@@ -383,7 +383,7 @@ watch(jumpVersion, () => {
     </header>
 
     <!-- Content -->
-    <div class="max-w-6xl mx-auto py-8 space-y-8">
+    <div class="container w-full py-8 space-y-8">
       <!-- ── Current Tags ───────────────────────────────────────────────────── -->
       <section class="space-y-3">
         <h2 class="text-xs text-fg-subtle uppercase tracking-wider px-4 sm:px-6 ps-1">
@@ -495,7 +495,7 @@ watch(jumpVersion, () => {
         </h2>
 
         <!-- List + changelog side panel -->
-        <div class="flex items-start">
+        <div class="flex">
           <!-- Version list -->
           <div
             class="flex-1 min-w-0 border-y sm:border border-border sm:rounded-lg sm:overflow-hidden"
@@ -544,7 +544,8 @@ watch(jumpVersion, () => {
                 </div>
 
                 <!-- Right side -->
-                <div class="flex items-center gap-3 shrink-0 relative z-10">
+                <div class="flex items-center gap-2 shrink-0 relative z-10">
+                  <!-- Metadata: date + provenance -->
                   <DateTime
                     v-if="v.time"
                     :datetime="v.time"
@@ -560,24 +561,29 @@ watch(jumpVersion, () => {
                     compact
                     :linked="false"
                   />
+
+                  <!-- Divider -->
+                  <span
+                    v-if="v.hasChangelog"
+                    class="w-px h-3.5 bg-border shrink-0 hidden sm:block"
+                    aria-hidden="true"
+                  />
+
+                  <!-- Changelog toggle button -->
                   <button
                     v-if="v.hasChangelog"
                     type="button"
-                    class="flex items-center gap-1 text-xs transition-colors rounded focus-visible:outline-accent/70"
+                    class="flex items-center gap-1.5 text-xs px-2 py-1 rounded border transition-colors focus-visible:outline-accent/70"
                     :class="
                       selectedChangelogVersion === v.version
-                        ? 'text-fg'
-                        : 'text-fg-subtle hover:text-fg'
+                        ? 'border-accent/50 bg-accent/8 text-accent'
+                        : 'border-border text-fg-subtle hover:text-fg hover:border-border-hover'
                     "
                     :aria-expanded="selectedChangelogVersion === v.version"
-                    :aria-pressed="selectedChangelogVersion === v.version"
+                    :aria-label="`Toggle changelog for v${v.version}`"
                     @click.stop="toggleChangelog(v.version)"
                   >
-                    <span
-                      class="i-lucide:chevron-right w-3 h-3 transition-transform duration-200 motion-reduce:transition-none"
-                      :class="{ 'rotate-90': selectedChangelogVersion === v.version }"
-                      aria-hidden="true"
-                    />
+                    <span class="i-lucide:scroll-text w-3.5 h-3.5 shrink-0" aria-hidden="true" />
                     <span class="hidden sm:inline">Changelog</span>
                   </button>
                 </div>
@@ -603,11 +609,11 @@ watch(jumpVersion, () => {
 
           <!-- Changelog side panel (desktop only) -->
           <div
-            class="hidden sm:block overflow-hidden shrink-0 transition-[width] duration-200 ease-out motion-reduce:transition-none"
+            class="hidden sm:block overflow-clip shrink-0 transition-[width] duration-200 ease-out motion-reduce:transition-none"
             :class="selectedChangelogVersion ? 'w-[28rem] ms-6' : 'w-0'"
           >
             <!-- Fixed-width inner keeps content from squishing during animation -->
-            <div class="w-[28rem] sticky top-28">
+            <div class="w-[28rem] sticky top-34">
               <div class="rounded-lg border border-border overflow-hidden">
                 <!-- Panel header -->
                 <div
