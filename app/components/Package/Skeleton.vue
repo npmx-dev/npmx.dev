@@ -1,51 +1,45 @@
 <script setup lang="ts"></script>
 
 <template>
+  <!-- Package header — matches area-header in [...name].vue -->
+  <header class="bg-[--bg] pt-2">
+    <div class="min-w-0">
+      <!-- Package name -->
+      <div class="min-w-0 flex items-center gap-2 justify-between">
+        <h1 class="font-mono text-2xl sm:text-3xl font-medium">
+          <SkeletonInline class="block! h-9 w-48" />
+        </h1>
+        <div class="flex gap-1">
+          <!-- Compare placeholder -->
+          <SkeletonBlock class="w-9 md:w-40 h-9 rounded self-baseline" />
+          <!-- Likes button placeholder -->
+          <SkeletonBlock class="w-14 h-9 rounded self-baseline" />
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div
+    class="sticky top-14 z-1 pt-2 bg-bg border-b border-border flex flex-col md:flex-row-reverse flex-wrap gap-2 justify-between"
+  >
+    <!-- Version -->
+    <span class="inline-flex items-baseline font-mono text-base sm:text-lg shrink-0">
+      <SkeletonInline class="h-6 w-20" />
+    </span>
+    <!-- Docs + Code + Compare nav placeholder (hidden on mobile) -->
+    <div class="flex items-center gap-0.5 p-0.5">
+      <SkeletonInline class="h-7 w-22 rounded" />
+      <SkeletonInline class="h-7 w-20 rounded" />
+      <SkeletonInline class="h-7 w-26 rounded" />
+    </div>
+  </div>
   <article
     aria-busy="true"
     :aria-label="$t('package.skeleton.loading')"
     class="package-page motion-safe:animate-fade-in"
   >
-    <!-- Package header — matches area-header in [...name].vue -->
-    <header class="area-header sticky top-14 z-1 bg-[--bg] py-2">
-      <div class="flex items-baseline gap-x-2 gap-y-1 sm:gap-x-3 flex-wrap min-w-0">
-        <!-- Package name -->
-        <div class="min-w-0">
-          <h1 class="font-mono text-2xl sm:text-3xl font-medium">
-            <SkeletonInline class="h-9 w-48" />
-          </h1>
-        </div>
-        <!-- Version -->
-        <span class="inline-flex items-baseline font-mono text-base sm:text-lg shrink-0">
-          <SkeletonInline class="h-6 w-20" />
-        </span>
-
-        <!-- Docs + Code + Compare nav placeholder (hidden on mobile) -->
-        <div
-          class="hidden sm:flex items-center gap-0.5 p-0.5 bg-bg-subtle border border-border-subtle rounded-md shrink-0 ms-auto self-center"
-        >
-          <SkeletonInline class="h-7 w-22 rounded" />
-          <SkeletonInline class="h-7 w-20 rounded" />
-          <SkeletonInline class="h-7 w-26 rounded" />
-        </div>
-
-        <!-- Metrics badges + likes — matches basis-full flex row -->
-        <div class="basis-full flex gap-2 sm:gap-3 flex-wrap items-stretch">
-          <!-- Badge row (Types, ESM, CJS, CJS-ghost) -->
-          <div class="flex items-center gap-1.5 self-baseline">
-            <SkeletonBlock class="w-16 h-5.5 rounded" />
-            <SkeletonBlock class="w-13 h-5.5 rounded" />
-            <SkeletonBlock class="w-13 h-5.5 rounded" />
-            <SkeletonBlock class="w-13 h-5.5 rounded bg-bg-subtle" />
-          </div>
-          <!-- Likes button placeholder -->
-          <SkeletonBlock class="w-14 h-5.5 rounded self-baseline" />
-        </div>
-      </div>
-    </header>
-
     <!-- Package details — matches area-details in [...name].vue -->
-    <section class="area-details">
+    <section class="area-details pt-4">
       <div class="mb-4">
         <!-- Description -->
         <div class="max-w-2xl">
@@ -65,6 +59,17 @@
           <li><SkeletonInline class="h-5 w-16" /></li>
           <li><SkeletonInline class="h-5 w-10" /></li>
         </ul>
+
+        <!-- Metrics badges + likes — matches basis-full flex row -->
+        <div class="basis-full flex gap-2 sm:gap-3 flex-wrap items-stretch mt-4">
+          <!-- Badge row (Types, ESM, CJS, CJS-ghost) -->
+          <div class="flex items-center gap-1.5 self-baseline">
+            <SkeletonBlock class="w-16 h-5.5 rounded" />
+            <SkeletonBlock class="w-13 h-5.5 rounded" />
+            <SkeletonBlock class="w-13 h-5.5 rounded" />
+            <SkeletonBlock class="w-13 h-5.5 rounded bg-bg-subtle" />
+          </div>
+        </div>
       </div>
 
       <!-- Stats grid — matches dl in [...name].vue -->
@@ -382,7 +387,6 @@
   /* Mobile: single column, sidebar above readme */
   grid-template-columns: minmax(0, 1fr);
   grid-template-areas:
-    'header'
     'details'
     'install'
     'vulns'
@@ -390,12 +394,11 @@
     'readme';
 }
 
-/* Tablet/medium: header/install/vulns full width, readme+sidebar side by side */
+/* Tablet/medium: install/vulns full width, readme+sidebar side by side */
 @media (min-width: 1024px) {
   .package-page {
     grid-template-columns: 2fr 1fr;
     grid-template-areas:
-      'header  header'
       'details details'
       'install install'
       'vulns   vulns'
@@ -409,16 +412,11 @@
   .package-page {
     grid-template-columns: 1fr 20rem;
     grid-template-areas:
-      'header  sidebar'
       'details sidebar'
       'install sidebar'
       'vulns   sidebar'
       'readme  sidebar';
   }
-}
-
-.area-header {
-  grid-area: header;
 }
 
 .area-details {
