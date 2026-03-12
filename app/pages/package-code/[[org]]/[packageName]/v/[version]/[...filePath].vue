@@ -259,6 +259,7 @@ function copyPermalinkUrl() {
   copyPermalink(url.toString())
 }
 
+const { isTouchDeviceClient } = useScrollToTop()
 const { copied: fileContentCopied, copy: copyFileContent } = useClipboard({
   source: () => fileContent.value?.content || '',
   copiedDuring: 2000,
@@ -271,6 +272,10 @@ function scrollToTop() {
     contentContainer.value.scrollTo({ top: 0, behavior: 'smooth' })
   }
 }
+const { y } = useScroll(contentContainer)
+const isVisible = computed(() => {
+  return y.value > SCROLL_TO_TOP_THRESHOLD
+})
 
 // Canonical URL for this code page
 const canonicalUrl = computed(() => `https://npmx.dev${getCodeUrl(route.params)}`)
@@ -474,12 +479,13 @@ defineOgImageComponent('Default', {
             </div>
             <div class="flex items-center gap-2">
               <button
+                v-if="isVisible"
                 type="button"
                 class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors items-center inline-flex gap-1"
                 @click="scrollToTop"
               >
                 <span class="i-lucide:arrow-up w-3 h-3" />
-                {{ $t('code.scroll_to_top') }}
+                {{ isTouchDeviceClient ? '' : $t('code.scroll_to_top') }}
               </button>
               <button
                 v-if="selectedLines"
