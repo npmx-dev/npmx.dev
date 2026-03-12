@@ -1368,7 +1368,7 @@ const showSkeleton = shallowRef(false)
           </div>
           <TerminalInstall
             :package-name="pkg.name"
-            :requested-version="resolvedVersion"
+            :requested-version="requestedVersion ? resolvedVersion : null"
             :install-version-override="installVersionOverride"
             :jsr-info="jsrInfo"
             :dev-dependency-suggestion="packageAnalysis?.devDependencySuggestion"
