@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { PackageVersionInfo } from '#shared/types'
-import { compare } from 'semver'
 import { buildVersionToTagsMap, buildTaggedVersionRows } from '~/utils/versions'
 
 definePageMeta({
@@ -22,81 +20,33 @@ const orgName = computed(() => {
   return match ? match[1] : null
 })
 
-// ─── Mock data ────────────────────────────────────────────────────────────────
-// TODO: Replace distTags with pkg['dist-tags'] from usePackage()
-// TODO: Replace versionHistory with data from useAllPackageVersions()
+// ─── Data ─────────────────────────────────────────────────────────────────────
+
+const { data: versionHistoryData } = usePackageVersionHistory(packageName)
+
 // TODO: Replace mockChangelogs with pre-rendered HTML from the server
 //       (GitHub releases body or CHANGELOG.md, parsed server-side like README)
-
-const distTags: Record<string, string> = {
-  latest: '3.4.21',
-  next: '3.5.0-beta.3',
-  beta: '3.5.0-beta.3',
-  rc: '3.5.0-rc.1',
-  alpha: '3.5.0-alpha.5',
-  csp: '3.4.21',
-  legacy: '2.7.16',
-}
-
-const versionHistory: PackageVersionInfo[] = [
-  { version: '3.5.0-beta.3', time: '2024-12-18T10:00:00Z', hasProvenance: true },
-  { version: '3.5.0-rc.1', time: '2024-12-10T10:00:00Z', hasProvenance: true },
-  { version: '3.5.0-alpha.5', time: '2024-11-28T10:00:00Z', hasProvenance: true },
-  { version: '3.5.0-alpha.4', time: '2024-11-10T10:00:00Z', hasProvenance: false },
-  { version: '3.5.0-alpha.3', time: '2024-10-22T10:00:00Z', hasProvenance: false },
-  { version: '3.4.21', time: '2024-12-05T10:00:00Z', hasProvenance: true },
-  { version: '3.4.20', time: '2024-11-20T10:00:00Z', hasProvenance: true },
-  { version: '3.4.19', time: '2024-11-08T10:00:00Z', hasProvenance: true },
-  { version: '3.4.18', time: '2024-10-25T10:00:00Z', hasProvenance: true },
-  { version: '3.4.17', time: '2024-10-01T10:00:00Z', hasProvenance: true },
-  { version: '3.4.0', time: '2024-02-15T10:00:00Z', hasProvenance: false },
-  { version: '3.3.13', time: '2024-01-10T10:00:00Z', hasProvenance: false },
-  { version: '3.3.0', time: '2023-05-11T10:00:00Z', hasProvenance: false },
-  { version: '3.2.47', time: '2023-03-30T10:00:00Z', hasProvenance: false },
-  { version: '3.0.0', time: '2022-09-29T10:00:00Z', hasProvenance: false },
-  { version: '2.7.16', time: '2023-12-08T10:00:00Z', hasProvenance: false },
-  { version: '2.7.15', time: '2023-09-12T10:00:00Z', hasProvenance: false },
-  { version: '2.7.14', time: '2023-06-01T10:00:00Z', hasProvenance: false },
-  { version: '2.7.0', time: '2022-07-01T10:00:00Z', hasProvenance: false },
-  { version: '2.6.14', time: '2022-03-14T10:00:00Z', hasProvenance: false },
-  {
-    version: '2.5.22',
-    time: '2018-03-20T10:00:00Z',
-    hasProvenance: false,
-    deprecated: 'Use vue@2.6.x or later',
-  },
-  {
-    version: '2.5.0',
-    time: '2017-10-13T10:00:00Z',
-    hasProvenance: false,
-    deprecated: 'Use vue@2.6.x or later',
-  },
-  { version: '1.0.28', time: '2016-12-15T10:00:00Z', hasProvenance: false },
-]
-
-// TODO: Replace with pre-rendered HTML from the server
-const mockChangelogs: Record<string, string> = {
-  '3.5.0-beta.3': 'Hello world',
-}
+const mockChangelogs: Record<string, string> = {}
 
 // ─── Derived data ─────────────────────────────────────────────────────────────
 
-const versionToTagsMap = computed(() => buildVersionToTagsMap(distTags))
+const distTags = computed(() => versionHistoryData.value?.distTags ?? {})
+const versionHistory = computed(() => versionHistoryData.value?.versions ?? [])
+
+const versionToTagsMap = computed(() => buildVersionToTagsMap(distTags.value))
 
 const sortedVersions = computed(() =>
-  [...versionHistory]
-    .sort((a, b) => compare(b.version, a.version))
-    .map(v => ({
-      ...v,
-      tags: versionToTagsMap.value.get(v.version),
-      hasChangelog: v.version in mockChangelogs,
-    })),
+  versionHistory.value.map(v => ({
+    ...v,
+    tags: versionToTagsMap.value.get(v.version),
+    hasChangelog: v.version in mockChangelogs,
+  })),
 )
 
-const tagRows = computed(() => buildTaggedVersionRows(distTags))
+const tagRows = computed(() => buildTaggedVersionRows(distTags.value))
 
 function getVersionTime(version: string): string | undefined {
-  return versionHistory.find(v => v.version === version)?.time
+  return versionHistory.value.find(v => v.version === version)?.time
 }
 
 // ─── Changelog side panel ─────────────────────────────────────────────────────
@@ -120,7 +70,7 @@ const jumpError = ref('')
 function navigateToVersion() {
   const v = jumpVersion.value.trim()
   if (!v) return
-  if (!versionHistory.some(entry => entry.version === v)) {
+  if (!versionHistory.value.some(entry => entry.version === v)) {
     jumpError.value = `"${v}" not found`
     return
   }
