@@ -3505,6 +3505,9 @@
         "compare_versions_title": {
           "type": "string"
         },
+        "version_selector_title": {
+          "type": "string"
+        },
         "summary": {
           "type": "string"
         },

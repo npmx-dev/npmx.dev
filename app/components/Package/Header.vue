@@ -8,13 +8,14 @@ import { togglePackageLike } from '~/utils/atproto/likes'
 import { isEditableElement } from '~/utils/input'
 
 const props = defineProps<{
-  pkg: Pick<SlimPackument, 'name' | 'versions' | 'dist-tags'> | null
+  pkg?: Pick<SlimPackument, 'name' | 'versions' | 'dist-tags'> | null
   resolvedVersion?: string | null
-  displayVersion: PackumentVersion | null
-  latestVersion: SlimVersion | null
-  provenanceData: ProvenanceDetails | null
-  provenanceStatus: string
+  displayVersion?: PackumentVersion | null
+  latestVersion?: SlimVersion | null
+  provenanceData?: ProvenanceDetails | null
+  provenanceStatus?: string | null
   page: 'main' | 'docs' | 'code' | 'diff'
+  versionUrlPattern: string
 }>()
 
 const { requestedVersion, orgName } = usePackageRoute()
@@ -125,11 +126,6 @@ const diffLink = computed((): RouteLocationRaw | null => {
   }
   return diffRoute(props.pkg.name, props.resolvedVersion, props.latestVersion.version)
 })
-
-// URL pattern for version selector - includes file path if present
-const versionUrlPattern = computed(
-  () => `/package/${props.pkg?.name || packageName.value}/v/{version}`,
-)
 
 const keyboardShortcuts = useKeyboardShortcuts()
 
@@ -341,7 +337,7 @@ const likeAction = async () => {
         :tabindex="showScrollToTop ? 0 : -1"
       />
       <div class="flex-inline items-center flex-nowrap gap-1 font-mono text-fg-muted">
-        <template v-if="hasProvenance(displayVersion)">
+        <template v-if="displayVersion && hasProvenance(displayVersion)">
           <TooltipApp
             :text="
               provenanceData && provenanceStatus !== 'pending'

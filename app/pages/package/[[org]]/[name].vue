@@ -517,6 +517,11 @@ const canonicalUrl = computed(() => {
   return requestedVersion.value ? `${base}/v/${requestedVersion.value}` : base
 })
 
+// URL pattern for version selector - includes file path if present
+const versionUrlPattern = computed(
+  () => `/package/${pkg.value?.name || packageName.value}/v/{version}`,
+)
+
 const dependencyCount = computed(() => getDependencyCount(displayVersion.value))
 
 const numberFormatter = useNumberFormatter()
@@ -585,6 +590,7 @@ const showSkeleton = shallowRef(false)
         :provenance-status="provenanceStatus"
         :class="$style.areaHeader"
         page="main"
+        :version-url-pattern="versionUrlPattern"
       />
       <article id="package-article" :class="$style.packagePage">
         <!-- Package details -->

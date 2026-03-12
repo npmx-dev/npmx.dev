@@ -1167,6 +1167,7 @@
     "file_size_warning": "{size} exceeds the 250KB limit for comparison",
     "compare_versions": "diff",
     "compare_versions_title": "Compare with latest version",
+    "version_selector_title": "Compare with version",
     "summary": "Summary",
     "deps_count": "{count} dep | {count} deps",
     "dependencies": "Dependencies",

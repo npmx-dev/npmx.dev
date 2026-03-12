@@ -293,6 +293,14 @@ const markdownViewMode = shallowRef<(typeof markdownViewModes)[number]['key']>('
 
 const bytesFormatter = useBytesFormatter()
 
+// Keep latestVersion for comparison (to show "(latest)" badge)
+const latestVersion = computed(() => {
+  if (!pkg.value) return null
+  const latestTag = pkg.value['dist-tags']?.latest
+  if (!latestTag) return null
+  return pkg.value.versions[latestTag] ?? null
+})
+
 useHead({
   link: [{ rel: 'canonical', href: canonicalUrl }],
 })
@@ -330,69 +338,17 @@ defineOgImageComponent('Default', {
 
 <template>
   <main class="flex-1 flex flex-col">
-    <!-- Header -->
-    <header class="border-b border-border bg-bg sticky top-14 z-20">
-      <div class="container py-4">
-        <!-- Package info and navigation -->
-        <div class="flex items-center gap-2 mb-3 flex-wrap min-w-0">
-          <NuxtLink
-            :to="packageRoute(packageName, version)"
-            class="font-mono text-lg font-medium hover:text-fg transition-colors min-w-0 truncate max-w-[60vw] sm:max-w-none"
-            :title="packageName"
-          >
-            <span v-if="orgName" class="text-fg-muted">@{{ orgName }}/</span
-            >{{ orgName ? packageName.replace(`@${orgName}/`, '') : packageName }}
-          </NuxtLink>
-          <!-- Version selector -->
-          <VersionSelector
-            v-if="version && pkg?.versions && pkg?.['dist-tags']"
-            :package-name="packageName"
-            :current-version="version"
-            :versions="pkg.versions"
-            :dist-tags="pkg['dist-tags']"
-            :url-pattern="versionUrlPattern"
-          />
-          <span
-            v-else-if="version"
-            class="px-2 py-0.5 font-mono text-sm bg-bg-muted border border-border rounded truncate max-w-32 sm:max-w-48"
-            :title="`v${version}`"
-          >
-            v{{ version }}
-          </span>
-          <span class="text-fg-subtle shrink-0">/</span>
-          <span class="font-mono text-sm text-fg-muted shrink-0">{{
-            $t('package.links.code')
-          }}</span>
-        </div>
-
-        <!-- Breadcrumb navigation -->
-        <nav
-          :aria-label="$t('code.file_path')"
-          class="flex items-center gap-1 font-mono text-sm overflow-x-auto"
-          dir="ltr"
-        >
-          <NuxtLink
-            v-if="filePath"
-            :to="getCurrentCodeUrlWithPath()"
-            class="text-fg-muted hover:text-fg transition-colors shrink-0"
-          >
-            {{ $t('code.root') }}
-          </NuxtLink>
-          <span v-else class="text-fg shrink-0">{{ $t('code.root') }}</span>
-          <template v-for="(crumb, i) in breadcrumbs" :key="crumb.path">
-            <span class="text-fg-subtle">/</span>
-            <NuxtLink
-              v-if="i < breadcrumbs.length - 1"
-              :to="getCurrentCodeUrlWithPath(crumb.path)"
-              class="text-fg-muted hover:text-fg transition-colors"
-            >
-              {{ crumb.name }}
-            </NuxtLink>
-            <span v-else class="text-fg">{{ crumb.name }}</span>
-          </template>
-        </nav>
-      </div>
-    </header>
+    <div class="w-full container -mb-px">
+      <PackageHeader
+        :pkg="pkg"
+        :resolved-version="version"
+        :display-version="pkg?.requestedVersion"
+        :latest-version="latestVersion"
+        :version-url-pattern="versionUrlPattern"
+        page="code"
+      />
+    </div>
+    <span class="block h-px w-full bg-border" />
 
     <!-- Error: no version -->
     <div v-if="!version" class="container py-20 text-center">
