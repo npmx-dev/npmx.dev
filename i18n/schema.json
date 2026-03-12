@@ -538,9 +538,6 @@
         "go_back_home": {
           "type": "string"
         },
-        "view_on_npm": {
-          "type": "string"
-        },
         "per_week": {
           "type": "string"
         },
@@ -576,6 +573,48 @@
         },
         "error": {
           "type": "string"
+        },
+        "view_on": {
+          "type": "object",
+          "properties": {
+            "npm": {
+              "type": "string"
+            },
+            "github": {
+              "type": "string"
+            },
+            "gitlab": {
+              "type": "string"
+            },
+            "bitbucket": {
+              "type": "string"
+            },
+            "codeberg": {
+              "type": "string"
+            },
+            "git_repo": {
+              "type": "string"
+            },
+            "forgejo": {
+              "type": "string"
+            },
+            "gitea": {
+              "type": "string"
+            },
+            "gitee": {
+              "type": "string"
+            },
+            "radicle": {
+              "type": "string"
+            },
+            "sourcehut": {
+              "type": "string"
+            },
+            "tangled": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false
@@ -940,9 +979,6 @@
             "no_readme": {
               "type": "string"
             },
-            "view_on_github": {
-              "type": "string"
-            },
             "toc_title": {
               "type": "string"
             },
@@ -1141,7 +1177,7 @@
             "grouping_usage_all": {
               "type": "string"
             },
-            "grouping_usage_low": {
+            "grouping_usage_most_used": {
               "type": "string"
             },
             "recent_versions_only_tooltip": {
@@ -1381,6 +1417,9 @@
             "smoothing": {
               "type": "string"
             },
+            "prediction": {
+              "type": "string"
+            },
             "known_anomalies": {
               "type": "string"
             },
@@ -1442,6 +1481,12 @@
                   "type": "string"
                 },
                 "general_description": {
+                  "type": "string"
+                },
+                "facet_bar_general_description": {
+                  "type": "string"
+                },
+                "facet_bar_analysis": {
                   "type": "string"
                 }
               },
@@ -2343,6 +2388,12 @@
         },
         "scroll_to_top": {
           "type": "string"
+        },
+        "binary_file": {
+          "type": "string"
+        },
+        "binary_rendering_warning": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -3125,6 +3176,12 @@
               "type": "string"
             },
             "empty_description": {
+              "type": "string"
+            },
+            "table_view": {
+              "type": "string"
+            },
+            "charts_view": {
               "type": "string"
             }
           },

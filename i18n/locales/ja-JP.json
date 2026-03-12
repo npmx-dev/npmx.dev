@@ -178,7 +178,6 @@
     "skip_link": "メインコンテンツにスキップ",
     "warnings": "警告:",
     "go_back_home": "ホームへ戻る",
-    "view_on_npm": "npmで表示",
     "per_week": "/ 週",
     "vanity_downloads_hint": "バニティ番号: パッケージが表示されていません|バニティ番号: 表示されているパッケージの数値|バニティ番号: 表示されている {count} 個のパッケージの合計",
     "sort": {
@@ -190,7 +189,11 @@
     "cancel": "キャンセル",
     "save": "保存",
     "edit": "編集",
-    "error": "エラー"
+    "error": "エラー",
+    "view_on": {
+      "npm": "npmで表示",
+      "github": "GitHubで表示"
+    }
   },
   "profile": {
     "display_name": "表示名",
@@ -312,7 +315,6 @@
     "readme": {
       "title": "Readme",
       "no_readme": "READMEはありません。",
-      "view_on_github": "GitHubで表示",
       "toc_title": "目次",
       "callout": {
         "note": "メモ",
@@ -377,7 +379,6 @@
       "grouping_versions_only_recent": "直近のみ",
       "grouping_usage_title": "使用状況",
       "grouping_usage_all": "すべて",
-      "grouping_usage_low": "低",
       "recent_versions_only_tooltip": "過去1年以内に公開されたバージョンのみ表示します。",
       "show_low_usage_tooltip": "総ダウンロード数の1%未満のバージョングループも含めます。",
       "y_axis_label": "ダウンロード",

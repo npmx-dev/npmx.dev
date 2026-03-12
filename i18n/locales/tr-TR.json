@@ -73,6 +73,18 @@
     "instant_search_turn_off": "kapat",
     "instant_search_advisory": "{label} {state} — {action}"
   },
+  "nav": {
+    "main_navigation": "Ana",
+    "popular_packages": "Popüler paketler",
+    "settings": "ayarlar",
+    "compare": "karşılaştır",
+    "back": "geri",
+    "menu": "Menü",
+    "mobile_menu": "Navigasyon menüsü",
+    "open_menu": "Menüyü aç",
+    "links": "Bağlantılar",
+    "tap_to_search": "Aramak için dokunun"
+  },
   "blog": {
     "title": "Blog",
     "heading": "blog",
@@ -97,18 +109,6 @@
       "repost_count": "{count} yeniden paylaşım",
       "more_replies": "{count} yanıt daha..."
     }
-  },
-  "nav": {
-    "main_navigation": "Ana",
-    "popular_packages": "Popüler paketler",
-    "settings": "ayarlar",
-    "compare": "karşılaştır",
-    "back": "geri",
-    "menu": "Menü",
-    "mobile_menu": "Navigasyon menüsü",
-    "open_menu": "Menüyü aç",
-    "links": "Bağlantılar",
-    "tap_to_search": "Aramak için dokunun"
   },
   "settings": {
     "title": "ayarlar",
@@ -178,7 +178,6 @@
     "skip_link": "Ana içeriğe geç",
     "warnings": "Uyarılar:",
     "go_back_home": "Ana sayfaya dön",
-    "view_on_npm": "npm'de görüntüle",
     "per_week": "/ hafta",
     "vanity_downloads_hint": "Gösterge: paket gösterilmiyor | Gösterge: gösterilen paket için | Gösterge: {count} gösterilen paketin toplamı",
     "sort": {
@@ -190,7 +189,11 @@
     "cancel": "İptal",
     "save": "Kaydet",
     "edit": "Düzenle",
-    "error": "Hata"
+    "error": "Hata",
+    "view_on": {
+      "npm": "npm'de görüntüle",
+      "github": "GitHub'da görüntüle"
+    }
   },
   "profile": {
     "display_name": "Görünen ad",
@@ -312,7 +315,6 @@
     "readme": {
       "title": "Readme",
       "no_readme": "README mevcut değil.",
-      "view_on_github": "GitHub'da görüntüle",
       "toc_title": "İçindekiler",
       "callout": {
         "note": "Not",
@@ -377,7 +379,6 @@
       "grouping_versions_only_recent": "Yalnızca son",
       "grouping_usage_title": "Kullanım",
       "grouping_usage_all": "Tümü",
-      "grouping_usage_low": "Düşük",
       "recent_versions_only_tooltip": "Yalnızca son bir yıl içinde yayınlanan sürümleri göster.",
       "show_low_usage_tooltip": "Toplam indirmelerin %1'inden azını oluşturan sürüm gruplarını dahil et.",
       "y_axis_label": "İndirmeler",
@@ -961,15 +962,15 @@
         "description": "Discord'da topluluğa katılın",
         "cta": "Discord'a katıl"
       },
-      "follow": {
-        "title": "Takip edin",
-        "description": "Güncellemeler için bizi takip edin",
-        "cta": "Bluesky'da takip et"
-      },
       "builders": {
         "title": "Yapımcılar",
         "description": "Yapımcı topluluğumuza katılın ve npmx'in geleceğini şekillendirin",
         "cta": "Yapımcı sohbetine katıl"
+      },
+      "follow": {
+        "title": "Takip edin",
+        "description": "Güncellemeler için bizi takip edin",
+        "cta": "Bluesky'da takip et"
       }
     }
   },
@@ -1022,7 +1023,6 @@
     }
   },
   "compare": {
-    "compare_versions_title": "Sürümleri karşılaştır",
     "packages": {
       "title": "Paketleri Karşılaştır",
       "tagline": "npm paketlerini yan yana karşılaştırın",
@@ -1147,6 +1147,7 @@
     "lines_hidden": "{count} satır gizlendi",
     "file_too_large": "Dosya çok büyük",
     "file_size_warning": "Dosya boyutu {size}",
+    "compare_versions_title": "Sürümleri karşılaştır",
     "summary": "Özet",
     "deps_count": "{count} bağımlılık",
     "dependencies": "Bağımlılıklar",

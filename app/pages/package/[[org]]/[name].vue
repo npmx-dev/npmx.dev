@@ -21,6 +21,7 @@ import { useModal } from '~/composables/useModal'
 import { useAtproto } from '~/composables/atproto/useAtproto'
 import { togglePackageLike } from '~/utils/atproto/likes'
 import { useInstallSizeDiff } from '~/composables/useInstallSizeDiff'
+import { useViewOnGitProvider } from '~/composables/useViewOnGitProvider'
 import type { RouteLocationRaw } from 'vue-router'
 
 defineOgImageComponent('Package', {
@@ -106,6 +107,11 @@ const navExtraOffsetStyle = computed(() => ({
 
 const { packageName, requestedVersion, orgName } = usePackageRoute()
 
+const { data: resolvedVersion, status: resolvedStatus } = await useResolvedVersion(
+  packageName,
+  requestedVersion,
+)
+
 if (import.meta.server) {
   assertValidPackageName(packageName.value)
 }
@@ -114,7 +120,7 @@ if (import.meta.server) {
 const { data: readmeData } = useLazyFetch<ReadmeResponse>(
   () => {
     const base = `/api/registry/readme/${packageName.value}`
-    const version = requestedVersion.value
+    const version = resolvedVersion.value
     return version ? `${base}/v/${version}` : base
   },
   {
@@ -150,7 +156,7 @@ const {
 } = useLazyFetch<ReadmeMarkdownResponse>(
   () => {
     const base = `/api/registry/readme/markdown/${packageName.value}`
-    const version = requestedVersion.value
+    const version = resolvedVersion.value
     return version ? `${base}/v/${version}` : base
   },
   {
@@ -200,7 +206,7 @@ const {
 } = useLazyFetch<InstallSizeResult | null>(
   () => {
     const base = `/api/registry/install-size/${packageName.value}`
-    const version = requestedVersion.value
+    const version = resolvedVersion.value
     return version ? `${base}/v/${version}` : base
   },
   {
@@ -213,7 +219,7 @@ onMounted(() => fetchInstallSize())
 const { data: skillsData } = useLazyFetch<SkillsListResponse>(
   () => {
     const base = `/skills/${packageName.value}`
-    const version = requestedVersion.value
+    const version = resolvedVersion.value
     return version ? `${base}/v/${version}` : base
   },
   { default: () => ({ package: '', version: '', skills: [] }) },
@@ -221,11 +227,6 @@ const { data: skillsData } = useLazyFetch<SkillsListResponse>(
 
 const { data: packageAnalysis } = usePackageAnalysis(packageName, requestedVersion)
 const { data: moduleReplacement } = useModuleReplacement(packageName)
-
-const { data: resolvedVersion, status: resolvedStatus } = await useResolvedVersion(
-  packageName,
-  requestedVersion,
-)
 
 if (
   import.meta.server &&
@@ -502,6 +503,8 @@ const repoProviderIcon = computed((): IconClass => {
   if (!provider) return 'i-simple-icons:github'
   return PROVIDER_ICONS[provider] ?? 'i-lucide:code'
 })
+
+const viewOnGitProvider = useViewOnGitProvider(() => repoRef.value?.provider)
 
 const homepageUrl = computed(() => {
   const homepage = displayVersion.value?.homepage
@@ -863,7 +866,6 @@ const showSkeleton = shallowRef(false)
               :to="docsLink"
               aria-keyshortcuts="d"
               classicon="i-lucide:file-text"
-              :title="$t('package.links.docs')"
             >
               <span class="max-sm:sr-only">{{ $t('package.links.docs') }}</span>
             </LinkBase>
@@ -873,7 +875,6 @@ const showSkeleton = shallowRef(false)
               :to="codeLink"
               aria-keyshortcuts="."
               classicon="i-lucide:code"
-              :title="$t('package.links.code')"
             >
               <span class="max-sm:sr-only">{{ $t('package.links.code') }}</span>
             </LinkBase>
@@ -882,7 +883,6 @@ const showSkeleton = shallowRef(false)
               :to="{ name: 'compare', query: { packages: pkg.name } }"
               aria-keyshortcuts="c"
               classicon="i-lucide:git-compare"
-              :title="$t('package.links.compare')"
             >
               <span class="max-sm:sr-only">{{ $t('package.links.compare') }}</span>
             </LinkBase>
@@ -900,7 +900,6 @@ const showSkeleton = shallowRef(false)
             <ButtonBase
               v-if="showScrollToTop"
               variant="secondary"
-              :title="$t('common.scroll_to_top')"
               :aria-label="$t('common.scroll_to_top')"
               @click="scrollToTop"
               classicon="i-lucide:arrow-up"
@@ -1007,7 +1006,7 @@ const showSkeleton = shallowRef(false)
             <li>
               <LinkBase
                 :to="`https://www.npmjs.com/package/${pkg.name}`"
-                :title="$t('common.view_on_npm')"
+                :title="$t('common.view_on.npm')"
                 classicon="i-simple-icons:npm"
               >
                 npm
@@ -1369,7 +1368,7 @@ const showSkeleton = shallowRef(false)
           </div>
           <TerminalInstall
             :package-name="pkg.name"
-            :requested-version="requestedVersion"
+            :requested-version="resolvedVersion"
             :install-version-override="installVersionOverride"
             :jsr-info="jsrInfo"
             :dev-dependency-suggestion="packageAnalysis?.devDependencySuggestion"
@@ -1452,7 +1451,8 @@ const showSkeleton = shallowRef(false)
             target="_blank"
             rel="noopener noreferrer"
             class="link text-fg underline underline-offset-4 decoration-fg-subtle hover:(decoration-fg text-fg) transition-colors duration-200"
-            >{{ $t('package.readme.view_on_github') }}</a
+          >
+            {{ viewOnGitProvider }}</a
           >
         </p>
 

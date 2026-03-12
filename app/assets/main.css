@@ -275,13 +275,16 @@ dd {
 }
 
 /* Shiki theme colors */
-html.light .shiki,
-html.light .shiki span {
+html.light .shiki {
   color: var(--shiki-light) !important;
   background-color: var(--shiki-light-bg) !important;
-  font-style: var(--shiki-light-font-style) !important;
-  font-weight: var(--shiki-light-font-weight) !important;
-  text-decoration: var(--shiki-light-text-decoration) !important;
+
+  & span {
+    color: var(--shiki-light) !important;
+    font-style: var(--shiki-light-font-style) !important;
+    font-weight: var(--shiki-light-font-weight) !important;
+    text-decoration: var(--shiki-light-text-decoration) !important;
+  }
 }
 
 /* Inline code in package descriptions */
