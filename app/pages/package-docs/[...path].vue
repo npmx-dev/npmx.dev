@@ -21,17 +21,26 @@ const parsedRoute = computed(() => {
     return {
       packageName: segments.join('/'),
       version: null as string | null,
+      entrypoint: null as string | null,
     }
   }
 
+  // Version is the segment right after "v"
+  const version = segments[vIndex + 1]!
+  // Everything after the version is the entrypoint path (e.g., "router.js")
+  const entrypointSegments = segments.slice(vIndex + 2)
+  const entrypoint = entrypointSegments.length > 0 ? entrypointSegments.join('/') : null
+
   return {
     packageName: segments.slice(0, vIndex).join('/'),
-    version: segments.slice(vIndex + 1).join('/'),
+    version,
+    entrypoint,
   }
 })
 
 const packageName = computed(() => parsedRoute.value.packageName)
 const requestedVersion = computed(() => parsedRoute.value.version)
+const entrypoint = computed(() => parsedRoute.value.entrypoint)
 
 // Validate package name on server-side for early error detection
 if (import.meta.server && packageName.value) {
@@ -72,7 +81,8 @@ const resolvedVersion = computed(() => requestedVersion.value ?? latestVersion.v
 
 const docsUrl = computed(() => {
   if (!packageName.value || !resolvedVersion.value) return null
-  return `/api/registry/docs/${packageName.value}/v/${resolvedVersion.value}`
+  const base = `/api/registry/docs/${packageName.value}/v/${resolvedVersion.value}`
+  return entrypoint.value ? `${base}/${entrypoint.value}` : base
 })
 
 const shouldFetch = computed(() => !!docsUrl.value)
@@ -119,6 +129,33 @@ const showLoading = computed(
   () => docsStatus.value === 'pending' || (docsStatus.value === 'idle' && docsUrl.value !== null),
 )
 const showEmptyState = computed(() => docsData.value?.status !== 'ok')
+
+// Multi-entrypoint support
+const entrypoints = computed(() => docsData.value?.entrypoints ?? null)
+const currentEntrypoint = computed(() => docsData.value?.entrypoint ?? entrypoint.value ?? '')
+
+// Preserve entrypoint when switching versions
+const versionUrlPattern = computed(() => {
+  const base = `/package-docs/${packageName.value}/v/{version}`
+  return entrypoint.value ? `${base}/${entrypoint.value}` : base
+})
+
+// Redirect to first entrypoint for multi-entrypoint packages
+watch(docsData, data => {
+  if (data?.entrypoints?.length && !entrypoint.value && resolvedVersion.value) {
+    const firstEntrypoint = data.entrypoints[0]!
+    const pathSegments = [
+      ...packageName.value.split('/'),
+      'v',
+      resolvedVersion.value,
+      ...firstEntrypoint.split('/'),
+    ]
+    router.replace({
+      name: 'docs',
+      params: { path: pathSegments as [string, ...string[]] },
+    })
+  }
+})
 </script>
 
 <template>
@@ -148,11 +185,18 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
               :current-version="resolvedVersion"
               :versions="pkg.versions"
               :dist-tags="pkg['dist-tags']"
-              :url-pattern="`/package-docs/${packageName}/v/{version}`"
+              :url-pattern="versionUrlPattern"
             />
             <span v-else-if="resolvedVersion" class="text-fg-subtle font-mono text-sm shrink-0">
               {{ resolvedVersion }}
             </span>
+            <EntrypointSelector
+              v-if="entrypoints && currentEntrypoint && resolvedVersion"
+              :package-name="packageName"
+              :version="resolvedVersion"
+              :current-entrypoint="currentEntrypoint"
+              :entrypoints="entrypoints"
+            />
           </div>
           <div class="flex items-center gap-3 shrink-0">
             <span class="text-xs px-2 py-1 rounded badge-green border border-badge-green/50">

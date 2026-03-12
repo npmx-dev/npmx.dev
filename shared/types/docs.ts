@@ -8,6 +8,10 @@ export interface DocsResponse {
   breadcrumbs?: string | null
   status: DocsStatus
   message?: string
+  /** Available entrypoints for multi-entrypoint packages. Absent for single-entrypoint packages. */
+  entrypoints?: string[]
+  /** The current entrypoint being viewed. Absent for single-entrypoint packages. */
+  entrypoint?: string
 }
 
 export interface DocsSearchResponse {
