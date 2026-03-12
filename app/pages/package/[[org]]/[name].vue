@@ -25,8 +25,6 @@ defineOgImageComponent('Package', {
   primaryColor: '#60a5fa',
 })
 
-const router = useRouter()
-
 const readmeHeader = useTemplateRef('readmeHeader')
 const isReadmeHeaderPinned = shallowRef(false)
 const packageHeaderHeight = usePackageHeaderHeight()
