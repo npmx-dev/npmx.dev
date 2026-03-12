@@ -101,15 +101,14 @@ export function buildMonthlyEvolution(
   return entries.map(([month, value], i) => {
     const [y, m] = month.split('-').map(Number) as [number, number]
     const total = daysInMonth(y, m - 1)
+    const isFirst = i === 0
+    const isLast = i === entries.length - 1
 
-    if (i === 0 && rangeStartIso) {
-      const startDay = Number(rangeStartIso.split('-')[2])
-      if (startDay > 1) value = fillPartialBucket(value, total - startDay + 1, total)
-    }
-    if (i === entries.length - 1 && rangeEndIso) {
-      const endDay = Number(rangeEndIso.split('-')[2])
-      if (endDay < total) value = fillPartialBucket(value, endDay, total)
-    }
+    const startDay = isFirst && rangeStartIso ? Number(rangeStartIso.split('-')[2]) : 1
+    const endDay = isLast && rangeEndIso ? Number(rangeEndIso.split('-')[2]) : total
+    const actualDays = endDay - startDay + 1
+
+    if (actualDays < total) value = fillPartialBucket(value, actualDays, total)
 
     return { month, value, timestamp: parseIsoDate(`${month}-01`).getTime() }
   })
@@ -132,18 +131,20 @@ export function buildYearlyEvolution(
   return entries.map(([year, value], i) => {
     const total = daysInYear(Number(year))
     const yearStart = parseIsoDate(`${year}-01-01`)
+    const isFirst = i === 0
+    const isLast = i === entries.length - 1
 
-    if (i === 0 && rangeStartIso) {
-      const dayOfYear = Math.floor(
-        (parseIsoDate(rangeStartIso).getTime() - yearStart.getTime()) / DAY_MS,
-      )
-      if (dayOfYear > 0) value = fillPartialBucket(value, total - dayOfYear, total)
-    }
-    if (i === entries.length - 1 && rangeEndIso) {
-      const actualDays =
-        Math.floor((parseIsoDate(rangeEndIso).getTime() - yearStart.getTime()) / DAY_MS) + 1
-      if (actualDays < total) value = fillPartialBucket(value, actualDays, total)
-    }
+    const startOffset =
+      isFirst && rangeStartIso
+        ? Math.floor((parseIsoDate(rangeStartIso).getTime() - yearStart.getTime()) / DAY_MS)
+        : 0
+    const endOffset =
+      isLast && rangeEndIso
+        ? Math.floor((parseIsoDate(rangeEndIso).getTime() - yearStart.getTime()) / DAY_MS) + 1
+        : total
+    const actualDays = endOffset - startOffset
+
+    if (actualDays < total) value = fillPartialBucket(value, actualDays, total)
 
     return { year, value, timestamp: yearStart.getTime() }
   })

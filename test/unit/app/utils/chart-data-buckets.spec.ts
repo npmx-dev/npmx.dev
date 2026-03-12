@@ -138,6 +138,19 @@ describe('buildMonthlyEvolution', () => {
     expect(buildMonthlyEvolution([])).toEqual([])
   })
 
+  it('scales single month partial on both ends without double-scaling', () => {
+    // 2025-01-10 to 2025-01-20 = 11 days out of 31
+    const daily = Array.from({ length: 11 }, (_, i) => ({
+      day: `2025-01-${String(i + 10).padStart(2, '0')}`,
+      value: 10,
+    }))
+
+    const result = buildMonthlyEvolution(daily, '2025-01-10', '2025-01-20')
+
+    expect(result).toHaveLength(1)
+    expect(result[0]!.value).toBe(Math.round((110 * 31) / 11))
+  })
+
   it('scales up partial first month', () => {
     const daily = Array.from({ length: 14 }, (_, i) => ({
       day: `2025-03-${String(i + 18).padStart(2, '0')}`,
@@ -186,6 +199,20 @@ describe('buildYearlyEvolution', () => {
 
   it('returns empty array for empty input', () => {
     expect(buildYearlyEvolution([])).toEqual([])
+  })
+
+  it('scales single year partial on both ends without double-scaling', () => {
+    // 2025-04-01 to 2025-06-30 = 91 days out of 365
+    const daily = Array.from({ length: 91 }, (_, i) => {
+      const d = new Date(Date.UTC(2025, 3, 1))
+      d.setUTCDate(d.getUTCDate() + i)
+      return { day: d.toISOString().slice(0, 10), value: 10 }
+    })
+
+    const result = buildYearlyEvolution(daily, '2025-04-01', '2025-06-30')
+
+    expect(result).toHaveLength(1)
+    expect(result[0]!.value).toBe(Math.round((910 * 365) / 91))
   })
 
   it('scales up partial first year', () => {
