@@ -74,7 +74,6 @@ const versionToTags = computed(() => buildVersionToTagsMap(props.distTags))
 
 /** Get URL for a specific version */
 function getVersionUrl(version: string): string {
-  console.log('props.urlPattern', props.urlPattern)
   return props.urlPattern.replace('{version}', version)
 }
 

@@ -125,17 +125,14 @@ useSeoMeta({
 
 <template>
   <main class="flex-1 flex flex-col min-h-0">
-    <div class="w-full container -mb-px">
-      <PackageHeader
-        :pkg="pkg"
-        :resolved-version="fromVersion"
-        :display-version="pkg?.requestedVersion"
-        :latest-version="latestVersionDetailed"
-        :version-url-pattern="fromVersionUrlPattern"
-        page="diff"
-      />
-    </div>
-    <span class="block h-px w-full bg-border" />
+    <PackageHeader
+      :pkg="pkg"
+      :resolved-version="fromVersion"
+      :display-version="pkg?.requestedVersion"
+      :latest-version="latestVersionDetailed"
+      :version-url-pattern="fromVersionUrlPattern"
+      page="diff"
+    />
 
     <!-- Error: invalid route -->
     <div v-if="!versionRange" class="container py-20 text-center">

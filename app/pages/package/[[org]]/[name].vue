@@ -557,7 +557,18 @@ const showSkeleton = shallowRef(false)
       <span class="text-xs">Skeleton</span>
     </ButtonBase>
   </DevOnly>
-  <main class="container flex-1 w-full pb-8">
+  <main class="flex-1 pb-8">
+    <PackageHeader
+      :pkg="pkg"
+      :resolved-version="resolvedVersion"
+      :display-version="displayVersion"
+      :latest-version="latestVersion"
+      :provenance-data="provenanceData"
+      :provenance-status="provenanceStatus"
+      :class="$style.areaHeader"
+      page="main"
+      :version-url-pattern="versionUrlPattern"
+    />
     <!-- Scenario 1: SPA fallback — show skeleton (no real content to preserve) -->
     <!-- Scenario 2: SSR with missing payload — preserve server DOM, skip skeleton -->
     <PackageSkeleton
@@ -576,23 +587,13 @@ const showSkeleton = shallowRef(false)
         (hasServerContentOnly && serverRenderedHtml && (!pkg || readmeData?.defaultValue))
       "
       id="package-article"
+      class="container w-full"
       :class="$style.packagePage"
       v-html="serverRenderedHtml"
     />
 
     <template v-else-if="pkg">
-      <PackageHeader
-        :pkg="pkg"
-        :resolved-version="resolvedVersion"
-        :display-version="displayVersion"
-        :latest-version="latestVersion"
-        :provenance-data="provenanceData"
-        :provenance-status="provenanceStatus"
-        :class="$style.areaHeader"
-        page="main"
-        :version-url-pattern="versionUrlPattern"
-      />
-      <article id="package-article" :class="$style.packagePage">
+      <article id="package-article" :class="$style.packagePage" class="container w-full">
         <!-- Package details -->
         <section :class="$style.areaDetails">
           <div class="mb-4 pt-4">
@@ -1172,7 +1173,7 @@ const showSkeleton = shallowRef(false)
     <div
       v-else-if="status === 'error'"
       role="alert"
-      class="flex flex-col items-center py-20 text-center"
+      class="flex flex-col items-center py-20 text-center container w-full"
     >
       <h1 class="font-mono text-2xl font-medium mb-4">
         {{ $t('package.not_found') }}
@@ -1193,7 +1194,6 @@ const showSkeleton = shallowRef(false)
   gap: 2rem;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  max-width: 100%;
 
   /* Mobile: single column, sidebar above readme */
   grid-template-columns: minmax(0, 1fr);

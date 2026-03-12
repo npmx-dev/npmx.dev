@@ -134,17 +134,14 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
 
 <template>
   <div class="docs-page flex-1 flex flex-col">
-    <div class="w-full container -mb-px">
-      <PackageHeader
-        :pkg="pkg"
-        :resolved-version="resolvedVersion"
-        :display-version="pkg?.requestedVersion"
-        :latest-version="latestVersionDetailed"
-        :version-url-pattern="versionUrlPattern"
-        page="docs"
-      />
-    </div>
-    <span class="block h-px w-full bg-border" />
+    <PackageHeader
+      :pkg="pkg"
+      :resolved-version="resolvedVersion"
+      :display-version="pkg?.requestedVersion"
+      :latest-version="latestVersionDetailed"
+      :version-url-pattern="versionUrlPattern"
+      page="docs"
+    />
 
     <div class="flex" dir="ltr">
       <!-- Sidebar TOC -->
@@ -198,8 +195,8 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
 <style>
 /* Layout constants - must match AppHeader height */
 .docs-page {
-  --app-header-height: 57px;
-  --docs-header-height: 57px;
+  --app-header-height: 56px;
+  --docs-header-height: 44px;
   --combined-header-height: calc(var(--app-header-height) + var(--docs-header-height));
 }
 

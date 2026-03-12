@@ -338,17 +338,14 @@ defineOgImageComponent('Default', {
 
 <template>
   <main class="flex-1 flex flex-col">
-    <div class="w-full container -mb-px">
-      <PackageHeader
-        :pkg="pkg"
-        :resolved-version="version"
-        :display-version="pkg?.requestedVersion"
-        :latest-version="latestVersion"
-        :version-url-pattern="versionUrlPattern"
-        page="code"
-      />
-    </div>
-    <span class="block h-px w-full bg-border" />
+    <PackageHeader
+      :pkg="pkg"
+      :resolved-version="version"
+      :display-version="pkg?.requestedVersion"
+      :latest-version="latestVersion"
+      :version-url-pattern="versionUrlPattern"
+      page="code"
+    />
 
     <!-- Error: no version -->
     <div v-if="!version" class="container py-20 text-center">
@@ -376,7 +373,7 @@ defineOgImageComponent('Default', {
     <div v-else-if="fileTree" class="flex flex-1" dir="ltr">
       <!-- File tree sidebar - sticky with internal scroll -->
       <aside
-        class="w-64 lg:w-72 border-ie border-border shrink-0 hidden md:block bg-bg-subtle sticky top-28 self-start h-[calc(100vh-7rem)] overflow-y-auto"
+        class="w-64 lg:w-72 border-ie border-border shrink-0 hidden md:block bg-bg-subtle sticky top-25 self-start h-[calc(100vh-7rem)] overflow-y-auto"
       >
         <CodeFileTree
           :tree="fileTree.tree"
@@ -388,7 +385,7 @@ defineOgImageComponent('Default', {
 
       <!-- File content / Directory listing - sticky with internal scroll on desktop -->
       <div
-        class="flex-1 min-w-0 overflow-x-hidden sticky top-28 self-start h-[calc(100vh-7rem)] overflow-y-auto"
+        class="flex-1 min-w-0 overflow-x-hidden sticky top-25 self-start overflow-y-auto"
         ref="contentContainer"
       >
         <!-- File viewer -->
@@ -419,14 +416,40 @@ defineOgImageComponent('Default', {
                   {{ mode.label }}
                 </button>
               </div>
-              <div class="flex items-center gap-3 text-sm">
+              <!-- Breadcrumb navigation -->
+              <nav
+                :aria-label="$t('code.file_path')"
+                class="flex items-center gap-0.5 font-mono text-sm overflow-x-auto"
+                dir="ltr"
+              >
+                <NuxtLink
+                  v-if="filePath"
+                  :to="getCurrentCodeUrlWithPath()"
+                  class="text-fg-muted hover:text-fg transition-colors shrink-0"
+                >
+                  {{ $t('code.root') }}
+                </NuxtLink>
+                <span v-else class="text-fg shrink-0">{{ $t('code.root') }}</span>
+                <template v-for="(crumb, i) in breadcrumbs" :key="crumb.path">
+                  <span class="text-fg-subtle">/</span>
+                  <NuxtLink
+                    v-if="i < breadcrumbs.length - 1"
+                    :to="getCurrentCodeUrlWithPath(crumb.path)"
+                    class="text-fg-muted hover:text-fg transition-colors"
+                  >
+                    {{ crumb.name }}
+                  </NuxtLink>
+                  <span v-else class="text-fg">{{ crumb.name }}</span>
+                </template>
+              </nav>
+              <!-- <div class="flex items-center gap-3 text-sm">
                 <span class="text-fg-muted" dir="auto">{{
                   $t('code.lines', { count: fileContent.lines })
                 }}</span>
                 <span v-if="currentNode?.size" class="text-fg-subtle">{{
                   bytesFormatter.format(currentNode.size)
                 }}</span>
-              </div>
+              </div> -->
             </div>
             <div class="flex items-center gap-2">
               <button

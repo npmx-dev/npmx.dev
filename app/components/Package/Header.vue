@@ -248,7 +248,7 @@ const likeAction = async () => {
 
 <template>
   <!-- Package header -->
-  <header class="bg-bg pt-2">
+  <header class="bg-bg pt-2 w-full container">
     <!-- Package name and version -->
     <div class="flex items-baseline justify-between gap-x-2 gap-y-1 flex-wrap min-w-0">
       <CopyToClipboardButton
@@ -320,112 +320,116 @@ const likeAction = async () => {
   </header>
   <div
     ref="header"
-    class="bg-bg sticky top-14 z-1 border-b border-border flex flex-col md:flex-row-reverse items-baseline justify-between gap-x-2 gap-y-1 flex-wrap min-w-0 pt-2"
+    class="w-full bg-bg sticky top-14 z-1 border-b border-border pt-2"
     :class="[$style.packageHeader]"
     data-testid="package-subheader"
   >
     <div
-      class="flex items-center max-md:justify-between max-md:w-full max-md:flex-row-reverse gap-2"
+      class="w-full container flex flex-col md:flex-row-reverse items-baseline justify-between gap-x-2 gap-y-1 flex-wrap"
     >
-      <ButtonBase
-        variant="secondary"
-        :aria-label="$t('common.scroll_to_top')"
-        @click="scrollToTop"
-        classicon="i-lucide:arrow-up"
-        :class="showScrollToTop ? '' : 'opacity-0 pointer-events-none select-none'"
-        class="py-1.5 px-2.5 sm:me-2"
-        :tabindex="showScrollToTop ? 0 : -1"
-      />
-      <div class="flex-inline items-center flex-nowrap gap-1 font-mono text-fg-muted">
-        <template v-if="displayVersion && hasProvenance(displayVersion)">
-          <TooltipApp
-            :text="
-              provenanceData && provenanceStatus !== 'pending'
-                ? $t('package.provenance_section.built_and_signed_on', {
-                    provider: provenanceData.providerLabel,
-                  })
-                : $t('package.verified_provenance')
-            "
-            position="bottom"
-            strategy="fixed"
-          >
-            <LinkBase
-              variant="button-secondary"
-              :to="packageRoute(packageName, resolvedVersion, '#provenance')"
-              :aria-label="$t('package.provenance_section.view_more_details')"
-              classicon="i-lucide:shield-check"
-              class="py-1.5 px-2.5 me-2"
-            />
-          </TooltipApp>
-        </template>
-        <!-- Version resolution indicator (e.g., "latest → 4.2.0") -->
-        <template v-if="requestedVersion && resolvedVersion !== requestedVersion">
-          <TooltipApp
-            :text="requestedVersion"
-            position="bottom"
-            strategy="fixed"
-            class="vertical-middle"
-          >
-            <span class="i-lucide:cable rtl-flip min-w-3 w-3 h-3 mx-1" aria-hidden="true" />
-          </TooltipApp>
-        </template>
-        <!-- Version selector -->
-        <VersionSelector
-          v-if="resolvedVersion && pkg?.versions && pkg?.['dist-tags']"
-          :package-name="packageName"
-          :current-version="resolvedVersion"
-          :versions="pkg.versions"
-          :dist-tags="pkg['dist-tags']"
-          :url-pattern="versionUrlPattern"
+      <div
+        class="flex items-center max-md:justify-between max-md:w-full max-md:flex-row-reverse gap-2"
+      >
+        <ButtonBase
+          variant="secondary"
+          :aria-label="$t('common.scroll_to_top')"
+          @click="scrollToTop"
+          classicon="i-lucide:arrow-up"
+          :class="showScrollToTop ? '' : 'opacity-0 pointer-events-none select-none'"
+          class="py-1.5 px-2.5 sm:me-2"
+          :tabindex="showScrollToTop ? 0 : -1"
         />
+        <div class="flex-inline items-center flex-nowrap gap-1 font-mono text-fg-muted">
+          <template v-if="displayVersion && hasProvenance(displayVersion)">
+            <TooltipApp
+              :text="
+                provenanceData && provenanceStatus !== 'pending'
+                  ? $t('package.provenance_section.built_and_signed_on', {
+                      provider: provenanceData.providerLabel,
+                    })
+                  : $t('package.verified_provenance')
+              "
+              position="bottom"
+              strategy="fixed"
+            >
+              <LinkBase
+                variant="button-secondary"
+                :to="packageRoute(packageName, resolvedVersion, '#provenance')"
+                :aria-label="$t('package.provenance_section.view_more_details')"
+                classicon="i-lucide:shield-check"
+                class="py-1.5 px-2.5 me-2"
+              />
+            </TooltipApp>
+          </template>
+          <!-- Version resolution indicator (e.g., "latest → 4.2.0") -->
+          <template v-if="requestedVersion && resolvedVersion !== requestedVersion">
+            <TooltipApp
+              :text="requestedVersion"
+              position="bottom"
+              strategy="fixed"
+              class="vertical-middle"
+            >
+              <span class="i-lucide:cable rtl-flip min-w-3 w-3 h-3 mx-1" aria-hidden="true" />
+            </TooltipApp>
+          </template>
+          <!-- Version selector -->
+          <VersionSelector
+            v-if="resolvedVersion && pkg?.versions && pkg?.['dist-tags']"
+            :package-name="packageName"
+            :current-version="resolvedVersion"
+            :versions="pkg.versions"
+            :dist-tags="pkg['dist-tags']"
+            :url-pattern="versionUrlPattern"
+          />
+        </div>
       </div>
+      <!-- Docs + Code — inline on desktop, floating bottom bar on mobile -->
+      <nav
+        v-if="resolvedVersion"
+        :aria-label="$t('package.navigation')"
+        class="flex gap-4 me-auto -mb-px"
+        :style="navExtraOffsetStyle"
+        :class="$style.packageNav"
+      >
+        <LinkBase
+          v-if="mainLink"
+          :to="mainLink"
+          aria-keyshortcuts="m"
+          class="decoration-none border-b-2 p-1 hover:border-accent/50 lowercase"
+          :class="page === 'main' ? 'border-accent text-accent!' : 'border-transparent'"
+        >
+          {{ $t('package.links.main') }}
+        </LinkBase>
+        <LinkBase
+          v-if="docsLink"
+          :to="docsLink"
+          aria-keyshortcuts="d"
+          class="decoration-none border-b-2 p-1 hover:border-accent/50"
+          :class="page === 'docs' ? 'border-accent text-accent!' : 'border-transparent'"
+        >
+          {{ $t('package.links.docs') }}
+        </LinkBase>
+        <LinkBase
+          v-if="codeLink"
+          :to="codeLink"
+          aria-keyshortcuts="."
+          class="decoration-none border-b-2 p-1 hover:border-accent/50"
+          :class="page === 'code' ? 'border-accent text-accent!' : 'border-transparent'"
+        >
+          {{ $t('package.links.code') }}
+        </LinkBase>
+        <LinkBase
+          v-if="diffLink"
+          :to="diffLink"
+          :title="$t('compare.compare_versions_title')"
+          aria-keyshortcuts="f"
+          class="decoration-none border-b-2 p-1 hover:border-accent/50"
+          :class="page === 'diff' ? 'border-accent text-accent!' : 'border-transparent'"
+        >
+          {{ $t('compare.compare_versions') }}
+        </LinkBase>
+      </nav>
     </div>
-    <!-- Docs + Code — inline on desktop, floating bottom bar on mobile -->
-    <nav
-      v-if="resolvedVersion"
-      :aria-label="$t('package.navigation')"
-      class="flex gap-4 me-auto -mb-px"
-      :style="navExtraOffsetStyle"
-      :class="$style.packageNav"
-    >
-      <LinkBase
-        v-if="mainLink"
-        :to="mainLink"
-        aria-keyshortcuts="m"
-        class="decoration-none border-b-2 p-1 hover:border-accent/50 lowercase"
-        :class="page === 'main' ? 'border-accent text-accent!' : 'border-transparent'"
-      >
-        {{ $t('package.links.main') }}
-      </LinkBase>
-      <LinkBase
-        v-if="docsLink"
-        :to="docsLink"
-        aria-keyshortcuts="d"
-        class="decoration-none border-b-2 p-1 hover:border-accent/50"
-        :class="page === 'docs' ? 'border-accent text-accent!' : 'border-transparent'"
-      >
-        {{ $t('package.links.docs') }}
-      </LinkBase>
-      <LinkBase
-        v-if="codeLink"
-        :to="codeLink"
-        aria-keyshortcuts="."
-        class="decoration-none border-b-2 p-1 hover:border-accent/50"
-        :class="page === 'code' ? 'border-accent text-accent!' : 'border-transparent'"
-      >
-        {{ $t('package.links.code') }}
-      </LinkBase>
-      <LinkBase
-        v-if="diffLink"
-        :to="diffLink"
-        :title="$t('compare.compare_versions_title')"
-        aria-keyshortcuts="f"
-        class="decoration-none border-b-2 p-1 hover:border-accent/50"
-        :class="page === 'diff' ? 'border-accent text-accent!' : 'border-transparent'"
-      >
-        {{ $t('compare.compare_versions') }}
-      </LinkBase>
-    </nav>
   </div>
 </template>
 
