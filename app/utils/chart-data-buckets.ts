@@ -5,34 +5,7 @@ import type {
   WeeklyDataPoint,
   YearlyDataPoint,
 } from '~/types/chart'
-
-// ---------------------------------------------------------------------------
-// Date helpers
-// ---------------------------------------------------------------------------
-
-const DAY_MS = 86_400_000
-
-function parseIso(value: string): Date {
-  return new Date(`${value}T00:00:00.000Z`)
-}
-
-function toIso(date: Date): string {
-  return date.toISOString().slice(0, 10)
-}
-
-function addDays(date: Date, days: number): Date {
-  const d = new Date(date)
-  d.setUTCDate(d.getUTCDate() + days)
-  return d
-}
-
-function daysInMonth(year: number, month: number): number {
-  return new Date(Date.UTC(year, month + 1, 0)).getUTCDate()
-}
-
-function daysInYear(year: number): number {
-  return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0) ? 366 : 365
-}
+import { DAY_MS, parseIsoDate, toIsoDate, addDays, daysInMonth, daysInYear } from '~/utils/date'
 
 // ---------------------------------------------------------------------------
 // Fill partial bucket
@@ -52,7 +25,11 @@ export function buildDailyEvolution(daily: DailyRawPoint[]): DailyDataPoint[] {
   return daily
     .slice()
     .sort((a, b) => a.day.localeCompare(b.day))
-    .map(item => ({ day: item.day, value: item.value, timestamp: parseIso(item.day).getTime() }))
+    .map(item => ({
+      day: item.day,
+      value: item.value,
+      timestamp: parseIsoDate(item.day).getTime(),
+    }))
 }
 
 export function buildWeeklyEvolution(
@@ -63,18 +40,18 @@ export function buildWeeklyEvolution(
   const sorted = daily.slice().sort((a, b) => a.day.localeCompare(b.day))
   if (sorted.length === 0) return []
 
-  const rangeStartDate = parseIso(rangeStartIso)
+  const rangeStartDate = parseIsoDate(rangeStartIso)
 
   // Align from last day with actual data (npm has 1-2 day delay, today is incomplete)
   const lastNonZero = sorted.findLast(d => d.value > 0)
-  const pickerEnd = parseIso(rangeEndIso)
-  const effectiveEnd = lastNonZero ? parseIso(lastNonZero.day) : pickerEnd
+  const pickerEnd = parseIsoDate(rangeEndIso)
+  const effectiveEnd = lastNonZero ? parseIsoDate(lastNonZero.day) : pickerEnd
   const rangeEndDate = effectiveEnd.getTime() < pickerEnd.getTime() ? effectiveEnd : pickerEnd
 
   // Group into 7-day buckets from END backwards
   const buckets = new Map<number, number>()
   for (const item of sorted) {
-    const offset = Math.floor((rangeEndDate.getTime() - parseIso(item.day).getTime()) / DAY_MS)
+    const offset = Math.floor((rangeEndDate.getTime() - parseIsoDate(item.day).getTime()) / DAY_MS)
     if (offset < 0) continue
     const idx = Math.floor(offset / 7)
     buckets.set(idx, (buckets.get(idx) ?? 0) + item.value)
@@ -94,8 +71,8 @@ export function buildWeeklyEvolution(
         value = fillPartialBucket(value, actualDays, 7)
       }
 
-      const weekStartIso = toIso(weekStartDate)
-      const weekEndIso = toIso(weekEndDate)
+      const weekStartIso = toIsoDate(weekStartDate)
+      const weekEndIso = toIsoDate(weekEndDate)
       return {
         value,
         weekKey: `${weekStartIso}_${weekEndIso}`,
@@ -134,7 +111,7 @@ export function buildMonthlyEvolution(
       if (endDay < total) value = fillPartialBucket(value, endDay, total)
     }
 
-    return { month, value, timestamp: parseIso(`${month}-01`).getTime() }
+    return { month, value, timestamp: parseIsoDate(`${month}-01`).getTime() }
   })
 }
 
@@ -154,17 +131,17 @@ export function buildYearlyEvolution(
 
   return entries.map(([year, value], i) => {
     const total = daysInYear(Number(year))
-    const yearStart = parseIso(`${year}-01-01`)
+    const yearStart = parseIsoDate(`${year}-01-01`)
 
     if (i === 0 && rangeStartIso) {
       const dayOfYear = Math.floor(
-        (parseIso(rangeStartIso).getTime() - yearStart.getTime()) / DAY_MS,
+        (parseIsoDate(rangeStartIso).getTime() - yearStart.getTime()) / DAY_MS,
       )
       if (dayOfYear > 0) value = fillPartialBucket(value, total - dayOfYear, total)
     }
     if (i === entries.length - 1 && rangeEndIso) {
       const actualDays =
-        Math.floor((parseIso(rangeEndIso).getTime() - yearStart.getTime()) / DAY_MS) + 1
+        Math.floor((parseIsoDate(rangeEndIso).getTime() - yearStart.getTime()) / DAY_MS) + 1
       if (actualDays < total) value = fillPartialBucket(value, actualDays, total)
     }
 
