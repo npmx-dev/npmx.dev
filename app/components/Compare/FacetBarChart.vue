@@ -230,7 +230,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
                   ${name}
                 </span>
                 <span class="text-base text-[var(--fg)] font-mono tabular-nums text-end">
-                  ${(datapoint as VueUiHorizontalBarDatapoint).formattedValue ?? 0}
+                  ${datapoint?.formattedValue ?? 0}
                 </span>
               </div>
             </div>
