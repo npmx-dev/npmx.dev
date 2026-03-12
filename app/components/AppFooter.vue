@@ -92,12 +92,20 @@ const closeModal = () => modalRef.value?.close?.()
                   <span>{{ $t('shortcuts.open_code_view') }}</span>
                 </li>
                 <li class="flex gap-2 items-center">
+                  <kbd class="kbd">r</kbd>
+                  <span>{{ $t('shortcuts.open_readme') }}</span>
+                </li>
+                <li class="flex gap-2 items-center">
                   <kbd class="kbd">d</kbd>
                   <span>{{ $t('shortcuts.open_docs') }}</span>
                 </li>
                 <li class="flex gap-2 items-center">
                   <kbd class="kbd">c</kbd>
                   <span>{{ $t('shortcuts.compare_from_package') }}</span>
+                </li>
+                <li class="flex gap-2 items-center">
+                  <kbd class="kbd">f</kbd>
+                  <span>{{ $t('shortcuts.open_diff') }}</span>
                 </li>
               </ul>
               <p class="text-fg-muted leading-relaxed">

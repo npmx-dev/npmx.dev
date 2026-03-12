@@ -36,7 +36,9 @@
     "go_to_result": "Go to result",
     "open_code_view": "Open code view",
     "open_docs": "Open docs",
-    "disable_shortcuts": "You can disable keyboard shortcuts in {settings}."
+    "disable_shortcuts": "You can disable keyboard shortcuts in {settings}.",
+    "open_readme": "Open readme",
+    "open_diff": "Open version differences"
   },
   "search": {
     "label": "Search npm packages",

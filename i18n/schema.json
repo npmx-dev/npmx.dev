@@ -114,6 +114,12 @@
         },
         "disable_shortcuts": {
           "type": "string"
+        },
+        "open_readme": {
+          "type": "string"
+        },
+        "open_diff": {
+          "type": "string"
         }
       },
       "additionalProperties": false

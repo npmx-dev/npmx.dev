@@ -5,6 +5,7 @@ import { SCROLL_TO_TOP_THRESHOLD } from '~/composables/useScrollToTop'
 import { useModal } from '~/composables/useModal'
 import { useAtproto } from '~/composables/atproto/useAtproto'
 import { togglePackageLike } from '~/utils/atproto/likes'
+import { isEditableElement } from '~/utils/input'
 
 const props = defineProps<{
   pkg: Pick<SlimPackument, 'name' | 'versions' | 'dist-tags'> | null
@@ -13,10 +14,7 @@ const props = defineProps<{
   latestVersion: SlimVersion | null
   provenanceData: ProvenanceDetails | null
   provenanceStatus: string
-  docsLink: RouteLocationRaw | null
-  codeLink: RouteLocationRaw | null
   page: 'readme' | 'docs' | 'code' | 'diff'
-  versionUrlPattern: string
 }>()
 
 const { requestedVersion, orgName } = usePackageRoute()
@@ -79,6 +77,113 @@ function hasProvenance(version: PackumentVersion | null): boolean {
   if (!version?.dist) return false
   return !!(version.dist as { attestations?: unknown }).attestations
 }
+
+const router = useRouter()
+// Docs URL: use our generated API docs
+const docsLink = computed(() => {
+  if (!props.resolvedVersion) return null
+
+  return {
+    name: 'docs' as const,
+    params: {
+      path: [props.pkg?.name ?? '', 'v', props.resolvedVersion] satisfies [string, string, string],
+    },
+  }
+})
+
+const codeLink = computed((): RouteLocationRaw | null => {
+  if (props.pkg == null || props.resolvedVersion == null) {
+    return null
+  }
+  const split = props.pkg.name.split('/')
+  return {
+    name: 'code',
+    params: {
+      org: split.length === 2 ? split[0] : undefined,
+      packageName: split.length === 2 ? split[1]! : split[0]!,
+      version: props.resolvedVersion,
+      filePath: '',
+    },
+  }
+})
+
+const readmeLink = computed((): RouteLocationRaw | null => {
+  if (props.pkg == null || props.resolvedVersion == null) {
+    return null
+  }
+  return packageRoute(props.pkg.name, props.resolvedVersion)
+})
+
+const diffLink = computed((): RouteLocationRaw | null => {
+  if (
+    props.pkg == null ||
+    props.resolvedVersion == null ||
+    props.latestVersion == null ||
+    props.latestVersion.version === props.resolvedVersion
+  ) {
+    return null
+  }
+  return diffRoute(props.pkg.name, props.resolvedVersion, props.latestVersion.version)
+})
+
+// URL pattern for version selector - includes file path if present
+const versionUrlPattern = computed(
+  () => `/package/${props.pkg?.name || packageName.value}/v/{version}`,
+)
+
+const keyboardShortcuts = useKeyboardShortcuts()
+
+onKeyStroke(
+  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, '.') && !isEditableElement(e.target),
+  e => {
+    if (codeLink.value === null) return
+    e.preventDefault()
+
+    navigateTo(codeLink.value)
+  },
+  { dedupe: true },
+)
+
+onKeyStroke(
+  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, 'r') && !isEditableElement(e.target),
+  e => {
+    if (readmeLink.value === null) return
+    e.preventDefault()
+
+    navigateTo(readmeLink.value)
+  },
+  { dedupe: true },
+)
+
+onKeyStroke(
+  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, 'd') && !isEditableElement(e.target),
+  e => {
+    if (!docsLink.value) return
+    e.preventDefault()
+    navigateTo(docsLink.value)
+  },
+  { dedupe: true },
+)
+
+onKeyStroke(
+  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, 'c') && !isEditableElement(e.target),
+  e => {
+    if (!props.pkg) return
+    e.preventDefault()
+    router.push({ name: 'compare', query: { packages: props.pkg.name } })
+  },
+  { dedupe: true },
+)
+
+onKeyStroke(
+  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, 'f') && !isEditableElement(e.target),
+  e => {
+    if (diffLink.value === null) return
+    e.preventDefault()
+    navigateTo(diffLink.value)
+  },
+  { dedupe: true },
+)
 
 //atproto
 // TODO: Maybe set this where it's not loaded here every load?
@@ -288,8 +393,8 @@ const likeAction = async () => {
       :class="$style.packageNav"
     >
       <LinkBase
-        v-if="docsLink"
-        :to="docsLink"
+        v-if="readmeLink"
+        :to="readmeLink"
         aria-keyshortcuts="r"
         class="decoration-none border-b-2 p-1 hover:border-accent/50 lowercase"
         :class="page === 'readme' ? 'border-accent text-accent!' : 'border-transparent'"
@@ -315,8 +420,8 @@ const likeAction = async () => {
         {{ $t('package.links.code') }}
       </LinkBase>
       <LinkBase
-        v-if="displayVersion && latestVersion && displayVersion.version !== latestVersion.version"
-        :to="diffRoute(packageName, displayVersion.version, latestVersion.version)"
+        v-if="diffLink"
+        :to="diffLink"
         :title="$t('compare.compare_versions_title')"
         aria-keyshortcuts="f"
         class="decoration-none border-b-2 p-1 hover:border-accent/50"

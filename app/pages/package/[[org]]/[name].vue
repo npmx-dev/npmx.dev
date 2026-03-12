@@ -14,12 +14,10 @@ import type { IconClass } from '~/types'
 import { assertValidPackageName } from '#shared/utils/npm'
 import { joinURL } from 'ufo'
 import { areUrlsEquivalent } from '#shared/utils/url'
-import { isEditableElement } from '~/utils/input'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
 import { detectPublishSecurityDowngradeForVersion } from '~/utils/publish-security'
 import { useInstallSizeDiff } from '~/composables/useInstallSizeDiff'
 import { useViewOnGitProvider } from '~/composables/useViewOnGitProvider'
-import type { RouteLocationRaw } from 'vue-router'
 
 defineOgImageComponent('Package', {
   name: () => packageName.value,
@@ -449,18 +447,6 @@ const homepageUrl = computed(() => {
   return homepage
 })
 
-// Docs URL: use our generated API docs
-const docsLink = computed(() => {
-  if (!resolvedVersion.value) return null
-
-  return {
-    name: 'docs' as const,
-    params: {
-      path: [pkg.value!.name, 'v', resolvedVersion.value] satisfies [string, string, string],
-    },
-  }
-})
-
 const fundingUrl = computed(() => {
   let funding = displayVersion.value?.funding
   if (Array.isArray(funding)) funding = funding[0]
@@ -552,59 +538,6 @@ useSeoMeta({
   twitterDescription: () => pkg.value?.description ?? '',
 })
 
-const codeLink = computed((): RouteLocationRaw | null => {
-  if (pkg.value == null || resolvedVersion.value == null) {
-    return null
-  }
-  const split = pkg.value.name.split('/')
-  return {
-    name: 'code',
-    params: {
-      org: split.length === 2 ? split[0] : undefined,
-      packageName: split.length === 2 ? split[1]! : split[0]!,
-      version: resolvedVersion.value,
-      filePath: '',
-    },
-  }
-})
-
-const keyboardShortcuts = useKeyboardShortcuts()
-
-onKeyStroke(
-  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, '.') && !isEditableElement(e.target),
-  e => {
-    if (codeLink.value === null) return
-    e.preventDefault()
-
-    navigateTo(codeLink.value)
-  },
-  { dedupe: true },
-)
-
-onKeyStroke(
-  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, 'd') && !isEditableElement(e.target),
-  e => {
-    if (!docsLink.value) return
-    e.preventDefault()
-    navigateTo(docsLink.value)
-  },
-  { dedupe: true },
-)
-
-onKeyStroke(
-  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, 'c') && !isEditableElement(e.target),
-  e => {
-    if (!pkg.value) return
-    e.preventDefault()
-    router.push({ name: 'compare', query: { packages: pkg.value.name } })
-  },
-)
-
-// URL pattern for version selector - includes file path if present
-const versionUrlPattern = computed(
-  () => `/package/${pkg.value?.name || packageName.value}/v/{version}`,
-)
-
 const showSkeleton = shallowRef(false)
 </script>
 
@@ -652,10 +585,7 @@ const showSkeleton = shallowRef(false)
         :latest-version="latestVersion"
         :provenance-data="provenanceData"
         :provenance-status="provenanceStatus"
-        :docs-link="docsLink"
-        :code-link="codeLink"
         :class="$style.areaHeader"
-        :version-url-pattern="versionUrlPattern"
         page="readme"
       />
       <article id="package-article" :class="$style.packagePage">
