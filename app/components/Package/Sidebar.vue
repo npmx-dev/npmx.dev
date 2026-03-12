@@ -25,7 +25,7 @@ const offset = computed(() => {
 })
 const packageHeaderHeight = usePackageHeaderHeight()
 const stickyStyle = computed(() =>
-  direction.value === 'up' ? { top: `${60 + packageHeaderHeight.value}px` } : { bottom: `32px` },
+  direction.value === 'up' ? { top: `${56 + packageHeaderHeight.value}px` } : { bottom: `32px` },
 )
 
 const style = computed(() => {

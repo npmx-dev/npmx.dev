@@ -320,7 +320,7 @@ const likeAction = async () => {
   </header>
   <div
     ref="header"
-    class="w-full bg-bg sticky top-14 z-1 border-b border-border pt-2"
+    class="w-full bg-bg sticky top-14 z-50 border-b border-border pt-2"
     :class="[$style.packageHeader]"
     data-testid="package-subheader"
   >
@@ -380,6 +380,7 @@ const likeAction = async () => {
             :versions="pkg.versions"
             :dist-tags="pkg['dist-tags']"
             :url-pattern="versionUrlPattern"
+            position-class="max-md:inset-is-0 md:inset-ie-0"
           />
         </div>
       </div>

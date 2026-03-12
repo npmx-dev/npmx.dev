@@ -11,14 +11,21 @@ import {
 } from '~/utils/versions'
 import { fetchAllPackageVersions } from '~/utils/npm/api'
 
-const props = defineProps<{
-  packageName: string
-  currentVersion: string
-  versions: Record<string, unknown>
-  distTags: Record<string, string>
-  /** URL pattern for navigation. Use {version} as placeholder. */
-  urlPattern: string
-}>()
+const props = withDefaults(
+  defineProps<{
+    packageName: string
+    currentVersion: string
+    versions: Record<string, unknown>
+    distTags: Record<string, string>
+    /** URL pattern for navigation. Use {version} as placeholder. */
+    urlPattern: string
+    /** class for the position of the dropdown, default is inset-is-0 */
+    positionClass?: string | null
+  }>(),
+  {
+    positionClass: 'inset-is-0',
+  },
+)
 
 const isOpen = shallowRef(false)
 const dropdownRef = useTemplateRef('dropdownRef')
@@ -507,7 +514,8 @@ watch(
         :aria-activedescendant="
           focusedIndex >= 0 ? `version-${flatItems[focusedIndex]?.version?.version}` : undefined
         "
-        class="absolute top-full inset-is-0 mt-2 min-w-[220px] bg-bg-subtle/80 backdrop-blur-sm border border-border-subtle rounded-lg shadow-lg shadow-fg-subtle/10 z-50 py-1 max-h-[400px] overflow-y-auto overscroll-contain focus-visible:outline-none"
+        class="absolute top-full mt-2 min-w-[220px] max-w-[calc(100vw-40px)] bg-bg-subtle/80 backdrop-blur-sm border border-border-subtle rounded-lg shadow-lg shadow-fg-subtle/10 z-50 py-1 max-h-[400px] overflow-y-auto overscroll-contain focus-visible:outline-none"
+        :class="positionClass"
         @keydown="handleListboxKeydown"
       >
         <!-- Version groups -->

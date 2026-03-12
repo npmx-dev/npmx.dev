@@ -389,6 +389,7 @@ defineOgImageComponent('Default', {
                     ? 'bg-bg shadow text-fg border-border'
                     : 'text-fg-subtle hover:text-fg border-transparent'
                 "
+                :aria-selected="markdownViewMode === mode.key"
                 @click="markdownViewMode = mode.key"
               >
                 <span class="inline-block h-3 w-3" :class="mode.icon" aria-hidden="true" />

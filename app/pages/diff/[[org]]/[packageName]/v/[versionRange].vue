@@ -160,13 +160,12 @@ useSeoMeta({
       <aside
         class="hidden md:flex w-80 border-ie border-border bg-bg-subtle flex-col shrink-0 min-h-0"
       >
-        <div class="px-3 py-2 border-b border-border">
+        <div v-if="pkg?.versions && pkg?.['dist-tags']" class="px-3 py-2 border-b border-border">
           <p class="text-xs font-medium text-fg mb-1 flex items-center gap-1.5">
             <span class="block i-lucide-git-compare-arrows w-3.5 h-3.5" />
             {{ $t('compare.version_selector_title') }}
           </p>
           <VersionSelector
-            v-if="pkg?.versions && pkg?.['dist-tags']"
             :package-name="packageName"
             :current-version="toVersion"
             :versions="pkg.versions"
@@ -243,6 +242,10 @@ useSeoMeta({
           v-model:selected-file="selectedFile"
           v-model:file-filter="fileFilter"
           v-model:open="mobileDrawerOpen"
+          :pkg="pkg"
+          :package-name="packageName"
+          :to-version="toVersion"
+          :to-version-url-pattern="toVersionUrlPattern"
         />
       </Teleport>
     </ClientOnly>
