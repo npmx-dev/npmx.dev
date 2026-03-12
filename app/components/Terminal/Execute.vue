@@ -70,7 +70,7 @@ const copyExecuteCommand = () => copyExecute(getFullExecuteCommand())
           >
           <ButtonBase
             type="button"
-            size="small"
+            size="square"
             class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
             :aria-label="$t('package.get_started.copy_command')"
             :classicon="executeCopied ? 'i-lucide:check' : 'i-lucide:copy'"

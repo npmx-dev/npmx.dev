@@ -9,7 +9,7 @@ const props = withDefaults(
     /** @default "secondary" */
     variant?: 'primary' | 'secondary'
     /** @default "medium" */
-    size?: 'small' | 'medium'
+    size?: 'small' | 'medium' | 'square'
     /** Keyboard shortcut hint */
     ariaKeyshortcuts?: string
     /** Forces the button to occupy the entire width of its container. */
@@ -43,6 +43,7 @@ defineExpose({
       'flex': block,
       'text-sm px-4 py-2': size === 'medium',
       'text-xs px-2 py-0.5': size === 'small',
+      'p-1': size === 'square',
       'bg-transparent text-fg hover:enabled:(bg-fg/10) focus-visible:enabled:(bg-fg/10) aria-pressed:(bg-fg/10 border-fg/20 hover:enabled:(bg-fg/20 text-fg/50))':
         variant === 'secondary',
       'text-bg bg-fg hover:enabled:(bg-fg/50) focus-visible:enabled:(bg-fg/50) aria-pressed:(bg-fg text-bg border-fg hover:enabled:(text-bg/50))':

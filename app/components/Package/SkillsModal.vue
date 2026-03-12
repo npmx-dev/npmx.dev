@@ -133,7 +133,7 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
           </code>
           <ButtonBase
             type="button"
-            size="small"
+            size="square"
             class="absolute top-0 inset-ie-0 px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100"
             :aria-label="$t('package.get_started.copy_command')"
             :classicon="copied ? 'i-lucide:check' : 'i-lucide:copy'"
