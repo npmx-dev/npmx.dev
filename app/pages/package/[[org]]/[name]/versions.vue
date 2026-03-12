@@ -74,207 +74,9 @@ const versionHistory: PackageVersionInfo[] = [
   { version: '1.0.28', time: '2016-12-15T10:00:00Z', hasProvenance: false },
 ]
 
-// Changelog markdown strings keyed by version.
-// In production these would be pre-rendered HTML from the server
-// (e.g. GitHub release body or CHANGELOG.md, parsed like README).
+// TODO: Replace with pre-rendered HTML from the server
 const mockChangelogs: Record<string, string> = {
-  '3.5.0-beta.3': `### Bug Fixes
-
-- Fixed \`v-model\` not triggering update when used with custom modifier on the same component
-- Resolved hydration mismatch for \`<Suspense>\` with async setup components
-
-### Performance
-
-- Reduced scheduler flush cost for large component trees with many watchers`,
-
-  '3.5.0-rc.1': `## Vue 3.5 RC
-
-The API is now stable. This release candidate is intended for final testing before the stable release.
-
-### New Features
-
-- \`useTemplateRef()\` — reactive ref bound to a template element by string key
-- \`useId()\` — SSR-safe unique ID generation for accessibility attributes
-- Deferred \`<Suspense>\` — suspense boundary no longer blocks parent tree rendering
-
-### Breaking Changes
-
-> **Note:** These only affect experimental APIs that were previously behind flags.
-
-- Removed \`v-memo\` on component root nodes — use it on inner elements instead
-- \`defineModel()\` local mutation now requires explicit \`local\` option
-
-**Full Changelog**: [v3.4.21...v3.5.0-rc.1](https://github.com/vuejs/core/compare/v3.4.21...v3.5.0-rc.1)`,
-
-  '3.4.21': `### Bug Fixes
-
-- Fixed \`<KeepAlive>\` failing to restore scroll position on re-activation (#10156)
-- Corrected \`shallowReadonly\` not preserving array identity on nested access
-- Fixed compiler warning for \`v-bind\` shorthand used on \`<slot>\` elements
-
-**Full Changelog**: [v3.4.20...v3.4.21](https://github.com/vuejs/core/compare/v3.4.20...v3.4.21)`,
-
-  '3.4.0': `## Vue 3.4 — "Slam Dunk"
-
-### New Features
-
-- **Reactivity transform removed** — the experimental \`$ref\` sugar has been dropped; use \`ref()\` directly
-- **\`v-bind\` shorthand** — \`:foo\` can now be written as just \`:foo\` when binding a same-name prop
-- **\`defineModel()\` stable** — two-way binding macro is now stable and no longer requires opt-in
-- **Parser rewrite** — the template compiler's parser is 2× faster and produces better error messages
-
-### Breaking Changes
-
-- \`app.config.compilerOptions.isCustomElement\` now receives the full element tag with namespace prefix
-- \`@vue/reactivity\` no longer exports \`deferredComputed\` — use \`computed\` with a scheduler instead
-
-\`\`\`ts
-// Before
-const double = deferredComputed(() => count.value * 2)
-
-// After
-const double = computed(() => count.value * 2, { scheduler: queueMicrotask })
-\`\`\`
-
-**Full Changelog**: [v3.3.13...v3.4.0](https://github.com/vuejs/core/compare/v3.3.13...v3.4.0)`,
-
-  '3.0.0': `## Vue 3.0 — "One Piece"
-
-The first stable release of Vue 3. Rebuilt from the ground up with the Composition API, TypeScript, and a new reactivity system.
-
-### Highlights
-
-- **Composition API** — \`setup()\`, \`ref()\`, \`reactive()\`, \`computed()\`, \`watch()\`
-- **Fragments** — components can now have multiple root nodes
-- **Teleport** — render content in a different part of the DOM
-- **Suspense** — coordinate async dependency resolution in component trees
-- **Improved TypeScript support** — full type inference for component props and emits
-- **Tree-shakeable** — global APIs are now ES module exports
-
-### Migration
-
-Vue 3 is not backwards compatible with Vue 2. See the [Migration Guide](https://v3-migration.vuejs.org/) for a full list of breaking changes.
-
-**Full Changelog**: [github.com/vuejs/core](https://github.com/vuejs/core/blob/main/CHANGELOG.md)`,
-}
-
-// ─── Markdown rendering ───────────────────────────────────────────────────────
-// Minimal block-level markdown parser for changelog content.
-// Handles headings, lists, paragraphs, blockquotes, and inline formatting.
-// In production this would be replaced by server-rendered HTML (like README).
-
-function parseInline(text: string): string {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/`([^`]+)`/g, '<code>$1</code>')
-    .replace(
-      /\[([^\]]+)\]\((https?:[^)]+)\)/g,
-      '<a href="$2" target="_blank" rel="nofollow noreferrer noopener">$1</a>',
-    )
-}
-
-function parseChangelogMarkdown(markdown: string): string {
-  const lines = markdown.split('\n')
-  const out: string[] = []
-  let inList = false
-  let inBlockquote = false
-  let inCodeBlock = false
-  let codeLang = ''
-  let codeLines: string[] = []
-
-  const flushList = () => {
-    if (inList) {
-      out.push('</ul>')
-      inList = false
-    }
-  }
-  const flushBlockquote = () => {
-    if (inBlockquote) {
-      out.push('</blockquote>')
-      inBlockquote = false
-    }
-  }
-
-  for (const line of lines) {
-    // Code block fence
-    if (line.startsWith('```')) {
-      if (inCodeBlock) {
-        out.push(
-          `<pre><code${codeLang ? ` class="language-${codeLang}"` : ''}>${codeLines.map(l => l.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')).join('\n')}</code></pre>`,
-        )
-        inCodeBlock = false
-        codeLines = []
-        codeLang = ''
-      } else {
-        flushList()
-        flushBlockquote()
-        inCodeBlock = true
-        codeLang = line.slice(3).trim()
-      }
-      continue
-    }
-    if (inCodeBlock) {
-      codeLines.push(line)
-      continue
-    }
-
-    const trimmed = line.trim()
-
-    // Blank line
-    if (!trimmed) {
-      flushList()
-      flushBlockquote()
-      continue
-    }
-
-    // Blockquote
-    if (trimmed.startsWith('> ')) {
-      flushList()
-      if (!inBlockquote) {
-        out.push('<blockquote>')
-        inBlockquote = true
-      }
-      out.push(`<p>${parseInline(trimmed.slice(2))}</p>`)
-      continue
-    }
-    flushBlockquote()
-
-    // Headings
-    const h2 = trimmed.match(/^## (.+)/)
-    const h3 = trimmed.match(/^### (.+)/)
-    if (h2) {
-      flushList()
-      out.push(`<h2>${parseInline(h2[1]!)}</h2>`)
-      continue
-    }
-    if (h3) {
-      flushList()
-      out.push(`<h3>${parseInline(h3[1]!)}</h3>`)
-      continue
-    }
-
-    // List item
-    const li = trimmed.match(/^[-*] (.+)/)
-    if (li) {
-      if (!inList) {
-        out.push('<ul>')
-        inList = true
-      }
-      out.push(`<li>${parseInline(li[1]!)}</li>`)
-      continue
-    }
-
-    // Paragraph
-    flushList()
-    out.push(`<p>${parseInline(trimmed)}</p>`)
-  }
-
-  flushList()
-  flushBlockquote()
-  return out.join('\n')
+  '3.5.0-beta.3': 'Hello world',
 }
 
 // ─── Derived data ─────────────────────────────────────────────────────────────
@@ -301,15 +103,14 @@ function getVersionTime(version: string): string | undefined {
 
 const selectedChangelogVersion = ref<string | null>(null)
 
-const selectedChangelogHtml = computed(() => {
+const selectedChangelogContent = computed(() => {
   if (!selectedChangelogVersion.value) return ''
-  const raw = mockChangelogs[selectedChangelogVersion.value]
-  return raw ? parseChangelogMarkdown(raw) : ''
+  return mockChangelogs[selectedChangelogVersion.value] ?? ''
 })
 
-function toggleChangelog(version: string) {
-  selectedChangelogVersion.value = selectedChangelogVersion.value === version ? null : version
-}
+// function toggleChangelog(version: string) {
+//   selectedChangelogVersion.value = selectedChangelogVersion.value === version ? null : version
+// }
 
 // ─── Jump to version ──────────────────────────────────────────────────────────
 
@@ -416,7 +217,7 @@ watch(jumpVersion, () => {
           <!-- Right: date + provenance -->
           <div class="flex flex-col items-end gap-1.5 shrink-0 relative z-10">
             <ProvenanceBadge
-              v-if="versionHistory.find(v => v.version === tagRows[0].version)?.hasProvenance"
+              v-if="versionHistory.find(v => v.version === tagRows?.[0]?.version)?.hasProvenance"
               :package-name="packageName"
               :version="tagRows[0].version"
               compact
@@ -545,6 +346,32 @@ watch(jumpVersion, () => {
 
                 <!-- Right side -->
                 <div class="flex items-center gap-2 shrink-0 relative z-10">
+                  <!-- Changelog toggle button -->
+                  <!-- TODO(atriiy): changelog would be implemented later -->
+                  <!-- <button
+                    v-if="v.hasChangelog"
+                    type="button"
+                    class="flex items-center gap-1.5 text-xs px-2 py-1 rounded border transition-colors focus-visible:outline-accent/70"
+                    :class="
+                      selectedChangelogVersion === v.version
+                        ? 'border-accent/50 bg-accent/8 text-accent'
+                        : 'border-border text-fg-subtle hover:text-fg hover:border-border-hover'
+                    "
+                    :aria-expanded="selectedChangelogVersion === v.version"
+                    :aria-label="`Toggle changelog for v${v.version}`"
+                    @click.stop="toggleChangelog(v.version)"
+                  >
+                    <span class="i-lucide:scroll-text w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                    <span class="hidden sm:inline">Changelog</span>
+                  </button> -->
+
+                  <!-- Divider -->
+                  <span
+                    v-if="v.hasChangelog"
+                    class="w-px h-3.5 bg-border shrink-0 hidden sm:block"
+                    aria-hidden="true"
+                  />
+
                   <!-- Metadata: date + provenance -->
                   <DateTime
                     v-if="v.time"
@@ -561,31 +388,6 @@ watch(jumpVersion, () => {
                     compact
                     :linked="false"
                   />
-
-                  <!-- Divider -->
-                  <span
-                    v-if="v.hasChangelog"
-                    class="w-px h-3.5 bg-border shrink-0 hidden sm:block"
-                    aria-hidden="true"
-                  />
-
-                  <!-- Changelog toggle button -->
-                  <button
-                    v-if="v.hasChangelog"
-                    type="button"
-                    class="flex items-center gap-1.5 text-xs px-2 py-1 rounded border transition-colors focus-visible:outline-accent/70"
-                    :class="
-                      selectedChangelogVersion === v.version
-                        ? 'border-accent/50 bg-accent/8 text-accent'
-                        : 'border-border text-fg-subtle hover:text-fg hover:border-border-hover'
-                    "
-                    :aria-expanded="selectedChangelogVersion === v.version"
-                    :aria-label="`Toggle changelog for v${v.version}`"
-                    @click.stop="toggleChangelog(v.version)"
-                  >
-                    <span class="i-lucide:scroll-text w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-                    <span class="hidden sm:inline">Changelog</span>
-                  </button>
                 </div>
               </div>
 
@@ -598,10 +400,9 @@ watch(jumpVersion, () => {
                 "
               >
                 <div class="overflow-hidden">
-                  <div
-                    class="changelog-body border-t border-border px-4 py-3 text-sm"
-                    v-html="selectedChangelogVersion === v.version ? selectedChangelogHtml : ''"
-                  />
+                  <div class="changelog-body border-t border-border px-4 py-3 text-sm">
+                    {{ selectedChangelogVersion === v.version ? selectedChangelogContent : '' }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -641,8 +442,9 @@ watch(jumpVersion, () => {
                 <!-- Panel body — scrollable for long content -->
                 <div
                   class="changelog-body overflow-y-auto max-h-[calc(100vh-12rem)] px-4 py-3 text-sm"
-                  v-html="selectedChangelogHtml"
-                />
+                >
+                  {{ selectedChangelogContent }}
+                </div>
               </div>
             </div>
           </div>
@@ -659,66 +461,5 @@ watch(jumpVersion, () => {
   line-height: 1.6;
   overflow-wrap: break-word;
   word-break: break-word;
-}
-
-.changelog-body :deep(h2) {
-  @apply font-mono font-medium text-fg text-base mt-4 mb-2 pb-1.5 border-b border-border;
-}
-.changelog-body :deep(h2:first-child) {
-  @apply mt-0;
-}
-.changelog-body :deep(h3) {
-  @apply font-mono font-medium text-fg text-sm mt-3 mb-1.5;
-}
-.changelog-body :deep(h3:first-child) {
-  @apply mt-0;
-}
-
-.changelog-body :deep(p) {
-  @apply mb-2 last:mb-0;
-}
-
-.changelog-body :deep(ul) {
-  @apply mb-2 ps-4 space-y-1 last:mb-0;
-  list-style-type: disc;
-}
-.changelog-body :deep(li::marker) {
-  color: var(--border-hover);
-}
-
-.changelog-body :deep(blockquote) {
-  @apply border-s-2 border-border ps-3 my-2 text-fg-subtle italic;
-}
-
-.changelog-body :deep(code) {
-  @apply font-mono text-xs;
-  font-size: 0.8em;
-  background: var(--bg-muted);
-  padding: 0.15em 0.35em;
-  border-radius: 3px;
-  border: 1px solid var(--border);
-}
-
-.changelog-body :deep(pre) {
-  @apply rounded-md border border-border overflow-x-auto p-3 my-2;
-  background: var(--bg-subtle);
-}
-.changelog-body :deep(pre code) {
-  background: transparent;
-  border: none;
-  padding: 0;
-  font-size: 0.8rem;
-  color: var(--fg);
-}
-
-.changelog-body :deep(a) {
-  @apply underline underline-offset-2 decoration-1 decoration-fg/30 transition-colors duration-150;
-}
-.changelog-body :deep(a:hover) {
-  @apply decoration-accent text-accent;
-}
-
-.changelog-body :deep(strong) {
-  @apply font-semibold text-fg;
 }
 </style>
