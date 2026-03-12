@@ -56,8 +56,8 @@ function splitIsoRangeIntoChunksInclusive(
     const actualEnd = cursorEnd.getTime() < finalEnd.getTime() ? cursorEnd : finalEnd
 
     chunks.push({
-      startIso: formatIsoDateOnly(cursorStart),
-      endIso: formatIsoDateOnly(actualEnd),
+      startIso: toIsoDate(cursorStart),
+      endIso: toIsoDate(actualEnd),
     })
 
     cursorStart = addDays(actualEnd, 1)
