@@ -1634,7 +1634,7 @@ watch(selectedMetric, value => {
                 v-model="endDate"
                 type="date"
                 :max="DATE_INPUT_MAX"
-                class="w-full min-w-0 bg-transparent ps-2"
+                class="w-full min-w-0 bg-transparent"
                 size="medium"
               />
             </div>
