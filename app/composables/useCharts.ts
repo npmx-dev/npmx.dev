@@ -32,6 +32,25 @@ function startOfUtcMonth(date: Date): Date {
   return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1))
 }
 
+function daysInMonth(year: number, month: number): number {
+  return new Date(Date.UTC(year, month + 1, 0)).getUTCDate()
+}
+
+function daysInYear(year: number): number {
+  return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0) ? 366 : 365
+}
+
+/**
+ * Scale up a partial bucket value proportionally.
+ * @param value - the raw sum for the partial bucket
+ * @param actualDays - number of days with data in the bucket
+ * @param totalDays - expected full bucket size in days
+ */
+export function fillPartialBucket(value: number, actualDays: number, totalDays: number): number {
+  if (actualDays <= 0 || actualDays >= totalDays) return value
+  return Math.round((value * totalDays) / actualDays)
+}
+
 function startOfUtcYear(date: Date): Date {
   return new Date(Date.UTC(date.getUTCFullYear(), 0, 1))
 }
@@ -107,35 +126,48 @@ export function buildRollingWeeklyEvolutionFromDaily(
   rangeEndIso: string,
 ): WeeklyDataPoint[] {
   const sorted = daily.slice().sort((a, b) => a.day.localeCompare(b.day))
-  const rangeStartDate = parseIsoDateOnly(rangeStartIso)
-  const rangeEndDate = parseIsoDateOnly(rangeEndIso)
+  if (sorted.length === 0) return []
 
+  const rangeStartDate = parseIsoDateOnly(rangeStartIso)
+  // Align from last day with actual data (npm has 1-2 day delay, today is incomplete)
+  const lastNonZero = sorted.findLast(d => d.value > 0)
+  const effectiveEnd = lastNonZero
+    ? parseIsoDateOnly(lastNonZero.day)
+    : parseIsoDateOnly(rangeEndIso)
+  const pickerEnd = parseIsoDateOnly(rangeEndIso)
+  const rangeEndDate = effectiveEnd.getTime() < pickerEnd.getTime() ? effectiveEnd : pickerEnd
+
+  // Build 7-day buckets from END backwards
   const groupedByIndex = new Map<number, number>()
 
   for (const item of sorted) {
     const itemDate = parseIsoDateOnly(item.day)
-    const dayOffset = Math.floor((itemDate.getTime() - rangeStartDate.getTime()) / 86400000)
-    if (dayOffset < 0) continue
+    const dayOffsetFromEnd = Math.floor((rangeEndDate.getTime() - itemDate.getTime()) / 86400000)
+    if (dayOffsetFromEnd < 0) continue
 
-    const weekIndex = Math.floor(dayOffset / 7)
+    const weekIndex = Math.floor(dayOffsetFromEnd / 7)
     groupedByIndex.set(weekIndex, (groupedByIndex.get(weekIndex) ?? 0) + item.value)
   }
 
   return Array.from(groupedByIndex.entries())
-    .sort(([a], [b]) => a - b)
+    .sort(([a], [b]) => b - a) // reverse: highest index = oldest week
     .map(([weekIndex, value]) => {
-      const weekStartDate = addDays(rangeStartDate, weekIndex * 7)
-      const weekEndDate = addDays(weekStartDate, 6)
+      const weekEndDate = addDays(rangeEndDate, -(weekIndex * 7))
+      let weekStartDate = addDays(weekEndDate, -6)
 
-      // Clamp weekEnd to the actual data range end date
-      const clampedWeekEndDate =
-        weekEndDate.getTime() > rangeEndDate.getTime() ? rangeEndDate : weekEndDate
+      // First bucket may be partial — scale up proportionally
+      if (weekStartDate.getTime() < rangeStartDate.getTime()) {
+        weekStartDate = rangeStartDate
+        const actualDays =
+          Math.floor((weekEndDate.getTime() - rangeStartDate.getTime()) / 86400000) + 1
+        value = fillPartialBucket(value, actualDays, 7)
+      }
 
       const weekStartIso = toIsoDateString(weekStartDate)
-      const weekEndIso = toIsoDateString(clampedWeekEndDate)
+      const weekEndIso = toIsoDateString(weekEndDate)
 
       const timestampStart = weekStartDate.getTime()
-      const timestampEnd = clampedWeekEndDate.getTime()
+      const timestampEnd = weekEndDate.getTime()
 
       return {
         value,
@@ -148,7 +180,11 @@ export function buildRollingWeeklyEvolutionFromDaily(
     })
 }
 
-export function buildMonthlyEvolutionFromDaily(daily: DailyRawPoint[]): MonthlyDataPoint[] {
+export function buildMonthlyEvolutionFromDaily(
+  daily: DailyRawPoint[],
+  rangeStartIso?: string,
+  rangeEndIso?: string,
+): MonthlyDataPoint[] {
   const sorted = daily.slice().sort((a, b) => a.day.localeCompare(b.day))
   const valuesByMonth = new Map<string, number>()
 
@@ -157,16 +193,39 @@ export function buildMonthlyEvolutionFromDaily(daily: DailyRawPoint[]): MonthlyD
     valuesByMonth.set(month, (valuesByMonth.get(month) ?? 0) + item.value)
   }
 
-  return Array.from(valuesByMonth.entries())
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([month, value]) => {
-      const monthStartDate = parseIsoDateOnly(`${month}-01`)
-      const timestamp = monthStartDate.getTime()
-      return { month, value, timestamp }
-    })
+  const entries = Array.from(valuesByMonth.entries()).sort(([a], [b]) => a.localeCompare(b))
+
+  return entries.map(([month, value], index) => {
+    const monthStartDate = parseIsoDateOnly(`${month}-01`)
+    const [y, m] = month.split('-').map(Number) as [number, number]
+    const totalDays = daysInMonth(y, m - 1)
+
+    // Scale up partial first bucket
+    if (index === 0 && rangeStartIso) {
+      const rangeStartDay = Number(rangeStartIso.split('-')[2])
+      if (rangeStartDay > 1) {
+        value = fillPartialBucket(value, totalDays - rangeStartDay + 1, totalDays)
+      }
+    }
+
+    // Scale up partial last bucket
+    if (index === entries.length - 1 && rangeEndIso) {
+      const rangeEndDay = Number(rangeEndIso.split('-')[2])
+      if (rangeEndDay < totalDays) {
+        value = fillPartialBucket(value, rangeEndDay, totalDays)
+      }
+    }
+
+    const timestamp = monthStartDate.getTime()
+    return { month, value, timestamp }
+  })
 }
 
-export function buildYearlyEvolutionFromDaily(daily: DailyRawPoint[]): YearlyDataPoint[] {
+export function buildYearlyEvolutionFromDaily(
+  daily: DailyRawPoint[],
+  rangeStartIso?: string,
+  rangeEndIso?: string,
+): YearlyDataPoint[] {
   const sorted = daily.slice().sort((a, b) => a.day.localeCompare(b.day))
   const valuesByYear = new Map<string, number>()
 
@@ -175,13 +234,36 @@ export function buildYearlyEvolutionFromDaily(daily: DailyRawPoint[]): YearlyDat
     valuesByYear.set(year, (valuesByYear.get(year) ?? 0) + item.value)
   }
 
-  return Array.from(valuesByYear.entries())
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([year, value]) => {
-      const yearStartDate = parseIsoDateOnly(`${year}-01-01`)
-      const timestamp = yearStartDate.getTime()
-      return { year, value, timestamp }
-    })
+  const entries = Array.from(valuesByYear.entries()).sort(([a], [b]) => a.localeCompare(b))
+
+  return entries.map(([year, value], index) => {
+    const y = Number(year)
+    const totalDays = daysInYear(y)
+
+    // Scale up partial first bucket
+    if (index === 0 && rangeStartIso) {
+      const rangeStart = parseIsoDateOnly(rangeStartIso)
+      const yearStart = parseIsoDateOnly(`${year}-01-01`)
+      const dayOfYear = Math.floor((rangeStart.getTime() - yearStart.getTime()) / 86400000)
+      if (dayOfYear > 0) {
+        value = fillPartialBucket(value, totalDays - dayOfYear, totalDays)
+      }
+    }
+
+    // Scale up partial last bucket
+    if (index === entries.length - 1 && rangeEndIso) {
+      const rangeEnd = parseIsoDateOnly(rangeEndIso)
+      const yearStart = parseIsoDateOnly(`${year}-01-01`)
+      const actualDays = Math.floor((rangeEnd.getTime() - yearStart.getTime()) / 86400000) + 1
+      if (actualDays < totalDays) {
+        value = fillPartialBucket(value, actualDays, totalDays)
+      }
+    }
+
+    const yearStartDate = parseIsoDateOnly(`${year}-01-01`)
+    const timestamp = yearStartDate.getTime()
+    return { year, value, timestamp }
+  })
 }
 
 const npmDailyRangeCache = import.meta.client ? new Map<string, Promise<DailyRawPoint[]>>() : null
@@ -473,8 +555,9 @@ export function useCharts() {
     if (resolvedOptions.granularity === 'day') return buildDailyEvolutionFromDaily(sortedDaily)
     if (resolvedOptions.granularity === 'week')
       return buildRollingWeeklyEvolutionFromDaily(sortedDaily, startIso, endIso)
-    if (resolvedOptions.granularity === 'month') return buildMonthlyEvolutionFromDaily(sortedDaily)
-    return buildYearlyEvolutionFromDaily(sortedDaily)
+    if (resolvedOptions.granularity === 'month')
+      return buildMonthlyEvolutionFromDaily(sortedDaily, startIso, endIso)
+    return buildYearlyEvolutionFromDaily(sortedDaily, startIso, endIso)
   }
 
   async function fetchPackageLikesEvolution(
@@ -517,8 +600,8 @@ export function useCharts() {
     if (resolvedOptions.granularity === 'week')
       return buildRollingWeeklyEvolutionFromDaily(filteredDaily, startIso, endIso)
     if (resolvedOptions.granularity === 'month')
-      return buildMonthlyEvolutionFromDaily(filteredDaily)
-    return buildYearlyEvolutionFromDaily(filteredDaily)
+      return buildMonthlyEvolutionFromDaily(filteredDaily, startIso, endIso)
+    return buildYearlyEvolutionFromDaily(filteredDaily, startIso, endIso)
   }
 
   async function fetchRepoContributorsEvolution(
