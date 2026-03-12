@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { buildVersionToTagsMap, buildTaggedVersionRows } from '~/utils/versions'
+import {
+  buildVersionToTagsMap,
+  buildTaggedVersionRows,
+  getVersionGroupKey,
+  getVersionGroupLabel,
+} from '~/utils/versions'
 
 definePageMeta({
   name: 'package-versions',
@@ -47,6 +52,41 @@ const tagRows = computed(() => buildTaggedVersionRows(distTags.value))
 
 function getVersionTime(version: string): string | undefined {
   return versionHistory.value.find(v => v.version === version)?.time
+}
+
+// ─── Version groups ───────────────────────────────────────────────────────────
+
+const expandedGroups = ref(new Set<string>())
+
+const versionGroups = computed(() => {
+  const byKey = new Map<string, typeof sortedVersions.value>()
+  for (const v of sortedVersions.value) {
+    const key = getVersionGroupKey(v.version)
+    if (!byKey.has(key)) byKey.set(key, [])
+    byKey.get(key)!.push(v)
+  }
+
+  return Array.from(byKey.keys())
+    .sort((a, b) => {
+      const [aMajor, aMinor] = a.split('.').map(Number)
+      const [bMajor, bMinor] = b.split('.').map(Number)
+      if (aMajor !== bMajor) return (bMajor ?? 0) - (aMajor ?? 0)
+      return (bMinor ?? -1) - (aMinor ?? -1)
+    })
+    .map(groupKey => ({
+      groupKey,
+      label: getVersionGroupLabel(groupKey),
+      versions: byKey.get(groupKey)!,
+    }))
+})
+
+function toggleGroup(groupKey: string) {
+  if (expandedGroups.value.has(groupKey)) {
+    expandedGroups.value.delete(groupKey)
+  } else {
+    expandedGroups.value.add(groupKey)
+  }
+  expandedGroups.value = new Set(expandedGroups.value)
 }
 
 // ─── Changelog side panel ─────────────────────────────────────────────────────
@@ -247,111 +287,144 @@ watch(jumpVersion, () => {
 
         <!-- List + changelog side panel -->
         <div class="flex">
-          <!-- Version list -->
+          <!-- Version list (grouped by major) -->
           <div
             class="flex-1 min-w-0 border-y sm:border border-border sm:rounded-lg sm:overflow-hidden"
           >
             <div
-              v-for="v in sortedVersions"
-              :key="v.version"
-              class="border-b border-border last:border-0 transition-colors"
-              :class="selectedChangelogVersion === v.version ? 'bg-bg-subtle' : ''"
+              v-for="group in versionGroups"
+              :key="group.groupKey"
+              class="border-b border-border last:border-0"
             >
-              <div
-                class="flex items-center gap-3 px-4 py-2.5 group relative"
-                :class="selectedChangelogVersion === v.version ? '' : 'hover:bg-bg-subtle'"
+              <!-- Group header -->
+              <button
+                type="button"
+                class="flex items-center gap-3 px-4 py-2.5 w-full text-start hover:bg-bg-subtle transition-colors"
+                :aria-expanded="expandedGroups.has(group.groupKey)"
+                :aria-label="`${expandedGroups.has(group.groupKey) ? 'Collapse' : 'Expand'} ${group.label}`"
+                @click="toggleGroup(group.groupKey)"
               >
-                <!-- Version + badges -->
-                <div class="flex-1 min-w-0 flex items-center gap-2 flex-wrap">
-                  <LinkBase
-                    :to="packageRoute(packageName, v.version)"
-                    class="font-mono text-sm after:absolute after:inset-0 after:content-['']"
-                    :class="v.deprecated ? 'text-red-700 dark:text-red-400' : ''"
-                    :classicon="v.deprecated ? 'i-lucide:octagon-alert' : undefined"
-                    dir="ltr"
-                  >
-                    {{ v.version }}
-                  </LinkBase>
-                  <div
-                    v-if="v.tags?.length"
-                    class="flex items-center gap-1 flex-wrap relative z-10"
-                  >
-                    <span
-                      v-for="tag in v.tags"
-                      :key="tag"
-                      class="text-4xs font-semibold uppercase tracking-wide"
-                      :class="tag === 'latest' ? 'text-accent' : 'text-fg-subtle'"
-                    >
-                      {{ tag }}
-                    </span>
-                  </div>
+                <span class="w-4 h-4 flex items-center justify-center text-fg-subtle shrink-0">
                   <span
-                    v-if="v.deprecated"
-                    class="text-3xs font-medium text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded relative z-10"
-                    :title="v.deprecated"
-                  >
-                    deprecated
-                  </span>
-                </div>
-
-                <!-- Right side -->
-                <div class="flex items-center gap-2 shrink-0 relative z-10">
-                  <!-- Changelog toggle button -->
-                  <!-- TODO(atriiy): changelog would be implemented later -->
-                  <!-- <button
-                    v-if="v.hasChangelog"
-                    type="button"
-                    class="flex items-center gap-1.5 text-xs px-2 py-1 rounded border transition-colors focus-visible:outline-accent/70"
-                    :class="
-                      selectedChangelogVersion === v.version
-                        ? 'border-accent/50 bg-accent/8 text-accent'
-                        : 'border-border text-fg-subtle hover:text-fg hover:border-border-hover'
-                    "
-                    :aria-expanded="selectedChangelogVersion === v.version"
-                    :aria-label="`Toggle changelog for v${v.version}`"
-                    @click.stop="toggleChangelog(v.version)"
-                  >
-                    <span class="i-lucide:scroll-text w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-                    <span class="hidden sm:inline">Changelog</span>
-                  </button> -->
-
-                  <!-- Divider -->
-                  <span
-                    v-if="v.hasChangelog"
-                    class="w-px h-3.5 bg-border shrink-0 hidden sm:block"
+                    class="i-lucide:chevron-right w-3 h-3 transition-transform duration-200 rtl-flip"
+                    :class="expandedGroups.has(group.groupKey) ? 'rotate-90' : ''"
                     aria-hidden="true"
                   />
-
-                  <!-- Metadata: date + provenance -->
+                </span>
+                <span class="font-mono text-sm font-medium">{{ group.label }}</span>
+                <span class="text-xs text-fg-subtle">({{ group.versions.length }})</span>
+                <span class="ms-auto flex items-center gap-3 shrink-0">
+                  <span class="font-mono text-xs text-fg-muted" dir="ltr">{{
+                    group.versions[0]?.version
+                  }}</span>
                   <DateTime
-                    v-if="v.time"
-                    :datetime="v.time"
+                    v-if="group.versions[0]?.time"
+                    :datetime="group.versions[0].time"
                     class="text-xs text-fg-subtle hidden sm:block"
                     year="numeric"
                     month="short"
                     day="numeric"
                   />
-                  <ProvenanceBadge
-                    v-if="v.hasProvenance"
-                    :package-name="packageName"
-                    :version="v.version"
-                    compact
-                    :linked="false"
-                  />
-                </div>
-              </div>
+                </span>
+              </button>
 
-              <!-- Mobile inline changelog (below the row, sm and up uses side panel) -->
+              <!-- Expanded versions -->
               <div
-                v-if="v.hasChangelog"
-                class="grid sm:hidden transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none"
-                :class="
-                  selectedChangelogVersion === v.version ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
-                "
+                class="grid transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none"
+                :class="expandedGroups.has(group.groupKey) ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'"
               >
-                <div class="overflow-hidden">
-                  <div class="changelog-body border-t border-border px-4 py-3 text-sm">
-                    {{ selectedChangelogVersion === v.version ? selectedChangelogContent : '' }}
+                <div class="overflow-hidden border-t border-border">
+                  <div
+                    v-for="v in group.versions"
+                    :key="v.version"
+                    class="border-b border-border last:border-0 transition-colors"
+                    :class="selectedChangelogVersion === v.version ? 'bg-bg-subtle' : ''"
+                  >
+                    <div
+                      class="flex items-center gap-3 px-4 ps-11 py-2.5 group relative"
+                      :class="selectedChangelogVersion === v.version ? '' : 'hover:bg-bg-subtle'"
+                    >
+                      <!-- Version + badges -->
+                      <div class="flex-1 min-w-0 flex items-center gap-2 flex-wrap">
+                        <LinkBase
+                          :to="packageRoute(packageName, v.version)"
+                          class="font-mono text-sm after:absolute after:inset-0 after:content-['']"
+                          :class="v.deprecated ? 'text-red-700 dark:text-red-400' : ''"
+                          :classicon="v.deprecated ? 'i-lucide:octagon-alert' : undefined"
+                          dir="ltr"
+                        >
+                          {{ v.version }}
+                        </LinkBase>
+                        <div
+                          v-if="v.tags?.length"
+                          class="flex items-center gap-1 flex-wrap relative z-10"
+                        >
+                          <span
+                            v-for="tag in v.tags"
+                            :key="tag"
+                            class="text-4xs font-semibold uppercase tracking-wide"
+                            :class="tag === 'latest' ? 'text-accent' : 'text-fg-subtle'"
+                          >
+                            {{ tag }}
+                          </span>
+                        </div>
+                        <span
+                          v-if="v.deprecated"
+                          class="text-3xs font-medium text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded relative z-10"
+                          :title="v.deprecated"
+                        >
+                          deprecated
+                        </span>
+                      </div>
+
+                      <!-- Right side -->
+                      <div class="flex items-center gap-2 shrink-0 relative z-10">
+                        <!-- TODO(atriiy): changelog would be implemented later -->
+
+                        <!-- Divider -->
+                        <span
+                          v-if="v.hasChangelog"
+                          class="w-px h-3.5 bg-border shrink-0 hidden sm:block"
+                          aria-hidden="true"
+                        />
+
+                        <!-- Metadata: date + provenance -->
+                        <DateTime
+                          v-if="v.time"
+                          :datetime="v.time"
+                          class="text-xs text-fg-subtle hidden sm:block"
+                          year="numeric"
+                          month="short"
+                          day="numeric"
+                        />
+                        <ProvenanceBadge
+                          v-if="v.hasProvenance"
+                          :package-name="packageName"
+                          :version="v.version"
+                          compact
+                          :linked="false"
+                        />
+                      </div>
+                    </div>
+
+                    <!-- Mobile inline changelog (below the row, sm and up uses side panel) -->
+                    <div
+                      v-if="v.hasChangelog"
+                      class="grid sm:hidden transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none"
+                      :class="
+                        selectedChangelogVersion === v.version
+                          ? 'grid-rows-[1fr]'
+                          : 'grid-rows-[0fr]'
+                      "
+                    >
+                      <div class="overflow-hidden">
+                        <div class="changelog-body border-t border-border px-4 py-3 text-sm">
+                          {{
+                            selectedChangelogVersion === v.version ? selectedChangelogContent : ''
+                          }}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
