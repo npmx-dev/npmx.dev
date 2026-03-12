@@ -379,7 +379,6 @@
       "grouping_versions_only_recent": "Yalnız son",
       "grouping_usage_title": "İstifadə",
       "grouping_usage_all": "Hamısı",
-      "grouping_usage_low": "Aşağı",
       "recent_versions_only_tooltip": "Yalnız son bir il ərzində dərc edilmiş versiyaları göstər.",
       "show_low_usage_tooltip": "Ümumi endirmələrin 1%-dən azını təşkil edən versiya qruplarını daxil et.",
       "y_axis_label": "Endirmələr",
@@ -963,15 +962,15 @@
         "description": "Söhbət edin, suallar verin və fikirlər paylaşın.",
         "cta": "Discord-a qoşul"
       },
-      "follow": {
-        "title": "Yeniliklərdən xəbərdar olun",
-        "description": "npmx haqqında son yenilikləri öyrənin.",
-        "cta": "Bluesky-da izlə"
-      },
       "builders": {
         "title": "Qurucular",
         "description": "Qurucular icmasamıza qoşulun və npmx-in gələcəyini formalaşdırın",
         "cta": "Qurucular söhbətinə qoşul"
+      },
+      "follow": {
+        "title": "Yeniliklərdən xəbərdar olun",
+        "description": "npmx haqqında son yenilikləri öyrənin.",
+        "cta": "Bluesky-da izlə"
       }
     }
   },
@@ -1024,7 +1023,6 @@
     }
   },
   "compare": {
-    "compare_versions_title": "Versiyaları müqayisə et",
     "packages": {
       "title": "paketləri müqayisə et",
       "tagline": "düzgün seçim etməyinizə kömək etmək üçün npm paketlərini yan-yana müqayisə edin.",
@@ -1150,6 +1148,7 @@
     "files_count": "{count} fayl",
     "lines_hidden": "{count} sətir gizlədilib",
     "compare_versions": "fərq",
+    "compare_versions_title": "Versiyaları müqayisə et",
     "summary": "Xülasə",
     "deps_count": "{count} asılılıq",
     "dependencies": "Asılılıqlar",

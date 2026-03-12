@@ -43,6 +43,7 @@ export interface AppSettings {
     averageWindow: number
     smoothingTau: number
     anomaliesFixed: boolean
+    predictionPoints: number
   }
 }
 
@@ -66,6 +67,7 @@ const DEFAULT_SETTINGS: AppSettings = {
     averageWindow: 0,
     smoothingTau: 1,
     anomaliesFixed: true,
+    predictionPoints: 4,
   },
 }
 

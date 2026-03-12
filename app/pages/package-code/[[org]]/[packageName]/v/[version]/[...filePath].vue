@@ -4,6 +4,7 @@ import type {
   PackageFileTreeResponse,
   PackageFileContentResponse,
 } from '#shared/types'
+import { isBinaryFilePath } from '~/utils/file-types'
 
 definePageMeta({
   name: 'code',
@@ -105,6 +106,9 @@ const isViewingFile = computed(() => currentNode.value?.type === 'file')
 
 // Maximum file size we'll try to load (500KB) - must match server
 const MAX_FILE_SIZE = 500 * 1024
+
+const isBinaryFile = computed(() => !!filePath.value && isBinaryFilePath(filePath.value))
+
 const isFileTooLarge = computed(() => {
   const size = currentNode.value?.size
   return size !== undefined && size > MAX_FILE_SIZE
@@ -113,7 +117,13 @@ const isFileTooLarge = computed(() => {
 // Fetch file content when a file is selected (and not too large)
 const fileContentUrl = computed(() => {
   // Don't fetch if no file path, file tree not loaded, file is too large, or it's a directory
-  if (!filePath.value || !fileTree.value || isFileTooLarge.value || !isViewingFile.value) {
+  if (
+    !filePath.value ||
+    !fileTree.value ||
+    isFileTooLarge.value ||
+    !isViewingFile.value ||
+    isBinaryFile.value
+  ) {
     return null
   }
   return `/api/registry/file/${packageName.value}/v/${version.value}/${filePath.value}`
@@ -426,7 +436,7 @@ defineOgImageComponent('Default', {
         ref="contentContainer"
       >
         <!-- File viewer -->
-        <template v-if="isViewingFile && fileContent">
+        <template v-if="isViewingFile && !isBinaryFile && fileContent">
           <div
             class="sticky z-10 top-0 bg-bg border-b border-border px-4 py-2 flex items-center justify-between"
           >
@@ -518,6 +528,19 @@ defineOgImageComponent('Default', {
             @line-click="handleLineClick"
           />
         </template>
+
+        <!-- Binary file warning -->
+        <div v-else-if="isViewingFile && isBinaryFile" class="py-20 text-center">
+          <div class="i-lucide:binary w-12 h-12 mx-auto text-fg-subtle mb-4" />
+          <p class="text-fg-muted mb-2">{{ $t('code.binary_file') }}</p>
+          <p class="text-fg-subtle text-sm mb-4">{{ $t('code.binary_rendering_warning') }}</p>
+          <LinkBase
+            variant="button-secondary"
+            :to="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
+          >
+            {{ $t('code.view_raw') }}
+          </LinkBase>
+        </div>
 
         <!-- File too large warning -->
         <div v-else-if="isViewingFile && isFileTooLarge" class="py-20 text-center">

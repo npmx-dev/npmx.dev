@@ -379,7 +379,6 @@
       "grouping_versions_only_recent": "Тільки нещодавні",
       "grouping_usage_title": "Використання",
       "grouping_usage_all": "Усі",
-      "grouping_usage_low": "Низьке",
       "recent_versions_only_tooltip": "Показувати лише версії, опубліковані за останній рік.",
       "show_low_usage_tooltip": "Включити групи версій з менш ніж 1% від загальних завантажень.",
       "y_axis_label": "Завантаження",

@@ -17,9 +17,6 @@ import { areUrlsEquivalent } from '#shared/utils/url'
 import { isEditableElement } from '~/utils/input'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
 import { detectPublishSecurityDowngradeForVersion } from '~/utils/publish-security'
-import { useModal } from '~/composables/useModal'
-import { useAtproto } from '~/composables/atproto/useAtproto'
-import { togglePackageLike } from '~/utils/atproto/likes'
 import { useInstallSizeDiff } from '~/composables/useInstallSizeDiff'
 import { useViewOnGitProvider } from '~/composables/useViewOnGitProvider'
 import type { RouteLocationRaw } from 'vue-router'
@@ -32,15 +29,10 @@ defineOgImageComponent('Package', {
 
 const router = useRouter()
 
-const header = useTemplateRef('header')
-const isHeaderPinned = shallowRef(false)
 const readmeHeader = useTemplateRef('readmeHeader')
 const isReadmeHeaderPinned = shallowRef(false)
-const navExtraOffset = shallowRef(0)
-const isMobile = useMediaQuery('(max-width: 639.9px)')
-
-const headerBounds = useElementBounding(header)
-const readmeStickyTop = computed(() => `${56 + headerBounds.height.value}px`)
+const packageHeaderHeight = usePackageHeaderHeight()
+const readmeStickyTop = computed(() => `${56 + packageHeaderHeight.value}px`)
 
 function isStickyPinned(el: HTMLElement | null): boolean {
   if (!el) return false
@@ -53,59 +45,17 @@ function isStickyPinned(el: HTMLElement | null): boolean {
 }
 
 function checkHeaderPosition() {
-  isHeaderPinned.value = isStickyPinned(header.value)
   isReadmeHeaderPinned.value = isStickyPinned(readmeHeader.value)
 }
 
 useEventListener('scroll', checkHeaderPosition, { passive: true })
 useEventListener('resize', checkHeaderPosition)
 
-const footerTarget = ref<HTMLElement | null>(null)
-const footerThresholds = Array.from({ length: 11 }, (_, i) => i / 10)
-
-const { pause: pauseFooterObserver, resume: resumeFooterObserver } = useIntersectionObserver(
-  footerTarget,
-  ([entry]) => {
-    if (!entry) return
-
-    navExtraOffset.value = entry.isIntersecting ? entry.intersectionRect.height : 0
-  },
-  {
-    threshold: footerThresholds,
-    immediate: false,
-  },
-)
-
-function initFooterObserver() {
-  footerTarget.value = document.querySelector('footer')
-  if (!footerTarget.value) return
-
-  pauseFooterObserver()
-
-  watch(
-    isMobile,
-    value => {
-      if (value) {
-        resumeFooterObserver()
-      } else {
-        pauseFooterObserver()
-        navExtraOffset.value = 0
-      }
-    },
-    { immediate: true },
-  )
-}
-
 onMounted(() => {
   checkHeaderPosition()
-  initFooterObserver()
 })
 
-const navExtraOffsetStyle = computed(() => ({
-  '--package-nav-extra': `${navExtraOffset.value}px`,
-}))
-
-const { packageName, requestedVersion, orgName } = usePackageRoute()
+const { packageName, requestedVersion } = usePackageRoute()
 
 const { data: resolvedVersion, status: resolvedStatus } = await useResolvedVersion(
   packageName,
@@ -317,25 +267,6 @@ const pkgDescription = useMarkdown(() => ({
   text: pkg.value?.description ?? '',
   packageName: pkg.value?.name,
 }))
-
-//copy package name
-const { copied: copiedPkgName, copy: copyPkgName } = useClipboard({
-  source: packageName,
-  copiedDuring: 2000,
-})
-
-//copy version name
-const { copied: copiedVersion, copy: copyVersion } = useClipboard({
-  source: () => resolvedVersion.value ?? '',
-  copiedDuring: 2000,
-})
-
-const { scrollToTop, isTouchDeviceClient } = useScrollToTop()
-
-const { y: scrollY } = useScroll(window)
-const showScrollToTop = computed(
-  () => isTouchDeviceClient.value && scrollY.value > SCROLL_TO_TOP_THRESHOLD,
-)
 
 // Fetch dependency analysis (lazy, client-side)
 // This is the same composable used by PackageVulnerabilityTree and PackageDeprecatedTree
@@ -602,69 +533,6 @@ const canonicalUrl = computed(() => {
   return requestedVersion.value ? `${base}/v/${requestedVersion.value}` : base
 })
 
-//atproto
-// TODO: Maybe set this where it's not loaded here every load?
-const { user } = useAtproto()
-
-const authModal = useModal('auth-modal')
-
-const { data: likesData, status: likeStatus } = useFetch(
-  () => `/api/social/likes/${packageName.value}`,
-  {
-    default: () => ({ totalLikes: 0, userHasLiked: false }),
-    server: false,
-  },
-)
-const isLoadingLikeData = computed(
-  () => likeStatus.value === 'pending' || likeStatus.value === 'idle',
-)
-
-const isLikeActionPending = shallowRef(false)
-
-const likeAction = async () => {
-  if (user.value?.handle == null) {
-    authModal.open()
-    return
-  }
-
-  if (isLikeActionPending.value) return
-
-  const currentlyLiked = likesData.value?.userHasLiked ?? false
-  const currentLikes = likesData.value?.totalLikes ?? 0
-
-  // Optimistic update
-  likesData.value = {
-    totalLikes: currentlyLiked ? currentLikes - 1 : currentLikes + 1,
-    userHasLiked: !currentlyLiked,
-  }
-
-  isLikeActionPending.value = true
-
-  try {
-    const result = await togglePackageLike(packageName.value, currentlyLiked, user.value?.handle)
-
-    isLikeActionPending.value = false
-
-    if (result.success) {
-      // Update with server response
-      likesData.value = result.data
-    } else {
-      // Revert on error
-      likesData.value = {
-        totalLikes: currentLikes,
-        userHasLiked: currentlyLiked,
-      }
-    }
-  } catch {
-    // Revert on error
-    likesData.value = {
-      totalLikes: currentLikes,
-      userHasLiked: currentlyLiked,
-    }
-    isLikeActionPending.value = false
-  }
-}
-
 const dependencyCount = computed(() => getDependencyCount(displayVersion.value))
 
 const numberFormatter = useNumberFormatter()
@@ -772,190 +640,18 @@ const showSkeleton = shallowRef(false)
     />
 
     <article v-else-if="pkg" id="package-article" :class="$style.packagePage">
-      <!-- Package header -->
-      <header
-        class="sticky top-14 z-1 bg-[--bg] py-2 border-border"
-        ref="header"
-        :class="[$style.areaHeader, { 'border-b': isHeaderPinned }]"
-      >
-        <!-- Package name and version -->
-        <div class="flex items-baseline gap-x-2 gap-y-1 sm:gap-x-3 flex-wrap min-w-0">
-          <CopyToClipboardButton
-            :copied="copiedPkgName"
-            :copy-text="$t('package.copy_name')"
-            class="flex flex-col items-start min-w-0"
-            @click="copyPkgName()"
-          >
-            <h1
-              class="font-mono text-2xl sm:text-3xl font-medium min-w-0 break-words"
-              :title="pkg.name"
-              dir="ltr"
-            >
-              <LinkBase v-if="orgName" :to="{ name: 'org', params: { org: orgName } }">
-                @{{ orgName }}
-              </LinkBase>
-              <span v-if="orgName">/</span>
-              <span :class="{ 'text-fg-muted': orgName }">
-                {{ orgName ? pkg.name.replace(`@${orgName}/`, '') : pkg.name }}
-              </span>
-            </h1>
-          </CopyToClipboardButton>
-
-          <CopyToClipboardButton
-            v-if="resolvedVersion"
-            :copied="copiedVersion"
-            :copy-text="$t('package.copy_version')"
-            class="inline-flex items-baseline gap-1.5 font-mono text-base sm:text-lg text-fg-muted shrink-0"
-            @click="copyVersion()"
-          >
-            <!-- Version resolution indicator (e.g., "latest → 4.2.0") -->
-            <template v-if="requestedVersion && resolvedVersion !== requestedVersion">
-              <span class="font-mono text-fg-muted text-sm" dir="ltr">{{ requestedVersion }}</span>
-              <span class="i-lucide:arrow-right rtl-flip w-3 h-3" aria-hidden="true" />
-            </template>
-
-            <LinkBase
-              v-if="requestedVersion && resolvedVersion !== requestedVersion"
-              :to="packageRoute(pkg.name, resolvedVersion)"
-              :title="$t('package.view_permalink')"
-              dir="ltr"
-              >{{ resolvedVersion }}</LinkBase
-            >
-            <span dir="ltr" v-else>v{{ resolvedVersion }}</span>
-
-            <template v-if="hasProvenance(displayVersion)">
-              <TooltipApp
-                :text="
-                  provenanceData && provenanceStatus !== 'pending'
-                    ? $t('package.provenance_section.built_and_signed_on', {
-                        provider: provenanceData.providerLabel,
-                      })
-                    : $t('package.verified_provenance')
-                "
-                position="bottom"
-                strategy="fixed"
-              >
-                <LinkBase
-                  variant="button-secondary"
-                  size="small"
-                  to="#provenance"
-                  :aria-label="$t('package.provenance_section.view_more_details')"
-                  classicon="i-lucide:shield-check"
-                />
-              </TooltipApp>
-            </template>
-            <span
-              v-if="requestedVersion && latestVersion && resolvedVersion !== latestVersion.version"
-              class="text-fg-subtle text-sm shrink-0"
-              >{{ $t('package.not_latest') }}</span
-            >
-          </CopyToClipboardButton>
-
-          <!-- Docs + Code + Compare — inline on desktop, floating bottom bar on mobile -->
-          <ButtonGroup
-            v-if="resolvedVersion"
-            as="nav"
-            :aria-label="$t('package.navigation')"
-            class="hidden sm:flex max-sm:flex max-sm:fixed max-sm:z-40 max-sm:inset-is-1/2 max-sm:-translate-x-1/2 max-sm:rtl:translate-x-1/2 max-sm:bg-[--bg]/90 max-sm:backdrop-blur-md max-sm:border max-sm:border-border max-sm:rounded-md max-sm:shadow-md ms-auto"
-            :style="navExtraOffsetStyle"
-            :class="$style.packageNav"
-          >
-            <LinkBase
-              variant="button-secondary"
-              v-if="docsLink"
-              :to="docsLink"
-              aria-keyshortcuts="d"
-              classicon="i-lucide:file-text"
-            >
-              <span class="max-sm:sr-only">{{ $t('package.links.docs') }}</span>
-            </LinkBase>
-            <LinkBase
-              v-if="codeLink"
-              variant="button-secondary"
-              :to="codeLink"
-              aria-keyshortcuts="."
-              classicon="i-lucide:code"
-            >
-              <span class="max-sm:sr-only">{{ $t('package.links.code') }}</span>
-            </LinkBase>
-            <LinkBase
-              variant="button-secondary"
-              :to="{ name: 'compare', query: { packages: pkg.name } }"
-              aria-keyshortcuts="c"
-              classicon="i-lucide:git-compare"
-            >
-              <span class="max-sm:sr-only">{{ $t('package.links.compare') }}</span>
-            </LinkBase>
-            <LinkBase
-              v-if="
-                displayVersion && latestVersion && displayVersion.version !== latestVersion.version
-              "
-              variant="button-secondary"
-              :to="diffRoute(pkg.name, displayVersion.version, latestVersion.version)"
-              classicon="i-lucide:diff"
-              :title="$t('compare.compare_versions_title')"
-            >
-              <span class="max-sm:sr-only">{{ $t('compare.compare_versions') }}</span>
-            </LinkBase>
-            <ButtonBase
-              v-if="showScrollToTop"
-              variant="secondary"
-              :aria-label="$t('common.scroll_to_top')"
-              @click="scrollToTop"
-              classicon="i-lucide:arrow-up"
-              class="sm:p-2.75"
-            />
-          </ButtonGroup>
-
-          <!-- Package metrics -->
-          <div class="basis-full flex gap-2 sm:gap-3 flex-wrap items-stretch">
-            <PackageMetricsBadges
-              v-if="resolvedVersion"
-              :package-name="pkg.name"
-              :version="resolvedVersion"
-              :is-binary="isBinaryOnly"
-              class="self-baseline"
-            />
-
-            <!-- Package likes -->
-            <TooltipApp
-              :text="
-                isLoadingLikeData
-                  ? $t('common.loading')
-                  : likesData?.userHasLiked
-                    ? $t('package.likes.unlike')
-                    : $t('package.likes.like')
-              "
-              position="bottom"
-              class="items-center"
-              strategy="fixed"
-            >
-              <ButtonBase
-                @click="likeAction"
-                size="small"
-                :aria-label="
-                  likesData?.userHasLiked ? $t('package.likes.unlike') : $t('package.likes.like')
-                "
-                :aria-pressed="likesData?.userHasLiked"
-                :classicon="
-                  likesData?.userHasLiked
-                    ? 'i-lucide:heart-minus text-red-500'
-                    : 'i-lucide:heart-plus'
-                "
-              >
-                <span
-                  v-if="isLoadingLikeData"
-                  class="i-svg-spinners:ring-resize w-3 h-3 my-0.5"
-                  aria-hidden="true"
-                />
-                <span v-else>
-                  {{ compactNumberFormatter.format(likesData?.totalLikes ?? 0) }}
-                </span>
-              </ButtonBase>
-            </TooltipApp>
-          </div>
-        </div>
-      </header>
+      <PackageHeader
+        :pkg="pkg"
+        :resolved-version="resolvedVersion"
+        :display-version="displayVersion"
+        :latest-version="latestVersion"
+        :provenance-data="provenanceData"
+        :provenance-status="provenanceStatus"
+        :is-binary-only="isBinaryOnly"
+        :docs-link="docsLink"
+        :code-link="codeLink"
+        :class="$style.areaHeader"
+      />
 
       <!-- Package details -->
       <section :class="$style.areaDetails">
@@ -1632,18 +1328,6 @@ const showSkeleton = shallowRef(false)
   grid-area: header;
 }
 
-/* Improve package name wrapping for narrow screens */
-.areaHeader h1 {
-  overflow-wrap: anywhere;
-}
-
-/* Ensure description text wraps properly */
-.areaHeader p {
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  word-break: break-word;
-}
-
 .areaDetails {
   grid-area: details;
 }
@@ -1676,16 +1360,7 @@ const showSkeleton = shallowRef(false)
   grid-area: sidebar;
 }
 
-/* Mobile floating nav: safe-area positioning + kbd hiding */
 @media (max-width: 639.9px) {
-  .packageNav {
-    bottom: calc(1.25rem + var(--package-nav-extra, 0px) + env(safe-area-inset-bottom, 0px));
-  }
-
-  .packageNav > :global(a kbd) {
-    display: none;
-  }
-
   .packagePage {
     padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
   }

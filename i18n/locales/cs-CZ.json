@@ -389,7 +389,6 @@
       "grouping_versions_only_recent": "Pouze nedávné",
       "grouping_usage_title": "Použití",
       "grouping_usage_all": "Všechno",
-      "grouping_usage_low": "Nízké",
       "recent_versions_only_tooltip": "Zobrazit pouze verze zveřejněné v posledním roce.",
       "show_low_usage_tooltip": "Zahrnout skupiny verzí s méně než 1 % celkových stažení.",
       "y_axis_label": "Stažení",

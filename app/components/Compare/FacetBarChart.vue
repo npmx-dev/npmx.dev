@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { VueUiHorizontalBar } from 'vue-data-ui/vue-ui-horizontal-bar'
-import type {
-  VueUiHorizontalBarConfig,
-  VueUiHorizontalBarDatapoint,
-  VueUiHorizontalBarDatasetItem,
-} from 'vue-data-ui'
+import type { VueUiHorizontalBarConfig, VueUiHorizontalBarDatasetItem } from 'vue-data-ui'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
 import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
 import {
@@ -230,7 +226,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
                   ${name}
                 </span>
                 <span class="text-base text-[var(--fg)] font-mono tabular-nums text-end">
-                  ${(datapoint as VueUiHorizontalBarDatapoint).formattedValue ?? 0}
+                  ${datapoint?.formattedValue ?? 0}
                 </span>
               </div>
             </div>
