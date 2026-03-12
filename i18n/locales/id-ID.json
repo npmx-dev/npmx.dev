@@ -93,7 +93,7 @@
       "view_profile": "Lihat profil {name} di Bluesky"
     },
     "draft_badge": "Draft",
-    "draft_banner": "Ini adalah draf yang belum di publikasikan, Kontennya mungkin belum lengkap atau mengandung ketidakakuratan",
+    "draft_banner": "Ini adalah draf yang belum dipublikasikan. Kontennya mungkin belum lengkap atau mengandung ketidakakuratan",
     "atproto": {
       "view_on_bluesky": "Lihat di Bluesky",
       "reply_on_bluesky": "Balas di Bluesky",
