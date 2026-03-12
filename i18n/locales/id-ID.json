@@ -465,8 +465,8 @@
       },
       "data_correction": "Koreksi data",
       "average_window": "Rata-rata jendela",
-      "prediction": "Prediksi tren",
       "smoothing": "Penghalusan",
+      "prediction": "Prediksi tren",
       "known_anomalies": "Anomali yang diketahui",
       "known_anomalies_description": "Menyisipkan lonjakan unduhan yang diketahui akibat bot atau masalah CI.",
       "known_anomalies_ranges": "Batas anomali",
@@ -789,7 +789,6 @@
       "code": "kode"
     },
     "file_path": "Jalur berkas",
-    "scroll_to_top": "Kembali ke atas",
     "binary_file": "File biner",
     "binary_rendering_warning": "File ini adalah file biner dan tidak dapat ditampilkan sebagai teks."
   },
