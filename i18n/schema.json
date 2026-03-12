@@ -2380,9 +2380,6 @@
         "file_path": {
           "type": "string"
         },
-        "scroll_to_top": {
-          "type": "string"
-        },
         "binary_file": {
           "type": "string"
         },

@@ -219,14 +219,6 @@ function getCurrentCodeUrlWithPath(path?: string): string {
   })
 }
 
-// Extract org name from scoped package
-const orgName = computed(() => {
-  const name = packageName.value
-  if (!name.startsWith('@')) return null
-  const match = name.match(/^@([^/]+)\//)
-  return match ? match[1] : null
-})
-
 // Line number click handler - update URL hash without scrolling
 function handleLineClick(lineNum: number, event: MouseEvent) {
   let newHash: string
@@ -263,14 +255,6 @@ const { copied: fileContentCopied, copy: copyFileContent } = useClipboard({
   source: () => fileContent.value?.content || '',
   copiedDuring: 2000,
 })
-
-// Scroll to top of file content
-const contentContainer = useTemplateRef('contentContainer')
-function scrollToTop() {
-  if (contentContainer.value) {
-    contentContainer.value.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-}
 
 // Canonical URL for this code page
 const canonicalUrl = computed(() => `https://npmx.dev${getCodeUrl(route.params)}`)
@@ -384,7 +368,7 @@ defineOgImageComponent('Default', {
       </aside>
 
       <!-- File content / Directory listing - sticky with internal scroll on desktop -->
-      <div class="flex-1 min-w-0 self-start" ref="contentContainer">
+      <div class="flex-1 min-w-0 self-start">
         <div
           class="sticky z-10 top-25 bg-bg border-b border-border px-4 py-2 flex items-center justify-between gap-2 text-nowrap overflow-x-auto max-w-full"
         >

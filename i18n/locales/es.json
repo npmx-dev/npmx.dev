@@ -735,8 +735,7 @@
       "preview": "vista previa",
       "code": "código"
     },
-    "file_path": "Ruta del archivo",
-    "scroll_to_top": "Volver arriba"
+    "file_path": "Ruta del archivo"
   },
   "badges": {
     "provenance": {

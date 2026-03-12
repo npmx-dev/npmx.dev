@@ -774,8 +774,7 @@
       "preview": "önbaxış",
       "code": "kod"
     },
-    "file_path": "Fayl yolu",
-    "scroll_to_top": "Yuxarı qayıt"
+    "file_path": "Fayl yolu"
   },
   "badges": {
     "provenance": {
@@ -1139,11 +1138,11 @@
         "title": "Trendləri Müqayisə Et"
       }
     },
-    "file_too_large": "Fayl müqayisə üçün çox böyükdür",
-    "file_size_warning": "{size} müqayisə üçün 250KB limitini keçir",
     "file_changes": "Fayl Dəyişiklikləri",
     "files_count": "{count} fayl",
     "lines_hidden": "{count} sətir gizlədilib",
+    "file_too_large": "Fayl müqayisə üçün çox böyükdür",
+    "file_size_warning": "{size} müqayisə üçün 250KB limitini keçir",
     "compare_versions": "fərq",
     "compare_versions_title": "Versiyaları müqayisə et",
     "summary": "Xülasə",

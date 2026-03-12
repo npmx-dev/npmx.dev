@@ -735,8 +735,7 @@
       "preview": "преглед",
       "code": "код"
     },
-    "file_path": "Път към файл",
-    "scroll_to_top": "Към началото"
+    "file_path": "Път към файл"
   },
   "badges": {
     "provenance": {

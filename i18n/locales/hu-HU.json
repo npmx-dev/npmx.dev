@@ -735,8 +735,7 @@
       "preview": "előnézet",
       "code": "kód"
     },
-    "file_path": "Fájl elérési útja",
-    "scroll_to_top": "Görgetés a tetejére"
+    "file_path": "Fájl elérési útja"
   },
   "badges": {
     "provenance": {

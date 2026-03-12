@@ -774,8 +774,7 @@
       "preview": "попередній перегляд",
       "code": "код"
     },
-    "file_path": "Шлях до файлу",
-    "scroll_to_top": "Прокрутити вгору"
+    "file_path": "Шлях до файлу"
   },
   "badges": {
     "provenance": {

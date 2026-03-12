@@ -774,8 +774,7 @@
       "preview": "Vorschau",
       "code": "Code"
     },
-    "file_path": "Dateipfad",
-    "scroll_to_top": "Nach oben scrollen"
+    "file_path": "Dateipfad"
   },
   "badges": {
     "provenance": {

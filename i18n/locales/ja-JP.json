@@ -774,8 +774,7 @@
       "preview": "プレビュー",
       "code": "コード"
     },
-    "file_path": "ファイルパス",
-    "scroll_to_top": "トップへスクロール"
+    "file_path": "ファイルパス"
   },
   "badges": {
     "provenance": {

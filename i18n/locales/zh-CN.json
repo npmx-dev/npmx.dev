@@ -774,8 +774,7 @@
       "preview": "预览",
       "code": "代码"
     },
-    "file_path": "文件路径",
-    "scroll_to_top": "滚动到顶部"
+    "file_path": "文件路径"
   },
   "badges": {
     "provenance": {
