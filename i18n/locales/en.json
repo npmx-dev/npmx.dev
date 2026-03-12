@@ -793,6 +793,7 @@
     },
     "file_path": "File path",
     "scroll_to_top": "Scroll to top",
+    "word_wrap": "Word wrap",
     "binary_file": "Binary file",
     "binary_rendering_warning": "File type not supported for preview."
   },

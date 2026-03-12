@@ -3,6 +3,7 @@ const props = defineProps<{
   html: string
   lines: number
   selectedLines: { start: number; end: number } | null
+  wordWrap?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -10,6 +11,7 @@ const emit = defineEmits<{
 }>()
 
 const codeRef = useTemplateRef('codeRef')
+const lineNumbersRef = useTemplateRef('lineNumbersRef')
 
 // Generate line numbers array
 const lineNumbers = computed(() => {
@@ -30,6 +32,30 @@ function isLineSelected(lineNum: number): boolean {
 // Handle line number click
 function onLineClick(lineNum: number, event: MouseEvent) {
   emit('lineClick', lineNum, event)
+}
+
+// Synchronize line number heights with code line heights (needed for word wrap)
+function syncLineHeights() {
+  if (!props.wordWrap || !codeRef.value || !lineNumbersRef.value) {
+    // Reset heights if word wrap is disabled
+    if (lineNumbersRef.value) {
+      const nums = lineNumbersRef.value.querySelectorAll<HTMLElement>('.line-number')
+      nums.forEach(num => (num.style.height = ''))
+    }
+    return
+  }
+
+  const lines = codeRef.value.querySelectorAll<HTMLElement>('code > .line')
+  const nums = lineNumbersRef.value.querySelectorAll<HTMLElement>('.line-number')
+
+  lines.forEach((line, index) => {
+    const num = nums[index]
+    if (num) {
+      // Use getBoundingClientRect for more precision if needed, but offsetHeight is usually enough
+      const height = line.offsetHeight
+      num.style.height = `${height}px`
+    }
+  })
 }
 
 // Apply highlighting to code lines when selection changes
@@ -53,10 +79,26 @@ function updateLineHighlighting() {
 watch(
   () => [props.selectedLines, props.html] as const,
   () => {
-    nextTick(updateLineHighlighting)
+    nextTick(() => {
+      updateLineHighlighting()
+      syncLineHeights()
+    })
   },
   { immediate: true },
 )
+
+// Also watch wordWrap specifically
+watch(
+  () => props.wordWrap,
+  () => {
+    nextTick(syncLineHeights)
+  },
+)
+
+// Sync on resize
+if (import.meta.client) {
+  useEventListener(window, 'resize', syncLineHeights)
+}
 
 // Use Nuxt's `navigateTo` for the rendered import links
 function handleImportLinkNavigate() {
@@ -86,9 +128,10 @@ watch(
 </script>
 
 <template>
-  <div class="code-viewer flex min-h-full max-w-full">
+  <div class="code-viewer flex min-h-full max-w-full" :class="{ 'is-wrapped': wordWrap }">
     <!-- Line numbers column -->
     <div
+      ref="lineNumbersRef"
       class="line-numbers shrink-0 bg-bg-subtle border-ie border-solid border-border text-end select-none relative"
       :style="{ '--line-digits': lineDigits }"
       aria-hidden="true"
@@ -153,6 +196,12 @@ watch(
   white-space: pre;
   overflow: hidden;
   transition: background-color 0.1s;
+}
+
+.is-wrapped .code-content :deep(.line) {
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: none;
 }
 
 /* Highlighted lines in code content - extend full width with negative margin */
