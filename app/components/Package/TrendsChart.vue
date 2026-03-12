@@ -2105,4 +2105,8 @@ watch(selectedMetric, value => {
 [data-minimap-visible='false'] .vue-data-ui-watermark {
   top: calc(100% - 2rem) !important;
 }
+
+input::-webkit-date-and-time-value {
+  margin-inline: 4px;
+}
 </style>

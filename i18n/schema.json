@@ -2382,6 +2382,12 @@
         },
         "scroll_to_top": {
           "type": "string"
+        },
+        "binary_file": {
+          "type": "string"
+        },
+        "binary_rendering_warning": {
+          "type": "string"
         }
       },
       "additionalProperties": false
