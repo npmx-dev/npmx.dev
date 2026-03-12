@@ -248,7 +248,7 @@ const likeAction = async () => {
 
 <template>
   <!-- Package header -->
-  <header class="bg-bg pt-2 w-full container">
+  <header class="bg-bg pt-5 w-full container">
     <!-- Package name and version -->
     <div class="flex items-baseline justify-between gap-x-2 gap-y-1 flex-wrap min-w-0">
       <CopyToClipboardButton
@@ -357,7 +357,7 @@ const likeAction = async () => {
                 :to="packageRoute(packageName, resolvedVersion, '#provenance')"
                 :aria-label="$t('package.provenance_section.view_more_details')"
                 classicon="i-lucide:shield-check"
-                class="py-1.5 px-2.5 me-2"
+                class="py-1.25 px-2 me-2"
               />
             </TooltipApp>
           </template>
@@ -387,7 +387,7 @@ const likeAction = async () => {
       <nav
         v-if="resolvedVersion"
         :aria-label="$t('package.navigation')"
-        class="flex gap-4 me-auto -mb-px"
+        class="flex gap-4 me-auto -mb-px max-w-full overflow-x-auto"
         :style="navExtraOffsetStyle"
         :class="$style.packageNav"
       >
@@ -444,11 +444,16 @@ const likeAction = async () => {
   word-break: break-word;
 }
 
-@media (max-width: 639.9px) {
-  .packageNav {
-    bottom: calc(1.25rem + var(--package-nav-extra, 0px) + env(safe-area-inset-bottom, 0px));
-  }
+.packageNav {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
 
+.packageNav::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 639.9px) {
   .packageNav > :global(a kbd) {
     display: none;
   }
