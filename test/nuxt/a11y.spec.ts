@@ -172,6 +172,7 @@ import {
   PackageCompatibility,
   PackageDependencies,
   PackageDeprecatedTree,
+  PackageHeader,
   PackageInstallScripts,
   PackageKeywords,
   PackageList,
@@ -720,6 +721,36 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(PackageLikeCard, {
         props: { packageUrl: 'https://npmx.dev/package/vue' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageHeader', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageHeader, {
+        props: {
+          pkg: { name: 'vue' },
+          resolvedVersion: '3.5.0',
+          displayVersion: {
+            _id: '1234567890',
+            _npmVersion: '3.5.0',
+            name: 'vue',
+            version: '3.5.0',
+            dist: {
+              shasum: '1234567890',
+              signatures: [],
+              tarball: 'https://npmx.dev/package/vue/tarball',
+            },
+          },
+          latestVersion: { version: '3.5.0', tags: [] },
+          provenanceData: null,
+          provenanceStatus: 'idle',
+          docsLink: null,
+          codeLink: null,
+          isBinaryOnly: false,
+        },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])

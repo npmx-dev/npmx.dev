@@ -1618,16 +1618,12 @@ watch(selectedMetric, value => {
               {{ $t('package.trends.start_date') }}
             </label>
             <div class="relative flex items-center">
-              <span
-                class="absolute inset-is-2 i-lucide:calendar w-4 h-4 text-fg-subtle shrink-0 pointer-events-none"
-                aria-hidden="true"
-              />
               <InputBase
                 id="startDate"
                 v-model="startDate"
                 type="date"
                 :max="DATE_INPUT_MAX"
-                class="w-full min-w-0 bg-transparent ps-7"
+                class="w-full min-w-0 bg-transparent"
                 size="medium"
               />
             </div>
@@ -1638,16 +1634,12 @@ watch(selectedMetric, value => {
               {{ $t('package.trends.end_date') }}
             </label>
             <div class="relative flex items-center">
-              <span
-                class="absolute inset-is-2 i-lucide:calendar w-4 h-4 text-fg-subtle shrink-0 pointer-events-none"
-                aria-hidden="true"
-              />
               <InputBase
                 id="endDate"
                 v-model="endDate"
                 type="date"
                 :max="DATE_INPUT_MAX"
-                class="w-full min-w-0 bg-transparent ps-7"
+                class="w-full min-w-0 bg-transparent"
                 size="medium"
               />
             </div>
@@ -2108,5 +2100,9 @@ watch(selectedMetric, value => {
 
 [data-minimap-visible='false'] .vue-data-ui-watermark {
   top: calc(100% - 2rem) !important;
+}
+
+input::-webkit-date-and-time-value {
+  margin-inline: 4px;
 }
 </style>
