@@ -2175,7 +2175,7 @@ watch(selectedMetric, value => {
 .no-transition circle {
   transition: none !important;
 }
-  
+
 input::-webkit-date-and-time-value {
   margin-inline: 4px;
 }
