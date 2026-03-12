@@ -131,14 +131,14 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
             <span class="text-fg">npx </span>
             <span class="text-fg-muted">skills add {{ baseUrl }}/{{ packageName }}</span>
           </code>
-          <button
+          <ButtonBase
             type="button"
-            class="absolute top-0 inset-ie-0 px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/cmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-accent/70"
+            size="square"
+            class="absolute top-0 inset-ie-0 px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100"
             :aria-label="$t('package.get_started.copy_command')"
+            :classicon="copied ? 'i-lucide:check' : 'i-lucide:copy'"
             @click.stop="copyCommand"
-          >
-            <span aria-live="polite">{{ copied ? $t('common.copied') : $t('common.copy') }}</span>
-          </button>
+          />
         </div>
       </div>
     </div>
@@ -205,7 +205,7 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
                 <span v-if="skill.fileCounts?.references" class="text-fg-subtle">
                   <span class="i-lucide:file-text size-3 align-[-2px] me-0.5" />{{
                     $t(
-                      'package.skills.file_counts.refs',
+                      'package.skills.file_counts.references',
                       { count: skill.fileCounts.references },
                       skill.fileCounts.references,
                     )

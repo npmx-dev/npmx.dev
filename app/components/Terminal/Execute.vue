@@ -68,14 +68,14 @@ const copyExecuteCommand = () => copyExecute(getFullExecuteCommand())
               >{{ i > 0 ? ' ' : '' }}{{ part }}</span
             ></code
           >
-          <button
+          <ButtonBase
             type="button"
-            class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/executecmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-accent/70"
+            size="square"
+            class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
             :aria-label="$t('package.get_started.copy_command')"
+            :classicon="executeCopied ? 'i-lucide:check' : 'i-lucide:copy'"
             @click.stop="copyExecuteCommand"
-          >
-            {{ executeCopied ? $t('common.copied') : $t('common.copy') }}
-          </button>
+          />
         </div>
       </div>
     </div>

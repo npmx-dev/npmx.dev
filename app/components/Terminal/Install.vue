@@ -151,14 +151,14 @@ const copyDevInstallCommand = () =>
               >{{ i > 0 ? ' ' : '' }}{{ part }}</span
             ></code
           >
-          <button
+          <ButtonBase
             type="button"
-            class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/installcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-accent/70 select-none"
+            size="square"
+            class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
             :aria-label="$t('package.get_started.copy_command')"
+            :classicon="copied ? 'i-lucide:check' : 'i-lucide:copy'"
             @click.stop="copyInstallCommand"
-          >
-            <span aria-live="polite">{{ copied ? $t('common.copied') : $t('common.copy') }}</span>
-          </button>
+          />
         </div>
 
         <!-- Suggested dev dependency install command -->
@@ -185,15 +185,12 @@ const copyDevInstallCommand = () =>
             >
             <ButtonBase
               type="button"
-              size="small"
-              class="text-fg-muted bg-bg-subtle/80 border-border opacity-0 group-hover/devinstallcmd:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
+              size="square"
+              class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
               :aria-label="$t('package.get_started.copy_dev_command')"
+              :classicon="devInstallCopied ? 'i-lucide:check' : 'i-lucide:copy'"
               @click.stop="copyDevInstallCommand"
-            >
-              <span aria-live="polite">{{
-                devInstallCopied ? $t('common.copied') : $t('common.copy')
-              }}</span>
-            </ButtonBase>
+            />
           </div>
         </template>
 
@@ -249,13 +246,14 @@ const copyDevInstallCommand = () =>
                 >{{ i > 0 ? ' ' : '' }}{{ part }}</span
               ></code
             >
-            <button
+            <ButtonBase
               type="button"
-              class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/runcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-accent/70 select-none"
+              size="square"
+              class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
+              :aria-label="$t('package.run.copy_command')"
+              :classicon="runCopied ? 'i-lucide:check' : 'i-lucide:copy'"
               @click.stop="copyRunCommand(executableInfo?.primaryCommand)"
-            >
-              {{ runCopied ? $t('common.copied') : $t('common.copy') }}
-            </button>
+            />
           </div>
         </template>
 
@@ -294,16 +292,14 @@ const copyDevInstallCommand = () =>
                 >{{ i > 0 ? ' ' : '' }}{{ part }}</span
               ></code
             >
-            <button
+            <ButtonBase
               type="button"
-              class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/createcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-accent/70 select-none"
+              size="square"
+              class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
               :aria-label="$t('package.create.copy_command')"
+              :classicon="createCopied ? 'i-lucide:check' : 'i-lucide:copy'"
               @click.stop="copyCreateCommand"
-            >
-              <span aria-live="polite">{{
-                createCopied ? $t('common.copied') : $t('common.copy')
-              }}</span>
-            </button>
+            />
           </div>
         </template>
       </div>

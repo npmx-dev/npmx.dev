@@ -320,7 +320,11 @@
     },
     "run": {
       "title": "Run",
-      "locally": "Run locally"
+      "locally": "Run locally",
+      "copy_command": "Copy command to run locally"
+    },
+    "command": {
+      "copied": "Command copied"
     },
     "readme": {
       "title": "Readme",
