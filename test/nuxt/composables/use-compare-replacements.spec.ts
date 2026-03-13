@@ -104,7 +104,7 @@ describe('useCompareReplacements', () => {
 
       expect(noDepSuggestions.value[0]?.forPackage).toBe('is-even')
       expect(noDepSuggestions.value[0]?.replacement.type).toBe('simple')
-      expect(noDepSuggestions.value[0]?.replacement.example).toBe('(n % 2) === 0')
+      expect(noDepSuggestions.value[0]?.replacement).toHaveProperty('example', '(n % 2) === 0')
     })
 
     it('categorizes documented replacements as info suggestions', async () => {
