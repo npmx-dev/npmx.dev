@@ -7,7 +7,7 @@ const { info, requestedDate, requestedVersion } = defineProps<{
   requestedVersion?: string | null | undefined
 }>()
 
-const { data: releases } = useFetch<ReleaseData[]>(
+const { data: releases, error } = await useFetch<ReleaseData[]>(
   () => `/api/changelog/releases/${info.provider}/${info.repo}`,
 )
 
@@ -59,4 +59,5 @@ watch(
   <div class="flex flex-col gap-2 py-3" v-if="releases">
     <ChangelogCard v-for="release of releases" :release :key="release.id" />
   </div>
+  <slot v-else-if="error" name="error"></slot>
 </template>

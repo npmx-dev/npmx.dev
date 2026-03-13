@@ -1372,7 +1372,7 @@
     "draft": "Draft",
     "no_logs": "Sorry, this package does not publish changelogs, or its changelog format is not supported.",
     "error": {
-      "p1": "Sorry, the changelogs for {package} couldn't be loaded",
+      "p1": "Sorry, the changelog for {package} couldn't be loaded",
       "p2": "Please try again later or {viewon}"
     }
   }

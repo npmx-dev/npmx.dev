@@ -7,7 +7,9 @@ const { info, requestedVersion, tpTarget } = defineProps<{
 
 const route = useRoute()
 
-const { data } = useLazyFetch(() => `/api/changelog/md/${info.provider}/${info.repo}/${info.path}`)
+const { data, error } = await useFetch(
+  () => `/api/changelog/md/${info.provider}/${info.repo}/${info.path}`,
+)
 
 watch(
   [() => data.value?.toc, () => requestedVersion?.toLowerCase(), () => route.hash],
@@ -38,4 +40,5 @@ watch(
     <ReadmeTocDropdown :toc="data.toc" class="justify-self-end" />
   </Teleport>
   <Readme v-if="data?.html" :html="data.html"></Readme>
+  <slot v-else-if="error" name="error"></slot>
 </template>

@@ -138,27 +138,50 @@ defineOgImageComponent('Default', {
         <SkeletonBlock class="h-5 w-3/4 max-w-2xl rounded" />
       </section>
 
-      <template v-else-if="!error">
-        <LazyChangelogReleases
-          v-if="changelog?.type == 'release'"
-          :info="changelog"
-          :requestedDate="versionDate"
-          :requested-version="version || latestVersion?.version"
-        />
-        <LazyChangelogMarkdown
-          v-else-if="changelog?.type == 'md'"
-          :info="changelog"
-          :tpTarget="tptoc"
-          :requested-version="version || latestVersion?.version"
-        />
-        <p class="mt-5" v-else>{{ $t('changelog.no_logs') }}</p>
-      </template>
-      <section v-else class="flex items-center pa-3 flex-col text-lg gap-2">
-        <p>{{ $t('changelog.error.p1', { package: pkg?.name }) }}</p>
-        <i18n-t keypath="changelog.error.p2" tag="p" #viewon>
-          <LinkBase :to="changelog?.link">{{ viewOnGit.toLowerCase() }}</LinkBase>
-        </i18n-t>
-      </section>
+      <Suspense v-else>
+        <template #default>
+          <LazyChangelogReleases
+            v-if="changelog?.type == 'release'"
+            :info="changelog"
+            :requestedDate="versionDate"
+            :requested-version="version || latestVersion?.version"
+            #error
+          >
+            <LazyChangelogErrorMsg
+              :pkgName="pkg?.name"
+              :changelog-link="changelog.link"
+              :viewOnGit
+            />
+          </LazyChangelogReleases>
+          <LazyChangelogMarkdown
+            v-else-if="changelog?.type == 'md'"
+            :info="changelog"
+            :tpTarget="tptoc"
+            :requested-version="version || latestVersion?.version"
+            #error
+          >
+            <LazyChangelogErrorMsg
+              :pkgName="pkg?.name"
+              :changelog-link="changelog.link"
+              :viewOnGit
+            />
+          </LazyChangelogMarkdown>
+          <p class="mt-5" v-else>{{ $t('changelog.no_logs') }}</p>
+        </template>
+        <template #fallback>
+          <section class="flex flex-col gap-2 py-3">
+            <SkeletonBlock class="h-8 w-40 rounded" />
+            <ul class="ms-3 list-disc my-[1rem] ps-[1.5rem] marker:color-[--border-hover]">
+              <li class="mb-1" v-for="_n in 5">
+                <SkeletonBlock class="h-7 w-full max-w-2xl rounded" />
+              </li>
+            </ul>
+
+            <SkeletonBlock class="h-5 w-5/6 max-w-2xl rounded" />
+            <SkeletonBlock class="h-5 w-3/4 max-w-2xl rounded" />
+          </section>
+        </template>
+      </Suspense>
     </section>
   </main>
 </template>
