@@ -28,34 +28,39 @@ function getReplacementTooltip(col: ComparisonGridColumn): string {
 
 <template>
   <div class="overflow-x-auto">
-    <div
-      class="comparison-grid"
-      :class="[totalColumns === 4 ? 'min-w-[800px]' : 'min-w-[600px]', `columns-${totalColumns}`]"
-      :style="{ '--columns': totalColumns }"
-    >
+    <div class="comparison-grid" :style="{ '--package-count': totalColumns }">
       <!-- Header row -->
       <div class="comparison-header">
         <div class="comparison-label" />
 
         <!-- Package columns -->
-        <div v-for="col in columns" :key="col.name" class="comparison-cell comparison-cell-header">
-          <span class="inline-flex items-center gap-1.5 truncate">
+        <div
+          v-for="col in columns"
+          :key="col.name"
+          class="comparison-cell comparison-cell-header min-w-0"
+        >
+          <div class="flex items-start justify-center gap-1.5 min-w-0">
             <LinkBase
               :to="packageRoute(col.name, col.version)"
-              class="text-sm truncate"
-              block
+              class="flex min-w-0 flex-col items-center text-center text-sm"
               :title="col.version ? `${col.name}@${col.version}` : col.name"
             >
-              {{ col.name }}<template v-if="col.version">@{{ col.version }}</template>
+              <span class="min-w-0 break-words line-clamp-1">
+                {{ col.name }}
+              </span>
+              <span v-if="col.version" class="text-fg-muted line-clamp-1">
+                @{{ col.version }}
+              </span>
             </LinkBase>
+
             <TooltipApp v-if="col.replacement" :text="getReplacementTooltip(col)" position="bottom">
               <span
-                class="i-lucide:lightbulb w-3.5 h-3.5 text-amber-500 shrink-0 cursor-help"
+                class="i-lucide:lightbulb mt-0.5 h-3.5 w-3.5 shrink-0 cursor-help text-amber-500"
                 role="img"
                 :aria-label="$t('package.replacement.title')"
               />
             </TooltipApp>
-          </span>
+          </div>
         </div>
 
         <!-- "No dep" column (always last) -->
@@ -102,18 +107,9 @@ function getReplacementTooltip(col: ComparisonGridColumn): string {
 .comparison-grid {
   display: grid;
   gap: 0;
-}
-
-.comparison-grid.columns-2 {
-  grid-template-columns: minmax(120px, 180px) repeat(2, 1fr);
-}
-
-.comparison-grid.columns-3 {
-  grid-template-columns: minmax(120px, 160px) repeat(3, 1fr);
-}
-
-.comparison-grid.columns-4 {
-  grid-template-columns: minmax(100px, 140px) repeat(4, 1fr);
+  grid-template-columns:
+    minmax(110px, 150px)
+    repeat(var(--package-count), minmax(0, 1fr));
 }
 
 .comparison-header {
