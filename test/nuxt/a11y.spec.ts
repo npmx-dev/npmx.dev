@@ -2875,6 +2875,17 @@ describe('component accessibility audits', () => {
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
+
+    it('should have no accessibility violations in all sizes', async () => {
+      const sizes = ['xs', 'lg'] as const
+      for (const size of sizes) {
+        const component = await mountSuspended(UserAvatar, {
+          props: { username: 'testuser', size },
+        })
+        const results = await runAxe(component)
+        expect(results.violations).toEqual([])
+      }
+    })
   })
 
   // Diff components
