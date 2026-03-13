@@ -18,7 +18,7 @@ export function initPreferencesOnPrehydrate() {
       'violet',
       'magenta',
       'neutral',
-    ])
+    ] satisfies typeof ACCENT_COLOR_IDS)
 
     // Valid package manager IDs
     const validPMs = new Set(['npm', 'pnpm', 'yarn', 'bun', 'deno', 'vlt'])
