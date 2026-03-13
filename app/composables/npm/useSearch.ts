@@ -289,6 +289,7 @@ export function useSearch(
 
     // Seed cache from asyncData for Algolia (which skips cache on initial fetch)
     if (!cache.value && asyncData.data.value) {
+      const { searchResponse } = asyncData.data.value
       setCache([...searchResponse.objects], searchResponse.totalUnlimited)
     }
 
