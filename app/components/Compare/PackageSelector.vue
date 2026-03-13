@@ -213,7 +213,7 @@ onClickOutside(containerRef, () => {
           {{ pkg }}
         </LinkBase>
         <ButtonBase
-          size="small"
+          size="sm"
           :aria-label="
             $t('compare.selector.remove_package', {
               package: pkg === NO_DEPENDENCY_ID ? $t('compare.no_dependency.label') : pkg,

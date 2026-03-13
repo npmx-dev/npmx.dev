@@ -65,7 +65,7 @@ const docUrl = computed(() => {
     <!-- No dependency action button -->
     <ButtonBase
       v-if="variant === 'nodep' && showAction !== false"
-      size="small"
+      size="sm"
       :aria-label="$t('compare.no_dependency.add_column')"
       @click="emit('addNoDep')"
     >

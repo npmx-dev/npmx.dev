@@ -490,7 +490,7 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations with size small', async () => {
       const component = await mountSuspended(ButtonBase, {
-        props: { size: 'small' },
+        props: { size: 'sm' },
         slots: { default: 'Button content' },
       })
       const results = await runAxe(component)
