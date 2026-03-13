@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { WindowVirtualizer } from 'virtua/vue'
 import { getVersions } from 'fast-npm-meta'
+import { validRange } from 'semver'
 import {
   buildVersionToTagsMap,
   buildTaggedVersionRows,
+  filterVersions,
   getVersionGroupKey,
   getVersionGroupLabel,
 } from '~/utils/versions'
@@ -17,7 +19,6 @@ definePageMeta({
 const SSR_COUNT = 20
 
 const route = useRoute()
-const router = useRouter()
 
 const packageName = computed(() => {
   const { org, name } = route.params as { org?: string; name: string }
@@ -125,6 +126,33 @@ async function toggleGroup(groupKey: string) {
   }
 }
 
+// ─── Version filter ───────────────────────────────────────────────────────────
+
+const versionFilter = ref('')
+const isFilterActive = computed(() => versionFilter.value.trim() !== '')
+
+const filteredVersionSet = computed(() => {
+  const trimmed = versionFilter.value.trim()
+  if (!trimmed) return null
+  // Try semver range first (e.g. "^2.0.0", ">=1 <3")
+  if (validRange(trimmed)) {
+    return filterVersions(versionStrings.value, trimmed)
+  }
+  // Fallback: substring match (e.g. "2.4", "beta")
+  const lower = trimmed.toLowerCase()
+  return new Set(versionStrings.value.filter(v => v.toLowerCase().includes(lower)))
+})
+
+const filteredGroups = computed(() => {
+  if (!isFilterActive.value || !filteredVersionSet.value) return versionGroups.value
+  return versionGroups.value
+    .map(group => ({
+      ...group,
+      versions: group.versions.filter(v => filteredVersionSet.value!.has(v)),
+    }))
+    .filter(group => group.versions.length > 0)
+})
+
 // ─── Flat list for virtual rendering ──────────────────────────────────────────
 
 type FlatItem =
@@ -133,14 +161,14 @@ type FlatItem =
 
 const flatItems = computed<FlatItem[]>(() => {
   const items: FlatItem[] = []
-  for (const group of versionGroups.value) {
+  for (const group of filteredGroups.value) {
     items.push({
       type: 'header',
       groupKey: group.groupKey,
       label: group.label,
       versions: group.versions,
     })
-    if (expandedGroups.value.has(group.groupKey)) {
+    if (expandedGroups.value.has(group.groupKey) || isFilterActive.value) {
       for (const version of group.versions) {
         items.push({ type: 'version', version, groupKey: group.groupKey })
       }
@@ -161,26 +189,6 @@ const selectedChangelogContent = computed(() => {
 // function toggleChangelog(version: string) {
 //   selectedChangelogVersion.value = selectedChangelogVersion.value === version ? null : version
 // }
-
-// ─── Jump to version ──────────────────────────────────────────────────────────
-
-const jumpVersion = ref('')
-const jumpError = ref('')
-
-function navigateToVersion() {
-  const v = jumpVersion.value.trim()
-  if (!v) return
-  if (!versionStrings.value.includes(v)) {
-    jumpError.value = `"${v}" not found`
-    return
-  }
-  jumpError.value = ''
-  router.push(packageRoute(packageName.value, v))
-}
-
-watch(jumpVersion, () => {
-  jumpError.value = ''
-})
 </script>
 
 <template>
@@ -201,35 +209,14 @@ watch(jumpVersion, () => {
           <span class="text-fg-subtle shrink-0">/</span>
           <span class="font-mono text-sm text-fg-muted shrink-0">Version History</span>
         </div>
-        <div class="flex flex-col items-end gap-1 shrink-0">
-          <div class="flex items-center gap-2">
-            <InputBase
-              v-model="jumpVersion"
-              type="text"
-              placeholder="Jump to version…"
-              aria-label="Jump to version"
-              size="small"
-              class="w-36 sm:w-44 font-mono"
-              @keydown.enter="navigateToVersion"
-            />
-            <ButtonBase
-              variant="secondary"
-              size="small"
-              classicon="i-lucide:arrow-right"
-              :disabled="!jumpVersion.trim()"
-              @click="navigateToVersion"
-            >
-              Go
-            </ButtonBase>
-          </div>
-          <p
-            v-if="jumpError"
-            role="alert"
-            class="text-red-500 dark:text-red-400 text-xs leading-none"
-          >
-            {{ jumpError }}
-          </p>
-        </div>
+        <InputBase
+          v-model="versionFilter"
+          type="text"
+          placeholder="Filter versions…"
+          aria-label="Filter versions"
+          size="small"
+          class="w-36 sm:w-44 font-mono"
+        />
       </div>
     </header>
 
@@ -345,8 +332,18 @@ watch(jumpVersion, () => {
           </span>
         </h2>
 
+        <!-- No filter matches -->
+        <div
+          v-if="isFilterActive && filteredGroups.length === 0"
+          class="px-1 py-4 text-sm text-fg-subtle"
+          role="status"
+          aria-live="polite"
+        >
+          No versions match <span class="font-mono">{{ versionFilter }}</span>
+        </div>
+
         <!-- List + changelog side panel -->
-        <div class="flex">
+        <div v-else class="flex">
           <!-- Version list (grouped by major, virtualized) -->
           <div
             class="flex-1 min-w-0 border-y sm:border border-border sm:rounded-lg sm:overflow-hidden"
