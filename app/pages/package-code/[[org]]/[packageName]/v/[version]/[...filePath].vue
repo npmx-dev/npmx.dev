@@ -347,10 +347,10 @@ defineOgImageComponent('Default', {
     </div>
 
     <!-- Main content: file tree + file viewer -->
-    <div v-else-if="fileTree" class="flex flex-1" dir="ltr">
+    <div v-else-if="fileTree" class="main-content flex flex-1" dir="ltr">
       <!-- File tree sidebar - sticky with internal scroll -->
       <aside
-        class="w-64 lg:w-72 border-ie border-border shrink-0 hidden md:block bg-bg-subtle sticky top-25 self-start h-[calc(100vh-7rem)] overflow-y-auto"
+        class="file-tree border-ie border-border shrink-0 hidden md:block bg-bg-subtle sticky top-25 self-start h-[calc(100vh-7rem)] overflow-y-auto"
       >
         <CodeFileTree
           :tree="fileTree.tree"
@@ -361,7 +361,7 @@ defineOgImageComponent('Default', {
       </aside>
 
       <!-- File content / Directory listing - sticky with internal scroll on desktop -->
-      <div class="flex-1 min-w-0 self-start">
+      <div class="file-viewer flex-1 min-w-0 self-start">
         <div
           class="sticky z-10 top-25 bg-bg border-b border-border px-4 py-2 flex items-center justify-between gap-2 text-nowrap overflow-x-auto max-w-full"
         >
@@ -584,3 +584,21 @@ defineOgImageComponent('Default', {
     </ClientOnly>
   </main>
 </template>
+
+<style scoped>
+.main-content {
+  --sidebar-space: calc(var(--spacing) * 64);
+}
+@screen lg {
+  .main-content {
+    --sidebar-space: calc(var(--spacing) * 72);
+  }
+}
+
+.file-tree {
+  width: var(--sidebar-space);
+}
+.file-viewer {
+  width: calc(100% - var(--sidebar-space));
+}
+</style>
