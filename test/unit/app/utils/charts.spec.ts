@@ -3,7 +3,6 @@ import {
   sum,
   chunkIntoWeeks,
   buildWeeklyEvolutionFromDaily,
-  addDays,
   clamp,
   quantile,
   winsorize,
@@ -322,59 +321,6 @@ describe('buildWeeklyEvolutionFromDaily', () => {
         downloads: 40,
       },
     ])
-  })
-})
-
-describe('addDays', () => {
-  it('returns a new Date instance (does not mutate original)', () => {
-    const original = new Date('2028-01-01T00:00:00Z')
-    const result = addDays(original, 5)
-
-    expect(result).not.toBe(original)
-    expect(original.toISOString()).toBe('2028-01-01T00:00:00.000Z')
-  })
-
-  it('adds positive days correctly', () => {
-    const date = new Date('2028-01-01T00:00:00Z')
-    const result = addDays(date, 10)
-
-    expect(result.toISOString()).toBe('2028-01-11T00:00:00.000Z')
-  })
-
-  it('subtracts days when negative value is provided', () => {
-    const date = new Date('2028-01-10T00:00:00Z')
-    const result = addDays(date, -5)
-
-    expect(result.toISOString()).toBe('2028-01-05T00:00:00.000Z')
-  })
-
-  it('handles month overflow correctly', () => {
-    const date = new Date('2028-01-28T00:00:00Z')
-    const result = addDays(date, 5)
-
-    expect(result.toISOString()).toBe('2028-02-02T00:00:00.000Z')
-  })
-
-  it('handles year overflow correctly', () => {
-    const date = new Date('2027-12-29T00:00:00Z')
-    const result = addDays(date, 5)
-
-    expect(result.toISOString()).toBe('2028-01-03T00:00:00.000Z')
-  })
-
-  it('handles leap year correctly', () => {
-    const date = new Date('2028-02-27T00:00:00Z') // 2028 is leap year
-    const result = addDays(date, 2)
-
-    expect(result.toISOString()).toBe('2028-02-29T00:00:00.000Z')
-  })
-
-  it('keeps UTC behavior consistent (no timezone drift)', () => {
-    const date = new Date('2028-03-01T00:00:00Z')
-    const result = addDays(date, 1)
-
-    expect(result.getUTCHours()).toBe(0)
-    expect(result.toISOString()).toBe('2028-03-02T00:00:00.000Z')
   })
 })
 

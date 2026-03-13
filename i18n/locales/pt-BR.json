@@ -118,9 +118,7 @@
     "not_found": "Pacote não encontrado",
     "not_found_message": "O pacote não pôde ser encontrado.",
     "no_description": "Nenhuma descrição fornecida",
-    "not_latest": "(não é a mais recente)",
     "verified_provenance": "Proveniência verificada",
-    "view_permalink": "Ver link permanente para esta versão",
     "navigation": "Pacote",
     "copy_name": "Copiar nome do pacote",
     "deprecation": {

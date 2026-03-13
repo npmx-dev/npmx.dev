@@ -116,6 +116,7 @@ vi.mock('vue-data-ui/vue-ui-xy', () => {
 // Import components from #components where possible
 // For server/client variants, we need to import directly to test the specific variant
 import {
+  Alert,
   AppFooter,
   AppHeader,
   AppLogo,
@@ -171,6 +172,7 @@ import {
   PackageCompatibility,
   PackageDependencies,
   PackageDeprecatedTree,
+  PackageHeader,
   PackageInstallScripts,
   PackageKeywords,
   PackageList,
@@ -719,6 +721,39 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(PackageLikeCard, {
         props: { packageUrl: 'https://npmx.dev/package/vue' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageHeader', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageHeader, {
+        props: {
+          pkg: {
+            'name': 'vue',
+            'dist-tags': {},
+            'versions': {},
+          },
+          resolvedVersion: '3.5.0',
+          displayVersion: {
+            _id: '1234567890',
+            _npmVersion: '3.5.0',
+            name: 'vue',
+            version: '3.5.0',
+            dist: {
+              shasum: '1234567890',
+              signatures: [],
+              tarball: 'https://npmx.dev/package/vue/tarball',
+            },
+          },
+          latestVersion: { version: '3.5.0', tags: [] },
+          provenanceData: null,
+          provenanceStatus: 'idle',
+          page: 'docs',
+          versionUrlPattern: '/package/vue/v/{version}',
+        },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
@@ -3384,6 +3419,9 @@ describe('component accessibility audits', () => {
           groupedDeps: new Map(),
           allChanges: mockAllChanges,
           open: false,
+          packageName: 'nuxt',
+          toVersion: '3.0.0',
+          toVersionUrlPattern: 'https://npmx.dev/package/nuxt/v/3.0.0',
         },
       })
       const results = await runAxe(component)
@@ -3397,6 +3435,9 @@ describe('component accessibility audits', () => {
           groupedDeps: new Map(),
           allChanges: mockAllChanges,
           open: true,
+          packageName: 'nuxt',
+          toVersion: '3.0.0',
+          toVersionUrlPattern: 'https://npmx.dev/package/nuxt/v/3.0.0',
         },
       })
       const results = await runAxe(component)
@@ -3529,6 +3570,35 @@ describe('component accessibility audits', () => {
       expect(results.violations).toEqual([])
     })
   })
+
+  describe('Alert', () => {
+    it('should have no accessibility violations for warning variant', async () => {
+      const component = await mountSuspended(Alert, {
+        props: { variant: 'warning', title: 'Warning title' },
+        slots: { default: 'This is a warning message.' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations for error variant', async () => {
+      const component = await mountSuspended(Alert, {
+        props: { variant: 'error', title: 'Error title' },
+        slots: { default: 'This is an error message.' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations without title', async () => {
+      const component = await mountSuspended(Alert, {
+        props: { variant: 'warning' },
+        slots: { default: 'This is a warning message.' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
 })
 
 function applyTheme(colorMode: string, bgTheme: string | null) {
@@ -3575,6 +3645,22 @@ describe('background theme accessibility', () => {
   }
 
   const components = [
+    {
+      name: 'AlertWarning',
+      mount: () =>
+        mountSuspended(Alert, {
+          props: { variant: 'warning', title: 'Warning title' },
+          slots: { default: '<p>Warning body</p>' },
+        }),
+    },
+    {
+      name: 'AlertError',
+      mount: () =>
+        mountSuspended(Alert, {
+          props: { variant: 'error', title: 'Error title' },
+          slots: { default: '<p>Error body</p>' },
+        }),
+    },
     { name: 'AppHeader', mount: () => mountSuspended(AppHeader) },
     { name: 'AppFooter', mount: () => mountSuspended(AppFooter) },
     { name: 'HeaderSearchBox', mount: () => mountSuspended(HeaderSearchBox) },

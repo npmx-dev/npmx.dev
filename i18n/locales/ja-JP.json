@@ -216,12 +216,9 @@
     "not_found": "パッケージが見つかりません",
     "not_found_message": "パッケージが見つかりませんでした。",
     "no_description": "説明はありません",
-    "not_latest": "（最新ではありません）",
     "verified_provenance": "検証済みprovenance",
-    "view_permalink": "このバージョンのパーマリンクを表示",
     "navigation": "パッケージナビゲーション",
     "copy_name": "パッケージ名をコピー",
-    "copy_version": "パッケージのバージョンをコピー",
     "deprecation": {
       "package": "このパッケージは非推奨になりました。",
       "version": "このバージョンは非推奨になりました。",
@@ -379,7 +376,6 @@
       "grouping_versions_only_recent": "直近のみ",
       "grouping_usage_title": "使用状況",
       "grouping_usage_all": "すべて",
-      "grouping_usage_low": "低",
       "recent_versions_only_tooltip": "過去1年以内に公開されたバージョンのみ表示します。",
       "show_low_usage_tooltip": "総ダウンロード数の1%未満のバージョングループも含めます。",
       "y_axis_label": "ダウンロード",
@@ -778,8 +774,7 @@
       "preview": "プレビュー",
       "code": "コード"
     },
-    "file_path": "ファイルパス",
-    "scroll_to_top": "トップへスクロール"
+    "file_path": "ファイルパス"
   },
   "badges": {
     "provenance": {

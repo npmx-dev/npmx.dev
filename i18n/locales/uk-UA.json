@@ -216,12 +216,9 @@
     "not_found": "Пакет не знайдено",
     "not_found_message": "Пакет не вдалося знайти.",
     "no_description": "Опис не надано",
-    "not_latest": "(не найновіший)",
     "verified_provenance": "Перевірене походження",
-    "view_permalink": "Переглянути постійне посилання на цю версію",
     "navigation": "Пакет",
     "copy_name": "Скопіювати назву пакета",
-    "copy_version": "Скопіювати версію пакета",
     "deprecation": {
       "package": "Цей пакет більше не підтримується.",
       "version": "Ця версія більше не підтримується.",
@@ -379,7 +376,6 @@
       "grouping_versions_only_recent": "Тільки нещодавні",
       "grouping_usage_title": "Використання",
       "grouping_usage_all": "Усі",
-      "grouping_usage_low": "Низьке",
       "recent_versions_only_tooltip": "Показувати лише версії, опубліковані за останній рік.",
       "show_low_usage_tooltip": "Включити групи версій з менш ніж 1% від загальних завантажень.",
       "y_axis_label": "Завантаження",
@@ -778,8 +774,7 @@
       "preview": "попередній перегляд",
       "code": "код"
     },
-    "file_path": "Шлях до файлу",
-    "scroll_to_top": "Прокрутити вгору"
+    "file_path": "Шлях до файлу"
   },
   "badges": {
     "provenance": {
