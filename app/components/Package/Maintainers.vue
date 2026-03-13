@@ -189,7 +189,7 @@ watch(
             class="link-subtle text-sm shrink-0"
             dir="ltr"
           >
-            <UserAvatar :username="maintainer.name" size="xs" />
+            <UserAvatar :username="maintainer.name" size="xs" aria-hidden="true" />
             <span>{{ maintainer.name }}</span>
           </LinkBase>
           <span v-else class="font-mono text-sm text-fg-muted" dir="ltr">{{
