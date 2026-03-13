@@ -1,14 +1,3 @@
-import type {
-  FacetValue,
-  ComparisonFacet,
-  ComparisonPackage,
-  Packument,
-  VulnerabilityTreeResult,
-} from '#shared/types'
-import type { PackageLikes } from '#shared/types/social'
-import { encodePackageName } from '#shared/utils/npm'
-import type { PackageAnalysisResponse } from './usePackageAnalysis'
-import { isBinaryOnlyPackage } from '#shared/utils/binary-detection'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
 
 /** Special identifier for the "What Would James Do?" comparison column */

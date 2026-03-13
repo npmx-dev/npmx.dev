@@ -1,9 +1,3 @@
-import type { NpmSearchResponse, NpmSearchResult } from '#shared/types'
-import type { SearchProvider } from '~/composables/useSettings'
-import type { AlgoliaMultiSearchChecks } from './useAlgoliaSearch'
-import { type SearchSuggestion, emptySearchResponse, parseSuggestionIntent } from './search-utils'
-import { isValidNewPackageName, checkPackageExists } from '~/utils/package-name'
-
 function emptySearchPayload() {
   return {
     searchResponse: emptySearchResponse(),

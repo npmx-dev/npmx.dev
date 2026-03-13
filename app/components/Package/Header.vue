@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PackumentVersion, ProvenanceDetails, SlimVersion, SlimPackument } from '#shared/types'
 import type { RouteLocationRaw } from 'vue-router'
 import { SCROLL_TO_TOP_THRESHOLD } from '~/composables/useScrollToTop'
 import { useModal } from '~/composables/useModal'

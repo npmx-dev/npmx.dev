@@ -1,14 +1,4 @@
 <script setup lang="ts">
-import type {
-  InstallSizeResult,
-  NpmVersionDist,
-  PackageVersionInfo,
-  PackumentVersion,
-  ProvenanceDetails,
-  ReadmeResponse,
-  ReadmeMarkdownResponse,
-  SkillsListResponse,
-} from '#shared/types'
 import type { JsrPackageInfo } from '#shared/types/jsr'
 import type { IconClass } from '~/types'
 import { assertValidPackageName } from '#shared/utils/npm'

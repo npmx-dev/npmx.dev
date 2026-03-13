@@ -1,11 +1,4 @@
 <script setup lang="ts">
-import type {
-  PackageFileTree,
-  PackageFileTreeResponse,
-  PackageFileContentResponse,
-} from '#shared/types'
-import { isBinaryFilePath } from '~/utils/file-types'
-
 definePageMeta({
   name: 'code',
   path: '/package-code/:org?/:packageName/v/:version/:filePath(.*)?',
