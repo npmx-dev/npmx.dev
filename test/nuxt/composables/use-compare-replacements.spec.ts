@@ -51,13 +51,17 @@ describe('useCompareReplacements', () => {
         vi.fn().mockImplementation((url: string) => {
           if (url.includes('/api/replacements/array-includes')) {
             return Promise.resolve({
-              id: 'array-includes',
+              id: 'Array.prototype.includes',
               type: 'native',
-              url: { type: 'mdn', id: 'Global_Objects/Array/includes' },
-              engines: [{ engine: 'nodejs', minVersion: '6.0.0' }],
-              nodeFeatureId: {
-                moduleName: 'Array.prototype.includes',
+              url: {
+                type: 'mdn',
+                id: 'Web/JavaScript/Reference/Global_Objects/Array/includes',
               },
+              webFeatureId: {
+                featureId: 'array-includes',
+                compatKey: 'javascript.builtins.Array.includes',
+              },
+              engines: [{ engine: 'nodejs', minVersion: '6.0.0' }],
             } satisfies ModuleReplacement)
           }
           return Promise.resolve(null)
@@ -72,7 +76,6 @@ describe('useCompareReplacements', () => {
         expect(noDepSuggestions.value).toHaveLength(1)
       })
 
-      // Note: forPackage likely maps to the 'id' in the new schema or the original query
       expect(noDepSuggestions.value[0]?.forPackage).toBe('array-includes')
       expect(noDepSuggestions.value[0]?.replacement.type).toBe('native')
       expect(infoSuggestions.value).toHaveLength(0)
@@ -84,9 +87,10 @@ describe('useCompareReplacements', () => {
         vi.fn().mockImplementation((url: string) => {
           if (url.includes('/api/replacements/is-even')) {
             return Promise.resolve({
-              id: 'is-even',
+              id: 'snippet::is-even',
               type: 'simple',
-              description: 'Use (n % 2) === 0',
+              description: 'You can use the modulo operator to check if a number is even.',
+              example: '(n % 2) === 0',
             } satisfies ModuleReplacement)
           }
           return Promise.resolve(null)
@@ -103,7 +107,7 @@ describe('useCompareReplacements', () => {
 
       expect(noDepSuggestions.value[0]?.forPackage).toBe('is-even')
       expect(noDepSuggestions.value[0]?.replacement.type).toBe('simple')
-      expect(infoSuggestions.value).toHaveLength(0)
+      expect(noDepSuggestions.value[0]?.replacement.example).toBe('(n % 2) === 0')
     })
 
     it('categorizes documented replacements as info suggestions', async () => {
@@ -112,11 +116,10 @@ describe('useCompareReplacements', () => {
         vi.fn().mockImplementation((url: string) => {
           if (url.includes('/api/replacements/moment')) {
             return Promise.resolve({
-              id: 'moment',
+              id: 'date-fns',
               type: 'documented',
-              url: 'https://momentjs.com/docs/#/use-it/built-in-alternatives/',
+              url: { type: 'e18e', id: 'moment' },
               replacementModule: 'date-fns',
-              preferred: true,
             } satisfies ModuleReplacement)
           }
           return Promise.resolve(null)
@@ -142,24 +145,28 @@ describe('useCompareReplacements', () => {
         vi.fn().mockImplementation((url: string) => {
           if (url.includes('/api/replacements/is-odd')) {
             return Promise.resolve({
-              id: 'is-odd',
+              id: 'snippet::is-odd',
               type: 'simple',
-              description: 'Use (n % 2) !== 0',
+              description: 'Check if odd',
+              example: '(n % 2) !== 0',
             } satisfies ModuleReplacement)
           }
           if (url.includes('/api/replacements/lodash')) {
             return Promise.resolve({
-              id: 'lodash',
+              id: 'native',
               type: 'documented',
-              url: 'https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore',
+              url: { type: 'e18e', id: 'lodash' },
               replacementModule: 'native',
             } satisfies ModuleReplacement)
           }
           if (url.includes('/api/replacements/array-map')) {
             return Promise.resolve({
-              id: 'array-map',
+              id: 'Array.prototype.map',
               type: 'native',
-              url: { type: 'mdn', id: 'Global_Objects/Array/map' },
+              url: {
+                type: 'mdn',
+                id: 'Web/JavaScript/Reference/Global_Objects/Array/map',
+              },
               engines: [{ engine: 'nodejs', minVersion: '0.10.0' }],
             } satisfies ModuleReplacement)
           }
@@ -224,9 +231,10 @@ describe('useCompareReplacements', () => {
       const fetchMock = vi.fn().mockImplementation((url: string) => {
         if (url.includes('/api/replacements/is-even')) {
           return Promise.resolve({
-            id: 'is-even',
+            id: 'snippet::is-even',
             type: 'simple',
-            description: 'Use (n % 2) === 0',
+            description: 'Check even',
+            example: '(n % 2) === 0',
           } satisfies ModuleReplacement)
         }
         return Promise.resolve(null)
