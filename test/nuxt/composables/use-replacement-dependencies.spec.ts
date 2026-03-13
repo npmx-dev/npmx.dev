@@ -14,7 +14,7 @@ const NATIVE_REPLACEMENT: ModuleReplacement = {
   type: 'native',
   url: {
     type: 'mdn',
-    id: 'Web/JavaScript/Reference/Global_Objects/Array/includes', // corrected path
+    id: 'Web/JavaScript/Reference/Global_Objects/Array/includes',
   },
   webFeatureId: {
     featureId: 'array-includes',
