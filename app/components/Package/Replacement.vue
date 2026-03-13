@@ -59,11 +59,13 @@ const nodeVersion = computed(() => {
       <span v-else-if="replacement.type === 'simple'">
         {{ replacement.description }}
         <template v-if="replacement.example">
-          <strong>Example:</strong><br>
-          <pre class="bg-amber-800/10 dark:bg-amber-950/30 p-2 rounded mt-1 overflow-x-auto text-xs font-mono"><code>{{ replacement.example }}</code></pre>
+          <strong>Example:</strong><br />
+          <pre
+            class="bg-amber-800/10 dark:bg-amber-950/30 p-2 rounded mt-1 overflow-x-auto text-xs font-mono"
+          ><code>{{ replacement.example }}</code></pre>
         </template>
         <span v-if="!replacement.url">
-          <br><br>
+          <br /><br />
           <a
             href="https://e18e.dev/docs/replacements/"
             target="_blank"
