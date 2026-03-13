@@ -59,23 +59,13 @@ const nodeVersion = computed(() => {
       <span v-else-if="replacement.type === 'simple'">
         {{ replacement.description }}
         <template v-if="replacement.example">
-          <strong>Example:</strong><br />
-          <pre
-            class="bg-amber-800/10 dark:bg-amber-950/30 p-2 rounded mt-1 overflow-x-auto text-xs font-mono"
-          ><code>{{ replacement.example }}</code></pre>
+          <div>
+            <strong>Example:</strong><br />
+            <pre
+              class="bg-amber-800/10 dark:bg-amber-950/30 p-2 rounded mt-1 overflow-x-auto text-xs font-mono"
+            ><code>{{ replacement.example }}</code></pre>
+          </div>
         </template>
-        <span v-if="!replacement.url">
-          <br /><br />
-          <a
-            href="https://e18e.dev/docs/replacements/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center gap-1 ms-1 underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg transition-colors"
-          >
-            {{ $t('package.replacement.community') }}
-            <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
-          </a>
-        </span>
       </span>
       <i18n-t
         v-else-if="replacement.type === 'documented'"
