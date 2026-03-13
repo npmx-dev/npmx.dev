@@ -1,4 +1,3 @@
-import { ref, watchEffect, h, defineComponent } from 'vue'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import type { ModuleReplacement } from 'module-replacements'
