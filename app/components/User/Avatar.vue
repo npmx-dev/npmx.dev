@@ -1,10 +1,44 @@
 <script setup lang="ts">
 const props = defineProps<{
   username: string
+  size: 'sm' | 'md' | 'lg'
 }>()
 
+const sizePixels = computed(() => {
+  switch (props.size) {
+    case 'sm':
+      return 24
+    case 'md':
+      return 40
+    case 'lg':
+      return 64
+  }
+})
+
+const sizeClass = computed(() => {
+  switch (props.size) {
+    case 'sm':
+      return 'size-6'
+    case 'md':
+      return 'size-10'
+    case 'lg':
+      return 'size-16'
+  }
+})
+
+const textClass = computed(() => {
+  switch (props.size) {
+    case 'sm':
+      return 'text-xs'
+    case 'md':
+      return 'text-base'
+    case 'lg':
+      return 'text-2xl'
+  }
+})
+
 const { data: gravatarUrl } = useLazyFetch(() => `/api/gravatar/${props.username}`, {
-  transform: res => (res.hash ? `/_avatar/${res.hash}?s=128&d=404` : null),
+  transform: res => (res.hash ? `/_avatar/${res.hash}?s=64&d=404` : null),
   getCachedData(key, nuxtApp) {
     return nuxtApp.static.data[key] ?? nuxtApp.payload.data[key]
   },
@@ -14,7 +48,8 @@ const { data: gravatarUrl } = useLazyFetch(() => `/api/gravatar/${props.username
 <template>
   <!-- Avatar -->
   <div
-    class="size-16 shrink-0 rounded-full bg-bg-muted border border-border flex items-center justify-center overflow-hidden"
+    class="shrink-0 rounded-full bg-bg-muted border border-border flex items-center justify-center overflow-hidden"
+    :class="sizeClass"
     role="img"
     :aria-label="`Avatar for ${username}`"
   >
@@ -23,13 +58,22 @@ const { data: gravatarUrl } = useLazyFetch(() => `/api/gravatar/${props.username
       v-if="gravatarUrl"
       :src="gravatarUrl"
       alt=""
-      width="64"
-      height="64"
+      :width="sizePixels"
+      :height="sizePixels"
       class="w-full h-full object-cover"
     />
-    <!-- Else fallback to initials -->
-    <span v-else class="text-2xl text-fg-subtle font-mono" aria-hidden="true">
-      {{ username.charAt(0).toUpperCase() }}
-    </span>
+    <!-- Else fallback to initials (use svg to avoid underline styling) -->
+    <svg
+      v-else
+      xmlns="http://www.w3.org/2000/svg"
+      :width="sizePixels"
+      :height="sizePixels"
+      class="text-fg-subtle"
+      :class="textClass"
+    >
+      <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" fill="currentColor">
+        {{ username.charAt(0).toUpperCase() }}
+      </text>
+    </svg>
   </div>
 </template>
