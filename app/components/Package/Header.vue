@@ -295,7 +295,6 @@ const likeAction = async () => {
         >
           <ButtonBase
             @click="likeAction"
-            size="medium"
             :aria-label="
               likesData?.userHasLiked ? $t('package.likes.unlike') : $t('package.likes.like')
             "

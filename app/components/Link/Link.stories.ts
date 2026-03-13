@@ -66,7 +66,7 @@ export const ButtonSecondary: Story = {
 export const SmallButton: Story = {
   args: {
     variant: 'button-primary',
-    size: 'small',
+    size: 'sm',
     default: 'Small Button',
   },
 }
@@ -113,16 +113,16 @@ export const Snapshot: Story = {
         <LinkBase to="/" classicon="i-lucide:check">Link with icon</LinkBase>
         <LinkBase to="/" no-underline>Link without underline</LinkBase>
         <LinkBase to="/" disabled>Disabled Link</LinkBase>
-        
+
         <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
           <LinkBase to="/" variant="button-primary">Primary</LinkBase>
           <LinkBase to="/" variant="button-secondary">Secondary</LinkBase>
           <LinkBase to="/" variant="button-primary" disabled>Disabled</LinkBase>
           <LinkBase to="/" variant="button-primary" classicon="i-lucide:copy">With Icon</LinkBase>
         </div>
-        
+
         <div style="display: flex; gap: 1rem;">
-          <LinkBase to="/" variant="button-primary" size="small">Small Button</LinkBase>
+          <LinkBase to="/" variant="button-primary" size="sm">Small Button</LinkBase>
         </div>
         <LinkBase to="/" variant="button-primary" block>Full Width Button</LinkBase>
       </div>

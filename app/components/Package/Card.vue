@@ -169,7 +169,7 @@ const numberFormatter = useNumberFormatter()
       <li v-for="keyword in result.package.keywords.slice(0, 5)" :key="keyword">
         <ButtonBase
           class="pointer-events-auto"
-          size="small"
+          size="sm"
           :aria-pressed="props.filters?.keywords.includes(keyword)"
           :title="`Filter by ${keyword}`"
           @click.stop="emit('clickKeyword', keyword)"

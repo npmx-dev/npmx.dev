@@ -225,7 +225,7 @@ useSeoMeta({
             {{ $t('compare.packages.section_facets') }}
           </h2>
           <ButtonBase
-            size="small"
+            size="sm"
             :aria-pressed="isAllSelected"
             :disabled="isAllSelected"
             :aria-label="$t('compare.facets.select_all')"
@@ -235,7 +235,7 @@ useSeoMeta({
           </ButtonBase>
           <span class="text-3xs text-fg-muted/40" aria-hidden="true">/</span>
           <ButtonBase
-            size="small"
+            size="sm"
             :aria-pressed="isNoneSelected"
             :disabled="isNoneSelected"
             :aria-label="$t('compare.facets.deselect_all')"

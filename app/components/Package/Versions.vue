@@ -545,7 +545,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
             autocomplete="off"
             class="flex-1 min-w-0"
             :class="isInvalidRange ? '!border-red-500' : ''"
-            size="small"
+            size="sm"
           />
           <TooltipApp interactive position="top">
             <span

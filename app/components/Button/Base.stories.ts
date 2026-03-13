@@ -24,7 +24,7 @@ export const Secondary: Story = {
 export const Small: Story = {
   args: {
     default: 'Small Button',
-    size: 'small',
+    size: 'sm',
     variant: 'secondary',
   },
 }

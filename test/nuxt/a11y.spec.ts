@@ -490,7 +490,7 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations with size small', async () => {
       const component = await mountSuspended(ButtonBase, {
-        props: { size: 'small' },
+        props: { size: 'sm' },
         slots: { default: 'Button content' },
       })
       const results = await runAxe(component)
@@ -550,7 +550,7 @@ describe('component accessibility audits', () => {
           to: 'http://example.com',
           disabled: true,
           variant: 'button-secondary',
-          size: 'small',
+          size: 'sm',
         },
         slots: { default: 'Button link content' },
       })
@@ -2582,7 +2582,7 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations with size small', async () => {
       const component = await mountSuspended(InputBase, {
-        props: { size: 'small' },
+        props: { size: 'sm' },
         attrs: { 'aria-label': 'Small input' },
       })
       const results = await runAxe(component)
@@ -2591,7 +2591,7 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations with size large', async () => {
       const component = await mountSuspended(InputBase, {
-        props: { size: 'large' },
+        props: { size: 'lg' },
         attrs: { 'aria-label': 'Large input' },
       })
       const results = await runAxe(component)

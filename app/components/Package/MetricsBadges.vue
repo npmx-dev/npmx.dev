@@ -61,7 +61,7 @@ const typesHref = computed(() => {
         <LinkBase
           v-if="typesHref"
           variant="button-secondary"
-          size="small"
+          size="sm"
           :to="typesHref"
           classicon="i-lucide:check"
         >

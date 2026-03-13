@@ -1624,7 +1624,6 @@ watch(selectedMetric, value => {
                 type="date"
                 :max="DATE_INPUT_MAX"
                 class="w-full min-w-0 bg-transparent"
-                size="medium"
               />
             </div>
           </div>
@@ -1640,7 +1639,6 @@ watch(selectedMetric, value => {
                 type="date"
                 :max="DATE_INPUT_MAX"
                 class="w-full min-w-0 bg-transparent"
-                size="medium"
               />
             </div>
           </div>
