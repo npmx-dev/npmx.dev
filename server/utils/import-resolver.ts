@@ -102,6 +102,37 @@ function getExtensionPriority(sourceFile: string): string[][] {
 }
 
 /**
+ * Resolve an alias specifier to the directory path within a file path.
+ * Supports #, ~, and @ prefixes (e.g. #app, ~/app, @/app).
+ * The alias must match a path segment exactly (no partial matches).
+ */
+export function resolveAliasToDir(aliasSpec: string, filePath?: string | null): string | null {
+  if (
+    (!aliasSpec.startsWith('#') && !aliasSpec.startsWith('~') && !aliasSpec.startsWith('@')) ||
+    !filePath
+  ) {
+    return null
+  }
+
+  // Support #app, #/app, ~app, ~/app, @app, @/app
+  const alias = aliasSpec.replace(/^[#~@]\/?/, '')
+  const segments = filePath.split('/')
+
+  let lastMatchIndex = -1
+  for (let i = 0; i < segments.length; i++) {
+    if (segments[i] === alias) {
+      lastMatchIndex = i
+    }
+  }
+
+  if (lastMatchIndex === -1) {
+    return null
+  }
+
+  return segments.slice(0, lastMatchIndex + 1).join('/')
+}
+
+/**
  * Get index file extensions to try for directory imports.
  */
 function getIndexExtensions(sourceFile: string): string[] {
@@ -130,6 +161,10 @@ export interface ResolvedImport {
   /** The resolved file path (relative to package root) */
   path: string
 }
+
+export type InternalImportTarget = string | { default?: string; import?: string } | null | undefined
+
+export type InternalImportsMap = Record<string, InternalImportTarget>
 
 /**
  * Resolve a relative import specifier to an actual file path.
@@ -198,6 +233,119 @@ export function resolveRelativeImport(
   return null
 }
 
+function normalizeInternalImportTarget(target: InternalImportTarget): string | null {
+  if (typeof target === 'string') {
+    return target
+  }
+
+  if (target && typeof target === 'object') {
+    if (typeof target.import === 'string') {
+      return target.import
+    }
+
+    if (typeof target.default === 'string') {
+      return target.default
+    }
+  }
+
+  return null
+}
+
+function guessInternalImportTarget(
+  imports: InternalImportsMap,
+  specifier: string,
+  files: FileSet,
+  currentFile: string,
+): string | null {
+  for (const [key, value] of Object.entries(imports)) {
+    if (specifier.startsWith(key)) {
+      const basePath = resolveAliasToDir(key, normalizeInternalImportTarget(value))
+      if (!basePath) continue
+
+      const suffix = specifier.substring(key.length).trim().replace(/^\//, '')
+      const pathWithoutExt = suffix ? `${basePath}/${suffix}` : basePath
+
+      const toCheckPath = (p: string) => files.has(normalizePath(p)) || files.has(p)
+
+      // Path already has an extension-like suffix on the last segment - return as is if exists
+      const filename = pathWithoutExt.split('/').pop() ?? ''
+      if (filename.includes('.') && !filename.endsWith('.')) {
+        if (toCheckPath(pathWithoutExt)) {
+          return pathWithoutExt.startsWith('./') ? pathWithoutExt : `./${pathWithoutExt}`
+        }
+        return null
+      }
+
+      // Try adding extensions based on currentFile type
+      const extensionGroups = getExtensionPriority(currentFile)
+      for (const extensions of extensionGroups) {
+        if (extensions.length === 0) {
+          if (toCheckPath(pathWithoutExt)) {
+            return pathWithoutExt.startsWith('./') ? pathWithoutExt : `./${pathWithoutExt}`
+          }
+        } else {
+          for (const ext of extensions) {
+            const pathWithExt = pathWithoutExt + ext
+            if (toCheckPath(pathWithExt)) {
+              return pathWithExt.startsWith('./') ? pathWithExt : `./${pathWithExt}`
+            }
+          }
+        }
+      }
+
+      // Try as directory with index file
+      for (const indexFile of getIndexExtensions(currentFile)) {
+        const indexPath = `${pathWithoutExt}/${indexFile}`
+        if (toCheckPath(indexPath)) {
+          return indexPath.startsWith('./') ? indexPath : `./${indexPath}`
+        }
+      }
+    }
+  }
+  return null
+}
+
+/**
+ * import ... from '#components/Button.vue'
+ * import ... from '#/components/Button.vue'
+ * import ... from '~/components/Button.vue'
+ * import ... from '~components/Button.vue'
+ */
+export function resolveInternalImport(
+  specifier: string,
+  currentFile: string,
+  imports: InternalImportsMap | undefined,
+  files: FileSet,
+): ResolvedImport | null {
+  const cleanSpecifier = specifier.replace(/^['"]|['"]$/g, '').trim()
+
+  if (
+    (!cleanSpecifier.startsWith('#') &&
+      !cleanSpecifier.startsWith('~') &&
+      !cleanSpecifier.startsWith('@')) ||
+    !imports
+  ) {
+    return null
+  }
+
+  const importTarget = normalizeInternalImportTarget(imports[cleanSpecifier])
+  const target =
+    importTarget != null
+      ? importTarget
+      : guessInternalImportTarget(imports, cleanSpecifier, files, currentFile)
+
+  if (!target || !target.startsWith('./')) {
+    return null
+  }
+
+  const path = normalizePath(target)
+  if (!path || path.startsWith('..') || !files.has(path)) {
+    return null
+  }
+
+  return { path }
+}
+
 /**
  * Create a resolver function bound to a specific file tree and current file.
  */
@@ -206,9 +354,13 @@ export function createImportResolver(
   currentFile: string,
   packageName: string,
   version: string,
+  internalImports?: InternalImportsMap,
 ): (specifier: string) => string | null {
   return (specifier: string) => {
-    const resolved = resolveRelativeImport(specifier, currentFile, files)
+    const relativeResolved = resolveRelativeImport(specifier, currentFile, files)
+    const internalResolved = resolveInternalImport(specifier, currentFile, internalImports, files)
+    const resolved = relativeResolved != null ? relativeResolved : internalResolved
+
     if (resolved) {
       return `/package-code/${packageName}/v/${version}/${resolved.path}`
     }
