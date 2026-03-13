@@ -321,7 +321,12 @@ export function resolveInternalImport(
 ): ResolvedImport | null {
   const cleanSpecifier = specifier.replace(/^['"]|['"]$/g, '').trim()
 
-  if ((!cleanSpecifier.startsWith('#') && !cleanSpecifier.startsWith('~')) || !imports) {
+  if (
+    (!cleanSpecifier.startsWith('#') &&
+      !cleanSpecifier.startsWith('~') &&
+      !cleanSpecifier.startsWith('@')) ||
+    !imports
+  ) {
     return null
   }
 

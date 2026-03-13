@@ -191,7 +191,7 @@ describe('createImportResolver', () => {
   })
 })
 
-describe('resolveInternalSpecifier', () => {
+describe('resolveInternalImport', () => {
   it('resolves exact imports map matches to files in the package', () => {
     const files = new Set<string>(['dist/app/nuxt.js'])
 
@@ -238,10 +238,10 @@ describe('resolveInternalSpecifier', () => {
   })
 
   it('resolves prefix matches with extension resolution via guessInternalImportTarget', () => {
-    const files = new Set<string>(['dist/app/nuxt.js'])
+    const files = new Set<string>(['dist/app/components/button.js'])
 
     const resolved = resolveInternalImport(
-      '#app/nuxt',
+      '#app/components/button.js',
       'dist/index.js',
       {
         '#app': './dist/app/index.js',
@@ -249,6 +249,51 @@ describe('resolveInternalSpecifier', () => {
       files,
     )
 
-    expect(resolved?.path).toBe('dist/app/nuxt.js')
+    expect(resolved?.path).toBe('dist/app/components/button.js')
+  })
+
+  it('resolves file that could not found in the files', () => {
+    const files = new Set<string>(['dist/app/index.js'])
+
+    const resolved = resolveInternalImport(
+      '#app/components/button.js',
+      'dist/index.js',
+      {
+        '#app': './dist/app/index.js',
+      },
+      files,
+    )
+
+    expect(resolved).toBeNull()
+  })
+
+  it('resolves file that prefix is "~/"', () => {
+    const files = new Set<string>(['dist/app/components/button.js'])
+
+    const resolved = resolveInternalImport(
+      '~/app/components/button.js',
+      'dist/index.js',
+      {
+        '~/app': './dist/app/index.js',
+      },
+      files,
+    )
+
+    expect(resolved?.path).toBe('dist/app/components/button.js')
+  })
+
+  it('resolves file that prefix is "@/"', () => {
+    const files = new Set<string>(['dist/app/components/button.js'])
+
+    const resolved = resolveInternalImport(
+      '@/app/components/button.js',
+      'dist/index.js',
+      {
+        '@/app': './dist/app/index.js',
+      },
+      files,
+    )
+
+    expect(resolved?.path).toBe('dist/app/components/button.js')
   })
 })
