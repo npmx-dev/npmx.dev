@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import { getVersions } from 'fast-npm-meta'
 import {
   buildVersionToTagsMap,
   buildTaggedVersionRows,
   getVersionGroupKey,
   getVersionGroupLabel,
 } from '~/utils/versions'
+import { fetchAllPackageVersions } from '~/utils/npm/api'
 
 definePageMeta({
   name: 'package-versions',
@@ -25,45 +27,65 @@ const orgName = computed(() => {
   return match ? match[1] : null
 })
 
-// ─── Data ─────────────────────────────────────────────────────────────────────
+// ─── Phase 1: lightweight fetch (page load) ───────────────────────────────────
+// Fetches only version strings, dist-tags, and publish times — no deprecated/provenance metadata.
+// Enough to render the "Current Tags" section and all group headers immediately.
 
-const { data: versionHistoryData } = usePackageVersionHistory(packageName)
+const { data: versionSummary } = useLazyAsyncData(
+  () => `package-version-summary:${packageName.value}`,
+  async () => {
+    const data = await getVersions(packageName.value)
+    return {
+      distTags: data.distTags as Record<string, string>,
+      versions: data.versions,
+      time: data.time as Record<string, string>,
+    }
+  },
+)
+
+const distTags = computed(() => versionSummary.value?.distTags ?? {})
+const versionStrings = computed(() => versionSummary.value?.versions ?? [])
+const versionTimes = computed(() => versionSummary.value?.time ?? {})
+
+// ─── Phase 2: full metadata (loaded on first group expand) ────────────────────
+// Fetches deprecated status, provenance, and exact times needed for version rows.
+
+const fullVersionMap = ref<Map<
+  string,
+  { time?: string; deprecated?: string; hasProvenance: boolean }
+> | null>(null)
+const hasLoadedFull = ref(false)
+
+async function ensureFullDataLoaded() {
+  if (hasLoadedFull.value) return
+  const versions = await fetchAllPackageVersions(packageName.value)
+  fullVersionMap.value = new Map(versions.map(v => [v.version, v]))
+  hasLoadedFull.value = true
+}
+
+// ─── Derived data ─────────────────────────────────────────────────────────────
 
 // TODO: Replace mockChangelogs with pre-rendered HTML from the server
 //       (GitHub releases body or CHANGELOG.md, parsed server-side like README)
 const mockChangelogs: Record<string, string> = {}
 
-// ─── Derived data ─────────────────────────────────────────────────────────────
-
-const distTags = computed(() => versionHistoryData.value?.distTags ?? {})
-const versionHistory = computed(() => versionHistoryData.value?.versions ?? [])
-
 const versionToTagsMap = computed(() => buildVersionToTagsMap(distTags.value))
-
-const sortedVersions = computed(() =>
-  versionHistory.value.map(v => ({
-    ...v,
-    tags: versionToTagsMap.value.get(v.version),
-    hasChangelog: v.version in mockChangelogs,
-  })),
-)
-
 const tagRows = computed(() => buildTaggedVersionRows(distTags.value))
 
-const versionByKey = computed(() => new Map(versionHistory.value.map(v => [v.version, v])))
-
 function getVersionTime(version: string): string | undefined {
-  return versionByKey.value.get(version)?.time
+  return versionTimes.value[version]
 }
 
 // ─── Version groups ───────────────────────────────────────────────────────────
 
 const expandedGroups = ref(new Set<string>())
+const renderedGroups = ref(new Set<string>())
+const loadingGroup = ref<string | null>(null)
 
 const versionGroups = computed(() => {
-  const byKey = new Map<string, typeof sortedVersions.value>()
-  for (const v of sortedVersions.value) {
-    const key = getVersionGroupKey(v.version)
+  const byKey = new Map<string, string[]>()
+  for (const v of versionStrings.value) {
+    const key = getVersionGroupKey(v)
     if (!byKey.has(key)) byKey.set(key, [])
     byKey.get(key)!.push(v)
   }
@@ -82,12 +104,21 @@ const versionGroups = computed(() => {
     }))
 })
 
-function toggleGroup(groupKey: string) {
+async function toggleGroup(groupKey: string) {
   if (expandedGroups.value.has(groupKey)) {
     expandedGroups.value.delete(groupKey)
-  } else {
-    expandedGroups.value.add(groupKey)
+    return
   }
+  if (!hasLoadedFull.value) {
+    loadingGroup.value = groupKey
+    try {
+      await ensureFullDataLoaded()
+    } finally {
+      loadingGroup.value = null
+    }
+  }
+  renderedGroups.value.add(groupKey)
+  expandedGroups.value.add(groupKey)
 }
 
 // ─── Changelog side panel ─────────────────────────────────────────────────────
@@ -111,7 +142,7 @@ const jumpError = ref('')
 function navigateToVersion() {
   const v = jumpVersion.value.trim()
   if (!v) return
-  if (!versionHistory.value.some(entry => entry.version === v)) {
+  if (!versionStrings.value.includes(v)) {
     jumpError.value = `"${v}" not found`
     return
   }
@@ -208,7 +239,7 @@ watch(jumpVersion, () => {
           <!-- Right: date + provenance -->
           <div class="flex flex-col items-end gap-1.5 shrink-0 relative z-10">
             <ProvenanceBadge
-              v-if="versionByKey.get(tagRows[0].version)?.hasProvenance"
+              v-if="fullVersionMap?.get(tagRows[0].version)?.hasProvenance"
               :package-name="packageName"
               :version="tagRows[0].version"
               compact
@@ -266,7 +297,7 @@ watch(jumpVersion, () => {
 
             <!-- Provenance -->
             <ProvenanceBadge
-              v-if="versionByKey.get(row.version)?.hasProvenance"
+              v-if="fullVersionMap?.get(row.version)?.hasProvenance"
               :package-name="packageName"
               :version="row.version"
               compact
@@ -282,7 +313,7 @@ watch(jumpVersion, () => {
         <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-3 px-4 sm:px-6 ps-1">
           Version History
           <span class="ms-1 normal-case font-normal tracking-normal">
-            ({{ sortedVersions.length }})
+            ({{ versionStrings.length }})
           </span>
         </h2>
 
@@ -307,6 +338,12 @@ watch(jumpVersion, () => {
               >
                 <span class="w-4 h-4 flex items-center justify-center text-fg-subtle shrink-0">
                   <span
+                    v-if="loadingGroup === group.groupKey"
+                    class="i-svg-spinners:ring-resize w-3 h-3"
+                    aria-hidden="true"
+                  />
+                  <span
+                    v-else
                     class="i-lucide:chevron-right w-3 h-3 transition-transform duration-200 rtl-flip"
                     :class="expandedGroups.has(group.groupKey) ? 'rotate-90' : ''"
                     aria-hidden="true"
@@ -316,11 +353,11 @@ watch(jumpVersion, () => {
                 <span class="text-xs text-fg-subtle">({{ group.versions.length }})</span>
                 <span class="ms-auto flex items-center gap-3 shrink-0">
                   <span class="font-mono text-xs text-fg-muted" dir="ltr">{{
-                    group.versions[0]?.version
+                    group.versions[0]
                   }}</span>
                   <DateTime
-                    v-if="group.versions[0]?.time"
-                    :datetime="group.versions[0].time"
+                    v-if="getVersionTime(group.versions[0])"
+                    :datetime="getVersionTime(group.versions[0])!"
                     class="text-xs text-fg-subtle hidden sm:block"
                     year="numeric"
                     month="short"
@@ -331,94 +368,97 @@ watch(jumpVersion, () => {
 
               <!-- Expanded versions -->
               <div v-show="expandedGroups.has(group.groupKey)" class="border-t border-border">
-                <div
-                  v-for="v in group.versions"
-                  :key="v.version"
-                  class="border-b border-border last:border-0 transition-colors"
-                  :class="selectedChangelogVersion === v.version ? 'bg-bg-subtle' : ''"
-                >
+                <template v-if="renderedGroups.has(group.groupKey)">
                   <div
-                    class="flex items-center gap-3 px-4 ps-11 py-2.5 group relative"
-                    :class="selectedChangelogVersion === v.version ? '' : 'hover:bg-bg-subtle'"
+                    v-for="v in group.versions"
+                    :key="v"
+                    class="border-b border-border last:border-0 transition-colors"
+                    :class="selectedChangelogVersion === v ? 'bg-bg-subtle' : ''"
                   >
-                    <!-- Version + badges -->
-                    <div class="flex-1 min-w-0 flex items-center gap-2 flex-wrap">
-                      <LinkBase
-                        :to="packageRoute(packageName, v.version)"
-                        class="font-mono text-sm after:absolute after:inset-0 after:content-['']"
-                        :class="v.deprecated ? 'text-red-700 dark:text-red-400' : ''"
-                        :classicon="v.deprecated ? 'i-lucide:octagon-alert' : undefined"
-                        dir="ltr"
-                      >
-                        {{ v.version }}
-                      </LinkBase>
-                      <div
-                        v-if="v.tags?.length"
-                        class="flex items-center gap-1 flex-wrap relative z-10"
-                      >
-                        <span
-                          v-for="tag in v.tags"
-                          :key="tag"
-                          class="text-4xs font-semibold uppercase tracking-wide"
-                          :class="tag === 'latest' ? 'text-accent' : 'text-fg-subtle'"
+                    <div
+                      class="flex items-center gap-3 px-4 ps-11 py-2.5 group relative"
+                      :class="selectedChangelogVersion === v ? '' : 'hover:bg-bg-subtle'"
+                    >
+                      <!-- Version + badges -->
+                      <div class="flex-1 min-w-0 flex items-center gap-2 flex-wrap">
+                        <LinkBase
+                          :to="packageRoute(packageName, v)"
+                          class="font-mono text-sm after:absolute after:inset-0 after:content-['']"
+                          :class="
+                            fullVersionMap?.get(v)?.deprecated
+                              ? 'text-red-700 dark:text-red-400'
+                              : ''
+                          "
+                          :classicon="
+                            fullVersionMap?.get(v)?.deprecated
+                              ? 'i-lucide:octagon-alert'
+                              : undefined
+                          "
+                          dir="ltr"
                         >
-                          {{ tag }}
+                          {{ v }}
+                        </LinkBase>
+                        <div
+                          v-if="versionToTagsMap.get(v)?.length"
+                          class="flex items-center gap-1 flex-wrap relative z-10"
+                        >
+                          <span
+                            v-for="tag in versionToTagsMap.get(v)"
+                            :key="tag"
+                            class="text-4xs font-semibold uppercase tracking-wide"
+                            :class="tag === 'latest' ? 'text-accent' : 'text-fg-subtle'"
+                          >
+                            {{ tag }}
+                          </span>
+                        </div>
+                        <span
+                          v-if="fullVersionMap?.get(v)?.deprecated"
+                          class="text-3xs font-medium text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded relative z-10"
+                          :title="fullVersionMap.get(v)!.deprecated"
+                        >
+                          deprecated
                         </span>
                       </div>
-                      <span
-                        v-if="v.deprecated"
-                        class="text-3xs font-medium text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded relative z-10"
-                        :title="v.deprecated"
-                      >
-                        deprecated
-                      </span>
+
+                      <!-- Right side -->
+                      <div class="flex items-center gap-2 shrink-0 relative z-10">
+                        <!-- TODO(atriiy): changelog would be implemented later -->
+
+                        <!-- Metadata: date + provenance -->
+                        <DateTime
+                          v-if="getVersionTime(v)"
+                          :datetime="getVersionTime(v)!"
+                          class="text-xs text-fg-subtle hidden sm:block"
+                          year="numeric"
+                          month="short"
+                          day="numeric"
+                        />
+                        <ProvenanceBadge
+                          v-if="fullVersionMap?.get(v)?.hasProvenance"
+                          :package-name="packageName"
+                          :version="v"
+                          compact
+                          :linked="false"
+                        />
+                      </div>
                     </div>
 
-                    <!-- Right side -->
-                    <div class="flex items-center gap-2 shrink-0 relative z-10">
-                      <!-- TODO(atriiy): changelog would be implemented later -->
-
-                      <!-- Divider -->
-                      <span
-                        v-if="v.hasChangelog"
-                        class="w-px h-3.5 bg-border shrink-0 hidden sm:block"
-                        aria-hidden="true"
-                      />
-
-                      <!-- Metadata: date + provenance -->
-                      <DateTime
-                        v-if="v.time"
-                        :datetime="v.time"
-                        class="text-xs text-fg-subtle hidden sm:block"
-                        year="numeric"
-                        month="short"
-                        day="numeric"
-                      />
-                      <ProvenanceBadge
-                        v-if="v.hasProvenance"
-                        :package-name="packageName"
-                        :version="v.version"
-                        compact
-                        :linked="false"
-                      />
-                    </div>
-                  </div>
-
-                  <!-- Mobile inline changelog (below the row, sm and up uses side panel) -->
-                  <div
-                    v-if="v.hasChangelog"
-                    class="grid sm:hidden transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none"
-                    :class="
-                      selectedChangelogVersion === v.version ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
-                    "
-                  >
-                    <div class="overflow-hidden">
-                      <div class="changelog-body border-t border-border px-4 py-3 text-sm">
-                        {{ selectedChangelogVersion === v.version ? selectedChangelogContent : '' }}
+                    <!-- Mobile inline changelog (below the row, sm and up uses side panel) -->
+                    <div
+                      v-if="v in mockChangelogs"
+                      class="grid sm:hidden transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none"
+                      :class="
+                        selectedChangelogVersion === v ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+                      "
+                    >
+                      <div class="overflow-hidden">
+                        <div class="changelog-body border-t border-border px-4 py-3 text-sm">
+                          {{ selectedChangelogVersion === v ? selectedChangelogContent : '' }}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                </template>
               </div>
             </div>
           </div>
