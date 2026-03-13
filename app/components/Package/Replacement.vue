@@ -11,6 +11,7 @@ const resolveUrl = (url?: KnownUrl) => {
 
   switch (url.type) {
     case 'mdn':
+      return `https://developer.mozilla.org/en-US/docs/${url.id}`
     case 'node':
       return `https://nodejs.org/${url.id}`
     case 'e18e':
