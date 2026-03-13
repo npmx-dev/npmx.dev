@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { WindowVirtualizer } from 'virtua/vue'
 import { getVersions } from 'fast-npm-meta'
-import { validRange } from 'semver'
+import { compare, validRange } from 'semver'
 import {
   buildVersionToTagsMap,
   buildTaggedVersionRows,
@@ -103,7 +103,7 @@ const versionGroups = computed(() => {
     .map(groupKey => ({
       groupKey,
       label: getVersionGroupLabel(groupKey),
-      versions: byKey.get(groupKey)!,
+      versions: byKey.get(groupKey)!.sort((a, b) => compare(b, a)),
     }))
 })
 
