@@ -38,7 +38,7 @@
     "open_docs": "Tampilkan dokumentasi",
     "disable_shortcuts": "Anda dapat menonaktifkan pintasan papan ketik pada {settings}.",
     "open_main": "Tampilkan informasi utama",
-    "open_diff": "Tampilkan perbedaaan versi"
+    "open_diff": "Tampilkan perbedaan versi"
   },
   "search": {
     "label": "Cari paket npm",
