@@ -402,7 +402,9 @@ const isEndDateOnPeriodEnd = computed(() => {
 })
 
 const supportsEstimation = computed(
-  () => displayedGranularity.value !== 'daily' && selectedMetric.value !== 'contributors',
+  () =>
+    !['daily', 'weekly'].includes(displayedGranularity.value) &&
+    selectedMetric.value !== 'contributors',
 )
 
 const hasDownloadAnomalies = computed(() =>
@@ -1081,7 +1083,10 @@ const normalisedDataset = computed(() => {
       {
         averageWindow: settings.value.chartFilter.averageWindow,
         smoothingTau: settings.value.chartFilter.smoothingTau,
-        predictionPoints: settings.value.chartFilter.predictionPoints ?? DEFAULT_PREDICTION_POINTS,
+        predictionPoints:
+          granularity === 'weekly'
+            ? 0 // weekly buckets are end-aligned → always complete, no prediction needed
+            : (settings.value.chartFilter.predictionPoints ?? DEFAULT_PREDICTION_POINTS),
       },
       { granularity, lastDateMs, referenceMs, isAbsoluteMetric },
     )
@@ -1763,15 +1768,14 @@ watch(selectedMetric, value => {
             </span>
             <label
               class="flex items-center gap-1.5 text-2xs font-mono text-fg-subtle cursor-pointer h-4"
-              :class="{ 'opacity-50 pointer-events-none': !hasAnomalies }"
+              :class="{ 'opacity-50': !hasAnomalies }"
             >
               <input
-                :checked="settings.chartFilter.anomaliesFixed && hasAnomalies"
+                :checked="settings.chartFilter.anomaliesFixed"
                 @change="
                   settings.chartFilter.anomaliesFixed = ($event.target as HTMLInputElement).checked
                 "
                 type="checkbox"
-                :disabled="!hasAnomalies"
                 class="accent-[var(--accent-color,var(--fg-subtle))]"
               />
               {{ $t('package.trends.apply_correction') }}
