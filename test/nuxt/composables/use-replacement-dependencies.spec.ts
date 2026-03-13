@@ -3,14 +3,13 @@ import { mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
 import type { ModuleReplacement } from 'module-replacements'
 
 const SIMPLE_REPLACEMENT: ModuleReplacement = {
-  "id": "snippet::is-even",
-  "type": "simple",
-  "description": "You can use the modulo operator to check if a number is even.",
-  "example": "(n % 2) === 0"
+  id: 'snippet::is-even',
+  type: 'simple',
+  description: 'You can use the modulo operator to check if a number is even.',
+  example: '(n % 2) === 0',
 }
 
 const NATIVE_REPLACEMENT: ModuleReplacement = {
-  "id": "Array.prototype.includes",
   "type": "native",
   "url": {
 	"type": "mdn",
@@ -35,9 +34,24 @@ const NATIVE_REPLACEMENT: ModuleReplacement = {
 	{ "engine": "opera", "minVersion": "34" },
 	{ "engine": "opera_android", "minVersion": "34" },
 	{ "engine": "samsunginternet_android", "minVersion": "5.0" },
-	{ "engine": "webview_android", "minVersion": "47" },
-	{ "engine": "webview_ios", "minVersion": "9" }
-  ]
+  engines: [
+    { engine: 'chrome', minVersion: '47' },
+    { engine: 'chrome_android', minVersion: '47' },
+    { engine: 'edge', minVersion: '14' },
+    { engine: 'firefox', minVersion: '43' },
+    { engine: 'firefox_android', minVersion: '43' },
+    { engine: 'safari', minVersion: '9' },
+    { engine: 'safari_ios', minVersion: '9' },
+    { engine: 'bun', minVersion: '1.0.0' },
+    { engine: 'deno', minVersion: '1.0' },
+    { engine: 'nodejs', minVersion: '6.0.0' },
+    { engine: 'oculus', minVersion: '5.0' },
+    { engine: 'opera', minVersion: '34' },
+    { engine: 'opera_android', minVersion: '34' },
+    { engine: 'samsunginternet_android', minVersion: '5.0' },
+    { engine: 'webview_android', minVersion: '47' },
+    { engine: 'webview_ios', minVersion: '9' },
+  ],
 }
 
 async function mountWithDeps(deps: Record<string, string> | undefined) {
@@ -114,6 +128,7 @@ describe('useReplacementDependencies', () => {
 
     expect(simple?.type).toBe('simple')
     expect(native?.type).toBe('native')
+    expect(native?.url?.type).toBe('mdn')
     expect(replacements.value['picoquery']).toBeUndefined()
   })
 
