@@ -95,6 +95,14 @@ function versionRoute(version: string): RouteLocationRaw {
   return packageRoute(props.packageName, version)
 }
 
+// Route to the full versions history page
+const versionsPageRoute = computed((): RouteLocationRaw => {
+  const [org, name = ''] = props.packageName.startsWith('@')
+    ? props.packageName.split('/')
+    : ['', props.packageName]
+  return { name: 'package-versions', params: { org, name } }
+})
+
 // Version to tags lookup (supports multiple tags per version)
 const versionToTags = computed(() => buildVersionToTagsMap(props.distTags))
 
@@ -521,15 +529,26 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
     id="versions"
   >
     <template #actions>
-      <ButtonBase
-        variant="secondary"
-        class="text-fg-subtle hover:text-fg transition-colors min-w-6 min-h-6 -m-1 p-1 rounded"
-        :title="$t('package.downloads.community_distribution')"
-        classicon="i-lucide:file-stack"
-        @click="openDistributionModal"
-      >
-        <span class="sr-only">{{ $t('package.downloads.community_distribution') }}</span>
-      </ButtonBase>
+      <div class="flex items-center gap-3">
+        <LinkBase
+          :to="versionsPageRoute"
+          variant="button-secondary"
+          class="text-fg-subtle hover:text-fg transition-colors min-w-6 min-h-6 p-1 rounded"
+          title="View all versions"
+          classicon="i-lucide:history"
+        >
+          <span class="sr-only">View all versions</span>
+        </LinkBase>
+        <ButtonBase
+          variant="secondary"
+          class="text-fg-subtle hover:text-fg transition-colors min-w-6 min-h-6 -m-1 p-1 rounded"
+          :title="$t('package.downloads.community_distribution')"
+          classicon="i-lucide:file-stack"
+          @click="openDistributionModal"
+        >
+          <span class="sr-only">{{ $t('package.downloads.community_distribution') }}</span>
+        </ButtonBase>
+      </div>
     </template>
     <div class="space-y-0.5 min-w-0">
       <!-- Semver range filter -->
