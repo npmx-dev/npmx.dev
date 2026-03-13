@@ -1,11 +1,11 @@
 import { all, type ModuleReplacement } from 'module-replacements'
 
-const replacementMap = new Map<string, ModuleReplacement>(
-  all.moduleReplacements.map(r => [r.moduleName, r]),
-)
-
-export default defineEventHandler((event): ModuleReplacement | null => {
+export default defineEventHandler((event): ModuleReplacement[] | null => {
   const pkg = getRouterParam(event, 'pkg')
   if (!pkg) return null
-  return replacementMap.get(pkg) ?? null
+  const mapping = all.mappings[pkg]
+  if (!mapping) return null
+  const replacements = mapping.replacements.map(r => all.replacements[r]!)
+  if (!replacements.length) return null
+  return replacements
 })
