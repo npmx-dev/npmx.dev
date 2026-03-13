@@ -179,12 +179,9 @@
     "not_found": "找不到套件",
     "not_found_message": "找不到此套件。",
     "no_description": "未提供描述",
-    "not_latest": "（非最新）",
     "verified_provenance": "已驗證的來源",
-    "view_permalink": "檢視此版本的永久連結",
     "navigation": "套件導覽",
     "copy_name": "複製套件名稱",
-    "copy_version": "複製套件版本",
     "deprecation": {
       "package": "此套件已被棄用。",
       "version": "此版本已被棄用。",
@@ -737,8 +734,7 @@
       "preview": "預覽",
       "code": "程式碼"
     },
-    "file_path": "檔案路徑",
-    "scroll_to_top": "回到頂端"
+    "file_path": "檔案路徑"
   },
   "badges": {
     "provenance": {

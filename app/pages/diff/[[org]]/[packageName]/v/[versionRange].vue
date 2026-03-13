@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CompareResponse, FileChange } from '#shared/types'
+import type { RouteLocationRaw } from 'vue-router'
 import { diffRoute, packageRoute } from '~/utils/router'
 
 definePageMeta({
@@ -90,12 +91,24 @@ const groupedDeps = computed(() => {
   }
   return groups
 })
+// Keep latestVersion for comparison (to show "(latest)" badge)
+const latestVersionDetailed = computed(() => {
+  if (!pkg.value) return null
+  const latestTag = pkg.value['dist-tags']?.latest
+  if (!latestTag) return null
+  return pkg.value.versions[latestTag] ?? null
+})
+
+const normalizeRoutePath = (route: RouteLocationRaw) => {
+  const resolvedHref = router.resolve(route).href
+  return resolvedHref.replace(/%7B/g, '{').replace(/%7D/g, '}')
+}
 
 const fromVersionUrlPattern = computed(() => {
-  return router.resolve(diffRoute(packageName.value, '{version}', toVersion.value)).href
+  return normalizeRoutePath(diffRoute(packageName.value, '{version}', toVersion.value))
 })
 const toVersionUrlPattern = computed(() => {
-  return router.resolve(diffRoute(packageName.value, fromVersion.value, '{version}')).href
+  return normalizeRoutePath(diffRoute(packageName.value, fromVersion.value, '{version}'))
 })
 
 useSeoMeta({
@@ -112,53 +125,14 @@ useSeoMeta({
 
 <template>
   <main class="flex-1 flex flex-col min-h-0">
-    <!-- Header -->
-    <header class="border-b border-border bg-bg sticky top-14 z-20">
-      <div class="container py-4">
-        <!-- Package info -->
-        <div class="flex items-center gap-2 mb-3 flex-wrap min-w-0">
-          <NuxtLink
-            :to="packageRoute(packageName)"
-            class="font-mono text-lg font-medium hover:text-fg transition-colors min-w-0 truncate"
-          >
-            {{ packageName }}
-          </NuxtLink>
-          <span class="text-fg-subtle">/</span>
-          <span class="font-mono text-sm text-fg-muted">compare</span>
-        </div>
-
-        <!-- Version selectors -->
-        <div class="flex items-center gap-3 flex-wrap">
-          <div class="flex items-center gap-2">
-            <span class="text-xs text-fg-subtle uppercase tracking-wide">From</span>
-            <VersionSelector
-              v-if="pkg?.versions && pkg?.['dist-tags']"
-              :package-name="packageName"
-              :current-version="fromVersion"
-              :versions="pkg.versions"
-              :dist-tags="pkg['dist-tags']"
-              :url-pattern="fromVersionUrlPattern"
-            />
-            <span v-else class="font-mono text-sm text-fg-muted">{{ fromVersion }}</span>
-          </div>
-
-          <span class="i-lucide:arrow-right w-4 h-4 text-fg-subtle" />
-
-          <div class="flex items-center gap-2">
-            <span class="text-xs text-fg-subtle uppercase tracking-wide">To</span>
-            <VersionSelector
-              v-if="pkg?.versions && pkg?.['dist-tags']"
-              :package-name="packageName"
-              :current-version="toVersion"
-              :versions="pkg.versions"
-              :dist-tags="pkg['dist-tags']"
-              :url-pattern="toVersionUrlPattern"
-            />
-            <span v-else class="font-mono text-sm text-fg-muted">{{ toVersion }}</span>
-          </div>
-        </div>
-      </div>
-    </header>
+    <PackageHeader
+      :pkg="pkg"
+      :resolved-version="fromVersion"
+      :display-version="pkg?.requestedVersion"
+      :latest-version="latestVersionDetailed"
+      :version-url-pattern="fromVersionUrlPattern"
+      page="diff"
+    />
 
     <!-- Error: invalid route -->
     <div v-if="!versionRange" class="container py-20 text-center">
@@ -186,6 +160,19 @@ useSeoMeta({
       <aside
         class="hidden md:flex w-80 border-ie border-border bg-bg-subtle flex-col shrink-0 min-h-0"
       >
+        <div v-if="pkg?.versions && pkg?.['dist-tags']" class="px-3 py-2 border-b border-border">
+          <p class="text-xs font-medium text-fg mb-1 flex items-center gap-1.5">
+            <span class="block i-lucide-git-compare-arrows w-3.5 h-3.5" />
+            {{ $t('compare.version_selector_title') }}
+          </p>
+          <VersionSelector
+            :package-name="packageName"
+            :current-version="toVersion"
+            :versions="pkg.versions"
+            :dist-tags="pkg['dist-tags']"
+            :url-pattern="toVersionUrlPattern"
+          />
+        </div>
         <DiffSidebarPanel
           :compare="compare"
           :grouped-deps="groupedDeps"
@@ -255,6 +242,10 @@ useSeoMeta({
           v-model:selected-file="selectedFile"
           v-model:file-filter="fileFilter"
           v-model:open="mobileDrawerOpen"
+          :pkg="pkg"
+          :package-name="packageName"
+          :to-version="toVersion"
+          :to-version-url-pattern="toVersionUrlPattern"
         />
       </Teleport>
     </ClientOnly>

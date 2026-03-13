@@ -219,14 +219,6 @@ function getCurrentCodeUrlWithPath(path?: string): string {
   })
 }
 
-// Extract org name from scoped package
-const orgName = computed(() => {
-  const name = packageName.value
-  if (!name.startsWith('@')) return null
-  const match = name.match(/^@([^/]+)\//)
-  return match ? match[1] : null
-})
-
 // Line number click handler - update URL hash without scrolling
 function handleLineClick(lineNum: number, event: MouseEvent) {
   let newHash: string
@@ -264,14 +256,6 @@ const { copied: fileContentCopied, copy: copyFileContent } = useClipboard({
   copiedDuring: 2000,
 })
 
-// Scroll to top of file content
-const contentContainer = useTemplateRef('contentContainer')
-function scrollToTop() {
-  if (contentContainer.value) {
-    contentContainer.value.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-}
-
 // Canonical URL for this code page
 const canonicalUrl = computed(() => `https://npmx.dev${getCodeUrl(route.params)}`)
 
@@ -292,6 +276,14 @@ const markdownViewModes = [
 const markdownViewMode = shallowRef<(typeof markdownViewModes)[number]['key']>('preview')
 
 const bytesFormatter = useBytesFormatter()
+
+// Keep latestVersion for comparison (to show "(latest)" badge)
+const latestVersion = computed(() => {
+  if (!pkg.value) return null
+  const latestTag = pkg.value['dist-tags']?.latest
+  if (!latestTag) return null
+  return pkg.value.versions[latestTag] ?? null
+})
 
 useHead({
   link: [{ rel: 'canonical', href: canonicalUrl }],
@@ -330,69 +322,14 @@ defineOgImageComponent('Default', {
 
 <template>
   <main class="flex-1 flex flex-col">
-    <!-- Header -->
-    <header class="border-b border-border bg-bg sticky top-14 z-20">
-      <div class="container py-4">
-        <!-- Package info and navigation -->
-        <div class="flex items-center gap-2 mb-3 flex-wrap min-w-0">
-          <NuxtLink
-            :to="packageRoute(packageName, version)"
-            class="font-mono text-lg font-medium hover:text-fg transition-colors min-w-0 truncate max-w-[60vw] sm:max-w-none"
-            :title="packageName"
-          >
-            <span v-if="orgName" class="text-fg-muted">@{{ orgName }}/</span
-            >{{ orgName ? packageName.replace(`@${orgName}/`, '') : packageName }}
-          </NuxtLink>
-          <!-- Version selector -->
-          <VersionSelector
-            v-if="version && pkg?.versions && pkg?.['dist-tags']"
-            :package-name="packageName"
-            :current-version="version"
-            :versions="pkg.versions"
-            :dist-tags="pkg['dist-tags']"
-            :url-pattern="versionUrlPattern"
-          />
-          <span
-            v-else-if="version"
-            class="px-2 py-0.5 font-mono text-sm bg-bg-muted border border-border rounded truncate max-w-32 sm:max-w-48"
-            :title="`v${version}`"
-          >
-            v{{ version }}
-          </span>
-          <span class="text-fg-subtle shrink-0">/</span>
-          <span class="font-mono text-sm text-fg-muted shrink-0">{{
-            $t('package.links.code')
-          }}</span>
-        </div>
-
-        <!-- Breadcrumb navigation -->
-        <nav
-          :aria-label="$t('code.file_path')"
-          class="flex items-center gap-1 font-mono text-sm overflow-x-auto"
-          dir="ltr"
-        >
-          <NuxtLink
-            v-if="filePath"
-            :to="getCurrentCodeUrlWithPath()"
-            class="text-fg-muted hover:text-fg transition-colors shrink-0"
-          >
-            {{ $t('code.root') }}
-          </NuxtLink>
-          <span v-else class="text-fg shrink-0">{{ $t('code.root') }}</span>
-          <template v-for="(crumb, i) in breadcrumbs" :key="crumb.path">
-            <span class="text-fg-subtle">/</span>
-            <NuxtLink
-              v-if="i < breadcrumbs.length - 1"
-              :to="getCurrentCodeUrlWithPath(crumb.path)"
-              class="text-fg-muted hover:text-fg transition-colors"
-            >
-              {{ crumb.name }}
-            </NuxtLink>
-            <span v-else class="text-fg">{{ crumb.name }}</span>
-          </template>
-        </nav>
-      </div>
-    </header>
+    <PackageHeader
+      :pkg="pkg"
+      :resolved-version="version"
+      :display-version="pkg?.requestedVersion"
+      :latest-version="latestVersion"
+      :version-url-pattern="versionUrlPattern"
+      page="code"
+    />
 
     <!-- Error: no version -->
     <div v-if="!version" class="container py-20 text-center">
@@ -420,7 +357,7 @@ defineOgImageComponent('Default', {
     <div v-else-if="fileTree" class="flex flex-1" dir="ltr">
       <!-- File tree sidebar - sticky with internal scroll -->
       <aside
-        class="w-64 lg:w-72 border-ie border-border shrink-0 hidden md:block bg-bg-subtle sticky top-28 self-start h-[calc(100vh-7rem)] overflow-y-auto"
+        class="w-64 lg:w-72 border-ie border-border shrink-0 hidden md:block bg-bg-subtle sticky top-25 self-start h-[calc(100vh-7rem)] overflow-y-auto"
       >
         <CodeFileTree
           :tree="fileTree.tree"
@@ -431,87 +368,95 @@ defineOgImageComponent('Default', {
       </aside>
 
       <!-- File content / Directory listing - sticky with internal scroll on desktop -->
-      <div
-        class="flex-1 min-w-0 overflow-x-hidden sticky top-28 self-start h-[calc(100vh-7rem)] overflow-y-auto"
-        ref="contentContainer"
-      >
+      <div class="flex-1 min-w-0 self-start">
+        <div
+          class="sticky z-10 top-25 bg-bg border-b border-border px-4 py-2 flex items-center justify-between gap-2 text-nowrap overflow-x-auto max-w-full"
+        >
+          <div class="flex items-center gap-2">
+            <div
+              v-if="fileContent?.markdownHtml"
+              class="flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md overflow-x-auto"
+              role="tablist"
+              aria-label="Markdown view mode selector"
+            >
+              <button
+                v-for="mode in markdownViewModes"
+                :key="mode.key"
+                role="tab"
+                class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-solid focus-visible:outline-accent/70 inline-flex items-center gap-1.5"
+                :class="
+                  markdownViewMode === mode.key
+                    ? 'bg-bg shadow text-fg border-border'
+                    : 'text-fg-subtle hover:text-fg border-transparent'
+                "
+                :aria-selected="markdownViewMode === mode.key"
+                @click="markdownViewMode = mode.key"
+              >
+                <span class="inline-block h-3 w-3" :class="mode.icon" aria-hidden="true" />
+                {{ mode.label }}
+              </button>
+            </div>
+            <!-- Breadcrumb navigation -->
+            <nav
+              :aria-label="$t('code.file_path')"
+              class="flex items-center gap-0.5 font-mono text-sm overflow-x-auto"
+              dir="ltr"
+            >
+              <NuxtLink
+                v-if="filePath"
+                :to="getCurrentCodeUrlWithPath()"
+                class="text-fg-muted hover:text-fg transition-colors shrink-0"
+              >
+                {{ $t('code.root') }}
+              </NuxtLink>
+              <span v-else class="text-fg shrink-0">{{ $t('code.root') }}</span>
+              <template v-for="(crumb, i) in breadcrumbs" :key="crumb.path">
+                <span class="text-fg-subtle">/</span>
+                <NuxtLink
+                  v-if="i < breadcrumbs.length - 1"
+                  :to="getCurrentCodeUrlWithPath(crumb.path)"
+                  class="text-fg-muted hover:text-fg transition-colors"
+                >
+                  {{ crumb.name }}
+                </NuxtLink>
+                <span v-else class="text-fg">{{ crumb.name }}</span>
+              </template>
+            </nav>
+          </div>
+          <div class="flex items-center gap-2" v-if="isViewingFile && !isBinaryFile && fileContent">
+            <button
+              v-if="selectedLines"
+              type="button"
+              class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors active:scale-95"
+              @click="copyPermalinkUrl"
+            >
+              {{ permalinkCopied ? $t('common.copied') : $t('code.copy_link') }}
+            </button>
+            <button
+              v-if="!!fileContent?.content"
+              type="button"
+              class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors inline-flex items-center gap-1 capitalize"
+              @click="copyFileContent()"
+            >
+              <span
+                class="w-3 h-3"
+                :class="fileContentCopied ? 'i-lucide:check' : 'i-lucide:file'"
+              />
+              {{ fileContentCopied ? $t('common.copied') : $t('common.copy') }}
+            </button>
+            <a
+              :href="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors inline-flex items-center gap-1"
+            >
+              {{ $t('code.raw') }}
+              <span class="i-lucide:external-link w-3 h-3" />
+            </a>
+          </div>
+        </div>
         <!-- File viewer -->
         <template v-if="isViewingFile && !isBinaryFile && fileContent">
-          <div
-            class="sticky z-10 top-0 bg-bg border-b border-border px-4 py-2 flex items-center justify-between"
-          >
-            <div class="flex items-center gap-2">
-              <div
-                v-if="fileContent.markdownHtml"
-                class="flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md overflow-x-auto"
-                role="tablist"
-                aria-label="Markdown view mode selector"
-              >
-                <button
-                  v-for="mode in markdownViewModes"
-                  :key="mode.key"
-                  role="tab"
-                  class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-solid focus-visible:outline-accent/70 inline-flex items-center gap-1.5"
-                  :class="
-                    markdownViewMode === mode.key
-                      ? 'bg-bg shadow text-fg border-border'
-                      : 'text-fg-subtle hover:text-fg border-transparent'
-                  "
-                  @click="markdownViewMode = mode.key"
-                >
-                  <span class="inline-block h-3 w-3" :class="mode.icon" aria-hidden="true" />
-                  {{ mode.label }}
-                </button>
-              </div>
-              <div class="flex items-center gap-3 text-sm">
-                <span class="text-fg-muted" dir="auto">{{
-                  $t('code.lines', { count: fileContent.lines })
-                }}</span>
-                <span v-if="currentNode?.size" class="text-fg-subtle">{{
-                  bytesFormatter.format(currentNode.size)
-                }}</span>
-              </div>
-            </div>
-            <div class="flex items-center gap-2">
-              <button
-                type="button"
-                class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors items-center inline-flex gap-1"
-                @click="scrollToTop"
-              >
-                <span class="i-lucide:arrow-up w-3 h-3" />
-                {{ $t('code.scroll_to_top') }}
-              </button>
-              <button
-                v-if="selectedLines"
-                type="button"
-                class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors active:scale-95"
-                @click="copyPermalinkUrl"
-              >
-                {{ permalinkCopied ? $t('common.copied') : $t('code.copy_link') }}
-              </button>
-              <button
-                v-if="!!fileContent?.content"
-                type="button"
-                class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors inline-flex items-center gap-1 capitalize"
-                @click="copyFileContent()"
-              >
-                <span
-                  class="w-3 h-3"
-                  :class="fileContentCopied ? 'i-lucide:check' : 'i-lucide:file'"
-                />
-                {{ fileContentCopied ? $t('common.copied') : $t('common.copy') }}
-              </button>
-              <a
-                :href="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors inline-flex items-center gap-1"
-              >
-                {{ $t('code.raw') }}
-                <span class="i-lucide:external-link w-3 h-3" />
-              </a>
-            </div>
-          </div>
           <div
             v-if="fileContent.markdownHtml"
             v-show="markdownViewMode === 'preview'"
@@ -527,6 +472,16 @@ defineOgImageComponent('Default', {
             :selected-lines="selectedLines"
             @line-click="handleLineClick"
           />
+          <div class="sticky bottom-0 bg-bg border-t border-border px-4 py-1">
+            <div class="flex items-center gap-3 text-sm justify-end">
+              <span class="text-fg-muted" dir="auto">{{
+                $t('code.lines', { count: fileContent.lines })
+              }}</span>
+              <span v-if="currentNode?.size" class="text-fg-subtle">{{
+                bytesFormatter.format(currentNode.size)
+              }}</span>
+            </div>
+          </div>
         </template>
 
         <!-- Binary file warning -->

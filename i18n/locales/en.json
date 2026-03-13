@@ -36,7 +36,9 @@
     "go_to_result": "Go to result",
     "open_code_view": "Open code view",
     "open_docs": "Open docs",
-    "disable_shortcuts": "You can disable keyboard shortcuts in {settings}."
+    "disable_shortcuts": "You can disable keyboard shortcuts in {settings}.",
+    "open_main": "Open main information",
+    "open_diff": "Open version differences"
   },
   "search": {
     "label": "Search npm packages",
@@ -226,12 +228,9 @@
     "not_found": "Package Not Found",
     "not_found_message": "The package could not be found.",
     "no_description": "No description provided",
-    "not_latest": "(not latest)",
     "verified_provenance": "Verified provenance",
-    "view_permalink": "View permalink for this version",
     "navigation": "Package",
     "copy_name": "Copy package name",
-    "copy_version": "Copy package version",
     "deprecation": {
       "package": "This package has been deprecated.",
       "version": "This version has been deprecated.",
@@ -288,6 +287,7 @@
       "view_source": "View source"
     },
     "links": {
+      "main": "main",
       "repo": "repo",
       "homepage": "homepage",
       "issues": "issues",
@@ -792,7 +792,6 @@
       "code": "code"
     },
     "file_path": "File path",
-    "scroll_to_top": "Scroll to top",
     "binary_file": "Binary file",
     "binary_rendering_warning": "File type not supported for preview."
   },
@@ -1167,6 +1166,7 @@
     "file_size_warning": "{size} exceeds the 250KB limit for comparison",
     "compare_versions": "diff",
     "compare_versions_title": "Compare with latest version",
+    "version_selector_title": "Compare with version",
     "summary": "Summary",
     "deps_count": "{count} dep | {count} deps",
     "dependencies": "Dependencies",

@@ -179,12 +179,9 @@
     "not_found": "Пакетът не е намерен",
     "not_found_message": "Пакетът не може да бъде намерен.",
     "no_description": "Няма предоставено описание",
-    "not_latest": "(не е последна)",
     "verified_provenance": "Потвърден произход",
-    "view_permalink": "Преглед на постоянна връзка за тази версия",
     "navigation": "Пакет",
     "copy_name": "Копиране на името на пакета",
-    "copy_version": "Копиране на версията на пакета",
     "deprecation": {
       "package": "Този пакет е остарял.",
       "version": "Тази версия е остаряла.",
@@ -738,8 +735,7 @@
       "preview": "преглед",
       "code": "код"
     },
-    "file_path": "Път към файл",
-    "scroll_to_top": "Към началото"
+    "file_path": "Път към файл"
   },
   "badges": {
     "provenance": {

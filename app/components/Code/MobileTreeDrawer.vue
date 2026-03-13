@@ -29,7 +29,7 @@ watch(isOpen, open => (isLocked.value = open))
   <!-- Toggle button (mobile only) -->
   <ButtonBase
     variant="primary"
-    class="md:hidden fixed bottom-4 inset-ie-4 z-45"
+    class="md:hidden fixed bottom-9 inset-ie-4 z-45"
     :aria-label="$t('code.toggle_tree')"
     @click="isOpen = !isOpen"
     :classicon="isOpen ? 'i-lucide:x' : 'i-lucide:folder'"

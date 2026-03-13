@@ -13,10 +13,12 @@
   "trademark_disclaimer": "npm adalah merek dagang terdaftar dari npm, Inc. Situs ini tidak berafiliasi dengan npm, Inc.",
   "footer": {
     "about": "tentang",
+    "blog": "blog",
     "docs": "dokumen",
     "source": "sumber",
     "social": "sosial",
     "chat": "obrolan",
+    "builders_chat": "builders",
     "keyboard_shortcuts": "pintasan papan ketik"
   },
   "shortcuts": {
@@ -63,7 +65,13 @@
       "org": "organisasi",
       "view_user_packages": "Lihat paket oleh pengguna ini",
       "view_org_packages": "Lihat paket oleh organisasi ini"
-    }
+    },
+    "instant_search": "Pencarian instan",
+    "instant_search_on": "aktif",
+    "instant_search_off": "nonaktif",
+    "instant_search_turn_on": "aktifkan",
+    "instant_search_turn_off": "nonaktifkan",
+    "instant_search_advisory": "{label} {state} — {action}"
   },
   "nav": {
     "main_navigation": "Utama",
@@ -78,8 +86,29 @@
     "tap_to_search": "Ketuk untuk mencari"
   },
   "blog": {
-    "author": {},
-    "atproto": {}
+    "title": "Blog",
+    "heading": "blog",
+    "meta_description": "Wawasan dan pembaruan dari komunitas npmx",
+    "author": {
+      "view_profile": "Lihat profil {name} di Bluesky"
+    },
+    "draft_badge": "Draft",
+    "draft_banner": "Ini adalah draf yang belum dipublikasikan. Kontennya mungkin belum lengkap atau mengandung ketidakakuratan",
+    "atproto": {
+      "view_on_bluesky": "Lihat di Bluesky",
+      "reply_on_bluesky": "Balas di Bluesky",
+      "likes_on_bluesky": "Suka di Bluesky",
+      "like_or_reply_on_bluesky": "Sukai postingan ini atau tambahkan komentar di Bluesky",
+      "no_comments_yet": "Belum ada komentar.",
+      "could_not_load_comments": "Tidak dapat memuat komentar.",
+      "comments": "Komentar",
+      "loading_comments": "Memuat komentar...",
+      "updating": "Memperbarui...",
+      "reply_count": "{count} balasan | {count} balasan",
+      "like_count": "{count} suka | {count} suka",
+      "repost_count": "{count} repost | {count} repost",
+      "more_replies": "{count} balasan lainnya... | {count} balasan lainnya..."
+    }
   },
   "settings": {
     "title": "pengaturan",
@@ -100,6 +129,8 @@
       "algolia": "Algolia",
       "algolia_description": "Menggunakan Algolia untuk pencarian, halaman organisasi, dan pengguna yang lebih cepat."
     },
+    "instant_search": "Pencarian instan",
+    "instant_search_description": "Langsung membuka halaman pencarian dan memperbarui hasil saat Anda mengetik.",
     "relative_dates": "Format tanggal relatif",
     "include_types": "Sertakan {'@'}types saat instal",
     "include_types_description": "Tambahkan paket {'@'}types ke perintah instalasi untuk paket tanpa tipe",
@@ -126,7 +157,13 @@
     "edit_on_github": "Edit di GitHub",
     "view_guide": "Panduan terjemahan"
   },
-  "error": {},
+  "error": {
+    "401": "Tidak memiliki otorisasi",
+    "404": "Halaman tidak ditemukan",
+    "500": "Kesalahan server internal",
+    "503": "Layanan tidak tersedia",
+    "default": "Terjadi kesalahan"
+  },
   "common": {
     "loading": "Memuat...",
     "loading_more": "Memuat lebih banyak...",
@@ -149,24 +186,49 @@
       "members": "anggota"
     },
     "scroll_to_top": "Kembali ke atas",
+    "cancel": "Batal",
+    "save": "Simpan",
+    "edit": "Edit",
+    "error": "Kesalahan",
     "view_on": {
       "npm": "lihat di npm",
-      "github": "Lihat di GitHub"
+      "github": "Lihat di GitHub",
+      "gitlab": "Lihat di GitLab",
+      "bitbucket": "Lihat di Bitbucket",
+      "codeberg": "Lihat di Codeberg",
+      "git_repo": "Lihat repositori Git",
+      "forgejo": "Lihat di Forgejo",
+      "gitea": "Lihat di Gitea",
+      "gitee": "Lihat di Gitee",
+      "radicle": "Lihat di Radicle",
+      "sourcehut": "Lihat di SourceHut",
+      "tangled": "Lihat di Tangled"
     }
   },
   "profile": {
-    "invite": {}
+    "display_name": "Nama tampilan",
+    "description": "Deskripsi",
+    "no_description": "Tidak ada deskripsi",
+    "website": "Situs web",
+    "website_placeholder": "https://contoh.com",
+    "likes": "Suka",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "Profil npmx oleh {handle}",
+    "not_found": "Profil tidak ditemukan",
+    "not_found_message": "Profil untuk {handle} tidak dapat ditemukan.",
+    "invite": {
+      "message": "Sepertinya mereka belum menggunakan npmx. Ingin memberi tahu mereka?",
+      "share_button": "Bagikan di Bluesky",
+      "compose_text": "Hai {'@'}{handle}! Sudah pernah mencoba npmx.dev? Ini adalah browser untuk npm registry yang cepat, modern, dan open-source.\nhttps://npmx.dev"
+    }
   },
   "package": {
     "not_found": "Paket Tidak Ditemukan",
     "not_found_message": "Paket tidak dapat ditemukan.",
     "no_description": "Tidak ada deskripsi",
-    "not_latest": "(bukan versi terbaru)",
     "verified_provenance": "Provenans terverifikasi",
-    "view_permalink": "Lihat permalink untuk versi ini",
     "navigation": "Paket",
     "copy_name": "Salin nama paket",
-    "copy_version": "Salin versi paket",
     "deprecation": {
       "package": "Paket ini telah usang (deprecated).",
       "version": "Versi ini telah usang (deprecated).",
@@ -324,6 +386,7 @@
       "grouping_versions_only_recent": "Hanya baru-baru ini",
       "grouping_usage_title": "Penggunaan",
       "grouping_usage_all": "Semua",
+      "grouping_usage_most_used": "Paling sering digunakan",
       "recent_versions_only_tooltip": "Tampilkan hanya versi yang diterbitkan dalam satu tahun terakhir.",
       "show_low_usage_tooltip": "Sertakan grup versi dengan kurang dari 1% total unduhan.",
       "y_axis_label": "Unduhan",
@@ -387,6 +450,8 @@
       "download_file": "Unduh {fileType}",
       "toggle_annotator": "Ganti anotator",
       "toggle_stack_mode": "Beralih mode tumpukan",
+      "open_options": "Buka opsi",
+      "close_options": "Tutup opsi",
       "legend_estimation": "Estimasi",
       "no_data": "Tidak ada data tersedia",
       "y_axis_label": "{granularity} {facet}",
@@ -401,6 +466,7 @@
       "data_correction": "Koreksi data",
       "average_window": "Rata-rata jendela",
       "smoothing": "Penghalusan",
+      "prediction": "Prediksi tren",
       "known_anomalies": "Anomali yang diketahui",
       "known_anomalies_description": "Menyisipkan lonjakan unduhan yang diketahui akibat bot atau masalah CI.",
       "known_anomalies_ranges": "Batas anomali",
@@ -421,12 +487,15 @@
         "estimations": "Nilai akhir adalah estimasi berdasarkan data sebagian untuk periode saat ini.",
         "compare": "Bagan perbandingan jumlah unduhan paket untuk: {packages}.",
         "single_package": "Bagan jumlah unduhan paket untuk paket {package}.",
-        "general_description": "Sumbu Y melambangkan jumlah unduhan. Sumbu X melambangkan jangka waktu, mulai dari {start_date} hingga {end_date}, dalam kurun waktu {granularity}. {estimation_notice} {packages_analysis}. {watermark}."
+        "general_description": "Sumbu Y melambangkan jumlah unduhan. Sumbu X melambangkan jangka waktu, mulai dari {start_date} hingga {end_date}, dalam kurun waktu {granularity}. {estimation_notice} {packages_analysis}. {watermark}.",
+        "facet_bar_general_description": "Grafik batang horizontal untuk: {packages}, membandingkan {facet} ({description}). {facet_analysis} {watermark}.",
+        "facet_bar_analysis": "{package_name} memiliki nilai {value}."
       }
     },
     "downloads": {
       "title": "Unduhan Mingguan",
-      "community_distribution": "Lihat sebaran penggunaan komunitas"
+      "community_distribution": "Lihat sebaran penggunaan komunitas",
+      "subtitle": "Di semua versi"
     },
     "install_scripts": {
       "title": "Skrip Instalasi",
@@ -720,7 +789,8 @@
       "code": "kode"
     },
     "file_path": "Jalur berkas",
-    "scroll_to_top": "Kembali ke atas"
+    "binary_file": "File biner",
+    "binary_rendering_warning": "File ini adalah file biner dan tidak dapat ditampilkan sebagai teks."
   },
   "badges": {
     "provenance": {
@@ -904,7 +974,11 @@
         "description": "Obrolkan, ajukan pertanyaan, dan bagikan ide.",
         "cta": "Gabung Discord"
       },
-      "builders": {},
+      "builders": {
+        "title": "Bantu membangun npmx",
+        "description": "Bergabunglah dengan para builder yang membentuk masa depan npmx.",
+        "cta": "Gabung Builders Discord"
+      },
       "follow": {
         "title": "Tetap terbarui",
         "description": "Temukan kabar terbaru tentang npmx.",
@@ -937,7 +1011,8 @@
       "connect_bluesky": "Hubungkan dengan Bluesky",
       "what_is_atmosphere": "Apa itu akun Atmosphere?",
       "atmosphere_explanation": "{npmx} menggunakan {atproto} untuk mendukung berbagai fitur sosialnya, memungkinkan pengguna memiliki data mereka sendiri dan menggunakan satu akun untuk semua aplikasi yang kompatibel. Setelah membuat akun, Anda dapat menggunakan aplikasi lain seperti {bluesky} dan {tangled} dengan akun yang sama.",
-      "default_input_error": "Silakan masukkan handle, DID, atau URL PDS yang valid"
+      "default_input_error": "Silakan masukkan handle, DID, atau URL PDS yang valid",
+      "profile": "Profil"
     }
   },
   "header": {
@@ -974,7 +1049,9 @@
       "loading": "Memuat data paket...",
       "error": "Gagal memuat data paket. Silakan coba lagi.",
       "empty_title": "Pilih paket untuk dibandingkan",
-      "empty_description": "Cari dan tambahkan setidaknya 2 paket di atas untuk melihat perbandingan metrik mereka secara berdampingan."
+      "empty_description": "Cari dan tambahkan setidaknya 2 paket di atas untuk melihat perbandingan metrik mereka secara berdampingan.",
+      "table_view": "Tabel",
+      "charts_view": "Grafik"
     },
     "selector": {
       "search_label": "Cari paket",
@@ -1082,7 +1159,10 @@
     "file_changes": "Perubahan Berkas",
     "files_count": "{count} berkas",
     "lines_hidden": "{count} baris disembunyikan",
+    "file_too_large": "File terlalu besar untuk dibandingkan",
+    "file_size_warning": "{size} melebihi batas 250KB untuk perbandingan",
     "compare_versions": "perbarui",
+    "compare_versions_title": "Bandingkan dengan versi terbaru",
     "summary": "Ringkasan",
     "deps_count": "{count} ketergantungan",
     "dependencies": "Ketergantungan",
@@ -1111,9 +1191,32 @@
     "filter_files_label": "Filter berkas menurut jenis tindakan"
   },
   "pds": {
-    "join": {},
-    "server": {},
-    "community": {}
+    "title": "npmx.social",
+    "meta_description": "Personal Data Server (PDS) resmi berbasis AT Protocol untuk komunitas npmx.",
+    "join": {
+      "title": "Bergabung dengan Komunitas",
+      "description": "Baik Anda membuat akun pertama di atmosphere atau memigrasikan akun yang sudah ada, Anda tetap dapat bergabung di sini. Anda dapat memigrasikan akun Anda tanpa kehilangan handle, postingan, atau pengikut.",
+      "migrate": "Migrasi dengan PDS MOOver"
+    },
+    "server": {
+      "title": "Detail Server",
+      "location_label": "Lokasi:",
+      "location_value": "Nuremberg, Jerman",
+      "infrastructure_label": "Infrastruktur:",
+      "infrastructure_value": "Dihosting di Hetzner",
+      "privacy_label": "Privasi:",
+      "privacy_value": "Tunduk pada hukum perlindungan data ketat Uni Eropa",
+      "learn_more": "Pelajari bagaimana npmx menggunakan Atmosphere"
+    },
+    "community": {
+      "title": "Siapa saja di sini",
+      "description": "Beberapa dari {count} akun yang sudah menjadikan npmx.social sebagai rumah:",
+      "loading": "Memuat komunitas PDS...",
+      "error": "Gagal memuat komunitas PDS.",
+      "empty": "Tidak ada anggota komunitas untuk ditampilkan.",
+      "view_profile": "Lihat profil {handle}",
+      "new_accounts": "...ditambah {count} lainnya yang baru di atmosphere"
+    }
   },
   "privacy_policy": {
     "title": "kebijakan privasi",

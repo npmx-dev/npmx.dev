@@ -114,6 +114,12 @@
         },
         "disable_shortcuts": {
           "type": "string"
+        },
+        "open_main": {
+          "type": "string"
+        },
+        "open_diff": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -682,22 +688,13 @@
         "no_description": {
           "type": "string"
         },
-        "not_latest": {
-          "type": "string"
-        },
         "verified_provenance": {
-          "type": "string"
-        },
-        "view_permalink": {
           "type": "string"
         },
         "navigation": {
           "type": "string"
         },
         "copy_name": {
-          "type": "string"
-        },
-        "copy_version": {
           "type": "string"
         },
         "deprecation": {
@@ -868,6 +865,9 @@
         "links": {
           "type": "object",
           "properties": {
+            "main": {
+              "type": "string"
+            },
             "repo": {
               "type": "string"
             },
@@ -2380,9 +2380,6 @@
         "file_path": {
           "type": "string"
         },
-        "scroll_to_top": {
-          "type": "string"
-        },
         "binary_file": {
           "type": "string"
         },
@@ -3503,6 +3500,9 @@
           "type": "string"
         },
         "compare_versions_title": {
+          "type": "string"
+        },
+        "version_selector_title": {
           "type": "string"
         },
         "summary": {
