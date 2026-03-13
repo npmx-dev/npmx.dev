@@ -161,7 +161,7 @@ const { data: skillsData } = useLazyFetch<SkillsListResponse>(
 )
 
 const { data: packageAnalysis } = usePackageAnalysis(packageName, requestedVersion)
-const { data: moduleReplacement } = useModuleReplacement(packageName)
+const { data: moduleReplacements } = useModuleReplacements(packageName)
 
 if (
   import.meta.server &&
@@ -963,7 +963,7 @@ const showSkeleton = shallowRef(false)
 
         <div class="space-y-6" :class="$style.areaVulns">
           <!-- Bad package warning -->
-          <PackageReplacement v-if="moduleReplacement" :replacement="moduleReplacement" />
+          <PackageReplacement v-if="moduleReplacements" :replacements="moduleReplacements" />
           <!-- Size / dependency increase notice -->
           <PackageSizeIncrease v-if="sizeDiff" :diff="sizeDiff" />
           <!-- Vulnerability scan -->
