@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { setResponseHeader } from 'h3'
-import type { DocsResponse } from '#shared/types'
-import { assertValidPackageName, fetchLatestVersion } from '#shared/utils/npm'
 
 definePageMeta({
   name: 'docs',

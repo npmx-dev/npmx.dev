@@ -1,11 +1,3 @@
-import type {
-  PackageFileTree,
-  SkillFileCounts,
-  SkillFrontmatter,
-  SkillListItem,
-  SkillWarning,
-} from '#shared/types'
-
 const MAX_SKILL_FILE_SIZE = 500 * 1024
 
 /**

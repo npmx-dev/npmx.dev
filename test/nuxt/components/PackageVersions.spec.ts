@@ -1,7 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import PackageVersions from '~/components/Package/Versions.vue'
-import type { SlimVersion } from '#shared/types'
 
 // Mock the fetchAllPackageVersions function
 const mockFetchAllPackageVersions = vi.fn()

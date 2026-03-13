@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import type { CompareResponse, FileChange } from '#shared/types'
 import type { RouteLocationRaw } from 'vue-router'
-import { diffRoute, packageRoute } from '~/utils/router'
 
 definePageMeta({
   name: 'diff',
@@ -99,8 +97,8 @@ const latestVersionDetailed = computed(() => {
   return pkg.value.versions[latestTag] ?? null
 })
 
-const normalizeRoutePath = (route: RouteLocationRaw) => {
-  const resolvedHref = router.resolve(route).href
+const normalizeRoutePath = (routeLocation: RouteLocationRaw) => {
+  const resolvedHref = router.resolve(routeLocation).href
   return resolvedHref.replace(/%7B/g, '{').replace(/%7D/g, '}')
 }
 

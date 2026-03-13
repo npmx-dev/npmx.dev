@@ -1,18 +1,7 @@
 <script setup lang="ts">
-import type { PackageVersionInfo, SlimVersion } from '#shared/types'
 import { compare, validRange } from 'semver'
 import type { RouteLocationRaw } from 'vue-router'
 import { fetchAllPackageVersions } from '~/utils/npm/api'
-import { NPMX_DOCS_SITE } from '#shared/utils/constants'
-import {
-  buildVersionToTagsMap,
-  filterExcludedTags,
-  filterVersions,
-  getPrereleaseChannel,
-  getVersionGroupKey,
-  getVersionGroupLabel,
-  isSameVersionGroup,
-} from '~/utils/versions'
 
 const props = defineProps<{
   packageName: string

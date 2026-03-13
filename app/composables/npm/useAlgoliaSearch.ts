@@ -1,4 +1,3 @@
-import type { NpmSearchResponse, NpmSearchResult } from '#shared/types'
 import {
   liteClient as algoliasearch,
   type LiteClient,

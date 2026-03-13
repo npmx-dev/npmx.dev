@@ -1,18 +1,7 @@
 <script setup lang="ts">
-import type {
-  InstallSizeResult,
-  NpmVersionDist,
-  PackageVersionInfo,
-  PackumentVersion,
-  ProvenanceDetails,
-  ReadmeResponse,
-  ReadmeMarkdownResponse,
-  SkillsListResponse,
-} from '#shared/types'
 import type { JsrPackageInfo } from '#shared/types/jsr'
 import type { IconClass } from '~/types'
 import { assertValidPackageName } from '#shared/utils/npm'
-import { joinURL } from 'ufo'
 import { areUrlsEquivalent } from '#shared/utils/url'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
 import { detectPublishSecurityDowngradeForVersion } from '~/utils/publish-security'
@@ -399,16 +388,7 @@ const totalDepsCount = computed(() => {
   return null
 })
 
-const repositoryUrl = computed(() => {
-  const repo = displayVersion.value?.repository
-  if (!repo?.url) return null
-  let url = normalizeGitUrl(repo.url)
-  // append `repository.directory` for monorepo packages
-  if (repo.directory) {
-    url = joinURL(`${url}/tree/HEAD`, repo.directory)
-  }
-  return url
-})
+const { repositoryUrl } = useRepositoryUrl(displayVersion)
 
 const { meta: repoMeta, repoRef, stars, starsLink, forks, forksLink } = useRepoMeta(repositoryUrl)
 
@@ -453,15 +433,6 @@ const fundingUrl = computed(() => {
 
   return typeof funding === 'string' ? funding : funding.url
 })
-
-function normalizeGitUrl(url: string): string {
-  return url
-    .replace(/^git\+/, '')
-    .replace(/^git:\/\//, 'https://')
-    .replace(/\.git$/, '')
-    .replace(/^ssh:\/\/git@github\.com/, 'https://github.com')
-    .replace(/^git@github\.com:/, 'https://github.com/')
-}
 
 // Check if a version has provenance/attestations
 // The dist object may have attestations that aren't in the base type

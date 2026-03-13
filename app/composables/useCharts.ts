@@ -1,5 +1,3 @@
-import type { MaybeRefOrGetter } from 'vue'
-import { toValue } from 'vue'
 import type {
   DailyDataPoint,
   DailyRawPoint,
@@ -8,18 +6,7 @@ import type {
   WeeklyDataPoint,
   YearlyDataPoint,
 } from '~/types/chart'
-import type { RepoRef } from '#shared/utils/git-providers'
-import { parseRepoUrl } from '#shared/utils/git-providers'
-import type { PackageMetaResponse } from '#shared/types'
-import { encodePackageName } from '#shared/utils/npm'
 import { fetchNpmDownloadsRange } from '~/utils/npm/api'
-import { parseIsoDate, toIsoDate, addDays } from '~/utils/date'
-import {
-  buildDailyEvolution,
-  buildWeeklyEvolution,
-  buildMonthlyEvolution,
-  buildYearlyEvolution,
-} from '~/utils/chart-data-buckets'
 
 export type PackumentLikeForTime = {
   time?: Record<string, string>

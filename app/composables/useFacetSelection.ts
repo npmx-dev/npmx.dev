@@ -1,13 +1,3 @@
-import type { ComparisonFacet, FacetInfo } from '#shared/types'
-import {
-  ALL_FACETS,
-  CATEGORY_ORDER,
-  DEFAULT_FACETS,
-  FACET_INFO,
-  FACETS_BY_CATEGORY,
-} from '#shared/types/comparison'
-import { useRouteQuery } from '@vueuse/router'
-
 /** Facet info enriched with i18n labels */
 export interface FacetInfoWithLabels extends Omit<FacetInfo, 'id'> {
   id: ComparisonFacet
