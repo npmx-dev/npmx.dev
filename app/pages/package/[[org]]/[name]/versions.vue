@@ -42,6 +42,7 @@ const { data: versionSummary } = useLazyAsyncData(
       time: data.time as Record<string, string>,
     }
   },
+  { deep: false },
 )
 
 const distTags = computed(() => versionSummary.value?.distTags ?? {})
@@ -51,7 +52,7 @@ const versionTimes = computed(() => versionSummary.value?.time ?? {})
 // ─── Phase 2: full metadata (loaded on first group expand) ────────────────────
 // Fetches deprecated status, provenance, and exact times needed for version rows.
 
-const fullVersionMap = ref<Map<
+const fullVersionMap = shallowRef<Map<
   string,
   { time?: string; deprecated?: string; hasProvenance: boolean }
 > | null>(null)
