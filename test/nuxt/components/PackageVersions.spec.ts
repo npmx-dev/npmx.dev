@@ -72,10 +72,15 @@ describe('PackageVersions', () => {
         },
       })
 
-      // Find version links (exclude anchor links that start with # and external links)
+      // Find version links (exclude anchor links, external links, and action buttons like "View all versions")
       const versionLinks = component
         .findAll('a')
-        .filter(a => !a.attributes('href')?.startsWith('#') && a.attributes('target') !== '_blank')
+        .filter(
+          a =>
+            !a.attributes('href')?.startsWith('#') &&
+            a.attributes('target') !== '_blank' &&
+            a.attributes('title') !== 'View all versions',
+        )
       expect(versionLinks.length).toBeGreaterThan(0)
       expect(versionLinks[0]?.text()).toBe('2.0.0')
     })
@@ -92,10 +97,15 @@ describe('PackageVersions', () => {
         },
       })
 
-      // Find version links (exclude anchor links that start with # and external links)
+      // Find version links (exclude anchor links, external links, and action buttons like "View all versions")
       const versionLinks = component
         .findAll('a')
-        .filter(a => !a.attributes('href')?.startsWith('#') && a.attributes('target') !== '_blank')
+        .filter(
+          a =>
+            !a.attributes('href')?.startsWith('#') &&
+            a.attributes('target') !== '_blank' &&
+            a.attributes('title') !== 'View all versions',
+        )
       expect(versionLinks.length).toBeGreaterThan(0)
       expect(versionLinks[0]?.text()).toBe('1.0.0')
     })
@@ -234,7 +244,12 @@ describe('PackageVersions', () => {
       // Find version links (exclude anchor links that start with # and external links)
       const versionLinks = component
         .findAll('a')
-        .filter(a => !a.attributes('href')?.startsWith('#') && a.attributes('target') !== '_blank')
+        .filter(
+          a =>
+            !a.attributes('href')?.startsWith('#') &&
+            a.attributes('target') !== '_blank' &&
+            a.attributes('title') !== 'View all versions',
+        )
       const versions = versionLinks.map(l => l.text())
       // Should be sorted by version descending
       expect(versions[0]).toBe('2.0.0')
@@ -257,7 +272,12 @@ describe('PackageVersions', () => {
       // Find version links (exclude anchor links that start with # and external links)
       const versionLinks = component
         .findAll('a')
-        .filter(a => !a.attributes('href')?.startsWith('#') && a.attributes('target') !== '_blank')
+        .filter(
+          a =>
+            !a.attributes('href')?.startsWith('#') &&
+            a.attributes('target') !== '_blank' &&
+            a.attributes('title') !== 'View all versions',
+        )
       expect(versionLinks.length).toBeGreaterThan(0)
       expect(versionLinks[0]?.classes()).toContain('text-red-800')
     })
@@ -277,7 +297,12 @@ describe('PackageVersions', () => {
       // Find version links (exclude anchor links that start with # and external links)
       const versionLinks = component
         .findAll('a')
-        .filter(a => !a.attributes('href')?.startsWith('#') && a.attributes('target') !== '_blank')
+        .filter(
+          a =>
+            !a.attributes('href')?.startsWith('#') &&
+            a.attributes('target') !== '_blank' &&
+            a.attributes('title') !== 'View all versions',
+        )
       expect(versionLinks.length).toBeGreaterThan(0)
       expect(versionLinks[0]?.attributes('title')).toContain('deprecated')
     })
@@ -609,7 +634,12 @@ describe('PackageVersions', () => {
       // Count visible version links (excluding anchor links that start with # and external links)
       const visibleLinks = component
         .findAll('a')
-        .filter(a => !a.attributes('href')?.startsWith('#') && a.attributes('target') !== '_blank')
+        .filter(
+          a =>
+            !a.attributes('href')?.startsWith('#') &&
+            a.attributes('target') !== '_blank' &&
+            a.attributes('title') !== 'View all versions',
+        )
       // Should have max 10 visible links in the main section
       expect(visibleLinks.length).toBeLessThanOrEqual(10)
     })
@@ -1015,7 +1045,12 @@ describe('PackageVersions', () => {
       // Find version links (exclude anchor and external links)
       const versionLinks = component
         .findAll('a')
-        .filter(a => !a.attributes('href')?.startsWith('#') && a.attributes('target') !== '_blank')
+        .filter(
+          a =>
+            !a.attributes('href')?.startsWith('#') &&
+            a.attributes('target') !== '_blank' &&
+            a.attributes('title') !== 'View all versions',
+        )
       const versions = versionLinks.map(l => l.text())
       expect(versions).not.toContain('3.0.0')
     })
