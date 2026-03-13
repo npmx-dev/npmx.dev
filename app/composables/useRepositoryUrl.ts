@@ -1,14 +1,5 @@
 import { joinURL } from 'ufo'
 
-function normalizeGitUrl(url: string): string {
-  return url
-    .replace(/^git\+/, '')
-    .replace(/^git:\/\//, 'https://')
-    .replace(/\.git$/, '')
-    .replace(/^ssh:\/\/git@github\.com/, 'https://github.com')
-    .replace(/^git@github\.com:/, 'https://github.com/')
-}
-
 type RequestedVersion = SlimPackument['requestedVersion'] | null
 
 type UseRepositoryUrlReturn = {
