@@ -135,57 +135,57 @@ watch(
   flex: 1;
   min-width: 0;
   max-width: calc(100% - var(--line-numbers-width));
+}
 
-  &:deep(pre) {
-    margin: 0;
-    padding: 0;
-    background: transparent !important;
-    overflow: visible;
-    max-width: 100%;
-  }
+.code-content:deep(pre) {
+  margin: 0;
+  padding: 0;
+  background: transparent !important;
+  overflow: visible;
+  max-width: 100%;
+}
 
-  &:deep(code) {
-    display: block;
-    padding: 0 1rem;
-    background: transparent !important;
-    max-width: 100%;
-  }
+.code-content:deep(code) {
+  display: block;
+  padding: 0 1rem;
+  background: transparent !important;
+  max-width: 100%;
+}
 
-  &:deep(.line) {
-    display: flex;
-    flex-wrap: wrap;
-    /* Ensure consistent height matching line numbers */
-    line-height: 24px;
-    min-height: 24px;
-    white-space: pre-wrap;
-    overflow: hidden;
-    transition: background-color 0.1s;
-    max-width: 100%;
-  }
+.code-content:deep(.line) {
+  display: flex;
+  flex-wrap: wrap;
+  /* Ensure consistent height matching line numbers */
+  line-height: 24px;
+  min-height: 24px;
+  white-space: pre-wrap;
+  overflow: hidden;
+  transition: background-color 0.1s;
+  max-width: 100%;
+}
 
-  /* Highlighted lines in code content - extend full width with negative margin */
-  &:deep(.line.highlighted) {
-    @apply bg-yellow-500/20;
-    margin: 0 -1rem;
-    padding: 0 1rem;
-  }
+/* Highlighted lines in code content - extend full width with negative margin */
+.code-content:deep(.line.highlighted) {
+  @apply bg-yellow-500/20;
+  margin: 0 -1rem;
+  padding: 0 1rem;
+}
 
-  /* Clickable import links */
-  &:deep(.import-link) {
-    color: inherit;
-    text-decoration: underline;
-    text-decoration-style: dotted;
-    text-decoration-color: rgba(158, 203, 255, 0.5); /* syntax.str with transparency */
-    text-underline-offset: 2px;
-    transition:
-      text-decoration-color 0.15s,
-      text-decoration-style 0.15s;
-    cursor: pointer;
-  }
+/* Clickable import links */
+.code-content:deep(.import-link) {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: rgba(158, 203, 255, 0.5); /* syntax.str with transparency */
+  text-underline-offset: 2px;
+  transition:
+    text-decoration-color 0.15s,
+    text-decoration-style 0.15s;
+  cursor: pointer;
+}
 
-  &:deep(.import-link:hover) {
-    text-decoration-style: solid;
-    text-decoration-color: #9ecbff; /* syntax.str - light blue */
-  }
+.code-content:deep(.import-link:hover) {
+  text-decoration-style: solid;
+  text-decoration-color: #9ecbff; /* syntax.str - light blue */
 }
 </style>
