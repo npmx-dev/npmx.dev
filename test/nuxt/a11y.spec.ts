@@ -550,7 +550,7 @@ describe('component accessibility audits', () => {
           to: 'http://example.com',
           disabled: true,
           variant: 'button-secondary',
-          size: 'small',
+          size: 'sm',
         },
         slots: { default: 'Button link content' },
       })

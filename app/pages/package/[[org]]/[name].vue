@@ -713,7 +713,7 @@ const showSkeleton = shallowRef(false)
                 <ButtonGroup v-if="dependencyCount > 0" class="ms-auto">
                   <LinkBase
                     variant="button-secondary"
-                    size="small"
+                    size="sm"
                     :to="`https://npmgraph.js.org/?q=${pkg.name}${resolvedVersion ? `@${resolvedVersion}` : ''}`"
                     :title="$t('package.stats.view_dependency_graph')"
                     classicon="i-lucide:network -rotate-90"
@@ -723,7 +723,7 @@ const showSkeleton = shallowRef(false)
 
                   <LinkBase
                     variant="button-secondary"
-                    size="small"
+                    size="sm"
                     :to="`https://node-modules.dev/grid/depth#install=${pkg.name}${resolvedVersion ? `@${resolvedVersion}` : ''}`"
                     :title="$t('package.stats.inspect_dependency_tree')"
                     classicon="i-lucide:table"
