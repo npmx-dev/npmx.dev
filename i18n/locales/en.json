@@ -901,7 +901,7 @@
       "paginated": "Paginated",
       "items_per_page": "Items per page",
       "per_page": "{count} / page",
-      "showing": "{start}-{end} of {total}",
+      "showing": "{range} of {total}",
       "previous": "Previous page",
       "next": "Next page",
       "nav_label": "Pagination"

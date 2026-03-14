@@ -882,7 +882,7 @@
       "paginated": "По сторінках",
       "items_per_page": "Елементів на сторінці",
       "per_page": "{count} / сторінка",
-      "showing": "{start}-{end} з {total}",
+      "showing": "{range} з {total}",
       "previous": "Попередня сторінка",
       "next": "Наступна сторінка",
       "nav_label": "Посторінково"
