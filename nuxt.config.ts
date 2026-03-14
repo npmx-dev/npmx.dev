@@ -286,6 +286,8 @@ export default defineNuxtConfig({
     enabled: !isStorybook,
     defaults: {
       component: 'Default',
+      width: 1200,
+      height: 630,
     },
     fonts: [
       { name: 'Geist', weight: 400, path: '/fonts/Geist-Regular.ttf' },
