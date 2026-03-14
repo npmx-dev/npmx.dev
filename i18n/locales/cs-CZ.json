@@ -467,11 +467,6 @@
       "smoothing": "Vyhlazování",
       "known_anomalies": "Známé anomálie",
       "known_anomalies_description": "Interpoluje přes známé špičky stažení způsobené boty nebo problémy s CI.",
-      "known_anomalies_ranges": "Rozsahy anomálií",
-      "known_anomalies_range": "Od {start} do {end}",
-      "known_anomalies_range_named": "{packageName}: od {start} do {end}",
-      "known_anomalies_none": "Žádné známé anomálie pro tento balíček. | Žádné známé anomálie pro tyto balíčky.",
-      "known_anomalies_contribute": "Přispět daty o anomáliích",
       "apply_correction": "Aplikovat korekci",
       "copy_alt": {
         "trend_none": "převážně stabilní",

@@ -418,11 +418,6 @@
       "smoothing": "Изглаждане",
       "known_anomalies": "Известни аномалии",
       "known_anomalies_description": "Интерполира известни скокове в изтеглянията, причинени от ботове или CI проблеми.",
-      "known_anomalies_ranges": "Диапазони на аномалии",
-      "known_anomalies_range": "От {start} до {end}",
-      "known_anomalies_range_named": "{packageName}: от {start} до {end}",
-      "known_anomalies_none": "Няма известни аномалии за този пакет. | Няма известни аномалии за тези пакети.",
-      "known_anomalies_contribute": "Допринесете данни за аномалии",
       "apply_correction": "Прилагане на корекция",
       "copy_alt": {
         "trend_none": "предимно стабилна",

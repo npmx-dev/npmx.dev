@@ -469,11 +469,6 @@
       "prediction": "Prognoza",
       "known_anomalies": "Znane anomalie",
       "known_anomalies_description": "Interpoluje dane, pomijając znane skoki ilości pobrań spowodowane botami lub problemami z CI",
-      "known_anomalies_ranges": "Zakresy anomalii",
-      "known_anomalies_range": "Od {start} do {end}",
-      "known_anomalies_range_named": "{packageName}: od {start} do {end}",
-      "known_anomalies_none": "Brak znanych anomalii dla tego pakietu. | Brak znanych anomalii dla tych pakietów.",
-      "known_anomalies_contribute": "Dodaj dane o anomaliach",
       "apply_correction": "Zastosuj poprawki",
       "copy_alt": {
         "trend_none": "przeważnie płaski",

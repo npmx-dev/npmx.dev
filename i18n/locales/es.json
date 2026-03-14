@@ -418,11 +418,6 @@
       "smoothing": "Suavizado",
       "known_anomalies": "Anomalías conocidas",
       "known_anomalies_description": "Interpola sobre picos de descarga conocidos causados por bots o problemas de CI.",
-      "known_anomalies_ranges": "Rangos de anomalías",
-      "known_anomalies_range": "Desde {start} hasta {end}",
-      "known_anomalies_range_named": "{packageName}: desde {start} hasta {end}",
-      "known_anomalies_none": "No hay anomalías conocidas para este paquete. | No hay anomalías conocidas para estos paquetes.",
-      "known_anomalies_contribute": "Contribuir con datos de anomalías",
       "apply_correction": "Aplicar corrección",
       "copy_alt": {
         "trend_none": "mayormente plano",

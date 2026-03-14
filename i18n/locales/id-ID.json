@@ -472,11 +472,6 @@
       "prediction": "Prediksi tren",
       "known_anomalies": "Anomali yang diketahui",
       "known_anomalies_description": "Menyisipkan lonjakan unduhan yang diketahui akibat bot atau masalah CI.",
-      "known_anomalies_ranges": "Batas anomali",
-      "known_anomalies_range": "Dari {start} hingga {end}",
-      "known_anomalies_range_named": "{packageName}: dari {start} hingga {end}",
-      "known_anomalies_none": "Tidak ada anomali yang diketahui untuk paket ini. | Tidak ada anomali yang diketahui untuk paket-paket ini.",
-      "known_anomalies_contribute": "Berkontribusilah pada data anomali",
       "apply_correction": "Terapkan koreksi",
       "copy_alt": {
         "trend_none": "sebagian besar datar",

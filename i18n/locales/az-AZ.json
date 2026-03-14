@@ -457,11 +457,6 @@
       "smoothing": "Hamarlama",
       "known_anomalies": "Bilinən anomaliyalar",
       "known_anomalies_description": "Botlar və ya CI problemlərindən yaranan bilinən endirmə sıçrayışlarını interpolyasiya edir.",
-      "known_anomalies_ranges": "Anomaliya aralıqları",
-      "known_anomalies_range": "{start}-dən {end}-ə",
-      "known_anomalies_range_named": "{packageName}: {start}-dən {end}-ə",
-      "known_anomalies_none": "Bu paket üçün bilinən anomaliya yoxdur. | Bu paketlər üçün bilinən anomaliya yoxdur.",
-      "known_anomalies_contribute": "Anomaliya məlumatı əlavə et",
       "apply_correction": "Düzəliş tətbiq et",
       "copy_alt": {
         "trend_none": "əsasən sabit",
