@@ -108,14 +108,11 @@ const versionGroups = computed(() => {
 })
 
 async function toggleGroup(groupKey: string) {
-  console.log('toggleGroup', groupKey)
   if (expandedGroups.value.has(groupKey)) {
     expandedGroups.value.delete(groupKey)
     return
   }
   expandedGroups.value.add(groupKey)
-  console.log('toggleGroup expanded', fullVersionMap.value)
-  console.log('toggleGroup expanded', !fullVersionMap.value)
   if (!fullVersionMap.value) {
     loadingGroup.value = groupKey
     try {
@@ -205,7 +202,7 @@ const selectedChangelogContent = computed(() => {
         <div class="flex items-center gap-2 min-w-0">
           <NuxtLink
             :to="packageRoute(packageName)"
-            class="font-mono text-lg font-medium hover:text-fg-muted transition-colors min-w-0 truncate"
+            class="text-lg font-medium hover:text-fg-muted transition-colors min-w-0 truncate"
             :title="packageName"
             dir="ltr"
           >
@@ -213,7 +210,7 @@ const selectedChangelogContent = computed(() => {
             >{{ orgName ? packageName.replace(`@${orgName}/`, '') : packageName }}
           </NuxtLink>
           <span class="text-fg-subtle shrink-0">/</span>
-          <span class="font-mono text-sm text-fg-muted shrink-0">Version History</span>
+          <h1 class="text-sm text-fg-muted shrink-0">Version History</h1>
         </div>
         <InputBase
           v-model="versionFilter"
@@ -221,7 +218,7 @@ const selectedChangelogContent = computed(() => {
           placeholder="Filter versions…"
           aria-label="Filter versions"
           size="small"
-          class="w-36 sm:w-44 font-mono"
+          class="w-36 sm:w-44"
         />
       </div>
     </header>
@@ -252,7 +249,7 @@ const selectedChangelogContent = computed(() => {
             </div>
             <LinkBase
               :to="packageRoute(packageName, tagRows[0].version)"
-              class="font-mono text-2xl font-semibold tracking-tight after:absolute after:inset-0 after:content-['']"
+              class="text-2xl font-semibold tracking-tight after:absolute after:inset-0 after:content-['']"
               dir="ltr"
               >{{ tagRows[0].version }}</LinkBase
             >
@@ -300,7 +297,7 @@ const selectedChangelogContent = computed(() => {
             <!-- Version -->
             <LinkBase
               :to="packageRoute(packageName, row.version)"
-              class="font-mono text-sm flex-1 min-w-0 after:absolute after:inset-0 after:content-['']"
+              class="text-sm flex-1 min-w-0 after:absolute after:inset-0 after:content-['']"
               dir="ltr"
             >
               {{ row.version }}
@@ -345,7 +342,7 @@ const selectedChangelogContent = computed(() => {
           role="status"
           aria-live="polite"
         >
-          No versions match <span class="font-mono">{{ versionFilter }}</span>
+          No versions match {{ versionFilter }}
         </div>
 
         <!-- List + changelog side panel -->
@@ -383,12 +380,10 @@ const selectedChangelogContent = computed(() => {
                           aria-hidden="true"
                         />
                       </span>
-                      <span class="font-mono text-sm font-medium">{{ item.label }}</span>
+                      <span class="text-sm font-medium">{{ item.label }}</span>
                       <span class="text-xs text-fg-subtle">({{ item.versions.length }})</span>
                       <span class="ms-auto flex items-center gap-3 shrink-0">
-                        <span class="font-mono text-xs text-fg-muted" dir="ltr">{{
-                          item.versions[0]
-                        }}</span>
+                        <span class="text-xs text-fg-muted" dir="ltr">{{ item.versions[0] }}</span>
                         <DateTime
                           v-if="getVersionTime(item.versions[0])"
                           :datetime="getVersionTime(item.versions[0])!"
@@ -420,7 +415,7 @@ const selectedChangelogContent = computed(() => {
                           <LinkBase
                             :to="packageRoute(packageName, item.version)"
                             :prefetch="false"
-                            class="font-mono text-sm after:absolute after:inset-0 after:content-['']"
+                            class="text-sm after:absolute after:inset-0 after:content-['']"
                             :class="
                               fullVersionMap?.get(item.version)?.deprecated
                                 ? 'text-red-700 dark:text-red-400'
@@ -519,12 +514,10 @@ const selectedChangelogContent = computed(() => {
                     <span class="w-4 h-4 flex items-center justify-center text-fg-subtle shrink-0">
                       <span class="i-lucide:chevron-right w-3 h-3 rtl-flip" aria-hidden="true" />
                     </span>
-                    <span class="font-mono text-sm font-medium">{{ item.label }}</span>
+                    <span class="text-sm font-medium">{{ item.label }}</span>
                     <span class="text-xs text-fg-subtle">({{ item.versions.length }})</span>
                     <span class="ms-auto flex items-center gap-3 shrink-0">
-                      <span class="font-mono text-xs text-fg-muted" dir="ltr">{{
-                        item.versions[0]
-                      }}</span>
+                      <span class="text-xs text-fg-muted" dir="ltr">{{ item.versions[0] }}</span>
                       <DateTime
                         v-if="getVersionTime(item.versions[0] ?? '')"
                         :datetime="getVersionTime(item.versions[0] ?? '')!"
@@ -557,7 +550,7 @@ const selectedChangelogContent = computed(() => {
                       class="i-lucide:scroll-text w-3.5 h-3.5 text-fg-subtle shrink-0"
                       aria-hidden="true"
                     />
-                    <span class="font-mono text-sm font-medium truncate" dir="ltr">
+                    <span class="text-sm font-medium truncate" dir="ltr">
                       v{{ selectedChangelogVersion }}
                     </span>
                   </div>
