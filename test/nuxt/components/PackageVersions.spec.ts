@@ -72,14 +72,14 @@ describe('PackageVersions', () => {
         },
       })
 
-      // Find version links (exclude anchor links, external links, and action buttons like "View all versions")
+      // Find version links (exclude anchor links, external links, and action buttons)
       const versionLinks = component
         .findAll('a')
         .filter(
           a =>
             !a.attributes('href')?.startsWith('#') &&
             a.attributes('target') !== '_blank' &&
-            a.attributes('title') !== 'View all versions',
+            !a.attributes('data-testid')?.includes('view-all-versions'),
         )
       expect(versionLinks.length).toBeGreaterThan(0)
       expect(versionLinks[0]?.text()).toBe('2.0.0')
@@ -97,14 +97,14 @@ describe('PackageVersions', () => {
         },
       })
 
-      // Find version links (exclude anchor links, external links, and action buttons like "View all versions")
+      // Find version links (exclude anchor links, external links, and action buttons)
       const versionLinks = component
         .findAll('a')
         .filter(
           a =>
             !a.attributes('href')?.startsWith('#') &&
             a.attributes('target') !== '_blank' &&
-            a.attributes('title') !== 'View all versions',
+            !a.attributes('data-testid')?.includes('view-all-versions'),
         )
       expect(versionLinks.length).toBeGreaterThan(0)
       expect(versionLinks[0]?.text()).toBe('1.0.0')
@@ -248,7 +248,7 @@ describe('PackageVersions', () => {
           a =>
             !a.attributes('href')?.startsWith('#') &&
             a.attributes('target') !== '_blank' &&
-            a.attributes('title') !== 'View all versions',
+            !a.attributes('data-testid')?.includes('view-all-versions'),
         )
       const versions = versionLinks.map(l => l.text())
       // Should be sorted by version descending
@@ -276,7 +276,7 @@ describe('PackageVersions', () => {
           a =>
             !a.attributes('href')?.startsWith('#') &&
             a.attributes('target') !== '_blank' &&
-            a.attributes('title') !== 'View all versions',
+            !a.attributes('data-testid')?.includes('view-all-versions'),
         )
       expect(versionLinks.length).toBeGreaterThan(0)
       expect(versionLinks[0]?.classes()).toContain('text-red-800')
@@ -301,7 +301,7 @@ describe('PackageVersions', () => {
           a =>
             !a.attributes('href')?.startsWith('#') &&
             a.attributes('target') !== '_blank' &&
-            a.attributes('title') !== 'View all versions',
+            !a.attributes('data-testid')?.includes('view-all-versions'),
         )
       expect(versionLinks.length).toBeGreaterThan(0)
       expect(versionLinks[0]?.attributes('title')).toContain('deprecated')
@@ -638,7 +638,7 @@ describe('PackageVersions', () => {
           a =>
             !a.attributes('href')?.startsWith('#') &&
             a.attributes('target') !== '_blank' &&
-            a.attributes('title') !== 'View all versions',
+            !a.attributes('data-testid')?.includes('view-all-versions'),
         )
       // Should have max 10 visible links in the main section
       expect(visibleLinks.length).toBeLessThanOrEqual(10)
@@ -1049,7 +1049,7 @@ describe('PackageVersions', () => {
           a =>
             !a.attributes('href')?.startsWith('#') &&
             a.attributes('target') !== '_blank' &&
-            a.attributes('title') !== 'View all versions',
+            !a.attributes('data-testid')?.includes('view-all-versions'),
         )
       const versions = versionLinks.map(l => l.text())
       expect(versions).not.toContain('3.0.0')

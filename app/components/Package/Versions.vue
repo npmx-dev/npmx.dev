@@ -536,6 +536,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
           class="text-fg-subtle hover:text-fg transition-colors min-w-6 min-h-6 p-1 rounded"
           :title="$t('package.versions.view_all_versions')"
           classicon="i-lucide:history"
+          data-testid="view-all-versions-link"
         >
           <span class="sr-only">{{ $t('package.versions.view_all_versions') }}</span>
         </LinkBase>
