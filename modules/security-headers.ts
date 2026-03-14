@@ -4,8 +4,10 @@ import { TRUSTED_IMAGE_DOMAINS } from '#server/utils/image-proxy'
 
 /**
  * Adds Content-Security-Policy and security headers to all HTML responses
- * via a Nitro route rule. This covers both SSR/ISR pages and prerendered
- * pages (which don't run server middleware).
+ * via Nitro route rules. This covers both SSR/ISR pages and prerendered
+ * pages (which are served as static files on Vercel and don't hit the server).
+ *
+ * API routes opt out via `false` to disable the inherited headers.
  *
  * Current policy uses 'unsafe-inline' for scripts and styles because:
  * - Nuxt injects inline scripts for hydration and payload transfer
@@ -54,18 +56,15 @@ export default defineNuxtModule({
       'Referrer-Policy': 'strict-origin-when-cross-origin',
     }
 
-    // Apply to all page routes via a catch-all rule.
-    // API routes are excluded — CSP doesn't make sense for JSON responses.
     nuxt.options.routeRules ??= {}
     nuxt.options.routeRules['/**'] = {
       ...nuxt.options.routeRules['/**'],
       headers,
     }
+    // Disable page-specific headers on API routes — CSP doesn't apply to JSON.
     nuxt.options.routeRules['/api/**'] = {
       ...nuxt.options.routeRules['/api/**'],
-      headers: {
-        'X-Content-Type-Options': 'nosniff',
-      },
+      headers: false,
     }
   },
 })
