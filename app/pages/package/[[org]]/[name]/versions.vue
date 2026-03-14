@@ -362,17 +362,27 @@ const selectedChangelogContent = computed(() => {
                       <span
                         class="w-4 h-4 flex items-center justify-center text-fg-subtle shrink-0"
                       >
-                        <span
-                          v-if="loadingGroup === item.groupKey"
-                          class="i-svg-spinners:ring-resize w-3 h-3"
-                          aria-hidden="true"
-                        />
-                        <span
-                          v-else
-                          class="i-lucide:chevron-right w-3 h-3 transition-transform duration-200 rtl-flip"
-                          :class="expandedGroups.has(item.groupKey) ? 'rotate-90' : ''"
-                          aria-hidden="true"
-                        />
+                        <Transition name="icon-swap" mode="out-in">
+                          <span
+                            v-if="loadingGroup === item.groupKey"
+                            key="loading"
+                            class="i-svg-spinners:ring-resize w-3 h-3"
+                            aria-hidden="true"
+                          />
+                          <span
+                            v-else-if="isFilterActive"
+                            key="search"
+                            class="i-lucide:search w-3 h-3 animate-searching"
+                            aria-hidden="true"
+                          />
+                          <span
+                            v-else
+                            key="chevron"
+                            class="i-lucide:chevron-right w-3 h-3 transition-transform duration-200 rtl-flip"
+                            :class="expandedGroups.has(item.groupKey) ? 'rotate-90' : ''"
+                            aria-hidden="true"
+                          />
+                        </Transition>
                       </span>
                       <span class="text-sm font-medium">{{ item.label }}</span>
                       <span class="text-xs text-fg-subtle">({{ item.versions.length }})</span>
@@ -574,6 +584,42 @@ const selectedChangelogContent = computed(() => {
 </template>
 
 <style scoped>
+.icon-swap-enter-active {
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+
+.icon-swap-leave-active {
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+  animation: none !important;
+}
+
+.icon-swap-enter-from {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+.icon-swap-leave-to {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+@keyframes searching {
+  from {
+    transform: rotate(0deg) translateY(-2px) rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg) translateY(-2px) rotate(-360deg);
+  }
+}
+
+.animate-searching {
+  animation: searching 1.2s linear infinite;
+}
+
 .changelog-body {
   color: var(--fg-muted);
   line-height: 1.6;
