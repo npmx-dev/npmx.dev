@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { JsrPackageInfo } from '#shared/types/jsr'
-import type { IconClass } from '~/types'
 import { assertValidPackageName } from '#shared/utils/npm'
 import { areUrlsEquivalent } from '#shared/utils/url'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
@@ -392,24 +391,7 @@ const { repositoryUrl } = useRepositoryUrl(displayVersion)
 
 const { meta: repoMeta, repoRef, stars, starsLink, forks, forksLink } = useRepoMeta(repositoryUrl)
 
-const PROVIDER_ICONS: Record<string, IconClass> = {
-  github: 'i-simple-icons:github',
-  gitlab: 'i-simple-icons:gitlab',
-  bitbucket: 'i-simple-icons:bitbucket',
-  codeberg: 'i-simple-icons:codeberg',
-  gitea: 'i-simple-icons:gitea',
-  forgejo: 'i-simple-icons:forgejo',
-  gitee: 'i-simple-icons:gitee',
-  sourcehut: 'i-simple-icons:sourcehut',
-  tangled: 'i-custom:tangled',
-  radicle: 'i-lucide:network', // Radicle is a P2P network, using network icon
-}
-
-const repoProviderIcon = computed((): IconClass => {
-  const provider = repoRef.value?.provider
-  if (!provider) return 'i-simple-icons:github'
-  return PROVIDER_ICONS[provider] ?? 'i-lucide:code'
-})
+const repoProviderIcon = useProviderIcon(() => repoRef.value?.provider)
 
 const viewOnGitProvider = useViewOnGitProvider(() => repoRef.value?.provider)
 
@@ -634,14 +616,32 @@ const showSkeleton = shallowRef(false)
                   {{ $t('package.links.fund') }}
                 </LinkBase>
               </li>
+              <!-- Mobile-only: Docs + Code + Compare links -->
+              <li class="sm:hidden">
+                <LinkBase
+                  :to="{ name: 'compare', query: { packages: pkg.name } }"
+                  classicon="i-lucide:git-compare"
+                >
+                  {{ $t('package.links.compare') }}
+                </LinkBase>
+              </li>
+              <li
+                v-if="
+                  displayVersion &&
+                  latestVersion &&
+                  displayVersion.version !== latestVersion.version
+                "
+                class="sm:hidden"
+              >
+                <NuxtLink
+                  :to="diffRoute(pkg.name, displayVersion.version, latestVersion.version)"
+                  class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+                >
+                  <span class="i-lucide:diff w-4 h-4" aria-hidden="true" />
+                  {{ $t('compare.compare_versions') }}
+                </NuxtLink>
+              </li>
             </ul>
-            <PackageMetricsBadges
-              v-if="resolvedVersion"
-              :package-name="packageName"
-              :version="resolvedVersion"
-              :is-binary="isBinaryOnly"
-              class="self-baseline mt-4"
-            />
           </div>
 
           <div

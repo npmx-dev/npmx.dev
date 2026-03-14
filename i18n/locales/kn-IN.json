@@ -125,6 +125,7 @@
       "version": "ಈ ಆವೃತ್ತಿ ಅಮಾನ್ಯಗೊಳಿಸಲಾಗಿದೆ.",
       "no_reason": "ಕಾರಣ ನೀಡಲಾಗಿಲ್ಲ"
     },
+    "size_increase": {},
     "replacement": {
       "title": "ನಿಮಗೆ ಈ ಅವಲಂಬನೆ ಅಗತ್ಯವಿಲ್ಲದಿರಬಹುದು.",
       "native": "ಇದನ್ನು {replacement} ಮೂಲಕ ಬದಲಾಯಿಸಬಹುದು, ಇದು Node {nodeVersion} ರಿಂದ ಲಭ್ಯವಿದೆ.",
@@ -220,7 +221,8 @@
       "more_tagged": "{count} ಇನ್ನಷ್ಟು ಟ್ಯಾಗ್ ಮಾಡಲಾಗಿದೆ",
       "all_covered": "ಎಲ್ಲಾ ಆವೃತ್ತಿಗಳು ಮೇಲಿನ ಟ್ಯಾಗ್‌ಗಳಿಂದ ಒಳಗೊಂಡಿವೆ",
       "deprecated_title": "{version} (ಅಮಾನ್ಯಗೊಳಿಸಲಾಗಿದೆ)",
-      "view_all": "{count} ಆವೃತ್ತಿ ನೋಡಿ | ಎಲ್ಲಾ {count} ಆವೃತ್ತಿಗಳನ್ನು ನೋಡಿ"
+      "view_all": "{count} ಆವೃತ್ತಿ ನೋಡಿ | ಎಲ್ಲಾ {count} ಆವೃತ್ತಿಗಳನ್ನು ನೋಡಿ",
+      "copy_alt": {}
     },
     "dependencies": {
       "title": "ಅವಲಂಬನೆಗಳು ({count})",
@@ -269,7 +271,8 @@
       "date_range_multiline": "{start}\nರಿಂದ {end}",
       "download_file": "{fileType} ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ",
       "toggle_annotator": "ಅನೋಟೇಟರ್ ಟಾಗಲ್ ಮಾಡಿ",
-      "items": {}
+      "items": {},
+      "copy_alt": {}
     },
     "downloads": {
       "title": "ವಾರದ ಡೌನ್‌ಲೋಡ್‌ಗಳು"
@@ -698,6 +701,8 @@
         "managers": "ನಿರ್ವಾಹಕರು"
       }
     },
+    "sponsors": {},
+    "oss_partners": {},
     "team": {},
     "contributors": {
       "title": "ಸಹಯೋಗಿಗಳು",
@@ -829,7 +834,9 @@
       },
       "values": {},
       "trends": {}
-    }
+    },
+    "file_filter_option": {},
+    "filter": {}
   },
   "privacy_policy": {
     "cookies": {
@@ -850,5 +857,6 @@
     "measures": {},
     "limitations": {},
     "contact": {}
-  }
+  },
+  "changelog": {}
 }

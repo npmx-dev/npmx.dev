@@ -295,7 +295,8 @@
       "code": "code",
       "docs": "docs",
       "fund": "fund",
-      "compare": "compare"
+      "compare": "compare",
+      "changelog": "changelog"
     },
     "likes": {
       "like": "Like this package",
@@ -1364,6 +1365,15 @@
         "some": "some",
         "all": "all"
       }
+    }
+  },
+  "changelog": {
+    "pre_release": "Pre-release",
+    "draft": "Draft",
+    "no_logs": "Sorry, this package does not publish changelogs, or its changelog format is not supported.",
+    "error": {
+      "p1": "Sorry, the changelog for {package} couldn't be loaded",
+      "p2": "Please try again later or {viewon}"
     }
   }
 }

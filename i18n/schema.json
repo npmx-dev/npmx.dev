@@ -891,6 +891,9 @@
             },
             "compare": {
               "type": "string"
+            },
+            "changelog": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -4095,6 +4098,33 @@
                 }
               },
               "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "changelog": {
+      "type": "object",
+      "properties": {
+        "pre_release": {
+          "type": "string"
+        },
+        "draft": {
+          "type": "string"
+        },
+        "no_logs": {
+          "type": "string"
+        },
+        "error": {
+          "type": "object",
+          "properties": {
+            "p1": {
+              "type": "string"
+            },
+            "p2": {
+              "type": "string"
             }
           },
           "additionalProperties": false
