@@ -23,7 +23,7 @@
     "@nuxtjs/mdc": "0.20.1",
     "better-sqlite3": "12.6.2",
     "docus": "5.7.0",
-    "nuxt": "4.3.1",
+    "nuxt": "4.4.2",
     "tailwindcss": "4.2.1"
   }
 }
