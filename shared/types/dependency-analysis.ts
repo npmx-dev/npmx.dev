@@ -181,6 +181,19 @@ export interface DeprecatedPackageInfo {
 }
 
 /**
+ * URL-based dependency info (git:, https:)
+ */
+export interface UrlDependencyInfo {
+  name: string
+  /** The git: or https: URL */
+  url: string
+  /** Depth in dependency tree: root (0), direct (1), transitive (2+) */
+  depth: DependencyDepth
+  /** Dependency path from root package */
+  path: string[]
+}
+
+/**
  * Result of dependency tree analysis
  */
 export interface VulnerabilityTreeResult {
@@ -192,6 +205,8 @@ export interface VulnerabilityTreeResult {
   vulnerablePackages: PackageVulnerabilityInfo[]
   /** All deprecated packages in the tree */
   deprecatedPackages: DeprecatedPackageInfo[]
+  /** All dependencies using git: or https: URLs */
+  urlDependencies: UrlDependencyInfo[]
   /** Total packages analyzed */
   totalPackages: number
   /** Number of packages that could not be checked (OSV query failed) */
