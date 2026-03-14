@@ -2121,6 +2121,7 @@ describe('component accessibility audits', () => {
             title: '1.0.0',
             publishedAt: '2026-02-11 10:00:00.000Z',
           },
+          tocHeaderClass: 'toc',
         },
       })
       const results = await runAxe(component)
