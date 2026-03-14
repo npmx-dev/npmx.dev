@@ -55,6 +55,10 @@
     "links": "Links",
     "tap_to_search": "Toque para pesquisar"
   },
+  "blog": {
+    "author": {},
+    "atproto": {}
+  },
   "settings": {
     "title": "configurações",
     "tagline": "personalize sua experiência npmx",
@@ -88,6 +92,7 @@
     "edit_on_github": "Editar no GitHub",
     "view_guide": "Guia de tradução"
   },
+  "error": {},
   "common": {
     "loading": "Carregando...",
     "loading_more": "Carregando mais...",
@@ -114,6 +119,9 @@
       "github": "Ver no GitHub"
     }
   },
+  "profile": {
+    "invite": {}
+  },
   "package": {
     "not_found": "Pacote não encontrado",
     "not_found_message": "O pacote não pôde ser encontrado.",
@@ -126,6 +134,7 @@
       "version": "Esta versão foi descontinuada.",
       "no_reason": "Nenhum motivo fornecido"
     },
+    "size_increase": {},
     "replacement": {
       "title": "Você pode não precisar desta dependência.",
       "native": "Isso pode ser substituído por {replacement}, disponível desde Node {nodeVersion}.",
@@ -133,7 +142,6 @@
       "documented": "A {community} marcou este pacote como tendo alternativas mais performáticas.",
       "none": "Este pacote foi marcado como não mais necessário, e sua funcionalidade provavelmente está disponível nativamente em todas as engines.",
       "learn_more": "Saiba mais",
-      "mdn": "MDN",
       "community": "comunidade"
     },
     "stats": {
@@ -221,7 +229,8 @@
       "more_tagged": "{count} mais marcadas",
       "all_covered": "Todas as versões estão cobertas pelas tags acima",
       "deprecated_title": "{version} (descontinuada)",
-      "view_all": "Ver {count} versão | Ver todas as {count} versões"
+      "view_all": "Ver {count} versão | Ver todas as {count} versões",
+      "copy_alt": {}
     },
     "dependencies": {
       "title": "Dependências ({count})",
@@ -270,7 +279,8 @@
       "date_range_multiline": "{start}\npara {end}",
       "download_file": "Baixar {fileType}",
       "toggle_annotator": "Alternar anotador",
-      "items": {}
+      "items": {},
+      "copy_alt": {}
     },
     "downloads": {
       "title": "Downloads Semanais"
@@ -699,6 +709,8 @@
         "managers": "gerenciadores de pacotes"
       }
     },
+    "sponsors": {},
+    "oss_partners": {},
     "team": {},
     "contributors": {
       "title": "Contribuidores",
@@ -719,6 +731,7 @@
         "description": "Converse, faça perguntas e compartilhe ideias.",
         "cta": "Junte-se ao Discord"
       },
+      "builders": {},
       "follow": {
         "title": "Mantenha-se atualizado",
         "description": "Descubra as novidades sobre npmx.",
@@ -830,7 +843,14 @@
       },
       "values": {},
       "trends": {}
-    }
+    },
+    "file_filter_option": {},
+    "filter": {}
+  },
+  "pds": {
+    "join": {},
+    "server": {},
+    "community": {}
   },
   "privacy_policy": {
     "cookies": {

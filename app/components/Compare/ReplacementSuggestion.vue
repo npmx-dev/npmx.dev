@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ModuleReplacement } from 'module-replacements'
+import { resolveReplacementUrl } from '~/utils/resolve-replacement-url'
 
 const props = defineProps<{
   packageName: string
@@ -14,9 +15,11 @@ const emit = defineEmits<{
   addNoDep: []
 }>()
 
-const docUrl = computed(() => {
-  if (props.replacement.type !== 'documented' || !props.replacement.docPath) return null
-  return `https://e18e.dev/docs/replacements/${props.replacement.docPath}.html`
+const docUrl = computed(() => resolveReplacementUrl(props.replacement.url))
+
+const nodeVersion = computed(() => {
+  const nodeEngine = props.replacement.engines?.find(e => e.engine === 'nodejs')
+  return nodeEngine?.minVersion || null
 })
 </script>
 
@@ -38,16 +41,20 @@ const docUrl = computed(() => {
       <p class="text-xs mt-0.5 opacity-80">
         <template v-if="replacement.type === 'native'">
           {{
-            $t('package.replacement.native', {
-              replacement: replacement.replacement,
-              nodeVersion: replacement.nodeVersion,
-            })
+            nodeVersion
+              ? $t('package.replacement.native', {
+                  replacement: replacement.description || replacement.id,
+                  nodeVersion,
+                })
+              : $t('package.replacement.native_no_version', {
+                  replacement: replacement.description || replacement.id,
+                })
           }}
         </template>
         <template v-else-if="replacement.type === 'simple'">
           {{
             $t('package.replacement.simple', {
-              replacement: replacement.replacement,
+              replacement: replacement.description,
               community: $t('package.replacement.community'),
             })
           }}
@@ -55,14 +62,17 @@ const docUrl = computed(() => {
         <template v-else-if="replacement.type === 'documented'">
           {{
             $t('package.replacement.documented', {
+              replacement: replacement.replacementModule,
               community: $t('package.replacement.community'),
             })
           }}
         </template>
+        <template v-else-if="replacement.type === 'removal'">
+          {{ replacement.description }}
+        </template>
       </p>
     </div>
 
-    <!-- No dependency action button -->
     <ButtonBase
       v-if="variant === 'nodep' && showAction !== false"
       size="small"
@@ -72,7 +82,6 @@ const docUrl = computed(() => {
       {{ $t('package.replacement.consider_no_dep') }}
     </ButtonBase>
 
-    <!-- Info link -->
     <LinkBase v-else-if="docUrl" :to="docUrl" variant="button-secondary" size="small">
       {{ $t('package.replacement.learn_more') }}
     </LinkBase>

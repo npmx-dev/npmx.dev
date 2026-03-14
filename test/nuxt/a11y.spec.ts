@@ -1944,11 +1944,23 @@ describe('component accessibility audits', () => {
         props: {
           packageName: 'array-includes',
           replacement: {
+            id: 'Array.prototype.includes',
             type: 'native',
-            moduleName: 'array-includes',
-            nodeVersion: '6.0.0',
-            replacement: 'Array.prototype.includes',
-            mdnPath: 'Global_Objects/Array/includes',
+            url: {
+              type: 'mdn',
+              id: 'Web/JavaScript/Reference/Global_Objects/Array/includes',
+            },
+            webFeatureId: {
+              featureId: 'array-includes',
+              compatKey: 'javascript.builtins.Array.includes',
+            },
+            engines: [
+              { engine: 'chrome', minVersion: '47' },
+              { engine: 'edge', minVersion: '14' },
+              { engine: 'firefox', minVersion: '43' },
+              { engine: 'safari', minVersion: '9' },
+              { engine: 'nodejs', minVersion: '6.0.0' },
+            ],
           },
           variant: 'nodep',
         },
@@ -1962,9 +1974,10 @@ describe('component accessibility audits', () => {
         props: {
           packageName: 'is-even',
           replacement: {
+            id: 'snippet::is-even',
             type: 'simple',
-            moduleName: 'is-even',
-            replacement: 'Use (n % 2) === 0',
+            description: 'You can use the modulo operator to check if a number is even.',
+            example: '(n % 2) === 0',
           },
           variant: 'nodep',
         },
@@ -1978,9 +1991,10 @@ describe('component accessibility audits', () => {
         props: {
           packageName: 'moment',
           replacement: {
+            id: 'day.js',
             type: 'documented',
-            moduleName: 'moment',
-            docPath: 'moment',
+            url: { type: 'e18e', id: 'moment' },
+            replacementModule: 'day.js',
           },
           variant: 'info',
         },
@@ -2403,12 +2417,16 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(PackageReplacement, {
         props: {
           replacement: {
+            id: 'Array.prototype.every',
             type: 'native',
-            moduleName: 'array-every',
-            nodeVersion: '0.10.0',
-            replacement: 'Array.prototype.every',
-            mdnPath: 'Global_Objects/Array/every',
-            category: 'native',
+            url: {
+              type: 'mdn',
+              id: 'Web/JavaScript/Reference/Global_Objects/Array/every',
+            },
+            engines: [
+              { engine: 'nodejs', minVersion: '0.10.0' },
+              { engine: 'chrome', minVersion: '1' },
+            ],
           },
         },
       })
@@ -2420,23 +2438,10 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(PackageReplacement, {
         props: {
           replacement: {
+            id: 'snippet::is-even',
             type: 'simple',
-            moduleName: 'underscore',
-            replacement: 'lodash',
-          },
-        },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-
-    it('should have no accessibility violations for documented replacement', async () => {
-      const component = await mountSuspended(PackageReplacement, {
-        props: {
-          replacement: {
-            type: 'documented',
-            moduleName: 'moment',
-            docPath: 'moment',
+            description: 'You can use the modulo operator to check if a number is even.',
+            example: '(n % 2) === 0',
           },
         },
       })

@@ -54,6 +54,10 @@
     "links": "लिंक",
     "tap_to_search": "खोजने के लिए टैप करें"
   },
+  "blog": {
+    "author": {},
+    "atproto": {}
+  },
   "settings": {
     "title": "सेटिंग्स",
     "tagline": "अपने npmx अनुभव को अनुकूलित करें",
@@ -87,6 +91,7 @@
     "edit_on_github": "GitHub पर संपादित करें",
     "view_guide": "अनुवाद गाइड"
   },
+  "error": {},
   "common": {
     "loading": "लोड हो रहा है...",
     "loading_more": "और लोड हो रहा है...",
@@ -113,6 +118,9 @@
       "github": "GitHub पर देखें"
     }
   },
+  "profile": {
+    "invite": {}
+  },
   "package": {
     "not_found": "पैकेज नहीं मिला",
     "not_found_message": "पैकेज नहीं मिल सका।",
@@ -125,6 +133,7 @@
       "version": "यह संस्करण डेप्रीकेट कर दिया गया है।",
       "no_reason": "कोई कारण प्रदान नहीं किया गया"
     },
+    "size_increase": {},
     "replacement": {
       "title": "आपको इस निर्भरता की आवश्यकता नहीं हो सकती।",
       "native": "इसे {replacement} से बदला जा सकता है, जो Node {nodeVersion} से उपलब्ध है।",
@@ -132,7 +141,6 @@
       "documented": "{community} ने इस पैकेज को अधिक प्रदर्शनकारी विकल्पों के रूप में फ़्लैग किया है।",
       "none": "यह पैकेज अब आवश्यक नहीं होने के रूप में फ़्लैग किया गया है, और इसकी कार्यक्षमता सभी इंजनों में नेटिवली उपलब्ध होने की संभावना है।",
       "learn_more": "और जानें",
-      "mdn": "MDN",
       "community": "समुदाय"
     },
     "stats": {
@@ -220,7 +228,8 @@
       "more_tagged": "{count} और टैग किए गए",
       "all_covered": "सभी संस्करण ऊपर के टैग्स द्वारा कवर किए गए हैं",
       "deprecated_title": "{version} (डेप्रीकेटेड)",
-      "view_all": "{count} संस्करण देखें | सभी {count} संस्करण देखें"
+      "view_all": "{count} संस्करण देखें | सभी {count} संस्करण देखें",
+      "copy_alt": {}
     },
     "dependencies": {
       "title": "निर्भरताएँ ({count})",
@@ -269,7 +278,8 @@
       "date_range_multiline": "{start}\nसे {end}",
       "download_file": "{fileType} डाउनलोड करें",
       "toggle_annotator": "एनोटेटर टॉगल करें",
-      "items": {}
+      "items": {},
+      "copy_alt": {}
     },
     "downloads": {
       "title": "साप्ताहिक डाउनलोड्स"
@@ -698,6 +708,8 @@
         "managers": "मैनेजर"
       }
     },
+    "sponsors": {},
+    "oss_partners": {},
     "team": {},
     "contributors": {
       "title": "योगदानकर्ता",
@@ -718,6 +730,7 @@
         "description": "चैट करें, प्रश्न पूछें, और विचार साझा करें।",
         "cta": "Discord से जुड़ें"
       },
+      "builders": {},
       "follow": {
         "title": "अद्यतन रहें",
         "description": "npmx पर नवीनतम जानकारी प्राप्त करें।",
@@ -829,7 +842,14 @@
       },
       "values": {},
       "trends": {}
-    }
+    },
+    "file_filter_option": {},
+    "filter": {}
+  },
+  "pds": {
+    "join": {},
+    "server": {},
+    "community": {}
   },
   "privacy_policy": {
     "cookies": {

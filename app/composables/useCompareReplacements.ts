@@ -99,9 +99,9 @@ export function useCompareReplacements(packageNames: MaybeRefOrGetter<string[]>)
   )
 
   return {
-    replacements: readonly(replacements),
-    noDepSuggestions: readonly(noDepSuggestions),
-    infoSuggestions: readonly(infoSuggestions),
+    replacements,
+    noDepSuggestions,
+    infoSuggestions,
     loading: readonly(loading),
   }
 }

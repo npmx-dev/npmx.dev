@@ -76,6 +76,10 @@
     "links": "روابط",
     "tap_to_search": "اضغط للبحث"
   },
+  "blog": {
+    "author": {},
+    "atproto": {}
+  },
   "settings": {
     "title": "الإعدادات",
     "tagline": "تخصيص تجربتك على npmx",
@@ -118,6 +122,7 @@
     "edit_on_github": "تعديل على GitHub",
     "view_guide": "دليل الترجمة"
   },
+  "error": {},
   "common": {
     "loading": "جارٍ التحميل…",
     "loading_more": "جارٍ تحميل المزيد…",
@@ -145,6 +150,9 @@
       "github": "عرض على GitHub"
     }
   },
+  "profile": {
+    "invite": {}
+  },
   "package": {
     "not_found": "لم يتم العثور على الحزمة",
     "not_found_message": "تعذّر العثور على الحزمة.",
@@ -157,6 +165,7 @@
       "version": "تم إهمال هذا الإصدار.",
       "no_reason": "لم يتم تقديم سبب"
     },
+    "size_increase": {},
     "replacement": {
       "title": "قد لا تحتاج إلى هذه التبعية.",
       "native": "يمكن استبدالها بـ {replacement}، المتوفرة منذ Node {nodeVersion}.",
@@ -165,7 +174,6 @@
       "none": "تم وضع علامة على هذه الحزمة بأنها لم تعد مطلوبة، ومن المرجح أن وظيفتها متاحة أصلًا في جميع المحركات.",
       "learn_more": "اعرف المزيد",
       "learn_more_above": "اعرف المزيد أعلاه.",
-      "mdn": "MDN",
       "community": "المجتمع",
       "consider_no_dep": "+ هل تريد خيار «بدون تبعية»؟"
     },
@@ -303,7 +311,8 @@
       "filter_help": "مساعدة فلتر نطاق semver",
       "filter_tooltip": "فلترة الإصدارات باستخدام {link}. مثلاً ^3.0.0 يعرض كل إصدارات 3.x.",
       "filter_tooltip_link": "نطاق semver",
-      "no_matches": "لا توجد إصدارات تطابق هذا النطاق"
+      "no_matches": "لا توجد إصدارات تطابق هذا النطاق",
+      "copy_alt": {}
     },
     "dependencies": {
       "title": "التبعيات ({count})",
@@ -363,7 +372,8 @@
         "downloads": "التنزيلات",
         "likes": "الإعجابات",
         "contributors": "المساهمون"
-      }
+      },
+      "copy_alt": {}
     },
     "downloads": {
       "title": "التنزيلات الأسبوعية",
@@ -810,6 +820,8 @@
         "managers": "مديري"
       }
     },
+    "sponsors": {},
+    "oss_partners": {},
     "team": {
       "title": "الفريق",
       "governance": "الحوكمة",
@@ -837,6 +849,7 @@
         "description": "تحدث، اطرح الأسئلة، وشارك الأفكار.",
         "cta": "انضم إلى Discord"
       },
+      "builders": {},
       "follow": {
         "title": "ابقَ على اطلاع",
         "description": "اكتشف آخر الأخبار عن npmx.",
@@ -1009,7 +1022,14 @@
       "trends": {
         "title": "مقارنة التوجهات"
       }
-    }
+    },
+    "file_filter_option": {},
+    "filter": {}
+  },
+  "pds": {
+    "join": {},
+    "server": {},
+    "community": {}
   },
   "privacy_policy": {
     "title": "سياسة الخصوصية",

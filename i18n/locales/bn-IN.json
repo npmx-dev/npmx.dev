@@ -53,6 +53,10 @@
     "links": "লিংকগুলি",
     "tap_to_search": "অনুসন্ধানের জন্য ট্যাপ করুন"
   },
+  "blog": {
+    "author": {},
+    "atproto": {}
+  },
   "settings": {
     "title": "সেটিংস",
     "tagline": "আপনার npmx অভিজ্ঞতা কাস্টমাইজ করুন",
@@ -86,6 +90,7 @@
     "edit_on_github": "GitHub এ সম্পাদনা করুন",
     "view_guide": "অনুবাদ গাইড"
   },
+  "error": {},
   "common": {
     "loading": "লোড হচ্ছে...",
     "loading_more": "আরো লোড হচ্ছে...",
@@ -112,6 +117,9 @@
       "github": "GitHub এ দেখুন"
     }
   },
+  "profile": {
+    "invite": {}
+  },
   "package": {
     "not_found": "প্যাকেজ পাওয়া যায়নি",
     "not_found_message": "প্যাকেজ পাওয়া যায়নি।",
@@ -124,6 +132,7 @@
       "version": "এই ভার্সনটি নিষ্ক্রিয় করা হয়েছে।",
       "no_reason": "কোনো কারণ দেওয়া হয়নি"
     },
+    "size_increase": {},
     "replacement": {
       "title": "আপনার এই ডিপেনডেন্সির প্রয়োজন নাও হতে পারে।",
       "native": "এটিকে {replacement} দিয়ে প্রতিস্থাপন করা যেতে পারে, যা Node {nodeVersion} থেকে উপলব্ধ।",
@@ -131,7 +140,6 @@
       "documented": "{community} এই প্যাকেজটিকে আরো ভাল পারফরম্যান্স অপশন হিসাবে চিহ্নিত করেছে।",
       "none": "এই প্যাকেজটি এখন অনাবশ্যক হিসাবে চিহ্নিত, এবং এর কার্যকরিতা সমস্ত ইঞ্জিনে নেটিভভাবে উপলব্ধ হওয়ার সম্ভাবনা আছে।",
       "learn_more": "আরো জানুন",
-      "mdn": "MDN",
       "community": "কমিউনিটি"
     },
     "stats": {
@@ -219,7 +227,8 @@
       "more_tagged": "{count}টি আরো ট্যাগ করা",
       "all_covered": "সব ভার্সন উপরের ট্যাগ দ্বারা আবৃত",
       "deprecated_title": "{version} (নিষ্ক্রিয়)",
-      "view_all": "{count}টি ভার্সন দেখুন | সব {count}টি ভার্সন দেখুন"
+      "view_all": "{count}টি ভার্সন দেখুন | সব {count}টি ভার্সন দেখুন",
+      "copy_alt": {}
     },
     "dependencies": {
       "title": "নির্ভরতা ({count})",
@@ -268,7 +277,8 @@
       "date_range_multiline": "{start}\nথেকে {end}",
       "download_file": "{fileType} ডাউনলোড করুন",
       "toggle_annotator": "অ্যানোটেটর টগল করুন",
-      "items": {}
+      "items": {},
+      "copy_alt": {}
     },
     "downloads": {
       "title": "সাপ্তাহিক ডাউনলোড"
@@ -697,6 +707,8 @@
         "managers": "ম্যানেজার"
       }
     },
+    "sponsors": {},
+    "oss_partners": {},
     "team": {},
     "contributors": {
       "title": "অবদানকারী",
@@ -717,6 +729,7 @@
         "description": "চ্যাট করুন, প্রশ্ন জিজ্ঞাসা করুন এবং ধারণা শেয়ার করুন।",
         "cta": "Discord এ যোগ দিন"
       },
+      "builders": {},
       "follow": {
         "title": "আপডেট পান",
         "description": "npmx এর সর্বশেষ তথ্য পান।",
@@ -828,7 +841,14 @@
       },
       "values": {},
       "trends": {}
-    }
+    },
+    "file_filter_option": {},
+    "filter": {}
+  },
+  "pds": {
+    "join": {},
+    "server": {},
+    "community": {}
   },
   "privacy_policy": {
     "cookies": {
