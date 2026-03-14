@@ -119,7 +119,8 @@ async function toggleGroup(groupKey: string) {
 
 // ─── Version filter ───────────────────────────────────────────────────────────
 
-const versionFilter = ref('')
+const versionFilterInput = ref('')
+const versionFilter = refDebounced(versionFilterInput, 100)
 const isFilterActive = computed(() => versionFilter.value.trim() !== '')
 
 const filteredVersionSet = computed(() => {
@@ -137,10 +138,11 @@ const filteredVersionSet = computed(() => {
 const filteredGroups = computed(() => {
   if (!isFilterActive.value || !filteredVersionSet.value) return versionGroups.value
   return versionGroups.value
-    .map(group => ({
-      ...group,
-      versions: group.versions.filter(v => filteredVersionSet.value!.has(v)),
-    }))
+    .map(group =>
+      Object.assign({}, group, {
+        versions: group.versions.filter(v => filteredVersionSet.value!.has(v)),
+      }),
+    )
     .filter(group => group.versions.length > 0)
 })
 
@@ -207,7 +209,7 @@ const selectedChangelogContent = computed(() => {
           <h1 class="text-sm text-fg-muted shrink-0">{{ $t('package.versions.page_title') }}</h1>
         </div>
         <InputBase
-          v-model="versionFilter"
+          v-model="versionFilterInput"
           type="text"
           :placeholder="$t('package.versions.version_filter_placeholder')"
           :aria-label="$t('package.versions.version_filter_label')"
