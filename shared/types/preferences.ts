@@ -3,6 +3,8 @@
  * Used for configurable columns, filtering, sorting, and pagination
  */
 
+import type { SearchProvider } from './npm-registry'
+
 // View modes
 export type ViewMode = 'cards' | 'table'
 
@@ -163,7 +165,7 @@ export const SORT_KEYS: SortKeyConfig[] = [
  * - npm returns 1 for all detail scores, and score.final === searchScore (= relevance)
  * - Algolia returns synthetic values (quality: 0|1, maintenance: 0, score: 0)
  */
-export const PROVIDER_SORT_KEYS: Record<'algolia' | 'npm', Set<SortKey>> = {
+export const PROVIDER_SORT_KEYS: Record<SearchProvider, Set<SortKey>> = {
   algolia: new Set<SortKey>(['relevance', 'downloads-week', 'updated', 'name']),
   npm: new Set<SortKey>(['relevance', 'downloads-week', 'updated', 'name']),
 }

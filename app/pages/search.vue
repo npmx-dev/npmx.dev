@@ -252,6 +252,21 @@ const effectiveTotal = computed(() => {
   return displayResults.value.length
 })
 
+const resultsLimitAppliedText = computed<string>(() => {
+  const totalUnlimited = results.value?.totalUnlimited ?? 0
+  const total = results.value?.total ?? 0
+
+  if (isRelevanceSort.value && total < totalUnlimited) {
+    const totalTrans = { total: $n(totalUnlimited) }
+
+    return searchProvider.value === 'npm'
+      ? $t('search.more_results_available_npm', totalTrans)
+      : $t('search.more_results_available_algolia', totalTrans)
+  }
+  // do not show hint if results limit is not reached
+  return ''
+})
+
 // Handle filter chip removal
 function handleClearFilter(chip: FilterChip) {
   clearFilter(chip)
@@ -393,14 +408,16 @@ const exactMatchType = computed<'package' | 'org' | 'user' | null>(() => {
 const suggestionCount = computed(() => validatedSuggestions.value.length)
 const totalSelectableCount = computed(() => suggestionCount.value + resultCount.value)
 
+function isElementVisible(el: HTMLElement) {
+  return el.getClientRects().length > 0
+}
+
 /**
  * Get all focusable result elements in DOM order (suggestions first, then packages)
  */
 function getFocusableElements(): HTMLElement[] {
-  const isVisible = (el: HTMLElement) => el.getClientRects().length > 0
-
   const suggestions = Array.from(document.querySelectorAll<HTMLElement>('[data-suggestion-index]'))
-    .filter(isVisible)
+    .filter(isElementVisible)
     .sort((a, b) => {
       const aIdx = Number.parseInt(a.dataset.suggestionIndex ?? '0', 10)
       const bIdx = Number.parseInt(b.dataset.suggestionIndex ?? '0', 10)
@@ -408,7 +425,7 @@ function getFocusableElements(): HTMLElement[] {
     })
 
   const packages = Array.from(document.querySelectorAll<HTMLElement>('[data-result-index]'))
-    .filter(isVisible)
+    .filter(isElementVisible)
     .sort((a, b) => {
       const aIdx = Number.parseInt(a.dataset.resultIndex ?? '0', 10)
       const bIdx = Number.parseInt(b.dataset.resultIndex ?? '0', 10)
@@ -435,7 +452,7 @@ async function navigateToPackage(packageName: string) {
 const pendingEnterQuery = shallowRef<string | null>(null)
 
 // Watch for results to navigate when Enter was pressed before results arrived
-watch(displayResults, results => {
+watch(displayResults, ([firstResult]) => {
   if (!pendingEnterQuery.value) return
 
   // Check if input is still focused (user hasn't started navigating or clicked elsewhere)
@@ -445,7 +462,6 @@ watch(displayResults, results => {
   }
 
   // Navigate if first result matches the query that was entered
-  const firstResult = results[0]
   // eslint-disable-next-line no-console
   console.log('[search] watcher fired', {
     pending: pendingEnterQuery.value,
@@ -614,8 +630,8 @@ const rawLiveRegionMessage = computed(() => {
   }
 
   if (status.value === 'success' || status.value === 'error') {
-    if (displayResults.value.length === 0 && query.value) {
-      return $t('search.no_results', { query: query.value })
+    if (displayResults.value.length === 0 && committedQuery.value) {
+      return $t('search.no_results', { query: committedQuery.value })
     }
   }
 
@@ -750,16 +766,29 @@ onBeforeUnmount(() => {
             />
             <p
               v-if="viewMode === 'cards' && paginationMode === 'infinite'"
-              class="text-fg-muted text-sm mt-4 font-mono"
+              class="flex items-center text-fg-muted text-sm mt-4 font-mono"
             >
               <template v-if="isRelevanceSort">
-                {{
+                <span>{{
                   $t(
                     'search.found_packages',
                     { count: $n(visibleResults.total) },
                     visibleResults.total,
                   )
-                }}
+                }}</span>
+                <ClientOnly>
+                  <TooltipApp
+                    v-if="resultsLimitAppliedText"
+                    position="top"
+                    :text="resultsLimitAppliedText"
+                    class="ms-1"
+                  >
+                    <span
+                      class="i-lucide:info w-3 h-3 text-fg-subtle cursor-help"
+                      aria-hidden="true"
+                    />
+                  </TooltipApp>
+                </ClientOnly>
               </template>
               <template v-else>
                 {{
@@ -772,24 +801,39 @@ onBeforeUnmount(() => {
             </p>
             <p
               v-if="viewMode === 'table' || paginationMode === 'paginated'"
-              class="text-fg-muted text-sm mt-4 font-mono"
+              class="flex items-center text-fg-muted text-sm mt-4 font-mono"
             >
-              {{
-                $t(
-                  'filters.count.showing_paginated',
-                  {
-                    pageSize: Math.min(preferredPageSize, effectiveTotal),
-                    count: $n(effectiveTotal),
-                  },
-                  effectiveTotal,
-                )
-              }}
+              <span
+                >{{
+                  $t(
+                    'filters.count.showing_paginated',
+                    {
+                      pageSize: Math.min(preferredPageSize, effectiveTotal),
+                      count: $n(effectiveTotal),
+                    },
+                    effectiveTotal,
+                  )
+                }}
+              </span>
+              <ClientOnly>
+                <TooltipApp
+                  v-if="resultsLimitAppliedText"
+                  position="top"
+                  :text="resultsLimitAppliedText"
+                  class="ms-1"
+                >
+                  <span
+                    class="i-lucide:info w-3 h-3 text-fg-subtle cursor-help"
+                    aria-hidden="true"
+                  />
+                </TooltipApp>
+              </ClientOnly>
             </p>
           </div>
 
           <div v-else-if="status === 'success' || status === 'error'" class="py-12">
             <p class="text-fg-muted font-mono mb-6 text-center">
-              {{ $t('search.no_results', { query }) }}
+              {{ $t('search.no_results', { query: committedQuery }) }}
             </p>
 
             <div v-if="validatedSuggestions.length > 0" class="max-w-md mx-auto mb-6 space-y-3">

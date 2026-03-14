@@ -2,6 +2,8 @@
 import type { PageSize, PaginationMode, ViewMode } from '#shared/types/preferences'
 import { PAGE_SIZE_OPTIONS } from '#shared/types/preferences'
 
+const ALL_PAGES_VISIBLE_TRESHOLD = 7
+
 const props = defineProps<{
   totalItems: number
   /** When in table view, force pagination mode (no infinite scroll for tables) */
@@ -63,7 +65,7 @@ const visiblePages = computed(() => {
   const current = currentPage.value
   const pages: (number | 'ellipsis')[] = []
 
-  if (total <= 7) {
+  if (total <= ALL_PAGES_VISIBLE_TRESHOLD) {
     // Show all pages
     for (let i = 1; i <= total; i++) {
       pages.push(i)
@@ -96,6 +98,11 @@ const visiblePages = computed(() => {
 
   return pages
 })
+
+// disable last page button to prevent TOO MANY REQUESTS error
+function isPageButtonDisabled(page: number): boolean {
+  return totalPages.value > ALL_PAGES_VISIBLE_TRESHOLD && page > currentPage.value + 2
+}
 
 function handlePageSizeChange(event: Event) {
   const target = event.target as HTMLSelectElement
@@ -167,8 +174,8 @@ function handlePageSizeChange(event: Event) {
       <span class="text-sm font-mono text-fg-muted">
         {{
           $t('filters.pagination.showing', {
-            start: startItem,
-            end: endItem,
+            start: $n(startItem),
+            end: $n(endItem),
             total: $n(totalItems),
           })
         }}
@@ -197,6 +204,7 @@ function handlePageSizeChange(event: Event) {
           <button
             v-else
             type="button"
+            :disabled="isPageButtonDisabled(page)"
             class="min-w-[32px] h-8 px-2 font-mono text-sm rounded transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
             :class="
               page === currentPage

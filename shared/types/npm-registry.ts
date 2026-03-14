@@ -103,6 +103,8 @@ export interface PackageVersionInfo {
   deprecated?: string
 }
 
+export type SearchProvider = 'npm' | 'algolia'
+
 /**
  * Person/contact type extracted from @npm/types Contact interface
  * Used for maintainers, authors, publishers
@@ -124,6 +126,22 @@ export interface NpmSearchResponse {
   objects: NpmSearchResult[]
   total: number
   time: string
+}
+
+export interface SearchResponse extends NpmSearchResponse {
+  totalUnlimited: number
+}
+
+export interface SearchSuggestion {
+  type: 'user' | 'org'
+  name: string
+  exists: boolean
+}
+
+export interface SearchResult {
+  searchResponse: SearchResponse
+  suggestions: SearchSuggestion[]
+  packageAvailability: { name: string; available: boolean } | null
 }
 
 export interface NpmSearchResult {

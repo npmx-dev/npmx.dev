@@ -1,3 +1,6 @@
+import type { NpmSearchResponse, NpmSearchResult, SearchProvider } from '#shared/types'
+import { emptySearchResponse } from './search-utils'
+
 /** Default page size for incremental loading (npm registry path) */
 const PAGE_SIZE = 50 as const
 
@@ -35,7 +38,7 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
 
   /** Tracks which provider actually served the current data (may differ from
    *  searchProvider when Algolia returns empty and we fall through to npm) */
-  const activeProvider = shallowRef<'npm' | 'algolia'>(searchProviderValue.value)
+  const activeProvider = shallowRef<SearchProvider>(searchProviderValue.value)
 
   const cache = shallowRef<{
     username: string
