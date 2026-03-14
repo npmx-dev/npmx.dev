@@ -77,11 +77,13 @@ export const OSS_PARTNERS = [
     name: 'Nuxt',
     logo: LogoNuxt,
     url: 'https://nuxt.com/',
+    maxHeight: '3.2rem',
   },
   {
     name: 'Vue',
     logo: LogoVue,
     url: 'https://vuejs.org/',
+    maxHeight: '3.5rem',
   },
   {
     name: 'Algolia',
@@ -136,6 +138,7 @@ export const OSS_PARTNERS = [
     name: 'Vue Data UI',
     logo: LogoVueDataUi,
     url: 'https://vue-data-ui.graphieros.com/',
+    maxHeight: '3.5rem',
   },
   {
     name: 'UnJS',
