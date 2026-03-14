@@ -757,9 +757,6 @@
             "learn_more_above": {
               "type": "string"
             },
-            "mdn": {
-              "type": "string"
-            },
             "community": {
               "type": "string"
             },
