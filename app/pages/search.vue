@@ -73,13 +73,16 @@ const { settings } = useSettings()
 
 /**
  * Reorder results to put exact package name match at the top,
- * and optionally filter out platform-specific packages.
+ * and optionally filter out platform-specific packages or security holding packages.
  */
 const visibleResults = computed(() => {
   const raw = rawVisibleResults.value
   if (!raw) return raw
 
   let objects = raw.objects
+
+  // Filter out "Security holding package" package takendown by npm registory
+  objects = objects.filter(r => r.package.repository?.url !== 'npm/security-holder')
 
   // Filter out platform-specific packages if setting is enabled
   if (settings.value.hidePlatformPackages) {
