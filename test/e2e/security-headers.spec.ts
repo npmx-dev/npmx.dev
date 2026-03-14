@@ -12,11 +12,10 @@ test.describe('security headers', () => {
     expect(headers['referrer-policy']).toBe('strict-origin-when-cross-origin')
   })
 
-  test('API routes do not include CSP headers', async ({ page, baseURL }) => {
+  test('API routes do not include CSP', async ({ page, baseURL }) => {
     const response = await page.request.get(`${baseURL}/api/registry/package-meta/vue`)
-    const headers = response.headers()
 
-    expect(headers['content-security-policy']).toBeFalsy()
+    expect(response.headers()['content-security-policy']).toBeUndefined()
   })
 
   // Navigate key pages and assert no CSP violations are logged.
