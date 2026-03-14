@@ -154,9 +154,12 @@ export async function fetchSkillContent(
 /**
  * Validate skill frontmatter and return warnings.
  */
-export function validateSkill(frontmatter: SkillFrontmatter): SkillWarning[] {
+export function validateSkill(
+  frontmatter: SkillFrontmatter,
+  packageLicense?: string,
+): SkillWarning[] {
   const warnings: SkillWarning[] = []
-  if (!frontmatter.license) {
+  if (!frontmatter.license && !packageLicense) {
     warnings.push({ type: 'warning', message: 'No license specified' })
   }
   if (!frontmatter.compatibility) {
@@ -173,17 +176,28 @@ export async function fetchSkillsList(
   version: string,
   skillDirs: SkillDirInfo[],
 ): Promise<SkillListItem[]> {
+  // Get package license for fallback if skill doesn't specify one
+  let packageLicense: string | undefined
+  try {
+    const packument = await fetchNpmPackage(packageName)
+    const license = packument.versions?.[version]?.license ?? packument.license
+    packageLicense = typeof license === 'string' ? license : license?.type
+  } catch {
+    // If we can't fetch package info, just proceed without it
+  }
   const skills = await Promise.all(
     skillDirs.map(async ({ name: dirName, children }) => {
       try {
         const { frontmatter } = await fetchSkillContent(packageName, version, dirName)
-        const warnings = validateSkill(frontmatter)
+        const warnings = validateSkill(frontmatter, packageLicense)
         const fileCounts = countSkillFiles(children)
+        // Use skill license if specified, otherwise fallback to package license
+        const license = frontmatter.license || packageLicense
         const item: SkillListItem = {
           name: frontmatter.name,
           description: frontmatter.description,
           dirName,
-          license: frontmatter.license,
+          license,
           compatibility: frontmatter.compatibility,
           warnings: warnings.length > 0 ? warnings : undefined,
           fileCounts,
