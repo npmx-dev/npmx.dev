@@ -33,6 +33,7 @@ watch(
 )
 
 const packages = computed(() => results.value?.objects ?? [])
+const totalPackages = computed(() => results.value?.totalPackages ?? 0)
 const packageCount = computed(() => packages.value.length)
 
 // Preferences (persisted to localStorage)
@@ -141,7 +142,10 @@ useSeoMeta({
 
 defineOgImageComponent('Default', {
   title: () => `@${orgName.value}`,
-  description: () => (packageCount.value ? `${packageCount.value} packages` : 'npm organization'),
+  description: () =>
+    totalPackages.value || packageCount.value
+      ? `${totalPackages.value || packageCount.value} packages`
+      : 'npm organization',
   primaryColor: '#60a5fa',
 })
 </script>
@@ -163,7 +167,13 @@ defineOgImageComponent('Default', {
         <div>
           <h1 class="font-mono text-2xl sm:text-3xl font-medium">@{{ orgName }}</h1>
           <p v-if="status === 'success'" class="text-fg-muted text-sm mt-1">
-            {{ $t('org.public_packages', { count: $n(packageCount) }, packageCount) }}
+            {{
+              $t(
+                'org.public_packages',
+                { count: $n(totalPackages || packageCount) },
+                totalPackages || packageCount,
+              )
+            }}
           </p>
         </div>
 

@@ -1,9 +1,30 @@
 /**
- * Fetch all packages for an npm organization.
+ * Maximum number of packages to fetch metadata for.
+ * Large orgs (e.g. @types with 8000+ packages) would otherwise trigger
+ * thousands of network requests, causing severe performance degradation.
+ * Algolia batches in chunks of 1000; npm fallback fetches individually.
+ */
+const MAX_ORG_PACKAGES = 1000
+
+export interface OrgPackagesResponse extends NpmSearchResponse {
+  /** Total number of packages in the org (may exceed objects.length if capped) */
+  totalPackages: number
+}
+
+function emptyOrgResponse(): OrgPackagesResponse {
+  return {
+    ...emptySearchResponse(),
+    totalPackages: 0,
+  }
+}
+
+/**
+ * Fetch packages for an npm organization.
  *
  * 1. Gets the authoritative package list from the npm registry (single request)
- * 2. Fetches metadata from Algolia by exact name (single request)
- * 3. Falls back to lightweight server-side package-meta lookups
+ * 2. Caps to MAX_ORG_PACKAGES to prevent excessive network requests
+ * 3. Fetches metadata from Algolia by exact name (batched in chunks of 1000)
+ * 4. Falls back to lightweight server-side package-meta lookups
  */
 export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
   const route = useRoute()
@@ -20,7 +41,7 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
     async ({ ssrContext }, { signal }) => {
       const org = toValue(orgName)
       if (!org) {
-        return emptySearchResponse()
+        return emptyOrgResponse()
       }
 
       // Get the authoritative package list from the npm registry (single request)
@@ -49,15 +70,25 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
       }
 
       if (packageNames.length === 0) {
-        return emptySearchResponse()
+        return emptyOrgResponse()
       }
 
-      // Fetch metadata + downloads from Algolia (single request via getObjects)
+      const totalPackages = packageNames.length
+
+      // Cap the number of packages to fetch metadata for
+      if (packageNames.length > MAX_ORG_PACKAGES) {
+        packageNames = packageNames.slice(0, MAX_ORG_PACKAGES)
+      }
+
+      // Fetch metadata + downloads from Algolia (batched in chunks of 1000)
       if (searchProviderValue.value === 'algolia') {
         try {
           const response = await getPackagesByName(packageNames)
           if (response.objects.length > 0) {
-            return response
+            return {
+              ...response,
+              totalPackages,
+            } satisfies OrgPackagesResponse
           }
         } catch {
           // Fall through to npm registry path
@@ -88,10 +119,11 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
         isStale: false,
         objects: results,
         total: results.length,
+        totalPackages,
         time: new Date().toISOString(),
-      } satisfies NpmSearchResponse
+      } satisfies OrgPackagesResponse
     },
-    { default: emptySearchResponse },
+    { default: emptyOrgResponse },
   )
 
   return asyncData
