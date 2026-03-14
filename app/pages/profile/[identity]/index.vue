@@ -157,9 +157,20 @@ defineOgImageComponent('Default', {
 
       <!-- Display Profile -->
       <div v-else class="flex flex-col flex-wrap gap-4">
-        <h1 v-if="profile.displayName" class="font-mono text-2xl sm:text-3xl font-medium">
-          {{ profile.displayName }}
-        </h1>
+        <div class="flex flex-row justify-between">
+          <h1 v-if="profile.displayName" class="font-mono text-2xl sm:text-3xl font-medium">
+            {{ profile.displayName }}
+          </h1>
+          <LinkBase
+            v-if="user?.handle === profile?.handle"
+            to="/account/settings"
+            variant="button-secondary"
+            classicon="i-lucide:settings"
+            class="hidden sm:inline-flex"
+          >
+            Account Settings
+          </LinkBase>
+        </div>
         <p v-if="profile.description">{{ profile.description }}</p>
         <div class="flex gap-4 items-center font-mono text-sm">
           <h2>@{{ profile.handle ?? identity }}</h2>
