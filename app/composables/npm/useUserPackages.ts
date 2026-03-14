@@ -1,6 +1,3 @@
-import type { NpmSearchResponse, NpmSearchResult } from '#shared/types'
-import { emptySearchResponse } from './search-utils'
-
 /** Default page size for incremental loading (npm registry path) */
 const PAGE_SIZE = 50 as const
 

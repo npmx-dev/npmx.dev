@@ -131,7 +131,6 @@
     "skip_link": "Gå til hovedinnhold",
     "warnings": "Advarsler:",
     "go_back_home": "Gå tilbake til start",
-    "view_on_npm": "vis på npm",
     "per_week": "/ uke",
     "vanity_downloads_hint": "Visningstall: ingen pakker vist | Visningstall: for den viste pakken | Visningstall: Sum av {count} viste pakker",
     "sort": {
@@ -139,15 +138,17 @@
       "role": "rolle",
       "members": "medlemmer"
     },
-    "scroll_to_top": "Rull til toppen"
+    "scroll_to_top": "Rull til toppen",
+    "view_on": {
+      "npm": "vis på npm",
+      "github": "Vis på GitHub"
+    }
   },
   "package": {
     "not_found": "Pakke ikke funnet",
     "not_found_message": "Pakken kunne ikke finnes.",
     "no_description": "Ingen beskrivelse gitt",
-    "not_latest": "(ikke nyeste)",
     "verified_provenance": "Verifisert opprinnelse",
-    "view_permalink": "Vis permalenke for denne versjonen",
     "navigation": "Pakke",
     "copy_name": "Kopier pakkenavn",
     "deprecation": {
@@ -234,7 +235,6 @@
     "readme": {
       "title": "Readme",
       "no_readme": "Ingen README tilgjengelig.",
-      "view_on_github": "Vis på GitHub",
       "toc_title": "Innhold",
       "callout": {
         "note": "Merk",

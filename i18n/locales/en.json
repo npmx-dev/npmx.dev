@@ -36,7 +36,9 @@
     "go_to_result": "Go to result",
     "open_code_view": "Open code view",
     "open_docs": "Open docs",
-    "disable_shortcuts": "You can disable keyboard shortcuts in {settings}."
+    "disable_shortcuts": "You can disable keyboard shortcuts in {settings}.",
+    "open_main": "Open main information",
+    "open_diff": "Open version differences"
   },
   "search": {
     "label": "Search npm packages",
@@ -178,7 +180,6 @@
     "skip_link": "Skip to main content",
     "warnings": "Warnings:",
     "go_back_home": "Go back home",
-    "view_on_npm": "view on npm",
     "per_week": "/ week",
     "vanity_downloads_hint": "Vanity number: no packages displayed | Vanity number: for the displayed package | Vanity number: Sum of {count} displayed packages",
     "sort": {
@@ -190,7 +191,21 @@
     "cancel": "Cancel",
     "save": "Save",
     "edit": "Edit",
-    "error": "Error"
+    "error": "Error",
+    "view_on": {
+      "npm": "view on npm",
+      "github": "View on GitHub",
+      "gitlab": "View on GitLab",
+      "bitbucket": "View on Bitbucket",
+      "codeberg": "View on Codeberg",
+      "git_repo": "View on Git repository",
+      "forgejo": "View on Forgejo",
+      "gitea": "View on Gitea",
+      "gitee": "View on Gitee",
+      "radicle": "View on Radicle",
+      "sourcehut": "View on SourceHut",
+      "tangled": "View on Tangled"
+    }
   },
   "profile": {
     "display_name": "Display Name",
@@ -213,12 +228,9 @@
     "not_found": "Package Not Found",
     "not_found_message": "The package could not be found.",
     "no_description": "No description provided",
-    "not_latest": "(not latest)",
     "verified_provenance": "Verified provenance",
-    "view_permalink": "View permalink for this version",
     "navigation": "Package",
     "copy_name": "Copy package name",
-    "copy_version": "Copy package version",
     "deprecation": {
       "package": "This package has been deprecated.",
       "version": "This version has been deprecated.",
@@ -275,6 +287,7 @@
       "view_source": "View source"
     },
     "links": {
+      "main": "main",
       "repo": "repo",
       "homepage": "homepage",
       "issues": "issues",
@@ -312,7 +325,6 @@
     "readme": {
       "title": "Readme",
       "no_readme": "No README available.",
-      "view_on_github": "View on GitHub",
       "toc_title": "Outline",
       "callout": {
         "note": "Note",
@@ -377,7 +389,7 @@
       "grouping_versions_only_recent": "Only recent",
       "grouping_usage_title": "Usage",
       "grouping_usage_all": "All",
-      "grouping_usage_low": "Low",
+      "grouping_usage_most_used": "Most used",
       "recent_versions_only_tooltip": "Show only versions published within the last year.",
       "show_low_usage_tooltip": "Include version groups with less than 1% of total downloads.",
       "y_axis_label": "Downloads",
@@ -457,6 +469,7 @@
       "data_correction": "Data correction",
       "average_window": "Average window",
       "smoothing": "Smoothing",
+      "prediction": "Prediction",
       "known_anomalies": "Known anomalies",
       "known_anomalies_description": "Interpolates over known download spikes caused by bots or CI issues.",
       "known_anomalies_ranges": "Anomaly ranges",
@@ -477,7 +490,9 @@
         "estimations": "The final values are estimates based on partial data for the current period.",
         "compare": "Package download comparison line chart for: {packages}.",
         "single_package": "Downloads line chart for the {package} package.",
-        "general_description": "The Y axis represents the number of downloads. The X axis represents the date range, from {start_date} to {end_date}, with a {granularity} time period.{estimation_notice} {packages_analysis}. {watermark}."
+        "general_description": "The Y axis represents the number of downloads. The X axis represents the date range, from {start_date} to {end_date}, with a {granularity} time period.{estimation_notice} {packages_analysis}. {watermark}.",
+        "facet_bar_general_description": "Horizontal bar chart for: {packages}, comparing {facet} ({description}). {facet_analysis} {watermark}.",
+        "facet_bar_analysis": "{package_name} has a value of {value}."
       }
     },
     "downloads": {
@@ -777,7 +792,8 @@
       "code": "code"
     },
     "file_path": "File path",
-    "scroll_to_top": "Scroll to top"
+    "binary_file": "Binary file",
+    "binary_rendering_warning": "File type not supported for preview."
   },
   "badges": {
     "provenance": {
@@ -1036,7 +1052,9 @@
       "loading": "Loading package data...",
       "error": "Failed to load package data. Please try again.",
       "empty_title": "Select packages to compare",
-      "empty_description": "Search and add at least 2 packages above to see a side-by-side comparison of their metrics."
+      "empty_description": "Search and add at least 2 packages above to see a side-by-side comparison of their metrics.",
+      "table_view": "Table",
+      "charts_view": "Charts"
     },
     "selector": {
       "search_label": "Search for packages",
@@ -1148,6 +1166,7 @@
     "file_size_warning": "{size} exceeds the 250KB limit for comparison",
     "compare_versions": "diff",
     "compare_versions_title": "Compare with latest version",
+    "version_selector_title": "Compare with version",
     "summary": "Summary",
     "deps_count": "{count} dep | {count} deps",
     "dependencies": "Dependencies",

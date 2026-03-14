@@ -77,6 +77,10 @@
     "links": "Връзки",
     "tap_to_search": "Докоснете за търсене"
   },
+  "blog": {
+    "author": {},
+    "atproto": {}
+  },
   "settings": {
     "title": "настройки",
     "tagline": "персонализирайте вашето npmx изживяване",
@@ -122,6 +126,7 @@
     "edit_on_github": "Редактиране в GitHub",
     "view_guide": "Ръководство за превод"
   },
+  "error": {},
   "common": {
     "loading": "Зареждане...",
     "loading_more": "Зареждане на още...",
@@ -136,7 +141,6 @@
     "skip_link": "Преминаване към основното съдържание",
     "warnings": "Предупреждения:",
     "go_back_home": "Назад към начална страница",
-    "view_on_npm": "преглед в npm",
     "per_week": "/ седмица",
     "vanity_downloads_hint": "Брой за показ: няма показани пакети | Брой за показ: за показания пакет | Брой за показ: Сума от {count} показани пакета",
     "sort": {
@@ -148,7 +152,11 @@
     "cancel": "Отказ",
     "save": "Запазване",
     "edit": "Редактиране",
-    "error": "Грешка"
+    "error": "Грешка",
+    "view_on": {
+      "npm": "преглед в npm",
+      "github": "Преглед в GitHub"
+    }
   },
   "profile": {
     "display_name": "Показвано име",
@@ -171,12 +179,9 @@
     "not_found": "Пакетът не е намерен",
     "not_found_message": "Пакетът не може да бъде намерен.",
     "no_description": "Няма предоставено описание",
-    "not_latest": "(не е последна)",
     "verified_provenance": "Потвърден произход",
-    "view_permalink": "Преглед на постоянна връзка за тази версия",
     "navigation": "Пакет",
     "copy_name": "Копиране на името на пакета",
-    "copy_version": "Копиране на версията на пакета",
     "deprecation": {
       "package": "Този пакет е остарял.",
       "version": "Тази версия е остаряла.",
@@ -270,7 +275,6 @@
     "readme": {
       "title": "Readme",
       "no_readme": "Няма наличен README.",
-      "view_on_github": "Преглед в GitHub",
       "toc_title": "Съдържание",
       "callout": {
         "note": "Бележка",
@@ -335,7 +339,6 @@
       "grouping_versions_only_recent": "Само скорошни",
       "grouping_usage_title": "Използване",
       "grouping_usage_all": "Всички",
-      "grouping_usage_low": "Ниско",
       "recent_versions_only_tooltip": "Показване само на версии, публикувани през последната година.",
       "show_low_usage_tooltip": "Включване на групи версии с по-малко от 1% от общите изтегляния.",
       "y_axis_label": "Изтегляния",
@@ -732,8 +735,7 @@
       "preview": "преглед",
       "code": "код"
     },
-    "file_path": "Път към файл",
-    "scroll_to_top": "Към началото"
+    "file_path": "Път към файл"
   },
   "badges": {
     "provenance": {
@@ -917,6 +919,7 @@
         "description": "Чат, задаване на въпроси и споделяне на идеи.",
         "cta": "Присъединяване към Discord"
       },
+      "builders": {},
       "follow": {
         "title": "Следете актуалното",
         "description": "Научете най-новото за npmx.",
@@ -1124,6 +1127,11 @@
     "select_file_prompt": "Изберете файл от страничната лента за преглед на разликите",
     "close_files_panel": "Затваряне на панела с файлове",
     "filter_files_label": "Филтриране на файлове по тип на промяна"
+  },
+  "pds": {
+    "join": {},
+    "server": {},
+    "community": {}
   },
   "privacy_policy": {
     "title": "политика за поверителност",

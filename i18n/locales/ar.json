@@ -132,7 +132,6 @@
     "skip_link": "تخطي إلى المحتوى الرئيسي",
     "warnings": "تحذيرات:",
     "go_back_home": "العودة إلى الصفحة الرئيسية",
-    "view_on_npm": "عرض على npm",
     "per_week": "/ أسبوع",
     "vanity_downloads_hint": "رقم زخرفي: لا توجد حزم معروضة | رقم زخرفي: للحزمة المعروضة | رقم زخرفي: للحزمتين المعروضتين | رقم زخرفي: مجموع {count} من الحزم المعروضة | رقم زخرفي: مجموع {count} من الحزم المعروضة | رقم زخرفي: مجموع {count} من الحزم المعروضة",
     "sort": {
@@ -140,18 +139,19 @@
       "role": "الدور",
       "members": "الأعضاء"
     },
-    "scroll_to_top": "التمرير إلى الأعلى"
+    "scroll_to_top": "التمرير إلى الأعلى",
+    "view_on": {
+      "npm": "عرض على npm",
+      "github": "عرض على GitHub"
+    }
   },
   "package": {
     "not_found": "لم يتم العثور على الحزمة",
     "not_found_message": "تعذّر العثور على الحزمة.",
     "no_description": "لا يوجد وصف",
-    "not_latest": "(ليست الأحدث)",
     "verified_provenance": "مصدر موثّق",
-    "view_permalink": "عرض الرابط الدائم لهذا الإصدار",
     "navigation": "تصفح الحزمة",
     "copy_name": "نسخ اسم الحزمة",
-    "copy_version": "نسخ إصدار الحزمة",
     "deprecation": {
       "package": "تم إهمال هذه الحزمة.",
       "version": "تم إهمال هذا الإصدار.",
@@ -238,7 +238,6 @@
     "readme": {
       "title": "README (إقرأني)",
       "no_readme": "لا يتوفر README.",
-      "view_on_github": "عرض على GitHub",
       "toc_title": "جدول المحتويات",
       "callout": {
         "note": "ملاحظة",

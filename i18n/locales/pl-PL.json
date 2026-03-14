@@ -13,10 +13,12 @@
   "trademark_disclaimer": "npm jest zarejestrowanym znakiem towarowym npm, Inc. Ta strona nie jest powiązana z npm, Inc.",
   "footer": {
     "about": "o nas",
+    "blog": "blog",
     "docs": "dokumentacja",
     "source": "kod źródłowy",
     "social": "social",
     "chat": "czat",
+    "builders_chat": "czat twórców",
     "keyboard_shortcuts": "skróty klawiaturowe"
   },
   "shortcuts": {
@@ -63,7 +65,13 @@
       "org": "organizacja",
       "view_user_packages": "Zobacz pakiety tego użytkownika",
       "view_org_packages": "Zobacz pakiety tej organizacji"
-    }
+    },
+    "instant_search": "Wyszukiwanie natychmiastowe",
+    "instant_search_on": "włączone",
+    "instant_search_off": "wyłączone",
+    "instant_search_turn_on": "włącz",
+    "instant_search_turn_off": "wyłącz",
+    "instant_search_advisory": "{label} {state} — {action}"
   },
   "nav": {
     "main_navigation": "Główne",
@@ -76,6 +84,31 @@
     "open_menu": "Otwórz menu",
     "links": "Linki",
     "tap_to_search": "Dotknij, aby wyszukać"
+  },
+  "blog": {
+    "title": "Blog",
+    "heading": "blog",
+    "meta_description": "Przemyślenia i nowości od społeczności npmx",
+    "author": {
+      "view_profile": "Zobacz profil {name} na Bluesky"
+    },
+    "draft_badge": "Wersja robocza",
+    "draft_banner": "To jest nieopublikowana wersja robocza. Zawartość może być niepełna lub zawierać błędy.",
+    "atproto": {
+      "view_on_bluesky": "Zobacz na Bluesky",
+      "reply_on_bluesky": "Odpowiedz na Bluesky",
+      "likes_on_bluesky": "Polubienia na Bluesky",
+      "like_or_reply_on_bluesky": "Polub ten wpis lub dodaj komentarz na Bluesky",
+      "no_comments_yet": "Brak komentarzy.",
+      "could_not_load_comments": "Wystąpił problem z wczytaniem komentarzy.",
+      "comments": "Komentarze",
+      "loading_comments": "Wczytywanie komentarzy...",
+      "updating": "Aktualizowanie...",
+      "reply_count": "{count} odpowiedzi | {count} odpowiedź | {count} odpowiedzi | {count} odpowiedzi | {count} odpowiedzi",
+      "like_count": "{count} polubień | {count} polubienie | {count} polubienia | {count} polubień | {count} polubień",
+      "repost_count": "{count} udostępnień | {count} udostępnienie | {count} udostępnienia | {count} udostępnień | {count} udostępnień",
+      "more_replies": "{count} odpowiedzi więcej... | {count} odpowiedź więcej... | {count} odpowiedzi więcej... | {count} odpowiedzi więcej... | {count} odpowiedzi więcej..."
+    }
   },
   "settings": {
     "title": "ustawienia",
@@ -96,6 +129,8 @@
       "algolia": "Algolia",
       "algolia_description": "Do wyszukiwania oraz stron organizacji i użytkowników używana jest Algolia."
     },
+    "instant_search": "Wyszukiwanie natychmiastowe",
+    "instant_search_description": "Przekierowuje na stronę wyszukiwania i aktualizuje wyniki w trakcie pisania.",
     "relative_dates": "Daty względne",
     "include_types": "Dodaj {'@'}types do instalacji",
     "include_types_description": "Dodawaj pakiet {'@'}types do komend instalacji dla pakietów bez typów",
@@ -122,6 +157,13 @@
     "edit_on_github": "Edytuj na GitHub",
     "view_guide": "Przewodnik tłumaczeń"
   },
+  "error": {
+    "401": "Brak autoryzacji",
+    "404": "Nie znaleziono strony",
+    "500": "Wewnętrzny błąd serwera",
+    "503": "Usługa niedostępna",
+    "default": "Coś poszło nie tak"
+  },
   "common": {
     "loading": "Ładowanie...",
     "loading_more": "Ładowanie kolejnych...",
@@ -136,7 +178,6 @@
     "skip_link": "Przejdź do głównej treści",
     "warnings": "Ostrzeżenia:",
     "go_back_home": "Wróć na stronę główną",
-    "view_on_npm": "zobacz na npm",
     "per_week": "/ tydz.",
     "vanity_downloads_hint": "Numer ozdobny: brak wyświetlonych pakietów | Numer ozdobny: dla wyświetlanego pakietu | Numer ozdobny: suma {count} wyświetlanych pakietów | Numer ozdobny: suma {count} wyświetlanych pakietów | Numer ozdobny: suma {count} wyświetlanych pakietów",
     "sort": {
@@ -144,18 +185,50 @@
       "role": "rola",
       "members": "członkowie"
     },
-    "scroll_to_top": "Przewiń na górę"
+    "scroll_to_top": "Przewiń na górę",
+    "cancel": "Anuluj",
+    "save": "Zapisz",
+    "edit": "Edytuj",
+    "error": "Błąd",
+    "view_on": {
+      "npm": "zobacz na npm",
+      "github": "Zobacz w GitHub",
+      "gitlab": "Zobacz w GitLab",
+      "bitbucket": "Zobacz w Bitbucket",
+      "codeberg": "Zobacz w Codeberg",
+      "git_repo": "Zobacz w repozytorium Git",
+      "forgejo": "Zobacz w Forgejo",
+      "gitea": "Zobacz w Gitea",
+      "gitee": "Zobacz w Gitee",
+      "radicle": "Zobacz w Radicle",
+      "sourcehut": "Zobacz w SourceHut",
+      "tangled": "Zobacz w Tangled"
+    }
+  },
+  "profile": {
+    "display_name": "Nazwa profilu",
+    "description": "Opis",
+    "no_description": "Brak opisu",
+    "website": "Strona www",
+    "website_placeholder": "https://example.com",
+    "likes": "Polubienia",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "profil npmx {handle}",
+    "not_found": "Nie znaleziono profilu",
+    "not_found_message": "Nie znaleziono profilu {handle}.",
+    "invite": {
+      "message": "Wygląda na to, że jeszcze nie korzystają z npmx. Chcesz ich powiadomić?",
+      "share_button": "Podziel się na Bluesky",
+      "compose_text": "Hej {'@'}{handle}! Czy znasz już npmx.dev? To szybka, nowoczesna przeglądarka rejestru npm z otwartym kodem źródłowym.\nhttps://npmx.dev"
+    }
   },
   "package": {
     "not_found": "Nie znaleziono pakietu",
     "not_found_message": "Nie udało się znaleźć pakietu.",
     "no_description": "Brak opisu",
-    "not_latest": "(nie najnowsza)",
     "verified_provenance": "Zweryfikowane pochodzenie",
-    "view_permalink": "Zobacz stały link do tej wersji",
     "navigation": "Pakiet",
     "copy_name": "Kopiuj nazwę pakietu",
-    "copy_version": "Kopiuj wersję pakietu",
     "deprecation": {
       "package": "Ten pakiet został oznaczony jako przestarzały.",
       "version": "Ta wersja została oznaczona jako przestarzała.",
@@ -249,7 +322,6 @@
     "readme": {
       "title": "README",
       "no_readme": "Brak README.",
-      "view_on_github": "Zobacz na GitHub",
       "toc_title": "Spis treści",
       "callout": {
         "note": "Notatka",
@@ -314,7 +386,7 @@
       "grouping_versions_only_recent": "Tylko ostatnie",
       "grouping_usage_title": "Adopcja",
       "grouping_usage_all": "Wszystkie",
-      "grouping_usage_low": "Niskie",
+      "grouping_usage_most_used": "Najczęściej używane",
       "recent_versions_only_tooltip": "Pokaż tylko wersje opublikowane w ciągu ostatniego roku.",
       "show_low_usage_tooltip": "Uwzględnij grupy wersji z mniej niż 1% wszystkich pobrań.",
       "y_axis_label": "Pobrania",
@@ -378,6 +450,8 @@
       "download_file": "Pobierz {fileType}",
       "toggle_annotator": "Przełącz adnotacje",
       "toggle_stack_mode": "Widok rozdzielony",
+      "open_options": "Otwórz opcje",
+      "close_options": "Zamknij opcje",
       "legend_estimation": "Szacunek",
       "no_data": "Brak dostępnych danych",
       "y_axis_label": "{granularity} {facet}",
@@ -392,6 +466,7 @@
       "data_correction": "Poprawki danych",
       "average_window": "Przedział średniej",
       "smoothing": "Wygładzanie",
+      "prediction": "Prognoza",
       "known_anomalies": "Znane anomalie",
       "known_anomalies_description": "Interpoluje dane, pomijając znane skoki ilości pobrań spowodowane botami lub problemami z CI",
       "known_anomalies_ranges": "Zakresy anomalii",
@@ -412,12 +487,15 @@
         "estimations": "Końcowe wartości są szacowane na podstawie danych częściowych dla bieżącego okresu.",
         "compare": "Wykres liniowy porównujący ilość pobrań dla: {packages}.",
         "single_package": "Wykres liniowy ilości pobrań dla pakietu {package}.",
-        "general_description": "Oś Y przedstawia ilość pobrań. Oś X przedstawia zakres dat, od {start_date} do {end_date}, z jednostką czasu {granularity}. {estimation_notice} {package_analysis}. {watermark}"
+        "general_description": "Oś Y przedstawia ilość pobrań. Oś X przedstawia zakres dat, od {start_date} do {end_date}, z jednostką czasu {granularity}. {estimation_notice} {package_analysis}. {watermark}",
+        "facet_bar_general_description": "Poziomy wykres słupkowy dla: {packages}, porównuje {facet} ({description}). {facet_analysis} {watermark}.",
+        "facet_bar_analysis": "{package_name} ma wartość {value}."
       }
     },
     "downloads": {
       "title": "Pobrania tygodniowe",
-      "community_distribution": "Zobacz, jak społeczność korzysta z pakietu"
+      "community_distribution": "Zobacz, jak społeczność korzysta z pakietu",
+      "subtitle": "Dla wszystkich wersji"
     },
     "install_scripts": {
       "title": "Skrypty instalacji",
@@ -710,8 +788,7 @@
       "preview": "podgląd",
       "code": "kod"
     },
-    "file_path": "Ścieżka pliku",
-    "scroll_to_top": "Wróć do góry"
+    "file_path": "Ścieżka pliku"
   },
   "badges": {
     "provenance": {
@@ -895,6 +972,11 @@
         "description": "Pogadaj, zadaj pytania i dziel się pomysłami.",
         "cta": "Dołącz do Discorda"
       },
+      "builders": {
+        "title": "Pomóż budować npmx",
+        "description": "Dołącz do twórców kształtujących przyszłość npmx.",
+        "cta": "Dołącz do Discorda dla twórców"
+      },
       "follow": {
         "title": "Bądź na bieżąco",
         "description": "Sprawdź, co nowego w npmx.",
@@ -927,7 +1009,8 @@
       "connect_bluesky": "Połącz z Bluesky",
       "what_is_atmosphere": "Czym jest konto Atmosphere?",
       "atmosphere_explanation": "{npmx} używa {atproto} do zasilania wielu funkcji społecznościowych, umożliwiając użytkownikom posiadanie swoich danych i korzystanie z jednego konta we wszystkich kompatybilnych aplikacjach. Gdy utworzysz konto, możesz używać innych aplikacji, takich jak {bluesky} i {tangled}, z tym samym kontem.",
-      "default_input_error": "Wprowadź poprawny identyfikator, DID lub pełny adres do PDS"
+      "default_input_error": "Wprowadź poprawny identyfikator, DID lub pełny adres do PDS",
+      "profile": "Profil"
     }
   },
   "header": {
@@ -964,7 +1047,9 @@
       "loading": "Ładowanie danych pakietów...",
       "error": "Nie udało się wczytać danych pakietów. Spróbuj ponownie.",
       "empty_title": "Wybierz pakiety do porównania",
-      "empty_description": "Wyszukaj i dodaj co najmniej 2 pakiety powyżej, aby zobaczyć porównanie ich metryk."
+      "empty_description": "Wyszukaj i dodaj co najmniej 2 pakiety powyżej, aby zobaczyć porównanie ich metryk.",
+      "table_view": "Tabela",
+      "charts_view": "Wykresy"
     },
     "selector": {
       "search_label": "Szukaj pakietów",
@@ -1072,7 +1157,10 @@
     "file_changes": "Zmiany w plikach",
     "files_count": "{count} plików",
     "lines_hidden": "ukryto {count} linii",
+    "file_too_large": "Plik jest zbyt duży do porównania",
+    "file_size_warning": "{size} przekracza limit dla porównań wynoszący 250KB",
     "compare_versions": "porównaj",
+    "compare_versions_title": "Porównaj z najnowszą wersją",
     "summary": "Podsumowanie",
     "deps_count": "{count} zależności",
     "dependencies": "Zależności",
@@ -1099,6 +1187,34 @@
     "select_file_prompt": "Wybierz plik z panelu obok, aby zobaczyć zmiany",
     "close_files_panel": "Zamknij panel plików",
     "filter_files_label": "Filtruj pliki według rodzaju zmian"
+  },
+  "pds": {
+    "title": "npmx.social",
+    "meta_description": "Oficjalny AT Protocol Personal Data Server (PDS) dla społeczności npmx.",
+    "join": {
+      "title": "Dołącz do społeczności",
+      "description": "Niezależnie od tego, czy tworzysz nowe konto w Atmosphere, czy migrujesz istniejące - pasujesz tutaj. Możesz zmigrować konto, zachowując swój nick, posty oraz obserwujących.",
+      "migrate": "Zmigruj przy pomocy PDS MOOver"
+    },
+    "server": {
+      "title": "Szczegóły serwera",
+      "location_label": "Lokalizacja:",
+      "location_value": "Norymberga, Niemcy",
+      "infrastructure_label": "Infrastruktura:",
+      "infrastructure_value": "Hostowane na serwerach Hetzner",
+      "privacy_label": "Prywatność:",
+      "privacy_value": "Zgodnie z przepisami UE o ochronie danych",
+      "learn_more": "Dowiedz się jak npmx korzysta z Atmosphere"
+    },
+    "community": {
+      "title": "Kto tu jest",
+      "description": "Jedne z {count} kont, które już mogą nazywać npmx.social swoim domem:",
+      "loading": "Wczytywanie danych społeczności PDS...",
+      "error": "Nie udało się wczytać danych społeczności PDS.",
+      "empty": "Brak członków do wyświetlenia.",
+      "view_profile": "Zobacz profil {handle}",
+      "new_accounts": "...plus {count} więcej, którzy są nowi w środowisku atmosphere"
+    }
   },
   "privacy_policy": {
     "title": "polityka prywatności",

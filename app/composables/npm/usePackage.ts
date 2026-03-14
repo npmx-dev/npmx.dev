@@ -1,13 +1,3 @@
-import type {
-  Packument,
-  SlimPackument,
-  SlimVersion,
-  SlimPackumentVersion,
-  PackumentVersion,
-  PublishTrustLevel,
-} from '#shared/types'
-import { extractInstallScriptsInfo } from '~/utils/install-scripts'
-
 /** Number of recent versions to include in initial payload */
 const RECENT_VERSIONS_COUNT = 5
 

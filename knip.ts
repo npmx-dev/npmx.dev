@@ -4,9 +4,6 @@ const config: KnipConfig = {
   workspaces: {
     '.': {
       entry: [
-        'app/router.options.ts!',
-        'app/app.vue!',
-        'app/error.vue!',
         'app/pages/**/*.vue!',
         'app/components/**/*.vue!',
         'app/components/**/*.d.vue.ts!',
@@ -65,14 +62,7 @@ const config: KnipConfig = {
     },
     'docs': {
       entry: ['app/**/*.{ts,vue,css}'],
-      ignoreDependencies: [
-        'docus',
-        'better-sqlite3',
-        '@nuxtjs/mdc',
-        'nuxt!',
-        '@nuxt/ui',
-        'tailwindcss',
-      ],
+      ignoreDependencies: ['docus', 'better-sqlite3', '@nuxtjs/mdc', 'nuxt!'],
     },
   },
 }

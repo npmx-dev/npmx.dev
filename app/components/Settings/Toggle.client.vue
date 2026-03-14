@@ -27,7 +27,7 @@ const id = useId()
 <template>
   <label
     :for="id"
-    class="grid items-center gap-1.5 py-1 -my-1 grid-cols-[auto_1fr_auto]"
+    class="grid items-center gap-1.5 py-1 -my-1 grid-cols-[auto_1fr_auto] cursor-pointer"
     :class="[justify === 'start' ? 'justify-start' : '']"
     :style="
       props.reverseOrder
@@ -39,9 +39,9 @@ const id = useId()
       <input
         role="switch"
         type="checkbox"
-        :id
+        :id="id"
         v-model="checked"
-        class="toggle appearance-none h-6 w-11 rounded-full border border-fg relative shrink-0 bg-fg-subtle checked:bg-fg checked:border-fg focus-visible:(outline-2 outline-fg outline-offset-2) before:content-[''] before:absolute before:h-5 before:w-5 before:top-1px before:rounded-full before:bg-bg"
+        class="toggle appearance-none h-6 w-11 rounded-full border border-fg relative shrink-0 bg-fg/50 transition-colors duration-200 ease-in-out checked:bg-fg hover:bg-fg/60 checked:hover:(bg-fg/80 after:opacity-50) focus-visible:(outline-2 outline-accent outline-offset-2) before:(content-[''] absolute h-5 w-5 top-px start-px rounded-full bg-bg transition-transform duration-200 ease-in-out) checked:before:translate-x-[20px] rtl:checked:before:-translate-x-[20px] after:(content-[''] absolute h-3.5 w-3.5 top-[4px] start-[4px] i-lucide:check bg-fg opacity-0 transition-all duration-200 ease-in-out) checked:after:opacity-100 checked:after:translate-x-[20px] rtl:checked:after:-translate-x-[20px]"
         style="grid-area: toggle"
       />
       <TooltipApp
@@ -85,9 +85,9 @@ const id = useId()
       <input
         role="switch"
         type="checkbox"
-        :id
+        :id="id"
         v-model="checked"
-        class="toggle appearance-none h-6 w-11 rounded-full border border-fg relative shrink-0 bg-fg-subtle checked:bg-fg checked:border-fg focus-visible:(outline-2 outline-fg outline-offset-2) before:content-[''] before:absolute before:h-5 before:w-5 before:top-1px before:rounded-full before:bg-bg"
+        class="toggle appearance-none h-6 w-11 rounded-full border border-fg relative shrink-0 bg-fg/50 transition-colors duration-200 ease-in-out checked:bg-fg hover:bg-fg/60 checked:hover:(bg-fg/80 after:opacity-50) focus-visible:(outline-2 outline-accent outline-offset-2) before:(content-[''] absolute h-5 w-5 top-px start-px rounded-full bg-bg transition-transform duration-200 ease-in-out) checked:before:translate-x-[20px] rtl:checked:before:-translate-x-[20px] after:(content-[''] absolute h-3.5 w-3.5 top-[4px] start-[4px] i-lucide:check bg-fg opacity-0 transition-all duration-200 ease-in-out) checked:after:opacity-100 checked:after:translate-x-[20px] rtl:checked:after:-translate-x-[20px]"
         style="grid-area: toggle; justify-self: end"
       />
     </template>
@@ -98,82 +98,37 @@ const id = useId()
 </template>
 
 <style scoped>
-/* Thumb position: logical property for RTL support */
-.toggle::before {
-  inset-inline-start: 1px;
-}
+/* Support forced colors */
+@media (forced-colors: active) {
+  .toggle {
+    background: Canvas;
+    border-color: CanvasText;
+  }
 
-/* Track transition */
-.toggle {
-  transition:
-    background-color 200ms ease-in-out,
-    border-color 100ms ease-in-out;
-}
+  .toggle:checked {
+    background: Highlight;
+    border-color: CanvasText;
+  }
 
-.toggle::before {
-  transition:
-    background-color 200ms ease-in-out,
-    translate 200ms ease-in-out;
-}
+  .toggle::before {
+    background-color: CanvasText;
+  }
 
-/* Hover states */
-.toggle:hover:not(:checked) {
-  background: var(--fg-muted);
-}
+  .toggle:checked::before {
+    background-color: Canvas;
+  }
 
-.toggle:checked:hover {
-  background: var(--fg-muted);
-  border-color: var(--fg-muted);
-}
-
-/* RTL-aware checked thumb position */
-:dir(ltr) .toggle:checked::before {
-  translate: 20px;
-}
-
-:dir(rtl) .toggle:checked::before {
-  translate: -20px;
+  .toggle::after {
+    background-color: Highlight;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .toggle,
-  .toggle::before {
-    transition: none;
-  }
-}
-
-/* Support forced colors */
-@media (forced-colors: active) {
-  label > span {
-    background: Canvas;
-    color: Highlight;
-    forced-color-adjust: none;
-  }
-
-  label:has(.toggle:checked) > span {
-    background: Highlight;
-    color: Canvas;
-  }
-
-  .toggle::before {
-    forced-color-adjust: none;
-    background-color: Highlight;
-  }
-
-  .toggle,
-  .toggle:hover {
-    background: Canvas;
-    border-color: CanvasText;
-  }
-
-  .toggle:checked,
-  .toggle:checked:hover {
-    background: Highlight;
-    border-color: CanvasText;
-  }
-
-  .toggle:checked::before {
-    background: Canvas;
+  .toggle::before,
+  .toggle::after {
+    transition: none !important;
+    animation: none !important;
   }
 }
 </style>

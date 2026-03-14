@@ -77,6 +77,10 @@
     "links": "連結",
     "tap_to_search": "點擊以搜尋"
   },
+  "blog": {
+    "author": {},
+    "atproto": {}
+  },
   "settings": {
     "title": "設定",
     "tagline": "自訂你的 npmx 體驗",
@@ -122,6 +126,7 @@
     "edit_on_github": "在 GitHub 上編輯",
     "view_guide": "翻譯指南"
   },
+  "error": {},
   "common": {
     "loading": "載入中…",
     "loading_more": "載入更多中…",
@@ -136,7 +141,6 @@
     "skip_link": "跳至主要內容",
     "warnings": "警告：",
     "go_back_home": "回到首頁",
-    "view_on_npm": "在 npm 上檢視",
     "per_week": "/ 週",
     "vanity_downloads_hint": "顯示下載量：未顯示套件 | 顯示下載量：顯示的套件 | 顯示下載量：顯示的 {count} 個套件總和",
     "sort": {
@@ -148,7 +152,11 @@
     "cancel": "取消",
     "save": "儲存",
     "edit": "編輯",
-    "error": "錯誤"
+    "error": "錯誤",
+    "view_on": {
+      "npm": "在 npm 上檢視",
+      "github": "在 GitHub 上檢視"
+    }
   },
   "profile": {
     "display_name": "顯示名稱",
@@ -171,12 +179,9 @@
     "not_found": "找不到套件",
     "not_found_message": "找不到此套件。",
     "no_description": "未提供描述",
-    "not_latest": "（非最新）",
     "verified_provenance": "已驗證的來源",
-    "view_permalink": "檢視此版本的永久連結",
     "navigation": "套件導覽",
     "copy_name": "複製套件名稱",
-    "copy_version": "複製套件版本",
     "deprecation": {
       "package": "此套件已被棄用。",
       "version": "此版本已被棄用。",
@@ -270,7 +275,6 @@
     "readme": {
       "title": "README",
       "no_readme": "沒有可用的 README。",
-      "view_on_github": "在 GitHub 上檢視",
       "toc_title": "大綱",
       "callout": {
         "note": "注意",
@@ -335,7 +339,6 @@
       "grouping_versions_only_recent": "僅顯示近期版本",
       "grouping_usage_title": "使用量",
       "grouping_usage_all": "全部",
-      "grouping_usage_low": "低使用量",
       "recent_versions_only_tooltip": "僅顯示過去一年內發布的版本。",
       "show_low_usage_tooltip": "包含總下載量低於 1% 的版本群組。",
       "y_axis_label": "下載量",
@@ -731,8 +734,7 @@
       "preview": "預覽",
       "code": "程式碼"
     },
-    "file_path": "檔案路徑",
-    "scroll_to_top": "回到頂端"
+    "file_path": "檔案路徑"
   },
   "badges": {
     "provenance": {
@@ -916,6 +918,7 @@
         "description": "聊天、提問並分享想法。",
         "cta": "加入 Discord"
       },
+      "builders": {},
       "follow": {
         "title": "保持更新",
         "description": "掌握 npmx 的最新動態。",
@@ -1121,6 +1124,11 @@
     "select_file_prompt": "請先從側邊欄選擇檔案以檢視差異",
     "close_files_panel": "關閉檔案面板",
     "filter_files_label": "依變更類型篩選檔案"
+  },
+  "pds": {
+    "join": {},
+    "server": {},
+    "community": {}
   },
   "privacy_policy": {
     "title": "隱私權政策",

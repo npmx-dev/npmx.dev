@@ -1,18 +1,9 @@
-import type { ComparisonFacet, FacetInfo } from '#shared/types'
-import {
-  ALL_FACETS,
-  CATEGORY_ORDER,
-  DEFAULT_FACETS,
-  FACET_INFO,
-  FACETS_BY_CATEGORY,
-} from '#shared/types/comparison'
-import { useRouteQuery } from '@vueuse/router'
-
 /** Facet info enriched with i18n labels */
 export interface FacetInfoWithLabels extends Omit<FacetInfo, 'id'> {
   id: ComparisonFacet
   label: string
   description: string
+  chartable: boolean
 }
 
 /**
@@ -24,58 +15,71 @@ export function useFacetSelection(queryParam = 'facets') {
   const { t } = useI18n()
 
   const facetLabels = computed(
-    (): Record<ComparisonFacet, { label: string; description: string }> => ({
+    (): Record<ComparisonFacet, { label: string; description: string; chartable: boolean }> => ({
       downloads: {
         label: t(`compare.facets.items.downloads.label`),
         description: t(`compare.facets.items.downloads.description`),
+        chartable: true,
       },
       totalLikes: {
         label: t(`compare.facets.items.totalLikes.label`),
         description: t(`compare.facets.items.totalLikes.description`),
+        chartable: true,
       },
       packageSize: {
         label: t(`compare.facets.items.packageSize.label`),
         description: t(`compare.facets.items.packageSize.description`),
+        chartable: true,
       },
       installSize: {
         label: t(`compare.facets.items.installSize.label`),
         description: t(`compare.facets.items.installSize.description`),
+        chartable: true,
       },
       moduleFormat: {
         label: t(`compare.facets.items.moduleFormat.label`),
         description: t(`compare.facets.items.moduleFormat.description`),
+        chartable: false,
       },
       types: {
         label: t(`compare.facets.items.types.label`),
         description: t(`compare.facets.items.types.description`),
+        chartable: false,
       },
       engines: {
         label: t(`compare.facets.items.engines.label`),
         description: t(`compare.facets.items.engines.description`),
+        chartable: false,
       },
       vulnerabilities: {
         label: t(`compare.facets.items.vulnerabilities.label`),
         description: t(`compare.facets.items.vulnerabilities.description`),
+        chartable: false,
       },
       lastUpdated: {
         label: t(`compare.facets.items.lastUpdated.label`),
         description: t(`compare.facets.items.lastUpdated.description`),
+        chartable: false,
       },
       license: {
         label: t(`compare.facets.items.license.label`),
         description: t(`compare.facets.items.license.description`),
+        chartable: false,
       },
       dependencies: {
         label: t(`compare.facets.items.dependencies.label`),
         description: t(`compare.facets.items.dependencies.description`),
+        chartable: true,
       },
       totalDependencies: {
         label: t(`compare.facets.items.totalDependencies.label`),
         description: t(`compare.facets.items.totalDependencies.description`),
+        chartable: true,
       },
       deprecated: {
         label: t(`compare.facets.items.deprecated.label`),
         description: t(`compare.facets.items.deprecated.description`),
+        chartable: false,
       },
     }),
   )
@@ -87,6 +91,7 @@ export function useFacetSelection(queryParam = 'facets') {
       ...FACET_INFO[facet],
       label: facetLabels.value[facet].label,
       description: facetLabels.value[facet].description,
+      chartable: facetLabels.value[facet].chartable,
     }
   }
 

@@ -1,5 +1,4 @@
 import { diff as semverDiff } from 'semver'
-import type { PackageFileTree, DependencyChange, FileChange, CompareResponse } from '#shared/types'
 
 /**
  * Parse a version range from a URL segment.

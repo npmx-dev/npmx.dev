@@ -77,6 +77,10 @@
     "links": "Enlaces",
     "tap_to_search": "Toca para buscar"
   },
+  "blog": {
+    "author": {},
+    "atproto": {}
+  },
   "settings": {
     "title": "configuración",
     "tagline": "personaliza tu experiencia en npmx",
@@ -122,6 +126,7 @@
     "edit_on_github": "Editar en GitHub",
     "view_guide": "Guía de traducción"
   },
+  "error": {},
   "common": {
     "loading": "Cargando...",
     "loading_more": "Cargando más...",
@@ -136,7 +141,6 @@
     "skip_link": "Saltar al contenido principal",
     "warnings": "Advertencias:",
     "go_back_home": "Volver al inicio",
-    "view_on_npm": "ver en npm",
     "per_week": "/ semana",
     "vanity_downloads_hint": "Número de vanidad: no se muestran paquetes | Número de vanidad: para el paquete mostrado | Número de vanidad: Suma de {count} paquetes mostrados",
     "sort": {
@@ -148,7 +152,11 @@
     "cancel": "Cancelar",
     "save": "Guardar",
     "edit": "Editar",
-    "error": "Error"
+    "error": "Error",
+    "view_on": {
+      "npm": "ver en npm",
+      "github": "Ver en GitHub"
+    }
   },
   "profile": {
     "display_name": "Nombre visible",
@@ -171,12 +179,9 @@
     "not_found": "Paquete no encontrado",
     "not_found_message": "No se pudo encontrar el paquete.",
     "no_description": "Sin descripción proporcionada",
-    "not_latest": "(no es la última versión)",
     "verified_provenance": "Procedencia verificada",
-    "view_permalink": "Ver enlace permanente para esta versión",
     "navigation": "Navegación del paquete",
     "copy_name": "Copiar nombre del paquete",
-    "copy_version": "Copiar versión del paquete",
     "deprecation": {
       "package": "Este paquete está obsoleto.",
       "version": "Esta versión está obsoleta.",
@@ -270,7 +275,6 @@
     "readme": {
       "title": "Léeme",
       "no_readme": "No hay README disponible.",
-      "view_on_github": "Ver en GitHub",
       "toc_title": "Índice",
       "callout": {
         "note": "Nota",
@@ -335,7 +339,6 @@
       "grouping_versions_only_recent": "Solo recientes",
       "grouping_usage_title": "Uso",
       "grouping_usage_all": "Todo",
-      "grouping_usage_low": "Bajo",
       "recent_versions_only_tooltip": "Mostrar solo versiones publicadas en el último año.",
       "show_low_usage_tooltip": "Incluir grupos de versiones con menos del 1% de las descargas totales.",
       "y_axis_label": "Descargas",
@@ -732,8 +735,7 @@
       "preview": "vista previa",
       "code": "código"
     },
-    "file_path": "Ruta del archivo",
-    "scroll_to_top": "Volver arriba"
+    "file_path": "Ruta del archivo"
   },
   "badges": {
     "provenance": {
@@ -917,6 +919,7 @@
         "description": "Chatea, haz preguntas y comparte ideas.",
         "cta": "Únete a Discord"
       },
+      "builders": {},
       "follow": {
         "title": "Mantente actualizado",
         "description": "Entérate de lo último en npmx.",
@@ -1124,6 +1127,11 @@
     "select_file_prompt": "Selecciona un archivo de la barra lateral para ver sus diferencias",
     "close_files_panel": "Cerrar panel de archivos",
     "filter_files_label": "Filtrar archivos por tipo de cambio"
+  },
+  "pds": {
+    "join": {},
+    "server": {},
+    "community": {}
   },
   "privacy_policy": {
     "title": "política de privacidad",

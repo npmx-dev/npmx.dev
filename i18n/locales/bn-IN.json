@@ -99,7 +99,6 @@
     "skip_link": "মুখ্য কন্টেন্টে যান",
     "warnings": "সতর্কতা:",
     "go_back_home": "হোমে ফিরে যান",
-    "view_on_npm": "npm এ দেখুন",
     "per_week": "/ সপ্তাহ",
     "vanity_downloads_hint": "ভ্যানিটি নম্বর: কোন প্যাকেজ প্রদর্শিত হয়নি | ভ্যানিটি নম্বর: প্রদর্শিত প্যাকেজের জন্য | ভ্যানিটি নম্বর: {count} প্রদর্শিত প্যাকেজের মোট",
     "sort": {
@@ -107,15 +106,17 @@
       "role": "ভূমিকা",
       "members": "সদস্য"
     },
-    "scroll_to_top": "উপরে স্ক্রল করুন"
+    "scroll_to_top": "উপরে স্ক্রল করুন",
+    "view_on": {
+      "npm": "npm এ দেখুন",
+      "github": "GitHub এ দেখুন"
+    }
   },
   "package": {
     "not_found": "প্যাকেজ পাওয়া যায়নি",
     "not_found_message": "প্যাকেজ পাওয়া যায়নি।",
     "no_description": "কোনো বর্ণনা দেওয়া হয়নি",
-    "not_latest": "(সর্বশেষ নয়)",
     "verified_provenance": "যাচাইকৃত প্রোভেন্স",
-    "view_permalink": "এই ভার্সনের পার্মালিংক দেখুন",
     "navigation": "প্যাকেজ",
     "copy_name": "প্যাকেজের নাম কপি করুন",
     "deprecation": {
@@ -194,7 +195,6 @@
     "readme": {
       "title": "রিডমি",
       "no_readme": "README উপলব্ধ নেই।",
-      "view_on_github": "GitHub এ দেখুন",
       "callout": {}
     },
     "provenance_section": {},

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { CompareResponse, FileChange } from '#shared/types'
 import { packageRoute } from '~/utils/router'
 
 const props = defineProps<{
