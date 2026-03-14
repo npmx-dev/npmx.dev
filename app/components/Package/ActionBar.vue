@@ -25,16 +25,16 @@ onKeyStroke(
     <section
       v-if="selectedPackages.length"
       aria-labelledby="action-bar-title"
-      class="fixed bottom-10 inset-is-0 w-full flex items-center justify-center z-36 pointer-events-none"
+      class="group fixed bottom-10 inset-is-0 w-full flex items-center justify-center z-36 pointer-events-none focus:outline-none"
+      tabindex="-1"
+      aria-keyshortcuts="b"
+      ref="actionBarRef"
     >
       <h3 id="action-bar-title" class="sr-only">
         {{ $t('action_bar.title') }}
       </h3>
       <div
-        ref="actionBarRef"
-        tabindex="-1"
-        aria-keyshortcuts="b"
-        class="pointer-events-auto bg-bg shadow-2xl shadow-accent/20 border-2 border-accent/60 p-3 min-w-[300px] rounded-xl flex gap-3 items-center justify-between animate-in ring-1 ring-accent/30"
+        class="group-focus:outline-accent group-focus:outline-2 group-focus:outline-offset-2 pointer-events-auto bg-bg shadow-2xl shadow-accent/20 border-2 border-accent/60 p-3 min-w-[300px] rounded-xl flex gap-3 items-center justify-between animate-in ring-1 ring-accent/30"
       >
         <div aria-live="polite" aria-atomic="true" class="sr-only">
           {{ $t('action_bar.selection', selectedPackages.length) }}.
