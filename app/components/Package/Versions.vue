@@ -543,7 +543,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
             :aria-invalid="isInvalidRange ? 'true' : undefined"
             :aria-describedby="isInvalidRange ? 'semver-filter-error' : undefined"
             autocomplete="off"
-            class="flex-1 min-w-0"
+            class="flex-1 min-w-0 max-sm:placeholder:text-2xs"
             :class="isInvalidRange ? '!border-red-500' : ''"
             size="small"
           />
