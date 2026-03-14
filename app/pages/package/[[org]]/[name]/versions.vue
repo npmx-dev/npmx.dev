@@ -18,19 +18,13 @@ definePageMeta({
 /** Number of flat items (headers + version rows) to render statically during SSR */
 const SSR_COUNT = 20
 
-const route = useRoute()
+const route = useRoute('package-versions')
 
 const packageName = computed(() => {
-  const { org, name } = route.params as { org?: string; name: string }
-  return org ? `${org}/${name}` : (name as string)
+  const { org, name } = route.params
+  return org ? `${org}/${name}` : name
 })
-
-const orgName = computed(() => {
-  const name = packageName.value
-  if (!name.startsWith('@')) return null
-  const match = name.match(/^@([^/]+)\//)
-  return match ? match[1] : null
-})
+const orgName = computed(() => route.params.org?.replace('@', '') ?? null)
 
 // ─── Phase 1: lightweight fetch (page load) ───────────────────────────────────
 // Fetches only version strings, dist-tags, and publish times — no deprecated/provenance metadata.
@@ -349,7 +343,7 @@ const selectedChangelogContent = computed(() => {
         <div v-else class="flex">
           <!-- Version list (grouped by major, virtualized) -->
           <div
-            class="flex-1 min-w-0 border-y sm:border border-border sm:rounded-lg sm:overflow-hidden"
+            class="flex-1 min-w-0 self-start border-y sm:border border-border sm:rounded-lg sm:overflow-hidden"
           >
             <ClientOnly>
               <WindowVirtualizer :data="flatItems">
@@ -507,7 +501,7 @@ const selectedChangelogContent = computed(() => {
                     v-for="item in versionGroups.slice(0, SSR_COUNT)"
                     :key="item.groupKey"
                     type="button"
-                    class="flex items-center gap-3 px-4 py-2.5 w-full text-start border-b border-border"
+                    class="flex items-center gap-3 px-4 py-2.5 w-full text-start border-b border-border last:border-b-0"
                     :aria-expanded="false"
                     :aria-label="`Expand ${item.label}`"
                   >
@@ -580,7 +574,6 @@ const selectedChangelogContent = computed(() => {
 </template>
 
 <style scoped>
-/* Changelog panel prose styles — mirrors readme.vue conventions */
 .changelog-body {
   color: var(--fg-muted);
   line-height: 1.6;
