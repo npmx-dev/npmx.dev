@@ -1138,6 +1138,9 @@
             "view_all": {
               "type": "string"
             },
+            "view_all_versions": {
+              "type": "string"
+            },
             "distribution_title": {
               "type": "string"
             },
@@ -1212,6 +1215,24 @@
                 }
               },
               "additionalProperties": false
+            },
+            "page_title": {
+              "type": "string"
+            },
+            "current_tags": {
+              "type": "string"
+            },
+            "version_filter_placeholder": {
+              "type": "string"
+            },
+            "version_filter_label": {
+              "type": "string"
+            },
+            "no_match_filter": {
+              "type": "string"
+            },
+            "close_changelog": {
+              "type": "string"
             }
           },
           "additionalProperties": false

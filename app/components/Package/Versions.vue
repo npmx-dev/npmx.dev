@@ -534,10 +534,10 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
           :to="versionsPageRoute"
           variant="button-secondary"
           class="text-fg-subtle hover:text-fg transition-colors min-w-6 min-h-6 p-1 rounded"
-          title="View all versions"
+          :title="$t('package.versions.view_all_versions')"
           classicon="i-lucide:history"
         >
-          <span class="sr-only">View all versions</span>
+          <span class="sr-only">{{ $t('package.versions.view_all_versions') }}</span>
         </LinkBase>
         <ButtonBase
           variant="secondary"

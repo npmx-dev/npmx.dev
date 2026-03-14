@@ -204,13 +204,13 @@ const selectedChangelogContent = computed(() => {
             >{{ orgName ? packageName.replace(`@${orgName}/`, '') : packageName }}
           </NuxtLink>
           <span class="text-fg-subtle shrink-0">/</span>
-          <h1 class="text-sm text-fg-muted shrink-0">Version History</h1>
+          <h1 class="text-sm text-fg-muted shrink-0">{{ $t('package.versions.page_title') }}</h1>
         </div>
         <InputBase
           v-model="versionFilter"
           type="text"
-          placeholder="Filter versions…"
-          aria-label="Filter versions"
+          :placeholder="$t('package.versions.version_filter_placeholder')"
+          :aria-label="$t('package.versions.version_filter_label')"
           size="small"
           class="w-36 sm:w-44"
         />
@@ -222,7 +222,7 @@ const selectedChangelogContent = computed(() => {
       <!-- ── Current Tags ───────────────────────────────────────────────────── -->
       <section class="space-y-3">
         <h2 class="text-xs text-fg-subtle uppercase tracking-wider px-4 sm:px-6 ps-1">
-          Current Tags
+          {{ $t('package.versions.current_tags') }}
         </h2>
 
         <!-- Latest — featured card -->
@@ -323,7 +323,7 @@ const selectedChangelogContent = computed(() => {
       <!-- ── Version History ───────────────────────────────────────────────── -->
       <section v-if="versionGroups.length > 0">
         <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-3 px-4 sm:px-6 ps-1">
-          Version History
+          {{ $t('package.versions.page_title') }}
           <span class="ms-1 normal-case font-normal tracking-normal">
             ({{ versionStrings.length }})
           </span>
@@ -336,7 +336,7 @@ const selectedChangelogContent = computed(() => {
           role="status"
           aria-live="polite"
         >
-          No versions match {{ versionFilter }}
+          {{ $t('package.versions.no_match_filter', { filter: versionFilter }) }}
         </div>
 
         <!-- List + changelog side panel -->
@@ -356,7 +356,11 @@ const selectedChangelogContent = computed(() => {
                       class="flex items-center gap-3 px-4 py-2.5 w-full text-start hover:bg-bg-subtle transition-colors"
                       :class="index < flatItems.length - 1 ? 'border-b border-border' : ''"
                       :aria-expanded="expandedGroups.has(item.groupKey)"
-                      :aria-label="`${expandedGroups.has(item.groupKey) ? 'Collapse' : 'Expand'} ${item.label}`"
+                      :aria-label="
+                        expandedGroups.has(item.groupKey)
+                          ? $t('package.versions.collapse', { tag: item.label })
+                          : $t('package.versions.expand', { tag: item.label })
+                      "
                       @click="toggleGroup(item.groupKey)"
                     >
                       <span
@@ -513,7 +517,7 @@ const selectedChangelogContent = computed(() => {
                     type="button"
                     class="flex items-center gap-3 px-4 py-2.5 w-full text-start border-b border-border last:border-b-0"
                     :aria-expanded="false"
-                    :aria-label="`Expand ${item.label}`"
+                    :aria-label="$t('package.versions.expand', { tag: item.label })"
                   >
                     <span class="w-4 h-4 flex items-center justify-center text-fg-subtle shrink-0">
                       <span class="i-lucide:chevron-right w-3 h-3 rtl-flip" aria-hidden="true" />
@@ -561,7 +565,7 @@ const selectedChangelogContent = computed(() => {
                   <button
                     type="button"
                     class="text-fg-subtle hover:text-fg transition-colors rounded focus-visible:outline-accent/70 shrink-0 ms-2"
-                    aria-label="Close changelog"
+                    :aria-label="$t('package.versions.close_changelog')"
                     @click="selectedChangelogVersion = null"
                   >
                     <span class="i-lucide:x w-3.5 h-3.5" aria-hidden="true" />

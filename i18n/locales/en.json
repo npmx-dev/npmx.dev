@@ -378,6 +378,7 @@
       "all_covered": "All versions are covered by tags above",
       "deprecated_title": "{version} (deprecated)",
       "view_all": "View {count} version | View all {count} versions",
+      "view_all_versions": "View all versions",
       "distribution_title": "Semver Group",
       "distribution_modal_title": "Versions",
       "distribution_range_date_same_year": "from {from} to {to}, {endYear}",
@@ -402,7 +403,13 @@
       "copy_alt": {
         "per_version_analysis": "{version} version was downloaded {downloads} times",
         "general_description": "Bar chart showing per-version downloads for {versions_count} {semver_grouping_mode} versions of the {package_name} package, {date_range_label} from the {first_version} version to the {last_version} version. The most downloaded version is {max_downloaded_version} with {max_version_downloads} downloads. {per_version_analysis}. {watermark}."
-      }
+      },
+      "page_title": "Version History",
+      "current_tags": "Current Tags",
+      "version_filter_placeholder": "Filter versions…",
+      "version_filter_label": "Filter versions",
+      "no_match_filter": "No versions match {filter}",
+      "close_changelog": "Close changelog"
     },
     "dependencies": {
       "title": "Dependency ({count}) | Dependencies ({count})",
