@@ -363,7 +363,9 @@
       "published": "Published",
       "weekly_downloads": "Weekly downloads",
       "keywords": "Keywords",
-      "license": "License"
+      "license": "License",
+      "select": "Select package",
+      "select_maximum": "Maximum {count} packages can be selected"
     },
     "versions": {
       "title": "Versions",
@@ -855,6 +857,7 @@
       "secure": "Without warnings",
       "insecure": "With warnings"
     },
+    "view_selected": "View selected",
     "sort": {
       "label": "Sort packages",
       "toggle_direction": "Toggle sort direction",
@@ -888,7 +891,8 @@
       "popularity_score": "Popularity score",
       "maintenance_score": "Maintenance score",
       "combined_score": "Combined score",
-      "security": "Security"
+      "security": "Security",
+      "selection": "Select package"
     },
     "view_mode": {
       "label": "View mode",
@@ -1365,5 +1369,10 @@
         "all": "all"
       }
     }
+  },
+  "action_bar": {
+    "title": "action bar",
+    "selection": "0 selected | 1 selected | {count} selected",
+    "shortcut": "Press \"{key}\" to focus actions"
   }
 }
