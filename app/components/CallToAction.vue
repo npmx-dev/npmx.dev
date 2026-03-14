@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const discord = useDiscordLink()
 const socialLinks = computed(() => [
   {
     id: 'github',
@@ -10,11 +11,11 @@ const socialLinks = computed(() => [
   },
   {
     id: 'discord',
-    href: 'https://chat.npmx.dev',
+    href: discord.value.url,
     icon: 'i-lucide:message-circle',
-    titleKey: $t('about.get_involved.community.title'),
-    descriptionKey: $t('about.get_involved.community.description'),
-    ctaKey: $t('about.get_involved.community.cta'),
+    titleKey: discord.value.title,
+    descriptionKey: discord.value.description,
+    ctaKey: discord.value.cta,
   },
   {
     id: 'bluesky',

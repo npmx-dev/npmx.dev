@@ -216,7 +216,7 @@ const copyDevInstallCommand = () =>
             >
             <NuxtLink
               :to="packageRoute(typesPackageName!)"
-              class="text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-accent/70 rounded select-none"
+              class="text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-accent/70 rounded select-none -m-1 p-1"
               :title="$t('package.get_started.view_types', { package: typesPackageName })"
             >
               <span class="i-lucide:arrow-right rtl-flip w-3 h-3 align-middle" aria-hidden="true" />

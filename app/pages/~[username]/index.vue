@@ -155,7 +155,7 @@ defineOgImage('Page.takumi', {
               target="_blank"
               rel="noopener noreferrer"
               class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-              :title="$t('common.view_on_npm')"
+              :title="$t('common.view_on.npm')"
             >
               <span class="i-simple-icons:npm w-4 h-4" aria-hidden="true" />
               npm

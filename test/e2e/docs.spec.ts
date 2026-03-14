@@ -10,10 +10,7 @@ test.describe('API Documentation Pages', () => {
 
     // Header should show package name and version
     await expect(page.locator('header').getByText('ufo')).toBeVisible()
-    await expect(page.locator('header').getByText('1.6.3')).toBeVisible()
-
-    // API Docs badge should be visible
-    await expect(page.locator('text=API Docs')).toBeVisible()
+    await expect(page.locator('[data-testid="package-subheader"]').getByText('1.6.3')).toBeVisible()
 
     // Should have documentation content
     const docsContent = page.locator('.docs-content')
@@ -73,17 +70,6 @@ test.describe('API Documentation Pages', () => {
     await expect(page).toHaveURL(/\/package-docs\/ufo\/v\//)
   })
 
-  test('package link in header navigates to package page', async ({ page, goto }) => {
-    await goto('/package-docs/ufo/v/1.6.3', { waitUntil: 'networkidle' })
-
-    // Click on package name in header
-    const packageLink = page.locator('header a').filter({ hasText: 'ufo' })
-    await packageLink.click()
-
-    // Should navigate to package page (URL ends with /ufo)
-    await expect(page).toHaveURL(/\/package\/ufo$/)
-  })
-
   test('docs page handles package gracefully when types unavailable', async ({ page, goto }) => {
     // Use a simple JS package - the page should load without crashing
     // regardless of whether it has types or shows an error state
@@ -108,7 +94,9 @@ test.describe('Version Selector', () => {
     await goto('/package-docs/ufo/v/1.6.3', { waitUntil: 'hydration' })
 
     // Find and click the version selector button (wait for it to be visible)
-    const versionButton = page.locator('header button').filter({ hasText: '1.6.3' })
+    const versionButton = page
+      .locator('[data-testid="package-subheader"] button')
+      .filter({ hasText: '1.6.3' })
     await expect(versionButton).toBeVisible({ timeout: 10000 })
 
     await versionButton.click()
@@ -126,7 +114,9 @@ test.describe('Version Selector', () => {
     await goto('/package-docs/ufo/v/1.6.3', { waitUntil: 'hydration' })
 
     // Find and click the version selector button (wait for it to be visible)
-    const versionButton = page.locator('header button').filter({ hasText: '1.6.3' })
+    const versionButton = page
+      .locator('[data-testid="package-subheader"] button')
+      .filter({ hasText: '1.6.3' })
     await expect(versionButton).toBeVisible({ timeout: 10000 })
 
     await versionButton.click()
@@ -160,7 +150,9 @@ test.describe('Version Selector', () => {
     await goto('/package-docs/ufo/v/1.6.3', { waitUntil: 'hydration' })
 
     // Wait for version button to be visible
-    const versionButton = page.locator('header button').filter({ hasText: '1.6.3' })
+    const versionButton = page
+      .locator('[data-testid="package-subheader"] button')
+      .filter({ hasText: '1.6.3' })
     await expect(versionButton).toBeVisible({ timeout: 10000 })
 
     await versionButton.click()

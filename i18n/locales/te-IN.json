@@ -100,7 +100,6 @@
     "skip_link": "ప్రధాన కంటెంట్‌కు వెళ్లండి",
     "warnings": "హెచ్చరికలు:",
     "go_back_home": "హోమ్‌కు వెనక్కి వెళ్లండి",
-    "view_on_npm": "npm లో వీక్షించండి",
     "per_week": "/ వారం",
     "vanity_downloads_hint": "వానిటీ నంబర్: ప్యాకేజ్ ప్రదర్శించబడలేదు | వానిటీ నంబర్: ప్రదర్శించబడిన ప్యాకేజ్‌కు | వానిటీ నంబర్: {count} ప్రదర్శించబడిన ప్యాకేజ్‌ల మొత్తం",
     "sort": {
@@ -108,15 +107,17 @@
       "role": "పాత్ర",
       "members": "సభ్యులు"
     },
-    "scroll_to_top": "పైకి స్క్రోల్ చేయండి"
+    "scroll_to_top": "పైకి స్క్రోల్ చేయండి",
+    "view_on": {
+      "npm": "npm లో వీక్షించండి",
+      "github": "GitHub లో వీక్షించండి"
+    }
   },
   "package": {
     "not_found": "ప్యాకేజ్ కనుగొనబడలేదు",
     "not_found_message": "ప్యాకేజ్ కనుగొనబడలేదు.",
     "no_description": "వివరణ అందించబడలేదు",
-    "not_latest": "(తాజాది కాదు)",
     "verified_provenance": "ధృవీకరించబడిన ప్రోవెనెన్స్",
-    "view_permalink": "ఈ వెర్షన్ యొక్క పర్మాలింక్‌ను వీక్షించండి",
     "navigation": "ప్యాకేజ్",
     "copy_name": "ప్యాకేజ్ పేరును కాపీ చేయండి",
     "deprecation": {
@@ -195,7 +196,6 @@
     "readme": {
       "title": "రీడ్మీ",
       "no_readme": "README అందుబాటులో లేదు.",
-      "view_on_github": "GitHub లో వీక్షించండి",
       "callout": {}
     },
     "provenance_section": {},
@@ -360,9 +360,6 @@
   "connector": {
     "modal": {
       "title": "లోకల్ కనెక్టర్",
-      "contributor_badge": "కంట్రిబ్యూటర్‌లకు మాత్రమే",
-      "contributor_notice": "కనెక్టర్ ఇంకా npm లో ప్రచురించబడలేదు. స్థానికంగా అమలు చేయడానికి {link} చూడండి.",
-      "contributor_link": "కంట్రిబ్యూషన్ గైడ్",
       "connected": "కనెక్ట్ చేయబడింది",
       "connected_as_user": "~{user} గా కనెక్ట్ చేయబడింది",
       "connected_hint": "ఇప్పుడు మీరు వెబ్ UI నుండి ప్యాకేజ్‌లు మరియు సంస్థలను నిర్వహించవచ్చు.",
@@ -658,7 +655,6 @@
       "paginated": "పేజినేటెడ్",
       "items_per_page": "పేజీకి అంశాలు",
       "per_page": "{count} / పేజీ",
-      "all_yolo": "అన్నీ (YOLO)",
       "showing": "{total} లో {start}-{end}",
       "previous": "మునుపటి పేజీ",
       "next": "తర్వాతి పేజీ",

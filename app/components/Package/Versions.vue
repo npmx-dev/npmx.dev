@@ -1,18 +1,7 @@
 <script setup lang="ts">
-import type { PackageVersionInfo, SlimVersion } from '#shared/types'
 import { compare, validRange } from 'semver'
 import type { RouteLocationRaw } from 'vue-router'
 import { fetchAllPackageVersions } from '~/utils/npm/api'
-import { NPMX_DOCS_SITE } from '#shared/utils/constants'
-import {
-  buildVersionToTagsMap,
-  filterExcludedTags,
-  filterVersions,
-  getPrereleaseChannel,
-  getVersionGroupKey,
-  getVersionGroupLabel,
-  isSameVersionGroup,
-} from '~/utils/versions'
 
 const props = defineProps<{
   packageName: string
@@ -115,6 +104,22 @@ const effectiveCurrentVersion = computed(
 
 // Semver range filter
 const semverFilter = ref('')
+
+// Load all versions when a valid semver filter is entered
+watch(semverFilter, async newFilter => {
+  const trimmed = newFilter.trim()
+  if (trimmed === '' || hasLoadedAll.value) return
+  if (!validRange(trimmed)) return
+
+  try {
+    const allVersions = await loadAllVersions()
+    processLoadedVersions(allVersions)
+    // Auto-expand "Other versions" so filtered results are visible
+    otherVersionsExpanded.value = true
+  } catch {
+    // Silently fail — user can still use the filter with already-known versions
+  }
+})
 // Collect all known versions: initial props + dynamically loaded ones
 const allKnownVersions = computed(() => {
   const versions = new Set(Object.keys(props.versions))
@@ -196,8 +201,10 @@ const visibleTagRows = computed(() => {
     ? allTagRows.value
     : allTagRows.value.filter(row => !row.primaryVersion.deprecated)
   const rows = isFilterActive.value
-    ? rowsMaybeFilteredForDeprecation.filter(row =>
-        filteredVersionSet.value.has(row.primaryVersion.version),
+    ? rowsMaybeFilteredForDeprecation.filter(
+        row =>
+          filteredVersionSet.value.has(row.primaryVersion.version) ||
+          getTagVersions(row.tag).some(v => filteredVersionSet.value.has(v.version)),
       )
     : rowsMaybeFilteredForDeprecation
   const first = rows.slice(0, MAX_VISIBLE_TAGS)
@@ -215,7 +222,11 @@ const visibleTagRows = computed(() => {
 const hiddenTagRows = computed(() => {
   const hiddenRows = allTagRows.value.filter(row => !visibleTagRows.value.includes(row))
   const rows = isFilterActive.value
-    ? hiddenRows.filter(row => filteredVersionSet.value.has(row.primaryVersion.version))
+    ? hiddenRows.filter(
+        row =>
+          filteredVersionSet.value.has(row.primaryVersion.version) ||
+          getTagVersions(row.tag).some(v => filteredVersionSet.value.has(v.version)),
+      )
     : hiddenRows
   return rows
 })
@@ -435,6 +446,14 @@ function getExpandedTagVersions(tag: string, primaryVersion: string): VersionDis
   return versions.filter(v => filteredVersionSet.value.has(v.version))
 }
 
+// Check if a tag row's children are expanded (manually or via active filter)
+function isTagExpanded(tag: string, primaryVersion: string): boolean {
+  return (
+    expandedTags.value.has(tag) ||
+    (isFilterActive.value && getExpandedTagVersions(tag, primaryVersion).length > 0)
+  )
+}
+
 function findClaimingTag(version: string): string | null {
   const versionChannel = getPrereleaseChannel(version)
 
@@ -515,7 +534,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
     <div class="space-y-0.5 min-w-0">
       <!-- Semver range filter -->
       <div>
-        <div class="flex items-center gap-2 p-1">
+        <div class="flex items-center gap-2 pb-1 pe-1">
           <InputBase
             v-model="semverFilter"
             type="text"
@@ -583,7 +602,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
             v-if="getTagVersions(row.tag).length > 1 || !hasLoadedAll"
             type="button"
             class="size-5 -me-1 flex items-center justify-center text-fg-subtle hover:text-fg transition-colors rounded-sm relative z-10"
-            :aria-expanded="expandedTags.has(row.tag)"
+            :aria-expanded="isTagExpanded(row.tag, row.primaryVersion.version)"
             :aria-label="
               expandedTags.has(row.tag)
                 ? $t('package.versions.collapse', { tag: row.tag })
@@ -602,7 +621,9 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
               v-else
               class="size-3 transition-transform duration-200 rtl-flip"
               :class="
-                expandedTags.has(row.tag) ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'
+                isTagExpanded(row.tag, row.primaryVersion.version)
+                  ? 'i-lucide:chevron-down'
+                  : 'i-lucide:chevron-right'
               "
               aria-hidden="true"
             />
@@ -671,10 +692,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
 
         <!-- Expanded versions -->
         <div
-          v-if="
-            expandedTags.has(row.tag) &&
-            getExpandedTagVersions(row.tag, row.primaryVersion.version).length
-          "
+          v-if="isTagExpanded(row.tag, row.primaryVersion.version)"
           class="ms-4 ps-2 border-is border-border space-y-0.5 pe-2"
         >
           <div

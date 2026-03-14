@@ -11,6 +11,7 @@ export default defineConfig({
       {
         resolve: {
           alias: {
+            '~': `${rootDir}/app`,
             '#shared': `${rootDir}/shared`,
             '#server': `${rootDir}/server`,
           },

@@ -119,6 +119,7 @@ export default defineConfig({
         svelte: '#FF3E00',
         tailwind: '#06B6D4',
         storybook: '#FF4785',
+        marko: '#CC0067',
       },
     },
     animation: {

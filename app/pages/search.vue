@@ -32,7 +32,11 @@ const updateUrlPage = debounce((page: number) => {
   window.history.replaceState(window.history.state, '', url)
 }, 500)
 
-const { model: searchQuery, provider: searchProvider } = useGlobalSearch()
+const {
+  model: searchQuery,
+  committedModel: committedQuery,
+  provider: searchProvider,
+} = useGlobalSearch()
 const query = computed(() => searchQuery.value)
 
 // Track if page just loaded (for hiding "Searching..." during view transition)
@@ -160,8 +164,7 @@ const EAGER_LOAD_SIZE = { algolia: 500, npm: 500 } as const
 
 // Calculate how many results we need based on current page and preferred page size
 const requestedSize = computed(() => {
-  const numericPrefSize = preferredPageSize.value === 'all' ? 250 : preferredPageSize.value
-  const base = Math.max(pageSize, currentPage.value * numericPrefSize)
+  const base = Math.max(pageSize, currentPage.value * preferredPageSize.value)
   // When sorting by something other than relevance, fetch a large batch
   // so client-side sorting operates on a meaningful pool of matching results
   if (!isRelevanceSort.value) {
@@ -181,6 +184,7 @@ watch(searchProvider, provider => {
 })
 
 // Use incremental search with client-side caching + org/user suggestions
+// committedQuery only updates on Enter when instant search is off, otherwise tracks query as user types
 const {
   data: results,
   status,
@@ -191,7 +195,7 @@ const {
   suggestions: validatedSuggestions,
   packageAvailability,
 } = useSearch(
-  query,
+  committedQuery,
   searchProvider,
   () => ({
     size: requestedSize.value,
@@ -475,6 +479,9 @@ function handleResultsKeydown(e: KeyboardEvent) {
     const inputValue = (document.activeElement as HTMLInputElement).value.trim()
     if (!inputValue) return
 
+    // When instantSearch is off, commit the query so search starts
+    committedQuery.value = inputValue
+
     // Check if first result matches the input value exactly
     const firstResult = displayResults.value[0]
     if (firstResult?.package.name === inputValue) {
@@ -578,10 +585,8 @@ const rawLiveRegionMessage = computed(() => {
 
   if (visibleResults.value && displayResults.value.length > 0) {
     if (viewMode.value === 'table' || paginationMode.value === 'paginated') {
-      const pSize =
-        preferredPageSize.value === 'all'
-          ? $n(effectiveTotal.value)
-          : Math.min(preferredPageSize.value, effectiveTotal.value)
+      const pSize = Math.min(preferredPageSize.value, effectiveTotal.value)
+
       return $t(
         'filters.count.showing_paginated',
         {
@@ -663,7 +668,7 @@ onBeforeUnmount(() => {
         <SearchProviderToggle />
       </div>
 
-      <section v-if="query" class="results-layout">
+      <section v-if="committedQuery" class="results-layout">
         <LoadingSpinner v-if="showSearching" :text="$t('search.searching')" />
 
         <div
@@ -772,10 +777,7 @@ onBeforeUnmount(() => {
                 $t(
                   'filters.count.showing_paginated',
                   {
-                    pageSize:
-                      preferredPageSize === 'all'
-                        ? $n(effectiveTotal)
-                        : Math.min(preferredPageSize, effectiveTotal),
+                    pageSize: Math.min(preferredPageSize, effectiveTotal),
                     count: $n(effectiveTotal),
                   },
                   effectiveTotal,

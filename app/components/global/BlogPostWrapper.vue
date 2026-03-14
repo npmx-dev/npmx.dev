@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import type { BlogPostFrontmatter } from '#shared/schemas/blog'
+import type { RawBlogPostFrontmatter } from '#shared/schemas/blog'
+import { generateBlogTID } from '#shared/utils/atproto'
+import { posts } from '#blog/posts'
 
 const props = defineProps<{
-  frontmatter: BlogPostFrontmatter
+  frontmatter: RawBlogPostFrontmatter
 }>()
+
+const post = computed(() => posts.find(p => p.slug === props.frontmatter.slug))
 
 useSeoMeta({
   title: props.frontmatter.title,
@@ -14,9 +18,18 @@ useSeoMeta({
   ...(props.frontmatter.draft ? { robots: 'noindex, nofollow' } : {}),
 })
 
+useHead({
+  link: [
+    {
+      rel: 'site.standard.document',
+      href: `at://${NPMX_DEV_DID}/site.standard.document/${generateBlogTID(props.frontmatter.date, props.frontmatter.slug)}`,
+    },
+  ],
+})
+
 defineOgImage('BlogPost.takumi', {
   title: props.frontmatter.title,
-  authors: props.frontmatter.authors,
+  authors: post.value?.authors ?? [],
   date: props.frontmatter.date,
 })
 
@@ -40,9 +53,9 @@ const blueskyPostUri = computed(() => blueskyLink.value?.postUri ?? null)
         </span>
       </div>
     </div>
-    <div v-if="frontmatter.authors" class="mb-12 max-w-prose mx-auto">
+    <div v-if="post?.authors" class="mb-12 max-w-prose mx-auto">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <AuthorList :authors="frontmatter.authors" variant="expanded" />
+        <AuthorList :authors="post.authors" variant="expanded" />
       </div>
     </div>
     <article class="max-w-prose mx-auto p-2 prose dark:prose-invert">

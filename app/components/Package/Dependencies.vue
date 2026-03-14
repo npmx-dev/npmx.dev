@@ -108,7 +108,7 @@ const numberFormatter = useNumberFormatter()
         )
       "
     >
-      <ul class="px-1 space-y-1 list-none m-0" :aria-label="$t('package.dependencies.list_label')">
+      <ul class="space-y-1 list-none m-0" :aria-label="$t('package.dependencies.list_label')">
         <li
           v-for="[dep, version] in sortedDependencies.slice(0, depsExpanded ? undefined : 10)"
           :key="dep"
@@ -218,8 +218,8 @@ const numberFormatter = useNumberFormatter()
           :key="peer.name"
           class="flex items-center justify-between py-1 text-sm gap-1 min-w-0"
         >
-          <div class="flex items-center gap-1 min-w-0 flex-1">
-            <LinkBase :to="packageRoute(peer.name)" class="block truncate" dir="ltr">
+          <div class="flex items-center gap-2 min-w-0 flex-1">
+            <LinkBase :to="packageRoute(peer.name)" class="block max-w-[70%] break-words" dir="ltr">
               {{ peer.name }}
             </LinkBase>
             <TagStatic v-if="peer.optional" :title="$t('package.dependencies.optional')">
@@ -228,7 +228,7 @@ const numberFormatter = useNumberFormatter()
           </div>
           <LinkBase
             :to="packageRoute(peer.name, peer.version)"
-            class="block truncate max-w-[40%]"
+            class="block truncate max-w-[30%]"
             :title="peer.version"
             dir="ltr"
           >
@@ -278,9 +278,9 @@ const numberFormatter = useNumberFormatter()
             optionalDepsExpanded ? undefined : 10,
           )"
           :key="dep"
-          class="flex items-center justify-between py-1 text-sm gap-2"
+          class="flex items-baseline justify-between py-1 text-sm gap-2"
         >
-          <LinkBase :to="packageRoute(dep)" class="block truncate" dir="ltr">
+          <LinkBase :to="packageRoute(dep)" class="block max-w-[80%] break-words" dir="ltr">
             {{ dep }}
           </LinkBase>
           <LinkBase

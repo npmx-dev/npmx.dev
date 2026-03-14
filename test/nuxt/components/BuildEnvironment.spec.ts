@@ -1,4 +1,3 @@
-import type { BuildInfo } from '#shared/types'
 import { describe, expect, it } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import BuildEnvironment from '~/components/BuildEnvironment.vue'
@@ -25,6 +24,33 @@ describe('BuildEnvironment', () => {
     const envSpan = component.find('span.tracking-wider')
     expect(envSpan.exists()).toBe(true)
     expect(envSpan.text()).toBe(buildInfo.env)
+    const commitLink = component.find(`a[href$="/commit/${buildInfo.commit}"]`)
+    expect(commitLink.exists()).toBe(true)
+    const tagLink = component.find(`a[href$="/tag/v${buildInfo.version}"]`)
+    expect(tagLink.exists()).toBe(false)
+  })
+
+  it('renders canary environment correctly', async () => {
+    const buildInfo: BuildInfo = {
+      env: 'canary',
+      version: '1.2.3',
+      time: 1234567890,
+      commit: 'abcdef',
+      shortCommit: 'abc',
+      branch: 'main',
+      privacyPolicyDate: new Date().toISOString(),
+      prNumber: null,
+    }
+    const component = await mountSuspended(BuildEnvironment, {
+      props: {
+        buildInfo,
+      },
+    })
+
+    // In canary mode, it shows env name, not version link
+    const envSpan = component.find('span.tracking-wider')
+    expect(envSpan.exists()).toBe(true)
+    expect(envSpan.text()).toBe('canary')
     const commitLink = component.find(`a[href$="/commit/${buildInfo.commit}"]`)
     expect(commitLink.exists()).toBe(true)
     const tagLink = component.find(`a[href$="/tag/v${buildInfo.version}"]`)

@@ -44,4 +44,11 @@ describe('PackageLikeCard', () => {
 
     expect(wrapper.find('span.truncate').text()).toBe('@scope/pkg')
   })
+
+  it('hides the like button entirely while like data is pending', async () => {
+    wrapper = await mountLikeCard('https://npmx.dev/package/vue')
+
+    const button = wrapper.find('button')
+    expect(button.exists()).toBe(false)
+  })
 })

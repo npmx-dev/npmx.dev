@@ -13,10 +13,12 @@
   "trademark_disclaimer": "npm, npm, Inc.-in qeydiyyatlı ticarət markasıdır. Bu sayt npm, Inc. ilə əlaqəli deyil.",
   "footer": {
     "about": "haqqında",
+    "blog": "bloq",
     "docs": "sənədlər",
     "source": "mənbə",
     "social": "sosial",
     "chat": "söhbət",
+    "builders_chat": "qurucular",
     "keyboard_shortcuts": "klaviatura qısayolları"
   },
   "shortcuts": {
@@ -33,7 +35,8 @@
     "navigate_results": "Nəticələr arasında gəz",
     "go_to_result": "Nəticəyə keç",
     "open_code_view": "Kod görünüşünü aç",
-    "open_docs": "Sənədləri aç"
+    "open_docs": "Sənədləri aç",
+    "disable_shortcuts": "Klaviatura qısayollarını {settings} bölməsindən söndürə bilərsiniz."
   },
   "search": {
     "label": "npm paketlərini axtar",
@@ -62,7 +65,13 @@
       "org": "təşkilat",
       "view_user_packages": "Bu istifadəçinin paketlərinə bax",
       "view_org_packages": "Bu təşkilatın paketlərinə bax"
-    }
+    },
+    "instant_search": "Ani axtarış",
+    "instant_search_on": "açıq",
+    "instant_search_off": "bağlı",
+    "instant_search_turn_on": "aç",
+    "instant_search_turn_off": "bağla",
+    "instant_search_advisory": "{label} {state} — {action}"
   },
   "nav": {
     "main_navigation": "Əsas",
@@ -76,6 +85,31 @@
     "links": "Keçidlər",
     "tap_to_search": "Axtarmaq üçün toxunun"
   },
+  "blog": {
+    "title": "Bloq",
+    "heading": "bloq",
+    "meta_description": "npmx icmasından fikirlər və yeniliklər",
+    "author": {
+      "view_profile": "{name} Bluesky profilinə bax"
+    },
+    "draft_badge": "Qaralama",
+    "draft_banner": "Bu dərc edilməmiş qaralamadır. Natamam və ya qeyri-dəqiq məlumat ehtiva edə bilər.",
+    "atproto": {
+      "view_on_bluesky": "Bluesky-da bax",
+      "reply_on_bluesky": "Bluesky-da cavabla",
+      "likes_on_bluesky": "Bluesky-da bəyənmələr",
+      "like_or_reply_on_bluesky": "Bu yazını bəyənin və ya Bluesky-da şərh əlavə edin",
+      "no_comments_yet": "Hələ şərh yoxdur.",
+      "could_not_load_comments": "Şərhlər yüklənə bilmədi.",
+      "comments": "Şərhlər",
+      "loading_comments": "Şərhlər yüklənir...",
+      "updating": "Yenilənir...",
+      "reply_count": "{count} cavab",
+      "like_count": "{count} bəyənmə",
+      "repost_count": "{count} yenidən paylaşım",
+      "more_replies": "{count} cavab daha..."
+    }
+  },
   "settings": {
     "title": "tənzimləmələr",
     "tagline": "npmx təcrübənizi fərdiləşdirin",
@@ -84,7 +118,8 @@
       "appearance": "Görünüş",
       "display": "Ekran",
       "search": "Məlumat mənbəyi",
-      "language": "Dil"
+      "language": "Dil",
+      "keyboard_shortcuts": "Klaviatura qısayolları"
     },
     "data_source": {
       "label": "Məlumat mənbəyi",
@@ -94,6 +129,8 @@
       "algolia": "Algolia",
       "algolia_description": "Daha sürətli axtarış, təşkilat və istifadəçi səhifələri üçün Algolia istifadə edir."
     },
+    "instant_search": "Ani axtarış",
+    "instant_search_description": "Axtarış səhifəsinə keçir və siz yazdıqca nəticələri yeniləyir.",
     "relative_dates": "Nisbi tarixlər",
     "include_types": "Quraşdırmaya {'@'}types daxil et",
     "include_types_description": "Tipsiz paketlər üçün quraşdırma əmrlərinə {'@'}types paketi əlavə et",
@@ -108,7 +145,9 @@
     "accent_colors": "Vurğu rəngləri",
     "clear_accent": "Vurğu rəngini təmizlə",
     "translation_progress": "Tərcümə irəliləyişi",
-    "background_themes": "Fon tonu"
+    "background_themes": "Fon tonu",
+    "keyboard_shortcuts_enabled": "Klaviatura qısayollarını aktivləşdir",
+    "keyboard_shortcuts_enabled_description": "Klaviatura qısayolları digər brauzer və ya sistem qısayolları ilə toqquşarsa deaktiv edilə bilər"
   },
   "i18n": {
     "missing_keys": "{count} çatışmayan tərcümə | {count} çatışmayan tərcümə",
@@ -117,6 +156,13 @@
     "contribute_hint": "Çatışmayan açarları əlavə edərək bu tərcüməni yaxşılaşdırmağa kömək edin.",
     "edit_on_github": "GitHub-da redaktə et",
     "view_guide": "Tərcümə bələdçisi"
+  },
+  "error": {
+    "401": "İcazəsiz",
+    "404": "Səhifə tapılmadı",
+    "500": "Daxili server xətası",
+    "503": "Xidmət əlçatan deyil",
+    "default": "Nəsə səhv oldu"
   },
   "common": {
     "loading": "Yüklənir...",
@@ -132,7 +178,6 @@
     "skip_link": "Əsas məzmuna keç",
     "warnings": "Xəbərdarlıqlar:",
     "go_back_home": "Ana səhifəyə qayıt",
-    "view_on_npm": "npm-də bax",
     "per_week": "/ həftə",
     "vanity_downloads_hint": "Göstərici: paket göstərilmir | Göstərici: göstərilən paket üçün | Göstərici: {count} göstərilən paketin cəmi",
     "sort": {
@@ -140,18 +185,40 @@
       "role": "rol",
       "members": "üzvlər"
     },
-    "scroll_to_top": "Yuxarı qayıt"
+    "scroll_to_top": "Yuxarı qayıt",
+    "cancel": "Ləğv et",
+    "save": "Saxla",
+    "edit": "Redaktə et",
+    "error": "Xəta",
+    "view_on": {
+      "npm": "npm-də bax",
+      "github": "GitHub-da bax"
+    }
+  },
+  "profile": {
+    "display_name": "Görünən Ad",
+    "description": "Təsvir",
+    "no_description": "Təsvir yoxdur",
+    "website": "Veb-sayt",
+    "website_placeholder": "https://example.com",
+    "likes": "Bəyənmələr",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "{handle} tərəfindən npmx profili",
+    "not_found": "Profil Tapılmadı",
+    "not_found_message": "{handle} üçün profil tapıla bilmədi.",
+    "invite": {
+      "message": "Deyəsən onlar hələ npmx istifadə etmirlər. Onlara bu barədə demək istəyirsiniz?",
+      "share_button": "Bluesky-da paylaş",
+      "compose_text": "Salam {'@'}{handle}! npmx.dev-i yoxlamısan? Bu, npm reyestri üçün sürətli, müasir və açıq mənbəli brauzerdir.\nhttps://npmx.dev"
+    }
   },
   "package": {
     "not_found": "Paket Tapılmadı",
     "not_found_message": "Paket tapıla bilmədi.",
     "no_description": "Təsvir verilməyib",
-    "not_latest": "(son deyil)",
     "verified_provenance": "Təsdiqlənmiş mənşə",
-    "view_permalink": "Bu versiya üçün daimi keçidə bax",
     "navigation": "Paket",
     "copy_name": "Paket adını kopyala",
-    "copy_version": "Paket versiyasını kopyala",
     "deprecation": {
       "package": "Bu paket köhnəlmişdir.",
       "version": "Bu versiya köhnəlmişdir.",
@@ -245,7 +312,6 @@
     "readme": {
       "title": "Readme",
       "no_readme": "README mövcud deyil.",
-      "view_on_github": "GitHub-da bax",
       "toc_title": "Məzmun",
       "callout": {
         "note": "Qeyd",
@@ -310,7 +376,6 @@
       "grouping_versions_only_recent": "Yalnız son",
       "grouping_usage_title": "İstifadə",
       "grouping_usage_all": "Hamısı",
-      "grouping_usage_low": "Aşağı",
       "recent_versions_only_tooltip": "Yalnız son bir il ərzində dərc edilmiş versiyaları göstər.",
       "show_low_usage_tooltip": "Ümumi endirmələrin 1%-dən azını təşkil edən versiya qruplarını daxil et.",
       "y_axis_label": "Endirmələr",
@@ -373,6 +438,9 @@
       "date_range_multiline": "{start}\n- {end}",
       "download_file": "{fileType} endir",
       "toggle_annotator": "Annotator keçid",
+      "toggle_stack_mode": "Yığın rejimini dəyişdir",
+      "open_options": "Seçimləri aç",
+      "close_options": "Seçimləri bağla",
       "legend_estimation": "Təxmin",
       "no_data": "Məlumat mövcud deyil",
       "y_axis_label": "{granularity} {facet}",
@@ -384,6 +452,17 @@
         "likes": "Bəyənmələr",
         "contributors": "Əməkdaşlar"
       },
+      "data_correction": "Məlumat düzəlişi",
+      "average_window": "Orta pəncərə",
+      "smoothing": "Hamarlama",
+      "known_anomalies": "Bilinən anomaliyalar",
+      "known_anomalies_description": "Botlar və ya CI problemlərindən yaranan bilinən endirmə sıçrayışlarını interpolyasiya edir.",
+      "known_anomalies_ranges": "Anomaliya aralıqları",
+      "known_anomalies_range": "{start}-dən {end}-ə",
+      "known_anomalies_range_named": "{packageName}: {start}-dən {end}-ə",
+      "known_anomalies_none": "Bu paket üçün bilinən anomaliya yoxdur. | Bu paketlər üçün bilinən anomaliya yoxdur.",
+      "known_anomalies_contribute": "Anomaliya məlumatı əlavə et",
+      "apply_correction": "Düzəliş tətbiq et",
       "copy_alt": {
         "trend_none": "əsasən sabit",
         "trend_strong": "güclü",
@@ -401,7 +480,8 @@
     },
     "downloads": {
       "title": "Həftəlik Endirmələr",
-      "community_distribution": "İcma adaptasiya paylanmasına bax"
+      "community_distribution": "İcma adaptasiya paylanmasına bax",
+      "subtitle": "Bütün versiyalar üzrə"
     },
     "install_scripts": {
       "title": "Quraşdırma Skriptləri",
@@ -495,9 +575,6 @@
   "connector": {
     "modal": {
       "title": "Lokal Konnektor",
-      "contributor_badge": "Yalnız əməkdaşlar üçün",
-      "contributor_notice": "Konnektor hələ npm-ə dərc edilməyib. Lokal işə salmaq üçün {link} baxın.",
-      "contributor_link": "töhfə bələdçisi",
       "connected": "Qoşulub",
       "connected_as_user": "~{user} kimi qoşulub",
       "connected_hint": "İndi veb interfeysdən paketləri və təşkilatları idarə edə bilərsiniz.",
@@ -805,7 +882,6 @@
       "paginated": "Səhifələnmiş",
       "items_per_page": "Səhifə başına element",
       "per_page": "{count} / səhifə",
-      "all_yolo": "Hamısı (YOLO)",
       "showing": "{start}-{end} / {total}",
       "previous": "Əvvəlki səhifə",
       "next": "Növbəti səhifə",
@@ -882,6 +958,11 @@
         "description": "Söhbət edin, suallar verin və fikirlər paylaşın.",
         "cta": "Discord-a qoşul"
       },
+      "builders": {
+        "title": "Qurucular",
+        "description": "Qurucular icmasamıza qoşulun və npmx-in gələcəyini formalaşdırın",
+        "cta": "Qurucular söhbətinə qoşul"
+      },
       "follow": {
         "title": "Yeniliklərdən xəbərdar olun",
         "description": "npmx haqqında son yenilikləri öyrənin.",
@@ -914,7 +995,8 @@
       "connect_bluesky": "Bluesky ilə qoşul",
       "what_is_atmosphere": "Atmosphere hesabı nədir?",
       "atmosphere_explanation": "{npmx} sosial funksiyalarını gücləndirmək üçün {atproto} istifadə edir, istifadəçilərə öz məlumatlarına sahib olmağa və bütün uyğun tətbiqlər üçün bir hesab istifadə etməyə imkan verir. Hesab yaratdıqdan sonra eyni hesabla {bluesky} və {tangled} kimi digər tətbiqlərdən istifadə edə bilərsiniz.",
-      "default_input_error": "Xahiş edirik düzgün istifadəçi adı, DID və ya tam PDS URL daxil edin"
+      "default_input_error": "Xahiş edirik düzgün istifadəçi adı, DID və ya tam PDS URL daxil edin",
+      "profile": "Profil"
     }
   },
   "header": {
@@ -1059,7 +1141,10 @@
     "file_changes": "Fayl Dəyişiklikləri",
     "files_count": "{count} fayl",
     "lines_hidden": "{count} sətir gizlədilib",
+    "file_too_large": "Fayl müqayisə üçün çox böyükdür",
+    "file_size_warning": "{size} müqayisə üçün 250KB limitini keçir",
     "compare_versions": "fərq",
+    "compare_versions_title": "Versiyaları müqayisə et",
     "summary": "Xülasə",
     "deps_count": "{count} asılılıq",
     "dependencies": "Asılılıqlar",
@@ -1086,6 +1171,34 @@
     "select_file_prompt": "Fərqini görmək üçün yan paneldən fayl seçin",
     "close_files_panel": "Fayllar panelini bağla",
     "filter_files_label": "Faylları dəyişiklik növünə görə süz"
+  },
+  "pds": {
+    "title": "PDS",
+    "meta_description": "npmx PDS - Şəxsi Məlumat Serveri",
+    "join": {
+      "title": "Qoşul",
+      "description": "npmx PDS-ə qoşulun",
+      "migrate": "Köçür"
+    },
+    "server": {
+      "title": "Server",
+      "location_label": "Yer",
+      "location_value": "Nürnberq, Almaniya",
+      "infrastructure_label": "İnfrastruktur",
+      "infrastructure_value": "Hetzner üzərində yerləşdirilir",
+      "privacy_label": "Gizlilik",
+      "privacy_value": "Sərt AB Məlumat Mühafizəsi qanunlarına tabedir",
+      "learn_more": "Ətraflı öyrən"
+    },
+    "community": {
+      "title": "İcma",
+      "description": "{count} hesab ilə icmasamıza qoşulun",
+      "loading": "Yüklənir...",
+      "error": "Xəta",
+      "empty": "Boş",
+      "view_profile": "{handle} profilinə bax",
+      "new_accounts": "{count} yeni hesab"
+    }
   },
   "privacy_policy": {
     "title": "gizlilik siyasəti",

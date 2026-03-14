@@ -100,7 +100,6 @@
     "skip_link": "मुख्य सामग्रीमा जानुहोस्",
     "warnings": "चेतावनीहरू:",
     "go_back_home": "होममा फर्कनुहोस्",
-    "view_on_npm": "npm मा हेर्नुहोस्",
     "per_week": "/ हप्ता",
     "vanity_downloads_hint": "भ्यानिटी नम्बर: कुनै प्याकेज देखाइएको छैन | भ्यानिटी नम्बर: देखाइएको प्याकेजका लागि | भ्यानिटी नम्बर: देखाइएको {count} प्याकेजहरूको योग",
     "sort": {
@@ -108,15 +107,17 @@
       "role": "भूमिका",
       "members": "सदस्यहरू"
     },
-    "scroll_to_top": "माथि स्क्रोल गर्नुहोस्"
+    "scroll_to_top": "माथि स्क्रोल गर्नुहोस्",
+    "view_on": {
+      "npm": "npm मा हेर्नुहोस्",
+      "github": "GitHub मा हेर्नुहोस्"
+    }
   },
   "package": {
     "not_found": "प्याकेज फेला परेन",
     "not_found_message": "प्याकेज फेला पार्न सकिएन।",
     "no_description": "विवरण उपलब्ध छैन",
-    "not_latest": "(नवीनतम होइन)",
     "verified_provenance": "प्रमाणित प्रुभेनेन्स",
-    "view_permalink": "यस संस्करणको पर्मालिङ्क हेर्नुहोस्",
     "navigation": "प्याकेज",
     "copy_name": "प्याकेज नाम कपी गर्नुहोस्",
     "deprecation": {
@@ -181,7 +182,6 @@
     "readme": {
       "title": "README",
       "no_readme": "README उपलब्ध छैन।",
-      "view_on_github": "GitHub मा हेर्नुहोस्",
       "callout": {}
     },
     "provenance_section": {},
@@ -345,9 +345,6 @@
   "connector": {
     "modal": {
       "title": "लोकल कनेक्टर",
-      "contributor_badge": "कन्ट्रिब्युटर मात्र",
-      "contributor_notice": "कनेक्टर अझै npm मा प्रकाशित गरिएको छैन। लोकल रूपमा चलाउने तरिका हेर्न {link} हेर्नुहोस्।",
-      "contributor_link": "कन्ट्रिब्युटिङ गाइड",
       "connected": "जोडियो",
       "connected_as_user": "~{user} रूपमा जोडियो",
       "connected_hint": "अब तपाईं वेब UI बाट प्याकेज र संगठनहरू व्यवस्थापन गर्न सक्नुहुन्छ।",
@@ -643,7 +640,6 @@
       "paginated": "पृष्ठमा विभाजित",
       "items_per_page": "प्रति पृष्ठ वस्तुहरू",
       "per_page": "{count} / पृष्ठ",
-      "all_yolo": "सबै (YOLO)",
       "showing": "{total} मध्ये {start}-{end}",
       "previous": "अघिल्लो पृष्ठ",
       "next": "अर्को पृष्ठ",

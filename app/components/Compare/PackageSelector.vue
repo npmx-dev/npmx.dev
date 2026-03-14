@@ -266,13 +266,13 @@ onClickOutside(containerRef, () => {
         <div
           v-if="isInputFocused && (navigableItems.length > 0 || isSearching)"
           ref="listRef"
-          class="absolute top-full inset-x-0 mt-1 bg-bg-elevated border border-border rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
+          class="absolute top-full inset-x-0 mt-1 px-0.5 bg-bg-elevated border border-border rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
         >
           <!-- No dependency option (easter egg with James) -->
           <ButtonBase
             v-if="showNoDependencyOption"
             data-navigable
-            class="block w-full text-start"
+            class="block w-full text-start !border-transparent"
             :class="highlightedIndex === 0 ? '!bg-accent/15' : ''"
             :aria-label="$t('compare.no_dependency.add_column')"
             @mouseenter="highlightedIndex = 0"
@@ -297,7 +297,7 @@ onClickOutside(containerRef, () => {
             v-for="(result, index) in filteredResults"
             :key="result.name"
             data-navigable
-            class="block w-full text-start"
+            class="block w-full text-start my-0.5 !border-transparent"
             :class="highlightedIndex === index + resultIndexOffset ? '!bg-accent/15' : ''"
             @mouseenter="highlightedIndex = index + resultIndexOffset"
             @click="addPackage(result.name)"

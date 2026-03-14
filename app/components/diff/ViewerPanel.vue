@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { FileDiffResponse, FileChange } from '#shared/types'
 import { onClickOutside } from '@vueuse/core'
 
 const bytesFormatter = useBytesFormatter()

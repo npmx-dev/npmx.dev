@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PackageFileTree } from '#shared/types'
 import type { RouteLocationRaw } from 'vue-router'
 import type { RouteNamedMap } from 'vue-router/auto-routes'
 import { ADDITIONAL_ICONS, getFileIcon } from '~/utils/file-icons'
@@ -65,7 +64,6 @@ watch(
             class="size-[1em] me-1 shrink-0"
             :class="isExpanded(node.path) ? 'text-yellow-500' : 'text-yellow-600'"
             viewBox="0 0 16 16"
-            fill="currentColor"
             aria-hidden="true"
           >
             <use

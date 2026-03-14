@@ -26,10 +26,8 @@ What npmx offers:
 
 ## Shortcuts
 
-> [!IMPORTANT]  
-> We're keeping the website, repository, and our discord community low-profile until the browser is polished enough. We'll do a formal announcement at that point. Please avoid sharing the website or the invite link to discord on social media directly. The repo is public, so people who care about the project can easily find it and join us. Anyone who wants to help is more than welcome to [join the community](https://chat.npmx.dev). If you know others who would be interested, please invite them too!
-
 - [chat.npmx.dev](https://chat.npmx.dev) - Discord Server
+- [build.npmx.dev](https://build.npmx.dev) - Builders Discord Server
 - [social.npmx.dev](https://social.npmx.dev) - Bluesky Profile
 - [repo.npmx.dev](https://repo.npmx.dev) - GitHub Repository
 - [issues.npmx.dev](https://issues.npmx.dev) - GitHub Issues

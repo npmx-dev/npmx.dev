@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { Author } from '#shared/schemas/blog'
+import type { ResolvedAuthor } from '#shared/schemas/blog'
 
 const props = withDefaults(
   defineProps<{
     title: string
-    authors?: Author[]
+    authors?: ResolvedAuthor[]
     date?: string
     primaryColor?: string
   }>(),
@@ -14,8 +14,6 @@ const props = withDefaults(
     primaryColor: '#60a5fa',
   },
 )
-
-const { resolvedAuthors } = useBlueskyAuthorProfiles(props.authors)
 
 const formattedDate = computed(() => {
   if (!props.date) return ''
@@ -41,17 +39,17 @@ const getInitials = (name: string) =>
     .slice(0, 2)
 
 const visibleAuthors = computed(() => {
-  if (resolvedAuthors.value.length <= 3) return resolvedAuthors.value
-  return resolvedAuthors.value.slice(0, MAX_VISIBLE_AUTHORS)
+  if (props.authors.length <= 3) return props.authors
+  return props.authors.slice(0, MAX_VISIBLE_AUTHORS)
 })
 
 const extraCount = computed(() => {
-  if (resolvedAuthors.value.length <= 3) return 0
-  return resolvedAuthors.value.length - MAX_VISIBLE_AUTHORS
+  if (props.authors.length <= 3) return 0
+  return props.authors.length - MAX_VISIBLE_AUTHORS
 })
 
 const formattedAuthorNames = computed(() => {
-  const allNames = resolvedAuthors.value.map(a => a.name)
+  const allNames = props.authors.map(a => a.name)
   if (allNames.length === 0) return ''
   if (allNames.length === 1) return allNames[0]
   if (allNames.length === 2) return `${allNames[0]} and ${allNames[1]}`
@@ -96,7 +94,7 @@ const formattedAuthorNames = computed(() => {
 
       <!-- Authors -->
       <div
-        v-if="resolvedAuthors.length"
+        v-if="authors.length"
         class="flex items-center gap-4 self-start justify-start flex-nowrap"
         style="font-family: 'Geist', sans-serif"
       >
@@ -112,6 +110,8 @@ const formattedAuthorNames = computed(() => {
               v-if="author.avatar"
               :src="author.avatar"
               :alt="author.name"
+              width="48"
+              height="48"
               class="w-full h-full object-cover"
             />
             <span v-else style="font-size: 20px; color: #666; font-weight: 500">

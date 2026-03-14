@@ -100,7 +100,6 @@
     "skip_link": "मुख्य सामग्री पर जाएं",
     "warnings": "चेतावनियाँ:",
     "go_back_home": "होम पर वापस जाएं",
-    "view_on_npm": "npm पर देखें",
     "per_week": "/ सप्ताह",
     "vanity_downloads_hint": "वैनिटी नंबर: कोई पैकेज प्रदर्शित नहीं | वैनिटी नंबर: प्रदर्शित पैकेज के लिए | वैनिटी नंबर: {count} प्रदर्शित पैकेज का योग",
     "sort": {
@@ -108,15 +107,17 @@
       "role": "भूमिका",
       "members": "सदस्य"
     },
-    "scroll_to_top": "शीर्ष पर स्क्रॉल करें"
+    "scroll_to_top": "शीर्ष पर स्क्रॉल करें",
+    "view_on": {
+      "npm": "npm पर देखें",
+      "github": "GitHub पर देखें"
+    }
   },
   "package": {
     "not_found": "पैकेज नहीं मिला",
     "not_found_message": "पैकेज नहीं मिल सका।",
     "no_description": "कोई विवरण प्रदान नहीं किया गया",
-    "not_latest": "(नवीनतम नहीं)",
     "verified_provenance": "सत्यापित प्रोवेनेंस",
-    "view_permalink": "इस संस्करण का परमालिंक देखें",
     "navigation": "पैकेज",
     "copy_name": "पैकेज नाम अनुकरण करें",
     "deprecation": {
@@ -195,7 +196,6 @@
     "readme": {
       "title": "रीडमी",
       "no_readme": "कोई README उपलब्ध नहीं है।",
-      "view_on_github": "GitHub पर देखें",
       "callout": {}
     },
     "provenance_section": {},
@@ -360,9 +360,6 @@
   "connector": {
     "modal": {
       "title": "लोकल कनेक्टर",
-      "contributor_badge": "केवल योगदानकर्ताओं के लिए",
-      "contributor_notice": "कनेक्टर अभी तक npm पर प्रकाशित नहीं हुआ है। स्थानीय रूप से चलाने के लिए {link} देखें।",
-      "contributor_link": "योगदान गाइड",
       "connected": "कनेक्ट किया गया",
       "connected_as_user": "~{user} के रूप में कनेक्ट किया गया",
       "connected_hint": "अब आप वेब UI से पैकेज और संगठन प्रबंधित कर सकते हैं।",
@@ -658,7 +655,6 @@
       "paginated": "पेजिनेटेड",
       "items_per_page": "प्रति पृष्ठ आइटम",
       "per_page": "{count} / पृष्ठ",
-      "all_yolo": "सभी (YOLO)",
       "showing": "{total} में से {start}-{end}",
       "previous": "पिछला पृष्ठ",
       "next": "अगला पृष्ठ",

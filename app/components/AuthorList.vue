@@ -1,18 +1,16 @@
 <script setup lang="ts">
-import type { Author } from '#shared/schemas/blog'
+import type { ResolvedAuthor } from '#shared/schemas/blog'
 
-const props = defineProps<{
-  authors: Author[]
+defineProps<{
+  authors: ResolvedAuthor[]
   variant?: 'compact' | 'expanded'
 }>()
-
-const { resolvedAuthors } = useBlueskyAuthorProfiles(props.authors)
 </script>
 
 <template>
   <!-- Expanded variant: vertical list with larger avatars -->
   <div v-if="variant === 'expanded'" class="flex flex-wrap items-center gap-4">
-    <div v-for="author in resolvedAuthors" :key="author.name" class="flex items-center gap-2">
+    <div v-for="author in authors" :key="author.name" class="flex items-center gap-2">
       <AuthorAvatar :author="author" size="md" disable-link />
       <div class="flex flex-col">
         <span class="text-sm font-medium text-fg">{{ author.name }}</span>
@@ -34,7 +32,7 @@ const { resolvedAuthors } = useBlueskyAuthorProfiles(props.authors)
   <div v-else class="flex items-center gap-2 min-w-0">
     <div class="flex items-center">
       <AuthorAvatar
-        v-for="(author, index) in resolvedAuthors"
+        v-for="(author, index) in authors"
         :key="author.name"
         :author="author"
         size="md"
@@ -43,7 +41,7 @@ const { resolvedAuthors } = useBlueskyAuthorProfiles(props.authors)
       />
     </div>
     <span class="text-xs text-fg-muted font-mono truncate">
-      {{ resolvedAuthors.map(a => a.name).join(', ') }}
+      {{ authors.map(a => a.name).join(', ') }}
     </span>
   </div>
 </template>

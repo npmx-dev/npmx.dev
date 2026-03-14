@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { SHOWCASED_FRAMEWORKS } from '~/utils/frameworks'
 
-const { model: searchQuery, flushUpdateUrlQuery } = useGlobalSearch()
+const { model: searchQuery, startSearch } = useGlobalSearch()
 const isSearchFocused = shallowRef(false)
 
 async function search() {
-  flushUpdateUrlQuery()
+  startSearch()
 }
 
 const { env } = useAppConfig().buildInfo
@@ -48,25 +48,31 @@ defineOgImage('Splash.takumi')
           {{ $t('tagline') }}
         </p>
         <search
-          class="w-full max-w-xl motion-safe:animate-slide-up motion-safe:animate-fill-both"
+          class="w-full max-w-2xl motion-safe:animate-slide-up motion-safe:animate-fill-both"
           style="animation-delay: 0.2s"
         >
-          <form method="GET" action="/search" class="relative" @submit.prevent.trim="search">
+          <form
+            method="GET"
+            action="/search"
+            class="relative grid justify-items-center gap-4"
+            @submit.prevent.trim="search"
+          >
             <label for="home-search" class="sr-only">
               {{ $t('search.label') }}
             </label>
 
-            <div class="relative group" :class="{ 'is-focused': isSearchFocused }">
+            <div class="relative group w-full max-w-xl" :class="{ 'is-focused': isSearchFocused }">
               <div
                 class="absolute z-1 -inset-px pointer-events-none rounded-lg bg-gradient-to-r from-fg/0 to-accent/5 opacity-0 transition-opacity duration-500 blur-sm group-[.is-focused]:opacity-100"
               />
 
               <div class="search-box relative flex items-center">
-                <span
-                  class="absolute inset-is-4 text-fg-subtle font-mono text-lg pointer-events-none transition-colors duration-200 motion-reduce:transition-none [.group:hover:not(:focus-within)_&]:text-fg/80 group-focus-within:text-accent z-1"
+                <kbd
+                  class="absolute inset-is-4 text-fg-subtle font-mono text-lg pointer-events-none transition-colors duration-200 motion-reduce:transition-none [.group:hover:not(:focus-within)_&]:text-fg/80 group-focus-within:text-accent z-1 rounded"
+                  aria-hidden="true"
                 >
                   /
-                </span>
+                </kbd>
 
                 <InputBase
                   id="home-search"
@@ -78,8 +84,10 @@ defineOgImage('Splash.takumi')
                   no-correct
                   size="large"
                   class="w-full ps-8 pe-24"
+                  aria-describedby="instant-search-advisory"
                   @focus="isSearchFocused = true"
                   @blur="isSearchFocused = false"
+                  ariaKeyshortcuts="/"
                 />
 
                 <ButtonBase
@@ -94,6 +102,8 @@ defineOgImage('Splash.takumi')
                 </ButtonBase>
               </div>
             </div>
+
+            <InstantSearch />
           </form>
         </search>
 

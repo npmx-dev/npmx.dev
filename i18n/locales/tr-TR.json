@@ -13,10 +13,12 @@
   "trademark_disclaimer": "npm, npm, Inc.'in tescilli ticari markasıdır. Bu site npm, Inc. ile bağlantılı değildir.",
   "footer": {
     "about": "hakkında",
+    "blog": "blog",
     "docs": "belgeler",
     "source": "kaynak",
     "social": "sosyal",
     "chat": "sohbet",
+    "builders_chat": "yapımcılar",
     "keyboard_shortcuts": "klavye kısayolları"
   },
   "shortcuts": {
@@ -63,7 +65,13 @@
       "org": "organizasyon",
       "view_user_packages": "Bu kullanıcının paketlerine bak",
       "view_org_packages": "Bu organizasyonun paketlerine bak"
-    }
+    },
+    "instant_search": "Anında arama",
+    "instant_search_on": "açık",
+    "instant_search_off": "kapalı",
+    "instant_search_turn_on": "aç",
+    "instant_search_turn_off": "kapat",
+    "instant_search_advisory": "{label} {state} — {action}"
   },
   "nav": {
     "main_navigation": "Ana",
@@ -76,6 +84,31 @@
     "open_menu": "Menüyü aç",
     "links": "Bağlantılar",
     "tap_to_search": "Aramak için dokunun"
+  },
+  "blog": {
+    "title": "Blog",
+    "heading": "blog",
+    "meta_description": "npmx topluluğundan içgörüler ve güncellemeler",
+    "author": {
+      "view_profile": "{name}'in Bluesky profilini görüntüle"
+    },
+    "draft_badge": "Taslak",
+    "draft_banner": "Bu yayınlanmamış bir taslaktır. Eksik veya hatalı bilgiler içerebilir.",
+    "atproto": {
+      "view_on_bluesky": "Bluesky'da görüntüle",
+      "reply_on_bluesky": "Bluesky'da yanıtla",
+      "likes_on_bluesky": "Bluesky'daki beğeniler",
+      "like_or_reply_on_bluesky": "Bu gönderiyi beğenin veya Bluesky'da yorum ekleyin",
+      "no_comments_yet": "Henüz yorum yok.",
+      "could_not_load_comments": "Yorumlar yüklenemedi.",
+      "comments": "Yorumlar",
+      "loading_comments": "Yorumlar yükleniyor...",
+      "updating": "Güncelleniyor...",
+      "reply_count": "{count} yanıt",
+      "like_count": "{count} beğeni",
+      "repost_count": "{count} yeniden paylaşım",
+      "more_replies": "{count} yanıt daha..."
+    }
   },
   "settings": {
     "title": "ayarlar",
@@ -96,6 +129,8 @@
       "algolia": "Algolia",
       "algolia_description": "Daha hızlı arama, organizasyon ve kullanıcı sayfaları için Algolia kullanır."
     },
+    "instant_search": "Anında arama",
+    "instant_search_description": "Arama sayfasına gider ve siz yazarken sonuçları günceller.",
     "relative_dates": "Göreceli tarihler",
     "include_types": "Kuruluma {'@'}types dahil et",
     "include_types_description": "Tipsiz paketler için kurulum komutlarına {'@'}types paketi ekle",
@@ -122,6 +157,13 @@
     "edit_on_github": "GitHub'da düzenle",
     "view_guide": "Çeviri rehberi"
   },
+  "error": {
+    "401": "Yetkisiz",
+    "404": "Sayfa bulunamadı",
+    "500": "Sunucu hatası",
+    "503": "Hizmet kullanılamıyor",
+    "default": "Bir şeyler ters gitti"
+  },
   "common": {
     "loading": "Yükleniyor...",
     "loading_more": "Daha fazla yükleniyor...",
@@ -136,7 +178,6 @@
     "skip_link": "Ana içeriğe geç",
     "warnings": "Uyarılar:",
     "go_back_home": "Ana sayfaya dön",
-    "view_on_npm": "npm'de görüntüle",
     "per_week": "/ hafta",
     "vanity_downloads_hint": "Gösterge: paket gösterilmiyor | Gösterge: gösterilen paket için | Gösterge: {count} gösterilen paketin toplamı",
     "sort": {
@@ -148,7 +189,11 @@
     "cancel": "İptal",
     "save": "Kaydet",
     "edit": "Düzenle",
-    "error": "Hata"
+    "error": "Hata",
+    "view_on": {
+      "npm": "npm'de görüntüle",
+      "github": "GitHub'da görüntüle"
+    }
   },
   "profile": {
     "display_name": "Görünen ad",
@@ -171,12 +216,9 @@
     "not_found": "Paket Bulunamadı",
     "not_found_message": "Paket bulunamadı.",
     "no_description": "Açıklama verilmemiş",
-    "not_latest": "(en son değil)",
     "verified_provenance": "Doğrulanmış köken",
-    "view_permalink": "Bu sürüm için kalıcı bağlantıya bak",
     "navigation": "Paket",
     "copy_name": "Paket adını kopyala",
-    "copy_version": "Paket sürümünü kopyala",
     "deprecation": {
       "package": "Bu paket kullanımdan kaldırılmıştır.",
       "version": "Bu sürüm kullanımdan kaldırılmıştır.",
@@ -270,7 +312,6 @@
     "readme": {
       "title": "Readme",
       "no_readme": "README mevcut değil.",
-      "view_on_github": "GitHub'da görüntüle",
       "toc_title": "İçindekiler",
       "callout": {
         "note": "Not",
@@ -335,7 +376,6 @@
       "grouping_versions_only_recent": "Yalnızca son",
       "grouping_usage_title": "Kullanım",
       "grouping_usage_all": "Tümü",
-      "grouping_usage_low": "Düşük",
       "recent_versions_only_tooltip": "Yalnızca son bir yıl içinde yayınlanan sürümleri göster.",
       "show_low_usage_tooltip": "Toplam indirmelerin %1'inden azını oluşturan sürüm gruplarını dahil et.",
       "y_axis_label": "İndirmeler",
@@ -399,6 +439,8 @@
       "download_file": "{fileType} indir",
       "toggle_annotator": "Annotator geçişi",
       "toggle_stack_mode": "Yığın modunu değiştir",
+      "open_options": "Seçenekleri aç",
+      "close_options": "Seçenekleri kapat",
       "legend_estimation": "Tahmin",
       "no_data": "Veri mevcut değil",
       "y_axis_label": "{granularity} {facet}",
@@ -533,9 +575,6 @@
   "connector": {
     "modal": {
       "title": "Yerel Bağlayıcı",
-      "contributor_badge": "Yalnızca katkıda bulunanlar için",
-      "contributor_notice": "Bağlayıcı henüz npm'e yayınlanmadı. Yerel olarak çalıştırmak için {link} bakın.",
-      "contributor_link": "katkı rehberi",
       "connected": "Bağlandı",
       "connected_as_user": "~{user} olarak bağlandı",
       "connected_hint": "Artık web arayüzünden paketleri ve organizasyonları yönetebilirsiniz.",
@@ -735,8 +774,7 @@
       "preview": "önizleme",
       "code": "kod"
     },
-    "file_path": "Dosya yolu",
-    "scroll_to_top": "Yukarı dön"
+    "file_path": "Dosya yolu"
   },
   "badges": {
     "provenance": {
@@ -844,7 +882,6 @@
       "paginated": "Sayfalı",
       "items_per_page": "Sayfa başına öğe",
       "per_page": "/ sayfa",
-      "all_yolo": "Tümü (YOLO)",
       "showing": "Gösteriliyor",
       "previous": "Önceki",
       "next": "Sonraki",
@@ -920,6 +957,11 @@
         "title": "Topluluk",
         "description": "Discord'da topluluğa katılın",
         "cta": "Discord'a katıl"
+      },
+      "builders": {
+        "title": "Yapımcılar",
+        "description": "Yapımcı topluluğumuza katılın ve npmx'in geleceğini şekillendirin",
+        "cta": "Yapımcı sohbetine katıl"
       },
       "follow": {
         "title": "Takip edin",
@@ -1101,7 +1143,7 @@
     "lines_hidden": "{count} satır gizlendi",
     "file_too_large": "Dosya çok büyük",
     "file_size_warning": "Dosya boyutu {size}",
-    "compare_versions": "Sürümleri karşılaştır",
+    "compare_versions_title": "Sürümleri karşılaştır",
     "summary": "Özet",
     "deps_count": "{count} bağımlılık",
     "dependencies": "Bağımlılıklar",
@@ -1128,6 +1170,34 @@
     "select_file_prompt": "Görüntülemek için bir dosya seçin",
     "close_files_panel": "Dosya panelini kapat",
     "filter_files_label": "Dosyaları filtrele"
+  },
+  "pds": {
+    "title": "PDS",
+    "meta_description": "npmx PDS - Kişisel Veri Sunucusu",
+    "join": {
+      "title": "Katıl",
+      "description": "npmx PDS'ye katılın",
+      "migrate": "Geçiş yap"
+    },
+    "server": {
+      "title": "Sunucu",
+      "location_label": "Konum",
+      "location_value": "Nürnberg, Almanya",
+      "infrastructure_label": "Altyapı",
+      "infrastructure_value": "Hetzner üzerinde barındırılıyor",
+      "privacy_label": "Gizlilik",
+      "privacy_value": "Katı AB Veri Koruma yasalarına tabidir",
+      "learn_more": "Daha fazla bilgi"
+    },
+    "community": {
+      "title": "Topluluk",
+      "description": "{count} hesap ile topluluğumuza katılın",
+      "loading": "Yükleniyor...",
+      "error": "Hata",
+      "empty": "Boş",
+      "view_profile": "{handle} profilini görüntüle",
+      "new_accounts": "{count} yeni hesap"
+    }
   },
   "privacy_policy": {
     "title": "Gizlilik Politikası",

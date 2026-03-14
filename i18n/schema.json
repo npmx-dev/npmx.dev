@@ -58,6 +58,9 @@
         "chat": {
           "type": "string"
         },
+        "builders_chat": {
+          "type": "string"
+        },
         "keyboard_shortcuts": {
           "type": "string"
         }
@@ -110,6 +113,12 @@
           "type": "string"
         },
         "disable_shortcuts": {
+          "type": "string"
+        },
+        "open_main": {
+          "type": "string"
+        },
+        "open_diff": {
           "type": "string"
         }
       },
@@ -198,6 +207,24 @@
             }
           },
           "additionalProperties": false
+        },
+        "instant_search": {
+          "type": "string"
+        },
+        "instant_search_on": {
+          "type": "string"
+        },
+        "instant_search_off": {
+          "type": "string"
+        },
+        "instant_search_turn_on": {
+          "type": "string"
+        },
+        "instant_search_turn_off": {
+          "type": "string"
+        },
+        "instant_search_advisory": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -370,6 +397,12 @@
           },
           "additionalProperties": false
         },
+        "instant_search": {
+          "type": "string"
+        },
+        "instant_search_description": {
+          "type": "string"
+        },
         "relative_dates": {
           "type": "string"
         },
@@ -511,9 +544,6 @@
         "go_back_home": {
           "type": "string"
         },
-        "view_on_npm": {
-          "type": "string"
-        },
         "per_week": {
           "type": "string"
         },
@@ -549,6 +579,48 @@
         },
         "error": {
           "type": "string"
+        },
+        "view_on": {
+          "type": "object",
+          "properties": {
+            "npm": {
+              "type": "string"
+            },
+            "github": {
+              "type": "string"
+            },
+            "gitlab": {
+              "type": "string"
+            },
+            "bitbucket": {
+              "type": "string"
+            },
+            "codeberg": {
+              "type": "string"
+            },
+            "git_repo": {
+              "type": "string"
+            },
+            "forgejo": {
+              "type": "string"
+            },
+            "gitea": {
+              "type": "string"
+            },
+            "gitee": {
+              "type": "string"
+            },
+            "radicle": {
+              "type": "string"
+            },
+            "sourcehut": {
+              "type": "string"
+            },
+            "tangled": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false
@@ -616,22 +688,13 @@
         "no_description": {
           "type": "string"
         },
-        "not_latest": {
-          "type": "string"
-        },
         "verified_provenance": {
-          "type": "string"
-        },
-        "view_permalink": {
           "type": "string"
         },
         "navigation": {
           "type": "string"
         },
         "copy_name": {
-          "type": "string"
-        },
-        "copy_version": {
           "type": "string"
         },
         "deprecation": {
@@ -802,6 +865,9 @@
         "links": {
           "type": "object",
           "properties": {
+            "main": {
+              "type": "string"
+            },
             "repo": {
               "type": "string"
             },
@@ -911,9 +977,6 @@
               "type": "string"
             },
             "no_readme": {
-              "type": "string"
-            },
-            "view_on_github": {
               "type": "string"
             },
             "toc_title": {
@@ -1108,7 +1171,7 @@
             "grouping_usage_all": {
               "type": "string"
             },
-            "grouping_usage_low": {
+            "grouping_usage_most_used": {
               "type": "string"
             },
             "recent_versions_only_tooltip": {
@@ -1348,6 +1411,9 @@
             "smoothing": {
               "type": "string"
             },
+            "prediction": {
+              "type": "string"
+            },
             "known_anomalies": {
               "type": "string"
             },
@@ -1409,6 +1475,12 @@
                   "type": "string"
                 },
                 "general_description": {
+                  "type": "string"
+                },
+                "facet_bar_general_description": {
+                  "type": "string"
+                },
+                "facet_bar_analysis": {
                   "type": "string"
                 }
               },
@@ -1706,15 +1778,6 @@
           "type": "object",
           "properties": {
             "title": {
-              "type": "string"
-            },
-            "contributor_badge": {
-              "type": "string"
-            },
-            "contributor_notice": {
-              "type": "string"
-            },
-            "contributor_link": {
               "type": "string"
             },
             "connected": {
@@ -2317,7 +2380,10 @@
         "file_path": {
           "type": "string"
         },
-        "scroll_to_top": {
+        "binary_file": {
+          "type": "string"
+        },
+        "binary_rendering_warning": {
           "type": "string"
         }
       },
@@ -2641,9 +2707,6 @@
             "per_page": {
               "type": "string"
             },
-            "all_yolo": {
-              "type": "string"
-            },
             "showing": {
               "type": "string"
             },
@@ -2872,6 +2935,21 @@
               },
               "additionalProperties": false
             },
+            "builders": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "cta": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
             "follow": {
               "type": "object",
               "properties": {
@@ -3083,6 +3161,12 @@
               "type": "string"
             },
             "empty_description": {
+              "type": "string"
+            },
+            "table_view": {
+              "type": "string"
+            },
+            "charts_view": {
               "type": "string"
             }
           },
@@ -3416,6 +3500,9 @@
           "type": "string"
         },
         "compare_versions_title": {
+          "type": "string"
+        },
+        "version_selector_title": {
           "type": "string"
         },
         "summary": {

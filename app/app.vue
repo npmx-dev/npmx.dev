@@ -48,10 +48,17 @@ if (import.meta.server) {
 }
 
 const keyboardShortcuts = useKeyboardShortcuts()
+const { settings } = useSettings()
 
 onKeyDown(
   '/',
   e => {
+    if (e.ctrlKey) {
+      e.preventDefault()
+      settings.value.instantSearch = !settings.value.instantSearch
+      return
+    }
+
     if (!keyboardShortcuts.value || isEditableElement(e.target)) return
     e.preventDefault()
 

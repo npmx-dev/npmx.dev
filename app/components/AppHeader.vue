@@ -5,6 +5,7 @@ import { isEditableElement } from '~/utils/input'
 import { NPMX_DOCS_SITE } from '#shared/utils/constants'
 
 const keyboardShortcuts = useKeyboardShortcuts()
+const discord = useDiscordLink()
 
 withDefaults(
   defineProps<{
@@ -122,8 +123,8 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
       },
       {
         name: 'Chat',
-        label: $t('footer.chat'),
-        href: 'https://chat.npmx.dev',
+        label: discord.value.label,
+        href: discord.value.url,
         target: '_blank',
         type: 'link',
         external: true,
