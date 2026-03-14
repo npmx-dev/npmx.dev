@@ -76,6 +76,10 @@
     "links": "Link",
     "tap_to_search": "Tocca per cercare"
   },
+  "blog": {
+    "author": {},
+    "atproto": {}
+  },
   "settings": {
     "title": "impostazioni",
     "tagline": "personalizza la tua esperienza npmx",
@@ -118,6 +122,7 @@
     "edit_on_github": "Modifica su GitHub",
     "view_guide": "Guida alla traduzione"
   },
+  "error": {},
   "common": {
     "loading": "Caricando...",
     "loading_more": "Caricando altri...",
@@ -144,6 +149,9 @@
       "npm": "vedi su npm",
       "github": "Vedi su GitHub"
     }
+  },
+  "profile": {
+    "invite": {}
   },
   "package": {
     "not_found": "Pacchetto Non Trovato",
@@ -172,7 +180,6 @@
       "none": "Questo pacchetto è stato segnalato come non più necessario, e la sua funzionalità è probabilmente disponibile nativamente in tutti i motori.",
       "learn_more": "Scopri di più",
       "learn_more_above": "Scopri di più sopra",
-      "mdn": "MDN",
       "community": "comunità",
       "consider_no_dep": "Considera nessuna dipendenza?"
     },
@@ -229,9 +236,9 @@
       "title": "Inizia",
       "pm_label": "Gestore di pacchetti",
       "copy_command": "Copia comando di installazione",
-      "view_types": "Vedi {package}",
       "copy_dev_command": "Copia comando di installazione dev",
-      "dev_dependency_hint": "Di solito installato come dev dependency"
+      "dev_dependency_hint": "Di solito installato come dev dependency",
+      "view_types": "Vedi {package}"
     },
     "create": {
       "title": "Crea nuovo progetto",
@@ -297,7 +304,8 @@
       "more_tagged": "{count} altri taggati",
       "all_covered": "Tutte le versioni sono coperte dai tag sopra",
       "deprecated_title": "{version} (deprecato)",
-      "view_all": "Visualizza {count} versione | Visualizza tutte le {count} versioni"
+      "view_all": "Visualizza {count} versione | Visualizza tutte le {count} versioni",
+      "copy_alt": {}
     },
     "dependencies": {
       "title": "Dipendenza ({count}) | Dipendenze ({count})",
@@ -351,7 +359,8 @@
       "y_axis_label": "{granularity} {facet}",
       "items": {
         "downloads": "Download"
-      }
+      },
+      "copy_alt": {}
     },
     "downloads": {
       "title": "Download settimanali",
@@ -794,6 +803,8 @@
         "managers": "gestori di pacchetti"
       }
     },
+    "sponsors": {},
+    "oss_partners": {},
     "team": {},
     "contributors": {
       "title": "{count} Collaboratore | {count} Collaboratori",
@@ -814,6 +825,7 @@
         "description": "Chatta, fai domande e condividi idee.",
         "cta": "Unisciti a Discord"
       },
+      "builders": {},
       "follow": {
         "title": "Rimani aggiornato",
         "description": "Scopri le ultime novità su npmx.",
@@ -984,7 +996,14 @@
         "up_to_you": "A tua scelta!"
       },
       "trends": {}
-    }
+    },
+    "file_filter_option": {},
+    "filter": {}
+  },
+  "pds": {
+    "join": {},
+    "server": {},
+    "community": {}
   },
   "privacy_policy": {
     "title": "Informativa sulla privacy",
