@@ -408,8 +408,7 @@
       "current_tags": "Current Tags",
       "version_filter_placeholder": "Filter versions…",
       "version_filter_label": "Filter versions",
-      "no_match_filter": "No versions match {filter}",
-      "close_changelog": "Close changelog"
+      "no_match_filter": "No versions match {filter}"
     },
     "dependencies": {
       "title": "Dependency ({count}) | Dependencies ({count})",

@@ -1230,9 +1230,6 @@
             },
             "no_match_filter": {
               "type": "string"
-            },
-            "close_changelog": {
-              "type": "string"
             }
           },
           "additionalProperties": false
