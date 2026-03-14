@@ -32,6 +32,8 @@ export default defineNuxtModule({
       'https://api.npmjs.org',
       'https://npm.antfu.dev',
       ...ALL_KNOWN_GIT_API_ORIGINS,
+      // Local CLI connector (npmx CLI communicates via localhost)
+      'http://127.0.0.1:*',
     ].join(' ')
 
     const frameSrc = ['https://bsky.app', 'https://pdsmoover.com'].join(' ')
