@@ -12,6 +12,7 @@ const props = defineProps<{
 }>()
 
 const depth = computed(() => props.depth ?? 0)
+const treeRoot = useTemplateRef('treeRoot')
 
 // Check if a node or any of its children is currently selected
 function isNodeActive(node: PackageFileTree): boolean {
@@ -35,12 +36,20 @@ function getFileRoute(nodePath: string): RouteLocationRaw {
 
 const { toggleDir, isExpanded, autoExpandAncestors } = useFileTreeState(props.baseUrl)
 
+const scrollIntoView = () => {
+  const el = treeRoot.value?.querySelector('[aria-current="true"]') as HTMLElement
+  if (el) {
+    el.scrollIntoView({ block: 'center' })
+  }
+}
+
 // Auto-expand directories in the current path
 watch(
   () => props.currentPath,
   path => {
     if (path) {
       autoExpandAncestors(path)
+      nextTick(scrollIntoView)
     }
   },
   { immediate: true },
@@ -48,7 +57,7 @@ watch(
 </script>
 
 <template>
-  <ul class="list-none m-0 p-0" :class="depth === 0 ? 'py-2' : ''">
+  <ul ref="treeRoot" class="list-none m-0 p-0" :class="depth === 0 ? 'py-2' : ''">
     <li v-for="node in tree" :key="node.path">
       <!-- Directory -->
       <template v-if="node.type === 'directory'">
