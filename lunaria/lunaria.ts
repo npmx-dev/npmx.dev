@@ -14,9 +14,6 @@ if (existsSync('.git/MERGE_HEAD')) {
 const lunaria = await createLunaria()
 const status = await lunaria.getFullStatus()
 
-// Generate HTML dashboard
-const html = Page(lunaria.config, status, lunaria)
-
 // Generate JSON status for the app
 const { sourceLocale } = lunaria.config
 const links = lunaria.gitHostingLinks()
@@ -102,6 +99,9 @@ const jsonStatus: I18nStatus = {
     }
   }),
 }
+
+// Generate HTML dashboard using processed jsonStatus
+const html = Page(lunaria.config, jsonStatus, lunaria)
 
 mkdirSync('dist/lunaria', { recursive: true })
 writeFileSync('dist/lunaria/index.html', html)

@@ -23,15 +23,22 @@ export const BaseStyles = html`
       --ln-color-blue: #3b82f6;
       --ln-color-orange: #f97316;
       --ln-color-purple: #a855f7;
+      --ln-color-green: #2edaa6; /* swatch-emerald */
+      --ln-color-dark-green: #24a27c;
+      --ln-color-red: #f9697c; /* swatch-coral */
+      --ln-color-dark-red: #bf002d;
 
       /** Contextual colors */
       --ln-color-background: var(--ln-color-white);
-      --ln-color-link: var(--ln-color-blue);
+      --ln-color-link: var(--ln-color-gray-2);
+      --ln-color-link-hover: var(--ln-color-white);
       --ln-color-done: var(--ln-color-purple);
       --ln-color-outdated: var(--ln-color-orange);
       --ln-color-missing: #ef4444;
       --ln-color-table-border: var(--ln-color-gray-3);
       --ln-color-table-background: var(--ln-color-gray-1);
+
+      --progress-bar-height: 16px;
     }
 
     @media (prefers-color-scheme: dark) {
@@ -128,27 +135,37 @@ export const BaseStyles = html`
       color: inherit;
     }
 
+    a {
+      color: var(--ln-color-link);
+    }
+
     a:hover {
       text-decoration: underline;
-      color: var(--ln-color-gray-5);
+      color: var(--ln-color-link-hover);
     }
 
     ul {
       font-size: 0.875rem;
     }
 
-    .progress-details {
-      margin-bottom: 1.25rem;
+    .capitalize {
+      text-transform: capitalize;
     }
 
     details summary {
       cursor: pointer;
       user-select: none;
+      color: var(--ln-color-link);
     }
 
+    details summary::marker {
+      margin-right: 0.4rem;
+    }
+
+    details summary:hover,
     details summary:hover strong,
     details summary:hover::marker {
-      color: var(--ln-color-gray-5);
+      color: var(--ln-color-link-hover);
     }
 
     details p {
@@ -169,12 +186,75 @@ export const BaseStyles = html`
       margin-bottom: 1rem;
     }
 
+    .lang-code {
+      margin-left: 1rem;
+    }
+
+    /* Progress deatils per locale */
+    .progress-details {
+      border: 1px solid var(--ln-color-gray-6);
+      margin-bottom: 1.25rem;
+      padding: 1rem;
+      border-radius: 0.5rem;
+    }
+
+    .progress-details hr {
+      margin-top: 0.5rem;
+      border-color: var(--ln-color-gray-6);
+    }
+
+    .progress-details a {
+      font-size: 0.85rem;
+    }
+
+    .progress-summary {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 0.5rem;
+      font-size: 0.8125rem;
+    }
+
+    .progress-bar-wrapper {
+      height: var(--progress-bar-height);
+      margin-top: 0.5rem;
+      border-radius: var(--progress-bar-height);
+      background-color: var(--ln-color-gray-7);
+    }
+
+    .progress-bar-wrapper .progress-bar {
+      min-width: 5%;
+      max-width: 100%;
+      height: var(--progress-bar-height);
+      border-radius: var(--progress-bar-height);
+    }
+
+    .progress-bar.completed {
+      background-color: var(--ln-color-dark-green);
+    }
+
+    .progress-bar.very-good {
+      background-color: var(--ln-color-green);
+    }
+
+    .progress-bar.good {
+      background-color: var(--ln-color-orange);
+    }
+
+    .progress-bar.help-needed {
+      background-color: var(--ln-color-red);
+    }
+
+    .progress-bar.basic {
+      background-color: var(--ln-color-dark-red);
+    }
+
     .create-button {
       padding: 0.1em 0.5em;
       font-weight: bold;
       font-size: 0.75rem;
     }
 
+    /*Progress by files*/
     .status-by-file-wrapper {
       overflow-x: auto;
       margin-bottom: 1rem;
@@ -239,47 +319,6 @@ export const BaseStyles = html`
     .status-by-file td:not(:first-of-type) a {
       text-decoration: none;
     }
-
-    .progress-summary {
-      font-size: 0.8125rem;
-    }
-
-    .progress-bar {
-      display: flex;
-      flex-direction: row;
-      margin-top: 0.5rem;
-    }
-
-    .progress-bar div:first-of-type {
-      border-radius: 36px 0px 0px 36px;
-    }
-
-    .progress-bar div:last-of-type {
-      border-radius: 0px 36px 36px 0px;
-    }
-
-    .up-to-date-bar,
-    .outdated-bar,
-    .missing-bar {
-      width: 1rem;
-      height: 1rem;
-    }
-
-    .up-to-date-bar {
-      background-color: var(--ln-color-done);
-    }
-
-    .outdated-bar {
-      background-color: var(--ln-color-outdated);
-    }
-
-    .missing-bar {
-      background-color: var(--ln-color-missing);
-    }
-
-    .capitalize {
-      text-transform: capitalize;
-    }
   </style>
 `
 
@@ -298,14 +337,10 @@ export const CustomStyles = html`
       --border-subtle: oklch(23.9% 0 0);
       --border-hover: oklch(37.1% 0 0);
 
-      --ln-color-link: #539bf5;
       --ln-color-table-background: var(--bg-subtle);
       --ln-color-table-border: var(--border);
       --ln-color-background: var(--bg);
       --ln-color-black: var(--fg);
-      --ln-color-missing: #f87171;
-      --ln-color-outdated: #fb923c;
-      --ln-color-done: #c084fc;
     }
 
     html {
