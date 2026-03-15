@@ -17,7 +17,7 @@ const pkg = computed(() => props.result.package)
 const score = computed(() => props.result.score)
 
 const updatedDate = computed(() => props.result.package.date)
-const { isPackageSelected, togglePackageSelection, isMaxSelected } = usePackageSelection()
+const { isPackageSelected, togglePackageSelection, canSelectMore } = usePackageSelection()
 const isSelected = computed<boolean>(() => {
   return isPackageSelected(props.result.package.name)
 })
@@ -55,7 +55,7 @@ const allMaintainersText = computed(() => {
     <td class="ps-3">
       <PackageSelectionCheckbox
         :package-name="result.package.name"
-        :disabled="isMaxSelected && !isSelected"
+        :disabled="canSelectMore && !isSelected"
         :checked="isSelected"
         @change="togglePackageSelection"
       />
