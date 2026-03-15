@@ -17,7 +17,7 @@
     "source": "código-fonte",
     "social": "redes sociais",
     "chat": "chat",
-    "blog": "blogue",
+    "blog": "blog",
     "builders_chat": "construtores",
     "keyboard_shortcuts": "atalhos de teclado"
   },
@@ -294,7 +294,7 @@
       "description_to_none_provenance": "Esta versão foi publicada sem {provenance}.",
       "description_to_none_trustedPublisher": "Esta versão foi publicada sem {trustedPublishing}.",
       "description_to_provenance_trustedPublisher": "Esta versão usa {provenance} mas não {trustedPublishing}.",
-      "fallback_install_provenance": "Os comandos de instalação estão fixados na versão {version}, a última versão com provenencia.",
+      "fallback_install_provenance": "Os comandos de instalação estão fixados na versão {version}, a última versão com proveniência.",
       "fallback_install_trustedPublisher": "Os comandos de instalação são fixados em {version}, a última versão com publicação de confiança.",
       "provenance_link_text": "proveniência",
       "title": "Redução de confiança",
@@ -1247,7 +1247,7 @@
       "title": "Limitações conhecidas"
     },
     "contact": {
-      "link": "Repositório Github",
+      "link": "Repositório GitHub",
       "p1": "Se você encontrar uma barreira de acessibilidade no {app}, informe-nos abrindo um problema em nosso {link}. Levamos esses relatórios a sério e faremos o nosso melhor para abordá-los.",
       "title": "Feedback"
     },
@@ -1256,9 +1256,9 @@
     "welcome": "Queremos que o {app} possa ser usado pelo maior número de pessoas possível."
   },
   "blog": {
-    "title": "Blogue",
+    "title": "Blog",
     "meta_description": "Insights e atualizações da comunidade npmx",
-    "heading": "blogue",
+    "heading": "blog",
     "draft_banner": "Este é um rascunho não publicado. Pode estar incompleto ou conter imprecisões.",
     "atproto": {
       "comments": "Comentários",
