@@ -254,7 +254,7 @@ describe('FacetSelector', () => {
       expect(mockDeselectCategory).toHaveBeenCalledWith('performance')
     })
 
-    it('disables all button when all facets in category are selected', async () => {
+    it('marks all button as checked when all facets in category are selected', async () => {
       // Select all performance facets
       const performanceFacets: (string | ComparisonFacet)[] = FACETS_BY_CATEGORY.performance.filter(
         f => !FACET_INFO[f].comingSoon,
@@ -265,11 +265,11 @@ describe('FacetSelector', () => {
       const component = await mountSuspended(FacetSelector)
 
       const allButton = component.findAll('button[role="radio"]').find(b => b.text() === 'all')
-      // First all button (performance) should be aria-disabled
-      expect(allButton!.attributes('aria-disabled')).toBe('true')
+      // First all button (performance) should be checked
+      expect(allButton!.attributes('aria-checked')).toBe('true')
     })
 
-    it('disables none button when no facets in category are selected', async () => {
+    it('marks none button as checked when no facets in category are selected', async () => {
       // Deselect all performance facets
       mockSelectedFacets.value = ['downloads'] // only health facet selected
       mockIsFacetSelected.mockImplementation((f: string) => f === 'downloads')
@@ -277,8 +277,8 @@ describe('FacetSelector', () => {
       const component = await mountSuspended(FacetSelector)
 
       const noneButton = component.findAll('button[role="radio"]').find(b => b.text() === 'none')
-      // First none button (performance) should be aria-disabled
-      expect(noneButton!.attributes('aria-disabled')).toBe('true')
+      // First none button (performance) should be checked
+      expect(noneButton!.attributes('aria-checked')).toBe('true')
     })
   })
 
