@@ -1249,7 +1249,7 @@
     "contact": {
       "link": "Repositório Github",
       "p1": "Se você encontrar uma barreira de acessibilidade no {app}, informe-nos abrindo um problema em nosso {link}. Levamos esses relatórios a sério e faremos o nosso melhor para abordá-los.",
-      "title": "Opinião"
+      "title": "Feedback"
     },
     "footer_title": "a11y",
     "title": "acessibilidade",
@@ -1315,7 +1315,7 @@
       "view_profile": "Veja o perfil de {handle}"
     },
     "join": {
-      "description": "Quer que esteja você criando sua primeira conta na atmosfera ou migrando uma já existente, você pertence aqui. Você pode migrar sua conta atual sem perder seu controle, suas postagens ou seus seguidores.",
+      "description": "Esteja você criando sua primeira conta na atmosfera ou migrando uma já existente, você pertence aqui. Você pode migrar sua conta atual sem perder seu controle, suas postagens ou seus seguidores.",
       "migrate": "Migrar com PDS MOOver",
       "title": "Junte-se à comunidade"
     },
