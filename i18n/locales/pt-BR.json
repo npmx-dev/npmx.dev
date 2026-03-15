@@ -1020,9 +1020,9 @@
       "add_column": "Adicionar coluna sem dependência à comparação",
       "e18e_community": "comunidade e18e",
       "label": "(Sem dependência)",
-      "tooltip_description": "Compare com não usar uma dependência!  O {link} mantém uma lista de pacotes que podem ser substituídos por APIs nativas ou alternativas mais simples.",
+      "tooltip_description": "Compare com não usar uma dependência! O {link} mantém uma lista de pacotes que podem ser substituídos por APIs nativas ou alternativas mais simples.",
       "tooltip_title": "Você pode não precisar de uma dependência",
-      "typeahead_description": "Compare com não usar uma dependência!  Aprovado por e18e.",
+      "typeahead_description": "Compare com não usar uma dependência! Aprovado por e18e.",
       "typeahead_title": "O que Tiago faria?"
     },
     "facets": {
@@ -1222,7 +1222,7 @@
       "title": "Alterações nesta política"
     },
     "last_updated": "Última atualização: {date}",
-    "title": "política de Privacidade",
+    "title": "política de privacidade",
     "welcome": "Bem-vindo ao {app}. Estamos empenhados em proteger a sua privacidade. Esta política explica quais dados coletamos, como os utilizamos e seus direitos em relação às suas informações."
   },
   "a11y": {
