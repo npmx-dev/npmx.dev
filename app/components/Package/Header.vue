@@ -130,7 +130,12 @@ const diffLink = computed((): RouteLocationRaw | null => {
 const { data: changelog } = usePackageChangelog(packageName, requestedVersion)
 
 const changelogLink = computed((): RouteLocationRaw | null => {
-  if (!changelog.value || props.pkg == null || props.resolvedVersion == null) {
+  if (
+    // either changelog.value is available or current page is the changelog
+    !(changelog.value || props.page == 'changes') ||
+    props.pkg == null ||
+    props.resolvedVersion == null
+  ) {
     return null
   }
   return changelogRoute(props.pkg.name, props.resolvedVersion)
