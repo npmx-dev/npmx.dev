@@ -212,6 +212,7 @@ const { diff: sizeDiff } = useInstallSizeDiff(packageName, resolvedVersion, pkg,
 const nuxtApp = useNuxtApp()
 const route = useRoute()
 // Gates template rendering only — data fetches intentionally still run.
+// immediate is set once at mount — skipped requests won't re-fire on navigation, leaving data permanently missing.
 const isVersionsRoute = computed(() => route.name === 'package-versions')
 const hasEmptyPayload =
   import.meta.client &&
