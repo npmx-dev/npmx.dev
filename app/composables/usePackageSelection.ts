@@ -11,13 +11,13 @@ export function usePackageSelection() {
       if (!raw) return []
       return raw
         .split(',')
-        .map(p => String(p).trim())
+        .map(p => p.trim())
         .filter(Boolean)
         .slice(0, MAX_PACKAGE_SELECTION)
     },
     set(pkgs: string[]) {
       // Ensure all items are strings before joining
-      const validPkgs = (Array.isArray(pkgs) ? pkgs : []).map(p => String(p).trim()).filter(Boolean)
+      const validPkgs = (Array.isArray(pkgs) ? pkgs : []).map(p => p.trim()).filter(Boolean)
       selectedPackagesParam.value = validPkgs.length > 0 ? validPkgs.join(',') : ''
     },
   })
@@ -38,11 +38,11 @@ export function usePackageSelection() {
   }
 
   function isPackageSelected(packageName: string): boolean {
-    return selectedPackages.value.includes(String(packageName).trim())
+    return selectedPackages.value.includes(packageName.trim())
   }
 
   function togglePackageSelection(packageName: string) {
-    const safeName = String(packageName).trim()
+    const safeName = packageName.trim()
     if (!safeName) return
 
     const pkgs = [...selectedPackages.value]
