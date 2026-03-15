@@ -47,7 +47,7 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
 
   const asyncData = useLazyAsyncData(
     () => `user-packages:${searchProviderValue.value}:${toValue(username)}`,
-    async ({ $npmRegistry }, { signal }) => {
+    async (_nuxtApp, { signal }) => {
       const user = toValue(username)
       if (!user) {
         return emptySearchResponse()

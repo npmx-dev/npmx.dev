@@ -402,12 +402,12 @@ const exactMatchType = computed<'package' | 'org' | 'user' | null>(() => {
 const suggestionCount = computed(() => validatedSuggestions.value.length)
 const totalSelectableCount = computed(() => suggestionCount.value + resultCount.value)
 
+const isVisible = (el: HTMLElement) => el.getClientRects().length > 0
+
 /**
  * Get all focusable result elements in DOM order (suggestions first, then packages)
  */
 function getFocusableElements(): HTMLElement[] {
-  const isVisible = (el: HTMLElement) => el.getClientRects().length > 0
-
   const suggestions = Array.from(document.querySelectorAll<HTMLElement>('[data-suggestion-index]'))
     .filter(isVisible)
     .sort((a, b) => {
@@ -444,7 +444,7 @@ async function navigateToPackage(packageName: string) {
 const pendingEnterQuery = shallowRef<string | null>(null)
 
 // Watch for results to navigate when Enter was pressed before results arrived
-watch(displayResults, results => {
+watch(displayResults, newResults => {
   if (!pendingEnterQuery.value) return
 
   // Check if input is still focused (user hasn't started navigating or clicked elsewhere)
@@ -454,7 +454,7 @@ watch(displayResults, results => {
   }
 
   // Navigate if first result matches the query that was entered
-  const firstResult = results[0]
+  const firstResult = newResults[0]
   // eslint-disable-next-line no-console
   console.log('[search] watcher fired', {
     pending: pendingEnterQuery.value,
