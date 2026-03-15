@@ -61,7 +61,7 @@
       "view_user_packages": "Ver pacotes deste usuário",
       "view_org_packages": "Ver pacotes desta organização"
     },
-    "title_search": "pesquisa: {pesquisa}",
+    "title_search": "pesquisa: {search}",
     "title_packages": "pesquisa de pactoes",
     "rate_limited": "Limite de pedidos npm atingido, tente novamente em alguns instantes",
     "meta_description_packages": "Pesquisa de pacotes npm",
@@ -412,7 +412,7 @@
         "estimation": "O valor final é uma estimativa baseada em dados parciais do período atual.",
         "estimations": "Os valores finais são estimativas baseadas em dados parciais do período corrente.",
         "facet_bar_analysis": "{package_name} tem um valor de {value}.",
-        "facet_bar_general_description": "Gráfico de barras horizontais para: {pacotes}, comparando {facet} ({description}). {facet_analysis} {watermark}.",
+        "facet_bar_general_description": "Gráfico de barras horizontais para: {packages}, comparando {facet} ({description}). {facet_analysis} {watermark}.",
         "single_package": "Gráfico de linhas de downloads para o pacote {package}.",
         "trend_none": "principalmente plano",
         "trend_strong": "forte",
@@ -528,9 +528,9 @@
       "published": "Publicado recentemente"
     },
     "size": {
-      "b": "{tamanho} B",
-      "kb": "{tamanho} KB",
-      "mb": "{tamanho} MB"
+      "b": "{size} B",
+      "kb": "{size} KB",
+      "mb": "{size} MB"
     },
     "size_increase": {
       "deps": "{count} mais dependências",
@@ -1119,8 +1119,8 @@
     "dev_dependencies": "Dependências de desenvolvimento",
     "file_changes": "Alterações de arquivo",
     "file_filter_option": {
-      "added": "Adicionado ({contagem})",
-      "all": "Todos ({contagem})",
+      "added": "Adicionado ({count})",
+      "all": "Todos ({count})",
       "modified": "Modificado ({count})",
       "removed": "Removidos ({count})"
     },
