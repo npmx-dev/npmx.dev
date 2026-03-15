@@ -12,10 +12,10 @@ const { data, pending } = useAsyncData(
       selectedPackages.value.map(name =>
         $fetch(`/api/registry/package-meta/${encodeURIComponent(name)}`)
           .then(response => ({ package: response }))
-          .catch(() => []),
+          .catch(() => null),
       ),
     )
-    return results as NpmSearchResult[]
+    return results.filter(result => result !== null)
   },
   {
     default: () => [],
