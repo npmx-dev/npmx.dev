@@ -342,11 +342,6 @@ const flatItems = computed<FlatItem[]>(() => {
                     class="flex items-center gap-3 px-4 py-2.5 w-full text-start hover:bg-bg-subtle transition-colors"
                     :class="index < flatItems.length - 1 ? 'border-b border-border' : ''"
                     :aria-expanded="expandedGroups.has(item.groupKey)"
-                    :aria-label="
-                      expandedGroups.has(item.groupKey)
-                        ? $t('package.versions.collapse', { tag: item.label })
-                        : $t('package.versions.expand', { tag: item.label })
-                    "
                     @click="toggleGroup(item.groupKey)"
                   >
                     <span class="w-4 h-4 flex items-center justify-center text-fg-subtle shrink-0">
@@ -472,7 +467,6 @@ const flatItems = computed<FlatItem[]>(() => {
                   type="button"
                   class="flex items-center gap-3 px-4 py-2.5 w-full text-start border-b border-border last:border-b-0"
                   :aria-expanded="false"
-                  :aria-label="$t('package.versions.expand', { tag: item.label })"
                 >
                   <span class="w-4 h-4 flex items-center justify-center text-fg-subtle shrink-0">
                     <span class="i-lucide:chevron-right w-3 h-3 rtl-flip" aria-hidden="true" />
