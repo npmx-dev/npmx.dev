@@ -26,6 +26,7 @@ overrides:
   vitest: npm:@voidzero-dev/vite-plus-test@0.0.0-g52709db6.20260226-1136
   '@unocss/core': 66.6.3
   storybook: ^10.2.7
+  'string.prototype.matchall': npm:@no-polyfill/string.prototype.matchall@0.0.1
 
 packageExtensions:
   '@nuxt/scripts':
