@@ -186,6 +186,8 @@ const { user } = useAtproto()
 
 const likeAnimKey = shallowRef(0)
 const showLikeFloat = shallowRef(false)
+const likeFloatKey = shallowRef(0)
+let likeFloatTimer: ReturnType<typeof setTimeout> | null = null
 
 const heartAnimStyle = computed(() => {
   if (likeAnimKey.value === 0) return {}
@@ -226,9 +228,15 @@ const likeAction = async () => {
   likeAnimKey.value++
 
   if (!currentlyLiked) {
+    if (likeFloatTimer !== null) {
+      clearTimeout(likeFloatTimer)
+      likeFloatTimer = null
+    }
+    likeFloatKey.value++
     showLikeFloat.value = true
-    setTimeout(() => {
+    likeFloatTimer = setTimeout(() => {
       showLikeFloat.value = false
+      likeFloatTimer = null
     }, 850)
   }
 
@@ -315,7 +323,13 @@ const likeAction = async () => {
           strategy="fixed"
         >
           <div :class="$style.likeWrapper">
-            <span v-if="showLikeFloat" aria-hidden="true" :class="$style.likeFloat">+1</span>
+            <span
+              v-if="showLikeFloat"
+              :key="likeFloatKey"
+              aria-hidden="true"
+              :class="$style.likeFloat"
+              >+1</span
+            >
             <ButtonBase
               @click="likeAction"
               size="medium"
