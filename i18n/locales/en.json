@@ -1373,6 +1373,7 @@
   "action_bar": {
     "title": "action bar",
     "selection": "0 selected | 1 selected | {count} selected",
-    "shortcut": "Press \"{key}\" to focus actions"
+    "shortcut": "Press \"{key}\" to focus actions",
+    "button_close_aria_label": "Close action bar"
   }
 }

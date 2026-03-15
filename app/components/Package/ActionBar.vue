@@ -48,7 +48,7 @@ onKeyStroke(
           <button
             @click="clearSelectedPackages"
             class="flex items-center ms-1 text-fg-muted hover:(text-fg bg-accent/10) p-1.5 rounded-lg transition-colors"
-            aria-label="Close action bar"
+            :aria-label="$t('action_bar.button_close_aria_label')"
           >
             <span class="i-lucide:x text-sm" aria-hidden="true" />
           </button>

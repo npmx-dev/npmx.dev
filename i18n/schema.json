@@ -4125,6 +4125,9 @@
         },
         "shortcut": {
           "type": "string"
+        },
+        "button_close_aria_label": {
+          "type": "string"
         }
       },
       "additionalProperties": false
