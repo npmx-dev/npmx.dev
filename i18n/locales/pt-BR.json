@@ -656,7 +656,7 @@
       "paginated": "Paginada",
       "items_per_page": "Itens por página",
       "per_page": "{count} / página",
-      "showing": "{start}-{end} de {total}",
+      "showing": "{range} de {total}",
       "previous": "Página anterior",
       "next": "Próxima página",
       "nav_label": "Paginação"
