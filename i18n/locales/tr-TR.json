@@ -1057,8 +1057,6 @@
       "coming_soon": "Yakında",
       "select_all": "Tümünü seç",
       "deselect_all": "Tümünün seçimini kaldır",
-      "select_category": "{category} kategorisini seç",
-      "deselect_category": "{category} kategorisinin seçimini kaldır",
       "binary_only_tooltip": "Yalnızca binary paketler için",
       "categories": {
         "performance": "Performans",
