@@ -253,7 +253,7 @@ const likeAction = async () => {
       <CopyToClipboardButton
         :copied="copiedPkgName"
         :copy-text="$t('package.copy_name')"
-        class="flex flex-col items-start min-w-0"
+        class="flex flex-col items-start min-w-0 z-60"
         @click="copyPkgName()"
       >
         <h1
