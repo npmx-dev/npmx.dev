@@ -66,5 +66,10 @@ export function initPreferencesOnPrehydrate() {
     if (settings.keyboardShortcuts === false) {
       document.documentElement.dataset.kbdShortcuts = 'false'
     }
+
+    // Search provider (default: algolia)
+    if (settings.searchProvider === 'npm') {
+      document.documentElement.dataset.searchProvider = 'npm'
+    }
   })
 }
