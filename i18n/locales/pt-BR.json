@@ -62,7 +62,7 @@
       "view_org_packages": "Ver pacotes desta organização"
     },
     "title_search": "pesquisa: {search}",
-    "title_packages": "pesquisa de pactoes",
+    "title_packages": "pesquisa de pacotes",
     "rate_limited": "Limite de pedidos npm atingido, tente novamente em alguns instantes",
     "meta_description_packages": "Pesquisa de pacotes npm",
     "meta_description": "Resultados da pesquisa para '{search}'",
@@ -742,9 +742,9 @@
       "preview": "visualizar",
       "code": "código"
     },
-    "file_path": "Caminho do ficheiro",
-    "binary_rendering_warning": "Tipo de ficheiro não suportado para visualização.",
-    "binary_file": "Ficheiro binário"
+    "file_path": "Caminho do arquivo",
+    "binary_rendering_warning": "Tipo de arquivo não suportado para visualização.",
+    "binary_file": "Arquivo binário"
   },
   "badges": {
     "provenance": {
@@ -1017,7 +1017,7 @@
       "add_hint": "Adicione pelo menos 2 pacotes para comparar."
     },
     "no_dependency": {
-      "add_column": "Adictionr coluna sem dependência à comparação",
+      "add_column": "Adicionar coluna sem dependência à comparação",
       "e18e_community": "comunidade e18e",
       "label": "(Sem dependência)",
       "tooltip_description": "Compare com não usar uma dependência!  O {link} mantém uma lista de pacotes que podem ser substituídos por APIs nativas ou alternativas mais simples.",
@@ -1125,9 +1125,9 @@
       "removed": "Removidos ({count})"
     },
     "file_size_warning": "{size} excede o limite de 250 KB para comparação",
-    "file_too_large": "Ficheiro muito grande para comparar",
-    "files_button": "Ficheiros",
-    "files_count": "{count} ficheiro | {count} ficheiros",
+    "file_too_large": "Arquivo muito grande para comparar",
+    "files_button": "Arquivos",
+    "files_count": "{count} arquivo | {count} arquivos",
     "filter": {
       "added": "adicionado",
       "modified": "modificado",
@@ -1137,12 +1137,12 @@
     "lines_hidden": "{count} linha escondida | {count} linhas escondidas",
     "no_dependency_changes": "Sem alterações de dependência",
     "no_files_all": "Nenhum arquivo",
-    "no_files_filtered": "Nenhum ficheiro {filter}",
-    "no_files_search": "Nenhum ficheiro correspondente a \"{query}\"",
+    "no_files_filtered": "Nenhum arquivo {filter}",
+    "no_files_search": "Nenhum arquivo correspondente a \"{query}\"",
     "optional_dependencies": "Dependências opcionais",
     "peer_dependencies": "Dependências de pares",
     "search_files_placeholder": "Pesquisar arquivos...",
-    "select_file_prompt": "Selecione um ficheiro na barra lateral para ver suas diferenças",
+    "select_file_prompt": "Selecione um arquivo na barra lateral para ver suas diferenças",
     "summary": "Resumo"
   },
   "privacy_policy": {
@@ -1289,7 +1289,7 @@
   },
   "profile": {
     "description": "Descrição",
-    "display_name": "Nome visivel",
+    "display_name": "Nome visível",
     "invite": {
       "compose_text": "Olá, {'@'}{handle}! Você já conferiu npmx.dev? É um navegador para o registro npm rápido, moderno e de código aberto.\nhttps://npmx.dev",
       "message": "Parece que eles ainda não estão usando o npmx. Quer contar a eles sobre isso?",
