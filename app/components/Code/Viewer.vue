@@ -11,16 +11,16 @@ const emit = defineEmits<{
 
 const codeRef = useTemplateRef('codeRef')
 
-// Using this so we can track the height of each line, and therefore compute digit sidebar
+const LINE_HEIGHT_PX = 24
 const lineMultipliers = ref<number[]>([])
-const LINE_HEIGHT_PX = 24 // also used in css
 
 function updateLineMultipliers() {
   if (!codeRef.value) return
-  const lines = Array.from(codeRef.value.querySelectorAll('code > .line'))
-  lineMultipliers.value = lines.map(line =>
-    Math.max(1, Math.round(parseFloat(getComputedStyle(line).height) / LINE_HEIGHT_PX)),
-  )
+  const lines = codeRef.value.querySelectorAll<HTMLElement>('code > .line')
+  const result: number[] = Array.from({ length: lines.length })
+  for (let i = 0; i < lines.length; i++)
+    result[i] = Math.max(1, Math.round(lines[i]!.offsetHeight / LINE_HEIGHT_PX))
+  lineMultipliers.value = result
 }
 
 watch(
@@ -30,28 +30,40 @@ watch(
 )
 useResizeObserver(codeRef, updateLineMultipliers)
 
-// Line numbers ++ blank rows for the wrapped lines
-const displayLines = computed(() => {
-  const result: (number | null)[] = []
-  for (let i = 0; i < props.lines; i++) {
-    result.push(i + 1)
-    const extra = (lineMultipliers.value[i] ?? 1) - 1
-    for (let j = 0; j < extra; j++) result.push(null)
-  }
-  return result
-})
-
 const lineDigits = computed(() => String(props.lines).length)
 
-// Check if a line is selected
 function isLineSelected(lineNum: number): boolean {
   if (!props.selectedLines) return false
   return lineNum >= props.selectedLines.start && lineNum <= props.selectedLines.end
 }
 
-// Handle line number click
-function onLineClick(lineNum: number, event: MouseEvent) {
-  emit('lineClick', lineNum, event)
+const lineNumbersHtml = computed(() => {
+  const multipliers = lineMultipliers.value
+  const total = props.lines
+  const parts: string[] = []
+
+  for (let i = 0; i < total; i++) {
+    const num = i + 1
+    const cls = isLineSelected(num)
+      ? 'bg-yellow-500/20 text-fg'
+      : 'text-fg-subtle hover:text-fg-muted'
+    parts.push(
+      `<a id="L${num}" href="#L${num}" tabindex="-1" class="line-number block px-3 py-0 font-mono text-sm leading-6 cursor-pointer transition-colors no-underline ${cls}" data-line="${num}">${num}</a>`,
+    )
+
+    const extra = (multipliers[i] ?? 1) - 1
+    for (let j = 0; j < extra; j++) parts.push('<span class="block px-3 leading-6">\u00a0</span>')
+  }
+
+  return parts.join('')
+})
+
+function onLineNumberClick(event: MouseEvent) {
+  const target = (event.target as HTMLElement).closest<HTMLAnchorElement>('a[data-line]')
+  if (!target) return
+  event.preventDefault()
+  const lineNum = Number(target.dataset.line)
+  if (lineNum) emit('lineClick', lineNum, event)
 }
 
 // Apply highlighting to code lines when selection changes
@@ -109,31 +121,15 @@ watch(
 
 <template>
   <div class="code-viewer flex min-h-full max-w-full" :style="{ '--line-digits': lineDigits }">
-    <!-- Line numbers column -->
+    <!-- Line numbers column — raw HTML + event delegation to avoid v-for overhead on large files -->
+    <!-- eslint-disable vue/no-v-html -->
     <div
       class="line-numbers shrink-0 bg-bg-subtle border-ie border-solid border-border text-end select-none relative"
       aria-hidden="true"
-    >
-      <!-- This needs to be a native <a> element, because `LinkBase` (or specifically `NuxtLink`) does not seem to work when trying to prevent default behavior (jumping to the anchor) -->
-      <template v-for="(lineNum, idx) in displayLines" :key="idx">
-        <a
-          v-if="lineNum !== null"
-          :id="`L${lineNum}`"
-          :href="`#L${lineNum}`"
-          tabindex="-1"
-          class="line-number block px-3 py-0 font-mono text-sm leading-6 cursor-pointer transition-colors no-underline"
-          :class="[
-            isLineSelected(lineNum)
-              ? 'bg-yellow-500/20 text-fg'
-              : 'text-fg-subtle hover:text-fg-muted',
-          ]"
-          @click.prevent="onLineClick(lineNum, $event)"
-        >
-          {{ lineNum }}
-        </a>
-        <span v-else class="block px-3 leading-6">&nbsp;</span>
-      </template>
-    </div>
+      v-html="lineNumbersHtml"
+      @click="onLineNumberClick"
+    />
+    <!-- eslint-enable vue/no-v-html -->
 
     <!-- Code content -->
     <div class="code-content">
