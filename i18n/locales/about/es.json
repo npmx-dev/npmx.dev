@@ -1,0 +1,70 @@
+{
+  "about": {
+    "title": "Acerca de",
+    "heading": "acerca de",
+    "meta_description": "npmx es un explorador rápido y moderno para el registro npm. Una mejor UX/DX para explorar paquetes npm.",
+    "what_we_are": {
+      "title": "Lo que somos",
+      "better_ux_dx": "mejor UX/DX",
+      "admin_ui": "UI de administración",
+      "description": "npmx es una {betterUxDx} para el registro de paquetes npm y herramientas. Proporcionamos una interfaz rápida y moderna para explorar paquetes, con características como modo oscuro, navegación por teclado, exploración de código y conexiones a registros alternativos como {jsr}.",
+      "admin_description": "También aspiramos a proporcionar una mejor {adminUi} para gestionar tus paquetes, equipos y organizaciones — todo desde el navegador, impulsado por tu CLI de npm local."
+    },
+    "what_we_are_not": {
+      "title": "Lo que no somos",
+      "not_package_manager": "No es un gestor de paquetes.",
+      "not_registry": "No es un registro.",
+      "registry_description": "No alojamos paquetes. Solo somos una mejor manera de explorarlos.",
+      "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}.",
+      "words": {
+        "already": "Ya hay",
+        "people": "gente",
+        "building": "construyendo",
+        "really": "gestores de",
+        "cool": "paquetes",
+        "package": "realmente",
+        "managers": "geniales"
+      }
+    },
+    "sponsors": {
+      "title": "Patrocinadores"
+    },
+    "oss_partners": {
+      "title": "Socios de OSS"
+    },
+    "team": {
+      "title": "Equipo",
+      "governance": "Gobernanza",
+      "role_steward": "Administrador",
+      "role_maintainer": "Mantenedor",
+      "sponsor": "Patrocinar",
+      "sponsor_aria": "Patrocinar a {name} en GitHub"
+    },
+    "contributors": {
+      "title": "{count} Colaborador | {count} Colaboradores",
+      "description": "npmx es completamente de código abierto, construido por una increíble comunidad de colaboradores. Únete a nosotros y construyamos juntos la experiencia de navegación de npm que siempre quisimos.",
+      "loading": "Cargando colaboradores...",
+      "error": "Error al cargar colaboradores",
+      "view_profile": "Ver perfil de GitHub de {name}"
+    },
+    "get_involved": {
+      "title": "Involúcrate",
+      "contribute": {
+        "title": "Contribuir",
+        "description": "Ayúdanos a construir una mejor experiencia npm.",
+        "cta": "Ver en GitHub"
+      },
+      "community": {
+        "title": "Únete a la comunidad",
+        "description": "Chatea, haz preguntas y comparte ideas.",
+        "cta": "Únete a Discord"
+      },
+      "builders": {},
+      "follow": {
+        "title": "Mantente actualizado",
+        "description": "Entérate de lo último en npmx.",
+        "cta": "Síguenos en Bluesky"
+      }
+    }
+  }
+}

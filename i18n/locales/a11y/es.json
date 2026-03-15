@@ -1,0 +1,32 @@
+{
+  "a11y": {
+    "title": "accesibilidad",
+    "footer_title": "a11y",
+    "welcome": "Queremos que {app} sea utilizable por el mayor número de personas posible.",
+    "approach": {
+      "title": "Nuestro enfoque",
+      "p1": "Intentamos seguir las Pautas de Accesibilidad para el Contenido Web (WCAG) 2.2 y usarlas como referencia al desarrollar funcionalidades. No afirmamos cumplir totalmente con ningún nivel de WCAG; la accesibilidad es un proceso continuo y siempre hay más trabajo por hacer.",
+      "p2": "Este sitio es un {about}. Las mejoras de accesibilidad se realizan de forma incremental como parte de nuestro desarrollo habitual.",
+      "about_link": "proyecto de código abierto impulsado por la comunidad"
+    },
+    "measures": {
+      "title": "Qué hacemos",
+      "p1": "Algunas de las cosas que intentamos hacer en todo el sitio web:",
+      "li1": "Usar HTML semántico y atributos ARIA cuando sea apropiado.",
+      "li2": "Usar tamaños de texto relativos para que puedas ajustarlos en tu navegador.",
+      "li3": "Soportar la navegación por teclado en toda la interfaz.",
+      "li4": "Respetar las preferencias de reducción de movimiento y esquema de color.",
+      "li5": "Diseñar teniendo en cuenta un contraste de color suficiente.",
+      "li6": "Asegurar que el contenido esencial esté disponible sin JavaScript, aunque algunas funciones interactivas lo requieran."
+    },
+    "limitations": {
+      "title": "Limitaciones conocidas",
+      "p1": "Algunas partes del sitio, particularmente el contenido de terceros como los README de los paquetes, pueden no cumplir con los estándares de accesibilidad. Estamos trabajando para mejorar estas áreas con el tiempo."
+    },
+    "contact": {
+      "title": "Comentarios",
+      "p1": "Si encuentras una barrera de accesibilidad en {app}, por favor háznoslo saber abriendo una incidencia en nuestro {link}. Nos tomamos estos informes muy en serio y haremos todo lo posible para abordarlos.",
+      "link": "repositorio de GitHub"
+    }
+  }
+}

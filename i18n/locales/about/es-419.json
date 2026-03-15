@@ -1,0 +1,7 @@
+{
+  "about": {
+    "what_we_are": {
+      "admin_description": "También aspiramos a proporcionar una mejor {adminUi} para administrar tus paquetes, equipos y organizaciones — todo desde el navegador, impulsado por tu CLI de npm local."
+    }
+  }
+}

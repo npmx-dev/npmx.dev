@@ -1,0 +1,30 @@
+{
+  "pds": {
+    "title": "npmx.social",
+    "meta_description": "The official AT Protocol Personal Data Server (PDS) for the npmx community.",
+    "join": {
+      "title": "Join the Community",
+      "description": "Whether you are creating your first account on the atmosphere or migrating an existing one, you belong here. You can migrate your current account without losing your handle, your posts, or your followers.",
+      "migrate": "Migrate with PDS MOOver"
+    },
+    "server": {
+      "title": "Server Details",
+      "location_label": "Location:",
+      "location_value": "Nuremberg, Germany",
+      "infrastructure_label": "Infrastructure:",
+      "infrastructure_value": "Hosted on Hetzner",
+      "privacy_label": "Privacy:",
+      "privacy_value": "Subject to strict EU Data Protection laws",
+      "learn_more": "Learn how npmx uses the Atmosphere"
+    },
+    "community": {
+      "title": "Who is here",
+      "description": "Some of the {count} accounts that are already calling npmx.social home:",
+      "loading": "Loading PDS community...",
+      "error": "Failed to load PDS community.",
+      "empty": "No community members to display.",
+      "view_profile": "View {handle}'s profile",
+      "new_accounts": "...plus {count} more that are new to the atmosphere"
+    }
+  }
+}

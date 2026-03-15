@@ -1,0 +1,36 @@
+{
+  "vacations": {
+    "title": "on vacation",
+    "meta_description": "The npmx team was recharging. Discord reopened after a week.",
+    "heading": "recharging",
+    "subtitle": "we were building npmx at a pace that was costing {some} of us sleep. we didn't want that to be the norm! so we took a week off. together.",
+    "illustration_alt": "a single row of cosy icons",
+    "poke_log": "Poke the campfire",
+    "what": {
+      "title": "what happened",
+      "p1": "discord was closed {dates}.",
+      "dates": "February 14 – 21",
+      "p2": "all invite links were gone and channels were locked – except {garden}, which stayed open for folks who wanted to keep hanging out.",
+      "garden": "#garden"
+    },
+    "meantime": {
+      "title": "in the meantime",
+      "p1": "{site} and {repo} stayed open – people still dug in, filed some issues, opened a few PRs, but mainly everyone spent time somewhere near a cosy fireplace.",
+      "repo_link": "the repo"
+    },
+    "return": {
+      "title": "we came back!",
+      "p1": "we came back recharged and ready for the final push to March 3rd. {social} for updates.",
+      "social_link": "follow us on Bluesky"
+    },
+    "stats": {
+      "contributors": "Contributors",
+      "commits": "Commits",
+      "pr": "PRs Merged",
+      "subtitle": {
+        "some": "some",
+        "all": "all"
+      }
+    }
+  }
+}

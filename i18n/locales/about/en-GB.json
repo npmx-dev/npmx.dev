@@ -1,0 +1,7 @@
+{
+  "about": {
+    "what_we_are": {
+      "admin_description": "We also aim to provide a better {adminUi} for managing your packages, teams, and organisations — all from the browser, powered by your local npm CLI."
+    }
+  }
+}

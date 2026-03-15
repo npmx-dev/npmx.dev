@@ -35,11 +35,6 @@
       "scope_warning_text": "Unscoped package names are a shared resource. Only claim a name if you intend to publish and maintain a package. For personal or organisational projects, use a scoped name like {'@'}{username}/{name}."
     }
   },
-  "about": {
-    "what_we_are": {
-      "admin_description": "We also aim to provide a better {adminUi} for managing your packages, teams, and organisations — all from the browser, powered by your local npm CLI."
-    }
-  },
   "header": {
     "orgs_dropdown": {
       "error": "Failed to load organisations",

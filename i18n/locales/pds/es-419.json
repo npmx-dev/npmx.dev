@@ -1,0 +1,10 @@
+{
+  "pds": {
+    "join": {
+      "description": "Ya sea que estés creando tu primera cuenta en la atmósfera o migrando una existente, tu lugar está aquí. Puedes migrar tu cuenta actual sin perder tu usuario, tus publicaciones o tus seguidores."
+    },
+    "server": {
+      "learn_more": "Conoce cómo npmx usa la Atmósfera"
+    }
+  }
+}
