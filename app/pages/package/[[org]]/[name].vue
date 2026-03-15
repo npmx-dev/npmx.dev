@@ -143,7 +143,17 @@ const {
     immediate: false,
   },
 )
-onMounted(() => fetchInstallSize())
+
+// Trigger fetch only when we have the real resolved version
+watch(
+  [resolvedVersion, resolvedStatus],
+  ([version, status]) => {
+    if (version && status === 'success') {
+      fetchInstallSize()
+    }
+  },
+  { immediate: true },
+)
 
 const { data: skillsData } = useLazyFetch<SkillsListResponse>(
   () => {
