@@ -900,7 +900,7 @@
       "paginated": "Terpaginasi",
       "items_per_page": "Item per halaman",
       "per_page": "{count} / halaman",
-      "showing": "{start}-{end} dari {total}",
+      "showing": "{range} dari {total}",
       "previous": "Halaman sebelumnya",
       "next": "Halaman berikutnya",
       "nav_label": "Paginasi"

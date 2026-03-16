@@ -760,7 +760,7 @@
       "paginated": "Paginato",
       "items_per_page": "Elementi per pagina",
       "per_page": "{count} / pagina",
-      "showing": "{start}-{end} su {total}",
+      "showing": "{range} su {total}",
       "previous": "Pagina precedente",
       "next": "Pagina successiva",
       "nav_label": "Paginazione"

@@ -6,6 +6,14 @@ export interface FacetInfoWithLabels extends Omit<FacetInfo, 'id'> {
   chartable: boolean
 }
 
+// Get facets in a category (excluding coming soon)
+function getFacetsInCategory(category: string): ComparisonFacet[] {
+  return ALL_FACETS.filter(f => {
+    const info = FACET_INFO[f]
+    return info.category === category && !info.comingSoon
+  })
+}
+
 /**
  * Composable for managing comparison facet selection with URL sync.
  *
@@ -148,14 +156,6 @@ export function useFacetSelection(queryParam = 'facets') {
     } else {
       selectedFacetIds.value = [...current, facet]
     }
-  }
-
-  // Get facets in a category (excluding coming soon)
-  function getFacetsInCategory(category: string): ComparisonFacet[] {
-    return ALL_FACETS.filter(f => {
-      const info = FACET_INFO[f]
-      return info.category === category && !info.comingSoon
-    })
   }
 
   // Select all facets in a category

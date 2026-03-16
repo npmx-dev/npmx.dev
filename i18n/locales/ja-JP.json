@@ -895,7 +895,7 @@
       "paginated": "ページ分割",
       "items_per_page": "1ページあたりの項目数",
       "per_page": "{count} / ページ",
-      "showing": "{total} 件中 {start}-{end}",
+      "showing": "{total} 件中 {range}",
       "previous": "前のページ",
       "next": "次のページ",
       "nav_label": "ページネーション"

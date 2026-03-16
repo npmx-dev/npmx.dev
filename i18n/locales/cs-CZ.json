@@ -893,7 +893,7 @@
       "paginated": "Stránkované",
       "items_per_page": "Položek na stránku",
       "per_page": "{count} / stránku",
-      "showing": "{start}-{end} z {total}",
+      "showing": "{range} z {total}",
       "previous": "Předchozí stránka",
       "next": "Další stránka",
       "nav_label": "Stránkování"

@@ -777,7 +777,7 @@
       "paginated": "مقسم إلى صفحات",
       "items_per_page": "عدد العناصر في الصفحة",
       "per_page": "{count} / صفحة",
-      "showing": "{start}-{end} من {total}",
+      "showing": "{range} من {total}",
       "previous": "الصفحة السابقة",
       "next": "الصفحة التالية",
       "nav_label": "التصفح"

@@ -732,7 +732,7 @@
       "paginated": "Sideinndelt",
       "items_per_page": "Elementer per side",
       "per_page": "{count} / side",
-      "showing": "{start}-{end} av {total}",
+      "showing": "{range} av {total}",
       "previous": "Forrige side",
       "next": "Neste side",
       "nav_label": "Sideinndeling"

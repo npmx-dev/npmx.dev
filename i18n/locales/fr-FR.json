@@ -883,7 +883,7 @@
       "paginated": "Paginé",
       "items_per_page": "Éléments par page",
       "per_page": "{count} / page",
-      "showing": "{start}-{end} sur {total}",
+      "showing": "{range} sur {total}",
       "previous": "Page précédente",
       "next": "Page suivante",
       "nav_label": "Pagination"

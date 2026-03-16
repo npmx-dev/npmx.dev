@@ -34,17 +34,13 @@ export function buildWeeklyEvolution(
   if (sorted.length === 0) return []
 
   const rangeStartDate = parseIsoDate(rangeStartIso)
+  const rangeEndDate = parseIsoDate(rangeEndIso)
 
-  // Align from last day with actual data (npm has 1-2 day delay, today is incomplete)
-  const lastNonZero = sorted.findLast(d => d.value > 0)
-  const pickerEnd = parseIsoDate(rangeEndIso)
-  const effectiveEnd = lastNonZero ? parseIsoDate(lastNonZero.day) : pickerEnd
-  const rangeEndDate = effectiveEnd.getTime() < pickerEnd.getTime() ? effectiveEnd : pickerEnd
-
-  // Group into 7-day buckets from END backwards
   const buckets = new Map<number, number>()
+
   for (const item of sorted) {
-    const offset = Math.floor((rangeEndDate.getTime() - parseIsoDate(item.day).getTime()) / DAY_MS)
+    const itemDate = parseIsoDate(item.day)
+    const offset = Math.floor((rangeEndDate.getTime() - itemDate.getTime()) / DAY_MS)
     if (offset < 0) continue
     const idx = Math.floor(offset / 7)
     buckets.set(idx, (buckets.get(idx) ?? 0) + item.value)

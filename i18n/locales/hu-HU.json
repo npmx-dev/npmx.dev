@@ -842,7 +842,7 @@
       "paginated": "Lapozható",
       "items_per_page": "Elem per oldal",
       "per_page": "{count} / oldal",
-      "showing": "{start}-{end} / {total}",
+      "showing": "{range} / {total}",
       "previous": "Előző oldal",
       "next": "Következő oldal",
       "nav_label": "Lapozás"

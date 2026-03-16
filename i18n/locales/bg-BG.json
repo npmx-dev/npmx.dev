@@ -842,7 +842,7 @@
       "paginated": "Със страници",
       "items_per_page": "Елементи на страница",
       "per_page": "{count} / страница",
-      "showing": "{start}-{end} от {total}",
+      "showing": "{range} от {total}",
       "previous": "Предишна страница",
       "next": "Следваща страница",
       "nav_label": "Странициране"

@@ -665,7 +665,7 @@
       "paginated": "పేజినేటెడ్",
       "items_per_page": "పేజీకి అంశాలు",
       "per_page": "{count} / పేజీ",
-      "showing": "{total} లో {start}-{end}",
+      "showing": "{total} లో {range}",
       "previous": "మునుపటి పేజీ",
       "next": "తర్వాతి పేజీ",
       "nav_label": "పేజినేషన్"

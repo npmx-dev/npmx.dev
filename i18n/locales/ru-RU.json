@@ -881,7 +881,7 @@
       "paginated": "Страничный",
       "items_per_page": "Элементов на странице",
       "per_page": "{count} на странице",
-      "showing": "{start}-{end} из {total}",
+      "showing": "{range} из {total}",
       "previous": "Предыдущая страница",
       "next": "Следующая страница",
       "nav_label": "Пагинация"
