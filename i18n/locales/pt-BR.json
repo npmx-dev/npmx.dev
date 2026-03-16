@@ -346,7 +346,13 @@
       "no_matches": "Nenhuma versão corresponde a esta faixa",
       "recent_versions_only_tooltip": "Mostrar apenas versões publicadas no último ano.",
       "show_low_usage_tooltip": "Incluir grupos de versões com menos de 1% do total de downloads.",
-      "y_axis_label": "Transferências"
+      "y_axis_label": "Transferências",
+      "view_all_versions": "Ver todas as versões",
+      "page_title": "Histórico de versões",
+      "current_tags": "Tags atuais",
+      "version_filter_placeholder": "Filtrar versões...",
+      "version_filter_label": "Filtrar versões",
+      "no_match_filter": "Nenhuma versão corresponde a {filter}"
     },
     "dependencies": {
       "title": "Dependências ({count})",
