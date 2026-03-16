@@ -22,7 +22,7 @@ export function usePackageSelection() {
     },
   })
 
-  const canSelectMore = computed(() => selectedPackages.value.length >= MAX_PACKAGE_SELECTION)
+  const canSelectMore = computed(() => selectedPackages.value.length < MAX_PACKAGE_SELECTION)
 
   const showSelectionView = computed<boolean>({
     get() {

@@ -67,7 +67,7 @@ const numberFormatter = useNumberFormatter()
 
       <PackageSelectionCheckbox
         :package-name="result.package.name"
-        :disabled="canSelectMore && !isSelected"
+        :disabled="!canSelectMore && !isSelected"
         :checked="isSelected"
         @change="togglePackageSelection"
       />

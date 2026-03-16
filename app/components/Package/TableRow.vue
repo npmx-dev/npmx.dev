@@ -55,7 +55,7 @@ const allMaintainersText = computed(() => {
     <td class="ps-3">
       <PackageSelectionCheckbox
         :package-name="result.package.name"
-        :disabled="canSelectMore && !isSelected"
+        :disabled="!canSelectMore && !isSelected"
         :checked="isSelected"
         @change="togglePackageSelection"
       />
