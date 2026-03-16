@@ -12,8 +12,9 @@ export default {
       return { left: 0, top: 0 }
     }
 
-    // Don't scroll for other param changes (filters, pagination, etc.)
-    if (to.path === from.path) {
+    // Preserve the current viewport for query-only updates on pages that opt in,
+    // such as compare where controls sync state to the URL in-place.
+    if (to.path === from.path && to.hash === from.hash && to.meta.preserveScrollOnQuery === true) {
       return false
     }
 
