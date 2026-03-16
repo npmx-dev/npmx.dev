@@ -62,9 +62,7 @@ async function mountWithDeps(deps: Record<string, string> | undefined) {
 
 describe('useReplacementDependencies', () => {
   it('returns replacements for dependencies that have them', async () => {
-    registerEndpoint('/api/replacements/is-even', () => {
-      replacement: SIMPLE_REPLACEMENT
-    })
+    registerEndpoint('/api/replacements/is-even', () => ({ replacement: SIMPLE_REPLACEMENT }))
     registerEndpoint('/api/replacements/picoquery', () => null)
 
     const replacements = await mountWithDeps({
@@ -97,12 +95,10 @@ describe('useReplacementDependencies', () => {
   })
 
   it('handles multiple dependencies with replacements', async () => {
-    registerEndpoint('/api/replacements/is-even', () => {
-      replacement: SIMPLE_REPLACEMENT
-    })
-    registerEndpoint('/api/replacements/array-includes', () => {
-      replacement: NATIVE_REPLACEMENT
-    })
+    registerEndpoint('/api/replacements/is-even', () => ({ replacement: SIMPLE_REPLACEMENT }))
+    registerEndpoint('/api/replacements/array-includes', () => ({
+      replacement: NATIVE_REPLACEMENT,
+    }))
     registerEndpoint('/api/replacements/picoquery', () => null)
 
     const replacements = await mountWithDeps({
@@ -128,9 +124,7 @@ describe('useReplacementDependencies', () => {
     registerEndpoint('/api/replacements/failing-package', () => {
       throw new Error('Network error')
     })
-    registerEndpoint('/api/replacements/is-even', () => {
-      replacement: SIMPLE_REPLACEMENT
-    })
+    registerEndpoint('/api/replacements/is-even', () => ({ replacement: SIMPLE_REPLACEMENT }))
 
     const replacements = await mountWithDeps({
       'failing-package': '^1.0.0',

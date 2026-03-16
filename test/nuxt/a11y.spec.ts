@@ -2489,6 +2489,11 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations for native replacement', async () => {
       const component = await mountSuspended(PackageReplacement, {
         props: {
+          mappping: {
+            type: 'module',
+            moduleName: 'array-every',
+            replacements: ['Array.prototype.every'],
+          },
           replacement: {
             id: 'Array.prototype.every',
             type: 'native',
@@ -2510,6 +2515,11 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations for simple replacement', async () => {
       const component = await mountSuspended(PackageReplacement, {
         props: {
+          mapping: {
+            type: 'module',
+            moduleName: 'is-even',
+            replacements: ['snippet::is-even'],
+          },
           replacement: {
             id: 'snippet::is-even',
             type: 'simple',

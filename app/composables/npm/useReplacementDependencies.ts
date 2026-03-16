@@ -1,4 +1,4 @@
-import type { ModuleReplacement } from 'module-replacements'
+import type { ModuleReplacement, ModuleReplacementMapping } from 'module-replacements'
 
 async function fetchReplacements(
   deps: Record<string, string>,
