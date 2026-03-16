@@ -2489,7 +2489,7 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations for native replacement', async () => {
       const component = await mountSuspended(PackageReplacement, {
         props: {
-          mappping: {
+          mapping: {
             type: 'module',
             moduleName: 'array-every',
             replacements: ['Array.prototype.every'],
