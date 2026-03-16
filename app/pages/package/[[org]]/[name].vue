@@ -211,6 +211,9 @@ const { diff: sizeDiff } = useInstallSizeDiff(packageName, resolvedVersion, pkg,
 //    → Preserve the server-rendered DOM, don't flash to skeleton.
 const nuxtApp = useNuxtApp()
 const route = useRoute()
+// Gates template rendering only — data fetches intentionally still run.
+// immediate is set once at mount — skipped requests won't re-fire on navigation, leaving data permanently missing.
+const isVersionsRoute = computed(() => route.name === 'package-versions')
 const hasEmptyPayload =
   import.meta.client &&
   nuxtApp.payload.serverRendered &&
@@ -479,7 +482,8 @@ const showSkeleton = shallowRef(false)
 </script>
 
 <template>
-  <DevOnly>
+  <NuxtPage v-if="isVersionsRoute" />
+  <DevOnly v-else>
     <ButtonBase
       class="fixed bottom-4 inset-is-4 z-50 shadow-lg rounded-full! px-3! py-2!"
       classicon="i-simple-icons:skeleton"
@@ -491,7 +495,7 @@ const showSkeleton = shallowRef(false)
       <span class="text-xs">Skeleton</span>
     </ButtonBase>
   </DevOnly>
-  <main class="flex-1 pb-8">
+  <main v-if="!isVersionsRoute" class="flex-1 pb-8">
     <!-- Scenario 1: SPA fallback — show skeleton (no real content to preserve) -->
     <!-- Scenario 2: SSR with missing payload — preserve server DOM, skip skeleton -->
     <PackageSkeleton
@@ -593,10 +597,8 @@ const showSkeleton = shallowRef(false)
                   <!-- Direct deps (muted) -->
                   <span class="text-fg-muted">{{ numberFormatter.format(dependencyCount) }}</span>
 
-                  <!-- Separator and total transitive deps -->
+                  <!-- Total transitive deps in parens -->
                   <template v-if="dependencyCount > 0 && dependencyCount !== totalDepsCount">
-                    <span class="text-fg-subtle">/</span>
-
                     <ClientOnly>
                       <span
                         v-if="
@@ -605,14 +607,16 @@ const showSkeleton = shallowRef(false)
                         "
                         class="inline-flex items-center gap-1 text-fg-subtle"
                       >
-                        <span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />
+                        (<span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />)
                       </span>
-                      <span v-else-if="totalDepsCount !== null">{{
-                        numberFormatter.format(totalDepsCount)
-                      }}</span>
-                      <span v-else class="text-fg-subtle">-</span>
+                      <span v-else-if="totalDepsCount !== null"
+                        ><span class="text-fg-subtle">(</span
+                        >{{ numberFormatter.format(totalDepsCount)
+                        }}<span class="text-fg-subtle">)</span></span
+                      >
+                      <span v-else class="text-fg-subtle">(-)</span>
                       <template #fallback>
-                        <span class="text-fg-subtle">-</span>
+                        <span class="text-fg-subtle">(-)</span>
                       </template>
                     </ClientOnly>
                   </template>
@@ -662,20 +666,22 @@ const showSkeleton = shallowRef(false)
                   <span v-else>-</span>
                 </span>
 
-                <!-- Separator and install size -->
+                <!-- Total install size in parens -->
                 <template v-if="displayVersion?.dist?.unpackedSize !== installSize?.totalSize">
-                  <span class="text-fg-subtle mx-1">/</span>
-
-                  <span
-                    v-if="installSizeStatus === 'pending'"
-                    class="inline-flex items-center gap-1 text-fg-subtle"
-                  >
-                    <span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />
+                  <span class="ms-1">
+                    <span
+                      v-if="installSizeStatus === 'pending'"
+                      class="inline-flex items-center gap-1 text-fg-subtle"
+                    >
+                      (<span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />)
+                    </span>
+                    <span v-else-if="installSize?.totalSize" dir="ltr">
+                      <span class="text-fg-subtle">(</span
+                      >{{ bytesFormatter.format(installSize.totalSize)
+                      }}<span class="text-fg-subtle">)</span>
+                    </span>
+                    <span v-else class="text-fg-subtle">(-)</span>
                   </span>
-                  <span v-else-if="installSize?.totalSize" dir="ltr">
-                    {{ bytesFormatter.format(installSize.totalSize) }}
-                  </span>
-                  <span v-else class="text-fg-subtle">-</span>
                 </template>
               </dd>
             </div>
