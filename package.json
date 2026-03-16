@@ -149,7 +149,7 @@
     "lint-staged": "16.3.2",
     "markdown-it-anchor": "9.2.0",
     "oxfmt": "0.36.0",
-    "oxlint": "1.51.0",
+    "oxlint": "1.55.0",
     "schema-dts": "1.1.5",
     "simple-git-hooks": "2.13.1",
     "storybook": "catalog:storybook",
