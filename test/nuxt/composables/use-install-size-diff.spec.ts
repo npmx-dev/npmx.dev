@@ -1,5 +1,4 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { SlimPackument, InstallSizeResult } from '#shared/types'
 
 function createPackage(
   name: string,

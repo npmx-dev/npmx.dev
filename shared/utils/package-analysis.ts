@@ -200,17 +200,21 @@ export function getCreatePackageName(packageName: string): string {
 
 /**
  * Extract the short name from a create-* package for display.
- * e.g., "create-vite" -> "vite", "@scope/create-foo" -> "foo"
+ * e.g., "create-vite" -> "vite", "@scope/create-foo" -> "@scope/foo", "@scope/create" -> "@scope"
  */
 export function getCreateShortName(createPackageName: string): string {
   if (createPackageName.startsWith('@')) {
-    // @scope/create-foo -> foo
+    // @scope/create -> @scope, @scope/create-foo -> @scope/foo
     const slashIndex = createPackageName.indexOf('/')
+    const scope = createPackageName.slice(0, slashIndex)
     const name = createPackageName.slice(slashIndex + 1)
-    if (name.startsWith('create-')) {
-      return name.slice('create-'.length)
+    if (name === 'create') {
+      return scope
     }
-    return name
+    if (name.startsWith('create-')) {
+      return `${scope}/${name.slice('create-'.length)}`
+    }
+    return createPackageName
   }
   // create-vite -> vite
   if (createPackageName.startsWith('create-')) {

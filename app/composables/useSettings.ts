@@ -1,12 +1,10 @@
 import type { RemovableRef } from '@vueuse/core'
 import { useLocalStorage } from '@vueuse/core'
-import { ACCENT_COLORS } from '#shared/utils/constants'
+import { ACCENT_COLORS, type AccentColorId } from '#shared/utils/constants'
 import type { LocaleObject } from '@nuxtjs/i18n'
 import { BACKGROUND_THEMES } from '#shared/utils/constants'
 
 type BackgroundThemeId = keyof typeof BACKGROUND_THEMES
-
-type AccentColorId = keyof typeof ACCENT_COLORS.light
 
 /** Available search providers */
 export type SearchProvider = 'npm' | 'algolia'
@@ -45,6 +43,7 @@ export interface AppSettings {
     averageWindow: number
     smoothingTau: number
     anomaliesFixed: boolean
+    predictionPoints: number
   }
 }
 
@@ -68,6 +67,7 @@ const DEFAULT_SETTINGS: AppSettings = {
     averageWindow: 0,
     smoothingTau: 1,
     anomaliesFixed: true,
+    predictionPoints: 4,
   },
 }
 

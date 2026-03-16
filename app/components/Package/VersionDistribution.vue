@@ -421,13 +421,13 @@ const chartConfig = computed<VueUiXyConfig>(() => {
             @click="showLowUsageVersions = false"
             :variant="showLowUsageVersions ? 'secondary' : 'primary'"
           >
-            {{ $t('package.versions.grouping_usage_all') }}
+            {{ $t('package.versions.grouping_usage_most_used') }}
           </ButtonBase>
           <ButtonBase
             @click="showLowUsageVersions = true"
             :variant="showLowUsageVersions ? 'primary' : 'secondary'"
           >
-            {{ $t('package.versions.grouping_usage_low') }}
+            {{ $t('package.versions.grouping_usage_all') }}
           </ButtonBase>
         </ButtonGroup>
       </div>

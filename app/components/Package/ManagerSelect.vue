@@ -144,6 +144,7 @@ function handleKeydown(event: KeyboardEvent) {
         :id="listboxId"
         ref="listRef"
         role="listbox"
+        data-testid="package-manager-dropdown"
         :aria-activedescendant="
           highlightedIndex >= 0
             ? `${listboxId}-${packageManagers[highlightedIndex]?.id}`

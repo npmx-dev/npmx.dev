@@ -1,4 +1,3 @@
-import type { NpmSearchResponse, PackageMetaResponse } from '#shared/types'
 import { emptySearchResponse, metaToSearchResult } from './search-utils'
 
 export interface NpmSearchOptions {

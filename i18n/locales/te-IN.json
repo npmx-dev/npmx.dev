@@ -117,9 +117,7 @@
     "not_found": "ప్యాకేజ్ కనుగొనబడలేదు",
     "not_found_message": "ప్యాకేజ్ కనుగొనబడలేదు.",
     "no_description": "వివరణ అందించబడలేదు",
-    "not_latest": "(తాజాది కాదు)",
     "verified_provenance": "ధృవీకరించబడిన ప్రోవెనెన్స్",
-    "view_permalink": "ఈ వెర్షన్ యొక్క పర్మాలింక్‌ను వీక్షించండి",
     "navigation": "ప్యాకేజ్",
     "copy_name": "ప్యాకేజ్ పేరును కాపీ చేయండి",
     "deprecation": {
@@ -657,7 +655,7 @@
       "paginated": "పేజినేటెడ్",
       "items_per_page": "పేజీకి అంశాలు",
       "per_page": "{count} / పేజీ",
-      "showing": "{total} లో {start}-{end}",
+      "showing": "{total} లో {range}",
       "previous": "మునుపటి పేజీ",
       "next": "తర్వాతి పేజీ",
       "nav_label": "పేజినేషన్"

@@ -1,11 +1,4 @@
-import type { Packument, NpmSearchResponse } from '#shared/types'
-import { encodePackageName, fetchLatestVersion } from '#shared/utils/npm'
 import { maxSatisfying, prerelease } from 'semver'
-import {
-  CACHE_MAX_AGE_FIVE_MINUTES,
-  CACHE_MAX_AGE_ONE_DAY,
-  NPM_REGISTRY,
-} from '#shared/utils/constants'
 
 export const fetchNpmPackage = defineCachedFunction(
   async (name: string): Promise<Packument> => {
