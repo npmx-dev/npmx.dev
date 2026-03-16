@@ -2000,6 +2000,11 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(CompareReplacementSuggestion, {
         props: {
           packageName: 'array-includes',
+          mapping: {
+            type: 'module',
+            moduleName: 'array-includes',
+            replacements: ['Array.prototype.includes'],
+          },
           replacement: {
             id: 'Array.prototype.includes',
             type: 'native',
@@ -2030,6 +2035,11 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(CompareReplacementSuggestion, {
         props: {
           packageName: 'is-even',
+          mapping: {
+            type: 'module',
+            moduleName: 'is-even',
+            replacements: ['snippet::is-even'],
+          },
           replacement: {
             id: 'snippet::is-even',
             type: 'simple',
@@ -2047,6 +2057,12 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(CompareReplacementSuggestion, {
         props: {
           packageName: 'moment',
+          mapping: {
+            type: 'module',
+            moduleName: 'moment',
+            replacements: ['day.js', 'date-fns', 'luxon', 'Date'],
+            url: { type: 'e18e', id: 'moment' },
+          },
           replacement: {
             id: 'day.js',
             type: 'documented',

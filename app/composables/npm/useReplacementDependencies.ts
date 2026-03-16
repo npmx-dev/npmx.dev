@@ -8,7 +8,11 @@ async function fetchReplacements(
   const results = await Promise.all(
     names.map(async name => {
       try {
-        const { replacement } = await $fetch<ModuleReplacement | null>(`/api/replacements/${name}`)
+        const response = await $fetch<{
+          mapping: ModuleReplacementMapping
+          replacement: ModuleReplacement
+        } | null>(`/api/replacements/${name}`)
+        const replacement = response?.replacement ?? null
         return { name, replacement }
       } catch {
         return { name, replacement: null }
