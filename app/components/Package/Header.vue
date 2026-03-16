@@ -247,13 +247,13 @@ const likeAction = async () => {
 
 <template>
   <!-- Package header -->
-  <header class="bg-bg pt-5 w-full container">
+  <header class="bg-bg pt-5 pb-1 w-full container">
     <!-- Package name and version -->
     <div class="flex items-baseline justify-between gap-x-2 gap-y-1 flex-wrap min-w-0">
       <CopyToClipboardButton
         :copied="copiedPkgName"
         :copy-text="$t('package.copy_name')"
-        class="flex flex-col items-start min-w-0 z-60"
+        class="flex flex-col items-start min-w-0"
         @click="copyPkgName()"
       >
         <h1
@@ -319,7 +319,7 @@ const likeAction = async () => {
   </header>
   <div
     ref="header"
-    class="w-full bg-bg sticky top-14 z-50 border-b border-border pt-2"
+    class="w-full bg-bg sticky top-14 z-10 border-b border-border pt-2"
     :class="[$style.packageHeader]"
     data-testid="package-subheader"
   >
@@ -451,6 +451,10 @@ const likeAction = async () => {
 
 .packageNav::-webkit-scrollbar {
   display: none;
+}
+
+.packageNav > :global(a:focus-visible) {
+  outline-offset: -2px !important;
 }
 
 @media (max-width: 639.9px) {
