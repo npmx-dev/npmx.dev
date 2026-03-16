@@ -358,9 +358,9 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
 
 function buildLocales() {
   const useLocales = Object.values(locales).reduce((acc, data) => {
-    const locales = countryLocaleVariants[data.code]
-    if (locales) {
-      locales.forEach(l => {
+    const variants = countryLocaleVariants[data.code]
+    if (variants) {
+      variants.forEach(l => {
         const entry: LocaleObjectData = {
           ...data,
           code: l.code,
@@ -406,9 +406,8 @@ export const datetimeFormats = Object.values(currentLocales).reduce((acc, data) 
 }, {} as DateTimeFormats)
 
 export const numberFormats = Object.values(currentLocales).reduce((acc, data) => {
-  const numberFormats = data.numberFormats
-  if (numberFormats) {
-    acc[data.code] = { ...numberFormats }
+  if (data.numberFormats) {
+    acc[data.code] = { ...data.numberFormats }
     delete data.numberFormats
   } else {
     acc[data.code] = {

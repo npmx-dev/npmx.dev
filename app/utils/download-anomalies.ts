@@ -98,7 +98,7 @@ export function applyBlocklistCorrection(opts: {
   if (!anomalies.length) return data
 
   // Clone to avoid mutation
-  const result = (data as Array<Record<string, any>>).map(d => ({ ...d }))
+  const result = (data as Array<Record<string, any>>).map(d => Object.assign({}, d))
 
   for (const anomaly of anomalies) {
     // Find indices of affected points

@@ -1,11 +1,6 @@
 <script setup lang="ts">
-import type { JsrPackageInfo } from '#shared/types/jsr'
 import { assertValidPackageName } from '#shared/utils/npm'
-import { areUrlsEquivalent } from '#shared/utils/url'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
-import { detectPublishSecurityDowngradeForVersion } from '~/utils/publish-security'
-import { useInstallSizeDiff } from '~/composables/useInstallSizeDiff'
-import { useViewOnGitProvider } from '~/composables/useViewOnGitProvider'
 
 defineOgImageComponent('Package', {
   name: () => packageName.value,
@@ -148,7 +143,17 @@ const {
     immediate: false,
   },
 )
-onMounted(() => fetchInstallSize())
+
+// Trigger fetch only when we have the real resolved version
+watch(
+  [resolvedVersion, resolvedStatus],
+  ([version, status]) => {
+    if (version && status === 'success') {
+      fetchInstallSize()
+    }
+  },
+  { immediate: true },
+)
 
 const { data: skillsData } = useLazyFetch<SkillsListResponse>(
   () => {
@@ -389,32 +394,9 @@ const totalDepsCount = computed(() => {
 
 const { repositoryUrl } = useRepositoryUrl(displayVersion)
 
-const { meta: repoMeta, repoRef, stars, starsLink, forks, forksLink } = useRepoMeta(repositoryUrl)
-
-const repoProviderIcon = useProviderIcon(() => repoRef.value?.provider)
+const { repoRef } = useRepoMeta(repositoryUrl)
 
 const viewOnGitProvider = useViewOnGitProvider(() => repoRef.value?.provider)
-
-const homepageUrl = computed(() => {
-  const homepage = displayVersion.value?.homepage
-  if (!homepage) return null
-
-  // Don't show homepage if it's the same as the repository URL
-  if (repositoryUrl.value && areUrlsEquivalent(homepage, repositoryUrl.value)) {
-    return null
-  }
-
-  return homepage
-})
-
-const fundingUrl = computed(() => {
-  let funding = displayVersion.value?.funding
-  if (Array.isArray(funding)) funding = funding[0]
-
-  if (!funding) return null
-
-  return typeof funding === 'string' ? funding : funding.url
-})
 
 // Check if a version has provenance/attestations
 // The dist object may have attestations that aren't in the base type
@@ -478,7 +460,6 @@ const versionUrlPattern = computed(
 const dependencyCount = computed(() => getDependencyCount(displayVersion.value))
 
 const numberFormatter = useNumberFormatter()
-const compactNumberFormatter = useCompactNumberFormatter()
 const bytesFormatter = useBytesFormatter()
 
 useHead({
@@ -560,88 +541,14 @@ const showSkeleton = shallowRef(false)
               </p>
             </div>
 
-            <!-- External links -->
-            <ul
-              class="flex flex-wrap items-center gap-x-3 gap-y-1.5 sm:gap-4 list-none m-0 p-0 mt-3 text-sm"
-            >
-              <li v-if="repositoryUrl">
-                <LinkBase :to="repositoryUrl" :classicon="repoProviderIcon">
-                  <span v-if="repoRef">
-                    {{ repoRef.owner }}<span class="opacity-50">/</span>{{ repoRef.repo }}
-                  </span>
-                  <span v-else>{{ $t('package.links.repo') }}</span>
-                </LinkBase>
-              </li>
-              <li v-if="repositoryUrl && repoMeta && starsLink">
-                <LinkBase :to="starsLink" classicon="i-lucide:star">
-                  {{ compactNumberFormatter.format(stars) }}
-                </LinkBase>
-              </li>
-              <li v-if="forks && forksLink">
-                <LinkBase :to="forksLink" classicon="i-lucide:git-fork">
-                  {{ compactNumberFormatter.format(forks) }}
-                </LinkBase>
-              </li>
-              <li class="basis-full sm:hidden" />
-              <li v-if="homepageUrl">
-                <LinkBase :to="homepageUrl" classicon="i-lucide:link">
-                  {{ $t('package.links.homepage') }}
-                </LinkBase>
-              </li>
-              <li v-if="displayVersion?.bugs?.url">
-                <LinkBase :to="displayVersion.bugs.url" classicon="i-lucide:circle-alert">
-                  {{ $t('package.links.issues') }}
-                </LinkBase>
-              </li>
-              <li>
-                <LinkBase
-                  :to="`https://www.npmjs.com/package/${pkg.name}`"
-                  :title="$t('common.view_on.npm')"
-                  classicon="i-simple-icons:npm"
-                >
-                  npm
-                </LinkBase>
-              </li>
-              <li v-if="jsrInfo?.exists && jsrInfo.url">
-                <LinkBase
-                  :to="jsrInfo.url"
-                  :title="$t('badges.jsr.title')"
-                  classicon="i-simple-icons:jsr"
-                >
-                  {{ $t('package.links.jsr') }}
-                </LinkBase>
-              </li>
-              <li v-if="fundingUrl">
-                <LinkBase :to="fundingUrl" classicon="i-lucide:heart">
-                  {{ $t('package.links.fund') }}
-                </LinkBase>
-              </li>
-              <!-- Mobile-only: Docs + Code + Compare links -->
-              <li class="sm:hidden">
-                <LinkBase
-                  :to="{ name: 'compare', query: { packages: pkg.name } }"
-                  classicon="i-lucide:git-compare"
-                >
-                  {{ $t('package.links.compare') }}
-                </LinkBase>
-              </li>
-              <li
-                v-if="
-                  displayVersion &&
-                  latestVersion &&
-                  displayVersion.version !== latestVersion.version
-                "
-                class="sm:hidden"
-              >
-                <NuxtLink
-                  :to="diffRoute(pkg.name, displayVersion.version, latestVersion.version)"
-                  class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-                >
-                  <span class="i-lucide:diff w-4 h-4" aria-hidden="true" />
-                  {{ $t('compare.compare_versions') }}
-                </NuxtLink>
-              </li>
-            </ul>
+            <PackageExternalLinks :pkg :jsrInfo />
+            <PackageMetricsBadges
+              v-if="resolvedVersion"
+              :package-name="packageName"
+              :version="resolvedVersion"
+              :is-binary="isBinaryOnly"
+              class="self-baseline mt-4"
+            />
           </div>
 
           <div
