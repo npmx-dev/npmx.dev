@@ -52,6 +52,37 @@ export function getPrereleaseChannel(version: string): string {
 }
 
 /**
+ * Priority order for well-known dist-tags.
+ * Lower number = higher priority in display order.
+ * Unknown tags fall back to Infinity and are sorted by publish date descending.
+ */
+export const TAG_PRIORITY: Record<string, number> = {
+  stable: 0,
+  rc: 1,
+  beta: 2,
+  next: 3,
+  alpha: 4,
+  canary: 5,
+  nightly: 6,
+  experimental: 7,
+  legacy: 8,
+}
+
+/**
+ * Get the display priority for a dist-tag.
+ * Uses fuzzy matching so e.g. "v2-legacy" matches "legacy".
+ * @param tag - The tag name (e.g., "beta", "v2-legacy")
+ * @returns Numeric priority (lower = higher priority); Infinity for unknown tags
+ */
+export function getTagPriority(tag: string | undefined): number {
+  if (!tag) return Infinity
+  for (const [key, priority] of Object.entries(TAG_PRIORITY)) {
+    if (tag.toLowerCase().includes(key)) return priority
+  }
+  return Infinity
+}
+
+/**
  * Sort tags with 'latest' first, then alphabetically
  * @param tags - Array of tag names
  * @returns New sorted array
