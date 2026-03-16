@@ -286,16 +286,17 @@ async function scanUrlDependencies(
 
     const urlDeps: UrlDependencyInfo[] = []
     // Include devDependencies only for the root package
-    const allDeps = depth === 'root'
-      ? {
-          ...versionData.dependencies,
-          ...versionData.optionalDependencies,
-          ...versionData.devDependencies,
-        }
-      : {
-          ...versionData.dependencies,
-          ...versionData.optionalDependencies,
-        }
+    const allDeps =
+      depth === 'root'
+        ? {
+            ...versionData.dependencies,
+            ...versionData.optionalDependencies,
+            ...versionData.devDependencies,
+          }
+        : {
+            ...versionData.dependencies,
+            ...versionData.optionalDependencies,
+          }
 
     // URL dependencies are children of the current package, so their depth is one level deeper
     const dependencyDepth: DependencyDepth = depth === 'root' ? 'direct' : 'transitive'
