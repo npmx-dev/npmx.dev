@@ -128,6 +128,7 @@ export async function changelogRenderer(mdRepoInfo: MarkdownRepoInfo) {
         ),
         mdRepoInfo,
         prefixId,
+        idPrefix,
       ),
       toc,
     }
@@ -138,6 +139,7 @@ export function sanitizeRawHTML(
   rawHtml: string,
   mdRepoInfo: MarkdownRepoInfo,
   prefixId: typeof prefixIdFn,
+  idPrefix: string,
 ) {
   return sanitizeHtml(rawHtml, {
     allowedTags: ALLOWED_TAGS,
@@ -169,13 +171,13 @@ export function sanitizeRawHTML(
       },
       img: (tagName, attribs) => {
         if (attribs.src) {
-          attribs.src = resolveUrl(attribs.src, mdRepoInfo)
+          attribs.src = resolveUrl(attribs.src, mdRepoInfo, idPrefix)
         }
         return { tagName, attribs }
       },
       source: (tagName, attribs) => {
         if (attribs.src) {
-          attribs.src = resolveUrl(attribs.src, mdRepoInfo)
+          attribs.src = resolveUrl(attribs.src, mdRepoInfo, idPrefix)
         }
         if (attribs.srcset) {
           attribs.srcset = attribs.srcset
@@ -185,7 +187,7 @@ export function sanitizeRawHTML(
               const url = parts[0]
               if (!url) return entry.trim()
               const descriptor = parts[1]
-              const resolvedUrl = resolveUrl(url, mdRepoInfo)
+              const resolvedUrl = resolveUrl(url, mdRepoInfo, idPrefix)
               return descriptor ? `${resolvedUrl} ${descriptor}` : resolvedUrl
             })
             .join(', ')
@@ -197,7 +199,7 @@ export function sanitizeRawHTML(
           return { tagName, attribs }
         }
 
-        const resolvedHref = resolveUrl(attribs.href, mdRepoInfo)
+        const resolvedHref = resolveUrl(attribs.href, mdRepoInfo, idPrefix)
 
         // Add security attributes for external links
         if (resolvedHref && hasProtocol(resolvedHref, { acceptRelative: true })) {
@@ -227,14 +229,14 @@ interface MarkdownRepoInfo {
   path?: string
 }
 
-function resolveUrl(url: string, repoInfo: MarkdownRepoInfo) {
+function resolveUrl(url: string, repoInfo: MarkdownRepoInfo, idPrefix: string) {
   if (!url) return url
   if (url.startsWith('#')) {
     if (url.startsWith('#user-content')) {
       return url
     }
     // Prefix anchor links to match heading IDs (avoids collision with page IDs)
-    return `#user-content-${url.slice(1)}`
+    return `#${idPrefix}-${url.slice(1)}`
   }
   if (hasProtocol(url, { acceptRelative: true })) {
     try {
