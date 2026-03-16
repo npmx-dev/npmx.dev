@@ -7,6 +7,17 @@ export default {
     if (savedPosition) {
       return savedPosition
     }
+
+    // Preserve the current viewport for query-only updates on pages that opt in,
+    // such as compare where controls sync state to the URL in-place.
+    if (
+      to.path === _from.path &&
+      to.hash === _from.hash &&
+      to.meta.preserveScrollOnQuery === true
+    ) {
+      return false
+    }
+
     // If navigating to a hash anchor, scroll to it
     if (to.hash) {
       const { scrollMargin } = to.meta
