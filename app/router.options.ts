@@ -10,11 +10,7 @@ export default {
 
     // Preserve the current viewport for query-only updates on pages that opt in,
     // such as compare where controls sync state to the URL in-place.
-    if (
-      to.path === from.path &&
-      to.hash === from.hash &&
-      to.meta.preserveScrollOnQuery === true
-    ) {
+    if (to.path === from.path && to.hash === from.hash && to.meta.preserveScrollOnQuery === true) {
       return false
     }
 
