@@ -211,6 +211,9 @@ const { diff: sizeDiff } = useInstallSizeDiff(packageName, resolvedVersion, pkg,
 //    → Preserve the server-rendered DOM, don't flash to skeleton.
 const nuxtApp = useNuxtApp()
 const route = useRoute()
+// Gates template rendering only — data fetches intentionally still run.
+// immediate is set once at mount — skipped requests won't re-fire on navigation, leaving data permanently missing.
+const isVersionsRoute = computed(() => route.name === 'package-versions')
 const hasEmptyPayload =
   import.meta.client &&
   nuxtApp.payload.serverRendered &&
@@ -479,7 +482,8 @@ const showSkeleton = shallowRef(false)
 </script>
 
 <template>
-  <DevOnly>
+  <NuxtPage v-if="isVersionsRoute" />
+  <DevOnly v-else>
     <ButtonBase
       class="fixed bottom-4 inset-is-4 z-50 shadow-lg rounded-full! px-3! py-2!"
       classicon="i-simple-icons:skeleton"
@@ -491,7 +495,7 @@ const showSkeleton = shallowRef(false)
       <span class="text-xs">Skeleton</span>
     </ButtonBase>
   </DevOnly>
-  <main class="flex-1 pb-8">
+  <main v-if="!isVersionsRoute" class="flex-1 pb-8">
     <!-- Scenario 1: SPA fallback — show skeleton (no real content to preserve) -->
     <!-- Scenario 2: SSR with missing payload — preserve server DOM, skip skeleton -->
     <PackageSkeleton
