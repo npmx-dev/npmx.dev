@@ -461,6 +461,30 @@ describe('parseRepositoryInfo', () => {
   })
 })
 
+describe('normalizeGitUrl', () => {
+  it('strips .git suffix from HTTPS URLs', () => {
+    expect(normalizeGitUrl('https://github.com/tailwindlabs/tailwindcss.git')).toBe(
+      'https://github.com/tailwindlabs/tailwindcss',
+    )
+  })
+
+  it('strips .git suffix from git+https URLs', () => {
+    expect(normalizeGitUrl('git+https://github.com/tailwindlabs/tailwindcss.git')).toBe(
+      'https://github.com/tailwindlabs/tailwindcss',
+    )
+  })
+
+  it('strips .git suffix from ssh URLs', () => {
+    expect(normalizeGitUrl('git@github.com:tailwindlabs/tailwindcss.git')).toBe(
+      'https://github.com/tailwindlabs/tailwindcss',
+    )
+  })
+
+  it('leaves URLs without .git suffix unchanged', () => {
+    expect(normalizeGitUrl('https://github.com/nuxt/nuxt')).toBe('https://github.com/nuxt/nuxt')
+  })
+})
+
 describe('RepositoryInfo type', () => {
   it('includes blobBaseUrl in RepositoryInfo', () => {
     const result = parseRepositoryInfo({

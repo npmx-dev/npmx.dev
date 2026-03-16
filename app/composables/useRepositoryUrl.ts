@@ -23,7 +23,8 @@ export function useRepositoryUrl(
 
     // append `repository.directory` for monorepo packages
     if (repo.directory) {
-      url = joinURL(`${url}/tree/HEAD`, repo.directory)
+      const encodedDirectory = repo.directory.split('/').map(encodeURIComponent).join('/')
+      url = joinURL(`${url}/tree/HEAD`, encodedDirectory)
     }
 
     return url
