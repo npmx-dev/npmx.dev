@@ -7,6 +7,10 @@ import { isValidNewPackageName } from '~/utils/package-name'
 import { isPlatformSpecificPackage } from '~/utils/platform-packages'
 import { normalizeSearchParam } from '#shared/utils/url'
 
+definePageMeta({
+  preserveScrollOnQuery: true,
+})
+
 const route = useRoute()
 
 const { selectedPackages, showSelectionView, openSelectionView, closeSelectionView } =
