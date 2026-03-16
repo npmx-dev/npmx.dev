@@ -19,8 +19,8 @@ export function useRepositoryUrl(
     let url = normalizeGitUrl(repo.url)
 
     // append `repository.directory` for monorepo packages
-    if (repo.directory) {
-      url = joinURL(`${url}/tree/HEAD`, repo.directory)
+    if (repo.directory && url) {
+      url = joinURL(url.replace(/\.git$/, ''), `/tree/HEAD`, repo.directory)
     }
 
     return url
