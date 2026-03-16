@@ -1,4 +1,4 @@
-import { all, type ModuleReplacement } from 'module-replacements'
+import { all, type ModuleReplacement, type ModuleReplacementMapping } from 'module-replacements'
 
 export default defineEventHandler(
   (event): { mapping: ModuleReplacementMapping; replacement: ModuleReplacement } | null => {
