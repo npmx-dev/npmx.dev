@@ -89,7 +89,7 @@ describe('detectPublishSecurityDowngradeForVersion', () => {
   })
 
   it('flags ongoing downgraded versions until an upgrade happens', () => {
-    const versions = [
+    const downgradedVersions = [
       {
         version: '2.1.0',
         time: '2026-01-01T00:00:00.000Z',
@@ -122,16 +122,16 @@ describe('detectPublishSecurityDowngradeForVersion', () => {
       },
     ]
 
-    expect(detectPublishSecurityDowngradeForVersion(versions, '2.1.1')?.trustedVersion).toBe(
-      '2.1.0',
-    )
-    expect(detectPublishSecurityDowngradeForVersion(versions, '2.2.0')?.trustedVersion).toBe(
-      '2.1.0',
-    )
-    expect(detectPublishSecurityDowngradeForVersion(versions, '2.3.0')?.trustedVersion).toBe(
-      '2.1.0',
-    )
-    expect(detectPublishSecurityDowngradeForVersion(versions, '2.4.0')).toBeNull()
+    expect(
+      detectPublishSecurityDowngradeForVersion(downgradedVersions, '2.1.1')?.trustedVersion,
+    ).toBe('2.1.0')
+    expect(
+      detectPublishSecurityDowngradeForVersion(downgradedVersions, '2.2.0')?.trustedVersion,
+    ).toBe('2.1.0')
+    expect(
+      detectPublishSecurityDowngradeForVersion(downgradedVersions, '2.3.0')?.trustedVersion,
+    ).toBe('2.1.0')
+    expect(detectPublishSecurityDowngradeForVersion(downgradedVersions, '2.4.0')).toBeNull()
   })
 
   it('skips deprecated versions when selecting trustedVersion', () => {

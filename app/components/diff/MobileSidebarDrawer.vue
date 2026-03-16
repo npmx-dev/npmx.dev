@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import type { CompareResponse, FileChange } from '#shared/types'
-import type { SlimPackument } from '#shared/types'
-
 const props = defineProps<{
   compare: CompareResponse
   groupedDeps: Map<string, CompareResponse['dependencyChanges']>

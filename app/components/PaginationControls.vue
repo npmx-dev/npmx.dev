@@ -36,6 +36,8 @@ const endItem = computed(() => {
   return Math.min(currentPage.value * (pageSize.value as number), props.totalItems)
 })
 
+const numberFormatter = useNumberFormatter()
+
 const canGoPrev = computed(() => currentPage.value > 1)
 const canGoNext = computed(() => currentPage.value < totalPages.value)
 
@@ -167,8 +169,7 @@ function handlePageSizeChange(event: Event) {
       <span class="text-sm font-mono text-fg-muted">
         {{
           $t('filters.pagination.showing', {
-            start: startItem,
-            end: endItem,
+            range: numberFormatter.formatRange(startItem, endItem),
             total: $n(totalItems),
           })
         }}

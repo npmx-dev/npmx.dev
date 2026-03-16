@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PackageVersionInfo } from '#shared/types'
 import { onClickOutside } from '@vueuse/core'
 import { compare } from 'semver'
 import {

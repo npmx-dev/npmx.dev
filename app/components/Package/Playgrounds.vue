@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { PlaygroundLink } from '#shared/types'
-
 const props = defineProps<{
   links: PlaygroundLink[]
 }>()

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { SkillListItem } from '#shared/types'
-
 const props = defineProps<{
   skills: SkillListItem[]
   packageName: string
