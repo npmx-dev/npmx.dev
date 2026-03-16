@@ -3,10 +3,13 @@ import type { ModuleReplacement } from 'module-replacements'
 import { resolveReplacementUrl } from '~/utils/resolve-replacement-url'
 
 const props = defineProps<{
+  mapping: ModuleReplacementMapping
   replacement: ModuleReplacement
 }>()
 
-const externalUrl = computed(() => resolveReplacementUrl(props.replacement.url))
+const externalUrl = computed(() =>
+  resolveReplacementUrl(props.mapping.url ?? props.replacement.url),
+)
 
 const nodeVersion = computed(() => {
   const nodeEngine = props.replacement.engines?.find(e => e.engine === 'nodejs')
