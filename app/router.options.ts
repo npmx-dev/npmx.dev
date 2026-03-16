@@ -1,7 +1,7 @@
 import type { RouterConfig } from 'nuxt/schema'
 
 export default {
-  scrollBehavior(to, _from, savedPosition) {
+  scrollBehavior(to, from, savedPosition) {
     // If the browser has a saved position (e.g. back/forward navigation), restore it
 
     if (savedPosition) {
@@ -11,8 +11,8 @@ export default {
     // Preserve the current viewport for query-only updates on pages that opt in,
     // such as compare where controls sync state to the URL in-place.
     if (
-      to.path === _from.path &&
-      to.hash === _from.hash &&
+      to.path === from.path &&
+      to.hash === from.hash &&
       to.meta.preserveScrollOnQuery === true
     ) {
       return false
