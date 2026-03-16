@@ -205,6 +205,8 @@ export function sanitizeRawHTML(
         if (resolvedHref && hasProtocol(resolvedHref, { acceptRelative: true })) {
           attribs.rel = 'nofollow noreferrer noopener'
           attribs.target = '_blank'
+        } else {
+          attribs.target = ''
         }
         attribs.href = resolvedHref
         return { tagName, attribs }
@@ -236,7 +238,7 @@ function resolveUrl(url: string, repoInfo: MarkdownRepoInfo, idPrefix: string) {
       return url
     }
     // Prefix anchor links to match heading IDs (avoids collision with page IDs)
-    return `#${idPrefix}-${url.slice(1)}`
+    return `#${idPrefix}-${slugify(url.slice(1))}`
   }
   if (hasProtocol(url, { acceptRelative: true })) {
     try {
