@@ -65,6 +65,7 @@ async function ensureFullDataLoaded() {
 // ─── Derived data ─────────────────────────────────────────────────────────────
 
 const versionToTagsMap = computed(() => buildVersionToTagsMap(distTags.value))
+
 const tagRows = computed(() => buildTaggedVersionRows(distTags.value))
 const latestTagRow = computed(() => tagRows.value.find(r => r.tags.includes('latest')) ?? null)
 const otherTagRows = computed(() =>

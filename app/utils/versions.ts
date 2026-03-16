@@ -57,15 +57,16 @@ export function getPrereleaseChannel(version: string): string {
  * Unknown tags fall back to Infinity and are sorted by publish date descending.
  */
 export const TAG_PRIORITY: Record<string, number> = {
-  stable: 0,
-  rc: 1,
-  beta: 2,
-  next: 3,
-  alpha: 4,
-  canary: 5,
-  nightly: 6,
-  experimental: 7,
-  legacy: 8,
+  latest: 0,
+  stable: 1,
+  rc: 2,
+  beta: 3,
+  next: 4,
+  alpha: 5,
+  canary: 6,
+  nightly: 7,
+  experimental: 8,
+  legacy: 9,
 }
 
 /**
