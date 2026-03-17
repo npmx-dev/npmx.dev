@@ -357,7 +357,7 @@ const showClaimPrompt = computed(() => {
   return (
     isValidPackageName.value &&
     packageAvailability.value?.available === true &&
-    packageAvailability.value.name === query.value.trim() &&
+    packageAvailability.value.name === committedQuery.value.trim() &&
     (!isConnected.value || (isConnected.value && canPublishToScope.value)) &&
     status.value !== 'pending'
   )
