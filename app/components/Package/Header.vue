@@ -272,7 +272,7 @@ const likeAction = async () => {
 
 <template>
   <!-- Package header -->
-  <header class="bg-bg pt-5 w-full container">
+  <header class="bg-bg pt-5 pb-1 w-full container">
     <!-- Package name and version -->
     <div class="flex items-baseline justify-between gap-x-2 gap-y-1 flex-wrap min-w-0">
       <CopyToClipboardButton
@@ -344,7 +344,7 @@ const likeAction = async () => {
   </header>
   <div
     ref="header"
-    class="w-full bg-bg sticky top-14 z-50 border-b border-border pt-2"
+    class="w-full bg-bg sticky top-14 z-10 border-b border-border pt-2"
     :class="[$style.packageHeader]"
     data-testid="package-subheader"
   >
@@ -420,7 +420,7 @@ const likeAction = async () => {
           v-if="mainLink"
           :to="mainLink"
           aria-keyshortcuts="m"
-          class="decoration-none border-b-2 p-1 hover:border-accent/50 lowercase"
+          class="decoration-none border-b-2 p-1 hover:border-accent/50 lowercase focus-visible:[outline-offset:-2px]!"
           :class="page === 'main' ? 'border-accent text-accent!' : 'border-transparent'"
         >
           {{ $t('package.links.main') }}
@@ -429,7 +429,7 @@ const likeAction = async () => {
           v-if="docsLink"
           :to="docsLink"
           aria-keyshortcuts="d"
-          class="decoration-none border-b-2 p-1 hover:border-accent/50"
+          class="decoration-none border-b-2 p-1 hover:border-accent/50 focus-visible:[outline-offset:-2px]!"
           :class="page === 'docs' ? 'border-accent text-accent!' : 'border-transparent'"
         >
           {{ $t('package.links.docs') }}
@@ -438,7 +438,7 @@ const likeAction = async () => {
           v-if="codeLink"
           :to="codeLink"
           aria-keyshortcuts="."
-          class="decoration-none border-b-2 p-1 hover:border-accent/50"
+          class="decoration-none border-b-2 p-1 hover:border-accent/50 focus-visible:[outline-offset:-2px]!"
           :class="page === 'code' ? 'border-accent text-accent!' : 'border-transparent'"
         >
           {{ $t('package.links.code') }}
@@ -448,7 +448,7 @@ const likeAction = async () => {
           :to="diffLink"
           :title="$t('compare.compare_versions_title')"
           aria-keyshortcuts="f"
-          class="decoration-none border-b-2 p-1 hover:border-accent/50"
+          class="decoration-none border-b-2 p-1 hover:border-accent/50 focus-visible:[outline-offset:-2px]!"
           :class="page === 'diff' ? 'border-accent text-accent!' : 'border-transparent'"
         >
           {{ $t('compare.compare_versions') }}
