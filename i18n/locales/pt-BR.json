@@ -363,7 +363,9 @@
       "published": "Publicado",
       "weekly_downloads": "Downloads semanais",
       "keywords": "Palavras-chave",
-      "license": "Licença"
+      "license": "Licença",
+      "select": "Selecionar pacote",
+      "select_maximum": "No máximo {count} pacotes podem ser selecionados"
     },
     "versions": {
       "title": "Versões",
@@ -861,6 +863,7 @@
       "secure": "Sem avisos",
       "insecure": "Com avisos"
     },
+    "view_selected": "Ver selecionados",
     "sort": {
       "label": "Ordenar pacotes",
       "toggle_direction": "Alternar direção de classificação",
@@ -894,7 +897,8 @@
       "popularity_score": "Pontuação de popularidade",
       "maintenance_score": "Pontuação de manutenção",
       "combined_score": "Pontuação combinada",
-      "security": "Segurança"
+      "security": "Segurança",
+      "selection": "Selecionar pacote"
     },
     "view_mode": {
       "label": "Modo de exibição",
@@ -1337,5 +1341,11 @@
       "p1": "Se você encontrar uma barreira de acessibilidade no {app}, informe-nos abrindo um problema em nosso {link}. Levamos esses relatórios a sério e faremos o nosso melhor para abordá-los.",
       "link": "Repositório GitHub"
     }
+  },
+  "action_bar": {
+    "title": "Barra de ações",
+    "selection": "0 selecionados | 1 selecionado | {count} selecionados",
+    "shortcut": "Pressione \"{key}\" para focar nas ações",
+    "button_close_aria_label": "Fechar barra de ações"
   }
 }
