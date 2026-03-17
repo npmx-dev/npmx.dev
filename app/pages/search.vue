@@ -752,7 +752,8 @@ onBeforeUnmount(() => {
             </div>
             <button
               type="button"
-              class="shrink-0 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md motion-safe:transition-colors motion-safe:duration-200 hover:bg-fg/90 focus-visible:outline-accent/70"
+              class="shrink-0 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md motion-safe:transition-[color,background-color,opacity] motion-safe:duration-200 hover:bg-fg/90 focus-visible:outline-accent/70 disabled:opacity-85 disabled:cursor-not-allowed"
+              :disabled="status === 'pending'"
               @click="claimPackageModalRef?.open()"
             >
               {{ $t('search.claim_button', { name: query }) }}
