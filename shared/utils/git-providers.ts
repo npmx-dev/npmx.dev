@@ -293,7 +293,7 @@ const providers: ProviderConfig[] = [
  * Handles: git+https://, git://, git@host:path, ssh://git@host/path
  */
 export function normalizeGitUrl(input: string): string | null {
-  const normalized = input
+  let url = input
     .trim()
     .replace(/^git\+/, '')
     .replace(/\.git$/, '')
@@ -301,7 +301,8 @@ export function normalizeGitUrl(input: string): string | null {
     .replace(/(\.[^./]+?):/, '$1/') // change ".com:" to ".com/" from "ssh://user@host.com:..."
     .replace(/^git:\/\//, 'https://')
     .replace(/^ssh:\/\//, 'https://')
-  return normalized || null
+  url = url.includes('://') ? url : `https://${url}`
+  return url || null
 }
 
 export function parseRepoUrl(input: string): RepoRef | null {
