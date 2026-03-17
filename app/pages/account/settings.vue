@@ -338,6 +338,8 @@ async function confirmPasswordReset() {
             >
               {{ isConfirmingEmail ? 'Saving...' : 'Save New Email' }}
             </ButtonBase>
+
+            <ButtonBase variant="secondary" @click="isEmailCodeSent = false"> Cancel </ButtonBase>
           </div>
         </div>
       </section>
@@ -391,6 +393,8 @@ async function confirmPasswordReset() {
           >
             {{ isConfirmingPassword ? 'Saving...' : 'Save New Password' }}
           </ButtonBase>
+
+          <ButtonBase variant="secondary" @click="isPasswordCodeSent = false"> Cancel </ButtonBase>
         </div>
       </section>
     </div>
