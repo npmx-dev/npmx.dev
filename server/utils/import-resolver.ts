@@ -116,8 +116,16 @@ export function resolveAliasToDir(aliasSpec: string, filePath?: string | null): 
 
   // Support #app, #/app, ~app, ~/app, @app, @/app
   const alias = aliasSpec.replace(/^[#~@]\/?/, '')
-  const segments = filePath.split('/')
+  const normalizedFilePath = filePath.replace(/\/+$/, '')
+  if (!normalizedFilePath) {
+    return null
+  }
 
+  if (alias === '') {
+    return normalizedFilePath
+  }
+
+  const segments = normalizedFilePath.split('/')
   let lastMatchIndex = -1
   for (let i = 0; i < segments.length; i++) {
     if (segments[i] === alias) {
@@ -349,11 +357,31 @@ export function resolveInternalImport(
   }
 
   const path = normalizePath(target)
-  if (!path || path.startsWith('..') || !files.has(path)) {
+  if (!path || path.startsWith('..')) {
     return null
   }
 
-  return { path }
+  if (files.has(path)) {
+    return { path }
+  }
+
+  for (const extensions of getExtensionPriority(currentFile)) {
+    for (const ext of extensions) {
+      const candidate = `${path}${ext}`
+      if (files.has(candidate)) {
+        return { path: candidate }
+      }
+    }
+  }
+
+  for (const indexFile of getIndexExtensions(currentFile)) {
+    const candidate = `${path}/${indexFile}`
+    if (files.has(candidate)) {
+      return { path: candidate }
+    }
+  }
+
+  return null
 }
 
 /**
