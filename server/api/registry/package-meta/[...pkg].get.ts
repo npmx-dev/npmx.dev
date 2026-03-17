@@ -1,11 +1,3 @@
-import type { NpmDownloadCount } from '#shared/types'
-import {
-  CACHE_MAX_AGE_FIVE_MINUTES,
-  ERROR_NPM_FETCH_FAILED,
-  NPM_API,
-} from '#shared/utils/constants'
-import { encodePackageName } from '#shared/utils/npm'
-
 /**
  * Returns lightweight package metadata for search results.
  *

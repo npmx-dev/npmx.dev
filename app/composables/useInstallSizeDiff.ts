@@ -1,5 +1,4 @@
 import { compare, prerelease, valid } from 'semver'
-import type { InstallSizeResult, SlimPackument } from '#shared/types'
 
 export interface InstallSizeDiff {
   comparisonVersion: string

@@ -216,12 +216,9 @@
     "not_found": "Paket nicht gefunden",
     "not_found_message": "Das Paket konnte nicht gefunden werden.",
     "no_description": "Keine Beschreibung vorhanden",
-    "not_latest": "(nicht aktuell)",
     "verified_provenance": "Verifizierte Herkunft",
-    "view_permalink": "Permalink für diese Version anzeigen",
     "navigation": "Paket",
     "copy_name": "Paketnamen kopieren",
-    "copy_version": "Paketversion kopieren",
     "deprecation": {
       "package": "Dieses Paket ist veraltet.",
       "version": "Diese Version ist veraltet.",
@@ -777,8 +774,7 @@
       "preview": "Vorschau",
       "code": "Code"
     },
-    "file_path": "Dateipfad",
-    "scroll_to_top": "Nach oben scrollen"
+    "file_path": "Dateipfad"
   },
   "badges": {
     "provenance": {
@@ -886,7 +882,7 @@
       "paginated": "Paginiert",
       "items_per_page": "Elemente pro Seite",
       "per_page": "{count} / Seite",
-      "showing": "{start}-{end} von {total}",
+      "showing": "{range} von {total}",
       "previous": "Vorherige Seite",
       "next": "Nächste Seite",
       "nav_label": "Paginierung"

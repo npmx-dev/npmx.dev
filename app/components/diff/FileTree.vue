@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { FileChange } from '#shared/types'
-
 interface DiffTreeNode {
   name: string
   path: string

@@ -38,7 +38,7 @@ test.describe('Compare Page', () => {
     await expect(page).toHaveURL(/packages=vue,nuxt,__no_dependency__/)
 
     // Verify column order in the grid: vue, nuxt, then no-dep
-    const headerLinks = grid.locator('.comparison-cell-header a.truncate')
+    const headerLinks = grid.locator('.comparison-cell-header a[title]')
     await expect(headerLinks).toHaveCount(2)
     await expect(headerLinks.nth(0)).toContainText('vue')
     await expect(headerLinks.nth(1)).toContainText('nuxt')

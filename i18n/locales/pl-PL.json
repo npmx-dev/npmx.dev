@@ -226,12 +226,9 @@
     "not_found": "Nie znaleziono pakietu",
     "not_found_message": "Nie udało się znaleźć pakietu.",
     "no_description": "Brak opisu",
-    "not_latest": "(nie najnowsza)",
     "verified_provenance": "Zweryfikowane pochodzenie",
-    "view_permalink": "Zobacz stały link do tej wersji",
     "navigation": "Pakiet",
     "copy_name": "Kopiuj nazwę pakietu",
-    "copy_version": "Kopiuj wersję pakietu",
     "deprecation": {
       "package": "Ten pakiet został oznaczony jako przestarzały.",
       "version": "Ta wersja została oznaczona jako przestarzała.",
@@ -791,8 +788,7 @@
       "preview": "podgląd",
       "code": "kod"
     },
-    "file_path": "Ścieżka pliku",
-    "scroll_to_top": "Wróć do góry"
+    "file_path": "Ścieżka pliku"
   },
   "badges": {
     "provenance": {
@@ -900,7 +896,7 @@
       "paginated": "Stronicowane",
       "items_per_page": "Elementów na stronę",
       "per_page": "{count} / stronę",
-      "showing": "{start}-{end} z {total}",
+      "showing": "{range} z {total}",
       "previous": "Poprzednia strona",
       "next": "Następna strona",
       "nav_label": "Paginacja"

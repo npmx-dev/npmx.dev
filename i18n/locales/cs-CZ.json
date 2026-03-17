@@ -226,12 +226,9 @@
     "not_found": "Balíček nenalezen",
     "not_found_message": "Balíček nebyl nalezen.",
     "no_description": "Není k dispozici žádný popis",
-    "not_latest": "(není nejnovější)",
     "verified_provenance": "Ověřený původ",
-    "view_permalink": "Zobrazit trvalý odkaz na tuto verzi",
     "navigation": "Navigace balíčku",
     "copy_name": "Zkopírovat název balíčku",
-    "copy_version": "Zkopírovat verzi balíčku",
     "deprecation": {
       "package": "Tento balíček byl označen jako zastaralý.",
       "version": "Tato verze byla označena jako zastaralá.",
@@ -789,8 +786,7 @@
       "preview": "náhled",
       "code": "kód"
     },
-    "file_path": "Cesta k souboru",
-    "scroll_to_top": "Posunout nahoru"
+    "file_path": "Cesta k souboru"
   },
   "badges": {
     "provenance": {
@@ -898,7 +894,7 @@
       "paginated": "Stránkované",
       "items_per_page": "Položek na stránku",
       "per_page": "{count} / stránku",
-      "showing": "{start}-{end} z {total}",
+      "showing": "{range} z {total}",
       "previous": "Předchozí stránka",
       "next": "Další stránka",
       "nav_label": "Stránkování"
