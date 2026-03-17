@@ -112,6 +112,10 @@ watch(
   { immediate: true },
 )
 
+// Suppress per-card enter animation when the entire result set is replaced (new search).
+// Cards loaded incrementally via scroll should still animate in with the stagger effect.
+const suppressAnimation = shallowRef(false)
+
 // Reset scroll state when results change significantly (new search)
 watch(
   () => props.results,
@@ -123,6 +127,10 @@ watch(
       (oldResults.length > 0 && newResults[0]?.package.name !== oldResults[0]?.package.name)
     ) {
       hasScrolledToInitial.value = false
+      suppressAnimation.value = true
+      nextTick(() => {
+        suppressAnimation.value = false
+      })
     }
   },
 )
@@ -172,9 +180,13 @@ defineExpose({
                 :show-publisher="showPublisher"
                 :index="index"
                 :search-query="searchQuery"
-                class="motion-safe:animate-fade-in motion-safe:animate-fill-both"
+                :class="
+                  !suppressAnimation && 'motion-safe:animate-fade-in motion-safe:animate-fill-both'
+                "
+                :style="
+                  !suppressAnimation ? { animationDelay: `${Math.min(index * 0.02, 0.3)}s` } : {}
+                "
                 :filters="filters"
-                :style="{ animationDelay: `${Math.min(index * 0.02, 0.3)}s` }"
                 @click-keyword="emit('clickKeyword', $event)"
               />
             </div>
@@ -224,8 +236,10 @@ defineExpose({
             :show-publisher="showPublisher"
             :index="index"
             :search-query="searchQuery"
-            class="motion-safe:animate-fade-in motion-safe:animate-fill-both"
-            :style="{ animationDelay: `${Math.min(index * 0.02, 0.3)}s` }"
+            :class="
+              !suppressAnimation && 'motion-safe:animate-fade-in motion-safe:animate-fill-both'
+            "
+            :style="!suppressAnimation ? { animationDelay: `${Math.min(index * 0.02, 0.3)}s` } : {}"
             :filters="filters"
             @click-keyword="emit('clickKeyword', $event)"
           />
