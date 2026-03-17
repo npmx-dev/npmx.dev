@@ -112,6 +112,12 @@ async function confirmEmailChange() {
   }
 }
 
+function cancelEmailChange() {
+  isEmailCodeSent.value = false
+  emailSuccess.value = ''
+  emailError.value = ''
+}
+
 const passwordEmail = ref('')
 const newPassword = ref('')
 const passwordToken = ref('')
@@ -174,6 +180,12 @@ async function confirmPasswordReset() {
   } finally {
     isConfirmingPassword.value = false
   }
+}
+
+function cancelPasswordReset() {
+  isPasswordCodeSent.value = false
+  passwordSuccess.value = ''
+  passwordError.value = ''
 }
 </script>
 
@@ -339,16 +351,7 @@ async function confirmPasswordReset() {
               {{ isConfirmingEmail ? 'Saving...' : 'Save New Email' }}
             </ButtonBase>
 
-            <ButtonBase
-              variant="secondary"
-              @click="
-                isEmailCodeSent = false
-                emailSuccess = ''
-                emailError = ''
-              "
-            >
-              Cancel
-            </ButtonBase>
+            <ButtonBase variant="secondary" @click="cancelEmailChange"> Cancel </ButtonBase>
           </div>
         </div>
       </section>
@@ -403,16 +406,7 @@ async function confirmPasswordReset() {
             {{ isConfirmingPassword ? 'Saving...' : 'Save New Password' }}
           </ButtonBase>
 
-          <ButtonBase
-            variant="secondary"
-            @click="
-              isPasswordCodeSent = false
-              passwordSuccess = ''
-              passwordError = ''
-            "
-          >
-            Cancel
-          </ButtonBase>
+          <ButtonBase variant="secondary" @click="cancelPasswordReset"> Cancel </ButtonBase>
         </div>
       </section>
     </div>
