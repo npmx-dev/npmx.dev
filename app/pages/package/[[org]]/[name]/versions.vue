@@ -72,8 +72,8 @@ const otherTagRows = computed(() =>
   tagRows.value
     .filter(r => !r.tags.includes('latest'))
     .sort((rowA, rowB) => {
-      const priorityA = getTagPriority(rowA.primaryTag)
-      const priorityB = getTagPriority(rowB.primaryTag)
+      const priorityA = Math.min(...rowA.tags.map(getTagPriority))
+      const priorityB = Math.min(...rowB.tags.map(getTagPriority))
       if (priorityA !== priorityB) return priorityA - priorityB
       const timeA = versionTimes.value[rowA.version] ?? ''
       const timeB = versionTimes.value[rowB.version] ?? ''
