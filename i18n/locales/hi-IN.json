@@ -655,7 +655,7 @@
       "paginated": "पेजिनेटेड",
       "items_per_page": "प्रति पृष्ठ आइटम",
       "per_page": "{count} / पृष्ठ",
-      "showing": "{total} में से {start}-{end}",
+      "showing": "{total} में से {range}",
       "previous": "पिछला पृष्ठ",
       "next": "अगला पृष्ठ",
       "nav_label": "पेजिनेशन"

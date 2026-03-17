@@ -22,6 +22,7 @@ export type ColumnId =
   | 'maintenanceScore'
   | 'combinedScore'
   | 'security'
+  | 'selection'
 
 export interface ColumnConfig {
   id: ColumnId

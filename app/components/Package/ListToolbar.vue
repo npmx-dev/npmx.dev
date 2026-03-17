@@ -43,6 +43,7 @@ const pageSize = defineModel<PageSize>('pageSize', { required: true })
 
 const emit = defineEmits<{
   'toggleColumn': [columnId: ColumnId]
+  'toggleSelection': []
   'resetColumns': []
   'clearFilter': [chip: FilterChip]
   'clearAllFilters': []
@@ -110,6 +111,8 @@ const sortKeyLabelKeys = computed<Record<SortKey, string>>(() => ({
 function getSortKeyLabelKey(key: SortKey): string {
   return sortKeyLabelKeys.value[key]
 }
+
+const { selectedPackages, clearSelectedPackages } = usePackageSelection()
 </script>
 
 <template>
@@ -210,6 +213,26 @@ function getSortKeyLabelKey(key: SortKey): string {
           />
 
           <ViewModeToggle v-model="viewMode" />
+        </div>
+
+        <div
+          class="flex items-center order-3 sm:border-is sm:border-fg-subtle/20 sm:ps-3"
+          v-if="selectedPackages.length"
+        >
+          <ButtonBase
+            variant="secondary"
+            @click="emit('toggleSelection')"
+            classicon="i-lucide:package-check"
+          >
+            {{ t('filters.view_selected') }} ({{ selectedPackages.length }})
+          </ButtonBase>
+          <button
+            @click="clearSelectedPackages"
+            aria-label="Close action bar"
+            class="flex items-center ms-2"
+          >
+            <span class="i-lucide:x text-sm" />
+          </button>
         </div>
       </div>
     </div>

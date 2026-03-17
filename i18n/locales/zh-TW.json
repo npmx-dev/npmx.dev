@@ -842,7 +842,7 @@
       "paginated": "分頁",
       "items_per_page": "每頁項目數",
       "per_page": "{count} / 頁",
-      "showing": "顯示第 {start}-{end} 項，共 {total} 項",
+      "showing": "顯示第 {range} 項，共 {total} 項",
       "previous": "上一頁",
       "next": "下一頁",
       "nav_label": "分頁"
