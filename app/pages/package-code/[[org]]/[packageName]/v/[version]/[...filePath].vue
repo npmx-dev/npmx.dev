@@ -125,7 +125,9 @@ const {
   data: fileContent,
   status: fileStatus,
   execute: fetchFileContent,
-} = useFetch<PackageFileContentResponse>(() => fileContentUrl.value!, { immediate: false })
+} = useFetch<PackageFileContentResponse>(() => fileContentUrl.value!, {
+  immediate: false,
+})
 
 watch(
   fileContentUrl,
@@ -237,7 +239,9 @@ function handleLineClick(lineNum: number, event: MouseEvent) {
 }
 
 // Copy link to current line(s)
-const { copied: permalinkCopied, copy: copyPermalink } = useClipboard({ copiedDuring: 2000 })
+const { copied: permalinkCopied, copy: copyPermalink } = useClipboard({
+  copiedDuring: 2000,
+})
 function copyPermalinkUrl() {
   const url = new URL(window.location.href)
   copyPermalink(url.toString())
@@ -421,11 +425,12 @@ defineOgImageComponent('Default', {
             <button
               type="button"
               class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors items-center inline-flex gap-1"
+              :aria-pressed="wordWrap"
               :class="{ 'bg-accent/10 text-accent border-accent/20': wordWrap }"
               @click="wordWrap = !wordWrap"
             >
               <span v-if="!!wordWrap" class="i-lucide:wrap-text w-3 h-3" />
-              <span v-if="!wordWrap" class="i-lucide:text w-3 h-3" />
+              <span v-else class="i-lucide:text w-3 h-3" />
               {{ $t('code.word_wrap') }}
             </button>
             <button
@@ -514,7 +519,9 @@ defineOgImageComponent('Default', {
           <p class="text-fg-muted mb-2">{{ $t('code.file_too_large') }}</p>
           <p class="text-fg-subtle text-sm mb-4">
             {{
-              $t('code.file_size_warning', { size: bytesFormatter.format(currentNode?.size ?? 0) })
+              $t('code.file_size_warning', {
+                size: bytesFormatter.format(currentNode?.size ?? 0),
+              })
             }}
           </p>
           <LinkBase
@@ -567,7 +574,9 @@ defineOgImageComponent('Default', {
         <div v-else-if="filePath && fileStatus === 'error'" class="py-20 text-center" role="alert">
           <div class="i-lucide:circle-alert w-8 h-8 mx-auto text-fg-subtle mb-4" />
           <p class="text-fg-muted mb-2">{{ $t('code.failed_to_load') }}</p>
-          <p class="text-fg-subtle text-sm mb-4">{{ $t('code.unavailable_hint') }}</p>
+          <p class="text-fg-subtle text-sm mb-4">
+            {{ $t('code.unavailable_hint') }}
+          </p>
           <LinkBase
             variant="button-secondary"
             :to="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"

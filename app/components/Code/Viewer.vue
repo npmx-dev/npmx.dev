@@ -40,7 +40,9 @@ function syncLineHeights() {
     // Reset heights if word wrap is disabled
     if (lineNumbersRef.value) {
       const nums = lineNumbersRef.value.querySelectorAll<HTMLElement>('.line-number')
-      nums.forEach(num => (num.style.height = ''))
+      for (const num of nums) {
+        num.style.height = ''
+      }
     }
     return
   }
