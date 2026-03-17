@@ -1341,6 +1341,9 @@
             },
             "show_less": {
               "type": "string"
+            },
+            "maintainer_template": {
+              "type": "string"
             }
           },
           "additionalProperties": false

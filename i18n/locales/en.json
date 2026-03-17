@@ -445,7 +445,8 @@
       "cancel_add": "Cancel adding owner",
       "add_owner": "+ Add owner",
       "show_more": "(show {count} more)",
-      "show_less": "(show fewer)"
+      "show_less": "(show fewer)",
+      "maintainer_template": "{avatar} {char126}{name}"
     },
     "trends": {
       "granularity": "Granularity",
