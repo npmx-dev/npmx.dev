@@ -2,7 +2,12 @@ import type { StorybookConfig } from '@storybook-vue/nuxt'
 
 const config = {
   stories: ['../app/**/*.stories.@(js|ts)'],
-  addons: ['@storybook/addon-a11y', '@storybook/addon-docs', '@storybook/addon-themes'],
+  addons: [
+    '@storybook/addon-a11y',
+    '@storybook/addon-docs',
+    '@storybook/addon-themes',
+    'storybook-i18n',
+  ],
   framework: '@storybook-vue/nuxt',
   staticDirs: ['./.public'],
   features: {
