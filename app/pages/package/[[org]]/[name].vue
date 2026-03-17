@@ -777,7 +777,7 @@ const showSkeleton = shallowRef(false)
                 v-if="displayVersion"
                 :package-name="pkg.name"
                 :version="displayVersion"
-                :install-size="installSize ?? undefined"
+                :install-size="installSize ?? null"
                 size="small"
               />
               <PackageManagerSelect />
