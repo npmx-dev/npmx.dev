@@ -125,9 +125,7 @@ const {
   data: fileContent,
   status: fileStatus,
   execute: fetchFileContent,
-} = useFetch<PackageFileContentResponse>(() => fileContentUrl.value!, {
-  immediate: false,
-})
+} = useFetch<PackageFileContentResponse>(() => fileContentUrl.value!, { immediate: false })
 
 watch(
   fileContentUrl,
@@ -239,9 +237,7 @@ function handleLineClick(lineNum: number, event: MouseEvent) {
 }
 
 // Copy link to current line(s)
-const { copied: permalinkCopied, copy: copyPermalink } = useClipboard({
-  copiedDuring: 2000,
-})
+const { copied: permalinkCopied, copy: copyPermalink } = useClipboard({ copiedDuring: 2000 })
 function copyPermalinkUrl() {
   const url = new URL(window.location.href)
   copyPermalink(url.toString())
@@ -518,9 +514,7 @@ defineOgImageComponent('Default', {
           <p class="text-fg-muted mb-2">{{ $t('code.file_too_large') }}</p>
           <p class="text-fg-subtle text-sm mb-4">
             {{
-              $t('code.file_size_warning', {
-                size: bytesFormatter.format(currentNode?.size ?? 0),
-              })
+              $t('code.file_size_warning', { size: bytesFormatter.format(currentNode?.size ?? 0) })
             }}
           </p>
           <LinkBase
@@ -573,9 +567,7 @@ defineOgImageComponent('Default', {
         <div v-else-if="filePath && fileStatus === 'error'" class="py-20 text-center" role="alert">
           <div class="i-lucide:circle-alert w-8 h-8 mx-auto text-fg-subtle mb-4" />
           <p class="text-fg-muted mb-2">{{ $t('code.failed_to_load') }}</p>
-          <p class="text-fg-subtle text-sm mb-4">
-            {{ $t('code.unavailable_hint') }}
-          </p>
+          <p class="text-fg-subtle text-sm mb-4">{{ $t('code.unavailable_hint') }}</p>
           <LinkBase
             variant="button-secondary"
             :to="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
