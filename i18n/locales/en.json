@@ -138,6 +138,8 @@
     "include_types_description": "Add {'@'}types package to install commands for untyped packages",
     "hide_platform_packages": "Hide platform-specific packages in search",
     "hide_platform_packages_description": "Hide native binary packages like {'@'}esbuild/linux-x64 from results",
+    "enable_graph_pulse_loop": "Enable looping of pulse effect on mini graph",
+    "enable_graph_pulse_loop_description": "Activate the reapeated animation of the pulse effect on the weekly download graph",
     "theme": "Theme",
     "theme_light": "Light",
     "theme_dark": "Dark",

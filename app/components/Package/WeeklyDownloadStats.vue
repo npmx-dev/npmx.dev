@@ -208,7 +208,7 @@ const dataset = computed<VueUiSparklineDatasetItem[]>(() =>
 
 const lastDatapoint = computed(() => dataset.value.at(-1)?.period ?? '')
 
-const isLoop = shallowRef(false)
+const isLoop = shallowRef(settings.value.enableGraphPulseLooping)
 const showPulse = shallowRef(true)
 const keyboardShortcuts = useKeyboardShortcuts()
 
