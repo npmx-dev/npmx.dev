@@ -3,8 +3,7 @@ defineProps<{
   viewMode?: ViewMode
 }>()
 
-const { selectedPackages, clearSelectedPackages, selectedPackagesParam, closeSelectionView } =
-  usePackageSelection()
+const { selectedPackages, clearSelectedPackages, selectedPackagesParam } = usePackageSelection()
 
 const { data, pending } = useAsyncData(
   async () => {
