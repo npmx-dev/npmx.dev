@@ -296,7 +296,7 @@ export function normalizeGitUrl(input: string): string | null {
   const raw = input.trim()
   if (!raw) return null
 
-  const normalized = raw.replace(/^git\+/, '')
+  const normalized = raw.replace(/^git\+/, '').replace(/\.git\/?$/, '')
 
   // Handle ssh:// and git:// URLs by converting to https://
   if (/^(?:ssh|git):\/\//i.test(normalized)) {

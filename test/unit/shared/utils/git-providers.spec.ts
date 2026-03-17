@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { parseRepositoryInfo, type RepositoryInfo } from '#shared/utils/git-providers'
+import {
+  normalizeGitUrl,
+  parseRepoUrl,
+  parseRepositoryInfo,
+  type RepositoryInfo,
+} from '#shared/utils/git-providers'
 
 describe('parseRepositoryInfo', () => {
   it('returns undefined for undefined input', () => {
@@ -382,6 +387,111 @@ describe('parseRepositoryInfo', () => {
         rawBaseUrl: 'https://next.forgejo.org/forgejo/forgejo/raw/branch/main',
         blobBaseUrl: 'https://next.forgejo.org/forgejo/forgejo/src/branch/main',
       })
+    })
+  })
+})
+
+describe('normalizeGitUrl', () => {
+  it('strips git+ prefix', () => {
+    expect(normalizeGitUrl('git+https://github.com/owner/repo')).toBe(
+      'https://github.com/owner/repo',
+    )
+  })
+
+  it('strips .git suffix', () => {
+    expect(normalizeGitUrl('https://github.com/owner/repo.git')).toBe(
+      'https://github.com/owner/repo',
+    )
+  })
+
+  it('strips .git/ suffix with trailing slash', () => {
+    expect(normalizeGitUrl('https://github.com/owner/repo.git/')).toBe(
+      'https://github.com/owner/repo',
+    )
+  })
+
+  it('strips both git+ prefix and .git suffix', () => {
+    expect(normalizeGitUrl('git+https://github.com/owner/repo.git')).toBe(
+      'https://github.com/owner/repo',
+    )
+  })
+
+  it('strips .git suffix from ssh:// URL before converting to https', () => {
+    expect(normalizeGitUrl('ssh://git@github.com/owner/repo.git')).toBe(
+      'https://github.com/owner/repo',
+    )
+  })
+
+  it('strips .git suffix from git:// URL before converting to https', () => {
+    expect(normalizeGitUrl('git://github.com/owner/repo.git')).toBe('https://github.com/owner/repo')
+  })
+
+  it('strips .git suffix from SCP-style URL', () => {
+    expect(normalizeGitUrl('git@github.com:owner/repo.git')).toBe('https://github.com/owner/repo')
+  })
+
+  it('strips .git/ suffix from git+ssh:// URL', () => {
+    expect(normalizeGitUrl('git+ssh://git@gitlab.com/group/repo.git/')).toBe(
+      'https://gitlab.com/group/repo',
+    )
+  })
+
+  it('returns null for empty string', () => {
+    expect(normalizeGitUrl('')).toBeNull()
+  })
+
+  it('returns null for whitespace-only string', () => {
+    expect(normalizeGitUrl('   ')).toBeNull()
+  })
+
+  it('preserves URL without .git suffix', () => {
+    expect(normalizeGitUrl('https://github.com/owner/repo')).toBe('https://github.com/owner/repo')
+  })
+})
+
+describe('parseRepoUrl with .git suffix variations', () => {
+  it('parses ssh:// URL with .git suffix', () => {
+    const result = parseRepoUrl('ssh://git@github.com/owner/repo.git')
+    expect(result).toMatchObject({
+      provider: 'github',
+      owner: 'owner',
+      repo: 'repo',
+    })
+  })
+
+  it('parses git:// URL with .git suffix', () => {
+    const result = parseRepoUrl('git://github.com/owner/repo.git')
+    expect(result).toMatchObject({
+      provider: 'github',
+      owner: 'owner',
+      repo: 'repo',
+    })
+  })
+
+  it('parses SCP-style URL with .git suffix', () => {
+    const result = parseRepoUrl('git@github.com:owner/repo.git')
+    expect(result).toMatchObject({
+      provider: 'github',
+      owner: 'owner',
+      repo: 'repo',
+    })
+  })
+
+  it('parses URL with .git/ trailing slash', () => {
+    const result = parseRepoUrl('https://github.com/owner/repo.git/')
+    expect(result).toMatchObject({
+      provider: 'github',
+      owner: 'owner',
+      repo: 'repo',
+    })
+  })
+
+  it('parses GitLab SCP-style URL with .git suffix', () => {
+    const result = parseRepoUrl('git@gitlab.com:group/subgroup/repo.git')
+    expect(result).toMatchObject({
+      provider: 'gitlab',
+      owner: 'group/subgroup',
+      repo: 'repo',
     })
   })
 })
