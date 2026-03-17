@@ -6,7 +6,7 @@
       "description": "Een snelle, moderne browser voor het npm register. Zoek, blader en ontdek pakketten met een moderne interface."
     }
   },
-  "built_at": "gebouwd op {0}",
+  "built_at": "gebouwd {0}",
   "alt_logo": "npmx logo",
   "tagline": "een snelle, moderne browser voor de npm register",
   "non_affiliation_disclaimer": "niet affiliëerd met npm, Inc.",
@@ -36,14 +36,16 @@
     "go_to_result": "Go to result",
     "open_code_view": "Open code view",
     "open_docs": "Open docs",
-    "disable_shortcuts": "You can disable keyboard shortcuts in {settings}."
+    "disable_shortcuts": "You can disable keyboard shortcuts in {settings}.",
+    "open_main": "EN TEXT TO REPLACE: Open main information",
+    "open_diff": "EN TEXT TO REPLACE: Open version differences"
   },
   "search": {
     "label": "Zoek npm pakketten",
     "placeholder": "zoek pakketten...",
     "button": "zoek",
     "searching": "Zoeken...",
-    "found_packages": "No packages found | Found 1 package | Found {count} packages",
+    "found_packages": "Geen pakketten gevonden | 1 pakket gevonden | {count} pakketten gevonden",
     "found_packages_sorted": "Geen resultaten gevonden | Sorting top {count} result | Sorting top {count} results",
     "updating": "(updaten...)",
     "no_results": "Geen pakketten gevonden voor \"{query}\"",
@@ -59,18 +61,18 @@
     "want_to_claim": "Wil je deze pakket naam registeren?",
     "start_typing": "Start typen om te zoeken naar pakketten",
     "algolia_disclaimer": "Mogelijk gemaakt door Algolia",
-    "exact_match": "exact",
+    "exact_match": "precies",
     "suggestion": {
-      "user": "user",
+      "user": "persoon",
       "org": "org",
-      "view_user_packages": "View packages by this user",
-      "view_org_packages": "View packages by this organization"
+      "view_user_packages": "Bekijk pakketten van deze persoon",
+      "view_org_packages": "Bekijk pakketten van deze organisatie"
     },
-    "instant_search": "Instant search",
-    "instant_search_on": "on",
-    "instant_search_off": "off",
-    "instant_search_turn_on": "turn on",
-    "instant_search_turn_off": "turn off",
+    "instant_search": "Direct zoeken",
+    "instant_search_on": "aan",
+    "instant_search_off": "uit",
+    "instant_search_turn_on": "aanzetten",
+    "instant_search_turn_off": "uitzetten",
     "instant_search_advisory": "{label} {state} — {action}"
   },
   "nav": {
@@ -90,7 +92,7 @@
     "heading": "blog",
     "meta_description": "Inzichten en updates van de npmx community",
     "author": {
-      "view_profile": "View {name}'s profile on Bluesky"
+      "view_profile": "Bekijk {name}'s profiel op Bluesky"
     },
     "draft_badge": "Ontwerp",
     "draft_banner": "This is an unpublished draft. It may be incomplete or contain inaccuracies.",
@@ -226,12 +228,9 @@
     "not_found": "Package Not Found",
     "not_found_message": "The package could not be found.",
     "no_description": "No description provided",
-    "not_latest": "(not latest)",
     "verified_provenance": "Verified provenance",
-    "view_permalink": "View permalink for this version",
     "navigation": "Package",
     "copy_name": "Copy package name",
-    "copy_version": "Copy package version",
     "deprecation": {
       "package": "This package has been deprecated.",
       "version": "This version has been deprecated.",
@@ -288,6 +287,7 @@
       "view_source": "View source"
     },
     "links": {
+      "main": "EN TEXT TO REPLACE: main",
       "repo": "repo",
       "homepage": "homepage",
       "issues": "issues",
@@ -359,11 +359,13 @@
     "keywords_title": "Keywords",
     "compatibility": "Compatibility",
     "card": {
-      "publisher": "Publisher",
-      "published": "Published",
-      "weekly_downloads": "Weekly downloads",
-      "keywords": "Keywords",
-      "license": "License"
+      "publisher": "Publiceerder",
+      "published": "Gepubliceerd",
+      "weekly_downloads": "Weekelijkse downloads",
+      "keywords": "Trefwoorden",
+      "license": "Licentie",
+      "select": "EN TEXT TO REPLACE: Select package",
+      "select_maximum": "EN TEXT TO REPLACE: Maximum {count} packages can be selected"
     },
     "versions": {
       "title": "Versions",
@@ -378,6 +380,7 @@
       "all_covered": "All versions are covered by tags above",
       "deprecated_title": "{version} (deprecated)",
       "view_all": "View {count} version | View all {count} versions",
+      "view_all_versions": "EN TEXT TO REPLACE: View all versions",
       "distribution_title": "Semver Group",
       "distribution_modal_title": "Versions",
       "distribution_range_date_same_year": "from {from} to {to}, {endYear}",
@@ -389,7 +392,7 @@
       "grouping_versions_only_recent": "Only recent",
       "grouping_usage_title": "Usage",
       "grouping_usage_all": "All",
-      "grouping_usage_low": "Low",
+      "grouping_usage_most_used": "EN TEXT TO REPLACE: Most used",
       "recent_versions_only_tooltip": "Show only versions published within the last year.",
       "show_low_usage_tooltip": "Include version groups with less than 1% of total downloads.",
       "y_axis_label": "Downloads",
@@ -402,7 +405,12 @@
       "copy_alt": {
         "per_version_analysis": "{version} version was downloaded {downloads} times",
         "general_description": "Bar chart showing per-version downloads for {versions_count} {semver_grouping_mode} versions of the {package_name} package, {date_range_label} from the {first_version} version to the {last_version} version. The most downloaded version is {max_downloaded_version} with {max_version_downloads} downloads. {per_version_analysis}. {watermark}."
-      }
+      },
+      "page_title": "EN TEXT TO REPLACE: Version History",
+      "current_tags": "EN TEXT TO REPLACE: Current Tags",
+      "version_filter_placeholder": "EN TEXT TO REPLACE: Filter versions…",
+      "version_filter_label": "EN TEXT TO REPLACE: Filter versions",
+      "no_match_filter": "EN TEXT TO REPLACE: No versions match {filter}"
     },
     "dependencies": {
       "title": "Dependency ({count}) | Dependencies ({count})",
@@ -469,6 +477,7 @@
       "data_correction": "Gegevenscorrectie",
       "average_window": "Gemiddelde periode",
       "smoothing": "Gladmaken",
+      "prediction": "EN TEXT TO REPLACE: Prediction",
       "known_anomalies": "Bekende afwijkingen",
       "known_anomalies_description": "Interpoleert bekende downloadpieken die worden veroorzaakt door bots of CI-problemen.",
       "known_anomalies_ranges": "Afwijkingsbereiken",
@@ -791,7 +800,8 @@
       "code": "code"
     },
     "file_path": "File path",
-    "scroll_to_top": "Scroll to top"
+    "binary_file": "EN TEXT TO REPLACE: Binary file",
+    "binary_rendering_warning": "EN TEXT TO REPLACE: File type \"{contentType}\" is not supported for preview."
   },
   "badges": {
     "provenance": {
@@ -853,40 +863,42 @@
       "secure": "Without warnings",
       "insecure": "With warnings"
     },
+    "view_selected": "Bekijk geselecteerde",
     "sort": {
-      "label": "Sort packages",
-      "toggle_direction": "Toggle sort direction",
-      "ascending": "Ascending",
-      "descending": "Descending",
-      "relevance": "Relevance",
+      "label": "Pakketten sorteren",
+      "toggle_direction": "Sorteerrichting wijzigen",
+      "ascending": "Oplopend",
+      "descending": "Aflopend",
+      "relevance": "Relevantie",
       "downloads_week": "Downloads/wk",
-      "downloads_day": "Downloads/day",
-      "downloads_month": "Downloads/mo",
-      "downloads_year": "Downloads/yr",
-      "published": "Last Published",
-      "name": "Name",
-      "quality": "Quality",
-      "popularity": "Popularity",
-      "maintenance": "Maintenance",
+      "downloads_day": "Downloads/dag",
+      "downloads_month": "Downloads/ma",
+      "downloads_year": "Downloads/jr",
+      "published": "Laatst gepubliceerd",
+      "name": "Naam",
+      "quality": "Kwaliteit",
+      "popularity": "Populariteit",
+      "maintenance": "Onderhoud",
       "score": "Score"
     },
     "columns": {
-      "title": "Columns",
-      "show": "Show columns",
+      "title": "Kolommen",
+      "show": "Kolommen weergeven",
       "reset": "Reset to defaults",
-      "coming_soon": "Coming soon",
-      "name": "Name",
-      "version": "Version",
-      "description": "Description",
+      "coming_soon": "Binnenkort",
+      "name": "Naam",
+      "version": "Versie",
+      "description": "Bescrijving",
       "downloads": "Downloads/wk",
-      "published": "Last Published",
-      "maintainers": "Maintainers",
-      "keywords": "Keywords",
-      "quality_score": "Quality score",
-      "popularity_score": "Popularity score",
-      "maintenance_score": "Maintenance score",
-      "combined_score": "Combined score",
-      "security": "Security"
+      "published": "Laatst gepubliceerd",
+      "maintainers": "Beheerders",
+      "keywords": "Trefwoorden",
+      "quality_score": "Kwaliteit score",
+      "popularity_score": "Populariteit score",
+      "maintenance_score": "Onderhoud score",
+      "combined_score": "Gecombineerde score",
+      "security": "Beveiliging",
+      "selection": "Selecteer pakket"
     },
     "view_mode": {
       "label": "View mode",
@@ -894,15 +906,15 @@
       "table": "Table view"
     },
     "pagination": {
-      "mode_label": "Pagination mode",
-      "infinite": "Infinite",
-      "paginated": "Paginated",
-      "items_per_page": "Items per page",
-      "per_page": "{count} / page",
-      "showing": "{start}-{end} of {total}",
-      "previous": "Previous page",
-      "next": "Next page",
-      "nav_label": "Pagination"
+      "mode_label": "Pagineringmodus",
+      "infinite": "Oneindig",
+      "paginated": "Genummerde pagina's",
+      "items_per_page": "Aantal resultaten per pagina",
+      "per_page": "{count} / pagina",
+      "showing": "{start}-{end} van {total}",
+      "previous": "Voriga pagina",
+      "next": "Volgende pagina",
+      "nav_label": "Paginering"
     },
     "count": {
       "showing_filtered": "{filtered} of {count} package | {filtered} of {count} packages",
@@ -912,7 +924,7 @@
     "table": {
       "security_warning": "Security warning",
       "secure": "Secure",
-      "no_packages": "No packages found"
+      "no_packages": "Geen pakketten gevonden"
     }
   },
   "about": {
@@ -1164,6 +1176,7 @@
     "file_size_warning": "{size} exceeds the 250KB limit for comparison",
     "compare_versions": "diff",
     "compare_versions_title": "Compare with latest version",
+    "version_selector_title": "EN TEXT TO REPLACE: Compare with version",
     "summary": "Summary",
     "deps_count": "{count} dep | {count} deps",
     "dependencies": "Dependencies",
@@ -1328,5 +1341,11 @@
       "p1": "Als u een toegankelijkheidsbarrière tegenkomt op {app}, laat het ons dan weten door een issue aan te maken op onze {link}. We nemen deze meldingen serieus en zullen ons best doen om ze op te lossen.",
       "link": "GitHub repository"
     }
+  },
+  "action_bar": {
+    "title": "EN TEXT TO REPLACE: action bar",
+    "selection": "EN TEXT TO REPLACE: 0 selected | 1 selected | {count} selected",
+    "shortcut": "EN TEXT TO REPLACE: Press \"{key}\" to focus actions",
+    "button_close_aria_label": "EN TEXT TO REPLACE: Close action bar"
   }
 }
