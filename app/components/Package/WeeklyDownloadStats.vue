@@ -308,6 +308,7 @@ function layEgg() {
   nextTick(() => {
     showPulse.value = true
     isLoop.value = !isLoop.value
+    settings.value.enableGraphPulseLooping = isLoop.value
     playEggPulse()
   })
 }
