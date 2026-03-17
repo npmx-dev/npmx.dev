@@ -20,6 +20,12 @@ useFetch('/api/atproto/server-info').then(({ data }) => {
   }
 })
 
+const isEmailUnverified = computed(() => {
+  const session = user.value as { emailConfirmed?: boolean } | null | undefined
+
+  return session?.emailConfirmed === false
+})
+
 function initiateHandleUpdate() {
   handleError.value = ''
   handleSuccess.value = ''
@@ -207,6 +213,14 @@ function cancelPasswordReset() {
       </div>
     </header>
 
+    <div
+      v-if="isEmailUnverified"
+      class="p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg text-yellow-600 text-sm flex gap-2"
+    >
+      ⚠️ Your account email is unverified. You must verify it on your provider before requesting
+      email or password changes.
+    </div>
+
     <div class="flex flex-col gap-6">
       <section class="p-6 bg-bg-subtle border border-border rounded-lg">
         <h2 class="font-mono text-xl mb-2">Change Handle</h2>
@@ -318,7 +332,7 @@ function cancelPasswordReset() {
           <ButtonBase
             v-if="!isEmailCodeSent"
             variant="secondary"
-            :disabled="isRequestingEmail"
+            :disabled="isRequestingEmail || isEmailUnverified"
             @click="requestEmailChange"
           >
             {{ isRequestingEmail ? 'Requesting...' : 'Request Email Change' }}
@@ -377,7 +391,7 @@ function cancelPasswordReset() {
           <ButtonBase
             variant="secondary"
             class="text-red-500 mt-2"
-            :disabled="isRequestingPassword || !passwordEmail"
+            :disabled="isRequestingPassword || !passwordEmail || isEmailUnverified"
             @click="requestPasswordReset"
           >
             {{ isRequestingPassword ? 'Sending...' : 'Send Reset Code' }}
