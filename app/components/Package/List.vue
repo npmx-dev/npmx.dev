@@ -112,9 +112,11 @@ watch(
   { immediate: true },
 )
 
-// Suppress per-card enter animation when the entire result set is replaced (new search).
-// Cards loaded incrementally via scroll should still animate in with the stagger effect.
-const suppressAnimation = shallowRef(false)
+// Tracks how many items came from the last new-search batch.
+// Items at index < newSearchBatchSize are from the new search → no animation.
+// Items at index >= newSearchBatchSize were loaded via scroll → animate with stagger.
+// Using an index threshold avoids any timing dependency on nextTick / virtual list paint.
+const newSearchBatchSize = shallowRef(Infinity)
 
 // Reset scroll state when results change significantly (new search)
 watch(
@@ -127,10 +129,7 @@ watch(
       (oldResults.length > 0 && newResults[0]?.package.name !== oldResults[0]?.package.name)
     ) {
       hasScrolledToInitial.value = false
-      suppressAnimation.value = true
-      nextTick(() => {
-        suppressAnimation.value = false
-      })
+      newSearchBatchSize.value = newResults.length
     }
   },
 )
@@ -181,10 +180,13 @@ defineExpose({
                 :index="index"
                 :search-query="searchQuery"
                 :class="
-                  !suppressAnimation && 'motion-safe:animate-fade-in motion-safe:animate-fill-both'
+                  index >= newSearchBatchSize &&
+                  'motion-safe:animate-fade-in motion-safe:animate-fill-both'
                 "
                 :style="
-                  !suppressAnimation ? { animationDelay: `${Math.min(index * 0.02, 0.3)}s` } : {}
+                  index >= newSearchBatchSize
+                    ? { animationDelay: `${Math.min((index - newSearchBatchSize) * 0.02, 0.3)}s` }
+                    : {}
                 "
                 :filters="filters"
                 @click-keyword="emit('clickKeyword', $event)"
@@ -237,9 +239,14 @@ defineExpose({
             :index="index"
             :search-query="searchQuery"
             :class="
-              !suppressAnimation && 'motion-safe:animate-fade-in motion-safe:animate-fill-both'
+              index >= newSearchBatchSize &&
+              'motion-safe:animate-fade-in motion-safe:animate-fill-both'
             "
-            :style="!suppressAnimation ? { animationDelay: `${Math.min(index * 0.02, 0.3)}s` } : {}"
+            :style="
+              index >= newSearchBatchSize
+                ? { animationDelay: `${Math.min((index - newSearchBatchSize) * 0.02, 0.3)}s` }
+                : {}
+            "
             :filters="filters"
             @click-keyword="emit('clickKeyword', $event)"
           />
