@@ -293,7 +293,7 @@ const providers: ProviderConfig[] = [
  * Handles: git+https://, git://, git@host:path, ssh://git@host/path
  */
 export function normalizeGitUrl(input: string): string | null {
-  let url = input
+  const url = input
     .trim()
     .replace(/^git\+/, '')
     .replace(/\.git$/, '')
