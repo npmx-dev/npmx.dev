@@ -301,8 +301,8 @@ export function normalizeGitUrl(input: string): string | null {
     .replace(/(\.[^./]+?):/, '$1/') // change ".com:" to ".com/" from "ssh://user@host.com:..."
     .replace(/^git:\/\//, 'https://')
     .replace(/^ssh:\/\//, 'https://')
-  url = url.includes('://') ? url : `https://${url}`
-  return url || null
+  if (!url) return null
+  return url.includes('://') ? url : `https://${url}`
 }
 
 export function parseRepoUrl(input: string): RepoRef | null {
