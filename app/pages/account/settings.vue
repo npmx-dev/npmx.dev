@@ -270,7 +270,7 @@ function cancelPasswordReset() {
               v-model="customDomainInput"
               type="text"
               class="flex-1 bg-bg border border-border rounded-md px-3 py-2 font-mono text-sm max-w-md"
-              placeholder="e.g., paulie.codes"
+              placeholder="e.g., example.com"
             />
             <ButtonBase
               v-if="!isConfirmingHandle"
