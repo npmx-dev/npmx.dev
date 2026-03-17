@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PackageFileTree } from '#shared/types'
 import type { RouteNamedMap } from 'vue-router/auto-routes'
 
 defineProps<{

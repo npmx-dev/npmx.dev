@@ -896,7 +896,7 @@
       "paginated": "Stronicowane",
       "items_per_page": "Elementów na stronę",
       "per_page": "{count} / stronę",
-      "showing": "{start}-{end} z {total}",
+      "showing": "{range} z {total}",
       "previous": "Poprzednia strona",
       "next": "Następna strona",
       "nav_label": "Paginacja"

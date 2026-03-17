@@ -1,11 +1,4 @@
 <script setup lang="ts">
-import type {
-  PackageFileTree,
-  PackageFileTreeResponse,
-  PackageFileContentResponse,
-} from '#shared/types'
-import { isBinaryFilePath } from '~/utils/file-types'
-
 definePageMeta({
   name: 'code',
   path: '/package-code/:org?/:packageName/v/:version/:filePath(.*)?',
@@ -107,7 +100,12 @@ const isViewingFile = computed(() => currentNode.value?.type === 'file')
 // Maximum file size we'll try to load (500KB) - must match server
 const MAX_FILE_SIZE = 500 * 1024
 
-const isBinaryFile = computed(() => !!filePath.value && isBinaryFilePath(filePath.value))
+// Estimate binary file based on mime type
+const isBinaryFile = computed(() => {
+  const contentType = fileContent.value?.contentType
+  if (!contentType) return false
+  return isBinaryContentType(contentType)
+})
 
 const isFileTooLarge = computed(() => {
   const size = currentNode.value?.size
@@ -117,13 +115,7 @@ const isFileTooLarge = computed(() => {
 // Fetch file content when a file is selected (and not too large)
 const fileContentUrl = computed(() => {
   // Don't fetch if no file path, file tree not loaded, file is too large, or it's a directory
-  if (
-    !filePath.value ||
-    !fileTree.value ||
-    isFileTooLarge.value ||
-    !isViewingFile.value ||
-    isBinaryFile.value
-  ) {
+  if (!filePath.value || !fileTree.value || isFileTooLarge.value || !isViewingFile.value) {
     return null
   }
   return `/api/registry/file/${packageName.value}/v/${version.value}/${filePath.value}`
@@ -488,7 +480,13 @@ defineOgImageComponent('Default', {
         <div v-else-if="isViewingFile && isBinaryFile" class="py-20 text-center">
           <div class="i-lucide:binary w-12 h-12 mx-auto text-fg-subtle mb-4" />
           <p class="text-fg-muted mb-2">{{ $t('code.binary_file') }}</p>
-          <p class="text-fg-subtle text-sm mb-4">{{ $t('code.binary_rendering_warning') }}</p>
+          <p class="text-fg-subtle text-sm mb-4">
+            {{
+              $t('code.binary_rendering_warning', {
+                contentType: fileContent?.contentType ?? 'unknown',
+              })
+            }}
+          </p>
           <LinkBase
             variant="button-secondary"
             :to="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"

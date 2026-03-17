@@ -654,7 +654,7 @@
       "paginated": "পাতায়িত",
       "items_per_page": "প্রতি পাতায় আইটেম",
       "per_page": "{count} / পাতায়",
-      "showing": "{total} এর মধ্যে {start}-{end}",
+      "showing": "{total} এর মধ্যে {range}",
       "previous": "আগের পাতা",
       "next": "পরের পাতা",
       "nav_label": "পাতায়ন"

@@ -1,10 +1,3 @@
-import type {
-  JsDelivrPackageResponse,
-  JsDelivrFileNode,
-  PackageFileTree,
-  PackageFileTreeResponse,
-} from '#shared/types'
-
 /**
  * Fetch the file tree from jsDelivr API.
  * Returns a nested tree structure of all files in the package.
