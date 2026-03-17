@@ -71,13 +71,13 @@ const latestTagRow = computed(() => tagRows.value.find(r => r.tags.includes('lat
 const otherTagRows = computed(() =>
   tagRows.value
     .filter(r => !r.tags.includes('latest'))
-    .sort((a, b) => {
-      const pa = getTagPriority(a.primaryTag)
-      const pb = getTagPriority(b.primaryTag)
-      if (pa !== pb) return pa - pb
-      const ta = versionTimes.value[a.version] ?? ''
-      const tb = versionTimes.value[b.version] ?? ''
-      return tb.localeCompare(ta)
+    .sort((rowA, rowB) => {
+      const priorityA = getTagPriority(rowA.primaryTag)
+      const priorityB = getTagPriority(rowB.primaryTag)
+      if (priorityA !== priorityB) return priorityA - priorityB
+      const timeA = versionTimes.value[rowA.version] ?? ''
+      const timeB = versionTimes.value[rowB.version] ?? ''
+      return timeB.localeCompare(timeA)
     }),
 )
 
