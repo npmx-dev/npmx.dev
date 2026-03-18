@@ -6,6 +6,10 @@ import {
 } from '#shared/utils/git-providers'
 
 describe('normalizeGitUrl', () => {
+  it('should return null for empty input', () => {
+    expect.soft(normalizeGitUrl('')).toBeNull()
+  })
+
   it('should leave plain HTTPS URLs unchanged', () => {
     expect
       .soft(normalizeGitUrl('https://github.com/user/repo'))
@@ -52,7 +56,7 @@ describe('normalizeGitUrl', () => {
       .toBe('https://github.com/user/repo')
   })
 
-  it('should convert git@github.com SSH format', () => {
+  it('should convert SSH format to https://', () => {
     expect.soft(normalizeGitUrl('git@github.com:user/repo')).toBe('https://github.com/user/repo')
     expect
       .soft(normalizeGitUrl('git@github.com:user/repo.git'))
