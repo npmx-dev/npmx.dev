@@ -23,6 +23,8 @@ export interface AppSettings {
   preferredBackgroundTheme: BackgroundThemeId | null
   /** Hide platform-specific packages (e.g., @scope/pkg-linux-x64) from search results */
   hidePlatformPackages: boolean
+  /** Enable weekly download graph pulse looping animation */
+  enableGraphPulseLooping: boolean
   /** User-selected locale */
   selectedLocale: LocaleObject['code'] | null
   /** Search provider for package search */
@@ -52,6 +54,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   includeTypesInInstall: true,
   accentColorId: null,
   hidePlatformPackages: true,
+  enableGraphPulseLooping: false,
   selectedLocale: null,
   preferredBackgroundTheme: null,
   searchProvider: import.meta.test ? 'npm' : 'algolia',

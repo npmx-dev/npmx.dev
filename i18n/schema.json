@@ -418,6 +418,12 @@
         "hide_platform_packages_description": {
           "type": "string"
         },
+        "enable_graph_pulse_loop": {
+          "type": "string"
+        },
+        "enable_graph_pulse_loop_description": {
+          "type": "string"
+        },
         "theme": {
           "type": "string"
         },
