@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import {
-    SHOWCASED_FRAMEWORKS,
-    getFrameworkColor,
-    isListedFramework,
-    type ShowcasedFramework,
+  SHOWCASED_FRAMEWORKS,
+  getFrameworkColor,
+  isListedFramework,
+  type ShowcasedFramework,
 } from '../../../../app/utils/frameworks'
 
 describe('getFrameworkColor', () => {

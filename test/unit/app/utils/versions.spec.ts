@@ -1,16 +1,16 @@
 import { describe, expect, it } from 'vitest'
 import {
-    buildTaggedVersionRows,
-    buildVersionToTagsMap,
-    filterExcludedTags,
-    filterVersions,
-    getPrereleaseChannel,
-    getVersionGroupKey,
-    getVersionGroupLabel,
-    isExactVersion,
-    isSameVersionGroup,
-    parseVersion,
-    sortTags,
+  buildTaggedVersionRows,
+  buildVersionToTagsMap,
+  filterExcludedTags,
+  filterVersions,
+  getPrereleaseChannel,
+  getVersionGroupKey,
+  getVersionGroupLabel,
+  isExactVersion,
+  isSameVersionGroup,
+  parseVersion,
+  sortTags,
 } from '../../../../app/utils/versions'
 
 describe('isExactVersion', () => {

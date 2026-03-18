@@ -5,12 +5,12 @@ vi.mock('~/utils/chart-data-correction', () => ({
 }))
 
 import {
-    endDateOnlyToUtcMs,
-    getBucketStartUtc,
-    getBucketEndUtc,
-    getCompletionRatio,
-    linearProject,
-    extrapolateLastValue,
+  endDateOnlyToUtcMs,
+  getBucketStartUtc,
+  getBucketEndUtc,
+  getCompletionRatio,
+  linearProject,
+  extrapolateLastValue,
 } from '../../../../app/utils/chart-data-prediction'
 
 describe('endDateOnlyToUtcMs', () => {

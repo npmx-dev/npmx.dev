@@ -1,26 +1,26 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
+import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 import {
-    sum,
-    chunkIntoWeeks,
-    buildWeeklyEvolutionFromDaily,
-    clamp,
-    quantile,
-    winsorize,
-    computeLineChartAnalysis,
-    createAltTextForTrendLineChart,
-    copyAltTextForTrendLineChart,
-    createAltTextForVersionsBarChart,
-    copyAltTextForVersionsBarChart,
-    loadFile,
-    sanitise,
-    insertLineBreaks,
-    applyEllipsis,
-    type TrendLineConfig,
-    type TrendLineDataset,
-    type VersionsBarConfig,
-    type VersionsBarDataset,
-} from '../../../../app/utils/charts';
-import type { AltCopyArgs } from 'vue-data-ui';
+  sum,
+  chunkIntoWeeks,
+  buildWeeklyEvolutionFromDaily,
+  clamp,
+  quantile,
+  winsorize,
+  computeLineChartAnalysis,
+  createAltTextForTrendLineChart,
+  copyAltTextForTrendLineChart,
+  createAltTextForVersionsBarChart,
+  copyAltTextForVersionsBarChart,
+  loadFile,
+  sanitise,
+  insertLineBreaks,
+  applyEllipsis,
+  type TrendLineConfig,
+  type TrendLineDataset,
+  type VersionsBarConfig,
+  type VersionsBarDataset,
+} from '../../../../app/utils/charts'
+import type { AltCopyArgs } from 'vue-data-ui'
 
 type TranslateCall = { key: string | number; named?: Record<string, unknown> }
 
