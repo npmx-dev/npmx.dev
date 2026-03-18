@@ -223,7 +223,7 @@ importers:
         specifier: 0.48.6
         version: 0.48.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(vue@3.5.30(typescript@5.9.3))
       vite:
-        specifier: ^8.0.0
+        specifier: 8.0.0
         version: 8.0.0(@types/node@24.11.0)(esbuild@0.27.3)(jiti@2.6.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
       vite-plugin-pwa:
         specifier: 1.2.0
@@ -4150,9 +4150,6 @@ packages:
 
   '@rolldown/pluginutils@1.0.0-rc.5':
     resolution: {integrity: sha512-RxlLX/DPoarZ9PtxVrQgZhPoor987YtKQqCo5zkjX+0S0yLJ7Vv515Wk6+xtTL67VONKJKxETWZwuZjss2idYw==}
-
-  '@rolldown/pluginutils@1.0.0-rc.6':
-    resolution: {integrity: sha512-Y0+JT8Mi1mmW08K6HieG315XNRu4L0rkfCpA364HtytjgiqYnMYRdFPcxRl+BQQqNXzecL2S9nii+RUpO93XIA==}
 
   '@rolldown/pluginutils@1.0.0-rc.9':
     resolution: {integrity: sha512-w6oiRWgEBl04QkFZgmW+jnU1EC9b57Oihi2ot3HNWIQRqgHp5PnYDia5iZ5FF7rpa4EQdiqMDXjlqKGXBhsoXw==}
@@ -15224,8 +15221,6 @@ snapshots:
 
   '@rolldown/pluginutils@1.0.0-rc.5': {}
 
-  '@rolldown/pluginutils@1.0.0-rc.6': {}
-
   '@rolldown/pluginutils@1.0.0-rc.9': {}
 
   '@rollup/plugin-alias@6.0.0(rollup@4.56.0)':
@@ -16421,7 +16416,7 @@ snapshots:
       '@babel/core': 7.29.0
       '@babel/plugin-syntax-typescript': 7.28.6(@babel/core@7.29.0)
       '@babel/plugin-transform-typescript': 7.28.6(@babel/core@7.29.0)
-      '@rolldown/pluginutils': 1.0.0-rc.6
+      '@rolldown/pluginutils': 1.0.0-rc.9
       '@vue/babel-plugin-jsx': 2.0.1(@babel/core@7.29.0)
       vite: 7.3.1(@types/node@24.11.0)(jiti@2.6.1)(lightningcss@1.32.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
       vue: 3.5.30(typescript@5.9.3)
@@ -16433,7 +16428,7 @@ snapshots:
       '@babel/core': 7.29.0
       '@babel/plugin-syntax-typescript': 7.28.6(@babel/core@7.29.0)
       '@babel/plugin-transform-typescript': 7.28.6(@babel/core@7.29.0)
-      '@rolldown/pluginutils': 1.0.0-rc.6
+      '@rolldown/pluginutils': 1.0.0-rc.9
       '@vue/babel-plugin-jsx': 2.0.1(@babel/core@7.29.0)
       vite: 7.3.1(@types/node@25.0.10)(jiti@2.6.1)(lightningcss@1.32.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
       vue: 3.5.30(typescript@5.9.3)
@@ -16502,7 +16497,7 @@ snapshots:
     dependencies:
       '@oxc-project/runtime': 0.115.0
       '@oxc-project/types': 0.115.0
-      lightningcss: 1.31.1
+      lightningcss: 1.32.0
       postcss: 8.5.8
     optionalDependencies:
       '@types/node': 24.11.0
@@ -18498,7 +18493,7 @@ snapshots:
       esbuild: 0.27.3
       fontaine: 0.8.0
       jiti: 2.6.1
-      lightningcss: 1.31.1
+      lightningcss: 1.32.0
       magic-string: 0.30.21
       ohash: 2.0.11
       pathe: 2.0.3
@@ -18536,7 +18531,7 @@ snapshots:
       esbuild: 0.27.3
       fontaine: 0.8.0
       jiti: 2.6.1
-      lightningcss: 1.31.1
+      lightningcss: 1.32.0
       magic-string: 0.30.21
       ohash: 2.0.11
       pathe: 2.0.3
