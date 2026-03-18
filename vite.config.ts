@@ -7,7 +7,8 @@ const rootDir = fileURLToPath(new URL('.', import.meta.url))
 
 export default defineConfig({
   staged: {
-    'i18n/locales/*': 'node ./lunaria/lunaria.ts && node scripts/generate-i18n-schema.ts && vp fmt i18n/schema.json && git add i18n/schema.json',
+    'i18n/locales/*':
+      'node ./lunaria/lunaria.ts && node scripts/generate-i18n-schema.ts && vp fmt i18n/schema.json && git add i18n/schema.json',
     '*.{js,ts,mjs,cjs,vue}': 'vp lint --fix',
     '*.vue': 'node scripts/unocss-checker.ts',
     '*.{js,ts,mjs,cjs,vue,json,yml,md,html,css}': 'vp fmt',
