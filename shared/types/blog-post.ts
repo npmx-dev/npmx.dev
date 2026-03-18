@@ -1,24 +1,32 @@
-import type {
-  AppBskyActorDefs,
-  AppBskyRichtextFacet,
-  AppBskyEmbedImages,
-  AppBskyEmbedExternal,
-} from '@atproto/api'
+import type * as app from '#shared/types/lexicons/app'
 
 export type CommentEmbed =
-  | { type: 'images'; images: AppBskyEmbedImages.ViewImage[] }
-  | { type: 'external'; external: AppBskyEmbedExternal.ViewExternal }
+  | { type: 'images'; images: app.bsky.embed.images.ViewImage[] }
+  | { type: 'external'; external: app.bsky.embed.external.ViewExternal }
 
 export interface Comment {
   uri: string
   cid: string
-  author: Pick<AppBskyActorDefs.ProfileViewBasic, 'did' | 'handle' | 'displayName' | 'avatar'>
+  author: Pick<app.bsky.actor.defs.ProfileViewBasic, 'did' | 'handle' | 'displayName' | 'avatar'>
   text: string
-  facets?: AppBskyRichtextFacet.Main[]
+  facets?: app.bsky.richtext.facet.Main[]
   embed?: CommentEmbed
   createdAt: string
   likeCount: number
   replyCount: number
   repostCount: number
   replies: Comment[]
+}
+
+/*
+  WARN: FederatedArticleInput specifics
+  interface - All strings must be captured in single quotes in order to be parsed correctly in the MD file
+  authorHandle - Must not contain `@` symbol prefix
+  description - Any additional single quotes must be properly escaped with a `\`
+*/
+export interface FederatedArticleInput {
+  url: string
+  title: string
+  authorHandle: string
+  description: string
 }

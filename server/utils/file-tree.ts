@@ -1,10 +1,3 @@
-import type {
-  JsDelivrPackageResponse,
-  JsDelivrFileNode,
-  PackageFileTree,
-  PackageFileTreeResponse,
-} from '#shared/types'
-
 /**
  * Fetch the file tree from jsDelivr API.
  * Returns a nested tree structure of all files in the package.
@@ -12,9 +5,10 @@ import type {
 export async function fetchFileTree(
   packageName: string,
   version: string,
+  signal?: AbortSignal,
 ): Promise<JsDelivrPackageResponse> {
   const url = `https://data.jsdelivr.com/v1/packages/npm/${packageName}@${version}`
-  const response = await fetch(url)
+  const response = await fetch(url, { signal })
 
   if (!response.ok) {
     if (response.status === 404) {
@@ -39,17 +33,21 @@ export function convertToFileTree(
     const path = parentPath ? `${parentPath}/${node.name}` : node.name
 
     if (node.type === 'directory') {
+      const children = node.files ? convertToFileTree(node.files, path) : []
+
       result.push({
         name: node.name,
         path,
         type: 'directory',
-        children: node.files ? convertToFileTree(node.files, path) : [],
+        size: children.reduce((total, child) => total + (child.size ?? 0), 0),
+        children,
       })
     } else {
       result.push({
         name: node.name,
         path,
         type: 'file',
+        hash: node.hash,
         size: node.size,
       })
     }
@@ -73,8 +71,9 @@ export function convertToFileTree(
 export async function getPackageFileTree(
   packageName: string,
   version: string,
+  signal?: AbortSignal,
 ): Promise<PackageFileTreeResponse> {
-  const jsDelivrData = await fetchFileTree(packageName, version)
+  const jsDelivrData = await fetchFileTree(packageName, version, signal)
   const tree = convertToFileTree(jsDelivrData.files)
 
   return {

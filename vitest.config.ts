@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'node:url'
-import { defineConfig } from 'vitest/config'
+import { defineConfig } from 'vite-plus'
 import { defineVitestProject } from '@nuxt/test-utils/config'
-import { playwright } from '@vitest/browser-playwright'
+import { playwright } from 'vite-plus/test/browser-playwright'
 
 const rootDir = fileURLToPath(new URL('.', import.meta.url))
 
@@ -11,7 +11,9 @@ export default defineConfig({
       {
         resolve: {
           alias: {
+            '~': `${rootDir}/app`,
             '#shared': `${rootDir}/shared`,
+            '#server': `${rootDir}/server`,
           },
         },
         test: {
@@ -25,11 +27,13 @@ export default defineConfig({
           name: 'nuxt',
           include: ['test/nuxt/**/*.{test,spec}.ts'],
           environment: 'nuxt',
-          setupFiles: ['./test/nuxt/setup.ts'],
           environmentOptions: {
             nuxt: {
               rootDir: fileURLToPath(new URL('.', import.meta.url)),
               overrides: {
+                vue: {
+                  runtimeCompiler: true,
+                },
                 experimental: {
                   payloadExtraction: false,
                   viteEnvironmentApi: false,

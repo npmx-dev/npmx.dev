@@ -3,7 +3,34 @@ import { H3, HTTPError, handleCors, type H3Event } from 'h3-next'
 import type { CorsOptions } from 'h3-next'
 import * as v from 'valibot'
 
-import type { ConnectorState, PendingOperation, ApiResponse } from './types.ts'
+import type {
+  ConnectorState,
+  PendingOperation,
+  ApiResponse,
+  ConnectorEndpoints,
+  AssertEndpointsImplemented,
+} from './types.ts'
+
+// Endpoint completeness check — errors if this list diverges from ConnectorEndpoints.
+const _endpointCheck: AssertEndpointsImplemented<
+  | 'POST /connect'
+  | 'GET /state'
+  | 'POST /operations'
+  | 'POST /operations/batch'
+  | 'DELETE /operations'
+  | 'DELETE /operations/all'
+  | 'POST /approve'
+  | 'POST /approve-all'
+  | 'POST /retry'
+  | 'POST /execute'
+  | 'GET /org/:org/users'
+  | 'GET /org/:org/teams'
+  | 'GET /team/:scopeTeam/users'
+  | 'GET /package/:pkg/collaborators'
+  | 'GET /user/packages'
+  | 'GET /user/orgs'
+> = true
+void _endpointCheck
 import { logDebug, logError } from './logger.ts'
 import {
   getNpmUser,
@@ -24,6 +51,8 @@ import {
   ownerRemove,
   packageInit,
   listUserPackages,
+  extractUrls,
+  type ExecNpmOptions,
   type NpmExecResult,
 } from './npm-client.ts'
 import {
@@ -108,7 +137,7 @@ export function createConnectorApp(expectedToken: string) {
         avatar,
         connectedAt: state.session.connectedAt,
       },
-    } as ApiResponse
+    } satisfies ApiResponse<ConnectorEndpoints['POST /connect']['data']>
   })
 
   app.get('/state', event => {
@@ -124,7 +153,7 @@ export function createConnectorApp(expectedToken: string) {
         avatar: state.session.avatar,
         operations: state.operations,
       },
-    } as ApiResponse
+    } satisfies ApiResponse<ConnectorEndpoints['GET /state']['data']>
   })
 
   app.post('/operations', async event => {
@@ -164,7 +193,7 @@ export function createConnectorApp(expectedToken: string) {
     return {
       success: true,
       data: operation,
-    } as ApiResponse
+    } satisfies ApiResponse<ConnectorEndpoints['POST /operations']['data']>
   })
 
   app.post('/operations/batch', async event => {
@@ -212,7 +241,7 @@ export function createConnectorApp(expectedToken: string) {
     return {
       success: true,
       data: created,
-    } as ApiResponse
+    } satisfies ApiResponse<ConnectorEndpoints['POST /operations/batch']['data']>
   })
 
   app.post('/approve', event => {
@@ -246,7 +275,7 @@ export function createConnectorApp(expectedToken: string) {
     return {
       success: true,
       data: operation,
-    } as ApiResponse
+    } satisfies ApiResponse<ConnectorEndpoints['POST /approve']['data']>
   })
 
   app.post('/approve-all', event => {
@@ -263,7 +292,7 @@ export function createConnectorApp(expectedToken: string) {
     return {
       success: true,
       data: { approved: pendingOps.length },
-    } as ApiResponse
+    } satisfies ApiResponse<ConnectorEndpoints['POST /approve-all']['data']>
   })
 
   app.post('/retry', event => {
@@ -299,7 +328,7 @@ export function createConnectorApp(expectedToken: string) {
     return {
       success: true,
       data: operation,
-    } as ApiResponse
+    } satisfies ApiResponse<ConnectorEndpoints['POST /retry']['data']>
   })
 
   app.post('/execute', async event => {
@@ -308,8 +337,10 @@ export function createConnectorApp(expectedToken: string) {
       throw new HTTPError({ statusCode: 401, message: 'Unauthorized' })
     }
 
-    // OTP can be passed directly in the request body for this execution
+    // OTP, interactive flag, and openUrls can be passed in the request body
     let otp: string | undefined
+    let interactive = false
+    let openUrls = false
     try {
       const rawBody = await event.req.json()
       if (rawBody) {
@@ -318,6 +349,8 @@ export function createConnectorApp(expectedToken: string) {
           throw new HTTPError({ statusCode: 400, message: parsed.error })
         }
         otp = parsed.data.otp
+        interactive = parsed.data.interactive ?? false
+        openUrls = parsed.data.openUrls ?? false
       }
     } catch (err) {
       // Re-throw HTTPError, ignore JSON parse errors (empty body is fine)
@@ -329,6 +362,9 @@ export function createConnectorApp(expectedToken: string) {
     let otpRequired = false
     const completedIds = new Set<string>()
     const failedIds = new Set<string>()
+
+    // Collect all URLs across all operations in this execution batch
+    const allUrls: string[] = []
 
     // Execute operations in waves, respecting dependencies
     // Each wave contains operations whose dependencies are satisfied
@@ -366,8 +402,9 @@ export function createConnectorApp(expectedToken: string) {
       // Execute ready operations in parallel
       const runningOps = readyOps.map(async op => {
         op.status = 'running'
-        const result = await executeOperation(op, otp)
+        const result = await executeOperation(op, { otp, interactive, openUrls })
         op.result = result
+        op.authUrl = undefined
         op.status = result.exitCode === 0 ? 'completed' : 'failed'
 
         if (result.exitCode === 0) {
@@ -381,6 +418,11 @@ export function createConnectorApp(expectedToken: string) {
           otpRequired = true
         }
 
+        // Collect URLs from this operation's output
+        if (result.urls && result.urls.length > 0) {
+          allUrls.push(...result.urls)
+        }
+
         results.push({ id: op.id, result })
       })
 
@@ -390,14 +432,17 @@ export function createConnectorApp(expectedToken: string) {
     // Check if any operation had an auth failure
     const authFailure = results.some(r => r.result.authFailure)
 
+    const urls = [...new Set(allUrls)]
+
     return {
       success: true,
       data: {
         results,
         otpRequired,
         authFailure,
+        urls: urls.length > 0 ? urls : undefined,
       },
-    } as ApiResponse
+    } satisfies ApiResponse<ConnectorEndpoints['POST /execute']['data']>
   })
 
   app.delete('/operations', event => {
@@ -429,7 +474,7 @@ export function createConnectorApp(expectedToken: string) {
 
     state.operations.splice(index, 1)
 
-    return { success: true } as ApiResponse
+    return { success: true } satisfies ApiResponse<ConnectorEndpoints['DELETE /operations']['data']>
   })
 
   app.delete('/operations/all', event => {
@@ -444,7 +489,7 @@ export function createConnectorApp(expectedToken: string) {
     return {
       success: true,
       data: { removed },
-    } as ApiResponse
+    } satisfies ApiResponse<ConnectorEndpoints['DELETE /operations/all']['data']>
   })
 
   // List endpoints (read-only data fetching)
@@ -474,7 +519,7 @@ export function createConnectorApp(expectedToken: string) {
       return {
         success: true,
         data: users,
-      } as ApiResponse
+      } satisfies ApiResponse<ConnectorEndpoints['GET /org/:org/users']['data']>
     } catch {
       return {
         success: false,
@@ -508,7 +553,7 @@ export function createConnectorApp(expectedToken: string) {
       return {
         success: true,
         data: teams,
-      } as ApiResponse
+      } satisfies ApiResponse<ConnectorEndpoints['GET /org/:org/teams']['data']>
     } catch {
       return {
         success: false,
@@ -554,7 +599,7 @@ export function createConnectorApp(expectedToken: string) {
       return {
         success: true,
         data: users,
-      } as ApiResponse
+      } satisfies ApiResponse<ConnectorEndpoints['GET /team/:scopeTeam/users']['data']>
     } catch {
       return {
         success: false,
@@ -595,7 +640,7 @@ export function createConnectorApp(expectedToken: string) {
       return {
         success: true,
         data: collaborators,
-      } as ApiResponse
+      } satisfies ApiResponse<ConnectorEndpoints['GET /package/:pkg/collaborators']['data']>
     } catch {
       return {
         success: false,
@@ -634,7 +679,7 @@ export function createConnectorApp(expectedToken: string) {
       return {
         success: true,
         data: packages,
-      } as ApiResponse
+      } satisfies ApiResponse<ConnectorEndpoints['GET /user/packages']['data']>
     } catch {
       return {
         success: false,
@@ -686,7 +731,7 @@ export function createConnectorApp(expectedToken: string) {
       return {
         success: true,
         data: Array.from(orgs).sort(),
-      } as ApiResponse
+      } satisfies ApiResponse<ConnectorEndpoints['GET /user/orgs']['data']>
     } catch {
       return {
         success: false,
@@ -698,42 +743,76 @@ export function createConnectorApp(expectedToken: string) {
   return app
 }
 
-async function executeOperation(op: PendingOperation, otp?: string): Promise<NpmExecResult> {
+async function executeOperation(
+  op: PendingOperation,
+  options: { otp?: string; interactive?: boolean; openUrls?: boolean } = {},
+): Promise<NpmExecResult> {
   const { type, params } = op
+
+  // Build exec options that get passed through to execNpm, which
+  // internally routes to either execFile or PTY-based execution.
+  const execOptions: ExecNpmOptions = {
+    otp: options.otp,
+    interactive: options.interactive,
+    openUrls: options.openUrls,
+    onAuthUrl: options.interactive
+      ? url => {
+          // Set authUrl on the operation so /state exposes it to the
+          // frontend while npm is still polling for authentication.
+          op.authUrl = url
+        }
+      : undefined,
+  }
+
+  let result: NpmExecResult
 
   switch (type) {
     case 'org:add-user':
-      return orgAddUser(
+    case 'org:set-role':
+      result = await orgAddUser(
         params.org,
         params.user,
         params.role as 'developer' | 'admin' | 'owner',
-        otp,
+        execOptions,
       )
+      break
     case 'org:rm-user':
-      return orgRemoveUser(params.org, params.user, otp)
+      result = await orgRemoveUser(params.org, params.user, execOptions)
+      break
     case 'team:create':
-      return teamCreate(params.scopeTeam, otp)
+      result = await teamCreate(params.scopeTeam, execOptions)
+      break
     case 'team:destroy':
-      return teamDestroy(params.scopeTeam, otp)
+      result = await teamDestroy(params.scopeTeam, execOptions)
+      break
     case 'team:add-user':
-      return teamAddUser(params.scopeTeam, params.user, otp)
+      result = await teamAddUser(params.scopeTeam, params.user, execOptions)
+      break
     case 'team:rm-user':
-      return teamRemoveUser(params.scopeTeam, params.user, otp)
+      result = await teamRemoveUser(params.scopeTeam, params.user, execOptions)
+      break
     case 'access:grant':
-      return accessGrant(
+      result = await accessGrant(
         params.permission as 'read-only' | 'read-write',
         params.scopeTeam,
         params.pkg,
-        otp,
+        execOptions,
       )
+      break
     case 'access:revoke':
-      return accessRevoke(params.scopeTeam, params.pkg, otp)
+      result = await accessRevoke(params.scopeTeam, params.pkg, execOptions)
+      break
     case 'owner:add':
-      return ownerAdd(params.user, params.pkg, otp)
+      result = await ownerAdd(params.user, params.pkg, execOptions)
+      break
     case 'owner:rm':
-      return ownerRemove(params.user, params.pkg, otp)
+      result = await ownerRemove(params.user, params.pkg, execOptions)
+      break
     case 'package:init':
-      return packageInit(params.name, params.author, otp)
+      // package:init has its own special execution path (temp dir + publish)
+      // and does not support interactive mode
+      result = await packageInit(params.name, params.author, options.otp)
+      break
     default:
       return {
         stdout: '',
@@ -741,6 +820,14 @@ async function executeOperation(op: PendingOperation, otp?: string): Promise<Npm
         exitCode: 1,
       }
   }
+
+  // Extract URLs from output if not already populated
+  if (!result.urls) {
+    const urls = extractUrls((result.stdout || '') + '\n' + (result.stderr || ''))
+    if (urls.length > 0) result.urls = urls
+  }
+
+  return result
 }
 
 export { generateToken }

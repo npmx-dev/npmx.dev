@@ -42,6 +42,7 @@ async function run(): Promise<void> {
   const { missingKeys, unusedKeys, maybeDynamicKeys } = await createI18NReport({
     vueFiles: VUE_FILES_GLOB,
     languageFiles: join(LOCALES_DIRECTORY, REFERENCE_FILE_NAME),
+    exclude: ['$schema'],
   })
 
   const hasMissingKeys = missingKeys.length > 0

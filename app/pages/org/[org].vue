@@ -10,7 +10,7 @@ definePageMeta({
 const route = useRoute('org')
 const router = useRouter()
 
-const orgName = computed(() => route.params.org)
+const orgName = computed(() => route.params.org.toLowerCase())
 
 const { isConnected } = useConnector()
 
@@ -57,9 +57,6 @@ const {
   setSort,
 } = useStructuredFilters({
   packages,
-  initialFilters: {
-    ...parseSearchOperators(normalizeSearchParam(route.query.q)),
-  },
   initialSort: (normalizeSearchParam(route.query.sort) as SortOption) ?? 'updated-desc',
 })
 
@@ -68,9 +65,7 @@ const currentPage = shallowRef(1)
 
 // Calculate total pages
 const totalPages = computed(() => {
-  if (pageSize.value === 'all') return 1
-  const numericSize = typeof pageSize.value === 'number' ? pageSize.value : 25
-  return Math.ceil(sortedPackages.value.length / numericSize)
+  return Math.ceil(sortedPackages.value.length / pageSize.value)
 })
 
 // Reset to page 1 when filters change
@@ -180,9 +175,9 @@ defineOgImageComponent('Default', {
               target="_blank"
               rel="noopener noreferrer"
               class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-              :title="$t('common.view_on_npm')"
+              :title="$t('common.view_on.npm')"
             >
-              <span class="i-carbon:logo-npm w-4 h-4" aria-hidden="true" />
+              <span class="i-simple-icons:npm w-4 h-4" aria-hidden="true" />
               npm
             </a>
           </nav>
@@ -190,7 +185,7 @@ defineOgImageComponent('Default', {
             class="text-fg-subtle text-xs mt-1 flex items-center gap-1.5 justify-end cursor-help"
             :title="$t('common.vanity_downloads_hint', { count: filteredCount }, filteredCount)"
           >
-            <span class="i-carbon:chart-line w-3.5 h-3.5" aria-hidden="true" />
+            <span class="i-lucide:chart-line w-3.5 h-3.5" aria-hidden="true" />
             <span class="font-mono"
               >{{ $n(totalWeeklyDownloads) }} {{ $t('common.per_week') }}</span
             >

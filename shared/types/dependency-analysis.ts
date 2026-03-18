@@ -37,6 +37,37 @@ export interface OsvReference {
 }
 
 /**
+ * Version range event from OSV affected data
+ * @see https://ossf.github.io/osv-schema/#affectedrangesevents-fields
+ */
+export interface OsvRangeEvent {
+  introduced?: string
+  fixed?: string
+  last_affected?: string
+  limit?: string
+}
+
+/**
+ * Version range from OSV affected data
+ */
+export interface OsvRange {
+  type: 'SEMVER' | 'ECOSYSTEM' | 'GIT'
+  events: OsvRangeEvent[]
+}
+
+/**
+ * Affected package info from OSV
+ */
+export interface OsvAffected {
+  package: {
+    ecosystem: string
+    name: string
+  }
+  ranges?: OsvRange[]
+  versions?: string[]
+}
+
+/**
  * Individual vulnerability record from OSV
  */
 export interface OsvVulnerability {
@@ -48,6 +79,7 @@ export interface OsvVulnerability {
   published?: string
   severity?: OsvSeverity[]
   references?: OsvReference[]
+  affected?: OsvAffected[]
   database_specific?: {
     severity?: string
     cwe_ids?: string[]
@@ -97,6 +129,8 @@ export interface VulnerabilitySummary {
   severity: OsvSeverityLevel
   aliases: string[]
   url: string
+  /** Version that fixes this vulnerability (if known) */
+  fixedIn?: string
 }
 
 /**

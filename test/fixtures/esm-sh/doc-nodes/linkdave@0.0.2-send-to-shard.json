@@ -1,0 +1,34 @@
+{
+  "name": "SendToShardFn",
+  "kind": "typeAlias",
+  "typeAliasDef": {
+    "tsType": {
+      "repr": "",
+      "kind": "fnOrConstructor",
+      "fnOrConstructor": {
+        "constructor": false,
+        "tsType": { "repr": "void", "kind": "keyword", "keyword": "void" },
+        "params": [
+          {
+            "kind": "identifier",
+            "name": "guildId",
+            "optional": false,
+            "tsType": { "repr": "string", "kind": "keyword", "keyword": "string" }
+          },
+          {
+            "kind": "identifier",
+            "name": "payload",
+            "optional": false,
+            "tsType": {
+              "repr": "GatewayVoiceStateUpdate",
+              "kind": "typeRef",
+              "typeRef": { "typeName": "GatewayVoiceStateUpdate" }
+            }
+          }
+        ],
+        "typeParams": []
+      }
+    },
+    "typeParams": []
+  }
+}

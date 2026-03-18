@@ -595,6 +595,304 @@ describe('dependency-analysis', () => {
       expect(result.deprecatedPackages[2]?.depth).toBe('transitive')
     })
 
+    it('extracts correct fixedIn version for the current version range', async () => {
+      const mockResolved = new Map([
+        [
+          'minimist@1.0.0',
+          {
+            name: 'minimist',
+            version: '1.0.0',
+            size: 1000,
+            optional: false,
+            depth: 'root' as const,
+            path: ['minimist@1.0.0'],
+          },
+        ],
+      ])
+      vi.mocked(resolveDependencyTree).mockResolvedValue(mockResolved)
+
+      // Mock OSV response with multiple affected ranges (like minimist)
+      // Range 1: 0 - 0.2.1, Range 2: 1.0.0 - 1.2.3
+      // Version 1.0.0 should match Range 2, so fixedIn should be 1.2.3
+      mockOsvApi(
+        [{ vulns: [{ id: 'GHSA-vh95-rmgr-6w4m', modified: '2024-01-01' }] }],
+        new Map([
+          [
+            'minimist@1.0.0',
+            {
+              vulns: [
+                {
+                  id: 'GHSA-vh95-rmgr-6w4m',
+                  summary: 'Prototype Pollution in minimist',
+                  database_specific: { severity: 'MODERATE' },
+                  affected: [
+                    {
+                      package: { ecosystem: 'npm', name: 'minimist' },
+                      ranges: [
+                        {
+                          type: 'SEMVER',
+                          events: [{ introduced: '0' }, { fixed: '0.2.1' }],
+                        },
+                      ],
+                    },
+                    {
+                      package: { ecosystem: 'npm', name: 'minimist' },
+                      ranges: [
+                        {
+                          type: 'SEMVER',
+                          events: [{ introduced: '1.0.0' }, { fixed: '1.2.3' }],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        ]),
+      )
+
+      const result = await analyzeDependencyTree('minimist', '1.0.0')
+
+      expect(result.vulnerablePackages).toHaveLength(1)
+      expect(result.vulnerablePackages[0]?.vulnerabilities[0]?.fixedIn).toBe('1.2.3')
+    })
+
+    it('extracts correct fixedIn for prerelease versions (e.g., 16.0.0-beta.0)', async () => {
+      const mockResolved = new Map([
+        [
+          'next@16.0.0-beta.0',
+          {
+            name: 'next',
+            version: '16.0.0-beta.0',
+            size: 1000,
+            optional: false,
+            depth: 'root' as const,
+            path: ['next@16.0.0-beta.0'],
+          },
+        ],
+      ])
+      vi.mocked(resolveDependencyTree).mockResolvedValue(mockResolved)
+
+      // Mock OSV response with multiple ranges including prerelease
+      // Version 16.0.0-beta.0 should NOT match 13.0.0-15.0.8, but SHOULD match 16.0.0-beta.0-16.0.11
+      mockOsvApi(
+        [{ vulns: [{ id: 'GHSA-test', modified: '2024-01-01' }] }],
+        new Map([
+          [
+            'next@16.0.0-beta.0',
+            {
+              vulns: [
+                {
+                  id: 'GHSA-test',
+                  summary: 'Test vulnerability',
+                  database_specific: { severity: 'HIGH' },
+                  affected: [
+                    {
+                      package: { ecosystem: 'npm', name: 'next' },
+                      ranges: [
+                        {
+                          type: 'SEMVER',
+                          events: [{ introduced: '13.0.0' }, { fixed: '15.0.8' }],
+                        },
+                      ],
+                    },
+                    {
+                      package: { ecosystem: 'npm', name: 'next' },
+                      ranges: [
+                        {
+                          type: 'SEMVER',
+                          events: [{ introduced: '16.0.0-beta.0' }, { fixed: '16.0.11' }],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        ]),
+      )
+
+      const result = await analyzeDependencyTree('next', '16.0.0-beta.0')
+
+      expect(result.vulnerablePackages).toHaveLength(1)
+      // Should match the 16.x range, not the 13-15 range
+      expect(result.vulnerablePackages[0]?.vulnerabilities[0]?.fixedIn).toBe('16.0.11')
+    })
+
+    it('handles multiple introduced/fixed pairs in a single range', async () => {
+      const mockResolved = new Map([
+        [
+          'example@1.5.0',
+          {
+            name: 'example',
+            version: '1.5.0',
+            size: 1000,
+            optional: false,
+            depth: 'root' as const,
+            path: ['example@1.5.0'],
+          },
+        ],
+      ])
+      vi.mocked(resolveDependencyTree).mockResolvedValue(mockResolved)
+
+      // Single range with multiple introduced/fixed pairs (reintroduced vulnerability)
+      // Range: 0-0.2.1, 1.0.0-1.2.3, 1.4.0-1.6.0
+      // Version 1.5.0 should match the third interval (1.4.0-1.6.0)
+      mockOsvApi(
+        [{ vulns: [{ id: 'GHSA-multi-range', modified: '2024-01-01' }] }],
+        new Map([
+          [
+            'example@1.5.0',
+            {
+              vulns: [
+                {
+                  id: 'GHSA-multi-range',
+                  summary: 'Multi-range vulnerability',
+                  database_specific: { severity: 'HIGH' },
+                  affected: [
+                    {
+                      package: { ecosystem: 'npm', name: 'example' },
+                      ranges: [
+                        {
+                          type: 'SEMVER',
+                          events: [
+                            { introduced: '0' },
+                            { fixed: '0.2.1' },
+                            { introduced: '1.0.0' },
+                            { fixed: '1.2.3' },
+                            { introduced: '1.4.0' },
+                            { fixed: '1.6.0' },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        ]),
+      )
+
+      const result = await analyzeDependencyTree('example', '1.5.0')
+
+      expect(result.vulnerablePackages).toHaveLength(1)
+      // Should match the third interval and return its fixed version
+      expect(result.vulnerablePackages[0]?.vulnerabilities[0]?.fixedIn).toBe('1.6.0')
+    })
+
+    it('suggests closest fixedIn when multiple ranges match (backport fix preferred)', async () => {
+      const mockResolved = new Map([
+        [
+          'example@3.4.6',
+          {
+            name: 'example',
+            version: '3.4.6',
+            size: 1000,
+            optional: false,
+            depth: 'root' as const,
+            path: ['example@3.4.6'],
+          },
+        ],
+      ])
+      vi.mocked(resolveDependencyTree).mockResolvedValue(mockResolved)
+
+      // Two affected ranges:
+      //   Range 1 (broad): >= 3.4.5-foo.2, < 3.5.9-foo.15 (fix: 3.5.9-foo.15)
+      //   Range 2 (narrow backport): >= 3.4.5-foo.2, < 3.4.8 (fix: 3.4.8)
+      //
+      // Version 3.4.6 falls in BOTH ranges.
+      // The broad range is listed first, so the current early-return picks 3.5.9-foo.15.
+      // But 3.4.8 is the closer/more appropriate fix for someone on 3.4.x.
+      mockOsvApi(
+        [{ vulns: [{ id: 'GHSA-backport', modified: '2024-01-01' }] }],
+        new Map([
+          [
+            'example@3.4.6',
+            {
+              vulns: [
+                {
+                  id: 'GHSA-backport',
+                  summary: 'Vulnerability with backported fix',
+                  database_specific: { severity: 'HIGH' },
+                  affected: [
+                    {
+                      package: { ecosystem: 'npm', name: 'example' },
+                      ranges: [
+                        {
+                          type: 'SEMVER',
+                          events: [{ introduced: '3.4.5-foo.2' }, { fixed: '3.5.9-foo.15' }],
+                        },
+                      ],
+                    },
+                    {
+                      package: { ecosystem: 'npm', name: 'example' },
+                      ranges: [
+                        {
+                          type: 'SEMVER',
+                          events: [{ introduced: '3.4.5-foo.2' }, { fixed: '3.4.8' }],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        ]),
+      )
+
+      const result = await analyzeDependencyTree('example', '3.4.6')
+
+      expect(result.vulnerablePackages).toHaveLength(1)
+      // Should suggest 3.4.8 (the closest fix), not 3.5.9-foo.15
+      expect(result.vulnerablePackages[0]?.vulnerabilities[0]?.fixedIn).toBe('3.4.8')
+    })
+
+    it('returns undefined fixedIn when no matching range has a fixed version', async () => {
+      const mockResolved = new Map([
+        [
+          'pkg@1.0.0',
+          {
+            name: 'pkg',
+            version: '1.0.0',
+            size: 1000,
+            optional: false,
+            depth: 'root' as const,
+            path: ['pkg@1.0.0'],
+          },
+        ],
+      ])
+      vi.mocked(resolveDependencyTree).mockResolvedValue(mockResolved)
+
+      // Mock OSV response without affected data
+      mockOsvApi(
+        [{ vulns: [{ id: 'GHSA-no-fix', modified: '2024-01-01' }] }],
+        new Map([
+          [
+            'pkg@1.0.0',
+            {
+              vulns: [
+                {
+                  id: 'GHSA-no-fix',
+                  summary: 'Vuln without fix info',
+                  database_specific: { severity: 'LOW' },
+                  // No affected field
+                },
+              ],
+            },
+          ],
+        ]),
+      )
+
+      const result = await analyzeDependencyTree('pkg', '1.0.0')
+
+      expect(result.vulnerablePackages).toHaveLength(1)
+      expect(result.vulnerablePackages[0]?.vulnerabilities[0]?.fixedIn).toBeUndefined()
+    })
+
     it('returns both vulnerabilities and deprecated packages together', async () => {
       const mockResolved = new Map([
         [

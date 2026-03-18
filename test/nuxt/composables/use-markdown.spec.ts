@@ -318,4 +318,82 @@ describe('useMarkdown', () => {
       expect(processed.value).toBe('bold and <strong>also bold</strong>')
     })
   })
+
+  describe('HTML comment stripping', () => {
+    it('strips HTML comments', () => {
+      const processed = useMarkdown({ text: '<!-- automd:badges color=yellow -->A library' })
+      expect(processed.value).toBe('A library')
+    })
+
+    it('strips HTML comments from the middle of text', () => {
+      const processed = useMarkdown({ text: 'Before <!-- comment --> after' })
+      expect(processed.value).toBe('Before  after')
+    })
+
+    it('strips multiple HTML comments', () => {
+      const processed = useMarkdown({ text: '<!-- first -->Text <!-- second -->here' })
+      expect(processed.value).toBe('Text here')
+    })
+
+    it('strips multiline HTML comments', () => {
+      const processed = useMarkdown({ text: '<!-- multi\nline\ncomment -->Text' })
+      expect(processed.value).toBe('Text')
+    })
+
+    it('returns empty string when description is only a comment', () => {
+      const processed = useMarkdown({ text: '<!-- automd:badges color=yellow -->' })
+      expect(processed.value).toBe('')
+    })
+
+    it('strips unclosed HTML comments (truncated)', () => {
+      const processed = useMarkdown({ text: 'A library <!-- automd:badges color=yel' })
+      expect(processed.value).toBe('A library ')
+    })
+  })
+
+  describe('HTML tags inside backtick spans (regression #1478)', () => {
+    it('preserves HTML tags inside backtick code spans', () => {
+      const processed = useMarkdown({ text: 'Use `<div>` for layout' })
+      expect(processed.value).toBe('Use <code>&lt;div&gt;</code> for layout')
+    })
+
+    it('preserves multiple HTML tags inside one backtick span', () => {
+      const processed = useMarkdown({ text: 'Use `<div><span>test</span></div>` element' })
+      expect(processed.value).toBe(
+        'Use <code>&lt;div&gt;&lt;span&gt;test&lt;/span&gt;&lt;/div&gt;</code> element',
+      )
+    })
+
+    it('preserves backtick spans while stripping bare HTML tags', () => {
+      const processed = useMarkdown({ text: '`<a>` some <b>bold</b> text `<c>`' })
+      expect(processed.value).toBe('<code>&lt;a&gt;</code> some bold text <code>&lt;c&gt;</code>')
+    })
+
+    it('strips HTML tags outside backticks but keeps backtick content', () => {
+      const processed = useMarkdown({ text: '<b>hello</b> and `<input type="text">` world' })
+      expect(processed.value).toBe(
+        'hello and <code>&lt;input type=&quot;text&quot;&gt;</code> world',
+      )
+    })
+
+    it('handles backtick span with self-closing tag', () => {
+      const processed = useMarkdown({ text: 'Use `<br/>` for line breaks' })
+      expect(processed.value).toBe('Use <code>&lt;br/&gt;</code> for line breaks')
+    })
+
+    it('handles backtick spans without HTML inside', () => {
+      const processed = useMarkdown({ text: '`code` and <b>stripped</b>' })
+      expect(processed.value).toBe('<code>code</code> and stripped')
+    })
+
+    it('preserves HTML comments inside backtick spans', () => {
+      const processed = useMarkdown({ text: 'Use `<!-- comment -->` syntax' })
+      expect(processed.value).toBe('Use <code>&lt;!-- comment --&gt;</code> syntax')
+    })
+
+    it('strips HTML comments outside backtick spans', () => {
+      const processed = useMarkdown({ text: '`<div>` <!-- badge --> is an element' })
+      expect(processed.value).toBe('<code>&lt;div&gt;</code>  is an element')
+    })
+  })
 })

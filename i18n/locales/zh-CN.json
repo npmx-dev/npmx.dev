@@ -1,21 +1,42 @@
 {
+  "$schema": "../schema.json",
   "seo": {
     "home": {
-      "title": "npmx - 更好的 npm 仓库浏览工具",
-      "description": "更好的 npm 仓库浏览工具。通过更现代化的用户界面搜索，浏览，并探索软件包。"
+      "title": "npmx - npm 仓库的包浏览器",
+      "description": "一个快速、现代的 npm 仓库浏览工具。通过现代化界面，轻松搜索、浏览和探索软件包。"
     }
   },
   "built_at": "构建于 {0}",
   "alt_logo": "npmx 标志",
-  "tagline": "更好的 npm 仓库浏览工具",
+  "tagline": "npm 仓库的快速、现代浏览器工具",
   "non_affiliation_disclaimer": "不与 npm, Inc. 有任何隶属关系",
   "trademark_disclaimer": "npm 是 npm, Inc. 的注册商标。本网站不与 npm, Inc. 有任何隶属关系。",
   "footer": {
     "about": "关于",
+    "blog": "博客",
     "docs": "文档",
     "source": "源码",
     "social": "社交媒体",
-    "chat": "聊天"
+    "chat": "聊天",
+    "builders_chat": "构建者",
+    "keyboard_shortcuts": "键盘快捷键"
+  },
+  "shortcuts": {
+    "section": {
+      "global": "全局",
+      "search": "搜索",
+      "package": "包"
+    },
+    "focus_search": "聚焦搜索",
+    "show_kbd_hints": "高亮键盘提示",
+    "settings": "打开设置",
+    "compare": "打开比较",
+    "compare_from_package": "打开比较（使用当前包预填充）",
+    "navigate_results": "导航结果",
+    "go_to_result": "跳转到结果",
+    "open_code_view": "打开代码视图",
+    "open_docs": "打开文档",
+    "disable_shortcuts": "你可以在{settings}中禁用快捷键。"
   },
   "search": {
     "label": "搜索 npm 包",
@@ -23,8 +44,10 @@
     "button": "搜索",
     "searching": "搜索中…",
     "found_packages": "共找到 {count} 个包",
+    "found_packages_sorted": "正在排序前 {count} 个结果",
     "updating": "（更新中…）",
     "no_results": "未找到匹配“{query}”的包",
+    "rate_limited": "已达到 npm 请求限制，请稍后再试",
     "title": "搜索",
     "title_search": "搜索：{search}",
     "title_packages": "搜索包",
@@ -35,13 +58,20 @@
     "claim_button": "声明“{name}”",
     "want_to_claim": "想要声明这个包名吗？",
     "start_typing": "输入以搜索软件包",
+    "algolia_disclaimer": "由 Algolia 提供支持",
     "exact_match": "精确匹配",
     "suggestion": {
       "user": "用户",
       "org": "组织",
       "view_user_packages": "查看该用户的包",
       "view_org_packages": "查看该组织的包"
-    }
+    },
+    "instant_search": "即时搜索",
+    "instant_search_on": "已开启",
+    "instant_search_off": "已关闭",
+    "instant_search_turn_on": "开启",
+    "instant_search_turn_off": "关闭",
+    "instant_search_advisory": "{label} {state} — {action}"
   },
   "nav": {
     "main_navigation": "主页",
@@ -55,6 +85,31 @@
     "links": "链接",
     "tap_to_search": "点击搜索"
   },
+  "blog": {
+    "title": "博客",
+    "heading": "博客",
+    "meta_description": "来自 npmx 社区的见解与更新",
+    "author": {
+      "view_profile": "在 Bluesky 上查看 {name} 的资料"
+    },
+    "draft_badge": "草稿",
+    "draft_banner": "这是一篇未发布的草稿。内容可能不完整或包含不准确的信息。",
+    "atproto": {
+      "view_on_bluesky": "在 Bluesky 上查看",
+      "reply_on_bluesky": "在 Bluesky 上回复",
+      "likes_on_bluesky": "Bluesky 上的点赞",
+      "like_or_reply_on_bluesky": "在 Bluesky 上点赞此帖子或发表评论",
+      "no_comments_yet": "暂无评论。",
+      "could_not_load_comments": "无法加载评论。",
+      "comments": "评论",
+      "loading_comments": "正在加载评论...",
+      "updating": "更新中...",
+      "reply_count": "{count} 条回复 | {count} 条回复",
+      "like_count": "{count} 个赞 | {count} 个赞",
+      "repost_count": "{count} 次转发 | {count} 次转发",
+      "more_replies": "还有 {count} 条回复... | 还有 {count} 条回复..."
+    }
+  },
   "settings": {
     "title": "设置",
     "tagline": "定制你的 npmx 体验",
@@ -62,8 +117,20 @@
     "sections": {
       "appearance": "外观",
       "display": "显示",
-      "language": "语言"
+      "search": "数据来源",
+      "language": "语言",
+      "keyboard_shortcuts": "快捷键"
     },
+    "data_source": {
+      "label": "数据来源",
+      "description": "选择 npmx 从哪里获取搜索数据。单独的包页面始终直接使用 npm registry。",
+      "npm": "npm Registry",
+      "npm_description": "直接从 npm 官方注册表获取搜索、组织和用户列表。权威可靠，但速度可能较慢。",
+      "algolia": "Algolia",
+      "algolia_description": "使用 Algolia 来实现更快的搜索，适用于组织页和用户页。"
+    },
+    "instant_search": "即时搜索",
+    "instant_search_description": "导航到搜索页面并在输入时更新结果。",
     "relative_dates": "相对时间",
     "include_types": "在安装时包含 {'@'}types",
     "include_types_description": "为未提供类型定义的包自动添加 {'@'}types 包到安装命令",
@@ -78,7 +145,9 @@
     "accent_colors": "强调色",
     "clear_accent": "清除强调色",
     "translation_progress": "翻译进度",
-    "background_themes": "背景色调"
+    "background_themes": "背景色调",
+    "keyboard_shortcuts_enabled": "启用快捷键",
+    "keyboard_shortcuts_enabled_description": "如果某些快捷键与其他浏览器或系统快捷键冲突，可以选择将其禁用。"
   },
   "i18n": {
     "missing_keys": "{count} 项缺少翻译",
@@ -88,6 +157,13 @@
     "edit_on_github": "在 GitHub 上编辑",
     "view_guide": "翻译指南"
   },
+  "error": {
+    "401": "未授权",
+    "404": "很抱歉，页面未找到",
+    "500": "服务器内部错误",
+    "503": "服务不可用",
+    "default": "抱歉，出现了一些问题"
+  },
   "common": {
     "loading": "加载中…",
     "loading_more": "加载更多中…",
@@ -95,13 +171,13 @@
     "end_of_results": "没有更多结果",
     "try_again": "再试一次",
     "close": "关闭",
+    "or": "或",
     "retry": "重试",
     "copy": "复制",
     "copied": "已复制！",
     "skip_link": "跳转到主界面",
     "warnings": "警告：",
     "go_back_home": "返回首页",
-    "view_on_npm": "在 npm 上查看",
     "per_week": "/ 周",
     "vanity_downloads_hint": "累计下载量：未显示包 | 累计下载量：显示的包 | 累计下载量：{count} 个显示的包的总和",
     "sort": {
@@ -109,21 +185,51 @@
       "role": "角色",
       "members": "成员"
     },
-    "scroll_to_top": "回到顶部"
+    "scroll_to_top": "回到顶部",
+    "cancel": "取消",
+    "save": "保存",
+    "edit": "编辑",
+    "error": "加载出错",
+    "view_on": {
+      "npm": "在 npm 上查看",
+      "github": "在 GitHub 上查看"
+    }
+  },
+  "profile": {
+    "display_name": "显示名称",
+    "description": "简介",
+    "no_description": "暂无简介",
+    "website": "网站",
+    "website_placeholder": "https://example.com",
+    "likes": "喜欢",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "{handle} 的 npmx 个人资料",
+    "not_found": "未找到个人资料",
+    "not_found_message": "找不到 {handle} 的个人资料。",
+    "invite": {
+      "message": "看起来他们还没有使用 npmx，去邀请一下？",
+      "share_button": "分享到 Bluesky",
+      "compose_text": "嗨 {'@'}{handle}！您用过 npmx.dev 吗？它是一个快速、现代且开源的 npm registry 浏览器。\nhttps://npmx.dev"
+    }
   },
   "package": {
-    "not_found": "没有找到包",
-    "not_found_message": "找不到这个包。",
-    "no_description": "没有提供描述",
-    "not_latest": "（不是最新）",
-    "verified_provenance": "已验证的来源",
-    "view_permalink": "查看这个版本的链接",
+    "not_found": "未找到包",
+    "not_found_message": "找不到此包。",
+    "no_description": "未提供描述",
+    "verified_provenance": "已验证来源",
     "navigation": "包导航",
     "copy_name": "复制包名",
     "deprecation": {
-      "package": "这个包已经被弃用。",
-      "version": "这个版本已经被弃用。",
-      "no_reason": "没有提供原因"
+      "package": "此包已废弃。",
+      "version": "此版本已废弃。",
+      "no_reason": "未提供原因"
+    },
+    "size_increase": {
+      "title_size": "自 v{version} 以来体积显著增加",
+      "title_deps": "自 v{version} 以来依赖项数量显著增加",
+      "title_both": "自 v{version} 以来体积和依赖项显著增加",
+      "size": "安装大小增加了 {percent} (增大了 {size})",
+      "deps": "{count} 个依赖项"
     },
     "replacement": {
       "title": "你可能不需要这个依赖。",
@@ -179,8 +285,8 @@
       "compare": "比较"
     },
     "likes": {
-      "like": "喜欢这个包",
-      "unlike": "取消喜欢这个包"
+      "like": "点赞此包",
+      "unlike": "取消点赞"
     },
     "docs": {
       "not_available": "文档不可用",
@@ -190,6 +296,8 @@
       "title": "开始使用",
       "pm_label": "包管理器",
       "copy_command": "复制安装命令",
+      "copy_dev_command": "复制开发依赖安装命令",
+      "dev_dependency_hint": "通常作为开发依赖项安装",
       "view_types": "查看 {package}"
     },
     "create": {
@@ -202,10 +310,9 @@
       "locally": "本地运行"
     },
     "readme": {
-      "title": "Readme",
-      "no_readme": "没有可用的 README。",
-      "view_on_github": "在 GitHub 上查看",
-      "toc_title": "大纲",
+      "title": "自述文件",
+      "no_readme": "无可用自述文件。",
+      "toc_title": "目录",
       "callout": {
         "note": "注意",
         "tip": "提示",
@@ -213,7 +320,7 @@
         "warning": "警告",
         "caution": "当心"
       },
-      "copy_as_markdown": "以 Markdown 格式复制 README"
+      "copy_as_markdown": "复制为 Markdown"
     },
     "provenance_section": {
       "title": "来源",
@@ -225,6 +332,16 @@
       "transparency_log_entry": "透明日志条目",
       "view_more_details": "查看更多详情",
       "error_loading": "加载来源详情失败"
+    },
+    "security_downgrade": {
+      "title": "信任度降低",
+      "description_to_none_provenance": "此版本发布时未包含 {provenance}。",
+      "description_to_none_trustedPublisher": "此版本发布时未包含 {trustedPublishing}。",
+      "description_to_provenance_trustedPublisher": "此版本使用了 {provenance} 但未包含 {trustedPublishing}。",
+      "fallback_install_provenance": "安装命令已锁定为 {version}，这是最后一个具有来源的版本。",
+      "fallback_install_trustedPublisher": "安装命令已锁定为 {version}，这是最后一个具有可信发布的版本。",
+      "provenance_link_text": "来源",
+      "trusted_publishing_link_text": "可信发布"
     },
     "keywords_title": "关键词",
     "compatibility": "兼容性",
@@ -247,7 +364,31 @@
       "more_tagged": "还有 {count} 个标签",
       "all_covered": "所有版本均已包含于上方标签中。",
       "deprecated_title": "{version}（已弃用）",
-      "view_all": "查看全部 {count} 个版本"
+      "view_all": "查看全部 {count} 个版本",
+      "distribution_title": "语义化版本分组",
+      "distribution_modal_title": "版本",
+      "distribution_range_date_same_year": "{endYear}年 {from} 至 {to}",
+      "distribution_range_date_multiple_years": "{startYear}年 {from} 至 {endYear}年 {to}",
+      "grouping_major": "主版本",
+      "grouping_minor": "次版本",
+      "grouping_versions_title": "版本",
+      "grouping_versions_all": "全部",
+      "grouping_versions_only_recent": "仅最近",
+      "grouping_usage_title": "使用率",
+      "grouping_usage_all": "全部",
+      "recent_versions_only_tooltip": "仅显示在过去一年内发布的版本。",
+      "show_low_usage_tooltip": "包括下载量低于 1% 的版本组。",
+      "y_axis_label": "下载量",
+      "filter_placeholder": "按语义化版本过滤（例如 ^3.0.0）",
+      "filter_invalid": "无效的语义化版本范围",
+      "filter_help": "语义化版本范围过滤帮助",
+      "filter_tooltip": "使用 {link} 过滤版本。例如，^3.0.0 显示所有 3.x 版本。",
+      "filter_tooltip_link": "语义化版本范围",
+      "no_matches": "没有匹配此范围的版本",
+      "copy_alt": {
+        "per_version_analysis": "{version} （{downloads}次）",
+        "general_description": "条形图展示了 {package_name} 在 {date_range_label} 期间的下载量分布，数据涵盖了{versions_count} 个 {semver_grouping_mode}（从{first_version}到{last_version}）。下载量最高的版本是{max_downloaded_version}，达{max_version_downloads}次。其余版本下载量：{per_version_analysis}。{watermark}。"
+      }
     },
     "dependencies": {
       "title": "依赖（{count} 个）",
@@ -257,7 +398,8 @@
       "view_vulnerabilities": "查看漏洞",
       "outdated_major": "落后 {count} 个主要版本（最新：{latest}）",
       "outdated_minor": "落后 {count} 个次要版本（最新：{latest}）",
-      "outdated_patch": "有可用的补丁更新（最新：{latest}）"
+      "outdated_patch": "有可用的补丁更新（最新：{latest}）",
+      "has_replacement": "该依赖有推荐的替代包。"
     },
     "peer_dependencies": {
       "title": "对等依赖（{count} 个）",
@@ -283,13 +425,7 @@
       "show_more": "（显示另外 {count} 个）",
       "show_less": "（收起）"
     },
-    "downloads": {
-      "title": "每周下载量",
-      "date_range": "{start} 到 {end}",
-      "date_range_multiline": "{start}\n到 {end}",
-      "analyze": "分析下载量",
-      "community_distribution": "查看社区采用分布",
-      "modal_title": "下载量",
+    "trends": {
       "granularity": "周期",
       "granularity_daily": "每日",
       "granularity_weekly": "每周",
@@ -297,12 +433,55 @@
       "granularity_yearly": "每年",
       "start_date": "开始",
       "end_date": "结束",
-      "no_data": "没有下载数据",
       "loading": "加载中…",
-      "y_axis_label": "{granularity}下载量",
+      "date_range": "{start} 至 {end}",
+      "date_range_multiline": "{start}\n至 {end}",
       "download_file": "下载 {fileType}",
       "toggle_annotator": "切换标注工具",
-      "legend_estimation": "估算值"
+      "toggle_stack_mode": "切换堆叠模式",
+      "open_options": "展开选项",
+      "close_options": "收起选项",
+      "legend_estimation": "估算值",
+      "no_data": "无可用数据",
+      "y_axis_label": "{granularity} {facet}",
+      "facet": "维度",
+      "title": "趋势",
+      "contributors_skip": "未展示的贡献者（没有 Github 仓库）：",
+      "items": {
+        "downloads": "下载量",
+        "likes": "喜欢",
+        "contributors": "贡献者"
+      },
+      "data_correction": "数据校正",
+      "average_window": "平均窗口",
+      "smoothing": "平滑处理",
+      "known_anomalies": "已知异常",
+      "known_anomalies_description": "对已知的由机器人或CI问题导致的下载峰值进行插值处理。",
+      "known_anomalies_ranges": "异常区间",
+      "known_anomalies_range": "{start} 至 {end}",
+      "known_anomalies_range_named": "{packageName}：从 {start} 到 {end}",
+      "known_anomalies_none": "此包没有已知异常。 | 这些包没有已知异常。",
+      "known_anomalies_contribute": "贡献异常数据",
+      "apply_correction": "应用校正",
+      "copy_alt": {
+        "trend_none": "平稳",
+        "trend_strong": "明显",
+        "trend_weak": "微弱",
+        "trend_undefined": "未知（数据不足）",
+        "button_label": "复制替代文本",
+        "watermark": "底部有水印 \"./npmx a fast, modern browser for the npm registry\"",
+        "analysis": "{package_name} 的下载量从{start_value}，变为{end_value}，变化趋势{trend}（平均每期变化{downloads_slope}次）",
+        "estimation": "（注：最终值为基于部分数据的估算）",
+        "estimations": "（注：最终值为基于部分数据的估算）",
+        "compare": "以下为 {packages} 的下载量对比折线图。",
+        "single_package": "{package} 的下载量折线图。",
+        "general_description": "Y 轴表示下载量，X 轴表示日期范围（{start_date} 至 {end_date}），统计周期为{granularity}。{estimation_notice} {packages_analysis}。{watermark}。"
+      }
+    },
+    "downloads": {
+      "title": "每周下载量",
+      "community_distribution": "查看社区采用分布",
+      "subtitle": "涵盖所有版本"
     },
     "install_scripts": {
       "title": "安装脚本",
@@ -339,7 +518,8 @@
         "high": "高",
         "moderate": "中等",
         "low": "低"
-      }
+      },
+      "fixed_in_title": "修复于版本 {version}"
     },
     "deprecated": {
       "label": "已弃用",
@@ -375,7 +555,6 @@
     },
     "skeleton": {
       "loading": "加载包详情",
-      "weekly": "每周",
       "maintainers": "维护者",
       "keywords": "关键词",
       "versions": "版本",
@@ -396,9 +575,6 @@
   "connector": {
     "modal": {
       "title": "本地连接器",
-      "contributor_badge": "贡献者专用",
-      "contributor_notice": "连接器尚未发布到 npm。请参阅 {link} 了解如何本地运行。",
-      "contributor_link": "贡献指南",
       "connected": "已连接",
       "connected_as_user": "已连接为 ~{user}",
       "connected_hint": "现在你可以通过 Web UI 管理包和组织。",
@@ -414,7 +590,8 @@
       "warning": "警告",
       "warning_text": "这将允许 npmx 访问你的 npm CLI。请仅连接你信任的站点。",
       "connect": "连接",
-      "connecting": "连接中…"
+      "connecting": "连接中…",
+      "auto_open_url": "自动打开认证页面"
     }
   },
   "operations": {
@@ -430,7 +607,9 @@
       "otp_placeholder": "输入 OTP 代码…",
       "otp_label": "一次性代码",
       "retry_otp": "使用 OTP 重试",
+      "retry_web_auth": "使用网页认证重试",
       "retrying": "重试中…",
+      "open_web_auth": "打开网页认证链接",
       "approve_operation": "批准操作",
       "remove_operation": "移除操作",
       "approve_all": "批准所有",
@@ -455,7 +634,7 @@
       "member_count": "{count} 个成员",
       "members_of": "团队 {team} 的成员",
       "no_members": "没有成员",
-      "remove_user": "从团队 {user} 中移除",
+      "remove_user": "将 {user} 从团队中移除",
       "username_to_add": "要添加到 {team} 的用户名",
       "username_placeholder": "用户名…",
       "add_button": "添加",
@@ -552,6 +731,7 @@
       "invalid_name": "无效的包名：",
       "available": "这个名称可用！",
       "taken": "这个名称已被占用。",
+      "missing_permission": "你没有权限将包添加到 {'@'}{scope} 下面。",
       "similar_warning": "存在相似的包 — npm 可能会拒绝这个名称：",
       "related": "相关包：",
       "scope_warning_title": "考虑使用一个限定范围的包",
@@ -599,7 +779,7 @@
   "badges": {
     "provenance": {
       "verified": "已验证",
-      "verified_title": "已验证的来源",
+      "verified_title": "已验证来源",
       "verified_via": "已验证：通过 {provider} 发布"
     },
     "jsr": {
@@ -653,8 +833,8 @@
     },
     "security_options": {
       "all": "所有包",
-      "secure": "带有警告",
-      "insecure": "不带警告"
+      "secure": "没有警告",
+      "insecure": "有警告"
     },
     "sort": {
       "label": "排序包",
@@ -702,8 +882,7 @@
       "paginated": "分页",
       "items_per_page": "每页显示",
       "per_page": "{count} / 页",
-      "all_yolo": "全部（YOLO）",
-      "showing": "第 {start} - {end} 条，共 {total} 条",
+      "showing": "第 {range} 条，共 {total} 条",
       "previous": "上一页",
       "next": "下一页",
       "nav_label": "分页"
@@ -714,9 +893,9 @@
       "showing_paginated": "已显示 {pageSize} 个，共 {count} 个包"
     },
     "table": {
-      "security_warning": "未找到包",
+      "security_warning": "安全性警告",
       "secure": "安全",
-      "no_packages": "安全性警告"
+      "no_packages": "未找到包"
     }
   },
   "about": {
@@ -746,6 +925,20 @@
         "managers": "管理器"
       }
     },
+    "sponsors": {
+      "title": "赞助商"
+    },
+    "oss_partners": {
+      "title": "开源合作伙伴"
+    },
+    "team": {
+      "title": "团队",
+      "governance": "治理",
+      "role_steward": "管理者",
+      "role_maintainer": "维护者",
+      "sponsor": "赞助",
+      "sponsor_aria": "在 GitHub 上赞助 {name}"
+    },
     "contributors": {
       "title": "{count} 位贡献者",
       "description": "npmx 是完全开源的，由令人惊叹的社区贡献者们共同构建。",
@@ -765,6 +958,11 @@
         "description": "聊天、提出问题并分享想法。",
         "cta": "加入 Discord"
       },
+      "builders": {
+        "title": "参与构建 npmx",
+        "description": "加入构建者团队，共同塑造 npmx 的未来。",
+        "cta": "加入构建者 Discord"
+      },
       "follow": {
         "title": "保持更新",
         "description": "了解 npmx 的最新动态。",
@@ -782,7 +980,7 @@
     "connect_npm_cli": "连接到 npm CLI",
     "connect_atmosphere": "连接到 Atmosphere",
     "connecting": "连接中…",
-    "ops": "ops"
+    "ops": "{count} 个操作"
   },
   "auth": {
     "modal": {
@@ -796,7 +994,9 @@
       "create_account": "创建一个新账户",
       "connect_bluesky": "使用 Bluesky 账户登录",
       "what_is_atmosphere": "什么是 Atmosphere 账户？",
-      "atmosphere_explanation": "{npmx} 使用 {atproto} 为其多项社交功能提供支持，让用户真正拥有自己的数据并使用一个账户登录所有兼容的应用。一旦创建账户，你便可以使用其他应用，例如 {bluesky} 和 {tangled}。"
+      "atmosphere_explanation": "{npmx} 使用 {atproto} 为其多项社交功能提供支持，让用户真正拥有自己的数据并使用一个账户登录所有兼容的应用。一旦创建账户，你便可以使用其他应用，例如 {bluesky} 和 {tangled}。",
+      "default_input_error": "请输入有效的 handle、DID 或完整的 PDS URL",
+      "profile": "个人资料"
     }
   },
   "header": {
@@ -829,6 +1029,7 @@
       "section_packages": "包",
       "section_facets": "维度",
       "section_comparison": "比较",
+      "copy_as_markdown": "复制为 Markdown",
       "loading": "正在加载包数据…",
       "error": "加载包数据失败。请重试。",
       "empty_title": "选择要比较的包",
@@ -932,7 +1133,71 @@
         "types_none": "无",
         "vulnerabilities_summary": "{count}（{critical} 严重/{high} 高）",
         "up_to_you": "由你决定!"
+      },
+      "trends": {
+        "title": "比较趋势"
       }
+    },
+    "file_changes": "文件更改",
+    "files_count": "{count} 个文件",
+    "lines_hidden": "已隐藏 {count} 行",
+    "file_too_large": "文件过大，无法对比",
+    "file_size_warning": "{size} 超出了 250KB 的对比限制",
+    "compare_versions": "差异",
+    "compare_versions_title": "与最新版本比较",
+    "summary": "摘要",
+    "deps_count": "{count} 个依赖",
+    "dependencies": "直接依赖项",
+    "dev_dependencies": "开发依赖项",
+    "peer_dependencies": "对等依赖项",
+    "optional_dependencies": "可选依赖项",
+    "no_dependency_changes": "无依赖项更改",
+    "file_filter_option": {
+      "all": "全部 ({count})",
+      "added": "新增 ({count})",
+      "removed": "删除 ({count})",
+      "modified": "修改 ({count})"
+    },
+    "search_files_placeholder": "搜索文件…",
+    "no_files_all": "暂无文件",
+    "no_files_search": "未找到与 \"{query}\" 匹配的文件",
+    "no_files_filtered": "没有 {filter} 的文件",
+    "filter": {
+      "added": "新增",
+      "removed": "删除",
+      "modified": "修改"
+    },
+    "files_button": "文件",
+    "select_file_prompt": "从侧边栏选择一个文件以查看其差异",
+    "close_files_panel": "关闭文件面板",
+    "filter_files_label": "按更改类型筛选文件"
+  },
+  "pds": {
+    "title": "npmx.social",
+    "meta_description": "npmx 社区的官方 AT Protocol 个人数据服务器 (PDS)。",
+    "join": {
+      "title": "加入社区",
+      "description": "无论你是第一次在 Atmosphere 上创建账户，还是迁移现有账户，这里都是你的归属。你可以迁移当前账户，而不会丢失你的账户、帖子或关注者。",
+      "migrate": "使用 PDS MOOver 迁移"
+    },
+    "server": {
+      "title": "服务器详情",
+      "location_label": "位置：",
+      "location_value": "德国，纽伦堡",
+      "infrastructure_label": "基础设施：",
+      "infrastructure_value": "托管于 Hetzner",
+      "privacy_label": "隐私：",
+      "privacy_value": "受欧盟严格的数据保护法律约束",
+      "learn_more": "了解 npmx 如何使用 Atmosphere"
+    },
+    "community": {
+      "title": "谁在这里",
+      "description": "在 {count} 个已将 npmx.social 视为家的账户中，这里有一些：",
+      "loading": "正在加载 PDS 社区...",
+      "error": "加载 PDS 社区失败。",
+      "empty": "没有社区成员可显示。",
+      "view_profile": "查看 {handle} 的资料",
+      "new_accounts": "...以及 {count} 个新加入 Atmosphere 的账户"
     }
   },
   "privacy_policy": {
@@ -1013,6 +1278,36 @@
     "changes": {
       "title": "本政策的变更",
       "p1": "我们可能会不时更新本隐私政策。任何更改都将发布在此页面上，并附有更新的修订日期。"
+    }
+  },
+  "a11y": {
+    "title": "无障碍",
+    "footer_title": "无障碍",
+    "welcome": "我们希望 {app} 能够被尽可能多的人使用。",
+    "approach": {
+      "title": "我们的做法",
+      "p1": "我们尝试遵循 Web 内容无障碍指南（WCAG）2.2，并在构建功能时将其作为参考。我们不声称完全符合任何级别的 WCAG——无障碍是一个持续的过程，总是有更多的工作要做。",
+      "p2": "此站点是一个 {about}。无障碍改进是我们常规开发的一部分，逐步进行。",
+      "about_link": "开源、社区驱动的项目"
+    },
+    "measures": {
+      "title": "具体措施",
+      "p1": "我们在全站致力于落实以下措施：",
+      "li1": "在适当时使用语义化 HTML 和 ARIA 属性。",
+      "li2": "使用相对字号，以便用户在浏览器中调整。",
+      "li3": "支持全站键盘导航。",
+      "li4": "遵循 prefers-reduced-motion 和 prefers-color-scheme 媒体查询。",
+      "li5": "设计时确保足够的颜色对比度。",
+      "li6": "确保在禁用 JavaScript 时仍可访问基本内容（部分交互功能除外）。"
+    },
+    "limitations": {
+      "title": "已知限制",
+      "p1": "网站的某些部分，特别是第三方内容（如包的自述文件），可能不符合无障碍标准。我们正在努力改善这些问题。"
+    },
+    "contact": {
+      "title": "反馈",
+      "p1": "如果你在 {app} 上遇到无障碍访问问题，请在我们的 {link} 上提交 Issue 反馈给我们。我们会认真对待这些反馈，并尽力解决。",
+      "link": "GitHub 仓库"
     }
   }
 }

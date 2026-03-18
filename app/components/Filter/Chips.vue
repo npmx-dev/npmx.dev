@@ -25,7 +25,7 @@ const emit = defineEmits<{
           :aria-label="$t('filters.remove_filter', { label: chip.label })"
           @click="emit('remove', chip)"
         >
-          <span class="i-carbon-close w-3 h-3" aria-hidden="true" />
+          <span class="i-lucide:x w-3 h-3" aria-hidden="true" />
         </button>
       </TagStatic>
     </TransitionGroup>

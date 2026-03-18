@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { createError } from 'h3'
+import { FetchError } from 'ofetch'
 import * as v from 'valibot'
 import { handleApiError } from '../../../../server/utils/error-handler'
 
@@ -43,5 +44,35 @@ describe('handleApiError', () => {
     expect(() => handleApiError(null, { message: 'Service unavailable', statusCode: 503 })).toThrow(
       expect.objectContaining({ statusCode: 503, message: 'Service unavailable' }),
     )
+  })
+
+  describe('FetchError handling', () => {
+    it('propagates the upstream statusCode from a FetchError', () => {
+      const fetchErr = new FetchError('Not Found')
+      fetchErr.statusCode = 404
+      fetchErr.statusMessage = 'Not Found'
+
+      expect(() => handleApiError(fetchErr, fallback)).toThrow(
+        expect.objectContaining({ statusCode: 404, message: 'Not Found' }),
+      )
+    })
+
+    it('propagates a 503 statusCode from a FetchError', () => {
+      const fetchErr = new FetchError('Service Unavailable')
+      fetchErr.statusCode = 503
+      fetchErr.statusMessage = 'Service Unavailable'
+
+      expect(() => handleApiError(fetchErr, fallback)).toThrow(
+        expect.objectContaining({ statusCode: 503 }),
+      )
+    })
+
+    it('falls through to the generic fallback when FetchError has no statusCode', () => {
+      const fetchErr = new FetchError('Network error')
+
+      expect(() => handleApiError(fetchErr, { message: 'Bad gateway', statusCode: 502 })).toThrow(
+        expect.objectContaining({ statusCode: 502, message: 'Bad gateway' }),
+      )
+    })
   })
 })

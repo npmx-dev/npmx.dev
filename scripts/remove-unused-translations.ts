@@ -51,6 +51,7 @@ async function run(): Promise<void> {
   const { unusedKeys } = await createI18NReport({
     vueFiles: VUE_FILES_GLOB,
     languageFiles: referenceFilePath,
+    exclude: ['$schema'],
   })
 
   if (unusedKeys.length === 0) {

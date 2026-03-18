@@ -1,4 +1,4 @@
-import { decodeHtmlEntities } from '~/utils/formatters'
+import { decodeHtmlEntities } from '#shared/utils/html'
 
 interface UseMarkdownOptions {
   text: string
@@ -8,7 +8,6 @@ interface UseMarkdownOptions {
   packageName?: string
 }
 
-/** @public */
 export function useMarkdown(options: MaybeRefOrGetter<UseMarkdownOptions>) {
   return computed(() => parseMarkdown(toValue(options)))
 }
@@ -33,9 +32,18 @@ function stripAndEscapeHtml(text: string, packageName?: string): string {
   // Then strip markdown image badges
   stripped = stripMarkdownImages(stripped)
 
-  // Then strip actual HTML tags (keep their text content)
-  // Only match tags that start with a letter or / (to avoid matching things like "a < b > c")
-  stripped = stripped.replace(/<\/?[a-z][^>]*>/gi, '')
+  // Strip actual HTML tags (keep their text content), but leave tags inside backtick spans
+  // The alternation matches a backtick span first — if that branch wins the match is kept as-is
+  stripped = stripped.replace(
+    /(`[^`]*`)|<\/?[a-z][^>]*>/gi,
+    (match, codeSpan: string | undefined) => codeSpan ?? '',
+  )
+
+  // Strip HTML comments: <!-- ... --> (including unclosed comments from truncation)
+  stripped = stripped.replace(
+    /(`[^`]*`)|<!--[\s\S]*?(-->|$)/g,
+    (match, codeSpan: string | undefined) => codeSpan ?? '',
+  )
 
   if (packageName) {
     // Trim first to handle leading/trailing whitespace from stripped HTML
@@ -80,20 +88,20 @@ function parseMarkdown({ text, packageName, plain }: UseMarkdownOptions): string
   html = html.replace(/~~(.+?)~~/g, '<del>$1</del>')
 
   // Links: [text](url) - only allow https, mailto
-  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, text, url) => {
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, textGroup, url) => {
     // In plain mode, just render the link text without the anchor
     if (plain) {
-      return text
+      return textGroup
     }
     const decodedUrl = url.replace(/&amp;/g, '&')
     try {
       const { protocol, href } = new URL(decodedUrl)
       if (['https:', 'mailto:'].includes(protocol)) {
         const safeUrl = href.replace(/"/g, '&quot;')
-        return `<a href="${safeUrl}" rel="nofollow noreferrer noopener" target="_blank">${text}</a>`
+        return `<a href="${safeUrl}" rel="nofollow noreferrer noopener" target="_blank">${textGroup}</a>`
       }
     } catch {}
-    return `${text} (${url})`
+    return `${textGroup} (${url})`
   })
 
   return html

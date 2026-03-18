@@ -6,16 +6,28 @@
  * @see https://github.com/npm/registry/blob/main/docs/REGISTRY-API.md
  */
 
-import type { Packument as PackumentWithoutLicenseObjects, PackumentVersion } from '@npm/types'
+import type {
+  Packument as PackumentWithoutLicenseObjects,
+  PackumentVersion as PackumentVersionWithoutAttestations,
+  Contact,
+} from '@npm/types'
 import type { ReadmeResponse } from './readme'
 
 // Re-export official npm types for packument/manifest
-export type { PackumentVersion, Manifest, ManifestVersion, PackageJSON } from '@npm/types'
+export type { Manifest, ManifestVersion, PackageJSON } from '@npm/types'
 
-// TODO: Remove this type override when @npm/types fixes the license field typing
-export type Packument = Omit<PackumentWithoutLicenseObjects, 'license'> & {
+type NpmTrustedPublisherEvidence = NpmSearchTrustedPublisher | NpmTrustedPublisher | true
+
+export interface PackumentVersion extends PackumentVersionWithoutAttestations {
+  _npmUser?: Contact & { trustedPublisher?: NpmTrustedPublisherEvidence }
+  dist: PackumentVersionWithoutAttestations['dist'] & { attestations?: NpmVersionAttestations }
+}
+
+export type Packument = Omit<PackumentWithoutLicenseObjects, 'license' | 'versions'> & {
   // Fix for license field being incorrectly typed in @npm/types
+  // TODO: Remove this type override when @npm/types fixes the license field typing
   license?: string | { type: string; url?: string }
+  versions: Record<string, PackumentVersion>
 }
 
 /** Install scripts info (preinstall, install, postinstall) */
@@ -30,8 +42,11 @@ export type SlimPackumentVersion = PackumentVersion & {
   installScripts?: InstallScriptsInfo
 }
 
+export type PublishTrustLevel = 'none' | 'trustedPublisher' | 'provenance'
+
 export type SlimVersion = Pick<SlimPackumentVersion, 'version' | 'deprecated' | 'tags'> & {
-  hasProvenance?: true
+  hasProvenance?: boolean
+  trustLevel?: PublishTrustLevel
 }
 
 /**
@@ -68,10 +83,13 @@ export interface SlimPackument {
   'keywords'?: string[]
   'repository'?: { type?: string; url?: string; directory?: string }
   'bugs'?: { url?: string; email?: string }
+  'storybook'?: { url: string }
   /** current version */
   'requestedVersion': SlimPackumentVersion | null
   /** Only includes dist-tag versions (with installScripts info added per version) */
   'versions': Record<string, SlimVersion>
+  /** Lightweight security metadata for all versions */
+  'securityVersions'?: PackageVersionInfo[]
 }
 
 /**
@@ -81,6 +99,7 @@ export interface PackageVersionInfo {
   version: string
   time?: string
   hasProvenance: boolean
+  trustLevel?: PublishTrustLevel
   deprecated?: string
 }
 
@@ -109,8 +128,8 @@ export interface NpmSearchResponse {
 
 export interface NpmSearchResult {
   package: NpmSearchPackage
-  score: NpmSearchScore
-  searchScore: number
+  score?: NpmSearchScore
+  searchScore?: number
   /** Download counts (weekly/monthly) */
   downloads?: {
     weekly?: number
@@ -215,7 +234,6 @@ export interface NpmVersionDist {
 /**
  * Parsed provenance details for display (from attestation bundle SLSA predicate).
  * Used by the provenance API and PackageProvenanceSection.
- * @public
  */
 export interface ProvenanceDetails {
   /** Provider ID (e.g. "github", "gitlab") */
@@ -337,7 +355,9 @@ export interface PackageFileTree {
   path: string
   /** Node type */
   type: 'file' | 'directory'
-  /** File size in bytes (only for files) */
+  /** File hash (only for files) */
+  hash?: string
+  /** Node size in bytes (file size or recursive directory total) */
   size?: number
   /** Child nodes (only for directories) */
   children?: PackageFileTree[]
@@ -361,6 +381,7 @@ export interface PackageFileContentResponse {
   version: string
   path: string
   language: string
+  contentType: string | null
   content: string
   html: string
   lines: number
@@ -378,4 +399,27 @@ export interface MinimalPackument {
   'dist-tags'?: Record<string, string>
   'time': Record<string, string>
   'maintainers'?: NpmPerson[]
+}
+
+/**
+ * Lightweight package metadata returned by /api/registry/package-meta/.
+ * Contains only the fields needed for search result cards, extracted
+ * server-side from the full packument + downloads API.
+ */
+export interface PackageMetaResponse {
+  name: string
+  version: string
+  description?: string
+  keywords?: string[]
+  license?: string
+  date: string
+  links: {
+    npm: string
+    homepage?: string
+    repository?: string
+    bugs?: string
+  }
+  author?: NpmPerson
+  maintainers?: NpmPerson[]
+  weeklyDownloads?: number
 }

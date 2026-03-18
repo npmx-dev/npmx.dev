@@ -3,7 +3,6 @@ import { ref } from 'vue'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import PackageSelector from '~/components/Compare/PackageSelector.vue'
 
-// Mock $fetch for useNpmSearch
 const mockFetch = vi.fn()
 vi.stubGlobal('$fetch', mockFetch)
 
@@ -55,7 +54,7 @@ describe('PackageSelector', () => {
 
       const removeButtons = component
         .findAll('button')
-        .filter(b => b.find('.i-carbon\\:close').exists())
+        .filter(b => b.find('.i-lucide\\:x').exists())
       expect(removeButtons.length).toBe(2)
     })
 
@@ -66,9 +65,7 @@ describe('PackageSelector', () => {
         },
       })
 
-      const removeButton = component
-        .findAll('button')
-        .find(b => b.find('.i-carbon\\:close').exists())
+      const removeButton = component.findAll('button').find(b => b.find('.i-lucide\\:x').exists())
       await removeButton!.trigger('click')
 
       const emitted = component.emitted('update:modelValue')
@@ -118,16 +115,6 @@ describe('PackageSelector', () => {
       })
       input = component.find('input')
       expect(input.attributes('placeholder')).toBeTruthy()
-    })
-
-    it('has search icon', async () => {
-      const component = await mountSuspended(PackageSelector, {
-        props: {
-          modelValue: [],
-        },
-      })
-
-      expect(component.find('.i-carbon\\:search').exists()).toBe(true)
     })
   })
 

@@ -1,20 +1,58 @@
 <script setup lang="ts">
 import { VueUiSparkline } from 'vue-data-ui/vue-ui-sparkline'
 import { useCssVariables } from '~/composables/useColors'
+import type { WeeklyDataPoint } from '~/types/chart'
+import { applyDataCorrection } from '~/utils/chart-data-correction'
 import { OKLCH_NEUTRAL_FALLBACK, lightenOklch } from '~/utils/colors'
+import { applyBlocklistCorrection } from '~/utils/download-anomalies'
+import type { RepoRef } from '#shared/utils/git-providers'
+import type { VueUiSparklineConfig, VueUiSparklineDatasetItem } from 'vue-data-ui'
+import { onKeyDown } from '@vueuse/core'
+
+import('vue-data-ui/style.css')
 
 const props = defineProps<{
   packageName: string
   createdIso: string | null
+  repoRef?: RepoRef | null | undefined
 }>()
+
+const router = useRouter()
+const route = useRoute()
+const { settings } = useSettings()
 
 const chartModal = useModal('chart-modal')
 const hasChartModalTransitioned = shallowRef(false)
-const isChartModalOpen = shallowRef(false)
+
+const modalTitle = computed(() => {
+  const facet = route.query.facet as string | undefined
+  if (facet === 'likes') return $t('package.trends.items.likes')
+  if (facet === 'contributors') return $t('package.trends.items.contributors')
+  return $t('package.trends.items.downloads')
+})
+
+const modalSubtitle = computed(() => {
+  const facet = route.query.facet as string | undefined
+  if (facet === 'likes' || facet === 'contributors') return undefined
+  return $t('package.downloads.subtitle')
+})
+
+const isChartModalOpen = shallowRef<boolean>(false)
 
 function handleModalClose() {
   isChartModalOpen.value = false
   hasChartModalTransitioned.value = false
+
+  router.replace({
+    query: {
+      ...route.query,
+      modal: undefined,
+      granularity: undefined,
+      end: undefined,
+      start: undefined,
+      facet: undefined,
+    },
+  })
 }
 
 function handleModalTransitioned() {
@@ -86,7 +124,7 @@ const pulseColor = computed(() => {
   return isDarkMode.value ? accent.value : lightenOklch(accent.value, 0.5)
 })
 
-const weeklyDownloads = shallowRef<WeeklyDownloadPoint[]>([])
+const weeklyDownloads = shallowRef<WeeklyDataPoint[]>([])
 const isLoadingWeeklyDownloads = shallowRef(true)
 const hasWeeklyDownloads = computed(() => weeklyDownloads.value.length > 0)
 
@@ -95,6 +133,14 @@ async function openChartModal() {
 
   isChartModalOpen.value = true
   hasChartModalTransitioned.value = false
+
+  await router.replace({
+    query: {
+      ...route.query,
+      modal: 'chart',
+    },
+  })
+
   // ensure the component renders before opening the dialog
   await nextTick()
   await nextTick()
@@ -111,7 +157,7 @@ async function loadWeeklyDownloads() {
       () => props.createdIso,
       () => ({ granularity: 'week' as const, weeks: 52 }),
     )
-    weeklyDownloads.value = (result as WeeklyDownloadPoint[]) ?? []
+    weeklyDownloads.value = (result as WeeklyDataPoint[]) ?? []
   } catch {
     weeklyDownloads.value = []
   } finally {
@@ -119,8 +165,16 @@ async function loadWeeklyDownloads() {
   }
 }
 
-onMounted(() => {
-  loadWeeklyDownloads()
+onMounted(async () => {
+  await loadWeeklyDownloads()
+
+  if (route.query.modal === 'chart') {
+    isChartModalOpen.value = true
+  }
+
+  if (isChartModalOpen.value && hasWeeklyDownloads.value) {
+    openChartModal()
+  }
 })
 
 watch(
@@ -128,10 +182,24 @@ watch(
   () => loadWeeklyDownloads(),
 )
 
-const dataset = computed(() =>
-  weeklyDownloads.value.map(d => ({
-    value: d?.downloads ?? 0,
-    period: $t('package.downloads.date_range', {
+const correctedDownloads = computed<WeeklyDataPoint[]>(() => {
+  let data = weeklyDownloads.value as WeeklyDataPoint[]
+  if (!data.length) return data
+  if (settings.value.chartFilter.anomaliesFixed) {
+    data = applyBlocklistCorrection({
+      data,
+      packageName: props.packageName,
+      granularity: 'weekly',
+    }) as WeeklyDataPoint[]
+  }
+  data = applyDataCorrection(data, settings.value.chartFilter) as WeeklyDataPoint[]
+  return data
+})
+
+const dataset = computed<VueUiSparklineDatasetItem[]>(() =>
+  correctedDownloads.value.map(d => ({
+    value: d?.value ?? 0,
+    period: $t('package.trends.date_range', {
       start: d.weekStart ?? '-',
       end: d.weekEnd ?? '-',
     }),
@@ -140,7 +208,110 @@ const dataset = computed(() =>
 
 const lastDatapoint = computed(() => dataset.value.at(-1)?.period ?? '')
 
-const config = computed(() => {
+const showPulse = shallowRef(true)
+const keyboardShortcuts = useKeyboardShortcuts()
+
+const cheatCode = [
+  'arrowup',
+  'arrowright',
+  'arrowleft',
+  'arrowup',
+  'arrowleft',
+  'arrowright',
+] as const
+
+type CheatKey = (typeof cheatCode)[number]
+
+const easterEgg = shallowRef<CheatKey[]>([])
+let resetTimeout: ReturnType<typeof setTimeout> | undefined
+const easterEggResetDelay = 1500
+
+function resetEasterEgg() {
+  easterEgg.value = []
+  clearTimeout(resetTimeout)
+  resetTimeout = undefined
+}
+
+function pushEasterEggKey(key: CheatKey) {
+  clearTimeout(resetTimeout)
+  resetTimeout = setTimeout(resetEasterEgg, easterEggResetDelay)
+
+  const nextIndex = easterEgg.value.length
+  const expectedKey = cheatCode[nextIndex]
+  // Reset if the position is wrong
+  if (!expectedKey || expectedKey !== key) {
+    resetEasterEgg()
+    return
+  }
+
+  easterEgg.value.push(key)
+
+  // Match! reset & trigger
+  if (easterEgg.value.length === cheatCode.length) {
+    resetEasterEgg()
+    layEgg()
+  }
+}
+
+onKeyDown(
+  'ArrowUp',
+  e => {
+    if (!keyboardShortcuts.value) return
+    pushEasterEggKey('arrowup')
+  },
+  { dedupe: true },
+)
+
+onKeyDown(
+  'ArrowRight',
+  e => {
+    if (!keyboardShortcuts.value) return
+    pushEasterEggKey('arrowright')
+  },
+  { dedupe: true },
+)
+
+onKeyDown(
+  'ArrowLeft',
+  e => {
+    if (!keyboardShortcuts.value) return
+    pushEasterEggKey('arrowleft')
+  },
+  { dedupe: true },
+)
+
+onBeforeUnmount(() => {
+  resetEasterEgg()
+  clearTimeout(eggPulseTimeout)
+  eggPulseTimeout = undefined
+})
+
+const eggPulse = ref(false)
+
+let eggPulseTimeout: ReturnType<typeof setTimeout> | undefined
+
+function playEggPulse() {
+  eggPulse.value = false
+  void document.documentElement.offsetHeight
+  eggPulse.value = true
+
+  clearTimeout(eggPulseTimeout)
+
+  eggPulseTimeout = setTimeout(() => {
+    eggPulse.value = false
+  }, 900)
+}
+
+function layEgg() {
+  showPulse.value = false
+  nextTick(() => {
+    showPulse.value = true
+    settings.value.enableGraphPulseLooping = !settings.value.enableGraphPulseLooping
+    playEggPulse()
+  })
+}
+
+const config = computed<VueUiSparklineConfig>(() => {
   return {
     theme: 'dark',
     /**
@@ -175,7 +346,7 @@ const config = computed(() => {
         opacity: 10,
       },
       dataLabel: {
-        offsetX: -10,
+        offsetX: -12,
         fontSize: 28,
         bold: false,
         color: colors.value.fg,
@@ -183,14 +354,14 @@ const config = computed(() => {
       line: {
         color: colors.value.borderHover,
         pulse: {
-          show: true, // the pulse will not show if prefers-reduced-motion (enforced by vue-data-ui)
-          loop: true, // runs only once if false
+          show: showPulse.value, // the pulse will not show if prefers-reduced-motion (enforced by vue-data-ui)
+          loop: settings.value.enableGraphPulseLooping,
           radius: 1.5,
-          color: pulseColor.value,
+          color: pulseColor.value!,
           easing: 'ease-in-out',
           trail: {
             show: true,
-            length: 20,
+            length: 30,
             opacity: 0.75,
           },
         },
@@ -200,7 +371,7 @@ const config = computed(() => {
         stroke: isDarkMode.value ? 'oklch(0.985 0 0)' : 'oklch(0.145 0 0)',
       },
       title: {
-        text: lastDatapoint.value,
+        text: String(lastDatapoint.value),
         fontSize: 12,
         color: colors.value.fgSubtle,
         bold: false,
@@ -209,6 +380,12 @@ const config = computed(() => {
         strokeDasharray: 0,
         color: isDarkMode.value ? 'oklch(0.985 0 0)' : colors.value.fgSubtle,
       },
+      padding: {
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+      },
     },
   }
 })
@@ -216,21 +393,26 @@ const config = computed(() => {
 
 <template>
   <div class="space-y-8">
-    <CollapsibleSection id="downloads" :title="$t('package.downloads.title')">
+    <CollapsibleSection
+      id="downloads"
+      :title="$t('package.downloads.title')"
+      :subtitle="$t('package.downloads.subtitle')"
+    >
       <template #actions>
         <ButtonBase
           v-if="hasWeeklyDownloads"
           type="button"
           @click="openChartModal"
           class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 focus-visible:outline-accent/70 rounded"
-          :title="$t('package.downloads.analyze')"
-          classicon="i-carbon:data-analytics"
+          :title="$t('package.trends.title')"
+          classicon="i-lucide:chart-line"
         >
-          <span class="sr-only">{{ $t('package.downloads.analyze') }}</span>
+          <span class="sr-only">{{ $t('package.trends.title') }}</span>
         </ButtonBase>
+        <span v-else-if="isLoadingWeeklyDownloads" class="min-w-6 min-h-6 -m-1 p-1" />
       </template>
 
-      <div class="w-full overflow-hidden">
+      <div class="w-full h-[76px] egg-pulse-target" :class="{ 'egg-pulse': eggPulse }">
         <template v-if="isLoadingWeeklyDownloads || hasWeeklyDownloads">
           <ClientOnly>
             <VueUiSparkline class="w-full max-w-xs" :dataset :config>
@@ -240,26 +422,21 @@ const config = computed(() => {
               </template>
             </VueUiSparkline>
             <template #fallback>
-              <!-- Skeleton matching sparkline layout: title row + chart with data label -->
-              <div class="min-h-[75.195px]">
-                <!-- Title row: date range (24px height) -->
+              <!-- Skeleton matching VueUiSparkline layout (title 24px + SVG aspect 500:80) -->
+              <div class="max-w-xs">
+                <!-- Title row: fontSize * 2 = 24px -->
                 <div class="h-6 flex items-center ps-3">
                   <SkeletonInline class="h-3 w-36" />
                 </div>
-                <!-- Chart area: data label left, sparkline right -->
+                <!-- Chart area: matches SVG viewBox 500:80 -->
                 <div class="aspect-[500/80] flex items-center">
-                  <!-- Data label (covers ~42% width) -->
+                  <!-- Data label (covers ~42% width, matching dataLabel.offsetX) -->
                   <div class="w-[42%] flex items-center ps-0.5">
                     <SkeletonInline class="h-7 w-24" />
                   </div>
-                  <!-- Sparkline area (~58% width) -->
-                  <div class="flex-1 flex items-end gap-0.5 h-4/5 pe-3">
-                    <SkeletonInline
-                      v-for="i in 16"
-                      :key="i"
-                      class="flex-1 rounded-sm"
-                      :style="{ height: `${25 + ((i * 7) % 50)}%` }"
-                    />
+                  <!-- Sparkline line placeholder -->
+                  <div class="flex-1 flex items-end pe-3">
+                    <SkeletonInline class="h-px w-full" />
                   </div>
                 </div>
               </div>
@@ -267,7 +444,7 @@ const config = computed(() => {
           </ClientOnly>
         </template>
         <p v-else class="py-2 text-sm font-mono text-fg-subtle">
-          {{ $t('package.downloads.no_data') }}
+          {{ $t('package.trends.no_data') }}
         </p>
       </div>
     </CollapsibleSection>
@@ -275,27 +452,29 @@ const config = computed(() => {
 
   <PackageChartModal
     v-if="isChartModalOpen && hasWeeklyDownloads"
+    :modal-title="modalTitle"
+    :modal-subtitle="modalSubtitle"
     @close="handleModalClose"
     @transitioned="handleModalTransitioned"
   >
     <!-- The Chart is mounted after the dialog has transitioned -->
     <!-- This avoids flaky behavior that hides the chart's minimap half of the time -->
     <Transition name="opacity" mode="out-in">
-      <PackageDownloadAnalytics
+      <PackageTrendsChart
         v-if="hasChartModalTransitioned"
         :weeklyDownloads="weeklyDownloads"
         :inModal="true"
         :packageName="props.packageName"
+        :repoRef="props.repoRef"
         :createdIso="createdIso"
+        permalink
+        show-facet-selector
       />
     </Transition>
 
-    <!-- This placeholder bears the same dimensions as the PackageDownloadAnalytics component -->
+    <!-- This placeholder bears the same dimensions as the PackageTrendsChart component -->
     <!-- Avoids CLS when the dialog has transitioned -->
-    <div
-      v-if="!hasChartModalTransitioned"
-      class="w-full aspect-[390/634.5] sm:aspect-[718/622.797]"
-    />
+    <div v-if="!hasChartModalTransitioned" class="w-full aspect-[390/634.5] sm:aspect-[718/647]" />
   </PackageChartModal>
 </template>
 
@@ -321,10 +500,56 @@ const config = computed(() => {
 .vue-ui-sparkline-title span {
   padding: 0 !important;
   letter-spacing: 0.04rem;
+  @apply font-mono;
 }
+
 .vue-ui-sparkline text {
   font-family:
     Geist Mono,
     monospace !important;
+}
+
+.egg-pulse-target {
+  transform-origin: center;
+  will-change: transform;
+}
+
+.egg-pulse {
+  animation: egg-heartbeat 900ms ease-in-out 0ms 1;
+}
+
+/* 3 heart pulses */
+@keyframes egg-heartbeat {
+  0% {
+    transform: scale(1);
+  }
+  10% {
+    transform: scale(1.1);
+  }
+  20% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.03);
+  }
+  45% {
+    transform: scale(1);
+  }
+  60% {
+    transform: scale(1.01);
+  }
+  70% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .egg-pulse {
+    animation: none !important;
+    transform: none !important;
+  }
 }
 </style>

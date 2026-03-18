@@ -260,6 +260,25 @@ describe('useInstallCommand', () => {
       version.value = '18.2.0'
       expect(installCommand.value).toBe('npm install react@18.2.0')
     })
+
+    it('should prefer installVersionOverride when provided', () => {
+      const requestedVersion = shallowRef<string | null>(null)
+      const installVersionOverride = shallowRef<string | null>('1.0.0')
+
+      const { installCommand } = useInstallCommand(
+        'foo',
+        requestedVersion,
+        null,
+        null,
+        installVersionOverride,
+      )
+
+      expect(installCommand.value).toBe('npm install foo@1.0.0')
+
+      installVersionOverride.value = null
+      requestedVersion.value = '2.0.0'
+      expect(installCommand.value).toBe('npm install foo@2.0.0')
+    })
   })
 
   describe('copyInstallCommand', () => {

@@ -259,7 +259,7 @@ watch(lastExecutionTime, () => {
     <!-- Header -->
     <div class="flex items-center justify-start p-4 border-b border-border">
       <h2 id="teams-heading" class="font-mono text-sm font-medium flex items-center gap-2">
-        <span class="i-carbon:group w-4 h-4 text-fg-muted" aria-hidden="true" />
+        <span class="i-lucide:users w-4 h-4 text-fg-muted" aria-hidden="true" />
         {{ $t('org.teams.title') }}
         <span v-if="teams.length > 0" class="text-fg-muted">({{ teams.length }})</span>
       </h2>
@@ -272,7 +272,7 @@ watch(lastExecutionTime, () => {
         @click="loadTeams"
       >
         <span
-          class="i-carbon:renew w-4 h-4"
+          class="i-lucide:refresh-ccw w-4 h-4"
           :class="{ 'animate-spin': isLoadingTeams }"
           aria-hidden="true"
         />
@@ -283,18 +283,19 @@ watch(lastExecutionTime, () => {
     <div class="flex items-center gap-2 p-3 border-b border-border bg-bg">
       <div class="flex-1 relative">
         <span
-          class="absolute inset-is-2 top-1/2 -translate-y-1/2 i-carbon:search w-3.5 h-3.5 text-fg-subtle"
+          class="absolute inset-is-2 top-1/2 -translate-y-1/2 i-lucide:search w-3.5 h-3.5 text-fg-subtle"
           aria-hidden="true"
         />
         <label for="teams-search" class="sr-only">{{ $t('org.teams.filter_label') }}</label>
-        <input
+        <InputBase
           id="teams-search"
           v-model="searchQuery"
           type="search"
           name="teams-search"
           :placeholder="$t('org.teams.filter_placeholder')"
-          v-bind="noCorrect"
-          class="w-full ps-7 pe-2 py-1.5 font-mono text-sm bg-bg-subtle border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-accent focus-visible:(outline-2 outline-accent/70)"
+          no-correct
+          class="w-full min-w-25 ps-7"
+          size="medium"
         />
       </div>
       <div
@@ -327,10 +328,7 @@ watch(lastExecutionTime, () => {
 
     <!-- Loading state -->
     <div v-if="isLoadingTeams && teams.length === 0" class="p-8 text-center">
-      <span
-        class="i-carbon:rotate-180 w-5 h-5 text-fg-muted motion-safe:animate-spin mx-auto"
-        aria-hidden="true"
-      />
+      <span class="i-svg-spinners:ring-resize w-5 h-5 text-fg-muted mx-auto" aria-hidden="true" />
       <p class="font-mono text-sm text-fg-muted mt-2">{{ $t('org.teams.loading') }}</p>
     </div>
 
@@ -370,7 +368,7 @@ watch(lastExecutionTime, () => {
             <span
               class="w-4 h-4 transition-transform duration-200 rtl-flip"
               :class="[
-                expandedTeams.has(teamName) ? 'i-carbon:chevron-down' : 'i-carbon:chevron-right',
+                expandedTeams.has(teamName) ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right',
                 'text-fg-muted',
               ]"
               aria-hidden="true"
@@ -387,7 +385,7 @@ watch(lastExecutionTime, () => {
             </span>
             <span
               v-if="isLoadingUsers[teamName]"
-              class="i-carbon:rotate-180 w-3 h-3 text-fg-muted motion-safe:animate-spin"
+              class="i-svg-spinners:ring-resize w-3 h-3 text-fg-muted"
               aria-hidden="true"
             />
           </button>
@@ -398,7 +396,7 @@ watch(lastExecutionTime, () => {
             :aria-label="$t('org.teams.delete_team', { name: teamName })"
             @click.stop="handleDestroyTeam(teamName)"
           >
-            <span class="i-carbon:trash-can w-4 h-4" aria-hidden="true" />
+            <span class="i-lucide:trash w-4 h-4" aria-hidden="true" />
           </button>
         </div>
 
@@ -425,14 +423,14 @@ watch(lastExecutionTime, () => {
               >
                 ~{{ user }}
               </NuxtLink>
-              <span class="font-mono text-sm text-fg">{{ teamName }}</span>
+              <span class="font-mono text-sm text-fg mx-2">{{ teamName }}</span>
               <button
                 type="button"
                 class="p-1 text-fg-subtle hover:text-red-400 transition-colors duration-200 rounded focus-visible:outline-accent/70"
                 :aria-label="$t('org.teams.remove_user', { user })"
                 @click="handleRemoveUser(teamName, user)"
               >
-                <span class="i-carbon:close w-3.5 h-3.5" aria-hidden="true" />
+                <span class="i-lucide:x w-3.5 h-3.5" aria-hidden="true" />
               </button>
             </li>
           </ul>
@@ -446,14 +444,15 @@ watch(lastExecutionTime, () => {
               <label :for="`add-user-${teamName}`" class="sr-only">{{
                 $t('org.teams.username_to_add', { team: teamName })
               }}</label>
-              <input
+              <InputBase
                 :id="`add-user-${teamName}`"
                 v-model="newUserUsername"
                 type="text"
                 :name="`add-user-${teamName}`"
                 :placeholder="$t('org.teams.username_placeholder')"
-                v-bind="noCorrect"
-                class="flex-1 px-2 py-1 font-mono text-sm bg-bg-subtle border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-accent/70"
+                no-correct
+                class="flex-1 min-w-25"
+                size="medium"
               />
               <button
                 type="submit"
@@ -468,7 +467,7 @@ watch(lastExecutionTime, () => {
                 :aria-label="$t('org.teams.cancel_add_user')"
                 @click="showAddUserFor = null"
               >
-                <span class="i-carbon:close w-4 h-4" aria-hidden="true" />
+                <span class="i-lucide:x w-4 h-4" aria-hidden="true" />
               </button>
             </form>
           </div>
@@ -497,25 +496,26 @@ watch(lastExecutionTime, () => {
         <form class="flex items-center gap-2" @submit.prevent="handleCreateTeam">
           <div class="flex-1 flex items-center">
             <span
-              class="px-2 py-1.5 font-mono text-sm text-fg-subtle bg-bg border border-ie-0 border-border rounded-is"
+              class="px-2 py-3 leading-none font-mono text-sm text-fg-subtle bg-bg border border-ie-0 border-border rounded-is"
             >
               {{ orgName }}:
             </span>
             <label for="new-team-name" class="sr-only">{{ $t('org.teams.team_name_label') }}</label>
-            <input
+            <InputBase
               id="new-team-name"
               v-model="newTeamName"
               type="text"
               name="new-team-name"
               :placeholder="$t('org.teams.team_name_placeholder')"
-              v-bind="noCorrect"
-              class="flex-1 px-2 py-1.5 font-mono text-sm bg-bg border border-border rounded-ie text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-accent/70"
+              no-correct
+              class="flex-1 min-w-25 rounded-is-none"
+              size="medium"
             />
           </div>
           <button
             type="submit"
             :disabled="!newTeamName.trim() || isCreatingTeam"
-            class="px-3 py-1.5 font-mono text-xs text-bg bg-fg rounded transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-accent/70"
+            class="px-3 py-2 font-mono text-xs text-bg bg-fg rounded transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-accent/70"
           >
             {{ isCreatingTeam ? '…' : $t('org.teams.create_button') }}
           </button>
@@ -525,7 +525,7 @@ watch(lastExecutionTime, () => {
             :aria-label="$t('org.teams.cancel_create')"
             @click="showCreateTeam = false"
           >
-            <span class="i-carbon:close w-4 h-4" aria-hidden="true" />
+            <span class="i-lucide:x w-4 h-4" aria-hidden="true" />
           </button>
         </form>
       </div>

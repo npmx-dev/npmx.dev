@@ -15,16 +15,21 @@
 const pages = [
   '/oauth-client-metadata.json',
   '/200.html',
+  '/opensearch.xml',
   '/about',
+  '/accessibility',
+  '/blog',
   '/compare',
   '/org',
   '/package',
   '/package-code',
   '/package-docs',
+  '/pds',
   '/privacy',
   '/search',
   '/settings',
   '/manifest.webmanifest',
+  '/recharging',
 ]
 
 const cacheControl = 's-maxage=3600, stale-while-revalidate=36000'

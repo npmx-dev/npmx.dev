@@ -1,4 +1,5 @@
 import { isError, createError } from 'h3'
+import { FetchError } from 'ofetch'
 import * as v from 'valibot'
 import type { ErrorOptions } from '#shared/types/error'
 
@@ -16,6 +17,14 @@ export function handleApiError(error: unknown, fallback: ErrorOptions): never {
       error.statusMessage = fallback.statusMessage
     }
     throw error
+  }
+
+  if (error instanceof FetchError && error.statusCode) {
+    throw createError({
+      statusCode: error.statusCode,
+      statusMessage: error.statusMessage,
+      message: error.message,
+    })
   }
 
   // Handle Valibot validation errors

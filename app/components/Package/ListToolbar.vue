@@ -30,6 +30,8 @@ const props = defineProps<{
   activeFilters: FilterChip[]
   /** When true, shows search-specific UI (relevance sort, no filters) */
   searchContext?: boolean
+  /** Sort keys to force-disable (e.g. when the current provider doesn't support them) */
+  disabledSortKeys?: SortKey[]
 }>()
 
 const { t } = useI18n()
@@ -41,6 +43,7 @@ const pageSize = defineModel<PageSize>('pageSize', { required: true })
 
 const emit = defineEmits<{
   'toggleColumn': [columnId: ColumnId]
+  'toggleSelection': []
   'resetColumns': []
   'clearFilter': [chip: FilterChip]
   'clearAllFilters': []
@@ -58,27 +61,31 @@ const showingFiltered = computed(() => props.filteredCount !== props.totalCount)
 const currentSort = computed(() => parseSortOption(sortOption.value))
 
 // Get available sort keys based on context
+const disabledSet = computed(() => new Set(props.disabledSortKeys ?? []))
+
 const availableSortKeys = computed(() => {
+  const applyDisabled = (k: (typeof SORT_KEYS)[number]) => ({
+    ...k,
+    disabled: k.disabled || disabledSet.value.has(k.key),
+  })
+
   if (props.searchContext) {
-    // In search context: show relevance (enabled) and others (disabled)
-    return SORT_KEYS.filter(k => !k.searchOnly || k.key === 'relevance').map(k =>
-      Object.assign({}, k, {
-        disabled: k.key !== 'relevance',
-      }),
-    )
+    // In search context: show relevance + non-disabled sorts (downloads, updated, name)
+    return SORT_KEYS.filter(k => !k.searchOnly || k.key === 'relevance').map(applyDisabled)
   }
   // In org/user context: hide search-only sorts
-  return SORT_KEYS.filter(k => !k.searchOnly)
+  return SORT_KEYS.filter(k => !k.searchOnly).map(applyDisabled)
 })
 
 // Handle sort key change from dropdown
-function handleSortKeyChange(event: Event) {
-  const target = event.target as HTMLSelectElement
-  const newKey = target.value as SortKey
-  const config = SORT_KEYS.find(k => k.key === newKey)
-  const direction = config?.defaultDirection ?? 'desc'
-  sortOption.value = buildSortOption(newKey, direction)
-}
+const sortKeyModel = computed<SortKey>({
+  get: () => currentSort.value.key,
+  set: newKey => {
+    const config = SORT_KEYS.find(k => k.key === newKey)
+    const direction = config?.defaultDirection ?? 'desc'
+    sortOption.value = buildSortOption(newKey, direction)
+  },
+})
 
 // Toggle sort direction
 function handleToggleDirection() {
@@ -104,6 +111,8 @@ const sortKeyLabelKeys = computed<Record<SortKey, string>>(() => ({
 function getSortKeyLabelKey(key: SortKey): string {
   return sortKeyLabelKeys.value[key]
 }
+
+const { selectedPackages, clearSelectedPackages } = usePackageSelection()
 </script>
 
 <template>
@@ -141,7 +150,7 @@ function getSortKeyLabelKey(key: SortKey): string {
           $t(
             'filters.count.showing_paginated',
             {
-              pageSize: pageSize === 'all' ? $n(filteredCount) : pageSize,
+              pageSize: Math.min(pageSize, filteredCount),
               count: $n(filteredCount),
             },
             filteredCount,
@@ -151,42 +160,29 @@ function getSortKeyLabelKey(key: SortKey): string {
 
       <div class="flex-1" />
 
-      <div
-        class="flex flex-wrap items-center gap-3 sm:justify-end justify-between w-full sm:w-auto"
-      >
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
         <!-- Sort controls -->
-        <div class="flex items-center gap-1 shrink-0 order-1 sm:order-1">
+        <div class="flex items-center gap-1 shrink-0">
           <!-- Sort key dropdown -->
-          <div class="relative">
-            <label for="sort-select" class="sr-only">{{ $t('filters.sort.label') }}</label>
-            <select
-              id="sort-select"
-              :value="currentSort.key"
-              class="appearance-none bg-bg-subtle border border-border rounded-md ps-3 pe-8 py-1.5 font-mono text-sm text-fg cursor-pointer transition-colors duration-200 hover:border-border-hover"
-              @change="handleSortKeyChange"
-            >
-              <option
-                v-for="keyConfig in availableSortKeys"
-                :key="keyConfig.key"
-                :value="keyConfig.key"
-                :disabled="keyConfig.disabled"
-              >
-                {{ getSortKeyLabelKey(keyConfig.key) }}
-              </option>
-            </select>
-            <div
-              class="flex items-center absolute inset-ie-2 top-1/2 -translate-y-1/2 text-fg-subtle pointer-events-none"
-              aria-hidden="true"
-            >
-              <span class="i-carbon-chevron-down w-4 h-4" />
-            </div>
-          </div>
+          <SelectField
+            :label="$t('filters.sort.label')"
+            hidden-label
+            id="sort-select"
+            v-model="sortKeyModel"
+            :items="
+              availableSortKeys.map(keyConfig => ({
+                label: getSortKeyLabelKey(keyConfig.key),
+                value: keyConfig.key,
+                disabled: keyConfig.disabled,
+              }))
+            "
+          />
 
-          <!-- Sort direction toggle (hidden in search context) -->
+          <!-- Sort direction toggle -->
           <button
-            v-if="!searchContext"
+            v-if="!searchContext || currentSort.key !== 'relevance'"
             type="button"
-            class="p-1.5 rounded border border-border bg-bg-subtle text-fg-muted hover:text-fg hover:border-border-hover transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+            class="p-2.5 rounded-md border border-border bg-bg-subtle text-fg-muted hover:text-fg hover:border-border-hover transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
             :aria-label="$t('filters.sort.toggle_direction')"
             :title="
               currentSort.direction === 'asc'
@@ -199,8 +195,8 @@ function getSortKeyLabelKey(key: SortKey): string {
               class="w-4 h-4 block transition-transform duration-200"
               :class="
                 currentSort.direction === 'asc'
-                  ? 'i-carbon-sort-ascending'
-                  : 'i-carbon-sort-descending'
+                  ? 'i-lucide:arrow-down-narrow-wide'
+                  : 'i-lucide:arrow-down-wide-narrow'
               "
               aria-hidden="true"
             />
@@ -208,29 +204,35 @@ function getSortKeyLabelKey(key: SortKey): string {
         </div>
 
         <!-- View mode toggle - mobile (left side, row 2) -->
-        <div class="flex sm:hidden items-center gap-1 order-2">
-          <ViewModeToggle v-model="viewMode" />
-        </div>
-
-        <!-- Column picker - mobile (right side, row 2) -->
-        <ColumnPicker
-          v-if="viewMode === 'table'"
-          class="flex sm:hidden order-3"
-          :columns="columns"
-          @toggle="emit('toggleColumn', $event)"
-          @reset="emit('resetColumns')"
-        />
-
-        <!-- View mode toggle + Column picker - desktop (right side, row 1) -->
-        <div class="hidden sm:flex items-center gap-1 order-2">
-          <ViewModeToggle v-model="viewMode" />
-
+        <div class="flex flex-row-reverse sm:flex-row items-center gap-1">
           <ColumnPicker
             v-if="viewMode === 'table'"
             :columns="columns"
             @toggle="emit('toggleColumn', $event)"
             @reset="emit('resetColumns')"
           />
+
+          <ViewModeToggle v-model="viewMode" />
+        </div>
+
+        <div
+          class="flex items-center order-3 sm:border-is sm:border-fg-subtle/20 sm:ps-3"
+          v-if="selectedPackages.length"
+        >
+          <ButtonBase
+            variant="secondary"
+            @click="emit('toggleSelection')"
+            classicon="i-lucide:package-check"
+          >
+            {{ t('filters.view_selected') }} ({{ selectedPackages.length }})
+          </ButtonBase>
+          <button
+            @click="clearSelectedPackages"
+            aria-label="Close action bar"
+            class="flex items-center ms-2"
+          >
+            <span class="i-lucide:x text-sm" />
+          </button>
         </div>
       </div>
     </div>

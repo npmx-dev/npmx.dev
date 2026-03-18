@@ -40,7 +40,8 @@ describe('PackageWeeklyDownloadStats', () => {
     })
 
     expect(component.text()).toContain('Weekly Downloads')
-    expect(component.text()).toContain('No download data available')
+    expect(component.text()).toContain('Across all versions')
+    expect(component.text()).toContain('No data available')
   })
 
   it('shows the section when weekly downloads exist', async () => {
@@ -51,7 +52,7 @@ describe('PackageWeeklyDownloadStats', () => {
         weekEnd: '2026-01-07',
         timestampStart: 1767225600000,
         timestampEnd: 1767744000000,
-        downloads: 42,
+        value: 42,
       },
     ])
 
@@ -60,6 +61,7 @@ describe('PackageWeeklyDownloadStats', () => {
     })
 
     expect(component.text()).toContain('Weekly Downloads')
-    expect(component.text()).not.toContain('No download data available')
+    expect(component.text()).toContain('Across all versions')
+    expect(component.text()).not.toContain('No data available')
   })
 })

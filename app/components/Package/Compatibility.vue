@@ -14,6 +14,8 @@ const engineIcons: Record<string, string> = {
   bun: 'i-simple-icons:bun',
   node: 'i-simple-icons:nodedotjs',
   npm: 'i-simple-icons:npm',
+  pnpm: 'i-simple-icons:pnpm',
+  yarn: 'i-simple-icons:yarn',
 }
 
 function getName(engine: string): string {
@@ -21,7 +23,7 @@ function getName(engine: string): string {
 }
 
 function getIcon(engine: string): string {
-  return engineIcons[engine] || 'i-carbon:code'
+  return engineIcons[engine] || 'i-lucide:code'
 }
 
 const sortedEngines = computed(() => {

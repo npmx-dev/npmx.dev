@@ -5,18 +5,7 @@ import { normalizeSearchParam } from '#shared/utils/url'
 const route = useRoute('~username')
 const router = useRouter()
 
-const username = computed(() => route.params.username)
-
-// Infinite scroll state
-const pageSize = 50
-const maxResults = 250 // npm API hard limit
-const currentPage = shallowRef(1)
-
-// Get initial page from URL (for scroll restoration on reload)
-const initialPage = computed(() => {
-  const p = Number.parseInt(normalizeSearchParam(route.query.page), 10)
-  return Number.isNaN(p) ? 1 : Math.max(1, p)
-})
+const username = computed(() => route.params.username.toLowerCase())
 
 // Debounced URL update for page and filter/sort
 const updateUrl = debounce((updates: { page?: number; filter?: string; sort?: string }) => {
@@ -38,48 +27,35 @@ const sortOption = shallowRef<SortOption>(
   (normalizeSearchParam(route.query.sort) as SortOption) || 'downloads',
 )
 
-// Track if we've loaded all results (one-way flag, doesn't reset)
-// Initialize to true if URL already has filter/sort params
-const hasLoadedAll = shallowRef(
-  Boolean(route.query.q) ||
-    (route.query.sort && normalizeSearchParam(route.query.sort) !== 'downloads'),
-)
-
 // Update URL when filter/sort changes (debounced)
 const debouncedUpdateUrl = debounce((filter: string, sort: string) => {
   updateUrl({ filter, sort })
 }, 300)
 
+// Load all results when user starts filtering/sorting (so client-side filter works on full set)
 watch([filterText, sortOption], ([filter, sort]) => {
-  // Once user interacts with filter/sort, load all results
-  if (!hasLoadedAll.value && (filter !== '' || sort !== 'downloads')) {
-    hasLoadedAll.value = true
+  if (filter !== '' || sort !== 'downloads') {
+    loadAll()
   }
   debouncedUpdateUrl(filter, sort)
 })
 
-// Search for packages by this maintainer
-const searchQuery = computed(() => `maintainer:${username.value}`)
-
-// Request size: load all if user has interacted with filter/sort, otherwise paginate
-const requestSize = computed(() => (hasLoadedAll.value ? maxResults : pageSize * currentPage.value))
-
+// Fetch packages (composable manages pagination & provider dispatch internally)
 const {
   data: results,
   status,
   error,
   isLoadingMore,
-  hasMore: apiHasMore,
-  fetchMore,
-} = useNpmSearch(searchQuery, () => ({
-  size: requestSize.value,
-}))
+  hasMore,
+  loadMore,
+  loadAll,
+  pageSize,
+} = useUserPackages(username)
 
-// Initialize current page from URL on mount
-onMounted(() => {
-  if (initialPage.value > 1) {
-    currentPage.value = initialPage.value
-  }
+// Get initial page from URL (for scroll restoration on reload)
+const initialPage = computed(() => {
+  const p = Number.parseInt(normalizeSearchParam(route.query.page), 10)
+  return Number.isNaN(p) ? 1 : Math.max(1, p)
 })
 
 // Get the base packages list
@@ -132,22 +108,6 @@ const totalWeeklyDownloads = computed(() =>
   filteredAndSortedPackages.value.reduce((sum, pkg) => sum + (pkg.downloads?.weekly ?? 0), 0),
 )
 
-// Check if there are potentially more results
-const hasMore = computed(() => {
-  if (!results.value) return false
-  // Don't show "load more" when we've already loaded all
-  if (hasLoadedAll.value) return false
-  // Use API's hasMore, but cap at maxResults
-  if (!apiHasMore.value) return false
-  return results.value.objects.length < maxResults
-})
-
-async function loadMore() {
-  if (isLoadingMore.value || !hasMore.value) return
-  currentPage.value++
-  await fetchMore(requestSize.value)
-}
-
 // Update URL when page changes from scrolling
 function handlePageChange(page: number) {
   updateUrl({ page, filter: filterText.value, sort: sortOption.value })
@@ -155,10 +115,8 @@ function handlePageChange(page: number) {
 
 // Reset state when username changes
 watch(username, () => {
-  currentPage.value = 1
   filterText.value = ''
   sortOption.value = 'downloads'
-  hasLoadedAll.value = false
 })
 
 useSeoMeta({
@@ -198,9 +156,9 @@ defineOgImageComponent('Default', {
               target="_blank"
               rel="noopener noreferrer"
               class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-              :title="$t('common.view_on_npm')"
+              :title="$t('common.view_on.npm')"
             >
-              <span class="i-carbon:logo-npm w-4 h-4" aria-hidden="true" />
+              <span class="i-simple-icons:npm w-4 h-4" aria-hidden="true" />
               npm
             </a>
           </nav>
@@ -208,7 +166,7 @@ defineOgImageComponent('Default', {
             class="text-fg-subtle text-xs mt-1 flex items-center gap-1.5 justify-end cursor-help"
             :title="$t('common.vanity_downloads_hint', { count: filteredCount }, filteredCount)"
           >
-            <span class="i-carbon:chart-line w-3.5 h-3.5" aria-hidden="true" />
+            <span class="i-lucide:chart-line w-3.5 h-3.5" aria-hidden="true" />
             <span class="font-mono"
               >{{ $n(totalWeeklyDownloads) }} {{ $t('common.per_week') }}</span
             >
@@ -217,14 +175,14 @@ defineOgImageComponent('Default', {
       </div>
     </header>
 
-    <!-- Loading state -->
+    <!-- Loading state (only on initial load, not when we already have data) -->
     <LoadingSpinner
-      v-if="status === 'pending' && currentPage === 1"
+      v-if="status === 'pending' && packages.length === 0 && !error"
       :text="$t('common.loading_packages')"
     />
 
     <!-- Error state -->
-    <div v-else-if="status === 'error'" role="alert" class="py-12 text-center">
+    <div v-else-if="error || status === 'error'" role="alert" class="py-12 text-center">
       <p class="text-fg-muted mb-4">
         {{ error?.message ?? $t('user.page.failed_to_load') }}
       </p>
@@ -260,7 +218,7 @@ defineOgImageComponent('Default', {
         v-else
         :results="filteredAndSortedPackages"
         :has-more="hasMore"
-        :is-loading="isLoadingMore || (status === 'pending' && currentPage > 1)"
+        :is-loading="isLoadingMore"
         :page-size="pageSize"
         :initial-page="initialPage"
         @load-more="loadMore"

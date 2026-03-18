@@ -1,14 +1,33 @@
-import { object, string, startsWith, minLength, regex, pipe } from 'valibot'
+import { boolean, object, optional, pipe, string, url } from 'valibot'
 import type { InferOutput } from 'valibot'
-import { AT_URI_REGEX } from '#shared/utils/constants'
 
-export const BlueSkyUriSchema = object({
-  uri: pipe(
-    string(),
-    startsWith('at://'),
-    minLength(10),
-    regex(AT_URI_REGEX, 'Must be a valid at:// URI'),
-  ),
+/**
+ * INFO: Validates AT Protocol createSession response
+ * Used for authenticating PDS sessions.
+ */
+export const PDSSessionSchema = object({
+  did: string(),
+  handle: string(),
+  accessJwt: string(),
+  refreshJwt: string(),
+  email: string(),
+  emailConfirmed: boolean(),
 })
 
-export type BlueSkyUri = InferOutput<typeof BlueSkyUriSchema>
+export type PDSSessionResponse = InferOutput<typeof PDSSessionSchema>
+
+export const BlogMetaRequestSchema = object({
+  url: pipe(string(), url()),
+})
+
+export type BlogMetaRequest = InferOutput<typeof BlogMetaRequestSchema>
+
+export const BlogMetaResponseSchema = object({
+  title: string(),
+  author: optional(string()),
+  description: optional(string()),
+  image: optional(string()),
+  _meta: optional(object({})),
+})
+
+export type BlogMetaResponse = InferOutput<typeof BlogMetaResponseSchema>

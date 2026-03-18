@@ -140,7 +140,7 @@ defineOgImageComponent('Default', {
           id="back-to-profile"
           class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
         >
-          <span class="i-carbon:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
+          <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
           {{ $t('user.orgs_page.back_to_profile') }}
         </NuxtLink>
       </nav>
@@ -224,7 +224,7 @@ defineOgImageComponent('Default', {
               <!-- Stats -->
               <div class="flex items-center gap-4 text-sm text-fg-muted">
                 <div class="flex items-center gap-1.5">
-                  <span class="i-carbon:cube w-4 h-4" aria-hidden="true" />
+                  <span class="i-lucide:box w-4 h-4" aria-hidden="true" />
                   <span v-if="org.packageCount !== null">
                     {{
                       $t(

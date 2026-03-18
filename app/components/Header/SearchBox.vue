@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { debounce } from 'perfect-debounce'
-import { normalizeSearchParam } from '#shared/utils/url'
-
 withDefaults(
   defineProps<{
     inputClass?: string
@@ -12,84 +9,23 @@ withDefaults(
 )
 
 const emit = defineEmits(['blur', 'focus'])
-
-const router = useRouter()
 const route = useRoute()
-
 const isSearchFocused = shallowRef(false)
 
 const showSearchBar = computed(() => {
   return route.name !== 'index'
 })
 
-// Local input value (updates immediately as user types)
-const searchQuery = shallowRef(normalizeSearchParam(route.query.q))
-
-// Pages that have their own local filter using ?q
-const pagesWithLocalFilter = new Set(['~username', 'org'])
-
-// Debounced URL update for search query
-const updateUrlQuery = debounce((value: string) => {
-  // Don't navigate away from pages that use ?q for local filtering
-  if (pagesWithLocalFilter.has(route.name as string)) {
-    return
-  }
-  if (route.name === 'search') {
-    router.replace({ query: { q: value || undefined } })
-    return
-  }
-  if (!value) {
-    return
-  }
-
-  router.push({
-    name: 'search',
-    query: {
-      q: value,
-    },
-  })
-}, 250)
-
-// Watch input and debounce URL updates
-watch(searchQuery, value => {
-  updateUrlQuery(value)
-})
-
-// Sync input with URL when navigating (e.g., back button)
-watch(
-  () => route.query.q,
-  urlQuery => {
-    // Don't sync from pages that use ?q for local filtering
-    if (pagesWithLocalFilter.has(route.name as string)) {
-      return
-    }
-    const value = normalizeSearchParam(urlQuery)
-    if (searchQuery.value !== value) {
-      searchQuery.value = value
-    }
-  },
-)
-
-function handleSearchBlur() {
-  isSearchFocused.value = false
-  emit('blur')
-}
-function handleSearchFocus() {
-  isSearchFocused.value = true
-  emit('focus')
-}
+const { model: searchQuery, startSearch } = useGlobalSearch('header')
+const hasSearchQuery = computed(() => searchQuery.value.trim().length > 0)
 
 function handleSubmit() {
-  if (pagesWithLocalFilter.has(route.name as string)) {
-    router.push({
-      name: 'search',
-      query: {
-        q: searchQuery.value,
-      },
-    })
-  } else {
-    updateUrlQuery.flush()
-  }
+  startSearch()
+}
+
+function clearSearch() {
+  searchQuery.value = ''
+  inputRef.value?.focus()
 }
 
 // Expose focus method for parent components
@@ -108,24 +44,37 @@ defineExpose({ focus })
 
       <div class="relative group" :class="{ 'is-focused': isSearchFocused }">
         <div class="search-box relative flex items-center">
-          <span
-            class="absolute inset-is-3 text-fg-subtle font-mono text-sm pointer-events-none transition-colors duration-200 motion-reduce:transition-none [.group:hover:not(:focus-within)_&]:text-fg/80 group-focus-within:text-accent z-1"
+          <kbd
+            class="absolute inset-is-3 text-fg-subtle font-mono text-sm pointer-events-none transition-colors duration-200 motion-reduce:transition-none [.group:hover:not(:focus-within)_&]:text-fg/80 group-focus-within:text-accent z-1 rounded"
+            aria-hidden="true"
           >
             /
-          </span>
+          </kbd>
 
-          <input
+          <InputBase
             id="header-search"
             ref="inputRef"
             v-model="searchQuery"
             type="search"
             name="q"
             :placeholder="$t('search.placeholder')"
-            v-bind="noCorrect"
-            class="w-full min-w-25 bg-bg-subtle border border-border rounded-md ps-7 pe-3 py-1.5 font-mono text-sm text-fg placeholder:text-fg-subtle transition-[border-color,outline-color] duration-300 hover:border-fg-subtle outline-2 outline-transparent focus:border-accent focus-visible:(outline-2 outline-accent/70)"
-            @focus="handleSearchFocus"
-            @blur="handleSearchBlur"
+            no-correct
+            class="w-full min-w-25 ps-7 pe-8"
+            @focus="isSearchFocused = true"
+            @blur="isSearchFocused = false"
+            size="small"
+            ariaKeyshortcuts="/"
           />
+          <button
+            v-if="hasSearchQuery"
+            type="button"
+            class="absolute inset-ie-2 h-6 w-6 items-center justify-center rounded text-fg-muted hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent group-focus-within:flex group-hover:inline-flex hidden"
+            @click="clearSearch"
+            aria-hidden="true"
+            tabindex="-1"
+          >
+            <span class="i-lucide:circle-x h-4 w-4" />
+          </button>
           <button type="submit" class="sr-only">{{ $t('search.button') }}</button>
         </div>
       </div>

@@ -1,0 +1,7 @@
+{
+  "projectToken": "chpt_e46907a72045a1b",
+  "onlyChanged": true,
+  "autoAcceptChanges": "main",
+  "exitZeroOnChanges": false,
+  "externals": ["public/**", "app/assets/**", ".storybook/**", "nuxt.config.ts", "uno.config.ts"]
+}

@@ -4,8 +4,6 @@ const config: KnipConfig = {
   workspaces: {
     '.': {
       entry: [
-        'app/app.vue!',
-        'app/error.vue!',
         'app/pages/**/*.vue!',
         'app/components/**/*.vue!',
         'app/components/**/*.d.vue.ts!',
@@ -27,7 +25,14 @@ const config: KnipConfig = {
         'uno-preset-rtl.ts!',
         'scripts/**/*.ts',
       ],
-      project: ['**/*.{ts,vue,cjs,mjs}', '!test/fixtures/**'],
+      project: [
+        '**/*.{ts,vue,cjs,mjs}',
+        '!test/fixtures/**',
+        '!test/test-utils/**',
+        '!test/e2e/helpers/**',
+        '!cli/src/**',
+        '!lexicons/**',
+      ],
       ignoreDependencies: [
         '@iconify-json/*',
         '@voidzero-dev/vite-plus-core',
@@ -42,17 +47,23 @@ const config: KnipConfig = {
         /** Some components import types from here, but installing it directly could lead to a version mismatch */
         'vue-router',
 
+        /** Required by @nuxtjs/i18n at runtime but not directly imported in production code */
+        '@intlify/shared',
+
         /** Oxlint plugins don't get picked up yet */
         '@e18e/eslint-plugin',
         'eslint-plugin-regexp',
+
+        /** Used in test/e2e/helpers/ which is excluded from knip project scope */
+        'h3-next',
       ],
       ignoreUnresolved: ['#components', '#oauth/config'],
     },
     'cli': {
-      project: ['src/**/*.ts!'],
+      project: ['src/**/*.ts!', '!src/mock-*.ts'],
     },
     'docs': {
-      entry: ['app/**/*.{ts,vue}'],
+      entry: ['app/**/*.{ts,vue,css}'],
       ignoreDependencies: ['docus', 'better-sqlite3', '@nuxtjs/mdc', 'nuxt!'],
     },
   },

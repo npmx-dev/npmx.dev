@@ -57,6 +57,32 @@ watch(
   },
   { immediate: true },
 )
+
+// Use Nuxt's `navigateTo` for the rendered import links
+function handleImportLinkNavigate() {
+  if (!codeRef.value) return
+
+  const anchors = codeRef.value.querySelectorAll<HTMLAnchorElement>('a.import-link')
+  anchors.forEach(anchor => {
+    // NOTE: We do not need to remove previous listeners because we re-create the entire HTML content on each html update
+    anchor.addEventListener('click', event => {
+      if (event.metaKey || event.altKey || event.ctrlKey || event.shiftKey) return
+      const href = anchor.getAttribute('href')
+      if (href) {
+        event.preventDefault()
+        navigateTo(href)
+      }
+    })
+  })
+}
+
+watch(
+  () => props.html,
+  () => {
+    nextTick(handleImportLinkNavigate)
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -67,6 +93,7 @@ watch(
       :style="{ '--line-digits': lineDigits }"
       aria-hidden="true"
     >
+      <!-- This needs to be a native <a> element, because `LinkBase` (or specifically `NuxtLink`) does not seem to work when trying to prevent default behavior (jumping to the anchor) -->
       <a
         v-for="lineNum in lineNumbers"
         :id="`L${lineNum}`"
@@ -88,7 +115,7 @@ watch(
     <!-- Code content -->
     <div class="code-content flex-1 overflow-x-auto min-w-0">
       <!-- eslint-disable vue/no-v-html -- HTML is generated server-side by Shiki -->
-      <div ref="codeRef" class="code-lines w-fit" v-html="html" />
+      <div ref="codeRef" class="code-lines min-w-full w-fit" v-html="html" />
       <!-- eslint-enable vue/no-v-html -->
     </div>
   </div>
@@ -130,7 +157,7 @@ watch(
 
 /* Highlighted lines in code content - extend full width with negative margin */
 .code-content :deep(.line.highlighted) {
-  background: rgb(234 179 8 / 0.2); /* yellow-500/20 */
+  @apply bg-yellow-500/20;
   margin: 0 -1rem;
   padding: 0 1rem;
 }

@@ -1,3 +1,5 @@
+import { createDefu } from 'defu'
+
 /**
  * Abstraction for preferences storage
  * Currently uses localStorage, designed for future user prefs API
@@ -10,6 +12,13 @@ interface StorageProvider<T> {
   set: (value: T) => void
   remove: () => void
 }
+
+const defu = createDefu((object, key, value) => {
+  if (Array.isArray(object[key]) && Array.isArray(value)) {
+    object[key] = value
+    return true
+  }
+})
 
 /**
  * Creates a localStorage-based storage provider
@@ -58,9 +67,9 @@ function createLocalStorageProvider<T>(key: string): StorageProvider<T> {
  * Abstracts the storage mechanism to allow future migration to API-based storage
  *
  */
-export function usePreferencesProvider<T>(defaultValue: T) {
+export function usePreferencesProvider<T extends object>(defaultValue: T) {
   const provider = createLocalStorageProvider<T>(STORAGE_KEY)
-  const data = ref<T>(defaultValue) as Ref<T>
+  const data = ref<T>(defaultValue)
   const isHydrated = shallowRef(false)
 
   // Load from storage on client
@@ -68,7 +77,7 @@ export function usePreferencesProvider<T>(defaultValue: T) {
     const stored = provider.get()
     if (stored) {
       // Merge stored values with defaults to handle schema evolution
-      data.value = { ...defaultValue, ...stored }
+      data.value = defu(stored, defaultValue)
     }
     isHydrated.value = true
   })

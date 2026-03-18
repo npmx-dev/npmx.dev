@@ -56,7 +56,7 @@ function openAuthModal() {
 </script>
 
 <template>
-  <div ref="accountMenuRef" class="relative flex min-w-24 justify-end">
+  <div ref="accountMenuRef" class="relative flex min-w-28 justify-end">
     <ButtonBase
       type="button"
       :aria-expanded="isOpen"
@@ -65,7 +65,7 @@ function openAuthModal() {
       class="border-none"
     >
       <!-- Stacked avatars when connected -->
-      <div
+      <span
         v-if="hasAnyConnection"
         class="flex items-center"
         :class="hasBothConnections ? '-space-x-2' : ''"
@@ -83,7 +83,7 @@ function openAuthModal() {
           v-else-if="isNpmConnected"
           class="w-6 h-6 rounded-full bg-bg-muted ring-2 ring-bg flex items-center justify-center"
         >
-          <span class="i-carbon-terminal w-3 h-3 text-fg-muted" aria-hidden="true" />
+          <span class="i-lucide:terminal w-3 h-3 text-fg-muted" aria-hidden="true" />
         </span>
 
         <!-- Atmosphere avatar (second/front, overlapping) -->
@@ -101,9 +101,9 @@ function openAuthModal() {
           class="w-6 h-6 rounded-full bg-bg-muted ring-2 ring-bg flex items-center justify-center"
           :class="hasBothConnections ? 'relative z-10' : ''"
         >
-          <span class="i-carbon-cloud w-3 h-3 text-fg-muted" aria-hidden="true" />
+          <span class="i-lucide:at-sign w-3 h-3 text-fg-muted" aria-hidden="true" />
         </span>
-      </div>
+      </span>
 
       <!-- "connect" text when not connected -->
       <span v-if="!hasAnyConnection" class="font-mono text-sm">
@@ -112,7 +112,7 @@ function openAuthModal() {
 
       <!-- Chevron -->
       <span
-        class="i-carbon-chevron-down w-3 h-3 transition-transform duration-200"
+        class="i-lucide:chevron-down w-3 h-3 transition-transform duration-200"
         :class="{ 'rotate-180': isOpen }"
         aria-hidden="true"
       />
@@ -142,12 +142,12 @@ function openAuthModal() {
           <!-- Connected accounts section -->
           <div v-if="hasAnyConnection" class="py-1">
             <!-- npm CLI connection -->
-            <button
+            <ButtonBase
               v-if="isNpmConnected && npmUser"
-              type="button"
               role="menuitem"
-              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-muted transition-colors text-start rounded-md"
+              class="w-full text-start gap-x-3 border-none"
               @click="openConnectorModal"
+              out
             >
               <img
                 v-if="npmAvatar"
@@ -161,12 +161,12 @@ function openAuthModal() {
                 v-else
                 class="w-8 h-8 rounded-full bg-bg-muted flex items-center justify-center"
               >
-                <span class="i-carbon-terminal w-4 h-4 text-fg-muted" aria-hidden="true" />
+                <span class="i-lucide:terminal w-4 h-4 text-fg-muted" aria-hidden="true" />
               </span>
-              <div class="flex-1 min-w-0">
-                <div class="font-mono text-sm text-fg truncate">~{{ npmUser }}</div>
-                <div class="text-xs text-fg-subtle">{{ $t('account_menu.npm_cli') }}</div>
-              </div>
+              <span class="flex-1 min-w-0">
+                <span class="font-mono text-sm text-fg truncate block">~{{ npmUser }}</span>
+                <span class="text-xs text-fg-subtle">{{ $t('account_menu.npm_cli') }}</span>
+              </span>
               <span
                 v-if="operationCount > 0"
                 class="px-1.5 py-0.5 font-mono text-xs rounded"
@@ -182,14 +182,13 @@ function openAuthModal() {
                   })
                 }}
               </span>
-            </button>
+            </ButtonBase>
 
             <!-- Atmosphere connection -->
-            <button
+            <ButtonBase
               v-if="atprotoUser"
-              type="button"
               role="menuitem"
-              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-muted transition-colors text-start rounded-md"
+              class="w-full text-start gap-x-3 border-none"
               @click="openAuthModal"
             >
               <img
@@ -204,13 +203,15 @@ function openAuthModal() {
                 v-else
                 class="w-8 h-8 rounded-full bg-bg-muted flex items-center justify-center"
               >
-                <span class="i-carbon-cloud w-4 h-4 text-fg-muted" aria-hidden="true" />
+                <span class="i-lucide:at-sign w-4 h-4 text-fg-muted" aria-hidden="true" />
               </span>
-              <div class="flex-1 min-w-0">
-                <div class="font-mono text-sm text-fg truncate">@{{ atprotoUser.handle }}</div>
-                <div class="text-xs text-fg-subtle">{{ $t('account_menu.atmosphere') }}</div>
-              </div>
-            </button>
+              <span class="flex-1 min-w-0">
+                <span class="font-mono text-sm text-fg truncate block"
+                  >@{{ atprotoUser.handle }}</span
+                >
+                <span class="text-xs text-fg-subtle">{{ $t('account_menu.atmosphere') }}</span>
+              </span>
+            </ButtonBase>
           </div>
 
           <!-- Divider (only if we have connections AND options to connect) -->
@@ -221,50 +222,48 @@ function openAuthModal() {
 
           <!-- Connect options -->
           <div v-if="!isNpmConnected || !atprotoUser" class="py-1">
-            <button
+            <ButtonBase
               v-if="!isNpmConnected"
-              type="button"
               role="menuitem"
-              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-muted transition-colors text-start rounded-md"
+              class="w-full text-start gap-x-3 border-none"
               @click="openConnectorModal"
             >
               <span class="w-8 h-8 rounded-full bg-bg-muted flex items-center justify-center">
                 <span
                   v-if="isNpmConnecting"
-                  class="i-carbon-circle-dash w-4 h-4 text-yellow-500 animate-spin"
+                  class="i-svg-spinners:ring-resize w-4 h-4 text-yellow-500 animate-spin"
                   aria-hidden="true"
                 />
-                <span v-else class="i-carbon-terminal w-4 h-4 text-fg-muted" aria-hidden="true" />
+                <span v-else class="i-lucide:terminal w-4 h-4 text-fg-muted" aria-hidden="true" />
               </span>
-              <div class="flex-1 min-w-0">
-                <div class="font-mono text-sm text-fg">
+              <span class="flex-1 min-w-0">
+                <span class="font-mono text-sm text-fg block">
                   {{
                     isNpmConnecting
                       ? $t('account_menu.connecting')
                       : $t('account_menu.connect_npm_cli')
                   }}
-                </div>
-                <div class="text-xs text-fg-subtle">{{ $t('account_menu.npm_cli_desc') }}</div>
-              </div>
-            </button>
+                </span>
+                <span class="text-xs text-fg-subtle">{{ $t('account_menu.npm_cli_desc') }}</span>
+              </span>
+            </ButtonBase>
 
-            <button
+            <ButtonBase
               v-if="!atprotoUser"
-              type="button"
               role="menuitem"
-              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-muted transition-colors text-start rounded-md"
+              class="w-full text-start gap-x-3 border-none"
               @click="openAuthModal"
             >
               <span class="w-8 h-8 rounded-full bg-bg-muted flex items-center justify-center">
-                <span class="i-carbon-cloud w-4 h-4 text-fg-muted" aria-hidden="true" />
+                <span class="i-lucide:at-sign w-4 h-4 text-fg-muted" aria-hidden="true" />
               </span>
-              <div class="flex-1 min-w-0">
-                <div class="font-mono text-sm text-fg">
+              <span class="flex-1 min-w-0">
+                <span class="font-mono text-sm text-fg block">
                   {{ $t('account_menu.connect_atmosphere') }}
-                </div>
-                <div class="text-xs text-fg-subtle">{{ $t('account_menu.atmosphere_desc') }}</div>
-              </div>
-            </button>
+                </span>
+                <span class="text-xs text-fg-subtle">{{ $t('account_menu.atmosphere_desc') }}</span>
+              </span>
+            </ButtonBase>
           </div>
         </div>
       </div>

@@ -2,10 +2,10 @@
 import type { LocaleObject } from '@nuxtjs/i18n'
 import * as process from 'node:process'
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { basename, join } from 'node:path'
+import { basename, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { deepCopy } from '@intlify/shared'
 import { countryLocaleVariants, currentLocales } from '../config/i18n.ts'
-import { mergeLocaleObject } from '../lunaria/prepare-json-files.ts'
 import { COLORS } from './utils.ts'
 
 const LOCALES_DIRECTORY = fileURLToPath(new URL('../i18n/locales', import.meta.url))
@@ -128,12 +128,34 @@ const loadJson = async ({ filePath, mergeLocale, locale }: LocaleInfo): Promise<
     )
     process.exit(1)
   }
-  const merged = await mergeLocaleObject(localeObject)
-  if (!merged) {
-    console.error(`${COLORS.red}Error: Failed to merge locale "${locale}"${COLORS.reset}`)
-    process.exit(1)
+
+  // Merge multi-file locale: load base file, then overlay variant file on top
+  const localesFolder = resolve('i18n/locales')
+  const files = localeObject.files ?? []
+  if (localeObject.file || files.length === 1) {
+    const fileName =
+      (localeObject.file ? getFileName(localeObject.file) : undefined) ??
+      (files[0] ? getFileName(files[0]) : undefined)
+    if (!fileName) return {}
+    return JSON.parse(readFileSync(join(localesFolder, fileName), 'utf-8')) as NestedObject
   }
-  return merged
+
+  const firstFile = files[0]
+  if (!firstFile) return {}
+  const source = JSON.parse(
+    readFileSync(join(localesFolder, getFileName(firstFile)), 'utf-8'),
+  ) as NestedObject
+  for (let i = 1; i < files.length; i++) {
+    const file = files[i]
+    if (!file) continue
+    const overlay = JSON.parse(readFileSync(join(localesFolder, getFileName(file)), 'utf-8'))
+    deepCopy(overlay, source)
+  }
+  return source
+}
+
+function getFileName(file: string | { path: string }): string {
+  return typeof file === 'string' ? file : file.path
 }
 
 type SyncStats = {
@@ -230,17 +252,21 @@ const processLocale = async (
 
   const targetContent = await loadJson(localeInfo)
 
+  // $schema is a JSON Schema reference, not a translation key — preserve it but exclude from comparison
+  const { $schema: targetSchema, ...targetWithoutSchema } = targetContent
+
   const stats: SyncStats = {
     missing: [],
     extra: [],
     referenceKeys: [],
   }
 
-  const newContent = syncLocaleData(referenceContent, targetContent, stats, fix)
+  const newContent = syncLocaleData(referenceContent, targetWithoutSchema, stats, fix)
 
   // Write if there are removals (always) or we are in fix mode
   if (!localeInfo.mergeLocale && (stats.extra.length > 0 || fix)) {
-    writeFileSync(filePath, JSON.stringify(newContent, null, 2) + '\n', 'utf-8')
+    const output = targetSchema ? { $schema: targetSchema, ...newContent } : newContent
+    writeFileSync(filePath, JSON.stringify(output, null, 2) + '\n', 'utf-8')
   }
 
   return stats
@@ -380,6 +406,12 @@ const run = async (): Promise<void> => {
     locale: 'en',
     lang: 'en',
   })
+
+  // TODO: removing vacations entry key for temporal recharging page
+  delete referenceContent.vacations
+
+  // $schema is a JSON Schema reference, not a translation key
+  delete referenceContent.$schema
 
   const args = process.argv.slice(2)
   const fix = args.includes('--fix')

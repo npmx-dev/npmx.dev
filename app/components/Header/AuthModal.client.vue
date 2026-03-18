@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useAtproto } from '~/composables/atproto/useAtproto'
 import { authRedirect } from '~/utils/atproto/helpers'
-import { ensureValidAtIdentifier } from '@atproto/syntax'
+import { isAtIdentifierString } from '@atproto/lex'
+
+const authModal = useModal('auth-modal')
 
 const handleInput = shallowRef('')
 const errorMessage = shallowRef('')
@@ -28,20 +30,15 @@ async function handleCreateAccount() {
 
 async function handleLogin() {
   if (handleInput.value) {
-    // URLS to PDSs are valid for oauth redirects
-    if (!handleInput.value.startsWith('https://')) {
-      try {
-        ensureValidAtIdentifier(handleInput.value)
-      } catch (error) {
-        errorMessage.value =
-          error instanceof Error ? error.message : $t('auth.modal.default_input_error')
-        return
-      }
+    // URLS to PDSs are valid for initiating oauth flows
+    if (handleInput.value.startsWith('https://') || isAtIdentifierString(handleInput.value)) {
+      await authRedirect(handleInput.value, {
+        redirectTo: route.fullPath,
+        locale: locale.value,
+      })
+    } else {
+      errorMessage.value = $t('auth.modal.default_input_error')
     }
-    await authRedirect(handleInput.value, {
-      redirectTo: route.fullPath,
-      locale: locale.value,
-    })
   }
 }
 
@@ -53,6 +50,14 @@ watch(handleInput, newHandleInput => {
 
   if (normalized !== newHandleInput) {
     handleInput.value = normalized
+  }
+})
+
+watch(user, async newUser => {
+  if (newUser?.relogin) {
+    await authRedirect(newUser.did, {
+      redirectTo: route.fullPath,
+    })
   }
 })
 </script>
@@ -69,12 +74,22 @@ watch(handleInput, newHandleInput => {
           </p>
         </div>
       </div>
-      <button
-        class="w-full px-4 py-2 font-mono text-sm text-fg-muted bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-accent/70"
-        @click="logout"
-      >
-        {{ $t('auth.modal.disconnect') }}
-      </button>
+
+      <div class="flex flex-col space-y-4">
+        <LinkBase
+          variant="button-secondary"
+          :to="{ name: 'profile-identity', params: { identity: user.handle } }"
+          prefetch-on="interaction"
+          class="w-full"
+          @click="authModal.close()"
+        >
+          {{ $t('auth.modal.profile') }}
+        </LinkBase>
+
+        <ButtonBase class="w-full" @click="logout">
+          {{ $t('auth.modal.disconnect') }}
+        </ButtonBase>
+      </div>
     </div>
 
     <!-- Disconnected state -->
@@ -89,14 +104,15 @@ watch(handleInput, newHandleInput => {
           >
             {{ $t('auth.modal.handle_label') }}
           </label>
-          <input
+          <InputBase
             id="handle-input"
             v-model="handleInput"
             type="text"
             name="handle"
             :placeholder="$t('auth.modal.handle_placeholder')"
-            v-bind="noCorrect"
-            class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg placeholder:text-fg-subtle transition-colors duration-200 hover:border-fg-subtle focus:border-accent focus-visible:(outline-2 outline-accent/70)"
+            no-correct
+            class="w-full"
+            size="medium"
           />
           <p v-if="errorMessage" class="text-red-500 text-xs mt-1" role="alert">
             {{ errorMessage }}
@@ -105,7 +121,7 @@ watch(handleInput, newHandleInput => {
 
         <details class="text-sm">
           <summary
-            class="text-fg-subtle cursor-pointer hover:text-fg-muted transition-colors duration-200 focus-visible:(outline-2 outline-accent/70)"
+            class="text-fg-subtle hover:text-fg-muted transition-colors duration-200 focus-visible:(outline-2 outline-accent/70)"
           >
             {{ $t('auth.modal.what_is_atmosphere') }}
           </summary>
@@ -115,19 +131,13 @@ watch(handleInput, newHandleInput => {
                 <span class="font-bold">npmx.dev</span>
               </template>
               <template #atproto>
-                <a :href="atprotoLink" target="_blank" class="text-blue-400 hover:underline">
-                  AT Protocol
-                </a>
+                <LinkBase :to="atprotoLink"> AT Protocol </LinkBase>
               </template>
               <template #bluesky>
-                <a href="https://bsky.app" target="_blank" class="text-blue-400 hover:underline">
-                  Bluesky
-                </a>
+                <LinkBase to="https://bsky.app"> Bluesky </LinkBase>
               </template>
               <template #tangled>
-                <a href="https://tangled.org" target="_blank" class="text-blue-400 hover:underline">
-                  Tangled
-                </a>
+                <LinkBase to="https://tangled.org"> Tangled </LinkBase>
               </template>
             </i18n-t>
           </div>
@@ -137,23 +147,17 @@ watch(handleInput, newHandleInput => {
       <ButtonBase type="submit" variant="primary" :disabled="!handleInput.trim()" class="w-full">
         {{ $t('auth.modal.connect') }}
       </ButtonBase>
-      <ButtonBase type="button" variant="primary" class="w-full" @click="handleCreateAccount">
+      <ButtonBase type="button" class="w-full" @click="handleCreateAccount">
         {{ $t('auth.modal.create_account') }}
       </ButtonBase>
       <hr class="color-border" />
       <ButtonBase
         type="button"
-        variant="primary"
-        class="w-full flex items-center justify-center gap-2"
+        class="w-full"
         @click="handleBlueskySignIn"
+        classicon="i-simple-icons:bluesky"
       >
         {{ $t('auth.modal.connect_bluesky') }}
-        <svg fill="none" viewBox="0 0 64 57" width="20" style="width: 20px">
-          <path
-            fill="#0F73FF"
-            d="M13.873 3.805C21.21 9.332 29.103 20.537 32 26.55v15.882c0-.338-.13.044-.41.867-1.512 4.456-7.418 21.847-20.923 7.944-7.111-7.32-3.819-14.64 9.125-16.85-7.405 1.264-15.73-.825-18.014-9.015C1.12 23.022 0 8.51 0 6.55 0-3.268 8.579-.182 13.873 3.805ZM50.127 3.805C42.79 9.332 34.897 20.537 32 26.55v15.882c0-.338.13.044.41.867 1.512 4.456 7.418 21.847 20.923 7.944 7.111-7.32 3.819-14.64-9.125-16.85 7.405 1.264 15.73-.825 18.014-9.015C62.88 23.022 64 8.51 64 6.55c0-9.818-8.578-6.732-13.873-2.745Z"
-          ></path>
-        </svg>
       </ButtonBase>
     </form>
   </Modal>

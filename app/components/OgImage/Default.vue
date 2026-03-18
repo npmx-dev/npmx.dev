@@ -15,11 +15,12 @@ const props = withDefaults(defineProps<Props>(), {
 <template>
   <div
     class="h-full w-full flex flex-col justify-center px-20 bg-[#050505] text-[#fafafa] relative overflow-hidden"
+    style="font-family: 'Geist Mono', sans-serif"
   >
     <div class="relative z-10 flex flex-col gap-6">
       <div class="flex items-start gap-4">
         <div
-          class="flex items-start justify-center w-16 h-16 rounded-xl bg-gradient-to-tr from-[#3b82f6] shadow-lg"
+          class="flex items-start justify-center w-16 h-16 p-3.5 rounded-xl bg-gradient-to-tr from-[#3b82f6] shadow-lg"
           :style="{ backgroundColor: props.primaryColor }"
         >
           <svg
@@ -41,17 +42,19 @@ const props = withDefaults(defineProps<Props>(), {
           </svg>
         </div>
 
-        <h1
-          class="text-8xl font-bold tracking-tighter"
-          style="font-family: 'Geist Sans', sans-serif"
-        >
-          <span class="opacity-80" :style="{ color: props.primaryColor }">./</span>{{ props.title }}
+        <h1 class="text-8xl font-bold">
+          <span
+            class="opacity-80 tracking-[-0.1em]"
+            :style="{ color: props.primaryColor }"
+            style="margin-left: -1rem; margin-right: 0.5rem"
+            >./</span
+          >{{ props.title }}
         </h1>
       </div>
 
       <div
-        class="flex flex-wrap items-center gap-x-3 text-4xl font-light text-[#a3a3a3]"
-        style="font-family: 'Geist Sans', sans-serif"
+        class="flex flex-wrap items-center gap-x-3 text-4xl text-[#a3a3a3]"
+        style="font-family: 'Geist', sans-serif"
       >
         <template v-for="(part, index) in props.description.split(/(\*\*.*?\*\*)/)" :key="index">
           <span

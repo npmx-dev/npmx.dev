@@ -1,12 +1,13 @@
 import type { RemovableRef } from '@vueuse/core'
 import { useLocalStorage } from '@vueuse/core'
-import { ACCENT_COLORS } from '#shared/utils/constants'
+import { ACCENT_COLORS, type AccentColorId } from '#shared/utils/constants'
 import type { LocaleObject } from '@nuxtjs/i18n'
 import { BACKGROUND_THEMES } from '#shared/utils/constants'
 
 type BackgroundThemeId = keyof typeof BACKGROUND_THEMES
 
-type AccentColorId = keyof typeof ACCENT_COLORS.light
+/** Available search providers */
+export type SearchProvider = 'npm' | 'algolia'
 
 /**
  * Application settings stored in localStorage
@@ -22,10 +23,29 @@ export interface AppSettings {
   preferredBackgroundTheme: BackgroundThemeId | null
   /** Hide platform-specific packages (e.g., @scope/pkg-linux-x64) from search results */
   hidePlatformPackages: boolean
+  /** Enable weekly download graph pulse looping animation */
+  enableGraphPulseLooping: boolean
   /** User-selected locale */
   selectedLocale: LocaleObject['code'] | null
+  /** Search provider for package search */
+  searchProvider: SearchProvider
+  /** Show search results as you type */
+  instantSearch: boolean
+  /** Enable/disable keyboard shortcuts */
+  keyboardShortcuts: boolean
+  /** Connector preferences */
+  connector: {
+    /** Automatically open the web auth page in the browser */
+    autoOpenURL: boolean
+  }
   sidebar: {
     collapsed: string[]
+  }
+  chartFilter: {
+    averageWindow: number
+    smoothingTau: number
+    anomaliesFixed: boolean
+    predictionPoints: number
   }
 }
 
@@ -34,10 +54,23 @@ const DEFAULT_SETTINGS: AppSettings = {
   includeTypesInInstall: true,
   accentColorId: null,
   hidePlatformPackages: true,
+  enableGraphPulseLooping: false,
   selectedLocale: null,
   preferredBackgroundTheme: null,
+  searchProvider: import.meta.test ? 'npm' : 'algolia',
+  instantSearch: true,
+  keyboardShortcuts: true,
+  connector: {
+    autoOpenURL: false,
+  },
   sidebar: {
     collapsed: [],
+  },
+  chartFilter: {
+    averageWindow: 0,
+    smoothingTau: 1,
+    anomaliesFixed: true,
+    predictionPoints: 4,
   },
 }
 
@@ -72,6 +105,31 @@ export function useRelativeDates() {
 }
 
 /**
+ * Composable for accessing just the keyboard shortcuts setting.
+ * Useful for components that only need to read this specific setting.
+ */
+export const useKeyboardShortcuts = createSharedComposable(function useKeyboardShortcuts() {
+  const { settings } = useSettings()
+  const enabled = computed(() => settings.value.keyboardShortcuts)
+
+  if (import.meta.client) {
+    watch(
+      enabled,
+      value => {
+        if (value) {
+          delete document.documentElement.dataset.kbdShortcuts
+        } else {
+          document.documentElement.dataset.kbdShortcuts = 'false'
+        }
+      },
+      { immediate: true },
+    )
+  }
+
+  return enabled
+})
+
+/**
  * Composable for managing accent color.
  */
 export function useAccentColor() {
@@ -102,6 +160,32 @@ export function useAccentColor() {
     accentColors,
     selectedAccentColor: computed(() => settings.value.accentColorId),
     setAccentColor,
+  }
+}
+
+/**
+ * Composable for managing the search provider setting.
+ */
+export function useSearchProvider() {
+  const { settings } = useSettings()
+
+  const searchProvider = computed({
+    get: () => settings.value.searchProvider,
+    set: (value: SearchProvider) => {
+      settings.value.searchProvider = value
+    },
+  })
+
+  const isAlgolia = computed(() => searchProvider.value === 'algolia')
+
+  function toggle() {
+    searchProvider.value = searchProvider.value === 'npm' ? 'algolia' : 'npm'
+  }
+
+  return {
+    searchProvider,
+    isAlgolia,
+    toggle,
   }
 }
 

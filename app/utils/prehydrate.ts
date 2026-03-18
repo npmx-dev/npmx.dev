@@ -10,13 +10,23 @@ export function initPreferencesOnPrehydrate() {
   // All constants must be hardcoded inside the callback.
   onPrehydrate(() => {
     // Valid accent color IDs (must match --swatch-* variables defined in main.css)
-    const accentColorIds = new Set(['coral', 'amber', 'emerald', 'sky', 'violet', 'magenta'])
+    const accentColorIds = new Set([
+      'sky',
+      'coral',
+      'amber',
+      'emerald',
+      'violet',
+      'magenta',
+      'neutral',
+    ] satisfies typeof ACCENT_COLOR_IDS)
 
     // Valid package manager IDs
     const validPMs = new Set(['npm', 'pnpm', 'yarn', 'bun', 'deno', 'vlt'])
 
     // Read settings from localStorage
-    const settings = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
+    const settings = JSON.parse(
+      localStorage.getItem('npmx-settings') || '{}',
+    ) as Partial<AppSettings>
 
     const accentColorId = settings.accentColorId
     if (accentColorId && accentColorIds.has(accentColorId)) {
@@ -51,5 +61,10 @@ export function initPreferencesOnPrehydrate() {
     document.documentElement.dataset.pm = pm
 
     document.documentElement.dataset.collapsed = settings.sidebar?.collapsed?.join(' ') ?? ''
+
+    // Keyboard shortcuts (default: true)
+    if (settings.keyboardShortcuts === false) {
+      document.documentElement.dataset.kbdShortcuts = 'false'
+    }
   })
 }

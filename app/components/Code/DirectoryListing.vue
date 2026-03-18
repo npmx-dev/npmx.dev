@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import type { PackageFileTree } from '#shared/types'
 import type { RouteLocationRaw } from 'vue-router'
-import { getFileIcon } from '~/utils/file-icons'
+import type { RouteNamedMap } from 'vue-router/auto-routes'
+import { ADDITIONAL_ICONS, getFileIcon } from '~/utils/file-icons'
 
 const props = defineProps<{
   tree: PackageFileTree[]
   currentPath: string
   baseUrl: string
-  /** Base path segments for the code route (e.g., ['nuxt', 'v', '4.2.0']) */
-  basePath: string[]
+  baseRoute: Pick<RouteNamedMap['code'], 'params'>
 }>()
 
 // Get the current directory's contents
@@ -41,13 +40,14 @@ const parentPath = computed(() => {
 
 // Build route object for a path
 function getCodeRoute(nodePath?: string): RouteLocationRaw {
-  if (!nodePath) {
-    return { name: 'code', params: { path: props.basePath as [string, ...string[]] } }
-  }
-  const pathSegments = [...props.basePath, ...nodePath.split('/')]
   return {
     name: 'code',
-    params: { path: pathSegments as [string, ...string[]] },
+    params: {
+      org: props.baseRoute.params.org,
+      packageName: props.baseRoute.params.packageName,
+      version: props.baseRoute.params.version,
+      filePath: nodePath ?? '',
+    },
   }
 }
 
@@ -76,13 +76,20 @@ const bytesFormatter = useBytesFormatter()
           class="border-b border-border hover:bg-bg-subtle transition-colors"
         >
           <td colspan="2">
-            <NuxtLink
+            <LinkBase
               :to="getCodeRoute(parentPath || undefined)"
-              class="flex items-center gap-2 py-2 px-4 font-mono text-sm text-fg-muted hover:text-fg transition-colors"
+              class="py-2 px-4 font-mono text-sm w-full"
+              no-underline
             >
-              <span class="i-carbon:folder w-4 h-4 text-yellow-600" />
-              <span>..</span>
-            </NuxtLink>
+              <svg
+                class="size-[1em] me-1 shrink-0 text-yellow-600"
+                viewBox="0 0 16 16"
+                aria-hidden="true"
+              >
+                <use :href="`/file-tree-sprite.svg#${ADDITIONAL_ICONS['folder']}`" />
+              </svg>
+              <span class="w-full flex justify-self-stretch items-center gap-2"> .. </span>
+            </LinkBase>
           </td>
         </tr>
 
@@ -93,24 +100,28 @@ const bytesFormatter = useBytesFormatter()
           class="border-b border-border hover:bg-bg-subtle transition-colors"
         >
           <td colspan="2">
-            <NuxtLink
+            <LinkBase
               :to="getCodeRoute(node.path)"
-              class="flex items-center gap-2 py-2 px-4 font-mono text-sm hover:text-fg transition-colors"
-              :class="node.type === 'directory' ? 'text-fg' : 'text-fg-muted'"
+              class="py-2 px-4 font-mono text-sm w-full"
+              no-underline
             >
-              <span
-                v-if="node.type === 'directory'"
-                class="i-carbon:folder w-4 h-4 text-yellow-600"
-              />
-              <span v-else class="w-4 h-4" :class="getFileIcon(node.name)" />
-              <span class="flex-1">{{ node.name }}</span>
-              <span
-                v-if="node.type === 'file' && node.size"
-                class="text-end font-mono text-xs text-fg-subtle"
+              <svg
+                class="size-[1em] me-1 shrink-0"
+                viewBox="0 0 16 16"
+                :class="node.type === 'directory' ? 'text-yellow-600' : undefined"
+                aria-hidden="true"
               >
-                {{ bytesFormatter.format(node.size) }}
+                <use
+                  :href="`/file-tree-sprite.svg#${node.type === 'directory' ? ADDITIONAL_ICONS['folder'] : getFileIcon(node.name)}`"
+                />
+              </svg>
+              <span class="w-full flex justify-self-stretch items-center gap-2">
+                <span class="flex-1">{{ node.name }}</span>
+                <span v-if="typeof node.size === 'number'" class="text-end text-xs text-fg-subtle">
+                  {{ bytesFormatter.format(node.size) }}
+                </span>
               </span>
-            </NuxtLink>
+            </LinkBase>
           </td>
         </tr>
       </tbody>

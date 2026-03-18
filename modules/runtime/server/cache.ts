@@ -27,6 +27,7 @@ const FIXTURE_PATHS = {
   esmHeaders: 'esm-sh:headers',
   esmTypes: 'esm-sh:types',
   githubContributors: 'github:contributors.json',
+  githubContributorsStats: 'github:contributors-stats.json',
 } as const
 
 type FixtureType = keyof typeof FIXTURE_PATHS
@@ -194,6 +195,44 @@ function getMockForUrl(url: string): MockResult | null {
     return { data: null }
   }
 
+  // npm attestations API - return empty attestations (provenance not needed in tests)
+  if (host === 'registry.npmjs.org' && pathname.startsWith('/-/npm/v1/attestations/')) {
+    return { data: { attestations: [] } }
+  }
+
+  // Constellation API - return empty results for link queries
+  if (host === 'constellation.microcosm.blue') {
+    if (pathname === '/links/distinct-dids') {
+      return { data: { total: 0, linking_dids: [], cursor: undefined } }
+    }
+    if (pathname === '/links/all') {
+      return { data: { links: {} } }
+    }
+    if (pathname === '/xrpc/blue.microcosm.links.getBacklinks') {
+      return { data: { total: 0, records: [], cursor: undefined } }
+    }
+    return { data: null }
+  }
+
+  // UNGH (GitHub proxy) - return mock repo metadata
+  if (host === 'ungh.cc') {
+    const repoMatch = pathname.match(/^\/repos\/([^/]+)\/([^/]+)$/)
+    if (repoMatch?.[1] && repoMatch?.[2]) {
+      return {
+        data: {
+          repo: {
+            description: `${repoMatch[1]}/${repoMatch[2]} - mock repo description`,
+            stars: 1000,
+            forks: 100,
+            watchers: 50,
+            defaultBranch: 'main',
+          },
+        },
+      }
+    }
+    return { data: null }
+  }
+
   // GitHub API - handled via fixtures, return null to use fixture system
   // Note: The actual fixture loading is handled in fetchFromFixtures via special case
   if (host === 'api.github.com') {
@@ -281,6 +320,67 @@ async function processSingleFastNpmMeta(
   return result
 }
 
+/**
+ * Process a single package for the /versions/ endpoint.
+ * Returns PackageVersionsInfo shape: { name, distTags, versions, specifier, time, lastSynced }
+ */
+async function processSingleVersionsMeta(
+  packageQuery: string,
+  storage: ReturnType<typeof useStorage>,
+  metadata: boolean,
+): Promise<Record<string, unknown>> {
+  let packageName = packageQuery
+  let specifier = '*'
+
+  if (packageName.startsWith('@')) {
+    const atIndex = packageName.indexOf('@', 1)
+    if (atIndex !== -1) {
+      specifier = packageName.slice(atIndex + 1)
+      packageName = packageName.slice(0, atIndex)
+    }
+  } else {
+    const atIndex = packageName.indexOf('@')
+    if (atIndex !== -1) {
+      specifier = packageName.slice(atIndex + 1)
+      packageName = packageName.slice(0, atIndex)
+    }
+  }
+
+  if (packageName.includes('does-not-exist') || packageName.includes('nonexistent')) {
+    return { name: packageName, error: 'not_found' }
+  }
+
+  const fixturePath = getFixturePath('packument', packageName)
+  const packument = await storage.getItem<any>(fixturePath)
+
+  if (!packument) {
+    return { name: packageName, error: 'not_found' }
+  }
+
+  const result: Record<string, unknown> = {
+    name: packageName,
+    specifier,
+    distTags: packument['dist-tags'] || {},
+    versions: Object.keys(packument.versions || {}),
+    time: packument.time || {},
+    lastSynced: Date.now(),
+  }
+
+  if (metadata) {
+    const versionsMeta: Record<string, Record<string, unknown>> = {}
+    for (const [ver, data] of Object.entries(packument.versions || {})) {
+      const meta: Record<string, unknown> = { version: ver }
+      const vData = data as Record<string, unknown>
+      if (vData.deprecated) meta.deprecated = vData.deprecated
+      if (packument.time?.[ver]) meta.time = packument.time[ver]
+      versionsMeta[ver] = meta
+    }
+    result.versionsMeta = versionsMeta
+  }
+
+  return result
+}
+
 async function handleFastNpmMeta(
   url: string,
   storage: ReturnType<typeof useStorage>,
@@ -296,22 +396,27 @@ async function handleFastNpmMeta(
 
   if (host !== 'npm.antfu.dev') return null
 
-  const pathPart = decodeURIComponent(pathname.slice(1))
-  if (!pathPart) return null
+  const rawPath = decodeURIComponent(pathname.slice(1))
+  if (!rawPath) return null
 
   const metadata = searchParams.get('metadata') === 'true'
+
+  // Determine if this is a /versions/ request
+  const isVersions = rawPath.startsWith('versions/')
+  const pathPart = isVersions ? rawPath.slice('versions/'.length) : rawPath
+  const processFn = isVersions
+    ? (pkg: string) => processSingleVersionsMeta(pkg, storage, metadata)
+    : (pkg: string) => processSingleFastNpmMeta(pkg, storage, metadata)
 
   // Handle batch requests (package1+package2+...)
   if (pathPart.includes('+')) {
     const packages = pathPart.split('+')
-    const results = await Promise.all(
-      packages.map(pkg => processSingleFastNpmMeta(pkg, storage, metadata)),
-    )
+    const results = await Promise.all(packages.map(processFn))
     return { data: results }
   }
 
   // Handle single package request
-  const result = await processSingleFastNpmMeta(pathPart, storage, metadata)
+  const result = await processFn(pathPart)
   if ('error' in result) {
     return { data: null }
   }
@@ -336,6 +441,18 @@ async function handleGitHubApi(
 
   if (host !== 'api.github.com') return null
 
+  // Contributors stats endpoint: /repos/{owner}/{repo}/stats/contributors
+  const contributorsStatsMatch = pathname.match(/^\/repos\/([^/]+)\/([^/]+)\/stats\/contributors$/)
+  if (contributorsStatsMatch) {
+    const contributorsStats = await storage.getItem<unknown[]>(
+      FIXTURE_PATHS.githubContributorsStats,
+    )
+    if (contributorsStats) {
+      return { data: contributorsStats }
+    }
+    return { data: [] }
+  }
+
   // Contributors endpoint: /repos/{owner}/{repo}/contributors
   const contributorsMatch = pathname.match(/^\/repos\/([^/]+)\/([^/]+)\/contributors$/)
   if (contributorsMatch) {
@@ -345,6 +462,19 @@ async function handleGitHubApi(
     }
     // Return empty array if no fixture exists
     return { data: [] }
+  }
+
+  // Commits endpoint: /repos/{owner}/{repo}/commits
+  const commitsMatch = pathname.match(/^\/repos\/([^/]+)\/([^/]+)\/commits$/)
+  if (commitsMatch) {
+    // Return a single-item array; fetchPageCount will use body.length when no Link header
+    return { data: [{ sha: 'mock-commit' }] }
+  }
+
+  // Search endpoint: /search/issues, /search/commits, etc.
+  const searchMatch = pathname.match(/^\/search\/(.+)$/)
+  if (searchMatch) {
+    return { data: { total_count: 0, incomplete_results: false, items: [] } }
   }
 
   // Other GitHub API endpoints can be added here as needed
@@ -710,12 +840,17 @@ export default defineNitroPlugin(nitroApp => {
   const originalFetch = globalThis.fetch
   const original$fetch = globalThis.$fetch
 
-  // Override native fetch for esm.sh requests
+  // Override native fetch for esm.sh requests and to inject test fixture responses
   globalThis.fetch = async (input: URL | RequestInfo, init?: RequestInit): Promise<Response> => {
     const urlStr =
       typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url
 
-    if (urlStr.startsWith('/') || urlStr.includes('woff') || urlStr.includes('fonts')) {
+    if (
+      urlStr.startsWith('/') ||
+      urlStr.startsWith('data:') ||
+      urlStr.includes('woff') ||
+      urlStr.includes('fonts')
+    ) {
       return await originalFetch(input, init)
     }
 
@@ -731,7 +866,10 @@ export default defineNitroPlugin(nitroApp => {
           headers: { 'content-type': 'application/json' },
         })
       }
-      return new Response('Not Found', { status: 404 })
+      return new Response(JSON.stringify({ error: 'Not Found' }), {
+        status: 404,
+        headers: { 'content-type': 'application/json' },
+      })
     } catch (err: any) {
       // Convert createError exceptions to proper HTTP responses
       const statusCode = err?.statusCode || err?.status || 404

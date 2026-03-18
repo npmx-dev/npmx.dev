@@ -1,5 +1,5 @@
 export function useCanGoBack() {
-  const canGoBack = ref(false)
+  const canGoBack = shallowRef(false)
 
   const router = useRouter()
 
