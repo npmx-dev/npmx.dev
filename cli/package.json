@@ -2,26 +2,26 @@
   "name": "npmx-connector",
   "version": "0.0.1",
   "description": "Local connector for npmx.dev - enables authenticated npm operations from the web UI",
+  "homepage": "https://npmx.dev",
+  "bugs": {
+    "url": "https://github.com/npmx-dev/npmx.dev/issues"
+  },
   "license": "MIT",
-  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/npmx-dev/npmx.dev.git",
     "directory": "cli"
   },
-  "bugs": {
-    "url": "https://github.com/npmx-dev/npmx.dev/issues"
-  },
-  "homepage": "https://npmx.dev",
   "bin": {
     "npmx-connector": "./dist/cli.mjs"
-  },
-  "exports": {
-    ".": "./dist/index.mjs"
   },
   "files": [
     "dist"
   ],
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs"
+  },
   "scripts": {
     "build": "tsdown",
     "dev": "NPMX_CLI_DEV=true node src/cli.ts",

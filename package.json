@@ -1,14 +1,14 @@
 {
   "name": "npmx",
-  "license": "MIT",
-  "private": true,
-  "type": "module",
   "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
   "author": {
     "name": "Daniel Roe",
     "email": "daniel@roe.dev",
     "url": "https://roe.dev"
   },
+  "type": "module",
   "scripts": {
     "build": "nuxt build",
     "build:lunaria": "node ./lunaria/lunaria.ts",

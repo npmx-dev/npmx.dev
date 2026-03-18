@@ -32,10 +32,6 @@ jobs:
         with:
           node-version: lts/*
           cache: true
-          run-install: false
-
-      - name: 📦 Install dependencies (root only, no scripts)
-        run: vp install --filter . --ignore-scripts
 
       - name: 🔠 Lint project
         run: vp run lint
@@ -181,10 +177,6 @@ jobs:
         with:
           node-version: lts/*
           cache: true
-          run-install: false
-
-      - name: 📦 Install dependencies (root only, no scripts)
-        run: vp install --filter . --ignore-scripts
 
       - name: 🌐 Check for missing or dynamic i18n keys
         run: vp run i18n:report
