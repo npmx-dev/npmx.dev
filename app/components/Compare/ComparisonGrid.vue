@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ModuleReplacement } from 'module-replacements'
 
-export interface ComparisonGridColumn {
+interface ComparisonGridColumn {
   name: string
   version?: string
   /** Module replacement data for this package (if available) */
