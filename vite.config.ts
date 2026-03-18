@@ -213,25 +213,6 @@ export default defineConfig({
     coverage: {
       enabled: true,
       provider: 'v8',
-      // Exclude files that cause parse errors during coverage remapping.
-      // The V8 coverage provider uses rolldown to parse source files, but
-      // rolldown seems to currently fail on Vite's SSR transform output (`await __vite_ssr_import__`).
-      exclude: [
-        '**/node_modules/**',
-        '**/*.json',
-        'cli/**',
-        'app/utils/versions.ts',
-        'app/utils/package-name.ts',
-        'shared/utils/git-providers.ts',
-        'shared/utils/spdx.ts',
-        'shared/utils/url.ts',
-        'server/utils/readme.ts',
-        'server/utils/docs/text.ts',
-        'server/utils/code-highlight.ts',
-        'server/utils/npm.ts',
-        'server/utils/shiki.ts',
-        'server/utils/jsr.ts',
-      ],
     },
   },
 })
