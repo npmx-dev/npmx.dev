@@ -88,12 +88,20 @@ const closeModal = () => modalRef.value?.close?.()
               </p>
               <ul class="mb-8 flex flex-col gap-2">
                 <li class="flex gap-2 items-center">
-                  <kbd class="kbd">.</kbd>
-                  <span>{{ $t('shortcuts.open_code_view') }}</span>
+                  <kbd class="kbd">m</kbd>
+                  <span>{{ $t('shortcuts.open_main') }}</span>
                 </li>
                 <li class="flex gap-2 items-center">
                   <kbd class="kbd">d</kbd>
                   <span>{{ $t('shortcuts.open_docs') }}</span>
+                </li>
+                <li class="flex gap-2 items-center">
+                  <kbd class="kbd">.</kbd>
+                  <span>{{ $t('shortcuts.open_code_view') }}</span>
+                </li>
+                <li class="flex gap-2 items-center">
+                  <kbd class="kbd">f</kbd>
+                  <span>{{ $t('shortcuts.open_diff') }}</span>
                 </li>
                 <li class="flex gap-2 items-center">
                   <kbd class="kbd">c</kbd>

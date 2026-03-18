@@ -12,6 +12,8 @@ type GitHubContributorStats = {
   weeks: GitHubContributorWeek[]
 }
 
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+
 export default defineCachedEventHandler(
   async event => {
     const owner = getRouterParam(event, 'owner')
@@ -30,7 +32,6 @@ export default defineCachedEventHandler(
       'Accept': 'application/vnd.github+json',
     }
 
-    const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
     const maxAttempts = 6
     let delayMs = 1000
 

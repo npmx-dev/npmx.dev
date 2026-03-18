@@ -46,17 +46,21 @@ function isDateAffected(
       const weekEndDate = new Date(weekStartDate)
       weekEndDate.setUTCDate(weekEndDate.getUTCDate() + 6)
       const endWeek = weekEndDate.toISOString().slice(0, 10)
-      return startWeek <= anomaly.end.date && endWeek >= anomaly.start.date
+      return startWeek < anomaly.end.date && endWeek > anomaly.start.date
     }
     case 'monthly': {
-      const startMonth = anomaly.start.date.slice(0, 7) + '-01'
-      const endMonth = anomaly.end.date.slice(0, 7) + '-01'
-      return date >= startMonth && date <= endMonth
+      const monthStart = date
+      const monthStartDate = new Date(`${date}T00:00:00Z`)
+      const monthEndDate = new Date(monthStartDate)
+      monthEndDate.setUTCMonth(monthEndDate.getUTCMonth() + 1)
+      monthEndDate.setUTCDate(monthEndDate.getUTCDate() - 1)
+      const monthEnd = monthEndDate.toISOString().slice(0, 10)
+      return monthStart < anomaly.end.date && monthEnd > anomaly.start.date
     }
     case 'yearly': {
-      const startYear = anomaly.start.date.slice(0, 4) + '-01-01'
-      const endYear = anomaly.end.date.slice(0, 4) + '-01-01'
-      return date >= startYear && date <= endYear
+      const yearStart = date
+      const yearEnd = `${date.slice(0, 4)}-12-31`
+      return yearStart < anomaly.end.date && yearEnd > anomaly.start.date
     }
   }
 }
@@ -94,7 +98,7 @@ export function applyBlocklistCorrection(opts: {
   if (!anomalies.length) return data
 
   // Clone to avoid mutation
-  const result = (data as Array<Record<string, any>>).map(d => ({ ...d }))
+  const result = (data as Array<Record<string, any>>).map(d => Object.assign({}, d))
 
   for (const anomaly of anomalies) {
     // Find indices of affected points

@@ -13,11 +13,11 @@
   "trademark_disclaimer": "npm est une marque déposée de npm, Inc. Ce site n'est pas affilié à npm, Inc.",
   "footer": {
     "about": "à propos",
+    "blog": "blog",
     "docs": "docs",
     "source": "source",
     "social": "réseaux sociaux",
     "chat": "espace de discussion",
-    "blog": "blog",
     "builders_chat": "builders",
     "keyboard_shortcuts": "raccourcis clavier"
   },
@@ -129,6 +129,8 @@
       "algolia": "Algolia",
       "algolia_description": "Utiliser Algolia pour accélérer la recherche et les pages d'organisations et d'utilisateurs."
     },
+    "instant_search": "Recherche instantanée",
+    "instant_search_description": "Navigue vers la page de recherche et met à jour les résultats au fur et à mesure de la saisie.",
     "relative_dates": "Dates relatives",
     "include_types": "Inclure {'@'}types à la commande d'installation",
     "include_types_description": "Inclure les paquets {'@'}types à la commande d'installation pour les paquets non typés",
@@ -144,8 +146,6 @@
     "clear_accent": "Supprimer la couleur d'accentuation",
     "translation_progress": "Progression de la traduction",
     "background_themes": "Teinte de fond",
-    "instant_search": "Recherche instantanée",
-    "instant_search_description": "Navigue vers la page de recherche et met à jour les résultats au fur et à mesure de la saisie.",
     "keyboard_shortcuts_enabled": "Activer les raccourcis clavier",
     "keyboard_shortcuts_enabled_description": "Les raccourcis clavier peuvent être désactivés s'ils entrent en conflit avec d'autres raccourcis du navigateur ou du système"
   },
@@ -178,7 +178,6 @@
     "skip_link": "Passer au contenu principal",
     "warnings": "Avertissements :",
     "go_back_home": "Retour à l'accueil",
-    "view_on_npm": "voir sur npm",
     "per_week": "/ semaine",
     "vanity_downloads_hint": "Métrique de vanité : aucun paquet affiché | Métrique de vanité : pour le paquet affiché | Métrique de vanité : somme des {count} paquets affichés",
     "sort": {
@@ -190,7 +189,11 @@
     "cancel": "Annuler",
     "save": "Enregistrer",
     "edit": "Modifier",
-    "error": "Erreur"
+    "error": "Erreur",
+    "view_on": {
+      "npm": "voir sur npm",
+      "github": "Voir sur GitHub"
+    }
   },
   "profile": {
     "display_name": "Nom d'affichage",
@@ -213,12 +216,9 @@
     "not_found": "Paquet introuvable",
     "not_found_message": "Le paquet n'a pas pu être trouvé.",
     "no_description": "Aucune description fournie",
-    "not_latest": "(pas la dernière)",
     "verified_provenance": "Provenance vérifiée",
-    "view_permalink": "Voir le lien permanent pour cette version",
     "navigation": "Paquet",
     "copy_name": "Copier le nom du paquet",
-    "copy_version": "Copier le numéro de version du paquet",
     "deprecation": {
       "package": "Ce paquet a été déprécié.",
       "version": "Cette version a été dépréciée.",
@@ -312,7 +312,6 @@
     "readme": {
       "title": "Readme",
       "no_readme": "Aucun README disponible.",
-      "view_on_github": "Voir sur GitHub",
       "toc_title": "Sommaire",
       "callout": {
         "note": "Note",
@@ -377,7 +376,6 @@
       "grouping_versions_only_recent": "Récentes seulement",
       "grouping_usage_title": "Utilisation",
       "grouping_usage_all": "Toutes",
-      "grouping_usage_low": "Basse",
       "recent_versions_only_tooltip": "Ne montrer que les versions publiées durant l'année écoulée.",
       "show_low_usage_tooltip": "Inclure les groupes de versions avec moins d'1% des téléchargements totaux.",
       "y_axis_label": "Téléchargements",
@@ -778,8 +776,7 @@
       "preview": "aperçu",
       "code": "code"
     },
-    "file_path": "Chemin du fichier",
-    "scroll_to_top": "Remonter en haut"
+    "file_path": "Chemin du fichier"
   },
   "badges": {
     "provenance": {
@@ -887,7 +884,7 @@
       "paginated": "Paginé",
       "items_per_page": "Éléments par page",
       "per_page": "{count} / page",
-      "showing": "{start}-{end} sur {total}",
+      "showing": "{range} sur {total}",
       "previous": "Page précédente",
       "next": "Page suivante",
       "nav_label": "Pagination"
@@ -924,10 +921,10 @@
         "already": "Il y a",
         "people": "déjà des gens",
         "building": "qui créent",
-        "managers": "des gestionnaires",
-        "package": "de paquets",
         "really": "vraiment",
-        "cool": "cool"
+        "cool": "cool",
+        "package": "de paquets",
+        "managers": "des gestionnaires"
       }
     },
     "sponsors": {

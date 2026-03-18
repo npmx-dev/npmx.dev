@@ -178,7 +178,6 @@
     "skip_link": "跳转到主界面",
     "warnings": "警告：",
     "go_back_home": "返回首页",
-    "view_on_npm": "在 npm 上查看",
     "per_week": "/ 周",
     "vanity_downloads_hint": "累计下载量：未显示包 | 累计下载量：显示的包 | 累计下载量：{count} 个显示的包的总和",
     "sort": {
@@ -190,7 +189,11 @@
     "cancel": "取消",
     "save": "保存",
     "edit": "编辑",
-    "error": "加载出错"
+    "error": "加载出错",
+    "view_on": {
+      "npm": "在 npm 上查看",
+      "github": "在 GitHub 上查看"
+    }
   },
   "profile": {
     "display_name": "显示名称",
@@ -213,12 +216,9 @@
     "not_found": "未找到包",
     "not_found_message": "找不到此包。",
     "no_description": "未提供描述",
-    "not_latest": "（非最新）",
     "verified_provenance": "已验证来源",
-    "view_permalink": "查看此版本的链接",
     "navigation": "包导航",
     "copy_name": "复制包名",
-    "copy_version": "复制版本号",
     "deprecation": {
       "package": "此包已废弃。",
       "version": "此版本已废弃。",
@@ -312,7 +312,6 @@
     "readme": {
       "title": "自述文件",
       "no_readme": "无可用自述文件。",
-      "view_on_github": "在 GitHub 上查看",
       "toc_title": "目录",
       "callout": {
         "note": "注意",
@@ -377,7 +376,6 @@
       "grouping_versions_only_recent": "仅最近",
       "grouping_usage_title": "使用率",
       "grouping_usage_all": "全部",
-      "grouping_usage_low": "低",
       "recent_versions_only_tooltip": "仅显示在过去一年内发布的版本。",
       "show_low_usage_tooltip": "包括下载量低于 1% 的版本组。",
       "y_axis_label": "下载量",
@@ -776,8 +774,7 @@
       "preview": "预览",
       "code": "代码"
     },
-    "file_path": "文件路径",
-    "scroll_to_top": "滚动到顶部"
+    "file_path": "文件路径"
   },
   "badges": {
     "provenance": {
@@ -885,7 +882,7 @@
       "paginated": "分页",
       "items_per_page": "每页显示",
       "per_page": "{count} / 页",
-      "showing": "第 {start} - {end} 条，共 {total} 条",
+      "showing": "第 {range} 条，共 {total} 条",
       "previous": "上一页",
       "next": "下一页",
       "nav_label": "分页"

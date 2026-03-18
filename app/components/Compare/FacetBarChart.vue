@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { VueUiHorizontalBar } from 'vue-data-ui/vue-ui-horizontal-bar'
-import type {
-  VueUiHorizontalBarConfig,
-  VueUiHorizontalBarDatapoint,
-  VueUiHorizontalBarDatasetItem,
-} from 'vue-data-ui'
+import type { VueUiHorizontalBarConfig, VueUiHorizontalBarDatasetItem } from 'vue-data-ui'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
 import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
 import {
@@ -182,8 +178,8 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
               bold: false,
               color: colors.value.fg,
               value: {
-                formatter: ({ config }) => {
-                  return config?.datapoint?.formattedValue ?? '0'
+                formatter: ({ config: formatterConfig }) => {
+                  return formatterConfig?.datapoint?.formattedValue ?? '0'
                 },
               },
             },
@@ -220,13 +216,18 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
             const name = datapoint?.name?.replace(/\n/g, '<br>')
             return `
             <div class="font-mono p-3 border border-border rounded-md bg-[var(--bg)]/10 backdrop-blur-md">
-              <div class="flex items-center gap-2">
+              <div class="grid grid-cols-[12px_minmax(0,1fr)_max-content] items-center gap-x-3">
                 <div class="w-3 h-3">
                   <svg viewBox="0 0 2 2" class="w-full h-full">
                     <rect x="0" y="0" width="2" height="2" rx="0.3" fill="${datapoint?.color}" />
                   </svg>
                 </div>
-                <span>${name}: ${(datapoint as VueUiHorizontalBarDatapoint).formattedValue ?? 0}</span>
+                <span class="text-3xs uppercase tracking-wide text-[var(--fg)]/70 truncate">
+                  ${name}
+                </span>
+                <span class="text-base text-[var(--fg)] font-mono tabular-nums text-end">
+                  ${datapoint?.formattedValue ?? 0}
+                </span>
               </div>
             </div>
             `

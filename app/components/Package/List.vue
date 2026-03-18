@@ -1,14 +1,4 @@
 <script setup lang="ts">
-import type { NpmSearchResult } from '#shared/types'
-import type { WindowVirtualizerHandle } from '~/composables/useVirtualInfiniteScroll'
-import type {
-  ColumnConfig,
-  PageSize,
-  PaginationMode,
-  SortOption,
-  ViewMode,
-} from '#shared/types/preferences'
-import { DEFAULT_COLUMNS } from '#shared/types/preferences'
 import { WindowVirtualizer } from 'virtua/vue'
 
 /** Number of items to render statically during SSR */
@@ -176,7 +166,8 @@ defineExpose({
           <template #default="{ item, index }">
             <div class="pb-4">
               <PackageCard
-                :result="item as NpmSearchResult"
+                :key="item.package.name"
+                :result="item"
                 :heading-level="headingLevel"
                 :show-publisher="showPublisher"
                 :index="index"

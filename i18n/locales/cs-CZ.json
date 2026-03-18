@@ -178,7 +178,6 @@
     "skip_link": "Přejít na hlavní obsah",
     "warnings": "Varování:",
     "go_back_home": "Zpět na začátek",
-    "view_on_npm": "Zobrazit na npm",
     "per_week": "/ týden",
     "vanity_downloads_hint": "Pro zobrazený balíček | Součet pro {count} zobrazené balíčky | Součet pro {count} zobrazených balíčků",
     "sort": {
@@ -190,7 +189,21 @@
     "cancel": "Zrušit",
     "save": "Uložit",
     "edit": "Upravit",
-    "error": "Chyba"
+    "error": "Chyba",
+    "view_on": {
+      "npm": "Zobrazit na npm",
+      "github": "Zobrazit na GitHubu",
+      "gitlab": "Zobrazit na GitLabu",
+      "bitbucket": "Zobrazit na Bitbucketu",
+      "codeberg": "Zobrazit na Codebergu",
+      "git_repo": "Zobrazit v Git repozitáži",
+      "forgejo": "Zobrazit na Forgejo",
+      "gitea": "Zobrazit na Gitea",
+      "gitee": "Zobrazit na Gitee",
+      "radicle": "Zobrazit na Radicle",
+      "sourcehut": "Zobrazit na SourceHutu",
+      "tangled": "Zobrazit na Tangled"
+    }
   },
   "profile": {
     "display_name": "Zobrazované jméno",
@@ -213,12 +226,9 @@
     "not_found": "Balíček nenalezen",
     "not_found_message": "Balíček nebyl nalezen.",
     "no_description": "Není k dispozici žádný popis",
-    "not_latest": "(není nejnovější)",
     "verified_provenance": "Ověřený původ",
-    "view_permalink": "Zobrazit trvalý odkaz na tuto verzi",
     "navigation": "Navigace balíčku",
     "copy_name": "Zkopírovat název balíčku",
-    "copy_version": "Zkopírovat verzi balíčku",
     "deprecation": {
       "package": "Tento balíček byl označen jako zastaralý.",
       "version": "Tato verze byla označena jako zastaralá.",
@@ -312,7 +322,6 @@
     "readme": {
       "title": "ČTI MĚ",
       "no_readme": "Žádné ČTI MĚ NENÍ k dispozici.",
-      "view_on_github": "Zobrazit na GitHubu",
       "toc_title": "Obsah",
       "callout": {
         "note": "Poznámka",
@@ -377,7 +386,6 @@
       "grouping_versions_only_recent": "Pouze nedávné",
       "grouping_usage_title": "Použití",
       "grouping_usage_all": "Všechno",
-      "grouping_usage_low": "Nízké",
       "recent_versions_only_tooltip": "Zobrazit pouze verze zveřejněné v posledním roce.",
       "show_low_usage_tooltip": "Zahrnout skupiny verzí s méně než 1 % celkových stažení.",
       "y_axis_label": "Stažení",
@@ -477,7 +485,9 @@
         "estimations": "Konečné hodnoty jsou odhady založené na částečných datech pro aktuální období.",
         "compare": "Porovnání grafu stahování balíčků pro: {packages}.",
         "single_package": "Graf stahování pro balíček {package}.",
-        "general_description": "Osa Y představuje počet stažení. Osa X představuje časový rozsah od {start_date} do {end_date} s časovým obdobím {granularity}.{estimation_notice} {packages_analysis}. {watermark}."
+        "general_description": "Osa Y představuje počet stažení. Osa X představuje časový rozsah od {start_date} do {end_date} s časovým obdobím {granularity}.{estimation_notice} {packages_analysis}. {watermark}.",
+        "facet_bar_general_description": "Horizontální sloupcový graf pro: {packages}, porovnávající {facet} ({description}). {facet_analysis} {watermark}.",
+        "facet_bar_analysis": "{package_name} má hodnotu {value}."
       }
     },
     "downloads": {
@@ -776,8 +786,7 @@
       "preview": "náhled",
       "code": "kód"
     },
-    "file_path": "Cesta k souboru",
-    "scroll_to_top": "Posunout nahoru"
+    "file_path": "Cesta k souboru"
   },
   "badges": {
     "provenance": {
@@ -885,7 +894,7 @@
       "paginated": "Stránkované",
       "items_per_page": "Položek na stránku",
       "per_page": "{count} / stránku",
-      "showing": "{start}-{end} z {total}",
+      "showing": "{range} z {total}",
       "previous": "Předchozí stránka",
       "next": "Další stránka",
       "nav_label": "Stránkování"
@@ -1036,7 +1045,9 @@
       "loading": "Načítání dat balíčků...",
       "error": "Nepodařilo se načíst data balíčků. Zkuste to prosím znovu.",
       "empty_title": "Vyberte balíčky k porovnání",
-      "empty_description": "Vyhledejte a přidejte alespoň 2 balíčky výše, abyste viděli porovnání jejich metrik vedle sebe."
+      "empty_description": "Vyhledejte a přidejte alespoň 2 balíčky výše, abyste viděli porovnání jejich metrik vedle sebe.",
+      "table_view": "Tabulka",
+      "charts_view": "Grafy"
     },
     "selector": {
       "search_label": "Vyhledat balíčky",

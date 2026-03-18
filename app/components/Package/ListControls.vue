@@ -1,5 +1,5 @@
 <script setup lang="ts">
-export type SortOption = 'downloads' | 'updated' | 'name-asc' | 'name-desc'
+type SortOption = 'downloads' | 'updated' | 'name-asc' | 'name-desc'
 
 const props = defineProps<{
   /** Current search/filter text */

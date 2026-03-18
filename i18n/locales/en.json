@@ -36,7 +36,9 @@
     "go_to_result": "Go to result",
     "open_code_view": "Open code view",
     "open_docs": "Open docs",
-    "disable_shortcuts": "You can disable keyboard shortcuts in {settings}."
+    "disable_shortcuts": "You can disable keyboard shortcuts in {settings}.",
+    "open_main": "Open main information",
+    "open_diff": "Open version differences"
   },
   "search": {
     "label": "Search npm packages",
@@ -136,6 +138,8 @@
     "include_types_description": "Add {'@'}types package to install commands for untyped packages",
     "hide_platform_packages": "Hide platform-specific packages in search",
     "hide_platform_packages_description": "Hide native binary packages like {'@'}esbuild/linux-x64 from results",
+    "enable_graph_pulse_loop": "Enable looping of pulse effect on mini graph",
+    "enable_graph_pulse_loop_description": "Activate a continuous pulse animation on the weekly download graph. This animation may be distracting for some users.",
     "theme": "Theme",
     "theme_light": "Light",
     "theme_dark": "Dark",
@@ -178,7 +182,6 @@
     "skip_link": "Skip to main content",
     "warnings": "Warnings:",
     "go_back_home": "Go back home",
-    "view_on_npm": "view on npm",
     "per_week": "/ week",
     "vanity_downloads_hint": "Vanity number: no packages displayed | Vanity number: for the displayed package | Vanity number: Sum of {count} displayed packages",
     "sort": {
@@ -190,7 +193,21 @@
     "cancel": "Cancel",
     "save": "Save",
     "edit": "Edit",
-    "error": "Error"
+    "error": "Error",
+    "view_on": {
+      "npm": "view on npm",
+      "github": "View on GitHub",
+      "gitlab": "View on GitLab",
+      "bitbucket": "View on Bitbucket",
+      "codeberg": "View on Codeberg",
+      "git_repo": "View on Git repository",
+      "forgejo": "View on Forgejo",
+      "gitea": "View on Gitea",
+      "gitee": "View on Gitee",
+      "radicle": "View on Radicle",
+      "sourcehut": "View on SourceHut",
+      "tangled": "View on Tangled"
+    }
   },
   "profile": {
     "display_name": "Display Name",
@@ -213,12 +230,9 @@
     "not_found": "Package Not Found",
     "not_found_message": "The package could not be found.",
     "no_description": "No description provided",
-    "not_latest": "(not latest)",
     "verified_provenance": "Verified provenance",
-    "view_permalink": "View permalink for this version",
     "navigation": "Package",
     "copy_name": "Copy package name",
-    "copy_version": "Copy package version",
     "deprecation": {
       "package": "This package has been deprecated.",
       "version": "This version has been deprecated.",
@@ -275,6 +289,7 @@
       "view_source": "View source"
     },
     "links": {
+      "main": "main",
       "repo": "repo",
       "homepage": "homepage",
       "issues": "issues",
@@ -312,7 +327,6 @@
     "readme": {
       "title": "Readme",
       "no_readme": "No README available.",
-      "view_on_github": "View on GitHub",
       "toc_title": "Outline",
       "callout": {
         "note": "Note",
@@ -351,7 +365,9 @@
       "published": "Published",
       "weekly_downloads": "Weekly downloads",
       "keywords": "Keywords",
-      "license": "License"
+      "license": "License",
+      "select": "Select package",
+      "select_maximum": "Maximum {count} packages can be selected"
     },
     "versions": {
       "title": "Versions",
@@ -366,6 +382,7 @@
       "all_covered": "All versions are covered by tags above",
       "deprecated_title": "{version} (deprecated)",
       "view_all": "View {count} version | View all {count} versions",
+      "view_all_versions": "View all versions",
       "distribution_title": "Semver Group",
       "distribution_modal_title": "Versions",
       "distribution_range_date_same_year": "from {from} to {to}, {endYear}",
@@ -377,7 +394,7 @@
       "grouping_versions_only_recent": "Only recent",
       "grouping_usage_title": "Usage",
       "grouping_usage_all": "All",
-      "grouping_usage_low": "Low",
+      "grouping_usage_most_used": "Most used",
       "recent_versions_only_tooltip": "Show only versions published within the last year.",
       "show_low_usage_tooltip": "Include version groups with less than 1% of total downloads.",
       "y_axis_label": "Downloads",
@@ -390,7 +407,12 @@
       "copy_alt": {
         "per_version_analysis": "{version} version was downloaded {downloads} times",
         "general_description": "Bar chart showing per-version downloads for {versions_count} {semver_grouping_mode} versions of the {package_name} package, {date_range_label} from the {first_version} version to the {last_version} version. The most downloaded version is {max_downloaded_version} with {max_version_downloads} downloads. {per_version_analysis}. {watermark}."
-      }
+      },
+      "page_title": "Version History",
+      "current_tags": "Current Tags",
+      "version_filter_placeholder": "Filter versions…",
+      "version_filter_label": "Filter versions",
+      "no_match_filter": "No versions match {filter}"
     },
     "dependencies": {
       "title": "Dependency ({count}) | Dependencies ({count})",
@@ -425,7 +447,8 @@
       "cancel_add": "Cancel adding owner",
       "add_owner": "+ Add owner",
       "show_more": "(show {count} more)",
-      "show_less": "(show fewer)"
+      "show_less": "(show fewer)",
+      "maintainer_template": "{avatar} {char126}{name}"
     },
     "trends": {
       "granularity": "Granularity",
@@ -457,6 +480,7 @@
       "data_correction": "Data correction",
       "average_window": "Average window",
       "smoothing": "Smoothing",
+      "prediction": "Prediction",
       "known_anomalies": "Known anomalies",
       "known_anomalies_description": "Interpolates over known download spikes caused by bots or CI issues.",
       "known_anomalies_ranges": "Anomaly ranges",
@@ -779,7 +803,8 @@
       "code": "code"
     },
     "file_path": "File path",
-    "scroll_to_top": "Scroll to top"
+    "binary_file": "Binary file",
+    "binary_rendering_warning": "File type \"{contentType}\" is not supported for preview."
   },
   "badges": {
     "provenance": {
@@ -841,6 +866,7 @@
       "secure": "Without warnings",
       "insecure": "With warnings"
     },
+    "view_selected": "View selected",
     "sort": {
       "label": "Sort packages",
       "toggle_direction": "Toggle sort direction",
@@ -874,7 +900,8 @@
       "popularity_score": "Popularity score",
       "maintenance_score": "Maintenance score",
       "combined_score": "Combined score",
-      "security": "Security"
+      "security": "Security",
+      "selection": "Select package"
     },
     "view_mode": {
       "label": "View mode",
@@ -887,7 +914,7 @@
       "paginated": "Paginated",
       "items_per_page": "Items per page",
       "per_page": "{count} / page",
-      "showing": "{start}-{end} of {total}",
+      "showing": "{range} of {total}",
       "previous": "Previous page",
       "next": "Next page",
       "nav_label": "Pagination"
@@ -1152,6 +1179,7 @@
     "file_size_warning": "{size} exceeds the 250KB limit for comparison",
     "compare_versions": "diff",
     "compare_versions_title": "Compare with latest version",
+    "version_selector_title": "Compare with version",
     "summary": "Summary",
     "deps_count": "{count} dep | {count} deps",
     "dependencies": "Dependencies",
@@ -1350,5 +1378,11 @@
         "all": "all"
       }
     }
+  },
+  "action_bar": {
+    "title": "action bar",
+    "selection": "0 selected | 1 selected | {count} selected",
+    "shortcut": "Press \"{key}\" to focus actions",
+    "button_close_aria_label": "Close action bar"
   }
 }

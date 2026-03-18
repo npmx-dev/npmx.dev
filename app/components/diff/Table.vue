@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { DiffHunk, DiffSkipBlock } from '#shared/types'
-
 const props = defineProps<{
   hunks: (DiffHunk | DiffSkipBlock)[]
   type: 'add' | 'delete' | 'modify'
