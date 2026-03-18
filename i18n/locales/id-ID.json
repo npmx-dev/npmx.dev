@@ -108,8 +108,7 @@
       "updating": "Memperbarui...",
       "reply_count": "{count} balasan | {count} balasan",
       "like_count": "{count} suka | {count} suka",
-      "repost_count": "{count} repost | {count} repost",
-      "more_replies": "{count} balasan lainnya... | {count} balasan lainnya..."
+      "repost_count": "{count} repost | {count} repost"
     }
   },
   "settings": {

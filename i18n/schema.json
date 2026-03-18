@@ -331,9 +331,6 @@
             "repost_count": {
               "type": "string"
             },
-            "more_replies": {
-              "type": "string"
-            },
             "replying_to": {
               "type": "string"
             },

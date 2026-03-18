@@ -47,6 +47,8 @@ const SKIPPED_COMPONENTS: Record<string, string> = {
   'SkeletonBlock.vue': 'Already covered indirectly via other component tests',
   'SkeletonInline.vue': 'Already covered indirectly via other component tests',
   'Button/Group.vue': "Wrapper component, tests wouldn't make much sense here",
+  'BlueskyCommentThread.vue':
+    'Wrapper component - manages collapsible reply thread, tested via BlueskyComment',
 }
 
 /**

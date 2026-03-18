@@ -109,7 +109,6 @@
       "reply_count": "{count} reply | {count} replies",
       "like_count": "{count} like | {count} likes",
       "repost_count": "{count} repost | {count} reposts",
-      "more_replies": "{count} more reply... | {count} more replies...",
       "replying_to": "Replying to {name}",
       "view_replies": "View {count} reply | View {count} replies",
       "hide_replies": "Hide replies"

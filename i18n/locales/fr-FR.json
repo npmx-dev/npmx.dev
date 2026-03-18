@@ -106,8 +106,7 @@
       "updating": "Mise à jour...",
       "reply_count": "{count} réponse | {count} réponses",
       "like_count": "{count} j'aime | {count} j'aime",
-      "repost_count": "{count} repartage | {count} repartages",
-      "more_replies": "{count} réponse de plus... | {count} réponses de plus..."
+      "repost_count": "{count} repartage | {count} repartages"
     }
   },
   "settings": {

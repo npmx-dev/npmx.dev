@@ -108,8 +108,7 @@
       "updating": "Actualizando...",
       "reply_count": "{count} respuesta | {count} respuestas",
       "like_count": "{count} me gusta | {count} me gusta",
-      "repost_count": "{count} republicación | {count} republicaciones",
-      "more_replies": "{count} respuesta más... | {count} respuestas más..."
+      "repost_count": "{count} republicación | {count} republicaciones"
     }
   },
   "settings": {
