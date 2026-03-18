@@ -18,7 +18,7 @@ const props = defineProps<{
 }>()
 
 const { requestedVersion, orgName } = usePackageRoute()
-const { scrollToTop, isTouchDeviceClient } = useScrollToTop()
+const { scrollToTop } = useScrollToTop()
 const packageHeaderHeight = usePackageHeaderHeight()
 
 const header = useTemplateRef('header')
