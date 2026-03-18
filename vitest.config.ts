@@ -14,6 +14,7 @@ export default defineConfig({
             '~': `${rootDir}/app`,
             '#shared': `${rootDir}/shared`,
             '#server': `${rootDir}/server`,
+            '#scripts': `${rootDir}/scripts`,
           },
         },
         test: {
