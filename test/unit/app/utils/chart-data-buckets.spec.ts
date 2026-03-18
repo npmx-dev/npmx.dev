@@ -1,10 +1,10 @@
-import { describe, expect, it } from 'vite-plus/test'
+import { describe, expect, it } from 'vitest'
 import {
-  fillPartialBucket,
-  buildDailyEvolution,
-  buildWeeklyEvolution,
-  buildMonthlyEvolution,
-  buildYearlyEvolution,
+    fillPartialBucket,
+    buildDailyEvolution,
+    buildWeeklyEvolution,
+    buildMonthlyEvolution,
+    buildYearlyEvolution,
 } from '../../../../app/utils/chart-data-buckets'
 
 describe('fillPartialBucket', () => {

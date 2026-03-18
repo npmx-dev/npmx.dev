@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vite-plus/test'
+import { describe, expect, it } from 'vitest'
 import { createError } from 'h3'
 import { FetchError } from 'ofetch'
 import * as v from 'valibot'

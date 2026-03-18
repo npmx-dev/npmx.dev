@@ -1,8 +1,8 @@
-import { describe, expect, it } from 'vite-plus/test'
+import { describe, expect, it } from 'vitest'
 import {
-  normalizeGitUrl,
-  parseRepositoryInfo,
-  type RepositoryInfo,
+    normalizeGitUrl,
+    parseRepositoryInfo,
+    type RepositoryInfo,
 } from '#shared/utils/git-providers'
 
 describe('normalizeGitUrl', () => {

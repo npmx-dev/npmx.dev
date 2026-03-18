@@ -1,9 +1,9 @@
-import { describe, expect, it } from 'vite-plus/test'
+import { describe, expect, it } from 'vitest'
 import {
-  SEVERITY_COLORS,
-  SEVERITY_TEXT_COLORS,
-  SEVERITY_BADGE_COLORS,
-  getHighestSeverity,
+    SEVERITY_COLORS,
+    SEVERITY_TEXT_COLORS,
+    SEVERITY_BADGE_COLORS,
+    getHighestSeverity,
 } from '../../../../shared/utils/severity'
 
 describe('severity utils', () => {

@@ -1,11 +1,11 @@
-import { describe, expect, it } from 'vite-plus/test'
+import { describe, expect, it } from 'vitest'
 import {
-  getInstallCommand,
-  getInstallCommandParts,
-  getPackageSpecifier,
-  getExecuteCommand,
-  getExecuteCommandParts,
-  getDevDependencyFlag,
+    getInstallCommand,
+    getInstallCommandParts,
+    getPackageSpecifier,
+    getExecuteCommand,
+    getExecuteCommandParts,
+    getDevDependencyFlag,
 } from '../../../../app/utils/install-command'
 import type { JsrPackageInfo } from '../../../../shared/types/jsr'
 

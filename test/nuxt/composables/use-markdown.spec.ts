@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vite-plus/test'
+import { describe, expect, it } from 'vitest'
 
 // Utility to use more human-readable strings in tests
 function escapeHtml(text: string): string {

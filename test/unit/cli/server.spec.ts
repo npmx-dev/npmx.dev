@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vite-plus/test'
+import { describe, expect, it, vi } from 'vitest'
 import { createConnectorApp } from '../../../cli/src/server.ts'
 
 const TEST_TOKEN = 'test-token-123'

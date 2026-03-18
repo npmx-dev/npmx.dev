@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vite-plus/test'
+import { describe, expect, it } from 'vitest'
 
 function createVersion(version: string, hasAttestations = false): Packument['versions'][string] {
   return {

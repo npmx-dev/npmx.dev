@@ -1,11 +1,11 @@
-import { describe, expect, it } from 'vite-plus/test'
+import { describe, expect, it } from 'vitest'
 import {
-  isTrustedImageDomain,
-  isAllowedImageUrl,
-  toProxiedImageUrl,
-  resolveAndValidateHost,
-  signImageUrl,
-  verifyImageUrl,
+    isTrustedImageDomain,
+    isAllowedImageUrl,
+    toProxiedImageUrl,
+    resolveAndValidateHost,
+    signImageUrl,
+    verifyImageUrl,
 } from '../../../../server/utils/image-proxy'
 
 const TEST_SECRET = 'test-secret-key-for-unit-tests'

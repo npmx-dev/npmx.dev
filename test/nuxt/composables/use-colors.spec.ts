@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vite-plus/test'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { computed, nextTick, defineComponent } from 'vue'
 import { mount } from '@vue/test-utils'
 import type * as VueUseCore from '@vueuse/core'

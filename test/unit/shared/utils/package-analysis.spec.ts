@@ -1,12 +1,12 @@
-import { describe, expect, it } from 'vite-plus/test'
+import { describe, expect, it } from 'vitest'
 import {
-  analyzePackage,
-  detectModuleFormat,
-  detectTypesStatus,
-  getCreatePackageName,
-  getCreateShortName,
-  getTypesPackageName,
-  hasBuiltInTypes,
+    analyzePackage,
+    detectModuleFormat,
+    detectTypesStatus,
+    getCreatePackageName,
+    getCreateShortName,
+    getTypesPackageName,
+    hasBuiltInTypes,
 } from '../../../../shared/utils/package-analysis'
 
 describe('detectModuleFormat', () => {

@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import PackageSelector from '~/components/Compare/PackageSelector.vue'

@@ -1,5 +1,5 @@
 import { mockNuxtImport, mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
-import { describe, expect, it, vi, beforeEach } from 'vite-plus/test'
+import { describe, expect, it, vi, beforeEach } from 'vitest'
 
 const { mockUseResolvedVersion, mockUsePackageDownloads, mockUsePackage, mockUseRepoMeta } =
   vi.hoisted(() => ({

@@ -1,16 +1,16 @@
-import { describe, expect, it, vi } from 'vite-plus/test'
+import { describe, expect, it, vi } from 'vitest'
 
 vi.mock('~/utils/chart-data-correction', () => ({
   applyDataCorrection: (data: { value: number }[]) => data,
 }))
 
 import {
-  endDateOnlyToUtcMs,
-  getBucketStartUtc,
-  getBucketEndUtc,
-  getCompletionRatio,
-  linearProject,
-  extrapolateLastValue,
+    endDateOnlyToUtcMs,
+    getBucketStartUtc,
+    getBucketEndUtc,
+    getCompletionRatio,
+    linearProject,
+    extrapolateLastValue,
 } from '../../../../app/utils/chart-data-prediction'
 
 describe('endDateOnlyToUtcMs', () => {

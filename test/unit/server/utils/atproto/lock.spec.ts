@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach } from 'vite-plus/test'
+import { describe, expect, it, vi, beforeEach } from 'vitest'
 
 const mockRedisSet = vi.fn()
 const mockRedisGet = vi.fn()

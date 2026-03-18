@@ -1,10 +1,10 @@
-import { describe, expect, it } from 'vite-plus/test'
+import { describe, expect, it } from 'vitest'
 import {
-  validateUsername,
-  validateOrgName,
-  validateScopeTeam,
-  validatePackageName,
-  extractUrls,
+    validateUsername,
+    validateOrgName,
+    validateScopeTeam,
+    validatePackageName,
+    extractUrls,
 } from '../../../cli/src/npm-client.ts'
 
 describe('validateUsername', () => {

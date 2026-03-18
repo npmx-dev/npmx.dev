@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto'
-import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock('#server/utils/npm', () => ({
   fetchUserEmail: vi.fn(),

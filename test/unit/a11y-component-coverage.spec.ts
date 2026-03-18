@@ -10,7 +10,7 @@
  */
 import fs from 'node:fs'
 import path from 'node:path'
-import { assert, describe, it } from 'vite-plus/test'
+import { assert, describe, it } from 'vitest'
 import { fileURLToPath } from 'node:url'
 
 /**

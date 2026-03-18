@@ -1,11 +1,11 @@
-import { describe, expect, it } from 'vite-plus/test'
+import { describe, expect, it } from 'vitest'
 import {
-  addDays,
-  DAY_MS,
-  daysInMonth,
-  daysInYear,
-  parseIsoDate,
-  toIsoDate,
+    addDays,
+    DAY_MS,
+    daysInMonth,
+    daysInYear,
+    parseIsoDate,
+    toIsoDate,
 } from '../../../../app/utils/date'
 
 describe('DAY_MS', () => {

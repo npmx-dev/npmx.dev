@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vite-plus/test'
+import { describe, expect, it } from 'vitest'
 
 // Test the URL parsing logic directly by importing from the composable
 // Since it's not exported, we'll test the behavior through the expected patterns

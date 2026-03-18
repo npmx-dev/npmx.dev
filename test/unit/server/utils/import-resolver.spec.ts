@@ -1,9 +1,9 @@
-import { describe, expect, it } from 'vite-plus/test'
+import { describe, expect, it } from 'vitest'
 import type { PackageFileTree } from '../../../../shared/types'
 import {
-  createImportResolver,
-  flattenFileTree,
-  resolveRelativeImport,
+    createImportResolver,
+    flattenFileTree,
+    resolveRelativeImport,
 } from '../../../../server/utils/import-resolver'
 
 describe('flattenFileTree', () => {

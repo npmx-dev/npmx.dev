@@ -1,11 +1,11 @@
-import { describe, expect, it } from 'vite-plus/test'
+import { describe, expect, it } from 'vitest'
 import {
-  buildSortOption,
-  parseSortOption,
-  toggleDirection,
-  type SortDirection,
-  type SortKey,
-  type SortOption,
+    buildSortOption,
+    parseSortOption,
+    toggleDirection,
+    type SortDirection,
+    type SortKey,
+    type SortOption,
 } from '#shared/types/preferences'
 
 describe('parseSortOption', () => {

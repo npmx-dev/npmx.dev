@@ -1,9 +1,9 @@
-import { describe, expect, it } from 'vite-plus/test'
+import { describe, expect, it } from 'vitest'
 import { applyBlocklistCorrection } from '../../../../app/utils/download-anomalies'
 import type {
-  MonthlyDataPoint,
-  WeeklyDataPoint,
-  YearlyDataPoint,
+    MonthlyDataPoint,
+    WeeklyDataPoint,
+    YearlyDataPoint,
 } from '../../../../app/types/chart'
 
 /** Helper to build a WeeklyDataPoint from a start date and value. */

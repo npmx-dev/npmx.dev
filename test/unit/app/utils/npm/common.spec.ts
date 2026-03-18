@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vite-plus/test'
+import { describe, expect, it } from 'vitest'
 
 import { buildScopeTeam } from '../../../../../app/utils/npm/common'
 import { validateScopeTeam } from '../../../../../cli/src/npm-client'

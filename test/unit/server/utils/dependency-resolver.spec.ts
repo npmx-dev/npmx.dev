@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach } from 'vite-plus/test'
+import { describe, expect, it, vi, beforeEach } from 'vitest'
 import type { Packument, PackumentVersion } from '../../../../shared/types'
 
 // Mock Nitro globals before importing the module

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vite-plus/test'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import { ref, computed, readonly, nextTick } from 'vue'
 import type { VueWrapper } from '@vue/test-utils'
