@@ -23,7 +23,6 @@ overrides:
   sharp: 0.34.5
   vite: npm:@voidzero-dev/vite-plus-core@0.1.12
   vitest: npm:@voidzero-dev/vite-plus-test@0.1.12
-  '@unocss/core': 66.6.3
   storybook: ^10.2.7
 
 packageExtensions:

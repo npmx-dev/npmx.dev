@@ -23,7 +23,6 @@ overrides:
   sharp: 0.34.5
   vite: npm:@voidzero-dev/vite-plus-core@0.1.12
   vitest: npm:@voidzero-dev/vite-plus-test@0.1.12
-  '@unocss/core': 66.6.3
   storybook: ^10.2.7
 
 packageExtensionsChecksum: sha256-YBtmV2wlHHTKm5hOqoxwkw6LifLft12a+kUIp1CTUjY=
@@ -4919,8 +4918,8 @@ packages:
     resolution: {integrity: sha512-1uleyRLyJc6PNNc2L3hEaKL89zXwvQAtP36oFySgL47RAxZHPZ4vfqFpbwR0eEN4iSqTS24ZFr7CTRWCaEGjzQ==}
     engines: {node: '>=14'}
 
-  '@unocss/core@66.6.3':
-    resolution: {integrity: sha512-Sk13RiFD8LyBPeFuMWzoN1/c5VnQ9n5lIpkEdarvjP1QlICA8QGROMPNq5dBGwoR6059cumxok935HhYe0XkHQ==}
+  '@unocss/core@66.6.7':
+    resolution: {integrity: sha512-Q8456iWFtdwrUNYKVOQY8ygRggjZOVtLc6Jc8KIkxig7OiNlUWOgXJTfCh4I8g6jBYzC5eHaHFDLgJOmOrxBsg==}
 
   '@unocss/extractor-arbitrary-variants@66.6.7':
     resolution: {integrity: sha512-PQiBHK0yUJ0BR+3GYnTPU6va6HVSRPV+O+s1zZmt23TWbyIeucoKCNR47TDtv+Z1xuksY8krIjtDYtufdrVWKw==}
@@ -15819,7 +15818,7 @@ snapshots:
     dependencies:
       '@jridgewell/remapping': 2.3.5
       '@unocss/config': 66.6.7
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
       '@unocss/preset-wind3': 66.6.7
       '@unocss/preset-wind4': 66.6.7
       '@unocss/transformer-directives': 66.6.7
@@ -15835,20 +15834,20 @@ snapshots:
 
   '@unocss/config@66.6.7':
     dependencies:
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
       colorette: 2.0.20
       consola: 3.4.2
       unconfig: 7.5.0
 
-  '@unocss/core@66.6.3': {}
+  '@unocss/core@66.6.7': {}
 
   '@unocss/extractor-arbitrary-variants@66.6.7':
     dependencies:
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
 
   '@unocss/inspector@66.6.7':
     dependencies:
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
       '@unocss/rule-utils': 66.6.7
       colorette: 2.0.20
       gzip-size: 6.0.0
@@ -15858,7 +15857,7 @@ snapshots:
     dependencies:
       '@nuxt/kit': 4.3.1(magicast@0.5.2)
       '@unocss/config': 66.6.7
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
       '@unocss/preset-attributify': 66.6.7
       '@unocss/preset-icons': 66.6.7
       '@unocss/preset-tagify': 66.6.7
@@ -15879,88 +15878,88 @@ snapshots:
 
   '@unocss/preset-attributify@66.6.7':
     dependencies:
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
 
   '@unocss/preset-icons@66.6.7':
     dependencies:
       '@iconify/utils': 3.1.0
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
       ofetch: 1.5.1
 
   '@unocss/preset-mini@66.6.7':
     dependencies:
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
       '@unocss/extractor-arbitrary-variants': 66.6.7
       '@unocss/rule-utils': 66.6.7
 
   '@unocss/preset-tagify@66.6.7':
     dependencies:
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
 
   '@unocss/preset-typography@66.6.7':
     dependencies:
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
       '@unocss/rule-utils': 66.6.7
 
   '@unocss/preset-uno@66.6.7':
     dependencies:
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
       '@unocss/preset-wind3': 66.6.7
 
   '@unocss/preset-web-fonts@66.6.7':
     dependencies:
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
       ofetch: 1.5.1
 
   '@unocss/preset-wind3@66.6.7':
     dependencies:
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
       '@unocss/preset-mini': 66.6.7
       '@unocss/rule-utils': 66.6.7
 
   '@unocss/preset-wind4@66.6.7':
     dependencies:
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
       '@unocss/extractor-arbitrary-variants': 66.6.7
       '@unocss/rule-utils': 66.6.7
 
   '@unocss/preset-wind@66.6.7':
     dependencies:
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
       '@unocss/preset-wind3': 66.6.7
 
   '@unocss/reset@66.6.7': {}
 
   '@unocss/rule-utils@66.6.7':
     dependencies:
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
       magic-string: 0.30.21
 
   '@unocss/transformer-attributify-jsx@66.6.7':
     dependencies:
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
       oxc-parser: 0.115.0
       oxc-walker: 0.7.0(oxc-parser@0.115.0)
 
   '@unocss/transformer-compile-class@66.6.7':
     dependencies:
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
 
   '@unocss/transformer-directives@66.6.7':
     dependencies:
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
       '@unocss/rule-utils': 66.6.7
       css-tree: 3.2.1
 
   '@unocss/transformer-variant-group@66.6.7':
     dependencies:
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
 
   '@unocss/vite@66.6.7(vite@8.0.0(@types/node@24.12.0)(esbuild@0.27.3)(jiti@2.6.1)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2))':
     dependencies:
       '@jridgewell/remapping': 2.3.5
       '@unocss/config': 66.6.7
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
       '@unocss/inspector': 66.6.7
       chokidar: 5.0.0
       magic-string: 0.30.21
@@ -15973,7 +15972,7 @@ snapshots:
     dependencies:
       '@jridgewell/remapping': 2.3.5
       '@unocss/config': 66.6.7
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
       chokidar: 5.0.0
       magic-string: 0.30.21
       pathe: 2.0.3
@@ -20123,7 +20122,7 @@ snapshots:
       '@resvg/resvg-js': 2.6.2
       '@resvg/resvg-wasm': 2.6.2
       '@unhead/vue': 2.1.10(vue@3.5.30(typescript@5.9.3))
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
       '@unocss/preset-wind3': 66.6.7
       chrome-launcher: 1.2.1
       consola: 3.4.2
@@ -20163,7 +20162,7 @@ snapshots:
       '@resvg/resvg-js': 2.6.2
       '@resvg/resvg-wasm': 2.6.2
       '@unhead/vue': 2.1.10(vue@3.5.30(typescript@5.9.3))
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
       '@unocss/preset-wind3': 66.6.7
       chrome-launcher: 1.2.1
       consola: 3.4.2
@@ -22794,7 +22793,7 @@ snapshots:
   unocss@66.6.7(@unocss/webpack@66.6.7(webpack@5.104.1(esbuild@0.27.3)))(vite@8.0.0(@types/node@24.12.0)(esbuild@0.27.3)(jiti@2.6.1)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2)):
     dependencies:
       '@unocss/cli': 66.6.7
-      '@unocss/core': 66.6.3
+      '@unocss/core': 66.6.7
       '@unocss/preset-attributify': 66.6.7
       '@unocss/preset-icons': 66.6.7
       '@unocss/preset-mini': 66.6.7
