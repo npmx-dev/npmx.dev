@@ -1,5 +1,5 @@
 import { describe, expect, it, beforeEach } from 'vitest'
-import { MockConnectorStateManager, createMockConnectorState } from '~~/cli/src/mock-state'
+import { MockConnectorStateManager, createMockConnectorState } from '../../../cli/src/mock-state.ts'
 
 function createManager() {
   const data = createMockConnectorState({ token: 'test-token', npmUser: 'testuser' })

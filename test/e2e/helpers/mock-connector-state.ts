@@ -5,7 +5,7 @@ import {
   createMockConnectorState,
   DEFAULT_MOCK_CONFIG,
   type MockConnectorConfig,
-} from '~~/cli/src/mock-state'
+} from '../../../cli/src/mock-state'
 
 export { MockConnectorStateManager, createMockConnectorState, DEFAULT_MOCK_CONFIG }
 export type { MockConnectorConfig }

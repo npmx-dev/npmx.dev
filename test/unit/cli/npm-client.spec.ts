@@ -5,7 +5,7 @@ import {
   validateScopeTeam,
   validatePackageName,
   extractUrls,
-} from '~~/cli/src/npm-client'
+} from '../../../cli/src/npm-client'
 
 describe('validateUsername', () => {
   it('accepts valid usernames', () => {
