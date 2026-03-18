@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { computed, toValue } from 'vue'
 import type { SlimPackumentVersion } from '#shared/types/npm-registry'
-import { useRepositoryUrl } from '../../../../app/composables/useRepositoryUrl'
+import { useRepositoryUrl } from '~/composables/useRepositoryUrl'
 
 function createVersion(repository?: SlimPackumentVersion['repository']): SlimPackumentVersion {
   return { repository } as SlimPackumentVersion
