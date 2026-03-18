@@ -21,6 +21,48 @@ permissions:
   contents: read
 
 jobs:
+  build:
+    name: 🏗️ Build project
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          node-version: lts/*
+
+      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+        name: 🟧 Install pnpm
+        with:
+          cache: true
+
+      - name: 📦 Install dependencies
+        run: pnpm install
+
+      - name: 📦 Restore Nuxt build cache
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
+        with:
+          path: |
+            .nuxt
+            node_modules/.cache
+          key: nuxt-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('app/**', 'server/**', 'shared/**', 'nuxt.config.*') }}
+          restore-keys: |
+            nuxt-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('pnpm-lock.yaml') }}-
+            nuxt-${{ runner.os }}-${{ runner.arch }}-
+
+      - name: 🏗️ Build project
+        run: pnpm build:test
+        env:
+          VALIDATE_HTML: true
+
+      - name: ⬆︎ Upload build output
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: build-output
+          path: .output/
+          retention-days: 1
+
   lint:
     name: 🔠 Lint project
     runs-on: ubuntu-24.04-arm
@@ -124,6 +166,7 @@ jobs:
 
   browser:
     name: 🖥️ Browser tests
+    needs: build
     runs-on: ubuntu-24.04-arm
     container:
       image: mcr.microsoft.com/playwright:v1.58.2-noble
@@ -141,16 +184,18 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm install
 
-      - name: 🏗️ Build project
-        run: pnpm build:test
-        env:
-          VALIDATE_HTML: true
+      - name: ⬇︎ Download build output
+        uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
+        with:
+          name: build-output
+          path: .output/
 
       - name: 🖥️ Test project (browser)
         run: pnpm test:browser:prebuilt
 
   a11y:
     name: ♿ Accessibility audit
+    needs: build
     runs-on: ubuntu-latest # See https://github.com/GoogleChrome/lighthouse/discussions/16834
     strategy:
       matrix:
@@ -169,8 +214,11 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm install
 
-      - name: 🏗️ Build project
-        run: pnpm build:test
+      - name: ⬇︎ Download build output
+        uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
+        with:
+          name: build-output
+          path: .output/
 
       - name: ♿ Accessibility audit (Lighthouse - ${{ matrix.mode }} mode)
         run: pnpm test:a11y:prebuilt
