@@ -40,6 +40,7 @@ const config: KnipConfig = {
         'h3-next',
       ],
       ignoreUnresolved: ['#oauth/config'],
+      ignoreFiles: ['app/components/Tooltip/Announce.vue', 'app/components/UserCombobox.vue'],
     },
     'cli': {
       project: ['src/**/*.ts!', '!src/mock-*.ts'],
