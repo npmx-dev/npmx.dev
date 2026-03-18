@@ -1,3 +1,5 @@
+@layer properties, theme, base, icons, typography, shortcuts, default;
+
 /* Base reset and defaults */
 *,
 *::before,

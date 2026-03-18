@@ -55,6 +55,12 @@ export default defineNuxtConfig({
     },
   },
 
+  unocss: {
+    // Storybook doesn't mount app.vue (where `uno.css` is imported),
+    // so disable this property only in non-storybook environments.
+    autoImport: isStorybook,
+  },
+
   devtools: { enabled: true },
 
   devServer: {

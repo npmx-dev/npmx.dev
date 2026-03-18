@@ -26,7 +26,6 @@ export default defineConfig({
     presetWind4(),
     presetIcons({
       extraProperties: {
-        'display': 'inline-block',
         'forced-color-adjust': 'preserve-parent-color',
       },
       warn: true,
@@ -39,6 +38,7 @@ export default defineConfig({
     // keep this preset last
     ...(process.env.CI ? [] : [presetRtl(), presetA11y()]),
   ].filter(Boolean),
+  outputToCssLayers: true,
   transformers: [transformerDirectives(), transformerVariantGroup()],
   theme: {
     spacing: { DEFAULT: '4px' },
