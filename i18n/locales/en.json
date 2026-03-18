@@ -110,7 +110,9 @@
       "like_count": "{count} like | {count} likes",
       "repost_count": "{count} repost | {count} reposts",
       "more_replies": "{count} more reply... | {count} more replies..."
-    }
+    },
+    "no_excerpt": "No Excerpt Available",
+    "no_posts": "No posts found."
   },
   "settings": {
     "title": "settings",
@@ -286,7 +288,9 @@
         "refs": "{count} ref | {count} refs",
         "assets": "{count} asset | {count} assets"
       },
-      "view_source": "View source"
+      "view_source": "View source",
+      "method_npm": "skills-npm",
+      "method_cli": "skills CLI"
     },
     "links": {
       "main": "main",
@@ -1205,7 +1209,25 @@
     "files_button": "Files",
     "select_file_prompt": "Select a file from the sidebar to view its diff",
     "close_files_panel": "Close files panel",
-    "filter_files_label": "Filter files by change type"
+    "filter_files_label": "Filter files by change type",
+    "invalid_url": "Invalid comparison URL. Use format: /diff/package/v/from...to",
+    "go_to_package": "Go to package",
+    "comparing_versions": "Comparing versions...",
+    "failed_to_compare": "Failed to compare versions",
+    "back_to_package": "Back to package",
+    "viewer": {
+      "options": "Options",
+      "merge_modified_lines": "Merge modified lines",
+      "word_wrap": "Word wrap",
+      "change_ratio": "Change ratio",
+      "diff_distance": "Diff distance",
+      "char_edits": "Char edits",
+      "view_file": "View file",
+      "loading_diff": "Loading diff...",
+      "failed_to_load_diff": "Failed to load diff",
+      "view_in_code_browser": "View in code browser",
+      "no_content_changes": "No content changes detected"
+    }
   },
   "pds": {
     "title": "npmx.social",

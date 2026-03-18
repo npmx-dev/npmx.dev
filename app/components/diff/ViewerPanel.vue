@@ -174,10 +174,10 @@ function getCodeUrl(version: string): string {
             >
               <div class="flex flex-col gap-2">
                 <!-- Merge modified lines toggle -->
-                <SettingsToggle label="Merge modified lines" v-model="mergeModifiedLines" />
+                <SettingsToggle :label="$t('compare.viewer.merge_modified_lines')" v-model="mergeModifiedLines" />
 
                 <!-- Word wrap toggle -->
-                <SettingsToggle label="Word wrap" v-model="wordWrap" />
+                <SettingsToggle :label="$t('compare.viewer.word_wrap')" v-model="wordWrap" />
 
                 <!-- Sliders -->
                 <div
@@ -186,14 +186,14 @@ function getCodeUrl(version: string): string {
                 >
                   <!-- Change ratio slider -->
                   <div class="sr-only">
-                    <label for="change-ratio">Change ratio</label>
+                    <label for="change-ratio">{{ $t('compare.viewer.change_ratio') }}</label>
                   </div>
                   <div
                     class="slider-shell w-full min-w-0"
                     :class="{ 'is-disabled': !mergeModifiedLines }"
                   >
                     <div class="slider-labels">
-                      <span class="slider-label">Change ratio</span>
+                      <span class="slider-label">{{ $t('compare.viewer.change_ratio') }}</span>
                       <span class="slider-value tabular-nums">{{ maxChangeRatio.toFixed(2) }}</span>
                     </div>
                     <div class="slider-track">
@@ -219,14 +219,14 @@ function getCodeUrl(version: string): string {
 
                   <!-- Diff distance slider -->
                   <div class="sr-only">
-                    <label for="diff-distance">Diff distance</label>
+                    <label for="diff-distance">{{ $t('compare.viewer.diff_distance') }}</label>
                   </div>
                   <div
                     class="slider-shell w-full min-w-0"
                     :class="{ 'is-disabled': !mergeModifiedLines }"
                   >
                     <div class="slider-labels">
-                      <span class="slider-label">Diff distance</span>
+                      <span class="slider-label">{{ $t('compare.viewer.diff_distance') }}</span>
                       <span class="slider-value tabular-nums">{{ maxDiffDistance }}</span>
                     </div>
                     <div class="slider-track">
@@ -252,14 +252,14 @@ function getCodeUrl(version: string): string {
 
                   <!-- Char edits slider -->
                   <div class="sr-only">
-                    <label for="char-edits">Char edits</label>
+                    <label for="char-edits">{{ $t('compare.viewer.char_edits') }}</label>
                   </div>
                   <div
                     class="slider-shell w-full min-w-0"
                     :class="{ 'is-disabled': !mergeModifiedLines }"
                   >
                     <div class="slider-labels">
-                      <span class="slider-label">Char edits</span>
+                      <span class="slider-label">{{ $t('compare.viewer.char_edits') }}</span>
                       <span class="slider-value tabular-nums">{{ inlineMaxCharEdits }}</span>
                     </div>
                     <div class="slider-track">
@@ -317,14 +317,14 @@ function getCodeUrl(version: string): string {
       <!-- Loading state -->
       <div v-else-if="status === 'pending'" class="py-12 text-center">
         <div class="i-svg-spinners-ring-resize w-6 h-6 mx-auto text-fg-muted" />
-        <p class="mt-2 text-sm text-fg-muted">Loading diff...</p>
+        <p class="mt-2 text-sm text-fg-muted">{{ $t('compare.viewer.loading_diff') }}</p>
       </div>
 
       <!-- Error state -->
       <div v-else-if="status === 'error'" class="py-8 text-center">
         <span class="i-lucide:triangle-alert w-8 h-8 mx-auto text-fg-subtle mb-2 block" />
         <p class="text-fg-muted text-sm mb-2">
-          {{ loadError?.message || 'Failed to load diff' }}
+          {{ loadError?.message || $t('compare.viewer.failed_to_load_diff') }}
         </p>
         <div class="flex items-center justify-center gap-2">
           <NuxtLink
