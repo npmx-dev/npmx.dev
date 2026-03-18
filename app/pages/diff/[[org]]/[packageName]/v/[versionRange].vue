@@ -135,21 +135,26 @@ useSeoMeta({
     <!-- Error: invalid route -->
     <div v-if="!versionRange" class="container py-20 text-center">
       <p class="text-fg-muted mb-4">
-        Invalid comparison URL. Use format: /diff/package/v/from...to
+        {{ $t('compare.version_invalid_url') }}
+        <code class="font-mono text-sm">/diff/package/v/from...to</code>
       </p>
-      <NuxtLink :to="packageRoute(packageName)" class="btn">Go to package</NuxtLink>
+      <NuxtLink :to="packageRoute(packageName)" class="btn">{{
+        $t('compare.version_back_to_package')
+      }}</NuxtLink>
     </div>
 
     <!-- Loading state -->
     <div v-else-if="compareStatus === 'pending'" class="container py-20 text-center">
       <div class="i-svg-spinners-ring-resize w-8 h-8 mx-auto text-fg-muted" />
-      <p class="mt-4 text-fg-muted">Comparing versions...</p>
+      <p class="mt-4 text-fg-muted">{{ $t('compare.comparing_versions_label') }}</p>
     </div>
 
     <!-- Error state -->
     <div v-else-if="compareStatus === 'error'" class="container py-20 text-center" role="alert">
-      <p class="text-fg-muted mb-4">Failed to compare versions</p>
-      <NuxtLink :to="packageRoute(packageName)" class="btn">Back to package</NuxtLink>
+      <p class="text-fg-muted mb-4">{{ $t('compare.version_error_message') }}</p>
+      <NuxtLink :to="packageRoute(packageName)" class="btn">{{
+        $t('compare.version_back_to_package')
+      }}</NuxtLink>
     </div>
 
     <!-- Comparison content -->
