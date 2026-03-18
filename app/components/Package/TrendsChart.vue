@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Theme as VueDataUiTheme, VueUiXyConfig, VueUiXyDatasetItem } from 'vue-data-ui'
 import { VueUiXy } from 'vue-data-ui/vue-ui-xy'
-import { useDebounceFn, useElementSize } from '@vueuse/core'
+import { useDebounceFn, useElementSize, useTimeoutFn } from '@vueuse/core'
 import { useCssVariables } from '~/composables/useColors'
 import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch, lightenOklch } from '~/utils/colors'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
@@ -1681,6 +1681,8 @@ watch(selectedMetric, value => {
 
         <button
           v-if="showResetButton"
+          :aria-expanded="showCorrectionControls"
+          aria-controls="trends-correction-controls"
           type="button"
           aria-label="Reset date range"
           class="self-end flex items-center justify-center px-2.5 py-2.25 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
@@ -1706,6 +1708,9 @@ watch(selectedMetric, value => {
         </button>
         <div
           class="overflow-hidden transition-[opacity] duration-200 ease-out"
+          id="trends-correction-controls"
+          :aria-hidden="!showCorrectionControls"
+          :inert="!showCorrectionControls"
           :class="
             showCorrectionControls
               ? 'max-h-[220px] opacity-100'
