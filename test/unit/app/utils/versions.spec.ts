@@ -11,7 +11,7 @@ import {
   isSameVersionGroup,
   parseVersion,
   sortTags,
-} from '../../../../app/utils/versions'
+} from '~/utils/versions'
 
 describe('isExactVersion', () => {
   it('returns true for stable versions', () => {

@@ -9,6 +9,7 @@ import { PasswordSession } from '@atproto/lex-password-session'
 import {
   Client,
   isAtIdentifierString,
+  toDatetimeString,
   XrpcResponseError,
   type AtIdentifierString,
 } from '@atproto/lex'
@@ -175,7 +176,7 @@ function buildATProtoDocument(siteUrl: string, data: BlogPostDocument) {
     description: data.description ?? data.excerpt,
     tags: data.tags,
     // Publish on the record with the current date
-    publishedAt: new Date().toISOString(),
+    publishedAt: toDatetimeString(new Date()),
   })
 }
 

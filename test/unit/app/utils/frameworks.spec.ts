@@ -4,7 +4,7 @@ import {
   getFrameworkColor,
   isListedFramework,
   type ShowcasedFramework,
-} from '../../../../app/utils/frameworks'
+} from '~/utils/frameworks'
 
 describe('getFrameworkColor', () => {
   it('returns the color a listed framework', () => {

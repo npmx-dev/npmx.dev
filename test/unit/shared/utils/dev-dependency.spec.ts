@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { getDevDependencySuggestion } from '../../../../shared/utils/dev-dependency'
+import { getDevDependencySuggestion } from '#shared/utils/dev-dependency'
 
 describe('getDevDependencySuggestion', () => {
   it('suggests dev dependency for known tooling packages', () => {
