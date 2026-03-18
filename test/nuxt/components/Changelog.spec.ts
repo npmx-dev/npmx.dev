@@ -13,6 +13,6 @@ describe('Changelog', () => {
     })
 
     expect(component.text()).toContain(`Sorry, the changelog for npmx-dev couldn't be loaded`)
-    expect(component.text()).toContain(`Please try again later or view on github`)
+    expect(component.text()).toContain(`Please try again later or View on Github`)
   })
 })

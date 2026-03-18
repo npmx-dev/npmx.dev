@@ -14,5 +14,6 @@ export const GithubReleaseCollectionSchama = v.object({
   releases: v.array(GithubReleaseSchama),
 })
 
-export type GithubRelease = v.InferOutput<typeof GithubReleaseSchama>
-export type GithubReleaseCollection = v.InferOutput<typeof GithubReleaseCollectionSchama>
+// keeping this here in case it's needed
+// export type GithubRelease = v.InferOutput<typeof GithubReleaseSchama>
+// export type GithubReleaseCollection = v.InferOutput<typeof GithubReleaseCollectionSchama>

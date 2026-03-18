@@ -63,7 +63,8 @@ function navigateToTitle() {
 <style module>
 .linkTitle::after {
   content: '__';
-  @apply inline i-lucide:link rtl-flip ms-1 opacity-0 text-[0.75em];
+  @apply inline i-lucide:link rtl-flip ms-1 opacity-0;
+  font-size: 0.75em;
 }
 
 .linkTitle:hover::after {
