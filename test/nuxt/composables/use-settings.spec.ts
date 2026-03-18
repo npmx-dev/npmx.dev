@@ -7,7 +7,7 @@ describe('useSettings - keyboardShortcuts', () => {
 
   describe('default value', () => {
     it('should default keyboardShortcuts to true', async () => {
-      const { useSettings } = await import('../../../app/composables/useSettings')
+      const { useSettings } = await import('~/composables/useSettings')
       const { settings } = useSettings()
       expect(settings.value.keyboardShortcuts).toBe(true)
     })
@@ -15,14 +15,14 @@ describe('useSettings - keyboardShortcuts', () => {
 
   describe('useKeyboardShortcuts composable', () => {
     it('should return true by default', async () => {
-      const { useKeyboardShortcuts } = await import('../../../app/composables/useSettings')
+      const { useKeyboardShortcuts } = await import('~/composables/useSettings')
       const enabled = useKeyboardShortcuts()
       expect(enabled.value).toBe(true)
     })
 
     it('should reflect changes made via settings', async () => {
-      const { useSettings } = await import('../../../app/composables/useSettings')
-      const { useKeyboardShortcuts } = await import('../../../app/composables/useSettings')
+      const { useSettings } = await import('~/composables/useSettings')
+      const { useKeyboardShortcuts } = await import('~/composables/useSettings')
       const { settings } = useSettings()
       const enabled = useKeyboardShortcuts()
 
@@ -34,8 +34,8 @@ describe('useSettings - keyboardShortcuts', () => {
     })
 
     it('should be reactive', async () => {
-      const { useSettings } = await import('../../../app/composables/useSettings')
-      const { useKeyboardShortcuts } = await import('../../../app/composables/useSettings')
+      const { useSettings } = await import('~/composables/useSettings')
+      const { useKeyboardShortcuts } = await import('~/composables/useSettings')
       const { settings } = useSettings()
       const enabled = useKeyboardShortcuts()
 

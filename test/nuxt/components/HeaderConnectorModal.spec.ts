@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import { ref, computed, readonly, nextTick } from 'vue'
 import type { VueWrapper } from '@vue/test-utils'
-import type { PendingOperation } from '../../../cli/src/types'
+import type { PendingOperation } from '~~/cli/types'
 import { HeaderConnectorModal } from '#components'
 
 // Mock state that will be controlled by tests

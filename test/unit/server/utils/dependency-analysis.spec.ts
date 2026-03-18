@@ -6,14 +6,14 @@ const $fetchMock = vi.fn()
 vi.stubGlobal('$fetch', $fetchMock)
 
 // Import module under test
-const { analyzeDependencyTree } = await import('../../../../server/utils/dependency-analysis')
+const { analyzeDependencyTree } = await import('#server/utils/dependency-analysis')
 
 // Mock the dependency resolver
-vi.mock('../../../../server/utils/dependency-resolver', () => ({
+vi.mock('#server/utils/dependency-resolver', () => ({
   resolveDependencyTree: vi.fn(),
 }))
 
-const { resolveDependencyTree } = await import('../../../../server/utils/dependency-resolver')
+const { resolveDependencyTree } = await import('#server/utils/dependency-resolver')
 
 /**
  * Helper to create mock $fetch that handles the two-step OSV API pattern:
