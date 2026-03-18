@@ -36,7 +36,7 @@ export default defineCachedEventHandler(
     swr: true,
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
-      return `changelogInfo:v1:${pkg.replace(/\/+$/, '').trim()}`
+      return `changelogInfo:v1:${pkg.trim().replace(/\/+$/, '')}`
     },
   },
 )

@@ -11,9 +11,9 @@ definePageMeta({
 const route = useRoute('changes')
 // Parse package name & version
 // Patterns:
-//   /changes/nuxt/v/4.2.0 → packageName: "nuxt", version: "4.2.0"
-//   /changes/nuxt/v/4.2.0/src/index.ts → packageName: "nuxt", version: "4.2.0"
-//   /changes/@nuxt/kit/v/1.0.0 → packageName: "@nuxt/kit", version: "1.0.0"
+//   /package-changes/nuxt/v/4.2.0 → packageName: "nuxt", version: "4.2.0"
+//   /package-changes/nuxt/v/4.2.0/src/index.ts → packageName: "nuxt", version: "4.2.0"
+//   /package-changes/@nuxt/kit/v/1.0.0 → packageName: "@nuxt/kit", version: "1.0.0"
 const parsedRoute = computed(() => {
   const { org, name } = route.params
 
@@ -49,17 +49,6 @@ const latestVersion = computed(() => {
   if (!latestTag) return null
   return pkg.value.versions[latestTag] ?? null
 })
-
-// watch(
-//   [version, () => latestVersion.value?.version, packageName],
-//   ([v, latest, name]) => {
-//     if (!v && latest && name) {
-//       const pathSegments = [...name.split('/'), 'v', latest]
-//       navigateTo({ name: 'changes', params: { path: pathSegments as [string, ...string[]] } })
-//     }
-//   },
-//   { immediate: true },
-// )
 
 // getting info
 const { data: changelog, pending } = usePackageChangelog(packageName, version)
@@ -104,10 +93,9 @@ defineOgImageComponent('Default', {
     />
     <section class="container w-full pt-3">
       <div
-        class="pa-3 z-2 flex justify-between gap-4 h-14 b-b-1"
+        class="pa-3 z-2 flex justify-between gap-4 h-14 b-b-1 border-border bg-bg top-[--combined-header-height]"
         :class="{
-          [$style.tocHeader]: true,
-          sticky: changelog?.type == 'md',
+          sticky: changelog?.type === 'md',
         }"
       >
         <LinkBase
@@ -118,13 +106,13 @@ defineOgImageComponent('Default', {
         >
           {{ changelog.provider }}
         </LinkBase>
-        <div v-if="changelog?.type == 'md'" ref="tptoc" class="w-14 h-8">
-          <!- prevents layout shift while loading ->
+        <div v-if="changelog?.type === 'md'" ref="tptoc" class="w-14 h-8">
+          <!-- prevents layout shift while loading -->
         </div>
       </div>
       <section v-if="pending || resolvingPending" class="flex flex-col gap-2 py-3">
         <SkeletonBlock class="h-8 w-40 rounded" />
-        <ul class="ms-3 list-disc my-[1rem] ps-[1.5rem] marker:color-[--border-hover]">
+        <ul class="ms-3 list-disc my-4 ps-6 marker:color-[--border-hover]">
           <li class="mb-1" v-for="_n in 5">
             <SkeletonBlock class="h-7 w-full max-w-2xl rounded" />
           </li>
@@ -137,11 +125,10 @@ defineOgImageComponent('Default', {
       <Suspense v-else>
         <template #default>
           <LazyChangelogReleases
-            v-if="changelog?.type == 'release'"
+            v-if="changelog?.type === 'release'"
             :info="changelog"
             :requestedDate="versionDate"
             :requested-version="version"
-            :tocHeaderClass="$style.tocHeader"
             #error
           >
             <LazyChangelogErrorMsg
@@ -151,7 +138,7 @@ defineOgImageComponent('Default', {
             />
           </LazyChangelogReleases>
           <LazyChangelogMarkdown
-            v-else-if="changelog?.type == 'md'"
+            v-else-if="changelog?.type === 'md'"
             :info="changelog"
             :tpTarget="tptoc"
             :requested-version="version"
@@ -182,12 +169,3 @@ defineOgImageComponent('Default', {
     </section>
   </main>
 </template>
-
-<style module>
-.tocHeader {
-  /* border-bottom-width: 1px; */
-  border-color: color-mix(in srgb, var(--border) var(--un-border-opacity), transparent);
-  background-color: color-mix(in srgb, var(--bg) var(--un-bg-opacity), transparent);
-  top: var(--combined-header-height); /* top is only used when sticky is used */
-}
-</style>

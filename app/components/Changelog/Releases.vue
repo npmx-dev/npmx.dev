@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { slugify } from '~~/shared/utils/html'
 
-const { info, requestedDate, requestedVersion, tocHeaderClass } = defineProps<{
+const { info, requestedDate, requestedVersion } = defineProps<{
   info: ChangelogReleaseInfo
   requestedDate?: string
   requestedVersion?: string | null | undefined
-  tocHeaderClass: string
 }>()
 
 const { data: releases, error } = await useFetch<ReleaseData[]>(
@@ -25,25 +24,25 @@ const matchingDateReleases = computed(() => {
     }
     const date = new Date(release.publishedAt).toISOString().split('T')[0]
 
-    return date == requestedDate
+    return date === requestedDate
   })
 })
 
 if (import.meta.client) {
   watch(
     [() => route.hash, () => requestedDate?.toLowerCase(), releases, () => requestedVersion],
-    ([hash, date, r, rv]) => {
-      if (hash && r) {
+    ([hash, date, uReleases, uRequestedVersion]) => {
+      if (hash && uReleases) {
         // ensures the user is scrolled to the hash
         navigateTo(hash, { replace: true })
         return
       }
-      if (hash || !date || !r) {
+      if (hash || !date || !uReleases) {
         return
       }
-      if (rv) {
+      if (uRequestedVersion) {
         for (const match of matchingDateReleases.value ?? []) {
-          if (match.title.toLowerCase().includes(rv)) {
+          if (match.title.toLowerCase().includes(uRequestedVersion)) {
             navigateTo(`#release-${slugify(match.title)}`, { replace: true })
             return
           }
@@ -61,7 +60,7 @@ if (import.meta.client) {
 </script>
 <template>
   <div class="flex flex-col gap-2 py-3" v-if="releases">
-    <ChangelogCard v-for="release of releases" :release :key="release.id" :tocHeaderClass />
+    <ChangelogCard v-for="release of releases" :release :key="release.id" />
   </div>
   <slot v-else-if="error" name="error"></slot>
 </template>

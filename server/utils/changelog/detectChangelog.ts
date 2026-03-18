@@ -15,11 +15,7 @@ import { resolveURL } from 'ufo'
  *
  * first checks if releases are available and then changelog.md
  */
-export async function detectChangelog(
-  pkg: ExtendedPackageJson,
-  // packageName: string,
-  // version: string,
-) {
+export async function detectChangelog(pkg: ExtendedPackageJson) {
   if (!pkg.repository?.url) {
     return false
   }

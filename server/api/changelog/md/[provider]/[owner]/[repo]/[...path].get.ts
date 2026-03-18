@@ -19,8 +19,6 @@ export default defineCachedEventHandler(
     }
 
     try {
-      console.log({ provider })
-
       switch (provider as ProviderId) {
         case 'github':
           return await getGithubMarkDown(owner, repo, path)
