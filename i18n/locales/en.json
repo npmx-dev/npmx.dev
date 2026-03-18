@@ -938,7 +938,7 @@
       "title": "What we are",
       "better_ux_dx": "better UX/DX",
       "admin_ui": "admin UI",
-      "description": "npmx is a {betterUxDx} for the npm package registry and tooling. We provide a fast, modern interface for exploring packages, with features like dark mode, keyboard navigation, code browsing, and connections to alternative registries like {jsr}.",
+      "description": "npmx is a package browser offering a {betterUxDx} for the npm package registry. We provide a fast, modern interface for exploring packages, with features like dark mode, keyboard navigation, code browsing, and connections to alternative registries like {jsr}.",
       "admin_description": "We also aim to provide a better {adminUi} for managing your packages, teams, and organizations — all from the browser, powered by your local npm CLI."
     },
     "what_we_are_not": {
