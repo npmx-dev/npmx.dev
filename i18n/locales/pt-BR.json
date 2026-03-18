@@ -88,8 +88,6 @@
     "tap_to_search": "Toque para pesquisar"
   },
   "blog": {
-    "author": {},
-    "atproto": {}
     "title": "Blog",
     "heading": "blog",
     "meta_description": "Insights e atualizações da comunidade npmx",
@@ -225,9 +223,6 @@
       "share_button": "Compartilhar no Bluesky",
       "compose_text": "Olá, {'@'}{handle}! Você já conferiu npmx.dev? É um navegador para o registro npm rápido, moderno e de código aberto.\nhttps://npmx.dev"
     }
-  },
-  "profile": {
-    "invite": {}
   },
   "package": {
     "not_found": "Pacote não encontrado",
