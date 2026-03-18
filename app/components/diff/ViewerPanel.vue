@@ -174,7 +174,10 @@ function getCodeUrl(version: string): string {
             >
               <div class="flex flex-col gap-2">
                 <!-- Merge modified lines toggle -->
-                <SettingsToggle :label="$t('compare.viewer.merge_modified_lines')" v-model="mergeModifiedLines" />
+                <SettingsToggle
+                  :label="$t('compare.viewer.merge_modified_lines')"
+                  v-model="mergeModifiedLines"
+                />
 
                 <!-- Word wrap toggle -->
                 <SettingsToggle :label="$t('compare.viewer.word_wrap')" v-model="wordWrap" />

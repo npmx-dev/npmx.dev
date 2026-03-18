@@ -67,7 +67,9 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
               : 'border-transparent text-fg-subtle hover:text-fg'
           "
           @click="selectedMethod = 'skills-npm'"
-        >{{ $t('package.skills.method_npm') }}</button>
+        >
+          {{ $t('package.skills.method_npm') }}
+        </button>
         <button
           role="tab"
           :aria-selected="selectedMethod === 'skills-cli'"
@@ -80,7 +82,9 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
               : 'border-transparent text-fg-subtle hover:text-fg'
           "
           @click="selectedMethod = 'skills-cli'"
-        >{{ $t('package.skills.method_cli') }}</button>
+        >
+          {{ $t('package.skills.method_cli') }}
+        </button>
       </div>
     </div>
 

@@ -137,7 +137,9 @@ useSeoMeta({
       <p class="text-fg-muted mb-4">
         {{ $t('compare.invalid_url') }}
       </p>
-      <NuxtLink :to="packageRoute(packageName)" class="btn">{{ $t('compare.go_to_package') }}</NuxtLink>
+      <NuxtLink :to="packageRoute(packageName)" class="btn">{{
+        $t('compare.go_to_package')
+      }}</NuxtLink>
     </div>
 
     <!-- Loading state -->
@@ -149,7 +151,9 @@ useSeoMeta({
     <!-- Error state -->
     <div v-else-if="compareStatus === 'error'" class="container py-20 text-center" role="alert">
       <p class="text-fg-muted mb-4">{{ $t('compare.failed_to_compare') }}</p>
-      <NuxtLink :to="packageRoute(packageName)" class="btn">{{ $t('compare.back_to_package') }}</NuxtLink>
+      <NuxtLink :to="packageRoute(packageName)" class="btn">{{
+        $t('compare.back_to_package')
+      }}</NuxtLink>
     </div>
 
     <!-- Comparison content -->
