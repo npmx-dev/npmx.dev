@@ -1360,26 +1360,18 @@ const chartHeight = computed(() => {
   return showCorrectionControls.value && props.inModal ? 494 : 600
 })
 
-const timeoutId = shallowRef<ReturnType<typeof setTimeout> | null>(null)
+const { start } = useTimeoutFn(
+  () => {
+    isResizing.value = false
+  },
+  200,
+  { immediate: false },
+)
 
 function pauseChartTransitions() {
-  if (timeoutId.value) {
-    clearTimeout(timeoutId.value)
-  }
-
   isResizing.value = true
-
-  timeoutId.value = setTimeout(() => {
-    isResizing.value = false
-    timeoutId.value = null
-  }, 200)
+  start()
 }
-
-onBeforeUnmount(() => {
-  if (timeoutId.value) {
-    clearTimeout(timeoutId.value)
-  }
-})
 
 watch(
   chartHeight,
@@ -1729,6 +1721,7 @@ watch(selectedMetric, value => {
                 </span>
                 <input
                   v-model.number="settings.chartFilter.averageWindow"
+                  :disabled="!showCorrectionControls"
                   type="range"
                   min="0"
                   max="20"
@@ -1743,6 +1736,7 @@ watch(selectedMetric, value => {
                 </span>
                 <input
                   v-model.number="settings.chartFilter.smoothingTau"
+                  :disabled="!showCorrectionControls"
                   type="range"
                   min="0"
                   max="20"
@@ -1757,6 +1751,7 @@ watch(selectedMetric, value => {
                 </span>
                 <input
                   v-model.number="settings.chartFilter.predictionPoints"
+                  :disabled="!showCorrectionControls"
                   type="range"
                   min="0"
                   max="30"
@@ -1769,7 +1764,11 @@ watch(selectedMetric, value => {
                   class="text-2xs font-mono text-fg-subtle tracking-wide uppercase flex items-center justify-between"
                 >
                   {{ $t('package.trends.known_anomalies') }}
-                  <TooltipApp interactive :to="inModal ? '#chart-modal' : undefined">
+                  <TooltipApp
+                    interactive
+                    :to="inModal ? '#chart-modal' : undefined"
+                    v-if="showCorrectionControls"
+                  >
                     <button
                       type="button"
                       class="i-lucide:info w-3.5 h-3.5 text-fg-muted cursor-help"
@@ -1824,6 +1823,7 @@ watch(selectedMetric, value => {
                 >
                   <input
                     :checked="settings.chartFilter.anomaliesFixed"
+                    :disabled="!showCorrectionControls"
                     @change="
                       settings.chartFilter.anomaliesFixed = (
                         $event.target as HTMLInputElement
