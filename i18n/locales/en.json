@@ -289,7 +289,8 @@
         "refs": "{count} ref | {count} refs",
         "assets": "{count} asset | {count} assets"
       },
-      "view_source": "View source"
+      "view_source": "View source",
+      "skills_cli": "skills CLI"
     },
     "links": {
       "main": "main",

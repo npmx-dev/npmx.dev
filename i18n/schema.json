@@ -873,6 +873,9 @@
             },
             "view_source": {
               "type": "string"
+            },
+            "skills_cli": {
+              "type": "string"
             }
           },
           "additionalProperties": false
