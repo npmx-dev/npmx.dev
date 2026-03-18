@@ -402,7 +402,17 @@ describe('install command generation', () => {
             packageManager: 'npm',
             isCreatePackage: true,
           }),
-        ).toEqual(['npm', 'create', 'app'])
+        ).toEqual(['npm', 'create', '@vue/app'])
+      })
+
+      it('handles @scope/create pattern', () => {
+        expect(
+          getExecuteCommandParts({
+            packageName: '@angular/create',
+            packageManager: 'npm',
+            isCreatePackage: true,
+          }),
+        ).toEqual(['npm', 'create', '@angular'])
       })
     })
   })

@@ -200,7 +200,7 @@ export default defineCachedEventHandler(
                     defaultColor: 'dark',
                   })
                   const html = raw.match(/<code[^>]*>([\s\S]*?)<\/code>/)?.[1]
-                  return html ? { ...seg, html } : seg
+                  return html ? Object.assign({}, seg, { html }) : seg
                 } catch {
                   return seg
                 }

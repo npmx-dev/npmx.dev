@@ -128,8 +128,8 @@ export interface NpmSearchResponse {
 
 export interface NpmSearchResult {
   package: NpmSearchPackage
-  score: NpmSearchScore
-  searchScore: number
+  score?: NpmSearchScore
+  searchScore?: number
   /** Download counts (weekly/monthly) */
   downloads?: {
     weekly?: number
@@ -381,6 +381,7 @@ export interface PackageFileContentResponse {
   version: string
   path: string
   language: string
+  contentType: string | null
   content: string
   html: string
   lines: number

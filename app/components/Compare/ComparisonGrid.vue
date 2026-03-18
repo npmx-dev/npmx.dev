@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ModuleReplacement } from 'module-replacements'
 
-export interface ComparisonGridColumn {
+interface ComparisonGridColumn {
   name: string
   version?: string
   /** Module replacement data for this package (if available) */
@@ -17,6 +17,7 @@ const props = defineProps<{
 
 /** Total column count including the optional no-dep column */
 const totalColumns = computed(() => props.columns.length + (props.showNoDependency ? 1 : 0))
+const visibleColumns = computed(() => Math.min(totalColumns.value, 4))
 
 /** Compute plain-text tooltip for a replacement column */
 function getReplacementTooltip(col: ComparisonGridColumn): string {
@@ -30,32 +31,43 @@ function getReplacementTooltip(col: ComparisonGridColumn): string {
   <div class="overflow-x-auto">
     <div
       class="comparison-grid"
-      :class="[totalColumns === 4 ? 'min-w-[800px]' : 'min-w-[600px]', `columns-${totalColumns}`]"
-      :style="{ '--columns': totalColumns }"
+      :style="{
+        '--package-count': totalColumns,
+        '--visible-columns': visibleColumns,
+      }"
     >
       <!-- Header row -->
       <div class="comparison-header">
-        <div class="comparison-label" />
+        <div class="comparison-label relative bg-bg" />
 
         <!-- Package columns -->
-        <div v-for="col in columns" :key="col.name" class="comparison-cell comparison-cell-header">
-          <span class="inline-flex items-center gap-1.5 truncate">
+        <div
+          v-for="col in columns"
+          :key="col.name"
+          class="comparison-cell comparison-cell-header min-w-0"
+        >
+          <div class="flex items-start justify-center gap-1.5 min-w-0">
             <LinkBase
               :to="packageRoute(col.name, col.version)"
-              class="text-sm truncate"
-              block
+              class="flex min-w-0 flex-col items-center text-center text-sm"
               :title="col.version ? `${col.name}@${col.version}` : col.name"
             >
-              {{ col.name }}<template v-if="col.version">@{{ col.version }}</template>
+              <span class="min-w-0 break-words line-clamp-1">
+                {{ col.name }}
+              </span>
+              <span v-if="col.version" class="text-fg-muted line-clamp-1">
+                @{{ col.version }}
+              </span>
             </LinkBase>
+
             <TooltipApp v-if="col.replacement" :text="getReplacementTooltip(col)" position="bottom">
               <span
-                class="i-lucide:lightbulb w-3.5 h-3.5 text-amber-500 shrink-0 cursor-help"
+                class="i-lucide:lightbulb mt-0.5 h-3.5 w-3.5 shrink-0 cursor-help text-amber-500"
                 role="img"
                 :aria-label="$t('package.replacement.title')"
               />
             </TooltipApp>
-          </span>
+          </div>
         </div>
 
         <!-- "No dep" column (always last) -->
@@ -100,20 +112,13 @@ function getReplacementTooltip(col: ComparisonGridColumn): string {
 
 <style scoped>
 .comparison-grid {
+  --label-column-width: 140px;
+  --package-column-width: calc((100% - var(--label-column-width)) / var(--visible-columns));
   display: grid;
   gap: 0;
-}
-
-.comparison-grid.columns-2 {
-  grid-template-columns: minmax(120px, 180px) repeat(2, 1fr);
-}
-
-.comparison-grid.columns-3 {
-  grid-template-columns: minmax(120px, 160px) repeat(3, 1fr);
-}
-
-.comparison-grid.columns-4 {
-  grid-template-columns: minmax(100px, 140px) repeat(4, 1fr);
+  grid-template-columns:
+    var(--label-column-width)
+    repeat(var(--package-count), minmax(var(--package-column-width), var(--package-column-width)));
 }
 
 .comparison-header {
@@ -121,8 +126,16 @@ function getReplacementTooltip(col: ComparisonGridColumn): string {
 }
 
 .comparison-header > .comparison-label {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--color-border);
+  z-index: 3;
+}
+
+.comparison-label {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  inline-size: var(--label-column-width);
+  min-inline-size: var(--label-column-width);
+  isolation: isolate;
 }
 
 .comparison-header > .comparison-cell-header {
