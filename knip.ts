@@ -6,6 +6,7 @@ const config: KnipConfig = {
       entry: [
         'i18n/**/*.ts',
         'lunaria.config.ts',
+        'lunaria/lunaria.ts',
         'pwa-assets.config.ts',
         '.lighthouserc.cjs',
         'lighthouse-setup.cjs',
