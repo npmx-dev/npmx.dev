@@ -23,6 +23,10 @@ const offset = computed(() => {
     ? content.value.offsetTop
     : container.value.offsetHeight - content.value.offsetTop - content.value.offsetHeight
 })
+const packageHeaderHeight = usePackageHeaderHeight()
+const stickyStyle = computed(() =>
+  direction.value === 'up' ? { top: `${56 + packageHeaderHeight.value}px` } : { bottom: `32px` },
+)
 
 const style = computed(() => {
   return direction.value === 'down'
@@ -42,6 +46,7 @@ const style = computed(() => {
     <div
       ref="content"
       class="sticky w-full group-data-[direction=up]:(self-start top-30 xl:top-14) group-data-[direction=down]:(self-end bottom-8)"
+      :style="stickyStyle"
     >
       <slot />
     </div>

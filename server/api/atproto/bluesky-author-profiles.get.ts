@@ -1,4 +1,5 @@
 import * as v from 'valibot'
+import crypto from 'node:crypto'
 import { CACHE_MAX_AGE_ONE_DAY, BLUESKY_API } from '#shared/utils/constants'
 import { AuthorSchema } from '#shared/schemas/blog'
 import { Client } from '@atproto/lex'
@@ -38,7 +39,7 @@ export default defineCachedEventHandler(
       return { authors: [] }
     }
 
-    const handles = authors.map(a => a.blueskyHandle).filter(v => v != null)
+    const handles = authors.map(a => a.blueskyHandle).filter(handle => handle != null)
 
     if (handles.length === 0) {
       return {
@@ -75,7 +76,11 @@ export default defineCachedEventHandler(
     maxAge: CACHE_MAX_AGE_ONE_DAY,
     getKey: event => {
       const { authors } = getQuery(event)
-      return `author-profiles:${authors ?? 'npmx.dev'}`
+      const hash = crypto
+        .createHash('md5')
+        .update(JSON.stringify(authors ?? 'npmx.dev'))
+        .digest('hex')
+      return `author-profiles:${hash}`
     },
   },
 )

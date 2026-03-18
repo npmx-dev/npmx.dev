@@ -1,10 +1,5 @@
 import * as v from 'valibot'
 import { PackageFileDiffQuerySchema } from '#shared/schemas/package'
-import type { FileDiffResponse, DiffHunk } from '#shared/types'
-import { CACHE_MAX_AGE_ONE_YEAR } from '#shared/utils/constants'
-import { createDiff, insertSkipBlocks, countDiffStats } from '#server/utils/diff'
-import { parseVersionRange } from '#server/utils/compare'
-import { getLanguageFromPath } from '#server/utils/code-highlight'
 
 const CACHE_VERSION = 1
 const DIFF_TIMEOUT = 15000 // 15 sec
@@ -205,7 +200,7 @@ export default defineCachedEventHandler(
                     defaultColor: 'dark',
                   })
                   const html = raw.match(/<code[^>]*>([\s\S]*?)<\/code>/)?.[1]
-                  return html ? { ...seg, html } : seg
+                  return html ? Object.assign({}, seg, { html }) : seg
                 } catch {
                   return seg
                 }

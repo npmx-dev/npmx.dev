@@ -17,6 +17,10 @@ const pkg = computed(() => props.result.package)
 const score = computed(() => props.result.score)
 
 const updatedDate = computed(() => props.result.package.date)
+const { isPackageSelected, togglePackageSelection, canSelectMore } = usePackageSelection()
+const isSelected = computed<boolean>(() => {
+  return isPackageSelected(props.result.package.name)
+})
 
 function formatDownloads(count?: number): string {
   if (count === undefined) return '-'
@@ -48,6 +52,14 @@ const allMaintainersText = computed(() => {
     tabindex="0"
     :data-result-index="index"
   >
+    <td class="ps-3">
+      <PackageSelectionCheckbox
+        :package-name="result.package.name"
+        :disabled="!canSelectMore && !isSelected"
+        :checked="isSelected"
+        @change="togglePackageSelection"
+      />
+    </td>
     <!-- Name (always visible) -->
     <td class="py-2 px-3">
       <NuxtLink

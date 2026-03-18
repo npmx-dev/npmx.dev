@@ -13,11 +13,13 @@
   "trademark_disclaimer": "npm является зарегистрированной торговой маркой npm, Inc. Этот сайт не аффилирован с npm, Inc.",
   "footer": {
     "about": "о проекте",
+    "blog": "блог",
     "docs": "документация",
     "source": "исходный код",
     "social": "соцсети",
     "chat": "чат",
-    "keyboard_shortcuts": "сочетания клавиш"
+    "builders_chat": "разработчики",
+    "keyboard_shortcuts": "горячие клавиши"
   },
   "shortcuts": {
     "section": {
@@ -33,7 +35,8 @@
     "navigate_results": "Навигация по результатам",
     "go_to_result": "Перейти к результату",
     "open_code_view": "Открыть просмотр кода",
-    "open_docs": "Открыть документацию"
+    "open_docs": "Открыть документацию",
+    "disable_shortcuts": "Для отключения горячих клавиш загляните в {settings}."
   },
   "search": {
     "label": "Поиск пакетов npm",
@@ -62,7 +65,13 @@
       "org": "организация",
       "view_user_packages": "Посмотреть пакеты этого пользователя",
       "view_org_packages": "Посмотреть пакеты этой организации"
-    }
+    },
+    "instant_search": "Мгновенный поиск",
+    "instant_search_on": "вкл",
+    "instant_search_off": "выкл",
+    "instant_search_turn_on": "включить",
+    "instant_search_turn_off": "выключить",
+    "instant_search_advisory": "{label} {state} — {action}"
   },
   "nav": {
     "main_navigation": "Главное",
@@ -76,6 +85,31 @@
     "links": "Ссылки",
     "tap_to_search": "Нажмите для поиска"
   },
+  "blog": {
+    "title": "Блог",
+    "heading": "Блог",
+    "meta_description": "Инсайты и обновления от сообщества npmx",
+    "author": {
+      "view_profile": "Посмотреть профиль {name} в Bluesky"
+    },
+    "draft_badge": "Черновик",
+    "draft_banner": "Это неопубликованный черновик. Он может быть неполным или содержать неточности.",
+    "atproto": {
+      "view_on_bluesky": "Посмотреть в Bluesky",
+      "reply_on_bluesky": "Ответить в Bluesky",
+      "likes_on_bluesky": "Лайки в Bluesky",
+      "like_or_reply_on_bluesky": "Поставить лайк или оставить комментарий в Bluesky",
+      "no_comments_yet": "Пока нет комментариев.",
+      "could_not_load_comments": "Не удалось загрузить комментарии.",
+      "comments": "Комментарии",
+      "loading_comments": "Загрузка комментариев…",
+      "updating": "Обновление…",
+      "reply_count": "{count} ответ | {count} ответа | {count} ответов",
+      "like_count": "{count} лайк | {count} лайка | {count} лайков",
+      "repost_count": "{count} репост | {count} репоста | {count} репостов",
+      "more_replies": "Ещё {count} ответ… | Ещё {count} ответа… | Ещё {count} ответов…"
+    }
+  },
   "settings": {
     "title": "настройки",
     "tagline": "сделайте npmx удобным для себя",
@@ -84,7 +118,8 @@
       "appearance": "Внешний вид",
       "display": "Отображение",
       "search": "Источник данных",
-      "language": "Язык"
+      "language": "Язык",
+      "keyboard_shortcuts": "Горячие клавиши"
     },
     "data_source": {
       "label": "Источник данных",
@@ -94,6 +129,8 @@
       "algolia": "Algolia",
       "algolia_description": "Использует Algolia для ускорения поиска, страниц организаций и пользователей."
     },
+    "instant_search": "Мгновенный поиск",
+    "instant_search_description": "Переходит на страницу поиска и обновляет результаты по мере ввода текста.",
     "relative_dates": "Относительные даты",
     "include_types": "Включать {'@'}types при установке",
     "include_types_description": "Добавлять пакет {'@'}types в команды установки для нетипизированных пакетов",
@@ -108,7 +145,9 @@
     "accent_colors": "Акцентные цвета",
     "clear_accent": "Сбросить акцентный цвет",
     "translation_progress": "Прогресс перевода",
-    "background_themes": "Оттенок фона"
+    "background_themes": "Оттенок фона",
+    "keyboard_shortcuts_enabled": "Использовать горячие клавиши",
+    "keyboard_shortcuts_enabled_description": "Горячие клавиши можно выключить, если возникают конфликты с сочетаниями клавиш браузера или операционной системы"
   },
   "i18n": {
     "missing_keys": "{count} отсутствующий перевод | {count} отсутствующих перевода | {count} отсутствующих переводов",
@@ -117,6 +156,13 @@
     "contribute_hint": "Помогите улучшить этот перевод, добавив недостающие ключи.",
     "edit_on_github": "Редактировать на GitHub",
     "view_guide": "Руководство по переводу"
+  },
+  "error": {
+    "401": "Не авторизован",
+    "404": "Страница не найдена",
+    "500": "Внутренняя ошибка сервера",
+    "503": "Сервис недоступен",
+    "default": "Что-то пошло не так"
   },
   "common": {
     "loading": "Загрузка...",
@@ -132,7 +178,6 @@
     "skip_link": "Перейти к основному контенту",
     "warnings": "Предупреждения:",
     "go_back_home": "Вернуться на главную",
-    "view_on_npm": "посмотреть на npm",
     "per_week": "/ неделю",
     "vanity_downloads_hint": "Метрика тщеславия: пакеты не отображаются | Метрика тщеславия: для отображаемого пакета | Метрика тщеславия: сумма {count} отображаемых пакетов",
     "sort": {
@@ -140,18 +185,40 @@
       "role": "роль",
       "members": "участники"
     },
-    "scroll_to_top": "Прокрутить наверх"
+    "scroll_to_top": "Прокрутить наверх",
+    "cancel": "Отменить",
+    "save": "Сохранить",
+    "edit": "Изменить",
+    "error": "Ошибка",
+    "view_on": {
+      "npm": "посмотреть на npm",
+      "github": "Посмотреть на GitHub"
+    }
+  },
+  "profile": {
+    "display_name": "Отображаемое имя",
+    "description": "Описание",
+    "no_description": "Описание отсутствует",
+    "website": "Сайт",
+    "website_placeholder": "https://example.com",
+    "likes": "Лайки",
+    "seo_title": "{handle} — npmx",
+    "seo_description": "Профиль npmx от {handle}",
+    "not_found": "Профиль не найден",
+    "not_found_message": "Профиль пользователя {handle} не найден.",
+    "invite": {
+      "message": "Похоже, этот пользователь ещё не пользуется npmx. Хотите рассказать ему о проекте?",
+      "share_button": "Поделиться в Bluesky",
+      "compose_text": "Привет, {'@'}{handle}! Уже смотрел npmx.dev? Это быстрый, современный и open-source браузер для реестра npm.\nhttps://npmx.dev"
+    }
   },
   "package": {
     "not_found": "Пакет не найден",
     "not_found_message": "Пакет не удалось найти.",
     "no_description": "Описание отсутствует",
-    "not_latest": "(не последняя)",
     "verified_provenance": "Подтвержденное происхождение",
-    "view_permalink": "Посмотреть постоянную ссылку на эту версию",
     "navigation": "Навигация по пакету",
     "copy_name": "Скопировать имя пакета",
-    "copy_version": "Скопировать версию пакета",
     "deprecation": {
       "package": "Этот пакет устарел.",
       "version": "Эта версия устарела.",
@@ -245,7 +312,6 @@
     "readme": {
       "title": "Readme",
       "no_readme": "README недоступен.",
-      "view_on_github": "Посмотреть на GitHub",
       "toc_title": "Содержание",
       "callout": {
         "note": "Примечание",
@@ -310,7 +376,6 @@
       "grouping_versions_only_recent": "Только недавние",
       "grouping_usage_title": "Использование",
       "grouping_usage_all": "Все",
-      "grouping_usage_low": "Низкое",
       "recent_versions_only_tooltip": "Показывать только версии, опубликованные за последний год.",
       "show_low_usage_tooltip": "Включить группы версий, на которые приходится менее 1% от общего числа загрузок.",
       "y_axis_label": "Загрузки",
@@ -374,6 +439,8 @@
       "download_file": "Скачать {fileType}",
       "toggle_annotator": "Переключить аннотации",
       "toggle_stack_mode": "Переключить режим накопления",
+      "open_options": "Открыть параметры",
+      "close_options": "Закрыть параметры",
       "legend_estimation": "Оценка",
       "no_data": "Нет данных",
       "y_axis_label": "{granularity} {facet}",
@@ -413,7 +480,8 @@
     },
     "downloads": {
       "title": "Загрузки за неделю",
-      "community_distribution": "Просмотреть распределение использования сообществом"
+      "community_distribution": "Просмотреть распределение использования сообществом",
+      "subtitle": "По всем версиям"
     },
     "install_scripts": {
       "title": "Скрипты установки",
@@ -813,8 +881,8 @@
       "infinite": "Бесконечный",
       "paginated": "Страничный",
       "items_per_page": "Элементов на странице",
-      "per_page": "{count} / стр.",
-      "showing": "{start}-{end} из {total}",
+      "per_page": "{count} на странице",
+      "showing": "{range} из {total}",
       "previous": "Предыдущая страница",
       "next": "Следующая страница",
       "nav_label": "Пагинация"
@@ -890,8 +958,13 @@
         "description": "Общайтесь, задавайте вопросы и делитесь идеями.",
         "cta": "Присоединиться к Discord"
       },
+      "builders": {
+        "title": "Создавайте npmx вместе с нами",
+        "description": "Присоединяйтесь к тем, кто формирует будущее npmx.",
+        "cta": "Вступить в Discord для разработчиков"
+      },
       "follow": {
-        "title": "Быть в курсе",
+        "title": "Оставаться в курсе",
         "description": "Узнавайте последние новости об npmx.",
         "cta": "Подписаться в Bluesky"
       }
@@ -915,14 +988,15 @@
       "connected_as": "Вы вошли как {'@'}{handle}",
       "disconnect": "Выйти",
       "connect_prompt": "Войдите через аккаунт Atmosphere",
-      "handle_label": "Хендл",
+      "handle_label": "Псевдоним",
       "handle_placeholder": "alice.npmx.social",
       "connect": "Подключить",
       "create_account": "Создать новый аккаунт",
       "connect_bluesky": "Войти через Bluesky",
       "what_is_atmosphere": "Что такое аккаунт Atmosphere?",
       "atmosphere_explanation": "{npmx} использует протокол {atproto} для работы многих социальных функций, позволяя пользователям владеть своими данными и использовать единый аккаунт для всех совместимых приложений. Создав аккаунт, вы сможете использовать другие приложения, такие как {bluesky} и {tangled}, с той же учетной записью.",
-      "default_input_error": "Пожалуйста, введите корректный хендл, DID или полный URL-адрес PDS"
+      "default_input_error": "Пожалуйста, введите корректный псевдоним, DID или полный URL-адрес PDS",
+      "profile": "Профиль"
     }
   },
   "header": {
@@ -1013,7 +1087,7 @@
           "description": "Общее количество зависимостей, включая транзитивные"
         },
         "downloads": {
-          "label": "Загрузок в неделю",
+          "label": "Загрузок/нед",
           "description": "Количество загрузок в неделю"
         },
         "totalLikes": {
@@ -1067,9 +1141,12 @@
     "file_changes": "Изменения файлов",
     "files_count": "файлов: {count}",
     "lines_hidden": "скрыто строк: {count}",
+    "file_too_large": "Файл слишком большой для сравнения",
+    "file_size_warning": "{size} превышает лимит в 250 КБ для сравнения",
     "compare_versions": "сравнение",
+    "compare_versions_title": "Сравнить с последней версией",
     "summary": "Сводка",
-    "deps_count": "зав-тей: {count}",
+    "deps_count": "зависимостей: {count}",
     "dependencies": "Зависимости",
     "dev_dependencies": "Dev-зависимости",
     "peer_dependencies": "Peer-зависимости",
@@ -1094,6 +1171,34 @@
     "select_file_prompt": "Выберите файл в боковой панели, чтобы просмотреть его изменения",
     "close_files_panel": "Закрыть панель файлов",
     "filter_files_label": "Фильтровать файлы по типу изменений"
+  },
+  "pds": {
+    "title": "npmx.social",
+    "meta_description": "Официальный сервер персональных данных (PDS) AT-протокола для сообщества npmx.",
+    "join": {
+      "title": "Присоединяйтесь к сообществу",
+      "description": "Создаёте ли вы свой первый аккаунт в Atmosphere или переносите существующий — это место для вас. Можно перенести текущий аккаунт без потери псевдонима, постов и подписчиков.",
+      "migrate": "Перенести через PDS MOOver"
+    },
+    "server": {
+      "title": "О сервере",
+      "location_label": "Расположение:",
+      "location_value": "Нюрнберг, Германия",
+      "infrastructure_label": "Инфраструктура:",
+      "infrastructure_value": "Хостинг Hetzner",
+      "privacy_label": "Конфиденциальность:",
+      "privacy_value": "Подчиняется строгим законам ЕС о защите данных",
+      "learn_more": "Узнайте, как npmx использует Atmosphere"
+    },
+    "community": {
+      "title": "Кто здесь",
+      "description": "{count} участник, который уже считает npmx.social своим домом: | Некоторые из {count} участников, которые уже считают npmx.social своим домом: | Некоторые из {count} участников, которые уже считают npmx.social своим домом:",
+      "loading": "Загрузка сообщества PDS…",
+      "error": "Не удалось загрузить сообщество PDS.",
+      "empty": "Участников сообщества пока нет.",
+      "view_profile": "Посмотреть профиль {handle}",
+      "new_accounts": "…плюс ещё {count} новых участников в Atmosphere"
+    }
   },
   "privacy_policy": {
     "title": "политика конфиденциальности",

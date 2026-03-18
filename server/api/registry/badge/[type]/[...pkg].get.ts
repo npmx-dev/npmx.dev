@@ -14,12 +14,17 @@ const BUNDLEPHOBIA_API = 'https://bundlephobia.com/api/size'
 const NPMS_API = 'https://api.npms.io/v2/package'
 
 const SafeStringSchema = v.pipe(v.string(), v.regex(/^[^<>"&]*$/, 'Invalid characters'))
+const SafeColorSchema = v.pipe(
+  v.string(),
+  v.transform(value => (value.startsWith('#') ? value : `#${value}`)),
+  v.hexColor(),
+)
 
 const QUERY_SCHEMA = v.object({
-  color: v.optional(SafeStringSchema),
   name: v.optional(v.string()),
-  labelColor: v.optional(SafeStringSchema),
   label: v.optional(SafeStringSchema),
+  color: v.optional(SafeColorSchema),
+  labelColor: v.optional(SafeColorSchema),
 })
 
 const COLORS = {
@@ -95,6 +100,23 @@ function escapeXML(str: string): string {
     .replace(/"/g, '&quot;')
 }
 
+function toLinear(c: number): number {
+  return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)
+}
+
+function getContrastTextColor(bgHex: string): string {
+  let clean = bgHex.replace('#', '')
+  if (clean.length === 3)
+    clean = clean[0]! + clean[0]! + clean[1]! + clean[1]! + clean[2]! + clean[2]!
+  if (!/^[0-9a-f]{6}$/i.test(clean)) return '#ffffff'
+  const r = parseInt(clean.slice(0, 2), 16) / 255
+  const g = parseInt(clean.slice(2, 4), 16) / 255
+  const b = parseInt(clean.slice(4, 6), 16) / 255
+  const luminance = 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b)
+  // threshold where contrast ratio with white equals contrast ratio with black
+  return luminance > 0.179 ? '#000000' : '#ffffff'
+}
+
 function measureShieldsTextLength(text: string): number {
   const measuredWidth = measureTextWidth(text, SHIELDS_FONT_SHORTHAND)
 
@@ -110,8 +132,11 @@ function renderDefaultBadgeSvg(params: {
   finalLabel: string
   finalLabelColor: string
   finalValue: string
+  labelTextColor: string
+  valueTextColor: string
 }): string {
-  const { finalColor, finalLabel, finalLabelColor, finalValue } = params
+  const { finalColor, finalLabel, finalLabelColor, finalValue, labelTextColor, valueTextColor } =
+    params
   const leftWidth = finalLabel.trim().length === 0 ? 0 : measureDefaultTextWidth(finalLabel)
   const rightWidth = measureDefaultTextWidth(finalValue)
   const totalWidth = leftWidth + rightWidth
@@ -120,19 +145,19 @@ function renderDefaultBadgeSvg(params: {
   const escapedValue = escapeXML(finalValue)
 
   return `
-    <svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="${height}" role="img" aria-label="${escapedLabel}: ${escapedValue}">
-      <clipPath id="r">
-        <rect width="${totalWidth}" height="${height}" rx="3" fill="#fff"/>
-      </clipPath>
-      <g clip-path="url(#r)">
-        <rect width="${leftWidth}" height="${height}" fill="${finalLabelColor}"/>
-        <rect x="${leftWidth}" width="${rightWidth}" height="${height}" fill="${finalColor}"/>
-      </g>
-      <g text-anchor="middle" font-family="Geist, system-ui, -apple-system, sans-serif" font-size="11">
-        <text x="${leftWidth / 2}" y="14" fill="#ffffff">${escapedLabel}</text>
-        <text x="${leftWidth + rightWidth / 2}" y="14" fill="#ffffff">${escapedValue}</text>
-      </g>
-    </svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="${height}" role="img" aria-label="${escapedLabel}: ${escapedValue}">
+  <clipPath id="r">
+    <rect width="${totalWidth}" height="${height}" rx="3" fill="#fff"/>
+  </clipPath>
+  <g clip-path="url(#r)">
+    <rect width="${leftWidth}" height="${height}" fill="${finalLabelColor}"/>
+    <rect x="${leftWidth}" width="${rightWidth}" height="${height}" fill="${finalColor}"/>
+  </g>
+  <g text-anchor="middle" font-family="Geist, system-ui, -apple-system, sans-serif" font-size="11">
+    <text x="${leftWidth / 2}" y="14" fill="${labelTextColor}">${escapedLabel}</text>
+    <text x="${leftWidth + rightWidth / 2}" y="14" fill="${valueTextColor}">${escapedValue}</text>
+  </g>
+</svg>
   `.trim()
 }
 
@@ -141,8 +166,11 @@ function renderShieldsBadgeSvg(params: {
   finalLabel: string
   finalLabelColor: string
   finalValue: string
+  labelTextColor: string
+  valueTextColor: string
 }): string {
-  const { finalColor, finalLabel, finalLabelColor, finalValue } = params
+  const { finalColor, finalLabel, finalLabelColor, finalValue, labelTextColor, valueTextColor } =
+    params
   const hasLabel = finalLabel.trim().length > 0
 
   const leftTextLength = hasLabel ? measureShieldsTextLength(finalLabel) : 0
@@ -161,26 +189,26 @@ function renderShieldsBadgeSvg(params: {
   const rightTextLengthAttr = rightTextLength * 10
 
   return `
-    <svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="${height}" role="img" aria-label="${title}">
-      <linearGradient id="s" x2="0" y2="100%">
-        <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
-        <stop offset="1" stop-opacity=".1"/>
-      </linearGradient>
-      <clipPath id="r">
-        <rect width="${totalWidth}" height="${height}" rx="3" fill="#fff"/>
-      </clipPath>
-      <g clip-path="url(#r)">
-        <rect width="${leftWidth}" height="${height}" fill="${finalLabelColor}"/>
-        <rect x="${leftWidth}" width="${rightWidth}" height="${height}" fill="${finalColor}"/>
-        <rect width="${totalWidth}" height="${height}" fill="url(#s)"/>
-      </g>
-      <g fill="#fff" text-anchor="middle" font-family="Verdana, Geneva, DejaVu Sans, sans-serif" text-rendering="geometricPrecision" font-size="110">
-        <text aria-hidden="true" x="${leftCenter}" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="${leftTextLengthAttr}">${escapedLabel}</text>
-        <text x="${leftCenter}" y="140" transform="scale(.1)" fill="#fff" textLength="${leftTextLengthAttr}">${escapedLabel}</text>
-        <text aria-hidden="true" x="${rightCenter}" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="${rightTextLengthAttr}">${escapedValue}</text>
-        <text x="${rightCenter}" y="140" transform="scale(.1)" fill="#fff" textLength="${rightTextLengthAttr}">${escapedValue}</text>
-      </g>
-    </svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="${height}" role="img" aria-label="${title}">
+  <linearGradient id="s" x2="0" y2="100%">
+    <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+    <stop offset="1" stop-opacity=".1"/>
+  </linearGradient>
+  <clipPath id="r">
+    <rect width="${totalWidth}" height="${height}" rx="3" fill="#fff"/>
+  </clipPath>
+  <g clip-path="url(#r)">
+    <rect width="${leftWidth}" height="${height}" fill="${finalLabelColor}"/>
+    <rect x="${leftWidth}" width="${rightWidth}" height="${height}" fill="${finalColor}"/>
+    <rect width="${totalWidth}" height="${height}" fill="url(#s)"/>
+  </g>
+  <g text-anchor="middle" font-family="Verdana, Geneva, DejaVu Sans, sans-serif" text-rendering="geometricPrecision" font-size="110">
+    <text aria-hidden="true" x="${leftCenter}" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="${leftTextLengthAttr}">${escapedLabel}</text>
+    <text x="${leftCenter}" y="140" transform="scale(.1)" fill="${labelTextColor}" textLength="${leftTextLengthAttr}">${escapedLabel}</text>
+    <text aria-hidden="true" x="${rightCenter}" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="${rightTextLengthAttr}">${escapedValue}</text>
+    <text x="${rightCenter}" y="140" transform="scale(.1)" fill="${valueTextColor}" textLength="${rightTextLengthAttr}">${escapedValue}</text>
+  </g>
+</svg>
   `.trim()
 }
 
@@ -442,8 +470,18 @@ export default defineCachedEventHandler(
       const rawLabelColor = labelColor ?? defaultLabelColor
       const finalLabelColor = rawLabelColor.startsWith('#') ? rawLabelColor : `#${rawLabelColor}`
 
+      const labelTextColor = getContrastTextColor(finalLabelColor)
+      const valueTextColor = getContrastTextColor(finalColor)
+
       const renderFn = badgeStyle === 'shieldsio' ? renderShieldsBadgeSvg : renderDefaultBadgeSvg
-      const svg = renderFn({ finalColor, finalLabel, finalLabelColor, finalValue })
+      const svg = renderFn({
+        finalColor,
+        finalLabel,
+        finalLabelColor,
+        finalValue,
+        labelTextColor,
+        valueTextColor,
+      })
 
       setHeader(event, 'Content-Type', 'image/svg+xml')
       setHeader(
