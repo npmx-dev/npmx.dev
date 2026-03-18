@@ -32,6 +32,7 @@ jobs:
         with:
           node-version: lts/*
           cache: true
+          run-install: false
 
       - name: 📦 Install dependencies (root only, no scripts)
         run: vp install --filter . --ignore-scripts
@@ -51,9 +52,6 @@ jobs:
           node-version: lts/*
           cache: true
 
-      - name: 📦 Install dependencies
-        run: vp install
-
       - name: 💪 Type check
         run: vp run test:types
 
@@ -69,11 +67,8 @@ jobs:
           node-version: lts/*
           cache: true
 
-      - name: 📦 Install dependencies
-        run: vp install
-
       - name: 🧪 Unit tests
-        run: vp test --project unit run --coverage --reporter=default --reporter=junit --outputFile=test-report.junit.xml
+        run: vp test --project unit --coverage --reporter=default --reporter=junit --outputFile=test-report.junit.xml
 
       - name: ⬆︎ Upload test results to Codecov
         if: ${{ !cancelled() }}
@@ -93,14 +88,11 @@ jobs:
           node-version: lts/*
           cache: true
 
-      - name: 📦 Install dependencies
-        run: vp install
-
       - name: 🌐 Install browser
         run: vp exec playwright install chromium-headless-shell
 
       - name: 🧪 Component tests
-        run: vp test --project nuxt run --coverage --reporter=default --reporter=junit --outputFile=test-report.junit.xml
+        run: vp test --project nuxt --coverage --reporter=default --reporter=junit --outputFile=test-report.junit.xml
 
       - name: ⬆︎ Upload coverage reports to Codecov
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5
@@ -128,9 +120,6 @@ jobs:
           node-version: lts/*
           cache: true
 
-      - name: 📦 Install dependencies
-        run: vp install
-
       - name: 🏗️ Build project
         run: vp run build:test
         env:
@@ -154,9 +143,6 @@ jobs:
           node-version: lts/*
           cache: true
 
-      - name: 📦 Install dependencies
-        run: vp install
-
       - name: 🏗️ Build project
         run: vp run build:test
 
@@ -178,9 +164,6 @@ jobs:
           node-version: lts/*
           cache: true
 
-      - name: 📦 Install dependencies
-        run: vp install
-
       - name: 🧹 Check for unused code
         run: vp run knip
 
@@ -198,6 +181,7 @@ jobs:
         with:
           node-version: lts/*
           cache: true
+          run-install: false
 
       - name: 📦 Install dependencies (root only, no scripts)
         run: vp install --filter . --ignore-scripts

@@ -25,9 +25,6 @@ jobs:
           node-version: lts/*
           cache: true
 
-      - name: 📦 Install dependencies
-        run: vp install
-
       - name: 🎨 Check for non-RTL/non-a11y CSS classes
         run: vp run lint:css
 

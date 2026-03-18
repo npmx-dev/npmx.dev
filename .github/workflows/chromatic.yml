@@ -31,11 +31,13 @@ jobs:
           node-version: lts/*
           cache: true
 
-      - name: 📦 Install dependencies
-        run: vp install
+      - name: 🏗️ Build Storybook
+        run: vp run build-storybook
 
       - name: 🧪 Run Chromatic Visual and Accessibility Tests
         uses: chromaui/action@5ec258af08deb3e8c36653bd618cb7fe52090031 # v15.2.0
+        with:
+          storybookBuildDir: storybook-static
         env:
           CHROMATIC_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
           CHROMATIC_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
