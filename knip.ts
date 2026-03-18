@@ -4,24 +4,12 @@ const config: KnipConfig = {
   workspaces: {
     '.': {
       entry: [
-        'app/pages/**/*.vue!',
-        'app/components/**/*.vue!',
-        'app/components/**/*.d.vue.ts!',
-        'app/composables/**/*.ts!',
-        'app/middleware/**/*.ts!',
-        'app/plugins/**/*.ts!',
-        'app/utils/**/*.ts!',
-        'server/**/*.ts!',
-        'modules/**/*.ts!',
-        'config/**/*.ts!',
-        'lunaria/**/*.ts!',
-        'shared/**/*.ts!',
         'i18n/**/*.ts',
         'lunaria.config.ts',
         'pwa-assets.config.ts',
         '.lighthouserc.cjs',
         'lighthouse-setup.cjs',
-        'uno-preset-rtl.ts!',
+        'uno-preset-*.ts!',
         'scripts/**/*.ts',
       ],
       project: [
@@ -45,9 +33,6 @@ const config: KnipConfig = {
         /** Some components import types from here, but installing it directly could lead to a version mismatch */
         'vue-router',
 
-        /** Required by @nuxtjs/i18n at runtime but not directly imported in production code */
-        '@intlify/shared',
-
         /** Oxlint plugins don't get picked up yet */
         '@e18e/eslint-plugin',
         'eslint-plugin-regexp',
@@ -55,14 +40,14 @@ const config: KnipConfig = {
         /** Used in test/e2e/helpers/ which is excluded from knip project scope */
         'h3-next',
       ],
-      ignoreUnresolved: ['#components', '#oauth/config'],
+      ignoreUnresolved: ['#oauth/config'],
     },
     'cli': {
       project: ['src/**/*.ts!', '!src/mock-*.ts'],
     },
     'docs': {
       entry: ['app/**/*.{ts,vue,css}'],
-      ignoreDependencies: ['docus', 'better-sqlite3', '@nuxtjs/mdc', 'nuxt!'],
+      ignoreDependencies: ['docus', 'better-sqlite3', '@nuxtjs/mdc'],
     },
   },
 }
