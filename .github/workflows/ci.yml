@@ -32,7 +32,7 @@ jobs:
         with:
           node-version: lts/*
 
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
         name: 🟧 Install pnpm
 
       - name: 📦 Install dependencies (root only, no scripts)
@@ -52,7 +52,7 @@ jobs:
         with:
           node-version: lts/*
 
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
         name: 🟧 Install pnpm
 
       - name: 📦 Install dependencies
@@ -72,7 +72,7 @@ jobs:
         with:
           node-version: lts/*
 
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
         name: 🟧 Install pnpm
 
       - name: 📦 Install dependencies
@@ -98,7 +98,7 @@ jobs:
         with:
           node-version: lts/*
 
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
         name: 🟧 Install pnpm
 
       - name: 📦 Install dependencies
@@ -135,7 +135,7 @@ jobs:
         with:
           node-version: lts/*
 
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
         name: 🟧 Install pnpm
 
       - name: 📦 Install dependencies
@@ -163,7 +163,7 @@ jobs:
         with:
           node-version: lts/*
 
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
         name: 🟧 Install pnpm
 
       - name: 📦 Install dependencies
@@ -189,7 +189,7 @@ jobs:
         with:
           node-version: lts/*
 
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
         name: 🟧 Install pnpm
 
       - name: 📦 Install dependencies
@@ -212,7 +212,7 @@ jobs:
         with:
           node-version: lts/*
 
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
         name: 🟧 Install pnpm
 
       - name: 📦 Install dependencies (root only, no scripts)
