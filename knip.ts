@@ -4,6 +4,7 @@ const config: KnipConfig = {
   workspaces: {
     '.': {
       entry: [
+        'app/service-worker.ts!',
         'i18n/**/*.ts',
         'lunaria.config.ts',
         'pwa-assets.config.ts',
