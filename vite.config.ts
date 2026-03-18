@@ -187,6 +187,7 @@ export default defineConfig({
       // rolldown seems to currently fail on Vite's SSR transform output (`await __vite_ssr_import__`).
       exclude: [
         '**/node_modules/**',
+        '**/*.json',
         'cli/**',
         'app/utils/versions.ts',
         'app/utils/package-name.ts',
