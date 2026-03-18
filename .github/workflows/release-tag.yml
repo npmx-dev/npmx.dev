@@ -23,11 +23,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: voidzero-dev/setup-vp@1bc2c0c101cb14b233d41d9f113658852e3ba658 # v1
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
           node-version: lts/*
-          cache: true
-          run-install: false
 
       - name: 🔢 Determine next version
         id: version
@@ -59,6 +57,10 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git tag -a "$VERSION" -m "Release $VERSION"
           git push origin "$VERSION"
+
+      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+        if: steps.check.outputs.skip == 'false'
+        name: 🟧 Install pnpm
 
       - name: 📦 Install dependencies
         if: steps.check.outputs.skip == 'false'
