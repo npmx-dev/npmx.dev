@@ -6,6 +6,37 @@ import { playwright } from 'vite-plus/test/browser-playwright'
 const rootDir = fileURLToPath(new URL('.', import.meta.url))
 
 export default defineConfig({
+  run: {
+    tasks: {
+      'lint': {
+        command: 'vp lint && vp fmt --check',
+      },
+      'knip': {
+        command: 'knip',
+      },
+      'generate:lexicons': {
+        command: 'lex build --lexicons lexicons --out shared/types/lexicons --clear',
+      },
+      'generate:sprite': {
+        command: 'node scripts/generate-file-tree-sprite.ts',
+      },
+      'i18n:check': {
+        command: 'node scripts/compare-translations.ts',
+      },
+      'i18n:report': {
+        command: 'node scripts/find-invalid-translations.ts',
+      },
+      'i18n:schema': {
+        command: 'node scripts/generate-i18n-schema.ts',
+      },
+      'lint:css': {
+        command: 'node scripts/unocss-checker.ts',
+      },
+      'build:lunaria': {
+        command: 'node ./lunaria/lunaria.ts',
+      },
+    },
+  },
   lint: {
     plugins: ['unicorn', 'typescript', 'oxc', 'vue', 'vitest'],
     jsPlugins: ['@e18e/eslint-plugin', 'eslint-plugin-regexp'],
