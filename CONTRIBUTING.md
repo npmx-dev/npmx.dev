@@ -648,7 +648,7 @@ Use vue-i18n's built-in formatters for locale-aware formatting:
 Write unit tests for core functionality using Vitest:
 
 ```typescript
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect } from 'vite-plus/test'
 
 describe('featureName', () => {
   it('should handle expected case', () => {

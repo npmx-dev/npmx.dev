@@ -22,15 +22,15 @@
     "i18n:schema": "node scripts/generate-i18n-schema.ts",
     "knip": "knip",
     "knip:fix": "knip --fix",
-    "lint": "oxlint && oxfmt --check",
-    "lint:fix": "oxlint --fix && oxfmt",
+    "lint": "vp lint && vp fmt --check",
+    "lint:fix": "vp lint --fix && vp fmt",
     "lint:css": "node scripts/unocss-checker.ts",
     "generate": "nuxt generate",
     "npmx-connector": "pnpm --filter npmx-connector dev",
     "mock-connector": "pnpm --filter npmx-connector dev:mock",
     "generate-pwa-icons": "pwa-assets-generator",
     "preview": "nuxt preview",
-    "postinstall": "(pnpm rebuild @resvg/resvg-js || true) && pnpm generate:lexicons && pnpm generate:sprite && nuxt prepare && simple-git-hooks",
+    "postinstall": "(pnpm rebuild @resvg/resvg-js || true) && pnpm generate:lexicons && pnpm generate:sprite && nuxt prepare && vp config",
     "generate:sprite": "node scripts/generate-file-tree-sprite.ts",
     "generate:fixtures": "node scripts/generate-fixtures.ts",
     "generate:lexicons": "lex build --lexicons lexicons --out shared/types/lexicons --clear",
@@ -146,12 +146,8 @@
     "h3": "1.15.5",
     "h3-next": "npm:h3@2.0.1-rc.14",
     "knip": "5.86.0",
-    "lint-staged": "16.3.2",
     "markdown-it-anchor": "9.2.0",
-    "oxfmt": "0.36.0",
-    "oxlint": "1.56.0",
     "schema-dts": "1.1.5",
-    "simple-git-hooks": "2.13.1",
     "storybook": "catalog:storybook",
     "typescript": "5.9.3",
     "unplugin-vue-markdown": "30.0.0",
@@ -162,26 +158,6 @@
   },
   "engines": {
     "node": "24"
-  },
-  "simple-git-hooks": {
-    "pre-commit": "pnpm exec lint-staged"
-  },
-  "lint-staged": {
-    "i18n/locales/*": [
-      "node ./lunaria/lunaria.ts",
-      "node scripts/generate-i18n-schema.ts",
-      "pnpm exec oxfmt i18n/schema.json",
-      "git add i18n/schema.json"
-    ],
-    "*.{js,ts,mjs,cjs,vue}": [
-      "pnpm exec oxlint --fix"
-    ],
-    "*.vue": [
-      "node scripts/unocss-checker.ts"
-    ],
-    "*.{js,ts,mjs,cjs,vue,json,yml,md,html,css}": [
-      "pnpm exec oxfmt"
-    ]
   },
   "packageManager": "pnpm@10.30.3",
   "storybook": {
