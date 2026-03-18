@@ -333,6 +333,15 @@
             },
             "more_replies": {
               "type": "string"
+            },
+            "replying_to": {
+              "type": "string"
+            },
+            "view_replies": {
+              "type": "string"
+            },
+            "hide_replies": {
+              "type": "string"
             }
           },
           "additionalProperties": false
