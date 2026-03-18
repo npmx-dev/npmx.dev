@@ -8,6 +8,7 @@ const config: KnipConfig = {
         'lunaria.config.ts',
         'lunaria/lunaria.ts',
         'pwa-assets.config.ts',
+        'modules/*.ts',
         '.lighthouserc.cjs',
         'lighthouse-setup.cjs',
         'uno-preset-*.ts!',
@@ -47,7 +48,7 @@ const config: KnipConfig = {
     },
     'docs': {
       entry: ['app/**/*.{ts,vue,css}'],
-      ignoreDependencies: ['docus', 'better-sqlite3', '@nuxtjs/mdc'],
+      ignoreDependencies: ['@nuxtjs/mdc'],
     },
   },
 }

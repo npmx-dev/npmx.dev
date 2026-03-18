@@ -198,9 +198,6 @@ jobs:
       - name: 🧹 Check for unused code
         run: pnpm vp run knip
 
-      - name: 🧹 Check for unused production code
-        run: pnpm vp run knip --production --exclude dependencies
-
   i18n:
     name: 🌐 i18n validation
     runs-on: ubuntu-24.04-arm

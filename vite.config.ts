@@ -12,7 +12,7 @@ export default defineConfig({
         command: 'vp lint && vp fmt --check',
       },
       'knip': {
-        command: 'knip',
+        command: 'knip && knip --production --exclude dependencies',
       },
       'generate:lexicons': {
         command: 'lex build --lexicons lexicons --out shared/types/lexicons --clear',
