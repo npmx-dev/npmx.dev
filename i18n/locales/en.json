@@ -138,6 +138,8 @@
     "include_types_description": "Add {'@'}types package to install commands for untyped packages",
     "hide_platform_packages": "Hide platform-specific packages in search",
     "hide_platform_packages_description": "Hide native binary packages like {'@'}esbuild/linux-x64 from results",
+    "enable_graph_pulse_loop": "Enable looping of pulse effect on mini graph",
+    "enable_graph_pulse_loop_description": "Activate a continuous pulse animation on the weekly download graph. This animation may be distracting for some users.",
     "theme": "Theme",
     "theme_light": "Light",
     "theme_dark": "Dark",
@@ -364,7 +366,9 @@
       "published": "Published",
       "weekly_downloads": "Weekly downloads",
       "keywords": "Keywords",
-      "license": "License"
+      "license": "License",
+      "select": "Select package",
+      "select_maximum": "Maximum {count} packages can be selected"
     },
     "versions": {
       "title": "Versions",
@@ -444,7 +448,8 @@
       "cancel_add": "Cancel adding owner",
       "add_owner": "+ Add owner",
       "show_more": "(show {count} more)",
-      "show_less": "(show fewer)"
+      "show_less": "(show fewer)",
+      "maintainer_template": "{avatar} {char126}{name}"
     },
     "trends": {
       "granularity": "Granularity",
@@ -862,6 +867,7 @@
       "secure": "Without warnings",
       "insecure": "With warnings"
     },
+    "view_selected": "View selected",
     "sort": {
       "label": "Sort packages",
       "toggle_direction": "Toggle sort direction",
@@ -895,7 +901,8 @@
       "popularity_score": "Popularity score",
       "maintenance_score": "Maintenance score",
       "combined_score": "Combined score",
-      "security": "Security"
+      "security": "Security",
+      "selection": "Select package"
     },
     "view_mode": {
       "label": "View mode",
@@ -1372,5 +1379,11 @@
         "all": "all"
       }
     }
+  },
+  "action_bar": {
+    "title": "action bar",
+    "selection": "0 selected | 1 selected | {count} selected",
+    "shortcut": "Press \"{key}\" to focus actions",
+    "button_close_aria_label": "Close action bar"
   }
 }

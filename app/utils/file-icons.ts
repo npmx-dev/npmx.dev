@@ -146,6 +146,7 @@ export const FILENAME_ICONS: Record<string, string> = {
   'yarn.lock': 'vscode-icons-file-type-yarn',
   '.yarnrc': 'vscode-icons-file-type-yarn',
   '.yarnrc.yml': 'vscode-icons-file-type-yarn',
+  'bun.lock': 'vscode-icons-file-type-bun',
   'bun.lockb': 'vscode-icons-file-type-bun',
   'bunfig.toml': 'vscode-icons-file-type-bun',
   'deno.json': 'vscode-icons-file-type-deno',

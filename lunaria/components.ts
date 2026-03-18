@@ -49,7 +49,7 @@ export const Page = (
 	`
 }
 
-export const Meta = html`
+const Meta = html`
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 	<title>npmx - Translation Status</title>
@@ -73,11 +73,7 @@ export const Meta = html`
 	<link rel="icon" href="https://npmx.dev/favicon.svg" type="image/svg+xml" />
 `
 
-export const Body = (
-  config: LunariaConfig,
-  status: LunariaStatus,
-  lunaria: LunariaInstance,
-): string => {
+const Body = (config: LunariaConfig, status: LunariaStatus, lunaria: LunariaInstance): string => {
   return html`
 		<main>
 			<div class="limit-to-viewport">
@@ -89,7 +85,7 @@ export const Body = (
 	`
 }
 
-export const StatusByLocale = (
+const StatusByLocale = (
   config: LunariaConfig,
   status: LunariaStatus,
   lunaria: LunariaInstance,
@@ -103,11 +99,7 @@ export const StatusByLocale = (
 	`
 }
 
-export const LocaleDetails = (
-  status: LunariaStatus,
-  locale: Locale,
-  lunaria: LunariaInstance,
-): string => {
+const LocaleDetails = (status: LunariaStatus, locale: Locale, lunaria: LunariaInstance): string => {
   const { label, lang } = locale
 
   const missingFiles = status.filter(
@@ -173,7 +165,7 @@ export const LocaleDetails = (
 	`
 }
 
-export const OutdatedFiles = (
+const OutdatedFiles = (
   outdatedFiles: LunariaStatus,
   lang: string,
   lunaria: LunariaInstance,
@@ -213,7 +205,7 @@ export const OutdatedFiles = (
 	`
 }
 
-export const StatusByFile = (
+const StatusByFile = (
   config: LunariaConfig,
   status: LunariaStatus,
   lunaria: LunariaInstance,
@@ -237,11 +229,7 @@ export const StatusByFile = (
 	`
 }
 
-export const TableBody = (
-  status: LunariaStatus,
-  locales: Locale[],
-  lunaria: LunariaInstance,
-): string => {
+const TableBody = (status: LunariaStatus, locales: Locale[], lunaria: LunariaInstance): string => {
   const links = lunaria.gitHostingLinks()
 
   return html`
@@ -261,7 +249,7 @@ export const TableBody = (
 	`
 }
 
-export const TableContentStatus = (
+const TableContentStatus = (
   localizations: StatusEntry['localizations'],
   lang: string,
   lunaria: LunariaInstance,
@@ -289,7 +277,7 @@ export const TableContentStatus = (
   return html`<td>${EmojiFileLink(link, status)}</td>`
 }
 
-export const ContentDetailsLinks = (
+const ContentDetailsLinks = (
   fileStatus: StatusEntry,
   lang: string,
   lunaria: LunariaInstance,
@@ -322,7 +310,7 @@ export const ContentDetailsLinks = (
 	`
 }
 
-export const EmojiFileLink = (
+const EmojiFileLink = (
   href: string | null,
   type: 'missing' | 'outdated' | 'up-to-date',
 ): string => {
@@ -347,15 +335,15 @@ export const EmojiFileLink = (
 			</span>`
 }
 
-export const Link = (href: string, text: string): string => {
+const Link = (href: string, text: string): string => {
   return html`<a href="${href}">${text}</a>`
 }
 
-export const CreateFileLink = (href: string, text: string): string => {
+const CreateFileLink = (href: string, text: string): string => {
   return html`<a class="create-button" href="${href}">${text}</a>`
 }
 
-export const ProgressBar = (
+const ProgressBar = (
   total: number,
   outdated: number,
   missing: number,
@@ -381,7 +369,7 @@ export const ProgressBar = (
 	`
 }
 
-export const TitleParagraph = html`
+const TitleParagraph = html`
   <p>
     If you're interested in helping us translate
     <a href="https://npmx.dev/">npmx.dev</a> into one of the languages listed below, you've come to
@@ -396,74 +384,3 @@ export const TitleParagraph = html`
     to learn about our translation process and how you can get involved.
   </p>
 `
-
-/**
- * Build an SVG file showing a summary of each language's translation progress.
- */
-export const SvgSummary = (config: LunariaConfig, status: LunariaStatus): string => {
-  const localeHeight = 56 // Each locale’s summary is 56px high.
-  const svgHeight = localeHeight * Math.ceil(config.locales.length / 2)
-  return html`<svg
-		xmlns="http://www.w3.org/2000/svg"
-		viewBox="0 0 400 ${svgHeight}"
-		font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'"
-	>
-		${config.locales
-      .map(locale => SvgLocaleSummary(status, locale))
-      .sort((a, b) => b.progress - a.progress)
-      .map(
-        ({ svg }, index) =>
-          html`<g transform="translate(${(index % 2) * 215} ${Math.floor(index / 2) * 56})"
-						>${svg}</g
-					>`,
-      )}
-	</svg>`
-}
-
-function SvgLocaleSummary(
-  status: LunariaStatus,
-  { label, lang }: Locale,
-): { svg: string; progress: number } {
-  const missingFiles = status.filter(
-    file =>
-      file.localizations.find(localization => localization.lang === lang)?.status === 'missing',
-  )
-  const outdatedFiles = status.filter(file => {
-    const localization = file.localizations.find(localizationItem => localizationItem.lang === lang)
-    if (!localization || localization.status === 'missing') {
-      return false
-    } else if (file.type === 'dictionary') {
-      return 'missingKeys' in localization ? localization.missingKeys.length > 0 : false
-    } else {
-      return (
-        localization.status === 'outdated' ||
-        ('missingKeys' in localization && localization.missingKeys.length > 0)
-      )
-    }
-  })
-
-  const doneLength = status.length - outdatedFiles.length - missingFiles.length
-  const barWidth = 184
-  const doneFraction = doneLength / status.length
-  const outdatedFraction = outdatedFiles.length / status.length
-  const doneWidth = (doneFraction * barWidth).toFixed(2)
-  const outdatedWidth = ((outdatedFraction + doneFraction) * barWidth).toFixed(2)
-
-  return {
-    progress: doneFraction,
-    svg: html`<text x="0" y="12" font-size="11" font-weight="600" fill="#999"
-				>${label} (${lang})</text
-			>
-			<text x="0" y="26" font-size="9" fill="#999">
-				${
-          missingFiles.length == 0 && outdatedFiles.length == 0
-            ? '100% complete, amazing job! 🎉'
-            : html`${doneLength} done, ${outdatedFiles.length} outdated, ${missingFiles.length}
-						missing`
-        }
-			</text>
-			<rect x="0" y="34" width="${barWidth}" height="8" fill="#999" opacity="0.25"></rect>
-			<rect x="0" y="34" width="${outdatedWidth}" height="8" fill="#fb923c"></rect>
-			<rect x="0" y="34" width="${doneWidth}" height="8" fill="#c084fc"></rect>`,
-  }
-}

@@ -5,6 +5,7 @@ import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
 
 definePageMeta({
   name: 'compare',
+  preserveScrollOnQuery: true,
 })
 
 const { locale } = useI18n()

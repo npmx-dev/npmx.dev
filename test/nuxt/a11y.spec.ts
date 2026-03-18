@@ -219,6 +219,9 @@ import {
   DiffSkipBlock,
   DiffTable,
   DiffViewerPanel,
+  PackageActionBar,
+  PackageSelectionView,
+  PackageSelectionCheckbox,
   PackageExternalLinks,
 } from '#components'
 
@@ -2942,7 +2945,7 @@ describe('component accessibility audits', () => {
   describe('UserAvatar', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(UserAvatar, {
-        props: { username: 'testuser' },
+        props: { username: 'testuser', size: 'lg' },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
@@ -2950,7 +2953,7 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations with short username', async () => {
       const component = await mountSuspended(UserAvatar, {
-        props: { username: 'a' },
+        props: { username: 'a', size: 'lg' },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
@@ -2958,10 +2961,21 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations with long username', async () => {
       const component = await mountSuspended(UserAvatar, {
-        props: { username: 'verylongusernameexample' },
+        props: { username: 'verylongusernameexample', size: 'lg' },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations in all sizes', async () => {
+      const sizes = ['xs', 'lg'] as const
+      for (const size of sizes) {
+        const component = await mountSuspended(UserAvatar, {
+          props: { username: 'testuser', size },
+        })
+        const results = await runAxe(component)
+        expect(results.violations).toEqual([])
+      }
     })
   })
 
@@ -3654,6 +3668,59 @@ describe('component accessibility audits', () => {
           },
         },
       })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageActionBar', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageActionBar)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageSelectionView', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageSelectionView)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations changing view mode', async () => {
+      const component = await mountSuspended(PackageSelectionView, {
+        props: {
+          viewMode: 'table',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageSelectionCheckbox', () => {
+    it('should have no accessibility violations when disabled', async () => {
+      const component = await mountSuspended(PackageSelectionCheckbox, {
+        props: {
+          packageName: 'nuxt',
+          checked: false,
+          disabled: true,
+        },
+      })
+
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageSelectionCheckbox, {
+        props: {
+          packageName: 'nuxt',
+          checked: false,
+        },
+      })
+
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
