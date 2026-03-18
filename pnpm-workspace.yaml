@@ -18,12 +18,11 @@ onlyBuiltDependencies:
   - '@resvg/resvg-js'
   - better-sqlite3
   - sharp@0.34.5
-  - simple-git-hooks@2.13.1
 
 overrides:
   sharp: 0.34.5
-  vite: npm:@voidzero-dev/vite-plus-core@0.0.0-g52709db6.20260226-1136
-  vitest: npm:@voidzero-dev/vite-plus-test@0.0.0-g52709db6.20260226-1136
+  vite: npm:@voidzero-dev/vite-plus-core@0.1.12
+  vitest: npm:@voidzero-dev/vite-plus-test@0.1.12
   '@unocss/core': 66.6.3
   storybook: ^10.2.7
 
@@ -31,6 +30,9 @@ packageExtensions:
   '@nuxt/scripts':
     dependencies:
       estree-walker: ^3.0.3
+  'unplugin-vue-markdown':
+    peerDependencies:
+      'vite': '^2.0.0 || ^3.0.0-0 || ^4.0.0-0 || ^5.0.0-0 || ^6.0.0 || ^7.0.0 || ^8.0.0'
 
 patchedDependencies:
   '@jsr/deno__doc@0.189.1': patches/@jsr__deno__doc@0.189.1.patch

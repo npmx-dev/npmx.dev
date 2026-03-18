@@ -2,14 +2,14 @@
   "name": "npmx-docs",
   "private": true,
   "description": "npmx public docs site",
+  "bugs": {
+    "url": "https://github.com/npmx-dev/npmx.dev/issues"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/npmx-dev/npmx.dev.git",
     "directory": "docs"
-  },
-  "bugs": {
-    "url": "https://github.com/npmx-dev/npmx.dev/issues"
   },
   "scripts": {
     "dev": "nuxt dev",

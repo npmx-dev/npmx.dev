@@ -24,22 +24,22 @@ jobs:
         with:
           node-version: lts/*
 
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
         name: 🟧 Install pnpm
 
       - name: 📦 Install dependencies
         run: pnpm install
 
       - name: 🎨 Check for non-RTL/non-a11y CSS classes
-        run: pnpm lint:css
+        run: pnpm vp run lint:css
 
       - name: 🌐 Compare translations
-        run: pnpm i18n:check
+        run: pnpm vp run i18n:check
 
       - name: 🌍 Update lunaria data
-        run: pnpm build:lunaria
+        run: pnpm vp run build:lunaria
 
       - name: 🔠 Fix lint errors
-        run: pnpm lint:fix
+        run: pnpm vp run lint:fix
 
       - uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27 # 635ffb0c9798bd160680f18fd73371e355b85f27

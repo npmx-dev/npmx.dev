@@ -6,6 +6,7 @@ const config: KnipConfig = {
       entry: [
         'i18n/**/*.ts',
         'lunaria.config.ts',
+        'lunaria/lunaria.ts',
         'pwa-assets.config.ts',
         '.lighthouserc.cjs',
         'lighthouse-setup.cjs',
@@ -22,7 +23,6 @@ const config: KnipConfig = {
       ],
       ignoreDependencies: [
         '@iconify-json/*',
-        '@voidzero-dev/vite-plus-core',
         'puppeteer',
         /** Needs to be explicitly installed, even though it is not imported, to avoid type errors. */
         'unplugin-vue-router',
