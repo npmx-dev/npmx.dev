@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import routerOptions from '../../../app/router.options'
 
 type ScrollBehavior = NonNullable<typeof routerOptions.scrollBehavior>

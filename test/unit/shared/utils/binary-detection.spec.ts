@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { isBinaryOnlyPackage, isCreatePackage } from '../../../../shared/utils/binary-detection'
 
 describe('binary-detection', () => {

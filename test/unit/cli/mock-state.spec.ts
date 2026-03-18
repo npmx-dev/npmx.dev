@@ -1,4 +1,4 @@
-import { describe, expect, it, beforeEach } from 'vitest'
+import { describe, expect, it, beforeEach } from 'vite-plus/test'
 import { MockConnectorStateManager, createMockConnectorState } from '../../../cli/src/mock-state.ts'
 
 function createManager() {

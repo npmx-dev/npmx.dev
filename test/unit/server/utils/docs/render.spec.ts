@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { renderDocNodes } from '../../../../../server/utils/docs/render'
 import type { DenoDocNode } from '#shared/types/deno-doc'
 import type { MergedSymbol } from '../../../../../server/utils/docs/types'

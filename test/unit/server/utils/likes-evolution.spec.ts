@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach, type Mocked } from 'vitest'
+import { describe, expect, it, vi, beforeEach, type Mocked } from 'vite-plus/test'
 import * as TID from '@atcute/tid'
 import type { ConstellationLike } from '../../../../server/utils/atproto/utils/likes'
 import type { CacheAdapter } from '../../../../server/utils/cache/shared'

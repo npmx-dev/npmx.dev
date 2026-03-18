@@ -28,15 +28,13 @@ jobs:
           # Makes the action clone the entire git history
           fetch-depth: 0
 
-      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+      - uses: voidzero-dev/setup-vp@1bc2c0c101cb14b233d41d9f113658852e3ba658 # v1
         with:
           node-version: lts/*
-
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: 🟧 Install pnpm
+          cache: true
 
       - name: 📦 Install dependencies
-        run: pnpm install
+        run: vp install
 
       - name: Generate Lunaria Overview
         uses: lunariajs/action@4911ad0736d1e3b20af4cb70f5079aea2327ed8e # v1-prerelease

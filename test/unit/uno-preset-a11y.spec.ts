@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from 'vite-plus/test'
 import { presetA11y, resetA11yWarnings } from '../../uno-preset-a11y'
 import { createGenerator, presetWind4 } from 'unocss'
 

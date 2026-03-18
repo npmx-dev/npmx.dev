@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest'
+import { describe, expect, it, vi, beforeEach } from 'vite-plus/test'
 import { parsePackageParams } from '../../../../server/utils/parse-package-params'
 import { NPM_MISSING_README_SENTINEL } from '#shared/utils/constants'
 

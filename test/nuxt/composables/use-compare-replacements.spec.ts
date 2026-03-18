@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vite-plus/test'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import type { ModuleReplacement } from 'module-replacements'
 import type { ReplacementSuggestion } from '~/composables/useCompareReplacements'

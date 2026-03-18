@@ -22,7 +22,6 @@ const config: KnipConfig = {
       ],
       ignoreDependencies: [
         '@iconify-json/*',
-        '@voidzero-dev/vite-plus-core',
         'puppeteer',
         /** Needs to be explicitly installed, even though it is not imported, to avoid type errors. */
         'unplugin-vue-router',

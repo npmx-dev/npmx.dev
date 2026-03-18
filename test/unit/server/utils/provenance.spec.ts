@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { parseAttestationToProvenanceDetails } from '../../../../server/utils/provenance'
 
 const SLSA_PROVENANCE_V1 = 'https://slsa.dev/provenance/v1'
