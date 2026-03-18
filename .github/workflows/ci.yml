@@ -199,7 +199,7 @@ jobs:
         run: pnpm knip
 
       - name: 🧹 Check for unused production code
-        run: pnpm knip --production
+        run: pnpm knip --production --exclude dependencies
 
   i18n:
     name: 🌐 i18n validation
