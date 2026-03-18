@@ -64,7 +64,7 @@ jobs:
 
       - name: 📦 Install dependencies
         if: steps.check.outputs.skip == 'false'
-        run: vp install --filter . --ignore-scripts
+        run: pnpm vp install --filter . --ignore-scripts
 
       - name: 📝 Generate release notes
         if: steps.check.outputs.skip == 'false'

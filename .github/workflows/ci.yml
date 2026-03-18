@@ -39,7 +39,7 @@ jobs:
         run: pnpm install --filter . --ignore-scripts
 
       - name: 🔠 Lint project
-        run: vp run lint
+        run: pnpm vp run lint
 
   types:
     name: 💪 Type check
@@ -59,7 +59,7 @@ jobs:
         run: pnpm install
 
       - name: 💪 Type check
-        run: vp run test:types
+        run: pnpm vp run test:types
 
   unit:
     name: 🧪 Unit tests
@@ -79,7 +79,7 @@ jobs:
         run: pnpm install
 
       - name: 🧪 Unit tests
-        run: vp test --project unit --coverage --reporter=default --reporter=junit --outputFile=test-report.junit.xml
+        run: pnpm vp test --project unit --coverage --reporter=default --reporter=junit --outputFile=test-report.junit.xml
 
       - name: ⬆︎ Upload test results to Codecov
         if: ${{ !cancelled() }}
@@ -105,10 +105,10 @@ jobs:
         run: pnpm install
 
       - name: 🌐 Install browser
-        run: vp exec playwright install chromium-headless-shell
+        run: pnpm vp exec playwright install chromium-headless-shell
 
       - name: 🧪 Component tests
-        run: vp test --project nuxt --coverage --reporter=default --reporter=junit --outputFile=test-report.junit.xml
+        run: pnpm vp test --project nuxt --coverage --reporter=default --reporter=junit --outputFile=test-report.junit.xml
 
       - name: ⬆︎ Upload coverage reports to Codecov
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5
@@ -142,12 +142,12 @@ jobs:
         run: pnpm install
 
       - name: 🏗️ Build project
-        run: vp run build:test
+        run: pnpm vp run build:test
         env:
           VALIDATE_HTML: true
 
       - name: 🖥️ Test project (browser)
-        run: vp run test:browser:prebuilt
+        run: pnpm vp run test:browser:prebuilt
 
   a11y:
     name: ♿ Accessibility audit
@@ -170,10 +170,10 @@ jobs:
         run: pnpm install
 
       - name: 🏗️ Build project
-        run: vp run build:test
+        run: pnpm vp run build:test
 
       - name: ♿ Accessibility audit (Lighthouse - ${{ matrix.mode }} mode)
-        run: vp run test:a11y:prebuilt
+        run: pnpm vp run test:a11y:prebuilt
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
           LIGHTHOUSE_COLOR_MODE: ${{ matrix.mode }}
@@ -196,10 +196,10 @@ jobs:
         run: pnpm install
 
       - name: 🧹 Check for unused code
-        run: vp run knip
+        run: pnpm vp run knip
 
       - name: 🧹 Check for unused production code
-        run: vp run knip --production --exclude dependencies
+        run: pnpm vp run knip --production --exclude dependencies
 
   i18n:
     name: 🌐 i18n validation
@@ -219,7 +219,7 @@ jobs:
         run: pnpm install --filter . --ignore-scripts
 
       - name: 🌐 Check for missing or dynamic i18n keys
-        run: vp run i18n:report
+        run: pnpm vp run i18n:report
 
       - name: 🌐 Check i18n schema is up to date
         run: |
