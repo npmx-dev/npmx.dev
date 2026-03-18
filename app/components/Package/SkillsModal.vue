@@ -36,10 +36,11 @@ const installCommand = computed(() => {
 
 const { copied, copy } = useClipboard({ copiedDuring: 2000 })
 const copyCommand = () => installCommand.value && copy(installCommand.value)
+const translateWarning = useI18nWarning()
 
 function getWarningTooltip(skill: SkillListItem): string | undefined {
   if (!skill.warnings?.length) return undefined
-  return skill.warnings.map(w => w.message).join(', ')
+  return skill.warnings.map(translateWarning).join(', ')
 }
 </script>
 
@@ -218,10 +219,10 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
                     )
                   }}
                 </span>
-                <template v-for="warning in skill.warnings" :key="warning.message">
+                <template v-for="warning in skill.warnings" :key="warning.key">
                   <span class="text-amber-500">
                     <span class="i-lucide:circle-alert size-3 align-[-2px] me-0.5" />{{
-                      warning.message
+                      translateWarning(warning)
                     }}
                   </span>
                 </template>

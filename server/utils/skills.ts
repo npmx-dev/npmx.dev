@@ -1,3 +1,5 @@
+import type { WarningMessage } from '#shared/types/warning'
+
 const MAX_SKILL_FILE_SIZE = 500 * 1024
 
 /**
@@ -154,13 +156,13 @@ export async function fetchSkillContent(
 /**
  * Validate skill frontmatter and return warnings.
  */
-export function validateSkill(frontmatter: SkillFrontmatter): SkillWarning[] {
-  const warnings: SkillWarning[] = []
+export function validateSkill(frontmatter: SkillFrontmatter): WarningMessage[] {
+  const warnings: WarningMessage[] = []
   if (!frontmatter.license) {
-    warnings.push({ type: 'warning', message: 'No license specified' })
+    warnings.push({ key: 'package.skills.warnings.no_license' })
   }
   if (!frontmatter.compatibility) {
-    warnings.push({ type: 'warning', message: 'No compatibility info' })
+    warnings.push({ key: 'package.skills.warnings.no_compatibility' })
   }
   return warnings
 }

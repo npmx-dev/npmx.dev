@@ -286,6 +286,10 @@
         "refs": "{count} ref | {count} refs",
         "assets": "{count} asset | {count} assets"
       },
+      "warnings": {
+        "no_license": "No license specified",
+        "no_compatibility": "No compatibility info"
+      },
       "view_source": "View source"
     },
     "links": {
@@ -1205,7 +1209,10 @@
     "files_button": "Files",
     "select_file_prompt": "Select a file from the sidebar to view its diff",
     "close_files_panel": "Close files panel",
-    "filter_files_label": "Filter files by change type"
+    "filter_files_label": "Filter files by change type",
+    "warnings": {
+      "files_truncated": "File list truncated to {count} files"
+    }
   },
   "pds": {
     "title": "npmx.social",

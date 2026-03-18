@@ -3426,7 +3426,9 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations with warnings', async () => {
       const compareWithWarnings = {
         ...mockCompare,
-        meta: { warnings: ['Some files were truncated'] },
+        meta: {
+          warnings: [{ key: 'compare.warnings.files_truncated', data: { count: '1000' } }],
+        },
       }
       const component = await mountSuspended(DiffSidebarPanel, {
         props: {

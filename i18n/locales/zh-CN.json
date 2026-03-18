@@ -272,7 +272,11 @@
         "refs": "{count} 个引用 | {count} 个引用",
         "assets": "{count} 个资源 | {count} 个资源"
       },
-      "view_source": "查看源代码"
+      "view_source": "查看源代码",
+      "warnings": {
+        "no_compatibility": "无兼容性信息",
+        "no_license": "未指定许可证"
+      }
     },
     "links": {
       "repo": "仓库",

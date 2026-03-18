@@ -1,14 +1,11 @@
+import type { WarningMessage } from '#shared/types/warning'
+
 export interface SkillFrontmatter {
   name: string
   description: string
   license?: string
   compatibility?: string
   metadata?: Record<string, string>
-}
-
-export interface SkillWarning {
-  type: 'error' | 'warning'
-  message: string
 }
 
 export interface SkillFileCounts {
@@ -23,7 +20,7 @@ export interface SkillListItem {
   dirName: string
   license?: string
   compatibility?: string
-  warnings?: SkillWarning[]
+  warnings?: WarningMessage[]
   fileCounts?: SkillFileCounts
 }
 

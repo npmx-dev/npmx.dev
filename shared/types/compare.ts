@@ -1,3 +1,5 @@
+import type { WarningMessage } from '#shared/types/warning'
+
 /** A change in a dependency between versions */
 export interface DependencyChange {
   /** Package name */
@@ -60,7 +62,7 @@ export interface CompareResponse {
     /** Whether file list was truncated due to size */
     truncated?: boolean
     /** Any warnings during comparison */
-    warnings?: string[]
+    warnings?: WarningMessage[]
     /** Time taken to compute (ms) */
     computeTime?: number
   }

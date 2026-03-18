@@ -862,6 +862,18 @@
               },
               "additionalProperties": false
             },
+            "warnings": {
+              "type": "object",
+              "properties": {
+                "no_license": {
+                  "type": "string"
+                },
+                "no_compatibility": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
             "view_source": {
               "type": "string"
             }
@@ -3621,6 +3633,15 @@
         },
         "filter_files_label": {
           "type": "string"
+        },
+        "warnings": {
+          "type": "object",
+          "properties": {
+            "files_truncated": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false

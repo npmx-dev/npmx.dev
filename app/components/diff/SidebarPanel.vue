@@ -19,6 +19,7 @@ const fileFilter = defineModel<'all' | 'added' | 'removed' | 'modified'>('fileFi
 
 const sectionOrder = ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies']
 const { t } = useI18n()
+const translateWarning = useI18nWarning()
 const sectionMeta = computed<Record<string, { label: string; icon: string }>>(() => ({
   dependencies: { label: t('compare.dependencies'), icon: 'i-lucide:box' },
   devDependencies: { label: t('compare.dev_dependencies'), icon: 'i-lucide:wrench' },
@@ -112,7 +113,9 @@ function handleFileSelect(file: FileChange) {
         <div class="flex items-start gap-2">
           <span class="i-lucide:triangle-alert w-3.5 h-3.5 text-yellow-500 shrink-0 mt-0.5" />
           <div class="text-3xs text-fg-muted">
-            <p v-for="warning in compare.meta.warnings" :key="warning">{{ warning }}</p>
+            <p v-for="warning in compare.meta.warnings" :key="warning.key">
+              {{ translateWarning(warning) }}
+            </p>
           </div>
         </div>
       </div>

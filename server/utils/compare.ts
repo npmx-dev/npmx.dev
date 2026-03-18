@@ -1,4 +1,5 @@
 import { diff as semverDiff } from 'semver'
+import type { WarningMessage } from '#shared/types/warning'
 
 /**
  * Parse a version range from a URL segment.
@@ -236,9 +237,12 @@ export function buildCompareResponse(
   const fileChanges = compareFileTrees(fromTree, toTree)
   const dependencyChanges = compareDependencies(fromPkg, toPkg)
 
-  const warnings: string[] = []
+  const warnings: WarningMessage[] = []
   if (fileChanges.truncated) {
-    warnings.push(`File list truncated to ${MAX_FILES_COMPARE} files`)
+    warnings.push({
+      key: 'compare.warnings.files_truncated',
+      data: { count: String(MAX_FILES_COMPARE) },
+    })
   }
 
   return {
