@@ -115,7 +115,7 @@ export const LocaleDetails = (
       file.localizations.find(localization => localization.lang === lang)?.status === 'missing',
   )
   const outdatedFiles = status.filter(file => {
-    const localization = file.localizations.find(localization => localization.lang === lang)
+    const localization = file.localizations.find(localizationItem => localizationItem.lang === lang)
 
     if (!localization || localization.status === 'missing') return false
     if (file.type === 'dictionary')
@@ -150,7 +150,7 @@ export const LocaleDetails = (
 						<ul>
 							${missingFiles.map(file => {
                 const localization = file.localizations.find(
-                  localization => localization.lang === lang,
+                  localizationItem => localizationItem.lang === lang,
                 )!
                 return html`
 									<li>
@@ -182,7 +182,9 @@ export const OutdatedFiles = (
 		<h3 class="capitalize">Outdated</h3>
 		<ul>
 			${outdatedFiles.map(file => {
-        const localization = file.localizations.find(localization => localization.lang === lang)!
+        const localization = file.localizations.find(
+          localizationItem => localizationItem.lang === lang,
+        )!
 
         const isMissingKeys =
           localization.status !== 'missing' &&
@@ -221,14 +223,16 @@ export const StatusByFile = (
 		<h2 id="by-file">
 			<a href="#by-file">Translation status by file</a>
 		</h2>
-		<table class="status-by-file">
-			<thead>
-				<tr>
-					${['File', ...locales.map(({ lang }) => lang)].map(col => html`<th>${col}</th>`)}
-				</tr>
-			</thead>
-			${TableBody(status, locales, lunaria)}
-		</table>
+		<div class="status-by-file-wrapper">
+			<table class="status-by-file">
+				<thead>
+					<tr>
+						${['File', ...locales.map(({ lang }) => lang)].map(col => html`<th>${col}</th>`)}
+					</tr>
+				</thead>
+				${TableBody(status, locales, lunaria)}
+			</table>
+		</div>
 		<sup class="capitalize">❌ missing &nbsp; 🔄 outdated &nbsp; ✔ done </sup>
 	`
 }
@@ -248,7 +252,7 @@ export const TableBody = (
 				<tr>
 					<td>${Link(links.source(file.source.path), collapsePath(file.source.path))}</td>
 						${locales.map(({ lang }) => {
-              return TableContentStatus(file.localizations, lang, lunaria)
+              return TableContentStatus(file.localizations, lang, lunaria, file.type)
             })}
 					</td>
 				</tr>`,
@@ -261,10 +265,24 @@ export const TableContentStatus = (
   localizations: StatusEntry['localizations'],
   lang: string,
   lunaria: LunariaInstance,
+  fileType?: string,
 ): string => {
-  const localization = localizations.find(localization => localization.lang === lang)!
+  const localization = localizations.find(localizationItem => localizationItem.lang === lang)!
   const isMissingKeys = 'missingKeys' in localization && localization.missingKeys.length > 0
-  const status = isMissingKeys ? 'outdated' : localization.status
+  // For dictionary files, status is determined solely by key completion:
+  // if there are missing keys it's "outdated", if all keys are present it's "up-to-date",
+  // regardless of git history. This prevents variants with merge coverage (e.g. en-US, en-GB)
+  // from showing as outdated when their keys are fully covered by the base locale.
+  const status =
+    fileType === 'dictionary'
+      ? isMissingKeys
+        ? 'outdated'
+        : localization.status === 'missing'
+          ? 'missing'
+          : 'up-to-date'
+      : isMissingKeys
+        ? 'outdated'
+        : localization.status
   const links = lunaria.gitHostingLinks()
   const link =
     status === 'missing' ? links.create(localization.path) : links.source(localization.path)
@@ -276,7 +294,9 @@ export const ContentDetailsLinks = (
   lang: string,
   lunaria: LunariaInstance,
 ): string => {
-  const localization = fileStatus.localizations.find(localization => localization.lang === lang)!
+  const localization = fileStatus.localizations.find(
+    localizationItem => localizationItem.lang === lang,
+  )!
   const isMissingKeys =
     localization.status !== 'missing' &&
     'missingKeys' in localization &&
@@ -345,9 +365,9 @@ export const ProgressBar = (
   const missingSize = Math.round((missing / total) * size)
   const doneSize = size - outdatedSize - missingSize
 
-  const getBlocks = (size: number, type: 'missing' | 'outdated' | 'up-to-date') => {
+  const getBlocks = (blockSize: number, type: 'missing' | 'outdated' | 'up-to-date') => {
     const items = []
-    for (let i = 0; i < size; i++) {
+    for (let i = 0; i < blockSize; i++) {
       items.push(html`<div class="${type}-bar"></div>`)
     }
     return items
@@ -409,7 +429,7 @@ function SvgLocaleSummary(
       file.localizations.find(localization => localization.lang === lang)?.status === 'missing',
   )
   const outdatedFiles = status.filter(file => {
-    const localization = file.localizations.find(localization => localization.lang === lang)
+    const localization = file.localizations.find(localizationItem => localizationItem.lang === lang)
     if (!localization || localization.status === 'missing') {
       return false
     } else if (file.type === 'dictionary') {

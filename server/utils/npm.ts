@@ -1,9 +1,4 @@
-import type { Packument, NpmSearchResponse } from '#shared/types'
-import { encodePackageName, fetchLatestVersion } from '#shared/utils/npm'
 import { maxSatisfying, prerelease } from 'semver'
-import { CACHE_MAX_AGE_FIVE_MINUTES } from '#shared/utils/constants'
-
-const NPM_REGISTRY = 'https://registry.npmjs.org'
 
 export const fetchNpmPackage = defineCachedFunction(
   async (name: string): Promise<Packument> => {
@@ -45,7 +40,7 @@ export async function fetchLatestVersionWithFallback(name: string): Promise<stri
 function constraintIncludesPrerelease(constraint: string): boolean {
   // Look for prerelease identifiers in the constraint
   return (
-    /-(alpha|beta|rc|next|canary|dev|preview|pre|experimental)/i.test(constraint) ||
+    /-(?:alpha|beta|rc|next|canary|dev|preview|pre|experimental)/i.test(constraint) ||
     /-\d/.test(constraint)
   ) // e.g., -0, -1
 }

@@ -1,7 +1,5 @@
 export function useFileTreeState(baseUrl: string) {
-  const stateKey = computed(() => `npmx-file-tree${baseUrl}`)
-
-  const expanded = useState<Set<string>>(stateKey.value, () => new Set<string>())
+  const expanded = useState<Set<string>>(`npmx-file-tree${baseUrl}`, () => new Set<string>())
 
   function toggleDir(path: string) {
     if (expanded.value.has(path)) {

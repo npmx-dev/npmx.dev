@@ -31,17 +31,22 @@ This focus helps guide our project decisions as a community and what we choose t
   - [Setup](#setup)
 - [Development workflow](#development-workflow)
   - [Available commands](#available-commands)
+  - [Clearing caches during development](#clearing-caches-during-development)
   - [Project structure](#project-structure)
   - [Local connector CLI](#local-connector-cli)
+  - [Mock connector (for local development)](#mock-connector-for-local-development)
 - [Code style](#code-style)
   - [TypeScript](#typescript)
   - [Server API patterns](#server-api-patterns)
   - [Import order](#import-order)
   - [Naming conventions](#naming-conventions)
   - [Vue components](#vue-components)
+  - [Internal linking](#internal-linking)
+  - [Cursor and navigation](#cursor-and-navigation)
 - [RTL Support](#rtl-support)
 - [Localization (i18n)](#localization-i18n)
   - [Approach](#approach)
+  - [i18n commands](#i18n-commands)
   - [Adding a new locale](#adding-a-new-locale)
   - [Update translation](#update-translation)
   - [Adding translations](#adding-translations)
@@ -51,8 +56,17 @@ This focus helps guide our project decisions as a community and what we choose t
 - [Testing](#testing)
   - [Unit tests](#unit-tests)
   - [Component accessibility tests](#component-accessibility-tests)
+  - [Lighthouse accessibility tests](#lighthouse-accessibility-tests)
+  - [Lighthouse performance tests](#lighthouse-performance-tests)
   - [End to end tests](#end-to-end-tests)
   - [Test fixtures (mocking external APIs)](#test-fixtures-mocking-external-apis)
+- [Storybook](#storybook)
+  - [Component categories](#component-categories)
+  - [Coverage guidelines](#coverage-guidelines)
+  - [Project conventions](#project-conventions)
+  - [Configuration](#configuration)
+  - [Global app settings](#global-app-settings)
+  - [Known limitations](#known-limitations)
 - [Submitting changes](#submitting-changes)
   - [Before submitting](#before-submitting)
   - [Pull request process](#pull-request-process)
@@ -100,6 +114,10 @@ pnpm dev              # Start development server
 pnpm build            # Production build
 pnpm preview          # Preview production build
 
+# Connector
+pnpm npmx-connector   # Start the real connector (requires npm login)
+pnpm mock-connector   # Start the mock connector (no npm login needed)
+
 # Code Quality
 pnpm lint             # Run linter (oxlint + oxfmt)
 pnpm lint:fix         # Auto-fix lint issues
@@ -110,7 +128,37 @@ pnpm test             # Run all Vitest tests
 pnpm test:unit        # Unit tests only
 pnpm test:nuxt        # Nuxt component tests
 pnpm test:browser     # Playwright E2E tests
+pnpm test:a11y        # Lighthouse accessibility audits
+pnpm test:perf        # Lighthouse performance audits (CLS)
 ```
+
+### Clearing caches during development
+
+Nitro persists `defineCachedEventHandler` results to disk at `.nuxt/cache/nitro/`. This cache **survives dev server restarts**. If you're iterating on a cached API route and want fresh results, delete the relevant cache directory:
+
+```bash
+# Clear all Nitro handler caches
+rm -rf .nuxt/cache/nitro/handlers/
+
+# Clear a specific handler cache (e.g. picks)
+rm -rf .nuxt/cache/nitro/handlers/npmx-picks/
+```
+
+Alternatively, you can bypass the cache entirely in development by adding `shouldBypassCache: () => import.meta.dev` to your `defineCachedEventHandler` options:
+
+```ts
+export default defineCachedEventHandler(
+  async event => {
+    // ...
+  },
+  {
+    maxAge: 60 * 5,
+    shouldBypassCache: () => import.meta.dev,
+  },
+)
+```
+
+The `.cache/` directory is a separate storage mount used for fetch-cache and atproto data.
 
 ### Project structure
 
@@ -131,10 +179,11 @@ shared/                 # Shared between app and server
 └── types/              # TypeScript type definitions
 
 cli/                    # Local connector CLI (separate workspace)
+
 test/                   # Vitest tests
 ├── unit/               # Unit tests (*.spec.ts)
-└── nuxt/               # Nuxt component tests
-tests/                  # Playwright E2E tests
+├── nuxt/               # Nuxt component tests
+└── e2e/                # Playwright E2E tests
 ```
 
 > [!TIP]
@@ -150,6 +199,36 @@ pnpm npmx-connector
 ```
 
 The connector will check your npm authentication, generate a connection token, and listen for requests from npmx.dev.
+
+### Mock connector (for local development)
+
+If you're working on admin features (org management, package access controls, operations queue) and don't want to use your real npm account, you can run the mock connector instead:
+
+```bash
+pnpm mock-connector
+```
+
+This starts a mock connector server pre-populated with sample data (orgs, teams, members, packages). No npm login is required &mdash; operations succeed immediately without making real npm CLI calls.
+
+The mock connector prints a connection URL to the terminal, just like the real connector. Click it (or paste the token manually) to connect the UI.
+
+**Options:**
+
+```bash
+pnpm mock-connector                # default: port 31415, user "mock-user", sample data
+pnpm mock-connector --port 9999    # custom port
+pnpm mock-connector --user alice   # custom username
+pnpm mock-connector --empty        # start with no pre-populated data
+```
+
+**Default sample data:**
+
+- **@nuxt**: 4 members (mock-user, danielroe, pi0, antfu), 3 teams (core, docs, triage)
+- **@unjs**: 2 members (mock-user, pi0), 1 team (maintainers)
+- **Packages**: @nuxt/kit, @nuxt/schema, @unjs/nitro with team-based access controls
+
+> [!TIP]
+> Run `pnpm dev` in a separate terminal to start the Nuxt dev server, then click the connection URL from the mock connector to connect.
 
 ## Code style
 
@@ -247,18 +326,6 @@ import { hasProtocol } from 'ufo'
 | Constants        | SCREAMING_SNAKE_CASE     | `NPM_REGISTRY`, `ALLOWED_TAGS` |
 | Types/Interfaces | PascalCase               | `NpmSearchResponse`            |
 
-> [!TIP]
-> Exports in `app/composables/`, `app/utils/`, and `server/utils/` are auto-imported by Nuxt. To prevent [knip](https://knip.dev/) from flagging them as unused, add a `@public` JSDoc annotation:
->
-> ```typescript
-> /**
->  * @public
->  */
-> export function myAutoImportedFunction() {
->   // ...
-> }
-> ```
-
 ### Vue components
 
 - Use Composition API with `<script setup lang="ts">`
@@ -277,6 +344,91 @@ const props = defineProps<{
 ```
 
 Ideally, extract utilities into separate files so they can be unit tested. 🙏
+
+### Internal linking
+
+Always use **object syntax with named routes** for internal navigation. This makes links resilient to URL structure changes and provides type safety via `unplugin-vue-router`.
+
+```vue
+<!-- Good: named route -->
+<NuxtLink :to="{ name: 'settings' }">Settings</NuxtLink>
+
+<!-- Bad: string path -->
+<NuxtLink to="/settings">Settings</NuxtLink>
+```
+
+The same applies to programmatic navigation:
+
+```typescript
+// Good
+navigateTo({ name: 'compare' })
+router.push({ name: 'search' })
+
+// Bad
+navigateTo('/compare')
+router.push('/search')
+```
+
+For routes with parameters, pass them explicitly:
+
+```vue
+<NuxtLink :to="{ name: '~username', params: { username } }">Profile</NuxtLink>
+<NuxtLink :to="{ name: 'org', params: { org: orgName } }">Organization</NuxtLink>
+```
+
+Query parameters work as expected:
+
+```vue
+<NuxtLink :to="{ name: 'compare', query: { packages: pkg.name } }">Compare</NuxtLink>
+```
+
+#### Package routes
+
+For package links, use the auto-imported `packageRoute()` utility from `app/utils/router.ts`. It handles scoped/unscoped packages and optional versions:
+
+```vue
+<!-- Links to /package/vue -->
+<NuxtLink :to="packageRoute('vue')">vue</NuxtLink>
+
+<!-- Links to /package/@nuxt/kit -->
+<NuxtLink :to="packageRoute('@nuxt/kit')">@nuxt/kit</NuxtLink>
+
+<!-- Links to /package/vue/v/3.5.0 -->
+<NuxtLink :to="packageRoute('vue', '3.5.0')">vue@3.5.0</NuxtLink>
+```
+
+> [!IMPORTANT]
+> Never construct package URLs as strings. The route structure uses separate `org` and `name` params, and `packageRoute()` handles the splitting correctly.
+
+#### Available route names
+
+| Route name        | URL pattern                       | Parameters                |
+| ----------------- | --------------------------------- | ------------------------- |
+| `index`           | `/`                               | &mdash;                   |
+| `about`           | `/about`                          | &mdash;                   |
+| `compare`         | `/compare`                        | &mdash;                   |
+| `privacy`         | `/privacy`                        | &mdash;                   |
+| `search`          | `/search`                         | &mdash;                   |
+| `settings`        | `/settings`                       | &mdash;                   |
+| `package`         | `/package/:org?/:name`            | `org?`, `name`            |
+| `package-version` | `/package/:org?/:name/v/:version` | `org?`, `name`, `version` |
+| `code`            | `/package-code/:path+`            | `path` (array)            |
+| `docs`            | `/package-docs/:path+`            | `path` (array)            |
+| `org`             | `/org/:org`                       | `org`                     |
+| `~username`       | `/~:username`                     | `username`                |
+| `~username-orgs`  | `/~:username/orgs`                | `username`                |
+
+### Cursor and navigation
+
+**npmx** uses `cursor: pointer` only for links to match users’ everyday experience. For all other interactive elements, including buttons, use the default cursor (_or another appropriate cursor to indicate state_).
+
+> [!NOTE]
+> A link is any element that leads to another content (_go to another page, authorize_)
+> A button is any element that operates an action (_show tooltip, open menu, "like" package, open dropdown_)
+> If you're unsure which element to use - feel free to ask question in the issue or on discord
+
+> [!IMPORTANT]
+> Always Prefer implementing navigation as real links whenever possible. This ensures they can be opened in a new tab, shared or reloaded, and so the same content is available at a stable URL
 
 ## RTL Support
 
@@ -302,7 +454,19 @@ npmx.dev uses [@nuxtjs/i18n](https://i18n.nuxtjs.org/) for internationalization.
 - All user-facing strings should use translation keys via `$t()` in templates and script
 - Translation files live in [`i18n/locales/`](i18n/locales) (e.g., `en-US.json`)
 - We use the `no_prefix` strategy (no `/en-US/` or `/fr-FR/` in URLs)
-- Locale preference is stored in cookies and respected on subsequent visits
+- Locale preference is stored in `localStorage` and respected on subsequent visits
+
+### i18n commands
+
+The following scripts help manage translation files. `en.json` is the reference locale.
+
+| Command                        | Description                                                                                                                                                                             |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm i18n:check [locale]`     | Compares `en.json` with other locale files. Shows missing and extra keys. Optionally filter output by locale (e.g. `pnpm i18n:check ja-JP`).                                            |
+| `pnpm i18n:check:fix [locale]` | Same as check, but adds missing keys to other locales with English placeholders.                                                                                                        |
+| `pnpm i18n:report`             | Audits translation keys against code usage in `.vue` and `.ts` files. Reports missing keys (used in code but not in locale), unused keys (in locale but not in code), and dynamic keys. |
+| `pnpm i18n:report:fix`         | Removes unused keys from `en.json` and all other locale files.                                                                                                                          |
+| `pnpm i18n:schema`             | Generates a JSON Schema from `en.json` at `i18n/schema.json`. Locale files reference this schema for IDE validation and autocompletion.                                                 |
 
 ### Adding a new locale
 
@@ -328,17 +492,8 @@ To add a new locale:
    },
    ```
 
-4. Copy your translation file to `lunaria/files/` for translation tracking:
-
-   ```bash
-   cp i18n/locales/uk-UA.json lunaria/files/uk-UA.json
-   ```
-
-   > [!IMPORTANT]
-   > This file must be committed. Lunaria uses git history to track translation progress, so the build will fail if this file is missing.
-
-5. If the language is `right-to-left`, add `dir: 'rtl'` (see `ar-EG` in config for example)
-6. If the language requires special pluralization rules, add a `pluralRule` callback (see `ar-EG` or `ru-RU` in config for examples)
+4. If the language is `right-to-left`, add `dir: 'rtl'` (see `ar-EG` in config for example)
+5. If the language requires special pluralization rules, add a `pluralRule` callback (see `ar-EG` or `ru-RU` in config for examples)
 
 Check [Pluralization rule callback](https://vue-i18n.intlify.dev/guide/essentials/pluralization#custom-pluralization) and [Plural Rules](https://cldr.unicode.org/index/cldr-spec/plural-rules#TOC-Determining-Plural-Categories) for more info.
 
@@ -347,25 +502,7 @@ Check [Pluralization rule callback](https://vue-i18n.intlify.dev/guide/essential
 We track the current progress of translations with [Lunaria](https://lunaria.dev/) on this site: https://i18n.npmx.dev/
 If you see any outdated translations in your language, feel free to update the keys to match the English version.
 
-In order to make sure you have everything up-to-date, you can run:
-
-```bash
-pnpm i18n:check <country-code>
-```
-
-For example to check if all Japanese translation keys are up-to-date, run:
-
-```bash
-pnpm i18n:check ja-JP
-```
-
-To automatically add missing keys with English placeholders, use `--fix`:
-
-```bash
-pnpm i18n:check:fix fr-FR
-```
-
-This will add missing keys with `"EN TEXT TO REPLACE: {english text}"` as placeholder values, making it easier to see what needs translation.
+Use `pnpm i18n:check` and `pnpm i18n:check:fix` to verify and fix your locale (see [i18n commands](#i18n-commands) above for details).
 
 #### Country variants (advanced)
 
@@ -453,6 +590,32 @@ See how `es`, `es-ES`, and `es-419` are configured in [config/i18n.ts](./config/
 - Use `common.*` for shared strings (loading, retry, close, etc.)
 - Use component-specific prefixes: `package.card.*`, `settings.*`, `nav.*`
 - Do not use dashes (`-`) in translation keys; always use underscore (`_`): e.g., `privacy_policy` instead of `privacy-policy`
+- **Always use static string literals as translation keys.** Our i18n scripts (`pnpm i18n:report`) rely on static analysis to detect unused and missing keys. Dynamic keys cannot be analyzed and will be flagged as errors.
+
+  **Bad:**
+
+  ```vue
+  <!-- Template literal -->
+  <p>{{ $t(`package.tabs.${tab}`) }}</p>
+
+  <!-- Variable -->
+  <p>{{ $t(myKey) }}</p>
+  ```
+
+  **Good:**
+
+  ```typescript
+  const { t } = useI18n()
+
+  const tabLabels = computed(() => ({
+    readme: t('package.tabs.readme'),
+    versions: t('package.tabs.versions'),
+  }))
+  ```
+
+  ```vue
+  <p>{{ tabLabels[tab] }}</p>
+  ```
 
 ### Using i18n-ally (recommended)
 
@@ -524,6 +687,60 @@ A coverage test in `test/unit/a11y-component-coverage.spec.ts` ensures all compo
 > [!IMPORTANT]
 > Just because axe-core doesn't find any obvious issues, it does not mean a component is accessible. Please do additional checks and use best practices.
 
+### Lighthouse accessibility tests
+
+In addition to component-level axe audits, the project runs full-page accessibility audits using [Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci). These test the rendered pages in both light and dark mode against Lighthouse's accessibility category, requiring a perfect score.
+
+#### How it works
+
+1. The project is built in test mode (`pnpm build:test`), which activates server-side fixture mocking
+2. Lighthouse CI starts a preview server and audits three URLs: `/`, `/search?q=nuxt`, and `/package/nuxt`
+3. A Puppeteer setup script (`lighthouse-setup.cjs`) runs before each audit to set the color mode and intercept client-side API requests using the same fixtures as the E2E tests
+
+#### Running locally
+
+```bash
+# Build + run both light and dark audits
+pnpm test:a11y
+
+# Or against an existing test build
+pnpm test:a11y:prebuilt
+
+# Or run a single color mode manually
+pnpm build:test
+LIGHTHOUSE_COLOR_MODE=dark ./scripts/lighthouse.sh
+```
+
+This requires Chrome or Chromium to be installed. The script will auto-detect common installation paths. Results are printed to the terminal and saved in `.lighthouseci/`.
+
+#### Configuration
+
+| File                    | Purpose                                                   |
+| ----------------------- | --------------------------------------------------------- |
+| `.lighthouserc.cjs`     | Lighthouse CI config (URLs, assertions, Chrome path)      |
+| `lighthouse-setup.cjs`  | Puppeteer script for color mode + client-side API mocking |
+| `scripts/lighthouse.sh` | Shell wrapper that runs the audit for a given color mode  |
+
+### Lighthouse performance tests
+
+The project also runs Lighthouse performance audits to enforce zero Cumulative Layout Shift (CLS). These run separately from the accessibility audits and test the same set of URLs.
+
+#### How it works
+
+The same `.lighthouserc.cjs` config is shared between accessibility and performance audits. When the `LH_PERF` environment variable is set, the config switches from the `accessibility` category to the `performance` category and asserts that CLS is exactly 0.
+
+#### Running locally
+
+```bash
+# Build + run performance audit
+pnpm test:perf
+
+# Or against an existing test build
+pnpm test:perf:prebuilt
+```
+
+Unlike the accessibility audits, performance audits do not run in separate light/dark modes.
+
 ### End to end tests
 
 Write end-to-end tests using Playwright:
@@ -545,10 +762,12 @@ E2E tests use a fixture system to mock external API requests, ensuring tests are
 - Serves pre-recorded fixture data from `test/fixtures/`
 - Enabled via `NUXT_TEST_FIXTURES=true` or Nuxt test mode
 
-**Client-side mocking** (`test/e2e/test-utils.ts`):
+**Client-side mocking** (`test/fixtures/mock-routes.cjs`):
 
-- Uses Playwright's route interception to mock browser requests
-- All test files import from `./test-utils` instead of `@nuxt/test-utils/playwright`
+- Shared URL matching and response generation logic used by both Playwright E2E tests and Lighthouse CI
+- Playwright tests (`test/e2e/test-utils.ts`) use this via `page.route()` interception
+- Lighthouse tests (`lighthouse-setup.cjs`) use this via Puppeteer request interception
+- All E2E test files import from `./test-utils` instead of `@nuxt/test-utils/playwright`
 - Throws a clear error if an unmocked external request is detected
 
 #### Fixture files
@@ -596,7 +815,186 @@ URL:  https://registry.npmjs.org/some-package
 You need to either:
 
 1. Add a fixture file for that package/endpoint
-2. Update the mock handlers in `test/e2e/test-utils.ts` (client) or `modules/runtime/server/cache.ts` (server)
+2. Update the mock handlers in `test/fixtures/mock-routes.cjs` (client) or `modules/runtime/server/cache.ts` (server)
+
+### Testing connector features
+
+Features that require authentication through the local connector (org management, package collaborators, operations queue) are tested using a mock connector server.
+
+#### Architecture
+
+The mock connector infrastructure is shared between the CLI, E2E tests, and Vitest component tests:
+
+```
+cli/src/
+├── types.ts           # ConnectorEndpoints contract (shared by real + mock)
+├── mock-state.ts      # MockConnectorStateManager (canonical source)
+├── mock-app.ts        # H3 mock app + MockConnectorServer class
+└── mock-server.ts     # CLI entry point (pnpm mock-connector)
+
+test/test-utils/       # Re-exports from cli/src/ for test convenience
+test/e2e/helpers/      # E2E-specific wrappers (fixtures, global setup)
+```
+
+Both the real server (`cli/src/server.ts`) and the mock server (`cli/src/mock-app.ts`) conform to the `ConnectorEndpoints` interface defined in `cli/src/types.ts`. This ensures the API contract is enforced by TypeScript. When adding a new endpoint, update `ConnectorEndpoints` first, then implement it in both servers.
+
+#### Vitest component tests (`test/nuxt/`)
+
+- Mock the `useConnector` composable with reactive state
+- Use `document.body` queries for components using Teleport
+- See `test/nuxt/components/HeaderConnectorModal.spec.ts` for an example
+
+```typescript
+// Create mock state
+const mockState = ref({ connected: false, npmUser: null, ... })
+
+// Mock the composable
+vi.mock('~/composables/useConnector', () => ({
+  useConnector: () => ({
+    isConnected: computed(() => mockState.value.connected),
+    // ... other properties
+  }),
+}))
+```
+
+#### Playwright E2E tests (`test/e2e/`)
+
+- A mock HTTP server starts automatically via Playwright's global setup
+- Use the `mockConnector` fixture to set up test data and the `gotoConnected` helper to navigate with authentication
+
+```typescript
+test('shows org members', async ({ page, gotoConnected, mockConnector }) => {
+  // Set up test data
+  await mockConnector.setOrgData('@testorg', {
+    users: { testuser: 'owner', member1: 'admin' },
+  })
+
+  // Navigate with connector authentication
+  await gotoConnected('/@testorg')
+
+  // Test assertions
+  await expect(page.getByRole('link', { name: '@testuser' })).toBeVisible()
+})
+```
+
+The mock connector supports test endpoints for state manipulation:
+
+- `/__test__/reset` - Reset all mock state
+- `/__test__/org` - Set org users, teams, and team members
+- `/__test__/user-orgs` - Set user's organizations
+- `/__test__/user-packages` - Set user's packages
+- `/__test__/package` - Set package collaborators
+
+## Storybook
+
+Storybook is a development environment for UI components that helps catch UI changes and provides integrations for various testing types. For testing, Storybook offers:
+
+- **Accessibility tests** - Built-in a11y checks
+- **Visual tests** - Compare JPG screenshots
+- **Vitest tests** - Use stories directly in the unit tests
+
+### Component categories
+
+The plan is to organize components into 3 categories.
+
+#### UI Library Components
+
+Generic and reusable components used throughout the application.
+
+- Examples: Button, Input, Modal, Card
+- **Testing focus:** Props, variants, accessibility
+- **Coverage:** All variants and states
+
+#### Composite Components
+
+Single-use components that encapsulate one feature.
+
+- Examples: UserProfile, WeeklyDownloadStats
+- **Testing focus:** Integration patterns, user interactions
+- **Coverage:** Common usage scenarios
+
+#### Page Components
+
+**Full-page layouts** should match what the users see.
+
+- Examples: HomePage, Dashboard, CheckoutPage
+- **Testing focus:** Layout, responsive behavior, integration testing
+- **Coverage:** Critical user flows and breakpoints
+
+### Coverage guidelines
+
+#### Which Components Need Stories?
+
+TBD
+
+### Project conventions
+
+#### Place `.stories.ts` files next to the component
+
+```sh
+components/
+├── Button.vue
+└── Button.stories.ts
+```
+
+#### Story Template
+
+```ts
+// *.stories.ts
+import type { Meta, StoryObj } from '@storybook-vue/nuxt'
+import Component from './Button.vue'
+
+const meta = {
+  component: Component,
+  // component scope configuration goes here
+} satisfies Meta<typeof Component>
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const Default: Story = {
+  // story scope configuration goes here
+}
+```
+
+#### JSDocs Annotation
+
+The component should include descriptive comments.
+
+```ts
+// Button.vue
+<script setup lang="ts">
+const props = withDefaults(
+  defineProps<{
+    /** Whether the button is disabled */
+    disabled?: boolean
+    /**
+     * HTML button type attribute
+     * @default "button"
+    type?: 'button' | 'submit'
+    // ...
+  }>)
+</script>
+```
+
+### Configuration
+
+Stories can be configured at three levels:
+
+- **Global scope** (`.storybook/preview.ts`) - Applies to all stories
+- **Component scope** - Applies to all stories for a specific component
+- **Story scope** - Applies to individual stories only
+
+### Global app settings
+
+Global application settings are added to the Storybook toolbar for easy testing and viewing. Configure these in `.storybook/preview.ts` under the `globalTypes` and `decorators` properties.
+
+### Known limitations
+
+- Changing `i18n` in the toolbar doesn't update the language. A manual story reload is required.
+- `autodocs` currently is non-functional due bugs, its usage is discouraged at this time.
+- `pnpm storybook` may log warnings or non-breaking errors for Nuxt modules due to the lack of mocks. If the UI renders correctly, these can be safely ignored.
+- Do not `import type` from `.vue` files. The `vue-docgen-api` parser used by `@storybook/addon-docs` cannot follow type imports across SFCs and will crash. Extract shared types into a separate `.ts` file instead.
 
 ## Submitting changes
 
@@ -626,7 +1024,7 @@ Format: `type(scope): description`
 
 **Types:** `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`
 
-**Scopes (optional):** `docs`, `i18n`, `deps`
+**Scopes (optional):** `a11y`, `blog`, `deps`, `docs`, `cli`, `i18n`, `ui`
 
 **Examples:**
 
@@ -635,8 +1033,10 @@ Format: `type(scope): description`
 - `fix(i18n): update French translations`
 - `chore(deps): update vite to v6`
 
+Where front end changes are made, please include before and after screenshots in your pull request description.
+
 > [!NOTE]
-> The subject must start with a lowercase letter. Individual commit messages within your PR don't need to follow this format since they'll be squashed.
+> Use lowercase letters in your pull request title. Individual commit messages within your PR don't need to follow this format since they'll be squashed.
 
 ### PR descriptions
 

@@ -1,32 +1,14 @@
-import { safeParse, flatten } from 'valibot'
+import type { $Typed, AtUriString, Unknown$TypedObject } from '@atproto/lex'
+import { Client, isAtUriString } from '@atproto/lex'
 import type { Comment, CommentEmbed } from '#shared/types/blog-post'
+import * as app from '#shared/types/lexicons/app'
 import {
-  AppBskyFeedDefs,
-  AppBskyFeedPost,
-  AppBskyEmbedImages,
-  AppBskyEmbedExternal,
-} from '@atproto/api'
-import { BlueSkyUriSchema } from '#shared/schemas/atproto'
-import { CACHE_MAX_AGE_ONE_MINUTE, BLUESKY_API, AT_URI_REGEX } from '#shared/utils/constants'
+  CACHE_MAX_AGE_ONE_MINUTE,
+  BLUESKY_API,
+  BSKY_POST_AT_URI_REGEX,
+} from '#shared/utils/constants'
 
-import { jsonToLex } from '@atproto/api'
-
-type ThreadResponse = { thread: AppBskyFeedDefs.ThreadViewPost }
-
-type LikesResponse = {
-  likes: Array<{
-    actor: {
-      did: string
-      handle: string
-      displayName?: string
-      avatar?: string
-    }
-  }>
-}
-
-type PostsResponse = { posts: Array<{ likeCount?: number }> }
-
-const $bluesky = $fetch.create({ baseURL: BLUESKY_API })
+const blueskyClient = new Client({ service: BLUESKY_API })
 
 /**
  * Provides both build and runtime comments refreshes
@@ -35,35 +17,26 @@ const $bluesky = $fetch.create({ baseURL: BLUESKY_API })
  */
 export default defineCachedEventHandler(
   async event => {
-    const query = getQuery(event)
-    const parsed = safeParse(BlueSkyUriSchema, query)
+    const { uri } = getQuery(event)
 
-    if (!parsed.success) {
+    if (typeof uri !== 'string' || !isAtUriString(uri)) {
       throw createError({
         statusCode: 400,
-        statusMessage: `Invalid URI format: ${flatten(parsed.issues).root?.[0] || 'Must be a valid at:// URI'}`,
+        statusMessage: `Invalid URI format: Must be a valid at:// URI`,
       })
     }
-
-    const { uri } = parsed.output
 
     try {
       // Fetch thread, likes, and post metadata in parallel
       const [threadResponse, likesResponse, postsResponse] = await Promise.all([
-        $bluesky<ThreadResponse>('/app.bsky.feed.getPostThread', {
-          query: { uri, depth: 10 },
-        }).catch((err: Error) => {
+        blueskyClient.call(app.bsky.feed.getPostThread, { uri, depth: 10 }).catch((err: Error) => {
           console.warn(`[Bluesky] Thread fetch failed for ${uri}:`, err.message)
           return null
         }),
 
-        $bluesky<LikesResponse>('/app.bsky.feed.getLikes', {
-          query: { uri, limit: 50 },
-        }).catch(() => ({ likes: [] })),
+        blueskyClient.call(app.bsky.feed.getLikes, { uri, limit: 50 }).catch(() => ({ likes: [] })),
 
-        $bluesky<PostsResponse>('/app.bsky.feed.getPosts', {
-          query: { uris: [uri] },
-        }).catch(() => ({ posts: [] })),
+        blueskyClient.call(app.bsky.feed.getPosts, { uris: [uri] }).catch(() => ({ posts: [] })),
       ])
 
       // Early return if thread fetch fails w/o 404
@@ -108,24 +81,24 @@ export default defineCachedEventHandler(
 )
 
 // Helper to convert AT URI to web URL
-function atUriToWebUrl(uri: string): string | null {
-  const match = uri.match(AT_URI_REGEX)
+function atUriToWebUrl(uri: AtUriString): string | null {
+  const match = uri.match(BSKY_POST_AT_URI_REGEX)
   if (!match) return null
-  const [, did, rkey] = match
+  const [, did, rkey] = match as [string, `did:plc:${string}`, string]
   return `https://bsky.app/profile/${did}/post/${rkey}`
 }
 
-function parseEmbed(embed: AppBskyFeedDefs.PostView['embed']): CommentEmbed | undefined {
+function parseEmbed(embed: app.bsky.feed.defs.PostView['embed']): CommentEmbed | undefined {
   if (!embed) return undefined
 
-  if (AppBskyEmbedImages.isView(embed)) {
+  if (app.bsky.embed.images.view.$isTypeOf(embed)) {
     return {
       type: 'images',
       images: embed.images,
     }
   }
 
-  if (AppBskyEmbedExternal.isView(embed)) {
+  if (app.bsky.embed.external.view.$isTypeOf(embed)) {
     return {
       type: 'external',
       external: embed.external,
@@ -135,14 +108,18 @@ function parseEmbed(embed: AppBskyFeedDefs.PostView['embed']): CommentEmbed | un
   return undefined
 }
 
-function parseThread(thread: AppBskyFeedDefs.ThreadViewPost): Comment | null {
-  if (!AppBskyFeedDefs.isThreadViewPost(thread)) return null
+function parseThread(
+  thread:
+    | Unknown$TypedObject
+    | $Typed<app.bsky.feed.defs.ThreadViewPost>
+    | $Typed<app.bsky.feed.defs.NotFoundPost>
+    | $Typed<app.bsky.feed.defs.BlockedPost>,
+): Comment | null {
+  if (!app.bsky.feed.defs.threadViewPost.$isTypeOf(thread)) return null
 
   const { post } = thread
 
-  // This casts our external.thumb as a blobRef which is needed to validateRecord
-  const lexPostRecord = jsonToLex(post.record)
-  const recordValidation = AppBskyFeedPost.validateRecord(lexPostRecord)
+  const recordValidation = app.bsky.feed.post.$safeValidate(post.record)
 
   if (!recordValidation.success) return null
   const record = recordValidation.value
@@ -150,7 +127,7 @@ function parseThread(thread: AppBskyFeedDefs.ThreadViewPost): Comment | null {
   const replies: Comment[] = []
   if (thread.replies) {
     for (const reply of thread.replies) {
-      if (AppBskyFeedDefs.isThreadViewPost(reply)) {
+      if (app.bsky.feed.defs.threadViewPost.$isTypeOf(reply)) {
         const parsed = parseThread(reply)
         if (parsed) replies.push(parsed)
       }

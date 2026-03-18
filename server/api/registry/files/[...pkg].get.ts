@@ -1,7 +1,5 @@
 import * as v from 'valibot'
 import { PackageVersionQuerySchema } from '#shared/schemas/package'
-import type { PackageFileTreeResponse } from '#shared/types'
-import { CACHE_MAX_AGE_ONE_YEAR, ERROR_FILE_LIST_FETCH_FAILED } from '#shared/utils/constants'
 
 /**
  * Returns the file tree for a package version.
@@ -46,7 +44,7 @@ export default defineCachedEventHandler(
     swr: true,
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
-      return `files:v1:${pkg.replace(/\/+$/, '').trim()}`
+      return `files:v2:${pkg.replace(/\/+$/, '').trim()}`
     },
   },
 )

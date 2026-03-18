@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { joinURL } from 'ufo'
-
 const props = withDefaults(
   defineProps<{
     name: string
@@ -32,19 +30,13 @@ if (
 }
 
 const { data: downloads, refresh: refreshDownloads } = usePackageDownloads(name, 'last-week')
-const { data: pkg, refresh: refreshPkg } = usePackage(name, resolvedVersion.value ?? version.value)
+const { data: pkg, refresh: refreshPkg } = usePackage(
+  name,
+  () => resolvedVersion.value ?? version.value,
+)
 const displayVersion = computed(() => pkg.value?.requestedVersion ?? null)
 
-const repositoryUrl = computed(() => {
-  const repo = displayVersion.value?.repository
-  if (!repo?.url) return null
-  let url = normalizeGitUrl(repo.url)
-  // append `repository.directory` for monorepo packages
-  if (repo.directory) {
-    url = joinURL(`${url}/tree/HEAD`, repo.directory)
-  }
-  return url
-})
+const { repositoryUrl } = useRepositoryUrl(displayVersion)
 
 const { data: likes, refresh: refreshLikes } = useFetch(() => `/api/social/likes/${name.value}`, {
   default: () => ({ totalLikes: 0, userHasLiked: false }),
@@ -53,11 +45,29 @@ const { data: likes, refresh: refreshLikes } = useFetch(() => `/api/social/likes
 const { stars, refresh: refreshRepoMeta } = useRepoMeta(repositoryUrl)
 
 const formattedStars = computed(() =>
-  Intl.NumberFormat('en', {
-    notation: 'compact',
-    maximumFractionDigits: 1,
-  }).format(stars.value),
+  stars.value > 0
+    ? Intl.NumberFormat('en', {
+        notation: 'compact',
+        maximumFractionDigits: 1,
+      }).format(stars.value)
+    : '',
 )
+
+const MAX_LOGO_SYMBOLS = 40
+
+const titleTruncated = computed(() => {
+  return name.value.length > MAX_LOGO_SYMBOLS
+    ? `${name.value.slice(0, MAX_LOGO_SYMBOLS - 1)}…`
+    : name.value
+})
+
+// Dynamic font sizing based on name length
+// OG images are 1200px wide, with 64px padding on each side = 1072px content width
+// The original size (8xl) can fit 19 characters (2 logo characters + 17 name characters)
+const titleScale = computed(() => {
+  const len = titleTruncated.value.length + 2
+  return Math.min(Math.floor((19 / len) * 100) / 100, 1)
+})
 
 try {
   await refreshPkg()
@@ -73,11 +83,13 @@ try {
 <template>
   <div
     class="h-full w-full flex flex-col justify-center px-20 bg-[#050505] text-[#fafafa] relative overflow-hidden"
+    style="font-family: 'Geist Mono', sans-serif"
   >
     <div class="relative z-10 flex flex-col gap-6">
+      <!-- Package name -->
       <div class="flex items-start gap-4">
         <div
-          class="flex items-center justify-center w-16 h-16 p-4 rounded-xl shadow-lg bg-gradient-to-tr from-[#3b82f6]"
+          class="flex items-center justify-center w-16 h-16 p-3.5 rounded-xl shadow-lg bg-gradient-to-tr from-[#3b82f6]"
           :style="{ backgroundColor: primaryColor }"
         >
           <svg
@@ -100,17 +112,20 @@ try {
         </div>
 
         <h1
-          class="text-8xl font-bold tracking-tighter"
-          style="font-family: 'Geist Sans', sans-serif"
+          class="font-bold text-8xl origin-cl tracking-tighter text-nowrap whitespace-nowrap flex flex-nowrap"
+          :style="{ transform: `scale(${titleScale})` }"
         >
-          <span :style="{ color: primaryColor }" class="opacity-80">./</span>{{ pkg?.name }}
+          <span
+            :style="{ color: primaryColor }"
+            class="opacity-80 tracking-[-0.1em]"
+            style="margin-left: -0.5rem; margin-right: 1rem"
+            >./</span
+          >{{ titleTruncated }}
         </h1>
       </div>
 
-      <div
-        class="flex items-center gap-5 text-4xl font-light text-[#a3a3a3]"
-        style="font-family: 'Geist Sans', sans-serif"
-      >
+      <!-- Version -->
+      <div class="flex items-center gap-5 text-3xl font-light text-[#a3a3a3]">
         <span
           class="px-3 py-1 me-2 rounded-lg border font-bold opacity-90"
           :style="{
@@ -120,9 +135,11 @@ try {
             boxShadow: `0 0 20px ${primaryColor}25`,
           }"
         >
-          {{ resolvedVersion }}
+          {{ resolvedVersion ?? version }}
         </span>
-        <span v-if="downloads" class="flex items-center gap-2">
+
+        <!-- Downloads (if any) -->
+        <span v-if="downloads" class="flex items-center gap-2 tracking-tight">
           <svg
             width="30"
             height="30"
@@ -139,7 +156,9 @@ try {
           </svg>
           <span>{{ $n(downloads.downloads) }}/wk</span>
         </span>
-        <span v-if="pkg?.license" class="flex items-center gap-2">
+
+        <!-- License (if any) -->
+        <span v-if="pkg?.license" class="flex items-center gap-2" data-testid="license">
           <svg
             viewBox="0 0 32 32"
             :fill="primaryColor"
@@ -162,7 +181,13 @@ try {
             {{ pkg.license }}
           </span>
         </span>
-        <span class="flex items-center gap-2">
+
+        <!-- Stars (if any) -->
+        <span
+          v-if="formattedStars"
+          class="flex items-center gap-2 tracking-tight"
+          data-testid="stars"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 32 32"
@@ -179,7 +204,13 @@ try {
             {{ formattedStars }}
           </span>
         </span>
-        <span class="flex items-center gap-2">
+
+        <!-- Likes (if any) -->
+        <span
+          v-if="likes.totalLikes > 0"
+          class="flex items-center gap-2 tracking-tight"
+          data-testid="likes"
+        >
           <svg
             width="32"
             height="32"

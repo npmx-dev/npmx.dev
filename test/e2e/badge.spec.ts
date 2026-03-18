@@ -61,7 +61,7 @@ test.describe('badge API', () => {
 
         expect(response.status()).toBe(200)
         if (type === 'version') {
-          expect(body).toContain('3.12.0')
+          expect(body).toContain('v3.12.0')
         }
       })
 
@@ -118,12 +118,68 @@ test.describe('badge API', () => {
     expect(body).toContain(`fill="#${customColor}"`)
   })
 
+  test('light color produces dark text for contrast', async ({ page, baseURL }) => {
+    const url = toLocalUrl(baseURL, '/api/registry/badge/version/nuxt?color=FFDC3B')
+    const { body } = await fetchBadge(page, url)
+
+    expect(body).toContain('fill="#ffffff">version')
+    expect(body).toMatch(/fill="#000000">v\d/)
+  })
+
+  test('dark color keeps white text for contrast', async ({ page, baseURL }) => {
+    const url = toLocalUrl(baseURL, '/api/registry/badge/version/nuxt?color=0a0a0a')
+    const { body } = await fetchBadge(page, url)
+
+    expect(body).toContain('fill="#ffffff">version')
+    expect(body).toMatch(/fill="#ffffff">v\d/)
+  })
+
+  test('light labelColor produces dark label text for contrast', async ({ page, baseURL }) => {
+    const url = toLocalUrl(baseURL, '/api/registry/badge/version/nuxt?labelColor=ffffff')
+    const { body } = await fetchBadge(page, url)
+
+    expect(body).toContain('fill="#000000">version')
+  })
+
+  test('3-char hex color is handled correctly for contrast', async ({ page, baseURL }) => {
+    const url = toLocalUrl(baseURL, '/api/registry/badge/version/nuxt?color=CCC')
+    const { body } = await fetchBadge(page, url)
+
+    expect(body).toContain('fill="#ffffff">version')
+    expect(body).toMatch(/fill="#000000">v\d/)
+  })
+
+  test('light colour produces dark text for contrast in shieldsio style', async ({
+    page,
+    baseURL,
+  }) => {
+    const url = toLocalUrl(baseURL, '/api/registry/badge/version/nuxt?style=shieldsio&color=FFDC3B')
+    const { body } = await fetchBadge(page, url)
+
+    expect(body).toMatch(/fill="#ffffff"(\stextLength="\d+")?>version/)
+    expect(body).toMatch(/fill="#000000"(\stextLength="\d+")?>v\d/)
+  })
+
   test('custom label parameter is applied to SVG', async ({ page, baseURL }) => {
     const customLabel = 'my-label'
     const url = toLocalUrl(baseURL, `/api/registry/badge/version/nuxt?label=${customLabel}`)
     const { body } = await fetchBadge(page, url)
 
     expect(body).toContain(customLabel)
+  })
+
+  test('style=default keeps current badge renderer', async ({ page, baseURL }) => {
+    const url = toLocalUrl(baseURL, '/api/registry/badge/version/nuxt?style=default')
+    const { body } = await fetchBadge(page, url)
+
+    expect(body).toContain('font-family="Geist, system-ui, -apple-system, sans-serif"')
+  })
+
+  test('style=shieldsio renders shields.io-like badge', async ({ page, baseURL }) => {
+    const url = toLocalUrl(baseURL, '/api/registry/badge/version/nuxt?style=shieldsio')
+    const { body } = await fetchBadge(page, url)
+
+    expect(body).toContain('font-family="Verdana, Geneva, DejaVu Sans, sans-serif"')
   })
 
   test('invalid badge type defaults to version strategy', async ({ page, baseURL }) => {

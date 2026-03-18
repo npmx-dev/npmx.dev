@@ -39,3 +39,16 @@ test-results/
 
 # generated files
 shared/types/lexicons
+file-tree-sprite.svg
+public/blog/avatar
+
+**/__screenshots__/**
+
+# output
+.vercel
+
+# Storybook
+*storybook.log
+storybook-static
+
+.nvmrc

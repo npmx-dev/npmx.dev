@@ -27,7 +27,7 @@ describe('LicenseDisplay', () => {
       const component = await mountSuspended(LicenseDisplay, {
         props: { license: 'MIT' },
       })
-      const icon = component.find('.i-carbon-scales')
+      const icon = component.find('.i-lucide\\:scale')
       expect(icon.exists()).toBe(true)
     })
 
@@ -35,7 +35,7 @@ describe('LicenseDisplay', () => {
       const component = await mountSuspended(LicenseDisplay, {
         props: { license: 'CustomLicense' },
       })
-      const icon = component.find('.i-carbon-scales')
+      const icon = component.find('.i-lucide\\:scale')
       expect(icon.exists()).toBe(false)
     })
   })
@@ -105,7 +105,7 @@ describe('LicenseDisplay', () => {
       const component = await mountSuspended(LicenseDisplay, {
         props: { license: 'CustomLicense OR MIT' },
       })
-      const icon = component.find('.i-carbon-scales')
+      const icon = component.find('.i-lucide\\:scale')
       expect(icon.exists()).toBe(true)
     })
   })

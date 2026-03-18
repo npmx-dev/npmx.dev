@@ -22,7 +22,7 @@ export const PackageNameSchema = v.pipe(
 export const VersionSchema = v.pipe(
   v.string(),
   v.nonEmpty('Version is required'),
-  v.regex(/^[a-z0-9._+-]+$/i, 'Invalid version format'),
+  v.regex(/^[\w.+-]+$/, 'Invalid version format'),
 )
 
 /**
@@ -71,9 +71,32 @@ export const PackageFileQuerySchema = v.object({
 })
 
 /**
+ * Schema for version comparison (from...to range)
+ */
+export const PackageCompareQuerySchema = v.object({
+  packageName: PackageNameSchema,
+  fromVersion: VersionSchema,
+  toVersion: VersionSchema,
+})
+
+/**
+ * Schema for file diff between versions
+ */
+export const PackageFileDiffQuerySchema = v.object({
+  packageName: PackageNameSchema,
+  fromVersion: VersionSchema,
+  toVersion: VersionSchema,
+  filePath: FilePathSchema,
+})
+
+/**
  * Automatically infer types for routes
  * Usage - prefer this over manually defining interfaces
  */
 export type PackageRouteParams = v.InferOutput<typeof PackageRouteParamsSchema>
 export type PackageVersionQuery = v.InferOutput<typeof PackageVersionQuerySchema>
 export type PackageFileQuery = v.InferOutput<typeof PackageFileQuerySchema>
+/** @public */
+export type PackageCompareQuery = v.InferOutput<typeof PackageCompareQuerySchema>
+/** @public */
+export type PackageFileDiffQuery = v.InferOutput<typeof PackageFileDiffQuerySchema>

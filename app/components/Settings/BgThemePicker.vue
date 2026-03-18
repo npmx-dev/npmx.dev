@@ -3,11 +3,21 @@ const { backgroundThemes, selectedBackgroundTheme, setBackgroundTheme } = useBac
 
 onPrehydrate(el => {
   const settings = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
+  const defaultId = 'neutral'
   const id = settings.preferredBackgroundTheme
   if (id) {
-    const input = el.querySelector<HTMLInputElement>(`input[value="${id || 'neutral'}"]`)
+    const input = el.querySelector<HTMLInputElement>(`input[value="${id}"]`)
     if (input) {
       input.checked = true
+      input.setAttribute('checked', '')
+    }
+    // Remove checked from the server-default (clear button, value="")
+    if (id !== defaultId) {
+      const clearInput = el.querySelector<HTMLInputElement>(`input[value="${defaultId}"]`)
+      if (clearInput) {
+        clearInput.checked = false
+        clearInput.removeAttribute('checked')
+      }
     }
   }
 })
@@ -21,7 +31,7 @@ onPrehydrate(el => {
     <label
       v-for="theme in backgroundThemes"
       :key="theme.id"
-      class="size-6 rounded-full transition-transform duration-150 motion-safe:hover:scale-110 cursor-pointer has-[:checked]:(ring-2 ring-fg ring-offset-2 ring-offset-bg-subtle) has-[:focus-visible]:(ring-2 ring-fg ring-offset-2 ring-offset-bg-subtle)"
+      class="size-6 rounded-full transition-transform duration-150 motion-safe:hover:scale-110 has-[:checked]:(ring-2 ring-fg ring-offset-2 ring-offset-bg-subtle) has-[:focus-visible]:(ring-2 ring-fg ring-offset-2 ring-offset-bg-subtle)"
       :style="{ backgroundColor: theme.value }"
     >
       <input
@@ -29,10 +39,28 @@ onPrehydrate(el => {
         name="background-theme"
         class="sr-only"
         :value="theme.id"
-        :checked="selectedBackgroundTheme === theme.id"
+        :checked="
+          selectedBackgroundTheme === theme.id ||
+          (!selectedBackgroundTheme && theme.id === 'neutral')
+        "
         :aria-label="theme.name"
         @change="setBackgroundTheme(theme.id)"
       />
     </label>
   </fieldset>
 </template>
+
+<style scoped>
+@media (forced-colors: active) {
+  /* keep background theme swatches visible in forced colors. */
+  label {
+    forced-color-adjust: none;
+    border: 1px solid CanvasText;
+
+    &:has(> input:checked) {
+      outline: 2px solid Highlight;
+      outline-offset: 2px;
+    }
+  }
+}
+</style>

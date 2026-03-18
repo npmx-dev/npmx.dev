@@ -1,0 +1,42 @@
+{
+  "name": "RawVoiceServerUpdate",
+  "kind": "typeAlias",
+  "typeAliasDef": {
+    "tsType": {
+      "repr": "Pick",
+      "kind": "typeRef",
+      "typeRef": {
+        "typeName": "Pick",
+        "typeParams": [
+          {
+            "repr": "GatewayVoiceServerUpdateDispatchData",
+            "kind": "typeRef",
+            "typeRef": { "typeName": "GatewayVoiceServerUpdateDispatchData" }
+          },
+          {
+            "repr": "",
+            "kind": "union",
+            "union": [
+              {
+                "repr": "token",
+                "kind": "literal",
+                "literal": { "kind": "string", "string": "token" }
+              },
+              {
+                "repr": "guild_id",
+                "kind": "literal",
+                "literal": { "kind": "string", "string": "guild_id" }
+              },
+              {
+                "repr": "endpoint",
+                "kind": "literal",
+                "literal": { "kind": "string", "string": "endpoint" }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "typeParams": []
+  }
+}

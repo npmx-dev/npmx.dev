@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import process from 'node:process'
 import { spawn } from 'node:child_process'
+import { styleText } from 'node:util'
 import * as p from '@clack/prompts'
-import pc from 'picocolors'
 import { defineCommand, runMain } from 'citty'
 import { serve } from 'srvx'
 import { createConnectorApp, generateToken, CONNECTOR_VERSION } from './server.ts'
@@ -52,7 +52,7 @@ const main = defineCommand({
 
     // Warning message and accept prompt
     logWarning(
-      `This allows ${pc.underline('npmx.dev')} to access your npm cli and any authenticated contexts.`,
+      `This allows ${styleText('underline', 'npmx.dev')} to access your npm cli and any authenticated contexts.`,
     )
     const accept = await p.confirm({
       message: 'Do you accept?',

@@ -1,5 +1,3 @@
-import type { ProvenanceDetails } from '#shared/types'
-
 const SLSA_PROVENANCE_V1 = 'https://slsa.dev/provenance/v1'
 const SLSA_PROVENANCE_V0_2 = 'https://slsa.dev/provenance/v0.2'
 
@@ -90,7 +88,6 @@ function repoUrlToBlobUrl(repository: string, path: string, ref = 'main'): strin
 /**
  * Parse npm attestations API response into ProvenanceDetails.
  * Prefers SLSA provenance v1; falls back to v0.2 for provider label and ledger only (no source commit/build file from v0.2).
- * @public
  */
 export function parseAttestationToProvenanceDetails(response: unknown): ProvenanceDetails | null {
   const body = response as NpmAttestationsResponse

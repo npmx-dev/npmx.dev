@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { I18nLocaleStatus } from '#shared/types'
-
 const props = defineProps<{
   status: I18nLocaleStatus
 }>()
@@ -29,6 +27,9 @@ const contributionGuideUrl =
 // Copy missing keys as JSON template to clipboard
 const { copy, copied } = useClipboard()
 
+const numberFormatter = useNumberFormatter()
+const percentageFormatter = useNumberFormatter({ style: 'percent' })
+
 function copyMissingKeysTemplate() {
   // Create a template showing what needs to be added
   const template = props.status.missingKeys.map(key => `  "${key}": ""`).join(',\n')
@@ -49,7 +50,10 @@ ${template}`
       <div class="flex items-center justify-between text-xs text-fg-muted">
         <span>{{ $t('settings.translation_progress') }}</span>
         <span class="tabular-nums"
-          >{{ status.completedKeys }}/{{ status.totalKeys }} ({{ status.percentComplete }}%)</span
+          >{{ numberFormatter.format(status.completedKeys) }}/{{
+            numberFormatter.format(status.totalKeys)
+          }}
+          ({{ percentageFormatter.format(status.percentComplete / 100) }})</span
         >
       </div>
       <div class="h-1.5 bg-bg rounded-full overflow-hidden">
@@ -64,7 +68,13 @@ ${template}`
     <div v-if="status.missingKeys.length > 0" class="space-y-2">
       <div class="flex items-center justify-between">
         <h4 class="text-xs text-fg-muted font-medium">
-          {{ $t('i18n.missing_keys', { count: status.missingKeys.length }) }}
+          {{
+            $t(
+              'i18n.missing_keys',
+              { count: numberFormatter.format(status.missingKeys.length) },
+              status.missingKeys.length,
+            )
+          }}
         </h4>
         <button
           type="button"
@@ -87,7 +97,13 @@ ${template}`
         class="text-xs text-fg-muted hover:text-fg rounded focus-visible:outline-accent/70"
         @click="showAll = true"
       >
-        {{ $t('i18n.show_more_keys', { count: remainingCount }) }}
+        {{
+          $t(
+            'i18n.show_more_keys',
+            { count: numberFormatter.format(remainingCount) },
+            remainingCount,
+          )
+        }}
       </button>
     </div>
 
@@ -104,7 +120,7 @@ ${template}`
           rel="noopener noreferrer"
           class="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs bg-bg hover:bg-bg-subtle border border-border rounded-md transition-colors focus-visible:outline-accent/70"
         >
-          <span class="i-carbon-edit w-3.5 h-3.5" aria-hidden="true" />
+          <span class="i-lucide:pen w-3.5 h-3.5" aria-hidden="true" />
           {{ $t('i18n.edit_on_github') }}
         </a>
 
@@ -114,7 +130,7 @@ ${template}`
           rel="noopener noreferrer"
           class="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-fg-muted hover:text-fg rounded transition-colors focus-visible:outline-accent/70"
         >
-          <span class="i-carbon-document w-3.5 h-3.5" aria-hidden="true" />
+          <span class="i-lucide:file-text w-3.5 h-3.5" aria-hidden="true" />
           {{ $t('i18n.view_guide') }}
         </a>
       </div>

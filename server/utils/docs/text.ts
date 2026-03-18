@@ -1,3 +1,4 @@
+/* oxlint-disable regexp/no-super-linear-backtracking */
 /**
  * Text Processing Utilities
  *
@@ -54,7 +55,7 @@ export function cleanSymbolName(name: string): string {
  * Create a URL-safe HTML anchor ID for a symbol.
  */
 export function createSymbolId(kind: string, name: string): string {
-  return `${kind}-${name}`.replace(/[^a-zA-Z0-9-]/g, '_')
+  return `${kind}-${name}`.replace(/[^a-z0-9-]/gi, '_')
 }
 
 /**
@@ -126,7 +127,7 @@ export async function renderMarkdown(text: string, symbolLookup: SymbolLookup): 
   result = result
     .replace(/`([^`]+)`/g, '<code class="docs-inline-code">$1</code>')
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/\n\n+/g, '<br><br>')
+    .replace(/\n{2,}/g, '<br><br>')
     .replace(/\n/g, '<br>')
 
   // Highlight and restore code blocks

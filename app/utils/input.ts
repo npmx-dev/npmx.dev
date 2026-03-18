@@ -19,10 +19,12 @@ export function isEditableElement(target: EventTarget | null): boolean {
  */
 export function isKeyWithoutModifiers(event: KeyboardEvent, key: string): boolean {
   return (
-    event.key.toLowerCase() === key.toLowerCase() &&
+    event.key?.toLowerCase() === key.toLowerCase() &&
     !event.altKey &&
     !event.ctrlKey &&
     !event.metaKey &&
     !event.shiftKey
   )
 }
+
+export const DATE_INPUT_MAX = '9999-12-31'

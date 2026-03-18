@@ -1,0 +1,50 @@
+{
+  "id": "blue.microcosm.identity.resolveMiniDoc",
+  "defs": {
+    "main": {
+      "type": "query",
+      "description": "Slingshot: like com.atproto.identity.resolveIdentity but instead of the full didDoc it returns an atproto-relevant subset",
+      "parameters": {
+        "type": "params",
+        "required": ["identifier"],
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "format": "at-identifier",
+            "description": "handle or DID to resolve"
+          }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["did", "handle", "pds", "signing_key"],
+          "properties": {
+            "did": {
+              "type": "string",
+              "format": "did",
+              "description": "DID, bi-directionally verified if a handle was provided in the query"
+            },
+            "handle": {
+              "type": "string",
+              "format": "handle",
+              "description": "the validated handle of the account or 'handle.invalid' if the handle did not bi-directionally match the DID document"
+            },
+            "pds": {
+              "type": "string",
+              "format": "uri",
+              "description": "the identity's PDS URL"
+            },
+            "signing_key": {
+              "type": "string",
+              "description": "the atproto signing key publicKeyMultibase"
+            }
+          }
+        }
+      }
+    }
+  },
+  "$type": "com.atproto.lexicon.schema",
+  "lexicon": 1
+}

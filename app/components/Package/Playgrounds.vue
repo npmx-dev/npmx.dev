@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import type { PlaygroundLink } from '#shared/types'
-import { decodeHtmlEntities } from '~/utils/formatters'
-
 const props = defineProps<{
   links: PlaygroundLink[]
 }>()
@@ -16,7 +13,13 @@ const providerIcons: Record<string, string> = {
   'vue-playground': 'i-simple-icons:vuedotjs',
   'nuxt-new': 'i-simple-icons:nuxtdotjs',
   'vite-new': 'i-simple-icons:vite',
-  'jsfiddle': 'i-carbon:code',
+  'jsfiddle': 'i-lucide:code',
+  'typescript-playground': 'i-simple-icons:typescript',
+  'solid-playground': 'i-simple-icons:solid',
+  'svelte-playground': 'i-simple-icons:svelte',
+  'tailwind-playground': 'i-simple-icons:tailwindcss',
+  'storybook': 'i-simple-icons:storybook',
+  'marko-playground': 'i-simple-icons:marko',
 }
 
 // Map provider id to color class
@@ -30,10 +33,16 @@ const providerColors: Record<string, string> = {
   'nuxt-new': 'text-provider-nuxt',
   'vite-new': 'text-provider-vite',
   'jsfiddle': 'text-provider-jsfiddle',
+  'typescript-playground': 'text-provider-typescript',
+  'solid-playground': 'text-provider-solid',
+  'svelte-playground': 'text-provider-svelte',
+  'tailwind-playground': 'text-provider-tailwind',
+  'storybook': 'text-provider-storybook',
+  'marko-playground': 'text-provider-marko',
 }
 
 function getIcon(provider: string): string {
-  return providerIcons[provider] || 'i-carbon:play'
+  return providerIcons[provider] || 'i-lucide:play'
 }
 
 function getColor(provider: string): string {
@@ -109,11 +118,11 @@ function focusMenuItem(index: number) {
 </script>
 
 <template>
-  <section v-if="links.length > 0" class="px-1">
-    <h2 id="playgrounds-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-3">
-      {{ $t('package.playgrounds.title') }}
-    </h2>
-
+  <CollapsibleSection
+    v-if="links.length > 0"
+    id="playgrounds"
+    :title="$t('package.playgrounds.title')"
+  >
     <div ref="dropdownRef" class="relative">
       <!-- Single link: direct button -->
       <TooltipApp v-if="hasSingleLink && firstLink" :text="firstLink.providerName" class="w-full">
@@ -127,7 +136,7 @@ function focusMenuItem(index: number) {
             :class="[getIcon(firstLink.provider), getColor(firstLink.provider), 'w-4 h-4 shrink-0']"
             aria-hidden="true"
           />
-          <span class="truncate text-fg-muted">{{ decodeHtmlEntities(firstLink.label) }}</span>
+          <span class="truncate text-fg-muted">{{ firstLink.label }}</span>
         </a>
       </TooltipApp>
 
@@ -142,13 +151,13 @@ function focusMenuItem(index: number) {
         @keydown="handleKeydown"
       >
         <span class="flex items-center gap-2">
-          <span class="i-carbon:play w-4 h-4 shrink-0 text-fg-muted" aria-hidden="true" />
+          <span class="i-lucide:play w-4 h-4 shrink-0 text-fg-muted" aria-hidden="true" />
           <span class="text-fg-muted"
             >{{ $t('package.playgrounds.choose') }} ({{ links.length }})</span
           >
         </span>
         <span
-          class="i-carbon:chevron-down w-3 h-3 text-fg-subtle transition-transform duration-200 motion-reduce:transition-none"
+          class="i-lucide:chevron-down w-3 h-3 text-fg-subtle transition-transform duration-200 motion-reduce:transition-none"
           :class="{ 'rotate-180': isOpen }"
           aria-hidden="true"
         />
@@ -183,11 +192,11 @@ function focusMenuItem(index: number) {
                 :class="[getIcon(link.provider), getColor(link.provider), 'w-4 h-4 shrink-0']"
                 aria-hidden="true"
               />
-              <span class="truncate">{{ decodeHtmlEntities(link.label) }}</span>
+              <span class="truncate">{{ link.label }}</span>
             </a>
           </TooltipApp>
         </div>
       </Transition>
     </div>
-  </section>
+  </CollapsibleSection>
 </template>

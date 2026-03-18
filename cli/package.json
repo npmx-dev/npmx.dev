@@ -17,10 +17,7 @@
     "npmx-connector": "./dist/cli.mjs"
   },
   "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.mts"
-    }
+    ".": "./dist/index.mjs"
   },
   "files": [
     "dist"
@@ -29,22 +26,23 @@
     "build": "tsdown",
     "dev": "NPMX_CLI_DEV=true node src/cli.ts",
     "dev:debug": "DEBUG=npmx-connector NPMX_CLI_DEV=true node src/cli.ts",
+    "dev:mock": "NPMX_CLI_DEV=true node src/mock-server.ts",
     "test:types": "tsc --noEmit"
   },
   "dependencies": {
-    "@clack/prompts": "^1.0.0",
-    "citty": "^0.2.0",
-    "h3-next": "npm:h3@^2.0.1-rc.11",
+    "@clack/prompts": "^1.0.1",
+    "@lydell/node-pty": "1.2.0-beta.3",
+    "citty": "^0.2.1",
+    "h3-next": "npm:h3@^2.0.1-rc.14",
     "obug": "^2.1.1",
-    "picocolors": "^1.1.1",
-    "srvx": "^0.10.1",
+    "srvx": "^0.11.7",
     "valibot": "^1.2.0",
     "validate-npm-package-name": "^7.0.2"
   },
   "devDependencies": {
-    "@types/node": "24.10.9",
+    "@types/node": "24.11.0",
     "@types/validate-npm-package-name": "4.0.2",
-    "tsdown": "0.20.1",
+    "tsdown": "0.20.3",
     "typescript": "5.9.3"
   },
   "engines": {

@@ -185,7 +185,7 @@ const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
           :key="username"
           role="option"
           :aria-selected="highlightedIndex === index"
-          class="px-2 py-1 font-mono text-sm cursor-pointer transition-colors duration-100"
+          class="px-2 py-1 font-mono text-sm transition-colors duration-100"
           :class="
             highlightedIndex === index
               ? 'bg-bg-muted text-fg'
@@ -204,7 +204,7 @@ const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
           role="status"
           aria-live="polite"
         >
-          <span class="i-carbon:information w-3 h-3 me-1 align-middle" aria-hidden="true" />
+          <span class="i-lucide:info w-3 h-3 me-1 align-middle" aria-hidden="true" />
           {{
             $t('user.combobox.press_enter_to_add', {
               username: inputValue.trim().replace(/^@/, ''),

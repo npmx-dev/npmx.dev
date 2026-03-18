@@ -1,5 +1,11 @@
 <script setup lang="ts">
+import { LinkBase } from '#components'
+import type { NavigationConfig, NavigationConfigWithGroups } from '~/types'
 import { isEditableElement } from '~/utils/input'
+import { NPMX_DOCS_SITE } from '#shared/utils/constants'
+
+const keyboardShortcuts = useKeyboardShortcuts()
+const discord = useDiscordLink()
 
 withDefaults(
   defineProps<{
@@ -12,8 +18,125 @@ withDefaults(
 
 const { isConnected, npmUser } = useConnector()
 
+const desktopLinks = computed<NavigationConfig>(() => [
+  {
+    name: 'Compare',
+    label: $t('nav.compare'),
+    to: { name: 'compare' },
+    keyshortcut: 'c',
+    type: 'link',
+    external: false,
+    iconClass: 'i-lucide:git-compare',
+  },
+  {
+    name: 'Settings',
+    label: $t('nav.settings'),
+    to: { name: 'settings' },
+    keyshortcut: ',',
+    type: 'link',
+    external: false,
+    iconClass: 'i-lucide:settings',
+  },
+])
+
+const mobileLinks = computed<NavigationConfigWithGroups>(() => [
+  {
+    name: 'Desktop Links',
+    type: 'group',
+    items: [...desktopLinks.value],
+  },
+  {
+    type: 'separator',
+  },
+  {
+    name: 'About & Policies',
+    type: 'group',
+    items: [
+      {
+        name: 'About',
+        label: $t('footer.about'),
+        to: { name: 'about' },
+        type: 'link',
+        external: false,
+        iconClass: 'i-lucide:info',
+      },
+      {
+        name: 'Blog',
+        label: $t('footer.blog'),
+        to: { name: 'blog' },
+        type: 'link',
+        external: false,
+        iconClass: 'i-lucide:notebook-pen',
+      },
+      {
+        name: 'Privacy Policy',
+        label: $t('privacy_policy.title'),
+        to: { name: 'privacy' },
+        type: 'link',
+        external: false,
+        iconClass: 'i-lucide:shield-check',
+      },
+      {
+        name: 'Accessibility',
+        label: $t('a11y.title'),
+        to: { name: 'accessibility' },
+        type: 'link',
+        external: false,
+        iconClass: 'i-custom:a11y',
+      },
+    ],
+  },
+  {
+    type: 'separator',
+  },
+  {
+    name: 'External Links',
+    type: 'group',
+    label: $t('nav.links'),
+    items: [
+      {
+        name: 'Docs',
+        label: $t('footer.docs'),
+        href: NPMX_DOCS_SITE,
+        target: '_blank',
+        type: 'link',
+        external: true,
+        iconClass: 'i-lucide:file-text',
+      },
+      {
+        name: 'Source',
+        label: $t('footer.source'),
+        href: 'https://repo.npmx.dev',
+        target: '_blank',
+        type: 'link',
+        external: true,
+        iconClass: 'i-simple-icons:github',
+      },
+      {
+        name: 'Social',
+        label: $t('footer.social'),
+        href: 'https://social.npmx.dev',
+        target: '_blank',
+        type: 'link',
+        external: true,
+        iconClass: 'i-simple-icons:bluesky',
+      },
+      {
+        name: 'Chat',
+        label: discord.value.label,
+        href: discord.value.url,
+        target: '_blank',
+        type: 'link',
+        external: true,
+        iconClass: 'i-lucide:message-circle',
+      },
+    ],
+  },
+])
+
 const showFullSearch = shallowRef(false)
 const showMobileMenu = shallowRef(false)
+const { env, prNumber } = useAppConfig().buildInfo
 
 // On mobile, clicking logo+search button expands search
 const route = useRoute()
@@ -62,57 +185,64 @@ function handleSearchFocus() {
 }
 
 onKeyStroke(
-  e => isKeyWithoutModifiers(e, ',') && !isEditableElement(e.target),
   e => {
-    e.preventDefault()
-    navigateTo('/settings')
-  },
-  { dedupe: true },
-)
+    if (!keyboardShortcuts.value || isEditableElement(e.target)) {
+      return
+    }
 
-onKeyStroke(
-  e =>
-    isKeyWithoutModifiers(e, 'c') &&
-    !isEditableElement(e.target) &&
-    // Allow more specific handlers to take precedence
-    !e.defaultPrevented,
-  e => {
-    e.preventDefault()
-    navigateTo('/compare')
+    for (const link of desktopLinks.value) {
+      if (link.to && link.keyshortcut && isKeyWithoutModifiers(e, link.keyshortcut)) {
+        e.preventDefault()
+        navigateTo(link.to)
+        break
+      }
+    }
   },
   { dedupe: true },
 )
 </script>
 
 <template>
-  <header class="sticky top-0 z-50 bg-bg/80 backdrop-blur-md border-b border-border">
+  <header class="sticky top-0 z-50 border-b border-border">
+    <div class="absolute inset-0 bg-bg/80 backdrop-blur-md" />
     <nav
       :aria-label="$t('nav.main_navigation')"
-      class="container min-h-14 flex items-center gap-2"
-      :class="isOnHomePage ? 'justify-end' : 'justify-between'"
+      class="relative container min-h-14 flex items-center gap-2 z-1 justify-end"
     >
-      <!-- Mobile: Logo + search button (expands search, doesn't navigate) -->
-      <button
+      <!-- Mobile: Logo (navigates home) -->
+      <NuxtLink
         v-if="!isSearchExpanded && !isOnHomePage"
-        type="button"
-        class="sm:hidden flex-shrink-0 inline-flex items-center gap-2 font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 rounded"
-        :aria-label="$t('nav.tap_to_search')"
-        @click="expandMobileSearch"
+        to="/"
+        :aria-label="$t('header.home')"
+        class="sm:hidden flex-shrink-0 font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring me-4"
       >
-        <AppLogo class="w-8 h-8 rounded-lg" />
-        <span class="i-carbon:search w-4 h-4 text-fg-subtle" aria-hidden="true" />
-      </button>
+        <AppMark class="w-6 h-auto" />
+      </NuxtLink>
 
       <!-- Desktop: Logo (navigates home) -->
       <div v-if="showLogo" class="hidden sm:flex flex-shrink-0 items-center">
         <NuxtLink
-          to="/"
+          :to="{ name: 'index' }"
           :aria-label="$t('header.home')"
           dir="ltr"
-          class="inline-flex items-center gap-1 header-logo font-mono text-lg font-medium text-fg hover:text-fg/90 transition-colors duration-200 rounded"
+          class="relative inline-flex items-center gap-1 py-2 header-logo font-mono text-lg font-medium text-fg hover:text-fg/90 transition-colors duration-200 me-4"
         >
-          <AppLogo class="w-8 h-8 rounded-lg" />
-          <span>npmx</span>
+          <AppLogo class="h-4.5 w-auto" />
+          <span
+            aria-hidden="true"
+            class="scale-35 transform-origin-br font-mono tracking-wide text-accent absolute bottom-0.75 -inset-ie-1"
+          >
+            {{ env === 'release' ? 'alpha' : env }}
+          </span>
+        </NuxtLink>
+        <NuxtLink
+          v-if="prNumber"
+          :to="`https://github.com/npmx-dev/npmx.dev/pull/${prNumber}`"
+          :aria-label="`Open GitHub pull request ${prNumber}`"
+        >
+          <span class="text-xs px-1.5 py-0.5 rounded badge-green font-sans font-medium ms-2">
+            PR #{{ prNumber }}
+          </span>
         </NuxtLink>
       </div>
       <!-- Spacer when logo is hidden on desktop -->
@@ -120,8 +250,12 @@ onKeyStroke(
 
       <!-- Center: Search bar + nav items -->
       <div
-        class="flex-1 flex items-center justify-center md:gap-6"
-        :class="{ 'hidden sm:flex': !isSearchExpanded }"
+        class="flex-1 flex items-center md:gap-6"
+        :class="{
+          'hidden sm:flex': !isSearchExpanded,
+          'justify-end': isOnHomePage,
+          'justify-center': !isOnHomePage,
+        }"
       >
         <!-- Search bar (hidden on mobile unless expanded) -->
         <HeaderSearchBox
@@ -149,55 +283,45 @@ onKeyStroke(
       </div>
 
       <!-- End: Desktop nav items + Mobile menu button -->
-      <div class="flex-shrink-0 flex items-center gap-0.5 sm:gap-2">
-        <!-- Desktop: Compare link -->
-        <NuxtLink
-          to="/compare"
-          class="hidden sm:inline-flex link-subtle font-mono text-sm items-center gap-2 px-2 py-1.5 hover:bg-bg-subtle focus-visible:outline-accent/70 rounded"
-          aria-keyshortcuts="c"
+      <div class="hidden sm:flex flex-shrink-0">
+        <!-- Desktop: Explore link -->
+        <LinkBase
+          v-for="link in desktopLinks"
+          :key="link.name"
+          class="border-none"
+          variant="button-secondary"
+          :to="link.to"
+          :aria-keyshortcuts="link.keyshortcut"
         >
-          {{ $t('nav.compare') }}
-          <kbd
-            class="inline-flex items-center justify-center w-5 h-5 text-xs bg-bg-muted border border-border rounded"
-            aria-hidden="true"
-          >
-            c
-          </kbd>
-        </NuxtLink>
+          {{ link.label }}
+        </LinkBase>
 
-        <!-- Desktop: Settings link -->
-        <NuxtLink
-          to="/settings"
-          class="hidden sm:inline-flex link-subtle font-mono text-sm items-center gap-2 px-2 py-1.5 hover:bg-bg-subtle focus-visible:outline-accent/70 rounded"
-          aria-keyshortcuts=","
-        >
-          {{ $t('nav.settings') }}
-          <kbd
-            class="inline-flex items-center justify-center w-5 h-5 text-xs bg-bg-muted border border-border rounded"
-            aria-hidden="true"
-          >
-            ,
-          </kbd>
-        </NuxtLink>
-
-        <!-- Desktop: Account menu -->
-        <div class="hidden sm:block">
-          <HeaderAccountMenu />
-        </div>
-
-        <!-- Mobile: Menu button (always visible, click to open menu) -->
-        <button
-          type="button"
-          class="sm:hidden flex items-center p-2 -m-2 text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
-          :aria-label="$t('nav.open_menu')"
-          @click="showMobileMenu = true"
-        >
-          <span class="w-6 h-6 inline-block i-carbon:menu" aria-hidden="true" />
-        </button>
+        <HeaderAccountMenu />
       </div>
+
+      <!-- Mobile: Search button (expands search) -->
+      <ButtonBase
+        type="button"
+        class="sm:hidden ms-auto"
+        :aria-label="$t('nav.tap_to_search')"
+        :aria-expanded="showMobileMenu"
+        @click="expandMobileSearch"
+        v-if="!isSearchExpanded && !isOnHomePage"
+        classicon="i-lucide:search"
+      />
+
+      <!-- Mobile: Menu button (always visible, click to open menu) -->
+      <ButtonBase
+        type="button"
+        class="sm:hidden"
+        :aria-label="$t('nav.open_menu')"
+        :aria-expanded="showMobileMenu"
+        @click="showMobileMenu = !showMobileMenu"
+        classicon="i-lucide:menu"
+      />
     </nav>
 
     <!-- Mobile menu -->
-    <HeaderMobileMenu v-model:open="showMobileMenu" />
+    <HeaderMobileMenu :links="mobileLinks" v-model:open="showMobileMenu" />
   </header>
 </template>

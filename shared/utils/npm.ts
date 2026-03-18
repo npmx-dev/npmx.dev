@@ -2,7 +2,7 @@ import { getLatestVersion } from 'fast-npm-meta'
 import { createError } from 'h3'
 import validatePackageName from 'validate-npm-package-name'
 
-const NPM_USERNAME_RE = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/i
+const NPM_USERNAME_RE = /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i
 const NPM_USERNAME_MAX_LENGTH = 50
 
 /**
@@ -52,7 +52,6 @@ export function assertValidPackageName(name: string): void {
 /**
  * Validate an npm username and throw an HTTP error if invalid.
  * Uses a regular expression to check against npm naming rules.
- * @public
  */
 export function assertValidUsername(username: string): void {
   if (!username || username.length > NPM_USERNAME_MAX_LENGTH || !NPM_USERNAME_RE.test(username)) {

@@ -1,15 +1,23 @@
-import type { NodeSavedSession, NodeSavedState } from '@atproto/oauth-client-node'
+import type { NodeSavedSession } from '@atproto/oauth-client-node'
 
 export interface UserServerSession {
-  public: {
-    did: string
-    handle: string
-    pds: string
-    avatar?: string
+  public?:
+    | {
+        did: string
+        handle: string
+        pds: string
+        avatar?: string
+        relogin?: boolean
+      }
+    | undefined
+
+  profile: {
+    website?: string
+    description?: string
+    displayName?: string
   }
-  // Only to be used in the atproto session and state stores
-  // Will need to change to Record<string, T> and add a current logged in user if we ever want to support
-  // multiple did logins per server session
-  oauthSession: NodeSavedSession | undefined
-  oauthState: NodeSavedState | undefined
+
+  // DO NOT USE
+  // Here for historic reasons to redirect users logged in with the previous oauth to login again
+  oauthSession?: NodeSavedSession | undefined
 }

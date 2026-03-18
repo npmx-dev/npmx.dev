@@ -5,18 +5,20 @@ const props = defineProps<{
   error: NuxtError
 }>()
 
-const status = computed(() => props.error.statusCode || 500)
+const status = computed(() => props.error.status || 500)
 const statusText = computed(() => {
-  if (props.error.statusMessage) return props.error.statusMessage
+  if (props.error.statusText) return props.error.statusText
   switch (status.value) {
+    case 401:
+      return $t('error.401')
     case 404:
-      return 'Page not found'
+      return $t('error.404')
     case 500:
-      return 'Internal server error'
+      return $t('error.500')
     case 503:
-      return 'Service unavailable'
+      return $t('error.503')
     default:
-      return 'Something went wrong'
+      return $t('error.default')
   }
 })
 
@@ -54,7 +56,7 @@ useHead({
         class="font-mono text-sm px-6 py-3 bg-fg text-bg rounded-lg transition-all duration-200 hover:bg-fg/90 active:scale-95"
         @click="handleError"
       >
-        go home
+        {{ $t('common.go_back_home') }}
       </button>
     </main>
 

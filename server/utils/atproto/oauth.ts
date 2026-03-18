@@ -1,15 +1,21 @@
-import type { OAuthClientMetadataInput, OAuthSession } from '@atproto/oauth-client-node'
+import type {
+  OAuthClientMetadata,
+  OAuthRedirectUri,
+  OAuthSession,
+  WebUri,
+} from '@atproto/oauth-client-node'
+import { JoseKey, Keyset, oauthRedirectUriSchema, webUriSchema } from '@atproto/oauth-client-node'
 import type { EventHandlerRequest, H3Event, SessionManager } from 'h3'
 import { NodeOAuthClient, AtprotoDohHandleResolver } from '@atproto/oauth-client-node'
-import { parse } from 'valibot'
 import { getOAuthLock } from '#server/utils/atproto/lock'
 import { useOAuthStorage } from '#server/utils/atproto/storage'
-import { LIKES_SCOPE } from '#shared/utils/constants'
-import { OAuthMetadataSchema } from '#shared/schemas/oauth'
+import { LIKES_SCOPE, PROFILE_SCOPE } from '#shared/utils/constants'
+import type { UserServerSession } from '#shared/types/userSession'
 // @ts-expect-error virtual file from oauth module
 import { clientUri } from '#oauth/config'
+
 // TODO: If you add writing a new record you will need to add a scope for it
-export const scope = `atproto ${LIKES_SCOPE}`
+export const scope = `atproto ${LIKES_SCOPE} ${PROFILE_SCOPE}`
 
 /**
  * Resolves a did to a handle via DoH or via the http website calls
@@ -18,29 +24,41 @@ export const handleResolver = new AtprotoDohHandleResolver({
   dohEndpoint: 'https://cloudflare-dns.com/dns-query',
 })
 
-export function getOauthClientMetadata() {
-  const dev = import.meta.dev
+/**
+ * Generates the OAuth client metadata. pkAlg is used to signify that the OAuth client is confidential
+ */
+export function getOauthClientMetadata(pkAlg: string | undefined = undefined): OAuthClientMetadata {
+  const redirect_uri: OAuthRedirectUri = oauthRedirectUriSchema.parse(
+    `${clientUri}/api/auth/atproto`,
+  )
 
-  const client_uri = clientUri
-  const redirect_uri = `${client_uri}/api/auth/atproto`
+  const client_id =
+    import.meta.dev || import.meta.test
+      ? `http://localhost?redirect_uri=${encodeURIComponent(redirect_uri)}&scope=${encodeURIComponent(scope)}`
+      : `${clientUri}/oauth-client-metadata.json`
 
-  const client_id = dev
-    ? `http://localhost?redirect_uri=${encodeURIComponent(redirect_uri)}&scope=${encodeURIComponent(scope)}`
-    : `${client_uri}/oauth-client-metadata.json`
+  const jwks_uri: WebUri | undefined = pkAlg
+    ? webUriSchema.parse(`${clientUri}/.well-known/jwks.json`)
+    : undefined
 
   // If anything changes here, please make sure to also update /shared/schemas/oauth.ts to match
-  return parse(OAuthMetadataSchema, {
+  return {
     client_name: 'npmx.dev',
     client_id,
-    client_uri,
+    client_uri: clientUri,
     scope,
-    redirect_uris: [redirect_uri] as [string, ...string[]],
+    redirect_uris: [redirect_uri],
     grant_types: ['authorization_code', 'refresh_token'],
     application_type: 'web',
-    token_endpoint_auth_method: 'none',
     dpop_bound_access_tokens: true,
     response_types: ['code'],
-  }) as OAuthClientMetadataInput
+    subject_type: 'public',
+    authorization_signed_response_alg: 'RS256',
+    // confidential client values
+    token_endpoint_auth_method: pkAlg ? 'private_key_jwt' : 'none',
+    jwks_uri,
+    token_endpoint_auth_signing_alg: pkAlg,
+  }
 }
 
 type EventHandlerWithOAuthSession<T extends EventHandlerRequest, D> = (
@@ -49,27 +67,51 @@ type EventHandlerWithOAuthSession<T extends EventHandlerRequest, D> = (
   serverSession: SessionManager,
 ) => Promise<D>
 
-async function getOAuthSession(
-  event: H3Event,
-): Promise<{ oauthSession: OAuthSession | undefined; serverSession: SessionManager }> {
+export async function getNodeOAuthClient(): Promise<NodeOAuthClient> {
+  const { stateStore, sessionStore } = useOAuthStorage()
+
+  // These are optional and not expected or can be used easily in local development, only in production
+  const keyset = await loadJWKs()
+  const pk = keyset?.findPrivateKey({ usage: 'sign' })
+  const clientMetadata = getOauthClientMetadata(pk?.alg)
+
+  return new NodeOAuthClient({
+    stateStore,
+    sessionStore,
+    clientMetadata,
+    requestLock: getOAuthLock(),
+    handleResolver,
+    keyset,
+  })
+}
+
+export async function loadJWKs(): Promise<Keyset | undefined> {
+  // If we ever need to add multiple JWKs to rotate keys we will need to add a new one
+  // under a new variable and update here
+  const jwkOne = useRuntimeConfig().oauthJwkOne
+  if (!jwkOne) return undefined
+
+  // For multiple keys if we need to rotate
+  // const keys = await Promise.all([JoseKey.fromImportable(jwkOne)])
+
+  const keys = await JoseKey.fromImportable(jwkOne)
+  return new Keyset([keys])
+}
+
+async function getOAuthSession(event: H3Event): Promise<{
+  oauthSession: OAuthSession | undefined
+  serverSession: SessionManager<UserServerSession>
+}> {
   const serverSession = await useServerSession(event)
 
   try {
-    const clientMetadata = getOauthClientMetadata()
-    const { stateStore, sessionStore } = useOAuthStorage(serverSession)
-
-    const client = new NodeOAuthClient({
-      stateStore,
-      sessionStore,
-      clientMetadata,
-      requestLock: getOAuthLock(),
-      handleResolver,
-    })
-
     const currentSession = serverSession.data
-    if (!currentSession) return { oauthSession: undefined, serverSession }
+    // TODO (jg): why can a session be `{}`?
+    if (!currentSession || !currentSession.public?.did) {
+      return { oauthSession: undefined, serverSession }
+    }
 
-    const oauthSession = await client.restore(currentSession.public.did)
+    const oauthSession = await event.context.oauthClient.restore(currentSession.public.did)
     return { oauthSession, serverSession }
   } catch (error) {
     // Log error safely without using util.inspect on potentially problematic objects
@@ -105,6 +147,18 @@ export function eventHandlerWithOAuthSession<T extends EventHandlerRequest, D>(
 ) {
   return defineEventHandler(async event => {
     const { oauthSession, serverSession } = await getOAuthSession(event)
+    const publicData = serverSession.data.public
+    // User was authenticated at one point, but was not able to restore
+    // the session to the PDS
+    if (!oauthSession && publicData) {
+      // cleans up our server side session store
+      await serverSession.clear()
+      throw createError({
+        status: 401,
+        message: 'User needs to re authenticate',
+      })
+    }
+
     return await handler(event, oauthSession, serverSession)
   })
 }

@@ -1,6 +1,26 @@
 {
+  "$schema": "../schema.json",
   "built_at": "generado {0}",
   "alt_logo": "logo de npmx",
+  "shortcuts": {
+    "settings": "Abrir configuración"
+  },
+  "blog": {
+    "atproto": {
+      "like_or_reply_on_bluesky": "Dale me gusta a esta publicación o agrega tu comentario en Bluesky"
+    }
+  },
+  "settings": {
+    "keyboard_shortcuts_enabled": "Habilitar atajos de teclado"
+  },
+  "error": {
+    "default": "Algo salió mal"
+  },
+  "auth": {
+    "modal": {
+      "default_input_error": "Por favor, ingresa un handle, DID o URL de PDS válido"
+    }
+  },
   "connector": {
     "modal": {
       "connected_hint": "Ahora puedes administrar paquetes y organizaciones desde la interfaz web.",
@@ -18,6 +38,13 @@
       "failed_to_check": "Error al verificar disponibilidad del nombre"
     }
   },
+  "profile": {
+    "not_found_message": "No se pudo encontrar el perfil de {handle}.",
+    "invite": {
+      "message": "Parece que aún no usa npmx. ¿Quieres contarle?",
+      "compose_text": "¡Hola {'@'}{handle}! ¿Has probado ya npmx.dev? Es un navegador para el registro de npm rápido, moderno y de código abierto.\nhttps://npmx.dev"
+    }
+  },
   "package": {
     "readme": {
       "title": "Léame"
@@ -27,8 +54,42 @@
       "cancel_grant": "Cancelar otorgar acceso",
       "grant_access": "+ Otorgar acceso de equipo"
     },
-    "skeleton": {
-      "readme": "Léame"
+    "versions": {
+      "copy_alt": {
+        "general_description": "Gráfica de barras que muestra las descargas por versión para {versions_count} versiones {semver_grouping_mode} del paquete {package_name}, {date_range_label} desde la versión {first_version} hasta la versión {last_version}. La versión más descargada es {max_downloaded_version} con {max_version_downloads} descargas. {per_version_analysis}. {watermark}."
+      }
+    },
+    "trends": {
+      "copy_alt": {
+        "compare": "Gráfica de líneas de comparación de descargas de paquetes para: {packages}.",
+        "facet_bar_general_description": "Gráfica de barras horizontal para: {packages}, comparando {facet} ({description}). {facet_analysis} {watermark}."
+      }
     }
+  },
+  "compare": {
+    "packages": {
+      "charts_view": "Gráficas"
+    },
+    "no_dependency": {
+      "typeahead_description": "¡Compara contra no usar una dependencia! Aprobado por e18e.",
+      "tooltip_description": "¡Compara contra no usar una dependencia! La {link} mantiene una lista de paquetes que pueden ser reemplazados con APIs nativas o alternativas más simples."
+    },
+    "file_filter_option": {
+      "added": "Agregados ({count})"
+    },
+    "filter": {
+      "added": "agregado"
+    }
+  },
+  "pds": {
+    "join": {
+      "description": "Ya sea que estés creando tu primera cuenta en la atmósfera o migrando una existente, tu lugar está aquí. Puedes migrar tu cuenta actual sin perder tu usuario, tus publicaciones o tus seguidores."
+    },
+    "server": {
+      "learn_more": "Conoce cómo npmx usa la Atmósfera"
+    }
+  },
+  "a11y": {
+    "welcome": "Queremos que {app} sea utilizable por la mayor cantidad de personas posible."
   }
 }

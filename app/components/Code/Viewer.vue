@@ -16,6 +16,11 @@ const lineNumbers = computed(() => {
   return Array.from({ length: props.lines }, (_, i) => i + 1)
 })
 
+// Used for CSS calculation of line number column width
+const lineDigits = computed(() => {
+  return String(props.lines).length
+})
+
 // Check if a line is selected
 function isLineSelected(lineNum: number): boolean {
   if (!props.selectedLines) return false
@@ -52,15 +57,43 @@ watch(
   },
   { immediate: true },
 )
+
+// Use Nuxt's `navigateTo` for the rendered import links
+function handleImportLinkNavigate() {
+  if (!codeRef.value) return
+
+  const anchors = codeRef.value.querySelectorAll<HTMLAnchorElement>('a.import-link')
+  anchors.forEach(anchor => {
+    // NOTE: We do not need to remove previous listeners because we re-create the entire HTML content on each html update
+    anchor.addEventListener('click', event => {
+      if (event.metaKey || event.altKey || event.ctrlKey || event.shiftKey) return
+      const href = anchor.getAttribute('href')
+      if (href) {
+        event.preventDefault()
+        navigateTo(href)
+      }
+    })
+  })
+}
+
+watch(
+  () => props.html,
+  () => {
+    nextTick(handleImportLinkNavigate)
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
-  <div class="code-viewer flex min-h-full">
+  <div class="code-viewer flex min-h-full max-w-full">
     <!-- Line numbers column -->
     <div
-      class="line-numbers shrink-0 bg-bg-subtle border-ie border-border text-end select-none"
+      class="line-numbers shrink-0 bg-bg-subtle border-ie border-solid border-border text-end select-none relative"
+      :style="{ '--line-digits': lineDigits }"
       aria-hidden="true"
     >
+      <!-- This needs to be a native <a> element, because `LinkBase` (or specifically `NuxtLink`) does not seem to work when trying to prevent default behavior (jumping to the anchor) -->
       <a
         v-for="lineNum in lineNumbers"
         :id="`L${lineNum}`"
@@ -82,7 +115,7 @@ watch(
     <!-- Code content -->
     <div class="code-content flex-1 overflow-x-auto min-w-0">
       <!-- eslint-disable vue/no-v-html -- HTML is generated server-side by Shiki -->
-      <div ref="codeRef" class="code-lines w-fit" v-html="html" />
+      <div ref="codeRef" class="code-lines min-w-full w-fit" v-html="html" />
       <!-- eslint-enable vue/no-v-html -->
     </div>
   </div>
@@ -94,7 +127,8 @@ watch(
 }
 
 .line-numbers {
-  min-width: 3.5rem;
+  /* 1ch per digit + 1.5rem (px-3 * 2) padding */
+  min-width: calc(var(--line-digits) * 1ch + 1.5rem);
 }
 
 .code-content :deep(pre) {
@@ -123,7 +157,7 @@ watch(
 
 /* Highlighted lines in code content - extend full width with negative margin */
 .code-content :deep(.line.highlighted) {
-  background: rgb(234 179 8 / 0.2); /* yellow-500/20 */
+  @apply bg-yellow-500/20;
   margin: 0 -1rem;
   padding: 0 1rem;
 }

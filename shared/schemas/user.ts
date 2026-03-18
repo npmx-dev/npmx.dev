@@ -1,6 +1,6 @@
 import * as v from 'valibot'
 
-const NPM_USERNAME_RE = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/i
+const NPM_USERNAME_RE = /^[a-z0-9]([\w.-]*[a-z0-9])?$/i
 const NPM_USERNAME_MAX_LENGTH = 50
 
 /**
@@ -21,7 +21,5 @@ export const GravatarQuerySchema = v.object({
   username: NpmUsernameSchema,
 })
 
-/** @public */
 export type NpmUsername = v.InferOutput<typeof NpmUsernameSchema>
-/** @public */
 export type GravatarQuery = v.InferOutput<typeof GravatarQuerySchema>

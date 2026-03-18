@@ -3,7 +3,6 @@ import { ref } from 'vue'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import PackageSelector from '~/components/Compare/PackageSelector.vue'
 
-// Mock $fetch for useNpmSearch
 const mockFetch = vi.fn()
 vi.stubGlobal('$fetch', mockFetch)
 
@@ -55,7 +54,7 @@ describe('PackageSelector', () => {
 
       const removeButtons = component
         .findAll('button')
-        .filter(b => b.find('.i-carbon\\:close').exists())
+        .filter(b => b.find('.i-lucide\\:x').exists())
       expect(removeButtons.length).toBe(2)
     })
 
@@ -66,9 +65,7 @@ describe('PackageSelector', () => {
         },
       })
 
-      const removeButton = component
-        .findAll('button')
-        .find(b => b.find('.i-carbon\\:close').exists())
+      const removeButton = component.findAll('button').find(b => b.find('.i-lucide\\:x').exists())
       await removeButton!.trigger('click')
 
       const emitted = component.emitted('update:modelValue')
@@ -119,16 +116,6 @@ describe('PackageSelector', () => {
       input = component.find('input')
       expect(input.attributes('placeholder')).toBeTruthy()
     })
-
-    it('has search icon', async () => {
-      const component = await mountSuspended(PackageSelector, {
-        props: {
-          modelValue: [],
-        },
-      })
-
-      expect(component.find('.i-carbon\\:search').exists()).toBe(true)
-    })
   })
 
   describe('adding packages', () => {
@@ -140,12 +127,28 @@ describe('PackageSelector', () => {
       })
 
       const input = component.find('input')
-      await input.setValue('my-package')
+      await input.setValue('lodash')
       await input.trigger('keydown', { key: 'Enter' })
 
       const emitted = component.emitted('update:modelValue')
       expect(emitted).toBeTruthy()
-      expect(emitted![0]![0]).toEqual(['my-package'])
+      expect(emitted![0]![0]).toEqual(['lodash'])
+    })
+
+    it('adds "no dep" entry on Enter key', async () => {
+      const component = await mountSuspended(PackageSelector, {
+        props: {
+          modelValue: [],
+        },
+      })
+
+      const input = component.find('input')
+      await input.setValue('no dep')
+      await input.trigger('keydown', { key: 'Enter' })
+
+      const emitted = component.emitted('update:modelValue')
+      expect(emitted).toBeTruthy()
+      expect(emitted![0]![0]).toEqual(['__no_dependency__'])
     })
 
     it('clears input after adding package', async () => {
@@ -156,7 +159,7 @@ describe('PackageSelector', () => {
       })
 
       const input = component.find('input')
-      await input.setValue('my-package')
+      await input.setValue('lodash')
       await input.trigger('keydown', { key: 'Enter' })
 
       // Input should be cleared

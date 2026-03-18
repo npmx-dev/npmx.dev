@@ -1,5 +1,9 @@
 import { $nsid as likeNsid } from '#shared/types/lexicons/dev/npmx/feed/like.defs'
 import type { Backlink } from '#shared/utils/constellation'
+import type * as blue from '#shared/types/lexicons/blue'
+import * as dev from '#shared/types/lexicons/dev'
+import { Client } from '@atproto/lex'
+import * as TID from '@atcute/tid'
 
 //Cache keys and helpers
 const CACHE_PREFIX = 'atproto-likes:'
@@ -8,29 +12,59 @@ const CACHE_USER_LIKES_KEY = (packageName: string, did: string) =>
   `${CACHE_PREFIX}${packageName}:users:${did}:liked`
 const CACHE_USERS_BACK_LINK = (packageName: string, did: string) =>
   `${CACHE_PREFIX}${packageName}:users:${did}:backlink`
+const CACHE_EVOLUTION_KEY = (packageName: string) => `${CACHE_PREFIX}${packageName}:evolution`
 
 const CACHE_MAX_AGE = CACHE_MAX_AGE_ONE_MINUTE * 5
+
+/**
+ * Decodes TID timestamps from backlink rkeys and groups by day.
+ * Pure function — no I/O, no side effects.
+ */
+export function aggregateBacklinksByDay(
+  backlinks: Backlink[],
+): Array<{ day: string; likes: number }> {
+  const countsByDay = new Map<string, number>()
+  for (const backlink of backlinks) {
+    try {
+      const { timestamp } = TID.parse(backlink.rkey)
+      const timestampMs = timestamp / 1000
+      const date = new Date(timestampMs)
+      const day = date.toISOString().slice(0, 10)
+      countsByDay.set(day, (countsByDay.get(day) ?? 0) + 1)
+    } catch {
+      console.warn(`Skipping non-TID rkey: ${backlink.rkey}`)
+    }
+  }
+  return Array.from(countsByDay.entries())
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([day, likes]) => ({ day, likes }))
+}
+
+/** The subset of Constellation that PackageLikesUtils actually needs. */
+export type ConstellationLike = Pick<Constellation, 'getBackLinks' | 'getLinksDistinctDids'>
 
 /**
  * Logic to handle liking, unliking, and seeing if a user has liked a package on npmx
  */
 export class PackageLikesUtils {
-  private readonly constellation: Constellation
+  private readonly constellation: ConstellationLike
   private readonly cache: CacheAdapter
 
-  constructor() {
-    this.constellation = new Constellation(
-      // Passes in a fetch wrapped as cachedfetch since are already doing some heavy caching here
-      async <T = unknown>(
-        url: string,
-        options: Parameters<typeof $fetch>[1] = {},
-        _ttl?: number,
-      ): Promise<CachedFetchResult<T>> => {
-        const data = (await $fetch<T>(url, options)) as T
-        return { data, isStale: false, cachedAt: null }
-      },
-    )
-    this.cache = getCacheAdapter('generic')
+  constructor(deps?: { constellation?: ConstellationLike; cache?: CacheAdapter }) {
+    this.constellation =
+      deps?.constellation ??
+      new Constellation(
+        // Passes in a fetch wrapped as cachedfetch since are already doing some heavy caching here
+        async <T = unknown>(
+          url: string,
+          options: Parameters<typeof $fetch>[1] = {},
+          _ttl?: number,
+        ): Promise<CachedFetchResult<T>> => {
+          const data = (await $fetch<T>(url, options)) as T
+          return { data, isStale: false, cachedAt: null }
+        },
+      )
+    this.cache = deps?.cache ?? getCacheAdapter('generic')
   }
 
   /**
@@ -247,5 +281,62 @@ export class PackageLikesUtils {
       totalLikes: totalLikes,
       userHasLiked: false,
     }
+  }
+
+  /**
+   * Gets a list of likes for a user. Newest first
+   * @param miniDoc
+   * @param limit
+   * @returns
+   */
+  async getUserLikes(
+    miniDoc: blue.microcosm.identity.resolveMiniDoc.$OutputBody,
+    limit: number = 10,
+  ) {
+    const client = new Client(miniDoc.pds, {
+      headers: { 'User-Agent': 'npmx' },
+    })
+    const result = await client.list(dev.npmx.feed.like, {
+      limit,
+      repo: miniDoc.did,
+    })
+    return result
+  }
+
+  /*
+   * Gets the likes evolution for a package as daily {day, likes} points.
+   * Fetches ALL backlinks via paginated constellation calls, decodes TID
+   * timestamps from each rkey, and groups by day.
+   * Results are cached for 5 minutes.
+   */
+  async getLikesEvolution(packageName: string): Promise<Array<{ day: string; likes: number }>> {
+    const cacheKey = CACHE_EVOLUTION_KEY(packageName)
+    const cached = await this.cache.get<Array<{ day: string; likes: number }>>(cacheKey)
+    if (cached) return cached
+
+    const subjectRef = PACKAGE_SUBJECT_REF(packageName)
+    const allBacklinks: Backlink[] = []
+    let cursor: string | undefined
+
+    // Paginate through all backlinks
+    do {
+      const { data } = await this.constellation.getBackLinks(
+        subjectRef,
+        likeNsid,
+        'subjectRef',
+        100,
+        cursor,
+        false,
+        [],
+        0,
+      )
+      allBacklinks.push(...data.records)
+      cursor = data.cursor
+    } while (cursor)
+
+    const result = aggregateBacklinksByDay(allBacklinks)
+
+    await this.cache.set(cacheKey, result, CACHE_MAX_AGE)
+    return result
   }
 }

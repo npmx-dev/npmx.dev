@@ -1,14 +1,3 @@
-import type {
-  FacetValue,
-  ComparisonFacet,
-  ComparisonPackage,
-  Packument,
-  VulnerabilityTreeResult,
-} from '#shared/types'
-import { encodePackageName } from '#shared/utils/npm'
-import type { PackageAnalysisResponse } from './usePackageAnalysis'
-import { isBinaryOnlyPackage } from '#shared/utils/binary-detection'
-import { formatBytes } from '~/utils/formatters'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
 
 /** Special identifier for the "What Would James Do?" comparison column */
@@ -28,6 +17,8 @@ export const NoDependencyDisplay = {
 export interface PackageComparisonData {
   package: ComparisonPackage
   downloads?: number
+  /** Total likes from atproto */
+  totalLikes?: number
   /** Package's own unpacked size (from dist.unpackedSize) */
   packageSize?: number
   /** Number of direct dependencies */
@@ -68,6 +59,10 @@ export interface PackageComparisonData {
  */
 export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
   const { t } = useI18n()
+  const { $npmRegistry } = useNuxtApp()
+  const numberFormatter = useNumberFormatter()
+  const compactNumberFormatter = useCompactNumberFormatter()
+  const bytesFormatter = useBytesFormatter()
   const packages = computed(() => toValue(packageNames))
 
   // Cache of fetched data by package name (source of truth)
@@ -119,15 +114,13 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
         namesToFetch.map(async (name): Promise<PackageComparisonData | null> => {
           try {
             // Fetch basic package info first (required)
-            const pkgData = await $fetch<Packument>(
-              `https://registry.npmjs.org/${encodePackageName(name)}`,
-            )
+            const { data: pkgData } = await $npmRegistry<Packument>(`/${encodePackageName(name)}`)
 
             const latestVersion = pkgData['dist-tags']?.latest
             if (!latestVersion) return null
 
             // Fetch fast additional data in parallel (optional - failures are ok)
-            const [downloads, analysis, vulns] = await Promise.all([
+            const [downloads, analysis, vulns, likes] = await Promise.all([
               $fetch<{ downloads: number }>(
                 `https://api.npmjs.org/downloads/point/last-week/${encodePackageName(name)}`,
               ).catch(() => null),
@@ -137,8 +130,10 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               $fetch<VulnerabilityTreeResult>(
                 `/api/registry/vulnerabilities/${encodePackageName(name)}`,
               ).catch(() => null),
+              $fetch<PackageLikes>(`/api/social/likes/${encodePackageName(name)}`).catch(
+                () => null,
+              ),
             ])
-
             const versionData = pkgData.versions[latestVersion]
             const packageSize = versionData?.dist?.unpackedSize
 
@@ -188,6 +183,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
                 deprecated: versionData?.deprecated,
               },
               isBinaryOnly: isBinary,
+              totalLikes: likes?.totalLikes,
             }
           } catch {
             return null
@@ -256,7 +252,14 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
 
     return packagesData.value.map(pkg => {
       if (!pkg) return null
-      return computeFacetValue(facet, pkg, t)
+      return computeFacetValue(
+        facet,
+        pkg,
+        numberFormatter.value.format,
+        compactNumberFormatter.value.format,
+        bytesFormatter.format,
+        t,
+      )
     })
   }
 
@@ -299,6 +302,7 @@ function createNoDependencyData(): PackageComparisonData {
     },
     isNoDependency: true,
     downloads: undefined,
+    totalLikes: undefined,
     packageSize: 0,
     directDeps: 0,
     installSize: {
@@ -337,6 +341,9 @@ function resolveNoDependencyDisplay(
 function computeFacetValue(
   facet: ComparisonFacet,
   data: PackageComparisonData,
+  formatNumber: (num: number) => string,
+  formatCompactNumber: (num: number) => string,
+  formatBytes: (num: number) => string,
   t: (key: string, params?: Record<string, unknown>) => string,
 ): FacetValue | null {
   const { isNoDependency } = data
@@ -350,6 +357,14 @@ function computeFacetValue(
       return {
         raw: data.downloads,
         display: formatCompactNumber(data.downloads),
+        status: 'neutral',
+      }
+    }
+    case 'totalLikes': {
+      if (data.totalLikes === undefined) return null
+      return {
+        raw: data.totalLikes,
+        display: formatCompactNumber(data.totalLikes),
         status: 'neutral',
       }
     }
@@ -500,7 +515,7 @@ function computeFacetValue(
       if (depCount == null) return null
       return {
         raw: depCount,
-        display: String(depCount),
+        display: formatNumber(depCount),
         status: depCount > 10 ? 'warning' : 'neutral',
       }
     }
@@ -519,7 +534,7 @@ function computeFacetValue(
       const totalDepCount = data.installSize.dependencyCount
       return {
         raw: totalDepCount,
-        display: String(totalDepCount),
+        display: formatNumber(totalDepCount),
         status: totalDepCount > 50 ? 'warning' : 'neutral',
       }
     }

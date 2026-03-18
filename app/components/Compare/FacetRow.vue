@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { FacetValue } from '#shared/types'
-
 const props = defineProps<{
   /** Facet label */
   label: string
@@ -90,10 +88,12 @@ function isCellLoading(index: number): boolean {
 <template>
   <div class="contents">
     <!-- Label cell -->
-    <div class="comparison-label flex items-center gap-1.5 px-4 py-3 border-b border-border">
+    <div
+      class="comparison-label relative bg-bg flex items-center gap-1.5 px-4 py-3 border-b border-border"
+    >
       <span class="text-xs text-fg-muted uppercase tracking-wider">{{ label }}</span>
       <TooltipApp v-if="description" :text="description" position="top">
-        <span class="i-carbon:information w-3 h-3 text-fg-subtle cursor-help" aria-hidden="true" />
+        <span class="i-lucide:info w-3 h-3 text-fg-subtle cursor-help" aria-hidden="true" />
       </TooltipApp>
     </div>
 
@@ -114,10 +114,7 @@ function isCellLoading(index: number): boolean {
 
       <!-- Loading state -->
       <template v-if="isCellLoading(index)">
-        <span
-          class="i-carbon:circle-dash w-4 h-4 text-fg-subtle motion-safe:animate-spin"
-          aria-hidden="true"
-        />
+        <span class="i-svg-spinners:ring-resize w-4 h-4 text-fg-subtle" aria-hidden="true" />
       </template>
 
       <!-- No data -->
@@ -135,7 +132,9 @@ function isCellLoading(index: number): boolean {
           >
             <!-- Date values use DateTime component for i18n and user settings -->
             <DateTime v-if="value.type === 'date'" :datetime="value.display" date-style="medium" />
-            <template v-else>{{ value.display }}</template>
+            <template v-else>
+              <span dir="auto">{{ value.display }}</span>
+            </template>
           </span>
         </TooltipApp>
         <span
@@ -146,9 +145,21 @@ function isCellLoading(index: number): boolean {
         >
           <!-- Date values use DateTime component for i18n and user settings -->
           <DateTime v-if="value.type === 'date'" :datetime="value.display" date-style="medium" />
-          <template v-else>{{ value.display }}</template>
+          <template v-else>
+            <span dir="auto">{{ value.display }}</span>
+          </template>
         </span>
       </template>
     </div>
   </div>
 </template>
+
+<style lang="css" scoped>
+.comparison-label {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  inline-size: var(--label-column-width);
+  min-inline-size: var(--label-column-width);
+}
+</style>

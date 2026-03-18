@@ -1,11 +1,3 @@
-import type {
-  PackageFileTree,
-  SkillFileCounts,
-  SkillFrontmatter,
-  SkillListItem,
-  SkillWarning,
-} from '#shared/types'
-
 const MAX_SKILL_FILE_SIZE = 500 * 1024
 
 /**
@@ -73,7 +65,6 @@ export interface SkillDirInfo {
 /**
  * Find skill directories in a package file tree.
  * Returns skill names and their children for file counting.
- * @public
  */
 export function findSkillDirs(tree: PackageFileTree[]): SkillDirInfo[] {
   const skillsDir = tree.find(node => node.type === 'directory' && node.name === 'skills')
@@ -176,7 +167,6 @@ export function validateSkill(frontmatter: SkillFrontmatter): SkillWarning[] {
 
 /**
  * Fetch skill list with frontmatter for discovery endpoint.
- * @public
  */
 export async function fetchSkillsList(
   packageName: string,
@@ -215,7 +205,6 @@ export interface WellKnownSkillItem {
 
 /**
  * Fetch skill list for well-known index.json format (CLI compatibility).
- * @public
  */
 export async function fetchSkillsListForWellKnown(
   packageName: string,

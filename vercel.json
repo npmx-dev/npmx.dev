@@ -3,17 +3,27 @@
   "trailingSlash": false,
   "redirects": [
     {
-      "source": "/",
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "build.npmx.dev"
+        }
+      ],
+      "destination": "https://discord.gg/x9KE5U2q8w"
+    },
+    {
+      "source": "/(.*)",
       "has": [
         {
           "type": "host",
           "value": "chat.npmx.dev"
         }
       ],
-      "destination": "https://discord.gg/NHwgTgAFVV"
+      "destination": "https://discord.gg/CjZM5qRbCu"
     },
     {
-      "source": "/",
+      "source": "/(.*)",
       "has": [
         {
           "type": "host",
@@ -23,7 +33,7 @@
       "destination": "https://bsky.app/profile/npmx.dev"
     },
     {
-      "source": "/",
+      "source": "/(.*)",
       "has": [
         {
           "type": "host",
@@ -33,7 +43,7 @@
       "destination": "https://github.com/npmx-dev/npmx.dev"
     },
     {
-      "source": "/",
+      "source": "/(.*)",
       "has": [
         {
           "type": "host",
@@ -43,7 +53,7 @@
       "destination": "https://github.com/npmx-dev/npmx.dev/issues"
     },
     {
-      "source": "/",
+      "source": "/(.*)",
       "has": [
         {
           "type": "host",
@@ -53,7 +63,7 @@
       "destination": "https://github.com/npmx-dev/npmx.dev/blob/main/CODE_OF_CONDUCT.md"
     },
     {
-      "source": "/",
+      "source": "/(.*)",
       "has": [
         {
           "type": "host",
@@ -63,7 +73,7 @@
       "destination": "https://github.com/npmx-dev/npmx.dev/blob/main/CONTRIBUTING.md"
     },
     {
-      "source": "/",
+      "source": "/(.*)",
       "has": [
         {
           "type": "host",
@@ -73,7 +83,7 @@
       "destination": "https://github.com/npmx-dev/npmx.dev/blob/main/GOVERNANCE.md"
     },
     {
-      "source": "/",
+      "source": "/(.*)",
       "has": [
         {
           "type": "host",
