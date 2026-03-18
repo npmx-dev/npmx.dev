@@ -23,7 +23,7 @@
     "mock-connector": "vp run --filter npmx-connector dev:mock",
     "generate-pwa-icons": "pwa-assets-generator",
     "preview": "nuxt preview",
-    "postinstall": "(vp pm rebuild @resvg/resvg-js || true) && vp run generate:lexicons && vp run generate:sprite && nuxt prepare && vp config",
+    "postinstall": "(vp pm rebuild -- @resvg/resvg-js || true) && vp run generate:lexicons && vp run generate:sprite && nuxt prepare && vp config",
     "generate:fixtures": "node scripts/generate-fixtures.ts",
     "generate:jwk": "node scripts/gen-jwk.ts",
     "test": "vp test",
