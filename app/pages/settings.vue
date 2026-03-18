@@ -36,9 +36,9 @@ defineOgImageComponent('Default', {
   primaryColor: '#60a5fa',
 })
 
-const setLocale: typeof setNuxti18nLocale = locale => {
-  settings.value.selectedLocale = locale
-  return setNuxti18nLocale(locale)
+const setLocale: typeof setNuxti18nLocale = newLocale => {
+  settings.value.selectedLocale = newLocale
+  return setNuxti18nLocale(newLocale)
 }
 </script>
 
@@ -141,6 +141,16 @@ const setLocale: typeof setNuxti18nLocale = locale => {
               :label="$t('settings.hide_platform_packages')"
               :description="$t('settings.hide_platform_packages_description')"
               v-model="settings.hidePlatformPackages"
+            />
+
+            <!-- Divider -->
+            <div class="border-t border-border my-4" />
+
+            <!-- Enable weekly download graph pulse looping animation -->
+            <SettingsToggle
+              :label="$t('settings.enable_graph_pulse_loop')"
+              :description="$t('settings.enable_graph_pulse_loop_description')"
+              v-model="settings.enableGraphPulseLooping"
             />
           </div>
         </section>

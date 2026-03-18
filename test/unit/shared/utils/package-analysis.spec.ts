@@ -429,19 +429,23 @@ describe('getCreateShortName', () => {
     expect(getCreateShortName('create-vite')).toBe('vite')
   })
 
-  it('extracts name from scoped create-* package', () => {
-    expect(getCreateShortName('@vue/create-app')).toBe('app')
+  it('extracts name from scoped create-* package preserving scope', () => {
+    expect(getCreateShortName('@vue/create-app')).toBe('@vue/app')
   })
 
   it('returns full name if not a create-* package', () => {
     expect(getCreateShortName('vite')).toBe('vite')
   })
 
-  it('handles scoped package without create- prefix', () => {
-    expect(getCreateShortName('@scope/foo')).toBe('foo')
+  it('returns full name for scoped package without create- prefix', () => {
+    expect(getCreateShortName('@scope/foo')).toBe('@scope/foo')
   })
 
   it('extracts name from create-next-app style packages', () => {
     expect(getCreateShortName('create-next-app')).toBe('next-app')
+  })
+
+  it('returns scope only for @scope/create packages', () => {
+    expect(getCreateShortName('@angular/create')).toBe('@angular')
   })
 })

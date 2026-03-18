@@ -19,7 +19,7 @@ const SELECT_FIELD_LABEL_SIZES = {
 
 const model = defineModel<string | undefined>({ default: undefined })
 
-export interface SelectFieldProps extends SelectBaseProps {
+interface SelectFieldProps extends SelectBaseProps {
   items: { label: string; value: string; disabled?: boolean }[]
   size?: keyof typeof SELECT_FIELD_SIZES
   selectAttrs?: Omit<SelectBaseProps, 'size' | 'id'> &

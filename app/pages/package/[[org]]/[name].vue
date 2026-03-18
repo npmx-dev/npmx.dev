@@ -1,12 +1,6 @@
 <script setup lang="ts">
-import type { JsrPackageInfo } from '#shared/types/jsr'
-import type { IconClass } from '~/types'
 import { assertValidPackageName } from '#shared/utils/npm'
-import { areUrlsEquivalent } from '#shared/utils/url'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
-import { detectPublishSecurityDowngradeForVersion } from '~/utils/publish-security'
-import { useInstallSizeDiff } from '~/composables/useInstallSizeDiff'
-import { useViewOnGitProvider } from '~/composables/useViewOnGitProvider'
 
 defineOgImageComponent('Package', {
   name: () => packageName.value,
@@ -149,7 +143,17 @@ const {
     immediate: false,
   },
 )
-onMounted(() => fetchInstallSize())
+
+// Trigger fetch only when we have the real resolved version
+watch(
+  [resolvedVersion, resolvedStatus],
+  ([version, status]) => {
+    if (version && status === 'success') {
+      fetchInstallSize()
+    }
+  },
+  { immediate: true },
+)
 
 const { data: skillsData } = useLazyFetch<SkillsListResponse>(
   () => {
@@ -207,6 +211,9 @@ const { diff: sizeDiff } = useInstallSizeDiff(packageName, resolvedVersion, pkg,
 //    → Preserve the server-rendered DOM, don't flash to skeleton.
 const nuxtApp = useNuxtApp()
 const route = useRoute()
+// Gates template rendering only — data fetches intentionally still run.
+// immediate is set once at mount — skipped requests won't re-fire on navigation, leaving data permanently missing.
+const isVersionsRoute = computed(() => route.name === 'package-versions')
 const hasEmptyPayload =
   import.meta.client &&
   nuxtApp.payload.serverRendered &&
@@ -390,49 +397,9 @@ const totalDepsCount = computed(() => {
 
 const { repositoryUrl } = useRepositoryUrl(displayVersion)
 
-const { meta: repoMeta, repoRef, stars, starsLink, forks, forksLink } = useRepoMeta(repositoryUrl)
-
-const PROVIDER_ICONS: Record<string, IconClass> = {
-  github: 'i-simple-icons:github',
-  gitlab: 'i-simple-icons:gitlab',
-  bitbucket: 'i-simple-icons:bitbucket',
-  codeberg: 'i-simple-icons:codeberg',
-  gitea: 'i-simple-icons:gitea',
-  forgejo: 'i-simple-icons:forgejo',
-  gitee: 'i-simple-icons:gitee',
-  sourcehut: 'i-simple-icons:sourcehut',
-  tangled: 'i-custom:tangled',
-  radicle: 'i-lucide:network', // Radicle is a P2P network, using network icon
-}
-
-const repoProviderIcon = computed((): IconClass => {
-  const provider = repoRef.value?.provider
-  if (!provider) return 'i-simple-icons:github'
-  return PROVIDER_ICONS[provider] ?? 'i-lucide:code'
-})
+const { repoRef } = useRepoMeta(repositoryUrl)
 
 const viewOnGitProvider = useViewOnGitProvider(() => repoRef.value?.provider)
-
-const homepageUrl = computed(() => {
-  const homepage = displayVersion.value?.homepage
-  if (!homepage) return null
-
-  // Don't show homepage if it's the same as the repository URL
-  if (repositoryUrl.value && areUrlsEquivalent(homepage, repositoryUrl.value)) {
-    return null
-  }
-
-  return homepage
-})
-
-const fundingUrl = computed(() => {
-  let funding = displayVersion.value?.funding
-  if (Array.isArray(funding)) funding = funding[0]
-
-  if (!funding) return null
-
-  return typeof funding === 'string' ? funding : funding.url
-})
 
 // Check if a version has provenance/attestations
 // The dist object may have attestations that aren't in the base type
@@ -496,7 +463,6 @@ const versionUrlPattern = computed(
 const dependencyCount = computed(() => getDependencyCount(displayVersion.value))
 
 const numberFormatter = useNumberFormatter()
-const compactNumberFormatter = useCompactNumberFormatter()
 const bytesFormatter = useBytesFormatter()
 
 useHead({
@@ -516,7 +482,8 @@ const showSkeleton = shallowRef(false)
 </script>
 
 <template>
-  <DevOnly>
+  <NuxtPage v-if="isVersionsRoute" />
+  <DevOnly v-else>
     <ButtonBase
       class="fixed bottom-4 inset-is-4 z-50 shadow-lg rounded-full! px-3! py-2!"
       classicon="i-simple-icons:skeleton"
@@ -528,7 +495,7 @@ const showSkeleton = shallowRef(false)
       <span class="text-xs">Skeleton</span>
     </ButtonBase>
   </DevOnly>
-  <main class="flex-1 pb-8">
+  <main v-if="!isVersionsRoute" class="flex-1 pb-8">
     <!-- Scenario 1: SPA fallback — show skeleton (no real content to preserve) -->
     <!-- Scenario 2: SSR with missing payload — preserve server DOM, skip skeleton -->
     <PackageSkeleton
@@ -578,63 +545,7 @@ const showSkeleton = shallowRef(false)
               </p>
             </div>
 
-            <!-- External links -->
-            <ul
-              class="flex flex-wrap items-center gap-x-3 gap-y-1.5 sm:gap-4 list-none m-0 p-0 mt-3 text-sm"
-            >
-              <li v-if="repositoryUrl">
-                <LinkBase :to="repositoryUrl" :classicon="repoProviderIcon">
-                  <span v-if="repoRef">
-                    {{ repoRef.owner }}<span class="opacity-50">/</span>{{ repoRef.repo }}
-                  </span>
-                  <span v-else>{{ $t('package.links.repo') }}</span>
-                </LinkBase>
-              </li>
-              <li v-if="repositoryUrl && repoMeta && starsLink">
-                <LinkBase :to="starsLink" classicon="i-lucide:star">
-                  {{ compactNumberFormatter.format(stars) }}
-                </LinkBase>
-              </li>
-              <li v-if="forks && forksLink">
-                <LinkBase :to="forksLink" classicon="i-lucide:git-fork">
-                  {{ compactNumberFormatter.format(forks) }}
-                </LinkBase>
-              </li>
-              <li class="basis-full sm:hidden" />
-              <li v-if="homepageUrl">
-                <LinkBase :to="homepageUrl" classicon="i-lucide:link">
-                  {{ $t('package.links.homepage') }}
-                </LinkBase>
-              </li>
-              <li v-if="displayVersion?.bugs?.url">
-                <LinkBase :to="displayVersion.bugs.url" classicon="i-lucide:circle-alert">
-                  {{ $t('package.links.issues') }}
-                </LinkBase>
-              </li>
-              <li>
-                <LinkBase
-                  :to="`https://www.npmjs.com/package/${pkg.name}`"
-                  :title="$t('common.view_on.npm')"
-                  classicon="i-simple-icons:npm"
-                >
-                  npm
-                </LinkBase>
-              </li>
-              <li v-if="jsrInfo?.exists && jsrInfo.url">
-                <LinkBase
-                  :to="jsrInfo.url"
-                  :title="$t('badges.jsr.title')"
-                  classicon="i-simple-icons:jsr"
-                >
-                  {{ $t('package.links.jsr') }}
-                </LinkBase>
-              </li>
-              <li v-if="fundingUrl">
-                <LinkBase :to="fundingUrl" classicon="i-lucide:heart">
-                  {{ $t('package.links.fund') }}
-                </LinkBase>
-              </li>
-            </ul>
+            <PackageExternalLinks :pkg :jsrInfo />
             <PackageMetricsBadges
               v-if="resolvedVersion"
               :package-name="packageName"
@@ -686,10 +597,8 @@ const showSkeleton = shallowRef(false)
                   <!-- Direct deps (muted) -->
                   <span class="text-fg-muted">{{ numberFormatter.format(dependencyCount) }}</span>
 
-                  <!-- Separator and total transitive deps -->
+                  <!-- Total transitive deps in parens -->
                   <template v-if="dependencyCount > 0 && dependencyCount !== totalDepsCount">
-                    <span class="text-fg-subtle">/</span>
-
                     <ClientOnly>
                       <span
                         v-if="
@@ -698,14 +607,16 @@ const showSkeleton = shallowRef(false)
                         "
                         class="inline-flex items-center gap-1 text-fg-subtle"
                       >
-                        <span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />
+                        (<span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />)
                       </span>
-                      <span v-else-if="totalDepsCount !== null">{{
-                        numberFormatter.format(totalDepsCount)
-                      }}</span>
-                      <span v-else class="text-fg-subtle">-</span>
+                      <span v-else-if="totalDepsCount !== null"
+                        ><span class="text-fg-subtle">(</span
+                        >{{ numberFormatter.format(totalDepsCount)
+                        }}<span class="text-fg-subtle">)</span></span
+                      >
+                      <span v-else class="text-fg-subtle">(-)</span>
                       <template #fallback>
-                        <span class="text-fg-subtle">-</span>
+                        <span class="text-fg-subtle">(-)</span>
                       </template>
                     </ClientOnly>
                   </template>
@@ -755,20 +666,22 @@ const showSkeleton = shallowRef(false)
                   <span v-else>-</span>
                 </span>
 
-                <!-- Separator and install size -->
+                <!-- Total install size in parens -->
                 <template v-if="displayVersion?.dist?.unpackedSize !== installSize?.totalSize">
-                  <span class="text-fg-subtle mx-1">/</span>
-
-                  <span
-                    v-if="installSizeStatus === 'pending'"
-                    class="inline-flex items-center gap-1 text-fg-subtle"
-                  >
-                    <span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />
+                  <span class="ms-1">
+                    <span
+                      v-if="installSizeStatus === 'pending'"
+                      class="inline-flex items-center gap-1 text-fg-subtle"
+                    >
+                      (<span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />)
+                    </span>
+                    <span v-else-if="installSize?.totalSize" dir="ltr">
+                      <span class="text-fg-subtle">(</span
+                      >{{ bytesFormatter.format(installSize.totalSize)
+                      }}<span class="text-fg-subtle">)</span>
+                    </span>
+                    <span v-else class="text-fg-subtle">(-)</span>
                   </span>
-                  <span v-else-if="installSize?.totalSize" dir="ltr">
-                    {{ bytesFormatter.format(installSize.totalSize) }}
-                  </span>
-                  <span v-else class="text-fg-subtle">-</span>
                 </template>
               </dd>
             </div>

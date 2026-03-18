@@ -6,8 +6,6 @@ import * as process from 'node:process'
 import { version as packageVersion } from '../package.json'
 import { getNextVersion } from '../scripts/next-version'
 
-export { packageVersion as version }
-
 /**
  * Environment variable `PULL_REQUEST` provided by Netlify.
  * @see {@link https://docs.netlify.com/build/configure-builds/environment-variables/#git-metadata}
@@ -17,7 +15,7 @@ export { packageVersion as version }
  *
  * Whether triggered by a GitHub PR
  */
-export const isPR = process.env.PULL_REQUEST === 'true' || !!process.env.VERCEL_GIT_PULL_REQUEST_ID
+const isPR = process.env.PULL_REQUEST === 'true' || !!process.env.VERCEL_GIT_PULL_REQUEST_ID
 
 /**
  * Environment variable `REVIEW_ID` provided by Netlify.
@@ -28,7 +26,7 @@ export const isPR = process.env.PULL_REQUEST === 'true' || !!process.env.VERCEL_
  *
  * Pull request number (if in a PR environment)
  */
-export const prNumber = process.env.REVIEW_ID || process.env.VERCEL_GIT_PULL_REQUEST_ID || null
+const prNumber = process.env.REVIEW_ID || process.env.VERCEL_GIT_PULL_REQUEST_ID || null
 
 /**
  * Environment variable `BRANCH` provided by Netlify.
@@ -39,7 +37,7 @@ export const prNumber = process.env.REVIEW_ID || process.env.VERCEL_GIT_PULL_REQ
  *
  * Git branch
  */
-export const gitBranch = process.env.BRANCH || process.env.VERCEL_GIT_COMMIT_REF
+const gitBranch = process.env.BRANCH || process.env.VERCEL_GIT_COMMIT_REF
 
 /**
  * Whether this is the canary environment (main.npmx.dev).
@@ -68,7 +66,7 @@ export const isCanary =
  *
  * Whether this is some sort of preview environment.
  */
-export const isPreview =
+const isPreview =
   isPR ||
   (process.env.CONTEXT && process.env.CONTEXT !== 'production') ||
   process.env.VERCEL_ENV === 'preview' ||
@@ -118,7 +116,7 @@ export const getProductionUrl = () =>
     : undefined
 
 const git = Git()
-export async function getGitInfo() {
+async function getGitInfo() {
   let branch
   try {
     branch = gitBranch || (await git.revparse(['--abbrev-ref', 'HEAD']))

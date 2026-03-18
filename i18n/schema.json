@@ -418,6 +418,12 @@
         "hide_platform_packages_description": {
           "type": "string"
         },
+        "enable_graph_pulse_loop": {
+          "type": "string"
+        },
+        "enable_graph_pulse_loop_description": {
+          "type": "string"
+        },
         "theme": {
           "type": "string"
         },
@@ -1095,6 +1101,12 @@
             },
             "license": {
               "type": "string"
+            },
+            "select": {
+              "type": "string"
+            },
+            "select_maximum": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1136,6 +1148,9 @@
               "type": "string"
             },
             "view_all": {
+              "type": "string"
+            },
+            "view_all_versions": {
               "type": "string"
             },
             "distribution_title": {
@@ -1212,6 +1227,21 @@
                 }
               },
               "additionalProperties": false
+            },
+            "page_title": {
+              "type": "string"
+            },
+            "current_tags": {
+              "type": "string"
+            },
+            "version_filter_placeholder": {
+              "type": "string"
+            },
+            "version_filter_label": {
+              "type": "string"
+            },
+            "no_match_filter": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1316,6 +1346,9 @@
               "type": "string"
             },
             "show_less": {
+              "type": "string"
+            },
+            "maintainer_template": {
               "type": "string"
             }
           },
@@ -2569,6 +2602,9 @@
           },
           "additionalProperties": false
         },
+        "view_selected": {
+          "type": "string"
+        },
         "sort": {
           "type": "object",
           "properties": {
@@ -2669,6 +2705,9 @@
               "type": "string"
             },
             "security": {
+              "type": "string"
+            },
+            "selection": {
               "type": "string"
             }
           },
@@ -4098,6 +4137,24 @@
             }
           },
           "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "action_bar": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "selection": {
+          "type": "string"
+        },
+        "shortcut": {
+          "type": "string"
+        },
+        "button_close_aria_label": {
+          "type": "string"
         }
       },
       "additionalProperties": false
