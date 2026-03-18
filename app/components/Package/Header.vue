@@ -61,9 +61,7 @@ onBeforeUnmount(() => {
 const navExtraOffsetStyle = { '--package-nav-extra': '0px' }
 
 const { y: scrollY } = useScroll(window)
-const showScrollToTop = computed(
-  () => isTouchDeviceClient.value && scrollY.value > SCROLL_TO_TOP_THRESHOLD,
-)
+const showScrollToTop = computed(() => scrollY.value > SCROLL_TO_TOP_THRESHOLD)
 
 const packageName = computed(() => props.pkg?.name ?? '')
 const compactNumberFormatter = useCompactNumberFormatter()
