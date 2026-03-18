@@ -4,6 +4,7 @@ const config: KnipConfig = {
   workspaces: {
     '.': {
       entry: [
+        'app/service-worker.ts!',
         'i18n/**/*.ts',
         'lunaria.config.ts',
         'pwa-assets.config.ts',
@@ -26,6 +27,7 @@ const config: KnipConfig = {
         'puppeteer',
         /** Needs to be explicitly installed, even though it is not imported, to avoid type errors. */
         'unplugin-vue-router',
+        'workbox-build',
         'vite-plugin-pwa',
         '@vueuse/shared',
 

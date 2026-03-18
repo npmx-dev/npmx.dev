@@ -28,6 +28,7 @@ const pages = [
   '/privacy',
   '/search',
   '/settings',
+  '/manifest.webmanifest',
   '/recharging',
 ]
 

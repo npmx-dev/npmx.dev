@@ -238,6 +238,27 @@ importers:
       vue-data-ui:
         specifier: 3.15.12
         version: 3.15.12(vue@3.5.30(typescript@5.9.3))
+      workbox-build:
+        specifier: 7.4.0
+        version: 7.4.0
+      workbox-cacheable-response:
+        specifier: 7.4.0
+        version: 7.4.0
+      workbox-core:
+        specifier: 7.4.0
+        version: 7.4.0
+      workbox-expiration:
+        specifier: 7.4.0
+        version: 7.4.0
+      workbox-precaching:
+        specifier: 7.4.0
+        version: 7.4.0
+      workbox-routing:
+        specifier: 7.4.0
+        version: 7.4.0
+      workbox-strategies:
+        specifier: 7.4.0
+        version: 7.4.0
     devDependencies:
       '@e18e/eslint-plugin':
         specifier: 0.2.0

@@ -13,7 +13,9 @@
     "build": "nuxt build",
     "build:lunaria": "node ./lunaria/lunaria.ts",
     "build:test": "NODE_ENV=test pnpm build",
+    "build:local:pwa": "VITE_DEV_PWA=true nuxt build",
     "dev": "nuxt dev",
+    "dev:pwa": "VITE_DEV_PWA=true nuxt dev",
     "dev:docs": "pnpm run --filter npmx-docs dev --port=3001",
     "i18n:check": "node scripts/compare-translations.ts",
     "i18n:check:fix": "node scripts/compare-translations.ts --fix",
@@ -119,7 +121,14 @@
     "vite-plugin-pwa": "1.2.0",
     "vite-plus": "0.0.0-g52709db6.20260226-1136",
     "vue": "3.5.30",
-    "vue-data-ui": "3.15.12"
+    "vue-data-ui": "3.15.12",
+    "workbox-build": "7.4.0",
+    "workbox-cacheable-response": "7.4.0",
+    "workbox-core": "7.4.0",
+    "workbox-expiration": "7.4.0",
+    "workbox-precaching": "7.4.0",
+    "workbox-routing": "7.4.0",
+    "workbox-strategies": "7.4.0"
   },
   "devDependencies": {
     "@e18e/eslint-plugin": "0.2.0",

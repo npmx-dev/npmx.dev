@@ -22,6 +22,9 @@ export default defineNuxtConfig({
     debug: {
       hydration: true,
     },
+    pwa: {
+      disable: true,
+    },
   },
 
   colorMode: {
@@ -187,6 +190,13 @@ export default defineNuxtConfig({
     '/_v/view': { proxy: 'https://npmx.dev/_vercel/insights/view' },
     '/_v/event': { proxy: 'https://npmx.dev/_vercel/insights/event' },
     '/_v/session': { proxy: 'https://npmx.dev/_vercel/insights/session' },
+    // PWA manifest
+    '/manifest.webmanifest': {
+      headers: {
+        'Content-Type': 'application/manifest+json',
+        'Cache-Control': 'public, max-age=0, must-revalidate',
+      },
+    },
     // lunaria status.json
     '/lunaria/status.json': {
       headers: {
@@ -299,18 +309,50 @@ export default defineNuxtConfig({
   },
 
   pwa: {
-    // Disable service worker
-    disable: true,
+    // Disable service worker for storybook
+    disable: isStorybook,
     pwaAssets: {
       disabled: isStorybook,
       config: false,
     },
+    registerType: 'autoUpdate',
+    strategies: 'injectManifest',
+    srcDir: '.',
+    filename: 'service-worker.ts',
+    client: {
+      periodicSyncForUpdates: 3_600, // Check for updates every hour
+    },
+    injectManifest: {
+      minify: process.env.VITE_DEV_PWA !== 'true',
+      sourcemap: process.env.VITE_DEV_PWA !== 'true',
+      enableWorkboxModulesLogs: process.env.VITE_DEV_PWA === 'true' ? true : undefined,
+      globPatterns: ['**/*.{js,json,css,html,txt,svg,png,ico,webp,woff,woff2,ttf,eot,otf,wasm}'],
+      globIgnores: ['manifest**.webmanifest'],
+    },
+    devOptions: {
+      enabled: process.env.VITE_DEV_PWA === 'true',
+      type: 'module',
+    },
     manifest: {
+      id: '/',
+      scope: '/',
+      start_url: '/',
       name: 'npmx',
       short_name: 'npmx',
       description: 'A fast, modern browser for the npm registry',
       theme_color: '#0a0a0a',
       background_color: '#0a0a0a',
+      orientation: 'portrait',
+      display: 'standalone',
+      display_override: ['window-controls-overlay'],
+      // categories: ['social', 'social networking', 'news'],
+      handle_links: 'preferred',
+      launch_handler: {
+        client_mode: ['navigate-existing', 'auto'],
+      },
+      edge_side_panel: {
+        preferred_width: 480,
+      },
       icons: [
         {
           src: 'pwa-64x64.png',
