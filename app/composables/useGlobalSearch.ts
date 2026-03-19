@@ -1,4 +1,5 @@
 import { normalizeSearchParam } from '#shared/utils/url'
+import { nextTick } from 'vue'
 import { debounce } from 'perfect-debounce'
 
 // Pages that have their own local filter using ?q
@@ -17,8 +18,22 @@ export function useGlobalSearch(place: 'header' | 'content' = 'content') {
 
   const router = useRouter()
   const route = useRoute()
+  const getFocusedSearchInputValue = () => {
+    if (!import.meta.client) return ''
+
+    const active = document.activeElement
+    if (!(active instanceof HTMLInputElement)) return ''
+    if (active.type !== 'search' && active.name !== 'q') return ''
+    return active.value
+  }
   // Internally used searchQuery state
   const searchQuery = useState<string>('search-query', () => {
+    // Preserve fast typing before hydration (e.g. homepage autofocus search input).
+    const focusedInputValue = getFocusedSearchInputValue()
+    if (focusedInputValue) {
+      return focusedInputValue
+    }
+
     if (pagesWithLocalFilter.has(route.name as string)) {
       return ''
     }
@@ -40,13 +55,28 @@ export function useGlobalSearch(place: 'header' | 'content' = 'content') {
     }
   })
 
-  // clean search input when navigating away from search page
+  // Sync URL query to input state only on search page.
+  // On other pages (e.g. home), keep the user's in-progress typing untouched.
   watch(
-    () => route.query.q,
-    urlQuery => {
+    () => [route.name, route.query.q] as const,
+    ([routeName, urlQuery]) => {
+      if (routeName !== 'search') return
+
+      // Never clobber in-progress typing while any search input is focused.
+      if (import.meta.client) {
+        const active = document.activeElement
+        if (
+          active instanceof HTMLInputElement &&
+          (active.type === 'search' || active.name === 'q')
+        ) {
+          return
+        }
+      }
+
       const value = normalizeSearchParam(urlQuery)
-      if (!value) searchQuery.value = ''
-      if (!searchQuery.value) searchQuery.value = value
+      if (searchQuery.value !== value) {
+        searchQuery.value = value
+      }
     },
   )
 
@@ -107,6 +137,42 @@ export function useGlobalSearch(place: 'header' | 'content' = 'content') {
       updateUrlQuery(value, searchProvider.value)
     },
   })
+
+  // When navigating back to the homepage (e.g. via logo click from /search),
+  // reset the global search state so the home input starts fresh and re-focus
+  // the dedicated home search input.
+  if (import.meta.client) {
+    watch(
+      () => route.name,
+      name => {
+        if (name !== 'index') return
+        searchQuery.value = ''
+        committedSearchQuery.value = ''
+        // Use nextTick so we run after the homepage has rendered.
+        nextTick(() => {
+          const homeInput = document.getElementById('home-search')
+          if (homeInput instanceof HTMLInputElement) {
+            homeInput.focus()
+            homeInput.select()
+          }
+        })
+      },
+      { flush: 'post' },
+    )
+  }
+
+  // On hydration, useState can reuse SSR payload (often empty), skipping initializer.
+  // Recover fast-typed value from the focused input once on client mount.
+  if (import.meta.client) {
+    onMounted(() => {
+      const focusedInputValue = getFocusedSearchInputValue()
+      if (!focusedInputValue) return
+      if (searchQuery.value) return
+
+      // Use model setter path to preserve instant-search behavior.
+      searchQueryValue.value = focusedInputValue
+    })
+  }
 
   return {
     model: searchQueryValue,
