@@ -67,7 +67,8 @@ test.describe('Compare Page', () => {
 
     const body = await response.json()
     // The API should return a valid install size object, not an error
-    expect(body).toHaveProperty('installSize')
+    expect(body).toHaveProperty('selfSize')
+    expect(body).toHaveProperty('totalSize')
   })
 
   test('loads analysis data for a scoped package', async ({ page, goto }) => {
@@ -86,6 +87,7 @@ test.describe('Compare Page', () => {
 
     const body = await response.json()
     expect(body).toHaveProperty('package', '@nuxt/kit')
+    expect(body).toHaveProperty('moduleFormat', 'esm')
   })
 
   test('compare grid shows data (not all dashes) for a scoped package', async ({ page, goto }) => {
