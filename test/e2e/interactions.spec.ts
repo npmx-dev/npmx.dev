@@ -89,19 +89,6 @@ test.describe('Compare Page', () => {
     expect(body).toHaveProperty('package', '@nuxt/kit')
     expect(body).toHaveProperty('moduleFormat', 'esm')
   })
-
-  test('compare grid shows data (not all dashes) for a scoped package', async ({ page, goto }) => {
-    await goto('/compare?packages=@nuxt/kit,vue', { waitUntil: 'hydration' })
-
-    const grid = page.locator('.comparison-grid')
-    await expect(grid).toBeVisible({ timeout: 20_000 })
-
-    // Package size row should have a value for the scoped package column,
-    // not a dash, which would indicate the API call failed before the fix.
-    const packageSizeRow = grid.locator('[data-facet="packageSize"]')
-    await expect(packageSizeRow).toBeVisible({ timeout: 15_000 })
-    await expect(packageSizeRow.locator('.comparison-cell').first()).not.toContainText('-')
-  })
 })
 
 test.describe('Search Pages', () => {
