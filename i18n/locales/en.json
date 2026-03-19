@@ -532,7 +532,7 @@
       "esm": "ES Modules supported",
       "cjs": "CommonJS supported",
       "no_esm": "ES Modules unsupported",
-      "wasm": "Has Web Assembly",
+      "wasm": "Has WebAssembly",
       "types_label": "Types",
       "types_included": "Types included",
       "types_available": "Types available via {package}",
