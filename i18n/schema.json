@@ -1600,6 +1600,9 @@
             "no_esm": {
               "type": "string"
             },
+            "wasm": {
+              "type": "string"
+            },
             "types_label": {
               "type": "string"
             },
