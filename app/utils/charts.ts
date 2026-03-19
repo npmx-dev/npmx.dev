@@ -720,3 +720,341 @@ export function applyEllipsis(text: string, maxLength = 45) {
   }
   return text.slice(0, maxLength) + '...'
 }
+
+// a11y pattern generation
+export type SvgPatternType =
+  | 'diagonalLines'
+  | 'verticalLines'
+  | 'horizontalLines'
+  | 'crosshatch'
+  | 'dots'
+  | 'grid'
+  | 'zigzag'
+
+export type SeededSvgPatternOptions = {
+  foregroundColor?: string
+  backgroundColor?: string
+  minimumSize?: number
+  maximumSize?: number
+}
+
+export type SeededSvgPatternResult = {
+  width: number
+  height: number
+  rotation: number
+  patternType: SvgPatternType
+  contentMarkup: string
+}
+
+type NonEmptyReadonlyArray<T> = readonly [T, ...T[]]
+
+/**
+ * Generates a deterministic 32-bit unsigned integer hash from a string.
+ *
+ * This function is based on the FNV-1a hashing algorithm. It is used to
+ * transform any string input into a stable numeric seed suitable for
+ * deterministic pseudo-random number generation.
+ *
+ * The same input string will always produce the same output number.
+ *
+ * @param value - The input string to hash.
+ * @returns A 32-bit unsigned integer hash.
+ */
+export function createSeedNumber(value: string): number {
+  let hashValue = 2166136261
+  for (let index = 0; index < value.length; index += 1) {
+    hashValue ^= value.charCodeAt(index)
+    hashValue = Math.imul(hashValue, 16777619)
+  }
+  return hashValue >>> 0
+}
+
+/**
+ * Creates a deterministic pseudo-random number generator (PRNG) based on a numeric seed.
+ *
+ * This function implements a fast, non-cryptographic PRNG similar to Mulberry32.
+ * It produces a reproducible sequence of numbers in the range [0, 1), meaning
+ * the same seed will always generate the same sequence.
+ *
+ * The returned function maintains internal state and should be called repeatedly
+ * to obtain successive pseudo-random values.
+ *
+ * @param seedNumber - 32 bit integer seed
+ * @returns A function that returns a pseudo rand number between 0 (inclusive) and 1 (exclusive).
+ *
+ * @example
+ * const random = createDeterministicRandomGenerator(12345)
+ * const a = random() // always the same for seed 12345
+ * const b = random()
+ */
+function createDeterministicRandomGenerator(seedNumber: number): () => number {
+  // Ensure the seed is treated as an unsigned 32 bit int
+  let state = seedNumber >>> 0
+
+  return function generateRandomNumber(): number {
+    // Advance internal state using a constant
+    state += 0x6d2b79f5
+    let intermediateValue = state
+
+    // First mixing step:
+    // - XOR with a right shifted version of itself
+    // - Multiply with a derived value to further scramble bits
+    intermediateValue = Math.imul(
+      intermediateValue ^ (intermediateValue >>> 15),
+      intermediateValue | 1,
+    )
+
+    // Second mixing step:
+    // - Combine current value with another transformed version of itself
+    // - Multiply again to increase entropy and spread bits
+    intermediateValue ^= intermediateValue + Math.imul(
+      intermediateValue ^ (intermediateValue >>> 7),
+      intermediateValue | 61,
+    )
+
+    // Final step:
+    // - Final XOR with shifted value for additional scrambling
+    // - Convert to unsigned 32 bit int
+    // - Normalize to a float in range 0 to 1
+    return ((intermediateValue ^ (intermediateValue >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+function pickValue<T>(
+  values: NonEmptyReadonlyArray<T>,
+  generateRandomNumber: () => number,
+): T {
+  const selectedIndex = Math.floor(generateRandomNumber() * values.length)
+  const selectedValue = values[selectedIndex]
+  if (selectedValue === undefined) {
+    throw new Error('pickValue requires a non-empty array')
+  }
+  return selectedValue
+}
+
+function createLineElement(
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  stroke: string,
+  strokeWidth: number,
+  opacity: number,
+): string {
+  return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${stroke}" stroke-width="${strokeWidth}" opacity="${opacity}" shape-rendering="crispEdges" stroke-linecap="round" stroke-linejoin="round" />`
+}
+
+function createCircleElement(
+  centerX: number,
+  centerY: number,
+  radius: number,
+  fill: string,
+  opacity: number,
+): string {
+  return `<circle cx="${centerX}" cy="${centerY}" r="${radius}" fill="${fill}" opacity="${opacity}" />`
+}
+
+function createPathElement(
+  pathData: string,
+  fill: string,
+  stroke: string,
+  strokeWidth: number,
+  opacity: number,
+): string {
+  return `<path d="${pathData}" fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}" opacity="${opacity}" stroke-linecap="round" stroke-linejoin="round" />`
+}
+
+function toNonEmptyReadonlyArray<T>(values: readonly T[]): NonEmptyReadonlyArray<T> {
+  if (values.length === 0) {
+    throw new Error('Expected a non-empty array')
+  }
+
+  return values as NonEmptyReadonlyArray<T>
+}
+
+export function createSeededSvgPattern(
+  seed: string | number,
+  options?: SeededSvgPatternOptions,
+): SeededSvgPatternResult {
+  const normalizedSeed = String(seed)
+  const foregroundColor = options?.foregroundColor ?? '#111111'
+  const backgroundColor = options?.backgroundColor ?? 'transparent'
+  const minimumSize = options?.minimumSize ?? 8
+  const maximumSize = options?.maximumSize ?? 20
+
+  const seedNumber = createSeedNumber(normalizedSeed)
+  const generateRandomNumber = createDeterministicRandomGenerator(seedNumber)
+
+  const patternType = pickValue(
+    [
+      'diagonalLines',
+      'verticalLines',
+      'horizontalLines',
+      'crosshatch',
+      'dots',
+      'grid',
+      'zigzag',
+    ] as const,
+    generateRandomNumber,
+  )
+
+  const availableSizes: number[] = []
+  for (let size = minimumSize; size <= maximumSize; size += 2) {
+    availableSizes.push(size)
+  }
+
+  const tileSize = pickValue(toNonEmptyReadonlyArray(availableSizes), generateRandomNumber)
+  const gap = pickValue([2, 3, 4, 5, 6] as const, generateRandomNumber)
+  const strokeWidth = pickValue([1, 1.25, 1.5, 1.75, 2] as const, generateRandomNumber)
+  const opacity = pickValue([0.7, 0.8, 0.9, 1] as const, generateRandomNumber)
+  const rotation = pickValue([0, 15, 30, 45, 60, 75, 90, 120, 135] as const, generateRandomNumber)
+
+  let contentMarkup = ''
+
+  switch (patternType) {
+    case 'diagonalLines': {
+      contentMarkup = [
+        createLineElement(
+          -tileSize,
+          tileSize,
+          tileSize,
+          -tileSize,
+          foregroundColor,
+          strokeWidth,
+          opacity,
+        ),
+        createLineElement(0, tileSize, tileSize, 0, foregroundColor, strokeWidth, opacity),
+        createLineElement(
+          0,
+          tileSize * 2,
+          tileSize * 2,
+          0,
+          foregroundColor,
+          strokeWidth,
+          opacity,
+        ),
+      ].join('')
+      break
+    }
+
+    case 'verticalLines': {
+      const positions = [0, gap + strokeWidth, (gap + strokeWidth) * 2]
+      contentMarkup = positions
+        .map(x => createLineElement(x, 0, x, tileSize, foregroundColor, strokeWidth, opacity))
+        .join('')
+      break
+    }
+
+    case 'horizontalLines': {
+      const positions = [0, gap + strokeWidth, (gap + strokeWidth) * 2]
+      contentMarkup = positions
+        .map(y => createLineElement(0, y, tileSize, y, foregroundColor, strokeWidth, opacity))
+        .join('')
+      break
+    }
+
+    case 'crosshatch': {
+      contentMarkup = [
+        createLineElement(
+          0,
+          tileSize / 2,
+          tileSize,
+          tileSize / 2,
+          foregroundColor,
+          strokeWidth,
+          opacity,
+        ),
+        createLineElement(
+          tileSize / 2,
+          0,
+          tileSize / 2,
+          tileSize,
+          foregroundColor,
+          strokeWidth,
+          opacity,
+        ),
+        createLineElement(
+          0,
+          0,
+          tileSize,
+          tileSize,
+          foregroundColor,
+          strokeWidth * 0.75,
+          opacity,
+        ),
+        createLineElement(
+          tileSize,
+          0,
+          0,
+          tileSize,
+          foregroundColor,
+          strokeWidth * 0.75,
+          opacity,
+        ),
+      ].join('')
+      break
+    }
+
+    case 'dots': {
+      const radius = Math.max(1, tileSize / 12)
+      contentMarkup = [
+        createCircleElement(tileSize / 4, tileSize / 4, radius, foregroundColor, opacity),
+        createCircleElement((tileSize * 3) / 4, tileSize / 4, radius, foregroundColor, opacity),
+        createCircleElement(tileSize / 4, (tileSize * 3) / 4, radius, foregroundColor, opacity),
+        createCircleElement(
+          (tileSize * 3) / 4,
+          (tileSize * 3) / 4,
+          radius,
+          foregroundColor,
+          opacity,
+        ),
+      ].join('')
+      break
+    }
+
+    case 'grid': {
+      contentMarkup = [
+        createLineElement(0, 0, tileSize, 0, foregroundColor, strokeWidth, opacity),
+        createLineElement(0, 0, 0, tileSize, foregroundColor, strokeWidth, opacity),
+        createLineElement(
+          0,
+          tileSize / 2,
+          tileSize,
+          tileSize / 2,
+          foregroundColor,
+          strokeWidth * 0.8,
+          opacity,
+        ),
+        createLineElement(
+          tileSize / 2,
+          0,
+          tileSize / 2,
+          tileSize,
+          foregroundColor,
+          strokeWidth * 0.8,
+          opacity,
+        ),
+      ].join('')
+      break
+    }
+
+    case 'zigzag': {
+      const midPoint = tileSize / 2
+      const pathData = `M 0 ${midPoint} L ${tileSize / 4} 0 L ${tileSize / 2} ${midPoint} L ${(tileSize * 3) / 4} ${tileSize} L ${tileSize} ${midPoint}`
+      contentMarkup = createPathElement(pathData, 'none', foregroundColor, strokeWidth, opacity)
+      break
+    }
+  }
+
+  if (backgroundColor !== 'transparent') {
+    contentMarkup = `<rect x="0" y="0" width="${tileSize}" height="${tileSize}" fill="${backgroundColor}" />${contentMarkup}`
+  }
+
+  return {
+    width: tileSize,
+    height: tileSize,
+    rotation,
+    patternType,
+    contentMarkup,
+  }
+}
