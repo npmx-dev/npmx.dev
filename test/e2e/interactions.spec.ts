@@ -88,10 +88,7 @@ test.describe('Compare Page', () => {
     expect(body).toHaveProperty('package', '@nuxt/kit')
   })
 
-  test('compare grid shows data (not all dashes) for a scoped package', async ({
-    page,
-    goto,
-  }) => {
+  test('compare grid shows data (not all dashes) for a scoped package', async ({ page, goto }) => {
     await goto('/compare?packages=@nuxt/kit,vue', { waitUntil: 'hydration' })
 
     const grid = page.locator('.comparison-grid')
