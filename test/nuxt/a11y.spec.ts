@@ -191,6 +191,7 @@ import {
   PackageVersions,
   PackageVulnerabilityTree,
   PaginationControls,
+  ProgressBar,
   ProvenanceBadge,
   Readme,
   ReadmeTocDropdown,
@@ -3707,6 +3708,16 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(Alert, {
         props: { variant: 'warning' },
         slots: { default: 'This is a warning message.' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('ProgressBar', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(ProgressBar, {
+        props: { val: 99, label: 'Progress status for en' },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])

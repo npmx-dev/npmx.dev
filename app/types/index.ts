@@ -2,7 +2,6 @@ import '#app'
 import '#vue-router'
 export * from './icon'
 export * from './navigation'
-export * from './components'
 
 declare module '#app' {
   interface PageMeta {

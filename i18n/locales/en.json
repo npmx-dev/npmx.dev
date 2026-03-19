@@ -1356,9 +1356,7 @@
     "guide": "localization (i18n) guide",
     "by_locale": "Translation progress by locale",
     "by_file": "Translation progress by file",
-    "locale_summary": "{name} ({id})",
     "complete_text": "This translation is complete, amazing job!",
-    "done_text": "done",
     "missing_text": "missing",
     "missing_keys": "There is no missing translations | Missing translation | Missing translations",
     "progress_label": "Progress status for {locale}",
@@ -1366,7 +1364,6 @@
       "file": "File",
       "status": "Status",
       "error": "Error while loading file list.",
-      "loading": "{spinner} Loading translation files...",
       "empty": "No files found",
       "file_link": "Edit {file} ({lang}) on GitHub"
     }

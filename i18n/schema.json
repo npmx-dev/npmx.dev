@@ -4072,13 +4072,7 @@
         "by_file": {
           "type": "string"
         },
-        "locale_summary": {
-          "type": "string"
-        },
         "complete_text": {
-          "type": "string"
-        },
-        "done_text": {
           "type": "string"
         },
         "missing_text": {
@@ -4100,9 +4094,6 @@
               "type": "string"
             },
             "error": {
-              "type": "string"
-            },
-            "loading": {
               "type": "string"
             },
             "empty": {
