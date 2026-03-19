@@ -5,10 +5,11 @@ import { compare, validRange } from 'semver'
 import {
   buildVersionToTagsMap,
   buildTaggedVersionRows,
+  compareTagRows,
+  compareVersionGroupKeys,
   filterVersions,
   getVersionGroupKey,
   getVersionGroupLabel,
-  getTagPriority,
 } from '~/utils/versions'
 import { fetchAllPackageVersions } from '~/utils/npm/api'
 
@@ -71,14 +72,7 @@ const latestTagRow = computed(() => tagRows.value.find(r => r.tags.includes('lat
 const otherTagRows = computed(() =>
   tagRows.value
     .filter(r => !r.tags.includes('latest'))
-    .sort((rowA, rowB) => {
-      const priorityA = Math.min(...rowA.tags.map(getTagPriority))
-      const priorityB = Math.min(...rowB.tags.map(getTagPriority))
-      if (priorityA !== priorityB) return priorityA - priorityB
-      const timeA = versionTimes.value[rowA.version] ?? ''
-      const timeB = versionTimes.value[rowB.version] ?? ''
-      return timeB.localeCompare(timeA)
-    }),
+    .sort((rowA, rowB) => compareTagRows(rowA, rowB, versionTimes.value)),
 )
 
 function getVersionTime(version: string): string | undefined {
@@ -99,12 +93,7 @@ const versionGroups = computed(() => {
   }
 
   return Array.from(byKey.keys())
-    .sort((a, b) => {
-      const [aMajor, aMinor] = a.split('.').map(Number)
-      const [bMajor, bMinor] = b.split('.').map(Number)
-      if (aMajor !== bMajor) return (bMajor ?? 0) - (aMajor ?? 0)
-      return (bMinor ?? -1) - (aMinor ?? -1)
-    })
+    .sort(compareVersionGroupKeys)
     .map(groupKey => ({
       groupKey,
       label: getVersionGroupLabel(groupKey),

@@ -84,6 +84,41 @@ export function getTagPriority(tag: string | undefined): number {
 }
 
 /**
+ * Compare two tagged version rows for display ordering.
+ * Sorts by minimum tag priority first; falls back to publish date descending.
+ * @param rowA - First row
+ * @param rowB - Second row
+ * @param versionTimes - Map of version string to ISO publish time
+ * @returns Negative/zero/positive comparator value
+ */
+export function compareTagRows(
+  rowA: TaggedVersionRow,
+  rowB: TaggedVersionRow,
+  versionTimes: Record<string, string>,
+): number {
+  const priorityA = Math.min(...rowA.tags.map(getTagPriority))
+  const priorityB = Math.min(...rowB.tags.map(getTagPriority))
+  if (priorityA !== priorityB) return priorityA - priorityB
+  const timeA = versionTimes[rowA.version] ?? ''
+  const timeB = versionTimes[rowB.version] ?? ''
+  return timeB.localeCompare(timeA)
+}
+
+/**
+ * Compare two version group keys for display ordering.
+ * Sorts by major descending, then by minor descending for 0.x groups.
+ * @param a - Group key (e.g. "1", "0.9")
+ * @param b - Group key (e.g. "2", "0.10")
+ * @returns Negative/zero/positive comparator value
+ */
+export function compareVersionGroupKeys(a: string, b: string): number {
+  const [majorA, minorA] = a.split('.').map(Number)
+  const [majorB, minorB] = b.split('.').map(Number)
+  if (majorA !== majorB) return (majorB ?? 0) - (majorA ?? 0)
+  return (minorB ?? -1) - (minorA ?? -1)
+}
+
+/**
  * Sort tags with 'latest' first, then alphabetically
  * @param tags - Array of tag names
  * @returns New sorted array
