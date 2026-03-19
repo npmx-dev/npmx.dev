@@ -45,7 +45,7 @@ const copyToClipboard = async () => {
 
 <template>
   <div
-    class="my-8 p-5 rounded-xl border border-gray-200/60 dark:border-white/5 bg-gray-50/50 dark:bg-white/[0.02] flex flex-col sm:flex-row items-end gap-4"
+    class="my-8 p-5 rounded-xl border border-gray-200/60 dark:border-white/5 bg-gray-50/50 dark:bg-white/2 flex flex-col sm:flex-row items-end gap-4"
   >
     <div class="flex flex-col gap-1.5 flex-1 w-full">
       <label class="text-[11px] font-bold uppercase tracking-wider text-gray-400 ml-1"
@@ -55,7 +55,7 @@ const copyToClipboard = async () => {
         v-model="pkg"
         type="text"
         spellcheck="false"
-        class="w-full h-[42px] px-4 py-2 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-black/20 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none text-sm transition-all"
+        class="w-full h-10.5 px-4 py-2 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-black/20 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none text-sm transition-all"
         :class="{ 'border-red-500/50 focus:ring-red-500/10 focus:border-red-500': !isValid }"
         placeholder="e.g. nuxt"
       />
@@ -68,7 +68,7 @@ const copyToClipboard = async () => {
       <div class="relative">
         <select
           v-model="type"
-          class="w-full h-[42px] px-4 py-2 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-black/20 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none text-sm transition-all appearance-none cursor-pointer"
+          class="w-full h-10.5 px-4 py-2 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-black/20 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none text-sm transition-all appearance-none cursor-pointer"
         >
           <option v-for="t in types" :key="t" :value="t" class="dark:bg-gray-900">{{ t }}</option>
         </select>
@@ -83,7 +83,7 @@ const copyToClipboard = async () => {
         >Preview & Action</label
       >
       <div
-        class="flex items-center bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg h-[42px] overflow-hidden"
+        class="flex items-center bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg h-10.5 overflow-hidden"
       >
         <div
           class="flex-1 flex items-center justify-center px-3 border-r border-gray-200 dark:border-white/10 h-full bg-gray-50/50 dark:bg-transparent"
@@ -91,7 +91,7 @@ const copyToClipboard = async () => {
           <img
             v-if="isValid"
             :src="`https://npmx.dev/api/registry/badge/${type}/${pkg}`"
-            class="h-[20px]"
+            class="h-5"
             alt="Badge Preview"
             @error="isValid = false"
           />
@@ -103,7 +103,7 @@ const copyToClipboard = async () => {
         <button
           @click="copyToClipboard"
           :disabled="!isValid"
-          class="px-4 h-full text-[11px] font-bold uppercase tracking-widest transition-all disabled:opacity-20 disabled:cursor-not-allowed min-w-[85px] hover:bg-gray-50 dark:hover:bg-white/5"
+          class="px-4 h-full text-[11px] font-bold uppercase tracking-widest transition-all disabled:opacity-20 disabled:cursor-not-allowed min-w-21.25 hover:bg-gray-50 dark:hover:bg-white/5"
           :class="
             copied
               ? 'text-emerald-500 bg-emerald-50/50 dark:bg-emerald-500/10'
