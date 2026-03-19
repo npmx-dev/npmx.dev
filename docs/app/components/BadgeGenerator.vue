@@ -5,18 +5,34 @@ const isValid = ref(true)
 const copied = ref(false)
 
 const types = [
-  'version', 'license', 'size', 'downloads', 'downloads-day',
-  'downloads-week', 'downloads-month', 'downloads-year',
-  'vulnerabilities', 'dependencies', 'created', 'updated',
-  'engines', 'types', 'maintainers', 'deprecated',
-  'quality', 'popularity', 'maintenance', 'score', 'name',
+  'version',
+  'license',
+  'size',
+  'downloads',
+  'downloads-day',
+  'downloads-week',
+  'downloads-month',
+  'downloads-year',
+  'vulnerabilities',
+  'dependencies',
+  'created',
+  'updated',
+  'engines',
+  'types',
+  'maintainers',
+  'deprecated',
+  'quality',
+  'popularity',
+  'maintenance',
+  'score',
+  'name',
 ]
 
 watch(pkg, () => {
   isValid.value = true
 })
 
-const formatLabel = (str) => {
+const formatLabel = str => {
   if (!str || typeof str !== 'string') return ''
   return str
     .split('-')
@@ -65,7 +81,9 @@ const copyToClipboard = async () => {
           v-model="type"
           class="w-full h-10.5 px-4 py-2 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-black/20 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none text-sm transition-all appearance-none cursor-pointer"
         >
-          <option v-for="t in types" :key="t" :value="t" class="dark:bg-gray-900">{{ formatLabel(t) }}</option>
+          <option v-for="t in types" :key="t" :value="t" class="dark:bg-gray-900">
+            {{ formatLabel(t) }}
+          </option>
         </select>
         <span
           class="absolute right-3 top-1/2 -translate-y-1/2 i-lucide-chevron-down w-4 h-4 text-gray-400 pointer-events-none"
