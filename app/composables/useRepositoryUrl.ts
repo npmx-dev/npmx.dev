@@ -1,4 +1,4 @@
-import { joinURL } from 'ufo'
+import { joinURL, withoutTrailingSlash } from 'ufo'
 
 type RequestedVersion = SlimPackument['requestedVersion'] | null
 
@@ -21,9 +21,11 @@ export function useRepositoryUrl(
       return null
     }
 
-    // append `repository.directory` for monorepo packages
+    // Fix: Strip trailing .git (and any leftovers) before constructing the directory link
+    url = url.replace(/\.git\/?$/, '')
+
     if (repo.directory) {
-      url = joinURL(`${url}/tree/HEAD`, repo.directory)
+      url = joinURL(`${withoutTrailingSlash(url)}/tree/HEAD`, repo.directory)
     }
 
     return url
