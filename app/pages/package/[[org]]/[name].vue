@@ -778,6 +778,7 @@ const showSkeleton = shallowRef(false)
                 :package-name="pkg.name"
                 :version="displayVersion"
                 :dependencies="installSize?.dependencies ?? null"
+                :dependencies-loading="installSizeStatus === 'pending'"
                 size="small"
               />
               <PackageManagerSelect />

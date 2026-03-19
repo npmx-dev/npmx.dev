@@ -7,9 +7,11 @@ const props = withDefaults(
     packageName: string
     version: SlimPackumentVersion
     dependencies: DependencySize[] | null
+    dependenciesLoading?: boolean
     size?: 'small' | 'medium'
   }>(),
   {
+    dependenciesLoading: false,
     size: 'medium',
   },
 )
@@ -21,16 +23,14 @@ const highlightedIndex = shallowRef(-1)
 const dropdownPosition = shallowRef<{ top: number; left: number } | null>(null)
 
 const menuId = 'download-menu'
-const menuItems = computed(() => {
-  const items = [{ id: 'package', icon: 'i-lucide:package' }]
-  if (props.dependencies?.length) {
-    items.push({
-      id: 'dependencies',
-      icon: 'i-lucide:list-tree',
-    })
-  }
-  return items
-})
+const menuItems = computed(() => [
+  { id: 'package', icon: 'i-lucide:package', disabled: false },
+  {
+    id: 'dependencies',
+    icon: props.dependenciesLoading ? 'i-lucide:loader-circle' : 'i-lucide:list-tree',
+    disabled: props.dependenciesLoading || !props.dependencies?.length,
+  },
+])
 
 const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
 
@@ -87,7 +87,7 @@ function handleKeydown(event: KeyboardEvent) {
     case 'Enter':
     case ' ':
       event.preventDefault()
-      handleAction(menuItems.value[highlightedIndex.value]?.id)
+      handleAction(menuItems.value[highlightedIndex.value])
       break
     case 'Escape':
       event.preventDefault()
@@ -100,10 +100,11 @@ function handleKeydown(event: KeyboardEvent) {
   }
 }
 
-function handleAction(id: string | undefined) {
-  if (id === 'package') {
+function handleAction(item: (typeof menuItems.value)[number] | undefined) {
+  if (!item || item.disabled) return
+  if (item.id === 'package') {
     downloadPackage()
-  } else if (id === 'dependencies') {
+  } else if (item.id === 'dependencies') {
     downloadDependenciesScript()
   }
   close()
@@ -233,16 +234,26 @@ defineOptions({
           v-for="(item, index) in menuItems"
           :key="item.id"
           role="menuitem"
-          class="cursor-pointer flex items-center gap-2 px-3 py-1.5 text-sm text-fg-muted transition-colors duration-150"
+          :aria-disabled="item.disabled || undefined"
+          class="flex items-center gap-2 px-3 py-1.5 text-sm transition-colors duration-150"
           :class="[
-            highlightedIndex === index
-              ? 'bg-bg-elevated text-fg'
-              : 'hover:bg-bg-elevated hover:text-fg',
+            item.disabled
+              ? 'cursor-default text-fg-muted/50'
+              : highlightedIndex === index
+                ? 'cursor-pointer bg-bg-elevated text-fg'
+                : 'cursor-pointer text-fg-muted hover:bg-bg-elevated hover:text-fg',
           ]"
-          @click="handleAction(item.id)"
+          @click="handleAction(item)"
           @mouseenter="highlightedIndex = index"
         >
-          <span :class="item.icon" class="w-4 h-4" aria-hidden="true" />
+          <span
+            :class="[
+              item.icon,
+              { 'animate-spin': item.id === 'dependencies' && dependenciesLoading },
+            ]"
+            class="w-4 h-4"
+            aria-hidden="true"
+          />
           {{
             item.id === 'package'
               ? $t('package.download.package')
