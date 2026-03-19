@@ -1527,26 +1527,23 @@ describe('createSeededSvgPattern', () => {
       'backbone',
     ]
 
+    const expectedTagByPatternType: Record<
+      ReturnType<typeof createSeededSvgPattern>['patternType'],
+      string
+    > = {
+      diagonalLines: '<line',
+      verticalLines: '<line',
+      horizontalLines: '<line',
+      crosshatch: '<line',
+      dots: '<circle',
+      grid: '<line',
+      zigzag: '<path',
+    }
+
     for (const seed of seeds) {
       const result = createSeededSvgPattern(seed)
-
-      switch (result.patternType) {
-        case 'dots':
-          expect(result.contentMarkup).toContain('<circle')
-          break
-
-        case 'zigzag':
-          expect(result.contentMarkup).toContain('<path')
-          break
-
-        case 'diagonalLines':
-        case 'verticalLines':
-        case 'horizontalLines':
-        case 'crosshatch':
-        case 'grid':
-          expect(result.contentMarkup).toContain('<line')
-          break
-      }
+      const expectedTag = expectedTagByPatternType[result.patternType]
+      expect(result.contentMarkup).toContain(expectedTag)
     }
   })
 
