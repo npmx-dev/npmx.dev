@@ -78,7 +78,7 @@ const blueskyPostUri = computed(() => blueskyLink.value?.postUri ?? null)
   @apply prose dark:prose-invert;
 }
 
-:deep(.prose a:not(.not-prose a)) {
+:deep(.prose a:not(.not-prose a):not([class*='no-underline'])) {
   text-decoration: underline;
   text-underline-offset: 0.2rem;
   text-decoration-thickness: 1px;
@@ -88,7 +88,7 @@ const blueskyPostUri = computed(() => blueskyLink.value?.postUri ?? null)
     color 0.2s;
 }
 
-:deep(.prose a:not(.not-prose a):hover) {
+:deep(.prose a:not(.not-prose a):not([class*='no-underline']):hover) {
   text-decoration-color: var(--fg);
   color: var(--fg);
 }

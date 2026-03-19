@@ -55,7 +55,7 @@ const federatedArticles = computed(() => {
         rel="noopener noreferrer"
         v-for="article in federatedArticles"
         :key="article.url"
-        class="grid grid-cols-[auto_1fr] gap-x-5 no-underline hover:no-underline rounded-lg border border-border p-4 transition-all hover:shadow-md hover:shadow-black/5 dark:hover:shadow-white/5 hover:border-border-hover"
+        class="grid grid-cols-[auto_1fr] gap-x-5 no-underline hover:no-underline rounded-lg border border-border p-4 transition-all hover:shadow-md hover:shadow-fg/5 hover:border-border-hover"
       >
         <AuthorAvatar v-if="article.author" :author="article.author" size="md" class="row-span-2" />
         <div class="flex flex-col">

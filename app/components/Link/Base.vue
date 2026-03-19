@@ -101,7 +101,7 @@ const keyboardShortcutsEnabled = useKeyboardShortcuts()
       'text-xs px-2 py-0.5': isButtonSmall,
       'bg-transparent text-fg hover:(bg-fg/10 text-accent) focus-visible:(bg-fg/10 text-accent) aria-[current=true]:(bg-fg/10 text-accent border-fg/20 hover:enabled:(bg-fg/20 text-fg/50))':
         variant === 'button-secondary',
-      'text-bg bg-fg hover:(bg-fg/80 text-bg) focus-visible:(bg-fg/80 text-bg) aria-current:(bg-fg text-bg border-fg hover:enabled:(text-bg/50))':
+      'text-bg bg-fg hover:(bg-fg/50 text-accent) focus-visible:(bg-fg/50) aria-current:(bg-fg text-bg border-fg hover:enabled:(text-bg/50))':
         variant === 'button-primary',
     }"
     :to="to"

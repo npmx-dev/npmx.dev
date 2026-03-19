@@ -51,7 +51,8 @@ function getHostname(uri: string): string {
       :href="`https://bsky.app/profile/${comment.author.handle}`"
       target="_blank"
       rel="noopener noreferrer"
-      :class="['shrink-0', depth > 0 ? 'hidden sm:block' : '']"
+      class="shrink-0"
+      :class="depth > 0 ? 'hidden sm:block' : ''"
     >
       <img
         v-if="comment.author.avatar"
