@@ -828,6 +828,14 @@ function pickValue<T>(values: NonEmptyReadonlyArray<T>, generateRandomNumber: ()
   return selectedValue
 }
 
+function escapeSvgAttribute(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+}
+
 function createLineElement(
   x1: number,
   y1: number,
@@ -837,7 +845,8 @@ function createLineElement(
   strokeWidth: number,
   opacity: number,
 ): string {
-  return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${stroke}" stroke-width="${strokeWidth}" opacity="${opacity}" shape-rendering="crispEdges" stroke-linecap="round" stroke-linejoin="round" />`
+  const safeStroke = escapeSvgAttribute(stroke)
+  return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${safeStroke}" stroke-width="${strokeWidth}" opacity="${opacity}" shape-rendering="crispEdges" stroke-linecap="round" stroke-linejoin="round" />`
 }
 
 function createCircleElement(
@@ -847,7 +856,8 @@ function createCircleElement(
   fill: string,
   opacity: number,
 ): string {
-  return `<circle cx="${centerX}" cy="${centerY}" r="${radius}" fill="${fill}" opacity="${opacity}" />`
+  const safeFill = escapeSvgAttribute(fill)
+  return `<circle cx="${centerX}" cy="${centerY}" r="${radius}" fill="${safeFill}" opacity="${opacity}" />`
 }
 
 function createPathElement(
@@ -857,7 +867,9 @@ function createPathElement(
   strokeWidth: number,
   opacity: number,
 ): string {
-  return `<path d="${pathData}" fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}" opacity="${opacity}" stroke-linecap="round" stroke-linejoin="round" />`
+  const safeFill = escapeSvgAttribute(fill)
+  const safeStroke = escapeSvgAttribute(stroke)
+  return `<path d="${pathData}" fill="${safeFill}" stroke="${safeStroke}" stroke-width="${strokeWidth}" opacity="${opacity}" stroke-linecap="round" stroke-linejoin="round" />`
 }
 
 function toNonEmptyReadonlyArray<T>(values: readonly T[]): NonEmptyReadonlyArray<T> {
@@ -1025,7 +1037,8 @@ export function createSeededSvgPattern(
   }
 
   if (backgroundColor !== 'transparent') {
-    contentMarkup = `<rect x="0" y="0" width="${tileSize}" height="${tileSize}" fill="${backgroundColor}" />${contentMarkup}`
+    const safeBackgroundColor = escapeSvgAttribute(backgroundColor)
+    contentMarkup = `<rect x="0" y="0" width="${tileSize}" height="${tileSize}" fill="${safeBackgroundColor}" />${contentMarkup}`
   }
 
   return {
