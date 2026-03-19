@@ -4,6 +4,7 @@ import { VueUiHorizontalBar } from 'vue-data-ui/vue-ui-horizontal-bar'
 import type { VueUiHorizontalBarConfig, VueUiHorizontalBarDatasetItem } from 'vue-data-ui'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
 import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
+
 import {
   loadFile,
   insertLineBreaks,
@@ -237,14 +238,26 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
     },
   }
 })
+
 </script>
 
 <template>
   <div class="font-mono facet-bar">
     <ClientOnly v-if="dataset.length">
       <VueUiHorizontalBar :key="chartKey" :dataset :config class="[direction:ltr]">
+        <template #pattern="{ patternId, seriesIndex }">
+          <ChartPatternSlot
+            v-if="seriesIndex != 0"
+            :id="patternId"
+            :seed="seriesIndex"
+            :foreground-color="colors.bg!"
+            fallback-color="transparent"
+            :max-size="24"
+            :min-size="16"
+          />
+        </template>
+
         <template #svg="{ svg }">
-          <!-- Inject npmx logo & tagline during SVG and PNG print -->
           <g
             v-if="svg.isPrintingSvg || svg.isPrintingImg"
             v-html="
@@ -261,15 +274,19 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
           <span v-if="isOpen" class="i-lucide:x w-6 h-6" aria-hidden="true" />
           <span v-else class="i-lucide:ellipsis-vertical w-6 h-6" aria-hidden="true" />
         </template>
+
         <template #optionCsv>
           <span class="text-fg-subtle font-mono pointer-events-none">CSV</span>
         </template>
+
         <template #optionImg>
           <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
         </template>
+
         <template #optionSvg>
           <span class="text-fg-subtle font-mono pointer-events-none">SVG</span>
         </template>
+
         <template #optionAltCopy>
           <span
             class="w-6 h-6"
