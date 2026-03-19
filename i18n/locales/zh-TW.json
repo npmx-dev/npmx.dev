@@ -3,8 +3,8 @@
   "seo": {
     "home": {
       "title": "npmx - 更好的 npm 套件註冊表瀏覽工具",
-      "description": "更好的 npm 套件註冊表瀏覽工具。使用更現代化的介面來搜尋、瀏覽與探索套件。"
-    }
+      "description": "更好的 npm 套件註冊表瀏覽工具。使用更現代化的介面來搜尋、瀏覽與探索套件。",
+    },
   },
   "built_at": "建置於 {0}",
   "alt_logo": "npmx 標誌",
@@ -13,17 +13,19 @@
   "trademark_disclaimer": "npm 是 npm, Inc. 的註冊商標。本網站與 npm, Inc. 無任何隸屬關係。",
   "footer": {
     "about": "關於",
+    "blog": "部落格",
     "docs": "文件",
     "source": "原始碼",
     "social": "社群媒體",
     "chat": "聊天",
-    "keyboard_shortcuts": "鍵盤快捷鍵"
+    "builders_chat": "開發者聊天",
+    "keyboard_shortcuts": "鍵盤快捷鍵",
   },
   "shortcuts": {
     "section": {
       "global": "全域",
       "search": "搜尋",
-      "package": "套件"
+      "package": "套件",
     },
     "focus_search": "焦點搜尋",
     "show_kbd_hints": "顯示鍵盤快速鍵提示",
@@ -34,7 +36,9 @@
     "go_to_result": "前往搜尋結果",
     "open_code_view": "開啟程式碼檢視",
     "open_docs": "開啟文件",
-    "disable_shortcuts": "你可以在 {settings} 中停用鍵盤快速鍵。"
+    "disable_shortcuts": "你可以在 {settings} 中停用鍵盤快速鍵。",
+    "open_main": "開啟主要資訊",
+    "open_diff": "開啟版本差異",
   },
   "search": {
     "label": "搜尋 npm 套件",
@@ -62,8 +66,14 @@
       "user": "使用者",
       "org": "組織",
       "view_user_packages": "檢視此使用者的套件",
-      "view_org_packages": "檢視此組織的套件"
-    }
+      "view_org_packages": "檢視此組織的套件",
+    },
+    "instant_search": "立即搜尋",
+    "instant_search_on": "開啟",
+    "instant_search_off": "關閉",
+    "instant_search_turn_on": "開啟",
+    "instant_search_turn_off": "關閉",
+    "instant_search_advisory": "{label} {state} — {action}",
   },
   "nav": {
     "main_navigation": "首頁",
@@ -75,11 +85,32 @@
     "mobile_menu": "導覽選單",
     "open_menu": "開啟選單",
     "links": "連結",
-    "tap_to_search": "點擊以搜尋"
+    "tap_to_search": "點擊以搜尋",
   },
   "blog": {
-    "author": {},
-    "atproto": {}
+    "title": "部落格",
+    "heading": "部落格",
+    "meta_description": "來自 npmx 社群的見解與最新動態",
+    "author": {
+      "view_profile": "在 Bluesky 上查看 {name} 的個人檔案",
+    },
+    "draft_badge": "草稿",
+    "draft_banner": "這是尚未發佈的草稿。內容可能不完整或包含不準確的資訊。",
+    "atproto": {
+      "view_on_bluesky": "在 Bluesky 上查看",
+      "reply_on_bluesky": "在 Bluesky 上回覆",
+      "likes_on_bluesky": "在 Bluesky 上的喜歡",
+      "like_or_reply_on_bluesky": "在 Bluesky 上喜歡這篇文章或新增留言",
+      "no_comments_yet": "尚無留言。",
+      "could_not_load_comments": "無法載入留言。",
+      "comments": "留言",
+      "loading_comments": "正在載入留言⋯⋯",
+      "updating": "更新中⋯⋯",
+      "reply_count": "{count} 則回覆 | {count} 則回覆",
+      "like_count": "{count} 個喜歡 | {count} 個喜歡",
+      "repost_count": "{count} 次轉發 | {count} 次轉發",
+      "more_replies": "還有 {count} 則回覆⋯⋯ | 還有 {count} 則回覆⋯⋯",
+    },
   },
   "settings": {
     "title": "設定",
@@ -90,7 +121,7 @@
       "display": "顯示",
       "search": "搜尋套件庫",
       "language": "語言",
-      "keyboard_shortcuts": "鍵盤快速鍵"
+      "keyboard_shortcuts": "鍵盤快速鍵",
     },
     "data_source": {
       "label": "搜尋套件庫",
@@ -98,13 +129,17 @@
       "npm": "npm Registry",
       "npm_description": "直接從 npm Registry 搜尋套件、組織及使用者。官方來源，但速度可能較慢。",
       "algolia": "Algolia",
-      "algolia_description": "使用 Algolia 以更快速的搜尋套件、組織及使用者。"
+      "algolia_description": "使用 Algolia 以更快速的搜尋套件、組織及使用者。",
     },
+    "instant_search": "即時搜尋",
+    "instant_search_description": "導航至搜尋頁面，並在您輸入時即時更新搜尋結果。",
     "relative_dates": "相對時間",
     "include_types": "安裝時包含 {'@'}types",
     "include_types_description": "對未提供型別定義的套件，自動在安裝指令加入 {'@'}types 套件",
     "hide_platform_packages": "在搜尋結果中隱藏平台特定套件",
     "hide_platform_packages_description": "在搜尋結果中隱藏平台特定的原生二進位套件（例如 {'@'}esbuild/linux-x64）",
+    "enable_graph_pulse_loop": "啟用迷你圖表的脈衝循環效果",
+    "enable_graph_pulse_loop_description": "在每週下載圖表上啟動連續的脈衝動畫。請注意，此動畫可能會對部分使用者造成視覺干擾。",
     "theme": "主題",
     "theme_light": "淺色",
     "theme_dark": "深色",
@@ -116,7 +151,7 @@
     "translation_progress": "翻譯進度",
     "background_themes": "背景色調",
     "keyboard_shortcuts_enabled": "啟用鍵盤快速鍵",
-    "keyboard_shortcuts_enabled_description": "若與其他瀏覽器或系統快捷鍵衝突，可停用鍵盤快速鍵"
+    "keyboard_shortcuts_enabled_description": "若與其他瀏覽器或系統快捷鍵衝突，可停用鍵盤快速鍵",
   },
   "i18n": {
     "missing_keys": "{count} 項缺少翻譯",
@@ -124,9 +159,15 @@
     "show_more_keys": "顯示其他 {count} 項…",
     "contribute_hint": "補上缺少的鍵值以協助改進翻譯。",
     "edit_on_github": "在 GitHub 上編輯",
-    "view_guide": "翻譯指南"
+    "view_guide": "翻譯指南",
   },
-  "error": {},
+  "error": {
+    "401": "未經授權",
+    "404": "找不到頁面",
+    "500": "內部伺服器錯誤",
+    "503": "服務無法使用",
+    "default": "發生未預期的錯誤",
+  },
   "common": {
     "loading": "載入中…",
     "loading_more": "載入更多中…",
@@ -146,7 +187,7 @@
     "sort": {
       "name": "名稱",
       "role": "角色",
-      "members": "成員"
+      "members": "成員",
     },
     "scroll_to_top": "回到頂端",
     "cancel": "取消",
@@ -155,8 +196,18 @@
     "error": "錯誤",
     "view_on": {
       "npm": "在 npm 上檢視",
-      "github": "在 GitHub 上檢視"
-    }
+      "github": "在 GitHub 上檢視",
+      "gitlab": "在 GitLab 上檢視",
+      "bitbucket": "在 Bitbucket 上檢視",
+      "codeberg": "在 Codeberg 上檢視",
+      "git_repo": "在 Git 儲存庫上檢視",
+      "forgejo": "在 Forgejo 上檢視",
+      "gitea": "在 Gitea 上檢視",
+      "gitee": "在 Gitee 上檢視",
+      "radicle": "在 Radicle 上檢視",
+      "sourcehut": "在 SourceHut 上檢視",
+      "tangled": "在 Tangled 上檢視",
+    },
   },
   "profile": {
     "display_name": "顯示名稱",
@@ -172,8 +223,8 @@
     "invite": {
       "message": "看起來對方還沒在用 npmx。要不要跟他們分享一下？",
       "share_button": "分享到 Bluesky",
-      "compose_text": "Hey {'@'}{handle}！你用過 npmx.dev 了嗎？它是 npm Registry 的瀏覽器，快速、現代，而且是開源的。\\nhttps://npmx.dev"
-    }
+      "compose_text": "Hey {'@'}{handle}！你用過 npmx.dev 了嗎？它是 npm Registry 的瀏覽器，快速、現代，而且是開源的。\\nhttps://npmx.dev",
+    },
   },
   "package": {
     "not_found": "找不到套件",
@@ -185,14 +236,14 @@
     "deprecation": {
       "package": "此套件已被棄用。",
       "version": "此版本已被棄用。",
-      "no_reason": "未提供原因"
+      "no_reason": "未提供原因",
     },
     "size_increase": {
       "title_size": "自 v{version} 起，安裝大小顯著增加",
       "title_deps": "自 v{version} 起，相依套件數量顯著增加",
       "title_both": "自 v{version} 起，安裝大小與相依套件數量皆顯著增加",
       "size": "安裝大小增加了 {percent}（多出 {size}）",
-      "deps": "增加了 {count} 個相依套件"
+      "deps": "增加了 {count} 個相依套件",
     },
     "replacement": {
       "title": "你可能不需要這個相依套件。",
@@ -204,7 +255,7 @@
       "learn_more_above": "參閱上方說明",
       "mdn": "MDN",
       "community": "社群",
-      "consider_no_dep": "+ 考慮不使用相依套件？"
+      "consider_no_dep": "+ 考慮不使用相依套件？",
     },
     "stats": {
       "license": "授權",
@@ -217,8 +268,8 @@
       "inspect_dependency_tree": "檢視相依樹",
       "size_tooltip": {
         "unpacked": "未壓縮大小（此套件）：{size}",
-        "total": "總未壓縮大小（包含 {count} 個相依套件）：{size}"
-      }
+        "total": "總未壓縮大小（包含 {count} 個相依套件）：{size}",
+      },
     },
     "skills": {
       "title": "代理技能",
@@ -233,11 +284,12 @@
       "file_counts": {
         "scripts": "{count} 個腳本 | {count} 個腳本",
         "refs": "{count} 個參考 | {count} 個參考",
-        "assets": "{count} 個資源 | {count} 個資源"
+        "assets": "{count} 個資源 | {count} 個資源",
       },
-      "view_source": "檢視原始碼"
+      "view_source": "檢視原始碼",
     },
     "links": {
+      "main": "main",
       "repo": "儲存庫",
       "homepage": "首頁",
       "issues": "Issues",
@@ -245,15 +297,15 @@
       "code": "程式碼",
       "docs": "文件",
       "fund": "贊助",
-      "compare": "比較"
+      "compare": "比較",
     },
     "likes": {
       "like": "喜歡這個套件",
-      "unlike": "取消喜歡這個套件"
+      "unlike": "取消喜歡這個套件",
     },
     "docs": {
       "not_available": "文件不可用",
-      "not_available_detail": "我們無法為此版本產生文件。"
+      "not_available_detail": "我們無法為此版本產生文件。",
     },
     "get_started": {
       "title": "開始使用",
@@ -261,16 +313,16 @@
       "copy_command": "複製安裝指令",
       "copy_dev_command": "複製安裝指令 (Dev)",
       "dev_dependency_hint": "通常安裝為開發相依套件",
-      "view_types": "檢視 {package}"
+      "view_types": "檢視 {package}",
     },
     "create": {
       "title": "建立新專案",
       "copy_command": "複製建立指令",
-      "view": "{packageName} 由同一位維護者維護，點擊檢視詳細資訊"
+      "view": "{packageName} 由同一位維護者維護，點擊檢視詳細資訊",
     },
     "run": {
       "title": "執行",
-      "locally": "在本機執行"
+      "locally": "在本機執行",
     },
     "readme": {
       "title": "README",
@@ -281,9 +333,9 @@
         "tip": "提示",
         "important": "重要",
         "warning": "警告",
-        "caution": "小心"
+        "caution": "小心",
       },
-      "copy_as_markdown": "複製 README 為 Markdown 格式"
+      "copy_as_markdown": "複製 README 為 Markdown 格式",
     },
     "provenance_section": {
       "title": "來源",
@@ -294,7 +346,7 @@
       "public_ledger": "公開帳本",
       "transparency_log_entry": "透明度日誌條目",
       "view_more_details": "檢視更多細節",
-      "error_loading": "載入來源詳情失敗"
+      "error_loading": "載入來源詳情失敗",
     },
     "security_downgrade": {
       "title": "信任等級調降",
@@ -304,7 +356,7 @@
       "fallback_install_provenance": "安裝指令已固定在 {version}，這是最後一個具有來源證明 (provenance) 的版本。",
       "fallback_install_trustedPublisher": "安裝指令已固定在 {version}，這是最後一個具有信任發佈 (trusted publishing) 的版本。",
       "provenance_link_text": "來源證明 (provenance)",
-      "trusted_publishing_link_text": "信任發佈 (trusted publishing)"
+      "trusted_publishing_link_text": "信任發佈 (trusted publishing)",
     },
     "keywords_title": "關鍵字",
     "compatibility": "相容性",
@@ -313,7 +365,9 @@
       "published": "發布於",
       "weekly_downloads": "每週下載量",
       "keywords": "關鍵字",
-      "license": "授權"
+      "license": "授權",
+      "select": "選擇套件",
+      "select_maximum": "最多 {count} 個套件可以選擇",
     },
     "versions": {
       "title": "版本",
@@ -328,6 +382,7 @@
       "all_covered": "所有版本均已包含於上方標籤中。",
       "deprecated_title": "{version}（已棄用）",
       "view_all": "檢視全部 {count} 個版本",
+      "view_all_versions": "檢視全部版本",
       "distribution_title": "語義化版本群組",
       "distribution_modal_title": "版本",
       "distribution_range_date_same_year": "從 {from} 至 {to}, {endYear}",
@@ -339,6 +394,7 @@
       "grouping_versions_only_recent": "僅顯示近期版本",
       "grouping_usage_title": "使用量",
       "grouping_usage_all": "全部",
+      "grouping_usage_most_used": "最常使用版本",
       "recent_versions_only_tooltip": "僅顯示過去一年內發布的版本。",
       "show_low_usage_tooltip": "包含總下載量低於 1% 的版本群組。",
       "y_axis_label": "下載量",
@@ -350,8 +406,13 @@
       "no_matches": "沒有符合此範圍的版本",
       "copy_alt": {
         "per_version_analysis": "{version} 版本下載了 {downloads} 次",
-        "general_description": "長條圖呈現 {package_name} 套件在 {date_range_label} 期間、從 {first_version} 到 {last_version} 的 {versions_count} 個 {semver_grouping_mode} 版本下載量。下載量最高的版本是 {max_downloaded_version}，共 {max_version_downloads} 次下載。{per_version_analysis}。{watermark}。"
-      }
+        "general_description": "長條圖呈現 {package_name} 套件在 {date_range_label} 期間、從 {first_version} 到 {last_version} 的 {versions_count} 個 {semver_grouping_mode} 版本下載量。下載量最高的版本是 {max_downloaded_version}，共 {max_version_downloads} 次下載。{per_version_analysis}。{watermark}。",
+      },
+      "page_title": "版本歷史記錄",
+      "current_tags": "當前標籤",
+      "version_filter_placeholder": "篩選版本…",
+      "version_filter_label": "篩選版本",
+      "no_match_filter": "沒有版本符合 {filter}",
     },
     "dependencies": {
       "title": "相依（{count} 個）",
@@ -362,17 +423,17 @@
       "outdated_major": "落後 {count} 個主要版本（最新：{latest}）",
       "outdated_minor": "落後 {count} 個次要版本（最新：{latest}）",
       "outdated_patch": "有可用的修補更新（最新：{latest}）",
-      "has_replacement": "此相依套件有建議的替代方案"
+      "has_replacement": "此相依套件有建議的替代方案",
     },
     "peer_dependencies": {
       "title": "peer 相依（{count} 個）",
       "list_label": "套件 peer 相依",
-      "show_all": "顯示全部 {count} 個 peer 相依"
+      "show_all": "顯示全部 {count} 個 peer 相依",
     },
     "optional_dependencies": {
       "title": "選用相依（{count} 個）",
       "list_label": "套件選用相依",
-      "show_all": "顯示全部 {count} 個選用相依"
+      "show_all": "顯示全部 {count} 個選用相依",
     },
     "maintainers": {
       "title": "維護者",
@@ -386,7 +447,8 @@
       "cancel_add": "取消新增擁有者",
       "add_owner": "+ 新增擁有者",
       "show_more": "（顯示另外 {count} 個）",
-      "show_less": "（收合）"
+      "show_less": "（收合）",
+      "maintainer_template": "{avatar} {char126}{name}",
     },
     "trends": {
       "granularity": "週期",
@@ -402,6 +464,8 @@
       "download_file": "下載 {fileType}",
       "toggle_annotator": "切換標註工具",
       "toggle_stack_mode": "切換堆疊模式",
+      "open_options": "開啟選項",
+      "close_options": "關閉選項",
       "legend_estimation": "估計值",
       "no_data": "無可用資料",
       "y_axis_label": "{granularity} {facet}",
@@ -411,11 +475,12 @@
       "items": {
         "downloads": "下載次數",
         "likes": "喜歡總數",
-        "contributors": "貢獻者"
+        "contributors": "貢獻者",
       },
       "data_correction": "資料修正",
       "average_window": "平均視窗",
       "smoothing": "平滑化",
+      "prediction": "預估值",
       "known_anomalies": "已知異常",
       "known_anomalies_description": "針對由機器人或 CI 問題造成的已知下載尖峰進行內插修正。",
       "known_anomalies_ranges": "異常區間",
@@ -436,22 +501,25 @@
         "estimations": "最終數值是根據當前週期的部分數據所做的預估值。",
         "compare": "套件下載量比較折線圖：{package_name}。",
         "single_package": "下載 {package} 套件下載量的折線圖。",
-        "general_description": "Y 軸代表下載次數。X 軸代表日期範圍，從 {start_date} 至 {end_date}，以 {granularity} 為時間單位。 {estimation_notice} {packages_analysis}. {watermark}."
+        "general_description": "Y 軸代表下載次數。X 軸代表日期範圍，從 {start_date} 至 {end_date}，以 {granularity} 為時間單位。 {estimation_notice} {packages_analysis}. {watermark}.",
+        "facet_bar_general_description": "水平長條圖: {package} 的 {facet} 對比({description}). {facet_analysis} {watermark}.",
+        "facet_bar_analysis": "{package_name} 值為 {value}."
       }
     },
     "downloads": {
       "title": "每週下載量",
-      "community_distribution": "檢視社群採用分布"
+      "community_distribution": "檢視社群採用分布",
+      "subtitle": "所有版本"
     },
     "install_scripts": {
       "title": "安裝腳本",
       "script_label": "（腳本）",
       "npx_packages": "{count} 個 npx 套件",
-      "currently": "目前 {version}"
+      "currently": "目前 {version}",
     },
     "playgrounds": {
       "title": "試一試",
-      "choose": "選擇 Playground"
+      "choose": "選擇 Playground",
     },
     "metrics": {
       "esm": "支援 ES 模組",
@@ -460,11 +528,11 @@
       "types_label": "型別",
       "types_included": "包含型別",
       "types_available": "由 {package} 提供型別",
-      "no_types": "沒有 TypeScript 型別"
+      "no_types": "沒有 TypeScript 型別",
     },
     "license": {
       "view_spdx": "在 SPDX 上檢視授權條款",
-      "none": "無"
+      "none": "無",
     },
     "vulnerabilities": {
       "tree_found": "在 {packages}/{total} 個套件中發現 {vulns} 個漏洞",
@@ -477,14 +545,14 @@
         "critical": "嚴重",
         "high": "高",
         "moderate": "中等",
-        "low": "低"
+        "low": "低",
       },
-      "fixed_in_title": "已於 {version} 版本修復"
+      "fixed_in_title": "已於 {version} 版本修復",
     },
     "deprecated": {
       "label": "已棄用",
       "tree_found": "{count} 個已棄用的相依套件",
-      "show_all": "顯示全部 {count} 個已棄用的套件"
+      "show_all": "顯示全部 {count} 個已棄用的套件",
     },
     "access": {
       "title": "團隊權限",
@@ -501,36 +569,36 @@
       "permission_label": "權限等級",
       "permission": {
         "read_only": "唯讀",
-        "read_write": "讀寫"
+        "read_write": "讀寫",
       },
       "grant_button": "授權",
       "cancel_grant": "取消授權",
-      "grant_access": "+ 授予團隊權限"
+      "grant_access": "+ 授予團隊權限",
     },
     "list": {
       "filter_label": "篩選套件",
       "filter_placeholder": "篩選套件…",
       "sort_label": "排序套件",
-      "showing_count": "顯示 {total} 個套件中的 {filtered} 個"
+      "showing_count": "顯示 {total} 個套件中的 {filtered} 個",
     },
     "skeleton": {
       "loading": "載入套件詳細資訊",
       "maintainers": "維護者",
       "keywords": "關鍵字",
       "versions": "版本",
-      "dependencies": "相依套件"
+      "dependencies": "相依套件",
     },
     "sort": {
       "downloads": "下載量最多",
       "published": "最近發布",
       "name_asc": "名稱（A-Z）",
-      "name_desc": "名稱（Z-A）"
+      "name_desc": "名稱（Z-A）",
     },
     "size": {
       "b": "{size} B",
       "kb": "{size} kB",
-      "mb": "{size} MB"
-    }
+      "mb": "{size} MB",
+    },
   },
   "connector": {
     "modal": {
@@ -551,8 +619,8 @@
       "warning_text": "這將允許 npmx 存取你的 npm CLI。請只連線到你信任的網站。",
       "connect": "連線",
       "connecting": "連線中…",
-      "auto_open_url": "自動開啟驗證頁面"
-    }
+      "auto_open_url": "自動開啟驗證頁面",
+    },
   },
   "operations": {
     "queue": {
@@ -577,8 +645,8 @@
       "executing": "執行中…",
       "log": "記錄",
       "log_label": "已完成的操作記錄",
-      "remove_from_log": "從記錄中移除"
-    }
+      "remove_from_log": "從記錄中移除",
+    },
   },
   "org": {
     "teams": {
@@ -605,7 +673,7 @@
       "create_button": "建立",
       "no_match": "沒有符合「{query}」的團隊",
       "cancel_create": "取消建立團隊",
-      "create_team": "+ 建立團隊"
+      "create_team": "+ 建立團隊",
     },
     "members": {
       "title": "成員",
@@ -630,13 +698,13 @@
         "all": "全部",
         "developer": "開發者",
         "admin": "管理員",
-        "owner": "擁有者"
+        "owner": "擁有者",
       },
       "team_label": "團隊",
       "no_team": "無團隊",
       "add_button": "新增",
       "cancel_add": "取消新增成員",
-      "add_member": "+ 新增成員"
+      "add_member": "+ 新增成員",
     },
     "public_packages": "{count} 個公開套件",
     "page": {
@@ -648,15 +716,15 @@
       "failed_to_load": "載入組織套件失敗",
       "no_match": "找不到符合「{query}」的套件",
       "not_found": "找不到組織",
-      "not_found_message": "「{'@'}{name}」組織在 npm 上不存在"
-    }
+      "not_found_message": "「{'@'}{name}」組織在 npm 上不存在",
+    },
   },
   "user": {
     "combobox": {
       "add_to_org_hint": "（也會加入組織）",
       "press_enter_to_add": "按 Enter 以新增 {'@'}{username}",
       "default_placeholder": "使用者名稱…",
-      "suggestions_label": "使用者建議"
+      "suggestions_label": "使用者建議",
     },
     "page": {
       "packages_title": "套件",
@@ -664,7 +732,7 @@
       "no_packages_hint": "此使用者可能不存在或沒有公開套件。",
       "failed_to_load": "載入使用者套件失敗",
       "no_match": "找不到符合「{query}」的套件",
-      "filter_placeholder": "篩選 {count} 個套件…"
+      "filter_placeholder": "篩選 {count} 個套件…",
     },
     "orgs_page": {
       "title": "組織",
@@ -678,8 +746,8 @@
       "empty": "找不到組織。",
       "empty_hint": "組織是從你具命名範圍的套件中偵測到的。",
       "count": "{count} 個組織",
-      "packages_count": "{count} 個套件"
-    }
+      "packages_count": "{count} 個套件",
+    },
   },
   "claim": {
     "modal": {
@@ -704,8 +772,8 @@
       "publishing": "發布中…",
       "checking": "正在檢查可用性…",
       "failed_to_check": "檢查名稱可用性失敗",
-      "failed_to_claim": "認領套件失敗"
-    }
+      "failed_to_claim": "認領套件失敗",
+    },
   },
   "code": {
     "files_label": "檔案",
@@ -728,23 +796,25 @@
     "back_to_package": "返回套件",
     "table": {
       "name": "名稱",
-      "size": "大小"
+      "size": "大小",
     },
     "markdown_view_mode": {
       "preview": "預覽",
-      "code": "程式碼"
+      "code": "程式碼",
     },
-    "file_path": "檔案路徑"
+    "file_path": "檔案路徑",
+    "binary_file": "二進位檔案",
+    "binary_rendering_warning": "檔案類型 \"{contentType}\" 不支援預覽。",
   },
   "badges": {
     "provenance": {
       "verified": "已驗證",
       "verified_title": "已驗證來源",
-      "verified_via": "已驗證：透過 {provider} 發布"
+      "verified_via": "已驗證：透過 {provider} 發布",
     },
     "jsr": {
-      "title": "也適用於 JSR"
-    }
+      "title": "也適用於 JSR",
+    },
   },
   "filters": {
     "title": "篩選",
@@ -774,7 +844,7 @@
       "downloads": "下載量",
       "keyword": "關鍵字",
       "security": "安全性",
-      "updated": "最近更新"
+      "updated": "最近更新",
     },
     "download_range": {
       "any": "不限",
@@ -782,20 +852,21 @@
       "100_1k": "100 - 1K",
       "1k_10k": "1K - 10K",
       "10k_100k": "10K - 100K",
-      "gt100k": "> 100K"
+      "gt100k": "> 100K",
     },
     "updated": {
       "any": "不限時間",
       "week": "近一週",
       "month": "近一個月",
       "quarter": "近三個月",
-      "year": "近一年"
+      "year": "近一年",
     },
     "security_options": {
       "all": "所有套件",
       "secure": "無警告",
-      "insecure": "有警告"
+      "insecure": "有警告",
     },
+    "view_selected": "檢視已選擇套件",
     "sort": {
       "label": "排序套件",
       "toggle_direction": "切換排序方向",
@@ -811,7 +882,7 @@
       "quality": "品質",
       "popularity": "受歡迎度",
       "maintenance": "維護程度",
-      "score": "分數"
+      "score": "分數",
     },
     "columns": {
       "title": "欄位",
@@ -829,12 +900,13 @@
       "popularity_score": "受歡迎度分數",
       "maintenance_score": "維護程度分數",
       "combined_score": "總分",
-      "security": "安全性"
+      "security": "安全性",
+      "selection": "選擇套件",
     },
     "view_mode": {
       "label": "檢視模式",
       "cards": "卡片檢視",
-      "table": "表格檢視"
+      "table": "表格檢視",
     },
     "pagination": {
       "mode_label": "分頁模式",
@@ -845,18 +917,18 @@
       "showing": "顯示第 {range} 項，共 {total} 項",
       "previous": "上一頁",
       "next": "下一頁",
-      "nav_label": "分頁"
+      "nav_label": "分頁",
     },
     "count": {
       "showing_filtered": "{count} 個套件中符合 {filtered} 個",
       "showing_all": "{count} 個套件",
-      "showing_paginated": "已顯示 {pageSize} 個，共 {count} 個套件"
+      "showing_paginated": "已顯示 {pageSize} 個，共 {count} 個套件",
     },
     "table": {
       "security_warning": "安全性警告",
       "secure": "安全",
-      "no_packages": "找不到套件"
-    }
+      "no_packages": "找不到套件",
+    },
   },
   "about": {
     "title": "關於",
@@ -867,7 +939,7 @@
       "better_ux_dx": "更好的使用者體驗與開發者體驗",
       "admin_ui": "管理介面",
       "description": "npmx 為 npm 套件註冊表及其工具鏈提供{betterUxDx}。我們提供快速、現代化的介面來探索套件，支援深色模式、鍵盤導覽、程式碼瀏覽，以及與 {jsr} 等替代註冊表連線等功能。",
-      "admin_description": "我們也致力於提供更好的{adminUi}，用於管理你的 npm 套件、團隊與組織——一切都在瀏覽器中完成，並由你本機的 npm CLI 驅動。"
+      "admin_description": "我們也致力於提供更好的{adminUi}，用於管理你的 npm 套件、團隊與組織——一切都在瀏覽器中完成，並由你本機的 npm CLI 驅動。",
     },
     "what_we_are_not": {
       "title": "我們不是什麼",
@@ -882,14 +954,14 @@
         "really": "非常",
         "cool": "棒的",
         "package": "套件",
-        "managers": "管理器"
-      }
+        "managers": "管理器",
+      },
     },
     "sponsors": {
-      "title": "贊助者"
+      "title": "贊助者",
     },
     "oss_partners": {
-      "title": "開源軟體夥伴"
+      "title": "開源軟體夥伴",
     },
     "team": {
       "title": "團隊",
@@ -897,34 +969,38 @@
       "role_steward": "管理者",
       "role_maintainer": "維護者",
       "sponsor": "贊助",
-      "sponsor_aria": "在 GitHub 上贊助 {name}"
+      "sponsor_aria": "在 GitHub 上贊助 {name}",
     },
     "contributors": {
       "title": "{count} 位貢獻者",
       "description": "npmx 完全開源，由令人驚豔的社群貢獻者共同建立。",
       "loading": "正在載入貢獻者…",
       "error": "無法載入貢獻者",
-      "view_profile": "檢視 {name} 的 GitHub 個人檔案"
+      "view_profile": "檢視 {name} 的 GitHub 個人檔案",
     },
     "get_involved": {
       "title": "加入我們",
       "contribute": {
         "title": "做出貢獻",
         "description": "幫助我們改善 npm 體驗。",
-        "cta": "在 GitHub 上檢視"
+        "cta": "在 GitHub 上檢視",
       },
       "community": {
         "title": "加入社群",
         "description": "聊天、提問並分享想法。",
-        "cta": "加入 Discord"
+        "cta": "加入 Discord",
       },
-      "builders": {},
+      "builders": {
+        "title": "幫助建立 npmx",
+        "description": "加入建立者 Discord，參與開發。",
+        "cta": "加入 Builders Discord",
+      },
       "follow": {
         "title": "保持更新",
         "description": "掌握 npmx 的最新動態。",
-        "cta": "在 Bluesky 上關注"
-      }
-    }
+        "cta": "在 Bluesky 上關注",
+      },
+    },
   },
   "account_menu": {
     "connect": "連線",
@@ -936,7 +1012,7 @@
     "connect_npm_cli": "連線到 npm CLI",
     "connect_atmosphere": "連線到 Atmosphere",
     "connecting": "連線中…",
-    "ops": "操作"
+    "ops": "操作",
   },
   "auth": {
     "modal": {
@@ -952,8 +1028,8 @@
       "what_is_atmosphere": "什麼是 Atmosphere 帳戶？",
       "atmosphere_explanation": "{npmx} 使用 {atproto} 為其多項社交功能提供支援，讓使用者真正擁有自己的資料並使用一個帳戶登入所有相容的應用程式。一旦建立帳戶，你便可以使用其他應用程式，例如 {bluesky} 和 {tangled}。",
       "default_input_error": "請輸入有效的 Bluesky 用戶名、DID（去中心化識別） 或完整的 PDS URL",
-      "profile": "個人檔案"
-    }
+      "profile": "個人檔案",
+    },
   },
   "header": {
     "home": "npmx 首頁",
@@ -963,7 +1039,7 @@
       "loading": "載入中…",
       "error": "載入套件失敗",
       "empty": "找不到套件",
-      "view_all": "檢視全部"
+      "view_all": "檢視全部",
     },
     "orgs": "組織",
     "orgs_dropdown": {
@@ -971,8 +1047,8 @@
       "loading": "載入中…",
       "error": "載入組織失敗",
       "empty": "找不到組織",
-      "view_all": "檢視全部"
-    }
+      "view_all": "檢視全部",
+    },
   },
   "compare": {
     "packages": {
@@ -989,7 +1065,9 @@
       "loading": "正在載入套件資料…",
       "error": "載入套件資料失敗。請重試。",
       "empty_title": "選擇要比較的套件",
-      "empty_description": "在上方搜尋並新增至少 2 個套件，以查看它們指標的並排比較。"
+      "empty_description": "在上方搜尋並新增至少 2 個套件，以查看它們指標的並排比較。",
+      "table_view": "表格檢視",
+      "charts_view": "圖表檢視",
     },
     "selector": {
       "search_label": "搜尋套件",
@@ -998,7 +1076,7 @@
       "searching": "搜尋中…",
       "remove_package": "移除 {package}",
       "packages_selected": "已選擇 {count}/{max} 個套件。",
-      "add_hint": "至少新增 2 個套件以進行比較。"
+      "add_hint": "至少新增 2 個套件以進行比較。",
     },
     "no_dependency": {
       "label": "(無相依套件)",
@@ -1007,7 +1085,7 @@
       "tooltip_title": "你可能不需要相依套件",
       "tooltip_description": "試試看不使用套件會如何！這份 {link} 維護了一系列清單，列出可被原生 API 或更簡單的替代方案所取代的套件。",
       "e18e_community": "e18e 社群",
-      "add_column": "在比較中加入「無相依套件」欄位"
+      "add_column": "在比較中加入「無相依套件」欄位",
     },
     "facets": {
       "group_label": "比較維度",
@@ -1023,61 +1101,61 @@
         "performance": "效能",
         "health": "健康度",
         "compatibility": "相容性",
-        "security": "安全與合規"
+        "security": "安全與合規",
       },
       "items": {
         "packageSize": {
           "label": "套件大小",
-          "description": "套件本身大小（未壓縮）"
+          "description": "套件本身大小（未壓縮）",
         },
         "installSize": {
           "label": "安裝大小",
-          "description": "包含所有相依套件的總安裝大小"
+          "description": "包含所有相依套件的總安裝大小",
         },
         "dependencies": {
           "label": "直接相依",
-          "description": "直接相依套件數量"
+          "description": "直接相依套件數量",
         },
         "totalDependencies": {
           "label": "總相依",
-          "description": "包含間接相依的相依套件總數"
+          "description": "包含間接相依的相依套件總數",
         },
         "downloads": {
           "label": "每週下載量",
-          "description": "每週下載次數"
+          "description": "每週下載次數",
         },
         "totalLikes": {
           "label": "喜歡",
-          "description": "喜歡總數"
+          "description": "喜歡總數",
         },
         "lastUpdated": {
           "label": "發布日期",
-          "description": "此版本的發布日期"
+          "description": "此版本的發布日期",
         },
         "deprecated": {
           "label": "已棄用？",
-          "description": "套件是否已棄用"
+          "description": "套件是否已棄用",
         },
         "engines": {
           "label": "引擎",
-          "description": "Node.js 版本需求"
+          "description": "Node.js 版本需求",
         },
         "types": {
           "label": "型別",
-          "description": "TypeScript 型別定義"
+          "description": "TypeScript 型別定義",
         },
         "moduleFormat": {
           "label": "模組格式",
-          "description": "支援 ESM/CJS"
+          "description": "支援 ESM/CJS",
         },
         "license": {
           "label": "授權",
-          "description": "套件授權"
+          "description": "套件授權",
         },
         "vulnerabilities": {
           "label": "漏洞",
-          "description": "已知安全漏洞"
-        }
+          "description": "已知安全漏洞",
+        },
       },
       "values": {
         "any": "不限",
@@ -1088,16 +1166,20 @@
         "types_included": "包含",
         "types_none": "無",
         "vulnerabilities_summary": "{count}（{critical} 嚴重/{high} 高）",
-        "up_to_you": "你來做主！"
+        "up_to_you": "你來做主！",
       },
       "trends": {
-        "title": "每週下載"
-      }
+        "title": "每週下載",
+      },
     },
     "file_changes": "檔案變更",
     "files_count": "{count} 個檔案",
     "lines_hidden": "已隱藏 {count} 行",
+    "file_too_large": "檔案大小過大，無法比較",
+    "file_size_warning": "檔案大小 {size} 超過 250KB，無法比較",
     "compare_versions": "差異",
+    "compare_versions_title": "比較最新版本",
+    "version_selector_title": "比較版本",
     "summary": "摘要",
     "deps_count": "{count} 個相依套件",
     "dependencies": "相依套件",
@@ -1109,7 +1191,7 @@
       "all": "全部（{count}）",
       "added": "新增（{count}）",
       "removed": "刪除（{count}）",
-      "modified": "修改（{count}）"
+      "modified": "修改（{count}）",
     },
     "search_files_placeholder": "搜尋檔案…",
     "no_files_all": "沒有檔案",
@@ -1118,17 +1200,40 @@
     "filter": {
       "added": "新增",
       "removed": "刪除",
-      "modified": "修改"
+      "modified": "修改",
     },
     "files_button": "檔案",
     "select_file_prompt": "請先從側邊欄選擇檔案以檢視差異",
     "close_files_panel": "關閉檔案面板",
-    "filter_files_label": "依變更類型篩選檔案"
+    "filter_files_label": "依變更類型篩選檔案",
   },
   "pds": {
-    "join": {},
-    "server": {},
-    "community": {}
+    "title": "npmx.social",
+    "meta_description": "為 npmx 社群提供的官方 AT Protocol 個人資料伺服器（PDS）。",
+    "join": {
+      "title": "加入社群",
+      "description": "無論您是在 Atmosphere 上建立第一個帳號，還是要遷移現有帳號，這裡都歡迎您。您可以遷移目前的帳號，而不會遺失您的使用者名稱、貼文或跟隨者。",
+      "migrate": "使用 PDS MOOver 工具遷移",
+    },
+    "server": {
+      "title": "伺服器詳細資訊",
+      "location_label": "伺服器位置：",
+      "location_value": "德國紐倫堡",
+      "infrastructure_label": "基礎設施：",
+      "infrastructure_value": "托管於 Hetzner",
+      "privacy_label": "隱私保護：",
+      "privacy_value": "遵循歐盟嚴格的資料保護法規",
+      "learn_more": "瞭解 npmx 如何使用 Atmosphere",
+    },
+    "community": {
+      "title": "誰在這裡",
+      "description": "以下是在 npmx.social 落腳的 {count} 個帳號中的一部分：",
+      "loading": "正在載入 PDS 社群成員⋯⋯",
+      "error": "無法載入 PDS 社群成員。",
+      "empty": "尚無社群成員可顯示。",
+      "view_profile": "查看 {handle} 的個人檔案",
+      "new_accounts": "⋯⋯還有 {count} 個新加入 Atmosphere 的帳號",
+    },
   },
   "privacy_policy": {
     "title": "隱私權政策",
@@ -1137,7 +1242,7 @@
     "cookies": {
       "what_are": {
         "title": "甚麼是 Cookies?",
-        "p1": "Cookies 是你造訪網站時儲存在你設備上的小文本文件。它們的目的是通過記住某些偏好和設置來改善你的瀏覽體驗。"
+        "p1": "Cookies 是你造訪網站時儲存在你設備上的小文本文件。它們的目的是通過記住某些偏好和設置來改善你的瀏覽體驗。",
       },
       "types": {
         "title": "我們使用哪些 Cookies？",
@@ -1149,7 +1254,7 @@
         "cookie_vdpl": "__vdpl",
         "cookie_vdpl_desc": "此 Cookie 由我們的託管服務商 (Vercel) 用於偏斜保護 (Skew Protection)。其目的是確保當你在瀏覽網頁時若有新版本發布，系統能引導你從正確的佈署版本獲取資源。此 Cookie 不具備任何追蹤功能。",
         "cookie_h3": "h3",
-        "cookie_h3_desc": "此為我們的安全工作階段 (Secure Session) Cookie。當你連接 Atmosphere 帳戶時，它會儲存你的 OAuth 存取權杖 (Access Token)。此 Cookie 對於維持你的登入驗證狀態十分重要。"
+        "cookie_h3_desc": "此為我們的安全工作階段 (Secure Session) Cookie。當你連接 Atmosphere 帳戶時，它會儲存你的 OAuth 存取權杖 (Access Token)。此 Cookie 對於維持你的登入驗證狀態十分重要。",
       },
       "local_storage": {
         "title": "本地儲存",
@@ -1157,7 +1262,7 @@
         "bold": "本地儲存空間 (Local Storage)",
         "p2": "此資訊純屬功能性質，僅儲存在你的裝置中，且 {bold2}。我們僅將其用於提升你在本網站的使用體驗。",
         "bold2": "不包含個人資料，亦不會用於追蹤你的行為",
-        "settings": "設定"
+        "settings": "設定",
       },
       "management": {
         "title": "管理 Cookies",
@@ -1166,8 +1271,8 @@
         "p2": "以下是常用瀏覽器的 Cookie 管理說明連結：",
         "chrome": "Google Chrome (在新視窗開啟)",
         "firefox": "Mozilla Firefox (在新視窗開啟)",
-        "edge": "Microsoft Edge (在新視窗開啟)"
-      }
+        "edge": "Microsoft Edge (在新視窗開啟)",
+      },
     },
     "analytics": {
       "title": "分析",
@@ -1178,18 +1283,18 @@
       "li2": "不收集個人識別資訊",
       "li3": "不進行跨網站的使用者追蹤",
       "li4": "所有數據均經過彙整與匿名處理",
-      "p3": "收集的資訊僅限於：頁面網址 (URL)、來源網址 (Referrer)、國家/地區、裝置類型、瀏覽器以及作業系統。這些數據無法用於識別特定個人身分。"
+      "p3": "收集的資訊僅限於：頁面網址 (URL)、來源網址 (Referrer)、國家/地區、裝置類型、瀏覽器以及作業系統。這些數據無法用於識別特定個人身分。",
     },
     "authenticated": {
       "title": "已驗證使用者",
       "p1": "當你將 {bold} 帳戶連結至 npmx 時，我們會將你的 OAuth 存取權杖 (Access Token) 儲存在安全的 HTTP-only 工作階段 Cookie 中。此權杖僅用於代表你進行請求驗證。",
       "bold": "Atmosphere",
       "p2": "我們不會儲存你的登入驗證資訊，也不會存取超出提供功能所需範圍外的任何資料。你可以隨時從 {settings} 頁面取消連結你的帳戶。",
-      "settings": "設定"
+      "settings": "設定",
     },
     "data_retention": {
       "title": "資料保留",
-      "p1": "當你關閉瀏覽器或在一段時間未操作後，工作階段 (Session) Cookie 將會自動刪除。本地儲存 (Local storage) 的偏好設定則會保留在你的裝置中，直到你清除瀏覽器數據為止。分析數據則以彙整形式保留，且不會與個別使用者產生關聯。"
+      "p1": "當你關閉瀏覽器或在一段時間未操作後，工作階段 (Session) Cookie 將會自動刪除。本地儲存 (Local storage) 的偏好設定則會保留在你的裝置中，直到你清除瀏覽器數據為止。分析數據則以彙整形式保留，且不會與個別使用者產生關聯。",
     },
     "your_rights": {
       "title": "你的權利",
@@ -1198,17 +1303,17 @@
       "li2": "隨時清除你的本地儲存空間 (Local Storage) 與 Cookies",
       "li3": "中斷你的已驗證工作階段 (Authenticated Session)",
       "li4": "向我們索取數據處理的相關資訊",
-      "p2": "由於我們不收集個人資料，因此通常沒有可供刪除或匯出的個人資訊。"
+      "p2": "由於我們不收集個人資料，因此通常沒有可供刪除或匯出的個人資訊。",
     },
     "contact": {
       "title": "聯絡我們",
       "p1": "若對本隱私權政策有任何疑問或疑慮，歡迎在我們的 {link} 建立 Issue 與我們聯絡。",
-      "link": "GitHub 儲存庫"
+      "link": "GitHub 儲存庫",
     },
     "changes": {
       "title": "政策變更",
-      "p1": "我們可能會不定期更新本隱私權政策。任何變更都將發布於本頁面，並標明更新日期。"
-    }
+      "p1": "我們可能會不定期更新本隱私權政策。任何變更都將發布於本頁面，並標明更新日期。",
+    },
   },
   "a11y": {
     "title": "無障礙網站",
@@ -1218,7 +1323,7 @@
       "title": "我們的理念",
       "p1": "我們致力於遵循《網頁內容無障礙設計指引》(WCAG) 2.2，並在開發功能時將其作為參考。我們並未聲明完全符合 WCAG 的任何等級 —— 網站無障礙化是持續性的工作，我們會不斷努力改進。",
       "p2": "本網站是一個 {about}。 無障礙設計會隨日常開發逐步改善。",
-      "about_link": "開源且由社群驅動的專案"
+      "about_link": "開源且由社群驅動的專案",
     },
     "measures": {
       "title": "具體措施",
@@ -1228,16 +1333,22 @@
       "li3": "支援全介面的鍵盤操作導覽。",
       "li4": "尊重瀏覽器的「減少動態效果」與「色彩配置」設定。",
       "li5": "設計時考量足夠的色彩對比度。",
-      "li6": "確保核心內容在停用 JavaScript 的情況下仍可閱讀，但部分互動功能仍需啟用才能運作。"
+      "li6": "確保核心內容在停用 JavaScript 的情況下仍可閱讀，但部分互動功能仍需啟用才能運作。",
     },
     "limitations": {
       "title": "已知局限",
-      "p1": "網站的部分區域 —— 尤其是像套件 README 等第三方內容 —— 可能未符合無障礙標準。我們正持續改善這些區域。"
+      "p1": "網站的部分區域 —— 尤其是像套件 README 等第三方內容 —— 可能未符合無障礙標準。我們正持續改善這些區域。",
     },
     "contact": {
       "title": "意見回饋",
       "p1": "如果您在 {app} 遇到無障礙障礙，請在我們的 {link} 提交 Issue 告知我們。我們非常重視這些報告，並會盡力解決問題。",
-      "link": "GitHub 儲存庫"
-    }
-  }
+      "link": "GitHub 儲存庫",
+    },
+  },
+  "action_bar": {
+    "title": "操作列",
+    "selection": "已選擇 0 個套件 | 已選擇 1 個套件 | {count} 個套件",
+    "shortcut": "按 \"{key}\" 以聚焦操作",
+    "button_close_aria_label": "關閉操作列",
+  },
 }
