@@ -44,7 +44,7 @@ describe('PackageMetricsBadges', () => {
 
     const text = wrapper.text()
     expect(text).toContain('WASM')
-    expect(text).not.toContain('Types')
+    expect(text).not.toContain('ESM')
   })
 
   it('does not render the CJS label when no CJS', async () => {
