@@ -23,14 +23,25 @@ const highlightedIndex = shallowRef(-1)
 const dropdownPosition = shallowRef<{ top: number; left: number } | null>(null)
 
 const menuId = 'download-menu'
-const menuItems = computed(() => [
-  { id: 'package', icon: 'i-lucide:package', disabled: false },
-  {
-    id: 'dependencies',
-    icon: props.dependenciesLoading ? 'i-lucide:loader-circle' : 'i-lucide:list-tree',
-    disabled: props.dependenciesLoading || !props.dependencies?.length,
-  },
-])
+const menuItems = computed(() => {
+  const items: { id: string; icon: string; disabled: boolean }[] = [
+    { id: 'package', icon: 'i-lucide:package', disabled: false },
+  ]
+  if (props.dependenciesLoading) {
+    items.push({
+      id: 'dependencies',
+      icon: 'i-lucide:loader-circle',
+      disabled: true,
+    })
+  } else if (props.dependencies?.length) {
+    items.push({
+      id: 'dependencies',
+      icon: 'i-lucide:list-tree',
+      disabled: false,
+    })
+  }
+  return items
+})
 
 const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
 
