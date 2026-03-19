@@ -84,7 +84,11 @@ const compactNumberFormatter = useCompactNumberFormatter()
       v-if="isColumnVisible('downloads')"
       class="py-2 px-3 font-mono text-xs text-fg-muted text-end tabular-nums"
     >
-      {{ result.downloads?.weekly ? compactNumberFormatter.format(result.downloads.weekly) : '-' }}
+      {{
+        result.downloads?.weekly !== undefined
+          ? compactNumberFormatter.format(result.downloads.weekly)
+          : '-'
+      }}
     </td>
 
     <!-- Updated -->
