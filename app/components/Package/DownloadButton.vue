@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { SlimPackumentVersion, InstallSizeResult } from '#shared/types'
-import { onClickOutside, useEventListener } from '@vueuse/core'
+import { onClickOutside, useEventListener, useMediaQuery } from '@vueuse/core'
 
 const props = withDefaults(
   defineProps<{
@@ -18,10 +18,10 @@ const triggerRef = useTemplateRef('triggerRef')
 const listRef = useTemplateRef('listRef')
 const isOpen = shallowRef(false)
 const highlightedIndex = shallowRef(-1)
-const dropdownPosition = shallowRef<{ top: number; right: number } | null>(null)
+const dropdownPosition = shallowRef<{ top: number; left: number } | null>(null)
 
 const { t } = useI18n()
-const menuId = `${useId()}-download-menu`
+const menuId = 'download-menu'
 const menuItems = computed(() => {
   const items = [{ id: 'package', label: t('package.download.package'), icon: 'i-lucide:package' }]
   if (props.installSize) {
@@ -34,11 +34,13 @@ const menuItems = computed(() => {
   return items
 })
 
+const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
+
 function getDropdownStyle(): Record<string, string> {
   if (!dropdownPosition.value) return {}
   return {
     top: `${dropdownPosition.value.top}px`,
-    right: `${document.documentElement.clientWidth - dropdownPosition.value.right}px`,
+    left: `${dropdownPosition.value.left}px`,
   }
 }
 
@@ -50,7 +52,7 @@ function toggle() {
     if (rect) {
       dropdownPosition.value = {
         top: rect.bottom + 4,
-        right: rect.right,
+        left: rect.left,
       }
     }
     isOpen.value = true
@@ -200,36 +202,40 @@ defineOptions({
   >
     {{ $t('package.download.button') }}
     <span
-      class="i-lucide:chevron-down ms-1 transition-transform duration-200 motion-reduce:transition-none"
-      :class="[size === 'small' ? 'w-3 h-3' : 'w-3.5 h-3.5', { 'rotate-180': isOpen }]"
+      class="i-lucide:chevron-down ms-1"
+      :class="[
+        size === 'small' ? 'w-3 h-3' : 'w-3.5 h-3.5',
+        { 'rotate-180': isOpen },
+        prefersReducedMotion ? '' : 'transition-transform duration-200',
+      ]"
       aria-hidden="true"
     />
   </ButtonBase>
 
   <Teleport to="body">
     <Transition
-      enter-active-class="transition-opacity duration-150 motion-reduce:duration-0"
-      enter-from-class="opacity-0"
+      :enter-active-class="prefersReducedMotion ? '' : 'transition-opacity duration-150'"
+      :enter-from-class="prefersReducedMotion ? '' : 'opacity-0'"
       enter-to-class="opacity-100"
-      leave-active-class="transition-opacity duration-100 motion-reduce:duration-0"
+      :leave-active-class="prefersReducedMotion ? '' : 'transition-opacity duration-100'"
       leave-from-class="opacity-100"
-      leave-to-class="opacity-0"
+      :leave-to-class="prefersReducedMotion ? '' : 'opacity-0'"
     >
-      <div
+      <ul
         v-if="isOpen"
         :id="menuId"
         ref="listRef"
         role="menu"
+        :aria-label="$t('package.download.button')"
         :style="getDropdownStyle()"
-        class="fixed bg-bg-subtle border border-border rounded-md shadow-lg z-50 py-1 w-64 overscroll-contain"
+        class="fixed bg-bg-subtle border border-border rounded-md shadow-lg z-50"
         @keydown="handleKeydown"
       >
-        <button
+        <li
           v-for="(item, index) in menuItems"
           :key="item.id"
           role="menuitem"
-          type="button"
-          class="w-full flex items-center gap-2 px-3 py-2 text-sm text-fg-muted transition-colors duration-150"
+          class="cursor-pointer flex items-center gap-2 px-3 py-1.5 text-sm text-fg-muted transition-colors duration-150"
           :class="[
             highlightedIndex === index
               ? 'bg-bg-elevated text-fg'
@@ -240,8 +246,8 @@ defineOptions({
         >
           <span :class="item.icon" class="w-4 h-4" aria-hidden="true" />
           {{ item.label }}
-        </button>
-      </div>
+        </li>
+      </ul>
     </Transition>
   </Teleport>
 </template>

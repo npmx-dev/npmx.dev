@@ -153,7 +153,7 @@ export async function resolveDependencyTree(
         if (!matchesPlatform(versionData)) return
 
         const size = (versionData.dist as { unpackedSize?: number })?.unpackedSize ?? 0
-        const tarballUrl = versionData.dist.tarball
+        const tarballUrl = versionData.dist?.tarball ?? ''
         const key = `${name}@${version}`
 
         // Build path for this package (path to parent + this package with version)

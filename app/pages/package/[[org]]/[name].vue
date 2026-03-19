@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { assertValidPackageName } from '#shared/utils/npm'
-import { usePackageHeaderHeight } from '~/composables/usePackageHeaderHeight'
-import { useRepositoryUrl } from '~/composables/useRepositoryUrl'
-import { useViewOnGitProvider } from '~/composables/useViewOnGitProvider'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
 
 defineOgImageComponent('Package', {
