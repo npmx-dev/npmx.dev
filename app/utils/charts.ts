@@ -890,9 +890,15 @@ export function createSeededSvgPattern(
   const minimumSize = options?.minimumSize ?? 8
   const maximumSize = options?.maximumSize ?? 20
 
-  if (minimumSize <= 0 || maximumSize <= 0 || minimumSize > maximumSize) {
+  if (
+    !Number.isFinite(minimumSize) ||
+    !Number.isFinite(maximumSize) ||
+    minimumSize <= 0 ||
+    maximumSize <= 0 ||
+    minimumSize > maximumSize
+  ) {
     throw new RangeError(
-      'minimumSize and maximumSize must be positive, and minimumSize must not exceed maximumSize',
+      'minimumSize and maximumSize must be finite, positive, and minimumSize must not exceed maximumSize',
     )
   }
 
