@@ -145,7 +145,7 @@ function getCodeUrl(version: string): string {
             @click="showOptions = !showOptions"
           >
             <span class="i-lucide:settings w-3.5 h-3.5" />
-            Options
+            {{ $t('compare.viewer.options') }}
             <span
               class="i-lucide:chevron-down w-3 h-3 transition-transform"
               :class="{ 'rotate-180': showOptions }"
@@ -298,7 +298,7 @@ function getCodeUrl(version: string): string {
           class="px-2 py-1 text-xs text-fg-muted hover:text-fg bg-bg-muted border border-border rounded transition-colors"
           target="_blank"
         >
-          View file
+          {{ $t('compare.viewer.view_file') }}
         </NuxtLink>
       </div>
     </div>
@@ -335,7 +335,7 @@ function getCodeUrl(version: string): string {
             :to="getCodeUrl(toVersion)"
             class="text-xs text-fg-muted hover:text-fg underline"
           >
-            View in code browser
+            {{ $t('compare.viewer.view_in_code_browser') }}
           </NuxtLink>
         </div>
       </div>
@@ -345,7 +345,7 @@ function getCodeUrl(version: string): string {
         v-else-if="diff && diff.hunks.length === 0"
         class="py-8 text-center text-fg-muted text-sm"
       >
-        No content changes detected
+        {{ $t('compare.viewer.no_content_changes') }}
       </div>
 
       <!-- Diff content -->
