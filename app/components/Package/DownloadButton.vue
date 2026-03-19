@@ -243,7 +243,11 @@ defineOptions({
           @mouseenter="highlightedIndex = index"
         >
           <span :class="item.icon" class="w-4 h-4" aria-hidden="true" />
-          {{ item.id === 'package' ? $t('package.download.package') : $t('package.download.dependencies') }}
+          {{
+            item.id === 'package'
+              ? $t('package.download.package')
+              : $t('package.download.dependencies')
+          }}
         </li>
       </ul>
     </Transition>
