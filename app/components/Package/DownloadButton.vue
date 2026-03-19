@@ -21,7 +21,7 @@ const highlightedIndex = shallowRef(-1)
 const dropdownPosition = shallowRef<{ top: number; right: number } | null>(null)
 
 const { t } = useI18n()
-const menuId = 'download-menu'
+const menuId = `${useId()}-download-menu`
 const menuItems = computed(() => {
   const items = [{ id: 'package', label: t('package.download.package'), icon: 'i-lucide:package' }]
   if (props.installSize) {
@@ -177,8 +177,6 @@ function downloadDependenciesScript() {
   URL.revokeObjectURL(url)
 }
 
-const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
-
 useEventListener('scroll', () => isOpen.value && close(), { passive: true })
 
 defineOptions({
@@ -202,11 +200,10 @@ defineOptions({
   >
     {{ $t('package.download.button') }}
     <span
-      class="i-lucide:chevron-down ms-1"
+      class="i-lucide:chevron-down ms-1 transition-transform duration-200 motion-reduce:transition-none"
       :class="[
         size === 'small' ? 'w-3 h-3' : 'w-3.5 h-3.5',
         { 'rotate-180': isOpen },
-        prefersReducedMotion ? '' : 'transition-transform duration-200',
       ]"
       aria-hidden="true"
     />
@@ -214,12 +211,12 @@ defineOptions({
 
   <Teleport to="body">
     <Transition
-      :enter-active-class="prefersReducedMotion ? '' : 'transition-opacity duration-150'"
-      :enter-from-class="prefersReducedMotion ? '' : 'opacity-0'"
+      enter-active-class="transition-opacity duration-150 motion-reduce:duration-0"
+      enter-from-class="opacity-0"
       enter-to-class="opacity-100"
-      :leave-active-class="prefersReducedMotion ? '' : 'transition-opacity duration-100'"
+      leave-active-class="transition-opacity duration-100 motion-reduce:duration-0"
       leave-from-class="opacity-100"
-      :leave-to-class="prefersReducedMotion ? '' : 'opacity-0'"
+      leave-to-class="opacity-0"
     >
       <div
         v-if="isOpen"
