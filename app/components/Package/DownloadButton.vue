@@ -153,36 +153,70 @@ async function downloadPackage() {
 function downloadDependenciesScript() {
   if (!props.dependencies?.length) return
 
-  const lines = [
-    '#!/bin/bash',
-    `# Download dependencies for ${props.packageName}@${props.version.version}`,
-    'mkdir -p node_modules',
-    '',
-  ]
+  const tarballs: { name: string; version: string; url: string }[] = []
 
-  // Add root package
   const rootTarball = props.version.dist.tarball
   if (rootTarball) {
-    lines.push(`# ${props.packageName}@${props.version.version}`)
-    lines.push(
-      `curl -L "${rootTarball}" -o "${props.packageName.replace(/\//g, '__')}-${props.version.version}.tgz"`,
-    )
+    tarballs.push({ name: props.packageName, version: props.version.version, url: rootTarball })
   }
 
-  // Add dependencies
   props.dependencies.forEach(dep => {
     if (!dep.tarballUrl) return
-    lines.push(`# ${dep.name}@${dep.version}`)
-    lines.push(
-      `curl -L "${dep.tarballUrl}" -o "${dep.name.replace(/\//g, '__')}-${dep.version}.tgz"`,
-    )
+    tarballs.push({ name: dep.name, version: dep.version, url: dep.tarballUrl })
   })
 
-  const blob = new Blob([lines.join('\n')], { type: 'text/x-shellscript' })
+  const sanitize = (name: string) => name.replace(/\//g, '__')
+
+  // Node.js script — works on all platforms
+  const lines = [
+    '#!/usr/bin/env node',
+    `// Download dependencies for ${props.packageName}@${props.version.version}`,
+    '// Run: node <filename>',
+    '',
+    "const { mkdirSync, createWriteStream } = require('fs');",
+    "const https = require('https');",
+    "const http = require('http');",
+    "const { basename } = require('path');",
+    '',
+    "const dir = 'tarballs';",
+    'mkdirSync(dir, { recursive: true });',
+    '',
+    'const tarballs = [',
+    ...tarballs.map(t => `  { name: '${t.name}', version: '${t.version}', url: '${t.url}' },`),
+    '];',
+    '',
+    'function download(url, dest) {',
+    '  return new Promise((resolve, reject) => {',
+    "    const client = url.startsWith('https') ? https : http;",
+    '    client.get(url, (res) => {',
+    '      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {',
+    '        return download(res.headers.location, dest).then(resolve, reject);',
+    '      }',
+    '      if (res.statusCode !== 200) {',
+    '        return reject(new Error(`HTTP ${res.statusCode} for ${url}`));',
+    '      }',
+    '      const file = createWriteStream(dest);',
+    "      res.pipe(file).on('finish', () => file.close(resolve));",
+    '    }).on("error", reject);',
+    '  });',
+    '}',
+    '',
+    '(async () => {',
+    '  for (const t of tarballs) {',
+    "    const filename = `${t.name.replace(/\\//g, '__')}-${t.version}.tgz`;",
+    '    const dest = `${dir}/${filename}`;',
+    '    console.log(`Downloading ${t.name}@${t.version}...`);',
+    '    await download(t.url, dest);',
+    '  }',
+    '  console.log(`Done! ${tarballs.length} tarball(s) saved to ${dir}/`);',
+    '})();',
+  ]
+
+  const blob = new Blob([lines.join('\n')], { type: 'application/javascript' })
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
-  link.download = `download-${props.packageName.replace(/\//g, '__')}-deps.sh`
+  link.download = `download-${sanitize(props.packageName)}-deps.js`
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)
