@@ -4266,6 +4266,9 @@
             }
           },
           "additionalProperties": false
+        },
+        "rate_limit_ungh": {
+          "type": "string"
         }
       },
       "additionalProperties": false
