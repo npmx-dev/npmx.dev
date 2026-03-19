@@ -1,3 +1,5 @@
+import type { NpmSearchResult, PackageMetaResponse, SearchResponse } from '#shared/types'
+
 export function metaToSearchResult(meta: PackageMetaResponse): NpmSearchResult {
   return {
     package: {
@@ -18,19 +20,14 @@ export function metaToSearchResult(meta: PackageMetaResponse): NpmSearchResult {
   }
 }
 
-export function emptySearchResponse(): NpmSearchResponse {
+export function emptySearchResponse(): SearchResponse {
   return {
     objects: [],
+    totalUnlimited: 0,
     total: 0,
     isStale: false,
     time: new Date().toISOString(),
   }
-}
-
-export interface SearchSuggestion {
-  type: 'user' | 'org'
-  name: string
-  exists: boolean
 }
 
 export type SuggestionIntent = 'user' | 'org' | 'both' | null

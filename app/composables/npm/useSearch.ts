@@ -1,10 +1,21 @@
-function emptySearchPayload() {
-  return {
-    searchResponse: emptySearchResponse(),
-    suggestions: [] as SearchSuggestion[],
-    packageAvailability: null as { name: string; available: boolean } | null,
-  }
-}
+import type {
+  NpmSearchResponse,
+  NpmSearchResult,
+  SearchProvider,
+  SearchResponse,
+  SearchResult,
+  SearchSuggestion,
+} from '#shared/types'
+import type { AlgoliaMultiSearchChecks } from './useAlgoliaSearch'
+import { emptySearchResponse, parseSuggestionIntent } from './search-utils'
+import { isValidNewPackageName, checkPackageExists } from '~/utils/package-name'
+
+export const SEARCH_ENGINE_HITS_LIMIT: Record<SearchProvider, number> = {
+  algolia: 1000,
+  npm: 5000,
+} as const
+
+const DEFAULT_INITIAL_SEARCH_LIMIT = 25
 
 export interface SearchOptions {
   size?: number
@@ -17,6 +28,14 @@ export interface UseSearchConfig {
    * npm runs them as separate API calls in parallel.
    */
   suggestions?: boolean
+}
+
+interface SearchResponseCache {
+  query: string
+  provider: SearchProvider
+  objects: NpmSearchResult[]
+  totalUnlimited: number
+  total: number
 }
 
 export function useSearch(
@@ -32,12 +51,7 @@ export function useSearch(
     checkUserExists: checkUserNpm,
   } = useNpmSearch()
 
-  const cache = shallowRef<{
-    query: string
-    provider: SearchProvider
-    objects: NpmSearchResult[]
-    total: number
-  } | null>(null)
+  const cache = shallowRef<SearchResponseCache | null>(null)
 
   const isLoadingMore = shallowRef(false)
   const isRateLimited = shallowRef(false)
@@ -47,6 +61,42 @@ export function useSearch(
   const packageAvailability = shallowRef<{ name: string; available: boolean } | null>(null)
   const existenceCache = shallowRef<Record<string, boolean>>({})
   const suggestionRequestId = shallowRef(0)
+
+  function setCache(objects: NpmSearchResult[] | null, total: number = 0): void {
+    if (objects === null) {
+      cache.value = null
+      return
+    }
+
+    const provider = toValue(searchProvider)
+
+    cache.value = {
+      query: toValue(query),
+      provider,
+      objects,
+      totalUnlimited: total,
+      total: Math.min(total, SEARCH_ENGINE_HITS_LIMIT[provider]),
+    }
+  }
+
+  function prepareSearchResponse(response: NpmSearchResponse | SearchResponse): SearchResponse {
+    const totalUnlimited: number =
+      'totalUnlimited' in response ? response.totalUnlimited : response.total
+
+    return {
+      ...response,
+      totalUnlimited,
+      total: Math.min(totalUnlimited, SEARCH_ENGINE_HITS_LIMIT[toValue(searchProvider)]),
+    }
+  }
+
+  function emptySearchPayload(): SearchResult {
+    return {
+      searchResponse: emptySearchResponse(),
+      suggestions: [],
+      packageAvailability: null,
+    }
+  }
 
   /**
    * Determine which extra checks to include in the Algolia multi-search.
@@ -136,7 +186,7 @@ export function useSearch(
     suggestionsLoading.value = false
   }
 
-  const asyncData = useLazyAsyncData(
+  const asyncData = useLazyAsyncData<SearchResult>(
     () => `search:${toValue(searchProvider)}:${toValue(query)}`,
     async (_nuxtApp, { signal }) => {
       const q = toValue(query)
@@ -148,14 +198,18 @@ export function useSearch(
       }
 
       const opts = toValue(options)
-      cache.value = null
+      setCache(null)
 
       if (provider === 'algolia') {
         const checks = config.suggestions ? buildAlgoliaChecks(q) : undefined
 
         if (config.suggestions) {
           suggestionsLoading.value = true
-          const result = await algoliaMultiSearch(q, { size: opts.size ?? 25 }, checks)
+          const result = await algoliaMultiSearch(
+            q,
+            { size: opts.size ?? DEFAULT_INITIAL_SEARCH_LIMIT },
+            checks,
+          )
 
           if (q !== toValue(query)) {
             return emptySearchPayload()
@@ -164,13 +218,13 @@ export function useSearch(
           isRateLimited.value = false
           processAlgoliaChecks(q, checks, result)
           return {
-            searchResponse: result.search,
+            searchResponse: prepareSearchResponse(result.search),
             suggestions: suggestions.value,
             packageAvailability: packageAvailability.value,
           }
         }
 
-        const response = await searchAlgolia(q, { size: opts.size ?? 25 })
+        const response = await searchAlgolia(q, { size: opts.size ?? DEFAULT_INITIAL_SEARCH_LIMIT })
 
         if (q !== toValue(query)) {
           return emptySearchPayload()
@@ -178,29 +232,28 @@ export function useSearch(
 
         isRateLimited.value = false
         return {
-          searchResponse: response,
+          searchResponse: prepareSearchResponse(response),
           suggestions: [],
           packageAvailability: null,
         }
       }
 
       try {
-        const response = await searchNpm(q, { size: opts.size ?? 25 }, signal)
+        const response = await searchNpm(
+          q,
+          { size: opts.size ?? DEFAULT_INITIAL_SEARCH_LIMIT },
+          signal,
+        )
 
         if (q !== toValue(query)) {
           return emptySearchPayload()
         }
 
-        cache.value = {
-          query: q,
-          provider,
-          objects: response.objects,
-          total: response.total,
-        }
+        setCache(response.objects, response.total)
 
         isRateLimited.value = false
         return {
-          searchResponse: response,
+          searchResponse: prepareSearchResponse(response),
           suggestions: [],
           packageAvailability: null,
         }
@@ -224,12 +277,12 @@ export function useSearch(
     const provider = toValue(searchProvider)
 
     if (!q) {
-      cache.value = null
+      setCache(null)
       return
     }
 
     if (cache.value && (cache.value.query !== q || cache.value.provider !== provider)) {
-      cache.value = null
+      setCache(null)
       await asyncData.refresh()
       return
     }
@@ -237,12 +290,7 @@ export function useSearch(
     // Seed cache from asyncData for Algolia (which skips cache on initial fetch)
     if (!cache.value && asyncData.data.value) {
       const { searchResponse } = asyncData.data.value
-      cache.value = {
-        query: q,
-        provider,
-        objects: [...searchResponse.objects],
-        total: searchResponse.total,
-      }
+      setCache([...searchResponse.objects], searchResponse.totalUnlimited)
     }
 
     const currentCount = cache.value?.objects.length ?? 0
@@ -264,25 +312,17 @@ export function useSearch(
       if (cache.value && cache.value.query === q && cache.value.provider === provider) {
         const existingNames = new Set(cache.value.objects.map(obj => obj.package.name))
         const newObjects = response.objects.filter(obj => !existingNames.has(obj.package.name))
-        cache.value = {
-          query: q,
-          provider,
-          objects: [...cache.value.objects, ...newObjects],
-          total: response.total,
-        }
+
+        setCache([...cache.value.objects, ...newObjects], response.total)
       } else {
-        cache.value = {
-          query: q,
-          provider,
-          objects: response.objects,
-          total: response.total,
-        }
+        setCache(response.objects, response.total)
       }
 
       if (
         cache.value &&
         cache.value.objects.length < targetSize &&
-        cache.value.objects.length < cache.value.total
+        cache.value.objects.length < cache.value.total &&
+        cache.value.objects.length < SEARCH_ENGINE_HITS_LIMIT[provider] // additional protection from infinite loop
       ) {
         await fetchMore(targetSize)
       }
@@ -304,7 +344,7 @@ export function useSearch(
   watch(
     () => toValue(searchProvider),
     async () => {
-      cache.value = null
+      setCache(null)
       existenceCache.value = {}
       await asyncData.refresh()
       const targetSize = toValue(options).size
@@ -314,19 +354,20 @@ export function useSearch(
     },
   )
 
-  const data = computed<NpmSearchResponse | null>(() => {
+  const data = computed<SearchResponse | null>(() => {
     if (cache.value) {
       return {
         isStale: false,
         objects: cache.value.objects,
         total: cache.value.total,
+        totalUnlimited: cache.value.totalUnlimited,
         time: new Date().toISOString(),
       }
     }
     return asyncData.data.value?.searchResponse ?? null
   })
 
-  const hasMore = computed(() => {
+  const hasMore = computed<boolean>(() => {
     if (!cache.value) return true
     return cache.value.objects.length < cache.value.total
   })

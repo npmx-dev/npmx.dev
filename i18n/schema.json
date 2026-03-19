@@ -225,6 +225,12 @@
         },
         "instant_search_advisory": {
           "type": "string"
+        },
+        "more_results_available_npm": {
+          "type": "string"
+        },
+        "more_results_available_algolia": {
+          "type": "string"
         }
       },
       "additionalProperties": false
