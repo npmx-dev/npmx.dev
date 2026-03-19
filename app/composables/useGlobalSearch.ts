@@ -4,7 +4,7 @@ import { debounce } from 'perfect-debounce'
 // Pages that have their own local filter using ?q
 const pagesWithLocalFilter = new Set(['~username', 'org'])
 
-const SEARCH_DEBOUNCE_MS = 250
+const SEARCH_DEBOUNCE_MS = 100
 
 export function useGlobalSearch(place: 'header' | 'content' = 'content') {
   const { settings } = useSettings()
