@@ -11,7 +11,6 @@ import { handleApiError } from '#server/utils/error-handler'
 const NPM_DOWNLOADS_API = 'https://api.npmjs.org/downloads/point'
 const OSV_QUERY_API = 'https://api.osv.dev/v1/query'
 const BUNDLEPHOBIA_API = 'https://bundlephobia.com/api/size'
-const NPMS_API = 'https://api.npms.io/v2/package'
 
 const SafeStringSchema = v.pipe(v.string(), v.regex(/^[^<>"&]*$/, 'Invalid characters'))
 const SafeColorSchema = v.pipe(
@@ -252,16 +251,6 @@ async function fetchDownloads(
   }
 }
 
-async function fetchNpmsScore(packageName: string) {
-  try {
-    const response = await fetch(`${NPMS_API}/${encodeURIComponent(packageName)}`)
-    const data = await response.json()
-    return data.score
-  } catch {
-    return null
-  }
-}
-
 async function fetchVulnerabilities(packageName: string, version: string): Promise<number> {
   try {
     const response = await fetch(OSV_QUERY_API, {
@@ -394,30 +383,6 @@ const badgeStrategies = {
       value: isDeprecated ? 'deprecated' : 'active',
       color: isDeprecated ? COLORS.red : COLORS.green,
     }
-  },
-
-  'quality': async (pkgData: globalThis.Packument) => {
-    const score = await fetchNpmsScore(pkgData.name)
-    const value = score ? `${Math.round(score.detail.quality * 100)}%` : 'unknown'
-    return { label: 'quality', value, color: COLORS.purple }
-  },
-
-  'popularity': async (pkgData: globalThis.Packument) => {
-    const score = await fetchNpmsScore(pkgData.name)
-    const value = score ? `${Math.round(score.detail.popularity * 100)}%` : 'unknown'
-    return { label: 'popularity', value, color: COLORS.cyan }
-  },
-
-  'maintenance': async (pkgData: globalThis.Packument) => {
-    const score = await fetchNpmsScore(pkgData.name)
-    const value = score ? `${Math.round(score.detail.maintenance * 100)}%` : 'unknown'
-    return { label: 'maintenance', value, color: COLORS.yellow }
-  },
-
-  'score': async (pkgData: globalThis.Packument) => {
-    const score = await fetchNpmsScore(pkgData.name)
-    const value = score ? `${Math.round(score.final * 100)}%` : 'unknown'
-    return { label: 'score', value, color: COLORS.blue }
   },
 }
 
