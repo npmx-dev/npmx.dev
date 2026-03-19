@@ -460,10 +460,10 @@ npmx.dev uses [@nuxtjs/i18n](https://i18n.nuxtjs.org/) for internationalization.
 
 The following scripts help manage translation files. `en.json` is the reference locale.
 
-| Command                        | Description                                                                                                                                                                             |
-| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm i18n:check:fix [locale]` | Adds missing keys to other locales with English placeholders.                                                                                                        |
-| `pnpm i18n:report:fix`         | Removes unused keys from `en.json` and all other locale files.                                                                                                                          |
+| Command                        | Description                                                    |
+| ------------------------------ | -------------------------------------------------------------- |
+| `pnpm i18n:check:fix [locale]` | Adds missing keys to other locales with English placeholders.  |
+| `pnpm i18n:report:fix`         | Removes unused keys from `en.json` and all other locale files. |
 
 ### Adding a new locale
 
