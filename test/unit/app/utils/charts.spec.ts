@@ -15,7 +15,7 @@ import {
   sanitise,
   insertLineBreaks,
   applyEllipsis,
-  createSeedNumber, 
+  createSeedNumber,
   createSeededSvgPattern,
   type TrendLineConfig,
   type TrendLineDataset,

@@ -2159,8 +2159,8 @@ describe('component accessibility audits', () => {
           foregroundColor: 'black',
           fallbackColor: 'transparent',
           maxSize: 24,
-          minSize: 16
-        }
+          minSize: 16,
+        },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])

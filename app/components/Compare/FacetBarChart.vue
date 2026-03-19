@@ -238,7 +238,6 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
     },
   }
 })
-
 </script>
 
 <template>

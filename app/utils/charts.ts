@@ -807,10 +807,9 @@ function createDeterministicRandomGenerator(seedNumber: number): () => number {
     // Second mixing step:
     // - Combine current value with another transformed version of itself
     // - Multiply again to increase entropy and spread bits
-    intermediateValue ^= intermediateValue + Math.imul(
-      intermediateValue ^ (intermediateValue >>> 7),
-      intermediateValue | 61,
-    )
+    intermediateValue ^=
+      intermediateValue +
+      Math.imul(intermediateValue ^ (intermediateValue >>> 7), intermediateValue | 61)
 
     // Final step:
     // - Final XOR with shifted value for additional scrambling
@@ -820,10 +819,7 @@ function createDeterministicRandomGenerator(seedNumber: number): () => number {
   }
 }
 
-function pickValue<T>(
-  values: NonEmptyReadonlyArray<T>,
-  generateRandomNumber: () => number,
-): T {
+function pickValue<T>(values: NonEmptyReadonlyArray<T>, generateRandomNumber: () => number): T {
   const selectedIndex = Math.floor(generateRandomNumber() * values.length)
   const selectedValue = values[selectedIndex]
   if (selectedValue === undefined) {
@@ -924,15 +920,7 @@ export function createSeededSvgPattern(
           opacity,
         ),
         createLineElement(0, tileSize, tileSize, 0, foregroundColor, strokeWidth, opacity),
-        createLineElement(
-          0,
-          tileSize * 2,
-          tileSize * 2,
-          0,
-          foregroundColor,
-          strokeWidth,
-          opacity,
-        ),
+        createLineElement(0, tileSize * 2, tileSize * 2, 0, foregroundColor, strokeWidth, opacity),
       ].join('')
       break
     }
@@ -973,24 +961,8 @@ export function createSeededSvgPattern(
           strokeWidth,
           opacity,
         ),
-        createLineElement(
-          0,
-          0,
-          tileSize,
-          tileSize,
-          foregroundColor,
-          strokeWidth * 0.75,
-          opacity,
-        ),
-        createLineElement(
-          tileSize,
-          0,
-          0,
-          tileSize,
-          foregroundColor,
-          strokeWidth * 0.75,
-          opacity,
-        ),
+        createLineElement(0, 0, tileSize, tileSize, foregroundColor, strokeWidth * 0.75, opacity),
+        createLineElement(tileSize, 0, 0, tileSize, foregroundColor, strokeWidth * 0.75, opacity),
       ].join('')
       break
     }
