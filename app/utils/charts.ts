@@ -878,6 +878,12 @@ export function createSeededSvgPattern(
   const minimumSize = options?.minimumSize ?? 8
   const maximumSize = options?.maximumSize ?? 20
 
+  if (minimumSize <= 0 || maximumSize <= 0 || minimumSize > maximumSize) {
+    throw new RangeError(
+      'minimumSize and maximumSize must be positive, and minimumSize must not exceed maximumSize',
+    )
+  }
+
   const seedNumber = createSeedNumber(normalizedSeed)
   const generateRandomNumber = createDeterministicRandomGenerator(seedNumber)
 
