@@ -1190,7 +1190,11 @@
     "comparing_versions_label": "Comparing versions...",
     "version_back_to_package": "Back to package",
     "version_error_message": "Failed to compare versions.",
-    "version_invalid_url": "Invalid comparison URL. Use format:",
+    "version_invalid_url_format": {
+      "hint": "Invalid comparison URL. Use format: {0}",
+      "from_version": "from",
+      "to_version": "to"
+    },
     "version_selector_title": "Compare with version",
     "summary": "Summary",
     "deps_count": "{count} dep | {count} deps",

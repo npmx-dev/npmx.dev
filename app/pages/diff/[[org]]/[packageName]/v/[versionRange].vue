@@ -134,10 +134,13 @@ useSeoMeta({
 
     <!-- Error: invalid route -->
     <div v-if="!versionRange" class="container py-20 text-center">
-      <p class="text-fg-muted mb-4">
-        {{ $t('compare.version_invalid_url') }}
-        <code class="font-mono text-sm">/diff/package/v/from...to</code>
-      </p>
+      <i18n-t keypath="compare.version_invalid_url_format.hint" tag="p" class="text-fg-muted mb-4">
+        <code class="font-mono text-sm"
+          >/diff/{{ packageName }}/v/{{
+            $t('compare.version_invalid_url_format.from_version')
+          }}...{{ $t('compare.version_invalid_url_format.to_version') }}</code
+        >
+      </i18n-t>
       <NuxtLink :to="packageRoute(packageName)" class="btn">{{
         $t('compare.version_back_to_package')
       }}</NuxtLink>

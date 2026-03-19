@@ -3574,8 +3574,20 @@
         "version_error_message": {
           "type": "string"
         },
-        "version_invalid_url": {
-          "type": "string"
+        "version_invalid_url_format": {
+          "type": "object",
+          "properties": {
+            "hint": {
+              "type": "string"
+            },
+            "from_version": {
+              "type": "string"
+            },
+            "to_version": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
         },
         "version_selector_title": {
           "type": "string"
