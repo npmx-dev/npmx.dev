@@ -2,18 +2,18 @@
 import { useProviderIcon } from '~/composables/useProviderIcon'
 
 definePageMeta({
-  name: 'changes',
-  alias: ['/changes/:org?/:name'],
+  name: 'changelog',
+  alias: ['/changelog/:org?/:name'],
   scrollMargin: 190,
 })
 /// routing
 
-const route = useRoute('changes')
+const route = useRoute('changelog')
 // Parse package name & version
 // Patterns:
-//   /package-changes/nuxt/v/4.2.0 → packageName: "nuxt", version: "4.2.0"
-//   /package-changes/nuxt/v/4.2.0/src/index.ts → packageName: "nuxt", version: "4.2.0"
-//   /package-changes/@nuxt/kit/v/1.0.0 → packageName: "@nuxt/kit", version: "1.0.0"
+//   /package-changelog/nuxt/v/4.2.0 → packageName: "nuxt", version: "4.2.0"
+//   /package-changelog/nuxt/v/4.2.0/src/index.ts → packageName: "nuxt", version: "4.2.0"
+//   /package-changelog/@nuxt/kit/v/1.0.0 → packageName: "@nuxt/kit", version: "1.0.0"
 const parsedRoute = computed(() => {
   const { org, name } = route.params
 
@@ -40,7 +40,7 @@ const { data: version, pending: resolvingPending } = await useResolvedVersion(
 const { data: pkg } = usePackage(packageName, () => version.value ?? requestedVersion.value ?? null)
 
 const versionUrlPattern = computed(() => {
-  return `/package-changes/${packageName.value}/v/{version}`
+  return `/package-changelog/${packageName.value}/v/{version}`
 })
 
 const latestVersion = computed(() => {
@@ -84,7 +84,7 @@ defineOgImageComponent('Default', {
 <template>
   <main class="flex-1 flex flex-col" :style="stickyStyle">
     <PackageHeader
-      page="changes"
+      page="changelog"
       :versionUrlPattern
       :pkg
       :latestVersion

@@ -55,7 +55,7 @@ export function changelogRoute(
 
   if (version) {
     return {
-      name: 'changes-version',
+      name: 'changelog-version',
       params: {
         org,
         name,
@@ -67,7 +67,7 @@ export function changelogRoute(
   }
 
   return {
-    name: 'changes',
+    name: 'changelog',
     params: {
       org,
       name,

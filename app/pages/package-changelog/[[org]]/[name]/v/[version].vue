@@ -2,8 +2,8 @@
 // stub
 
 definePageMeta({
-  name: 'changes-version',
-  alias: ['/changes/:org?/:name/v/:version'],
+  name: 'changelog-version',
+  alias: ['/changelog/:org?/:name/v/:version'],
 })
 </script>
 <template>

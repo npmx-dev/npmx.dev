@@ -14,7 +14,7 @@ const props = defineProps<{
   latestVersion?: SlimVersion | null
   provenanceData?: ProvenanceDetails | null
   provenanceStatus?: string | null
-  page: 'main' | 'docs' | 'code' | 'diff' | 'changes'
+  page: 'main' | 'docs' | 'code' | 'diff' | 'changelog'
   versionUrlPattern: string
 }>()
 
@@ -130,7 +130,7 @@ const { data: changelog } = usePackageChangelog(packageName, requestedVersion)
 const changelogLink = computed((): RouteLocationRaw | null => {
   if (
     // either changelog.value is available or current page is the changelog
-    !(changelog.value || props.page == 'changes') ||
+    !(changelog.value || props.page == 'changelog') ||
     props.pkg == null ||
     props.resolvedVersion == null
   ) {
@@ -456,7 +456,7 @@ const likeAction = async () => {
           :to="changelogLink"
           aria-keyshortcuts="-"
           class="decoration-none border-b-2 p-1 hover:border-accent/50"
-          :class="page === 'changes' ? 'border-accent text-accent!' : 'border-transparent'"
+          :class="page === 'changelog' ? 'border-accent text-accent!' : 'border-transparent'"
         >
           {{ $t('package.links.changelog') }}
         </LinkBase>
