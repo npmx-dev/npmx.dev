@@ -85,7 +85,9 @@ vi.mock('~/composables/useFacetSelection', () => ({
     facetsByCategory: computed(() => {
       const result: Record<string, ReturnType<typeof buildFacetInfo>[]> = {}
       for (const category of CATEGORY_ORDER) {
-        result[category] = FACETS_BY_CATEGORY[category].map(facet => buildFacetInfo(facet))
+        result[category] = FACETS_BY_CATEGORY[category].map((facet: ComparisonFacet) =>
+          buildFacetInfo(facet),
+        )
       }
       return result
     }),
@@ -230,12 +232,21 @@ describe('FacetSelector', () => {
   })
 
   describe('category all/none buttons', () => {
+    function findCategoryActionButton(
+      component: Awaited<ReturnType<typeof mountSuspended>>,
+      category: string,
+      action: 'all' | 'none',
+    ) {
+      return component.find(
+        `button[data-facet-category="${category}"][data-facet-category-action="${action}"]`,
+      )
+    }
+
     it('calls selectCategory when all button is clicked', async () => {
       const component = await mountSuspended(FacetSelector)
 
-      // Find the first 'all' radio (for performance category)
-      const allButton = component.findAll('button[role="radio"]').find(b => b.text() === 'all')
-      await allButton!.trigger('click')
+      const allButton = findCategoryActionButton(component, 'performance', 'all')
+      await allButton.trigger('click')
 
       expect(mockSelectCategory).toHaveBeenCalledWith('performance')
     })
@@ -247,38 +258,64 @@ describe('FacetSelector', () => {
 
       const component = await mountSuspended(FacetSelector)
 
-      // Find the first 'none' radio (for performance category)
-      const noneButton = component.findAll('button[role="radio"]').find(b => b.text() === 'none')
-      await noneButton!.trigger('click')
+      const noneButton = findCategoryActionButton(component, 'performance', 'none')
+      await noneButton.trigger('click')
 
       expect(mockDeselectCategory).toHaveBeenCalledWith('performance')
     })
 
-    it('marks all button as checked when all facets in category are selected', async () => {
+    it('marks all button as aria-disabled when all facets in category are selected', async () => {
       // Select all performance facets
       const performanceFacets: (string | ComparisonFacet)[] = FACETS_BY_CATEGORY.performance.filter(
-        f => !FACET_INFO[f].comingSoon,
+        (f: ComparisonFacet) => !FACET_INFO[f].comingSoon,
       )
       mockSelectedFacets.value = performanceFacets
       mockIsFacetSelected.mockImplementation((f: string) => performanceFacets.includes(f))
 
       const component = await mountSuspended(FacetSelector)
 
-      const allButton = component.findAll('button[role="radio"]').find(b => b.text() === 'all')
-      // First all button (performance) should be checked
-      expect(allButton!.attributes('aria-checked')).toBe('true')
+      const allButton = findCategoryActionButton(component, 'performance', 'all')
+
+      expect(allButton.attributes('aria-disabled')).toBe('true')
     })
 
-    it('marks none button as checked when no facets in category are selected', async () => {
+    it('marks none button as aria-disabled when no facets in category are selected', async () => {
       // Deselect all performance facets
       mockSelectedFacets.value = ['downloads'] // only health facet selected
       mockIsFacetSelected.mockImplementation((f: string) => f === 'downloads')
 
       const component = await mountSuspended(FacetSelector)
 
-      const noneButton = component.findAll('button[role="radio"]').find(b => b.text() === 'none')
-      // First none button (performance) should be checked
-      expect(noneButton!.attributes('aria-checked')).toBe('true')
+      const noneButton = findCategoryActionButton(component, 'performance', 'none')
+
+      expect(noneButton.attributes('aria-disabled')).toBe('true')
+    })
+
+    it('does not call selectCategory when all button action is already fulfilled', async () => {
+      const performanceFacets: (string | ComparisonFacet)[] = FACETS_BY_CATEGORY.performance.filter(
+        (f: ComparisonFacet) => !FACET_INFO[f].comingSoon,
+      )
+      mockSelectedFacets.value = performanceFacets
+      mockIsFacetSelected.mockImplementation((f: string) => performanceFacets.includes(f))
+
+      const component = await mountSuspended(FacetSelector)
+
+      const allButton = findCategoryActionButton(component, 'performance', 'all')
+      await allButton.trigger('click')
+
+      expect(mockSelectCategory).not.toHaveBeenCalled()
+    })
+
+    it('does not call deselectCategory when none button action is already fulfilled', async () => {
+      mockSelectedFacets.value = ['downloads']
+      mockIsFacetSelected.mockImplementation((f: string) => f === 'downloads')
+
+      const component = await mountSuspended(FacetSelector)
+
+      const noneButton = findCategoryActionButton(component, 'performance', 'none')
+      await noneButton.trigger('click')
+
+      expect(mockDeselectCategory).not.toHaveBeenCalled()
     })
   })
 

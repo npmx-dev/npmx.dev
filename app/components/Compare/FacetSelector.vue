@@ -22,52 +22,6 @@ function isCategoryNoneSelected(category: string): boolean {
   const selectableFacets = facets.filter(f => !f.comingSoon)
   return selectableFacets.length > 0 && selectableFacets.every(f => !isFacetSelected(f.id))
 }
-
-function getCategoryActiveControl(category: string): 'all' | 'none' {
-  if (isCategoryAllSelected(category)) return 'all'
-  if (isCategoryNoneSelected(category)) return 'none'
-  return 'all'
-}
-
-function handleCategoryControlKeydown(category: string, event: KeyboardEvent): void {
-  const { key } = event
-
-  if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(key)) return
-
-  event.preventDefault()
-
-  const target = event.currentTarget as HTMLElement | null
-  if (!target) return
-
-  const group = target.closest('[data-facet-category-radiogroup]') as HTMLElement | null
-  if (!group) return
-
-  const radios = Array.from(group.querySelectorAll<HTMLElement>('[role="radio"]'))
-  if (!radios.length) return
-
-  const currentIndex = radios.indexOf(target)
-  if (currentIndex === -1) return
-
-  let nextIndex = currentIndex
-
-  if (key === 'ArrowLeft' || key === 'ArrowUp') {
-    nextIndex = (currentIndex - 1 + radios.length) % radios.length
-  } else if (key === 'ArrowRight' || key === 'ArrowDown') {
-    nextIndex = (currentIndex + 1) % radios.length
-  }
-
-  const nextRadio = radios[nextIndex]
-  if (!nextRadio) return
-  const radioType = nextRadio.dataset.radioType
-
-  if (radioType === 'all') {
-    selectCategory(category)
-  } else if (radioType === 'none') {
-    deselectCategory(category)
-  }
-
-  nextRadio.focus()
-}
 </script>
 
 <template>
@@ -76,9 +30,7 @@ function handleCategoryControlKeydown(category: string, event: KeyboardEvent): v
       <!-- Category header with all/none buttons -->
       <div
         class="flex items-center gap-2 mb-2"
-        role="radiogroup"
         :aria-labelledby="`facet-category-label-${category}`"
-        data-facet-category-radiogroup
       >
         <span
           :id="`facet-category-label-${category}`"
