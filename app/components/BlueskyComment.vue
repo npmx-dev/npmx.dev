@@ -121,7 +121,7 @@ function getHostname(uri: string): string {
       </div>
 
       <!-- Comment text with rich segments -->
-      <p class="text-fg-muted whitespace-pre-wrap">
+      <p class="text-fg-muted whitespace-pre-wrap mt-2 mb-3">
         <template v-for="(segment, i) in processedSegments" :key="i">
           <a
             v-if="segment.url"
@@ -190,7 +190,7 @@ function getHostname(uri: string): string {
       <!-- Like/repost counts -->
       <div
         v-if="comment.likeCount > 0 || comment.repostCount > 0"
-        class="mt-2 flex gap-4 text-sm text-fg-subtle"
+        class="mt-1 flex gap-4 text-sm text-fg-subtle"
       >
         <span v-if="comment.likeCount > 0">
           {{ $t('blog.atproto.like_count', { count: comment.likeCount }, comment.likeCount) }}
