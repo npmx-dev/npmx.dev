@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { mountSuspended } from '@nuxt/test-utils/runtime'
+import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import type { VueWrapper } from '@vue/test-utils'
 import { ref } from 'vue'
 import PackageMetricsBadges from '~/components/Package/MetricsBadges.vue'
@@ -29,6 +29,7 @@ describe('PackageMetricsBadges', () => {
     expect(text).toContain('Types')
     expect(text).toContain('ESM')
     expect(text).toContain('CJS')
+    expect(text).not.toContain('WASM')
   })
 
   it('renders the wasm label', async () => {
@@ -43,5 +44,23 @@ describe('PackageMetricsBadges', () => {
 
     const text = wrapper.text()
     expect(text).toContain('WASM')
+    expect(text).not.toContain('Types')
+  })
+
+  it('does not render the CJS label when no CJS', async () => {
+    mockUsePackageAnalysis.mockReturnValue({
+      data: ref({ moduleFormat: 'esm', types: { kind: 'included' } }),
+      status: ref('success'),
+    })
+
+    wrapper = await mountSuspended(PackageMetricsBadges, {
+      props: { packageName: '@nuxt/kit' },
+    })
+
+    const text = wrapper.text()
+    expect(text).toContain('Types')
+    expect(text).toContain('ESM')
+    expect(text).not.toContain('CJS')
+    expect(text).not.toContain('WASM')
   })
 })
