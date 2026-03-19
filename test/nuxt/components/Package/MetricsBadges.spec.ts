@@ -4,11 +4,11 @@ import type { VueWrapper } from '@vue/test-utils'
 import { ref } from 'vue'
 import PackageMetricsBadges from '~/components/Package/MetricsBadges.vue'
 
-const mockUsePackageAnalysis = vi.fn()
-
-vi.mock('~/composables/usePackageAnalysis', () => ({
-  usePackageAnalysis: mockUsePackageAnalysis,
+const { mockUsePackageAnalysis } = vi.hoisted(() => ({
+  mockUsePackageAnalysis: vi.fn(),
 }))
+
+mockNuxtImport('usePackageAnalysis', () => mockUsePackageAnalysis)
 
 describe('PackageMetricsBadges', () => {
   let wrapper: VueWrapper
@@ -22,7 +22,7 @@ describe('PackageMetricsBadges', () => {
     })
 
     wrapper = await mountSuspended(PackageMetricsBadges, {
-      props: { packageName: 'test-pkg' },
+      props: { packageName: 'ufo' },
     })
 
     const text = wrapper.text()
@@ -38,7 +38,7 @@ describe('PackageMetricsBadges', () => {
     })
 
     wrapper = await mountSuspended(PackageMetricsBadges, {
-      props: { packageName: 'wasm-pkg' },
+      props: { packageName: 'swc-plugin-transform-webpack-context' },
     })
 
     const text = wrapper.text()
