@@ -87,7 +87,7 @@ export function detectModuleFormat(pkg: ExtendedPackageJson): ModuleFormat {
 
     return mainIsCJS ? 'dual' : 'esm'
   }
-  
+
   const mainIsWASM = pkg.main?.endsWith('.wasm')
   if (mainIsWASM) {
     return 'wasm'
