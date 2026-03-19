@@ -47,6 +47,62 @@ test.describe('Compare Page', () => {
     const noDepColumn = grid.locator('.comparison-cell-nodep')
     await expect(noDepColumn).toBeVisible()
   })
+
+  test('loads install-size data for a scoped package', async ({ page, goto }) => {
+    // Intercept the internal API call the browser makes for install-size.
+    // The browser will request /api/registry/install-size/@nuxt%2Fkit (encoded slash).
+    // Before the fix this would fail to parse and return an error; after it returns 200.
+    const installSizeResponse = page.waitForResponse(
+      res =>
+        res.url().includes('/api/registry/install-size/') &&
+        res.url().includes('nuxt') &&
+        res.request().method() === 'GET',
+      { timeout: 20_000 },
+    )
+
+    await goto('/compare?packages=@nuxt/kit,vue', { waitUntil: 'hydration' })
+
+    const response = await installSizeResponse
+    expect(response.status()).toBe(200)
+
+    const body = await response.json()
+    // The API should return a valid install size object, not an error
+    expect(body).toHaveProperty('installSize')
+  })
+
+  test('loads analysis data for a scoped package', async ({ page, goto }) => {
+    const analysisResponse = page.waitForResponse(
+      res =>
+        res.url().includes('/api/registry/analysis/') &&
+        res.url().includes('nuxt') &&
+        res.request().method() === 'GET',
+      { timeout: 20_000 },
+    )
+
+    await goto('/compare?packages=@nuxt/kit,vue', { waitUntil: 'hydration' })
+
+    const response = await analysisResponse
+    expect(response.status()).toBe(200)
+
+    const body = await response.json()
+    expect(body).toHaveProperty('package', '@nuxt/kit')
+  })
+
+  test('compare grid shows data (not all dashes) for a scoped package', async ({
+    page,
+    goto,
+  }) => {
+    await goto('/compare?packages=@nuxt/kit,vue', { waitUntil: 'hydration' })
+
+    const grid = page.locator('.comparison-grid')
+    await expect(grid).toBeVisible({ timeout: 20_000 })
+
+    // Package size row should have a value for the scoped package column,
+    // not a dash, which would indicate the API call failed before the fix.
+    const packageSizeRow = grid.locator('[data-facet="packageSize"]')
+    await expect(packageSizeRow).toBeVisible({ timeout: 15_000 })
+    await expect(packageSizeRow.locator('.comparison-cell').first()).not.toContainText('-')
+  })
 })
 
 test.describe('Search Pages', () => {
