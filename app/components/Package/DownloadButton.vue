@@ -20,14 +20,13 @@ const isOpen = shallowRef(false)
 const highlightedIndex = shallowRef(-1)
 const dropdownPosition = shallowRef<{ top: number; left: number } | null>(null)
 
-const { t } = useI18n()
 const menuId = 'download-menu'
 const menuItems = computed(() => {
-  const items = [{ id: 'package', label: t('package.download.package'), icon: 'i-lucide:package' }]
+  const items = [{ id: 'package', labelKey: 'package.download.package', icon: 'i-lucide:package' }]
   if (props.dependencies?.length) {
     items.push({
       id: 'dependencies',
-      label: t('package.download.dependencies'),
+      labelKey: 'package.download.dependencies',
       icon: 'i-lucide:list-tree',
     })
   }
@@ -245,7 +244,7 @@ defineOptions({
           @mouseenter="highlightedIndex = index"
         >
           <span :class="item.icon" class="w-4 h-4" aria-hidden="true" />
-          {{ item.label }}
+          {{ $t(item.labelKey) }}
         </li>
       </ul>
     </Transition>
