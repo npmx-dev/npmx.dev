@@ -109,7 +109,7 @@ test.describe('badge API', () => {
       expect(body).not.toContain('missing')
     })
 
-    test('types badge shows included badge when types not declared explictly', async ({
+    test('types badge shows included badge when types not declared explicitly', async ({
       page,
       baseURL,
     }) => {
