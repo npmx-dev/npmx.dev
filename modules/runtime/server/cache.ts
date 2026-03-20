@@ -28,6 +28,7 @@ const FIXTURE_PATHS = {
   esmTypes: 'esm-sh:types',
   githubContributors: 'github:contributors.json',
   githubContributorsStats: 'github:contributors-stats.json',
+  jsdelivr: 'jsdelivr',
 } as const
 
 type FixtureType = keyof typeof FIXTURE_PATHS
@@ -158,33 +159,6 @@ function getMockForUrl(url: string): MockResult | null {
               maintenance: 0.75,
             },
           },
-        },
-      }
-    }
-  }
-
-  // jsdelivr CDN - return 404 for README files, etc.
-  if (host === 'cdn.jsdelivr.net') {
-    // Return null data which will cause a 404 - README files are optional
-    return { data: null }
-  }
-
-  // jsdelivr data API - return mock file listing
-  if (host === 'data.jsdelivr.com') {
-    const packageMatch = decodeURIComponent(pathname).match(/^\/v1\/packages\/npm\/(.+)$/)
-    if (packageMatch?.[1]) {
-      const pkgWithVersion = packageMatch[1]
-      const parsed = parseScopedPackageWithVersion(pkgWithVersion)
-      return {
-        data: {
-          type: 'npm',
-          name: parsed.name,
-          version: parsed.version || 'latest',
-          files: [
-            { name: 'package.json', hash: 'abc123', size: 1000 },
-            { name: 'index.js', hash: 'def456', size: 500 },
-            { name: 'README.md', hash: 'ghi789', size: 2000 },
-          ],
         },
       }
     }
@@ -590,7 +564,7 @@ async function handleJsdelivrDataApi(
   const parsed = parseScopedPackageWithVersion(packageMatch[1])
 
   // Try per-package fixture first
-  const fixturePath = `jsdelivr:${parsed.name.replace(/\//g, ':')}.json`
+  const fixturePath = getFixturePath('jsdelivr', parsed.name)
   const fixture = await storage.getItem<unknown>(fixturePath)
   if (fixture) {
     return { data: fixture }
