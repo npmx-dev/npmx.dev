@@ -106,6 +106,21 @@ interface ExportsAnalysis {
   hasTypes: boolean
 }
 
+/**
+ * Fetch @types package info including deprecation status using fast-npm-meta.
+ * Returns undefined if the package doesn't exist.
+ */
+async function fetchTypesPackageInfo(packageName: string): Promise<TypesPackageInfo | undefined> {
+  const result = await getLatestVersion(packageName, { metadata: true, throw: false })
+  if ('error' in result) {
+    return undefined
+  }
+  return {
+    packageName,
+    deprecated: result.deprecated,
+  }
+}
+
 export async function fetchPackageWithTypesAndFiles(
   packageName: string,
   version?: string,
