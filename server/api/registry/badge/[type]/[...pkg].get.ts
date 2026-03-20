@@ -374,7 +374,8 @@ const badgeStrategies = {
   },
 
   'types': async (pkgData: globalThis.Packument, requestedVersion?: string) => {
-    const versionData = requestedVersion ? pkgData.versions?.[requestedVersion] : undefined
+    const targetVersion = requestedVersion ?? getLatestVersion(pkgData)
+    const versionData = targetVersion ? pkgData.versions?.[targetVersion] : undefined
 
     if (versionData && hasBuiltInTypes(versionData)) {
       return { label: 'types', value: 'included', color: COLORS.blue }
