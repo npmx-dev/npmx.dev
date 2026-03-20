@@ -100,6 +100,13 @@ test.describe('badge API', () => {
 
       expect(body).toContain('active')
     })
+
+    test('types badge shows @types badge', async ({ page, baseURL }) => {
+      const url = toLocalUrl(baseURL, '/api/registry/badge/types/is-odd')
+      const { body } = await fetchBadge(page, url)
+
+      expect(body).toContain('@types')
+    })
   })
 
   test('custom labelColor parameter is applied to SVG', async ({ page, baseURL }) => {
