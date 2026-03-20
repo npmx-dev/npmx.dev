@@ -19,7 +19,7 @@ import {
   type TrendLineDataset,
   type VersionsBarConfig,
   type VersionsBarDataset,
-} from '../../../../app/utils/charts'
+} from '~/utils/charts'
 import type { AltCopyArgs } from 'vue-data-ui'
 
 type TranslateCall = { key: string | number; named?: Record<string, unknown> }
@@ -442,30 +442,30 @@ describe('winsorize', () => {
   })
 })
 
+const computeBaseTrend = (rSquared: number | null) => {
+  if (rSquared === null) return 'undefined' as const
+  if (rSquared > 0.75) return 'strong' as const
+  if (rSquared > 0.4) return 'weak' as const
+  return 'none' as const
+}
+
+const buildSeries = (base: number, step: number, noiseAmplitude: number) => {
+  const values: number[] = []
+  for (let i = 0; i < 19; i += 1) {
+    const noise =
+      i % 4 === 0
+        ? noiseAmplitude
+        : i % 4 === 1
+          ? -noiseAmplitude
+          : i % 4 === 2
+            ? Math.floor(noiseAmplitude / 2)
+            : -Math.floor(noiseAmplitude / 2)
+    values.push(base + i * step + noise)
+  }
+  return values
+}
+
 describe('computeLineChartAnalysis', () => {
-  const computeBaseTrend = (rSquared: number | null) => {
-    if (rSquared === null) return 'undefined' as const
-    if (rSquared > 0.75) return 'strong' as const
-    if (rSquared > 0.4) return 'weak' as const
-    return 'none' as const
-  }
-
-  const buildSeries = (base: number, step: number, noiseAmplitude: number) => {
-    const values: number[] = []
-    for (let i = 0; i < 19; i += 1) {
-      const noise =
-        i % 4 === 0
-          ? noiseAmplitude
-          : i % 4 === 1
-            ? -noiseAmplitude
-            : i % 4 === 2
-              ? Math.floor(noiseAmplitude / 2)
-              : -Math.floor(noiseAmplitude / 2)
-      values.push(base + i * step + noise)
-    }
-    return values
-  }
-
   it('returns undefined interpretations for empty array', () => {
     const result = computeLineChartAnalysis([])
     expect(result.mean).toBe(0)

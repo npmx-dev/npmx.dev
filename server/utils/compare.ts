@@ -16,11 +16,11 @@ export function parseVersionRange(versionRange: string): { from: string; to: str
 /** Maximum number of files to include in comparison */
 const MAX_FILES_COMPARE = 1000
 
-function traverse(nodes: PackageFileTree[], result: Map<string, PackageFileTree>) {
+function traverse(nodes: PackageFileTree[], callback: (node: PackageFileTree) => void) {
   for (const node of nodes) {
-    result.set(node.path, node)
+    callback(node)
     if (node.children) {
-      traverse(node.children, result)
+      traverse(node.children, callback)
     }
   }
 }
@@ -29,7 +29,10 @@ function traverse(nodes: PackageFileTree[], result: Map<string, PackageFileTree>
 export function flattenTree(tree: PackageFileTree[]): Map<string, PackageFileTree> {
   const result = new Map<string, PackageFileTree>()
 
-  traverse(tree, result)
+  traverse(tree, node => {
+    result.set(node.path, node)
+  })
+
   return result
 }
 
@@ -212,14 +215,10 @@ export function compareDependencies(
 export function countFiles(tree: PackageFileTree[]): number {
   let count = 0
 
-  function traverse(nodes: PackageFileTree[]) {
-    for (const node of nodes) {
-      if (node.type === 'file') count++
-      if (node.children) traverse(node.children)
-    }
-  }
+  traverse(tree, node => {
+    if (node.type === 'file') count++
+  })
 
-  traverse(tree)
   return count
 }
 

@@ -17,13 +17,10 @@ const pkg = computed(() => props.result.package)
 const score = computed(() => props.result.score)
 
 const updatedDate = computed(() => props.result.package.date)
-
-function formatDownloads(count?: number): string {
-  if (count === undefined) return '-'
-  if (count >= 1_000_000) return `${(count / 1_000_000).toFixed(1)}M`
-  if (count >= 1_000) return `${(count / 1_000).toFixed(1)}K`
-  return count.toString()
-}
+const { isPackageSelected, togglePackageSelection, canSelectMore } = usePackageSelection()
+const isSelected = computed<boolean>(() => {
+  return isPackageSelected(props.result.package.name)
+})
 
 function formatScore(value?: number): string {
   if (value === undefined || value === 0) return '-'
@@ -40,6 +37,8 @@ const allMaintainersText = computed(() => {
   if (!pkg.value.maintainers?.length) return ''
   return pkg.value.maintainers.map(m => m.name || m.email).join(', ')
 })
+
+const compactNumberFormatter = useCompactNumberFormatter()
 </script>
 
 <template>
@@ -48,6 +47,14 @@ const allMaintainersText = computed(() => {
     tabindex="0"
     :data-result-index="index"
   >
+    <td class="ps-3">
+      <PackageSelectionCheckbox
+        :package-name="result.package.name"
+        :disabled="!canSelectMore && !isSelected"
+        :checked="isSelected"
+        @change="togglePackageSelection"
+      />
+    </td>
     <!-- Name (always visible) -->
     <td class="py-2 px-3">
       <NuxtLink
@@ -77,7 +84,11 @@ const allMaintainersText = computed(() => {
       v-if="isColumnVisible('downloads')"
       class="py-2 px-3 font-mono text-xs text-fg-muted text-end tabular-nums"
     >
-      {{ formatDownloads(result.downloads?.weekly) }}
+      {{
+        result.downloads?.weekly !== undefined
+          ? compactNumberFormatter.format(result.downloads.weekly)
+          : '-'
+      }}
     </td>
 
     <!-- Updated -->

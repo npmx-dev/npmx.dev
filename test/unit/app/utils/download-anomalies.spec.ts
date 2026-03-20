@@ -1,10 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { applyBlocklistCorrection } from '../../../../app/utils/download-anomalies'
-import type {
-  MonthlyDataPoint,
-  WeeklyDataPoint,
-  YearlyDataPoint,
-} from '../../../../app/types/chart'
+import { applyBlocklistCorrection } from '~/utils/download-anomalies'
+import type { MonthlyDataPoint, WeeklyDataPoint, YearlyDataPoint } from '~/types/chart'
 
 /** Helper to build a WeeklyDataPoint from a start date and value. */
 function week(weekStart: string, value: number): WeeklyDataPoint {
