@@ -106,6 +106,10 @@ interface ExportsAnalysis {
   hasTypes: boolean
 }
 
+interface AnalysisPackageJson extends ExtendedPackageJson {
+  readme?: string
+}
+
 /**
  * Fetch @types package info including deprecation status using fast-npm-meta.
  * Returns undefined if the package doesn't exist.
