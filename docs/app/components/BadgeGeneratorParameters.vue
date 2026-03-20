@@ -172,45 +172,47 @@ const copyToClipboard = async () => {
     <div class="h-px bg-gray-200 dark:bg-white/5 w-full" />
 
     <div class="grid grid-cols-1 sm:grid-cols-4 gap-6">
-        <div class="flex flex-col gap-1.5">
-            <label class="text-[10px] font-bold uppercase text-gray-400 ml-1">Label Text</label>
-            <div class="relative group">
-            <input
-                v-model="labelText"
-                :disabled="usePkgName"
-                type="text"
-                placeholder="Custom Label"
-                class="w-full px-3 py-2 h-9 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-black/20 text-xs outline-none focus:border-emerald-500 disabled:cursor-not-allowed transition-all"
-                :class="{ 'opacity-50 grayscale pl-3': usePkgName }"
-            />
+      <div class="flex flex-col gap-1.5">
+        <label class="text-[10px] font-bold uppercase text-gray-400 ml-1">Label Text</label>
+        <div class="relative group">
+          <input
+            v-model="labelText"
+            :disabled="usePkgName"
+            type="text"
+            placeholder="Custom Label"
+            class="w-full px-3 py-2 h-9 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-black/20 text-xs outline-none focus:border-emerald-500 disabled:cursor-not-allowed transition-all"
+            :class="{ 'opacity-50 grayscale pl-3': usePkgName }"
+          />
 
-            <transition
-                enter-active-class="transition duration-200 ease-out"
-                enter-from-class="opacity-0 scale-95"
-                enter-to-class="opacity-100 scale-100"
-                leave-active-class="transition duration-150 ease-in"
-                leave-from-class="opacity-100 scale-100"
-                leave-to-class="opacity-0 scale-95"
+          <transition
+            enter-active-class="transition duration-200 ease-out"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-100"
+            leave-active-class="transition duration-150 ease-in"
+            leave-from-class="opacity-100 scale-100"
+            leave-to-class="opacity-0 scale-95"
+          >
+            <div
+              v-if="usePkgName"
+              class="absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none"
             >
-                <div
-                v-if="usePkgName"
-                class="absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none"
-                >
-                <span class="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-500 text-[9px] font-bold uppercase tracking-tighter border border-emerald-500/20">
-                    Auto
-                </span>
-                </div>
-            </transition>
+              <span
+                class="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-500 text-[9px] font-bold uppercase tracking-tighter border border-emerald-500/20"
+              >
+                Auto
+              </span>
             </div>
+          </transition>
         </div>
+      </div>
 
       <div class="flex flex-col gap-1.5">
         <label class="text-[10px] font-bold uppercase text-gray-400 ml-1">Badge Value</label>
         <input
-        v-model="badgeValue"
-        type="text"
-        placeholder="Override Value"
-        class="px-3 py-2 h-9 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-black/20 text-xs outline-none focus:border-emerald-500 transition-all"
+          v-model="badgeValue"
+          type="text"
+          placeholder="Override Value"
+          class="px-3 py-2 h-9 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-black/20 text-xs outline-none focus:border-emerald-500 transition-all"
         />
       </div>
 
