@@ -6,7 +6,7 @@ import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import { CACHE_MAX_AGE_ONE_HOUR, ERROR_NPM_FETCH_FAILED } from '#shared/utils/constants'
 import { fetchNpmPackage } from '#server/utils/npm'
 import { assertValidPackageName } from '#shared/utils/npm'
-import { detectTypesStatus } from '#server/utils/package-analysis'
+import { detectTypesStatus } from '#shared/utils/package-analysis'
 import { handleApiError } from '#server/utils/error-handler'
 
 const NPM_DOWNLOADS_API = 'https://api.npmjs.org/downloads/point'
