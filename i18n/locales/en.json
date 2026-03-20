@@ -96,6 +96,7 @@
     },
     "draft_badge": "Draft",
     "draft_banner": "This is an unpublished draft. It may be incomplete or contain inaccuracies.",
+    "no_posts": "No posts found.",
     "atproto": {
       "view_on_bluesky": "View on Bluesky",
       "reply_on_bluesky": "Reply on Bluesky",
@@ -208,7 +209,9 @@
       "radicle": "View on Radicle",
       "sourcehut": "View on SourceHut",
       "tangled": "View on Tangled"
-    }
+    },
+    "collapse": "Collapse",
+    "expand": "Expand"
   },
   "profile": {
     "display_name": "Display Name",
@@ -287,7 +290,8 @@
         "refs": "{count} ref | {count} refs",
         "assets": "{count} asset | {count} assets"
       },
-      "view_source": "View source"
+      "view_source": "View source",
+      "skills_cli": "skills CLI"
     },
     "links": {
       "main": "main",
@@ -391,9 +395,11 @@
       "grouping_major": "Major",
       "grouping_minor": "Minor",
       "grouping_versions_title": "Versions",
+      "grouping_versions_about": "About version grouping",
       "grouping_versions_all": "All",
       "grouping_versions_only_recent": "Only recent",
       "grouping_usage_title": "Usage",
+      "grouping_usage_about": "About usage grouping",
       "grouping_usage_all": "All",
       "grouping_usage_most_used": "Most used",
       "recent_versions_only_tooltip": "Show only versions published within the last year.",
@@ -424,7 +430,8 @@
       "outdated_major": "{count} major version behind (latest: {latest}) | {count} major versions behind (latest: {latest})",
       "outdated_minor": "{count} minor version behind (latest: {latest}) | {count} minor versions behind (latest: {latest})",
       "outdated_patch": "Patch update available (latest: {latest})",
-      "has_replacement": "This dependency has suggested replacements"
+      "has_replacement": "This dependency has suggested replacements",
+      "vulnerabilities_count": "{count} vulnerability | {count} vulnerabilities"
     },
     "peer_dependencies": {
       "title": "Peer Dependency ({count}) | Peer Dependencies ({count})",
@@ -868,6 +875,7 @@
       "insecure": "With warnings"
     },
     "view_selected": "View selected",
+    "clear_selected_label": "Clear selected",
     "sort": {
       "label": "Sort packages",
       "toggle_direction": "Toggle sort direction",
@@ -1180,6 +1188,14 @@
     "file_size_warning": "{size} exceeds the 250KB limit for comparison",
     "compare_versions": "diff",
     "compare_versions_title": "Compare with latest version",
+    "comparing_versions_label": "Comparing versions...",
+    "version_back_to_package": "Back to package",
+    "version_error_message": "Failed to compare versions.",
+    "version_invalid_url_format": {
+      "hint": "Invalid comparison URL. Use format: {0}",
+      "from_version": "from",
+      "to_version": "to"
+    },
     "version_selector_title": "Compare with version",
     "summary": "Summary",
     "deps_count": "{count} dep | {count} deps",
@@ -1206,7 +1222,18 @@
     "files_button": "Files",
     "select_file_prompt": "Select a file from the sidebar to view its diff",
     "close_files_panel": "Close files panel",
-    "filter_files_label": "Filter files by change type"
+    "filter_files_label": "Filter files by change type",
+    "change_ratio": "Change ratio",
+    "char_edits": "Char edits",
+    "diff_distance": "Diff distance",
+    "loading_diff": "Loading diff...",
+    "loading_diff_error": "Failed to load diff",
+    "merge_modified_lines": "Merge modified lines",
+    "no_content_changes": "No content changes detected",
+    "options": "Options",
+    "view_file": "View file",
+    "view_in_code_browser": "View in code browser",
+    "word_wrap": "Word wrap"
   },
   "pds": {
     "title": "npmx.social",

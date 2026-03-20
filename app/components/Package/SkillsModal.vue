@@ -83,7 +83,7 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
           "
           @click="selectedMethod = 'skills-cli'"
         >
-          skills CLI
+          {{ $t('package.skills.skills_cli') }}
         </button>
       </div>
     </div>

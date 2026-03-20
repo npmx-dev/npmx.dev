@@ -47,6 +47,48 @@ test.describe('Compare Page', () => {
     const noDepColumn = grid.locator('.comparison-cell-nodep')
     await expect(noDepColumn).toBeVisible()
   })
+
+  test('loads install-size data for a scoped package', async ({ page, goto }) => {
+    // Intercept the internal API call the browser makes for install-size.
+    // The browser will request /api/registry/install-size/@nuxt%2Fkit (encoded slash).
+    // Before the fix this would fail to parse and return an error; after it returns 200.
+    const installSizeResponse = page.waitForResponse(
+      res =>
+        res.url().includes('/api/registry/install-size/') &&
+        res.url().includes('nuxt') &&
+        res.request().method() === 'GET',
+      { timeout: 20_000 },
+    )
+
+    await goto('/compare?packages=@nuxt/kit,vue', { waitUntil: 'hydration' })
+
+    const response = await installSizeResponse
+    expect(response.status()).toBe(200)
+
+    const body = await response.json()
+    // The API should return a valid install size object, not an error
+    expect(body).toHaveProperty('selfSize')
+    expect(body).toHaveProperty('totalSize')
+  })
+
+  test('loads analysis data for a scoped package', async ({ page, goto }) => {
+    const analysisResponse = page.waitForResponse(
+      res =>
+        res.url().includes('/api/registry/analysis/') &&
+        res.url().includes('nuxt') &&
+        res.request().method() === 'GET',
+      { timeout: 20_000 },
+    )
+
+    await goto('/compare?packages=@nuxt/kit,vue', { waitUntil: 'hydration' })
+
+    const response = await analysisResponse
+    expect(response.status()).toBe(200)
+
+    const body = await response.json()
+    expect(body).toHaveProperty('package', '@nuxt/kit')
+    expect(body).toHaveProperty('moduleFormat', 'esm')
+  })
 })
 
 test.describe('Search Pages', () => {
