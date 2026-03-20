@@ -383,7 +383,7 @@ const badgeStrategies = {
 
     const { pkg, typesPackage, files } = await fetchPackageWithTypesAndFiles(
       pkgData.name,
-      requestedVersion,
+      targetVersion,
     )
 
     const typesStatus = detectTypesStatus(pkg, typesPackage, files)
