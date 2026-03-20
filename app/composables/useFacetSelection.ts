@@ -1,19 +1,17 @@
-import type { ComparisonFacet, FacetInfo } from '#shared/types'
-import {
-  ALL_FACETS,
-  CATEGORY_ORDER,
-  DEFAULT_FACETS,
-  FACET_INFO,
-  FACETS_BY_CATEGORY,
-} from '#shared/types/comparison'
-import { useRouteQuery } from '@vueuse/router'
-
 /** Facet info enriched with i18n labels */
 export interface FacetInfoWithLabels extends Omit<FacetInfo, 'id'> {
   id: ComparisonFacet
   label: string
   description: string
   chartable: boolean
+}
+
+// Get facets in a category (excluding coming soon)
+function getFacetsInCategory(category: string): ComparisonFacet[] {
+  return ALL_FACETS.filter(f => {
+    const info = FACET_INFO[f]
+    return info.category === category && !info.comingSoon
+  })
 }
 
 /**
@@ -158,14 +156,6 @@ export function useFacetSelection(queryParam = 'facets') {
     } else {
       selectedFacetIds.value = [...current, facet]
     }
-  }
-
-  // Get facets in a category (excluding coming soon)
-  function getFacetsInCategory(category: string): ComparisonFacet[] {
-    return ALL_FACETS.filter(f => {
-      const info = FACET_INFO[f]
-      return info.category === category && !info.comingSoon
-    })
   }
 
   // Select all facets in a category

@@ -124,7 +124,7 @@ const keyboardShortcutsEnabled = useKeyboardShortcuts()
     <kbd
       v-if="keyboardShortcutsEnabled && ariaKeyshortcuts"
       data-kbd-hint
-      class="ms-2 inline-flex items-center justify-center size-4 text-xs text-fg bg-bg-muted border border-border rounded no-underline"
+      class="ms-2 hidden sm:inline-flex items-center justify-center size-4 text-xs text-fg bg-bg-muted border border-border rounded no-underline"
       aria-hidden="true"
     >
       {{ ariaKeyshortcuts }}

@@ -6,8 +6,8 @@ import {
   getExecuteCommand,
   getExecuteCommandParts,
   getDevDependencyFlag,
-} from '../../../../app/utils/install-command'
-import type { JsrPackageInfo } from '../../../../shared/types/jsr'
+} from '~/utils/install-command'
+import type { JsrPackageInfo } from '#shared/types/jsr'
 
 describe('install command generation', () => {
   // Test fixtures
@@ -402,7 +402,17 @@ describe('install command generation', () => {
             packageManager: 'npm',
             isCreatePackage: true,
           }),
-        ).toEqual(['npm', 'create', 'app'])
+        ).toEqual(['npm', 'create', '@vue/app'])
+      })
+
+      it('handles @scope/create pattern', () => {
+        expect(
+          getExecuteCommandParts({
+            packageName: '@angular/create',
+            packageManager: 'npm',
+            isCreatePackage: true,
+          }),
+        ).toEqual(['npm', 'create', '@angular'])
       })
     })
   })

@@ -216,12 +216,9 @@
     "not_found": "Paquet introuvable",
     "not_found_message": "Le paquet n'a pas pu être trouvé.",
     "no_description": "Aucune description fournie",
-    "not_latest": "(pas la dernière)",
     "verified_provenance": "Provenance vérifiée",
-    "view_permalink": "Voir le lien permanent pour cette version",
     "navigation": "Paquet",
     "copy_name": "Copier le nom du paquet",
-    "copy_version": "Copier le numéro de version du paquet",
     "deprecation": {
       "package": "Ce paquet a été déprécié.",
       "version": "Cette version a été dépréciée.",
@@ -779,8 +776,7 @@
       "preview": "aperçu",
       "code": "code"
     },
-    "file_path": "Chemin du fichier",
-    "scroll_to_top": "Remonter en haut"
+    "file_path": "Chemin du fichier"
   },
   "badges": {
     "provenance": {
@@ -888,7 +884,7 @@
       "paginated": "Paginé",
       "items_per_page": "Éléments par page",
       "per_page": "{count} / page",
-      "showing": "{start}-{end} sur {total}",
+      "showing": "{range} sur {total}",
       "previous": "Page précédente",
       "next": "Page suivante",
       "nav_label": "Pagination"
@@ -907,19 +903,19 @@
   "about": {
     "title": "À propos",
     "heading": "à propos",
-    "meta_description": "npmx est un navigateur rapide et moderne pour le registre npm. Une meilleure UX/DX pour explorer les paquets npm.",
+    "meta_description": "npmx est un navigateur rapide et moderne pour le registre npm. Une excellente UX/DX pour explorer les paquets npm.",
     "what_we_are": {
       "title": "Ce que nous sommes",
-      "better_ux_dx": "meilleure UX/DX",
+      "better_ux_dx": "excellente UX/DX",
       "admin_ui": "interface d'administration",
       "description": "npmx est une {betterUxDx} pour le registre npm et ses outils. Nous fournissons une interface rapide et moderne pour explorer les paquets, avec des fonctionnalités comme le mode sombre, la navigation au clavier, la visualisation du code, et des connexions à des registres alternatifs comme {jsr}.",
-      "admin_description": "Nous visons également à fournir une meilleure {adminUi} pour gérer vos paquets, équipes et organisations — le tout depuis le navigateur, alimenté par votre CLI npm local."
+      "admin_description": "Nous visons également à fournir une excellente {adminUi} pour gérer vos paquets, équipes et organisations — le tout depuis le navigateur, alimenté par votre CLI npm local."
     },
     "what_we_are_not": {
       "title": "Ce que nous ne sommes pas",
       "not_package_manager": "Nous ne sommes pas un gestionnaire de paquets.",
       "not_registry": "Nous ne sommes pas un registre.",
-      "registry_description": "Nous n'hébergeons pas de paquets. Nous sommes juste une meilleure façon de les explorer.",
+      "registry_description": "Nous n'hébergeons pas de paquets. Nous sommes une façon rapide et moderne de les explorer.",
       "package_managers_exist": "{already} {people} {building} {managers} {package} {really} {cool}.",
       "words": {
         "already": "Il y a",
@@ -956,7 +952,7 @@
       "title": "Participer",
       "contribute": {
         "title": "Contribuer",
-        "description": "Aidez-nous à créer une meilleure expérience npm.",
+        "description": "Aidez-nous à créer l'expérience npm que nous voulons tous.",
         "cta": "Voir sur GitHub"
       },
       "community": {

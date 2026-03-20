@@ -216,12 +216,9 @@
     "not_found": "Paket Tapılmadı",
     "not_found_message": "Paket tapıla bilmədi.",
     "no_description": "Təsvir verilməyib",
-    "not_latest": "(son deyil)",
     "verified_provenance": "Təsdiqlənmiş mənşə",
-    "view_permalink": "Bu versiya üçün daimi keçidə bax",
     "navigation": "Paket",
     "copy_name": "Paket adını kopyala",
-    "copy_version": "Paket versiyasını kopyala",
     "deprecation": {
       "package": "Bu paket köhnəlmişdir.",
       "version": "Bu versiya köhnəlmişdir.",
@@ -777,8 +774,7 @@
       "preview": "önbaxış",
       "code": "kod"
     },
-    "file_path": "Fayl yolu",
-    "scroll_to_top": "Yuxarı qayıt"
+    "file_path": "Fayl yolu"
   },
   "badges": {
     "provenance": {
@@ -886,7 +882,7 @@
       "paginated": "Səhifələnmiş",
       "items_per_page": "Səhifə başına element",
       "per_page": "{count} / səhifə",
-      "showing": "{start}-{end} / {total}",
+      "showing": "{range} / {total}",
       "previous": "Əvvəlki səhifə",
       "next": "Növbəti səhifə",
       "nav_label": "Səhifələmə"
@@ -1142,11 +1138,11 @@
         "title": "Trendləri Müqayisə Et"
       }
     },
-    "file_too_large": "Fayl müqayisə üçün çox böyükdür",
-    "file_size_warning": "{size} müqayisə üçün 250KB limitini keçir",
     "file_changes": "Fayl Dəyişiklikləri",
     "files_count": "{count} fayl",
     "lines_hidden": "{count} sətir gizlədilib",
+    "file_too_large": "Fayl müqayisə üçün çox böyükdür",
+    "file_size_warning": "{size} müqayisə üçün 250KB limitini keçir",
     "compare_versions": "fərq",
     "compare_versions_title": "Versiyaları müqayisə et",
     "summary": "Xülasə",
