@@ -11,6 +11,33 @@ const config = {
   async viteFinal(newConfig) {
     newConfig.plugins ??= []
 
+    // Bridge compatibility between Storybook v10 core and v9 @storybook-vue/nuxt
+    // v10 expects module federation globals that v9 doesn't provide
+    newConfig.plugins.push({
+      name: 'storybook-v10-compat',
+      transformIndexHtml: {
+        order: 'pre',
+        handler(html) {
+          const script = `
+<script>
+  // Minimal shims for Storybook v10 module federation system
+  // These will be replaced when Storybook runtime loads
+  window.__STORYBOOK_MODULE_GLOBAL__ = { global: window };
+  window.__STORYBOOK_MODULE_CLIENT_LOGGER__ = { 
+    deprecate: console.warn.bind(console, '[deprecated]'),
+    once: console.log.bind(console),
+    logger: console
+  };
+  window.__STORYBOOK_MODULE_CHANNELS__ = {
+    Channel: class { on() {} off() {} emit() {} once() {} },
+    createBrowserChannel: () => new window.__STORYBOOK_MODULE_CHANNELS__.Channel()
+  };
+</script>`
+          return html.replace(/<script>/, script + '<script>')
+        },
+      },
+    })
+
     newConfig.plugins.push({
       name: 'ignore-internals',
       transform(_, id) {
