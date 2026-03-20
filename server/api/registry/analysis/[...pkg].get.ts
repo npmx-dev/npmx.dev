@@ -26,7 +26,7 @@ import { parseRepoUrl } from '#shared/utils/git-providers'
 import { encodePackageName } from '#shared/utils/npm'
 import { flattenFileTree } from '#server/utils/import-resolver'
 import { getPackageFileTree } from '#server/utils/file-tree'
-import { getLatestVersion, getLatestVersionBatch } from 'fast-npm-meta'
+import { getLatestVersionBatch } from 'fast-npm-meta'
 
 export default defineCachedEventHandler(
   async event => {
