@@ -1,13 +1,16 @@
-import { marked, type Tokens } from 'marked'
+import type { ReadmeResponse, TocItem } from '#shared/types/readme'
+import type { Tokens } from 'marked'
+import matter from 'gray-matter'
+import { marked } from 'marked'
 import sanitizeHtml from 'sanitize-html'
 import { hasProtocol } from 'ufo'
-import type { ReadmeResponse, TocItem } from '#shared/types/readme'
 import { convertBlobOrFileToRawUrl, type RepositoryInfo } from '#shared/utils/git-providers'
 import { decodeHtmlEntities, stripHtmlTags } from '#shared/utils/html'
 import { convertToEmoji } from '#shared/utils/emoji'
 import { toProxiedImageUrl } from '#server/utils/image-proxy'
 
 import { highlightCodeSync } from './shiki'
+import { escapeHtml } from './docs/text'
 
 /**
  * Playground provider configuration
@@ -403,12 +406,42 @@ function calculateSemanticDepth(depth: number, lastSemanticLevel: number) {
   return Math.min(depth + 2, maxAllowed)
 }
 
+/**
+ * Render YAML frontmatter as a GitHub-style key-value table.
+ */
+function renderFrontmatterTable(data: Record<string, unknown>): string {
+  const entries = Object.entries(data)
+  if (entries.length === 0) return ''
+
+  const rows = entries
+    .map(([key, value]) => {
+      const displayValue =
+        typeof value === 'object' && value !== null ? JSON.stringify(value) : String(value ?? '')
+      return `<tr><th>${escapeHtml(key)}</th><td>${escapeHtml(displayValue)}</td></tr>`
+    })
+    .join('\n')
+  return `<table><thead><tr><th>Key</th><th>Value</th></tr></thead><tbody>\n${rows}\n</tbody></table>\n`
+}
+
 export async function renderReadmeHtml(
   content: string,
   packageName: string,
   repoInfo?: RepositoryInfo,
 ): Promise<ReadmeResponse> {
   if (!content) return { html: '', playgroundLinks: [], toc: [] }
+
+  // Parse and strip YAML frontmatter, render as table if present
+  let markdownBody = content
+  let frontmatterHtml = ''
+  try {
+    const { data, content: body } = matter(content)
+    if (data && Object.keys(data).length > 0) {
+      frontmatterHtml = renderFrontmatterTable(data)
+      markdownBody = body
+    }
+  } catch {
+    // If frontmatter parsing fails, render the full content as-is
+  }
 
   const shiki = await getShikiHighlighter()
   const renderer = new marked.Renderer()
@@ -514,7 +547,7 @@ ${html}
 
   marked.setOptions({ renderer })
 
-  const rawHtml = marked.parse(content) as string
+  const rawHtml = frontmatterHtml + (marked.parse(markdownBody) as string)
 
   const sanitized = sanitizeHtml(rawHtml, {
     allowedTags: ALLOWED_TAGS,
