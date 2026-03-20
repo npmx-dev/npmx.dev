@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { createError } from 'h3'
 import { FetchError } from 'ofetch'
 import * as v from 'valibot'
-import { handleApiError } from '../../../../server/utils/error-handler'
+import { handleApiError } from '#server/utils/error-handler'
 
 describe('handleApiError', () => {
   const fallback = { message: 'Something went wrong', statusCode: 500 }

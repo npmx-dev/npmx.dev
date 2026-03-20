@@ -150,7 +150,11 @@ const numberFormatter = useNumberFormatter()
               :to="packageRoute(dep, getVulnerableDepInfo(dep)!.version)"
               class="shrink-0"
               :class="SEVERITY_TEXT_COLORS[getHighestSeverity(getVulnerableDepInfo(dep)!.counts)]"
-              :title="`${getVulnerableDepInfo(dep)!.counts.total} vulnerabilities`"
+              :title="
+                $t('package.dependencies.vulnerabilities_count', {
+                  count: getVulnerableDepInfo(dep)!.counts.total,
+                })
+              "
               classicon="i-lucide:shield-check"
             >
               <span class="sr-only">{{ $t('package.dependencies.view_vulnerabilities') }}</span>
@@ -176,7 +180,11 @@ const numberFormatter = useNumberFormatter()
               ({{ getOutdatedTooltip(outdatedDeps[dep], $t) }})
             </span>
             <span v-if="getVulnerableDepInfo(dep)" class="sr-only">
-              ({{ getVulnerableDepInfo(dep)!.counts.total }} vulnerabilities)
+              ({{
+                $t('package.dependencies.vulnerabilities_count', {
+                  count: getVulnerableDepInfo(dep)!.counts.total,
+                })
+              }})
             </span>
           </span>
         </li>

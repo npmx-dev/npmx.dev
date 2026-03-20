@@ -176,33 +176,6 @@
     <!-- Vulns area (empty placeholder to hold grid space) -->
     <div class="area-vulns" />
 
-    <!-- README — matches area-readme in [...name].vue -->
-    <section class="area-readme min-w-0 scroll-mt-20">
-      <div class="flex flex-wrap items-center justify-between mb-3 px-1">
-        <h2 class="text-xs font-mono text-fg-subtle uppercase tracking-wider">
-          {{ $t('package.readme.title') }}
-        </h2>
-      </div>
-      <!-- Simulated README content -->
-      <div class="space-y-4">
-        <!-- Heading -->
-        <SkeletonBlock class="h-7 w-2/3" />
-        <!-- Paragraphs -->
-        <SkeletonBlock class="h-4 w-full" />
-        <SkeletonBlock class="h-4 w-full" />
-        <SkeletonBlock class="h-4 w-4/5" />
-        <!-- Gap for section break -->
-        <SkeletonBlock class="h-6 w-1/2 mt-6" />
-        <SkeletonBlock class="h-4 w-full" />
-        <SkeletonBlock class="h-4 w-full" />
-        <SkeletonBlock class="h-4 w-3/4" />
-        <!-- Code block placeholder -->
-        <SkeletonBlock class="h-24 w-full rounded-lg mt-4" />
-        <SkeletonBlock class="h-4 w-full" />
-        <SkeletonBlock class="h-4 w-5/6" />
-      </div>
-    </section>
-
     <!-- Sidebar — matches area-sidebar in [...name].vue -->
     <div class="area-sidebar">
       <div
@@ -379,6 +352,33 @@
         </div>
       </div>
     </div>
+
+    <!-- README — matches area-readme in [...name].vue -->
+    <section class="area-readme min-w-0 scroll-mt-20">
+      <div class="flex flex-wrap items-center justify-between mb-3 px-1">
+        <h2 class="text-xs font-mono text-fg-subtle uppercase tracking-wider">
+          {{ $t('package.readme.title') }}
+        </h2>
+      </div>
+      <!-- Simulated README content -->
+      <div class="space-y-4">
+        <!-- Heading -->
+        <SkeletonBlock class="h-7 w-2/3" />
+        <!-- Paragraphs -->
+        <SkeletonBlock class="h-4 w-full" />
+        <SkeletonBlock class="h-4 w-full" />
+        <SkeletonBlock class="h-4 w-4/5" />
+        <!-- Gap for section break -->
+        <SkeletonBlock class="h-6 w-1/2 mt-6" />
+        <SkeletonBlock class="h-4 w-full" />
+        <SkeletonBlock class="h-4 w-full" />
+        <SkeletonBlock class="h-4 w-3/4" />
+        <!-- Code block placeholder -->
+        <SkeletonBlock class="h-24 w-full rounded-lg mt-4" />
+        <SkeletonBlock class="h-4 w-full" />
+        <SkeletonBlock class="h-4 w-5/6" />
+      </div>
+    </section>
   </article>
 </template>
 
@@ -403,8 +403,8 @@
     grid-template-columns: 2fr 1fr;
     grid-template-areas:
       'details details'
-      'install install'
-      'vulns   vulns'
+      'install sidebar'
+      'vulns   sidebar'
       'readme  sidebar';
     grid-template-rows: auto auto auto auto 1fr;
   }

@@ -1,6 +1,6 @@
 import { emptySearchResponse, metaToSearchResult } from './search-utils'
 
-export interface NpmSearchOptions {
+interface NpmSearchOptions {
   size?: number
   from?: number
 }

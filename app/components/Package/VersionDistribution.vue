@@ -375,7 +375,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
               tabindex="0"
               class="i-lucide:info w-3.5 h-3.5 text-fg-subtle cursor-help shrink-0 rounded-sm"
               role="img"
-              aria-label="versions info"
+              :aria-label="$t('package.versions.grouping_versions_about')"
             />
           </TooltipApp>
         </label>
@@ -412,7 +412,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
               tabindex="0"
               class="i-lucide:info w-3.5 h-3.5 text-fg-subtle cursor-help shrink-0 rounded-sm"
               role="img"
-              aria-label="versions info"
+              :aria-label="$t('package.versions.grouping_usage_about')"
             />
           </TooltipApp>
         </label>

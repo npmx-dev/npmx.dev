@@ -18,7 +18,7 @@ const props = defineProps<{
 }>()
 
 const { requestedVersion, orgName } = usePackageRoute()
-const { scrollToTop, isTouchDeviceClient } = useScrollToTop()
+const { scrollToTop } = useScrollToTop()
 const packageHeaderHeight = usePackageHeaderHeight()
 
 const header = useTemplateRef('header')
@@ -61,9 +61,7 @@ onBeforeUnmount(() => {
 const navExtraOffsetStyle = { '--package-nav-extra': '0px' }
 
 const { y: scrollY } = useScroll(window)
-const showScrollToTop = computed(
-  () => isTouchDeviceClient.value && scrollY.value > SCROLL_TO_TOP_THRESHOLD,
-)
+const showScrollToTop = computed(() => scrollY.value > SCROLL_TO_TOP_THRESHOLD)
 
 const packageName = computed(() => props.pkg?.name ?? '')
 const compactNumberFormatter = useCompactNumberFormatter()

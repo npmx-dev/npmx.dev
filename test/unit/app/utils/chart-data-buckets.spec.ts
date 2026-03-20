@@ -5,7 +5,7 @@ import {
   buildWeeklyEvolution,
   buildMonthlyEvolution,
   buildYearlyEvolution,
-} from '../../../../app/utils/chart-data-buckets'
+} from '~/utils/chart-data-buckets'
 
 describe('fillPartialBucket', () => {
   it('scales proportionally', () => {
