@@ -1055,3 +1055,43 @@ export function createSeededSvgPattern(
     contentMarkup,
   }
 }
+
+export type ChartPatternSlotProps = {
+  id: string
+  seed: string | number
+  color?: string
+  foregroundColor: string
+  fallbackColor: string
+  maxSize: number
+  minSize: number
+}
+
+// Equivalent of the PatternSlot.vue component, to be used inside tooltip.customFormat in chart configs
+export function createChartPatternSlotMarkup({
+  id,
+  seed,
+  color,
+  foregroundColor,
+  fallbackColor,
+  maxSize,
+  minSize,
+}: ChartPatternSlotProps) {
+  const pattern = createSeededSvgPattern(seed, {
+    foregroundColor,
+    backgroundColor: color ?? fallbackColor,
+    minimumSize: minSize,
+    maximumSize: maxSize,
+  })
+
+  return `
+    <pattern
+      id="${id}"
+      patternUnits="userSpaceOnUse"
+      width="${pattern.width}"
+      height="${pattern.height}"
+      patternTransform="rotate(${pattern.rotation})"
+    >
+      ${pattern.contentMarkup}
+    </pattern>
+  `
+}

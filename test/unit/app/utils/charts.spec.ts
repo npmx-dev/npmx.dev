@@ -17,6 +17,7 @@ import {
   applyEllipsis,
   createSeedNumber,
   createSeededSvgPattern,
+  createChartPatternSlotMarkup,
   type TrendLineConfig,
   type TrendLineDataset,
   type VersionsBarConfig,
@@ -1558,5 +1559,95 @@ describe('createSeededSvgPattern', () => {
     const numericSeedResult = createSeededSvgPattern(12345)
     const stringSeedResult = createSeededSvgPattern('12345')
     expect(numericSeedResult).toEqual(stringSeedResult)
+  })
+})
+
+describe('createChartPatternSlotMarkup', () => {
+  it('returns a pattern element with the provided id', () => {
+    const result = createChartPatternSlotMarkup({
+      id: 'pattern-1',
+      seed: 7,
+      color: '#ff0000',
+      foregroundColor: '#ffffff',
+      fallbackColor: 'transparent',
+      maxSize: 24,
+      minSize: 16,
+    })
+
+    expect(result).toContain('<pattern')
+    expect(result).toContain('id="pattern-1"')
+    expect(result).toContain('patternUnits="userSpaceOnUse"')
+    expect(result).toContain('</pattern>')
+  })
+
+  it('includes width, height, rotation, and content markup from the generated pattern', () => {
+    const generatedPattern = createSeededSvgPattern(1, {
+      foregroundColor: '#000',
+      backgroundColor: 'transparent',
+      minimumSize: 16,
+      maximumSize: 24,
+    })
+
+    const result = createChartPatternSlotMarkup({
+      id: 'pattern-1',
+      seed: 1,
+      foregroundColor: '#000',
+      fallbackColor: 'transparent',
+      maxSize: 24,
+      minSize: 16,
+    })
+
+    expect(result).toContain(`width="${generatedPattern.width}"`)
+    expect(result).toContain(`height="${generatedPattern.height}"`)
+    expect(result).toContain(`patternTransform="rotate(${generatedPattern.rotation})"`)
+    expect(result).toContain(generatedPattern.contentMarkup)
+  })
+
+  it('is deterministic for the same inputs', () => {
+    const first = createChartPatternSlotMarkup({
+      id: 'pattern-stable',
+      seed: 'nuxt',
+      color: '#00ff00',
+      foregroundColor: '#000000',
+      fallbackColor: 'transparent',
+      maxSize: 40,
+      minSize: 10,
+    })
+
+    const second = createChartPatternSlotMarkup({
+      id: 'pattern-stable',
+      seed: 'nuxt',
+      color: '#00ff00',
+      foregroundColor: '#000000',
+      fallbackColor: 'transparent',
+      maxSize: 40,
+      minSize: 10,
+    })
+
+    expect(first).toBe(second)
+  })
+
+  it('changes when the id changes', () => {
+    const first = createChartPatternSlotMarkup({
+      id: 'pattern-a',
+      seed: 1,
+      color: '#00ff00',
+      foregroundColor: '#000000',
+      fallbackColor: 'transparent',
+      maxSize: 40,
+      minSize: 10,
+    })
+
+    const second = createChartPatternSlotMarkup({
+      id: 'pattern-b',
+      seed: 2,
+      color: '#00ff00',
+      foregroundColor: '#000000',
+      fallbackColor: 'transparent',
+      maxSize: 40,
+      minSize: 10,
+    })
+
+    expect(first).not.toBe(second)
   })
 })

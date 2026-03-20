@@ -6,17 +6,9 @@
  * series in the context of data visualisation.
  */
 import { computed } from 'vue'
-import { createSeededSvgPattern } from '~/utils/charts'
+import { createSeededSvgPattern, type ChartPatternSlotProps } from '~/utils/charts'
 
-const props = defineProps<{
-  id: string
-  seed: string | number
-  color?: string
-  foregroundColor: string
-  fallbackColor: string
-  maxSize: number
-  minSize: number
-}>()
+const props = defineProps<ChartPatternSlotProps>()
 
 const pattern = computed(() =>
   createSeededSvgPattern(props.seed, {
