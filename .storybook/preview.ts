@@ -4,8 +4,6 @@ import { currentLocales } from '../config/i18n'
 import { fn } from 'storybook/test'
 import { ACCENT_COLORS } from '../shared/utils/constants'
 
-import npmxDark from './theme'
-
 // related: https://github.com/npmx-dev/npmx.dev/blob/1431d24be555bca5e1ae6264434d49ca15173c43/test/nuxt/setup.ts#L12-L26
 // Stub Nuxt specific globals
 // @ts-expect-error - dynamic global name
@@ -26,9 +24,6 @@ const preview: Preview = {
         color: /(background|color)$/i,
         date: /Date$/i,
       },
-    },
-    docs: {
-      theme: npmxDark,
     },
   },
   // Provides toolbars to switch things like theming and language
