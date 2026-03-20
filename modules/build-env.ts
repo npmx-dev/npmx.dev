@@ -25,6 +25,18 @@ export default defineNuxtModule({
         privacyPolicyDate: time.toISOString(),
         prNumber: null,
       } satisfies BuildInfo
+    } else if (process.env.STORYBOOK === 'true') {
+      const time = new Date('2026-01-22T10:07:07Z')
+      nuxt.options.appConfig.buildInfo = {
+        env: 'release',
+        version: 'x.x.x',
+        commit: 'e39e56c08fd1e7bdb556c8565c6b11b3c34c8934',
+        shortCommit: 'e39e56c0',
+        branch: 'main',
+        time: time.getTime(),
+        privacyPolicyDate: time.toISOString(),
+        prNumber: null,
+      } satisfies BuildInfo
     } else {
       const [{ env: useEnv, version, commit, shortCommit, branch, prNumber }, privacyPolicyDate] =
         await Promise.all([getEnv(nuxt.options.dev), getFileLastUpdated('app/pages/privacy.vue')])
