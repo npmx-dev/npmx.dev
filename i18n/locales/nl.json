@@ -545,7 +545,7 @@
       "tree_found": "{vulns} kwetsbaarheid in {packages}/{total} pakketten | {vulns} kwetsbaarheden in {packages}/{total} pakketten",
       "show_all_packages": "toon {count} betrokken pakketten | toon alle {count} betrokken pakketten",
       "path": "pad",
-      "more": "+{count} more",
+      "more": "+{count} meer",
       "packages_failed": "{count} pakket kon niet worden gecontroleerd | {count} pakketten konden niet worden gecontroleerd",
       "scan_failed": "Kon niet scannen voor kwetsbaarheden",
       "severity": {
@@ -554,7 +554,7 @@
         "moderate": "matig",
         "low": "laag"
       },
-      "fixed_in_title": "Fixed in version {version}"
+      "fixed_in_title": "Opgelost in versie {version}"
     },
     "deprecated": {
       "label": "Afgeraden",
@@ -562,44 +562,44 @@
       "show_all": "toen {count} afgeraden pakket | toen alle {count} afgeraden pakketten"
     },
     "access": {
-      "title": "Team Access",
-      "refresh": "Refresh team access",
-      "list_label": "Team access list",
-      "owner": "owner",
+      "title": "Team toegang",
+      "refresh": "Team toegang vernieuwen",
+      "list_label": "Team toegang lijst",
+      "owner": "eigenaar",
       "rw": "rw",
       "ro": "ro",
-      "revoke_access": "Revoke {name} access",
-      "no_access": "No team access configured",
-      "select_team_label": "Select team",
-      "loading_teams": "Loading teams...",
-      "select_team": "Select team",
-      "permission_label": "Permission level",
+      "revoke_access": "Toegang van {name} intrekken",
+      "no_access": "Er is geen teamtoegang geconfigureerd",
+      "select_team_label": "Selecteer team",
+      "loading_teams": "Teams laden...",
+      "select_team": "Selecteer team",
+      "permission_label": "Toegangsniveau",
       "permission": {
-        "read_only": "read-only",
-        "read_write": "read-write"
+        "read_only": "lezen",
+        "read_write": "lezen-schrijven"
       },
-      "grant_button": "grant",
-      "cancel_grant": "Cancel granting access",
-      "grant_access": "+ Grant team access"
+      "grant_button": "verlenen",
+      "cancel_grant": "Toegang verlenen annuleren",
+      "grant_access": "+ team toegang verlenen"
     },
     "list": {
-      "filter_label": "Filter packages",
-      "filter_placeholder": "Filter packages...",
-      "sort_label": "Sort packages",
-      "showing_count": "Showing {filtered} of {total} packages"
+      "filter_label": "Filter pakketten",
+      "filter_placeholder": "Filter pakketten...",
+      "sort_label": "sorteer pakketten",
+      "showing_count": "{filtered} van {total} pakketten weergeven"
     },
     "skeleton": {
-      "loading": "Loading package details",
-      "maintainers": "Maintainers",
-      "keywords": "Keywords",
-      "versions": "Versions",
+      "loading": "Pakket informatie laden",
+      "maintainers": "Beheerders",
+      "keywords": "Trefwoorden",
+      "versions": "Versies",
       "dependencies": "Dependencies"
     },
     "sort": {
-      "downloads": "Most downloaded",
-      "published": "Recently published",
-      "name_asc": "Name (A-Z)",
-      "name_desc": "Name (Z-A)"
+      "downloads": "Meest gedownload",
+      "published": "Recent gepubliceerd",
+      "name_asc": "Naam (A-Z)",
+      "name_desc": "Naam (Z-A)"
     },
     "size": {
       "b": "{size} B",
