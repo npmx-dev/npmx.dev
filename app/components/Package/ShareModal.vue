@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ACCENT_COLOR_TOKENS } from '#shared/utils/constants'
+
 const props = defineProps<{
   packageName: string
   resolvedVersion: string
@@ -9,24 +11,12 @@ const props = defineProps<{
 const { origin } = useRequestURL()
 const colorMode = useColorMode()
 const theme = computed(() => (colorMode.value === 'dark' ? 'dark' : 'light'))
-const { selectedAccentColor, accentColors } = useAccentColor()
-
-function resolveColorToHex(color: string): string {
-  const canvas = document.createElement('canvas')
-  canvas.width = canvas.height = 1
-  const ctx = canvas.getContext('2d')!
-  ctx.fillStyle = color
-  ctx.fillRect(0, 0, 1, 1)
-  const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data
-  return `#${r!.toString(16).padStart(2, '0')}${g!.toString(16).padStart(2, '0')}${b!.toString(16).padStart(2, '0')}`
-}
+const { selectedAccentColor } = useAccentColor()
 
 const colorParam = computed(() => {
-  const id = selectedAccentColor.value
-  if (!id) return ''
-  const colorValue = accentColors.value.find(c => c.id === id)?.value
-  if (!colorValue) return ''
-  const hex = resolveColorToHex(colorValue)
+  const id = selectedAccentColor.value as keyof typeof ACCENT_COLOR_TOKENS
+  if (!id || !(id in ACCENT_COLOR_TOKENS)) return ''
+  const hex = ACCENT_COLOR_TOKENS[id][theme.value].hex
   return `&color=${encodeURIComponent(hex)}`
 })
 
