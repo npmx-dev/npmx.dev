@@ -1,12 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import {
-  addDays,
-  DAY_MS,
-  daysInMonth,
-  daysInYear,
-  parseIsoDate,
-  toIsoDate,
-} from '../../../../app/utils/date'
+import { addDays, DAY_MS, daysInMonth, daysInYear, parseIsoDate, toIsoDate } from '~/utils/date'
 
 describe('DAY_MS', () => {
   it('equals 86 400 000', () => {

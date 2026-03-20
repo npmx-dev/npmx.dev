@@ -37,8 +37,8 @@
     "open_code_view": "打开代码视图",
     "open_docs": "打开文档",
     "disable_shortcuts": "你可以在{settings}中禁用快捷键。",
-    "open_main": "打开主要信息",
-    "open_diff": "打开版本差异"
+    "open_main": "查看主要信息",
+    "open_diff": "查看版本差异"
   },
   "search": {
     "label": "搜索 npm 包",
@@ -138,6 +138,8 @@
     "include_types_description": "为未提供类型定义的包自动添加 {'@'}types 包到安装命令",
     "hide_platform_packages": "在搜索结果隐藏平台特定包",
     "hide_platform_packages_description": "在搜索结果中隐藏平台特定的原生二进制包（例如 {'@'}esbuild/linux-x64）",
+    "enable_graph_pulse_loop": "启用迷你图表脉冲循环效果",
+    "enable_graph_pulse_loop_description": "在周下载量图表上启用持续脉冲动画。部分用户可能会觉得该动画效果易造成视觉干扰。",
     "theme": "主题",
     "theme_light": "浅色",
     "theme_dark": "深色",
@@ -363,7 +365,9 @@
       "published": "发布于",
       "weekly_downloads": "每周下载量",
       "keywords": "关键词",
-      "license": "许可证"
+      "license": "许可证",
+      "select": "选择软件包",
+      "select_maximum": "最多可选择 {count} 个软件包"
     },
     "versions": {
       "title": "版本",
@@ -378,6 +382,7 @@
       "all_covered": "所有版本均已包含于上方标签中。",
       "deprecated_title": "{version}（已弃用）",
       "view_all": "查看全部 {count} 个版本",
+      "view_all_versions": "查看所有版本",
       "distribution_title": "语义化版本分组",
       "distribution_modal_title": "版本",
       "distribution_range_date_same_year": "{endYear}年 {from} 至 {to}",
@@ -402,7 +407,12 @@
       "copy_alt": {
         "per_version_analysis": "{version} （{downloads}次）",
         "general_description": "条形图展示了 {package_name} 在 {date_range_label} 期间的下载量分布，数据涵盖了{versions_count} 个 {semver_grouping_mode}（从{first_version}到{last_version}）。下载量最高的版本是{max_downloaded_version}，达{max_version_downloads}次。其余版本下载量：{per_version_analysis}。{watermark}。"
-      }
+      },
+      "page_title": "版本历史",
+      "current_tags": "当前标签",
+      "version_filter_placeholder": "筛选版本…",
+      "version_filter_label": "筛选版本",
+      "no_match_filter": "没有与“{filter}”匹配的版本"
     },
     "dependencies": {
       "title": "依赖（{count} 个）",
@@ -437,7 +447,8 @@
       "cancel_add": "取消添加拥有者",
       "add_owner": "+ 添加拥有者",
       "show_more": "（显示另外 {count} 个）",
-      "show_less": "（收起）"
+      "show_less": "（收起）",
+      "maintainer_template": "{avatar} {char126}{name}"
     },
     "trends": {
       "granularity": "周期",
@@ -491,8 +502,8 @@
         "compare": "以下为 {packages} 的下载量对比折线图。",
         "single_package": "{package} 的下载量折线图。",
         "general_description": "Y 轴表示下载量，X 轴表示日期范围（{start_date} 至 {end_date}），统计周期为{granularity}。{estimation_notice} {packages_analysis}。{watermark}。",
-        "facet_bar_general_description": "横向条形图，对比 {packages} 的 {facet}（{description}）。{facet_analysis} {watermark}。",
-        "facet_bar_analysis": "{package_name} 的值为 {value}。"
+        "facet_bar_general_description": "水平条形图：{packages} 的 {facet} 对比（{description}）。{facet_analysis} {watermark}",
+        "facet_bar_analysis": "{package_name}：{value}"
       }
     },
     "downloads": {
@@ -793,7 +804,7 @@
     },
     "file_path": "文件路径",
     "binary_file": "二进制文件",
-    "binary_rendering_warning": "不支持预览此文件类型。"
+    "binary_rendering_warning": "暂不支持预览“{contentType}”类型的文件。"
   },
   "badges": {
     "provenance": {
@@ -855,6 +866,7 @@
       "secure": "没有警告",
       "insecure": "有警告"
     },
+    "view_selected": "查看选中项",
     "sort": {
       "label": "排序包",
       "toggle_direction": "切换排序方向",
@@ -888,7 +900,8 @@
       "popularity_score": "受欢迎度",
       "maintenance_score": "维护程度",
       "combined_score": "总分",
-      "security": "安全性"
+      "security": "安全性",
+      "selection": "选择软件包"
     },
     "view_mode": {
       "label": "视图模式",
@@ -901,7 +914,7 @@
       "paginated": "分页",
       "items_per_page": "每页显示",
       "per_page": "{count} / 页",
-      "showing": "第 {start} - {end} 条，共 {total} 条",
+      "showing": "第 {range} 条，共 {total} 条",
       "previous": "上一页",
       "next": "下一页",
       "nav_label": "分页"
@@ -1050,11 +1063,11 @@
       "section_comparison": "对比",
       "copy_as_markdown": "复制为 Markdown",
       "loading": "正在加载包数据…",
-      "error": "包数据加载失败，请重试。",
-      "empty_title": "选择要对比的包",
-      "empty_description": "在上方搜索并添加至少 2 个包，即可查看它们的指标并排对比。",
-      "table_view": "表格",
-      "charts_view": "图表"
+      "error": "加载包数据失败。请重试。",
+      "empty_title": "选择要比较的包",
+      "empty_description": "在上方搜索并添加至少 2 个包，以查看它们指标的并排比较。",
+      "table_view": "表格视图",
+      "charts_view": "图表视图"
     },
     "selector": {
       "search_label": "搜索包",
@@ -1165,8 +1178,8 @@
     "file_too_large": "文件过大，无法对比",
     "file_size_warning": "{size} 超出了 250KB 的对比限制",
     "compare_versions": "差异",
-    "compare_versions_title": "与最新版本比较",
-    "version_selector_title": "与版本比较",
+    "compare_versions_title": "与最新版本对比",
+    "version_selector_title": "版本对比",
     "summary": "摘要",
     "deps_count": "{count} 个依赖",
     "dependencies": "直接依赖项",
@@ -1331,5 +1344,11 @@
       "p1": "如果你在 {app} 上遇到无障碍访问问题，请在我们的 {link} 上提交 Issue 反馈给我们。我们会认真对待这些反馈，并尽力解决。",
       "link": "GitHub 仓库"
     }
+  },
+  "action_bar": {
+    "title": "操作栏",
+    "selection": "0 个项目被选中 | 1 个项目被选中 | {count} 个项目被选中",
+    "shortcut": "按下 \"{key}\" 快捷键以执行操作",
+    "button_close_aria_label": "关闭操作面板"
   }
 }

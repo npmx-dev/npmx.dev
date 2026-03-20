@@ -543,7 +543,7 @@ watch(
               type="button"
               class="w-4 h-4 flex items-center justify-center text-fg-subtle hover:text-fg transition-colors shrink-0"
               :aria-expanded="group.isExpanded"
-              :aria-label="group.isExpanded ? 'Collapse' : 'Expand'"
+              :aria-label="group.isExpanded ? $t('common.collapse') : $t('common.expand')"
               @click.stop="toggleGroup(group.id)"
             >
               <span

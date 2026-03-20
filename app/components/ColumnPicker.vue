@@ -54,6 +54,7 @@ const columnLabels = computed(() => ({
   maintenanceScore: $t('filters.columns.maintenance_score'),
   combinedScore: $t('filters.columns.combined_score'),
   security: $t('filters.columns.security'),
+  selection: $t('filters.columns.selection'),
 }))
 
 function getColumnLabel(id: ColumnId): string {

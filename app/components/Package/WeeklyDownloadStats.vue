@@ -208,7 +208,6 @@ const dataset = computed<VueUiSparklineDatasetItem[]>(() =>
 
 const lastDatapoint = computed(() => dataset.value.at(-1)?.period ?? '')
 
-const isLoop = shallowRef(false)
 const showPulse = shallowRef(true)
 const keyboardShortcuts = useKeyboardShortcuts()
 
@@ -307,7 +306,7 @@ function layEgg() {
   showPulse.value = false
   nextTick(() => {
     showPulse.value = true
-    isLoop.value = !isLoop.value
+    settings.value.enableGraphPulseLooping = !settings.value.enableGraphPulseLooping
     playEggPulse()
   })
 }
@@ -356,7 +355,7 @@ const config = computed<VueUiSparklineConfig>(() => {
         color: colors.value.borderHover,
         pulse: {
           show: showPulse.value, // the pulse will not show if prefers-reduced-motion (enforced by vue-data-ui)
-          loop: isLoop.value,
+          loop: settings.value.enableGraphPulseLooping,
           radius: 1.5,
           color: pulseColor.value!,
           easing: 'ease-in-out',

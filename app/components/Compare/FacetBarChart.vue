@@ -178,8 +178,8 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
               bold: false,
               color: colors.value.fg,
               value: {
-                formatter: ({ config }) => {
-                  return config?.datapoint?.formattedValue ?? '0'
+                formatter: ({ config: formatterConfig }) => {
+                  return formatterConfig?.datapoint?.formattedValue ?? '0'
                 },
               },
             },
