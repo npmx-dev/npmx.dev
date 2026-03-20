@@ -30,7 +30,7 @@
     "focus_search": "Focus op zoeken",
     "show_kbd_hints": "Toetsenbordtips uitlichten",
     "settings": "Open instellingen",
-    "compare": "Open compare",
+    "compare": "Open vergelijken",
     "compare_from_package": "Vergelijking openen (vooraf ingevuld met het huidige pakket)",
     "navigate_results": "Navigeer resultaten",
     "go_to_result": "Ga naar resultaten",
@@ -56,7 +56,7 @@
     "meta_description": "Zoek resultaten voor '{search}'",
     "meta_description_packages": "Zoek npm pakketten",
     "not_taken": "{name} is niet in gebruik",
-    "claim_prompt": "Registeer dit pakketnaam op npm",
+    "claim_prompt": "Registeer deze pakketnaam op npm",
     "claim_button": "Registeer \"{name}\"",
     "want_to_claim": "Wil je deze pakket naam registeren?",
     "start_typing": "Start typen om te zoeken naar pakketten",
@@ -96,6 +96,7 @@
     },
     "draft_badge": "Ontwerp",
     "draft_banner": "Dit is een ongepubliceerd concept. Het kan onvolledig zijn of onjuistheden bevatten.",
+    "no_posts": "Geen blog posts gevonden",
     "atproto": {
       "view_on_bluesky": "Bekijk op Bluesky",
       "reply_on_bluesky": "Reageer op Bluesky",
@@ -109,7 +110,7 @@
       "reply_count": "{count} antwoord | {count} antwoorden",
       "like_count": "{count} vind leuk | {count} vinden leuk",
       "repost_count": "{count} herplaatsing | {count} herplaatsing",
-      "more_replies": "{count} more reply... | {count} more replies..."
+      "more_replies": "{count} meer reactie... | {count} meer reacties..."
     }
   },
   "settings": {
@@ -138,6 +139,8 @@
     "include_types_description": "Voeg {'@'}types toe aan installatie commands van pakketten zonder types.",
     "hide_platform_packages": "Verberg platformspecifieke pakketten in zoekresultaten",
     "hide_platform_packages_description": "Verberg native binaire pakketten zoals {'@'}esbuild/linux-x64 uit de resultaten",
+    "enable_graph_pulse_loop": "Schakel het herhalen van het pulseffect in de minigrafiek in",
+    "enable_graph_pulse_loop_description": "Schakel een doorlopende pulsanimatie in op de grafiek met wekelijkse downloads. Deze animatie kan voor sommige gebruikers storend zijn.",
     "theme": "Thema",
     "theme_light": "Licht",
     "theme_dark": "Donker",
@@ -145,7 +148,7 @@
     "language": "Taal",
     "help_translate": "Help npmx vertalen",
     "accent_colors": "Accentkleuren",
-    "clear_accent": "Clear accent color",
+    "clear_accent": "Geen accentkleur",
     "translation_progress": "Voortgang vertaling",
     "background_themes": "Achtergrondkleur",
     "keyboard_shortcuts_enabled": "toetsenbordnavigatie inschakelen",
@@ -205,10 +208,12 @@
       "radicle": "Bekijk op Radicle",
       "sourcehut": "Bekijk op SourceHut",
       "tangled": "Bekijk op Tangled"
-    }
+    },
+    "collapse": "inklappen",
+    "expand": "uitklappen"
   },
   "profile": {
-    "display_name": "Display Name",
+    "display_name": "Profiel naam",
     "description": "Bescrijving",
     "no_description": "Geen bescrijving",
     "website": "Website",
@@ -240,8 +245,8 @@
       "title_size": "Aanzienlijke toenamen in grootte sinds v{version}",
       "title_deps": "Aanzienlijke toename van het aantal dependencies sinds versie {version}",
       "title_both": "Aanzienlijke toename in omvang en depen sinds v{version}",
-      "size": "Install size increased by {percent} ({size} larger)",
-      "deps": "{count} more dependencies"
+      "size": "De installatiegrootte is toegenomen met {percent} ({size} groter)",
+      "deps": "{count} meer dependencies"
     },
     "replacement": {
       "title": "U heeft waarschijnlijk dit niet nodig",
@@ -284,7 +289,8 @@
         "refs": "{count} verwijzing | {count} verwijzingen",
         "assets": "{count} bestand | {count} bestanden"
       },
-      "view_source": "Bekijk bron"
+      "view_source": "Bekijk bron",
+      "skills_cli": "skills CLI"
     },
     "links": {
       "main": "Overzicht",
@@ -352,7 +358,7 @@
       "description_to_none_trustedPublisher": "Deze versie is gepubliseerd zonder {trustedPublishing}.",
       "description_to_provenance_trustedPublisher": "Deze versie gebruikt {provenance} maar niet {trustedPublishing}.",
       "fallback_install_provenance": "Installatie commands zijn vastgezet op {version}, de laatste versie met geverifieerde herkomst.",
-      "fallback_install_trustedPublisher": "Install commands are pinned to {version}, the last version with trusted publishing.",
+      "fallback_install_trustedPublisher": "Installatie commands zijn vastgezet op {version}, the last version with vertrouwd publiceren.",
       "provenance_link_text": "herkomstverificatie",
       "trusted_publishing_link_text": "vertrouwd publiceren"
     },
@@ -388,9 +394,11 @@
       "grouping_major": "Hoofd",
       "grouping_minor": "Sub",
       "grouping_versions_title": "Versies",
+      "grouping_versions_about": "Over versiegroepering",
       "grouping_versions_all": "Alle",
       "grouping_versions_only_recent": "Alleen recent",
       "grouping_usage_title": "Gebruik",
+      "grouping_usage_about": "Over gebruiksgroepering",
       "grouping_usage_all": "Alle",
       "grouping_usage_most_used": "Meest gebruikt",
       "recent_versions_only_tooltip": "Toon alleen versies die in het afgelopen jaar zijn gepubliceerd.",
@@ -407,10 +415,10 @@
         "general_description": "Staafdiagram met het aantal downloads per versie voor {versions_count} {semver_grouping_mode}-versies van het pakket {package_name}, {date_range_label} van versie {first_version} tot versie {last_version}. De meest gedownloade versie is {max_downloaded_version} met {max_version_downloads} downloads. {per_version_analysis}. {watermark}."
       },
       "page_title": "Versie geschiedenis",
-      "current_tags": "EN TEXT TO REPLACE: Current Tags",
+      "current_tags": "Huidige tags",
       "version_filter_placeholder": "Filter versies.",
       "version_filter_label": "Filter versies",
-      "no_match_filter": "EN TEXT TO REPLACE: No versions match {filter}"
+      "no_match_filter": "Geen versies die voldoen aan {filter}"
     },
     "dependencies": {
       "title": "Dependency ({count}) | Dependencies ({count})",
@@ -418,10 +426,11 @@
       "show_all": "toon {count} dep | toon alle {count} deps",
       "optional": "optioneel",
       "view_vulnerabilities": "Bekijk kwetsbaarheden",
-      "outdated_major": "{count} subversie achter (nieuwste: {latest}) | {count} subversies achter (nieuwste: {latest})",
-      "outdated_minor": "{count} minor version behind (latest: {latest}) | {count} minor versions behind (latest: {latest})",
+      "outdated_major": "{count} hoofdversie achter (nieuwste: {latest}) | {count} hoofdversies achter (nieuwste: {latest})",
+      "outdated_minor": "{count} subversie achter (nieuwste: {latest}) | {count} subversies achter (nieuwste: {latest})",
       "outdated_patch": "Patch update beschikbaar (nieuwste: {latest})",
-      "has_replacement": "Deze dedependency heeft voorgesteld alternatieven"
+      "has_replacement": "Deze dedependency heeft voorgesteld alternatieven",
+      "vulnerabilities_count": "{count} kwetsbaarheid | {count} kwetsbaarheden"
     },
     "peer_dependencies": {
       "title": "Peer Dependency ({count}) | Peer Dependencies ({count})",
@@ -445,7 +454,8 @@
       "cancel_add": "Annuleer toevoegen eigenaar",
       "add_owner": "+ Eigenaar toevoegen",
       "show_more": "(toon {count} meer)",
-      "show_less": "(toon minder)"
+      "show_less": "(toon minder)",
+      "maintainer_template": "{avatar} {char126}{name}"
     },
     "trends": {
       "granularity": "Granulariteit",
@@ -477,7 +487,7 @@
       "data_correction": "Gegevenscorrectie",
       "average_window": "Gemiddelde periode",
       "smoothing": "Gladmaken",
-      "prediction": "EN TEXT TO REPLACE: Prediction",
+      "prediction": "Voorspelling",
       "known_anomalies": "Bekende afwijkingen",
       "known_anomalies_description": "Interpoleert bekende downloadpieken die worden veroorzaakt door bots of CI-problemen.",
       "known_anomalies_ranges": "Afwijkingsbereiken",
@@ -487,20 +497,20 @@
       "known_anomalies_contribute": "Anomaliegegevens bijdragen",
       "apply_correction": "Correctie toepassen",
       "copy_alt": {
-        "trend_none": "mostly flat",
-        "trend_strong": "strong",
-        "trend_weak": "weak",
+        "trend_none": "voornamelijk plat",
+        "trend_strong": "Sterk",
+        "trend_weak": "zwak",
         "trend_undefined": "undefined (insufficient data)",
         "button_label": "Alternatieve tekst kopiëren",
-        "watermark": "At the bottom, a watermark reads \"./npmx a fast, modern browser for the npm registry\"",
-        "analysis": "{package_name} starts at {start_value} and ends at {end_value}, showing a {trend} trend with a slope of {downloads_slope} downloads per time interval",
-        "estimation": "The final value is an estimate based on partial data for the current period.",
-        "estimations": "The final values are estimates based on partial data for the current period.",
-        "compare": "Package download comparison line chart for: {packages}.",
-        "single_package": "Downloads line chart for the {package} package.",
-        "general_description": "The Y axis represents the number of downloads. The X axis represents the date range, from {start_date} to {end_date}, with a {granularity} time period.{estimation_notice} {packages_analysis}. {watermark}.",
-        "facet_bar_general_description": "EN TEXT TO REPLACE: Horizontal bar chart for: {packages}, comparing {facet} ({description}). {facet_analysis} {watermark}.",
-        "facet_bar_analysis": "EN TEXT TO REPLACE: {package_name} has a value of {value}."
+        "watermark": "Onderaan staat in een watermerk: \"./npmx @:tagline\"",
+        "analysis": "{package_name} begint op {start_value} en eindigt op {end_value}, wat een {trend} trend laat zien met een helling van {downloads_slope} downloads per tijdsinterval.",
+        "estimation": "De laatste waarde is een schatting, gebaseerd op onvolledige gegevens voor de huidige periode.",
+        "estimations": "De laatste waardes zijn een schatting, gebaseerd op onvolledige gegevens voor de huidige periode.",
+        "compare": "Lijngrafiek ter vergelijking van pakketdownloads voor: {packages}.",
+        "single_package": "Downloadgrafiek voor pakket {package}.",
+        "general_description": "De Y-as toont het aantal downloads. De X-as toont de periode, van {start_date} tot {end_date}, met een {granularity} tijdsinterval. {estimation_notice} {packages_analysis}. {watermark}.",
+        "facet_bar_general_description": " Horizontaal staafdiagram voor: {packages}, ter vergelijking van {facet} ({description}). {facet_analysis} {watermark}.",
+        "facet_bar_analysis": "{package_name} heeft een waarde van {value}."
       }
     },
     "downloads": {
@@ -864,6 +874,7 @@
       "insecure": "With warnings"
     },
     "view_selected": "Bekijk geselecteerde",
+    "clear_selected_label": "EN TEXT TO REPLACE: Clear selected",
     "sort": {
       "label": "Pakketten sorteren",
       "toggle_direction": "Sorteerrichting wijzigen",
@@ -1176,6 +1187,14 @@
     "file_size_warning": "{size} exceeds the 250KB limit for comparison",
     "compare_versions": "verschillen",
     "compare_versions_title": "Vergelijk met de laatste versie",
+    "comparing_versions_label": "EN TEXT TO REPLACE: Comparing versions...",
+    "version_back_to_package": "EN TEXT TO REPLACE: Back to package",
+    "version_error_message": "EN TEXT TO REPLACE: Failed to compare versions.",
+    "version_invalid_url_format": {
+      "hint": "EN TEXT TO REPLACE: Invalid comparison URL. Use format: {0}",
+      "from_version": "EN TEXT TO REPLACE: from",
+      "to_version": "EN TEXT TO REPLACE: to"
+    },
     "version_selector_title": "EN TEXT TO REPLACE: Compare with version",
     "summary": "Summary",
     "deps_count": "{count} dep | {count} deps",
@@ -1202,7 +1221,18 @@
     "files_button": "Files",
     "select_file_prompt": "Select a file from the sidebar to view its diff",
     "close_files_panel": "Close files panel",
-    "filter_files_label": "Filter files by change type"
+    "filter_files_label": "Filter files by change type",
+    "change_ratio": "EN TEXT TO REPLACE: Change ratio",
+    "char_edits": "EN TEXT TO REPLACE: Char edits",
+    "diff_distance": "EN TEXT TO REPLACE: Diff distance",
+    "loading_diff": "EN TEXT TO REPLACE: Loading diff...",
+    "loading_diff_error": "EN TEXT TO REPLACE: Failed to load diff",
+    "merge_modified_lines": "EN TEXT TO REPLACE: Merge modified lines",
+    "no_content_changes": "EN TEXT TO REPLACE: No content changes detected",
+    "options": "EN TEXT TO REPLACE: Options",
+    "view_file": "EN TEXT TO REPLACE: View file",
+    "view_in_code_browser": "EN TEXT TO REPLACE: View in code browser",
+    "word_wrap": "EN TEXT TO REPLACE: Word wrap"
   },
   "pds": {
     "title": "npmx.social",
