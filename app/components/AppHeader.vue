@@ -224,7 +224,7 @@ onKeyStroke(
         :aria-label="$t('header.pr', { prNumber })"
         class="sm:hidden"
       >
-        <span class="text-xs px-1.5 py-0.5 rounded badge-green font-sans font-medium ms-2">
+        <span class="text-xs px-1.5 py-0.5 rounded badge-green font-sans font-medium">
           PR #{{ prNumber }}
         </span>
       </NuxtLink>
