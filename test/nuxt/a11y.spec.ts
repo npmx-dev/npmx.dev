@@ -238,6 +238,7 @@ import {
 // Server variant components must be imported directly to test the server-side render
 // The #components import automatically provides the client variant
 import LogoNuxt from '~/assets/logos/oss-partners/nuxt.svg'
+import CommandPaletteComponent from '~/components/CommandPalette.client.vue'
 import HeaderAccountMenuServer from '~/components/Header/AccountMenu.server.vue'
 import ToggleServer from '~/components/Settings/Toggle.server.vue'
 import SearchProviderToggleServer from '~/components/SearchProviderToggle.server.vue'
@@ -470,6 +471,43 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(BackButton)
       expect(component.find('button').exists()).toBe(true)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('CommandPalette', () => {
+    let commandPalette: ReturnType<typeof useCommandPalette> | null = null
+
+    const CommandPaletteHarness = defineComponent({
+      name: 'CommandPaletteHarness',
+      setup() {
+        commandPalette = useCommandPalette()
+
+        onMounted(() => {
+          commandPalette?.open()
+        })
+
+        onBeforeUnmount(() => {
+          commandPalette?.close()
+          commandPalette?.clearPackageContext()
+        })
+
+        return () => h('div', [h(CommandPaletteComponent)])
+      },
+    })
+
+    afterEach(() => {
+      commandPalette?.close()
+      commandPalette?.clearPackageContext()
+      commandPalette = null
+    })
+
+    it('should have no accessibility violations when open', async () => {
+      const component = await mountSuspended(CommandPaletteHarness)
+      await nextTick()
+      await nextTick()
+
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })

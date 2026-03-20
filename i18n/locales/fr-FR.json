@@ -27,6 +27,9 @@
       "search": "Recherche",
       "package": "Paquet"
     },
+    "ctrl_key": "Ctrl",
+    "command_palette": "Ouvrir la palette de commandes",
+    "command_palette_description": "Utilisez la palette de commandes pour passer entre les pages, les vues de paquet, les paramètres et les liens externes sans quitter le clavier. Sur macOS, appuyez sur ⌘K. Sous Windows et Linux, appuyez sur {ctrlKey}+K.",
     "focus_search": "Aller à la recherche",
     "show_kbd_hints": "Afficher les raccourcis clavier",
     "settings": "Ouvrir les paramètres",
@@ -36,7 +39,9 @@
     "go_to_result": "Ouvrir le résultat",
     "open_code_view": "Ouvrir la vue code",
     "open_docs": "Ouvrir la doc",
-    "disable_shortcuts": "Vous pouvez désactiver les raccourcis clavier dans {settings}."
+    "disable_shortcuts": "Vous pouvez désactiver les raccourcis clavier dans {settings}.",
+    "open_main": "Ouvrir la page principale",
+    "open_diff": "Ouvrir les différences de version"
   },
   "search": {
     "label": "Rechercher des paquets npm",
@@ -72,6 +77,105 @@
     "instant_search_turn_on": "activer",
     "instant_search_turn_off": "désactiver",
     "instant_search_advisory": "{label} {state} — {action}"
+  },
+  "command_palette": {
+    "title": "palette de commandes",
+    "quick_actions": "aller à...",
+    "subtitle": "naviguez dans npmx et changez rapidement les paramètres",
+    "subtitle_languages": "choisissez une langue ou aidez à améliorer les traductions",
+    "instructions": "Tapez pour filtrer les commandes. Utilisez les flèches pour parcourir les résultats et Entrée pour lancer une commande.",
+    "input_label": "Recherche dans la palette de commandes",
+    "results_label": "Résultats de la palette de commandes",
+    "placeholder": "tapez une commande...",
+    "back": "Retour",
+    "empty": "Aucune commande correspondante",
+    "empty_search_hint": "Appuyez sur Entrée pour rechercher « {query} ».",
+    "current": "actuel",
+    "here": "vous êtes ici",
+    "connected": "connecté",
+    "state": {
+      "on": "activé",
+      "off": "désactivé"
+    },
+    "groups": {
+      "actions": "Actions",
+      "help": "Aide",
+      "language": "Langue",
+      "connections": "Connexions",
+      "navigation": "Navigation",
+      "links": "Liens",
+      "npmx": "npmx",
+      "package": "Paquet",
+      "package_with_name": "Paquet ({name})",
+      "versions": "Versions",
+      "versions_with_name": "Versions de {name}"
+    },
+    "actions": {
+      "search": "Recherche",
+      "search_for": "Rechercher « {query} »",
+      "keyboard_shortcuts": "Raccourcis clavier",
+      "help_translate": "Aider à traduire"
+    },
+    "connections": {
+      "npm_connect": "Se connecter avec npm CLI",
+      "npm_connected": "CLI npm (~{username})",
+      "npm_disconnect": "Se déconnecter de npm CLI",
+      "atmosphere_connect": "Se connecter à Atmosphere",
+      "atmosphere_connected": "atmosphere ({'@'}{handle})",
+      "atmosphere_disconnect": "Se déconnecter d’Atmosphere"
+    },
+    "navigation": {
+      "home": "accueil",
+      "packages": "paquets (~{username})",
+      "orgs": "organisations (~{username})",
+      "profile": "profil ({'@'}{handle})"
+    },
+    "links": {
+      "external": "Lien externe"
+    },
+    "package_links": {
+      "stars": "Étoiles du dépôt",
+      "forks": "Forks du dépôt"
+    },
+    "theme": {
+      "system": "Utiliser le thème du système",
+      "light": "Utiliser le thème clair",
+      "dark": "Utiliser le thème sombre"
+    },
+    "package": {
+      "main": "Page du paquet",
+      "docs": "Doc",
+      "code": "Code",
+      "diff": "Diff",
+      "compare": "Comparer ce paquet",
+      "download": "Télécharger le tarball"
+    },
+    "package_actions": {
+      "copy_run": "Copier la commande d'exécution"
+    },
+    "code": {
+      "copy_file": "Copier le contenu du fichier"
+    },
+    "diff": {
+      "merge_modified_lines": "Fusionner les lignes modifiées",
+      "word_wrap": "Retour automatique à la ligne"
+    },
+    "version": {
+      "label": "{version}"
+    },
+    "status": {
+      "available_in_context": "{context}. Aucune commande disponible | {context}. 1 commande disponible | {context}. {count} commandes disponibles",
+      "matching_in_context": "{context}. Aucune commande correspondante | {context}. 1 commande correspondante | {context}. {count} commandes correspondantes",
+      "no_matches_search_in_context": "{context}. Aucune commande correspondante. Appuyez sur Entrée pour rechercher « {query} »."
+    },
+    "announcements": {
+      "language_changed": "Langue {language}.",
+      "relative_dates_on": "Dates relatives activées.",
+      "relative_dates_off": "Dates relatives désactivées.",
+      "theme_changed": "Thème {theme}.",
+      "accent_color_changed": "Couleur d’accentuation {color}.",
+      "background_theme_changed": "Couleur d’arrière-plan {theme}."
+    }
   },
   "nav": {
     "main_navigation": "Barre de navigation",
@@ -143,7 +247,8 @@
     "language": "Langue de l'interface",
     "help_translate": "Aidez-nous à traduire npmx",
     "accent_colors": {
-      "label": "Couleurs d'accentuation",
+      "label": "Couleurs d’accentuation",
+      "neutral": "Neutre",
       "sky": "Ciel",
       "coral": "Corail",
       "amber": "Ambre",

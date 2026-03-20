@@ -74,6 +74,12 @@ const DEFAULT_SETTINGS: AppSettings = {
   },
 }
 
+export const DEFAULT_ACCENT_COLOR_ID = DEFAULT_SETTINGS.accentColorId
+export const DEFAULT_BACKGROUND_THEME_ID = DEFAULT_SETTINGS.preferredBackgroundTheme
+export const DEFAULT_ACCENT_COLOR_OPTION_ID: AccentColorId = DEFAULT_ACCENT_COLOR_ID ?? 'neutral'
+export const DEFAULT_BACKGROUND_THEME_OPTION_ID: BackgroundThemeId =
+  DEFAULT_BACKGROUND_THEME_ID ?? 'neutral'
+
 const STORAGE_KEY = 'npmx-settings'
 
 // Shared settings instance (singleton per app)
@@ -159,17 +165,22 @@ export function useAccentColor() {
   })
 
   function setAccentColor(id: AccentColorId | null) {
-    if (id) {
-      document.documentElement.style.setProperty('--accent-color', `var(--swatch-${id})`)
+    const accentColorId = id === 'neutral' ? DEFAULT_ACCENT_COLOR_ID : id
+
+    if (accentColorId) {
+      document.documentElement.style.setProperty('--accent-color', `var(--swatch-${accentColorId})`)
     } else {
       document.documentElement.style.removeProperty('--accent-color')
     }
-    settings.value.accentColorId = id
+    settings.value.accentColorId = accentColorId
   }
 
   return {
     accentColors,
     selectedAccentColor: computed(() => settings.value.accentColorId),
+    selectedAccentColorOptionId: computed(
+      () => settings.value.accentColorId ?? DEFAULT_ACCENT_COLOR_OPTION_ID,
+    ),
     setAccentColor,
   }
 }
@@ -233,6 +244,9 @@ export function useBackgroundTheme() {
   return {
     backgroundThemes,
     selectedBackgroundTheme: computed(() => settings.value.preferredBackgroundTheme),
+    selectedBackgroundThemeOptionId: computed(
+      () => settings.value.preferredBackgroundTheme ?? DEFAULT_BACKGROUND_THEME_OPTION_ID,
+    ),
     setBackgroundTheme,
   }
 }

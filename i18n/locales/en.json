@@ -27,6 +27,9 @@
       "search": "Search",
       "package": "Package"
     },
+    "ctrl_key": "Ctrl",
+    "command_palette": "Open command palette",
+    "command_palette_description": "Use the command palette to jump between pages, package views, settings, and external links without leaving the keyboard. On macOS, press ⌘K. On Windows and Linux, press {ctrlKey}+K.",
     "focus_search": "Focus search",
     "show_kbd_hints": "Highlight keyboard hints",
     "settings": "Open settings",
@@ -74,6 +77,105 @@
     "instant_search_turn_on": "turn on",
     "instant_search_turn_off": "turn off",
     "instant_search_advisory": "{label} {state} — {action}"
+  },
+  "command_palette": {
+    "title": "command palette",
+    "quick_actions": "jump to...",
+    "subtitle": "navigate across npmx and switch settings quickly",
+    "subtitle_languages": "choose a language or help improve translations",
+    "instructions": "Type to filter commands. Use the arrow keys to move through results and Enter to run a command.",
+    "input_label": "Command palette search",
+    "results_label": "Command results",
+    "placeholder": "type a command...",
+    "back": "Back",
+    "empty": "No matching commands",
+    "empty_search_hint": "Press Enter to search for \"{query}\".",
+    "current": "current",
+    "here": "you are here",
+    "connected": "connected",
+    "state": {
+      "on": "on",
+      "off": "off"
+    },
+    "groups": {
+      "actions": "Actions",
+      "help": "Help",
+      "language": "Language",
+      "connections": "Connections",
+      "navigation": "Navigation",
+      "links": "Links",
+      "npmx": "npmx",
+      "package": "Package",
+      "package_with_name": "Package ({name})",
+      "versions": "Versions",
+      "versions_with_name": "Versions of {name}"
+    },
+    "actions": {
+      "search": "Search",
+      "search_for": "Search for \"{query}\"",
+      "keyboard_shortcuts": "Keyboard shortcuts",
+      "help_translate": "Help translate"
+    },
+    "connections": {
+      "npm_connect": "Connect to npm CLI",
+      "npm_connected": "npm CLI (~{username})",
+      "npm_disconnect": "Disconnect npm CLI",
+      "atmosphere_connect": "Connect to Atmosphere",
+      "atmosphere_connected": "atmosphere ({'@'}{handle})",
+      "atmosphere_disconnect": "Disconnect Atmosphere"
+    },
+    "navigation": {
+      "home": "home",
+      "packages": "packages (~{username})",
+      "orgs": "orgs (~{username})",
+      "profile": "profile ({'@'}{handle})"
+    },
+    "links": {
+      "external": "External link"
+    },
+    "package_links": {
+      "stars": "Repository stars",
+      "forks": "Repository forks"
+    },
+    "theme": {
+      "system": "Use system theme",
+      "light": "Use light theme",
+      "dark": "Use dark theme"
+    },
+    "package": {
+      "main": "Package page",
+      "docs": "Docs",
+      "code": "Code",
+      "diff": "Diff",
+      "compare": "Compare this package",
+      "download": "Download tarball"
+    },
+    "package_actions": {
+      "copy_run": "Copy run command"
+    },
+    "code": {
+      "copy_file": "Copy file contents"
+    },
+    "diff": {
+      "merge_modified_lines": "Merge modified lines",
+      "word_wrap": "Word wrap"
+    },
+    "version": {
+      "label": "{version}"
+    },
+    "status": {
+      "available_in_context": "{context}. No commands available | {context}. 1 command available | {context}. {count} commands available",
+      "matching_in_context": "{context}. No matching commands | {context}. 1 matching command | {context}. {count} matching commands",
+      "no_matches_search_in_context": "{context}. No matching commands. Press Enter to search for \"{query}\"."
+    },
+    "announcements": {
+      "language_changed": "Language set to {language}.",
+      "relative_dates_on": "Relative dates on.",
+      "relative_dates_off": "Relative dates off.",
+      "theme_changed": "Theme set to {theme}.",
+      "accent_color_changed": "Accent color set to {color}.",
+      "background_theme_changed": "Background shade set to {theme}."
+    }
   },
   "nav": {
     "main_navigation": "Main",
@@ -150,6 +252,7 @@
     "translation_status": "Check global translation status",
     "accent_colors": {
       "label": "Accent colors",
+      "neutral": "Neutral",
       "sky": "Sky",
       "coral": "Coral",
       "amber": "Amber",

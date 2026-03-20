@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
+
 const props = defineProps<{
   links: PlaygroundLink[]
 }>()
@@ -115,6 +117,19 @@ function focusMenuItem(index: number) {
   const items = menuRef.value?.querySelectorAll<HTMLElement>('[role="menuitem"]')
   items?.[index]?.focus()
 }
+
+useCommandPaletteContextCommands(
+  computed((): CommandPaletteContextCommandInput[] =>
+    props.links.map(link => ({
+      id: `package-playground:${link.url}`,
+      group: 'links',
+      label: link.label,
+      keywords: [link.providerName, $t('package.playgrounds.title')],
+      iconClass: getIcon(link.provider),
+      href: link.url,
+    })),
+  ),
+)
 </script>
 
 <template>

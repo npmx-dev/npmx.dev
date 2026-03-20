@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { updateProfile as updateProfileUtil } from '~/utils/atproto/profile'
+import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
 
 const route = useRoute('profile-identity')
 const identity = computed(() => route.params.identity)
@@ -93,6 +94,49 @@ const inviteUrl = computed(() => {
   const text = $t('profile.invite.compose_text', { handle: profile.value.handle })
   return `https://bsky.app/intent/compose?text=${encodeURIComponent(text)}`
 })
+
+useCommandPaletteContextCommands(
+  computed((): CommandPaletteContextCommandInput[] => {
+    const commands: CommandPaletteContextCommandInput[] = []
+
+    if (user.value?.handle === profile.value.handle && !isEditing.value) {
+      commands.push({
+        id: 'profile-edit',
+        group: 'actions',
+        label: $t('common.edit'),
+        keywords: [profile.value.handle ?? identity.value, $t('profile.display_name')],
+        iconClass: 'i-lucide:square-pen',
+        action: () => {
+          isEditing.value = true
+        },
+      })
+    }
+
+    if (profile.value.website) {
+      commands.push({
+        id: 'profile-website',
+        group: 'links',
+        label: $t('profile.website'),
+        keywords: [profile.value.website, profile.value.handle ?? identity.value],
+        iconClass: 'i-lucide:link',
+        href: profile.value.website,
+      })
+    }
+
+    if (showInviteSection.value) {
+      commands.push({
+        id: 'profile-share-invite',
+        group: 'actions',
+        label: $t('profile.invite.share_button'),
+        keywords: [profile.value.handle ?? identity.value, $t('profile.invite.message')],
+        iconClass: 'i-lucide:send',
+        href: inviteUrl.value,
+      })
+    }
+
+    return commands
+  }),
+)
 
 useSeoMeta({
   title: () => $t('profile.seo_title', { handle: identity.value }),
