@@ -3,6 +3,7 @@
  */
 
 import { getLatestVersion } from 'fast-npm-meta'
+import { flattenFileTree } from '#server/utils/import-resolver'
 
 export type ModuleFormat = 'esm' | 'cjs' | 'dual' | 'unknown'
 

@@ -3,14 +3,11 @@ import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import type {
   PackageAnalysis,
   ExtendedPackageJson,
-  TypesPackageInfo,
   CreatePackageInfo,
 } from '#shared/utils/package-analysis'
 import {
   analyzePackage,
-  getTypesPackageName,
   getCreatePackageName,
-  hasBuiltInTypes,
   fetchPackageWithTypesAndFiles,
 } from '#shared/utils/package-analysis'
 import {
@@ -24,7 +21,6 @@ import {
 } from '#shared/utils/constants'
 import { parseRepoUrl } from '#shared/utils/git-providers'
 import { encodePackageName } from '#shared/utils/npm'
-import { flattenFileTree } from '#server/utils/import-resolver'
 import { getPackageFileTree } from '#server/utils/file-tree'
 import { getLatestVersionBatch } from 'fast-npm-meta'
 
