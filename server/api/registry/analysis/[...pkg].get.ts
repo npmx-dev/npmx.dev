@@ -21,7 +21,6 @@ import {
 } from '#shared/utils/constants'
 import { parseRepoUrl } from '#shared/utils/git-providers'
 import { encodePackageName } from '#shared/utils/npm'
-import { getPackageFileTree } from '#server/utils/file-tree'
 import { getLatestVersionBatch } from 'fast-npm-meta'
 
 export default defineCachedEventHandler(
