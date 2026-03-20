@@ -571,6 +571,46 @@ function logUnmockedRequest(type: string, detail: string, url: string): void {
   )
 }
 
+async function handleJsdelivrDataApi(
+  url: string,
+  storage: ReturnType<typeof useStorage>,
+): Promise<MockResult | null> {
+  let urlObj: URL
+  try {
+    urlObj = new URL(url)
+  } catch {
+    return null
+  }
+
+  if (urlObj.host !== 'data.jsdelivr.com') return null
+
+  const packageMatch = decodeURIComponent(urlObj.pathname).match(/^\/v1\/packages\/npm\/(.+)$/)
+  if (!packageMatch?.[1]) return null
+
+  const parsed = parseScopedPackageWithVersion(packageMatch[1])
+
+  // Try per-package fixture first
+  const fixturePath = `jsdelivr:${parsed.name.replace(/\//g, ':')}.json`
+  const fixture = await storage.getItem<unknown>(fixturePath)
+  if (fixture) {
+    return { data: fixture }
+  }
+
+  // Fall back to generic stub (no declaration files)
+  return {
+    data: {
+      type: 'npm',
+      name: parsed.name,
+      version: parsed.version || 'latest',
+      files: [
+        { name: 'package.json', hash: 'abc123', size: 1000 },
+        { name: 'index.js', hash: 'def456', size: 500 },
+        { name: 'README.md', hash: 'ghi789', size: 2000 },
+      ],
+    },
+  }
+}
+
 /**
  * Shared fixture-backed fetch implementation.
  * This is used by both cachedFetch and the global $fetch override.
@@ -591,6 +631,12 @@ async function fetchFromFixtures<T>(
   if (fastNpmMetaResult) {
     if (VERBOSE) process.stdout.write(`[test-fixtures] Fast-npm-meta: ${url}\n`)
     return { data: fastNpmMetaResult.data as T, isStale: false, cachedAt: Date.now() }
+  }
+
+  const jsdelivrResult = await handleJsdelivrDataApi(url, storage)
+  if (jsdelivrResult) {
+    if (VERBOSE) process.stdout.write(`[test-fixtures] jsDelivr Data API: ${url}\n`)
+    return { data: jsdelivrResult.data as T, isStale: false, cachedAt: Date.now() }
   }
 
   // Check for GitHub API
