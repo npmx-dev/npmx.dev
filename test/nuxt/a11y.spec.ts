@@ -2914,7 +2914,7 @@ describe('component accessibility audits', () => {
   describe('UserAvatar', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(UserAvatar, {
-        props: { username: 'testuser' },
+        props: { username: 'testuser', size: 'lg' },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
@@ -2922,7 +2922,7 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations with short username', async () => {
       const component = await mountSuspended(UserAvatar, {
-        props: { username: 'a' },
+        props: { username: 'a', size: 'lg' },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
@@ -2930,10 +2930,21 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations with long username', async () => {
       const component = await mountSuspended(UserAvatar, {
-        props: { username: 'verylongusernameexample' },
+        props: { username: 'verylongusernameexample', size: 'lg' },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations in all sizes', async () => {
+      const sizes = ['xs', 'lg'] as const
+      for (const size of sizes) {
+        const component = await mountSuspended(UserAvatar, {
+          props: { username: 'testuser', size },
+        })
+        const results = await runAxe(component)
+        expect(results.violations).toEqual([])
+      }
     })
   })
 

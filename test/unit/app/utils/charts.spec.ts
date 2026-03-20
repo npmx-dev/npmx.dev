@@ -19,7 +19,7 @@ import {
   type TrendLineDataset,
   type VersionsBarConfig,
   type VersionsBarDataset,
-} from '../../../../app/utils/charts'
+} from '~/utils/charts'
 import type { AltCopyArgs } from 'vue-data-ui'
 
 type TranslateCall = { key: string | number; named?: Record<string, unknown> }

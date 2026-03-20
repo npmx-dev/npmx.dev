@@ -17,6 +17,9 @@ export function useRepositoryUrl(
     }
 
     let url = normalizeGitUrl(repo.url)
+    if (!url) {
+      return null
+    }
 
     // append `repository.directory` for monorepo packages
     if (repo.directory) {
