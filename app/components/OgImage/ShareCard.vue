@@ -79,24 +79,6 @@ try {
   console.warn('[share-card] Failed to load data server-side:', err)
 }
 
-let sparklineValues: number[] = []
-try {
-  const endDate = new Date()
-  endDate.setDate(endDate.getDate() - 1)
-  const startDate = new Date(endDate)
-  startDate.setDate(startDate.getDate() - (52 * 7 - 1))
-  const fmtDate = (d: Date) => d.toISOString().slice(0, 10)
-  const result = await $fetch<{ downloads: Array<{ downloads: number }> }>(
-    `https://api.npmjs.org/downloads/range/${fmtDate(startDate)}:${fmtDate(endDate)}/${encodeURIComponent(props.name)}`,
-  )
-  const daily = result.downloads ?? []
-  for (let i = 0; i < daily.length; i += 7) {
-    sparklineValues.push(daily.slice(i, i + 7).reduce((sum, d) => sum + d.downloads, 0))
-  }
-} catch {
-  /* decorative — omit on failure */
-}
-
 const version = computed(() => resolvedVersion.value ?? pkg.value?.['dist-tags']?.latest ?? '')
 const isLatest = computed(() => pkg.value?.['dist-tags']?.latest === version.value)
 const description = computed(() => pkg.value?.description ?? '')
@@ -116,56 +98,21 @@ const repoSlug = computed(() => {
   return truncate(`${ref.owner}/${ref.repo}`, 26)
 })
 
-const weekRange = computed(() => {
-  const end = new Date()
-  end.setDate(end.getDate() - 1)
-  const start = new Date(end)
-  start.setDate(start.getDate() - 6)
-  const fmt = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-  return `${fmt(start)} – ${fmt(end)}`
-})
-
 // Card: 1280×520 (2.46:1) — same ratio as 640×260, doubled for sharpness.
-// Footer ~68px. Main area ~452px.
-// Right panel: 400px wide, 32px padding → 336px sparkline width.
-// Weights: 300 (secondary), 400 (labels), 500 (primary values).
+// Single-column layout: accent bar + full-width content.
+// Typography hierarchy (two weights only):
+//   500 — primary values: package name, weekly DL, bottom stats
+//   300 — secondary: version, description, tags, footer text
+//   400 — labels only (18px uppercase tracked)
 const BOTTOM_ROW_H = 132
-const SPARK_W = 336
-const SPARK_H = 96
-
-const sparklinePoints = computed(() => {
-  if (sparklineValues.length < 2) return ''
-  const P = 4
-  const max = Math.max(...sparklineValues)
-  const min = Math.min(...sparklineValues)
-  const range = max - min || 1
-  // Add 25% buffer below min so the lowest point never touches the bottom
-  const floor = Math.max(0, min - range * 0.25)
-  const adjustedRange = max - floor || 1
-  return sparklineValues
-    .map((v, i) => {
-      const x = P + (i / (sparklineValues.length - 1)) * (SPARK_W - P * 2)
-      const y = SPARK_H - P - ((v - floor) / adjustedRange) * (SPARK_H - P * 2)
-      return `${x.toFixed(1)},${y.toFixed(1)}`
-    })
-    .join(' ')
-})
-
-const sparklineAreaPoints = computed(() => {
-  if (!sparklinePoints.value) return ''
-  const P = 4
-  return `${sparklinePoints.value} ${(SPARK_W - P).toFixed(1)},${SPARK_H} ${P},${SPARK_H}`
-})
 </script>
 
 <template>
   <!--
     Rendered at 1280×520 (2.46:1).
-    Same proportions as 640×260 but 2× the pixels — sharp at any display size.
-    Typography hierarchy (two weights only):
-      500 — primary values: package name, weekly DL, stars, forks, bottom stats
-      300 — secondary: version, description, tags, date range, footer text
-      400 — labels only (18px uppercase tracked)
+    Flat single-column layout — no left/right panel split.
+    Top row: package identity (left) + weekly downloads (right) on one baseline.
+    Bottom row: all stats unified in a single row.
   -->
   <div
     class="h-full w-full flex flex-col"
@@ -175,56 +122,75 @@ const sparklineAreaPoints = computed(() => {
       fontFamily: '\'Geist Mono\', ui-monospace, monospace',
     }"
   >
-    <!-- ── Main row ─────────────────────────────────────────────────── -->
+    <!-- ── Main content ─────────────────────────────────────────────── -->
     <div class="flex flex-row flex-1 overflow-hidden">
-      <!-- 4px accent bar -->
-      <div class="flex-shrink-0" :style="{ width: '4px', backgroundColor: primaryColor }" />
-
-      <!-- Left panel -->
+      <!-- Content column -->
       <div class="flex flex-col flex-1 overflow-hidden justify-between">
         <!-- Top content -->
         <div class="flex flex-col" style="padding: 32px 40px 0 32px">
-          <!-- Name · version · latest -->
-          <div
-            class="flex flex-row items-baseline flex-wrap gap-[16px]"
-            style="margin-bottom: 16px"
-          >
-            <span
-              :style="{
-                fontSize: '48px',
-                fontWeight: 500,
-                lineHeight: '1',
-                letterSpacing: '-1px',
-              }"
-            >
-              <span :style="{ color: primaryColor, marginRight: '-10px' }">.</span>/{{
-                truncate(name, 24)
-              }}
-            </span>
-            <span
-              :style="{
-                fontSize: '26px',
-                fontWeight: 300,
-                color: t.textMuted,
-                lineHeight: '1',
-              }"
-              >v{{ version }}</span
-            >
-            <span
-              v-if="isLatest"
-              class="flex items-center"
-              :style="{
-                fontSize: '20px',
-                fontWeight: 400,
-                padding: '4px 14px',
-                borderRadius: '20px',
-                border: `1px solid ${withAlpha(primaryColor, 0.25)}`,
-                color: withAlpha(primaryColor, 0.7),
-                lineHeight: '1.5',
-                letterSpacing: '0.04em',
-              }"
-              >latest</span
-            >
+          <!-- Top row: name+version+latest ← → downloads — single baseline -->
+          <div class="flex flex-row items-baseline justify-between" style="margin-bottom: 16px">
+            <!-- Left: name · version · latest -->
+            <div class="flex flex-row items-baseline flex-wrap gap-[16px]">
+              <span
+                :style="{
+                  fontSize: '48px',
+                  fontWeight: 500,
+                  lineHeight: '1',
+                  letterSpacing: '-1px',
+                }"
+              >
+                <span :style="{ color: primaryColor, marginRight: '-10px', marginLeft: '-10px' }"
+                  >.</span
+                >/{{ truncate(name, 24) }}
+              </span>
+              <span
+                :style="{
+                  fontSize: '26px',
+                  fontWeight: 300,
+                  color: t.textMuted,
+                  lineHeight: '1',
+                }"
+                >v{{ version }}</span
+              >
+              <span
+                v-if="isLatest"
+                class="flex items-center"
+                :style="{
+                  fontSize: '20px',
+                  fontWeight: 400,
+                  padding: '4px 14px',
+                  borderRadius: '20px',
+                  border: `1px solid ${withAlpha(primaryColor, 0.25)}`,
+                  color: withAlpha(primaryColor, 0.7),
+                  lineHeight: '1.5',
+                  letterSpacing: '0.04em',
+                }"
+                >latest</span
+              >
+            </div>
+
+            <!-- Right: weekly downloads — flat, single line -->
+            <div class="flex flex-row items-baseline flex-shrink-0" style="gap: 10px">
+              <span
+                :style="{
+                  fontSize: '40px',
+                  fontWeight: 500,
+                  color: t.text,
+                  lineHeight: '1',
+                  letterSpacing: '-1.5px',
+                }"
+                >{{ formatNum(weeklyDownloads) }}</span
+              >
+              <span
+                :style="{
+                  fontSize: '20px',
+                  fontWeight: 300,
+                  color: t.textSubtle,
+                }"
+                >weekly</span
+              >
+            </div>
           </div>
 
           <!-- Description -->
@@ -300,7 +266,7 @@ const sparklineAreaPoints = computed(() => {
           </div>
         </div>
 
-        <!-- Bottom meta stats -->
+        <!-- Bottom unified stats row -->
         <div
           class="flex flex-col justify-center flex-shrink-0"
           :style="{
@@ -308,189 +274,147 @@ const sparklineAreaPoints = computed(() => {
             padding: '0 40px 0 32px',
           }"
         >
-          <div class="flex flex-row" style="gap: 48px">
-            <div class="flex flex-col" style="gap: 8px">
-              <span
-                :style="{
-                  fontSize: '18px',
-                  fontWeight: 400,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.08em',
-                  color: t.textSubtle,
-                }"
-                >Install Size</span
+          <div class="flex flex-row items-center" style="gap: 36px">
+            <!-- Stars -->
+            <div v-if="stars > 0" class="flex flex-row items-center" style="gap: 8px">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                :stroke="t.textSubtle"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
               >
+                <path
+                  d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.12 2.12 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.12 2.12 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.12 2.12 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.12 2.12 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.12 2.12 0 0 0 1.597-1.16z"
+                />
+              </svg>
               <span
                 :style="{
-                  fontSize: '28px',
-                  fontWeight: 500,
-                  color: t.text,
+                  fontSize: '24px',
+                  fontWeight: 400,
+                  color: t.textMuted,
                   lineHeight: '1',
-                  letterSpacing: '-0.4px',
+                  letterSpacing: '-0.3px',
+                }"
+                >{{ formatNum(stars) }}</span
+              >
+            </div>
+
+            <!-- Forks -->
+            <div v-if="forks > 0" class="flex flex-row items-center" style="gap: 8px">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                :stroke="t.textSubtle"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="18" r="3" />
+                <circle cx="6" cy="6" r="3" />
+                <circle cx="18" cy="6" r="3" />
+                <path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9m6 3v3" />
+              </svg>
+              <span
+                :style="{
+                  fontSize: '24px',
+                  fontWeight: 400,
+                  color: t.textMuted,
+                  lineHeight: '1',
+                  letterSpacing: '-0.3px',
+                }"
+                >{{ formatNum(forks) }}</span
+              >
+            </div>
+
+            <!-- Install Size -->
+            <div class="flex flex-row items-center" style="gap: 8px">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                :stroke="t.textSubtle"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73zm1 .27V12"
+                />
+                <path d="M3.29 7L12 12l8.71-5M7.5 4.27l9 5.15" />
+              </svg>
+              <span
+                :style="{
+                  fontSize: '24px',
+                  fontWeight: 400,
+                  color: t.textMuted,
+                  lineHeight: '1',
+                  letterSpacing: '-0.3px',
                 }"
                 >{{ formatBytes(unpackedSize) }}</span
               >
             </div>
-            <div class="flex flex-col" style="gap: 8px">
-              <span
-                :style="{
-                  fontSize: '18px',
-                  fontWeight: 400,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.08em',
-                  color: t.textSubtle,
-                }"
-                >Dependencies</span
+
+            <!-- Dependencies -->
+            <div class="flex flex-row items-center" style="gap: 8px">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                :stroke="t.textSubtle"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
               >
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+              </svg>
               <span
                 :style="{
-                  fontSize: '28px',
-                  fontWeight: 500,
-                  color: t.text,
+                  fontSize: '24px',
+                  fontWeight: 400,
+                  color: t.textMuted,
                   lineHeight: '1',
-                  letterSpacing: '-0.4px',
+                  letterSpacing: '-0.3px',
                 }"
                 >{{ depsCount }}</span
               >
             </div>
-            <div v-if="publishedAt" class="flex flex-col" style="gap: 8px">
-              <span
-                :style="{
-                  fontSize: '18px',
-                  fontWeight: 400,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.08em',
-                  color: t.textSubtle,
-                }"
-                >Published</span
+
+            <!-- Published -->
+            <div v-if="publishedAt" class="flex flex-row items-center" style="gap: 8px">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                :stroke="t.textSubtle"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
               >
+                <path d="M8 2v4m8-4v4" />
+                <rect width="18" height="18" x="3" y="4" rx="2" />
+                <path d="M3 10h18" />
+              </svg>
               <span
                 :style="{
-                  fontSize: '28px',
-                  fontWeight: 500,
-                  color: t.text,
+                  fontSize: '24px',
+                  fontWeight: 400,
+                  color: t.textMuted,
                   lineHeight: '1',
-                  letterSpacing: '-0.4px',
+                  letterSpacing: '-0.3px',
                 }"
                 >{{ formatDate(publishedAt) }}</span
               >
             </div>
-          </div>
-        </div>
-      </div>
-
-
-      <!-- Right panel — 400px -->
-      <div class="flex flex-col flex-shrink-0" style="width: 400px">
-        <!-- Weekly Downloads -->
-        <div class="flex flex-col flex-1 justify-between" style="padding: 28px 32px 24px">
-          <div class="flex flex-col">
-            <span
-              :style="{
-                fontSize: '18px',
-                fontWeight: 400,
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-                color: t.textSubtle,
-                marginBottom: '8px',
-              }"
-              >Weekly DL</span
-            >
-            <span
-              :style="{
-                fontSize: '60px',
-                fontWeight: 500,
-                color: t.text,
-                lineHeight: '1',
-                letterSpacing: '-2px',
-                marginBottom: '6px',
-              }"
-              >{{ formatNum(weeklyDownloads) }}</span
-            >
-            <span
-              :style="{
-                fontSize: '20px',
-                fontWeight: 300,
-                color: t.textSubtle,
-              }"
-              >{{ weekRange }}</span
-            >
-          </div>
-
-          <!-- Sparkline -->
-          <svg
-            v-if="sparklinePoints"
-            :width="SPARK_W"
-            :height="SPARK_H"
-            :viewBox="`0 0 ${SPARK_W} ${SPARK_H}`"
-            style="display: block"
-          >
-            <polyline
-              :points="sparklineAreaPoints"
-              :fill="withAlpha(primaryColor, 0.08)"
-              stroke="none"
-            />
-            <polyline
-              :points="sparklinePoints"
-              fill="none"
-              :stroke="primaryColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-          <div v-else :style="{ height: `${SPARK_H}px` }" />
-        </div>
-
-
-        <!-- Stars + Forks -->
-        <div class="flex flex-row flex-shrink-0" :style="{ height: `${BOTTOM_ROW_H}px` }">
-          <div class="flex flex-col justify-center" style="flex: 1; padding: 0 28px">
-            <span
-              :style="{
-                fontSize: '18px',
-                fontWeight: 400,
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-                color: t.textSubtle,
-                marginBottom: '10px',
-              }"
-              >Stars</span
-            >
-            <span
-              :style="{
-                fontSize: '40px',
-                fontWeight: 500,
-                color: t.text,
-                lineHeight: '1',
-                letterSpacing: '-0.6px',
-              }"
-              >{{ stars > 0 ? formatNum(stars) : '—' }}</span
-            >
-          </div>
-
-          <div class="flex flex-col justify-center" style="flex: 1; padding: 0 28px">
-            <span
-              :style="{
-                fontSize: '18px',
-                fontWeight: 400,
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-                color: t.textSubtle,
-                marginBottom: '10px',
-              }"
-              >Forks</span
-            >
-            <span
-              :style="{
-                fontSize: '40px',
-                fontWeight: 500,
-                color: t.text,
-                lineHeight: '1',
-                letterSpacing: '-0.6px',
-              }"
-              >{{ forks > 0 ? formatNum(forks) : '—' }}</span
-            >
           </div>
         </div>
       </div>

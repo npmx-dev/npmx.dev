@@ -99,7 +99,7 @@ function handleCopyLink() {
       uses a bicubic/lanczos algorithm instead of nearest-neighbour.
     -->
     <div
-      class="bg-bg-elevated rounded-lg mb-4 overflow-hidden ring-1 ring-border"
+      class="bg-bg-elevated rounded-lg mb-4 overflow-hidden ring-1 ring-border-subtle"
       style="aspect-ratio: 1280/520"
     >
       <!-- Loading skeleton -->
