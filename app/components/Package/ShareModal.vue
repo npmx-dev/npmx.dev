@@ -75,7 +75,7 @@ async function downloadCard() {
 <template>
   <Modal :modal-title="`share ${packageName}`" id="share-modal" class="sm:max-w-3xl">
     <!-- Card preview -->
-    <div class="bg-bg-elevated rounded-lg mb-4 overflow-hidden" style="aspect-ratio: 1200/630">
+    <div class="bg-bg-elevated rounded-lg mb-4 overflow-hidden" style="aspect-ratio: 1140/500">
       <!-- Loading skeleton -->
       <div
         v-if="!imgLoaded && !imgError"
@@ -97,7 +97,7 @@ async function downloadCard() {
       <img
         :src="cardUrl"
         :alt="`${packageName} share card`"
-        class="w-full h-full object-cover rounded"
+        class="w-full h-full object-contain rounded"
         :class="imgLoaded ? '' : 'hidden'"
         @load="imgLoaded = true"
         @error="imgError = true"
