@@ -29,10 +29,6 @@ test.describe('badge API', () => {
     'created': 'created',
     'maintainers': 'maintainers',
     'deprecated': 'status',
-    'quality': 'quality',
-    'popularity': 'popularity',
-    'maintenance': 'maintenance',
-    'score': 'score',
   }
 
   const percentageTypes = new Set(['quality', 'popularity', 'maintenance', 'score'])
