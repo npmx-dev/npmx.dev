@@ -182,7 +182,7 @@ const ProgressBar = (percentComplete: number): string => {
 }
 
 const Link = (href: string, text: string): string => {
-  return html`<a href="${href}" target="_blank">${text}</a>`
+  return html`<a href="${href}" target="_blank" rel="noopener noreferrer">${text}</a>`
 }
 
 const TitleParagraph = html`

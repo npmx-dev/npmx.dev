@@ -141,7 +141,7 @@ ${template}`
             :lang="localeEntry.lang"
             :dir="localeEntry.dir === 'rtl' ? 'rtl' : 'auto'"
           >
-            <summary class="list-none cursor-pointer select-none">
+            <summary class="max-w-full list-none cursor-pointer select-none">
               <span class="flex flex-col gap-2">
                 <span class="flex items-center justify-between">
                   <span class="flex items-center gap-2">
@@ -180,13 +180,13 @@ ${template}`
               </span>
             </summary>
 
-            <div class="ps-6 mt-4">
-              <div v-if="localeEntry.missingKeys.length > 0">
-                <div class="flex items-center justify-between mb-2">
-                  <h4 class="text-sm font-medium text-fg mb-1">
+            <div class="ps-6 max-md:ps-3 mt-6">
+              <template v-if="localeEntry.missingKeys.length > 0">
+                <div class="flex items-center justify-between mb-3">
+                  <h4 class="text-sm font-medium text-fg my-0">
                     {{ $t('translation_status.missing_keys', {}, { locale: localeEntry.lang }) }}
                   </h4>
-                  <ButtonBase type="button" size="medium" @click="copyMissingKeys(localeEntry)">
+                  <ButtonBase type="button" size="small" @click="copyMissingKeys(localeEntry)">
                     {{
                       copied
                         ? $t('common.copied', {}, { locale: localeEntry.lang })
@@ -194,18 +194,20 @@ ${template}`
                     }}
                   </ButtonBase>
                 </div>
-                <ul
-                  class="space-y-1 text-xs font-mono bg-bg rounded-md p-2 max-h-64 overflow-y-auto mt-0"
-                >
-                  <li
-                    v-for="key in localeEntry.missingKeys"
-                    :key="key"
-                    class="text-fg-muted truncate"
-                    :title="key"
+                <div class="max-w-full">
+                  <ul
+                    class="text-xs font-mono bg-bg rounded-md max-h-64 overflow-y-auto overflow-x-auto space-y-1 p-2 mt-0"
                   >
-                    {{ key }}
-                  </li>
-                </ul>
+                    <li
+                      v-for="key in localeEntry.missingKeys"
+                      :key="key"
+                      class="text-fg-muted break-all whitespace-normal border-b border-border/10 last:border-0 pb-1"
+                      :title="key"
+                    >
+                      {{ key }}
+                    </li>
+                  </ul>
+                </div>
                 <div class="mt-4">
                   <LinkBase
                     :to="localeEntry.githubEditUrl"
@@ -215,10 +217,10 @@ ${template}`
                     {{ $t('i18n.edit_on_github', {}, { locale: localeEntry.lang }) }}
                   </LinkBase>
                 </div>
-              </div>
+              </template>
               <div
                 v-else
-                class="p-4 rounded bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-900/30 text-green-800 dark:text-green-200 flex items-center gap-2"
+                class="p-4 rounded bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-900/30 text-green-800 dark:text-green-200 flex items-start gap-2"
               >
                 <span>{{
                   $t('translation_status.complete_text', {}, { locale: localeEntry.lang })
