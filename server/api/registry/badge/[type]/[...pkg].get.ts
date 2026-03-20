@@ -379,7 +379,7 @@ const badgeStrategies = {
     if (versionData && hasBuiltInTypes(versionData)) {
        return { label: 'types', value: 'included', color: COLORS.blue }
     }
-    
+
     const { pkg, typesPackage, files } = await fetchPackageWithTypesAndFiles(
       pkgData.name,
       requestedVersion,
