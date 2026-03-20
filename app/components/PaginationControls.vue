@@ -155,7 +155,7 @@ function handlePageSizeChange(event: Event) {
           @change="handlePageSizeChange"
           :items="
             PAGE_SIZE_OPTIONS.map(size => ({
-              label: $t('filters.pagination.per_page', { count: size }),
+              label: $t('filters.pagination.per_page', { count: $n(size) }),
               value: String(size),
             }))
           "
@@ -207,7 +207,7 @@ function handlePageSizeChange(event: Event) {
             :aria-current="page === currentPage ? 'page' : undefined"
             @click="goToPage(page)"
           >
-            {{ page }}
+            {{ $n(page) }}
           </button>
         </template>
 
