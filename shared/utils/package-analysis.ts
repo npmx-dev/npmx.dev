@@ -108,25 +108,6 @@ interface ExportsAnalysis {
   hasTypes: boolean
 }
 
-interface AnalysisPackageJson extends ExtendedPackageJson {
-  readme?: string
-}
-
-/**
- * Fetch @types package info including deprecation status using fast-npm-meta.
- * Returns undefined if the package doesn't exist.
- */
-async function fetchTypesPackageInfo(packageName: string): Promise<TypesPackageInfo | undefined> {
-  const result = await getLatestVersion(packageName, { metadata: true, throw: false })
-  if ('error' in result) {
-    return undefined
-  }
-  return {
-    packageName,
-    deprecated: result.deprecated,
-  }
-}
-
 /**
  * Recursively analyze exports field for module format indicators
  */

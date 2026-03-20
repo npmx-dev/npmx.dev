@@ -1,4 +1,5 @@
 import { flattenFileTree } from '#server/utils/import-resolver'
+import type { ExtendedPackageJson, TypesPackageInfo } from '#shared/utils/package-analysis'
 
 /**
  * Fetch the file tree from jsDelivr API.
@@ -84,6 +85,25 @@ export async function getPackageFileTree(
     default: jsDelivrData.default ?? undefined,
     tree,
   }
+}
+
+/**
+ * Fetch @types package info including deprecation status using fast-npm-meta.
+ * Returns undefined if the package doesn't exist.
+ */
+async function fetchTypesPackageInfo(packageName: string): Promise<TypesPackageInfo | undefined> {
+  const result = await getLatestVersion(packageName, { metadata: true, throw: false })
+  if ('error' in result) {
+    return undefined
+  }
+  return {
+    packageName,
+    deprecated: result.deprecated,
+  }
+}
+
+interface AnalysisPackageJson extends ExtendedPackageJson {
+  readme?: string
 }
 
 export async function fetchPackageWithTypesAndFiles(
