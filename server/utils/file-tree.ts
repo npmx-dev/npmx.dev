@@ -1,3 +1,4 @@
+import { getLatestVersion } from 'fast-npm-meta'
 import { flattenFileTree } from '#server/utils/import-resolver'
 import type { ExtendedPackageJson, TypesPackageInfo } from '#shared/utils/package-analysis'
 

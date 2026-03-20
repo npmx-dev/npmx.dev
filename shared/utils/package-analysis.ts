@@ -2,8 +2,6 @@
  * Package analysis utilities for detecting module format and TypeScript support
  */
 
-import { getLatestVersion } from 'fast-npm-meta'
-
 export type ModuleFormat = 'esm' | 'cjs' | 'dual' | 'unknown'
 
 export type TypesStatus =
