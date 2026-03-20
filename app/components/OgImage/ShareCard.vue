@@ -254,7 +254,7 @@ const sparklineAreaPoints = computed(() => {
                 color: t.textSubtle,
                 lineHeight: '1.6',
               }"
-              >TypeScript</span
+              >Types</span
             >
             <span
               class="flex items-center"
