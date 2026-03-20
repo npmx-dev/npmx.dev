@@ -2,7 +2,12 @@ import type { StorybookConfig } from '@storybook-vue/nuxt'
 
 const config = {
   stories: ['../.storybook/*.mdx', '../app/**/*.stories.@(js|ts)'],
-  addons: ['@storybook/addon-a11y', '@storybook/addon-docs', '@storybook/addon-themes'],
+  addons: [
+    '@storybook/addon-a11y',
+    '@storybook/addon-docs',
+    '@storybook/addon-themes',
+    'storybook-i18n',
+  ],
   framework: '@storybook-vue/nuxt',
   staticDirs: ['./.public'],
   features: {
@@ -23,7 +28,7 @@ const config = {
   // Minimal shims for Storybook v10 module federation system
   // These will be replaced when Storybook runtime loads
   window.__STORYBOOK_MODULE_GLOBAL__ = { global: window };
-  window.__STORYBOOK_MODULE_CLIENT_LOGGER__ = { 
+  window.__STORYBOOK_MODULE_CLIENT_LOGGER__ = {
     deprecate: console.warn.bind(console, '[deprecated]'),
     once: console.log.bind(console),
     logger: console
