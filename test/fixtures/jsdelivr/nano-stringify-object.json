@@ -1,6 +1,5 @@
 {
   "files": [
-    ,
     { "name": "dist/index.d.ts", "hash": "ghi", "size": 1200 },
     { "name": "dist/index.js", "hash": "def", "size": 5700 },
     { "name": "package.json", "hash": "abc", "size": 600 }
