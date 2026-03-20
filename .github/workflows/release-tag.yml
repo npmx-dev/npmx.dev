@@ -27,6 +27,10 @@ jobs:
         with:
           node-version: lts/*
           cache: true
+          run-install: false
+
+      - name: 📦 Install dependencies (root only, no scripts)
+        run: vp install --filter . --ignore-scripts
 
       - name: 🔢 Determine next version
         id: version
