@@ -425,12 +425,7 @@ function matchJsdelivrDataApi(urlString) {
 
     const fixture = readFixture(`jsdelivr/${parsed.name}.json`)
     if (fixture) {
-      return json({
-        type: 'npm',
-        name: parsed.name,
-        version: parsed.version || 'latest',
-        ...fixture,
-      })
+      return json(fixture)
     }
 
     return json({

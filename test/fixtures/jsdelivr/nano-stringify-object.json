@@ -1,7 +1,48 @@
 {
+  "type": "npm",
+  "name": "nano-stringify-object",
+  "version": "0.0.0",
+  "default": null,
   "files": [
-    { "name": "dist/index.d.ts", "hash": "ghi", "size": 1200 },
-    { "name": "dist/index.js", "hash": "def", "size": 5700 },
-    { "name": "package.json", "hash": "abc", "size": 600 }
-  ]
+    {
+      "type": "directory",
+      "name": "dist",
+      "files": [
+        {
+          "type": "file",
+          "name": "index.d.mts",
+          "hash": "miLdJwbJG1quJbUdHplSpmv+/7F8rHZM+kVXXRdz9W0=",
+          "size": 1192
+        },
+        {
+          "type": "file",
+          "name": "index.mjs",
+          "hash": "jznEg84ts4a5VCzdpfQViYnTBWoREZeolfbHUVtAymA=",
+          "size": 5731
+        }
+      ]
+    },
+    {
+      "type": "file",
+      "name": "LICENSE",
+      "hash": "GxzKussvQB30SBOW+2S33DnejHW8yBDc3jxk/WDXyzM=",
+      "size": 1221
+    },
+    {
+      "type": "file",
+      "name": "package.json",
+      "hash": "1Z382Cx0/ZycKM2TUBZlLWHt/RB/z00gOfwkt8WyPG4=",
+      "size": 639
+    },
+    {
+      "type": "file",
+      "name": "README.md",
+      "hash": "47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=",
+      "size": 0
+    }
+  ],
+  "links": {
+    "stats": "https://data.jsdelivr.com/v1/stats/packages/npm/nano-stringify-object@0.0.0",
+    "entrypoints": "https://data.jsdelivr.com/v1/packages/npm/nano-stringify-object@0.0.0/entrypoints"
+  }
 }
