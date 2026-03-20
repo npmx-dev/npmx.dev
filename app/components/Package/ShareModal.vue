@@ -10,10 +10,16 @@ const { origin } = useRequestURL()
 const colorMode = useColorMode()
 const theme = computed(() => (colorMode.value === 'dark' ? 'dark' : 'light'))
 const { selectedAccentColor } = useAccentColor()
-const colorParam = computed(() => selectedAccentColor.value ? `&color=${selectedAccentColor.value}` : '')
+const colorParam = computed(() =>
+  selectedAccentColor.value ? `&color=${selectedAccentColor.value}` : '',
+)
 
-const cardUrl = computed(() => `/api/card/${props.packageName}.png?theme=${theme.value}${colorParam.value}`)
-const absoluteCardUrl = computed(() => `${origin}/api/card/${props.packageName}.png?theme=${theme.value}${colorParam.value}`)
+const cardUrl = computed(
+  () => `/api/card/${props.packageName}.png?theme=${theme.value}${colorParam.value}`,
+)
+const absoluteCardUrl = computed(
+  () => `${origin}/api/card/${props.packageName}.png?theme=${theme.value}${colorParam.value}`,
+)
 
 // Downloads for alt text
 const { data: downloadsData } = usePackageDownloads(
@@ -67,11 +73,7 @@ async function downloadCard() {
 </script>
 
 <template>
-  <Modal
-    :modal-title="`share ${packageName}`"
-    id="share-modal"
-    class="sm:max-w-3xl"
-  >
+  <Modal :modal-title="`share ${packageName}`" id="share-modal" class="sm:max-w-3xl">
     <!-- Card preview -->
     <div class="bg-bg-elevated rounded-lg mb-4 overflow-hidden" style="aspect-ratio: 1200/420">
       <!-- Loading skeleton -->
@@ -118,7 +120,11 @@ async function downloadCard() {
       </ButtonBase>
 
       <!-- ALT: copy image alt text, tooltip shows the full string on hover -->
-      <TooltipApp :text="altCopied ? altText : 'Copy alt text for screen readers'" position="top" strategy="fixed">
+      <TooltipApp
+        :text="altCopied ? altText : 'Copy alt text for screen readers'"
+        position="top"
+        strategy="fixed"
+      >
         <ButtonBase
           :classicon="altCopied ? 'i-lucide:check text-green-500' : 'i-lucide:accessibility'"
           :class="altCopied ? 'text-green-500' : ''"

@@ -42,7 +42,7 @@ const primaryColor = ACCENT_HEX[theme][color]
 defineOgImageComponent(
   'ShareCard',
   { name: packageName, theme, primaryColor },
-  { width: 2400, height: 840 },
+  { width: 1400, height: 480 },
 )
 
 onMounted(() => {
