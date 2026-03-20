@@ -28,10 +28,6 @@ import { flattenFileTree } from '#server/utils/import-resolver'
 import { getPackageFileTree } from '#server/utils/file-tree'
 import { getLatestVersion, getLatestVersionBatch } from 'fast-npm-meta'
 
-interface AnalysisPackageJson extends ExtendedPackageJson {
-  readme?: string
-}
-
 export default defineCachedEventHandler(
   async event => {
     // Parse package name and optional version from path
