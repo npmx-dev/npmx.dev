@@ -9,10 +9,26 @@ const props = defineProps<{
 const { origin } = useRequestURL()
 const colorMode = useColorMode()
 const theme = computed(() => (colorMode.value === 'dark' ? 'dark' : 'light'))
-const { selectedAccentColor } = useAccentColor()
-const colorParam = computed(() =>
-  selectedAccentColor.value ? `&color=${selectedAccentColor.value}` : '',
-)
+const { selectedAccentColor, accentColors } = useAccentColor()
+
+function resolveColorToHex(color: string): string {
+  const canvas = document.createElement('canvas')
+  canvas.width = canvas.height = 1
+  const ctx = canvas.getContext('2d')!
+  ctx.fillStyle = color
+  ctx.fillRect(0, 0, 1, 1)
+  const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data
+  return `#${r!.toString(16).padStart(2, '0')}${g!.toString(16).padStart(2, '0')}${b!.toString(16).padStart(2, '0')}`
+}
+
+const colorParam = computed(() => {
+  const id = selectedAccentColor.value
+  if (!id) return ''
+  const colorValue = accentColors.value.find(c => c.id === id)?.value
+  if (!colorValue) return ''
+  const hex = resolveColorToHex(colorValue)
+  return `&color=${encodeURIComponent(hex)}`
+})
 
 const cardUrl = computed(
   () => `/api/card/${props.packageName}.png?theme=${theme.value}${colorParam.value}`,
@@ -95,7 +111,7 @@ function handleCopyLink() {
       uses a bicubic/lanczos algorithm instead of nearest-neighbour.
     -->
     <div
-      class="bg-bg-elevated rounded-lg mb-4 overflow-hidden ring-1 ring-white/10"
+      class="bg-bg-elevated rounded-lg mb-4 overflow-hidden ring-1 ring-border"
       style="aspect-ratio: 1280/520"
     >
       <!-- Loading skeleton -->

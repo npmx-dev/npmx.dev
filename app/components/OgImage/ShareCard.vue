@@ -1,38 +1,24 @@
 <script setup lang="ts">
+import { ACCENT_COLOR_TOKENS, SHARE_CARD_THEMES } from '#shared/utils/constants'
+import type { AccentColorId } from '#shared/utils/constants'
+
 const props = withDefaults(
   defineProps<{
     name: string
     theme?: 'light' | 'dark'
-    primaryColor?: string
+    color?: string
   }>(),
-  { theme: 'dark', primaryColor: '#5bc8e8' },
+  { theme: 'dark' },
 )
 
-const THEMES = {
-  dark: {
-    bg: '#0d0d0d',
-    border: '#252525',
-    divider: '#1a1a1a',
-    text: '#f0f0f0',
-    textMuted: '#9a9a9a',
-    textSubtle: '#565656',
-    footerBg: '#0d0d0d',
-  },
-  light: {
-    bg: '#fafaf9',
-    border: '#e0ddd8',
-    divider: '#ebebea',
-    text: '#1a1a1a',
-    textMuted: '#606060',
-    textSubtle: '#9a9898',
-    footerBg: '#fafaf9',
-  },
-} as const
-
-const t = computed(() => THEMES[props.theme])
-// const primaryColor = computed(() => props.primaryColor || '#006fc2')
-const primaryColor = '#006fc2'
-console.log('color: ', props.primaryColor)
+const t = computed(() => SHARE_CARD_THEMES[props.theme])
+const primaryColor = computed(() => {
+  const id = props.color as AccentColorId | undefined
+  if (id && id in ACCENT_COLOR_TOKENS) {
+    return ACCENT_COLOR_TOKENS[id][props.theme].hex
+  }
+  return ACCENT_COLOR_TOKENS.sky[props.theme].hex
+})
 
 function withAlpha(color: string, alpha: number): string {
   if (color.startsWith('oklch(')) return color.replace(')', ` / ${alpha})`)
@@ -211,7 +197,7 @@ const sparklineAreaPoints = computed(() => {
                 letterSpacing: '-1px',
               }"
             >
-              <span :style="{ color: primaryColor, opacity: 0.6, marginRight: '-10px' }">.</span>/{{
+              <span :style="{ color: primaryColor, marginRight: '-10px' }">.</span>/{{
                 truncate(name, 24)
               }}
             </span>
@@ -251,7 +237,7 @@ const sparklineAreaPoints = computed(() => {
               marginBottom: '20px',
             }"
           >
-            {{ truncate(description || 'No description.', 140) }}
+            {{ truncate(description || 'No description.', 230) }}
           </div>
 
           <!-- Tags -->
@@ -305,8 +291,8 @@ const sparklineAreaPoints = computed(() => {
                 fontWeight: 300,
                 padding: '4px 14px',
                 borderRadius: '6px',
-                border: `1px solid ${withAlpha(t.border, 0.4)}`,
-                color: withAlpha(t.textSubtle, 0.6),
+                border: `1px solid ${withAlpha(t.border, 0.5)}`,
+                color: withAlpha(t.textSubtle, 0.8),
                 lineHeight: '1.6',
               }"
               >{{ repoSlug }}</span
@@ -523,7 +509,7 @@ const sparklineAreaPoints = computed(() => {
       :style="{
         padding: '16px 40px 16px 32px',
         borderTop: `1px solid ${t.border}`,
-        backgroundColor: t.footerBg,
+        backgroundColor: t.bg,
       }"
     >
       <div class="flex flex-row items-center" :style="{ fontSize: '22px', fontWeight: 300 }">
