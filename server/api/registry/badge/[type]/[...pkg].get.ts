@@ -375,9 +375,9 @@ const badgeStrategies = {
 
   'types': async (pkgData: globalThis.Packument, requestedVersion?: string) => {
     const versionData = requestedVersion ? pkgData.versions?.[requestedVersion] : undefined
- 
+
     if (versionData && hasBuiltInTypes(versionData)) {
-       return { label: 'types', value: 'included', color: COLORS.blue }
+      return { label: 'types', value: 'included', color: COLORS.blue }
     }
 
     const { pkg, typesPackage, files } = await fetchPackageWithTypesAndFiles(
