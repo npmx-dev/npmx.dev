@@ -23,7 +23,7 @@ jobs:
       - uses: voidzero-dev/setup-vp@73e69397a8b289de4b1d017ced18e18004183bb1 # v1
         with:
           node-version: lts/*
-          cache: true
+          run-install: false
 
       - name: 🔍 Check for unreleased commits
         id: check
