@@ -215,32 +215,32 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
           backdropFilter: false,
           backgroundColor: 'transparent',
           customFormat: ({ datapoint }) => {
-          const name = datapoint?.name?.replace(/\n/g, '<br>') ?? ''
-          const safeSeriesIndex = (datapoint?.absoluteIndex as number) ?? 0
-          const patternId = `tooltip-pattern-${safeSeriesIndex}`
-          const usePattern = safeSeriesIndex !== 0
+            const name = datapoint?.name?.replace(/\n/g, '<br>') ?? ''
+            const safeSeriesIndex = (datapoint?.absoluteIndex as number) ?? 0
+            const patternId = `tooltip-pattern-${safeSeriesIndex}`
+            const usePattern = safeSeriesIndex !== 0
 
-          const patternMarkup = usePattern
-            ? createChartPatternSlotMarkup({
-                id: patternId,
-                seed: safeSeriesIndex,
-                foregroundColor: colors.value.bg!,
-                fallbackColor: 'transparent',
-                maxSize: 24,
-                minSize: 16,
-              })
-            : ''
+            const patternMarkup = usePattern
+              ? createChartPatternSlotMarkup({
+                  id: patternId,
+                  seed: safeSeriesIndex,
+                  foregroundColor: colors.value.bg!,
+                  fallbackColor: 'transparent',
+                  maxSize: 24,
+                  minSize: 16,
+                })
+              : ''
 
-          const markerMarkup = usePattern
-            ? `
+            const markerMarkup = usePattern
+              ? `
               <rect x="0" y="0" width="20" height="20" rx="3" fill="${datapoint?.color ?? 'transparent'}" />
               <rect x="0" y="0" width="20" height="20" rx="3" fill="url(#${patternId})" />
             `
-            : `
+              : `
               <rect x="0" y="0" width="20" height="20" rx="3" fill="${datapoint?.color ?? 'transparent'}" />
             `
 
-          return `
+            return `
             <div class="font-mono p-3 border border-border rounded-md bg-[var(--bg)]/10 backdrop-blur-md">
               <div class="grid grid-cols-[12px_minmax(0,1fr)_max-content] items-center gap-x-3">
                 <div class="w-3 h-3">
@@ -260,7 +260,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
               </div>
             </div>
           `
-        }
+          },
         },
       },
     },
