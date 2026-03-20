@@ -40,7 +40,7 @@ function getHostname(uri: string): string {
 }
 
 function firstChar(str: string): string {
-  const segmenter = new Intl.Segmenter({ granularity: 'grapheme' })
+  const segmenter = new Intl.Segmenter(undefined, { granularity: 'grapheme' })
   return Array.from(segmenter.segment(str))[0]?.segment ?? ''
 }
 </script>
