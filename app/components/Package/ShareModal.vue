@@ -148,6 +148,7 @@ function handleCopyLink() {
       <div class="flex items-center gap-2">
         <ButtonBase
           :classicon="linkCopied ? 'i-lucide:check text-green-500' : 'i-lucide:link'"
+          :disabled="!imgLoaded"
           @click="handleCopyLink"
         >
           {{ linkCopied ? 'Copied!' : 'Copy link' }}
@@ -175,7 +176,7 @@ function handleCopyLink() {
         </Transition>
       </div>
 
-      <ButtonBase variant="primary" classicon="i-lucide:download" @click="downloadCard">
+      <ButtonBase variant="primary" classicon="i-lucide:download" :disabled="!imgLoaded" @click="downloadCard">
         Download PNG
       </ButtonBase>
     </div>
