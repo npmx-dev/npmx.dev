@@ -373,11 +373,72 @@ const badgeStrategies = {
   },
 
   'types': async (pkgData: globalThis.Packument) => {
-    const latest = getLatestVersion(pkgData)
-    const versionData = latest ? pkgData.versions?.[latest] : undefined
-    const hasTypes = !!(versionData?.types || versionData?.typings)
-    const value = hasTypes ? 'included' : 'missing'
-    const color = hasTypes ? COLORS.blue : COLORS.slate
+    const versionData = pkgData.versions?.latest
+
+    if (!versionData) {
+      return { label: 'types', value: 'unknown', color: COLORS.slate }
+    }
+
+    const pkgJson: ExtendedPackageJson = {
+      name: pkgData.name,
+      version: 'latest',
+      types: versionData.types,
+      typings: versionData.typings,
+      exports: versionData.exports,
+      main: versionData.main,
+      module: versionData.module,
+      type: versionData.type,
+    }
+
+    let typesStatus: TypesStatus = { kind: 'none' }
+    let detailColor = COLORS.blue
+
+    if (hasBuiltInTypes(pkgJson)) {
+      typesStatus = { kind: 'included' }
+    } else {
+      try {
+        const [fileTreeResult, typesMetaResult] = await Promise.allSettled([
+          getPackageFileTree(pkgData.name, latest),
+          getLatestVersion(getTypesPackageName(pkgData.name), { metadata: true, throw: false }),
+        ])
+
+        let files: Set<string> | undefined
+        if (fileTreeResult.status === 'fulfilled') {
+          files = flattenFileTree(fileTreeResult.value.tree)
+        }
+
+        let typesPkg: TypesPackageInfo | undefined
+        if (typesMetaResult.status === 'fulfilled' && !('error' in typesMetaResult.value)) {
+          typesPkg = {
+            packageName: getTypesPackageName(pkgData.name),
+            deprecated: typesMetaResult.value.deprecated,
+          }
+        }
+
+        typesStatus = detectTypesStatus(pkgJson, typesPkg, files)
+      } catch {}
+    }
+
+    let value: 'included' | '@types' | 'missing'
+    let color: string
+
+    switch (typesStatus.kind) {
+      case 'included': {
+        value = 'included'
+        color = COLORS.blue
+        break
+      }
+      case '@types': {
+        value = '@types'
+        color = COLORS.blue
+        break
+      }
+      default: {
+        value = 'missing'
+        color = COLORS.slate
+        break
+      }
+    }
     return { label: 'types', value, color }
   },
 
