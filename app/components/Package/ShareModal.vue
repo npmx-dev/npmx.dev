@@ -53,7 +53,10 @@ const { copied: altCopied, copy: copyAlt } = useClipboard({
   copiedDuring: 1500,
 })
 
-// Image load state — dialog is display:none when closed so loading begins on open
+// Reveal Copy ALT after the user has downloaded or copied the link
+const showAlt = ref(false)
+
+// Image load state
 const imgLoaded = ref(false)
 const imgError = ref(false)
 
@@ -69,13 +72,27 @@ async function downloadCard() {
   document.body.appendChild(a)
   a.click()
   document.body.removeChild(a)
+  showAlt.value = true
+}
+
+function handleCopyLink() {
+  copyLink(absoluteCardUrl.value)
+  showAlt.value = true
 }
 </script>
 
 <template>
-  <Modal :modal-title="`share ${packageName}`" id="share-modal" class="sm:max-w-3xl">
-    <!-- Card preview -->
-    <div class="bg-bg-elevated rounded-lg mb-4 overflow-hidden" style="aspect-ratio: 1140/500">
+  <Modal :modal-title="`share ${packageName}`" id="share-modal" class="sm:max-w-3xl" @close="showAlt = false">
+    <!--
+      aspect-ratio matches card output (1280×520 = 2.46:1).
+      The PNG is rendered at full 1280px, displayed inside a ~700px container —
+      about 0.55× scale. image-rendering: high-quality ensures the browser
+      uses a bicubic/lanczos algorithm instead of nearest-neighbour.
+    -->
+    <div
+      class="bg-bg-elevated rounded-lg mb-4 overflow-hidden ring-1 ring-white/10"
+      style="aspect-ratio: 1280/520"
+    >
       <!-- Loading skeleton -->
       <div
         v-if="!imgLoaded && !imgError"
@@ -93,11 +110,12 @@ async function downloadCard() {
         Failed to load card.
       </div>
 
-      <!-- The image itself — always rendered so the browser starts fetching on open -->
+      <!-- Image — always rendered so fetch starts immediately on open -->
       <img
         :src="cardUrl"
         :alt="`${packageName} share card`"
-        class="w-full h-full object-contain rounded"
+        class="w-full h-full rounded"
+        style="object-fit: contain; image-rendering: high-quality"
         :class="imgLoaded ? '' : 'hidden'"
         @load="imgLoaded = true"
         @error="imgError = true"
@@ -105,39 +123,40 @@ async function downloadCard() {
     </div>
 
     <!-- Action row -->
-    <div class="flex items-center gap-2 flex-wrap">
-      <!-- Download PNG — primary -->
+    <div class="flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <ButtonBase
+          :classicon="linkCopied ? 'i-lucide:check text-green-500' : 'i-lucide:link'"
+          @click="handleCopyLink"
+        >
+          {{ linkCopied ? 'Copied!' : 'Copy link' }}
+        </ButtonBase>
+
+        <Transition
+          enter-active-class="transition-all duration-300 ease-out"
+          enter-from-class="opacity-0 -translate-x-2 scale-95"
+          enter-to-class="opacity-100 translate-x-0 scale-100"
+        >
+          <TooltipApp
+            v-if="showAlt"
+            :text="altCopied ? altText : 'Copy alt text for screen readers'"
+            position="top"
+            strategy="fixed"
+          >
+            <ButtonBase
+              :classicon="altCopied ? 'i-lucide:check text-green-500' : 'i-lucide:accessibility'"
+              :class="altCopied ? 'text-green-500' : ''"
+              @click="copyAlt(altText)"
+            >
+              {{ altCopied ? 'Copied!' : 'Copy ALT' }}
+            </ButtonBase>
+          </TooltipApp>
+        </Transition>
+      </div>
+
       <ButtonBase variant="primary" classicon="i-lucide:download" @click="downloadCard">
         Download PNG
       </ButtonBase>
-
-      <!-- Copy link -->
-      <ButtonBase
-        :classicon="linkCopied ? 'i-lucide:check text-green-500' : 'i-lucide:link'"
-        @click="copyLink(absoluteCardUrl)"
-      >
-        {{ linkCopied ? 'Copied!' : 'Copy link' }}
-      </ButtonBase>
-
-      <!-- ALT: copy image alt text, tooltip shows the full string on hover -->
-      <TooltipApp
-        :text="altCopied ? altText : 'Copy alt text for screen readers'"
-        position="top"
-        strategy="fixed"
-      >
-        <ButtonBase
-          :classicon="altCopied ? 'i-lucide:check text-green-500' : 'i-lucide:accessibility'"
-          :class="altCopied ? 'text-green-500' : ''"
-          @click="copyAlt(altText)"
-        >
-          {{ altCopied ? 'Copied!' : 'Copy ALT' }}
-        </ButtonBase>
-      </TooltipApp>
     </div>
-
-    <!-- README snippet hint -->
-    <p class="text-xs text-fg-subtle mt-3 font-mono">
-      Paste the link into any markdown file — GitHub renders it automatically.
-    </p>
   </Modal>
 </template>
