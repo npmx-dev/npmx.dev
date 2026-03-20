@@ -292,6 +292,9 @@
         "draft_banner": {
           "type": "string"
         },
+        "no_posts": {
+          "type": "string"
+        },
         "atproto": {
           "type": "object",
           "properties": {
@@ -627,6 +630,12 @@
             }
           },
           "additionalProperties": false
+        },
+        "collapse": {
+          "type": "string"
+        },
+        "expand": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -863,6 +872,9 @@
               "additionalProperties": false
             },
             "view_source": {
+              "type": "string"
+            },
+            "skills_cli": {
               "type": "string"
             }
           },
@@ -1174,6 +1186,9 @@
             "grouping_versions_title": {
               "type": "string"
             },
+            "grouping_versions_about": {
+              "type": "string"
+            },
             "grouping_versions_all": {
               "type": "string"
             },
@@ -1181,6 +1196,9 @@
               "type": "string"
             },
             "grouping_usage_title": {
+              "type": "string"
+            },
+            "grouping_usage_about": {
               "type": "string"
             },
             "grouping_usage_all": {
@@ -1274,6 +1292,9 @@
               "type": "string"
             },
             "has_replacement": {
+              "type": "string"
+            },
+            "vulnerabilities_count": {
               "type": "string"
             }
           },
@@ -2605,6 +2626,9 @@
         "view_selected": {
           "type": "string"
         },
+        "clear_selected_label": {
+          "type": "string"
+        },
         "sort": {
           "type": "object",
           "properties": {
@@ -3541,6 +3565,30 @@
         "compare_versions_title": {
           "type": "string"
         },
+        "comparing_versions_label": {
+          "type": "string"
+        },
+        "version_back_to_package": {
+          "type": "string"
+        },
+        "version_error_message": {
+          "type": "string"
+        },
+        "version_invalid_url_format": {
+          "type": "object",
+          "properties": {
+            "hint": {
+              "type": "string"
+            },
+            "from_version": {
+              "type": "string"
+            },
+            "to_version": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
         "version_selector_title": {
           "type": "string"
         },
@@ -3620,6 +3668,39 @@
           "type": "string"
         },
         "filter_files_label": {
+          "type": "string"
+        },
+        "change_ratio": {
+          "type": "string"
+        },
+        "char_edits": {
+          "type": "string"
+        },
+        "diff_distance": {
+          "type": "string"
+        },
+        "loading_diff": {
+          "type": "string"
+        },
+        "loading_diff_error": {
+          "type": "string"
+        },
+        "merge_modified_lines": {
+          "type": "string"
+        },
+        "no_content_changes": {
+          "type": "string"
+        },
+        "options": {
+          "type": "string"
+        },
+        "view_file": {
+          "type": "string"
+        },
+        "view_in_code_browser": {
+          "type": "string"
+        },
+        "word_wrap": {
           "type": "string"
         }
       },
