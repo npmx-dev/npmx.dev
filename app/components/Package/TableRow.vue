@@ -164,38 +164,6 @@ const allMaintainersText = computed(() => {
       <span v-else class="text-fg-subtle">-</span>
     </td>
 
-    <!-- Quality Score -->
-    <td
-      v-if="isColumnVisible('qualityScore')"
-      class="py-2 px-3 font-mono text-xs text-fg-muted text-end tabular-nums"
-    >
-      {{ formatScore(score?.detail?.quality) }}
-    </td>
-
-    <!-- Popularity Score -->
-    <td
-      v-if="isColumnVisible('popularityScore')"
-      class="py-2 px-3 font-mono text-xs text-fg-muted text-end tabular-nums"
-    >
-      {{ formatScore(score?.detail?.popularity) }}
-    </td>
-
-    <!-- Maintenance Score -->
-    <td
-      v-if="isColumnVisible('maintenanceScore')"
-      class="py-2 px-3 font-mono text-xs text-fg-muted text-end tabular-nums"
-    >
-      {{ formatScore(score?.detail?.maintenance) }}
-    </td>
-
-    <!-- Combined Score -->
-    <td
-      v-if="isColumnVisible('combinedScore')"
-      class="py-2 px-3 font-mono text-xs text-fg-muted text-end tabular-nums"
-    >
-      {{ formatScore(score?.final) }}
-    </td>
-
     <!-- Security -->
     <td v-if="isColumnVisible('security')" class="py-2 px-3">
       <span v-if="result.flags?.insecure" class="text-syntax-kw">

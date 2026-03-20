@@ -904,10 +904,6 @@
       "published": "Last Published",
       "maintainers": "Maintainers",
       "keywords": "Keywords",
-      "quality_score": "Quality score",
-      "popularity_score": "Popularity score",
-      "maintenance_score": "Maintenance score",
-      "combined_score": "Combined score",
       "security": "Security",
       "selection": "Select package"
     },

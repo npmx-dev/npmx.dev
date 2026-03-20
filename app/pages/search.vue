@@ -134,10 +134,6 @@ const ALL_SORT_KEYS: SortKey[] = [
   'downloads-year',
   'updated',
   'name',
-  'quality',
-  'popularity',
-  'maintenance',
-  'score',
 ]
 
 // Disable sort keys the current provider can't meaningfully sort by
