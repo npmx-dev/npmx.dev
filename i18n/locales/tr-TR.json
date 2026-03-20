@@ -882,7 +882,7 @@
       "paginated": "Sayfalı",
       "items_per_page": "Sayfa başına öğe",
       "per_page": "/ sayfa",
-      "showing": "Gösteriliyor",
+      "showing": "{range} / {total} gösteriliyor",
       "previous": "Önceki",
       "next": "Sonraki",
       "nav_label": "Sayfalama navigasyonu"

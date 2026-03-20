@@ -655,7 +655,7 @@
       "paginated": "ಪುಟೀಕರಿಸಿದ",
       "items_per_page": "ಪ್ರತಿ ಪುಟದ ಅಂಶಗಳು",
       "per_page": "{count} / ಪುಟ",
-      "showing": "{total} ನಲ್ಲಿ {start}-{end}",
+      "showing": "{total} ನಲ್ಲಿ {range}",
       "previous": "ಹಿಂದಿನ ಪುಟ",
       "next": "ಮುಂದಿನ ಪುಟ",
       "nav_label": "ಪುಟೀಕರಣ"

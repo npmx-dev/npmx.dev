@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import * as fc from 'fast-check'
-import { mapWithConcurrency } from '../../../../shared/utils/async'
+import { mapWithConcurrency } from '#shared/utils/async'
 
 describe('mapWithConcurrency', () => {
   it('processes all items and returns results in order', async () => {

@@ -1,71 +1,31 @@
-// Extensions that are binary and cannot be meaningfully displayed as text
-const BINARY_EXTENSIONS = new Set([
-  // Images
-  'png',
-  'jpg',
-  'jpeg',
-  'gif',
-  'webp',
-  'ico',
-  'bmp',
-  'tiff',
-  'tif',
-  'avif',
-  'heic',
-  'heif',
-  // Fonts
-  'woff',
-  'woff2',
-  'ttf',
-  'otf',
-  'eot',
-  // Archives
-  'zip',
-  'tar',
-  'gz',
-  'tgz',
-  'bz2',
-  'xz',
-  '7z',
-  'rar',
-  // Executables / compiled
-  'exe',
-  'dll',
-  'so',
-  'dylib',
-  'node',
-  'wasm',
-  'pyc',
-  'class',
-  // Media
-  'mp3',
-  'mp4',
-  'ogg',
-  'wav',
-  'avi',
-  'mov',
-  'webm',
-  'flac',
-  'aac',
-  'mkv',
-  // Documents
-  'pdf',
-  'doc',
-  'docx',
-  'xls',
-  'xlsx',
-  'ppt',
-  'pptx',
-  // Data
-  'bin',
-  'dat',
-  'db',
-  'sqlite',
-  'sqlite3',
+// MIME types that are binary and cannot be meaningfully displayed as text
+const BINARY_MIME_PREFIXES = new Set([
+  'image/',
+  'audio/',
+  'video/',
+  'font/',
+  'application/wasm',
+  'application/pdf',
+  'application/zip',
+  'application/x-rar-compressed',
+  'application/x-7z-compressed',
+  'application/x-gzip',
+  'application/x-tar',
+  'application/x-bz2',
+  'application/x-xz',
+  'application/x-executable',
+  'application/x-msdownload', // exe / dll
+  'application/x-sharedlib', // so / dylib
+  'application/msword', // .doc
+  'application/vnd.',
+  'application/octet-stream',
 ])
 
-export function isBinaryFilePath(filePath: string): boolean {
-  const dotIndex = filePath.lastIndexOf('.')
-  const ext = dotIndex > -1 ? filePath.slice(dotIndex + 1).toLowerCase() : ''
-  return BINARY_EXTENSIONS.has(ext)
+export function isBinaryContentType(contentType: string): boolean {
+  for (const prefix of BINARY_MIME_PREFIXES) {
+    if (contentType.startsWith(prefix)) {
+      return true
+    }
+  }
+  return false
 }

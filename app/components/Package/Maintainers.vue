@@ -189,7 +189,13 @@ watch(
             class="link-subtle text-sm shrink-0"
             dir="ltr"
           >
-            ~{{ maintainer.name }}
+            <i18n-t keypath="package.maintainers.maintainer_template">
+              <template #avatar>
+                <UserAvatar :username="maintainer.name" size="xs" aria-hidden="true" />
+              </template>
+              <template #char126>~</template>
+              <template #name>{{ maintainer.name }}</template>
+            </i18n-t>
           </LinkBase>
           <span v-else class="font-mono text-sm text-fg-muted" dir="ltr">{{
             maintainer.email

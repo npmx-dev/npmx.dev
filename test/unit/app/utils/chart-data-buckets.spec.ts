@@ -5,7 +5,7 @@ import {
   buildWeeklyEvolution,
   buildMonthlyEvolution,
   buildYearlyEvolution,
-} from '../../../../app/utils/chart-data-buckets'
+} from '~/utils/chart-data-buckets'
 
 describe('fillPartialBucket', () => {
   it('scales proportionally', () => {
@@ -84,7 +84,7 @@ describe('buildWeeklyEvolution', () => {
     expect(result[1]!.weekEnd).toBe('2025-03-10')
   })
 
-  it('aligns from last non-zero data day, ignoring trailing zeros', () => {
+  it('always aligns from rangeEnd, even with trailing zeros', () => {
     const daily = [
       { day: '2025-03-01', value: 10 },
       { day: '2025-03-02', value: 10 },
@@ -99,10 +99,14 @@ describe('buildWeeklyEvolution', () => {
 
     const result = buildWeeklyEvolution(daily, '2025-03-01', '2025-03-09')
 
-    expect(result).toHaveLength(1)
-    expect(result[0]!.value).toBe(70)
+    // Bucket 0: 03-03..03-09 = 50, Bucket 1: 03-01..03-02 (partial, scaled)
+    expect(result).toHaveLength(2)
     expect(result[0]!.weekStart).toBe('2025-03-01')
-    expect(result[0]!.weekEnd).toBe('2025-03-07')
+    expect(result[0]!.weekEnd).toBe('2025-03-02')
+    expect(result[0]!.value).toBe(Math.round((20 * 7) / 2))
+    expect(result[1]!.weekStart).toBe('2025-03-03')
+    expect(result[1]!.weekEnd).toBe('2025-03-09')
+    expect(result[1]!.value).toBe(50)
   })
 
   it('returns empty array for empty input', () => {

@@ -52,3 +52,6 @@ public/blog/avatar
 storybook-static
 
 .nvmrc
+.agents
+.vscode/mcp.json
+AGENTS.md

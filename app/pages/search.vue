@@ -7,7 +7,20 @@ import { isValidNewPackageName } from '~/utils/package-name'
 import { isPlatformSpecificPackage } from '~/utils/platform-packages'
 import { normalizeSearchParam } from '#shared/utils/url'
 
+definePageMeta({
+  preserveScrollOnQuery: true,
+})
+
 const route = useRoute()
+
+const { selectedPackages, showSelectionView, openSelectionView, closeSelectionView } =
+  usePackageSelection()
+
+watch(selectedPackages, packages => {
+  if (packages.length === 0) {
+    closeSelectionView()
+  }
+})
 
 // Preferences (persisted to localStorage)
 const {
@@ -393,12 +406,12 @@ const exactMatchType = computed<'package' | 'org' | 'user' | null>(() => {
 const suggestionCount = computed(() => validatedSuggestions.value.length)
 const totalSelectableCount = computed(() => suggestionCount.value + resultCount.value)
 
+const isVisible = (el: HTMLElement) => el.getClientRects().length > 0
+
 /**
  * Get all focusable result elements in DOM order (suggestions first, then packages)
  */
 function getFocusableElements(): HTMLElement[] {
-  const isVisible = (el: HTMLElement) => el.getClientRects().length > 0
-
   const suggestions = Array.from(document.querySelectorAll<HTMLElement>('[data-suggestion-index]'))
     .filter(isVisible)
     .sort((a, b) => {
@@ -435,7 +448,7 @@ async function navigateToPackage(packageName: string) {
 const pendingEnterQuery = shallowRef<string | null>(null)
 
 // Watch for results to navigate when Enter was pressed before results arrived
-watch(displayResults, results => {
+watch(displayResults, newResults => {
   if (!pendingEnterQuery.value) return
 
   // Check if input is still focused (user hasn't started navigating or clicked elsewhere)
@@ -445,7 +458,7 @@ watch(displayResults, results => {
   }
 
   // Navigate if first result matches the query that was entered
-  const firstResult = results[0]
+  const firstResult = newResults[0]
   // eslint-disable-next-line no-console
   console.log('[search] watcher fired', {
     pending: pendingEnterQuery.value,
@@ -660,16 +673,33 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
+  <PackageActionBar v-if="!showSelectionView" />
+
   <main class="flex-1 py-8 search-page" :class="{ 'overflow-x-hidden': viewMode !== 'table' }">
     <div class="container-sm">
       <div class="flex items-center justify-between gap-4 mb-4">
         <h1 class="font-mono text-2xl sm:text-3xl font-medium">
           {{ $t('search.title') }}
         </h1>
-        <SearchProviderToggle />
+        <button
+          v-if="showSelectionView"
+          type="button"
+          class="cursor-pointer inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
+          @click="closeSelectionView"
+          :aria-label="$t('nav.back')"
+        >
+          <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
+          <span class="hidden sm:inline">{{ $t('nav.back') }}</span>
+        </button>
+        <SearchProviderToggle v-else />
       </div>
 
-      <section v-if="committedQuery" class="results-layout">
+      <PackageSelectionView
+        v-if="showSelectionView && selectedPackages.length"
+        :view-mode="viewMode"
+      />
+
+      <section v-else-if="committedQuery" class="results-layout">
         <LoadingSpinner v-if="showSearching" :text="$t('search.searching')" />
 
         <div
@@ -738,6 +768,7 @@ onBeforeUnmount(() => {
               :disabled-sort-keys="disabledSortKeys"
               search-context
               @toggle-column="toggleColumn"
+              @toggle-selection="openSelectionView"
               @reset-columns="resetColumns"
               @clear-filter="handleClearFilter"
               @clear-all-filters="clearAllFilters"
@@ -778,7 +809,7 @@ onBeforeUnmount(() => {
                 $t(
                   'filters.count.showing_paginated',
                   {
-                    pageSize: Math.min(preferredPageSize, effectiveTotal),
+                    pageSize: $n(Math.min(preferredPageSize, effectiveTotal)),
                     count: $n(effectiveTotal),
                   },
                   effectiveTotal,
