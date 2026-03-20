@@ -106,6 +106,18 @@ test.describe('badge API', () => {
       const { body } = await fetchBadge(page, url)
 
       expect(body).toContain('@types')
+      expect(body).not.toContain('missing')
+    })
+
+    test('types badge shows included badge when types not declared explictly', async ({
+      page,
+      baseURL,
+    }) => {
+      const url = toLocalUrl(baseURL, '/api/registry/badge/types/nano-stringify-object')
+      const { body } = await fetchBadge(page, url)
+
+      expect(body).toContain('included')
+      expect(body).not.toContain('missing')
     })
   })
 
