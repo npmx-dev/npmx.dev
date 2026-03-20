@@ -613,11 +613,7 @@ watch(
                     v-for="tag in v.tags"
                     :key="tag"
                     class="text-4xs px-1 py-0.5 rounded font-sans font-medium"
-                    :class="
-                      tag === 'latest'
-                        ? 'bg-emerald-500/10 text-emerald-400'
-                        : 'bg-bg-muted text-fg-subtle'
-                    "
+                    :class="tag === 'latest' ? 'badge-accent' : 'badge-subtle'"
                   >
                     {{ tag }}
                   </span>
