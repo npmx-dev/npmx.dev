@@ -56,7 +56,7 @@ test.describe('badge API', () => {
       })
 
       test('explicit version badge renders successfully', async ({ page, baseURL }) => {
-        const url = toLocalUrl(baseURL, `/api/registry/badge/${type}/nuxt/v/3.12.0`)
+        const url = toLocalUrl(baseURL, `/api/registry/badge/${type}/nuxt/v/3.21.0`)
         const { response, body } = await fetchBadge(page, url)
 
         expect(response.status()).toBe(200)
