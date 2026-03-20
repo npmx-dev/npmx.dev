@@ -146,4 +146,3 @@ export async function fetchPackageWithTypesAndFiles(
 
   return { pkg, typesPackage, files }
 }
-

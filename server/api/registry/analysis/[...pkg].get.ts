@@ -5,10 +5,7 @@ import type {
   ExtendedPackageJson,
   CreatePackageInfo,
 } from '#shared/utils/package-analysis'
-import {
-  analyzePackage,
-  getCreatePackageName,
-} from '#shared/utils/package-analysis'
+import { analyzePackage, getCreatePackageName } from '#shared/utils/package-analysis'
 import {
   getDevDependencySuggestion,
   type DevDependencySuggestion,
