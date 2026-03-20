@@ -8,7 +8,6 @@ import type {
 import {
   analyzePackage,
   getCreatePackageName,
-  fetchPackageWithTypesAndFiles,
 } from '#shared/utils/package-analysis'
 import {
   getDevDependencySuggestion,
@@ -21,6 +20,7 @@ import {
 } from '#shared/utils/constants'
 import { parseRepoUrl } from '#shared/utils/git-providers'
 import { encodePackageName } from '#shared/utils/npm'
+import { fetchPackageWithTypesAndFiles } from '#server/utils/file-tree'
 import { getLatestVersionBatch } from 'fast-npm-meta'
 
 export default defineCachedEventHandler(
