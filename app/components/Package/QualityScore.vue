@@ -25,7 +25,13 @@ const checkLabels: Record<string, string> = {
 }
 
 const categories = computed(() => {
-  const order: ScoreCategory[] = ['documentation', 'maintenance', 'types', 'bestPractices', 'security']
+  const order: ScoreCategory[] = [
+    'documentation',
+    'maintenance',
+    'types',
+    'bestPractices',
+    'security',
+  ]
   return order.map(cat => ({
     key: cat,
     label: categoryLabels[cat],
