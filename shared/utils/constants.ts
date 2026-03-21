@@ -97,6 +97,7 @@ export interface AccentColorToken {
   dark: { oklch: string; hex: string }
 }
 
+// todo(atriiy): This is duplicated with ACCENT_COLORS, will be refactored later
 export const ACCENT_COLOR_TOKENS = {
   sky: {
     light: { oklch: 'oklch(0.53 0.16 247.27)', hex: '#006fc2' },
@@ -154,39 +155,29 @@ export const BACKGROUND_THEME_TOKENS = {
 /**
  * Static theme tokens for the share card OG image.
  * Must use hex/rgb — satori (the OG image renderer) does not support oklch.
- * Background is not included here — use BACKGROUND_THEME_TOKENS for the card bg.
- * Values are hex equivalents of the corresponding CSS custom properties:
- *   border      → --border
- *   borderMuted → --border at 60% opacity
- *   borderFaint → --border at 50% opacity
- *   divider     → --border-subtle
- *   text        → --fg
- *   textMuted   → --fg-muted
- *   textSubtle  → --fg-subtle
- *   textFaint   → --fg-subtle at 80% opacity
  */
 export const SHARE_CARD_THEMES = {
   dark: {
-    bg: '#101010', // --bg:           oklch(0.171 0 0)
-    border: '#262626', // --border:       oklch(0.269 0 0)
-    borderMuted: '#26262699', // --border @ 60%
-    borderFaint: '#26262680', // --border @ 50%
-    divider: '#1f1f1f', // --border-subtle: oklch(0.239 0 0)
-    text: '#f9f9f9', // --fg:           oklch(0.982 0 0)
-    textMuted: '#adadad', // --fg-muted:    oklch(0.749 0 0)
-    textSubtle: '#969696', // --fg-subtle:   oklch(0.673 0 0)
-    textFaint: '#969696cc', // --fg-subtle @ 80%
+    bg: '#101010',
+    border: '#262626',
+    borderMuted: '#26262699',
+    borderFaint: '#26262680',
+    divider: '#1f1f1f',
+    text: '#f9f9f9',
+    textMuted: '#adadad',
+    textSubtle: '#969696',
+    textFaint: '#969696cc',
   },
   light: {
-    bg: '#ffffff', // --bg:           oklch(1 0 0)
-    border: '#cecece', // --border:       oklch(0.8514 0 0)
-    borderMuted: '#cecece99', // --border @ 60%
-    borderFaint: '#cecece80', // --border @ 50%
-    divider: '#e5e5e5', // --border-subtle: oklch(0.922 0 0)
-    text: '#0a0a0a', // --fg:           oklch(0.146 0 0)
-    textMuted: '#474747', // --fg-muted:    oklch(0.398 0 0)
-    textSubtle: '#5d5d5d', // --fg-subtle:   oklch(0.48 0 0)
-    textFaint: '#5d5d5dcc', // --fg-subtle @ 80%
+    bg: '#ffffff',
+    border: '#cecece',
+    borderMuted: '#cecece99',
+    borderFaint: '#cecece80',
+    divider: '#e5e5e5',
+    text: '#0a0a0a',
+    textMuted: '#474747',
+    textSubtle: '#5d5d5d',
+    textFaint: '#5d5d5dcc',
   },
 } as const satisfies Record<'light' | 'dark', Record<string, string>>
 

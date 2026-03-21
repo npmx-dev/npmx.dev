@@ -11,7 +11,7 @@ const props = withDefaults(
   { theme: 'dark' },
 )
 
-const t = computed(() => SHARE_CARD_THEMES[props.theme])
+const theme = computed(() => SHARE_CARD_THEMES[props.theme])
 const primaryColor = computed(() => {
   const id = props.color as AccentColorId | undefined
   if (id && id in ACCENT_COLOR_TOKENS) {
@@ -50,7 +50,9 @@ const version = computed(() => resolvedVersion.value ?? pkg.value?.['dist-tags']
 const isLatest = computed(() => pkg.value?.['dist-tags']?.latest === version.value)
 const description = computed(() => pkg.value?.description ?? '')
 const license = computed(() => pkg.value?.license ?? '')
-const hasTypes = computed(() => Boolean(displayVersion.value?.types || displayVersion.value?.typings))
+const hasTypes = computed(() =>
+  Boolean(displayVersion.value?.types || displayVersion.value?.typings),
+)
 const moduleFormat = computed(() => (displayVersion.value?.type === 'module' ? 'ESM' : 'CJS'))
 const depsCount = computed(() => Object.keys(displayVersion.value?.dependencies ?? {}).length)
 const unpackedSize = computed(() => displayVersion.value?.dist?.unpackedSize ?? 0)
@@ -68,11 +70,12 @@ const fontMono = "'Geist Mono', ui-monospace, monospace"
 
 <template>
   <!-- Rendered at 1280×520 (2.46:1). -->
+  <!-- Icons inlined as SVG: satori cannot render CSS mask-image/background-image icons (i-lucide-*) -->
   <div
     class="h-full w-full flex flex-col"
     :style="{
-      backgroundColor: t.bg,
-      color: t.text,
+      backgroundColor: theme.bg,
+      color: theme.text,
       fontFamily: fontSans,
     }"
   >
@@ -94,7 +97,7 @@ const fontMono = "'Geist Mono', ui-monospace, monospace"
               </span>
               <span
                 class="text-[26px] font-light leading-none"
-                :style="{ color: t.textMuted, fontFamily: fontMono }"
+                :style="{ color: theme.textMuted, fontFamily: fontMono }"
               >
                 v{{ version }}
               </span>
@@ -113,18 +116,18 @@ const fontMono = "'Geist Mono', ui-monospace, monospace"
             <div class="flex flex-row items-baseline flex-shrink-0 gap-[10px]">
               <span
                 class="text-[40px] font-medium leading-none tracking-[-1.5px]"
-                :style="{ color: t.text, fontFamily: fontMono }"
+                :style="{ color: theme.text, fontFamily: fontMono }"
               >
                 {{ compactFormatter.format(weeklyDownloads) }}
               </span>
-              <span class="text-[22px] font-light" :style="{ color: t.textMuted }">weekly</span>
+              <span class="text-[22px] font-light" :style="{ color: theme.textMuted }">weekly</span>
             </div>
           </div>
 
           <!-- Description -->
           <div
             class="text-[22px] font-light leading-[1.6] mb-5"
-            :style="{ color: t.textMuted, fontFamily: fontSans }"
+            :style="{ color: theme.textMuted, fontFamily: fontSans }"
           >
             {{ truncate(description || 'No description.', 440) }}
           </div>
@@ -135,16 +138,16 @@ const fontMono = "'Geist Mono', ui-monospace, monospace"
               v-if="hasTypes"
               class="flex items-center text-[20px] font-light py-1 px-[14px] rounded-[6px] leading-[1.6]"
               :style="{
-                border: `1px solid ${t.borderMuted}`,
-                color: t.textSubtle,
+                border: `1px solid ${theme.borderMuted}`,
+                color: theme.textSubtle,
               }"
               >Types</span
             >
             <span
               class="flex items-center text-[20px] font-light py-1 px-[14px] rounded-[6px] leading-[1.6]"
               :style="{
-                border: `1px solid ${t.borderMuted}`,
-                color: t.textSubtle,
+                border: `1px solid ${theme.borderMuted}`,
+                color: theme.textSubtle,
               }"
               >{{ moduleFormat }}</span
             >
@@ -152,8 +155,8 @@ const fontMono = "'Geist Mono', ui-monospace, monospace"
               v-if="license"
               class="flex items-center text-[20px] font-light py-1 px-[14px] rounded-[6px] leading-[1.6]"
               :style="{
-                border: `1px solid ${t.borderMuted}`,
-                color: t.textSubtle,
+                border: `1px solid ${theme.borderMuted}`,
+                color: theme.textSubtle,
               }"
               >{{ license }}</span
             >
@@ -161,8 +164,8 @@ const fontMono = "'Geist Mono', ui-monospace, monospace"
               v-if="repoSlug"
               class="flex items-center text-[20px] font-light py-1 px-[14px] rounded-[6px] leading-[1.6]"
               :style="{
-                border: `1px solid ${t.borderFaint}`,
-                color: t.textFaint,
+                border: `1px solid ${theme.borderFaint}`,
+                color: theme.textFaint,
                 fontFamily: fontMono,
               }"
               >{{ repoSlug }}</span
@@ -180,7 +183,7 @@ const fontMono = "'Geist Mono', ui-monospace, monospace"
                 height="20"
                 viewBox="0 0 24 24"
                 fill="none"
-                :stroke="t.textSubtle"
+                :stroke="theme.textSubtle"
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -191,7 +194,7 @@ const fontMono = "'Geist Mono', ui-monospace, monospace"
               </svg>
               <span
                 class="text-[24px] font-normal leading-none tracking-[-0.3px]"
-                :style="{ color: t.textMuted }"
+                :style="{ color: theme.textMuted }"
                 >{{ compactFormatter.format(stars) }}</span
               >
             </div>
@@ -203,7 +206,7 @@ const fontMono = "'Geist Mono', ui-monospace, monospace"
                 height="20"
                 viewBox="0 0 24 24"
                 fill="none"
-                :stroke="t.textSubtle"
+                :stroke="theme.textSubtle"
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -215,7 +218,7 @@ const fontMono = "'Geist Mono', ui-monospace, monospace"
               </svg>
               <span
                 class="text-[24px] font-normal leading-none tracking-[-0.3px]"
-                :style="{ color: t.textMuted }"
+                :style="{ color: theme.textMuted }"
                 >{{ compactFormatter.format(forks) }}</span
               >
             </div>
@@ -227,7 +230,7 @@ const fontMono = "'Geist Mono', ui-monospace, monospace"
                 height="20"
                 viewBox="0 0 24 24"
                 fill="none"
-                :stroke="t.textSubtle"
+                :stroke="theme.textSubtle"
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -239,7 +242,7 @@ const fontMono = "'Geist Mono', ui-monospace, monospace"
               </svg>
               <span
                 class="text-[24px] font-normal leading-none tracking-[-0.3px]"
-                :style="{ color: t.textMuted }"
+                :style="{ color: theme.textMuted }"
                 >{{ bytesFormatter.format(unpackedSize) }}</span
               >
             </div>
@@ -251,7 +254,7 @@ const fontMono = "'Geist Mono', ui-monospace, monospace"
                 height="20"
                 viewBox="0 0 24 24"
                 fill="none"
-                :stroke="t.textSubtle"
+                :stroke="theme.textSubtle"
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -261,7 +264,7 @@ const fontMono = "'Geist Mono', ui-monospace, monospace"
               </svg>
               <span
                 class="text-[24px] font-normal leading-none tracking-[-0.3px]"
-                :style="{ color: t.textMuted }"
+                :style="{ color: theme.textMuted }"
                 >{{ depsCount }}</span
               >
             </div>
@@ -273,7 +276,7 @@ const fontMono = "'Geist Mono', ui-monospace, monospace"
                 height="20"
                 viewBox="0 0 24 24"
                 fill="none"
-                :stroke="t.textSubtle"
+                :stroke="theme.textSubtle"
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -284,7 +287,7 @@ const fontMono = "'Geist Mono', ui-monospace, monospace"
               </svg>
               <span
                 class="text-[24px] font-normal leading-none tracking-[-0.3px]"
-                :style="{ color: t.textMuted }"
+                :style="{ color: theme.textMuted }"
                 >{{ formatDate(publishedAt) }}</span
               >
             </div>
@@ -297,8 +300,8 @@ const fontMono = "'Geist Mono', ui-monospace, monospace"
     <div
       class="flex flex-row items-center justify-between flex-shrink-0 py-4 pr-10 pl-8"
       :style="{
-        borderTop: `1px solid ${t.border}`,
-        backgroundColor: t.bg,
+        borderTop: `1px solid ${theme.border}`,
+        backgroundColor: theme.bg,
       }"
     >
       <div
@@ -306,11 +309,14 @@ const fontMono = "'Geist Mono', ui-monospace, monospace"
         :style="{ fontFamily: fontMono }"
       >
         <span class="font-medium -ml-1" :style="{ color: primaryColor }">.</span>/npmx
-        <span class="ml-3 font-light" :style="{ color: t.textSubtle, fontFamily: fontSans }"
+        <span class="ml-3 font-light" :style="{ color: theme.textSubtle, fontFamily: fontSans }"
           >· npm package explorer</span
         >
       </div>
-      <span class="text-[20px] font-light" :style="{ color: t.textSubtle, fontFamily: fontMono }">
+      <span
+        class="text-[20px] font-light"
+        :style="{ color: theme.textSubtle, fontFamily: fontMono }"
+      >
         npmx.dev/package/{{ name }}
       </span>
     </div>
