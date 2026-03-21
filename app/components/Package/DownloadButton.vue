@@ -200,11 +200,7 @@ defineOptions({
           @click="handleAction(item)"
           @mouseenter="highlightedIndex = index"
         >
-          <span
-            :class="item.icon"
-            class="w-4 h-4"
-            aria-hidden="true"
-          />
+          <span :class="item.icon" class="w-4 h-4" aria-hidden="true" />
           {{ $t('package.download.package') }}
         </li>
       </ul>
