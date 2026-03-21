@@ -75,7 +75,9 @@
     "theme_system": "सिस्टम",
     "language": "भाषा",
     "help_translate": "npmx का अनुवाद करने में मदद करें",
-    "accent_colors": "एक्सेंट रंग",
+    "accent_colors": {
+      "label": "एक्सेंट रंग"
+    },
     "clear_accent": "एक्सेंट रंग साफ़ करें",
     "translation_progress": "अनुवाद प्रगति"
   },

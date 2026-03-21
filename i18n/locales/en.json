@@ -148,10 +148,25 @@
     "language": "Language",
     "help_translate": "Help translate npmx",
     "translation_status": "Check global translation status",
-    "accent_colors": "Accent colors",
+    "accent_colors": {
+      "label": "Accent colors",
+      "sky": "Sky",
+      "coral": "Coral",
+      "amber": "Amber",
+      "emerald": "Emerald",
+      "violet": "Violet",
+      "magenta": "Magenta"
+    },
     "clear_accent": "Clear accent color",
     "translation_progress": "Translation progress",
-    "background_themes": "Background shade",
+    "background_themes": {
+      "label": "Background shade",
+      "neutral": "Neutral",
+      "stone": "Stone",
+      "zinc": "Zinc",
+      "slate": "Slate",
+      "black": "Black"
+    },
     "keyboard_shortcuts_enabled": "Enable keyboard shortcuts",
     "keyboard_shortcuts_enabled_description": "Keyboard shortcuts can be disabled if they conflict with other browser or system shortcuts"
   },
@@ -310,8 +325,15 @@
       "unlike": "Unlike this package"
     },
     "docs": {
+      "contents": "Contents",
+      "default_not_available": "Docs are not available for this version.",
       "not_available": "Docs not available",
-      "not_available_detail": "We could not generate docs for this version."
+      "not_available_detail": "We could not generate docs for this version.",
+      "page_title": "API Docs - npmx",
+      "page_title_name": "{name} docs - npmx",
+      "page_title_version": "{name} docs - npmx",
+      "og_title": "{name} - Docs",
+      "view_package": "View package"
     },
     "get_started": {
       "title": "Get started",

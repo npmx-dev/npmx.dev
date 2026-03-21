@@ -144,10 +144,14 @@
     "theme_system": "Sistema",
     "language": "Idioma",
     "help_translate": "Ayuda a traducir npmx",
-    "accent_colors": "Colores de acento",
+    "accent_colors": {
+      "label": "Colores de acento"
+    },
     "clear_accent": "Limpiar color de acento",
     "translation_progress": "Progreso de traducción",
-    "background_themes": "Tema de fondo",
+    "background_themes": {
+      "label": "Tema de fondo"
+    },
     "keyboard_shortcuts_enabled": "Activar atajos de teclado",
     "keyboard_shortcuts_enabled_description": "Los atajos de teclado pueden desactivarse si entran en conflicto con otros atajos del navegador o del sistema"
   },

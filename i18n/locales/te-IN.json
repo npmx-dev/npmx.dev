@@ -75,7 +75,9 @@
     "theme_system": "సిస్టమ్",
     "language": "భాష",
     "help_translate": "npmx అనువాదంలో సహాయం చేయండి",
-    "accent_colors": "యాక్సెంట్ రంగులు",
+    "accent_colors": {
+      "label": "యాక్సెంట్ రంగులు"
+    },
     "clear_accent": "యాక్సెంట్ రంగును క్లియర్ చేయండి",
     "translation_progress": "అనువాద పురోగతి"
   },
