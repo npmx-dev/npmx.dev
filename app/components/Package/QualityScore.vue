@@ -3,10 +3,32 @@ const props = defineProps<{
   score: PackageScore
 }>()
 
+const categoryLabels: Record<ScoreCategory, string> = {
+  documentation: $t('package.score.categories.documentation'),
+  maintenance: $t('package.score.categories.maintenance'),
+  types: $t('package.score.categories.types'),
+  bestPractices: $t('package.score.categories.bestPractices'),
+  security: $t('package.score.categories.security'),
+}
+
+const checkLabels: Record<string, string> = {
+  'has-readme': $t('package.score.checks.has-readme'),
+  'has-description': $t('package.score.checks.has-description'),
+  'update-frequency': $t('package.score.checks.update-frequency'),
+  'has-types': $t('package.score.checks.has-types'),
+  'has-license': $t('package.score.checks.has-license'),
+  'has-repository': $t('package.score.checks.has-repository'),
+  'has-provenance': $t('package.score.checks.has-provenance'),
+  'has-esm': $t('package.score.checks.has-esm'),
+  'no-vulnerabilities': $t('package.score.checks.no-vulnerabilities'),
+  'not-deprecated': $t('package.score.checks.not-deprecated'),
+}
+
 const categories = computed(() => {
-  const order = ['documentation', 'maintenance', 'types', 'bestPractices', 'security'] as const
+  const order: ScoreCategory[] = ['documentation', 'maintenance', 'types', 'bestPractices', 'security']
   return order.map(cat => ({
     key: cat,
+    label: categoryLabels[cat],
     checks: props.score.checks.filter(c => c.category === cat),
   }))
 })
@@ -67,7 +89,7 @@ const scoreLabel = computed(() =>
     <div class="space-y-3">
       <div v-for="cat in categories" :key="cat.key">
         <h3 class="text-2xs text-fg-subtle uppercase tracking-wider mb-1.5">
-          {{ $t(`package.score.categories.${cat.key}`) }}
+          {{ cat.label }}
         </h3>
         <ul class="space-y-1 list-none m-0 p-0">
           <li
@@ -87,7 +109,7 @@ const scoreLabel = computed(() =>
               aria-hidden="true"
             />
             <span class="flex-1 text-fg-muted" :class="{ 'text-fg-subtle': check.points === 0 }">
-              {{ $t(`package.score.checks.${check.id}`) }}
+              {{ checkLabels[check.id] }}
             </span>
             <span class="font-mono text-2xs text-fg-subtle shrink-0">
               {{ check.points }}/{{ check.maxPoints }}
