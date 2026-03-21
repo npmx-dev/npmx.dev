@@ -158,7 +158,7 @@ try {
         </span>
 
         <!-- License (if any) -->
-        <span v-if="pkg?.license" class="flex items-center gap-2" data-testid="license">
+        <span v-if="displayVersion?.license || pkg?.license" class="flex items-center gap-2" data-testid="license">
           <svg
             viewBox="0 0 32 32"
             :fill="primaryColor"
@@ -178,7 +178,7 @@ try {
             />
           </svg>
           <span>
-            {{ pkg.license }}
+            {{ displayVersion?.license || pkg?.license }}
           </span>
         </span>
 
