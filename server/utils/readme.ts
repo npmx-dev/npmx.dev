@@ -648,7 +648,7 @@ ${html}
   // Strip trailing whitespace (tabs/spaces) from code block closing fences.
   // While marky-markdown handles these gracefully, marked fails to recognize
   // the end of a code block if the closing fences are followed by unexpected whitespaces.
-  const normalizedContent = content.replace(/^( {0,3}(?:`{3,}|~{3,}))\s*$/gm, '$1')
+  const normalizedContent = markdownBody.replace(/^( {0,3}(?:`{3,}|~{3,}))\s*$/gm, '$1')
   const rawHtml = frontmatterHtml + (marked.parse(normalizedContent) as string)
 
   const sanitized = sanitizeHtml(rawHtml, {
