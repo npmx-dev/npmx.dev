@@ -109,7 +109,7 @@
       "reply_count": "{count} 条回复 | {count} 条回复",
       "like_count": "{count} 个赞 | {count} 个赞",
       "repost_count": "{count} 次转发 | {count} 次转发",
-      "more_replies": "还有 {count} 条回复... | 还有 {count} 条回复..."
+      "more_replies": "还有 {count} 条回复..."
     }
   },
   "settings": {
@@ -1048,7 +1048,8 @@
       "error": "加载组织失败",
       "empty": "未找到组织",
       "view_all": "查看全部"
-    }
+    },
+    "pr": "在 GitHub 上打开 PR #{prNumber}"
   },
   "compare": {
     "packages": {
