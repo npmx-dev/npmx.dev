@@ -241,6 +241,15 @@ const likeAction = async () => {
     isLikeActionPending.value = false
   }
 }
+
+const fundingUrl = computed(() => {
+  let funding = props.displayVersion?.funding
+  if (Array.isArray(funding)) funding = funding[0]
+
+  if (!funding) return null
+
+  return typeof funding === 'string' ? funding : funding.url
+})
 </script>
 
 <template>
@@ -312,6 +321,15 @@ const likeAction = async () => {
             </span>
           </ButtonBase>
         </TooltipApp>
+
+        <LinkBase
+          variant="button-secondary"
+          v-if="fundingUrl"
+          :to="fundingUrl"
+          classicon="i-lucide:handshake text-accent"
+        >
+          <span class="max-sm:sr-only">{{ $t('package.links.fund') }}</span>
+        </LinkBase>
       </div>
     </div>
   </header>
