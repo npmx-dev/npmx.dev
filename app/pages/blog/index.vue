@@ -21,12 +21,9 @@ useSeoMeta({
   <main class="container w-full flex-1 py-12 sm:py-16 overflow-x-hidden">
     <article class="max-w-2xl mx-auto">
       <header class="mb-12">
-        <div class="flex items-baseline justify-between gap-4 mb-4">
-          <h1 class="font-mono text-3xl sm:text-4xl font-medium">
-            {{ $t('blog.heading') }}
-          </h1>
-          <BackButton />
-        </div>
+        <h1 class="font-mono text-3xl sm:text-4xl font-medium">
+          {{ $t('blog.heading') }}
+        </h1>
         <p class="text-fg-muted text-lg">
           {{ $t('tagline') }}
         </p>
