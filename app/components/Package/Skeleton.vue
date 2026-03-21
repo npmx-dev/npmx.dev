@@ -2,24 +2,22 @@
 
 <template>
   <!-- Package header — matches area-header in [...name].vue -->
-  <header class="bg-[--bg] pt-5 pb-1 w-full container">
-    <div class="min-w-0">
-      <!-- Package name -->
-      <div class="min-w-0 flex items-center gap-2 justify-between">
-        <h1 class="font-mono text-2xl sm:text-3xl font-medium">
-          <SkeletonInline class="block! h-9 w-48" />
-        </h1>
-        <div class="flex gap-1">
-          <!-- Compare placeholder -->
-          <SkeletonBlock class="w-9 md:w-40 h-9 rounded self-baseline" />
-          <!-- Likes button placeholder -->
-          <SkeletonBlock class="w-14 h-9 rounded self-baseline" />
-        </div>
+  <header class="bg-bg pt-6 pb-2 pb-1 w-full container">
+    <!-- Package name -->
+    <div class="flex items-baseline justify-between gap-x-2 gap-y-1 flex-wrap min-w-0">
+      <h1 class="font-mono text-2xl sm:text-3xl font-medium">
+        <SkeletonInline class="block! h-9 w-48" />
+      </h1>
+      <div class="flex gap-2 flex-wrap items-stretch">
+        <!-- Compare placeholder -->
+        <SkeletonBlock class="w-9 md:w-36 h-9 rounded" />
+        <!-- Likes button placeholder -->
+        <SkeletonBlock class="w-14 h-9 rounded" />
       </div>
     </div>
   </header>
 
-  <div class="sticky top-14 z-1 pt-3 bg-bg border-b border-border w-full">
+  <div class="w-full bg-bg sticky top-14 z-10 border-b border-border pt-2">
     <div class="w-full container flex flex-col md:flex-row-reverse flex-wrap gap-2 justify-between">
       <!-- Version -->
       <span class="inline-flex items-baseline font-mono text-base sm:text-lg shrink-0">
