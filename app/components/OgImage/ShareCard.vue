@@ -98,28 +98,18 @@ const repoSlug = computed(() => {
   return truncate(`${ref.owner}/${ref.repo}`, 26)
 })
 
-// Card: 1280×520 (2.46:1) — same ratio as 640×260, doubled for sharpness.
-// Single-column layout: accent bar + full-width content.
-// Typography hierarchy (two weights only):
-//   500 — primary values: package name, weekly DL, bottom stats
-//   300 — secondary: version, description, tags, footer text
-//   400 — labels only (18px uppercase tracked)
-const BOTTOM_ROW_H = 132
+const fontSans = "'Geist', ui-sans-serif, sans-serif"
+const fontMono = "'Geist Mono', ui-monospace, monospace"
 </script>
 
 <template>
-  <!--
-    Rendered at 1280×520 (2.46:1).
-    Flat single-column layout — no left/right panel split.
-    Top row: package identity (left) + weekly downloads (right) on one baseline.
-    Bottom row: all stats unified in a single row.
-  -->
+  <!-- Rendered at 1280×520 (2.46:1). -->
   <div
     class="h-full w-full flex flex-col"
     :style="{
       backgroundColor: t.bg,
       color: t.text,
-      fontFamily: '\'Geist Mono\', ui-monospace, monospace',
+      fontFamily: fontSans,
     }"
   >
     <!-- ── Main content ─────────────────────────────────────────────── -->
@@ -127,79 +117,50 @@ const BOTTOM_ROW_H = 132
       <!-- Content column -->
       <div class="flex flex-col flex-1 overflow-hidden justify-between">
         <!-- Top content -->
-        <div class="flex flex-col" style="padding: 32px 40px 0 32px">
+        <div class="flex flex-col pt-8 pr-10 pl-8">
           <!-- Top row: name+version+latest ← → downloads — single baseline -->
-          <div class="flex flex-row items-baseline justify-between" style="margin-bottom: 16px">
+          <div class="flex flex-row items-baseline justify-between mb-4">
             <!-- Left: name · version · latest -->
             <div class="flex flex-row items-baseline flex-wrap gap-[16px]">
               <span
-                :style="{
-                  fontSize: '48px',
-                  fontWeight: 500,
-                  lineHeight: '1',
-                  letterSpacing: '-1px',
-                }"
+                class="text-[48px] font-medium leading-none tracking-[-1px]"
+                :style="{ fontFamily: fontMono }"
               >
                 {{ truncate(name, 24) }}
               </span>
               <span
-                :style="{
-                  fontSize: '26px',
-                  fontWeight: 300,
-                  color: t.textMuted,
-                  lineHeight: '1',
-                }"
-                >v{{ version }}</span
+                class="text-[26px] font-light leading-none"
+                :style="{ color: t.textMuted, fontFamily: fontMono }"
               >
+                v{{ version }}
+              </span>
               <span
                 v-if="isLatest"
-                class="flex items-center"
+                class="flex items-center text-[20px] font-normal py-1 px-[14px] rounded-[20px] leading-[1.5] tracking-[0.04em]"
                 :style="{
-                  fontSize: '20px',
-                  fontWeight: 400,
-                  padding: '4px 14px',
-                  borderRadius: '20px',
                   border: `1px solid ${withAlpha(primaryColor, 0.25)}`,
-                  color: withAlpha(primaryColor, 0.7),
-                  lineHeight: '1.5',
-                  letterSpacing: '0.04em',
+                  color: withAlpha(primaryColor, 0.9),
                 }"
                 >latest</span
               >
             </div>
 
             <!-- Right: weekly downloads — flat, single line -->
-            <div class="flex flex-row items-baseline flex-shrink-0" style="gap: 10px">
+            <div class="flex flex-row items-baseline flex-shrink-0 gap-[10px]">
               <span
-                :style="{
-                  fontSize: '40px',
-                  fontWeight: 500,
-                  color: t.text,
-                  lineHeight: '1',
-                  letterSpacing: '-1.5px',
-                }"
-                >{{ formatNum(weeklyDownloads) }}</span
+                class="text-[40px] font-medium leading-none tracking-[-1.5px]"
+                :style="{ color: t.text, fontFamily: fontMono }"
               >
-              <span
-                :style="{
-                  fontSize: '20px',
-                  fontWeight: 300,
-                  color: t.textSubtle,
-                }"
-                >weekly</span
-              >
+                {{ formatNum(weeklyDownloads) }}
+              </span>
+              <span class="text-[22px] font-light" :style="{ color: t.textMuted }">weekly</span>
             </div>
           </div>
 
           <!-- Description -->
           <div
-            :style="{
-              fontSize: '22px',
-              fontWeight: 300,
-              color: t.textMuted,
-              lineHeight: '1.6',
-              marginBottom: '20px',
-            }"
+            class="text-[22px] font-light leading-[1.6] mb-5"
+            :style="{ color: t.textMuted, fontFamily: fontSans }"
           >
             {{ truncate(description || 'No description.', 440) }}
           </div>
@@ -208,56 +169,37 @@ const BOTTOM_ROW_H = 132
           <div class="flex flex-row flex-wrap gap-[16px]">
             <span
               v-if="hasTypes"
-              class="flex items-center"
+              class="flex items-center text-[20px] font-light py-1 px-[14px] rounded-[6px] leading-[1.6]"
               :style="{
-                fontSize: '20px',
-                fontWeight: 300,
-                padding: '4px 14px',
-                borderRadius: '6px',
                 border: `1px solid ${withAlpha(t.border, 0.6)}`,
                 color: t.textSubtle,
-                lineHeight: '1.6',
               }"
               >Types</span
             >
             <span
-              class="flex items-center"
+              class="flex items-center text-[20px] font-light py-1 px-[14px] rounded-[6px] leading-[1.6]"
               :style="{
-                fontSize: '20px',
-                fontWeight: 300,
-                padding: '4px 14px',
-                borderRadius: '6px',
                 border: `1px solid ${withAlpha(t.border, 0.6)}`,
                 color: t.textSubtle,
-                lineHeight: '1.6',
               }"
               >{{ moduleFormat }}</span
             >
             <span
               v-if="license"
-              class="flex items-center"
+              class="flex items-center text-[20px] font-light py-1 px-[14px] rounded-[6px] leading-[1.6]"
               :style="{
-                fontSize: '20px',
-                fontWeight: 300,
-                padding: '4px 14px',
-                borderRadius: '6px',
                 border: `1px solid ${withAlpha(t.border, 0.6)}`,
                 color: t.textSubtle,
-                lineHeight: '1.6',
               }"
               >{{ license }}</span
             >
             <span
               v-if="repoSlug"
-              class="flex items-center"
+              class="flex items-center text-[20px] font-light py-1 px-[14px] rounded-[6px] leading-[1.6]"
               :style="{
-                fontSize: '20px',
-                fontWeight: 300,
-                padding: '4px 14px',
-                borderRadius: '6px',
                 border: `1px solid ${withAlpha(t.border, 0.5)}`,
                 color: withAlpha(t.textSubtle, 0.8),
-                lineHeight: '1.6',
+                fontFamily: fontMono,
               }"
               >{{ repoSlug }}</span
             >
@@ -265,16 +207,10 @@ const BOTTOM_ROW_H = 132
         </div>
 
         <!-- Bottom unified stats row -->
-        <div
-          class="flex flex-col justify-center flex-shrink-0"
-          :style="{
-            height: `${BOTTOM_ROW_H}px`,
-            padding: '0 40px 0 32px',
-          }"
-        >
+        <div class="flex flex-col justify-center flex-shrink-0 h-[132px] pr-10 pl-8">
           <div class="flex flex-row items-center gap-[42px]">
             <!-- Stars -->
-            <div v-if="stars > 0" class="flex flex-row items-center gap-[8px]">
+            <div v-if="stars > 0" class="flex flex-row items-center gap-2">
               <svg
                 width="20"
                 height="20"
@@ -290,19 +226,14 @@ const BOTTOM_ROW_H = 132
                 />
               </svg>
               <span
-                :style="{
-                  fontSize: '24px',
-                  fontWeight: 400,
-                  color: t.textMuted,
-                  lineHeight: '1',
-                  letterSpacing: '-0.3px',
-                }"
+                class="text-[24px] font-normal leading-none tracking-[-0.3px]"
+                :style="{ color: t.textMuted }"
                 >{{ formatNum(stars) }}</span
               >
             </div>
 
             <!-- Forks -->
-            <div v-if="forks > 0" class="flex flex-row items-center" style="gap: 8px">
+            <div v-if="forks > 0" class="flex flex-row items-center gap-2">
               <svg
                 width="20"
                 height="20"
@@ -319,19 +250,14 @@ const BOTTOM_ROW_H = 132
                 <path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9m6 3v3" />
               </svg>
               <span
-                :style="{
-                  fontSize: '24px',
-                  fontWeight: 400,
-                  color: t.textMuted,
-                  lineHeight: '1',
-                  letterSpacing: '-0.3px',
-                }"
+                class="text-[24px] font-normal leading-none tracking-[-0.3px]"
+                :style="{ color: t.textMuted }"
                 >{{ formatNum(forks) }}</span
               >
             </div>
 
             <!-- Install Size -->
-            <div class="flex flex-row items-center" style="gap: 8px">
+            <div class="flex flex-row items-center gap-2">
               <svg
                 width="20"
                 height="20"
@@ -348,19 +274,14 @@ const BOTTOM_ROW_H = 132
                 <path d="M3.29 7L12 12l8.71-5M7.5 4.27l9 5.15" />
               </svg>
               <span
-                :style="{
-                  fontSize: '24px',
-                  fontWeight: 400,
-                  color: t.textMuted,
-                  lineHeight: '1',
-                  letterSpacing: '-0.3px',
-                }"
+                class="text-[24px] font-normal leading-none tracking-[-0.3px]"
+                :style="{ color: t.textMuted }"
                 >{{ formatBytes(unpackedSize) }}</span
               >
             </div>
 
             <!-- Dependencies -->
-            <div class="flex flex-row items-center" style="gap: 8px">
+            <div class="flex flex-row items-center gap-2">
               <svg
                 width="20"
                 height="20"
@@ -375,19 +296,14 @@ const BOTTOM_ROW_H = 132
                 <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
               </svg>
               <span
-                :style="{
-                  fontSize: '24px',
-                  fontWeight: 400,
-                  color: t.textMuted,
-                  lineHeight: '1',
-                  letterSpacing: '-0.3px',
-                }"
+                class="text-[24px] font-normal leading-none tracking-[-0.3px]"
+                :style="{ color: t.textMuted }"
                 >{{ depsCount }}</span
               >
             </div>
 
             <!-- Published -->
-            <div v-if="publishedAt" class="flex flex-row items-center" style="gap: 8px">
+            <div v-if="publishedAt" class="flex flex-row items-center gap-2">
               <svg
                 width="20"
                 height="20"
@@ -403,13 +319,8 @@ const BOTTOM_ROW_H = 132
                 <path d="M3 10h18" />
               </svg>
               <span
-                :style="{
-                  fontSize: '24px',
-                  fontWeight: 400,
-                  color: t.textMuted,
-                  lineHeight: '1',
-                  letterSpacing: '-0.3px',
-                }"
+                class="text-[24px] font-normal leading-none tracking-[-0.3px]"
+                :style="{ color: t.textMuted }"
                 >{{ formatDate(publishedAt) }}</span
               >
             </div>
@@ -420,20 +331,22 @@ const BOTTOM_ROW_H = 132
 
     <!-- ── Footer ────────────────────────────────────────────────────── -->
     <div
-      class="flex flex-row items-center justify-between flex-shrink-0"
+      class="flex flex-row items-center justify-between flex-shrink-0 py-4 pr-10 pl-8"
       :style="{
-        padding: '16px 40px 16px 32px',
         borderTop: `1px solid ${t.border}`,
         backgroundColor: t.bg,
       }"
     >
-      <div class="flex flex-row items-center" :style="{ fontSize: '22px', fontWeight: 300 }">
-        <span :style="{ color: primaryColor, fontWeight: 500, marginLeft: '-4px' }">.</span>/npmx
-        <span :style="{ color: t.textSubtle, marginLeft: '12px', fontWeight: 300 }"
+      <div
+        class="flex flex-row items-center text-[22px] font-light"
+        :style="{ fontFamily: fontMono }"
+      >
+        <span class="font-medium -ml-1" :style="{ color: primaryColor }">.</span>/npmx
+        <span class="ml-3 font-light" :style="{ color: t.textSubtle, fontFamily: fontSans }"
           >· npm package explorer</span
         >
       </div>
-      <span :style="{ fontSize: '20px', fontWeight: 300, color: t.textSubtle }">
+      <span class="text-[20px] font-light" :style="{ color: t.textSubtle, fontFamily: fontMono }">
         npmx.dev/package/{{ name }}
       </span>
     </div>
