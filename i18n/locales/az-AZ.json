@@ -142,10 +142,14 @@
     "theme_system": "Sistem",
     "language": "Dil",
     "help_translate": "npmx-i tərcümə etməyə kömək edin",
-    "accent_colors": "Vurğu rəngləri",
+    "accent_colors": {
+      "label": "Vurğu rəngləri"
+    },
     "clear_accent": "Vurğu rəngini təmizlə",
     "translation_progress": "Tərcümə irəliləyişi",
-    "background_themes": "Fon tonu",
+    "background_themes": {
+      "label": "Fon tonu"
+    },
     "keyboard_shortcuts_enabled": "Klaviatura qısayollarını aktivləşdir",
     "keyboard_shortcuts_enabled_description": "Klaviatura qısayolları digər brauzer və ya sistem qısayolları ilə toqquşarsa deaktiv edilə bilər"
   },
