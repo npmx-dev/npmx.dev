@@ -259,12 +259,14 @@ const flatItems = computed<FlatItem[]>(() => {
                 v-for="tag in latestTagRow!.tags.filter(t => t !== 'latest')"
                 :key="tag"
                 class="text-3xs font-semibold uppercase tracking-wide text-fg-subtle"
+                :title="tag"
                 >{{ tag }}</span
               >
             </div>
             <LinkBase
               :to="packageRoute(packageName, latestTagRow!.version)"
               class="text-2xl font-semibold tracking-tight after:absolute after:inset-0 after:content-['']"
+              :title="latestTagRow!.version"
               dir="ltr"
               >{{ latestTagRow!.version }}</LinkBase
             >
@@ -305,6 +307,7 @@ const flatItems = computed<FlatItem[]>(() => {
                 v-for="tag in row.tags"
                 :key="tag"
                 class="text-3xs font-semibold uppercase tracking-wide text-fg-subtle"
+                :title="tag"
                 >{{ tag }}</span
               >
             </div>
@@ -313,30 +316,30 @@ const flatItems = computed<FlatItem[]>(() => {
             <LinkBase
               :to="packageRoute(packageName, row.version)"
               class="text-sm flex-1 min-w-0 after:absolute after:inset-0 after:content-['']"
+              :title="row.version"
               dir="ltr"
             >
               {{ row.version }}
             </LinkBase>
 
-            <!-- Date -->
-            <DateTime
-              v-if="getVersionTime(row.version)"
-              :datetime="getVersionTime(row.version)!"
-              class="text-xs text-fg-subtle shrink-0 hidden sm:block"
-              year="numeric"
-              month="short"
-              day="numeric"
-            />
-
-            <!-- Provenance -->
-            <ProvenanceBadge
-              v-if="fullVersionMap?.get(row.version)?.hasProvenance"
-              :package-name="packageName"
-              :version="row.version"
-              compact
-              :linked="false"
-              class="relative z-10 shrink-0"
-            />
+            <!-- Date + Provenance -->
+            <div class="flex items-center gap-2 shrink-0 relative z-10">
+              <DateTime
+                v-if="getVersionTime(row.version)"
+                :datetime="getVersionTime(row.version)!"
+                class="text-xs text-fg-subtle hidden sm:block"
+                year="numeric"
+                month="short"
+                day="numeric"
+              />
+              <ProvenanceBadge
+                v-if="fullVersionMap?.get(row.version)?.hasProvenance"
+                :package-name="packageName"
+                :version="row.version"
+                compact
+                :linked="false"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -403,7 +406,9 @@ const flatItems = computed<FlatItem[]>(() => {
                     <span class="text-sm font-medium">{{ item.label }}</span>
                     <span class="text-xs text-fg-subtle">({{ item.versions.length }})</span>
                     <span class="ms-auto flex items-center gap-3 shrink-0">
-                      <span class="text-xs text-fg-muted" dir="ltr">{{ item.versions[0] }}</span>
+                      <span class="text-xs text-fg-muted" :title="item.versions[0]" dir="ltr">{{
+                        item.versions[0]
+                      }}</span>
                       <DateTime
                         v-if="getVersionTime(item.versions[0])"
                         :datetime="getVersionTime(item.versions[0])!"
@@ -440,6 +445,11 @@ const flatItems = computed<FlatItem[]>(() => {
                               ? 'i-lucide:octagon-alert'
                               : undefined
                           "
+                          :title="
+                            fullVersionMap?.get(item.version)?.deprecated
+                              ? $t('package.versions.deprecated_title', { version: item.version })
+                              : item.version
+                          "
                           dir="ltr"
                         >
                           {{ item.version }}
@@ -453,6 +463,7 @@ const flatItems = computed<FlatItem[]>(() => {
                             :key="tag"
                             class="text-4xs font-semibold uppercase tracking-wide"
                             :class="tag === 'latest' ? 'text-accent' : 'text-fg-subtle'"
+                            :title="tag"
                           >
                             {{ tag }}
                           </span>
