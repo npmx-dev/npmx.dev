@@ -1,8 +1,8 @@
-<script setup>
+<script lang="ts" setup>
 import { useClipboard } from '@vueuse/core'
 
 const pkg = useState('badge-pkg', () => 'nuxt')
-const type = useState('badge-type', () => 'version')
+const type = useState<BadgeType>('badge-type', () => 'version')
 const isValid = ref(true)
 
 const { copy, copied } = useClipboard({ copiedDuring: 2000 })
@@ -11,7 +11,7 @@ watch([pkg, type], () => {
   isValid.value = true
 })
 
-const formatLabel = str => {
+const formatLabel = (str: string) => {
   if (!str || typeof str !== 'string') return ''
   return str
     .split('-')

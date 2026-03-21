@@ -1,8 +1,8 @@
-<script setup>
+<script lang="ts" setup>
 import { useClipboard } from '@vueuse/core'
 
 const pkg = useState('badge-pkg', () => 'nuxt')
-const type = useState('badge-type', () => 'version')
+const type = useState<BadgeType>('badge-type', () => 'version')
 const isValid = ref(true)
 
 const { copy, copied } = useClipboard({ copiedDuring: 2000 })
@@ -16,7 +16,7 @@ const badgeStyle = useState('badge-style', () => 'default')
 
 const styles = ['default', 'shieldsio']
 
-const validateHex = hex => {
+const validateHex = (hex: string) => {
   if (!hex) return true
   const clean = hex.replace('#', '')
   return /^[0-9A-F]{3}$/i.test(clean) || /^[0-9A-F]{6}$/i.test(clean)
@@ -28,7 +28,7 @@ const isInputValid = computed(
   () => isLabelHexValid.value && isBadgeHexValid.value && pkg.value.length > 0,
 )
 
-const cleanHex = hex => hex?.replace('#', '') || ''
+const cleanHex = (hex: string) => hex?.replace('#', '') || ''
 
 const queryParams = computed(() => {
   if (!isInputValid.value) return ''
@@ -58,7 +58,7 @@ watch([pkg, type, queryParams], () => {
   isValid.value = true
 })
 
-const formatLabel = str => {
+const formatLabel = (str: string) => {
   if (!str || typeof str !== 'string') return ''
   return str
     .split('-')
