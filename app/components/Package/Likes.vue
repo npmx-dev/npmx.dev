@@ -14,6 +14,13 @@ const showLikeFloat = shallowRef(false)
 const likeFloatKey = shallowRef(0)
 let likeFloatTimer: ReturnType<typeof setTimeout> | null = null
 
+onUnmounted(() => {
+  if (likeFloatTimer !== null) {
+    clearTimeout(likeFloatTimer)
+    likeFloatTimer = null
+  }
+})
+
 const heartAnimStyle = computed(() => {
   if (likeAnimKey.value === 0 || prefersReducedMotion.value) return {}
   return {
