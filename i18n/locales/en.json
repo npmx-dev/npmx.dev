@@ -303,7 +303,7 @@
       "docs": "docs",
       "fund": "fund",
       "compare": "compare",
-      "compare_this_package": "compare this package..."
+      "compare_this_package": "compare this package"
     },
     "likes": {
       "like": "Like this package",
