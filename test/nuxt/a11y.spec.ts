@@ -136,6 +136,7 @@ import {
   ButtonBase,
   LinkBase,
   CallToAction,
+  ChartPatternSlot,
   CodeDirectoryListing,
   CodeFileTree,
   CodeMobileTreeDrawer,
@@ -191,6 +192,7 @@ import {
   PackageVersions,
   PackageVulnerabilityTree,
   PaginationControls,
+  ProgressBar,
   ProvenanceBadge,
   Readme,
   ReadmeTocDropdown,
@@ -2149,6 +2151,23 @@ describe('component accessibility audits', () => {
     })
   })
 
+  describe('ChartPatternSlot', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(ChartPatternSlot, {
+        props: {
+          id: 'perennius',
+          seed: 1,
+          foregroundColor: 'black',
+          fallbackColor: 'transparent',
+          maxSize: 24,
+          minSize: 16,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
   describe('CopyToClipboardButton', () => {
     it('should have no accessibility violations in default state', async () => {
       const component = await mountSuspended(CopyToClipboardButton, {
@@ -3718,6 +3737,16 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(Alert, {
         props: { variant: 'warning' },
         slots: { default: 'This is a warning message.' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('ProgressBar', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(ProgressBar, {
+        props: { val: 99, label: 'Progress status for en' },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])

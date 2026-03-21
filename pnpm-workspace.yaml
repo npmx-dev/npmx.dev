@@ -23,7 +23,7 @@ overrides:
   sharp: 0.34.5
   vite: npm:@voidzero-dev/vite-plus-core@0.1.12
   vitest: npm:@voidzero-dev/vite-plus-test@0.1.12
-  storybook: ^10.2.7
+  storybook: ^10.3.1
 
 packageExtensions:
   '@nuxt/scripts':
@@ -43,7 +43,8 @@ shellEmulator: true
 catalogs:
   storybook:
     '@storybook-vue/nuxt': '9.0.1'
-    '@storybook/addon-a11y': '^10.2.7'
-    '@storybook/addon-docs': '^10.2.7'
-    '@storybook/addon-themes': '^10.2.7'
-    'storybook': '^10.2.7'
+    '@storybook/addon-a11y': '^10.3.1'
+    '@storybook/addon-docs': '^10.3.1'
+    '@storybook/addon-themes': '^10.3.1'
+    'storybook': '^10.3.1'
+    'storybook-i18n': '^10.1.1'
