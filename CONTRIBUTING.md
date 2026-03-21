@@ -347,7 +347,7 @@ Ideally, extract utilities into separate files so they can be unit tested. 🙏
 
 ### Internal linking
 
-Always use **object syntax with named routes** for internal navigation. This makes links resilient to URL structure changes and provides type safety via `unplugin-vue-router`.
+Always use **object syntax with named routes** for internal navigation. This makes links resilient to URL structure changes and provides type safety via `vue-router`.
 
 ```vue
 <!-- Good: named route -->
