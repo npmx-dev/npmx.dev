@@ -285,7 +285,7 @@ const fundingUrl = computed(() => {
           aria-keyshortcuts="c"
           classicon="i-lucide:git-compare"
         >
-          <span class="max-sm:sr-only">{{ $t('package.links.compare') }}</span>
+          <span class="max-sm:sr-only">{{ $t('package.links.compare_this_package') }}</span>
         </LinkBase>
         <!-- Package likes -->
         <TooltipApp

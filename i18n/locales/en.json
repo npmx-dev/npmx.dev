@@ -302,7 +302,8 @@
       "code": "code",
       "docs": "docs",
       "fund": "fund",
-      "compare": "compare"
+      "compare": "compare",
+      "compare_this_package": "compare this package..."
     },
     "likes": {
       "like": "Like this package",

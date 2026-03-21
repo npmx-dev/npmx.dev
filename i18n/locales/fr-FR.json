@@ -282,7 +282,8 @@
       "code": "code",
       "docs": "docs",
       "fund": "donner",
-      "compare": "comparer"
+      "compare": "comparer",
+      "compare_this_package": "comparer ce paquet..."
     },
     "likes": {
       "like": "Liker ce paquet",
