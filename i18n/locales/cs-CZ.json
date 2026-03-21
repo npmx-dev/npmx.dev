@@ -107,7 +107,7 @@
       "reply_count": "{count} odpověď | {count} odpovědi | {count} odpovědí",
       "like_count": "{count} lajk | {count} lajky | {count} lajků",
       "repost_count": "{count} repost | {count} reposty | {count} repostů",
-      "more_replies": "{count} další odpověď ... | {count} další odpovědi ... | {count} dalších odpovědí ..."
+      "more_replies": "ještě {count} odpověď… | ještě {count} odpovědi… | ještě {count} odpovědí…"
     }
   },
   "settings": {
@@ -226,12 +226,9 @@
     "not_found": "Balíček nenalezen",
     "not_found_message": "Balíček nebyl nalezen.",
     "no_description": "Není k dispozici žádný popis",
-    "not_latest": "(není nejnovější)",
     "verified_provenance": "Ověřený původ",
-    "view_permalink": "Zobrazit trvalý odkaz na tuto verzi",
     "navigation": "Navigace balíčku",
     "copy_name": "Zkopírovat název balíčku",
-    "copy_version": "Zkopírovat verzi balíčku",
     "deprecation": {
       "package": "Tento balíček byl označen jako zastaralý.",
       "version": "Tato verze byla označena jako zastaralá.",
@@ -389,7 +386,6 @@
       "grouping_versions_only_recent": "Pouze nedávné",
       "grouping_usage_title": "Použití",
       "grouping_usage_all": "Všechno",
-      "grouping_usage_low": "Nízké",
       "recent_versions_only_tooltip": "Zobrazit pouze verze zveřejněné v posledním roce.",
       "show_low_usage_tooltip": "Zahrnout skupiny verzí s méně než 1 % celkových stažení.",
       "y_axis_label": "Stažení",
@@ -790,8 +786,7 @@
       "preview": "náhled",
       "code": "kód"
     },
-    "file_path": "Cesta k souboru",
-    "scroll_to_top": "Posunout nahoru"
+    "file_path": "Cesta k souboru"
   },
   "badges": {
     "provenance": {
@@ -899,7 +894,7 @@
       "paginated": "Stránkované",
       "items_per_page": "Položek na stránku",
       "per_page": "{count} / stránku",
-      "showing": "{start}-{end} z {total}",
+      "showing": "{range} z {total}",
       "previous": "Předchozí stránka",
       "next": "Další stránka",
       "nav_label": "Stránkování"

@@ -148,9 +148,7 @@
     "not_found": "Pakke ikke funnet",
     "not_found_message": "Pakken kunne ikke finnes.",
     "no_description": "Ingen beskrivelse gitt",
-    "not_latest": "(ikke nyeste)",
     "verified_provenance": "Verifisert opprinnelse",
-    "view_permalink": "Vis permalenke for denne versjonen",
     "navigation": "Pakke",
     "copy_name": "Kopier pakkenavn",
     "deprecation": {
@@ -724,7 +722,7 @@
       "paginated": "Sideinndelt",
       "items_per_page": "Elementer per side",
       "per_page": "{count} / side",
-      "showing": "{start}-{end} av {total}",
+      "showing": "{range} av {total}",
       "previous": "Forrige side",
       "next": "Neste side",
       "nav_label": "Sideinndeling"

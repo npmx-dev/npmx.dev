@@ -13,13 +13,13 @@
   "trademark_disclaimer": "npm ist eine eingetragene Marke von npm, Inc. Diese Seite ist nicht mit npm, Inc. verbunden.",
   "footer": {
     "about": "Über uns",
+    "blog": "Blog",
     "docs": "Doku",
     "source": "Quellcode",
     "social": "Social",
     "chat": "Chat",
-    "keyboard_shortcuts": "Tastenkombination",
-    "blog": "Blog",
-    "builders_chat": "Builders-Chat"
+    "builders_chat": "Builders-Chat",
+    "keyboard_shortcuts": "Tastenkombination"
   },
   "shortcuts": {
     "section": {
@@ -60,18 +60,18 @@
     "start_typing": "Tippe, um Pakete zu suchen",
     "algolia_disclaimer": "Bereitgestellt von Algolia",
     "exact_match": "exakt",
-    "instant_search": "Sofortsuche",
-    "instant_search_on": "Sofortsuche aktiviert",
-    "instant_search_off": "Sofortsuche deaktiviert",
-    "instant_search_turn_on": "Sofortsuche aktivieren",
-    "instant_search_turn_off": "Sofortsuche deaktivieren",
-    "instant_search_advisory": "Die Sofortsuche sendet bei jedem Tastendruck eine Anfrage.",
     "suggestion": {
       "user": "Benutzer",
       "org": "Organisation",
       "view_user_packages": "Pakete dieses Benutzers anzeigen",
       "view_org_packages": "Pakete dieser Organisation anzeigen"
-    }
+    },
+    "instant_search": "Sofortsuche",
+    "instant_search_on": "Sofortsuche aktiviert",
+    "instant_search_off": "Sofortsuche deaktiviert",
+    "instant_search_turn_on": "Sofortsuche aktivieren",
+    "instant_search_turn_off": "Sofortsuche deaktivieren",
+    "instant_search_advisory": "Die Sofortsuche sendet bei jedem Tastendruck eine Anfrage."
   },
   "nav": {
     "main_navigation": "Hauptnavigation",
@@ -84,6 +84,31 @@
     "open_menu": "Menü öffnen",
     "links": "Links",
     "tap_to_search": "Tippen zum Suchen"
+  },
+  "blog": {
+    "title": "Blog",
+    "heading": "Blog",
+    "meta_description": "Neuigkeiten, Updates und Artikel rund um npmx.",
+    "author": {
+      "view_profile": "Profil von {name} anzeigen"
+    },
+    "draft_badge": "Entwurf",
+    "draft_banner": "Dies ist ein Entwurf und noch nicht öffentlich sichtbar.",
+    "atproto": {
+      "view_on_bluesky": "Auf Bluesky ansehen",
+      "reply_on_bluesky": "Auf Bluesky antworten",
+      "likes_on_bluesky": "{count} Like auf Bluesky | {count} Likes auf Bluesky",
+      "like_or_reply_on_bluesky": "Auf Bluesky liken oder antworten",
+      "no_comments_yet": "Noch keine Kommentare. Sei der Erste!",
+      "could_not_load_comments": "Kommentare konnten nicht geladen werden.",
+      "comments": "Kommentare",
+      "loading_comments": "Kommentare werden geladen...",
+      "updating": "(wird aktualisiert...)",
+      "reply_count": "{count} Antwort | {count} Antworten",
+      "like_count": "{count} Like | {count} Likes",
+      "repost_count": "{count} Repost | {count} Reposts",
+      "more_replies": "noch {count} Antwort… | noch {count} Antworten…"
+    }
   },
   "settings": {
     "title": "Einstellungen",
@@ -104,6 +129,8 @@
       "algolia": "Algolia",
       "algolia_description": "Nutzt Algolia für schnellere Suche, Org- und Benutzerseiten."
     },
+    "instant_search": "Sofortsuche",
+    "instant_search_description": "Suchergebnisse werden automatisch bei der Eingabe aktualisiert, ohne die Eingabetaste zu drücken.",
     "relative_dates": "Relative Datumsangaben",
     "include_types": "{'@'}types bei Installation einschließen",
     "include_types_description": "TypeScript-Typdefinitionen ({'@'}types-Paket) automatisch zu Installationsbefehlen für Pakete ohne Typen hinzufügen",
@@ -120,9 +147,7 @@
     "translation_progress": "Übersetzungsfortschritt",
     "background_themes": "Hintergrundschattierung",
     "keyboard_shortcuts_enabled": "Tastenkombinationen aktivieren",
-    "keyboard_shortcuts_enabled_description": "Tastenkombinationen können deaktiviert werden, wenn sie mit anderen Browser- oder Systemkürzeln in Konflikt stehen",
-    "instant_search": "Sofortsuche",
-    "instant_search_description": "Suchergebnisse werden automatisch bei der Eingabe aktualisiert, ohne die Eingabetaste zu drücken."
+    "keyboard_shortcuts_enabled_description": "Tastenkombinationen können deaktiviert werden, wenn sie mit anderen Browser- oder Systemkürzeln in Konflikt stehen"
   },
   "i18n": {
     "missing_keys": "{count} fehlende Übersetzung | {count} fehlende Übersetzungen",
@@ -131,6 +156,13 @@
     "contribute_hint": "Hilf mit, diese Übersetzung zu verbessern, indem du die fehlenden Schlüssel ergänzt.",
     "edit_on_github": "Auf GitHub bearbeiten",
     "view_guide": "Übersetzungsleitfaden"
+  },
+  "error": {
+    "401": "Nicht autorisiert",
+    "404": "Seite nicht gefunden",
+    "500": "Interner Serverfehler",
+    "503": "Dienst nicht verfügbar",
+    "default": "Ein unerwarteter Fehler ist aufgetreten"
   },
   "common": {
     "loading": "Lädt...",
@@ -163,13 +195,6 @@
       "github": "Auf GitHub ansehen"
     }
   },
-  "error": {
-    "401": "Nicht autorisiert",
-    "404": "Seite nicht gefunden",
-    "500": "Interner Serverfehler",
-    "503": "Dienst nicht verfügbar",
-    "default": "Ein unerwarteter Fehler ist aufgetreten"
-  },
   "profile": {
     "display_name": "Anzeigename",
     "description": "Beschreibung",
@@ -187,41 +212,13 @@
       "compose_text": "Schau dir {name} auf npmx an: {url}"
     }
   },
-  "blog": {
-    "title": "Blog",
-    "heading": "Blog",
-    "meta_description": "Neuigkeiten, Updates und Artikel rund um npmx.",
-    "author": {
-      "view_profile": "Profil von {name} anzeigen"
-    },
-    "draft_badge": "Entwurf",
-    "draft_banner": "Dies ist ein Entwurf und noch nicht öffentlich sichtbar.",
-    "atproto": {
-      "view_on_bluesky": "Auf Bluesky ansehen",
-      "reply_on_bluesky": "Auf Bluesky antworten",
-      "likes_on_bluesky": "{count} Like auf Bluesky | {count} Likes auf Bluesky",
-      "like_or_reply_on_bluesky": "Auf Bluesky liken oder antworten",
-      "no_comments_yet": "Noch keine Kommentare. Sei der Erste!",
-      "could_not_load_comments": "Kommentare konnten nicht geladen werden.",
-      "comments": "Kommentare",
-      "loading_comments": "Kommentare werden geladen...",
-      "updating": "(wird aktualisiert...)",
-      "reply_count": "{count} Antwort | {count} Antworten",
-      "like_count": "{count} Like | {count} Likes",
-      "repost_count": "{count} Repost | {count} Reposts",
-      "more_replies": "{count} weitere Antwort anzeigen | {count} weitere Antworten anzeigen"
-    }
-  },
   "package": {
     "not_found": "Paket nicht gefunden",
     "not_found_message": "Das Paket konnte nicht gefunden werden.",
     "no_description": "Keine Beschreibung vorhanden",
-    "not_latest": "(nicht aktuell)",
     "verified_provenance": "Verifizierte Herkunft",
-    "view_permalink": "Permalink für diese Version anzeigen",
     "navigation": "Paket",
     "copy_name": "Paketnamen kopieren",
-    "copy_version": "Paketversion kopieren",
     "deprecation": {
       "package": "Dieses Paket ist veraltet.",
       "version": "Diese Version ist veraltet.",
@@ -379,7 +376,6 @@
       "grouping_versions_only_recent": "Nur aktuelle",
       "grouping_usage_title": "Nutzung",
       "grouping_usage_all": "Alle",
-      "grouping_usage_low": "Gering",
       "recent_versions_only_tooltip": "Nur Versionen anzeigen, die im letzten Jahr veröffentlicht wurden.",
       "show_low_usage_tooltip": "Versionsgruppen anzeigen, die weniger als 1% aller Downloads ausmachen.",
       "y_axis_label": "Downloads",
@@ -443,13 +439,13 @@
       "download_file": "{fileType} herunterladen",
       "toggle_annotator": "Annotation umschalten",
       "toggle_stack_mode": "Gestapelte Ansicht ein-/ausschalten",
+      "open_options": "Diagrammoptionen öffnen",
+      "close_options": "Diagrammoptionen schließen",
       "legend_estimation": "Schätzung",
       "no_data": "Keine Daten vorhanden",
       "y_axis_label": "{facet} {granularity}",
       "facet": "Facette",
       "title": "Trends",
-      "open_options": "Diagrammoptionen öffnen",
-      "close_options": "Diagrammoptionen schließen",
       "contributors_skip": "Nicht angezeigt bei Mitwirkende (hat kein GitHub-Repository): | Nicht angezeigt bei Mitwirkende (haben kein GitHub-Repository):",
       "items": {
         "downloads": "Downloads",
@@ -484,8 +480,8 @@
     },
     "downloads": {
       "title": "Wöchentliche Downloads",
-      "subtitle": "Downloads über die Zeit",
-      "community_distribution": "Community-Adoptionsverteilung ansehen"
+      "community_distribution": "Community-Adoptionsverteilung ansehen",
+      "subtitle": "Downloads über die Zeit"
     },
     "install_scripts": {
       "title": "Installationsskripte",
@@ -778,8 +774,7 @@
       "preview": "Vorschau",
       "code": "Code"
     },
-    "file_path": "Dateipfad",
-    "scroll_to_top": "Nach oben scrollen"
+    "file_path": "Dateipfad"
   },
   "badges": {
     "provenance": {
@@ -887,7 +882,7 @@
       "paginated": "Paginiert",
       "items_per_page": "Elemente pro Seite",
       "per_page": "{count} / Seite",
-      "showing": "{start}-{end} von {total}",
+      "showing": "{range} von {total}",
       "previous": "Vorherige Seite",
       "next": "Nächste Seite",
       "nav_label": "Paginierung"
@@ -963,15 +958,15 @@
         "description": "Chatte, stelle Fragen und teile Ideen.",
         "cta": "Discord beitreten"
       },
-      "follow": {
-        "title": "Bleib auf dem Laufenden",
-        "description": "Erfahre das Neueste über npmx.",
-        "cta": "Auf Bluesky folgen"
-      },
       "builders": {
         "title": "Builders-Community",
         "description": "Vernetze dich mit anderen Entwicklern, die auf npmx aufbauen.",
         "cta": "Builders-Chat beitreten"
+      },
+      "follow": {
+        "title": "Bleib auf dem Laufenden",
+        "description": "Erfahre das Neueste über npmx.",
+        "cta": "Auf Bluesky folgen"
       }
     }
   },
@@ -1146,6 +1141,8 @@
     "file_changes": "Dateiänderungen",
     "files_count": "{count} Datei | {count} Dateien",
     "lines_hidden": "{count} Zeile ausgeblendet | {count} Zeilen ausgeblendet",
+    "file_too_large": "Datei zu groß für Diff-Ansicht",
+    "file_size_warning": "{size} überschreitet das Limit für die Diff-Anzeige",
     "compare_versions": "Diff",
     "compare_versions_title": "Mit neuester Version vergleichen",
     "summary": "Zusammenfassung",
@@ -1173,9 +1170,35 @@
     "files_button": "Dateien",
     "select_file_prompt": "Wähle eine Datei in der Seitenleiste, um die Änderungen anzuzeigen",
     "close_files_panel": "Dateibereich schließen",
-    "filter_files_label": "Dateien nach Art der Änderung filtern",
-    "file_too_large": "Datei zu groß für Diff-Ansicht",
-    "file_size_warning": "{size} überschreitet das Limit für die Diff-Anzeige"
+    "filter_files_label": "Dateien nach Art der Änderung filtern"
+  },
+  "pds": {
+    "title": "npmx PDS",
+    "meta_description": "Tritt dem persönlichen Datenspeicher (PDS) von npmx bei – deiner Heimat im AT-Protokoll-Netzwerk.",
+    "join": {
+      "title": "Dem PDS beitreten",
+      "description": "Erstelle ein Konto auf dem npmx PDS und werde Teil des dezentralen AT-Protokoll-Netzwerks.",
+      "migrate": "Bestehendes Konto migrieren"
+    },
+    "server": {
+      "title": "Serverinformationen",
+      "location_label": "Standort",
+      "location_value": "EU",
+      "infrastructure_label": "Infrastruktur",
+      "infrastructure_value": "Vercel",
+      "privacy_label": "Datenschutz",
+      "privacy_value": "Datenschutzerklärung ansehen",
+      "learn_more": "Mehr über PDS erfahren"
+    },
+    "community": {
+      "title": "Community",
+      "description": "Nutzende, die diesen PDS verwenden.",
+      "loading": "Community wird geladen...",
+      "error": "Community konnte nicht geladen werden",
+      "empty": "Noch keine Mitglieder gefunden.",
+      "view_profile": "Profil von {name} anzeigen",
+      "new_accounts": "Neue Konten"
+    }
   },
   "privacy_policy": {
     "title": "Datenschutzerklärung",
@@ -1285,34 +1308,6 @@
       "title": "Feedback",
       "p1": "Wenn du bei {app} auf eine Barriere stößt, sag uns bitte Bescheid, indem du ein Ticket in unserem {link} eröffnest. Wir nehmen diese Meldungen ernst und werden unser Bestes tun, um sie zu beheben.",
       "link": "GitHub-Repository"
-    }
-  },
-  "pds": {
-    "title": "npmx PDS",
-    "meta_description": "Tritt dem persönlichen Datenspeicher (PDS) von npmx bei – deiner Heimat im AT-Protokoll-Netzwerk.",
-    "join": {
-      "title": "Dem PDS beitreten",
-      "description": "Erstelle ein Konto auf dem npmx PDS und werde Teil des dezentralen AT-Protokoll-Netzwerks.",
-      "migrate": "Bestehendes Konto migrieren"
-    },
-    "server": {
-      "title": "Serverinformationen",
-      "location_label": "Standort",
-      "location_value": "EU",
-      "infrastructure_label": "Infrastruktur",
-      "infrastructure_value": "Vercel",
-      "privacy_label": "Datenschutz",
-      "privacy_value": "Datenschutzerklärung ansehen",
-      "learn_more": "Mehr über PDS erfahren"
-    },
-    "community": {
-      "title": "Community",
-      "description": "Nutzende, die diesen PDS verwenden.",
-      "loading": "Community wird geladen...",
-      "error": "Community konnte nicht geladen werden",
-      "empty": "Noch keine Mitglieder gefunden.",
-      "view_profile": "Profil von {name} anzeigen",
-      "new_accounts": "Neue Konten"
     }
   }
 }

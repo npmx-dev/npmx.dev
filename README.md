@@ -159,6 +159,7 @@ We welcome contributions &ndash; please do feel free to explore the project and 
 - [npmx-weekly](https://npmx-weekly.trueberryless.org/) &ndash; A weekly newsletter for the npmx ecosystem. Add your own content via suggestions in the weekly PR on [GitHub](https://github.com/trueberryless-org/npmx-weekly/pulls?q=is%3Aopen+is%3Apr+label%3A%22%F0%9F%95%94+weekly+post%22).
 - [npmx-digest](https://npmx-digest.trueberryless.org/) &ndash; An automated news aggregation website that summarizes npmx activity from GitHub and Bluesky every 8 hours.
 - [npmx-redirect](https://github.com/iaverages/npmx-redirect) &ndash; Browser extension that automatically redirects npmjs.com URLs to npmx.dev.
+- [npmx-badge](https://npmx-badge.vercel.app/) &ndash; A playground to help you create custom badges quickly.
 
 If you're building something cool, let us know! 🙏
 

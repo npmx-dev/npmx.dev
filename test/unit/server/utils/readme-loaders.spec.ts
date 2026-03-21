@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { parsePackageParams } from '../../../../server/utils/parse-package-params'
+import { parsePackageParams } from '#server/utils/parse-package-params'
 import { NPM_MISSING_README_SENTINEL } from '#shared/utils/constants'
 
 // Mock Nitro globals before importing the module
@@ -15,7 +15,7 @@ const parseRepositoryInfoMock = vi.fn()
 vi.stubGlobal('parseRepositoryInfo', parseRepositoryInfoMock)
 
 const { fetchReadmeFromJsdelivr, isStandardReadme, resolvePackageReadmeSource } =
-  await import('../../../../server/utils/readme-loaders')
+  await import('#server/utils/readme-loaders')
 
 describe('isStandardReadme', () => {
   it('returns true for standard README filenames', () => {
