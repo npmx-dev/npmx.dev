@@ -87,7 +87,7 @@ const setLocale: typeof setNuxti18nLocale = newLocale => {
             <!-- Accent colors -->
             <div class="space-y-3">
               <span class="block text-sm text-fg font-medium">
-                {{ $t('settings.accent_colors') }}
+                {{ $t('settings.accent_colors.label') }}
               </span>
               <SettingsAccentColorPicker />
             </div>
@@ -95,7 +95,7 @@ const setLocale: typeof setNuxti18nLocale = newLocale => {
             <!-- Background themes -->
             <div class="space-y-3">
               <span class="block text-sm text-fg font-medium">
-                {{ $t('settings.background_themes') }}
+                {{ $t('settings.background_themes.label') }}
               </span>
               <SettingsBgThemePicker />
             </div>

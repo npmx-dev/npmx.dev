@@ -142,10 +142,14 @@
     "theme_system": "System",
     "language": "Sprache",
     "help_translate": "Hilf bei der Übersetzung von npmx",
-    "accent_colors": "Akzentfarben",
+    "accent_colors": {
+      "label": "Akzentfarben"
+    },
     "clear_accent": "Akzentfarbe zurücksetzen",
     "translation_progress": "Übersetzungsfortschritt",
-    "background_themes": "Hintergrundschattierung",
+    "background_themes": {
+      "label": "Hintergrundschattierung"
+    },
     "keyboard_shortcuts_enabled": "Tastenkombinationen aktivieren",
     "keyboard_shortcuts_enabled_description": "Tastenkombinationen können deaktiviert werden, wenn sie mit anderen Browser- oder Systemkürzeln in Konflikt stehen"
   },

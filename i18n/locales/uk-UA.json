@@ -145,10 +145,14 @@
     "language": "Мова",
     "help_translate": "Допоможіть перекласти npmx",
     "translation_status": "Переглянути глобальний статус перекладу",
-    "accent_colors": "Колірні акценти",
+    "accent_colors": {
+      "label": "Колірні акценти"
+    },
     "clear_accent": "Очистити колір акценту",
     "translation_progress": "Статус перекладу",
-    "background_themes": "Колір фону",
+    "background_themes": {
+      "label": "Колір фону"
+    },
     "keyboard_shortcuts_enabled": "Увімкнути гарячі клавіші",
     "keyboard_shortcuts_enabled_description": "Гарячі клавіші можна вимкнути, якщо вони конфліктують з налаштуваннями браузера або системи"
   },

@@ -142,10 +142,14 @@
     "theme_system": "Systemowy",
     "language": "Język",
     "help_translate": "Pomóż tłumaczyć npmx",
-    "accent_colors": "Kolory akcentu",
+    "accent_colors": {
+      "label": "Kolory akcentu"
+    },
     "clear_accent": "Wyczyść kolor akcentu",
     "translation_progress": "Postęp tłumaczenia",
-    "background_themes": "Odcień tła",
+    "background_themes": {
+      "label": "Odcień tła"
+    },
     "keyboard_shortcuts_enabled": "Włącz skróty klawiaturowe",
     "keyboard_shortcuts_enabled_description": "Skróty klawiaturowe mogą zostać wyłączone jeśli kolidują z innymi skrótami przeglądarki lub systemu"
   },

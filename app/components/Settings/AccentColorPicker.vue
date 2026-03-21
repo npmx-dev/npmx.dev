@@ -29,7 +29,7 @@ onPrehydrate(el => {
   <fieldset
     class="flex items-center gap-4 has-[input:focus-visible]:(outline-solid outline-accent/70 outline-offset-4) rounded-xl w-fit"
   >
-    <legend class="sr-only">{{ $t('settings.accent_colors') }}</legend>
+    <legend class="sr-only">{{ $t('settings.accent_colors.label') }}</legend>
     <label
       v-for="color in accentColors"
       :key="color.id"
@@ -43,7 +43,7 @@ onPrehydrate(el => {
         class="sr-only"
         :value="color.id"
         :checked="selectedAccentColor === color.id || (!selectedAccentColor && color.id === 'sky')"
-        :aria-label="color.id === 'neutral' ? $t('settings.clear_accent') : color.name"
+        :aria-label="color.label"
         @change="setAccentColor(color.id)"
       />
       <span v-if="color.id === 'neutral'" class="i-lucide:ban size-4 text-bg" aria-hidden="true" />

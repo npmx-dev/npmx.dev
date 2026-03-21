@@ -105,10 +105,14 @@
     "theme_system": "System",
     "language": "Språk",
     "help_translate": "Hjelp med å oversette npmx",
-    "accent_colors": "Aksentfarger",
+    "accent_colors": {
+      "label": "Aksentfarger"
+    },
     "clear_accent": "Fjern aksentfarge",
     "translation_progress": "Oversettelsesfremdrift",
-    "background_themes": "Bakgrunnsnyanse"
+    "background_themes": {
+      "label": "Bakgrunnsnyanse"
+    }
   },
   "i18n": {
     "missing_keys": "{count} manglende oversettelse | {count} manglende oversettelser",
