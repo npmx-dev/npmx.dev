@@ -201,11 +201,11 @@ const BOTTOM_ROW_H = 132
               marginBottom: '20px',
             }"
           >
-            {{ truncate(description || 'No description.', 230) }}
+            {{ truncate(description || 'No description.', 440) }}
           </div>
 
           <!-- Tags -->
-          <div class="flex flex-row flex-wrap gap-[10px]">
+          <div class="flex flex-row flex-wrap gap-[16px]">
             <span
               v-if="hasTypes"
               class="flex items-center"
@@ -272,9 +272,9 @@ const BOTTOM_ROW_H = 132
             padding: '0 40px 0 32px',
           }"
         >
-          <div class="flex flex-row items-center" style="gap: 36px">
+          <div class="flex flex-row items-center gap-[42px]">
             <!-- Stars -->
-            <div v-if="stars > 0" class="flex flex-row items-center" style="gap: 8px">
+            <div v-if="stars > 0" class="flex flex-row items-center gap-[8px]">
               <svg
                 width="20"
                 height="20"
@@ -428,7 +428,7 @@ const BOTTOM_ROW_H = 132
       }"
     >
       <div class="flex flex-row items-center" :style="{ fontSize: '22px', fontWeight: 300 }">
-        <span :style="{ color: primaryColor, fontWeight: 500 }">.</span>/npmx
+        <span :style="{ color: primaryColor, fontWeight: 500, marginLeft: '-4px' }">.</span>/npmx
         <span :style="{ color: t.textSubtle, marginLeft: '12px', fontWeight: 300 }"
           >· npm package explorer</span
         >
