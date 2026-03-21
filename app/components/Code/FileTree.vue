@@ -37,7 +37,7 @@ function getFileRoute(nodePath: string): RouteLocationRaw {
 const { toggleDir, isExpanded, autoExpandAncestors } = useFileTreeState(props.baseUrl)
 
 const scrollIntoView = () => {
-  const el = treeRoot.value?.querySelector('[aria-current="true"]') as HTMLElement
+  const el = treeRoot.value?.querySelector<HTMLElement>('[aria-current="true"]')
   el?.scrollIntoView({ block: 'center', behavior: 'smooth' })
 }
 
