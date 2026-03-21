@@ -17,6 +17,16 @@ definePageMeta({
   name: 'package-versions',
 })
 
+interface NpmWebsiteVersionDownload {
+  version: string
+  downloads: number
+}
+
+interface NpmWebsiteVersionsResponse {
+  weeklyDownloads?: number
+  versions: NpmWebsiteVersionDownload[]
+}
+
 /** Number of flat items (headers + version rows) to render statically during SSR */
 const SSR_COUNT = 20
 
@@ -48,6 +58,47 @@ const { data: versionSummary } = useLazyAsyncData(
 const distTags = computed(() => versionSummary.value?.distTags ?? {})
 const versionStrings = computed(() => versionSummary.value?.versions ?? [])
 const versionTimes = computed(() => versionSummary.value?.time ?? {})
+
+const { data: npmWebsiteVersions } = useLazyFetch<NpmWebsiteVersionsResponse>(
+  () => `/api/registry/npmjs-versions/${encodeURIComponent(packageName.value)}`,
+  {
+    key: () => `npmjs-versions:${packageName.value}`,
+    deep: false,
+    default: () => ({ versions: [] }),
+    getCachedData(key, nuxtApp) {
+      return nuxtApp.static.data[key] ?? nuxtApp.payload.data[key]
+    },
+  },
+)
+
+const numberFormatter = useNumberFormatter()
+const versionDownloadsMap = computed(
+  () =>
+    new Map(
+      (npmWebsiteVersions.value?.versions ?? []).map(({ version, downloads }) => [
+        version,
+        downloads,
+      ]),
+    ),
+)
+
+function getVersionDownloads(version: string): number | undefined {
+  return versionDownloadsMap.value.get(version)
+}
+
+function getGroupDownloads(versions: string[]): number | undefined {
+  let total = 0
+  let hasValue = false
+
+  for (const version of versions) {
+    const downloads = getVersionDownloads(version)
+    if (downloads === undefined) continue
+    total += downloads
+    hasValue = true
+  }
+
+  return hasValue ? total : undefined
+}
 
 // ─── Phase 2: full metadata (loaded on first group expand) ────────────────────
 // Fetches deprecated status, provenance, and exact times needed for version rows.
@@ -241,6 +292,14 @@ const flatItems = computed<FlatItem[]>(() => {
             >
           </div>
           <!-- Right: date + provenance -->
+          <div
+            v-if="getVersionDownloads(latestTagRow!.version) !== undefined"
+            class="text-sm font-medium text-fg tabular-nums shrink-0"
+            :aria-label="$t('package.downloads.title')"
+            dir="ltr"
+          >
+            {{ numberFormatter.format(getVersionDownloads(latestTagRow!.version)!) }}
+          </div>
           <div class="flex flex-col items-end gap-1.5 shrink-0 relative z-10">
             <ProvenanceBadge
               v-if="fullVersionMap?.get(latestTagRow!.version)?.hasProvenance"
@@ -290,6 +349,14 @@ const flatItems = computed<FlatItem[]>(() => {
             </LinkBase>
 
             <!-- Date -->
+            <span
+              v-if="getVersionDownloads(row.version) !== undefined"
+              class="text-xs text-fg-muted shrink-0 tabular-nums w-24 text-end"
+              :aria-label="$t('package.downloads.title')"
+              dir="ltr"
+            >
+              {{ numberFormatter.format(getVersionDownloads(row.version)!) }}
+            </span>
             <DateTime
               v-if="getVersionTime(row.version)"
               :datetime="getVersionTime(row.version)!"
@@ -373,7 +440,15 @@ const flatItems = computed<FlatItem[]>(() => {
                     </span>
                     <span class="text-sm font-medium">{{ item.label }}</span>
                     <span class="text-xs text-fg-subtle">({{ item.versions.length }})</span>
-                    <span class="ms-auto flex items-center gap-3 shrink-0">
+                    <span
+                      v-if="getGroupDownloads(item.versions) !== undefined"
+                      class="ms-auto text-xs text-fg-muted tabular-nums w-24 text-end"
+                      :aria-label="$t('package.downloads.title')"
+                      dir="ltr"
+                    >
+                      {{ numberFormatter.format(getGroupDownloads(item.versions)!) }}
+                    </span>
+                    <span class="flex items-center gap-3 shrink-0">
                       <span class="text-xs text-fg-muted" dir="ltr">{{ item.versions[0] }}</span>
                       <DateTime
                         v-if="getVersionTime(item.versions[0])"
@@ -437,8 +512,16 @@ const flatItems = computed<FlatItem[]>(() => {
                         </span>
                       </div>
 
+                      <span
+                        v-if="getVersionDownloads(item.version) !== undefined"
+                        class="text-xs text-fg-muted tabular-nums w-24 text-end shrink-0"
+                        :aria-label="$t('package.downloads.title')"
+                        dir="ltr"
+                      >
+                        {{ numberFormatter.format(getVersionDownloads(item.version)!) }}
+                      </span>
                       <!-- Right side -->
-                      <div class="flex items-center gap-2 shrink-0 relative z-10">
+                      <div class="flex items-center gap-2 shrink-0 relative z-10 w-36 justify-end">
                         <!-- Metadata: date + provenance -->
                         <DateTime
                           v-if="getVersionTime(item.version)"
@@ -477,7 +560,15 @@ const flatItems = computed<FlatItem[]>(() => {
                   </span>
                   <span class="text-sm font-medium">{{ item.label }}</span>
                   <span class="text-xs text-fg-subtle">({{ item.versions.length }})</span>
-                  <span class="ms-auto flex items-center gap-3 shrink-0">
+                  <span
+                    v-if="getGroupDownloads(item.versions) !== undefined"
+                    class="ms-auto text-xs text-fg-muted tabular-nums w-24 text-end"
+                    :aria-label="$t('package.downloads.title')"
+                    dir="ltr"
+                  >
+                    {{ numberFormatter.format(getGroupDownloads(item.versions)!) }}
+                  </span>
+                  <span class="flex items-center gap-3 shrink-0">
                     <span class="text-xs text-fg-muted" dir="ltr">{{ item.versions[0] }}</span>
                     <DateTime
                       v-if="getVersionTime(item.versions[0] ?? '')"
