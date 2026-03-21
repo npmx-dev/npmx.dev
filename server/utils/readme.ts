@@ -570,10 +570,10 @@ ${html}
     }
 
     // Security attributes for external links
-    let extraAttrs = ''
-    if (resolvedHref && hasProtocol(resolvedHref, { acceptRelative: true })) {
-      extraAttrs = ' rel="nofollow noreferrer noopener" target="_blank"'
-    }
+    let extraAttrs =
+      resolvedHref && hasProtocol(resolvedHref, { acceptRelative: true })
+        ? ' rel="nofollow noreferrer noopener" target="_blank"'
+        : ''
 
     return { resolvedHref, extraAttrs }
   }
