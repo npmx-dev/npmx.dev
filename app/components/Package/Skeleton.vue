@@ -178,7 +178,7 @@
     <!-- Sidebar — matches area-sidebar in [...name].vue -->
     <div class="area-sidebar">
       <div
-        class="space-y-6 sm:space-y-8 min-w-0 pe-2.5 lg:(max-h-[calc(100dvh-8.5rem)] overscroll-contain) xl:(max-h-[calc(100dvh-6rem)])"
+        class="sticky top-30 xl:top-14 space-y-6 sm:space-y-8 min-w-0 overflow-y-auto pe-2.5 lg:(max-h-[calc(100dvh-8.5rem)] overscroll-contain) xl:(max-h-[calc(100dvh-6rem)])"
       >
         <div class="flex flex-col gap-4 sm:gap-6 xl:pt-4">
           <!-- Download stats — matches CollapsibleSection + sparkline skeleton -->
