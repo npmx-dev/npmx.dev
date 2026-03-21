@@ -1,13 +1,36 @@
 <script setup lang="ts">
-import { parseLicenseExpression } from '#shared/utils/spdx'
+import { parseLicenseExpression } from "#shared/utils/spdx";
+
+import { useLicenseChanges } from "~/composables/useLicenseChanges";
+import { useI18n } from "vue-i18n";
 
 const props = defineProps<{
-  license: string
-}>()
+  license: string;
+  packageName?: string;
+}>();
 
-const tokens = computed(() => parseLicenseExpression(props.license))
+const { t } = useI18n();
 
-const hasAnyValidLicense = computed(() => tokens.value.some(t => t.type === 'license' && t.url))
+const tokens = computed(() => parseLicenseExpression(props.license));
+const licenseChanges = useLicenseChanges(() => props.packageName);
+
+const changes = computed(() => licenseChanges.data.value?.changes ?? []);
+
+const licenseChangeText = computed(() =>
+  changes.value
+    .map((item) =>
+      t("package.versions.license_change_item", {
+        from: item.from,
+        to: item.to,
+        version: item.version,
+      }),
+    )
+    .join("; "),
+);
+
+const hasAnyValidLicense = computed(() =>
+  tokens.value.some((t) => t.type === "license" && t.url),
+);
 </script>
 
 <template>
@@ -21,10 +44,12 @@ const hasAnyValidLicense = computed(() => tokens.value.some(t => t.type === 'lic
         class="link-subtle"
         :title="$t('package.license.view_spdx')"
       >
-        {{ token.value }}
+        {{ token.value }}!!
       </a>
       <span v-else-if="token.type === 'license'">{{ token.value }}</span>
-      <span v-else-if="token.type === 'operator'" class="text-4xs">{{ token.value }}</span>
+      <span v-else-if="token.type === 'operator'" class="text-4xs">{{
+        token.value
+      }}</span>
     </template>
     <span
       v-if="hasAnyValidLicense"
@@ -32,4 +57,29 @@ const hasAnyValidLicense = computed(() => tokens.value.some(t => t.type === 'lic
       aria-hidden="true"
     />
   </span>
+  <div
+    v-if="changes.length > 0"
+    class="text-red-500 flex justify-start items-center gap-x-1"
+  >
+    <p>change!</p>
+    <TooltipApp interactive position="top">
+      <span
+        tabindex="0"
+        class="block cursor-help shrink-0 -m-2 p-2 -me-1 focus-visible:outline-2 focus-visible:outline-accent/70 rounded"
+      >
+        <span
+          class="block i-lucide:info w-3.5 h-3.5 text-fg-subtle"
+          role="img"
+          :aria-label="$t('package.versions.license_change_help')"
+        />
+      </span>
+      <template #content>
+        <p class="text-xs text-fg-muted">
+          <i18n-t keypath="package.versions.changed_license" tag="span">
+            <template #license_change>{{ licenseChangeText }}</template>
+          </i18n-t>
+        </p>
+      </template>
+    </TooltipApp>
+  </div>
 </template>

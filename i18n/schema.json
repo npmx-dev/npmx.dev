@@ -1297,7 +1297,16 @@
             "filter_help": {
               "type": "string"
             },
+            "license_change_help": {
+              "type": "string"
+            },
+            "license_change_item": {
+              "type": "string"
+            },
             "filter_tooltip": {
+              "type": "string"
+            },
+            "changed_license": {
               "type": "string"
             },
             "filter_tooltip_link": {
