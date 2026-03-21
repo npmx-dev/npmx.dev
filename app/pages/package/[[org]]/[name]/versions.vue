@@ -23,7 +23,6 @@ interface NpmWebsiteVersionDownload {
 }
 
 interface NpmWebsiteVersionsResponse {
-  weeklyDownloads?: number
   versions: NpmWebsiteVersionDownload[]
 }
 

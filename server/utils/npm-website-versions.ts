@@ -3,28 +3,16 @@ export interface NpmWebsiteVersionDownload {
   downloads: number
 }
 
-export interface NpmWebsiteVersionsData {
-  weeklyDownloads?: number
-  versions: NpmWebsiteVersionDownload[]
-}
-
 interface NpmApiVersionDownloadsResponse {
   downloads: Record<string, number>
 }
 
-interface NpmApiWeeklyDownloadsResponse {
-  downloads: number
-}
-
 export async function fetchNpmVersionDownloadsFromApi(
   packageName: string,
-): Promise<NpmWebsiteVersionsData> {
+): Promise<NpmWebsiteVersionDownload[]> {
   const encodedName = encodePackageName(packageName)
 
-  const [versionsResponse, weeklyDownloadsResponse] = await Promise.all([
-    fetch(`https://api.npmjs.org/versions/${encodedName}/last-week`),
-    fetch(`https://api.npmjs.org/downloads/point/last-week/${encodedName}`),
-  ])
+  const versionsResponse = await fetch(`https://api.npmjs.org/versions/${encodedName}/last-week`)
 
   if (!versionsResponse.ok) {
     if (versionsResponse.status === 404) {
@@ -41,15 +29,9 @@ export async function fetchNpmVersionDownloadsFromApi(
   }
 
   const versionsData = (await versionsResponse.json()) as NpmApiVersionDownloadsResponse
-  const weeklyDownloadsData = weeklyDownloadsResponse.ok
-    ? ((await weeklyDownloadsResponse.json()) as NpmApiWeeklyDownloadsResponse)
-    : null
 
-  return {
-    weeklyDownloads: weeklyDownloadsData?.downloads,
-    versions: Object.entries(versionsData.downloads).map(([version, downloads]) => ({
-      version,
-      downloads,
-    })),
-  }
+  return Object.entries(versionsData.downloads).map(([version, downloads]) => ({
+    version,
+    downloads,
+  }))
 }

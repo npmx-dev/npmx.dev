@@ -11,22 +11,11 @@ export default defineCachedEventHandler(
     const packageName = decodeURIComponent(pkgParam)
 
     try {
-      const parsed = await fetchNpmVersionDownloadsFromApi(packageName)
-
-      if (parsed.versions.length === 0) {
-        throw createError({
-          statusCode: 502,
-          message: 'Failed to fetch version download data',
-        })
-      }
+      const versions = await fetchNpmVersionDownloadsFromApi(packageName)
 
       return {
         packageName,
-        source: 'npm-api',
-        sourceUrl: `https://api.npmjs.org/versions/${encodePackageName(packageName)}/last-week`,
-        fetchedAt: new Date().toISOString(),
-        weeklyDownloads: parsed.weeklyDownloads,
-        versions: parsed.versions,
+        versions,
       }
     } catch (error: unknown) {
       handleApiError(error, {
