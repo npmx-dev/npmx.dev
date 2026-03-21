@@ -38,9 +38,7 @@ const { toggleDir, isExpanded, autoExpandAncestors } = useFileTreeState(props.ba
 
 const scrollIntoView = () => {
   const el = treeRoot.value?.querySelector('[aria-current="true"]') as HTMLElement
-  if (el) {
-    el.scrollIntoView({ block: 'center', behavior: 'smooth' })
-  }
+  el?.scrollIntoView({ block: 'center', behavior: 'smooth' })
 }
 
 // Auto-expand directories in the current path
