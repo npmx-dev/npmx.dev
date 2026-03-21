@@ -144,6 +144,7 @@
     "theme_system": "Системна",
     "language": "Мова",
     "help_translate": "Допоможіть перекласти npmx",
+    "translation_status": "Переглянути глобальний статус перекладу",
     "accent_colors": "Колірні акценти",
     "clear_accent": "Очистити колір акценту",
     "translation_progress": "Статус перекладу",
