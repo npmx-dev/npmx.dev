@@ -107,7 +107,7 @@
       "reply_count": "{count} réponse | {count} réponses",
       "like_count": "{count} j'aime | {count} j'aime",
       "repost_count": "{count} repartage | {count} repartages",
-      "more_replies": "{count} réponse de plus... | {count} réponses de plus..."
+      "more_replies": "{count} réponse supplémentaire... | {count} réponses supplémentaires..."
     }
   },
   "settings": {

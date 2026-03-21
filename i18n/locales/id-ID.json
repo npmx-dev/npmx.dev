@@ -109,7 +109,7 @@
       "reply_count": "{count} balasan | {count} balasan",
       "like_count": "{count} suka | {count} suka",
       "repost_count": "{count} repost | {count} repost",
-      "more_replies": "{count} balasan lainnya... | {count} balasan lainnya..."
+      "more_replies": "{count} balasan lagi... | {count} balasan lagi..."
     }
   },
   "settings": {
