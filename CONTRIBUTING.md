@@ -460,13 +460,13 @@ npmx.dev uses [@nuxtjs/i18n](https://i18n.nuxtjs.org/) for internationalization.
 
 The following scripts help manage translation files. `en.json` is the reference locale.
 
-| Command                               | Description                                                                                                                                                                             |
-| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm vp run i18n:check [locale]`     | Compares `en.json` with other locale files. Shows missing and extra keys. Optionally filter output by locale (e.g. `pnpm i18n:check ja-JP`).                                            |
-| `pnpm vp run i18n:check:fix [locale]` | Same as check, but adds missing keys to other locales with English placeholders.                                                                                                        |
-| `pnpm vp run i18n:report`             | Audits translation keys against code usage in `.vue` and `.ts` files. Reports missing keys (used in code but not in locale), unused keys (in locale but not in code), and dynamic keys. |
-| `pnpm vp run i18n:report:fix`         | Removes unused keys from `en.json` and all other locale files.                                                                                                                          |
-| `pnpm vp run i18n:schema`             | Generates a JSON Schema from `en.json` at `i18n/schema.json`. Locale files reference this schema for IDE validation and autocompletion.                                                 |
+| Command                        | Description                                                                                                                                                                             |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm i18n:check [locale]`     | Compares `en.json` with other locale files. Shows missing and extra keys. Optionally filter output by locale (e.g. `pnpm i18n:check ja-JP`).                                            |
+| `pnpm i18n:check:fix [locale]` | Same as check, but adds missing keys to other locales with English placeholders.                                                                                                        |
+| `pnpm i18n:report`             | Audits translation keys against code usage in `.vue` and `.ts` files. Reports missing keys (used in code but not in locale), unused keys (in locale but not in code), and dynamic keys. |
+| `pnpm i18n:report:fix`         | Removes unused keys from `en.json` and all other locale files.                                                                                                                          |
+| `pnpm i18n:schema`             | Generates a JSON Schema from `en.json` at `i18n/schema.json`. Locale files reference this schema for IDE validation and autocompletion.                                                 |
 
 ### Adding a new locale
 
