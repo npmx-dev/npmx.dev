@@ -1,7 +1,5 @@
 import { CACHE_MAX_AGE_ONE_HOUR } from '#shared/utils/constants'
-import {
-  fetchNpmVersionDownloadsFromApi,
-} from '#server/utils/npm-website-versions'
+import { fetchNpmVersionDownloadsFromApi } from '#server/utils/npm-website-versions'
 
 export default defineCachedEventHandler(
   async event => {
