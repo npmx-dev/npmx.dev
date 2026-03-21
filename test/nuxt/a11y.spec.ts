@@ -582,7 +582,7 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe.only('Likes', () => {
+  describe('Likes', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(Likes, {
         props: { packageName: 'svelte' },
