@@ -24,6 +24,7 @@ const SafeColorSchema = v.pipe(
 const QUERY_SCHEMA = v.object({
   name: v.optional(v.string()),
   label: v.optional(SafeStringSchema),
+  value: v.optional(SafeStringSchema),
   color: v.optional(SafeColorSchema),
   labelColor: v.optional(SafeColorSchema),
 })
@@ -290,6 +291,10 @@ async function fetchInstallSize(packageName: string, version: string): Promise<n
 }
 
 const badgeStrategies = {
+  'name': async (pkgData: globalThis.Packument) => {
+    return { label: 'npm', value: pkgData.name, color: COLORS.slate }
+  },
+
   'version': async (pkgData: globalThis.Packument, requestedVersion?: string) => {
     const version = requestedVersion ?? getLatestVersion(pkgData) ?? 'unknown'
     return {
@@ -483,6 +488,7 @@ export default defineCachedEventHandler(
       const labelColor = queryParams.success ? queryParams.output.labelColor : undefined
       const showName = queryParams.success && queryParams.output.name === 'true'
       const userLabel = queryParams.success ? queryParams.output.label : undefined
+      const userValue = queryParams.success ? queryParams.output.value : undefined
       const badgeStyleResult = v.safeParse(BadgeStyleSchema, query.style)
       const badgeStyle = badgeStyleResult.success ? badgeStyleResult.output : 'default'
 
@@ -496,7 +502,7 @@ export default defineCachedEventHandler(
       const strategyResult = await strategy(pkgData, requestedVersion)
 
       const finalLabel = userLabel ? userLabel : showName ? packageName : strategyResult.label
-      const finalValue = strategyResult.value
+      const finalValue = userValue ? userValue : strategyResult.value
 
       const rawColor = userColor ?? strategyResult.color
       const finalColor = rawColor?.startsWith('#') ? rawColor : `#${rawColor}`

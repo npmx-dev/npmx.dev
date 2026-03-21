@@ -771,8 +771,15 @@ const showSkeleton = shallowRef(false)
                 {{ $t('package.get_started.title') }}
               </LinkBase>
             </h2>
-            <!-- Package manager dropdown -->
-            <PackageManagerSelect />
+            <!-- Package manager dropdown + Download button -->
+            <div class="flex items-center gap-2">
+              <PackageDownloadButton
+                v-if="displayVersion"
+                :package-name="pkg.name"
+                :version="displayVersion"
+              />
+              <PackageManagerSelect />
+            </div>
           </div>
           <div>
             <div

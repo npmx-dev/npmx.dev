@@ -105,10 +105,14 @@
     "theme_system": "سمة النظام",
     "language": "اللغة",
     "help_translate": "ساهم في ترجمة npmx",
-    "accent_colors": "ألوان الموقع",
+    "accent_colors": {
+      "label": "ألوان الموقع"
+    },
     "clear_accent": "مسح لون التمييز",
     "translation_progress": "تقدم الترجمة",
-    "background_themes": "درجة خلفية الصفحة"
+    "background_themes": {
+      "label": "درجة خلفية الصفحة"
+    }
   },
   "i18n": {
     "missing_keys": "{count} ترجمات مفقودة | ترجمة واحدة مفقودة | ترجمتان مفقودتان | {count} ترجمات مفقودة | {count} ترجمة مفقودة | {count} ترجمة مفقودة",

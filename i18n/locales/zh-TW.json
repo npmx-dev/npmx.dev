@@ -146,10 +146,14 @@
     "theme_system": "跟隨系統",
     "language": "語言",
     "help_translate": "協助翻譯 npmx",
-    "accent_colors": "強調色",
+    "accent_colors": {
+      "label": "強調色"
+    },
     "clear_accent": "清除強調色",
     "translation_progress": "翻譯進度",
-    "background_themes": "背景色調",
+    "background_themes": {
+      "label": "背景色調"
+    },
     "keyboard_shortcuts_enabled": "啟用鍵盤快速鍵",
     "keyboard_shortcuts_enabled_description": "若與其他瀏覽器或系統快捷鍵衝突，可停用鍵盤快速鍵"
   },
