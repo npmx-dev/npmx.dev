@@ -102,12 +102,8 @@ function parseScopedPackageWithVersion(input: string): { name: string; version?:
 }
 
 function getMockForUrl(url: string): MockResult | null {
-  let urlObj: URL
-  try {
-    urlObj = new URL(url)
-  } catch {
-    return null
-  }
+  const urlObj = URL.parse(url)
+  if (!urlObj) return null
 
   const { host, pathname, searchParams } = urlObj
 
@@ -359,12 +355,8 @@ async function handleFastNpmMeta(
   url: string,
   storage: ReturnType<typeof useStorage>,
 ): Promise<MockResult | null> {
-  let urlObj: URL
-  try {
-    urlObj = new URL(url)
-  } catch {
-    return null
-  }
+  const urlObj = URL.parse(url)
+  if (!urlObj) return null
 
   const { host, pathname, searchParams } = urlObj
 
@@ -404,12 +396,8 @@ async function handleGitHubApi(
   url: string,
   storage: ReturnType<typeof useStorage>,
 ): Promise<MockResult | null> {
-  let urlObj: URL
-  try {
-    urlObj = new URL(url)
-  } catch {
-    return null
-  }
+  const urlObj = URL.parse(url)
+  if (!urlObj) return null
 
   const { host, pathname } = urlObj
 
@@ -460,12 +448,8 @@ interface FixtureMatchWithVersion extends FixtureMatch {
 }
 
 function matchUrlToFixture(url: string): FixtureMatchWithVersion | null {
-  let urlObj: URL
-  try {
-    urlObj = new URL(url)
-  } catch {
-    return null
-  }
+  const urlObj = URL.parse(url)
+  if (!urlObj) return null
 
   const { host, pathname, searchParams } = urlObj
 
@@ -549,12 +533,8 @@ async function handleJsdelivrDataApi(
   url: string,
   storage: ReturnType<typeof useStorage>,
 ): Promise<MockResult | null> {
-  let urlObj: URL
-  try {
-    urlObj = new URL(url)
-  } catch {
-    return null
-  }
+  const urlObj = URL.parse(url)
+  if (!urlObj) return null
 
   if (urlObj.host !== 'data.jsdelivr.com') return null
 
