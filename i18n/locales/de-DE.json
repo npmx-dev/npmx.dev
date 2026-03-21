@@ -107,7 +107,7 @@
       "reply_count": "{count} Antwort | {count} Antworten",
       "like_count": "{count} Like | {count} Likes",
       "repost_count": "{count} Repost | {count} Reposts",
-      "more_replies": "{count} weitere Antwort anzeigen | {count} weitere Antworten anzeigen"
+      "more_replies": "noch {count} Antwort… | noch {count} Antworten…"
     }
   },
   "settings": {

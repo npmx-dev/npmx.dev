@@ -2,7 +2,7 @@
  * Package analysis utilities for detecting module format and TypeScript support
  */
 
-export type ModuleFormat = 'esm' | 'cjs' | 'dual' | 'unknown'
+export type ModuleFormat = 'esm' | 'cjs' | 'dual' | 'wasm' | 'unknown'
 
 export type TypesStatus =
   | { kind: 'included' }
@@ -86,6 +86,11 @@ export function detectModuleFormat(pkg: ExtendedPackageJson): ModuleFormat {
     const mainIsCJS = pkg.main?.endsWith('.cjs') || (pkg.main?.endsWith('.js') && !isTypeModule)
 
     return mainIsCJS ? 'dual' : 'esm'
+  }
+
+  const mainIsWASM = pkg.main?.endsWith('.wasm')
+  if (mainIsWASM) {
+    return 'wasm'
   }
 
   if (hasModule || isTypeModule) {

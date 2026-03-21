@@ -1,4 +1,11 @@
 <script setup lang="ts">
+/**
+ * Use `ButtonGroup` to group multiple buttons together with connected borders.
+ */
+defineOptions({
+  name: 'ButtonGroup',
+})
+
 const props = defineProps<{
   as?: string | Component
 }>()
