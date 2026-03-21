@@ -5,7 +5,7 @@ vi.mock('#server/utils/npm', () => ({
   fetchUserEmail: vi.fn(),
 }))
 
-const { getGravatarFromUsername } = await import('../../../../server/utils/gravatar')
+const { getGravatarFromUsername } = await import('#server/utils/gravatar')
 const { fetchUserEmail } = await import('#server/utils/npm')
 
 describe('gravatar utils', () => {

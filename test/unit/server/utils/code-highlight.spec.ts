@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { linkifyModuleSpecifiers } from '../../../../server/utils/code-highlight'
+import { linkifyModuleSpecifiers } from '#server/utils/code-highlight'
 
 describe('linkifyModuleSpecifiers', () => {
   const dependencies = {

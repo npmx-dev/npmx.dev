@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { detectPublishSecurityDowngradeForVersion } from '../../../../app/utils/publish-security'
+import { detectPublishSecurityDowngradeForVersion } from '~/utils/publish-security'
 
 describe('detectPublishSecurityDowngradeForVersion', () => {
   const versions = [

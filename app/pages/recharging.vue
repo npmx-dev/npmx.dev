@@ -17,9 +17,6 @@ defineOgImageComponent('Default', {
   description: () => $t('vacations.meta_description'),
 })
 
-const router = useRouter()
-const canGoBack = useCanGoBack()
-
 const { data: stats } = useFetch('/api/repo-stats')
 
 /**
@@ -74,15 +71,7 @@ const icons = [
           <h1 class="font-mono text-3xl sm:text-4xl font-medium">
             {{ $t('vacations.heading') }}
           </h1>
-          <button
-            type="button"
-            class="cursor-pointer inline-flex items-center gap-2 p-1.5 -mx-1.5 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
-            @click="router.back()"
-            v-if="canGoBack"
-          >
-            <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
-            <span class="sr-only sm:not-sr-only">{{ $t('nav.back') }}</span>
-          </button>
+          <BackButton />
         </div>
         <i18n-t
           keypath="vacations.subtitle"

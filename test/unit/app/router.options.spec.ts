@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import routerOptions from '../../../app/router.options'
+import routerOptions from '~/router.options'
 
 type ScrollBehavior = NonNullable<typeof routerOptions.scrollBehavior>
 type RouteArg = Parameters<ScrollBehavior>[0]

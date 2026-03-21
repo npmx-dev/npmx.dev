@@ -2,24 +2,24 @@
 
 <template>
   <!-- Package header — matches area-header in [...name].vue -->
-  <header class="bg-[--bg] pt-5 pb-1 w-full container">
-    <div class="min-w-0">
-      <!-- Package name -->
-      <div class="min-w-0 flex items-center gap-2 justify-between">
-        <h1 class="font-mono text-2xl sm:text-3xl font-medium">
-          <SkeletonInline class="block! h-9 w-48" />
-        </h1>
-        <div class="flex gap-1">
-          <!-- Compare placeholder -->
-          <SkeletonBlock class="w-9 md:w-40 h-9 rounded self-baseline" />
-          <!-- Likes button placeholder -->
-          <SkeletonBlock class="w-14 h-9 rounded self-baseline" />
-        </div>
+  <header class="bg-bg pt-6 pb-2 pb-1 w-full container">
+    <!-- Package name -->
+    <div class="flex items-baseline justify-between gap-x-2 gap-y-1 flex-wrap min-w-0">
+      <h1 class="font-mono text-2xl sm:text-3xl font-medium">
+        <SkeletonInline class="block! h-9 w-48" />
+      </h1>
+      <div class="flex gap-2 flex-wrap items-stretch">
+        <!-- Compare placeholder -->
+        <SkeletonBlock class="w-9 md:w-36 h-9 rounded" />
+        <!-- Likes button placeholder -->
+        <SkeletonBlock class="w-14 h-9 rounded" />
+        <!-- Fund link placeholder -->
+        <SkeletonBlock class="w-22 h-9 rounded self-baseline" />
       </div>
     </div>
   </header>
 
-  <div class="sticky top-14 z-1 pt-3 bg-bg border-b border-border w-full">
+  <div class="w-full bg-bg sticky top-14 z-10 border-b border-border pt-2">
     <div class="w-full container flex flex-col md:flex-row-reverse flex-wrap gap-2 justify-between">
       <!-- Version -->
       <span class="inline-flex items-baseline font-mono text-base sm:text-lg shrink-0">
@@ -173,37 +173,10 @@
     <!-- Vulns area (empty placeholder to hold grid space) -->
     <div class="area-vulns" />
 
-    <!-- README — matches area-readme in [...name].vue -->
-    <section class="area-readme min-w-0 scroll-mt-20">
-      <div class="flex flex-wrap items-center justify-between mb-3 px-1">
-        <h2 class="text-xs font-mono text-fg-subtle uppercase tracking-wider">
-          {{ $t('package.readme.title') }}
-        </h2>
-      </div>
-      <!-- Simulated README content -->
-      <div class="space-y-4">
-        <!-- Heading -->
-        <SkeletonBlock class="h-7 w-2/3" />
-        <!-- Paragraphs -->
-        <SkeletonBlock class="h-4 w-full" />
-        <SkeletonBlock class="h-4 w-full" />
-        <SkeletonBlock class="h-4 w-4/5" />
-        <!-- Gap for section break -->
-        <SkeletonBlock class="h-6 w-1/2 mt-6" />
-        <SkeletonBlock class="h-4 w-full" />
-        <SkeletonBlock class="h-4 w-full" />
-        <SkeletonBlock class="h-4 w-3/4" />
-        <!-- Code block placeholder -->
-        <SkeletonBlock class="h-24 w-full rounded-lg mt-4" />
-        <SkeletonBlock class="h-4 w-full" />
-        <SkeletonBlock class="h-4 w-5/6" />
-      </div>
-    </section>
-
     <!-- Sidebar — matches area-sidebar in [...name].vue -->
     <div class="area-sidebar">
       <div
-        class="sticky top-30 xl:top-14 space-y-6 sm:space-y-8 min-w-0 overflow-y-auto pe-2.5 lg:(max-h-[calc(100dvh-8.5rem)] overscroll-contain) xl:(max-h-[calc(100dvh-6rem)])"
+        class="space-y-6 sm:space-y-8 min-w-0 lg:(max-h-[calc(100dvh-8.5rem)] overscroll-contain) xl:(max-h-[calc(100dvh-6rem)])"
       >
         <div class="flex flex-col gap-4 sm:gap-6 xl:pt-4">
           <!-- Download stats — matches CollapsibleSection + sparkline skeleton -->
@@ -376,6 +349,33 @@
         </div>
       </div>
     </div>
+
+    <!-- README — matches area-readme in [...name].vue -->
+    <section class="area-readme min-w-0 scroll-mt-20">
+      <div class="flex flex-wrap items-center justify-between mb-3 px-1">
+        <h2 class="text-xs font-mono text-fg-subtle uppercase tracking-wider">
+          {{ $t('package.readme.title') }}
+        </h2>
+      </div>
+      <!-- Simulated README content -->
+      <div class="space-y-4">
+        <!-- Heading -->
+        <SkeletonBlock class="h-7 w-2/3" />
+        <!-- Paragraphs -->
+        <SkeletonBlock class="h-4 w-full" />
+        <SkeletonBlock class="h-4 w-full" />
+        <SkeletonBlock class="h-4 w-4/5" />
+        <!-- Gap for section break -->
+        <SkeletonBlock class="h-6 w-1/2 mt-6" />
+        <SkeletonBlock class="h-4 w-full" />
+        <SkeletonBlock class="h-4 w-full" />
+        <SkeletonBlock class="h-4 w-3/4" />
+        <!-- Code block placeholder -->
+        <SkeletonBlock class="h-24 w-full rounded-lg mt-4" />
+        <SkeletonBlock class="h-4 w-full" />
+        <SkeletonBlock class="h-4 w-5/6" />
+      </div>
+    </section>
   </article>
 </template>
 
@@ -400,8 +400,8 @@
     grid-template-columns: 2fr 1fr;
     grid-template-areas:
       'details details'
-      'install install'
-      'vulns   vulns'
+      'install sidebar'
+      'vulns   sidebar'
       'readme  sidebar';
     grid-template-rows: auto auto auto auto 1fr;
   }
