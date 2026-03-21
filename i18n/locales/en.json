@@ -363,6 +363,29 @@
       "provenance_link_text": "provenance",
       "trusted_publishing_link_text": "trusted publishing"
     },
+    "score": {
+      "title": "Quality Score",
+      "subtitle": "{earned} of {total} points",
+      "categories": {
+        "documentation": "Documentation",
+        "maintenance": "Maintenance",
+        "types": "Type Coverage",
+        "bestPractices": "Best Practices",
+        "security": "Security"
+      },
+      "checks": {
+        "has-readme": "Has a substantial README",
+        "has-description": "Has a description",
+        "update-frequency": "Recently updated",
+        "has-types": "TypeScript types",
+        "has-license": "Has a license",
+        "has-repository": "Has a repository link",
+        "has-provenance": "Has publish provenance",
+        "has-esm": "Supports ES modules",
+        "no-vulnerabilities": "No known vulnerabilities",
+        "not-deprecated": "Not deprecated"
+      }
+    },
     "keywords_title": "Keywords",
     "compatibility": "Compatibility",
     "card": {

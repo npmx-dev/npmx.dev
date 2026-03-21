@@ -295,6 +295,16 @@ if (import.meta.client) {
   )
 }
 
+const packageScore = usePackageScore({
+  pkg: computed(() => pkg.value),
+  resolvedVersion: computed(() => resolvedVersion.value),
+  readmeHtml: computed(() => readmeData.value?.html ?? ''),
+  analysis: computed(() => packageAnalysis.value),
+  vulnCounts: computed(() => vulnTree.value?.totalCounts ?? null),
+  vulnStatus: computed(() => vulnTreeStatus.value),
+  hasProvenance: computed(() => !!displayVersion.value && hasProvenance(displayVersion.value)),
+})
+
 const isMounted = useMounted()
 
 // Keep latestVersion for comparison (to show "(latest)" badge)
@@ -916,6 +926,11 @@ const showSkeleton = shallowRef(false)
               <template #fallback>
                 <!-- Show skeleton loaders when SSR or access controls are loading -->
               </template>
+            </ClientOnly>
+
+            <!-- Quality Score -->
+            <ClientOnly>
+              <PackageQualityScore :score="packageScore" />
             </ClientOnly>
 
             <!-- Download stats -->
