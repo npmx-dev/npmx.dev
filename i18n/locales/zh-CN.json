@@ -109,7 +109,7 @@
       "reply_count": "{count} 条回复 | {count} 条回复",
       "like_count": "{count} 个赞 | {count} 个赞",
       "repost_count": "{count} 次转发 | {count} 次转发",
-      "more_replies": "还有 {count} 条回复... | 还有 {count} 条回复..."
+      "more_replies": "还有 {count} 条回复..."
     }
   },
   "settings": {
