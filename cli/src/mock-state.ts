@@ -229,10 +229,10 @@ export class MockConnectorStateManager {
   }
 
   approveOperation(id: string): PendingOperation | null {
-    const op = this.state.operations.find(op => op.id === id)
-    if (!op || op.status !== 'pending') return null
-    op.status = 'approved'
-    return op
+    const operation = this.state.operations.find(op => op.id === id)
+    if (!operation || operation.status !== 'pending') return null
+    operation.status = 'approved'
+    return operation
   }
 
   approveAll(): number {
@@ -247,11 +247,11 @@ export class MockConnectorStateManager {
   }
 
   retryOperation(id: string): PendingOperation | null {
-    const op = this.state.operations.find(op => op.id === id)
-    if (!op || op.status !== 'failed') return null
-    op.status = 'approved'
-    op.result = undefined
-    return op
+    const operation = this.state.operations.find(op => op.id === id)
+    if (!operation || operation.status !== 'failed') return null
+    operation.status = 'approved'
+    operation.result = undefined
+    return operation
   }
 
   /** Execute all approved operations (mock: instant success unless configured otherwise). */

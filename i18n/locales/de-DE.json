@@ -107,7 +107,7 @@
       "reply_count": "{count} Antwort | {count} Antworten",
       "like_count": "{count} Like | {count} Likes",
       "repost_count": "{count} Repost | {count} Reposts",
-      "more_replies": "{count} weitere Antwort anzeigen | {count} weitere Antworten anzeigen"
+      "more_replies": "noch {count} Antwort… | noch {count} Antworten…"
     }
   },
   "settings": {
@@ -882,7 +882,7 @@
       "paginated": "Paginiert",
       "items_per_page": "Elemente pro Seite",
       "per_page": "{count} / Seite",
-      "showing": "{start}-{end} von {total}",
+      "showing": "{range} von {total}",
       "previous": "Vorherige Seite",
       "next": "Nächste Seite",
       "nav_label": "Paginierung"

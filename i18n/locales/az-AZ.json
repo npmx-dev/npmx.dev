@@ -107,7 +107,7 @@
       "reply_count": "{count} cavab",
       "like_count": "{count} bəyənmə",
       "repost_count": "{count} yenidən paylaşım",
-      "more_replies": "{count} cavab daha..."
+      "more_replies": "daha {count} cavab... | daha {count} cavab..."
     }
   },
   "settings": {
@@ -882,7 +882,7 @@
       "paginated": "Səhifələnmiş",
       "items_per_page": "Səhifə başına element",
       "per_page": "{count} / səhifə",
-      "showing": "{start}-{end} / {total}",
+      "showing": "{range} / {total}",
       "previous": "Əvvəlki səhifə",
       "next": "Növbəti səhifə",
       "nav_label": "Səhifələmə"

@@ -41,7 +41,7 @@ export default defineCachedEventHandler(
 
     try {
       const { packageName, version } = v.parse(PackageRouteParamsSchema, {
-        packageName: rawPackageName,
+        packageName: decodeURIComponent(rawPackageName),
         version: rawVersion,
       })
 

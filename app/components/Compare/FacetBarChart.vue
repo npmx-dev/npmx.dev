@@ -3,7 +3,9 @@ import { ref, computed } from 'vue'
 import { VueUiHorizontalBar } from 'vue-data-ui/vue-ui-horizontal-bar'
 import type { VueUiHorizontalBarConfig, VueUiHorizontalBarDatasetItem } from 'vue-data-ui'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
+import { createChartPatternSlotMarkup } from '~/utils/charts'
 import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
+
 import {
   loadFile,
   insertLineBreaks,
@@ -178,8 +180,8 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
               bold: false,
               color: colors.value.fg,
               value: {
-                formatter: ({ config }) => {
-                  return config?.datapoint?.formattedValue ?? '0'
+                formatter: ({ config: formatterConfig }) => {
+                  return formatterConfig?.datapoint?.formattedValue ?? '0'
                 },
               },
             },
@@ -213,13 +215,40 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
           backdropFilter: false,
           backgroundColor: 'transparent',
           customFormat: ({ datapoint }) => {
-            const name = datapoint?.name?.replace(/\n/g, '<br>')
+            const name = datapoint?.name?.replace(/\n/g, '<br>') ?? ''
+            const safeSeriesIndex = (datapoint?.absoluteIndex as number) ?? 0
+            const patternId = `tooltip-pattern-${safeSeriesIndex}`
+            const usePattern = safeSeriesIndex !== 0
+
+            const patternMarkup = usePattern
+              ? createChartPatternSlotMarkup({
+                  id: patternId,
+                  seed: safeSeriesIndex,
+                  foregroundColor: colors.value.bg!,
+                  fallbackColor: 'transparent',
+                  maxSize: 24,
+                  minSize: 16,
+                })
+              : ''
+
+            const markerMarkup = usePattern
+              ? `
+              <rect x="0" y="0" width="20" height="20" rx="3" fill="${datapoint?.color ?? 'transparent'}" />
+              <rect x="0" y="0" width="20" height="20" rx="3" fill="url(#${patternId})" />
+            `
+              : `
+              <rect x="0" y="0" width="20" height="20" rx="3" fill="${datapoint?.color ?? 'transparent'}" />
+            `
+
             return `
             <div class="font-mono p-3 border border-border rounded-md bg-[var(--bg)]/10 backdrop-blur-md">
               <div class="grid grid-cols-[12px_minmax(0,1fr)_max-content] items-center gap-x-3">
                 <div class="w-3 h-3">
-                  <svg viewBox="0 0 2 2" class="w-full h-full">
-                    <rect x="0" y="0" width="2" height="2" rx="0.3" fill="${datapoint?.color}" />
+                  <svg viewBox="0 0 20 20" class="w-full h-full" aria-hidden="true">
+                    <defs>
+                      ${patternMarkup}
+                    </defs>
+                    ${markerMarkup}
                   </svg>
                 </div>
                 <span class="text-3xs uppercase tracking-wide text-[var(--fg)]/70 truncate">
@@ -230,7 +259,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
                 </span>
               </div>
             </div>
-            `
+          `
           },
         },
       },
@@ -243,8 +272,19 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
   <div class="font-mono facet-bar">
     <ClientOnly v-if="dataset.length">
       <VueUiHorizontalBar :key="chartKey" :dataset :config class="[direction:ltr]">
+        <template #pattern="{ patternId, seriesIndex }">
+          <ChartPatternSlot
+            v-if="seriesIndex != 0"
+            :id="patternId"
+            :seed="seriesIndex"
+            :foreground-color="colors.bg!"
+            fallback-color="transparent"
+            :max-size="24"
+            :min-size="16"
+          />
+        </template>
+
         <template #svg="{ svg }">
-          <!-- Inject npmx logo & tagline during SVG and PNG print -->
           <g
             v-if="svg.isPrintingSvg || svg.isPrintingImg"
             v-html="
@@ -261,15 +301,19 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
           <span v-if="isOpen" class="i-lucide:x w-6 h-6" aria-hidden="true" />
           <span v-else class="i-lucide:ellipsis-vertical w-6 h-6" aria-hidden="true" />
         </template>
+
         <template #optionCsv>
           <span class="text-fg-subtle font-mono pointer-events-none">CSV</span>
         </template>
+
         <template #optionImg>
           <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
         </template>
+
         <template #optionSvg>
           <span class="text-fg-subtle font-mono pointer-events-none">SVG</span>
         </template>
+
         <template #optionAltCopy>
           <span
             class="w-6 h-6"

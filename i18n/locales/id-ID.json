@@ -109,7 +109,7 @@
       "reply_count": "{count} balasan | {count} balasan",
       "like_count": "{count} suka | {count} suka",
       "repost_count": "{count} repost | {count} repost",
-      "more_replies": "{count} balasan lainnya... | {count} balasan lainnya..."
+      "more_replies": "{count} balasan lagi... | {count} balasan lagi..."
     }
   },
   "settings": {
@@ -901,7 +901,7 @@
       "paginated": "Terpaginasi",
       "items_per_page": "Item per halaman",
       "per_page": "{count} / halaman",
-      "showing": "{start}-{end} dari {total}",
+      "showing": "{range} dari {total}",
       "previous": "Halaman sebelumnya",
       "next": "Halaman berikutnya",
       "nav_label": "Paginasi"

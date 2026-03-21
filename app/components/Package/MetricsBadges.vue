@@ -26,6 +26,11 @@ const hasCjs = computed(() => {
   return analysis.value.moduleFormat === 'cjs' || analysis.value.moduleFormat === 'dual'
 })
 
+const isWasm = computed(() => {
+  if (!analysis.value) return false
+  return analysis.value.moduleFormat === 'wasm'
+})
+
 // Types support
 const hasTypes = computed(() => {
   if (!analysis.value) return false
@@ -80,35 +85,45 @@ const typesHref = computed(() => {
       </TooltipApp>
     </li>
 
-    <!-- ESM badge (show with X if missing) -->
-    <li class="contents">
-      <TooltipApp
-        :text="isLoading ? '' : hasEsm ? $t('package.metrics.esm') : $t('package.metrics.no_esm')"
-        strategy="fixed"
-      >
-        <TagStatic
-          tabindex="0"
-          :variant="hasEsm && !isLoading ? 'default' : 'ghost'"
-          :classicon="
-            isLoading ? 'i-svg-spinners:ring-resize ' : hasEsm ? 'i-lucide:check' : 'i-lucide:x'
-          "
-        >
-          ESM
-        </TagStatic>
-      </TooltipApp>
-    </li>
+    <template v-if="isWasm && !isLoading">
+      <li class="contents">
+        <TooltipApp :text="$t('package.metrics.wasm')" strategy="fixed">
+          <TagStatic tabindex="0" variant="default">WASM</TagStatic>
+        </TooltipApp>
+      </li>
+    </template>
 
-    <!-- CJS badge -->
-    <li v-if="isLoading || hasCjs" class="contents">
-      <TooltipApp :text="isLoading ? '' : $t('package.metrics.cjs')" strategy="fixed">
-        <TagStatic
-          tabindex="0"
-          :variant="isLoading ? 'ghost' : 'default'"
-          :classicon="isLoading ? 'i-svg-spinners:ring-resize ' : 'i-lucide:check'"
+    <template v-else>
+      <!-- ESM badge (show with X if missing) -->
+      <li class="contents">
+        <TooltipApp
+          :text="isLoading ? '' : hasEsm ? $t('package.metrics.esm') : $t('package.metrics.no_esm')"
+          strategy="fixed"
         >
-          CJS
-        </TagStatic>
-      </TooltipApp>
-    </li>
+          <TagStatic
+            tabindex="0"
+            :variant="hasEsm && !isLoading ? 'default' : 'ghost'"
+            :classicon="
+              isLoading ? 'i-svg-spinners:ring-resize ' : hasEsm ? 'i-lucide:check' : 'i-lucide:x'
+            "
+          >
+            ESM
+          </TagStatic>
+        </TooltipApp>
+      </li>
+
+      <!-- CJS badge -->
+      <li v-if="isLoading || hasCjs" class="contents">
+        <TooltipApp :text="isLoading ? '' : $t('package.metrics.cjs')" strategy="fixed">
+          <TagStatic
+            tabindex="0"
+            :variant="isLoading ? 'ghost' : 'default'"
+            :classicon="isLoading ? 'i-svg-spinners:ring-resize ' : 'i-lucide:check'"
+          >
+            CJS
+          </TagStatic>
+        </TooltipApp>
+      </li>
+    </template>
   </ul>
 </template>
