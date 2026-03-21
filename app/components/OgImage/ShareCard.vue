@@ -49,15 +49,12 @@ try {
 const version = computed(() => resolvedVersion.value ?? pkg.value?.['dist-tags']?.latest ?? '')
 const isLatest = computed(() => pkg.value?.['dist-tags']?.latest === version.value)
 const description = computed(() => pkg.value?.description ?? '')
-const license = computed(() => (pkg.value?.license as string | undefined) ?? '')
-const hasTypes = computed(() => !!(displayVersion.value?.types || displayVersion.value?.typings))
+const license = computed(() => pkg.value?.license ?? '')
+const hasTypes = computed(() => Boolean(displayVersion.value?.types || displayVersion.value?.typings))
 const moduleFormat = computed(() => (displayVersion.value?.type === 'module' ? 'ESM' : 'CJS'))
 const depsCount = computed(() => Object.keys(displayVersion.value?.dependencies ?? {}).length)
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const unpackedSize = computed(() => (displayVersion.value?.dist as any)?.unpackedSize ?? 0)
-const publishedAt = computed(
-  () => pkg.value?.time?.[version.value] ?? pkg.value?.time?.modified ?? '',
-)
+const unpackedSize = computed(() => displayVersion.value?.dist?.unpackedSize ?? 0)
+const publishedAt = computed(() => pkg.value?.time?.[version.value] ?? '')
 const weeklyDownloads = computed(() => downloads.value?.downloads ?? 0)
 const repoSlug = computed(() => {
   const ref = repoRef.value
