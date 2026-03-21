@@ -178,6 +178,7 @@ import {
   PackageChartModal,
   PackageClaimPackageModal,
   PackageCompatibility,
+  PackageQualityScore,
   PackageDependencies,
   PackageDeprecatedTree,
   PackageHeader,
@@ -1118,6 +1119,34 @@ describe('component accessibility audits', () => {
           engines: {
             node: '>=14',
             npm: '>=10',
+          },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageQualityScore', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageQualityScore, {
+        props: {
+          score: {
+            percentage: 85,
+            totalPoints: 12,
+            maxPoints: 14,
+            checks: [
+              { id: 'has-readme', category: 'documentation', points: 2, maxPoints: 2 },
+              { id: 'has-description', category: 'documentation', points: 1, maxPoints: 1 },
+              { id: 'update-frequency', category: 'maintenance', points: 2, maxPoints: 2 },
+              { id: 'has-types', category: 'types', points: 1, maxPoints: 2 },
+              { id: 'has-license', category: 'bestPractices', points: 1, maxPoints: 1 },
+              { id: 'has-repository', category: 'bestPractices', points: 1, maxPoints: 1 },
+              { id: 'has-provenance', category: 'bestPractices', points: 0, maxPoints: 1 },
+              { id: 'has-esm', category: 'bestPractices', points: 1, maxPoints: 1 },
+              { id: 'no-vulnerabilities', category: 'security', points: 2, maxPoints: 2 },
+              { id: 'not-deprecated', category: 'security', points: 1, maxPoints: 1 },
+            ],
           },
         },
       })
