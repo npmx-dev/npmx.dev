@@ -58,14 +58,6 @@ watch([pkg, type, queryParams], () => {
   isValid.value = true
 })
 
-const formatLabel = str => {
-  if (!str || typeof str !== 'string') return ''
-  return str
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' per ')
-}
-
 const copyToClipboard = async () => {
   const markdown = `[![Open on npmx.dev](${badgeUrl.value})](https://npmx.dev/package/${pkg.value})`
   copy(markdown)
@@ -96,10 +88,10 @@ const copyToClipboard = async () => {
         <div class="relative">
           <select
             v-model="type"
-            class="w-full h-10.5 px-4 py-2 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-black/20 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none text-sm transition-all appearance-none cursor-pointer"
+            class="w-full h-10.5 px-4 py-2 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-black/20 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none text-sm transition-all appearance-none cursor-pointer capitalize"
           >
             <option v-for="t in BADGE_TYPES" :key="t" :value="t" class="dark:bg-gray-900">
-              {{ formatLabel(t) }}
+              {{ t }}
             </option>
           </select>
           <span
