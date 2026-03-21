@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import type { CompareResponse, FileChange } from '#shared/types'
-
 const props = defineProps<{
   compare: CompareResponse
   groupedDeps: Map<string, CompareResponse['dependencyChanges']>
   allChanges: FileChange[]
+  pkg?: Pick<SlimPackument, 'versions' | 'dist-tags'> | null
+  packageName: string
+  toVersion: string
+  toVersionUrlPattern: string
 }>()
 
 const selectedFile = defineModel<FileChange | null>('selectedFile', { default: null })
@@ -53,30 +55,43 @@ watch(open, value => {
       v-if="open"
       class="md:hidden fixed inset-y-0 inset-is-0 z-50 w-72 max-w-[85vw] bg-bg-subtle border-ie border-border overflow-y-auto flex flex-col"
     >
-      <div
-        class="sticky top-0 bg-bg-subtle border-b border-border px-4 py-3 flex items-center justify-between gap-2"
-      >
-        <div class="text-xs font-mono text-fg-muted flex items-center gap-2">
-          <span class="flex items-center gap-1">
-            <span class="text-green-500">+{{ props.compare.stats.filesAdded }}</span>
-            <span class="text-fg-subtle">/</span>
-            <span class="text-red-500">-{{ props.compare.stats.filesRemoved }}</span>
-            <span class="text-fg-subtle">/</span>
-            <span class="text-yellow-500">~{{ props.compare.stats.filesModified }}</span>
-          </span>
-          <span class="text-fg-subtle">•</span>
-          <span>{{
-            $t('compare.files_count', { count: props.allChanges.length }, props.allChanges.length)
-          }}</span>
+      <div class="sticky top-0 bg-bg-subtle border-b border-border z-50">
+        <div class="flex items-center justify-between gap-2 py-2 px-4">
+          <div class="text-xs font-mono text-fg-muted flex items-center gap-2">
+            <span class="flex items-center gap-1">
+              <span class="text-green-500">+{{ props.compare.stats.filesAdded }}</span>
+              <span class="text-fg-subtle">/</span>
+              <span class="text-red-500">-{{ props.compare.stats.filesRemoved }}</span>
+              <span class="text-fg-subtle">/</span>
+              <span class="text-yellow-500">~{{ props.compare.stats.filesModified }}</span>
+            </span>
+            <span class="text-fg-subtle">•</span>
+            <span>{{
+              $t('compare.files_count', { count: props.allChanges.length }, props.allChanges.length)
+            }}</span>
+          </div>
+          <button
+            type="button"
+            class="text-fg-muted hover:text-fg transition-colors"
+            :aria-label="$t('compare.close_files_panel')"
+            @click="open = false"
+          >
+            <span class="i-lucide:x w-5 h-5" />
+          </button>
         </div>
-        <button
-          type="button"
-          class="text-fg-muted hover:text-fg transition-colors"
-          :aria-label="$t('compare.close_files_panel')"
-          @click="open = false"
-        >
-          <span class="i-lucide:x w-5 h-5" />
-        </button>
+        <div v-if="pkg?.versions && pkg?.['dist-tags']" class="py-2 border-t border-border px-4">
+          <p class="text-xs font-medium text-fg mb-1 flex items-center gap-1.5">
+            <span class="block i-lucide-git-compare-arrows w-3.5 h-3.5" />
+            {{ $t('compare.version_selector_title') }}
+          </p>
+          <VersionSelector
+            :package-name="packageName"
+            :current-version="toVersion"
+            :versions="pkg.versions"
+            :dist-tags="pkg['dist-tags']"
+            :url-pattern="toVersionUrlPattern"
+          />
+        </div>
       </div>
 
       <DiffSidebarPanel

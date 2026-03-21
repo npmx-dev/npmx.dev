@@ -114,9 +114,7 @@
     "not_found": "पॅकेज सापडले नाही",
     "not_found_message": "पॅकेज सापडले नाही.",
     "no_description": "कोणतेही वर्णन प्रदान केलेले नाही",
-    "not_latest": "(नवीनतम नाही)",
     "verified_provenance": "सत्यापित उत्पत्ती",
-    "view_permalink": "या आवृत्तीसाठी परमालिंक पहा",
     "navigation": "पॅकेज",
     "copy_name": "पॅकेज नाव कॉपी करा",
     "deprecation": {

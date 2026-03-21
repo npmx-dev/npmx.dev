@@ -148,9 +148,7 @@
     "not_found": "தொகுப்பு கிடைக்கவில்லை",
     "not_found_message": "தொகுப்பைக் கண்டுபிடிக்க இயலவில்லை.",
     "no_description": "விளக்கம் வழங்கப்படவில்லை",
-    "not_latest": "(சமீபத்தியது அல்ல)",
     "verified_provenance": "சரிபார்க்கப்பட்ட மூலநிலை",
-    "view_permalink": "இந்தப் பதிப்பின் நிரந்தர இணைப்பைக் காண்க",
     "navigation": "தொகுப்பு",
     "copy_name": "தொகுப்புப் பெயரை நகலெடு",
     "deprecation": {
@@ -744,7 +742,7 @@
       "paginated": "பக்கமிடப்பட்ட",
       "items_per_page": "ஒரு பக்கத்திற்கான உருப்படிகள்",
       "per_page": "{count} / பக்கம்",
-      "showing": "{start}-{end} / {total}",
+      "showing": "{range} / {total}",
       "previous": "முந்தைய பக்கம்",
       "next": "அடுத்த பக்கம்",
       "nav_label": "பக்க வழிசெலுத்தல்"

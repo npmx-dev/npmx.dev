@@ -61,67 +61,6 @@ test.describe('Create Command', () => {
     })
   })
 
-  test.describe('Copy Functionality', () => {
-    test('hovering create command shows copy button', async ({ page, goto }) => {
-      await goto('/package/vite', { waitUntil: 'hydration' })
-
-      await expect(page.locator('h1')).toContainText('vite', { timeout: 15000 })
-
-      await expect(page.locator('main header').locator('text=/v\\d+\\.\\d+/')).toBeVisible({
-        timeout: 15000,
-      })
-
-      // Find the create command container (wait longer for API response)
-      const createCommandContainer = page.locator('.group\\/createcmd').first()
-      await expect(createCommandContainer).toBeVisible({ timeout: 20000 })
-
-      // Copy button should initially be hidden (opacity-0)
-      const copyButton = createCommandContainer.locator('button')
-      await expect(copyButton).toHaveCSS('opacity', '0')
-
-      // Hover over the container
-      await createCommandContainer.hover()
-
-      // Copy button should become visible
-      await expect(copyButton).toHaveCSS('opacity', '1')
-    })
-
-    test('clicking copy button copies create command and shows confirmation', async ({
-      page,
-      goto,
-      context,
-    }) => {
-      // Grant clipboard permissions
-      await context.grantPermissions(['clipboard-read', 'clipboard-write'])
-
-      await goto('/package/vite', { waitUntil: 'hydration' })
-      await expect(page.locator('h1')).toContainText('vite', { timeout: 15000 })
-
-      await expect(page.locator('main header').locator('text=/v\\d+\\.\\d+/')).toBeVisible({
-        timeout: 15000,
-      })
-
-      const createCommandContainer = page.locator('.group\\/createcmd').first()
-      await expect(createCommandContainer).toBeVisible({ timeout: 20000 })
-
-      await createCommandContainer.hover()
-
-      // Click the copy button
-      const copyButton = createCommandContainer.locator('button')
-      await copyButton.click()
-
-      // Button text should change to "copied!"
-      await expect(copyButton).toContainText(/copied/i)
-
-      // Verify clipboard content contains the create command
-      const clipboardContent = await page.evaluate(() => navigator.clipboard.readText())
-      expect(clipboardContent).toMatch(/create vite/i)
-
-      await expect(copyButton).toContainText(/copy/i, { timeout: 5000 })
-      await expect(copyButton).not.toContainText(/copied/i)
-    })
-  })
-
   test.describe('Install Command Copy', () => {
     test('hovering install command shows copy button', async ({ page, goto }) => {
       await goto('/package/is-odd', { waitUntil: 'hydration' })

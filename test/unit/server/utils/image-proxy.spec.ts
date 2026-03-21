@@ -6,7 +6,7 @@ import {
   resolveAndValidateHost,
   signImageUrl,
   verifyImageUrl,
-} from '../../../../server/utils/image-proxy'
+} from '#server/utils/image-proxy'
 
 const TEST_SECRET = 'test-secret-key-for-unit-tests'
 

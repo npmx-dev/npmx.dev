@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import type { DiffLine as DiffLineType } from '#shared/types'
-
 const props = defineProps<{
-  line: DiffLineType
+  line: DiffLine
 }>()
 
 const diffContext = inject<{

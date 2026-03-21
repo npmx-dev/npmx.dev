@@ -1,4 +1,3 @@
-import type { NpmSearchResponse, NpmSearchResult } from '#shared/types'
 import {
   liteClient as algoliasearch,
   type LiteClient,
@@ -108,7 +107,7 @@ function hitToSearchResult(hit: AlgoliaHit): NpmSearchResult {
   }
 }
 
-export interface AlgoliaSearchOptions {
+interface AlgoliaSearchOptions {
   size?: number
   from?: number
   filters?: string
@@ -122,7 +121,7 @@ export interface AlgoliaMultiSearchChecks {
   checkPackage?: string
 }
 
-export interface AlgoliaSearchWithSuggestionsResult {
+interface AlgoliaSearchWithSuggestionsResult {
   search: NpmSearchResponse
   orgExists: boolean
   userExists: boolean
