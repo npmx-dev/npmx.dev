@@ -107,7 +107,7 @@
       "reply_count": "{count} odpowiedzi | {count} odpowiedź | {count} odpowiedzi | {count} odpowiedzi | {count} odpowiedzi",
       "like_count": "{count} polubień | {count} polubienie | {count} polubienia | {count} polubień | {count} polubień",
       "repost_count": "{count} udostępnień | {count} udostępnienie | {count} udostępnienia | {count} udostępnień | {count} udostępnień",
-      "more_replies": "{count} odpowiedzi więcej... | {count} odpowiedź więcej... | {count} odpowiedzi więcej... | {count} odpowiedzi więcej... | {count} odpowiedzi więcej..."
+      "more_replies": "jeszcze {count} odpowiedź… | jeszcze {count} odpowiedzi… | jeszcze {count} odpowiedzi…"
     }
   },
   "settings": {

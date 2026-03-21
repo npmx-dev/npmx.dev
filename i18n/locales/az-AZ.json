@@ -107,7 +107,7 @@
       "reply_count": "{count} cavab",
       "like_count": "{count} bəyənmə",
       "repost_count": "{count} yenidən paylaşım",
-      "more_replies": "{count} cavab daha..."
+      "more_replies": "daha {count} cavab... | daha {count} cavab..."
     }
   },
   "settings": {
