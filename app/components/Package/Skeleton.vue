@@ -7,13 +7,15 @@
       <!-- Package name -->
       <div class="min-w-0 flex items-center gap-2 justify-between">
         <h1 class="font-mono text-2xl sm:text-3xl font-medium">
-          <SkeletonInline class="block! h-9 w-48" />
+          <SkeletonInline class="block! h-10 w-48" />
         </h1>
         <div class="flex gap-1">
           <!-- Compare placeholder -->
-          <SkeletonBlock class="w-9 md:w-40 h-9 rounded self-baseline" />
+          <SkeletonBlock class="w-9 md:w-40 h-10 rounded self-baseline" />
           <!-- Likes button placeholder -->
-          <SkeletonBlock class="w-14 h-9 rounded self-baseline" />
+          <SkeletonBlock class="w-14 h-10 rounded self-baseline" />
+          <!-- Fund link placeholder -->
+          <SkeletonBlock class="w-18 h-10 rounded self-baseline" />
         </div>
       </div>
     </div>
@@ -176,7 +178,7 @@
     <!-- Sidebar — matches area-sidebar in [...name].vue -->
     <div class="area-sidebar">
       <div
-        class="sticky top-30 xl:top-14 space-y-6 sm:space-y-8 min-w-0 overflow-y-auto pe-2.5 lg:(max-h-[calc(100dvh-8.5rem)] overscroll-contain) xl:(max-h-[calc(100dvh-6rem)])"
+        class="space-y-6 sm:space-y-8 min-w-0 pe-2.5 lg:(max-h-[calc(100dvh-8.5rem)] overscroll-contain) xl:(max-h-[calc(100dvh-6rem)])"
       >
         <div class="flex flex-col gap-4 sm:gap-6 xl:pt-4">
           <!-- Download stats — matches CollapsibleSection + sparkline skeleton -->
