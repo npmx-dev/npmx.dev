@@ -7,30 +7,6 @@ const isValid = ref(true)
 
 const { copy, copied } = useClipboard({ copiedDuring: 2000 })
 
-const types = [
-  'version',
-  'license',
-  'size',
-  'downloads',
-  'downloads-day',
-  'downloads-week',
-  'downloads-month',
-  'downloads-year',
-  'vulnerabilities',
-  'dependencies',
-  'created',
-  'updated',
-  'engines',
-  'types',
-  'maintainers',
-  'deprecated',
-  'quality',
-  'popularity',
-  'maintenance',
-  'score',
-  'name',
-]
-
 watch([pkg, type], () => {
   isValid.value = true
 })
@@ -76,7 +52,7 @@ const copyToClipboard = async () => {
           v-model="type"
           class="w-full h-10.5 px-4 py-2 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-black/20 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none text-sm transition-all appearance-none cursor-pointer"
         >
-          <option v-for="t in types" :key="t" :value="t" class="dark:bg-gray-900">
+          <option v-for="t in BADGE_TYPES" :key="t" :value="t" class="dark:bg-gray-900">
             {{ formatLabel(t) }}
           </option>
         </select>
