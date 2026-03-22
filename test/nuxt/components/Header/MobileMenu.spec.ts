@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import { computed, nextTick } from 'vue'
+import { HeaderMobileMenu } from '#components'
 
 // Mock useConnector
 mockNuxtImport('useConnector', () => () => ({
@@ -24,7 +25,6 @@ vi.mock('@vueuse/integrations/useFocusTrap', () => ({
 
 describe('MobileMenu', () => {
   async function mountMenu(open = false) {
-    const { HeaderMobileMenu } = await import('#components')
     return mountSuspended(HeaderMobileMenu, {
       props: {
         open,
@@ -33,7 +33,7 @@ describe('MobileMenu', () => {
             type: 'group' as const,
             name: 'main',
             label: 'Navigation',
-            items: [{ name: 'home', label: 'Home', to: '/', iconClass: 'i-lucide:home' }],
+            items: [{ type: 'link' as const, name: 'home', label: 'Home', to: '/', iconClass: 'i-lucide:home' }],
           },
         ],
       },
