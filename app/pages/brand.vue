@@ -35,41 +35,9 @@ const logos = [
     height: 153,
     span: false,
   },
-  {
-    name: () => $t('brand.logos.app_icon'),
-    src: '/logo-icon.svg',
-    altDark: () => $t('brand.logos.app_icon_alt'),
-    altLight: () => $t('brand.logos.app_icon_light_alt'),
-    width: 512,
-    height: 512,
-    span: false,
-  },
 ]
-
-const colors = [
-  { name: () => $t('brand.colors.background'), hex: '#0a0a0a', oklch: 'oklch(0.171 0 0)' },
-  { name: () => $t('brand.colors.foreground'), hex: '#fafafa', oklch: 'oklch(0.982 0 0)' },
-  { name: () => $t('brand.colors.accent'), hex: '#51c8fc', oklch: 'oklch(0.787 0.128 230.318)' },
-]
-
-const { copy, copied, text: lastCopied } = useClipboard({ copiedDuring: 2000 })
 
 const typographySizes = ['text-2xl', 'text-xl', 'text-lg', 'text-base', 'text-sm']
-
-const dosItems = [
-  () => $t('brand.usage.do_clear_space'),
-  () => $t('brand.usage.do_color_variants'),
-  () => $t('brand.usage.do_aspect_ratio'),
-  () => $t('brand.usage.do_minimum_size'),
-]
-
-const dontsItems = [
-  () => $t('brand.usage.dont_stretch'),
-  () => $t('brand.usage.dont_recolor'),
-  () => $t('brand.usage.dont_busy_bg'),
-  () => $t('brand.usage.dont_effects'),
-  () => $t('brand.usage.dont_rotate'),
-]
 
 const pngLoading = ref(new Set<string>())
 
@@ -184,75 +152,6 @@ async function handlePngDownload(logo: (typeof logos)[number]) {
           <BrandCustomize />
         </ClientOnly>
 
-        <!-- Colors Section -->
-        <section aria-labelledby="brand-colors-heading">
-          <h2 id="brand-colors-heading" class="text-lg text-fg uppercase tracking-wider mb-4">
-            {{ $t('brand.colors.title') }}
-          </h2>
-          <p class="text-fg-muted leading-relaxed mb-8">
-            {{ $t('brand.colors.description') }}
-          </p>
-
-          <!-- Screen reader announcement for copy -->
-          <div class="sr-only" aria-live="polite" role="status">
-            <span v-if="copied">{{ $t('brand.colors.copied') }}</span>
-          </div>
-
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            <div
-              v-for="color in colors"
-              :key="color.hex"
-              class="group"
-              role="group"
-              :aria-label="color.name()"
-            >
-              <div
-                class="rounded-lg h-20 sm:h-24 mb-3 border border-border"
-                :style="{ backgroundColor: color.hex }"
-              />
-              <p class="font-mono text-sm text-fg mb-1 m-0">
-                {{ color.name() }}
-              </p>
-              <div class="flex flex-col gap-1">
-                <ButtonBase
-                  size="sm"
-                  class="!border-none !px-0 !justify-start"
-                  :aria-label="$t('brand.colors.copy_hex', { name: color.name() })"
-                  @click="copy(color.hex)"
-                >
-                  <code class="text-fg-muted">{{ color.hex }}</code>
-                  <span
-                    class="w-3 h-3 shrink-0 transition-colors duration-200"
-                    :class="
-                      copied && lastCopied === color.hex
-                        ? 'i-lucide:check text-badge-green'
-                        : 'i-lucide:copy opacity-0 group-hover:opacity-100'
-                    "
-                    aria-hidden="true"
-                  />
-                </ButtonBase>
-                <ButtonBase
-                  size="sm"
-                  class="!border-none !px-0 !justify-start"
-                  :aria-label="$t('brand.colors.copy_oklch', { name: color.name() })"
-                  @click="copy(color.oklch)"
-                >
-                  <code class="text-fg-subtle">{{ color.oklch }}</code>
-                  <span
-                    class="w-3 h-3 shrink-0 transition-colors duration-200"
-                    :class="
-                      copied && lastCopied === color.oklch
-                        ? 'i-lucide:check text-badge-green'
-                        : 'i-lucide:copy opacity-0 group-hover:opacity-100'
-                    "
-                    aria-hidden="true"
-                  />
-                </ButtonBase>
-              </div>
-            </div>
-          </div>
-        </section>
-
         <!-- Typography Section -->
         <section aria-labelledby="brand-typography-heading">
           <h2 id="brand-typography-heading" class="text-lg text-fg uppercase tracking-wider mb-4">
@@ -311,56 +210,16 @@ async function handlePngDownload(logo: (typeof logos)[number]) {
           </div>
         </section>
 
-        <!-- Usage Guidelines Section -->
-        <section aria-labelledby="brand-usage-heading">
-          <h2 id="brand-usage-heading" class="text-lg text-fg uppercase tracking-wider mb-4">
-            {{ $t('brand.usage.title') }}
+        <!-- Guidelines -->
+        <section aria-labelledby="brand-guidelines-heading">
+          <h2 id="brand-guidelines-heading" class="text-lg text-fg uppercase tracking-wider mb-4">
+            {{ $t('brand.guidelines.title') }}
           </h2>
-          <p class="text-fg-muted leading-relaxed mb-8">
-            {{ $t('brand.usage.description') }}
-          </p>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Do's -->
-            <div>
-              <h3 class="font-mono text-sm text-badge-green uppercase tracking-wider mb-4">
-                {{ $t('brand.usage.do') }}
-              </h3>
-              <ul class="space-y-3 list-none p-0 m-0">
-                <li
-                  v-for="(item, i) in dosItems"
-                  :key="`do-${i}`"
-                  class="flex items-start gap-3 text-fg-muted text-sm"
-                >
-                  <span
-                    class="i-lucide:check w-4 h-4 text-badge-green shrink-0 mt-0.5"
-                    aria-hidden="true"
-                  />
-                  <span>{{ item() }}</span>
-                </li>
-              </ul>
-            </div>
-
-            <!-- Don'ts -->
-            <div>
-              <h3 class="font-mono text-sm text-badge-pink uppercase tracking-wider mb-4">
-                {{ $t('brand.usage.dont') }}
-              </h3>
-              <ul class="space-y-3 list-none p-0 m-0">
-                <li
-                  v-for="(item, i) in dontsItems"
-                  :key="`dont-${i}`"
-                  class="flex items-start gap-3 text-fg-muted text-sm"
-                >
-                  <span
-                    class="i-lucide:x w-4 h-4 text-badge-pink shrink-0 mt-0.5"
-                    aria-hidden="true"
-                  />
-                  <span>{{ item() }}</span>
-                </li>
-              </ul>
-            </div>
-          </div>
+          <blockquote
+            class="border-is-2 border-is-accent ps-6 py-2 text-fg-muted leading-relaxed italic"
+          >
+            {{ $t('brand.guidelines.message') }}
+          </blockquote>
         </section>
       </div>
     </article>

@@ -4408,6 +4408,9 @@
         "copy_svg": {
           "type": "string"
         },
+        "copied": {
+          "type": "string"
+        },
         "browse_brand": {
           "type": "string"
         }
@@ -4456,15 +4459,6 @@
             "mark_light_alt": {
               "type": "string"
             },
-            "app_icon": {
-              "type": "string"
-            },
-            "app_icon_alt": {
-              "type": "string"
-            },
-            "app_icon_light_alt": {
-              "type": "string"
-            },
             "on_dark": {
               "type": "string"
             },
@@ -4510,36 +4504,6 @@
           },
           "additionalProperties": false
         },
-        "colors": {
-          "type": "object",
-          "properties": {
-            "title": {
-              "type": "string"
-            },
-            "description": {
-              "type": "string"
-            },
-            "copy_hex": {
-              "type": "string"
-            },
-            "copy_oklch": {
-              "type": "string"
-            },
-            "copied": {
-              "type": "string"
-            },
-            "background": {
-              "type": "string"
-            },
-            "foreground": {
-              "type": "string"
-            },
-            "accent": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false
-        },
         "typography": {
           "type": "object",
           "properties": {
@@ -4570,46 +4534,13 @@
           },
           "additionalProperties": false
         },
-        "usage": {
+        "guidelines": {
           "type": "object",
           "properties": {
             "title": {
               "type": "string"
             },
-            "description": {
-              "type": "string"
-            },
-            "do": {
-              "type": "string"
-            },
-            "dont": {
-              "type": "string"
-            },
-            "do_clear_space": {
-              "type": "string"
-            },
-            "do_color_variants": {
-              "type": "string"
-            },
-            "do_aspect_ratio": {
-              "type": "string"
-            },
-            "do_minimum_size": {
-              "type": "string"
-            },
-            "dont_stretch": {
-              "type": "string"
-            },
-            "dont_recolor": {
-              "type": "string"
-            },
-            "dont_busy_bg": {
-              "type": "string"
-            },
-            "dont_effects": {
-              "type": "string"
-            },
-            "dont_rotate": {
+            "message": {
               "type": "string"
             }
           },

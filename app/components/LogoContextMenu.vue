@@ -83,7 +83,7 @@ onKeyStroke('Escape', () => {
             :classicon="copied ? 'i-lucide:check text-badge-green' : 'i-lucide:copy'"
             @click="copySvg"
           >
-            {{ copied ? $t('brand.colors.copied') : $t('logo_menu.copy_svg') }}
+            {{ copied ? $t('logo_menu.copied') : $t('logo_menu.copy_svg') }}
           </ButtonBase>
           <ButtonBase
             role="menuitem"

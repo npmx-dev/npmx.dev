@@ -1468,6 +1468,7 @@
   },
   "logo_menu": {
     "copy_svg": "Copy logo as SVG",
+    "copied": "Copied!",
     "browse_brand": "Browse brand kit"
   },
   "brand": {
@@ -1484,9 +1485,6 @@
       "mark": "Logo mark",
       "mark_alt": "npmx logo mark with dot and slash on dark background",
       "mark_light_alt": "npmx logo mark with dot and slash on light background",
-      "app_icon": "App icon",
-      "app_icon_alt": "npmx app icon with slash on dark rounded background",
-      "app_icon_light_alt": "npmx app icon with slash on light background",
       "on_dark": "On dark",
       "on_light": "On light",
       "download_svg": "SVG",
@@ -1502,16 +1500,6 @@
       "download_svg_aria": "Download customized logo as SVG",
       "download_png_aria": "Download customized logo as PNG"
     },
-    "colors": {
-      "title": "colors",
-      "description": "The core npmx color palette uses OKLch color space for perceptual uniformity.",
-      "copy_hex": "Copy hex value for {name}",
-      "copy_oklch": "Copy OKLch value for {name}",
-      "copied": "Copied!",
-      "background": "Background",
-      "foreground": "Foreground",
-      "accent": "Accent"
-    },
     "typography": {
       "title": "typography",
       "description": "npmx uses the Geist font family by Vercel for both interface text and code.",
@@ -1522,20 +1510,9 @@
       "pangram": "The quick brown fox jumps over the lazy dog",
       "numbers": "0123456789"
     },
-    "usage": {
-      "title": "usage guidelines",
-      "description": "Follow these guidelines when using the npmx brand assets.",
-      "do": "Do",
-      "dont": "Don't",
-      "do_clear_space": "Maintain adequate clear space around the logo",
-      "do_color_variants": "Use the correct color variant for your background",
-      "do_aspect_ratio": "Keep the logo's original aspect ratio",
-      "do_minimum_size": "Use a minimum height of 24px for the logo mark",
-      "dont_stretch": "Stretch or distort the logo",
-      "dont_recolor": "Change the logo's colors",
-      "dont_busy_bg": "Place on busy or low-contrast backgrounds",
-      "dont_effects": "Add shadows, gradients, or outlines",
-      "dont_rotate": "Rotate or skew the logo"
+    "guidelines": {
+      "title": "guidelines",
+      "message": "Please leave sufficient contrast with the background and a large enough logo size (more than 24px). This is important for our users' accessibility, and we hope you'll help us uphold these values."
     }
   }
 }
