@@ -95,29 +95,70 @@ const {
   },
 )
 
+function maybePrefetchReadmeMarkdown() {
+  if (import.meta.server) return
+  if (!readmeData.value.mdExists) return
+  if (readmeMarkdownStatus.value !== 'idle') return
+  void fetchReadmeMarkdown()
+}
+
+watch([() => readmeData.value.mdExists, readmeMarkdownStatus], () => {
+  maybePrefetchReadmeMarkdown()
+}, { immediate: true })
+
 //copy README file as Markdown
 const { copied: copiedReadme, copy: copyReadme } = useClipboard({
   source: () => '',
   copiedDuring: 2000,
   legacy: true,
 })
+const isCopyingReadme = shallowRef(false)
+
+const readmeCopyTooltip = computed(() =>
+  isCopyingReadme.value ? $t('common.loading') : $t('package.readme.copy_as_markdown'),
+)
+
+const readmeCopyAriaLabel = computed(() => {
+  if (isCopyingReadme.value) return $t('common.loading')
+  if (copiedReadme.value) return $t('common.copied')
+  return $t('package.readme.copy_as_markdown')
+})
+
+const readmeCopyIcon = computed(() => {
+  if (isCopyingReadme.value) return 'i-svg-spinners:ring-resize'
+  if (copiedReadme.value) return 'i-lucide:check'
+  return 'i-simple-icons:markdown'
+})
+
+const readmeCopyText = computed(() => {
+  if (isCopyingReadme.value) return $t('common.loading')
+  if (copiedReadme.value) return $t('common.copied')
+  return $t('common.copy')
+})
 
 function prefetchReadmeMarkdown() {
-  if (readmeMarkdownStatus.value === 'idle') {
-    fetchReadmeMarkdown()
-  }
+  maybePrefetchReadmeMarkdown()
 }
 
 async function copyReadmeHandler() {
-  let markdown = readmeMarkdownData.value?.markdown
-  if (!markdown) {
-    await fetchReadmeMarkdown()
-    markdown = readmeMarkdownData.value?.markdown
+  if (isCopyingReadme.value) return
+
+  isCopyingReadme.value = true
+
+  try {
+    let markdown = readmeMarkdownData.value?.markdown
+    if (!markdown) {
+      await fetchReadmeMarkdown()
+      markdown = readmeMarkdownData.value?.markdown
+    }
+
+    if (!markdown) return
+
+    await copyReadme(markdown)
   }
-
-  if (!markdown) return
-
-  await copyReadme(markdown)
+  finally {
+    isCopyingReadme.value = false
+  }
 }
 
 // Track active TOC item based on scroll position
@@ -988,20 +1029,20 @@ const showSkeleton = shallowRef(false)
               <!-- Copy readme as Markdown button -->
               <TooltipApp
                 v-if="readmeData?.mdExists"
-                :text="$t('package.readme.copy_as_markdown')"
+                :text="readmeCopyTooltip"
                 position="bottom"
               >
                 <ButtonBase
                   @mouseenter="prefetchReadmeMarkdown"
                   @focus="prefetchReadmeMarkdown"
                   @click="copyReadmeHandler()"
+                  :disabled="isCopyingReadme"
+                  :aria-busy="isCopyingReadme ? 'true' : 'false'"
                   :aria-pressed="copiedReadme"
-                  :aria-label="
-                    copiedReadme ? $t('common.copied') : $t('package.readme.copy_as_markdown')
-                  "
-                  :classicon="copiedReadme ? 'i-lucide:check' : 'i-simple-icons:markdown'"
+                  :aria-label="readmeCopyAriaLabel"
+                  :classicon="readmeCopyIcon"
                 >
-                  {{ copiedReadme ? $t('common.copied') : $t('common.copy') }}
+                  {{ readmeCopyText }}
                 </ButtonBase>
               </TooltipApp>
               <ReadmeTocDropdown
