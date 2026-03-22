@@ -317,8 +317,8 @@ const config = computed<VueUiSparklineConfig>(() => {
       translations: {
         keyboardNavigation: $t('package.trends.chart_sr.keyboard_navigation_horizontal'),
         tableAvailable: $t('package.trends.chart_sr.table_available'),
-        tableCaption: $t('package.trends.chart_sr.table_caption')
-      }
+        tableCaption: $t('package.trends.chart_sr.table_caption'),
+      },
     },
     theme: 'dark',
     /**
@@ -509,9 +509,9 @@ const config = computed<VueUiSparklineConfig>(() => {
 }
 
 :deep(.vue-data-ui-component svg:focus-visible) {
-    outline: 0.1rem solid var(--accent-color) !important;
-    border-radius: 0.1rem;
-    outline-offset: 3px;
+  outline: 0.1rem solid var(--accent-color) !important;
+  border-radius: 0.1rem;
+  outline-offset: 3px;
 }
 </style>
 

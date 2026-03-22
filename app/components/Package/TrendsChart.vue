@@ -1392,8 +1392,8 @@ const chartConfig = computed<VueUiXyConfig>(() => {
       translations: {
         keyboardNavigation: $t('package.trends.chart_sr.keyboard_navigation_horizontal'),
         tableAvailable: $t('package.trends.chart_sr.table_available'),
-        tableCaption: $t('package.trends.chart_sr.table_caption')
-      }
+        tableCaption: $t('package.trends.chart_sr.table_caption'),
+      },
     },
     chart: {
       height: chartHeight.value,
@@ -2146,9 +2146,9 @@ watch(selectedMetric, value => {
 
 <style scoped>
 :deep(.vue-data-ui-component svg:focus-visible) {
-    outline: 1px solid var(--accent-color) !important;
-    border-radius: 0.1rem;
-    outline-offset: 0;
+  outline: 1px solid var(--accent-color) !important;
+  border-radius: 0.1rem;
+  outline-offset: 0;
 }
 :deep(.vue-ui-user-options-button:focus-visible),
 :deep(.vue-ui-user-options :first-child:focus-visible) {
