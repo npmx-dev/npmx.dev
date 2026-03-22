@@ -1327,12 +1327,6 @@
             "current_tags": {
               "type": "string"
             },
-            "version_filter_placeholder": {
-              "type": "string"
-            },
-            "version_filter_label": {
-              "type": "string"
-            },
             "no_match_filter": {
               "type": "string"
             }

@@ -414,8 +414,6 @@
       },
       "page_title": "版本歷史記錄",
       "current_tags": "當前標籤",
-      "version_filter_placeholder": "篩選版本…",
-      "version_filter_label": "篩選版本",
       "no_match_filter": "沒有版本符合 {filter}"
     },
     "dependencies": {
