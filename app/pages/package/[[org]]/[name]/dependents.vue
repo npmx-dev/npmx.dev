@@ -19,12 +19,14 @@ const resolvedVersion = computed(() => {
   return latest
 })
 
-const displayVersion = computed(() => {
-  if (!pkg.value || !resolvedVersion.value) return null
-  return pkg.value.versions[resolvedVersion.value] ?? null
-})
+const displayVersion = computed(() => pkg.value?.requestedVersion ?? null)
 
-const latestVersion = computed(() => displayVersion.value ?? null)
+const latestVersion = computed(() => {
+  if (!pkg.value) return null
+  const latestTag = pkg.value['dist-tags']?.latest
+  if (!latestTag) return null
+  return pkg.value.versions[latestTag] ?? null
+})
 
 const versionUrlPattern = computed(() => {
   const split = packageName.value.split('/')

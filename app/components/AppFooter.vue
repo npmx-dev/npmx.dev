@@ -24,7 +24,7 @@ const closeModal = () => modalRef.value?.close?.()
         <div class="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-1 min-h-11 text-xs">
           <!-- Column 1: Product -->
           <div class="flex flex-col gap-1">
-            <span class="text-fg-subtle uppercase tracking-wider text-2xs mb-1">{{ $t('footer.product') }}</span>
+            <span class="text-fg-subtle uppercase tracking-wide text-2xs mb-1">{{ $t('footer.product') }}</span>
             <LinkBase :to="{ name: 'about' }">{{ $t('footer.about') }}</LinkBase>
             <LinkBase :to="{ name: 'blog' }">{{ $t('footer.blog') }}</LinkBase>
             <LinkBase :to="NPMX_DOCS_SITE">{{ $t('footer.docs') }}</LinkBase>
@@ -119,7 +119,7 @@ const closeModal = () => modalRef.value?.close?.()
 
           <!-- Column 2: Legal & Info -->
           <div class="flex flex-col gap-1">
-            <span class="text-fg-subtle uppercase tracking-wider text-2xs mb-1">{{ $t('footer.legal') }}</span>
+            <span class="text-fg-subtle uppercase tracking-wide text-2xs mb-1">{{ $t('footer.legal') }}</span>
             <LinkBase :to="{ name: 'privacy' }">{{ $t('privacy_policy.title') }}</LinkBase>
             <LinkBase :to="{ name: 'accessibility' }">{{ $t('a11y.footer_title') }}</LinkBase>
             <LinkBase :to="{ name: 'translation-status' }">{{ $t('translation_status.title') }}</LinkBase>
@@ -127,7 +127,7 @@ const closeModal = () => modalRef.value?.close?.()
 
           <!-- Column 3: Community -->
           <div class="flex flex-col gap-1">
-            <span class="text-fg-subtle uppercase tracking-wider text-2xs mb-1">{{ $t('footer.community') }}</span>
+            <span class="text-fg-subtle uppercase tracking-wide text-2xs mb-1">{{ $t('footer.community') }}</span>
             <LinkBase to="https://repo.npmx.dev">{{ $t('footer.source') }}</LinkBase>
             <LinkBase to="https://social.npmx.dev">{{ $t('footer.social') }}</LinkBase>
             <LinkBase :to="discord.url">{{ discord.label }}</LinkBase>

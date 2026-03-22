@@ -1,4 +1,4 @@
-import { CACHE_MAX_AGE_FIVE_MINUTES, NPM_REGISTRY } from '#shared/utils/constants'
+import { CACHE_MAX_AGE_FIVE_MINUTES } from '#shared/utils/constants'
 
 const NPM_SEARCH_BASE = 'https://registry.npmjs.org/-/v1/search'
 

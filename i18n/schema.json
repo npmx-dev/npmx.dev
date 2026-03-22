@@ -63,6 +63,15 @@
         },
         "keyboard_shortcuts": {
           "type": "string"
+        },
+        "product": {
+          "type": "string"
+        },
+        "legal": {
+          "type": "string"
+        },
+        "community": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -625,6 +634,12 @@
         "scroll_to_top": {
           "type": "string"
         },
+        "previous": {
+          "type": "string"
+        },
+        "next": {
+          "type": "string"
+        },
         "cancel": {
           "type": "string"
         },
@@ -960,6 +975,9 @@
             },
             "compare_this_package": {
               "type": "string"
+            },
+            "dependents": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1055,6 +1073,27 @@
               "type": "string"
             },
             "locally": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "dependents": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "subtitle": {
+              "type": "string"
+            },
+            "count": {
+              "type": "string"
+            },
+            "none": {
+              "type": "string"
+            },
+            "error": {
               "type": "string"
             }
           },
@@ -1367,6 +1406,9 @@
               "type": "string"
             },
             "vulnerabilities_count": {
+              "type": "string"
+            },
+            "none": {
               "type": "string"
             }
           },
@@ -1697,6 +1739,12 @@
               "type": "string"
             },
             "none": {
+              "type": "string"
+            },
+            "changed_badge": {
+              "type": "string"
+            },
+            "changed": {
               "type": "string"
             }
           },
@@ -2525,6 +2573,9 @@
           "type": "string"
         },
         "binary_rendering_warning": {
+          "type": "string"
+        },
+        "toggle_word_wrap": {
           "type": "string"
         }
       },
