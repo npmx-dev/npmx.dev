@@ -109,7 +109,7 @@
       "reply_count": "{count} 条回复 | {count} 条回复",
       "like_count": "{count} 个赞 | {count} 个赞",
       "repost_count": "{count} 次转发 | {count} 次转发",
-      "more_replies": "还有 {count} 条回复... | 还有 {count} 条回复..."
+      "more_replies": "还有 {count} 条回复..."
     }
   },
   "settings": {
@@ -146,10 +146,14 @@
     "theme_system": "跟随系统",
     "language": "语言",
     "help_translate": "帮助翻译 npmx",
-    "accent_colors": "强调色",
+    "accent_colors": {
+      "label": "强调色"
+    },
     "clear_accent": "清除强调色",
     "translation_progress": "翻译进度",
-    "background_themes": "背景色调",
+    "background_themes": {
+      "label": "背景色调"
+    },
     "keyboard_shortcuts_enabled": "启用快捷键",
     "keyboard_shortcuts_enabled_description": "如果某些快捷键与其他浏览器或系统快捷键冲突，可以选择将其禁用。"
   },
@@ -1048,7 +1052,8 @@
       "error": "加载组织失败",
       "empty": "未找到组织",
       "view_all": "查看全部"
-    }
+    },
+    "pr": "在 GitHub 上打开 PR #{prNumber}"
   },
   "compare": {
     "packages": {

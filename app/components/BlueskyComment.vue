@@ -38,16 +38,27 @@ function getHostname(uri: string): string {
     return uri
   }
 }
+
+let segmenter: Intl.Segmenter | null = null
+function firstChar(str: string): string {
+  segmenter ??= new Intl.Segmenter(undefined, { granularity: 'grapheme' })
+  return Array.from(segmenter.segment(str))[0]?.segment ?? ''
+}
 </script>
 
 <template>
-  <div :class="depth === 0 ? 'flex gap-3' : 'flex gap-3 mt-3'">
-    <!-- Avatar -->
+  <!--
+    Depth 0: classic avatar-column layout (all screens)
+    Depth 1+: Medium-style inline avatar on mobile, avatar-column on desktop
+  -->
+  <div :class="depth === 0 ? 'flex gap-3' : 'sm:flex sm:gap-3'">
+    <!-- Column avatar: always shown at depth 0, desktop-only at depth 1+ -->
     <a
       :href="`https://bsky.app/profile/${comment.author.handle}`"
       target="_blank"
       rel="noopener noreferrer"
       class="shrink-0"
+      :class="depth > 0 ? 'hidden sm:block' : ''"
     >
       <img
         v-if="comment.author.avatar"
@@ -65,22 +76,45 @@ function getHostname(uri: string): string {
           depth === 0 ? 'w-10 h-10' : 'w-8 h-8 text-sm',
         ]"
       >
-        {{ (comment.author.displayName || comment.author.handle).charAt(0).toUpperCase() }}
+        {{ firstChar(comment.author.displayName || comment.author.handle).toUpperCase() }}
       </div>
     </a>
 
     <div class="flex-1 min-w-0">
       <!-- Author info + timestamp -->
-      <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0">
+      <div class="flex flex-wrap items-center gap-x-2 gap-y-0">
+        <!-- Inline avatar: mobile-only for nested comments -->
+        <a
+          v-if="depth > 0"
+          :href="`https://bsky.app/profile/${comment.author.handle}`"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="shrink-0 sm:hidden"
+        >
+          <img
+            v-if="comment.author.avatar"
+            :src="comment.author.avatar"
+            :alt="comment.author.displayName || comment.author.handle"
+            class="w-6 h-6 rounded-full"
+            width="24"
+            height="24"
+            loading="lazy"
+          />
+          <div
+            v-else
+            class="w-6 h-6 rounded-full bg-border flex items-center justify-center text-fg-muted text-xs"
+          >
+            {{ firstChar(comment.author.displayName || comment.author.handle).toUpperCase() }}
+          </div>
+        </a>
         <a
           :href="`https://bsky.app/profile/${comment.author.handle}`"
           target="_blank"
           rel="noopener noreferrer"
-          class="font-medium text-fg hover:underline"
+          :class="['font-medium text-fg hover:underline', depth > 0 ? 'text-sm' : '']"
         >
           {{ comment.author.displayName || comment.author.handle }}
         </a>
-        <span class="text-fg-subtle text-sm">@{{ comment.author.handle }}</span>
         <span class="text-fg-subtle text-sm">·</span>
         <a
           :href="getCommentUrl(props.comment)"
@@ -93,7 +127,7 @@ function getHostname(uri: string): string {
       </div>
 
       <!-- Comment text with rich segments -->
-      <p class="text-fg-muted whitespace-pre-wrap">
+      <p class="text-fg-muted whitespace-pre-wrap mt-2 mb-3">
         <template v-for="(segment, i) in processedSegments" :key="i">
           <a
             v-if="segment.url"
@@ -162,7 +196,7 @@ function getHostname(uri: string): string {
       <!-- Like/repost counts -->
       <div
         v-if="comment.likeCount > 0 || comment.repostCount > 0"
-        class="mt-2 flex gap-4 text-sm text-fg-subtle"
+        class="mt-1 flex gap-4 text-sm text-fg-subtle"
       >
         <span v-if="comment.likeCount > 0">
           {{ $t('blog.atproto.like_count', { count: comment.likeCount }, comment.likeCount) }}
@@ -174,7 +208,10 @@ function getHostname(uri: string): string {
 
       <!-- Nested replies -->
       <template v-if="comment.replies.length > 0">
-        <div v-if="depth < MaxDepth" class="mt-2 ps-2 border-is-2 border-border flex flex-col">
+        <div
+          v-if="depth < MaxDepth"
+          class="mt-3 ps-3 border-is-2 border-border flex flex-col gap-3"
+        >
           <BlueskyComment
             v-for="reply in comment.replies"
             :key="reply.uri"

@@ -111,10 +111,14 @@
     "theme_system": "Rendszer",
     "language": "Nyelv",
     "help_translate": "Segíts lefordítani az npmx-et",
-    "accent_colors": "Akcentus színek",
+    "accent_colors": {
+      "label": "Akcentus színek"
+    },
     "clear_accent": "Akcentus szín törlése",
     "translation_progress": "Fordítás állapota",
-    "background_themes": "Háttér árnyalata",
+    "background_themes": {
+      "label": "Háttér árnyalata"
+    },
     "keyboard_shortcuts_enabled": "Billentyűzet parancsikonok engedélyezése",
     "keyboard_shortcuts_enabled_description": "A billentyűzet parancsikonok letilthatók, ha ütköznek más böngésző vagy rendszer parancsikonokkal"
   },

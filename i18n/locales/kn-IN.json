@@ -75,7 +75,9 @@
     "theme_system": "ಸಿಸ್ಟಮ್",
     "language": "ಭಾಷೆ",
     "help_translate": "npmx ಅನುವಾದಕ್ಕೆ ಸಹಾಯ ಮಾಡಿ",
-    "accent_colors": "ಅಕ್ಸೆಂಟ್ ಬಣ್ಣಗಳು",
+    "accent_colors": {
+      "label": "ಅಕ್ಸೆಂಟ್ ಬಣ್ಣಗಳು"
+    },
     "clear_accent": "ಅಕ್ಸೆಂಟ್ ಬಣ್ಣ ತೆರವುಗೊಳಿಸಿ",
     "translation_progress": "ಅನುವಾದ ಪ್ರಗತಿ"
   },
