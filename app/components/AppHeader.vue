@@ -151,6 +151,7 @@ const route = useRoute()
 const isMobile = useIsMobile()
 const isSearchExpandedManually = shallowRef(false)
 const searchBoxRef = useTemplateRef('searchBoxRef')
+const searchContainerRef = useTemplateRef('searchContainerRef')
 
 // On search page, always show search expanded on mobile
 const isOnHomePage = computed(() => route.name === 'index')
@@ -188,6 +189,12 @@ function handleSearchBlur() {
   }
 }
 
+onClickOutside(searchContainerRef, () => {
+  if (isMobile.value && !isOnSearchPage.value) {
+    isSearchExpandedManually.value = false
+  }
+})
+
 function handleSearchFocus() {
   showFullSearch.value = true
 }
@@ -215,7 +222,7 @@ onKeyStroke(
     <div class="absolute inset-0 bg-bg/80 backdrop-blur-md" />
     <nav
       :aria-label="$t('nav.main_navigation')"
-      class="relative container min-h-14 flex items-center gap-2 z-1 justify-end"
+      class="relative container min-h-14 flex items-center gap-2 justify-end"
     >
       <!-- Mobile: Logo (navigates home) -->
       <NuxtLink
@@ -260,6 +267,7 @@ onKeyStroke(
 
       <!-- Center: Search bar + nav items -->
       <div
+        ref="searchContainerRef"
         class="flex-1 flex items-center md:gap-6"
         :class="{
           'hidden sm:flex': !isSearchExpanded,
@@ -277,7 +285,7 @@ onKeyStroke(
         />
         <ul
           v-if="!isSearchExpanded && isConnected && npmUser"
-          :class="{ hidden: showFullSearch }"
+          :class="{ 'invisible pointer-events-none': showFullSearch }"
           class="hidden sm:flex items-center gap-4 sm:gap-6 list-none m-0 p-0"
         >
           <!-- Packages dropdown (when connected) -->
