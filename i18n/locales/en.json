@@ -1105,7 +1105,9 @@
       "empty_title": "Select packages to compare",
       "empty_description": "Search and add at least 2 packages above to see a side-by-side comparison of their metrics.",
       "table_view": "Table",
-      "charts_view": "Charts"
+      "charts_view": "Charts",
+      "bar_chart_nav_hint": "Use ↑ ↓",
+      "line_chart_nav_hint": "Use ← →"
     },
     "selector": {
       "search_label": "Search for packages",

@@ -1626,6 +1626,9 @@
             },
             "subtitle": {
               "type": "string"
+            },
+            "sparkline_nav_hint": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -3320,6 +3323,12 @@
               "type": "string"
             },
             "charts_view": {
+              "type": "string"
+            },
+            "bar_chart_nav_hint": {
+              "type": "string"
+            },
+            "line_chart_nav_hint": {
               "type": "string"
             }
           },
