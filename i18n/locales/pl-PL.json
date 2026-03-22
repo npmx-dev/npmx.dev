@@ -588,8 +588,7 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    },
-    "download": {}
+    }
   },
   "connector": {
     "modal": {
@@ -1162,7 +1161,6 @@
     "file_size_warning": "{size} przekracza limit dla porównań wynoszący 250KB",
     "compare_versions": "porównaj",
     "compare_versions_title": "Porównaj z najnowszą wersją",
-    "version_invalid_url_format": {},
     "summary": "Podsumowanie",
     "deps_count": "{count} zależności",
     "dependencies": "Zależności",
@@ -1327,9 +1325,5 @@
       "p1": "Jeśli napotkasz barierę dostępności w {app}, daj nam znać, otwierając zgłoszenie w naszym {link}. Traktujemy takie zgłoszenia poważnie i zrobimy wszystko, co w naszej mocy, aby rozwiązać problem.",
       "link": "repozytorium GitHub"
     }
-  },
-  "translation_status": {
-    "table": {}
-  },
-  "action_bar": {}
+  }
 }

@@ -599,8 +599,7 @@
       "b": "{size} B",
       "kb": "{size} KB",
       "mb": "{size} MB"
-    },
-    "download": {}
+    }
   },
   "connector": {
     "modal": {
@@ -1177,7 +1176,6 @@
     "file_size_warning": "{size} excede o limite de 250 KB para comparação",
     "compare_versions": "diferença",
     "compare_versions_title": "Compare com a versão mais recente",
-    "version_invalid_url_format": {},
     "version_selector_title": "Comparar com versão",
     "summary": "Resumo",
     "deps_count": "{count} dependência | {count} dependências",
@@ -1343,9 +1341,6 @@
       "p1": "Se você encontrar uma barreira de acessibilidade no {app}, informe-nos abrindo um problema em nosso {link}. Levamos esses relatórios a sério e faremos o nosso melhor para abordá-los.",
       "link": "Repositório GitHub"
     }
-  },
-  "translation_status": {
-    "table": {}
   },
   "action_bar": {
     "title": "Barra de ações",

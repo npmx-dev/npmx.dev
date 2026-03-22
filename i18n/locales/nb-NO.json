@@ -76,10 +76,6 @@
     "links": "Lenker",
     "tap_to_search": "Trykk for å søke"
   },
-  "blog": {
-    "author": {},
-    "atproto": {}
-  },
   "settings": {
     "title": "innstillinger",
     "tagline": "tilpass din npmx-opplevelse",
@@ -126,7 +122,6 @@
     "edit_on_github": "Rediger på GitHub",
     "view_guide": "Oversettelsesguide"
   },
-  "error": {},
   "common": {
     "loading": "Laster...",
     "loading_more": "Laster mer...",
@@ -153,9 +148,6 @@
       "github": "Vis på GitHub"
     }
   },
-  "profile": {
-    "invite": {}
-  },
   "package": {
     "not_found": "Pakke ikke funnet",
     "not_found_message": "Pakken kunne ikke finnes.",
@@ -168,7 +160,6 @@
       "version": "Denne versjonen er utfaset.",
       "no_reason": "Ingen årsak oppgitt"
     },
-    "size_increase": {},
     "replacement": {
       "title": "Du trenger kanskje ikke denne avhengigheten.",
       "native": "Denne kan erstattes med {replacement}, tilgjengelig siden Node {nodeVersion}.",
@@ -281,8 +272,7 @@
       "more_tagged": "{count} flere tagget",
       "all_covered": "Alle versjoner dekkes av taggene over",
       "deprecated_title": "{version} (utfaset)",
-      "view_all": "Vis {count} versjon | Vis alle {count} versjoner",
-      "copy_alt": {}
+      "view_all": "Vis {count} versjon | Vis alle {count} versjoner"
     },
     "dependencies": {
       "title": "Avhengighet ({count}) | Avhengigheter ({count})",
@@ -336,8 +326,7 @@
       "y_axis_label": "{granularity} {facet}",
       "items": {
         "downloads": "Nedlastinger"
-      },
-      "copy_alt": {}
+      }
     },
     "downloads": {
       "title": "Ukentlige nedlastinger",
@@ -429,8 +418,7 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    },
-    "download": {}
+    }
   },
   "connector": {
     "modal": {
@@ -777,8 +765,6 @@
         "managers": "pakkebehandlere"
       }
     },
-    "sponsors": {},
-    "oss_partners": {},
     "team": {},
     "contributors": {
       "title": "{count} Bidragsyter | {count} Bidragsytere",
@@ -799,7 +785,6 @@
         "description": "Chat, still spørsmål og del ideer.",
         "cta": "Bli med på Discord"
       },
-      "builders": {},
       "follow": {
         "title": "Hold deg oppdatert",
         "description": "Få med deg det siste om npmx.",
@@ -972,15 +957,7 @@
       "trends": {
         "title": "Ukentlige nedlastinger"
       }
-    },
-    "version_invalid_url_format": {},
-    "file_filter_option": {},
-    "filter": {}
-  },
-  "pds": {
-    "join": {},
-    "server": {},
-    "community": {}
+    }
   },
   "privacy_policy": {
     "cookies": {
@@ -1001,9 +978,5 @@
     "measures": {},
     "limitations": {},
     "contact": {}
-  },
-  "translation_status": {
-    "table": {}
-  },
-  "action_bar": {}
+  }
 }

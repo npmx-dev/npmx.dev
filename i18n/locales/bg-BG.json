@@ -535,8 +535,7 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    },
-    "download": {}
+    }
   },
   "connector": {
     "modal": {
@@ -1102,7 +1101,6 @@
     "file_too_large": "Файлът е твърде голям за сравнение",
     "file_size_warning": "{size} надвишава лимита от 250KB за сравнение",
     "compare_versions": "diff",
-    "version_invalid_url_format": {},
     "summary": "Резюме",
     "deps_count": "{count} зависимости",
     "dependencies": "Зависимости",
@@ -1244,9 +1242,5 @@
       "p1": "Ако срещнете бариера за достъпност в {app}, моля, уведомете ни, като отворите проблем в нашето {link}. Приемаме сериозно тези доклади и ще направим всичко възможно да ги разгледаме.",
       "link": "GitHub хранилище"
     }
-  },
-  "translation_status": {
-    "table": {}
-  },
-  "action_bar": {}
+  }
 }

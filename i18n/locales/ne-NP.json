@@ -54,10 +54,6 @@
     "links": "लिङ्कहरू",
     "tap_to_search": "खोज्न ट्याप गर्नुहोस्"
   },
-  "blog": {
-    "author": {},
-    "atproto": {}
-  },
   "settings": {
     "title": "सेटिङ्स",
     "tagline": "आफ्नो npmx अनुभव अनुकूल बनाउनुहोस्",
@@ -83,8 +79,7 @@
       "label": "एक्सेन्ट रङहरू"
     },
     "clear_accent": "एक्सेन्ट रङ हटाउनुहोस्",
-    "translation_progress": "अनुवाद प्रगति",
-    "background_themes": {}
+    "translation_progress": "अनुवाद प्रगति"
   },
   "i18n": {
     "missing_keys": "{count} अनुवाद छुटेको छ | {count} अनुवादहरू छुटेका छन्",
@@ -94,7 +89,6 @@
     "edit_on_github": "GitHub मा सम्पादन गर्नुहोस्",
     "view_guide": "अनुवाद मार्गदर्शन"
   },
-  "error": {},
   "common": {
     "loading": "लोड हुँदैछ...",
     "loading_more": "अझै लोड हुँदैछ...",
@@ -121,9 +115,6 @@
       "github": "GitHub मा हेर्नुहोस्"
     }
   },
-  "profile": {
-    "invite": {}
-  },
   "package": {
     "not_found": "प्याकेज फेला परेन",
     "not_found_message": "प्याकेज फेला पार्न सकिएन।",
@@ -136,7 +127,6 @@
       "version": "यो संस्करण अप्रचलित (deprecated) गरिएको छ।",
       "no_reason": "कारण दिइएको छैन"
     },
-    "size_increase": {},
     "replacement": {
       "title": "तपाईंलाई यो डिपेन्डेन्सी आवश्यक नपर्न सक्छ।",
       "native": "Node {nodeVersion} देखि उपलब्ध {replacement} ले यसलाई प्रतिस्थापन गर्न सक्छ।",
@@ -218,8 +208,7 @@
       "more_tagged": "{count} थप ट्याग गरिएको",
       "all_covered": "माथिका ट्यागले सबै संस्करणहरू कभर गर्छन्",
       "deprecated_title": "{version} (deprecated)",
-      "view_all": "{count} संस्करण हेर्नुहोस् | सबै {count} संस्करणहरू हेर्नुहोस्",
-      "copy_alt": {}
+      "view_all": "{count} संस्करण हेर्नुहोस् | सबै {count} संस्करणहरू हेर्नुहोस्"
     },
     "dependencies": {
       "title": "डिपेन्डेन्सीहरू ({count})",
@@ -268,8 +257,7 @@
       "date_range_multiline": "{start}\nदेखि {end}",
       "download_file": "{fileType} डाउनलोड गर्नुहोस्",
       "toggle_annotator": "एनोटेटर टगल गर्नुहोस्",
-      "items": {},
-      "copy_alt": {}
+      "items": {}
     },
     "downloads": {
       "title": "साप्ताहिक डाउनलोड"
@@ -354,8 +342,7 @@
       "name_asc": "नाम (A-Z)",
       "name_desc": "नाम (Z-A)"
     },
-    "size": {},
-    "download": {}
+    "size": {}
   },
   "connector": {
     "modal": {
@@ -694,8 +681,6 @@
         "managers": "म्यानेजरहरू बनाइरहेका छन्"
       }
     },
-    "sponsors": {},
-    "oss_partners": {},
     "team": {},
     "contributors": {
       "title": "कन्ट्रिब्युटरहरू",
@@ -716,7 +701,6 @@
         "description": "च्याट गर्नुहोस्, प्रश्न सोध्नुहोस्, र विचार साझा गर्नुहोस्।",
         "cta": "Discord मा जोडिनुहोस्"
       },
-      "builders": {},
       "follow": {
         "title": "अपडेट रहनुहोस्",
         "description": "npmx का ताजा अपडेटहरू जान्नुहोस्।",
@@ -828,15 +812,7 @@
       },
       "values": {},
       "trends": {}
-    },
-    "version_invalid_url_format": {},
-    "file_filter_option": {},
-    "filter": {}
-  },
-  "pds": {
-    "join": {},
-    "server": {},
-    "community": {}
+    }
   },
   "privacy_policy": {
     "cookies": {
@@ -857,9 +833,5 @@
     "measures": {},
     "limitations": {},
     "contact": {}
-  },
-  "translation_status": {
-    "table": {}
-  },
-  "action_bar": {}
+  }
 }

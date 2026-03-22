@@ -574,8 +574,7 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    },
-    "download": {}
+    }
   },
   "connector": {
     "modal": {
@@ -1146,7 +1145,6 @@
     "file_size_warning": "{size} müqayisə üçün 250KB limitini keçir",
     "compare_versions": "fərq",
     "compare_versions_title": "Versiyaları müqayisə et",
-    "version_invalid_url_format": {},
     "summary": "Xülasə",
     "deps_count": "{count} asılılıq",
     "dependencies": "Asılılıqlar",
@@ -1311,9 +1309,5 @@
       "p1": "{app} saytında əlçatanlıq maneəsi ilə qarşılaşsanız, xahiş edirik {link} issue açaraq bizə bildirin. Bu hesabatları ciddi qəbul edirik və onları həll etmək üçün əlimizdən gələni edəcəyik.",
       "link": "GitHub repozitoriyası"
     }
-  },
-  "translation_status": {
-    "table": {}
-  },
-  "action_bar": {}
+  }
 }

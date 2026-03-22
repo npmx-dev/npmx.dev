@@ -574,8 +574,7 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    },
-    "download": {}
+    }
   },
   "connector": {
     "modal": {
@@ -1145,7 +1144,6 @@
     "file_too_large": "Dosya çok büyük",
     "file_size_warning": "Dosya boyutu {size}",
     "compare_versions_title": "Sürümleri karşılaştır",
-    "version_invalid_url_format": {},
     "summary": "Özet",
     "deps_count": "{count} bağımlılık",
     "dependencies": "Bağımlılıklar",
@@ -1310,9 +1308,5 @@
       "p1": "Erişilebilirlik sorunları için:",
       "link": "GitHub'da issue açın"
     }
-  },
-  "translation_status": {
-    "table": {}
-  },
-  "action_bar": {}
+  }
 }

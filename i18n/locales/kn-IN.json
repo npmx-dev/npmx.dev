@@ -54,10 +54,6 @@
     "links": "ಲಿಂಕ್‌ಗಳು",
     "tap_to_search": "ಹುಡುಕಲು ಟ್ಯಾಪ್ ಮಾಡಿ"
   },
-  "blog": {
-    "author": {},
-    "atproto": {}
-  },
   "settings": {
     "title": "ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
     "tagline": "ನಿಮ್ಮ npmx ಅನುಭವವನ್ನು ಕಸ್ಟಮೈಸ್ ಮಾಡಿ",
@@ -83,8 +79,7 @@
       "label": "ಅಕ್ಸೆಂಟ್ ಬಣ್ಣಗಳು"
     },
     "clear_accent": "ಅಕ್ಸೆಂಟ್ ಬಣ್ಣ ತೆರವುಗೊಳಿಸಿ",
-    "translation_progress": "ಅನುವಾದ ಪ್ರಗತಿ",
-    "background_themes": {}
+    "translation_progress": "ಅನುವಾದ ಪ್ರಗತಿ"
   },
   "i18n": {
     "missing_keys": "{count} ಅನುವಾದ ಇಲ್ಲ | {count} ಅನುವಾದಗಳು ಇಲ್ಲ",
@@ -94,7 +89,6 @@
     "edit_on_github": "GitHub ನಲ್ಲಿ ಸಂಪಾದಿಸಿ",
     "view_guide": "ಅನುವಾದ ಮಾರ್ಗದರ್ಶಿ"
   },
-  "error": {},
   "common": {
     "loading": "ಲೋಡ್ ಆಗುತ್ತಿದೆ...",
     "loading_more": "ಇನ್ನಷ್ಟು ಲೋಡ್ ಆಗುತ್ತಿದೆ...",
@@ -121,9 +115,6 @@
       "github": "GitHub ನಲ್ಲಿ ನೋಡಿ"
     }
   },
-  "profile": {
-    "invite": {}
-  },
   "package": {
     "not_found": "ಪ್ಯಾಕೇಜ್ ಕಂಡುಬಂದಿಲ್ಲ",
     "not_found_message": "ಪ್ಯಾಕೇಜ್ ಕಂಡುಬಂದಿಲ್ಲ.",
@@ -136,7 +127,6 @@
       "version": "ಈ ಆವೃತ್ತಿ ಅಮಾನ್ಯಗೊಳಿಸಲಾಗಿದೆ.",
       "no_reason": "ಕಾರಣ ನೀಡಲಾಗಿಲ್ಲ"
     },
-    "size_increase": {},
     "replacement": {
       "title": "ನಿಮಗೆ ಈ ಅವಲಂಬನೆ ಅಗತ್ಯವಿಲ್ಲದಿರಬಹುದು.",
       "native": "ಇದನ್ನು {replacement} ಮೂಲಕ ಬದಲಾಯಿಸಬಹುದು, ಇದು Node {nodeVersion} ರಿಂದ ಲಭ್ಯವಿದೆ.",
@@ -232,8 +222,7 @@
       "more_tagged": "{count} ಇನ್ನಷ್ಟು ಟ್ಯಾಗ್ ಮಾಡಲಾಗಿದೆ",
       "all_covered": "ಎಲ್ಲಾ ಆವೃತ್ತಿಗಳು ಮೇಲಿನ ಟ್ಯಾಗ್‌ಗಳಿಂದ ಒಳಗೊಂಡಿವೆ",
       "deprecated_title": "{version} (ಅಮಾನ್ಯಗೊಳಿಸಲಾಗಿದೆ)",
-      "view_all": "{count} ಆವೃತ್ತಿ ನೋಡಿ | ಎಲ್ಲಾ {count} ಆವೃತ್ತಿಗಳನ್ನು ನೋಡಿ",
-      "copy_alt": {}
+      "view_all": "{count} ಆವೃತ್ತಿ ನೋಡಿ | ಎಲ್ಲಾ {count} ಆವೃತ್ತಿಗಳನ್ನು ನೋಡಿ"
     },
     "dependencies": {
       "title": "ಅವಲಂಬನೆಗಳು ({count})",
@@ -282,8 +271,7 @@
       "date_range_multiline": "{start}\nರಿಂದ {end}",
       "download_file": "{fileType} ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ",
       "toggle_annotator": "ಅನೋಟೇಟರ್ ಟಾಗಲ್ ಮಾಡಿ",
-      "items": {},
-      "copy_alt": {}
+      "items": {}
     },
     "downloads": {
       "title": "ವಾರದ ಡೌನ್‌ಲೋಡ್‌ಗಳು"
@@ -369,8 +357,7 @@
       "name_asc": "ಹೆಸರು (A-Z)",
       "name_desc": "ಹೆಸರು (Z-A)"
     },
-    "size": {},
-    "download": {}
+    "size": {}
   },
   "connector": {
     "modal": {
@@ -709,8 +696,6 @@
         "managers": "ನಿರ್ವಾಹಕರು"
       }
     },
-    "sponsors": {},
-    "oss_partners": {},
     "team": {},
     "contributors": {
       "title": "ಸಹಯೋಗಿಗಳು",
@@ -731,7 +716,6 @@
         "description": "ಚಾಟ್ ಮಾಡಿ, ಪ್ರಶ್ನೆಗಳು ಕೇಳಿ ಮತ್ತು ಆಲೋಚನೆಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಿ.",
         "cta": "Discord ನಲ್ಲಿ ಸೇರಿ"
       },
-      "builders": {},
       "follow": {
         "title": "ನವೀಕರಣಗಳನ್ನು ಪಡೆಯಿರಿ",
         "description": "npmx ಬಗ್ಗೆ ಇತ್ತೀಚಿನ ಮಾಹಿತಿ ಪಡೆಯಿರಿ.",
@@ -843,15 +827,7 @@
       },
       "values": {},
       "trends": {}
-    },
-    "version_invalid_url_format": {},
-    "file_filter_option": {},
-    "filter": {}
-  },
-  "pds": {
-    "join": {},
-    "server": {},
-    "community": {}
+    }
   },
   "privacy_policy": {
     "cookies": {
@@ -872,9 +848,5 @@
     "measures": {},
     "limitations": {},
     "contact": {}
-  },
-  "translation_status": {
-    "table": {}
-  },
-  "action_bar": {}
+  }
 }

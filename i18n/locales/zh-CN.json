@@ -602,8 +602,7 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    },
-    "download": {}
+    }
   },
   "connector": {
     "modal": {
@@ -1181,7 +1180,6 @@
     "file_size_warning": "{size} 超出了 250KB 的对比限制",
     "compare_versions": "差异",
     "compare_versions_title": "与最新版本对比",
-    "version_invalid_url_format": {},
     "version_selector_title": "版本对比",
     "summary": "摘要",
     "deps_count": "{count} 个依赖",
@@ -1347,9 +1345,6 @@
       "p1": "如果你在 {app} 上遇到无障碍访问问题，请在我们的 {link} 上提交 Issue 反馈给我们。我们会认真对待这些反馈，并尽力解决。",
       "link": "GitHub 仓库"
     }
-  },
-  "translation_status": {
-    "table": {}
   },
   "action_bar": {
     "title": "操作栏",
