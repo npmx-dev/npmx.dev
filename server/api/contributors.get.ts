@@ -1,5 +1,10 @@
 export type Role = 'steward' | 'maintainer' | 'contributor'
 
+export interface SocialAccount {
+  provider: string
+  url: string
+}
+
 export interface GitHubContributor {
   login: string
   id: number
@@ -8,9 +13,12 @@ export interface GitHubContributor {
   contributions: number
   role: Role
   sponsors_url: string | null
+  bio: string | null
+  twitterUsername: string | null
+  socialAccounts: SocialAccount[]
 }
 
-type GitHubAPIContributor = Omit<GitHubContributor, 'role' | 'sponsors_url'>
+type GitHubAPIContributor = Omit<GitHubContributor, 'role' | 'sponsors_url' | 'bio' | 'twitterUsername' | 'socialAccounts'>
 
 // Fallback when no GitHub token is available (e.g. preview environments).
 // Only stewards are shown as maintainers; everyone else is a contributor.
@@ -60,16 +68,31 @@ async function fetchTeamMembers(token: string): Promise<TeamMembers | null> {
   }
 }
 
-/**
- * Batch-query GitHub GraphQL API to check which users have sponsors enabled.
- * Returns a Set of logins that have a sponsors listing.
- */
-async function fetchSponsorable(token: string, logins: string[]): Promise<Set<string>> {
-  if (logins.length === 0) return new Set()
+interface GovernanceProfile {
+  hasSponsorsListing: boolean
+  bio: string | null
+  twitterUsername: string | null
+  socialAccounts: SocialAccount[]
+}
 
-  // Build aliased GraphQL query: user0: user(login: "x") { hasSponsorsListing login }
+/**
+ * Batch-query GitHub GraphQL API to fetch profile data for governance members.
+ * Returns bio, social accounts, and sponsors listing status.
+ */
+async function fetchGovernanceProfiles(
+  token: string,
+  logins: string[],
+): Promise<Map<string, GovernanceProfile>> {
+  if (logins.length === 0) return new Map()
+
   const fragments = logins.map(
-    (login, i) => `user${i}: user(login: "${login}") { hasSponsorsListing login }`,
+    (login, i) => `user${i}: user(login: "${login}") {
+      login
+      hasSponsorsListing
+      bio
+      twitterUsername
+      socialAccounts(first: 10) { nodes { provider url } }
+    }`,
   )
   const query = `{ ${fragments.join('\n')} }`
 
@@ -85,26 +108,40 @@ async function fetchSponsorable(token: string, logins: string[]): Promise<Set<st
     })
 
     if (!response.ok) {
-      console.warn(`Failed to fetch sponsors info: ${response.status}`)
-      return new Set()
+      console.warn(`Failed to fetch governance profiles: ${response.status}`)
+      return new Map()
     }
 
     const json = (await response.json()) as {
-      data?: Record<string, { login: string; hasSponsorsListing: boolean } | null>
+      data?: Record<string, {
+        login: string
+        hasSponsorsListing: boolean
+        bio: string | null
+        twitterUsername: string | null
+        socialAccounts: { nodes: { provider: string; url: string }[] }
+      } | null>
     }
 
-    const sponsorable = new Set<string>()
+    const profiles = new Map<string, GovernanceProfile>()
     if (json.data) {
       for (const user of Object.values(json.data)) {
-        if (user?.hasSponsorsListing) {
-          sponsorable.add(user.login)
+        if (user) {
+          profiles.set(user.login, {
+            hasSponsorsListing: user.hasSponsorsListing,
+            bio: user.bio,
+            twitterUsername: user.twitterUsername,
+            socialAccounts: user.socialAccounts.nodes.map(n => ({
+              provider: n.provider,
+              url: n.url,
+            })),
+          })
         }
       }
     }
-    return sponsorable
+    return profiles
   } catch (error) {
-    console.warn('Failed to fetch sponsors info:', error)
-    return new Set()
+    console.warn('Failed to fetch governance profiles:', error)
+    return new Map()
   }
 }
 
@@ -172,18 +209,22 @@ export default defineCachedEventHandler(
       .filter(c => teams.steward.has(c.login) || teams.maintainer.has(c.login))
       .map(c => c.login)
 
-    const sponsorable = githubToken
-      ? await fetchSponsorable(githubToken, maintainerLogins)
-      : new Set<string>()
+    const governanceProfiles = githubToken
+      ? await fetchGovernanceProfiles(githubToken, maintainerLogins)
+      : new Map<string, GovernanceProfile>()
 
     return filtered
       .map(c => {
         const { role, order } = getRoleInfo(c.login, teams)
-        const sponsors_url = sponsorable.has(c.login)
+        const profile = governanceProfiles.get(c.login)
+        const sponsors_url = profile?.hasSponsorsListing
           ? `https://github.com/sponsors/${c.login}`
           : null
-        Object.assign(c, { role, order, sponsors_url })
-        return c as GitHubContributor & { order: number; sponsors_url: string | null; role: Role }
+        const bio = profile?.bio ?? null
+        const twitterUsername = profile?.twitterUsername ?? null
+        const socialAccounts = profile?.socialAccounts ?? []
+        Object.assign(c, { role, order, sponsors_url, bio, twitterUsername, socialAccounts })
+        return c as GitHubContributor & { order: number }
       })
       .sort((a, b) => a.order - b.order || b.contributions - a.contributions)
       .map(({ order: _, ...rest }) => rest)
