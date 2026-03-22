@@ -51,7 +51,26 @@ const SHIELDS_FONT_SHORTHAND = 'normal normal 400 11px Verdana, Geneva, DejaVu S
 let cachedCanvasContext: SKRSContext2D | null | undefined
 
 const NARROW_CHARS = new Set([' ', '!', '"', "'", '(', ')', '*', ',', '-', '.', ':', ';', '|'])
-const MEDIUM_CHARS = new Set(['#', '$', '+', '/', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '}', '~'])
+const MEDIUM_CHARS = new Set([
+  '#',
+  '$',
+  '+',
+  '/',
+  '<',
+  '=',
+  '>',
+  '?',
+  '@',
+  '[',
+  '\\',
+  ']',
+  '^',
+  '_',
+  '`',
+  '{',
+  '}',
+  '~',
+])
 
 function estimateTextWidth(text: string, fallbackFont: 'default' | 'shieldsio'): number {
   let totalWidth = 0
