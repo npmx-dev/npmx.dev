@@ -31,7 +31,7 @@ describe('FacetBarChart skeleton loaders', () => {
     // The formula used is: width = `${40 + (i * 17) % 40}%`
     // For 3 packages: i=0 -> 40%, i=1 -> 57%, i=2 -> 74%
     const packages = ['react', 'vue', 'svelte']
-    const widths = packages.map((_, i) => `${40 + (i * 17) % 40}%`)
+    const widths = packages.map((_, i) => `${40 + ((i * 17) % 40)}%`)
 
     // Verify they are not all the same (the bug was all bars had the same width)
     const uniqueWidths = new Set(widths)
@@ -41,7 +41,7 @@ describe('FacetBarChart skeleton loaders', () => {
   it('skeleton width formula produces values within 40-80% range', () => {
     const indices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     for (const i of indices) {
-      const width = 40 + (i * 17) % 40
+      const width = 40 + ((i * 17) % 40)
       expect(width).toBeGreaterThanOrEqual(40)
       expect(width).toBeLessThan(80)
     }

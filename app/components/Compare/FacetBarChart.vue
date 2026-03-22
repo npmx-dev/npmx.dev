@@ -332,12 +332,8 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
           <SkeletonInline class="h-3 w-36 rounded" />
         </div>
         <div class="flex flex-col gap-2 px-2" aria-hidden="true">
-          <div
-            v-for="(pkg, i) in packages"
-            :key="pkg"
-            class="flex items-center gap-3"
-          >
-            <SkeletonInline class="h-3 shrink-0" :style="{ width: `${40 + (i * 17) % 40}%` }" />
+          <div v-for="(pkg, i) in packages" :key="pkg" class="flex items-center gap-3">
+            <SkeletonInline class="h-3 shrink-0" :style="{ width: `${40 + ((i * 17) % 40)}%` }" />
             <SkeletonInline class="h-7 flex-1 rounded" />
           </div>
         </div>
@@ -352,12 +348,8 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
       </div>
       <!-- Bar skeletons with varying widths for visual realism -->
       <div class="flex flex-col gap-2 px-2" aria-hidden="true">
-        <div
-          v-for="(pkg, i) in packages"
-          :key="pkg"
-          class="flex items-center gap-3"
-        >
-          <SkeletonInline class="h-3 shrink-0" :style="{ width: `${40 + (i * 17) % 40}%` }" />
+        <div v-for="(pkg, i) in packages" :key="pkg" class="flex items-center gap-3">
+          <SkeletonInline class="h-3 shrink-0" :style="{ width: `${40 + ((i * 17) % 40)}%` }" />
           <SkeletonInline class="h-7 flex-1 rounded" />
         </div>
       </div>
