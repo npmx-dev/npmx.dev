@@ -107,7 +107,7 @@
       "reply_count": "{count} 件の返信",
       "like_count": "{count} 件のいいね",
       "repost_count": "{count} 件のリポスト",
-      "more_replies": "さらに {count} 件のリプライを表示..."
+      "more_replies": "さらに{count}件の返信…"
     }
   },
   "settings": {
@@ -142,10 +142,14 @@
     "theme_system": "システム",
     "language": "言語",
     "help_translate": "npmxの翻訳に協力する",
-    "accent_colors": "アクセントカラー",
+    "accent_colors": {
+      "label": "アクセントカラー"
+    },
     "clear_accent": "アクセントカラーをクリア",
     "translation_progress": "翻訳の進捗状況",
-    "background_themes": "背景シェード",
+    "background_themes": {
+      "label": "背景シェード"
+    },
     "keyboard_shortcuts_enabled": "キーボードショートカットを有効化",
     "keyboard_shortcuts_enabled_description": "ブラウザやシステムのショートカットと競合する場合、キーボードショートカットを無効化できます"
   },

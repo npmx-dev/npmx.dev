@@ -107,7 +107,7 @@
       "reply_count": "{count} ответ | {count} ответа | {count} ответов",
       "like_count": "{count} лайк | {count} лайка | {count} лайков",
       "repost_count": "{count} репост | {count} репоста | {count} репостов",
-      "more_replies": "Ещё {count} ответ… | Ещё {count} ответа… | Ещё {count} ответов…"
+      "more_replies": "ещё {count} ответ... | ещё {count} ответа... | ещё {count} ответов..."
     }
   },
   "settings": {
@@ -142,10 +142,14 @@
     "theme_system": "Системная",
     "language": "Язык",
     "help_translate": "Помочь с переводом npmx",
-    "accent_colors": "Акцентные цвета",
+    "accent_colors": {
+      "label": "Акцентные цвета"
+    },
     "clear_accent": "Сбросить акцентный цвет",
     "translation_progress": "Прогресс перевода",
-    "background_themes": "Оттенок фона",
+    "background_themes": {
+      "label": "Оттенок фона"
+    },
     "keyboard_shortcuts_enabled": "Использовать горячие клавиши",
     "keyboard_shortcuts_enabled_description": "Горячие клавиши можно выключить, если возникают конфликты с сочетаниями клавиш браузера или операционной системы"
   },

@@ -4,7 +4,7 @@ vi.mock('~/utils/npm/api', () => ({
   fetchNpmDownloadsRange: vi.fn(),
 }))
 
-import { getNpmPackageCreationDate } from '../../../../app/composables/useCharts'
+import { getNpmPackageCreationDate } from '~/composables/useCharts'
 
 describe('getNpmPackageCreationDate', () => {
   it('returns created date from packument time', () => {

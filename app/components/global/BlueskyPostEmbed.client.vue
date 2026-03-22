@@ -107,10 +107,16 @@ const postUrl = computed(() => {
     :href="postUrl ?? '#'"
     target="_blank"
     rel="noopener noreferrer"
-    class="not-prose block rounded-lg border border-border bg-bg-subtle p-4 sm:p-5 no-underline hover:border-border-hover transition-colors duration-200"
+    class="not-prose block rounded-lg border border-border bg-bg-subtle p-4 sm:p-5 no-underline hover:border-border-hover transition-colors duration-200 relative group"
   >
+    <!-- Bluesky icon -->
+    <span
+      class="i-simple-icons:bluesky w-5 h-5 text-fg-subtle group-hover:text-blue-500 absolute top-4 end-4 sm:top-5 sm:end-5"
+      aria-hidden="true"
+    />
+
     <!-- Author row -->
-    <div class="flex items-center gap-3 mb-3">
+    <div class="flex items-center gap-3 mb-3 pe-7">
       <img
         v-if="post.author.avatar"
         :src="`${post.author.avatar}?size=48`"
@@ -126,10 +132,6 @@ const postUrl = computed(() => {
         </div>
         <div class="text-sm text-fg-subtle truncate">@{{ post.author.handle }}</div>
       </div>
-      <span
-        class="i-simple-icons:bluesky w-5 h-5 text-fg-subtle ms-auto shrink-0"
-        aria-hidden="true"
-      />
     </div>
 
     <!-- Post text -->

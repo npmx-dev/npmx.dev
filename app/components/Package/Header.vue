@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import type { RouteLocationRaw } from 'vue-router'
 import { SCROLL_TO_TOP_THRESHOLD } from '~/composables/useScrollToTop'
-import { useModal } from '~/composables/useModal'
-import { useAtproto } from '~/composables/atproto/useAtproto'
-import { togglePackageLike } from '~/utils/atproto/likes'
 import { isEditableElement } from '~/utils/input'
 
 const props = defineProps<{
@@ -18,7 +15,7 @@ const props = defineProps<{
 }>()
 
 const { requestedVersion, orgName } = usePackageRoute()
-const { scrollToTop, isTouchDeviceClient } = useScrollToTop()
+const { scrollToTop } = useScrollToTop()
 const packageHeaderHeight = usePackageHeaderHeight()
 
 const header = useTemplateRef('header')
@@ -61,12 +58,9 @@ onBeforeUnmount(() => {
 const navExtraOffsetStyle = { '--package-nav-extra': '0px' }
 
 const { y: scrollY } = useScroll(window)
-const showScrollToTop = computed(
-  () => isTouchDeviceClient.value && scrollY.value > SCROLL_TO_TOP_THRESHOLD,
-)
+const showScrollToTop = computed(() => scrollY.value > SCROLL_TO_TOP_THRESHOLD)
 
 const packageName = computed(() => props.pkg?.name ?? '')
-const compactNumberFormatter = useCompactNumberFormatter()
 
 const { copied: copiedPkgName, copy: copyPkgName } = useClipboard({
   source: packageName,
@@ -180,74 +174,19 @@ onKeyStroke(
   { dedupe: true },
 )
 
-//atproto
-// TODO: Maybe set this where it's not loaded here every load?
-const { user } = useAtproto()
+const fundingUrl = computed(() => {
+  let funding = props.displayVersion?.funding
+  if (Array.isArray(funding)) funding = funding[0]
 
-const authModal = useModal('auth-modal')
+  if (!funding) return null
 
-const { data: likesData, status: likeStatus } = useFetch(
-  () => `/api/social/likes/${packageName.value}`,
-  {
-    default: () => ({ totalLikes: 0, userHasLiked: false }),
-    server: false,
-  },
-)
-
-const isLoadingLikeData = computed(
-  () => likeStatus.value === 'pending' || likeStatus.value === 'idle',
-)
-
-const isLikeActionPending = shallowRef(false)
-
-const likeAction = async () => {
-  if (user.value?.handle == null) {
-    authModal.open()
-    return
-  }
-
-  if (isLikeActionPending.value) return
-
-  const currentlyLiked = likesData.value?.userHasLiked ?? false
-  const currentLikes = likesData.value?.totalLikes ?? 0
-
-  // Optimistic update
-  likesData.value = {
-    totalLikes: currentlyLiked ? currentLikes - 1 : currentLikes + 1,
-    userHasLiked: !currentlyLiked,
-  }
-
-  isLikeActionPending.value = true
-
-  try {
-    const result = await togglePackageLike(packageName.value, currentlyLiked, user.value?.handle)
-
-    isLikeActionPending.value = false
-
-    if (result.success) {
-      // Update with server response
-      likesData.value = result.data
-    } else {
-      // Revert on error
-      likesData.value = {
-        totalLikes: currentLikes,
-        userHasLiked: currentlyLiked,
-      }
-    }
-  } catch {
-    // Revert on error
-    likesData.value = {
-      totalLikes: currentLikes,
-      userHasLiked: currentlyLiked,
-    }
-    isLikeActionPending.value = false
-  }
-}
+  return typeof funding === 'string' ? funding : funding.url
+})
 </script>
 
 <template>
   <!-- Package header -->
-  <header class="bg-bg pt-5 w-full container">
+  <header class="bg-bg pt-5 pb-1 w-full container">
     <!-- Package name and version -->
     <div class="flex items-baseline justify-between gap-x-2 gap-y-1 flex-wrap min-w-0">
       <CopyToClipboardButton
@@ -278,48 +217,24 @@ const likeAction = async () => {
           aria-keyshortcuts="c"
           classicon="i-lucide:git-compare"
         >
-          <span class="max-sm:sr-only">{{ $t('package.links.compare') }}</span>
+          <span class="max-sm:sr-only">{{ $t('package.links.compare_this_package') }}</span>
         </LinkBase>
-        <!-- Package likes -->
-        <TooltipApp
-          :text="
-            isLoadingLikeData
-              ? $t('common.loading')
-              : likesData?.userHasLiked
-                ? $t('package.likes.unlike')
-                : $t('package.likes.like')
-          "
-          position="bottom"
-          class="items-center"
-          strategy="fixed"
+        <PackageLikes :packageName />
+
+        <LinkBase
+          variant="button-secondary"
+          v-if="fundingUrl"
+          :to="fundingUrl"
+          classicon="i-lucide:handshake text-accent"
         >
-          <ButtonBase
-            @click="likeAction"
-            size="medium"
-            :aria-label="
-              likesData?.userHasLiked ? $t('package.likes.unlike') : $t('package.likes.like')
-            "
-            :aria-pressed="likesData?.userHasLiked"
-            :classicon="
-              likesData?.userHasLiked ? 'i-lucide:heart-minus text-red-500' : 'i-lucide:heart-plus'
-            "
-          >
-            <span
-              v-if="isLoadingLikeData"
-              class="i-svg-spinners:ring-resize w-3 h-3 my-0.5"
-              aria-hidden="true"
-            />
-            <span v-else>
-              {{ compactNumberFormatter.format(likesData?.totalLikes ?? 0) }}
-            </span>
-          </ButtonBase>
-        </TooltipApp>
+          <span class="max-sm:sr-only">{{ $t('package.links.fund') }}</span>
+        </LinkBase>
       </div>
     </div>
   </header>
   <div
     ref="header"
-    class="w-full bg-bg sticky top-14 z-50 border-b border-border pt-2"
+    class="w-full bg-bg sticky top-14 z-10 border-b border-border pt-2"
     :class="[$style.packageHeader]"
     data-testid="package-subheader"
   >
@@ -395,7 +310,7 @@ const likeAction = async () => {
           v-if="mainLink"
           :to="mainLink"
           aria-keyshortcuts="m"
-          class="decoration-none border-b-2 p-1 hover:border-accent/50 lowercase"
+          class="decoration-none border-b-2 p-1 hover:border-accent/50 lowercase focus-visible:[outline-offset:-2px]!"
           :class="page === 'main' ? 'border-accent text-accent!' : 'border-transparent'"
         >
           {{ $t('package.links.main') }}
@@ -404,7 +319,7 @@ const likeAction = async () => {
           v-if="docsLink"
           :to="docsLink"
           aria-keyshortcuts="d"
-          class="decoration-none border-b-2 p-1 hover:border-accent/50"
+          class="decoration-none border-b-2 p-1 hover:border-accent/50 focus-visible:[outline-offset:-2px]!"
           :class="page === 'docs' ? 'border-accent text-accent!' : 'border-transparent'"
         >
           {{ $t('package.links.docs') }}
@@ -413,7 +328,7 @@ const likeAction = async () => {
           v-if="codeLink"
           :to="codeLink"
           aria-keyshortcuts="."
-          class="decoration-none border-b-2 p-1 hover:border-accent/50"
+          class="decoration-none border-b-2 p-1 hover:border-accent/50 focus-visible:[outline-offset:-2px]!"
           :class="page === 'code' ? 'border-accent text-accent!' : 'border-transparent'"
         >
           {{ $t('package.links.code') }}
@@ -423,7 +338,7 @@ const likeAction = async () => {
           :to="diffLink"
           :title="$t('compare.compare_versions_title')"
           aria-keyshortcuts="f"
-          class="decoration-none border-b-2 p-1 hover:border-accent/50"
+          class="decoration-none border-b-2 p-1 hover:border-accent/50 focus-visible:[outline-offset:-2px]!"
           :class="page === 'diff' ? 'border-accent text-accent!' : 'border-transparent'"
         >
           {{ $t('compare.compare_versions') }}

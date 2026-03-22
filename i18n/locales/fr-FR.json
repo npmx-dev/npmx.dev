@@ -107,7 +107,7 @@
       "reply_count": "{count} réponse | {count} réponses",
       "like_count": "{count} j'aime | {count} j'aime",
       "repost_count": "{count} repartage | {count} repartages",
-      "more_replies": "{count} réponse de plus... | {count} réponses de plus..."
+      "more_replies": "{count} réponse supplémentaire... | {count} réponses supplémentaires..."
     }
   },
   "settings": {
@@ -142,10 +142,25 @@
     "theme_system": "Système",
     "language": "Langue de l'interface",
     "help_translate": "Aidez-nous à traduire npmx",
-    "accent_colors": "Couleurs d'accentuation",
+    "accent_colors": {
+      "label": "Couleurs d'accentuation",
+      "sky": "Ciel",
+      "coral": "Corail",
+      "amber": "Ambre",
+      "emerald": "Émeraude",
+      "violet": "Violet",
+      "magenta": "Magenta"
+    },
     "clear_accent": "Supprimer la couleur d'accentuation",
     "translation_progress": "Progression de la traduction",
-    "background_themes": "Teinte de fond",
+    "background_themes": {
+      "label": "Teinte de fond",
+      "neutral": "Neutre",
+      "stone": "Pierre",
+      "zinc": "Zinc",
+      "slate": "Ardoise",
+      "black": "Noir"
+    },
     "keyboard_shortcuts_enabled": "Activer les raccourcis clavier",
     "keyboard_shortcuts_enabled_description": "Les raccourcis clavier peuvent être désactivés s'ils entrent en conflit avec d'autres raccourcis du navigateur ou du système"
   },
@@ -282,15 +297,23 @@
       "code": "code",
       "docs": "docs",
       "fund": "donner",
-      "compare": "comparer"
+      "compare": "comparer",
+      "compare_this_package": "comparer ce paquet"
     },
     "likes": {
       "like": "Liker ce paquet",
       "unlike": "Retirer le like"
     },
     "docs": {
+      "contents": "Sommaire",
+      "default_not_available": "La documentation n'est pas disponible pour cette version.",
       "not_available": "Documentation non disponible",
-      "not_available_detail": "Nous n'avons pas pu générer la documentation pour cette version."
+      "not_available_detail": "Nous n'avons pas pu générer la documentation pour cette version.",
+      "page_title": "Documentation API - npmx",
+      "page_title_name": "Documentation {name} - npmx",
+      "page_title_version": "Documentation {name} - npmx",
+      "og_title": "{name} - Documentation",
+      "view_package": "Voir le paquet"
     },
     "get_started": {
       "title": "Commencer",
@@ -903,19 +926,19 @@
   "about": {
     "title": "À propos",
     "heading": "à propos",
-    "meta_description": "npmx est un navigateur rapide et moderne pour le registre npm. Une meilleure UX/DX pour explorer les paquets npm.",
+    "meta_description": "npmx est un navigateur rapide et moderne pour le registre npm. Une excellente UX/DX pour explorer les paquets npm.",
     "what_we_are": {
       "title": "Ce que nous sommes",
-      "better_ux_dx": "meilleure UX/DX",
+      "better_ux_dx": "excellente UX/DX",
       "admin_ui": "interface d'administration",
       "description": "npmx est une {betterUxDx} pour le registre npm et ses outils. Nous fournissons une interface rapide et moderne pour explorer les paquets, avec des fonctionnalités comme le mode sombre, la navigation au clavier, la visualisation du code, et des connexions à des registres alternatifs comme {jsr}.",
-      "admin_description": "Nous visons également à fournir une meilleure {adminUi} pour gérer vos paquets, équipes et organisations — le tout depuis le navigateur, alimenté par votre CLI npm local."
+      "admin_description": "Nous visons également à fournir une excellente {adminUi} pour gérer vos paquets, équipes et organisations — le tout depuis le navigateur, alimenté par votre CLI npm local."
     },
     "what_we_are_not": {
       "title": "Ce que nous ne sommes pas",
       "not_package_manager": "Nous ne sommes pas un gestionnaire de paquets.",
       "not_registry": "Nous ne sommes pas un registre.",
-      "registry_description": "Nous n'hébergeons pas de paquets. Nous sommes juste une meilleure façon de les explorer.",
+      "registry_description": "Nous n'hébergeons pas de paquets. Nous sommes une façon rapide et moderne de les explorer.",
       "package_managers_exist": "{already} {people} {building} {managers} {package} {really} {cool}.",
       "words": {
         "already": "Il y a",
@@ -952,7 +975,7 @@
       "title": "Participer",
       "contribute": {
         "title": "Contribuer",
-        "description": "Aidez-nous à créer une meilleure expérience npm.",
+        "description": "Aidez-nous à créer l'expérience npm que nous voulons tous.",
         "cta": "Voir sur GitHub"
       },
       "community": {

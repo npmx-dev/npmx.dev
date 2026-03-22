@@ -111,10 +111,14 @@
     "theme_system": "Системна",
     "language": "Език",
     "help_translate": "Помогнете да преведем npmx",
-    "accent_colors": "Акцентни цветове",
+    "accent_colors": {
+      "label": "Акцентни цветове"
+    },
     "clear_accent": "Изчистване на акцентен цвят",
     "translation_progress": "Напредък на превода",
-    "background_themes": "Фонов нюанс",
+    "background_themes": {
+      "label": "Фонов нюанс"
+    },
     "keyboard_shortcuts_enabled": "Активиране на клавишни комбинации",
     "keyboard_shortcuts_enabled_description": "Клавишните комбинации могат да бъдат деактивирани, ако влизат в конфликт с други браузърни или системни преки пътища"
   },

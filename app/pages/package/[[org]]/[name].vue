@@ -211,6 +211,9 @@ const { diff: sizeDiff } = useInstallSizeDiff(packageName, resolvedVersion, pkg,
 //    → Preserve the server-rendered DOM, don't flash to skeleton.
 const nuxtApp = useNuxtApp()
 const route = useRoute()
+// Gates template rendering only — data fetches intentionally still run.
+// immediate is set once at mount — skipped requests won't re-fire on navigation, leaving data permanently missing.
+const isVersionsRoute = computed(() => route.name === 'package-versions')
 const hasEmptyPayload =
   import.meta.client &&
   nuxtApp.payload.serverRendered &&
@@ -479,7 +482,8 @@ const showSkeleton = shallowRef(false)
 </script>
 
 <template>
-  <DevOnly>
+  <NuxtPage v-if="isVersionsRoute" />
+  <DevOnly v-else>
     <ButtonBase
       class="fixed bottom-4 inset-is-4 z-50 shadow-lg rounded-full! px-3! py-2!"
       classicon="i-simple-icons:skeleton"
@@ -491,7 +495,7 @@ const showSkeleton = shallowRef(false)
       <span class="text-xs">Skeleton</span>
     </ButtonBase>
   </DevOnly>
-  <main class="flex-1 pb-8">
+  <main v-if="!isVersionsRoute" class="flex-1 pb-8">
     <!-- Scenario 1: SPA fallback — show skeleton (no real content to preserve) -->
     <!-- Scenario 2: SSR with missing payload — preserve server DOM, skip skeleton -->
     <PackageSkeleton
@@ -593,10 +597,8 @@ const showSkeleton = shallowRef(false)
                   <!-- Direct deps (muted) -->
                   <span class="text-fg-muted">{{ numberFormatter.format(dependencyCount) }}</span>
 
-                  <!-- Separator and total transitive deps -->
+                  <!-- Total transitive deps in parens -->
                   <template v-if="dependencyCount > 0 && dependencyCount !== totalDepsCount">
-                    <span class="text-fg-subtle">/</span>
-
                     <ClientOnly>
                       <span
                         v-if="
@@ -605,14 +607,16 @@ const showSkeleton = shallowRef(false)
                         "
                         class="inline-flex items-center gap-1 text-fg-subtle"
                       >
-                        <span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />
+                        (<span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />)
                       </span>
-                      <span v-else-if="totalDepsCount !== null">{{
-                        numberFormatter.format(totalDepsCount)
-                      }}</span>
-                      <span v-else class="text-fg-subtle">-</span>
+                      <span v-else-if="totalDepsCount !== null"
+                        ><span class="text-fg-subtle">(</span
+                        >{{ numberFormatter.format(totalDepsCount)
+                        }}<span class="text-fg-subtle">)</span></span
+                      >
+                      <span v-else class="text-fg-subtle">(-)</span>
                       <template #fallback>
-                        <span class="text-fg-subtle">-</span>
+                        <span class="text-fg-subtle">(-)</span>
                       </template>
                     </ClientOnly>
                   </template>
@@ -662,20 +666,22 @@ const showSkeleton = shallowRef(false)
                   <span v-else>-</span>
                 </span>
 
-                <!-- Separator and install size -->
+                <!-- Total install size in parens -->
                 <template v-if="displayVersion?.dist?.unpackedSize !== installSize?.totalSize">
-                  <span class="text-fg-subtle mx-1">/</span>
-
-                  <span
-                    v-if="installSizeStatus === 'pending'"
-                    class="inline-flex items-center gap-1 text-fg-subtle"
-                  >
-                    <span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />
+                  <span class="ms-1">
+                    <span
+                      v-if="installSizeStatus === 'pending'"
+                      class="inline-flex items-center gap-1 text-fg-subtle"
+                    >
+                      (<span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />)
+                    </span>
+                    <span v-else-if="installSize?.totalSize" dir="ltr">
+                      <span class="text-fg-subtle">(</span
+                      >{{ bytesFormatter.format(installSize.totalSize)
+                      }}<span class="text-fg-subtle">)</span>
+                    </span>
+                    <span v-else class="text-fg-subtle">(-)</span>
                   </span>
-                  <span v-else-if="installSize?.totalSize" dir="ltr">
-                    {{ bytesFormatter.format(installSize.totalSize) }}
-                  </span>
-                  <span v-else class="text-fg-subtle">-</span>
                 </template>
               </dd>
             </div>
@@ -765,8 +771,15 @@ const showSkeleton = shallowRef(false)
                 {{ $t('package.get_started.title') }}
               </LinkBase>
             </h2>
-            <!-- Package manager dropdown -->
-            <PackageManagerSelect />
+            <!-- Package manager dropdown + Download button -->
+            <div class="flex items-center gap-2">
+              <PackageDownloadButton
+                v-if="displayVersion"
+                :package-name="pkg.name"
+                :version="displayVersion"
+              />
+              <PackageManagerSelect />
+            </div>
           </div>
           <div>
             <div
@@ -891,6 +904,78 @@ const showSkeleton = shallowRef(false)
           </ClientOnly>
         </div>
 
+        <PackageSidebar :class="$style.areaSidebar">
+          <div class="flex flex-col gap-4 sm:gap-6 xl:pt-4">
+            <!-- Team access controls (for scoped packages when connected) -->
+            <ClientOnly>
+              <PackageAccessControls :package-name="pkg.name" />
+              <template #fallback>
+                <!-- Show skeleton loaders when SSR or access controls are loading -->
+              </template>
+            </ClientOnly>
+
+            <!-- Agent Skills -->
+            <ClientOnly>
+              <PackageSkillsCard
+                v-if="skillsData?.skills?.length"
+                :skills="skillsData.skills"
+                :package-name="pkg.name"
+                :version="resolvedVersion || undefined"
+              />
+              <template #fallback>
+                <!-- Show skeleton loaders when SSR or access controls are loading -->
+              </template>
+            </ClientOnly>
+
+            <!-- Download stats -->
+            <PackageWeeklyDownloadStats
+              :packageName
+              :createdIso="pkg?.time?.created ?? null"
+              :repoRef="repoRef"
+            />
+
+            <!-- Playground links -->
+            <PackagePlaygrounds v-if="playgroundLinks.length" :links="playgroundLinks" />
+
+            <PackageCompatibility :engines="displayVersion?.engines" />
+
+            <!-- Versions (grouped by release channel) -->
+            <PackageVersions
+              v-if="pkg.versions && Object.keys(pkg.versions).length > 0"
+              :package-name="pkg.name"
+              :versions="pkg.versions"
+              :dist-tags="pkg['dist-tags'] ?? {}"
+              :time="pkg.time"
+              :selected-version="resolvedVersion ?? pkg['dist-tags']?.['latest']"
+            />
+
+            <!-- Install Scripts Warning -->
+            <PackageInstallScripts
+              v-if="displayVersion?.installScripts"
+              :package-name="pkg.name"
+              :version="displayVersion.version"
+              :install-scripts="displayVersion.installScripts"
+            />
+
+            <!-- Dependencies -->
+            <PackageDependencies
+              v-if="hasDependencies && resolvedVersion && displayVersion"
+              :package-name="pkg.name"
+              :version="resolvedVersion"
+              :dependencies="displayVersion.dependencies"
+              :peer-dependencies="displayVersion.peerDependencies"
+              :peer-dependencies-meta="displayVersion.peerDependenciesMeta"
+              :optional-dependencies="displayVersion.optionalDependencies"
+            />
+
+            <!-- Keywords -->
+            <PackageKeywords :keywords="displayVersion?.keywords" />
+
+            <!-- Maintainers (with admin actions when connected) -->
+            <PackageMaintainers :package-name="pkg.name" :maintainers="pkg.maintainers" />
+          </div>
+        </PackageSidebar>
+
         <!-- README -->
         <section id="readme" class="min-w-0 scroll-mt-20" :class="$style.areaReadme">
           <div
@@ -974,78 +1059,6 @@ const showSkeleton = shallowRef(false)
             </div>
           </section>
         </section>
-
-        <PackageSidebar :class="$style.areaSidebar">
-          <div class="flex flex-col gap-4 sm:gap-6 xl:pt-4">
-            <!-- Team access controls (for scoped packages when connected) -->
-            <ClientOnly>
-              <PackageAccessControls :package-name="pkg.name" />
-              <template #fallback>
-                <!-- Show skeleton loaders when SSR or access controls are loading -->
-              </template>
-            </ClientOnly>
-
-            <!-- Agent Skills -->
-            <ClientOnly>
-              <PackageSkillsCard
-                v-if="skillsData?.skills?.length"
-                :skills="skillsData.skills"
-                :package-name="pkg.name"
-                :version="resolvedVersion || undefined"
-              />
-              <template #fallback>
-                <!-- Show skeleton loaders when SSR or access controls are loading -->
-              </template>
-            </ClientOnly>
-
-            <!-- Download stats -->
-            <PackageWeeklyDownloadStats
-              :packageName
-              :createdIso="pkg?.time?.created ?? null"
-              :repoRef="repoRef"
-            />
-
-            <!-- Playground links -->
-            <PackagePlaygrounds v-if="playgroundLinks.length" :links="playgroundLinks" />
-
-            <PackageCompatibility :engines="displayVersion?.engines" />
-
-            <!-- Versions (grouped by release channel) -->
-            <PackageVersions
-              v-if="pkg.versions && Object.keys(pkg.versions).length > 0"
-              :package-name="pkg.name"
-              :versions="pkg.versions"
-              :dist-tags="pkg['dist-tags'] ?? {}"
-              :time="pkg.time"
-              :selected-version="resolvedVersion ?? pkg['dist-tags']?.['latest']"
-            />
-
-            <!-- Install Scripts Warning -->
-            <PackageInstallScripts
-              v-if="displayVersion?.installScripts"
-              :package-name="pkg.name"
-              :version="displayVersion.version"
-              :install-scripts="displayVersion.installScripts"
-            />
-
-            <!-- Dependencies -->
-            <PackageDependencies
-              v-if="hasDependencies && resolvedVersion && displayVersion"
-              :package-name="pkg.name"
-              :version="resolvedVersion"
-              :dependencies="displayVersion.dependencies"
-              :peer-dependencies="displayVersion.peerDependencies"
-              :peer-dependencies-meta="displayVersion.peerDependenciesMeta"
-              :optional-dependencies="displayVersion.optionalDependencies"
-            />
-
-            <!-- Keywords -->
-            <PackageKeywords :keywords="displayVersion?.keywords" />
-
-            <!-- Maintainers (with admin actions when connected) -->
-            <PackageMaintainers :package-name="pkg.name" :maintainers="pkg.maintainers" />
-          </div>
-        </PackageSidebar>
       </article>
     </template>
 
@@ -1091,8 +1104,8 @@ const showSkeleton = shallowRef(false)
     grid-template-columns: 2fr 1fr;
     grid-template-areas:
       'details details'
-      'install install'
-      'vulns   vulns'
+      'install sidebar'
+      'vulns   sidebar'
       'readme  sidebar';
     grid-template-rows: auto auto auto auto 1fr;
   }
