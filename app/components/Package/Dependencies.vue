@@ -90,6 +90,19 @@ function getDepVersionClass(dep: string) {
 }
 
 const numberFormatter = useNumberFormatter()
+
+/**
+ * Parses npm alias syntax: "npm:real-pkg@^1.0.0"
+ * Returns { name, range } for the real package, or null if not an alias.
+ */
+function parseNpmAlias(version: string): { name: string; range: string } | null {
+  if (!version.startsWith('npm:')) return null
+  const spec = version.slice(4) // strip 'npm:'
+  // Handle scoped packages like @scope/pkg@1.0.0 — find @ after position 0
+  const atIdx = spec.startsWith('@') ? spec.indexOf('@', 1) : spec.indexOf('@')
+  if (atIdx === -1) return { name: spec, range: '' }
+  return { name: spec.slice(0, atIdx), range: spec.slice(atIdx + 1) }
+}
 </script>
 
 <template>
@@ -122,7 +135,7 @@ const numberFormatter = useNumberFormatter()
           :key="dep"
           class="flex items-center justify-between py-1 text-sm gap-2"
         >
-          <LinkBase :to="packageRoute(dep)" class="block truncate" dir="ltr">
+          <LinkBase :to="packageRoute(parseNpmAlias(version)?.name ?? dep)" class="block truncate" dir="ltr">
             {{ dep }}
           </LinkBase>
           <span class="flex items-center gap-1 max-w-[40%]" dir="ltr">
@@ -177,7 +190,7 @@ const numberFormatter = useNumberFormatter()
               <span class="sr-only">{{ $t('package.deprecated.label') }}</span>
             </LinkBase>
             <LinkBase
-              :to="packageRoute(dep, version)"
+              :to="packageRoute(parseNpmAlias(version)?.name ?? dep, parseNpmAlias(version)?.range ?? version)"
               class="block truncate"
               :class="getDepVersionClass(dep)"
               :title="getDepVersionTooltip(dep, version)"
@@ -235,7 +248,7 @@ const numberFormatter = useNumberFormatter()
           class="flex items-center justify-between py-1 text-sm gap-1 min-w-0"
         >
           <div class="flex items-center gap-2 min-w-0 flex-1">
-            <LinkBase :to="packageRoute(peer.name)" class="block max-w-[70%] break-words" dir="ltr">
+            <LinkBase :to="packageRoute(parseNpmAlias(peer.version)?.name ?? peer.name)" class="block max-w-[70%] break-words" dir="ltr">
               {{ peer.name }}
             </LinkBase>
             <TagStatic v-if="peer.optional" :title="$t('package.dependencies.optional')">
@@ -243,7 +256,7 @@ const numberFormatter = useNumberFormatter()
             </TagStatic>
           </div>
           <LinkBase
-            :to="packageRoute(peer.name, peer.version)"
+            :to="packageRoute(parseNpmAlias(peer.version)?.name ?? peer.name, parseNpmAlias(peer.version)?.range ?? peer.version)"
             class="block truncate max-w-[30%]"
             :title="peer.version"
             dir="ltr"
@@ -296,11 +309,11 @@ const numberFormatter = useNumberFormatter()
           :key="dep"
           class="flex items-baseline justify-between py-1 text-sm gap-2"
         >
-          <LinkBase :to="packageRoute(dep)" class="block max-w-[80%] break-words" dir="ltr">
+          <LinkBase :to="packageRoute(parseNpmAlias(version)?.name ?? dep)" class="block max-w-[80%] break-words" dir="ltr">
             {{ dep }}
           </LinkBase>
           <LinkBase
-            :to="packageRoute(dep, version)"
+            :to="packageRoute(parseNpmAlias(version)?.name ?? dep, parseNpmAlias(version)?.range ?? version)"
             class="block truncate"
             :title="version"
             dir="ltr"
