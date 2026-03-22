@@ -43,6 +43,7 @@ const COLORS = {
 
 const BADGE_PADDING_X = 8
 const MIN_BADGE_TEXT_WIDTH = 40
+const FALLBACK_VALUE_EXTRA_PADDING_X = 4
 const SHIELDS_LABEL_PADDING_X = 5
 
 const BADGE_FONT_SHORTHAND = 'normal normal 400 11px Geist, system-ui, -apple-system, sans-serif'
@@ -132,14 +133,17 @@ function measureTextWidth(text: string, font: string): number | null {
   return null
 }
 
-function measureDefaultTextWidth(text: string): number {
+function measureDefaultTextWidth(text: string, fallbackExtraPadding = 0): number {
   const measuredWidth = measureTextWidth(text, BADGE_FONT_SHORTHAND)
 
   if (measuredWidth !== null) {
     return Math.max(MIN_BADGE_TEXT_WIDTH, measuredWidth + BADGE_PADDING_X * 2)
   }
 
-  return Math.max(MIN_BADGE_TEXT_WIDTH, estimateTextWidth(text, 'default') + BADGE_PADDING_X * 2)
+  return Math.max(
+    MIN_BADGE_TEXT_WIDTH,
+    estimateTextWidth(text, 'default') + BADGE_PADDING_X * 2 + fallbackExtraPadding,
+  )
 }
 
 function escapeXML(str: string): string {
@@ -188,7 +192,7 @@ function renderDefaultBadgeSvg(params: {
   const { finalColor, finalLabel, finalLabelColor, finalValue, labelTextColor, valueTextColor } =
     params
   const leftWidth = finalLabel.trim().length === 0 ? 0 : measureDefaultTextWidth(finalLabel)
-  const rightWidth = measureDefaultTextWidth(finalValue)
+  const rightWidth = measureDefaultTextWidth(finalValue, FALLBACK_VALUE_EXTRA_PADDING_X)
   const totalWidth = leftWidth + rightWidth
   const height = 20
   const escapedLabel = escapeXML(finalLabel)
