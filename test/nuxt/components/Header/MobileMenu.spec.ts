@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
-import { ref, computed, nextTick } from 'vue'
+import { computed, nextTick } from 'vue'
 
 // Mock useConnector
 mockNuxtImport('useConnector', () => () => ({
@@ -24,8 +24,8 @@ vi.mock('@vueuse/integrations/useFocusTrap', () => ({
 
 describe('MobileMenu', () => {
   async function mountMenu(open = false) {
-    const { MobileMenuClient } = await import('#components')
-    return mountSuspended(MobileMenuClient, {
+    const { HeaderMobileMenu } = await import('#components')
+    return mountSuspended(HeaderMobileMenu, {
       props: {
         open,
         links: [
