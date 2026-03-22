@@ -64,7 +64,7 @@ export default defineNuxtModule({
 
     // Other security headers via route rules (fine on all responses).
     nuxt.options.routeRules ??= {}
-    const wildCardRules = nuxt.options.routeRules['/**'];
+    const wildCardRules = nuxt.options.routeRules['/**']
     nuxt.options.routeRules['/**'] = {
       ...wildCardRules,
       headers: {
