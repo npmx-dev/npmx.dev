@@ -1698,6 +1698,12 @@
             },
             "none": {
               "type": "string"
+            },
+            "changed_badge": {
+              "type": "string"
+            },
+            "changed": {
+              "type": "string"
             }
           },
           "additionalProperties": false
