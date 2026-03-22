@@ -391,7 +391,7 @@ const flatItems = computed<FlatItem[]>(() => {
                         <span
                           v-else-if="isFilterActive"
                           key="search"
-                          class="i-lucide:search w-3 h-3 animate-searching"
+                          class="i-lucide:funnel w-3 h-3"
                           aria-hidden="true"
                         />
                         <span
@@ -562,16 +562,4 @@ const flatItems = computed<FlatItem[]>(() => {
   transform: scale(0.5);
 }
 
-@keyframes searching {
-  from {
-    transform: rotate(0deg) translateY(-2px) rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg) translateY(-2px) rotate(-360deg);
-  }
-}
-
-.animate-searching {
-  animation: searching 1.2s linear infinite;
-}
 </style>
