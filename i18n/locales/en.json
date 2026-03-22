@@ -19,7 +19,10 @@
     "social": "social",
     "chat": "chat",
     "builders_chat": "builders",
-    "keyboard_shortcuts": "keyboard shortcuts"
+    "keyboard_shortcuts": "keyboard shortcuts",
+    "product": "Product",
+    "legal": "Legal",
+    "community": "Community"
   },
   "shortcuts": {
     "section": {
@@ -207,6 +210,8 @@
       "members": "members"
     },
     "scroll_to_top": "Scroll to top",
+    "previous": "Previous",
+    "next": "Next",
     "cancel": "Cancel",
     "save": "Save",
     "edit": "Edit",
@@ -318,7 +323,8 @@
       "docs": "docs",
       "fund": "fund",
       "compare": "compare",
-      "compare_this_package": "compare this package"
+      "compare_this_package": "compare this package",
+      "dependents": "dependents"
     },
     "likes": {
       "like": "Like this package",
@@ -351,6 +357,13 @@
     "run": {
       "title": "Run",
       "locally": "Run locally"
+    },
+    "dependents": {
+      "title": "Dependents",
+      "subtitle": "Packages that depend on {name}",
+      "count": "{count} dependent | {count} dependents",
+      "none": "No packages found that depend on {name}",
+      "error": "Failed to load dependents"
     },
     "readme": {
       "title": "Readme",
@@ -454,7 +467,8 @@
       "outdated_minor": "{count} minor version behind (latest: {latest}) | {count} minor versions behind (latest: {latest})",
       "outdated_patch": "Patch update available (latest: {latest})",
       "has_replacement": "This dependency has suggested replacements",
-      "vulnerabilities_count": "{count} vulnerability | {count} vulnerabilities"
+      "vulnerabilities_count": "{count} vulnerability | {count} vulnerabilities",
+      "none": "No dependencies"
     },
     "peer_dependencies": {
       "title": "Peer Dependency ({count}) | Peer Dependencies ({count})",
@@ -564,7 +578,9 @@
     },
     "license": {
       "view_spdx": "View license text on SPDX",
-      "none": "None"
+      "none": "None",
+      "changed_badge": "changed",
+      "changed": "License changed from {latest} in the latest version"
     },
     "vulnerabilities": {
       "tree_found": "{vulns} vulnerability in {packages}/{total} packages | {vulns} vulnerabilities in {packages}/{total} packages",
@@ -840,7 +856,8 @@
     },
     "file_path": "File path",
     "binary_file": "Binary file",
-    "binary_rendering_warning": "File type \"{contentType}\" is not supported for preview."
+    "binary_rendering_warning": "File type \"{contentType}\" is not supported for preview.",
+    "toggle_word_wrap": "Word wrap"
   },
   "badges": {
     "provenance": {

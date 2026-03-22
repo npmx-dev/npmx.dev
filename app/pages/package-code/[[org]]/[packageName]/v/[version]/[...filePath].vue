@@ -267,6 +267,8 @@ const markdownViewModes = [
 
 const markdownViewMode = shallowRef<(typeof markdownViewModes)[number]['key']>('preview')
 
+const wordWrap = shallowRef(false)
+
 const bytesFormatter = useBytesFormatter()
 
 // Keep latestVersion for comparison (to show "(latest)" badge)
@@ -417,6 +419,17 @@ defineOgImageComponent('Default', {
           </div>
           <div class="flex items-center gap-2" v-if="isViewingFile && !isBinaryFile && fileContent">
             <button
+              type="button"
+              class="px-2 py-1 font-mono text-xs border rounded transition-colors inline-flex items-center gap-1"
+              :class="wordWrap ? 'bg-accent/10 text-accent border-accent/30' : 'text-fg-muted bg-bg-subtle border-border hover:text-fg hover:border-border-hover'"
+              :aria-pressed="wordWrap"
+              :title="$t('code.toggle_word_wrap')"
+              @click="wordWrap = !wordWrap"
+            >
+              <span class="i-lucide:wrap-text w-3 h-3" aria-hidden="true" />
+              {{ $t('code.toggle_word_wrap') }}
+            </button>
+            <button
               v-if="selectedLines"
               type="button"
               class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors active:scale-95"
@@ -462,6 +475,7 @@ defineOgImageComponent('Default', {
             :html="fileContent.html"
             :lines="fileContent.lines"
             :selected-lines="selectedLines"
+            :word-wrap="wordWrap"
             @line-click="handleLineClick"
           />
           <div class="sticky bottom-0 bg-bg border-t border-border px-4 py-1">
