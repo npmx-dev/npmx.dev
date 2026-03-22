@@ -3,6 +3,7 @@ const props = defineProps<{
   html: string
   lines: number
   selectedLines: { start: number; end: number } | null
+  wordWrap?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -113,9 +114,9 @@ watch(
     </div>
 
     <!-- Code content -->
-    <div class="code-content flex-1 overflow-x-auto min-w-0">
+    <div class="code-content flex-1 min-w-0" :class="wordWrap ? 'overflow-x-hidden' : 'overflow-x-auto'">
       <!-- eslint-disable vue/no-v-html -- HTML is generated server-side by Shiki -->
-      <div ref="codeRef" class="code-lines min-w-full w-fit" v-html="html" />
+      <div ref="codeRef" class="code-lines min-w-full w-fit" :class="{ 'word-wrap': wordWrap }" v-html="html" />
       <!-- eslint-enable vue/no-v-html -->
     </div>
   </div>
@@ -153,6 +154,21 @@ watch(
   white-space: pre;
   overflow: hidden;
   transition: background-color 0.1s;
+}
+
+.code-content.word-wrap-active :deep(.line),
+.code-content:has(.word-wrap) :deep(.line) {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  max-height: none;
+  overflow: visible;
+}
+
+.code-lines.word-wrap :deep(.line) {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  max-height: none;
+  overflow: visible;
 }
 
 /* Highlighted lines in code content - extend full width with negative margin */
