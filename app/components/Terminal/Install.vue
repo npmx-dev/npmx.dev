@@ -185,7 +185,7 @@ const copyDevInstallCommand = () =>
             >
             <ButtonBase
               type="button"
-              size="small"
+              size="sm"
               class="text-fg-muted bg-bg-subtle/80 border-border opacity-0 group-hover/devinstallcmd:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
               :aria-label="$t('package.get_started.copy_dev_command')"
               @click.stop="copyDevInstallCommand"

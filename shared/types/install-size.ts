@@ -2,6 +2,7 @@ export interface DependencySize {
   name: string
   version: string
   size: number
+  tarballUrl: string
   /** True if this is an optional dependency */
   optional?: boolean
 }

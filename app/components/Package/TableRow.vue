@@ -144,7 +144,7 @@ const compactNumberFormatter = useCompactNumberFormatter()
         <ButtonBase
           v-for="keyword in pkg.keywords.slice(0, 3)"
           :key="keyword"
-          size="small"
+          size="sm"
           :aria-pressed="props.filters?.keywords.includes(keyword)"
           :title="`Filter by ${keyword}`"
           @click.stop="emit('clickKeyword', keyword)"

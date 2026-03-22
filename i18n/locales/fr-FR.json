@@ -142,10 +142,25 @@
     "theme_system": "Système",
     "language": "Langue de l'interface",
     "help_translate": "Aidez-nous à traduire npmx",
-    "accent_colors": "Couleurs d'accentuation",
+    "accent_colors": {
+      "label": "Couleurs d'accentuation",
+      "sky": "Ciel",
+      "coral": "Corail",
+      "amber": "Ambre",
+      "emerald": "Émeraude",
+      "violet": "Violet",
+      "magenta": "Magenta"
+    },
     "clear_accent": "Supprimer la couleur d'accentuation",
     "translation_progress": "Progression de la traduction",
-    "background_themes": "Teinte de fond",
+    "background_themes": {
+      "label": "Teinte de fond",
+      "neutral": "Neutre",
+      "stone": "Pierre",
+      "zinc": "Zinc",
+      "slate": "Ardoise",
+      "black": "Noir"
+    },
     "keyboard_shortcuts_enabled": "Activer les raccourcis clavier",
     "keyboard_shortcuts_enabled_description": "Les raccourcis clavier peuvent être désactivés s'ils entrent en conflit avec d'autres raccourcis du navigateur ou du système"
   },
@@ -282,15 +297,23 @@
       "code": "code",
       "docs": "docs",
       "fund": "donner",
-      "compare": "comparer"
+      "compare": "comparer",
+      "compare_this_package": "comparer ce paquet"
     },
     "likes": {
       "like": "Liker ce paquet",
       "unlike": "Retirer le like"
     },
     "docs": {
+      "contents": "Sommaire",
+      "default_not_available": "La documentation n'est pas disponible pour cette version.",
       "not_available": "Documentation non disponible",
-      "not_available_detail": "Nous n'avons pas pu générer la documentation pour cette version."
+      "not_available_detail": "Nous n'avons pas pu générer la documentation pour cette version.",
+      "page_title": "Documentation API - npmx",
+      "page_title_name": "Documentation {name} - npmx",
+      "page_title_version": "Documentation {name} - npmx",
+      "og_title": "{name} - Documentation",
+      "view_package": "Voir le paquet"
     },
     "get_started": {
       "title": "Commencer",

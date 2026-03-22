@@ -40,7 +40,7 @@ function isCategoryNoneSelected(category: string): boolean {
           :aria-pressed="isCategoryAllSelected(category)"
           :disabled="isCategoryAllSelected(category)"
           @click="selectCategory(category)"
-          size="small"
+          size="sm"
         >
           {{ $t('compare.facets.all') }}
         </ButtonBase>
@@ -52,7 +52,7 @@ function isCategoryNoneSelected(category: string): boolean {
           :aria-pressed="isCategoryNoneSelected(category)"
           :disabled="isCategoryNoneSelected(category)"
           @click="deselectCategory(category)"
-          size="small"
+          size="sm"
         >
           {{ $t('compare.facets.none') }}
         </ButtonBase>
@@ -64,7 +64,7 @@ function isCategoryNoneSelected(category: string): boolean {
         <ButtonBase
           v-for="facet in facetsByCategory[category]"
           :key="facet.id"
-          size="small"
+          size="sm"
           :title="facet.comingSoon ? $t('compare.facets.coming_soon') : facet.description"
           :disabled="facet.comingSoon"
           :aria-pressed="isFacetSelected(facet.id)"

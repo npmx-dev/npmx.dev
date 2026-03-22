@@ -51,7 +51,8 @@ const config: KnipConfig = {
       project: ['src/**/*.ts!', '!src/mock-*.ts'],
     },
     'docs': {
-      entry: ['app/**/*.{ts,vue,css}'],
+      entry: ['app/**/*.{ts,vue,css}', 'shared/**/*.{ts,vue,css}'],
+      project: ['**/*.{ts,vue,cjs,mjs}'],
       ignoreDependencies: ['@nuxtjs/mdc'],
     },
   },

@@ -105,10 +105,14 @@
     "theme_system": "கணினி",
     "language": "மொழி",
     "help_translate": "npmx-ஐ மொழிபெயர்க்க உதவுங்கள்",
-    "accent_colors": "வலியுறுத்தல் வண்ணங்கள்",
+    "accent_colors": {
+      "label": "வலியுறுத்தல் வண்ணங்கள்"
+    },
     "clear_accent": "வலியுறுத்தல் வண்ணத்தை அழி",
     "translation_progress": "மொழிபெயர்ப்பு முன்னேற்றம்",
-    "background_themes": "பின்புல நிழல்"
+    "background_themes": {
+      "label": "பின்புல நிழல்"
+    }
   },
   "i18n": {
     "missing_keys": "{count} விடுபட்ட மொழிபெயர்ப்பு | {count} விடுபட்ட மொழிபெயர்ப்புகள்",

@@ -265,7 +265,7 @@ watch(
             :placeholder="$t('package.maintainers.username_placeholder')"
             no-correct
             class="flex-1 min-w-25 m-1"
-            size="small"
+            size="sm"
           />
           <ButtonBase type="submit" :disabled="!newOwnerUsername.trim() || isAdding">
             {{ isAdding ? '…' : $t('package.maintainers.add_button') }}

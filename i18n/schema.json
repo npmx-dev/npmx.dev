@@ -449,7 +449,31 @@
           "type": "string"
         },
         "accent_colors": {
-          "type": "string"
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "sky": {
+              "type": "string"
+            },
+            "coral": {
+              "type": "string"
+            },
+            "amber": {
+              "type": "string"
+            },
+            "emerald": {
+              "type": "string"
+            },
+            "violet": {
+              "type": "string"
+            },
+            "magenta": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
         },
         "clear_accent": {
           "type": "string"
@@ -458,7 +482,28 @@
           "type": "string"
         },
         "background_themes": {
-          "type": "string"
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "neutral": {
+              "type": "string"
+            },
+            "stone": {
+              "type": "string"
+            },
+            "zinc": {
+              "type": "string"
+            },
+            "slate": {
+              "type": "string"
+            },
+            "black": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
         },
         "keyboard_shortcuts_enabled": {
           "type": "string"
@@ -912,6 +957,9 @@
             },
             "compare": {
               "type": "string"
+            },
+            "compare_this_package": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -931,10 +979,31 @@
         "docs": {
           "type": "object",
           "properties": {
+            "contents": {
+              "type": "string"
+            },
+            "default_not_available": {
+              "type": "string"
+            },
             "not_available": {
               "type": "string"
             },
             "not_available_detail": {
+              "type": "string"
+            },
+            "page_title": {
+              "type": "string"
+            },
+            "page_title_name": {
+              "type": "string"
+            },
+            "page_title_version": {
+              "type": "string"
+            },
+            "og_title": {
+              "type": "string"
+            },
+            "view_package": {
               "type": "string"
             }
           },
@@ -1823,6 +1892,18 @@
               "type": "string"
             },
             "mb": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "download": {
+          "type": "object",
+          "properties": {
+            "button": {
+              "type": "string"
+            },
+            "tarball": {
               "type": "string"
             }
           },
