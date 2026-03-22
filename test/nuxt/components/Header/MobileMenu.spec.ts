@@ -33,7 +33,15 @@ describe('MobileMenu', () => {
             type: 'group' as const,
             name: 'main',
             label: 'Navigation',
-            items: [{ type: 'link' as const, name: 'home', label: 'Home', to: '/', iconClass: 'i-lucide:home' }],
+            items: [
+              {
+                type: 'link' as const,
+                name: 'home',
+                label: 'Home',
+                to: '/',
+                iconClass: 'i-lucide:home',
+              },
+            ],
           },
         ],
       },
