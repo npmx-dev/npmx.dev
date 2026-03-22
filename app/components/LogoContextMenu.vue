@@ -56,7 +56,7 @@ onKeyStroke('Escape', () => {
 </script>
 
 <template>
-  <div @contextmenu="onContextMenu">
+  <div class="contents" @contextmenu="onContextMenu">
     <slot />
 
     <Teleport to="body">

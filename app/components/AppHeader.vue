@@ -226,11 +226,11 @@ onKeyStroke(
       class="relative container min-h-14 flex items-center gap-2 z-1 justify-end"
     >
       <!-- Mobile: Logo (navigates home) -->
-      <LogoContextMenu v-if="!isSearchExpanded && !isOnHomePage" class="sm:hidden">
+      <LogoContextMenu v-if="!isSearchExpanded && !isOnHomePage" class="sm:hidden flex-shrink-0">
         <NuxtLink
           to="/"
           :aria-label="$t('header.home')"
-          class="flex-shrink-0 font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring me-4"
+          class="font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring me-4"
         >
           <AppMark class="w-6 h-auto" />
         </NuxtLink>
