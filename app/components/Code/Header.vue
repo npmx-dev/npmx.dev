@@ -84,22 +84,22 @@ const isPathDropdownOpen = shallowRef(false)
 const pathDropdownButtonRef = useTemplateRef('pathDropdownButtonRef')
 const pathDropdownListRef = useTemplateRef<HTMLElement>('pathDropdownListRef')
 
-function togglePathDropdown(force: boolean) {
-  if (force !== undefined) {
-    isPathDropdownOpen.value = force
+function togglePathDropdown(forceClose?: boolean) {
+  if (forceClose) {
+    isPathDropdownOpen.value = false
     return
   }
 
   isPathDropdownOpen.value = !isPathDropdownOpen.value
 }
 
-onClickOutside(pathDropdownListRef, () => togglePathDropdown(false), {
+onClickOutside(pathDropdownListRef, () => togglePathDropdown(true), {
   ignore: [pathDropdownButtonRef],
 })
 
 useEventListener('keydown', (event: KeyboardEvent) => {
   if (event.key === 'Escape' && isPathDropdownOpen.value) {
-    togglePathDropdown(false)
+    togglePathDropdown(true)
   }
 })
 </script>
@@ -180,11 +180,11 @@ useEventListener('keydown', (event: KeyboardEvent) => {
             >
               <!-- add └ mark to better visualize nested folders) -->
               <template v-if="level === index">
-                <span class="absolute top-0 bottom-1/2 left-2 w-px bg-fg-subtle/50" />
-                <span class="absolute top-1/2 left-2 right-0 h-px bg-fg-subtle/50" />
+                <span class="absolute top-0 bottom-1/2 inset-is-2 w-px bg-fg-subtle/50" />
+                <span class="absolute top-1/2 inset-is-2 inset-ie-0 h-px bg-fg-subtle/50" />
               </template>
             </span>
-            <span :class="{ 'pl-1': index > 0 }" class="min-w-0 break-all"
+            <span :class="{ 'ps-1': index > 0 }" class="min-w-0 break-all"
               >{{ crumb.name }}<span class="text-fg-subtle">/</span></span
             >
           </NuxtLink>
@@ -241,6 +241,7 @@ useEventListener('keydown', (event: KeyboardEvent) => {
             variant="button-secondary"
             :to="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
             class="px-3"
+            :aria-label="$t('code.open_raw_file')"
           />
         </template>
         <ButtonBase

@@ -1164,15 +1164,23 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(CodeHeader, {
         props: {
-          html: '<pre><code><span class="line">const x = 1;</span></code></pre>',
           filePath: 'dir1/dir2/sourcefile.js',
           loading: false,
           isViewingFile: true,
           isBinaryFile: false,
-          fileContent: '<pre><code><span class="line">const x = 1;</span></code></pre>',
+          fileContent: {
+            package: 'vite',
+            version: '1.0.0',
+            path: 'dir1/dir2/sourcefile.js',
+            language: 'javascript',
+            contentType: 'application/javascript',
+            content: 'const x = 1;',
+            html: '<pre><code><span class="line">const x = 1;</span></code></pre>',
+            lines: 1,
+          },
           markdownViewMode: 'preview',
           selectedLines: null,
-          getCodeUrlWithPath: path => path,
+          getCodeUrlWithPath: (path = '') => path,
           packageName: 'vite',
           version: '1.0.0',
         },
@@ -1181,7 +1189,7 @@ describe('component accessibility audits', () => {
       expect(results.violations).toEqual([])
     })
   })
-  
+
   describe('CodeSkeletonLoader', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(CodeSkeletonLoader)

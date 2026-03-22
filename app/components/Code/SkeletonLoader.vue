@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-full" aria-busy="true" :aria-label="$t('common.loading')">
+  <div class="flex min-h-full" role="status" aria-busy="true" :aria-label="$t('common.loading')">
     <!-- Fake line numbers column -->
     <div class="shrink-0 bg-bg-subtle border-ie border-border w-14 py-0">
       <div v-for="n in 20" :key="n" class="px-3 h-6 flex items-center justify-end">

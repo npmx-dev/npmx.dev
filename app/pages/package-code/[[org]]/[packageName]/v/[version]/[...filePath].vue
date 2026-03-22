@@ -325,7 +325,7 @@ defineOgImageComponent('Default', {
     <!-- Main content: file tree + file viewer -->
     <div
       v-else-if="!!fileTree"
-      class="container w-full grid grid-cols-[18rem_1fr] max-lg:grid-cols-[16rem_1fr] max-md:grid-cols-[1fr] border-border border-r border-l transition-mix-width duration-200 ease-in-out px-0"
+      class="container w-full grid grid-cols-[18rem_1fr] max-lg:grid-cols-[16rem_1fr] max-md:grid-cols-[1fr] border-border border-is border-ie transition-mix-width duration-200 ease-in-out px-0"
       :class="{ 'max-w-full border-0': codeContainerFull }"
       dir="ltr"
     >
@@ -362,7 +362,7 @@ defineOgImageComponent('Default', {
         <CodeSkeletonLoader v-if="isLoading" />
 
         <!-- File viewer -->
-        <template v-else-if="!isBinaryFile && fileContent">
+        <template v-else-if="isViewingFile && !isBinaryFile && fileContent">
           <div
             v-if="fileContent.markdownHtml"
             v-show="markdownViewMode === 'preview'"

@@ -821,6 +821,7 @@
     "copy_link": "Copy link",
     "view_raw": "View raw file",
     "toggle_container": "Toggle code container width",
+    "open_raw_file": "Open raw file",
     "open_path_dropdown": "Open path segments dropdown",
     "file_too_large": "File too large to preview",
     "file_size_warning": "{size} exceeds the 500KB limit for syntax highlighting",
