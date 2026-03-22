@@ -119,8 +119,7 @@ function copyViaExecCommand(text: string): boolean {
   textarea.select()
   try {
     return document.execCommand('copy')
-  }
-  finally {
+  } finally {
     document.body.removeChild(textarea)
   }
 }
@@ -138,14 +137,15 @@ async function copyReadmeHandler() {
   try {
     await navigator.clipboard.writeText(markdown)
     success = true
-  }
-  catch {
+  } catch {
     success = copyViaExecCommand(markdown)
   }
 
   if (success) {
     copiedReadme.value = true
-    setTimeout(() => { copiedReadme.value = false }, 2000)
+    setTimeout(() => {
+      copiedReadme.value = false
+    }, 2000)
   }
 }
 
