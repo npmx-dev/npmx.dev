@@ -122,6 +122,9 @@ async function toggleGroup(groupKey: string) {
 const versionFilterInput = ref('')
 const versionFilter = refDebounced(versionFilterInput, 100)
 const isFilterActive = computed(() => versionFilter.value.trim() !== '')
+const isInvalidRange = computed(
+  () => isFilterActive.value && validRange(versionFilter.value.trim()) === null,
+)
 
 const filteredVersionSet = computed(() => {
   const trimmed = versionFilter.value.trim()
@@ -198,14 +201,40 @@ const flatItems = computed<FlatItem[]>(() => {
           <span class="text-fg-subtle shrink-0">/</span>
           <h1 class="text-sm text-fg-muted shrink-0">{{ $t('package.versions.page_title') }}</h1>
         </div>
-        <InputBase
-          v-model="versionFilterInput"
-          type="text"
-          :placeholder="$t('package.versions.version_filter_placeholder')"
-          :aria-label="$t('package.versions.version_filter_label')"
-          size="sm"
-          class="w-36 sm:w-44"
-        />
+        <div class="relative">
+          <InputBase
+            v-model="versionFilterInput"
+            type="text"
+            :placeholder="$t('package.versions.version_filter_placeholder')"
+            :aria-label="$t('package.versions.version_filter_label')"
+            :aria-invalid="isInvalidRange ? 'true' : undefined"
+            :aria-describedby="isInvalidRange ? 'version-filter-error' : undefined"
+            autocomplete="off"
+            size="small"
+            class="w-36 sm:w-44"
+            :class="isInvalidRange ? 'pe-7 !border-red-500' : ''"
+          />
+          <Transition
+            enter-active-class="transition-all duration-150"
+            enter-from-class="opacity-0 scale-60"
+            leave-active-class="transition-all duration-150"
+            leave-to-class="opacity-0 scale-60"
+          >
+            <TooltipApp
+              v-if="isInvalidRange"
+              :text="$t('package.versions.filter_invalid')"
+              position="bottom"
+              class="absolute end-0 inset-y-0 flex items-center pe-2"
+            >
+              <span
+                id="version-filter-error"
+                class="i-lucide:circle-alert w-3.5 h-3.5 text-red-500 block"
+                role="img"
+                :aria-label="$t('package.versions.filter_invalid')"
+              />
+            </TooltipApp>
+          </Transition>
+        </div>
       </div>
     </header>
 
