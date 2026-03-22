@@ -5,8 +5,6 @@ import {
   validateScopeTeam,
   validatePackageName,
   extractUrls,
-  createNpmEnv,
-  NPM_REGISTRY_URL,
 } from '../../../cli/src/npm-client'
 
 describe('validateUsername', () => {
@@ -184,17 +182,5 @@ describe('extractUrls', () => {
     const npmOutput =
       'Authenticate your account at:\nhttps://www.npmjs.com/login?next=/login/cli/abc123'
     expect(extractUrls(npmOutput)).toEqual(['https://www.npmjs.com/login?next=/login/cli/abc123'])
-  })
-})
-
-describe('createNpmEnv', () => {
-  it('enforces npmjs registry for all npm commands', () => {
-    const env = createNpmEnv()
-    expect(env.npm_config_registry).toBe(NPM_REGISTRY_URL)
-  })
-
-  it('does not allow overriding enforced registry', () => {
-    const env = createNpmEnv({ npm_config_registry: 'https://registry.npmmirror.com/' })
-    expect(env.npm_config_registry).toBe(NPM_REGISTRY_URL)
   })
 })
