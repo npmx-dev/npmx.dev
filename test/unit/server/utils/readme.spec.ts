@@ -84,8 +84,37 @@ describe('Playground Link Extraction', () => {
   })
 
   describe('Other Providers', () => {
-    it('extracts CodePen links', async () => {
+    it('extracts CodePen pen links', async () => {
       const markdown = `[Pen](https://codepen.io/user/pen/abc123)`
+      const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+      expect(result.playgroundLinks[0]!.provider).toBe('codepen')
+    })
+
+    it('does not treat a CodePen profile page as a playground link', async () => {
+      // https://codepen.io/username is a profile page, not a pen
+      const markdown = `[Profile](https://codepen.io/username)`
+      const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+      expect(result.playgroundLinks).toHaveLength(0)
+    })
+
+    it('does not treat a CodePen collection page as a playground link', async () => {
+      const markdown = `[Collection](https://codepen.io/username/pens/public)`
+      const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+      expect(result.playgroundLinks).toHaveLength(0)
+    })
+
+    it('extracts CodePen full-page links', async () => {
+      const markdown = `[Full](https://codepen.io/user/full/abc123)`
+      const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+      expect(result.playgroundLinks[0]!.provider).toBe('codepen')
+    })
+
+    it('extracts CodePen details links', async () => {
+      const markdown = `[Details](https://codepen.io/user/details/abc123)`
       const result = await renderReadmeHtml(markdown, 'test-pkg')
 
       expect(result.playgroundLinks[0]!.provider).toBe('codepen')
