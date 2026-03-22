@@ -1,19 +1,41 @@
 <script setup lang="ts">
 import { ACCENT_COLORS, type AccentColorId } from '#shared/utils/constants'
 
-const { accentColors, selectedAccentColor } = useAccentColor()
+const { selectedAccentColor } = useAccentColor()
 const { download: downloadBlob } = useSvgToPng()
+const { t } = useI18n()
 
 const customAccent = ref<string | null>(null)
 const customBgDark = ref(true)
 const customLogoRef = useTemplateRef('customLogoRef')
 
 const activeAccentId = computed(() => customAccent.value ?? selectedAccentColor.value ?? 'sky')
+
+// Use the palette matching the preview background, not the site theme
+const previewPalette = computed(() => customBgDark.value ? ACCENT_COLORS.dark : ACCENT_COLORS.light)
+
 const activeAccentColor = computed(() => {
-  // Use light accent colors on light bg for proper contrast (e.g. neutral: dark on white, not white on white)
-  const palette = customBgDark.value ? ACCENT_COLORS.dark : ACCENT_COLORS.light
-  return palette[activeAccentId.value as AccentColorId] ?? palette.sky
+  return previewPalette.value[activeAccentId.value as AccentColorId] ?? previewPalette.value.sky
 })
+
+const accentColorLabels = computed<Record<AccentColorId, string>>(() => ({
+  sky: t('settings.accent_colors.sky'),
+  coral: t('settings.accent_colors.coral'),
+  amber: t('settings.accent_colors.amber'),
+  emerald: t('settings.accent_colors.emerald'),
+  violet: t('settings.accent_colors.violet'),
+  magenta: t('settings.accent_colors.magenta'),
+  neutral: t('settings.clear_accent'),
+}))
+
+// Color swatches match the preview background palette so the circles reflect what the logo will render
+const pickerColors = computed(() =>
+  Object.entries(previewPalette.value).map(([id, value]) => ({
+    id: id as AccentColorId,
+    label: accentColorLabels.value[id as AccentColorId],
+    value,
+  })),
+)
 
 function getCustomSvgString(): string {
   const el = customLogoRef.value?.$el as SVGElement | undefined
@@ -120,7 +142,7 @@ async function downloadCustomPng() {
           }}</span>
           <div class="flex items-center gap-1.5" role="radiogroup">
             <ButtonBase
-              v-for="color in accentColors"
+              v-for="color in pickerColors"
               :key="color.id"
               role="radio"
               :aria-checked="activeAccentId === color.id"
@@ -129,7 +151,9 @@ async function downloadCustomPng() {
               :class="
                 activeAccentId === color.id
                   ? '!border-fg scale-110'
-                  : '!border-transparent hover:!border-border-hover'
+                  : color.id === 'neutral'
+                    ? '!border-border hover:!border-border-hover'
+                    : '!border-transparent hover:!border-border-hover'
               "
               :style="{ backgroundColor: color.value }"
               @click="customAccent = color.id"
