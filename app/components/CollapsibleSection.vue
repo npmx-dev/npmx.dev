@@ -106,7 +106,9 @@ useHead({
         <button
           type="button"
           class="text-start focus-visible:outline-accent/70 rounded"
-          :aria-label="`${isOpen ? 'Collapse' : 'Expand'} ${title}`"
+          :aria-expanded="isOpen"
+          :aria-controls="contentId"
+          :aria-label="ariaLabel"
           @click="toggle"
         >
           {{ title }}
