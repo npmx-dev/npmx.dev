@@ -94,6 +94,14 @@ const numberFormatter = useNumberFormatter()
 
 <template>
   <div class="space-y-8">
+    <!-- Empty state when no dependencies at all -->
+    <p
+      v-if="sortedDependencies.length === 0 && sortedPeerDependencies.length === 0 && sortedOptionalDependencies.length === 0"
+      class="text-sm text-fg-subtle"
+    >
+      {{ $t('package.dependencies.none') }}
+    </p>
+
     <!-- Dependencies -->
     <CollapsibleSection
       v-if="sortedDependencies.length > 0"
