@@ -454,7 +454,8 @@
       "outdated_minor": "{count} minor version behind (latest: {latest}) | {count} minor versions behind (latest: {latest})",
       "outdated_patch": "Patch update available (latest: {latest})",
       "has_replacement": "This dependency has suggested replacements",
-      "vulnerabilities_count": "{count} vulnerability | {count} vulnerabilities"
+      "vulnerabilities_count": "{count} vulnerability | {count} vulnerabilities",
+      "none": "No dependencies"
     },
     "peer_dependencies": {
       "title": "Peer Dependency ({count}) | Peer Dependencies ({count})",
@@ -564,7 +565,9 @@
     },
     "license": {
       "view_spdx": "View license text on SPDX",
-      "none": "None"
+      "none": "None",
+      "changed_badge": "changed",
+      "changed": "License changed from {latest} in the latest version"
     },
     "vulnerabilities": {
       "tree_found": "{vulns} vulnerability in {packages}/{total} packages | {vulns} vulnerabilities in {packages}/{total} packages",

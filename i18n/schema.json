@@ -1368,6 +1368,9 @@
             },
             "vulnerabilities_count": {
               "type": "string"
+            },
+            "none": {
+              "type": "string"
             }
           },
           "additionalProperties": false
