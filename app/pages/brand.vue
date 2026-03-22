@@ -47,15 +47,9 @@ const logos = [
 ]
 
 const colors = [
-  { key: 'background', hex: '#0a0a0a', oklch: 'oklch(0.171 0 0)', swatch: '#0a0a0a', light: false },
-  { key: 'foreground', hex: '#fafafa', oklch: 'oklch(0.982 0 0)', swatch: '#fafafa', light: true },
-  {
-    key: 'accent',
-    hex: '#51c8fc',
-    oklch: 'oklch(0.787 0.128 230.318)',
-    swatch: '#51c8fc',
-    light: true,
-  },
+  { name: () => $t('brand.colors.background'), hex: '#0a0a0a', oklch: 'oklch(0.171 0 0)' },
+  { name: () => $t('brand.colors.foreground'), hex: '#fafafa', oklch: 'oklch(0.982 0 0)' },
+  { name: () => $t('brand.colors.accent'), hex: '#51c8fc', oklch: 'oklch(0.787 0.128 230.318)' },
 ]
 
 const { copy, copied, text: lastCopied } = useClipboard({ copiedDuring: 2000 })
@@ -206,25 +200,23 @@ async function handlePngDownload(logo: (typeof logos)[number]) {
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
             <div
               v-for="color in colors"
-              :key="color.key"
+              :key="color.hex"
               class="group"
               role="group"
-              :aria-label="$t(`brand.colors.${color.key}`)"
+              :aria-label="color.name()"
             >
               <div
                 class="rounded-lg h-20 sm:h-24 mb-3 border border-border"
                 :style="{ backgroundColor: color.hex }"
               />
               <p class="font-mono text-sm text-fg mb-1 m-0">
-                {{ $t(`brand.colors.${color.key}`) }}
+                {{ color.name() }}
               </p>
               <div class="flex flex-col gap-1">
                 <ButtonBase
                   size="sm"
                   class="!border-none !px-0 !justify-start"
-                  :aria-label="
-                    $t('brand.colors.copy_hex', { name: $t(`brand.colors.${color.key}`) })
-                  "
+                  :aria-label="$t('brand.colors.copy_hex', { name: color.name() })"
                   @click="copy(color.hex)"
                 >
                   <code class="text-fg-muted">{{ color.hex }}</code>
@@ -241,9 +233,7 @@ async function handlePngDownload(logo: (typeof logos)[number]) {
                 <ButtonBase
                   size="sm"
                   class="!border-none !px-0 !justify-start"
-                  :aria-label="
-                    $t('brand.colors.copy_oklch', { name: $t(`brand.colors.${color.key}`) })
-                  "
+                  :aria-label="$t('brand.colors.copy_oklch', { name: color.name() })"
                   @click="copy(color.oklch)"
                 >
                   <code class="text-fg-subtle">{{ color.oklch }}</code>
