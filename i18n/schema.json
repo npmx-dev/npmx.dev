@@ -63,6 +63,15 @@
         },
         "keyboard_shortcuts": {
           "type": "string"
+        },
+        "product": {
+          "type": "string"
+        },
+        "legal": {
+          "type": "string"
+        },
+        "community": {
+          "type": "string"
         }
       },
       "additionalProperties": false

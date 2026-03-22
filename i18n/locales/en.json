@@ -19,7 +19,10 @@
     "social": "social",
     "chat": "chat",
     "builders_chat": "builders",
-    "keyboard_shortcuts": "keyboard shortcuts"
+    "keyboard_shortcuts": "keyboard shortcuts",
+    "product": "Product",
+    "legal": "Legal",
+    "community": "Community"
   },
   "shortcuts": {
     "section": {
