@@ -1,5 +1,3 @@
-import type { NpmSearchResponse, NpmSearchResult, PackageMetaResponse } from '#shared/types'
-
 export function metaToSearchResult(meta: PackageMetaResponse): NpmSearchResult {
   return {
     package: {

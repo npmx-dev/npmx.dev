@@ -3,7 +3,6 @@ import {
   sum,
   chunkIntoWeeks,
   buildWeeklyEvolutionFromDaily,
-  addDays,
   clamp,
   quantile,
   winsorize,
@@ -16,11 +15,14 @@ import {
   sanitise,
   insertLineBreaks,
   applyEllipsis,
+  createSeedNumber,
+  createSeededSvgPattern,
+  createChartPatternSlotMarkup,
   type TrendLineConfig,
   type TrendLineDataset,
   type VersionsBarConfig,
   type VersionsBarDataset,
-} from '../../../../app/utils/charts'
+} from '~/utils/charts'
 import type { AltCopyArgs } from 'vue-data-ui'
 
 type TranslateCall = { key: string | number; named?: Record<string, unknown> }
@@ -325,59 +327,6 @@ describe('buildWeeklyEvolutionFromDaily', () => {
   })
 })
 
-describe('addDays', () => {
-  it('returns a new Date instance (does not mutate original)', () => {
-    const original = new Date('2028-01-01T00:00:00Z')
-    const result = addDays(original, 5)
-
-    expect(result).not.toBe(original)
-    expect(original.toISOString()).toBe('2028-01-01T00:00:00.000Z')
-  })
-
-  it('adds positive days correctly', () => {
-    const date = new Date('2028-01-01T00:00:00Z')
-    const result = addDays(date, 10)
-
-    expect(result.toISOString()).toBe('2028-01-11T00:00:00.000Z')
-  })
-
-  it('subtracts days when negative value is provided', () => {
-    const date = new Date('2028-01-10T00:00:00Z')
-    const result = addDays(date, -5)
-
-    expect(result.toISOString()).toBe('2028-01-05T00:00:00.000Z')
-  })
-
-  it('handles month overflow correctly', () => {
-    const date = new Date('2028-01-28T00:00:00Z')
-    const result = addDays(date, 5)
-
-    expect(result.toISOString()).toBe('2028-02-02T00:00:00.000Z')
-  })
-
-  it('handles year overflow correctly', () => {
-    const date = new Date('2027-12-29T00:00:00Z')
-    const result = addDays(date, 5)
-
-    expect(result.toISOString()).toBe('2028-01-03T00:00:00.000Z')
-  })
-
-  it('handles leap year correctly', () => {
-    const date = new Date('2028-02-27T00:00:00Z') // 2028 is leap year
-    const result = addDays(date, 2)
-
-    expect(result.toISOString()).toBe('2028-02-29T00:00:00.000Z')
-  })
-
-  it('keeps UTC behavior consistent (no timezone drift)', () => {
-    const date = new Date('2028-03-01T00:00:00Z')
-    const result = addDays(date, 1)
-
-    expect(result.getUTCHours()).toBe(0)
-    expect(result.toISOString()).toBe('2028-03-02T00:00:00.000Z')
-  })
-})
-
 describe('clamp', () => {
   it('returns the value when it is within bounds', () => {
     expect(clamp(5, 0, 10)).toBe(5)
@@ -496,30 +445,30 @@ describe('winsorize', () => {
   })
 })
 
+const computeBaseTrend = (rSquared: number | null) => {
+  if (rSquared === null) return 'undefined' as const
+  if (rSquared > 0.75) return 'strong' as const
+  if (rSquared > 0.4) return 'weak' as const
+  return 'none' as const
+}
+
+const buildSeries = (base: number, step: number, noiseAmplitude: number) => {
+  const values: number[] = []
+  for (let i = 0; i < 19; i += 1) {
+    const noise =
+      i % 4 === 0
+        ? noiseAmplitude
+        : i % 4 === 1
+          ? -noiseAmplitude
+          : i % 4 === 2
+            ? Math.floor(noiseAmplitude / 2)
+            : -Math.floor(noiseAmplitude / 2)
+    values.push(base + i * step + noise)
+  }
+  return values
+}
+
 describe('computeLineChartAnalysis', () => {
-  const computeBaseTrend = (rSquared: number | null) => {
-    if (rSquared === null) return 'undefined' as const
-    if (rSquared > 0.75) return 'strong' as const
-    if (rSquared > 0.4) return 'weak' as const
-    return 'none' as const
-  }
-
-  const buildSeries = (base: number, step: number, noiseAmplitude: number) => {
-    const values: number[] = []
-    for (let i = 0; i < 19; i += 1) {
-      const noise =
-        i % 4 === 0
-          ? noiseAmplitude
-          : i % 4 === 1
-            ? -noiseAmplitude
-            : i % 4 === 2
-              ? Math.floor(noiseAmplitude / 2)
-              : -Math.floor(noiseAmplitude / 2)
-      values.push(base + i * step + noise)
-    }
-    return values
-  }
-
   it('returns undefined interpretations for empty array', () => {
     const result = computeLineChartAnalysis([])
     expect(result.mean).toBe(0)
@@ -1451,5 +1400,254 @@ describe('applyEllipsis', () => {
 
   it('preserves whitespace within the truncated portion', () => {
     expect(applyEllipsis('you need to touch grass', 13)).toBe('you need to t...')
+  })
+})
+
+describe('createSeedNumber', () => {
+  it('returns the same hash for the same input', () => {
+    expect(createSeedNumber('react')).toBe(createSeedNumber('react'))
+    expect(createSeedNumber('vue')).toBe(createSeedNumber('vue'))
+  })
+
+  it('returns different hashes for different inputs', () => {
+    expect(createSeedNumber('react')).not.toBe(createSeedNumber('vue'))
+    expect(createSeedNumber('svelte')).not.toBe(createSeedNumber('solid'))
+  })
+
+  it('returns a 32 bit unsigned integer', () => {
+    const result = createSeedNumber('react')
+    expect(Number.isInteger(result)).toBe(true)
+    expect(result).toBeGreaterThanOrEqual(0)
+    expect(result).toBeLessThanOrEqual(4294967295)
+  })
+
+  it('handles an empty string', () => {
+    const result = createSeedNumber('')
+    expect(Number.isInteger(result)).toBe(true)
+    expect(result).toBeGreaterThanOrEqual(0)
+    expect(result).toBeLessThanOrEqual(4294967295)
+  })
+
+  it('is case sensitive', () => {
+    expect(createSeedNumber('react')).not.toBe(createSeedNumber('React'))
+  })
+})
+
+describe('createSeededSvgPattern', () => {
+  it('returns deterministic output for the same seed', () => {
+    const first = createSeededSvgPattern('react')
+    const second = createSeededSvgPattern('react')
+    expect(first).toEqual(second)
+  })
+
+  it('returns different output for different seeds', () => {
+    const first = createSeededSvgPattern('react')
+    const second = createSeededSvgPattern('vue')
+    expect(second).not.toEqual(first)
+  })
+
+  it('returns a valid pattern object shape', () => {
+    const result = createSeededSvgPattern('react')
+    expect(typeof result.width).toBe('number')
+    expect(typeof result.height).toBe('number')
+    expect(typeof result.rotation).toBe('number')
+    expect(typeof result.patternType).toBe('string')
+    expect(typeof result.contentMarkup).toBe('string')
+  })
+
+  it('uses default options when none are provided', () => {
+    const result = createSeededSvgPattern('react')
+    expect(result.width).toBeGreaterThanOrEqual(8)
+    expect(result.width).toBeLessThanOrEqual(20)
+    expect(result.height).toBe(result.width)
+    expect(result.contentMarkup.length).toBeGreaterThan(0)
+  })
+
+  it('uses the provided foreground and background colors', () => {
+    const result = createSeededSvgPattern('react', {
+      foregroundColor: '#ff0000',
+      backgroundColor: '#00ff00',
+    })
+    expect(result.contentMarkup).toContain('#ff0000')
+    expect(result.contentMarkup).toContain('#00ff00')
+    expect(result.contentMarkup).toContain('<rect x="0" y="0"')
+  })
+
+  it('does not inject a background rect when backgroundColor is transparent', () => {
+    const result = createSeededSvgPattern('react', {
+      backgroundColor: 'transparent',
+    })
+    expect(result.contentMarkup).not.toContain('<rect x="0" y="0"')
+  })
+
+  it('respects the provided size range', () => {
+    const result = createSeededSvgPattern('react', {
+      minimumSize: 10,
+      maximumSize: 16,
+    })
+    expect(result.width).toBeGreaterThanOrEqual(10)
+    expect(result.width).toBeLessThanOrEqual(16)
+    expect(result.height).toBe(result.width)
+  })
+
+  it('always returns one of the supported pattern types', () => {
+    const allowedPatternTypes = [
+      'diagonalLines',
+      'verticalLines',
+      'horizontalLines',
+      'crosshatch',
+      'dots',
+      'grid',
+      'zigzag',
+    ]
+    const result = createSeededSvgPattern('react')
+    expect(allowedPatternTypes).toContain(result.patternType)
+  })
+
+  it('returns a supported rotation value', () => {
+    const allowedRotations = [0, 15, 30, 45, 60, 75, 90, 120, 135]
+    const result = createSeededSvgPattern('react')
+    expect(allowedRotations).toContain(result.rotation)
+  })
+
+  it('returns svg markup matching the selected pattern type', () => {
+    const seeds = [
+      'react',
+      'vue',
+      'svelte',
+      'solid',
+      'angular',
+      'ember',
+      'preact',
+      'lit',
+      'alpine',
+      'nuxt',
+      'next',
+      'astro',
+      'qwik',
+      'backbone',
+    ]
+
+    const expectedTagByPatternType: Record<
+      ReturnType<typeof createSeededSvgPattern>['patternType'],
+      string
+    > = {
+      diagonalLines: '<line',
+      verticalLines: '<line',
+      horizontalLines: '<line',
+      crosshatch: '<line',
+      dots: '<circle',
+      grid: '<line',
+      zigzag: '<path',
+    }
+
+    for (const seed of seeds) {
+      const result = createSeededSvgPattern(seed)
+      const expectedTag = expectedTagByPatternType[result.patternType]
+      expect(result.contentMarkup).toContain(expectedTag)
+    }
+  })
+
+  it('accepts numeric seeds', () => {
+    const result = createSeededSvgPattern(12345)
+    expect(typeof result.width).toBe('number')
+    expect(typeof result.contentMarkup).toBe('string')
+    expect(result.contentMarkup.length).toBeGreaterThan(0)
+  })
+
+  it('returns deterministic output for equivalent numeric and string seeds', () => {
+    const numericSeedResult = createSeededSvgPattern(12345)
+    const stringSeedResult = createSeededSvgPattern('12345')
+    expect(numericSeedResult).toEqual(stringSeedResult)
+  })
+})
+
+describe('createChartPatternSlotMarkup', () => {
+  it('returns a pattern element with the provided id', () => {
+    const result = createChartPatternSlotMarkup({
+      id: 'pattern-1',
+      seed: 7,
+      color: '#ff0000',
+      foregroundColor: '#ffffff',
+      fallbackColor: 'transparent',
+      maxSize: 24,
+      minSize: 16,
+    })
+
+    expect(result).toContain('<pattern')
+    expect(result).toContain('id="pattern-1"')
+    expect(result).toContain('patternUnits="userSpaceOnUse"')
+    expect(result).toContain('</pattern>')
+  })
+
+  it('includes width, height, rotation, and content markup from the generated pattern', () => {
+    const generatedPattern = createSeededSvgPattern(1, {
+      foregroundColor: '#000',
+      backgroundColor: 'transparent',
+      minimumSize: 16,
+      maximumSize: 24,
+    })
+
+    const result = createChartPatternSlotMarkup({
+      id: 'pattern-1',
+      seed: 1,
+      foregroundColor: '#000',
+      fallbackColor: 'transparent',
+      maxSize: 24,
+      minSize: 16,
+    })
+
+    expect(result).toContain(`width="${generatedPattern.width}"`)
+    expect(result).toContain(`height="${generatedPattern.height}"`)
+    expect(result).toContain(`patternTransform="rotate(${generatedPattern.rotation})"`)
+    expect(result).toContain(generatedPattern.contentMarkup)
+  })
+
+  it('is deterministic for the same inputs', () => {
+    const first = createChartPatternSlotMarkup({
+      id: 'pattern-stable',
+      seed: 'nuxt',
+      color: '#00ff00',
+      foregroundColor: '#000000',
+      fallbackColor: 'transparent',
+      maxSize: 40,
+      minSize: 10,
+    })
+
+    const second = createChartPatternSlotMarkup({
+      id: 'pattern-stable',
+      seed: 'nuxt',
+      color: '#00ff00',
+      foregroundColor: '#000000',
+      fallbackColor: 'transparent',
+      maxSize: 40,
+      minSize: 10,
+    })
+
+    expect(first).toBe(second)
+  })
+
+  it('changes when the id changes', () => {
+    const first = createChartPatternSlotMarkup({
+      id: 'pattern-a',
+      seed: 1,
+      color: '#00ff00',
+      foregroundColor: '#000000',
+      fallbackColor: 'transparent',
+      maxSize: 40,
+      minSize: 10,
+    })
+
+    const second = createChartPatternSlotMarkup({
+      id: 'pattern-b',
+      seed: 2,
+      color: '#00ff00',
+      foregroundColor: '#000000',
+      fallbackColor: 'transparent',
+      maxSize: 40,
+      minSize: 10,
+    })
+
+    expect(first).not.toBe(second)
   })
 })

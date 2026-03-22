@@ -65,7 +65,7 @@ const docUrl = computed(() => {
     <!-- No dependency action button -->
     <ButtonBase
       v-if="variant === 'nodep' && showAction !== false"
-      size="small"
+      size="sm"
       :aria-label="$t('compare.no_dependency.add_column')"
       @click="emit('addNoDep')"
     >
@@ -73,7 +73,7 @@ const docUrl = computed(() => {
     </ButtonBase>
 
     <!-- Info link -->
-    <LinkBase v-else-if="docUrl" :to="docUrl" variant="button-secondary" size="small">
+    <LinkBase v-else-if="docUrl" :to="docUrl" variant="button-secondary" size="sm">
       {{ $t('package.replacement.learn_more') }}
     </LinkBase>
   </div>

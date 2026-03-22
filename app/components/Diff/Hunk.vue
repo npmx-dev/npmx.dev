@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import type { DiffHunk as DiffHunkType } from '#shared/types'
-
 defineProps<{
-  hunk: DiffHunkType
+  hunk: DiffHunk
 }>()
 </script>
 

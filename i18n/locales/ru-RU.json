@@ -107,7 +107,7 @@
       "reply_count": "{count} ответ | {count} ответа | {count} ответов",
       "like_count": "{count} лайк | {count} лайка | {count} лайков",
       "repost_count": "{count} репост | {count} репоста | {count} репостов",
-      "more_replies": "Ещё {count} ответ… | Ещё {count} ответа… | Ещё {count} ответов…"
+      "more_replies": "ещё {count} ответ... | ещё {count} ответа... | ещё {count} ответов..."
     }
   },
   "settings": {
@@ -142,10 +142,14 @@
     "theme_system": "Системная",
     "language": "Язык",
     "help_translate": "Помочь с переводом npmx",
-    "accent_colors": "Акцентные цвета",
+    "accent_colors": {
+      "label": "Акцентные цвета"
+    },
     "clear_accent": "Сбросить акцентный цвет",
     "translation_progress": "Прогресс перевода",
-    "background_themes": "Оттенок фона",
+    "background_themes": {
+      "label": "Оттенок фона"
+    },
     "keyboard_shortcuts_enabled": "Использовать горячие клавиши",
     "keyboard_shortcuts_enabled_description": "Горячие клавиши можно выключить, если возникают конфликты с сочетаниями клавиш браузера или операционной системы"
   },
@@ -186,14 +190,14 @@
       "members": "участники"
     },
     "scroll_to_top": "Прокрутить наверх",
-    "view_on": {
-      "npm": "посмотреть на npm",
-      "github": "Посмотреть на GitHub"
-    },
     "cancel": "Отменить",
     "save": "Сохранить",
     "edit": "Изменить",
-    "error": "Ошибка"
+    "error": "Ошибка",
+    "view_on": {
+      "npm": "посмотреть на npm",
+      "github": "Посмотреть на GitHub"
+    }
   },
   "profile": {
     "display_name": "Отображаемое имя",
@@ -216,12 +220,9 @@
     "not_found": "Пакет не найден",
     "not_found_message": "Пакет не удалось найти.",
     "no_description": "Описание отсутствует",
-    "not_latest": "(не последняя)",
     "verified_provenance": "Подтвержденное происхождение",
-    "view_permalink": "Посмотреть постоянную ссылку на эту версию",
     "navigation": "Навигация по пакету",
     "copy_name": "Скопировать имя пакета",
-    "copy_version": "Скопировать версию пакета",
     "deprecation": {
       "package": "Этот пакет устарел.",
       "version": "Эта версия устарела.",
@@ -379,7 +380,6 @@
       "grouping_versions_only_recent": "Только недавние",
       "grouping_usage_title": "Использование",
       "grouping_usage_all": "Все",
-      "grouping_usage_low": "Низкое",
       "recent_versions_only_tooltip": "Показывать только версии, опубликованные за последний год.",
       "show_low_usage_tooltip": "Включить группы версий, на которые приходится менее 1% от общего числа загрузок.",
       "y_axis_label": "Загрузки",
@@ -778,8 +778,7 @@
       "preview": "превью",
       "code": "код"
     },
-    "file_path": "Путь к файлу",
-    "scroll_to_top": "Прокрутить наверх"
+    "file_path": "Путь к файлу"
   },
   "badges": {
     "provenance": {
@@ -887,7 +886,7 @@
       "paginated": "Страничный",
       "items_per_page": "Элементов на странице",
       "per_page": "{count} на странице",
-      "showing": "{start}-{end} из {total}",
+      "showing": "{range} из {total}",
       "previous": "Предыдущая страница",
       "next": "Следующая страница",
       "nav_label": "Пагинация"

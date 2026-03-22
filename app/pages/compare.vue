@@ -5,12 +5,12 @@ import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
 
 definePageMeta({
   name: 'compare',
+  preserveScrollOnQuery: true,
 })
 
 const { locale } = useI18n()
-const router = useRouter()
-const canGoBack = useCanGoBack()
 const { copied, copy } = useClipboard({ copiedDuring: 2000 })
+const maxPackages = 4
 
 // Sync packages with URL query param (stable ref - doesn't change on other query changes)
 const packagesParam = useRouteQuery<string>('packages', '', { mode: 'replace' })
@@ -23,7 +23,7 @@ const packages = computed({
       .split(',')
       .map(p => p.trim())
       .filter(p => p.length > 0)
-      .slice(0, 4)
+      .slice(0, maxPackages)
   },
   set(value) {
     packagesParam.value = value.length > 0 ? value.join(',') : ''
@@ -61,12 +61,12 @@ const gridColumns = computed(() =>
 
 // Whether we can add the no-dep column (not already added and have room)
 const canAddNoDep = computed(
-  () => packages.value.length < 4 && !packages.value.includes(NO_DEPENDENCY_ID),
+  () => packages.value.length < maxPackages && !packages.value.includes(NO_DEPENDENCY_ID),
 )
 
 // Add "no dependency" column to comparison
 function addNoDep() {
-  if (packages.value.length >= 4) return
+  if (packages.value.length >= maxPackages) return
   if (packages.value.includes(NO_DEPENDENCY_ID)) return
   packages.value = [...packages.value, NO_DEPENDENCY_ID]
 }
@@ -171,15 +171,7 @@ useSeoMeta({
           <h1 class="font-mono text-3xl sm:text-4xl font-medium">
             {{ $t('compare.packages.title') }}
           </h1>
-          <button
-            type="button"
-            class="cursor-pointer inline-flex items-center gap-2 p-1.5 -mx-1.5 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
-            @click="router.back()"
-            v-if="canGoBack"
-          >
-            <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
-            <span class="hidden sm:inline">{{ $t('nav.back') }}</span>
-          </button>
+          <BackButton />
         </div>
         <p class="text-fg-muted text-lg">
           {{ $t('compare.packages.tagline') }}
@@ -191,7 +183,7 @@ useSeoMeta({
         <h2 id="packages-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-3">
           {{ $t('compare.packages.section_packages') }}
         </h2>
-        <ComparePackageSelector v-model="packages" :max="4" />
+        <ComparePackageSelector v-model="packages" :max="maxPackages" />
 
         <!-- "No dep" replacement suggestions (native, simple) -->
         <div v-if="noDepSuggestions.length > 0" class="mt-3 space-y-2">
@@ -225,7 +217,7 @@ useSeoMeta({
             {{ $t('compare.packages.section_facets') }}
           </h2>
           <ButtonBase
-            size="small"
+            size="sm"
             :aria-pressed="isAllSelected"
             :disabled="isAllSelected"
             :aria-label="$t('compare.facets.select_all')"
@@ -235,7 +227,7 @@ useSeoMeta({
           </ButtonBase>
           <span class="text-3xs text-fg-muted/40" aria-hidden="true">/</span>
           <ButtonBase
-            size="small"
+            size="sm"
             :aria-pressed="isNoneSelected"
             :disabled="isNoneSelected"
             :aria-label="$t('compare.facets.deselect_all')"

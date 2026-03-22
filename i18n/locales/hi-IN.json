@@ -75,7 +75,9 @@
     "theme_system": "सिस्टम",
     "language": "भाषा",
     "help_translate": "npmx का अनुवाद करने में मदद करें",
-    "accent_colors": "एक्सेंट रंग",
+    "accent_colors": {
+      "label": "एक्सेंट रंग"
+    },
     "clear_accent": "एक्सेंट रंग साफ़ करें",
     "translation_progress": "अनुवाद प्रगति"
   },
@@ -117,9 +119,7 @@
     "not_found": "पैकेज नहीं मिला",
     "not_found_message": "पैकेज नहीं मिल सका।",
     "no_description": "कोई विवरण प्रदान नहीं किया गया",
-    "not_latest": "(नवीनतम नहीं)",
     "verified_provenance": "सत्यापित प्रोवेनेंस",
-    "view_permalink": "इस संस्करण का परमालिंक देखें",
     "navigation": "पैकेज",
     "copy_name": "पैकेज नाम अनुकरण करें",
     "deprecation": {
@@ -657,7 +657,7 @@
       "paginated": "पेजिनेटेड",
       "items_per_page": "प्रति पृष्ठ आइटम",
       "per_page": "{count} / पृष्ठ",
-      "showing": "{total} में से {start}-{end}",
+      "showing": "{total} में से {range}",
       "previous": "पिछला पृष्ठ",
       "next": "अगला पृष्ठ",
       "nav_label": "पेजिनेशन"

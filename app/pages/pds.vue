@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import type { AtprotoProfile } from '#shared/types/atproto'
 
-const router = useRouter()
-const canGoBack = useCanGoBack()
-
 useSeoMeta({
   title: () => `${$t('pds.title')} - npmx`,
   ogTitle: () => `${$t('pds.title')} - npmx`,
@@ -44,22 +41,14 @@ const totalAccounts = computed(() => pdsUsers.value.length)
 </script>
 
 <template>
-  <main class="container flex-1 py-12 sm:py-16">
+  <main class="container flex-1 py-12 sm:py-16 overflow-x-hidden">
     <article class="max-w-2xl mx-auto">
       <header class="mb-12">
         <div class="flex items-baseline justify-between gap-4 mb-4">
           <h1 class="font-mono text-3xl sm:text-4xl font-medium">
             {{ $t('pds.title') }}
           </h1>
-          <button
-            type="button"
-            class="cursor-pointer inline-flex items-center gap-2 p-1.5 -mx-1.5 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
-            @click="router.back()"
-            v-if="canGoBack"
-          >
-            <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
-            <span class="hidden sm:inline">{{ $t('nav.back') }}</span>
-          </button>
+          <BackButton />
         </div>
         <p class="text-fg-muted text-lg">
           {{ $t('pds.meta_description') }}
@@ -156,30 +145,25 @@ const totalAccounts = computed(() => pdsUsers.value.length)
                 :key="user.handle"
                 class="block group relative hover:z-10"
               >
-                <a
-                  :href="`https://bsky.app/profile/${user.handle}`"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  :aria-label="$t('pds.community.view_profile', { handle: user.handle })"
-                  class="block rounded-lg"
-                >
-                  <img
-                    :src="user.avatar"
-                    :alt="`${user.handle}'s avatar`"
-                    @error="handleImageError(user.handle)"
-                    width="48"
-                    height="48"
-                    class="w-12 h-12 rounded-lg ring-2 ring-transparent group-hover:ring-accent transition-all duration-200 ease-out group-hover:scale-125 will-change-transform"
-                    loading="lazy"
-                  />
-                  <span
-                    class="pointer-events-none absolute -top-9 inset-is-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900 text-xs px-2 py-1 shadow-lg opacity-0 scale-95 transition-all duration-150 group-hover:opacity-100 group-hover:scale-100"
-                    dir="ltr"
-                    role="tooltip"
+                <TooltipApp :text="`@${user.handle}`" class="block" position="top">
+                  <a
+                    :href="`https://bsky.app/profile/${user.handle}`"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    :aria-label="$t('pds.community.view_profile', { handle: user.handle })"
+                    class="block rounded-lg"
                   >
-                    @{{ user.handle }}
-                  </span>
-                </a>
+                    <img
+                      :src="user.avatar"
+                      :alt="`${user.handle}'s avatar`"
+                      @error="handleImageError(user.handle)"
+                      width="48"
+                      height="48"
+                      class="w-12 h-12 rounded-lg ring-2 ring-transparent group-hover:ring-accent transition-all duration-200 ease-out group-hover:scale-125 will-change-transform"
+                      loading="lazy"
+                    />
+                  </a>
+                </TooltipApp>
               </li>
             </ul>
             <p v-if="usersWithoutAvatars.length" class="text-center mt-4 text-fg-muted text-sm">

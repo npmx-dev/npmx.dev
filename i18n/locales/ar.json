@@ -105,10 +105,14 @@
     "theme_system": "سمة النظام",
     "language": "اللغة",
     "help_translate": "ساهم في ترجمة npmx",
-    "accent_colors": "ألوان الموقع",
+    "accent_colors": {
+      "label": "ألوان الموقع"
+    },
     "clear_accent": "مسح لون التمييز",
     "translation_progress": "تقدم الترجمة",
-    "background_themes": "درجة خلفية الصفحة"
+    "background_themes": {
+      "label": "درجة خلفية الصفحة"
+    }
   },
   "i18n": {
     "missing_keys": "{count} ترجمات مفقودة | ترجمة واحدة مفقودة | ترجمتان مفقودتان | {count} ترجمات مفقودة | {count} ترجمة مفقودة | {count} ترجمة مفقودة",
@@ -149,12 +153,9 @@
     "not_found": "لم يتم العثور على الحزمة",
     "not_found_message": "تعذّر العثور على الحزمة.",
     "no_description": "لا يوجد وصف",
-    "not_latest": "(ليست الأحدث)",
     "verified_provenance": "مصدر موثّق",
-    "view_permalink": "عرض الرابط الدائم لهذا الإصدار",
     "navigation": "تصفح الحزمة",
     "copy_name": "نسخ اسم الحزمة",
-    "copy_version": "نسخ إصدار الحزمة",
     "deprecation": {
       "package": "تم إهمال هذه الحزمة.",
       "version": "تم إهمال هذا الإصدار.",
@@ -770,7 +771,7 @@
       "paginated": "مقسم إلى صفحات",
       "items_per_page": "عدد العناصر في الصفحة",
       "per_page": "{count} / صفحة",
-      "showing": "{start}-{end} من {total}",
+      "showing": "{range} من {total}",
       "previous": "الصفحة السابقة",
       "next": "الصفحة التالية",
       "nav_label": "التصفح"

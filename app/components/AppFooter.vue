@@ -35,6 +35,9 @@ const closeModal = () => modalRef.value?.close?.()
             <LinkBase :to="{ name: 'accessibility' }">
               {{ $t('a11y.footer_title') }}
             </LinkBase>
+            <LinkBase :to="{ name: 'translation-status' }">
+              {{ $t('translation_status.title') }}
+            </LinkBase>
             <button
               type="button"
               class="cursor-pointer group inline-flex gap-x-1 items-center justify-center underline-offset-[0.2rem] underline decoration-1 decoration-fg/30 font-mono text-fg hover:(decoration-accent text-accent) focus-visible:(decoration-accent text-accent) transition-colors duration-200"
@@ -88,12 +91,20 @@ const closeModal = () => modalRef.value?.close?.()
               </p>
               <ul class="mb-8 flex flex-col gap-2">
                 <li class="flex gap-2 items-center">
-                  <kbd class="kbd">.</kbd>
-                  <span>{{ $t('shortcuts.open_code_view') }}</span>
+                  <kbd class="kbd">m</kbd>
+                  <span>{{ $t('shortcuts.open_main') }}</span>
                 </li>
                 <li class="flex gap-2 items-center">
                   <kbd class="kbd">d</kbd>
                   <span>{{ $t('shortcuts.open_docs') }}</span>
+                </li>
+                <li class="flex gap-2 items-center">
+                  <kbd class="kbd">.</kbd>
+                  <span>{{ $t('shortcuts.open_code_view') }}</span>
+                </li>
+                <li class="flex gap-2 items-center">
+                  <kbd class="kbd">f</kbd>
+                  <span>{{ $t('shortcuts.open_diff') }}</span>
                 </li>
                 <li class="flex gap-2 items-center">
                   <kbd class="kbd">c</kbd>

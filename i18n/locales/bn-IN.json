@@ -74,7 +74,9 @@
     "theme_system": "সিস্টেম",
     "language": "ভাষা",
     "help_translate": "npmx অনুবাদে সাহায্য করুন",
-    "accent_colors": "এক্সেন্ট রং",
+    "accent_colors": {
+      "label": "এক্সেন্ট রং"
+    },
     "clear_accent": "এক্সেন্ট রং সাফ করুন",
     "translation_progress": "অনুবাদের অগ্রগতি"
   },
@@ -116,9 +118,7 @@
     "not_found": "প্যাকেজ পাওয়া যায়নি",
     "not_found_message": "প্যাকেজ পাওয়া যায়নি।",
     "no_description": "কোনো বর্ণনা দেওয়া হয়নি",
-    "not_latest": "(সর্বশেষ নয়)",
     "verified_provenance": "যাচাইকৃত প্রোভেন্স",
-    "view_permalink": "এই ভার্সনের পার্মালিংক দেখুন",
     "navigation": "প্যাকেজ",
     "copy_name": "প্যাকেজের নাম কপি করুন",
     "deprecation": {
@@ -656,7 +656,7 @@
       "paginated": "পাতায়িত",
       "items_per_page": "প্রতি পাতায় আইটেম",
       "per_page": "{count} / পাতায়",
-      "showing": "{total} এর মধ্যে {start}-{end}",
+      "showing": "{total} এর মধ্যে {range}",
       "previous": "আগের পাতা",
       "next": "পরের পাতা",
       "nav_label": "পাতায়ন"

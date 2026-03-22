@@ -1,12 +1,10 @@
 import type { RemovableRef } from '@vueuse/core'
 import { useLocalStorage } from '@vueuse/core'
-import { ACCENT_COLORS } from '#shared/utils/constants'
+import { ACCENT_COLORS, type AccentColorId } from '#shared/utils/constants'
 import type { LocaleObject } from '@nuxtjs/i18n'
 import { BACKGROUND_THEMES } from '#shared/utils/constants'
 
 type BackgroundThemeId = keyof typeof BACKGROUND_THEMES
-
-type AccentColorId = keyof typeof ACCENT_COLORS.light
 
 /** Available search providers */
 export type SearchProvider = 'npm' | 'algolia'
@@ -25,6 +23,8 @@ export interface AppSettings {
   preferredBackgroundTheme: BackgroundThemeId | null
   /** Hide platform-specific packages (e.g., @scope/pkg-linux-x64) from search results */
   hidePlatformPackages: boolean
+  /** Enable weekly download graph pulse looping animation */
+  enableGraphPulseLooping: boolean
   /** User-selected locale */
   selectedLocale: LocaleObject['code'] | null
   /** Search provider for package search */
@@ -45,6 +45,7 @@ export interface AppSettings {
     averageWindow: number
     smoothingTau: number
     anomaliesFixed: boolean
+    predictionPoints: number
   }
 }
 
@@ -53,6 +54,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   includeTypesInInstall: true,
   accentColorId: null,
   hidePlatformPackages: true,
+  enableGraphPulseLooping: false,
   selectedLocale: null,
   preferredBackgroundTheme: null,
   searchProvider: import.meta.test ? 'npm' : 'algolia',
@@ -68,6 +70,7 @@ const DEFAULT_SETTINGS: AppSettings = {
     averageWindow: 0,
     smoothingTau: 1,
     anomaliesFixed: true,
+    predictionPoints: 4,
   },
 }
 
@@ -132,6 +135,17 @@ export const useKeyboardShortcuts = createSharedComposable(function useKeyboardS
 export function useAccentColor() {
   const { settings } = useSettings()
   const colorMode = useColorMode()
+  const { t } = useI18n()
+
+  const accentColorLabels = computed<Record<AccentColorId, string>>(() => ({
+    sky: t('settings.accent_colors.sky'),
+    coral: t('settings.accent_colors.coral'),
+    amber: t('settings.accent_colors.amber'),
+    emerald: t('settings.accent_colors.emerald'),
+    violet: t('settings.accent_colors.violet'),
+    magenta: t('settings.accent_colors.magenta'),
+    neutral: t('settings.clear_accent'),
+  }))
 
   const accentColors = computed(() => {
     const isDark = colorMode.value === 'dark'
@@ -139,7 +153,7 @@ export function useAccentColor() {
 
     return Object.entries(colors).map(([id, value]) => ({
       id: id as AccentColorId,
-      name: id,
+      label: accentColorLabels.value[id as AccentColorId],
       value,
     }))
   })
@@ -187,11 +201,23 @@ export function useSearchProvider() {
 }
 
 export function useBackgroundTheme() {
-  const backgroundThemes = Object.entries(BACKGROUND_THEMES).map(([id, value]) => ({
-    id: id as BackgroundThemeId,
-    name: id,
-    value,
+  const { t } = useI18n()
+
+  const bgThemeLabels = computed<Record<BackgroundThemeId, string>>(() => ({
+    neutral: t('settings.background_themes.neutral'),
+    stone: t('settings.background_themes.stone'),
+    zinc: t('settings.background_themes.zinc'),
+    slate: t('settings.background_themes.slate'),
+    black: t('settings.background_themes.black'),
   }))
+
+  const backgroundThemes = computed(() =>
+    Object.entries(BACKGROUND_THEMES).map(([id, value]) => ({
+      id: id as BackgroundThemeId,
+      label: bgThemeLabels.value[id as BackgroundThemeId],
+      value,
+    })),
+  )
 
   const { settings } = useSettings()
 

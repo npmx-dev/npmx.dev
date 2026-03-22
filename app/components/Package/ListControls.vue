@@ -1,5 +1,5 @@
 <script setup lang="ts">
-export type SortOption = 'downloads' | 'updated' | 'name-asc' | 'name-desc'
+type SortOption = 'downloads' | 'updated' | 'name-asc' | 'name-desc'
 
 const props = defineProps<{
   /** Current search/filter text */
@@ -68,7 +68,6 @@ const showFilteredCount = computed(() => {
         :placeholder="placeholder ?? $t('package.list.filter_placeholder')"
         no-correct
         class="w-full min-w-25 ps-10"
-        size="medium"
       />
     </div>
 

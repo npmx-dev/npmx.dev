@@ -84,6 +84,14 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         external: false,
         iconClass: 'i-custom:a11y',
       },
+      {
+        name: 'Translation Status',
+        label: $t('translation_status.title'),
+        to: { name: 'translation-status' },
+        type: 'link',
+        external: false,
+        iconClass: 'i-lucide:languages',
+      },
     ],
   },
   {
@@ -235,16 +243,18 @@ onKeyStroke(
             {{ env === 'release' ? 'alpha' : env }}
           </span>
         </NuxtLink>
-        <NuxtLink
-          v-if="prNumber"
-          :to="`https://github.com/npmx-dev/npmx.dev/pull/${prNumber}`"
-          :aria-label="`Open GitHub pull request ${prNumber}`"
-        >
-          <span class="text-xs px-1.5 py-0.5 rounded badge-green font-sans font-medium ms-2">
-            PR #{{ prNumber }}
-          </span>
-        </NuxtLink>
       </div>
+
+      <NuxtLink
+        v-if="showLogo && !isSearchExpanded && prNumber"
+        :to="`https://github.com/npmx-dev/npmx.dev/pull/${prNumber}`"
+        :aria-label="$t('header.pr', { prNumber })"
+      >
+        <span class="text-xs px-1.5 py-0.5 rounded badge-green font-sans font-medium">
+          PR #{{ prNumber }}
+        </span>
+      </NuxtLink>
+
       <!-- Spacer when logo is hidden on desktop -->
       <span v-else class="hidden sm:block w-1" />
 

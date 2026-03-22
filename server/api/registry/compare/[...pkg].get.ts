@@ -1,8 +1,5 @@
 import * as v from 'valibot'
 import { PackageCompareQuerySchema } from '#shared/schemas/package'
-import type { CompareResponse } from '#shared/types'
-import { CACHE_MAX_AGE_ONE_YEAR } from '#shared/utils/constants'
-import { buildCompareResponse, parseVersionRange } from '#server/utils/compare'
 
 const CACHE_VERSION = 1
 const COMPARE_TIMEOUT = 8000 // 8 seconds

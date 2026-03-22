@@ -107,7 +107,7 @@
       "reply_count": "{count} 件の返信",
       "like_count": "{count} 件のいいね",
       "repost_count": "{count} 件のリポスト",
-      "more_replies": "さらに {count} 件のリプライを表示..."
+      "more_replies": "さらに{count}件の返信…"
     }
   },
   "settings": {
@@ -142,10 +142,14 @@
     "theme_system": "システム",
     "language": "言語",
     "help_translate": "npmxの翻訳に協力する",
-    "accent_colors": "アクセントカラー",
+    "accent_colors": {
+      "label": "アクセントカラー"
+    },
     "clear_accent": "アクセントカラーをクリア",
     "translation_progress": "翻訳の進捗状況",
-    "background_themes": "背景シェード",
+    "background_themes": {
+      "label": "背景シェード"
+    },
     "keyboard_shortcuts_enabled": "キーボードショートカットを有効化",
     "keyboard_shortcuts_enabled_description": "ブラウザやシステムのショートカットと競合する場合、キーボードショートカットを無効化できます"
   },
@@ -192,7 +196,17 @@
     "error": "エラー",
     "view_on": {
       "npm": "npmで表示",
-      "github": "GitHubで表示"
+      "github": "GitHubで表示",
+      "gitlab": "GitLabで表示",
+      "bitbucket": "Bitbucketで表示",
+      "codeberg": "Codebergで表示",
+      "git_repo": "Gitリポジトリで表示",
+      "forgejo": "Forgejoで表示",
+      "gitea": "Giteaで表示",
+      "gitee": "Giteeで表示",
+      "radicle": "Radicleで表示",
+      "sourcehut": "SourceHutで表示",
+      "tangled": "Tangledで表示"
     }
   },
   "profile": {
@@ -216,12 +230,9 @@
     "not_found": "パッケージが見つかりません",
     "not_found_message": "パッケージが見つかりませんでした。",
     "no_description": "説明はありません",
-    "not_latest": "（最新ではありません）",
     "verified_provenance": "検証済みprovenance",
-    "view_permalink": "このバージョンのパーマリンクを表示",
     "navigation": "パッケージナビゲーション",
     "copy_name": "パッケージ名をコピー",
-    "copy_version": "パッケージのバージョンをコピー",
     "deprecation": {
       "package": "このパッケージは非推奨になりました。",
       "version": "このバージョンは非推奨になりました。",
@@ -379,7 +390,7 @@
       "grouping_versions_only_recent": "直近のみ",
       "grouping_usage_title": "使用状況",
       "grouping_usage_all": "すべて",
-      "grouping_usage_low": "低",
+      "grouping_usage_most_used": "最多使用",
       "recent_versions_only_tooltip": "過去1年以内に公開されたバージョンのみ表示します。",
       "show_low_usage_tooltip": "総ダウンロード数の1%未満のバージョングループも含めます。",
       "y_axis_label": "ダウンロード",
@@ -459,6 +470,7 @@
       "data_correction": "データ補正",
       "average_window": "平均ウィンドウ",
       "smoothing": "スムージング",
+      "prediction": "予測値",
       "known_anomalies": "既知のアノマリー",
       "known_anomalies_description": "ボットやCIの問題による既知のダウンロードスパイクを補完します。",
       "known_anomalies_ranges": "アノマリー範囲",
@@ -479,7 +491,9 @@
         "estimations": "最終値は、現在の期間の部分的データに基づく推定値です。",
         "compare": "パッケージダウンロード比較折れ線グラフ: {packages}",
         "single_package": "{package} パッケージのダウンロード折れ線グラフ",
-        "general_description": "Y軸はダウンロード数、X軸は {start_date} から {end_date} までの期間（単位：{granularity}）を示します。{estimation_notice} {packages_analysis}。{watermark}。"
+        "general_description": "Y軸はダウンロード数、X軸は {start_date} から {end_date} までの期間（単位：{granularity}）を示します。{estimation_notice} {packages_analysis}。{watermark}。",
+        "facet_bar_general_description": "{packages} の横棒グラフ: {facet} の比較 ({description})。{facet_analysis} {watermark}。",
+        "facet_bar_analysis": "{package_name} の値は {value} です。"
       }
     },
     "downloads": {
@@ -778,8 +792,7 @@
       "preview": "プレビュー",
       "code": "コード"
     },
-    "file_path": "ファイルパス",
-    "scroll_to_top": "トップへスクロール"
+    "file_path": "ファイルパス"
   },
   "badges": {
     "provenance": {
@@ -887,7 +900,7 @@
       "paginated": "ページ分割",
       "items_per_page": "1ページあたりの項目数",
       "per_page": "{count} / ページ",
-      "showing": "{total} 件中 {start}-{end}",
+      "showing": "{total} 件中 {range}",
       "previous": "前のページ",
       "next": "次のページ",
       "nav_label": "ページネーション"
@@ -1038,7 +1051,9 @@
       "loading": "パッケージデータを読み込み中...",
       "error": "パッケージデータの読み込みに失敗しました。もう一度お試しください。",
       "empty_title": "比較するパッケージを選択",
-      "empty_description": "上部の検索から2つ以上のパッケージを追加すると、メトリクスを並べて比較できます。"
+      "empty_description": "上部の検索から2つ以上のパッケージを追加すると、メトリクスを並べて比較できます。",
+      "table_view": "テーブル",
+      "charts_view": "グラフ"
     },
     "selector": {
       "search_label": "パッケージを検索",

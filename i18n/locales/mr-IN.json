@@ -72,10 +72,14 @@
     "theme_system": "सिस्टम",
     "language": "भाषा",
     "help_translate": "npmx चे भाषांतर करण्यात मदत करा",
-    "accent_colors": "उच्चारण रंग",
+    "accent_colors": {
+      "label": "उच्चारण रंग"
+    },
     "clear_accent": "उच्चारण रंग साफ करा",
     "translation_progress": "भाषांतर प्रगती",
-    "background_themes": "पार्श्वभूमी छटा"
+    "background_themes": {
+      "label": "पार्श्वभूमी छटा"
+    }
   },
   "i18n": {
     "missing_keys": "{count} भाषांतर गायब आहे | {count} भाषांतरे गायब आहेत",
@@ -114,9 +118,7 @@
     "not_found": "पॅकेज सापडले नाही",
     "not_found_message": "पॅकेज सापडले नाही.",
     "no_description": "कोणतेही वर्णन प्रदान केलेले नाही",
-    "not_latest": "(नवीनतम नाही)",
     "verified_provenance": "सत्यापित उत्पत्ती",
-    "view_permalink": "या आवृत्तीसाठी परमालिंक पहा",
     "navigation": "पॅकेज",
     "copy_name": "पॅकेज नाव कॉपी करा",
     "deprecation": {

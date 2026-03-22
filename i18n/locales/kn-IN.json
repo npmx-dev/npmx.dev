@@ -75,7 +75,9 @@
     "theme_system": "ಸಿಸ್ಟಮ್",
     "language": "ಭಾಷೆ",
     "help_translate": "npmx ಅನುವಾದಕ್ಕೆ ಸಹಾಯ ಮಾಡಿ",
-    "accent_colors": "ಅಕ್ಸೆಂಟ್ ಬಣ್ಣಗಳು",
+    "accent_colors": {
+      "label": "ಅಕ್ಸೆಂಟ್ ಬಣ್ಣಗಳು"
+    },
     "clear_accent": "ಅಕ್ಸೆಂಟ್ ಬಣ್ಣ ತೆರವುಗೊಳಿಸಿ",
     "translation_progress": "ಅನುವಾದ ಪ್ರಗತಿ"
   },
@@ -117,9 +119,7 @@
     "not_found": "ಪ್ಯಾಕೇಜ್ ಕಂಡುಬಂದಿಲ್ಲ",
     "not_found_message": "ಪ್ಯಾಕೇಜ್ ಕಂಡುಬಂದಿಲ್ಲ.",
     "no_description": "ವಿವರಣೆ ನೀಡಲಾಗಿಲ್ಲ",
-    "not_latest": "(ಇದು ಇತ್ತೀಚಿನದು ಅಲ್ಲ)",
     "verified_provenance": "ಪರಿಶೀಲಿತ ಮೂಲ (Provenance)",
-    "view_permalink": "ಈ ಆವೃತ್ತಿಯ ಶಾಶ್ವತ ಲಿಂಕ್ ನೋಡಿ",
     "navigation": "ಪ್ಯಾಕೇಜ್",
     "copy_name": "ಪ್ಯಾಕೇಜ್ ಹೆಸರನ್ನು ನಕಲಿಸಿ",
     "deprecation": {
@@ -657,7 +657,7 @@
       "paginated": "ಪುಟೀಕರಿಸಿದ",
       "items_per_page": "ಪ್ರತಿ ಪುಟದ ಅಂಶಗಳು",
       "per_page": "{count} / ಪುಟ",
-      "showing": "{total} ನಲ್ಲಿ {start}-{end}",
+      "showing": "{total} ನಲ್ಲಿ {range}",
       "previous": "ಹಿಂದಿನ ಪುಟ",
       "next": "ಮುಂದಿನ ಪುಟ",
       "nav_label": "ಪುಟೀಕರಣ"
