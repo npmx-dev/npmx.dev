@@ -43,7 +43,7 @@ const COLORS = {
 
 const BADGE_PADDING_X = 8
 const MIN_BADGE_TEXT_WIDTH = 40
-const FALLBACK_VALUE_EXTRA_PADDING_X = 4
+const FALLBACK_VALUE_EXTRA_PADDING_X = 8
 const SHIELDS_LABEL_PADDING_X = 5
 
 const BADGE_FONT_SHORTHAND = 'normal normal 400 11px Geist, system-ui, -apple-system, sans-serif'
