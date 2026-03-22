@@ -1,5 +1,5 @@
 import * as v from 'valibot'
-import { createCanvas, type SKRSContext2D } from '@napi-rs/canvas'
+import { createCanvas, GlobalFonts, type SKRSContext2D } from '@napi-rs/canvas'
 import { hash } from 'ohash'
 import { createError, getRouterParam, getQuery, setHeader } from 'h3'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
@@ -52,6 +52,25 @@ const BADGE_FONT_SHORTHAND = 'normal normal 400 11px Geist, system-ui, -apple-sy
 const SHIELDS_FONT_SHORTHAND = 'normal normal 400 11px Verdana, Geneva, DejaVu Sans, sans-serif'
 
 let cachedCanvasContext: SKRSContext2D | null | undefined
+let fontRegistered = false
+
+async function registerGeistFont(): Promise<void> {
+  if (fontRegistered) return
+
+  try {
+    const fontStorage = useStorage('assets:fonts')
+    const fontData = await fontStorage.getItemRaw('Geist-Regular.ttf')
+
+    if (fontData) {
+      const buffer = fontData instanceof Buffer ? fontData : Buffer.from(fontData as ArrayBuffer)
+      GlobalFonts.register(buffer, 'Geist')
+    }
+  } catch {
+    // font registration is best-effort; fallback measurement will be used
+  }
+
+  fontRegistered = true
+}
 
 function getCanvasContext(): SKRSContext2D | null {
   if (cachedCanvasContext !== undefined) {
@@ -431,6 +450,8 @@ const BadgeStyleSchema = v.picklist(['default', 'shieldsio'])
 
 export default defineCachedEventHandler(
   async event => {
+    await registerGeistFont()
+
     const query = getQuery(event)
     const typeParam = getRouterParam(event, 'type')
     const pkgParamSegments = getRouterParam(event, 'pkg')?.split('/') ?? []

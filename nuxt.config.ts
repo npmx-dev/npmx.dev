@@ -253,6 +253,12 @@ export default defineNuxtConfig({
     replace: {
       'import.meta.test': isTest,
     },
+    serverAssets: [
+      {
+        baseName: 'fonts',
+        dir: './public/fonts',
+      },
+    ],
   },
 
   fonts: {
