@@ -43,7 +43,12 @@ describe('dependents API response mapping', () => {
   it('maps npm search objects to the expected package shape', () => {
     const objects: NpmSearchObject[] = [
       {
-        package: { name: 'some-lib', version: '1.2.3', description: 'A library', date: '2024-01-01' },
+        package: {
+          name: 'some-lib',
+          version: '1.2.3',
+          description: 'A library',
+          date: '2024-01-01',
+        },
         score: { final: 0.95 },
         searchScore: 100,
       },
