@@ -114,9 +114,17 @@ watch(
     </div>
 
     <!-- Code content -->
-    <div class="code-content flex-1 min-w-0" :class="wordWrap ? 'overflow-x-hidden' : 'overflow-x-auto'">
+    <div
+      class="code-content flex-1 min-w-0"
+      :class="wordWrap ? 'overflow-x-hidden' : 'overflow-x-auto'"
+    >
       <!-- eslint-disable vue/no-v-html -- HTML is generated server-side by Shiki -->
-      <div ref="codeRef" class="code-lines min-w-full w-fit" :class="{ 'word-wrap': wordWrap }" v-html="html" />
+      <div
+        ref="codeRef"
+        class="code-lines min-w-full w-fit"
+        :class="{ 'word-wrap': wordWrap }"
+        v-html="html"
+      />
       <!-- eslint-enable vue/no-v-html -->
     </div>
   </div>
