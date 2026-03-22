@@ -2526,6 +2526,9 @@
         },
         "binary_rendering_warning": {
           "type": "string"
+        },
+        "toggle_word_wrap": {
+          "type": "string"
         }
       },
       "additionalProperties": false

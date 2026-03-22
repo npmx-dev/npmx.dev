@@ -19,10 +19,7 @@
     "social": "social",
     "chat": "chat",
     "builders_chat": "builders",
-    "keyboard_shortcuts": "keyboard shortcuts",
-    "product": "Product",
-    "legal": "Legal",
-    "community": "Community"
+    "keyboard_shortcuts": "keyboard shortcuts"
   },
   "shortcuts": {
     "section": {
@@ -210,8 +207,6 @@
       "members": "members"
     },
     "scroll_to_top": "Scroll to top",
-    "previous": "Previous",
-    "next": "Next",
     "cancel": "Cancel",
     "save": "Save",
     "edit": "Edit",
@@ -323,8 +318,7 @@
       "docs": "docs",
       "fund": "fund",
       "compare": "compare",
-      "compare_this_package": "compare this package",
-      "dependents": "dependents"
+      "compare_this_package": "compare this package"
     },
     "likes": {
       "like": "Like this package",
@@ -357,13 +351,6 @@
     "run": {
       "title": "Run",
       "locally": "Run locally"
-    },
-    "dependents": {
-      "title": "Dependents",
-      "subtitle": "Packages that depend on {name}",
-      "count": "{count} dependent | {count} dependents",
-      "none": "No packages found that depend on {name}",
-      "error": "Failed to load dependents"
     },
     "readme": {
       "title": "Readme",
@@ -467,8 +454,7 @@
       "outdated_minor": "{count} minor version behind (latest: {latest}) | {count} minor versions behind (latest: {latest})",
       "outdated_patch": "Patch update available (latest: {latest})",
       "has_replacement": "This dependency has suggested replacements",
-      "vulnerabilities_count": "{count} vulnerability | {count} vulnerabilities",
-      "none": "No dependencies"
+      "vulnerabilities_count": "{count} vulnerability | {count} vulnerabilities"
     },
     "peer_dependencies": {
       "title": "Peer Dependency ({count}) | Peer Dependencies ({count})",
@@ -578,9 +564,7 @@
     },
     "license": {
       "view_spdx": "View license text on SPDX",
-      "none": "None",
-      "changed_badge": "changed",
-      "changed": "License changed from {latest} in the latest version"
+      "none": "None"
     },
     "vulnerabilities": {
       "tree_found": "{vulns} vulnerability in {packages}/{total} packages | {vulns} vulnerabilities in {packages}/{total} packages",
