@@ -535,7 +535,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -830,10 +831,6 @@
       "published": "Utoljára közzétéve",
       "maintainers": "Karbantartók",
       "keywords": "Kulcsszavak",
-      "quality_score": "Minőség pontszám",
-      "popularity_score": "Népszerűség pontszám",
-      "maintenance_score": "Karbantartás pontszám",
-      "combined_score": "Összesített pontszám",
       "security": "Biztonság"
     },
     "view_mode": {
@@ -1105,6 +1102,7 @@
     "file_too_large": "A fájl túl nagy az összehasonlításhoz",
     "file_size_warning": "{size} meghaladja a 250KB-os limitet az összehasonlításhoz",
     "compare_versions": "diff",
+    "version_invalid_url_format": {},
     "summary": "Összegzés",
     "deps_count": "{count} függ",
     "dependencies": "Függőségek",
@@ -1246,5 +1244,9 @@
       "p1": "Ha akadálymentességi problémákat tapasztalsz a(z) {app} -on, kérjük, közölj velünk egy kérdés megnyitásával a(z) {link} -ben. Komolyan vesszük ezeket a jelentéseket, és mindent megteszünk a megoldásukért.",
       "link": "GitHub tárhelyen"
     }
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

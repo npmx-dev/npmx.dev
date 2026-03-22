@@ -574,7 +574,8 @@
       "b": "{size} байт",
       "kb": "{size} КБ",
       "mb": "{size} МБ"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -869,10 +870,6 @@
       "published": "Опубликован",
       "maintainers": "Мейнтейнеры",
       "keywords": "Ключевые слова",
-      "quality_score": "Оценка качества",
-      "popularity_score": "Оценка популярности",
-      "maintenance_score": "Оценка поддержки",
-      "combined_score": "Общая оценка",
       "security": "Безопасность"
     },
     "view_mode": {
@@ -1149,6 +1146,7 @@
     "file_size_warning": "{size} превышает лимит в 250 КБ для сравнения",
     "compare_versions": "сравнение",
     "compare_versions_title": "Сравнить с последней версией",
+    "version_invalid_url_format": {},
     "summary": "Сводка",
     "deps_count": "зависимостей: {count}",
     "dependencies": "Зависимости",
@@ -1313,5 +1311,9 @@
       "p1": "Если вы столкнулись с какими-либо препятствиями при использовании {app}, пожалуйста, сообщите нам об этом, создав тикет (issue) в нашем {link}. Мы серьезно относимся к таким сообщениям и сделаем все возможное, чтобы исправить ситуацию.",
       "link": "репозитории GitHub"
     }
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

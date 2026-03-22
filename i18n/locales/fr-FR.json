@@ -595,7 +595,8 @@
       "b": "{size} o",
       "kb": "{size} ko",
       "mb": "{size} Mo"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -890,10 +891,6 @@
       "published": "Dern. publication",
       "maintainers": "Mainteneurs",
       "keywords": "Mots-clés",
-      "quality_score": "Score de qualité",
-      "popularity_score": "Score de popularité",
-      "maintenance_score": "Score de maintenance",
-      "combined_score": "Score combiné",
       "security": "Sécurité"
     },
     "view_mode": {
@@ -1170,6 +1167,7 @@
     "file_size_warning": "{size} dépasse la limite de 250 Ko pour la comparaison",
     "compare_versions": "diff",
     "compare_versions_title": "Comparer avec la dernière version",
+    "version_invalid_url_format": {},
     "summary": "Résumé",
     "deps_count": "{count} dépendances",
     "dependencies": "Dépendances",
@@ -1334,5 +1332,9 @@
       "p1": "Si vous rencontrez un problème d'accessibilité sur {app}, veuillez nous le faire savoir en ouvrant une issue sur notre {link}. Nous prenons ces rapports au sérieux et ferons de notre mieux pour les régler.",
       "link": "dépôt GitHub"
     }
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

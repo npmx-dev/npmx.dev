@@ -592,7 +592,8 @@
       "b": "{size} Б",
       "kb": "{size} кБ",
       "mb": "{size} МБ"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -889,10 +890,6 @@
       "published": "Останнє опублікування",
       "maintainers": "Супроводжувачі",
       "keywords": "Ключові слова",
-      "quality_score": "Оцінка якості",
-      "popularity_score": "Оцінка популярності",
-      "maintenance_score": "Оцінка підтримки",
-      "combined_score": "Комбінована оцінка",
       "security": "Безпечність"
     },
     "view_mode": {
@@ -1171,6 +1168,7 @@
     "file_size_warning": "{size} перевищує ліміт 250 КБ для порівняння",
     "compare_versions": "зміни",
     "compare_versions_title": "Порівняти з останньою версією",
+    "version_invalid_url_format": {},
     "version_selector_title": "Порівняти з версією",
     "summary": "Підсумок",
     "deps_count": "{count} залежн.",
@@ -1336,5 +1334,9 @@
       "p1": "Якщо ви зіткнулися з бар'єром доступності на {app}, будь ласка, повідомте нам, відкривши задачу в нашому {link}. Ми серйозно ставимося до цих повідомлень і зробимо все можливе для їх вирішення.",
       "link": "репозиторії GitHub"
     }
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }
