@@ -104,45 +104,47 @@ function prefetchReadmeMarkdown() {
   }
 }
 
-// Fallback for Safari: navigator.clipboard.writeText() must be called
-// synchronously within a user gesture. The async fetch breaks that chain,
-// so we fall back to execCommand('copy') via a temporary textarea.
-function copyViaExecCommand(text: string): boolean {
-  const textarea = document.createElement('textarea')
-  textarea.value = text
-  textarea.style.position = 'fixed'
-  textarea.style.opacity = '0'
-  document.body.appendChild(textarea)
-  textarea.select()
-  try {
-    return document.execCommand('copy')
-  } finally {
-    document.body.removeChild(textarea)
-  }
-}
-
+// Safari requires clipboard writes synchronously within a user gesture.
+// Passing a Promise into ClipboardItem lets clipboard.write() stay
+// synchronous while the fetch resolves asynchronously inside the item.
+// See: https://wolfgangrittner.dev/how-to-use-clipboard-api-in-safari/
 async function copyReadmeHandler() {
-  await fetchReadmeMarkdown()
-
-  const markdown = readmeMarkdownData.value?.markdown
-  if (!markdown) return
-
-  // Try the modern clipboard API first, then fall back to execCommand.
-  // Safari requires clipboard writes synchronously within a user gesture —
-  // the async fetch above breaks that chain, so writeText() will reject.
-  let success = false
   try {
-    await navigator.clipboard.writeText(markdown)
-    success = true
-  } catch {
-    success = copyViaExecCommand(markdown)
-  }
-
-  if (success) {
+    const item = new ClipboardItem({
+      'text/plain': (async () => {
+        await fetchReadmeMarkdown()
+        const markdown = readmeMarkdownData.value?.markdown
+        if (!markdown) throw new Error('No markdown')
+        return new Blob([markdown], { type: 'text/plain' })
+      })(),
+    })
+    await navigator.clipboard.write([item])
     copiedReadme.value = true
-    setTimeout(() => {
-      copiedReadme.value = false
-    }, 2000)
+    setTimeout(() => { copiedReadme.value = false }, 2000)
+  } catch {
+    // Fallback for browsers without ClipboardItem Promise support
+    await fetchReadmeMarkdown()
+    const markdown = readmeMarkdownData.value?.markdown
+    if (!markdown) return
+    try {
+      await navigator.clipboard.writeText(markdown)
+      copiedReadme.value = true
+      setTimeout(() => { copiedReadme.value = false }, 2000)
+    } catch {
+      // last resort: execCommand
+      const textarea = document.createElement('textarea')
+      textarea.value = markdown
+      textarea.style.position = 'fixed'
+      textarea.style.opacity = '0'
+      document.body.appendChild(textarea)
+      textarea.select()
+      const ok = document.execCommand('copy')
+      document.body.removeChild(textarea)
+      if (ok) {
+        copiedReadme.value = true
+        setTimeout(() => { copiedReadme.value = false }, 2000)
+      }
+    }
   }
 }
 
