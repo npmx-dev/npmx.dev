@@ -82,7 +82,6 @@ function getVersionTime(version: string): string | undefined {
 // ─── Version groups ───────────────────────────────────────────────────────────
 
 const expandedGroups = ref(new Set<string>())
-const loadingGroup = ref<string | null>(null)
 
 const versionGroups = computed(() => {
   const byKey = new Map<string, string[]>()
@@ -101,21 +100,23 @@ const versionGroups = computed(() => {
     }))
 })
 
-async function toggleGroup(groupKey: string) {
+function toggleGroup(groupKey: string) {
   if (expandedGroups.value.has(groupKey)) {
     expandedGroups.value.delete(groupKey)
-    return
-  }
-  expandedGroups.value.add(groupKey)
-  if (!fullVersionMap.value) {
-    loadingGroup.value = groupKey
-    try {
-      await ensureFullDataLoaded()
-    } finally {
-      loadingGroup.value = null
-    }
+  } else {
+    expandedGroups.value.add(groupKey)
   }
 }
+
+watch(
+  versionSummary,
+  async summary => {
+    if (summary) {
+      await ensureFullDataLoaded()
+    }
+  },
+  { immediate: true },
+)
 
 // ─── Version filter ───────────────────────────────────────────────────────────
 
@@ -383,13 +384,7 @@ const flatItems = computed<FlatItem[]>(() => {
                     <span class="w-4 h-4 flex items-center justify-center text-fg-subtle shrink-0">
                       <Transition name="icon-swap" mode="out-in">
                         <span
-                          v-if="loadingGroup === item.groupKey"
-                          key="loading"
-                          class="i-svg-spinners:ring-resize w-3 h-3"
-                          aria-hidden="true"
-                        />
-                        <span
-                          v-else-if="isFilterActive"
+                          v-if="isFilterActive"
                           key="search"
                           class="i-lucide:funnel w-3 h-3"
                           aria-hidden="true"
@@ -561,5 +556,4 @@ const flatItems = computed<FlatItem[]>(() => {
   opacity: 0;
   transform: scale(0.5);
 }
-
 </style>
