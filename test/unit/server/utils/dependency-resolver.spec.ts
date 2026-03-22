@@ -199,7 +199,13 @@ describe('dependency-resolver', () => {
 
       expect(result.size).toBe(1)
       const pkg = result.get('root@1.0.0')
-      expect(pkg).toEqual({ name: 'root', version: '1.0.0', size: 5000, optional: false })
+      expect(pkg).toEqual({
+        name: 'root',
+        version: '1.0.0',
+        size: 5000,
+        tarballUrl: '',
+        optional: false,
+      })
     })
 
     it('resolves direct dependencies', async () => {

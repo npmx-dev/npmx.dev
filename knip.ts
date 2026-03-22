@@ -41,13 +41,18 @@ const config: KnipConfig = {
         'h3-next',
       ],
       ignoreUnresolved: ['#oauth/config'],
-      ignoreFiles: ['app/components/Tooltip/Announce.vue', 'app/components/UserCombobox.vue'],
+      ignoreFiles: [
+        'app/components/Tooltip/Announce.vue',
+        'app/components/UserCombobox.vue',
+        '**/*.unused.*',
+      ],
     },
     'cli': {
       project: ['src/**/*.ts!', '!src/mock-*.ts'],
     },
     'docs': {
-      entry: ['app/**/*.{ts,vue,css}'],
+      entry: ['app/**/*.{ts,vue,css}', 'shared/**/*.{ts,vue,css}'],
+      project: ['**/*.{ts,vue,cjs,mjs}'],
       ignoreDependencies: ['@nuxtjs/mdc'],
     },
   },

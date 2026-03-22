@@ -107,7 +107,7 @@
       "reply_count": "{count} yanıt",
       "like_count": "{count} beğeni",
       "repost_count": "{count} yeniden paylaşım",
-      "more_replies": "{count} yanıt daha..."
+      "more_replies": "{count} yanıt daha... | {count} yanıt daha..."
     }
   },
   "settings": {
@@ -142,10 +142,14 @@
     "theme_system": "Sistem",
     "language": "Dil",
     "help_translate": "npmx'i çevirmeye yardım edin",
-    "accent_colors": "Vurgu renkleri",
+    "accent_colors": {
+      "label": "Vurgu renkleri"
+    },
     "clear_accent": "Vurgu rengini temizle",
     "translation_progress": "Çeviri ilerlemesi",
-    "background_themes": "Arka plan tonu",
+    "background_themes": {
+      "label": "Arka plan tonu"
+    },
     "keyboard_shortcuts_enabled": "Klavye kısayolları etkin",
     "keyboard_shortcuts_enabled_description": "Hızlı navigasyon için klavye kısayollarını etkinleştir"
   },

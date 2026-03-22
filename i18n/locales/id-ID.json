@@ -109,7 +109,7 @@
       "reply_count": "{count} balasan | {count} balasan",
       "like_count": "{count} suka | {count} suka",
       "repost_count": "{count} repost | {count} repost",
-      "more_replies": "{count} balasan lainnya... | {count} balasan lainnya..."
+      "more_replies": "{count} balasan lagi... | {count} balasan lagi..."
     }
   },
   "settings": {
@@ -144,10 +144,14 @@
     "theme_system": "Sistem",
     "language": "Bahasa",
     "help_translate": "Bantu terjemahkan npmx",
-    "accent_colors": "Warna aksen",
+    "accent_colors": {
+      "label": "Warna aksen"
+    },
     "clear_accent": "Hapus warna aksen",
     "translation_progress": "Progres terjemahan",
-    "background_themes": "Warna latar belakang",
+    "background_themes": {
+      "label": "Warna latar belakang"
+    },
     "keyboard_shortcuts_enabled": "Aktifkan pintasan papan ketik",
     "keyboard_shortcuts_enabled_description": "Pintasan papan ketik dapat dinonaktifkan jika bertentangan dengan pintasan peramban atau sistem lainnya."
   },

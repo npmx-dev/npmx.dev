@@ -203,7 +203,7 @@ const flatItems = computed<FlatItem[]>(() => {
           type="text"
           :placeholder="$t('package.versions.version_filter_placeholder')"
           :aria-label="$t('package.versions.version_filter_label')"
-          size="small"
+          size="sm"
           class="w-36 sm:w-44"
         />
       </div>
