@@ -108,7 +108,6 @@ useHead({
           class="text-start focus-visible:outline-accent/70 rounded"
           :aria-expanded="isOpen"
           :aria-controls="contentId"
-          :aria-label="ariaLabel"
           @click="toggle"
         >
           {{ title }}
