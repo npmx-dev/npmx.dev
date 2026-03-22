@@ -22,13 +22,10 @@ export function useSvgToPng() {
     ctx.drawImage(img, 0, 0, width, height)
 
     return new Promise<Blob>((resolve, reject) => {
-      canvas.toBlob(
-        (blob) => {
-          if (blob) resolve(blob)
-          else reject(new Error('Canvas toBlob failed'))
-        },
-        'image/png',
-      )
+      canvas.toBlob(blob => {
+        if (blob) resolve(blob)
+        else reject(new Error('Canvas toBlob failed'))
+      }, 'image/png')
     })
   }
 

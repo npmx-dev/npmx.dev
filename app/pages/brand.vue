@@ -49,7 +49,13 @@ const logos = [
 const colors = [
   { key: 'background', hex: '#0a0a0a', oklch: 'oklch(0.171 0 0)', swatch: '#0a0a0a', light: false },
   { key: 'foreground', hex: '#fafafa', oklch: 'oklch(0.982 0 0)', swatch: '#fafafa', light: true },
-  { key: 'accent', hex: '#51c8fc', oklch: 'oklch(0.787 0.128 230.318)', swatch: '#51c8fc', light: true },
+  {
+    key: 'accent',
+    hex: '#51c8fc',
+    oklch: 'oklch(0.787 0.128 230.318)',
+    swatch: '#51c8fc',
+    light: true,
+  },
 ]
 
 const { copy, copied, text: lastCopied } = useClipboard({ copiedDuring: 2000 })
@@ -79,8 +85,7 @@ async function handlePngDownload(logo: (typeof logos)[number]) {
     const blob = await convert(logo.src, logo.width, logo.height)
     const filename = logo.src.replace(/^\//, '').replace('.svg', '.png')
     downloadPng(blob, filename)
-  }
-  finally {
+  } finally {
     pngLoading.value = null
   }
 }
@@ -217,26 +222,38 @@ async function handlePngDownload(logo: (typeof logos)[number]) {
                 <ButtonBase
                   size="sm"
                   class="!border-none !px-0 !justify-start"
-                  :aria-label="$t('brand.colors.copy_hex', { name: $t(`brand.colors.${color.key}`) })"
+                  :aria-label="
+                    $t('brand.colors.copy_hex', { name: $t(`brand.colors.${color.key}`) })
+                  "
                   @click="copy(color.hex)"
                 >
                   <code class="text-fg-muted">{{ color.hex }}</code>
                   <span
                     class="w-3 h-3 shrink-0 transition-colors duration-200"
-                    :class="copied && lastCopied === color.hex ? 'i-lucide:check text-badge-green' : 'i-lucide:copy opacity-0 group-hover:opacity-100'"
+                    :class="
+                      copied && lastCopied === color.hex
+                        ? 'i-lucide:check text-badge-green'
+                        : 'i-lucide:copy opacity-0 group-hover:opacity-100'
+                    "
                     aria-hidden="true"
                   />
                 </ButtonBase>
                 <ButtonBase
                   size="sm"
                   class="!border-none !px-0 !justify-start"
-                  :aria-label="$t('brand.colors.copy_oklch', { name: $t(`brand.colors.${color.key}`) })"
+                  :aria-label="
+                    $t('brand.colors.copy_oklch', { name: $t(`brand.colors.${color.key}`) })
+                  "
                   @click="copy(color.oklch)"
                 >
                   <code class="text-fg-subtle">{{ color.oklch }}</code>
                   <span
                     class="w-3 h-3 shrink-0 transition-colors duration-200"
-                    :class="copied && lastCopied === color.oklch ? 'i-lucide:check text-badge-green' : 'i-lucide:copy opacity-0 group-hover:opacity-100'"
+                    :class="
+                      copied && lastCopied === color.oklch
+                        ? 'i-lucide:check text-badge-green'
+                        : 'i-lucide:copy opacity-0 group-hover:opacity-100'
+                    "
                     aria-hidden="true"
                   />
                 </ButtonBase>
@@ -324,7 +341,10 @@ async function handlePngDownload(logo: (typeof logos)[number]) {
                   :key="`do-${i}`"
                   class="flex items-start gap-3 text-fg-muted text-sm"
                 >
-                  <span class="i-lucide:check w-4 h-4 text-badge-green shrink-0 mt-0.5" aria-hidden="true" />
+                  <span
+                    class="i-lucide:check w-4 h-4 text-badge-green shrink-0 mt-0.5"
+                    aria-hidden="true"
+                  />
                   <span>{{ item() }}</span>
                 </li>
               </ul>
@@ -341,7 +361,10 @@ async function handlePngDownload(logo: (typeof logos)[number]) {
                   :key="`dont-${i}`"
                   class="flex items-start gap-3 text-fg-muted text-sm"
                 >
-                  <span class="i-lucide:x w-4 h-4 text-badge-pink shrink-0 mt-0.5" aria-hidden="true" />
+                  <span
+                    class="i-lucide:x w-4 h-4 text-badge-pink shrink-0 mt-0.5"
+                    aria-hidden="true"
+                  />
                   <span>{{ item() }}</span>
                 </li>
               </ul>

@@ -38,8 +38,7 @@ async function copySvg() {
     const res = await fetch('/logo.svg')
     const svg = await res.text()
     await copy(svg)
-  }
-  finally {
+  } finally {
     close()
   }
 }
