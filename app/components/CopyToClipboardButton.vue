@@ -89,17 +89,9 @@ function handleClick() {
 }
 
 @media (hover: none) {
-  /* On touch devices show the button statically (no hover possible) */
+  /* On touch devices, hide the button since hover is not available */
   .copyButton {
-    clip: auto;
-    clip-path: none;
-    height: auto;
-    overflow: visible;
-    width: auto;
-    opacity: 1;
-    translate: none;
-    pointer-events: auto;
-    transition: none;
+    display: none;
   }
 }
 </style>
