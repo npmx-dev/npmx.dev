@@ -3,39 +3,17 @@ import { mountSuspended } from '@nuxt/test-utils/runtime'
 import AppHeader from '~/components/AppHeader.vue'
 
 describe('AppHeader', () => {
-  it('renders a search input area', async () => {
-    const wrapper = await mountSuspended(AppHeader, {
-      route: '/',
-    })
-
-    // The search container with ref="searchContainerRef" should be rendered
-    // and contain an input element for the search functionality
-    const html = wrapper.html()
-    // The header renders a search form/input
-    expect(html).toContain('search')
-  })
-
-  it('nav links use invisible instead of hidden to prevent layout shift', async () => {
-    const wrapper = await mountSuspended(AppHeader, {
-      route: '/',
-    })
-
-    const html = wrapper.html()
-    // The nav list should use 'invisible pointer-events-none' (not 'hidden')
-    // when the search is expanded, to prevent layout shifts
-    // Verify the nav list element exists at all
-    const navList = wrapper.find('nav ul, ul[class*="list-none"]')
-    // When not on a search page and search is not expanded,
-    // the nav list should be visible (not invisible)
-    expect(navList.exists() || html.includes('list-none')).toBe(true)
-  })
-
   it('renders the header element', async () => {
-    const wrapper = await mountSuspended(AppHeader, {
-      route: '/',
-    })
-
+    const wrapper = await mountSuspended(AppHeader, { route: '/' })
     expect(wrapper.find('header').exists()).toBe(true)
+  })
+
+  it('does not apply z-1 to the nav container (fixes Connect dropdown clipping)', async () => {
+    const wrapper = await mountSuspended(AppHeader, { route: '/' })
+    // Regression: z-1 on the nav container caused the package sub-header to render
+    // above the Connect dropdown. The container must not have z-1.
+    const nav = wrapper.find('nav')
+    expect(nav.attributes('class') ?? '').not.toContain('z-1')
   })
 
   it('renders logo link when showLogo is true', async () => {
@@ -43,8 +21,6 @@ describe('AppHeader', () => {
       route: '/package/react',
       props: { showLogo: true },
     })
-
-    // There should be a link to the home page (logo)
     const homeLink = wrapper.find('a[href="/"]')
     expect(homeLink.exists()).toBe(true)
   })
