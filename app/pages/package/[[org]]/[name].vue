@@ -107,13 +107,46 @@ function prefetchReadmeMarkdown() {
   }
 }
 
+// Fallback for Safari: navigator.clipboard.writeText() must be called
+// synchronously within a user gesture. The async fetch breaks that chain,
+// so we fall back to execCommand('copy') via a temporary textarea.
+function copyViaExecCommand(text: string): boolean {
+  const textarea = document.createElement('textarea')
+  textarea.value = text
+  textarea.style.position = 'fixed'
+  textarea.style.opacity = '0'
+  document.body.appendChild(textarea)
+  textarea.select()
+  try {
+    return document.execCommand('copy')
+  }
+  finally {
+    document.body.removeChild(textarea)
+  }
+}
+
 async function copyReadmeHandler() {
   await fetchReadmeMarkdown()
 
   const markdown = readmeMarkdownData.value?.markdown
   if (!markdown) return
 
-  await copyReadme(markdown)
+  // Try the modern clipboard API first, then fall back to execCommand.
+  // Safari requires clipboard writes synchronously within a user gesture —
+  // the async fetch above breaks that chain, so writeText() will reject.
+  let success = false
+  try {
+    await navigator.clipboard.writeText(markdown)
+    success = true
+  }
+  catch {
+    success = copyViaExecCommand(markdown)
+  }
+
+  if (success) {
+    copiedReadme.value = true
+    setTimeout(() => { copiedReadme.value = false }, 2000)
+  }
 }
 
 // Track active TOC item based on scroll position
