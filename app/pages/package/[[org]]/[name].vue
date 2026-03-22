@@ -120,7 +120,9 @@ async function copyReadmeHandler() {
     })
     await navigator.clipboard.write([item])
     copiedReadme.value = true
-    setTimeout(() => { copiedReadme.value = false }, 2000)
+    setTimeout(() => {
+      copiedReadme.value = false
+    }, 2000)
   } catch {
     // Fallback for browsers without ClipboardItem Promise support
     await fetchReadmeMarkdown()
@@ -129,7 +131,9 @@ async function copyReadmeHandler() {
     try {
       await navigator.clipboard.writeText(markdown)
       copiedReadme.value = true
-      setTimeout(() => { copiedReadme.value = false }, 2000)
+      setTimeout(() => {
+        copiedReadme.value = false
+      }, 2000)
     } catch {
       // last resort: execCommand
       const textarea = document.createElement('textarea')
@@ -142,7 +146,9 @@ async function copyReadmeHandler() {
       document.body.removeChild(textarea)
       if (ok) {
         copiedReadme.value = true
-        setTimeout(() => { copiedReadme.value = false }, 2000)
+        setTimeout(() => {
+          copiedReadme.value = false
+        }, 2000)
       }
     }
   }
