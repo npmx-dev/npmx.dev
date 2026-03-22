@@ -1,3 +1,4 @@
+import type { RemovableRef } from '@vueuse/core'
 import { useLocalStorage } from '@vueuse/core'
 import { ACCENT_COLORS, type AccentColorId } from '#shared/utils/constants'
 import type { LocaleObject } from '@nuxtjs/i18n'
