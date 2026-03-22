@@ -113,6 +113,13 @@ function buildExportFilename(extension: string): string {
 const config = computed<VueUiHorizontalBarConfig>(() => {
   return {
     theme: isDarkMode.value ? 'dark' : '',
+    a11y: {
+      translations: {
+        keyboardNavigation: $t('package.trends.chart_sr.keyboard_navigation_vertical'),
+        tableAvailable: $t('package.trends.chart_sr.table_available'),
+        tableCaption: $t('package.trends.chart_sr.table_caption')
+      }
+    },
     userOptions: {
       buttons: {
         tooltip: false,

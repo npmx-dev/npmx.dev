@@ -1388,6 +1388,13 @@ watch(
 const chartConfig = computed<VueUiXyConfig>(() => {
   return {
     theme: isDarkMode.value ? 'dark' : ('' as VueDataUiTheme),
+    a11y: {
+      translations: {
+        keyboardNavigation: $t('package.trends.chart_sr.keyboard_navigation_horizontal'),
+        tableAvailable: $t('package.trends.chart_sr.table_available'),
+        tableCaption: $t('package.trends.chart_sr.table_caption')
+      }
+    },
     chart: {
       height: chartHeight.value,
       backgroundColor: colors.value.bg,

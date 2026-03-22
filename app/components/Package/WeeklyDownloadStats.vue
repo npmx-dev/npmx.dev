@@ -313,6 +313,13 @@ function layEgg() {
 
 const config = computed<VueUiSparklineConfig>(() => {
   return {
+    a11y: {
+      translations: {
+        keyboardNavigation: $t('package.trends.chart_sr.keyboard_navigation_horizontal'),
+        tableAvailable: $t('package.trends.chart_sr.table_available'),
+        tableCaption: $t('package.trends.chart_sr.table_caption')
+      }
+    },
     theme: 'dark',
     /**
      * The built-in skeleton loader kicks in when the component is mounted but the data is not yet ready.
