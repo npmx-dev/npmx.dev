@@ -105,10 +105,14 @@
     "theme_system": "Sistema",
     "language": "Lingua",
     "help_translate": "Aiuta a tradurre npmx",
-    "accent_colors": "Colori di accento",
+    "accent_colors": {
+      "label": "Colori di accento"
+    },
     "clear_accent": "Cancella colore di accento",
     "translation_progress": "Progresso della traduzione",
-    "background_themes": "Sfumatura di sfondo"
+    "background_themes": {
+      "label": "Sfumatura di sfondo"
+    }
   },
   "i18n": {
     "missing_keys": "{count} chiave mancante | {count} chiavi mancanti",

@@ -128,7 +128,6 @@ const executeNpmxConnectorCommand = computed(() => {
             :placeholder="$t('connector.modal.token_placeholder')"
             no-correct
             class="w-full"
-            size="medium"
           />
         </div>
 
@@ -151,7 +150,6 @@ const executeNpmxConnectorCommand = computed(() => {
               inputmode="numeric"
               autocomplete="off"
               class="w-full"
-              size="medium"
             />
 
             <div class="border-t border-border my-3" />

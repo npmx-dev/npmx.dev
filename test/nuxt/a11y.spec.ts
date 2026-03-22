@@ -113,6 +113,12 @@ vi.mock('vue-data-ui/vue-ui-xy', () => {
   }
 })
 
+vi.mock('~/composables/useCanGoBack', () => {
+  return {
+    useCanGoBack: () => shallowRef(true),
+  }
+})
+
 // Import components from #components where possible
 // For server/client variants, we need to import directly to test the specific variant
 import {
@@ -125,6 +131,7 @@ import {
   AboutLogoList,
   AuthorAvatar,
   AuthorList,
+  BackButton,
   BlogPostFederatedArticles,
   BlogPostListCard,
   BlogPostWrapper,
@@ -136,6 +143,7 @@ import {
   ButtonBase,
   LinkBase,
   CallToAction,
+  ChartPatternSlot,
   CodeDirectoryListing,
   CodeFileTree,
   CodeMobileTreeDrawer,
@@ -179,6 +187,7 @@ import {
   PackageListControls,
   PackageListToolbar,
   PackageMaintainers,
+  PackageDownloadButton,
   PackageManagerSelect,
   PackageMetricsBadges,
   PackagePlaygrounds,
@@ -191,6 +200,7 @@ import {
   PackageVersions,
   PackageVulnerabilityTree,
   PaginationControls,
+  ProgressBar,
   ProvenanceBadge,
   Readme,
   ReadmeTocDropdown,
@@ -235,6 +245,7 @@ import PackageTrendsChart from '~/components/Package/TrendsChart.vue'
 import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
 import PackageLikeCard from '~/components/Package/LikeCard.vue'
 import SizeIncrease from '~/components/Package/SizeIncrease.vue'
+import Likes from '~/components/Package/Likes.vue'
 
 describe('component accessibility audits', () => {
   describe('DateTime', () => {
@@ -455,6 +466,15 @@ describe('component accessibility audits', () => {
     })
   })
 
+  describe('BackButton', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(BackButton)
+      expect(component.find('button').exists()).toBe(true)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
   describe('TagStatic', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(TagStatic, {
@@ -494,7 +514,7 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations with size small', async () => {
       const component = await mountSuspended(ButtonBase, {
-        props: { size: 'small' },
+        props: { size: 'sm' },
         slots: { default: 'Button content' },
       })
       const results = await runAxe(component)
@@ -554,9 +574,19 @@ describe('component accessibility audits', () => {
           to: 'http://example.com',
           disabled: true,
           variant: 'button-secondary',
-          size: 'small',
+          size: 'sm',
         },
         slots: { default: 'Button link content' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('Likes', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(Likes, {
+        props: { packageName: 'svelte' },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
@@ -2129,6 +2159,23 @@ describe('component accessibility audits', () => {
     })
   })
 
+  describe('ChartPatternSlot', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(ChartPatternSlot, {
+        props: {
+          id: 'perennius',
+          seed: 1,
+          foregroundColor: 'black',
+          fallbackColor: 'transparent',
+          maxSize: 24,
+          minSize: 16,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
   describe('CopyToClipboardButton', () => {
     it('should have no accessibility violations in default state', async () => {
       const component = await mountSuspended(CopyToClipboardButton, {
@@ -2622,7 +2669,7 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations with size small', async () => {
       const component = await mountSuspended(InputBase, {
-        props: { size: 'small' },
+        props: { size: 'sm' },
         attrs: { 'aria-label': 'Small input' },
       })
       const results = await runAxe(component)
@@ -2631,7 +2678,7 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations with size large', async () => {
       const component = await mountSuspended(InputBase, {
-        props: { size: 'large' },
+        props: { size: 'lg' },
         attrs: { 'aria-label': 'Large input' },
       })
       const results = await runAxe(component)
@@ -2925,6 +2972,23 @@ describe('component accessibility audits', () => {
         const results = await runAxe(component)
         expect(results.violations).toEqual([])
       }
+    })
+  })
+
+  describe('PackageDownloadButton', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageDownloadButton, {
+        props: {
+          packageName: 'vue',
+          version: {
+            version: '3.5.0',
+            dist: { tarball: 'https://registry.npmjs.org/vue/-/vue-3.5.0.tgz' },
+          } as any,
+          dependencies: null,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
     })
   })
 
@@ -3698,6 +3762,16 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(Alert, {
         props: { variant: 'warning' },
         slots: { default: 'This is a warning message.' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('ProgressBar', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(ProgressBar, {
+        props: { val: 99, label: 'Progress status for en' },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])

@@ -107,7 +107,7 @@
       "reply_count": "{count} odpowiedzi | {count} odpowiedź | {count} odpowiedzi | {count} odpowiedzi | {count} odpowiedzi",
       "like_count": "{count} polubień | {count} polubienie | {count} polubienia | {count} polubień | {count} polubień",
       "repost_count": "{count} udostępnień | {count} udostępnienie | {count} udostępnienia | {count} udostępnień | {count} udostępnień",
-      "more_replies": "{count} odpowiedzi więcej... | {count} odpowiedź więcej... | {count} odpowiedzi więcej... | {count} odpowiedzi więcej... | {count} odpowiedzi więcej..."
+      "more_replies": "jeszcze {count} odpowiedź… | jeszcze {count} odpowiedzi… | jeszcze {count} odpowiedzi…"
     }
   },
   "settings": {
@@ -142,10 +142,14 @@
     "theme_system": "Systemowy",
     "language": "Język",
     "help_translate": "Pomóż tłumaczyć npmx",
-    "accent_colors": "Kolory akcentu",
+    "accent_colors": {
+      "label": "Kolory akcentu"
+    },
     "clear_accent": "Wyczyść kolor akcentu",
     "translation_progress": "Postęp tłumaczenia",
-    "background_themes": "Odcień tła",
+    "background_themes": {
+      "label": "Odcień tła"
+    },
     "keyboard_shortcuts_enabled": "Włącz skróty klawiaturowe",
     "keyboard_shortcuts_enabled_description": "Skróty klawiaturowe mogą zostać wyłączone jeśli kolidują z innymi skrótami przeglądarki lub systemu"
   },

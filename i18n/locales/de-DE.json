@@ -107,7 +107,7 @@
       "reply_count": "{count} Antwort | {count} Antworten",
       "like_count": "{count} Like | {count} Likes",
       "repost_count": "{count} Repost | {count} Reposts",
-      "more_replies": "{count} weitere Antwort anzeigen | {count} weitere Antworten anzeigen"
+      "more_replies": "noch {count} Antwort… | noch {count} Antworten…"
     }
   },
   "settings": {
@@ -142,10 +142,14 @@
     "theme_system": "System",
     "language": "Sprache",
     "help_translate": "Hilf bei der Übersetzung von npmx",
-    "accent_colors": "Akzentfarben",
+    "accent_colors": {
+      "label": "Akzentfarben"
+    },
     "clear_accent": "Akzentfarbe zurücksetzen",
     "translation_progress": "Übersetzungsfortschritt",
-    "background_themes": "Hintergrundschattierung",
+    "background_themes": {
+      "label": "Hintergrundschattierung"
+    },
     "keyboard_shortcuts_enabled": "Tastenkombinationen aktivieren",
     "keyboard_shortcuts_enabled_description": "Tastenkombinationen können deaktiviert werden, wenn sie mit anderen Browser- oder Systemkürzeln in Konflikt stehen"
   },

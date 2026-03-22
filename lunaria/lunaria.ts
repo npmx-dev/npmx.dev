@@ -14,9 +14,6 @@ if (existsSync('.git/MERGE_HEAD')) {
 const lunaria = await createLunaria()
 const status = await lunaria.getFullStatus()
 
-// Generate HTML dashboard
-const html = Page(lunaria.config, status, lunaria)
-
 // Generate JSON status for the app
 const { sourceLocale } = lunaria.config
 const links = lunaria.gitHostingLinks()
@@ -75,6 +72,7 @@ const jsonStatus: I18nStatus = {
   sourceLocale: {
     lang: sourceLocale.lang,
     label: sourceLocale.label,
+    totalKeys,
   },
   locales: appLocales.map(locale => {
     const localization = fileStatus.localizations.find(l => l.lang === locale.code)
@@ -93,6 +91,7 @@ const jsonStatus: I18nStatus = {
     return {
       lang: locale.code,
       label: locale.name!,
+      dir: locale?.dir ?? 'ltr',
       totalKeys,
       completedKeys,
       missingKeys,
@@ -102,6 +101,9 @@ const jsonStatus: I18nStatus = {
     }
   }),
 }
+
+// Generate HTML dashboard using processed jsonStatus
+const html = Page(lunaria.config, jsonStatus, lunaria)
 
 mkdirSync('dist/lunaria', { recursive: true })
 writeFileSync('dist/lunaria/index.html', html)

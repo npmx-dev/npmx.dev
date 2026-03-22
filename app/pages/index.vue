@@ -86,7 +86,7 @@ defineOgImageComponent('Default', {
                   autofocus
                   :placeholder="$t('search.placeholder')"
                   no-correct
-                  size="large"
+                  size="lg"
                   class="w-full ps-8 pe-24"
                   aria-describedby="instant-search-advisory"
                   @focus="isSearchFocused = true"
