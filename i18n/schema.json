@@ -1450,7 +1450,7 @@
         "trends": {
           "type": "object",
           "properties": {
-            "chart_sr": {
+            "chart_assistive_text": {
               "type": "object",
               "properties": {
                 "keyboard_navigation_horizontal": {

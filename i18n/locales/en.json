@@ -482,7 +482,7 @@
       "maintainer_template": "{avatar} {char126}{name}"
     },
     "trends": {
-      "chart_sr": {
+      "chart_assistive_text": {
         "keyboard_navigation_horizontal": "Use the left and right arrow keys to cycle through data points.",
         "keyboard_navigation_vertical": "Use the up and down arrow keys to cycle through data points.",
         "table_available": "A data table for this chart is available below.",

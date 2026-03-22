@@ -449,7 +449,7 @@
       "show_less": "(afficher moins)"
     },
     "trends": {
-      "chart_sr": {
+      "chart_assistive_text": {
         "keyboard_navigation_horizontal": "Utilisez les touches fléchées gauche et droite pour parcourir les points de données.",
         "keyboard_navigation_vertical": "Utilisez les touches fléchées haut et bas pour parcourir les points de données.",
         "table_available": "Un tableau de données pour ce graphique est disponible ci-dessous.",
