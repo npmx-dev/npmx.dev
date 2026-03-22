@@ -80,7 +80,7 @@ async function handlePngDownload(logo: (typeof logos)[number]) {
             {{ $t('brand.logos.description') }}
           </p>
 
-          <div class="space-y-14">
+          <div class="space-y-16">
             <figure
               v-for="logo in logos"
               :key="logo.src"
