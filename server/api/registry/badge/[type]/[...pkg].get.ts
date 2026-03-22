@@ -41,9 +41,6 @@ const COLORS = {
   white: '#ffffff',
 }
 
-const CHAR_WIDTH = 7
-const SHIELDS_CHAR_WIDTH = 6
-
 const BADGE_PADDING_X = 8
 const MIN_BADGE_TEXT_WIDTH = 40
 const SHIELDS_LABEL_PADDING_X = 5
@@ -52,6 +49,39 @@ const BADGE_FONT_SHORTHAND = 'normal normal 400 11px Geist, system-ui, -apple-sy
 const SHIELDS_FONT_SHORTHAND = 'normal normal 400 11px Verdana, Geneva, DejaVu Sans, sans-serif'
 
 let cachedCanvasContext: SKRSContext2D | null | undefined
+
+const NARROW_CHARS = new Set([' ', '!', '"', "'", '(', ')', '*', ',', '-', '.', ':', ';', '|'])
+const MEDIUM_CHARS = new Set(['#', '$', '+', '/', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '}', '~'])
+
+function estimateTextWidth(text: string, fallbackFont: 'default' | 'shieldsio'): number {
+  let totalWidth = 0
+
+  for (const character of text) {
+    if (NARROW_CHARS.has(character)) {
+      totalWidth += 3
+      continue
+    }
+
+    if (MEDIUM_CHARS.has(character)) {
+      totalWidth += 5
+      continue
+    }
+
+    if (/\d/.test(character)) {
+      totalWidth += 6
+      continue
+    }
+
+    if (/[A-Z]/.test(character)) {
+      totalWidth += 7
+      continue
+    }
+
+    totalWidth += fallbackFont === 'shieldsio' ? 5.5 : 6
+  }
+
+  return Math.max(1, Math.round(totalWidth))
+}
 
 function getCanvasContext(): SKRSContext2D | null {
   if (cachedCanvasContext !== undefined) {
@@ -90,7 +120,7 @@ function measureDefaultTextWidth(text: string): number {
     return Math.max(MIN_BADGE_TEXT_WIDTH, measuredWidth + BADGE_PADDING_X * 2)
   }
 
-  return Math.max(MIN_BADGE_TEXT_WIDTH, Math.round(text.length * CHAR_WIDTH) + BADGE_PADDING_X * 2)
+  return Math.max(MIN_BADGE_TEXT_WIDTH, estimateTextWidth(text, 'default') + BADGE_PADDING_X * 2)
 }
 
 function escapeXML(str: string): string {
@@ -125,7 +155,7 @@ function measureShieldsTextLength(text: string): number {
     return Math.max(1, measuredWidth)
   }
 
-  return Math.max(1, Math.round(text.length * SHIELDS_CHAR_WIDTH))
+  return estimateTextWidth(text, 'shieldsio')
 }
 
 function renderDefaultBadgeSvg(params: {
