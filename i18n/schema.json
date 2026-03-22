@@ -1465,7 +1465,8 @@
                 "table_caption": {
                   "type": "string"
                 }
-              }
+              },
+              "additionalProperties": false
             },
             "granularity": {
               "type": "string"
