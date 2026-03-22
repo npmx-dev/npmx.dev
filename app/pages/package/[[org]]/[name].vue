@@ -109,6 +109,8 @@ function prefetchReadmeMarkdown() {
 // synchronous while the fetch resolves asynchronously inside the item.
 // See: https://wolfgangrittner.dev/how-to-use-clipboard-api-in-safari/
 async function copyReadmeHandler() {
+  let copied = false
+
   try {
     const item = new ClipboardItem({
       'text/plain': (async () => {
@@ -119,38 +121,34 @@ async function copyReadmeHandler() {
       })(),
     })
     await navigator.clipboard.write([item])
-    copiedReadme.value = true
-    setTimeout(() => {
-      copiedReadme.value = false
-    }, 2000)
+    copied = true
   } catch {
     // Fallback for browsers without ClipboardItem Promise support
     await fetchReadmeMarkdown()
     const markdown = readmeMarkdownData.value?.markdown
-    if (!markdown) return
-    try {
-      await navigator.clipboard.writeText(markdown)
-      copiedReadme.value = true
-      setTimeout(() => {
-        copiedReadme.value = false
-      }, 2000)
-    } catch {
-      // last resort: execCommand
-      const textarea = document.createElement('textarea')
-      textarea.value = markdown
-      textarea.style.position = 'fixed'
-      textarea.style.opacity = '0'
-      document.body.appendChild(textarea)
-      textarea.select()
-      const ok = document.execCommand('copy')
-      document.body.removeChild(textarea)
-      if (ok) {
-        copiedReadme.value = true
-        setTimeout(() => {
-          copiedReadme.value = false
-        }, 2000)
+    if (markdown) {
+      try {
+        await navigator.clipboard.writeText(markdown)
+        copied = true
+      } catch {
+        // last resort: execCommand
+        const textarea = document.createElement('textarea')
+        textarea.value = markdown
+        textarea.style.position = 'fixed'
+        textarea.style.opacity = '0'
+        document.body.appendChild(textarea)
+        textarea.select()
+        copied = document.execCommand('copy')
+        document.body.removeChild(textarea)
       }
     }
+  }
+
+  if (copied) {
+    copiedReadme.value = true
+    setTimeout(() => {
+      copiedReadme.value = false
+    }, 2000)
   }
 }
 
