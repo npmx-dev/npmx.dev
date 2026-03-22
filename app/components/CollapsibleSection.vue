@@ -104,14 +104,17 @@ useHead({
           />
         </button>
 
-        <span>
-          <LinkBase :to="`#${id}`">
-            {{ title }}
-          </LinkBase>
+        <button
+          type="button"
+          class="text-start focus-visible:outline-accent/70 rounded"
+          :aria-label="`${isOpen ? 'Collapse' : 'Expand'} ${title}`"
+          @click="toggle"
+        >
+          {{ title }}
           <span v-if="subtitle" class="block text-2xs normal-case tracking-normal">{{
             subtitle
           }}</span>
-        </span>
+        </button>
       </component>
 
       <!-- Actions slot for buttons or other elements -->
