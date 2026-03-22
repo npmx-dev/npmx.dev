@@ -12,13 +12,10 @@ type LicenseValue = string | { type?: string } | undefined | null
 
 function normalize(l: LicenseValue): string {
   if (!l) return ''
-  return typeof l === 'string' ? l : (l as { type?: string })?.type ?? ''
+  return typeof l === 'string' ? l : ((l as { type?: string })?.type ?? '')
 }
 
-function licenseChanged(
-  currentLicense: LicenseValue,
-  packageLicense: LicenseValue,
-): boolean {
+function licenseChanged(currentLicense: LicenseValue, packageLicense: LicenseValue): boolean {
   if (!currentLicense || !packageLicense) return false
   return normalize(currentLicense) !== normalize(packageLicense)
 }
