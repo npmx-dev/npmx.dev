@@ -132,7 +132,8 @@ function matchPlaygroundProvider(url: string): PlaygroundProvider | null {
         if (
           (hostname === domain || hostname.endsWith(`.${domain}`)) &&
           (!provider.paths || provider.paths.some(path => parsed.pathname.startsWith(path))) &&
-          (!provider.pathContains || provider.pathContains.some(seg => parsed.pathname.includes(seg)))
+          (!provider.pathContains ||
+            provider.pathContains.some(seg => parsed.pathname.includes(seg)))
         ) {
           return provider
         }
