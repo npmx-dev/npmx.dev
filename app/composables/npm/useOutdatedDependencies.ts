@@ -68,10 +68,12 @@ export function useOutdatedDependencies(
     }
 
     // Resolve npm: aliases and filter out non-semver constraints
-    const resolvedEntries = Object.entries(deps).map(([key, value]) => {
-      const parsed = parseDepValue(value)
-      return { key, realName: parsed.name ?? key, range: parsed.range }
-    }).filter((e): e is typeof e & { range: string } => e.range !== null)
+    const resolvedEntries = Object.entries(deps)
+      .map(([key, value]) => {
+        const parsed = parseDepValue(value)
+        return { key, realName: parsed.name ?? key, range: parsed.range }
+      })
+      .filter((e): e is typeof e & { range: string } => e.range !== null)
 
     if (resolvedEntries.length === 0) {
       outdated.value = {}

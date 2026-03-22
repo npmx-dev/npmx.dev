@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { SEVERITY_TEXT_COLORS, getHighestSeverity } from '#shared/utils/severity'
-import { getOutdatedTooltip, getVersionClass, parseDepValue } from '~/utils/npm/outdated-dependencies'
+import {
+  getOutdatedTooltip,
+  getVersionClass,
+  parseDepValue,
+} from '~/utils/npm/outdated-dependencies'
 
 const { t } = useI18n()
 
@@ -84,7 +88,8 @@ function getDepVersionTooltip(key: string, realName: string, version: string) {
 function getDepVersionClass(key: string, realName: string) {
   const outdated = outdatedDeps.value[key]
   if (outdated) return getVersionClass(outdated)
-  if (getVulnerableDepInfo(realName) || getDeprecatedDepInfo(realName)) return getVersionClass(undefined)
+  if (getVulnerableDepInfo(realName) || getDeprecatedDepInfo(realName))
+    return getVersionClass(undefined)
   if (replacementDeps.value[realName]) return 'text-amber-700 dark:text-amber-500'
   return getVersionClass(undefined)
 }
@@ -157,9 +162,18 @@ const numberFormatter = useNumberFormatter()
             </TooltipApp>
             <LinkBase
               v-if="getVulnerableDepInfo(depName(dep, version))"
-              :to="packageRoute(depName(dep, version), getVulnerableDepInfo(depName(dep, version))!.version)"
+              :to="
+                packageRoute(
+                  depName(dep, version),
+                  getVulnerableDepInfo(depName(dep, version))!.version,
+                )
+              "
               class="shrink-0"
-              :class="SEVERITY_TEXT_COLORS[getHighestSeverity(getVulnerableDepInfo(depName(dep, version))!.counts)]"
+              :class="
+                SEVERITY_TEXT_COLORS[
+                  getHighestSeverity(getVulnerableDepInfo(depName(dep, version))!.counts)
+                ]
+              "
               :title="
                 $t('package.dependencies.vulnerabilities_count', {
                   count: getVulnerableDepInfo(depName(dep, version))!.counts.total,
@@ -171,7 +185,12 @@ const numberFormatter = useNumberFormatter()
             </LinkBase>
             <LinkBase
               v-if="getDeprecatedDepInfo(depName(dep, version))"
-              :to="packageRoute(depName(dep, version), getDeprecatedDepInfo(depName(dep, version))!.version)"
+              :to="
+                packageRoute(
+                  depName(dep, version),
+                  getDeprecatedDepInfo(depName(dep, version))!.version,
+                )
+              "
               class="shrink-0 text-purple-700 dark:text-purple-500"
               :title="getDeprecatedDepInfo(depName(dep, version))!.message"
               classicon="i-lucide:octagon-alert"
@@ -237,7 +256,11 @@ const numberFormatter = useNumberFormatter()
           class="flex items-center justify-between py-1 text-sm gap-1 min-w-0"
         >
           <div class="flex items-center gap-2 min-w-0 flex-1">
-            <LinkBase :to="packageRoute(depName(peer.name, peer.version))" class="block max-w-[70%] break-words" dir="ltr">
+            <LinkBase
+              :to="packageRoute(depName(peer.name, peer.version))"
+              class="block max-w-[70%] break-words"
+              dir="ltr"
+            >
               {{ peer.name }}
             </LinkBase>
             <TagStatic v-if="peer.optional" :title="$t('package.dependencies.optional')">
@@ -298,7 +321,11 @@ const numberFormatter = useNumberFormatter()
           :key="dep"
           class="flex items-baseline justify-between py-1 text-sm gap-2"
         >
-          <LinkBase :to="packageRoute(depName(dep, version))" class="block max-w-[80%] break-words" dir="ltr">
+          <LinkBase
+            :to="packageRoute(depName(dep, version))"
+            class="block max-w-[80%] break-words"
+            dir="ltr"
+          >
             {{ dep }}
           </LinkBase>
           <LinkBase
