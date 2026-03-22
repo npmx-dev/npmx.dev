@@ -16,8 +16,12 @@ const props = defineProps<{
 
 const buttonCopyText = computed(() => props.copyText || $t('common.copy'))
 const buttonCopiedText = computed(() => props.copiedText || $t('common.copied'))
-const buttonAriaLabelCopy = computed(() => props.ariaLabelCopy || props.copyText || $t('common.copy'))
-const buttonAriaLabelCopied = computed(() => props.ariaLabelCopied || props.copiedText || $t('common.copied'))
+const buttonAriaLabelCopy = computed(
+  () => props.ariaLabelCopy || props.copyText || $t('common.copy'),
+)
+const buttonAriaLabelCopied = computed(
+  () => props.ariaLabelCopied || props.copiedText || $t('common.copied'),
+)
 
 const emit = defineEmits<{
   click: []
