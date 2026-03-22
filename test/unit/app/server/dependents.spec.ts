@@ -79,8 +79,8 @@ describe('dependents API response mapping', () => {
     ]
 
     const result = mapNpmSearchResponse(objects, 1, 0, 20)
-    expect(result.packages[0].description).toBeNull()
-    expect(result.packages[0].date).toBeNull()
+    expect(result.packages[0]!.description).toBeNull()
+    expect(result.packages[0]!.date).toBeNull()
   })
 
   it('returns empty packages array when objects is empty', () => {
