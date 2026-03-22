@@ -426,7 +426,7 @@ const config = computed<VueUiSparklineConfig>(() => {
               <!-- Keyboard navigation hint -->
               <template #hint="{ isVisible }">
                 <p v-if="isVisible" class="text-accent text-xs text-center mt-2" aria-hidden="true">
-                  {{ $t('compare.packages.line_chart_nav_hint') }}
+                  {{ $t('package.downloads.sparkline_nav_hint') }}
                 </p>
               </template>
 
