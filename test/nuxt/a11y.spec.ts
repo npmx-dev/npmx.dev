@@ -2247,6 +2247,59 @@ describe('component accessibility audits', () => {
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
+
+    it('title button has aria-expanded=true when open and false after click', async () => {
+      const component = await mountSuspended(CollapsibleSection, {
+        props: { title: 'Dependencies', id: 'deps-section' },
+        slots: { default: '<p>Some content</p>' },
+      })
+
+      // Find the title button (second button in the heading — the one with visible text)
+      const buttons = component.findAll('button')
+      const titleButton = buttons.find(b => b.text().includes('Dependencies'))
+      expect(titleButton).toBeDefined()
+
+      // Initially open
+      expect(titleButton!.attributes('aria-expanded')).toBe('true')
+
+      // After click it should be collapsed
+      await titleButton!.trigger('click')
+      expect(titleButton!.attributes('aria-expanded')).toBe('false')
+
+      // Click again to re-expand
+      await titleButton!.trigger('click')
+      expect(titleButton!.attributes('aria-expanded')).toBe('true')
+    })
+
+    it('title button has aria-controls pointing to the content element', async () => {
+      const component = await mountSuspended(CollapsibleSection, {
+        props: { title: 'Section Title', id: 'ctrl-test' },
+        slots: { default: '<p>Controlled content</p>' },
+      })
+
+      const buttons = component.findAll('button')
+      const titleButton = buttons.find(b => b.text().includes('Section Title'))
+      expect(titleButton).toBeDefined()
+
+      const controls = titleButton!.attributes('aria-controls')
+      expect(controls).toBe('ctrl-test-collapsible-content')
+
+      // The referenced content element should exist
+      expect(component.find(`#${controls}`).exists()).toBe(true)
+    })
+
+    it('should have no accessibility violations with a subtitle', async () => {
+      const component = await mountSuspended(CollapsibleSection, {
+        props: {
+          title: 'Section Title',
+          subtitle: 'A subtitle that describes the section',
+          id: 'subtitle-section',
+        },
+        slots: { default: '<p>Content</p>' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
   })
 
   describe('TerminalExecute', () => {
