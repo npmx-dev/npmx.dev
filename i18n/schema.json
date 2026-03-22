@@ -625,6 +625,12 @@
         "scroll_to_top": {
           "type": "string"
         },
+        "previous": {
+          "type": "string"
+        },
+        "next": {
+          "type": "string"
+        },
         "cancel": {
           "type": "string"
         },
@@ -959,6 +965,9 @@
               "type": "string"
             },
             "compare_this_package": {
+              "type": "string"
+            },
+            "dependents": {
               "type": "string"
             }
           },
@@ -1397,6 +1406,27 @@
               "type": "string"
             },
             "show_all": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "dependents": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "subtitle": {
+              "type": "string"
+            },
+            "count": {
+              "type": "string"
+            },
+            "error": {
+              "type": "string"
+            },
+            "none": {
               "type": "string"
             }
           },
@@ -2492,6 +2522,9 @@
           "type": "string"
         },
         "back_to_package": {
+          "type": "string"
+        },
+        "toggle_word_wrap": {
           "type": "string"
         },
         "table": {
