@@ -19,7 +19,8 @@ interface PlaygroundProvider {
   id: string // Provider identifier
   name: string
   domains: string[] // Associated domains
-  paths?: string[]
+  paths?: string[] // pathname must start with one of these
+  pathContains?: string[] // pathname must contain one of these
   icon?: string // Provider icon name
 }
 
@@ -44,6 +45,8 @@ const PLAYGROUND_PROVIDERS: PlaygroundProvider[] = [
     name: 'CodePen',
     domains: ['codepen.io'],
     icon: 'codepen',
+    // Only match actual pen URLs like /username/pen/id (not profile/collection pages)
+    pathContains: ['/pen/', '/full/', '/details/'],
   },
   {
     id: 'jsfiddle',
@@ -128,7 +131,8 @@ function matchPlaygroundProvider(url: string): PlaygroundProvider | null {
       for (const domain of provider.domains) {
         if (
           (hostname === domain || hostname.endsWith(`.${domain}`)) &&
-          (!provider.paths || provider.paths.some(path => parsed.pathname.startsWith(path)))
+          (!provider.paths || provider.paths.some(path => parsed.pathname.startsWith(path))) &&
+          (!provider.pathContains || provider.pathContains.some(seg => parsed.pathname.includes(seg)))
         ) {
           return provider
         }
