@@ -70,8 +70,8 @@ async function downloadCustomPng() {
     ctx.scale(scale, scale)
     ctx.drawImage(img, 0, 0, 602, 170)
 
-    await new Promise<void>((resolve) => {
-      canvas.toBlob((pngBlob) => {
+    await new Promise<void>(resolve => {
+      canvas.toBlob(pngBlob => {
         if (pngBlob) downloadBlob(pngBlob, `npmx-logo-${activeAccentId.value}.png`)
         URL.revokeObjectURL(url)
         resolve()
