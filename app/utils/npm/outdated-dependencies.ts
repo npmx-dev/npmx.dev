@@ -26,7 +26,7 @@ export function constraintIncludesPrerelease(constraint: string): boolean {
 }
 
 /** Parsed result of an npm dependency value */
-export interface ParsedDepValue {
+interface ParsedDepValue {
   /** The real package name (different from key only for aliases) */
   name: string | null
   /** The semver range or version, null for non-resolvable values (file:, git, etc.) */
