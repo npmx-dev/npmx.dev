@@ -2751,18 +2751,6 @@
             },
             "name": {
               "type": "string"
-            },
-            "quality": {
-              "type": "string"
-            },
-            "popularity": {
-              "type": "string"
-            },
-            "maintenance": {
-              "type": "string"
-            },
-            "score": {
-              "type": "string"
             }
           },
           "additionalProperties": false
