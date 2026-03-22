@@ -1878,6 +1878,13 @@ watch(selectedMetric, value => {
             @zoomEnd="setIsZoom"
             @zoomReset="isZoomed = false"
           >
+            <!-- Keyboard navigation hint -->
+            <template #hint="{ isVisible }">
+              <p v-if="isVisible" class="text-accent text-xs -mt-6 text-center" aria-hidden="true">
+                {{ $t('compare.packages.line_chart_nav_hint') }}
+              </p>
+            </template>
+
             <!-- Injecting custom svg elements -->
             <template #svg="{ svg }">
               <!-- Estimation lines for monthly & yearly granularities when the end date induces a downwards trend -->
@@ -2129,6 +2136,19 @@ watch(selectedMetric, value => {
     </div>
   </div>
 </template>
+
+<style scoped>
+:deep(.vue-data-ui-component svg:focus-visible) {
+    outline: 1px solid var(--accent-color) !important;
+    border-radius: 0.1rem;
+    outline-offset: 0;
+}
+:deep(.vue-ui-user-options-button:focus-visible),
+:deep(.vue-ui-user-options :first-child:focus-visible) {
+  outline: 0.1rem solid var(--accent-color) !important;
+  border-radius: 0.25rem;
+}
+</style>
 
 <style>
 .vue-ui-pen-and-paper-actions {

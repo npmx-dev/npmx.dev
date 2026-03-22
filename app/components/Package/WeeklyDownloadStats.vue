@@ -416,6 +416,13 @@ const config = computed<VueUiSparklineConfig>(() => {
         <template v-if="isLoadingWeeklyDownloads || hasWeeklyDownloads">
           <ClientOnly>
             <VueUiSparkline class="w-full max-w-xs" :dataset :config>
+              <!-- Keyboard navigation hint -->
+              <template #hint="{ isVisible }">
+                <p v-if="isVisible" class="text-accent text-xs text-center mt-2" aria-hidden="true">
+                  {{ $t('compare.packages.line_chart_nav_hint') }}
+                </p>
+              </template>
+
               <template #skeleton>
                 <!-- This empty div overrides the default built-in scanning animation on load -->
                 <div />
@@ -492,6 +499,12 @@ const config = computed<VueUiSparklineConfig>(() => {
 .opacity-enter-to,
 .opacity-leave-from {
   opacity: 1;
+}
+
+:deep(.vue-data-ui-component svg:focus-visible) {
+    outline: 0.1rem solid var(--accent-color) !important;
+    border-radius: 0.1rem;
+    outline-offset: 3px;
 }
 </style>
 
