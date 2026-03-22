@@ -14,7 +14,7 @@ export const NPM_REGISTRY_URL = 'https://registry.npmjs.org/'
 
 function createNpmEnv(overrides: Record<string, string> = {}): Record<string, string> {
   return {
-    ...(process.env as Record<string, string>),
+    ...process.env,
     ...overrides,
     FORCE_COLOR: '0',
     npm_config_registry: NPM_REGISTRY_URL,
