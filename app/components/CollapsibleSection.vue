@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { shallowRef, computed } from 'vue'
-import { LinkBase } from '#components'
 
 interface Props {
   title: string
