@@ -11,10 +11,7 @@ import { describe, expect, it } from 'vitest'
 
 const EAGER_LOAD_SIZE = { algolia: 500, npm: 500 } as const
 
-function paginationTotal(
-  effectiveTotal: number,
-  provider: keyof typeof EAGER_LOAD_SIZE,
-): number {
+function paginationTotal(effectiveTotal: number, provider: keyof typeof EAGER_LOAD_SIZE): number {
   const cap = EAGER_LOAD_SIZE[provider]
   return Math.min(effectiveTotal, cap)
 }
