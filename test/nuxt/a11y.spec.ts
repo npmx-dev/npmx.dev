@@ -1164,14 +1164,14 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(CodeHeader, {
         props: {
-          filePath: 'dir1/dir2/sourcefile.js',
+          filePath: 'misc/true.js',
           loading: false,
           isViewingFile: true,
           isBinaryFile: false,
           fileContent: {
             package: 'vite',
             version: '1.0.0',
-            path: 'dir1/dir2/sourcefile.js',
+            path: 'misc/true.js',
             language: 'javascript',
             contentType: 'application/javascript',
             content: 'const x = 1;',
@@ -1180,7 +1180,7 @@ describe('component accessibility audits', () => {
           },
           markdownViewMode: 'preview',
           selectedLines: null,
-          getCodeUrlWithPath: (path = '') => path,
+          getCodeUrlWithPath: (path = '') => `/package-code/vite/v/1.0.0/${path}`,
           packageName: 'vite',
           version: '1.0.0',
         },
