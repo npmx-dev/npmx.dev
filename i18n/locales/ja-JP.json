@@ -588,7 +588,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -768,12 +769,10 @@
   "code": {
     "files_label": "ファイル",
     "no_files": "このディレクトリにファイルはありません",
-    "root": "ルート",
     "lines": "{count} 行",
     "toggle_tree": "ファイルツリーを切り替え",
     "close_tree": "ファイルツリーを閉じる",
     "copy_link": "リンクをコピー",
-    "raw": "RAW",
     "view_raw": "RAWファイルを表示",
     "file_too_large": "ファイルが大きすぎるためプレビューできません",
     "file_size_warning": "{size} は構文強調表示の制限である500KBを超えています",
@@ -1165,6 +1164,7 @@
     "file_size_warning": "{size} は比較制限の250KBを超えています",
     "compare_versions": "diff",
     "compare_versions_title": "最新バージョンと比較",
+    "version_invalid_url_format": {},
     "summary": "要約",
     "deps_count": "依存関係 {count} 件",
     "dependencies": "依存関係",
@@ -1329,5 +1329,9 @@
       "p1": "{app} でアクセシビリティ上のバリアを見つけた場合は、{link} でissueを作成して連絡してください。報告は真剣に受け止め、問題を解決するためにできる限り対応します。",
       "link": "GitHubリポジトリ"
     }
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

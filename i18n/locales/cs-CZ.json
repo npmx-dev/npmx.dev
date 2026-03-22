@@ -586,7 +586,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -766,12 +767,10 @@
   "code": {
     "files_label": "Soubory",
     "no_files": "Žádné soubory v této složce",
-    "root": "kořen",
     "lines": "{count} řádků",
     "toggle_tree": "Přepnout strom souborů",
     "close_tree": "Zavřít strom souborů",
     "copy_link": "Kopírovat odkaz",
-    "raw": "Raw",
     "view_raw": "Zobrazit raw soubor",
     "file_too_large": "Soubor je příliš velký pro náhled",
     "file_size_warning": "{size} překračuje limit 500KB pro zvýraznění syntaxe",
@@ -1163,6 +1162,7 @@
     "file_size_warning": "{size} překračuje limit 250KB pro porovnání",
     "compare_versions": "porovnat",
     "compare_versions_title": "Porovnat s nejnovější verzí",
+    "version_invalid_url_format": {},
     "summary": "Souhrn",
     "deps_count": "{count} závislostí",
     "dependencies": "Závislosti",
@@ -1327,5 +1327,9 @@
       "p1": "Pokud narazíte na překážku v přístupnosti na {app}, dejte nám prosím vědět otevřením problému na našem {link}. Tyto zprávy bereme vážně a uděláme vše pro to, abychom je řešili.",
       "link": "GitHub repozitáři"
     }
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

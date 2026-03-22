@@ -602,7 +602,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -782,12 +783,10 @@
   "code": {
     "files_label": "文件",
     "no_files": "这个目录中没有文件",
-    "root": "根目录",
     "lines": "{count} 行",
     "toggle_tree": "切换文件树",
     "close_tree": "关闭文件树",
     "copy_link": "复制链接",
-    "raw": "原始文件",
     "view_raw": "查看原始文件",
     "file_too_large": "文件过大，无法预览",
     "file_size_warning": "{size} 超出了 500KB 的语法高亮限制",
@@ -1184,6 +1183,7 @@
     "file_size_warning": "{size} 超出了 250KB 的对比限制",
     "compare_versions": "差异",
     "compare_versions_title": "与最新版本对比",
+    "version_invalid_url_format": {},
     "version_selector_title": "版本对比",
     "summary": "摘要",
     "deps_count": "{count} 个依赖",
@@ -1349,6 +1349,9 @@
       "p1": "如果你在 {app} 上遇到无障碍访问问题，请在我们的 {link} 上提交 Issue 反馈给我们。我们会认真对待这些反馈，并尽力解决。",
       "link": "GitHub 仓库"
     }
+  },
+  "translation_status": {
+    "table": {}
   },
   "action_bar": {
     "title": "操作栏",
