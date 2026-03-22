@@ -49,7 +49,7 @@ const distTags = computed(() => versionSummary.value?.distTags ?? {})
 const versionStrings = computed(() => versionSummary.value?.versions ?? [])
 const versionTimes = computed(() => versionSummary.value?.time ?? {})
 
-// ─── Phase 2: full metadata (loaded on first group expand) ────────────────────
+// ─── Phase 2: full metadata (fired automatically after phase 1 completes) ────
 // Fetches deprecated status, provenance, and exact times needed for version rows.
 
 const fullVersionMap = shallowRef<Map<
@@ -98,6 +98,16 @@ const versionGroups = computed(() => {
       label: getVersionGroupLabel(groupKey),
       versions: byKey.get(groupKey)!.sort((a, b) => compare(b, a)),
     }))
+})
+
+const deprecatedGroupKeys = computed(() => {
+  if (!fullVersionMap.value) return new Set<string>()
+  const result = new Set<string>()
+  for (const group of versionGroups.value) {
+    if (group.versions.every(v => !!fullVersionMap.value!.get(v)?.deprecated))
+      result.add(group.groupKey)
+  }
+  return result
 })
 
 function toggleGroup(groupKey: string) {
@@ -272,8 +282,13 @@ const flatItems = computed<FlatItem[]>(() => {
               >{{ latestTagRow!.version }}</LinkBase
             >
           </div>
-          <!-- Right: date + provenance -->
+          <!-- Right: deprecated + date + provenance -->
           <div class="flex flex-col items-end gap-1.5 shrink-0 relative z-10">
+            <span
+              v-if="fullVersionMap?.get(latestTagRow!.version)?.deprecated"
+              class="text-3xs font-medium text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded"
+              :title="fullVersionMap!.get(latestTagRow!.version)!.deprecated"
+            >deprecated</span>
             <ProvenanceBadge
               v-if="fullVersionMap?.get(latestTagRow!.version)?.hasProvenance"
               :package-name="packageName"
@@ -323,8 +338,13 @@ const flatItems = computed<FlatItem[]>(() => {
               {{ row.version }}
             </LinkBase>
 
-            <!-- Date + Provenance -->
+            <!-- Deprecated + Date + Provenance -->
             <div class="flex items-center gap-2 shrink-0 relative z-10">
+              <span
+                v-if="fullVersionMap?.get(row.version)?.deprecated"
+                class="text-3xs font-medium text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded"
+                :title="fullVersionMap!.get(row.version)!.deprecated"
+              >deprecated</span>
               <DateTime
                 v-if="getVersionTime(row.version)"
                 :datetime="getVersionTime(row.version)!"
@@ -399,6 +419,10 @@ const flatItems = computed<FlatItem[]>(() => {
                       </Transition>
                     </span>
                     <span class="text-sm font-medium">{{ item.label }}</span>
+                    <span
+                      v-if="deprecatedGroupKeys.has(item.groupKey)"
+                      class="text-3xs font-medium text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded"
+                    >deprecated</span>
                     <span class="text-xs text-fg-subtle">({{ item.versions.length }})</span>
                     <span class="ms-auto flex items-center gap-3 shrink-0">
                       <span class="text-xs text-fg-muted" :title="item.versions[0]" dir="ltr">{{
