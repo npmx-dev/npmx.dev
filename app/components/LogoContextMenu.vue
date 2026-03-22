@@ -34,13 +34,10 @@ function close() {
 const { copy, copied } = useClipboard({ copiedDuring: 2000 })
 
 async function copySvg() {
-  try {
-    const res = await fetch('/logo.svg')
-    const svg = await res.text()
-    await copy(svg)
-  } finally {
-    close()
-  }
+  const res = await fetch('/logo.svg')
+  const svg = await res.text()
+  await copy(svg)
+  setTimeout(close, 800)
 }
 
 function goToBrand() {
