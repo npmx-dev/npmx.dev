@@ -108,11 +108,27 @@ function prefetchReadmeMarkdown() {
 }
 
 async function copyReadmeHandler() {
-  await fetchReadmeMarkdown()
+  // Safari requires navigator.clipboard.write() to be called synchronously within
+  // the user gesture, but accepts a Promise inside ClipboardItem.
+  // This pattern works in Safari 13.1+, Chrome, and Firefox.
+  if (typeof ClipboardItem !== 'undefined' && navigator.clipboard?.write) {
+    const blobPromise = (async () => {
+      await fetchReadmeMarkdown()
+      const markdown = readmeMarkdownData.value?.markdown ?? ''
+      return new Blob([markdown], { type: 'text/plain' })
+    })()
+    try {
+      await navigator.clipboard.write([new ClipboardItem({ 'text/plain': blobPromise })])
+      return
+    } catch {
+      // Fall through to legacy approach
+    }
+  }
 
+  // Legacy fallback (non-Safari, or older browsers)
+  await fetchReadmeMarkdown()
   const markdown = readmeMarkdownData.value?.markdown
   if (!markdown) return
-
   await copyReadme(markdown)
 }
 
@@ -303,6 +319,17 @@ const latestVersion = computed(() => {
   const latestTag = pkg.value['dist-tags']?.latest
   if (!latestTag) return null
   return pkg.value.versions[latestTag] ?? null
+})
+
+// Detect license changes between current version and latest
+const licenseChanged = computed(() => {
+  const currentLicense = displayVersion.value?.license
+  const latestLicense = latestVersion.value?.license ?? pkg.value?.license
+  if (!currentLicense || !latestLicense) return false
+  // Normalize: compare string representations
+  const normalize = (l: unknown): string =>
+    typeof l === 'string' ? l : (l as { type?: string })?.type ?? ''
+  return normalize(currentLicense) !== normalize(latestLicense)
 })
 
 const deprecationNotice = computed(() => {
@@ -582,9 +609,19 @@ const showSkeleton = shallowRef(false)
               <dt class="text-xs text-fg-subtle uppercase tracking-wider">
                 {{ $t('package.stats.license') }}
               </dt>
-              <dd class="font-mono text-sm text-fg">
-                <LicenseDisplay v-if="pkg.license" :license="pkg.license" />
+              <dd class="font-mono text-sm text-fg flex items-center gap-2 flex-wrap">
+                <LicenseDisplay v-if="displayVersion?.license ?? pkg.license" :license="displayVersion?.license ?? pkg.license" />
                 <span v-else>{{ $t('package.license.none') }}</span>
+                <TooltipApp
+                  v-if="licenseChanged"
+                  :text="$t('package.license.changed', { latest: latestVersion?.license ?? pkg.license })"
+                  position="bottom"
+                >
+                  <span class="inline-flex items-center gap-1 px-1.5 py-0.5 text-2xs font-sans rounded bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30 cursor-help">
+                    <span class="i-lucide:triangle-alert w-3 h-3" aria-hidden="true" />
+                    {{ $t('package.license.changed_badge') }}
+                  </span>
+                </TooltipApp>
               </dd>
             </div>
 
@@ -959,7 +996,7 @@ const showSkeleton = shallowRef(false)
 
             <!-- Dependencies -->
             <PackageDependencies
-              v-if="hasDependencies && resolvedVersion && displayVersion"
+              v-if="resolvedVersion && displayVersion"
               :package-name="pkg.name"
               :version="resolvedVersion"
               :dependencies="displayVersion.dependencies"
@@ -1107,7 +1144,7 @@ const showSkeleton = shallowRef(false)
       'install sidebar'
       'vulns   sidebar'
       'readme  sidebar';
-    grid-template-rows: auto auto auto auto 1fr;
+    grid-template-rows: auto auto auto auto;
   }
 }
 
@@ -1159,6 +1196,7 @@ const showSkeleton = shallowRef(false)
 
 .areaSidebar {
   grid-area: sidebar;
+  align-self: start;
 }
 
 @media (max-width: 639.9px) {
