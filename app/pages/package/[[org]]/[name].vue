@@ -321,12 +321,11 @@ const latestVersion = computed(() => {
   return pkg.value.versions[latestTag] ?? null
 })
 
-// Detect license changes between current version and latest
+// SlimVersion does not carry license, so we compare against the package-level license
 const licenseChanged = computed(() => {
   const currentLicense = displayVersion.value?.license
-  const latestLicense = latestVersion.value?.license ?? pkg.value?.license
+  const latestLicense = pkg.value?.license
   if (!currentLicense || !latestLicense) return false
-  // Normalize: compare string representations
   const normalize = (l: unknown): string =>
     typeof l === 'string' ? l : (l as { type?: string })?.type ?? ''
   return normalize(currentLicense) !== normalize(latestLicense)
@@ -392,18 +391,6 @@ const sizeTooltip = computed(() => {
       }),
   ]
   return chunks.filter(Boolean).join('\n')
-})
-
-const hasDependencies = computed(() => {
-  if (!displayVersion.value) return false
-  const deps = displayVersion.value.dependencies
-  const peerDeps = displayVersion.value.peerDependencies
-  const optionalDeps = displayVersion.value.optionalDependencies
-  return (
-    (deps && Object.keys(deps).length > 0) ||
-    (peerDeps && Object.keys(peerDeps).length > 0) ||
-    (optionalDeps && Object.keys(optionalDeps).length > 0)
-  )
 })
 
 // Vulnerability count for the stats banner
@@ -610,11 +597,11 @@ const showSkeleton = shallowRef(false)
                 {{ $t('package.stats.license') }}
               </dt>
               <dd class="font-mono text-sm text-fg flex items-center gap-2 flex-wrap">
-                <LicenseDisplay v-if="displayVersion?.license ?? pkg.license" :license="displayVersion?.license ?? pkg.license" />
+                <LicenseDisplay v-if="displayVersion?.license ?? pkg.license" :license="(displayVersion?.license ?? pkg.license) as string" />
                 <span v-else>{{ $t('package.license.none') }}</span>
                 <TooltipApp
                   v-if="licenseChanged"
-                  :text="$t('package.license.changed', { latest: latestVersion?.license ?? pkg.license })"
+                  :text="$t('package.license.changed', { latest: pkg.license })"
                   position="bottom"
                 >
                   <span class="inline-flex items-center gap-1 px-1.5 py-0.5 text-2xs font-sans rounded bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30 cursor-help">
