@@ -96,10 +96,7 @@ const {
 )
 
 //copy README file as Markdown
-const { copied: copiedReadme, copy: copyReadme } = useClipboard({
-  source: () => '',
-  copiedDuring: 2000,
-})
+const copiedReadme = shallowRef(false)
 
 function prefetchReadmeMarkdown() {
   if (readmeMarkdownStatus.value === 'idle') {
