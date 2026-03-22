@@ -163,7 +163,9 @@ const chartConfig = computed<VueUiXyConfig>(() => {
     theme: isDarkMode.value ? 'dark' : '',
     a11y: {
       translations: {
-        keyboardNavigation: $t('package.trends.chart_assistive_text.keyboard_navigation_horizontal'),
+        keyboardNavigation: $t(
+          'package.trends.chart_assistive_text.keyboard_navigation_horizontal',
+        ),
         tableAvailable: $t('package.trends.chart_assistive_text.table_available'),
         tableCaption: $t('package.trends.chart_assistive_text.table_caption'),
       },
