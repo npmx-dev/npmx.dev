@@ -221,7 +221,7 @@ const flatItems = computed<FlatItem[]>(() => {
             :aria-invalid="isInvalidRange ? 'true' : undefined"
             :aria-describedby="isInvalidRange ? 'version-filter-error' : undefined"
             autocomplete="off"
-            size="small"
+            size="sm"
             class="w-36 sm:w-64"
             :class="isInvalidRange ? 'pe-7 !border-red-500' : ''"
           />
@@ -288,7 +288,8 @@ const flatItems = computed<FlatItem[]>(() => {
               v-if="fullVersionMap?.get(latestTagRow!.version)?.deprecated"
               class="text-3xs font-medium text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded"
               :title="fullVersionMap!.get(latestTagRow!.version)!.deprecated"
-            >deprecated</span>
+              >deprecated</span
+            >
             <ProvenanceBadge
               v-if="fullVersionMap?.get(latestTagRow!.version)?.hasProvenance"
               :package-name="packageName"
@@ -344,7 +345,8 @@ const flatItems = computed<FlatItem[]>(() => {
                 v-if="fullVersionMap?.get(row.version)?.deprecated"
                 class="text-3xs font-medium text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded"
                 :title="fullVersionMap!.get(row.version)!.deprecated"
-              >deprecated</span>
+                >deprecated</span
+              >
               <DateTime
                 v-if="getVersionTime(row.version)"
                 :datetime="getVersionTime(row.version)!"
@@ -422,7 +424,8 @@ const flatItems = computed<FlatItem[]>(() => {
                     <span
                       v-if="deprecatedGroupKeys.has(item.groupKey)"
                       class="text-3xs font-medium text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded"
-                    >deprecated</span>
+                      >deprecated</span
+                    >
                     <span class="text-xs text-fg-subtle">({{ item.versions.length }})</span>
                     <span class="ms-auto flex items-center gap-3 shrink-0">
                       <span class="text-xs text-fg-muted" :title="item.versions[0]" dir="ltr">{{
