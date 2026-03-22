@@ -171,14 +171,8 @@ useSeoMeta({
           >
             {{ $t('common.previous') }}
           </ButtonBase>
-          <span class="text-sm text-fg-muted font-mono">
-            {{ page + 1 }} / {{ totalPages }}
-          </span>
-          <ButtonBase
-            variant="secondary"
-            :disabled="page >= totalPages - 1"
-            @click="nextPage"
-          >
+          <span class="text-sm text-fg-muted font-mono"> {{ page + 1 }} / {{ totalPages }} </span>
+          <ButtonBase variant="secondary" :disabled="page >= totalPages - 1" @click="nextPage">
             {{ $t('common.next') }}
             <span class="i-lucide:chevron-right w-4 h-4" aria-hidden="true" />
           </ButtonBase>

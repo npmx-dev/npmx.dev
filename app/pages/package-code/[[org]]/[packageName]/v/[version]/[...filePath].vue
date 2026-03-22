@@ -421,7 +421,11 @@ defineOgImageComponent('Default', {
             <button
               type="button"
               class="px-2 py-1 font-mono text-xs border rounded transition-colors inline-flex items-center gap-1"
-              :class="wordWrap ? 'bg-accent/10 text-accent border-accent/30' : 'text-fg-muted bg-bg-subtle border-border hover:text-fg hover:border-border-hover'"
+              :class="
+                wordWrap
+                  ? 'bg-accent/10 text-accent border-accent/30'
+                  : 'text-fg-muted bg-bg-subtle border-border hover:text-fg hover:border-border-hover'
+              "
               :aria-pressed="wordWrap"
               :title="$t('code.toggle_word_wrap')"
               @click="wordWrap = !wordWrap"
