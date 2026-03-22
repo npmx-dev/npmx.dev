@@ -207,6 +207,8 @@
       "members": "members"
     },
     "scroll_to_top": "Scroll to top",
+    "previous": "Previous",
+    "next": "Next",
     "cancel": "Cancel",
     "save": "Save",
     "edit": "Edit",
@@ -318,7 +320,8 @@
       "docs": "docs",
       "fund": "fund",
       "compare": "compare",
-      "compare_this_package": "compare this package"
+      "compare_this_package": "compare this package",
+      "dependents": "dependents"
     },
     "likes": {
       "like": "Like this package",
@@ -634,6 +637,13 @@
     "download": {
       "button": "Download",
       "tarball": "Download Tarball as .tar.gz"
+    },
+    "dependents": {
+      "title": "Dependents",
+      "subtitle": "Packages that depend on {name}",
+      "count": "{count} dependent | {count} dependents",
+      "none": "No packages found that depend on {name}",
+      "error": "Failed to load dependents"
     }
   },
   "connector": {

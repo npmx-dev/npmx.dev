@@ -1411,27 +1411,6 @@
           },
           "additionalProperties": false
         },
-        "dependents": {
-          "type": "object",
-          "properties": {
-            "title": {
-              "type": "string"
-            },
-            "subtitle": {
-              "type": "string"
-            },
-            "count": {
-              "type": "string"
-            },
-            "error": {
-              "type": "string"
-            },
-            "none": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false
-        },
         "maintainers": {
           "type": "object",
           "properties": {
@@ -1934,6 +1913,27 @@
               "type": "string"
             },
             "tarball": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "dependents": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "subtitle": {
+              "type": "string"
+            },
+            "count": {
+              "type": "string"
+            },
+            "none": {
+              "type": "string"
+            },
+            "error": {
               "type": "string"
             }
           },
@@ -2522,9 +2522,6 @@
           "type": "string"
         },
         "back_to_package": {
-          "type": "string"
-        },
-        "toggle_word_wrap": {
           "type": "string"
         },
         "table": {
