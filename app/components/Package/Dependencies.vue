@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { SEVERITY_TEXT_COLORS, getHighestSeverity } from '#shared/utils/severity'
 import { getOutdatedTooltip, getVersionClass } from '~/utils/npm/outdated-dependencies'
+import { parseNpmAlias } from '~/utils/npm/alias'
 
 const { t } = useI18n()
 
@@ -91,18 +92,6 @@ function getDepVersionClass(dep: string) {
 
 const numberFormatter = useNumberFormatter()
 
-/**
- * Parses npm alias syntax: "npm:real-pkg@^1.0.0"
- * Returns { name, range } for the real package, or null if not an alias.
- */
-function parseNpmAlias(version: string): { name: string; range: string } | null {
-  if (!version.startsWith('npm:')) return null
-  const spec = version.slice(4) // strip 'npm:'
-  // Handle scoped packages like @scope/pkg@1.0.0 — find @ after position 0
-  const atIdx = spec.startsWith('@') ? spec.indexOf('@', 1) : spec.indexOf('@')
-  if (atIdx === -1) return { name: spec, range: '' }
-  return { name: spec.slice(0, atIdx), range: spec.slice(atIdx + 1) }
-}
 </script>
 
 <template>
