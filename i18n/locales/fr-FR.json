@@ -449,6 +449,12 @@
       "show_less": "(afficher moins)"
     },
     "trends": {
+      "chart_sr": {
+        "keyboard_navigation_horizontal": "Utilisez les touches fléchées gauche et droite pour parcourir les points de données.",
+        "keyboard_navigation_vertical": "Utilisez les touches fléchées haut et bas pour parcourir les points de données.",
+        "table_available": "Un tableau de données pour ce graphique est disponible ci-dessous.",
+        "table_caption": "Tableau de données du graphique"
+      },
       "granularity": "Granularité",
       "granularity_daily": "Par Jour",
       "granularity_weekly": "Par Semaine",

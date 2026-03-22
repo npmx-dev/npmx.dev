@@ -1450,6 +1450,23 @@
         "trends": {
           "type": "object",
           "properties": {
+            "chart_sr": {
+              "type": "object",
+              "properties": {
+                "keyboard_navigation_horizontal": {
+                  "type": "string"
+                },
+                "keyboard_navigation_vertical": {
+                  "type": "string"
+                },
+                "table_available": {
+                  "type": "string"
+                },
+                "table_caption": {
+                  "type": "string"
+                }
+              }
+            },
             "granularity": {
               "type": "string"
             },
