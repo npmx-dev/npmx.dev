@@ -591,7 +591,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -771,12 +772,10 @@
   "code": {
     "files_label": "Berkas",
     "no_files": "Tidak ada berkas di direktori ini",
-    "root": "root",
     "lines": "{count} baris",
     "toggle_tree": "Ganti pohon berkas",
     "close_tree": "Tutup pohon berkas",
     "copy_link": "Salin tautan",
-    "raw": "Raw",
     "view_raw": "Lihat berkas mentah",
     "file_too_large": "Berkas terlalu besar untuk pratinjau",
     "file_size_warning": "{size} melebihi batas 500KB untuk penyorotan sintaksis",
@@ -1170,6 +1169,7 @@
     "file_size_warning": "{size} melebihi batas 250KB untuk perbandingan",
     "compare_versions": "perbarui",
     "compare_versions_title": "Bandingkan dengan versi terbaru",
+    "version_invalid_url_format": {},
     "version_selector_title": "Bandingkan dengan versi",
     "summary": "Ringkasan",
     "deps_count": "{count} ketergantungan",
@@ -1335,5 +1335,9 @@
       "p1": "Jika kamu menemukan kendala terkait fitur aksesibilitas bagi penyandang disabilitas atau masalah tampilan di platform {app}, silakan laporkan masalahnya di {link}. Setiap laporan yang masuk akan kami tindak lanjuti dengan prioritas tinggi agar layanan kita lebih baik bagi seluruh pengguna.",
       "link": "Repositori Pengembangan Isu Github"
     }
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

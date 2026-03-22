@@ -574,7 +574,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -754,12 +755,10 @@
   "code": {
     "files_label": "Dateien",
     "no_files": "Keine Dateien in diesem Verzeichnis",
-    "root": "Wurzel",
     "lines": "{count} Zeile | {count} Zeilen",
     "toggle_tree": "Dateibaum umschalten",
     "close_tree": "Dateibaum schließen",
     "copy_link": "Link kopieren",
-    "raw": "Roh",
     "view_raw": "Rohdatei anzeigen",
     "file_too_large": "Datei zu groß für Vorschau",
     "file_size_warning": "{size} überschreitet das 500KB-Limit für Syntax-Highlighting",
@@ -1149,6 +1148,7 @@
     "file_size_warning": "{size} überschreitet das Limit für die Diff-Anzeige",
     "compare_versions": "Diff",
     "compare_versions_title": "Mit neuester Version vergleichen",
+    "version_invalid_url_format": {},
     "summary": "Zusammenfassung",
     "deps_count": "{count} Abh.",
     "dependencies": "Abhängigkeiten",
@@ -1313,5 +1313,9 @@
       "p1": "Wenn du bei {app} auf eine Barriere stößt, sag uns bitte Bescheid, indem du ein Ticket in unserem {link} eröffnest. Wir nehmen diese Meldungen ernst und werden unser Bestes tun, um sie zu beheben.",
       "link": "GitHub-Repository"
     }
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

@@ -76,6 +76,10 @@
     "links": "Link",
     "tap_to_search": "Tocca per cercare"
   },
+  "blog": {
+    "author": {},
+    "atproto": {}
+  },
   "settings": {
     "title": "impostazioni",
     "tagline": "personalizza la tua esperienza npmx",
@@ -122,6 +126,7 @@
     "edit_on_github": "Modifica su GitHub",
     "view_guide": "Guida alla traduzione"
   },
+  "error": {},
   "common": {
     "loading": "Caricando...",
     "loading_more": "Caricando altri...",
@@ -452,7 +457,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -628,12 +634,10 @@
   "code": {
     "files_label": "File",
     "no_files": "Nessun file in questa directory",
-    "root": "root",
     "lines": "{count} riga | {count} righe",
     "toggle_tree": "Attiva/disattiva albero dei file",
     "close_tree": "Chiudi albero dei file",
     "copy_link": "Copia link",
-    "raw": "Raw",
     "view_raw": "Visualizza file raw",
     "file_too_large": "File troppo grande per visualizzare l'anteprima",
     "file_size_warning": "{size} supera il limite di 500 KB per l'evidenziatore di sintassi",
@@ -825,6 +829,7 @@
         "description": "Chatta, fai domande e condividi idee.",
         "cta": "Unisciti a Discord"
       },
+      "builders": {},
       "follow": {
         "title": "Rimani aggiornato",
         "description": "Scopri le ultime novità su npmx.",
@@ -996,8 +1001,14 @@
       },
       "trends": {}
     },
+    "version_invalid_url_format": {},
     "file_filter_option": {},
     "filter": {}
+  },
+  "pds": {
+    "join": {},
+    "server": {},
+    "community": {}
   },
   "privacy_policy": {
     "title": "Informativa sulla privacy",
@@ -1084,6 +1095,9 @@
     "measures": {},
     "limitations": {},
     "contact": {}
+  },
+  "translation_status": {
+    "table": {}
   },
   "action_bar": {}
 }

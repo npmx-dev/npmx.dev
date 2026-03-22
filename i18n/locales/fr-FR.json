@@ -595,7 +595,8 @@
       "b": "{size} o",
       "kb": "{size} ko",
       "mb": "{size} Mo"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -775,12 +776,10 @@
   "code": {
     "files_label": "Fichiers",
     "no_files": "Aucun fichier dans ce répertoire",
-    "root": "racine",
     "lines": "{count} lignes",
     "toggle_tree": "Basculer l'arborescence",
     "close_tree": "Fermer l'arborescence",
     "copy_link": "Copier le lien",
-    "raw": "Brut",
     "view_raw": "Voir le fichier brut",
     "file_too_large": "Fichier trop volumineux pour l'aperçu",
     "file_size_warning": "{size} dépasse la limite de 500 Ko pour la coloration syntaxique",
@@ -1170,6 +1169,7 @@
     "file_size_warning": "{size} dépasse la limite de 250 Ko pour la comparaison",
     "compare_versions": "diff",
     "compare_versions_title": "Comparer avec la dernière version",
+    "version_invalid_url_format": {},
     "summary": "Résumé",
     "deps_count": "{count} dépendances",
     "dependencies": "Dépendances",
@@ -1334,5 +1334,9 @@
       "p1": "Si vous rencontrez un problème d'accessibilité sur {app}, veuillez nous le faire savoir en ouvrant une issue sur notre {link}. Nous prenons ces rapports au sérieux et ferons de notre mieux pour les régler.",
       "link": "dépôt GitHub"
     }
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

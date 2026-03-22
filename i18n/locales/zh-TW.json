@@ -602,7 +602,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -782,12 +783,10 @@
   "code": {
     "files_label": "檔案",
     "no_files": "此目錄中沒有檔案",
-    "root": "根目錄",
     "lines": "{count} 行",
     "toggle_tree": "切換檔案樹",
     "close_tree": "關閉檔案樹",
     "copy_link": "複製連結",
-    "raw": "原始",
     "view_raw": "檢視原始檔",
     "file_too_large": "檔案太大無法預覽",
     "file_size_warning": "{size} 超過 500KB 的語法高亮限制",
@@ -1183,6 +1182,7 @@
     "file_size_warning": "檔案大小 {size} 超過 250KB，無法比較",
     "compare_versions": "差異",
     "compare_versions_title": "比較最新版本",
+    "version_invalid_url_format": {},
     "version_selector_title": "比較版本",
     "summary": "摘要",
     "deps_count": "{count} 個相依套件",
@@ -1348,6 +1348,9 @@
       "p1": "如果您在 {app} 遇到無障礙障礙，請在我們的 {link} 提交 Issue 告知我們。我們非常重視這些報告，並會盡力解決問題。",
       "link": "GitHub 儲存庫"
     }
+  },
+  "translation_status": {
+    "table": {}
   },
   "action_bar": {
     "title": "操作列",

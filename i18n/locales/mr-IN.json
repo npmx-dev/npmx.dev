@@ -18,6 +18,9 @@
     "social": "सोशल",
     "chat": "चॅट"
   },
+  "shortcuts": {
+    "section": {}
+  },
   "search": {
     "label": "npm पॅकेजेस शोधा",
     "placeholder": "पॅकेजेस शोधा...",
@@ -52,6 +55,10 @@
     "links": "लिंक",
     "tap_to_search": "शोधण्यासाठी टॅप करा"
   },
+  "blog": {
+    "author": {},
+    "atproto": {}
+  },
   "settings": {
     "title": "सेटिंग्ज",
     "tagline": "तुमचा npmx अनुभव सानुकूलित करा",
@@ -61,6 +68,7 @@
       "display": "प्रदर्शन",
       "language": "भाषा"
     },
+    "data_source": {},
     "relative_dates": "सापेक्ष तारखा",
     "include_types": "स्थापनेत {'@'}types समाविष्ट करा",
     "include_types_description": "अनटाइप केलेल्या पॅकेजसाठी स्थापना आदेशात {'@'}types पॅकेज जोडा",
@@ -89,6 +97,7 @@
     "edit_on_github": "GitHub वर संपादित करा",
     "view_guide": "भाषांतर मार्गदर्शक"
   },
+  "error": {},
   "common": {
     "loading": "लोड करत आहे...",
     "loading_more": "अधिक लोड करत आहे...",
@@ -114,6 +123,9 @@
       "npm": "npm वर पहा"
     }
   },
+  "profile": {
+    "invite": {}
+  },
   "package": {
     "not_found": "पॅकेज सापडले नाही",
     "not_found_message": "पॅकेज सापडले नाही.",
@@ -126,6 +138,7 @@
       "version": "ही आवृत्ती नापसंत केली गेली आहे.",
       "no_reason": "कोणतेही कारण प्रदान केलेले नाही"
     },
+    "size_increase": {},
     "replacement": {
       "title": "तुम्हाला या निर्भरतेची गरज नसू शकते.",
       "native": "हे {replacement} सह बदलले जाऊ शकते, Node {nodeVersion} पासून उपलब्ध आहे.",
@@ -201,14 +214,21 @@
       "callout": {}
     },
     "provenance_section": {},
+    "security_downgrade": {},
     "keywords_title": "कीवर्ड",
     "compatibility": "सुसंगतता",
     "card": {},
-    "versions": {},
+    "versions": {
+      "copy_alt": {}
+    },
     "dependencies": {},
     "peer_dependencies": {},
     "optional_dependencies": {},
     "maintainers": {},
+    "trends": {
+      "items": {},
+      "copy_alt": {}
+    },
     "downloads": {},
     "install_scripts": {},
     "playgrounds": {},
@@ -223,7 +243,9 @@
     },
     "list": {},
     "skeleton": {},
-    "sort": {}
+    "sort": {},
+    "size": {},
+    "download": {}
   },
   "connector": {
     "modal": {}
@@ -249,7 +271,6 @@
   "code": {
     "no_files": "कोणत्याही फाइल्स उपलब्ध नाहीत",
     "lines": "{count} ओळी",
-    "raw": "कच्चा",
     "table": {},
     "markdown_view_mode": {}
   },
@@ -275,10 +296,14 @@
     "what_we_are_not": {
       "words": {}
     },
+    "sponsors": {},
+    "oss_partners": {},
+    "team": {},
     "contributors": {},
     "get_involved": {
       "contribute": {},
       "community": {},
+      "builders": {},
       "follow": {}
     }
   },
@@ -313,8 +338,17 @@
         "license": {},
         "vulnerabilities": {}
       },
-      "values": {}
-    }
+      "values": {},
+      "trends": {}
+    },
+    "version_invalid_url_format": {},
+    "file_filter_option": {},
+    "filter": {}
+  },
+  "pds": {
+    "join": {},
+    "server": {},
+    "community": {}
   },
   "privacy_policy": {
     "cookies": {
@@ -329,5 +363,15 @@
     "your_rights": {},
     "contact": {},
     "changes": {}
-  }
+  },
+  "a11y": {
+    "approach": {},
+    "measures": {},
+    "limitations": {},
+    "contact": {}
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

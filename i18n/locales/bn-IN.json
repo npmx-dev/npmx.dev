@@ -53,6 +53,10 @@
     "links": "লিংকগুলি",
     "tap_to_search": "অনুসন্ধানের জন্য ট্যাপ করুন"
   },
+  "blog": {
+    "author": {},
+    "atproto": {}
+  },
   "settings": {
     "title": "সেটিংস",
     "tagline": "আপনার npmx অভিজ্ঞতা কাস্টমাইজ করুন",
@@ -78,7 +82,8 @@
       "label": "এক্সেন্ট রং"
     },
     "clear_accent": "এক্সেন্ট রং সাফ করুন",
-    "translation_progress": "অনুবাদের অগ্রগতি"
+    "translation_progress": "অনুবাদের অগ্রগতি",
+    "background_themes": {}
   },
   "i18n": {
     "missing_keys": "{count} অনুবাদ নেই | {count} অনুবাদ নেই",
@@ -88,6 +93,7 @@
     "edit_on_github": "GitHub এ সম্পাদনা করুন",
     "view_guide": "অনুবাদ গাইড"
   },
+  "error": {},
   "common": {
     "loading": "লোড হচ্ছে...",
     "loading_more": "আরো লোড হচ্ছে...",
@@ -114,6 +120,9 @@
       "github": "GitHub এ দেখুন"
     }
   },
+  "profile": {
+    "invite": {}
+  },
   "package": {
     "not_found": "প্যাকেজ পাওয়া যায়নি",
     "not_found_message": "প্যাকেজ পাওয়া যায়নি।",
@@ -126,6 +135,7 @@
       "version": "এই ভার্সনটি নিষ্ক্রিয় করা হয়েছে।",
       "no_reason": "কোনো কারণ দেওয়া হয়নি"
     },
+    "size_increase": {},
     "replacement": {
       "title": "আপনার এই ডিপেনডেন্সির প্রয়োজন নাও হতে পারে।",
       "native": "এটিকে {replacement} দিয়ে প্রতিস্থাপন করা যেতে পারে, যা Node {nodeVersion} থেকে উপলব্ধ।",
@@ -221,7 +231,8 @@
       "more_tagged": "{count}টি আরো ট্যাগ করা",
       "all_covered": "সব ভার্সন উপরের ট্যাগ দ্বারা আবৃত",
       "deprecated_title": "{version} (নিষ্ক্রিয়)",
-      "view_all": "{count}টি ভার্সন দেখুন | সব {count}টি ভার্সন দেখুন"
+      "view_all": "{count}টি ভার্সন দেখুন | সব {count}টি ভার্সন দেখুন",
+      "copy_alt": {}
     },
     "dependencies": {
       "title": "নির্ভরতা ({count})",
@@ -270,7 +281,8 @@
       "date_range_multiline": "{start}\nথেকে {end}",
       "download_file": "{fileType} ডাউনলোড করুন",
       "toggle_annotator": "অ্যানোটেটর টগল করুন",
-      "items": {}
+      "items": {},
+      "copy_alt": {}
     },
     "downloads": {
       "title": "সাপ্তাহিক ডাউনলোড"
@@ -356,7 +368,8 @@
       "name_asc": "নাম (A-Z)",
       "name_desc": "নাম (Z-A)"
     },
-    "size": {}
+    "size": {},
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -532,12 +545,10 @@
   "code": {
     "files_label": "ফাইলগুলি",
     "no_files": "এই ডাইরেক্টরিতে কোনো ফাইল নেই",
-    "root": "রুট",
     "lines": "{count}টি লাইন",
     "toggle_tree": "ফাইল ট্রি টগল করুন",
     "close_tree": "ফাইল ট্রি বন্ধ করুন",
     "copy_link": "লিঙ্ক কপি করুন",
-    "raw": "রও",
     "view_raw": "রও ফাইল দেখুন",
     "file_too_large": "প্রিভিউ-র জন্য ফাইল খুব বড়",
     "file_size_warning": "{size} সিনট্যাক্স হাইলাইটিং-এর জন্য 500KB সীমার চেয়ে বেশি",
@@ -699,6 +710,8 @@
         "managers": "ম্যানেজার"
       }
     },
+    "sponsors": {},
+    "oss_partners": {},
     "team": {},
     "contributors": {
       "title": "অবদানকারী",
@@ -719,6 +732,7 @@
         "description": "চ্যাট করুন, প্রশ্ন জিজ্ঞাসা করুন এবং ধারণা শেয়ার করুন।",
         "cta": "Discord এ যোগ দিন"
       },
+      "builders": {},
       "follow": {
         "title": "আপডেট পান",
         "description": "npmx এর সর্বশেষ তথ্য পান।",
@@ -830,7 +844,15 @@
       },
       "values": {},
       "trends": {}
-    }
+    },
+    "version_invalid_url_format": {},
+    "file_filter_option": {},
+    "filter": {}
+  },
+  "pds": {
+    "join": {},
+    "server": {},
+    "community": {}
   },
   "privacy_policy": {
     "cookies": {
@@ -851,5 +873,9 @@
     "measures": {},
     "limitations": {},
     "contact": {}
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }
