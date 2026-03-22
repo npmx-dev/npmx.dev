@@ -271,7 +271,7 @@ const fundingUrl = computed(() => {
                 :to="packageRoute(packageName, resolvedVersion, '#provenance')"
                 :aria-label="$t('package.provenance_section.view_more_details')"
                 classicon="i-lucide:shield-check"
-                class="py-1.25 px-2 me-2"
+                class="py-1.5 px-2 me-2"
               />
             </TooltipApp>
           </template>
