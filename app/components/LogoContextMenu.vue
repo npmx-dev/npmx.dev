@@ -73,13 +73,14 @@ onKeyStroke('Escape', () => {
           ref="menuRef"
           role="menu"
           tabindex="-1"
-          class="fixed z-[999] min-w-48 bg-bg-elevated border border-border rounded-lg shadow-lg py-1 origin-top-left focus:outline-none motion-reduce:transition-none"
+          class="fixed z-[999] bg-bg-elevated border border-border rounded-lg shadow-lg py-1 origin-top-left focus:outline-none motion-reduce:transition-none"
           :style="{ left: `${x}px`, top: `${y}px` }"
           @keydown.escape="close"
         >
           <ButtonBase
             role="menuitem"
-            class="w-full text-start gap-x-3 border-none"
+            size="sm"
+            class="w-full text-start gap-x-2 border-none !px-3 !py-1.5"
             :classicon="copied ? 'i-lucide:check text-badge-green' : 'i-lucide:copy'"
             @click="copySvg"
           >
@@ -87,7 +88,8 @@ onKeyStroke('Escape', () => {
           </ButtonBase>
           <ButtonBase
             role="menuitem"
-            class="w-full text-start gap-x-3 border-none"
+            size="sm"
+            class="w-full text-start gap-x-2 border-none !px-3 !py-1.5"
             classicon="i-lucide:palette"
             @click="goToBrand"
           >
