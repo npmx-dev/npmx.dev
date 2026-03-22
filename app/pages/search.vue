@@ -265,6 +265,18 @@ const effectiveTotal = computed(() => {
   return displayResults.value.length
 })
 
+/**
+ * Total items for pagination purposes.
+ * Capped by EAGER_LOAD_SIZE so that the page count only reflects pages we can
+ * actually fetch — e.g. with a 500-result cap, max pages = ceil(500 / pageSize).
+ * Without this cap, a search returning total=92,000 would show 3,680 pages but
+ * navigation beyond page 20 (at 25/page) would silently fail.
+ */
+const paginationTotal = computed(() => {
+  const cap = EAGER_LOAD_SIZE[searchProvider.value]
+  return Math.min(effectiveTotal.value, cap)
+})
+
 // Handle filter chip removal
 function handleClearFilter(chip: FilterChip) {
   clearFilter(chip)
@@ -878,7 +890,7 @@ onBeforeUnmount(() => {
             v-model:mode="paginationMode"
             v-model:page-size="preferredPageSize"
             v-model:current-page="currentPage"
-            :total-items="effectiveTotal"
+            :total-items="paginationTotal"
             :view-mode="viewMode"
           />
         </div>
