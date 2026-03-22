@@ -253,7 +253,7 @@ const fundingUrl = computed(() => {
           class="py-1.5 px-2.5 sm:me-2"
           :tabindex="showScrollToTop ? 0 : -1"
         />
-        <div class="flex-inline items-center flex-nowrap gap-1 font-mono text-fg-muted">
+        <div class="flex-inline items-center flex-nowrap gap-3 font-mono text-fg-muted">
           <template v-if="displayVersion && hasProvenance(displayVersion)">
             <TooltipApp
               :text="
