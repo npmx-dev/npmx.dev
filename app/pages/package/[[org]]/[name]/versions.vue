@@ -205,13 +205,13 @@ const flatItems = computed<FlatItem[]>(() => {
           <InputBase
             v-model="versionFilterInput"
             type="text"
-            :placeholder="$t('package.versions.version_filter_placeholder')"
-            :aria-label="$t('package.versions.version_filter_label')"
+            :placeholder="$t('package.versions.filter_placeholder')"
+            :aria-label="$t('package.versions.filter_placeholder')"
             :aria-invalid="isInvalidRange ? 'true' : undefined"
             :aria-describedby="isInvalidRange ? 'version-filter-error' : undefined"
             autocomplete="off"
             size="small"
-            class="w-36 sm:w-44"
+            class="w-36 sm:w-64"
             :class="isInvalidRange ? 'pe-7 !border-red-500' : ''"
           />
           <Transition
