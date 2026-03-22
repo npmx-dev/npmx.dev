@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { ACCENT_COLORS, type AccentColorId } from '#shared/utils/constants'
+
 const { accentColors, selectedAccentColor } = useAccentColor()
-const { convert: _convert, download: downloadBlob } = useSvgToPng()
+const { download: downloadBlob } = useSvgToPng()
 
 const customAccent = ref<string | null>(null)
 const customBgDark = ref(true)
@@ -8,9 +10,9 @@ const customLogoRef = useTemplateRef('customLogoRef')
 
 const activeAccentId = computed(() => customAccent.value ?? selectedAccentColor.value ?? 'sky')
 const activeAccentColor = computed(() => {
-  const match = accentColors.value.find(c => c.id === activeAccentId.value)
-  const fallback = accentColors.value[0]?.value ?? 'oklch(0.787 0.128 230.318)'
-  return match?.value ?? fallback
+  // Use light accent colors on light bg for proper contrast (e.g. neutral: dark on white, not white on white)
+  const palette = customBgDark.value ? ACCENT_COLORS.dark : ACCENT_COLORS.light
+  return palette[activeAccentId.value as AccentColorId] ?? palette.sky
 })
 
 function getCustomSvgString(): string {
