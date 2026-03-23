@@ -754,7 +754,7 @@ Make sure to read about [Playwright best practices](https://playwright.dev/docs/
 
 #### Updating snapshots
 
-Some tests use image snapshots that must match the CI environment (Linux). If you need to update them, use Docker to run in the same environment:
+Some tests use image snapshots that must match the CI environment (Linux). If you need to update them, and aren't running Linux, you can use Docker to run in the same environment:
 
 ```bash
 docker run --rm \
