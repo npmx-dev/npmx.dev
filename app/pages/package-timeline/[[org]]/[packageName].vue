@@ -110,13 +110,14 @@ if (import.meta.client) {
 }
 
 interface VersionEvents {
-  size?: {
+  installSize?: {
     direction: 'increase' | 'decrease'
     sizeRatio: number
     sizeDelta: number
+  }
+  deps?: {
+    direction: 'increase' | 'decrease'
     depDiff: number
-    sizeThresholdExceeded: boolean
-    depThresholdExceeded: boolean
   }
   license?: { from: string; to: string }
   esm?: 'added' | 'removed'
@@ -158,17 +159,18 @@ const versionEvents = computed(() => {
       const depsIncreased = depDiff > DEP_INCREASE_THRESHOLD
       const depsDecreased = depDiff < -DEP_INCREASE_THRESHOLD
 
-      if (sizeIncreased || sizeDecreased || depsIncreased || depsDecreased) {
-        ev.size = {
-          direction:
-            (sizeDecreased || depsDecreased) && !sizeIncreased && !depsIncreased
-              ? 'decrease'
-              : 'increase',
+      if (sizeIncreased || sizeDecreased) {
+        ev.installSize = {
+          direction: sizeDecreased ? 'decrease' : 'increase',
           sizeRatio,
           sizeDelta: currentSize.totalSize - previousSize.totalSize,
+        }
+      }
+
+      if (depsIncreased || depsDecreased) {
+        ev.deps = {
+          direction: depsDecreased ? 'decrease' : 'increase',
           depDiff,
-          sizeThresholdExceeded: sizeIncreased || sizeDecreased,
-          depThresholdExceeded: depsIncreased || depsDecreased,
         }
       }
     }
@@ -190,7 +192,7 @@ const versionEvents = computed(() => {
     if (current.hasTypes && !previous.hasTypes) ev.types = 'added'
     else if (!current.hasTypes && previous.hasTypes) ev.types = 'removed'
 
-    if (ev.size || ev.license || ev.esm || ev.types) {
+    if (ev.installSize || ev.deps || ev.license || ev.esm || ev.types) {
       events.set(current.version, ev)
     }
   }
@@ -258,12 +260,12 @@ useSeoMeta({
             class="relative border-s border-border/50 ms-3 mt-2"
           >
             <template v-for="(ev, _) in [versionEvents.get(entry.version)!]" :key="0">
-              <!-- Size event -->
-              <li v-if="ev.size" class="mb-2 ms-4 relative last:mb-0">
+              <!-- Install size event -->
+              <li v-if="ev.installSize" class="mb-2 ms-4 relative last:mb-0">
                 <span
                   class="absolute -start-[calc(1rem+0.375rem)] top-0.5 flex items-center justify-center w-3 h-3 rounded-full border"
                   :class="
-                    ev.size.direction === 'decrease'
+                    ev.installSize.direction === 'decrease'
                       ? 'bg-green-500 border-green-600'
                       : 'bg-amber-500 border-amber-600'
                   "
@@ -271,7 +273,7 @@ useSeoMeta({
                   <span
                     class="w-2 h-2 text-white"
                     :class="
-                      ev.size.direction === 'decrease'
+                      ev.installSize.direction === 'decrease'
                         ? 'i-lucide:trending-down'
                         : 'i-lucide:trending-up'
                     "
@@ -281,36 +283,59 @@ useSeoMeta({
                 <p
                   class="text-xs"
                   :class="
-                    ev.size.direction === 'decrease'
+                    ev.installSize.direction === 'decrease'
                       ? 'text-green-700 dark:text-green-400'
                       : 'text-amber-700 dark:text-amber-400'
                   "
                 >
-                  <template v-if="ev.size.sizeThresholdExceeded">
-                    {{
-                      ev.size.direction === 'decrease'
-                        ? $t('package.timeline.size_decrease', {
-                            percent: Math.abs(Math.round(ev.size.sizeRatio * 100)),
-                            size: bytesFormatter.format(Math.abs(ev.size.sizeDelta)),
-                          })
-                        : $t('package.timeline.size_increase', {
-                            percent: Math.round(ev.size.sizeRatio * 100),
-                            size: bytesFormatter.format(ev.size.sizeDelta),
-                          })
-                    }}
-                  </template>
-                  <template v-if="ev.size.sizeThresholdExceeded && ev.size.depThresholdExceeded">
-                    &middot;
-                  </template>
-                  <template v-if="ev.size.depThresholdExceeded">
-                    {{
-                      ev.size.depDiff > 0
-                        ? $t('package.timeline.dep_increase', { count: ev.size.depDiff })
-                        : $t('package.timeline.dep_decrease', {
-                            count: Math.abs(ev.size.depDiff),
-                          })
-                    }}
-                  </template>
+                  {{
+                    ev.installSize.direction === 'decrease'
+                      ? $t('package.timeline.size_decrease', {
+                          percent: Math.abs(Math.round(ev.installSize.sizeRatio * 100)),
+                          size: bytesFormatter.format(Math.abs(ev.installSize.sizeDelta)),
+                        })
+                      : $t('package.timeline.size_increase', {
+                          percent: Math.round(ev.installSize.sizeRatio * 100),
+                          size: bytesFormatter.format(ev.installSize.sizeDelta),
+                        })
+                  }}
+                </p>
+              </li>
+              <!-- Dependency count event -->
+              <li v-if="ev.deps" class="mb-2 ms-4 relative last:mb-0">
+                <span
+                  class="absolute -start-[calc(1rem+0.375rem)] top-0.5 flex items-center justify-center w-3 h-3 rounded-full border"
+                  :class="
+                    ev.deps.direction === 'decrease'
+                      ? 'bg-green-500 border-green-600'
+                      : 'bg-amber-500 border-amber-600'
+                  "
+                >
+                  <span
+                    class="w-2 h-2 text-white"
+                    :class="
+                      ev.deps.direction === 'decrease'
+                        ? 'i-lucide:trending-down'
+                        : 'i-lucide:trending-up'
+                    "
+                    aria-hidden="true"
+                  />
+                </span>
+                <p
+                  class="text-xs"
+                  :class="
+                    ev.deps.direction === 'decrease'
+                      ? 'text-green-700 dark:text-green-400'
+                      : 'text-amber-700 dark:text-amber-400'
+                  "
+                >
+                  {{
+                    ev.deps.depDiff > 0
+                      ? $t('package.timeline.dep_increase', { count: ev.deps.depDiff })
+                      : $t('package.timeline.dep_decrease', {
+                          count: Math.abs(ev.deps.depDiff),
+                        })
+                  }}
                 </p>
               </li>
               <!-- License change -->
