@@ -137,7 +137,11 @@ async function handlePngDownload(logo: (typeof logos)[number]) {
                         <span
                           class="size-[1em]"
                           aria-hidden="true"
-                          :class="pngLoading.has(logo.src) ? 'i-lucide:loader-circle animate-spin' : 'i-lucide:download'"
+                          :class="
+                            pngLoading.has(logo.src)
+                              ? 'i-lucide:loader-circle animate-spin'
+                              : 'i-lucide:download'
+                          "
                         />
                         {{ $t('brand.logos.download_png') }}
                       </ButtonBase>
@@ -195,7 +199,11 @@ async function handlePngDownload(logo: (typeof logos)[number]) {
                         <span
                           class="size-[1em]"
                           aria-hidden="true"
-                          :class="pngLoading.has(logo.src) ? 'i-lucide:loader-circle animate-spin' : 'i-lucide:download'"
+                          :class="
+                            pngLoading.has(logo.src)
+                              ? 'i-lucide:loader-circle animate-spin'
+                              : 'i-lucide:download'
+                          "
                         />
                         {{ $t('brand.logos.download_png') }}
                       </ButtonBase>
