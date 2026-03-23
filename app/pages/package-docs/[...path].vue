@@ -164,7 +164,10 @@ function onTocClick(e: Event) {
 }
 
 if (import.meta.client) {
-  watch(() => docsData.value?.toc, () => nextTick(updateActiveTocLink))
+  watch(
+    () => docsData.value?.toc,
+    () => nextTick(updateActiveTocLink),
+  )
   onMounted(() => {
     window.addEventListener('hashchange', updateActiveTocLink)
     updateActiveTocLink()
@@ -197,7 +200,12 @@ if (import.meta.client) {
             {{ $t('package.docs.contents') }}
           </h2>
           <!-- eslint-disable vue/no-v-html -->
-          <div ref="tocContainerRef" class="toc-content" @click="onTocClick" v-html="docsData.toc" />
+          <div
+            ref="tocContainerRef"
+            class="toc-content"
+            @click="onTocClick"
+            v-html="docsData.toc"
+          />
         </div>
       </aside>
 
