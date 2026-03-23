@@ -13,13 +13,32 @@
   "trademark_disclaimer": "npm हा npm, Inc. चा नोंदणीकृत ट्रेडमार्क आहे. ही साइट npm, Inc. शी संलग्न नाही.",
   "footer": {
     "about": "बद्दल",
+    "blog": "ब्लॉग",
     "docs": "दस्तऐवज",
     "source": "स्रोत",
     "social": "सोशल",
     "chat": "चॅट",
-    "blog": "ब्लॉग",
     "builders_chat": "बिल्डर्स",
     "keyboard_shortcuts": "कीबोर्ड शॉर्टकट"
+  },
+  "shortcuts": {
+    "section": {
+      "global": "जागतिक",
+      "search": "शोध",
+      "package": "पॅकेज"
+    },
+    "focus_search": "शोधावर फोकस करा",
+    "show_kbd_hints": "कीबोर्ड सूचनांना ठळक करा",
+    "settings": "सेटिंग्ज उघडा",
+    "compare": "तुलना उघडा",
+    "compare_from_package": "तुलना उघडा (सध्याच्या पॅकेजसह पूर्वभरलेले)",
+    "navigate_results": "परिणामांमध्ये फिरा",
+    "go_to_result": "परिणामाकडे जा",
+    "open_code_view": "कोड दृश्य उघडा",
+    "open_docs": "दस्तऐवज उघडा",
+    "disable_shortcuts": "तुम्ही {settings} मध्ये कीबोर्ड शॉर्टकट अक्षम करू शकता.",
+    "open_main": "मुख्य माहिती उघडा",
+    "open_diff": "आवृत्तीतील फरक उघडा"
   },
   "search": {
     "label": "npm पॅकेजेस शोधा",
@@ -27,14 +46,21 @@
     "button": "शोधा",
     "searching": "शोधत आहे...",
     "found_packages": "कोणतेही पॅकेज सापडले नाही | 1 पॅकेज सापडले | {count} पॅकेजेस सापडल्या",
+    "found_packages_sorted": "कोणतेही परिणाम सापडले नाहीत | शीर्ष {count} परिणाम क्रमबद्ध करत आहे | शीर्ष {count} परिणाम क्रमबद्ध करत आहे",
     "updating": "(अद्यतनित करत आहे...)",
     "no_results": "\"{query}\" साठी कोणतेही पॅकेज सापडले नाही",
+    "rate_limited": "npm दर मर्यादा गाठली, थोड्या वेळाने पुन्हा प्रयत्न करा",
     "title": "शोध",
+    "title_search": "शोध: {search}",
+    "title_packages": "पॅकेजेस शोधा",
+    "meta_description": "'{search}' साठी शोध परिणाम",
+    "meta_description_packages": "npm पॅकेजेस शोधा",
     "not_taken": "{name} उपलब्ध आहे",
     "claim_prompt": "npm वर हे पॅकेज नाव दावा करा",
     "claim_button": "\"{name}\" दावा करा",
     "want_to_claim": "हे पॅकेज नाव दावा करायचे आहे का?",
     "start_typing": "पॅकेजेस शोधण्यासाठी टाइप करणे सुरू करा",
+    "algolia_disclaimer": "Algolia द्वारे समर्थित",
     "exact_match": "अचूक",
     "suggestion": {
       "user": "वापरकर्ता",
@@ -42,13 +68,6 @@
       "view_user_packages": "या वापरकर्त्याची पॅकेजेस पहा",
       "view_org_packages": "या संस्थेची पॅकेजेस पहा"
     },
-    "found_packages_sorted": "कोणतेही परिणाम सापडले नाहीत | शीर्ष {count} परिणाम क्रमबद्ध करत आहे | शीर्ष {count} परिणाम क्रमबद्ध करत आहे",
-    "rate_limited": "npm दर मर्यादा गाठली, थोड्या वेळाने पुन्हा प्रयत्न करा",
-    "title_search": "शोध: {search}",
-    "title_packages": "पॅकेजेस शोधा",
-    "meta_description": "'{search}' साठी शोध परिणाम",
-    "meta_description_packages": "npm पॅकेजेस शोधा",
-    "algolia_disclaimer": "Algolia द्वारे समर्थित",
     "instant_search": "तात्काळ शोध",
     "instant_search_on": "चालू",
     "instant_search_off": "बंद",
@@ -68,6 +87,32 @@
     "links": "लिंक",
     "tap_to_search": "शोधण्यासाठी टॅप करा"
   },
+  "blog": {
+    "title": "ब्लॉग",
+    "heading": "ब्लॉग",
+    "meta_description": "npmx समुदायाकडून अंतर्दृष्टी आणि अद्यतने",
+    "author": {
+      "view_profile": "Bluesky वर {name} चे प्रोफाइल पहा"
+    },
+    "draft_badge": "मसुदा",
+    "draft_banner": "हा अप्रकाशित मसुदा आहे. तो अपूर्ण असू शकतो किंवा त्यात चुकीची माहिती असू शकते.",
+    "no_posts": "कोणत्याही पोस्ट सापडल्या नाहीत.",
+    "atproto": {
+      "view_on_bluesky": "Bluesky वर पहा",
+      "reply_on_bluesky": "Bluesky वर उत्तर द्या",
+      "likes_on_bluesky": "Bluesky वरील पसंती",
+      "like_or_reply_on_bluesky": "ही पोस्ट पसंत करा किंवा तुमची टिप्पणी Bluesky वर जोडा",
+      "no_comments_yet": "अजून कोणत्याही टिप्पण्या नाहीत.",
+      "could_not_load_comments": "टिप्पण्या लोड करता आल्या नाहीत.",
+      "comments": "टिप्पण्या",
+      "loading_comments": "टिप्पण्या लोड करत आहे...",
+      "updating": "अद्यतनित करत आहे...",
+      "reply_count": "{count} उत्तर | {count} उत्तरे",
+      "like_count": "{count} पसंती | {count} पसंत्या",
+      "repost_count": "{count} पुनर्पोस्ट | {count} पुनर्पोस्ट्स",
+      "more_replies": "{count} आणखी उत्तर... | {count} आणखी उत्तरे..."
+    }
+  },
   "settings": {
     "title": "सेटिंग्ज",
     "tagline": "तुमचा npmx अनुभव सानुकूलित करा",
@@ -75,21 +120,34 @@
     "sections": {
       "appearance": "देखावा",
       "display": "प्रदर्शन",
-      "language": "भाषा",
       "search": "शोध वैशिष्ट्ये",
+      "language": "भाषा",
       "keyboard_shortcuts": "कीबोर्ड शॉर्टकट"
     },
+    "data_source": {
+      "label": "डेटा स्रोत",
+      "description": "npmx ला शोध डेटा कुठून मिळवायचा ते निवडा. स्वतंत्र पॅकेज पृष्ठे नेहमी थेट npm नोंदणी वापरतात.",
+      "npm": "npm नोंदणी",
+      "npm_description": "शोध, संस्था आणि वापरकर्ता सूची थेट अधिकृत npm नोंदणीतून आणते. अधिकृत, पण थोडे मंद असू शकते.",
+      "algolia": "Algolia",
+      "algolia_description": "जलद शोध, संस्था आणि वापरकर्ता पृष्ठांसाठी Algolia वापरते."
+    },
+    "instant_search": "तात्काळ शोध",
+    "instant_search_description": "शोध पृष्ठावर नेते आणि तुम्ही टाइप करताच परिणाम अद्यतनित करते.",
     "relative_dates": "सापेक्ष तारखा",
     "include_types": "स्थापनेत {'@'}types समाविष्ट करा",
     "include_types_description": "अनटाइप केलेल्या पॅकेजसाठी स्थापना आदेशात {'@'}types पॅकेज जोडा",
     "hide_platform_packages": "शोधात प्लॅटफॉर्म-विशिष्ट पॅकेजेस लपवा",
     "hide_platform_packages_description": "परिणामांमधून {'@'}esbuild/linux-x64 सारखी मूळ बायनरी पॅकेजेस लपवा",
+    "enable_graph_pulse_loop": "लघु आलेखावर पल्स प्रभावाचा लूप सक्षम करा",
+    "enable_graph_pulse_loop_description": "साप्ताहिक डाउनलोड आलेखावर सतत पल्स अॅनिमेशन सक्रिय करा. हे अॅनिमेशन काही वापरकर्त्यांसाठी विचलित करणारे असू शकते.",
     "theme": "थीम",
     "theme_light": "फिकट",
     "theme_dark": "गडद",
     "theme_system": "सिस्टम",
     "language": "भाषा",
     "help_translate": "npmx चे भाषांतर करण्यात मदत करा",
+    "translation_status": "जागतिक भाषांतर स्थिती तपासा",
     "accent_colors": {
       "label": "अॅक्सेंट रंग",
       "sky": "आकाशी",
@@ -109,19 +167,6 @@
       "slate": "स्लेट",
       "black": "काळा"
     },
-    "data_source": {
-      "label": "डेटा स्रोत",
-      "description": "npmx ला शोध डेटा कुठून मिळवायचा ते निवडा. स्वतंत्र पॅकेज पृष्ठे नेहमी थेट npm नोंदणी वापरतात.",
-      "npm": "npm नोंदणी",
-      "npm_description": "शोध, संस्था आणि वापरकर्ता सूची थेट अधिकृत npm नोंदणीतून आणते. अधिकृत, पण थोडे मंद असू शकते.",
-      "algolia": "Algolia",
-      "algolia_description": "जलद शोध, संस्था आणि वापरकर्ता पृष्ठांसाठी Algolia वापरते."
-    },
-    "instant_search": "तात्काळ शोध",
-    "instant_search_description": "शोध पृष्ठावर नेते आणि तुम्ही टाइप करताच परिणाम अद्यतनित करते.",
-    "enable_graph_pulse_loop": "लघु आलेखावर पल्स प्रभावाचा लूप सक्षम करा",
-    "enable_graph_pulse_loop_description": "साप्ताहिक डाउनलोड आलेखावर सतत पल्स अॅनिमेशन सक्रिय करा. हे अॅनिमेशन काही वापरकर्त्यांसाठी विचलित करणारे असू शकते.",
-    "translation_status": "जागतिक भाषांतर स्थिती तपासा",
     "keyboard_shortcuts_enabled": "कीबोर्ड शॉर्टकट सक्षम करा",
     "keyboard_shortcuts_enabled_description": "जर कीबोर्ड शॉर्टकट इतर ब्राउझर किंवा सिस्टम शॉर्टकटशी संघर्ष करत असतील तर ते अक्षम करता येतात"
   },
@@ -133,6 +178,13 @@
     "edit_on_github": "GitHub वर संपादित करा",
     "view_guide": "भाषांतर मार्गदर्शक"
   },
+  "error": {
+    "401": "अनधिकृत",
+    "404": "पृष्ठ सापडले नाही",
+    "500": "अंतर्गत सर्व्हर त्रुटी",
+    "503": "सेवा उपलब्ध नाही",
+    "default": "काहीतरी चूक झाली"
+  },
   "common": {
     "loading": "लोड करत आहे...",
     "loading_more": "अधिक लोड करत आहे...",
@@ -140,6 +192,7 @@
     "end_of_results": "परिणाम संपले",
     "try_again": "पुन्हा प्रयत्न करा",
     "close": "बंद करा",
+    "or": "किंवा",
     "retry": "पुन्हा प्रयत्न करा",
     "copy": "कॉपी करा",
     "copied": "कॉपी झाले!",
@@ -154,6 +207,10 @@
       "members": "सदस्य"
     },
     "scroll_to_top": "वर स्क्रोल करा",
+    "cancel": "रद्द करा",
+    "save": "जतन करा",
+    "edit": "संपादित करा",
+    "error": "त्रुटी",
     "view_on": {
       "npm": "npm वर पहा",
       "github": "GitHub वर पहा",
@@ -168,13 +225,25 @@
       "sourcehut": "SourceHut वर पहा",
       "tangled": "Tangled वर पहा"
     },
-    "or": "किंवा",
-    "cancel": "रद्द करा",
-    "save": "जतन करा",
-    "edit": "संपादित करा",
-    "error": "त्रुटी",
     "collapse": "आकुंचित करा",
     "expand": "विस्तृत करा"
+  },
+  "profile": {
+    "display_name": "प्रदर्शन नाव",
+    "description": "वर्णन",
+    "no_description": "वर्णन नाही",
+    "website": "वेबसाइट",
+    "website_placeholder": "https://example.com",
+    "likes": "पसंती",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "{handle} द्वारे npmx प्रोफाइल",
+    "not_found": "प्रोफाइल सापडले नाही",
+    "not_found_message": "{handle} साठीचे प्रोफाइल सापडले नाही.",
+    "invite": {
+      "message": "ते अजून npmx वापरत आहेत असे दिसत नाही. त्यांना याबद्दल सांगायचे का?",
+      "share_button": "Bluesky वर शेअर करा",
+      "compose_text": "अहो {'@'}{handle}! तुम्ही अजून npmx.dev पाहिले आहे का? हा npm नोंदणीसाठी जलद, आधुनिक आणि मुक्त-स्रोत ब्राउझर आहे.\nhttps://npmx.dev"
+    }
   },
   "package": {
     "not_found": "पॅकेज सापडले नाही",
@@ -188,6 +257,13 @@
       "version": "ही आवृत्ती कालबाह्य घोषित केली गेली आहे.",
       "no_reason": "कोणतेही कारण प्रदान केलेले नाही"
     },
+    "size_increase": {
+      "title_size": "v{version} पासून आकारात लक्षणीय वाढ",
+      "title_deps": "v{version} पासून निर्भरतांच्या संख्येत लक्षणीय वाढ",
+      "title_both": "v{version} पासून आकार आणि निर्भरतांच्या संख्येत लक्षणीय वाढ",
+      "size": "इंस्टॉल आकार {percent} ने वाढला ({size} ने मोठा)",
+      "deps": "{count} अधिक निर्भरता"
+    },
     "replacement": {
       "title": "कदाचित तुम्हाला या निर्भरतेची गरज नसेल.",
       "native": "हे {replacement} सह बदलले जाऊ शकते, Node {nodeVersion} पासून उपलब्ध आहे.",
@@ -195,9 +271,9 @@
       "documented": "{community} ने या पॅकेजला अधिक कार्यक्षम पर्याय असल्याने चिन्हांकित केले आहे.",
       "none": "हे पॅकेज यापुढे आवश्यक नाही असे चिन्हांकित केले गेले आहे, आणि त्याची कार्यक्षमता सर्व इंजिनांमध्ये मूळतः उपलब्ध असू शकते.",
       "learn_more": "अधिक जाणून घ्या",
+      "learn_more_above": "वर अधिक जाणून घ्या.",
       "mdn": "MDN",
       "community": "समुदाय",
-      "learn_more_above": "वर अधिक जाणून घ्या.",
       "consider_no_dep": "+ निर्भरता नको का?"
     },
     "stats": {
@@ -233,6 +309,7 @@
       "skills_cli": "Skills CLI"
     },
     "links": {
+      "main": "मुख्य",
       "repo": "रिपो",
       "homepage": "होमपेज",
       "issues": "समस्या",
@@ -241,7 +318,6 @@
       "docs": "दस्तऐवज",
       "fund": "निधी",
       "compare": "तुलना करा",
-      "main": "मुख्य",
       "compare_this_package": "या पॅकेजची तुलना करा"
     },
     "likes": {
@@ -249,10 +325,10 @@
       "unlike": "या पॅकेजवरील पसंती काढा"
     },
     "docs": {
-      "not_available": "दस्तऐवज उपलब्ध नाहीत",
-      "not_available_detail": "आम्ही या आवृत्तीसाठी दस्तऐवज तयार करू शकलो नाही.",
       "contents": "अनुक्रमणिका",
       "default_not_available": "या आवृत्तीसाठी दस्तऐवज उपलब्ध नाहीत.",
+      "not_available": "दस्तऐवज उपलब्ध नाहीत",
+      "not_available_detail": "आम्ही या आवृत्तीसाठी दस्तऐवज तयार करू शकलो नाही.",
       "page_title": "API दस्तऐवज - npmx",
       "page_title_name": "{name} दस्तऐवज - npmx",
       "page_title_version": "{name} दस्तऐवज - npmx",
@@ -263,9 +339,9 @@
       "title": "सुरुवात करा",
       "pm_label": "पॅकेज मॅनेजर",
       "copy_command": "स्थापना आदेश कॉपी करा",
-      "view_types": "{package} पहा",
       "copy_dev_command": "डेव इंस्टॉल कमांड कॉपी करा",
-      "dev_dependency_hint": "हे सहसा dev dependency म्हणून इन्स्टॉल केले जाते"
+      "dev_dependency_hint": "हे सहसा dev dependency म्हणून इन्स्टॉल केले जाते",
+      "view_types": "{package} पहा"
     },
     "create": {
       "title": "नवीन प्रोजेक्ट तयार करा",
@@ -277,6 +353,9 @@
       "locally": "स्थानिकरित्या चालवा"
     },
     "readme": {
+      "title": "रीडमी",
+      "no_readme": "कोणतेही README उपलब्ध नाही.",
+      "toc_title": "रूपरेषा",
       "callout": {
         "note": "टीप",
         "tip": "सूचना",
@@ -284,9 +363,6 @@
         "warning": "इशारा",
         "caution": "सावधान"
       },
-      "title": "रीडमी",
-      "no_readme": "कोणतेही README उपलब्ध नाही.",
-      "toc_title": "रूपरेषा",
       "copy_as_markdown": "README Markdown म्हणून कॉपी करा"
     },
     "provenance_section": {
@@ -299,6 +375,16 @@
       "transparency_log_entry": "ट्रान्सपरन्सी लॉग नोंद",
       "view_more_details": "अधिक तपशील पहा",
       "error_loading": "प्रोव्हनन्स तपशील लोड करण्यात अयशस्वी"
+    },
+    "security_downgrade": {
+      "title": "विश्वास पातळी घट",
+      "description_to_none_provenance": "ही आवृत्ती {provenance} शिवाय प्रकाशित झाली.",
+      "description_to_none_trustedPublisher": "ही आवृत्ती {trustedPublishing} शिवाय प्रकाशित झाली.",
+      "description_to_provenance_trustedPublisher": "ही आवृत्ती {provenance} वापरते पण {trustedPublishing} नाही.",
+      "fallback_install_provenance": "इंस्टॉल कमांड्स {version} वर पिन केल्या आहेत, जी प्रोव्हनन्स असलेली शेवटची आवृत्ती आहे.",
+      "fallback_install_trustedPublisher": "इंस्टॉल कमांड्स {version} वर पिन केल्या आहेत, जी trusted publishing असलेली शेवटची आवृत्ती आहे.",
+      "provenance_link_text": "प्रोव्हनन्स",
+      "trusted_publishing_link_text": "trusted publishing"
     },
     "keywords_title": "कीवर्ड",
     "compatibility": "सुसंगतता",
@@ -395,112 +481,6 @@
       "show_less": "(कमी दाखवा)",
       "maintainer_template": "{avatar} {char126}{name}"
     },
-    "downloads": {
-      "title": "साप्ताहिक डाउनलोड्स",
-      "community_distribution": "समुदाय स्वीकार वितरण पहा",
-      "subtitle": "सर्व आवृत्त्यांमध्ये"
-    },
-    "install_scripts": {
-      "title": "इंस्टॉल स्क्रिप्ट्स",
-      "script_label": "(स्क्रिप्ट)",
-      "npx_packages": "{count} npx पॅकेज | {count} npx पॅकेजेस",
-      "currently": "सध्या {version}"
-    },
-    "playgrounds": {
-      "title": "वापरून पहा",
-      "choose": "प्लेग्राउंड निवडा"
-    },
-    "metrics": {
-      "esm": "ES Modules समर्थित",
-      "cjs": "CommonJS समर्थित",
-      "no_esm": "ES Modules असमर्थित",
-      "wasm": "WebAssembly आहे",
-      "types_label": "प्रकार",
-      "types_included": "प्रकार समाविष्ट आहेत",
-      "types_available": "{package} मार्फत प्रकार उपलब्ध",
-      "no_types": "कोणतेही प्रकार नाहीत"
-    },
-    "license": {
-      "view_spdx": "SPDX वर परवान्याचा मजकूर पहा",
-      "none": "काहीही नाही"
-    },
-    "vulnerabilities": {
-      "severity": {
-        "critical": "गंभीर",
-        "high": "उच्च",
-        "moderate": "मध्यम",
-        "low": "कमी"
-      },
-      "tree_found": "{packages}/{total} पॅकेजमध्ये {vulns} असुरक्षा | {packages}/{total} पॅकेजमध्ये {vulns} असुरक्षा",
-      "show_all_packages": "{count} प्रभावित पॅकेज दाखवा | सर्व {count} प्रभावित पॅकेज दाखवा",
-      "path": "मार्ग",
-      "more": "+{count} आणखी",
-      "packages_failed": "{count} पॅकेज तपासता आले नाही | {count} पॅकेजेस तपासता आले नाहीत",
-      "scan_failed": "असुरक्षांसाठी स्कॅन करता आले नाही",
-      "fixed_in_title": "आवृत्ती {version} मध्ये दुरुस्त"
-    },
-    "deprecated": {
-      "label": "अप्रचलित",
-      "tree_found": "{count} अप्रचलित निर्भरता | {count} अप्रचलित निर्भरता",
-      "show_all": "{count} अप्रचलित पॅकेज दाखवा | सर्व {count} अप्रचलित पॅकेज दाखवा"
-    },
-    "access": {
-      "permission": {
-        "read_only": "फक्त-वाचन",
-        "read_write": "वाचन-लेखन"
-      },
-      "title": "टीम प्रवेश",
-      "refresh": "टीम प्रवेश रीफ्रेश करा",
-      "list_label": "टीम प्रवेश यादी",
-      "owner": "मालक",
-      "rw": "rw",
-      "ro": "ro",
-      "revoke_access": "{name} चा प्रवेश रद्द करा",
-      "no_access": "कोणताही टीम प्रवेश संरचित केलेला नाही",
-      "select_team_label": "टीम निवडा",
-      "loading_teams": "टीम्स लोड होत आहेत...",
-      "select_team": "टीम निवडा",
-      "permission_label": "परवानगी पातळी",
-      "grant_button": "द्या",
-      "cancel_grant": "प्रवेश देणे रद्द करा",
-      "grant_access": "+ टीम प्रवेश द्या"
-    },
-    "list": {
-      "filter_label": "पॅकेजेस फिल्टर करा",
-      "filter_placeholder": "पॅकेजेस फिल्टर करा...",
-      "sort_label": "पॅकेजेस क्रमबद्ध करा",
-      "showing_count": "{total} पैकी {filtered} पॅकेजेस दाखवत आहे"
-    },
-    "skeleton": {
-      "loading": "पॅकेज तपशील लोड होत आहेत",
-      "maintainers": "देखभालकर्ते",
-      "keywords": "कीवर्ड्स",
-      "versions": "आवृत्त्या",
-      "dependencies": "निर्भरता"
-    },
-    "sort": {
-      "downloads": "सर्वाधिक डाउनलोड झालेले",
-      "published": "अलीकडे प्रकाशित",
-      "name_asc": "नाव (A-Z)",
-      "name_desc": "नाव (Z-A)"
-    },
-    "size_increase": {
-      "title_size": "v{version} पासून आकारात लक्षणीय वाढ",
-      "title_deps": "v{version} पासून निर्भरतांच्या संख्येत लक्षणीय वाढ",
-      "title_both": "v{version} पासून आकार आणि निर्भरतांच्या संख्येत लक्षणीय वाढ",
-      "size": "इंस्टॉल आकार {percent} ने वाढला ({size} ने मोठा)",
-      "deps": "{count} अधिक निर्भरता"
-    },
-    "security_downgrade": {
-      "title": "विश्वास पातळी घट",
-      "description_to_none_provenance": "ही आवृत्ती {provenance} शिवाय प्रकाशित झाली.",
-      "description_to_none_trustedPublisher": "ही आवृत्ती {trustedPublishing} शिवाय प्रकाशित झाली.",
-      "description_to_provenance_trustedPublisher": "ही आवृत्ती {provenance} वापरते पण {trustedPublishing} नाही.",
-      "fallback_install_provenance": "इंस्टॉल कमांड्स {version} वर पिन केल्या आहेत, जी प्रोव्हनन्स असलेली शेवटची आवृत्ती आहे.",
-      "fallback_install_trustedPublisher": "इंस्टॉल कमांड्स {version} वर पिन केल्या आहेत, जी trusted publishing असलेली शेवटची आवृत्ती आहे.",
-      "provenance_link_text": "प्रोव्हनन्स",
-      "trusted_publishing_link_text": "trusted publishing"
-    },
     "trends": {
       "granularity": "ग्रॅन्युलॅरिटी",
       "granularity_daily": "दैनिक",
@@ -556,6 +536,95 @@
         "facet_bar_general_description": "या पॅकेजांसाठी आडवा बार चार्ट: {packages}, {facet} ची तुलना ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} ची किंमत {value} आहे."
       }
+    },
+    "downloads": {
+      "title": "साप्ताहिक डाउनलोड्स",
+      "community_distribution": "समुदाय स्वीकार वितरण पहा",
+      "subtitle": "सर्व आवृत्त्यांमध्ये"
+    },
+    "install_scripts": {
+      "title": "इंस्टॉल स्क्रिप्ट्स",
+      "script_label": "(स्क्रिप्ट)",
+      "npx_packages": "{count} npx पॅकेज | {count} npx पॅकेजेस",
+      "currently": "सध्या {version}"
+    },
+    "playgrounds": {
+      "title": "वापरून पहा",
+      "choose": "प्लेग्राउंड निवडा"
+    },
+    "metrics": {
+      "esm": "ES Modules समर्थित",
+      "cjs": "CommonJS समर्थित",
+      "no_esm": "ES Modules असमर्थित",
+      "wasm": "WebAssembly आहे",
+      "types_label": "प्रकार",
+      "types_included": "प्रकार समाविष्ट आहेत",
+      "types_available": "{package} मार्फत प्रकार उपलब्ध",
+      "no_types": "कोणतेही प्रकार नाहीत"
+    },
+    "license": {
+      "view_spdx": "SPDX वर परवान्याचा मजकूर पहा",
+      "none": "काहीही नाही"
+    },
+    "vulnerabilities": {
+      "tree_found": "{packages}/{total} पॅकेजमध्ये {vulns} असुरक्षा | {packages}/{total} पॅकेजमध्ये {vulns} असुरक्षा",
+      "show_all_packages": "{count} प्रभावित पॅकेज दाखवा | सर्व {count} प्रभावित पॅकेज दाखवा",
+      "path": "मार्ग",
+      "more": "+{count} आणखी",
+      "packages_failed": "{count} पॅकेज तपासता आले नाही | {count} पॅकेजेस तपासता आले नाहीत",
+      "scan_failed": "असुरक्षांसाठी स्कॅन करता आले नाही",
+      "severity": {
+        "critical": "गंभीर",
+        "high": "उच्च",
+        "moderate": "मध्यम",
+        "low": "कमी"
+      },
+      "fixed_in_title": "आवृत्ती {version} मध्ये दुरुस्त"
+    },
+    "deprecated": {
+      "label": "अप्रचलित",
+      "tree_found": "{count} अप्रचलित निर्भरता | {count} अप्रचलित निर्भरता",
+      "show_all": "{count} अप्रचलित पॅकेज दाखवा | सर्व {count} अप्रचलित पॅकेज दाखवा"
+    },
+    "access": {
+      "title": "टीम प्रवेश",
+      "refresh": "टीम प्रवेश रीफ्रेश करा",
+      "list_label": "टीम प्रवेश यादी",
+      "owner": "मालक",
+      "rw": "rw",
+      "ro": "ro",
+      "revoke_access": "{name} चा प्रवेश रद्द करा",
+      "no_access": "कोणताही टीम प्रवेश संरचित केलेला नाही",
+      "select_team_label": "टीम निवडा",
+      "loading_teams": "टीम्स लोड होत आहेत...",
+      "select_team": "टीम निवडा",
+      "permission_label": "परवानगी पातळी",
+      "permission": {
+        "read_only": "फक्त-वाचन",
+        "read_write": "वाचन-लेखन"
+      },
+      "grant_button": "द्या",
+      "cancel_grant": "प्रवेश देणे रद्द करा",
+      "grant_access": "+ टीम प्रवेश द्या"
+    },
+    "list": {
+      "filter_label": "पॅकेजेस फिल्टर करा",
+      "filter_placeholder": "पॅकेजेस फिल्टर करा...",
+      "sort_label": "पॅकेजेस क्रमबद्ध करा",
+      "showing_count": "{total} पैकी {filtered} पॅकेजेस दाखवत आहे"
+    },
+    "skeleton": {
+      "loading": "पॅकेज तपशील लोड होत आहेत",
+      "maintainers": "देखभालकर्ते",
+      "keywords": "कीवर्ड्स",
+      "versions": "आवृत्त्या",
+      "dependencies": "निर्भरता"
+    },
+    "sort": {
+      "downloads": "सर्वाधिक डाउनलोड झालेले",
+      "published": "अलीकडे प्रकाशित",
+      "name_asc": "नाव (A-Z)",
+      "name_desc": "नाव (Z-A)"
     },
     "size": {
       "b": "{size} B",
@@ -643,12 +712,6 @@
       "create_team": "+ टीम तयार करा"
     },
     "members": {
-      "role": {
-        "all": "सर्व",
-        "developer": "विकसक",
-        "admin": "प्रशासक",
-        "owner": "मालक"
-      },
       "title": "सदस्य",
       "refresh": "सदस्य रीफ्रेश करा",
       "filter_label": "सदस्य फिल्टर करा",
@@ -667,12 +730,19 @@
       "username_label": "वापरकर्तानाव",
       "username_placeholder": "username...",
       "role_label": "भूमिका",
+      "role": {
+        "all": "सर्व",
+        "developer": "विकसक",
+        "admin": "प्रशासक",
+        "owner": "मालक"
+      },
       "team_label": "टीम",
       "no_team": "कोणतीही टीम नाही",
       "add_button": "जोडा",
       "cancel_add": "सदस्य जोडणे रद्द करा",
       "add_member": "+ सदस्य जोडा"
     },
+    "public_packages": "{count} सार्वजनिक पॅकेज | {count} सार्वजनिक पॅकेजेस",
     "page": {
       "packages_title": "पॅकेजेस",
       "members_tab": "सदस्य",
@@ -683,8 +753,7 @@
       "no_match": "\"{query}\" शी जुळणारी कोणतीही पॅकेजेस नाहीत",
       "not_found": "संस्था सापडली नाही",
       "not_found_message": "संस्था \"{'@'}{name}\" npm वर अस्तित्वात नाही"
-    },
-    "public_packages": "{count} सार्वजनिक पॅकेज | {count} सार्वजनिक पॅकेजेस"
+    }
   },
   "user": {
     "combobox": {
@@ -743,22 +812,14 @@
     }
   },
   "code": {
-    "no_files": "कोणत्याही फाइल्स उपलब्ध नाहीत",
-    "lines": "{count} ओळी",
-    "raw": "कच्चा",
-    "table": {
-      "name": "नाव",
-      "size": "आकार"
-    },
-    "markdown_view_mode": {
-      "preview": "पूर्वावलोकन",
-      "code": "कोड"
-    },
     "files_label": "फायली",
+    "no_files": "कोणत्याही फाइल्स उपलब्ध नाहीत",
     "root": "मूळ",
+    "lines": "{count} ओळी",
     "toggle_tree": "फाइल ट्री टॉगल करा",
     "close_tree": "फाइल ट्री बंद करा",
     "copy_link": "लिंक कॉपी करा",
+    "raw": "कच्चा",
     "view_raw": "कच्ची फाइल पहा",
     "file_too_large": "पूर्वावलोकनासाठी फाइल खूप मोठी आहे",
     "file_size_warning": "{size} हे सिंटॅक्स हायलाइटिंगसाठीच्या 500KB मर्यादेपेक्षा जास्त आहे",
@@ -769,6 +830,14 @@
     "loading_tree": "फाइल ट्री लोड होत आहे...",
     "failed_to_load_tree": "या पॅकेज आवृत्तीसाठी फायली लोड करण्यात अयशस्वी",
     "back_to_package": "पॅकेजकडे परत जा",
+    "table": {
+      "name": "नाव",
+      "size": "आकार"
+    },
+    "markdown_view_mode": {
+      "preview": "पूर्वावलोकन",
+      "code": "कोड"
+    },
     "file_path": "फाइल मार्ग",
     "binary_file": "बायनरी फाइल",
     "binary_rendering_warning": "\"{contentType}\" फाइल प्रकार पूर्वावलोकनासाठी समर्थित नाही."
@@ -784,6 +853,28 @@
     }
   },
   "filters": {
+    "title": "फिल्टर्स",
+    "search": "शोधा",
+    "search_scope": "शोध व्याप्ती",
+    "search_placeholder_name": "पॅकेज नावाने फिल्टर करा...",
+    "search_placeholder_description": "वर्णनाने फिल्टर करा...",
+    "search_placeholder_keywords": "कीवर्ड्सने फिल्टर करा...",
+    "search_placeholder_all": "सर्व शोधा किंवा name: desc: kw: वापरा",
+    "scope_name": "नाव",
+    "scope_name_description": "फक्त पॅकेज नावे शोधा",
+    "scope_description": "वर्णन",
+    "scope_description_description": "फक्त वर्णने शोधा",
+    "scope_keywords": "कीवर्ड्स",
+    "scope_keywords_description": "फक्त कीवर्ड्स शोधा",
+    "scope_all": "सर्व",
+    "scope_all_description": "सर्व फील्ड्स शोधा, name: desc: kw: ऑपरेटर समर्थित",
+    "weekly_downloads": "साप्ताहिक डाउनलोड्स",
+    "updated_within": "अद्ययावत कालावधी",
+    "security": "सुरक्षा",
+    "keywords": "कीवर्ड्स",
+    "more_keywords": "+{count} आणखी",
+    "clear_all": "सर्व साफ करा",
+    "remove_filter": "{label} फिल्टर काढून टाका",
     "chips": {
       "search": "शोध",
       "downloads": "डाउनलोड्स",
@@ -811,6 +902,8 @@
       "secure": "इशाऱ्यांशिवाय",
       "insecure": "इशाऱ्यांसह"
     },
+    "view_selected": "निवडलेले पहा",
+    "clear_selected_label": "निवड साफ करा",
     "sort": {
       "label": "पॅकेजेस क्रमबद्ध करा",
       "toggle_direction": "क्रम दिशा टॉगल करा",
@@ -872,34 +965,12 @@
       "security_warning": "सुरक्षा इशारा",
       "secure": "सुरक्षित",
       "no_packages": "कोणतीही पॅकेजेस सापडली नाहीत"
-    },
-    "title": "फिल्टर्स",
-    "search": "शोधा",
-    "search_scope": "शोध व्याप्ती",
-    "search_placeholder_name": "पॅकेज नावाने फिल्टर करा...",
-    "search_placeholder_description": "वर्णनाने फिल्टर करा...",
-    "search_placeholder_keywords": "कीवर्ड्सने फिल्टर करा...",
-    "search_placeholder_all": "सर्व शोधा किंवा name: desc: kw: वापरा",
-    "scope_name": "नाव",
-    "scope_name_description": "फक्त पॅकेज नावे शोधा",
-    "scope_description": "वर्णन",
-    "scope_description_description": "फक्त वर्णने शोधा",
-    "scope_keywords": "कीवर्ड्स",
-    "scope_keywords_description": "फक्त कीवर्ड्स शोधा",
-    "scope_all": "सर्व",
-    "scope_all_description": "सर्व फील्ड्स शोधा, name: desc: kw: ऑपरेटर समर्थित",
-    "weekly_downloads": "साप्ताहिक डाउनलोड्स",
-    "updated_within": "अद्ययावत कालावधी",
-    "security": "सुरक्षा",
-    "keywords": "कीवर्ड्स",
-    "more_keywords": "+{count} आणखी",
-    "clear_all": "सर्व साफ करा",
-    "remove_filter": "{label} फिल्टर काढून टाका",
-    "view_selected": "निवडलेले पहा",
-    "clear_selected_label": "निवड साफ करा"
+    }
   },
   "about": {
     "title": "बद्दल",
+    "heading": "बद्दल",
+    "meta_description": "npmx हे npm नोंदणीसाठी वेगवान, आधुनिक ब्राउझर आहे. npm पॅकेजेस शोधण्यासाठी उत्कृष्ट UX/DX.",
     "what_we_are": {
       "title": "आम्ही काय आहोत",
       "better_ux_dx": "उत्तम UX/DX",
@@ -908,6 +979,11 @@
       "admin_description": "तुमची पॅकेजेस, टीम्स आणि संस्था व्यवस्थापित करण्यासाठी - हे सर्व ब्राउझरमधून, तुमच्या स्थानिक npm CLI च्या मदतीने - आम्ही उत्तम {adminUi} देण्याचाही प्रयत्न करतो."
     },
     "what_we_are_not": {
+      "title": "आम्ही काय नाही",
+      "not_package_manager": "पॅकेज मॅनेजर नाही.",
+      "not_registry": "नोंदणी नाही.",
+      "registry_description": "आम्ही पॅकेजेस होस्ट करत नाही. त्यांना ब्राउझ करण्याचा आम्ही फक्त एक वेगवान, आधुनिक मार्ग आहोत.",
+      "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}.",
       "words": {
         "already": "आधीच",
         "people": "लोक",
@@ -916,45 +992,8 @@
         "cool": "छान",
         "package": "पॅकेज",
         "managers": "मॅनेजर्स आहेत"
-      },
-      "title": "आम्ही काय नाही",
-      "not_package_manager": "पॅकेज मॅनेजर नाही.",
-      "not_registry": "नोंदणी नाही.",
-      "registry_description": "आम्ही पॅकेजेस होस्ट करत नाही. त्यांना ब्राउझ करण्याचा आम्ही फक्त एक वेगवान, आधुनिक मार्ग आहोत.",
-      "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}."
-    },
-    "contributors": {
-      "title": "... आणि आणखी {count} योगदानकर्ता | ... आणि आणखी {count} योगदानकर्ते",
-      "description": "npmx पूर्णपणे मुक्त-स्रोत आहे आणि अप्रतिम योगदानकर्त्यांच्या समुदायाने तयार केले आहे. आमच्यात सामील व्हा आणि आपण नेहमी हवी होती ती npm ब्राउझिंगची अनुभूती एकत्र तयार करूया.",
-      "loading": "योगदानकर्ते लोड करत आहे...",
-      "error": "योगदानकर्ते लोड करण्यात अयशस्वी",
-      "view_profile": "{name} चे GitHub प्रोफाइल पहा"
-    },
-    "get_involved": {
-      "contribute": {
-        "title": "योगदान द्या",
-        "description": "आपल्याला हवा असलेला npm अनुभव तयार करण्यात आम्हाला मदत करा.",
-        "cta": "GitHub वर पहा"
-      },
-      "community": {
-        "title": "समुदायात सामील व्हा",
-        "description": "गप्पा मारा, प्रश्न विचारा आणि कल्पना शेअर करा.",
-        "cta": "Discord मध्ये सामील व्हा"
-      },
-      "follow": {
-        "title": "अद्ययावत रहा",
-        "description": "npmx बद्दलचे ताजे अपडेट्स जाणून घ्या.",
-        "cta": "Bluesky वर फॉलो करा"
-      },
-      "title": "सहभागी व्हा",
-      "builders": {
-        "title": "npmx तयार करण्यात मदत करा",
-        "description": "npmx चे भविष्य घडवणाऱ्या बिल्डर्समध्ये सामील व्हा.",
-        "cta": "Builders Discord मध्ये सामील व्हा"
       }
     },
-    "heading": "बद्दल",
-    "meta_description": "npmx हे npm नोंदणीसाठी वेगवान, आधुनिक ब्राउझर आहे. npm पॅकेजेस शोधण्यासाठी उत्कृष्ट UX/DX.",
     "sponsors": {
       "title": "प्रायोजक"
     },
@@ -968,11 +1007,41 @@
       "role_maintainer": "देखभालकर्ता",
       "sponsor": "प्रायोजक",
       "sponsor_aria": "GitHub वर {name} ला प्रायोजित करा"
+    },
+    "contributors": {
+      "title": "... आणि आणखी {count} योगदानकर्ता | ... आणि आणखी {count} योगदानकर्ते",
+      "description": "npmx पूर्णपणे मुक्त-स्रोत आहे आणि अप्रतिम योगदानकर्त्यांच्या समुदायाने तयार केले आहे. आमच्यात सामील व्हा आणि आपण नेहमी हवी होती ती npm ब्राउझिंगची अनुभूती एकत्र तयार करूया.",
+      "loading": "योगदानकर्ते लोड करत आहे...",
+      "error": "योगदानकर्ते लोड करण्यात अयशस्वी",
+      "view_profile": "{name} चे GitHub प्रोफाइल पहा"
+    },
+    "get_involved": {
+      "title": "सहभागी व्हा",
+      "contribute": {
+        "title": "योगदान द्या",
+        "description": "आपल्याला हवा असलेला npm अनुभव तयार करण्यात आम्हाला मदत करा.",
+        "cta": "GitHub वर पहा"
+      },
+      "community": {
+        "title": "समुदायात सामील व्हा",
+        "description": "गप्पा मारा, प्रश्न विचारा आणि कल्पना शेअर करा.",
+        "cta": "Discord मध्ये सामील व्हा"
+      },
+      "builders": {
+        "title": "npmx तयार करण्यात मदत करा",
+        "description": "npmx चे भविष्य घडवणाऱ्या बिल्डर्समध्ये सामील व्हा.",
+        "cta": "Builders Discord मध्ये सामील व्हा"
+      },
+      "follow": {
+        "title": "अद्ययावत रहा",
+        "description": "npmx बद्दलचे ताजे अपडेट्स जाणून घ्या.",
+        "cta": "Bluesky वर फॉलो करा"
+      }
     }
   },
   "account_menu": {
-    "account": "खाते",
     "connect": "जोडा",
+    "account": "खाते",
     "npm_cli": "npm CLI",
     "atmosphere": "Atmosphere",
     "npm_cli_desc": "पॅकेजेस आणि संस्था व्यवस्थापित करा",
@@ -1000,6 +1069,8 @@
     }
   },
   "header": {
+    "home": "npmx मुख्यपृष्ठ",
+    "packages": "पॅकेजेस",
     "packages_dropdown": {
       "title": "तुमची पॅकेजेस",
       "loading": "लोड करत आहे...",
@@ -1007,6 +1078,7 @@
       "empty": "कोणतीही पॅकेजेस सापडली नाहीत",
       "view_all": "सर्व पहा"
     },
+    "orgs": "संस्था",
     "orgs_dropdown": {
       "title": "तुमच्या संस्था",
       "loading": "लोड करत आहे...",
@@ -1014,9 +1086,6 @@
       "empty": "कोणत्याही संस्था सापडल्या नाहीत",
       "view_all": "सर्व पहा"
     },
-    "home": "npmx मुख्यपृष्ठ",
-    "packages": "पॅकेजेस",
-    "orgs": "संस्था",
     "pr": "GitHub pull request #{prNumber} उघडा"
   },
   "compare": {
@@ -1057,6 +1126,15 @@
       "add_column": "तुलनेत निर्भरता नसलेला स्तंभ जोडा"
     },
     "facets": {
+      "group_label": "तुलना घटक",
+      "all": "सर्व",
+      "none": "काहीही नाही",
+      "coming_soon": "लवकरच येत आहे",
+      "select_all": "सर्व घटक निवडा",
+      "deselect_all": "सर्व घटकांची निवड रद्द करा",
+      "select_category": "{category} मधील सर्व घटक निवडा",
+      "deselect_category": "{category} मधील सर्व घटकांची निवड रद्द करा",
+      "binary_only_tooltip": "हे पॅकेज binaries उघड करते आणि exports नाहीत",
       "categories": {
         "performance": "कार्यक्षमता",
         "health": "स्थिती",
@@ -1128,15 +1206,6 @@
         "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
         "up_to_you": "निर्णय तुमचा!"
       },
-      "group_label": "तुलना घटक",
-      "all": "सर्व",
-      "none": "काहीही नाही",
-      "coming_soon": "लवकरच येत आहे",
-      "select_all": "सर्व घटक निवडा",
-      "deselect_all": "सर्व घटकांची निवड रद्द करा",
-      "select_category": "{category} मधील सर्व घटक निवडा",
-      "deselect_category": "{category} मधील सर्व घटकांची निवड रद्द करा",
-      "binary_only_tooltip": "हे पॅकेज binaries उघड करते आणि exports नाहीत",
       "trends": {
         "title": "ट्रेंड्सची तुलना करा"
       }
@@ -1195,7 +1264,38 @@
     "view_in_code_browser": "कोड ब्राउझरमध्ये पहा",
     "word_wrap": "शब्द ओघ"
   },
+  "pds": {
+    "title": "npmx.social",
+    "meta_description": "npmx समुदायासाठी अधिकृत AT Protocol Personal Data Server (PDS).",
+    "join": {
+      "title": "समुदायात सामील व्हा",
+      "description": "तुम्ही atmosphere वर पहिले खाते तयार करत असाल किंवा विद्यमान खाते स्थलांतरित करत असाल, तुमचे येथे स्वागत आहे. तुमचे सध्याचे खाते तुम्ही तुमचे handle, पोस्ट्स किंवा followers न गमावता स्थलांतरित करू शकता.",
+      "migrate": "PDS MOOver सह स्थलांतर करा"
+    },
+    "server": {
+      "title": "सर्व्हर तपशील",
+      "location_label": "ठिकाण:",
+      "location_value": "न्युरेमबर्ग, जर्मनी",
+      "infrastructure_label": "पायाभूत सुविधा:",
+      "infrastructure_value": "Hetzner वर होस्ट केलेले",
+      "privacy_label": "गोपनीयता:",
+      "privacy_value": "कडक EU डेटा संरक्षण कायद्यांच्या अधीन",
+      "learn_more": "npmx Atmosphere कसा वापरतो ते जाणून घ्या"
+    },
+    "community": {
+      "title": "इथे कोण आहेत",
+      "description": "आधीच npmx.social ला आपले घर म्हणणाऱ्या {count} खात्यांपैकी काही:",
+      "loading": "PDS समुदाय लोड करत आहे...",
+      "error": "PDS समुदाय लोड करण्यात अयशस्वी.",
+      "empty": "दाखवण्यासाठी समुदाय सदस्य नाहीत.",
+      "view_profile": "{handle} चे प्रोफाइल पहा",
+      "new_accounts": "...आणि atmosphere मध्ये नवीन असलेली आणखी {count} खाती"
+    }
+  },
   "privacy_policy": {
+    "title": "गोपनीयता धोरण",
+    "last_updated": "शेवटचे अद्यतन: {date}",
+    "welcome": "{app} मध्ये तुमचे स्वागत आहे. तुमच्या गोपनीयतेचे संरक्षण करण्यासाठी आम्ही वचनबद्ध आहोत. या धोरणात आम्ही कोणता डेटा गोळा करतो, तो कसा वापरतो आणि तुमच्या माहितीबाबत तुमचे अधिकार काय आहेत हे स्पष्ट केले आहे.",
     "cookies": {
       "what_are": {
         "title": "कुकीज म्हणजे काय?",
@@ -1270,106 +1370,6 @@
     "changes": {
       "title": "या धोरणातील बदल",
       "p1": "आम्ही वेळोवेळी हे गोपनीयता धोरण अद्ययावत करू शकतो. कोणतेही बदल अद्ययावत पुनरावलोकन तारखेसह या पृष्ठावर प्रकाशित केले जातील."
-    },
-    "title": "गोपनीयता धोरण",
-    "last_updated": "शेवटचे अद्यतन: {date}",
-    "welcome": "{app} मध्ये तुमचे स्वागत आहे. तुमच्या गोपनीयतेचे संरक्षण करण्यासाठी आम्ही वचनबद्ध आहोत. या धोरणात आम्ही कोणता डेटा गोळा करतो, तो कसा वापरतो आणि तुमच्या माहितीबाबत तुमचे अधिकार काय आहेत हे स्पष्ट केले आहे."
-  },
-  "shortcuts": {
-    "section": {
-      "global": "जागतिक",
-      "search": "शोध",
-      "package": "पॅकेज"
-    },
-    "focus_search": "शोधावर फोकस करा",
-    "show_kbd_hints": "कीबोर्ड सूचनांना ठळक करा",
-    "settings": "सेटिंग्ज उघडा",
-    "compare": "तुलना उघडा",
-    "compare_from_package": "तुलना उघडा (सध्याच्या पॅकेजसह पूर्वभरलेले)",
-    "navigate_results": "परिणामांमध्ये फिरा",
-    "go_to_result": "परिणामाकडे जा",
-    "open_code_view": "कोड दृश्य उघडा",
-    "open_docs": "दस्तऐवज उघडा",
-    "disable_shortcuts": "तुम्ही {settings} मध्ये कीबोर्ड शॉर्टकट अक्षम करू शकता.",
-    "open_main": "मुख्य माहिती उघडा",
-    "open_diff": "आवृत्तीतील फरक उघडा"
-  },
-  "blog": {
-    "title": "ब्लॉग",
-    "heading": "ब्लॉग",
-    "meta_description": "npmx समुदायाकडून अंतर्दृष्टी आणि अद्यतने",
-    "author": {
-      "view_profile": "Bluesky वर {name} चे प्रोफाइल पहा"
-    },
-    "draft_badge": "मसुदा",
-    "draft_banner": "हा अप्रकाशित मसुदा आहे. तो अपूर्ण असू शकतो किंवा त्यात चुकीची माहिती असू शकते.",
-    "no_posts": "कोणत्याही पोस्ट सापडल्या नाहीत.",
-    "atproto": {
-      "view_on_bluesky": "Bluesky वर पहा",
-      "reply_on_bluesky": "Bluesky वर उत्तर द्या",
-      "likes_on_bluesky": "Bluesky वरील पसंती",
-      "like_or_reply_on_bluesky": "ही पोस्ट पसंत करा किंवा तुमची टिप्पणी Bluesky वर जोडा",
-      "no_comments_yet": "अजून कोणत्याही टिप्पण्या नाहीत.",
-      "could_not_load_comments": "टिप्पण्या लोड करता आल्या नाहीत.",
-      "comments": "टिप्पण्या",
-      "loading_comments": "टिप्पण्या लोड करत आहे...",
-      "updating": "अद्यतनित करत आहे...",
-      "reply_count": "{count} उत्तर | {count} उत्तरे",
-      "like_count": "{count} पसंती | {count} पसंत्या",
-      "repost_count": "{count} पुनर्पोस्ट | {count} पुनर्पोस्ट्स",
-      "more_replies": "{count} आणखी उत्तर... | {count} आणखी उत्तरे..."
-    }
-  },
-  "error": {
-    "401": "अनधिकृत",
-    "404": "पृष्ठ सापडले नाही",
-    "500": "अंतर्गत सर्व्हर त्रुटी",
-    "503": "सेवा उपलब्ध नाही",
-    "default": "काहीतरी चूक झाली"
-  },
-  "profile": {
-    "display_name": "प्रदर्शन नाव",
-    "description": "वर्णन",
-    "no_description": "वर्णन नाही",
-    "website": "वेबसाइट",
-    "website_placeholder": "https://example.com",
-    "likes": "पसंती",
-    "seo_title": "{handle} - npmx",
-    "seo_description": "{handle} द्वारे npmx प्रोफाइल",
-    "not_found": "प्रोफाइल सापडले नाही",
-    "not_found_message": "{handle} साठीचे प्रोफाइल सापडले नाही.",
-    "invite": {
-      "message": "ते अजून npmx वापरत आहेत असे दिसत नाही. त्यांना याबद्दल सांगायचे का?",
-      "share_button": "Bluesky वर शेअर करा",
-      "compose_text": "अहो {'@'}{handle}! तुम्ही अजून npmx.dev पाहिले आहे का? हा npm नोंदणीसाठी जलद, आधुनिक आणि मुक्त-स्रोत ब्राउझर आहे.\nhttps://npmx.dev"
-    }
-  },
-  "pds": {
-    "title": "npmx.social",
-    "meta_description": "npmx समुदायासाठी अधिकृत AT Protocol Personal Data Server (PDS).",
-    "join": {
-      "title": "समुदायात सामील व्हा",
-      "description": "तुम्ही atmosphere वर पहिले खाते तयार करत असाल किंवा विद्यमान खाते स्थलांतरित करत असाल, तुमचे येथे स्वागत आहे. तुमचे सध्याचे खाते तुम्ही तुमचे handle, पोस्ट्स किंवा followers न गमावता स्थलांतरित करू शकता.",
-      "migrate": "PDS MOOver सह स्थलांतर करा"
-    },
-    "server": {
-      "title": "सर्व्हर तपशील",
-      "location_label": "ठिकाण:",
-      "location_value": "न्युरेमबर्ग, जर्मनी",
-      "infrastructure_label": "पायाभूत सुविधा:",
-      "infrastructure_value": "Hetzner वर होस्ट केलेले",
-      "privacy_label": "गोपनीयता:",
-      "privacy_value": "कडक EU डेटा संरक्षण कायद्यांच्या अधीन",
-      "learn_more": "npmx Atmosphere कसा वापरतो ते जाणून घ्या"
-    },
-    "community": {
-      "title": "इथे कोण आहेत",
-      "description": "आधीच npmx.social ला आपले घर म्हणणाऱ्या {count} खात्यांपैकी काही:",
-      "loading": "PDS समुदाय लोड करत आहे...",
-      "error": "PDS समुदाय लोड करण्यात अयशस्वी.",
-      "empty": "दाखवण्यासाठी समुदाय सदस्य नाहीत.",
-      "view_profile": "{handle} चे प्रोफाइल पहा",
-      "new_accounts": "...आणि atmosphere मध्ये नवीन असलेली आणखी {count} खाती"
     }
   },
   "a11y": {
@@ -1423,40 +1423,6 @@
       "error": "फाइल यादी लोड करताना त्रुटी.",
       "empty": "कोणत्याही फाइल्स सापडल्या नाहीत",
       "file_link": "GitHub वर {file} ({lang}) संपादित करा"
-    }
-  },
-  "vacations": {
-    "title": "सुट्टीवर",
-    "meta_description": "npmx टीम विश्रांती घेत होती. एका आठवड्यानंतर Discord पुन्हा उघडला.",
-    "heading": "ऊर्जा भरून घेत आहोत",
-    "subtitle": "आम्ही npmx अशा वेगाने तयार करत होतो की त्याची किंमत आमच्यातील {some} लोकांच्या झोपेने चुकवावी लागत होती. तेच सामान्य व्हावे असे आम्हाला वाटत नव्हते! म्हणून आम्ही एक आठवड्याची सुट्टी घेतली. एकत्र.",
-    "illustration_alt": "आरामदायी आयकॉन्सची एकच ओळ",
-    "poke_log": "शेकोटीला ढवळा",
-    "what": {
-      "title": "काय घडले",
-      "p1": "discord {dates} बंद होता.",
-      "dates": "14 फेब्रुवारी – 21 फेब्रुवारी",
-      "p2": "सर्व आमंत्रण दुवे काढले गेले आणि चॅनेल्स लॉक केले गेले - फक्त {garden} वगळता, जे तिथेच वेळ घालवू इच्छिणाऱ्यांसाठी उघडे ठेवले होते.",
-      "garden": "#garden"
-    },
-    "meantime": {
-      "title": "तोपर्यंत",
-      "p1": "{site} आणि {repo} खुलेच राहिले - लोक येत राहिले, काही इश्यू दाखल केले, काही PRs उघडले, पण मुख्यतः सगळ्यांनी कुठेतरी आरामदायी शेकोटीजवळ वेळ घालवला.",
-      "repo_link": "रिपॉझिटरी"
-    },
-    "return": {
-      "title": "आम्ही परत आलो!",
-      "p1": "आम्ही ताजेतवाने होऊन 3 मार्चपर्यंतच्या अंतिम टप्प्यासाठी तयार होऊन परत आलो. अपडेट्ससाठी {social}.",
-      "social_link": "Bluesky वर आम्हाला फॉलो करा"
-    },
-    "stats": {
-      "contributors": "योगदानकर्ते",
-      "commits": "कमिट्स",
-      "pr": "मर्ज झालेले PRs",
-      "subtitle": {
-        "some": "काही",
-        "all": "सर्व"
-      }
     }
   },
   "action_bar": {
