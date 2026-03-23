@@ -17,7 +17,7 @@ describe('useRepositoryUrl', () => {
           type: 'git',
           url: 'git+https://github.com/agentmarkup/agentmarkup.git',
         },
-      }),
+      } as any),
     )
 
     expect(repositoryUrl.value).toBe('https://github.com/agentmarkup/agentmarkup')
@@ -31,7 +31,7 @@ describe('useRepositoryUrl', () => {
           url: 'git+https://github.com/agentmarkup/agentmarkup.git',
           directory: 'packages/vite',
         },
-      }),
+      } as any),
     )
 
     expect(repositoryUrl.value).toBe(
@@ -43,14 +43,14 @@ describe('useRepositoryUrl', () => {
     const { repositoryUrl } = useRepositoryUrl(
       ref({
         repository: {},
-      }),
+      } as any),
     )
 
     expect(repositoryUrl.value).toBeNull()
   })
 
   it('should return null when no repository field', () => {
-    const { repositoryUrl } = useRepositoryUrl(ref({}))
+    const { repositoryUrl } = useRepositoryUrl(ref({} as any))
 
     expect(repositoryUrl.value).toBeNull()
   })
@@ -61,7 +61,7 @@ describe('useRepositoryUrl', () => {
         repository: {
           url: 'https://github.com/nuxt/ui',
         },
-      }),
+      } as any),
     )
 
     expect(repositoryUrl.value).toBe('https://github.com/nuxt/ui')
@@ -74,7 +74,7 @@ describe('useRepositoryUrl', () => {
           url: 'git+https://github.com/org/repo.git',
           directory: 'packages/core/',
         },
-      }),
+      } as any),
     )
 
     expect(repositoryUrl.value).toBe('https://github.com/org/repo/tree/HEAD/packages/core/')
