@@ -20,6 +20,7 @@ const logos = [
   {
     name: () => $t('brand.logos.wordmark'),
     src: '/logo.svg',
+    srcLight: '/logo-light.svg',
     altDark: () => $t('brand.logos.wordmark_alt'),
     altLight: () => $t('brand.logos.wordmark_light_alt'),
     width: 602,
@@ -40,7 +41,19 @@ const logos = [
 
 const typographySizes = ['text-2xl', 'text-xl', 'text-lg', 'text-base', 'text-sm']
 
+const svgLoading = ref(new Set<string>())
 const pngLoading = ref(new Set<string>())
+
+function handleSvgDownload(src: string) {
+  if (svgLoading.value.has(src)) return
+  svgLoading.value.add(src)
+  try {
+    downloadFileLink(src, src.replace('/', ''))
+  }
+  finally {
+    svgLoading.value.delete(src)
+  }
+}
 
 async function handlePngDownload(logo: (typeof logos)[number]) {
   if (pngLoading.value.has(logo.src)) return
@@ -111,19 +124,23 @@ async function handlePngDownload(logo: (typeof logos)[number]) {
                       $t('brand.logos.on_dark')
                     }}</span>
                     <div class="flex items-center gap-2">
-                      <a
-                        :href="logo.src"
-                        :download="logo.src.replace('/', '')"
-                        class="inline-flex items-center gap-1 text-xs font-mono text-fg-muted border border-border rounded-md px-2 py-0.5 hover:bg-bg-muted hover:text-fg transition-colors duration-200 no-underline focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+                      <ButtonBase
+                        size="sm"
                         :aria-label="
                           $t('brand.logos.download_svg_aria', {
                             name: `${logo.name()} (${$t('brand.logos.on_dark')})`,
                           })
                         "
+                        :disabled="svgLoading.has(logo.src)"
+                        @click="handleSvgDownload(logo.src)"
                       >
-                        <span class="i-lucide:download w-3.5 h-3.5" aria-hidden="true" />
+                        <span
+                          class="size-[1em]"
+                          aria-hidden="true"
+                          :class="svgLoading.has(logo.src) ? 'i-lucide:loader-circle animate-spin' : 'i-lucide:download'"
+                        />
                         {{ $t('brand.logos.download_svg') }}
-                      </a>
+                      </ButtonBase>
                       <ButtonBase
                         size="sm"
                         :aria-label="
@@ -173,19 +190,23 @@ async function handlePngDownload(logo: (typeof logos)[number]) {
                       $t('brand.logos.on_light')
                     }}</span>
                     <div class="flex items-center gap-2">
-                      <a
-                        :href="logo.src"
-                        :download="logo.src.replace('/', '')"
-                        class="inline-flex items-center gap-1 text-xs font-mono text-fg-muted border border-border rounded-md px-2 py-0.5 hover:bg-bg-muted hover:text-fg transition-colors duration-200 no-underline focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+                      <ButtonBase
+                        size="sm"
                         :aria-label="
                           $t('brand.logos.download_svg_aria', {
                             name: `${logo.name()} (${$t('brand.logos.on_light')})`,
                           })
                         "
+                        :disabled="svgLoading.has(logo.srcLight ?? logo.src)"
+                        @click="handleSvgDownload(logo.srcLight ?? logo.src)"
                       >
-                        <span class="i-lucide:download w-3.5 h-3.5" aria-hidden="true" />
+                        <span
+                          class="size-[1em]"
+                          aria-hidden="true"
+                          :class="svgLoading.has(logo.srcLight ?? logo.src) ? 'i-lucide:loader-circle animate-spin' : 'i-lucide:download'"
+                        />
                         {{ $t('brand.logos.download_svg') }}
-                      </a>
+                      </ButtonBase>
                       <ButtonBase
                         size="sm"
                         :aria-label="

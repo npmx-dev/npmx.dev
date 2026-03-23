@@ -54,12 +54,19 @@ function getCustomSvgString(): string {
   return new XMLSerializer().serializeToString(clone)
 }
 
+const svgLoading = ref(false)
+
 function downloadCustomSvg() {
   const svg = getCustomSvgString()
   if (!svg) return
-
-  const blob = new Blob([svg], { type: 'image/svg+xml' })
-  downloadFile(blob, `npmx-logo-${activeAccentId.value}.svg`)
+  svgLoading.value = true
+  try {
+    const blob = new Blob([svg], { type: 'image/svg+xml' })
+    downloadFile(blob, `npmx-logo-${activeAccentId.value}.svg`)
+  }
+  finally {
+    svgLoading.value = false
+  }
 }
 
 const pngLoading = ref(false)
@@ -202,10 +209,15 @@ async function downloadCustomPng() {
         <div class="flex items-center gap-2">
           <ButtonBase
             size="sm"
-            classicon="i-lucide:download"
             :aria-label="$t('brand.customize.download_svg_aria')"
+            :disabled="svgLoading"
             @click="downloadCustomSvg"
           >
+            <span
+              class="size-[1em]"
+              aria-hidden="true"
+              :class="svgLoading ? 'i-lucide:loader-circle animate-spin' : 'i-lucide:download'"
+            />
             {{ $t('brand.logos.download_svg') }}
           </ButtonBase>
           <ButtonBase
