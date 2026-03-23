@@ -441,7 +441,7 @@ export function renderToc(symbols: MergedSymbol[]): string {
     const title = KIND_TITLES[kind] || kind
     lines.push(`<li>`)
     lines.push(
-      `<a href="#section-${kind}">${title} <span class="text-fg-subtle font-normal">(${kindSymbols.length})</span></a>`,
+      `<a href="#section-${kind}" class="text-fg-muted hover:text-fg block mb-1">${title} <span class="text-fg-subtle font-normal">(${kindSymbols.length})</span></a>`,
     )
 
     const showSymbols = kindSymbols.slice(0, MAX_TOC_ITEMS_PER_KIND)
