@@ -15,7 +15,7 @@ export default defineConfig<ConfigOptions>({
   webServer: {
     command: 'pnpm start:playwright:webserver',
     url: baseURL,
-    reuseExistingServer: false,
+    reuseExistingServer: !process.env.CI,
     timeout: 60_000,
   },
   // Start/stop mock connector server before/after all tests (teardown via returned closure)
