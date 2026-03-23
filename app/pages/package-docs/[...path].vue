@@ -168,13 +168,9 @@ if (import.meta.client) {
     () => docsData.value?.toc,
     () => nextTick(updateActiveTocLink),
   )
-  onMounted(() => {
-    window.addEventListener('hashchange', updateActiveTocLink)
-    updateActiveTocLink()
-  })
-  onBeforeUnmount(() => {
-    window.removeEventListener('hashchange', updateActiveTocLink)
-  })
+
+  onMounted(updateActiveTocLink)
+  useEventListener(window, 'hashchange', updateActiveTocLink)
 }
 </script>
 
