@@ -483,6 +483,12 @@
       "maintainer_template": "{avatar} {char126}{name}"
     },
     "trends": {
+      "chart_assistive_text": {
+        "keyboard_navigation_horizontal": "Use the left and right arrow keys to cycle through data points.",
+        "keyboard_navigation_vertical": "Use the up and down arrow keys to cycle through data points.",
+        "table_available": "A data table for this chart is available below.",
+        "table_caption": "Chart data table"
+      },
       "granularity": "Granularity",
       "granularity_daily": "Daily",
       "granularity_weekly": "Weekly",
@@ -541,7 +547,8 @@
     "downloads": {
       "title": "Weekly Downloads",
       "community_distribution": "View community adoption distribution",
-      "subtitle": "Across all versions"
+      "subtitle": "Across all versions",
+      "sparkline_nav_hint": "Use ← →"
     },
     "install_scripts": {
       "title": "Install Scripts",
@@ -1106,7 +1113,9 @@
       "empty_title": "Select packages to compare",
       "empty_description": "Search and add at least 2 packages above to see a side-by-side comparison of their metrics.",
       "table_view": "Table",
-      "charts_view": "Charts"
+      "charts_view": "Charts",
+      "bar_chart_nav_hint": "Use ↑ ↓",
+      "line_chart_nav_hint": "Use ← →"
     },
     "selector": {
       "search_label": "Search for packages",
