@@ -14,8 +14,6 @@ defineOgImageComponent('Default', {
   description: $t('brand.meta_description'),
 })
 
-const { convert } = useSvgToPng()
-
 const logos = [
   {
     name: () => $t('brand.logos.wordmark'),
@@ -45,7 +43,7 @@ async function handlePngDownload(logo: (typeof logos)[number]) {
   if (pngLoading.value.has(logo.src)) return
   pngLoading.value.add(logo.src)
   try {
-    const blob = await convert(logo.src, logo.width, logo.height)
+    const blob = await svgToPng(logo.src, logo.width, logo.height)
     const filename = logo.src.replace(/^\//, '').replace('.svg', '.png')
     downloadFile(blob, filename)
   } finally {
