@@ -43,7 +43,9 @@ async function copySvg() {
     })
     await navigator.clipboard.write([item])
     copied.value = true
-    setTimeout(() => { copied.value = false }, 2000)
+    setTimeout(() => {
+      copied.value = false
+    }, 2000)
   } catch {
     // Fallback for older browsers that don't support ClipboardItem with promises
     const res = await fetch('/logo.svg')
@@ -57,7 +59,9 @@ async function copySvg() {
     document.execCommand('copy')
     document.body.removeChild(textarea)
     copied.value = true
-    setTimeout(() => { copied.value = false }, 2000)
+    setTimeout(() => {
+      copied.value = false
+    }, 2000)
   }
   setTimeout(close, 1000)
 }
