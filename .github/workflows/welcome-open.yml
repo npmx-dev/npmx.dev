@@ -13,7 +13,6 @@ jobs:
     name: Greet First-Time Contributors
     if: github.repository == 'npmx-dev/npmx.dev'
     runs-on: ubuntu-latest
-
     steps:
       - uses: zephyrproject-rtos/action-first-interaction@58853996b1ac504b8e0f6964301f369d2bb22e5c
         with:
