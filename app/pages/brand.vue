@@ -29,6 +29,7 @@ const logos = [
   {
     name: () => $t('brand.logos.mark'),
     src: '/logo-mark.svg',
+    srcLight: '/logo-mark-light.svg',
     altDark: () => $t('brand.logos.mark_alt'),
     altLight: () => $t('brand.logos.mark_light_alt'),
     width: 153,
@@ -125,7 +126,6 @@ async function handlePngDownload(logo: (typeof logos)[number]) {
                       </a>
                       <ButtonBase
                         size="sm"
-                        classicon="i-lucide:download"
                         :aria-label="
                           $t('brand.logos.download_png_aria', {
                             name: `${logo.name()} (${$t('brand.logos.on_dark')})`,
@@ -134,6 +134,11 @@ async function handlePngDownload(logo: (typeof logos)[number]) {
                         :disabled="pngLoading.has(logo.src)"
                         @click="handlePngDownload(logo)"
                       >
+                        <span
+                          class="size-[1em]"
+                          aria-hidden="true"
+                          :class="pngLoading.has(logo.src) ? 'i-lucide:loader-circle animate-spin' : 'i-lucide:download'"
+                        />
                         {{ $t('brand.logos.download_png') }}
                       </ButtonBase>
                     </div>
@@ -153,11 +158,10 @@ async function handlePngDownload(logo: (typeof logos)[number]) {
                     />
                     <img
                       v-else
-                      :src="logo.src"
+                      :src="logo.srcLight ?? logo.src"
                       :alt="logo.altLight()"
                       class="max-h-16 w-auto max-w-full"
                       :class="{ 'max-h-20': logo.span }"
-                      :style="logo.src === '/logo-mark.svg' ? 'filter: invert(1)' : ''"
                     />
                   </div>
                   <div class="flex items-center justify-between mt-2">
@@ -180,7 +184,6 @@ async function handlePngDownload(logo: (typeof logos)[number]) {
                       </a>
                       <ButtonBase
                         size="sm"
-                        classicon="i-lucide:download"
                         :aria-label="
                           $t('brand.logos.download_png_aria', {
                             name: `${logo.name()} (${$t('brand.logos.on_light')})`,
@@ -189,6 +192,11 @@ async function handlePngDownload(logo: (typeof logos)[number]) {
                         :disabled="pngLoading.has(logo.src)"
                         @click="handlePngDownload(logo)"
                       >
+                        <span
+                          class="size-[1em]"
+                          aria-hidden="true"
+                          :class="pngLoading.has(logo.src) ? 'i-lucide:loader-circle animate-spin' : 'i-lucide:download'"
+                        />
                         {{ $t('brand.logos.download_png') }}
                       </ButtonBase>
                     </div>
