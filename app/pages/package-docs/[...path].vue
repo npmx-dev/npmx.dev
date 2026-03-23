@@ -155,8 +155,14 @@ function updateActiveTocLink(hash: string) {
 }
 
 if (import.meta.client) {
-  watch(() => route.hash, hash => updateActiveTocLink(hash))
-  watch(() => docsData.value?.toc, () => nextTick(() => updateActiveTocLink(route.hash)))
+  watch(
+    () => route.hash,
+    hash => updateActiveTocLink(hash),
+  )
+  watch(
+    () => docsData.value?.toc,
+    () => nextTick(() => updateActiveTocLink(route.hash)),
+  )
   onMounted(() => updateActiveTocLink(route.hash))
 }
 </script>
