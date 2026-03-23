@@ -287,8 +287,8 @@ importers:
         specifier: 0.6.2
         version: 0.6.2(magicast@0.5.2)
       chromatic:
-        specifier: 15.3.0
-        version: 15.3.0
+        specifier: 16.0.0
+        version: 16.0.0
       devalue:
         specifier: 5.6.4
         version: 5.6.4
@@ -5866,8 +5866,8 @@ packages:
     resolution: {integrity: sha512-+IxzY9BZOQd/XuYPRmrvEVjF/nqj5kgT4kEq7VofrDoM1MxoRjEWkrCC3EtLi59TVawxTAn+orJwFQcrqEN1+g==}
     engines: {node: '>=18'}
 
-  chromatic@15.3.0:
-    resolution: {integrity: sha512-ficw/Pz9OpBnPoWDRmuwFDwzLPSN0o90x6X+0+rbnMFYtDTPWXddW6R14jQ56SgYSByJ67OyHZg2gW6U6HF2Qw==}
+  chromatic@16.0.0:
+    resolution: {integrity: sha512-O81RVGDXXoreNeG894hjaUx08xep+C/BA6aJNMZkwSjH7Lln8IweZekBpBEoQPNNpjmHyZvcTIwN/aGitdK53Q==}
     hasBin: true
     peerDependencies:
       '@chromatic-com/cypress': ^0.*.* || ^1.0.0
@@ -17031,7 +17031,7 @@ snapshots:
 
   chownr@3.0.0: {}
 
-  chromatic@15.3.0: {}
+  chromatic@16.0.0: {}
 
   chrome-launcher@1.2.1:
     dependencies:
