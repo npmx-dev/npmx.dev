@@ -8,7 +8,12 @@
 export function withAlpha(color: string, alpha: number): string {
   if (color.startsWith('oklch(')) return color.replace(')', ` / ${alpha})`)
   if (color.startsWith('#'))
-    return color + Math.round(alpha * 255).toString(16).padStart(2, '0')
+    return (
+      color +
+      Math.round(alpha * 255)
+        .toString(16)
+        .padStart(2, '0')
+    )
   return color
 }
 
