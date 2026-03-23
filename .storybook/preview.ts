@@ -1,10 +1,9 @@
 import type { Preview } from '@storybook-vue/nuxt'
 import { withThemeByDataAttribute } from '@storybook/addon-themes'
 import { addons } from 'storybook/preview-api'
-import { currentLocales } from '../config/i18n'
 import { fn } from 'storybook/test'
+import { currentLocales } from '../config/i18n'
 import { ACCENT_COLORS } from '../shared/utils/constants'
-
 import npmxDark from './theme'
 
 // related: https://github.com/npmx-dev/npmx.dev/blob/1431d24be555bca5e1ae6264434d49ca15173c43/test/nuxt/setup.ts#L12-L26

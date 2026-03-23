@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { AppBskyRichtextFacet } from '@atproto/api'
-import { segmentize } from '@atcute/bluesky-richtext-segmenter'
 import type { Comment } from '#shared/types/blog-post'
+import { segmentize } from '@atcute/bluesky-richtext-segmenter'
 
 type RichtextFeature =
   | AppBskyRichtextFacet.Link

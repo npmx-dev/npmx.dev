@@ -1,5 +1,5 @@
-import { TID_CLOCK_ID } from './constants'
 import * as TID from '@atcute/tid'
+import { TID_CLOCK_ID } from './constants'
 
 const ONE_DAY_MILLISECONDS = 86400000
 const MS_TO_MICROSECONDS = 1000

@@ -4,13 +4,12 @@ import matter from 'gray-matter'
 import { marked } from 'marked'
 import sanitizeHtml from 'sanitize-html'
 import { hasProtocol } from 'ufo'
+import { toProxiedImageUrl } from '#server/utils/image-proxy'
+import { convertToEmoji } from '#shared/utils/emoji'
 import { convertBlobOrFileToRawUrl, type RepositoryInfo } from '#shared/utils/git-providers'
 import { decodeHtmlEntities, stripHtmlTags } from '#shared/utils/html'
-import { convertToEmoji } from '#shared/utils/emoji'
-import { toProxiedImageUrl } from '#server/utils/image-proxy'
-
-import { highlightCodeSync } from './shiki'
 import { escapeHtml } from './docs/text'
+import { highlightCodeSync } from './shiki'
 
 /**
  * Playground provider configuration
@@ -308,6 +307,17 @@ function normalizePreservedAnchorAttrs(attrs: string): string {
   return cleanedAttrs ? ` ${cleanedAttrs}` : ''
 }
 
+// Extract and preserve allowed attributes from HTML heading tags
+function extractHeadingAttrs(attrsString: string): string {
+  if (!attrsString) return ''
+  const preserved: string[] = []
+  const alignMatch = /\balign=(["']?)([^"'\s>]+)\1/i.exec(attrsString)
+  if (alignMatch?.[2]) {
+    preserved.push(`align="${alignMatch[2]}"`)
+  }
+  return preserved.length > 0 ? ` ${preserved.join(' ')}` : ''
+}
+
 const isNpmJsUrlThatCanBeRedirected = (url: URL) => {
   if (!npmJsHosts.has(url.host)) {
     return false
@@ -528,17 +538,6 @@ export async function renderReadmeHtml(
     const plainText = getHeadingPlainText(displayHtml)
     const slugSource = getHeadingSlugSource(displayHtml)
     return processHeading(depth, displayHtml, plainText, slugSource)
-  }
-
-  // Extract and preserve allowed attributes from HTML heading tags
-  function extractHeadingAttrs(attrsString: string): string {
-    if (!attrsString) return ''
-    const preserved: string[] = []
-    const alignMatch = /\balign=(["']?)([^"'\s>]+)\1/i.exec(attrsString)
-    if (alignMatch?.[2]) {
-      preserved.push(`align="${alignMatch[2]}"`)
-    }
-    return preserved.length > 0 ? ` ${preserved.join(' ')}` : ''
   }
 
   // Intercept HTML headings so they get id, TOC entry, and correct semantic level.

@@ -1,6 +1,6 @@
-import { afterEach, describe, expect, it } from 'vitest'
-import { mountSuspended } from '@nuxt/test-utils/runtime'
 import type { VueWrapper } from '@vue/test-utils'
+import { mountSuspended } from '@nuxt/test-utils/runtime'
+import { afterEach, describe, expect, it } from 'vitest'
 import Sidebar from '~/components/Package/Sidebar.vue'
 
 const VIEWPORT_HEIGHT = window.innerHeight

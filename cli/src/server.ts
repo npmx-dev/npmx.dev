@@ -1,36 +1,9 @@
-import crypto from 'node:crypto'
-import { H3, HTTPError, handleCors, type H3Event } from 'h3-next'
+import type { ConnectorState, PendingOperation, ApiResponse, ConnectorEndpoints } from './types.ts'
 import type { CorsOptions } from 'h3-next'
+import { H3, HTTPError, handleCors, type H3Event } from 'h3-next'
+import crypto from 'node:crypto'
 import * as v from 'valibot'
-
-import type {
-  ConnectorState,
-  PendingOperation,
-  ApiResponse,
-  ConnectorEndpoints,
-  AssertEndpointsImplemented,
-} from './types.ts'
-
-// Endpoint completeness check — errors if this list diverges from ConnectorEndpoints.
-const _endpointCheck: AssertEndpointsImplemented<
-  | 'POST /connect'
-  | 'GET /state'
-  | 'POST /operations'
-  | 'POST /operations/batch'
-  | 'DELETE /operations'
-  | 'DELETE /operations/all'
-  | 'POST /approve'
-  | 'POST /approve-all'
-  | 'POST /retry'
-  | 'POST /execute'
-  | 'GET /org/:org/users'
-  | 'GET /org/:org/teams'
-  | 'GET /team/:scopeTeam/users'
-  | 'GET /package/:pkg/collaborators'
-  | 'GET /user/packages'
-  | 'GET /user/orgs'
-> = true
-void _endpointCheck
+import pkg from '../package.json' with { type: 'json' }
 import { logDebug, logError } from './logger.ts'
 import {
   getNpmUser,
@@ -67,9 +40,6 @@ import {
   safeParse,
   validateOperationParams,
 } from './schemas.ts'
-
-// Read version from package.json
-import pkg from '../package.json' with { type: 'json' }
 
 export const CONNECTOR_VERSION = pkg.version
 

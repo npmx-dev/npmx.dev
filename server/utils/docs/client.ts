@@ -7,8 +7,8 @@
  * @module server/utils/docs/client
  */
 
-import { doc, type DocNode } from '@deno/doc'
 import type { DenoDocNode, DenoDocResult } from '#shared/types/deno-doc'
+import { doc, type DocNode } from '@deno/doc'
 import { isBuiltin } from 'node:module'
 
 // =============================================================================

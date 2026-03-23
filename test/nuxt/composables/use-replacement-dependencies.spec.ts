@@ -1,6 +1,6 @@
-import { describe, expect, it, vi } from 'vitest'
-import { mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
 import type { ModuleReplacement } from 'module-replacements'
+import { mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
+import { describe, expect, it, vi } from 'vitest'
 
 const SIMPLE_REPLACEMENT: ModuleReplacement = {
   type: 'simple',

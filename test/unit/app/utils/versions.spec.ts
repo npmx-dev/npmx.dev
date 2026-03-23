@@ -15,6 +15,10 @@ import {
   sortTags,
 } from '~/utils/versions'
 
+function row(version: string, tags: string[]) {
+  return { id: `version:${version}`, primaryTag: tags[0]!, tags, version }
+}
+
 describe('isExactVersion', () => {
   it('returns true for stable versions', () => {
     expect(isExactVersion('1.0.0')).toBe(true)
@@ -426,10 +430,6 @@ describe('isSameVersionGroup', () => {
 })
 
 describe('compareTagRows', () => {
-  function row(version: string, tags: string[]) {
-    return { id: `version:${version}`, primaryTag: tags[0]!, tags, version }
-  }
-
   it('sorts by tag priority ascending (rc before beta)', () => {
     const rc = row('2.0.0-rc.1', ['rc'])
     const beta = row('2.0.0-beta.1', ['beta'])

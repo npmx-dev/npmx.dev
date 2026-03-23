@@ -1,4 +1,7 @@
 import type { ComparisonFacet } from '#shared/types/comparison'
+import { mountSuspended } from '@nuxt/test-utils/runtime'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { computed, ref } from 'vue'
 import {
   CATEGORY_ORDER,
   FACET_INFO,
@@ -7,9 +10,6 @@ import {
   hasComingSoonFacets,
 } from '#shared/types/comparison'
 import FacetSelector from '~/components/Compare/FacetSelector.vue'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { computed, ref } from 'vue'
-import { mountSuspended } from '@nuxt/test-utils/runtime'
 
 // Create facet label/description lookup
 const facetLabels: Record<ComparisonFacet, { label: string; description: string }> = {

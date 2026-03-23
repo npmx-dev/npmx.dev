@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import type { NavigationConfigWithGroups } from '~/types'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { useAtproto } from '~/composables/atproto/useAtproto'
-import type { NavigationConfigWithGroups } from '~/types'
 
 const isOpen = defineModel<boolean>('open', { default: false })
 const { links } = defineProps<{

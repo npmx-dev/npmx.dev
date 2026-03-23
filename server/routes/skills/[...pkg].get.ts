@@ -2,7 +2,6 @@ import type { H3Event } from 'h3'
 import * as v from 'valibot'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import { SkillNameSchema } from '#shared/schemas/skills'
-
 import {
   CACHE_MAX_AGE_ONE_HOUR,
   CACHE_MAX_AGE_ONE_YEAR,

@@ -3,16 +3,16 @@
  * but backed by in-memory state. Used by the mock CLI and E2E tests.
  */
 
-import { H3, HTTPError, handleCors, type H3Event } from 'h3-next'
-import type { CorsOptions } from 'h3-next'
-import { serve, type Server } from 'srvx'
+import type { MockConnectorStateManager } from './mock-state.ts'
 import type {
   OperationType,
   ApiResponse,
   ConnectorEndpoints,
   AssertEndpointsImplemented,
 } from './types.ts'
-import type { MockConnectorStateManager } from './mock-state.ts'
+import type { CorsOptions } from 'h3-next'
+import { H3, HTTPError, handleCors, type H3Event } from 'h3-next'
+import { serve, type Server } from 'srvx'
 
 // Endpoint completeness check — errors if this list diverges from ConnectorEndpoints.
 // oxlint-disable-next-line no-unused-vars

@@ -1,10 +1,10 @@
-import * as v from 'valibot'
-import crypto from 'node:crypto'
-import { CACHE_MAX_AGE_ONE_DAY, BLUESKY_API } from '#shared/utils/constants'
-import { AuthorSchema } from '#shared/schemas/blog'
-import { Client } from '@atproto/lex'
 import type { Author, ResolvedAuthor } from '#shared/schemas/blog'
+import { Client } from '@atproto/lex'
+import crypto from 'node:crypto'
+import * as v from 'valibot'
+import { AuthorSchema } from '#shared/schemas/blog'
 import * as app from '#shared/types/lexicons/app'
+import { CACHE_MAX_AGE_ONE_DAY, BLUESKY_API } from '#shared/utils/constants'
 
 export default defineCachedEventHandler(
   async event => {

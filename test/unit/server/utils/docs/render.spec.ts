@@ -1,7 +1,7 @@
+import type { MergedSymbol } from '#server/utils/docs/types'
+import type { DenoDocNode } from '#shared/types/deno-doc'
 import { describe, expect, it } from 'vitest'
 import { renderDocNodes } from '#server/utils/docs/render'
-import type { DenoDocNode } from '#shared/types/deno-doc'
-import type { MergedSymbol } from '#server/utils/docs/types'
 
 // =============================================================================
 // Issue #1943: class getters shown as methods

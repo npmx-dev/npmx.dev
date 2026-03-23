@@ -1,10 +1,10 @@
-import type { MaybeRefOrGetter } from 'vue'
-import { toValue } from 'vue'
 import type {
   VersionDistributionResponse,
   VersionGroupDownloads,
   VersionGroupingMode,
 } from '#shared/types/version-downloads'
+import type { MaybeRefOrGetter } from 'vue'
+import { toValue } from 'vue'
 
 interface ChartDataItem {
   name: string

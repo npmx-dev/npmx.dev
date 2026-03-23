@@ -1,7 +1,7 @@
+import type { JsrPackageInfo } from '#shared/types/jsr'
 import * as v from 'valibot'
 import { PackageNameSchema } from '#shared/schemas/package'
 import { CACHE_MAX_AGE_ONE_HOUR, ERROR_JSR_FETCH_FAILED } from '#shared/utils/constants'
-import type { JsrPackageInfo } from '#shared/types/jsr'
 
 /**
  * Check if an npm package exists on JSR.

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { LinkBase } from '#components'
 import type { NavigationConfig, NavigationConfigWithGroups } from '~/types'
-import { isEditableElement } from '~/utils/input'
+import { LinkBase } from '#components'
 import { NPMX_DOCS_SITE } from '#shared/utils/constants'
+import { isEditableElement } from '~/utils/input'
 
 const keyboardShortcuts = useKeyboardShortcuts()
 const discord = useDiscordLink()

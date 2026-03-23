@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { compare, validRange } from 'semver'
 import type { RouteLocationRaw } from 'vue-router'
+import { compare, validRange } from 'semver'
 import { fetchAllPackageVersions } from '~/utils/npm/api'
 
 const props = defineProps<{

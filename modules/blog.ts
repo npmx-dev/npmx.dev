@@ -1,11 +1,16 @@
-import { join } from 'node:path'
-import Markdown from 'unplugin-vue-markdown/vite'
-import { addTemplate, addVitePlugin, defineNuxtModule, useNuxt, createResolver } from 'nuxt/kit'
 import shiki from '@shikijs/markdown-exit'
-import MarkdownItAnchor from 'markdown-it-anchor'
 import { defu } from 'defu'
 import { read } from 'gray-matter'
+import MarkdownItAnchor from 'markdown-it-anchor'
+import crypto from 'node:crypto'
+import { existsSync } from 'node:fs'
+import { mkdir, writeFile } from 'node:fs/promises'
+import { join } from 'node:path'
+import { addTemplate, addVitePlugin, defineNuxtModule, useNuxt, createResolver } from 'nuxt/kit'
+import { globSync } from 'tinyglobby'
+import Markdown from 'unplugin-vue-markdown/vite'
 import { array, safeParse } from 'valibot'
+import { isProduction } from '../config/env'
 import {
   AuthorSchema,
   RawBlogPostSchema,
@@ -13,12 +18,7 @@ import {
   type BlogPostFrontmatter,
   type ResolvedAuthor,
 } from '../shared/schemas/blog'
-import { globSync } from 'tinyglobby'
-import { isProduction } from '../config/env'
 import { BLUESKY_API } from '../shared/utils/constants'
-import { mkdir, writeFile } from 'node:fs/promises'
-import { existsSync } from 'node:fs'
-import crypto from 'node:crypto'
 
 /**
  * Fetches Bluesky avatars for a set of authors at build time.

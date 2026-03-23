@@ -1,5 +1,6 @@
 import { mockNuxtImport, mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
+import ProfilePage from '~/pages/profile/[identity]/index.vue'
 
 const { mockUseAtproto, mockUseProfileLikes } = vi.hoisted(() => ({
   mockUseAtproto: vi.fn(),
@@ -8,8 +9,6 @@ const { mockUseAtproto, mockUseProfileLikes } = vi.hoisted(() => ({
 
 mockNuxtImport('useAtproto', () => mockUseAtproto)
 mockNuxtImport('useProfileLikes', () => mockUseProfileLikes)
-
-import ProfilePage from '~/pages/profile/[identity]/index.vue'
 
 registerEndpoint('/api/social/profile/test-handle', () => ({
   displayName: 'Test User',

@@ -1,7 +1,7 @@
+import type { ErrorOptions } from '#shared/types/error'
 import { isError, createError } from 'h3'
 import { FetchError } from 'ofetch'
 import * as v from 'valibot'
-import type { ErrorOptions } from '#shared/types/error'
 
 /**
  * Generic error handler for Nitro routes

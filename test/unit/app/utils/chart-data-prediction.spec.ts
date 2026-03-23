@@ -1,9 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
-
-vi.mock('~/utils/chart-data-correction', () => ({
-  applyDataCorrection: (data: { value: number }[]) => data,
-}))
-
+import { describe, expect, it } from 'vitest'
 import {
   endDateOnlyToUtcMs,
   getBucketStartUtc,

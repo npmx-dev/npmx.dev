@@ -1,7 +1,6 @@
+import type { AtprotoProfile } from '#shared/types/atproto'
 import { Client, type AtIdentifierString } from '@atproto/lex'
 import * as app from '#shared/types/lexicons/app'
-import type { AtprotoProfile } from '#shared/types/atproto'
-
 import { BLUESKY_API, ERROR_PDS_FETCH_FAILED } from '#shared/utils/constants'
 
 interface GraphLink {

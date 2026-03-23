@@ -1,11 +1,4 @@
 <script setup lang="ts">
-import type { Theme as VueDataUiTheme, VueUiXyConfig, VueUiXyDatasetItem } from 'vue-data-ui'
-import { VueUiXy } from 'vue-data-ui/vue-ui-xy'
-import { useDebounceFn, useElementSize, useTimeoutFn } from '@vueuse/core'
-import { useCssVariables } from '~/composables/useColors'
-import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch, lightenOklch } from '~/utils/colors'
-import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
-import { drawNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
 import type { RepoRef } from '#shared/utils/git-providers'
 import type {
   ChartTimeGranularity,
@@ -17,14 +10,21 @@ import type {
   WeeklyDataPoint,
   YearlyDataPoint,
 } from '~/types/chart'
-import { DATE_INPUT_MAX } from '~/utils/input'
+import type { Theme as VueDataUiTheme, VueUiXyConfig, VueUiXyDatasetItem } from 'vue-data-ui'
+import { useDebounceFn, useElementSize, useTimeoutFn } from '@vueuse/core'
+import { VueUiXy } from 'vue-data-ui/vue-ui-xy'
+import { drawNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
+import { useCssVariables } from '~/composables/useColors'
 import {
   applyDataPipeline,
   endDateOnlyToUtcMs,
   DEFAULT_PREDICTION_POINTS,
 } from '~/utils/chart-data-prediction'
-import { applyBlocklistCorrection, getAnomaliesForPackages } from '~/utils/download-anomalies'
 import { copyAltTextForTrendLineChart, sanitise, loadFile, applyEllipsis } from '~/utils/charts'
+import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch, lightenOklch } from '~/utils/colors'
+import { applyBlocklistCorrection, getAnomaliesForPackages } from '~/utils/download-anomalies'
+import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
+import { DATE_INPUT_MAX } from '~/utils/input'
 
 import('vue-data-ui/style.css')
 

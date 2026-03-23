@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
+import { readdir, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createI18NReport, type I18NItem } from 'vue-i18n-extract'
 import { colors } from './utils/colors.ts'
-import { readdir, readFile, writeFile } from 'node:fs/promises'
 
 const LOCALES_DIRECTORY = fileURLToPath(new URL('../i18n/locales', import.meta.url))
 const REFERENCE_FILE_NAME = 'en.json'

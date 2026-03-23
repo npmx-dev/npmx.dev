@@ -1,5 +1,5 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { JsrPackageInfo } from '#shared/types/jsr'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 describe('useInstallCommand', () => {
   beforeEach(() => {

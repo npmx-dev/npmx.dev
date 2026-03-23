@@ -1,3 +1,4 @@
+import type { I18nStatus } from '../shared/types/i18n-status.ts'
 import {
   type createLunaria,
   type Locale,
@@ -6,7 +7,6 @@ import {
   type StatusEntry,
 } from '@lunariajs/core'
 import { BaseStyles, CustomStyles } from './styles.ts'
-import type { I18nStatus } from '../shared/types/i18n-status.ts'
 
 export function html(
   strings: TemplateStringsArray,

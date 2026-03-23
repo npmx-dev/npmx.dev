@@ -1,7 +1,7 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
-import { mountSuspended } from '@nuxt/test-utils/runtime'
-import type { ModuleReplacement } from 'module-replacements'
 import type { ReplacementSuggestion } from '~/composables/useCompareReplacements'
+import type { ModuleReplacement } from 'module-replacements'
+import { mountSuspended } from '@nuxt/test-utils/runtime'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 /**
  * Helper to test useCompareReplacements by wrapping it in a component.

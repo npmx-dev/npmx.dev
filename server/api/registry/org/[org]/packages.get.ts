@@ -1,5 +1,5 @@
-import { CACHE_MAX_AGE_ONE_HOUR, NPM_REGISTRY } from '#shared/utils/constants'
 import { FetchError } from 'ofetch'
+import { CACHE_MAX_AGE_ONE_HOUR, NPM_REGISTRY } from '#shared/utils/constants'
 
 // Validation pattern for npm org names - url-sage symbold and not start with a dot (incl. ~test24214. or -ex~-)
 const NPM_ORG_NAME_RE = /^[\w~-][\w.~-]*$/

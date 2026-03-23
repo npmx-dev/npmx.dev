@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FilterChip, SortOption } from '#shared/types/preferences'
-import { normalizeSearchParam } from '#shared/utils/url'
 import { debounce } from 'perfect-debounce'
+import { normalizeSearchParam } from '#shared/utils/url'
 
 definePageMeta({
   name: 'org',

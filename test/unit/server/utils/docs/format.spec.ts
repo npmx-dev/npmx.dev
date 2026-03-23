@@ -1,8 +1,8 @@
+import type { DenoDocNode } from '#shared/types/deno-doc'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { formatType, getNodeSignature } from '#server/utils/docs/format'
-import type { DenoDocNode } from '#shared/types/deno-doc'
 
 function loadFixture(name: string): DenoDocNode {
   const path = resolve(__dirname, '../../../../fixtures/esm-sh/doc-nodes', name)

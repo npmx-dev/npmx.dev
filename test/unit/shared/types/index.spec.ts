@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest'
 import type { Packument, NpmSearchResponse } from '#shared/types'
+import { describe, expect, it } from 'vitest'
 
 describe('npm registry types', () => {
   it('should correctly type a package response', () => {

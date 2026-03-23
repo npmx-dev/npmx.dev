@@ -1,9 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
-
-vi.mock('~/utils/npm/api', () => ({
-  fetchNpmDownloadsRange: vi.fn(),
-}))
-
+import { describe, expect, it } from 'vitest'
 import { getNpmPackageCreationDate } from '~/composables/useCharts'
 
 describe('getNpmPackageCreationDate', () => {

@@ -1,6 +1,7 @@
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import { defineComponent, h } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
+import PackageWeeklyDownloadStats from '~/components/Package/WeeklyDownloadStats.vue'
 
 const { mockFetchPackageDownloadEvolution } = vi.hoisted(() => ({
   mockFetchPackageDownloadEvolution: vi.fn(),
@@ -22,8 +23,6 @@ vi.mock('vue-data-ui/vue-ui-sparkline', () => ({
     },
   }),
 }))
-
-import PackageWeeklyDownloadStats from '~/components/Package/WeeklyDownloadStats.vue'
 
 describe('PackageWeeklyDownloadStats', () => {
   const baseProps = {

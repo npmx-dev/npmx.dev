@@ -1,11 +1,9 @@
 <script setup lang="ts">
+import type { VueUiHorizontalBarConfig, VueUiHorizontalBarDatasetItem } from 'vue-data-ui'
 import { ref, computed } from 'vue'
 import { VueUiHorizontalBar } from 'vue-data-ui/vue-ui-horizontal-bar'
-import type { VueUiHorizontalBarConfig, VueUiHorizontalBarDatasetItem } from 'vue-data-ui'
-import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
-import { createChartPatternSlotMarkup } from '~/utils/charts'
 import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
-
+import { createChartPatternSlotMarkup } from '~/utils/charts'
 import {
   loadFile,
   insertLineBreaks,
@@ -13,6 +11,7 @@ import {
   applyEllipsis,
   copyAltTextForCompareFacetBarChart,
 } from '~/utils/charts'
+import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
 
 import('vue-data-ui/style.css')
 

@@ -1,8 +1,8 @@
+import type { I18nStatus } from '../shared/types/i18n-status.ts'
 import { createLunaria } from '@lunariajs/core'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { Page } from './components.ts'
 import { countryLocaleVariants, currentLocales } from '../config/i18n.ts'
-import type { I18nStatus } from '../shared/types/i18n-status.ts'
+import { Page } from './components.ts'
 
 // skip lunaria during git merges as git history may be in an inconsistent state.
 if (existsSync('.git/MERGE_HEAD')) {

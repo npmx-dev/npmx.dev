@@ -1,31 +1,31 @@
-import * as v from 'valibot'
-import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import type {
   PackageAnalysis,
   ExtendedPackageJson,
   TypesPackageInfo,
   CreatePackageInfo,
 } from '#shared/utils/package-analysis'
+import { getLatestVersion, getLatestVersionBatch } from 'fast-npm-meta'
+import * as v from 'valibot'
+import { getPackageFileTree } from '#server/utils/file-tree'
+import { flattenFileTree } from '#server/utils/import-resolver'
+import { PackageRouteParamsSchema } from '#shared/schemas/package'
+import {
+  NPM_REGISTRY,
+  CACHE_MAX_AGE_ONE_DAY,
+  ERROR_PACKAGE_ANALYSIS_FAILED,
+} from '#shared/utils/constants'
+import {
+  getDevDependencySuggestion,
+  type DevDependencySuggestion,
+} from '#shared/utils/dev-dependency'
+import { parseRepoUrl } from '#shared/utils/git-providers'
+import { encodePackageName } from '#shared/utils/npm'
 import {
   analyzePackage,
   getTypesPackageName,
   getCreatePackageName,
   hasBuiltInTypes,
 } from '#shared/utils/package-analysis'
-import {
-  getDevDependencySuggestion,
-  type DevDependencySuggestion,
-} from '#shared/utils/dev-dependency'
-import {
-  NPM_REGISTRY,
-  CACHE_MAX_AGE_ONE_DAY,
-  ERROR_PACKAGE_ANALYSIS_FAILED,
-} from '#shared/utils/constants'
-import { parseRepoUrl } from '#shared/utils/git-providers'
-import { encodePackageName } from '#shared/utils/npm'
-import { flattenFileTree } from '#server/utils/import-resolver'
-import { getPackageFileTree } from '#server/utils/file-tree'
-import { getLatestVersion, getLatestVersionBatch } from 'fast-npm-meta'
 
 interface AnalysisPackageJson extends ExtendedPackageJson {
   readme?: string

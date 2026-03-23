@@ -1,6 +1,6 @@
+import { createGenerator, presetWind4 } from 'unocss'
 import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from 'vitest'
 import { presetA11y, resetA11yWarnings } from '../../uno-preset-a11y'
-import { createGenerator, presetWind4 } from 'unocss'
 
 describe('uno-preset-a11y', () => {
   let warnSpy: MockInstance

@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { isAtIdentifierString } from '@atproto/lex'
 import { useAtproto } from '~/composables/atproto/useAtproto'
 import { authRedirect } from '~/utils/atproto/helpers'
-import { isAtIdentifierString } from '@atproto/lex'
 
 const authModal = useModal('auth-modal')
 

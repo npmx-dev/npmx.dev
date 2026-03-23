@@ -1,13 +1,13 @@
 <script setup lang="ts">
+import type { RepoRef } from '#shared/utils/git-providers'
+import type { WeeklyDataPoint } from '~/types/chart'
+import type { VueUiSparklineConfig, VueUiSparklineDatasetItem } from 'vue-data-ui'
+import { onKeyDown } from '@vueuse/core'
 import { VueUiSparkline } from 'vue-data-ui/vue-ui-sparkline'
 import { useCssVariables } from '~/composables/useColors'
-import type { WeeklyDataPoint } from '~/types/chart'
 import { applyDataCorrection } from '~/utils/chart-data-correction'
 import { OKLCH_NEUTRAL_FALLBACK, lightenOklch } from '~/utils/colors'
 import { applyBlocklistCorrection } from '~/utils/download-anomalies'
-import type { RepoRef } from '#shared/utils/git-providers'
-import type { VueUiSparklineConfig, VueUiSparklineDatasetItem } from 'vue-data-ui'
-import { onKeyDown } from '@vueuse/core'
 
 import('vue-data-ui/style.css')
 

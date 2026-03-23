@@ -1,14 +1,14 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { ref } from 'vue'
 import type { ComparisonFacet } from '#shared/types/comparison'
+import type { FacetInfoWithLabels } from '~/composables/useFacetSelection'
+import { mountSuspended } from '@nuxt/test-utils/runtime'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { ref } from 'vue'
 import {
   DEFAULT_FACETS,
   FACET_INFO,
   FACETS_BY_CATEGORY,
   hasComingSoonFacets,
 } from '#shared/types/comparison'
-import type { FacetInfoWithLabels } from '~/composables/useFacetSelection'
 
 // Mock useRouteQuery - needs to be outside of the helper to persist across calls
 const mockRouteQuery = ref('')

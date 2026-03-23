@@ -1,3 +1,4 @@
+import type { Theme } from '@unocss/preset-wind4/theme'
 import {
   defineConfig,
   presetIcons,
@@ -6,9 +7,8 @@ import {
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
-import type { Theme } from '@unocss/preset-wind4/theme'
-import { presetRtl } from './uno-preset-rtl'
 import { presetA11y } from './uno-preset-a11y'
+import { presetRtl } from './uno-preset-rtl'
 
 const customIcons = {
   'agent-skills':

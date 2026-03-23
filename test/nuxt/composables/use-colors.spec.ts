@@ -1,7 +1,7 @@
+import type * as VueUseCore from '@vueuse/core'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { computed, nextTick, defineComponent } from 'vue'
-import { mount } from '@vue/test-utils'
-import type * as VueUseCore from '@vueuse/core'
 
 const useSupportedMock = vi.hoisted(() => vi.fn())
 const useMutationObserverMock = vi.hoisted(() => vi.fn())

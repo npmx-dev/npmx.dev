@@ -1,5 +1,5 @@
-import { normalizeSearchParam } from '#shared/utils/url'
 import { debounce } from 'perfect-debounce'
+import { normalizeSearchParam } from '#shared/utils/url'
 
 // Pages that have their own local filter using ?q
 const pagesWithLocalFilter = new Set(['~username', 'org'])

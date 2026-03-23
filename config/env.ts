@@ -1,8 +1,7 @@
 // TODO(serhalp): Extract most of this module to https://github.com/unjs/std-env.
 
-import Git from 'simple-git'
 import * as process from 'node:process'
-
+import Git from 'simple-git'
 import { version as packageVersion } from '../package.json'
 import { getNextVersion } from '../scripts/next-version'
 

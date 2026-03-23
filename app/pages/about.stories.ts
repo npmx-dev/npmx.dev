@@ -1,7 +1,7 @@
-import About from './about.vue'
 import type { Meta, StoryObj } from '@storybook-vue/nuxt'
-import AppHeader from '~/components/AppHeader.vue'
 import AppFooter from '~/components/AppFooter.vue'
+import AppHeader from '~/components/AppHeader.vue'
+import About from './about.vue'
 
 const meta = {
   component: About,

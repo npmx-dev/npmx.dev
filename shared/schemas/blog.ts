@@ -1,3 +1,5 @@
+import type { InferOutput } from 'valibot'
+import { isAtIdentifierString, type AtIdentifierString } from '@atproto/lex'
 import {
   array,
   boolean,
@@ -9,8 +11,6 @@ import {
   pipe,
   string,
 } from 'valibot'
-import { isAtIdentifierString, type AtIdentifierString } from '@atproto/lex'
-import type { InferOutput } from 'valibot'
 
 export const AuthorSchema = object({
   name: string(),

@@ -1,6 +1,6 @@
 import process from 'node:process'
-import { currentLocales } from './config/i18n'
 import { isCI, isTest, provider } from 'std-env'
+import { currentLocales } from './config/i18n'
 
 const isStorybook = process.env.STORYBOOK === 'true' || process.env.VITEST_STORYBOOK === 'true'
 

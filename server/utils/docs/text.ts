@@ -7,8 +7,8 @@
  * @module server/utils/docs/text
  */
 
-import { highlightCodeBlock } from '../shiki'
 import type { SymbolLookup } from './types'
+import { highlightCodeBlock } from '../shiki'
 
 /**
  * Strip ANSI escape codes from text.

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison'
 import { useRouteQuery } from '@vueuse/router'
 import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
+import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison'
 
 definePageMeta({
   name: 'compare',

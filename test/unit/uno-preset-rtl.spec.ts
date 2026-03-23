@@ -1,6 +1,6 @@
+import { createGenerator, presetWind4 } from 'unocss'
 import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from 'vitest'
 import { presetRtl, resetRtlWarnings } from '../../uno-preset-rtl'
-import { createGenerator, presetWind4 } from 'unocss'
 
 describe('uno-preset-rtl', () => {
   let warnSpy: MockInstance

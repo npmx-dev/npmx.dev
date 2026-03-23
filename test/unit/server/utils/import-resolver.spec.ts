@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest'
 import type { PackageFileTree } from '#shared/types'
+import { describe, expect, it } from 'vitest'
 import {
   createImportResolver,
   flattenFileTree,

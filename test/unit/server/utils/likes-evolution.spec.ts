@@ -1,7 +1,7 @@
-import { describe, expect, it, vi, beforeEach, type Mocked } from 'vitest'
-import * as TID from '@atcute/tid'
 import type { ConstellationLike } from '#server/utils/atproto/utils/likes'
 import type { CacheAdapter } from '#server/utils/cache/shared'
+import * as TID from '@atcute/tid'
+import { describe, expect, it, vi, beforeEach, type Mocked } from 'vitest'
 
 vi.stubGlobal('CACHE_MAX_AGE_ONE_MINUTE', 60)
 vi.stubGlobal('PACKAGE_SUBJECT_REF', (pkg: string) => `https://npmx.dev/package/${pkg}`)

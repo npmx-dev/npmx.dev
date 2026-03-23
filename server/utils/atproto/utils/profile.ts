@@ -1,7 +1,7 @@
 import type { MiniDoc, NPMXProfile } from '#shared/types/social'
+import { Client, isAtIdentifierString, isAtUriString } from '@atproto/lex'
 import * as blue from '#shared/types/lexicons/blue'
 import * as dev from '#shared/types/lexicons/dev'
-import { Client, isAtIdentifierString, isAtUriString } from '@atproto/lex'
 
 //Cache keys and helpers
 const CACHE_PREFIX = 'atproto-profile:'

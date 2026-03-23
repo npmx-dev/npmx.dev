@@ -1,5 +1,5 @@
-import { CONSTELLATION_HOST } from '#shared/utils/constants'
 import type { CachedFetchFunction } from './fetch-cache-config'
+import { CONSTELLATION_HOST } from '#shared/utils/constants'
 
 export type Backlink = {
   did: string

@@ -1,10 +1,10 @@
-import * as v from 'valibot'
-import { Client, toDatetimeString } from '@atproto/lex'
-import * as dev from '#shared/types/lexicons/dev'
 import type { UriString } from '@atproto/lex'
-import { LIKES_SCOPE } from '#shared/utils/constants'
-import { PackageLikeBodySchema } from '#shared/schemas/social'
+import { Client, toDatetimeString } from '@atproto/lex'
+import * as v from 'valibot'
 import { throwOnMissingOAuthScope } from '#server/utils/atproto/oauth'
+import { PackageLikeBodySchema } from '#shared/schemas/social'
+import * as dev from '#shared/types/lexicons/dev'
+import { LIKES_SCOPE } from '#shared/utils/constants'
 
 export default eventHandlerWithOAuthSession(async (event, oAuthSession) => {
   const loggedInUsersDid = oAuthSession?.did.toString()

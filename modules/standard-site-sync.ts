@@ -1,11 +1,3 @@
-import process from 'node:process'
-import { createHash } from 'node:crypto'
-import { defineNuxtModule, useNuxt, createResolver } from 'nuxt/kit'
-import { safeParse } from 'valibot'
-import { BlogPostSchema, type BlogPostFrontmatter } from '#shared/schemas/blog'
-import { NPMX_DEV_DID, NPMX_SITE } from '#shared/utils/constants'
-import { read } from 'gray-matter'
-import { PasswordSession } from '@atproto/lex-password-session'
 import {
   Client,
   isAtIdentifierString,
@@ -13,9 +5,17 @@ import {
   XrpcResponseError,
   type AtIdentifierString,
 } from '@atproto/lex'
+import { PasswordSession } from '@atproto/lex-password-session'
+import { read } from 'gray-matter'
+import { createHash } from 'node:crypto'
+import process from 'node:process'
+import { defineNuxtModule, useNuxt, createResolver } from 'nuxt/kit'
+import { safeParse } from 'valibot'
+import { BlogPostSchema, type BlogPostFrontmatter } from '#shared/schemas/blog'
+import { generateBlogTID, npmxPublicationRkey } from '#shared/utils/atproto'
+import { NPMX_DEV_DID, NPMX_SITE } from '#shared/utils/constants'
 import * as com from '../shared/types/lexicons/com'
 import * as site from '../shared/types/lexicons/site'
-import { generateBlogTID, npmxPublicationRkey } from '#shared/utils/atproto'
 
 const syncedDocuments = new Map<string, string>()
 

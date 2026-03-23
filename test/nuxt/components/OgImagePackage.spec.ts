@@ -1,5 +1,6 @@
 import { mockNuxtImport, mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
+import OgImagePackage from '~/components/OgImage/Package.vue'
 
 const { mockUseResolvedVersion, mockUsePackageDownloads, mockUsePackage, mockUseRepoMeta } =
   vi.hoisted(() => ({
@@ -14,8 +15,6 @@ mockNuxtImport('usePackageDownloads', () => mockUsePackageDownloads)
 mockNuxtImport('usePackage', () => mockUsePackage)
 mockNuxtImport('useRepoMeta', () => mockUseRepoMeta)
 mockNuxtImport('normalizeGitUrl', () => () => 'https://github.com/test/repo')
-
-import OgImagePackage from '~/components/OgImage/Package.vue'
 
 describe('OgImagePackage', () => {
   const baseProps = {

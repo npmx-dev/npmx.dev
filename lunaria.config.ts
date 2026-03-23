@@ -1,5 +1,5 @@
-import { defineConfig } from '@lunariajs/core/config'
 import type { Locale, Merge } from '@lunariajs/core'
+import { defineConfig } from '@lunariajs/core/config'
 import { currentLocales, countryLocaleVariants } from './config/i18n.ts'
 
 // The source locale is `en` (en.json contains all reference translation keys).

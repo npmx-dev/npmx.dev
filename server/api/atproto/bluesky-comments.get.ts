@@ -1,6 +1,6 @@
 import type { $Typed, AtUriString, Unknown$TypedObject } from '@atproto/lex'
-import { Client, isAtUriString } from '@atproto/lex'
 import type { Comment, CommentEmbed } from '#shared/types/blog-post'
+import { Client, isAtUriString } from '@atproto/lex'
 import * as app from '#shared/types/lexicons/app'
 import {
   CACHE_MAX_AGE_ONE_MINUTE,

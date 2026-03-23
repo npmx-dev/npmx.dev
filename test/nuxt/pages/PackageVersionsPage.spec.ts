@@ -1,7 +1,7 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { mountSuspended } from '@nuxt/test-utils/runtime'
-import type * as FastNpmMeta from 'fast-npm-meta'
 import type * as NpmApi from '~/utils/npm/api'
+import type * as FastNpmMeta from 'fast-npm-meta'
+import { mountSuspended } from '@nuxt/test-utils/runtime'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import VersionsPage from '~/pages/package/[[org]]/[name]/versions.vue'
 
 // ── Mocks ─────────────────────────────────────────────────────────────────────

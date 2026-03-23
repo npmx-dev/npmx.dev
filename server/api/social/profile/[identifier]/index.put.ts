@@ -1,8 +1,8 @@
-import { parse } from 'valibot'
-import { Client } from '@atproto/lex'
-import * as dev from '#shared/types/lexicons/dev'
 import type { NPMXProfile } from '#shared/types/social'
+import { Client } from '@atproto/lex'
+import { parse } from 'valibot'
 import { ProfileEditBodySchema } from '#shared/schemas/social'
+import * as dev from '#shared/types/lexicons/dev'
 
 export default eventHandlerWithOAuthSession(async (event, oAuthSession) => {
   const loggedInUsersDid = oAuthSession?.did.toString()

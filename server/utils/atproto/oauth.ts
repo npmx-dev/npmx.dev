@@ -4,15 +4,14 @@ import type {
   OAuthSession,
   WebUri,
 } from '@atproto/oauth-client-node'
-import { JoseKey, Keyset, oauthRedirectUriSchema, webUriSchema } from '@atproto/oauth-client-node'
+import type { UserServerSession } from '#shared/types/userSession'
 import type { EventHandlerRequest, H3Event, SessionManager } from 'h3'
+import { JoseKey, Keyset, oauthRedirectUriSchema, webUriSchema } from '@atproto/oauth-client-node'
 import { NodeOAuthClient, AtprotoDohHandleResolver } from '@atproto/oauth-client-node'
+import { clientUri } from '#oauth/config'
 import { getOAuthLock } from '#server/utils/atproto/lock'
 import { useOAuthStorage } from '#server/utils/atproto/storage'
 import { LIKES_SCOPE, PROFILE_SCOPE } from '#shared/utils/constants'
-import type { UserServerSession } from '#shared/types/userSession'
-// @ts-expect-error virtual file from oauth module
-import { clientUri } from '#oauth/config'
 
 // TODO: If you add writing a new record you will need to add a scope for it
 export const scope = `atproto ${LIKES_SCOPE} ${PROFILE_SCOPE}`

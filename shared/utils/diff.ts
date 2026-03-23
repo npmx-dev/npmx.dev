@@ -1,4 +1,3 @@
-import { createTwoFilesPatch } from 'diff'
 import type {
   DiffLine,
   DiffLineSegment,
@@ -6,6 +5,7 @@ import type {
   DiffSkipBlock,
   FileDiff,
 } from '#shared/types/compare'
+import { createTwoFilesPatch } from 'diff'
 
 /** Options for parsing diffs */
 export interface ParseOptions {

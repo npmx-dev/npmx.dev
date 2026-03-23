@@ -1,6 +1,6 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
-import { mountSuspended } from '@nuxt/test-utils/runtime'
 import type { PackageComparisonData } from '~/composables/usePackageComparison'
+import { mountSuspended } from '@nuxt/test-utils/runtime'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 /**
  * Helper to test usePackageComparison by wrapping it in a component.

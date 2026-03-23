@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { FilterChip, SortKey } from '#shared/types/preferences'
-import { parseSortOption, PROVIDER_SORT_KEYS } from '#shared/types/preferences'
 import { onKeyDown } from '@vueuse/core'
 import { debounce } from 'perfect-debounce'
+import { parseSortOption, PROVIDER_SORT_KEYS } from '#shared/types/preferences'
+import { normalizeSearchParam } from '#shared/utils/url'
 import { isValidNewPackageName } from '~/utils/package-name'
 import { isPlatformSpecificPackage } from '~/utils/platform-packages'
-import { normalizeSearchParam } from '#shared/utils/url'
 
 definePageMeta({
   preserveScrollOnQuery: true,

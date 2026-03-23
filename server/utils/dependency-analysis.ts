@@ -11,9 +11,9 @@ import type {
   OsvAffected,
   OsvRange,
 } from '#shared/types/dependency-analysis'
+import * as semver from 'semver'
 import { mapWithConcurrency } from '#shared/utils/async'
 import { resolveDependencyTree } from './dependency-resolver'
-import * as semver from 'semver'
 
 /** Maximum concurrent requests for fetching vulnerability details */
 const OSV_DETAIL_CONCURRENCY = 25

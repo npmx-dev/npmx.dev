@@ -1,6 +1,6 @@
+import type { ReadmeResponse } from '#shared/types/readme'
 import * as v from 'valibot'
 import { PackageFileQuerySchema } from '#shared/schemas/package'
-import type { ReadmeResponse } from '#shared/types/readme'
 import {
   CACHE_MAX_AGE_ONE_YEAR,
   ERROR_PACKAGE_VERSION_AND_FILE_FAILED,

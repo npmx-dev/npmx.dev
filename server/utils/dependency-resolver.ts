@@ -1,5 +1,5 @@
-import { mapWithConcurrency } from '#shared/utils/async'
 import { maxSatisfying } from 'semver'
+import { mapWithConcurrency } from '#shared/utils/async'
 
 /** Concurrency limit for fetching packuments during dependency resolution */
 const PACKUMENT_FETCH_CONCURRENCY = 20

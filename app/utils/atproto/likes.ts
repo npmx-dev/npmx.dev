@@ -1,6 +1,6 @@
+import type { PackageLikes } from '#shared/types/social'
 import { FetchError } from 'ofetch'
 import { handleAuthError } from '~/utils/atproto/helpers'
-import type { PackageLikes } from '#shared/types/social'
 
 type LikeResult = { success: true; data: PackageLikes } | { success: false; error: Error }
 

@@ -1,5 +1,5 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest'
 import type { Packument, PackumentVersion } from '#shared/types'
+import { describe, expect, it, vi, beforeEach } from 'vitest'
 
 // Mock Nitro globals before importing the module
 vi.stubGlobal('defineCachedFunction', (fn: Function) => fn)

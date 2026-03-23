@@ -1,3 +1,4 @@
+import type { JsrPackageInfo } from '#shared/types/jsr'
 import { describe, expect, it } from 'vitest'
 import {
   getInstallCommand,
@@ -7,7 +8,6 @@ import {
   getExecuteCommandParts,
   getDevDependencyFlag,
 } from '~/utils/install-command'
-import type { JsrPackageInfo } from '#shared/types/jsr'
 
 describe('install command generation', () => {
   // Test fixtures

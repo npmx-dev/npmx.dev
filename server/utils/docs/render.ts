@@ -6,12 +6,12 @@
  * @module server/utils/docs/render
  */
 
+import type { MergedSymbol, SymbolLookup } from './types'
 import type { DenoDocNode, JsDocTag } from '#shared/types/deno-doc'
 import { highlightCodeBlock } from '../shiki'
 import { formatParam, formatType, getNodeSignature } from './format'
 import { groupMergedByKind } from './processing'
 import { escapeHtml, createSymbolId, parseJsDocLinks, renderMarkdown } from './text'
-import type { MergedSymbol, SymbolLookup } from './types'
 
 // =============================================================================
 // Configuration

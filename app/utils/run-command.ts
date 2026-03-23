@@ -1,6 +1,6 @@
+import type { PackageManagerId } from './install-command'
 import type { JsrPackageInfo } from '#shared/types/jsr'
 import { getPackageSpecifier, packageManagers } from './install-command'
-import type { PackageManagerId } from './install-command'
 
 /**
  * Information about executable commands provided by a package.

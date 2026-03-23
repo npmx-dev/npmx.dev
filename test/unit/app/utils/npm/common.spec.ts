@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest'
-
 import { buildScopeTeam } from '~/utils/npm/common'
 import { validateScopeTeam } from '~~/cli/src/npm-client'
 
