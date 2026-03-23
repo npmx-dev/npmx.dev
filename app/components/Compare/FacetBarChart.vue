@@ -113,6 +113,13 @@ function buildExportFilename(extension: string): string {
 const config = computed<VueUiHorizontalBarConfig>(() => {
   return {
     theme: isDarkMode.value ? 'dark' : '',
+    a11y: {
+      translations: {
+        keyboardNavigation: $t('package.trends.chart_assistive_text.keyboard_navigation_vertical'),
+        tableAvailable: $t('package.trends.chart_assistive_text.table_available'),
+        tableCaption: $t('package.trends.chart_assistive_text.table_caption'),
+      },
+    },
     userOptions: {
       buttons: {
         tooltip: false,
@@ -272,6 +279,12 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
   <div class="font-mono facet-bar">
     <ClientOnly v-if="dataset.length">
       <VueUiHorizontalBar :key="chartKey" :dataset :config class="[direction:ltr]">
+        <template #hint="{ isVisible }">
+          <p v-if="isVisible" class="text-accent text-xs pt-2" aria-hidden="true">
+            {{ $t('compare.packages.bar_chart_nav_hint') }}
+          </p>
+        </template>
+
         <template #pattern="{ patternId, seriesIndex }">
           <ChartPatternSlot
             v-if="seriesIndex != 0"
@@ -348,6 +361,19 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
     </template>
   </div>
 </template>
+
+<style scoped>
+:deep(.vue-data-ui-component svg:focus-visible) {
+  outline: 1px solid var(--accent-color) !important;
+  border-radius: 0.1rem;
+  outline-offset: 3px !important;
+}
+:deep(.vue-ui-user-options-button:focus-visible),
+:deep(.vue-ui-user-options :first-child:focus-visible) {
+  outline: 0.1rem solid var(--accent-color) !important;
+  border-radius: 0.25rem;
+}
+</style>
 
 <style>
 .facet-bar .atom-subtitle {

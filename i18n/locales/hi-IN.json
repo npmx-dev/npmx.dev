@@ -54,6 +54,10 @@
     "links": "लिंक",
     "tap_to_search": "खोजने के लिए टैप करें"
   },
+  "blog": {
+    "author": {},
+    "atproto": {}
+  },
   "settings": {
     "title": "सेटिंग्स",
     "tagline": "अपने npmx अनुभव को अनुकूलित करें",
@@ -79,7 +83,8 @@
       "label": "एक्सेंट रंग"
     },
     "clear_accent": "एक्सेंट रंग साफ़ करें",
-    "translation_progress": "अनुवाद प्रगति"
+    "translation_progress": "अनुवाद प्रगति",
+    "background_themes": {}
   },
   "i18n": {
     "missing_keys": "{count} अनुवाद गायब है | {count} अनुवाद गायब हैं",
@@ -89,6 +94,7 @@
     "edit_on_github": "GitHub पर संपादित करें",
     "view_guide": "अनुवाद गाइड"
   },
+  "error": {},
   "common": {
     "loading": "लोड हो रहा है...",
     "loading_more": "और लोड हो रहा है...",
@@ -115,6 +121,9 @@
       "github": "GitHub पर देखें"
     }
   },
+  "profile": {
+    "invite": {}
+  },
   "package": {
     "not_found": "पैकेज नहीं मिला",
     "not_found_message": "पैकेज नहीं मिल सका।",
@@ -127,6 +136,7 @@
       "version": "यह संस्करण डेप्रीकेट कर दिया गया है।",
       "no_reason": "कोई कारण प्रदान नहीं किया गया"
     },
+    "size_increase": {},
     "replacement": {
       "title": "आपको इस निर्भरता की आवश्यकता नहीं हो सकती।",
       "native": "इसे {replacement} से बदला जा सकता है, जो Node {nodeVersion} से उपलब्ध है।",
@@ -222,7 +232,8 @@
       "more_tagged": "{count} और टैग किए गए",
       "all_covered": "सभी संस्करण ऊपर के टैग्स द्वारा कवर किए गए हैं",
       "deprecated_title": "{version} (डेप्रीकेटेड)",
-      "view_all": "{count} संस्करण देखें | सभी {count} संस्करण देखें"
+      "view_all": "{count} संस्करण देखें | सभी {count} संस्करण देखें",
+      "copy_alt": {}
     },
     "dependencies": {
       "title": "निर्भरताएँ ({count})",
@@ -271,7 +282,8 @@
       "date_range_multiline": "{start}\nसे {end}",
       "download_file": "{fileType} डाउनलोड करें",
       "toggle_annotator": "एनोटेटर टॉगल करें",
-      "items": {}
+      "items": {},
+      "copy_alt": {}
     },
     "downloads": {
       "title": "साप्ताहिक डाउनलोड्स"
@@ -357,7 +369,8 @@
       "name_asc": "नाम (A-Z)",
       "name_desc": "नाम (Z-A)"
     },
-    "size": {}
+    "size": {},
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -623,11 +636,7 @@
       "downloads_day": "डाउनलोड्स/दिन",
       "downloads_month": "डाउनलोड्स/महीना",
       "downloads_year": "डाउनलोड्स/वर्ष",
-      "name": "नाम",
-      "quality": "गुणवत्ता",
-      "popularity": "लोकप्रियता",
-      "maintenance": "रखरखाव",
-      "score": "स्कोर"
+      "name": "नाम"
     },
     "columns": {
       "title": "कॉलम्स",
@@ -640,10 +649,6 @@
       "downloads": "डाउनलोड्स/सप्ताह",
       "maintainers": "अनुरक्षक",
       "keywords": "कीवर्ड्स",
-      "quality_score": "गुणवत्ता स्कोर",
-      "popularity_score": "लोकप्रियता स्कोर",
-      "maintenance_score": "रखरखाव स्कोर",
-      "combined_score": "संयुक्त स्कोर",
       "security": "सुरक्षा"
     },
     "view_mode": {
@@ -700,6 +705,8 @@
         "managers": "मैनेजर"
       }
     },
+    "sponsors": {},
+    "oss_partners": {},
     "team": {},
     "contributors": {
       "title": "योगदानकर्ता",
@@ -720,6 +727,7 @@
         "description": "चैट करें, प्रश्न पूछें, और विचार साझा करें।",
         "cta": "Discord से जुड़ें"
       },
+      "builders": {},
       "follow": {
         "title": "अद्यतन रहें",
         "description": "npmx पर नवीनतम जानकारी प्राप्त करें।",
@@ -831,7 +839,15 @@
       },
       "values": {},
       "trends": {}
-    }
+    },
+    "version_invalid_url_format": {},
+    "file_filter_option": {},
+    "filter": {}
+  },
+  "pds": {
+    "join": {},
+    "server": {},
+    "community": {}
   },
   "privacy_policy": {
     "cookies": {
@@ -852,5 +868,9 @@
     "measures": {},
     "limitations": {},
     "contact": {}
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

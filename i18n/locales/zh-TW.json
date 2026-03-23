@@ -602,7 +602,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -882,11 +883,7 @@
       "downloads_month": "每月下載量",
       "downloads_year": "每年下載量",
       "published": "最近發布",
-      "name": "名稱",
-      "quality": "品質",
-      "popularity": "受歡迎度",
-      "maintenance": "維護程度",
-      "score": "分數"
+      "name": "名稱"
     },
     "columns": {
       "title": "欄位",
@@ -900,10 +897,6 @@
       "published": "最近發布",
       "maintainers": "維護者",
       "keywords": "關鍵字",
-      "quality_score": "品質分數",
-      "popularity_score": "受歡迎度分數",
-      "maintenance_score": "維護程度分數",
-      "combined_score": "總分",
       "security": "安全性",
       "selection": "選擇套件"
     },
@@ -1183,6 +1176,7 @@
     "file_size_warning": "檔案大小 {size} 超過 250KB，無法比較",
     "compare_versions": "差異",
     "compare_versions_title": "比較最新版本",
+    "version_invalid_url_format": {},
     "version_selector_title": "比較版本",
     "summary": "摘要",
     "deps_count": "{count} 個相依套件",
@@ -1348,6 +1342,9 @@
       "p1": "如果您在 {app} 遇到無障礙障礙，請在我們的 {link} 提交 Issue 告知我們。我們非常重視這些報告，並會盡力解決問題。",
       "link": "GitHub 儲存庫"
     }
+  },
+  "translation_status": {
+    "table": {}
   },
   "action_bar": {
     "title": "操作列",
