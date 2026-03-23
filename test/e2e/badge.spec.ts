@@ -29,13 +29,7 @@ test.describe('badge API', () => {
     'created': 'created',
     'maintainers': 'maintainers',
     'deprecated': 'status',
-    'quality': 'quality',
-    'popularity': 'popularity',
-    'maintenance': 'maintenance',
-    'score': 'score',
   }
-
-  const percentageTypes = new Set(['quality', 'popularity', 'maintenance', 'score'])
 
   for (const [type, expectedLabel] of Object.entries(badgeMap)) {
     test.describe(`${type} badge`, () => {
@@ -73,15 +67,6 @@ test.describe('badge API', () => {
         expect(body).toContain(packageName)
         expect(body).not.toContain(expectedLabel)
       })
-
-      if (percentageTypes.has(type)) {
-        test('contains percentage value', async ({ page, baseURL }) => {
-          const url = toLocalUrl(baseURL, `/api/registry/badge/${type}/vue`)
-          const { body } = await fetchBadge(page, url)
-
-          expect(body).toMatch(/\d+%|unknown/)
-        })
-      }
     })
   }
 

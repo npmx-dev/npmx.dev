@@ -134,10 +134,6 @@ const ALL_SORT_KEYS: SortKey[] = [
   'downloads-year',
   'updated',
   'name',
-  'quality',
-  'popularity',
-  'maintenance',
-  'score',
 ]
 
 // Disable sort keys the current provider can't meaningfully sort by
@@ -354,13 +350,19 @@ const canPublishToScope = computed(() => {
 
 // Show claim prompt when valid name, available, either not connected or connected and has permission
 const showClaimPrompt = computed(() => {
-  return (
-    isValidPackageName.value &&
-    packageAvailability.value?.available === true &&
-    packageAvailability.value.name === query.value.trim() &&
-    (!isConnected.value || (isConnected.value && canPublishToScope.value)) &&
-    status.value !== 'pending'
-  )
+  if (!isValidPackageName.value) return false
+  if (isConnected.value && !canPublishToScope.value) return false
+
+  const avail = packageAvailability.value
+
+  // Confirmed: availability result matches current committed query
+  if (avail?.available === true && avail.name === committedQuery.value.trim()) return true
+
+  // Pending: a new fetch is in flight — keep the claim visible if the last known
+  // result was "available" so it doesn't flicker until new data arrives
+  if (status.value === 'pending' && avail?.available === true) return true
+
+  return false
 })
 
 const claimPackageModalRef = useTemplateRef('claimPackageModalRef')
@@ -711,22 +713,28 @@ onBeforeUnmount(() => {
             status === 'success'
           "
         >
-          <div
-            v-if="validatedSuggestions.length > 0 && displayResults.length > 0"
-            class="mb-6 space-y-3"
+          <Transition
+            enter-active-class="motion-safe:animate-slide-up motion-safe:animate-fill-both"
+            leave-active-class="motion-safe:transition-[opacity,transform] motion-safe:duration-200 motion-safe:ease-out"
+            leave-to-class="opacity-0 motion-safe:-translate-y-1.5"
           >
-            <SearchSuggestionCard
-              v-for="(suggestion, idx) in validatedSuggestions"
-              :key="`${suggestion.type}-${suggestion.name}`"
-              :type="suggestion.type"
-              :name="suggestion.name"
-              :index="idx"
-              :is-exact-match="
-                (exactMatchType === 'org' && suggestion.type === 'org') ||
-                (exactMatchType === 'user' && suggestion.type === 'user')
-              "
-            />
-          </div>
+            <div
+              v-if="validatedSuggestions.length > 0 && displayResults.length > 0"
+              class="mb-6 space-y-3"
+            >
+              <SearchSuggestionCard
+                v-for="(suggestion, idx) in validatedSuggestions"
+                :key="`${suggestion.type}-${suggestion.name}`"
+                :type="suggestion.type"
+                :name="suggestion.name"
+                :index="idx"
+                :is-exact-match="
+                  (exactMatchType === 'org' && suggestion.type === 'org') ||
+                  (exactMatchType === 'user' && suggestion.type === 'user')
+                "
+              />
+            </div>
+          </Transition>
 
           <div
             v-if="showClaimPrompt && visibleResults && displayResults.length > 0"
@@ -740,7 +748,8 @@ onBeforeUnmount(() => {
             </div>
             <button
               type="button"
-              class="shrink-0 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md motion-safe:transition-colors motion-safe:duration-200 hover:bg-fg/90 focus-visible:outline-accent/70"
+              class="shrink-0 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md motion-safe:transition-[color,background-color,opacity] motion-safe:duration-200 hover:bg-fg/90 focus-visible:outline-accent/70 disabled:opacity-85 disabled:cursor-not-allowed"
+              :disabled="status === 'pending'"
               @click="claimPackageModalRef?.open()"
             >
               {{ $t('search.claim_button', { name: query }) }}
@@ -823,19 +832,25 @@ onBeforeUnmount(() => {
               {{ $t('search.no_results', { query }) }}
             </p>
 
-            <div v-if="validatedSuggestions.length > 0" class="max-w-md mx-auto mb-6 space-y-3">
-              <SearchSuggestionCard
-                v-for="(suggestion, idx) in validatedSuggestions"
-                :key="`${suggestion.type}-${suggestion.name}`"
-                :type="suggestion.type"
-                :name="suggestion.name"
-                :index="idx"
-                :is-exact-match="
-                  (exactMatchType === 'org' && suggestion.type === 'org') ||
-                  (exactMatchType === 'user' && suggestion.type === 'user')
-                "
-              />
-            </div>
+            <Transition
+              enter-active-class="motion-safe:animate-slide-up motion-safe:animate-fill-both"
+              leave-active-class="motion-safe:transition-[opacity,transform] motion-safe:duration-200 motion-safe:ease-out"
+              leave-to-class="opacity-0 motion-safe:-translate-y-1.5"
+            >
+              <div v-if="validatedSuggestions.length > 0" class="max-w-md mx-auto mb-6 space-y-3">
+                <SearchSuggestionCard
+                  v-for="(suggestion, idx) in validatedSuggestions"
+                  :key="`${suggestion.type}-${suggestion.name}`"
+                  :type="suggestion.type"
+                  :name="suggestion.name"
+                  :index="idx"
+                  :is-exact-match="
+                    (exactMatchType === 'org' && suggestion.type === 'org') ||
+                    (exactMatchType === 'user' && suggestion.type === 'user')
+                  "
+                />
+              </div>
+            </Transition>
 
             <div v-if="showClaimPrompt" class="max-w-md mx-auto text-center hidden sm:block">
               <div class="p-4 bg-bg-subtle border border-border rounded-lg">

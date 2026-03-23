@@ -160,6 +160,33 @@ function getMockForUrl(url: string): MockResult | null {
     }
   }
 
+  // jsdelivr CDN - return 404 for README files, etc.
+  if (host === 'cdn.jsdelivr.net') {
+    // Return null data which will cause a 404 - README files are optional
+    return { data: null }
+  }
+
+  // jsdelivr data API - return mock file listing
+  if (host === 'data.jsdelivr.com') {
+    const packageMatch = decodeURIComponent(pathname).match(/^\/v1\/packages\/npm\/(.+)$/)
+    if (packageMatch?.[1]) {
+      const pkgWithVersion = packageMatch[1]
+      const parsed = parseScopedPackageWithVersion(pkgWithVersion)
+      return {
+        data: {
+          type: 'npm',
+          name: parsed.name,
+          version: parsed.version || 'latest',
+          files: [
+            { name: 'package.json', hash: 'abc123', size: 1000 },
+            { name: 'index.js', hash: 'def456', size: 500 },
+            { name: 'README.md', hash: 'ghi789', size: 2000 },
+          ],
+        },
+      }
+    }
+  }
+
   // Gravatar API - return 404 (avatars not needed in tests)
   if (host === 'www.gravatar.com') {
     return { data: null }

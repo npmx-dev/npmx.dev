@@ -245,6 +245,7 @@ import PackageTrendsChart from '~/components/Package/TrendsChart.vue'
 import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
 import PackageLikeCard from '~/components/Package/LikeCard.vue'
 import SizeIncrease from '~/components/Package/SizeIncrease.vue'
+import Likes from '~/components/Package/Likes.vue'
 
 describe('component accessibility audits', () => {
   describe('DateTime', () => {
@@ -513,7 +514,7 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations with size small', async () => {
       const component = await mountSuspended(ButtonBase, {
-        props: { size: 'small' },
+        props: { size: 'sm' },
         slots: { default: 'Button content' },
       })
       const results = await runAxe(component)
@@ -573,9 +574,19 @@ describe('component accessibility audits', () => {
           to: 'http://example.com',
           disabled: true,
           variant: 'button-secondary',
-          size: 'small',
+          size: 'sm',
         },
         slots: { default: 'Button link content' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('Likes', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(Likes, {
+        props: { packageName: 'svelte' },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
@@ -763,10 +774,6 @@ describe('component accessibility audits', () => {
         publisher: {
           username: 'yyx990803',
         },
-      },
-      score: {
-        final: 0.9,
-        detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 },
       },
       searchScore: 100000,
     }
@@ -1374,10 +1381,6 @@ describe('component accessibility audits', () => {
           links: {},
           publisher: { username: 'yyx990803' },
         },
-        score: {
-          final: 0.9,
-          detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 },
-        },
         searchScore: 100000,
       },
       {
@@ -1389,10 +1392,6 @@ describe('component accessibility audits', () => {
           keywords: ['react'],
           links: {},
           publisher: { username: 'fb' },
-        },
-        score: {
-          final: 0.9,
-          detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 },
         },
         searchScore: 90000,
       },
@@ -1669,10 +1668,6 @@ describe('component accessibility audits', () => {
           links: {},
           publisher: { username: 'yyx990803' },
         },
-        score: {
-          final: 0.9,
-          detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 },
-        },
         searchScore: 100000,
       },
     ]
@@ -1733,10 +1728,6 @@ describe('component accessibility audits', () => {
       },
       downloads: { weekly: 50000000 },
       updated: '2024-01-01T00:00:00.000Z',
-      score: {
-        final: 0.95,
-        detail: { quality: 0.95, popularity: 0.99, maintenance: 0.9 },
-      },
       searchScore: 99999,
     }
 
@@ -2678,7 +2669,7 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations with size small', async () => {
       const component = await mountSuspended(InputBase, {
-        props: { size: 'small' },
+        props: { size: 'sm' },
         attrs: { 'aria-label': 'Small input' },
       })
       const results = await runAxe(component)
@@ -2687,7 +2678,7 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations with size large', async () => {
       const component = await mountSuspended(InputBase, {
-        props: { size: 'large' },
+        props: { size: 'lg' },
         attrs: { 'aria-label': 'Large input' },
       })
       const results = await runAxe(component)
@@ -3823,10 +3814,6 @@ describe('background theme accessibility', () => {
       keywords: [],
       links: {},
       publisher: { username: 'evan' },
-    },
-    score: {
-      final: 0.9,
-      detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 },
     },
     searchScore: 100000,
   }
