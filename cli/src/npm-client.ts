@@ -10,6 +10,16 @@ import { PackageNameSchema, UsernameSchema, OrgNameSchema, ScopeTeamSchema } fro
 import { logCommand, logSuccess, logError, logDebug } from './logger.ts'
 
 const execFileAsync = promisify(execFile)
+export const NPM_REGISTRY_URL = 'https://registry.npmjs.org/'
+
+function createNpmEnv(overrides: Record<string, string> = {}): Record<string, string> {
+  return {
+    ...process.env,
+    ...overrides,
+    FORCE_COLOR: '0',
+    npm_config_registry: NPM_REGISTRY_URL,
+  }
+}
 
 /**
  * Validates an npm package name using the official npm validation package
@@ -191,10 +201,7 @@ async function execNpmInteractive(
     let authUrlTimeout: ReturnType<typeof setTimeout> | null = null
     let authUrlTimedOut = false
 
-    const env: Record<string, string> = {
-      ...(process.env as Record<string, string>),
-      FORCE_COLOR: '0',
-    }
+    const env = createNpmEnv()
 
     // When openUrls is false, tell npm not to open the browser.
     // npm still prints the auth URL and polls doneUrl
@@ -330,7 +337,7 @@ async function execNpm(args: string[], options: ExecNpmOptions = {}): Promise<Np
     // On Unix, we keep it false for better security and performance
     const { stdout, stderr } = await execFileAsync('npm', npmArgs, {
       timeout: 60000,
-      env: { ...process.env, FORCE_COLOR: '0' },
+      env: createNpmEnv(),
       shell: process.platform === 'win32',
     })
 
@@ -606,7 +613,7 @@ export async function packageInit(
       const { stdout, stderr } = await execFileAsync('npm', npmArgs, {
         timeout: 60000,
         cwd: tempDir,
-        env: { ...process.env, FORCE_COLOR: '0' },
+        env: createNpmEnv(),
         shell: process.platform === 'win32',
       })
 
