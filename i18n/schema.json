@@ -1162,6 +1162,75 @@
           },
           "additionalProperties": false
         },
+        "score": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "subtitle": {
+              "type": "string"
+            },
+            "categories": {
+              "type": "object",
+              "properties": {
+                "documentation": {
+                  "type": "string"
+                },
+                "maintenance": {
+                  "type": "string"
+                },
+                "types": {
+                  "type": "string"
+                },
+                "bestPractices": {
+                  "type": "string"
+                },
+                "security": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "checks": {
+              "type": "object",
+              "properties": {
+                "has-readme": {
+                  "type": "string"
+                },
+                "has-description": {
+                  "type": "string"
+                },
+                "update-frequency": {
+                  "type": "string"
+                },
+                "has-types": {
+                  "type": "string"
+                },
+                "has-license": {
+                  "type": "string"
+                },
+                "has-repository": {
+                  "type": "string"
+                },
+                "has-provenance": {
+                  "type": "string"
+                },
+                "has-esm": {
+                  "type": "string"
+                },
+                "no-vulnerabilities": {
+                  "type": "string"
+                },
+                "not-deprecated": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
         "keywords_title": {
           "type": "string"
         },

@@ -347,6 +347,29 @@
       "provenance_link_text": "Herkunft",
       "trusted_publishing_link_text": "vertrauenswürdiges Publishing"
     },
+    "score": {
+      "title": "Paketqualität",
+      "subtitle": "{earned} von {total} Punkten",
+      "categories": {
+        "documentation": "Dokumentation",
+        "maintenance": "Pflege",
+        "types": "Typisierung",
+        "bestPractices": "Best Practices",
+        "security": "Sicherheit"
+      },
+      "checks": {
+        "has-readme": "Aussagekräftige README",
+        "has-description": "Beschreibung vorhanden",
+        "update-frequency": "Kürzlich aktualisiert",
+        "has-types": "TypeScript-Typen",
+        "has-license": "Lizenz angegeben",
+        "has-repository": "Repository verlinkt",
+        "has-provenance": "Herkunft verifizierbar",
+        "has-esm": "ES-Module unterstützt",
+        "no-vulnerabilities": "Keine bekannten Schwachstellen",
+        "not-deprecated": "Nicht veraltet"
+      }
+    },
     "keywords_title": "Schlüsselwörter",
     "compatibility": "Kompatibilität",
     "card": {

@@ -64,7 +64,7 @@ const DEFAULT_SETTINGS: AppSettings = {
     autoOpenURL: false,
   },
   sidebar: {
-    collapsed: [],
+    collapsed: ['quality-score'],
   },
   chartFilter: {
     averageWindow: 0,
