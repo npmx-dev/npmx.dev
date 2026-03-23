@@ -136,7 +136,7 @@
     "h3-next": "npm:h3@2.0.1-rc.16",
     "knip": "5.88.0",
     "markdown-it-anchor": "9.2.0",
-    "schema-dts": "1.1.5",
+    "schema-dts": "2.0.0",
     "storybook": "catalog:storybook",
     "storybook-i18n": "catalog:storybook",
     "typescript": "6.0.2",
