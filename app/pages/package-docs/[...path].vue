@@ -142,22 +142,36 @@ const stickyStyle = computed(() => {
 // Track active TOC item based on URL hash
 const tocContainerRef = useTemplateRef('tocContainerRef')
 
-function updateActiveTocLink(hash: string) {
+function updateActiveTocLink() {
   const container = tocContainerRef.value
   if (!container) return
+
+  const hash = window.location.hash
 
   container.querySelector('a.toc-active')?.classList.remove('toc-active')
 
   if (hash) {
-    const link = container.querySelector(`a[href="${CSS.escape(hash)}"]`)
+    const link = container.querySelector(`a[href="#${CSS.escape(hash.slice(1))}"]`)
     link?.classList.add('toc-active')
   }
 }
 
+function onTocClick(e: Event) {
+  const link = (e.target as HTMLElement).closest('a[href^="#"]')
+  if (link) {
+    nextTick(updateActiveTocLink)
+  }
+}
+
 if (import.meta.client) {
-  watch(() => route.hash, hash => updateActiveTocLink(hash))
-  watch(() => docsData.value?.toc, () => nextTick(() => updateActiveTocLink(route.hash)))
-  onMounted(() => updateActiveTocLink(route.hash))
+  watch(() => docsData.value?.toc, () => nextTick(updateActiveTocLink))
+  onMounted(() => {
+    window.addEventListener('hashchange', updateActiveTocLink)
+    updateActiveTocLink()
+  })
+  onBeforeUnmount(() => {
+    window.removeEventListener('hashchange', updateActiveTocLink)
+  })
 }
 </script>
 
@@ -183,7 +197,7 @@ if (import.meta.client) {
             {{ $t('package.docs.contents') }}
           </h2>
           <!-- eslint-disable vue/no-v-html -->
-          <div ref="tocContainerRef" class="toc-content" v-html="docsData.toc" />
+          <div ref="tocContainerRef" class="toc-content" @click="onTocClick" v-html="docsData.toc" />
         </div>
       </aside>
 
