@@ -161,7 +161,7 @@ export default defineNuxtModule({
       await mkdir(blogImagesDir, { recursive: true })
     }
 
-    addVitePlugin(() =>
+    addVitePlugin(
       Markdown({
         include: [/\.(md|markdown)($|\?)/],
         wrapperComponent: 'BlogPostWrapper',
@@ -177,7 +177,7 @@ export default defineNuxtModule({
           )
           md.use(MarkdownItAnchor as any)
         },
-      }),
+      }) as any,
     )
 
     // Load posts once with resolved Bluesky avatars (shared across template + route rules)
