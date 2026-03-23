@@ -11,6 +11,7 @@ import { logCommand, logSuccess, logError, logDebug } from './logger.ts'
 
 const execFileAsync = promisify(execFile)
 export const NPM_REGISTRY_URL = 'https://registry.npmjs.org/'
+const NPM_COMMAND = process.platform === 'win32' ? 'npm.cmd' : 'npm'
 
 function createNpmEnv(overrides: Record<string, string> = {}): Record<string, string> {
   return {
@@ -209,7 +210,7 @@ async function execNpmInteractive(
       env.npm_config_browser = 'false'
     }
 
-    const child = pty.spawn('npm', npmArgs, {
+    const child = pty.spawn(NPM_COMMAND, npmArgs, {
       name: 'xterm-256color',
       cols: 120,
       rows: 30,
@@ -331,14 +332,12 @@ async function execNpm(args: string[], options: ExecNpmOptions = {}): Promise<Np
   }
 
   try {
-    logDebug('Executing npm command:', { command: 'npm', args: npmArgs })
-    // Use execFile instead of exec to avoid shell injection vulnerabilities
-    // On Windows, shell: true is required to execute .cmd files (like npm.cmd)
-    // On Unix, we keep it false for better security and performance
-    const { stdout, stderr } = await execFileAsync('npm', npmArgs, {
+    logDebug('Executing npm command:', { command: NPM_COMMAND, args: npmArgs })
+    // Use execFile instead of exec to avoid shell injection vulnerabilities.
+    // Use npm.cmd on Windows to avoid shell wrapping and DEP0190 warnings.
+    const { stdout, stderr } = await execFileAsync(NPM_COMMAND, npmArgs, {
       timeout: 60000,
       env: createNpmEnv(),
-      shell: process.platform === 'win32',
     })
 
     logDebug('Command succeeded:', { stdout, stderr })
@@ -610,11 +609,10 @@ export async function packageInit(
     logCommand(`${displayCmd} (in temp dir for ${name})`)
 
     try {
-      const { stdout, stderr } = await execFileAsync('npm', npmArgs, {
+      const { stdout, stderr } = await execFileAsync(NPM_COMMAND, npmArgs, {
         timeout: 60000,
         cwd: tempDir,
         env: createNpmEnv(),
-        shell: process.platform === 'win32',
       })
 
       logSuccess(`Published ${name}@0.0.0`)
