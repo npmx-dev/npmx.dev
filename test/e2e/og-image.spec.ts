@@ -27,3 +27,20 @@ for (const path of paths) {
     })
   })
 }
+
+test.describe('share card', () => {
+  for (const theme of ['dark', 'light'] as const) {
+    test(`share card for nuxt (${theme})`, async ({ page, baseURL }) => {
+      const base = baseURL?.endsWith('/') ? baseURL.slice(0, -1) : baseURL
+      const response = await page.request.get(`${base}/api/card/nuxt.png?theme=${theme}`)
+
+      expect(response.status()).toBe(200)
+      expect(response.headers()['content-type']).toContain('image/png')
+
+      const imageBuffer = await response.body()
+      expect(imageBuffer).toMatchSnapshot({
+        name: `share-card-nuxt-${theme}.png`,
+      })
+    })
+  }
+})
