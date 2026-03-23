@@ -76,6 +76,7 @@ export const TRUSTED_IMAGE_DOMAINS = [
   'travis-ci.org',
   'secure.travis-ci.org',
   'img.badgesize.io',
+  'api.securityscorecards.dev',
 ]
 
 /**
