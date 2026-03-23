@@ -41,6 +41,7 @@ const executeNpmxConnectorCommand = computed(() => {
   return getExecuteCommand({
     packageName: 'npmx-connector',
     packageManager: selectedPM.value,
+    isBinaryOnly: true,
   })
 })
 </script>

@@ -1450,6 +1450,24 @@
         "trends": {
           "type": "object",
           "properties": {
+            "chart_assistive_text": {
+              "type": "object",
+              "properties": {
+                "keyboard_navigation_horizontal": {
+                  "type": "string"
+                },
+                "keyboard_navigation_vertical": {
+                  "type": "string"
+                },
+                "table_available": {
+                  "type": "string"
+                },
+                "table_caption": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
             "granularity": {
               "type": "string"
             },
@@ -1625,6 +1643,9 @@
               "type": "string"
             },
             "subtitle": {
+              "type": "string"
+            },
+            "sparkline_nav_hint": {
               "type": "string"
             }
           },
@@ -3296,6 +3317,12 @@
               "type": "string"
             },
             "charts_view": {
+              "type": "string"
+            },
+            "bar_chart_nav_hint": {
+              "type": "string"
+            },
+            "line_chart_nav_hint": {
               "type": "string"
             }
           },
