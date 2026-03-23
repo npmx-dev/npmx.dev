@@ -752,6 +752,23 @@ pnpm test:browser:ui     # Run with Playwright UI
 
 Make sure to read about [Playwright best practices](https://playwright.dev/docs/best-practices) and don't rely on classes/IDs but try to follow user-replicable behaviour (like selecting an element based on text content instead).
 
+#### Updating snapshots
+
+Some tests use image snapshots that must match the CI environment (Linux). If you need to update them, use Docker to run in the same environment:
+
+```bash
+docker run --rm \
+  -e CI=true \
+  -e NODE_OPTIONS="--max-old-space-size=4096" \
+  -v $(pwd):/work \
+  -w /work \
+  mcr.microsoft.com/playwright:v1.58.2-noble \
+  sh -c "npm install -g pnpm && pnpm install && pnpm vp run build:test && pnpm vp run test:browser:prebuilt --update-snapshots"
+```
+
+> [!NOTE]
+> If the build runs out of memory, increase `--max-old-space-size` to `8192`.
+
 ### Test fixtures (mocking external APIs)
 
 E2E tests use a fixture system to mock external API requests, ensuring tests are deterministic and don't hit real APIs. This is handled at two levels:
