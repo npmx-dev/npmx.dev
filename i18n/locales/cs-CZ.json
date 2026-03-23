@@ -107,7 +107,7 @@
       "reply_count": "{count} odpověď | {count} odpovědi | {count} odpovědí",
       "like_count": "{count} lajk | {count} lajky | {count} lajků",
       "repost_count": "{count} repost | {count} reposty | {count} repostů",
-      "more_replies": "{count} další odpověď ... | {count} další odpovědi ... | {count} dalších odpovědí ..."
+      "more_replies": "ještě {count} odpověď… | ještě {count} odpovědi… | ještě {count} odpovědí…"
     }
   },
   "settings": {
@@ -142,10 +142,14 @@
     "theme_system": "Systémové",
     "language": "Jazyk",
     "help_translate": "Pomozte přeložit npmx",
-    "accent_colors": "Barvy akcentu",
+    "accent_colors": {
+      "label": "Barvy akcentu"
+    },
     "clear_accent": "Vymazat barvu akcentu",
     "translation_progress": "Pokrok překladu",
-    "background_themes": "Odstín pozadí",
+    "background_themes": {
+      "label": "Odstín pozadí"
+    },
     "keyboard_shortcuts_enabled": "Povolit klávesové zkratky",
     "keyboard_shortcuts_enabled_description": "Klávesové zkratky lze zakázat, pokud se střetávají s jinými zkratkami prohlížeče nebo systému"
   },

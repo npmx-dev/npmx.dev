@@ -177,6 +177,7 @@ export default defineNuxtConfig({
     '/privacy': { prerender: true },
     '/search': { isr: false, cache: false }, // never cache
     '/settings': { prerender: true },
+    '/translation-status': { prerender: true },
     '/recharging': { prerender: true },
     '/pds': { isr: 86400 }, // revalidate daily
     // proxy for insights

@@ -822,7 +822,7 @@ onBeforeUnmount(() => {
                 $t(
                   'filters.count.showing_paginated',
                   {
-                    pageSize: Math.min(preferredPageSize, effectiveTotal),
+                    pageSize: $n(Math.min(preferredPageSize, effectiveTotal)),
                     count: $n(effectiveTotal),
                   },
                   effectiveTotal,

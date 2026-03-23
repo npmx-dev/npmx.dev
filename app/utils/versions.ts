@@ -52,6 +52,73 @@ export function getPrereleaseChannel(version: string): string {
 }
 
 /**
+ * Priority order for well-known dist-tags.
+ * Lower number = higher priority in display order.
+ * Unknown tags fall back to Infinity and are sorted by publish date descending.
+ */
+export const TAG_PRIORITY: Record<string, number> = {
+  latest: 0,
+  stable: 1,
+  rc: 2,
+  beta: 3,
+  next: 4,
+  alpha: 5,
+  canary: 6,
+  nightly: 7,
+  experimental: 8,
+  legacy: 9,
+}
+
+/**
+ * Get the display priority for a dist-tag.
+ * Uses fuzzy matching so e.g. "v2-legacy" matches "legacy".
+ * @param tag - The tag name (e.g., "beta", "v2-legacy")
+ * @returns Numeric priority (lower = higher priority); Infinity for unknown tags
+ */
+export function getTagPriority(tag: string | undefined): number {
+  if (!tag) return Infinity
+  for (const [key, priority] of Object.entries(TAG_PRIORITY)) {
+    if (tag.toLowerCase().includes(key)) return priority
+  }
+  return Infinity
+}
+
+/**
+ * Compare two tagged version rows for display ordering.
+ * Sorts by minimum tag priority first; falls back to publish date descending.
+ * @param rowA - First row
+ * @param rowB - Second row
+ * @param versionTimes - Map of version string to ISO publish time
+ * @returns Negative/zero/positive comparator value
+ */
+export function compareTagRows(
+  rowA: TaggedVersionRow,
+  rowB: TaggedVersionRow,
+  versionTimes: Record<string, string>,
+): number {
+  const priorityA = Math.min(...rowA.tags.map(getTagPriority))
+  const priorityB = Math.min(...rowB.tags.map(getTagPriority))
+  if (priorityA !== priorityB) return priorityA - priorityB
+  const timeA = versionTimes[rowA.version] ?? ''
+  const timeB = versionTimes[rowB.version] ?? ''
+  return timeB.localeCompare(timeA)
+}
+
+/**
+ * Compare two version group keys for display ordering.
+ * Sorts by major descending, then by minor descending for 0.x groups.
+ * @param a - Group key (e.g. "1", "0.9")
+ * @param b - Group key (e.g. "2", "0.10")
+ * @returns Negative/zero/positive comparator value
+ */
+export function compareVersionGroupKeys(a: string, b: string): number {
+  const [majorA, minorA] = a.split('.').map(Number)
+  const [majorB, minorB] = b.split('.').map(Number)
+  if (majorA !== majorB) return (majorB ?? 0) - (majorA ?? 0)
+  return (minorB ?? -1) - (minorA ?? -1)
+}
+
+/**
  * Sort tags with 'latest' first, then alphabetically
  * @param tags - Array of tag names
  * @returns New sorted array

@@ -624,7 +624,7 @@ const showSkeleton = shallowRef(false)
                 <ButtonGroup v-if="dependencyCount > 0" class="ms-auto">
                   <LinkBase
                     variant="button-secondary"
-                    size="small"
+                    size="sm"
                     :to="`https://npmgraph.js.org/?q=${pkg.name}${resolvedVersion ? `@${resolvedVersion}` : ''}`"
                     :title="$t('package.stats.view_dependency_graph')"
                     classicon="i-lucide:network -rotate-90"
@@ -634,7 +634,7 @@ const showSkeleton = shallowRef(false)
 
                   <LinkBase
                     variant="button-secondary"
-                    size="small"
+                    size="sm"
                     :to="`https://node-modules.dev/grid/depth#install=${pkg.name}${resolvedVersion ? `@${resolvedVersion}` : ''}`"
                     :title="$t('package.stats.inspect_dependency_tree')"
                     classicon="i-lucide:table"
@@ -771,8 +771,15 @@ const showSkeleton = shallowRef(false)
                 {{ $t('package.get_started.title') }}
               </LinkBase>
             </h2>
-            <!-- Package manager dropdown -->
-            <PackageManagerSelect />
+            <!-- Package manager dropdown + Download button -->
+            <div class="flex items-center gap-2">
+              <PackageDownloadButton
+                v-if="displayVersion"
+                :package-name="pkg.name"
+                :version="displayVersion"
+              />
+              <PackageManagerSelect />
+            </div>
           </div>
           <div>
             <div
@@ -863,7 +870,9 @@ const showSkeleton = shallowRef(false)
             </div>
             <TerminalInstall
               :package-name="pkg.name"
-              :requested-version="resolvedVersion"
+              :requested-version="
+                requestedVersion && requestedVersion !== 'latest' ? resolvedVersion : null
+              "
               :install-version-override="installVersionOverride"
               :jsr-info="jsrInfo"
               :dev-dependency-suggestion="packageAnalysis?.devDependencySuggestion"
@@ -1098,7 +1107,7 @@ const showSkeleton = shallowRef(false)
       'install sidebar'
       'vulns   sidebar'
       'readme  sidebar';
-    grid-template-rows: auto auto auto auto 1fr;
+    grid-template-rows: auto auto auto 1fr;
   }
 }
 
@@ -1111,6 +1120,7 @@ const showSkeleton = shallowRef(false)
       'install sidebar'
       'vulns   sidebar'
       'readme  sidebar';
+    grid-template-rows: auto auto auto 1fr;
   }
 }
 

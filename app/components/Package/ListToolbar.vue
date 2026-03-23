@@ -228,7 +228,7 @@ const { selectedPackages, clearSelectedPackages } = usePackageSelection()
           </ButtonBase>
           <button
             @click="clearSelectedPackages"
-            aria-label="Close action bar"
+            :aria-label="$t('filters.clear_selected_label')"
             class="flex items-center ms-2"
           >
             <span class="i-lucide:x text-sm" />

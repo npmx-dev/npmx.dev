@@ -296,7 +296,7 @@ export function normalizeGitUrl(input: string): string | null {
   const url = input
     .trim()
     .replace(/^git\+/, '')
-    .replace(/\.git$/, '')
+    .replace(/\.git(?=[/#?]|$)/i, '')
     .replace(/(^|\/)[^/]+?@/, '$1') // remove "user@" from "ssh://user@host.com:..."
     .replace(/(\.[^./]+?):/, '$1/') // change ".com:" to ".com/" from "ssh://user@host.com:..."
     .replace(/^git:\/\//, 'https://')

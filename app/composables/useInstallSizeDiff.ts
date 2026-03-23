@@ -31,7 +31,9 @@ function getComparisonVersion(pkg: SlimPackument, resolvedVersion: string): stri
     .sort((a, b) => compare(a, b))
 
   const currentIdx = stableVersions.indexOf(resolvedVersion)
-  if (currentIdx <= 0) return null
+  // Don't compare the second version against the first as the first
+  // has no baseline so a large size difference is expected
+  if (currentIdx <= 1) return null
 
   return stableVersions[currentIdx - 1]!
 }
