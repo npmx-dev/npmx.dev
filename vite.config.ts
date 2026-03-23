@@ -214,7 +214,6 @@ export default defineConfig({
     coverage: {
       enabled: true,
       provider: 'v8',
-      exclude: ['**/node_modules/**', '**/*.json'],
       include: ['{app,cli,server,shared}/**/*.{ts,vue}'],
     },
   },
