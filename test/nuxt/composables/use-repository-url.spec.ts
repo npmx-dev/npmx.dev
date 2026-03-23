@@ -11,24 +11,28 @@ import { describe, expect, it } from 'vitest'
  */
 describe('useRepositoryUrl', () => {
   it('should strip .git from repository URL', () => {
-    const { repositoryUrl } = useRepositoryUrl(ref({
-      repository: {
-        type: 'git',
-        url: 'git+https://github.com/agentmarkup/agentmarkup.git',
-      },
-    }))
+    const { repositoryUrl } = useRepositoryUrl(
+      ref({
+        repository: {
+          type: 'git',
+          url: 'git+https://github.com/agentmarkup/agentmarkup.git',
+        },
+      }),
+    )
 
     expect(repositoryUrl.value).toBe('https://github.com/agentmarkup/agentmarkup')
   })
 
   it('should append /tree/HEAD/{directory} for monorepo packages without .git', () => {
-    const { repositoryUrl } = useRepositoryUrl(ref({
-      repository: {
-        type: 'git',
-        url: 'git+https://github.com/agentmarkup/agentmarkup.git',
-        directory: 'packages/vite',
-      },
-    }))
+    const { repositoryUrl } = useRepositoryUrl(
+      ref({
+        repository: {
+          type: 'git',
+          url: 'git+https://github.com/agentmarkup/agentmarkup.git',
+          directory: 'packages/vite',
+        },
+      }),
+    )
 
     expect(repositoryUrl.value).toBe(
       'https://github.com/agentmarkup/agentmarkup/tree/HEAD/packages/vite',
@@ -36,9 +40,11 @@ describe('useRepositoryUrl', () => {
   })
 
   it('should return null when repository has no url', () => {
-    const { repositoryUrl } = useRepositoryUrl(ref({
-      repository: {},
-    }))
+    const { repositoryUrl } = useRepositoryUrl(
+      ref({
+        repository: {},
+      }),
+    )
 
     expect(repositoryUrl.value).toBeNull()
   })
@@ -50,25 +56,27 @@ describe('useRepositoryUrl', () => {
   })
 
   it('should handle plain HTTPS URLs without .git suffix', () => {
-    const { repositoryUrl } = useRepositoryUrl(ref({
-      repository: {
-        url: 'https://github.com/nuxt/ui',
-      },
-    }))
+    const { repositoryUrl } = useRepositoryUrl(
+      ref({
+        repository: {
+          url: 'https://github.com/nuxt/ui',
+        },
+      }),
+    )
 
     expect(repositoryUrl.value).toBe('https://github.com/nuxt/ui')
   })
 
   it('should handle directory with trailing slash', () => {
-    const { repositoryUrl } = useRepositoryUrl(ref({
-      repository: {
-        url: 'git+https://github.com/org/repo.git',
-        directory: 'packages/core/',
-      },
-    }))
-
-    expect(repositoryUrl.value).toBe(
-      'https://github.com/org/repo/tree/HEAD/packages/core/',
+    const { repositoryUrl } = useRepositoryUrl(
+      ref({
+        repository: {
+          url: 'git+https://github.com/org/repo.git',
+          directory: 'packages/core/',
+        },
+      }),
     )
+
+    expect(repositoryUrl.value).toBe('https://github.com/org/repo/tree/HEAD/packages/core/')
   })
 })
