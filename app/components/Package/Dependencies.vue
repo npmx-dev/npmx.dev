@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { SEVERITY_TEXT_COLORS, getHighestSeverity } from '#shared/utils/severity'
+import { isUrlDependency } from '#shared/utils/version-source'
 import { getOutdatedTooltip, getVersionClass } from '~/utils/npm/outdated-dependencies'
 
 const { t } = useI18n()
@@ -168,6 +169,19 @@ const numberFormatter = useNumberFormatter()
             >
               <span class="sr-only">{{ $t('package.deprecated.label') }}</span>
             </LinkBase>
+            <TooltipApp
+              v-if="isUrlDependency(version)"
+              class="shrink-0 text-amber-700 dark:text-amber-500"
+              :text="$t('package.dependencies.url_dependency')"
+            >
+              <button
+                type="button"
+                class="inline-flex items-center justify-center p-2 -m-2"
+                :aria-label="$t('package.dependencies.url_dependency')"
+              >
+                <span class="i-lucide:unlink w-3 h-3" aria-hidden="true" />
+              </button>
+            </TooltipApp>
             <LinkBase
               :to="packageRoute(dep, version)"
               class="block truncate"
@@ -234,14 +248,29 @@ const numberFormatter = useNumberFormatter()
               {{ $t('package.dependencies.optional') }}
             </TagStatic>
           </div>
-          <LinkBase
-            :to="packageRoute(peer.name, peer.version)"
-            class="block truncate max-w-[30%]"
-            :title="peer.version"
-            dir="ltr"
-          >
-            {{ peer.version }}
-          </LinkBase>
+          <span class="flex items-center gap-1 max-w-[30%]" dir="ltr">
+            <TooltipApp
+              v-if="isUrlDependency(peer.version)"
+              class="shrink-0 text-amber-700 dark:text-amber-500"
+              :text="$t('package.dependencies.url_dependency')"
+            >
+              <button
+                type="button"
+                class="inline-flex items-center justify-center p-2 -m-2"
+                :aria-label="$t('package.dependencies.url_dependency')"
+              >
+                <span class="i-lucide:unlink w-3 h-3" aria-hidden="true" />
+              </button>
+            </TooltipApp>
+            <LinkBase
+              :to="packageRoute(peer.name, peer.version)"
+              class="block truncate"
+              :title="peer.version"
+              dir="ltr"
+            >
+              {{ peer.version }}
+            </LinkBase>
+          </span>
         </li>
       </ul>
       <button
@@ -291,14 +320,29 @@ const numberFormatter = useNumberFormatter()
           <LinkBase :to="packageRoute(dep)" class="block max-w-[80%] break-words" dir="ltr">
             {{ dep }}
           </LinkBase>
-          <LinkBase
-            :to="packageRoute(dep, version)"
-            class="block truncate"
-            :title="version"
-            dir="ltr"
-          >
-            {{ version }}
-          </LinkBase>
+          <span class="flex items-center gap-1" dir="ltr">
+            <TooltipApp
+              v-if="isUrlDependency(version)"
+              class="shrink-0 text-amber-700 dark:text-amber-500"
+              :text="$t('package.dependencies.url_dependency')"
+            >
+              <button
+                type="button"
+                class="inline-flex items-center justify-center p-2 -m-2"
+                :aria-label="$t('package.dependencies.url_dependency')"
+              >
+                <span class="i-lucide:unlink w-3 h-3" aria-hidden="true" />
+              </button>
+            </TooltipApp>
+            <LinkBase
+              :to="packageRoute(dep, version)"
+              class="block truncate"
+              :title="version"
+              dir="ltr"
+            >
+              {{ version }}
+            </LinkBase>
+          </span>
         </li>
       </ul>
       <button

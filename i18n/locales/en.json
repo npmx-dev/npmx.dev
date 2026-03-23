@@ -454,6 +454,7 @@
       "outdated_minor": "{count} minor version behind (latest: {latest}) | {count} minor versions behind (latest: {latest})",
       "outdated_patch": "Patch update available (latest: {latest})",
       "has_replacement": "This dependency has suggested replacements",
+      "url_dependency": "This dependency uses a URL instead of the npm registry, bypassing integrity checks",
       "vulnerabilities_count": "{count} vulnerability | {count} vulnerabilities"
     },
     "peer_dependencies": {

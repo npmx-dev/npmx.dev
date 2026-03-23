@@ -1366,6 +1366,9 @@
             "has_replacement": {
               "type": "string"
             },
+            "url_dependency": {
+              "type": "string"
+            },
             "vulnerabilities_count": {
               "type": "string"
             }
