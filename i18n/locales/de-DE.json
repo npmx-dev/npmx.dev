@@ -1434,40 +1434,6 @@
       "file_link": "Bearbeite {file} ({lang}) auf GitHub"
     }
   },
-  "vacations": {
-    "title": "im urlaub",
-    "meta_description": "Das npmx-Team hat neue Energie getankt. Der Discord wurde nach einer Woche wieder geöffnet.",
-    "heading": "auftanken",
-    "subtitle": "wir haben an npmx in einem Tempo gearbeitet, das {some} von uns den Schlaf gekostet hat. wir wollten nicht, dass das zur Norm wird! also haben wir uns eine Woche frei genommen. gemeinsam.",
-    "illustration_alt": "eine einzelne Reihe gemütlicher Icons",
-    "poke_log": "Das Lagerfeuer schüren",
-    "what": {
-      "title": "was passiert ist",
-      "p1": "Discord war {dates} geschlossen.",
-      "dates": "14. – 21. Februar",
-      "p2": "alle Einladungslinks waren weg und die Kanäle gesperrt – außer {garden}, der für Leute offen blieb, die weiterhin Zeit miteinander verbringen wollten.",
-      "garden": "#garden"
-    },
-    "meantime": {
-      "title": "in der Zwischenzeit",
-      "p1": "{site} and {repo} blieben offen – die Leute haben sich trotzdem reingekniet, einige Issues erstellt, ein paar PRs geöffnet, aber hauptsächlich hat jeder Zeit an einem gemütlichen Kamin verbracht.",
-      "repo_link": "das Repo"
-    },
-    "return": {
-      "title": "wir sind zurück!",
-      "p1": "wir sind erholt zurückgekommen und bereit für den Endspurt bis zum 3. März. Folge uns auf {social} für Updates.",
-      "social_link": "Bluesky"
-    },
-    "stats": {
-      "contributors": "Mitwirkende",
-      "commits": "Commits",
-      "pr": "Zusammengeführte PRs",
-      "subtitle": {
-        "some": "einige",
-        "all": "alle"
-      }
-    }
-  },
   "action_bar": {
     "title": "Aktionsleiste",
     "selection": "0 ausgewählt | 1 ausgewählt | {count} ausgewählt",
