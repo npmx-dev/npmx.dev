@@ -455,7 +455,11 @@
       "esm_added": "Module type changed to ESM",
       "esm_removed": "Module type changed from ESM to CJS",
       "types_added": "TypeScript types added",
-      "types_removed": "TypeScript types removed"
+      "types_removed": "TypeScript types removed",
+      "trusted_publisher_added": "Trusted publishing enabled",
+      "trusted_publisher_removed": "Trusted publishing removed",
+      "provenance_added": "Provenance enabled",
+      "provenance_removed": "Provenance removed"
     },
     "dependencies": {
       "title": "Dependency ({count}) | Dependencies ({count})",

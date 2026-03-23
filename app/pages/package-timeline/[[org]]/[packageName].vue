@@ -240,6 +240,40 @@ const versionSubEvents = computed(() => {
       })
     }
 
+    // Trusted publisher changes
+    if (current.hasTrustedPublisher && !previous.hasTrustedPublisher) {
+      events.push({
+        key: 'trustedPublisher',
+        positive: true,
+        icon: 'i-lucide:shield-check',
+        text: t('package.timeline.trusted_publisher_added'),
+      })
+    } else if (!current.hasTrustedPublisher && previous.hasTrustedPublisher) {
+      events.push({
+        key: 'trustedPublisher',
+        positive: false,
+        icon: 'i-lucide:shield-off',
+        text: t('package.timeline.trusted_publisher_removed'),
+      })
+    }
+
+    // Provenance changes
+    if (current.hasProvenance && !previous.hasProvenance) {
+      events.push({
+        key: 'provenance',
+        positive: true,
+        icon: 'i-lucide:fingerprint',
+        text: t('package.timeline.provenance_added'),
+      })
+    } else if (!current.hasProvenance && previous.hasProvenance) {
+      events.push({
+        key: 'provenance',
+        positive: false,
+        icon: 'i-lucide:fingerprint',
+        text: t('package.timeline.provenance_removed'),
+      })
+    }
+
     if (events.length) {
       result.set(current.version, events)
     }

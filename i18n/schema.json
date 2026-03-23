@@ -1371,6 +1371,18 @@
             },
             "types_removed": {
               "type": "string"
+            },
+            "trusted_publisher_added": {
+              "type": "string"
+            },
+            "trusted_publisher_removed": {
+              "type": "string"
+            },
+            "provenance_added": {
+              "type": "string"
+            },
+            "provenance_removed": {
+              "type": "string"
             }
           },
           "additionalProperties": false

@@ -8,6 +8,8 @@ export interface TimelineVersion {
   license?: string
   type?: string
   hasTypes?: boolean
+  hasTrustedPublisher?: boolean
+  hasProvenance?: boolean
   tags: string[]
 }
 
@@ -71,6 +73,8 @@ export default defineCachedEventHandler(
             license: typeof license === 'string' ? license : undefined,
             type: typeof version.type === 'string' ? version.type : undefined,
             hasTypes: hasBuiltInTypes(version) || undefined,
+            hasTrustedPublisher: version._npmUser?.trustedPublisher ? true : undefined,
+            hasProvenance: version.dist?.attestations ? true : undefined,
             tags: tagsByVersion.get(v) ?? [],
           }
         })
