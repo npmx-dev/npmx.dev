@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import type { RouteLocationRaw } from 'vue-router'
 import { compare } from 'semver'
-import type { TimelineResponse, TimelineVersion } from '~~/server/api/registry/timeline/[...pkg].get'
+import type {
+  TimelineResponse,
+  TimelineVersion,
+} from '~~/server/api/registry/timeline/[...pkg].get'
 
 definePageMeta({
   name: 'timeline',
@@ -46,24 +49,26 @@ const loadError = ref(false)
 const hasMore = computed(() => timelineEntries.value.length < totalVersions.value)
 
 async function fetchTimeline(offset: number): Promise<TimelineResponse> {
-  return $fetch<TimelineResponse>(
-    `/api/registry/timeline/${packageName.value}`,
-    { query: { offset, limit: PAGE_SIZE } },
-  )
+  return $fetch<TimelineResponse>(`/api/registry/timeline/${packageName.value}`, {
+    query: { offset, limit: PAGE_SIZE },
+  })
 }
 
 // Initial load — useAsyncData serializes the full response across SSR → client
-const { data: initialTimeline } = await useAsyncData(
-  `timeline:${packageName.value}`,
-  () => fetchTimeline(0),
+const { data: initialTimeline } = await useAsyncData(`timeline:${packageName.value}`, () =>
+  fetchTimeline(0),
 )
 
-watch(initialTimeline, (data) => {
-  if (data) {
-    timelineEntries.value = data.versions
-    totalVersions.value = data.total
-  }
-}, { immediate: true })
+watch(
+  initialTimeline,
+  data => {
+    if (data) {
+      timelineEntries.value = data.versions
+      totalVersions.value = data.total
+    }
+  },
+  { immediate: true },
+)
 
 async function loadMore() {
   if (loadingMore.value || sizesLoading.value) return
@@ -73,11 +78,9 @@ async function loadMore() {
     const data = await fetchTimeline(timelineEntries.value.length)
     timelineEntries.value = [...timelineEntries.value, ...data.versions]
     totalVersions.value = data.total
-  }
-  catch {
+  } catch {
     loadError.value = true
-  }
-  finally {
+  } finally {
     loadingMore.value = false
   }
 }
@@ -185,9 +188,10 @@ const versionSubEvents = computed(() => {
           key: 'deps',
           positive: depsDecreased,
           icon: depsDecreased ? 'i-lucide:trending-down' : 'i-lucide:trending-up',
-          text: depDiff > 0
-            ? t('package.timeline.dep_increase', { count: depDiff })
-            : t('package.timeline.dep_decrease', { count: Math.abs(depDiff) }),
+          text:
+            depDiff > 0
+              ? t('package.timeline.dep_increase', { count: depDiff })
+              : t('package.timeline.dep_decrease', { count: Math.abs(depDiff) }),
         })
       }
     }
@@ -346,13 +350,19 @@ useSeoMeta({
             >
               <span
                 class="absolute -start-[calc(1rem+0.375rem)] top-0.5 flex items-center justify-center w-3 h-3 rounded-full border"
-                :class="ev.positive ? 'bg-green-500 border-green-600' : 'bg-amber-500 border-amber-600'"
+                :class="
+                  ev.positive ? 'bg-green-500 border-green-600' : 'bg-amber-500 border-amber-600'
+                "
               >
                 <span class="w-2 h-2 text-white" :class="ev.icon" aria-hidden="true" />
               </span>
               <p
                 class="text-xs"
-                :class="ev.positive ? 'text-green-700 dark:text-green-400' : 'text-amber-700 dark:text-amber-400'"
+                :class="
+                  ev.positive
+                    ? 'text-green-700 dark:text-green-400'
+                    : 'text-amber-700 dark:text-amber-400'
+                "
               >
                 {{ ev.text }}
               </p>

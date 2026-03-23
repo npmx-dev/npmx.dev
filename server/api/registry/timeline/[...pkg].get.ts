@@ -38,8 +38,7 @@ export default defineCachedEventHandler(
     let packageName: string
     try {
       packageName = decodeURIComponent(pkgParam)
-    }
-    catch {
+    } catch {
       throw createError({ statusCode: 400, message: 'Invalid package name encoding' })
     }
 
@@ -84,9 +83,11 @@ export default defineCachedEventHandler(
         versions: allVersions.slice(offset, offset + limit),
         total: allVersions.length,
       } satisfies TimelineResponse
-    }
-    catch (error: unknown) {
-      handleApiError(error, { statusCode: 502, message: `Failed to fetch timeline for ${packageName}` })
+    } catch (error: unknown) {
+      handleApiError(error, {
+        statusCode: 502,
+        message: `Failed to fetch timeline for ${packageName}`,
+      })
     }
   },
   {
