@@ -449,6 +449,12 @@
       "show_less": "(afficher moins)"
     },
     "trends": {
+      "chart_assistive_text": {
+        "keyboard_navigation_horizontal": "Utilisez les touches fléchées gauche et droite pour parcourir les points de données.",
+        "keyboard_navigation_vertical": "Utilisez les touches fléchées haut et bas pour parcourir les points de données.",
+        "table_available": "Un tableau de données pour ce graphique est disponible ci-dessous.",
+        "table_caption": "Tableau de données du graphique"
+      },
       "granularity": "Granularité",
       "granularity_daily": "Par Jour",
       "granularity_weekly": "Par Semaine",
@@ -506,7 +512,8 @@
     "downloads": {
       "title": "Téléchargements hebdo.",
       "community_distribution": "Voir la distribution des versions téléchargées par la communauté",
-      "subtitle": "Toutes versions confondues"
+      "subtitle": "Toutes versions confondues",
+      "sparkline_nav_hint": "Utilisez ← →"
     },
     "install_scripts": {
       "title": "Scripts d'installation",
@@ -1058,7 +1065,11 @@
       "loading": "Chargement des données des paquets...",
       "error": "Échec du chargement des données. Veuillez réessayer.",
       "empty_title": "Sélectionnez des paquets à comparer",
-      "empty_description": "Recherchez et ajoutez au moins 2 paquets ci-dessus pour voir une comparaison côte à côte de leurs facettes."
+      "empty_description": "Recherchez et ajoutez au moins 2 paquets ci-dessus pour voir une comparaison côte à côte de leurs facettes.",
+      "table_view": "Tableau",
+      "charts_view": "Graphiques",
+      "bar_chart_nav_hint": "Utilisez ↑ ↓",
+      "line_chart_nav_hint": "Utilisez ← →"
     },
     "selector": {
       "search_label": "Rechercher des paquets",
