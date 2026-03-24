@@ -385,7 +385,9 @@ const flatItems = computed<FlatItem[]>(() => {
 
       <!-- ── Version History ───────────────────────────────────────────────── -->
       <section v-if="versionGroups.length > 0">
-        <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-3 px-4 sm:px-6 ps-1 flex items-center">
+        <h2
+          class="text-xs text-fg-subtle uppercase tracking-wider mb-3 px-4 sm:px-6 ps-1 flex items-center"
+        >
           <span>
             {{ $t('package.versions.page_title') }}
             <span class="ms-1 normal-case font-normal tracking-normal">
