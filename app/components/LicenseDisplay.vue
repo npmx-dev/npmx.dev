@@ -1,36 +1,34 @@
 <script setup lang="ts">
-import { parseLicenseExpression } from "#shared/utils/spdx";
+import { parseLicenseExpression } from '#shared/utils/spdx'
 
-import { useLicenseChanges } from "~/composables/useLicenseChanges";
-import { useI18n } from "vue-i18n";
+import { useLicenseChanges } from '~/composables/useLicenseChanges'
+import { useI18n } from 'vue-i18n'
 
 const props = defineProps<{
-  license: string;
-  packageName?: string;
-}>();
+  license: string
+  packageName?: string
+}>()
 
-const { t } = useI18n();
+const { t } = useI18n()
 
-const tokens = computed(() => parseLicenseExpression(props.license));
-const licenseChanges = useLicenseChanges(() => props.packageName);
+const tokens = computed(() => parseLicenseExpression(props.license))
+const licenseChanges = useLicenseChanges(() => props.packageName)
 
-const changes = computed(() => licenseChanges.data.value?.changes ?? []);
+const changes = computed(() => licenseChanges.data.value?.changes ?? [])
 
 const licenseChangeText = computed(() =>
   changes.value
-    .map((item) =>
-      t("package.versions.license_change_item", {
+    .map(item =>
+      t('package.versions.license_change_item', {
         from: item.from,
         to: item.to,
         version: item.version,
       }),
     )
-    .join("; "),
-);
+    .join('; '),
+)
 
-const hasAnyValidLicense = computed(() =>
-  tokens.value.some((t) => t.type === "license" && t.url),
-);
+const hasAnyValidLicense = computed(() => tokens.value.some(t => t.type === 'license' && t.url))
 </script>
 
 <template>
@@ -47,9 +45,7 @@ const hasAnyValidLicense = computed(() =>
         {{ token.value }}
       </a>
       <span v-else-if="token.type === 'license'">{{ token.value }}</span>
-      <span v-else-if="token.type === 'operator'" class="text-4xs">{{
-        token.value
-      }}</span>
+      <span v-else-if="token.type === 'operator'" class="text-4xs">{{ token.value }}</span>
     </template>
     <span
       v-if="hasAnyValidLicense"
