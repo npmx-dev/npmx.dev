@@ -922,11 +922,7 @@
       "downloads_month": "Downloads/Monat",
       "downloads_year": "Downloads/Jahr",
       "published": "Zuletzt veröffentlicht",
-      "name": "Name",
-      "quality": "Qualität",
-      "popularity": "Beliebtheit",
-      "maintenance": "Wartung",
-      "score": "Bewertung"
+      "name": "Name"
     },
     "columns": {
       "title": "Spalten",
@@ -940,10 +936,6 @@
       "published": "Zuletzt veröffentlicht",
       "maintainers": "Maintainer",
       "keywords": "Stichwörter",
-      "quality_score": "Qualitätsfaktor",
-      "popularity_score": "Beliebtheitswert",
-      "maintenance_score": "Wartungsbewertung",
-      "combined_score": "Gesamtwertung",
       "security": "Sicherheit",
       "selection": "Paket auswählen"
     },
