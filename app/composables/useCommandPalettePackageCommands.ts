@@ -32,10 +32,14 @@ export function useCommandPalettePackageCommands(
       if (!resolvedContext?.resolvedVersion) return []
 
       const splitName = resolvedContext.packageName.split('/')
-      const docsPath =
-        splitName.length === 2
-          ? ([splitName[0]!, splitName[1]!, 'v', resolvedContext.resolvedVersion] as const)
-          : ([splitName[0]!, 'v', resolvedContext.resolvedVersion] as const)
+      const [firstSegment, secondSegment] = splitName
+      if (!firstSegment) return []
+
+      const isScopedPackage = splitName.length === 2 && !!secondSegment
+      const docsPath: [string, ...string[]] =
+        isScopedPackage
+          ? [firstSegment, secondSegment, 'v', resolvedContext.resolvedVersion]
+          : [firstSegment, 'v', resolvedContext.resolvedVersion]
       const docsLink = {
         name: 'docs' as const,
         params: {
@@ -45,8 +49,8 @@ export function useCommandPalettePackageCommands(
       const codeLink = {
         name: 'code' as const,
         params: {
-          org: splitName.length === 2 ? splitName[0] : undefined,
-          packageName: splitName.length === 2 ? splitName[1]! : splitName[0]!,
+          org: isScopedPackage ? firstSegment : undefined,
+          packageName: isScopedPackage ? secondSegment : firstSegment,
           version: resolvedContext.resolvedVersion,
           filePath: '',
         },
