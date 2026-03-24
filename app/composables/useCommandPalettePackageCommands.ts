@@ -36,10 +36,9 @@ export function useCommandPalettePackageCommands(
       if (!firstSegment) return []
 
       const isScopedPackage = splitName.length === 2 && !!secondSegment
-      const docsPath: [string, ...string[]] =
-        isScopedPackage
-          ? [firstSegment, secondSegment, 'v', resolvedContext.resolvedVersion]
-          : [firstSegment, 'v', resolvedContext.resolvedVersion]
+      const docsPath: [string, ...string[]] = isScopedPackage
+        ? [firstSegment, secondSegment, 'v', resolvedContext.resolvedVersion]
+        : [firstSegment, 'v', resolvedContext.resolvedVersion]
       const docsLink = {
         name: 'docs' as const,
         params: {
