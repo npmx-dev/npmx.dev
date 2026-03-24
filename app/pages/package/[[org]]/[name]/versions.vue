@@ -301,8 +301,10 @@ const flatItems = computed<FlatItem[]>(() => {
             class="text-sm font-medium text-fg tabular-nums shrink-0"
             :aria-label="getDownloadsAriaLabel(getVersionDownloads(latestTagRow!.version)!)"
             dir="ltr"
+            :title="getDownloadsAriaLabel(getVersionDownloads(latestTagRow!.version)!)"
           >
             {{ numberFormatter.format(getVersionDownloads(latestTagRow!.version)!) }}
+            <span class="i-lucide:chart-line"></span>
           </div>
           <div class="flex flex-col items-end gap-1.5 shrink-0 relative z-10">
             <ProvenanceBadge
@@ -358,8 +360,10 @@ const flatItems = computed<FlatItem[]>(() => {
               class="text-xs text-fg-muted shrink-0 tabular-nums w-24 text-end"
               :aria-label="getDownloadsAriaLabel(getVersionDownloads(row.version)!)"
               dir="ltr"
+              :title="getDownloadsAriaLabel(getVersionDownloads(row.version)!)"
             >
               {{ numberFormatter.format(getVersionDownloads(row.version)!) }}
+              <span class="i-lucide:chart-line"></span>
             </span>
             <DateTime
               v-if="getVersionTime(row.version)"
@@ -385,16 +389,11 @@ const flatItems = computed<FlatItem[]>(() => {
 
       <!-- ── Version History ───────────────────────────────────────────────── -->
       <section v-if="versionGroups.length > 0">
-        <h2
-          class="text-xs text-fg-subtle uppercase tracking-wider mb-3 px-4 sm:px-6 ps-1 flex items-center"
-        >
-          <span>
-            {{ $t('package.versions.page_title') }}
-            <span class="ms-1 normal-case font-normal tracking-normal">
-              ({{ versionStrings.length }})
-            </span>
+        <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-3 px-4 sm:px-6 ps-1">
+          {{ $t('package.versions.page_title') }}
+          <span class="ms-1 normal-case font-normal tracking-normal">
+            ({{ versionStrings.length }})
           </span>
-          <span class="ms-auto">{{ $t('package.downloads.title') }}</span>
         </h2>
 
         <!-- No filter matches -->
@@ -457,8 +456,10 @@ const flatItems = computed<FlatItem[]>(() => {
                       class="ms-auto text-xs text-fg-muted tabular-nums w-24 text-end"
                       :aria-label="getDownloadsAriaLabel(getGroupDownloads(item.versions)!)"
                       dir="ltr"
+                      :title="getDownloadsAriaLabel(getGroupDownloads(item.versions)!)"
                     >
                       {{ numberFormatter.format(getGroupDownloads(item.versions)!) }}
+                      <span class="i-lucide:chart-line"></span>
                     </span>
                     <span class="flex items-center gap-3 shrink-0">
                       <DateTime
@@ -527,11 +528,13 @@ const flatItems = computed<FlatItem[]>(() => {
                       <div class="flex items-center gap-2 shrink-0 relative z-10 justify-end">
                         <span
                           v-if="getVersionDownloads(item.version)"
-                          class="text-xs text-fg-muted tabular-nums w-24 text-end shrink-0"
+                          class="text-xs text-fg-muted tabular-nums w-24 text-end shrink-0 items-center"
                           :aria-label="getDownloadsAriaLabel(getVersionDownloads(item.version)!)"
+                          :title="getDownloadsAriaLabel(getVersionDownloads(item.version)!)"
                           dir="ltr"
                         >
                           {{ numberFormatter.format(getVersionDownloads(item.version)!) }}
+                          <span class="i-lucide:chart-line"></span>
                         </span>
                         <!-- Metadata: date + provenance -->
                         <DateTime
@@ -576,8 +579,10 @@ const flatItems = computed<FlatItem[]>(() => {
                     class="ms-auto text-xs text-fg-muted tabular-nums w-24 text-end"
                     :aria-label="getDownloadsAriaLabel(getGroupDownloads(item.versions)!)"
                     dir="ltr"
+                    :title="getDownloadsAriaLabel(getGroupDownloads(item.versions)!)"
                   >
                     {{ numberFormatter.format(getGroupDownloads(item.versions)!) }}
+                    <span class="i-lucide:chart-line"></span>
                   </span>
                   <span class="flex items-center gap-3 shrink-0">
                     <span v-if="item.versions[0]" class="text-xs text-fg-muted" dir="ltr"
