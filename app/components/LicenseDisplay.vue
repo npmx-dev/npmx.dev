@@ -58,7 +58,7 @@ const hasAnyValidLicense = computed(() => tokens.value.some(t => t.type === 'lic
     class="border border-amber-600/40 bg-amber-500/10 rounded-lg inline-flex justify-start items-center mt-1 gap-x-1 py-[2px] px-[3px]"
   >
     <p class="text-md text-amber-800 dark:text-amber-400">
-      {{ $t("package.versions.license_change_warning") }}
+      {{ $t('package.versions.license_change_warning') }}
     </p>
     <TooltipApp interactive position="top">
       <span
