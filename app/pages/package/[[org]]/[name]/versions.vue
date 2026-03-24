@@ -297,7 +297,7 @@ const flatItems = computed<FlatItem[]>(() => {
           </div>
           <!-- Right: date + provenance -->
           <div
-            v-if="getVersionDownloads(latestTagRow!.version) !== undefined"
+            v-if="getVersionDownloads(latestTagRow!.version)"
             class="text-sm font-medium text-fg tabular-nums shrink-0"
             :aria-label="getDownloadsAriaLabel(getVersionDownloads(latestTagRow!.version)!)"
             dir="ltr"
@@ -354,7 +354,7 @@ const flatItems = computed<FlatItem[]>(() => {
 
             <!-- Date -->
             <span
-              v-if="getVersionDownloads(row.version) !== undefined"
+              v-if="getVersionDownloads(row.version)"
               class="text-xs text-fg-muted shrink-0 tabular-nums w-24 text-end"
               :aria-label="getDownloadsAriaLabel(getVersionDownloads(row.version)!)"
               dir="ltr"
