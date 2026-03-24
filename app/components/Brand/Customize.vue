@@ -169,7 +169,9 @@ async function downloadCustomPng() {
         <!-- Row 2: Background toggle + Download buttons -->
         <div class="flex items-center gap-4 flex-wrap">
           <div class="flex items-center gap-3">
-            <span class="text-sm font-mono text-fg-muted">{{ $t('brand.customize.bg_label') }}</span>
+            <span class="text-sm font-mono text-fg-muted">{{
+              $t('brand.customize.bg_label')
+            }}</span>
             <div
               class="flex items-center border border-border rounded-md overflow-hidden"
               role="radiogroup"
@@ -181,7 +183,9 @@ async function downloadCustomPng() {
                 :aria-label="$t('brand.logos.on_dark')"
                 class="!border-none !rounded-none motion-reduce:transition-none"
                 :class="
-                  customBgDark ? 'bg-bg-muted text-fg' : 'bg-transparent text-fg-muted hover:text-fg'
+                  customBgDark
+                    ? 'bg-bg-muted text-fg'
+                    : 'bg-transparent text-fg-muted hover:text-fg'
                 "
                 @click="customBgDark = true"
               >
@@ -194,7 +198,9 @@ async function downloadCustomPng() {
                 :aria-label="$t('brand.logos.on_light')"
                 class="!border-none !rounded-none border-is border-is-border motion-reduce:transition-none"
                 :class="
-                  !customBgDark ? 'bg-bg-muted text-fg' : 'bg-transparent text-fg-muted hover:text-fg'
+                  !customBgDark
+                    ? 'bg-bg-muted text-fg'
+                    : 'bg-transparent text-fg-muted hover:text-fg'
                 "
                 @click="customBgDark = false"
               >
