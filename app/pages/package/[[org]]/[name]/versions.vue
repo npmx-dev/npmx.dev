@@ -71,6 +71,7 @@ const { data: npmWebsiteVersions } = useLazyFetch<NpmWebsiteVersionsResponse>(
 )
 
 const numberFormatter = useNumberFormatter()
+const { t } = useI18n()
 const versionDownloadsMap = computed(
   () =>
     new Map(
@@ -97,6 +98,10 @@ function getGroupDownloads(versions: string[]): number | undefined {
   }
 
   return hasValue ? total : undefined
+}
+
+function getDownloadsAriaLabel(downloads: number): string {
+  return `${numberFormatter.value.format(downloads)} ${t('package.downloads.title')}`
 }
 
 // ─── Phase 2: full metadata (loaded on first group expand) ────────────────────
@@ -294,7 +299,7 @@ const flatItems = computed<FlatItem[]>(() => {
           <div
             v-if="getVersionDownloads(latestTagRow!.version) !== undefined"
             class="text-sm font-medium text-fg tabular-nums shrink-0"
-            :aria-label="$t('package.downloads.title')"
+            :aria-label="getDownloadsAriaLabel(getVersionDownloads(latestTagRow!.version)!)"
             dir="ltr"
           >
             {{ numberFormatter.format(getVersionDownloads(latestTagRow!.version)!) }}
@@ -351,7 +356,7 @@ const flatItems = computed<FlatItem[]>(() => {
             <span
               v-if="getVersionDownloads(row.version) !== undefined"
               class="text-xs text-fg-muted shrink-0 tabular-nums w-24 text-end"
-              :aria-label="$t('package.downloads.title')"
+              :aria-label="getDownloadsAriaLabel(getVersionDownloads(row.version)!)"
               dir="ltr"
             >
               {{ numberFormatter.format(getVersionDownloads(row.version)!) }}
@@ -445,7 +450,7 @@ const flatItems = computed<FlatItem[]>(() => {
                     <span
                       v-if="getGroupDownloads(item.versions) !== undefined"
                       class="ms-auto text-xs text-fg-muted tabular-nums w-24 text-end"
-                      :aria-label="$t('package.downloads.title')"
+                      :aria-label="getDownloadsAriaLabel(getGroupDownloads(item.versions)!)"
                       dir="ltr"
                     >
                       {{ numberFormatter.format(getGroupDownloads(item.versions)!) }}
@@ -518,7 +523,7 @@ const flatItems = computed<FlatItem[]>(() => {
                         <span
                           v-if="getVersionDownloads(item.version) !== undefined"
                           class="text-xs text-fg-muted tabular-nums w-24 text-end shrink-0"
-                          :aria-label="$t('package.downloads.title')"
+                          :aria-label="getDownloadsAriaLabel(getVersionDownloads(item.version)!)"
                           dir="ltr"
                         >
                           {{ numberFormatter.format(getVersionDownloads(item.version)!) }}
@@ -564,7 +569,7 @@ const flatItems = computed<FlatItem[]>(() => {
                   <span
                     v-if="getGroupDownloads(item.versions) !== undefined"
                     class="ms-auto text-xs text-fg-muted tabular-nums w-24 text-end"
-                    :aria-label="$t('package.downloads.title')"
+                    :aria-label="getDownloadsAriaLabel(getGroupDownloads(item.versions)!)"
                     dir="ltr"
                   >
                     {{ numberFormatter.format(getGroupDownloads(item.versions)!) }}
