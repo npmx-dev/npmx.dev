@@ -922,11 +922,7 @@
       "downloads_month": "Downloads/mo",
       "downloads_year": "Downloads/yr",
       "published": "Last Published",
-      "name": "Name",
-      "quality": "Quality",
-      "popularity": "Popularity",
-      "maintenance": "Maintenance",
-      "score": "Score"
+      "name": "Name"
     },
     "columns": {
       "title": "Columns",
@@ -940,10 +936,6 @@
       "published": "Last Published",
       "maintainers": "Maintainers",
       "keywords": "Keywords",
-      "quality_score": "Quality score",
-      "popularity_score": "Popularity score",
-      "maintenance_score": "Maintenance score",
-      "combined_score": "Combined score",
       "security": "Security",
       "selection": "Select package"
     },

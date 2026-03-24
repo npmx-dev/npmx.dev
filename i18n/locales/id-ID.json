@@ -591,7 +591,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -870,11 +871,7 @@
       "downloads_month": "Unduhan/bulan",
       "downloads_year": "Unduhan/tahun",
       "published": "Paling Akhir Diterbitkan",
-      "name": "Nama",
-      "quality": "Kualitas",
-      "popularity": "Popularitas",
-      "maintenance": "Pemeliharaan",
-      "score": "Skor"
+      "name": "Nama"
     },
     "columns": {
       "title": "Kolom",
@@ -888,10 +885,6 @@
       "published": "Paling Akhir Diterbitkan",
       "maintainers": "Pemelihara",
       "keywords": "Kata kunci",
-      "quality_score": "Skor kualitas",
-      "popularity_score": "Skor popularitas",
-      "maintenance_score": "Skor pemeliharaan",
-      "combined_score": "Skor gabungan",
       "security": "Keamanan"
     },
     "view_mode": {
@@ -1170,6 +1163,7 @@
     "file_size_warning": "{size} melebihi batas 250KB untuk perbandingan",
     "compare_versions": "perbarui",
     "compare_versions_title": "Bandingkan dengan versi terbaru",
+    "version_invalid_url_format": {},
     "version_selector_title": "Bandingkan dengan versi",
     "summary": "Ringkasan",
     "deps_count": "{count} ketergantungan",
@@ -1335,5 +1329,9 @@
       "p1": "Jika kamu menemukan kendala terkait fitur aksesibilitas bagi penyandang disabilitas atau masalah tampilan di platform {app}, silakan laporkan masalahnya di {link}. Setiap laporan yang masuk akan kami tindak lanjuti dengan prioritas tinggi agar layanan kita lebih baik bagi seluruh pengguna.",
       "link": "Repositori Pengembangan Isu Github"
     }
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }
