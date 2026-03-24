@@ -16,6 +16,7 @@ jobs:
     steps:
       - uses: zephyrproject-rtos/action-first-interaction@58853996b1ac504b8e0f6964301f369d2bb22e5c
         with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
           pr-opened-message: |
             Hello! Thank you for opening your **first PR** to npmx, @${{ github.event.pull_request.user.login }}! 🚀
 
