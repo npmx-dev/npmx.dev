@@ -208,6 +208,10 @@ export default defineConfig({
               provider: playwright(),
               instances: [{ browser: 'chromium', headless: true }],
             },
+            alias: {
+              // Hack for 'Error: Missing "#oauth/config" specifier in "nuxt" package' error
+              '#oauth/config': '',
+            },
           },
         }),
     ],
