@@ -1,14 +1,14 @@
-import { html } from "./components.ts";
+import { html } from './components.ts'
 
 export const BaseStyles = html`
   <style>
     :root {
       /** Fonts */
       --ln-font-fallback:
-        -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial,
-        sans-serif, Apple Color Emoji, Segoe UI Emoji;
-      --ln-font-body: "Geist", "IBM Plex Sans Arabic", var(--ln-font-fallback);
-      --ln-font-mono: "Geist Mono", "IBM Plex Sans Arabic", monospace;
+        -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji,
+        Segoe UI Emoji;
+      --ln-font-body: 'Geist', 'IBM Plex Sans Arabic', var(--ln-font-fallback);
+      --ln-font-mono: 'Geist Mono', 'IBM Plex Sans Arabic', monospace;
 
       /* Light theme colors */
       --ln-color-white: #f9fafb;
@@ -320,7 +320,7 @@ export const BaseStyles = html`
       text-decoration: none;
     }
   </style>
-`;
+`
 
 export const CustomStyles = html`
   <style>
@@ -373,4 +373,4 @@ export const CustomStyles = html`
       border-radius: 0.5em;
     }
   </style>
-`;
+`
