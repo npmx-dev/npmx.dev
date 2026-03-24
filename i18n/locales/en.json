@@ -435,6 +435,7 @@
       "license_change_item": "from {from} to {to} at version {version}",
       "filter_tooltip": "Filter versions using a {link}. For example, ^3.0.0 shows all 3.x versions.",
       "changed_license": "The license was changed: {license_change}",
+      "license_change_warning": "change!",
       "filter_tooltip_link": "semver range",
       "no_matches": "No versions match this range",
       "copy_alt": {

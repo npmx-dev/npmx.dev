@@ -1309,6 +1309,9 @@
             "changed_license": {
               "type": "string"
             },
+            "license_change_warning": {
+              "type": "string"
+            },
             "filter_tooltip_link": {
               "type": "string"
             },

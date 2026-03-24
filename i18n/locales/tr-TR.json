@@ -390,6 +390,7 @@
       "license_change_item": "{version} sürümünde {from}'den {to}'ya",
       "filter_tooltip": "Sürümleri {link} kullanarak filtreleyin. Örneğin, ^3.0.0 tüm 3.x sürümlerini gösterir.",
       "changed_license": "Lisans değişikliği gerçekleşti: {license_change}",
+      "license_change_warning": "değişiklik!",
       "filter_tooltip_link": "semver aralığı",
       "no_matches": "Bu aralığa uygun sürüm yok",
       "copy_alt": {
