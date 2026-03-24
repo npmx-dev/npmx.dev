@@ -1,14 +1,5 @@
 import { describe, expect, it } from 'vitest'
 
-/**
- * Tests for useRepositoryUrl composable.
- *
- * Regression tests for GitHub issue #2233: monorepo packages with .git suffix
- * in repository.url generated broken source links like:
- * https://github.com/org/repo.git/tree/HEAD/packages/foo (404)
- * instead of:
- * https://github.com/org/repo/tree/HEAD/packages/foo
- */
 describe('useRepositoryUrl', () => {
   it('should strip .git from repository URL', () => {
     const { repositoryUrl } = useRepositoryUrl(
