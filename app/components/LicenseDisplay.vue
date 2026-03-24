@@ -1,34 +1,36 @@
 <script setup lang="ts">
-import { parseLicenseExpression } from '#shared/utils/spdx'
+import { parseLicenseExpression } from "#shared/utils/spdx";
 
-import { useLicenseChanges } from '~/composables/useLicenseChanges'
-import { useI18n } from 'vue-i18n'
+import { useLicenseChanges } from "~/composables/useLicenseChanges";
+import { useI18n } from "vue-i18n";
 
 const props = defineProps<{
-  license: string
-  packageName?: string
-}>()
+  license: string;
+  packageName?: string;
+}>();
 
-const { t } = useI18n()
+const { t } = useI18n();
 
-const tokens = computed(() => parseLicenseExpression(props.license))
-const licenseChanges = useLicenseChanges(() => props.packageName)
+const tokens = computed(() => parseLicenseExpression(props.license));
+const licenseChanges = useLicenseChanges(() => props.packageName);
 
-const changes = computed(() => licenseChanges.data.value?.changes ?? [])
+const changes = computed(() => licenseChanges.data.value?.changes ?? []);
 
 const licenseChangeText = computed(() =>
   changes.value
-    .map(item =>
-      t('package.versions.license_change_item', {
+    .map((item) =>
+      t("package.versions.license_change_item", {
         from: item.from,
         to: item.to,
         version: item.version,
       }),
     )
-    .join('; '),
-)
+    .join("; "),
+);
 
-const hasAnyValidLicense = computed(() => tokens.value.some(t => t.type === 'license' && t.url))
+const hasAnyValidLicense = computed(() =>
+  tokens.value.some((t) => t.type === "license" && t.url),
+);
 </script>
 
 <template>
@@ -42,10 +44,12 @@ const hasAnyValidLicense = computed(() => tokens.value.some(t => t.type === 'lic
         class="link-subtle"
         :title="$t('package.license.view_spdx')"
       >
-        {{ token.value }}!!
+        {{ token.value }}
       </a>
       <span v-else-if="token.type === 'license'">{{ token.value }}</span>
-      <span v-else-if="token.type === 'operator'" class="text-4xs">{{ token.value }}</span>
+      <span v-else-if="token.type === 'operator'" class="text-4xs">{{
+        token.value
+      }}</span>
     </template>
     <span
       v-if="hasAnyValidLicense"
@@ -53,8 +57,11 @@ const hasAnyValidLicense = computed(() => tokens.value.some(t => t.type === 'lic
       aria-hidden="true"
     />
   </span>
-  <div v-if="changes.length > 0" class="text-red-500 flex justify-start items-center gap-x-1">
-    <p>change!</p>
+  <div
+    v-if="changes.length > 0"
+    class="border border-amber-600/40 bg-amber-500/10 rounded-lg inline-flex justify-start items-center mt-1 gap-x-1 py-[2px] px-[3px]"
+  >
+    <p class="text-md text-amber-800 dark:text-amber-400">changed</p>
     <TooltipApp interactive position="top">
       <span
         tabindex="0"
