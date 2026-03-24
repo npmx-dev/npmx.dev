@@ -385,11 +385,14 @@ const flatItems = computed<FlatItem[]>(() => {
 
       <!-- ── Version History ───────────────────────────────────────────────── -->
       <section v-if="versionGroups.length > 0">
-        <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-3 px-4 sm:px-6 ps-1">
-          {{ $t('package.versions.page_title') }}
-          <span class="ms-1 normal-case font-normal tracking-normal">
-            ({{ versionStrings.length }})
+        <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-3 px-4 sm:px-6 ps-1 flex items-center">
+          <span>
+            {{ $t('package.versions.page_title') }}
+            <span class="ms-1 normal-case font-normal tracking-normal">
+              ({{ versionStrings.length }})
+            </span>
           </span>
+          <span class="ms-auto">{{ $t('package.downloads.title') }}</span>
         </h2>
 
         <!-- No filter matches -->
@@ -448,7 +451,7 @@ const flatItems = computed<FlatItem[]>(() => {
                       >v{{ item.versions[0] }}</span
                     >
                     <span
-                      v-if="getGroupDownloads(item.versions) !== undefined"
+                      v-if="getGroupDownloads(item.versions)"
                       class="ms-auto text-xs text-fg-muted tabular-nums w-24 text-end"
                       :aria-label="getDownloadsAriaLabel(getGroupDownloads(item.versions)!)"
                       dir="ltr"
@@ -457,7 +460,7 @@ const flatItems = computed<FlatItem[]>(() => {
                     </span>
                     <span class="flex items-center gap-3 shrink-0">
                       <DateTime
-                        v-if="item.versions[0] && getVersionTime(item.versions[0])"
+                        v-if="getVersionTime(item.versions[0])"
                         :datetime="getVersionTime(item.versions[0])!"
                         class="text-xs text-fg-subtle hidden sm:block whitespace-nowrap"
                         year="numeric"
@@ -521,7 +524,7 @@ const flatItems = computed<FlatItem[]>(() => {
                       <!-- Right side -->
                       <div class="flex items-center gap-2 shrink-0 relative z-10 justify-end">
                         <span
-                          v-if="getVersionDownloads(item.version) !== undefined"
+                          v-if="getVersionDownloads(item.version)"
                           class="text-xs text-fg-muted tabular-nums w-24 text-end shrink-0"
                           :aria-label="getDownloadsAriaLabel(getVersionDownloads(item.version)!)"
                           dir="ltr"
@@ -567,7 +570,7 @@ const flatItems = computed<FlatItem[]>(() => {
                   <span class="text-sm font-medium">{{ item.label }}</span>
                   <span class="text-xs text-fg-subtle">({{ item.versions.length }})</span>
                   <span
-                    v-if="getGroupDownloads(item.versions) !== undefined"
+                    v-if="getGroupDownloads(item.versions)"
                     class="ms-auto text-xs text-fg-muted tabular-nums w-24 text-end"
                     :aria-label="getDownloadsAriaLabel(getGroupDownloads(item.versions)!)"
                     dir="ltr"
@@ -579,7 +582,7 @@ const flatItems = computed<FlatItem[]>(() => {
                       >v{{ item.versions[0] }}</span
                     >
                     <DateTime
-                      v-if="item.versions[0] && getVersionTime(item.versions[0])"
+                      v-if="getVersionTime(item.versions[0] ?? '')"
                       :datetime="getVersionTime(item.versions[0] ?? '')!"
                       class="text-xs text-fg-subtle hidden sm:block whitespace-nowrap"
                       year="numeric"
