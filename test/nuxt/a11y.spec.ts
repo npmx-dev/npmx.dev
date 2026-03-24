@@ -777,10 +777,6 @@ describe('component accessibility audits', () => {
           username: 'yyx990803',
         },
       },
-      score: {
-        final: 0.9,
-        detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 },
-      },
       searchScore: 100000,
     }
 
@@ -1387,10 +1383,6 @@ describe('component accessibility audits', () => {
           links: {},
           publisher: { username: 'yyx990803' },
         },
-        score: {
-          final: 0.9,
-          detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 },
-        },
         searchScore: 100000,
       },
       {
@@ -1402,10 +1394,6 @@ describe('component accessibility audits', () => {
           keywords: ['react'],
           links: {},
           publisher: { username: 'fb' },
-        },
-        score: {
-          final: 0.9,
-          detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 },
         },
         searchScore: 90000,
       },
@@ -1682,10 +1670,6 @@ describe('component accessibility audits', () => {
           links: {},
           publisher: { username: 'yyx990803' },
         },
-        score: {
-          final: 0.9,
-          detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 },
-        },
         searchScore: 100000,
       },
     ]
@@ -1746,10 +1730,6 @@ describe('component accessibility audits', () => {
       },
       downloads: { weekly: 50000000 },
       updated: '2024-01-01T00:00:00.000Z',
-      score: {
-        final: 0.95,
-        detail: { quality: 0.95, popularity: 0.99, maintenance: 0.9 },
-      },
       searchScore: 99999,
     }
 
@@ -3866,10 +3846,6 @@ describe('background theme accessibility', () => {
       keywords: [],
       links: {},
       publisher: { username: 'evan' },
-    },
-    score: {
-      final: 0.9,
-      detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 },
     },
     searchScore: 100000,
   }
