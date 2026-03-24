@@ -287,7 +287,7 @@ const flatItems = computed<FlatItem[]>(() => {
               :to="packageRoute(packageName, latestTagRow!.version)"
               class="text-2xl font-semibold tracking-tight after:absolute after:inset-0 after:content-['']"
               dir="ltr"
-              >{{ latestTagRow!.version }}</LinkBase
+              >v{{ latestTagRow!.version }}</LinkBase
             >
           </div>
           <!-- Right: date + provenance -->
@@ -344,7 +344,7 @@ const flatItems = computed<FlatItem[]>(() => {
               class="text-sm flex-1 min-w-0 after:absolute after:inset-0 after:content-['']"
               dir="ltr"
             >
-              {{ row.version }}
+              v{{ row.version }}
             </LinkBase>
 
             <!-- Date -->
@@ -439,6 +439,9 @@ const flatItems = computed<FlatItem[]>(() => {
                     </span>
                     <span class="text-sm font-medium">{{ item.label }}</span>
                     <span class="text-xs text-fg-subtle">({{ item.versions.length }})</span>
+                    <span v-if="item.versions[0]" class="text-xs text-fg-muted" dir="ltr"
+                      >v{{ item.versions[0] }}</span
+                    >
                     <span
                       v-if="getGroupDownloads(item.versions) !== undefined"
                       class="ms-auto text-xs text-fg-muted tabular-nums w-24 text-end"
@@ -448,9 +451,8 @@ const flatItems = computed<FlatItem[]>(() => {
                       {{ numberFormatter.format(getGroupDownloads(item.versions)!) }}
                     </span>
                     <span class="flex items-center gap-3 shrink-0">
-                      <span class="text-xs text-fg-muted" dir="ltr">{{ item.versions[0] }}</span>
                       <DateTime
-                        v-if="getVersionTime(item.versions[0])"
+                        v-if="item.versions[0] && getVersionTime(item.versions[0])"
                         :datetime="getVersionTime(item.versions[0])!"
                         class="text-xs text-fg-subtle hidden sm:block"
                         year="numeric"
@@ -487,7 +489,7 @@ const flatItems = computed<FlatItem[]>(() => {
                           "
                           dir="ltr"
                         >
-                          {{ item.version }}
+                          v{{ item.version }}
                         </LinkBase>
                         <div
                           v-if="versionToTagsMap.get(item.version)?.length"
@@ -511,16 +513,16 @@ const flatItems = computed<FlatItem[]>(() => {
                         </span>
                       </div>
 
-                      <span
-                        v-if="getVersionDownloads(item.version) !== undefined"
-                        class="text-xs text-fg-muted tabular-nums w-24 text-end shrink-0"
-                        :aria-label="$t('package.downloads.title')"
-                        dir="ltr"
-                      >
-                        {{ numberFormatter.format(getVersionDownloads(item.version)!) }}
-                      </span>
                       <!-- Right side -->
-                      <div class="flex items-center gap-2 shrink-0 relative z-10 w-36 justify-end">
+                      <div class="flex items-center gap-2 shrink-0 relative z-10 w-50 justify-end">
+                        <span
+                          v-if="getVersionDownloads(item.version) !== undefined"
+                          class="text-xs text-fg-muted tabular-nums w-24 text-end shrink-0"
+                          :aria-label="$t('package.downloads.title')"
+                          dir="ltr"
+                        >
+                          {{ numberFormatter.format(getVersionDownloads(item.version)!) }}
+                        </span>
                         <!-- Metadata: date + provenance -->
                         <DateTime
                           v-if="getVersionTime(item.version)"
@@ -568,9 +570,11 @@ const flatItems = computed<FlatItem[]>(() => {
                     {{ numberFormatter.format(getGroupDownloads(item.versions)!) }}
                   </span>
                   <span class="flex items-center gap-3 shrink-0">
-                    <span class="text-xs text-fg-muted" dir="ltr">{{ item.versions[0] }}</span>
+                    <span v-if="item.versions[0]" class="text-xs text-fg-muted" dir="ltr"
+                      >v{{ item.versions[0] }}</span
+                    >
                     <DateTime
-                      v-if="getVersionTime(item.versions[0] ?? '')"
+                      v-if="item.versions[0] && getVersionTime(item.versions[0])"
                       :datetime="getVersionTime(item.versions[0] ?? '')!"
                       class="text-xs text-fg-subtle hidden sm:block"
                       year="numeric"

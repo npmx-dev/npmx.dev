@@ -8,7 +8,15 @@ export default defineCachedEventHandler(
       throw createError({ statusCode: 404, message: 'Package name is required' })
     }
 
-    const packageName = decodeURIComponent(pkgParam)
+    let packageName: string
+    try {
+      packageName = decodeURIComponent(pkgParam)
+    } catch {
+      throw createError({
+        statusCode: 400,
+        message: 'Invalid package name',
+      })
+    }
 
     try {
       const versions = await fetchNpmVersionDownloadsFromApi(packageName)
