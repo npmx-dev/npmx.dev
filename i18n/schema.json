@@ -2772,18 +2772,6 @@
             },
             "name": {
               "type": "string"
-            },
-            "quality": {
-              "type": "string"
-            },
-            "popularity": {
-              "type": "string"
-            },
-            "maintenance": {
-              "type": "string"
-            },
-            "score": {
-              "type": "string"
             }
           },
           "additionalProperties": false
@@ -2822,18 +2810,6 @@
               "type": "string"
             },
             "keywords": {
-              "type": "string"
-            },
-            "quality_score": {
-              "type": "string"
-            },
-            "popularity_score": {
-              "type": "string"
-            },
-            "maintenance_score": {
-              "type": "string"
-            },
-            "combined_score": {
               "type": "string"
             },
             "security": {

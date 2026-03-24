@@ -235,8 +235,8 @@ importers:
         specifier: 3.5.30
         version: 3.5.30(typescript@6.0.2)
       vue-data-ui:
-        specifier: 3.16.0
-        version: 3.16.0(vue@3.5.30(typescript@6.0.2))
+        specifier: 3.16.1
+        version: 3.16.1(vue@3.5.30(typescript@6.0.2))
     devDependencies:
       '@e18e/eslint-plugin':
         specifier: 0.3.0
@@ -311,8 +311,8 @@ importers:
         specifier: 9.2.0
         version: 9.2.0(@types/markdown-it@14.1.2)(markdown-it@14.1.1)
       schema-dts:
-        specifier: 1.1.5
-        version: 1.1.5
+        specifier: 2.0.0
+        version: 2.0.0(typescript@6.0.2)
       storybook:
         specifier: ^10.3.1
         version: 10.3.1(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -9380,8 +9380,14 @@ packages:
   scheduler@0.27.0:
     resolution: {integrity: sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q==}
 
-  schema-dts@1.1.5:
-    resolution: {integrity: sha512-RJr9EaCmsLzBX2NDiO5Z3ux2BVosNZN5jo0gWgsyKvxKIUL5R3swNvoorulAeL9kLB0iTSX7V6aokhla2m7xbg==}
+  schema-dts-lib@1.0.0:
+    resolution: {integrity: sha512-9MEO5vpQH9JdBioUupqluzxSYxPLjhmqRUudk15adUl/ypnRsM2/M1kN3AmVJQeG7nZqcL68H8JlGqQQT6vy9A==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      typescript: '>=4.9.5'
+
+  schema-dts@2.0.0:
+    resolution: {integrity: sha512-t7NoCy3Rn5GHGx6p7s1qIYK/AeIb8ZxJNR9WUNFkwMv2CiiGZBmqqYWc2FlZVm5ZbiHMY4OvBWhj7QtyrFO2Jw==}
 
   schema-utils@4.3.3:
     resolution: {integrity: sha512-eflK8wEtyOE6+hsaRVPxvUKYCpRgzLqDTb8krvAsRIwOGlHoSgYLgBXoubGgLd2fT41/OUYdb48v4k4WWHQurA==}
@@ -10584,8 +10590,8 @@ packages:
   vue-component-type-helpers@3.2.6:
     resolution: {integrity: sha512-O02tnvIfOQVmnvoWwuSydwRoHjZVt8UEBR+2p4rT35p8GAy5VTlWP8o5qXfJR/GWCN0nVZoYWsVUvx2jwgdBmQ==}
 
-  vue-data-ui@3.16.0:
-    resolution: {integrity: sha512-5f9mJi5vkC/48ntfBwxVG8AjuyZBf7nK9dzQDcL8L9xEFlRHuIrXB1YMt1qDQEWimcPSmWZ051KUQm/cSS3U5g==}
+  vue-data-ui@3.16.1:
+    resolution: {integrity: sha512-abJC3lSyikfD2y7sY61ZqKE2x5gPDtfsu/89oVndyVbk0ZaFQ4L6SCgPVlCPpFrNdfLRYM7KIYP+rseU5LHbYA==}
     peerDependencies:
       jspdf: '>=3.0.1'
       vue: '>=3.3.0'
@@ -21910,7 +21916,15 @@ snapshots:
 
   scheduler@0.27.0: {}
 
-  schema-dts@1.1.5: {}
+  schema-dts-lib@1.0.0(typescript@6.0.2):
+    dependencies:
+      typescript: 6.0.2
+
+  schema-dts@2.0.0(typescript@6.0.2):
+    dependencies:
+      schema-dts-lib: 1.0.0(typescript@6.0.2)
+    transitivePeerDependencies:
+      - typescript
 
   schema-utils@4.3.3:
     dependencies:
@@ -23366,7 +23380,7 @@ snapshots:
 
   vue-component-type-helpers@3.2.6: {}
 
-  vue-data-ui@3.16.0(vue@3.5.30(typescript@6.0.2)):
+  vue-data-ui@3.16.1(vue@3.5.30(typescript@6.0.2)):
     dependencies:
       vue: 3.5.30(typescript@6.0.2)
 
