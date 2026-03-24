@@ -234,7 +234,7 @@ const displayResults = computed(() => {
         diff = (a.downloads?.weekly ?? 0) - (b.downloads?.weekly ?? 0)
         break
       case 'updated':
-        diff = new Date(a.package.date).getTime() - new Date(b.package.date).getTime()
+        diff = Date.parse(a.package.date) - Date.parse(b.package.date)
         break
       case 'name':
         diff = a.package.name.localeCompare(b.package.name)
