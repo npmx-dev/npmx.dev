@@ -79,9 +79,12 @@
     "theme_system": "ಸಿಸ್ಟಮ್",
     "language": "ಭಾಷೆ",
     "help_translate": "npmx ಅನುವಾದಕ್ಕೆ ಸಹಾಯ ಮಾಡಿ",
-    "accent_colors": "ಅಕ್ಸೆಂಟ್ ಬಣ್ಣಗಳು",
+    "accent_colors": {
+      "label": "ಅಕ್ಸೆಂಟ್ ಬಣ್ಣಗಳು"
+    },
     "clear_accent": "ಅಕ್ಸೆಂಟ್ ಬಣ್ಣ ತೆರವುಗೊಳಿಸಿ",
-    "translation_progress": "ಅನುವಾದ ಪ್ರಗತಿ"
+    "translation_progress": "ಅನುವಾದ ಪ್ರಗತಿ",
+    "background_themes": {}
   },
   "i18n": {
     "missing_keys": "{count} ಅನುವಾದ ಇಲ್ಲ | {count} ಅನುವಾದಗಳು ಇಲ್ಲ",
@@ -365,7 +368,8 @@
       "name_asc": "ಹೆಸರು (A-Z)",
       "name_desc": "ಹೆಸರು (Z-A)"
     },
-    "size": {}
+    "size": {},
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -631,11 +635,7 @@
       "downloads_day": "ಡೌನ್‌ಲೋಡ್‌ಗಳು/ದಿನ",
       "downloads_month": "ಡೌನ್‌ಲೋಡ್‌ಗಳು/ತಿಂಗಳು",
       "downloads_year": "ಡೌನ್‌ಲೋಡ್‌ಗಳು/ವರ್ಷ",
-      "name": "ಹೆಸರು",
-      "quality": "ಗುಣಮಟ್ಟ",
-      "popularity": "ಜನಪ್ರಿಯತೆ",
-      "maintenance": "ನಿರ್ವಹಣೆ",
-      "score": "ಸ್ಕೋರ್"
+      "name": "ಹೆಸರು"
     },
     "columns": {
       "title": "ಕಾಲಮ್‌ಗಳು",
@@ -648,10 +648,6 @@
       "downloads": "ಡೌನ್‌ಲೋಡ್‌ಗಳು/ವಾರ",
       "maintainers": "ನಿರ್ವಹಕರು",
       "keywords": "ಕೀವರ್ಡ್‌ಗಳು",
-      "quality_score": "ಗುಣಮಟ್ಟದ ಸ್ಕೋರ್",
-      "popularity_score": "ಜನಪ್ರಿಯತಾ ಸ್ಕೋರ್",
-      "maintenance_score": "ನಿರ್ವಹಣಾ ಸ್ಕೋರ್",
-      "combined_score": "ಸಂಯುಕ್ತ ಸ್ಕೋರ್",
       "security": "ಭದ್ರತೆ"
     },
     "view_mode": {
@@ -843,6 +839,7 @@
       "values": {},
       "trends": {}
     },
+    "version_invalid_url_format": {},
     "file_filter_option": {},
     "filter": {}
   },
@@ -870,5 +867,9 @@
     "measures": {},
     "limitations": {},
     "contact": {}
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

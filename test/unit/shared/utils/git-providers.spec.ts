@@ -38,6 +38,12 @@ describe('normalizeGitUrl', () => {
     expect
       .soft(normalizeGitUrl('https://bitbucket.org/user/repo.git'))
       .toBe('https://bitbucket.org/user/repo')
+    expect
+      .soft(normalizeGitUrl('git+https://github.com/user/repo.git#readme'))
+      .toBe('https://github.com/user/repo#readme')
+    expect
+      .soft(normalizeGitUrl('git+https://github.com/user/repo.git?path=packages/core'))
+      .toBe('https://github.com/user/repo?path=packages/core')
   })
 
   it('should convert git:// protocol to https://', () => {

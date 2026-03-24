@@ -37,10 +37,6 @@ const columnToSortKey: Record<string, SortKey> = {
   name: 'name',
   downloads: 'downloads-week',
   updated: 'updated',
-  qualityScore: 'quality',
-  popularityScore: 'popularity',
-  maintenanceScore: 'maintenance',
-  combinedScore: 'score',
 }
 
 // Default direction for each column
@@ -48,10 +44,6 @@ const columnDefaultDirection: Record<string, 'asc' | 'desc'> = {
   name: 'asc',
   downloads: 'desc',
   updated: 'desc',
-  qualityScore: 'desc',
-  popularityScore: 'desc',
-  maintenanceScore: 'desc',
-  combinedScore: 'desc',
 }
 
 function isColumnSorted(id: string): boolean {
@@ -97,10 +89,6 @@ const columnLabels = computed(() => ({
   updated: t('filters.columns.published'),
   maintainers: t('filters.columns.maintainers'),
   keywords: t('filters.columns.keywords'),
-  qualityScore: t('filters.columns.quality_score'),
-  popularityScore: t('filters.columns.popularity_score'),
-  maintenanceScore: t('filters.columns.maintenance_score'),
-  combinedScore: t('filters.columns.combined_score'),
   security: t('filters.columns.security'),
   selection: t('filters.columns.selection'),
 }))
@@ -262,38 +250,6 @@ function getColumnLabel(id: ColumnId): string {
             class="py-3 px-3 text-xs text-start text-fg-muted font-mono font-medium uppercase tracking-wider whitespace-nowrap select-none text-end"
           >
             {{ getColumnLabel('keywords') }}
-          </th>
-
-          <th
-            v-if="isColumnVisible('qualityScore')"
-            scope="col"
-            class="py-3 px-3 text-xs text-start text-fg-muted font-mono font-medium uppercase tracking-wider whitespace-nowrap select-none text-end"
-          >
-            {{ getColumnLabel('qualityScore') }}
-          </th>
-
-          <th
-            v-if="isColumnVisible('popularityScore')"
-            scope="col"
-            class="py-3 px-3 text-xs text-start text-fg-muted font-mono font-medium uppercase tracking-wider whitespace-nowrap select-none text-end"
-          >
-            {{ getColumnLabel('popularityScore') }}
-          </th>
-
-          <th
-            v-if="isColumnVisible('maintenanceScore')"
-            scope="col"
-            class="py-3 px-3 text-xs text-start text-fg-muted font-mono font-medium uppercase tracking-wider whitespace-nowrap select-none text-end"
-          >
-            {{ getColumnLabel('maintenanceScore') }}
-          </th>
-
-          <th
-            v-if="isColumnVisible('combinedScore')"
-            scope="col"
-            class="py-3 px-3 text-xs text-start text-fg-muted font-mono font-medium uppercase tracking-wider whitespace-nowrap select-none text-end"
-          >
-            {{ getColumnLabel('combinedScore') }}
           </th>
 
           <th

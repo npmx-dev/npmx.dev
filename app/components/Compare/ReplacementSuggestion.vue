@@ -75,14 +75,15 @@ const nodeVersion = computed(() => {
 
     <ButtonBase
       v-if="variant === 'nodep' && showAction !== false"
-      size="small"
+      size="sm"
       :aria-label="$t('compare.no_dependency.add_column')"
       @click="emit('addNoDep')"
     >
       {{ $t('package.replacement.consider_no_dep') }}
     </ButtonBase>
 
-    <LinkBase v-else-if="docUrl" :to="docUrl" variant="button-secondary" size="small">
+    <!-- Info link -->
+    <LinkBase v-else-if="docUrl" :to="docUrl" variant="button-secondary" size="sm">
       {{ $t('package.replacement.learn_more') }}
     </LinkBase>
   </div>

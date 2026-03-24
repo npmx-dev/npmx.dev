@@ -144,10 +144,14 @@
     "theme_system": "Sistema",
     "language": "Idioma",
     "help_translate": "Ayuda a traducir npmx",
-    "accent_colors": "Colores de acento",
+    "accent_colors": {
+      "label": "Colores de acento"
+    },
     "clear_accent": "Limpiar color de acento",
     "translation_progress": "Progreso de traducción",
-    "background_themes": "Tema de fondo",
+    "background_themes": {
+      "label": "Tema de fondo"
+    },
     "keyboard_shortcuts_enabled": "Activar atajos de teclado",
     "keyboard_shortcuts_enabled_description": "Los atajos de teclado pueden desactivarse si entran en conflicto con otros atajos del navegador o del sistema"
   },
@@ -586,7 +590,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -865,11 +870,7 @@
       "downloads_month": "Descargas/mes",
       "downloads_year": "Descargas/año",
       "published": "Última publicación",
-      "name": "Nombre",
-      "quality": "Calidad",
-      "popularity": "Popularidad",
-      "maintenance": "Mantenimiento",
-      "score": "Puntuación"
+      "name": "Nombre"
     },
     "columns": {
       "title": "Columnas",
@@ -883,10 +884,6 @@
       "published": "Última publicación",
       "maintainers": "Mantenedores",
       "keywords": "Palabras clave",
-      "quality_score": "Puntuación de calidad",
-      "popularity_score": "Puntuación de popularidad",
-      "maintenance_score": "Puntuación de mantenimiento",
-      "combined_score": "Puntuación combinada",
       "security": "Seguridad"
     },
     "view_mode": {
@@ -1165,6 +1162,7 @@
     "file_size_warning": "{size} excede el límite de 250KB para la comparación",
     "compare_versions": "diferencia",
     "compare_versions_title": "Comparar con la última versión",
+    "version_invalid_url_format": {},
     "version_selector_title": "Comparar con la versión",
     "summary": "Resumen",
     "deps_count": "{count} dependencias",
@@ -1330,5 +1328,9 @@
       "p1": "Si encuentras una barrera de accesibilidad en {app}, por favor háznoslo saber abriendo una incidencia en nuestro {link}. Nos tomamos estos informes muy en serio y haremos todo lo posible para abordarlos.",
       "link": "repositorio de GitHub"
     }
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

@@ -79,9 +79,12 @@
     "theme_system": "सिस्टम",
     "language": "भाषा",
     "help_translate": "npmx का अनुवाद करने में मदद करें",
-    "accent_colors": "एक्सेंट रंग",
+    "accent_colors": {
+      "label": "एक्सेंट रंग"
+    },
     "clear_accent": "एक्सेंट रंग साफ़ करें",
-    "translation_progress": "अनुवाद प्रगति"
+    "translation_progress": "अनुवाद प्रगति",
+    "background_themes": {}
   },
   "i18n": {
     "missing_keys": "{count} अनुवाद गायब है | {count} अनुवाद गायब हैं",
@@ -365,7 +368,8 @@
       "name_asc": "नाम (A-Z)",
       "name_desc": "नाम (Z-A)"
     },
-    "size": {}
+    "size": {},
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -631,11 +635,7 @@
       "downloads_day": "डाउनलोड्स/दिन",
       "downloads_month": "डाउनलोड्स/महीना",
       "downloads_year": "डाउनलोड्स/वर्ष",
-      "name": "नाम",
-      "quality": "गुणवत्ता",
-      "popularity": "लोकप्रियता",
-      "maintenance": "रखरखाव",
-      "score": "स्कोर"
+      "name": "नाम"
     },
     "columns": {
       "title": "कॉलम्स",
@@ -648,10 +648,6 @@
       "downloads": "डाउनलोड्स/सप्ताह",
       "maintainers": "अनुरक्षक",
       "keywords": "कीवर्ड्स",
-      "quality_score": "गुणवत्ता स्कोर",
-      "popularity_score": "लोकप्रियता स्कोर",
-      "maintenance_score": "रखरखाव स्कोर",
-      "combined_score": "संयुक्त स्कोर",
       "security": "सुरक्षा"
     },
     "view_mode": {
@@ -843,6 +839,7 @@
       "values": {},
       "trends": {}
     },
+    "version_invalid_url_format": {},
     "file_filter_option": {},
     "filter": {}
   },
@@ -870,5 +867,9 @@
     "measures": {},
     "limitations": {},
     "contact": {}
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

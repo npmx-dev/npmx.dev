@@ -78,9 +78,12 @@
     "theme_system": "সিস্টেম",
     "language": "ভাষা",
     "help_translate": "npmx অনুবাদে সাহায্য করুন",
-    "accent_colors": "এক্সেন্ট রং",
+    "accent_colors": {
+      "label": "এক্সেন্ট রং"
+    },
     "clear_accent": "এক্সেন্ট রং সাফ করুন",
-    "translation_progress": "অনুবাদের অগ্রগতি"
+    "translation_progress": "অনুবাদের অগ্রগতি",
+    "background_themes": {}
   },
   "i18n": {
     "missing_keys": "{count} অনুবাদ নেই | {count} অনুবাদ নেই",
@@ -364,7 +367,8 @@
       "name_asc": "নাম (A-Z)",
       "name_desc": "নাম (Z-A)"
     },
-    "size": {}
+    "size": {},
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -630,11 +634,7 @@
       "downloads_day": "ডাউনলোড/দিন",
       "downloads_month": "ডাউনলোড/মাস",
       "downloads_year": "ডাউনলোড/বছর",
-      "name": "নাম",
-      "quality": "গুণমান",
-      "popularity": "জনপ্রিয়তা",
-      "maintenance": "রক্ষণাবেক্ষণ",
-      "score": "স্কোর"
+      "name": "নাম"
     },
     "columns": {
       "title": "কলাম",
@@ -647,10 +647,6 @@
       "downloads": "ডাউনলোড/সপ্তাহ",
       "maintainers": "রক্ষণাবেক্ষণকারী",
       "keywords": "কীওয়ার্ড",
-      "quality_score": "গুণমান স্কোর",
-      "popularity_score": "জনপ্রিয়তা স্কোর",
-      "maintenance_score": "রক্ষণাবেক্ষণ স্কোর",
-      "combined_score": "সম্মিলিত স্কোর",
       "security": "নিরাপত্তা"
     },
     "view_mode": {
@@ -842,6 +838,7 @@
       "values": {},
       "trends": {}
     },
+    "version_invalid_url_format": {},
     "file_filter_option": {},
     "filter": {}
   },
@@ -869,5 +866,9 @@
     "measures": {},
     "limitations": {},
     "contact": {}
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

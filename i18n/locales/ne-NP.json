@@ -79,9 +79,12 @@
     "theme_system": "सिस्टम",
     "language": "भाषा",
     "help_translate": "npmx अनुवाद गर्न सहयोग गर्नुहोस्",
-    "accent_colors": "एक्सेन्ट रङहरू",
+    "accent_colors": {
+      "label": "एक्सेन्ट रङहरू"
+    },
     "clear_accent": "एक्सेन्ट रङ हटाउनुहोस्",
-    "translation_progress": "अनुवाद प्रगति"
+    "translation_progress": "अनुवाद प्रगति",
+    "background_themes": {}
   },
   "i18n": {
     "missing_keys": "{count} अनुवाद छुटेको छ | {count} अनुवादहरू छुटेका छन्",
@@ -350,7 +353,8 @@
       "name_asc": "नाम (A-Z)",
       "name_desc": "नाम (Z-A)"
     },
-    "size": {}
+    "size": {},
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -616,11 +620,7 @@
       "downloads_day": "डाउनलोड/दिन",
       "downloads_month": "डाउनलोड/महिना",
       "downloads_year": "डाउनलोड/वर्ष",
-      "name": "नाम",
-      "quality": "क्वालिटी",
-      "popularity": "लोकप्रियता",
-      "maintenance": "मेन्टेनेन्स",
-      "score": "स्कोर"
+      "name": "नाम"
     },
     "columns": {
       "title": "स्तम्भहरू",
@@ -633,10 +633,6 @@
       "downloads": "डाउनलोड/हप्ता",
       "maintainers": "मेन्टेनरहरू",
       "keywords": "किवर्ड्स",
-      "quality_score": "क्वालिटी स्कोर",
-      "popularity_score": "लोकप्रियता स्कोर",
-      "maintenance_score": "मेन्टेनेन्स स्कोर",
-      "combined_score": "समग्र स्कोर",
       "security": "सिक्युरिटी"
     },
     "view_mode": {
@@ -828,6 +824,7 @@
       "values": {},
       "trends": {}
     },
+    "version_invalid_url_format": {},
     "file_filter_option": {},
     "filter": {}
   },
@@ -855,5 +852,9 @@
     "measures": {},
     "limitations": {},
     "contact": {}
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

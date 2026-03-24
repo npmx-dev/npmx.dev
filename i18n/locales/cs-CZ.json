@@ -107,7 +107,7 @@
       "reply_count": "{count} odpověď | {count} odpovědi | {count} odpovědí",
       "like_count": "{count} lajk | {count} lajky | {count} lajků",
       "repost_count": "{count} repost | {count} reposty | {count} repostů",
-      "more_replies": "{count} další odpověď ... | {count} další odpovědi ... | {count} dalších odpovědí ..."
+      "more_replies": "ještě {count} odpověď… | ještě {count} odpovědi… | ještě {count} odpovědí…"
     }
   },
   "settings": {
@@ -142,10 +142,14 @@
     "theme_system": "Systémové",
     "language": "Jazyk",
     "help_translate": "Pomozte přeložit npmx",
-    "accent_colors": "Barvy akcentu",
+    "accent_colors": {
+      "label": "Barvy akcentu"
+    },
     "clear_accent": "Vymazat barvu akcentu",
     "translation_progress": "Pokrok překladu",
-    "background_themes": "Odstín pozadí",
+    "background_themes": {
+      "label": "Odstín pozadí"
+    },
     "keyboard_shortcuts_enabled": "Povolit klávesové zkratky",
     "keyboard_shortcuts_enabled_description": "Klávesové zkratky lze zakázat, pokud se střetávají s jinými zkratkami prohlížeče nebo systému"
   },
@@ -581,7 +585,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -858,11 +863,7 @@
       "downloads_month": "Stažení/měsíc",
       "downloads_year": "Stažení/rok",
       "published": "Naposledy publikováno",
-      "name": "Název",
-      "quality": "Kvalita",
-      "popularity": "Popularita",
-      "maintenance": "Údržba",
-      "score": "Skóre"
+      "name": "Název"
     },
     "columns": {
       "title": "Sloupce",
@@ -876,10 +877,6 @@
       "published": "Naposledy publikováno",
       "maintainers": "Správci",
       "keywords": "Klíčová slova",
-      "quality_score": "Skóre kvality",
-      "popularity_score": "Skóre popularity",
-      "maintenance_score": "Skóre údržby",
-      "combined_score": "Kombinované skóre",
       "security": "Bezpečnost"
     },
     "view_mode": {
@@ -1158,6 +1155,7 @@
     "file_size_warning": "{size} překračuje limit 250KB pro porovnání",
     "compare_versions": "porovnat",
     "compare_versions_title": "Porovnat s nejnovější verzí",
+    "version_invalid_url_format": {},
     "summary": "Souhrn",
     "deps_count": "{count} závislostí",
     "dependencies": "Závislosti",
@@ -1322,5 +1320,9 @@
       "p1": "Pokud narazíte na překážku v přístupnosti na {app}, dejte nám prosím vědět otevřením problému na našem {link}. Tyto zprávy bereme vážně a uděláme vše pro to, abychom je řešili.",
       "link": "GitHub repozitáři"
     }
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

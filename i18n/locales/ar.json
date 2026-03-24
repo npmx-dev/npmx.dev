@@ -109,10 +109,14 @@
     "theme_system": "سمة النظام",
     "language": "اللغة",
     "help_translate": "ساهم في ترجمة npmx",
-    "accent_colors": "ألوان الموقع",
+    "accent_colors": {
+      "label": "ألوان الموقع"
+    },
     "clear_accent": "مسح لون التمييز",
     "translation_progress": "تقدم الترجمة",
-    "background_themes": "درجة خلفية الصفحة"
+    "background_themes": {
+      "label": "درجة خلفية الصفحة"
+    }
   },
   "i18n": {
     "missing_keys": "{count} ترجمات مفقودة | ترجمة واحدة مفقودة | ترجمتان مفقودتان | {count} ترجمات مفقودة | {count} ترجمة مفقودة | {count} ترجمة مفقودة",
@@ -466,7 +470,8 @@
       "b": "{size} بايت",
       "kb": "{size} كيلوبايت",
       "mb": "{size} ميجابايت"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -742,11 +747,7 @@
       "downloads_month": "التنزيلات/الشهر",
       "downloads_year": "التنزيلات/السنة",
       "published": "آخر نشر",
-      "name": "الاسم",
-      "quality": "الجودة",
-      "popularity": "الشعبية",
-      "maintenance": "الصيانة",
-      "score": "التنقيط"
+      "name": "الاسم"
     },
     "columns": {
       "title": "الأعمدة",
@@ -760,10 +761,6 @@
       "published": "آخر نشر",
       "maintainers": "المشرفون",
       "keywords": "الكلمات المفتاحية",
-      "quality_score": "درجة الجودة",
-      "popularity_score": "درجة الشعبية",
-      "maintenance_score": "درجة الصيانة",
-      "combined_score": "الدرجة المجمعة",
       "security": "الأمان"
     },
     "view_mode": {
@@ -1023,6 +1020,7 @@
         "title": "مقارنة التوجهات"
       }
     },
+    "version_invalid_url_format": {},
     "file_filter_option": {},
     "filter": {}
   },
@@ -1140,5 +1138,9 @@
       "p1": "إذا واجهت عائقاً في إمكانية الوصول على {app}، يرجى إبلاغنا بفتح بلاغ في {link}. نأخذ هذه البلاغات على محمل الجد وسنبذل قصارى جهدنا لمعالجتها.",
       "link": "مستودع GitHub"
     }
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

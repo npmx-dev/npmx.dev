@@ -13,10 +13,12 @@
   "trademark_disclaimer": "npm 是 npm, Inc. 的註冊商標。本網站與 npm, Inc. 無任何隸屬關係。",
   "footer": {
     "about": "關於",
+    "blog": "部落格",
     "docs": "文件",
     "source": "原始碼",
     "social": "社群媒體",
     "chat": "聊天",
+    "builders_chat": "開發者聊天",
     "keyboard_shortcuts": "鍵盤快捷鍵"
   },
   "shortcuts": {
@@ -34,7 +36,9 @@
     "go_to_result": "前往搜尋結果",
     "open_code_view": "開啟程式碼檢視",
     "open_docs": "開啟文件",
-    "disable_shortcuts": "你可以在 {settings} 中停用鍵盤快速鍵。"
+    "disable_shortcuts": "你可以在 {settings} 中停用鍵盤快速鍵。",
+    "open_main": "開啟主要資訊",
+    "open_diff": "開啟版本差異"
   },
   "search": {
     "label": "搜尋 npm 套件",
@@ -63,7 +67,13 @@
       "org": "組織",
       "view_user_packages": "檢視此使用者的套件",
       "view_org_packages": "檢視此組織的套件"
-    }
+    },
+    "instant_search": "立即搜尋",
+    "instant_search_on": "開啟",
+    "instant_search_off": "關閉",
+    "instant_search_turn_on": "開啟",
+    "instant_search_turn_off": "關閉",
+    "instant_search_advisory": "{label} {state} — {action}"
   },
   "nav": {
     "main_navigation": "首頁",
@@ -78,8 +88,29 @@
     "tap_to_search": "點擊以搜尋"
   },
   "blog": {
-    "author": {},
-    "atproto": {}
+    "title": "部落格",
+    "heading": "部落格",
+    "meta_description": "來自 npmx 社群的見解與最新動態",
+    "author": {
+      "view_profile": "在 Bluesky 上查看 {name} 的個人檔案"
+    },
+    "draft_badge": "草稿",
+    "draft_banner": "這是尚未發佈的草稿。內容可能不完整或包含不準確的資訊。",
+    "atproto": {
+      "view_on_bluesky": "在 Bluesky 上查看",
+      "reply_on_bluesky": "在 Bluesky 上回覆",
+      "likes_on_bluesky": "在 Bluesky 上的喜歡",
+      "like_or_reply_on_bluesky": "在 Bluesky 上喜歡這篇文章或新增留言",
+      "no_comments_yet": "尚無留言。",
+      "could_not_load_comments": "無法載入留言。",
+      "comments": "留言",
+      "loading_comments": "正在載入留言⋯⋯",
+      "updating": "更新中⋯⋯",
+      "reply_count": "{count} 則回覆 | {count} 則回覆",
+      "like_count": "{count} 個喜歡 | {count} 個喜歡",
+      "repost_count": "{count} 次轉發 | {count} 次轉發",
+      "more_replies": "還有 {count} 則回覆⋯⋯ | 還有 {count} 則回覆⋯⋯"
+    }
   },
   "settings": {
     "title": "設定",
@@ -100,21 +131,29 @@
       "algolia": "Algolia",
       "algolia_description": "使用 Algolia 以更快速的搜尋套件、組織及使用者。"
     },
+    "instant_search": "即時搜尋",
+    "instant_search_description": "導航至搜尋頁面，並在您輸入時即時更新搜尋結果。",
     "relative_dates": "相對時間",
     "include_types": "安裝時包含 {'@'}types",
     "include_types_description": "對未提供型別定義的套件，自動在安裝指令加入 {'@'}types 套件",
     "hide_platform_packages": "在搜尋結果中隱藏平台特定套件",
     "hide_platform_packages_description": "在搜尋結果中隱藏平台特定的原生二進位套件（例如 {'@'}esbuild/linux-x64）",
+    "enable_graph_pulse_loop": "啟用迷你圖表的脈衝循環效果",
+    "enable_graph_pulse_loop_description": "在每週下載圖表上啟動連續的脈衝動畫。請注意，此動畫可能會對部分使用者造成視覺干擾。",
     "theme": "主題",
     "theme_light": "淺色",
     "theme_dark": "深色",
     "theme_system": "跟隨系統",
     "language": "語言",
     "help_translate": "協助翻譯 npmx",
-    "accent_colors": "強調色",
+    "accent_colors": {
+      "label": "強調色"
+    },
     "clear_accent": "清除強調色",
     "translation_progress": "翻譯進度",
-    "background_themes": "背景色調",
+    "background_themes": {
+      "label": "背景色調"
+    },
     "keyboard_shortcuts_enabled": "啟用鍵盤快速鍵",
     "keyboard_shortcuts_enabled_description": "若與其他瀏覽器或系統快捷鍵衝突，可停用鍵盤快速鍵"
   },
@@ -126,7 +165,13 @@
     "edit_on_github": "在 GitHub 上編輯",
     "view_guide": "翻譯指南"
   },
-  "error": {},
+  "error": {
+    "401": "未經授權",
+    "404": "找不到頁面",
+    "500": "內部伺服器錯誤",
+    "503": "服務無法使用",
+    "default": "發生未預期的錯誤"
+  },
   "common": {
     "loading": "載入中…",
     "loading_more": "載入更多中…",
@@ -155,7 +200,17 @@
     "error": "錯誤",
     "view_on": {
       "npm": "在 npm 上檢視",
-      "github": "在 GitHub 上檢視"
+      "github": "在 GitHub 上檢視",
+      "gitlab": "在 GitLab 上檢視",
+      "bitbucket": "在 Bitbucket 上檢視",
+      "codeberg": "在 Codeberg 上檢視",
+      "git_repo": "在 Git 儲存庫上檢視",
+      "forgejo": "在 Forgejo 上檢視",
+      "gitea": "在 Gitea 上檢視",
+      "gitee": "在 Gitee 上檢視",
+      "radicle": "在 Radicle 上檢視",
+      "sourcehut": "在 SourceHut 上檢視",
+      "tangled": "在 Tangled 上檢視"
     }
   },
   "profile": {
@@ -237,6 +292,7 @@
       "view_source": "檢視原始碼"
     },
     "links": {
+      "main": "main",
       "repo": "儲存庫",
       "homepage": "首頁",
       "issues": "Issues",
@@ -312,7 +368,9 @@
       "published": "發布於",
       "weekly_downloads": "每週下載量",
       "keywords": "關鍵字",
-      "license": "授權"
+      "license": "授權",
+      "select": "選擇套件",
+      "select_maximum": "最多 {count} 個套件可以選擇"
     },
     "versions": {
       "title": "版本",
@@ -327,6 +385,7 @@
       "all_covered": "所有版本均已包含於上方標籤中。",
       "deprecated_title": "{version}（已棄用）",
       "view_all": "檢視全部 {count} 個版本",
+      "view_all_versions": "檢視全部版本",
       "distribution_title": "語義化版本群組",
       "distribution_modal_title": "版本",
       "distribution_range_date_same_year": "從 {from} 至 {to}, {endYear}",
@@ -338,6 +397,7 @@
       "grouping_versions_only_recent": "僅顯示近期版本",
       "grouping_usage_title": "使用量",
       "grouping_usage_all": "全部",
+      "grouping_usage_most_used": "最常使用版本",
       "recent_versions_only_tooltip": "僅顯示過去一年內發布的版本。",
       "show_low_usage_tooltip": "包含總下載量低於 1% 的版本群組。",
       "y_axis_label": "下載量",
@@ -350,7 +410,12 @@
       "copy_alt": {
         "per_version_analysis": "{version} 版本下載了 {downloads} 次",
         "general_description": "長條圖呈現 {package_name} 套件在 {date_range_label} 期間、從 {first_version} 到 {last_version} 的 {versions_count} 個 {semver_grouping_mode} 版本下載量。下載量最高的版本是 {max_downloaded_version}，共 {max_version_downloads} 次下載。{per_version_analysis}。{watermark}。"
-      }
+      },
+      "page_title": "版本歷史記錄",
+      "current_tags": "當前標籤",
+      "version_filter_placeholder": "篩選版本…",
+      "version_filter_label": "篩選版本",
+      "no_match_filter": "沒有版本符合 {filter}"
     },
     "dependencies": {
       "title": "相依（{count} 個）",
@@ -385,7 +450,8 @@
       "cancel_add": "取消新增擁有者",
       "add_owner": "+ 新增擁有者",
       "show_more": "（顯示另外 {count} 個）",
-      "show_less": "（收合）"
+      "show_less": "（收合）",
+      "maintainer_template": "{avatar} {char126}{name}"
     },
     "trends": {
       "granularity": "週期",
@@ -401,6 +467,8 @@
       "download_file": "下載 {fileType}",
       "toggle_annotator": "切換標註工具",
       "toggle_stack_mode": "切換堆疊模式",
+      "open_options": "開啟選項",
+      "close_options": "關閉選項",
       "legend_estimation": "估計值",
       "no_data": "無可用資料",
       "y_axis_label": "{granularity} {facet}",
@@ -415,6 +483,7 @@
       "data_correction": "資料修正",
       "average_window": "平均視窗",
       "smoothing": "平滑化",
+      "prediction": "預估值",
       "known_anomalies": "已知異常",
       "known_anomalies_description": "針對由機器人或 CI 問題造成的已知下載尖峰進行內插修正。",
       "known_anomalies_ranges": "異常區間",
@@ -435,12 +504,15 @@
         "estimations": "最終數值是根據當前週期的部分數據所做的預估值。",
         "compare": "套件下載量比較折線圖：{package_name}。",
         "single_package": "下載 {package} 套件下載量的折線圖。",
-        "general_description": "Y 軸代表下載次數。X 軸代表日期範圍，從 {start_date} 至 {end_date}，以 {granularity} 為時間單位。 {estimation_notice} {packages_analysis}. {watermark}."
+        "general_description": "Y 軸代表下載次數。X 軸代表日期範圍，從 {start_date} 至 {end_date}，以 {granularity} 為時間單位。 {estimation_notice} {packages_analysis}. {watermark}.",
+        "facet_bar_general_description": "水平長條圖: {package} 的 {facet} 對比({description}). {facet_analysis} {watermark}.",
+        "facet_bar_analysis": "{package_name} 值為 {value}."
       }
     },
     "downloads": {
       "title": "每週下載量",
-      "community_distribution": "檢視社群採用分布"
+      "community_distribution": "檢視社群採用分布",
+      "subtitle": "所有版本"
     },
     "install_scripts": {
       "title": "安裝腳本",
@@ -529,7 +601,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -733,7 +806,9 @@
       "preview": "預覽",
       "code": "程式碼"
     },
-    "file_path": "檔案路徑"
+    "file_path": "檔案路徑",
+    "binary_file": "二進位檔案",
+    "binary_rendering_warning": "檔案類型 \"{contentType}\" 不支援預覽。"
   },
   "badges": {
     "provenance": {
@@ -795,6 +870,7 @@
       "secure": "無警告",
       "insecure": "有警告"
     },
+    "view_selected": "檢視已選擇套件",
     "sort": {
       "label": "排序套件",
       "toggle_direction": "切換排序方向",
@@ -806,11 +882,7 @@
       "downloads_month": "每月下載量",
       "downloads_year": "每年下載量",
       "published": "最近發布",
-      "name": "名稱",
-      "quality": "品質",
-      "popularity": "受歡迎度",
-      "maintenance": "維護程度",
-      "score": "分數"
+      "name": "名稱"
     },
     "columns": {
       "title": "欄位",
@@ -824,11 +896,8 @@
       "published": "最近發布",
       "maintainers": "維護者",
       "keywords": "關鍵字",
-      "quality_score": "品質分數",
-      "popularity_score": "受歡迎度分數",
-      "maintenance_score": "維護程度分數",
-      "combined_score": "總分",
-      "security": "安全性"
+      "security": "安全性",
+      "selection": "選擇套件"
     },
     "view_mode": {
       "label": "檢視模式",
@@ -917,7 +986,11 @@
         "description": "聊天、提問並分享想法。",
         "cta": "加入 Discord"
       },
-      "builders": {},
+      "builders": {
+        "title": "幫助建立 npmx",
+        "description": "加入建立者 Discord，參與開發。",
+        "cta": "加入 Builders Discord"
+      },
       "follow": {
         "title": "保持更新",
         "description": "掌握 npmx 的最新動態。",
@@ -988,7 +1061,9 @@
       "loading": "正在載入套件資料…",
       "error": "載入套件資料失敗。請重試。",
       "empty_title": "選擇要比較的套件",
-      "empty_description": "在上方搜尋並新增至少 2 個套件，以查看它們指標的並排比較。"
+      "empty_description": "在上方搜尋並新增至少 2 個套件，以查看它們指標的並排比較。",
+      "table_view": "表格檢視",
+      "charts_view": "圖表檢視"
     },
     "selector": {
       "search_label": "搜尋套件",
@@ -1096,7 +1171,12 @@
     "file_changes": "檔案變更",
     "files_count": "{count} 個檔案",
     "lines_hidden": "已隱藏 {count} 行",
+    "file_too_large": "檔案大小過大，無法比較",
+    "file_size_warning": "檔案大小 {size} 超過 250KB，無法比較",
     "compare_versions": "差異",
+    "compare_versions_title": "比較最新版本",
+    "version_invalid_url_format": {},
+    "version_selector_title": "比較版本",
     "summary": "摘要",
     "deps_count": "{count} 個相依套件",
     "dependencies": "相依套件",
@@ -1125,9 +1205,32 @@
     "filter_files_label": "依變更類型篩選檔案"
   },
   "pds": {
-    "join": {},
-    "server": {},
-    "community": {}
+    "title": "npmx.social",
+    "meta_description": "為 npmx 社群提供的官方 AT Protocol 個人資料伺服器（PDS）。",
+    "join": {
+      "title": "加入社群",
+      "description": "無論您是在 Atmosphere 上建立第一個帳號，還是要遷移現有帳號，這裡都歡迎您。您可以遷移目前的帳號，而不會遺失您的使用者名稱、貼文或跟隨者。",
+      "migrate": "使用 PDS MOOver 工具遷移"
+    },
+    "server": {
+      "title": "伺服器詳細資訊",
+      "location_label": "伺服器位置：",
+      "location_value": "德國紐倫堡",
+      "infrastructure_label": "基礎設施：",
+      "infrastructure_value": "托管於 Hetzner",
+      "privacy_label": "隱私保護：",
+      "privacy_value": "遵循歐盟嚴格的資料保護法規",
+      "learn_more": "瞭解 npmx 如何使用 Atmosphere"
+    },
+    "community": {
+      "title": "誰在這裡",
+      "description": "以下是在 npmx.social 落腳的 {count} 個帳號中的一部分：",
+      "loading": "正在載入 PDS 社群成員⋯⋯",
+      "error": "無法載入 PDS 社群成員。",
+      "empty": "尚無社群成員可顯示。",
+      "view_profile": "查看 {handle} 的個人檔案",
+      "new_accounts": "⋯⋯還有 {count} 個新加入 Atmosphere 的帳號"
+    }
   },
   "privacy_policy": {
     "title": "隱私權政策",
@@ -1238,5 +1341,14 @@
       "p1": "如果您在 {app} 遇到無障礙障礙，請在我們的 {link} 提交 Issue 告知我們。我們非常重視這些報告，並會盡力解決問題。",
       "link": "GitHub 儲存庫"
     }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {
+    "title": "操作列",
+    "selection": "已選擇 0 個套件 | 已選擇 1 個套件 | {count} 個套件",
+    "shortcut": "按 \"{key}\" 以聚焦操作",
+    "button_close_aria_label": "關閉操作列"
   }
 }

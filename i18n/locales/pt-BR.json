@@ -144,10 +144,14 @@
     "theme_system": "Sistema",
     "language": "Idioma",
     "help_translate": "Ajude a traduzir npmx",
-    "accent_colors": "Cores de destaque",
+    "accent_colors": {
+      "label": "Cores de destaque"
+    },
     "clear_accent": "Limpar cor de destaque",
     "translation_progress": "Progresso de tradução",
-    "background_themes": "Tom de fundo",
+    "background_themes": {
+      "label": "Tom de fundo"
+    },
     "keyboard_shortcuts_enabled": "Habilitar atalhos de teclado",
     "keyboard_shortcuts_enabled_description": "Os atalhos de teclado podem ser desativados se entrarem em conflito com outros atalhos do navegador ou do sistema"
   },
@@ -594,7 +598,8 @@
       "b": "{size} B",
       "kb": "{size} KB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -874,11 +879,7 @@
       "downloads_month": "Downloads/mês",
       "downloads_year": "Downloads/ano",
       "published": "Última publicação",
-      "name": "Nome",
-      "quality": "Qualidade",
-      "popularity": "Popularidade",
-      "maintenance": "Manutenção",
-      "score": "Pontuação"
+      "name": "Nome"
     },
     "columns": {
       "title": "Colunas",
@@ -892,10 +893,6 @@
       "published": "Última publicação",
       "maintainers": "Mantenedores",
       "keywords": "Palavras-chave",
-      "quality_score": "Pontuação de qualidade",
-      "popularity_score": "Pontuação de popularidade",
-      "maintenance_score": "Pontuação de manutenção",
-      "combined_score": "Pontuação combinada",
       "security": "Segurança",
       "selection": "Selecionar pacote"
     },
@@ -1175,6 +1172,7 @@
     "file_size_warning": "{size} excede o limite de 250 KB para comparação",
     "compare_versions": "diferença",
     "compare_versions_title": "Compare com a versão mais recente",
+    "version_invalid_url_format": {},
     "version_selector_title": "Comparar com versão",
     "summary": "Resumo",
     "deps_count": "{count} dependência | {count} dependências",
@@ -1340,6 +1338,9 @@
       "p1": "Se você encontrar uma barreira de acessibilidade no {app}, informe-nos abrindo um problema em nosso {link}. Levamos esses relatórios a sério e faremos o nosso melhor para abordá-los.",
       "link": "Repositório GitHub"
     }
+  },
+  "translation_status": {
+    "table": {}
   },
   "action_bar": {
     "title": "Barra de ações",

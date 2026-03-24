@@ -109,10 +109,14 @@
     "theme_system": "கணினி",
     "language": "மொழி",
     "help_translate": "npmx-ஐ மொழிபெயர்க்க உதவுங்கள்",
-    "accent_colors": "வலியுறுத்தல் வண்ணங்கள்",
+    "accent_colors": {
+      "label": "வலியுறுத்தல் வண்ணங்கள்"
+    },
     "clear_accent": "வலியுறுத்தல் வண்ணத்தை அழி",
     "translation_progress": "மொழிபெயர்ப்பு முன்னேற்றம்",
-    "background_themes": "பின்புல நிழல்"
+    "background_themes": {
+      "label": "பின்புல நிழல்"
+    }
   },
   "i18n": {
     "missing_keys": "{count} விடுபட்ட மொழிபெயர்ப்பு | {count} விடுபட்ட மொழிபெயர்ப்புகள்",
@@ -444,7 +448,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -717,11 +722,7 @@
       "downloads_month": "பதிவிறக்கங்கள்/மாதம்",
       "downloads_year": "பதிவிறக்கங்கள்/ஆண்டு",
       "published": "கடைசியாக வெளியிடப்பட்டது",
-      "name": "பெயர்",
-      "quality": "தரம்",
-      "popularity": "பிரபலம்",
-      "maintenance": "பராமரிப்பு",
-      "score": "மதிப்பெண்"
+      "name": "பெயர்"
     },
     "columns": {
       "title": "நெடுவரிசைகள்",
@@ -735,10 +736,6 @@
       "published": "கடைசியாக வெளியிடப்பட்டது",
       "maintainers": "பராமரிப்பாளர்கள்",
       "keywords": "முக்கிய வார்த்தைகள்",
-      "quality_score": "தர மதிப்பெண்",
-      "popularity_score": "பிரபல மதிப்பெண்",
-      "maintenance_score": "பராமரிப்பு மதிப்பெண்",
-      "combined_score": "ஒருங்கிணைந்த மதிப்பெண்",
       "security": "பாதுகாப்பு"
     },
     "view_mode": {
@@ -991,6 +988,7 @@
         "title": "வாராந்திர பதிவிறக்கங்கள்"
       }
     },
+    "version_invalid_url_format": {},
     "file_filter_option": {},
     "filter": {}
   },
@@ -1084,5 +1082,9 @@
     "measures": {},
     "limitations": {},
     "contact": {}
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

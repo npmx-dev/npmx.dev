@@ -109,10 +109,14 @@
     "theme_system": "Sistema",
     "language": "Lingua",
     "help_translate": "Aiuta a tradurre npmx",
-    "accent_colors": "Colori di accento",
+    "accent_colors": {
+      "label": "Colori di accento"
+    },
     "clear_accent": "Cancella colore di accento",
     "translation_progress": "Progresso della traduzione",
-    "background_themes": "Sfumatura di sfondo"
+    "background_themes": {
+      "label": "Sfumatura di sfondo"
+    }
   },
   "i18n": {
     "missing_keys": "{count} chiave mancante | {count} chiavi mancanti",
@@ -452,7 +456,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -725,11 +730,7 @@
       "downloads_month": "Download/mese",
       "downloads_year": "Download/anno",
       "published": "Ultimo pubblicato",
-      "name": "Nome",
-      "quality": "Qualità",
-      "popularity": "Popolarità",
-      "maintenance": "Manutenzione",
-      "score": "Punteggio"
+      "name": "Nome"
     },
     "columns": {
       "title": "Colonne",
@@ -743,10 +744,6 @@
       "published": "Ultimo pubblicato",
       "maintainers": "Manutentori",
       "keywords": "Keywords",
-      "quality_score": "Punteggio di qualità",
-      "popularity_score": "Punteggio di popolarità",
-      "maintenance_score": "Punteggio di manutenzione",
-      "combined_score": "Punteggio combinato",
       "security": "Sicurezza"
     },
     "view_mode": {
@@ -997,6 +994,7 @@
       },
       "trends": {}
     },
+    "version_invalid_url_format": {},
     "file_filter_option": {},
     "filter": {}
   },
@@ -1090,6 +1088,9 @@
     "measures": {},
     "limitations": {},
     "contact": {}
+  },
+  "translation_status": {
+    "table": {}
   },
   "action_bar": {}
 }

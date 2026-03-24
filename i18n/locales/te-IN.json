@@ -79,9 +79,12 @@
     "theme_system": "సిస్టమ్",
     "language": "భాష",
     "help_translate": "npmx అనువాదంలో సహాయం చేయండి",
-    "accent_colors": "యాక్సెంట్ రంగులు",
+    "accent_colors": {
+      "label": "యాక్సెంట్ రంగులు"
+    },
     "clear_accent": "యాక్సెంట్ రంగును క్లియర్ చేయండి",
-    "translation_progress": "అనువాద పురోగతి"
+    "translation_progress": "అనువాద పురోగతి",
+    "background_themes": {}
   },
   "i18n": {
     "missing_keys": "{count} అనువాదం లేదు | {count} అనువాదాలు లేవు",
@@ -365,7 +368,8 @@
       "name_asc": "పేరు (A-Z)",
       "name_desc": "పేరు (Z-A)"
     },
-    "size": {}
+    "size": {},
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -631,11 +635,7 @@
       "downloads_day": "డౌన్‌లోడ్‌లు/రోజు",
       "downloads_month": "డౌన్‌లోడ్‌లు/నెల",
       "downloads_year": "డౌన్‌లోడ్‌లు/సంవత్సరం",
-      "name": "పేరు",
-      "quality": "నాణ్యత",
-      "popularity": "జనాదరణ",
-      "maintenance": "నిర్వహణ",
-      "score": "స్కోర్"
+      "name": "పేరు"
     },
     "columns": {
       "title": "కాలమ్‌లు",
@@ -648,10 +648,6 @@
       "downloads": "డౌన్‌లోడ్‌లు/వారం",
       "maintainers": "నిర్వహకులు",
       "keywords": "కీవర్డ్‌లు",
-      "quality_score": "నాణ్యత స్కోర్",
-      "popularity_score": "జనాదరణ స్కోర్",
-      "maintenance_score": "నిర్వహణ స్కోర్",
-      "combined_score": "సంయుక్త స్కోర్",
       "security": "భద్రత"
     },
     "view_mode": {
@@ -843,6 +839,7 @@
       "values": {},
       "trends": {}
     },
+    "version_invalid_url_format": {},
     "file_filter_option": {},
     "filter": {}
   },
@@ -870,5 +867,9 @@
     "measures": {},
     "limitations": {},
     "contact": {}
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

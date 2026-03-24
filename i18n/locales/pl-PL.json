@@ -107,7 +107,7 @@
       "reply_count": "{count} odpowiedzi | {count} odpowiedź | {count} odpowiedzi | {count} odpowiedzi | {count} odpowiedzi",
       "like_count": "{count} polubień | {count} polubienie | {count} polubienia | {count} polubień | {count} polubień",
       "repost_count": "{count} udostępnień | {count} udostępnienie | {count} udostępnienia | {count} udostępnień | {count} udostępnień",
-      "more_replies": "{count} odpowiedzi więcej... | {count} odpowiedź więcej... | {count} odpowiedzi więcej... | {count} odpowiedzi więcej... | {count} odpowiedzi więcej..."
+      "more_replies": "jeszcze {count} odpowiedź… | jeszcze {count} odpowiedzi… | jeszcze {count} odpowiedzi…"
     }
   },
   "settings": {
@@ -142,10 +142,14 @@
     "theme_system": "Systemowy",
     "language": "Język",
     "help_translate": "Pomóż tłumaczyć npmx",
-    "accent_colors": "Kolory akcentu",
+    "accent_colors": {
+      "label": "Kolory akcentu"
+    },
     "clear_accent": "Wyczyść kolor akcentu",
     "translation_progress": "Postęp tłumaczenia",
-    "background_themes": "Odcień tła",
+    "background_themes": {
+      "label": "Odcień tła"
+    },
     "keyboard_shortcuts_enabled": "Włącz skróty klawiaturowe",
     "keyboard_shortcuts_enabled_description": "Skróty klawiaturowe mogą zostać wyłączone jeśli kolidują z innymi skrótami przeglądarki lub systemu"
   },
@@ -583,7 +587,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -860,11 +865,7 @@
       "downloads_month": "Pobrania/mies.",
       "downloads_year": "Pobrania/rok",
       "published": "Ostatnio opublikowano",
-      "name": "Nazwa",
-      "quality": "Jakość",
-      "popularity": "Popularność",
-      "maintenance": "Utrzymanie",
-      "score": "Wynik"
+      "name": "Nazwa"
     },
     "columns": {
       "title": "Kolumny",
@@ -878,10 +879,6 @@
       "published": "Ostatnio opublikowano",
       "maintainers": "Opiekunowie",
       "keywords": "Słowa kluczowe",
-      "quality_score": "Wynik jakości",
-      "popularity_score": "Wynik popularności",
-      "maintenance_score": "Wynik utrzymania",
-      "combined_score": "Wynik łączny",
       "security": "Bezpieczeństwo"
     },
     "view_mode": {
@@ -1160,6 +1157,7 @@
     "file_size_warning": "{size} przekracza limit dla porównań wynoszący 250KB",
     "compare_versions": "porównaj",
     "compare_versions_title": "Porównaj z najnowszą wersją",
+    "version_invalid_url_format": {},
     "summary": "Podsumowanie",
     "deps_count": "{count} zależności",
     "dependencies": "Zależności",
@@ -1324,5 +1322,9 @@
       "p1": "Jeśli napotkasz barierę dostępności w {app}, daj nam znać, otwierając zgłoszenie w naszym {link}. Traktujemy takie zgłoszenia poważnie i zrobimy wszystko, co w naszej mocy, aby rozwiązać problem.",
       "link": "repozytorium GitHub"
     }
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

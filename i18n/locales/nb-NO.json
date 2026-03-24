@@ -109,10 +109,14 @@
     "theme_system": "System",
     "language": "Språk",
     "help_translate": "Hjelp med å oversette npmx",
-    "accent_colors": "Aksentfarger",
+    "accent_colors": {
+      "label": "Aksentfarger"
+    },
     "clear_accent": "Fjern aksentfarge",
     "translation_progress": "Oversettelsesfremdrift",
-    "background_themes": "Bakgrunnsnyanse"
+    "background_themes": {
+      "label": "Bakgrunnsnyanse"
+    }
   },
   "i18n": {
     "missing_keys": "{count} manglende oversettelse | {count} manglende oversettelser",
@@ -424,7 +428,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -697,11 +702,7 @@
       "downloads_month": "Nedlastinger/mnd",
       "downloads_year": "Nedlastinger/år",
       "published": "Sist publisert",
-      "name": "Navn",
-      "quality": "Kvalitet",
-      "popularity": "Popularitet",
-      "maintenance": "Vedlikehold",
-      "score": "Poengsum"
+      "name": "Navn"
     },
     "columns": {
       "title": "Kolonner",
@@ -715,10 +716,6 @@
       "published": "Sist publisert",
       "maintainers": "Vedlikeholdere",
       "keywords": "Nøkkelord",
-      "quality_score": "Kvalitetspoeng",
-      "popularity_score": "Popularitetspoeng",
-      "maintenance_score": "Vedlikeholdspoeng",
-      "combined_score": "Kombinert poengsum",
       "security": "Sikkerhet"
     },
     "view_mode": {
@@ -971,6 +968,7 @@
         "title": "Ukentlige nedlastinger"
       }
     },
+    "version_invalid_url_format": {},
     "file_filter_option": {},
     "filter": {}
   },
@@ -998,5 +996,9 @@
     "measures": {},
     "limitations": {},
     "contact": {}
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

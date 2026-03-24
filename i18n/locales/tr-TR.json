@@ -107,7 +107,7 @@
       "reply_count": "{count} yanıt",
       "like_count": "{count} beğeni",
       "repost_count": "{count} yeniden paylaşım",
-      "more_replies": "{count} yanıt daha..."
+      "more_replies": "{count} yanıt daha... | {count} yanıt daha..."
     }
   },
   "settings": {
@@ -142,10 +142,14 @@
     "theme_system": "Sistem",
     "language": "Dil",
     "help_translate": "npmx'i çevirmeye yardım edin",
-    "accent_colors": "Vurgu renkleri",
+    "accent_colors": {
+      "label": "Vurgu renkleri"
+    },
     "clear_accent": "Vurgu rengini temizle",
     "translation_progress": "Çeviri ilerlemesi",
-    "background_themes": "Arka plan tonu",
+    "background_themes": {
+      "label": "Arka plan tonu"
+    },
     "keyboard_shortcuts_enabled": "Klavye kısayolları etkin",
     "keyboard_shortcuts_enabled_description": "Hızlı navigasyon için klavye kısayollarını etkinleştir"
   },
@@ -569,7 +573,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -846,11 +851,7 @@
       "downloads_month": "Aylık indirmeler",
       "downloads_year": "Yıllık indirmeler",
       "published": "Yayınlanma tarihi",
-      "name": "Ad",
-      "quality": "Kalite",
-      "popularity": "Popülerlik",
-      "maintenance": "Bakım",
-      "score": "Skor"
+      "name": "Ad"
     },
     "columns": {
       "title": "Sütunlar",
@@ -864,10 +865,6 @@
       "published": "Yayınlandı",
       "maintainers": "Geliştiriciler",
       "keywords": "Anahtar kelimeler",
-      "quality_score": "Kalite skoru",
-      "popularity_score": "Popülerlik skoru",
-      "maintenance_score": "Bakım skoru",
-      "combined_score": "Birleşik skor",
       "security": "Güvenlik"
     },
     "view_mode": {
@@ -1143,6 +1140,7 @@
     "file_too_large": "Dosya çok büyük",
     "file_size_warning": "Dosya boyutu {size}",
     "compare_versions_title": "Sürümleri karşılaştır",
+    "version_invalid_url_format": {},
     "summary": "Özet",
     "deps_count": "{count} bağımlılık",
     "dependencies": "Bağımlılıklar",
@@ -1307,5 +1305,9 @@
       "p1": "Erişilebilirlik sorunları için:",
       "link": "GitHub'da issue açın"
     }
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }
