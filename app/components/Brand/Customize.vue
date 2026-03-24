@@ -205,7 +205,7 @@ async function downloadCustomPng() {
 
           <div class="flex items-center gap-2">
             <ButtonBase
-              size="sm"
+              size="md"
               :aria-label="$t('brand.customize.download_svg_aria')"
               :disabled="svgLoading"
               @click="downloadCustomSvg"
@@ -218,7 +218,7 @@ async function downloadCustomPng() {
               {{ $t('brand.logos.download_svg') }}
             </ButtonBase>
             <ButtonBase
-              size="sm"
+              size="md"
               :aria-label="$t('brand.customize.download_png_aria')"
               :disabled="pngLoading"
               @click="downloadCustomPng"
