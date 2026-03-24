@@ -21,8 +21,8 @@ onlyBuiltDependencies:
 
 overrides:
   sharp: 0.34.5
-  vite: npm:@voidzero-dev/vite-plus-core@0.1.12
-  vitest: npm:@voidzero-dev/vite-plus-test@0.1.12
+  vite: npm:@voidzero-dev/vite-plus-core@0.1.14-alpha.3
+  vitest: npm:@voidzero-dev/vite-plus-test@0.1.14-alpha.3
   storybook: ^10.3.1
 
 packageExtensions:
