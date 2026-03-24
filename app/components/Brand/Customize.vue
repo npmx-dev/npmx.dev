@@ -138,13 +138,11 @@ async function downloadCustomPng() {
       </div>
 
       <!-- Controls -->
-      <div
-        class="border-t border-border p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4"
-      >
-        <!-- Accent color picker -->
-        <fieldset class="flex items-center gap-3 flex-1 border-none p-0 m-0">
+      <div class="border-t border-border p-4 sm:p-6 flex flex-col gap-4">
+        <!-- Row 1: Accent color picker -->
+        <fieldset class="flex items-center gap-3 border-none p-0 m-0">
           <legend class="sr-only">{{ $t('brand.customize.accent_label') }}</legend>
-          <span class="text-xs font-mono text-fg-muted shrink-0">{{
+          <span class="text-sm font-mono text-fg-muted shrink-0">{{
             $t('brand.customize.accent_label')
           }}</span>
           <div class="flex items-center gap-1.5" role="radiogroup">
@@ -168,70 +166,71 @@ async function downloadCustomPng() {
           </div>
         </fieldset>
 
-        <!-- Background toggle -->
-        <div class="flex items-center gap-3">
-          <span class="text-xs font-mono text-fg-muted">{{ $t('brand.customize.bg_label') }}</span>
-          <div
-            class="flex items-center border border-border rounded-md overflow-hidden"
-            role="radiogroup"
-          >
+        <!-- Row 2: Background toggle + Download buttons -->
+        <div class="flex items-center gap-4 flex-wrap">
+          <div class="flex items-center gap-3">
+            <span class="text-sm font-mono text-fg-muted">{{ $t('brand.customize.bg_label') }}</span>
+            <div
+              class="flex items-center border border-border rounded-md overflow-hidden"
+              role="radiogroup"
+            >
+              <ButtonBase
+                size="sm"
+                role="radio"
+                :aria-checked="customBgDark"
+                :aria-label="$t('brand.logos.on_dark')"
+                class="!border-none !rounded-none motion-reduce:transition-none"
+                :class="
+                  customBgDark ? 'bg-bg-muted text-fg' : 'bg-transparent text-fg-muted hover:text-fg'
+                "
+                @click="customBgDark = true"
+              >
+                {{ $t('brand.logos.on_dark') }}
+              </ButtonBase>
+              <ButtonBase
+                size="sm"
+                role="radio"
+                :aria-checked="!customBgDark"
+                :aria-label="$t('brand.logos.on_light')"
+                class="!border-none !rounded-none border-is border-is-border motion-reduce:transition-none"
+                :class="
+                  !customBgDark ? 'bg-bg-muted text-fg' : 'bg-transparent text-fg-muted hover:text-fg'
+                "
+                @click="customBgDark = false"
+              >
+                {{ $t('brand.logos.on_light') }}
+              </ButtonBase>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
             <ButtonBase
               size="sm"
-              role="radio"
-              :aria-checked="customBgDark"
-              :aria-label="$t('brand.logos.on_dark')"
-              class="!border-none !rounded-none motion-reduce:transition-none"
-              :class="
-                customBgDark ? 'bg-bg-muted text-fg' : 'bg-transparent text-fg-muted hover:text-fg'
-              "
-              @click="customBgDark = true"
+              :aria-label="$t('brand.customize.download_svg_aria')"
+              :disabled="svgLoading"
+              @click="downloadCustomSvg"
             >
-              {{ $t('brand.logos.on_dark') }}
+              <span
+                class="size-[1em]"
+                aria-hidden="true"
+                :class="svgLoading ? 'i-lucide:loader-circle animate-spin' : 'i-lucide:download'"
+              />
+              {{ $t('brand.logos.download_svg') }}
             </ButtonBase>
             <ButtonBase
               size="sm"
-              role="radio"
-              :aria-checked="!customBgDark"
-              :aria-label="$t('brand.logos.on_light')"
-              class="!border-none !rounded-none border-is border-is-border motion-reduce:transition-none"
-              :class="
-                !customBgDark ? 'bg-bg-muted text-fg' : 'bg-transparent text-fg-muted hover:text-fg'
-              "
-              @click="customBgDark = false"
+              :aria-label="$t('brand.customize.download_png_aria')"
+              :disabled="pngLoading"
+              @click="downloadCustomPng"
             >
-              {{ $t('brand.logos.on_light') }}
+              <span
+                class="size-[1em]"
+                aria-hidden="true"
+                :class="pngLoading ? 'i-lucide:loader-circle animate-spin' : 'i-lucide:download'"
+              />
+              {{ $t('brand.logos.download_png') }}
             </ButtonBase>
           </div>
-        </div>
-
-        <!-- Download buttons -->
-        <div class="flex items-center gap-2">
-          <ButtonBase
-            size="sm"
-            :aria-label="$t('brand.customize.download_svg_aria')"
-            :disabled="svgLoading"
-            @click="downloadCustomSvg"
-          >
-            <span
-              class="size-[1em]"
-              aria-hidden="true"
-              :class="svgLoading ? 'i-lucide:loader-circle animate-spin' : 'i-lucide:download'"
-            />
-            {{ $t('brand.logos.download_svg') }}
-          </ButtonBase>
-          <ButtonBase
-            size="sm"
-            :aria-label="$t('brand.customize.download_png_aria')"
-            :disabled="pngLoading"
-            @click="downloadCustomPng"
-          >
-            <span
-              class="size-[1em]"
-              aria-hidden="true"
-              :class="pngLoading ? 'i-lucide:loader-circle animate-spin' : 'i-lucide:download'"
-            />
-            {{ $t('brand.logos.download_png') }}
-          </ButtonBase>
         </div>
       </div>
     </div>
