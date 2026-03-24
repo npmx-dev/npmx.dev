@@ -315,7 +315,7 @@ const flatItems = computed<FlatItem[]>(() => {
             <DateTime
               v-if="getVersionTime(latestTagRow!.version)"
               :datetime="getVersionTime(latestTagRow!.version)!"
-              class="text-xs text-fg-subtle"
+              class="text-xs text-fg-subtle whitespace-nowrap"
               year="numeric"
               month="short"
               day="numeric"
@@ -364,7 +364,7 @@ const flatItems = computed<FlatItem[]>(() => {
             <DateTime
               v-if="getVersionTime(row.version)"
               :datetime="getVersionTime(row.version)!"
-              class="text-xs text-fg-subtle shrink-0 hidden sm:block"
+              class="text-xs text-fg-subtle shrink-0 hidden sm:block whitespace-nowrap"
               year="numeric"
               month="short"
               day="numeric"
@@ -459,7 +459,7 @@ const flatItems = computed<FlatItem[]>(() => {
                       <DateTime
                         v-if="item.versions[0] && getVersionTime(item.versions[0])"
                         :datetime="getVersionTime(item.versions[0])!"
-                        class="text-xs text-fg-subtle hidden sm:block"
+                        class="text-xs text-fg-subtle hidden sm:block whitespace-nowrap"
                         year="numeric"
                         month="short"
                         day="numeric"
@@ -519,7 +519,7 @@ const flatItems = computed<FlatItem[]>(() => {
                       </div>
 
                       <!-- Right side -->
-                      <div class="flex items-center gap-2 shrink-0 relative z-10 w-50 justify-end">
+                      <div class="flex items-center gap-2 shrink-0 relative z-10 justify-end">
                         <span
                           v-if="getVersionDownloads(item.version) !== undefined"
                           class="text-xs text-fg-muted tabular-nums w-24 text-end shrink-0"
@@ -532,7 +532,7 @@ const flatItems = computed<FlatItem[]>(() => {
                         <DateTime
                           v-if="getVersionTime(item.version)"
                           :datetime="getVersionTime(item.version)!"
-                          class="text-xs text-fg-subtle hidden sm:block"
+                          class="text-xs text-fg-subtle hidden sm:block whitespace-nowrap"
                           year="numeric"
                           month="short"
                           day="numeric"
@@ -581,7 +581,7 @@ const flatItems = computed<FlatItem[]>(() => {
                     <DateTime
                       v-if="item.versions[0] && getVersionTime(item.versions[0])"
                       :datetime="getVersionTime(item.versions[0] ?? '')!"
-                      class="text-xs text-fg-subtle hidden sm:block"
+                      class="text-xs text-fg-subtle hidden sm:block whitespace-nowrap"
                       year="numeric"
                       month="short"
                       day="numeric"
