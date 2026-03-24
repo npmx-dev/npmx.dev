@@ -4569,6 +4569,9 @@
             },
             "message": {
               "type": "string"
+            },
+            "discord_link_text": {
+              "type": "string"
             }
           },
           "additionalProperties": false
