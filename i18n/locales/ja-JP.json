@@ -19,7 +19,8 @@
     "social": "ソーシャル",
     "chat": "チャット",
     "builders_chat": "ビルダー",
-    "keyboard_shortcuts": "キーボードショートカット"
+    "keyboard_shortcuts": "キーボードショートカット",
+    "brand": "EN TEXT TO REPLACE: brand"
   },
   "shortcuts": {
     "section": {
@@ -36,7 +37,9 @@
     "go_to_result": "結果に移動",
     "open_code_view": "コードビューを開く",
     "open_docs": "ドキュメントを開く",
-    "disable_shortcuts": "{settings} でキーボードショートカットを無効化できます。"
+    "disable_shortcuts": "{settings} でキーボードショートカットを無効化できます。",
+    "open_main": "EN TEXT TO REPLACE: Open main information",
+    "open_diff": "EN TEXT TO REPLACE: Open version differences"
   },
   "search": {
     "label": "npmパッケージを検索",
@@ -94,6 +97,7 @@
     },
     "draft_badge": "下書き",
     "draft_banner": "これは未公開の下書きです。内容が不完全であったり、不正確な情報が含まれている可能性があります。",
+    "no_posts": "EN TEXT TO REPLACE: No posts found.",
     "atproto": {
       "view_on_bluesky": "Blueskyで表示",
       "reply_on_bluesky": "Blueskyでリプライ",
@@ -136,19 +140,33 @@
     "include_types_description": "型定義のないパッケージのインストールコマンドに{'@'}typesパッケージを追加します",
     "hide_platform_packages": "検索でプラットフォーム固有のパッケージを非表示",
     "hide_platform_packages_description": "検索結果から{'@'}esbuild/linux-x64のようなネイティブバイナリパッケージを非表示にします",
+    "enable_graph_pulse_loop": "EN TEXT TO REPLACE: Enable looping of pulse effect on mini graph",
+    "enable_graph_pulse_loop_description": "EN TEXT TO REPLACE: Activate a continuous pulse animation on the weekly download graph. This animation may be distracting for some users.",
     "theme": "テーマ",
     "theme_light": "ライト",
     "theme_dark": "ダーク",
     "theme_system": "システム",
     "language": "言語",
     "help_translate": "npmxの翻訳に協力する",
+    "translation_status": "EN TEXT TO REPLACE: Check global translation status",
     "accent_colors": {
-      "label": "アクセントカラー"
+      "label": "アクセントカラー",
+      "sky": "EN TEXT TO REPLACE: Sky",
+      "coral": "EN TEXT TO REPLACE: Coral",
+      "amber": "EN TEXT TO REPLACE: Amber",
+      "emerald": "EN TEXT TO REPLACE: Emerald",
+      "violet": "EN TEXT TO REPLACE: Violet",
+      "magenta": "EN TEXT TO REPLACE: Magenta"
     },
     "clear_accent": "アクセントカラーをクリア",
     "translation_progress": "翻訳の進捗状況",
     "background_themes": {
-      "label": "背景シェード"
+      "label": "背景シェード",
+      "neutral": "EN TEXT TO REPLACE: Neutral",
+      "stone": "EN TEXT TO REPLACE: Stone",
+      "zinc": "EN TEXT TO REPLACE: Zinc",
+      "slate": "EN TEXT TO REPLACE: Slate",
+      "black": "EN TEXT TO REPLACE: Black"
     },
     "keyboard_shortcuts_enabled": "キーボードショートカットを有効化",
     "keyboard_shortcuts_enabled_description": "ブラウザやシステムのショートカットと競合する場合、キーボードショートカットを無効化できます"
@@ -207,7 +225,9 @@
       "radicle": "Radicleで表示",
       "sourcehut": "SourceHutで表示",
       "tangled": "Tangledで表示"
-    }
+    },
+    "collapse": "EN TEXT TO REPLACE: Collapse",
+    "expand": "EN TEXT TO REPLACE: Expand"
   },
   "profile": {
     "display_name": "表示名",
@@ -286,9 +306,11 @@
         "refs": "{count} 個の参照",
         "assets": "{count} 個のアセット"
       },
-      "view_source": "ソースを表示"
+      "view_source": "ソースを表示",
+      "skills_cli": "EN TEXT TO REPLACE: skills CLI"
     },
     "links": {
+      "main": "EN TEXT TO REPLACE: main",
       "repo": "リポジトリ",
       "homepage": "ホームページ",
       "issues": "issues",
@@ -296,15 +318,23 @@
       "code": "コード",
       "docs": "ドキュメント",
       "fund": "資金援助",
-      "compare": "比較"
+      "compare": "比較",
+      "compare_this_package": "EN TEXT TO REPLACE: compare this package"
     },
     "likes": {
       "like": "このパッケージをいいねする",
       "unlike": "このパッケージのいいねを解除する"
     },
     "docs": {
+      "contents": "EN TEXT TO REPLACE: Contents",
+      "default_not_available": "EN TEXT TO REPLACE: Docs are not available for this version.",
       "not_available": "ドキュメントは利用できません",
-      "not_available_detail": "このバージョンのドキュメントを生成できませんでした。"
+      "not_available_detail": "このバージョンのドキュメントを生成できませんでした。",
+      "page_title": "EN TEXT TO REPLACE: API Docs - npmx",
+      "page_title_name": "EN TEXT TO REPLACE: {name} docs - npmx",
+      "page_title_version": "EN TEXT TO REPLACE: {name} docs - npmx",
+      "og_title": "EN TEXT TO REPLACE: {name} - Docs",
+      "view_package": "EN TEXT TO REPLACE: View package"
     },
     "get_started": {
       "title": "はじめに",
@@ -364,7 +394,9 @@
       "published": "公開済み",
       "weekly_downloads": "週間ダウンロード数",
       "keywords": "キーワード",
-      "license": "ライセンス"
+      "license": "ライセンス",
+      "select": "EN TEXT TO REPLACE: Select package",
+      "select_maximum": "EN TEXT TO REPLACE: Maximum {count} packages can be selected"
     },
     "versions": {
       "title": "バージョン",
@@ -379,6 +411,7 @@
       "all_covered": "すべてのバージョンが上記のタグに含まれています",
       "deprecated_title": "{version}（非推奨）",
       "view_all": "{count} 個のバージョンを表示|{count} 個のすべてのバージョンを表示",
+      "view_all_versions": "EN TEXT TO REPLACE: View all versions",
       "distribution_title": "Semverグループ",
       "distribution_modal_title": "バージョン",
       "distribution_range_date_same_year": "{endYear} 年 {from} から {to}",
@@ -386,9 +419,11 @@
       "grouping_major": "メジャー",
       "grouping_minor": "マイナー",
       "grouping_versions_title": "バージョン",
+      "grouping_versions_about": "EN TEXT TO REPLACE: About version grouping",
       "grouping_versions_all": "すべて",
       "grouping_versions_only_recent": "直近のみ",
       "grouping_usage_title": "使用状況",
+      "grouping_usage_about": "EN TEXT TO REPLACE: About usage grouping",
       "grouping_usage_all": "すべて",
       "grouping_usage_most_used": "最多使用",
       "recent_versions_only_tooltip": "過去1年以内に公開されたバージョンのみ表示します。",
@@ -403,7 +438,12 @@
       "copy_alt": {
         "per_version_analysis": "バージョン {version} は {downloads} 回ダウンロードされました",
         "general_description": "{package_name} パッケージの {versions_count} 個の {semver_grouping_mode} バージョンにおけるバージョン別ダウンロード数を示す棒グラフ。期間は {date_range_label}（{first_version} から {last_version} まで）。最多ダウンロードはバージョン {max_downloaded_version} で {max_version_downloads} 回。{per_version_analysis}。{watermark}。"
-      }
+      },
+      "page_title": "EN TEXT TO REPLACE: Version History",
+      "current_tags": "EN TEXT TO REPLACE: Current Tags",
+      "version_filter_placeholder": "EN TEXT TO REPLACE: Filter versions…",
+      "version_filter_label": "EN TEXT TO REPLACE: Filter versions",
+      "no_match_filter": "EN TEXT TO REPLACE: No versions match {filter}"
     },
     "dependencies": {
       "title": "依存関係（{count}）",
@@ -414,7 +454,8 @@
       "outdated_major": "最新から {count} 個のメジャーバージョン遅れています (最新: {latest})",
       "outdated_minor": "最新から {count} 個のマイナーバージョン遅れています (最新: {latest})",
       "outdated_patch": "パッチアップデートがあります (最新: {latest})",
-      "has_replacement": "この依存関係には代替の候補があります"
+      "has_replacement": "この依存関係には代替の候補があります",
+      "vulnerabilities_count": "EN TEXT TO REPLACE: {count} vulnerability | {count} vulnerabilities"
     },
     "peer_dependencies": {
       "title": "ピア依存関係（{count}）",
@@ -438,9 +479,16 @@
       "cancel_add": "ownerの追加をキャンセル",
       "add_owner": "+ ownerを追加",
       "show_more": "（他 {count} 個を表示）",
-      "show_less": "（表示を減らす）"
+      "show_less": "（表示を減らす）",
+      "maintainer_template": "EN TEXT TO REPLACE: {avatar} {char126}{name}"
     },
     "trends": {
+      "chart_assistive_text": {
+        "keyboard_navigation_horizontal": "EN TEXT TO REPLACE: Use the left and right arrow keys to cycle through data points.",
+        "keyboard_navigation_vertical": "EN TEXT TO REPLACE: Use the up and down arrow keys to cycle through data points.",
+        "table_available": "EN TEXT TO REPLACE: A data table for this chart is available below.",
+        "table_caption": "EN TEXT TO REPLACE: Chart data table"
+      },
       "granularity": "粒度",
       "granularity_daily": "日次",
       "granularity_weekly": "週次",
@@ -499,7 +547,8 @@
     "downloads": {
       "title": "週間ダウンロード数",
       "community_distribution": "コミュニティの採用分布を表示",
-      "subtitle": "全バージョン合計"
+      "subtitle": "全バージョン合計",
+      "sparkline_nav_hint": "EN TEXT TO REPLACE: Use ← →"
     },
     "install_scripts": {
       "title": "インストールスクリプト",
@@ -515,6 +564,7 @@
       "esm": "ESモジュール対応",
       "cjs": "CommonJS対応",
       "no_esm": "ESモジュール非対応",
+      "wasm": "EN TEXT TO REPLACE: Has WebAssembly",
       "types_label": "型定義",
       "types_included": "型定義同梱",
       "types_available": "{package} 経由で型定義を利用可能",
@@ -588,6 +638,10 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
+    },
+    "download": {
+      "button": "EN TEXT TO REPLACE: Download",
+      "tarball": "EN TEXT TO REPLACE: Download Tarball as .tar.gz"
     }
   },
   "connector": {
@@ -792,7 +846,9 @@
       "preview": "プレビュー",
       "code": "コード"
     },
-    "file_path": "ファイルパス"
+    "file_path": "ファイルパス",
+    "binary_file": "EN TEXT TO REPLACE: Binary file",
+    "binary_rendering_warning": "EN TEXT TO REPLACE: File type \"{contentType}\" is not supported for preview."
   },
   "badges": {
     "provenance": {
@@ -854,6 +910,8 @@
       "secure": "警告なし",
       "insecure": "警告あり"
     },
+    "view_selected": "EN TEXT TO REPLACE: View selected",
+    "clear_selected_label": "EN TEXT TO REPLACE: Clear selected",
     "sort": {
       "label": "パッケージ一覧を並び替える",
       "toggle_direction": "並び順を切り替える",
@@ -887,7 +945,8 @@
       "popularity_score": "人気度スコア",
       "maintenance_score": "メンテナンススコア",
       "combined_score": "総合スコア",
-      "security": "セキュリティ"
+      "security": "セキュリティ",
+      "selection": "EN TEXT TO REPLACE: Select package"
     },
     "view_mode": {
       "label": "表示モード",
@@ -1034,7 +1093,8 @@
       "error": "organizationの読み込みに失敗しました",
       "empty": "organizationは見つかりませんでした",
       "view_all": "すべて表示"
-    }
+    },
+    "pr": "EN TEXT TO REPLACE: Open GitHub pull request #{prNumber}"
   },
   "compare": {
     "packages": {
@@ -1053,7 +1113,9 @@
       "empty_title": "比較するパッケージを選択",
       "empty_description": "上部の検索から2つ以上のパッケージを追加すると、メトリクスを並べて比較できます。",
       "table_view": "テーブル",
-      "charts_view": "グラフ"
+      "charts_view": "グラフ",
+      "bar_chart_nav_hint": "EN TEXT TO REPLACE: Use ↑ ↓",
+      "line_chart_nav_hint": "EN TEXT TO REPLACE: Use ← →"
     },
     "selector": {
       "search_label": "パッケージを検索",
@@ -1165,6 +1227,15 @@
     "file_size_warning": "{size} は比較制限の250KBを超えています",
     "compare_versions": "diff",
     "compare_versions_title": "最新バージョンと比較",
+    "comparing_versions_label": "EN TEXT TO REPLACE: Comparing versions...",
+    "version_back_to_package": "EN TEXT TO REPLACE: Back to package",
+    "version_error_message": "EN TEXT TO REPLACE: Failed to compare versions.",
+    "version_invalid_url_format": {
+      "hint": "EN TEXT TO REPLACE: Invalid comparison URL. Use format: {0}",
+      "from_version": "EN TEXT TO REPLACE: from",
+      "to_version": "EN TEXT TO REPLACE: to"
+    },
+    "version_selector_title": "EN TEXT TO REPLACE: Compare with version",
     "summary": "要約",
     "deps_count": "依存関係 {count} 件",
     "dependencies": "依存関係",
@@ -1190,7 +1261,18 @@
     "files_button": "ファイル",
     "select_file_prompt": "サイドバーからファイルを選択してdiffを表示",
     "close_files_panel": "ファイルパネルを閉じる",
-    "filter_files_label": "変更タイプでファイルをフィルタリング"
+    "filter_files_label": "変更タイプでファイルをフィルタリング",
+    "change_ratio": "EN TEXT TO REPLACE: Change ratio",
+    "char_edits": "EN TEXT TO REPLACE: Char edits",
+    "diff_distance": "EN TEXT TO REPLACE: Diff distance",
+    "loading_diff": "EN TEXT TO REPLACE: Loading diff...",
+    "loading_diff_error": "EN TEXT TO REPLACE: Failed to load diff",
+    "merge_modified_lines": "EN TEXT TO REPLACE: Merge modified lines",
+    "no_content_changes": "EN TEXT TO REPLACE: No content changes detected",
+    "options": "EN TEXT TO REPLACE: Options",
+    "view_file": "EN TEXT TO REPLACE: View file",
+    "view_in_code_browser": "EN TEXT TO REPLACE: View in code browser",
+    "word_wrap": "EN TEXT TO REPLACE: Word wrap"
   },
   "pds": {
     "title": "npmx.social",
@@ -1328,6 +1410,85 @@
       "title": "フィードバック",
       "p1": "{app} でアクセシビリティ上のバリアを見つけた場合は、{link} でissueを作成して連絡してください。報告は真剣に受け止め、問題を解決するためにできる限り対応します。",
       "link": "GitHubリポジトリ"
+    }
+  },
+  "translation_status": {
+    "title": "EN TEXT TO REPLACE: translation status",
+    "generated_at": "EN TEXT TO REPLACE: Generation date: {date}",
+    "welcome": "EN TEXT TO REPLACE: If you're interested in helping us to translate {npmx} into one of the languages listed below, you've come to the right place! This auto-updating page always lists all the content that could use your help right now.",
+    "p1": "EN TEXT TO REPLACE: We use {lang} as the default language, with a total of {count}. If you'd like to help add translations, locate the language in {bylang} and expand the details.",
+    "p1_lang": "EN TEXT TO REPLACE: American English (en-US)",
+    "p1_count": "EN TEXT TO REPLACE: 0 messages | 1 message |{count} messages",
+    "p2": "EN TEXT TO REPLACE: Before starting, please read our {guide} to learn about our translation process and how you can get involved.",
+    "guide": "EN TEXT TO REPLACE: localization (i18n) guide",
+    "by_locale": "EN TEXT TO REPLACE: Translation progress by locale",
+    "by_file": "EN TEXT TO REPLACE: Translation progress by file",
+    "complete_text": "EN TEXT TO REPLACE: This translation is complete, amazing job!",
+    "missing_text": "EN TEXT TO REPLACE: missing",
+    "missing_keys": "EN TEXT TO REPLACE: There is no missing translations | Missing translation | Missing translations",
+    "progress_label": "EN TEXT TO REPLACE: Progress status for {locale}",
+    "table": {
+      "file": "EN TEXT TO REPLACE: File",
+      "status": "EN TEXT TO REPLACE: Status",
+      "error": "EN TEXT TO REPLACE: Error while loading file list.",
+      "empty": "EN TEXT TO REPLACE: No files found",
+      "file_link": "EN TEXT TO REPLACE: Edit {file} ({lang}) on GitHub"
+    }
+  },
+  "action_bar": {
+    "title": "EN TEXT TO REPLACE: action bar",
+    "selection": "EN TEXT TO REPLACE: 0 selected | 1 selected | {count} selected",
+    "shortcut": "EN TEXT TO REPLACE: Press \"{key}\" to focus actions",
+    "button_close_aria_label": "EN TEXT TO REPLACE: Close action bar"
+  },
+  "logo_menu": {
+    "copy_svg": "EN TEXT TO REPLACE: Copy logo as SVG",
+    "copied": "EN TEXT TO REPLACE: Copied!",
+    "browse_brand": "EN TEXT TO REPLACE: Browse brand kit"
+  },
+  "brand": {
+    "title": "EN TEXT TO REPLACE: Brand",
+    "heading": "EN TEXT TO REPLACE: brand",
+    "meta_description": "EN TEXT TO REPLACE: npmx brand guidelines, logos, colors, and typography for use in press and media.",
+    "intro": "EN TEXT TO REPLACE: Resources and guidelines for using the npmx brand in your projects, articles, and media.",
+    "logos": {
+      "title": "EN TEXT TO REPLACE: logos",
+      "description": "EN TEXT TO REPLACE: Download npmx logos in SVG and PNG formats. Use the appropriate variant for your background.",
+      "wordmark": "EN TEXT TO REPLACE: Full wordmark",
+      "wordmark_alt": "EN TEXT TO REPLACE: npmx full wordmark logo with blue slash on dark background",
+      "wordmark_light_alt": "EN TEXT TO REPLACE: npmx full wordmark logo with accent slash on light background",
+      "mark": "EN TEXT TO REPLACE: Logo mark",
+      "mark_alt": "EN TEXT TO REPLACE: npmx logo mark with dot and slash on dark background",
+      "mark_light_alt": "EN TEXT TO REPLACE: npmx logo mark with dot and slash on light background",
+      "on_dark": "EN TEXT TO REPLACE: On dark",
+      "on_light": "EN TEXT TO REPLACE: On light",
+      "download_svg": "EN TEXT TO REPLACE: SVG",
+      "download_png": "EN TEXT TO REPLACE: PNG",
+      "download_svg_aria": "EN TEXT TO REPLACE: Download {name} as SVG",
+      "download_png_aria": "EN TEXT TO REPLACE: Download {name} as PNG"
+    },
+    "customize": {
+      "title": "EN TEXT TO REPLACE: customize your logo",
+      "description": "EN TEXT TO REPLACE: Preview the npmx logo with your accent color and background. The preview reflects your current settings — pick a color, toggle the background, and download.",
+      "accent_label": "EN TEXT TO REPLACE: Accent",
+      "bg_label": "EN TEXT TO REPLACE: Background",
+      "download_svg_aria": "EN TEXT TO REPLACE: Download customized logo as SVG",
+      "download_png_aria": "EN TEXT TO REPLACE: Download customized logo as PNG"
+    },
+    "typography": {
+      "title": "EN TEXT TO REPLACE: typography",
+      "description": "EN TEXT TO REPLACE: npmx uses the Geist font family by Vercel for both interface text and code.",
+      "sans": "EN TEXT TO REPLACE: Geist Sans",
+      "sans_desc": "EN TEXT TO REPLACE: Used for body text and UI elements.",
+      "mono": "EN TEXT TO REPLACE: Geist Mono",
+      "mono_desc": "EN TEXT TO REPLACE: Used for code, headings, and technical content.",
+      "pangram": "EN TEXT TO REPLACE: The quick brown fox jumps over the lazy dog",
+      "numbers": "EN TEXT TO REPLACE: 0123456789"
+    },
+    "guidelines": {
+      "title": "EN TEXT TO REPLACE: just a note",
+      "message": "EN TEXT TO REPLACE: Accessibility matters to us, and we would love you to follow us in this vision. When using mentioned media, ensure there is enough contrast against the background, and don't go smaller than 24px. If you need any other resources or additional information about the project, feel free to reach us at {link}.",
+      "discord_link_text": "EN TEXT TO REPLACE: chat.npmx.dev"
     }
   }
 }

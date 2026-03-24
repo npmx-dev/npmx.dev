@@ -19,7 +19,8 @@
     "social": "réseaux sociaux",
     "chat": "espace de discussion",
     "builders_chat": "builders",
-    "keyboard_shortcuts": "raccourcis clavier"
+    "keyboard_shortcuts": "raccourcis clavier",
+    "brand": "EN TEXT TO REPLACE: brand"
   },
   "shortcuts": {
     "section": {
@@ -36,7 +37,9 @@
     "go_to_result": "Ouvrir le résultat",
     "open_code_view": "Ouvrir la vue code",
     "open_docs": "Ouvrir la doc",
-    "disable_shortcuts": "Vous pouvez désactiver les raccourcis clavier dans {settings}."
+    "disable_shortcuts": "Vous pouvez désactiver les raccourcis clavier dans {settings}.",
+    "open_main": "EN TEXT TO REPLACE: Open main information",
+    "open_diff": "EN TEXT TO REPLACE: Open version differences"
   },
   "search": {
     "label": "Rechercher des paquets npm",
@@ -94,6 +97,7 @@
     },
     "draft_badge": "Brouillon",
     "draft_banner": "Ceci est un brouillon non publié. Il peut être incomplet ou contenir des inexactitudes.",
+    "no_posts": "EN TEXT TO REPLACE: No posts found.",
     "atproto": {
       "view_on_bluesky": "Voir sur Bluesky",
       "reply_on_bluesky": "Répondre sur Bluesky",
@@ -136,12 +140,15 @@
     "include_types_description": "Inclure les paquets {'@'}types à la commande d'installation pour les paquets non typés",
     "hide_platform_packages": "Masquer les paquets spécifiques à la plateforme dans la recherche",
     "hide_platform_packages_description": "Masquer les paquets binaires natifs comme {'@'}esbuild/linux-x64 des résultats",
+    "enable_graph_pulse_loop": "EN TEXT TO REPLACE: Enable looping of pulse effect on mini graph",
+    "enable_graph_pulse_loop_description": "EN TEXT TO REPLACE: Activate a continuous pulse animation on the weekly download graph. This animation may be distracting for some users.",
     "theme": "Thème",
     "theme_light": "Clair",
     "theme_dark": "Sombre",
     "theme_system": "Système",
     "language": "Langue de l'interface",
     "help_translate": "Aidez-nous à traduire npmx",
+    "translation_status": "EN TEXT TO REPLACE: Check global translation status",
     "accent_colors": {
       "label": "Couleurs d'accentuation",
       "sky": "Ciel",
@@ -207,8 +214,20 @@
     "error": "Erreur",
     "view_on": {
       "npm": "voir sur npm",
-      "github": "Voir sur GitHub"
-    }
+      "github": "Voir sur GitHub",
+      "gitlab": "EN TEXT TO REPLACE: View on GitLab",
+      "bitbucket": "EN TEXT TO REPLACE: View on Bitbucket",
+      "codeberg": "EN TEXT TO REPLACE: View on Codeberg",
+      "git_repo": "EN TEXT TO REPLACE: View on Git repository",
+      "forgejo": "EN TEXT TO REPLACE: View on Forgejo",
+      "gitea": "EN TEXT TO REPLACE: View on Gitea",
+      "gitee": "EN TEXT TO REPLACE: View on Gitee",
+      "radicle": "EN TEXT TO REPLACE: View on Radicle",
+      "sourcehut": "EN TEXT TO REPLACE: View on SourceHut",
+      "tangled": "EN TEXT TO REPLACE: View on Tangled"
+    },
+    "collapse": "EN TEXT TO REPLACE: Collapse",
+    "expand": "EN TEXT TO REPLACE: Expand"
   },
   "profile": {
     "display_name": "Nom d'affichage",
@@ -287,9 +306,11 @@
         "refs": "{count} référence | {count} références",
         "assets": "{count} ressource | {count} ressources"
       },
-      "view_source": "Voir la source"
+      "view_source": "Voir la source",
+      "skills_cli": "EN TEXT TO REPLACE: skills CLI"
     },
     "links": {
+      "main": "EN TEXT TO REPLACE: main",
       "repo": "dépôt",
       "homepage": "site web",
       "issues": "issues",
@@ -373,7 +394,9 @@
       "published": "Publié",
       "weekly_downloads": "Téléchargements hebdomadaires",
       "keywords": "Mots-clés",
-      "license": "Licence"
+      "license": "Licence",
+      "select": "EN TEXT TO REPLACE: Select package",
+      "select_maximum": "EN TEXT TO REPLACE: Maximum {count} packages can be selected"
     },
     "versions": {
       "title": "Versions",
@@ -388,6 +411,7 @@
       "all_covered": "Toutes les versions sont couvertes par les tags ci-dessus",
       "deprecated_title": "{version} (dépréciée)",
       "view_all": "Voir la version | Voir les {count} versions",
+      "view_all_versions": "EN TEXT TO REPLACE: View all versions",
       "distribution_title": "Groupe Semver",
       "distribution_modal_title": "Versions",
       "distribution_range_date_same_year": "de {from} à {to} {endYear}",
@@ -395,10 +419,13 @@
       "grouping_major": "Majeure",
       "grouping_minor": "Mineure",
       "grouping_versions_title": "Versions",
+      "grouping_versions_about": "EN TEXT TO REPLACE: About version grouping",
       "grouping_versions_all": "Toutes",
       "grouping_versions_only_recent": "Récentes seulement",
       "grouping_usage_title": "Utilisation",
+      "grouping_usage_about": "EN TEXT TO REPLACE: About usage grouping",
       "grouping_usage_all": "Toutes",
+      "grouping_usage_most_used": "EN TEXT TO REPLACE: Most used",
       "recent_versions_only_tooltip": "Ne montrer que les versions publiées durant l'année écoulée.",
       "show_low_usage_tooltip": "Inclure les groupes de versions avec moins d'1% des téléchargements totaux.",
       "y_axis_label": "Téléchargements",
@@ -411,7 +438,12 @@
       "copy_alt": {
         "per_version_analysis": "La version {version} a été téléchargée {downloads} fois",
         "general_description": "Graphique en barres montrant les téléchargements par version pour {versions_count} versions {semver_grouping_mode} du paquet {package_name}, {date_range_label} de la version {first_version} à la version {last_version}. La version la plus téléchargée est {max_downloaded_version} avec {max_version_downloads} téléchargements. {per_version_analysis}. {watermark}."
-      }
+      },
+      "page_title": "EN TEXT TO REPLACE: Version History",
+      "current_tags": "EN TEXT TO REPLACE: Current Tags",
+      "version_filter_placeholder": "EN TEXT TO REPLACE: Filter versions…",
+      "version_filter_label": "EN TEXT TO REPLACE: Filter versions",
+      "no_match_filter": "EN TEXT TO REPLACE: No versions match {filter}"
     },
     "dependencies": {
       "title": "Dépendances ({count})",
@@ -422,7 +454,8 @@
       "outdated_major": "{count} version majeure en retard (dernière : {latest}) | {count} versions majeures en retard (dernière : {latest})",
       "outdated_minor": "{count} version mineure en retard (dernière : {latest}) | {count} versions mineures en retard (dernière : {latest})",
       "outdated_patch": "Mise à jour patch disponible (dernière : {latest})",
-      "has_replacement": "Cette dépendance a des remplacements suggérés"
+      "has_replacement": "Cette dépendance a des remplacements suggérés",
+      "vulnerabilities_count": "EN TEXT TO REPLACE: {count} vulnerability | {count} vulnerabilities"
     },
     "peer_dependencies": {
       "title": "Dépendances peer ({count})",
@@ -446,7 +479,8 @@
       "cancel_add": "Annuler l'ajout de propriétaire",
       "add_owner": "+ Ajouter un propriétaire",
       "show_more": "(afficher {count} de plus)",
-      "show_less": "(afficher moins)"
+      "show_less": "(afficher moins)",
+      "maintainer_template": "EN TEXT TO REPLACE: {avatar} {char126}{name}"
     },
     "trends": {
       "chart_assistive_text": {
@@ -484,6 +518,7 @@
       "data_correction": "Correction des données",
       "average_window": "Plage de moyenne",
       "smoothing": "Lissage",
+      "prediction": "EN TEXT TO REPLACE: Prediction",
       "known_anomalies": "Anomalies connues",
       "known_anomalies_description": "Interpole les pics de téléchargements connus causés par des bots ou des problèmes de CI.",
       "known_anomalies_ranges": "Plages d'anomalies",
@@ -529,6 +564,7 @@
       "esm": "ES Modules supportés",
       "cjs": "CommonJS supporté",
       "no_esm": "Pas de support des ES Modules",
+      "wasm": "EN TEXT TO REPLACE: Has WebAssembly",
       "types_label": "Types",
       "types_included": "Types inclus",
       "types_available": "Types disponibles via {package}",
@@ -602,6 +638,10 @@
       "b": "{size} o",
       "kb": "{size} ko",
       "mb": "{size} Mo"
+    },
+    "download": {
+      "button": "EN TEXT TO REPLACE: Download",
+      "tarball": "EN TEXT TO REPLACE: Download Tarball as .tar.gz"
     }
   },
   "connector": {
@@ -806,7 +846,9 @@
       "preview": "aperçu",
       "code": "code"
     },
-    "file_path": "Chemin du fichier"
+    "file_path": "Chemin du fichier",
+    "binary_file": "EN TEXT TO REPLACE: Binary file",
+    "binary_rendering_warning": "EN TEXT TO REPLACE: File type \"{contentType}\" is not supported for preview."
   },
   "badges": {
     "provenance": {
@@ -868,6 +910,8 @@
       "secure": "Sans avertissements",
       "insecure": "Avec avertissements"
     },
+    "view_selected": "EN TEXT TO REPLACE: View selected",
+    "clear_selected_label": "EN TEXT TO REPLACE: Clear selected",
     "sort": {
       "label": "Trier les paquets",
       "toggle_direction": "Inverser l'ordre",
@@ -901,7 +945,8 @@
       "popularity_score": "Score de popularité",
       "maintenance_score": "Score de maintenance",
       "combined_score": "Score combiné",
-      "security": "Sécurité"
+      "security": "Sécurité",
+      "selection": "EN TEXT TO REPLACE: Select package"
     },
     "view_mode": {
       "label": "Mode d'affichage",
@@ -1048,7 +1093,8 @@
       "error": "Échec du chargement des organisations",
       "empty": "Aucune organisation trouvée",
       "view_all": "Tout voir"
-    }
+    },
+    "pr": "EN TEXT TO REPLACE: Open GitHub pull request #{prNumber}"
   },
   "compare": {
     "packages": {
@@ -1181,6 +1227,15 @@
     "file_size_warning": "{size} dépasse la limite de 250 Ko pour la comparaison",
     "compare_versions": "diff",
     "compare_versions_title": "Comparer avec la dernière version",
+    "comparing_versions_label": "EN TEXT TO REPLACE: Comparing versions...",
+    "version_back_to_package": "EN TEXT TO REPLACE: Back to package",
+    "version_error_message": "EN TEXT TO REPLACE: Failed to compare versions.",
+    "version_invalid_url_format": {
+      "hint": "EN TEXT TO REPLACE: Invalid comparison URL. Use format: {0}",
+      "from_version": "EN TEXT TO REPLACE: from",
+      "to_version": "EN TEXT TO REPLACE: to"
+    },
+    "version_selector_title": "EN TEXT TO REPLACE: Compare with version",
     "summary": "Résumé",
     "deps_count": "{count} dépendances",
     "dependencies": "Dépendances",
@@ -1206,7 +1261,18 @@
     "files_button": "Fichiers",
     "select_file_prompt": "Sélectionnez un fichier dans la barre latérale pour voir son diff",
     "close_files_panel": "Fermer le panneau de fichiers",
-    "filter_files_label": "Filtrer les fichiers par type de modification"
+    "filter_files_label": "Filtrer les fichiers par type de modification",
+    "change_ratio": "EN TEXT TO REPLACE: Change ratio",
+    "char_edits": "EN TEXT TO REPLACE: Char edits",
+    "diff_distance": "EN TEXT TO REPLACE: Diff distance",
+    "loading_diff": "EN TEXT TO REPLACE: Loading diff...",
+    "loading_diff_error": "EN TEXT TO REPLACE: Failed to load diff",
+    "merge_modified_lines": "EN TEXT TO REPLACE: Merge modified lines",
+    "no_content_changes": "EN TEXT TO REPLACE: No content changes detected",
+    "options": "EN TEXT TO REPLACE: Options",
+    "view_file": "EN TEXT TO REPLACE: View file",
+    "view_in_code_browser": "EN TEXT TO REPLACE: View in code browser",
+    "word_wrap": "EN TEXT TO REPLACE: Word wrap"
   },
   "pds": {
     "title": "npmx.social",
@@ -1344,6 +1410,85 @@
       "title": "Nous faire un retour",
       "p1": "Si vous rencontrez un problème d'accessibilité sur {app}, veuillez nous le faire savoir en ouvrant une issue sur notre {link}. Nous prenons ces rapports au sérieux et ferons de notre mieux pour les régler.",
       "link": "dépôt GitHub"
+    }
+  },
+  "translation_status": {
+    "title": "EN TEXT TO REPLACE: translation status",
+    "generated_at": "EN TEXT TO REPLACE: Generation date: {date}",
+    "welcome": "EN TEXT TO REPLACE: If you're interested in helping us to translate {npmx} into one of the languages listed below, you've come to the right place! This auto-updating page always lists all the content that could use your help right now.",
+    "p1": "EN TEXT TO REPLACE: We use {lang} as the default language, with a total of {count}. If you'd like to help add translations, locate the language in {bylang} and expand the details.",
+    "p1_lang": "EN TEXT TO REPLACE: American English (en-US)",
+    "p1_count": "EN TEXT TO REPLACE: 0 messages | 1 message |{count} messages",
+    "p2": "EN TEXT TO REPLACE: Before starting, please read our {guide} to learn about our translation process and how you can get involved.",
+    "guide": "EN TEXT TO REPLACE: localization (i18n) guide",
+    "by_locale": "EN TEXT TO REPLACE: Translation progress by locale",
+    "by_file": "EN TEXT TO REPLACE: Translation progress by file",
+    "complete_text": "EN TEXT TO REPLACE: This translation is complete, amazing job!",
+    "missing_text": "EN TEXT TO REPLACE: missing",
+    "missing_keys": "EN TEXT TO REPLACE: There is no missing translations | Missing translation | Missing translations",
+    "progress_label": "EN TEXT TO REPLACE: Progress status for {locale}",
+    "table": {
+      "file": "EN TEXT TO REPLACE: File",
+      "status": "EN TEXT TO REPLACE: Status",
+      "error": "EN TEXT TO REPLACE: Error while loading file list.",
+      "empty": "EN TEXT TO REPLACE: No files found",
+      "file_link": "EN TEXT TO REPLACE: Edit {file} ({lang}) on GitHub"
+    }
+  },
+  "action_bar": {
+    "title": "EN TEXT TO REPLACE: action bar",
+    "selection": "EN TEXT TO REPLACE: 0 selected | 1 selected | {count} selected",
+    "shortcut": "EN TEXT TO REPLACE: Press \"{key}\" to focus actions",
+    "button_close_aria_label": "EN TEXT TO REPLACE: Close action bar"
+  },
+  "logo_menu": {
+    "copy_svg": "EN TEXT TO REPLACE: Copy logo as SVG",
+    "copied": "EN TEXT TO REPLACE: Copied!",
+    "browse_brand": "EN TEXT TO REPLACE: Browse brand kit"
+  },
+  "brand": {
+    "title": "EN TEXT TO REPLACE: Brand",
+    "heading": "EN TEXT TO REPLACE: brand",
+    "meta_description": "EN TEXT TO REPLACE: npmx brand guidelines, logos, colors, and typography for use in press and media.",
+    "intro": "EN TEXT TO REPLACE: Resources and guidelines for using the npmx brand in your projects, articles, and media.",
+    "logos": {
+      "title": "EN TEXT TO REPLACE: logos",
+      "description": "EN TEXT TO REPLACE: Download npmx logos in SVG and PNG formats. Use the appropriate variant for your background.",
+      "wordmark": "EN TEXT TO REPLACE: Full wordmark",
+      "wordmark_alt": "EN TEXT TO REPLACE: npmx full wordmark logo with blue slash on dark background",
+      "wordmark_light_alt": "EN TEXT TO REPLACE: npmx full wordmark logo with accent slash on light background",
+      "mark": "EN TEXT TO REPLACE: Logo mark",
+      "mark_alt": "EN TEXT TO REPLACE: npmx logo mark with dot and slash on dark background",
+      "mark_light_alt": "EN TEXT TO REPLACE: npmx logo mark with dot and slash on light background",
+      "on_dark": "EN TEXT TO REPLACE: On dark",
+      "on_light": "EN TEXT TO REPLACE: On light",
+      "download_svg": "EN TEXT TO REPLACE: SVG",
+      "download_png": "EN TEXT TO REPLACE: PNG",
+      "download_svg_aria": "EN TEXT TO REPLACE: Download {name} as SVG",
+      "download_png_aria": "EN TEXT TO REPLACE: Download {name} as PNG"
+    },
+    "customize": {
+      "title": "EN TEXT TO REPLACE: customize your logo",
+      "description": "EN TEXT TO REPLACE: Preview the npmx logo with your accent color and background. The preview reflects your current settings — pick a color, toggle the background, and download.",
+      "accent_label": "EN TEXT TO REPLACE: Accent",
+      "bg_label": "EN TEXT TO REPLACE: Background",
+      "download_svg_aria": "EN TEXT TO REPLACE: Download customized logo as SVG",
+      "download_png_aria": "EN TEXT TO REPLACE: Download customized logo as PNG"
+    },
+    "typography": {
+      "title": "EN TEXT TO REPLACE: typography",
+      "description": "EN TEXT TO REPLACE: npmx uses the Geist font family by Vercel for both interface text and code.",
+      "sans": "EN TEXT TO REPLACE: Geist Sans",
+      "sans_desc": "EN TEXT TO REPLACE: Used for body text and UI elements.",
+      "mono": "EN TEXT TO REPLACE: Geist Mono",
+      "mono_desc": "EN TEXT TO REPLACE: Used for code, headings, and technical content.",
+      "pangram": "EN TEXT TO REPLACE: The quick brown fox jumps over the lazy dog",
+      "numbers": "EN TEXT TO REPLACE: 0123456789"
+    },
+    "guidelines": {
+      "title": "EN TEXT TO REPLACE: just a note",
+      "message": "EN TEXT TO REPLACE: Accessibility matters to us, and we would love you to follow us in this vision. When using mentioned media, ensure there is enough contrast against the background, and don't go smaller than 24px. If you need any other resources or additional information about the project, feel free to reach us at {link}.",
+      "discord_link_text": "EN TEXT TO REPLACE: chat.npmx.dev"
     }
   }
 }

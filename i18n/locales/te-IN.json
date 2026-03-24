@@ -13,13 +13,33 @@
   "trademark_disclaimer": "npm, npm, Inc. యొక్క నమోదిత ట్రేడ్‌మార్క్. ఈ సైట్ npm, Inc. తో అనుబంధం లేదు.",
   "footer": {
     "about": "మా గురించి సమాచారం",
+    "blog": "EN TEXT TO REPLACE: blog",
     "docs": "డాక్యుమెంటేషన్",
     "source": "మూలం",
     "social": "సోషల్",
-    "chat": "చాట్"
+    "chat": "చాట్",
+    "builders_chat": "EN TEXT TO REPLACE: builders",
+    "keyboard_shortcuts": "EN TEXT TO REPLACE: keyboard shortcuts",
+    "brand": "EN TEXT TO REPLACE: brand"
   },
   "shortcuts": {
-    "section": {}
+    "section": {
+      "global": "EN TEXT TO REPLACE: Global",
+      "search": "EN TEXT TO REPLACE: Search",
+      "package": "EN TEXT TO REPLACE: Package"
+    },
+    "focus_search": "EN TEXT TO REPLACE: Focus search",
+    "show_kbd_hints": "EN TEXT TO REPLACE: Highlight keyboard hints",
+    "settings": "EN TEXT TO REPLACE: Open settings",
+    "compare": "EN TEXT TO REPLACE: Open compare",
+    "compare_from_package": "EN TEXT TO REPLACE: Open compare (prefilled with current package)",
+    "navigate_results": "EN TEXT TO REPLACE: Navigate results",
+    "go_to_result": "EN TEXT TO REPLACE: Go to result",
+    "open_code_view": "EN TEXT TO REPLACE: Open code view",
+    "open_docs": "EN TEXT TO REPLACE: Open docs",
+    "disable_shortcuts": "EN TEXT TO REPLACE: You can disable keyboard shortcuts in {settings}.",
+    "open_main": "EN TEXT TO REPLACE: Open main information",
+    "open_diff": "EN TEXT TO REPLACE: Open version differences"
   },
   "search": {
     "label": "npm ప్యాకేజ్‌ను శోధించండి",
@@ -27,20 +47,34 @@
     "button": "శోధించండి",
     "searching": "శోధిస్తున్నారు...",
     "found_packages": "ప్యాకేజ్ కనుగొనబడలేదు | 1 ప్యాకేజ్ కనుగొనబడింది | {count} ప్యాకేజ్‌లు కనుగొనబడ్డాయి",
+    "found_packages_sorted": "EN TEXT TO REPLACE: No results found | Sorting top {count} result | Sorting top {count} results",
     "updating": "(నవీకరిస్తున్నారు...)",
     "no_results": "\"{query}\" కోసం ప్యాకేజ్‌లు కనుగొనబడలేదు",
+    "rate_limited": "EN TEXT TO REPLACE: Hit npm rate limit, try again in a moment",
+    "title": "EN TEXT TO REPLACE: search",
+    "title_search": "EN TEXT TO REPLACE: search: {search}",
+    "title_packages": "EN TEXT TO REPLACE: search packages",
+    "meta_description": "EN TEXT TO REPLACE: Search results for '{search}'",
+    "meta_description_packages": "EN TEXT TO REPLACE: Search npm packages",
     "not_taken": "{name} అందుబాటులో ఉంది",
     "claim_prompt": "npm లో ఈ ప్యాకేజ్ పేరును క్లెయిమ్ చేయండి",
     "claim_button": "\"{name}\" క్లెయిమ్ చేయండి",
     "want_to_claim": "ఈ ప్యాకేజ్ పేరును క్లెయిమ్ చేయాలనుకుంటున్నారా?",
     "start_typing": "ప్యాకేజ్‌ను శోధించడానికి టైప్ చేయడం ప్రారంభించండి",
+    "algolia_disclaimer": "EN TEXT TO REPLACE: Powered by Algolia",
     "exact_match": "ఖచ్చితమైన",
     "suggestion": {
       "user": "వినియోగదారు",
       "org": "సంస్థ",
       "view_user_packages": "ఈ వినియోగదారు ప్యాకేజ్‌లను వీక్షించండి",
       "view_org_packages": "ఈ సంస్థ ప్యాకేజ్‌లను వీక్షించండి"
-    }
+    },
+    "instant_search": "EN TEXT TO REPLACE: Instant search",
+    "instant_search_on": "EN TEXT TO REPLACE: on",
+    "instant_search_off": "EN TEXT TO REPLACE: off",
+    "instant_search_turn_on": "EN TEXT TO REPLACE: turn on",
+    "instant_search_turn_off": "EN TEXT TO REPLACE: turn off",
+    "instant_search_advisory": "EN TEXT TO REPLACE: {label} {state} — {action}"
   },
   "nav": {
     "main_navigation": "ప్రధాన",
@@ -54,6 +88,32 @@
     "links": "లింక్‌లు",
     "tap_to_search": "శోధించడానికి టాప్ చేయండి"
   },
+  "blog": {
+    "title": "EN TEXT TO REPLACE: Blog",
+    "heading": "EN TEXT TO REPLACE: blog",
+    "meta_description": "EN TEXT TO REPLACE: Insights and updates from the npmx community",
+    "author": {
+      "view_profile": "EN TEXT TO REPLACE: View {name}'s profile on Bluesky"
+    },
+    "draft_badge": "EN TEXT TO REPLACE: Draft",
+    "draft_banner": "EN TEXT TO REPLACE: This is an unpublished draft. It may be incomplete or contain inaccuracies.",
+    "no_posts": "EN TEXT TO REPLACE: No posts found.",
+    "atproto": {
+      "view_on_bluesky": "EN TEXT TO REPLACE: View on Bluesky",
+      "reply_on_bluesky": "EN TEXT TO REPLACE: Reply on Bluesky",
+      "likes_on_bluesky": "EN TEXT TO REPLACE: Likes on Bluesky",
+      "like_or_reply_on_bluesky": "EN TEXT TO REPLACE: Like this post or add your comment on Bluesky",
+      "no_comments_yet": "EN TEXT TO REPLACE: No comments yet.",
+      "could_not_load_comments": "EN TEXT TO REPLACE: Could not load comments.",
+      "comments": "EN TEXT TO REPLACE: Comments",
+      "loading_comments": "EN TEXT TO REPLACE: Loading comments...",
+      "updating": "EN TEXT TO REPLACE: Updating...",
+      "reply_count": "EN TEXT TO REPLACE: {count} reply | {count} replies",
+      "like_count": "EN TEXT TO REPLACE: {count} like | {count} likes",
+      "repost_count": "EN TEXT TO REPLACE: {count} repost | {count} reposts",
+      "more_replies": "EN TEXT TO REPLACE: {count} more reply... | {count} more replies..."
+    }
+  },
   "settings": {
     "title": "సెట్టింగ్‌లు",
     "tagline": "మీ npmx అనుభవాన్ని అనుకూలీకరించండి",
@@ -61,25 +121,55 @@
     "sections": {
       "appearance": "రూపం",
       "display": "ప్రదర్శన",
-      "language": "భాష"
+      "search": "EN TEXT TO REPLACE: Search features",
+      "language": "భాష",
+      "keyboard_shortcuts": "EN TEXT TO REPLACE: Keyboard shortcuts"
     },
-    "data_source": {},
+    "data_source": {
+      "label": "EN TEXT TO REPLACE: Data source",
+      "description": "EN TEXT TO REPLACE: Choose where npmx gets search data. Individual package pages always use the npm registry directly.",
+      "npm": "EN TEXT TO REPLACE: npm Registry",
+      "npm_description": "EN TEXT TO REPLACE: Fetches search, org and user listings directly from the official npm registry. Authoritative, but can be slower.",
+      "algolia": "EN TEXT TO REPLACE: Algolia",
+      "algolia_description": "EN TEXT TO REPLACE: Uses Algolia for faster search, org and user pages."
+    },
+    "instant_search": "EN TEXT TO REPLACE: Instant search",
+    "instant_search_description": "EN TEXT TO REPLACE: Navigates to the search page and updates the results as you type.",
     "relative_dates": "సాపేక్ష తేదీలు",
     "include_types": "ఇన్‌స్టాల్‌లో {'@'}types చేర్చండి",
     "include_types_description": "టైప్ చేయని ప్యాకేజ్‌కు ఇన్‌స్టాల్ కమాండ్‌లో {'@'}types ప్యాకేజ్‌ను జోడించండి",
     "hide_platform_packages": "శోధనలో ప్లాట్‌ఫార్మ్-నిర్దిష్ట ప్యాకేజ్‌లను దాచండి",
     "hide_platform_packages_description": "ఫలితాల నుండి {'@'}esbuild/linux-x64 వంటి నేటివ్ బైనరీ ప్యాకేజ్‌లను దాచండి",
+    "enable_graph_pulse_loop": "EN TEXT TO REPLACE: Enable looping of pulse effect on mini graph",
+    "enable_graph_pulse_loop_description": "EN TEXT TO REPLACE: Activate a continuous pulse animation on the weekly download graph. This animation may be distracting for some users.",
     "theme": "థీమ్",
     "theme_light": "లైట్",
     "theme_dark": "డార్క్",
     "theme_system": "సిస్టమ్",
     "language": "భాష",
     "help_translate": "npmx అనువాదంలో సహాయం చేయండి",
+    "translation_status": "EN TEXT TO REPLACE: Check global translation status",
     "accent_colors": {
-      "label": "యాక్సెంట్ రంగులు"
+      "label": "యాక్సెంట్ రంగులు",
+      "sky": "EN TEXT TO REPLACE: Sky",
+      "coral": "EN TEXT TO REPLACE: Coral",
+      "amber": "EN TEXT TO REPLACE: Amber",
+      "emerald": "EN TEXT TO REPLACE: Emerald",
+      "violet": "EN TEXT TO REPLACE: Violet",
+      "magenta": "EN TEXT TO REPLACE: Magenta"
     },
     "clear_accent": "యాక్సెంట్ రంగును క్లియర్ చేయండి",
-    "translation_progress": "అనువాద పురోగతి"
+    "translation_progress": "అనువాద పురోగతి",
+    "background_themes": {
+      "label": "EN TEXT TO REPLACE: Background shade",
+      "neutral": "EN TEXT TO REPLACE: Neutral",
+      "stone": "EN TEXT TO REPLACE: Stone",
+      "zinc": "EN TEXT TO REPLACE: Zinc",
+      "slate": "EN TEXT TO REPLACE: Slate",
+      "black": "EN TEXT TO REPLACE: Black"
+    },
+    "keyboard_shortcuts_enabled": "EN TEXT TO REPLACE: Enable keyboard shortcuts",
+    "keyboard_shortcuts_enabled_description": "EN TEXT TO REPLACE: Keyboard shortcuts can be disabled if they conflict with other browser or system shortcuts"
   },
   "i18n": {
     "missing_keys": "{count} అనువాదం లేదు | {count} అనువాదాలు లేవు",
@@ -89,6 +179,13 @@
     "edit_on_github": "GitHub లో సవరించండి",
     "view_guide": "అనువాద గైడ్"
   },
+  "error": {
+    "401": "EN TEXT TO REPLACE: Unauthorized",
+    "404": "EN TEXT TO REPLACE: Page not found",
+    "500": "EN TEXT TO REPLACE: Internal server error",
+    "503": "EN TEXT TO REPLACE: Service unavailable",
+    "default": "EN TEXT TO REPLACE: Something went wrong"
+  },
   "common": {
     "loading": "లోడ్ అవుతున్నది...",
     "loading_more": "మరిన్ని లోడ్ అవుతున్నది...",
@@ -96,6 +193,7 @@
     "end_of_results": "ఫలితాలు ముగిసాయి",
     "try_again": "మళ్లీ ప్రయత్నించండి",
     "close": "మూసివేయండి",
+    "or": "EN TEXT TO REPLACE: or",
     "retry": "మళ్లీ ప్రయత్నించండి",
     "copy": "కాపీ చేయండి",
     "copied": "కాపీ చేయబడింది!",
@@ -110,9 +208,42 @@
       "members": "సభ్యులు"
     },
     "scroll_to_top": "పైకి స్క్రోల్ చేయండి",
+    "cancel": "EN TEXT TO REPLACE: Cancel",
+    "save": "EN TEXT TO REPLACE: Save",
+    "edit": "EN TEXT TO REPLACE: Edit",
+    "error": "EN TEXT TO REPLACE: Error",
     "view_on": {
       "npm": "npm లో వీక్షించండి",
-      "github": "GitHub లో వీక్షించండి"
+      "github": "GitHub లో వీక్షించండి",
+      "gitlab": "EN TEXT TO REPLACE: View on GitLab",
+      "bitbucket": "EN TEXT TO REPLACE: View on Bitbucket",
+      "codeberg": "EN TEXT TO REPLACE: View on Codeberg",
+      "git_repo": "EN TEXT TO REPLACE: View on Git repository",
+      "forgejo": "EN TEXT TO REPLACE: View on Forgejo",
+      "gitea": "EN TEXT TO REPLACE: View on Gitea",
+      "gitee": "EN TEXT TO REPLACE: View on Gitee",
+      "radicle": "EN TEXT TO REPLACE: View on Radicle",
+      "sourcehut": "EN TEXT TO REPLACE: View on SourceHut",
+      "tangled": "EN TEXT TO REPLACE: View on Tangled"
+    },
+    "collapse": "EN TEXT TO REPLACE: Collapse",
+    "expand": "EN TEXT TO REPLACE: Expand"
+  },
+  "profile": {
+    "display_name": "EN TEXT TO REPLACE: Display Name",
+    "description": "EN TEXT TO REPLACE: Description",
+    "no_description": "EN TEXT TO REPLACE: No description",
+    "website": "EN TEXT TO REPLACE: Website",
+    "website_placeholder": "EN TEXT TO REPLACE: https://example.com",
+    "likes": "EN TEXT TO REPLACE: Likes",
+    "seo_title": "EN TEXT TO REPLACE: {handle} - npmx",
+    "seo_description": "EN TEXT TO REPLACE: npmx profile by {handle}",
+    "not_found": "EN TEXT TO REPLACE: Profile Not Found",
+    "not_found_message": "EN TEXT TO REPLACE: The profile for {handle} could not be found.",
+    "invite": {
+      "message": "EN TEXT TO REPLACE: It doesn't look like they're using npmx yet. Want to tell them about it?",
+      "share_button": "EN TEXT TO REPLACE: Share on Bluesky",
+      "compose_text": "EN TEXT TO REPLACE: Hey {'@'}{handle}! Have you checked out npmx.dev yet? It's a browser for the npm registry that's fast, modern, and open-source.\nhttps://npmx.dev"
     }
   },
   "package": {
@@ -127,6 +258,13 @@
       "version": "ఈ వెర్షన్ డిప్రికేట్ చేయబడింది.",
       "no_reason": "కారణం అందించబడలేదు"
     },
+    "size_increase": {
+      "title_size": "EN TEXT TO REPLACE: Significant size increase since v{version}",
+      "title_deps": "EN TEXT TO REPLACE: Significant dependency count increase since v{version}",
+      "title_both": "EN TEXT TO REPLACE: Significant size and dependency increase since v{version}",
+      "size": "EN TEXT TO REPLACE: Install size increased by {percent} ({size} larger)",
+      "deps": "EN TEXT TO REPLACE: {count} more dependencies"
+    },
     "replacement": {
       "title": "మీకు ఈ డిపెండెన్సీ అవసరం లేకపోవచ్చు.",
       "native": "దీనిని {replacement} తో భర్తీ చేయవచ్చు, ఇది Node {nodeVersion} నుండి అందుబాటులో ఉంది.",
@@ -134,14 +272,18 @@
       "documented": "{community} ఈ ప్యాకేజ్‌ను మరింత పనితీరు ఎంపికలుగా ఫ్లాగ్ చేసింది.",
       "none": "ఈ ప్యాకేజ్ ఇప్పుడు అవసరం లేనిదిగా ఫ్లాగ్ చేయబడింది, మరియు దీని కార్యాచరణ అన్ని ఇంజిన్‌లలో నేటివ్‌గా అందుబాటులో ఉండే అవకాశం ఉంది.",
       "learn_more": "మరిన్ని తెలుసుకోండి",
+      "learn_more_above": "EN TEXT TO REPLACE: Learn more above.",
       "mdn": "MDN",
-      "community": "కమ్యూనిటీ"
+      "community": "కమ్యూనిటీ",
+      "consider_no_dep": "EN TEXT TO REPLACE: + Consider no dep?"
     },
     "stats": {
       "license": "లైసెన్స్",
       "deps": "డిపెండెన్సీలు",
       "install_size": "ఇన్‌స్టాల్ సైజ్",
       "vulns": "అసురక్షితత్వాలు",
+      "published": "EN TEXT TO REPLACE: Published",
+      "published_tooltip": "EN TEXT TO REPLACE: Date {package}{'@'}{version} was published",
       "view_dependency_graph": "డిపెండెన్సీ గ్రాఫ్‌ను వీక్షించండి",
       "inspect_dependency_tree": "డిపెండెంసీ ట్రీని పరిశీలించండి",
       "size_tooltip": {
@@ -164,9 +306,11 @@
         "refs": "{count} రెఫ్ | {count} రెఫ్‌లు",
         "assets": "{count} ఆసెట్ | {count} ఆసెట్‌లు"
       },
-      "view_source": "మూలాన్ని వీక్షించండి"
+      "view_source": "మూలాన్ని వీక్షించండి",
+      "skills_cli": "EN TEXT TO REPLACE: skills CLI"
     },
     "links": {
+      "main": "EN TEXT TO REPLACE: main",
       "repo": "రిపో",
       "homepage": "హోమ్‌పేజ్",
       "issues": "సమస్యలు",
@@ -174,22 +318,36 @@
       "code": "కోడ్",
       "docs": "డాక్యుమెంటేషన్",
       "fund": "దానం చేయండి",
-      "compare": "పోల్చండి"
+      "compare": "పోల్చండి",
+      "compare_this_package": "EN TEXT TO REPLACE: compare this package"
     },
-    "likes": {},
+    "likes": {
+      "like": "EN TEXT TO REPLACE: Like this package",
+      "unlike": "EN TEXT TO REPLACE: Unlike this package"
+    },
     "docs": {
+      "contents": "EN TEXT TO REPLACE: Contents",
+      "default_not_available": "EN TEXT TO REPLACE: Docs are not available for this version.",
       "not_available": "డాక్యుమెంటేషన్ అందుబాటులో లేదు",
-      "not_available_detail": "మేము ఈ వెర్షన్ కోసం డాక్యుమెంటేషన్‌ను జెనరేట్ చేయలేకపోయాము."
+      "not_available_detail": "మేము ఈ వెర్షన్ కోసం డాక్యుమెంటేషన్‌ను జెనరేట్ చేయలేకపోయాము.",
+      "page_title": "EN TEXT TO REPLACE: API Docs - npmx",
+      "page_title_name": "EN TEXT TO REPLACE: {name} docs - npmx",
+      "page_title_version": "EN TEXT TO REPLACE: {name} docs - npmx",
+      "og_title": "EN TEXT TO REPLACE: {name} - Docs",
+      "view_package": "EN TEXT TO REPLACE: View package"
     },
     "get_started": {
       "title": "ప్రారంభించండి",
       "pm_label": "ప్యాకేజ్ మేనేజర్",
       "copy_command": "ఇన్‌స్టాల్ కమాండ్‌ను కాపీ చేయండి",
+      "copy_dev_command": "EN TEXT TO REPLACE: Copy dev install command",
+      "dev_dependency_hint": "EN TEXT TO REPLACE: Usually installed as a dev dependency",
       "view_types": "{package} వీక్షించండి"
     },
     "create": {
       "title": "కొత్త ప్రాజెక్ట్‌ను సృష్టించండి",
-      "copy_command": "క్రియేట్ కమాండ్‌ను కాపీ చేయండి"
+      "copy_command": "క్రియేట్ కమాండ్‌ను కాపీ చేయండి",
+      "view": "EN TEXT TO REPLACE: {packageName} has the same maintainer. Click for more details."
     },
     "run": {
       "title": "అమలు చేయండి",
@@ -198,17 +356,47 @@
     "readme": {
       "title": "రీడ్మీ",
       "no_readme": "README అందుబాటులో లేదు.",
-      "callout": {}
+      "toc_title": "EN TEXT TO REPLACE: Outline",
+      "callout": {
+        "note": "EN TEXT TO REPLACE: Note",
+        "tip": "EN TEXT TO REPLACE: Tip",
+        "important": "EN TEXT TO REPLACE: Important",
+        "warning": "EN TEXT TO REPLACE: Warning",
+        "caution": "EN TEXT TO REPLACE: Caution"
+      },
+      "copy_as_markdown": "EN TEXT TO REPLACE: Copy README as Markdown"
     },
-    "provenance_section": {},
-    "security_downgrade": {},
+    "provenance_section": {
+      "title": "EN TEXT TO REPLACE: Provenance",
+      "built_and_signed_on": "EN TEXT TO REPLACE: Built and signed on {provider}",
+      "view_build_summary": "EN TEXT TO REPLACE: View build summary",
+      "source_commit": "EN TEXT TO REPLACE: Source Commit",
+      "build_file": "EN TEXT TO REPLACE: Build File",
+      "public_ledger": "EN TEXT TO REPLACE: Public Ledger",
+      "transparency_log_entry": "EN TEXT TO REPLACE: Transparency log entry",
+      "view_more_details": "EN TEXT TO REPLACE: View more details",
+      "error_loading": "EN TEXT TO REPLACE: Failed to load provenance details"
+    },
+    "security_downgrade": {
+      "title": "EN TEXT TO REPLACE: Trust downgrade",
+      "description_to_none_provenance": "EN TEXT TO REPLACE: This version was published without {provenance}.",
+      "description_to_none_trustedPublisher": "EN TEXT TO REPLACE: This version was published without {trustedPublishing}.",
+      "description_to_provenance_trustedPublisher": "EN TEXT TO REPLACE: This version uses {provenance} but not {trustedPublishing}.",
+      "fallback_install_provenance": "EN TEXT TO REPLACE: Install commands are pinned to {version}, the last version with provenance.",
+      "fallback_install_trustedPublisher": "EN TEXT TO REPLACE: Install commands are pinned to {version}, the last version with trusted publishing.",
+      "provenance_link_text": "EN TEXT TO REPLACE: provenance",
+      "trusted_publishing_link_text": "EN TEXT TO REPLACE: trusted publishing"
+    },
     "keywords_title": "కీవర్డ్‌లు",
     "compatibility": "అనుకూలత",
     "card": {
       "publisher": "ప్రచురణకర్త",
+      "published": "EN TEXT TO REPLACE: Published",
       "weekly_downloads": "వారపు డౌన్‌లోడ్‌లు",
       "keywords": "కీవర్డ్‌లు",
-      "license": "లైసెన్స్"
+      "license": "లైసెన్స్",
+      "select": "EN TEXT TO REPLACE: Select package",
+      "select_maximum": "EN TEXT TO REPLACE: Maximum {count} packages can be selected"
     },
     "versions": {
       "title": "వెర్షన్‌లు",
@@ -222,7 +410,40 @@
       "more_tagged": "{count} మరిన్ని ట్యాగ్ చేయబడ్డాయి",
       "all_covered": "అన్ని వెర్షన్‌లు పైన ఉన్న ట్యాగ్‌ల ద్వారా కవర్ చేయబడ్డాయి",
       "deprecated_title": "{version} (డిప్రికేటెడ్)",
-      "view_all": "{count} వెర్షన్‌లను వీక్షించండి | అన్ని {count} వెర్షన్‌లను వీక్షించండి"
+      "view_all": "{count} వెర్షన్‌లను వీక్షించండి | అన్ని {count} వెర్షన్‌లను వీక్షించండి",
+      "view_all_versions": "EN TEXT TO REPLACE: View all versions",
+      "distribution_title": "EN TEXT TO REPLACE: Semver Group",
+      "distribution_modal_title": "EN TEXT TO REPLACE: Versions",
+      "distribution_range_date_same_year": "EN TEXT TO REPLACE: from {from} to {to}, {endYear}",
+      "distribution_range_date_multiple_years": "EN TEXT TO REPLACE: from {from}, {startYear} to {to}, {endYear}",
+      "grouping_major": "EN TEXT TO REPLACE: Major",
+      "grouping_minor": "EN TEXT TO REPLACE: Minor",
+      "grouping_versions_title": "EN TEXT TO REPLACE: Versions",
+      "grouping_versions_about": "EN TEXT TO REPLACE: About version grouping",
+      "grouping_versions_all": "EN TEXT TO REPLACE: All",
+      "grouping_versions_only_recent": "EN TEXT TO REPLACE: Only recent",
+      "grouping_usage_title": "EN TEXT TO REPLACE: Usage",
+      "grouping_usage_about": "EN TEXT TO REPLACE: About usage grouping",
+      "grouping_usage_all": "EN TEXT TO REPLACE: All",
+      "grouping_usage_most_used": "EN TEXT TO REPLACE: Most used",
+      "recent_versions_only_tooltip": "EN TEXT TO REPLACE: Show only versions published within the last year.",
+      "show_low_usage_tooltip": "EN TEXT TO REPLACE: Include version groups with less than 1% of total downloads.",
+      "y_axis_label": "EN TEXT TO REPLACE: Downloads",
+      "filter_placeholder": "EN TEXT TO REPLACE: Filter by semver (e.g. ^3.0.0)",
+      "filter_invalid": "EN TEXT TO REPLACE: Invalid semver range",
+      "filter_help": "EN TEXT TO REPLACE: Semver range filter help",
+      "filter_tooltip": "EN TEXT TO REPLACE: Filter versions using a {link}. For example, ^3.0.0 shows all 3.x versions.",
+      "filter_tooltip_link": "EN TEXT TO REPLACE: semver range",
+      "no_matches": "EN TEXT TO REPLACE: No versions match this range",
+      "copy_alt": {
+        "per_version_analysis": "EN TEXT TO REPLACE: {version} version was downloaded {downloads} times",
+        "general_description": "EN TEXT TO REPLACE: Bar chart showing per-version downloads for {versions_count} {semver_grouping_mode} versions of the {package_name} package, {date_range_label} from the {first_version} version to the {last_version} version. The most downloaded version is {max_downloaded_version} with {max_version_downloads} downloads. {per_version_analysis}. {watermark}."
+      },
+      "page_title": "EN TEXT TO REPLACE: Version History",
+      "current_tags": "EN TEXT TO REPLACE: Current Tags",
+      "version_filter_placeholder": "EN TEXT TO REPLACE: Filter versions…",
+      "version_filter_label": "EN TEXT TO REPLACE: Filter versions",
+      "no_match_filter": "EN TEXT TO REPLACE: No versions match {filter}"
     },
     "dependencies": {
       "title": "డిపెండెన్సీలు ({count})",
@@ -232,7 +453,9 @@
       "view_vulnerabilities": "అసురక్షితత్వాలను వీక్షించండి",
       "outdated_major": "{count} మేజర్ వెర్షన్ వెనుకబడి ఉంది (తాజాది: {latest}) | {count} మేజర్ వెర్షన్‌లు వెనుకబడి ఉన్నాయి (తాజాది: {latest})",
       "outdated_minor": "{count} మైనర్ వెర్షన్ వెనుకబడి ఉంది (తాజాది: {latest}) | {count} మైనర్ వెర్షన్‌లు వెనుకబడి ఉన్నాయి (తాజాది: {latest})",
-      "outdated_patch": "ప్యాచ్ నవీకరణ అందుబాటులో ఉంది (తాజాది: {latest})"
+      "outdated_patch": "ప్యాచ్ నవీకరణ అందుబాటులో ఉంది (తాజాది: {latest})",
+      "has_replacement": "EN TEXT TO REPLACE: This dependency has suggested replacements",
+      "vulnerabilities_count": "EN TEXT TO REPLACE: {count} vulnerability | {count} vulnerabilities"
     },
     "peer_dependencies": {
       "title": "పీర్ డిపెండెన్సీలు ({count})",
@@ -256,9 +479,16 @@
       "cancel_add": "యజమానిని జోడించడాన్ని రద్దు చేయండి",
       "add_owner": "+ యజమానిని జోడించండి",
       "show_more": "({count} మరిన్ని చూపించండి)",
-      "show_less": "(తక్కువ చూపించండి)"
+      "show_less": "(తక్కువ చూపించండి)",
+      "maintainer_template": "EN TEXT TO REPLACE: {avatar} {char126}{name}"
     },
     "trends": {
+      "chart_assistive_text": {
+        "keyboard_navigation_horizontal": "EN TEXT TO REPLACE: Use the left and right arrow keys to cycle through data points.",
+        "keyboard_navigation_vertical": "EN TEXT TO REPLACE: Use the up and down arrow keys to cycle through data points.",
+        "table_available": "EN TEXT TO REPLACE: A data table for this chart is available below.",
+        "table_caption": "EN TEXT TO REPLACE: Chart data table"
+      },
       "granularity": "గ్రాన్యులారిటీ",
       "granularity_daily": "రోజువారీ",
       "granularity_weekly": "వారపు",
@@ -271,10 +501,54 @@
       "date_range_multiline": "{start}\nనుండి {end}",
       "download_file": "{fileType} డౌన్‌లోడ్ చేయండి",
       "toggle_annotator": "అనోటేటర్‌ను టాగుల్ చేయండి",
-      "items": {}
+      "toggle_stack_mode": "EN TEXT TO REPLACE: Toggle stack mode",
+      "open_options": "EN TEXT TO REPLACE: Open options",
+      "close_options": "EN TEXT TO REPLACE: Close options",
+      "legend_estimation": "EN TEXT TO REPLACE: Estimation",
+      "no_data": "EN TEXT TO REPLACE: No data available",
+      "y_axis_label": "EN TEXT TO REPLACE: {granularity} {facet}",
+      "facet": "EN TEXT TO REPLACE: Facet",
+      "title": "EN TEXT TO REPLACE: Trends",
+      "contributors_skip": "EN TEXT TO REPLACE: Not shown in Contributors (no GitHub repo):",
+      "items": {
+        "downloads": "EN TEXT TO REPLACE: Downloads",
+        "likes": "EN TEXT TO REPLACE: Likes",
+        "contributors": "EN TEXT TO REPLACE: Contributors"
+      },
+      "data_correction": "EN TEXT TO REPLACE: Data correction",
+      "average_window": "EN TEXT TO REPLACE: Average window",
+      "smoothing": "EN TEXT TO REPLACE: Smoothing",
+      "prediction": "EN TEXT TO REPLACE: Prediction",
+      "known_anomalies": "EN TEXT TO REPLACE: Known anomalies",
+      "known_anomalies_description": "EN TEXT TO REPLACE: Interpolates over known download spikes caused by bots or CI issues.",
+      "known_anomalies_ranges": "EN TEXT TO REPLACE: Anomaly ranges",
+      "known_anomalies_range": "EN TEXT TO REPLACE: From {start} to {end}",
+      "known_anomalies_range_named": "EN TEXT TO REPLACE: {packageName}: from {start} to {end}",
+      "known_anomalies_none": "EN TEXT TO REPLACE: No known anomalies for this package. | No known anomalies for these packages.",
+      "known_anomalies_contribute": "EN TEXT TO REPLACE: Contribute anomaly data",
+      "apply_correction": "EN TEXT TO REPLACE: Apply correction",
+      "copy_alt": {
+        "trend_none": "EN TEXT TO REPLACE: mostly flat",
+        "trend_strong": "EN TEXT TO REPLACE: strong",
+        "trend_weak": "EN TEXT TO REPLACE: weak",
+        "trend_undefined": "EN TEXT TO REPLACE: undefined (insufficient data)",
+        "button_label": "EN TEXT TO REPLACE: Copy alt text",
+        "watermark": "EN TEXT TO REPLACE: At the bottom, a watermark reads \"./npmx a fast, modern browser for the npm registry\"",
+        "analysis": "EN TEXT TO REPLACE: {package_name} starts at {start_value} and ends at {end_value}, showing a {trend} trend with a slope of {downloads_slope} downloads per time interval",
+        "estimation": "EN TEXT TO REPLACE: The final value is an estimate based on partial data for the current period.",
+        "estimations": "EN TEXT TO REPLACE: The final values are estimates based on partial data for the current period.",
+        "compare": "EN TEXT TO REPLACE: Package download comparison line chart for: {packages}.",
+        "single_package": "EN TEXT TO REPLACE: Downloads line chart for the {package} package.",
+        "general_description": "EN TEXT TO REPLACE: The Y axis represents the number of downloads. The X axis represents the date range, from {start_date} to {end_date}, with a {granularity} time period.{estimation_notice} {packages_analysis}. {watermark}.",
+        "facet_bar_general_description": "EN TEXT TO REPLACE: Horizontal bar chart for: {packages}, comparing {facet} ({description}). {facet_analysis} {watermark}.",
+        "facet_bar_analysis": "EN TEXT TO REPLACE: {package_name} has a value of {value}."
+      }
     },
     "downloads": {
-      "title": "వారపు డౌన్‌లోడ్‌లు"
+      "title": "వారపు డౌన్‌లోడ్‌లు",
+      "community_distribution": "EN TEXT TO REPLACE: View community adoption distribution",
+      "subtitle": "EN TEXT TO REPLACE: Across all versions",
+      "sparkline_nav_hint": "EN TEXT TO REPLACE: Use ← →"
     },
     "install_scripts": {
       "title": "ఇన్‌స్టాల్ స్క్రిప్ట్‌లు",
@@ -290,6 +564,7 @@
       "esm": "ES Modules మద్దతు ఉంది",
       "cjs": "CommonJS మద్దతు ఉంది",
       "no_esm": "ES Modules మద్దతు లేదు",
+      "wasm": "EN TEXT TO REPLACE: Has WebAssembly",
       "types_label": "టైప్‌లు",
       "types_included": "టైప్‌లు చేర్చబడ్డాయి",
       "types_available": "టైప్‌లు {package} ద్వారా అందుబాటులో ఉన్నాయి",
@@ -311,7 +586,8 @@
         "high": "అధిక",
         "moderate": "మధ్యస్థ",
         "low": "తక్కువ"
-      }
+      },
+      "fixed_in_title": "EN TEXT TO REPLACE: Fixed in version {version}"
     },
     "deprecated": {
       "label": "డిప్రికేటెడ్",
@@ -354,10 +630,19 @@
     },
     "sort": {
       "downloads": "అత్యధికంగా డౌన్‌లోడ్ చేయబడినవి",
+      "published": "EN TEXT TO REPLACE: Recently published",
       "name_asc": "పేరు (A-Z)",
       "name_desc": "పేరు (Z-A)"
     },
-    "size": {}
+    "size": {
+      "b": "EN TEXT TO REPLACE: {size} B",
+      "kb": "EN TEXT TO REPLACE: {size} kB",
+      "mb": "EN TEXT TO REPLACE: {size} MB"
+    },
+    "download": {
+      "button": "EN TEXT TO REPLACE: Download",
+      "tarball": "EN TEXT TO REPLACE: Download Tarball as .tar.gz"
+    }
   },
   "connector": {
     "modal": {
@@ -377,7 +662,8 @@
       "warning": "హెచ్చరిక",
       "warning_text": "ఇది npmx కు మీ npm CLI కు ప్రాప్యతను అనుమతిస్తుంది. మీరు నమ్మకమైన సైట్‌ల నుండి మాత్రమే కనెక్ట్ చేయండి.",
       "connect": "కనెక్ట్ చేయండి",
-      "connecting": "కనెక్ట్ అవుతున్నది..."
+      "connecting": "కనెక్ట్ అవుతున్నది...",
+      "auto_open_url": "EN TEXT TO REPLACE: Automatically open auth page"
     }
   },
   "operations": {
@@ -393,7 +679,9 @@
       "otp_placeholder": "OTP కోడ్ నమోదు చేయండి...",
       "otp_label": "వన్-టైమ్ పాస్‌వర్డ్",
       "retry_otp": "OTP తో మళ్లీ ప్రయత్నించండి",
+      "retry_web_auth": "EN TEXT TO REPLACE: Retry with web auth",
       "retrying": "మళ్లీ ప్రయత్నిస్తున్నారు...",
+      "open_web_auth": "EN TEXT TO REPLACE: Open web auth link",
       "approve_operation": "ఆపరేషన్‌ను ఆమోదించండి",
       "remove_operation": "ఆపరేషన్‌ను తీసివేయండి",
       "approve_all": "అన్నింటిని ఆమోదించండి",
@@ -515,6 +803,7 @@
       "invalid_name": "చెల్లని ప్యాకేజ్ పేరు:",
       "available": "ఈ పేరు అందుబాటులో ఉంది!",
       "taken": "ఈ పేరు ఇప్పటికే తీసుకోబడింది.",
+      "missing_permission": "EN TEXT TO REPLACE: You do not have permission to add a package to scope {'@'}{scope}.",
       "similar_warning": "సమానమైన ప్యాకేజ్‌లు ఉన్నాయి - npm ఈ పేరును తిరస్కరించవచ్చు:",
       "related": "సంబంధిత ప్యాకేజ్‌లు:",
       "scope_warning_title": "బదులుగా స్కోప్ చేసిన ప్యాకేజ్‌ను ఉపయోగించడాన్ని పరిగణించండి",
@@ -557,7 +846,9 @@
       "preview": "ప్రివ్యూ",
       "code": "కోడ్"
     },
-    "file_path": "ఫైల్ పాత్"
+    "file_path": "ఫైల్ పాత్",
+    "binary_file": "EN TEXT TO REPLACE: Binary file",
+    "binary_rendering_warning": "EN TEXT TO REPLACE: File type \"{contentType}\" is not supported for preview."
   },
   "badges": {
     "provenance": {
@@ -592,7 +883,13 @@
     "more_keywords": "+{count} మరిన్ని",
     "clear_all": "అన్నింటిని క్లియర్ చేయండి",
     "remove_filter": "{label} ఫిల్టర్‌ను తీసివేయండి",
-    "chips": {},
+    "chips": {
+      "search": "EN TEXT TO REPLACE: Search",
+      "downloads": "EN TEXT TO REPLACE: Downloads",
+      "keyword": "EN TEXT TO REPLACE: Keyword",
+      "security": "EN TEXT TO REPLACE: Security",
+      "updated": "EN TEXT TO REPLACE: Updated"
+    },
     "download_range": {
       "any": "ఏదైనా",
       "lt100": "< 100",
@@ -613,6 +910,8 @@
       "secure": "హెచ్చరికలు లేకుండా",
       "insecure": "హెచ్చరికలతో"
     },
+    "view_selected": "EN TEXT TO REPLACE: View selected",
+    "clear_selected_label": "EN TEXT TO REPLACE: Clear selected",
     "sort": {
       "label": "ప్యాకేజ్‌లను క్రమబద్ధీకరించండి",
       "toggle_direction": "క్రమబద్ధీకరణ దిశను టాగుల్ చేయండి",
@@ -623,6 +922,7 @@
       "downloads_day": "డౌన్‌లోడ్‌లు/రోజు",
       "downloads_month": "డౌన్‌లోడ్‌లు/నెల",
       "downloads_year": "డౌన్‌లోడ్‌లు/సంవత్సరం",
+      "published": "EN TEXT TO REPLACE: Last Published",
       "name": "పేరు",
       "quality": "నాణ్యత",
       "popularity": "జనాదరణ",
@@ -638,13 +938,15 @@
       "version": "వెర్షన్",
       "description": "వివరణ",
       "downloads": "డౌన్‌లోడ్‌లు/వారం",
+      "published": "EN TEXT TO REPLACE: Last Published",
       "maintainers": "నిర్వహకులు",
       "keywords": "కీవర్డ్‌లు",
       "quality_score": "నాణ్యత స్కోర్",
       "popularity_score": "జనాదరణ స్కోర్",
       "maintenance_score": "నిర్వహణ స్కోర్",
       "combined_score": "సంయుక్త స్కోర్",
-      "security": "భద్రత"
+      "security": "భద్రత",
+      "selection": "EN TEXT TO REPLACE: Select package"
     },
     "view_mode": {
       "label": "వీక్షణ మోడ్",
@@ -700,7 +1002,20 @@
         "managers": "మేనేజర్‌లు"
       }
     },
-    "team": {},
+    "sponsors": {
+      "title": "EN TEXT TO REPLACE: Sponsors"
+    },
+    "oss_partners": {
+      "title": "EN TEXT TO REPLACE: OSS Partners"
+    },
+    "team": {
+      "title": "EN TEXT TO REPLACE: Team",
+      "governance": "EN TEXT TO REPLACE: Governance",
+      "role_steward": "EN TEXT TO REPLACE: steward",
+      "role_maintainer": "EN TEXT TO REPLACE: maintainer",
+      "sponsor": "EN TEXT TO REPLACE: sponsor",
+      "sponsor_aria": "EN TEXT TO REPLACE: Sponsor {name} on GitHub"
+    },
     "contributors": {
       "title": "కంట్రిబ్యూటర్‌లు",
       "description": "npmx పూర్తిగా ఓపెన్ సోర్స్, అద్భుతమైన కంట్రిబ్యూటర్‌ల కమ్యూనిటీ ద్వారా నిర్మించబడింది. మాతో చేరండి మరియు మేము ఎప్పుడూ కోరుకున్న npm బ్రౌజింగ్ అనుభవాన్ని కలిసి సృష్టిద్దాం.",
@@ -719,6 +1034,11 @@
         "title": "కమ్యూనిటీతో చేరండి",
         "description": "చాట్ చేయండి, ప్రశ్నలు అడగండి, మరియు ఆలోచనలను పంచుకోండి.",
         "cta": "Discord లో చేరండి"
+      },
+      "builders": {
+        "title": "EN TEXT TO REPLACE: Help build npmx",
+        "description": "EN TEXT TO REPLACE: Join the builders shaping the future of npmx.",
+        "cta": "EN TEXT TO REPLACE: Join Builders Discord"
       },
       "follow": {
         "title": "నవీకరణలతో ఉండండి",
@@ -751,7 +1071,9 @@
       "create_account": "కొత్త ఖాతాను సృష్టించండి",
       "connect_bluesky": "Bluesky తో కనెక్ట్ చేయండి",
       "what_is_atmosphere": "Atmosphere ఖాతా అంటే ఏమిటి?",
-      "atmosphere_explanation": "{npmx} దాని అనేక సోషల్ ఫీచర్‌లను నడపడానికి {atproto} ఉపయోగిస్తుంది, ఇది వినియోగదారులు తమ డేటా యొక్క యజమానులుగా మారడానికి మరియు అన్ని అనుకూల అప్లికేషన్‌ల కోసం ఒక ఖాతాను ఉపయోగించడానికి అనుమతిస్తుంది. మీరు ఖాతాను సృష్టించిన తర్వాత, మీరు {bluesky} మరియు {tangled} వంటి ఇతర అప్లికేషన్‌లను అదే ఖాతాతో ఉపయోగించవచ్చు."
+      "atmosphere_explanation": "{npmx} దాని అనేక సోషల్ ఫీచర్‌లను నడపడానికి {atproto} ఉపయోగిస్తుంది, ఇది వినియోగదారులు తమ డేటా యొక్క యజమానులుగా మారడానికి మరియు అన్ని అనుకూల అప్లికేషన్‌ల కోసం ఒక ఖాతాను ఉపయోగించడానికి అనుమతిస్తుంది. మీరు ఖాతాను సృష్టించిన తర్వాత, మీరు {bluesky} మరియు {tangled} వంటి ఇతర అప్లికేషన్‌లను అదే ఖాతాతో ఉపయోగించవచ్చు.",
+      "default_input_error": "EN TEXT TO REPLACE: Please enter a valid handle, DID, or a full PDS URL",
+      "profile": "EN TEXT TO REPLACE: Profile"
     }
   },
   "header": {
@@ -771,7 +1093,8 @@
       "error": "సంస్థలను లోడ్ చేయడంలో విఫలమైంది",
       "empty": "సంస్థలు కనుగొనబడలేదు",
       "view_all": "అన్నింటిని వీక్షించండి"
-    }
+    },
+    "pr": "EN TEXT TO REPLACE: Open GitHub pull request #{prNumber}"
   },
   "compare": {
     "packages": {
@@ -784,10 +1107,15 @@
       "section_packages": "ప్యాకేజ్‌లు",
       "section_facets": "ఫేసెట్‌లు",
       "section_comparison": "పోలిక",
+      "copy_as_markdown": "EN TEXT TO REPLACE: Copy table",
       "loading": "ప్యాకేజ్ డేటా లోడ్ అవుతున్నది...",
       "error": "ప్యాకేజ్ డేటాను లోడ్ చేయడంలో విఫలమైంది. దయచేసి మళ్లీ ప్రయత్నించండి.",
       "empty_title": "పోల్చడానికి ప్యాకేజ్‌లను ఎంచుకోండి",
-      "empty_description": "వాటి మెట్రిక్‌లను పక్కపక్కన పోలిక చూడడానికి పైన కనీసం 2 ప్యాకేజ్‌లను శోధించి జోడించండి."
+      "empty_description": "వాటి మెట్రిక్‌లను పక్కపక్కన పోలిక చూడడానికి పైన కనీసం 2 ప్యాకేజ్‌లను శోధించి జోడించండి.",
+      "table_view": "EN TEXT TO REPLACE: Table",
+      "charts_view": "EN TEXT TO REPLACE: Charts",
+      "bar_chart_nav_hint": "EN TEXT TO REPLACE: Use ↑ ↓",
+      "line_chart_nav_hint": "EN TEXT TO REPLACE: Use ← →"
     },
     "selector": {
       "search_label": "ప్యాకేజ్‌ను శోధించండి",
@@ -798,7 +1126,15 @@
       "packages_selected": "{count}/{max} ప్యాకేజ్‌లు ఎంచుకోబడ్డాయి.",
       "add_hint": "పోల్చడానికి కనీసం 2 ప్యాకేజ్‌లను జోడించండి."
     },
-    "no_dependency": {},
+    "no_dependency": {
+      "label": "EN TEXT TO REPLACE: (No dependency)",
+      "typeahead_title": "EN TEXT TO REPLACE: What Would James Do?",
+      "typeahead_description": "EN TEXT TO REPLACE: Compare against not using a dependency! e18e approved.",
+      "tooltip_title": "EN TEXT TO REPLACE: You might not need a dependency",
+      "tooltip_description": "EN TEXT TO REPLACE: Compare against not using a dependency! The {link} maintains a list of packages that can be replaced with native APIs or simpler alternatives.",
+      "e18e_community": "EN TEXT TO REPLACE: e18e community",
+      "add_column": "EN TEXT TO REPLACE: Add no dependency column to comparison"
+    },
     "facets": {
       "group_label": "పోలిక ఫేసెట్‌లు",
       "all": "అన్నీ",
@@ -808,6 +1144,7 @@
       "deselect_all": "అన్ని ఫేసెట్‌లను అన్‌సెలెక్ట్ చేయండి",
       "select_category": "అన్ని {category} ఫేసెట్‌లను ఎంచుకోండి",
       "deselect_category": "అన్ని {category} ఫేసెట్‌లను అన్‌సెలెక్ట్ చేయండి",
+      "binary_only_tooltip": "EN TEXT TO REPLACE: This package exposes binaries and no exports",
       "categories": {
         "performance": "పనితీరు",
         "health": "ఆరోగ్యం",
@@ -815,42 +1152,343 @@
         "security": "భద్రత మరియు అనుసరణ"
       },
       "items": {
-        "packageSize": {},
-        "installSize": {},
-        "dependencies": {},
-        "totalDependencies": {},
-        "downloads": {},
-        "totalLikes": {},
-        "lastUpdated": {},
-        "deprecated": {},
-        "engines": {},
-        "types": {},
-        "moduleFormat": {},
-        "license": {},
-        "vulnerabilities": {}
+        "packageSize": {
+          "label": "EN TEXT TO REPLACE: Package Size",
+          "description": "EN TEXT TO REPLACE: Size of the package itself (unpacked)"
+        },
+        "installSize": {
+          "label": "EN TEXT TO REPLACE: Install Size",
+          "description": "EN TEXT TO REPLACE: Total install size including all dependencies"
+        },
+        "dependencies": {
+          "label": "EN TEXT TO REPLACE: Direct Deps",
+          "description": "EN TEXT TO REPLACE: Number of direct dependencies"
+        },
+        "totalDependencies": {
+          "label": "EN TEXT TO REPLACE: Total Deps",
+          "description": "EN TEXT TO REPLACE: Total number of dependencies including transitive"
+        },
+        "downloads": {
+          "label": "EN TEXT TO REPLACE: Downloads/wk",
+          "description": "EN TEXT TO REPLACE: Weekly download count"
+        },
+        "totalLikes": {
+          "label": "EN TEXT TO REPLACE: Likes",
+          "description": "EN TEXT TO REPLACE: Number of likes"
+        },
+        "lastUpdated": {
+          "label": "EN TEXT TO REPLACE: Published",
+          "description": "EN TEXT TO REPLACE: When this version was published"
+        },
+        "deprecated": {
+          "label": "EN TEXT TO REPLACE: Deprecated?",
+          "description": "EN TEXT TO REPLACE: Whether the package is deprecated"
+        },
+        "engines": {
+          "label": "EN TEXT TO REPLACE: Engines",
+          "description": "EN TEXT TO REPLACE: Node.js version requirements"
+        },
+        "types": {
+          "label": "EN TEXT TO REPLACE: Types",
+          "description": "EN TEXT TO REPLACE: TypeScript type definitions"
+        },
+        "moduleFormat": {
+          "label": "EN TEXT TO REPLACE: Module Format",
+          "description": "EN TEXT TO REPLACE: ESM/CJS support"
+        },
+        "license": {
+          "label": "EN TEXT TO REPLACE: License",
+          "description": "EN TEXT TO REPLACE: Package license"
+        },
+        "vulnerabilities": {
+          "label": "EN TEXT TO REPLACE: Vulnerabilities",
+          "description": "EN TEXT TO REPLACE: Known security vulnerabilities"
+        }
       },
-      "values": {},
-      "trends": {}
+      "values": {
+        "any": "EN TEXT TO REPLACE: Any",
+        "none": "EN TEXT TO REPLACE: None",
+        "unknown": "EN TEXT TO REPLACE: Unknown",
+        "deprecated": "EN TEXT TO REPLACE: Deprecated",
+        "not_deprecated": "EN TEXT TO REPLACE: No",
+        "types_included": "EN TEXT TO REPLACE: Included",
+        "types_none": "EN TEXT TO REPLACE: None",
+        "vulnerabilities_summary": "EN TEXT TO REPLACE: {count} ({critical}C/{high}H)",
+        "up_to_you": "EN TEXT TO REPLACE: Up to you!"
+      },
+      "trends": {
+        "title": "EN TEXT TO REPLACE: Compare Trends"
+      }
+    },
+    "file_changes": "EN TEXT TO REPLACE: File Changes",
+    "files_count": "EN TEXT TO REPLACE: {count} file | {count} files",
+    "lines_hidden": "EN TEXT TO REPLACE: {count} line hidden | {count} lines hidden",
+    "file_too_large": "EN TEXT TO REPLACE: File too large to compare",
+    "file_size_warning": "EN TEXT TO REPLACE: {size} exceeds the 250KB limit for comparison",
+    "compare_versions": "EN TEXT TO REPLACE: diff",
+    "compare_versions_title": "EN TEXT TO REPLACE: Compare with latest version",
+    "comparing_versions_label": "EN TEXT TO REPLACE: Comparing versions...",
+    "version_back_to_package": "EN TEXT TO REPLACE: Back to package",
+    "version_error_message": "EN TEXT TO REPLACE: Failed to compare versions.",
+    "version_invalid_url_format": {
+      "hint": "EN TEXT TO REPLACE: Invalid comparison URL. Use format: {0}",
+      "from_version": "EN TEXT TO REPLACE: from",
+      "to_version": "EN TEXT TO REPLACE: to"
+    },
+    "version_selector_title": "EN TEXT TO REPLACE: Compare with version",
+    "summary": "EN TEXT TO REPLACE: Summary",
+    "deps_count": "EN TEXT TO REPLACE: {count} dep | {count} deps",
+    "dependencies": "EN TEXT TO REPLACE: Dependencies",
+    "dev_dependencies": "EN TEXT TO REPLACE: Dev Dependencies",
+    "peer_dependencies": "EN TEXT TO REPLACE: Peer Dependencies",
+    "optional_dependencies": "EN TEXT TO REPLACE: Optional Dependencies",
+    "no_dependency_changes": "EN TEXT TO REPLACE: No dependency changes",
+    "file_filter_option": {
+      "all": "EN TEXT TO REPLACE: All ({count})",
+      "added": "EN TEXT TO REPLACE: Added ({count})",
+      "removed": "EN TEXT TO REPLACE: Removed ({count})",
+      "modified": "EN TEXT TO REPLACE: Modified ({count})"
+    },
+    "search_files_placeholder": "EN TEXT TO REPLACE: Search files...",
+    "no_files_all": "EN TEXT TO REPLACE: No files",
+    "no_files_search": "EN TEXT TO REPLACE: No files matching \"{query}\"",
+    "no_files_filtered": "EN TEXT TO REPLACE: No {filter} files",
+    "filter": {
+      "added": "EN TEXT TO REPLACE: added",
+      "removed": "EN TEXT TO REPLACE: removed",
+      "modified": "EN TEXT TO REPLACE: modified"
+    },
+    "files_button": "EN TEXT TO REPLACE: Files",
+    "select_file_prompt": "EN TEXT TO REPLACE: Select a file from the sidebar to view its diff",
+    "close_files_panel": "EN TEXT TO REPLACE: Close files panel",
+    "filter_files_label": "EN TEXT TO REPLACE: Filter files by change type",
+    "change_ratio": "EN TEXT TO REPLACE: Change ratio",
+    "char_edits": "EN TEXT TO REPLACE: Char edits",
+    "diff_distance": "EN TEXT TO REPLACE: Diff distance",
+    "loading_diff": "EN TEXT TO REPLACE: Loading diff...",
+    "loading_diff_error": "EN TEXT TO REPLACE: Failed to load diff",
+    "merge_modified_lines": "EN TEXT TO REPLACE: Merge modified lines",
+    "no_content_changes": "EN TEXT TO REPLACE: No content changes detected",
+    "options": "EN TEXT TO REPLACE: Options",
+    "view_file": "EN TEXT TO REPLACE: View file",
+    "view_in_code_browser": "EN TEXT TO REPLACE: View in code browser",
+    "word_wrap": "EN TEXT TO REPLACE: Word wrap"
+  },
+  "pds": {
+    "title": "EN TEXT TO REPLACE: npmx.social",
+    "meta_description": "EN TEXT TO REPLACE: The official AT Protocol Personal Data Server (PDS) for the npmx community.",
+    "join": {
+      "title": "EN TEXT TO REPLACE: Join the Community",
+      "description": "EN TEXT TO REPLACE: Whether you are creating your first account on the atmosphere or migrating an existing one, you belong here. You can migrate your current account without losing your handle, your posts, or your followers.",
+      "migrate": "EN TEXT TO REPLACE: Migrate with PDS MOOver"
+    },
+    "server": {
+      "title": "EN TEXT TO REPLACE: Server Details",
+      "location_label": "EN TEXT TO REPLACE: Location:",
+      "location_value": "EN TEXT TO REPLACE: Nuremberg, Germany",
+      "infrastructure_label": "EN TEXT TO REPLACE: Infrastructure:",
+      "infrastructure_value": "EN TEXT TO REPLACE: Hosted on Hetzner",
+      "privacy_label": "EN TEXT TO REPLACE: Privacy:",
+      "privacy_value": "EN TEXT TO REPLACE: Subject to strict EU Data Protection laws",
+      "learn_more": "EN TEXT TO REPLACE: Learn how npmx uses the Atmosphere"
+    },
+    "community": {
+      "title": "EN TEXT TO REPLACE: Who is here",
+      "description": "EN TEXT TO REPLACE: Some of the {count} accounts that are already calling npmx.social home:",
+      "loading": "EN TEXT TO REPLACE: Loading PDS community...",
+      "error": "EN TEXT TO REPLACE: Failed to load PDS community.",
+      "empty": "EN TEXT TO REPLACE: No community members to display.",
+      "view_profile": "EN TEXT TO REPLACE: View {handle}'s profile",
+      "new_accounts": "EN TEXT TO REPLACE: ...plus {count} more that are new to the atmosphere"
     }
   },
   "privacy_policy": {
+    "title": "EN TEXT TO REPLACE: privacy policy",
+    "last_updated": "EN TEXT TO REPLACE: Last updated: {date}",
+    "welcome": "EN TEXT TO REPLACE: Welcome to {app}. We are committed to protecting your privacy. This policy explains what data we collect, how we use it, and your rights regarding your information.",
     "cookies": {
-      "what_are": {},
-      "types": {},
-      "local_storage": {},
-      "management": {}
+      "what_are": {
+        "title": "EN TEXT TO REPLACE: What are cookies?",
+        "p1": "EN TEXT TO REPLACE: Cookies are small text files stored on your device when you visit a website. Their purpose is to enhance your browsing experience by remembering certain preferences and settings."
+      },
+      "types": {
+        "title": "EN TEXT TO REPLACE: What cookies do we use?",
+        "p1": "EN TEXT TO REPLACE: We only use {bold} for purposes strictly necessary for the site's functionality. We do not use third-party or advertising cookies.",
+        "bold": "EN TEXT TO REPLACE: essential technical cookies",
+        "li1": "EN TEXT TO REPLACE: {li11}{separator} {li12}",
+        "li2": "EN TEXT TO REPLACE: {li21}{separator} {li22}",
+        "separator": "EN TEXT TO REPLACE: :",
+        "cookie_vdpl": "EN TEXT TO REPLACE: __vdpl",
+        "cookie_vdpl_desc": "EN TEXT TO REPLACE: This cookie is used by our hosting provider (Vercel) for skew protection. It ensures you fetch assets from the correct deployment version if a new update is released while you are browsing. It does not track you.",
+        "cookie_h3": "EN TEXT TO REPLACE: h3",
+        "cookie_h3_desc": "EN TEXT TO REPLACE: This is our secure session cookie. It stores the OAuth access token when you connect your Atmosphere account. It is essential for maintaining your authenticated session."
+      },
+      "local_storage": {
+        "title": "EN TEXT TO REPLACE: Local storage",
+        "p1": "EN TEXT TO REPLACE: In addition to session cookies, we use your browser's {bold} to save your display preferences. This allows us to remember the theme (light/dark) and some other {settings} you have selected, so you don't have to reconfigure them on each visit.",
+        "bold": "EN TEXT TO REPLACE: Local Storage",
+        "p2": "EN TEXT TO REPLACE: This information is purely functional, stored only on your device, and {bold2}. We use it exclusively to improve your experience on our website.",
+        "bold2": "EN TEXT TO REPLACE: contains no personal data nor is it used to track you",
+        "settings": "EN TEXT TO REPLACE: settings"
+      },
+      "management": {
+        "title": "EN TEXT TO REPLACE: Managing cookies",
+        "p1": "EN TEXT TO REPLACE: You can configure your browser to accept, reject, or delete cookies according to your preferences. However, please note that {bold}.",
+        "bold": "EN TEXT TO REPLACE: rejecting essential cookies may prevent full access to the application",
+        "p2": "EN TEXT TO REPLACE: Below are links with instructions for cookie management in the most commonly used browsers:",
+        "chrome": "EN TEXT TO REPLACE: Google Chrome (opens in a new window)",
+        "firefox": "EN TEXT TO REPLACE: Mozilla Firefox (opens in a new window)",
+        "edge": "EN TEXT TO REPLACE: Microsoft Edge (opens in a new window)"
+      }
     },
-    "analytics": {},
-    "authenticated": {},
-    "data_retention": {},
-    "your_rights": {},
-    "contact": {},
-    "changes": {}
+    "analytics": {
+      "title": "EN TEXT TO REPLACE: Analytics",
+      "p1": "EN TEXT TO REPLACE: We use {bold} to understand how visitors use our website. This helps us improve the user experience and identify issues.",
+      "bold": "EN TEXT TO REPLACE: Vercel Web Analytics",
+      "p2": "EN TEXT TO REPLACE: Vercel Analytics is designed with privacy in mind:",
+      "li1": "EN TEXT TO REPLACE: It does not use cookies",
+      "li2": "EN TEXT TO REPLACE: It does not collect personal identifiers",
+      "li3": "EN TEXT TO REPLACE: It does not track users across websites",
+      "li4": "EN TEXT TO REPLACE: All data is aggregated and anonymised",
+      "p3": "EN TEXT TO REPLACE: The only information collected includes: page URLs, referrer, country/region, device type, browser, and operating system. This data cannot be used to identify individual users."
+    },
+    "authenticated": {
+      "title": "EN TEXT TO REPLACE: Authenticated users",
+      "p1": "EN TEXT TO REPLACE: When you connect your {bold} account to npmx, we store your OAuth access token in a secure, HTTP-only session cookie. This token is used solely to authenticate requests on your behalf.",
+      "bold": "EN TEXT TO REPLACE: Atmosphere",
+      "p2": "EN TEXT TO REPLACE: We do not store your credentials, and we do not access any data beyond what is necessary to provide the features you use. You can disconnect your account at any time from the {settings} page.",
+      "settings": "EN TEXT TO REPLACE: settings"
+    },
+    "data_retention": {
+      "title": "EN TEXT TO REPLACE: Data retention",
+      "p1": "EN TEXT TO REPLACE: Session cookies are automatically deleted when you close your browser or after a period of inactivity. Local storage preferences remain on your device until you clear your browser data. Analytics data is retained in aggregate form and cannot be linked to individual users."
+    },
+    "your_rights": {
+      "title": "EN TEXT TO REPLACE: Your rights",
+      "p1": "EN TEXT TO REPLACE: You have the right to:",
+      "li1": "EN TEXT TO REPLACE: Access information about what data we collect",
+      "li2": "EN TEXT TO REPLACE: Clear your local storage and cookies at any time",
+      "li3": "EN TEXT TO REPLACE: Disconnect your authenticated session",
+      "li4": "EN TEXT TO REPLACE: Request information about our data practices",
+      "p2": "EN TEXT TO REPLACE: Since we do not collect personal data, there is typically no personal information to delete or export."
+    },
+    "contact": {
+      "title": "EN TEXT TO REPLACE: Contact us",
+      "p1": "EN TEXT TO REPLACE: For any questions or concerns about this privacy policy, you can contact us by opening an issue on our {link}.",
+      "link": "EN TEXT TO REPLACE: GitHub repository"
+    },
+    "changes": {
+      "title": "EN TEXT TO REPLACE: Changes to this policy",
+      "p1": "EN TEXT TO REPLACE: We may update this privacy policy from time to time. Any changes will be published on this page with an updated revision date."
+    }
   },
   "a11y": {
-    "approach": {},
-    "measures": {},
-    "limitations": {},
-    "contact": {}
+    "title": "EN TEXT TO REPLACE: accessibility",
+    "footer_title": "EN TEXT TO REPLACE: a11y",
+    "welcome": "EN TEXT TO REPLACE: We want {app} to be usable by as many people as possible.",
+    "approach": {
+      "title": "EN TEXT TO REPLACE: Our approach",
+      "p1": "EN TEXT TO REPLACE: We try to follow the Web Content Accessibility Guidelines (WCAG) 2.2 and use them as a reference when building features. We don't claim full conformance with any level of WCAG — accessibility is a continual process and there is always more work to do.",
+      "p2": "EN TEXT TO REPLACE: This site is an {about}. Accessibility improvements are made incrementally as part of our regular development.",
+      "about_link": "EN TEXT TO REPLACE: open-source, community-driven project"
+    },
+    "measures": {
+      "title": "EN TEXT TO REPLACE: What we do",
+      "p1": "EN TEXT TO REPLACE: Some of the things we aim to do across the site:",
+      "li1": "EN TEXT TO REPLACE: Use semantic HTML and ARIA attributes where appropriate.",
+      "li2": "EN TEXT TO REPLACE: Use relative text sizes so you can adjust them in your browser.",
+      "li3": "EN TEXT TO REPLACE: Support keyboard navigation throughout the interface.",
+      "li4": "EN TEXT TO REPLACE: Respect the prefers-reduced-motion and prefers-color-scheme media queries.",
+      "li5": "EN TEXT TO REPLACE: Design with sufficient color contrast in mind.",
+      "li6": "EN TEXT TO REPLACE: Ensure essential content is available without JavaScript, though some interactive features require it."
+    },
+    "limitations": {
+      "title": "EN TEXT TO REPLACE: Known limitations",
+      "p1": "EN TEXT TO REPLACE: Some parts of the site — particularly third-party content like package READMEs — may not meet accessibility standards. We are working to improve these areas over time."
+    },
+    "contact": {
+      "title": "EN TEXT TO REPLACE: Feedback",
+      "p1": "EN TEXT TO REPLACE: If you encounter an accessibility barrier on {app}, please let us know by opening an issue on our {link}. We take these reports seriously and will do our best to address them.",
+      "link": "EN TEXT TO REPLACE: GitHub repository"
+    }
+  },
+  "translation_status": {
+    "title": "EN TEXT TO REPLACE: translation status",
+    "generated_at": "EN TEXT TO REPLACE: Generation date: {date}",
+    "welcome": "EN TEXT TO REPLACE: If you're interested in helping us to translate {npmx} into one of the languages listed below, you've come to the right place! This auto-updating page always lists all the content that could use your help right now.",
+    "p1": "EN TEXT TO REPLACE: We use {lang} as the default language, with a total of {count}. If you'd like to help add translations, locate the language in {bylang} and expand the details.",
+    "p1_lang": "EN TEXT TO REPLACE: American English (en-US)",
+    "p1_count": "EN TEXT TO REPLACE: 0 messages | 1 message |{count} messages",
+    "p2": "EN TEXT TO REPLACE: Before starting, please read our {guide} to learn about our translation process and how you can get involved.",
+    "guide": "EN TEXT TO REPLACE: localization (i18n) guide",
+    "by_locale": "EN TEXT TO REPLACE: Translation progress by locale",
+    "by_file": "EN TEXT TO REPLACE: Translation progress by file",
+    "complete_text": "EN TEXT TO REPLACE: This translation is complete, amazing job!",
+    "missing_text": "EN TEXT TO REPLACE: missing",
+    "missing_keys": "EN TEXT TO REPLACE: There is no missing translations | Missing translation | Missing translations",
+    "progress_label": "EN TEXT TO REPLACE: Progress status for {locale}",
+    "table": {
+      "file": "EN TEXT TO REPLACE: File",
+      "status": "EN TEXT TO REPLACE: Status",
+      "error": "EN TEXT TO REPLACE: Error while loading file list.",
+      "empty": "EN TEXT TO REPLACE: No files found",
+      "file_link": "EN TEXT TO REPLACE: Edit {file} ({lang}) on GitHub"
+    }
+  },
+  "action_bar": {
+    "title": "EN TEXT TO REPLACE: action bar",
+    "selection": "EN TEXT TO REPLACE: 0 selected | 1 selected | {count} selected",
+    "shortcut": "EN TEXT TO REPLACE: Press \"{key}\" to focus actions",
+    "button_close_aria_label": "EN TEXT TO REPLACE: Close action bar"
+  },
+  "logo_menu": {
+    "copy_svg": "EN TEXT TO REPLACE: Copy logo as SVG",
+    "copied": "EN TEXT TO REPLACE: Copied!",
+    "browse_brand": "EN TEXT TO REPLACE: Browse brand kit"
+  },
+  "brand": {
+    "title": "EN TEXT TO REPLACE: Brand",
+    "heading": "EN TEXT TO REPLACE: brand",
+    "meta_description": "EN TEXT TO REPLACE: npmx brand guidelines, logos, colors, and typography for use in press and media.",
+    "intro": "EN TEXT TO REPLACE: Resources and guidelines for using the npmx brand in your projects, articles, and media.",
+    "logos": {
+      "title": "EN TEXT TO REPLACE: logos",
+      "description": "EN TEXT TO REPLACE: Download npmx logos in SVG and PNG formats. Use the appropriate variant for your background.",
+      "wordmark": "EN TEXT TO REPLACE: Full wordmark",
+      "wordmark_alt": "EN TEXT TO REPLACE: npmx full wordmark logo with blue slash on dark background",
+      "wordmark_light_alt": "EN TEXT TO REPLACE: npmx full wordmark logo with accent slash on light background",
+      "mark": "EN TEXT TO REPLACE: Logo mark",
+      "mark_alt": "EN TEXT TO REPLACE: npmx logo mark with dot and slash on dark background",
+      "mark_light_alt": "EN TEXT TO REPLACE: npmx logo mark with dot and slash on light background",
+      "on_dark": "EN TEXT TO REPLACE: On dark",
+      "on_light": "EN TEXT TO REPLACE: On light",
+      "download_svg": "EN TEXT TO REPLACE: SVG",
+      "download_png": "EN TEXT TO REPLACE: PNG",
+      "download_svg_aria": "EN TEXT TO REPLACE: Download {name} as SVG",
+      "download_png_aria": "EN TEXT TO REPLACE: Download {name} as PNG"
+    },
+    "customize": {
+      "title": "EN TEXT TO REPLACE: customize your logo",
+      "description": "EN TEXT TO REPLACE: Preview the npmx logo with your accent color and background. The preview reflects your current settings — pick a color, toggle the background, and download.",
+      "accent_label": "EN TEXT TO REPLACE: Accent",
+      "bg_label": "EN TEXT TO REPLACE: Background",
+      "download_svg_aria": "EN TEXT TO REPLACE: Download customized logo as SVG",
+      "download_png_aria": "EN TEXT TO REPLACE: Download customized logo as PNG"
+    },
+    "typography": {
+      "title": "EN TEXT TO REPLACE: typography",
+      "description": "EN TEXT TO REPLACE: npmx uses the Geist font family by Vercel for both interface text and code.",
+      "sans": "EN TEXT TO REPLACE: Geist Sans",
+      "sans_desc": "EN TEXT TO REPLACE: Used for body text and UI elements.",
+      "mono": "EN TEXT TO REPLACE: Geist Mono",
+      "mono_desc": "EN TEXT TO REPLACE: Used for code, headings, and technical content.",
+      "pangram": "EN TEXT TO REPLACE: The quick brown fox jumps over the lazy dog",
+      "numbers": "EN TEXT TO REPLACE: 0123456789"
+    },
+    "guidelines": {
+      "title": "EN TEXT TO REPLACE: just a note",
+      "message": "EN TEXT TO REPLACE: Accessibility matters to us, and we would love you to follow us in this vision. When using mentioned media, ensure there is enough contrast against the background, and don't go smaller than 24px. If you need any other resources or additional information about the project, feel free to reach us at {link}.",
+      "discord_link_text": "EN TEXT TO REPLACE: chat.npmx.dev"
+    }
   }
 }

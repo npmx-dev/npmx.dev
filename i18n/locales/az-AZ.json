@@ -19,7 +19,8 @@
     "social": "sosial",
     "chat": "söhbət",
     "builders_chat": "qurucular",
-    "keyboard_shortcuts": "klaviatura qısayolları"
+    "keyboard_shortcuts": "klaviatura qısayolları",
+    "brand": "EN TEXT TO REPLACE: brand"
   },
   "shortcuts": {
     "section": {
@@ -36,7 +37,9 @@
     "go_to_result": "Nəticəyə keç",
     "open_code_view": "Kod görünüşünü aç",
     "open_docs": "Sənədləri aç",
-    "disable_shortcuts": "Klaviatura qısayollarını {settings} bölməsindən söndürə bilərsiniz."
+    "disable_shortcuts": "Klaviatura qısayollarını {settings} bölməsindən söndürə bilərsiniz.",
+    "open_main": "EN TEXT TO REPLACE: Open main information",
+    "open_diff": "EN TEXT TO REPLACE: Open version differences"
   },
   "search": {
     "label": "npm paketlərini axtar",
@@ -94,6 +97,7 @@
     },
     "draft_badge": "Qaralama",
     "draft_banner": "Bu dərc edilməmiş qaralamadır. Natamam və ya qeyri-dəqiq məlumat ehtiva edə bilər.",
+    "no_posts": "EN TEXT TO REPLACE: No posts found.",
     "atproto": {
       "view_on_bluesky": "Bluesky-da bax",
       "reply_on_bluesky": "Bluesky-da cavabla",
@@ -136,19 +140,33 @@
     "include_types_description": "Tipsiz paketlər üçün quraşdırma əmrlərinə {'@'}types paketi əlavə et",
     "hide_platform_packages": "Axtarışda platforma-spesifik paketləri gizlət",
     "hide_platform_packages_description": "Nəticələrdə {'@'}esbuild/linux-x64 kimi yerli binar paketləri gizlət",
+    "enable_graph_pulse_loop": "EN TEXT TO REPLACE: Enable looping of pulse effect on mini graph",
+    "enable_graph_pulse_loop_description": "EN TEXT TO REPLACE: Activate a continuous pulse animation on the weekly download graph. This animation may be distracting for some users.",
     "theme": "Tema",
     "theme_light": "Açıq",
     "theme_dark": "Tünd",
     "theme_system": "Sistem",
     "language": "Dil",
     "help_translate": "npmx-i tərcümə etməyə kömək edin",
+    "translation_status": "EN TEXT TO REPLACE: Check global translation status",
     "accent_colors": {
-      "label": "Vurğu rəngləri"
+      "label": "Vurğu rəngləri",
+      "sky": "EN TEXT TO REPLACE: Sky",
+      "coral": "EN TEXT TO REPLACE: Coral",
+      "amber": "EN TEXT TO REPLACE: Amber",
+      "emerald": "EN TEXT TO REPLACE: Emerald",
+      "violet": "EN TEXT TO REPLACE: Violet",
+      "magenta": "EN TEXT TO REPLACE: Magenta"
     },
     "clear_accent": "Vurğu rəngini təmizlə",
     "translation_progress": "Tərcümə irəliləyişi",
     "background_themes": {
-      "label": "Fon tonu"
+      "label": "Fon tonu",
+      "neutral": "EN TEXT TO REPLACE: Neutral",
+      "stone": "EN TEXT TO REPLACE: Stone",
+      "zinc": "EN TEXT TO REPLACE: Zinc",
+      "slate": "EN TEXT TO REPLACE: Slate",
+      "black": "EN TEXT TO REPLACE: Black"
     },
     "keyboard_shortcuts_enabled": "Klaviatura qısayollarını aktivləşdir",
     "keyboard_shortcuts_enabled_description": "Klaviatura qısayolları digər brauzer və ya sistem qısayolları ilə toqquşarsa deaktiv edilə bilər"
@@ -196,8 +214,20 @@
     "error": "Xəta",
     "view_on": {
       "npm": "npm-də bax",
-      "github": "GitHub-da bax"
-    }
+      "github": "GitHub-da bax",
+      "gitlab": "EN TEXT TO REPLACE: View on GitLab",
+      "bitbucket": "EN TEXT TO REPLACE: View on Bitbucket",
+      "codeberg": "EN TEXT TO REPLACE: View on Codeberg",
+      "git_repo": "EN TEXT TO REPLACE: View on Git repository",
+      "forgejo": "EN TEXT TO REPLACE: View on Forgejo",
+      "gitea": "EN TEXT TO REPLACE: View on Gitea",
+      "gitee": "EN TEXT TO REPLACE: View on Gitee",
+      "radicle": "EN TEXT TO REPLACE: View on Radicle",
+      "sourcehut": "EN TEXT TO REPLACE: View on SourceHut",
+      "tangled": "EN TEXT TO REPLACE: View on Tangled"
+    },
+    "collapse": "EN TEXT TO REPLACE: Collapse",
+    "expand": "EN TEXT TO REPLACE: Expand"
   },
   "profile": {
     "display_name": "Görünən Ad",
@@ -276,9 +306,11 @@
         "refs": "{count} istinad | {count} istinad",
         "assets": "{count} resurs | {count} resurs"
       },
-      "view_source": "Mənbəyə bax"
+      "view_source": "Mənbəyə bax",
+      "skills_cli": "EN TEXT TO REPLACE: skills CLI"
     },
     "links": {
+      "main": "EN TEXT TO REPLACE: main",
       "repo": "repo",
       "homepage": "ana səhifə",
       "issues": "xətalar",
@@ -286,15 +318,23 @@
       "code": "kod",
       "docs": "sənədlər",
       "fund": "maliyyələşdirmə",
-      "compare": "müqayisə"
+      "compare": "müqayisə",
+      "compare_this_package": "EN TEXT TO REPLACE: compare this package"
     },
     "likes": {
       "like": "Bu paketi bəyən",
       "unlike": "Bəyənməni geri al"
     },
     "docs": {
+      "contents": "EN TEXT TO REPLACE: Contents",
+      "default_not_available": "EN TEXT TO REPLACE: Docs are not available for this version.",
       "not_available": "Sənədlər mövcud deyil",
-      "not_available_detail": "Bu versiya üçün sənədlər yaradıla bilmədi."
+      "not_available_detail": "Bu versiya üçün sənədlər yaradıla bilmədi.",
+      "page_title": "EN TEXT TO REPLACE: API Docs - npmx",
+      "page_title_name": "EN TEXT TO REPLACE: {name} docs - npmx",
+      "page_title_version": "EN TEXT TO REPLACE: {name} docs - npmx",
+      "og_title": "EN TEXT TO REPLACE: {name} - Docs",
+      "view_package": "EN TEXT TO REPLACE: View package"
     },
     "get_started": {
       "title": "Başla",
@@ -354,7 +394,9 @@
       "published": "Dərc edilib",
       "weekly_downloads": "Həftəlik endirmələr",
       "keywords": "Açar sözlər",
-      "license": "Lisenziya"
+      "license": "Lisenziya",
+      "select": "EN TEXT TO REPLACE: Select package",
+      "select_maximum": "EN TEXT TO REPLACE: Maximum {count} packages can be selected"
     },
     "versions": {
       "title": "Versiyalar",
@@ -369,6 +411,7 @@
       "all_covered": "Bütün versiyalar yuxarıdakı etiketlər tərəfindən əhatə olunub",
       "deprecated_title": "{version} (köhnəlmiş)",
       "view_all": "{count} versiyanı göstər | Bütün {count} versiyanı göstər",
+      "view_all_versions": "EN TEXT TO REPLACE: View all versions",
       "distribution_title": "Semver Qrupu",
       "distribution_modal_title": "Versiyalar",
       "distribution_range_date_same_year": "{from}-dən {to}-yə, {endYear}",
@@ -376,10 +419,13 @@
       "grouping_major": "Major",
       "grouping_minor": "Minor",
       "grouping_versions_title": "Versiyalar",
+      "grouping_versions_about": "EN TEXT TO REPLACE: About version grouping",
       "grouping_versions_all": "Hamısı",
       "grouping_versions_only_recent": "Yalnız son",
       "grouping_usage_title": "İstifadə",
+      "grouping_usage_about": "EN TEXT TO REPLACE: About usage grouping",
       "grouping_usage_all": "Hamısı",
+      "grouping_usage_most_used": "EN TEXT TO REPLACE: Most used",
       "recent_versions_only_tooltip": "Yalnız son bir il ərzində dərc edilmiş versiyaları göstər.",
       "show_low_usage_tooltip": "Ümumi endirmələrin 1%-dən azını təşkil edən versiya qruplarını daxil et.",
       "y_axis_label": "Endirmələr",
@@ -392,7 +438,12 @@
       "copy_alt": {
         "per_version_analysis": "{version} versiyası {downloads} dəfə endirilmişdir",
         "general_description": "{package_name} paketinin {versions_count} {semver_grouping_mode} versiyası üçün versiya başına endirmələri göstərən çubuq diaqramı, {date_range_label} {first_version} versiyasından {last_version} versiyasına qədər. Ən çox endirilən versiya {max_version_downloads} endirmə ilə {max_downloaded_version}-dir. {per_version_analysis}. {watermark}."
-      }
+      },
+      "page_title": "EN TEXT TO REPLACE: Version History",
+      "current_tags": "EN TEXT TO REPLACE: Current Tags",
+      "version_filter_placeholder": "EN TEXT TO REPLACE: Filter versions…",
+      "version_filter_label": "EN TEXT TO REPLACE: Filter versions",
+      "no_match_filter": "EN TEXT TO REPLACE: No versions match {filter}"
     },
     "dependencies": {
       "title": "Asılılıq ({count}) | Asılılıqlar ({count})",
@@ -403,7 +454,8 @@
       "outdated_major": "{count} major versiya geridə (son: {latest}) | {count} major versiya geridə (son: {latest})",
       "outdated_minor": "{count} minor versiya geridə (son: {latest}) | {count} minor versiya geridə (son: {latest})",
       "outdated_patch": "Patch yeniləməsi mövcuddur (son: {latest})",
-      "has_replacement": "Bu asılılığın tövsiyə olunan əvəzləyiciləri var"
+      "has_replacement": "Bu asılılığın tövsiyə olunan əvəzləyiciləri var",
+      "vulnerabilities_count": "EN TEXT TO REPLACE: {count} vulnerability | {count} vulnerabilities"
     },
     "peer_dependencies": {
       "title": "Peer Asılılıq ({count}) | Peer Asılılıqlar ({count})",
@@ -427,9 +479,16 @@
       "cancel_add": "Sahib əlavə etməni ləğv et",
       "add_owner": "+ Sahib əlavə et",
       "show_more": "(daha {count} göstər)",
-      "show_less": "(daha az göstər)"
+      "show_less": "(daha az göstər)",
+      "maintainer_template": "EN TEXT TO REPLACE: {avatar} {char126}{name}"
     },
     "trends": {
+      "chart_assistive_text": {
+        "keyboard_navigation_horizontal": "EN TEXT TO REPLACE: Use the left and right arrow keys to cycle through data points.",
+        "keyboard_navigation_vertical": "EN TEXT TO REPLACE: Use the up and down arrow keys to cycle through data points.",
+        "table_available": "EN TEXT TO REPLACE: A data table for this chart is available below.",
+        "table_caption": "EN TEXT TO REPLACE: Chart data table"
+      },
       "granularity": "Dərəcəlilik",
       "granularity_daily": "Günlük",
       "granularity_weekly": "Həftəlik",
@@ -459,6 +518,7 @@
       "data_correction": "Məlumat düzəlişi",
       "average_window": "Orta pəncərə",
       "smoothing": "Hamarlama",
+      "prediction": "EN TEXT TO REPLACE: Prediction",
       "known_anomalies": "Bilinən anomaliyalar",
       "known_anomalies_description": "Botlar və ya CI problemlərindən yaranan bilinən endirmə sıçrayışlarını interpolyasiya edir.",
       "known_anomalies_ranges": "Anomaliya aralıqları",
@@ -479,13 +539,16 @@
         "estimations": "Son dəyərlər cari dövr üçün qismən məlumatlara əsaslanan təxminlərdir.",
         "compare": "Paket endirmə müqayisəsi xətt diaqramı: {packages}.",
         "single_package": "{package} paketi üçün endirmə xətt diaqramı.",
-        "general_description": "Y oxu endirmələrin sayını təmsil edir. X oxu tarix aralığını təmsil edir, {start_date}-dən {end_date}-ə, {granularity} zaman dövrü ilə.{estimation_notice} {packages_analysis}. {watermark}."
+        "general_description": "Y oxu endirmələrin sayını təmsil edir. X oxu tarix aralığını təmsil edir, {start_date}-dən {end_date}-ə, {granularity} zaman dövrü ilə.{estimation_notice} {packages_analysis}. {watermark}.",
+        "facet_bar_general_description": "EN TEXT TO REPLACE: Horizontal bar chart for: {packages}, comparing {facet} ({description}). {facet_analysis} {watermark}.",
+        "facet_bar_analysis": "EN TEXT TO REPLACE: {package_name} has a value of {value}."
       }
     },
     "downloads": {
       "title": "Həftəlik Endirmələr",
       "community_distribution": "İcma adaptasiya paylanmasına bax",
-      "subtitle": "Bütün versiyalar üzrə"
+      "subtitle": "Bütün versiyalar üzrə",
+      "sparkline_nav_hint": "EN TEXT TO REPLACE: Use ← →"
     },
     "install_scripts": {
       "title": "Quraşdırma Skriptləri",
@@ -501,6 +564,7 @@
       "esm": "ES Modulları dəstəklənir",
       "cjs": "CommonJS dəstəklənir",
       "no_esm": "ES Modulları dəstəklənmir",
+      "wasm": "EN TEXT TO REPLACE: Has WebAssembly",
       "types_label": "Tiplər",
       "types_included": "Tiplər daxildir",
       "types_available": "Tiplər {package} vasitəsilə mövcuddur",
@@ -574,6 +638,10 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
+    },
+    "download": {
+      "button": "EN TEXT TO REPLACE: Download",
+      "tarball": "EN TEXT TO REPLACE: Download Tarball as .tar.gz"
     }
   },
   "connector": {
@@ -778,7 +846,9 @@
       "preview": "önbaxış",
       "code": "kod"
     },
-    "file_path": "Fayl yolu"
+    "file_path": "Fayl yolu",
+    "binary_file": "EN TEXT TO REPLACE: Binary file",
+    "binary_rendering_warning": "EN TEXT TO REPLACE: File type \"{contentType}\" is not supported for preview."
   },
   "badges": {
     "provenance": {
@@ -840,6 +910,8 @@
       "secure": "Xəbərdarlıqsız",
       "insecure": "Xəbərdarlıqlı"
     },
+    "view_selected": "EN TEXT TO REPLACE: View selected",
+    "clear_selected_label": "EN TEXT TO REPLACE: Clear selected",
     "sort": {
       "label": "Paketləri sırala",
       "toggle_direction": "Sıralama istiqamətini dəyişdir",
@@ -873,7 +945,8 @@
       "popularity_score": "Populyarlıq xalı",
       "maintenance_score": "Baxım xalı",
       "combined_score": "Ümumi xal",
-      "security": "Təhlükəsizlik"
+      "security": "Təhlükəsizlik",
+      "selection": "EN TEXT TO REPLACE: Select package"
     },
     "view_mode": {
       "label": "Görünüş rejimi",
@@ -1020,7 +1093,8 @@
       "error": "Təşkilatlar yüklənə bilmədi",
       "empty": "Təşkilat tapılmadı",
       "view_all": "Hamısını göstər"
-    }
+    },
+    "pr": "EN TEXT TO REPLACE: Open GitHub pull request #{prNumber}"
   },
   "compare": {
     "packages": {
@@ -1037,7 +1111,11 @@
       "loading": "Paket məlumatları yüklənir...",
       "error": "Paket məlumatları yüklənə bilmədi. Yenidən cəhd edin.",
       "empty_title": "Müqayisə üçün paketlər seçin",
-      "empty_description": "Metriklərinin yan-yana müqayisəsini görmək üçün yuxarıda ən azı 2 paket axtarıb əlavə edin."
+      "empty_description": "Metriklərinin yan-yana müqayisəsini görmək üçün yuxarıda ən azı 2 paket axtarıb əlavə edin.",
+      "table_view": "EN TEXT TO REPLACE: Table",
+      "charts_view": "EN TEXT TO REPLACE: Charts",
+      "bar_chart_nav_hint": "EN TEXT TO REPLACE: Use ↑ ↓",
+      "line_chart_nav_hint": "EN TEXT TO REPLACE: Use ← →"
     },
     "selector": {
       "search_label": "Paketləri axtar",
@@ -1149,6 +1227,15 @@
     "file_size_warning": "{size} müqayisə üçün 250KB limitini keçir",
     "compare_versions": "fərq",
     "compare_versions_title": "Versiyaları müqayisə et",
+    "comparing_versions_label": "EN TEXT TO REPLACE: Comparing versions...",
+    "version_back_to_package": "EN TEXT TO REPLACE: Back to package",
+    "version_error_message": "EN TEXT TO REPLACE: Failed to compare versions.",
+    "version_invalid_url_format": {
+      "hint": "EN TEXT TO REPLACE: Invalid comparison URL. Use format: {0}",
+      "from_version": "EN TEXT TO REPLACE: from",
+      "to_version": "EN TEXT TO REPLACE: to"
+    },
+    "version_selector_title": "EN TEXT TO REPLACE: Compare with version",
     "summary": "Xülasə",
     "deps_count": "{count} asılılıq",
     "dependencies": "Asılılıqlar",
@@ -1174,7 +1261,18 @@
     "files_button": "Fayllar",
     "select_file_prompt": "Fərqini görmək üçün yan paneldən fayl seçin",
     "close_files_panel": "Fayllar panelini bağla",
-    "filter_files_label": "Faylları dəyişiklik növünə görə süz"
+    "filter_files_label": "Faylları dəyişiklik növünə görə süz",
+    "change_ratio": "EN TEXT TO REPLACE: Change ratio",
+    "char_edits": "EN TEXT TO REPLACE: Char edits",
+    "diff_distance": "EN TEXT TO REPLACE: Diff distance",
+    "loading_diff": "EN TEXT TO REPLACE: Loading diff...",
+    "loading_diff_error": "EN TEXT TO REPLACE: Failed to load diff",
+    "merge_modified_lines": "EN TEXT TO REPLACE: Merge modified lines",
+    "no_content_changes": "EN TEXT TO REPLACE: No content changes detected",
+    "options": "EN TEXT TO REPLACE: Options",
+    "view_file": "EN TEXT TO REPLACE: View file",
+    "view_in_code_browser": "EN TEXT TO REPLACE: View in code browser",
+    "word_wrap": "EN TEXT TO REPLACE: Word wrap"
   },
   "pds": {
     "title": "PDS",
@@ -1312,6 +1410,85 @@
       "title": "Əlaqə",
       "p1": "{app} saytında əlçatanlıq maneəsi ilə qarşılaşsanız, xahiş edirik {link} issue açaraq bizə bildirin. Bu hesabatları ciddi qəbul edirik və onları həll etmək üçün əlimizdən gələni edəcəyik.",
       "link": "GitHub repozitoriyası"
+    }
+  },
+  "translation_status": {
+    "title": "EN TEXT TO REPLACE: translation status",
+    "generated_at": "EN TEXT TO REPLACE: Generation date: {date}",
+    "welcome": "EN TEXT TO REPLACE: If you're interested in helping us to translate {npmx} into one of the languages listed below, you've come to the right place! This auto-updating page always lists all the content that could use your help right now.",
+    "p1": "EN TEXT TO REPLACE: We use {lang} as the default language, with a total of {count}. If you'd like to help add translations, locate the language in {bylang} and expand the details.",
+    "p1_lang": "EN TEXT TO REPLACE: American English (en-US)",
+    "p1_count": "EN TEXT TO REPLACE: 0 messages | 1 message |{count} messages",
+    "p2": "EN TEXT TO REPLACE: Before starting, please read our {guide} to learn about our translation process and how you can get involved.",
+    "guide": "EN TEXT TO REPLACE: localization (i18n) guide",
+    "by_locale": "EN TEXT TO REPLACE: Translation progress by locale",
+    "by_file": "EN TEXT TO REPLACE: Translation progress by file",
+    "complete_text": "EN TEXT TO REPLACE: This translation is complete, amazing job!",
+    "missing_text": "EN TEXT TO REPLACE: missing",
+    "missing_keys": "EN TEXT TO REPLACE: There is no missing translations | Missing translation | Missing translations",
+    "progress_label": "EN TEXT TO REPLACE: Progress status for {locale}",
+    "table": {
+      "file": "EN TEXT TO REPLACE: File",
+      "status": "EN TEXT TO REPLACE: Status",
+      "error": "EN TEXT TO REPLACE: Error while loading file list.",
+      "empty": "EN TEXT TO REPLACE: No files found",
+      "file_link": "EN TEXT TO REPLACE: Edit {file} ({lang}) on GitHub"
+    }
+  },
+  "action_bar": {
+    "title": "EN TEXT TO REPLACE: action bar",
+    "selection": "EN TEXT TO REPLACE: 0 selected | 1 selected | {count} selected",
+    "shortcut": "EN TEXT TO REPLACE: Press \"{key}\" to focus actions",
+    "button_close_aria_label": "EN TEXT TO REPLACE: Close action bar"
+  },
+  "logo_menu": {
+    "copy_svg": "EN TEXT TO REPLACE: Copy logo as SVG",
+    "copied": "EN TEXT TO REPLACE: Copied!",
+    "browse_brand": "EN TEXT TO REPLACE: Browse brand kit"
+  },
+  "brand": {
+    "title": "EN TEXT TO REPLACE: Brand",
+    "heading": "EN TEXT TO REPLACE: brand",
+    "meta_description": "EN TEXT TO REPLACE: npmx brand guidelines, logos, colors, and typography for use in press and media.",
+    "intro": "EN TEXT TO REPLACE: Resources and guidelines for using the npmx brand in your projects, articles, and media.",
+    "logos": {
+      "title": "EN TEXT TO REPLACE: logos",
+      "description": "EN TEXT TO REPLACE: Download npmx logos in SVG and PNG formats. Use the appropriate variant for your background.",
+      "wordmark": "EN TEXT TO REPLACE: Full wordmark",
+      "wordmark_alt": "EN TEXT TO REPLACE: npmx full wordmark logo with blue slash on dark background",
+      "wordmark_light_alt": "EN TEXT TO REPLACE: npmx full wordmark logo with accent slash on light background",
+      "mark": "EN TEXT TO REPLACE: Logo mark",
+      "mark_alt": "EN TEXT TO REPLACE: npmx logo mark with dot and slash on dark background",
+      "mark_light_alt": "EN TEXT TO REPLACE: npmx logo mark with dot and slash on light background",
+      "on_dark": "EN TEXT TO REPLACE: On dark",
+      "on_light": "EN TEXT TO REPLACE: On light",
+      "download_svg": "EN TEXT TO REPLACE: SVG",
+      "download_png": "EN TEXT TO REPLACE: PNG",
+      "download_svg_aria": "EN TEXT TO REPLACE: Download {name} as SVG",
+      "download_png_aria": "EN TEXT TO REPLACE: Download {name} as PNG"
+    },
+    "customize": {
+      "title": "EN TEXT TO REPLACE: customize your logo",
+      "description": "EN TEXT TO REPLACE: Preview the npmx logo with your accent color and background. The preview reflects your current settings — pick a color, toggle the background, and download.",
+      "accent_label": "EN TEXT TO REPLACE: Accent",
+      "bg_label": "EN TEXT TO REPLACE: Background",
+      "download_svg_aria": "EN TEXT TO REPLACE: Download customized logo as SVG",
+      "download_png_aria": "EN TEXT TO REPLACE: Download customized logo as PNG"
+    },
+    "typography": {
+      "title": "EN TEXT TO REPLACE: typography",
+      "description": "EN TEXT TO REPLACE: npmx uses the Geist font family by Vercel for both interface text and code.",
+      "sans": "EN TEXT TO REPLACE: Geist Sans",
+      "sans_desc": "EN TEXT TO REPLACE: Used for body text and UI elements.",
+      "mono": "EN TEXT TO REPLACE: Geist Mono",
+      "mono_desc": "EN TEXT TO REPLACE: Used for code, headings, and technical content.",
+      "pangram": "EN TEXT TO REPLACE: The quick brown fox jumps over the lazy dog",
+      "numbers": "EN TEXT TO REPLACE: 0123456789"
+    },
+    "guidelines": {
+      "title": "EN TEXT TO REPLACE: just a note",
+      "message": "EN TEXT TO REPLACE: Accessibility matters to us, and we would love you to follow us in this vision. When using mentioned media, ensure there is enough contrast against the background, and don't go smaller than 24px. If you need any other resources or additional information about the project, feel free to reach us at {link}.",
+      "discord_link_text": "EN TEXT TO REPLACE: chat.npmx.dev"
     }
   }
 }

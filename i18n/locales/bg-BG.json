@@ -13,11 +13,14 @@
   "trademark_disclaimer": "npm е регистрирана търговска марка на npm, Inc. Този сайт не е свързан с npm, Inc.",
   "footer": {
     "about": "за нас",
+    "blog": "EN TEXT TO REPLACE: blog",
     "docs": "документация",
     "source": "код",
     "social": "социални мрежи",
     "chat": "чат",
-    "keyboard_shortcuts": "клавишни комбинации"
+    "builders_chat": "EN TEXT TO REPLACE: builders",
+    "keyboard_shortcuts": "клавишни комбинации",
+    "brand": "EN TEXT TO REPLACE: brand"
   },
   "shortcuts": {
     "section": {
@@ -34,7 +37,9 @@
     "go_to_result": "Отваряне на резултат",
     "open_code_view": "Отваряне на изглед на кода",
     "open_docs": "Отваряне на документация",
-    "disable_shortcuts": "Можете да деактивирате клавишните комбинации в {settings}."
+    "disable_shortcuts": "Можете да деактивирате клавишните комбинации в {settings}.",
+    "open_main": "EN TEXT TO REPLACE: Open main information",
+    "open_diff": "EN TEXT TO REPLACE: Open version differences"
   },
   "search": {
     "label": "Търсене на npm пакети",
@@ -63,7 +68,13 @@
       "org": "организация",
       "view_user_packages": "Показване на пакети от този потребител",
       "view_org_packages": "Показване на пакети от тази организация"
-    }
+    },
+    "instant_search": "EN TEXT TO REPLACE: Instant search",
+    "instant_search_on": "EN TEXT TO REPLACE: on",
+    "instant_search_off": "EN TEXT TO REPLACE: off",
+    "instant_search_turn_on": "EN TEXT TO REPLACE: turn on",
+    "instant_search_turn_off": "EN TEXT TO REPLACE: turn off",
+    "instant_search_advisory": "EN TEXT TO REPLACE: {label} {state} — {action}"
   },
   "nav": {
     "main_navigation": "Главна",
@@ -78,8 +89,30 @@
     "tap_to_search": "Докоснете за търсене"
   },
   "blog": {
-    "author": {},
-    "atproto": {}
+    "title": "EN TEXT TO REPLACE: Blog",
+    "heading": "EN TEXT TO REPLACE: blog",
+    "meta_description": "EN TEXT TO REPLACE: Insights and updates from the npmx community",
+    "author": {
+      "view_profile": "EN TEXT TO REPLACE: View {name}'s profile on Bluesky"
+    },
+    "draft_badge": "EN TEXT TO REPLACE: Draft",
+    "draft_banner": "EN TEXT TO REPLACE: This is an unpublished draft. It may be incomplete or contain inaccuracies.",
+    "no_posts": "EN TEXT TO REPLACE: No posts found.",
+    "atproto": {
+      "view_on_bluesky": "EN TEXT TO REPLACE: View on Bluesky",
+      "reply_on_bluesky": "EN TEXT TO REPLACE: Reply on Bluesky",
+      "likes_on_bluesky": "EN TEXT TO REPLACE: Likes on Bluesky",
+      "like_or_reply_on_bluesky": "EN TEXT TO REPLACE: Like this post or add your comment on Bluesky",
+      "no_comments_yet": "EN TEXT TO REPLACE: No comments yet.",
+      "could_not_load_comments": "EN TEXT TO REPLACE: Could not load comments.",
+      "comments": "EN TEXT TO REPLACE: Comments",
+      "loading_comments": "EN TEXT TO REPLACE: Loading comments...",
+      "updating": "EN TEXT TO REPLACE: Updating...",
+      "reply_count": "EN TEXT TO REPLACE: {count} reply | {count} replies",
+      "like_count": "EN TEXT TO REPLACE: {count} like | {count} likes",
+      "repost_count": "EN TEXT TO REPLACE: {count} repost | {count} reposts",
+      "more_replies": "EN TEXT TO REPLACE: {count} more reply... | {count} more replies..."
+    }
   },
   "settings": {
     "title": "настройки",
@@ -100,24 +133,40 @@
       "algolia": "Algolia",
       "algolia_description": "Използва Algolia за по-бързо търсене, страници на организации и потребители."
     },
+    "instant_search": "EN TEXT TO REPLACE: Instant search",
+    "instant_search_description": "EN TEXT TO REPLACE: Navigates to the search page and updates the results as you type.",
     "relative_dates": "Относителни дати",
     "include_types": "Включване на {'@'}types в инсталацията",
     "include_types_description": "Добавяне на {'@'}types пакет към командите за инсталация за нетипизирани пакети",
     "hide_platform_packages": "Скриване на платформо-специфични пакети при търсене",
     "hide_platform_packages_description": "Скриване на native binary пакети като {'@'}esbuild/linux-x64 от резултатите",
+    "enable_graph_pulse_loop": "EN TEXT TO REPLACE: Enable looping of pulse effect on mini graph",
+    "enable_graph_pulse_loop_description": "EN TEXT TO REPLACE: Activate a continuous pulse animation on the weekly download graph. This animation may be distracting for some users.",
     "theme": "Тема",
     "theme_light": "Светла",
     "theme_dark": "Тъмна",
     "theme_system": "Системна",
     "language": "Език",
     "help_translate": "Помогнете да преведем npmx",
+    "translation_status": "EN TEXT TO REPLACE: Check global translation status",
     "accent_colors": {
-      "label": "Акцентни цветове"
+      "label": "Акцентни цветове",
+      "sky": "EN TEXT TO REPLACE: Sky",
+      "coral": "EN TEXT TO REPLACE: Coral",
+      "amber": "EN TEXT TO REPLACE: Amber",
+      "emerald": "EN TEXT TO REPLACE: Emerald",
+      "violet": "EN TEXT TO REPLACE: Violet",
+      "magenta": "EN TEXT TO REPLACE: Magenta"
     },
     "clear_accent": "Изчистване на акцентен цвят",
     "translation_progress": "Напредък на превода",
     "background_themes": {
-      "label": "Фонов нюанс"
+      "label": "Фонов нюанс",
+      "neutral": "EN TEXT TO REPLACE: Neutral",
+      "stone": "EN TEXT TO REPLACE: Stone",
+      "zinc": "EN TEXT TO REPLACE: Zinc",
+      "slate": "EN TEXT TO REPLACE: Slate",
+      "black": "EN TEXT TO REPLACE: Black"
     },
     "keyboard_shortcuts_enabled": "Активиране на клавишни комбинации",
     "keyboard_shortcuts_enabled_description": "Клавишните комбинации могат да бъдат деактивирани, ако влизат в конфликт с други браузърни или системни преки пътища"
@@ -130,7 +179,13 @@
     "edit_on_github": "Редактиране в GitHub",
     "view_guide": "Ръководство за превод"
   },
-  "error": {},
+  "error": {
+    "401": "EN TEXT TO REPLACE: Unauthorized",
+    "404": "EN TEXT TO REPLACE: Page not found",
+    "500": "EN TEXT TO REPLACE: Internal server error",
+    "503": "EN TEXT TO REPLACE: Service unavailable",
+    "default": "EN TEXT TO REPLACE: Something went wrong"
+  },
   "common": {
     "loading": "Зареждане...",
     "loading_more": "Зареждане на още...",
@@ -159,8 +214,20 @@
     "error": "Грешка",
     "view_on": {
       "npm": "преглед в npm",
-      "github": "Преглед в GitHub"
-    }
+      "github": "Преглед в GitHub",
+      "gitlab": "EN TEXT TO REPLACE: View on GitLab",
+      "bitbucket": "EN TEXT TO REPLACE: View on Bitbucket",
+      "codeberg": "EN TEXT TO REPLACE: View on Codeberg",
+      "git_repo": "EN TEXT TO REPLACE: View on Git repository",
+      "forgejo": "EN TEXT TO REPLACE: View on Forgejo",
+      "gitea": "EN TEXT TO REPLACE: View on Gitea",
+      "gitee": "EN TEXT TO REPLACE: View on Gitee",
+      "radicle": "EN TEXT TO REPLACE: View on Radicle",
+      "sourcehut": "EN TEXT TO REPLACE: View on SourceHut",
+      "tangled": "EN TEXT TO REPLACE: View on Tangled"
+    },
+    "collapse": "EN TEXT TO REPLACE: Collapse",
+    "expand": "EN TEXT TO REPLACE: Expand"
   },
   "profile": {
     "display_name": "Показвано име",
@@ -239,9 +306,11 @@
         "refs": "{count} препратка | {count} препратки",
         "assets": "{count} ресурс | {count} ресурса"
       },
-      "view_source": "Преглед на кода"
+      "view_source": "Преглед на кода",
+      "skills_cli": "EN TEXT TO REPLACE: skills CLI"
     },
     "links": {
+      "main": "EN TEXT TO REPLACE: main",
       "repo": "хранилище",
       "homepage": "начална страница",
       "issues": "проблеми",
@@ -249,15 +318,23 @@
       "code": "код",
       "docs": "документация",
       "fund": "финансиране",
-      "compare": "сравнение"
+      "compare": "сравнение",
+      "compare_this_package": "EN TEXT TO REPLACE: compare this package"
     },
     "likes": {
       "like": "Харесване на пакета",
       "unlike": "Премахване на харесване"
     },
     "docs": {
+      "contents": "EN TEXT TO REPLACE: Contents",
+      "default_not_available": "EN TEXT TO REPLACE: Docs are not available for this version.",
       "not_available": "Документацията не е налична",
-      "not_available_detail": "Не успяхме да генерираме документация за тази версия."
+      "not_available_detail": "Не успяхме да генерираме документация за тази версия.",
+      "page_title": "EN TEXT TO REPLACE: API Docs - npmx",
+      "page_title_name": "EN TEXT TO REPLACE: {name} docs - npmx",
+      "page_title_version": "EN TEXT TO REPLACE: {name} docs - npmx",
+      "og_title": "EN TEXT TO REPLACE: {name} - Docs",
+      "view_package": "EN TEXT TO REPLACE: View package"
     },
     "get_started": {
       "title": "Първи стъпки",
@@ -317,7 +394,9 @@
       "published": "Публикуван",
       "weekly_downloads": "Седмични изтегляния",
       "keywords": "Ключови думи",
-      "license": "Лиценз"
+      "license": "Лиценз",
+      "select": "EN TEXT TO REPLACE: Select package",
+      "select_maximum": "EN TEXT TO REPLACE: Maximum {count} packages can be selected"
     },
     "versions": {
       "title": "Версии",
@@ -332,6 +411,7 @@
       "all_covered": "Всички версии са покрити от горните тагове",
       "deprecated_title": "{version} (остаряла)",
       "view_all": "Преглед на {count} версия | Преглед на всички {count} версии",
+      "view_all_versions": "EN TEXT TO REPLACE: View all versions",
       "distribution_title": "Semver група",
       "distribution_modal_title": "Версии",
       "distribution_range_date_same_year": "от {from} до {to}, {endYear}",
@@ -339,10 +419,13 @@
       "grouping_major": "Major",
       "grouping_minor": "Minor",
       "grouping_versions_title": "Версии",
+      "grouping_versions_about": "EN TEXT TO REPLACE: About version grouping",
       "grouping_versions_all": "Всички",
       "grouping_versions_only_recent": "Само скорошни",
       "grouping_usage_title": "Използване",
+      "grouping_usage_about": "EN TEXT TO REPLACE: About usage grouping",
       "grouping_usage_all": "Всички",
+      "grouping_usage_most_used": "EN TEXT TO REPLACE: Most used",
       "recent_versions_only_tooltip": "Показване само на версии, публикувани през последната година.",
       "show_low_usage_tooltip": "Включване на групи версии с по-малко от 1% от общите изтегляния.",
       "y_axis_label": "Изтегляния",
@@ -355,7 +438,12 @@
       "copy_alt": {
         "per_version_analysis": "Версия {version} е изтеглена {downloads} пъти",
         "general_description": "Стълбовидна диаграма, показваща изтеглянията по версии за {versions_count} {semver_grouping_mode} версии на пакета {package_name}, {date_range_label} от версия {first_version} до версия {last_version}. Най-изтегляната версия е {max_downloaded_version} с {max_version_downloads} изтегляния. {per_version_analysis}. {watermark}."
-      }
+      },
+      "page_title": "EN TEXT TO REPLACE: Version History",
+      "current_tags": "EN TEXT TO REPLACE: Current Tags",
+      "version_filter_placeholder": "EN TEXT TO REPLACE: Filter versions…",
+      "version_filter_label": "EN TEXT TO REPLACE: Filter versions",
+      "no_match_filter": "EN TEXT TO REPLACE: No versions match {filter}"
     },
     "dependencies": {
       "title": "Зависимост ({count}) | Зависимости ({count})",
@@ -366,7 +454,8 @@
       "outdated_major": "{count} major версия назад (последна: {latest}) | {count} major версии назад (последна: {latest})",
       "outdated_minor": "{count} minor версия назад (последна: {latest}) | {count} minor версии назад (последна: {latest})",
       "outdated_patch": "Налична patch актуализация (последна: {latest})",
-      "has_replacement": "Тази зависимост има предложени замени"
+      "has_replacement": "Тази зависимост има предложени замени",
+      "vulnerabilities_count": "EN TEXT TO REPLACE: {count} vulnerability | {count} vulnerabilities"
     },
     "peer_dependencies": {
       "title": "Peer зависимост ({count}) | Peer зависимости ({count})",
@@ -390,9 +479,16 @@
       "cancel_add": "Отказ от добавяне на собственик",
       "add_owner": "+ Добавяне на собственик",
       "show_more": "(показване на още {count})",
-      "show_less": "(показване на по-малко)"
+      "show_less": "(показване на по-малко)",
+      "maintainer_template": "EN TEXT TO REPLACE: {avatar} {char126}{name}"
     },
     "trends": {
+      "chart_assistive_text": {
+        "keyboard_navigation_horizontal": "EN TEXT TO REPLACE: Use the left and right arrow keys to cycle through data points.",
+        "keyboard_navigation_vertical": "EN TEXT TO REPLACE: Use the up and down arrow keys to cycle through data points.",
+        "table_available": "EN TEXT TO REPLACE: A data table for this chart is available below.",
+        "table_caption": "EN TEXT TO REPLACE: Chart data table"
+      },
       "granularity": "Гранулация",
       "granularity_daily": "Дневна",
       "granularity_weekly": "Седмична",
@@ -406,6 +502,8 @@
       "download_file": "Изтегляне на {fileType}",
       "toggle_annotator": "Превключване на анотатор",
       "toggle_stack_mode": "Превключване на режим на стак",
+      "open_options": "EN TEXT TO REPLACE: Open options",
+      "close_options": "EN TEXT TO REPLACE: Close options",
       "legend_estimation": "Оценка",
       "no_data": "Няма налични данни",
       "y_axis_label": "{granularity} {facet}",
@@ -420,6 +518,7 @@
       "data_correction": "Корекция на данни",
       "average_window": "Прозорец за средна стойност",
       "smoothing": "Изглаждане",
+      "prediction": "EN TEXT TO REPLACE: Prediction",
       "known_anomalies": "Известни аномалии",
       "known_anomalies_description": "Интерполира известни скокове в изтеглянията, причинени от ботове или CI проблеми.",
       "known_anomalies_ranges": "Диапазони на аномалии",
@@ -440,13 +539,16 @@
         "estimations": "Крайните стойности са оценки, базирани на частични данни за текущия период.",
         "compare": "Линейна диаграма за сравнение на изтегляния на пакети за: {packages}.",
         "single_package": "Линейна диаграма на изтегляния за пакета {package}.",
-        "general_description": "Оста Y представлява броя на изтеглянията. Оста X представлява диапазона от дати, от {start_date} до {end_date}, с {granularity} времеви период.{estimation_notice} {packages_analysis}. {watermark}."
+        "general_description": "Оста Y представлява броя на изтеглянията. Оста X представлява диапазона от дати, от {start_date} до {end_date}, с {granularity} времеви период.{estimation_notice} {packages_analysis}. {watermark}.",
+        "facet_bar_general_description": "EN TEXT TO REPLACE: Horizontal bar chart for: {packages}, comparing {facet} ({description}). {facet_analysis} {watermark}.",
+        "facet_bar_analysis": "EN TEXT TO REPLACE: {package_name} has a value of {value}."
       }
     },
     "downloads": {
       "title": "Седмични изтегляния",
       "community_distribution": "Преглед на разпределението на приемането от общността",
-      "subtitle": "За всички версии"
+      "subtitle": "За всички версии",
+      "sparkline_nav_hint": "EN TEXT TO REPLACE: Use ← →"
     },
     "install_scripts": {
       "title": "Скриптове за инсталация",
@@ -462,6 +564,7 @@
       "esm": "ES модули поддържани",
       "cjs": "CommonJS поддържан",
       "no_esm": "Няма поддръжка на ES модули",
+      "wasm": "EN TEXT TO REPLACE: Has WebAssembly",
       "types_label": "Типове",
       "types_included": "Типове включени",
       "types_available": "Типове налични чрез {package}",
@@ -535,6 +638,10 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
+    },
+    "download": {
+      "button": "EN TEXT TO REPLACE: Download",
+      "tarball": "EN TEXT TO REPLACE: Download Tarball as .tar.gz"
     }
   },
   "connector": {
@@ -739,7 +846,9 @@
       "preview": "преглед",
       "code": "код"
     },
-    "file_path": "Път към файл"
+    "file_path": "Път към файл",
+    "binary_file": "EN TEXT TO REPLACE: Binary file",
+    "binary_rendering_warning": "EN TEXT TO REPLACE: File type \"{contentType}\" is not supported for preview."
   },
   "badges": {
     "provenance": {
@@ -801,6 +910,8 @@
       "secure": "Без предупреждения",
       "insecure": "С предупреждения"
     },
+    "view_selected": "EN TEXT TO REPLACE: View selected",
+    "clear_selected_label": "EN TEXT TO REPLACE: Clear selected",
     "sort": {
       "label": "Сортиране на пакети",
       "toggle_direction": "Превключване на посоката на сортиране",
@@ -834,7 +945,8 @@
       "popularity_score": "Резултат за популярност",
       "maintenance_score": "Резултат за поддръжка",
       "combined_score": "Комбиниран резултат",
-      "security": "Сигурност"
+      "security": "Сигурност",
+      "selection": "EN TEXT TO REPLACE: Select package"
     },
     "view_mode": {
       "label": "Режим на изглед",
@@ -923,7 +1035,11 @@
         "description": "Чат, задаване на въпроси и споделяне на идеи.",
         "cta": "Присъединяване към Discord"
       },
-      "builders": {},
+      "builders": {
+        "title": "EN TEXT TO REPLACE: Help build npmx",
+        "description": "EN TEXT TO REPLACE: Join the builders shaping the future of npmx.",
+        "cta": "EN TEXT TO REPLACE: Join Builders Discord"
+      },
       "follow": {
         "title": "Следете актуалното",
         "description": "Научете най-новото за npmx.",
@@ -977,7 +1093,8 @@
       "error": "Неуспешно зареждане на организации",
       "empty": "Няма намерени организации",
       "view_all": "Преглед на всички"
-    }
+    },
+    "pr": "EN TEXT TO REPLACE: Open GitHub pull request #{prNumber}"
   },
   "compare": {
     "packages": {
@@ -994,7 +1111,11 @@
       "loading": "Зареждане на данни за пакета...",
       "error": "Неуспешно зареждане на данни за пакета. Моля, опитайте отново.",
       "empty_title": "Изберете пакети за сравнение",
-      "empty_description": "Търсете и добавете поне 2 пакета по-горе, за да видите сравнение на техните метрики един до друг."
+      "empty_description": "Търсете и добавете поне 2 пакета по-горе, за да видите сравнение на техните метрики един до друг.",
+      "table_view": "EN TEXT TO REPLACE: Table",
+      "charts_view": "EN TEXT TO REPLACE: Charts",
+      "bar_chart_nav_hint": "EN TEXT TO REPLACE: Use ↑ ↓",
+      "line_chart_nav_hint": "EN TEXT TO REPLACE: Use ← →"
     },
     "selector": {
       "search_label": "Търсене на пакети",
@@ -1105,6 +1226,16 @@
     "file_too_large": "Файлът е твърде голям за сравнение",
     "file_size_warning": "{size} надвишава лимита от 250KB за сравнение",
     "compare_versions": "diff",
+    "compare_versions_title": "EN TEXT TO REPLACE: Compare with latest version",
+    "comparing_versions_label": "EN TEXT TO REPLACE: Comparing versions...",
+    "version_back_to_package": "EN TEXT TO REPLACE: Back to package",
+    "version_error_message": "EN TEXT TO REPLACE: Failed to compare versions.",
+    "version_invalid_url_format": {
+      "hint": "EN TEXT TO REPLACE: Invalid comparison URL. Use format: {0}",
+      "from_version": "EN TEXT TO REPLACE: from",
+      "to_version": "EN TEXT TO REPLACE: to"
+    },
+    "version_selector_title": "EN TEXT TO REPLACE: Compare with version",
     "summary": "Резюме",
     "deps_count": "{count} зависимости",
     "dependencies": "Зависимости",
@@ -1130,12 +1261,46 @@
     "files_button": "Файлове",
     "select_file_prompt": "Изберете файл от страничната лента за преглед на разликите",
     "close_files_panel": "Затваряне на панела с файлове",
-    "filter_files_label": "Филтриране на файлове по тип на промяна"
+    "filter_files_label": "Филтриране на файлове по тип на промяна",
+    "change_ratio": "EN TEXT TO REPLACE: Change ratio",
+    "char_edits": "EN TEXT TO REPLACE: Char edits",
+    "diff_distance": "EN TEXT TO REPLACE: Diff distance",
+    "loading_diff": "EN TEXT TO REPLACE: Loading diff...",
+    "loading_diff_error": "EN TEXT TO REPLACE: Failed to load diff",
+    "merge_modified_lines": "EN TEXT TO REPLACE: Merge modified lines",
+    "no_content_changes": "EN TEXT TO REPLACE: No content changes detected",
+    "options": "EN TEXT TO REPLACE: Options",
+    "view_file": "EN TEXT TO REPLACE: View file",
+    "view_in_code_browser": "EN TEXT TO REPLACE: View in code browser",
+    "word_wrap": "EN TEXT TO REPLACE: Word wrap"
   },
   "pds": {
-    "join": {},
-    "server": {},
-    "community": {}
+    "title": "EN TEXT TO REPLACE: npmx.social",
+    "meta_description": "EN TEXT TO REPLACE: The official AT Protocol Personal Data Server (PDS) for the npmx community.",
+    "join": {
+      "title": "EN TEXT TO REPLACE: Join the Community",
+      "description": "EN TEXT TO REPLACE: Whether you are creating your first account on the atmosphere or migrating an existing one, you belong here. You can migrate your current account without losing your handle, your posts, or your followers.",
+      "migrate": "EN TEXT TO REPLACE: Migrate with PDS MOOver"
+    },
+    "server": {
+      "title": "EN TEXT TO REPLACE: Server Details",
+      "location_label": "EN TEXT TO REPLACE: Location:",
+      "location_value": "EN TEXT TO REPLACE: Nuremberg, Germany",
+      "infrastructure_label": "EN TEXT TO REPLACE: Infrastructure:",
+      "infrastructure_value": "EN TEXT TO REPLACE: Hosted on Hetzner",
+      "privacy_label": "EN TEXT TO REPLACE: Privacy:",
+      "privacy_value": "EN TEXT TO REPLACE: Subject to strict EU Data Protection laws",
+      "learn_more": "EN TEXT TO REPLACE: Learn how npmx uses the Atmosphere"
+    },
+    "community": {
+      "title": "EN TEXT TO REPLACE: Who is here",
+      "description": "EN TEXT TO REPLACE: Some of the {count} accounts that are already calling npmx.social home:",
+      "loading": "EN TEXT TO REPLACE: Loading PDS community...",
+      "error": "EN TEXT TO REPLACE: Failed to load PDS community.",
+      "empty": "EN TEXT TO REPLACE: No community members to display.",
+      "view_profile": "EN TEXT TO REPLACE: View {handle}'s profile",
+      "new_accounts": "EN TEXT TO REPLACE: ...plus {count} more that are new to the atmosphere"
+    }
   },
   "privacy_policy": {
     "title": "политика за поверителност",
@@ -1245,6 +1410,85 @@
       "title": "Обратна връзка",
       "p1": "Ако срещнете бариера за достъпност в {app}, моля, уведомете ни, като отворите проблем в нашето {link}. Приемаме сериозно тези доклади и ще направим всичко възможно да ги разгледаме.",
       "link": "GitHub хранилище"
+    }
+  },
+  "translation_status": {
+    "title": "EN TEXT TO REPLACE: translation status",
+    "generated_at": "EN TEXT TO REPLACE: Generation date: {date}",
+    "welcome": "EN TEXT TO REPLACE: If you're interested in helping us to translate {npmx} into one of the languages listed below, you've come to the right place! This auto-updating page always lists all the content that could use your help right now.",
+    "p1": "EN TEXT TO REPLACE: We use {lang} as the default language, with a total of {count}. If you'd like to help add translations, locate the language in {bylang} and expand the details.",
+    "p1_lang": "EN TEXT TO REPLACE: American English (en-US)",
+    "p1_count": "EN TEXT TO REPLACE: 0 messages | 1 message |{count} messages",
+    "p2": "EN TEXT TO REPLACE: Before starting, please read our {guide} to learn about our translation process and how you can get involved.",
+    "guide": "EN TEXT TO REPLACE: localization (i18n) guide",
+    "by_locale": "EN TEXT TO REPLACE: Translation progress by locale",
+    "by_file": "EN TEXT TO REPLACE: Translation progress by file",
+    "complete_text": "EN TEXT TO REPLACE: This translation is complete, amazing job!",
+    "missing_text": "EN TEXT TO REPLACE: missing",
+    "missing_keys": "EN TEXT TO REPLACE: There is no missing translations | Missing translation | Missing translations",
+    "progress_label": "EN TEXT TO REPLACE: Progress status for {locale}",
+    "table": {
+      "file": "EN TEXT TO REPLACE: File",
+      "status": "EN TEXT TO REPLACE: Status",
+      "error": "EN TEXT TO REPLACE: Error while loading file list.",
+      "empty": "EN TEXT TO REPLACE: No files found",
+      "file_link": "EN TEXT TO REPLACE: Edit {file} ({lang}) on GitHub"
+    }
+  },
+  "action_bar": {
+    "title": "EN TEXT TO REPLACE: action bar",
+    "selection": "EN TEXT TO REPLACE: 0 selected | 1 selected | {count} selected",
+    "shortcut": "EN TEXT TO REPLACE: Press \"{key}\" to focus actions",
+    "button_close_aria_label": "EN TEXT TO REPLACE: Close action bar"
+  },
+  "logo_menu": {
+    "copy_svg": "EN TEXT TO REPLACE: Copy logo as SVG",
+    "copied": "EN TEXT TO REPLACE: Copied!",
+    "browse_brand": "EN TEXT TO REPLACE: Browse brand kit"
+  },
+  "brand": {
+    "title": "EN TEXT TO REPLACE: Brand",
+    "heading": "EN TEXT TO REPLACE: brand",
+    "meta_description": "EN TEXT TO REPLACE: npmx brand guidelines, logos, colors, and typography for use in press and media.",
+    "intro": "EN TEXT TO REPLACE: Resources and guidelines for using the npmx brand in your projects, articles, and media.",
+    "logos": {
+      "title": "EN TEXT TO REPLACE: logos",
+      "description": "EN TEXT TO REPLACE: Download npmx logos in SVG and PNG formats. Use the appropriate variant for your background.",
+      "wordmark": "EN TEXT TO REPLACE: Full wordmark",
+      "wordmark_alt": "EN TEXT TO REPLACE: npmx full wordmark logo with blue slash on dark background",
+      "wordmark_light_alt": "EN TEXT TO REPLACE: npmx full wordmark logo with accent slash on light background",
+      "mark": "EN TEXT TO REPLACE: Logo mark",
+      "mark_alt": "EN TEXT TO REPLACE: npmx logo mark with dot and slash on dark background",
+      "mark_light_alt": "EN TEXT TO REPLACE: npmx logo mark with dot and slash on light background",
+      "on_dark": "EN TEXT TO REPLACE: On dark",
+      "on_light": "EN TEXT TO REPLACE: On light",
+      "download_svg": "EN TEXT TO REPLACE: SVG",
+      "download_png": "EN TEXT TO REPLACE: PNG",
+      "download_svg_aria": "EN TEXT TO REPLACE: Download {name} as SVG",
+      "download_png_aria": "EN TEXT TO REPLACE: Download {name} as PNG"
+    },
+    "customize": {
+      "title": "EN TEXT TO REPLACE: customize your logo",
+      "description": "EN TEXT TO REPLACE: Preview the npmx logo with your accent color and background. The preview reflects your current settings — pick a color, toggle the background, and download.",
+      "accent_label": "EN TEXT TO REPLACE: Accent",
+      "bg_label": "EN TEXT TO REPLACE: Background",
+      "download_svg_aria": "EN TEXT TO REPLACE: Download customized logo as SVG",
+      "download_png_aria": "EN TEXT TO REPLACE: Download customized logo as PNG"
+    },
+    "typography": {
+      "title": "EN TEXT TO REPLACE: typography",
+      "description": "EN TEXT TO REPLACE: npmx uses the Geist font family by Vercel for both interface text and code.",
+      "sans": "EN TEXT TO REPLACE: Geist Sans",
+      "sans_desc": "EN TEXT TO REPLACE: Used for body text and UI elements.",
+      "mono": "EN TEXT TO REPLACE: Geist Mono",
+      "mono_desc": "EN TEXT TO REPLACE: Used for code, headings, and technical content.",
+      "pangram": "EN TEXT TO REPLACE: The quick brown fox jumps over the lazy dog",
+      "numbers": "EN TEXT TO REPLACE: 0123456789"
+    },
+    "guidelines": {
+      "title": "EN TEXT TO REPLACE: just a note",
+      "message": "EN TEXT TO REPLACE: Accessibility matters to us, and we would love you to follow us in this vision. When using mentioned media, ensure there is enough contrast against the background, and don't go smaller than 24px. If you need any other resources or additional information about the project, feel free to reach us at {link}.",
+      "discord_link_text": "EN TEXT TO REPLACE: chat.npmx.dev"
     }
   }
 }
