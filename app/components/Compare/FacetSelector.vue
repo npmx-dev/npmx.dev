@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import type { FacetInfoWithLabels } from '~/composables/useFacetSelection'
+
 const {
+  selectedFacets,
   isFacetSelected,
   toggleFacet,
   selectCategory,
@@ -8,6 +11,17 @@ const {
   categoryOrder,
   getCategoryLabel,
 } = useFacetSelection()
+
+/** Native checkbox disabled when coming soon or this is the only selected facet (must keep ≥1). */
+function isFacetCheckboxDisabled(facet: FacetInfoWithLabels): boolean {
+  if (facet.comingSoon) return true
+  return selectedFacets.value.length === 1 && isFacetSelected(facet.id)
+}
+
+function onFacetChange(facet: FacetInfoWithLabels) {
+ if(isFacetCheckboxDisabled(facet)) return
+  toggleFacet(facet.id)
+}
 
 // Check if all non-comingSoon facets in a category are selected
 function isCategoryAllSelected(category: string): boolean {
@@ -58,39 +72,39 @@ function isCategoryNoneSelected(category: string): boolean {
         </ButtonBase>
       </div>
 
-      <!-- Facet buttons -->
-      <div class="flex items-center gap-1.5 flex-wrap" role="group">
-        <!-- TODO: These should be checkboxes -->
-        <ButtonBase
+      <div
+        class="flex items-center gap-1.5 flex-wrap"
+        role="group"
+        :aria-label="getCategoryLabel(category)"
+      >
+        <label
           v-for="facet in facetsByCategory[category]"
           :key="facet.id"
-          size="sm"
-          :title="facet.comingSoon ? $t('compare.facets.coming_soon') : facet.description"
-          :disabled="facet.comingSoon"
-          :aria-pressed="isFacetSelected(facet.id)"
-          :aria-label="facet.label"
-          class="gap-1 px-1.5 rounded transition-colors focus-visible:outline-accent/70"
+          class="flex items-center gap-1.5 px-1.5 py-0.5 rounded border text-xs transition-colors focus-within:outline focus-within:outline-2 focus-within:outline-offset-1 focus-within:outline-accent/70"
           :class="
             facet.comingSoon
               ? 'text-fg-subtle/50 bg-bg-subtle border-border-subtle cursor-not-allowed'
-              : isFacetSelected(facet.id)
-                ? 'text-fg-muted bg-bg-muted'
-                : 'text-fg-subtle bg-bg-subtle border-border-subtle hover:text-fg-muted hover:border-border'
-          "
-          @click="!facet.comingSoon && toggleFacet(facet.id)"
-          :classicon="
-            facet.comingSoon
-              ? undefined
-              : isFacetSelected(facet.id)
-                ? 'i-lucide:check'
-                : 'i-lucide:plus'
+              : isFacetCheckboxDisabled(facet)
+                ? 'text-fg-muted bg-bg-muted border-border opacity-90 cursor-not-allowed'
+                : isFacetSelected(facet.id)
+                  ? 'text-fg-muted bg-bg-muted border-border cursor-pointer'
+                  : 'text-fg-subtle bg-bg-subtle border-border-subtle hover:text-fg-muted hover:border-border cursor-pointer'
           "
         >
-          {{ facet.label }}
+          <input
+            type="checkbox"
+            :data-facet-id="facet.id"
+            class="size-3.5 shrink-0 accent-accent rounded border-border disabled:opacity-60"
+            :checked="isFacetSelected(facet.id)"
+            :disabled="isFacetCheckboxDisabled(facet)"
+            :title="facet.comingSoon ? $t('compare.facets.coming_soon') : facet.description"
+            @change="onFacetChange(facet)"
+          />
+          <span>{{ facet.label }}</span>
           <span v-if="facet.comingSoon" class="text-4xs"
             >({{ $t('compare.facets.coming_soon') }})</span
           >
-        </ButtonBase>
+        </label>
       </div>
     </div>
   </div>

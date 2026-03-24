@@ -136,7 +136,7 @@ describe('FacetSelector', () => {
     })
   })
 
-  describe('facet buttons', () => {
+  describe('facet checkboxes', () => {
     it('renders all facets from FACET_INFO', async () => {
       const component = await mountSuspended(FacetSelector)
 
@@ -146,43 +146,50 @@ describe('FacetSelector', () => {
       }
     })
 
-    it('shows checkmark icon for selected facets', async () => {
+    it('renders a checkbox for each facet', async () => {
+      const component = await mountSuspended(FacetSelector)
+
+      const checkboxes = component.findAll('input[type="checkbox"]')
+      expect(checkboxes.length).toBe(Object.keys(FACET_INFO).length)
+    })
+
+    it('checks selected facets', async () => {
       mockSelectedFacets.value = ['downloads']
       mockIsFacetSelected.mockImplementation((f: string) => f === 'downloads')
 
       const component = await mountSuspended(FacetSelector)
 
-      expect(component.find('.i-lucide\\:check').exists()).toBe(true)
+      const downloads = component.find('input[type="checkbox"][data-facet-id="downloads"]')
+      expect((downloads.element as HTMLInputElement).checked).toBe(true)
     })
 
-    it('shows add icon for unselected facets', async () => {
+    it('unchecks unselected facets', async () => {
       mockSelectedFacets.value = ['downloads']
       mockIsFacetSelected.mockImplementation((f: string) => f === 'downloads')
 
       const component = await mountSuspended(FacetSelector)
 
-      expect(component.find('.i-lucide\\:plus').exists()).toBe(true)
+      const types = component.find('input[type="checkbox"][data-facet-id="types"]')
+      expect((types.element as HTMLInputElement).checked).toBe(false)
     })
 
-    it('applies aria-pressed for selected state', async () => {
+    it('disables the checkbox when it is the only selected facet', async () => {
       mockSelectedFacets.value = ['downloads']
       mockIsFacetSelected.mockImplementation((f: string) => f === 'downloads')
 
       const component = await mountSuspended(FacetSelector)
 
-      const buttons = component.findAll('button[aria-pressed]')
-      const selectedButton = buttons.find(b => b.attributes('aria-pressed') === 'true')
-      expect(selectedButton).toBeDefined()
+      const downloads = component.find('input[type="checkbox"][data-facet-id="downloads"]')
+      expect(downloads.attributes('disabled')).toBeDefined()
     })
 
-    it('calls toggleFacet when facet button is clicked', async () => {
+    it('calls toggleFacet when a facet checkbox is changed', async () => {
       const component = await mountSuspended(FacetSelector)
 
-      // Find a facet button (not all/none)
-      const facetButton = component.findAll('button').find(b => b.text().includes('Downloads'))
-      await facetButton?.trigger('click')
+      const typesCheckbox = component.find('input[type="checkbox"][data-facet-id="types"]')
+      await typesCheckbox.trigger('change')
 
-      expect(mockToggleFacet).toHaveBeenCalled()
+      expect(mockToggleFacet).toHaveBeenCalledWith('types')
     })
   })
 
@@ -190,11 +197,10 @@ describe('FacetSelector', () => {
     it('disables comingSoon facets', async () => {
       const component = await mountSuspended(FacetSelector)
 
-      // totalDependencies is marked as comingSoon
-      const buttons = component.findAll('button')
-      const comingSoonButton = buttons.find(b => b.text().includes(comingSoonFacetLabel))
-
-      expect(comingSoonButton?.attributes('disabled')).toBeDefined()
+      const comingSoonInput = component.find(
+        `input[type="checkbox"][data-facet-id="${comingSoonFacetId}"]`,
+      )
+      expect(comingSoonInput.attributes('disabled')).toBeDefined()
     })
 
     it('shows coming soon text for comingSoon facets', async () => {
@@ -203,26 +209,14 @@ describe('FacetSelector', () => {
       expect(component.text().toLowerCase()).toContain('coming soon')
     })
 
-    it('does not show checkmark/add icon for comingSoon facets', async () => {
+    it('does not call toggleFacet when comingSoon checkbox change is triggered', async () => {
       const component = await mountSuspended(FacetSelector)
 
-      // Find the comingSoon button
-      const buttons = component.findAll('button')
-      const comingSoonButton = buttons.find(b => b.text().includes(comingSoonFacetLabel))
+      const comingSoonInput = component.find(
+        `input[type="checkbox"][data-facet-id="${comingSoonFacetId}"]`,
+      )
+      await comingSoonInput.trigger('change')
 
-      // Should not have checkmark or add icon
-      expect(comingSoonButton?.find('.i-lucide\\:check').exists()).toBe(false)
-      expect(comingSoonButton?.find('.i-lucide\\:plus').exists()).toBe(false)
-    })
-
-    it('does not call toggleFacet when comingSoon facet is clicked', async () => {
-      const component = await mountSuspended(FacetSelector)
-
-      const buttons = component.findAll('button')
-      const comingSoonButton = buttons.find(b => b.text().includes(comingSoonFacetLabel))
-      await comingSoonButton?.trigger('click')
-
-      // toggleFacet should not have been called with totalDependencies
       expect(mockToggleFacet).not.toHaveBeenCalledWith(comingSoonFacetId)
     })
   })
