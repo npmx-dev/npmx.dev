@@ -23,6 +23,20 @@ function onFacetChange(facet: FacetInfoWithLabels) {
   toggleFacet(facet.id)
 }
 
+/** Visual variant for each facet chip (border/background/cursor). */
+function facetChipVariantClass(facet: FacetInfoWithLabels): string {
+  if (facet.comingSoon) {
+    return 'text-fg-subtle/50 bg-bg-subtle border-border-subtle cursor-not-allowed'
+  }
+  if (isFacetCheckboxDisabled(facet)) {
+    return 'text-fg-muted bg-bg-muted border-border opacity-90 cursor-not-allowed'
+  }
+  if (isFacetSelected(facet.id)) {
+    return 'text-fg-muted bg-bg-muted border-border cursor-pointer'
+  }
+  return 'text-fg-subtle bg-bg-subtle border-border-subtle hover:text-fg-muted hover:border-border cursor-pointer'
+}
+
 // Check if all non-comingSoon facets in a category are selected
 function isCategoryAllSelected(category: string): boolean {
   const facets = facetsByCategory.value[category] ?? []
@@ -84,15 +98,7 @@ function isCategoryNoneSelected(category: string): boolean {
           v-for="facet in facetsByCategory[category]"
           :key="facet.id"
           class="flex items-center gap-1.5 px-1.5 py-0.5 rounded border text-xs transition-colors focus-within:outline focus-within:outline-2 focus-within:outline-offset-1 focus-within:outline-accent/70"
-          :class="
-            facet.comingSoon
-              ? 'text-fg-subtle/50 bg-bg-subtle border-border-subtle cursor-not-allowed'
-              : isFacetCheckboxDisabled(facet)
-                ? 'text-fg-muted bg-bg-muted border-border opacity-90 cursor-not-allowed'
-                : isFacetSelected(facet.id)
-                  ? 'text-fg-muted bg-bg-muted border-border cursor-pointer'
-                  : 'text-fg-subtle bg-bg-subtle border-border-subtle hover:text-fg-muted hover:border-border cursor-pointer'
-          "
+          :class="facetChipVariantClass(facet)"
         >
           <input
             type="checkbox"

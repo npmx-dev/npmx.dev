@@ -41,7 +41,7 @@ const categoryLabels: Record<string, string> = {
   security: 'Security & Compliance',
 }
 
-const comingSoonFacetId = comingSoonFacets[0]
+const comingSoonFacetId: ComparisonFacet | undefined = comingSoonFacets.at(0)
 
 // Helper to build facet info with labels
 function buildFacetInfo(facet: ComparisonFacet) {
@@ -190,33 +190,35 @@ describe('FacetSelector', () => {
     })
   })
 
-  describe.runIf(hasComingSoonFacets)('comingSoon facets', () => {
-    it('disables comingSoon facets', async () => {
-      const component = await mountSuspended(FacetSelector)
+  describe.runIf(hasComingSoonFacets && comingSoonFacetId !== undefined)(
+    'comingSoon facets',
+    () => {
+      // runIf guarantees comingSoonFacetId is defined here
+      const facetId: ComparisonFacet = comingSoonFacetId!
 
-      const comingSoonInput = component.find(
-        `input[type="checkbox"][data-facet-id="${comingSoonFacetId}"]`,
-      )
-      expect(comingSoonInput.attributes('disabled')).toBeDefined()
-    })
+      it('disables comingSoon facets', async () => {
+        const component = await mountSuspended(FacetSelector)
 
-    it('shows coming soon text for comingSoon facets', async () => {
-      const component = await mountSuspended(FacetSelector)
+        const comingSoonInput = component.find(`input[type="checkbox"][data-facet-id="${facetId}"]`)
+        expect(comingSoonInput.attributes('disabled')).toBeDefined()
+      })
 
-      expect(component.text().toLowerCase()).toContain('coming soon')
-    })
+      it('shows coming soon text for comingSoon facets', async () => {
+        const component = await mountSuspended(FacetSelector)
 
-    it('does not call toggleFacet when comingSoon checkbox change is triggered', async () => {
-      const component = await mountSuspended(FacetSelector)
+        expect(component.text().toLowerCase()).toContain('coming soon')
+      })
 
-      const comingSoonInput = component.find(
-        `input[type="checkbox"][data-facet-id="${comingSoonFacetId}"]`,
-      )
-      await comingSoonInput.trigger('change')
+      it('does not call toggleFacet when comingSoon checkbox change is triggered', async () => {
+        const component = await mountSuspended(FacetSelector)
 
-      expect(mockToggleFacet).not.toHaveBeenCalledWith(comingSoonFacetId)
-    })
-  })
+        const comingSoonInput = component.find(`input[type="checkbox"][data-facet-id="${facetId}"]`)
+        await comingSoonInput.trigger('change')
+
+        expect(mockToggleFacet).not.toHaveBeenCalledWith(facetId)
+      })
+    },
+  )
 
   describe('category all/none buttons', () => {
     it('calls selectCategory when all button is clicked', async () => {
