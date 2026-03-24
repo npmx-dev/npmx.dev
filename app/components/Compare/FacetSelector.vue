@@ -19,7 +19,7 @@ function isFacetCheckboxDisabled(facet: FacetInfoWithLabels): boolean {
 }
 
 function onFacetChange(facet: FacetInfoWithLabels) {
- if(isFacetCheckboxDisabled(facet)) return
+  if (isFacetCheckboxDisabled(facet)) return
   toggleFacet(facet.id)
 }
 

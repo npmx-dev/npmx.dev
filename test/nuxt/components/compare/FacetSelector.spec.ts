@@ -42,9 +42,6 @@ const categoryLabels: Record<string, string> = {
 }
 
 const comingSoonFacetId = comingSoonFacets[0]
-const comingSoonFacetLabel = hasComingSoonFacets
-  ? (facetLabels[comingSoonFacetId!]?.label ?? comingSoonFacetId)
-  : ''
 
 // Helper to build facet info with labels
 function buildFacetInfo(facet: ComparisonFacet) {
