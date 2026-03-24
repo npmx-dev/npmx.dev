@@ -138,7 +138,7 @@ async function loadBlogPosts(blogDir: string, imagesDir: string): Promise<BlogPo
   }
 
   // Sort newest first
-  posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  posts.sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
   return posts
 }
 
