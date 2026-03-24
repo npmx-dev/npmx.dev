@@ -2,14 +2,11 @@
 import { parseLicenseExpression } from '#shared/utils/spdx'
 
 import { useLicenseChanges } from '~/composables/useLicenseChanges'
-import { useI18n } from 'vue-i18n'
 
 const props = defineProps<{
   license: string
   packageName?: string
 }>()
-
-const { t } = useI18n()
 
 const tokens = computed(() => parseLicenseExpression(props.license))
 const licenseChanges = useLicenseChanges(() => props.packageName)
@@ -19,7 +16,7 @@ const changes = computed(() => licenseChanges.data.value?.changes ?? [])
 const licenseChangeText = computed(() =>
   changes.value
     .map(item =>
-      t('package.versions.license_change_item', {
+      $t('package.versions.license_change_item', {
         from: item.from,
         to: item.to,
         version: item.version,
