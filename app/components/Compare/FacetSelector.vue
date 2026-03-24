@@ -43,7 +43,10 @@ function isCategoryNoneSelected(category: string): boolean {
     <div v-for="category in categoryOrder" :key="category">
       <!-- Category header with all/none buttons -->
       <div class="flex items-center gap-2 mb-2">
-        <span class="text-3xs text-fg-subtle uppercase tracking-wider">
+        <span
+          :id="`facet-category-${category}-heading`"
+          class="text-3xs text-fg-subtle uppercase tracking-wider"
+        >
           {{ getCategoryLabel(category) }}
         </span>
         <!-- TODO: These should be radios, since they are mutually exclusive, and currently this behavior is faked with buttons -->
@@ -75,7 +78,7 @@ function isCategoryNoneSelected(category: string): boolean {
       <div
         class="flex items-center gap-1.5 flex-wrap"
         role="group"
-        :aria-label="getCategoryLabel(category)"
+        :aria-labelledby="`facet-category-${category}-heading`"
       >
         <label
           v-for="facet in facetsByCategory[category]"
