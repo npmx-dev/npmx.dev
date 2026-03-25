@@ -1640,11 +1640,11 @@ const isSparklineLayout = shallowRef(false)
       :aria-label="'Chart layout toggle'"
     >
       <button
-        id="classic-line-chart-layout"
+        id="combined-chart-layout-tab"
         type="button"
         role="tab"
         :aria-selected="isSparklineLayout ? 'false' : 'true'"
-        aria-controls="TODO"
+        aria-controls="combined-chart-layout-panel"
         :tabindex="isSparklineLayout ? 0 : -1"
         class="flex items-center justify-center gap-x-2 rounded px-3 py-2 font-mono text-sm border border-solid transition-colors duration-150 focus-visible:outline-accent/70"
         :class="
@@ -1659,12 +1659,12 @@ const isSparklineLayout = shallowRef(false)
       </button>
 
       <button
-        id="comparison-tab-charts"
+        id="split-chart-layout-tab"
         type="button"
         role="tab"
         :aria-selected="isSparklineLayout ? 'true' : 'false'"
-        aria-controls="comparison-panel-charts"
-        :tabindex="isSparklineLayout ? -1 : 0"
+        aria-controls="split-chart-layout-panel"
+        :tabindex="!isSparklineLayout ? 0 : -1"
         class="flex items-center justify-center gap-x-2 rounded px-3 py-2 font-mono text-sm border border-solid transition-colors duration-150 focus-visible:outline-accent/70"
         :class="
           isSparklineLayout
@@ -1923,7 +1923,8 @@ const isSparklineLayout = shallowRef(false)
       "
     >
       <ClientOnly v-if="chartData.dataset">
-        <div v-if="isSparklineLayout">
+        <div v-if="isSparklineLayout" id="split-chart-layout-panel" role="tabpanel"
+    aria-labelledby="split-chart-layout-tab">
           <ChartSplitSparkline
             :dataset="normalisedDataset"
             :dates="chartData.dates"
@@ -1931,7 +1932,8 @@ const isSparklineLayout = shallowRef(false)
           />
         </div>
 
-        <div :data-pending="pending" :data-minimap-visible="maxDatapoints > 6" v-else>
+        <div :data-pending="pending" :data-minimap-visible="maxDatapoints > 6" v-else id="combined-chart-layout-panel" role="tabpanel"
+    aria-labelledby="combined-chart-layout-tab">
           <VueUiXy
             :dataset="normalisedDataset"
             :config="chartConfig"
