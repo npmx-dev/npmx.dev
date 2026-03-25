@@ -1,7 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import type { DOMWrapper } from '@vue/test-utils'
-import type { Router } from 'vue-router'
 import PackageVersions from '~/components/Package/Versions.vue'
 import { packageVersionsRoute } from '~/utils/router'
 
@@ -39,6 +38,12 @@ function isVersionLink(a: DOMWrapper<Element>): boolean {
     a.attributes('target') !== '_blank' &&
     !a.attributes('data-testid')?.includes('view-all-versions')
   )
+}
+
+function getRouter(
+  component: Awaited<ReturnType<typeof mountSuspended>>,
+): Pick<typeof component.vm.$router, 'resolve'> {
+  return component.vm.$router
 }
 
 describe('PackageVersions', () => {
@@ -123,7 +128,7 @@ describe('PackageVersions', () => {
         },
       })
 
-      const router = component.vm.$router as Router
+      const router = getRouter(component)
       const expectedHref = router.resolve(packageVersionsRoute('test-package')).href
       const viewAll = component.find('[data-testid="view-all-versions-link"]')
       expect(viewAll.attributes('href')).toBe(expectedHref)
@@ -141,7 +146,7 @@ describe('PackageVersions', () => {
         },
       })
 
-      const router = component.vm.$router as Router
+      const router = getRouter(component)
       const expectedHref = router.resolve(packageVersionsRoute('@scope/test-package')).href
       const viewAll = component.find('[data-testid="view-all-versions-link"]')
       expect(viewAll.attributes('href')).toBe(expectedHref)
