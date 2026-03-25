@@ -25,8 +25,12 @@ function isCategoryNoneSelected(category: string): boolean {
 }
 
 const liveRegionText = ref('')
+const clearLiveRegion = debounce(() => {
+  liveRegionText.value = ''
+}, 250)
 const updateLiveRegion = debounce((message: string) => {
   liveRegionText.value = message
+  clearLiveRegion()
 }, 250)
 
 function selectAllFacet(category: string) {
