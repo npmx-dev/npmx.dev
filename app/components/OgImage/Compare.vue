@@ -44,10 +44,9 @@ try {
         $fetch<{ downloads: number }>(
           `https://api.npmjs.org/downloads/point/last-week/${encoded}`,
         ).catch(() => null),
-        $fetch<{ 'dist-tags'?: { latest?: string } }>(
-          `https://registry.npmjs.org/${encoded}`,
-          { headers: { Accept: 'application/vnd.npm.install-v1+json' } },
-        ).catch(() => null),
+        $fetch<{ 'dist-tags'?: { latest?: string } }>(`https://registry.npmjs.org/${encoded}`, {
+          headers: { Accept: 'application/vnd.npm.install-v1+json' },
+        }).catch(() => null),
       ])
       return {
         name,
@@ -118,31 +117,20 @@ function barPct(downloads: number): string {
             class="opacity-80 tracking-[-0.1em]"
             :style="{ color: primaryColor }"
             style="margin-right: 0.25rem"
-          >./</span>compare
+            >./</span
+          >compare
         </h1>
       </div>
 
       <!-- Bar chart rows -->
       <div class="flex flex-col gap-2">
-        <div
-          v-for="pkg in stats"
-          :key="pkg.name"
-          class="flex flex-col gap-1"
-        >
+        <div v-for="pkg in stats" :key="pkg.name" class="flex flex-col gap-1">
           <!-- Label row: name + downloads + version -->
-          <div
-            class="flex items-center gap-3"
-            style="font-family: 'Geist', sans-serif"
-          >
-            <span
-              class="text-2xl font-semibold tracking-tight"
-              :style="{ color: pkg.color }"
-            >
+          <div class="flex items-center gap-3" style="font-family: 'Geist', sans-serif">
+            <span class="text-2xl font-semibold tracking-tight" :style="{ color: pkg.color }">
               {{ pkg.name }}
             </span>
-            <span class="text-xl text-[#737373]">
-              {{ formatDownloads(pkg.downloads) }}/wk
-            </span>
+            <span class="text-xl text-[#737373]"> {{ formatDownloads(pkg.downloads) }}/wk </span>
             <span
               v-if="pkg.version"
               class="text-lg px-2 py-0.5 rounded-md border"
