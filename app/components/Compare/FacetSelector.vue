@@ -110,7 +110,7 @@ function deselectAllFacet(category: string) {
           :disabled="facet.comingSoon"
           :aria-checked="isFacetSelected(facet.id)"
           :aria-label="facet.label"
-          class="gap-1 px-1.5 rounded transition-colors text-fg-subtle bg-bg-subtle border-border-subtle enabled:hover:(text-fg-muted border-border) aria-checked:(text-fg-muted bg-bg-muted) focus-visible:outline-accent/70 disabled:(text-fg-subtle/50 bg-bg-subtle border-border-subtle)"
+          class="gap-1 px-1.5 rounded transition-colors text-fg-subtle bg-bg-subtle border-border-subtle enabled:hover:(text-fg-muted border-border) aria-checked:(text-fg-muted bg-fg/10 border-fg/20 hover:enabled:(bg-fg/20 text-fg/50)) focus-visible:outline-accent/70 disabled:(text-fg-subtle/50 bg-bg-subtle border-border-subtle)"
           @click="!facet.comingSoon && toggleFacet(facet.id)"
           :classicon="
             facet.comingSoon
