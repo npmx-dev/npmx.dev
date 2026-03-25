@@ -39,7 +39,11 @@ function isCategoryNoneSelected(category: string): boolean {
           size="sm"
           data-facet-category-action="all"
           :data-facet-category="category"
-          :aria-label="`${$t('compare.facets.all')} ${getCategoryLabel(category)}`"
+          :aria-label="
+            $t('compare.facets.select_all_category_facets', {
+              category: getCategoryLabel(category),
+            })
+          "
           :aria-disabled="isCategoryAllSelected(category)"
           class="aria-disabled:(opacity-40 border-transparent)"
           @click="!isCategoryAllSelected(category) && selectCategory(category)"
@@ -53,7 +57,11 @@ function isCategoryNoneSelected(category: string): boolean {
           size="sm"
           data-facet-category-action="none"
           :data-facet-category="category"
-          :aria-label="`${$t('compare.facets.none')} ${getCategoryLabel(category)}`"
+          :aria-label="
+            $t('compare.facets.deselect_all_category_facets', {
+              category: getCategoryLabel(category),
+            })
+          "
           :aria-disabled="isCategoryNoneSelected(category)"
           class="aria-disabled:(opacity-40 border-transparent)"
           @click="!isCategoryNoneSelected(category) && deselectCategory(category)"
