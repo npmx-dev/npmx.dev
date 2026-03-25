@@ -1072,7 +1072,6 @@
       "add_column": "Menambahkan kolom tanpa ketergantungan ke perbandingan"
     },
     "facets": {
-      "group_label": "Aspek perbandingan",
       "all": "semua",
       "none": "tidak ada",
       "coming_soon": "Segera hadir",

@@ -1008,7 +1008,6 @@
       "add_column": "Nincs függőség oszlop hozzáadása az összehasonlításhoz"
     },
     "facets": {
-      "group_label": "Összehasonlítási aspektusok",
       "all": "összes",
       "none": "nincs",
       "coming_soon": "Hamarosan",

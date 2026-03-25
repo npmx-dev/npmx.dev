@@ -1067,7 +1067,6 @@
       "add_column": "Dodaj kolumnę z brakiem zależności do porównania"
     },
     "facets": {
-      "group_label": "Aspekty porównania",
       "all": "wszystkie",
       "none": "brak",
       "coming_soon": "Wkrótce",

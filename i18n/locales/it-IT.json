@@ -913,7 +913,6 @@
       "add_column": "Aggiungi una colonna per il confronto senza dipendenze"
     },
     "facets": {
-      "group_label": "Sfaccettature di confronto",
       "all": "tutto",
       "none": "niente",
       "coming_soon": "Prossimamente",

@@ -1086,7 +1086,6 @@
       "add_column": "添加与“不使用依赖”的比较"
     },
     "facets": {
-      "group_label": "比较维度",
       "all": "全选",
       "none": "取消全选",
       "coming_soon": "即将推出",

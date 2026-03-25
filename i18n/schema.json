@@ -3385,9 +3385,6 @@
         "facets": {
           "type": "object",
           "properties": {
-            "group_label": {
-              "type": "string"
-            },
             "all": {
               "type": "string"
             },

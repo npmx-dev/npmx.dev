@@ -1127,7 +1127,6 @@
       "add_column": "Add no dependency column to comparison"
     },
     "facets": {
-      "group_label": "Comparison facets",
       "all": "all",
       "none": "none",
       "coming_soon": "Coming soon",

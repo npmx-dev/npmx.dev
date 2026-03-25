@@ -1067,7 +1067,6 @@
       "add_column": "比較項目に「依存関係なし」カラムを追加"
     },
     "facets": {
-      "group_label": "比較項目",
       "all": "すべて",
       "none": "なし",
       "coming_soon": "近日公開",

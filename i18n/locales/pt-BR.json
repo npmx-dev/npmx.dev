@@ -1082,7 +1082,6 @@
       "add_column": "Adicionar coluna sem dependência à comparação"
     },
     "facets": {
-      "group_label": "Aspectos de comparação",
       "all": "todos",
       "none": "nenhum",
       "coming_soon": "Em breve",

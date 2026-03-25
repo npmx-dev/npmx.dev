@@ -1125,7 +1125,6 @@
       "add_column": "Ajouter la colonne sans dépendance à la comparaison"
     },
     "facets": {
-      "group_label": "Facettes de comparaison",
       "all": "tout",
       "none": "aucun",
       "coming_soon": "Bientôt disponible",

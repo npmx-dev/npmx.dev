@@ -885,7 +885,6 @@
       "add_column": "Legg til ingen avhengighet-kolonne i sammenligningen"
     },
     "facets": {
-      "group_label": "Sammenligningsfasetter",
       "all": "alle",
       "none": "ingen",
       "coming_soon": "Kommer snart",

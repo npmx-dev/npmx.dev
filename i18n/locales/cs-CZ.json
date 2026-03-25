@@ -1065,7 +1065,6 @@
       "add_column": "Přidat sloupec bez závislosti do porovnání"
     },
     "facets": {
-      "group_label": "Kategorie vlastností",
       "all": "Vše",
       "none": "Žádné",
       "coming_soon": "Brzy k dispozici",

@@ -1072,7 +1072,6 @@
       "add_column": "Añadir columna sin dependencia a la comparación"
     },
     "facets": {
-      "group_label": "Facetas de comparación",
       "all": "todas",
       "none": "ninguna",
       "coming_soon": "Próximamente",
