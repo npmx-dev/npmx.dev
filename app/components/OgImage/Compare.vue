@@ -5,10 +5,12 @@ import { encodePackageName } from '#shared/utils/npm'
 const props = withDefaults(
   defineProps<{
     packages?: string | string[]
+    emptyDescription?: string
     primaryColor?: string
   }>(),
   {
     packages: () => [],
+    emptyDescription: 'Compare npm packages side-by-side',
     primaryColor: '#60a5fa',
   },
 )
@@ -125,21 +127,10 @@ function barPct(downloads: number): string {
       <!-- Empty state -->
       <div
         v-if="stats.length === 0"
-        class="flex flex-wrap items-center gap-x-3 text-4xl text-[#a3a3a3]"
+        class="text-4xl text-[#a3a3a3]"
         style="font-family: 'Geist', sans-serif"
       >
-        <span>compare npm packages</span>
-        <span
-          class="px-3 py-1 rounded-lg border font-normal"
-          :style="{
-            color: primaryColor,
-            backgroundColor: primaryColor + '10',
-            borderColor: primaryColor + '30',
-            boxShadow: `0 0 20px ${primaryColor}25`,
-          }"
-        >
-          side-by-side
-        </span>
+        {{ emptyDescription }}
       </div>
 
       <!-- Bar chart rows -->
