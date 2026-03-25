@@ -920,11 +920,7 @@
       "downloads_month": "Téléch./mois",
       "downloads_year": "Téléch./an",
       "published": "Dern. publication",
-      "name": "Nom",
-      "quality": "Qualité",
-      "popularity": "Popularité",
-      "maintenance": "Maintenance",
-      "score": "Score"
+      "name": "Nom"
     },
     "columns": {
       "title": "Colonnes",
@@ -938,10 +934,6 @@
       "published": "Dern. publication",
       "maintainers": "Mainteneurs",
       "keywords": "Mots-clés",
-      "quality_score": "Score de qualité",
-      "popularity_score": "Score de popularité",
-      "maintenance_score": "Score de maintenance",
-      "combined_score": "Score combiné",
       "security": "Sécurité",
       "selection": "Sélectionner le paquet"
     },

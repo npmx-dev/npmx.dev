@@ -63,6 +63,9 @@
         },
         "keyboard_shortcuts": {
           "type": "string"
+        },
+        "brand": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -2772,18 +2775,6 @@
             },
             "name": {
               "type": "string"
-            },
-            "quality": {
-              "type": "string"
-            },
-            "popularity": {
-              "type": "string"
-            },
-            "maintenance": {
-              "type": "string"
-            },
-            "score": {
-              "type": "string"
             }
           },
           "additionalProperties": false
@@ -2822,18 +2813,6 @@
               "type": "string"
             },
             "keywords": {
-              "type": "string"
-            },
-            "quality_score": {
-              "type": "string"
-            },
-            "popularity_score": {
-              "type": "string"
-            },
-            "maintenance_score": {
-              "type": "string"
-            },
-            "combined_score": {
               "type": "string"
             },
             "security": {
@@ -4422,6 +4401,156 @@
         },
         "button_close_aria_label": {
           "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "logo_menu": {
+      "type": "object",
+      "properties": {
+        "copy_svg": {
+          "type": "string"
+        },
+        "copied": {
+          "type": "string"
+        },
+        "browse_brand": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "brand": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "heading": {
+          "type": "string"
+        },
+        "meta_description": {
+          "type": "string"
+        },
+        "intro": {
+          "type": "string"
+        },
+        "logos": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "wordmark": {
+              "type": "string"
+            },
+            "wordmark_alt": {
+              "type": "string"
+            },
+            "wordmark_light_alt": {
+              "type": "string"
+            },
+            "mark": {
+              "type": "string"
+            },
+            "mark_alt": {
+              "type": "string"
+            },
+            "mark_light_alt": {
+              "type": "string"
+            },
+            "on_dark": {
+              "type": "string"
+            },
+            "on_light": {
+              "type": "string"
+            },
+            "download_svg": {
+              "type": "string"
+            },
+            "download_png": {
+              "type": "string"
+            },
+            "download_svg_aria": {
+              "type": "string"
+            },
+            "download_png_aria": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "customize": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "accent_label": {
+              "type": "string"
+            },
+            "bg_label": {
+              "type": "string"
+            },
+            "download_svg_aria": {
+              "type": "string"
+            },
+            "download_png_aria": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "typography": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "sans": {
+              "type": "string"
+            },
+            "sans_desc": {
+              "type": "string"
+            },
+            "mono": {
+              "type": "string"
+            },
+            "mono_desc": {
+              "type": "string"
+            },
+            "pangram": {
+              "type": "string"
+            },
+            "numbers": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "guidelines": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            },
+            "discord_link_text": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false

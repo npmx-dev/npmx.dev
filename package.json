@@ -109,7 +109,7 @@
     "vite-plugin-pwa": "1.2.0",
     "vite-plus": "0.1.12",
     "vue": "3.5.30",
-    "vue-data-ui": "3.16.0"
+    "vue-data-ui": "3.16.1"
   },
   "devDependencies": {
     "@e18e/eslint-plugin": "0.3.0",
@@ -134,9 +134,9 @@
     "fast-check": "4.6.0",
     "h3": "1.15.8",
     "h3-next": "npm:h3@2.0.1-rc.16",
-    "knip": "5.88.0",
+    "knip": "6.0.5",
     "markdown-it-anchor": "9.2.0",
-    "schema-dts": "1.1.5",
+    "schema-dts": "2.0.0",
     "storybook": "catalog:storybook",
     "storybook-i18n": "catalog:storybook",
     "typescript": "6.0.2",
