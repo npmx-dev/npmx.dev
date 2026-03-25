@@ -29,12 +29,10 @@ export async function downloadPackageTarball(
 
   const downloadUrl = await getDownloadUrl(tarballUrl)
 
-  const link = document.createElement('a')
-  link.href = downloadUrl ?? tarballUrl
-  link.download = `${packageName.replace(/\//g, '__')}-${version.version}.tgz`
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
+  downloadFileLink(
+    downloadUrl ?? tarballUrl,
+    `${packageName.replace(/\//g, '__')}-${version.version}.tgz`,
+  )
 
   if (downloadUrl) {
     URL.revokeObjectURL(downloadUrl)
