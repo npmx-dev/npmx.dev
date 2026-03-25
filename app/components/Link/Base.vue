@@ -13,7 +13,7 @@ const props = withDefaults(
     /** Visual style of the link */
     variant?: 'button-primary' | 'button-secondary' | 'link'
     /** Size (only applicable for button variants) */
-    size?: 'small' | 'medium'
+    size?: 'sm' | 'md'
     /** Makes the link take full width */
     block?: boolean
 
@@ -48,7 +48,7 @@ const props = withDefaults(
      */
     noNewTabIcon?: boolean
   }>(),
-  { variant: 'link', size: 'medium' },
+  { variant: 'link', size: 'md' },
 )
 
 const isLinkExternal = computed(
@@ -64,8 +64,8 @@ const isLinkAnchor = computed(
 /** size is only applicable for button like links */
 const isLink = computed(() => props.variant === 'link')
 const isButton = computed(() => !isLink.value)
-const isButtonSmall = computed(() => props.size === 'small' && !isLink.value)
-const isButtonMedium = computed(() => props.size === 'medium' && !isLink.value)
+const isButtonSmall = computed(() => props.size === 'sm' && !isLink.value)
+const isButtonMedium = computed(() => props.size === 'md' && !isLink.value)
 const keyboardShortcutsEnabled = useKeyboardShortcuts()
 </script>
 

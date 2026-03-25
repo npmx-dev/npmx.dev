@@ -19,7 +19,8 @@
     "social": "social",
     "chat": "chat",
     "builders_chat": "builders",
-    "keyboard_shortcuts": "keyboard shortcuts"
+    "keyboard_shortcuts": "keyboard shortcuts",
+    "brand": "brand"
   },
   "shortcuts": {
     "section": {
@@ -486,6 +487,12 @@
       "maintainer_template": "{avatar} {char126}{name}"
     },
     "trends": {
+      "chart_assistive_text": {
+        "keyboard_navigation_horizontal": "Use the left and right arrow keys to cycle through data points.",
+        "keyboard_navigation_vertical": "Use the up and down arrow keys to cycle through data points.",
+        "table_available": "A data table for this chart is available below.",
+        "table_caption": "Chart data table"
+      },
       "granularity": "Granularity",
       "granularity_daily": "Daily",
       "granularity_weekly": "Weekly",
@@ -544,7 +551,8 @@
     "downloads": {
       "title": "Weekly Downloads",
       "community_distribution": "View community adoption distribution",
-      "subtitle": "Across all versions"
+      "subtitle": "Across all versions",
+      "sparkline_nav_hint": "Use ← →"
     },
     "install_scripts": {
       "title": "Install Scripts",
@@ -634,6 +642,10 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
+    },
+    "download": {
+      "button": "Download",
+      "tarball": "Download Tarball as .tar.gz"
     }
   },
   "connector": {
@@ -915,11 +927,7 @@
       "downloads_month": "Downloads/mo",
       "downloads_year": "Downloads/yr",
       "published": "Last Published",
-      "name": "Name",
-      "quality": "Quality",
-      "popularity": "Popularity",
-      "maintenance": "Maintenance",
-      "score": "Score"
+      "name": "Name"
     },
     "columns": {
       "title": "Columns",
@@ -933,10 +941,6 @@
       "published": "Last Published",
       "maintainers": "Maintainers",
       "keywords": "Keywords",
-      "quality_score": "Quality score",
-      "popularity_score": "Popularity score",
-      "maintenance_score": "Maintenance score",
-      "combined_score": "Combined score",
       "security": "Security",
       "selection": "Select package"
     },
@@ -1105,7 +1109,9 @@
       "empty_title": "Select packages to compare",
       "empty_description": "Search and add at least 2 packages above to see a side-by-side comparison of their metrics.",
       "table_view": "Table",
-      "charts_view": "Charts"
+      "charts_view": "Charts",
+      "bar_chart_nav_hint": "Use ↑ ↓",
+      "line_chart_nav_hint": "Use ← →"
     },
     "selector": {
       "search_label": "Search for packages",
@@ -1464,5 +1470,55 @@
     "selection": "0 selected | 1 selected | {count} selected",
     "shortcut": "Press \"{key}\" to focus actions",
     "button_close_aria_label": "Close action bar"
+  },
+  "logo_menu": {
+    "copy_svg": "Copy logo as SVG",
+    "copied": "Copied!",
+    "browse_brand": "Browse brand kit"
+  },
+  "brand": {
+    "title": "Brand",
+    "heading": "brand",
+    "meta_description": "npmx brand guidelines, logos, colors, and typography for use in press and media.",
+    "intro": "Resources and guidelines for using the npmx brand in your projects, articles, and media.",
+    "logos": {
+      "title": "logos",
+      "description": "Download npmx logos in SVG and PNG formats. Use the appropriate variant for your background.",
+      "wordmark": "FULL WORDMARK",
+      "wordmark_alt": "npmx full wordmark logo with blue slash on dark background",
+      "wordmark_light_alt": "npmx full wordmark logo with accent slash on light background",
+      "mark": "LOGO MARK",
+      "mark_alt": "npmx logo mark with dot and slash on dark background",
+      "mark_light_alt": "npmx logo mark with dot and slash on light background",
+      "on_dark": "on dark",
+      "on_light": "on light",
+      "download_svg": "SVG",
+      "download_png": "PNG",
+      "download_svg_aria": "Download {name} as SVG",
+      "download_png_aria": "Download {name} as PNG"
+    },
+    "customize": {
+      "title": "customize your logo",
+      "description": "Preview the npmx logo with your accent color and background. The preview reflects your current settings — pick a color, toggle the background, and download.",
+      "accent_label": "accent",
+      "bg_label": "background",
+      "download_svg_aria": "Download customized logo as SVG",
+      "download_png_aria": "Download customized logo as PNG"
+    },
+    "typography": {
+      "title": "typography",
+      "description": "npmx uses the Geist font family by Vercel for both interface text and code.",
+      "sans": "Geist Sans",
+      "sans_desc": "Used for body text and UI elements.",
+      "mono": "Geist Mono",
+      "mono_desc": "Used for code, headings, and technical content.",
+      "pangram": "The quick brown fox jumps over the lazy dog",
+      "numbers": "0123456789"
+    },
+    "guidelines": {
+      "title": "just a note",
+      "message": "Accessibility matters to us, and we would love you to follow us in this vision. When using mentioned media, ensure there is enough contrast against the background, and don't go smaller than 24px. If you need any other resources or additional information about the project, feel free to reach us at {link}.",
+      "discord_link_text": "chat.npmx.dev"
+    }
   }
 }

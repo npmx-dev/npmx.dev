@@ -374,36 +374,6 @@ function matchBundlephobiaApi(urlString) {
 }
 
 /**
- * @param {string} urlString
- * @returns {MockResponse | null}
- */
-function matchNpmsApi(urlString) {
-  const url = new URL(urlString)
-  const pathname = decodeURIComponent(url.pathname)
-
-  const packageMatch = pathname.match(/^\/v2\/package\/(.+)$/)
-  if (packageMatch && packageMatch[1]) {
-    const packageName = packageMatch[1]
-    return json({
-      analyzedAt: new Date().toISOString(),
-      collected: {
-        metadata: { name: packageName },
-      },
-      score: {
-        final: 0.75,
-        detail: {
-          quality: 0.8,
-          popularity: 0.7,
-          maintenance: 0.75,
-        },
-      },
-    })
-  }
-
-  return null
-}
-
-/**
  * @param {string} _urlString
  * @returns {MockResponse | null}
  */
@@ -534,7 +504,6 @@ const routes = [
   { name: 'fast-npm-meta', pattern: 'https://npm.antfu.dev/**', match: matchFastNpmMeta },
   { name: 'JSR registry', pattern: 'https://jsr.io/**', match: matchJsrRegistry },
   { name: 'Bundlephobia API', pattern: 'https://bundlephobia.com/**', match: matchBundlephobiaApi },
-  { name: 'npms.io API', pattern: 'https://api.npms.io/**', match: matchNpmsApi },
   { name: 'jsdelivr CDN', pattern: 'https://cdn.jsdelivr.net/**', match: matchJsdelivrCdn },
   {
     name: 'jsdelivr Data API',
