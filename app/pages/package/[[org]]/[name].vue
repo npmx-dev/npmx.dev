@@ -256,8 +256,7 @@ const versionSecurityMetadata = computed<PackageVersionInfo[]>(() => {
 
 // Process package description
 const pkgDescription = useMarkdown(() => ({
-  text: pkg.value?.description ?? '',
-  packageName: pkg.value?.name,
+  text: pkg.value?.description ?? ''
 }))
 
 // Fetch dependency analysis (lazy, client-side)
