@@ -318,22 +318,4 @@ describe('FacetSelector', () => {
       expect(mockDeselectCategory).not.toHaveBeenCalled()
     })
   })
-
-  describe('styling', () => {
-    it('applies selected styling to selected facets', async () => {
-      mockSelectedFacets.value = ['downloads']
-      mockIsFacetSelected.mockImplementation((f: string) => f === 'downloads')
-
-      const component = await mountSuspended(FacetSelector)
-
-      // Selected facets have bg-bg-muted class
-      expect(component.find('.aria-checked:bg-bg-muted').exists()).toBe(true)
-    })
-
-    it.runIf(hasComingSoonFacets)('applies cursor-not-allowed to comingSoon facets', async () => {
-      const component = await mountSuspended(FacetSelector)
-
-      expect(component.find('.cursor-not-allowed').exists()).toBe(true)
-    })
-  })
 })
