@@ -401,7 +401,7 @@ function handleListboxKeydown(event: KeyboardEvent) {
       const item = items[focusedIndex.value]
       if (item?.type === 'group') {
         const group = versionGroups.value.find(g => g.id === item.groupId)
-        if (group && !group.isExpanded && group.versions.length > 1) {
+        if (group && !group.isExpanded && (group.versions.length > 1 || !hasLoadedAll.value)) {
           toggleGroup(item.groupId)
         }
       }
@@ -539,7 +539,7 @@ watch(
           >
             <!-- Expand button -->
             <button
-              v-if="group.versions.length > 1 || !hasLoadedAll"
+              v-if="group.isExpanded || group.versions.length > 1 || !hasLoadedAll"
               type="button"
               class="w-4 h-4 flex items-center justify-center text-fg-subtle hover:text-fg transition-colors shrink-0"
               :aria-expanded="group.isExpanded"
@@ -626,7 +626,7 @@ watch(
         <!-- Link to package page for full version list -->
         <div class="border-t border-border mt-1 pt-1 px-3 py-2">
           <NuxtLink
-            :to="packageRoute(packageName)"
+            :to="packageVersionsRoute(packageName)"
             class="text-xs text-fg-subtle hover:text-fg transition-[color] focus-visible:outline-none focus-visible:text-fg"
             @click="isOpen = false"
           >

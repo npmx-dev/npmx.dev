@@ -96,12 +96,7 @@ function versionRoute(version: string): RouteLocationRaw {
 }
 
 // Route to the full versions history page
-const versionsPageRoute = computed((): RouteLocationRaw => {
-  const [org, name = ''] = props.packageName.startsWith('@')
-    ? props.packageName.split('/')
-    : ['', props.packageName]
-  return { name: 'package-versions', params: { org, name } }
-})
+const versionsPageRoute = computed(() => packageVersionsRoute(props.packageName))
 
 // Version to tags lookup (supports multiple tags per version)
 const versionToTags = computed(() => buildVersionToTagsMap(props.distTags))
