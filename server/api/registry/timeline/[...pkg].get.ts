@@ -77,7 +77,7 @@ export default defineCachedEventHandler(
             tags: tagsByVersion.get(v) ?? [],
           }
         })
-        .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
+        .sort((a, b) => Date.parse(b.time) - Date.parse(a.time))
 
       return {
         versions: allVersions.slice(offset, offset + limit),
