@@ -979,7 +979,7 @@ describe('component accessibility audits', () => {
           dataset,
           dates,
           datetimeFormatterOptions,
-          showLastDatapointEstimation: false
+          showLastDatapointEstimation: false,
         },
       })
       const results = await runAxe(component)
@@ -992,7 +992,7 @@ describe('component accessibility audits', () => {
           dataset: [],
           dates: [],
           datetimeFormatterOptions,
-          showLastDatapointEstimation: false
+          showLastDatapointEstimation: false,
         },
       })
       const results = await runAxe(component)
