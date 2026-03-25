@@ -327,7 +327,7 @@ describe('FacetSelector', () => {
       const component = await mountSuspended(FacetSelector)
 
       // Selected facets have bg-bg-muted class
-      expect(component.find('.bg-bg-muted').exists()).toBe(true)
+      expect(component.find('.aria-checked:bg-bg-muted').exists()).toBe(true)
     })
 
     it.runIf(hasComingSoonFacets)('applies cursor-not-allowed to comingSoon facets', async () => {
