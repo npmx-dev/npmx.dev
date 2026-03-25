@@ -89,7 +89,7 @@ describe('usePackageComparison', () => {
 
       // Should use version-specific timestamp, NOT time.modified
       expect(values[0]!.display).toBe('2024-06-15T00:00:00.000Z')
-      expect(values[0]!.raw).toBe(new Date('2024-06-15T00:00:00.000Z').getTime())
+      expect(values[0]!.raw).toBe(Date.parse('2024-06-15T00:00:00.000Z'))
     })
 
     it('stores version-specific time in metadata', async () => {

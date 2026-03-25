@@ -922,11 +922,7 @@
       "downloads_month": "Завантажень/міс",
       "downloads_year": "Завантажень/рік",
       "published": "Останнє опублікування",
-      "name": "Ім'я",
-      "quality": "Якість",
-      "popularity": "Популярність",
-      "maintenance": "Підтримка",
-      "score": "Оцінка"
+      "name": "Ім'я"
     },
     "columns": {
       "title": "Колонки",

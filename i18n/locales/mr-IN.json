@@ -482,6 +482,7 @@
       "maintainer_template": "{avatar} {char126}{name}"
     },
     "trends": {
+      "chart_assistive_text": {},
       "granularity": "ग्रॅन्युलॅरिटी",
       "granularity_daily": "दैनिक",
       "granularity_weekly": "साप्ताहिक",
@@ -915,11 +916,7 @@
       "downloads_month": "डाउनलोड्स/महिना",
       "downloads_year": "डाउनलोड्स/वर्ष",
       "published": "शेवटचे प्रकाशित",
-      "name": "नाव",
-      "quality": "गुणवत्ता",
-      "popularity": "लोकप्रियता",
-      "maintenance": "देखभाल",
-      "score": "स्कोर"
+      "name": "नाव"
     },
     "columns": {
       "title": "स्तंभ",
@@ -933,10 +930,6 @@
       "published": "शेवटचे प्रकाशित",
       "maintainers": "देखभालकर्ते",
       "keywords": "कीवर्ड्स",
-      "quality_score": "गुणवत्ता स्कोर",
-      "popularity_score": "लोकप्रियता स्कोर",
-      "maintenance_score": "देखभाल स्कोर",
-      "combined_score": "एकत्रित स्कोर",
       "security": "सुरक्षा",
       "selection": "पॅकेज निवडा"
     },
@@ -1423,6 +1416,14 @@
       "error": "फाइल यादी लोड करताना त्रुटी.",
       "empty": "कोणत्याही फाइल्स सापडल्या नाहीत",
       "file_link": "GitHub वर {file} ({lang}) संपादित करा"
+    }
+  },
+  "vacations": {
+    "what": {},
+    "meantime": {},
+    "return": {},
+    "stats": {
+      "subtitle": {}
     }
   },
   "action_bar": {

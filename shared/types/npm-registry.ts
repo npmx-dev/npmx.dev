@@ -128,7 +128,6 @@ export interface NpmSearchResponse {
 
 export interface NpmSearchResult {
   package: NpmSearchPackage
-  score?: NpmSearchScore
   searchScore?: number
   /** Download counts (weekly/monthly) */
   downloads?: {
@@ -187,15 +186,6 @@ export interface NpmSearchPackage {
   publisher?: NpmSearchPublisher
   maintainers?: NpmPerson[]
   license?: string
-}
-
-export interface NpmSearchScore {
-  final: number
-  detail: {
-    quality: number
-    popularity: number
-    maintenance: number
-  }
 }
 
 /**
