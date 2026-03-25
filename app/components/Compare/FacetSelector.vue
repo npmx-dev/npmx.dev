@@ -77,14 +77,7 @@ function isCategoryNoneSelected(category: string): boolean {
           :disabled="facet.comingSoon"
           :aria-checked="isFacetSelected(facet.id)"
           :aria-label="facet.label"
-          class="gap-1 px-1.5 rounded transition-colors focus-visible:outline-accent/70"
-          :class="
-            facet.comingSoon
-              ? 'text-fg-subtle/50 bg-bg-subtle border-border-subtle cursor-not-allowed'
-              : isFacetSelected(facet.id)
-                ? 'text-fg-muted bg-bg-muted'
-                : 'text-fg-subtle bg-bg-subtle border-border-subtle hover:text-fg-muted hover:border-border'
-          "
+          class="gap-1 px-1.5 rounded transition-colors text-fg-subtle bg-bg-subtle border-border-subtle enabled:hover:(text-fg-muted border-border) aria-checked:(text-fg-muted bg-bg-muted) focus-visible:outline-accent/70 disabled:(text-fg-subtle/50 bg-bg-subtle border-border-subtle cursor-not-allowed)"
           @click="!facet.comingSoon && toggleFacet(facet.id)"
           :classicon="
             facet.comingSoon
