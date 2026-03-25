@@ -50,12 +50,12 @@ test.describe('badge API', () => {
       })
 
       test('explicit version badge renders successfully', async ({ page, baseURL }) => {
-        const url = toLocalUrl(baseURL, `/api/registry/badge/${type}/nuxt/v/3.12.0`)
+        const url = toLocalUrl(baseURL, `/api/registry/badge/${type}/nuxt/v/3.21.0`)
         const { response, body } = await fetchBadge(page, url)
 
         expect(response.status()).toBe(200)
         if (type === 'version') {
-          expect(body).toContain('v3.12.0')
+          expect(body).toContain('v3.21.0')
         }
       })
 
@@ -84,6 +84,25 @@ test.describe('badge API', () => {
       const { body } = await fetchBadge(page, url)
 
       expect(body).toContain('active')
+    })
+
+    test('types badge shows @types badge', async ({ page, baseURL }) => {
+      const url = toLocalUrl(baseURL, '/api/registry/badge/types/is-odd')
+      const { body } = await fetchBadge(page, url)
+
+      expect(body).toContain('@types')
+      expect(body).not.toContain('missing')
+    })
+
+    test('types badge shows included badge when types not declared explicitly', async ({
+      page,
+      baseURL,
+    }) => {
+      const url = toLocalUrl(baseURL, '/api/registry/badge/types/nano-stringify-object')
+      const { body } = await fetchBadge(page, url)
+
+      expect(body).toContain('included')
+      expect(body).not.toContain('missing')
     })
   })
 
