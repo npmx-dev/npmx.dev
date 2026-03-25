@@ -1,0 +1,341 @@
+{
+  "_id": "@types/is-odd",
+  "_rev": "357-6aea66bbc40695119f00465c0fa53de3",
+  "name": "@types/is-odd",
+  "dist-tags": {
+    "ts2.0": "3.0.0",
+    "ts2.1": "3.0.0",
+    "ts2.2": "3.0.0",
+    "ts2.3": "3.0.0",
+    "ts2.4": "3.0.0",
+    "ts2.5": "3.0.0",
+    "ts2.6": "3.0.0",
+    "ts2.7": "3.0.0",
+    "ts2.8": "3.0.0",
+    "ts2.9": "3.0.0",
+    "ts3.0": "3.0.0",
+    "ts3.1": "3.0.0",
+    "ts3.2": "3.0.0",
+    "ts3.3": "3.0.0",
+    "ts3.4": "3.0.0",
+    "ts3.5": "3.0.0",
+    "ts3.6": "3.0.0",
+    "ts3.7": "3.0.0",
+    "ts3.8": "3.0.1",
+    "ts3.9": "3.0.1",
+    "ts4.0": "3.0.1",
+    "ts4.1": "3.0.1",
+    "ts4.2": "3.0.1",
+    "ts4.3": "3.0.1",
+    "ts4.4": "3.0.1",
+    "ts5.8": "3.0.4",
+    "ts5.7": "3.0.4",
+    "latest": "3.0.4",
+    "ts4.5": "3.0.4",
+    "ts4.6": "3.0.4",
+    "ts4.7": "3.0.4",
+    "ts4.8": "3.0.4",
+    "ts4.9": "3.0.4",
+    "ts5.0": "3.0.4",
+    "ts5.1": "3.0.4",
+    "ts5.2": "3.0.4",
+    "ts5.3": "3.0.4",
+    "ts5.4": "3.0.4",
+    "ts5.5": "3.0.4",
+    "ts5.9": "3.0.4",
+    "ts5.6": "3.0.4",
+    "ts6.0": "3.0.4"
+  },
+  "versions": {
+    "3.0.0": {
+      "name": "@types/is-odd",
+      "version": "3.0.0",
+      "license": "MIT",
+      "_id": "@types/is-odd@3.0.0",
+      "maintainers": [
+        {
+          "name": "types",
+          "email": "ts-npm-types@microsoft.com"
+        }
+      ],
+      "contributors": [
+        {
+          "url": "https://github.com/adamzerella",
+          "name": " Adam Zerella",
+          "githubUsername": "adamzerella"
+        }
+      ],
+      "dist": {
+        "shasum": "861b26fa31e656354bb05d63254091f734c461b5",
+        "tarball": "https://registry.npmjs.org/@types/is-odd/-/is-odd-3.0.0.tgz",
+        "fileCount": 4,
+        "integrity": "sha512-XfoBBgqc9DYRWo0V6clOC9cDy9KYELqgWwyulwCkv8/6Hlnd25XbDXGGnWYqOr3GUYIwqp4/gqm7/RtCZvqOJA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDCb3RyeOCBQWvvgk/slsNiLZrw352GCFOXn7BvVT+33gIgfYjvWpa8EI/H67e8ndZkZLz93oN/dRVTLqnnm1d/1bM=",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 2712,
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJccLErCRA9TVsSAnZWagAAQhcP/2Ab+nx4IOo4BGdIySnD\nBONPypFkgSzUa29B81x0SYuFLk9M6lgVhcHLM6s62/HlTDMgT6MHFJdaIHcg\n9xvm/ROaBeKxKcm/iP2yS8OzMZ4GTzNc8t/r1w1GPrUGw5d/3GuEPktSlA3o\nUoVg9tc+QIMog46UGmcXARX6Hv81UGFqHUiV0JgRWQNLvTlUyXFpcpE1esyB\njumZDFuH+E9Bcj/k+DYy+G12lKhMHmTwLOMBN5YI9Cl3dNgnujcFbpKXCf3s\nYBKxjrWblz1l3eT1hk24KRhpOnUm262Y/v1axSeA2l3xxO/feg7MWf9V0fHZ\ndVDa4QBK+w2yt+0rNLJ0I0EqOxk7lMnxLRbbbBRSf4iwiwrzOVAxqwCCG2MW\nRj6ZAXf0/girV4/tXxFZX6maZVWXRiEEKRVWOFuHPAozp6Sdl8dpB8IXjKn6\n4vbGfDqqN2VMLPAfTtevEaZJDM+1/cnpcJSYRFbuzxxG1a9XU75hWNMzOvDZ\n/YhAmtTxNrNNux9DDVtifg0VoIBbIMUZ90/alhaczf0P2yvA5pJ2ktPHumSh\ne0RaiSu70C+ye2MHraEV9/uBoq+U1/ct6XPt1iYE1vQqtc+jf3nBazSDumpA\n2UXV4kmbHCUgg1a/a7xQH7lRgip+Sx776sv3ljRWmb2QUdlzI1gbipsUIZAA\n08K4\r\n=/LEL\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "main": "",
+      "types": "index",
+      "scripts": {},
+      "_npmUser": {
+        "name": "types",
+        "email": "ts-npm-types@microsoft.com"
+      },
+      "repository": {
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "type": "git",
+        "directory": "types/is-odd"
+      },
+      "description": "TypeScript definitions for is-odd",
+      "directories": {},
+      "dependencies": {},
+      "_hasShrinkwrap": false,
+      "typeScriptVersion": "2.0",
+      "_npmOperationalInternal": {
+        "tmp": "tmp/is-odd_3.0.0_1550889259065_0.09125334321631584",
+        "host": "s3://npm-registry-packages"
+      },
+      "typesPublisherContentHash": "1dc04627cea88eece89c95a0aed7905067a849634ee4f4bc84b23fa135d0dd02"
+    },
+    "3.0.1": {
+      "name": "@types/is-odd",
+      "version": "3.0.1",
+      "license": "MIT",
+      "_id": "@types/is-odd@3.0.1",
+      "maintainers": [
+        {
+          "name": "types",
+          "email": "ts-npm-types@microsoft.com"
+        }
+      ],
+      "contributors": [
+        {
+          "url": "https://github.com/DefinitelyTyped",
+          "name": "DefinitelyTyped",
+          "githubUsername": "DefinitelyTyped"
+        }
+      ],
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/is-odd",
+      "dist": {
+        "shasum": "b43a16362855c86db3c4df59e36b6eb3e44f555b",
+        "tarball": "https://registry.npmjs.org/@types/is-odd/-/is-odd-3.0.1.tgz",
+        "fileCount": 4,
+        "integrity": "sha512-mY+bL1FNKoF6xEN87ayz2Xk1O5L5L4v0KKheja7bWcqTD3je1w0nYzDVJ3W/bTtzkHJuqEb0UAFANtF5cI2wBg==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCIF54WCx1KAczN/AuO1k/pC1b6pj4o1a6FVbyunJ51BgIgcqi0fG9vJU1hms3h9IUwrrMJVbBMNlH+G4vPbyDsUf4=",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 3272,
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.13\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJhxQ2wCRA9TVsSAnZWagAAPhsP/3HOZ/uL7BMK+rZAXIdE\n0wy77RIsTo/+ZCWlJ3MNPWocIBi+eVfFmRkEIxnD3u9+EMOjZl10Q3rKlX/D\n6Zu4PDIBIUGU0p6WqdOqAMxHIGbehid+DG8RbgdcZw72QDCztPzPEwYDd3lE\nuaANy3qdPDdN5knlN0QvrJuiU9I++bCgEBWIXuiGTddeQOQXbitEBP7D7Q0E\n+PRYWlGXUjb3YiJgrZJfemEUfvntoqgOa1mPsM9crfo4+tzb5q8H4AEUhpd3\nZyYNxRZKsEN1MpA/i8KjwdO4P2zFofFgvmw/umU2+7/ACD86lYwpII/N26VB\nBlWaZXOPKxsX1uHZSmSI2Z1d6uE6PVSNP9R2fq7KuMWOkhnTb/U39uYBlJHE\nW0SCmMKIz/+TQP83sIH7LKBZmp4hft6UxIoL2LkOTStp7ibAw+rCbPA18NPl\nfMdcCQuHoY2bNHYa87/0ecOFke8JKLkI3DY1AwK+6h9WIX9cOV4MJXl/hXhG\nQiL7NIZ25XfWbqBTfrCtHInxd0e8X1hvR7OytDsyQ6ruAmZqWqNWIjhcLSYL\nGS9wahiPysJcRBxvKiYAfhd8wwUmi/ObbczqygNJqNMcoUZLzNd+AHZSnmlv\nYgU6p6lDs4aOeAcG7moR/+0Pe+OpZwnE0ngkQGLisG/YVayO+cBHLorBkQvc\nBTFo\r\n=oVZZ\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "main": "",
+      "types": "index.d.ts",
+      "scripts": {},
+      "_npmUser": {
+        "name": "types",
+        "email": "ts-npm-types@microsoft.com"
+      },
+      "repository": {
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "type": "git",
+        "directory": "types/is-odd"
+      },
+      "description": "TypeScript definitions for is-odd",
+      "directories": {},
+      "dependencies": {},
+      "_hasShrinkwrap": false,
+      "typeScriptVersion": "3.8",
+      "_npmOperationalInternal": {
+        "tmp": "tmp/is-odd_3.0.1_1640304047958_0.02408279906546351",
+        "host": "s3://npm-registry-packages"
+      },
+      "typesPublisherContentHash": "cfeed0da2d9c42717cef03273f341ce6f4edd16f2adf2bacbf13bc82214bfca7"
+    },
+    "3.0.2": {
+      "name": "@types/is-odd",
+      "version": "3.0.2",
+      "license": "MIT",
+      "_id": "@types/is-odd@3.0.2",
+      "maintainers": [
+        {
+          "name": "types",
+          "email": "ts-npm-types@microsoft.com"
+        }
+      ],
+      "contributors": [
+        {
+          "url": "https://github.com/DefinitelyTyped",
+          "name": "DefinitelyTyped",
+          "githubUsername": "DefinitelyTyped"
+        }
+      ],
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/is-odd",
+      "dist": {
+        "shasum": "064ccdfef0cba1f8597e2ec0eba0802fc6aba743",
+        "tarball": "https://registry.npmjs.org/@types/is-odd/-/is-odd-3.0.2.tgz",
+        "fileCount": 5,
+        "integrity": "sha512-a/mE50FokBkPY86oocj/oorgDaYjT+l2EGSVLwbAUFwjOpFFDlbqHW5I9FS0cISLxmuDRr1J26znAy88UkHUbg==",
+        "signatures": [
+          {
+            "sig": "MEUCIC7Z/Qq4ZJJjg5ibpVZWQu1VD8LS/arVBl5awUSBOtRqAiEA20t3jhV+JVYMlUF3fwMl8KneYzDO9+HRYTJ9mQ7WXPY=",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 3276
+      },
+      "main": "",
+      "types": "index.d.ts",
+      "scripts": {},
+      "_npmUser": {
+        "name": "types",
+        "email": "ts-npm-types@microsoft.com"
+      },
+      "repository": {
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "type": "git",
+        "directory": "types/is-odd"
+      },
+      "description": "TypeScript definitions for is-odd",
+      "directories": {},
+      "dependencies": {},
+      "_hasShrinkwrap": false,
+      "typeScriptVersion": "4.5",
+      "_npmOperationalInternal": {
+        "tmp": "tmp/is-odd_3.0.2_1695740874873_0.09491697275033473",
+        "host": "s3://npm-registry-packages"
+      },
+      "typesPublisherContentHash": "f9b12a308df62402e8e0f8a8b33f699ed9f75f869afce468cfeafb9f8714df4e"
+    },
+    "3.0.3": {
+      "name": "@types/is-odd",
+      "version": "3.0.3",
+      "license": "MIT",
+      "_id": "@types/is-odd@3.0.3",
+      "maintainers": [
+        {
+          "name": "types",
+          "email": "ts-npm-types@microsoft.com"
+        }
+      ],
+      "contributors": [],
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/is-odd",
+      "dist": {
+        "shasum": "a60696d7d28b6795522cc757f4bbf0d0250bfa59",
+        "tarball": "https://registry.npmjs.org/@types/is-odd/-/is-odd-3.0.3.tgz",
+        "fileCount": 5,
+        "integrity": "sha512-YdKKQ4CTGEfvdO+MWIPj/DLA3RZMJ9yOJOyLmq0nmN2FrKg6WQ5zynhlmjP7vnfYBTHNp/E9BJmBDsvw0/on/A==",
+        "signatures": [
+          {
+            "sig": "MEQCIGg7zdX3mlxczMdanHMrScYDLSnyDf6TL9b0DLRRkoWVAiBZYASSD5iCM3xRTS767+Gw41jQnDkIeK0rCHuy1SjgIw==",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 2576
+      },
+      "main": "",
+      "types": "index.d.ts",
+      "scripts": {},
+      "_npmUser": {
+        "name": "types",
+        "email": "ts-npm-types@microsoft.com"
+      },
+      "repository": {
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "type": "git",
+        "directory": "types/is-odd"
+      },
+      "description": "TypeScript definitions for is-odd",
+      "directories": {},
+      "dependencies": {},
+      "_hasShrinkwrap": false,
+      "typeScriptVersion": "4.5",
+      "_npmOperationalInternal": {
+        "tmp": "tmp/is-odd_3.0.3_1697606685662_0.7307845211597903",
+        "host": "s3://npm-registry-packages"
+      },
+      "typesPublisherContentHash": "f0888f66f4772459e29e716f6016cdaacfc7731573b71c46d23ded2554bd7a73"
+    },
+    "3.0.4": {
+      "name": "@types/is-odd",
+      "version": "3.0.4",
+      "license": "MIT",
+      "_id": "@types/is-odd@3.0.4",
+      "maintainers": [
+        {
+          "name": "types",
+          "email": "ts-npm-types@microsoft.com"
+        }
+      ],
+      "contributors": [],
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/is-odd",
+      "dist": {
+        "shasum": "281d2e0ff78f04b319e40f83b2c4cfae5377622a",
+        "tarball": "https://registry.npmjs.org/@types/is-odd/-/is-odd-3.0.4.tgz",
+        "fileCount": 5,
+        "integrity": "sha512-BdjXVZXuHVqdXNi9gEbwf/W/k2lIhXzqnmygz4BFRTdpgFpJsn1v7AfB3DaLHj04O9hKiqQvnxu5AeogyptDjQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIHLi2pVt8NsZM0434wTXqtu7F2kqqL9X7uySIbQ/XW7qAiEAzjn/2YlFKI02nQ2vaBNq0OtctmuDAdly4lY0V4eguIc=",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 2576
+      },
+      "main": "",
+      "types": "index.d.ts",
+      "scripts": {},
+      "_npmUser": {
+        "name": "types",
+        "email": "ts-npm-types@microsoft.com"
+      },
+      "repository": {
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "type": "git",
+        "directory": "types/is-odd"
+      },
+      "description": "TypeScript definitions for is-odd",
+      "directories": {},
+      "dependencies": {},
+      "_hasShrinkwrap": false,
+      "typeScriptVersion": "4.5",
+      "_npmOperationalInternal": {
+        "tmp": "tmp/is-odd_3.0.4_1699344348594_0.45442272513797977",
+        "host": "s3://npm-registry-packages"
+      },
+      "typesPublisherContentHash": "4f85cab04d848065af4c299b2e5770379553a5d4500593c40f39e06931124f91"
+    }
+  },
+  "time": {
+    "created": "2019-02-23T02:34:18.884Z",
+    "modified": "2025-08-03T07:01:33.304Z",
+    "3.0.0": "2019-02-23T02:34:19.212Z",
+    "3.0.1": "2021-12-24T00:00:48.118Z",
+    "3.0.2": "2023-09-26T15:07:55.020Z",
+    "3.0.3": "2023-10-18T05:24:45.883Z",
+    "3.0.4": "2023-11-07T08:05:48.848Z"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/is-odd",
+  "repository": {
+    "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+    "type": "git",
+    "directory": "types/is-odd"
+  },
+  "description": "TypeScript definitions for is-odd",
+  "contributors": [],
+  "maintainers": [
+    {
+      "name": "types",
+      "email": "ts-npm-types@microsoft.com"
+    }
+  ],
+  "readme": "[object Object]",
+  "readmeFilename": ""
+}
