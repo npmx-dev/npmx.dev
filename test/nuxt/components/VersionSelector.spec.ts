@@ -424,6 +424,48 @@ describe('VersionSelector', () => {
         { timeout: 2000 },
       )
     })
+
+    it('toggles older version groups for a single-version tagged release', async () => {
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '1.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
+        { version: '0.9.0', time: '2024-01-10T12:00:00.000Z', hasProvenance: false },
+      ])
+
+      const component = await mountSuspended(VersionSelector, {
+        props: {
+          packageName: 'test-package',
+          currentVersion: '1.0.0',
+          versions: { '1.0.0': {}, '0.9.0': {} },
+          distTags: { latest: '1.0.0' },
+          urlPattern: '/package-docs/test-package/v/{version}',
+        },
+      })
+
+      const button = component.find('button[aria-haspopup="listbox"]')
+      await button.trigger('click')
+
+      const expandButton = component.find('[role="listbox"] button[aria-expanded="false"]')
+      await expandButton.trigger('click')
+
+      await vi.waitFor(() => {
+        expect(mockFetchAllPackageVersions).toHaveBeenCalledWith('test-package')
+      })
+
+      await vi.waitFor(() => {
+        expect(component.find('[role="listbox"]').text()).toContain('0.9')
+        const expandedButton = component.find('[role="listbox"] button[aria-expanded="true"]')
+        expect(expandedButton.exists()).toBe(true)
+      })
+
+      const expandedButton = component.find('[role="listbox"] button[aria-expanded="true"]')
+      await expandedButton.trigger('click')
+
+      await vi.waitFor(() => {
+        expect(component.find('[role="listbox"]').text()).not.toContain('0.9')
+        const collapsedButton = component.find('[role="listbox"] button[aria-expanded="false"]')
+        expect(collapsedButton.exists()).toBe(true)
+      })
+    })
   })
 
   describe('0.x version grouping', () => {

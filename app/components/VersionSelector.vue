@@ -70,6 +70,9 @@ const isLoadingAll = shallowRef(false)
 /** Cached full version list */
 const allVersionsCache = shallowRef<PackageVersionInfo[] | null>(null)
 
+/** Whether non-tagged version groups are visible */
+const showAllGroups = shallowRef(false)
+
 // ============================================================================
 // Computed
 // ============================================================================
@@ -77,6 +80,18 @@ const allVersionsCache = shallowRef<PackageVersionInfo[] | null>(null)
 const latestVersion = computed(() => props.distTags.latest)
 
 const versionToTags = computed(() => buildVersionToTagsMap(props.distTags))
+
+const visibleVersionGroups = computed(() => {
+  if (!hasLoadedAll.value || showAllGroups.value) {
+    return versionGroups.value
+  }
+
+  return versionGroups.value.filter(group => group.primaryVersion.tags?.length)
+})
+
+const hasAdditionalGroups = computed(() =>
+  versionGroups.value.some(group => !group.primaryVersion.tags?.length),
+)
 
 /** Get URL for a specific version */
 function getVersionUrl(version: string): string {
@@ -310,30 +325,37 @@ async function toggleGroup(groupId: string) {
   const group = versionGroups.value.find(g => g.id === groupId)
   if (!group) return
 
-  if (group.isExpanded) {
-    group.isExpanded = false
+  if (group.isLoading) return
+
+  if (hasLoadedAll.value) {
+    if (hasNestedVersions(group)) {
+      group.isExpanded = !group.isExpanded
+      return
+    }
+
+    if (controlsAdditionalGroups(group)) {
+      showAllGroups.value = !showAllGroups.value
+    }
+
     return
   }
 
-  // Load all versions if not yet loaded
-  if (!hasLoadedAll.value) {
-    group.isLoading = true
-    try {
-      const allVersions = await loadAllVersions()
-      processLoadedVersions(allVersions)
-      // Find the group again after processing (it may have moved)
-      const updatedGroup = versionGroups.value.find(g => g.id === groupId)
-      if (updatedGroup) {
-        updatedGroup.isExpanded = true
-      }
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Failed to load versions:', error)
-    } finally {
-      group.isLoading = false
+  group.isLoading = true
+  try {
+    const allVersions = await loadAllVersions()
+    processLoadedVersions(allVersions)
+    showAllGroups.value = hasAdditionalGroups.value
+
+    // Find the group again after processing (it may have moved)
+    const updatedGroup = versionGroups.value.find(g => g.id === groupId)
+    if (updatedGroup && hasNestedVersions(updatedGroup)) {
+      updatedGroup.isExpanded = true
     }
-  } else {
-    group.isExpanded = true
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Failed to load versions:', error)
+  } finally {
+    group.isLoading = false
   }
 }
 
@@ -345,7 +367,7 @@ async function toggleGroup(groupId: string) {
 const flatItems = computed(() => {
   const items: Array<{ type: 'group' | 'version'; groupId: string; version?: VersionDisplay }> = []
 
-  for (const group of versionGroups.value) {
+  for (const group of visibleVersionGroups.value) {
     items.push({ type: 'group', groupId: group.id, version: group.primaryVersion })
 
     if (group.isExpanded && group.versions.length > 1) {
@@ -401,7 +423,7 @@ function handleListboxKeydown(event: KeyboardEvent) {
       const item = items[focusedIndex.value]
       if (item?.type === 'group') {
         const group = versionGroups.value.find(g => g.id === item.groupId)
-        if (group && !group.isExpanded && (group.versions.length > 1 || !hasLoadedAll.value)) {
+        if (group && !isGroupOpen(group) && canToggleGroup(group)) {
           toggleGroup(item.groupId)
         }
       }
@@ -414,6 +436,8 @@ function handleListboxKeydown(event: KeyboardEvent) {
         const group = versionGroups.value.find(g => g.id === item.groupId)
         if (group?.isExpanded) {
           group.isExpanded = false
+        } else if (group && controlsAdditionalGroups(group) && showAllGroups.value) {
+          showAllGroups.value = false
         }
       } else if (item?.type === 'version') {
         // Jump to parent group
@@ -450,6 +474,31 @@ function navigateToVersion(version: string) {
   navigateTo(getVersionUrl(version))
 }
 
+function hasNestedVersions(group: VersionGroup): boolean {
+  return group.versions.length > 1
+}
+
+function controlsAdditionalGroups(group: VersionGroup): boolean {
+  return (
+    Boolean(group.primaryVersion.tags?.length) &&
+    !hasNestedVersions(group) &&
+    hasAdditionalGroups.value
+  )
+}
+
+function isGroupOpen(group: VersionGroup): boolean {
+  return group.isExpanded || (controlsAdditionalGroups(group) && showAllGroups.value)
+}
+
+function canToggleGroup(group: VersionGroup): boolean {
+  return (
+    group.isLoading ||
+    hasNestedVersions(group) ||
+    !hasLoadedAll.value ||
+    controlsAdditionalGroups(group)
+  )
+}
+
 // Reset focused index when dropdown opens
 watch(isOpen, open => {
   if (open) {
@@ -463,6 +512,7 @@ watch(isOpen, open => {
 watch(
   () => [props.distTags, props.versions, props.currentVersion],
   () => {
+    showAllGroups.value = false
     if (hasLoadedAll.value && allVersionsCache.value) {
       processLoadedVersions(allVersionsCache.value)
     } else {
@@ -518,7 +568,7 @@ watch(
         @keydown="handleListboxKeydown"
       >
         <!-- Version groups -->
-        <div v-for="group in versionGroups" :key="group.id">
+        <div v-for="group in visibleVersionGroups" :key="group.id">
           <!-- Group header (primary version) -->
           <div
             :id="`version-${group.primaryVersion.version}`"
@@ -539,11 +589,11 @@ watch(
           >
             <!-- Expand button -->
             <button
-              v-if="group.isExpanded || group.versions.length > 1 || !hasLoadedAll"
+              v-if="canToggleGroup(group)"
               type="button"
               class="w-4 h-4 flex items-center justify-center text-fg-subtle hover:text-fg transition-colors shrink-0"
-              :aria-expanded="group.isExpanded"
-              :aria-label="group.isExpanded ? $t('common.collapse') : $t('common.expand')"
+              :aria-expanded="isGroupOpen(group)"
+              :aria-label="isGroupOpen(group) ? $t('common.collapse') : $t('common.expand')"
               @click.stop="toggleGroup(group.id)"
             >
               <span
@@ -554,11 +604,11 @@ watch(
               <span
                 v-else
                 class="w-3 h-3 transition-transform duration-200 rtl-flip"
-                :class="group.isExpanded ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'"
+                :class="isGroupOpen(group) ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'"
                 aria-hidden="true"
               />
             </button>
-            <span v-else class="w-4" />
+            <span v-else class="w-4 h-4 shrink-0" />
 
             <!-- Version link -->
             <NuxtLink
