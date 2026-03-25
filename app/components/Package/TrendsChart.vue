@@ -1923,8 +1923,12 @@ const isSparklineLayout = shallowRef(false)
       "
     >
       <ClientOnly v-if="chartData.dataset">
-        <div v-if="isSparklineLayout" id="split-chart-layout-panel" role="tabpanel"
-    aria-labelledby="split-chart-layout-tab">
+        <div
+          v-if="isSparklineLayout"
+          id="split-chart-layout-panel"
+          role="tabpanel"
+          aria-labelledby="split-chart-layout-tab"
+        >
           <ChartSplitSparkline
             :dataset="normalisedDataset"
             :dates="chartData.dates"
@@ -1932,8 +1936,14 @@ const isSparklineLayout = shallowRef(false)
           />
         </div>
 
-        <div :data-pending="pending" :data-minimap-visible="maxDatapoints > 6" v-else id="combined-chart-layout-panel" role="tabpanel"
-    aria-labelledby="combined-chart-layout-tab">
+        <div
+          :data-pending="pending"
+          :data-minimap-visible="maxDatapoints > 6"
+          v-else
+          id="combined-chart-layout-panel"
+          role="tabpanel"
+          aria-labelledby="combined-chart-layout-tab"
+        >
           <VueUiXy
             :dataset="normalisedDataset"
             :config="chartConfig"
