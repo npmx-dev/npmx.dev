@@ -1637,7 +1637,7 @@ const isSparklineLayout = shallowRef(false)
       v-if="isMultiPackageMode"
       class="inline-flex items-center gap-1 rounded-md border border-border-subtle bg-bg-subtle p-0.5 mt-4 mb-8"
       role="tablist"
-      :aria-label="'Chart layout toggle'"
+      :aria-label="$t('package.trends.chart_view_toggle')"
     >
       <button
         id="combined-chart-layout-tab"

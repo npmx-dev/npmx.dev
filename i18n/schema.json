@@ -1468,6 +1468,9 @@
               },
               "additionalProperties": false
             },
+            "chart_view_toggle": {
+              "type": "string"
+            },
             "chart_view_combined": {
               "type": "string"
             },

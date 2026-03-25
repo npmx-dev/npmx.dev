@@ -488,6 +488,7 @@
         "table_available": "A data table for this chart is available below.",
         "table_caption": "Chart data table"
       },
+      "chart_view_toggle": "Toggle view",
       "chart_view_combined": "Combined view",
       "chart_view_split": "Split view",
       "granularity": "Granularity",

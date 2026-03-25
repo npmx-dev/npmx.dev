@@ -486,6 +486,7 @@
         "table_available": "Un tableau de données pour ce graphique est disponible ci-dessous.",
         "table_caption": "Tableau de données du graphique"
       },
+      "chart_view_toggle": "Changer de vue",
       "chart_view_combined": "Vue groupée",
       "chart_view_split": "Vue séparée",
       "granularity": "Granularité",
