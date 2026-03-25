@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import type { ModuleReplacement, ModuleReplacementMapping } from 'module-replacements'
-import { resolveReplacementUrl } from '~/utils/resolve-replacement-url'
+import { resolveDocUrl } from 'module-replacements'
 
 const props = defineProps<{
   mapping: ModuleReplacementMapping
   replacement: ModuleReplacement
 }>()
 
-const externalUrl = computed(() =>
-  resolveReplacementUrl(props.mapping.url ?? props.replacement.url),
-)
+const externalUrl = computed(() => resolveDocUrl(props.mapping.url ?? props.replacement.url))
 
 const nodeVersion = computed(() => {
   const nodeEngine = props.replacement.engines?.find(e => e.engine === 'nodejs')

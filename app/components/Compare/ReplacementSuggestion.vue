@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ModuleReplacement } from 'module-replacements'
-import { resolveReplacementUrl } from '~/utils/resolve-replacement-url'
+import { resolveDocUrl } from 'module-replacements'
 
 const props = defineProps<{
   packageName: string
@@ -15,7 +15,7 @@ const emit = defineEmits<{
   addNoDep: []
 }>()
 
-const docUrl = computed(() => resolveReplacementUrl(props.replacement.url))
+const docUrl = computed(() => resolveDocUrl(props.replacement.url))
 
 const nodeVersion = computed(() => {
   const nodeEngine = props.replacement.engines?.find(e => e.engine === 'nodejs')
