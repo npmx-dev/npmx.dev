@@ -19,8 +19,10 @@ const props = defineProps<{
     year: string
     month: string
     day: string
-  }
+  },
+  showLastDatapointEstimation: boolean
 }>()
+
 
 const { locale } = useI18n()
 const colorMode = useColorMode()
@@ -89,6 +91,11 @@ function resetHover() {
 
 const configs = computed(() => {
   return (props.dataset || []).map<VueUiSparklineConfig>((unit, i) => {
+    const lastIndex = unit.series.length - 1
+    const dashIndices = props.showLastDatapointEstimation
+      ? Array.from(new Set([...(unit.dashIndices ?? []), lastIndex]))
+      : unit.dashIndices
+      
     return {
       a11y: {
         translations: {
@@ -140,6 +147,8 @@ const configs = computed(() => {
         },
         line: {
           color: unit.color ?? palette[i],
+          dashIndices,
+          dashArray: 3
         },
         plot: {
           radius: 6,
@@ -152,7 +161,7 @@ const configs = computed(() => {
         },
 
         verticalIndicator: {
-          strokeDasharray: 5,
+          strokeDasharray: 0,
           color: colors.value.fgSubtle,
         },
         padding: {

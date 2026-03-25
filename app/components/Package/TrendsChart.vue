@@ -1933,6 +1933,7 @@ const isSparklineLayout = shallowRef(false)
             :dataset="normalisedDataset"
             :dates="chartData.dates"
             :datetimeFormatterOptions
+            :showLastDatapointEstimation="shouldRenderEstimationOverlay && !isEndDateOnPeriodEnd"
           />
         </div>
 
