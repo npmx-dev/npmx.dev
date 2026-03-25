@@ -1131,6 +1131,8 @@
       "none": "none",
       "select_all_category_facets": "Select all {category} facets",
       "deselect_all_category_facets": "Deselect all {category} facets",
+      "selected_all_category_facets": "Selected all {category} facets",
+      "deselected_all_category_facets": "Deselected all {category} facets",
       "coming_soon": "Coming soon",
       "select_all": "Select all facets",
       "deselect_all": "Deselect all facets",

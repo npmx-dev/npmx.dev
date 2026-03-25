@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { debounce } from 'perfect-debounce'
 const {
   isFacetSelected,
   toggleFacet,
@@ -22,9 +23,29 @@ function isCategoryNoneSelected(category: string): boolean {
   const selectableFacets = facets.filter(f => !f.comingSoon)
   return selectableFacets.length > 0 && selectableFacets.every(f => !isFacetSelected(f.id))
 }
+
+const liveRegionText = ref('')
+const updateLiveRegion = debounce((message: string) => {
+  liveRegionText.value = message
+}, 250)
+
+function selectAllFacet(category: string) {
+  if (!isCategoryAllSelected(category)) {
+    updateLiveRegion($t('selected_all_category_facets', { category }))
+    selectCategory(category)
+  }
+}
+
+function deselectAllFacet(category: string) {
+  if (!isCategoryNoneSelected(category)) {
+    updateLiveRegion($t('deselected_all_category_facets', { category }))
+    deselectCategory(category)
+  }
+}
 </script>
 
 <template>
+  <div role="status" aria-live="polite" class="sr-only">{{ liveRegionText }}</div>
   <div class="space-y-3">
     <div v-for="category in categoryOrder" :key="category">
       <div class="flex items-center gap-2 mb-2">
@@ -46,7 +67,7 @@ function isCategoryNoneSelected(category: string): boolean {
           "
           :aria-disabled="isCategoryAllSelected(category)"
           class="aria-disabled:(opacity-40 border-transparent)"
-          @click="!isCategoryAllSelected(category) && selectCategory(category)"
+          @click="selectAllFacet(category)"
         >
           {{ $t('compare.facets.all') }}
         </ButtonBase>
@@ -64,7 +85,7 @@ function isCategoryNoneSelected(category: string): boolean {
           "
           :aria-disabled="isCategoryNoneSelected(category)"
           class="aria-disabled:(opacity-40 border-transparent)"
-          @click="!isCategoryNoneSelected(category) && deselectCategory(category)"
+          @click="deselectAllFacet(category)"
         >
           {{ $t('compare.facets.none') }}
         </ButtonBase>
