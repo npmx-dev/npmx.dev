@@ -19,10 +19,9 @@ const props = defineProps<{
     year: string
     month: string
     day: string
-  },
+  }
   showLastDatapointEstimation: boolean
 }>()
-
 
 const { locale } = useI18n()
 const colorMode = useColorMode()
@@ -95,7 +94,7 @@ const configs = computed(() => {
     const dashIndices = props.showLastDatapointEstimation
       ? Array.from(new Set([...(unit.dashIndices ?? []), lastIndex]))
       : unit.dashIndices
-      
+
     return {
       a11y: {
         translations: {
@@ -148,7 +147,7 @@ const configs = computed(() => {
         line: {
           color: unit.color ?? palette[i],
           dashIndices,
-          dashArray: 3
+          dashArray: 3,
         },
         plot: {
           radius: 6,
