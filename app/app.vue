@@ -140,6 +140,8 @@ if (import.meta.client) {
       {{ route.name === 'search' ? `${$t('search.title_packages')} - npmx` : message }}
     </NuxtRouteAnnouncer>
 
+    <NuxtAnnouncer />
+
     <div id="main-content" class="flex-1 flex flex-col" tabindex="-1">
       <NuxtPage />
     </div>
