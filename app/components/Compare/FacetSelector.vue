@@ -41,7 +41,9 @@ function isCategoryNoneSelected(category: string): boolean {
           :data-facet-category="category"
           :aria-label="`${$t('compare.facets.all')} ${getCategoryLabel(category)}`"
           :aria-disabled="isCategoryAllSelected(category)"
-          :class="{ 'opacity-40 cursor-not-allowed border-transparent': isCategoryAllSelected(category) }"
+          :class="{
+            'opacity-40 cursor-not-allowed border-transparent': isCategoryAllSelected(category),
+          }"
           @click="!isCategoryAllSelected(category) && selectCategory(category)"
         >
           {{ $t('compare.facets.all') }}
@@ -55,7 +57,9 @@ function isCategoryNoneSelected(category: string): boolean {
           :data-facet-category="category"
           :aria-label="`${$t('compare.facets.none')} ${getCategoryLabel(category)}`"
           :aria-disabled="isCategoryNoneSelected(category)"
-          :class="{ 'opacity-40 cursor-not-allowed border-transparent': isCategoryNoneSelected(category) }"
+          :class="{
+            'opacity-40 cursor-not-allowed border-transparent': isCategoryNoneSelected(category),
+          }"
           @click="!isCategoryNoneSelected(category) && deselectCategory(category)"
         >
           {{ $t('compare.facets.none') }}
