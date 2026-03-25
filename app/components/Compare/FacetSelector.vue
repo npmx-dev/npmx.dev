@@ -25,45 +25,43 @@ function isCategoryNoneSelected(category: string): boolean {
 </script>
 
 <template>
-  <div class="space-y-3" role="group" :aria-label="$t('compare.facets.group_label')">
+  <div class="space-y-3">
     <div v-for="category in categoryOrder" :key="category">
-      <!-- Category header with all/none buttons -->
-      <div
-        class="flex items-center gap-2 mb-2"
-        :aria-labelledby="`facet-category-label-${category}`"
-      >
+      <div class="flex items-center gap-2 mb-2">
         <span
           :id="`facet-category-label-${category}`"
           class="text-3xs text-fg-subtle uppercase tracking-wider"
         >
           {{ getCategoryLabel(category) }}
         </span>
+
         <ButtonBase
-          role="radio"
-          :aria-checked="isCategoryAllSelected(category)"
-          :tabindex="getCategoryActiveControl(category) === 'all' ? 0 : -1"
-          data-radio-type="all"
-          @keydown="handleCategoryControlKeydown(category, $event)"
-          @click="selectCategory(category)"
           size="sm"
+          data-facet-category-action="all"
+          :data-facet-category="category"
+          :aria-label="`${$t('compare.facets.all')} ${getCategoryLabel(category)}`"
+          :aria-disabled="isCategoryAllSelected(category)"
+          :class="{ 'opacity-40 cursor-not-allowed border-transparent': isCategoryAllSelected(category) }"
+          @click="!isCategoryAllSelected(category) && selectCategory(category)"
         >
           {{ $t('compare.facets.all') }}
         </ButtonBase>
+
         <span class="text-2xs text-fg-muted/40" aria-hidden="true">/</span>
+
         <ButtonBase
-          role="radio"
-          :aria-checked="isCategoryNoneSelected(category)"
-          :tabindex="getCategoryActiveControl(category) === 'none' ? 0 : -1"
-          data-radio-type="none"
-          @keydown="handleCategoryControlKeydown(category, $event)"
-          @click="deselectCategory(category)"
           size="sm"
+          data-facet-category-action="none"
+          :data-facet-category="category"
+          :aria-label="`${$t('compare.facets.none')} ${getCategoryLabel(category)}`"
+          :aria-disabled="isCategoryNoneSelected(category)"
+          :class="{ 'opacity-40 cursor-not-allowed border-transparent': isCategoryNoneSelected(category) }"
+          @click="!isCategoryNoneSelected(category) && deselectCategory(category)"
         >
           {{ $t('compare.facets.none') }}
         </ButtonBase>
       </div>
 
-      <!-- Facet buttons -->
       <div
         class="flex items-center gap-1.5 flex-wrap"
         role="group"
@@ -74,11 +72,12 @@ function isCategoryNoneSelected(category: string): boolean {
           v-for="facet in facetsByCategory[category]"
           :key="facet.id"
           size="sm"
-          :title="facet.comingSoon ? $t('compare.facets.coming_soon') : facet.description"
-          :aria-disabled="facet.comingSoon"
           role="checkbox"
+          :title="facet.comingSoon ? $t('compare.facets.coming_soon') : facet.description"
+          :disabled="facet.comingSoon"
           :aria-checked="isFacetSelected(facet.id)"
-          class="gap-1 px-1.5 rounded transition-colors"
+          :aria-label="facet.label"
+          class="gap-1 px-1.5 rounded transition-colors focus-visible:outline-accent/70"
           :class="
             facet.comingSoon
               ? 'text-fg-subtle/50 bg-bg-subtle border-border-subtle cursor-not-allowed'
