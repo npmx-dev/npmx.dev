@@ -95,7 +95,7 @@ defineOgImageComponent('Default', {
       :resolved-version="version"
       :display-version="pkg?.requestedVersion"
     />
-    <section class="container w-full pt-3">
+    <section class="container w-full pt-3" :class="$style.changelog">
       <div
         class="pa-3 z-2 flex justify-between gap-4 h-14 b-b-1 border-border bg-bg top-[--combined-header-height]"
         :class="{
@@ -177,3 +177,9 @@ defineOgImageComponent('Default', {
     </section>
   </main>
 </template>
+
+<style module>
+.changelog :global(.readme) :is(h1, h2, h3, h4, h5, h6) a[href^='#']::after {
+  content: unset !important;
+}
+</style>

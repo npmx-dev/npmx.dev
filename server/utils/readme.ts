@@ -184,7 +184,7 @@ export const ALLOWED_TAGS = [
 
 export const ALLOWED_ATTR: Record<string, string[]> = {
   '*': ['id'], // Allow id on all tags
-  'a': ['href', 'title', 'target', 'rel', 'content-none'],
+  'a': ['href', 'title', 'target', 'rel'],
   'img': ['src', 'alt', 'title', 'width', 'height', 'align'],
   'source': ['src', 'srcset', 'type', 'media'],
   'button': ['class', 'title', 'type', 'aria-label', 'data-copy'],
