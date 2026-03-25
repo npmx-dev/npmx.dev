@@ -1,5 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
+import type { PackageVersionInfo } from '#shared/types/npm-registry'
 import VersionSelector from '~/components/VersionSelector.vue'
 
 // Mock the fetchAllPackageVersions function
@@ -465,6 +466,99 @@ describe('VersionSelector', () => {
         const collapsedButton = component.find('[role="listbox"] button[aria-expanded="false"]')
         expect(collapsedButton.exists()).toBe(true)
       })
+    })
+
+    it('collapses additional version groups with ArrowLeft when showAllGroups is open', async () => {
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '1.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
+        { version: '0.9.0', time: '2024-01-10T12:00:00.000Z', hasProvenance: false },
+      ])
+
+      const component = await mountSuspended(VersionSelector, {
+        props: {
+          packageName: 'test-package',
+          currentVersion: '1.0.0',
+          versions: { '1.0.0': {}, '0.9.0': {} },
+          distTags: { latest: '1.0.0' },
+          urlPattern: '/package-docs/test-package/v/{version}',
+        },
+      })
+
+      const trigger = component.find('button[aria-haspopup="listbox"]')
+      await trigger.trigger('click')
+
+      await component.find('[role="listbox"] button[aria-expanded="false"]').trigger('click')
+
+      await vi.waitFor(() => {
+        expect(component.find('[role="listbox"]').text()).toContain('0.9')
+      })
+
+      const listbox = component.find('[role="listbox"]')
+      await listbox.trigger('keydown', { key: 'ArrowLeft' })
+
+      await vi.waitFor(() => {
+        expect(listbox.text()).not.toContain('0.9')
+      })
+    })
+
+    it('resets showAllGroups when dist-tags props change after loading', async () => {
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '1.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
+        { version: '0.9.0', time: '2024-01-10T12:00:00.000Z', hasProvenance: false },
+      ])
+
+      const component = await mountSuspended(VersionSelector, {
+        props: {
+          packageName: 'test-package',
+          currentVersion: '1.0.0',
+          versions: { '1.0.0': {}, '0.9.0': {} },
+          distTags: { latest: '1.0.0' },
+          urlPattern: '/package-docs/test-package/v/{version}',
+        },
+      })
+
+      const trigger = component.find('button[aria-haspopup="listbox"]')
+      await trigger.trigger('click')
+      await component.find('[role="listbox"] button[aria-expanded="false"]').trigger('click')
+
+      await vi.waitFor(() => {
+        expect(component.find('[role="listbox"]').text()).toContain('0.9')
+      })
+
+      await component.setProps({ distTags: { latest: '1.0.0' } })
+
+      await vi.waitFor(() => {
+        expect(component.find('[role="listbox"]').text()).not.toContain('0.9')
+      })
+    })
+
+    it('ignores expand clicks while a group is already loading', async () => {
+      let finishLoad: (value: PackageVersionInfo[]) => void
+      const loadPromise = new Promise<PackageVersionInfo[]>(resolve => {
+        finishLoad = resolve
+      })
+      mockFetchAllPackageVersions.mockReturnValue(loadPromise)
+
+      const component = await mountSuspended(VersionSelector, {
+        props: {
+          packageName: 'test-package',
+          currentVersion: '1.0.0',
+          versions: { '1.0.0': {} },
+          distTags: { latest: '1.0.0' },
+          urlPattern: '/package-docs/test-package/v/{version}',
+        },
+      })
+
+      const trigger = component.find('button[aria-haspopup="listbox"]')
+      await trigger.trigger('click')
+
+      const expandButton = component.find('[role="listbox"] button[aria-expanded]')
+      await expandButton.trigger('click')
+      await expandButton.trigger('click')
+
+      expect(mockFetchAllPackageVersions).toHaveBeenCalledTimes(1)
+
+      finishLoad!([{ version: '1.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false }])
     })
   })
 

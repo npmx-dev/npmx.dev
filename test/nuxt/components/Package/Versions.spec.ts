@@ -1,7 +1,9 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import type { DOMWrapper } from '@vue/test-utils'
+import type { Router } from 'vue-router'
 import PackageVersions from '~/components/Package/Versions.vue'
+import { packageVersionsRoute } from '~/utils/router'
 
 // Mock the fetchAllPackageVersions function
 const mockFetchAllPackageVersions = vi.fn()
@@ -107,6 +109,42 @@ describe('PackageVersions', () => {
       const versionLinks = component.findAll('a').filter(isVersionLink)
       expect(versionLinks.length).toBeGreaterThan(0)
       expect(versionLinks[0]?.text()).toBe('1.0.0')
+    })
+
+    it('view-all-versions link uses packageVersionsRoute for unscoped packages', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      const router = component.vm.$router as Router
+      const expectedHref = router.resolve(packageVersionsRoute('test-package')).href
+      const viewAll = component.find('[data-testid="view-all-versions-link"]')
+      expect(viewAll.attributes('href')).toBe(expectedHref)
+    })
+
+    it('view-all-versions link uses packageVersionsRoute for scoped packages', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: '@scope/test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      const router = component.vm.$router as Router
+      const expectedHref = router.resolve(packageVersionsRoute('@scope/test-package')).href
+      const viewAll = component.find('[data-testid="view-all-versions-link"]')
+      expect(viewAll.attributes('href')).toBe(expectedHref)
     })
 
     it('highlights the current version row when selectedVersion prop matches', async () => {
