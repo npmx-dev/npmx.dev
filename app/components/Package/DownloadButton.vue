@@ -32,14 +32,14 @@ async function downloadPackage() {
 
   const downloadUrl = await getDownloadUrl(tarballUrl)
 
-  const link = document.createElement('a')
-  link.href = downloadUrl ?? tarballUrl
-  link.download = `${props.packageName.replace(/\//g, '__')}-${props.version.version}.tgz`
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
+  downloadFileLink(
+    downloadUrl ?? tarballUrl,
+    `${props.packageName.replace(/\//g, '__')}-${props.version.version}.tgz`,
+  )
 
   if (downloadUrl) {
+    // We're creating the object url in getDownloadUrl,
+    // but need to clean it up here
     URL.revokeObjectURL(downloadUrl)
   }
 
