@@ -311,9 +311,7 @@ async function handlePngDownload(logo: (typeof logos)[number]) {
           <h2 id="brand-guidelines-heading" class="text-lg text-fg uppercase tracking-wider mb-4">
             {{ $t('brand.guidelines.title') }}
           </h2>
-          <blockquote
-            class="border-is-2 border-is-accent ps-6 py-2 text-fg-muted leading-relaxed"
-          >
+          <blockquote class="border-is-2 border-is-accent ps-6 py-2 text-fg-muted leading-relaxed">
             <i18n-t keypath="brand.guidelines.message" tag="p" class="m-0">
               <template #link>
                 <a
