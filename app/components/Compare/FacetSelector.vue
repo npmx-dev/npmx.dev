@@ -31,14 +31,14 @@ const updateLiveRegion = debounce((message: string) => {
 
 function selectAllFacet(category: string) {
   if (!isCategoryAllSelected(category)) {
-    updateLiveRegion($t('selected_all_category_facets', { category }))
+    updateLiveRegion($t('compare.facets.selected_all_category_facets', { category }))
     selectCategory(category)
   }
 }
 
 function deselectAllFacet(category: string) {
   if (!isCategoryNoneSelected(category)) {
-    updateLiveRegion($t('deselected_all_category_facets', { category }))
+    updateLiveRegion($t('compare.facets.deselected_all_category_facets', { category }))
     deselectCategory(category)
   }
 }
