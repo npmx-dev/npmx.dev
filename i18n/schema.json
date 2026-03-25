@@ -3391,6 +3391,18 @@
             "none": {
               "type": "string"
             },
+            "select_all_category_facets": {
+              "type": "string"
+            },
+            "deselect_all_category_facets": {
+              "type": "string"
+            },
+            "selected_all_category_facets": {
+              "type": "string"
+            },
+            "deselected_all_category_facets": {
+              "type": "string"
+            },
             "coming_soon": {
               "type": "string"
             },
