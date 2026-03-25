@@ -29,6 +29,10 @@ const SKIPPED_COMPONENTS: Record<string, string> = {
 
   // Client-only components with complex dependencies
   'Header/AuthModal.client.vue': 'Complex auth modal with navigation - requires full app context',
+  'Brand/Customize.vue':
+    'Client-only component using useAccentColor, useLocalStorage, and canvas API',
+  'LogoContextMenu.vue':
+    'Client-only context menu using Teleport, clipboard API, and pointer events',
 
   // Complex components requiring full app context or specific runtime conditions
   'Header/OrgsDropdown.vue': 'Requires connector context and API calls',
