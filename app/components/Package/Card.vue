@@ -37,7 +37,6 @@ const isExactMatch = computed(() => {
 const pkgDescription = useMarkdown(() => ({
   text: props.result.package.description ?? '',
   plain: true,
-  packageName: props.result.package.name,
 }))
 
 const numberFormatter = useNumberFormatter()
