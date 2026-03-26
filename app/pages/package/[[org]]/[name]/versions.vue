@@ -525,7 +525,9 @@ const flatItems = computed<FlatItem[]>(() => {
                       </div>
 
                       <!-- Right side -->
-                      <div class="grid grid-flow-col auto-cols-max items-center gap-2 shrink-0 relative z-10 justify-end">
+                      <div
+                        class="grid grid-flow-col auto-cols-max items-center gap-2 shrink-0 relative z-10 justify-end"
+                      >
                         <span
                           v-if="getVersionDownloads(item.version)"
                           class="grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums w-24 text-end shrink-0"
@@ -533,7 +535,9 @@ const flatItems = computed<FlatItem[]>(() => {
                           :title="getDownloadsAriaLabel(getVersionDownloads(item.version)!)"
                           dir="ltr"
                         >
-                          <span>{{ numberFormatter.format(getVersionDownloads(item.version)!) }}</span>
+                          <span>{{
+                            numberFormatter.format(getVersionDownloads(item.version)!)
+                          }}</span>
                           <span class="i-lucide:chart-line" aria-hidden="true"></span>
                         </span>
                         <!-- Metadata: date + provenance -->
