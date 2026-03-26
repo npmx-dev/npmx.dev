@@ -141,7 +141,9 @@ function barPct(downloads: number): string {
             <span class="text-2xl font-semibold tracking-tight" :style="{ color: pkg.color }">
               {{ pkg.name }}
             </span>
-            <span class="text-xl text-[#737373]"> {{ formatDownloads(pkg.downloads) }}/wk </span>
+            <span class="text-2xl font-medium text-[#d4d4d4]">
+              {{ formatDownloads(pkg.downloads) }}/wk
+            </span>
             <span
               v-if="pkg.version"
               class="text-lg px-2 py-0.5 rounded-md border"
