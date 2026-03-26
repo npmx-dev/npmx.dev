@@ -807,14 +807,11 @@
     },
     "no_dependency": {},
     "facets": {
-      "group_label": "তুলনা ফ্যাসেট",
       "all": "সব",
       "none": "কিছু না",
       "coming_soon": "শীঘ্রই আসছে",
       "select_all": "সব ফ্যাসেট নির্বাচন করুন",
       "deselect_all": "সব ফ্যাসেট অনির্বাচিত করুন",
-      "select_category": "সব {category} ফ্যাসেট নির্বাচন করুন",
-      "deselect_category": "সব {category} ফ্যাসেট অনির্বাচিত করুন",
       "categories": {
         "performance": "কর্মক্ষমতা",
         "health": "স্বাস্থ্য",

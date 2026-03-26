@@ -1073,14 +1073,11 @@
       "add_column": "Додати колонку без залежності до порівняння"
     },
     "facets": {
-      "group_label": "Аспекти порівняння",
       "all": "всі",
       "none": "жодного",
       "coming_soon": "Скоро",
       "select_all": "Вибрати всі аспекти",
       "deselect_all": "Скасувати вибір всіх аспектів",
-      "select_category": "Вибрати всі аспекти {category}",
-      "deselect_category": "Скасувати вибір всіх аспектів {category}",
       "binary_only_tooltip": "Цей пакет надає лише бінарні файли без експортів",
       "categories": {
         "performance": "Продуктивність",

@@ -1082,14 +1082,11 @@
       "add_column": "Adicionar coluna sem dependência à comparação"
     },
     "facets": {
-      "group_label": "Aspectos de comparação",
       "all": "todos",
       "none": "nenhum",
       "coming_soon": "Em breve",
       "select_all": "Selecionar todos os aspectos",
       "deselect_all": "Desselecionar todos os aspectos",
-      "select_category": "Selecionar todos os aspectos {category}",
-      "deselect_category": "Desselecionar todos os aspectos {category}",
       "binary_only_tooltip": "Este pacote expõe binários e nenhuma exportação",
       "categories": {
         "performance": "Performance",

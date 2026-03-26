@@ -1051,14 +1051,11 @@
       "add_column": "Müqayisəyə asılılıqsız sütun əlavə et"
     },
     "facets": {
-      "group_label": "Müqayisə aspektləri",
       "all": "hamısı",
       "none": "heç biri",
       "coming_soon": "Tezliklə",
       "select_all": "Bütün aspektləri seç",
       "deselect_all": "Bütün aspektləri ləğv et",
-      "select_category": "Bütün {category} aspektlərini seç",
-      "deselect_category": "Bütün {category} aspektlərini ləğv et",
       "binary_only_tooltip": "Bu paket yalnız binar fayllar təqdim edir, ixrac yoxdur",
       "categories": {
         "performance": "Performans",
