@@ -81,6 +81,10 @@ export const countryLocaleVariants: Record<string, (LocaleObjectData & { country
       { country: true, code: 'pt-PT', name: 'Português (Portugal)' },
       { code: 'pt-BR', name: 'Português (Brasil)' },
     ],*/
+  nl: [
+    { country: true, code: 'nl-NL', name: 'Nederlands' },
+    // { country: true, code: 'nl-BE', name: 'Vlaams' },
+  ],
 }
 
 function createPluralRule(locale: string, mapping: Record<string, number>) {
@@ -218,11 +222,11 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     file: 'ne-NP.json',
     name: 'नेपाली',
   },
-  /*{
-      code: 'nl-NL',
-      file: 'nl-NL.json',
-      name: 'Nederlands',
-    },*/
+  {
+    code: 'nl',
+    file: 'nl.json',
+    name: 'Nederlands',
+  },
   {
     code: 'es',
     file: 'es.json',

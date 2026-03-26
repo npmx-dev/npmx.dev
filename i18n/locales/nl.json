@@ -1,0 +1,1381 @@
+{
+  "$schema": "../schema.json",
+  "seo": {
+    "home": {
+      "title": "npmx - Pakket Browser voor de npm Register",
+      "description": "Een snelle, moderne browser voor het npm register. Zoek, blader en ontdek pakketten met een moderne interface."
+    }
+  },
+  "built_at": "gebouwd {0}",
+  "alt_logo": "npmx logo",
+  "tagline": "een snelle, moderne browser voor de npm register",
+  "non_affiliation_disclaimer": "niet affiliëerd met npm, Inc.",
+  "trademark_disclaimer": "npm is een geregisteerd trademark van npm, Inc. Deze website is niet affiliëerd met npm, Inc.",
+  "footer": {
+    "about": "over ons",
+    "blog": "blog",
+    "docs": "docs",
+    "source": "bron code",
+    "social": "social",
+    "chat": "chat",
+    "builders_chat": "bouwers",
+    "keyboard_shortcuts": "toetsenbordnavigatie"
+  },
+  "shortcuts": {
+    "section": {
+      "global": "Globaal",
+      "search": "Zoeken",
+      "package": "Pakket"
+    },
+    "focus_search": "Focus op zoeken",
+    "show_kbd_hints": "Toetsenbordtips uitlichten",
+    "settings": "Open instellingen",
+    "compare": "Open vergelijken",
+    "compare_from_package": "Vergelijking openen (vooraf ingevuld met het huidige pakket)",
+    "navigate_results": "Navigeer resultaten",
+    "go_to_result": "Ga naar resultaten",
+    "open_code_view": "Open code weergaven",
+    "open_docs": "Open documentatie",
+    "disable_shortcuts": "Je kunt toetsenboordnavigatie uitschakelen in {instellingen}.",
+    "open_main": "Open pakket overzicht",
+    "open_diff": "Open versie verschillen"
+  },
+  "search": {
+    "label": "Zoek npm pakketten",
+    "placeholder": "zoek pakketten...",
+    "button": "zoek",
+    "searching": "Zoeken...",
+    "found_packages": "Geen pakketten gevonden | 1 pakket gevonden | {count} pakketten gevonden",
+    "found_packages_sorted": "Geen resultaten gevonden | Sorting top {count} result | Sorting top {count} results",
+    "updating": "(updaten...)",
+    "no_results": "Geen pakketten gevonden voor \"{query}\"",
+    "rate_limited": "npm aanvraag limiet bereikt, probeer het zo nog eens.",
+    "title": "Zoeken",
+    "title_search": "Zoek: {search}",
+    "title_packages": "zoek pakketten",
+    "meta_description": "Zoek resultaten voor '{search}'",
+    "meta_description_packages": "Zoek npm pakketten",
+    "not_taken": "{name} is niet in gebruik",
+    "claim_prompt": "Registeer deze pakketnaam op npm",
+    "claim_button": "Registeer \"{name}\"",
+    "want_to_claim": "Wil je deze pakket naam registeren?",
+    "start_typing": "Start typen om te zoeken naar pakketten",
+    "algolia_disclaimer": "Mogelijk gemaakt door Algolia",
+    "exact_match": "precies",
+    "suggestion": {
+      "user": "persoon",
+      "org": "org",
+      "view_user_packages": "Bekijk pakketten van deze persoon",
+      "view_org_packages": "Bekijk pakketten van deze organisatie"
+    },
+    "instant_search": "Direct zoeken",
+    "instant_search_on": "aan",
+    "instant_search_off": "uit",
+    "instant_search_turn_on": "aanzetten",
+    "instant_search_turn_off": "uitzetten",
+    "instant_search_advisory": "{label} {state} — {action}"
+  },
+  "nav": {
+    "main_navigation": "Hoofd",
+    "popular_packages": "Populaire pakketten",
+    "settings": "instellingen",
+    "compare": "vergelijken",
+    "back": "terug",
+    "menu": "Menu",
+    "mobile_menu": "Navigatie menu",
+    "open_menu": "Open menu",
+    "links": "Links",
+    "tap_to_search": "Tik om te zoeken"
+  },
+  "blog": {
+    "title": "Blog",
+    "heading": "blog",
+    "meta_description": "Inzichten en updates van de npmx community",
+    "author": {
+      "view_profile": "Bekijk {name}'s profiel op Bluesky"
+    },
+    "draft_badge": "Ontwerp",
+    "draft_banner": "Dit is een ongepubliceerd concept. Het kan onvolledig zijn of onjuistheden bevatten.",
+    "no_posts": "Geen blog posts gevonden",
+    "atproto": {
+      "view_on_bluesky": "Bekijk op Bluesky",
+      "reply_on_bluesky": "Reageer op Bluesky",
+      "likes_on_bluesky": "Vind leuk op Bluesky",
+      "like_or_reply_on_bluesky": "Vind deze post leuk of voeg een opmerking Bluesky",
+      "no_comments_yet": "Nog geen opmerkingen.",
+      "could_not_load_comments": "Kon geen opmerkingen laden.",
+      "comments": "Opmerkingen",
+      "loading_comments": "Opmerkingen laden...",
+      "updating": "Bijwerken...",
+      "reply_count": "{count} antwoord | {count} antwoorden",
+      "like_count": "{count} vind leuk | {count} vinden leuk",
+      "repost_count": "{count} herplaatsing | {count} herplaatsing",
+      "more_replies": "{count} meer reactie... | {count} meer reacties..."
+    }
+  },
+  "settings": {
+    "title": "instellingen",
+    "tagline": "Pas uw npmx.dev ervaring aan",
+    "meta_description": "Pas uw npmx.dev ervaring aan met thema-, taal- en weergavevoorkeuren.",
+    "sections": {
+      "appearance": "Uiterlijk",
+      "display": "Display",
+      "search": "Zoekfuncties",
+      "language": "Taal",
+      "keyboard_shortcuts": "toetsenbordnavigatie"
+    },
+    "data_source": {
+      "label": "Gegevensbron",
+      "description": "Kies waar npmx zoekgegevens vandaan haalt. Individuele pakketpagina's gebruiken altijd rechtstreeks het npm-register.",
+      "npm": "npm register",
+      "npm_description": "Haald zoek-, org- en gebruikerslijsten rechtstreeks op uit het officiële npm-register. Betrouwbaar, maar kan trager zijn.",
+      "algolia": "Algolia",
+      "algolia_description": "Gebruikt Algolia voor snellere zoekopdrachten, organisatie- en gebruikerspagina's."
+    },
+    "instant_search": "Direct zoeken",
+    "instant_search_description": "Navigeert naar de zoekpagina en werkt de resultaten bij terwijl u typt.",
+    "relative_dates": "Relatieve datums",
+    "include_types": "Voeg {'@'}types toe aan installatie",
+    "include_types_description": "Voeg {'@'}types toe aan installatie commands van pakketten zonder types.",
+    "hide_platform_packages": "Verberg platformspecifieke pakketten in zoekresultaten",
+    "hide_platform_packages_description": "Verberg native binaire pakketten zoals {'@'}esbuild/linux-x64 uit de resultaten",
+    "enable_graph_pulse_loop": "Schakel het herhalen van het pulseffect in de minigrafiek in",
+    "enable_graph_pulse_loop_description": "Schakel een doorlopende pulsanimatie in op de grafiek met wekelijkse downloads. Deze animatie kan voor sommige gebruikers storend zijn.",
+    "theme": "Thema",
+    "theme_light": "Licht",
+    "theme_dark": "Donker",
+    "theme_system": "Systeem",
+    "language": "Taal",
+    "help_translate": "Help npmx vertalen",
+    "accent_colors": "Accentkleuren",
+    "clear_accent": "Geen accentkleur",
+    "translation_progress": "Voortgang vertaling",
+    "background_themes": "Achtergrondkleur",
+    "keyboard_shortcuts_enabled": "toetsenbordnavigatie inschakelen",
+    "keyboard_shortcuts_enabled_description": "toetsenbordnavigatie kan worden uitgeschakeld als ze conflicteren met andere sneltoetsen van de browser of het systeem."
+  },
+  "i18n": {
+    "missing_keys": "{count} ontbrekende vertaling | {count} ontbrekende vertalingen",
+    "copy_keys": "Sleutels kopiëren",
+    "show_more_keys": "Weergeef {count} meer...",
+    "contribute_hint": "Help deze vertaling te verbeteren door de ontbrekende sleutels toe te voegen.",
+    "edit_on_github": "Bewerk op GitHub",
+    "view_guide": "Vertalen handleiding"
+  },
+  "error": {
+    "401": "Ongeautoriseerd",
+    "404": "Pagina niet gevonden",
+    "500": "Interne serverfout",
+    "503": "Service niet beschikbaar",
+    "default": "Er is iets misgegaan"
+  },
+  "common": {
+    "loading": "Laden...",
+    "loading_more": "Meer laden...",
+    "loading_packages": "pakketten laden...",
+    "end_of_results": "Einde van resultaten",
+    "try_again": "Probeer opnieuw",
+    "close": "Sluiten",
+    "or": "of",
+    "retry": "Herproberen",
+    "copy": "kopieer",
+    "copied": "gekopieerd!",
+    "skip_link": "Ga naar de hoofdinhoud",
+    "warnings": "Waarschuwingen:",
+    "go_back_home": "Ga terug naar startpagina",
+    "per_week": "/ week",
+    "vanity_downloads_hint": "Totaaloverzicht: geen pakketten weergegeven | Totaaloverzicht: voor het weergegeven pakket | Totaaloverzicht: som van {count} weergegeven pakketten",
+    "sort": {
+      "name": "naam",
+      "role": "rol",
+      "members": "leden"
+    },
+    "scroll_to_top": "Naar boven scrollen",
+    "cancel": "Annuleer",
+    "save": "Opslaan",
+    "edit": "Wijzigen",
+    "error": "Fout",
+    "view_on": {
+      "npm": "Bekijk op npm",
+      "github": "Bekijk op GitHub",
+      "gitlab": "Bekijk op GitLab",
+      "bitbucket": "Bekijk op Bitbucket",
+      "codeberg": "Bekijk op Codeberg",
+      "git_repo": "Bekijk op Git repository",
+      "forgejo": "Bekijk op Forgejo",
+      "gitea": "Bekijk op Gitea",
+      "gitee": "Bekijk op Gitee",
+      "radicle": "Bekijk op Radicle",
+      "sourcehut": "Bekijk op SourceHut",
+      "tangled": "Bekijk op Tangled"
+    },
+    "collapse": "inklappen",
+    "expand": "uitklappen"
+  },
+  "profile": {
+    "display_name": "Profiel naam",
+    "description": "Bescrijving",
+    "no_description": "Geen bescrijving",
+    "website": "Website",
+    "website_placeholder": "https://example.com",
+    "likes": "Vind leuk",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "npmx profiel bij {handle}",
+    "not_found": "Profiel niet gevonden",
+    "not_found_message": "Het profiel voor {handle} kon niet gevonden worden.",
+    "invite": {
+      "message": "Het lijkt erop dat ze npmx nog niet gebruiken. Wil je ze hierop wijzen",
+      "share_button": "Deel op Bluesky",
+      "compose_text": "Hallo {'@'}{handle}! Heb je npmx.dev al bekeken? Het is een browser voor het npm register die snel, modern en open source is.\nhttps://npmx.dev"
+    }
+  },
+  "package": {
+    "not_found": "Pakket niet gevonden",
+    "not_found_message": "Dit pakket kon nit gevonden worden.",
+    "no_description": "Geen beschrijving beschikbaar",
+    "verified_provenance": "Geverifieerde herkomst",
+    "navigation": "Pakket",
+    "copy_name": "Kopieer pakket naam",
+    "deprecation": {
+      "package": "Dit pakket wordt afgeraden.",
+      "version": "Deze versie wordt afgeraden.",
+      "no_reason": "Geen reden gegeven"
+    },
+    "size_increase": {
+      "title_size": "Aanzienlijke toenamen in grootte sinds v{version}",
+      "title_deps": "Aanzienlijke toename van het aantal dependencies sinds versie {version}",
+      "title_both": "Aanzienlijke toename in omvang en depen sinds v{version}",
+      "size": "De installatiegrootte is toegenomen met {percent} ({size} groter)",
+      "deps": "{count} meer dependencies"
+    },
+    "replacement": {
+      "title": "U heeft waarschijnlijk dit niet nodig",
+      "native": "Dit kan vervangen worden door {replacement}, Beschikbaar sinds node {nodeVersion}.",
+      "simple": "De {community} heeft dit pakket als overbodig gemarkeerd, met het advies: {replacement}.",
+      "documented": "De {community} heeft aangegeven dat er voor dit pakket beter presterende alternatieven zijn.",
+      "none": "Dit pakket is gemarkeerd als overbodig en de functionaliteit ervan is waarschijnlijk standaard beschikbaar in alle omgevingen.",
+      "learn_more": "Leer meer",
+      "learn_more_above": "Lees hierboven meer.",
+      "mdn": "MDN",
+      "community": "gemeenschap",
+      "consider_no_dep": "+ Geen dependency overwegen?"
+    },
+    "stats": {
+      "license": "Licentie",
+      "deps": "Deps",
+      "install_size": "installatiegrootte",
+      "vulns": "Kwetsbaarheden",
+      "published": "Gepubliceerd",
+      "published_tooltip": "Datum waarop {package}{'@'}{version} is gepubliceerd",
+      "view_dependency_graph": "Dependency grafiek bekijken",
+      "inspect_dependency_tree": "Dependency structuur inspecteren",
+      "size_tooltip": {
+        "unpacked": "{size} uitgepakte grootte (dit pakket)",
+        "total": "totale grootte na uitpakken (inclusief {count} dependencies voor linux-x64)"
+      }
+    },
+    "skills": {
+      "title": "Agent Skills",
+      "skills_available": "{count} skill beschikbaar | {count} skills beschikbaar",
+      "compatible_with": "Compatibel met {tool}",
+      "install": "Installeer",
+      "installation_method": "Installatie methode",
+      "learn_more": "Leer meer",
+      "available_skills": "Beschikbare Skills",
+      "click_to_expand": "Klik om uit te vouwen",
+      "no_description": "Geen beschrijving",
+      "file_counts": {
+        "scripts": "{count} script | {count} scripts",
+        "refs": "{count} verwijzing | {count} verwijzingen",
+        "assets": "{count} bestand | {count} bestanden"
+      },
+      "view_source": "Bekijk bron",
+      "skills_cli": "skills CLI"
+    },
+    "links": {
+      "main": "Overzicht",
+      "repo": "repo",
+      "homepage": "website",
+      "issues": "issues",
+      "jsr": "jsr",
+      "code": "code",
+      "docs": "docs",
+      "fund": "Steunen",
+      "compare": "vergelijk"
+    },
+    "likes": {
+      "like": "Dit pakket leuk vinden",
+      "unlike": "Dit pakket niet meer leuk vinden"
+    },
+    "docs": {
+      "not_available": "Geen documentatie beschikbaar",
+      "not_available_detail": "We kunnen geen documentatie genereren van deze versie"
+    },
+    "get_started": {
+      "title": "Aan de slag",
+      "pm_label": "Pakketbeheerder",
+      "copy_command": "Kopieer installatie command",
+      "copy_dev_command": "Kopieer developer installatie command",
+      "dev_dependency_hint": "Wordt meestal geïnstalleerd als developer dependency",
+      "view_types": "Bekijk {package}"
+    },
+    "create": {
+      "title": "Nieuw project aanmaken",
+      "copy_command": "Kopieer aanmaak command",
+      "view": "{packageName} heeft dezelfde beheerder. Klik hier voor meer informatie."
+    },
+    "run": {
+      "title": "Uitvoeren",
+      "locally": "Lokaal uitvoeren"
+    },
+    "readme": {
+      "title": "Readme",
+      "no_readme": "Geen README beschikbaar.",
+      "toc_title": "Inhoud",
+      "callout": {
+        "note": "notitie",
+        "tip": "Tip",
+        "important": "Belangrijk",
+        "warning": "Waarschuwing",
+        "caution": "Let op"
+      },
+      "copy_as_markdown": "kopieer README als Markdown"
+    },
+    "provenance_section": {
+      "title": "Herkomst verificatie gegevens",
+      "built_and_signed_on": "Gebouwd en getekend op {provider}",
+      "view_build_summary": "Bekijk bouw samenvatting",
+      "source_commit": "Bron Commit",
+      "build_file": "Bouw bestand",
+      "public_ledger": "Publiek logboek",
+      "transparency_log_entry": "Vermelding in het transparantielogboek",
+      "view_more_details": "Meer informatie bekijken",
+      "error_loading": "Het laden van de herkomstgegevens is mislukt"
+    },
+    "security_downgrade": {
+      "title": "Vertrouwensvermindering",
+      "description_to_none_provenance": "Deze versie is gepubliseerd zonder {provenance}.",
+      "description_to_none_trustedPublisher": "Deze versie is gepubliseerd zonder {trustedPublishing}.",
+      "description_to_provenance_trustedPublisher": "Deze versie gebruikt {provenance} maar niet {trustedPublishing}.",
+      "fallback_install_provenance": "Installatie commands zijn vastgezet op {version}, de laatste versie met geverifieerde herkomst.",
+      "fallback_install_trustedPublisher": "Installatie commands zijn vastgezet op {version}, the last version with vertrouwd publiceren.",
+      "provenance_link_text": "herkomstverificatie",
+      "trusted_publishing_link_text": "vertrouwd publiceren"
+    },
+    "keywords_title": "Trefwoorden",
+    "compatibility": "Compatibiliteit",
+    "card": {
+      "publisher": "Publiceerder",
+      "published": "Gepubliceerd",
+      "weekly_downloads": "Weekelijkse downloads",
+      "keywords": "Trefwoorden",
+      "license": "Licentie",
+      "select": "Selecteer pakket",
+      "select_maximum": "Er kunnen maximaal {count} pakketten worden geselecteerd"
+    },
+    "versions": {
+      "title": "Versies",
+      "collapse": "{tag} inklappen",
+      "expand": "{tag} uitklappen",
+      "collapse_other": "Andere versies inklappen",
+      "expand_other": "Andere versies uitklappen",
+      "collapse_major": "Hoofd {major} inklappen",
+      "expand_major": "Hoofd {major} uitklappen",
+      "other_versions": "Andere versies",
+      "more_tagged": "Nog 1 getagd | Nog {count} meer getagd",
+      "all_covered": "Alle versies zijn gedekt bij de tags hierboven",
+      "deprecated_title": "{version} (afgeraden)",
+      "view_all": "Bekijk {count} versie | Bekijk alle {count} versies",
+      "view_all_versions": "Bekijk alle versies",
+      "distribution_title": "Semver Groep",
+      "distribution_modal_title": "Versies",
+      "distribution_range_date_same_year": "van {from} t/m {to}, {endYear}",
+      "distribution_range_date_multiple_years": "van {from}, {startYear} t/m {to}, {endYear}",
+      "grouping_major": "Hoofd",
+      "grouping_minor": "Sub",
+      "grouping_versions_title": "Versies",
+      "grouping_versions_about": "Over versiegroepering",
+      "grouping_versions_all": "Alle",
+      "grouping_versions_only_recent": "Alleen recent",
+      "grouping_usage_title": "Gebruik",
+      "grouping_usage_about": "Over gebruiksgroepering",
+      "grouping_usage_all": "Alle",
+      "grouping_usage_most_used": "Meest gebruikt",
+      "recent_versions_only_tooltip": "Toon alleen versies die in het afgelopen jaar zijn gepubliceerd.",
+      "show_low_usage_tooltip": "Inclusief versiegroepen met minder dan 1% van het totale aantal downloads.",
+      "y_axis_label": "Downloads",
+      "filter_placeholder": "Filter bij semver (bijv. ^3.0.0)",
+      "filter_invalid": "Ongeldige semver bereik",
+      "filter_help": "Semver bereikfilter hulp",
+      "filter_tooltip": "Filter versie bij {link}. bijvoorbeeld, ^3.0.0 laat zien 3.x versies.",
+      "filter_tooltip_link": "semver bereik",
+      "no_matches": "Geen versies in dit bereik",
+      "copy_alt": {
+        "per_version_analysis": "{version} versie was gedownloadt {downloads} keren",
+        "general_description": "Staafdiagram met het aantal downloads per versie voor {versions_count} {semver_grouping_mode}-versies van het pakket {package_name}, {date_range_label} van versie {first_version} tot versie {last_version}. De meest gedownloade versie is {max_downloaded_version} met {max_version_downloads} downloads. {per_version_analysis}. {watermark}."
+      },
+      "page_title": "Versie geschiedenis",
+      "current_tags": "Huidige tags",
+      "version_filter_placeholder": "Filter versies.",
+      "version_filter_label": "Filter versies",
+      "no_match_filter": "Geen versies die voldoen aan {filter}"
+    },
+    "dependencies": {
+      "title": "Dependency ({count}) | Dependencies ({count})",
+      "list_label": "Pakket dependencies",
+      "show_all": "toon {count} dep | toon alle {count} deps",
+      "optional": "optioneel",
+      "view_vulnerabilities": "Bekijk kwetsbaarheden",
+      "outdated_major": "{count} hoofdversie achter (nieuwste: {latest}) | {count} hoofdversies achter (nieuwste: {latest})",
+      "outdated_minor": "{count} subversie achter (nieuwste: {latest}) | {count} subversies achter (nieuwste: {latest})",
+      "outdated_patch": "Patch update beschikbaar (nieuwste: {latest})",
+      "has_replacement": "Deze dedependency heeft voorgesteld alternatieven",
+      "vulnerabilities_count": "{count} kwetsbaarheid | {count} kwetsbaarheden"
+    },
+    "peer_dependencies": {
+      "title": "Peer Dependency ({count}) | Peer Dependencies ({count})",
+      "list_label": "Pakket peer dependencies",
+      "show_all": "toon {count} peer dep | toon alle {count} peer deps"
+    },
+    "optional_dependencies": {
+      "title": "Optionele Dependency ({count}) | Optionele Dependencies ({count})",
+      "list_label": "Optionele pakket dependencies",
+      "show_all": "toon {count} Optionele dep | toon alle {count} Optionele deps"
+    },
+    "maintainers": {
+      "title": "Beheerders",
+      "list_label": "Pakket beheerders",
+      "you": "(u)",
+      "via": "via {teams}",
+      "remove_owner": "Verwijder {name} als eigenaar",
+      "username_to_add": "gebruikers naam toevoegen als eigenaar",
+      "username_placeholder": "gebruikersnaam...",
+      "add_button": "toevoegen",
+      "cancel_add": "Annuleer toevoegen eigenaar",
+      "add_owner": "+ Eigenaar toevoegen",
+      "show_more": "(toon {count} meer)",
+      "show_less": "(toon minder)",
+      "maintainer_template": "{avatar} {char126}{name}"
+    },
+    "trends": {
+      "granularity": "Granulariteit",
+      "granularity_daily": "Dagelijks",
+      "granularity_weekly": "Wekelijks",
+      "granularity_monthly": "Maandelijks",
+      "granularity_yearly": "Jaarlijks",
+      "start_date": "Van",
+      "end_date": "T/m",
+      "loading": "Laden...",
+      "date_range": "{start} t/m {end}",
+      "date_range_multiline": "{start}\nt/m {end}",
+      "download_file": "Download {fileType}",
+      "toggle_annotator": "Schakel annotator aan/uit",
+      "toggle_stack_mode": "Schakel stapelen aan/uit",
+      "open_options": "Open opties",
+      "close_options": "Sluit opties",
+      "legend_estimation": "Schatting",
+      "no_data": "Geen gegevens beschikbaar",
+      "y_axis_label": "{granularity} {facet}",
+      "facet": "Aspect",
+      "title": "Trends",
+      "contributors_skip": "Niet weergegeven in Bijdragers (geen GitHub-repository):",
+      "items": {
+        "downloads": "Downloads",
+        "likes": "Vind leuk",
+        "contributors": "Bijdragers"
+      },
+      "data_correction": "Gegevenscorrectie",
+      "average_window": "Gemiddelde periode",
+      "smoothing": "Gladmaken",
+      "prediction": "Voorspelling",
+      "known_anomalies": "Bekende afwijkingen",
+      "known_anomalies_description": "Interpoleert bekende downloadpieken die worden veroorzaakt door bots of CI-problemen.",
+      "known_anomalies_ranges": "Afwijkingsbereiken",
+      "known_anomalies_range": "Van {start} t/m {end}",
+      "known_anomalies_range_named": "{packageName}: van {start} t/m {end}",
+      "known_anomalies_none": "Geen bekende afwijkingen voor dit pakket. | Geen bekende afwijkingen voor deze pakketten.",
+      "known_anomalies_contribute": "Anomaliegegevens bijdragen",
+      "apply_correction": "Correctie toepassen",
+      "copy_alt": {
+        "trend_none": "voornamelijk plat",
+        "trend_strong": "Sterk",
+        "trend_weak": "zwak",
+        "trend_undefined": "undefined (insufficient data)",
+        "button_label": "Alternatieve tekst kopiëren",
+        "watermark": "Onderaan staat in een watermerk: \"./npmx @:tagline\"",
+        "analysis": "{package_name} begint op {start_value} en eindigt op {end_value}, wat een {trend} trend laat zien met een helling van {downloads_slope} downloads per tijdsinterval.",
+        "estimation": "De laatste waarde is een schatting, gebaseerd op onvolledige gegevens voor de huidige periode.",
+        "estimations": "De laatste waardes zijn een schatting, gebaseerd op onvolledige gegevens voor de huidige periode.",
+        "compare": "Lijngrafiek ter vergelijking van pakketdownloads voor: {packages}.",
+        "single_package": "Downloadgrafiek voor pakket {package}.",
+        "general_description": "De Y-as toont het aantal downloads. De X-as toont de periode, van {start_date} tot {end_date}, met een {granularity} tijdsinterval. {estimation_notice} {packages_analysis}. {watermark}.",
+        "facet_bar_general_description": " Horizontaal staafdiagram voor: {packages}, ter vergelijking van {facet} ({description}). {facet_analysis} {watermark}.",
+        "facet_bar_analysis": "{package_name} heeft een waarde van {value}."
+      }
+    },
+    "downloads": {
+      "title": "Weekelijkse Downloads",
+      "community_distribution": "Bekijk adoptiegraad",
+      "subtitle": "Over alle versies"
+    },
+    "install_scripts": {
+      "title": "Installatie Scripts",
+      "script_label": "(script)",
+      "npx_packages": "{count} npx pakket | {count} npx pakketten",
+      "currently": "huidige {version}"
+    },
+    "playgrounds": {
+      "title": "Probeer het uit",
+      "choose": "kies playground"
+    },
+    "metrics": {
+      "esm": "ES Modules ondersteund",
+      "cjs": "CommonJS ondersteund",
+      "no_esm": "Geen ES Modules ondersteuning",
+      "types_label": "Types",
+      "types_included": "Inclusief types",
+      "types_available": "Types beschikbaar via {package}",
+      "no_types": "Geen TypeScript types"
+    },
+    "license": {
+      "view_spdx": "bekijk licentie tekst op SPDX",
+      "none": "Geen"
+    },
+    "vulnerabilities": {
+      "tree_found": "{vulns} kwetsbaarheid in {packages}/{total} pakketten | {vulns} kwetsbaarheden in {packages}/{total} pakketten",
+      "show_all_packages": "toon {count} betrokken pakketten | toon alle {count} betrokken pakketten",
+      "path": "pad",
+      "more": "+{count} meer",
+      "packages_failed": "{count} pakket kon niet worden gecontroleerd | {count} pakketten konden niet worden gecontroleerd",
+      "scan_failed": "Kon niet scannen voor kwetsbaarheden",
+      "severity": {
+        "critical": "kritiek",
+        "high": "hoog",
+        "moderate": "matig",
+        "low": "laag"
+      },
+      "fixed_in_title": "Opgelost in versie {version}"
+    },
+    "deprecated": {
+      "label": "Afgeraden",
+      "tree_found": "{count} afraden dependency | {count} afgeraden dependencies",
+      "show_all": "toen {count} afgeraden pakket | toen alle {count} afgeraden pakketten"
+    },
+    "access": {
+      "title": "Team toegang",
+      "refresh": "Team toegang vernieuwen",
+      "list_label": "Team toegang lijst",
+      "owner": "eigenaar",
+      "rw": "rw",
+      "ro": "ro",
+      "revoke_access": "Toegang van {name} intrekken",
+      "no_access": "Er is geen teamtoegang geconfigureerd",
+      "select_team_label": "Selecteer team",
+      "loading_teams": "Teams laden...",
+      "select_team": "Selecteer team",
+      "permission_label": "Toegangsniveau",
+      "permission": {
+        "read_only": "lezen",
+        "read_write": "lezen-schrijven"
+      },
+      "grant_button": "verlenen",
+      "cancel_grant": "Toegang verlenen annuleren",
+      "grant_access": "+ team toegang verlenen"
+    },
+    "list": {
+      "filter_label": "Filter pakketten",
+      "filter_placeholder": "Filter pakketten...",
+      "sort_label": "sorteer pakketten",
+      "showing_count": "{filtered} van {total} pakketten weergeven"
+    },
+    "skeleton": {
+      "loading": "Pakket informatie laden",
+      "maintainers": "Beheerders",
+      "keywords": "Trefwoorden",
+      "versions": "Versies",
+      "dependencies": "Dependencies"
+    },
+    "sort": {
+      "downloads": "Meest gedownload",
+      "published": "Recent gepubliceerd",
+      "name_asc": "Naam (A-Z)",
+      "name_desc": "Naam (Z-A)"
+    },
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
+    }
+  },
+  "connector": {
+    "modal": {
+      "title": "Lokale Connector",
+      "connected": "Verbonden",
+      "connected_as_user": "Verbonden als ~{user}",
+      "connected_hint": "U kunt nu pakketten en organisaties beheren vanuit de webinterface.",
+      "disconnect": "Ontkoppelen",
+      "run_hint": "Voer de connector uit op uw computer om beheerdersfuncties in te schakelen.",
+      "copy_command": "Kopieer command",
+      "copied": "Gekopieerd",
+      "paste_token": "Plak vervolgens het onderstaande token om verbinding te maken:",
+      "token_label": "Token",
+      "token_placeholder": "plak hier uw token...",
+      "advanced": "Geavanceerde opties",
+      "port_label": "Port",
+      "warning": "WAARSCHUWING",
+      "warning_text": "Dit geeft npmx toegang tot je npm CLI. Maak alleen verbinding met sites die je vertrouwt.",
+      "connect": "Verbind",
+      "connecting": "Verbinden...",
+      "auto_open_url": "Automatisch authenticatiepagina openen"
+    }
+  },
+  "operations": {
+    "queue": {
+      "title": "Operations Queue",
+      "clear_all": "clear all",
+      "refresh": "Refresh operations",
+      "empty": "No operations queued",
+      "empty_hint": "Add operations from package or org pages",
+      "active_label": "Active operations",
+      "otp_required": "OTP required",
+      "otp_prompt": "Enter OTP to continue",
+      "otp_placeholder": "Enter OTP code...",
+      "otp_label": "One-time password",
+      "retry_otp": "Retry with OTP",
+      "retry_web_auth": "Retry with web auth",
+      "retrying": "Retrying...",
+      "open_web_auth": "Open web auth link",
+      "approve_operation": "Approve operation",
+      "remove_operation": "Remove operation",
+      "approve_all": "Approve All",
+      "execute": "Execute",
+      "executing": "Executing...",
+      "log": "Log",
+      "log_label": "Completed operations log",
+      "remove_from_log": "Remove from log"
+    }
+  },
+  "org": {
+    "teams": {
+      "title": "Teams",
+      "refresh": "Refresh teams",
+      "filter_label": "Filter teams",
+      "filter_placeholder": "Filter teams...",
+      "sort_by": "Sort by",
+      "loading": "Loading teams...",
+      "no_teams": "No teams found",
+      "list_label": "Organization teams",
+      "delete_team": "Delete team {name}",
+      "member_count": "{count} member | {count} members",
+      "members_of": "Members of {team}",
+      "no_members": "No members",
+      "remove_user": "Remove {user} from team",
+      "username_to_add": "Username to add to {team}",
+      "username_placeholder": "username...",
+      "add_button": "add",
+      "cancel_add_user": "Cancel adding user",
+      "add_member": "+ Add member",
+      "team_name_label": "Team name",
+      "team_name_placeholder": "team-name...",
+      "create_button": "create",
+      "no_match": "No teams match \"{query}\"",
+      "cancel_create": "Cancel creating team",
+      "create_team": "+ Create team"
+    },
+    "members": {
+      "title": "Members",
+      "refresh": "Refresh members",
+      "filter_label": "Filter members",
+      "filter_placeholder": "Filter members...",
+      "filter_by_role": "Filter by role",
+      "filter_by_team": "Filter by team",
+      "all_teams": "all teams",
+      "sort_by": "Sort by",
+      "loading": "Loading members...",
+      "no_members": "No members found",
+      "list_label": "Organization members",
+      "change_role_for": "Change role for {name}",
+      "remove_from_org": "Remove {name} from org",
+      "view_team": "View {team} team",
+      "no_match": "No members match your filters",
+      "username_label": "Username",
+      "username_placeholder": "username...",
+      "role_label": "Role",
+      "role": {
+        "all": "all",
+        "developer": "developer",
+        "admin": "admin",
+        "owner": "owner"
+      },
+      "team_label": "Team",
+      "no_team": "no team",
+      "add_button": "add",
+      "cancel_add": "Cancel adding member",
+      "add_member": "+ Add member"
+    },
+    "public_packages": "{count} publieke pakket | {count} publieke pakketten",
+    "page": {
+      "packages_title": "Pakketten",
+      "members_tab": "Leden",
+      "teams_tab": "Teams",
+      "no_packages": "Geen publieke pakketten gevonden voor",
+      "no_packages_hint": "Deze organisatie bestaat misschien niet of heeft geen publieke pakketten.",
+      "failed_to_load": "Het laden van de pakketten van de organisatie is mislukt",
+      "no_match": "Geen pakket kwam overeen met \"{query}\"",
+      "not_found": "Organisatie niet gevonden",
+      "not_found_message": "De organisatie \"{'@'}{name}\" bestaat niet op npm"
+    }
+  },
+  "user": {
+    "combobox": {
+      "add_to_org_hint": "(will also add to org)",
+      "press_enter_to_add": "Press Enter to add {'@'}{username}",
+      "default_placeholder": "username...",
+      "suggestions_label": "User suggestions"
+    },
+    "page": {
+      "packages_title": "Packages",
+      "no_packages": "No public packages found for",
+      "no_packages_hint": "This user may not exist or has no public packages.",
+      "failed_to_load": "Failed to load user packages",
+      "no_match": "No packages match \"{query}\"",
+      "filter_placeholder": "Filter {count} package... | Filter {count} packages..."
+    },
+    "orgs_page": {
+      "title": "Organizations",
+      "back_to_profile": "Back to profile",
+      "connect_required": "Connect the local CLI to view your organizations.",
+      "connect_hint_prefix": "Run",
+      "connect_hint_suffix": "to get started.",
+      "own_orgs_only": "You can only view your own organizations.",
+      "view_your_orgs": "View your organizations",
+      "loading": "Loading organizations...",
+      "empty": "No organizations found.",
+      "empty_hint": "Organizations are detected from your scoped packages.",
+      "count": "{count} Organization | {count} Organizations",
+      "packages_count": "{count} package | {count} packages"
+    }
+  },
+  "claim": {
+    "modal": {
+      "title": "Registeer pakket naam",
+      "success": "Pakket registeren!",
+      "success_detail": "{name}{'@'}0.0.0 is gepubliceerd op npm.",
+      "success_hint": "Je kunt nu nieuwe versies van dit pakket publiceren met npm publish.",
+      "view_package": "View Package",
+      "invalid_name": "Incorrecte pakket naam:",
+      "available": "Deze naam is beschikbaar!",
+      "taken": "Deze naam is al in gebruik.",
+      "missing_permission": "Je hebt geen toestemming om een pakket toe te voegen aan de scope {'@'}{scope}.",
+      "similar_warning": "Er bestaan vergelijkbare pakketten - npm kan deze naam afwijzen:",
+      "related": "Gerelateerde pakketten:",
+      "scope_warning_title": "Overweeg om in plaats daarvan een pakket met een scope te gebruiken.",
+      "scope_warning_text": "Pakketnamen zonder scope zijn een gedeelde bron. Claim alleen een naam als je van plan bent een pakket te publiceren en te onderhouden. Gebruik voor persoonlijke of organisatorische projecten een naam met een scope, zoals {'@'}{username}/{name}.",
+      "connect_required": "Maak verbinding met de lokale connector om deze pakketnaam te registreren.",
+      "connect_button": "Connect to Connector",
+      "publish_hint": "Hiermee wordt een minimaal tijdelijk pakket gepubliceerd.",
+      "preview_json": "Voorbeeld package.json",
+      "claim_button": "Registeer Pakket Naam",
+      "publishing": "Publiceren...",
+      "checking": "Controleren beschikbaarheid...",
+      "failed_to_check": "Kan de beschikbaarheid van de naam niet controleren",
+      "failed_to_claim": "Registeren niet gelukt"
+    }
+  },
+  "code": {
+    "files_label": "Bestanden",
+    "no_files": "No files in this directory",
+    "root": "root",
+    "lines": "{count} line | {count} lines",
+    "toggle_tree": "Bestandsstructuur weergeven/verbergen",
+    "close_tree": "Sluit bestand structuur",
+    "copy_link": "Kopieer link",
+    "raw": "Raw",
+    "view_raw": "Bekijk origineel bestand",
+    "file_too_large": "Bestand te groot om te weergeven",
+    "file_size_warning": "{size} overschrijdt de limiet van 500 KB voor syntaxisaccentuering",
+    "failed_to_load": "Het is niet gelukt om bestand te laden",
+    "unavailable_hint": "Bestand is misschien te groot of niet beschikbaar",
+    "version_required": "Een versie is verplicht om de code te bekijken",
+    "go_to_package": "Go to package",
+    "loading_tree": "Bestand structuur laden...",
+    "failed_to_load_tree": "Het is niet gelukt om bestanden te laden voor deze versie",
+    "back_to_package": "Back to package",
+    "table": {
+      "name": "Name",
+      "size": "Size"
+    },
+    "markdown_view_mode": {
+      "preview": "voorbeeld",
+      "code": "code"
+    },
+    "file_path": "Bestand pad",
+    "binary_file": "Binair bestand",
+    "binary_rendering_warning": "Bestand type \"{contentType}\" wordt niet ondersteund om te weergeven."
+  },
+  "badges": {
+    "provenance": {
+      "verified": "verified",
+      "verified_title": "Verified provenance",
+      "verified_via": "Verified: published via {provider}"
+    },
+    "jsr": {
+      "title": "Ook verkrijgbaar op JSR"
+    }
+  },
+  "filters": {
+    "title": "Filters",
+    "search": "Search",
+    "search_scope": "Search scope",
+    "search_placeholder_name": "Filter by package name...",
+    "search_placeholder_description": "Filter by description...",
+    "search_placeholder_keywords": "Filter by keywords...",
+    "search_placeholder_all": "Search all or use name: desc: kw:",
+    "scope_name": "Name",
+    "scope_name_description": "Search package names only",
+    "scope_description": "Description",
+    "scope_description_description": "Search descriptions only",
+    "scope_keywords": "Keywords",
+    "scope_keywords_description": "Search keywords only",
+    "scope_all": "All",
+    "scope_all_description": "Search all fields, supports name: desc: kw: operators",
+    "weekly_downloads": "Weekly downloads",
+    "updated_within": "Updated within",
+    "security": "Security",
+    "keywords": "Keywords",
+    "more_keywords": "+{count} more",
+    "clear_all": "Clear all",
+    "remove_filter": "Remove {label} filter",
+    "chips": {
+      "search": "Search",
+      "downloads": "Downloads",
+      "keyword": "Keyword",
+      "security": "Security",
+      "updated": "Updated"
+    },
+    "download_range": {
+      "any": "Any",
+      "lt100": "< 100",
+      "100_1k": "100 - 1K",
+      "1k_10k": "1K - 10K",
+      "10k_100k": "10K - 100K",
+      "gt100k": "> 100K"
+    },
+    "updated": {
+      "any": "Any time",
+      "week": "Past week",
+      "month": "Past month",
+      "quarter": "Past 3 months",
+      "year": "Past year"
+    },
+    "security_options": {
+      "all": "All packages",
+      "secure": "Without warnings",
+      "insecure": "With warnings"
+    },
+    "view_selected": "Bekijk geselecteerde",
+    "clear_selected_label": "EN TEXT TO REPLACE: Clear selected",
+    "sort": {
+      "label": "Pakketten sorteren",
+      "toggle_direction": "Sorteerrichting wijzigen",
+      "ascending": "Oplopend",
+      "descending": "Aflopend",
+      "relevance": "Relevantie",
+      "downloads_week": "Downloads/wk",
+      "downloads_day": "Downloads/dag",
+      "downloads_month": "Downloads/ma",
+      "downloads_year": "Downloads/jr",
+      "published": "Laatst gepubliceerd",
+      "name": "Naam",
+      "quality": "Kwaliteit",
+      "popularity": "Populariteit",
+      "maintenance": "Onderhoud",
+      "score": "Score"
+    },
+    "columns": {
+      "title": "Kolommen",
+      "show": "Kolommen weergeven",
+      "reset": "Reset to defaults",
+      "coming_soon": "Binnenkort",
+      "name": "Naam",
+      "version": "Versie",
+      "description": "Bescrijving",
+      "downloads": "Downloads/wk",
+      "published": "Laatst gepubliceerd",
+      "maintainers": "Beheerders",
+      "keywords": "Trefwoorden",
+      "quality_score": "Kwaliteit score",
+      "popularity_score": "Populariteit score",
+      "maintenance_score": "Onderhoud score",
+      "combined_score": "Gecombineerde score",
+      "security": "Beveiliging",
+      "selection": "Selecteer pakket"
+    },
+    "view_mode": {
+      "label": "View mode",
+      "cards": "Card view",
+      "table": "Table view"
+    },
+    "pagination": {
+      "mode_label": "Pagineringmodus",
+      "infinite": "Oneindig",
+      "paginated": "Genummerde pagina's",
+      "items_per_page": "Aantal resultaten per pagina",
+      "per_page": "{count} / pagina",
+      "showing": "{start}-{end} van {total}",
+      "previous": "Voriga pagina",
+      "next": "Volgende pagina",
+      "nav_label": "Paginering"
+    },
+    "count": {
+      "showing_filtered": "{filtered} of {count} package | {filtered} of {count} packages",
+      "showing_all": "{count} package | {count} packages",
+      "showing_paginated": "{pageSize} van {count} pakket | {pageSize} van {count} pakketten"
+    },
+    "table": {
+      "security_warning": "Security warning",
+      "secure": "Secure",
+      "no_packages": "Geen pakketten gevonden"
+    }
+  },
+  "about": {
+    "title": "Over",
+    "heading": "over ons",
+    "meta_description": "npmx is een snelle, moderne browser voor de npm register. Een betere UX/DX om npm-pakketten te ontdekken.",
+    "what_we_are": {
+      "title": "Wat zijn we",
+      "better_ux_dx": "betere UX/DX",
+      "admin_ui": "admin UI",
+      "description": "npmx is een {betterUxDx} voor het npm register en bijbehorende hulpmiddelen. We bieden een snelle, moderne interface voor het ontdekken van pakketten, met functies zoals dark mode, toetsenbordnavigatie, code-browsing en koppelingen met alternatieve registers zoals {jsr}.",
+      "admin_description": "We streven er ook naar om een betere {adminUi} te bieden voor het beheer van uw pakketten, teams en organisaties — allemaal vanuit de browser, aangedreven door uw lokale npm CLI."
+    },
+    "what_we_are_not": {
+      "title": "Wat zijn we niet",
+      "not_package_manager": "Geen pakketbeheerder",
+      "not_registry": "Niet een register.",
+      "registry_description": "Wij hosten geen pakketten. Wij bieden alleen een betere manier om ze te bekijken.",
+      "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}.",
+      "words": {
+        "already": "Er zijn",
+        "people": "al",
+        "building": "mensen bezig met",
+        "really": "het bouwen",
+        "cool": "van hele",
+        "package": "gave",
+        "managers": "pakket beheerders"
+      }
+    },
+    "sponsors": {
+      "title": "Sponsors"
+    },
+    "oss_partners": {
+      "title": "Open Source Software Partners"
+    },
+    "team": {
+      "title": "Team",
+      "governance": "Bestuur",
+      "role_steward": "Coördinator",
+      "role_maintainer": "Onderhouder",
+      "sponsor": "sponsor",
+      "sponsor_aria": "Sponsor {name} op GitHub"
+    },
+    "contributors": {
+      "title": "... en {count} meer bijdrager | ... en {count} meer bijdragers",
+      "description": "npmx is volledig open source en is ontwikkeld door een geweldige community van bijdragers. Doe mee en laten we samen de npm browserervaring bouwen die we altijd al wilden hebben.",
+      "loading": "Laden bijdragers...",
+      "error": "Niet gelukt om bedragers te laden",
+      "view_profile": "Bekijk het GitHub-profiel van {naam}"
+    },
+    "get_involved": {
+      "title": "Doe mee",
+      "contribute": {
+        "title": "Bijdragen",
+        "description": "Help ons om een betere npm ervaring te creëren.",
+        "cta": "Ga naar GitHub"
+      },
+      "community": {
+        "title": "Word lid van de community",
+        "description": "Chat, stel vragen en deel ideeën.",
+        "cta": "Word lid van de Discord"
+      },
+      "builders": {
+        "title": "Bouw mee",
+        "description": "Word lid van het team dat de toekomst van npmx bouwt.",
+        "cta": "Join de bouwsers Discord"
+      },
+      "follow": {
+        "title": "Blijf op te hoogte",
+        "description": "Ontdek het laatste nieuws van npmx.",
+        "cta": "Volg op Bluesky"
+      }
+    }
+  },
+  "account_menu": {
+    "connect": "verbinden",
+    "account": "Account",
+    "npm_cli": "npm CLI",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "Pakketten en organisaties beheren",
+    "atmosphere_desc": "Sociale functies en identiteit",
+    "connect_npm_cli": "Verbinden met npm CLI",
+    "connect_atmosphere": "Verbinden met Atmosphere",
+    "connecting": "Verbinden...",
+    "ops": "{count} operatie | {count} operaties"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosphere",
+      "connected_as": "Verbonden als {'@'}{handle}",
+      "disconnect": "Ontkoppelen",
+      "connect_prompt": "Verbind met je Atmosphere account",
+      "handle_label": "Handle",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "Verbinden",
+      "create_account": "Nieuw account maken",
+      "connect_bluesky": "Verbind met Bluesky",
+      "what_is_atmosphere": "wat is een Atmosphere account?",
+      "atmosphere_explanation": "{npmx} maakt gebruik van {atproto} voor veel van zijn sociale functies, waardoor gebruikers eigenaar zijn van hun gegevens en één account kunnen gebruiken voor alle compatibele applicaties. Zodra u een account hebt aangemaakt, kunt u andere apps zoals {bluesky} en {tangled} met hetzelfde account gebruiken.",
+      "default_input_error": "Voer een geldige handle, DID of volledige PDS-URL in.",
+      "profile": "Profiel"
+    }
+  },
+  "header": {
+    "home": "npmx startpagina",
+    "packages": "packages",
+    "packages_dropdown": {
+      "title": "Your Packages",
+      "loading": "Loading...",
+      "error": "Failed to load packages",
+      "empty": "No packages found",
+      "view_all": "View all"
+    },
+    "orgs": "orgs",
+    "orgs_dropdown": {
+      "title": "Your Organizations",
+      "loading": "Loading...",
+      "error": "Failed to load organizations",
+      "empty": "No organizations found",
+      "view_all": "View all"
+    }
+  },
+  "compare": {
+    "packages": {
+      "title": "vergelijk pakketten",
+      "tagline": "vergelijk npm pakketten naast elkaar om u te helpen bij het kiezen van de juiste.",
+      "meta_title": "Vergelijk {packages} - npmx",
+      "meta_title_empty": "Vergelijk pakketten - npmx",
+      "meta_description": "Vergelijking van {packages} naast elkaar",
+      "meta_description_empty": "Vergelijk npm pakketten naast elkaar",
+      "section_packages": "Pakketten",
+      "section_facets": "Aspecten",
+      "section_comparison": "Vergelijking",
+      "copy_as_markdown": "kopieer tabel",
+      "loading": "Pakket informatie laden...",
+      "error": "Het laden van pakketgegevens is mislukt. Probeer het opnieuw.",
+      "empty_title": "Selecteer pakketten om te vergelijken",
+      "empty_description": "Zoek en voeg ten minste 2 bovenstaande pakketten toe om een vergelijking van hun statistieken naast elkaar te zien.",
+      "table_view": "Tabel",
+      "charts_view": "Grafiek"
+    },
+    "selector": {
+      "search_label": "Zoek voor pakketten",
+      "search_first": "Zoek voor een pakket...",
+      "search_add": "Voeg nog een pakket toe...",
+      "searching": "Zoeken...",
+      "remove_package": "Verwijder {package}",
+      "packages_selected": "{count}/{max} pakketten geselecteerd.",
+      "add_hint": "Voeg tenminste 2 pakketten toe om te vergelijken"
+    },
+    "no_dependency": {
+      "label": "(Geen dependency)",
+      "typeahead_title": "Wat zou James doen?",
+      "typeahead_description": "Vergelijk zonder het gebruiken van een dependency! e18e goedgekeurd.",
+      "tooltip_title": "U heeft waarschijnlijk geen dependency nodig",
+      "tooltip_description": "Vergelijk dit met het niet gebruiken van een dependency! De {link} bevat een lijst met pakketten die kunnen worden vervangen door native API's of eenvoudigere alternatieven.",
+      "e18e_community": "e18e community",
+      "add_column": "Voeg geen pakket toe kolom toe aan vergelijking"
+    },
+    "facets": {
+      "group_label": "Vergelijking aspecten",
+      "all": "alles",
+      "none": "geen",
+      "coming_soon": "Binnenkort",
+      "select_all": "Selecteer alle acpecten",
+      "deselect_all": "Alle aspecten deselecteren",
+      "select_category": "Alle {category} aspecten selecteren",
+      "deselect_category": "Alle {category} aspecten deselecteren",
+      "binary_only_tooltip": "Dit pakket maakt binaries beschikbaar en exporteert niets",
+      "categories": {
+        "performance": "Prestaties",
+        "health": "Status",
+        "compatibility": "Compatibiliteit",
+        "security": "Beveiliging & Naleving"
+      },
+      "items": {
+        "packageSize": {
+          "label": "Pakket grote",
+          "description": "De grootte van het pakket zelf (uitgepakt)"
+        },
+        "installSize": {
+          "label": "Installatiegrootte",
+          "description": "Totale installatiegrootte inclusief alle depenencies"
+        },
+        "dependencies": {
+          "label": "Directe deps",
+          "description": "Aantal directe dependencies"
+        },
+        "totalDependencies": {
+          "label": "Totaal Deps",
+          "description": "Totaal aantal dependencies inclusief transitieve"
+        },
+        "downloads": {
+          "label": "Downloads/week",
+          "description": "Wekelijks aantal downloads"
+        },
+        "totalLikes": {
+          "label": "vind leuk",
+          "description": "Aantal vind leuk"
+        },
+        "lastUpdated": {
+          "label": "Gepubliceerd",
+          "description": "Wanneer deze versie is gepubliceerd"
+        },
+        "deprecated": {
+          "label": "Afgeraden?",
+          "description": "Is het pakket afgeraden"
+        },
+        "engines": {
+          "label": "Omgevingen",
+          "description": "Node.js versie verplichtingen"
+        },
+        "types": {
+          "label": "Types",
+          "description": "TypeScript type definities"
+        },
+        "moduleFormat": {
+          "label": "Moduleformaat",
+          "description": "ESM/CJS ondersteuning"
+        },
+        "license": {
+          "label": "Licentie",
+          "description": "Pakket licentie"
+        },
+        "vulnerabilities": {
+          "label": "Kwetsbaarheden",
+          "description": "Bekende beveiliging kwetsbaarheden"
+        }
+      },
+      "values": {
+        "any": "Alle",
+        "none": "Geen",
+        "unknown": "Unknown",
+        "deprecated": "Afgeraden",
+        "not_deprecated": "Nee",
+        "types_included": "Inbegrepen",
+        "types_none": "Geen",
+        "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
+        "up_to_you": "Jij beslist!"
+      },
+      "trends": {
+        "title": "Trends vergelijken"
+      }
+    },
+    "file_changes": "File Changes",
+    "files_count": "{count} file | {count} files",
+    "lines_hidden": "{count} line hidden | {count} lines hidden",
+    "file_too_large": "File too large to compare",
+    "file_size_warning": "{size} exceeds the 250KB limit for comparison",
+    "compare_versions": "verschillen",
+    "compare_versions_title": "Vergelijk met de laatste versie",
+    "comparing_versions_label": "EN TEXT TO REPLACE: Comparing versions...",
+    "version_back_to_package": "EN TEXT TO REPLACE: Back to package",
+    "version_error_message": "EN TEXT TO REPLACE: Failed to compare versions.",
+    "version_invalid_url_format": {
+      "hint": "EN TEXT TO REPLACE: Invalid comparison URL. Use format: {0}",
+      "from_version": "EN TEXT TO REPLACE: from",
+      "to_version": "EN TEXT TO REPLACE: to"
+    },
+    "version_selector_title": "EN TEXT TO REPLACE: Compare with version",
+    "summary": "Summary",
+    "deps_count": "{count} dep | {count} deps",
+    "dependencies": "Dependencies",
+    "dev_dependencies": "Dev Dependencies",
+    "peer_dependencies": "Peer Dependencies",
+    "optional_dependencies": "Optional Dependencies",
+    "no_dependency_changes": "No dependency changes",
+    "file_filter_option": {
+      "all": "All ({count})",
+      "added": "Added ({count})",
+      "removed": "Removed ({count})",
+      "modified": "Modified ({count})"
+    },
+    "search_files_placeholder": "Search files...",
+    "no_files_all": "No files",
+    "no_files_search": "No files matching \"{query}\"",
+    "no_files_filtered": "No {filter} files",
+    "filter": {
+      "added": "added",
+      "removed": "removed",
+      "modified": "modified"
+    },
+    "files_button": "Files",
+    "select_file_prompt": "Select a file from the sidebar to view its diff",
+    "close_files_panel": "Close files panel",
+    "filter_files_label": "Filter files by change type",
+    "change_ratio": "EN TEXT TO REPLACE: Change ratio",
+    "char_edits": "EN TEXT TO REPLACE: Char edits",
+    "diff_distance": "EN TEXT TO REPLACE: Diff distance",
+    "loading_diff": "EN TEXT TO REPLACE: Loading diff...",
+    "loading_diff_error": "EN TEXT TO REPLACE: Failed to load diff",
+    "merge_modified_lines": "EN TEXT TO REPLACE: Merge modified lines",
+    "no_content_changes": "EN TEXT TO REPLACE: No content changes detected",
+    "options": "EN TEXT TO REPLACE: Options",
+    "view_file": "EN TEXT TO REPLACE: View file",
+    "view_in_code_browser": "EN TEXT TO REPLACE: View in code browser",
+    "word_wrap": "EN TEXT TO REPLACE: Word wrap"
+  },
+  "pds": {
+    "title": "npmx.social",
+    "meta_description": "De officiële AT Protocol Persoonlijke Data Server (PDS) voor de npmx community.",
+    "join": {
+      "title": "Word lid van de Community",
+      "description": "Of je nu je eerste account op Atmosphere account aanmaakt of een bestaand account migreert, je bent hier aan het juiste adres. Je kunt je huidige account migreren zonder je gebruikersnaam, je berichten of je volgers te verliezen.",
+      "migrate": "Migeer met PDS MOOver"
+    },
+    "server": {
+      "title": "Server gegevens",
+      "location_label": "Locatie:",
+      "location_value": "Neurenberg, Duitsland",
+      "infrastructure_label": "Infrastructeur:",
+      "infrastructure_value": "Gehost door Hetzner",
+      "privacy_label": "Privacy:",
+      "privacy_value": "Onderworpen aan strenge Europese wetgeving inzake gegevensbescherming",
+      "learn_more": "Ontdek hoe npmx gebruikmaakt van Atmosphere"
+    },
+    "community": {
+      "title": "Wie is hier",
+      "description": "Vele van de {count} accounts die npmx.social al als thuis beschouwen:",
+      "loading": "Laden PDS community...",
+      "error": "Laden van PDS community mislukt.",
+      "empty": "Geen community leden om te weergeven.",
+      "view_profile": "Kijk {handle}'s profiel",
+      "new_accounts": "...plus {count} meer die nieuw zijn in de Atmosphere"
+    }
+  },
+  "privacy_policy": {
+    "title": "privacy beleid",
+    "last_updated": "Last updated: {date}",
+    "welcome": "Welcome to {app}. We are committed to protecting your privacy. This policy explains what data we collect, how we use it, and your rights regarding your information.",
+    "cookies": {
+      "what_are": {
+        "title": "What are cookies?",
+        "p1": "Cookies are small text files stored on your device when you visit a website. Their purpose is to enhance your browsing experience by remembering certain preferences and settings."
+      },
+      "types": {
+        "title": "What cookies do we use?",
+        "p1": "We only use {bold} for purposes strictly necessary for the site's functionality. We do not use third-party or advertising cookies.",
+        "bold": "essential technical cookies",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": ":",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "This cookie is used by our hosting provider (Vercel) for skew protection. It ensures you fetch assets from the correct deployment version if a new update is released while you are browsing. It does not track you.",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "This is our secure session cookie. It stores the OAuth access token when you connect your Atmosphere account. It is essential for maintaining your authenticated session."
+      },
+      "local_storage": {
+        "title": "Local storage",
+        "p1": "In addition to session cookies, we use your browser's {bold} to save your display preferences. This allows us to remember the theme (light/dark) and some other {settings} you have selected, so you don't have to reconfigure them on each visit.",
+        "bold": "Local Storage",
+        "p2": "This information is purely functional, stored only on your device, and {bold2}. We use it exclusively to improve your experience on our website.",
+        "bold2": "contains no personal data nor is it used to track you",
+        "settings": "settings"
+      },
+      "management": {
+        "title": "Managing cookies",
+        "p1": "You can configure your browser to accept, reject, or delete cookies according to your preferences. However, please note that {bold}.",
+        "bold": "rejecting essential cookies may prevent full access to the application",
+        "p2": "Below are links with instructions for cookie management in the most commonly used browsers:",
+        "chrome": "Google Chrome (opens in a new window)",
+        "firefox": "Mozilla Firefox (opens in a new window)",
+        "edge": "Microsoft Edge (opens in a new window)"
+      }
+    },
+    "analytics": {
+      "title": "Analytics",
+      "p1": "We use {bold} to understand how visitors use our website. This helps us improve the user experience and identify issues.",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analytics is designed with privacy in mind:",
+      "li1": "It does not use cookies",
+      "li2": "It does not collect personal identifiers",
+      "li3": "It does not track users across websites",
+      "li4": "All data is aggregated and anonymised",
+      "p3": "The only information collected includes: page URLs, referrer, country/region, device type, browser, and operating system. This data cannot be used to identify individual users."
+    },
+    "authenticated": {
+      "title": "Authenticated users",
+      "p1": "When you connect your {bold} account to npmx, we store your OAuth access token in a secure, HTTP-only session cookie. This token is used solely to authenticate requests on your behalf.",
+      "bold": "Atmosphere",
+      "p2": "We do not store your credentials, and we do not access any data beyond what is necessary to provide the features you use. You can disconnect your account at any time from the {settings} page.",
+      "settings": "settings"
+    },
+    "data_retention": {
+      "title": "Data retention",
+      "p1": "Session cookies are automatically deleted when you close your browser or after a period of inactivity. Local storage preferences remain on your device until you clear your browser data. Analytics data is retained in aggregate form and cannot be linked to individual users."
+    },
+    "your_rights": {
+      "title": "Your rights",
+      "p1": "You have the right to:",
+      "li1": "Access information about what data we collect",
+      "li2": "Clear your local storage and cookies at any time",
+      "li3": "Disconnect your authenticated session",
+      "li4": "Request information about our data practices",
+      "p2": "Since we do not collect personal data, there is typically no personal information to delete or export."
+    },
+    "contact": {
+      "title": "Contact us",
+      "p1": "For any questions or concerns about this privacy policy, you can contact us by opening an issue on our {link}.",
+      "link": "GitHub repository"
+    },
+    "changes": {
+      "title": "Changes to this policy",
+      "p1": "We may update this privacy policy from time to time. Any changes will be published on this page with an updated revision date."
+    }
+  },
+  "a11y": {
+    "title": "toegankelijkheid",
+    "footer_title": "toegankelijkheid",
+    "welcome": "We willen dat {app} door zoveel mogelijk mensen gebruikt kan worden.",
+    "approach": {
+      "title": "Onze aanpak",
+      "p1": "We try to follow the Web Content Accessibility Guidelines (WCAG) 2.2 and use them as a reference when building features. We don't claim full conformance with any level of WCAG — accessibility is a continual process and there is always more work to do.",
+      "p2": "Deze site is een {about}. Toegankelijkheidsverbeteringen worden stapsgewijs doorgevoerd als onderdeel van onze reguliere ontwikkeling.",
+      "about_link": "open source, community gedreven project"
+    },
+    "measures": {
+      "title": "Wat we doen",
+      "p1": "Enkele dingen die we op de hele website willen doen:",
+      "li1": "Gebruik waar nodig semantische HTML- en ARIA-attributen.",
+      "li2": "Gebruik relatieve tekstgroottes, zodat u deze in uw browser kunt aanpassen.",
+      "li3": "Ondersteuning voor toetsenbordnavigatie in de hele interface.",
+      "li4": "Respect the prefers-reduced-motion and prefers-color-scheme media queries.",
+      "li5": "Ontwerp met voldoende kleurcontrast in gedachten.",
+      "li6": "Zorg ervoor dat essentiële inhoud beschikbaar is zonder JavaScript, hoewel sommige interactieve functies dit wel vereisen."
+    },
+    "limitations": {
+      "title": "Bekende beperkingen",
+      "p1": "Some parts of the site — particularly third-party content like package READMEs — may not meet accessibility standards. We are working to improve these areas over time."
+    },
+    "contact": {
+      "title": "Feedback",
+      "p1": "Als u een toegankelijkheidsbarrière tegenkomt op {app}, laat het ons dan weten door een issue aan te maken op onze {link}. We nemen deze meldingen serieus en zullen ons best doen om ze op te lossen.",
+      "link": "GitHub repository"
+    }
+  },
+  "action_bar": {
+    "title": "EN TEXT TO REPLACE: action bar",
+    "selection": "EN TEXT TO REPLACE: 0 selected | 1 selected | {count} selected",
+    "shortcut": "EN TEXT TO REPLACE: Press \"{key}\" to focus actions",
+    "button_close_aria_label": "EN TEXT TO REPLACE: Close action bar"
+  }
+}
