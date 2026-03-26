@@ -1,6 +1,30 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/package/:path(.*)",
+      "has": [
+        {
+          "type": "header",
+          "key": "accept",
+          "value": "(.*?)text/markdown(.*)"
+        }
+      ],
+      "destination": "/raw/:path.md"
+    },
+    {
+      "source": "/:path((?!api|_nuxt|_v|__nuxt|raw/|skills/|package-code/|package-docs/|blog/|diff/|compare|search|org/|profile/|brand|about|accessibility|pds|privacy|recharging|settings|translation-status|oauth-client-metadata|opensearch|\\.well-known/).*)",
+      "has": [
+        {
+          "type": "header",
+          "key": "accept",
+          "value": "(.*?)text/markdown(.*)"
+        }
+      ],
+      "destination": "/raw/:path.md"
+    }
+  ],
   "redirects": [
     {
       "source": "/(.*)",
