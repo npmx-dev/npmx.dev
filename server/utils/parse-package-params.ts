@@ -6,9 +6,10 @@ export function parsePackageParams(segments: string[]): {
   rawPackageName: string
   rawVersion: string | undefined
 } {
-  const vIndex = segments.indexOf('v')
+  const packageSegmentCount = segments[0]?.startsWith('@') ? 2 : 1
+  const vIndex = packageSegmentCount
 
-  if (vIndex !== -1 && vIndex < segments.length - 1) {
+  if (segments[vIndex] === 'v' && vIndex < segments.length - 1) {
     return {
       rawPackageName: segments.slice(0, vIndex).join('/'),
       rawVersion: segments.slice(vIndex + 1).join('/'),
