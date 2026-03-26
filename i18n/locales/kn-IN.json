@@ -807,14 +807,11 @@
     },
     "no_dependency": {},
     "facets": {
-      "group_label": "ಹೋಲಿಕೆ ಫ್ಯಾಸೆಟ್‌ಗಳು",
       "all": "ಎಲ್ಲ",
       "none": "ಯಾವುದೂ ಇಲ್ಲ",
       "coming_soon": "ಶೀಘ್ರದಲ್ಲೇ",
       "select_all": "ಎಲ್ಲ ಫ್ಯಾಸೆಟ್‌ಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ",
       "deselect_all": "ಎಲ್ಲ ಫ್ಯಾಸೆಟ್‌ಗಳನ್ನು ಅನಾಯ್ಕೆಮಾಡಿ",
-      "select_category": "ಎಲ್ಲ {category} ಫ್ಯಾಸೆಟ್‌ಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ",
-      "deselect_category": "ಎಲ್ಲ {category} ಫ್ಯಾಸೆಟ್‌ಗಳನ್ನು ಅನಾಯ್ಕೆಮಾಡಿ",
       "categories": {
         "performance": "ಕಾರ್ಯಕ್ಷಮತೆ",
         "health": "ಆರೋಗ್ಯ",

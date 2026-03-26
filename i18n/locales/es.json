@@ -1071,14 +1071,11 @@
       "add_column": "Añadir columna sin dependencia a la comparación"
     },
     "facets": {
-      "group_label": "Facetas de comparación",
       "all": "todas",
       "none": "ninguna",
       "coming_soon": "Próximamente",
       "select_all": "Seleccionar todas las facetas",
       "deselect_all": "Deseleccionar todas las facetas",
-      "select_category": "Seleccionar todas las facetas de {category}",
-      "deselect_category": "Deseleccionar todas las facetas de {category}",
       "binary_only_tooltip": "Este paquete expone binarios y no exportaciones",
       "categories": {
         "performance": "Rendimiento",

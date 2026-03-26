@@ -1084,14 +1084,11 @@
       "add_column": "在比較中加入「無相依套件」欄位"
     },
     "facets": {
-      "group_label": "比較維度",
       "all": "全選",
       "none": "取消全選",
       "coming_soon": "即將推出",
       "select_all": "選擇所有維度",
       "deselect_all": "取消選擇所有維度",
-      "select_category": "選擇所有{category}維度",
-      "deselect_category": "取消選擇所有{category}維度",
       "binary_only_tooltip": "此套件僅提供二進位檔且沒有匯出",
       "categories": {
         "performance": "效能",
