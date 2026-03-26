@@ -51,28 +51,12 @@ function getSocialIcon(provider: string): string {
   return socialIcons[provider] ?? 'i-lucide:link'
 }
 
-function getSocialLinks(person: { twitterUsername: string | null; socialAccounts: SocialAccount[] }): { provider: string; url: string; icon: string }[] {
-  const links: { provider: string; url: string; icon: string }[] = []
-
-  if (person.twitterUsername) {
-    links.push({
-      provider: 'TWITTER',
-      url: `https://x.com/${person.twitterUsername}`,
-      icon: socialIcons.TWITTER!,
-    })
-  }
-
-  for (const account of person.socialAccounts) {
-    // Skip twitter if already added via twitterUsername
-    if (account.provider === 'TWITTER') continue
-    links.push({
-      provider: account.provider,
-      url: account.url,
-      icon: getSocialIcon(account.provider),
-    })
-  }
-
-  return links
+function getSocialLinks(person: { socialAccounts: SocialAccount[] }): { provider: string; url: string; icon: string }[] {
+  return person.socialAccounts.map(account => ({
+    provider: account.provider,
+    url: account.url,
+    icon: getSocialIcon(account.provider),
+  }))
 }
 
 const roleLabels = computed(

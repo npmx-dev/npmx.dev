@@ -14,11 +14,10 @@ export interface GitHubContributor {
   role: Role
   sponsors_url: string | null
   bio: string | null
-  twitterUsername: string | null
   socialAccounts: SocialAccount[]
 }
 
-type GitHubAPIContributor = Omit<GitHubContributor, 'role' | 'sponsors_url' | 'bio' | 'twitterUsername' | 'socialAccounts'>
+type GitHubAPIContributor = Omit<GitHubContributor, 'role' | 'sponsors_url' | 'bio' | 'socialAccounts'>
 
 // Fallback when no GitHub token is available (e.g. preview environments).
 // Only stewards are shown as maintainers; everyone else is a contributor.
@@ -71,7 +70,6 @@ async function fetchTeamMembers(token: string): Promise<TeamMembers | null> {
 interface GovernanceProfile {
   hasSponsorsListing: boolean
   bio: string | null
-  twitterUsername: string | null
   socialAccounts: SocialAccount[]
 }
 
@@ -94,6 +92,7 @@ async function fetchGovernanceProfiles(
       socialAccounts(first: 10) { nodes { provider url } }
     }`,
   )
+  // twitterUsername is fetched to normalise it into socialAccounts below
   const query = `{ ${fragments.join('\n')} }`
 
   try {
@@ -126,14 +125,20 @@ async function fetchGovernanceProfiles(
     if (json.data) {
       for (const user of Object.values(json.data)) {
         if (user) {
+          const socialAccounts: SocialAccount[] = user.socialAccounts.nodes.map(n => ({
+            provider: n.provider,
+            url: n.url,
+          }))
+          // Normalise twitterUsername into socialAccounts so callers have a
+          // single unified array. GitHub returns it separately because it
+          // predates the socialAccounts field.
+          if (user.twitterUsername && !socialAccounts.some(a => a.provider === 'TWITTER')) {
+            socialAccounts.unshift({ provider: 'TWITTER', url: `https://x.com/${user.twitterUsername}` })
+          }
           profiles.set(user.login, {
             hasSponsorsListing: user.hasSponsorsListing,
             bio: user.bio,
-            twitterUsername: user.twitterUsername,
-            socialAccounts: user.socialAccounts.nodes.map(n => ({
-              provider: n.provider,
-              url: n.url,
-            })),
+            socialAccounts,
           })
         }
       }
@@ -221,9 +226,8 @@ export default defineCachedEventHandler(
           ? `https://github.com/sponsors/${c.login}`
           : null
         const bio = profile?.bio ?? null
-        const twitterUsername = profile?.twitterUsername ?? null
         const socialAccounts = profile?.socialAccounts ?? []
-        Object.assign(c, { role, order, sponsors_url, bio, twitterUsername, socialAccounts })
+        Object.assign(c, { role, order, sponsors_url, bio, socialAccounts })
         return c as GitHubContributor & { order: number }
       })
       .sort((a, b) => a.order - b.order || b.contributions - a.contributions)
