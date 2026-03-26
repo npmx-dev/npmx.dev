@@ -1624,7 +1624,13 @@ watch(selectedMetric, value => {
 })
 
 // Sparkline charts (a11y alternative display for multi series)
-const isSparklineLayout = shallowRef(false)
+const chartLayout = usePermalink<'combined' | 'split'>('layout', 'combined')
+const isSparklineLayout = computed({
+  get: () => chartLayout.value === 'split',
+  set: (v: boolean) => {
+    chartLayout.value = v ? 'split' : 'combined'
+  },
+})
 </script>
 
 <template>
@@ -1633,50 +1639,25 @@ const isSparklineLayout = shallowRef(false)
     id="trends-chart"
     :aria-busy="activeMetricState.pending ? 'true' : 'false'"
   >
-    <div
+    <TabRoot
       v-if="isMultiPackageMode"
-      class="inline-flex items-center gap-1 rounded-md border border-border-subtle bg-bg-subtle p-0.5 mt-4 mb-8"
-      role="tablist"
-      :aria-label="$t('package.trends.chart_view_toggle')"
+      v-model="chartLayout"
+      id-prefix="chart-layout"
+      class="mt-4 mb-8"
     >
-      <button
-        id="combined-chart-layout-tab"
-        type="button"
-        role="tab"
-        :aria-selected="isSparklineLayout ? 'false' : 'true'"
-        aria-controls="combined-chart-layout-panel"
-        :tabindex="isSparklineLayout ? 0 : -1"
-        class="flex items-center justify-center gap-x-2 rounded px-3 py-2 font-mono text-sm border border-solid transition-colors duration-150 focus-visible:outline-accent/70"
-        :class="
-          isSparklineLayout
-            ? 'border-transparent text-fg-subtle hover:text-fg'
-            : 'bg-bg border-border shadow-sm text-fg'
-        "
-        @click="isSparklineLayout = false"
-      >
-        <span class="i-lucide:chart-line size-[1em]" aria-hidden="true" />
-        <span>{{ $t('package.trends.chart_view_combined') }}</span>
-      </button>
-
-      <button
-        id="split-chart-layout-tab"
-        type="button"
-        role="tab"
-        :aria-selected="isSparklineLayout ? 'true' : 'false'"
-        aria-controls="split-chart-layout-panel"
-        :tabindex="!isSparklineLayout ? 0 : -1"
-        class="flex items-center justify-center gap-x-2 rounded px-3 py-2 font-mono text-sm border border-solid transition-colors duration-150 focus-visible:outline-accent/70"
-        :class="
-          isSparklineLayout
-            ? 'bg-bg border-border shadow-sm text-fg'
-            : 'border-transparent text-fg-subtle hover:text-fg'
-        "
-        @click="isSparklineLayout = true"
-      >
-        <span class="i-lucide:square-split-horizontal size-[1em]" aria-hidden="true" />
-        <span>{{ $t('package.trends.chart_view_split') }}</span>
-      </button>
-    </div>
+      <TabList :aria-label="$t('package.trends.chart_view_toggle')">
+        <TabItem value="combined" tab-id="combined-chart-layout-tab" icon="i-lucide:chart-line">
+          {{ $t('package.trends.chart_view_combined') }}
+        </TabItem>
+        <TabItem
+          value="split"
+          tab-id="split-chart-layout-tab"
+          icon="i-lucide:square-split-horizontal"
+        >
+          {{ $t('package.trends.chart_view_split') }}
+        </TabItem>
+      </TabList>
+    </TabRoot>
 
     <div class="w-full mb-4 flex flex-col gap-3">
       <div class="grid grid-cols-2 sm:flex sm:flex-row gap-3 sm:gap-2 sm:items-end">

@@ -1109,6 +1109,7 @@
       "empty_description": "Search and add at least 2 packages above to see a side-by-side comparison of their metrics.",
       "table_view": "Table",
       "charts_view": "Charts",
+      "no_chartable_data": "No chartable data available for the selected facets.",
       "bar_chart_nav_hint": "Use ↑ ↓",
       "line_chart_nav_hint": "Use ← →"
     },
