@@ -340,23 +340,27 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
       </VueUiHorizontalBar>
 
       <template #fallback>
-        <div class="flex flex-col gap-2 justify-center items-center mb-2">
-          <SkeletonInline class="h-4 w-16" />
-          <SkeletonInline class="h-4 w-28" />
-        </div>
-        <div class="flex flex-col gap-1">
-          <SkeletonInline class="h-7 w-full" v-for="pkg in packages" :key="pkg" />
+        <div class="flex flex-col gap-3" data-test="facet-bar-chart-skeleton">
+          <div class="flex flex-col items-center gap-2 mb-3">
+            <SkeletonInline class="h-5 w-36 max-w-full" />
+            <SkeletonInline class="h-4 w-52 max-w-full" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <SkeletonInline class="h-8 w-full" v-for="pkg in packages" :key="pkg" />
+          </div>
         </div>
       </template>
     </ClientOnly>
 
     <template v-else>
-      <div class="flex flex-col gap-2 justify-center items-center mb-2">
-        <SkeletonInline class="h-4 w-16" />
-        <SkeletonInline class="h-4 w-28" />
-      </div>
-      <div class="flex flex-col gap-1">
-        <SkeletonInline class="h-7 w-full" v-for="pkg in packages" :key="pkg" />
+      <div class="flex flex-col gap-3" data-test="facet-bar-chart-skeleton">
+        <div class="flex flex-col items-center gap-2 mb-3">
+          <SkeletonInline class="h-5 w-36 max-w-full" />
+          <SkeletonInline class="h-4 w-52 max-w-full" />
+        </div>
+        <div class="flex flex-col gap-2">
+          <SkeletonInline class="h-8 w-full" v-for="pkg in packages" :key="pkg" />
+        </div>
       </div>
     </template>
   </div>
