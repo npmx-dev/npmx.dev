@@ -19,13 +19,9 @@ const ACCENT_COLORS = ['#60a5fa', '#f472b6', '#34d399', '#fbbf24']
 
 const displayPackages = computed(() => {
   const raw = props.packages
-  const list =
-    typeof raw === 'string'
-      ? raw
-          .split(',')
-          .map(p => p.trim())
-          .filter(Boolean)
-      : raw
+  const list = (typeof raw === 'string' ? raw.split(',') : raw)
+    .map(p => p.trim())
+    .filter(Boolean)
   return list.slice(0, 4)
 })
 
@@ -84,8 +80,9 @@ function formatDownloads(n: number): string {
 
 // Bar width as percentage string (max 100%)
 function barPct(downloads: number): string {
+  if (downloads <= 0) return '0%'
   const pct = (downloads / maxDownloads.value) * 100
-  return `${Math.max(pct, 5)}%`
+  return `${Math.min(100, Math.max(pct, 5))}%`
 }
 </script>
 
