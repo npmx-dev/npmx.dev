@@ -17,7 +17,10 @@ export interface GitHubContributor {
   socialAccounts: SocialAccount[]
 }
 
-type GitHubAPIContributor = Omit<GitHubContributor, 'role' | 'sponsors_url' | 'bio' | 'socialAccounts'>
+type GitHubAPIContributor = Omit<
+  GitHubContributor,
+  'role' | 'sponsors_url' | 'bio' | 'socialAccounts'
+>
 
 // Fallback when no GitHub token is available (e.g. preview environments).
 // Only stewards are shown as maintainers; everyone else is a contributor.
@@ -112,13 +115,16 @@ async function fetchGovernanceProfiles(
     }
 
     const json = (await response.json()) as {
-      data?: Record<string, {
-        login: string
-        hasSponsorsListing: boolean
-        bio: string | null
-        twitterUsername: string | null
-        socialAccounts: { nodes: { provider: string; url: string }[] }
-      } | null>
+      data?: Record<
+        string,
+        {
+          login: string
+          hasSponsorsListing: boolean
+          bio: string | null
+          twitterUsername: string | null
+          socialAccounts: { nodes: { provider: string; url: string }[] }
+        } | null
+      >
     }
 
     const profiles = new Map<string, GovernanceProfile>()
@@ -133,7 +139,10 @@ async function fetchGovernanceProfiles(
           // single unified array. GitHub returns it separately because it
           // predates the socialAccounts field.
           if (user.twitterUsername && !socialAccounts.some(a => a.provider === 'TWITTER')) {
-            socialAccounts.unshift({ provider: 'TWITTER', url: `https://x.com/${user.twitterUsername}` })
+            socialAccounts.unshift({
+              provider: 'TWITTER',
+              url: `https://x.com/${user.twitterUsername}`,
+            })
           }
           profiles.set(user.login, {
             hasSponsorsListing: user.hasSponsorsListing,

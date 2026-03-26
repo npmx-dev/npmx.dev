@@ -51,7 +51,9 @@ function getSocialIcon(provider: string): string {
   return socialIcons[provider] ?? 'i-lucide:link'
 }
 
-function getSocialLinks(person: { socialAccounts: SocialAccount[] }): { provider: string; url: string; icon: string }[] {
+function getSocialLinks(person: {
+  socialAccounts: SocialAccount[]
+}): { provider: string; url: string; icon: string }[] {
   return person.socialAccounts.map(account => ({
     provider: account.provider,
     url: account.url,
