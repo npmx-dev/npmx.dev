@@ -41,7 +41,10 @@ export function useCompareReplacements(packageNames: MaybeRefOrGetter<string[]>)
       const results = await Promise.all(
         namesToCheck.map(async name => {
           try {
-            const result = await $fetch<{ mapping: ModuleReplacementMapping; replacement: ModuleReplacement } | null>(`/api/replacements/${name}`)
+            const result = await $fetch<{
+              mapping: ModuleReplacementMapping
+              replacement: ModuleReplacement
+            } | null>(`/api/replacements/${name}`)
             return { name, replacement: result?.replacement ?? null }
           } catch {
             return { name, replacement: null }
