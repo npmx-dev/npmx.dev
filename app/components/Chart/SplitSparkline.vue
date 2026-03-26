@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { VueUiSparkline } from 'vue-data-ui/vue-ui-sparkline'
 import { useCssVariables } from '~/composables/useColors'
-import { type VueUiXyDatasetItem } from 'vue-data-ui'
-import type { VueUiSparklineConfig, VueUiSparklineDatasetItem } from 'vue-data-ui'
+import type { VueUiSparklineConfig, VueUiSparklineDatasetItem, VueUiXyDatasetItem } from 'vue-data-ui'
 import { getPalette } from 'vue-data-ui/utils'
 
 import('vue-data-ui/style.css')
