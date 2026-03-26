@@ -1624,9 +1624,7 @@ watch(selectedMetric, value => {
 })
 
 // Sparkline charts (a11y alternative display for multi series)
-const chartLayout = usePermalink<'combined' | 'split'>('layout', 'combined', {
-  permanent: props.permalink,
-})
+const chartLayout = usePermalink<'combined' | 'split'>('layout', 'combined')
 const isSparklineLayout = computed({
   get: () => chartLayout.value === 'split',
   set: (v: boolean) => {
