@@ -6,10 +6,14 @@ export function parsePackageParams(segments: string[]): {
   rawPackageName: string
   rawVersion: string | undefined
 } {
-  const packageSegmentCount = segments[0]?.startsWith('@') ? 2 : 1
-  const vIndex = packageSegmentCount
+  let vIndex = segments.indexOf('v')
 
-  if (segments[vIndex] === 'v' && vIndex < segments.length - 1) {
+  // If we encounter ".../v/v/...", treat the second "v" as the version delimiter.
+  if (segments[vIndex] === 'v' && segments[vIndex + 1] === 'v') {
+    vIndex++
+  }
+
+  if (vIndex !== -1 && vIndex < segments.length - 1) {
     return {
       rawPackageName: segments.slice(0, vIndex).join('/'),
       rawVersion: segments.slice(vIndex + 1).join('/'),

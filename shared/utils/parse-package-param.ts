@@ -37,10 +37,14 @@ export interface ParsedPackageParams {
  */
 export function parsePackageParam(pkgParam: string): ParsedPackageParams {
   const segments = pkgParam.split('/')
-  const packageSegmentCount = segments[0]?.startsWith('@') ? 2 : 1
-  const vIndex = packageSegmentCount
+  let vIndex = segments.indexOf('v')
 
-  if (segments[vIndex] === 'v' && vIndex < segments.length - 1) {
+  // If we encounter ".../v/v/...", treat the second "v" as the version delimiter.
+  if (segments[vIndex] === 'v' && segments[vIndex + 1] === 'v') {
+    vIndex++
+  }
+
+  if (vIndex !== -1 && vIndex < segments.length - 1) {
     return {
       packageName: segments.slice(0, vIndex).join('/'),
       version: segments[vIndex + 1],
