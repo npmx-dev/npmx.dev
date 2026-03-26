@@ -1122,10 +1122,10 @@
       "all": "सर्व",
       "none": "काहीही नाही",
       "coming_soon": "लवकरच येत आहे",
-      "select_category": "{category} मधील सर्व घटक निवडा",
-      "deselect_category": "{category} मधील सर्व घटकांची निवड रद्द करा",
       "select_all": "सर्व घटक निवडा",
       "deselect_all": "सर्व घटकांची निवड रद्द करा",
+      "select_category": "{category} मधील सर्व घटक निवडा",
+      "deselect_category": "{category} मधील सर्व घटकांची निवड रद्द करा",
       "binary_only_tooltip": "हे पॅकेज binaries उघड करते आणि exports नाहीत",
       "categories": {
         "performance": "कार्यक्षमता",
