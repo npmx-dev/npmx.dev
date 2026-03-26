@@ -101,7 +101,7 @@ function handleKeydown(event: KeyboardEvent) {
     :aria-expanded="isOpen"
     aria-haspopup="listbox"
     :aria-label="$t('package.get_started.pm_label')"
-    :aria-controls="listboxId"
+    :aria-controls="isOpen ? listboxId : undefined"
     @click="toggle"
     @keydown="handleKeydown"
   >

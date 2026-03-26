@@ -279,7 +279,10 @@ export default defineNuxtConfig({
   htmlValidator: {
     enabled: !isCI || (provider !== 'vercel' && !!process.env.VALIDATE_HTML),
     options: {
-      rules: { 'meta-refresh': 'off' },
+      rules: {
+        'meta-refresh': 'off',
+        'prefer-native-element': ['error', { exclude: ['listbox'] }],
+      },
     },
     failOnError: true,
   },
