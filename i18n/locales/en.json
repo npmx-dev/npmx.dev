@@ -270,7 +270,7 @@
       "example": "Example:",
       "native": "This can be replaced with {replacement}, available since Node {nodeVersion}.",
       "native_no_version": "This can be replaced with {replacement}.",
-      "simple": "The {community} has flagged this package as redundant, with the advice: {replacement}.",
+      "simple": "The {community} has flagged this package as redundant, with the advice: {replacement}",
       "documented": "The {community} has flagged this package as having more performant alternatives.",
       "none": "This package has been flagged as no longer needed, and its functionality is likely available natively in all engines.",
       "learn_more": "Learn more",
