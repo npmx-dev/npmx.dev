@@ -234,6 +234,10 @@ import {
   PackageSelectionCheckbox,
   PackageExternalLinks,
   ChartSplitSparkline,
+  TabRoot,
+  TabList,
+  TabItem,
+  TabPanel,
 } from '#components'
 
 // Server variant components must be imported directly to test the server-side render
@@ -995,6 +999,40 @@ describe('component accessibility audits', () => {
           showLastDatapointEstimation: false,
         },
       })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('TabRoot + TabList + TabItem + TabPanel', () => {
+    function createTabsFixture(modelValue: string, idPrefix: string) {
+      return defineComponent({
+        setup() {
+          return () =>
+            h(
+              TabRoot,
+              { modelValue, idPrefix },
+              () => [
+                h(TabList, { ariaLabel: 'Test tabs' }, () => [
+                  h(TabItem, { value: 'first' }, () => 'First'),
+                  h(TabItem, { value: 'second' }, () => 'Second'),
+                ]),
+                h(TabPanel, { value: 'first' }, () => 'First content'),
+                h(TabPanel, { value: 'second' }, () => 'Second content'),
+              ],
+            )
+        },
+      })
+    }
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(createTabsFixture('first', 'a11y-test'))
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with second tab selected', async () => {
+      const component = await mountSuspended(createTabsFixture('second', 'a11y-test2'))
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
