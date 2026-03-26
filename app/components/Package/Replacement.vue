@@ -13,10 +13,6 @@ const nodeVersion = computed(() => {
   const nodeEngine = props.replacement.engines?.find(e => e.engine === 'nodejs')
   return nodeEngine?.minVersion || null
 })
-
-const replacementDescription = useMarkdown({
-  text: props.replacement.description ?? '',
-})
 </script>
 
 <template>
@@ -33,8 +29,8 @@ const replacementDescription = useMarkdown({
       scope="global"
     >
       <template #replacement>
-        <code v-if="replacementDescription">
-          {{ replacementDescription }}
+        <code v-if="replacement.description">
+          {{ replacement.description }}
         </code>
         <span v-else>{{ replacement.id }}</span>
       </template>
@@ -48,14 +44,14 @@ const replacementDescription = useMarkdown({
       scope="global"
     >
       <template #replacement>
-        <code v-if="replacementDescription">
-          {{ replacementDescription }}
+        <code v-if="replacement.description">
+          {{ replacement.description }}
         </code>
         <span v-else>{{ replacement.id }}</span>
       </template>
     </i18n-t>
     <div v-else-if="replacement.type === 'simple'" class="block">
-      <div class="mb-2">{{ replacementDescription }}</div>
+      <div class="mb-2">{{ replacement.description }}</div>
       <div v-if="replacement.example">
         <strong class="block mb-1.5">{{ $t('package.replacement.example') }}</strong>
         <pre
@@ -84,7 +80,7 @@ const replacementDescription = useMarkdown({
       </template>
     </i18n-t>
     <template v-else-if="replacement.type === 'removal'">
-      {{ replacementDescription }}
+      {{ replacement.description }}
     </template>
     <template v-else>
       {{ $t('package.replacement.none') }}
