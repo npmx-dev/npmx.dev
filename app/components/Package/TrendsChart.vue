@@ -1645,7 +1645,7 @@ const isSparklineLayout = computed({
       id-prefix="chart-layout"
       class="mt-4 mb-8"
     >
-      <TabList :aria-label="$t('package.trends.chart_view_toggle')">
+      <TabList :ariaLabel="$t('package.trends.chart_view_toggle')">
         <TabItem value="combined" tab-id="combined-chart-layout-tab" icon="i-lucide:chart-line">
           {{ $t('package.trends.chart_view_combined') }}
         </TabItem>

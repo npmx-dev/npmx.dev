@@ -280,7 +280,7 @@ useSeoMeta({
             id-prefix="comparison"
             class="mt-4"
           >
-            <TabList :aria-label="$t('compare.packages.section_comparison')">
+            <TabList :ariaLabel="$t('compare.packages.section_comparison')">
               <TabItem value="table" tab-id="comparison-tab-table" icon="i-lucide:table">
                 {{ $t('compare.packages.table_view') }}
               </TabItem>

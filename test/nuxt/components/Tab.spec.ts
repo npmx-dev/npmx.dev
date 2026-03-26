@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { defineComponent, h, nextTick } from 'vue'
+import { defineComponent, h } from 'vue'
 import { TabRoot, TabList, TabItem, TabPanel } from '#components'
 
 function createTabsWrapper(props: { modelValue: string; idPrefix?: string }) {

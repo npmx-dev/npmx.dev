@@ -425,10 +425,11 @@ describe('isSameVersionGroup', () => {
   })
 })
 
+function row(version: string, tags: string[]) {
+  return { id: `version:${version}`, primaryTag: tags[0]!, tags, version }
+}
+
 describe('compareTagRows', () => {
-  function row(version: string, tags: string[]) {
-    return { id: `version:${version}`, primaryTag: tags[0]!, tags, version }
-  }
 
   it('sorts by tag priority ascending (rc before beta)', () => {
     const rc = row('2.0.0-rc.1', ['rc'])
