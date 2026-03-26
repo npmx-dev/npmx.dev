@@ -430,7 +430,6 @@ function row(version: string, tags: string[]) {
 }
 
 describe('compareTagRows', () => {
-
   it('sorts by tag priority ascending (rc before beta)', () => {
     const rc = row('2.0.0-rc.1', ['rc'])
     const beta = row('2.0.0-beta.1', ['beta'])

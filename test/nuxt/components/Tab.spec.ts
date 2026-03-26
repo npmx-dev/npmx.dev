@@ -10,11 +10,11 @@ function createTabsWrapper(props: { modelValue: string; idPrefix?: string }) {
       return () =>
         h(
           TabRoot,
-          ({
-	modelValue: props.modelValue,
-	idPrefix: props.idPrefix ?? 'test',
-	'onUpdate:modelValue': () => {}
-}),
+          {
+            'modelValue': props.modelValue,
+            'idPrefix': props.idPrefix ?? 'test',
+            'onUpdate:modelValue': () => {},
+          },
           () => [
             h(TabList, { ariaLabel: 'Test tabs' }, () => [
               h(TabItem, { value: 'one' }, () => 'One'),

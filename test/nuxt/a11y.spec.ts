@@ -1009,18 +1009,14 @@ describe('component accessibility audits', () => {
       return defineComponent({
         setup() {
           return () =>
-            h(
-              TabRoot,
-              { modelValue, idPrefix },
-              () => [
-                h(TabList, { ariaLabel: 'Test tabs' }, () => [
-                  h(TabItem, { value: 'first' }, () => 'First'),
-                  h(TabItem, { value: 'second' }, () => 'Second'),
-                ]),
-                h(TabPanel, { value: 'first' }, () => 'First content'),
-                h(TabPanel, { value: 'second' }, () => 'Second content'),
-              ],
-            )
+            h(TabRoot, { modelValue, idPrefix }, () => [
+              h(TabList, { ariaLabel: 'Test tabs' }, () => [
+                h(TabItem, { value: 'first' }, () => 'First'),
+                h(TabItem, { value: 'second' }, () => 'Second'),
+              ]),
+              h(TabPanel, { value: 'first' }, () => 'First content'),
+              h(TabPanel, { value: 'second' }, () => 'Second content'),
+            ])
         },
       })
     }
