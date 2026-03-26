@@ -13,6 +13,9 @@ const {
 
 const { user: atprotoUser } = useAtproto()
 
+const menuButtonRef = useTemplateRef('menuButtonRef')
+const menuRef = useTemplateRef('menuRef')
+
 const isOpen = shallowRef(false)
 
 /** Check if connected to at least one service */
@@ -32,6 +35,7 @@ onClickOutside(accountMenuRef, () => {
 
 useEventListener('keydown', event => {
   if (event.key === 'Escape' && isOpen.value) {
+    menuButtonRef.value?.focus()
     isOpen.value = false
   }
 })
@@ -53,14 +57,91 @@ function openAuthModal() {
     authModal.open()
   }
 }
+
+watch(menuRef, () => {
+  if (!menuRef.value) return
+  // Set up focus for the first menu item
+  const firstMenuItem = menuRef.value.querySelector('[role="menuitem"]') as HTMLButtonElement
+  if (!firstMenuItem) {
+    throw new Error('Cannot find a menuitem to focus')
+  }
+  firstMenuItem.tabIndex = 0
+  firstMenuItem.focus()
+})
+
+const menuItemNavKeys = {
+  next: 'ArrowDown',
+  prev: 'ArrowUp',
+  start: 'Home',
+  end: 'End',
+}
+
+function onMenuBlurWithin() {
+  requestAnimationFrame(() => {
+    if (!menuRef.value?.contains(document.activeElement)) {
+      isOpen.value = false
+    }
+  })
+}
+
+/**
+ * Use a roving tabindex for the menu widget
+ */
+function onMenuKeyDown(event: KeyboardEvent) {
+  const menu = event.currentTarget as HTMLElement
+  if (!menu) return
+
+  // Collect the menu items (i.e. focusable candidates)
+  const menuItems: HTMLElement[] = Array.from(menu.querySelectorAll('[role="menuitem"]'))
+  // Find the current item
+  let currentIndex = menuItems.findIndex(menuItem => menuItem.tabIndex !== -1)
+  const currentMenuItem = menuItems.at(currentIndex)
+  if (!currentMenuItem) {
+    throw new Error(`Missing menuitem at index ${currentIndex}`)
+  }
+
+  switch (event.key) {
+    case menuItemNavKeys.prev:
+      currentIndex = mod(currentIndex - 1, menuItems.length)
+      break
+    case menuItemNavKeys.next:
+      currentIndex = mod(currentIndex + 1, menuItems.length)
+      break
+    case menuItemNavKeys.start:
+      currentIndex = 0
+      break
+    case menuItemNavKeys.end:
+      currentIndex = menuItems.length - 1
+      break
+    default:
+      // Ignore all other keys
+      return
+  }
+
+  const menuItemToFocus = menuItems.at(currentIndex)
+  if (!menuItemToFocus) {
+    throw new RangeError(`currentIndex (${currentIndex}) outside of range of menu items`)
+  }
+
+  event.preventDefault()
+
+  currentMenuItem.tabIndex = -1
+  menuItemToFocus.tabIndex = 0
+  menuItemToFocus.focus()
+}
+
+function mod(n: number, m: number): number {
+  return ((n % m) + m) % m
+}
 </script>
 
 <template>
   <div ref="accountMenuRef" class="relative flex min-w-28 justify-end">
     <ButtonBase
+      ref="menuButtonRef"
       type="button"
       :aria-expanded="isOpen"
-      aria-haspopup="true"
+      aria-haspopup="menu"
       @click="isOpen = !isOpen"
       class="border-none"
     >
@@ -135,7 +216,14 @@ function openAuthModal() {
       enter-from-class="opacity-0 translate-y-1"
       leave-to-class="opacity-0 translate-y-1"
     >
-      <div v-if="isOpen" class="absolute inset-ie-0 top-full pt-2 w-72 z-50" role="menu">
+      <div
+        v-if="isOpen"
+        class="absolute inset-ie-0 top-full pt-2 w-72 z-50"
+        ref="menuRef"
+        role="menu"
+        @blur.capture="onMenuBlurWithin"
+        @keydown="onMenuKeyDown"
+      >
         <div
           class="bg-bg-subtle/80 backdrop-blur-sm border border-border-subtle rounded-lg shadow-lg shadow-bg-elevated/50 overflow-hidden px-1"
         >
@@ -145,6 +233,7 @@ function openAuthModal() {
             <ButtonBase
               v-if="isNpmConnected && npmUser"
               role="menuitem"
+              tabindex="-1"
               class="w-full text-start gap-x-3 border-none"
               @click="openConnectorModal"
               out
@@ -188,6 +277,7 @@ function openAuthModal() {
             <ButtonBase
               v-if="atprotoUser"
               role="menuitem"
+              tabindex="-1"
               class="w-full text-start gap-x-3 border-none"
               @click="openAuthModal"
             >
@@ -225,6 +315,7 @@ function openAuthModal() {
             <ButtonBase
               v-if="!isNpmConnected"
               role="menuitem"
+              tabindex="-1"
               class="w-full text-start gap-x-3 border-none"
               @click="openConnectorModal"
             >
@@ -251,6 +342,7 @@ function openAuthModal() {
             <ButtonBase
               v-if="!atprotoUser"
               role="menuitem"
+              tabindex="-1"
               class="w-full text-start gap-x-3 border-none"
               @click="openAuthModal"
             >

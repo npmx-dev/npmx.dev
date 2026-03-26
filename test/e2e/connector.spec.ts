@@ -28,8 +28,8 @@ async function expectConnected(page: Page, username = 'testuser') {
  * the npm CLI menu item inside the dropdown.
  */
 async function openConnectorModal(page: Page) {
-  // The AccountMenu button has aria-haspopup="true"
-  await page.locator('button[aria-haspopup="true"]').click()
+  // The AccountMenu button has aria-haspopup="menu"
+  await page.locator('button[aria-haspopup="menu"]').click()
 
   // In the dropdown menu, click the npm CLI item (menuitem containing ~testuser)
   await page
