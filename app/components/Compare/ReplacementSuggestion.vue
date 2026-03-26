@@ -31,6 +31,7 @@ const nodeVersion = computed(() => {
         ? 'bg-amber-500/10 border border-amber-600/30 text-amber-800 dark:text-amber-400'
         : 'bg-blue-500/10 border border-blue-600/30 text-blue-700 dark:text-blue-400'
     "
+    data-testid="replacement-suggestion-card"
   >
     <span
       class="w-4 h-4 flex-shrink-0 mt-0.5"
