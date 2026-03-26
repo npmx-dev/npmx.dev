@@ -31,7 +31,9 @@ function normalizePackages(packages: string | string[] | undefined): string[] {
   if (!packages) return []
 
   const values = Array.isArray(packages) ? packages : [packages]
-  return [...new Set(values.flatMap(value => value.split(',').map(pkg => pkg.trim())).filter(Boolean))]
+  return [
+    ...new Set(values.flatMap(value => value.split(',').map(pkg => pkg.trim())).filter(Boolean)),
+  ]
 }
 
 /**
@@ -67,14 +69,14 @@ export default defineCachedEventHandler(
       // Supports: /downloads/versions?packages=a,b and repeated ?packages=a&packages=b
       if (pkgParamSegments.length === 1) {
         const packageNames = normalizePackages(parsed.packages)
-  
+
         if (packageNames.length === 0) {
           throw createError({
             statusCode: 400,
             message: 'At least one package is required via query `packages`',
           })
         }
-  
+
         try {
           const packages = await Promise.all(
             packageNames.map(async packageName => ({
@@ -82,7 +84,7 @@ export default defineCachedEventHandler(
               versions: await fetchNpmVersionDownloadsFromApi(packageName),
             })),
           )
-  
+
           return {
             packages,
             timestamp: new Date().toISOString(),
@@ -100,7 +102,6 @@ export default defineCachedEventHandler(
         message: 'Failed to fetch version download data from npm API',
       })
     }
-
 
     const segments = pkgParamSegments.slice(0, -1)
 

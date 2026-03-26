@@ -76,20 +76,15 @@ const { data: npmWebsiteVersions } = useLazyFetch<NpmWebsiteVersionsResponse>(
 
 const packageVersions = computed(() => {
   return (
-    npmWebsiteVersions.value?.packages.find(pkg => pkg.packageName === packageName.value)?.versions ?? []
+    npmWebsiteVersions.value?.packages.find(pkg => pkg.packageName === packageName.value)
+      ?.versions ?? []
   )
 })
 
 const numberFormatter = useNumberFormatter()
 const { t } = useI18n()
 const versionDownloadsMap = computed(
-  () =>
-    new Map(
-      packageVersions.value.map(({ version, downloads }) => [
-        version,
-        downloads,
-      ]),
-    ),
+  () => new Map(packageVersions.value.map(({ version, downloads }) => [version, downloads])),
 )
 
 function getVersionDownloads(version: string): number | undefined {
