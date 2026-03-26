@@ -12,7 +12,7 @@ definePageMeta({
 
 const route = useRoute('code')
 
-// Preserve file-tree scroll position across file
+// Preserve file-tree scroll position across navigation
 const fileTreeSidebarRef = useTemplateRef('file-tree-sidebar')
 const savedFileTreeSidebarScroll = useState('code-sidebar-scroll', () => 0)
 
