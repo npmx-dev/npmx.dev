@@ -15,7 +15,7 @@ const nodeVersion = computed(() => {
 })
 
 const replacementDescription = useMarkdown({
-  text: props.replacement.description ?? ''
+  text: props.replacement.description ?? '',
 })
 </script>
 
