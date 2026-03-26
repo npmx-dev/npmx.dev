@@ -5,13 +5,13 @@ test.describe('Compare page - replacement suggestions', () => {
     page,
     goto,
   }) => {
-    // is-odd has a 'simple' replacement in module-replacements v3
     await goto('/compare?packages=is-odd,is-even', { waitUntil: 'hydration' })
 
-    // The suggestion box should appear after client-side fetch resolves
-    // Button text comes from $t('package.replacement.consider_no_dep')
-    const considerNoDepButton = page.getByRole('button', { name: /consider no dep/i })
-    await expect(considerNoDepButton).toBeVisible({ timeout: 15_000 })
+    const considerNoDepButton = await page.waitForSelector('button[aria-label="Add no dependency column to comparison"]', { 
+      timeout: 15_000 
+    })
+    
+    expect(considerNoDepButton).not.toBeNull()
   })
 
   test('does not show "Consider no dep?" box for packages without replacements', async ({
@@ -20,7 +20,10 @@ test.describe('Compare page - replacement suggestions', () => {
   }) => {
     await goto('/compare?packages=nuxt,vue', { waitUntil: 'hydration' })
 
-    const considerNoDepButton = page.getByRole('button', { name: /consider no dep/i })
-    await expect(considerNoDepButton).not.toBeVisible({ timeout: 10_000 })
+    await page.waitForTimeout(10000) 
+    
+    const considerNoDepButton = await page.querySelector('button[aria-label="Add no dependency column to comparison"]')
+    
+    expect(considerNoDepButton).toBeNull()
   })
 })
