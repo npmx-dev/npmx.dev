@@ -1,4 +1,4 @@
-import type { ModuleReplacement } from 'module-replacements'
+import type { ModuleReplacement, ModuleReplacementMapping } from 'module-replacements'
 
 export interface ReplacementSuggestion {
   forPackage: string
@@ -41,8 +41,8 @@ export function useCompareReplacements(packageNames: MaybeRefOrGetter<string[]>)
       const results = await Promise.all(
         namesToCheck.map(async name => {
           try {
-            const replacement = await $fetch<ModuleReplacement | null>(`/api/replacements/${name}`)
-            return { name, replacement }
+            const result = await $fetch<{ mapping: ModuleReplacementMapping; replacement: ModuleReplacement } | null>(`/api/replacements/${name}`)
+            return { name, replacement: result?.replacement ?? null }
           } catch {
             return { name, replacement: null }
           }
