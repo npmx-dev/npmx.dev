@@ -14,9 +14,12 @@ const nodeVersion = computed(() => {
   return nodeEngine?.minVersion || null
 })
 
-const replacementDescription = props.replacement.type === 'documented' ? null : useMarkdown(() => ({
-  text: props.replacement.description ?? '',
-}));
+const replacementDescription =
+  props.replacement.type === 'documented'
+    ? null
+    : useMarkdown(() => ({
+        text: props.replacement.description ?? '',
+      }))
 </script>
 
 <template>
