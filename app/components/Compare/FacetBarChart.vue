@@ -14,8 +14,6 @@ import {
   copyAltTextForCompareFacetBarChart,
 } from '~/utils/charts'
 
-import('vue-data-ui/style.css')
-
 const props = defineProps<{
   values: (FacetValue | null | undefined)[]
   packages: string[]
@@ -24,6 +22,7 @@ const props = defineProps<{
   facetLoading?: boolean
 }>()
 
+const { stylesLoaded } = useVueDataUiStyles()
 const colorMode = useColorMode()
 const resolvedMode = shallowRef<'light' | 'dark'>('light')
 const rootEl = shallowRef<HTMLElement | null>(null)
@@ -278,7 +277,13 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
 <template>
   <div class="font-mono facet-bar">
     <ClientOnly v-if="dataset.length">
-      <VueUiHorizontalBar :key="chartKey" :dataset :config class="[direction:ltr]">
+      <VueUiHorizontalBar
+        v-if="stylesLoaded"
+        :key="chartKey"
+        :dataset
+        :config
+        class="[direction:ltr]"
+      >
         <template #hint="{ isVisible }">
           <p v-if="isVisible" class="text-accent text-xs pt-2" aria-hidden="true">
             {{ $t('compare.packages.bar_chart_nav_hint') }}
@@ -338,6 +343,15 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
           />
         </template>
       </VueUiHorizontalBar>
+      <template v-else>
+        <div class="flex flex-col gap-2 justify-center items-center mb-2">
+          <SkeletonInline class="h-4 w-16" />
+          <SkeletonInline class="h-4 w-28" />
+        </div>
+        <div class="flex flex-col gap-1">
+          <SkeletonInline class="h-7 w-full" v-for="pkg in packages" :key="pkg" />
+        </div>
+      </template>
 
       <template #fallback>
         <div class="flex flex-col gap-2 justify-center items-center mb-2">

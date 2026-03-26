@@ -26,8 +26,6 @@ import {
 import { applyBlocklistCorrection, getAnomaliesForPackages } from '~/utils/download-anomalies'
 import { copyAltTextForTrendLineChart, sanitise, loadFile, applyEllipsis } from '~/utils/charts'
 
-import('vue-data-ui/style.css')
-
 const props = withDefaults(
   defineProps<{
     // For single package downloads history
@@ -61,6 +59,7 @@ const { locale } = useI18n()
 const { accentColors, selectedAccentColor } = useAccentColor()
 const { settings } = useSettings()
 const { copy, copied } = useClipboard()
+const { stylesLoaded } = useVueDataUiStyles()
 
 const colorMode = useColorMode()
 const resolvedMode = shallowRef<'light' | 'dark'>('light')
@@ -1877,6 +1876,7 @@ watch(selectedMetric, value => {
       <ClientOnly v-if="chartData.dataset">
         <div :data-pending="pending" :data-minimap-visible="maxDatapoints > 6">
           <VueUiXy
+            v-if="stylesLoaded"
             :dataset="normalisedDataset"
             :config="chartConfig"
             :class="{
@@ -2120,6 +2120,7 @@ watch(selectedMetric, value => {
               />
             </template>
           </VueUiXy>
+          <div v-else class="min-h-[260px]" />
         </div>
 
         <template #fallback>

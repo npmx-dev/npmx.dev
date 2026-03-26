@@ -9,8 +9,6 @@ import type { RepoRef } from '#shared/utils/git-providers'
 import type { VueUiSparklineConfig, VueUiSparklineDatasetItem } from 'vue-data-ui'
 import { onKeyDown } from '@vueuse/core'
 
-import('vue-data-ui/style.css')
-
 const props = defineProps<{
   packageName: string
   createdIso: string | null
@@ -20,6 +18,7 @@ const props = defineProps<{
 const router = useRouter()
 const route = useRoute()
 const { settings } = useSettings()
+const { stylesLoaded } = useVueDataUiStyles()
 
 const chartModal = useModal('chart-modal')
 const hasChartModalTransitioned = shallowRef(false)
@@ -424,7 +423,7 @@ const config = computed<VueUiSparklineConfig>(() => {
       <div class="w-full h-[76px] egg-pulse-target" :class="{ 'egg-pulse': eggPulse }">
         <template v-if="isLoadingWeeklyDownloads || hasWeeklyDownloads">
           <ClientOnly>
-            <VueUiSparkline class="w-full max-w-xs" :dataset :config>
+            <VueUiSparkline v-if="stylesLoaded" class="w-full max-w-xs" :dataset :config>
               <!-- Keyboard navigation hint -->
               <template #hint="{ isVisible }">
                 <p v-if="isVisible" class="text-accent text-xs text-center mt-2" aria-hidden="true">
@@ -437,6 +436,21 @@ const config = computed<VueUiSparklineConfig>(() => {
                 <div />
               </template>
             </VueUiSparkline>
+            <template v-else>
+              <div class="max-w-xs">
+                <div class="h-6 flex items-center ps-3">
+                  <SkeletonInline class="h-3 w-36" />
+                </div>
+                <div class="aspect-[500/80] flex items-center">
+                  <div class="w-[42%] flex items-center ps-0.5">
+                    <SkeletonInline class="h-7 w-24" />
+                  </div>
+                  <div class="flex-1 flex items-end pe-3">
+                    <SkeletonInline class="h-px w-full" />
+                  </div>
+                </div>
+              </div>
+            </template>
             <template #fallback>
               <!-- Skeleton matching VueUiSparkline layout (title 24px + SVG aspect 500:80) -->
               <div class="max-w-xs">

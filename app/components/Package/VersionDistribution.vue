@@ -11,8 +11,6 @@ import {
 import TooltipApp from '~/components/Tooltip/App.vue'
 import { copyAltTextForVersionsBarChart, sanitise, loadFile, applyEllipsis } from '~/utils/charts'
 
-import('vue-data-ui/style.css')
-
 const props = defineProps<{
   packageName: string
   inModal?: boolean
@@ -20,6 +18,7 @@ const props = defineProps<{
 
 const { accentColors, selectedAccentColor } = useAccentColor()
 const { copy, copied } = useClipboard()
+const { stylesLoaded } = useVueDataUiStyles()
 
 const colorMode = useColorMode()
 const resolvedMode = shallowRef<'light' | 'dark'>('light')
@@ -455,7 +454,12 @@ const chartConfig = computed<VueUiXyConfig>(() => {
       <!-- Chart content -->
       <ClientOnly v-if="xyDataset.length > 0 && !error">
         <div class="chart-container w-full" :key="groupingMode">
-          <VueUiXy :dataset="xyDataset" :config="chartConfig" class="[direction:ltr]">
+          <VueUiXy
+            v-if="stylesLoaded"
+            :dataset="xyDataset"
+            :config="chartConfig"
+            class="[direction:ltr]"
+          >
             <!-- Keyboard navigation hint -->
             <template #hint="{ isVisible }">
               <p v-if="isVisible" class="text-accent text-xs -mt-6 text-center" aria-hidden="true">
@@ -634,6 +638,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
               />
             </template>
           </VueUiXy>
+          <div v-else />
         </div>
 
         <template #fallback>
