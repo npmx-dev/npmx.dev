@@ -50,18 +50,21 @@ describe('useCompareReplacements', () => {
         vi.fn().mockImplementation((url: string) => {
           if (url.includes('/api/replacements/array-includes')) {
             return Promise.resolve({
-              id: 'Array.prototype.includes',
-              type: 'native',
-              url: {
-                type: 'mdn',
-                id: 'Web/JavaScript/Reference/Global_Objects/Array/includes',
-              },
-              webFeatureId: {
-                featureId: 'array-includes',
-                compatKey: 'javascript.builtins.Array.includes',
-              },
-              engines: [{ engine: 'nodejs', minVersion: '6.0.0' }],
-            } satisfies ModuleReplacement)
+              mapping: { replacements: ['Array.prototype.includes'] },
+              replacement: {
+                id: 'Array.prototype.includes',
+                type: 'native',
+                url: {
+                  type: 'mdn',
+                  id: 'Web/JavaScript/Reference/Global_Objects/Array/includes',
+                },
+                webFeatureId: {
+                  featureId: 'array-includes',
+                  compatKey: 'javascript.builtins.Array.includes',
+                },
+                engines: [{ engine: 'nodejs', minVersion: '6.0.0' }],
+              } satisfies ModuleReplacement,
+            })
           }
           return Promise.resolve(null)
         }),
@@ -86,11 +89,14 @@ describe('useCompareReplacements', () => {
         vi.fn().mockImplementation((url: string) => {
           if (url.includes('/api/replacements/is-even')) {
             return Promise.resolve({
-              id: 'snippet::is-even',
-              type: 'simple',
-              description: 'You can use the modulo operator to check if a number is even.',
-              example: '(n % 2) === 0',
-            } satisfies ModuleReplacement)
+              mapping: { replacements: ['snippet::is-even'] },
+              replacement: {
+                id: 'snippet::is-even',
+                type: 'simple',
+                description: 'You can use the modulo operator to check if a number is even.',
+                example: '(n % 2) === 0',
+              } satisfies ModuleReplacement,
+            })
           }
           return Promise.resolve(null)
         }),
@@ -113,11 +119,14 @@ describe('useCompareReplacements', () => {
         vi.fn().mockImplementation((url: string) => {
           if (url.includes('/api/replacements/moment')) {
             return Promise.resolve({
-              id: 'date-fns',
-              type: 'documented',
-              url: { type: 'e18e', id: 'moment' },
-              replacementModule: 'date-fns',
-            } satisfies ModuleReplacement)
+              mapping: { replacements: ['date-fns'] },
+              replacement: {
+                id: 'date-fns',
+                type: 'documented',
+                url: { type: 'e18e', id: 'moment' },
+                replacementModule: 'date-fns',
+              } satisfies ModuleReplacement,
+            })
           }
           return Promise.resolve(null)
         }),
@@ -142,30 +151,39 @@ describe('useCompareReplacements', () => {
         vi.fn().mockImplementation((url: string) => {
           if (url.includes('/api/replacements/is-odd')) {
             return Promise.resolve({
-              id: 'snippet::is-odd',
-              type: 'simple',
-              description: 'Check if odd',
-              example: '(n % 2) !== 0',
-            } satisfies ModuleReplacement)
+              mapping: { replacements: ['snippet::is-odd'] },
+              replacement: {
+                id: 'snippet::is-odd',
+                type: 'simple',
+                description: 'Check if odd',
+                example: '(n % 2) !== 0',
+              } satisfies ModuleReplacement,
+            })
           }
           if (url.includes('/api/replacements/lodash')) {
             return Promise.resolve({
-              id: 'native',
-              type: 'documented',
-              url: { type: 'e18e', id: 'lodash' },
-              replacementModule: 'native',
-            } satisfies ModuleReplacement)
+              mapping: { replacements: ['native'] },
+              replacement: {
+                id: 'native',
+                type: 'documented',
+                url: { type: 'e18e', id: 'lodash' },
+                replacementModule: 'native',
+              } satisfies ModuleReplacement,
+            })
           }
           if (url.includes('/api/replacements/array-map')) {
             return Promise.resolve({
-              id: 'Array.prototype.map',
-              type: 'native',
-              url: {
-                type: 'mdn',
-                id: 'Web/JavaScript/Reference/Global_Objects/Array/map',
-              },
-              engines: [{ engine: 'nodejs', minVersion: '0.10.0' }],
-            } satisfies ModuleReplacement)
+              mapping: { replacements: ['Array.prototype.map'] },
+              replacement: {
+                id: 'Array.prototype.map',
+                type: 'native',
+                url: {
+                  type: 'mdn',
+                  id: 'Web/JavaScript/Reference/Global_Objects/Array/map',
+                },
+                engines: [{ engine: 'nodejs', minVersion: '0.10.0' }],
+              } satisfies ModuleReplacement,
+            })
           }
           return Promise.resolve(null)
         }),
@@ -228,11 +246,14 @@ describe('useCompareReplacements', () => {
       const fetchMock = vi.fn().mockImplementation((url: string) => {
         if (url.includes('/api/replacements/is-even')) {
           return Promise.resolve({
-            id: 'snippet::is-even',
-            type: 'simple',
-            description: 'Check even',
-            example: '(n % 2) === 0',
-          } satisfies ModuleReplacement)
+            mapping: { replacements: ['snippet::is-even'] },
+            replacement: {
+              id: 'snippet::is-even',
+              type: 'simple',
+              description: 'Check even',
+              example: '(n % 2) === 0',
+            } satisfies ModuleReplacement,
+          })
         }
         return Promise.resolve(null)
       })
