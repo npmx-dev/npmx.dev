@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onClickOutside } from '@vueuse/core'
 import { LinkBase } from '#components'
 import type { NavigationConfig, NavigationConfigWithGroups } from '~/types'
 import { isEditableElement } from '~/utils/input'
@@ -159,6 +160,7 @@ const route = useRoute()
 const isMobile = useIsMobile()
 const isSearchExpandedManually = shallowRef(false)
 const searchBoxRef = useTemplateRef('searchBoxRef')
+const headerRef = useTemplateRef('headerRef')
 
 // On search page, always show search expanded on mobile
 const isOnHomePage = computed(() => route.name === 'index')
@@ -171,6 +173,21 @@ function expandMobileSearch() {
     searchBoxRef.value?.focus()
   })
 }
+
+function collapseMobileSearch() {
+  if (!isMobile.value) return
+  if (isOnSearchPage.value) return
+  isSearchExpandedManually.value = false
+  if (document.activeElement instanceof HTMLElement) {
+    document.activeElement.blur()
+  }
+}
+
+onClickOutside(headerRef, () => {
+  if (isMobile.value && isSearchExpanded.value && !isOnSearchPage.value) {
+    collapseMobileSearch()
+  }
+})
 
 watch(
   isOnSearchPage,
@@ -187,13 +204,6 @@ watch(
 
 function handleSearchBlur() {
   showFullSearch.value = false
-  // Collapse expanded search on mobile after blur (with delay for click handling)
-  // But don't collapse if we're on the search page
-  if (isMobile.value && !isOnSearchPage.value) {
-    setTimeout(() => {
-      isSearchExpandedManually.value = false
-    }, 150)
-  }
 }
 
 function handleSearchFocus() {
@@ -216,10 +226,22 @@ onKeyStroke(
   },
   { dedupe: true },
 )
+
+onKeyStroke(
+  e =>
+    isKeyWithoutModifiers(e, 'Escape') &&
+    isMobile.value &&
+    isSearchExpanded.value &&
+    !isOnSearchPage.value,
+  e => {
+    e.preventDefault()
+    collapseMobileSearch()
+  },
+)
 </script>
 
 <template>
-  <header class="sticky top-0 z-50 border-b border-border">
+  <header ref="headerRef" class="sticky top-0 z-50 border-b border-border">
     <div class="absolute inset-0 bg-bg/80 backdrop-blur-md" />
     <nav
       :aria-label="$t('nav.main_navigation')"
@@ -320,13 +342,23 @@ onKeyStroke(
 
       <!-- Mobile: Search button (expands search) -->
       <ButtonBase
+        v-if="!isSearchExpanded && !isOnHomePage"
         type="button"
         class="sm:hidden ms-auto"
         :aria-label="$t('nav.tap_to_search')"
-        :aria-expanded="showMobileMenu"
+        :aria-expanded="isSearchExpanded"
         @click="expandMobileSearch"
-        v-if="!isSearchExpanded && !isOnHomePage"
         classicon="i-lucide:search"
+      />
+
+      <!-- Mobile: Close search button (collapses search) -->
+      <ButtonBase
+        v-if="isSearchExpanded && !isOnSearchPage"
+        type="button"
+        class="sm:hidden flex-shrink-0"
+        :aria-label="$t('nav.close_search')"
+        @click="collapseMobileSearch"
+        classicon="i-lucide:x"
       />
 
       <!-- Mobile: Menu button (always visible, click to open menu) -->

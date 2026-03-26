@@ -86,7 +86,8 @@
     "mobile_menu": "Navigation menu",
     "open_menu": "Open menu",
     "links": "Links",
-    "tap_to_search": "Tap to search"
+    "tap_to_search": "Tap to search",
+    "close_search": "Close search"
   },
   "blog": {
     "title": "Blog",
