@@ -12,6 +12,22 @@ definePageMeta({
 
 const route = useRoute('code')
 
+// Preserve file-tree scroll position across file
+const fileTreeSidebarRef = useTemplateRef('file-tree-sidebar')
+const savedFileTreeSidebarScroll = useState('code-sidebar-scroll', () => 0)
+
+onBeforeUnmount(() => {
+  savedFileTreeSidebarScroll.value = fileTreeSidebarRef.value?.scrollTop ?? 0
+})
+
+watch(
+  fileTreeSidebarRef,
+  el => {
+    if (el && savedFileTreeSidebarScroll.value) el.scrollTop = savedFileTreeSidebarScroll.value
+  },
+  { once: true, flush: 'post' },
+)
+
 // Parse package name, version, and file path from URL
 // Patterns:
 //   /code/nuxt/v/4.2.0 → packageName: "nuxt", version: "4.2.0", filePath: null (show tree)
@@ -349,6 +365,7 @@ defineOgImageComponent('Default', {
     <div v-else-if="fileTree" class="flex flex-1" dir="ltr">
       <!-- File tree sidebar - sticky with internal scroll -->
       <aside
+        ref="file-tree-sidebar"
         class="w-64 lg:w-72 border-ie border-border shrink-0 hidden md:block bg-bg-subtle sticky top-25 self-start h-[calc(100vh-7rem)] overflow-y-auto"
       >
         <CodeFileTree
