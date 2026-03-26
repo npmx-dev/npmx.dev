@@ -23,7 +23,10 @@ interface NpmWebsiteVersionDownload {
 }
 
 interface NpmWebsiteVersionsResponse {
-  versions: NpmWebsiteVersionDownload[]
+  packages: Array<{
+    packageName: string
+    versions: NpmWebsiteVersionDownload[]
+  }>
 }
 
 /** Number of flat items (headers + version rows) to render statically during SSR */
@@ -59,23 +62,30 @@ const versionStrings = computed(() => versionSummary.value?.versions ?? [])
 const versionTimes = computed(() => versionSummary.value?.time ?? {})
 
 const { data: npmWebsiteVersions } = useLazyFetch<NpmWebsiteVersionsResponse>(
-  () => `/api/registry/npmjs-versions/${encodeURIComponent(packageName.value)}`,
+  () => '/api/registry/downloads/versions',
   {
-    key: () => `npmjs-versions:${packageName.value}`,
+    key: () => `downloads-versions:${packageName.value}`,
+    query: computed(() => ({ packages: packageName.value })),
     deep: false,
-    default: () => ({ versions: [] }),
+    default: () => ({ packages: [] }),
     getCachedData(key, nuxtApp) {
       return nuxtApp.static.data[key] ?? nuxtApp.payload.data[key]
     },
   },
 )
 
+const packageVersions = computed(() => {
+  return (
+    npmWebsiteVersions.value?.packages.find(pkg => pkg.packageName === packageName.value)?.versions ?? []
+  )
+})
+
 const numberFormatter = useNumberFormatter()
 const { t } = useI18n()
 const versionDownloadsMap = computed(
   () =>
     new Map(
-      (npmWebsiteVersions.value?.versions ?? []).map(({ version, downloads }) => [
+      packageVersions.value.map(({ version, downloads }) => [
         version,
         downloads,
       ]),
