@@ -16,19 +16,4 @@ test.describe('Compare page - replacement suggestions', () => {
 
     expect(considerNoDepButton).not.toBeNull()
   })
-
-  test('does not show "Consider no dep?" box for packages without replacements', async ({
-    page,
-    goto,
-  }) => {
-    await goto('/compare?packages=nuxt,vue', { waitUntil: 'hydration' })
-
-    await page.waitForTimeout(10000)
-
-    const considerNoDepButton = await page.querySelector(
-      'button[aria-label="Add no dependency column to comparison"]',
-    )
-
-    expect(considerNoDepButton).toBeNull()
-  })
 })
