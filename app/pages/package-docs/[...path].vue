@@ -138,6 +138,40 @@ const stickyStyle = computed(() => {
     '--combined-header-height': `${56 + (packageHeaderHeight.value || 44)}px`,
   }
 })
+
+// Track active TOC item based on URL hash
+const tocContainerRef = useTemplateRef('tocContainerRef')
+
+function updateActiveTocLink() {
+  const container = tocContainerRef.value
+  if (!container) return
+
+  const hash = window.location.hash
+
+  container.querySelector('a.toc-active')?.classList.remove('toc-active')
+
+  if (hash) {
+    const link = container.querySelector(`a[href="#${CSS.escape(hash.slice(1))}"]`)
+    link?.classList.add('toc-active')
+  }
+}
+
+function onTocClick(e: Event) {
+  const link = (e.target as HTMLElement).closest('a[href^="#"]')
+  if (link) {
+    nextTick(updateActiveTocLink)
+  }
+}
+
+if (import.meta.client) {
+  watch(
+    () => docsData.value?.toc,
+    () => nextTick(updateActiveTocLink),
+  )
+
+  onMounted(updateActiveTocLink)
+  useEventListener(window, 'hashchange', updateActiveTocLink)
+}
 </script>
 
 <template>
@@ -162,7 +196,12 @@ const stickyStyle = computed(() => {
             {{ $t('package.docs.contents') }}
           </h2>
           <!-- eslint-disable vue/no-v-html -->
-          <div class="toc-content" v-html="docsData.toc" />
+          <div
+            ref="tocContainerRef"
+            class="toc-content"
+            @click="onTocClick"
+            v-html="docsData.toc"
+          />
         </div>
       </aside>
 
@@ -229,6 +268,10 @@ const stickyStyle = computed(() => {
 
 .toc-content > ul > li > ul a {
   @apply text-xs text-fg-subtle hover:text-fg block py-0.5 truncate;
+}
+
+.toc-content a.toc-active {
+  @apply text-fg font-medium;
 }
 
 /* Main docs content container - no max-width to use full space */
