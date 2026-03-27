@@ -153,7 +153,7 @@ export function useCommandPaletteCommands() {
     }))
   })
 
-  const { results } = useFuse(query, commands, {
+  const { results } = useFuse(trimmedQuery, commands, {
     fuseOptions: {
       keys: ['label', 'keywords'],
       threshold: 0.3,
