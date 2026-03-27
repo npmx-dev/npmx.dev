@@ -100,7 +100,7 @@
           "value": "i18n.npmx.dev"
         }
       ],
-      "destination": "https://npmx.dev/translation-status"
+      "destination": "https://main.npmx.dev/translation-status"
     }
   ]
 }
