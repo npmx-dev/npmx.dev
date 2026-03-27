@@ -2295,6 +2295,9 @@
             },
             "not_found_message": {
               "type": "string"
+            },
+            "showing_packages": {
+              "type": "string"
             }
           },
           "additionalProperties": false

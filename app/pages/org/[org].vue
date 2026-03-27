@@ -15,7 +15,7 @@ const orgName = computed(() => route.params.org.toLowerCase())
 const { isConnected } = useConnector()
 
 // Fetch all packages in this org using the org packages API (lazy to not block navigation)
-const { data: results, status, error } = useOrgPackages(orgName)
+const { data: results, status, error, isLoadingMore, hasMore, loadAll } = useOrgPackages(orgName)
 
 // Handle 404 errors reactively (since we're not awaiting)
 watch(
@@ -33,6 +33,7 @@ watch(
 )
 
 const packages = computed(() => results.value?.objects ?? [])
+const totalPackages = computed(() => results.value?.totalPackages ?? 0)
 const packageCount = computed(() => packages.value.length)
 
 // Preferences (persisted to localStorage)
@@ -68,9 +69,16 @@ const totalPages = computed(() => {
   return Math.ceil(sortedPackages.value.length / pageSize.value)
 })
 
-// Reset to page 1 when filters change
+// Reset to page 1 when filters change; load all results so client-side filtering works
 watch([filters, sortOption], () => {
   currentPage.value = 1
+  if (
+    filters.value.text ||
+    filters.value.keywords.length > 0 ||
+    sortOption.value !== 'updated-desc'
+  ) {
+    loadAll()
+  }
 })
 
 // Clamp current page when total pages decreases (e.g., after filtering)
@@ -141,7 +149,10 @@ useSeoMeta({
 
 defineOgImageComponent('Default', {
   title: () => `@${orgName.value}`,
-  description: () => (packageCount.value ? `${packageCount.value} packages` : 'npm organization'),
+  description: () =>
+    totalPackages.value || packageCount.value
+      ? `${totalPackages.value || packageCount.value} packages`
+      : 'npm organization',
   primaryColor: '#60a5fa',
 })
 </script>
@@ -163,7 +174,23 @@ defineOgImageComponent('Default', {
         <div>
           <h1 class="font-mono text-2xl sm:text-3xl font-medium">@{{ orgName }}</h1>
           <p v-if="status === 'success'" class="text-fg-muted text-sm mt-1">
-            {{ $t('org.public_packages', { count: $n(packageCount) }, packageCount) }}
+            <template v-if="hasMore">
+              {{
+                $t('org.page.showing_packages', {
+                  loaded: $n(packageCount),
+                  total: $n(totalPackages),
+                })
+              }}
+            </template>
+            <template v-else>
+              {{
+                $t(
+                  'org.public_packages',
+                  { count: $n(totalPackages || packageCount) },
+                  totalPackages || packageCount,
+                )
+              }}
+            </template>
           </p>
         </div>
 
@@ -231,8 +258,11 @@ defineOgImageComponent('Default', {
       </section>
     </ClientOnly>
 
-    <!-- Loading state -->
-    <LoadingSpinner v-if="status === 'pending'" :text="$t('common.loading_packages')" />
+    <!-- Loading state (only when no packages loaded yet) -->
+    <LoadingSpinner
+      v-if="status === 'pending' && packages.length === 0"
+      :text="$t('common.loading_packages')"
+    />
 
     <!-- Error state -->
     <div v-else-if="status === 'error'" role="alert" class="py-12 text-center">
@@ -293,6 +323,8 @@ defineOgImageComponent('Default', {
       <template v-else>
         <PackageList
           :results="sortedPackages"
+          :has-more="hasMore"
+          :is-loading="isLoadingMore"
           :view-mode="viewMode"
           :columns="columns"
           :filters="filters"
@@ -300,6 +332,7 @@ defineOgImageComponent('Default', {
           :pagination-mode="paginationMode"
           :page-size="pageSize"
           :current-page="currentPage"
+          @load-more="loadAll"
           @click-keyword="toggleKeyword"
         />
 

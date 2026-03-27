@@ -214,11 +214,9 @@ export function useAlgoliaSearch() {
     }
   }
 
-  /** Fetch metadata for specific packages by exact name using Algolia's getObjects API. */
-  async function getPackagesByName(packageNames: string[]): Promise<NpmSearchResponse> {
-    if (packageNames.length === 0) {
-      return { isStale: false, objects: [], total: 0, time: new Date().toISOString() }
-    }
+  /** Fetch metadata for a single batch of packages (max 1000) by exact name. */
+  async function getPackagesByNameSlice(names: string[]): Promise<NpmSearchResult[]> {
+    if (names.length === 0) return []
 
     const response = await $fetch<{ results: (AlgoliaHit | null)[] }>(
       `https://${algolia.appId}-dsn.algolia.net/1/indexes/*/objects`,
@@ -229,7 +227,7 @@ export function useAlgoliaSearch() {
           'x-algolia-application-id': algolia.appId,
         },
         body: {
-          requests: packageNames.map(name => ({
+          requests: names.map(name => ({
             indexName,
             objectID: name,
             attributesToRetrieve: ATTRIBUTES_TO_RETRIEVE,
@@ -238,11 +236,31 @@ export function useAlgoliaSearch() {
       },
     )
 
-    const hits = response.results.filter((r): r is AlgoliaHit => r !== null && 'name' in r)
+    return response.results
+      .filter((r): r is AlgoliaHit => r !== null && 'name' in r)
+      .map(hitToSearchResult)
+  }
+
+  /** Fetch metadata for specific packages by exact name using Algolia's getObjects API. */
+  async function getPackagesByName(packageNames: string[]): Promise<NpmSearchResponse> {
+    if (packageNames.length === 0) {
+      return { isStale: false, objects: [], total: 0, time: new Date().toISOString() }
+    }
+
+    // Algolia getObjects has a limit of 1000 objects per request, so batch if needed
+    const BATCH_SIZE = 1000
+    const batches: string[][] = []
+    for (let i = 0; i < packageNames.length; i += BATCH_SIZE) {
+      batches.push(packageNames.slice(i, i + BATCH_SIZE))
+    }
+
+    const results = await Promise.all(batches.map(batch => getPackagesByNameSlice(batch)))
+    const allObjects = results.flat()
+
     return {
       isStale: false,
-      objects: hits.map(hitToSearchResult),
-      total: hits.length,
+      objects: allObjects,
+      total: allObjects.length,
       time: new Date().toISOString(),
     }
   }
@@ -349,5 +367,6 @@ export function useAlgoliaSearch() {
     searchWithSuggestions,
     searchByOwner,
     getPackagesByName,
+    getPackagesByNameSlice,
   }
 }
