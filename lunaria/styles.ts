@@ -41,24 +41,6 @@ export const BaseStyles = html`
       --progress-bar-height: 16px;
     }
 
-    @media (prefers-color-scheme: dark) {
-      :root {
-        /* Dark theme colors */
-        --ln-color-white: #030712;
-        --ln-color-gray-1: #374151;
-        --ln-color-gray-2: #4b5563;
-        --ln-color-gray-3: #6b7280;
-        --ln-color-gray-4: #9ca3af;
-        --ln-color-gray-5: #d1d5db;
-        --ln-color-gray-6: #e5e7eb;
-        --ln-color-gray-7: #f3f4f6;
-        --ln-color-black: #f9fafb;
-        --ln-color-blue: #60a5fa;
-        --ln-color-orange: #fb923c;
-        --ln-color-purple: #c084fc;
-      }
-    }
-
     * {
       box-sizing: border-box;
       margin: 0;
