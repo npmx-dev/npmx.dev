@@ -287,6 +287,15 @@ defineOgImageComponent('Default', {
   description: () => pkg.value?.license ?? '',
   primaryColor: '#60a5fa',
 })
+
+onPrehydrate(() => {
+  const settingsSaved = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
+  const container = document.getElementById('code-page-container')
+  
+  if (settingsSaved?.codeContainerFull === true && container) {
+    container!.classList.add('max-w-full', 'border-0')
+  }
+})
 </script>
 
 <template>
@@ -325,13 +334,14 @@ defineOgImageComponent('Default', {
     <!-- Main content: file tree + file viewer -->
     <div
       v-else-if="!!fileTree"
+      id="code-page-container"
       class="container w-full grid grid-cols-[18rem_1fr] max-lg:grid-cols-[16rem_1fr] max-md:grid-cols-[1fr] border-border border-is border-ie transition-mix-width duration-200 ease-in-out px-0"
       :class="{ 'max-w-full border-0': codeContainerFull }"
       dir="ltr"
     >
       <!-- File tree sidebar - sticky with internal scroll -->
       <aside
-        class="sticky top-25 w-64 lg:w-72 hidden md:block h-full shrink-0 self-start bg-bg-subtle border-ie border-border"
+        class="sticky top-25 w-64 lg:w-72 hidden md:block h-[calc(100vh-10.5rem)] shrink-0 self-start bg-bg-subtle border-ie border-border"
       >
         <div class="h-[calc(100vh-10.5rem)] overflow-y-auto">
           <CodeFileTree

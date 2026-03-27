@@ -120,7 +120,7 @@ useEventListener('keydown', (event: KeyboardEvent) => {
           :to="getCodeUrlWithPath()"
           class="text-fg-muted hover:text-fg transition-colors shrink-0"
         >
-          ..
+          ~
         </NuxtLink>
         <span class="max-md:hidden">
           <template v-for="crumb in breadcrumbs.items" :key="crumb.path">
@@ -139,11 +139,11 @@ useEventListener('keydown', (event: KeyboardEvent) => {
           <span ref="pathDropdownButtonRef">
             <ButtonBase
               size="sm"
-              class="px-2 mx-1"
+              class="px-2 py-1 mx-1"
               :aria-label="$t('code.open_path_dropdown')"
               :aria-expanded="isPathDropdownOpen"
               aria-haspopup="true"
-              @click="togglePathDropdown"
+              @click="togglePathDropdown()"
             >
               ...
             </ButtonBase>
@@ -211,7 +211,7 @@ useEventListener('keydown', (event: KeyboardEvent) => {
               v-for="mode in markdownViewModes"
               :key="mode.key"
               role="tab"
-              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 focus-visible:outline-accent/70 inline-flex items-center gap-1.5"
+              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 inline-flex items-center gap-1.5"
               :class="
                 markdownViewMode === mode.key
                   ? 'bg-bg-muted shadow text-fg'
