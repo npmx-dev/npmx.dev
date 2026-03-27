@@ -206,6 +206,10 @@ export default defineNuxtConfig({
   compatibilityDate: '2026-01-31',
 
   nitro: {
+    prerender: {
+      // OAuth plugin crashes in CI/test (no valid clientUri), matching main branch behavior
+      failOnError: !isTest,
+    },
     externals: {
       inline: [
         'shiki',
