@@ -207,23 +207,27 @@ describe('a11y component test coverage', () => {
 function buildMissingTestsMessage(missingTests: string[]): string {
   if (missingTests.length === 0) return ''
   return (
-    `Missing a11y tests for ${missingTests.length} component(s):\n${missingTests
-      .map(c => `  - ${c}`)
-      .join('\n')}\n\nTo fix: Add tests in test/nuxt/a11y.spec.ts or add to SKIPPED_COMPONENTS ` +
-    `in test/unit/a11y-component-coverage.spec.ts with justification.`
+    `Missing a11y tests for ${missingTests.length} component(s):\n` +
+    missingTests.map(c => `  - ${c}`).join('\n') +
+    '\n\nTo fix: Add tests in test/nuxt/a11y.spec.ts or add to SKIPPED_COMPONENTS ' +
+    'in test/unit/a11y-component-coverage.spec.ts with justification.'
   )
 }
 
 function buildObsoleteSkipsMessage(obsoleteSkips: string[]): string {
   if (obsoleteSkips.length === 0) return ''
-  return `Obsolete SKIPPED_COMPONENTS entries:\n${obsoleteSkips
-    .map(c => `  - ${c}`)
-    .join('\n')}\n\nThese components no longer exist. Remove them from SKIPPED_COMPONENTS.`
+  return (
+    `Obsolete SKIPPED_COMPONENTS entries:\n` +
+    obsoleteSkips.map(c => `  - ${c}`).join('\n') +
+    '\n\nThese components no longer exist. Remove them from SKIPPED_COMPONENTS.'
+  )
 }
 
 function buildUnnecessarySkipsMessage(unnecessarySkips: string[]): string {
   if (unnecessarySkips.length === 0) return ''
-  return `Unnecessary SKIPPED_COMPONENTS entries:\n${unnecessarySkips
-    .map(c => `  - ${c}`)
-    .join('\n')}\n\nThese components have tests now. Remove them from SKIPPED_COMPONENTS.`
+  return (
+    `Unnecessary SKIPPED_COMPONENTS entries:\n` +
+    unnecessarySkips.map(c => `  - ${c}`).join('\n') +
+    '\n\nThese components have tests now. Remove them from SKIPPED_COMPONENTS.'
+  )
 }
