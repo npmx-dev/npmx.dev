@@ -25,15 +25,57 @@ export function constraintIncludesPrerelease(constraint: string): boolean {
   )
 }
 
+/** Parsed result of an npm dependency value */
+interface ParsedDepValue {
+  /** The real package name (different from key only for aliases) */
+  name: string | null
+  /** The semver range or version, null for non-resolvable values (file:, git, etc.) */
+  range: string | null
+}
+
+/**
+ * Parse a dependency value which may be a semver range, an npm alias, or a non-semver reference.
+ *
+ * Examples:
+ *   "^4.2.0"                    { name: null, range: "^4.2.0" }
+ *   "npm:string-width@^4.2.0"   { name: "string-width", range: "^4.2.0" }
+ *   "npm:@scope/pkg@^1.0.0"     { name: "@scope/pkg", range: "^1.0.0" }
+ *   "file:../foo"               { name: null, range: null }
+ */
+export function parseDepValue(value: string): ParsedDepValue {
+  if (value.startsWith('npm:')) {
+    const aliasBody = value.slice(4) // strip "npm:"
+    // Scoped: @scope/name@range
+    if (aliasBody.startsWith('@')) {
+      const secondAt = aliasBody.indexOf('@', 1)
+      if (secondAt !== -1) {
+        return { name: aliasBody.slice(0, secondAt), range: aliasBody.slice(secondAt + 1) }
+      }
+      return { name: aliasBody, range: null }
+    }
+    // Unscoped: name@range
+    const atIndex = aliasBody.indexOf('@')
+    if (atIndex !== -1) {
+      return { name: aliasBody.slice(0, atIndex), range: aliasBody.slice(atIndex + 1) }
+    }
+    return { name: aliasBody, range: null }
+  }
+
+  if (isNonSemverConstraint(value)) {
+    return { name: null, range: null }
+  }
+
+  return { name: null, range: value }
+}
+
 /**
  * Check if a constraint is a non-semver value (git URL, file path, etc.)
  */
-export function isNonSemverConstraint(constraint: string): boolean {
+function isNonSemverConstraint(constraint: string): boolean {
   return (
     constraint.startsWith('git') ||
     constraint.startsWith('http') ||
     constraint.startsWith('file:') ||
-    constraint.startsWith('npm:') ||
     constraint.startsWith('link:') ||
     constraint.startsWith('workspace:') ||
     constraint.includes('/')

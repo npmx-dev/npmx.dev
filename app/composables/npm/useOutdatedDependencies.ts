@@ -3,8 +3,8 @@ import { getVersionsBatch } from 'fast-npm-meta'
 import { maxSatisfying, prerelease, major, minor, diff, gt } from 'semver'
 import {
   type OutdatedDependencyInfo,
-  isNonSemverConstraint,
   constraintIncludesPrerelease,
+  parseDepValue,
 } from '~/utils/npm/outdated-dependencies'
 
 const BATCH_SIZE = 50
@@ -67,16 +67,20 @@ export function useOutdatedDependencies(
       return
     }
 
-    const semverEntries = Object.entries(deps).filter(
-      ([, constraint]) => !isNonSemverConstraint(constraint),
-    )
+    // Resolve npm: aliases and filter out non-semver constraints
+    const resolvedEntries = Object.entries(deps)
+      .map(([key, value]) => {
+        const parsed = parseDepValue(value)
+        return { key, realName: parsed.name ?? key, range: parsed.range }
+      })
+      .filter((e): e is typeof e & { range: string } => e.range !== null)
 
-    if (semverEntries.length === 0) {
+    if (resolvedEntries.length === 0) {
       outdated.value = {}
       return
     }
 
-    const packageNames = semverEntries.map(([name]) => name)
+    const packageNames = [...new Set(resolvedEntries.map(e => e.realName))]
 
     const chunks: string[][] = []
     for (let i = 0; i < packageNames.length; i += BATCH_SIZE) {
@@ -95,16 +99,16 @@ export function useOutdatedDependencies(
     }
 
     const results: Record<string, OutdatedDependencyInfo> = {}
-    for (const [name, constraint] of semverEntries) {
-      const data = versionMap.get(name)
+    for (const { key, realName, range } of resolvedEntries) {
+      const data = versionMap.get(realName)
       if (!data) continue
 
       const latestTag = data.distTags.latest
       if (!latestTag) continue
 
-      const info = resolveOutdated(data.versions, latestTag, constraint)
+      const info = resolveOutdated(data.versions, latestTag, range)
       if (info) {
-        results[name] = info
+        results[key] = info
       }
     }
 
