@@ -365,7 +365,6 @@ useEventListener(document, 'keydown', handleGlobalKeydown)
             <section
               v-for="group in groupedCommands"
               :key="group.id"
-              :aria-labelledby="`${dialogId}-group-${group.id}`"
               class="rounded-xl border border-border/70 bg-bg-subtle/70 p-1 sm:p-1.5"
             >
               <h3
