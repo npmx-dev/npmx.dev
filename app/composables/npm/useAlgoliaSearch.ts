@@ -42,6 +42,7 @@ interface AlgoliaHit {
   modified: number
   homepage: string | null
   repository: AlgoliaRepo | null
+  owner: AlgoliaOwner | null
   owners: AlgoliaOwner[] | null
   downloadsLast30Days: number
   downloadsRatio: number
@@ -59,6 +60,7 @@ const ATTRIBUTES_TO_RETRIEVE = [
   'modified',
   'homepage',
   'repository',
+  'owner',
   'owners',
   'downloadsLast30Days',
   'downloadsRatio',
@@ -182,10 +184,11 @@ export function useAlgoliaSearch() {
         requests: [
           {
             indexName,
-            query: '',
+            query: ownerName,
             offset,
             length,
-            filters: `owner.name:${ownerName}`,
+            typoTolerance: false,
+            restrictSearchableAttributes: ['owner.name', 'owners.name'],
             analyticsTags: ['npmx.dev'],
             attributesToRetrieve: ATTRIBUTES_TO_RETRIEVE,
             attributesToHighlight: [],
@@ -208,7 +211,12 @@ export function useAlgoliaSearch() {
 
     return {
       isStale: false,
-      objects: allHits.map(hitToSearchResult),
+      // remove results where ownerName is not in owners and map for internal usage
+      objects: allHits
+        .filter(
+          hit => hit?.owner?.name === ownerName || hit?.owners?.some(o => o.name === ownerName),
+        )
+        .map(hitToSearchResult),
       total: serverTotal,
       time: new Date().toISOString(),
     }
