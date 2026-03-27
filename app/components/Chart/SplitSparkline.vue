@@ -99,6 +99,7 @@ const configs = computed(() => {
       ? Array.from(new Set([...(unit.dashIndices ?? []), lastIndex]))
       : unit.dashIndices
 
+    // Ensure we loop through available palette colours when the series count is higher than the avalable palette
     const fallbackColor = palette[i] ?? palette[i % palette.length] ?? palette[0]!
     const seriesColor = unit.color ?? fallbackColor
     const lightenedSeriesColor: string = unit.color
