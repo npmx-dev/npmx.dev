@@ -1895,7 +1895,7 @@ const isSparklineLayout = computed({
     <div
       role="region"
       aria-labelledby="trends-chart-title"
-      :class="
+      :class="isSparklineLayout || !inModal ? undefined:
         isMobile === false && width > 0
           ? showCorrectionControls
             ? 'h-[491px]'
