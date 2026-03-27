@@ -589,6 +589,9 @@
         "table_available": "Un tableau de données pour ce graphique est disponible ci-dessous.",
         "table_caption": "Tableau de données du graphique"
       },
+      "chart_view_toggle": "Changer de vue",
+      "chart_view_combined": "Vue groupée",
+      "chart_view_split": "Vue séparée",
       "granularity": "Granularité",
       "granularity_daily": "Par Jour",
       "granularity_weekly": "Par Semaine",
@@ -1228,14 +1231,11 @@
       "add_column": "Ajouter la colonne sans dépendance à la comparaison"
     },
     "facets": {
-      "group_label": "Facettes de comparaison",
       "all": "tout",
       "none": "aucun",
       "coming_soon": "Bientôt disponible",
       "select_all": "Sélectionner toutes les facettes",
       "deselect_all": "Désélectionner toutes les facettes",
-      "select_category": "Sélectionner toutes les facettes {category}",
-      "deselect_category": "Désélectionner toutes les facettes {category}",
       "binary_only_tooltip": "Ce paquet expose des binaires et aucun export",
       "categories": {
         "performance": "Performance",
