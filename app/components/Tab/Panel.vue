@@ -11,7 +11,7 @@ const getTabId = inject<(value: string) => string>('tabs-tab-id')
 const getPanelId = inject<(value: string) => string>('tabs-panel-id')
 
 if (!selected || !getTabId || !getPanelId) {
-  throw new Error('TabItem must be used inside a TabRoot component')
+  throw new Error('TabPanel must be used inside a TabRoot component')
 }
 
 const isSelected = computed(() => selected.value === props.value)
