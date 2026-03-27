@@ -102,8 +102,8 @@ const configs = computed(() => {
     const fallbackColor = palette[i] ?? palette[i % palette.length] ?? palette[0]!
     const seriesColor = unit.color ?? fallbackColor
     const lightenedSeriesColor: string = unit.color
-      ? lightenOklch(unit.color, 0.5) ?? seriesColor
-      : lightenColor(seriesColor, 0.5) ?? seriesColor // palette uses hex colours
+      ? (lightenOklch(unit.color, 0.5) ?? seriesColor)
+      : (lightenColor(seriesColor, 0.5) ?? seriesColor) // palette uses hex colours
 
     return {
       a11y: {
@@ -118,7 +118,7 @@ const configs = computed(() => {
       theme: isDarkMode.value ? 'dark' : '',
       temperatureColors: {
         show: isDarkMode.value,
-        colors: [lightenedSeriesColor, seriesColor]
+        colors: [lightenedSeriesColor, seriesColor],
       },
       skeletonConfig: {
         style: {
