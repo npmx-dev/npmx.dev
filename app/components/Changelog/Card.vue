@@ -55,7 +55,12 @@ function navigateToTitle() {
       />
       <!-- :active-id="activeTocId" -->
     </div>
-    <DateTime v-if="release.publishedAt" :datetime="release.publishedAt" date-style="medium" />
+    <DateTime
+      v-if="release.publishedAt"
+      :datetime="release.publishedAt"
+      date-style="medium"
+      class="mb-2 block"
+    />
     <Readme v-if="release.html" :html="release.html"></Readme>
   </section>
 </template>

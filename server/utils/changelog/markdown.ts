@@ -108,7 +108,7 @@ export async function changelogRenderer(mdRepoInfo: MarkdownRepoInfo) {
         toc.push({ text: plainText, id, depth })
       }
 
-      return `<h${semanticLevel} id="${id}" data-level="${depth}">${text}  <a href="#${id}"><span class="i-lucide:link size-[1em]" aria-hidden="true"></span></a></h${semanticLevel}>\n`
+      return `<h${semanticLevel} id="${id}" data-level="${depth}">${text} <a href="#${id}"> </a></h${semanticLevel}>\n`
     }
 
     // Helper to prefix id attributes with 'user-content-'

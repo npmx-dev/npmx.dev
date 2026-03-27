@@ -131,8 +131,8 @@ defineOgImageComponent('Default', {
           <LazyChangelogReleases
             v-if="changelog?.type === 'release'"
             :info="changelog"
-            :requestedDate="versionDate"
-            :requested-version="version"
+            :requested-date="versionDate"
+            :goToVersion="requestedVersion && version"
             #error
           >
             <LazyChangelogErrorMsg
@@ -145,7 +145,7 @@ defineOgImageComponent('Default', {
             v-else-if="changelog?.type === 'md'"
             :info="changelog"
             :tpTarget="tptoc"
-            :requested-version="version"
+            :goToVersion="requestedVersion && version"
             #error
           >
             <LazyChangelogErrorMsg
@@ -180,6 +180,6 @@ defineOgImageComponent('Default', {
 
 <style module>
 .changelog :global(.readme) :is(h1, h2, h3, h4, h5, h6) a[href^='#']::after {
-  content: unset !important;
+  /* content: unset !important; */
 }
 </style>

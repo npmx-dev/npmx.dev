@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { slugify } from '~~/shared/utils/html'
 
-const { info, requestedDate, requestedVersion } = defineProps<{
+const { info, requestedDate, goToVersion } = defineProps<{
   info: ChangelogReleaseInfo
   requestedDate?: string
-  requestedVersion?: string | null | undefined
+  goToVersion?: string | null | undefined
 }>()
 
-const { data: releases, error } = await useFetch<ReleaseData[]>(
+const { data: releases, error } = await useLazyFetch<ReleaseData[]>(
   () => `/api/changelog/releases/${info.provider}/${info.repo}`,
 )
 
@@ -27,15 +27,22 @@ const matchingDateReleases = computed(() => {
 })
 
 if (import.meta.client) {
+  const { settings } = useSettings()
+
   // doing this server side can make it that we go to the homepage
-  watchEffect(() => {
+  const stopWatching = watchEffect(() => {
     const uReleases = releases.value
     if (route.hash && uReleases) {
+      // scroll if there is a hash in the url
       navigateTo(route.hash, { replace: true })
       return
     }
+    // don't allow auto scrolling when disabled and there was no hash before
+    if (!settings.value.changelogAutoScroll) {
+      return
+    }
     const date = requestedDate?.toLowerCase()
-    if (route.hash || !date || !uReleases) {
+    if (route.hash || !date || !uReleases || !goToVersion) {
       return
     }
     const uMatchingDateReleases = matchingDateReleases.value
@@ -44,9 +51,9 @@ if (import.meta.client) {
       return
     }
 
-    if (requestedVersion) {
+    if (goToVersion) {
       for (const match of uMatchingDateReleases) {
-        if (match.title.toLowerCase().includes(requestedVersion)) {
+        if (match.title.toLowerCase().includes(goToVersion)) {
           navigateTo(`#release-${slugify(match.title)}`, { replace: true })
           return
         }
@@ -54,11 +61,18 @@ if (import.meta.client) {
     }
     navigateTo(`#date-${date}`, { replace: true })
   })
+  // stops watchEffect from trigger just before navigating
+  onBeforeRouteLeave(stopWatching)
 }
 </script>
 <template>
   <div class="flex flex-col gap-2 py-3" v-if="releases">
-    <ChangelogCard v-for="release of releases" :release :key="release.id" />
+    <LazyChangelogCard
+      v-for="release of releases"
+      :release
+      :key="release.id"
+      hydrate-on-interaction
+    />
   </div>
   <slot v-else-if="error" name="error"></slot>
 </template>

@@ -382,7 +382,7 @@ const fundingUrl = computed(() => {
           v-if="changelogLink"
           :to="changelogLink"
           aria-keyshortcuts="-"
-          class="decoration-none border-b-2 p-1 hover:border-accent/50"
+          class="decoration-none border-b-2 p-1 hover:border-accent/50 focus-visible:[outline-offset:-2px]!"
           :class="page === 'changelog' ? 'border-accent text-accent!' : 'border-transparent'"
         >
           {{ $t('package.links.changelog') }}

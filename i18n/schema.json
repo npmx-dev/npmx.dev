@@ -513,6 +513,12 @@
         },
         "keyboard_shortcuts_enabled_description": {
           "type": "string"
+        },
+        "enable_changelog_autoscroll": {
+          "type": "string"
+        },
+        "enable_changelog_autoscroll_description": {
+          "type": "string"
         }
       },
       "additionalProperties": false
