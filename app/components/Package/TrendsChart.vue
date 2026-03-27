@@ -1895,12 +1895,14 @@ const isSparklineLayout = computed({
     <div
       role="region"
       aria-labelledby="trends-chart-title"
-      :class="isSparklineLayout || !inModal ? undefined:
-        isMobile === false && width > 0
-          ? showCorrectionControls
-            ? 'h-[491px]'
-            : 'h-[567px]'
-          : 'min-h-[260px]'
+      :class="
+        isSparklineLayout || !inModal
+          ? undefined
+          : isMobile === false && width > 0
+            ? showCorrectionControls
+              ? 'h-[491px]'
+              : 'h-[567px]'
+            : 'min-h-[260px]'
       "
     >
       <ClientOnly v-if="chartData.dataset">
