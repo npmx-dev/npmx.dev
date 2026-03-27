@@ -28,7 +28,7 @@ vi.stubGlobal('useRuntimeConfig', () => mockConfig)
 const LOCK_UUID = '00000000-0000-0000-0000-000000000000'
 vi.spyOn(crypto, 'randomUUID').mockReturnValue(LOCK_UUID)
 
-const { getOAuthLock } = await import('../../../../../server/utils/atproto/lock')
+const { getOAuthLock } = await import('#server/utils/atproto/lock')
 
 function getUpstashLock() {
   mockConfig.upstash.redisRestUrl = 'https://redis.example.com'

@@ -3,5 +3,5 @@
   "onlyChanged": true,
   "autoAcceptChanges": "main",
   "exitZeroOnChanges": false,
-  "externals": ["public/**", "app/assets/**", ".storybook/**", "nuxt.config.ts", "uno.config.ts"]
+  "externals": [".storybook/**", "uno.config.ts"]
 }

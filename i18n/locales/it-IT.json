@@ -76,6 +76,10 @@
     "links": "Link",
     "tap_to_search": "Tocca per cercare"
   },
+  "blog": {
+    "author": {},
+    "atproto": {}
+  },
   "settings": {
     "title": "impostazioni",
     "tagline": "personalizza la tua esperienza npmx",
@@ -105,10 +109,14 @@
     "theme_system": "Sistema",
     "language": "Lingua",
     "help_translate": "Aiuta a tradurre npmx",
-    "accent_colors": "Colori di accento",
+    "accent_colors": {
+      "label": "Colori di accento"
+    },
     "clear_accent": "Cancella colore di accento",
     "translation_progress": "Progresso della traduzione",
-    "background_themes": "Sfumatura di sfondo"
+    "background_themes": {
+      "label": "Sfumatura di sfondo"
+    }
   },
   "i18n": {
     "missing_keys": "{count} chiave mancante | {count} chiavi mancanti",
@@ -118,6 +126,7 @@
     "edit_on_github": "Modifica su GitHub",
     "view_guide": "Guida alla traduzione"
   },
+  "error": {},
   "common": {
     "loading": "Caricando...",
     "loading_more": "Caricando altri...",
@@ -448,7 +457,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -721,11 +731,7 @@
       "downloads_month": "Download/mese",
       "downloads_year": "Download/anno",
       "published": "Ultimo pubblicato",
-      "name": "Nome",
-      "quality": "Qualità",
-      "popularity": "Popolarità",
-      "maintenance": "Manutenzione",
-      "score": "Punteggio"
+      "name": "Nome"
     },
     "columns": {
       "title": "Colonne",
@@ -739,10 +745,6 @@
       "published": "Ultimo pubblicato",
       "maintainers": "Manutentori",
       "keywords": "Keywords",
-      "quality_score": "Punteggio di qualità",
-      "popularity_score": "Punteggio di popolarità",
-      "maintenance_score": "Punteggio di manutenzione",
-      "combined_score": "Punteggio combinato",
       "security": "Sicurezza"
     },
     "view_mode": {
@@ -821,6 +823,7 @@
         "description": "Chatta, fai domande e condividi idee.",
         "cta": "Unisciti a Discord"
       },
+      "builders": {},
       "follow": {
         "title": "Rimani aggiornato",
         "description": "Scopri le ultime novità su npmx.",
@@ -910,14 +913,11 @@
       "add_column": "Aggiungi una colonna per il confronto senza dipendenze"
     },
     "facets": {
-      "group_label": "Sfaccettature di confronto",
       "all": "tutto",
       "none": "niente",
       "coming_soon": "Prossimamente",
       "select_all": "Seleziona tutte le sfaccettature",
       "deselect_all": "Deseleziona tutte le sfaccettature",
-      "select_category": "Seleziona tutte le sfaccettature {category}",
-      "deselect_category": "Deseleziona tutte le sfaccettature {category}",
       "binary_only_tooltip": "Questo pacchetto espone binari e nessuna esportazione",
       "categories": {
         "performance": "Prestazioni",
@@ -992,8 +992,14 @@
       },
       "trends": {}
     },
+    "version_invalid_url_format": {},
     "file_filter_option": {},
     "filter": {}
+  },
+  "pds": {
+    "join": {},
+    "server": {},
+    "community": {}
   },
   "privacy_policy": {
     "title": "Informativa sulla privacy",
@@ -1080,6 +1086,9 @@
     "measures": {},
     "limitations": {},
     "contact": {}
+  },
+  "translation_status": {
+    "table": {}
   },
   "action_bar": {}
 }

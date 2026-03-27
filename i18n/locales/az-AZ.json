@@ -107,7 +107,7 @@
       "reply_count": "{count} cavab",
       "like_count": "{count} bəyənmə",
       "repost_count": "{count} yenidən paylaşım",
-      "more_replies": "{count} cavab daha..."
+      "more_replies": "daha {count} cavab... | daha {count} cavab..."
     }
   },
   "settings": {
@@ -142,10 +142,14 @@
     "theme_system": "Sistem",
     "language": "Dil",
     "help_translate": "npmx-i tərcümə etməyə kömək edin",
-    "accent_colors": "Vurğu rəngləri",
+    "accent_colors": {
+      "label": "Vurğu rəngləri"
+    },
     "clear_accent": "Vurğu rəngini təmizlə",
     "translation_progress": "Tərcümə irəliləyişi",
-    "background_themes": "Fon tonu",
+    "background_themes": {
+      "label": "Fon tonu"
+    },
     "keyboard_shortcuts_enabled": "Klaviatura qısayollarını aktivləşdir",
     "keyboard_shortcuts_enabled_description": "Klaviatura qısayolları digər brauzer və ya sistem qısayolları ilə toqquşarsa deaktiv edilə bilər"
   },
@@ -570,7 +574,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -847,11 +852,7 @@
       "downloads_month": "Endirmələr/ay",
       "downloads_year": "Endirmələr/il",
       "published": "Son Dərc",
-      "name": "Ad",
-      "quality": "Keyfiyyət",
-      "popularity": "Populyarlıq",
-      "maintenance": "Baxım",
-      "score": "Xal"
+      "name": "Ad"
     },
     "columns": {
       "title": "Sütunlar",
@@ -865,10 +866,6 @@
       "published": "Son Dərc",
       "maintainers": "Dəstəkçilər",
       "keywords": "Açar sözlər",
-      "quality_score": "Keyfiyyət xalı",
-      "popularity_score": "Populyarlıq xalı",
-      "maintenance_score": "Baxım xalı",
-      "combined_score": "Ümumi xal",
       "security": "Təhlükəsizlik"
     },
     "view_mode": {
@@ -1054,14 +1051,11 @@
       "add_column": "Müqayisəyə asılılıqsız sütun əlavə et"
     },
     "facets": {
-      "group_label": "Müqayisə aspektləri",
       "all": "hamısı",
       "none": "heç biri",
       "coming_soon": "Tezliklə",
       "select_all": "Bütün aspektləri seç",
       "deselect_all": "Bütün aspektləri ləğv et",
-      "select_category": "Bütün {category} aspektlərini seç",
-      "deselect_category": "Bütün {category} aspektlərini ləğv et",
       "binary_only_tooltip": "Bu paket yalnız binar fayllar təqdim edir, ixrac yoxdur",
       "categories": {
         "performance": "Performans",
@@ -1145,6 +1139,7 @@
     "file_size_warning": "{size} müqayisə üçün 250KB limitini keçir",
     "compare_versions": "fərq",
     "compare_versions_title": "Versiyaları müqayisə et",
+    "version_invalid_url_format": {},
     "summary": "Xülasə",
     "deps_count": "{count} asılılıq",
     "dependencies": "Asılılıqlar",
@@ -1309,5 +1304,9 @@
       "p1": "{app} saytında əlçatanlıq maneəsi ilə qarşılaşsanız, xahiş edirik {link} issue açaraq bizə bildirin. Bu hesabatları ciddi qəbul edirik və onları həll etmək üçün əlimizdən gələni edəcəyik.",
       "link": "GitHub repozitoriyası"
     }
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

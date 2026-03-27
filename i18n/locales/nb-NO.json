@@ -76,6 +76,10 @@
     "links": "Lenker",
     "tap_to_search": "Trykk for å søke"
   },
+  "blog": {
+    "author": {},
+    "atproto": {}
+  },
   "settings": {
     "title": "innstillinger",
     "tagline": "tilpass din npmx-opplevelse",
@@ -105,10 +109,14 @@
     "theme_system": "System",
     "language": "Språk",
     "help_translate": "Hjelp med å oversette npmx",
-    "accent_colors": "Aksentfarger",
+    "accent_colors": {
+      "label": "Aksentfarger"
+    },
     "clear_accent": "Fjern aksentfarge",
     "translation_progress": "Oversettelsesfremdrift",
-    "background_themes": "Bakgrunnsnyanse"
+    "background_themes": {
+      "label": "Bakgrunnsnyanse"
+    }
   },
   "i18n": {
     "missing_keys": "{count} manglende oversettelse | {count} manglende oversettelser",
@@ -118,6 +126,7 @@
     "edit_on_github": "Rediger på GitHub",
     "view_guide": "Oversettelsesguide"
   },
+  "error": {},
   "common": {
     "loading": "Laster...",
     "loading_more": "Laster mer...",
@@ -144,6 +153,9 @@
       "github": "Vis på GitHub"
     }
   },
+  "profile": {
+    "invite": {}
+  },
   "package": {
     "not_found": "Pakke ikke funnet",
     "not_found_message": "Pakken kunne ikke finnes.",
@@ -156,6 +168,7 @@
       "version": "Denne versjonen er utfaset.",
       "no_reason": "Ingen årsak oppgitt"
     },
+    "size_increase": {},
     "replacement": {
       "title": "Du trenger kanskje ikke denne avhengigheten.",
       "native": "Denne kan erstattes med {replacement}, tilgjengelig siden Node {nodeVersion}.",
@@ -268,7 +281,8 @@
       "more_tagged": "{count} flere tagget",
       "all_covered": "Alle versjoner dekkes av taggene over",
       "deprecated_title": "{version} (utfaset)",
-      "view_all": "Vis {count} versjon | Vis alle {count} versjoner"
+      "view_all": "Vis {count} versjon | Vis alle {count} versjoner",
+      "copy_alt": {}
     },
     "dependencies": {
       "title": "Avhengighet ({count}) | Avhengigheter ({count})",
@@ -322,7 +336,8 @@
       "y_axis_label": "{granularity} {facet}",
       "items": {
         "downloads": "Nedlastinger"
-      }
+      },
+      "copy_alt": {}
     },
     "downloads": {
       "title": "Ukentlige nedlastinger",
@@ -414,7 +429,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -687,11 +703,7 @@
       "downloads_month": "Nedlastinger/mnd",
       "downloads_year": "Nedlastinger/år",
       "published": "Sist publisert",
-      "name": "Navn",
-      "quality": "Kvalitet",
-      "popularity": "Popularitet",
-      "maintenance": "Vedlikehold",
-      "score": "Poengsum"
+      "name": "Navn"
     },
     "columns": {
       "title": "Kolonner",
@@ -705,10 +717,6 @@
       "published": "Sist publisert",
       "maintainers": "Vedlikeholdere",
       "keywords": "Nøkkelord",
-      "quality_score": "Kvalitetspoeng",
-      "popularity_score": "Popularitetspoeng",
-      "maintenance_score": "Vedlikeholdspoeng",
-      "combined_score": "Kombinert poengsum",
       "security": "Sikkerhet"
     },
     "view_mode": {
@@ -765,6 +773,8 @@
         "managers": "pakkebehandlere"
       }
     },
+    "sponsors": {},
+    "oss_partners": {},
     "team": {},
     "contributors": {
       "title": "{count} Bidragsyter | {count} Bidragsytere",
@@ -785,6 +795,7 @@
         "description": "Chat, still spørsmål og del ideer.",
         "cta": "Bli med på Discord"
       },
+      "builders": {},
       "follow": {
         "title": "Hold deg oppdatert",
         "description": "Få med deg det siste om npmx.",
@@ -874,14 +885,11 @@
       "add_column": "Legg til ingen avhengighet-kolonne i sammenligningen"
     },
     "facets": {
-      "group_label": "Sammenligningsfasetter",
       "all": "alle",
       "none": "ingen",
       "coming_soon": "Kommer snart",
       "select_all": "Velg alle fasetter",
       "deselect_all": "Fravelg alle fasetter",
-      "select_category": "Velg alle {category}-fasetter",
-      "deselect_category": "Fravelg alle {category}-fasetter",
       "binary_only_tooltip": "Denne pakken eksponerer binærfiler og ingen eksporter",
       "categories": {
         "performance": "Ytelse",
@@ -957,7 +965,15 @@
       "trends": {
         "title": "Ukentlige nedlastinger"
       }
-    }
+    },
+    "version_invalid_url_format": {},
+    "file_filter_option": {},
+    "filter": {}
+  },
+  "pds": {
+    "join": {},
+    "server": {},
+    "community": {}
   },
   "privacy_policy": {
     "cookies": {
@@ -978,5 +994,9 @@
     "measures": {},
     "limitations": {},
     "contact": {}
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

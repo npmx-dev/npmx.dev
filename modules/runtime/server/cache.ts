@@ -28,6 +28,7 @@ const FIXTURE_PATHS = {
   esmTypes: 'esm-sh:types',
   githubContributors: 'github:contributors.json',
   githubContributorsStats: 'github:contributors-stats.json',
+  jsdelivr: 'jsdelivr',
 } as const
 
 type FixtureType = keyof typeof FIXTURE_PATHS
@@ -101,12 +102,8 @@ function parseScopedPackageWithVersion(input: string): { name: string; version?:
 }
 
 function getMockForUrl(url: string): MockResult | null {
-  let urlObj: URL
-  try {
-    urlObj = new URL(url)
-  } catch {
-    return null
-  }
+  const urlObj = URL.parse(url)
+  if (!urlObj) return null
 
   const { host, pathname, searchParams } = urlObj
 
@@ -135,56 +132,6 @@ function getMockForUrl(url: string): MockResult | null {
           size: 12345,
           gzip: 4567,
           dependencyCount: 3,
-        },
-      }
-    }
-  }
-
-  // npms.io API - return mock package score data
-  if (host === 'api.npms.io') {
-    const packageMatch = decodeURIComponent(pathname).match(/^\/v2\/package\/(.+)$/)
-    if (packageMatch?.[1]) {
-      return {
-        data: {
-          analyzedAt: new Date().toISOString(),
-          collected: {
-            metadata: { name: packageMatch[1] },
-          },
-          score: {
-            final: 0.75,
-            detail: {
-              quality: 0.8,
-              popularity: 0.7,
-              maintenance: 0.75,
-            },
-          },
-        },
-      }
-    }
-  }
-
-  // jsdelivr CDN - return 404 for README files, etc.
-  if (host === 'cdn.jsdelivr.net') {
-    // Return null data which will cause a 404 - README files are optional
-    return { data: null }
-  }
-
-  // jsdelivr data API - return mock file listing
-  if (host === 'data.jsdelivr.com') {
-    const packageMatch = decodeURIComponent(pathname).match(/^\/v1\/packages\/npm\/(.+)$/)
-    if (packageMatch?.[1]) {
-      const pkgWithVersion = packageMatch[1]
-      const parsed = parseScopedPackageWithVersion(pkgWithVersion)
-      return {
-        data: {
-          type: 'npm',
-          name: parsed.name,
-          version: parsed.version || 'latest',
-          files: [
-            { name: 'package.json', hash: 'abc123', size: 1000 },
-            { name: 'index.js', hash: 'def456', size: 500 },
-            { name: 'README.md', hash: 'ghi789', size: 2000 },
-          ],
         },
       }
     }
@@ -425,12 +372,8 @@ async function handleFastNpmMeta(
   url: string,
   storage: ReturnType<typeof useStorage>,
 ): Promise<MockResult | null> {
-  let urlObj: URL
-  try {
-    urlObj = new URL(url)
-  } catch {
-    return null
-  }
+  const urlObj = URL.parse(url)
+  if (!urlObj) return null
 
   const { host, pathname, searchParams } = urlObj
 
@@ -470,12 +413,8 @@ async function handleGitHubApi(
   url: string,
   storage: ReturnType<typeof useStorage>,
 ): Promise<MockResult | null> {
-  let urlObj: URL
-  try {
-    urlObj = new URL(url)
-  } catch {
-    return null
-  }
+  const urlObj = URL.parse(url)
+  if (!urlObj) return null
 
   const { host, pathname } = urlObj
 
@@ -526,12 +465,8 @@ interface FixtureMatchWithVersion extends FixtureMatch {
 }
 
 function matchUrlToFixture(url: string): FixtureMatchWithVersion | null {
-  let urlObj: URL
-  try {
-    urlObj = new URL(url)
-  } catch {
-    return null
-  }
+  const urlObj = URL.parse(url)
+  if (!urlObj) return null
 
   const { host, pathname, searchParams } = urlObj
 
@@ -611,6 +546,42 @@ function logUnmockedRequest(type: string, detail: string, url: string): void {
   )
 }
 
+async function handleJsdelivrDataApi(
+  url: string,
+  storage: ReturnType<typeof useStorage>,
+): Promise<MockResult | null> {
+  const urlObj = URL.parse(url)
+  if (!urlObj) return null
+
+  if (urlObj.host !== 'data.jsdelivr.com') return null
+
+  const packageMatch = decodeURIComponent(urlObj.pathname).match(/^\/v1\/packages\/npm\/(.+)$/)
+  if (!packageMatch?.[1]) return null
+
+  const parsed = parseScopedPackageWithVersion(packageMatch[1])
+
+  // Try per-package fixture first
+  const fixturePath = getFixturePath('jsdelivr', parsed.name)
+  const fixture = await storage.getItem<unknown>(fixturePath)
+  if (fixture) {
+    return { data: fixture }
+  }
+
+  // Fall back to generic stub (no declaration files)
+  return {
+    data: {
+      type: 'npm',
+      name: parsed.name,
+      version: parsed.version || 'latest',
+      files: [
+        { name: 'package.json', hash: 'abc123', size: 1000 },
+        { name: 'index.js', hash: 'def456', size: 500 },
+        { name: 'README.md', hash: 'ghi789', size: 2000 },
+      ],
+    },
+  }
+}
+
 /**
  * Shared fixture-backed fetch implementation.
  * This is used by both cachedFetch and the global $fetch override.
@@ -631,6 +602,12 @@ async function fetchFromFixtures<T>(
   if (fastNpmMetaResult) {
     if (VERBOSE) process.stdout.write(`[test-fixtures] Fast-npm-meta: ${url}\n`)
     return { data: fastNpmMetaResult.data as T, isStale: false, cachedAt: Date.now() }
+  }
+
+  const jsdelivrResult = await handleJsdelivrDataApi(url, storage)
+  if (jsdelivrResult) {
+    if (VERBOSE) process.stdout.write(`[test-fixtures] jsDelivr Data API: ${url}\n`)
+    return { data: jsdelivrResult.data as T, isStale: false, cachedAt: Date.now() }
   }
 
   // Check for GitHub API

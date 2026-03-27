@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
-import type { Packument, PackumentVersion } from '../../../../shared/types'
+import type { Packument, PackumentVersion } from '#shared/types'
 
 // Mock Nitro globals before importing the module
 vi.stubGlobal('defineCachedFunction', (fn: Function) => fn)
@@ -9,7 +9,7 @@ const mockFetchNpmPackage = vi.fn<(name: string) => Promise<Packument | null>>()
 vi.stubGlobal('fetchNpmPackage', mockFetchNpmPackage)
 
 const { TARGET_PLATFORM, matchesPlatform, resolveVersion, resolveDependencyTree } =
-  await import('../../../../server/utils/dependency-resolver')
+  await import('#server/utils/dependency-resolver')
 
 /**
  * Helper to build a minimal Packument for mocking.
@@ -199,7 +199,13 @@ describe('dependency-resolver', () => {
 
       expect(result.size).toBe(1)
       const pkg = result.get('root@1.0.0')
-      expect(pkg).toEqual({ name: 'root', version: '1.0.0', size: 5000, optional: false })
+      expect(pkg).toEqual({
+        name: 'root',
+        version: '1.0.0',
+        size: 5000,
+        tarballUrl: '',
+        optional: false,
+      })
     })
 
     it('resolves direct dependencies', async () => {

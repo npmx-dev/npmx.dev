@@ -5,6 +5,8 @@ import { compare, validRange } from 'semver'
 import {
   buildVersionToTagsMap,
   buildTaggedVersionRows,
+  compareTagRows,
+  compareVersionGroupKeys,
   filterVersions,
   getVersionGroupKey,
   getVersionGroupLabel,
@@ -64,7 +66,14 @@ async function ensureFullDataLoaded() {
 // ─── Derived data ─────────────────────────────────────────────────────────────
 
 const versionToTagsMap = computed(() => buildVersionToTagsMap(distTags.value))
+
 const tagRows = computed(() => buildTaggedVersionRows(distTags.value))
+const latestTagRow = computed(() => tagRows.value.find(r => r.tags.includes('latest')) ?? null)
+const otherTagRows = computed(() =>
+  tagRows.value
+    .filter(r => !r.tags.includes('latest'))
+    .sort((rowA, rowB) => compareTagRows(rowA, rowB, versionTimes.value)),
+)
 
 function getVersionTime(version: string): string | undefined {
   return versionTimes.value[version]
@@ -84,12 +93,7 @@ const versionGroups = computed(() => {
   }
 
   return Array.from(byKey.keys())
-    .sort((a, b) => {
-      const [aMajor, aMinor] = a.split('.').map(Number)
-      const [bMajor, bMinor] = b.split('.').map(Number)
-      if (aMajor !== bMajor) return (bMajor ?? 0) - (aMajor ?? 0)
-      return (bMinor ?? -1) - (aMinor ?? -1)
-    })
+    .sort(compareVersionGroupKeys)
     .map(groupKey => ({
       groupKey,
       label: getVersionGroupLabel(groupKey),
@@ -199,7 +203,7 @@ const flatItems = computed<FlatItem[]>(() => {
           type="text"
           :placeholder="$t('package.versions.version_filter_placeholder')"
           :aria-label="$t('package.versions.version_filter_label')"
-          size="small"
+          size="sm"
           class="w-36 sm:w-44"
         />
       </div>
@@ -215,7 +219,7 @@ const flatItems = computed<FlatItem[]>(() => {
 
         <!-- Latest — featured card -->
         <div
-          v-if="tagRows[0]"
+          v-if="latestTagRow"
           class="border-y sm:rounded-lg sm:border border-accent/40 bg-accent/5 px-5 py-4 relative flex items-center justify-between gap-4 hover:bg-accent/8 transition-colors"
         >
           <!-- Left: tags + version -->
@@ -223,31 +227,31 @@ const flatItems = computed<FlatItem[]>(() => {
             <div class="flex items-center gap-2 mb-1.5 flex-wrap">
               <span class="text-3xs font-bold uppercase tracking-widest text-accent">latest</span>
               <span
-                v-for="tag in tagRows[0].tags.filter(t => t !== 'latest')"
+                v-for="tag in latestTagRow!.tags.filter(t => t !== 'latest')"
                 :key="tag"
                 class="text-3xs font-semibold uppercase tracking-wide text-fg-subtle"
                 >{{ tag }}</span
               >
             </div>
             <LinkBase
-              :to="packageRoute(packageName, tagRows[0].version)"
+              :to="packageRoute(packageName, latestTagRow!.version)"
               class="text-2xl font-semibold tracking-tight after:absolute after:inset-0 after:content-['']"
               dir="ltr"
-              >{{ tagRows[0].version }}</LinkBase
+              >{{ latestTagRow!.version }}</LinkBase
             >
           </div>
           <!-- Right: date + provenance -->
           <div class="flex flex-col items-end gap-1.5 shrink-0 relative z-10">
             <ProvenanceBadge
-              v-if="fullVersionMap?.get(tagRows[0].version)?.hasProvenance"
+              v-if="fullVersionMap?.get(latestTagRow!.version)?.hasProvenance"
               :package-name="packageName"
-              :version="tagRows[0].version"
+              :version="latestTagRow!.version"
               compact
               :linked="false"
             />
             <DateTime
-              v-if="getVersionTime(tagRows[0].version)"
-              :datetime="getVersionTime(tagRows[0].version)!"
+              v-if="getVersionTime(latestTagRow!.version)"
+              :datetime="getVersionTime(latestTagRow!.version)!"
               class="text-xs text-fg-subtle"
               year="numeric"
               month="short"
@@ -258,11 +262,11 @@ const flatItems = computed<FlatItem[]>(() => {
 
         <!-- Other tags — compact list (hidden when only latest exists) -->
         <div
-          v-if="tagRows.length > 1"
+          v-if="otherTagRows.length > 0"
           class="border-y sm:rounded-lg sm:border border-border sm:overflow-hidden"
         >
           <div
-            v-for="row in tagRows.slice(1)"
+            v-for="row in otherTagRows"
             :key="row.id"
             class="flex items-center gap-4 px-4 py-2.5 border-b border-border last:border-0 hover:bg-bg-subtle transition-colors relative"
           >

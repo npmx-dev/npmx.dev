@@ -33,6 +33,11 @@ export const countryLocaleVariants: Record<string, (LocaleObjectData & { country
     // { code: 'ar-AE', name: 'Arabic (U.A.E.)' },
     // { code: 'ar-YE', name: 'Arabic (Yemen)' },
   ],
+  de: [
+    // de.json contains de-DE translations
+    { country: true, code: 'de-DE', name: 'Deutsch' },
+    { code: 'de-AT', name: 'Österreichisch' },
+  ],
   en: [
     // en.json contains en-US translations
     { country: true, code: 'en-US', name: 'English (US)' },
@@ -158,8 +163,8 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     name: 'Ελληνικά',
   },*/
   {
-    code: 'de-DE',
-    file: 'de-DE.json',
+    code: 'de',
+    file: 'de.json',
     name: 'Deutsch',
   },
   {
@@ -358,9 +363,9 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
 
 function buildLocales() {
   const useLocales = Object.values(locales).reduce((acc, data) => {
-    const variants = countryLocaleVariants[data.code]
-    if (variants) {
-      variants.forEach(l => {
+    const localeVariants = countryLocaleVariants[data.code]
+    if (localeVariants) {
+      localeVariants.forEach(l => {
         const entry: LocaleObjectData = {
           ...data,
           code: l.code,
@@ -406,8 +411,10 @@ export const datetimeFormats = Object.values(currentLocales).reduce((acc, data) 
 }, {} as DateTimeFormats)
 
 export const numberFormats = Object.values(currentLocales).reduce((acc, data) => {
-  if (data.numberFormats) {
-    acc[data.code] = { ...data.numberFormats }
+  const numberFormatsArray = data.numberFormats
+  if (numberFormatsArray) {
+    acc[data.code] = { ...numberFormatsArray }
+
     delete data.numberFormats
   } else {
     acc[data.code] = {

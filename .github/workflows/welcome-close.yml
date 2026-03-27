@@ -1,4 +1,4 @@
-name: welcome
+name: Claim Contributor Message
 
 on:
   pull_request_target:

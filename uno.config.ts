@@ -168,6 +168,7 @@ export default defineConfig({
     ['badge-purple', 'bg-badge-purple/10 text-badge-purple'],
     ['badge-pink', 'bg-badge-pink/10 text-badge-pink'],
     ['badge-subtle', 'bg-bg-subtle text-fg-subtle'],
+    ['badge-accent', 'bg-accent/10 text-accent'],
   ],
   rules: [
     // Custom scale for active states

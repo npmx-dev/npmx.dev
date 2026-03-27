@@ -19,6 +19,7 @@ const pages = [
   '/about',
   '/accessibility',
   '/blog',
+  '/brand',
   '/compare',
   '/org',
   '/package',
@@ -28,6 +29,7 @@ const pages = [
   '/privacy',
   '/search',
   '/settings',
+  '/translation-status',
   '/recharging',
 ]
 

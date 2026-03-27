@@ -35,6 +35,12 @@ const closeModal = () => modalRef.value?.close?.()
             <LinkBase :to="{ name: 'accessibility' }">
               {{ $t('a11y.footer_title') }}
             </LinkBase>
+            <LinkBase :to="{ name: 'translation-status' }">
+              {{ $t('translation_status.title') }}
+            </LinkBase>
+            <LinkBase :to="{ name: 'brand' }">
+              {{ $t('footer.brand') }}
+            </LinkBase>
             <button
               type="button"
               class="cursor-pointer group inline-flex gap-x-1 items-center justify-center underline-offset-[0.2rem] underline decoration-1 decoration-fg/30 font-mono text-fg hover:(decoration-accent text-accent) focus-visible:(decoration-accent text-accent) transition-colors duration-200"

@@ -107,7 +107,7 @@
       "reply_count": "{count} 件の返信",
       "like_count": "{count} 件のいいね",
       "repost_count": "{count} 件のリポスト",
-      "more_replies": "さらに {count} 件のリプライを表示..."
+      "more_replies": "さらに{count}件の返信…"
     }
   },
   "settings": {
@@ -142,10 +142,14 @@
     "theme_system": "システム",
     "language": "言語",
     "help_translate": "npmxの翻訳に協力する",
-    "accent_colors": "アクセントカラー",
+    "accent_colors": {
+      "label": "アクセントカラー"
+    },
     "clear_accent": "アクセントカラーをクリア",
     "translation_progress": "翻訳の進捗状況",
-    "background_themes": "背景シェード",
+    "background_themes": {
+      "label": "背景シェード"
+    },
     "keyboard_shortcuts_enabled": "キーボードショートカットを有効化",
     "keyboard_shortcuts_enabled_description": "ブラウザやシステムのショートカットと競合する場合、キーボードショートカットを無効化できます"
   },
@@ -584,7 +588,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -861,11 +866,7 @@
       "downloads_month": "ダウンロード数/月",
       "downloads_year": "ダウンロード数/年",
       "published": "最新の公開日",
-      "name": "パッケージ名",
-      "quality": "品質",
-      "popularity": "人気度",
-      "maintenance": "メンテナンス",
-      "score": "スコア"
+      "name": "パッケージ名"
     },
     "columns": {
       "title": "列",
@@ -879,10 +880,6 @@
       "published": "最新の公開",
       "maintainers": "メンテナ",
       "keywords": "キーワード",
-      "quality_score": "品質スコア",
-      "popularity_score": "人気度スコア",
-      "maintenance_score": "メンテナンススコア",
-      "combined_score": "総合スコア",
       "security": "セキュリティ"
     },
     "view_mode": {
@@ -1070,14 +1067,11 @@
       "add_column": "比較項目に「依存関係なし」カラムを追加"
     },
     "facets": {
-      "group_label": "比較項目",
       "all": "すべて",
       "none": "なし",
       "coming_soon": "近日公開",
       "select_all": "すべての項目を選択",
       "deselect_all": "すべての項目の選択を解除",
-      "select_category": "{category} のすべての項目を選択",
-      "deselect_category": "{category} のすべての項目の選択を解除",
       "binary_only_tooltip": "このパッケージはバイナリのみを提供し、エクスポートを含みません",
       "categories": {
         "performance": "パフォーマンス",
@@ -1161,6 +1155,7 @@
     "file_size_warning": "{size} は比較制限の250KBを超えています",
     "compare_versions": "diff",
     "compare_versions_title": "最新バージョンと比較",
+    "version_invalid_url_format": {},
     "summary": "要約",
     "deps_count": "依存関係 {count} 件",
     "dependencies": "依存関係",
@@ -1325,5 +1320,9 @@
       "p1": "{app} でアクセシビリティ上のバリアを見つけた場合は、{link} でissueを作成して連絡してください。報告は真剣に受け止め、問題を解決するためにできる限り対応します。",
       "link": "GitHubリポジトリ"
     }
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

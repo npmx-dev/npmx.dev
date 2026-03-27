@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { Packument, NpmSearchResponse } from '../../../../shared/types'
+import type { Packument, NpmSearchResponse } from '#shared/types'
 
 describe('npm registry types', () => {
   it('should correctly type a package response', () => {
@@ -46,14 +46,6 @@ describe('npm registry types', () => {
               npm: 'https://www.npmjs.com/package/test-package',
             },
           },
-          score: {
-            final: 0.9,
-            detail: {
-              quality: 0.9,
-              popularity: 0.8,
-              maintenance: 0.95,
-            },
-          },
           searchScore: 100000,
         },
       ],
@@ -64,6 +56,5 @@ describe('npm registry types', () => {
 
     expect(response.total).toBe(1)
     expect(response.objects[0]?.package.name).toBe('test-package')
-    expect(response.objects[0]?.score?.final).toBe(0.9)
   })
 })

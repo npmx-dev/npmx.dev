@@ -486,7 +486,7 @@ watch(
       <span dir="ltr" class="me-1.5">{{ currentVersion }}</span>
       <span
         v-if="currentVersion === latestVersion"
-        class="text-xs px-1.5 py-0.5 rounded badge-green font-sans font-medium me-1.5"
+        class="text-xs px-1.5 py-0.5 rounded badge-accent font-sans font-medium me-1.5"
       >
         latest
       </span>
@@ -543,7 +543,7 @@ watch(
               type="button"
               class="w-4 h-4 flex items-center justify-center text-fg-subtle hover:text-fg transition-colors shrink-0"
               :aria-expanded="group.isExpanded"
-              :aria-label="group.isExpanded ? 'Collapse' : 'Expand'"
+              :aria-label="group.isExpanded ? $t('common.collapse') : $t('common.expand')"
               @click.stop="toggleGroup(group.id)"
             >
               <span
@@ -577,7 +577,7 @@ watch(
                 v-for="tag in group.primaryVersion.tags"
                 :key="tag"
                 class="text-xs px-1.5 py-0.5 rounded font-sans font-medium"
-                :class="tag === 'latest' ? 'badge-green' : 'badge-subtle'"
+                :class="tag === 'latest' ? 'badge-accent' : 'badge-subtle'"
               >
                 {{ tag }}
               </span>
@@ -613,11 +613,7 @@ watch(
                     v-for="tag in v.tags"
                     :key="tag"
                     class="text-4xs px-1 py-0.5 rounded font-sans font-medium"
-                    :class="
-                      tag === 'latest'
-                        ? 'bg-emerald-500/10 text-emerald-400'
-                        : 'bg-bg-muted text-fg-subtle'
-                    "
+                    :class="tag === 'latest' ? 'badge-accent' : 'badge-subtle'"
                   >
                     {{ tag }}
                   </span>

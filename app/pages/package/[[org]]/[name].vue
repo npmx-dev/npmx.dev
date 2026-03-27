@@ -269,7 +269,6 @@ const versionSecurityMetadata = computed<PackageVersionInfo[]>(() => {
 // Process package description
 const pkgDescription = useMarkdown(() => ({
   text: pkg.value?.description ?? '',
-  packageName: pkg.value?.name,
 }))
 
 // Fetch dependency analysis (lazy, client-side)
@@ -636,7 +635,7 @@ const showSkeleton = shallowRef(false)
                 <ButtonGroup v-if="dependencyCount > 0" class="ms-auto">
                   <LinkBase
                     variant="button-secondary"
-                    size="small"
+                    size="sm"
                     :to="`https://npmgraph.js.org/?q=${pkg.name}${resolvedVersion ? `@${resolvedVersion}` : ''}`"
                     :title="$t('package.stats.view_dependency_graph')"
                     classicon="i-lucide:network -rotate-90"
@@ -646,7 +645,7 @@ const showSkeleton = shallowRef(false)
 
                   <LinkBase
                     variant="button-secondary"
-                    size="small"
+                    size="sm"
                     :to="`https://node-modules.dev/grid/depth#install=${pkg.name}${resolvedVersion ? `@${resolvedVersion}` : ''}`"
                     :title="$t('package.stats.inspect_dependency_tree')"
                     classicon="i-lucide:table"
@@ -783,8 +782,15 @@ const showSkeleton = shallowRef(false)
                 {{ $t('package.get_started.title') }}
               </LinkBase>
             </h2>
-            <!-- Package manager dropdown -->
-            <PackageManagerSelect />
+            <!-- Package manager dropdown + Download button -->
+            <div class="flex items-center gap-2">
+              <PackageDownloadButton
+                v-if="displayVersion"
+                :package-name="pkg.name"
+                :version="displayVersion"
+              />
+              <PackageManagerSelect />
+            </div>
           </div>
           <div>
             <div
@@ -875,7 +881,9 @@ const showSkeleton = shallowRef(false)
             </div>
             <TerminalInstall
               :package-name="pkg.name"
-              :requested-version="resolvedVersion"
+              :requested-version="
+                requestedVersion && requestedVersion !== 'latest' ? resolvedVersion : null
+              "
               :install-version-override="installVersionOverride"
               :jsr-info="jsrInfo"
               :dev-dependency-suggestion="packageAnalysis?.devDependencySuggestion"
@@ -906,6 +914,78 @@ const showSkeleton = shallowRef(false)
             />
           </ClientOnly>
         </div>
+
+        <PackageSidebar :class="$style.areaSidebar">
+          <div class="flex flex-col gap-4 sm:gap-6 xl:pt-4">
+            <!-- Team access controls (for scoped packages when connected) -->
+            <ClientOnly>
+              <PackageAccessControls :package-name="pkg.name" />
+              <template #fallback>
+                <!-- Show skeleton loaders when SSR or access controls are loading -->
+              </template>
+            </ClientOnly>
+
+            <!-- Agent Skills -->
+            <ClientOnly>
+              <PackageSkillsCard
+                v-if="skillsData?.skills?.length"
+                :skills="skillsData.skills"
+                :package-name="pkg.name"
+                :version="resolvedVersion || undefined"
+              />
+              <template #fallback>
+                <!-- Show skeleton loaders when SSR or access controls are loading -->
+              </template>
+            </ClientOnly>
+
+            <!-- Download stats -->
+            <PackageWeeklyDownloadStats
+              :packageName
+              :createdIso="pkg?.time?.created ?? null"
+              :repoRef="repoRef"
+            />
+
+            <!-- Playground links -->
+            <PackagePlaygrounds v-if="playgroundLinks.length" :links="playgroundLinks" />
+
+            <PackageCompatibility :engines="displayVersion?.engines" />
+
+            <!-- Versions (grouped by release channel) -->
+            <PackageVersions
+              v-if="pkg.versions && Object.keys(pkg.versions).length > 0"
+              :package-name="pkg.name"
+              :versions="pkg.versions"
+              :dist-tags="pkg['dist-tags'] ?? {}"
+              :time="pkg.time"
+              :selected-version="resolvedVersion ?? pkg['dist-tags']?.['latest']"
+            />
+
+            <!-- Install Scripts Warning -->
+            <PackageInstallScripts
+              v-if="displayVersion?.installScripts"
+              :package-name="pkg.name"
+              :version="displayVersion.version"
+              :install-scripts="displayVersion.installScripts"
+            />
+
+            <!-- Dependencies -->
+            <PackageDependencies
+              v-if="hasDependencies && resolvedVersion && displayVersion"
+              :package-name="pkg.name"
+              :version="resolvedVersion"
+              :dependencies="displayVersion.dependencies"
+              :peer-dependencies="displayVersion.peerDependencies"
+              :peer-dependencies-meta="displayVersion.peerDependenciesMeta"
+              :optional-dependencies="displayVersion.optionalDependencies"
+            />
+
+            <!-- Keywords -->
+            <PackageKeywords :keywords="displayVersion?.keywords" />
+
+            <!-- Maintainers (with admin actions when connected) -->
+            <PackageMaintainers :package-name="pkg.name" :maintainers="pkg.maintainers" />
+          </div>
+        </PackageSidebar>
 
         <!-- README -->
         <section id="readme" class="min-w-0 scroll-mt-20" :class="$style.areaReadme">
@@ -990,78 +1070,6 @@ const showSkeleton = shallowRef(false)
             </div>
           </section>
         </section>
-
-        <PackageSidebar :class="$style.areaSidebar">
-          <div class="flex flex-col gap-4 sm:gap-6 xl:pt-4">
-            <!-- Team access controls (for scoped packages when connected) -->
-            <ClientOnly>
-              <PackageAccessControls :package-name="pkg.name" />
-              <template #fallback>
-                <!-- Show skeleton loaders when SSR or access controls are loading -->
-              </template>
-            </ClientOnly>
-
-            <!-- Agent Skills -->
-            <ClientOnly>
-              <PackageSkillsCard
-                v-if="skillsData?.skills?.length"
-                :skills="skillsData.skills"
-                :package-name="pkg.name"
-                :version="resolvedVersion || undefined"
-              />
-              <template #fallback>
-                <!-- Show skeleton loaders when SSR or access controls are loading -->
-              </template>
-            </ClientOnly>
-
-            <!-- Download stats -->
-            <PackageWeeklyDownloadStats
-              :packageName
-              :createdIso="pkg?.time?.created ?? null"
-              :repoRef="repoRef"
-            />
-
-            <!-- Playground links -->
-            <PackagePlaygrounds v-if="playgroundLinks.length" :links="playgroundLinks" />
-
-            <PackageCompatibility :engines="displayVersion?.engines" />
-
-            <!-- Versions (grouped by release channel) -->
-            <PackageVersions
-              v-if="pkg.versions && Object.keys(pkg.versions).length > 0"
-              :package-name="pkg.name"
-              :versions="pkg.versions"
-              :dist-tags="pkg['dist-tags'] ?? {}"
-              :time="pkg.time"
-              :selected-version="resolvedVersion ?? pkg['dist-tags']?.['latest']"
-            />
-
-            <!-- Install Scripts Warning -->
-            <PackageInstallScripts
-              v-if="displayVersion?.installScripts"
-              :package-name="pkg.name"
-              :version="displayVersion.version"
-              :install-scripts="displayVersion.installScripts"
-            />
-
-            <!-- Dependencies -->
-            <PackageDependencies
-              v-if="hasDependencies && resolvedVersion && displayVersion"
-              :package-name="pkg.name"
-              :version="resolvedVersion"
-              :dependencies="displayVersion.dependencies"
-              :peer-dependencies="displayVersion.peerDependencies"
-              :peer-dependencies-meta="displayVersion.peerDependenciesMeta"
-              :optional-dependencies="displayVersion.optionalDependencies"
-            />
-
-            <!-- Keywords -->
-            <PackageKeywords :keywords="displayVersion?.keywords" />
-
-            <!-- Maintainers (with admin actions when connected) -->
-            <PackageMaintainers :package-name="pkg.name" :maintainers="pkg.maintainers" />
-          </div>
-        </PackageSidebar>
       </article>
     </template>
 
@@ -1107,10 +1115,10 @@ const showSkeleton = shallowRef(false)
     grid-template-columns: 2fr 1fr;
     grid-template-areas:
       'details details'
-      'install install'
-      'vulns   vulns'
+      'install sidebar'
+      'vulns   sidebar'
       'readme  sidebar';
-    grid-template-rows: auto auto auto auto 1fr;
+    grid-template-rows: auto auto auto 1fr;
   }
 }
 
@@ -1123,6 +1131,7 @@ const showSkeleton = shallowRef(false)
       'install sidebar'
       'vulns   sidebar'
       'readme  sidebar';
+    grid-template-rows: auto auto auto 1fr;
   }
 }
 

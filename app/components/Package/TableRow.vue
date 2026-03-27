@@ -14,25 +14,12 @@ const emit = defineEmits<{
 }>()
 
 const pkg = computed(() => props.result.package)
-const score = computed(() => props.result.score)
 
 const updatedDate = computed(() => props.result.package.date)
 const { isPackageSelected, togglePackageSelection, canSelectMore } = usePackageSelection()
 const isSelected = computed<boolean>(() => {
   return isPackageSelected(props.result.package.name)
 })
-
-function formatDownloads(count?: number): string {
-  if (count === undefined) return '-'
-  if (count >= 1_000_000) return `${(count / 1_000_000).toFixed(1)}M`
-  if (count >= 1_000) return `${(count / 1_000).toFixed(1)}K`
-  return count.toString()
-}
-
-function formatScore(value?: number): string {
-  if (value === undefined || value === 0) return '-'
-  return Math.round(value * 100).toString()
-}
 
 function isColumnVisible(id: string): boolean {
   return props.columns.find(c => c.id === id)?.visible ?? false
@@ -44,6 +31,8 @@ const allMaintainersText = computed(() => {
   if (!pkg.value.maintainers?.length) return ''
   return pkg.value.maintainers.map(m => m.name || m.email).join(', ')
 })
+
+const compactNumberFormatter = useCompactNumberFormatter()
 </script>
 
 <template>
@@ -89,7 +78,11 @@ const allMaintainersText = computed(() => {
       v-if="isColumnVisible('downloads')"
       class="py-2 px-3 font-mono text-xs text-fg-muted text-end tabular-nums"
     >
-      {{ formatDownloads(result.downloads?.weekly) }}
+      {{
+        result.downloads?.weekly !== undefined
+          ? compactNumberFormatter.format(result.downloads.weekly)
+          : '-'
+      }}
     </td>
 
     <!-- Updated -->
@@ -145,7 +138,7 @@ const allMaintainersText = computed(() => {
         <ButtonBase
           v-for="keyword in pkg.keywords.slice(0, 3)"
           :key="keyword"
-          size="small"
+          size="sm"
           :aria-pressed="props.filters?.keywords.includes(keyword)"
           :title="`Filter by ${keyword}`"
           @click.stop="emit('clickKeyword', keyword)"
@@ -162,38 +155,6 @@ const allMaintainersText = computed(() => {
         </span>
       </div>
       <span v-else class="text-fg-subtle">-</span>
-    </td>
-
-    <!-- Quality Score -->
-    <td
-      v-if="isColumnVisible('qualityScore')"
-      class="py-2 px-3 font-mono text-xs text-fg-muted text-end tabular-nums"
-    >
-      {{ formatScore(score?.detail?.quality) }}
-    </td>
-
-    <!-- Popularity Score -->
-    <td
-      v-if="isColumnVisible('popularityScore')"
-      class="py-2 px-3 font-mono text-xs text-fg-muted text-end tabular-nums"
-    >
-      {{ formatScore(score?.detail?.popularity) }}
-    </td>
-
-    <!-- Maintenance Score -->
-    <td
-      v-if="isColumnVisible('maintenanceScore')"
-      class="py-2 px-3 font-mono text-xs text-fg-muted text-end tabular-nums"
-    >
-      {{ formatScore(score?.detail?.maintenance) }}
-    </td>
-
-    <!-- Combined Score -->
-    <td
-      v-if="isColumnVisible('combinedScore')"
-      class="py-2 px-3 font-mono text-xs text-fg-muted text-end tabular-nums"
-    >
-      {{ formatScore(score?.final) }}
     </td>
 
     <!-- Security -->

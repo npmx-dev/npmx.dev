@@ -33,6 +33,10 @@ const SKIPPED_COMPONENTS: Record<string, string> = {
 
   // Client-only components with complex dependencies
   'Header/AuthModal.client.vue': 'Complex auth modal with navigation - requires full app context',
+  'Brand/Customize.vue':
+    'Client-only component using useAccentColor, useLocalStorage, and canvas API',
+  'LogoContextMenu.vue':
+    'Client-only context menu using Teleport, clipboard API, and pointer events',
 
   // Complex components requiring full app context or specific runtime conditions
   'Header/OrgsDropdown.vue': 'Requires connector context and API calls',
@@ -51,6 +55,11 @@ const SKIPPED_COMPONENTS: Record<string, string> = {
   'SkeletonBlock.vue': 'Already covered indirectly via other component tests',
   'SkeletonInline.vue': 'Already covered indirectly via other component tests',
   'Button/Group.vue': "Wrapper component, tests wouldn't make much sense here",
+  'Translation/StatusByFile.unused.vue': 'Unused component, might be needed in the future',
+}
+
+function normalizeComponentPath(filePath: string): string {
+  return filePath.replaceAll('\\', '/')
 }
 
 /**
@@ -66,7 +75,7 @@ function getVueFiles(dir: string, baseDir: string = dir): string[] {
       files.push(...getVueFiles(fullPath, baseDir))
     } else if (entry.isFile() && entry.name.endsWith('.vue')) {
       // Get relative path from base components directory
-      files.push(path.relative(baseDir, fullPath))
+      files.push(normalizeComponentPath(path.relative(baseDir, fullPath)))
     }
   }
 
@@ -91,7 +100,7 @@ function parseComponentsDeclaration(dtsPath: string): Map<string, string[]> {
   let match
   while ((match = exportRegex.exec(content)) !== null) {
     const componentName = match[1]!
-    const filePath = match[2]!
+    const filePath = normalizeComponentPath(match[2]!)
 
     const existing = componentMap.get(componentName) || []
     if (!existing.includes(filePath)) {
@@ -120,7 +129,7 @@ function getTestedComponents(
   let match
 
   while ((match = directImportRegex.exec(testFileContent)) !== null) {
-    tested.add(match[1]!)
+    tested.add(normalizeComponentPath(match[1]!))
   }
 
   // Match #components imports like:

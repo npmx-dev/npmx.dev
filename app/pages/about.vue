@@ -3,9 +3,6 @@ import type { Role } from '#server/api/contributors.get'
 import { SPONSORS } from '~/assets/logos/sponsors'
 import { OSS_PARTNERS } from '~/assets/logos/oss-partners'
 
-const router = useRouter()
-const canGoBack = useCanGoBack()
-
 useSeoMeta({
   title: () => `${$t('about.title')} - npmx`,
   ogTitle: () => `${$t('about.title')} - npmx`,
@@ -60,15 +57,7 @@ const roleLabels = computed(
           <h1 class="font-mono text-3xl sm:text-4xl font-medium">
             {{ $t('about.heading') }}
           </h1>
-          <button
-            type="button"
-            class="cursor-pointer inline-flex items-center gap-2 p-1.5 -mx-1.5 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
-            @click="router.back()"
-            v-if="canGoBack"
-          >
-            <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
-            <span class="hidden sm:inline">{{ $t('nav.back') }}</span>
-          </button>
+          <BackButton />
         </div>
         <p class="text-fg-muted text-lg">
           {{ $t('tagline') }}

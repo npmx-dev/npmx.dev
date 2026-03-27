@@ -6,8 +6,8 @@ import {
   getExecuteCommand,
   getExecuteCommandParts,
   getDevDependencyFlag,
-} from '../../../../app/utils/install-command'
-import type { JsrPackageInfo } from '../../../../shared/types/jsr'
+} from '~/utils/install-command'
+import type { JsrPackageInfo } from '#shared/types/jsr'
 
 describe('install command generation', () => {
   // Test fixtures

@@ -107,7 +107,7 @@
       "reply_count": "{count} ответ | {count} ответа | {count} ответов",
       "like_count": "{count} лайк | {count} лайка | {count} лайков",
       "repost_count": "{count} репост | {count} репоста | {count} репостов",
-      "more_replies": "Ещё {count} ответ… | Ещё {count} ответа… | Ещё {count} ответов…"
+      "more_replies": "ещё {count} ответ... | ещё {count} ответа... | ещё {count} ответов..."
     }
   },
   "settings": {
@@ -142,10 +142,14 @@
     "theme_system": "Системная",
     "language": "Язык",
     "help_translate": "Помочь с переводом npmx",
-    "accent_colors": "Акцентные цвета",
+    "accent_colors": {
+      "label": "Акцентные цвета"
+    },
     "clear_accent": "Сбросить акцентный цвет",
     "translation_progress": "Прогресс перевода",
-    "background_themes": "Оттенок фона",
+    "background_themes": {
+      "label": "Оттенок фона"
+    },
     "keyboard_shortcuts_enabled": "Использовать горячие клавиши",
     "keyboard_shortcuts_enabled_description": "Горячие клавиши можно выключить, если возникают конфликты с сочетаниями клавиш браузера или операционной системы"
   },
@@ -570,7 +574,8 @@
       "b": "{size} байт",
       "kb": "{size} КБ",
       "mb": "{size} МБ"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -847,11 +852,7 @@
       "downloads_month": "Загрузок/мес",
       "downloads_year": "Загрузок/год",
       "published": "Опубликован",
-      "name": "Имя",
-      "quality": "Качество",
-      "popularity": "Популярность",
-      "maintenance": "Поддержка",
-      "score": "Оценка"
+      "name": "Имя"
     },
     "columns": {
       "title": "Столбцы",
@@ -865,10 +866,6 @@
       "published": "Опубликован",
       "maintainers": "Мейнтейнеры",
       "keywords": "Ключевые слова",
-      "quality_score": "Оценка качества",
-      "popularity_score": "Оценка популярности",
-      "maintenance_score": "Оценка поддержки",
-      "combined_score": "Общая оценка",
       "security": "Безопасность"
     },
     "view_mode": {
@@ -1054,14 +1051,11 @@
       "add_column": "Добавить колонку «без зависимости» в сравнение"
     },
     "facets": {
-      "group_label": "Параметры сравнения",
       "all": "все",
       "none": "ни одного",
       "coming_soon": "Скоро появится",
       "select_all": "Выбрать все параметры",
       "deselect_all": "Снять выбор со всех",
-      "select_category": "Выбрать все параметры в категории {category}",
-      "deselect_category": "Снять выбор со всех в категории {category}",
       "binary_only_tooltip": "Этот пакет предоставляет исполняемые файлы и не имеет экспортируемых модулей",
       "categories": {
         "performance": "Производительность",
@@ -1145,6 +1139,7 @@
     "file_size_warning": "{size} превышает лимит в 250 КБ для сравнения",
     "compare_versions": "сравнение",
     "compare_versions_title": "Сравнить с последней версией",
+    "version_invalid_url_format": {},
     "summary": "Сводка",
     "deps_count": "зависимостей: {count}",
     "dependencies": "Зависимости",
@@ -1309,5 +1304,9 @@
       "p1": "Если вы столкнулись с какими-либо препятствиями при использовании {app}, пожалуйста, сообщите нам об этом, создав тикет (issue) в нашем {link}. Мы серьезно относимся к таким сообщениям и сделаем все возможное, чтобы исправить ситуацию.",
       "link": "репозитории GitHub"
     }
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

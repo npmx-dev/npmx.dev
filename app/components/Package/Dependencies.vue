@@ -126,7 +126,7 @@ const numberFormatter = useNumberFormatter()
             >
               <button
                 type="button"
-                class="p-2 -m-2"
+                class="inline-flex items-center justify-center p-2 -m-2"
                 :aria-label="getOutdatedTooltip(outdatedDeps[dep], $t)"
               >
                 <span class="i-lucide:circle-alert w-3 h-3" aria-hidden="true" />
@@ -139,7 +139,7 @@ const numberFormatter = useNumberFormatter()
             >
               <button
                 type="button"
-                class="p-2 -m-2"
+                class="inline-flex items-center justify-center p-2 -m-2"
                 :aria-label="$t('package.dependencies.has_replacement')"
               >
                 <span class="i-lucide:lightbulb w-3 h-3" aria-hidden="true" />
@@ -150,7 +150,11 @@ const numberFormatter = useNumberFormatter()
               :to="packageRoute(dep, getVulnerableDepInfo(dep)!.version)"
               class="shrink-0"
               :class="SEVERITY_TEXT_COLORS[getHighestSeverity(getVulnerableDepInfo(dep)!.counts)]"
-              :title="`${getVulnerableDepInfo(dep)!.counts.total} vulnerabilities`"
+              :title="
+                $t('package.dependencies.vulnerabilities_count', {
+                  count: getVulnerableDepInfo(dep)!.counts.total,
+                })
+              "
               classicon="i-lucide:shield-check"
             >
               <span class="sr-only">{{ $t('package.dependencies.view_vulnerabilities') }}</span>
@@ -176,7 +180,11 @@ const numberFormatter = useNumberFormatter()
               ({{ getOutdatedTooltip(outdatedDeps[dep], $t) }})
             </span>
             <span v-if="getVulnerableDepInfo(dep)" class="sr-only">
-              ({{ getVulnerableDepInfo(dep)!.counts.total }} vulnerabilities)
+              ({{
+                $t('package.dependencies.vulnerabilities_count', {
+                  count: getVulnerableDepInfo(dep)!.counts.total,
+                })
+              }})
             </span>
           </span>
         </li>

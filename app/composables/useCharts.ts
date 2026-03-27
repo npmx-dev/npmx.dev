@@ -6,6 +6,7 @@ import type {
   WeeklyDataPoint,
   YearlyDataPoint,
 } from '~/types/chart'
+import { mapWithConcurrency } from '#shared/utils/async'
 import { fetchNpmDownloadsRange } from '~/utils/npm/api'
 
 export type PackumentLikeForTime = {
@@ -388,12 +389,12 @@ async function fetchDailyRangeChunked(packageName: string, startIso: string, end
     return fetchDailyRangeCached(packageName, startIso, endIso)
   }
 
-  const all: DailyRawPoint[] = []
-
-  for (const range of ranges) {
-    const part = await fetchDailyRangeCached(packageName, range.startIso, range.endIso)
-    all.push(...part)
-  }
+  const parts = await mapWithConcurrency(
+    ranges,
+    range => fetchDailyRangeCached(packageName, range.startIso, range.endIso),
+    10,
+  )
+  const all = parts.flat()
 
   return mergeDailyPoints(all)
 }

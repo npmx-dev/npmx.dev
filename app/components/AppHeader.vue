@@ -84,6 +84,22 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         external: false,
         iconClass: 'i-custom:a11y',
       },
+      {
+        name: 'Translation Status',
+        label: $t('translation_status.title'),
+        to: { name: 'translation-status' },
+        type: 'link',
+        external: false,
+        iconClass: 'i-lucide:languages',
+      },
+      {
+        name: 'Brand',
+        label: $t('footer.brand'),
+        to: { name: 'brand' },
+        type: 'link',
+        external: false,
+        iconClass: 'i-lucide:palette',
+      },
     ],
   },
   {
@@ -210,17 +226,18 @@ onKeyStroke(
       class="relative container min-h-14 flex items-center gap-2 z-1 justify-end"
     >
       <!-- Mobile: Logo (navigates home) -->
-      <NuxtLink
-        v-if="!isSearchExpanded && !isOnHomePage"
-        to="/"
-        :aria-label="$t('header.home')"
-        class="sm:hidden flex-shrink-0 font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring me-4"
-      >
-        <AppMark class="w-6 h-auto" />
-      </NuxtLink>
+      <LogoContextMenu v-if="!isSearchExpanded && !isOnHomePage" class="sm:hidden flex-shrink-0">
+        <NuxtLink
+          to="/"
+          :aria-label="$t('header.home')"
+          class="font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring me-4"
+        >
+          <AppMark class="w-6 h-auto" />
+        </NuxtLink>
+      </LogoContextMenu>
 
       <!-- Desktop: Logo (navigates home) -->
-      <div v-if="showLogo" class="hidden sm:flex flex-shrink-0 items-center">
+      <LogoContextMenu v-if="showLogo" class="hidden sm:flex flex-shrink-0 items-center">
         <NuxtLink
           :to="{ name: 'index' }"
           :aria-label="$t('header.home')"
@@ -235,16 +252,18 @@ onKeyStroke(
             {{ env === 'release' ? 'alpha' : env }}
           </span>
         </NuxtLink>
-        <NuxtLink
-          v-if="prNumber"
-          :to="`https://github.com/npmx-dev/npmx.dev/pull/${prNumber}`"
-          :aria-label="`Open GitHub pull request ${prNumber}`"
-        >
-          <span class="text-xs px-1.5 py-0.5 rounded badge-green font-sans font-medium ms-2">
-            PR #{{ prNumber }}
-          </span>
-        </NuxtLink>
-      </div>
+      </LogoContextMenu>
+
+      <NuxtLink
+        v-if="showLogo && !isSearchExpanded && prNumber"
+        :to="`https://github.com/npmx-dev/npmx.dev/pull/${prNumber}`"
+        :aria-label="$t('header.pr', { prNumber })"
+      >
+        <span class="text-xs px-1.5 py-0.5 rounded badge-green font-sans font-medium">
+          PR #{{ prNumber }}
+        </span>
+      </NuxtLink>
+
       <!-- Spacer when logo is hidden on desktop -->
       <span v-else class="hidden sm:block w-1" />
 

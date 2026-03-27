@@ -54,6 +54,10 @@
     "links": "లింక్‌లు",
     "tap_to_search": "శోధించడానికి టాప్ చేయండి"
   },
+  "blog": {
+    "author": {},
+    "atproto": {}
+  },
   "settings": {
     "title": "సెట్టింగ్‌లు",
     "tagline": "మీ npmx అనుభవాన్ని అనుకూలీకరించండి",
@@ -75,9 +79,12 @@
     "theme_system": "సిస్టమ్",
     "language": "భాష",
     "help_translate": "npmx అనువాదంలో సహాయం చేయండి",
-    "accent_colors": "యాక్సెంట్ రంగులు",
+    "accent_colors": {
+      "label": "యాక్సెంట్ రంగులు"
+    },
     "clear_accent": "యాక్సెంట్ రంగును క్లియర్ చేయండి",
-    "translation_progress": "అనువాద పురోగతి"
+    "translation_progress": "అనువాద పురోగతి",
+    "background_themes": {}
   },
   "i18n": {
     "missing_keys": "{count} అనువాదం లేదు | {count} అనువాదాలు లేవు",
@@ -87,6 +94,7 @@
     "edit_on_github": "GitHub లో సవరించండి",
     "view_guide": "అనువాద గైడ్"
   },
+  "error": {},
   "common": {
     "loading": "లోడ్ అవుతున్నది...",
     "loading_more": "మరిన్ని లోడ్ అవుతున్నది...",
@@ -113,6 +121,9 @@
       "github": "GitHub లో వీక్షించండి"
     }
   },
+  "profile": {
+    "invite": {}
+  },
   "package": {
     "not_found": "ప్యాకేజ్ కనుగొనబడలేదు",
     "not_found_message": "ప్యాకేజ్ కనుగొనబడలేదు.",
@@ -125,6 +136,7 @@
       "version": "ఈ వెర్షన్ డిప్రికేట్ చేయబడింది.",
       "no_reason": "కారణం అందించబడలేదు"
     },
+    "size_increase": {},
     "replacement": {
       "title": "మీకు ఈ డిపెండెన్సీ అవసరం లేకపోవచ్చు.",
       "native": "దీనిని {replacement} తో భర్తీ చేయవచ్చు, ఇది Node {nodeVersion} నుండి అందుబాటులో ఉంది.",
@@ -220,7 +232,8 @@
       "more_tagged": "{count} మరిన్ని ట్యాగ్ చేయబడ్డాయి",
       "all_covered": "అన్ని వెర్షన్‌లు పైన ఉన్న ట్యాగ్‌ల ద్వారా కవర్ చేయబడ్డాయి",
       "deprecated_title": "{version} (డిప్రికేటెడ్)",
-      "view_all": "{count} వెర్షన్‌లను వీక్షించండి | అన్ని {count} వెర్షన్‌లను వీక్షించండి"
+      "view_all": "{count} వెర్షన్‌లను వీక్షించండి | అన్ని {count} వెర్షన్‌లను వీక్షించండి",
+      "copy_alt": {}
     },
     "dependencies": {
       "title": "డిపెండెన్సీలు ({count})",
@@ -269,7 +282,8 @@
       "date_range_multiline": "{start}\nనుండి {end}",
       "download_file": "{fileType} డౌన్‌లోడ్ చేయండి",
       "toggle_annotator": "అనోటేటర్‌ను టాగుల్ చేయండి",
-      "items": {}
+      "items": {},
+      "copy_alt": {}
     },
     "downloads": {
       "title": "వారపు డౌన్‌లోడ్‌లు"
@@ -355,7 +369,8 @@
       "name_asc": "పేరు (A-Z)",
       "name_desc": "పేరు (Z-A)"
     },
-    "size": {}
+    "size": {},
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -621,11 +636,7 @@
       "downloads_day": "డౌన్‌లోడ్‌లు/రోజు",
       "downloads_month": "డౌన్‌లోడ్‌లు/నెల",
       "downloads_year": "డౌన్‌లోడ్‌లు/సంవత్సరం",
-      "name": "పేరు",
-      "quality": "నాణ్యత",
-      "popularity": "జనాదరణ",
-      "maintenance": "నిర్వహణ",
-      "score": "స్కోర్"
+      "name": "పేరు"
     },
     "columns": {
       "title": "కాలమ్‌లు",
@@ -638,10 +649,6 @@
       "downloads": "డౌన్‌లోడ్‌లు/వారం",
       "maintainers": "నిర్వహకులు",
       "keywords": "కీవర్డ్‌లు",
-      "quality_score": "నాణ్యత స్కోర్",
-      "popularity_score": "జనాదరణ స్కోర్",
-      "maintenance_score": "నిర్వహణ స్కోర్",
-      "combined_score": "సంయుక్త స్కోర్",
       "security": "భద్రత"
     },
     "view_mode": {
@@ -698,6 +705,8 @@
         "managers": "మేనేజర్‌లు"
       }
     },
+    "sponsors": {},
+    "oss_partners": {},
     "team": {},
     "contributors": {
       "title": "కంట్రిబ్యూటర్‌లు",
@@ -718,6 +727,7 @@
         "description": "చాట్ చేయండి, ప్రశ్నలు అడగండి, మరియు ఆలోచనలను పంచుకోండి.",
         "cta": "Discord లో చేరండి"
       },
+      "builders": {},
       "follow": {
         "title": "నవీకరణలతో ఉండండి",
         "description": "npmx లో తాజా సమాచారాన్ని పొందండి.",
@@ -798,14 +808,11 @@
     },
     "no_dependency": {},
     "facets": {
-      "group_label": "పోలిక ఫేసెట్‌లు",
       "all": "అన్నీ",
       "none": "ఏదీ లేదు",
       "coming_soon": "త్వరలో వస్తుంది",
       "select_all": "అన్ని ఫేసెట్‌లను ఎంచుకోండి",
       "deselect_all": "అన్ని ఫేసెట్‌లను అన్‌సెలెక్ట్ చేయండి",
-      "select_category": "అన్ని {category} ఫేసెట్‌లను ఎంచుకోండి",
-      "deselect_category": "అన్ని {category} ఫేసెట్‌లను అన్‌సెలెక్ట్ చేయండి",
       "categories": {
         "performance": "పనితీరు",
         "health": "ఆరోగ్యం",
@@ -829,7 +836,15 @@
       },
       "values": {},
       "trends": {}
-    }
+    },
+    "version_invalid_url_format": {},
+    "file_filter_option": {},
+    "filter": {}
+  },
+  "pds": {
+    "join": {},
+    "server": {},
+    "community": {}
   },
   "privacy_policy": {
     "cookies": {
@@ -850,5 +865,9 @@
     "measures": {},
     "limitations": {},
     "contact": {}
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

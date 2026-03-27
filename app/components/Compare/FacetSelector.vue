@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { debounce } from 'perfect-debounce'
 const {
   isFacetSelected,
   toggleFacet,
@@ -22,61 +23,94 @@ function isCategoryNoneSelected(category: string): boolean {
   const selectableFacets = facets.filter(f => !f.comingSoon)
   return selectableFacets.length > 0 && selectableFacets.every(f => !isFacetSelected(f.id))
 }
+
+const liveRegionText = ref('')
+const clearLiveRegion = debounce(() => {
+  liveRegionText.value = ''
+}, 250)
+const updateLiveRegion = debounce((message: string) => {
+  liveRegionText.value = message
+  clearLiveRegion()
+}, 250)
+
+function selectAllFacet(category: string) {
+  if (!isCategoryAllSelected(category)) {
+    updateLiveRegion($t('compare.facets.selected_all_category_facets', { category }))
+    selectCategory(category)
+  }
+}
+
+function deselectAllFacet(category: string) {
+  if (!isCategoryNoneSelected(category)) {
+    updateLiveRegion($t('compare.facets.deselected_all_category_facets', { category }))
+    deselectCategory(category)
+  }
+}
 </script>
 
 <template>
-  <div class="space-y-3" role="group" :aria-label="$t('compare.facets.group_label')">
+  <div role="status" aria-live="polite" class="sr-only">{{ liveRegionText }}</div>
+  <div class="space-y-3">
     <div v-for="category in categoryOrder" :key="category">
-      <!-- Category header with all/none buttons -->
       <div class="flex items-center gap-2 mb-2">
-        <span class="text-3xs text-fg-subtle uppercase tracking-wider">
+        <span
+          :id="`facet-category-label-${category}`"
+          class="text-3xs text-fg-subtle uppercase tracking-wider"
+        >
           {{ getCategoryLabel(category) }}
         </span>
-        <!-- TODO: These should be radios, since they are mutually exclusive, and currently this behavior is faked with buttons -->
+
         <ButtonBase
+          size="sm"
+          data-facet-category-action="all"
+          :data-facet-category="category"
           :aria-label="
-            $t('compare.facets.select_category', { category: getCategoryLabel(category) })
+            $t('compare.facets.select_all_category_facets', {
+              category: getCategoryLabel(category),
+            })
           "
-          :aria-pressed="isCategoryAllSelected(category)"
-          :disabled="isCategoryAllSelected(category)"
-          @click="selectCategory(category)"
-          size="small"
+          :aria-disabled="isCategoryAllSelected(category)"
+          class="aria-disabled:(opacity-40 border-transparent)"
+          @click="selectAllFacet(category)"
         >
           {{ $t('compare.facets.all') }}
         </ButtonBase>
-        <span class="text-2xs text-fg-muted/40">/</span>
+
+        <span class="text-2xs text-fg-muted/40" aria-hidden="true">/</span>
+
         <ButtonBase
+          size="sm"
+          data-facet-category-action="none"
+          :data-facet-category="category"
           :aria-label="
-            $t('compare.facets.deselect_category', { category: getCategoryLabel(category) })
+            $t('compare.facets.deselect_all_category_facets', {
+              category: getCategoryLabel(category),
+            })
           "
-          :aria-pressed="isCategoryNoneSelected(category)"
-          :disabled="isCategoryNoneSelected(category)"
-          @click="deselectCategory(category)"
-          size="small"
+          :aria-disabled="isCategoryNoneSelected(category)"
+          class="aria-disabled:(opacity-40 border-transparent)"
+          @click="deselectAllFacet(category)"
         >
           {{ $t('compare.facets.none') }}
         </ButtonBase>
       </div>
 
-      <!-- Facet buttons -->
-      <div class="flex items-center gap-1.5 flex-wrap" role="group">
-        <!-- TODO: These should be checkboxes -->
+      <div
+        class="flex items-center gap-1.5 flex-wrap"
+        role="group"
+        :aria-labelledby="`facet-category-label-${category}`"
+        data-facet-category-facets
+      >
         <ButtonBase
           v-for="facet in facetsByCategory[category]"
           :key="facet.id"
-          size="small"
+          size="sm"
+          role="checkbox"
           :title="facet.comingSoon ? $t('compare.facets.coming_soon') : facet.description"
           :disabled="facet.comingSoon"
-          :aria-pressed="isFacetSelected(facet.id)"
+          :aria-checked="isFacetSelected(facet.id)"
           :aria-label="facet.label"
-          class="gap-1 px-1.5 rounded transition-colors focus-visible:outline-accent/70"
-          :class="
-            facet.comingSoon
-              ? 'text-fg-subtle/50 bg-bg-subtle border-border-subtle cursor-not-allowed'
-              : isFacetSelected(facet.id)
-                ? 'text-fg-muted bg-bg-muted'
-                : 'text-fg-subtle bg-bg-subtle border-border-subtle hover:text-fg-muted hover:border-border'
-          "
+          class="gap-1 px-1.5 rounded transition-colors text-fg-subtle bg-bg-subtle border-border-subtle enabled:hover:(text-fg-muted border-border) aria-checked:(text-fg-muted bg-fg/10 border-fg/20 hover:enabled:(bg-fg/20 text-fg/50)) focus-visible:outline-accent/70 disabled:(text-fg-subtle/50 bg-bg-subtle border-border-subtle)"
           @click="!facet.comingSoon && toggleFacet(facet.id)"
           :classicon="
             facet.comingSoon

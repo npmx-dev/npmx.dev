@@ -374,7 +374,7 @@ defineOgImage(
       <!-- File content / Directory listing - sticky with internal scroll on desktop -->
       <div class="flex-1 min-w-0 self-start">
         <div
-          class="sticky z-10 top-25 bg-bg border-b border-border px-4 py-2 flex items-center justify-between gap-2 text-nowrap overflow-x-auto max-w-full"
+          class="sticky z-5 top-25 bg-bg border-b border-border px-4 py-2 flex items-center justify-between gap-2 text-nowrap overflow-x-auto max-w-full"
         >
           <div class="flex items-center gap-2">
             <div

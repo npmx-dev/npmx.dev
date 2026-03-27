@@ -28,18 +28,18 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version: lts/*
 
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
         name: 🟧 Install pnpm
 
       - name: 📦 Install dependencies (root only, no scripts)
         run: pnpm install --filter . --ignore-scripts
 
       - name: 🔠 Lint project
-        run: pnpm lint
+        run: pnpm vp run lint
 
   types:
     name: 💪 Type check
@@ -48,18 +48,18 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version: lts/*
 
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
         name: 🟧 Install pnpm
 
       - name: 📦 Install dependencies
         run: pnpm install
 
       - name: 💪 Type check
-        run: pnpm test:types
+        run: pnpm vp run test:types
 
   unit:
     name: 🧪 Unit tests
@@ -68,18 +68,18 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version: lts/*
 
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
         name: 🟧 Install pnpm
 
       - name: 📦 Install dependencies
         run: pnpm install
 
       - name: 🧪 Unit tests
-        run: pnpm test:unit run --coverage --reporter=default --reporter=junit --outputFile=test-report.junit.xml
+        run: pnpm vp test --project unit --coverage --reporter=default --reporter=junit --outputFile=test-report.junit.xml
 
       - name: ⬆︎ Upload test results to Codecov
         if: ${{ !cancelled() }}
@@ -94,31 +94,31 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version: lts/*
 
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
         name: 🟧 Install pnpm
 
       - name: 📦 Install dependencies
         run: pnpm install
 
       - name: 🌐 Install browser
-        run: pnpm playwright install chromium-headless-shell
+        run: pnpm vp exec playwright install chromium-headless-shell
 
       - name: 🧪 Component tests
-        run: pnpm test:nuxt run --coverage --reporter=default --reporter=junit --outputFile=test-report.junit.xml
+        run: pnpm vp test --project nuxt --coverage --reporter=default --reporter=junit --outputFile=test-report.junit.xml
 
       - name: ⬆︎ Upload coverage reports to Codecov
-        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5
+        uses: codecov/codecov-action@1af58845a975a7985b0beb0cbe6fbbb71a41dbad # v5
         with:
           report_type: test_results
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: ⬆︎ Upload coverage reports to Codecov
-        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5
+        uses: codecov/codecov-action@1af58845a975a7985b0beb0cbe6fbbb71a41dbad # v5
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
@@ -131,24 +131,24 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version: lts/*
 
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
         name: 🟧 Install pnpm
 
       - name: 📦 Install dependencies
         run: pnpm install
 
       - name: 🏗️ Build project
-        run: pnpm build:test
+        run: pnpm vp run build:test
         env:
           VALIDATE_HTML: true
           NODE_OPTIONS: --max-old-space-size=6144
 
       - name: 🖥️ Test project (browser)
-        run: pnpm test:browser:prebuilt
+        run: pnpm vp run test:browser:prebuilt
 
   a11y:
     name: ♿ Accessibility audit
@@ -160,23 +160,23 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version: lts/*
 
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
         name: 🟧 Install pnpm
 
       - name: 📦 Install dependencies
         run: pnpm install
 
       - name: 🏗️ Build project
-        run: pnpm build:test
+        run: pnpm vp run build:test
         env:
           NODE_OPTIONS: --max-old-space-size=6144
 
       - name: ♿ Accessibility audit (Lighthouse - ${{ matrix.mode }} mode)
-        run: pnpm test:a11y:prebuilt
+        run: pnpm vp run test:a11y:prebuilt
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
           LIGHTHOUSE_COLOR_MODE: ${{ matrix.mode }}
@@ -188,21 +188,18 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version: lts/*
 
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
         name: 🟧 Install pnpm
 
       - name: 📦 Install dependencies
         run: pnpm install
 
       - name: 🧹 Check for unused code
-        run: pnpm knip
-
-      - name: 🧹 Check for unused production code
-        run: pnpm knip --production
+        run: pnpm vp run knip
 
   i18n:
     name: 🌐 i18n validation
@@ -211,20 +208,20 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version: lts/*
 
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
         name: 🟧 Install pnpm
 
       - name: 📦 Install dependencies (root only, no scripts)
         run: pnpm install --filter . --ignore-scripts
 
       - name: 🌐 Check for missing or dynamic i18n keys
-        run: pnpm i18n:report
+        run: pnpm vp run i18n:report
 
       - name: 🌐 Check i18n schema is up to date
         run: |
-          pnpm i18n:schema
+          pnpm vp run i18n:schema
           git diff --exit-code i18n/schema.json

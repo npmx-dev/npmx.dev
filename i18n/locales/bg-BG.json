@@ -111,10 +111,14 @@
     "theme_system": "Системна",
     "language": "Език",
     "help_translate": "Помогнете да преведем npmx",
-    "accent_colors": "Акцентни цветове",
+    "accent_colors": {
+      "label": "Акцентни цветове"
+    },
     "clear_accent": "Изчистване на акцентен цвят",
     "translation_progress": "Напредък на превода",
-    "background_themes": "Фонов нюанс",
+    "background_themes": {
+      "label": "Фонов нюанс"
+    },
     "keyboard_shortcuts_enabled": "Активиране на клавишни комбинации",
     "keyboard_shortcuts_enabled_description": "Клавишните комбинации могат да бъдат деактивирани, ако влизат в конфликт с други браузърни или системни преки пътища"
   },
@@ -531,7 +535,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -808,11 +813,7 @@
       "downloads_month": "Изтегляния/месец",
       "downloads_year": "Изтегляния/година",
       "published": "Последно публикуван",
-      "name": "Име",
-      "quality": "Качество",
-      "popularity": "Популярност",
-      "maintenance": "Поддръжка",
-      "score": "Резултат"
+      "name": "Име"
     },
     "columns": {
       "title": "Колони",
@@ -826,10 +827,6 @@
       "published": "Последно публикуван",
       "maintainers": "Поддържащи",
       "keywords": "Ключови думи",
-      "quality_score": "Резултат за качество",
-      "popularity_score": "Резултат за популярност",
-      "maintenance_score": "Резултат за поддръжка",
-      "combined_score": "Комбиниран резултат",
       "security": "Сигурност"
     },
     "view_mode": {
@@ -1011,14 +1008,11 @@
       "add_column": "Добавяне на колона без зависимости към сравнението"
     },
     "facets": {
-      "group_label": "Аспекти на сравнението",
       "all": "всички",
       "none": "нито един",
       "coming_soon": "Скоро",
       "select_all": "Избор на всички аспекти",
       "deselect_all": "Отмяна на избора на всички аспекти",
-      "select_category": "Избор на всички {category} аспекти",
-      "deselect_category": "Отмяна на избора на всички {category} аспекти",
       "binary_only_tooltip": "Този пакет излага binaries и няма exports",
       "categories": {
         "performance": "Производителност",
@@ -1101,6 +1095,7 @@
     "file_too_large": "Файлът е твърде голям за сравнение",
     "file_size_warning": "{size} надвишава лимита от 250KB за сравнение",
     "compare_versions": "diff",
+    "version_invalid_url_format": {},
     "summary": "Резюме",
     "deps_count": "{count} зависимости",
     "dependencies": "Зависимости",
@@ -1242,5 +1237,9 @@
       "p1": "Ако срещнете бариера за достъпност в {app}, моля, уведомете ни, като отворите проблем в нашето {link}. Приемаме сериозно тези доклади и ще направим всичко възможно да ги разгледаме.",
       "link": "GitHub хранилище"
     }
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

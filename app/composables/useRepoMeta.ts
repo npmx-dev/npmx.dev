@@ -3,6 +3,8 @@ import { parseRepoUrl, GITLAB_HOSTS } from '#shared/utils/git-providers'
 
 // TTL for git repo metadata (10 minutes - repo stats don't change frequently)
 const REPO_META_TTL = 60 * 10
+// Other TTLs for known sources
+const UNGH_REPO_META_TTL = 60 * 60 * 3 // 3 hours (ungh caches 6 hours server-side, but we run it half more frequently)
 
 export type RepoMetaLinks = {
   repo: string
@@ -134,7 +136,7 @@ const githubAdapter: ProviderAdapter = {
       const { data } = await cachedFetch<UnghRepoResponse>(
         `https://ungh.cc/repos/${ref.owner}/${ref.repo}`,
         { headers: { 'User-Agent': 'npmx', ...options.headers }, ...options },
-        REPO_META_TTL,
+        UNGH_REPO_META_TTL,
       )
       res = data
     } catch {

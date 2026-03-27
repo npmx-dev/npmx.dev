@@ -161,6 +161,15 @@ const hasMinimap = computed<boolean>(() => {
 const chartConfig = computed<VueUiXyConfig>(() => {
   return {
     theme: isDarkMode.value ? 'dark' : '',
+    a11y: {
+      translations: {
+        keyboardNavigation: $t(
+          'package.trends.chart_assistive_text.keyboard_navigation_horizontal',
+        ),
+        tableAvailable: $t('package.trends.chart_assistive_text.table_available'),
+        tableCaption: $t('package.trends.chart_assistive_text.table_caption'),
+      },
+    },
     chart: {
       title: {
         text: dateRangeLabel.value,
@@ -375,7 +384,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
               tabindex="0"
               class="i-lucide:info w-3.5 h-3.5 text-fg-subtle cursor-help shrink-0 rounded-sm"
               role="img"
-              aria-label="versions info"
+              :aria-label="$t('package.versions.grouping_versions_about')"
             />
           </TooltipApp>
         </label>
@@ -412,7 +421,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
               tabindex="0"
               class="i-lucide:info w-3.5 h-3.5 text-fg-subtle cursor-help shrink-0 rounded-sm"
               role="img"
-              aria-label="versions info"
+              :aria-label="$t('package.versions.grouping_usage_about')"
             />
           </TooltipApp>
         </label>
@@ -447,6 +456,13 @@ const chartConfig = computed<VueUiXyConfig>(() => {
       <ClientOnly v-if="xyDataset.length > 0 && !error">
         <div class="chart-container w-full" :key="groupingMode">
           <VueUiXy :dataset="xyDataset" :config="chartConfig" class="[direction:ltr]">
+            <!-- Keyboard navigation hint -->
+            <template #hint="{ isVisible }">
+              <p v-if="isVisible" class="text-accent text-xs -mt-6 text-center" aria-hidden="true">
+                {{ $t('compare.packages.line_chart_nav_hint') }}
+              </p>
+            </template>
+
             <!-- Injecting custom svg elements -->
             <template #svg="{ svg }">
               <!-- Inject legend during SVG print only -->
@@ -663,6 +679,18 @@ const chartConfig = computed<VueUiXyConfig>(() => {
 /* Disable all transitions on SVG elements to prevent repositioning animation */
 :deep(.vue-ui-xy) svg rect {
   transition: none !important;
+}
+
+:deep(.vue-data-ui-component svg:focus-visible) {
+  outline: 1px solid var(--accent-color) !important;
+  border-radius: 0.1rem;
+  outline-offset: 0 !important;
+}
+
+:deep(.vue-ui-user-options-button:focus-visible),
+:deep(.vue-ui-user-options :first-child:focus-visible) {
+  outline: 0.1rem solid var(--accent-color) !important;
+  border-radius: 0.25rem;
 }
 </style>
 

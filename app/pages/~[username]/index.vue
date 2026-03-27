@@ -143,7 +143,7 @@ defineOgImage(
     <!-- Header -->
     <header class="mb-8 pb-8 border-b border-border">
       <div class="flex flex-wrap items-center gap-4">
-        <UserAvatar :username="username" />
+        <UserAvatar :username="username" size="lg" />
         <div>
           <h1 class="font-mono text-2xl sm:text-3xl font-medium">~{{ username }}</h1>
           <p v-if="results?.total" class="text-fg-muted text-sm mt-1">

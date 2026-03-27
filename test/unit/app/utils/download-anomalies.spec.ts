@@ -1,10 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { applyBlocklistCorrection } from '../../../../app/utils/download-anomalies'
-import type {
-  MonthlyDataPoint,
-  WeeklyDataPoint,
-  YearlyDataPoint,
-} from '../../../../app/types/chart'
+import { applyBlocklistCorrection } from '~/utils/download-anomalies'
+import type { MonthlyDataPoint, WeeklyDataPoint, YearlyDataPoint } from '~/types/chart'
 
 /** Helper to build a WeeklyDataPoint from a start date and value. */
 function week(weekStart: string, value: number): WeeklyDataPoint {
@@ -26,7 +22,7 @@ function month(monthStr: string, value: number): MonthlyDataPoint {
   return {
     value,
     month: monthStr,
-    timestamp: new Date(`${monthStr}-01T00:00:00Z`).getTime(),
+    timestamp: Date.parse(`${monthStr}-01T00:00:00Z`),
   }
 }
 
@@ -34,7 +30,7 @@ function year(yearStr: string, value: number): YearlyDataPoint {
   return {
     value,
     year: yearStr,
-    timestamp: new Date(`${yearStr}-01-01T00:00:00Z`).getTime(),
+    timestamp: Date.parse(`${yearStr}-01-01T00:00:00Z`),
   }
 }
 

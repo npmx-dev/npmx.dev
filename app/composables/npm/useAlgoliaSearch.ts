@@ -91,14 +91,6 @@ function hitToSearchResult(hit: AlgoliaHit): NpmSearchResult {
           }))
         : [],
     },
-    score: {
-      final: 0,
-      detail: {
-        quality: hit.popular ? 1 : 0,
-        popularity: hit.downloadsRatio,
-        maintenance: 0,
-      },
-    },
     searchScore: 0,
     downloads: {
       weekly: Math.round(hit.downloadsLast30Days / 4.3),
@@ -107,7 +99,7 @@ function hitToSearchResult(hit: AlgoliaHit): NpmSearchResult {
   }
 }
 
-export interface AlgoliaSearchOptions {
+interface AlgoliaSearchOptions {
   size?: number
   from?: number
   filters?: string
@@ -121,7 +113,7 @@ export interface AlgoliaMultiSearchChecks {
   checkPackage?: string
 }
 
-export interface AlgoliaSearchWithSuggestionsResult {
+interface AlgoliaSearchWithSuggestionsResult {
   search: NpmSearchResponse
   orgExists: boolean
   userExists: boolean

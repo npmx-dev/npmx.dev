@@ -102,10 +102,6 @@ const sortKeyLabelKeys = computed<Record<SortKey, string>>(() => ({
   'downloads-year': t('filters.sort.downloads_year'),
   'updated': t('filters.sort.published'),
   'name': t('filters.sort.name'),
-  'quality': t('filters.sort.quality'),
-  'popularity': t('filters.sort.popularity'),
-  'maintenance': t('filters.sort.maintenance'),
-  'score': t('filters.sort.score'),
 }))
 
 function getSortKeyLabelKey(key: SortKey): string {
@@ -228,7 +224,7 @@ const { selectedPackages, clearSelectedPackages } = usePackageSelection()
           </ButtonBase>
           <button
             @click="clearSelectedPackages"
-            aria-label="Close action bar"
+            :aria-label="$t('filters.clear_selected_label')"
             class="flex items-center ms-2"
           >
             <span class="i-lucide:x text-sm" />

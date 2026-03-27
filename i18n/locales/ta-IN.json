@@ -76,6 +76,10 @@
     "links": "இணைப்புகள்",
     "tap_to_search": "தேட தட்டவும்"
   },
+  "blog": {
+    "author": {},
+    "atproto": {}
+  },
   "settings": {
     "title": "அமைப்புகள்",
     "tagline": "உங்கள் npmx அனுபவத்தைத் தனிப்பயனாக்கு",
@@ -105,10 +109,14 @@
     "theme_system": "கணினி",
     "language": "மொழி",
     "help_translate": "npmx-ஐ மொழிபெயர்க்க உதவுங்கள்",
-    "accent_colors": "வலியுறுத்தல் வண்ணங்கள்",
+    "accent_colors": {
+      "label": "வலியுறுத்தல் வண்ணங்கள்"
+    },
     "clear_accent": "வலியுறுத்தல் வண்ணத்தை அழி",
     "translation_progress": "மொழிபெயர்ப்பு முன்னேற்றம்",
-    "background_themes": "பின்புல நிழல்"
+    "background_themes": {
+      "label": "பின்புல நிழல்"
+    }
   },
   "i18n": {
     "missing_keys": "{count} விடுபட்ட மொழிபெயர்ப்பு | {count} விடுபட்ட மொழிபெயர்ப்புகள்",
@@ -118,6 +126,7 @@
     "edit_on_github": "GitHub-ல் திருத்து",
     "view_guide": "மொழிபெயர்ப்பு வழிகாட்டி"
   },
+  "error": {},
   "common": {
     "loading": "ஏற்றுகிறது...",
     "loading_more": "மேலும் ஏற்றுகிறது...",
@@ -144,6 +153,9 @@
       "github": "GitHub-ல் காண்க"
     }
   },
+  "profile": {
+    "invite": {}
+  },
   "package": {
     "not_found": "தொகுப்பு கிடைக்கவில்லை",
     "not_found_message": "தொகுப்பைக் கண்டுபிடிக்க இயலவில்லை.",
@@ -156,6 +168,7 @@
       "version": "இந்தப் பதிப்பு நிறுத்தப்பட்டது.",
       "no_reason": "காரணம் வழங்கப்படவில்லை"
     },
+    "size_increase": {},
     "replacement": {
       "title": "இந்த சார்பு உங்களுக்குத் தேவைப்படாமல் இருக்கலாம்.",
       "native": "இதை {replacement} மூலம் மாற்றலாம், Node {nodeVersion} முதல் கிடைக்கிறது.",
@@ -287,7 +300,8 @@
       "more_tagged": "{count} மேலும் குறியிடப்பட்டவை",
       "all_covered": "அனைத்து பதிப்புகளும் மேலே உள்ள குறிச்சொற்களால் உள்ளடக்கப்பட்டுள்ளன",
       "deprecated_title": "{version} (நிறுத்தப்பட்டது)",
-      "view_all": "{count} பதிப்பைக் காண்க | அனைத்து {count} பதிப்புகளையும் காண்க"
+      "view_all": "{count} பதிப்பைக் காண்க | அனைத்து {count} பதிப்புகளையும் காண்க",
+      "copy_alt": {}
     },
     "dependencies": {
       "title": "சார்பு ({count}) | சார்புகள் ({count})",
@@ -341,7 +355,8 @@
       "y_axis_label": "{granularity} {facet}",
       "items": {
         "downloads": "பதிவிறக்கங்கள்"
-      }
+      },
+      "copy_alt": {}
     },
     "downloads": {
       "title": "வாராந்திர பதிவிறக்கங்கள்",
@@ -434,7 +449,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -707,11 +723,7 @@
       "downloads_month": "பதிவிறக்கங்கள்/மாதம்",
       "downloads_year": "பதிவிறக்கங்கள்/ஆண்டு",
       "published": "கடைசியாக வெளியிடப்பட்டது",
-      "name": "பெயர்",
-      "quality": "தரம்",
-      "popularity": "பிரபலம்",
-      "maintenance": "பராமரிப்பு",
-      "score": "மதிப்பெண்"
+      "name": "பெயர்"
     },
     "columns": {
       "title": "நெடுவரிசைகள்",
@@ -725,10 +737,6 @@
       "published": "கடைசியாக வெளியிடப்பட்டது",
       "maintainers": "பராமரிப்பாளர்கள்",
       "keywords": "முக்கிய வார்த்தைகள்",
-      "quality_score": "தர மதிப்பெண்",
-      "popularity_score": "பிரபல மதிப்பெண்",
-      "maintenance_score": "பராமரிப்பு மதிப்பெண்",
-      "combined_score": "ஒருங்கிணைந்த மதிப்பெண்",
       "security": "பாதுகாப்பு"
     },
     "view_mode": {
@@ -785,6 +793,8 @@
         "managers": "மேலாளர்கள்"
       }
     },
+    "sponsors": {},
+    "oss_partners": {},
     "team": {},
     "contributors": {
       "title": "{count} பங்களிப்பாளர் | {count} பங்களிப்பாளர்கள்",
@@ -805,6 +815,7 @@
         "description": "அரட்டையடிக்கவும், கேள்விகள் கேட்கவும், யோசனைகளைப் பகிரவும்.",
         "cta": "Discord-ல் சேரவும்"
       },
+      "builders": {},
       "follow": {
         "title": "புதுப்பிப்புகளைப் பெறுங்கள்",
         "description": "npmx பற்றிய சமீபத்திய தகவல்களைக் கண்டறியுங்கள்.",
@@ -894,14 +905,11 @@
       "add_column": "ஒப்பீட்டில் சார்பு இல்லாத நெடுவரிசையைச் சேர்"
     },
     "facets": {
-      "group_label": "ஒப்பீட்டு அம்சங்கள்",
       "all": "அனைத்தும்",
       "none": "எதுவும் இல்லை",
       "coming_soon": "விரைவில் வரும்",
       "select_all": "அனைத்து அம்சங்களையும் தேர்வு செய்",
       "deselect_all": "அனைத்து அம்சங்களின் தேர்வை நீக்கு",
-      "select_category": "அனைத்து {category} அம்சங்களையும் தேர்வு செய்",
-      "deselect_category": "அனைத்து {category} அம்சங்களின் தேர்வை நீக்கு",
       "binary_only_tooltip": "இந்த தொகுப்பு பைனரிகளை மட்டுமே வெளிப்படுத்துகிறது, ஏற்றுமதிகள் இல்லை",
       "categories": {
         "performance": "செயல்திறன்",
@@ -977,7 +985,15 @@
       "trends": {
         "title": "வாராந்திர பதிவிறக்கங்கள்"
       }
-    }
+    },
+    "version_invalid_url_format": {},
+    "file_filter_option": {},
+    "filter": {}
+  },
+  "pds": {
+    "join": {},
+    "server": {},
+    "community": {}
   },
   "privacy_policy": {
     "title": "தனியுரிமைக் கொள்கை",
@@ -1064,5 +1080,9 @@
     "measures": {},
     "limitations": {},
     "contact": {}
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

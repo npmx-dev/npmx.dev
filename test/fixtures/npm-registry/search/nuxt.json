@@ -42,14 +42,6 @@
           "npm": "https://www.npmjs.com/package/nuxt"
         }
       },
-      "score": {
-        "final": 1846.2391,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -94,14 +86,6 @@
           "repository": "git+https://github.com/nuxt/nuxt.git",
           "bugs": "https://github.com/nuxt/nuxt/issues",
           "npm": "https://www.npmjs.com/package/@nuxt/vite-builder"
-        }
-      },
-      "score": {
-        "final": 436.68585,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -166,14 +150,6 @@
           "npm": "https://www.npmjs.com/package/@nuxt/devtools"
         }
       },
-      "score": {
-        "final": 435.51923,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -218,14 +194,6 @@
           "repository": "git+https://github.com/vueuse/vueuse.git",
           "bugs": "https://github.com/vueuse/vueuse/issues",
           "npm": "https://www.npmjs.com/package/@vueuse/nuxt"
-        }
-      },
-      "score": {
-        "final": 435.2237,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -274,14 +242,6 @@
           "npm": "https://www.npmjs.com/package/@nuxt/schema"
         }
       },
-      "score": {
-        "final": 433.77365,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -321,14 +281,6 @@
           "repository": "git+https://github.com/vuejs/pinia.git",
           "bugs": "https://github.com/vuejs/pinia/issues",
           "npm": "https://www.npmjs.com/package/@pinia/nuxt"
-        }
-      },
-      "score": {
-        "final": 430.91614,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -377,14 +329,6 @@
           "npm": "https://www.npmjs.com/package/@nuxt/kit"
         }
       },
-      "score": {
-        "final": 429.22345,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -426,14 +370,6 @@
           "npm": "https://www.npmjs.com/package/@nuxt/image"
         }
       },
-      "score": {
-        "final": 420.65933,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -473,14 +409,6 @@
           "repository": "git+https://github.com/KazariEX/dxup.git",
           "bugs": "https://github.com/KazariEX/dxup/issues",
           "npm": "https://www.npmjs.com/package/@dxup/nuxt"
-        }
-      },
-      "score": {
-        "final": 419.1896,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -536,14 +464,6 @@
           "npm": "https://www.npmjs.com/package/@nuxt/types"
         }
       },
-      "score": {
-        "final": 408.49863,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -590,14 +510,6 @@
           "npm": "https://www.npmjs.com/package/@nuxt/test-utils"
         }
       },
-      "score": {
-        "final": 403.97028,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -637,14 +549,6 @@
           "repository": "git+https://github.com/nuxt/nuxt.git",
           "bugs": "https://github.com/nuxt/nuxt/issues",
           "npm": "https://www.npmjs.com/package/@nuxt/nitro-server"
-        }
-      },
-      "score": {
-        "final": 396.81116,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -709,14 +613,6 @@
           "npm": "https://www.npmjs.com/package/@nuxt/eslint-plugin"
         }
       },
-      "score": {
-        "final": 395.78107,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -756,14 +652,6 @@
           "repository": "git+https://github.com/nuxt/cli.git",
           "bugs": "https://github.com/nuxt/cli/issues",
           "npm": "https://www.npmjs.com/package/@nuxt/cli"
-        }
-      },
-      "score": {
-        "final": 389.1604,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -828,14 +716,6 @@
           "npm": "https://www.npmjs.com/package/@nuxt/icon"
         }
       },
-      "score": {
-        "final": 385.6585,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -898,14 +778,6 @@
           "npm": "https://www.npmjs.com/package/@nuxt/eslint-config"
         }
       },
-      "score": {
-        "final": 384.345,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -945,14 +817,6 @@
           "repository": "git+https://github.com/nuxt/fonts.git",
           "bugs": "https://github.com/nuxt/fonts/issues",
           "npm": "https://www.npmjs.com/package/@nuxt/fonts"
-        }
-      },
-      "score": {
-        "final": 380.06802,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -1017,14 +881,6 @@
           "npm": "https://www.npmjs.com/package/@nuxt/eslint"
         }
       },
-      "score": {
-        "final": 369.41135,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -1060,14 +916,6 @@
           "repository": "git+https://github.com/cipami/nuxt-lodash.git",
           "bugs": "https://github.com/cipami/nuxt-lodash/issues",
           "npm": "https://www.npmjs.com/package/nuxt-lodash"
-        }
-      },
-      "score": {
-        "final": 369.3478,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -1123,14 +971,6 @@
           "npm": "https://www.npmjs.com/package/@nuxt/telemetry"
         }
       },
-      "score": {
-        "final": 368.14578,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -1171,14 +1011,6 @@
           "repository": "git://github.com/getsentry/sentry-javascript.git",
           "bugs": "https://github.com/getsentry/sentry-javascript/issues",
           "npm": "https://www.npmjs.com/package/@sentry/nuxt"
-        }
-      },
-      "score": {
-        "final": 362.62573,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -1232,14 +1064,6 @@
           "repository": "git+https://github.com/nuxt/postcss8.git",
           "bugs": "https://github.com/nuxt/postcss8/issues",
           "npm": "https://www.npmjs.com/package/@nuxt/postcss8"
-        }
-      },
-      "score": {
-        "final": 358.2893,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -1327,14 +1151,6 @@
           "npm": "https://www.npmjs.com/package/@workflow/nuxt"
         }
       },
-      "score": {
-        "final": 355.45712,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -1385,14 +1201,6 @@
           "npm": "https://www.npmjs.com/package/@unocss/nuxt"
         }
       },
-      "score": {
-        "final": 354.82272,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -1428,14 +1236,6 @@
           "repository": "git+https://github.com/Morgbn/nuxt-csurf.git",
           "bugs": "https://github.com/Morgbn/nuxt-csurf/issues",
           "npm": "https://www.npmjs.com/package/nuxt-csurf"
-        }
-      },
-      "score": {
-        "final": 352.99255,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {

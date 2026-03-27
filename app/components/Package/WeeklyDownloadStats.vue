@@ -208,7 +208,6 @@ const dataset = computed<VueUiSparklineDatasetItem[]>(() =>
 
 const lastDatapoint = computed(() => dataset.value.at(-1)?.period ?? '')
 
-const isLoop = shallowRef(false)
 const showPulse = shallowRef(true)
 const keyboardShortcuts = useKeyboardShortcuts()
 
@@ -307,13 +306,22 @@ function layEgg() {
   showPulse.value = false
   nextTick(() => {
     showPulse.value = true
-    isLoop.value = !isLoop.value
+    settings.value.enableGraphPulseLooping = !settings.value.enableGraphPulseLooping
     playEggPulse()
   })
 }
 
 const config = computed<VueUiSparklineConfig>(() => {
   return {
+    a11y: {
+      translations: {
+        keyboardNavigation: $t(
+          'package.trends.chart_assistive_text.keyboard_navigation_horizontal',
+        ),
+        tableAvailable: $t('package.trends.chart_assistive_text.table_available'),
+        tableCaption: $t('package.trends.chart_assistive_text.table_caption'),
+      },
+    },
     theme: 'dark',
     /**
      * The built-in skeleton loader kicks in when the component is mounted but the data is not yet ready.
@@ -356,7 +364,7 @@ const config = computed<VueUiSparklineConfig>(() => {
         color: colors.value.borderHover,
         pulse: {
           show: showPulse.value, // the pulse will not show if prefers-reduced-motion (enforced by vue-data-ui)
-          loop: isLoop.value,
+          loop: settings.value.enableGraphPulseLooping,
           radius: 1.5,
           color: pulseColor.value!,
           easing: 'ease-in-out',
@@ -417,6 +425,13 @@ const config = computed<VueUiSparklineConfig>(() => {
         <template v-if="isLoadingWeeklyDownloads || hasWeeklyDownloads">
           <ClientOnly>
             <VueUiSparkline class="w-full max-w-xs" :dataset :config>
+              <!-- Keyboard navigation hint -->
+              <template #hint="{ isVisible }">
+                <p v-if="isVisible" class="text-accent text-xs text-center mt-2" aria-hidden="true">
+                  {{ $t('package.downloads.sparkline_nav_hint') }}
+                </p>
+              </template>
+
               <template #skeleton>
                 <!-- This empty div overrides the default built-in scanning animation on load -->
                 <div />
@@ -493,6 +508,12 @@ const config = computed<VueUiSparklineConfig>(() => {
 .opacity-enter-to,
 .opacity-leave-from {
   opacity: 1;
+}
+
+:deep(.vue-data-ui-component svg:focus-visible) {
+  outline: 0.1rem solid var(--accent-color) !important;
+  border-radius: 0.1rem;
+  outline-offset: 3px;
 }
 </style>
 
