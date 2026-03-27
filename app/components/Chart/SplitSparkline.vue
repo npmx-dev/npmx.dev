@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { VueUiSparkline } from 'vue-data-ui/vue-ui-sparkline'
 import { useCssVariables } from '~/composables/useColors'
-import type {
-  VueUiSparklineConfig,
-  VueUiSparklineDatasetItem,
-  VueUiXyDatasetItem,
+import {
+  type VueUiSparklineConfig,
+  type VueUiSparklineDatasetItem,
+  type VueUiXyDatasetItem,
 } from 'vue-data-ui'
-import { getPalette } from 'vue-data-ui/utils'
+import { getPalette, lightenColor } from 'vue-data-ui/utils'
 
 import('vue-data-ui/style.css')
 
@@ -99,6 +99,12 @@ const configs = computed(() => {
       ? Array.from(new Set([...(unit.dashIndices ?? []), lastIndex]))
       : unit.dashIndices
 
+    const fallbackColor = palette[i] ?? palette[i % palette.length] ?? palette[0]!
+    const seriesColor = unit.color ?? fallbackColor
+    const lightenedSeriesColor: string = unit.color
+      ? lightenOklch(unit.color, 0.5) ?? seriesColor
+      : lightenColor(seriesColor, 0.5) ?? seriesColor // palette uses hex colours
+
     return {
       a11y: {
         translations: {
@@ -110,6 +116,10 @@ const configs = computed(() => {
         },
       },
       theme: isDarkMode.value ? 'dark' : '',
+      temperatureColors: {
+        show: isDarkMode.value,
+        colors: [lightenedSeriesColor, seriesColor]
+      },
       skeletonConfig: {
         style: {
           backgroundColor: 'transparent',
