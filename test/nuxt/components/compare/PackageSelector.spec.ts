@@ -222,7 +222,7 @@ describe('PackageSelector', () => {
   })
 
   describe('max prop', () => {
-    it('defaults to 4 when not provided', async () => {
+    it('defaults to 10 when not provided', async () => {
       const component = await mountSuspended(PackageSelector, {
         props: {
           modelValue: [],
@@ -230,7 +230,7 @@ describe('PackageSelector', () => {
       })
 
       // Should show max of 4 in hint
-      expect(component.text()).toContain('4')
+      expect(component.text()).toContain('1O')
     })
 
     it('uses provided max value', async () => {
