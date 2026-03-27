@@ -99,7 +99,7 @@ export default defineNuxtConfig({
 
   routeRules: {
     // API routes
-    '/api/**': { isr: 60 },
+    '/api/**': { isr: 300 },
     '/api/registry/badge/**': {
       isr: {
         expiration: 60 * 60 /* one hour */,
@@ -128,7 +128,7 @@ export default defineNuxtConfig({
     '/api/registry/package-meta/**': { isr: 300 },
     '/:pkg/.well-known/skills/**': { isr: 3600 },
     '/:scope/:pkg/.well-known/skills/**': { isr: 3600 },
-    '/__og-image__/**': getISRConfig(60),
+    '/__og-image__/**': getISRConfig(3600),
     '/_avatar/**': { isr: 3600, proxy: 'https://www.gravatar.com/avatar/**' },
     '/opensearch.xml': { isr: true },
     '/oauth-client-metadata.json': { prerender: true },
@@ -161,11 +161,11 @@ export default defineNuxtConfig({
       },
     },
     // pages
-    '/package/**': getISRConfig(60, { fallback: 'html' }),
-    '/package/:name/_payload.json': getISRConfig(60, { fallback: 'json' }),
-    '/package/:name/v/:version/_payload.json': getISRConfig(60, { fallback: 'json' }),
-    '/package/:org/:name/_payload.json': getISRConfig(60, { fallback: 'json' }),
-    '/package/:org/:name/v/:version/_payload.json': getISRConfig(60, { fallback: 'json' }),
+    '/package/**': getISRConfig(300, { fallback: 'html' }),
+    '/package/:name/_payload.json': getISRConfig(300, { fallback: 'json' }),
+    '/package/:name/v/:version/_payload.json': getISRConfig(300, { fallback: 'json' }),
+    '/package/:org/:name/_payload.json': getISRConfig(300, { fallback: 'json' }),
+    '/package/:org/:name/v/:version/_payload.json': getISRConfig(300, { fallback: 'json' }),
     // infinite cache (versioned - doesn't change)
     '/package-code/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/package-docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
