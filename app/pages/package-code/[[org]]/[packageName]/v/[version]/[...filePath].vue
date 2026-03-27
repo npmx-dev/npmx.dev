@@ -12,23 +12,6 @@ definePageMeta({
 
 const route = useRoute('code')
 
-// Preserve file-tree scroll position across navigation
-const fileTreeSidebarRef = useTemplateRef('file-tree-sidebar')
-const savedFileTreeSidebarScroll = useState('code-sidebar-scroll', () => 0)
-
-onBeforeUnmount(() => {
-  savedFileTreeSidebarScroll.value = fileTreeSidebarRef.value?.scrollTop ?? 0
-})
-
-watch(
-  fileTreeSidebarRef,
-  fileTreeSidebarElement => {
-    if (fileTreeSidebarElement && savedFileTreeSidebarScroll.value)
-      fileTreeSidebarElement.scrollTop = savedFileTreeSidebarScroll.value
-  },
-  { once: true, flush: 'post' },
-)
-
 // Parse package name, version, and file path from URL
 // Patterns:
 //   /code/nuxt/v/4.2.0 → packageName: "nuxt", version: "4.2.0", filePath: null (show tree)
@@ -46,6 +29,31 @@ const parsedRoute = computed(() => {
 
 const packageName = computed(() => parsedRoute.value.packageName)
 const version = computed(() => parsedRoute.value.version)
+
+// Preserve file-tree scroll position across navigation within same package (+ version)
+const fileTreeKey = computed(() => `${packageName.value}@${version.value}`)
+const fileTreeSidebarRef = useTemplateRef('file-tree-sidebar')
+const savedFileTreeSidebarScroll = useState('code-sidebar-scroll', () => ({
+  key: '',
+  scrollTop: 0,
+}))
+
+onBeforeUnmount(() => {
+  savedFileTreeSidebarScroll.value = {
+    key: fileTreeKey.value,
+    scrollTop: fileTreeSidebarRef.value?.scrollTop ?? 0,
+  }
+})
+
+watch(
+  fileTreeSidebarRef,
+  fileTreeSidebarElement => {
+    if (fileTreeSidebarElement && savedFileTreeSidebarScroll.value.key === fileTreeKey.value)
+      fileTreeSidebarElement.scrollTop = savedFileTreeSidebarScroll.value.scrollTop
+  },
+  { once: true, flush: 'post' },
+)
+
 const filePathOrig = computed(() => parsedRoute.value.filePath)
 const filePath = computed(() => parsedRoute.value.filePath?.replace(/\/$/, ''))
 
