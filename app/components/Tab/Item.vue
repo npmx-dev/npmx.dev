@@ -28,7 +28,7 @@ if (!selected || !getTabId || !getPanelId) {
 const isSelected = computed(() => selected.value === props.value)
 const resolvedTabId = computed(() => props.tabId ?? getTabId(props.value))
 const resolvedPanelId = computed(() => getPanelId(props.value))
-const select = () =>{
+const select = () => {
   selected.value = props.value
 }
 </script>
