@@ -78,7 +78,7 @@ const formattedAuthorNames = computed(() => {
       <!-- Authors -->
       <div v-if="authors.length" class="flex items-center gap-4 flex-nowrap">
         <!-- Stacked avatars -->
-        <span>
+        <span class="flex flex-row items-center">
           <span
             v-for="(author, index) in visibleAuthors"
             :key="author.name"
