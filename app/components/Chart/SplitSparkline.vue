@@ -159,7 +159,7 @@ const configs = computed(() => {
           },
         },
         line: {
-          color: unit.color ?? palette[i],
+          color: seriesColor,
           dashIndices,
           dashArray: 3,
         },
