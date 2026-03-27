@@ -43,6 +43,7 @@ packageExtensions:
 
 patchedDependencies:
   '@jsr/deno__doc@0.189.1': patches/@jsr__deno__doc@0.189.1.patch
+  '@nuxt/test-utils': patches/@nuxt__test-utils.patch
 
 savePrefix: ''
 
