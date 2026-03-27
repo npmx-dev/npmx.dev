@@ -22,8 +22,9 @@ onBeforeUnmount(() => {
 
 watch(
   fileTreeSidebarRef,
-  el => {
-    if (el && savedFileTreeSidebarScroll.value) el.scrollTop = savedFileTreeSidebarScroll.value
+  fileTreeSidebarElement => {
+    if (fileTreeSidebarElement && savedFileTreeSidebarScroll.value)
+      fileTreeSidebarElement.scrollTop = savedFileTreeSidebarScroll.value
   },
   { once: true, flush: 'post' },
 )
