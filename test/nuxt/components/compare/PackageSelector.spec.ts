@@ -185,8 +185,8 @@ describe('PackageSelector', () => {
     it('respects max packages limit', async () => {
       const component = await mountSuspended(PackageSelector, {
         props: {
-          modelValue: ['a', 'b', 'c', 'd'],
-          max: 4,
+          modelValue: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'],
+          max: 10,
         },
       })
 
@@ -200,19 +200,19 @@ describe('PackageSelector', () => {
       const component = await mountSuspended(PackageSelector, {
         props: {
           modelValue: ['lodash', 'underscore'],
-          max: 4,
+          max: 10,
         },
       })
 
       expect(component.text()).toContain('2')
-      expect(component.text()).toContain('4')
+      expect(component.text()).toContain('10')
     })
 
     it('shows add hint when less than 2 packages', async () => {
       const component = await mountSuspended(PackageSelector, {
         props: {
           modelValue: ['lodash'],
-          max: 4,
+          max: 10,
         },
       })
 
@@ -229,8 +229,8 @@ describe('PackageSelector', () => {
         },
       })
 
-      // Should show max of 4 in hint
-      expect(component.text()).toContain('1O')
+      // Should show max of 10 in hint
+      expect(component.text()).toContain('10')
     })
 
     it('uses provided max value', async () => {
