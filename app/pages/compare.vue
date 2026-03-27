@@ -295,7 +295,7 @@ useSeoMeta({
             <!-- Data table -->
             <TabPanel value="table" panel-id="comparison-panel-table">
               <!-- Desktop: Grid layout -->
-              <div class="hidden md:block overflow-x-auto">
+              <div class="hidden md:block overflow-x-auto mt-4">
                 <CompareComparisonGrid
                   :columns="gridColumns"
                   :show-no-dependency="showNoDependency"
@@ -315,7 +315,7 @@ useSeoMeta({
               </div>
 
               <!-- Mobile: Card-based layout -->
-              <div class="md:hidden space-y-3">
+              <div class="md:hidden space-y-3 mt-4">
                 <CompareFacetCard
                   v-for="facet in selectedFacets"
                   :key="facet.id"
