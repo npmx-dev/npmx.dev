@@ -37,7 +37,6 @@ const step = ref(0)
 
 onMounted(() => {
   rootEl.value = document.documentElement
-  resolvedMode.value = colorMode.value === 'dark' ? 'dark' : 'light'
 })
 
 watch(
@@ -45,7 +44,7 @@ watch(
   value => {
     resolvedMode.value = value === 'dark' ? 'dark' : 'light'
   },
-  { flush: 'sync' },
+  { flush: 'sync', immediate: true },
 )
 
 const { colors } = useCssVariables(
@@ -191,71 +190,69 @@ const configs = computed(() => {
 </script>
 
 <template>
-  <div>
-    <div class="grid gap-8 sm:grid-cols-2">
-      <ClientOnly v-for="(config, i) in configs" :key="`config_${i}`">
-        <div
-          @mouseleave="resetHover"
-          @keydown.esc="resetHover"
-          class="w-full max-w-[400px] mx-auto"
-        >
-          <div class="flex gap-2 place-items-center">
-            <div class="h-3 w-3">
-              <svg viewBox="0 0 2 2" class="w-full">
-                <rect
-                  x="0"
-                  y="0"
-                  width="2"
-                  height="2"
-                  rx="0.3"
-                  :fill="dataset?.[i]?.color ?? palette[i]"
-                />
-              </svg>
-            </div>
-            {{ applyEllipsis(dataset?.[i]?.name ?? '', 28) }}
+  <div class="grid gap-8 sm:grid-cols-2">
+    <ClientOnly v-for="(config, i) in configs" :key="`config_${i}`">
+      <div
+        @mouseleave="resetHover"
+        @keydown.esc="resetHover"
+        class="w-full max-w-[400px] mx-auto"
+      >
+        <div class="flex gap-2 place-items-center">
+          <div class="h-3 w-3">
+            <svg viewBox="0 0 2 2" class="w-full">
+              <rect
+                x="0"
+                y="0"
+                width="2"
+                height="2"
+                rx="0.3"
+                :fill="dataset?.[i]?.color ?? palette[i]"
+              />
+            </svg>
           </div>
-          <VueUiSparkline
-            :key="`${i}_${step}`"
-            :config
-            :dataset="datasets?.[i]"
-            :selectedIndex
-            @hoverIndex="hoverIndex"
-          >
-            <!-- Keyboard navigation hint -->
-            <template #hint="{ isVisible }">
-              <p v-if="isVisible" class="text-accent text-xs text-center mt-2" aria-hidden="true">
-                {{ $t('package.downloads.sparkline_nav_hint') }}
-              </p>
-            </template>
-
-            <template #skeleton>
-              <!-- This empty div overrides the default built-in scanning animation on load -->
-              <div />
-            </template>
-          </VueUiSparkline>
+          {{ applyEllipsis(dataset?.[i]?.name ?? '', 28) }}
         </div>
+        <VueUiSparkline
+          :key="`${i}_${step}`"
+          :config
+          :dataset="datasets?.[i]"
+          :selectedIndex
+          @hoverIndex="hoverIndex"
+        >
+          <!-- Keyboard navigation hint -->
+          <template #hint="{ isVisible }">
+            <p v-if="isVisible" class="text-accent text-xs text-center mt-2" aria-hidden="true">
+              {{ $t('package.downloads.sparkline_nav_hint') }}
+            </p>
+          </template>
 
-        <template #fallback>
-          <!-- Skeleton matching VueUiSparkline layout (title 24px + SVG aspect 500:80) -->
-          <div class="max-w-xs">
-            <!-- Title row: fontSize * 2 = 24px -->
-            <div class="h-6 flex items-center ps-3">
-              <SkeletonInline class="h-3 w-36" />
+          <template #skeleton>
+            <!-- This empty div overrides the default built-in scanning animation on load -->
+            <div />
+          </template>
+        </VueUiSparkline>
+      </div>
+
+      <template #fallback>
+        <!-- Skeleton matching VueUiSparkline layout (title 24px + SVG aspect 500:80) -->
+        <div class="max-w-xs">
+          <!-- Title row: fontSize * 2 = 24px -->
+          <div class="h-6 flex items-center ps-3">
+            <SkeletonInline class="h-3 w-36" />
+          </div>
+          <!-- Chart area: matches SVG viewBox 500:80 -->
+          <div class="aspect-[500/80] flex items-center">
+            <!-- Data label (covers ~42% width, matching dataLabel.offsetX) -->
+            <div class="w-[42%] flex items-center ps-0.5">
+              <SkeletonInline class="h-7 w-24" />
             </div>
-            <!-- Chart area: matches SVG viewBox 500:80 -->
-            <div class="aspect-[500/80] flex items-center">
-              <!-- Data label (covers ~42% width, matching dataLabel.offsetX) -->
-              <div class="w-[42%] flex items-center ps-0.5">
-                <SkeletonInline class="h-7 w-24" />
-              </div>
-              <!-- Sparkline line placeholder -->
-              <div class="flex-1 flex items-end pe-3">
-                <SkeletonInline class="h-px w-full" />
-              </div>
+            <!-- Sparkline line placeholder -->
+            <div class="flex-1 flex items-end pe-3">
+              <SkeletonInline class="h-px w-full" />
             </div>
           </div>
-        </template>
-      </ClientOnly>
-    </div>
+        </div>
+      </template>
+    </ClientOnly>
   </div>
 </template>

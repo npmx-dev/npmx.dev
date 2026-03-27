@@ -19,15 +19,16 @@ const props = withDefaults(
 
 const attrs = useAttrs()
 
-const selected = inject<WritableComputedRef<string>>('tabs-selected')!
-const getTabId = inject<(value: string) => string>('tabs-tab-id')!
-const getPanelId = inject<(value: string) => string>('tabs-panel-id')!
-
+const selected = inject<WritableComputedRef<string>>('tabs-selected')
+const getTabId = inject<(value: string) => string>('tabs-tab-id')
+const getPanelId = inject<(value: string) => string>('tabs-panel-id')
+if (!selected || !getTabId || !getPanelId) {
+  throw new Error('TabItem must be used inside a TabRoot component')
+}
 const isSelected = computed(() => selected.value === props.value)
 const resolvedTabId = computed(() => props.tabId ?? getTabId(props.value))
 const resolvedPanelId = computed(() => getPanelId(props.value))
-
-function select() {
+const select = () =>{
   selected.value = props.value
 }
 </script>
