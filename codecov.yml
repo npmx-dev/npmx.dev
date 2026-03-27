@@ -13,6 +13,11 @@ coverage:
         only_pulls: true
         informational: true
 
+# Ignore files that are covered by browser tests (Playwright) rather than unit tests
+ignore:
+  - 'app/pages/**/*'
+  - 'app/layouts/**/*'
+
 comment:
   layout: 'reach,diff,flags,tree,components'
   behavior: default
