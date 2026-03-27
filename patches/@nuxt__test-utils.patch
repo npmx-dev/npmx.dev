@@ -1,0 +1,13 @@
+diff --git a/dist/config.mjs b/dist/config.mjs
+index 41a73e237a7ecd0c63985421737f3cf0782391ee..56c9e2ca1dfade16afb10d90cebe43803063f837 100644
+--- a/dist/config.mjs
++++ b/dist/config.mjs
+@@ -128,7 +128,7 @@ async function getVitestConfigFromNuxt(options, loadNuxtOptions = {}) {
+       },
+       test: {
+         environmentOptions: {
+-          nuxtRuntimeConfig: applyEnv(structuredClone(options.nuxt.options.runtimeConfig), {
++          nuxtRuntimeConfig: applyEnv(JSON.parse(JSON.stringify(options.nuxt.options.runtimeConfig)), {
+             prefix: "NUXT_",
+             env: await setupDotenv(defu(loadNuxtOptions.dotenv, {
+               cwd: rootDir,

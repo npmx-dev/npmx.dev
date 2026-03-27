@@ -3,6 +3,15 @@ packages:
   - cli
   - docs
 
+catalogs:
+  storybook:
+    '@storybook-vue/nuxt': '9.0.1'
+    '@storybook/addon-a11y': '^10.3.1'
+    '@storybook/addon-docs': '^10.3.1'
+    '@storybook/addon-themes': '^10.3.1'
+    'storybook': '^10.3.1'
+    'storybook-i18n': '^10.1.1'
+
 ignoreDepScripts: true
 
 ignoreWorkspaceRootCheck: true
@@ -20,9 +29,9 @@ onlyBuiltDependencies:
 
 overrides:
   sharp: 0.34.5
+  storybook: ^10.3.1
   vite: npm:@voidzero-dev/vite-plus-core@0.1.12
   vitest: npm:@voidzero-dev/vite-plus-test@0.1.12
-  storybook: ^10.3.1
 
 packageExtensions:
   '@nuxt/scripts':
@@ -34,16 +43,8 @@ packageExtensions:
 
 patchedDependencies:
   '@jsr/deno__doc@0.189.1': patches/@jsr__deno__doc@0.189.1.patch
+  '@nuxt/test-utils': patches/@nuxt__test-utils.patch
 
 savePrefix: ''
 
 shellEmulator: true
-
-catalogs:
-  storybook:
-    '@storybook-vue/nuxt': '9.0.1'
-    '@storybook/addon-a11y': '^10.3.1'
-    '@storybook/addon-docs': '^10.3.1'
-    '@storybook/addon-themes': '^10.3.1'
-    'storybook': '^10.3.1'
-    'storybook-i18n': '^10.1.1'
