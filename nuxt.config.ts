@@ -280,6 +280,7 @@ export default defineNuxtConfig({
     options: {
       rules: { 'meta-refresh': 'off' },
     },
+    ignore: [/\.(xml|rss|json)$/, /^\/_og\//],
     failOnError: true,
   },
 
