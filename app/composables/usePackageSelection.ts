@@ -1,4 +1,4 @@
-export const MAX_PACKAGE_SELECTION = 4
+export const MAX_PACKAGE_SELECTION = 10
 
 export function usePackageSelection() {
   const selectedPackagesParam = useRouteQuery<string>('selection', '', { mode: 'replace' })
