@@ -1051,14 +1051,11 @@
       "add_column": "Sütun ekle"
     },
     "facets": {
-      "group_label": "Özellik grubu",
       "all": "Tümü",
       "none": "Hiçbiri",
       "coming_soon": "Yakında",
       "select_all": "Tümünü seç",
       "deselect_all": "Tümünün seçimini kaldır",
-      "select_category": "{category} kategorisini seç",
-      "deselect_category": "{category} kategorisinin seçimini kaldır",
       "binary_only_tooltip": "Yalnızca binary paketler için",
       "categories": {
         "performance": "Performans",

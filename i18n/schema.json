@@ -1474,6 +1474,15 @@
               },
               "additionalProperties": false
             },
+            "chart_view_toggle": {
+              "type": "string"
+            },
+            "chart_view_combined": {
+              "type": "string"
+            },
+            "chart_view_split": {
+              "type": "string"
+            },
             "granularity": {
               "type": "string"
             },
@@ -3325,6 +3334,9 @@
             "charts_view": {
               "type": "string"
             },
+            "no_chartable_data": {
+              "type": "string"
+            },
             "bar_chart_nav_hint": {
               "type": "string"
             },
@@ -3391,13 +3403,22 @@
         "facets": {
           "type": "object",
           "properties": {
-            "group_label": {
-              "type": "string"
-            },
             "all": {
               "type": "string"
             },
             "none": {
+              "type": "string"
+            },
+            "select_all_category_facets": {
+              "type": "string"
+            },
+            "deselect_all_category_facets": {
+              "type": "string"
+            },
+            "selected_all_category_facets": {
+              "type": "string"
+            },
+            "deselected_all_category_facets": {
               "type": "string"
             },
             "coming_soon": {
@@ -3407,12 +3428,6 @@
               "type": "string"
             },
             "deselect_all": {
-              "type": "string"
-            },
-            "select_category": {
-              "type": "string"
-            },
-            "deselect_category": {
               "type": "string"
             },
             "binary_only_tooltip": {

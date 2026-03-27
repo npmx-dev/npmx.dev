@@ -441,6 +441,17 @@ function renderFrontmatterTable(data: Record<string, unknown>): string {
   return `<table><thead><tr><th>Key</th><th>Value</th></tr></thead><tbody>\n${rows}\n</tbody></table>\n`
 }
 
+// Extract and preserve allowed attributes from HTML heading tags
+function extractHeadingAttrs(attrsString: string): string {
+  if (!attrsString) return ''
+  const preserved: string[] = []
+  const alignMatch = /\balign=(["']?)([^"'\s>]+)\1/i.exec(attrsString)
+  if (alignMatch?.[2]) {
+    preserved.push(`align="${alignMatch[2]}"`)
+  }
+  return preserved.length > 0 ? ` ${preserved.join(' ')}` : ''
+}
+
 export async function renderReadmeHtml(
   content: string,
   packageName: string,
@@ -511,17 +522,6 @@ export async function renderReadmeHtml(
     const plainText = getHeadingPlainText(displayHtml)
     const slugSource = getHeadingSlugSource(displayHtml)
     return processHeading(depth, displayHtml, plainText, slugSource)
-  }
-
-  // Extract and preserve allowed attributes from HTML heading tags
-  function extractHeadingAttrs(attrsString: string): string {
-    if (!attrsString) return ''
-    const preserved: string[] = []
-    const alignMatch = /\balign=(["']?)([^"'\s>]+)\1/i.exec(attrsString)
-    if (alignMatch?.[2]) {
-      preserved.push(`align="${alignMatch[2]}"`)
-    }
-    return preserved.length > 0 ? ` ${preserved.join(' ')}` : ''
   }
 
   // Intercept HTML headings so they get id, TOC entry, and correct semantic level.
