@@ -333,7 +333,6 @@
       "page_title": "API Документація - npmx",
       "page_title_name": "Документація {name} - npmx",
       "page_title_version": "Документація {name} - npmx",
-      "og_title": "{name} - Документація",
       "view_package": "Переглянути пакет"
     },
     "get_started": {
