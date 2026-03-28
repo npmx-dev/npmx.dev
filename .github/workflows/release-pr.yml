@@ -20,9 +20,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+      - uses: voidzero-dev/setup-vp@a03302daa50cf2f017c8c7345730c2740df207d6 # v1
         with:
           node-version: lts/*
+          run-install: false
 
       - name: 🔍 Check for unreleased commits
         id: check

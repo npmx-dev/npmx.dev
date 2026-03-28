@@ -28,18 +28,16 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+      - uses: voidzero-dev/setup-vp@a03302daa50cf2f017c8c7345730c2740df207d6 # v1
         with:
           node-version: lts/*
-
-      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: 🟧 Install pnpm
+          run-install: false
 
       - name: 📦 Install dependencies (root only, no scripts)
-        run: pnpm install --filter . --ignore-scripts
+        run: vp install --filter . --ignore-scripts
 
       - name: 🔠 Lint project
-        run: pnpm vp run lint
+        run: vp run lint
 
   types:
     name: 💪 Type check
@@ -48,18 +46,13 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+      - uses: voidzero-dev/setup-vp@a03302daa50cf2f017c8c7345730c2740df207d6 # v1
         with:
           node-version: lts/*
-
-      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: 🟧 Install pnpm
-
-      - name: 📦 Install dependencies
-        run: pnpm install
+          cache: true
 
       - name: 💪 Type check
-        run: pnpm vp run test:types
+        run: vp run test:types
 
   unit:
     name: 🧪 Unit tests
@@ -68,18 +61,13 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+      - uses: voidzero-dev/setup-vp@a03302daa50cf2f017c8c7345730c2740df207d6 # v1
         with:
           node-version: lts/*
-
-      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: 🟧 Install pnpm
-
-      - name: 📦 Install dependencies
-        run: pnpm install
+          cache: true
 
       - name: 🧪 Unit tests
-        run: pnpm vp test --project unit --coverage --reporter=default --reporter=junit --outputFile=test-report.junit.xml
+        run: vp test --project unit --coverage --reporter=default --reporter=junit --outputFile=test-report.junit.xml
 
       - name: ⬆︎ Upload test results to Codecov
         if: ${{ !cancelled() }}
@@ -94,21 +82,16 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+      - uses: voidzero-dev/setup-vp@a03302daa50cf2f017c8c7345730c2740df207d6 # v1
         with:
           node-version: lts/*
-
-      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: 🟧 Install pnpm
-
-      - name: 📦 Install dependencies
-        run: pnpm install
+          cache: true
 
       - name: 🌐 Install browser
-        run: pnpm vp exec playwright install chromium-headless-shell
+        run: vp exec playwright install chromium-headless-shell
 
       - name: 🧪 Component tests
-        run: pnpm vp test --project nuxt --coverage --reporter=default --reporter=junit --outputFile=test-report.junit.xml
+        run: vp test --project nuxt --coverage --reporter=default --reporter=junit --outputFile=test-report.junit.xml
 
       - name: ⬆︎ Upload coverage reports to Codecov
         uses: codecov/codecov-action@1af58845a975a7985b0beb0cbe6fbbb71a41dbad # v5
@@ -131,23 +114,18 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+      - uses: voidzero-dev/setup-vp@a03302daa50cf2f017c8c7345730c2740df207d6 # v1
         with:
           node-version: lts/*
-
-      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: 🟧 Install pnpm
-
-      - name: 📦 Install dependencies
-        run: pnpm install
+          cache: true
 
       - name: 🏗️ Build project
-        run: pnpm vp run build:test
+        run: vp run build:test
         env:
           VALIDATE_HTML: true
 
       - name: 🖥️ Test project (browser)
-        run: pnpm vp run test:browser:prebuilt
+        run: vp run test:browser:prebuilt
 
   a11y:
     name: ♿ Accessibility audit
@@ -159,21 +137,16 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+      - uses: voidzero-dev/setup-vp@a03302daa50cf2f017c8c7345730c2740df207d6 # v1
         with:
           node-version: lts/*
-
-      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: 🟧 Install pnpm
-
-      - name: 📦 Install dependencies
-        run: pnpm install
+          cache: true
 
       - name: 🏗️ Build project
-        run: pnpm vp run build:test
+        run: vp run build:test
 
       - name: ♿ Accessibility audit (Lighthouse - ${{ matrix.mode }} mode)
-        run: pnpm vp run test:a11y:prebuilt
+        run: vp run test:a11y:prebuilt
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
           LIGHTHOUSE_COLOR_MODE: ${{ matrix.mode }}
@@ -185,18 +158,13 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+      - uses: voidzero-dev/setup-vp@a03302daa50cf2f017c8c7345730c2740df207d6 # v1
         with:
           node-version: lts/*
-
-      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: 🟧 Install pnpm
-
-      - name: 📦 Install dependencies
-        run: pnpm install
+          cache: true
 
       - name: 🧹 Check for unused code
-        run: pnpm vp run knip
+        run: vp run knip
 
   i18n:
     name: 🌐 i18n validation
@@ -205,20 +173,18 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+      - uses: voidzero-dev/setup-vp@a03302daa50cf2f017c8c7345730c2740df207d6 # v1
         with:
           node-version: lts/*
-
-      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: 🟧 Install pnpm
+          run-install: false
 
       - name: 📦 Install dependencies (root only, no scripts)
-        run: pnpm install --filter . --ignore-scripts
+        run: vp install --filter . --ignore-scripts
 
       - name: 🌐 Check for missing or dynamic i18n keys
-        run: pnpm vp run i18n:report
+        run: vp run i18n:report
 
       - name: 🌐 Check i18n schema is up to date
         run: |
-          pnpm vp run i18n:schema
+          vp run i18n:schema
           git diff --exit-code i18n/schema.json
