@@ -64,6 +64,8 @@ What npmx offers:
 - **Organization pages** &ndash; browse org packages at `/@orgname`
 - **Search, filter & sort** &ndash; find packages within user/org lists
 - **Infinite scroll** &ndash; paginated lists that load as you scroll
+- **Team management** &ndash; create and manage org teams and member roles (via local connector)
+- **Member management** &ndash; add/remove org members and change their roles (via local connector)
 
 ### Comparison with npmjs.com
 
@@ -92,11 +94,9 @@ What npmx offers:
 | Version range resolution       |    ❌     |    ✅    |
 | Dependents list                |    ✅     |    🚧    |
 | Package admin (access/owners)  |    ✅     |    🚧    |
-| Org/team management            |    ✅     |    🚧    |
+| Org/team management            |    ✅     |    ✅    |
 | 2FA/account settings           |    ✅     |    ❌    |
 | Claim new package names        |    ✅     |    ✅    |
-
-🚧 = coming soon
 
 ## URL structure
 
