@@ -20,6 +20,7 @@ export const ERROR_PACKAGE_ANALYSIS_FAILED = 'Failed to analyze package.'
 export const ERROR_PACKAGE_VERSION_AND_FILE_FAILED = 'Version and file path are required.'
 export const ERROR_PACKAGE_REQUIREMENTS_FAILED =
   'Package name, version, and file path are required.'
+export const ERROR_PACKAGE_DETECT_CHANGELOG = 'failed to detect package has changelog'
 export const ERROR_BLUESKY_URL_FAILED =
   'Invalid Bluesky URL format. Expected: https://bsky.app/profile/HANDLE/post/POST_ID'
 export const ERROR_FILE_LIST_FETCH_FAILED = 'Failed to fetch file list.'
@@ -39,6 +40,15 @@ export const ERROR_SKILL_FILE_NOT_FOUND = 'Skill file not found.'
 export const ERROR_GRAVATAR_FETCH_FAILED = 'Failed to fetch Gravatar profile.'
 export const ERROR_GRAVATAR_EMAIL_UNAVAILABLE = "User's email not accessible."
 export const ERROR_NEED_REAUTH = 'User needs to reauthenticate'
+
+export const ERROR_CHANGELOG_NOT_FOUND =
+  'No releases or changelogs have been found for this package'
+export const ERROR_CHANGELOG_RELEASES_FAILED = 'Failed to get releases'
+export const ERROR_CHANGELOG_FILE_FAILED = 'Failed to get changelog markdown'
+export const ERROR_THROW_INCOMPLETE_PARAM = "Couldn't do request due to incomplete parameters"
+// for ungh.cc when api keys are exhausted, name is broad in case more proxies are going to be used
+export const ERROR_UNGH_API_KEY_EXHAUSTED =
+  "Couldn't fetch resources due to ungh api keys being exhausted"
 
 // microcosm services
 export const CONSTELLATION_HOST = 'constellation.microcosm.blue'

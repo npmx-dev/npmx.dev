@@ -169,7 +169,9 @@
       "black": "Black"
     },
     "keyboard_shortcuts_enabled": "Enable keyboard shortcuts",
-    "keyboard_shortcuts_enabled_description": "Keyboard shortcuts can be disabled if they conflict with other browser or system shortcuts"
+    "keyboard_shortcuts_enabled_description": "Keyboard shortcuts can be disabled if they conflict with other browser or system shortcuts",
+    "enable_changelog_autoscroll": "Auto scroll to requested version",
+    "enable_changelog_autoscroll_description": "Auto scroll to or close to the requested version at package changelog"
   },
   "i18n": {
     "missing_keys": "{count} missing translation | {count} missing translations",
@@ -319,7 +321,8 @@
       "docs": "docs",
       "fund": "fund",
       "compare": "compare",
-      "compare_this_package": "compare this package"
+      "compare_this_package": "compare this package",
+      "changelog": "changelog"
     },
     "likes": {
       "like": "Like this package",
@@ -1521,5 +1524,15 @@
       "message": "Accessibility matters to us, and we would love you to follow us in this vision. When using mentioned media, ensure there is enough contrast against the background, and don't go smaller than 24px. If you need any other resources or additional information about the project, feel free to reach us at {link}.",
       "discord_link_text": "chat.npmx.dev"
     }
+  },
+  "changelog": {
+    "pre_release": "Pre-release",
+    "draft": "Draft",
+    "no_logs": "Sorry, this package does not publish changelogs or its changelog format is not supported.",
+    "error": {
+      "p1": "Sorry, the changelog for {package} couldn't be loaded",
+      "p2": "Please try again later or {viewon}"
+    },
+    "rate_limit_ungh": "Sorry, Github's rate limit has been hit, try again in a moment"
   }
 }

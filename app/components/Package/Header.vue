@@ -2,6 +2,7 @@
 import type { RouteLocationRaw } from 'vue-router'
 import { SCROLL_TO_TOP_THRESHOLD } from '~/composables/useScrollToTop'
 import { isEditableElement } from '~/utils/input'
+import { usePackageChangelog } from '~/composables/usePackageChangelog'
 
 const props = defineProps<{
   pkg?: Pick<SlimPackument, 'name' | 'versions' | 'dist-tags'> | null
@@ -10,7 +11,7 @@ const props = defineProps<{
   latestVersion?: SlimVersion | null
   provenanceData?: ProvenanceDetails | null
   provenanceStatus?: string | null
-  page: 'main' | 'docs' | 'code' | 'diff'
+  page: 'main' | 'docs' | 'code' | 'diff' | 'changelog'
   versionUrlPattern: string
 }>()
 
@@ -120,6 +121,20 @@ const diffLink = computed((): RouteLocationRaw | null => {
   return diffRoute(props.pkg.name, props.resolvedVersion, props.latestVersion.version)
 })
 
+const { data: changelog } = usePackageChangelog(packageName, requestedVersion)
+
+const changelogLink = computed((): RouteLocationRaw | null => {
+  if (
+    // either changelog.value is available or current page is the changelog
+    !(changelog.value || props.page == 'changelog') ||
+    props.pkg == null ||
+    props.resolvedVersion == null
+  ) {
+    return null
+  }
+  return changelogRoute(props.pkg.name, props.resolvedVersion)
+})
+
 const keyboardShortcuts = useKeyboardShortcuts()
 
 onKeyStroke(
@@ -170,6 +185,26 @@ onKeyStroke(
     if (diffLink.value === null) return
     e.preventDefault()
     navigateTo(diffLink.value)
+  },
+  { dedupe: true },
+)
+
+onKeyStroke(
+  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, '-') && !isEditableElement(e.target),
+  e => {
+    if (changelogLink.value === null) return
+    e.preventDefault()
+    navigateTo(changelogLink.value)
+  },
+  { dedupe: true },
+)
+
+onKeyStroke(
+  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, '-') && !isEditableElement(e.target),
+  e => {
+    if (changelogLink.value === null) return
+    e.preventDefault()
+    navigateTo(changelogLink.value)
   },
   { dedupe: true },
 )
@@ -342,6 +377,15 @@ const fundingUrl = computed(() => {
           :class="page === 'diff' ? 'border-accent text-accent!' : 'border-transparent'"
         >
           {{ $t('compare.compare_versions') }}
+        </LinkBase>
+        <LinkBase
+          v-if="changelogLink"
+          :to="changelogLink"
+          aria-keyshortcuts="-"
+          class="decoration-none border-b-2 p-1 hover:border-accent/50 focus-visible:[outline-offset:-2px]!"
+          :class="page === 'changelog' ? 'border-accent text-accent!' : 'border-transparent'"
+        >
+          {{ $t('package.links.changelog') }}
         </LinkBase>
       </nav>
     </div>

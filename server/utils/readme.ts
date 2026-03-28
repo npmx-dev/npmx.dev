@@ -5,10 +5,9 @@ import { marked } from 'marked'
 import sanitizeHtml from 'sanitize-html'
 import { hasProtocol } from 'ufo'
 import { convertBlobOrFileToRawUrl, type RepositoryInfo } from '#shared/utils/git-providers'
-import { decodeHtmlEntities, stripHtmlTags } from '#shared/utils/html'
+import { decodeHtmlEntities, stripHtmlTags, slugify } from '#shared/utils/html'
 import { convertToEmoji } from '#shared/utils/emoji'
 import { toProxiedImageUrl } from '#server/utils/image-proxy'
-
 import { highlightCodeSync } from './shiki'
 import { escapeHtml } from './docs/text'
 
@@ -142,7 +141,7 @@ function matchPlaygroundProvider(url: string): PlaygroundProvider | null {
 
 // allow h1-h6, but replace h1-h2 later since we shift README headings down by 2 levels
 // (page h1 = package name, h2 = "Readme" section, so README h1 → h3)
-const ALLOWED_TAGS = [
+export const ALLOWED_TAGS = [
   'h1',
   'h2',
   'h3',
@@ -183,7 +182,7 @@ const ALLOWED_TAGS = [
   'button',
 ]
 
-const ALLOWED_ATTR: Record<string, string[]> = {
+export const ALLOWED_ATTR: Record<string, string[]> = {
   '*': ['id'], // Allow id on all tags
   'a': ['href', 'title', 'target', 'rel'],
   'img': ['src', 'alt', 'title', 'width', 'height', 'align'],
@@ -204,24 +203,6 @@ const ALLOWED_ATTR: Record<string, string[]> = {
   'p': ['align'],
 }
 
-/**
- * Generate a GitHub-style slug from heading text.
- * - Convert to lowercase
- * - Remove HTML tags
- * - Replace spaces with hyphens
- * - Remove special characters (keep alphanumeric, hyphens, underscores)
- * - Collapse multiple hyphens
- */
-function slugify(text: string): string {
-  return decodeHtmlEntities(stripHtmlTags(text))
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, '-') // Spaces to hyphens
-    .replace(/[^\w\u4e00-\u9fff\u3040-\u309f\u30a0-\u30ff-]/g, '') // Keep alphanumeric, CJK, hyphens
-    .replace(/-+/g, '-') // Collapse multiple hyphens
-    .replace(/^-|-$/g, '') // Trim leading/trailing hyphens
-}
-
 function getHeadingPlainText(text: string): string {
   return decodeHtmlEntities(stripHtmlTags(text).trim())
 }
@@ -231,6 +212,7 @@ function getHeadingSlugSource(text: string): string {
 }
 
 /**
+>>>>>>> main
  * Lazy ATX heading extension for marked: allows headings without a space after `#`.
  *
  * Reimplements the behavior of markdown-it-lazy-headers
@@ -308,7 +290,7 @@ function normalizePreservedAnchorAttrs(attrs: string): string {
   return cleanedAttrs ? ` ${cleanedAttrs}` : ''
 }
 
-const isNpmJsUrlThatCanBeRedirected = (url: URL) => {
+export const isNpmJsUrlThatCanBeRedirected = (url: URL) => {
   if (!npmJsHosts.has(url.host)) {
     return false
   }
@@ -425,7 +407,8 @@ function resolveImageUrl(url: string, packageName: string, repoInfo?: Repository
 }
 
 // Helper to prefix id attributes with 'user-content-'
-function prefixId(tagName: string, attribs: sanitizeHtml.Attributes) {
+
+export function prefixId(tagName: string, attribs: sanitizeHtml.Attributes) {
   if (attribs.id) {
     attribs.id = withUserContentPrefix(attribs.id)
   }
@@ -435,7 +418,7 @@ function prefixId(tagName: string, attribs: sanitizeHtml.Attributes) {
 // README h1 always becomes h3
 // For deeper levels, ensure sequential order
 // Don't allow jumping more than 1 level deeper than previous
-function calculateSemanticDepth(depth: number, lastSemanticLevel: number) {
+export function calculateSemanticDepth(depth: number, lastSemanticLevel: number) {
   if (depth === 1) return 3
   const maxAllowed = Math.min(lastSemanticLevel + 1, 6)
   return Math.min(depth + 2, maxAllowed)

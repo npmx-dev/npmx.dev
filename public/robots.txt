@@ -11,11 +11,13 @@ Disallow: /compare
 # Auth flows
 Disallow: /auth/
 
-# Code explorer & generated API docs
+# Code explorer, generated API docs & changelog
 Disallow: /package-code/
 Disallow: /code/
 Disallow: /package-docs/
 Disallow: /docs/
+Disallow: /package-changelog/
+Disallow: /changelog/
 
 # Internal API
 Disallow: /api/
