@@ -29,6 +29,12 @@ export function packageRoute(
   }
 }
 
+/** Full version history page (`/package/.../versions`) */
+export function packageVersionsRoute(packageName: string): RouteLocationRaw {
+  const [org, name = ''] = packageName.startsWith('@') ? packageName.split('/') : ['', packageName]
+  return { name: 'package-versions', params: { org, name } }
+}
+
 export function diffRoute(
   packageName: string,
   fromVersion: string,
