@@ -1072,14 +1072,11 @@
       "add_column": "Menambahkan kolom tanpa ketergantungan ke perbandingan"
     },
     "facets": {
-      "group_label": "Aspek perbandingan",
       "all": "semua",
       "none": "tidak ada",
       "coming_soon": "Segera hadir",
       "select_all": "Pilih semua aspek",
       "deselect_all": "Batalkan semua aspek",
-      "select_category": "Pilih semua aspek {category}",
-      "deselect_category": "Batalkan semua aspek {category}",
       "binary_only_tooltip": "Paket ini hanya mengekspos berkas biner dan bukan eksport",
       "categories": {
         "performance": "Performa",

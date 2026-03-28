@@ -489,6 +489,9 @@
         "table_available": "A data table for this chart is available below.",
         "table_caption": "Chart data table"
       },
+      "chart_view_toggle": "Toggle view",
+      "chart_view_combined": "Combined view",
+      "chart_view_split": "Split view",
       "granularity": "Granularity",
       "granularity_daily": "Daily",
       "granularity_weekly": "Weekly",
@@ -1106,6 +1109,7 @@
       "empty_description": "Search and add at least 2 packages above to see a side-by-side comparison of their metrics.",
       "table_view": "Table",
       "charts_view": "Charts",
+      "no_chartable_data": "No chartable data available for the selected facets.",
       "bar_chart_nav_hint": "Use ↑ ↓",
       "line_chart_nav_hint": "Use ← →"
     },
@@ -1128,14 +1132,15 @@
       "add_column": "Add no dependency column to comparison"
     },
     "facets": {
-      "group_label": "Comparison facets",
       "all": "all",
       "none": "none",
+      "select_all_category_facets": "Select all {category} facets",
+      "deselect_all_category_facets": "Deselect all {category} facets",
+      "selected_all_category_facets": "Selected all {category} facets",
+      "deselected_all_category_facets": "Deselected all {category} facets",
       "coming_soon": "Coming soon",
       "select_all": "Select all facets",
       "deselect_all": "Deselect all facets",
-      "select_category": "Select all {category} facets",
-      "deselect_category": "Deselect all {category} facets",
       "binary_only_tooltip": "This package exposes binaries and no exports",
       "categories": {
         "performance": "Performance",

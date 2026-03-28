@@ -392,6 +392,12 @@ function matchJsdelivrDataApi(urlString) {
   const packageMatch = pathname.match(/^\/v1\/packages\/npm\/(.+)$/)
   if (packageMatch && packageMatch[1]) {
     const parsed = parseScopedPackage(packageMatch[1])
+
+    const fixture = readFixture(`jsdelivr/${parsed.name}.json`)
+    if (fixture) {
+      return json(fixture)
+    }
+
     return json({
       type: 'npm',
       name: parsed.name,
