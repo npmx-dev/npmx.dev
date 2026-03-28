@@ -1471,6 +1471,15 @@
               },
               "additionalProperties": false
             },
+            "chart_view_toggle": {
+              "type": "string"
+            },
+            "chart_view_combined": {
+              "type": "string"
+            },
+            "chart_view_split": {
+              "type": "string"
+            },
             "granularity": {
               "type": "string"
             },
@@ -3326,6 +3335,9 @@
               "type": "string"
             },
             "charts_view": {
+              "type": "string"
+            },
+            "no_chartable_data": {
               "type": "string"
             },
             "bar_chart_nav_hint": {
