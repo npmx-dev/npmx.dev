@@ -960,6 +960,30 @@
             },
             "compare_this_package": {
               "type": "string"
+            },
+            "dependents": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "dependents": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "subtitle": {
+              "type": "string"
+            },
+            "count": {
+              "type": "string"
+            },
+            "none": {
+              "type": "string"
+            },
+            "error": {
+              "type": "string"
             }
           },
           "additionalProperties": false

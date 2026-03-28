@@ -318,7 +318,15 @@
       "docs": "docs",
       "fund": "fund",
       "compare": "compare",
-      "compare_this_package": "compare this package"
+      "compare_this_package": "compare this package",
+      "dependents": "dependents"
+    },
+    "dependents": {
+      "title": "Dependents",
+      "subtitle": "Packages that list {name} as a dependency",
+      "count": "{count} dependent | {count} dependents",
+      "none": "No packages depend on {name} yet",
+      "error": "Failed to load dependents"
     },
     "likes": {
       "like": "Like this package",
