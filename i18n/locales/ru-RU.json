@@ -19,7 +19,8 @@
     "social": "соцсети",
     "chat": "чат",
     "builders_chat": "разработчики",
-    "keyboard_shortcuts": "горячие клавиши"
+    "keyboard_shortcuts": "горячие клавиши",
+    "brand": "бренд"
   },
   "shortcuts": {
     "section": {
@@ -36,7 +37,9 @@
     "go_to_result": "Перейти к результату",
     "open_code_view": "Открыть просмотр кода",
     "open_docs": "Открыть документацию",
-    "disable_shortcuts": "Для отключения горячих клавиш загляните в {settings}."
+    "disable_shortcuts": "Для отключения горячих клавиш загляните в {settings}.",
+    "open_main": "Открыть основную информацию",
+    "open_diff": "Открыть различия версий"
   },
   "search": {
     "label": "Поиск пакетов npm",
@@ -94,6 +97,7 @@
     },
     "draft_badge": "Черновик",
     "draft_banner": "Это неопубликованный черновик. Он может быть неполным или содержать неточности.",
+    "no_posts": "Записей не найдено.",
     "atproto": {
       "view_on_bluesky": "Посмотреть в Bluesky",
       "reply_on_bluesky": "Ответить в Bluesky",
@@ -136,19 +140,33 @@
     "include_types_description": "Добавлять пакет {'@'}types в команды установки для нетипизированных пакетов",
     "hide_platform_packages": "Скрывать платформо-зависимые пакеты в поиске",
     "hide_platform_packages_description": "Скрывать нативные бинарные пакеты, такие как {'@'}esbuild/linux-x64, из результатов",
+    "enable_graph_pulse_loop": "Зациклить эффект пульса на мини-графике",
+    "enable_graph_pulse_loop_description": "Включить непрерывную пульсацию на мини-графике недельных загрузок. Анимация может отвлекать часть пользователей.",
     "theme": "Тема",
     "theme_light": "Светлая",
     "theme_dark": "Тёмная",
     "theme_system": "Системная",
     "language": "Язык",
     "help_translate": "Помочь с переводом npmx",
+    "translation_status": "Статус переводов по всему проекту",
     "accent_colors": {
-      "label": "Акцентные цвета"
+      "label": "Акцентные цвета",
+      "sky": "Небесный",
+      "coral": "Коралловый",
+      "amber": "Янтарный",
+      "emerald": "Изумрудный",
+      "violet": "Фиолетовый",
+      "magenta": "Пурпурный"
     },
     "clear_accent": "Сбросить акцентный цвет",
     "translation_progress": "Прогресс перевода",
     "background_themes": {
-      "label": "Оттенок фона"
+      "label": "Оттенок фона",
+      "neutral": "Нейтральный",
+      "stone": "Камень",
+      "zinc": "Цинк",
+      "slate": "Сланцевый",
+      "black": "Чёрный"
     },
     "keyboard_shortcuts_enabled": "Использовать горячие клавиши",
     "keyboard_shortcuts_enabled_description": "Горячие клавиши можно выключить, если возникают конфликты с сочетаниями клавиш браузера или операционной системы"
@@ -196,8 +214,20 @@
     "error": "Ошибка",
     "view_on": {
       "npm": "посмотреть на npm",
-      "github": "Посмотреть на GitHub"
-    }
+      "github": "Посмотреть на GitHub",
+      "gitlab": "Открыть на GitLab",
+      "bitbucket": "Открыть на Bitbucket",
+      "codeberg": "Открыть на Codeberg",
+      "git_repo": "Открыть в репозитории Git",
+      "forgejo": "Открыть на Forgejo",
+      "gitea": "Открыть на Gitea",
+      "gitee": "Открыть на Gitee",
+      "radicle": "Открыть на Radicle",
+      "sourcehut": "Открыть на SourceHut",
+      "tangled": "Открыть на Tangled"
+    },
+    "collapse": "Свернуть",
+    "expand": "Развернуть"
   },
   "profile": {
     "display_name": "Отображаемое имя",
@@ -276,9 +306,11 @@
         "refs": "{count} ссылка | {count} ссылки | {count} ссылок",
         "assets": "{count} ресурс | {count} ресурса | {count} ресурсов"
       },
-      "view_source": "Просмотреть исходный код"
+      "view_source": "Просмотреть исходный код",
+      "skills_cli": "skills CLI"
     },
     "links": {
+      "main": "main",
       "repo": "репозиторий",
       "homepage": "сайт",
       "issues": "тикеты",
@@ -286,15 +318,23 @@
       "code": "код",
       "docs": "доки",
       "fund": "поддержать",
-      "compare": "сравнить"
+      "compare": "сравнить",
+      "compare_this_package": "сравнить этот пакет"
     },
     "likes": {
       "like": "Поставить лайк этому пакету",
       "unlike": "Убрать лайк с этого пакета"
     },
     "docs": {
+      "contents": "Содержание",
+      "default_not_available": "Для этой версии документация недоступна.",
       "not_available": "Документация недоступна",
-      "not_available_detail": "Мы не смогли сгенерировать документацию для этой версии."
+      "not_available_detail": "Мы не смогли сгенерировать документацию для этой версии.",
+      "page_title": "Документация API — npmx",
+      "page_title_name": "документация {name} — npmx",
+      "page_title_version": "документация {name} — npmx",
+      "og_title": "{name} — документация",
+      "view_package": "К пакету"
     },
     "get_started": {
       "title": "Начало работы",
@@ -354,7 +394,9 @@
       "published": "Опубликовано",
       "weekly_downloads": "Еженедельные загрузки",
       "keywords": "Ключевые слова",
-      "license": "Лицензия"
+      "license": "Лицензия",
+      "select": "Выбрать пакет",
+      "select_maximum": "Можно выбрать не более {count} пакетов"
     },
     "versions": {
       "title": "Версии",
@@ -369,6 +411,7 @@
       "all_covered": "Все версии охвачены тегами выше",
       "deprecated_title": "{version} (устарела)",
       "view_all": "Посмотреть {count} версию | Посмотреть все {count} версии | Посмотреть все {count} версий",
+      "view_all_versions": "Все версии",
       "distribution_title": "Группа Semver",
       "distribution_modal_title": "Версии",
       "distribution_range_date_same_year": "с {from} по {to}, {endYear}",
@@ -376,10 +419,13 @@
       "grouping_major": "Мажорные",
       "grouping_minor": "Минорные",
       "grouping_versions_title": "Версии",
+      "grouping_versions_about": "О группировке версий",
       "grouping_versions_all": "Все",
       "grouping_versions_only_recent": "Только недавние",
       "grouping_usage_title": "Использование",
+      "grouping_usage_about": "О группировке по использованию",
       "grouping_usage_all": "Все",
+      "grouping_usage_most_used": "Чаще всего",
       "recent_versions_only_tooltip": "Показывать только версии, опубликованные за последний год.",
       "show_low_usage_tooltip": "Включить группы версий, на которые приходится менее 1% от общего числа загрузок.",
       "y_axis_label": "Загрузки",
@@ -392,7 +438,12 @@
       "copy_alt": {
         "per_version_analysis": "версия {version} была загружена {downloads} раз",
         "general_description": "Гистограмма, показывающая количество загрузок по версиям для {versions_count} {semver_grouping_mode} версий пакета {package_name}, {date_range_label} от версии {first_version} до версии {last_version}. Самая скачиваемая версия — {max_downloaded_version} с количеством загрузок {max_version_downloads}. {per_version_analysis}. {watermark}."
-      }
+      },
+      "page_title": "История версий",
+      "current_tags": "Текущие теги",
+      "version_filter_placeholder": "Фильтр версий…",
+      "version_filter_label": "Фильтр версий",
+      "no_match_filter": "Нет версий по фильтру «{filter}»"
     },
     "dependencies": {
       "title": "Зависимости ({count})",
@@ -403,7 +454,8 @@
       "outdated_major": "{count} мажорная версия позади (последняя: {latest}) | {count} мажорные версии позади (последняя: {latest}) | {count} мажорных версий позади (последняя: {latest})",
       "outdated_minor": "{count} минорная версия позади (последняя: {latest}) | {count} минорные версии позади (последняя: {latest}) | {count} минорных версий позади (последняя: {latest})",
       "outdated_patch": "Доступно патч-обновление (последняя: {latest})",
-      "has_replacement": "Для этой зависимости есть рекомендуемые замены"
+      "has_replacement": "Для этой зависимости есть рекомендуемые замены",
+      "vulnerabilities_count": "{count} уязвимость | {count} уязвимости | {count} уязвимостей"
     },
     "peer_dependencies": {
       "title": "Peer-зависимости ({count})",
@@ -427,9 +479,19 @@
       "cancel_add": "Отменить добавление владельца",
       "add_owner": "+ Добавить владельца",
       "show_more": "(показать ещё {count})",
-      "show_less": "(показать меньше)"
+      "show_less": "(показать меньше)",
+      "maintainer_template": "{avatar} {char126}{name}"
     },
     "trends": {
+      "chart_assistive_text": {
+        "keyboard_navigation_horizontal": "Стрелки влево и вправо — переключение точек данных.",
+        "keyboard_navigation_vertical": "Стрелки вверх и вниз — переключение точек данных.",
+        "table_available": "Ниже доступна таблица данных для этой диаграммы.",
+        "table_caption": "Таблица данных диаграммы"
+      },
+      "chart_view_toggle": "Переключить вид",
+      "chart_view_combined": "Общий вид",
+      "chart_view_split": "Раздельный вид",
       "granularity": "Детализация",
       "granularity_daily": "По дням",
       "granularity_weekly": "По неделям",
@@ -459,6 +521,7 @@
       "data_correction": "Корректировка данных",
       "average_window": "Окно усреднения",
       "smoothing": "Сглаживание",
+      "prediction": "Прогноз",
       "known_anomalies": "Известные аномалии",
       "known_anomalies_description": "Интерполирует данные поверх известных всплесков загрузок, вызванных ботами или проблемами CI.",
       "known_anomalies_ranges": "Диапазоны аномалий",
@@ -479,13 +542,16 @@
         "estimations": "Последние значения являются оценочными, основанными на частичных данных за текущий период.",
         "compare": "Линейный график сравнения загрузок пакетов для: {packages}.",
         "single_package": "Линейный график загрузок для пакета {package}.",
-        "general_description": "Ось Y представляет количество загрузок. Ось X представляет диапазон дат, от {start_date} до {end_date}, с временным интервалом {granularity}. {estimation_notice} {packages_analysis}. {watermark}."
+        "general_description": "Ось Y представляет количество загрузок. Ось X представляет диапазон дат, от {start_date} до {end_date}, с временным интервалом {granularity}. {estimation_notice} {packages_analysis}. {watermark}.",
+        "facet_bar_general_description": "Горизонтальная гистограмма для: {packages}, сравнение {facet} ({description}). {facet_analysis} {watermark}.",
+        "facet_bar_analysis": "У {package_name} значение {value}."
       }
     },
     "downloads": {
       "title": "Загрузки за неделю",
       "community_distribution": "Просмотреть распределение использования сообществом",
-      "subtitle": "По всем версиям"
+      "subtitle": "По всем версиям",
+      "sparkline_nav_hint": "← →"
     },
     "install_scripts": {
       "title": "Скрипты установки",
@@ -501,6 +567,7 @@
       "esm": "Поддержка ES-модулей",
       "cjs": "Поддержка CommonJS",
       "no_esm": "Нет поддержки ES-модулей",
+      "wasm": "Есть WebAssembly",
       "types_label": "Типы",
       "types_included": "Типы включены",
       "types_available": "Типы доступны через {package}",
@@ -575,7 +642,10 @@
       "kb": "{size} КБ",
       "mb": "{size} МБ"
     },
-    "download": {}
+    "download": {
+      "button": "Скачать",
+      "tarball": "Скачать tarball (.tar.gz)"
+    }
   },
   "connector": {
     "modal": {
@@ -779,7 +849,9 @@
       "preview": "превью",
       "code": "код"
     },
-    "file_path": "Путь к файлу"
+    "file_path": "Путь к файлу",
+    "binary_file": "Бинарный файл",
+    "binary_rendering_warning": "Предпросмотр для типа «{contentType}» не поддерживается."
   },
   "badges": {
     "provenance": {
@@ -841,6 +913,8 @@
       "secure": "Без предупреждений",
       "insecure": "С предупреждениями"
     },
+    "view_selected": "Показать выбранное",
+    "clear_selected_label": "Снять выделение",
     "sort": {
       "label": "Сортировка пакетов",
       "toggle_direction": "Переключить направление сортировки",
@@ -866,7 +940,8 @@
       "published": "Опубликован",
       "maintainers": "Мейнтейнеры",
       "keywords": "Ключевые слова",
-      "security": "Безопасность"
+      "security": "Безопасность",
+      "selection": "Выбрать пакет"
     },
     "view_mode": {
       "label": "Режим просмотра",
@@ -1013,7 +1088,8 @@
       "error": "Не удалось загрузить организации",
       "empty": "Организации не найдены",
       "view_all": "Посмотреть все"
-    }
+    },
+    "pr": "Открыть pull request #{prNumber} на GitHub"
   },
   "compare": {
     "packages": {
@@ -1030,7 +1106,12 @@
       "loading": "Загрузка данных пакета...",
       "error": "Не удалось загрузить данные пакета. Попробуйте ещё раз.",
       "empty_title": "Выберите пакеты для сравнения",
-      "empty_description": "Найдите и добавьте как минимум 2 пакета выше, чтобы увидеть наглядное сравнение их показателей."
+      "empty_description": "Найдите и добавьте как минимум 2 пакета выше, чтобы увидеть наглядное сравнение их показателей.",
+      "table_view": "Таблица",
+      "charts_view": "Диаграммы",
+      "no_chartable_data": "Нет данных для диаграмм по выбранным фасетам.",
+      "bar_chart_nav_hint": "↑ ↓",
+      "line_chart_nav_hint": "← →"
     },
     "selector": {
       "search_label": "Поиск пакетов",
@@ -1051,14 +1132,15 @@
       "add_column": "Добавить колонку «без зависимости» в сравнение"
     },
     "facets": {
-      "group_label": "Параметры сравнения",
       "all": "все",
       "none": "ни одного",
+      "select_all_category_facets": "Выбрать все фасеты ({category})",
+      "deselect_all_category_facets": "Снять выбор со всех фасетов ({category})",
+      "selected_all_category_facets": "Выбраны все фасеты ({category})",
+      "deselected_all_category_facets": "Выбор снят со всех фасетов ({category})",
       "coming_soon": "Скоро появится",
       "select_all": "Выбрать все параметры",
       "deselect_all": "Снять выбор со всех",
-      "select_category": "Выбрать все параметры в категории {category}",
-      "deselect_category": "Снять выбор со всех в категории {category}",
       "binary_only_tooltip": "Этот пакет предоставляет исполняемые файлы и не имеет экспортируемых модулей",
       "categories": {
         "performance": "Производительность",
@@ -1142,7 +1224,15 @@
     "file_size_warning": "{size} превышает лимит в 250 КБ для сравнения",
     "compare_versions": "сравнение",
     "compare_versions_title": "Сравнить с последней версией",
-    "version_invalid_url_format": {},
+    "comparing_versions_label": "Сравнение версий…",
+    "version_back_to_package": "К пакету",
+    "version_error_message": "Не удалось сравнить версии.",
+    "version_invalid_url_format": {
+      "hint": "Неверный URL сравнения. Формат: {0}",
+      "from_version": "с",
+      "to_version": "по"
+    },
+    "version_selector_title": "Сравнить с версией",
     "summary": "Сводка",
     "deps_count": "зависимостей: {count}",
     "dependencies": "Зависимости",
@@ -1168,7 +1258,18 @@
     "files_button": "Файлы",
     "select_file_prompt": "Выберите файл в боковой панели, чтобы просмотреть его изменения",
     "close_files_panel": "Закрыть панель файлов",
-    "filter_files_label": "Фильтровать файлы по типу изменений"
+    "filter_files_label": "Фильтровать файлы по типу изменений",
+    "change_ratio": "Доля изменений",
+    "char_edits": "Правок по символам",
+    "diff_distance": "Расстояние diff",
+    "loading_diff": "Загрузка diff…",
+    "loading_diff_error": "Не удалось загрузить diff",
+    "merge_modified_lines": "Объединить изменённые строки",
+    "no_content_changes": "Изменений содержимого не обнаружено",
+    "options": "Параметры",
+    "view_file": "Открыть файл",
+    "view_in_code_browser": "В браузере кода",
+    "word_wrap": "Перенос строк"
   },
   "pds": {
     "title": "npmx.social",
@@ -1309,7 +1410,116 @@
     }
   },
   "translation_status": {
-    "table": {}
+    "title": "статус переводов",
+    "generated_at": "Дата генерации: {date}",
+    "welcome": "Если хотите помочь перевести {npmx} на один из языков ниже — вы по адресу! Эта страница обновляется автоматически и показывает, чем сейчас можно заняться.",
+    "p1": "Базовый язык — {lang}, всего строк: {count}. Чтобы помочь с переводом, найдите язык в {bylang} и раскройте подробности.",
+    "p1_lang": "американский английский (en-US)",
+    "p1_count": "Нет строк | 1 строка | {count} строк",
+    "p2": "Перед началом прочитайте {guide} — там описан процесс перевода и как присоединиться.",
+    "guide": "руководство по локализации (i18n)",
+    "by_locale": "Прогресс по локалям",
+    "by_file": "Прогресс по файлам",
+    "complete_text": "Перевод завершён, отличная работа!",
+    "missing_text": "нет",
+    "missing_keys": "Нет пропусков | Нет перевода | Нет переводов",
+    "progress_label": "Прогресс для {locale}",
+    "table": {
+      "file": "Файл",
+      "status": "Статус",
+      "error": "Ошибка при загрузке списка файлов.",
+      "empty": "Файлы не найдены",
+      "file_link": "Редактировать {file} ({lang}) на GitHub"
+    }
   },
-  "action_bar": {}
+  "vacations": {
+    "title": "в отпуске",
+    "meta_description": "Команда npmx перезаряжалась. Discord снова открылся через неделю.",
+    "heading": "перезарядка",
+    "subtitle": "мы делали npmx в темпе, из-за которого {some} из нас не высыпались. так жить не хотелось — поэтому взяли недельный перерыв. вместе.",
+    "illustration_alt": "один ряд уютных иконок",
+    "poke_log": "Поковырять костёр",
+    "what": {
+      "title": "что было",
+      "p1": "Discord был закрыт {dates}.",
+      "dates": "14–21 февраля",
+      "p2": "все инвайт-ссылки отключили, каналы закрыли — кроме {garden}, там можно было общаться дальше.",
+      "garden": "#garden"
+    },
+    "meantime": {
+      "title": "тем временем",
+      "p1": "{site} и {repo} оставались открыты — люди копали код, заводили issue и PR, но в основном проводили время у камина.",
+      "repo_link": "репозиторий"
+    },
+    "return": {
+      "title": "мы вернулись!",
+      "p1": "мы вернулись с силами и готовы к финальному рывку к 3 марта. {social}.",
+      "social_link": "подписаться на нас в Bluesky"
+    },
+    "stats": {
+      "contributors": "Участники",
+      "commits": "Коммиты",
+      "pr": "Влитых PR",
+      "subtitle": {
+        "some": "некоторых",
+        "all": "все"
+      }
+    }
+  },
+  "action_bar": {
+    "title": "панель действий",
+    "selection": "Ничего не выбрано | Выбран 1 | Выбрано {count}",
+    "shortcut": "Нажмите «{key}», чтобы сфокусировать панель действий",
+    "button_close_aria_label": "Закрыть панель действий"
+  },
+  "logo_menu": {
+    "copy_svg": "Копировать логотип как SVG",
+    "copied": "Скопировано!",
+    "browse_brand": "Набор бренда"
+  },
+  "brand": {
+    "title": "Бренд",
+    "heading": "бренд",
+    "meta_description": "Бренд npmx: логотипы, цвета и типографика для прессы и медиа.",
+    "intro": "Ресурсы и правила использования бренда npmx в проектах, статьях и медиа.",
+    "logos": {
+      "title": "логотипы",
+      "description": "Скачайте логотипы npmx в SVG и PNG. Выберите вариант под ваш фон.",
+      "wordmark": "ПОЛНЫЙ ВОРДМАРК",
+      "wordmark_alt": "полный вордмарк npmx с синим слешем на тёмном фоне",
+      "wordmark_light_alt": "полный вордмарк npmx с акцентным слешем на светлом фоне",
+      "mark": "ЗНАК",
+      "mark_alt": "знак npmx с точкой и слешем на тёмном фоне",
+      "mark_light_alt": "знак npmx с точкой и слешем на светлом фоне",
+      "on_dark": "на тёмном",
+      "on_light": "на светлом",
+      "download_svg": "SVG",
+      "download_png": "PNG",
+      "download_svg_aria": "Скачать {name} (SVG)",
+      "download_png_aria": "Скачать {name} (PNG)"
+    },
+    "customize": {
+      "title": "настройка логотипа",
+      "description": "Предпросмотр логотипа npmx с вашим акцентным цветом и фоном. Отображаются текущие настройки — выберите цвет, переключите фон и скачайте.",
+      "accent_label": "акцент",
+      "bg_label": "фон",
+      "download_svg_aria": "Скачать настроенный логотип (SVG)",
+      "download_png_aria": "Скачать настроенный логотип (PNG)"
+    },
+    "typography": {
+      "title": "типографика",
+      "description": "npmx использует семейство шрифтов Geist (Vercel) для интерфейса и кода.",
+      "sans": "Geist Sans",
+      "sans_desc": "Для основного текста и элементов интерфейса.",
+      "mono": "Geist Mono",
+      "mono_desc": "Для кода, заголовков и технического контента.",
+      "pangram": "Съешь ещё этих мягких французских булок, да выпей же чаю",
+      "numbers": "0123456789"
+    },
+    "guidelines": {
+      "title": "небольшое примечание",
+      "message": "Для нас важна доступность, и мы будем рады, если вы разделите этот подход. При использовании материалов обеспечьте достаточный контраст с фоном и не уменьшайте размер меньше 24px. Если нужны другие ресурсы или информация о проекте, напишите нам: {link}.",
+      "discord_link_text": "chat.npmx.dev"
+    }
+  }
 }

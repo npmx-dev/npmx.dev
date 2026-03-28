@@ -1008,14 +1008,11 @@
       "add_column": "Nincs függőség oszlop hozzáadása az összehasonlításhoz"
     },
     "facets": {
-      "group_label": "Összehasonlítási aspektusok",
       "all": "összes",
       "none": "nincs",
       "coming_soon": "Hamarosan",
       "select_all": "Az összes aspektus kiválasztása",
       "deselect_all": "Az összes aspektus kijelölésének törlése",
-      "select_category": "Az összes {category} aspektus kiválasztása",
-      "deselect_category": "Az összes {category} aspektus kijelölésének törlése",
       "binary_only_tooltip": "Ez a csomag binárisokat mutat ki és nincsenek exportok",
       "categories": {
         "performance": "Teljesítmény",
