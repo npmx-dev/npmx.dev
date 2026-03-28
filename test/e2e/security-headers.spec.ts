@@ -10,6 +10,9 @@ test.describe('security headers', () => {
       .locator('meta[http-equiv="Content-Security-Policy"]')
       .getAttribute('content')
     expect(cspContent).toContain("script-src 'self'")
+    expect(cspContent).toContain('https://api.star-history.com')
+    expect(cspContent).toContain('https://cdn.bsky.app')
+    expect(cspContent).toContain('https://public.api.bsky.app')
 
     // Other security headers via route rules
     expect(headers['x-content-type-options']).toBe('nosniff')
@@ -25,7 +28,7 @@ test.describe('security headers', () => {
 
   // Navigate key pages and assert no CSP violations are logged.
   // This catches new external resources that weren't added to the CSP.
-  const PAGES = ['/', '/package/nuxt', '/search?q=vue', '/compare'] as const
+  const PAGES = ['/', '/package/nuxt', '/search?q=vue', '/compare', '/blog/alpha-release'] as const
 
   for (const path of PAGES) {
     test(`no CSP violations on ${path}`, async ({ goto, cspViolations }) => {

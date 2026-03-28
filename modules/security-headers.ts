@@ -1,4 +1,5 @@
 import { defineNuxtModule } from 'nuxt/kit'
+import { BLUESKY_API } from '#shared/utils/constants'
 import { ALL_KNOWN_GIT_API_ORIGINS } from '#shared/utils/git-providers'
 import { TRUSTED_IMAGE_DOMAINS } from '#server/utils/image-proxy'
 
@@ -19,10 +20,13 @@ import { TRUSTED_IMAGE_DOMAINS } from '#server/utils/image-proxy'
 export default defineNuxtModule({
   meta: { name: 'security-headers' },
   setup(_, nuxt) {
+    // These assets are embedded directly on blog pages and should not affect image-proxy trust.
+    const cspOnlyImgOrigins = ['https://api.star-history.com', 'https://cdn.bsky.app']
     const imgSrc = [
       "'self'",
       'data:',
       ...TRUSTED_IMAGE_DOMAINS.map(domain => `https://${domain}`),
+      ...cspOnlyImgOrigins,
     ].join(' ')
 
     const connectSrc = [
@@ -31,6 +35,7 @@ export default defineNuxtModule({
       'https://registry.npmjs.org',
       'https://api.npmjs.org',
       'https://npm.antfu.dev',
+      BLUESKY_API,
       ...ALL_KNOWN_GIT_API_ORIGINS,
       // Local CLI connector (npmx CLI communicates via localhost)
       'http://127.0.0.1:*',
