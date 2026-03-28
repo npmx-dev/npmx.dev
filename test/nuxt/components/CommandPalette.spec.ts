@@ -246,14 +246,11 @@ describe('CommandPalette', () => {
     await nextTick()
 
     expect(document.activeElement).toBe(commands[0])
-    expect(commands[0]?.classList.contains('border-border/80')).toBe(true)
 
     commands[1]?.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
     await nextTick()
 
     expect(document.activeElement).toBe(commands[0])
-    expect(commands[0]?.classList.contains('border-border/80')).toBe(true)
-    expect(commands[1]?.classList.contains('border-border/80')).toBe(false)
   })
 
   it('returns to the root view with ArrowLeft only when the input is empty', async () => {

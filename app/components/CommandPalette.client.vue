@@ -23,7 +23,6 @@ const inputRef = useTemplateRef<{
 }>('inputRef')
 const nuxtLinkComponent = resolveComponent('NuxtLink')
 
-const activeIndex = shallowRef(-1)
 const previouslyFocused = shallowRef<HTMLElement | null>(null)
 
 const dialogId = 'command-palette-modal'
@@ -63,10 +62,6 @@ const statusMessage = computed(() => {
   )
 })
 
-const commandIndexMap = computed(() => {
-  return new Map(flatCommands.value.map((command, index) => [command.id, index]))
-})
-
 function getDialog() {
   return document.querySelector<HTMLDialogElement>(`#${dialogId}`)
 }
@@ -97,7 +92,6 @@ function focusCommand(index: number) {
   const element = elements[index]
   if (!element) return
 
-  activeIndex.value = index
   element.focus()
 }
 
@@ -151,7 +145,6 @@ function getCommandAttrs(command: CommandPaletteCommand) {
     type: 'button' as const,
   }
 }
-
 function handleCommandClick(command: CommandPaletteCommand) {
   if (isLinkCommand(command)) {
     close()
@@ -193,7 +186,6 @@ function handleGlobalKeydown(event: KeyboardEvent) {
     event.preventDefault()
     const currentIndex = getCommandElements().findIndex(el => el === document.activeElement)
     if (currentIndex <= 0) {
-      activeIndex.value = -1
       focusInput()
       return
     }
@@ -238,7 +230,6 @@ function handleDialogClose() {
     return
   }
 
-  activeIndex.value = -1
   previouslyFocused.value?.focus()
   previouslyFocused.value = null
 }
@@ -261,7 +252,6 @@ watch(
       }
       await nextTick()
       focusInput()
-      activeIndex.value = -1
       return
     }
 
@@ -270,7 +260,6 @@ watch(
       return
     }
 
-    activeIndex.value = -1
     previouslyFocused.value?.focus()
     previouslyFocused.value = null
   },
@@ -285,10 +274,6 @@ watch(
     }
   },
 )
-
-watch(query, () => {
-  activeIndex.value = -1
-})
 
 useEventListener(document, 'keydown', handleGlobalKeydown)
 </script>
@@ -379,17 +364,11 @@ useEventListener(document, 'keydown', handleGlobalKeydown)
                   <component
                     :is="getCommandComponent(command)"
                     v-bind="getCommandAttrs(command)"
-                    class="block min-h-12 w-full rounded-lg border border-transparent px-3 py-2 text-start no-underline text-inherit transition-colors duration-150 hover:border-border/80 hover:bg-bg focus-visible:outline-accent/70"
-                    :class="
-                      activeIndex === (commandIndexMap.get(command.id) ?? -1)
-                        ? 'border-border/80 bg-bg'
-                        : ''
-                    "
+                    class="block min-h-12 w-full rounded-lg border border-transparent px-3 py-2 text-start no-underline text-inherit transition-colors duration-150 hover:border-border/80 hover:bg-bg focus-visible:border-border/80 focus-visible:bg-bg focus-visible:outline-accent/70"
                     data-command-item="true"
                     :data-command-id="command.id"
                     :aria-current="command.active ? 'true' : undefined"
                     @click="handleCommandClick(command)"
-                    @focus="activeIndex = commandIndexMap.get(command.id) ?? -1"
                   >
                     <span class="flex items-center gap-3">
                       <span
@@ -440,17 +419,11 @@ useEventListener(document, 'keydown', handleGlobalKeydown)
                 <component
                   :is="getCommandComponent(command)"
                   v-bind="getCommandAttrs(command)"
-                  class="block min-h-12 w-full rounded-xl border border-border/70 bg-bg-subtle/70 px-3 py-2 text-start no-underline text-inherit transition-colors duration-150 hover:border-border/80 hover:bg-bg focus-visible:outline-accent/70"
-                  :class="
-                    activeIndex === (commandIndexMap.get(command.id) ?? -1)
-                      ? 'border-border/80 bg-bg'
-                      : ''
-                  "
+                  class="block min-h-12 w-full rounded-xl border border-border/70 bg-bg-subtle/70 px-3 py-2 text-start no-underline text-inherit transition-colors duration-150 hover:border-border/80 hover:bg-bg focus-visible:border-border/80 focus-visible:bg-bg focus-visible:outline-accent/70"
                   data-command-item="true"
                   :data-command-id="command.id"
                   :aria-current="command.active ? 'true' : undefined"
                   @click="handleCommandClick(command)"
-                  @focus="activeIndex = commandIndexMap.get(command.id) ?? -1"
                 >
                   <span class="flex items-center gap-3">
                     <span
