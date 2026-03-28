@@ -524,12 +524,12 @@ describe('component accessibility audits', () => {
     })
 
     it('should have no accessibility violations when open', async () => {
-      await mountSuspended(CommandPaletteHarness)
+      const wrapper = await mountSuspended(CommandPaletteHarness)
       await nextTick()
       await nextTick()
 
       const dialog = document.getElementById('command-palette-modal')
-      const announcer = document.getElementById('command-palette-modal-announcement')
+      const announcer = wrapper.element.querySelector('#command-palette-modal-announcement')
 
       expect(dialog).not.toBeNull()
       expect(announcer).not.toBeNull()
