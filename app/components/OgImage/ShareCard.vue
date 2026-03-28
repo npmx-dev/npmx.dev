@@ -34,15 +34,15 @@ const { repositoryUrl } = useRepositoryUrl(displayVersion)
 const { stars, forks, repoRef, refresh: refreshRepoMeta } = useRepoMeta(repositoryUrl)
 
 try {
-  await refreshPkg()
-  await Promise.all([refreshRepoMeta(), refreshDownloads()])
+  await Promise.all([refreshPkg(), refreshDownloads()])
+  await refreshRepoMeta()
 } catch (err) {
   console.warn('[share-card] Failed to load data server-side:', err)
 }
 
 const version = computed(() => resolvedVersion.value ?? pkg.value?.['dist-tags']?.latest ?? '')
 const isLatest = computed(() => pkg.value?.['dist-tags']?.latest === version.value)
-const description = computed(() => pkg.value?.description ?? '')
+const description = computed(() => pkg.value?.description || 'No description.')
 const license = computed(() => pkg.value?.license ?? '')
 const hasTypes = computed(() =>
   Boolean(displayVersion.value?.types || displayVersion.value?.typings),
@@ -115,7 +115,7 @@ const fontMono = "'Geist Mono'"
                 class="text-[2.5rem] font-medium leading-none tracking-[-1.5px]"
                 :style="{ color: theme.text, fontFamily: fontMono }"
               >
-                {{ compactFormatter.format(weeklyDownloads) }}
+                {{ weeklyDownloads > 0 ? compactFormatter.format(weeklyDownloads) : '-' }}
               </span>
               <span class="text-[1.375rem] font-light" :style="{ color: theme.textMuted }"
                 >weekly</span
@@ -128,7 +128,7 @@ const fontMono = "'Geist Mono'"
             class="text-[1.375rem] font-light leading-[1.6] mb-5"
             :style="{ color: theme.textMuted, fontFamily: fontSans }"
           >
-            {{ truncate(description || 'No description.', 440) }}
+            {{ truncate(description, 440) }}
           </div>
 
           <!-- Tags -->
@@ -251,7 +251,7 @@ const fontMono = "'Geist Mono'"
             </div>
 
             <!-- Dependencies -->
-            <div class="flex flex-row items-center gap-2">
+            <div v-if="depsCount > 0" class="flex flex-row items-center gap-2">
               <svg
                 width="20"
                 height="20"
