@@ -114,7 +114,7 @@ npmx.dev supports npm permalinks &ndash; just replace `npmjs.com` with `npmx.dev
 | `npmjs.com/org/nuxt`            | [`npmx.dev/org/nuxt`](https://npmx.dev/org/nuxt)                       |
 
 > [!TIP]
-> Want automatic redirects? Try the [npmx-replace browser extension](https://github.com/tylersayshi/npmx-replace-extension) (Chrome only for now) or the separate [npmx-redirect extension](https://github.com/iaverages/npmx-redirect) for [Chrome](https://chromewebstore.google.com/detail/lbhjgfgpnlihfmobnohoipeljollhlnb) / [Firefox](https://addons.mozilla.org/en-GB/firefox/addon/npmx-redirect/).
+> Want automatic redirects? Try the [npmx-redirect extension](https://github.com/iaverages/npmx-redirect) for [Chrome](https://chromewebstore.google.com/detail/lbhjgfgpnlihfmobnohoipeljollhlnb) / [Firefox](https://addons.mozilla.org/en-GB/firefox/addon/npmx-redirect/).
 
 #### Not yet supported
 
