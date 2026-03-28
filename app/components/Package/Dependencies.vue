@@ -37,6 +37,17 @@ function getDeprecatedDepInfo(depName: string) {
   return vulnTree.value.deprecatedPackages.find(p => p.name === depName && p.depth === 'direct')
 }
 
+// Cache URL dependency lookups with computed map
+const urlDepMap = computed(() => {
+  if (!vulnTree.value) return new Map()
+  return new Map(vulnTree.value.urlDependencies.map(dep => [dep.name, dep]))
+})
+
+// Check if a dependency uses git: or https: URL
+function getUrlDepInfo(depName: string) {
+  return urlDepMap.value.get(depName) ?? null
+}
+
 // Expanded state for each section
 const depsExpanded = shallowRef(false)
 const peerDepsExpanded = shallowRef(false)
@@ -73,6 +84,8 @@ const sortedOptionalDependencies = computed(() => {
 
 // Get version tooltip
 function getDepVersionTooltip(dep: string, version: string) {
+  const urlDep = getUrlDepInfo(dep)
+  if (urlDep) return urlDep.url
   const outdated = outdatedDeps.value[dep]
   if (outdated) return getOutdatedTooltip(outdated, t)
   if (getVulnerableDepInfo(dep) || getDeprecatedDepInfo(dep)) return version
@@ -82,6 +95,7 @@ function getDepVersionTooltip(dep: string, version: string) {
 
 // Get version class
 function getDepVersionClass(dep: string) {
+  if (getUrlDepInfo(dep)) return 'text-orange-700 dark:text-orange-500'
   const outdated = outdatedDeps.value[dep]
   if (outdated) return getVersionClass(outdated)
   if (getVulnerableDepInfo(dep) || getDeprecatedDepInfo(dep)) return getVersionClass(undefined)
@@ -168,6 +182,19 @@ const numberFormatter = useNumberFormatter()
             >
               <span class="sr-only">{{ $t('package.deprecated.label') }}</span>
             </LinkBase>
+            <TooltipApp
+              v-if="getUrlDepInfo(dep)"
+              class="shrink-0 text-orange-700 dark:text-orange-500"
+              :text="getUrlDepInfo(dep)!.url"
+            >
+              <button
+                type="button"
+                class="p-2 -m-2"
+                :aria-label="`git/https dependency: ${getUrlDepInfo(dep)!.url}`"
+              >
+                <span class="i-lucide:triangle-alert w-3 h-3" aria-hidden="true" />
+              </button>
+            </TooltipApp>
             <LinkBase
               :to="packageRoute(dep, version)"
               class="block truncate"
