@@ -17,6 +17,18 @@ definePageMeta({
   name: 'package-versions',
 })
 
+interface NpmWebsiteVersionDownload {
+  version: string
+  downloads: number
+}
+
+interface NpmWebsiteVersionsResponse {
+  packages: Array<{
+    packageName: string
+    versions: NpmWebsiteVersionDownload[]
+  }>
+}
+
 /** Number of flat items (headers + version rows) to render statically during SSR */
 const SSR_COUNT = 20
 
@@ -48,6 +60,54 @@ const { data: versionSummary } = useLazyAsyncData(
 const distTags = computed(() => versionSummary.value?.distTags ?? {})
 const versionStrings = computed(() => versionSummary.value?.versions ?? [])
 const versionTimes = computed(() => versionSummary.value?.time ?? {})
+
+const { data: npmWebsiteVersions } = useLazyFetch<NpmWebsiteVersionsResponse>(
+  () => '/api/registry/downloads/versions',
+  {
+    key: () => `downloads-versions:${packageName.value}`,
+    query: computed(() => ({ packages: packageName.value })),
+    deep: false,
+    default: () => ({ packages: [] }),
+    getCachedData(key, nuxtApp) {
+      return nuxtApp.static.data[key] ?? nuxtApp.payload.data[key]
+    },
+  },
+)
+
+const packageVersions = computed(() => {
+  return (
+    npmWebsiteVersions.value?.packages.find(pkg => pkg.packageName === packageName.value)
+      ?.versions ?? []
+  )
+})
+
+const numberFormatter = useNumberFormatter()
+const { t } = useI18n()
+const versionDownloadsMap = computed(
+  () => new Map(packageVersions.value.map(({ version, downloads }) => [version, downloads])),
+)
+
+function getVersionDownloads(version: string): number | undefined {
+  return versionDownloadsMap.value.get(version)
+}
+
+function getGroupDownloads(versions: string[]): number | undefined {
+  let total = 0
+  let hasValue = false
+
+  for (const version of versions) {
+    const downloads = getVersionDownloads(version)
+    if (downloads === undefined) continue
+    total += downloads
+    hasValue = true
+  }
+
+  return hasValue ? total : undefined
+}
+
+function getDownloadsAriaLabel(downloads: number): string {
+  return `${numberFormatter.value.format(downloads)} ${t('package.downloads.title')}`
+}
 
 // ─── Phase 2: full metadata (loaded on first group expand) ────────────────────
 // Fetches deprecated status, provenance, and exact times needed for version rows.
@@ -237,10 +297,20 @@ const flatItems = computed<FlatItem[]>(() => {
               :to="packageRoute(packageName, latestTagRow!.version)"
               class="text-2xl font-semibold tracking-tight after:absolute after:inset-0 after:content-['']"
               dir="ltr"
-              >{{ latestTagRow!.version }}</LinkBase
+              >v{{ latestTagRow!.version }}</LinkBase
             >
           </div>
           <!-- Right: date + provenance -->
+          <div
+            v-if="getVersionDownloads(latestTagRow!.version)"
+            class="grid grid-flow-col auto-cols-max items-center gap-1 text-sm font-medium text-fg tabular-nums shrink-0"
+            :aria-label="getDownloadsAriaLabel(getVersionDownloads(latestTagRow!.version)!)"
+            dir="ltr"
+            :title="getDownloadsAriaLabel(getVersionDownloads(latestTagRow!.version)!)"
+          >
+            <span>{{ numberFormatter.format(getVersionDownloads(latestTagRow!.version)!) }}</span>
+            <span class="i-lucide:chart-line" aria-hidden="true"></span>
+          </div>
           <div class="flex flex-col items-end gap-1.5 shrink-0 relative z-10">
             <ProvenanceBadge
               v-if="fullVersionMap?.get(latestTagRow!.version)?.hasProvenance"
@@ -252,7 +322,7 @@ const flatItems = computed<FlatItem[]>(() => {
             <DateTime
               v-if="getVersionTime(latestTagRow!.version)"
               :datetime="getVersionTime(latestTagRow!.version)!"
-              class="text-xs text-fg-subtle"
+              class="text-xs text-fg-subtle whitespace-nowrap"
               year="numeric"
               month="short"
               day="numeric"
@@ -286,14 +356,24 @@ const flatItems = computed<FlatItem[]>(() => {
               class="text-sm flex-1 min-w-0 after:absolute after:inset-0 after:content-['']"
               dir="ltr"
             >
-              {{ row.version }}
+              v{{ row.version }}
             </LinkBase>
 
             <!-- Date -->
+            <span
+              v-if="getVersionDownloads(row.version)"
+              class="grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted shrink-0 tabular-nums w-24 text-end"
+              :aria-label="getDownloadsAriaLabel(getVersionDownloads(row.version)!)"
+              dir="ltr"
+              :title="getDownloadsAriaLabel(getVersionDownloads(row.version)!)"
+            >
+              <span>{{ numberFormatter.format(getVersionDownloads(row.version)!) }}</span>
+              <span class="i-lucide:chart-line" aria-hidden="true"></span>
+            </span>
             <DateTime
               v-if="getVersionTime(row.version)"
               :datetime="getVersionTime(row.version)!"
-              class="text-xs text-fg-subtle shrink-0 hidden sm:block"
+              class="text-xs text-fg-subtle shrink-0 hidden sm:block whitespace-nowrap"
               year="numeric"
               month="short"
               day="numeric"
@@ -373,12 +453,24 @@ const flatItems = computed<FlatItem[]>(() => {
                     </span>
                     <span class="text-sm font-medium">{{ item.label }}</span>
                     <span class="text-xs text-fg-subtle">({{ item.versions.length }})</span>
-                    <span class="ms-auto flex items-center gap-3 shrink-0">
-                      <span class="text-xs text-fg-muted" dir="ltr">{{ item.versions[0] }}</span>
+                    <span v-if="item.versions[0]" class="text-xs text-fg-muted" dir="ltr"
+                      >v{{ item.versions[0] }}</span
+                    >
+                    <span
+                      v-if="getGroupDownloads(item.versions)"
+                      class="ms-auto grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums w-24 text-end"
+                      :aria-label="getDownloadsAriaLabel(getGroupDownloads(item.versions)!)"
+                      dir="ltr"
+                      :title="getDownloadsAriaLabel(getGroupDownloads(item.versions)!)"
+                    >
+                      <span>{{ numberFormatter.format(getGroupDownloads(item.versions)!) }}</span>
+                      <span class="i-lucide:chart-line" aria-hidden="true"></span>
+                    </span>
+                    <span class="flex items-center gap-3 shrink-0">
                       <DateTime
                         v-if="getVersionTime(item.versions[0])"
                         :datetime="getVersionTime(item.versions[0])!"
-                        class="text-xs text-fg-subtle hidden sm:block"
+                        class="text-xs text-fg-subtle hidden sm:block whitespace-nowrap"
                         year="numeric"
                         month="short"
                         day="numeric"
@@ -413,7 +505,7 @@ const flatItems = computed<FlatItem[]>(() => {
                           "
                           dir="ltr"
                         >
-                          {{ item.version }}
+                          v{{ item.version }}
                         </LinkBase>
                         <div
                           v-if="versionToTagsMap.get(item.version)?.length"
@@ -438,12 +530,26 @@ const flatItems = computed<FlatItem[]>(() => {
                       </div>
 
                       <!-- Right side -->
-                      <div class="flex items-center gap-2 shrink-0 relative z-10">
+                      <div
+                        class="grid grid-flow-col auto-cols-max items-center gap-2 shrink-0 relative z-10 justify-end"
+                      >
+                        <span
+                          v-if="getVersionDownloads(item.version)"
+                          class="grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums w-24 text-end shrink-0"
+                          :aria-label="getDownloadsAriaLabel(getVersionDownloads(item.version)!)"
+                          :title="getDownloadsAriaLabel(getVersionDownloads(item.version)!)"
+                          dir="ltr"
+                        >
+                          <span>{{
+                            numberFormatter.format(getVersionDownloads(item.version)!)
+                          }}</span>
+                          <span class="i-lucide:chart-line" aria-hidden="true"></span>
+                        </span>
                         <!-- Metadata: date + provenance -->
                         <DateTime
                           v-if="getVersionTime(item.version)"
                           :datetime="getVersionTime(item.version)!"
-                          class="text-xs text-fg-subtle hidden sm:block"
+                          class="text-xs text-fg-subtle hidden sm:block whitespace-nowrap"
                           year="numeric"
                           month="short"
                           day="numeric"
@@ -477,12 +583,24 @@ const flatItems = computed<FlatItem[]>(() => {
                   </span>
                   <span class="text-sm font-medium">{{ item.label }}</span>
                   <span class="text-xs text-fg-subtle">({{ item.versions.length }})</span>
-                  <span class="ms-auto flex items-center gap-3 shrink-0">
-                    <span class="text-xs text-fg-muted" dir="ltr">{{ item.versions[0] }}</span>
+                  <span
+                    v-if="getGroupDownloads(item.versions)"
+                    class="ms-auto grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums w-24 text-end"
+                    :aria-label="getDownloadsAriaLabel(getGroupDownloads(item.versions)!)"
+                    dir="ltr"
+                    :title="getDownloadsAriaLabel(getGroupDownloads(item.versions)!)"
+                  >
+                    <span>{{ numberFormatter.format(getGroupDownloads(item.versions)!) }}</span>
+                    <span class="i-lucide:chart-line" aria-hidden="true"></span>
+                  </span>
+                  <span class="flex items-center gap-3 shrink-0">
+                    <span v-if="item.versions[0]" class="text-xs text-fg-muted" dir="ltr"
+                      >v{{ item.versions[0] }}</span
+                    >
                     <DateTime
                       v-if="getVersionTime(item.versions[0] ?? '')"
                       :datetime="getVersionTime(item.versions[0] ?? '')!"
-                      class="text-xs text-fg-subtle hidden sm:block"
+                      class="text-xs text-fg-subtle hidden sm:block whitespace-nowrap"
                       year="numeric"
                       month="short"
                       day="numeric"
