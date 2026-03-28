@@ -318,7 +318,8 @@
       "docs": "docs",
       "fund": "fund",
       "compare": "compare",
-      "compare_this_package": "compare this package"
+      "compare_this_package": "compare this package",
+      "access": "access"
     },
     "likes": {
       "like": "Like this package",
@@ -587,6 +588,10 @@
       "show_all": "show {count} deprecated package | show all {count} deprecated packages"
     },
     "access": {
+      "page_title": "Access & Collaborators",
+      "page_subtitle": "Manage team and collaborator access for {name}",
+      "connect_required": "Connect your npm CLI to manage access",
+      "connect_hint": "Use the local connector to view and manage package collaborators and team access.",
       "title": "Team Access",
       "refresh": "Refresh team access",
       "list_label": "Team access list",
