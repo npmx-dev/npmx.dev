@@ -123,6 +123,9 @@
         },
         "open_diff": {
           "type": "string"
+        },
+        "open_timeline": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -961,6 +964,9 @@
             "compare": {
               "type": "string"
             },
+            "timeline": {
+              "type": "string"
+            },
             "compare_this_package": {
               "type": "string"
             }
@@ -1334,6 +1340,57 @@
               "type": "string"
             },
             "no_match_filter": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "timeline": {
+          "type": "object",
+          "properties": {
+            "load_more": {
+              "type": "string"
+            },
+            "load_error": {
+              "type": "string"
+            },
+            "size_increase": {
+              "type": "string"
+            },
+            "size_decrease": {
+              "type": "string"
+            },
+            "dep_increase": {
+              "type": "string"
+            },
+            "dep_decrease": {
+              "type": "string"
+            },
+            "license_change": {
+              "type": "string"
+            },
+            "esm_added": {
+              "type": "string"
+            },
+            "esm_removed": {
+              "type": "string"
+            },
+            "types_added": {
+              "type": "string"
+            },
+            "types_removed": {
+              "type": "string"
+            },
+            "trusted_publisher_added": {
+              "type": "string"
+            },
+            "trusted_publisher_removed": {
+              "type": "string"
+            },
+            "provenance_added": {
+              "type": "string"
+            },
+            "provenance_removed": {
               "type": "string"
             }
           },

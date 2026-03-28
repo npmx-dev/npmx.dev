@@ -39,7 +39,8 @@
     "open_docs": "Open docs",
     "disable_shortcuts": "You can disable keyboard shortcuts in {settings}.",
     "open_main": "Open main information",
-    "open_diff": "Open version differences"
+    "open_diff": "Open version differences",
+    "open_timeline": "Open timeline"
   },
   "search": {
     "label": "Search npm packages",
@@ -319,6 +320,7 @@
       "docs": "docs",
       "fund": "fund",
       "compare": "compare",
+      "timeline": "timeline",
       "compare_this_package": "compare this package"
     },
     "likes": {
@@ -444,6 +446,23 @@
       "version_filter_placeholder": "Filter versions…",
       "version_filter_label": "Filter versions",
       "no_match_filter": "No versions match {filter}"
+    },
+    "timeline": {
+      "load_more": "Load more",
+      "load_error": "Failed to load timeline. Please try again later.",
+      "size_increase": "Install size increased by {percent}% ({size})",
+      "size_decrease": "Install size decreased by {percent}% ({size})",
+      "dep_increase": "{count} dependencies added",
+      "dep_decrease": "{count} dependencies removed",
+      "license_change": "License changed from {from} to {to}",
+      "esm_added": "Module type changed to ESM",
+      "esm_removed": "Module type changed from ESM to CJS",
+      "types_added": "TypeScript types added",
+      "types_removed": "TypeScript types removed",
+      "trusted_publisher_added": "Trusted publishing enabled",
+      "trusted_publisher_removed": "Trusted publishing removed",
+      "provenance_added": "Provenance enabled",
+      "provenance_removed": "Provenance removed"
     },
     "dependencies": {
       "title": "Dependency ({count}) | Dependencies ({count})",

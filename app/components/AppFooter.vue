@@ -110,6 +110,10 @@ const closeModal = () => modalRef.value?.close?.()
                   <span>{{ $t('shortcuts.open_diff') }}</span>
                 </li>
                 <li class="flex gap-2 items-center">
+                  <kbd class="kbd">t</kbd>
+                  <span>{{ $t('shortcuts.open_timeline') }}</span>
+                </li>
+                <li class="flex gap-2 items-center">
                   <kbd class="kbd">c</kbd>
                   <span>{{ $t('shortcuts.compare_from_package') }}</span>
                 </li>
