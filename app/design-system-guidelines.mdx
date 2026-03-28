@@ -1,0 +1,86 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Guidelines" tags={['hide-toolbar']} />
+
+# Guidelines
+
+## Containers
+
+We use three container types depending on content density.
+
+**Main Container** is the default layout container. It should be used for pages with minimal or non-text content (e.g. graphs, dashboards).
+
+**Content Container** is used for text-heavy layouts. All long-form content must be placed inside this container. The maximum readable width is **768px**.
+
+**Extra Container** is used for dense layouts (e.g. code, detailed views) where additional horizontal space is required.
+
+A right sidebar (304px) may be used for secondary content when needed.
+
+Text and input fields should not exceed **768px** in width
+
+## Element Sizes
+
+Interactive element sizes:
+
+- 24 — 2xs (rare)
+- 28 — xs (compact)
+- 32 — sm (minimum recommended)
+- 36 — md (default)
+- 42 — lg
+- 48 — xl
+- 56 — 2xl
+- 64 — 3xl
+
+## Typography
+
+- Base font size: **16px**
+- Minimum font size: **14px** (use sparingly)
+
+Text casing:
+
+- **Uppercase** — for headings
+- **Lowercase** — for UI elements
+- **Normal** - for body content
+
+[See Typography](./?path=/docs/tokens-typography--docs)
+
+## Surfaces & Sections
+
+To visually separate content blocks (grouped content, cards, settings sections), use subtle background variations:
+
+- `bg-muted`
+- `bg-subtle`
+
+## Borders & Radius
+
+- subtle border
+- light border radius
+- soft "glass-like" appearance
+
+Only avatars should have fully circular shapes.
+
+## Colors
+
+- Primary surfaces: **white** (`fg`)
+- Secondary or less important content: use softer, muted tones
+
+[See Colors](./?path=/docs/tokens-colors--docs)
+
+## Layout Stability
+
+Interfaces must remain visually stable across screens and pages. Avoid layout shifts. If shifts are unavoidable, place elements where movement is not critical to user interaction.
+
+## Responsiveness specifics
+
+On smaller screens:
+
+- Button text may be hidden (icons only)
+- Keyboard shortcuts may be hidden
+
+## General Principles
+
+- Preserve the meaning of elements (avoid links like button, etc)
+- Maintain sufficient spacing
+- Keep interfaces accessible
+- Prefer simple, predictable layouts
+- Design components to be easy to implement and scale
