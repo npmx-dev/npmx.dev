@@ -455,7 +455,7 @@
       "outdated_minor": "{count} минорная версия позади (последняя: {latest}) | {count} минорные версии позади (последняя: {latest}) | {count} минорных версий позади (последняя: {latest})",
       "outdated_patch": "Доступно патч-обновление (последняя: {latest})",
       "has_replacement": "Для этой зависимости есть рекомендуемые замены",
-      "vulnerabilities_count": "{count} уязвимость | {count} уязвимостей"
+      "vulnerabilities_count": "{count} уязвимость | {count} уязвимости | {count} уязвимостей"
     },
     "peer_dependencies": {
       "title": "Peer-зависимости ({count})",
