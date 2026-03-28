@@ -27,6 +27,21 @@ export function areUrlsEquivalent(url1: string, url2: string): boolean {
   return normalizeUrlForComparison(url1) === normalizeUrlForComparison(url2)
 }
 
+export function getSafeHttpUrl(url?: string | null): string | null {
+  if (!url) return null
+
+  try {
+    const parsed = new URL(url)
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+      return null
+    }
+
+    return parsed.href
+  } catch {
+    return null
+  }
+}
+
 export function normalizeSearchParam(query?: LocationQueryValue | LocationQueryValue[]): string {
   if (!query) return ''
 

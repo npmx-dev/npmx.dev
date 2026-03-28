@@ -2,6 +2,7 @@
 import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison'
 import { useRouteQuery } from '@vueuse/router'
 import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
+import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
 
 definePageMeta({
   name: 'compare',
@@ -77,6 +78,7 @@ const columnLoading = computed(() => packages.value.map((_, i) => isColumnLoadin
 const canCompare = computed(() => packages.value.length >= 2)
 
 const comparisonView = usePermalink<'table' | 'charts'>('view', 'table')
+const hasChartableFacets = computed(() => selectedFacets.value.some(facet => facet.chartable))
 
 // Extract headers from columns for facet rows
 const gridHeaders = computed(() =>
@@ -133,6 +135,75 @@ function exportComparisonDataAsMarkdown() {
 
   copy(markdown)
 }
+
+useCommandPaletteContextCommands(
+  computed((): CommandPaletteContextCommandInput[] => {
+    const commands: CommandPaletteContextCommandInput[] = [
+      {
+        id: 'compare-select-all',
+        group: 'actions',
+        label: $t('compare.facets.select_all'),
+        keywords: [$t('compare.packages.section_facets')],
+        iconClass: 'i-lucide:list-checks',
+        action: () => {
+          selectAll()
+        },
+      },
+      {
+        id: 'compare-deselect-all',
+        group: 'actions',
+        label: $t('compare.facets.deselect_all'),
+        keywords: [$t('compare.packages.section_facets')],
+        iconClass: 'i-lucide:list-x',
+        action: () => {
+          deselectAll()
+        },
+      },
+    ]
+
+    if (packagesData.value && packagesData.value.some(p => p !== null)) {
+      commands.push({
+        id: 'compare-copy-markdown',
+        group: 'actions',
+        label: $t('compare.packages.copy_as_markdown'),
+        keywords: [$t('compare.packages.section_comparison')],
+        iconClass: 'i-lucide:copy',
+        action: () => {
+          exportComparisonDataAsMarkdown()
+        },
+      })
+    }
+
+    if (canCompare.value && hasChartableFacets.value) {
+      commands.push(
+        {
+          id: 'compare-view-table',
+          group: 'actions',
+          label: $t('compare.packages.table_view'),
+          keywords: [$t('compare.packages.section_comparison')],
+          iconClass: 'i-lucide:table',
+          active: comparisonView.value === 'table',
+          action: () => {
+            comparisonView.value = 'table'
+          },
+        },
+        {
+          id: 'compare-view-charts',
+          group: 'actions',
+          label: $t('compare.packages.charts_view'),
+          keywords: [$t('compare.packages.section_comparison')],
+          iconClass: 'i-lucide:chart-bar-decreasing',
+          active: comparisonView.value === 'charts',
+          action: () => {
+            comparisonView.value = 'charts'
+          },
+        },
+      )
+    }
+
+    return commands
+  }),
+)
 
 useSeoMeta({
   title: () =>

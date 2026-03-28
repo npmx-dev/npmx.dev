@@ -88,6 +88,15 @@
           },
           "additionalProperties": false
         },
+        "ctrl_key": {
+          "type": "string"
+        },
+        "command_palette": {
+          "type": "string"
+        },
+        "command_palette_description": {
+          "type": "string"
+        },
         "focus_search": {
           "type": "string"
         },
@@ -228,6 +237,303 @@
         },
         "instant_search_advisory": {
           "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "command_palette": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "quick_actions": {
+          "type": "string"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "subtitle_languages": {
+          "type": "string"
+        },
+        "instructions": {
+          "type": "string"
+        },
+        "input_label": {
+          "type": "string"
+        },
+        "results_label": {
+          "type": "string"
+        },
+        "placeholder": {
+          "type": "string"
+        },
+        "back": {
+          "type": "string"
+        },
+        "empty": {
+          "type": "string"
+        },
+        "empty_search_hint": {
+          "type": "string"
+        },
+        "current": {
+          "type": "string"
+        },
+        "here": {
+          "type": "string"
+        },
+        "connected": {
+          "type": "string"
+        },
+        "state": {
+          "type": "object",
+          "properties": {
+            "on": {
+              "type": "string"
+            },
+            "off": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "groups": {
+          "type": "object",
+          "properties": {
+            "actions": {
+              "type": "string"
+            },
+            "help": {
+              "type": "string"
+            },
+            "language": {
+              "type": "string"
+            },
+            "connections": {
+              "type": "string"
+            },
+            "navigation": {
+              "type": "string"
+            },
+            "links": {
+              "type": "string"
+            },
+            "npmx": {
+              "type": "string"
+            },
+            "package": {
+              "type": "string"
+            },
+            "package_with_name": {
+              "type": "string"
+            },
+            "versions": {
+              "type": "string"
+            },
+            "versions_with_name": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "actions": {
+          "type": "object",
+          "properties": {
+            "search": {
+              "type": "string"
+            },
+            "search_for": {
+              "type": "string"
+            },
+            "keyboard_shortcuts": {
+              "type": "string"
+            },
+            "help_translate": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "connections": {
+          "type": "object",
+          "properties": {
+            "npm_connect": {
+              "type": "string"
+            },
+            "npm_connected": {
+              "type": "string"
+            },
+            "npm_disconnect": {
+              "type": "string"
+            },
+            "atmosphere_connect": {
+              "type": "string"
+            },
+            "atmosphere_connected": {
+              "type": "string"
+            },
+            "atmosphere_disconnect": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "navigation": {
+          "type": "object",
+          "properties": {
+            "home": {
+              "type": "string"
+            },
+            "packages": {
+              "type": "string"
+            },
+            "orgs": {
+              "type": "string"
+            },
+            "profile": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "links": {
+          "type": "object",
+          "properties": {
+            "external": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "package_links": {
+          "type": "object",
+          "properties": {
+            "stars": {
+              "type": "string"
+            },
+            "forks": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "theme": {
+          "type": "object",
+          "properties": {
+            "system": {
+              "type": "string"
+            },
+            "light": {
+              "type": "string"
+            },
+            "dark": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "package": {
+          "type": "object",
+          "properties": {
+            "main": {
+              "type": "string"
+            },
+            "docs": {
+              "type": "string"
+            },
+            "code": {
+              "type": "string"
+            },
+            "diff": {
+              "type": "string"
+            },
+            "compare": {
+              "type": "string"
+            },
+            "download": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "package_actions": {
+          "type": "object",
+          "properties": {
+            "copy_run": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "code": {
+          "type": "object",
+          "properties": {
+            "copy_file": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "diff": {
+          "type": "object",
+          "properties": {
+            "merge_modified_lines": {
+              "type": "string"
+            },
+            "word_wrap": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "version": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "status": {
+          "type": "object",
+          "properties": {
+            "available_in_context": {
+              "type": "string"
+            },
+            "matching_in_context": {
+              "type": "string"
+            },
+            "no_matches_search_in_context": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "announcements": {
+          "type": "object",
+          "properties": {
+            "language_changed": {
+              "type": "string"
+            },
+            "relative_dates_on": {
+              "type": "string"
+            },
+            "relative_dates_off": {
+              "type": "string"
+            },
+            "theme_changed": {
+              "type": "string"
+            },
+            "accent_color_changed": {
+              "type": "string"
+            },
+            "background_theme_changed": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false
@@ -455,6 +761,9 @@
           "type": "object",
           "properties": {
             "label": {
+              "type": "string"
+            },
+            "neutral": {
               "type": "string"
             },
             "sky": {

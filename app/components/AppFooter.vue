@@ -5,6 +5,7 @@ const route = useRoute()
 const isHome = computed(() => route.name === 'index')
 
 const discord = useDiscordLink()
+const { commandPaletteShortcutLabel } = usePlatformModifierKey()
 const modalRef = useTemplateRef('modalRef')
 const showModal = () => modalRef.value?.showModal?.()
 const closeModal = () => modalRef.value?.close?.()
@@ -55,10 +56,19 @@ const closeModal = () => modalRef.value?.close?.()
               :modalTitle="$t('footer.keyboard_shortcuts')"
               class="w-auto max-w-lg"
             >
+              <p class="mb-4 text-sm leading-relaxed text-fg-muted">
+                {{
+                  $t('shortcuts.command_palette_description', { ctrlKey: $t('shortcuts.ctrl_key') })
+                }}
+              </p>
               <p class="mb-2 font-mono text-fg-subtle">
                 {{ $t('shortcuts.section.global') }}
               </p>
               <ul class="mb-6 flex flex-col gap-2">
+                <li class="flex gap-2 items-center">
+                  <kbd class="kbd">{{ commandPaletteShortcutLabel }}</kbd>
+                  <span>{{ $t('shortcuts.command_palette') }}</span>
+                </li>
                 <li class="flex gap-2 items-center">
                   <kbd class="kbd">/</kbd>
                   <span>{{ $t('shortcuts.focus_search') }}</span>

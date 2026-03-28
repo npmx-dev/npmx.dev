@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core'
+import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
 
 const bytesFormatter = useBytesFormatter()
 
@@ -86,6 +87,35 @@ const charEditPercent = computed(() => calcPercent(inlineMaxCharEdits.value, 0, 
 function getCodeUrl(version: string): string {
   return `/package-code/${props.packageName}/v/${version}/${props.file.path}`
 }
+
+useCommandPaletteContextCommands(
+  computed((): CommandPaletteContextCommandInput[] => [
+    {
+      id: 'diff-toggle-merge-modified-lines',
+      group: 'actions',
+      label: $t('command_palette.diff.merge_modified_lines'),
+      keywords: [props.packageName, props.file.path],
+      iconClass: 'i-lucide:git-compare',
+      badge: mergeModifiedLines.value
+        ? $t('command_palette.state.on')
+        : $t('command_palette.state.off'),
+      action: () => {
+        mergeModifiedLines.value = !mergeModifiedLines.value
+      },
+    },
+    {
+      id: 'diff-toggle-word-wrap',
+      group: 'actions',
+      label: $t('command_palette.diff.word_wrap'),
+      keywords: [props.packageName, props.file.path],
+      iconClass: 'i-lucide:align-justify',
+      badge: wordWrap.value ? $t('command_palette.state.on') : $t('command_palette.state.off'),
+      action: () => {
+        wordWrap.value = !wordWrap.value
+      },
+    },
+  ]),
+)
 </script>
 
 <template>

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useAccentColor } from '~/composables/useSettings'
+import { DEFAULT_ACCENT_COLOR_OPTION_ID, useAccentColor } from '~/composables/useSettings'
 
-const { accentColors, selectedAccentColor, setAccentColor } = useAccentColor()
+const { accentColors, selectedAccentColorOptionId, setAccentColor } = useAccentColor()
 
 onPrehydrate(el => {
   const settings = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
-  const defaultId = 'sky'
-  const id = settings.accentColorId
+  const defaultId = DEFAULT_ACCENT_COLOR_OPTION_ID
+  const id = settings.accentColorId ?? defaultId
   if (id) {
     const input = el.querySelector<HTMLInputElement>(`input[value="${id}"]`)
     if (input) {
@@ -42,7 +42,7 @@ onPrehydrate(el => {
         name="accent-color"
         class="sr-only"
         :value="color.id"
-        :checked="selectedAccentColor === color.id || (!selectedAccentColor && color.id === 'sky')"
+        :checked="selectedAccentColorOptionId === color.id"
         :aria-label="color.label"
         @change="setAccentColor(color.id)"
       />
