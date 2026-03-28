@@ -223,34 +223,44 @@ useEventListener('keydown', (event: KeyboardEvent) => {
               {{ mode.label }}
             </button>
           </div>
-          <ButtonBase
-            v-if="selectedLines"
-            class="py-1 px-3"
-            :classicon="permalinkCopied ? 'i-lucide:check' : 'i-lucide:file-braces-corner'"
-            :aria-label="$t('code.copy_link')"
-            @click="copyPermalinkUrl"
-          />
-          <ButtonBase
-            v-if="!!fileContent?.content"
-            class="px-3"
-            :classicon="fileContentCopied ? 'i-lucide:check' : 'i-lucide:copy'"
-            :aria-label="$t('code.copy_content')"
-            @click="copyFileContent()"
-          />
-          <LinkBase
-            variant="button-secondary"
-            :to="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
-            class="px-3"
-            :aria-label="$t('code.open_raw_file')"
-          />
+          <TooltipApp :text="$t('code.copy_link')" position="top">
+            <ButtonBase
+              v-if="selectedLines"
+              class="py-1 px-3"
+              :classicon="permalinkCopied ? 'i-lucide:check' : 'i-lucide:file-braces-corner'"
+              :aria-label="$t('code.copy_link')"
+              @click="copyPermalinkUrl"
+            />
+          </TooltipApp>
+          <TooltipApp :text="$t('code.copy_content')" position="top">
+            <ButtonBase
+              v-if="!!fileContent?.content"
+              class="px-3"
+              :classicon="fileContentCopied ? 'i-lucide:check' : 'i-lucide:copy'"
+              :aria-label="$t('code.copy_content')"
+              @click="copyFileContent()"
+            />
+          </TooltipApp>
+          <TooltipApp :text="$t('code.open_raw_file')" position="top">
+            <LinkBase
+              variant="button-secondary"
+              :to="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
+              class="px-3"
+              :aria-label="$t('code.open_raw_file')"
+            />
+          </TooltipApp>
         </template>
-        <ButtonBase
-          class="px-3 max-xl:hidden"
-          :disabled="loading"
-          :classicon="codeContainerFull ? 'i-lucide:fold-horizontal' : 'i-lucide:unfold-horizontal'"
-          :aria-label="$t('code.toggle_container')"
-          @click="toggleCodeContainer()"
-        />
+        <TooltipApp :text="$t('code.toggle_container')" position="top">
+          <ButtonBase
+            class="px-3 max-xl:hidden"
+            :disabled="loading"
+            :classicon="
+              codeContainerFull ? 'i-lucide:fold-horizontal' : 'i-lucide:unfold-horizontal'
+            "
+            :aria-label="$t('code.toggle_container')"
+            @click="toggleCodeContainer()"
+          />
+        </TooltipApp>
       </div>
     </div>
   </div>
