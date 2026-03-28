@@ -10,6 +10,10 @@ async function search() {
 
 const { env } = useAppConfig().buildInfo
 
+useHead({
+  link: [{ key: 'llms-txt', rel: 'alternate', href: '/llms.txt', title: 'LLMs.txt' }],
+})
+
 useSeoMeta({
   title: () => $t('seo.home.title'),
   ogTitle: () => $t('seo.home.title'),
