@@ -582,7 +582,11 @@ const showSkeleton = shallowRef(false)
                 {{ $t('package.stats.license') }}
               </dt>
               <dd class="font-mono text-sm text-fg">
-                <LicenseDisplay v-if="pkg.license" :license="pkg.license" />
+                <LicenseDisplay
+                  v-if="pkg.license"
+                  :license="pkg.license"
+                  :package-name="pkg.name"
+                />
                 <span v-else>{{ $t('package.license.none') }}</span>
               </dd>
             </div>
