@@ -38,6 +38,7 @@ export interface AppSettings {
     /** Automatically open the web auth page in the browser */
     autoOpenURL: boolean
   }
+  codeContainerFull: boolean
   sidebar: {
     collapsed: string[]
   }
@@ -63,6 +64,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   connector: {
     autoOpenURL: false,
   },
+  codeContainerFull: false,
   sidebar: {
     collapsed: [],
   },
@@ -78,6 +80,8 @@ const STORAGE_KEY = 'npmx-settings'
 
 // Shared settings instance (singleton per app)
 let settingsRef: RemovableRef<AppSettings> | null = null
+
+const hasHydrated = ref(false)
 
 /**
  * Composable for managing application settings with localStorage persistence.
@@ -234,5 +238,24 @@ export function useBackgroundTheme() {
     backgroundThemes,
     selectedBackgroundTheme: computed(() => settings.value.preferredBackgroundTheme),
     setBackgroundTheme,
+  }
+}
+
+export function useCodeContainer() {
+  const { settings } = useSettings()
+
+  onMounted(() => {
+    hasHydrated.value = true
+  })
+
+  const codeContainerFull = computed(() => hasHydrated.value && settings.value.codeContainerFull)
+
+  function toggleCodeContainer() {
+    settings.value.codeContainerFull = !settings.value.codeContainerFull
+  }
+
+  return {
+    codeContainerFull,
+    toggleCodeContainer,
   }
 }

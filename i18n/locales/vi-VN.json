@@ -822,12 +822,10 @@
   "code": {
     "files_label": "Tệp",
     "no_files": "Không có tệp nào trong thư mục này",
-    "root": "gốc",
     "lines": "{count} dòng | {count} dòng",
     "toggle_tree": "Bật/tắt cây thư mục",
     "close_tree": "Đóng cây thư mục",
     "copy_link": "Sao chép liên kết",
-    "raw": "Thô",
     "view_raw": "Xem tệp thô",
     "file_too_large": "Tệp quá lớn để xem trước",
     "file_size_warning": "{size} vượt quá giới hạn 500KB để tô màu cú pháp (syntax highlight)",

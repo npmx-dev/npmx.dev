@@ -769,12 +769,10 @@
   "code": {
     "files_label": "ファイル",
     "no_files": "このディレクトリにファイルはありません",
-    "root": "ルート",
     "lines": "{count} 行",
     "toggle_tree": "ファイルツリーを切り替え",
     "close_tree": "ファイルツリーを閉じる",
     "copy_link": "リンクをコピー",
-    "raw": "RAW",
     "view_raw": "RAWファイルを表示",
     "file_too_large": "ファイルが大きすぎるためプレビューできません",
     "file_size_warning": "{size} は構文強調表示の制限である500KBを超えています",

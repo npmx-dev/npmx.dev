@@ -825,13 +825,15 @@
   "code": {
     "files_label": "Files",
     "no_files": "No files in this directory",
-    "root": "root",
     "lines": "{count} line | {count} lines",
     "toggle_tree": "Toggle file tree",
     "close_tree": "Close file tree",
+    "copy_content": "Copy file content",
     "copy_link": "Copy link",
-    "raw": "Raw",
     "view_raw": "View raw file",
+    "toggle_container": "Toggle code container width",
+    "open_raw_file": "Open raw file",
+    "open_path_dropdown": "Open path segments dropdown",
     "file_too_large": "File too large to preview",
     "file_size_warning": "{size} exceeds the 500KB limit for syntax highlighting",
     "failed_to_load": "Failed to load file",
@@ -846,8 +848,8 @@
       "size": "Size"
     },
     "markdown_view_mode": {
-      "preview": "preview",
-      "code": "code"
+      "preview": "Preview",
+      "code": "Code"
     },
     "file_path": "File path",
     "binary_file": "Binary file",

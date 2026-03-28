@@ -772,12 +772,10 @@
   "code": {
     "files_label": "Berkas",
     "no_files": "Tidak ada berkas di direktori ini",
-    "root": "root",
     "lines": "{count} baris",
     "toggle_tree": "Ganti pohon berkas",
     "close_tree": "Tutup pohon berkas",
     "copy_link": "Salin tautan",
-    "raw": "Raw",
     "view_raw": "Lihat berkas mentah",
     "file_too_large": "Berkas terlalu besar untuk pratinjau",
     "file_size_warning": "{size} melebihi batas 500KB untuk penyorotan sintaksis",

@@ -769,12 +769,10 @@
   "code": {
     "files_label": "Pliki",
     "no_files": "Brak plików w tym katalogu",
-    "root": "root",
     "lines": "{count} wierszy",
     "toggle_tree": "Przełącz drzewo plików",
     "close_tree": "Zamknij drzewo plików",
     "copy_link": "Kopiuj link",
-    "raw": "Surowe",
     "view_raw": "Zobacz surowy plik",
     "file_too_large": "Plik jest zbyt duży, aby wyświetlić podgląd",
     "file_size_warning": "{size} przekracza limit 500KB dla podświetlania składni",

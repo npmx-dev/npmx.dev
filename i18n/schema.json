@@ -2479,9 +2479,6 @@
         "no_files": {
           "type": "string"
         },
-        "root": {
-          "type": "string"
-        },
         "lines": {
           "type": "string"
         },
@@ -2491,13 +2488,22 @@
         "close_tree": {
           "type": "string"
         },
+        "copy_content": {
+          "type": "string"
+        },
         "copy_link": {
           "type": "string"
         },
-        "raw": {
+        "view_raw": {
           "type": "string"
         },
-        "view_raw": {
+        "toggle_container": {
+          "type": "string"
+        },
+        "open_raw_file": {
+          "type": "string"
+        },
+        "open_path_dropdown": {
           "type": "string"
         },
         "file_too_large": {

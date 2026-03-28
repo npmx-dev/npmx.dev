@@ -822,12 +822,10 @@
   "code": {
     "files_label": "Fichiers",
     "no_files": "Aucun fichier dans ce répertoire",
-    "root": "racine",
     "lines": "{count} lignes",
     "toggle_tree": "Basculer l'arborescence",
     "close_tree": "Fermer l'arborescence",
     "copy_link": "Copier le lien",
-    "raw": "Brut",
     "view_raw": "Voir le fichier brut",
     "file_too_large": "Fichier trop volumineux pour l'aperçu",
     "file_size_warning": "{size} dépasse la limite de 500 Ko pour la coloration syntaxique",
