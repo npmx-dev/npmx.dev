@@ -208,13 +208,17 @@ export default defineConfig({
               provider: playwright(),
               instances: [{ browser: 'chromium', headless: true }],
             },
+            alias: {
+              // Hack for 'Error: Missing "#oauth/config" specifier in "nuxt" package' error
+              '#oauth/config': '',
+            },
           },
         }),
     ],
     coverage: {
       enabled: true,
       provider: 'v8',
-      exclude: ['**/node_modules/**', '**/*.json'],
+      include: ['{app,cli,server,shared}/**/*.{ts,vue}'],
     },
   },
 })
