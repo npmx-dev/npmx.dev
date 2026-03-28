@@ -1,4 +1,5 @@
 import * as v from 'valibot'
+import type { InternalImportsMap } from '#server/utils/import-resolver'
 import { PackageFileQuerySchema } from '#shared/schemas/package'
 import type { ReadmeResponse } from '#shared/types/readme'
 import {
@@ -27,6 +28,7 @@ interface PackageJson {
   devDependencies?: Record<string, string>
   peerDependencies?: Record<string, string>
   optionalDependencies?: Record<string, string>
+  imports?: InternalImportsMap
 }
 
 /**
@@ -161,7 +163,13 @@ export default defineCachedEventHandler(
         // Create resolver for relative imports
         if (fileTreeResponse) {
           const files = flattenFileTree(fileTreeResponse.tree)
-          resolveRelative = createImportResolver(files, filePath, packageName, version)
+          resolveRelative = createImportResolver(
+            files,
+            filePath,
+            packageName,
+            version,
+            pkgJson?.imports,
+          )
         }
       }
 

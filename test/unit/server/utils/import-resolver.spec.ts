@@ -3,6 +3,7 @@ import type { PackageFileTree } from '#shared/types'
 import {
   createImportResolver,
   flattenFileTree,
+  resolveInternalImport,
   resolveRelativeImport,
 } from '#server/utils/import-resolver'
 
@@ -176,5 +177,123 @@ describe('createImportResolver', () => {
     const url = resolver('./utils')
 
     expect(url).toBe('/package-code/@scope/pkg/v/1.2.3/dist/utils.js')
+  })
+
+  it('resolves package imports aliases to code browser URLs', () => {
+    const files = new Set<string>(['dist/app/nuxt.js'])
+    const resolver = createImportResolver(files, 'dist/index.js', 'nuxt', '4.3.1', {
+      '#app/nuxt': './dist/app/nuxt.js',
+    })
+
+    const url = resolver('#app/nuxt')
+
+    expect(url).toBe('/package-code/nuxt/v/4.3.1/dist/app/nuxt.js')
+  })
+})
+
+describe('resolveInternalImport', () => {
+  it('resolves exact imports map matches to files in the package', () => {
+    const files = new Set<string>(['dist/app/nuxt.js'])
+
+    const resolved = resolveInternalImport(
+      '#app/nuxt',
+      'dist/index.js',
+      {
+        '#app/nuxt': './dist/app/nuxt.js',
+      },
+      files,
+    )
+
+    expect(resolved?.path).toBe('dist/app/nuxt.js')
+  })
+
+  it('supports import condition objects', () => {
+    const files = new Set<string>(['dist/app/nuxt.js'])
+
+    const resolved = resolveInternalImport(
+      '#app/nuxt',
+      'dist/index.js',
+      {
+        '#app/nuxt': { import: './dist/app/nuxt.js' },
+      },
+      files,
+    )
+
+    expect(resolved?.path).toBe('dist/app/nuxt.js')
+  })
+
+  it('returns null when the target file does not exist', () => {
+    const files = new Set<string>(['dist/app/index.js'])
+
+    const resolved = resolveInternalImport(
+      '#app/nuxt',
+      'dist/index.js',
+      {
+        '#app/nuxt': './dist/app/nuxt.js',
+      },
+      files,
+    )
+
+    expect(resolved).toBeNull()
+  })
+
+  it('resolves prefix matches with extension resolution via guessInternalImportTarget', () => {
+    const files = new Set<string>(['dist/app/components/button.js'])
+
+    const resolved = resolveInternalImport(
+      '#app/components/button.js',
+      'dist/index.js',
+      {
+        '#app': './dist/app/index.js',
+      },
+      files,
+    )
+
+    expect(resolved?.path).toBe('dist/app/components/button.js')
+  })
+
+  it('resolves file that could not found in the files', () => {
+    const files = new Set<string>(['dist/app/index.js'])
+
+    const resolved = resolveInternalImport(
+      '#app/components/button.js',
+      'dist/index.js',
+      {
+        '#app': './dist/app/index.js',
+      },
+      files,
+    )
+
+    expect(resolved).toBeNull()
+  })
+
+  it('resolves file that prefix is "~/"', () => {
+    const files = new Set<string>(['dist/app/components/button.js'])
+
+    const resolved = resolveInternalImport(
+      '~/app/components/button.js',
+      'dist/index.js',
+      {
+        '~/app': './dist/app/index.js',
+      },
+      files,
+    )
+
+    expect(resolved?.path).toBe('dist/app/components/button.js')
+  })
+
+  it('resolves file that prefix is "@/"', () => {
+    const files = new Set<string>(['dist/app/components/button.js'])
+
+    const resolved = resolveInternalImport(
+      '@/app/components/button.js',
+      'dist/index.js',
+      {
+        '@/app': './dist/app/index.js',
+      },
+      files,
+    )
+
+    expect(resolved?.path).toBe('dist/app/components/button.js')
   })
 })
