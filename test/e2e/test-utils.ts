@@ -75,6 +75,19 @@ function isHydrationMismatch(message: ConsoleMessage): boolean {
 }
 
 /**
+ * Detect Content-Security-Policy violations logged to the console.
+ *
+ * Browsers log CSP violations as console errors with a distinctive prefix.
+ * Catching these in e2e tests ensures new external resources are added to the
+ * CSP before they land in production.
+ */
+function isCspViolation(message: ConsoleMessage): boolean {
+  if (message.type() !== 'error') return false
+  const text = message.text()
+  return text.includes('Content-Security-Policy') || text.includes('content security policy')
+}
+
+/**
  * Extended test fixture with automatic external API mocking and hydration mismatch detection.
  *
  * All external API requests are intercepted and served from fixtures.
@@ -83,7 +96,11 @@ function isHydrationMismatch(message: ConsoleMessage): boolean {
  * Hydration mismatches are detected via Vue's console.error output, which is always
  * emitted in production builds when server-rendered HTML doesn't match client expectations.
  */
-export const test = base.extend<{ mockExternalApis: void; hydrationErrors: string[] }>({
+export const test = base.extend<{
+  mockExternalApis: void
+  hydrationErrors: string[]
+  cspViolations: string[]
+}>({
   mockExternalApis: [
     async ({ page }, use) => {
       await setupRouteMocking(page)
@@ -102,6 +119,18 @@ export const test = base.extend<{ mockExternalApis: void; hydrationErrors: strin
     })
 
     await use(errors)
+  },
+
+  cspViolations: async ({ page }, use) => {
+    const violations: string[] = []
+
+    page.on('console', message => {
+      if (isCspViolation(message)) {
+        violations.push(message.text())
+      }
+    })
+
+    await use(violations)
   },
 })
 
