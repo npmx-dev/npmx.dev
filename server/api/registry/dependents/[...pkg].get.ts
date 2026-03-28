@@ -25,9 +25,7 @@ export default defineCachedEventHandler(
       from: String(page * size),
     })
 
-    const response = await $fetch<NpmSearchResponse>(
-      `${NPM_REGISTRY}/-/v1/search?${params}`,
-    )
+    const response = await $fetch<NpmSearchResponse>(`${NPM_REGISTRY}/-/v1/search?${params}`)
 
     return {
       total: response.total,
