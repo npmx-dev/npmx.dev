@@ -8,10 +8,14 @@ useSeoMeta({
   description: () => $t('privacy_policy.welcome', { app: 'npmx' }),
 })
 
-defineOgImageComponent('Default', {
-  title: () => $t('privacy_policy.title'),
-  description: () => $t('privacy_policy.welcome', { app: 'npmx' }),
-})
+defineOgImage(
+  'Page.takumi',
+  {
+    title: () => $t('privacy_policy.title'),
+    description: () => $t('privacy_policy.welcome', { app: 'npmx' }),
+  },
+  { alt: () => `${$t('privacy_policy.title')} — npmx` },
+)
 
 const buildInfo = useAppConfig().buildInfo
 const { locale } = useI18n()

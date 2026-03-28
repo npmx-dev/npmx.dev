@@ -66,6 +66,138 @@ function mergeDailyPoints(points: DailyRawPoint[]): DailyRawPoint[] {
     .map(([day, value]) => ({ day, value }))
 }
 
+export function buildDailyEvolutionFromDaily(daily: DailyRawPoint[]): DailyDataPoint[] {
+  return daily
+    .slice()
+    .sort((a, b) => a.day.localeCompare(b.day))
+    .map(item => {
+      const dayDate = parseIsoDate(item.day)
+      const timestamp = dayDate.getTime()
+
+      return { day: item.day, value: item.value, timestamp }
+    })
+}
+
+export function buildRollingWeeklyEvolutionFromDaily(
+  daily: DailyRawPoint[],
+  rangeStartIso: string,
+  rangeEndIso: string,
+): WeeklyDataPoint[] {
+  const sorted = daily.slice().sort((a, b) => a.day.localeCompare(b.day))
+  const rangeStartDate = parseIsoDate(rangeStartIso)
+  const rangeEndDate = parseIsoDate(rangeEndIso)
+
+  const groupedByIndex = new Map<number, number>()
+
+  for (const item of sorted) {
+    const itemDate = parseIsoDate(item.day)
+    const dayOffset = Math.floor((itemDate.getTime() - rangeStartDate.getTime()) / 86400000)
+    if (dayOffset < 0) continue
+
+    const weekIndex = Math.floor(dayOffset / 7)
+    groupedByIndex.set(weekIndex, (groupedByIndex.get(weekIndex) ?? 0) + item.value)
+  }
+
+  return Array.from(groupedByIndex.entries())
+    .sort(([a], [b]) => a - b)
+    .map(([weekIndex, value]) => {
+      const weekStartDate = addDays(rangeStartDate, weekIndex * 7)
+      const weekEndDate = addDays(weekStartDate, 6)
+
+      // Clamp weekEnd to the actual data range end date
+      const clampedWeekEndDate =
+        weekEndDate.getTime() > rangeEndDate.getTime() ? rangeEndDate : weekEndDate
+
+      const weekStartIso = toIsoDateString(weekStartDate)
+      const weekEndIso = toIsoDateString(clampedWeekEndDate)
+
+      const timestampStart = weekStartDate.getTime()
+      const timestampEnd = clampedWeekEndDate.getTime()
+
+      return {
+        value,
+        weekKey: `${weekStartIso}_${weekEndIso}`,
+        weekStart: weekStartIso,
+        weekEnd: weekEndIso,
+        timestampStart,
+        timestampEnd,
+      }
+    })
+}
+
+/** Catmull-Rom monotone cubic spline — same algorithm as vue-data-ui's smoothPath for OG Images */
+export function smoothPath(pts: { x: number; y: number }[]): string {
+  if (pts.length < 2) return '0,0'
+  const n = pts.length - 1
+  const r = (v: number) => Math.round(v * 100) / 100
+  const out = [`${r(pts[0]!.x)},${r(pts[0]!.y)}`]
+  const dx: number[] = []
+  const dy: number[] = []
+  const m: number[] = []
+  const t: number[] = []
+
+  for (let i = 0; i < n; i++) {
+    dx[i] = pts[i + 1]!.x - pts[i]!.x
+    dy[i] = pts[i + 1]!.y - pts[i]!.y
+    m[i] = dx[i] === 0 ? 0 : dy[i]! / dx[i]!
+  }
+
+  t[0] = m[0]!
+  t[n] = m[n - 1]!
+  for (let i = 1; i < n; i++) {
+    t[i] = m[i - 1]! * m[i]! <= 0 ? 0 : (2 * m[i - 1]! * m[i]!) / (m[i - 1]! + m[i]!)
+  }
+
+  for (let i = 0; i < n; i++) {
+    const x0 = pts[i]!.x,
+      y0 = pts[i]!.y
+    const x1 = pts[i + 1]!.x,
+      y1 = pts[i + 1]!.y
+    const seg = x1 - x0
+    out.push(
+      `C ${r(x0 + seg / 3)},${r(y0 + (t[i]! * seg) / 3)} ${r(x1 - seg / 3)},${r(y1 - (t[i + 1]! * seg) / 3)} ${r(x1)},${r(y1)}`,
+    )
+  }
+
+  return out.join(' ')
+}
+
+export function buildMonthlyEvolutionFromDaily(daily: DailyRawPoint[]): MonthlyDataPoint[] {
+  const sorted = daily.slice().sort((a, b) => a.day.localeCompare(b.day))
+  const valuesByMonth = new Map<string, number>()
+
+  for (const item of sorted) {
+    const month = item.day.slice(0, 7)
+    valuesByMonth.set(month, (valuesByMonth.get(month) ?? 0) + item.value)
+  }
+
+  return Array.from(valuesByMonth.entries())
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([month, value]) => {
+      const monthStartDate = parseIsoDate(`${month}-01`)
+      const timestamp = monthStartDate.getTime()
+      return { month, value, timestamp }
+    })
+}
+
+export function buildYearlyEvolutionFromDaily(daily: DailyRawPoint[]): YearlyDataPoint[] {
+  const sorted = daily.slice().sort((a, b) => a.day.localeCompare(b.day))
+  const valuesByYear = new Map<string, number>()
+
+  for (const item of sorted) {
+    const year = item.day.slice(0, 4)
+    valuesByYear.set(year, (valuesByYear.get(year) ?? 0) + item.value)
+  }
+
+  return Array.from(valuesByYear.entries())
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([year, value]) => {
+      const yearStartDate = parseIsoDate(`${year}-01-01`)
+      const timestamp = yearStartDate.getTime()
+      return { year, value, timestamp }
+    })
+}
+
 const npmDailyRangeCache = import.meta.client ? new Map<string, Promise<DailyRawPoint[]>>() : null
 const likesEvolutionCache = import.meta.client ? new Map<string, Promise<DailyRawPoint[]>>() : null
 const contributorsEvolutionCache = import.meta.client

@@ -29,11 +29,14 @@ useSeoMeta({
   twitterDescription: () => $t('settings.meta_description'),
 })
 
-defineOgImageComponent('Default', {
-  title: () => $t('settings.title'),
-  description: () => $t('settings.tagline'),
-  primaryColor: '#60a5fa',
-})
+defineOgImage(
+  'Page.takumi',
+  {
+    title: () => $t('settings.title'),
+    description: () => $t('settings.tagline'),
+  },
+  { alt: () => `${$t('settings.title')} — npmx` },
+)
 
 const setLocale: typeof setNuxti18nLocale = newLocale => {
   settings.value.selectedLocale = newLocale

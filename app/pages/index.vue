@@ -19,11 +19,7 @@ useSeoMeta({
   twitterDescription: () => $t('seo.home.description'),
 })
 
-defineOgImageComponent('Default', {
-  primaryColor: '#60a5fa',
-  title: 'npmx',
-  description: 'a fast, modern browser for the **npm registry**',
-})
+defineOgImage('Splash.takumi', {}, { alt: () => $t('seo.home.description') })
 </script>
 
 <template>

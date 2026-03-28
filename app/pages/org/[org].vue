@@ -139,11 +139,14 @@ useSeoMeta({
   twitterDescription: () => `npm packages published by the ${orgName.value} organization`,
 })
 
-defineOgImageComponent('Default', {
-  title: () => `@${orgName.value}`,
-  description: () => (packageCount.value ? `${packageCount.value} packages` : 'npm organization'),
-  primaryColor: '#60a5fa',
-})
+defineOgImage(
+  'Page.takumi',
+  {
+    title: () => `@${orgName.value}`,
+    description: () => (packageCount.value ? `${packageCount.value} packages` : 'npm organization'),
+  },
+  { alt: () => `@${orgName.value} npm organization on npmx` },
+)
 </script>
 
 <template>

@@ -27,11 +27,15 @@ useHead({
   ],
 })
 
-defineOgImageComponent('BlogPost', {
-  title: props.frontmatter.title,
-  authors: post.value?.authors ?? [],
-  date: props.frontmatter.date,
-})
+defineOgImage(
+  'BlogPost.takumi',
+  {
+    title: props.frontmatter.title,
+    authors: post.value?.authors ?? [],
+    date: props.frontmatter.date,
+  },
+  { alt: `Blog post: ${props.frontmatter.title}` },
+)
 
 const slug = computed(() => props.frontmatter.slug)
 

@@ -187,6 +187,46 @@ function getMockForUrl(url: string): MockResult | null {
     return null
   }
 
+  // npm API: downloads range → synthetic daily data for sparklines
+  if (host === 'api.npmjs.org') {
+    const rangeMatch = decodeURIComponent(pathname).match(/^\/downloads\/range\/([^/]+)\/(.+)$/)
+    if (rangeMatch?.[1] && rangeMatch[2]) {
+      const [startDate, endDate] = rangeMatch[1].split(':')
+      const packageName = rangeMatch[2]
+      // Simple hash seeded by package name for deterministic but varied curves
+      let h = 0
+      for (const c of packageName) h = ((h << 5) - h + c.charCodeAt(0)) | 0
+      const s = Math.abs(h)
+
+      const base = (s % 40_000) + 500
+      // Trend: some packages grow, some shrink, some flat
+      const trendSlope = (((s >> 4) % 200) - 100) / 100_000 // -0.001 .. +0.001 per day
+      // Wave period varies per package (20-60 days)
+      const wavePeriod = 20 + ((s >> 8) % 40)
+      const waveAmp = 0.1 + ((s >> 12) % 30) / 100 // 0.10 .. 0.40
+      // Weekend dip intensity
+      const weekendDip = 0.3 + ((s >> 16) % 40) / 100 // 0.30 .. 0.70
+
+      const downloads: { day: string; downloads: number }[] = []
+      const start = new Date(startDate!)
+      const end = new Date(endDate!)
+      for (let d = new Date(start); d <= end; d.setUTCDate(d.getUTCDate() + 1)) {
+        const day = d.toISOString().slice(0, 10)
+        const i = downloads.length
+        const trend = 1 + trendSlope * i
+        const wave = Math.sin((i * 2 * Math.PI) / wavePeriod) * waveAmp
+        const noise = Math.sin(i * 7 + s) * 0.05
+        const dow = d.getUTCDay()
+        const weekend = dow === 0 || dow === 6 ? 1 - weekendDip : 1
+        downloads.push({
+          day,
+          downloads: Math.max(0, Math.round(base * trend * (1 + wave + noise) * weekend)),
+        })
+      }
+      return { data: { downloads, start: startDate, end: endDate, package: packageName } }
+    }
+  }
+
   // esm.sh is handled specially via $fetch.raw override, not here
   // Return null to indicate no mock available at the cachedFetch level
 

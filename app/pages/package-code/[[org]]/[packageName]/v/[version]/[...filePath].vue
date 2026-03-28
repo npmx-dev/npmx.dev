@@ -305,11 +305,23 @@ useSeoMeta({
   twitterDescription: () => `Browse source code for ${packageName.value}@${version.value}`,
 })
 
-defineOgImageComponent('Default', {
-  title: () => `${pkg.value?.name ?? 'Package'} - Code`,
-  description: () => pkg.value?.license ?? '',
-  primaryColor: '#60a5fa',
-})
+defineOgImage(
+  'Package.takumi',
+  {
+    name: () => packageName.value,
+    version: () => version.value,
+    variant: 'code-tree',
+  },
+  [
+    { key: 'og', alt: () => `Source code file tree for ${packageName.value}@${version.value}` },
+    {
+      key: 'whatsapp',
+      width: 800,
+      height: 800,
+      alt: () => `Source code file tree for ${packageName.value}@${version.value}`,
+    },
+  ],
+)
 </script>
 
 <template>

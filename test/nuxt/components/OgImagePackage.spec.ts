@@ -1,54 +1,51 @@
 import { mockNuxtImport, mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 
-const { mockUseResolvedVersion, mockUsePackageDownloads, mockUsePackage, mockUseRepoMeta } =
-  vi.hoisted(() => ({
-    mockUseResolvedVersion: vi.fn(),
-    mockUsePackageDownloads: vi.fn(),
-    mockUsePackage: vi.fn(),
-    mockUseRepoMeta: vi.fn(),
-  }))
+const { mockUseResolvedVersion, mockUsePackage, mockUseRepoMeta } = vi.hoisted(() => ({
+  mockUseResolvedVersion: vi.fn(),
+  mockUsePackage: vi.fn(),
+  mockUseRepoMeta: vi.fn(),
+}))
 
 mockNuxtImport('useResolvedVersion', () => mockUseResolvedVersion)
-mockNuxtImport('usePackageDownloads', () => mockUsePackageDownloads)
 mockNuxtImport('usePackage', () => mockUsePackage)
 mockNuxtImport('useRepoMeta', () => mockUseRepoMeta)
 mockNuxtImport('normalizeGitUrl', () => () => 'https://github.com/test/repo')
 
-import OgImagePackage from '~/components/OgImage/Package.vue'
+// Mock explicit imports used by sparkline
+vi.mock('~/utils/npm/api', () => ({
+  fetchNpmDownloadsRange: vi.fn().mockResolvedValue(null),
+}))
+vi.mock('~/composables/useCharts', () => ({
+  useCharts: vi.fn().mockReturnValue({
+    fetchPackageDownloadEvolution: vi.fn().mockResolvedValue([]),
+  }),
+  buildRollingWeeklyEvolutionFromDaily: vi.fn().mockReturnValue([]),
+  smoothPath: vi.fn().mockReturnValue(''),
+}))
+
+import OgImagePackage from '~/components/OgImage/Package.takumi.vue'
 
 describe('OgImagePackage', () => {
   const baseProps = {
     name: 'test-package',
     version: '1.0.0',
+    variant: 'download-chart' as const,
   }
 
   function setupMocks(
     overrides: {
       stars?: number
-      totalLikes?: number
-      downloads?: number | null
       license?: string | null
       packageName?: string
     } = {},
   ) {
-    const {
-      stars = 0,
-      totalLikes = 0,
-      downloads = 1000,
-      license = 'MIT',
-      packageName = 'test-package',
-    } = overrides
+    const { stars = 0, license = 'MIT', packageName = 'test-package' } = overrides
 
     mockUseResolvedVersion.mockReturnValue({
       data: ref('1.0.0'),
       status: ref('success'),
       error: ref(null),
-    })
-
-    mockUsePackageDownloads.mockReturnValue({
-      data: downloads != null ? ref({ downloads }) : ref(null),
-      refresh: vi.fn().mockResolvedValue(undefined),
     })
 
     mockUsePackage.mockReturnValue({
@@ -63,25 +60,28 @@ describe('OgImagePackage', () => {
     })
 
     mockUseRepoMeta.mockReturnValue({
+      meta: computed(() => null),
+      repoRef: computed(() => ({ owner: 'test', repo: 'repo' })),
+      starsLink: computed(() => ''),
+      forks: computed(() => 0),
+      forksLink: computed(() => ''),
       stars: computed(() => stars),
       refresh: vi.fn().mockResolvedValue(undefined),
     })
 
-    // Mock the likes API endpoint used by useFetch
     registerEndpoint(`/api/social/likes/${packageName}`, () => ({
-      totalLikes,
+      totalLikes: 0,
       userHasLiked: false,
     }))
   }
 
   beforeEach(() => {
     mockUseResolvedVersion.mockReset()
-    mockUsePackageDownloads.mockReset()
     mockUsePackage.mockReset()
     mockUseRepoMeta.mockReset()
   })
 
-  it('renders the package name and version', async () => {
+  it('renders the package name', async () => {
     setupMocks({ packageName: 'vue' })
 
     const component = await mountSuspended(OgImagePackage, {
@@ -89,7 +89,6 @@ describe('OgImagePackage', () => {
     })
 
     expect(component.text()).toContain('vue')
-    expect(component.text()).toContain('1.0.0')
   })
 
   describe('license', () => {
@@ -136,25 +135,14 @@ describe('OgImagePackage', () => {
     })
   })
 
-  describe('likes', () => {
-    it('hides likes section when totalLikes is 0', async () => {
-      setupMocks({ totalLikes: 0 })
+  it('renders repo info', async () => {
+    setupMocks()
 
-      const component = await mountSuspended(OgImagePackage, {
-        props: baseProps,
-      })
-
-      expect(component.find('[data-testid="likes"]').exists()).toBe(false)
+    const component = await mountSuspended(OgImagePackage, {
+      props: baseProps,
     })
 
-    it('shows likes section when totalLikes is positive', async () => {
-      setupMocks({ totalLikes: 42 })
-
-      const component = await mountSuspended(OgImagePackage, {
-        props: baseProps,
-      })
-
-      expect(component.text()).toContain('42')
-    })
+    expect(component.text()).toContain('test')
+    expect(component.text()).toContain('repo')
   })
 })

@@ -99,13 +99,18 @@ useSeoMeta({
   description: () => $t('profile.seo_description', { handle: identity.value }),
 })
 
-/**
-defineOgImageComponent('Default', {
-  title: () => `~${username.value}`,
-  description: () => (results.value ? `${results.value.total} packages` : 'npm user profile'),
-  primaryColor: '#60a5fa',
-})
-**/
+defineOgImage(
+  'Profile.takumi',
+  {
+    handle: () => profile.value.handle || identity.value,
+    displayName: () => profile.value.displayName || '',
+    description: () => profile.value.description || '',
+  },
+  {
+    alt: () =>
+      `Profile card for ${profile.value.displayName || profile.value.handle || identity.value}`,
+  },
+)
 </script>
 
 <template>
