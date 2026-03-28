@@ -14,7 +14,13 @@ export function downloadFileLink(link: string, filename: string) {
   const a = document.createElement('a')
   a.href = link
   a.download = filename
-  a.click()
+  document.body.appendChild(a)
+
+  try {
+    a.click()
+  } finally {
+    document.body.removeChild(a)
+  }
 }
 
 /**
