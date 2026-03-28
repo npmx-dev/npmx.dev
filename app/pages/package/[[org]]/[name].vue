@@ -884,7 +884,11 @@ const showSkeleton = shallowRef(false)
 
         <div class="space-y-6" :class="$style.areaVulns">
           <!-- Bad package warning -->
-          <PackageReplacement v-if="moduleReplacement" :replacement="moduleReplacement" />
+          <PackageReplacement
+            v-if="moduleReplacement"
+            :mapping="moduleReplacement.mapping"
+            :replacement="moduleReplacement.replacement"
+          />
           <!-- Size / dependency increase notice -->
           <PackageSizeIncrease v-if="sizeDiff" :diff="sizeDiff" />
           <!-- Vulnerability scan -->

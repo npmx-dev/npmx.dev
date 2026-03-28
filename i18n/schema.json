@@ -805,7 +805,13 @@
             "title": {
               "type": "string"
             },
+            "example": {
+              "type": "string"
+            },
             "native": {
+              "type": "string"
+            },
+            "native_no_version": {
               "type": "string"
             },
             "simple": {
@@ -821,9 +827,6 @@
               "type": "string"
             },
             "learn_more_above": {
-              "type": "string"
-            },
-            "mdn": {
               "type": "string"
             },
             "community": {

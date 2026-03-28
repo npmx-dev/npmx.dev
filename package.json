@@ -87,7 +87,7 @@
     "gray-matter": "4.0.3",
     "ipaddr.js": "2.3.0",
     "marked": "17.0.4",
-    "module-replacements": "2.11.0",
+    "module-replacements": "3.0.0-beta.4",
     "nuxt": "4.3.1",
     "nuxt-og-image": "5.1.13",
     "ofetch": "1.5.1",

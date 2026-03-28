@@ -1,4 +1,4 @@
-import type { ModuleReplacement } from 'module-replacements'
+import type { ModuleReplacement, ModuleReplacementMapping } from 'module-replacements'
 
 async function fetchReplacements(
   deps: Record<string, string>,
@@ -8,7 +8,11 @@ async function fetchReplacements(
   const results = await Promise.all(
     names.map(async name => {
       try {
-        const replacement = await $fetch<ModuleReplacement | null>(`/api/replacements/${name}`)
+        const response = await $fetch<{
+          mapping: ModuleReplacementMapping
+          replacement: ModuleReplacement
+        } | null>(`/api/replacements/${name}`)
+        const replacement = response?.replacement ?? null
         return { name, replacement }
       } catch {
         return { name, replacement: null }

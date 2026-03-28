@@ -255,7 +255,6 @@
       "none": "Este pacote foi marcado como não mais necessário, e sua funcionalidade provavelmente está disponível nativamente em todas as engines.",
       "learn_more": "Saiba mais",
       "learn_more_above": "Saiba mais acima.",
-      "mdn": "MDN",
       "community": "comunidade",
       "consider_no_dep": "+ Considerar sem dependências?"
     },

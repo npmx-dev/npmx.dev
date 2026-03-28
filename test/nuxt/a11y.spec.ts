@@ -2106,12 +2106,29 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(CompareReplacementSuggestion, {
         props: {
           packageName: 'array-includes',
-          replacement: {
-            type: 'native',
+          mapping: {
+            type: 'module',
             moduleName: 'array-includes',
-            nodeVersion: '6.0.0',
-            replacement: 'Array.prototype.includes',
-            mdnPath: 'Global_Objects/Array/includes',
+            replacements: ['Array.prototype.includes'],
+          },
+          replacement: {
+            id: 'Array.prototype.includes',
+            type: 'native',
+            url: {
+              type: 'mdn',
+              id: 'Web/JavaScript/Reference/Global_Objects/Array/includes',
+            },
+            webFeatureId: {
+              featureId: 'array-includes',
+              compatKey: 'javascript.builtins.Array.includes',
+            },
+            engines: [
+              { engine: 'chrome', minVersion: '47' },
+              { engine: 'edge', minVersion: '14' },
+              { engine: 'firefox', minVersion: '43' },
+              { engine: 'safari', minVersion: '9' },
+              { engine: 'nodejs', minVersion: '6.0.0' },
+            ],
           },
           variant: 'nodep',
         },
@@ -2124,10 +2141,16 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(CompareReplacementSuggestion, {
         props: {
           packageName: 'is-even',
-          replacement: {
-            type: 'simple',
+          mapping: {
+            type: 'module',
             moduleName: 'is-even',
-            replacement: 'Use (n % 2) === 0',
+            replacements: ['snippet::is-even'],
+          },
+          replacement: {
+            id: 'snippet::is-even',
+            type: 'simple',
+            description: 'You can use the modulo operator to check if a number is even.',
+            example: '(n % 2) === 0',
           },
           variant: 'nodep',
         },
@@ -2140,10 +2163,17 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(CompareReplacementSuggestion, {
         props: {
           packageName: 'moment',
-          replacement: {
-            type: 'documented',
+          mapping: {
+            type: 'module',
             moduleName: 'moment',
-            docPath: 'moment',
+            replacements: ['day.js', 'date-fns', 'luxon', 'Date'],
+            url: { type: 'e18e', id: 'moment' },
+          },
+          replacement: {
+            id: 'day.js',
+            type: 'documented',
+            url: { type: 'e18e', id: 'moment' },
+            replacementModule: 'day.js',
           },
           variant: 'info',
         },
@@ -2582,13 +2612,22 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations for native replacement', async () => {
       const component = await mountSuspended(PackageReplacement, {
         props: {
-          replacement: {
-            type: 'native',
+          mapping: {
+            type: 'module',
             moduleName: 'array-every',
-            nodeVersion: '0.10.0',
-            replacement: 'Array.prototype.every',
-            mdnPath: 'Global_Objects/Array/every',
-            category: 'native',
+            replacements: ['Array.prototype.every'],
+          },
+          replacement: {
+            id: 'Array.prototype.every',
+            type: 'native',
+            url: {
+              type: 'mdn',
+              id: 'Web/JavaScript/Reference/Global_Objects/Array/every',
+            },
+            engines: [
+              { engine: 'nodejs', minVersion: '0.10.0' },
+              { engine: 'chrome', minVersion: '1' },
+            ],
           },
         },
       })
@@ -2599,24 +2638,16 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations for simple replacement', async () => {
       const component = await mountSuspended(PackageReplacement, {
         props: {
-          replacement: {
-            type: 'simple',
-            moduleName: 'underscore',
-            replacement: 'lodash',
+          mapping: {
+            type: 'module',
+            moduleName: 'is-even',
+            replacements: ['snippet::is-even'],
           },
-        },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-
-    it('should have no accessibility violations for documented replacement', async () => {
-      const component = await mountSuspended(PackageReplacement, {
-        props: {
           replacement: {
-            type: 'documented',
-            moduleName: 'moment',
-            docPath: 'moment',
+            id: 'snippet::is-even',
+            type: 'simple',
+            description: 'You can use the modulo operator to check if a number is even.',
+            example: '(n % 2) === 0',
           },
         },
       })

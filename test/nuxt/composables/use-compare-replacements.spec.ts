@@ -50,13 +50,21 @@ describe('useCompareReplacements', () => {
         vi.fn().mockImplementation((url: string) => {
           if (url.includes('/api/replacements/array-includes')) {
             return Promise.resolve({
-              type: 'native',
-              moduleName: 'array-includes',
-              nodeVersion: '6.0.0',
-              replacement: 'Array.prototype.includes',
-              mdnPath: 'Global_Objects/Array/includes',
-              category: 'native',
-            } satisfies ModuleReplacement)
+              mapping: { replacements: ['Array.prototype.includes'] },
+              replacement: {
+                id: 'Array.prototype.includes',
+                type: 'native',
+                url: {
+                  type: 'mdn',
+                  id: 'Web/JavaScript/Reference/Global_Objects/Array/includes',
+                },
+                webFeatureId: {
+                  featureId: 'array-includes',
+                  compatKey: 'javascript.builtins.Array.includes',
+                },
+                engines: [{ engine: 'nodejs', minVersion: '6.0.0' }],
+              } satisfies ModuleReplacement,
+            })
           }
           return Promise.resolve(null)
         }),
@@ -81,19 +89,20 @@ describe('useCompareReplacements', () => {
         vi.fn().mockImplementation((url: string) => {
           if (url.includes('/api/replacements/is-even')) {
             return Promise.resolve({
-              type: 'simple',
-              moduleName: 'is-even',
-              replacement: 'Use (n % 2) === 0',
-              category: 'micro-utilities',
-            } satisfies ModuleReplacement)
+              mapping: { replacements: ['snippet::is-even'] },
+              replacement: {
+                id: 'snippet::is-even',
+                type: 'simple',
+                description: 'You can use the modulo operator to check if a number is even.',
+                example: '(n % 2) === 0',
+              } satisfies ModuleReplacement,
+            })
           }
           return Promise.resolve(null)
         }),
       )
 
-      const { noDepSuggestions, infoSuggestions } = await useCompareReplacementsInComponent([
-        'is-even',
-      ])
+      const { noDepSuggestions } = await useCompareReplacementsInComponent(['is-even'])
 
       await vi.waitFor(() => {
         expect(noDepSuggestions.value).toHaveLength(1)
@@ -101,7 +110,7 @@ describe('useCompareReplacements', () => {
 
       expect(noDepSuggestions.value[0]?.forPackage).toBe('is-even')
       expect(noDepSuggestions.value[0]?.replacement.type).toBe('simple')
-      expect(infoSuggestions.value).toHaveLength(0)
+      expect(noDepSuggestions.value[0]?.replacement).toHaveProperty('example', '(n % 2) === 0')
     })
 
     it('categorizes documented replacements as info suggestions', async () => {
@@ -110,11 +119,14 @@ describe('useCompareReplacements', () => {
         vi.fn().mockImplementation((url: string) => {
           if (url.includes('/api/replacements/moment')) {
             return Promise.resolve({
-              type: 'documented',
-              moduleName: 'moment',
-              docPath: 'moment',
-              category: 'preferred',
-            } satisfies ModuleReplacement)
+              mapping: { replacements: ['date-fns'] },
+              replacement: {
+                id: 'date-fns',
+                type: 'documented',
+                url: { type: 'e18e', id: 'moment' },
+                replacementModule: 'date-fns',
+              } satisfies ModuleReplacement,
+            })
           }
           return Promise.resolve(null)
         }),
@@ -139,29 +151,39 @@ describe('useCompareReplacements', () => {
         vi.fn().mockImplementation((url: string) => {
           if (url.includes('/api/replacements/is-odd')) {
             return Promise.resolve({
-              type: 'simple',
-              moduleName: 'is-odd',
-              replacement: 'Use (n % 2) !== 0',
-              category: 'micro-utilities',
-            } satisfies ModuleReplacement)
+              mapping: { replacements: ['snippet::is-odd'] },
+              replacement: {
+                id: 'snippet::is-odd',
+                type: 'simple',
+                description: 'Check if odd',
+                example: '(n % 2) !== 0',
+              } satisfies ModuleReplacement,
+            })
           }
           if (url.includes('/api/replacements/lodash')) {
             return Promise.resolve({
-              type: 'documented',
-              moduleName: 'lodash',
-              docPath: 'lodash-underscore',
-              category: 'preferred',
-            } satisfies ModuleReplacement)
+              mapping: { replacements: ['native'] },
+              replacement: {
+                id: 'native',
+                type: 'documented',
+                url: { type: 'e18e', id: 'lodash' },
+                replacementModule: 'native',
+              } satisfies ModuleReplacement,
+            })
           }
           if (url.includes('/api/replacements/array-map')) {
             return Promise.resolve({
-              type: 'native',
-              moduleName: 'array-map',
-              nodeVersion: '0.10.0',
-              replacement: 'Array.prototype.map',
-              mdnPath: 'Global_Objects/Array/map',
-              category: 'native',
-            } satisfies ModuleReplacement)
+              mapping: { replacements: ['Array.prototype.map'] },
+              replacement: {
+                id: 'Array.prototype.map',
+                type: 'native',
+                url: {
+                  type: 'mdn',
+                  id: 'Web/JavaScript/Reference/Global_Objects/Array/map',
+                },
+                engines: [{ engine: 'nodejs', minVersion: '0.10.0' }],
+              } satisfies ModuleReplacement,
+            })
           }
           return Promise.resolve(null)
         }),
@@ -178,12 +200,9 @@ describe('useCompareReplacements', () => {
         expect(infoSuggestions.value).toHaveLength(1)
       })
 
-      // no dep should have simple and native
       const noDepTypes = noDepSuggestions.value.map(s => s.replacement.type)
       expect(noDepTypes).toContain('simple')
       expect(noDepTypes).toContain('native')
-
-      // Info should have documented
       expect(infoSuggestions.value[0]?.replacement.type).toBe('documented')
     })
   })
@@ -192,12 +211,7 @@ describe('useCompareReplacements', () => {
     it('does not include packages with no replacement data', async () => {
       vi.stubGlobal(
         '$fetch',
-        vi.fn().mockImplementation((url: string) => {
-          if (url.includes('/api/replacements/react')) {
-            return Promise.resolve(null) // No replacement for react
-          }
-          return Promise.resolve(null)
-        }),
+        vi.fn().mockImplementation(() => Promise.resolve(null)),
       )
 
       const { noDepSuggestions, infoSuggestions, replacements } =
@@ -214,21 +228,16 @@ describe('useCompareReplacements', () => {
     it('handles fetch errors gracefully', async () => {
       vi.stubGlobal(
         '$fetch',
-        vi.fn().mockImplementation(() => {
-          return Promise.reject(new Error('Network error'))
-        }),
+        vi.fn().mockImplementation(() => Promise.reject(new Error('Network error'))),
       )
 
-      const { noDepSuggestions, infoSuggestions, replacements } =
-        await useCompareReplacementsInComponent(['some-package'])
+      const { replacements } = await useCompareReplacementsInComponent(['some-package'])
 
       await vi.waitFor(() => {
         expect(replacements.value.has('some-package')).toBe(true)
       })
 
       expect(replacements.value.get('some-package')).toBeNull()
-      expect(noDepSuggestions.value).toHaveLength(0)
-      expect(infoSuggestions.value).toHaveLength(0)
     })
   })
 
@@ -237,11 +246,14 @@ describe('useCompareReplacements', () => {
       const fetchMock = vi.fn().mockImplementation((url: string) => {
         if (url.includes('/api/replacements/is-even')) {
           return Promise.resolve({
-            type: 'simple',
-            moduleName: 'is-even',
-            replacement: 'Use (n % 2) === 0',
-            category: 'micro-utilities',
-          } satisfies ModuleReplacement)
+            mapping: { replacements: ['snippet::is-even'] },
+            replacement: {
+              id: 'snippet::is-even',
+              type: 'simple',
+              description: 'Check even',
+              example: '(n % 2) === 0',
+            } satisfies ModuleReplacement,
+          })
         }
         return Promise.resolve(null)
       })

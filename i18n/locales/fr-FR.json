@@ -272,7 +272,6 @@
       "none": "Ce paquet a été signalé comme n'étant plus nécessaire, et sa fonctionnalité est probablement disponible nativement dans tous les moteurs.",
       "learn_more": "En savoir plus",
       "learn_more_above": "En savoir plus ci-dessus.",
-      "mdn": "MDN",
       "community": "communauté",
       "consider_no_dep": "+ Envisager sans dépendance ?"
     },

@@ -257,7 +257,6 @@
       "none": "此包已被标记为不再需要，其功能很可能已由所有引擎原生提供。",
       "learn_more": "了解更多",
       "learn_more_above": "在上方了解更多。",
-      "mdn": "MDN",
       "community": "社区",
       "consider_no_dep": "+ 不使用依赖?"
     },
