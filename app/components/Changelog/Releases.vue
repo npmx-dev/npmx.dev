@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Client } from '@atproto/lex'
 import { slugify } from '~~/shared/utils/html'
 
 const { info, requestedDate, goToVersion } = defineProps<{
@@ -67,15 +68,12 @@ if (import.meta.client) {
   // stops watchEffect from trigger just before navigating
   onBeforeRouteLeave(stopWatching)
 }
+
+prefetchComponents('ChangelogCard')
 </script>
 <template>
   <div class="flex flex-col gap-2 py-3" v-if="releases">
-    <LazyChangelogCard
-      v-for="release of releases"
-      :release
-      :key="release.id"
-      hydrate-on-interaction
-    />
+    <ChangelogCard v-for="release of releases" :release :key="release.id" />
   </div>
   <slot v-else-if="error" name="error"></slot>
 </template>
