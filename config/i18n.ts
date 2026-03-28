@@ -33,6 +33,11 @@ export const countryLocaleVariants: Record<string, (LocaleObjectData & { country
     // { code: 'ar-AE', name: 'Arabic (U.A.E.)' },
     // { code: 'ar-YE', name: 'Arabic (Yemen)' },
   ],
+  de: [
+    // de.json contains de-DE translations
+    { country: true, code: 'de-DE', name: 'Deutsch' },
+    { code: 'de-AT', name: 'Österreichisch' },
+  ],
   en: [
     // en.json contains en-US translations
     { country: true, code: 'en-US', name: 'English (US)' },
@@ -158,8 +163,8 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     name: 'Ελληνικά',
   },*/
   {
-    code: 'de-DE',
-    file: 'de-DE.json',
+    code: 'de',
+    file: 'de.json',
     name: 'Deutsch',
   },
   {
@@ -338,13 +343,13 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
       code: 'tl-PH',
       file: 'tl-PH.json',
       name: 'Tagalog',
-    },
-    {
-      code: 'vi-VN',
-      file: 'vi-VN.json',
-      name: 'Tiếng Việt',
-    },
-    {
+    },*/
+  {
+    code: 'vi-VN',
+    file: 'vi-VN.json',
+    name: 'Tiếng Việt',
+  },
+  /*{
       code: 'cy',
       file: 'cy.json',
       name: 'Cymraeg',

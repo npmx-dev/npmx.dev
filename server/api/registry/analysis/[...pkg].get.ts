@@ -3,15 +3,9 @@ import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import type {
   PackageAnalysis,
   ExtendedPackageJson,
-  TypesPackageInfo,
   CreatePackageInfo,
 } from '#shared/utils/package-analysis'
-import {
-  analyzePackage,
-  getTypesPackageName,
-  getCreatePackageName,
-  hasBuiltInTypes,
-} from '#shared/utils/package-analysis'
+import { analyzePackage, getCreatePackageName } from '#shared/utils/package-analysis'
 import {
   getDevDependencySuggestion,
   type DevDependencySuggestion,
@@ -23,13 +17,8 @@ import {
 } from '#shared/utils/constants'
 import { parseRepoUrl } from '#shared/utils/git-providers'
 import { encodePackageName } from '#shared/utils/npm'
-import { flattenFileTree } from '#server/utils/import-resolver'
-import { getPackageFileTree } from '#server/utils/file-tree'
-import { getLatestVersion, getLatestVersionBatch } from 'fast-npm-meta'
-
-interface AnalysisPackageJson extends ExtendedPackageJson {
-  readme?: string
-}
+import { fetchPackageWithTypesAndFiles } from '#server/utils/file-tree'
+import { getLatestVersionBatch } from 'fast-npm-meta'
 
 export default defineCachedEventHandler(
   async event => {
@@ -44,38 +33,7 @@ export default defineCachedEventHandler(
         packageName: decodeURIComponent(rawPackageName),
         version: rawVersion,
       })
-
-      // Fetch package data
-      const encodedName = encodePackageName(packageName)
-      const versionSuffix = version ? `/${version}` : '/latest'
-      const pkg = await $fetch<AnalysisPackageJson>(
-        `${NPM_REGISTRY}/${encodedName}${versionSuffix}`,
-      )
-
-      let typesPackage: TypesPackageInfo | undefined
-      let files: Set<string> | undefined
-
-      // Only check for @types and files when the package doesn't ship its own types
-      if (!hasBuiltInTypes(pkg)) {
-        const typesPkgName = getTypesPackageName(packageName)
-        const resolvedVersion = pkg.version ?? version ?? 'latest'
-
-        // Fetch @types info and file tree in parallel — they are independent
-        const [typesResult, fileTreeResult] = await Promise.allSettled([
-          fetchTypesPackageInfo(typesPkgName),
-          getPackageFileTree(packageName, resolvedVersion),
-        ])
-
-        if (typesResult.status === 'fulfilled') {
-          typesPackage = typesResult.value
-        }
-        if (fileTreeResult.status === 'fulfilled') {
-          files = flattenFileTree(fileTreeResult.value.tree)
-        }
-      }
-
-      // Check for associated create-* package (e.g., vite -> create-vite, next -> create-next-app)
-      // Only show if the packages are actually associated (same maintainers or same org)
+      const { pkg, typesPackage, files } = await fetchPackageWithTypesAndFiles(packageName, version)
       const createPackage = await findAssociatedCreatePackage(packageName, pkg)
       const analysis = analyzePackage(pkg, {
         typesPackage,
@@ -106,21 +64,6 @@ export default defineCachedEventHandler(
     },
   },
 )
-
-/**
- * Fetch @types package info including deprecation status using fast-npm-meta.
- * Returns undefined if the package doesn't exist.
- */
-async function fetchTypesPackageInfo(packageName: string): Promise<TypesPackageInfo | undefined> {
-  const result = await getLatestVersion(packageName, { metadata: true, throw: false })
-  if ('error' in result) {
-    return undefined
-  }
-  return {
-    packageName,
-    deprecated: result.deprecated,
-  }
-}
 
 /** Package metadata needed for association validation */
 interface PackageWithMeta {

@@ -15,10 +15,6 @@ export const BADGE_TYPES = Object.freeze([
   'types',
   'maintainers',
   'deprecated',
-  'quality',
-  'popularity',
-  'maintenance',
-  'score',
   'name',
 ] as const)
 

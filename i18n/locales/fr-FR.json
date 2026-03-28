@@ -36,7 +36,9 @@
     "go_to_result": "Ouvrir le résultat",
     "open_code_view": "Ouvrir la vue code",
     "open_docs": "Ouvrir la doc",
-    "disable_shortcuts": "Vous pouvez désactiver les raccourcis clavier dans {settings}."
+    "disable_shortcuts": "Vous pouvez désactiver les raccourcis clavier dans {settings}.",
+    "open_main": "Ouvrir les informations principales",
+    "open_diff": "Ouvrir les différences de version"
   },
   "search": {
     "label": "Rechercher des paquets npm",
@@ -94,6 +96,7 @@
     },
     "draft_badge": "Brouillon",
     "draft_banner": "Ceci est un brouillon non publié. Il peut être incomplet ou contenir des inexactitudes.",
+    "no_posts": "Aucun article trouvé.",
     "atproto": {
       "view_on_bluesky": "Voir sur Bluesky",
       "reply_on_bluesky": "Répondre sur Bluesky",
@@ -136,12 +139,15 @@
     "include_types_description": "Inclure les paquets {'@'}types à la commande d'installation pour les paquets non typés",
     "hide_platform_packages": "Masquer les paquets spécifiques à la plateforme dans la recherche",
     "hide_platform_packages_description": "Masquer les paquets binaires natifs comme {'@'}esbuild/linux-x64 des résultats",
+    "enable_graph_pulse_loop": "Activer la boucle de l'effet de pulsation sur le mini-graphe",
+    "enable_graph_pulse_loop_description": "Activer une animation de pulsation continue sur le graphique des téléchargements hebdomadaires. Cette animation peut être gênante pour certaines personnes.",
     "theme": "Thème",
     "theme_light": "Clair",
     "theme_dark": "Sombre",
     "theme_system": "Système",
     "language": "Langue de l'interface",
     "help_translate": "Aidez-nous à traduire npmx",
+    "translation_status": "Consulter l'état global des traductions",
     "accent_colors": {
       "label": "Couleurs d'accentuation",
       "sky": "Ciel",
@@ -207,8 +213,20 @@
     "error": "Erreur",
     "view_on": {
       "npm": "voir sur npm",
-      "github": "Voir sur GitHub"
-    }
+      "github": "Voir sur GitHub",
+      "gitlab": "Voir sur GitLab",
+      "bitbucket": "Voir sur Bitbucket",
+      "codeberg": "Voir sur Codeberg",
+      "git_repo": "Voir le dépôt Git",
+      "forgejo": "Voir sur Forgejo",
+      "gitea": "Voir sur Gitea",
+      "gitee": "Voir sur Gitee",
+      "radicle": "Voir sur Radicle",
+      "sourcehut": "Voir sur SourceHut",
+      "tangled": "Voir sur Tangled"
+    },
+    "collapse": "Réduire",
+    "expand": "Développer"
   },
   "profile": {
     "display_name": "Nom d'affichage",
@@ -290,6 +308,7 @@
       "view_source": "Voir la source"
     },
     "links": {
+      "main": "principal",
       "repo": "dépôt",
       "homepage": "site web",
       "issues": "issues",
@@ -373,7 +392,9 @@
       "published": "Publié",
       "weekly_downloads": "Téléchargements hebdomadaires",
       "keywords": "Mots-clés",
-      "license": "Licence"
+      "license": "Licence",
+      "select": "Sélectionner le paquet",
+      "select_maximum": "Vous pouvez sélectionner jusqu'à {count} paquets"
     },
     "versions": {
       "title": "Versions",
@@ -388,6 +409,7 @@
       "all_covered": "Toutes les versions sont couvertes par les tags ci-dessus",
       "deprecated_title": "{version} (dépréciée)",
       "view_all": "Voir la version | Voir les {count} versions",
+      "view_all_versions": "Voir toutes les versions",
       "distribution_title": "Groupe Semver",
       "distribution_modal_title": "Versions",
       "distribution_range_date_same_year": "de {from} à {to} {endYear}",
@@ -395,10 +417,13 @@
       "grouping_major": "Majeure",
       "grouping_minor": "Mineure",
       "grouping_versions_title": "Versions",
+      "grouping_versions_about": "À propos du regroupement des versions",
       "grouping_versions_all": "Toutes",
       "grouping_versions_only_recent": "Récentes seulement",
       "grouping_usage_title": "Utilisation",
+      "grouping_usage_about": "À propos du regroupement par utilisation",
       "grouping_usage_all": "Toutes",
+      "grouping_usage_most_used": "Les plus utilisées",
       "recent_versions_only_tooltip": "Ne montrer que les versions publiées durant l'année écoulée.",
       "show_low_usage_tooltip": "Inclure les groupes de versions avec moins d'1% des téléchargements totaux.",
       "y_axis_label": "Téléchargements",
@@ -408,6 +433,11 @@
       "filter_tooltip": "Filtrer les versions avec une {link}. Par exemple, ^3.0.0 affiche toutes les versions 3.x.",
       "filter_tooltip_link": "plage semver",
       "no_matches": "Aucune version ne correspond à cette plage",
+      "page_title": "Historique des versions",
+      "current_tags": "Tags actuels",
+      "version_filter_placeholder": "Filtrer les versions...",
+      "version_filter_label": "Filtrer les versions",
+      "no_match_filter": "Aucune version ne correspond à {filter}",
       "copy_alt": {
         "per_version_analysis": "La version {version} a été téléchargée {downloads} fois",
         "general_description": "Graphique en barres montrant les téléchargements par version pour {versions_count} versions {semver_grouping_mode} du paquet {package_name}, {date_range_label} de la version {first_version} à la version {last_version}. La version la plus téléchargée est {max_downloaded_version} avec {max_version_downloads} téléchargements. {per_version_analysis}. {watermark}."
@@ -422,7 +452,8 @@
       "outdated_major": "{count} version majeure en retard (dernière : {latest}) | {count} versions majeures en retard (dernière : {latest})",
       "outdated_minor": "{count} version mineure en retard (dernière : {latest}) | {count} versions mineures en retard (dernière : {latest})",
       "outdated_patch": "Mise à jour patch disponible (dernière : {latest})",
-      "has_replacement": "Cette dépendance a des remplacements suggérés"
+      "has_replacement": "Cette dépendance a des remplacements suggérés",
+      "vulnerabilities_count": "{count} vulnérabilité | {count} vulnérabilités"
     },
     "peer_dependencies": {
       "title": "Dépendances peer ({count})",
@@ -449,6 +480,15 @@
       "show_less": "(afficher moins)"
     },
     "trends": {
+      "chart_assistive_text": {
+        "keyboard_navigation_horizontal": "Utilisez les touches fléchées gauche et droite pour parcourir les points de données.",
+        "keyboard_navigation_vertical": "Utilisez les touches fléchées haut et bas pour parcourir les points de données.",
+        "table_available": "Un tableau de données pour ce graphique est disponible ci-dessous.",
+        "table_caption": "Tableau de données du graphique"
+      },
+      "chart_view_toggle": "Changer de vue",
+      "chart_view_combined": "Vue groupée",
+      "chart_view_split": "Vue séparée",
       "granularity": "Granularité",
       "granularity_daily": "Par Jour",
       "granularity_weekly": "Par Semaine",
@@ -478,6 +518,7 @@
       "data_correction": "Correction des données",
       "average_window": "Plage de moyenne",
       "smoothing": "Lissage",
+      "prediction": "Prédiction",
       "known_anomalies": "Anomalies connues",
       "known_anomalies_description": "Interpole les pics de téléchargements connus causés par des bots ou des problèmes de CI.",
       "known_anomalies_ranges": "Plages d'anomalies",
@@ -506,7 +547,8 @@
     "downloads": {
       "title": "Téléchargements hebdo.",
       "community_distribution": "Voir la distribution des versions téléchargées par la communauté",
-      "subtitle": "Toutes versions confondues"
+      "subtitle": "Toutes versions confondues",
+      "sparkline_nav_hint": "Utilisez ← →"
     },
     "install_scripts": {
       "title": "Scripts d'installation",
@@ -522,6 +564,7 @@
       "esm": "ES Modules supportés",
       "cjs": "CommonJS supporté",
       "no_esm": "Pas de support des ES Modules",
+      "wasm": "Dispose de WebAssembly",
       "types_label": "Types",
       "types_included": "Types inclus",
       "types_available": "Types disponibles via {package}",
@@ -595,6 +638,10 @@
       "b": "{size} o",
       "kb": "{size} ko",
       "mb": "{size} Mo"
+    },
+    "download": {
+      "button": "Télécharger",
+      "tarball": "Télécharger le tarball au format .tar.gz"
     }
   },
   "connector": {
@@ -799,7 +846,9 @@
       "preview": "aperçu",
       "code": "code"
     },
-    "file_path": "Chemin du fichier"
+    "file_path": "Chemin du fichier",
+    "binary_file": "Fichier binaire",
+    "binary_rendering_warning": "Le type de fichier \"{contentType}\" n'est pas pris en charge pour l'aperçu."
   },
   "badges": {
     "provenance": {
@@ -861,6 +910,8 @@
       "secure": "Sans avertissements",
       "insecure": "Avec avertissements"
     },
+    "view_selected": "Voir la sélection",
+    "clear_selected_label": "Effacer la sélection",
     "sort": {
       "label": "Trier les paquets",
       "toggle_direction": "Inverser l'ordre",
@@ -872,11 +923,7 @@
       "downloads_month": "Téléch./mois",
       "downloads_year": "Téléch./an",
       "published": "Dern. publication",
-      "name": "Nom",
-      "quality": "Qualité",
-      "popularity": "Popularité",
-      "maintenance": "Maintenance",
-      "score": "Score"
+      "name": "Nom"
     },
     "columns": {
       "title": "Colonnes",
@@ -890,11 +937,8 @@
       "published": "Dern. publication",
       "maintainers": "Mainteneurs",
       "keywords": "Mots-clés",
-      "quality_score": "Score de qualité",
-      "popularity_score": "Score de popularité",
-      "maintenance_score": "Score de maintenance",
-      "combined_score": "Score combiné",
-      "security": "Sécurité"
+      "security": "Sécurité",
+      "selection": "Sélectionner le paquet"
     },
     "view_mode": {
       "label": "Mode d'affichage",
@@ -1041,7 +1085,8 @@
       "error": "Échec du chargement des organisations",
       "empty": "Aucune organisation trouvée",
       "view_all": "Tout voir"
-    }
+    },
+    "pr": "Ouvrir la pull request GitHub #{prNumber}"
   },
   "compare": {
     "packages": {
@@ -1058,7 +1103,11 @@
       "loading": "Chargement des données des paquets...",
       "error": "Échec du chargement des données. Veuillez réessayer.",
       "empty_title": "Sélectionnez des paquets à comparer",
-      "empty_description": "Recherchez et ajoutez au moins 2 paquets ci-dessus pour voir une comparaison côte à côte de leurs facettes."
+      "empty_description": "Recherchez et ajoutez au moins 2 paquets ci-dessus pour voir une comparaison côte à côte de leurs facettes.",
+      "table_view": "Tableau",
+      "charts_view": "Graphiques",
+      "bar_chart_nav_hint": "Utilisez ↑ ↓",
+      "line_chart_nav_hint": "Utilisez ← →"
     },
     "selector": {
       "search_label": "Rechercher des paquets",
@@ -1079,14 +1128,11 @@
       "add_column": "Ajouter la colonne sans dépendance à la comparaison"
     },
     "facets": {
-      "group_label": "Facettes de comparaison",
       "all": "tout",
       "none": "aucun",
       "coming_soon": "Bientôt disponible",
       "select_all": "Sélectionner toutes les facettes",
       "deselect_all": "Désélectionner toutes les facettes",
-      "select_category": "Sélectionner toutes les facettes {category}",
-      "deselect_category": "Désélectionner toutes les facettes {category}",
       "binary_only_tooltip": "Ce paquet expose des binaires et aucun export",
       "categories": {
         "performance": "Performance",
@@ -1170,6 +1216,15 @@
     "file_size_warning": "{size} dépasse la limite de 250 Ko pour la comparaison",
     "compare_versions": "diff",
     "compare_versions_title": "Comparer avec la dernière version",
+    "comparing_versions_label": "Comparaison des versions...",
+    "version_back_to_package": "Retour au paquet",
+    "version_error_message": "Échec de la comparaison des versions.",
+    "version_invalid_url_format": {
+      "hint": "URL de comparaison invalide. Utilisez le format : {0}",
+      "from_version": "de",
+      "to_version": "à"
+    },
+    "version_selector_title": "Comparer avec la version",
     "summary": "Résumé",
     "deps_count": "{count} dépendances",
     "dependencies": "Dépendances",
@@ -1195,7 +1250,18 @@
     "files_button": "Fichiers",
     "select_file_prompt": "Sélectionnez un fichier dans la barre latérale pour voir son diff",
     "close_files_panel": "Fermer le panneau de fichiers",
-    "filter_files_label": "Filtrer les fichiers par type de modification"
+    "filter_files_label": "Filtrer les fichiers par type de modification",
+    "change_ratio": "Ratio de changement",
+    "char_edits": "Modifications de caractères",
+    "diff_distance": "Distance de diff",
+    "loading_diff": "Chargement du diff...",
+    "loading_diff_error": "Échec du chargement du diff",
+    "merge_modified_lines": "Fusionner les lignes modifiées",
+    "no_content_changes": "Aucun changement de contenu détecté",
+    "options": "Options",
+    "view_file": "Voir le fichier",
+    "view_in_code_browser": "Voir dans le navigateur de code",
+    "word_wrap": "Retour à la ligne"
   },
   "pds": {
     "title": "npmx.social",
@@ -1334,5 +1400,34 @@
       "p1": "Si vous rencontrez un problème d'accessibilité sur {app}, veuillez nous le faire savoir en ouvrant une issue sur notre {link}. Nous prenons ces rapports au sérieux et ferons de notre mieux pour les régler.",
       "link": "dépôt GitHub"
     }
+  },
+  "translation_status": {
+    "title": "état des traductions",
+    "generated_at": "Date de génération : {date}",
+    "welcome": "Si vous souhaitez nous aider à traduire {npmx} dans l'une des langues listées ci-dessous, vous êtes au bon endroit ! Cette page mise à jour automatiquement recense toujours tout le contenu qui a besoin de votre aide en ce moment.",
+    "p1": "Nous utilisons {lang} comme langue par défaut, avec un total de {count}. Si vous souhaitez aider à ajouter des traductions, trouvez la langue dans {bylang} et développez les détails.",
+    "p1_lang": "anglais américain (en-US)",
+    "p1_count": "0 message | 1 message | {count} messages",
+    "p2": "Avant de commencer, veuillez lire notre {guide} pour en savoir plus sur notre processus de traduction et sur la façon de contribuer.",
+    "guide": "guide de localisation (i18n)",
+    "by_locale": "Progression des traductions par langue",
+    "by_file": "Progression des traductions par fichier",
+    "complete_text": "Cette traduction est complète, bravo !",
+    "missing_text": "manquantes",
+    "missing_keys": "Aucune traduction manquante | Traduction manquante | Traductions manquantes",
+    "progress_label": "État d'avancement pour {locale}",
+    "table": {
+      "file": "Fichier",
+      "status": "Statut",
+      "error": "Erreur lors du chargement de la liste des fichiers.",
+      "empty": "Aucun fichier trouvé",
+      "file_link": "Modifier {file} ({lang}) sur GitHub"
+    }
+  },
+  "action_bar": {
+    "title": "barre d'actions",
+    "selection": "0 sélectionné | 1 sélectionné | {count} sélectionnés",
+    "shortcut": "Appuyez sur « {key} » pour cibler les actions",
+    "button_close_aria_label": "Fermer la barre d'actions"
   }
 }

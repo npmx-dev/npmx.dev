@@ -233,6 +233,11 @@ import {
   PackageSelectionView,
   PackageSelectionCheckbox,
   PackageExternalLinks,
+  ChartSplitSparkline,
+  TabRoot,
+  TabList,
+  TabItem,
+  TabPanel,
 } from '#components'
 
 // Server variant components must be imported directly to test the server-side render
@@ -246,6 +251,7 @@ import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
 import PackageLikeCard from '~/components/Package/LikeCard.vue'
 import SizeIncrease from '~/components/Package/SizeIncrease.vue'
 import Likes from '~/components/Package/Likes.vue'
+import type { VueUiXyDatasetItem } from 'vue-data-ui'
 
 describe('component accessibility audits', () => {
   describe('DateTime', () => {
@@ -775,10 +781,6 @@ describe('component accessibility audits', () => {
           username: 'yyx990803',
         },
       },
-      score: {
-        final: 0.9,
-        detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 },
-      },
       searchScore: 100000,
     }
 
@@ -941,6 +943,93 @@ describe('component accessibility audits', () => {
       })
 
       const results = await runAxe(wrapper)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('ChartSplitSparkline', () => {
+    const dataset = [
+      {
+        color: 'oklch(0.7025 0.132 160.37)',
+        name: 'vue',
+        series: [100_000, 200_000, 150_000],
+        type: 'line',
+        dashIndices: [],
+      },
+      {
+        color: 'oklch(0.6917 0.1865 35.04)',
+        name: 'svelte',
+        series: [100_000, 200_000, 150_000],
+        type: 'line',
+        dashIndices: [],
+      },
+    ] as Array<
+      VueUiXyDatasetItem & {
+        color?: string
+        series: number[]
+        dashIndices?: number[]
+      }
+    >
+    const dates = [1743465600000, 1744070400000, 1744675200000]
+    const datetimeFormatterOptions = {
+      year: 'yyyy-MM-dd',
+      month: 'yyyy-MM-dd',
+      day: 'yyyy-MM-dd',
+    }
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(ChartSplitSparkline, {
+        props: {
+          dataset,
+          dates,
+          datetimeFormatterOptions,
+          showLastDatapointEstimation: false,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations when empty', async () => {
+      const component = await mountSuspended(ChartSplitSparkline, {
+        props: {
+          dataset: [],
+          dates: [],
+          datetimeFormatterOptions,
+          showLastDatapointEstimation: false,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('TabRoot + TabList + TabItem + TabPanel', () => {
+    function createTabsFixture(modelValue: string, idPrefix: string) {
+      return defineComponent({
+        setup() {
+          return () =>
+            h(TabRoot, { modelValue, idPrefix }, () => [
+              h(TabList, { ariaLabel: 'Test tabs' }, () => [
+                h(TabItem, { value: 'first' }, () => 'First'),
+                h(TabItem, { value: 'second' }, () => 'Second'),
+              ]),
+              h(TabPanel, { value: 'first' }, () => 'First content'),
+              h(TabPanel, { value: 'second' }, () => 'Second content'),
+            ])
+        },
+      })
+    }
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(createTabsFixture('first', 'a11y-test'))
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with second tab selected', async () => {
+      const component = await mountSuspended(createTabsFixture('second', 'a11y-test2'))
+      const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
   })
@@ -1385,10 +1474,6 @@ describe('component accessibility audits', () => {
           links: {},
           publisher: { username: 'yyx990803' },
         },
-        score: {
-          final: 0.9,
-          detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 },
-        },
         searchScore: 100000,
       },
       {
@@ -1400,10 +1485,6 @@ describe('component accessibility audits', () => {
           keywords: ['react'],
           links: {},
           publisher: { username: 'fb' },
-        },
-        score: {
-          final: 0.9,
-          detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 },
         },
         searchScore: 90000,
       },
@@ -1680,10 +1761,6 @@ describe('component accessibility audits', () => {
           links: {},
           publisher: { username: 'yyx990803' },
         },
-        score: {
-          final: 0.9,
-          detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 },
-        },
         searchScore: 100000,
       },
     ]
@@ -1744,10 +1821,6 @@ describe('component accessibility audits', () => {
       },
       downloads: { weekly: 50000000 },
       updated: '2024-01-01T00:00:00.000Z',
-      score: {
-        final: 0.95,
-        detail: { quality: 0.95, popularity: 0.99, maintenance: 0.9 },
-      },
       searchScore: 99999,
     }
 
@@ -3834,10 +3907,6 @@ describe('background theme accessibility', () => {
       keywords: [],
       links: {},
       publisher: { username: 'evan' },
-    },
-    score: {
-      final: 0.9,
-      detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 },
     },
     searchScore: 100000,
   }

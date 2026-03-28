@@ -637,6 +637,7 @@ export async function copyAltTextForCompareFacetBarChart({
 }
 
 // Used in chart context menu callbacks
+// @todo replace with downloadFileLink
 export function loadFile(link: string, filename: string) {
   const a = document.createElement('a')
   a.href = link

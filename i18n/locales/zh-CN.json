@@ -602,7 +602,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -882,11 +883,7 @@
       "downloads_month": "每月下载量",
       "downloads_year": "每年下载量",
       "published": "最近发布",
-      "name": "名称",
-      "quality": "质量评分",
-      "popularity": "受欢迎度",
-      "maintenance": "维护程度",
-      "score": "总分"
+      "name": "名称"
     },
     "columns": {
       "title": "列",
@@ -900,10 +897,6 @@
       "published": "最近发布",
       "maintainers": "维护者",
       "keywords": "关键词",
-      "quality_score": "质量评分",
-      "popularity_score": "受欢迎度",
-      "maintenance_score": "维护程度",
-      "combined_score": "总分",
       "security": "安全性",
       "selection": "选择软件包"
     },
@@ -1093,14 +1086,11 @@
       "add_column": "添加与“不使用依赖”的比较"
     },
     "facets": {
-      "group_label": "比较维度",
       "all": "全选",
       "none": "取消全选",
       "coming_soon": "即将推出",
       "select_all": "选择所有维度",
       "deselect_all": "取消选择所有维度",
-      "select_category": "选择所有{category}维度",
-      "deselect_category": "取消选择所有{category}维度",
       "binary_only_tooltip": "此包仅暴露二进制文件且无导出",
       "categories": {
         "performance": "性能",
@@ -1184,6 +1174,7 @@
     "file_size_warning": "{size} 超出了 250KB 的对比限制",
     "compare_versions": "差异",
     "compare_versions_title": "与最新版本对比",
+    "version_invalid_url_format": {},
     "version_selector_title": "版本对比",
     "summary": "摘要",
     "deps_count": "{count} 个依赖",
@@ -1349,6 +1340,9 @@
       "p1": "如果你在 {app} 上遇到无障碍访问问题，请在我们的 {link} 上提交 Issue 反馈给我们。我们会认真对待这些反馈，并尽力解决。",
       "link": "GitHub 仓库"
     }
+  },
+  "translation_status": {
+    "table": {}
   },
   "action_bar": {
     "title": "操作栏",

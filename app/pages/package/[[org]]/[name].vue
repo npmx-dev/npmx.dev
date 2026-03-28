@@ -257,7 +257,6 @@ const versionSecurityMetadata = computed<PackageVersionInfo[]>(() => {
 // Process package description
 const pkgDescription = useMarkdown(() => ({
   text: pkg.value?.description ?? '',
-  packageName: pkg.value?.name,
 }))
 
 // Fetch dependency analysis (lazy, client-side)
@@ -1107,7 +1106,7 @@ const showSkeleton = shallowRef(false)
       'install sidebar'
       'vulns   sidebar'
       'readme  sidebar';
-    grid-template-rows: auto auto auto auto 1fr;
+    grid-template-rows: auto auto auto 1fr;
   }
 }
 
@@ -1120,6 +1119,7 @@ const showSkeleton = shallowRef(false)
       'install sidebar'
       'vulns   sidebar'
       'readme  sidebar';
+    grid-template-rows: auto auto auto 1fr;
   }
 }
 
