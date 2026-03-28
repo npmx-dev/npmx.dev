@@ -1,0 +1,29 @@
+name: PR Body 007 Label
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+jobs:
+  sync-007-label:
+    if: github.repository == 'npmx-dev/npmx.dev'
+    runs-on: ubuntu-slim
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Sync 007 label
+        uses: actions/github-script@ed59741142d356d3eca8bc5478a0bee8cb865736 # v8.0.0
+        env:
+          LABEL_NAME: '007'
+          BODY_MARKER: 'If you are a human, please delete this line'
+        with:
+          script: |
+            const { default: syncLabel } = await import('./.github/scripts/sync-pr-body-007-label.mjs');
+            await syncLabel({ github, context, label: process.env.LABEL_NAME, marker: process.env.BODY_MARKER });
