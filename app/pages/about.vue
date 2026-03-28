@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Role } from '#server/api/contributors.get'
+import type { Role, SocialAccount } from '#server/api/contributors.get'
 import { SPONSORS } from '~/assets/logos/sponsors'
 import { OSS_PARTNERS } from '~/assets/logos/oss-partners'
 
@@ -36,6 +36,30 @@ const governanceMembers = computed(
 const communityContributors = computed(
   () => contributors.value?.filter(c => c.role === 'contributor') ?? [],
 )
+
+const socialIcons: Record<string, string> = {
+  TWITTER: 'i-simple-icons:x',
+  MASTODON: 'i-simple-icons:mastodon',
+  BLUESKY: 'i-simple-icons:bluesky',
+  LINKEDIN: 'i-simple-icons:linkedin',
+  YOUTUBE: 'i-simple-icons:youtube',
+  HOMETOWN: 'i-lucide:globe',
+  DISCORD: 'i-simple-icons:discord',
+}
+
+function getSocialIcon(provider: string): string {
+  return socialIcons[provider] ?? 'i-lucide:link'
+}
+
+function getSocialLinks(person: {
+  socialAccounts: SocialAccount[]
+}): { provider: string; url: string; icon: string }[] {
+  return person.socialAccounts.map(account => ({
+    provider: account.provider,
+    url: account.url,
+    icon: getSocialIcon(account.provider),
+  }))
+}
 
 const roleLabels = computed(
   () =>
@@ -209,17 +233,42 @@ const roleLabels = computed(
                   <div class="text-xs text-fg-muted tracking-tight">
                     {{ roleLabels[person.role] ?? person.role }}
                   </div>
-                  <LinkBase
-                    v-if="person.sponsors_url"
-                    :to="person.sponsors_url"
-                    no-underline
-                    no-external-icon
-                    classicon="i-lucide:heart"
-                    class="relative z-10 text-xs text-fg-muted hover:text-pink-400 mt-0.5"
-                    :aria-label="$t('about.team.sponsor_aria', { name: person.login })"
+                  <div
+                    v-if="person.bio"
+                    class="text-xs text-fg-subtle truncate mt-0.5"
+                    :title="person.bio"
                   >
-                    {{ $t('about.team.sponsor') }}
-                  </LinkBase>
+                    {{ person.bio }}
+                  </div>
+                  <div class="flex items-center gap-1.5 mt-1">
+                    <LinkBase
+                      v-if="person.sponsors_url"
+                      :to="person.sponsors_url"
+                      no-underline
+                      no-external-icon
+                      classicon="i-lucide:heart"
+                      class="relative z-10 text-xs text-fg-muted hover:text-pink-400"
+                      :aria-label="$t('about.team.sponsor_aria', { name: person.login })"
+                    >
+                      {{ $t('about.team.sponsor') }}
+                    </LinkBase>
+                    <div
+                      v-if="getSocialLinks(person).length"
+                      class="relative z-10 flex items-center gap-1"
+                    >
+                      <a
+                        v-for="link in getSocialLinks(person)"
+                        :key="link.provider"
+                        :href="link.url"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-fg-muted hover:text-fg transition-colors"
+                        :aria-label="`${person.login} on ${link.provider.toLowerCase()}`"
+                      >
+                        <span :class="[link.icon, 'w-3 h-3']" aria-hidden="true" />
+                      </a>
+                    </div>
+                  </div>
                 </div>
                 <span
                   class="i-lucide:external-link rtl-flip w-3.5 h-3.5 text-fg-muted opacity-50 shrink-0 self-start mt-0.5 pointer-events-none"
