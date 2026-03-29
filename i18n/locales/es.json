@@ -148,7 +148,7 @@
     "theme_system": "Sistema",
     "language": "Idioma",
     "help_translate": "Ayuda a traducir npmx",
-    "translation_status": "Comprueba el estado global de traducción",
+    "translation_status": "Comprueba el estado global de las traducciones",
     "accent_colors": {
       "label": "Colores de acento",
       "sky": "Cielo",
