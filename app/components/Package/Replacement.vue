@@ -29,7 +29,11 @@ const replacementDescription = useMarkdown(() => ({
       {{ $t('package.replacement.title') }}
     </h2>
     <p>
-      <i18n-t v-if="nodeVersion && replacement.type === 'native'" keypath="package.replacement.native" scope="global">
+      <i18n-t
+        v-if="nodeVersion && replacement.type === 'native'"
+        keypath="package.replacement.native"
+        scope="global"
+      >
         <template #replacement>
           <span v-if="replacementDescription" v-html="replacementDescription" />
           <span v-else
@@ -40,7 +44,11 @@ const replacementDescription = useMarkdown(() => ({
           {{ nodeVersion }}
         </template>
       </i18n-t>
-      <i18n-t v-else-if="replacement.type === 'native'" keypath="package.replacement.native_no_version" scope="global">
+      <i18n-t
+        v-else-if="replacement.type === 'native'"
+        keypath="package.replacement.native_no_version"
+        scope="global"
+      >
         <template #replacement>
           <span v-if="replacementDescription" v-html="replacementDescription" />
           <span v-else
