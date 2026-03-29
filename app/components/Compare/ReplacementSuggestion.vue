@@ -44,19 +44,29 @@ const replacementDescription = useMarkdown(() => ({
     <div class="min-w-0 flex-1">
       <p class="font-medium">{{ packageName }}: {{ $t('package.replacement.title') }}</p>
       <p class="text-xs mt-0.5 opacity-80">
-        <template v-if="replacement.type === 'native'">
-          <template v-if="nodeVersion">
-            <i18n-t keypath="package.replacement.native">
-              <template #replacement><span v-html="renderedNativeReplacement" /></template>
-              <template #nodeVersion>{{ nodeVersion }}</template>
-            </i18n-t>
+        <i18n-t
+          v-if="nodeVersion && replacement.type === 'native'"
+          keypath="package.replacement.native"
+          scope="global"
+        >
+          <template #replacement>
+            <span v-if="replacementDescription" v-html="replacementDescription" />
+            <span v-else>{{ replacement.id }}</span>
           </template>
-          <template v-else>
-            <i18n-t keypath="package.replacement.native_no_version">
-              <template #replacement><span v-html="renderedNativeReplacement" /></template>
-            </i18n-t>
+          <template #nodeVersion>
+            {{ nodeVersion }}
           </template>
-        </template>
+        </i18n-t>
+        <i18n-t
+          v-else-if="replacement.type === 'native'"
+          keypath="package.replacement.native_no_version"
+          scope="global"
+        >
+          <template #replacement>
+            <span v-if="replacementDescription" v-html="replacementDescription" />
+            <span v-else>{{ replacement.id }}</span>
+          </template>
+        </i18n-t>
         <template v-else-if="replacement.type === 'simple'">
           <i18n-t keypath="package.replacement.simple">
             <template #replacement><span v-html="replacementDescription" /></template>
