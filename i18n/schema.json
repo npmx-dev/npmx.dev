@@ -2554,6 +2554,9 @@
         "file_path": {
           "type": "string"
         },
+        "word_wrap": {
+          "type": "string"
+        },
         "binary_file": {
           "type": "string"
         },

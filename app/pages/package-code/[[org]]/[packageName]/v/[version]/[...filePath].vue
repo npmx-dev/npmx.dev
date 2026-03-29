@@ -251,6 +251,8 @@ const { copied: fileContentCopied, copy: copyFileContent } = useClipboard({
 // Canonical URL for this code page
 const canonicalUrl = computed(() => `https://npmx.dev${getCodeUrl(route.params)}`)
 
+const wordWrap = useLocalStorage('npmx-code-word-wrap', false)
+
 // Toggle markdown view mode
 const markdownViewModes = [
   {
@@ -417,6 +419,17 @@ defineOgImageComponent('Default', {
           </div>
           <div class="flex items-center gap-2" v-if="isViewingFile && !isBinaryFile && fileContent">
             <button
+              type="button"
+              class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors items-center inline-flex gap-1"
+              :aria-pressed="wordWrap"
+              :class="{ 'bg-accent/10 text-accent border-accent/20': wordWrap }"
+              @click="wordWrap = !wordWrap"
+            >
+              <span v-if="!!wordWrap" class="i-lucide:wrap-text w-3 h-3" />
+              <span v-else class="i-lucide:text w-3 h-3" />
+              {{ $t('code.word_wrap') }}
+            </button>
+            <button
               v-if="selectedLines"
               type="button"
               class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors active:scale-95"
@@ -462,6 +475,7 @@ defineOgImageComponent('Default', {
             :html="fileContent.html"
             :lines="fileContent.lines"
             :selected-lines="selectedLines"
+            :word-wrap="wordWrap"
             @line-click="handleLineClick"
           />
           <div class="sticky bottom-0 bg-bg border-t border-border px-4 py-1">

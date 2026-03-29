@@ -850,6 +850,7 @@
       "code": "code"
     },
     "file_path": "File path",
+    "word_wrap": "Word wrap",
     "binary_file": "Binary file",
     "binary_rendering_warning": "File type \"{contentType}\" is not supported for preview."
   },
