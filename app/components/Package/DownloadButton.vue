@@ -55,7 +55,7 @@ async function downloadPackage() {
       type="button"
       @click="downloadPackage"
       :disabled="loading"
-      class="border-border-subtle bg-bg-subtle! text-xs text-fg-muted hover:enabled:(text-fg border-border-hover)"
+      class="cursor-pointer border-border-subtle bg-bg-subtle! text-xs text-fg-muted hover:enabled:(text-fg border-border-hover)"
     >
       <span
         class="size-[1em]"
