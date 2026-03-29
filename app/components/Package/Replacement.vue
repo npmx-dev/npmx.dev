@@ -28,37 +28,29 @@ const replacementDescription = useMarkdown(() => ({
       <span class="i-lucide:lightbulb w-4 h-4" aria-hidden="true" />
       {{ $t('package.replacement.title') }}
     </h2>
-        <p v-if="nodeVersion && replacement.type === 'native'">
-    <i18n-t
-      
-      keypath="package.replacement.native"
-      scope="global"
-    >
-      <template #replacement>
+    <p v-if="nodeVersion && replacement.type === 'native'">
+      <i18n-t keypath="package.replacement.native" scope="global">
+        <template #replacement>
           <span v-if="replacementDescription" v-html="replacementDescription" />
           <span v-else
             ><code>{{ replacement.id }}</code></span
           >
-      </template>
-      <template #nodeVersion>
-        {{ nodeVersion }}
-      </template>
-    </i18n-t>
-        </p>
-        <p v-else-if="replacement.type === 'native'">
-    <i18n-t
-      
-      keypath="package.replacement.native_no_version"
-      scope="global"
-    >
-      <template #replacement>
+        </template>
+        <template #nodeVersion>
+          {{ nodeVersion }}
+        </template>
+      </i18n-t>
+    </p>
+    <p v-else-if="replacement.type === 'native'">
+      <i18n-t keypath="package.replacement.native_no_version" scope="global">
+        <template #replacement>
           <span v-if="replacementDescription" v-html="replacementDescription" />
           <span v-else
             ><code>{{ replacement.id }}</code></span
           >
-      </template>
-    </i18n-t>
-        </p>
+        </template>
+      </i18n-t>
+    </p>
     <div v-else-if="replacement.type === 'simple'" class="block">
       <p class="mb-2">
         <span v-html="replacementDescription" />
