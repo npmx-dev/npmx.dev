@@ -1411,14 +1411,14 @@
     "welcome": "Ako ste zainteresovani da nam pomognete da prevedemo {npmx} na neki od jezika navedenih ispod, na pravom ste mestu! Ova stranica koja se automatski ažurira uvek prikazuje sav sadržaj kome je trenutno potrebna vaša pomoć.",
     "p1": "Koristimo {lang} kao podrazumevani jezik, sa ukupno {count}. Ako želite da pomognete u dodavanju prevoda, pronađite jezik u {bylang} i proširite detalje.",
     "p1_lang": "američki engleski (en-US)",
-    "p1_count": "0 poruka | 1 poruka | {count} poruke | {count} poruka",
+    "p1_count": "{count} poruka | {count} poruke | {count} poruka",
     "p2": "Pre nego što počnete, pročitajte naš {guide} da biste naučili o našem procesu prevođenja i kako možete da se uključite.",
     "guide": "vodič za lokalizaciju (i18n)",
     "by_locale": "Napredak prevoda po lokalitetu",
     "by_file": "Napredak prevoda po datoteci",
     "complete_text": "Ovaj prevod je kompletan, neverovatan posao!",
     "missing_text": "nedostaje",
-    "missing_keys": "Nema nedostajućih prevoda | Nedostaje prevod | Nedostaju prevoda | Nedostaje prevoda",
+    "missing_keys": "{count} nedostajući prevod | {count} nedostajuća prevoda | {count} nedostajućih prevoda",
     "progress_label": "Status napretka za {locale}",
     "table": {
       "file": "Datoteka",
@@ -1464,7 +1464,7 @@
   },
   "action_bar": {
     "title": "traka akcija",
-    "selection": "0 izabrano | 1 izabran | {count} izabrana | {count} izabrano",
+    "selection": "{count} izabran | {count} izabrana | {count} izabrano",
     "shortcut": "Pritisnite \"{key}\" da fokusirate akcije",
     "button_close_aria_label": "Zatvorite traku akcija"
   },
