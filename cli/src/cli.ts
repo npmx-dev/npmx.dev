@@ -8,16 +8,17 @@ import { serve } from 'srvx'
 import { createConnectorApp, generateToken, CONNECTOR_VERSION } from './server.ts'
 import { getNpmUser, NPM_REGISTRY_URL } from './npm-client.ts'
 import { initLogger, showToken, logInfo, logWarning, logError } from './logger.ts'
+import { resolveNpmProcessCommand } from './npm-process.ts'
 
 const DEFAULT_PORT = 31415
 const DEFAULT_FRONTEND_URL = 'https://npmx.dev/'
 const DEV_FRONTEND_URL = 'http://127.0.0.1:3000/'
-
 async function runNpmLogin(): Promise<boolean> {
   return new Promise(resolve => {
-    const child = spawn('npm', ['login', `--registry=${NPM_REGISTRY_URL}`], {
+    const { command, args } = resolveNpmProcessCommand(['login', `--registry=${NPM_REGISTRY_URL}`])
+
+    const child = spawn(command, args, {
       stdio: 'inherit',
-      shell: true,
     })
 
     child.on('close', code => {

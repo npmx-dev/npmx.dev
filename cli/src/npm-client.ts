@@ -8,6 +8,7 @@ import { join } from 'node:path'
 import * as v from 'valibot'
 import { PackageNameSchema, UsernameSchema, OrgNameSchema, ScopeTeamSchema } from './schemas.ts'
 import { logCommand, logSuccess, logError, logDebug } from './logger.ts'
+import { resolveNpmProcessCommand } from './npm-process.ts'
 
 const execFileAsync = promisify(execFile)
 export const NPM_REGISTRY_URL = 'https://registry.npmjs.org/'
@@ -332,13 +333,10 @@ async function execNpm(args: string[], options: ExecNpmOptions = {}): Promise<Np
 
   try {
     logDebug('Executing npm command:', { command: 'npm', args: npmArgs })
-    // Use execFile instead of exec to avoid shell injection vulnerabilities
-    // On Windows, shell: true is required to execute .cmd files (like npm.cmd)
-    // On Unix, we keep it false for better security and performance
-    const { stdout, stderr } = await execFileAsync('npm', npmArgs, {
+    const { command, args: processArgs } = resolveNpmProcessCommand(npmArgs)
+    const { stdout, stderr } = await execFileAsync(command, processArgs, {
       timeout: 60000,
       env: createNpmEnv(),
-      shell: process.platform === 'win32',
     })
 
     logDebug('Command succeeded:', { stdout, stderr })
@@ -610,11 +608,11 @@ export async function packageInit(
     logCommand(`${displayCmd} (in temp dir for ${name})`)
 
     try {
-      const { stdout, stderr } = await execFileAsync('npm', npmArgs, {
+      const { command, args: processArgs } = resolveNpmProcessCommand(npmArgs)
+      const { stdout, stderr } = await execFileAsync(command, processArgs, {
         timeout: 60000,
         cwd: tempDir,
         env: createNpmEnv(),
-        shell: process.platform === 'win32',
       })
 
       logSuccess(`Published ${name}@0.0.0`)
