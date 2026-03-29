@@ -283,6 +283,7 @@ async function loadMore() {
 }
 onBeforeUnmount(() => {
   updateUrlPage.cancel()
+  cancelPendingAnnouncements()
 })
 
 // Update URL when page changes from scrolling
@@ -584,94 +585,92 @@ defineOgImageComponent('Default', {
 })
 
 // -----------------------------------
-// Live region debouncing logic
+// Live region announcements
 // -----------------------------------
 const isMobile = useIsMobile()
+const { polite } = useAnnouncer()
 
-// Evaluate the text that should be announced to screen readers
-const rawLiveRegionMessage = computed(() => {
-  if (isRateLimited.value) {
-    return $t('search.rate_limited')
-  }
-
-  // If status is pending, no update phrase needed yet
-  if (status.value === 'pending') {
-    return ''
-  }
-
-  if (visibleResults.value && displayResults.value.length > 0) {
-    if (viewMode.value === 'table' || paginationMode.value === 'paginated') {
-      const pSize = Math.min(preferredPageSize.value, effectiveTotal.value)
-
-      return $t(
-        'filters.count.showing_paginated',
-        {
-          pageSize: pSize.toString(),
-          count: $n(effectiveTotal.value),
-        },
-        effectiveTotal.value,
-      )
-    }
-
-    if (isRelevanceSort.value) {
-      return $t(
-        'search.found_packages',
-        { count: $n(visibleResults.value.total) },
-        visibleResults.value.total,
-      )
-    }
-
-    return $t(
-      'search.found_packages_sorted',
-      { count: $n(effectiveTotal.value) },
-      effectiveTotal.value,
-    )
-  }
-
-  if (status.value === 'success' || status.value === 'error') {
-    if (displayResults.value.length === 0 && query.value) {
-      return $t('search.no_results', { query: query.value })
-    }
-  }
-
-  return ''
-})
-
-const debouncedLiveRegionMessage = ref('')
-
-const updateLiveRegionMobile = debounce((val: string) => {
-  debouncedLiveRegionMessage.value = val
-}, 700)
-
-const updateLiveRegionDesktop = debounce((val: string) => {
-  debouncedLiveRegionMessage.value = val
+const announcePoliteDesktop = debounce((message: string) => {
+  polite(message)
 }, 250)
 
+const announcePoliteMobile = debounce((message: string) => {
+  polite(message)
+}, 700)
+
+function announcePolite(message: string) {
+  if (isMobile.value) {
+    announcePoliteDesktop.cancel()
+    announcePoliteMobile(message)
+    return
+  }
+
+  announcePoliteMobile.cancel()
+  announcePoliteDesktop(message)
+}
+
+function cancelPendingAnnouncements() {
+  announcePoliteDesktop.cancel()
+  announcePoliteMobile.cancel()
+}
+
+// Announce search results changes to screen readers
 watch(
-  rawLiveRegionMessage,
-  newVal => {
-    if (!newVal) {
-      updateLiveRegionMobile.cancel()
-      updateLiveRegionDesktop.cancel()
-      debouncedLiveRegionMessage.value = ''
+  () => ({
+    rateLimited: isRateLimited.value,
+    searchStatus: status.value,
+    count: displayResults.value.length,
+    searchQuery: query.value,
+    mode: viewMode.value,
+    pagMode: paginationMode.value,
+    total: effectiveTotal.value,
+  }),
+  ({ rateLimited, searchStatus, count, searchQuery, mode, pagMode, total }) => {
+    if (rateLimited) {
+      announcePolite($t('search.rate_limited'))
       return
     }
 
-    if (isMobile.value) {
-      updateLiveRegionDesktop.cancel()
-      updateLiveRegionMobile(newVal)
-    } else {
-      updateLiveRegionMobile.cancel()
-      updateLiveRegionDesktop(newVal)
+    // Don't announce while searching
+    if (searchStatus === 'pending') {
+      cancelPendingAnnouncements()
+      return
+    }
+
+    if (count > 0) {
+      if (mode === 'table' || pagMode === 'paginated') {
+        const pSize = Math.min(preferredPageSize.value, total)
+
+        announcePolite(
+          $t(
+            'filters.count.showing_paginated',
+            {
+              pageSize: pSize.toString(),
+              count: $n(total),
+            },
+            total,
+          ),
+        )
+      } else if (isRelevanceSort.value) {
+        announcePolite(
+          $t(
+            'search.found_packages',
+            { count: $n(visibleResults.value?.total ?? 0) },
+            visibleResults.value?.total ?? 0,
+          ),
+        )
+      } else {
+        announcePolite($t('search.found_packages_sorted', { count: $n(total) }, total))
+      }
+    } else if (searchStatus === 'success' || searchStatus === 'error') {
+      if (searchQuery) {
+        announcePolite($t('search.no_results', { query: searchQuery }))
+      } else {
+        cancelPendingAnnouncements()
+      }
     }
   },
-  { immediate: true },
 )
-
-onBeforeUnmount(() => {
-  updateLiveRegionMobile.cancel()
-  updateLiveRegionDesktop.cancel()
-})
 </script>
 
 <template>
@@ -910,10 +909,6 @@ onBeforeUnmount(() => {
       :package-scope="packageScope"
       :can-publish-to-scope="canPublishToScope"
     />
-
-    <div role="status" class="sr-only">
-      {{ debouncedLiveRegionMessage }}
-    </div>
   </main>
 </template>
 
