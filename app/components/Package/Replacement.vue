@@ -79,7 +79,7 @@ const replacementDescription = useMarkdown(() => ({
       <template v-else-if="replacement.type === 'removal'">
         <span v-html="replacementDescription" />
       </template>
-      <template v-else-if="replacement.type === 'simple'"">
+      <template v-else-if="replacement.type === 'simple'">
         <span v-html="replacementDescription" />
       </template>
       <template v-else>
