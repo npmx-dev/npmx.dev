@@ -28,8 +28,8 @@ const replacementDescription = useMarkdown(() => ({
       <span class="i-lucide:lightbulb w-4 h-4" aria-hidden="true" />
       {{ $t('package.replacement.title') }}
     </h2>
-    <p v-if="nodeVersion && replacement.type === 'native'">
-      <i18n-t keypath="package.replacement.native" scope="global">
+    <p>
+      <i18n-t v-if="nodeVersion && replacement.type === 'native'" keypath="package.replacement.native" scope="global">
         <template #replacement>
           <span v-if="replacementDescription" v-html="replacementDescription" />
           <span v-else
@@ -40,9 +40,7 @@ const replacementDescription = useMarkdown(() => ({
           {{ nodeVersion }}
         </template>
       </i18n-t>
-    </p>
-    <p v-else-if="replacement.type === 'native'">
-      <i18n-t keypath="package.replacement.native_no_version" scope="global">
+      <i18n-t v-else-if="replacement.type === 'native'" keypath="package.replacement.native_no_version" scope="global">
         <template #replacement>
           <span v-if="replacementDescription" v-html="replacementDescription" />
           <span v-else
@@ -50,17 +48,8 @@ const replacementDescription = useMarkdown(() => ({
           >
         </template>
       </i18n-t>
-    </p>
     <div v-else-if="replacement.type === 'simple'" class="block">
-      <p class="mb-2">
         <span v-html="replacementDescription" />
-      </p>
-      <div v-if="replacement.example">
-        <strong class="block mb-1.5">{{ $t('package.replacement.example') }}</strong>
-        <pre
-          class="bg-amber-800/10 dark:bg-amber-950/30 p-2 rounded border border-amber-700/20 overflow-x-auto text-xs font-mono leading-relaxed"
-        ><code>{{ replacement.example }}</code></pre>
-      </div>
     </div>
     <i18n-t
       v-else-if="replacement.type === 'documented'"
@@ -83,9 +72,7 @@ const replacementDescription = useMarkdown(() => ({
       </template>
     </i18n-t>
     <template v-else-if="replacement.type === 'removal'">
-      <p>
         <span v-html="replacementDescription" />
-      </p>
     </template>
     <template v-else>
       {{ $t('package.replacement.none') }}
@@ -100,5 +87,12 @@ const replacementDescription = useMarkdown(() => ({
       {{ $t('package.replacement.learn_more') }}
       <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
     </a>
+  </p>
+      <div v-if="replacement.example">
+        <strong class="block mb-1.5">{{ $t('package.replacement.example') }}</strong>
+        <pre
+          class="bg-amber-800/10 dark:bg-amber-950/30 p-2 rounded border border-amber-700/20 overflow-x-auto text-xs font-mono leading-relaxed"
+        ><code>{{ replacement.example }}</code></pre>
+      </div>
   </div>
 </template>
