@@ -57,6 +57,7 @@ What npmx offers:
 - **Version range resolution** &ndash; dependency ranges (e.g., `^1.0.0`) resolve to actual installed versions
 - **Claim new packages** &ndash; register new package names directly from search results (via local connector)
 - **Clickable version tags** &ndash; navigate directly to any version from the versions list
+- **Dependents list** &ndash; browse packages that depend on a given package
 
 ### User & org pages
 
@@ -90,7 +91,7 @@ What npmx offers:
 | Keyboard navigation            |    ❌     |    ✅    |
 | Multi-provider repo support    |    ❌     |    ✅    |
 | Version range resolution       |    ❌     |    ✅    |
-| Dependents list                |    ✅     |    🚧    |
+| Dependents list                |    ✅     |    ✅    |
 | Package admin (access/owners)  |    ✅     |    🚧    |
 | Org/team management            |    ✅     |    🚧    |
 | 2FA/account settings           |    ✅     |    ❌    |
@@ -119,7 +120,6 @@ npmx.dev supports npm permalinks &ndash; just replace `npmjs.com` with `npmx.dev
 #### Not yet supported
 
 - `/package/<name>/access` &ndash; package access settings
-- `/package/<name>/dependents` &ndash; dependent packages list
 - `/settings/*` &ndash; account settings pages
 
 ### Simpler URLs
