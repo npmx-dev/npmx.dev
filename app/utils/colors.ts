@@ -1,6 +1,23 @@
 // Vue Data UI does not support CSS vars nor OKLCH for now
 
 /**
+ * Appends an alpha value to a hex or oklch color string.
+ * Needed because OG image renderers (satori) don't support CSS variables or
+ * opacity utilities — colors must be fully resolved values.
+ */
+export function withAlpha(color: string, alpha: number): string {
+  if (color.startsWith('oklch(')) return color.replace(')', ` / ${alpha})`)
+  if (color.startsWith('#'))
+    return (
+      color +
+      Math.round(alpha * 255)
+        .toString(16)
+        .padStart(2, '0')
+    )
+  return color
+}
+
+/**
  * Default neutral OKLCH color used as fallback when CSS variables are unavailable (e.g., during SSR).
  * This matches the dark mode value of --fg-subtle defined in main.css.
  */

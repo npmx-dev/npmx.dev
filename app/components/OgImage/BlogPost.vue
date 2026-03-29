@@ -15,18 +15,7 @@ const props = withDefaults(
   },
 )
 
-const formattedDate = computed(() => {
-  if (!props.date) return ''
-  try {
-    return new Date(props.date).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    })
-  } catch {
-    return props.date
-  }
-})
+const formattedDate = computed(() => formatDate(props.date))
 
 const MAX_VISIBLE_AUTHORS = 2
 

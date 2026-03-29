@@ -174,6 +174,8 @@ onKeyStroke(
   { dedupe: true },
 )
 
+const shareModal = useModal('share-modal')
+
 const fundingUrl = computed(() => {
   let funding = props.displayVersion?.funding
   if (Array.isArray(funding)) funding = funding[0]
@@ -229,9 +231,25 @@ const fundingUrl = computed(() => {
         >
           <span class="max-sm:sr-only">{{ $t('package.links.fund') }}</span>
         </LinkBase>
+        <!-- Share card -->
+        <ButtonBase
+          classicon="i-lucide:share-2"
+          aria-label="Share package card"
+          @click="shareModal.open()"
+        >
+          <span class="max-sm:sr-only">share</span>
+        </ButtonBase>
       </div>
     </div>
   </header>
+  <!-- Share modal -->
+  <PackageShareModal
+    v-if="pkg"
+    :package-name="packageName"
+    :resolved-version="resolvedVersion ?? ''"
+    :is-latest="resolvedVersion === pkg?.['dist-tags']?.latest"
+    :license="displayVersion?.license"
+  />
   <div
     ref="header"
     class="w-full bg-bg sticky top-14 z-10 border-b border-border pt-2"

@@ -1,11 +1,20 @@
 <script setup lang="ts">
 import { assertValidPackageName } from '#shared/utils/npm'
+import { ACCENT_COLOR_TOKENS } from '#shared/utils/constants'
+import type { AccentColorId } from '#shared/utils/constants'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
+
+const { selectedAccentColor } = useAccentColor()
+const colorMode = useColorMode()
 
 defineOgImageComponent('Package', {
   name: () => packageName.value,
   version: () => requestedVersion.value ?? '',
-  primaryColor: '#60a5fa',
+  primaryColor: () => {
+    const theme = colorMode.value === 'dark' ? 'dark' : 'light'
+    const id = selectedAccentColor.value as AccentColorId | null
+    return id ? ACCENT_COLOR_TOKENS[id][theme].hex : ACCENT_COLOR_TOKENS.sky[theme].hex
+  },
 })
 
 const readmeHeader = useTemplateRef('readmeHeader')

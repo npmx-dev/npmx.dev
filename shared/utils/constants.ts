@@ -92,6 +92,43 @@ export const ACCENT_COLORS = {
   },
 } as const satisfies Record<'light' | 'dark', Record<AccentColorId, string>>
 
+export interface AccentColorToken {
+  light: { oklch: string; hex: string }
+  dark: { oklch: string; hex: string }
+}
+
+// todo(atriiy): This is duplicated with ACCENT_COLORS, will be refactored later
+export const ACCENT_COLOR_TOKENS = {
+  sky: {
+    light: { oklch: 'oklch(0.53 0.16 247.27)', hex: '#006fc2' },
+    dark: { oklch: 'oklch(0.787 0.128 230.318)', hex: '#51c8fc' },
+  },
+  coral: {
+    light: { oklch: 'oklch(0.56 0.17 10.75)', hex: '#c23d5c' },
+    dark: { oklch: 'oklch(0.704 0.177 14.75)', hex: '#f9697c' },
+  },
+  amber: {
+    light: { oklch: 'oklch(0.58 0.18 46.34)', hex: '#cb4c00' },
+    dark: { oklch: 'oklch(0.828 0.165 84.429)', hex: '#f8bc1c' },
+  },
+  emerald: {
+    light: { oklch: 'oklch(0.51 0.13 162.4)', hex: '#007c4f' },
+    dark: { oklch: 'oklch(0.792 0.153 166.95)', hex: '#2edaa6' },
+  },
+  violet: {
+    light: { oklch: 'oklch(0.56 0.13 282.067)', hex: '#6a68be' },
+    dark: { oklch: 'oklch(0.78 0.148 286.067)', hex: '#b0a9ff' },
+  },
+  magenta: {
+    light: { oklch: 'oklch(0.56 0.14 325)', hex: '#9c54a1' },
+    dark: { oklch: 'oklch(0.78 0.15 330)', hex: '#ec92e5' },
+  },
+  neutral: {
+    light: { oklch: 'oklch(0.145 0 0)', hex: '#0a0a0a' },
+    dark: { oklch: 'oklch(1 0 0)', hex: '#ffffff' },
+  },
+} as const satisfies Record<AccentColorId, AccentColorToken>
+
 export const BACKGROUND_THEMES = {
   neutral: 'oklch(0.555 0 0)',
   stone: 'oklch(0.555 0.013 58.123)',
@@ -99,6 +136,35 @@ export const BACKGROUND_THEMES = {
   slate: 'oklch(0.555 0.046 257.407)',
   black: 'oklch(0.4 0 0)',
 } as const
+
+/**
+ * Static theme tokens for the share card OG image.
+ * Must use hex/rgb — satori (the OG image renderer) does not support oklch.
+ */
+export const SHARE_CARD_THEMES = {
+  dark: {
+    bg: '#101010',
+    border: '#262626',
+    borderMuted: '#26262699',
+    borderFaint: '#26262680',
+    divider: '#1f1f1f',
+    text: '#f9f9f9',
+    textMuted: '#adadad',
+    textSubtle: '#969696',
+    textFaint: '#969696cc',
+  },
+  light: {
+    bg: '#ffffff',
+    border: '#cecece',
+    borderMuted: '#cecece99',
+    borderFaint: '#cecece80',
+    divider: '#e5e5e5',
+    text: '#0a0a0a',
+    textMuted: '#474747',
+    textSubtle: '#5d5d5d',
+    textFaint: '#5d5d5dcc',
+  },
+} as const satisfies Record<'light' | 'dark', Record<string, string>>
 
 // INFO: Regex for capture groups
 export const BLUESKY_URL_EXTRACT_REGEX = /profile\/([^/]+)\/post\/([^/]+)/
