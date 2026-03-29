@@ -963,6 +963,9 @@
             },
             "compare_this_package": {
               "type": "string"
+            },
+            "access": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1798,6 +1801,18 @@
         "access": {
           "type": "object",
           "properties": {
+            "page_title": {
+              "type": "string"
+            },
+            "page_subtitle": {
+              "type": "string"
+            },
+            "connect_required": {
+              "type": "string"
+            },
+            "connect_hint": {
+              "type": "string"
+            },
             "title": {
               "type": "string"
             },
