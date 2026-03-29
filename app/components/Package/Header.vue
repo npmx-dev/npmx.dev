@@ -248,7 +248,7 @@ const fundingUrl = computed(() => {
     :package-name="packageName"
     :resolved-version="resolvedVersion ?? ''"
     :is-latest="resolvedVersion === pkg?.['dist-tags']?.latest"
-    :license="(displayVersion as any)?.license"
+    :license="displayVersion?.license"
   />
   <div
     ref="header"

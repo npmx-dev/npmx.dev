@@ -27,6 +27,7 @@ const { data: downloadsData } = usePackageDownloads(
   'last-week',
 )
 
+// e.g. nuxt 4.4.2 (latest) — 1.4M weekly downloads — MIT license — via npmx.dev
 const altText = computed(() => {
   const tag = props.isLatest ? 'latest' : props.resolvedVersion
   const parts: string[] = [`${props.packageName} ${props.resolvedVersion} (${tag})`]
@@ -90,12 +91,6 @@ function handleCopyLink() {
     class="sm:max-w-3xl"
     @close="showAlt = false"
   >
-    <!--
-      aspect-ratio matches card output (1280×520 = 2.46:1).
-      The PNG is rendered at full 1280px, displayed inside a ~700px container —
-      about 0.55× scale. image-rendering: high-quality ensures the browser
-      uses a bicubic/lanczos algorithm instead of nearest-neighbour.
-    -->
     <div
       class="bg-bg-elevated rounded-lg mb-4 overflow-hidden ring-1 ring-border-subtle"
       style="aspect-ratio: 1280/520"
