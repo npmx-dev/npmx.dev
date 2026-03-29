@@ -56,9 +56,6 @@ const replacementDescription = useMarkdown(() => ({
           >
         </template>
       </i18n-t>
-      <template v-else-if="replacement.type === 'simple' || replacement.type === 'removal'">
-        <span v-html="replacementDescription" />
-      </template>
       <i18n-t
         v-else-if="replacement.type === 'documented'"
         keypath="package.replacement.documented"
@@ -79,6 +76,12 @@ const replacementDescription = useMarkdown(() => ({
           </a>
         </template>
       </i18n-t>
+      <template v-else-if="replacement.type === 'removal'">
+        <span v-html="replacementDescription" />
+      </template>
+      <template v-else-if="replacement.type === 'simple'"">
+        <span v-html="replacementDescription" />
+      </template>
       <template v-else>
         {{ $t('package.replacement.none') }}
       </template>
@@ -93,7 +96,7 @@ const replacementDescription = useMarkdown(() => ({
         <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
       </a>
     </p>
-    <div v-if="replacement.type === 'documented' && replacement.example">
+    <div v-if="replacement.type === 'simple' && replacement.example">
       <strong class="block mb-1.5">{{ $t('package.replacement.example') }}</strong>
       <pre
         class="bg-amber-800/10 dark:bg-amber-950/30 p-2 rounded border border-amber-700/20 overflow-x-auto text-xs font-mono leading-relaxed"
