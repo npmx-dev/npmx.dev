@@ -46,36 +46,28 @@ const replacementDescription = useMarkdown(() => ({
       <p class="text-xs mt-0.5 opacity-80">
         <template v-if="replacement.type === 'native'">
           <template v-if="nodeVersion">
-            {{
-              $t('package.replacement.native', {
-                replacement: replacement.description || replacement.id,
-                nodeVersion,
-              })
-            }}
+            <i18n-t keypath="package.replacement.native">
+              <template #replacement><span v-html="renderedNativeReplacement" /></template>
+              <template #nodeVersion>{{ nodeVersion }}</template>
+            </i18n-t>
           </template>
-          <template v-else
-            >{{
-              $t('package.replacement.native_no_version', {
-                replacement: replacement.description || replacement.id,
-              })
-            }}
+          <template v-else>
+            <i18n-t keypath="package.replacement.native_no_version">
+              <template #replacement><span v-html="renderedNativeReplacement" /></template>
+            </i18n-t>
           </template>
         </template>
         <template v-else-if="replacement.type === 'simple'">
-          {{
-            $t('package.replacement.simple', {
-              replacement: replacement.description,
-              community: $t('package.replacement.community'),
-            })
-          }}
+          <i18n-t keypath="package.replacement.simple">
+            <template #replacement><span v-html="replacementDescription" /></template>
+            <template #community>{{ $t('package.replacement.community') }}</template>
+          </i18n-t>
         </template>
         <template v-else-if="replacement.type === 'documented'">
-          {{
-            $t('package.replacement.documented', {
-              replacement: replacement.replacementModule,
-              community: $t('package.replacement.community'),
-            })
-          }}
+          <i18n-t keypath="package.replacement.documented">
+            <template #replacement><span v-html="renderedDocumentedModule" /></template>
+            <template #community>{{ $t('package.replacement.community') }}</template>
+          </i18n-t>
         </template>
         <template v-else-if="replacement.type === 'removal'">
           <span v-html="replacementDescription" />
