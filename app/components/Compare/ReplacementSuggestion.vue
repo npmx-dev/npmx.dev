@@ -51,7 +51,7 @@ const replacementDescription = useMarkdown(() => ({
         >
           <template #replacement>
             <span v-if="replacementDescription" v-html="replacementDescription" />
-            <span v-else>{{ replacement.id }}</span>
+            <span v-else><code>{{ replacement.id }}</code></span>
           </template>
           <template #nodeVersion>
             {{ nodeVersion }}
@@ -64,7 +64,7 @@ const replacementDescription = useMarkdown(() => ({
         >
           <template #replacement>
             <span v-if="replacementDescription" v-html="replacementDescription" />
-            <span v-else>{{ replacement.id }}</span>
+            <span v-else><code>{{ replacement.id }}</code></span>
           </template>
         </i18n-t>
         <template v-else-if="replacement.type === 'simple'">
