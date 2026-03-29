@@ -21,6 +21,10 @@ const nodeVersion = computed(() => {
   const nodeEngine = props.replacement.engines?.find(e => e.engine === 'nodejs')
   return nodeEngine?.minVersion || null
 })
+
+const replacementDescription = useMarkdown(() => ({
+  text: (props.replacement as { description?: string }).description ?? '',
+}))
 </script>
 
 <template>
@@ -41,16 +45,19 @@ const nodeVersion = computed(() => {
       <p class="font-medium">{{ packageName }}: {{ $t('package.replacement.title') }}</p>
       <p class="text-xs mt-0.5 opacity-80">
         <template v-if="replacement.type === 'native'">
-          {{
-            nodeVersion
-              ? $t('package.replacement.native', {
+        <template v-if="nodeVersion">
+          {{$t('package.replacement.native', {
                   replacement: replacement.description || replacement.id,
                   nodeVersion,
                 })
-              : $t('package.replacement.native_no_version', {
+          }}
+        </template>
+        <template v-else>{{
+            $t('package.replacement.native_no_version', {
                   replacement: replacement.description || replacement.id,
                 })
           }}
+        </template>
         </template>
         <template v-else-if="replacement.type === 'simple'">
           {{
@@ -69,7 +76,7 @@ const nodeVersion = computed(() => {
           }}
         </template>
         <template v-else-if="replacement.type === 'removal'">
-          {{ replacement.description }}
+          <span v-html="replacementDescription" />
         </template>
       </p>
     </div>
