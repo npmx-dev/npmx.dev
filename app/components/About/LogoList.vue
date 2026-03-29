@@ -2,7 +2,7 @@
 type BaseItem = {
   name: string
   url: string
-  normalisingIndent?: string
+  maxHeight?: string
   logo:
     | string
     | {
@@ -22,15 +22,15 @@ const props = defineProps<{
 </script>
 
 <template>
-  <ul class="flex flex-wrap gap-4 md:gap-x-6 md:gap-y-4 list-none">
-    <li v-for="item in list" :key="item.name">
+  <ul class="flex flex-wrap gap-2 md:gap-x-4 md:gap-y-3 -mx-2 list-none">
+    <li v-for="item in list" :key="item.name" class="flex items-center justify-center">
       <a
         v-if="'logo' in item"
         :href="item.url"
         target="_blank"
         rel="noopener noreferrer"
-        class="relative flex items-center justify-center h-14 min-w-14 rounded-md hover:bg-fg/10 transition-colors p-1"
-        :style="{ paddingBlock: item.normalisingIndent }"
+        class="relative flex items-center justify-center h-16 min-w-16 rounded-md hover:bg-fg/10 transition-colors p-2"
+        :style="{ maxHeight: item.maxHeight }"
         :aria-label="item.name"
       >
         <AboutLogoImg :src="item.logo" :alt="item.name" />
@@ -55,8 +55,8 @@ const props = defineProps<{
               :href="groupItem.url"
               target="_blank"
               rel="noopener noreferrer"
-              class="relative flex items-center justify-center h-10 min-w-10 rounded-md hover:bg-fg/10 transition-colors p-0.5"
-              :style="{ paddingBlock: groupItem.normalisingIndent }"
+              class="relative flex items-center justify-center h-12 min-w-12 rounded-md hover:bg-fg/10 transition-colors p-1"
+              :style="{ maxHeight: groupItem.maxHeight }"
               :aria-label="groupItem.name"
             >
               <AboutLogoImg :src="groupItem.logo" :alt="groupItem.name" />

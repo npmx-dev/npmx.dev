@@ -19,7 +19,7 @@ import LogoChromaticLight from './chromatic-light.svg'
 //
 // If there are no original assets and the logo is not universal, you can add only the dark theme variant
 // and specify 'auto' for the light one - this will grayscale the logo and invert it in light mode.
-// The normalisingIndent is the Y-axis space to visually stabilize favicon-only logos with logotypes that contain long name.
+// The maxHeight is used to make some logos more visually consistent with the others.
 export const SPONSORS = [
   {
     name: 'Vercel',
@@ -27,7 +27,7 @@ export const SPONSORS = [
       dark: LogoVercel,
       light: LogoVercelLight,
     },
-    normalisingIndent: '0.875rem',
+    maxHeight: '2.8rem',
     url: 'https://vercel.com/',
   },
   {
@@ -36,7 +36,7 @@ export const SPONSORS = [
       dark: LogoVoidZero,
       light: LogoVoidZeroLight,
     },
-    normalisingIndent: '0.875rem',
+    maxHeight: '2.8rem',
     url: 'https://voidzero.dev/',
   },
   {
@@ -45,7 +45,7 @@ export const SPONSORS = [
       dark: LogoVlt,
       light: LogoVltLight,
     },
-    normalisingIndent: '0.875rem',
+    maxHeight: '2.8rem',
     url: 'https://vlt.sh/',
   },
   {
@@ -54,7 +54,6 @@ export const SPONSORS = [
       dark: LogoNetlify,
       light: LogoNetlifyLight,
     },
-    normalisingIndent: '0.125rem',
     url: 'https://netlify.com/',
   },
   {
@@ -63,7 +62,7 @@ export const SPONSORS = [
       dark: LogoBluesky,
       light: LogoBlueskyLight,
     },
-    normalisingIndent: '0.625rem',
+    maxHeight: '3.2rem',
     url: 'https://bsky.app/',
   },
   {
