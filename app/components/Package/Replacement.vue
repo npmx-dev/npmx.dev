@@ -35,8 +35,8 @@ const replacementDescription = useMarkdown(() => ({
     >
       <template #replacement>
         <p>
-        <span v-if="replacementDescription" v-html="replacementDescription" />
-        <span v-else>{{ replacement.id }}</span>
+          <span v-if="replacementDescription" v-html="replacementDescription" />
+          <span v-else>{{ replacement.id }}</span>
         </p>
       </template>
       <template #nodeVersion>
@@ -50,14 +50,14 @@ const replacementDescription = useMarkdown(() => ({
     >
       <template #replacement>
         <p>
-        <span v-if="replacementDescription" v-html="replacementDescription" />
-        <span v-else>{{ replacement.id }}</span>
+          <span v-if="replacementDescription" v-html="replacementDescription" />
+          <span v-else>{{ replacement.id }}</span>
         </p>
       </template>
     </i18n-t>
     <div v-else-if="replacement.type === 'simple'" class="block">
-      <p class="mb-2" >
-      <span v-html="replacementDescription" />
+      <p class="mb-2">
+        <span v-html="replacementDescription" />
       </p>
       <div v-if="replacement.example">
         <strong class="block mb-1.5">{{ $t('package.replacement.example') }}</strong>
@@ -88,7 +88,7 @@ const replacementDescription = useMarkdown(() => ({
     </i18n-t>
     <template v-else-if="replacement.type === 'removal'">
       <p>
-      <span v-html="replacementDescription" />
+        <span v-html="replacementDescription" />
       </p>
     </template>
     <template v-else>
