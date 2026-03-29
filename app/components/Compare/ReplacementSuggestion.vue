@@ -45,19 +45,21 @@ const replacementDescription = useMarkdown(() => ({
       <p class="font-medium">{{ packageName }}: {{ $t('package.replacement.title') }}</p>
       <p class="text-xs mt-0.5 opacity-80">
         <template v-if="replacement.type === 'native'">
-        <template v-if="nodeVersion">
-          {{$t('package.replacement.native', {
-                  replacement: replacement.description || replacement.id,
-                  nodeVersion,
-                })
-          }}
-        </template>
-        <template v-else>{{
-            $t('package.replacement.native_no_version', {
-                  replacement: replacement.description || replacement.id,
-                })
-          }}
-        </template>
+          <template v-if="nodeVersion">
+            {{
+              $t('package.replacement.native', {
+                replacement: replacement.description || replacement.id,
+                nodeVersion,
+              })
+            }}
+          </template>
+          <template v-else
+            >{{
+              $t('package.replacement.native_no_version', {
+                replacement: replacement.description || replacement.id,
+              })
+            }}
+          </template>
         </template>
         <template v-else-if="replacement.type === 'simple'">
           {{
