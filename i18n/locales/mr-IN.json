@@ -440,8 +440,6 @@
       },
       "page_title": "आवृत्ती इतिहास",
       "current_tags": "सध्याचे टॅग्स",
-      "version_filter_placeholder": "आवृत्त्या फिल्टर करा…",
-      "version_filter_label": "आवृत्त्या फिल्टर करा",
       "no_match_filter": "{filter} शी जुळणारी कोणतीही आवृत्ती नाही"
     },
     "dependencies": {
@@ -1428,5 +1426,12 @@
     "selection": "0 निवडले | 1 निवडले | {count} निवडले",
     "shortcut": "\"{key}\" दाबून क्रियांवर फोकस करा",
     "button_close_aria_label": "क्रिया पट्टी बंद करा"
+  },
+  "logo_menu": {},
+  "brand": {
+    "logos": {},
+    "customize": {},
+    "typography": {},
+    "guidelines": {}
   }
 }
