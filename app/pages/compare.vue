@@ -134,6 +134,11 @@ function exportComparisonDataAsMarkdown() {
   copy(markdown)
 }
 
+defineOgImageComponent('Compare', {
+  packages: () => packages.value,
+  emptyDescription: () => $t('compare.packages.meta_description_empty'),
+})
+
 useSeoMeta({
   title: () =>
     packages.value.length > 0
