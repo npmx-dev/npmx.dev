@@ -8,7 +8,7 @@ const props = defineProps<{
   max?: number
 }>()
 
-const maxPackages = computed(() => props.max ?? 4)
+const maxPackages = computed(() => props.max ?? MAX_PACKAGE_SELECTION)
 
 // Input state
 const inputValue = shallowRef('')

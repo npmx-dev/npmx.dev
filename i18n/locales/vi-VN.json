@@ -1,0 +1,1521 @@
+{
+  "$schema": "../schema.json",
+  "seo": {
+    "home": {
+      "title": "npmx - Trình duyệt cho package từ npm",
+      "description": "Tìm kiếm và khám phá package từ npm bằng một giao diện hiện đại"
+    }
+  },
+  "built_at": "dựng ngày {0}",
+  "alt_logo": "logo npmx",
+  "tagline": "trình duyệt tốc độ và hiện đại cho npm",
+  "non_affiliation_disclaimer": "không thuộc npm, Inc.",
+  "trademark_disclaimer": "npm là một thương hiệu đã đăng ký của npm, Inc. Trang này không liên quan đến npm, Inc.",
+  "footer": {
+    "about": "giới thiệu",
+    "blog": "blog",
+    "docs": "tài liệu",
+    "source": "mã nguồn",
+    "social": "kết nối",
+    "chat": "trò chuyện",
+    "builders_chat": "phát triển",
+    "keyboard_shortcuts": "phím tắt",
+    "brand": "thương hiệu"
+  },
+  "shortcuts": {
+    "section": {
+      "global": "Toàn cục",
+      "search": "Tìm kiếm",
+      "package": "Package"
+    },
+    "focus_search": "Nhập ô tìm kiếm",
+    "show_kbd_hints": "Đánh dấu phím tắt trên giao diện",
+    "settings": "Mở cài đặt",
+    "compare": "Mở so sánh",
+    "compare_from_package": "Mở so sánh (điền sẵn package hiện tại)",
+    "navigate_results": "Điều hướng kết quả tìm kiếm",
+    "go_to_result": "Đi đến kết quả tìm kiếm",
+    "open_code_view": "Mở chế độ xem mã nguồn",
+    "open_docs": "Mở tài liệu",
+    "disable_shortcuts": "Bạn có thể vô hiệu hóa phím tắt trong {settings}.",
+    "open_main": "Mở trang chính",
+    "open_diff": "Mở so sánh phiên bản"
+  },
+  "search": {
+    "label": "Tìm package từ npm",
+    "placeholder": "package abc...",
+    "button": "tìm kiếm",
+    "searching": "Đang tìm...",
+    "found_packages": "Không tìm thấy package nào | Tìm thấy 1 package | Tìm thấy {count} package",
+    "found_packages_sorted": "Không có kết quả | Sắp xếp {count} kết quả đầu | Sắp xếp {count} kết quả đầu",
+    "updating": "(đang cập nhật...)",
+    "no_results": "Không tìm thấy gói nào cho \"{query}\"",
+    "rate_limited": "Đã chạm giới hạn tốc độ của npm, vui lòng thử lại sau ít phút",
+    "title": "tìm kiếm",
+    "title_search": "tìm kiếm: {search}",
+    "title_packages": "tìm gói",
+    "meta_description": "Kết quả tìm kiếm cho '{search}'",
+    "meta_description_packages": "Tìm các gói npm",
+    "not_taken": "{name} chưa được sử dụng",
+    "claim_prompt": "Nhận tên gói này trên npm",
+    "claim_button": "Nhận \"{name}\"",
+    "want_to_claim": "Bạn muốn nhận tên gói này không?",
+    "start_typing": "Bắt đầu nhập để tìm gói",
+    "algolia_disclaimer": "Powered by Algolia",
+    "exact_match": "khớp chính xác",
+    "suggestion": {
+      "user": "người dùng",
+      "org": "tổ chức",
+      "view_user_packages": "Xem các gói của người dùng này",
+      "view_org_packages": "Xem các gói của tổ chức này"
+    },
+    "instant_search": "Chế độ tìm nhanh",
+    "instant_search_on": "đang bật",
+    "instant_search_off": "đang tắt",
+    "instant_search_turn_on": "bật",
+    "instant_search_turn_off": "tắt",
+    "instant_search_advisory": "{label} {state} — {action}"
+  },
+  "nav": {
+    "main_navigation": "Trang chính",
+    "popular_packages": "Package phổ biến",
+    "settings": "cài đặt",
+    "compare": "so sánh",
+    "back": "quay lại",
+    "menu": "Bảng chọn",
+    "mobile_menu": "Bảng điều hướng",
+    "open_menu": "Mở bảng chọn",
+    "links": "Liên kết",
+    "tap_to_search": "Nhấn để tìm kiếm"
+  },
+  "blog": {
+    "title": "Blog",
+    "heading": "blog",
+    "meta_description": "Góc nhìn và cập nhật từ cộng đồng npmx",
+    "author": {
+      "view_profile": "Xem hồ sơ của {name} trên Bluesky"
+    },
+    "draft_badge": "Bản nháp",
+    "draft_banner": "Đây là bản nháp chưa xuất bản. Nội dung có thể chưa hoàn chỉnh hoặc có sai sót.",
+    "no_posts": "Không tìm thấy bài viết nào.",
+    "atproto": {
+      "view_on_bluesky": "Xem trên Bluesky",
+      "reply_on_bluesky": "Trả lời trên Bluesky",
+      "likes_on_bluesky": "Lượt thích trên Bluesky",
+      "like_or_reply_on_bluesky": "Thích bài viết này hoặc thêm bình luận trên Bluesky",
+      "no_comments_yet": "Chưa có bình luận nào.",
+      "could_not_load_comments": "Không thể tải bình luận.",
+      "comments": "Bình luận",
+      "loading_comments": "Đang tải bình luận...",
+      "updating": "Đang cập nhật...",
+      "reply_count": "{count} phản hồi | {count} phản hồi",
+      "like_count": "{count} lượt thích | {count} lượt thích",
+      "repost_count": "{count} lượt đăng lại | {count} lượt đăng lại",
+      "more_replies": "Thêm {count} phản hồi... | Thêm {count} phản hồi..."
+    }
+  },
+  "settings": {
+    "title": "cài đặt",
+    "tagline": "tùy chỉnh trải nghiệm npmx của riêng bạn",
+    "meta_description": "Tùy chỉnh chế độ màu, ngôn ngữ, và giao diện tại npmx.dev",
+    "sections": {
+      "appearance": "Giao diện",
+      "display": "Hiển thị",
+      "search": "Tìm kiếm",
+      "language": "Ngôn ngữ",
+      "keyboard_shortcuts": "Phím tắt"
+    },
+    "data_source": {
+      "label": "Nguồn dữ liệu",
+      "description": "Chọn nguồn dữ liệu khi npmx tìm kiếm. Trang chi tiết package luôn sử dụng npm registry trực tiếp.",
+      "npm": "npm Registry",
+      "npm_description": "Tìm kiếm tổ chức và người dùng từ registry chính thức của npm. Đáng tin cậy, nhưng có thể chậm hơn.",
+      "algolia": "Algolia",
+      "algolia_description": "Dùng Algolia để tìm kiếm nhanh hơn."
+    },
+    "instant_search": "Tìm kiếm nhanh",
+    "instant_search_description": "Hiển thị và cập nhật kết quả tìm kiếm ngay khi đang gõ",
+    "relative_dates": "Hiển thị ngày tương đối",
+    "include_types": "Hiển thị {'@'}types tại phần cài đặt package",
+    "include_types_description": "Thêm package {'@'}types vào lệnh cài đặt đối với package không có sẵn types",
+    "hide_platform_packages": "Ẩn package đặc thù nền tảng khi tìm kiếm",
+    "hide_platform_packages_description": "Ẩn package binary native, v.d. {'@'}esbuild/linux-x64 trong kết quả tìm kiếm",
+    "enable_graph_pulse_loop": "Hiệu ứng động trên biểu đồ",
+    "enable_graph_pulse_loop_description": "Bật hiệu ứng giao động trên biểu đồ tải hàng tuần. Hiệu ứng này có thể gây sao lãng với một số người dùng",
+    "theme": "Chủ đề màu",
+    "theme_light": "Sáng",
+    "theme_dark": "Tối",
+    "theme_system": "Theo hệ thống",
+    "language": "Ngôn ngữ",
+    "help_translate": "Hỗ trợ dịch npmx",
+    "translation_status": "Kiểm tra toàn bộ tiến độ dịch",
+    "accent_colors": {
+      "label": "Màu nổi",
+      "sky": "Sky",
+      "coral": "Coral",
+      "amber": "Amber",
+      "emerald": "Emerald",
+      "violet": "Violet",
+      "magenta": "Magenta"
+    },
+    "clear_accent": "Đặt lại màu nổi",
+    "translation_progress": "Tiến độ dịch",
+    "background_themes": {
+      "label": "Màu nền",
+      "neutral": "Trung tính",
+      "stone": "Stone",
+      "zinc": "Zinc",
+      "slate": "Slate",
+      "black": "Black"
+    },
+    "keyboard_shortcuts_enabled": "Phím tắt",
+    "keyboard_shortcuts_enabled_description": "Bạn có thể vô hiệu hóa phím tắt nếu gặp xung đột với trình duyệt hoặc các phím tắt hệ thống khác."
+  },
+  "i18n": {
+    "missing_keys": "thiếu {count} bản dịch | thiếu {count} bản dịch",
+    "copy_keys": "Sao chép khóa",
+    "show_more_keys": "Hiển thị thêm {count}...",
+    "contribute_hint": "Giúp cải thiện bản dịch bằng cách thêm khóa còn thiếu.",
+    "edit_on_github": "Chỉnh sửa tại Github",
+    "view_guide": "Hướng dẫn dịch"
+  },
+  "error": {
+    "401": "Không được phép truy cập",
+    "404": "Không tìm thấy trang",
+    "500": "Lỗi nội bộ máy chủ",
+    "503": "Dịch vụ không khả dụng",
+    "default": "Đã xảy ra lỗi"
+  },
+  "common": {
+    "loading": "Đang tải...",
+    "loading_more": "Đang tải thêm...",
+    "loading_packages": "Đang tải package...",
+    "end_of_results": "Hết kết quả",
+    "try_again": "Thử lại",
+    "close": "Đóng",
+    "or": "hoặc",
+    "retry": "thử lại",
+    "copy": "sao chép",
+    "copied": "đã sao chép!",
+    "skip_link": "Bỏ qua để đến nội dung chính",
+    "warnings": "Cảnh báo:",
+    "go_back_home": "Quay về trang chủ",
+    "per_week": "/ tuần",
+    "vanity_downloads_hint": "Số liệu ảo: không có gói nào đang hiển thị | Số liệu ảo: cho gói đang hiển thị | Số liệu ảo: tổng của {count} gói đang hiển thị",
+    "sort": {
+      "name": "tên",
+      "role": "vai trò",
+      "members": "thành viên"
+    },
+    "scroll_to_top": "Cuộn lên đầu trang",
+    "cancel": "Hủy",
+    "save": "Lưu",
+    "edit": "Chỉnh sửa",
+    "error": "Lỗi",
+    "view_on": {
+      "npm": "xem trên npm",
+      "github": "Xem trên GitHub",
+      "gitlab": "Xem trên GitLab",
+      "bitbucket": "Xem trên Bitbucket",
+      "codeberg": "Xem trên Codeberg",
+      "git_repo": "Xem trên kho Git",
+      "forgejo": "Xem trên Forgejo",
+      "gitea": "Xem trên Gitea",
+      "gitee": "Xem trên Gitee",
+      "radicle": "Xem trên Radicle",
+      "sourcehut": "Xem trên SourceHut",
+      "tangled": "Xem trên Tangled"
+    },
+    "collapse": "Thu gọn",
+    "expand": "Mở rộng"
+  },
+  "profile": {
+    "display_name": "Tên hiển thị",
+    "description": "Mô tả",
+    "no_description": "Không có mô tả",
+    "website": "Trang web",
+    "website_placeholder": "https://example.com",
+    "likes": "Lượt thích",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "npmx profile by {handle}",
+    "not_found": "Không tìm thấy hồ sơ",
+    "not_found_message": "Không tìm thấy hồ sơ của {handle}.",
+    "invite": {
+      "message": "Có vẻ họ chưa dùng npmx. Bạn có muốn giới thiệu cho họ không?",
+      "share_button": "Chia sẻ trên Bluesky",
+      "compose_text": "Chào {'@'}{handle}! Bạn đã thử npmx.dev chưa? Đây là trình duyệt cho npm registry, nhanh, hiện đại và mã nguồn mở.\nhttps://npmx.dev"
+    }
+  },
+  "package": {
+    "not_found": "Không tìm thấy gói",
+    "not_found_message": "Không tìm thấy gói này.",
+    "no_description": "Không có mô tả",
+    "verified_provenance": "Nguồn gốc đã xác minh",
+    "navigation": "Gói",
+    "copy_name": "Sao chép tên gói",
+    "deprecation": {
+      "package": "Gói này đã bị ngừng hỗ trợ.",
+      "version": "Phiên bản này đã bị ngừng hỗ trợ.",
+      "no_reason": "Không có lý do"
+    },
+    "size_increase": {
+      "title_size": "Kích thước tăng đáng kể kể từ v{version}",
+      "title_deps": "Số lượng dependency tăng đáng kể kể từ v{version}",
+      "title_both": "Kích thước và số dependency tăng đáng kể kể từ v{version}",
+      "size": "Kích thước cài đặt tăng {percent} (lớn hơn {size})",
+      "deps": "Thêm {count} dependency"
+    },
+    "replacement": {
+      "title": "Bạn có thể không cần dependency này.",
+      "native": "Có thể thay thế bằng {replacement}, có sẵn từ Node {nodeVersion}.",
+      "simple": "{community} đã đánh dấu gói này là dư thừa, với gợi ý: {replacement}.",
+      "documented": "{community} đã đánh dấu gói này có các lựa chọn thay thế hiệu năng tốt hơn.",
+      "none": "Gói này đã được đánh dấu là không còn cần thiết, chức năng của nó có thể đã có sẵn sẵn trong các engine.",
+      "learn_more": "Tìm hiểu thêm",
+      "learn_more_above": "Tìm hiểu thêm ở trên.",
+      "mdn": "MDN",
+      "community": "cộng đồng",
+      "consider_no_dep": "+ Cân nhắc không dùng dep?"
+    },
+    "stats": {
+      "license": "Giấy phép",
+      "deps": "Dependency",
+      "install_size": "Kích thước cài đặt",
+      "vulns": "Lỗ hổng",
+      "published": "Đã phát hành",
+      "published_tooltip": "Ngày {package}{'@'}{version} được phát hành",
+      "view_dependency_graph": "Xem đồ thị dependency",
+      "inspect_dependency_tree": "Xem cây dependency",
+      "size_tooltip": {
+        "unpacked": "{size} kích thước giải nén (gói này)",
+        "total": "{size} tổng kích thước giải nén (bao gồm {count} dependency cho linux-x64) | {size} tổng kích thước giải nén (bao gồm toàn bộ {count} dependency cho linux-x64)"
+      }
+    },
+    "skills": {
+      "title": "Kỹ năng Agent",
+      "skills_available": "Có {count} kỹ năng | Có {count} kỹ năng",
+      "compatible_with": "Tương thích với {tool}",
+      "install": "Cài đặt",
+      "installation_method": "Cách cài đặt",
+      "learn_more": "Tìm hiểu thêm",
+      "available_skills": "Các kỹ năng hiện có",
+      "click_to_expand": "Nhấn để mở rộng",
+      "no_description": "Không có mô tả",
+      "file_counts": {
+        "scripts": "{count} script | {count} script",
+        "refs": "{count} tham chiếu | {count} tham chiếu",
+        "assets": "{count} tài nguyên | {count} tài nguyên"
+      },
+      "view_source": "Xem mã nguồn",
+      "skills_cli": "skills CLI"
+    },
+    "links": {
+      "main": "main",
+      "repo": "repo",
+      "homepage": "homepage",
+      "issues": "issues",
+      "jsr": "jsr",
+      "code": "code",
+      "docs": "docs",
+      "fund": "fund",
+      "compare": "so sánh",
+      "compare_this_package": "so sánh gói này"
+    },
+    "likes": {
+      "like": "Thích gói này",
+      "unlike": "Bỏ thích gói này"
+    },
+    "docs": {
+      "contents": "Mục lục",
+      "default_not_available": "Tài liệu không khả dụng cho phiên bản này.",
+      "not_available": "Không có tài liệu",
+      "not_available_detail": "Không thể tạo tài liệu cho phiên bản này.",
+      "page_title": "Tài liệu API - npmx",
+      "page_title_name": "{name} docs - npmx",
+      "page_title_version": "{name} docs - npmx",
+      "og_title": "{name} - Tài liệu",
+      "view_package": "Xem gói"
+    },
+    "get_started": {
+      "title": "Bắt đầu",
+      "pm_label": "Trình quản lý gói",
+      "copy_command": "Sao chép lệnh cài đặt",
+      "copy_dev_command": "Sao chép lệnh cài đặt dev",
+      "dev_dependency_hint": "Thường được cài làm dependency dev",
+      "view_types": "Xem {package}"
+    },
+    "create": {
+      "title": "Tạo dự án mới",
+      "copy_command": "Sao chép lệnh tạo dự án",
+      "view": "{packageName} có cùng maintainer. Bấm để xem chi tiết."
+    },
+    "run": {
+      "title": "Chạy",
+      "locally": "Chạy cục bộ"
+    },
+    "readme": {
+      "title": "Readme",
+      "no_readme": "Không có README.",
+      "toc_title": "Dàn ý",
+      "callout": {
+        "note": "Ghi chú",
+        "tip": "Mẹo",
+        "important": "Quan trọng",
+        "warning": "Cảnh báo",
+        "caution": "Thận trọng"
+      },
+      "copy_as_markdown": "Sao chép README dạng Markdown"
+    },
+    "provenance_section": {
+      "title": "Provenance",
+      "built_and_signed_on": "Được build và ký trên {provider}",
+      "view_build_summary": "Xem tóm tắt build",
+      "source_commit": "Commit nguồn",
+      "build_file": "Tệp build",
+      "public_ledger": "Sổ cái công khai",
+      "transparency_log_entry": "Mục nhật ký minh bạch",
+      "view_more_details": "Xem thêm chi tiết",
+      "error_loading": "Không thể tải chi tiết provenance"
+    },
+    "security_downgrade": {
+      "title": "Giảm mức độ tin cậy",
+      "description_to_none_provenance": "Phiên bản này được phát hành mà không có {provenance}.",
+      "description_to_none_trustedPublisher": "Phiên bản này được phát hành mà không có {trustedPublishing}.",
+      "description_to_provenance_trustedPublisher": "Phiên bản này dùng {provenance} nhưng không dùng {trustedPublishing}.",
+      "fallback_install_provenance": "Lệnh cài đặt được ghim về {version}, phiên bản cuối cùng có provenance.",
+      "fallback_install_trustedPublisher": "Lệnh cài đặt được ghim về {version}, phiên bản cuối cùng có trusted publishing.",
+      "provenance_link_text": "provenance",
+      "trusted_publishing_link_text": "xuất bản đáng tin cậy"
+    },
+    "keywords_title": "Từ khóa",
+    "compatibility": "Tương thích",
+    "card": {
+      "publisher": "Nhà phát hành",
+      "published": "Đã phát hành",
+      "weekly_downloads": "Lượt tải hàng tuần",
+      "keywords": "Từ khóa",
+      "license": "Giấy phép",
+      "select": "Chọn gói",
+      "select_maximum": "Chỉ có thể chọn tối đa {count} gói"
+    },
+    "versions": {
+      "title": "Phiên bản",
+      "collapse": "Thu gọn {tag}",
+      "expand": "Mở rộng {tag}",
+      "collapse_other": "Thu gọn các phiên bản khác",
+      "expand_other": "Mở rộng các phiên bản khác",
+      "collapse_major": "Thu gọn major {major}",
+      "expand_major": "Mở rộng major {major}",
+      "other_versions": "Phiên bản khác",
+      "more_tagged": "Thêm {count} thẻ",
+      "all_covered": "Tất cả phiên bản đã được bao phủ bởi các thẻ ở trên",
+      "deprecated_title": "{version} (đã ngừng hỗ trợ)",
+      "view_all": "Xem {count} phiên bản | Xem tất cả {count} phiên bản",
+      "view_all_versions": "Xem tất cả phiên bản",
+      "distribution_title": "Nhóm Semver",
+      "distribution_modal_title": "Phiên bản",
+      "distribution_range_date_same_year": "từ {from} đến {to}, {endYear}",
+      "distribution_range_date_multiple_years": "từ {from}, {startYear} đến {to}, {endYear}",
+      "grouping_major": "Major",
+      "grouping_minor": "Minor",
+      "grouping_versions_title": "Phiên bản",
+      "grouping_versions_about": "Về cách nhóm phiên bản",
+      "grouping_versions_all": "Tất cả",
+      "grouping_versions_only_recent": "Chỉ gần đây",
+      "grouping_usage_title": "Mức sử dụng",
+      "grouping_usage_about": "Về cách nhóm mức sử dụng",
+      "grouping_usage_all": "Tất cả",
+      "grouping_usage_most_used": "Dùng nhiều nhất",
+      "recent_versions_only_tooltip": "Chỉ hiển thị phiên bản được phát hành trong vòng một năm gần nhất.",
+      "show_low_usage_tooltip": "Bao gồm các nhóm phiên bản có dưới 1% tổng lượt tải.",
+      "y_axis_label": "Lượt tải",
+      "filter_placeholder": "Lọc theo semver (ví dụ ^3.0.0)",
+      "filter_invalid": "Khoảng semver không hợp lệ",
+      "filter_help": "Trợ giúp lọc theo khoảng semver",
+      "filter_tooltip": "Lọc phiên bản bằng {link}. Ví dụ, ^3.0.0 sẽ hiện tất cả phiên bản 3.x.",
+      "filter_tooltip_link": "khoảng semver",
+      "no_matches": "Không có phiên bản khớp khoảng này",
+      "copy_alt": {
+        "per_version_analysis": "Phiên bản {version} được tải {downloads} lần",
+        "general_description": "Biểu đồ cột hiển thị lượt tải theo từng phiên bản cho {versions_count} phiên bản {semver_grouping_mode} của gói {package_name}, {date_range_label} từ phiên bản {first_version} đến {last_version}. Phiên bản được tải nhiều nhất là {max_downloaded_version} với {max_version_downloads} lượt tải. {per_version_analysis}. {watermark}."
+      },
+      "page_title": "Lịch sử phiên bản",
+      "current_tags": "Thẻ hiện tại",
+      "version_filter_placeholder": "Lọc phiên bản…",
+      "version_filter_label": "Lọc phiên bản",
+      "no_match_filter": "Không có phiên bản khớp {filter}"
+    },
+    "dependencies": {
+      "title": "Dependency ({count}) | Dependency ({count})",
+      "list_label": "Dependency của gói",
+      "show_all": "hiện {count} dep | hiện tất cả {count} dep",
+      "optional": "tùy chọn",
+      "view_vulnerabilities": "Xem lỗ hổng",
+      "outdated_major": "Chậm {count} major (mới nhất: {latest}) | Chậm {count} major (mới nhất: {latest})",
+      "outdated_minor": "Chậm {count} minor (mới nhất: {latest}) | Chậm {count} minor (mới nhất: {latest})",
+      "outdated_patch": "Có bản cập nhật patch (mới nhất: {latest})",
+      "has_replacement": "Dependency này có gợi ý thay thế",
+      "vulnerabilities_count": "{count} lỗ hổng | {count} lỗ hổng"
+    },
+    "peer_dependencies": {
+      "title": "Peer Dependency ({count}) | Peer Dependencies ({count})",
+      "list_label": "Peer dependency của gói",
+      "show_all": "hiện {count} peer dep | hiện tất cả {count} peer dep"
+    },
+    "optional_dependencies": {
+      "title": "Optional Dependency ({count}) | Optional Dependencies ({count})",
+      "list_label": "Optional dependency của gói",
+      "show_all": "hiện {count} optional dep | hiện tất cả {count} optional dep"
+    },
+    "maintainers": {
+      "title": "Người duy trì",
+      "list_label": "Người duy trì gói",
+      "you": "(bạn)",
+      "via": "qua {teams}",
+      "remove_owner": "Gỡ {name} khỏi chủ sở hữu",
+      "username_to_add": "Tên người dùng cần thêm làm chủ sở hữu",
+      "username_placeholder": "username...",
+      "add_button": "thêm",
+      "cancel_add": "Hủy thêm chủ sở hữu",
+      "add_owner": "+ Thêm chủ sở hữu",
+      "show_more": "(hiện thêm {count})",
+      "show_less": "(hiện ít hơn)",
+      "maintainer_template": "{avatar} {char126}{name}"
+    },
+    "trends": {
+      "chart_assistive_text": {
+        "keyboard_navigation_horizontal": "Dùng phím mũi tên trái và phải để duyệt các điểm dữ liệu.",
+        "keyboard_navigation_vertical": "Dùng phím mũi tên lên và xuống để duyệt các điểm dữ liệu.",
+        "table_available": "Bên dưới có bảng dữ liệu cho biểu đồ này.",
+        "table_caption": "Bảng dữ liệu biểu đồ"
+      },
+      "granularity": "Độ chi tiết",
+      "granularity_daily": "Hàng ngày",
+      "granularity_weekly": "Hàng tuần",
+      "granularity_monthly": "Hàng tháng",
+      "granularity_yearly": "Hàng năm",
+      "start_date": "Bắt đầu",
+      "end_date": "Kết thúc",
+      "loading": "Đang tải...",
+      "date_range": "{start} đến {end}",
+      "date_range_multiline": "{start}\nđến {end}",
+      "download_file": "Tải {fileType}",
+      "toggle_annotator": "Bật/tắt chú thích",
+      "toggle_stack_mode": "Bật/tắt chế độ xếp chồng",
+      "open_options": "Mở tùy chọn",
+      "close_options": "Đóng tùy chọn",
+      "legend_estimation": "Ước tính",
+      "no_data": "Không có dữ liệu",
+      "y_axis_label": "{granularity} {facet}",
+      "facet": "Khía cạnh",
+      "title": "Xu hướng",
+      "contributors_skip": "Không hiển thị trong mục Người đóng góp (không có repo GitHub):",
+      "items": {
+        "downloads": "Lượt tải",
+        "likes": "Lượt thích",
+        "contributors": "Người đóng góp"
+      },
+      "data_correction": "Hiệu chỉnh dữ liệu",
+      "average_window": "Cửa sổ trung bình",
+      "smoothing": "Làm mượt",
+      "prediction": "Dự đoán",
+      "known_anomalies": "Bất thường đã biết",
+      "known_anomalies_description": "Nội suy qua các đỉnh tải bất thường do bot hoặc sự cố CI gây ra.",
+      "known_anomalies_ranges": "Khoảng bất thường",
+      "known_anomalies_range": "Từ {start} đến {end}",
+      "known_anomalies_range_named": "{packageName}: từ {start} đến {end}",
+      "known_anomalies_none": "Không có bất thường đã biết cho gói này. | Không có bất thường đã biết cho các gói này.",
+      "known_anomalies_contribute": "Đóng góp dữ liệu bất thường",
+      "apply_correction": "Áp dụng hiệu chỉnh",
+      "copy_alt": {
+        "trend_none": "gần như đi ngang",
+        "trend_strong": "mạnh",
+        "trend_weak": "yếu",
+        "trend_undefined": "không xác định (thiếu dữ liệu)",
+        "button_label": "Sao chép văn bản thay thế",
+        "watermark": "Ở phía dưới có watermark ghi \"./npmx a fast, modern browser for the npm registry\"",
+        "analysis": "{package_name} bắt đầu ở {start_value} và kết thúc ở {end_value}, cho thấy xu hướng {trend} với độ dốc {downloads_slope} lượt tải mỗi khoảng thời gian",
+        "estimation": "Giá trị cuối là ước tính dựa trên dữ liệu một phần của kỳ hiện tại.",
+        "estimations": "Các giá trị cuối là ước tính dựa trên dữ liệu một phần của kỳ hiện tại.",
+        "compare": "Biểu đồ đường so sánh lượt tải cho các gói: {packages}.",
+        "single_package": "Biểu đồ đường lượt tải cho gói {package}.",
+        "general_description": "Trục Y biểu thị số lượt tải. Trục X biểu thị khoảng ngày, từ {start_date} đến {end_date}, với độ chi tiết {granularity}.{estimation_notice} {packages_analysis}. {watermark}.",
+        "facet_bar_general_description": "Biểu đồ cột ngang cho: {packages}, so sánh {facet} ({description}). {facet_analysis} {watermark}.",
+        "facet_bar_analysis": "{package_name} có giá trị {value}."
+      }
+    },
+    "downloads": {
+      "title": "Lượt tải hàng tuần",
+      "community_distribution": "Xem phân bố mức độ sử dụng theo cộng đồng",
+      "subtitle": "Trên tất cả phiên bản",
+      "sparkline_nav_hint": "Dùng ← →"
+    },
+    "install_scripts": {
+      "title": "Script cài đặt",
+      "script_label": "(script)",
+      "npx_packages": "{count} gói npx | {count} gói npx",
+      "currently": "hiện tại {version}"
+    },
+    "playgrounds": {
+      "title": "Thử ngay",
+      "choose": "chọn playground"
+    },
+    "metrics": {
+      "esm": "Hỗ trợ ES Modules",
+      "cjs": "Hỗ trợ CommonJS",
+      "no_esm": "Không hỗ trợ ES Modules",
+      "wasm": "Có WebAssembly",
+      "types_label": "Types",
+      "types_included": "Đã kèm types",
+      "types_available": "Có types qua {package}",
+      "no_types": "Không có types"
+    },
+    "license": {
+      "view_spdx": "Xem nội dung giấy phép trên SPDX",
+      "none": "Không có"
+    },
+    "vulnerabilities": {
+      "tree_found": "{vulns} lỗ hổng trong {packages}/{total} gói | {vulns} lỗ hổng trong {packages}/{total} gói",
+      "show_all_packages": "hiện {count} gói bị ảnh hưởng | hiện tất cả {count} gói bị ảnh hưởng",
+      "path": "đường dẫn",
+      "more": "+{count} nữa",
+      "packages_failed": "Không thể kiểm tra {count} gói | Không thể kiểm tra {count} gói",
+      "scan_failed": "Không thể quét lỗ hổng",
+      "severity": {
+        "critical": "nghiêm trọng",
+        "high": "cao",
+        "moderate": "trung bình",
+        "low": "thấp"
+      },
+      "fixed_in_title": "Đã khắc phục ở phiên bản {version}"
+    },
+    "deprecated": {
+      "label": "Đã ngừng hỗ trợ",
+      "tree_found": "{count} dependency đã ngừng hỗ trợ | {count} dependency đã ngừng hỗ trợ",
+      "show_all": "hiện {count} gói đã ngừng hỗ trợ | hiện tất cả {count} gói đã ngừng hỗ trợ"
+    },
+    "access": {
+      "title": "Quyền truy cập nhóm",
+      "refresh": "Làm mới quyền truy cập nhóm",
+      "list_label": "Danh sách quyền truy cập nhóm",
+      "owner": "owner",
+      "rw": "rw",
+      "ro": "ro",
+      "revoke_access": "Thu hồi quyền truy cập của {name}",
+      "no_access": "Chưa cấu hình quyền truy cập nhóm",
+      "select_team_label": "Chọn nhóm",
+      "loading_teams": "Đang tải nhóm...",
+      "select_team": "Chọn nhóm",
+      "permission_label": "Mức quyền",
+      "permission": {
+        "read_only": "chỉ đọc",
+        "read_write": "đọc-ghi"
+      },
+      "grant_button": "cấp quyền",
+      "cancel_grant": "Hủy cấp quyền truy cập",
+      "grant_access": "+ Cấp quyền truy cập nhóm"
+    },
+    "list": {
+      "filter_label": "Lọc gói",
+      "filter_placeholder": "Lọc gói...",
+      "sort_label": "Sắp xếp gói",
+      "showing_count": "Hiển thị {filtered} trên {total} gói"
+    },
+    "skeleton": {
+      "loading": "Đang tải chi tiết gói",
+      "maintainers": "Người duy trì",
+      "keywords": "Từ khóa",
+      "versions": "Phiên bản",
+      "dependencies": "Dependency"
+    },
+    "sort": {
+      "downloads": "Tải nhiều nhất",
+      "published": "Mới phát hành",
+      "name_asc": "Tên (A-Z)",
+      "name_desc": "Tên (Z-A)"
+    },
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
+    },
+    "download": {
+      "button": "Tải xuống",
+      "tarball": "Tải tarball dạng .tar.gz"
+    }
+  },
+  "connector": {
+    "modal": {
+      "title": "Local Connector",
+      "connected": "Đã kết nối",
+      "connected_as_user": "Đã kết nối dưới tên ~{user}",
+      "connected_hint": "Bây giờ bạn có thể quản lý package và tổ chức từ giao diện web.",
+      "disconnect": "Ngắt kết nối",
+      "run_hint": "Chạy connector trên máy của bạn để bật các tính năng quản trị.",
+      "copy_command": "Sao chép lệnh",
+      "copied": "Đã sao chép",
+      "paste_token": "Sau đó dán token vào bên dưới để kết nối:",
+      "token_label": "Token",
+      "token_placeholder": "dán token tại đây...",
+      "advanced": "Tùy chọn nâng cao",
+      "port_label": "Cổng",
+      "warning": "CẢNH BÁO",
+      "warning_text": "Hành động này cho phép npmx truy cập npm CLI của bạn. Chỉ kết nối với các trang web bạn tin tưởng.",
+      "connect": "Kết nối",
+      "connecting": "Đang kết nối...",
+      "auto_open_url": "Tự động mở trang xác thực"
+    }
+  },
+  "operations": {
+    "queue": {
+      "title": "Chờ xử lý",
+      "clear_all": "xóa tất cả",
+      "refresh": "Làm mới thao tác",
+      "empty": "Không có thao tác nào trong hàng đợi",
+      "empty_hint": "Thêm thao tác từ trang package hoặc tổ chức",
+      "active_label": "Thao tác đang hoạt động",
+      "otp_required": "Yêu cầu OTP",
+      "otp_prompt": "Nhập OTP để tiếp tục",
+      "otp_placeholder": "Nhập mã OTP...",
+      "otp_label": "Mật khẩu dùng một lần",
+      "retry_otp": "Thử lại với OTP",
+      "retry_web_auth": "Thử lại bằng xác thực web",
+      "retrying": "Đang thử lại...",
+      "open_web_auth": "Mở liên kết xác thực web",
+      "approve_operation": "Phê duyệt thao tác",
+      "remove_operation": "Xóa thao tác",
+      "approve_all": "Phê duyệt tất cả",
+      "execute": "Thực thi",
+      "executing": "Đang thực thi...",
+      "log": "Nhật ký (Log)",
+      "log_label": "Nhật ký thao tác đã hoàn thành",
+      "remove_from_log": "Xóa khỏi nhật ký"
+    }
+  },
+  "org": {
+    "teams": {
+      "title": "Nhóm (Team)",
+      "refresh": "Tải lại danh sách nhóm",
+      "filter_label": "Lọc nhóm",
+      "filter_placeholder": "Lọc nhóm...",
+      "sort_by": "Sắp xếp theo",
+      "loading": "Đang tải danh sách nhóm...",
+      "no_teams": "Không tìm thấy nhóm nào",
+      "list_label": "Các nhóm trong tổ chức",
+      "delete_team": "Xóa nhóm {name}",
+      "member_count": "{count} thành viên | {count} thành viên",
+      "members_of": "Thành viên của {team}",
+      "no_members": "Không có thành viên",
+      "remove_user": "Bỏ {user} khỏi nhóm",
+      "username_to_add": "Tên người dùng cần thêm vào {team}",
+      "username_placeholder": "username...",
+      "add_button": "thêm",
+      "cancel_add_user": "Hủy thêm người dùng",
+      "add_member": "+ Thêm thành viên",
+      "team_name_label": "Tên nhóm",
+      "team_name_placeholder": "ten-nhom...",
+      "create_button": "tạo",
+      "no_match": "Không có nhóm nào khớp với \"{query}\"",
+      "cancel_create": "Hủy tạo nhóm",
+      "create_team": "+ Tạo nhóm"
+    },
+    "members": {
+      "title": "Thành viên",
+      "refresh": "Làm mới danh sách thành viên",
+      "filter_label": "Lọc thành viên",
+      "filter_placeholder": "Lọc thành viên...",
+      "filter_by_role": "Lọc theo vai trò",
+      "filter_by_team": "Lọc theo nhóm",
+      "all_teams": "tất cả nhóm",
+      "sort_by": "Sắp xếp theo",
+      "loading": "Đang tải danh sách thành viên...",
+      "no_members": "Không tìm thấy thành viên nào",
+      "list_label": "Thành viên tổ chức",
+      "change_role_for": "Thay đổi vai trò cho {name}",
+      "remove_from_org": "Gỡ {name} khỏi tổ chức",
+      "view_team": "Xem nhóm {team}",
+      "no_match": "Không có thành viên nào khớp với bộ lọc",
+      "username_label": "Tên người dùng",
+      "username_placeholder": "username...",
+      "role_label": "Vai trò",
+      "role": {
+        "all": "tất cả",
+        "developer": "nhà phát triển (developer)",
+        "admin": "quản trị viên (admin)",
+        "owner": "chủ sở hữu (owner)"
+      },
+      "team_label": "Nhóm",
+      "no_team": "không có nhóm",
+      "add_button": "thêm",
+      "cancel_add": "Hủy thêm thành viên",
+      "add_member": "+ Thêm thành viên"
+    },
+    "public_packages": "{count} package công khai | {count} package công khai",
+    "page": {
+      "packages_title": "Package",
+      "members_tab": "Thành viên",
+      "teams_tab": "Nhóm",
+      "no_packages": "Không tìm thấy package công khai nào cho",
+      "no_packages_hint": "Tổ chức này có thể không tồn tại hoặc không có package công khai nào.",
+      "failed_to_load": "Không thể tải package của tổ chức",
+      "no_match": "Không có package nào khớp với \"{query}\"",
+      "not_found": "Không tìm thấy tổ chức",
+      "not_found_message": "Tổ chức \"{'@'}{name}\" không tồn tại trên npm"
+    }
+  },
+  "user": {
+    "combobox": {
+      "add_to_org_hint": "(cũng sẽ thêm vào tổ chức)",
+      "press_enter_to_add": "Nhấn Enter để thêm {'@'}{username}",
+      "default_placeholder": "username...",
+      "suggestions_label": "Gợi ý người dùng"
+    },
+    "page": {
+      "packages_title": "Package",
+      "no_packages": "Không tìm thấy package công khai nào cho",
+      "no_packages_hint": "Người dùng này có thể không tồn tại hoặc không có package công khai nào.",
+      "failed_to_load": "Không thể tải package của người dùng",
+      "no_match": "Không có package nào khớp với \"{query}\"",
+      "filter_placeholder": "Lọc {count} package... | Lọc {count} package..."
+    },
+    "orgs_page": {
+      "title": "Tổ chức",
+      "back_to_profile": "Quay lại hồ sơ",
+      "connect_required": "Kết nối CLI cục bộ (local) để xem các tổ chức của bạn.",
+      "connect_hint_prefix": "Chạy",
+      "connect_hint_suffix": "để bắt đầu.",
+      "own_orgs_only": "Bạn chỉ có thể xem các tổ chức của chính mình.",
+      "view_your_orgs": "Xem các tổ chức của bạn",
+      "loading": "Đang tải danh sách tổ chức...",
+      "empty": "Không tìm thấy tổ chức nào.",
+      "empty_hint": "Tổ chức được nhận dạng dựa trên package trong phạm vi của bạn (scoped package).",
+      "count": "{count} Tổ chức | {count} Tổ chức",
+      "packages_count": "{count} package | {count} package"
+    }
+  },
+  "claim": {
+    "modal": {
+      "title": "Lấy tên Package",
+      "success": "Đã lấy package!",
+      "success_detail": "{name}{'@'}0.0.0 đã được xuất bản lên npm.",
+      "success_hint": "Bây giờ bạn có thể xuất bản các phiên bản mới cho package này bằng lệnh npm publish.",
+      "view_package": "Xem Package",
+      "invalid_name": "Tên package không hợp lệ:",
+      "available": "Bạn có thể lấy tên này!",
+      "taken": "Tên này đã được sử dụng.",
+      "missing_permission": "Bạn không có quyền thêm package vào scope {'@'}{scope}.",
+      "similar_warning": "Package tương tự đã tồn tại - npm có thể từ chối tên này:",
+      "related": "Package liên quan:",
+      "scope_warning_title": "Cân nhắc sử dụng package có scope",
+      "scope_warning_text": "Tên package không có scope là tài nguyên chung. Chỉ lấy tên nếu bạn thực sự định xuất bản và duy trì package. Đối với các dự án cá nhân hoặc tổ chức, hãy sử dụng tên có scope như {'@'}{username}/{name}.",
+      "connect_required": "Kết nối với connector cục bộ (local) để lấy tên package này.",
+      "connect_button": "Kết nối với Connector",
+      "publish_hint": "Hành động này sẽ xuất bản một package giữ chỗ tối giản.",
+      "preview_json": "Xem trước package.json",
+      "claim_button": "Lấy tên Package",
+      "publishing": "Đang xuất bản...",
+      "checking": "Đang kiểm tra tính khả dụng...",
+      "failed_to_check": "Không thể kiểm tra tính khả dụng của tên",
+      "failed_to_claim": "Không thể lấy package"
+    }
+  },
+  "code": {
+    "files_label": "Tệp",
+    "no_files": "Không có tệp nào trong thư mục này",
+    "root": "gốc",
+    "lines": "{count} dòng | {count} dòng",
+    "toggle_tree": "Bật/tắt cây thư mục",
+    "close_tree": "Đóng cây thư mục",
+    "copy_link": "Sao chép liên kết",
+    "raw": "Thô",
+    "view_raw": "Xem tệp thô",
+    "file_too_large": "Tệp quá lớn để xem trước",
+    "file_size_warning": "{size} vượt quá giới hạn 500KB để tô màu cú pháp (syntax highlight)",
+    "failed_to_load": "Không thể tải tệp",
+    "unavailable_hint": "Tệp có thể quá lớn hoặc không khả dụng",
+    "version_required": "Cần có phiên bản để xem mã nguồn",
+    "go_to_package": "Đến package",
+    "loading_tree": "Đang tải cây thư mục...",
+    "failed_to_load_tree": "Không thể tải các tệp tại phiên bản này",
+    "back_to_package": "Quay lại package",
+    "table": {
+      "name": "Tên",
+      "size": "Kích thước"
+    },
+    "markdown_view_mode": {
+      "preview": "xem trước",
+      "code": "mã nguồn"
+    },
+    "file_path": "Đường dẫn tệp",
+    "binary_file": "Tệp binary",
+    "binary_rendering_warning": "Loại tệp \"{contentType}\" không hỗ trợ xem trước."
+  },
+  "badges": {
+    "provenance": {
+      "verified": "đã xác minh",
+      "verified_title": "Provenance đã xác minh",
+      "verified_via": "Đã xác minh: xuất bản qua {provider}"
+    },
+    "jsr": {
+      "title": "cũng có trên JSR"
+    }
+  },
+  "filters": {
+    "title": "Bộ lọc",
+    "search": "Tìm kiếm",
+    "search_scope": "Phạm vi tìm kiếm",
+    "search_placeholder_name": "Lọc theo tên package...",
+    "search_placeholder_description": "Lọc theo mô tả...",
+    "search_placeholder_keywords": "Lọc theo từ khóa...",
+    "search_placeholder_all": "Tìm tất cả hoặc dùng name: desc: kw:",
+    "scope_name": "Tên",
+    "scope_name_description": "Chỉ tìm trong tên package",
+    "scope_description": "Mô tả",
+    "scope_description_description": "Chỉ tìm trong mô tả",
+    "scope_keywords": "Từ khóa",
+    "scope_keywords_description": "Chỉ tìm trong từ khóa",
+    "scope_all": "Tất cả",
+    "scope_all_description": "Tìm tất cả trường, hỗ trợ name: desc: kw:",
+    "weekly_downloads": "Lượt tải hàng tuần",
+    "updated_within": "Cập nhật trong vòng",
+    "security": "Bảo mật",
+    "keywords": "Từ khóa",
+    "more_keywords": "+{count} nữa",
+    "clear_all": "Xóa tất cả",
+    "remove_filter": "Gỡ bộ lọc {label}",
+    "chips": {
+      "search": "Tìm kiếm",
+      "downloads": "Lượt tải",
+      "keyword": "Từ khóa",
+      "security": "Bảo mật",
+      "updated": "Cập nhật"
+    },
+    "download_range": {
+      "any": "Bất kỳ",
+      "lt100": "< 100",
+      "100_1k": "100 - 1K",
+      "1k_10k": "1K - 10K",
+      "10k_100k": "10K - 100K",
+      "gt100k": "> 100K"
+    },
+    "updated": {
+      "any": "Mọi lúc",
+      "week": "Tuần qua",
+      "month": "Tháng qua",
+      "quarter": "3 tháng qua",
+      "year": "Năm qua"
+    },
+    "security_options": {
+      "all": "Tất cả package",
+      "secure": "Không có cảnh báo",
+      "insecure": "Có cảnh báo"
+    },
+    "view_selected": "Xem các mục đã chọn",
+    "clear_selected_label": "Xóa các mục đã chọn",
+    "sort": {
+      "label": "Sắp xếp package",
+      "toggle_direction": "Đổi chiều sắp xếp",
+      "ascending": "Tăng dần",
+      "descending": "Giảm dần",
+      "relevance": "Độ liên quan",
+      "downloads_week": "Lượt tải/tuần",
+      "downloads_day": "Lượt tải/ngày",
+      "downloads_month": "Lượt tải/tháng",
+      "downloads_year": "Lượt tải/năm",
+      "published": "Xuất bản lần cuối",
+      "name": "Tên"
+    },
+    "columns": {
+      "title": "Cột",
+      "show": "Hiển thị cột",
+      "reset": "Đặt lại mặc định",
+      "coming_soon": "Sắp ra mắt",
+      "name": "Tên",
+      "version": "Phiên bản",
+      "description": "Mô tả",
+      "downloads": "Lượt tải/tuần",
+      "published": "Xuất bản lần cuối",
+      "maintainers": "Người duy trì",
+      "keywords": "Từ khóa",
+      "security": "Bảo mật",
+      "selection": "Chọn package"
+    },
+    "view_mode": {
+      "label": "Chế độ xem",
+      "cards": "Dạng thẻ",
+      "table": "Dạng bảng"
+    },
+    "pagination": {
+      "mode_label": "Chế độ phân trang",
+      "infinite": "Vô hạn",
+      "paginated": "Phân trang",
+      "items_per_page": "Số mục mỗi trang",
+      "per_page": "{count} / trang",
+      "showing": "{range} trên {total}",
+      "previous": "Trang trước",
+      "next": "Trang sau",
+      "nav_label": "Phân trang"
+    },
+    "count": {
+      "showing_filtered": "{filtered} trên {count} package | {filtered} trên {count} package",
+      "showing_all": "{count} package | {count} package",
+      "showing_paginated": "{pageSize} trên {count} package | {pageSize} trên {count} package"
+    },
+    "table": {
+      "security_warning": "Cảnh báo bảo mật",
+      "secure": "An toàn",
+      "no_packages": "Không tìm thấy package nào"
+    }
+  },
+  "about": {
+    "title": "Giới thiệu",
+    "heading": "giới thiệu",
+    "meta_description": "npmx là trình duyệt nhanh và hiện đại cho npm registry. Trải nghiệm UX/DX vượt trội để khám phá package từ npm.",
+    "what_we_are": {
+      "title": "NPMX là:",
+      "better_ux_dx": "UX/DX vượt trội",
+      "admin_ui": "giao diện quản trị",
+      "description": "npmx mang đến {betterUxDx} cho npm registry và các công cụ liên quan. Chúng tôi nỗ lực cung cấp một giao diện nhanh, hiện đại để khám phá package, với các tính năng như chế độ tối, điều hướng bằng bàn phím, duyệt mã nguồn và kết nối với registry thay thế như {jsr}.",
+      "admin_description": "Chúng tôi cũng hướng tới việc cung cấp một {adminUi} tốt để quản lý package, nhóm và tổ chức của bạn — làm được tất cả từ trình duyệt, hỗ trợ bằng npm CLI cục bộ."
+    },
+    "what_we_are_not": {
+      "title": "NPMX không phải là:",
+      "not_package_manager": "Không phải trình quản lý package.",
+      "not_registry": "Không phải là một registry.",
+      "registry_description": "Chúng tôi không lưu trữ package. Đây chỉ là một công cụ tìm kiếm nhanh chóng và hiện đại hơn.",
+      "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}.",
+      "words": {
+        "already": "Đã có",
+        "people": "những nỗ lực",
+        "building": "xây dựng",
+        "really": "trình quản lý",
+        "cool": "package",
+        "package": "thực sự",
+        "managers": "tuyệt vời"
+      }
+    },
+    "sponsors": {
+      "title": "Nhà tài trợ"
+    },
+    "oss_partners": {
+      "title": "Đối tác nguồn mở (OSS)"
+    },
+    "team": {
+      "title": "Đội ngũ",
+      "governance": "Quản trị",
+      "role_steward": "người điều hành",
+      "role_maintainer": "người duy trì",
+      "sponsor": "tài trợ",
+      "sponsor_aria": "Tài trợ {name} trên GitHub"
+    },
+    "contributors": {
+      "title": "... và {count} người đóng góp khác | ... và {count} người đóng góp khác",
+      "description": "npmx hoàn toàn là mã nguồn mở, được xây dựng bởi một cộng đồng người đóng góp tuyệt vời. Hãy tham gia cùng chúng tôi để cùng nhau xây dựng trải nghiệm tìm kiếm npm mà chúng ta luôn mong muốn.",
+      "loading": "Đang tải danh sách người đóng góp...",
+      "error": "Không thể tải danh sách người đóng góp",
+      "view_profile": "Xem hồ sơ GitHub của {name}"
+    },
+    "get_involved": {
+      "title": "Tham gia",
+      "contribute": {
+        "title": "Đóng góp",
+        "description": "Giúp xây dựng một trải nghiệm npm mà ta đều mong muốn",
+        "cta": "Xem tại GitHub"
+      },
+      "community": {
+        "title": "Gia nhập cộng đồng",
+        "description": "Trò chuyện, hỏi đáp, và chia sẻ ý tưởng",
+        "cta": "Tham gia Discord"
+      },
+      "builders": {
+        "title": "Phát triển npmx",
+        "description": "Tham gia nhóm phát triển, cùng vẽ ra tương lai của npmx",
+        "cta": "Vào Builders Discord"
+      },
+      "follow": {
+        "title": "Theo dõi",
+        "description": "Cập nhật thông tin mới nhất từ npmx",
+        "cta": "Theo dõi Bluesky"
+      }
+    }
+  },
+  "account_menu": {
+    "connect": "kết nối",
+    "account": "Tài khoản",
+    "npm_cli": "npm CLI",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "Quản lý package & tổ chức",
+    "atmosphere_desc": "Mạng xã hội và định danh",
+    "connect_npm_cli": "Kết nối với npm CLI",
+    "connect_atmosphere": "Kết nối với Atmosphere",
+    "connecting": "Đang kết nối...",
+    "ops": "{count} thao tác | {count} thao tác"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosphere",
+      "connected_as": "Đã kết nối dưới tên {'@'}{handle}",
+      "disconnect": "Ngắt kết nối",
+      "connect_prompt": "Kết nối với tài khoản Atmosphere của bạn",
+      "handle_label": "Handle",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "Kết nối",
+      "create_account": "Tạo tài khoản mới",
+      "connect_bluesky": "Kết nối với Bluesky",
+      "what_is_atmosphere": "Tài khoản Atmosphere là gì?",
+      "atmosphere_explanation": "{npmx} sử dụng {atproto} để vận hành nhiều tính năng mạng xã hội, cho phép người dùng sở hữu dữ liệu của chính mình và sử dụng một tài khoản cho tất cả các ứng dụng tương thích. Một khi bạn tạo tài khoản, bạn có thể sử dụng các ứng dụng khác như {bluesky} và {tangled} với cùng một tài khoản đó.",
+      "default_input_error": "Vui lòng nhập handle, DID hoặc URL PDS đầy đủ hợp lệ",
+      "profile": "Hồ sơ"
+    }
+  },
+  "header": {
+    "home": "trang chủ npmx",
+    "packages": "package",
+    "packages_dropdown": {
+      "title": "Package của bạn",
+      "loading": "Đang tải...",
+      "error": "Không thể tải package",
+      "empty": "Không tìm thấy package nào",
+      "view_all": "Xem tất cả"
+    },
+    "orgs": "tổ chức",
+    "orgs_dropdown": {
+      "title": "Tổ chức của bạn",
+      "loading": "Đang tải...",
+      "error": "Không thể tải tổ chức",
+      "empty": "Không tìm thấy tổ chức nào",
+      "view_all": "Xem tất cả"
+    },
+    "pr": "Mở GitHub pull request #{prNumber}"
+  },
+  "compare": {
+    "packages": {
+      "title": "so sánh package",
+      "tagline": "đối chiếu để đưa ra lựa chọn tốt nhất",
+      "meta_title": "So sánh {packages} - npmx",
+      "meta_title_empty": "So sánh package - npmx",
+      "meta_description": "Đối chiếu {packages}",
+      "meta_description_empty": "Đối chiếu package",
+      "section_packages": "Package",
+      "section_facets": "Bộ lọc",
+      "section_comparison": "So sánh",
+      "copy_as_markdown": "Sao chép bảng",
+      "loading": "Đang tải dữ liệu package...",
+      "error": "Không thể tải dữ liệu package. Vui lòng thử lại.",
+      "empty_title": "Chọn package để so sánh",
+      "empty_description": "Tìm và thêm ít nhất 2 package để đối chiếu dựa trên thông số của chúng.",
+      "table_view": "Bảng",
+      "charts_view": "Biểu đồ",
+      "bar_chart_nav_hint": "Dùng ↑ ↓",
+      "line_chart_nav_hint": "Dùng ← →"
+    },
+    "selector": {
+      "search_label": "Tìm kiếm package",
+      "search_first": "Tìm kiếm package...",
+      "search_add": "Thêm một package khác...",
+      "searching": "Đang tìm kiếm...",
+      "remove_package": "Gỡ {package}",
+      "packages_selected": "Đã chọn {count}/{max} package.",
+      "add_hint": "Thêm ít nhất 2 package để so sánh."
+    },
+    "no_dependency": {
+      "label": "(Không dependency)",
+      "typeahead_title": "Văn sẽ làm gì?",
+      "typeahead_description": "So sánh với việc không sử dụng dependency! Đã được e18e phê duyệt.",
+      "tooltip_title": "Bạn có thể không cần dependency",
+      "tooltip_description": "So sánh với việc không sử dụng dependency! {link} duy trì một danh sách các package có thể được thay thế bằng API có sẵn hoặc giải pháp đơn giản hơn.",
+      "e18e_community": "cộng đồng e18e",
+      "add_column": "Thêm cột không dependency vào so sánh"
+    },
+    "facets": {
+      "all": "tất cả",
+      "none": "không",
+      "select_all_category_facets": "Chọn tất cả phễu lọc {category}",
+      "deselect_all_category_facets": "Bỏ chọn tất cả phễu lọc {category}",
+      "selected_all_category_facets": "Đã chọn tất cả phễu lọc {category}",
+      "deselected_all_category_facets": "Đã bỏ chọn tất cả phễu lọc {category}",
+      "coming_soon": "Sắp ra mắt",
+      "select_all": "Chọn tất cả phễu lọc",
+      "deselect_all": "Bỏ chọn tất cả phễu lọc",
+      "binary_only_tooltip": "Package này cung cấp tệp thực thi và không có đầu xuất (export)",
+      "categories": {
+        "performance": "Hiệu năng",
+        "health": "Tình trạng (health)",
+        "compatibility": "Tương thích",
+        "security": "Bảo mật & Tuân thủ"
+      },
+      "items": {
+        "packageSize": {
+          "label": "Kích thước package",
+          "description": "Kích thước của chính package (sau khi giải nén)"
+        },
+        "installSize": {
+          "label": "Kích thước cài đặt",
+          "description": "Tổng kích thước cài đặt bao gồm tất cả dependency"
+        },
+        "dependencies": {
+          "label": "Dependency trực tiếp",
+          "description": "Số lượng dependency trực tiếp"
+        },
+        "totalDependencies": {
+          "label": "Tổng dependency",
+          "description": "Tổng số dependency bao gồm cả dependency bắc cầu"
+        },
+        "downloads": {
+          "label": "Lượt tải/tuần",
+          "description": "Số lượt tải hàng tuần"
+        },
+        "totalLikes": {
+          "label": "Lượt thích",
+          "description": "Số lượt thích"
+        },
+        "lastUpdated": {
+          "label": "Đã xuất bản",
+          "description": "Thời điểm phiên bản này được xuất bản"
+        },
+        "deprecated": {
+          "label": "Ngừng hỗ trợ (deprecated)?",
+          "description": "Liệu package có bị ngừng hỗ trợ hay không"
+        },
+        "engines": {
+          "label": "Engine",
+          "description": "Yêu cầu phiên bản Node.js"
+        },
+        "types": {
+          "label": "Types",
+          "description": "Định nghĩa kiểu TypeScript"
+        },
+        "moduleFormat": {
+          "label": "Định dạng Module",
+          "description": "Hỗ trợ ESM/CJS"
+        },
+        "license": {
+          "label": "Giấy phép",
+          "description": "Giấy phép của package"
+        },
+        "vulnerabilities": {
+          "label": "Lỗ hổng",
+          "description": "Các lỗ hổng bảo mật phổ biến"
+        }
+      },
+      "values": {
+        "any": "Bất kỳ",
+        "none": "Không",
+        "unknown": "Không xác định",
+        "deprecated": "Ngừng hỗ trợ (deprecated)",
+        "not_deprecated": "Không",
+        "types_included": "Bao gồm",
+        "types_none": "Không có",
+        "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
+        "up_to_you": "Tùy bạn!"
+      },
+      "trends": {
+        "title": "So sánh xu hướng"
+      }
+    },
+    "file_changes": "Thay đổi tệp",
+    "files_count": "{count} tệp | {count} tệp",
+    "lines_hidden": "{count} dòng ẩn | {count} dòng ẩn",
+    "file_too_large": "Tệp quá lớn để so sánh",
+    "file_size_warning": "{size} vượt quá giới hạn 250KB để so sánh",
+    "compare_versions": "diff",
+    "compare_versions_title": "So sánh với phiên bản mới nhất",
+    "comparing_versions_label": "Đang so sánh các phiên bản...",
+    "version_back_to_package": "Quay lại package",
+    "version_error_message": "Không thể so sánh các phiên bản.",
+    "version_invalid_url_format": {
+      "hint": "URL so sánh không hợp lệ. Sử dụng định dạng: {0}",
+      "from_version": "từ",
+      "to_version": "đến"
+    },
+    "version_selector_title": "So sánh với phiên bản",
+    "summary": "Tóm tắt",
+    "deps_count": "{count} dep | {count} dep",
+    "dependencies": "Dependencies",
+    "dev_dependencies": "Dev Dependencies",
+    "peer_dependencies": "Peer Dependencies",
+    "optional_dependencies": "Optional Dependencies",
+    "no_dependency_changes": "Không có thay đổi về dependency",
+    "file_filter_option": {
+      "all": "Tất cả ({count})",
+      "added": "Đã thêm ({count})",
+      "removed": "Đã xóa ({count})",
+      "modified": "Đã sửa ({count})"
+    },
+    "search_files_placeholder": "Tìm kiếm tệp...",
+    "no_files_all": "Không có tệp",
+    "no_files_search": "Không có tệp nào khớp với \"{query}\"",
+    "no_files_filtered": "Không có tệp {filter}",
+    "filter": {
+      "added": "đã thêm",
+      "removed": "đã xóa",
+      "modified": "đã sửa"
+    },
+    "files_button": "Tệp",
+    "select_file_prompt": "Chọn một tệp từ thanh bên để xem thay đổi",
+    "close_files_panel": "Đóng bảng danh sách tệp",
+    "filter_files_label": "Lọc tệp theo loại thay đổi",
+    "change_ratio": "Tỷ lệ thay đổi",
+    "char_edits": "Chỉnh sửa ký tự",
+    "diff_distance": "Khoảng cách khác biệt",
+    "loading_diff": "Đang tải thay đổi...",
+    "loading_diff_error": "Không thể tải thay đổi",
+    "merge_modified_lines": "Gộp các dòng đã sửa",
+    "no_content_changes": "Không phát hiện thay đổi về nội dung",
+    "options": "Tùy chọn",
+    "view_file": "Xem tệp",
+    "view_in_code_browser": "Xem trong trình duyệt mã nguồn",
+    "word_wrap": "Ngắt dòng"
+  },
+  "pds": {
+    "title": "npmx.social",
+    "meta_description": "Server Dữ liệu Cá nhân (PDS) chính thức của AT Protocol cho cộng đồng npmx.",
+    "join": {
+      "title": "Gia nhập Cộng đồng",
+      "description": "Hoan nghênh bạn dù bạn đang tạo tài khoản đầu tiên trên atmosphere hay chuyển một tài khoản hiện có sang. Bạn có thể chuyển tài khoản hiện tại của mình mà không mất handle, bài đăng hoặc người theo dõi.",
+      "migrate": "Chuyển vùng với PDS MOOver"
+    },
+    "server": {
+      "title": "Chi tiết Server",
+      "location_label": "Vị trí:",
+      "location_value": "Nuremberg, Đức",
+      "infrastructure_label": "Cơ sở hạ tầng:",
+      "infrastructure_value": "Lưu trữ trên Hetzner",
+      "privacy_label": "Quyền riêng tư:",
+      "privacy_value": "Tuân thủ luật Bảo vệ Dữ liệu nghiêm ngặt của EU",
+      "learn_more": "Tìm hiểu cách npmx sử dụng Atmosphere"
+    },
+    "community": {
+      "title": "Ai đang ở đây",
+      "description": "Một số trong {count} tài khoản đã coi npmx.social là nhà:",
+      "loading": "Đang tải cộng đồng PDS...",
+      "error": "Không thể tải cộng đồng PDS.",
+      "empty": "Không có thành viên cộng đồng để hiển thị.",
+      "view_profile": "Xem hồ sơ của {handle}",
+      "new_accounts": "...cộng thêm {count} người nữa mới gia nhập atmosphere"
+    }
+  },
+  "privacy_policy": {
+    "title": "chính sách bảo mật",
+    "last_updated": "Cập nhật lần cuối: {date}",
+    "welcome": "Chào mừng bạn đến với {app}. Chúng tôi cam kết bảo vệ quyền riêng tư của bạn. Chính sách này giải thích những dữ liệu chúng tôi thu thập, cách chúng tôi sử dụng và các quyền của bạn đối với thông tin của mình.",
+    "cookies": {
+      "what_are": {
+        "title": "Cookie là gì?",
+        "p1": "Cookie là các tệp văn bản nhỏ được lưu trữ trên thiết bị của bạn khi bạn truy cập một trang web. Mục đích của chúng là cải thiện trải nghiệm duyệt web của bạn bằng cách ghi nhớ một số tùy chọn và cài đặt nhất định."
+      },
+      "types": {
+        "title": "Chúng tôi sử dụng những loại cookie nào?",
+        "p1": "Chúng tôi chỉ sử dụng {bold} cho các mục đích thực sự cần thiết đối với chức năng của trang web. Chúng tôi không sử dụng cookie của bên thứ ba hoặc cookie quảng cáo.",
+        "bold": "các cookie kỹ thuật thiết yếu",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": ":",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "Cookie này được sử dụng bởi nhà cung cấp dịch vụ lưu trữ của chúng tôi (Vercel) để bảo vệ chống sai lệch phiên bản, đảm bảo bạn tải các tài nguyên từ đúng phiên bản triển khai nếu có một bản cập nhật mới được phát hành trong khi bạn đang duyệt web, và không dùng để theo dõi bạn.",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "Đây là cookie secure session của chúng tôi. Nó lưu trữ mã xác thực OAuth khi bạn kết nối tài khoản Atmosphere, là thiết yếu để duy trì phiên đăng nhập của bạn."
+      },
+      "local_storage": {
+        "title": "Local storage",
+        "p1": "Ngoài các cookie session, chúng tôi sử dụng {bold} của trình duyệt để lưu các tùy chọn hiển thị của bạn. Điều này cho phép nhớ chủ đề (sáng/tối) và một số {settings} khác mà bạn đã chọn, giúp bạn không phải cấu hình lại mỗi lần truy cập.",
+        "bold": "Lưu trữ Cục bộ (Local Storage)",
+        "p2": "Thông tin này hoàn toàn mang tính chức năng, chỉ được lưu trữ trên thiết bị của bạn và {bold2}. Chúng tôi sử dụng với mục đích duy nhất để cải thiện trải nghiệm của bạn trên trang web.",
+        "bold2": "không chứa dữ liệu cá nhân cũng như không được dùng để theo dõi bạn",
+        "settings": "cài đặt"
+      },
+      "management": {
+        "title": "Quản lý cookie",
+        "p1": "Bạn có thể cấu hình trình duyệt của mình để chấp nhận, từ chối hoặc xóa cookie theo ý muốn. Tuy nhiên, xin lưu ý rằng {bold}.",
+        "bold": "từ chối các cookie thiết yếu có thể ngăn cản việc truy cập một cách đầy đủ vào ứng dụng",
+        "p2": "Dưới đây là các liên kết hướng dẫn quản lý cookie trong các trình duyệt phổ biến nhất:",
+        "chrome": "Google Chrome (mở trong cửa sổ mới)",
+        "firefox": "Mozilla Firefox (mở trong cửa sổ mới)",
+        "edge": "Microsoft Edge (mở trong cửa sổ mới)"
+      }
+    },
+    "analytics": {
+      "title": "Phân tích",
+      "p1": "Chúng tôi sử dụng {bold} để hiểu cách khách truy cập sử dụng trang web của chúng tôi. Điều này giúp chúng tôi cải thiện trải nghiệm người dùng và xác định các vấn đề.",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analytics được thiết kế với sự ưu tiên về quyền riêng tư:",
+      "li1": "Không sử dụng cookie",
+      "li2": "Không thu thập các mã định danh cá nhân",
+      "li3": "Không theo dõi người dùng qua các trang web khác nhau",
+      "li4": "Tất cả dữ liệu được tổng hợp và ẩn danh",
+      "p3": "Thông tin duy nhất được thu thập bao gồm: URL trang, trang giới thiệu, quốc gia/khu vực, loại thiết bị, trình duyệt và hệ điều hành. Dữ liệu này không thể được sử dụng để nhận dạng từng người dùng cụ thể."
+    },
+    "authenticated": {
+      "title": "Người dùng đã đăng nhập",
+      "p1": "Khi bạn kết nối tài khoản {bold} với npmx, chúng tôi lưu trữ mã xác thực OAuth của bạn trong một cookie session an toàn, chỉ dành cho HTTP. Mã này chỉ được sử dụng để xác thực các yêu cầu thay mặt cho bạn.",
+      "bold": "Atmosphere",
+      "p2": "Chúng tôi không lưu trữ thông tin đăng nhập của bạn và không truy cập bất kỳ dữ liệu nào vượt quá mức cần thiết để cung cấp các tính năng bạn sử dụng. Bạn có thể ngắt kết nối tài khoản của mình bất kỳ lúc nào từ trang {settings}.",
+      "settings": "cài đặt"
+    },
+    "data_retention": {
+      "title": "Lưu trữ dữ liệu",
+      "p1": "Cookie session sẽ tự động bị xóa khi bạn đóng trình duyệt hoặc sau một khoảng thời gian không hoạt động. Các tùy chọn lưu trữ cục bộ vẫn còn trên thiết bị của bạn cho đến khi bạn xóa dữ liệu trình duyệt. Dữ liệu phân tích được giữ lại dưới dạng tổng hợp và không thể liên kết với người dùng cụ thể."
+    },
+    "your_rights": {
+      "title": "Quyền của bạn",
+      "p1": "Bạn có quyền:",
+      "li1": "Truy cập thông tin về những dữ liệu chúng tôi thu thập",
+      "li2": "Xóa lưu trữ cục bộ và cookie của bạn bất kỳ lúc nào",
+      "li3": "Ngắt kết nối phiên đăng nhập của bạn",
+      "li4": "Yêu cầu thông tin về các phương thức xử lý dữ liệu của chúng tôi",
+      "p2": "Vì chúng tôi không thu thập dữ liệu cá nhân, nên thường không có thông tin cá nhân nào để xóa hoặc xuất."
+    },
+    "contact": {
+      "title": "Liên hệ với chúng tôi",
+      "p1": "Đối với bất kỳ câu hỏi hoặc thắc mắc nào về chính sách bảo mật này, bạn có thể liên hệ với chúng tôi bằng cách mở một issue trên {link} của chúng tôi.",
+      "link": "kho mã nguồn GitHub"
+    },
+    "changes": {
+      "title": "Thay đổi đối với chính sách này",
+      "p1": "Chúng tôi có thể cập nhật chính sách bảo mật này theo thời gian. Bất kỳ thay đổi nào sẽ được công bố trên trang này với ngày cập nhật mới nhất."
+    }
+  },
+  "a11y": {
+    "title": "trợ năng",
+    "footer_title": "trợ năng",
+    "welcome": "Chúng tôi muốn {app} dễ sử dụng cho nhiều người nhất có thể.",
+    "approach": {
+      "title": "Cách tiếp cận",
+      "p1": "Chúng tôi cố gắng tuân theo Hướng dẫn về Trợ năng Nội dung Web (WCAG) 2.2 và sử dụng chúng làm tài liệu tham khảo khi xây dựng các tính năng. Chúng tôi không tuyên bố tuân thủ đầy đủ bất kỳ mức độ nào của WCAG — trợ năng là một quá trình liên tục và luôn có nhiều việc phải làm.",
+      "p2": "Trang web này là một {about}. Các cải tiến về trợ năng được thực hiện dần dần như một phần của quá trình phát triển thường xuyên của chúng tôi.",
+      "about_link": "dự án mã nguồn mở do cộng đồng xây dựng"
+    },
+    "measures": {
+      "title": "Cách thực hiện",
+      "p1": "Một số điều chúng tôi hướng tới thực hiện trên toàn bộ trang web:",
+      "li1": "Sử dụng HTML ngữ nghĩa (semantic) và các thuộc tính ARIA khi thích hợp.",
+      "li2": "Sử dụng kích thước văn bản tương đối để bạn có thể điều chỉnh chúng trong trình duyệt.",
+      "li3": "Hỗ trợ điều hướng bằng bàn phím trong toàn bộ giao diện.",
+      "li4": "Tôn trọng các truy vấn media prefers-reduced-motion và prefers-color-scheme.",
+      "li5": "Thiết kế với sự chú ý đến độ tương phản màu sắc đạt mức.",
+      "li6": "Đảm bảo nội dung thiết yếu luôn khả dụng mà không cần JavaScript, mặc dù một số tính năng tương tác yêu cầu nó."
+    },
+    "limitations": {
+      "title": "Hạn chế",
+      "p1": "Một số phần của trang web — đặc biệt là nội dung từ bên thứ ba như tệp README của package — có thể không đáp ứng các tiêu chuẩn trợ năng. Chúng tôi đang nỗ lực cải thiện những khu vực này theo thời gian."
+    },
+    "contact": {
+      "title": "Phản hồi",
+      "p1": "Nếu bạn gặp phải rào cản về trợ năng trên {app}, vui lòng cho chúng tôi biết bằng cách mở một issue trên {link} của chúng tôi. Chúng tôi xem xét các báo cáo này một cách nghiêm túc và sẽ cố gắng hết sức để giải quyết chúng.",
+      "link": "kho mã nguồn GitHub"
+    }
+  },
+  "translation_status": {
+    "title": "trạng thái bản dịch",
+    "generated_at": "Ngày tạo: {date}",
+    "welcome": "Bạn đã đến đúng nơi nếu quan tâm đến việc dịch {npmx} sang một trong các ngôn ngữ hiển thị dưới đây! Trang này được tự động cập nhật và liệt kê các nội dung cần được dịch.",
+    "p1": "Chúng ta dùng {lang} làm ngôn ngữ mặc định, với tổng cộng {count}. Nếu bạn muốn hỗ trợ, hãy xem chi tiết tại {bylang}.",
+    "p1_lang": "Tiếng Anh Mỹ (en-US)",
+    "p1_count": "0 chuỗi văn bản | 1 chuỗi văn bản | {count} chuỗi văn bản",
+    "p2": "Trước khi bắt đầu, bạn hãy đọc qua {guide} để hiểu thêm về quy trình dịch và cách đóng góp.",
+    "guide": "Hướng dẫn dịch (i18n)",
+    "by_locale": "Tiến độ dịch theo ngôn ngữ",
+    "by_file": "Tiến độ dịch theo tệp",
+    "complete_text": "Bản dịch đã hoàn chỉnh, tuyệt vời!",
+    "missing_text": "thiếu",
+    "missing_keys": "Không thiếu bản dịch | Thiếu bản dịch | Thiếu bản dịch",
+    "progress_label": "Tiến độ cho {locale}",
+    "table": {
+      "file": "Tệp",
+      "status": "Trạng thái",
+      "error": "Lỗi trong quá trình tải tệp",
+      "empty": "Không tìm thấy tệp nào",
+      "file_link": "Chỉnh sửa {file} ({lang}) tại GitHub"
+    }
+  },
+  "vacations": {
+    "title": "đang nghỉ lễ",
+    "meta_description": "Đội ngũ npmx đang nạp lại năng lượng. Discord sẽ mở lại sau một tuần.",
+    "heading": "đang nạp năng lượng",
+    "subtitle": "chúng tôi đã xây dựng npmx với cường độ khiến {some} thành viên mất ngủ. chúng tôi không muốn điều đó trở thành thường lệ! vì vậy chúng tôi đã cùng nhau nghỉ một tuần.",
+    "illustration_alt": "một dãy các biểu tượng ấm cúng",
+    "poke_log": "Khơi đống lửa trại",
+    "what": {
+      "title": "điều gì đã xảy ra",
+      "p1": "discord đã đóng cửa từ {dates}.",
+      "dates": "14 – 21 tháng 2",
+      "p2": "tất cả các liên kết mời đã bị gỡ và các kênh bị khóa – ngoại trừ {garden} vẫn mở cho những ai muốn tiếp tục trò chuyện.",
+      "garden": "#garden"
+    },
+    "meantime": {
+      "title": "trong thời gian đó",
+      "p1": "{site} và {repo} vẫn mở – mọi người vẫn miệt mài, báo cáo vấn đề, mở một vài PR, nhưng chủ yếu mọi người dành thời gian ở một nơi nào đó gần đống lửa ấm cúng.",
+      "repo_link": "kho mã nguồn"
+    },
+    "return": {
+      "title": "chúng tôi đã trở lại!",
+      "p1": "chúng tôi đã trở lại với năng lượng tràn đầy và sẵn sàng cho nỗ lực cuối cùng đến ngày 3 tháng 3. {social} để cập nhật thông tin.",
+      "social_link": "theo dõi chúng tôi trên Bluesky"
+    },
+    "stats": {
+      "contributors": "Người đóng góp",
+      "commits": "Commit",
+      "pr": "PR đã Merge",
+      "subtitle": {
+        "some": "một vài",
+        "all": "tất cả"
+      }
+    }
+  },
+  "action_bar": {
+    "title": "thanh thao tác",
+    "selection": "Đã chọn 0 | Đã chọn 1 | Đã chọn {count}",
+    "shortcut": "Nhấn \"{key}\" để tập trung vào các thao tác",
+    "button_close_aria_label": "Đóng thanh thao tác"
+  },
+  "logo_menu": {
+    "copy_svg": "Sao chép SVG",
+    "copied": "Đã sao chép!",
+    "browse_brand": "Xem bộ công cụ thương hiệu (brand kit)"
+  },
+  "brand": {
+    "title": "Thương hiệu",
+    "heading": "thương hiệu",
+    "meta_description": "Hướng dẫn về thương hiệu npmx, logo, màu sắc và kiểu chữ để sử dụng trong báo chí và truyền thông.",
+    "intro": "Các tài nguyên và nguyên tắc sử dụng thương hiệu npmx trong các dự án, bài viết và truyền thông của bạn.",
+    "logos": {
+      "title": "logo",
+      "description": "Tải xuống các logo npmx ở định dạng SVG và PNG. Sử dụng các biến thể phù hợp cho nền của bạn.",
+      "wordmark": "WORDMARK ĐẦY ĐỦ",
+      "wordmark_alt": "Logo wordmark npmx đầy đủ với dấu gạch chéo màu xanh trên nền tối",
+      "wordmark_light_alt": "Logo wordmark npmx đầy đủ với dấu gạch chéo nhấn mạnh trên nền sáng",
+      "mark": "LOGO MARK",
+      "mark_alt": "Logo mark npmx với dấu chấm và dấu gạch chéo trên nền tối",
+      "mark_light_alt": "Logo mark npmx với dấu chấm và dấu gạch chéo trên nền sáng",
+      "on_dark": "trên nền tối",
+      "on_light": "trên nền sáng",
+      "download_svg": "SVG",
+      "download_png": "PNG",
+      "download_svg_aria": "Tải xuống {name} dưới dạng SVG",
+      "download_png_aria": "Tải xuống {name} dưới dạng PNG"
+    },
+    "customize": {
+      "title": "tùy chỉnh logo của bạn",
+      "description": "Xem trước logo npmx với màu nhấn và nền của bạn. Bản xem trước phản ánh các cài đặt hiện tại của bạn — chọn một màu, chuyển đổi nền và tải xuống.",
+      "accent_label": "màu nhấn",
+      "bg_label": "nền",
+      "download_svg_aria": "Tải xuống logo tùy chỉnh dưới dạng SVG",
+      "download_png_aria": "Tải xuống logo tùy chỉnh dưới dạng PNG"
+    },
+    "typography": {
+      "title": "kiểu chữ",
+      "description": "npmx sử dụng bộ phông chữ Geist của Vercel cho cả văn bản giao diện và mã nguồn.",
+      "sans": "Geist Sans",
+      "sans_desc": "Được sử dụng cho nội dung văn bản và các thành phần giao diện.",
+      "mono": "Geist Mono",
+      "mono_desc": "Được sử dụng cho mã nguồn, tiêu đề và nội dung kỹ thuật.",
+      "pangram": "Thế giới này quả là rộng lớn và có rất nhiều điều để chúng ta khám phá",
+      "numbers": "0123456789"
+    },
+    "guidelines": {
+      "title": "một lưu ý nhỏ",
+      "message": "Trợ năng là vấn đề rất quan trọng đối với chúng tôi và chúng tôi rất mong bạn cùng chia sẻ tầm nhìn này. Khi sử dụng các phương tiện truyền thông đã đề cập, hãy đảm bảo có đủ độ tương phản với nền và không để kích thước nhỏ hơn 24px. Nếu bạn cần bất kỳ tài nguyên nào khác hoặc thông tin bổ sung về dự án, vui lòng liên hệ với chúng tôi tại {link}.",
+      "discord_link_text": "chat.npmx.dev"
+    }
+  }
+}
