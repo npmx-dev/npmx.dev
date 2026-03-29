@@ -29,7 +29,7 @@ import { lookup } from 'node:dns/promises'
 import ipaddr from 'ipaddr.js'
 
 /** Trusted image domains that don't need proxying (first-party or well-known CDNs) */
-const TRUSTED_IMAGE_DOMAINS = [
+export const TRUSTED_IMAGE_DOMAINS = [
   // First-party
   'npmx.dev',
 
