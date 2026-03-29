@@ -137,21 +137,6 @@ export const BACKGROUND_THEMES = {
   black: 'oklch(0.4 0 0)',
 } as const
 
-export type BackgroundThemeId = 'neutral' | 'stone' | 'zinc' | 'slate' | 'black'
-
-export interface BackgroundThemeToken {
-  oklch: string
-  hex: string
-}
-
-export const BACKGROUND_THEME_TOKENS = {
-  neutral: { oklch: 'oklch(0.555 0 0)', hex: '#737373' },
-  stone: { oklch: 'oklch(0.555 0.013 58.123)', hex: '#79716c' },
-  zinc: { oklch: 'oklch(0.555 0.016 285.931)', hex: '#72727c' },
-  slate: { oklch: 'oklch(0.555 0.046 257.407)', hex: '#62748e' },
-  black: { oklch: 'oklch(0.4 0 0)', hex: '#484848' },
-} as const satisfies Record<BackgroundThemeId, BackgroundThemeToken>
-
 /**
  * Static theme tokens for the share card OG image.
  * Must use hex/rgb — satori (the OG image renderer) does not support oklch.
