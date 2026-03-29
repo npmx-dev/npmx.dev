@@ -363,7 +363,14 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     code: 'sr-Latn-RS',
     file: 'sr-Latn-RS.json',
     name: 'Srpski (Latinica)',
-    pluralRule: createPluralRule('sr-Latn-RS', { zero: 2, one: 0, two: 1, few: 1, many: 2, other: 2 }),
+    pluralRule: createPluralRule('sr-Latn-RS', {
+      zero: 2,
+      one: 0,
+      two: 1,
+      few: 1,
+      many: 2,
+      other: 2,
+    }),
   },
 ]
 
