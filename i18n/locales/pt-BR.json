@@ -412,8 +412,6 @@
       },
       "page_title": "Histórico de versões",
       "current_tags": "Tags atuais",
-      "version_filter_placeholder": "Filtrar versões...",
-      "version_filter_label": "Filtrar versões",
       "no_match_filter": "Nenhuma versão corresponde a {filter}"
     },
     "dependencies": {

@@ -441,8 +441,6 @@
       },
       "page_title": "История версий",
       "current_tags": "Текущие теги",
-      "version_filter_placeholder": "Фильтр версий…",
-      "version_filter_label": "Фильтр версий",
       "no_match_filter": "Нет версий по фильтру «{filter}»"
     },
     "dependencies": {

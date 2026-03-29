@@ -433,15 +433,13 @@
       "filter_tooltip": "Filtrer les versions avec une {link}. Par exemple, ^3.0.0 affiche toutes les versions 3.x.",
       "filter_tooltip_link": "plage semver",
       "no_matches": "Aucune version ne correspond à cette plage",
-      "page_title": "Historique des versions",
-      "current_tags": "Tags actuels",
-      "version_filter_placeholder": "Filtrer les versions...",
-      "version_filter_label": "Filtrer les versions",
-      "no_match_filter": "Aucune version ne correspond à {filter}",
       "copy_alt": {
         "per_version_analysis": "La version {version} a été téléchargée {downloads} fois",
         "general_description": "Graphique en barres montrant les téléchargements par version pour {versions_count} versions {semver_grouping_mode} du paquet {package_name}, {date_range_label} de la version {first_version} à la version {last_version}. La version la plus téléchargée est {max_downloaded_version} avec {max_version_downloads} téléchargements. {per_version_analysis}. {watermark}."
-      }
+      },
+      "page_title": "Historique des versions",
+      "current_tags": "Tags actuels",
+      "no_match_filter": "Aucune version ne correspond à {filter}"
     },
     "dependencies": {
       "title": "Dépendances ({count})",
@@ -1424,10 +1422,25 @@
       "file_link": "Modifier {file} ({lang}) sur GitHub"
     }
   },
+  "vacations": {
+    "what": {},
+    "meantime": {},
+    "return": {},
+    "stats": {
+      "subtitle": {}
+    }
+  },
   "action_bar": {
     "title": "barre d'actions",
     "selection": "0 sélectionné | 1 sélectionné | {count} sélectionnés",
     "shortcut": "Appuyez sur « {key} » pour cibler les actions",
     "button_close_aria_label": "Fermer la barre d'actions"
+  },
+  "logo_menu": {},
+  "brand": {
+    "logos": {},
+    "customize": {},
+    "typography": {},
+    "guidelines": {}
   }
 }

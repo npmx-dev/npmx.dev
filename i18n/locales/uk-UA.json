@@ -441,8 +441,6 @@
       },
       "page_title": "Історія версій",
       "current_tags": "Поточні теги",
-      "version_filter_placeholder": "Фільтрувати версії…",
-      "version_filter_label": "Фільтрувати версії",
       "no_match_filter": "Версій за фільтром \"{filter}\" не знайдено"
     },
     "dependencies": {

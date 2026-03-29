@@ -13,13 +13,13 @@
   "trademark_disclaimer": "npm er et registrert varemerke for npm, Inc. Dette nettstedet er ikke tilknyttet npm, Inc.",
   "footer": {
     "about": "om",
+    "blog": "blogg",
     "docs": "dokumentasjon",
     "source": "kildekode",
     "social": "sosialt",
     "chat": "chat",
-    "keyboard_shortcuts": "tastatursnarveier",
-    "blog": "blogg",
     "builders_chat": "utviklere",
+    "keyboard_shortcuts": "tastatursnarveier",
     "brand": "merkevare"
   },
   "shortcuts": {
@@ -89,9 +89,15 @@
     "tap_to_search": "Trykk for å søke"
   },
   "blog": {
+    "title": "Blogg",
+    "heading": "blogg",
+    "meta_description": "Innsikt og oppdateringer fra npmx-fellesskapet",
     "author": {
       "view_profile": "Vis {name}s profil på Bluesky"
     },
+    "draft_badge": "Utkast",
+    "draft_banner": "Dette er et upublisert utkast. Det kan være ufullstendig eller inneholde unøyaktigheter.",
+    "no_posts": "Ingen innlegg funnet.",
     "atproto": {
       "view_on_bluesky": "Vis på Bluesky",
       "reply_on_bluesky": "Svar på Bluesky",
@@ -106,13 +112,7 @@
       "like_count": "{count} likerklikk | {count} likerklikk",
       "repost_count": "{count} deling | {count} delinger",
       "more_replies": "{count} svar til... | {count} svar til..."
-    },
-    "title": "Blogg",
-    "heading": "blogg",
-    "meta_description": "Innsikt og oppdateringer fra npmx-fellesskapet",
-    "draft_badge": "Utkast",
-    "draft_banner": "Dette er et upublisert utkast. Det kan være ufullstendig eller inneholde unøyaktigheter.",
-    "no_posts": "Ingen innlegg funnet."
+    }
   },
   "settings": {
     "title": "innstillinger",
@@ -133,17 +133,22 @@
       "algolia": "Algolia",
       "algolia_description": "Bruker Algolia for raskere søk, org- og brukersider."
     },
+    "instant_search": "Hurtigsøk",
+    "instant_search_description": "Navigerer til søkesiden og oppdaterer resultatene mens du skriver.",
     "relative_dates": "Relative datoer",
     "include_types": "Inkluder {'@'}types ved installasjon",
     "include_types_description": "Legg til {'@'}types-pakken i installasjonskommandoer for pakker uten typer",
     "hide_platform_packages": "Skjul plattformspesifikke pakker i søk",
     "hide_platform_packages_description": "Skjul binærpakker som {'@'}esbuild/linux-x64 fra resultatene",
+    "enable_graph_pulse_loop": "Aktiver pulseffekt-løkke på mini-graf",
+    "enable_graph_pulse_loop_description": "Aktiver en kontinuerlig pulsanimasjon på ukentlig nedlastingsgraf. Denne animasjonen kan være forstyrrende for noen brukere.",
     "theme": "Tema",
     "theme_light": "Lys",
     "theme_dark": "Mørk",
     "theme_system": "System",
     "language": "Språk",
     "help_translate": "Hjelp med å oversette npmx",
+    "translation_status": "Sjekk global oversettelsesstatus",
     "accent_colors": {
       "label": "Aksentfarger",
       "sky": "Himmel",
@@ -163,11 +168,6 @@
       "slate": "Skifer",
       "black": "Svart"
     },
-    "instant_search": "Hurtigsøk",
-    "instant_search_description": "Navigerer til søkesiden og oppdaterer resultatene mens du skriver.",
-    "enable_graph_pulse_loop": "Aktiver pulseffekt-løkke på mini-graf",
-    "enable_graph_pulse_loop_description": "Aktiver en kontinuerlig pulsanimasjon på ukentlig nedlastingsgraf. Denne animasjonen kan være forstyrrende for noen brukere.",
-    "translation_status": "Sjekk global oversettelsesstatus",
     "keyboard_shortcuts_enabled": "Aktiver tastatursnarveier",
     "keyboard_shortcuts_enabled_description": "Tastatursnarveier kan deaktiveres hvis de er i konflikt med andre nettleser- eller systemsnarveier"
   },
@@ -193,6 +193,7 @@
     "end_of_results": "Slutt på resultater",
     "try_again": "Prøv igjen",
     "close": "Lukk",
+    "or": "eller",
     "retry": "Prøv på nytt",
     "copy": "kopier",
     "copied": "kopiert!",
@@ -207,6 +208,10 @@
       "members": "medlemmer"
     },
     "scroll_to_top": "Rull til toppen",
+    "cancel": "Avbryt",
+    "save": "Lagre",
+    "edit": "Rediger",
+    "error": "Feil",
     "view_on": {
       "npm": "vis på npm",
       "github": "Vis på GitHub",
@@ -221,20 +226,10 @@
       "sourcehut": "Vis på SourceHut",
       "tangled": "Vis på Tangled"
     },
-    "or": "eller",
-    "cancel": "Avbryt",
-    "save": "Lagre",
-    "edit": "Rediger",
-    "error": "Feil",
     "collapse": "Skjul",
     "expand": "Utvid"
   },
   "profile": {
-    "invite": {
-      "message": "Det ser ikke ut som de bruker npmx ennå. Vil du fortelle dem om det?",
-      "share_button": "Del på Bluesky",
-      "compose_text": "Hei {'@'}{handle}! Har du sjekket ut npmx.dev ennå? Det er en leser for npm-registeret som er rask, moderne og åpen kildekode.\nhttps://npmx.dev"
-    },
     "display_name": "Visningsnavn",
     "description": "Beskrivelse",
     "no_description": "Ingen beskrivelse",
@@ -244,7 +239,12 @@
     "seo_title": "{handle} - npmx",
     "seo_description": "npmx-profil av {handle}",
     "not_found": "Profil ikke funnet",
-    "not_found_message": "Profilen for {handle} ble ikke funnet."
+    "not_found_message": "Profilen for {handle} ble ikke funnet.",
+    "invite": {
+      "message": "Det ser ikke ut som de bruker npmx ennå. Vil du fortelle dem om det?",
+      "share_button": "Del på Bluesky",
+      "compose_text": "Hei {'@'}{handle}! Har du sjekket ut npmx.dev ennå? Det er en leser for npm-registeret som er rask, moderne og åpen kildekode.\nhttps://npmx.dev"
+    }
   },
   "package": {
     "not_found": "Pakke ikke funnet",
@@ -310,6 +310,7 @@
       "skills_cli": "skills-kommandolinje"
     },
     "links": {
+      "main": "hoved",
       "repo": "repo",
       "homepage": "hjemmeside",
       "issues": "saker",
@@ -318,7 +319,6 @@
       "docs": "dok",
       "fund": "støtt",
       "compare": "sammenlign",
-      "main": "hoved",
       "compare_this_package": "sammenlign denne pakken"
     },
     "likes": {
@@ -326,10 +326,10 @@
       "unlike": "Fjern like fra denne pakken"
     },
     "docs": {
-      "not_available": "Dokumentasjon ikke tilgjengelig",
-      "not_available_detail": "Vi kunne ikke generere dokumentasjon for denne versjonen.",
       "contents": "Innhold",
       "default_not_available": "Dokumentasjon er ikke tilgjengelig for denne versjonen.",
+      "not_available": "Dokumentasjon ikke tilgjengelig",
+      "not_available_detail": "Vi kunne ikke generere dokumentasjon for denne versjonen.",
       "page_title": "API-dokumentasjon - npmx",
       "page_title_name": "{name}-dokumentasjon - npmx",
       "page_title_version": "{name}-dokumentasjon - npmx",
@@ -340,9 +340,9 @@
       "title": "Kom i gang",
       "pm_label": "Pakkebehandler",
       "copy_command": "Kopier installeringskommando",
-      "view_types": "Vis {package}",
       "copy_dev_command": "Kopier dev-installeringskommando",
-      "dev_dependency_hint": "Installeres vanligvis som en utviklingsavhengighet"
+      "dev_dependency_hint": "Installeres vanligvis som en utviklingsavhengighet",
+      "view_types": "Vis {package}"
     },
     "create": {
       "title": "Opprett nytt prosjekt",
@@ -411,10 +411,6 @@
       "all_covered": "Alle versjoner dekkes av taggene over",
       "deprecated_title": "{version} (utfaset)",
       "view_all": "Vis {count} versjon | Vis alle {count} versjoner",
-      "copy_alt": {
-        "per_version_analysis": "{version}-versjonen ble lastet ned {downloads} ganger",
-        "general_description": "Stolpediagram som viser nedlastinger per versjon for {versions_count} {semver_grouping_mode}-versjoner av {package_name}-pakken, {date_range_label} fra {first_version}-versjonen til {last_version}-versjonen. Den mest nedlastede versjonen er {max_downloaded_version} med {max_version_downloads} nedlastinger. {per_version_analysis}. {watermark}."
-      },
       "view_all_versions": "Vis alle versjoner",
       "distribution_title": "Semver-gruppe",
       "distribution_modal_title": "Versjoner",
@@ -439,10 +435,12 @@
       "filter_tooltip": "Filtrer versjoner ved hjelp av et {link}. For eksempel viser ^3.0.0 alle 3.x-versjoner.",
       "filter_tooltip_link": "semver-område",
       "no_matches": "Ingen versjoner matcher dette området",
+      "copy_alt": {
+        "per_version_analysis": "{version}-versjonen ble lastet ned {downloads} ganger",
+        "general_description": "Stolpediagram som viser nedlastinger per versjon for {versions_count} {semver_grouping_mode}-versjoner av {package_name}-pakken, {date_range_label} fra {first_version}-versjonen til {last_version}-versjonen. Den mest nedlastede versjonen er {max_downloaded_version} med {max_version_downloads} nedlastinger. {per_version_analysis}. {watermark}."
+      },
       "page_title": "Versjonshistorikk",
       "current_tags": "Nåværende tagger",
-      "version_filter_placeholder": "Filtrer versjoner…",
-      "version_filter_label": "Filtrer versjoner",
       "no_match_filter": "Ingen versjoner matcher {filter}"
     },
     "dependencies": {
@@ -483,6 +481,12 @@
       "maintainer_template": "{avatar} {char126}{name}"
     },
     "trends": {
+      "chart_assistive_text": {
+        "keyboard_navigation_horizontal": "Bruk venstre og høyre piltaster for å bla gjennom datapunkter.",
+        "keyboard_navigation_vertical": "Bruk opp og ned piltaster for å bla gjennom datapunkter.",
+        "table_available": "En datatabell for dette diagrammet er tilgjengelig nedenfor.",
+        "table_caption": "Diagramdatatabell"
+      },
       "granularity": "Oppløsning",
       "granularity_daily": "Daglig",
       "granularity_weekly": "Ukentlig",
@@ -495,14 +499,32 @@
       "date_range_multiline": "{start}\ntil {end}",
       "download_file": "Last ned {fileType}",
       "toggle_annotator": "Veksle annotering",
+      "toggle_stack_mode": "Veksle stablingsmodus",
+      "open_options": "Åpne alternativer",
+      "close_options": "Lukk alternativer",
       "legend_estimation": "Estimat",
       "no_data": "Ingen data tilgjengelig",
       "y_axis_label": "{granularity} {facet}",
+      "facet": "Fasett",
+      "title": "Trender",
+      "contributors_skip": "Ikke vist i Bidragsytere (ingen GitHub-repo):",
       "items": {
         "downloads": "Nedlastinger",
         "likes": "Likerklikk",
         "contributors": "Bidragsytere"
       },
+      "data_correction": "Datakorrigering",
+      "average_window": "Gjennomsnittsvindu",
+      "smoothing": "Utjevning",
+      "prediction": "Prediksjon",
+      "known_anomalies": "Kjente anomalier",
+      "known_anomalies_description": "Interpolerer over kjente nedlastingstopper forårsaket av roboter eller CI-problemer.",
+      "known_anomalies_ranges": "Anomaliområder",
+      "known_anomalies_range": "Fra {start} til {end}",
+      "known_anomalies_range_named": "{packageName}: fra {start} til {end}",
+      "known_anomalies_none": "Ingen kjente anomalier for denne pakken. | Ingen kjente anomalier for disse pakkene.",
+      "known_anomalies_contribute": "Bidra med anomalidata",
+      "apply_correction": "Bruk korrigering",
       "copy_alt": {
         "trend_none": "hovedsakelig flat",
         "trend_strong": "sterk",
@@ -518,31 +540,7 @@
         "general_description": "Y-aksen representerer antall nedlastinger. X-aksen representerer datoområdet, fra {start_date} til {end_date}, med en {granularity} tidsperiode.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Horisontalt stolpediagram for: {packages}, sammenligner {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} har en verdi på {value}."
-      },
-      "chart_assistive_text": {
-        "keyboard_navigation_horizontal": "Bruk venstre og høyre piltaster for å bla gjennom datapunkter.",
-        "keyboard_navigation_vertical": "Bruk opp og ned piltaster for å bla gjennom datapunkter.",
-        "table_available": "En datatabell for dette diagrammet er tilgjengelig nedenfor.",
-        "table_caption": "Diagramdatatabell"
-      },
-      "toggle_stack_mode": "Veksle stablingsmodus",
-      "open_options": "Åpne alternativer",
-      "close_options": "Lukk alternativer",
-      "facet": "Fasett",
-      "title": "Trender",
-      "contributors_skip": "Ikke vist i Bidragsytere (ingen GitHub-repo):",
-      "data_correction": "Datakorrigering",
-      "average_window": "Gjennomsnittsvindu",
-      "smoothing": "Utjevning",
-      "prediction": "Prediksjon",
-      "known_anomalies": "Kjente anomalier",
-      "known_anomalies_description": "Interpolerer over kjente nedlastingstopper forårsaket av roboter eller CI-problemer.",
-      "known_anomalies_ranges": "Anomaliområder",
-      "known_anomalies_range": "Fra {start} til {end}",
-      "known_anomalies_range_named": "{packageName}: fra {start} til {end}",
-      "known_anomalies_none": "Ingen kjente anomalier for denne pakken. | Ingen kjente anomalier for disse pakkene.",
-      "known_anomalies_contribute": "Bidra med anomalidata",
-      "apply_correction": "Bruk korrigering"
+      }
     },
     "downloads": {
       "title": "Ukentlige nedlastinger",
@@ -564,11 +562,11 @@
       "esm": "ES Modules støttet",
       "cjs": "CommonJS støttet",
       "no_esm": "Ingen ES Modules-støtte",
+      "wasm": "Har WebAssembly",
       "types_label": "Typer",
       "types_included": "Typer inkludert",
       "types_available": "Typer tilgjengelig via {package}",
-      "no_types": "Ingen TypeScript-typer",
-      "wasm": "Har WebAssembly"
+      "no_types": "Ingen TypeScript-typer"
     },
     "license": {
       "view_spdx": "Vis lisenstekst på SPDX",
@@ -679,7 +677,9 @@
       "otp_placeholder": "Skriv inn OTP-kode...",
       "otp_label": "Engangskode (OTP)",
       "retry_otp": "Prøv igjen med OTP",
+      "retry_web_auth": "Prøv igjen med nettautentisering",
       "retrying": "Prøver på nytt...",
+      "open_web_auth": "Åpne nettautentiseringslenke",
       "approve_operation": "Godkjenn operasjon",
       "remove_operation": "Fjern operasjon",
       "approve_all": "Godkjenn alle",
@@ -687,9 +687,7 @@
       "executing": "Utfører...",
       "log": "Logg",
       "log_label": "Fullførte operasjoner logg",
-      "remove_from_log": "Fjern fra logg",
-      "retry_web_auth": "Prøv igjen med nettautentisering",
-      "open_web_auth": "Åpne nettautentiseringslenke"
+      "remove_from_log": "Fjern fra logg"
     }
   },
   "org": {
@@ -803,6 +801,7 @@
       "invalid_name": "Ugyldig pakkenavn:",
       "available": "Dette navnet er ledig!",
       "taken": "Dette navnet er allerede opptatt.",
+      "missing_permission": "Du har ikke tillatelse til å legge til en pakke i scope {'@'}{scope}.",
       "similar_warning": "Lignende pakker finnes - npm kan avvise dette navnet:",
       "related": "Relaterte pakker:",
       "scope_warning_title": "Vurder å bruke en scoped pakke i stedet",
@@ -815,8 +814,7 @@
       "publishing": "Publiserer...",
       "checking": "Sjekker tilgjengelighet...",
       "failed_to_check": "Kunne ikke sjekke navnetilgjengelighet",
-      "failed_to_claim": "Kunne ikke gjøre krav på pakke",
-      "missing_permission": "Du har ikke tillatelse til å legge til en pakke i scope {'@'}{scope}."
+      "failed_to_claim": "Kunne ikke gjøre krav på pakke"
     }
   },
   "code": {
@@ -910,6 +908,8 @@
       "secure": "Uten advarsler",
       "insecure": "Med advarsler"
     },
+    "view_selected": "Vis valgte",
+    "clear_selected_label": "Fjern valgte",
     "sort": {
       "label": "Sorter pakker",
       "toggle_direction": "Veksle sorteringsrekkefølge",
@@ -963,9 +963,7 @@
       "security_warning": "Sikkerhetsadvarsel",
       "secure": "Sikker",
       "no_packages": "Ingen pakker funnet"
-    },
-    "view_selected": "Vis valgte",
-    "clear_selected_label": "Fjern valgte"
+    }
   },
   "about": {
     "title": "Om",
@@ -1099,11 +1097,11 @@
       "section_packages": "Pakker",
       "section_facets": "Fasetter",
       "section_comparison": "Sammenligning",
+      "copy_as_markdown": "Kopier tabell",
       "loading": "Laster pakkedata...",
       "error": "Kunne ikke laste pakkedata. Vennligst prøv igjen.",
       "empty_title": "Velg pakker å sammenligne",
       "empty_description": "Søk og legg til minst 2 pakker ovenfor for å se en side-om-side sammenligning av deres metrikker.",
-      "copy_as_markdown": "Kopier tabell",
       "table_view": "Tabell",
       "charts_view": "Diagrammer",
       "bar_chart_nav_hint": "Bruk ↑ ↓",
@@ -1130,6 +1128,10 @@
     "facets": {
       "all": "alle",
       "none": "ingen",
+      "select_all_category_facets": "Velg alle {category}-fasetter",
+      "deselect_all_category_facets": "Fravelg alle {category}-fasetter",
+      "selected_all_category_facets": "Valgte alle {category}-fasetter",
+      "deselected_all_category_facets": "Fravalgte alle {category}-fasetter",
       "coming_soon": "Kommer snart",
       "select_all": "Velg alle fasetter",
       "deselect_all": "Fravelg alle fasetter",
@@ -1207,27 +1209,7 @@
       },
       "trends": {
         "title": "Sammenlign trender"
-      },
-      "select_all_category_facets": "Velg alle {category}-fasetter",
-      "deselect_all_category_facets": "Fravelg alle {category}-fasetter",
-      "selected_all_category_facets": "Valgte alle {category}-fasetter",
-      "deselected_all_category_facets": "Fravalgte alle {category}-fasetter"
-    },
-    "version_invalid_url_format": {
-      "hint": "Ugyldig sammenlignings-URL. Bruk formatet: {0}",
-      "from_version": "fra",
-      "to_version": "til"
-    },
-    "file_filter_option": {
-      "all": "Alle ({count})",
-      "added": "Lagt til ({count})",
-      "removed": "Fjernet ({count})",
-      "modified": "Endret ({count})"
-    },
-    "filter": {
-      "added": "lagt til",
-      "removed": "fjernet",
-      "modified": "endret"
+      }
     },
     "file_changes": "Filendringer",
     "files_count": "{count} fil | {count} filer",
@@ -1239,6 +1221,11 @@
     "comparing_versions_label": "Sammenligner versjoner...",
     "version_back_to_package": "Tilbake til pakke",
     "version_error_message": "Kunne ikke sammenligne versjoner.",
+    "version_invalid_url_format": {
+      "hint": "Ugyldig sammenlignings-URL. Bruk formatet: {0}",
+      "from_version": "fra",
+      "to_version": "til"
+    },
     "version_selector_title": "Sammenlign med versjon",
     "summary": "Sammendrag",
     "deps_count": "{count} avh. | {count} avh.",
@@ -1247,10 +1234,21 @@
     "peer_dependencies": "Peer-avhengigheter",
     "optional_dependencies": "Valgfrie avhengigheter",
     "no_dependency_changes": "Ingen avhengighetsendringer",
+    "file_filter_option": {
+      "all": "Alle ({count})",
+      "added": "Lagt til ({count})",
+      "removed": "Fjernet ({count})",
+      "modified": "Endret ({count})"
+    },
     "search_files_placeholder": "Søk i filer...",
     "no_files_all": "Ingen filer",
     "no_files_search": "Ingen filer matcher «{query}»",
     "no_files_filtered": "Ingen {filter} filer",
+    "filter": {
+      "added": "lagt til",
+      "removed": "fjernet",
+      "modified": "endret"
+    },
     "files_button": "Filer",
     "select_file_prompt": "Velg en fil fra sidepanelet for å se dens diff",
     "close_files_panel": "Lukk filpanelet",
@@ -1268,6 +1266,8 @@
     "word_wrap": "Tekstbryting"
   },
   "pds": {
+    "title": "npmx.social",
+    "meta_description": "Den offisielle AT Protocol Personal Data Server (PDS) for npmx-fellesskapet.",
     "join": {
       "title": "Bli med i fellesskapet",
       "description": "Enten du oppretter din første konto på atmosfæren eller migrerer en eksisterende, hører du hjemme her. Du kan migrere din nåværende konto uten å miste håndtaket, innleggene eller følgerne dine.",
@@ -1291,11 +1291,12 @@
       "empty": "Ingen fellesskapsmedlemmer å vise.",
       "view_profile": "Vis {handle}s profil",
       "new_accounts": "...pluss {count} flere som er nye i atmosfæren"
-    },
-    "title": "npmx.social",
-    "meta_description": "Den offisielle AT Protocol Personal Data Server (PDS) for npmx-fellesskapet."
+    }
   },
   "privacy_policy": {
+    "title": "personvernpolicy",
+    "last_updated": "Sist oppdatert: {date}",
+    "welcome": "Velkommen til {app}. Vi er forpliktet til å beskytte personvernet ditt. Denne policyen forklarer hvilke data vi samler inn, hvordan vi bruker dem, og dine rettigheter angående informasjonen din.",
     "cookies": {
       "what_are": {
         "title": "Hva er informasjonskapsler?",
@@ -1370,12 +1371,12 @@
     "changes": {
       "title": "Endringer i denne policyen",
       "p1": "Vi kan oppdatere denne personvernpolicyen fra tid til annen. Eventuelle endringer vil bli publisert på denne siden med en oppdatert revisjonsdato."
-    },
-    "title": "personvernpolicy",
-    "last_updated": "Sist oppdatert: {date}",
-    "welcome": "Velkommen til {app}. Vi er forpliktet til å beskytte personvernet ditt. Denne policyen forklarer hvilke data vi samler inn, hvordan vi bruker dem, og dine rettigheter angående informasjonen din."
+    }
   },
   "a11y": {
+    "title": "tilgjengelighet",
+    "footer_title": "a11y",
+    "welcome": "Vi ønsker at {app} skal kunne brukes av så mange mennesker som mulig.",
     "approach": {
       "title": "Vår tilnærming",
       "p1": "Vi prøver å følge retningslinjene for tilgjengelig webinnhold (WCAG) 2.2 og bruker dem som referanse når vi bygger funksjoner. Vi hevder ikke full samsvar med noe nivå av WCAG — tilgjengelighet er en kontinuerlig prosess og det er alltid mer arbeid å gjøre.",
@@ -1400,19 +1401,9 @@
       "title": "Tilbakemelding",
       "p1": "Hvis du støter på en tilgjengelighetsbarriere på {app}, vennligst gi oss beskjed ved å opprette en sak på vår {link}. Vi tar disse rapportene på alvor og vil gjøre vårt beste for å løse dem.",
       "link": "GitHub-repositorium"
-    },
-    "title": "tilgjengelighet",
-    "footer_title": "a11y",
-    "welcome": "Vi ønsker at {app} skal kunne brukes av så mange mennesker som mulig."
+    }
   },
   "translation_status": {
-    "table": {
-      "file": "Fil",
-      "status": "Status",
-      "error": "Feil ved lasting av filliste.",
-      "empty": "Ingen filer funnet",
-      "file_link": "Rediger {file} ({lang}) på GitHub"
-    },
     "title": "oversettelsesstatus",
     "generated_at": "Genereringsdato: {date}",
     "welcome": "Hvis du er interessert i å hjelpe oss med å oversette {npmx} til ett av språkene listet nedenfor, har du kommet til rett sted! Denne automatisk oppdaterende siden lister alltid alt innholdet som kan trenge din hjelp akkurat nå.",
@@ -1426,13 +1417,14 @@
     "complete_text": "Denne oversettelsen er fullført, fantastisk jobb!",
     "missing_text": "mangler",
     "missing_keys": "Det er ingen manglende oversettelser | Manglende oversettelse | Manglende oversettelser",
-    "progress_label": "Fremdriftsstatus for {locale}"
-  },
-  "action_bar": {
-    "title": "handlingslinje",
-    "selection": "0 valgt | 1 valgt | {count} valgt",
-    "shortcut": "Trykk «{key}» for å fokusere handlinger",
-    "button_close_aria_label": "Lukk handlingslinje"
+    "progress_label": "Fremdriftsstatus for {locale}",
+    "table": {
+      "file": "Fil",
+      "status": "Status",
+      "error": "Feil ved lasting av filliste.",
+      "empty": "Ingen filer funnet",
+      "file_link": "Rediger {file} ({lang}) på GitHub"
+    }
   },
   "vacations": {
     "title": "på ferie",
@@ -1467,6 +1459,12 @@
         "all": "alle"
       }
     }
+  },
+  "action_bar": {
+    "title": "handlingslinje",
+    "selection": "0 valgt | 1 valgt | {count} valgt",
+    "shortcut": "Trykk «{key}» for å fokusere handlinger",
+    "button_close_aria_label": "Lukk handlingslinje"
   },
   "logo_menu": {
     "copy_svg": "Kopier logo som SVG",
