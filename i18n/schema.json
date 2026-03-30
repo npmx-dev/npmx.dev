@@ -1941,6 +1941,45 @@
             }
           },
           "additionalProperties": false
+        },
+        "health_score": {
+          "type": "object",
+          "properties": {
+            "dimensions_label": {
+              "type": "string"
+            },
+            "grade_tooltip": {
+              "type": "string"
+            },
+            "dimension_maintenance": {
+              "type": "string"
+            },
+            "powered_by": {
+              "type": "string"
+            },
+            "score_tooltip": {
+              "type": "string"
+            },
+            "error": {
+              "type": "string"
+            },
+            "dimension_security": {
+              "type": "string"
+            },
+            "dimension_popularity": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "dimension_quality": {
+              "type": "string"
+            },
+            "algorithm_subtitle": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false
