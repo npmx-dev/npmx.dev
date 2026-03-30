@@ -71,10 +71,10 @@ export default defineCachedEventHandler(
         const packageNames = normalizePackages(parsed.packages)
 
         if (packageNames.length === 0) {
-          throw createError({
-            statusCode: 400,
-            message: 'At least one package is required via query `packages`',
-          })
+          return {
+            packages: [],
+            timestamp: new Date().toISOString(),
+          }
         }
 
         try {

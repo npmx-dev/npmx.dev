@@ -38,6 +38,9 @@ const packageName = computed(() => {
   const { org, name } = route.params
   return org ? `${org}/${name}` : name
 })
+const packageNameQueryParam = computed(() => {
+  return packageName.value ? { packages: packageName.value } : {}
+})
 const orgName = computed(() => route.params.org?.replace('@', '') ?? null)
 
 // ─── Phase 1: lightweight fetch (page load) ───────────────────────────────────
@@ -65,7 +68,7 @@ const { data: npmWebsiteVersions } = useLazyFetch<NpmWebsiteVersionsResponse>(
   () => '/api/registry/downloads/versions',
   {
     key: () => `downloads-versions:${packageName.value}`,
-    query: computed(() => ({ packages: packageName.value })),
+    query: packageNameQueryParam,
     deep: false,
     default: () => ({ packages: [] }),
     getCachedData(key, nuxtApp) {
