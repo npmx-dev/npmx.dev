@@ -85,6 +85,15 @@ describe('parsePackageParam', () => {
         rest: [],
       })
     })
+
+    it('parses scoped package names whose package segment is literally v', () => {
+      const result = parsePackageParam('@scope/v/v/1.2.3/dist/index.js')
+      expect(result).toEqual({
+        packageName: '@scope/v',
+        version: '1.2.3',
+        rest: ['dist', 'index.js'],
+      })
+    })
   })
 
   describe('edge cases', () => {

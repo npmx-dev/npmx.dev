@@ -35,6 +35,7 @@ export default defineNuxtModule({
       'https://registry.npmjs.org',
       'https://api.npmjs.org',
       'https://npm.antfu.dev',
+      'https://npm-pulse.vercel.app',
       BLUESKY_API,
       ...ALL_KNOWN_GIT_API_ORIGINS,
       // Local CLI connector (npmx CLI communicates via localhost)

@@ -1,4 +1,4 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import { assertValidPackageName } from '#shared/utils/npm'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
 

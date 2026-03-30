@@ -1,4 +1,4 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 interface HealthScoreDimension {
   score: number
   weight: number
@@ -58,13 +58,13 @@ function scoreBarColor(score: number): string {
 }
 
 const dimensions = computed(() => {
-  if (!data.value) return []
+  if (!data.value?.dimensions) return []
   const d = data.value.dimensions
   return [
-    { key: 'maintenance', label: $t('package.health_score.dimension_maintenance'), score: d.maintenance.score, weight: d.maintenance.weight },
-    { key: 'quality', label: $t('package.health_score.dimension_quality'), score: d.quality.score, weight: d.quality.weight },
-    { key: 'security', label: $t('package.health_score.dimension_security'), score: d.security.score, weight: d.security.weight },
-    { key: 'popularity', label: $t('package.health_score.dimension_popularity'), score: d.popularity.score, weight: d.popularity.weight },
+    { key: 'maintenance', label: $t('package.health_score.dimension_maintenance'), score: d.maintenance?.score ?? 0, weight: d.maintenance?.weight ?? 0 },
+    { key: 'quality', label: $t('package.health_score.dimension_quality'), score: d.quality?.score ?? 0, weight: d.quality?.weight ?? 0 },
+    { key: 'security', label: $t('package.health_score.dimension_security'), score: d.security?.score ?? 0, weight: d.security?.weight ?? 0 },
+    { key: 'popularity', label: $t('package.health_score.dimension_popularity'), score: d.popularity?.score ?? 0, weight: d.popularity?.weight ?? 0 },
   ]
 })
 </script>
@@ -147,7 +147,7 @@ const dimensions = computed(() => {
 
       <!-- Footer link -->
       <a
-        :href="`https://npm-pulse.vercel.app/api/v1/score/${packageName}`"
+        :href="`https://npm-pulse.vercel.app/api/v1/score/${props.packageName}`"
         target="_blank"
         rel="noopener noreferrer"
         class="inline-flex items-center gap-1 text-xs text-fg-subtle hover:text-fg transition-colors duration-150 underline underline-offset-2 decoration-fg-subtle/40"

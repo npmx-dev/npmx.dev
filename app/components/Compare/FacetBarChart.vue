@@ -131,7 +131,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
         csv: false,
         altCopy: true,
       },
-      buttonTitle: {
+      buttonTitles: {
         img: $t('package.trends.download_file', { fileType: 'PNG' }),
         svg: $t('package.trends.download_file', { fileType: 'SVG' }),
         altCopy: $t('package.trends.copy_alt.button_label'),
