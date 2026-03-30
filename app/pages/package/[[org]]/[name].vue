@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { assertValidPackageName } from '#shared/utils/npm'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
 
@@ -925,6 +925,12 @@ const showSkeleton = shallowRef(false)
                 <!-- Show skeleton loaders when SSR or access controls are loading -->
               </template>
             </ClientOnly>
+
+            <!-- Health Score (npm Pulse) -->
+            <PackageHealthScore
+              :package-name="pkg.name"
+              :version="resolvedVersion || undefined"
+            />
 
             <!-- Download stats -->
             <PackageWeeklyDownloadStats
