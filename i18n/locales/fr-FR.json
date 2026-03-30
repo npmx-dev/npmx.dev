@@ -648,7 +648,6 @@
     },
     "health_score": {
       "title": "Score de santé",
-      "loading": "Analyse de la santé du paquet...",
       "error": "Impossible de charger le score de santé",
       "score_tooltip": "Score de santé global du paquet (0-100) propulsé par npm Pulse",
       "grade_tooltip": "Note de santé : {grade}",

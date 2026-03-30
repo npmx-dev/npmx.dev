@@ -648,7 +648,6 @@
     },
     "health_score": {
       "dimensions_label": "Health score dimensions",
-      "loading": "Analyzing package health...",
       "grade_tooltip": "Health grade: {grade}",
       "dimension_maintenance": "Maintenance",
       "powered_by": "npm Pulse",
