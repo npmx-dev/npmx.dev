@@ -36,10 +36,7 @@ onMounted(() => {
 
 const { packageName, requestedVersion } = usePackageRoute()
 
-const { data: resolvedVersion, status: resolvedStatus } = await useResolvedVersion(
-  packageName,
-  requestedVersion,
-)
+const { data: resolvedVersion, status: resolvedStatus } = await useResolvedVersion(packageName, requestedVersion)
 
 if (import.meta.server) {
   assertValidPackageName(packageName.value)
@@ -167,11 +164,7 @@ const { data: skillsData } = useLazyFetch<SkillsListResponse>(
 const { data: packageAnalysis } = usePackageAnalysis(packageName, requestedVersion)
 const { data: moduleReplacement } = useModuleReplacement(packageName)
 
-if (
-  import.meta.server &&
-  !resolvedVersion.value &&
-  ['success', 'error'].includes(resolvedStatus.value)
-) {
+if (import.meta.server && !resolvedVersion.value && ['success', 'error'].includes(resolvedStatus.value)) {
   throw createError({
     statusCode: 404,
     statusMessage: $t('package.not_found'),
@@ -193,11 +186,7 @@ watch(
   { immediate: true },
 )
 
-const {
-  data: pkg,
-  status,
-  error,
-} = usePackage(packageName, () => resolvedVersion.value ?? requestedVersion.value)
+const { data: pkg, status, error } = usePackage(packageName, () => resolvedVersion.value ?? requestedVersion.value)
 
 const { diff: sizeDiff } = useInstallSizeDiff(packageName, resolvedVersion, pkg, installSize)
 
@@ -215,9 +204,7 @@ const route = useRoute()
 // immediate is set once at mount — skipped requests won't re-fire on navigation, leaving data permanently missing.
 const isVersionsRoute = computed(() => route.name === 'package-versions')
 const hasEmptyPayload =
-  import.meta.client &&
-  nuxtApp.payload.serverRendered &&
-  !Object.keys(nuxtApp.payload.data ?? {}).length
+  import.meta.client && nuxtApp.payload.serverRendered && !Object.keys(nuxtApp.payload.data ?? {}).length
 const isSpaFallback = shallowRef(nuxtApp.isHydrating && hasEmptyPayload && !nuxtApp.payload.path)
 const isHydratingWithServerContent = shallowRef(
   nuxtApp.isHydrating && hasEmptyPayload && nuxtApp.payload.path === route.path,
@@ -228,9 +215,7 @@ const hasServerContentOnly = shallowRef(hasEmptyPayload && nuxtApp.payload.path 
 // DOM before Vue's hydration replaces it. This lets us show the server-rendered
 // HTML as a static snapshot while data refetches, avoiding any visual flash.
 const serverRenderedHtml = shallowRef<string | null>(
-  hasServerContentOnly.value
-    ? (document.getElementById('package-article')?.innerHTML ?? null)
-    : null,
+  hasServerContentOnly.value ? (document.getElementById('package-article')?.innerHTML ?? null) : null,
 )
 
 if (isSpaFallback.value || isHydratingWithServerContent.value) {
@@ -261,10 +246,7 @@ const pkgDescription = useMarkdown(() => ({
 
 // Fetch dependency analysis (lazy, client-side)
 // This is the same composable used by PackageVulnerabilityTree and PackageDeprecatedTree
-const { data: vulnTree, status: vulnTreeStatus } = useDependencyAnalysis(
-  packageName,
-  () => resolvedVersion.value ?? '',
-)
+const { data: vulnTree, status: vulnTreeStatus } = useDependencyAnalysis(packageName, () => resolvedVersion.value ?? '')
 
 const {
   data: provenanceData,
@@ -285,7 +267,7 @@ const {
 if (import.meta.client) {
   watch(
     displayVersion,
-    v => {
+    (v) => {
       if (v && hasProvenance(v) && provenanceStatus.value === 'idle') {
         fetchProvenance()
       }
@@ -331,9 +313,7 @@ const publishSecurityDowngrade = computed(() => {
   return detectPublishSecurityDowngradeForVersion(versionSecurityMetadata.value, currentVersion)
 })
 
-const installVersionOverride = computed(
-  () => publishSecurityDowngrade.value?.trustedVersion ?? null,
-)
+const installVersionOverride = computed(() => publishSecurityDowngrade.value?.trustedVersion ?? null)
 
 const downgradeFallbackInstallText = computed(() => {
   const d = publishSecurityDowngrade.value
@@ -455,9 +435,7 @@ const canonicalUrl = computed(() => {
 })
 
 // URL pattern for version selector - includes file path if present
-const versionUrlPattern = computed(
-  () => `/package/${pkg.value?.name || packageName.value}/v/{version}`,
-)
+const versionUrlPattern = computed(() => `/package/${pkg.value?.name || packageName.value}/v/{version}`)
 
 const dependencyCount = computed(() => getDependencyCount(displayVersion.value))
 
@@ -497,9 +475,7 @@ const showSkeleton = shallowRef(false)
   <main v-if="!isVersionsRoute" class="flex-1 pb-8">
     <!-- Scenario 1: SPA fallback — show skeleton (no real content to preserve) -->
     <!-- Scenario 2: SSR with missing payload — preserve server DOM, skip skeleton -->
-    <PackageSkeleton
-      v-if="isSpaFallback || (!hasServerContentOnly && (showSkeleton || status === 'pending'))"
-    />
+    <PackageSkeleton v-if="isSpaFallback || (!hasServerContentOnly && (showSkeleton || status === 'pending'))" />
 
     <!-- During hydration without payload, show captured server HTML as a static snapshot.
          This avoids a visual flash: the user sees the server content while data refetches.
@@ -600,17 +576,13 @@ const showSkeleton = shallowRef(false)
                   <template v-if="dependencyCount > 0 && dependencyCount !== totalDepsCount">
                     <ClientOnly>
                       <span
-                        v-if="
-                          vulnTreeStatus === 'pending' ||
-                          (installSizeStatus === 'pending' && !vulnTree)
-                        "
+                        v-if="vulnTreeStatus === 'pending' || (installSizeStatus === 'pending' && !vulnTree)"
                         class="inline-flex items-center gap-1 text-fg-subtle"
                       >
                         (<span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />)
                       </span>
                       <span v-else-if="totalDepsCount !== null"
-                        ><span class="text-fg-subtle">(</span
-                        >{{ numberFormatter.format(totalDepsCount)
+                        ><span class="text-fg-subtle">(</span>{{ numberFormatter.format(totalDepsCount)
                         }}<span class="text-fg-subtle">)</span></span
                       >
                       <span v-else class="text-fg-subtle">(-)</span>
@@ -668,15 +640,11 @@ const showSkeleton = shallowRef(false)
                 <!-- Total install size in parens -->
                 <template v-if="displayVersion?.dist?.unpackedSize !== installSize?.totalSize">
                   <span class="ms-1">
-                    <span
-                      v-if="installSizeStatus === 'pending'"
-                      class="inline-flex items-center gap-1 text-fg-subtle"
-                    >
+                    <span v-if="installSizeStatus === 'pending'" class="inline-flex items-center gap-1 text-fg-subtle">
                       (<span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />)
                     </span>
                     <span v-else-if="installSize?.totalSize" dir="ltr">
-                      <span class="text-fg-subtle">(</span
-                      >{{ bytesFormatter.format(installSize.totalSize)
+                      <span class="text-fg-subtle">(</span>{{ bytesFormatter.format(installSize.totalSize)
                       }}<span class="text-fg-subtle">)</span>
                     </span>
                     <span v-else class="text-fg-subtle">(-)</span>
@@ -710,10 +678,7 @@ const showSkeleton = shallowRef(false)
               </dd>
             </div>
 
-            <div
-              v-if="resolvedVersion && pkg.time?.[resolvedVersion]"
-              class="space-y-1 sm:col-span-2"
-            >
+            <div v-if="resolvedVersion && pkg.time?.[resolvedVersion]" class="space-y-1 sm:col-span-2">
               <dt
                 class="text-xs text-fg-subtle uppercase tracking-wider"
                 :title="
@@ -751,32 +716,21 @@ const showSkeleton = shallowRef(false)
             <PackageManagerSelect />
           </div>
           <div>
-            <TerminalExecute
-              :package-name="pkg.name"
-              :jsr-info="jsrInfo"
-              :is-create-package="isCreatePkg"
-            />
+            <TerminalExecute :package-name="pkg.name" :jsr-info="jsrInfo" :is-create-package="isCreatePkg" />
           </div>
         </section>
 
         <!-- Regular packages: Install command with optional run command -->
         <section v-else id="get-started" class="scroll-mt-20" :class="$style.areaInstall">
           <div class="flex flex-wrap items-center justify-between mb-3">
-            <h2
-              id="get-started-heading"
-              class="group text-xs text-fg-subtle uppercase tracking-wider"
-            >
+            <h2 id="get-started-heading" class="group text-xs text-fg-subtle uppercase tracking-wider">
               <LinkBase to="#get-started">
                 {{ $t('package.get_started.title') }}
               </LinkBase>
             </h2>
             <!-- Package manager dropdown + Download button -->
             <div class="flex items-center gap-2">
-              <PackageDownloadButton
-                v-if="displayVersion"
-                :package-name="pkg.name"
-                :version="displayVersion"
-              />
+              <PackageDownloadButton v-if="displayVersion" :package-name="pkg.name" :version="displayVersion" />
               <PackageManagerSelect />
             </div>
           </div>
@@ -869,9 +823,7 @@ const showSkeleton = shallowRef(false)
             </div>
             <TerminalInstall
               :package-name="pkg.name"
-              :requested-version="
-                requestedVersion && requestedVersion !== 'latest' ? resolvedVersion : null
-              "
+              :requested-version="requestedVersion && requestedVersion !== 'latest' ? resolvedVersion : null"
               :install-version-override="installVersionOverride"
               :jsr-info="jsrInfo"
               :dev-dependency-suggestion="packageAnalysis?.devDependencySuggestion"
@@ -889,11 +841,7 @@ const showSkeleton = shallowRef(false)
           <PackageSizeIncrease v-if="sizeDiff" :diff="sizeDiff" />
           <!-- Vulnerability scan -->
           <ClientOnly>
-            <PackageVulnerabilityTree
-              v-if="resolvedVersion"
-              :package-name="pkg.name"
-              :version="resolvedVersion"
-            />
+            <PackageVulnerabilityTree v-if="resolvedVersion" :package-name="pkg.name" :version="resolvedVersion" />
             <PackageDeprecatedTree
               v-if="resolvedVersion"
               :package-name="pkg.name"
@@ -927,17 +875,10 @@ const showSkeleton = shallowRef(false)
             </ClientOnly>
 
             <!-- Health Score (npm Pulse) -->
-            <PackageHealthScore
-              :package-name="pkg.name"
-              :version="resolvedVersion || undefined"
-            />
+            <PackageHealthScore :package-name="pkg.name" :version="resolvedVersion || undefined" />
 
             <!-- Download stats -->
-            <PackageWeeklyDownloadStats
-              :packageName
-              :createdIso="pkg?.time?.created ?? null"
-              :repoRef="repoRef"
-            />
+            <PackageWeeklyDownloadStats :packageName :createdIso="pkg?.time?.created ?? null" :repoRef="repoRef" />
 
             <!-- Playground links -->
             <PackagePlaygrounds v-if="playgroundLinks.length" :links="playgroundLinks" />
@@ -996,19 +937,13 @@ const showSkeleton = shallowRef(false)
             </h2>
             <div class="flex gap-2">
               <!-- Copy readme as Markdown button -->
-              <TooltipApp
-                v-if="readmeData?.mdExists"
-                :text="$t('package.readme.copy_as_markdown')"
-                position="bottom"
-              >
+              <TooltipApp v-if="readmeData?.mdExists" :text="$t('package.readme.copy_as_markdown')" position="bottom">
                 <ButtonBase
                   @mouseenter="prefetchReadmeMarkdown"
                   @focus="prefetchReadmeMarkdown"
                   @click="copyReadmeHandler()"
                   :aria-pressed="copiedReadme"
-                  :aria-label="
-                    copiedReadme ? $t('common.copied') : $t('package.readme.copy_as_markdown')
-                  "
+                  :aria-label="copiedReadme ? $t('common.copied') : $t('package.readme.copy_as_markdown')"
                   :classicon="copiedReadme ? 'i-lucide:check' : 'i-simple-icons:markdown'"
                 >
                   {{ copiedReadme ? $t('common.copied') : $t('common.copy') }}
@@ -1037,28 +972,14 @@ const showSkeleton = shallowRef(false)
             >
           </p>
 
-          <section
-            v-if="hasProvenance(displayVersion) && isMounted"
-            id="provenance"
-            class="scroll-mt-20"
-          >
-            <div
-              v-if="provenanceStatus === 'pending'"
-              class="mt-8 flex items-center gap-2 text-fg-subtle text-sm"
-            >
+          <section v-if="hasProvenance(displayVersion) && isMounted" id="provenance" class="scroll-mt-20">
+            <div v-if="provenanceStatus === 'pending'" class="mt-8 flex items-center gap-2 text-fg-subtle text-sm">
               <span class="i-svg-spinners:ring-resize w-4 h-4" aria-hidden="true" />
               <span>{{ $t('package.provenance_section.title') }}…</span>
             </div>
-            <PackageProvenanceSection
-              v-else-if="provenanceData"
-              :details="provenanceData"
-              class="mt-8"
-            />
+            <PackageProvenanceSection v-else-if="provenanceData" :details="provenanceData" class="mt-8" />
             <!-- Error state: provenance exists but details failed to load -->
-            <div
-              v-else-if="provenanceStatus === 'error'"
-              class="mt-8 flex items-center gap-2 text-fg-subtle text-sm"
-            >
+            <div v-else-if="provenanceStatus === 'error'" class="mt-8 flex items-center gap-2 text-fg-subtle text-sm">
               <span class="i-lucide:circle-alert w-4 h-4" aria-hidden="true" />
               <span>{{ $t('package.provenance_section.error_loading') }}</span>
             </div>
@@ -1079,9 +1000,7 @@ const showSkeleton = shallowRef(false)
       <p class="text-fg-muted mb-8">
         {{ error?.message ?? $t('package.not_found_message') }}
       </p>
-      <LinkBase variant="button-secondary" :to="{ name: 'index' }">{{
-        $t('common.go_back_home')
-      }}</LinkBase>
+      <LinkBase variant="button-secondary" :to="{ name: 'index' }">{{ $t('common.go_back_home') }}</LinkBase>
     </div>
   </main>
 </template>

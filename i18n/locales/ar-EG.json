@@ -235,7 +235,8 @@
       "dimension_quality": "الجودة",
       "dimension_security": "الأمان",
       "dimension_popularity": "الانتشار",
-      "powered_by": "npm Pulse"
+      "powered_by": "npm Pulse",
+      "algorithm_subtitle": "صيانة×30% · جودة×25% · أمان×25% · انتشار×20%"
     }
   },
   "claim": {

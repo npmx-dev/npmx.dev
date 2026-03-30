@@ -657,7 +657,8 @@
       "dimension_quality": "Qualité",
       "dimension_security": "Sécurité",
       "dimension_popularity": "Popularité",
-      "powered_by": "npm Pulse"
+      "powered_by": "npm Pulse",
+      "algorithm_subtitle": "Maintenance×30% · Qualité×25% · Sécurité×25% · Popularité×20%"
     }
   },
   "connector": {
