@@ -20,6 +20,13 @@ import { TRUSTED_IMAGE_DOMAINS } from '#server/utils/image-proxy'
 export default defineNuxtModule({
   meta: { name: 'security-headers' },
   setup(_, nuxt) {
+    const isDevtoolsRuntime =
+      nuxt.options.dev && nuxt.options.devtools !== false && !process.env.TEST
+
+    // Nuxt DevTools relies on injected client assets and an iframe-based UI in dev.
+    // Keep strict CSP/frame restrictions for non-dev environments.
+    if (isDevtoolsRuntime) return
+
     // These assets are embedded directly on blog pages and should not affect image-proxy trust.
     const cspOnlyImgOrigins = ['https://api.star-history.com', 'https://cdn.bsky.app']
     const imgSrc = [
