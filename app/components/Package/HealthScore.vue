@@ -120,7 +120,10 @@ const dimensions = computed(() => {
           </div>
         </TooltipApp>
 
-        <TooltipApp :text="$t('package.health_score.grade_tooltip', { grade: data.grade })" strategy="fixed">
+        <TooltipApp
+          :text="$t('package.health_score.grade_tooltip', { grade: data.grade })"
+          strategy="fixed"
+        >
           <TagStatic
             tabindex="0"
             :class="gradeColor(data.grade)"
@@ -133,7 +136,10 @@ const dimensions = computed(() => {
       </div>
 
       <!-- Dimension bars -->
-      <ul class="space-y-2 list-none m-0 p-0" :aria-label="$t('package.health_score.dimensions_label')">
+      <ul
+        class="space-y-2 list-none m-0 p-0"
+        :aria-label="$t('package.health_score.dimensions_label')"
+      >
         <li v-for="dim in dimensions" :key="dim.key">
           <div class="flex items-center justify-between mb-0.5">
             <span class="text-xs text-fg-subtle">

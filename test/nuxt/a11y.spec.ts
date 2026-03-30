@@ -20,7 +20,7 @@ const axeRunOptions: RunOptions = {
   rules: {
     // These rules check page-level concerns that don't apply to isolated components
     'landmark-one-main': { enabled: false },
-    region: { enabled: false },
+    'region': { enabled: false },
     'page-has-heading-one': { enabled: false },
     // Duplicate landmarks are expected when testing multiple header/footer components
     'landmark-no-duplicate-banner': { enabled: false },
@@ -71,11 +71,13 @@ beforeEach(() => {
 
 afterEach(() => {
   // Collect unexpected warnings
-  const unexpected = warnSpy.mock.calls.filter((args) => !allowedWarnings.some((re) => re.test(String(args[0]))))
+  const unexpected = warnSpy.mock.calls.filter(
+    args => !allowedWarnings.some(re => re.test(String(args[0]))),
+  )
   warnSpy.mockRestore()
 
   if (unexpected.length > 0) {
-    const msgs = unexpected.map((args) => args.map(String).join(' ')).join('\n')
+    const msgs = unexpected.map(args => args.map(String).join(' ')).join('\n')
     throw new Error(`Test emitted unexpected console.warn:\n${msgs}`)
   }
 })
@@ -706,7 +708,7 @@ describe('component accessibility audits', () => {
       // These are expected since the component represents a loading state.
       // The real content will have proper heading text when loaded.
       // Filter out 'empty-heading' violations as they're expected for skeleton components.
-      const violations = results.violations.filter((v) => v.id !== 'empty-heading')
+      const violations = results.violations.filter(v => v.id !== 'empty-heading')
       expect(violations).toEqual([])
     })
   })
@@ -716,15 +718,15 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(PackageExternalLinks, {
         props: {
           pkg: {
-            _id: 'react',
-            name: 'react',
+            '_id': 'react',
+            'name': 'react',
             'dist-tags': { latest: '18.2.0' },
-            time: {
-              created: '2013-01-31T01:07:45.050Z',
-              modified: '2024-03-14T00:00:00.000Z',
+            'time': {
+              'created': '2013-01-31T01:07:45.050Z',
+              'modified': '2024-03-14T00:00:00.000Z',
               '18.2.0': '2024-03-14T00:00:00.000Z',
             },
-            requestedVersion: {
+            'requestedVersion': {
               version: '18.2.0',
               _npmVersion: '18.2.0',
               homepage: 'https://react.dev',
@@ -748,7 +750,7 @@ describe('component accessibility audits', () => {
               time: '2024-03-14T00:00:00.000Z',
               _id: 'react@18.2.0',
             },
-            versions: {
+            'versions': {
               '18.2.0': {
                 version: '18.2.0',
                 hasProvenance: false,
@@ -823,9 +825,9 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(PackageHeader, {
         props: {
           pkg: {
-            name: 'vue',
+            'name': 'vue',
             'dist-tags': {},
-            versions: {},
+            'versions': {},
           },
           resolvedVersion: '3.5.0',
           displayVersion: {
@@ -2755,7 +2757,7 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations with placeholder', async () => {
       const component = await mountSuspended(InputBase, {
-        attrs: { placeholder: 'Search...', 'aria-label': 'Search' },
+        attrs: { 'placeholder': 'Search...', 'aria-label': 'Search' },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
@@ -2763,7 +2765,7 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations when disabled', async () => {
       const component = await mountSuspended(InputBase, {
-        attrs: { disabled: '', 'aria-label': 'Disabled input' },
+        attrs: { 'disabled': '', 'aria-label': 'Disabled input' },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
@@ -2802,7 +2804,8 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(SelectBase, {
         attrs: { 'aria-label': 'Choose option' },
         slots: {
-          default: '<option value="option1">option 1</option><option value="option2">option 2</option>',
+          default:
+            '<option value="option1">option 1</option><option value="option2">option 2</option>',
         },
       })
       const results = await runAxe(component)
