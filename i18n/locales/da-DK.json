@@ -556,7 +556,7 @@
     "install_scripts": {
       "title": "Installationsscripts",
       "script_label": "(script)",
-      "npx_packages": "{count} npx package | {count} npx packages",
+      "npx_packages": "{count} npx pakke | {count} npx pakker",
       "currently": "currently {version}"
     },
     "playgrounds": {
@@ -564,33 +564,33 @@
       "choose": "vælg legeplads"
     },
     "metrics": {
-      "esm": "ES Modules supported",
-      "cjs": "CommonJS supported",
-      "no_esm": "ES Modules unsupported",
-      "wasm": "Has WebAssembly",
-      "types_label": "Types",
-      "types_included": "Types included",
-      "types_available": "Types available via {package}",
-      "no_types": "No types"
+      "esm": "ES Modules understøttet",
+      "cjs": "CommonJS understøttet",
+      "no_esm": "ES Modules ikke understøttet",
+      "wasm": "Har WebAssembly",
+      "types_label": "Typer",
+      "types_included": "Typer inkluderet",
+      "types_available": "Typer tilgængelige via {package}",
+      "no_types": "Ingen typer"
     },
     "license": {
-      "view_spdx": "View license text on SPDX",
-      "none": "None"
+      "view_spdx": "Se licens tekst på SPDX",
+      "none": "Ingen"
     },
     "vulnerabilities": {
-      "tree_found": "{vulns} vulnerability in {packages}/{total} packages | {vulns} vulnerabilities in {packages}/{total} packages",
-      "show_all_packages": "show {count} affected package | show all {count} affected packages",
-      "path": "path",
-      "more": "+{count} more",
-      "packages_failed": "{count} package could not be checked | {count} packages could not be checked",
-      "scan_failed": "Could not scan for vulnerabilities",
+      "tree_found": "{vulns} sårbarhed i {packages}/{total} pakker | {vulns} sårbarheder i {packages}/{total} pakker",
+      "show_all_packages": "vis {count} berørte pakke | vis alle {count} berørte pakker",
+      "path": "sti",
+      "more": "+{count} mere",
+      "packages_failed": "{count} pakke kunne ikke kontrolleres | {count} pakker kunne ikke kontrolleres",
+      "scan_failed": "Kunne ikke scanne for sårbarheder",
       "severity": {
-        "critical": "critical",
-        "high": "high",
-        "moderate": "moderate",
-        "low": "low"
+        "critical": "kritisk",
+        "high": "høj",
+        "moderate": "moderat",
+        "low": "lav"
       },
-      "fixed_in_title": "Fixed in version {version}"
+      "fixed_in_title": "Håndteret i version {version}"
     },
     "deprecated": {
       "label": "Forældet",
@@ -619,23 +619,23 @@
       "grant_access": "+ Tildel teamadgang"
     },
     "list": {
-      "filter_label": "Filter packages",
-      "filter_placeholder": "Filter packages...",
-      "sort_label": "Sort packages",
-      "showing_count": "Showing {filtered} of {total} packages"
+      "filter_label": "Filtrer pakker",
+      "filter_placeholder": "Filtrer pakker...",
+      "sort_label": "Sorter pakker",
+      "showing_count": "Viser {filtered} af {total} pakker"
     },
     "skeleton": {
-      "loading": "Loading package details",
-      "maintainers": "Maintainers",
-      "keywords": "Keywords",
-      "versions": "Versions",
-      "dependencies": "Dependencies"
+      "loading": "Indlæser pakkeoplysninger",
+      "maintainers": "Vedligeholdere",
+      "keywords": "Nøgleord",
+      "versions": "Versioner",
+      "dependencies": "Afhængigheder"
     },
     "sort": {
-      "downloads": "Most downloaded",
-      "published": "Recently published",
-      "name_asc": "Name (A-Z)",
-      "name_desc": "Name (Z-A)"
+      "downloads": "Mest downloadede",
+      "published": "Senest udgivet",
+      "name_asc": "Navn (A-Z)",
+      "name_desc": "Navn (Z-A)"
     },
     "size": {
       "b": "{size} B",
@@ -644,7 +644,7 @@
     },
     "download": {
       "button": "Download",
-      "tarball": "Download Tarball as .tar.gz"
+      "tarball": "Download Tarball som .tar.gz"
     }
   },
   "connector": {
@@ -671,107 +671,107 @@
   },
   "operations": {
     "queue": {
-      "title": "Operations Queue",
-      "clear_all": "clear all",
-      "refresh": "Refresh operations",
-      "empty": "No operations queued",
-      "empty_hint": "Add operations from package or org pages",
-      "active_label": "Active operations",
-      "otp_required": "OTP required",
-      "otp_prompt": "Enter OTP to continue",
-      "otp_placeholder": "Enter OTP code...",
-      "otp_label": "One-time password",
-      "retry_otp": "Retry with OTP",
-      "retry_web_auth": "Retry with web auth",
-      "retrying": "Retrying...",
-      "open_web_auth": "Open web auth link",
-      "approve_operation": "Approve operation",
-      "remove_operation": "Remove operation",
-      "approve_all": "Approve All",
-      "execute": "Execute",
-      "executing": "Executing...",
+      "title": "Operationskø",
+      "clear_all": "ryd alle",
+      "refresh": "Opdater operationer",
+      "empty": "Ingen operationer i kø",
+      "empty_hint": "Tilføj operationer fra pakke- eller organisationssider",
+      "active_label": "Aktive operationer",
+      "otp_required": "OTP påkrævet",
+      "otp_prompt": "Indtast OTP for at fortsætte",
+      "otp_placeholder": "Indtast OTP-kode...",
+      "otp_label": "Engangskode",
+      "retry_otp": "Prøv igen med OTP",
+      "retry_web_auth": "Prøv igen med webauth",
+      "retrying": "Forsøger igen...",
+      "open_web_auth": "Åbn webauth-link",
+      "approve_operation": "Godkend operation",
+      "remove_operation": "Fjern operation",
+      "approve_all": "Godkend alle",
+      "execute": "Udfør",
+      "executing": "Udfører...",
       "log": "Log",
-      "log_label": "Completed operations log",
-      "remove_from_log": "Remove from log"
+      "log_label": "Log over gennemførte operationer",
+      "remove_from_log": "Fjern fra log"
     }
   },
   "org": {
     "teams": {
       "title": "Teams",
-      "refresh": "Refresh teams",
-      "filter_label": "Filter teams",
-      "filter_placeholder": "Filter teams...",
-      "sort_by": "Sort by",
-      "loading": "Loading teams...",
-      "no_teams": "No teams found",
-      "list_label": "Organization teams",
-      "delete_team": "Delete team {name}",
-      "member_count": "{count} member | {count} members",
-      "members_of": "Members of {team}",
-      "no_members": "No members",
-      "remove_user": "Remove {user} from team",
-      "username_to_add": "Username to add to {team}",
-      "username_placeholder": "username...",
-      "add_button": "add",
-      "cancel_add_user": "Cancel adding user",
-      "add_member": "+ Add member",
-      "team_name_label": "Team name",
-      "team_name_placeholder": "team-name...",
-      "create_button": "create",
-      "no_match": "No teams match \"{query}\"",
-      "cancel_create": "Cancel creating team",
-      "create_team": "+ Create team"
+      "refresh": "Opdater teams",
+      "filter_label": "Filtrer teams",
+      "filter_placeholder": "Filtrer teams...",
+      "sort_by": "Sorter efter",
+      "loading": "Indlæser teams...",
+      "no_teams": "Ingen teams fundet",
+      "list_label": "Organisationsteams",
+      "delete_team": "Slet team {name}",
+      "member_count": "{count} medlem | {count} medlemmer",
+      "members_of": "Medlemmer af {team}",
+      "no_members": "Ingen medlemmer",
+      "remove_user": "Fjern {user} fra team",
+      "username_to_add": "Brugernavn tilføjes til {team}",
+      "username_placeholder": "brugernavn...",
+      "add_button": "tilføj",
+      "cancel_add_user": "Annuller tilføjelse af bruger",
+      "add_member": "+ Tilføj medlem",
+      "team_name_label": "Team navn",
+      "team_name_placeholder": "team-navn...",
+      "create_button": "opret",
+      "no_match": "Ingen teams matcher \"{query}\"",
+      "cancel_create": "Annuller oprettelse af team",
+      "create_team": "+ Opret team"
     },
     "members": {
-      "title": "Members",
-      "refresh": "Refresh members",
-      "filter_label": "Filter members",
-      "filter_placeholder": "Filter members...",
-      "filter_by_role": "Filter by role",
-      "filter_by_team": "Filter by team",
-      "all_teams": "all teams",
-      "sort_by": "Sort by",
-      "loading": "Loading members...",
-      "no_members": "No members found",
-      "list_label": "Organization members",
-      "change_role_for": "Change role for {name}",
-      "remove_from_org": "Remove {name} from org",
-      "view_team": "View {team} team",
-      "no_match": "No members match your filters",
-      "username_label": "Username",
-      "username_placeholder": "username...",
-      "role_label": "Role",
+      "title": "Medlemmer",
+      "refresh": "Opdater medlemmer",
+      "filter_label": "Filtrer medlemmer",
+      "filter_placeholder": "Filtrer medlemmer...",
+      "filter_by_role": "Filtrer efter rolle",
+      "filter_by_team": "Filtrer efter team",
+      "all_teams": "alle teams",
+      "sort_by": "Sorter efter",
+      "loading": "Indlæser medlemmer...",
+      "no_members": "Ingen medlemmer fundet",
+      "list_label": "Organisationens medlemmer",
+      "change_role_for": "Skift rolle for {name}",
+      "remove_from_org": "Fjern {name} fra organisationen",
+      "view_team": "Se {team} team",
+      "no_match": "Ingen medlemmer matcher dine filtre",
+      "username_label": "Brugernavn",
+      "username_placeholder": "brugernavn...",
+      "role_label": "Rolle",
       "role": {
-        "all": "all",
-        "developer": "developer",
-        "admin": "admin",
-        "owner": "owner"
+        "all": "alle",
+        "developer": "udvikler",
+        "admin": "administrator",
+        "owner": "ejer"
       },
       "team_label": "Team",
-      "no_team": "no team",
-      "add_button": "add",
-      "cancel_add": "Cancel adding member",
-      "add_member": "+ Add member"
+      "no_team": "intet team",
+      "add_button": "tilføj",
+      "cancel_add": "Annuller tilføjelse af medlem",
+      "add_member": "+ Tilføj medlem"
     },
-    "public_packages": "{count} public package | {count} public packages",
+    "public_packages": "{count} offentlig pakke | {count} offentlige pakker",
     "page": {
-      "packages_title": "Packages",
-      "members_tab": "Members",
+      "packages_title": "Pakker",
+      "members_tab": "Medlemmer",
       "teams_tab": "Teams",
-      "no_packages": "No public packages found for",
-      "no_packages_hint": "This organization may not exist or has no public packages.",
-      "failed_to_load": "Failed to load organization packages",
-      "no_match": "No packages match \"{query}\"",
-      "not_found": "Organization not found",
-      "not_found_message": "The organization \"{'@'}{name}\" does not exist on npm"
+      "no_packages": "Ingen offentlige pakker fundet for",
+      "no_packages_hint": "Denne organisation findes muligvis ikke eller har ingen offentlige pakker.",
+      "failed_to_load": "Kunne ikke indlæse organisationspakker",
+      "no_match": "Ingen pakker matcher \"{query}\"",
+      "not_found": "Organisation ikke fundet",
+      "not_found_message": "Organisationen \"{'@'}{name}\" findes ikke på npm"
     }
   },
   "user": {
     "combobox": {
-      "add_to_org_hint": "(will also add to org)",
-      "press_enter_to_add": "Press Enter to add {'@'}{username}",
-      "default_placeholder": "username...",
-      "suggestions_label": "User suggestions"
+      "add_to_org_hint": "(vil også blive tilføjet til organisationen)",
+      "press_enter_to_add": "Tryk Enter for at tilføje {'@'}{username}",
+      "default_placeholder": "brugernavn...",
+      "suggestions_label": "Brugerforslag"
     },
     "page": {
       "packages_title": "Packages",
