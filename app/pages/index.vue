@@ -8,8 +8,6 @@ async function search() {
   startSearch()
 }
 
-const { env } = useAppConfig().buildInfo
-
 useSeoMeta({
   title: () => $t('seo.home.title'),
   ogTitle: () => $t('seo.home.title'),
@@ -24,22 +22,6 @@ defineOgImageComponent('Default', {
   title: 'npmx',
   description: 'a fast, modern browser for the **npm registry**',
 })
-
-// const route = useRoute()
-// const isKawaii = computed(() => route.query.kawaii === 'true')
-onPrehydrate(el => {
-  const isKawaii = new URLSearchParams(window.location.search).has('kawaii')
-  if (!isKawaii) return
-  const normalLogo = el.querySelector<HTMLElement>('#npmx-index-h1-logo-normal')
-  const kawaiiLogo = el.querySelector<HTMLElement>('#npmx-index-h1-logo-kawaii')
-  const logoEnv = el.querySelector<HTMLElement>('#npmx-index-h1-logo-env')
-  const logoTagline = el.querySelector<HTMLElement>('#npmx-index-tagline')
-  if (!normalLogo || !kawaiiLogo || !logoEnv || !logoTagline) return
-  normalLogo.style.display = 'none'
-  kawaiiLogo.style.display = 'block'
-  logoEnv.style.display = 'none'
-  logoTagline.style.display = 'none'
-})
 </script>
 
 <template>
@@ -48,34 +30,7 @@ onPrehydrate(el => {
       <header
         class="flex-1 flex flex-col items-center justify-center text-center pt-20 pb-4 md:pb-8 lg:pb-20"
       >
-        <h1
-          dir="ltr"
-          class="relative flex items-center justify-center gap-2 header-logo font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-6 motion-safe:animate-fade-in motion-safe:animate-fill-both"
-        >
-          <img
-            id="npmx-index-h1-logo-kawaii"
-            width="400"
-            class="hidden pb-8 motion-safe:animate-fade-in motion-safe:animate-scale-in motion-safe:hover:scale-105 motion-safe:transition w-80 sm:w-100"
-            src="/extra/npmx-cute.svg"
-            :alt="$t('alt_logo_kawaii')"
-          />
-          <AppLogo id="npmx-index-h1-logo-normal" class="w-42 h-auto sm:w-58 md:w-70" />
-          <span
-            id="npmx-index-h1-logo-env"
-            aria-hidden="true"
-            class="text-sm sm:text-base md:text-lg transform-origin-br font-mono tracking-widest text-accent absolute -bottom-4 -inset-ie-1.5"
-          >
-            {{ env === 'release' ? 'alpha' : env }}
-          </span>
-        </h1>
-
-        <p
-          id="npmx-index-tagline"
-          class="text-fg-muted text-lg sm:text-xl max-w-xl mb-12 lg:mb-14 motion-safe:animate-slide-up motion-safe:animate-fill-both"
-          style="animation-delay: 0.1s"
-        >
-          {{ $t('tagline') }}
-        </p>
+        <LandingLogo class="w-42 h-auto sm:w-58 md:w-70" />
         <search
           class="w-full max-w-2xl motion-safe:animate-slide-up motion-safe:animate-fill-both"
           style="animation-delay: 0.2s"
