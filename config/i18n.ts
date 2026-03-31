@@ -136,6 +136,11 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     name: 'Български',
     pluralRule: createPluralRule('bg-BG', { zero: 1, one: 0, two: 1, few: 1, many: 1, other: 1 }),
   },
+  {
+    code: 'da',
+    file: 'da-DK.json',
+    name: 'Dansk',
+  },
   /*{
     code: 'ckb',
     file: 'ckb.json',
