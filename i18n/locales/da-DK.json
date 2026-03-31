@@ -129,7 +129,7 @@
       "label": "Datakilde",
       "description": "Vælg, hvor npmx henter søgedata fra. Individuelle pakkesider bruger altid npm-registret direkte.",
       "npm": "npm Registry",
-      "npm_description": "Henter søgning, organisation og brugeroplysninger direkte fra det officielle npm-registre. Autoritativt, men kan være langsommere.",
+      "npm_description": "Henter søgning, organisation og brugeroplysninger direkte fra det officielle npm-register. Autoritativt, men kan være langsommere.",
       "algolia": "Algolia",
       "algolia_description": "Bruger Algolia for hurtigere søgning, organisations- og brugersider."
     },
