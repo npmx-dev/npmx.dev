@@ -236,7 +236,7 @@ defineExpose({
             :result="item"
             :heading-level="headingLevel"
             :show-publisher="showPublisher"
-            :index="index"
+            :index="(currentPage - 1) * numericPageSize + index"
             :search-query="searchQuery"
             :class="
               index >= newSearchBatchSize &&
