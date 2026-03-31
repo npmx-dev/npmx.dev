@@ -10,7 +10,7 @@ defineProps<{
 
 <template>
   <article
-    tabindex="0"
+    :tabindex="index != null ? 0 : undefined"
     :data-result-index="index"
     class="group bg-bg-subtle border border-border rounded-lg p-4 sm:p-6 transition-[border-color,background-color] duration-200 hover:(border-border-hover bg-bg-muted) cursor-pointer relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-bg focus-visible:ring-offset-2 focus-visible:ring-accent focus-visible:bg-bg-muted focus-visible:border-accent/50"
     :class="{
