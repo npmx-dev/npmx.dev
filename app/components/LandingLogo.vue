@@ -12,9 +12,9 @@ onPrehydrate(el => {
     month: '2-digit',
     day: '2-digit',
   }).format(new Date())
-  const isAprilFirst = date === '04/01'
+  const isTKawaii = date === '03/31'
 
-  if (!isKawaii && !isAprilFirst) return
+  if (!isKawaii && !isTKawaii) return
 
   const normalLogo = el.querySelector<HTMLElement>('#npmx-index-h1-logo-normal')
   const kawaiiLogo = el.querySelector<HTMLElement>('#npmx-index-h1-logo-kawaii')
@@ -24,7 +24,7 @@ onPrehydrate(el => {
 
   if (!normalLogo || !kawaiiLogo || !tkawaiiLogo || !logoEnv || !logoTagline) return
 
-  if (isAprilFirst) {
+  if (isTKawaii) {
     tkawaiiLogo.style.display = 'block'
   } else {
     kawaiiLogo.style.display = 'block'
