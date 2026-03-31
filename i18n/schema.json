@@ -4570,6 +4570,9 @@
       },
       "additionalProperties": false
     },
+    "alt_logo_kawaii": {
+      "type": "string"
+    },
     "$schema": {
       "type": "string"
     }
