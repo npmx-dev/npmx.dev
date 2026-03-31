@@ -28,7 +28,8 @@ defineOgImageComponent('Default', {
 // const route = useRoute()
 // const isKawaii = computed(() => route.query.kawaii === 'true')
 onPrehydrate(el => {
-  const isKawaii = window.location.search.includes('kawaii=true')
+  const params = new URLSearchParams(window.location.search)
+  const isKawaii = params.get('kawaii') === 'true'
   const normal = el.querySelector('#npmx-index-h1-logo-normal') as HTMLElement
   const kawaii = el.querySelector('#npmx-index-h1-logo-kawaii') as HTMLElement
   const env = el.querySelector('#npmx-index-h1-logo-env') as HTMLElement
