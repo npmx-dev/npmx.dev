@@ -28,23 +28,23 @@ defineOgImageComponent('Default', {
 // const route = useRoute()
 // const isKawaii = computed(() => route.query.kawaii === 'true')
 onPrehydrate(el => {
-  const params = new URLSearchParams(window.location.search)
-  const isKawaii = params.get('kawaii') === 'true'
-  const normal = el.querySelector('#npmx-index-h1-logo-normal') as HTMLElement
-  const kawaii = el.querySelector('#npmx-index-h1-logo-kawaii') as HTMLElement
-  const env = el.querySelector('#npmx-index-h1-logo-env') as HTMLElement
-  const tagline = el.querySelector('#npmx-index-tagline') as HTMLElement
-  if (!normal || !kawaii || !env || !tagline) return
+  const isKawaii = new URLSearchParams(window.location.search).has('kawaii')
+  if (!isKawaii) return
+  const normalLogo = el.querySelector<HTMLElement>('#npmx-index-h1-logo-normal')
+  const kawaiiLogo = el.querySelector<HTMLElement>('#npmx-index-h1-logo-kawaii')
+  const logoEnv = el.querySelector<HTMLElement>('#npmx-index-h1-logo-env')
+  const logoTagline = el.querySelector<HTMLElement>('#npmx-index-tagline')
+  if (!normalLogo || !kawaiiLogo || !logoEnv || !logoTagline) return
   if (isKawaii) {
-    normal.style.display = 'none'
-    kawaii.style.display = 'block'
-    env.style.display = 'none'
-    tagline.style.display = 'none'
+    normalLogo.style.display = 'none'
+    kawaiiLogo.style.display = 'block'
+    logoEnv.style.display = 'none'
+    logoTagline.style.display = 'none'
   } else {
-    normal.style.display = 'block'
-    kawaii.style.display = 'none'
-    env.style.display = 'block'
-    tagline.style.display = 'block'
+    normalLogo.style.display = 'block'
+    kawaiiLogo.style.display = 'none'
+    logoEnv.style.display = 'block'
+    logoTagline.style.display = 'block'
   }
 })
 </script>
