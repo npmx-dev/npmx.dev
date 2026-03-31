@@ -42,7 +42,7 @@ const isKawaii = computed(() => route.query.kawai === 'true')
           <img
             v-if="isKawaii === true"
             width="400"
-            class="pb-8 motion-safe:animate-fade-in motion-safe:hover:scale-105 motion-safe:tra nsition"
+            class="pb-8 motion-safe:animate-fade-in motion-safe:hover:scale-105 motion-safe:transition"
             src="/extra/npmx-cute.svg"
             alt="sticker"
           />
