@@ -59,12 +59,11 @@ export function useResultsKeyboardNavigation(options?: {
 
     // Only scroll if element is not already in viewport
     const rect = el.getBoundingClientRect()
-    const isInViewport = (
+    const isInViewport =
       rect.top >= 0 &&
       rect.left >= 0 &&
       rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
       rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    )
 
     if (!isInViewport) {
       el.scrollIntoView({ block: 'nearest', behavior: 'smooth' })

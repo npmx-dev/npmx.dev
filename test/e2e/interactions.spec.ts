@@ -342,10 +342,7 @@ test.describe('Org Pages', () => {
     await expect(page).toHaveURL(/\/package\//)
   })
 
-  test('/org/atcute → ArrowUp from first result stays at first result', async ({
-    page,
-    goto,
-  }) => {
+  test('/org/atcute → ArrowUp from first result stays at first result', async ({ page, goto }) => {
     await goto('/org/atcute', { waitUntil: 'hydration' })
 
     await expect(page.locator('[data-result-index="0"]').first()).toBeVisible({
