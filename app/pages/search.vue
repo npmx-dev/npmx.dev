@@ -405,9 +405,6 @@ const exactMatchType = computed<'package' | 'org' | 'user' | null>(() => {
   return null
 })
 
-const suggestionCount = computed(() => validatedSuggestions.value.length)
-const totalSelectableCount = computed(() => suggestionCount.value + resultCount.value)
-
 // Navigate to package page
 async function navigateToPackage(packageName: string) {
   await navigateTo(packageRoute(packageName))
