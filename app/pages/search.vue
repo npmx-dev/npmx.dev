@@ -408,39 +408,6 @@ const exactMatchType = computed<'package' | 'org' | 'user' | null>(() => {
 const suggestionCount = computed(() => validatedSuggestions.value.length)
 const totalSelectableCount = computed(() => suggestionCount.value + resultCount.value)
 
-const isVisible = (el: HTMLElement) => el.getClientRects().length > 0
-
-/**
- * Get all focusable result elements in DOM order (suggestions first, then packages)
- */
-function getFocusableElements(): HTMLElement[] {
-  const suggestions = Array.from(document.querySelectorAll<HTMLElement>('[data-suggestion-index]'))
-    .filter(isVisible)
-    .sort((a, b) => {
-      const aIdx = Number.parseInt(a.dataset.suggestionIndex ?? '0', 10)
-      const bIdx = Number.parseInt(b.dataset.suggestionIndex ?? '0', 10)
-      return aIdx - bIdx
-    })
-
-  const packages = Array.from(document.querySelectorAll<HTMLElement>('[data-result-index]'))
-    .filter(isVisible)
-    .sort((a, b) => {
-      const aIdx = Number.parseInt(a.dataset.resultIndex ?? '0', 10)
-      const bIdx = Number.parseInt(b.dataset.resultIndex ?? '0', 10)
-      return aIdx - bIdx
-    })
-
-  return [...suggestions, ...packages]
-}
-
-/**
- * Focus an element and scroll it into view
- */
-function focusElement(el: HTMLElement) {
-  el.focus()
-  el.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
-}
-
 // Navigate to package page
 async function navigateToPackage(packageName: string) {
   await navigateTo(packageRoute(packageName))
@@ -482,9 +449,16 @@ function focusSearchInput() {
   searchInput?.focus()
 }
 
+// Keyboard navigation for results (includes arrow keys and Enter on focused results)
+useResultsKeyboardNavigation({
+  includeSuggestions: true,
+  onArrowUpAtStart: focusSearchInput,
+})
+
+// Additional Enter key handling for search input (exact match navigation)
 const keyboardShortcuts = useKeyboardShortcuts()
 
-function handleResultsKeydown(e: KeyboardEvent) {
+function handleSearchInputEnter(e: KeyboardEvent) {
   if (!keyboardShortcuts.value) {
     return
   }
@@ -508,49 +482,9 @@ function handleResultsKeydown(e: KeyboardEvent) {
     pendingEnterQuery.value = inputValue
     return
   }
-
-  if (totalSelectableCount.value <= 0) return
-
-  const elements = getFocusableElements()
-  if (elements.length === 0) return
-
-  const currentIndex = elements.findIndex(el => el === document.activeElement)
-
-  if (e.key === 'ArrowDown') {
-    e.preventDefault()
-    const nextIndex = currentIndex < 0 ? 0 : Math.min(currentIndex + 1, elements.length - 1)
-    const el = elements[nextIndex]
-    if (el) focusElement(el)
-    return
-  }
-
-  if (e.key === 'ArrowUp') {
-    e.preventDefault()
-    // At first result or no result focused: return focus to search input
-    if (currentIndex <= 0) {
-      focusSearchInput()
-      return
-    }
-    const nextIndex = currentIndex - 1
-    const el = elements[nextIndex]
-    if (el) focusElement(el)
-    return
-  }
-
-  if (e.key === 'Enter') {
-    // Browser handles Enter on focused links naturally, but handle for non-link elements
-    if (document.activeElement && elements.includes(document.activeElement as HTMLElement)) {
-      const el = document.activeElement as HTMLElement
-      // Only prevent default and click if it's not already a link (links handle Enter natively)
-      if (el.tagName !== 'A') {
-        e.preventDefault()
-        el.click()
-      }
-    }
-  }
 }
 
-onKeyDown(['ArrowDown', 'ArrowUp', 'Enter'], handleResultsKeydown)
+onKeyDown('Enter', handleSearchInputEnter)
 
 useSeoMeta({
   title: () =>

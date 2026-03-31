@@ -123,6 +123,9 @@ function handleClearFilter(chip: FilterChip) {
 
 const activeTab = shallowRef<'members' | 'teams'>('members')
 
+// Keyboard navigation for package results
+useResultsKeyboardNavigation()
+
 // Canonical URL for this org page
 const canonicalUrl = computed(() => `https://npmx.dev/@${orgName.value}`)
 

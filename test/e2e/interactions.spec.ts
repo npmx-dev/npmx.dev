@@ -310,6 +310,60 @@ test.describe('Keyboard Shortcuts', () => {
   })
 })
 
+test.describe('Org Pages', () => {
+  test('/org/atcute → keyboard navigation (arrow keys + enter)', async ({ page, goto }) => {
+    await goto('/org/atcute', { waitUntil: 'hydration' })
+
+    // Wait for package results to load
+    await expect(page.locator('[data-result-index="0"]').first()).toBeVisible({
+      timeout: 15000,
+    })
+
+    const firstResult = page.locator('[data-result-index="0"]').first()
+    const secondResult = page.locator('[data-result-index="1"]').first()
+    await expect(firstResult).toBeVisible()
+
+    // ArrowDown focuses the first result
+    await page.keyboard.press('ArrowDown')
+    await expect(firstResult).toBeFocused()
+
+    // ArrowDown focuses the next result
+    await page.keyboard.press('ArrowDown')
+    if (await secondResult.isVisible()) {
+      await expect(secondResult).toBeFocused()
+
+      // ArrowUp returns to first result
+      await page.keyboard.press('ArrowUp')
+      await expect(firstResult).toBeFocused()
+    }
+
+    // Enter navigates to the focused package
+    await page.keyboard.press('Enter')
+    await expect(page).toHaveURL(/\/package\//)
+  })
+
+  test('/org/atcute → ArrowUp from first result stays at first result', async ({
+    page,
+    goto,
+  }) => {
+    await goto('/org/atcute', { waitUntil: 'hydration' })
+
+    await expect(page.locator('[data-result-index="0"]').first()).toBeVisible({
+      timeout: 15000,
+    })
+
+    const firstResult = page.locator('[data-result-index="0"]').first()
+
+    // Navigate to first result
+    await page.keyboard.press('ArrowDown')
+    await expect(firstResult).toBeFocused()
+
+    // ArrowUp from first result should keep focus on first result (no search input on org page)
+    await page.keyboard.press('ArrowUp')
+    await expect(firstResult).toBeFocused()
+  })
+})
+
 test.describe('Keyboard Shortcuts disabled', () => {
   test.beforeEach(async ({ page }) => {
     await page.addInitScript(() => {
@@ -355,5 +409,41 @@ test.describe('Keyboard Shortcuts disabled', () => {
     await page.keyboard.press('d')
 
     await expect(page).toHaveURL(/\/package\/vue$/)
+  })
+
+  test('arrow keys (org page) do not navigate when shortcuts are disabled', async ({
+    page,
+    goto,
+  }) => {
+    await goto('/org/atcute', { waitUntil: 'hydration' })
+
+    await expect(page.locator('[data-result-index="0"]').first()).toBeVisible({
+      timeout: 15000,
+    })
+
+    const firstResult = page.locator('[data-result-index="0"]').first()
+
+    await page.keyboard.press('ArrowDown')
+
+    // First result should NOT be focused when shortcuts are disabled
+    await expect(firstResult).not.toBeFocused()
+  })
+
+  test('arrow keys (search page) do not navigate when shortcuts are disabled', async ({
+    page,
+    goto,
+  }) => {
+    await goto('/search?q=vue', { waitUntil: 'hydration' })
+
+    await expect(page.locator('[data-result-index="0"]').first()).toBeVisible({
+      timeout: 15000,
+    })
+
+    const firstResult = page.locator('[data-result-index="0"]').first()
+
+    await page.keyboard.press('ArrowDown')
+
+    // First result should NOT be focused when shortcuts are disabled
+    await expect(firstResult).not.toBeFocused()
   })
 })

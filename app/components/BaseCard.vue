@@ -3,12 +3,16 @@ defineProps<{
   /** Whether this is an exact match for the query */
   isExactMatch?: boolean
   selected?: boolean
+  /** Index for keyboard navigation */
+  index?: number
 }>()
 </script>
 
 <template>
   <article
-    class="group bg-bg-subtle border border-border rounded-lg p-4 sm:p-6 transition-[border-color,background-color] duration-200 hover:(border-border-hover bg-bg-muted) cursor-pointer relative focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-bg focus-within:ring-offset-2 focus-within:ring-fg/50 focus-within:bg-bg-muted focus-within:border-border-hover"
+    tabindex="0"
+    :data-result-index="index"
+    class="group bg-bg-subtle border border-border rounded-lg p-4 sm:p-6 transition-[border-color,background-color] duration-200 hover:(border-border-hover bg-bg-muted) cursor-pointer relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-bg focus-visible:ring-offset-2 focus-visible:ring-accent focus-visible:bg-bg-muted focus-visible:border-accent/50"
     :class="{
       'border-accent/30 contrast-more:border-accent/90 bg-accent/5': isExactMatch,
       'bg-fg-subtle/15!': selected,

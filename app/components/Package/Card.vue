@@ -43,7 +43,7 @@ const numberFormatter = useNumberFormatter()
 </script>
 
 <template>
-  <BaseCard :selected="isSelected" :isExactMatch="isExactMatch">
+  <BaseCard :selected="isSelected" :isExactMatch="isExactMatch" :index="index">
     <header class="mb-4 flex items-baseline justify-between gap-2">
       <component
         :is="headingLevel ?? 'h3'"
@@ -53,7 +53,6 @@ const numberFormatter = useNumberFormatter()
           :to="packageRoute(result.package.name)"
           :prefetch-on="prefetch ? 'visibility' : 'interaction'"
           class="decoration-none after:content-[''] after:absolute after:inset-0"
-          :data-result-index="index"
           dir="ltr"
           >{{ result.package.name }}</NuxtLink
         >
@@ -153,7 +152,6 @@ const numberFormatter = useNumberFormatter()
     </div>
 
     <ul
-      role="list"
       v-if="result.package.keywords?.length"
       :aria-label="$t('package.card.keywords')"
       class="relative z-10 flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-border list-none m-0 p-0 pointer-events-none items-center"
