@@ -25,8 +25,27 @@ defineOgImageComponent('Default', {
   description: 'a fast, modern browser for the **npm registry**',
 })
 
-const route = useRoute()
-const isKawaii = computed(() => route.query.kawaii === 'true')
+// const route = useRoute()
+// const isKawaii = computed(() => route.query.kawaii === 'true')
+onPrehydrate(el => {
+  const isKawaii = window.location.search.includes('kawaii=true') 
+  const normal = el.querySelector('#npmx-index-h1-logo-normal') as HTMLElement
+  const kawaii = el.querySelector('#npmx-index-h1-logo-kawaii') as HTMLElement
+  const env = el.querySelector('#npmx-index-h1-logo-env') as HTMLElement
+  const tagline = el.querySelector('#npmx-index-tagline') as HTMLElement
+  if (!normal || !kawaii || !env || !tagline) return
+  if (isKawaii) {
+    normal.style.display = 'none'
+    kawaii.style.display = 'block'
+    env.style.display = 'none'
+    tagline.style.display = 'none'
+  } else {
+    normal.style.display = 'block'
+    kawaii.style.display = 'none'
+    env.style.display = 'block'
+    tagline.style.display = 'block'
+  }
+})
 </script>
 
 <template>
@@ -40,15 +59,18 @@ const isKawaii = computed(() => route.query.kawaii === 'true')
           class="relative flex items-center justify-center gap-2 header-logo font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-6 motion-safe:animate-fade-in motion-safe:animate-fill-both"
         >
           <img
-            v-if="isKawaii === true"
+            id="npmx-index-h1-logo-kawaii"
             width="400"
-            class="pb-8 motion-safe:animate-fade-in motion-safe:hover:scale-105 motion-safe:transition"
+            class="hidden pb-8 motion-safe:animate-fade-in motion-safe:animate-scale-in motion-safe:hover:scale-105 motion-safe:transition w-80 sm:w-100"
             src="/extra/npmx-cute.svg"
             alt="npmx kawaii logo"
           />
-          <AppLogo v-if="isKawaii !== true" class="w-42 h-auto sm:w-58 md:w-70" />
+          <AppLogo 
+            id="npmx-index-h1-logo-normal"
+            class="w-42 h-auto sm:w-58 md:w-70" 
+          />
           <span
-            v-if="isKawaii !== true"
+            id="npmx-index-h1-logo-env"
             aria-hidden="true"
             class="text-sm sm:text-base md:text-lg transform-origin-br font-mono tracking-widest text-accent absolute -bottom-4 -inset-ie-1.5"
           >
@@ -57,7 +79,7 @@ const isKawaii = computed(() => route.query.kawaii === 'true')
         </h1>
 
         <p
-          v-if="isKawaii !== true"
+          id="npmx-index-tagline"
           class="text-fg-muted text-lg sm:text-xl max-w-xl mb-12 lg:mb-14 motion-safe:animate-slide-up motion-safe:animate-fill-both"
           style="animation-delay: 0.1s"
         >
