@@ -119,7 +119,7 @@ pnpm npmx-connector   # Start the real connector (requires npm login)
 pnpm mock-connector   # Start the mock connector (no npm login needed)
 
 # Code Quality
-pnpm vp lint          # Run linter (oxlint + oxfmt)
+pnpm vp run lint      # Run linter (oxlint + oxfmt)
 pnpm lint:fix         # Auto-fix lint issues
 pnpm test:types       # TypeScript type checking
 
