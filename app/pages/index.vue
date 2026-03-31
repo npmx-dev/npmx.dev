@@ -35,17 +35,10 @@ onPrehydrate(el => {
   const logoEnv = el.querySelector<HTMLElement>('#npmx-index-h1-logo-env')
   const logoTagline = el.querySelector<HTMLElement>('#npmx-index-tagline')
   if (!normalLogo || !kawaiiLogo || !logoEnv || !logoTagline) return
-  if (isKawaii) {
-    normalLogo.style.display = 'none'
-    kawaiiLogo.style.display = 'block'
-    logoEnv.style.display = 'none'
-    logoTagline.style.display = 'none'
-  } else {
-    normalLogo.style.display = 'block'
-    kawaiiLogo.style.display = 'none'
-    logoEnv.style.display = 'block'
-    logoTagline.style.display = 'block'
-  }
+  normalLogo.style.display = 'none'
+  kawaiiLogo.style.display = 'block'
+  logoEnv.style.display = 'none'
+  logoTagline.style.display = 'none'
 })
 </script>
 
@@ -64,7 +57,7 @@ onPrehydrate(el => {
             width="400"
             class="hidden pb-8 motion-safe:animate-fade-in motion-safe:animate-scale-in motion-safe:hover:scale-105 motion-safe:transition w-80 sm:w-100"
             src="/extra/npmx-cute.svg"
-            alt="npmx kawaii logo"
+            :alt="$t('alt_logo_kawaii')"
           />
           <AppLogo id="npmx-index-h1-logo-normal" class="w-42 h-auto sm:w-58 md:w-70" />
           <span
