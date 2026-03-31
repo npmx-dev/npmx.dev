@@ -69,7 +69,7 @@
       "view_user_packages": "Se pakker fra denne bruger",
       "view_org_packages": "Se pakker fra denne organisation"
     },
-    "instant_search": "Instant søgning",
+    "instant_search": "Øjeblikkelig søgning",
     "instant_search_on": "på",
     "instant_search_off": "fra",
     "instant_search_turn_on": "tænd",
@@ -127,13 +127,13 @@
     },
     "data_source": {
       "label": "Datakilde",
-      "description": "Vælg, hvor npmx henter søgedata fra. Individuelle pakkesider bruger altid npm-registret direkte.",
+      "description": "Vælg, hvor npmx henter søgedata fra. Individuelle pakkesider bruger altid npm-registeret direkte.",
       "npm": "npm Registry",
-      "npm_description": "Henter søgning, organisation og brugeroplysninger direkte fra det officielle npm-register. Autoritativt, men kan være langsommere.",
+      "npm_description": "Henter søgning, organisation og brugeroplysninger direkte fra det officielle npm-register. Altid korrekt, men kan være langsommere.",
       "algolia": "Algolia",
       "algolia_description": "Bruger Algolia for hurtigere søgning, organisations- og brugersider."
     },
-    "instant_search": "Instant søgning",
+    "instant_search": "Øjeblikkelig søgning",
     "instant_search_description": "Navigerer til søgesiden og opdaterer resultaterne, mens du skriver.",
     "relative_dates": "Relative datoer",
     "include_types": "Inkluder {'@'}types i installationen",
@@ -593,30 +593,30 @@
       "fixed_in_title": "Fixed in version {version}"
     },
     "deprecated": {
-      "label": "Deprecated",
-      "tree_found": "{count} deprecated dependency | {count} deprecated dependencies",
-      "show_all": "show {count} deprecated package | show all {count} deprecated packages"
+      "label": "Forældet",
+      "tree_found": "{count} forældet afhængighed | {count} forældede afhængigheder",
+      "show_all": "vis {count} forældet pakke | vis alle {count} forældede pakker"
     },
     "access": {
-      "title": "Team Access",
-      "refresh": "Refresh team access",
-      "list_label": "Team access list",
-      "owner": "owner",
+      "title": "Teamadgang",
+      "refresh": "Opdater teamadgang",
+      "list_label": "Teamadgangsliste",
+      "owner": "ejer",
       "rw": "rw",
       "ro": "ro",
-      "revoke_access": "Revoke {name} access",
-      "no_access": "No team access configured",
-      "select_team_label": "Select team",
-      "loading_teams": "Loading teams...",
-      "select_team": "Select team",
-      "permission_label": "Permission level",
+      "revoke_access": "Fjern {name} adgang",
+      "no_access": "Ingen teamadgang konfigureret",
+      "select_team_label": "Vælg team",
+      "loading_teams": "Indlæser teams...",
+      "select_team": "Vælg team",
+      "permission_label": "Tilladelsesniveau",
       "permission": {
-        "read_only": "read-only",
-        "read_write": "read-write"
+        "read_only": "kun læse",
+        "read_write": "læse-skrive"
       },
-      "grant_button": "grant",
-      "cancel_grant": "Cancel granting access",
-      "grant_access": "+ Grant team access"
+      "grant_button": "tildel",
+      "cancel_grant": "Annuller tildeling af adgang",
+      "grant_access": "+ Tildel teamadgang"
     },
     "list": {
       "filter_label": "Filter packages",
