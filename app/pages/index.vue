@@ -28,7 +28,7 @@ defineOgImageComponent('Default', {
 // const route = useRoute()
 // const isKawaii = computed(() => route.query.kawaii === 'true')
 onPrehydrate(el => {
-  const isKawaii = window.location.search.includes('kawaii=true') 
+  const isKawaii = window.location.search.includes('kawaii=true')
   const normal = el.querySelector('#npmx-index-h1-logo-normal') as HTMLElement
   const kawaii = el.querySelector('#npmx-index-h1-logo-kawaii') as HTMLElement
   const env = el.querySelector('#npmx-index-h1-logo-env') as HTMLElement
@@ -65,10 +65,7 @@ onPrehydrate(el => {
             src="/extra/npmx-cute.svg"
             alt="npmx kawaii logo"
           />
-          <AppLogo 
-            id="npmx-index-h1-logo-normal"
-            class="w-42 h-auto sm:w-58 md:w-70" 
-          />
+          <AppLogo id="npmx-index-h1-logo-normal" class="w-42 h-auto sm:w-58 md:w-70" />
           <span
             id="npmx-index-h1-logo-env"
             aria-hidden="true"
