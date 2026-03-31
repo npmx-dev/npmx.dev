@@ -246,8 +246,6 @@ const displayResults = computed(() => {
   })
 })
 
-const resultCount = computed(() => displayResults.value.length)
-
 /**
  * The effective total for display and pagination purposes.
  * When sorting by non-relevance, we're working with a fetched subset (e.g. 250),
