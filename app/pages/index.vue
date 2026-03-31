@@ -26,7 +26,7 @@ defineOgImageComponent('Default', {
 })
 
 const route = useRoute()
-const isKawaii = computed(() => route.query.kawai === 'true')
+const isKawaii = computed(() => route.query.kawaii === 'true')
 </script>
 
 <template>
