@@ -141,6 +141,7 @@ import {
   BlueskyPostEmbed,
   BuildEnvironment,
   ButtonBase,
+  LandingLogo,
   LinkBase,
   CallToAction,
   ChartPatternSlot,
@@ -326,6 +327,14 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(AppHeader, {
         props: { showConnector: false },
       })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('LandingLogo', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(LandingLogo)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
