@@ -24,6 +24,9 @@ defineOgImageComponent('Default', {
   title: 'npmx',
   description: 'a fast, modern browser for the **npm registry**',
 })
+
+const route = useRoute()
+const isKawaii = computed(() => route.query.kawai === 'true')
 </script>
 
 <template>
@@ -36,8 +39,16 @@ defineOgImageComponent('Default', {
           dir="ltr"
           class="relative flex items-center justify-center gap-2 header-logo font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-6 motion-safe:animate-fade-in motion-safe:animate-fill-both"
         >
-          <AppLogo class="w-42 h-auto sm:w-58 md:w-70" />
+          <img
+            v-if="isKawaii === true"
+            width="400"
+            class="pb-8 motion-safe:animate-fade-in motion-safe:hover:scale-105 motion-safe:tra nsition"
+            src="/extra/npmx-cute.svg"
+            alt="sticker"
+          />
+          <AppLogo v-if="isKawaii !== true" class="w-42 h-auto sm:w-58 md:w-70" />
           <span
+            v-if="isKawaii !== true"
             aria-hidden="true"
             class="text-sm sm:text-base md:text-lg transform-origin-br font-mono tracking-widest text-accent absolute -bottom-4 -inset-ie-1.5"
           >
@@ -46,6 +57,7 @@ defineOgImageComponent('Default', {
         </h1>
 
         <p
+          v-if="isKawaii !== true"
           class="text-fg-muted text-lg sm:text-xl max-w-xl mb-12 lg:mb-14 motion-safe:animate-slide-up motion-safe:animate-fill-both"
           style="animation-delay: 0.1s"
         >
