@@ -44,7 +44,7 @@ const isKawaii = computed(() => route.query.kawai === 'true')
             width="400"
             class="pb-8 motion-safe:animate-fade-in motion-safe:hover:scale-105 motion-safe:transition"
             src="/extra/npmx-cute.svg"
-            alt="sticker"
+            alt="npmx kawaii logo"
           />
           <AppLogo v-if="isKawaii !== true" class="w-42 h-auto sm:w-58 md:w-70" />
           <span
