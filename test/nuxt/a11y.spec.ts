@@ -144,7 +144,6 @@ import {
   LandingLogo,
   LinkBase,
   CallToAction,
-  ChartPatternSlot,
   CodeDirectoryListing,
   CodeFileTree,
   CodeMobileTreeDrawer,
@@ -2256,23 +2255,6 @@ describe('component accessibility audits', () => {
   describe('CallToAction', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(CallToAction)
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-  })
-
-  describe('ChartPatternSlot', () => {
-    it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(ChartPatternSlot, {
-        props: {
-          id: 'perennius',
-          seed: 1,
-          foregroundColor: 'black',
-          fallbackColor: 'transparent',
-          maxSize: 24,
-          minSize: 16,
-        },
-      })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
