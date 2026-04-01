@@ -47,7 +47,7 @@ export const packageManagers = [
     action: 'add',
     executeLocal: 'deno run',
     executeRemote: 'deno run',
-    create: 'deno run',
+    create: 'deno create',
     icon: 'i-simple-icons:deno',
   },
   {
@@ -137,6 +137,9 @@ export function getExecuteCommandParts(options: ExecuteCommandOptions): string[]
   if (options.isCreatePackage) {
     const shortName = getCreateShortName(options.packageName)
     if (shortName !== options.packageName) {
+      if (options.packageManager === 'deno') {
+        return ['deno', 'create', `npm:${shortName}`]
+      }
       return [...pm.create.split(' '), shortName]
     }
   }
