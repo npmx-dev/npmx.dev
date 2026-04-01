@@ -730,5 +730,5 @@ export function applyEllipsis(text: string, maxLength = 45) {
 export const CHART_PATTERN_CONFIG = {
   disambiguator: 1,
   minSize: 16,
-  maxSize: 24
+  maxSize: 24,
 }

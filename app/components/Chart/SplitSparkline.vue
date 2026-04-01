@@ -215,7 +215,7 @@ const configs = computed(() => {
                 width="30"
                 height="30"
                 rx="3"
-                :fill="i === 0 ? dataset?.[0]?.color ?? palette[0] : `url(#marker_${i})`"
+                :fill="i === 0 ? (dataset?.[0]?.color ?? palette[0]) : `url(#marker_${i})`"
               />
             </svg>
           </div>
