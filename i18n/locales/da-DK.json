@@ -649,24 +649,24 @@
   },
   "connector": {
     "modal": {
-      "title": "Local Connector",
-      "connected": "Connected",
-      "connected_as_user": "Connected as ~{user}",
-      "connected_hint": "You can now manage packages and organizations from the web UI.",
-      "disconnect": "Disconnect",
-      "run_hint": "Run the connector on your machine to enable admin features.",
-      "copy_command": "Copy command",
-      "copied": "Copied",
-      "paste_token": "Then paste the token below to connect:",
+      "title": "Lokal Connector",
+      "connected": "Tilsluttet",
+      "connected_as_user": "Tilsluttet som ~{user}",
+      "connected_hint": "Du kan nu administrere pakker og organisationer fra web UI.",
+      "disconnect": "Afbryd forbindelse",
+      "run_hint": "Kør connectoren på din maskine for at aktivere admin-funktioner.",
+      "copy_command": "Kopiér kommando",
+      "copied": "Kopieret",
+      "paste_token": "Indsæt derefter tokenet nedenfor for at oprette forbindelse:",
       "token_label": "Token",
-      "token_placeholder": "paste token here...",
-      "advanced": "Advanced options",
+      "token_placeholder": "indsæt token her...",
+      "advanced": "Avancerede indstillinger",
       "port_label": "Port",
-      "warning": "WARNING",
-      "warning_text": "This allows npmx to access your npm CLI. Only connect to sites you trust.",
-      "connect": "Connect",
-      "connecting": "Connecting...",
-      "auto_open_url": "Automatically open auth page"
+      "warning": "ADVARSEL",
+      "warning_text": "Dette giver npmx adgang til din npm CLI. Opret kun forbindelse til sider, du stoler på.",
+      "connect": "Opret forbindelse",
+      "connecting": "Opretter forbindelse...",
+      "auto_open_url": "Åbn godkendelsesside automatisk"
     }
   },
   "operations": {
@@ -1072,204 +1072,204 @@
     }
   },
   "header": {
-    "home": "npmx home",
-    "packages": "packages",
+    "home": "npmx hjem",
+    "packages": "pakker",
     "packages_dropdown": {
-      "title": "Your Packages",
-      "loading": "Loading...",
-      "error": "Failed to load packages",
-      "empty": "No packages found",
-      "view_all": "View all"
+      "title": "Dine pakker",
+      "loading": "Indlæser...",
+      "error": "Kunne ikke indlæse pakker",
+      "empty": "Ingen pakker fundet",
+      "view_all": "Se alle"
     },
-    "orgs": "orgs",
+    "orgs": "organisationer",
     "orgs_dropdown": {
-      "title": "Your Organizations",
-      "loading": "Loading...",
-      "error": "Failed to load organizations",
-      "empty": "No organizations found",
-      "view_all": "View all"
+      "title": "Dine organisationer",
+      "loading": "Indlæser...",
+      "error": "Kunne ikke indlæse organisationer",
+      "empty": "Ingen organisationer fundet",
+      "view_all": "Se alle"
     },
-    "pr": "Open GitHub pull request #{prNumber}"
+    "pr": "Åbn GitHub pull request #{prNumber}"
   },
   "compare": {
     "packages": {
-      "title": "compare packages",
-      "tagline": "compare npm packages side-by-side to help you choose the right one.",
-      "meta_title": "Compare {packages} - npmx",
-      "meta_title_empty": "Compare Packages - npmx",
-      "meta_description": "Side-by-side comparison of {packages}",
-      "meta_description_empty": "Compare npm packages side-by-side",
-      "section_packages": "Packages",
-      "section_facets": "Facets",
-      "section_comparison": "Comparison",
-      "copy_as_markdown": "Copy table",
-      "loading": "Loading package data...",
-      "error": "Failed to load package data. Please try again.",
-      "empty_title": "Select packages to compare",
-      "empty_description": "Search and add at least 2 packages above to see a side-by-side comparison of their metrics.",
-      "table_view": "Table",
-      "charts_view": "Charts",
-      "no_chartable_data": "No chartable data available for the selected facets.",
-      "bar_chart_nav_hint": "Use ↑ ↓",
-      "line_chart_nav_hint": "Use ← →"
+      "title": "Sammenlign pakker",
+      "tagline": "Sammenlign npm-pakker side om side for at hjælpe dig med at vælge den rigtige.",
+      "meta_title": "Sammenlign {packages} - npmx",
+      "meta_title_empty": "Sammenlign pakker - npmx",
+      "meta_description": "Side-by-side sammenligning af {packages}",
+      "meta_description_empty": "Sammenlign npm-pakker side om side",
+      "section_packages": "Pakker",
+      "section_facets": "Facetter",
+      "section_comparison": "Sammenligning",
+      "copy_as_markdown": "Kopiér tabel",
+      "loading": "Indlæser pakkeoplysninger...",
+      "error": "Kunne ikke indlæse pakkeoplysninger. Prøv igen.",
+      "empty_title": "Vælg pakker at sammenligne",
+      "empty_description": "Søg og tilføj mindst 2 pakker ovenfor for at se en side-by-side sammenligning af deres målinger.",
+      "table_view": "Tabel",
+      "charts_view": "Diagrammer",
+      "no_chartable_data": "Ingen data tilgængelige for de valgte facetter.",
+      "bar_chart_nav_hint": "Brug ↑ ↓",
+      "line_chart_nav_hint": "Brug ← →"
     },
     "selector": {
-      "search_label": "Search for packages",
-      "search_first": "Search for a package...",
-      "search_add": "Add another package...",
-      "searching": "Searching...",
-      "remove_package": "Remove {package}",
-      "packages_selected": "{count}/{max} packages selected.",
-      "add_hint": "Add at least 2 packages to compare."
+      "search_label": "Søg efter pakker",
+      "search_first": "Søg efter en pakke...",
+      "search_add": "Tilføj en anden pakke...",
+      "searching": "Søger...",
+      "remove_package": "Fjern {package}",
+      "packages_selected": "{count}/{max} pakker valgt.",
+      "add_hint": "Tilføj mindst 2 pakker for at sammenligne."
     },
     "no_dependency": {
-      "label": "(No dependency)",
-      "typeahead_title": "What Would James Do?",
-      "typeahead_description": "Compare against not using a dependency! e18e approved.",
-      "tooltip_title": "You might not need a dependency",
-      "tooltip_description": "Compare against not using a dependency! The {link} maintains a list of packages that can be replaced with native APIs or simpler alternatives.",
+      "label": "(Ingen afhængighed)",
+      "typeahead_title": "Hvad ville James gøre?",
+      "typeahead_description": "Sammenlign med ikke at bruge en afhængighed! e18e godkendt.",
+      "tooltip_title": "Du har måske ikke brug for en afhængighed",
+      "tooltip_description": "Sammenlign med ikke at bruge en afhængighed! {link} opretholder en liste over pakker, der kan erstattes med native API'er eller enklere alternativer.",
       "e18e_community": "e18e community",
-      "add_column": "Add no dependency column to comparison"
+      "add_column": "Tilføj kolonne for ingen afhængighed til sammenligning"
     },
     "facets": {
-      "all": "all",
-      "none": "none",
-      "select_all_category_facets": "Select all {category} facets",
-      "deselect_all_category_facets": "Deselect all {category} facets",
-      "selected_all_category_facets": "Selected all {category} facets",
-      "deselected_all_category_facets": "Deselected all {category} facets",
-      "coming_soon": "Coming soon",
-      "select_all": "Select all facets",
-      "deselect_all": "Deselect all facets",
-      "binary_only_tooltip": "This package exposes binaries and no exports",
+      "all": "alle",
+      "none": "ingen",
+      "select_all_category_facets": "Vælg alle {category} facetter",
+      "deselect_all_category_facets": "Fravælg alle {category} facetter",
+      "selected_all_category_facets": "Valgte alle {category} facetter",
+      "deselected_all_category_facets": "Fravalgte alle {category} facetter",
+      "coming_soon": "Kommer snart",
+      "select_all": "Vælg alle facetter",
+      "deselect_all": "Fravælg alle facetter",
+      "binary_only_tooltip": "Denne pakke eksponerer kun binære filer og ingen exports",
       "categories": {
-        "performance": "Performance",
-        "health": "Health",
-        "compatibility": "Compatibility",
-        "security": "Security & Compliance"
+        "performance": "Ydeevne",
+        "health": "Sundhed",
+        "compatibility": "Kompatibilitet",
+        "security": "Sikkerhed & Overholdelse"
       },
       "items": {
         "packageSize": {
-          "label": "Package Size",
-          "description": "Size of the package itself (unpacked)"
+          "label": "Pakke størrelse",
+          "description": "Størrelsen af selve pakken (udpakket)"
         },
         "installSize": {
-          "label": "Install Size",
-          "description": "Total install size including all dependencies"
+          "label": "Installationsstørrelse",
+          "description": "Total installationsstørrelse inklusive alle afhængigheder"
         },
         "dependencies": {
-          "label": "Direct Deps",
-          "description": "Number of direct dependencies"
+          "label": "Direkte afhængigheder",
+          "description": "Antal direkte afhængigheder"
         },
         "totalDependencies": {
-          "label": "Total Deps",
-          "description": "Total number of dependencies including transitive"
+          "label": "Totale afhængigheder",
+          "description": "Totalt antal afhængigheder inklusive transitive"
         },
         "downloads": {
-          "label": "Downloads/wk",
-          "description": "Weekly download count"
+          "label": "Downloads/uge",
+          "description": "Antal downloads pr. uge"
         },
         "totalLikes": {
           "label": "Likes",
-          "description": "Number of likes"
+          "description": "Antal likes"
         },
         "lastUpdated": {
-          "label": "Published",
-          "description": "When this version was published"
+          "label": "Udgivet",
+          "description": "Hvornår denne version blev udgivet"
         },
         "deprecated": {
-          "label": "Deprecated?",
-          "description": "Whether the package is deprecated"
+          "label": "Forældet?",
+          "description": "Om pakken er forældet"
         },
         "engines": {
           "label": "Engines",
-          "description": "Node.js version requirements"
+          "description": "Node.js version krav"
         },
         "types": {
           "label": "Types",
-          "description": "TypeScript type definitions"
+          "description": "TypeScript type definitioner"
         },
         "moduleFormat": {
           "label": "Module Format",
           "description": "ESM/CJS support"
         },
         "license": {
-          "label": "License",
-          "description": "Package license"
+          "label": "Licens",
+          "description": "Pakke licens"
         },
         "vulnerabilities": {
-          "label": "Vulnerabilities",
-          "description": "Known security vulnerabilities"
+          "label": "Sårbarheder",
+          "description": "Kendte sikkerhedssårbarheder"
         }
       },
       "values": {
-        "any": "Any",
-        "none": "None",
-        "unknown": "Unknown",
-        "deprecated": "Deprecated",
-        "not_deprecated": "No",
-        "types_included": "Included",
-        "types_none": "None",
+        "any": "Alle",
+        "none": "Ingen",
+        "unknown": "Ukendt",
+        "deprecated": "Forældet",
+        "not_deprecated": "Nej",
+        "types_included": "Inkluderet",
+        "types_none": "Ingen",
         "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
-        "up_to_you": "Up to you!"
+        "up_to_you": "Op til dig!"
       },
       "trends": {
-        "title": "Compare Trends"
+        "title": "Sammenlign tendenser"
       }
     },
-    "file_changes": "File Changes",
-    "files_count": "{count} file | {count} files",
-    "lines_hidden": "{count} line hidden | {count} lines hidden",
-    "file_too_large": "File too large to compare",
-    "file_size_warning": "{size} exceeds the 250KB limit for comparison",
+    "file_changes": "Filændringer",
+    "files_count": "{count} fil | {count} filer",
+    "lines_hidden": "{count} linje skjult | {count} linjer skjult",
+    "file_too_large": "Fil for stor til at sammenligne",
+    "file_size_warning": "{size} overskrider 250KB grænsen for sammenligning",
     "compare_versions": "diff",
-    "compare_versions_title": "Compare with latest version",
-    "comparing_versions_label": "Comparing versions...",
-    "version_back_to_package": "Back to package",
-    "version_error_message": "Failed to compare versions.",
+    "compare_versions_title": "Sammenlign med seneste version",
+    "comparing_versions_label": "Sammenligner versioner...",
+    "version_back_to_package": "Tilbage til pakken",
+    "version_error_message": "Kunne ikke sammenligne versioner.",
     "version_invalid_url_format": {
-      "hint": "Invalid comparison URL. Use format: {0}",
-      "from_version": "from",
-      "to_version": "to"
+      "hint": "Ugyldig sammenlignings-URL. Brug format: {0}",
+      "from_version": "fra",
+      "to_version": "til"
     },
-    "version_selector_title": "Compare with version",
-    "summary": "Summary",
-    "deps_count": "{count} dep | {count} deps",
-    "dependencies": "Dependencies",
-    "dev_dependencies": "Dev Dependencies",
-    "peer_dependencies": "Peer Dependencies",
-    "optional_dependencies": "Optional Dependencies",
-    "no_dependency_changes": "No dependency changes",
+    "version_selector_title": "Sammenlign med version",
+    "summary": "Oversigt",
+    "deps_count": "{count} afhængighed | {count} afhængigheder",
+    "dependencies": "Afhængigheder",
+    "dev_dependencies": "Dev Afhængigheder",
+    "peer_dependencies": "Peer Afhængigheder",
+    "optional_dependencies": "Valgfrie Afhængigheder",
+    "no_dependency_changes": "Ingen ændringer i afhængigheder",
     "file_filter_option": {
-      "all": "All ({count})",
-      "added": "Added ({count})",
-      "removed": "Removed ({count})",
-      "modified": "Modified ({count})"
+      "all": "Alle ({count})",
+      "added": "Tilføjet ({count})",
+      "removed": "Fjernet ({count})",
+      "modified": "Ændret ({count})"
     },
-    "search_files_placeholder": "Search files...",
-    "no_files_all": "No files",
-    "no_files_search": "No files matching \"{query}\"",
-    "no_files_filtered": "No {filter} files",
+    "search_files_placeholder": "Søg filer...",
+    "no_files_all": "Ingen filer",
+    "no_files_search": "Ingen filer matcher \"{query}\"",
+    "no_files_filtered": "Ingen {filter} filer",
     "filter": {
-      "added": "added",
-      "removed": "removed",
-      "modified": "modified"
+      "added": "tilføjet",
+      "removed": "fjernet",
+      "modified": "ændret"
     },
-    "files_button": "Files",
-    "select_file_prompt": "Select a file from the sidebar to view its diff",
-    "close_files_panel": "Close files panel",
-    "filter_files_label": "Filter files by change type",
-    "change_ratio": "Change ratio",
-    "char_edits": "Char edits",
-    "diff_distance": "Diff distance",
-    "loading_diff": "Loading diff...",
-    "loading_diff_error": "Failed to load diff",
-    "merge_modified_lines": "Merge modified lines",
-    "no_content_changes": "No content changes detected",
-    "options": "Options",
-    "view_file": "View file",
-    "view_in_code_browser": "View in code browser",
-    "word_wrap": "Word wrap"
+    "files_button": "Filer",
+    "select_file_prompt": "Vælg en fil fra sidepanelet for at se dens diff",
+    "close_files_panel": "Luk filpanelet",
+    "filter_files_label": "Filtrer filer efter ændringstype",
+    "change_ratio": "Ændringsforhold",
+    "char_edits": "Tegnedits",
+    "diff_distance": "Diff afstand",
+    "loading_diff": "Indlæser diff...",
+    "loading_diff_error": "Kunne ikke indlæse diff",
+    "merge_modified_lines": "Flet ændrede linjer",
+    "no_content_changes": "Ingen indholdsændringer registreret",
+    "options": "Indstillinger",
+    "view_file": "Se fil",
+    "view_in_code_browser": "Se i kodebrowser",
+    "word_wrap": "Ordombrydning"
   },
   "pds": {
     "title": "npmx.social",
