@@ -93,8 +93,9 @@ defineOgImageComponent('Default', {
 
         <BuildEnvironment class="mt-4" />
         <p class="max-w-3xl mx-auto text-center">
-          <b>Update:</b> We carefully analyzed the best practices in our industry and, to give users the best experience you love, we decided to remove the dark theme.
-          We're looking for what's best for our users and were happy to conduct this research.
+          <b>Update:</b> We carefully analyzed the best practices in our industry and, to give users
+          the best experience you love, we decided to remove the dark theme. We're looking for
+          what's best for our users and were happy to conduct this research.
         </p>
         <p class="max-w-3xl mx-auto text-center mt-2 text-fg-muted">
           Thank you for participating 🤍
