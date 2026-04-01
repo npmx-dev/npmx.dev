@@ -13,7 +13,7 @@ import {
   sanitise,
   applyEllipsis,
   copyAltTextForCompareFacetBarChart,
-  CHART_PATTERN_CONFIG
+  CHART_PATTERN_CONFIG,
 } from '~/utils/charts'
 
 import('vue-data-ui/style.css')
