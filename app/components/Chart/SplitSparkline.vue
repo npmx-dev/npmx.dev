@@ -8,6 +8,7 @@ import {
   type VueUiXyDatasetItem,
 } from 'vue-data-ui'
 import { getPalette, lightenColor } from 'vue-data-ui/utils'
+import { CHART_PATTERN_CONFIG } from '~/utils/charts'
 
 import('vue-data-ui/style.css')
 
