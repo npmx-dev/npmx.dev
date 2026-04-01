@@ -203,7 +203,13 @@ const configs = computed(() => {
                   :id="`marker_${i}`"
                   :seed="i"
                   :foreground-color="colors.bg!"
-                  :background-color="dataset?.[i]?.color ?? palette[i]"
+                  :background-color="
+                    dataset?.[i]?.color
+                      ?? palette[i]
+                      ?? palette[i % palette.length]
+                      ?? palette[0]
+                      ?? 'transparent'
+                  "
                   :max-size="CHART_PATTERN_CONFIG.maxSize"
                   :min-size="CHART_PATTERN_CONFIG.minSize"
                   :disambiguator="CHART_PATTERN_CONFIG.disambiguator"
