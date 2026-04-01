@@ -1300,128 +1300,128 @@
     }
   },
   "privacy_policy": {
-    "title": "privacy policy",
-    "last_updated": "Last updated: {date}",
-    "welcome": "Welcome to {app}. We are committed to protecting your privacy. This policy explains what data we collect, how we use it, and your rights regarding your information.",
+    "title": "privatlivspolitik",
+    "last_updated": "Sidst opdateret: {date}",
+    "welcome": "Velkommen til {app}. Vi er forpligtet til at beskytte dit privatliv. Denne politik forklarer, hvilke data vi indsamler, hvordan vi bruger dem, og dine rettigheder vedrørende dine oplysninger.",
     "cookies": {
       "what_are": {
-        "title": "What are cookies?",
-        "p1": "Cookies are small text files stored on your device when you visit a website. Their purpose is to enhance your browsing experience by remembering certain preferences and settings."
+        "title": "Hvad er cookies?",
+        "p1": "Cookies er små tekstfiler, der gemmes på din enhed, når du besøger en hjemmeside. Deres formål er at forbedre din browsingoplevelse ved at huske visse præferencer og indstillinger."
       },
       "types": {
-        "title": "What cookies do we use?",
-        "p1": "We only use {bold} for purposes strictly necessary for the site's functionality. We do not use third-party or advertising cookies.",
-        "bold": "essential technical cookies",
+        "title": "Hvilke cookies bruger vi?",
+        "p1": "Vi bruger kun {bold} til formål, der er strengt nødvendige for sidens funktionalitet. Vi bruger ikke tredjeparts- eller reklamecookies.",
+        "bold": "væsentlige tekniske cookies",
         "li1": "{li11}{separator} {li12}",
         "li2": "{li21}{separator} {li22}",
         "separator": ":",
         "cookie_vdpl": "__vdpl",
-        "cookie_vdpl_desc": "This cookie is used by our hosting provider (Vercel) for skew protection. It ensures you fetch assets from the correct deployment version if a new update is released while you are browsing. It does not track you.",
+        "cookie_vdpl_desc": "Denne cookie bruges af vores hostingudbyder (Vercel) til skævbeskyttelse. Den sikrer, at du henter ressourcer fra den korrekte deploymentsversion, hvis en ny opdatering frigives, mens du browser. Den sporer dig ikke.",
         "cookie_h3": "h3",
-        "cookie_h3_desc": "This is our secure session cookie. It stores the OAuth access token when you connect your Atmosphere account. It is essential for maintaining your authenticated session."
+        "cookie_h3_desc": "Dette er vores sikre sessionscookie. Den gemmer OAuth-adgangstokenet, når du forbinder din Atmosphere-konto. Den er afgørende for at opretholde din autentificerede session."
       },
       "local_storage": {
-        "title": "Local storage",
-        "p1": "In addition to session cookies, we use your browser's {bold} to save your display preferences. This allows us to remember the theme (light/dark) and some other {settings} you have selected, so you don't have to reconfigure them on each visit.",
-        "bold": "Local Storage",
-        "p2": "This information is purely functional, stored only on your device, and {bold2}. We use it exclusively to improve your experience on our website.",
-        "bold2": "contains no personal data nor is it used to track you",
-        "settings": "settings"
+        "title": "Lokal lagring",
+        "p1": "Ud over sessionscookies bruger vi din browsers {bold} til at gemme dine visningspræferencer. Dette gør det muligt for os at huske temaet (lys/mørk) og nogle andre {settings}, du har valgt, så du ikke behøver at konfigurere dem igen ved hvert besøg.",
+        "bold": "Lokal lagring",
+        "p2": "Disse oplysninger er udelukkende funktionelle, gemt kun på din enhed, og {bold2}. Vi bruger det udelukkende til at forbedre din oplevelse på vores hjemmeside.",
+        "bold2": "indeholder ingen personlige data og bruges ikke til at spore dig",
+        "settings": "indstillinger"
       },
       "management": {
-        "title": "Managing cookies",
-        "p1": "You can configure your browser to accept, reject, or delete cookies according to your preferences. However, please note that {bold}.",
-        "bold": "rejecting essential cookies may prevent full access to the application",
-        "p2": "Below are links with instructions for cookie management in the most commonly used browsers:",
-        "chrome": "Google Chrome (opens in a new window)",
-        "firefox": "Mozilla Firefox (opens in a new window)",
-        "edge": "Microsoft Edge (opens in a new window)"
+        "title": "Håndtering af cookies",
+        "p1": "Du kan konfigurere din browser til at acceptere, afvise eller slette cookies i henhold til dine præferencer. Bemærk dog, at {bold}.",
+        "bold": "afvisning af væsentlige cookies kan forhindre fuld adgang til applikationen",
+        "p2": "Nedenfor er links med instruktioner til cookiehåndtering i de mest anvendte browsere:",
+        "chrome": "Google Chrome (åbner i et nyt vindue)",
+        "firefox": "Mozilla Firefox (åbner i et nyt vindue)",
+        "edge": "Microsoft Edge (åbner i et nyt vindue)"
       }
     },
     "analytics": {
       "title": "Analytics",
-      "p1": "We use {bold} to understand how visitors use our website. This helps us improve the user experience and identify issues.",
+      "p1": "Vi bruger {bold} til at forstå, hvordan besøgende bruger vores hjemmeside. Dette hjælper os med at forbedre brugeroplevelsen og identificere problemer.",
       "bold": "Vercel Web Analytics",
-      "p2": "Vercel Analytics is designed with privacy in mind:",
-      "li1": "It does not use cookies",
-      "li2": "It does not collect personal identifiers",
-      "li3": "It does not track users across websites",
-      "li4": "All data is aggregated and anonymised",
-      "p3": "The only information collected includes: page URLs, referrer, country/region, device type, browser, and operating system. This data cannot be used to identify individual users."
+      "p2": "Vercel Analytics er designet med privatliv for øje:",
+      "li1": "Det bruger ikke cookies",
+      "li2": "Det indsamler ikke personlige identifikatorer",
+      "li3": "Det sporer ikke brugere på tværs af hjemmesider",
+      "li4": "Alle data er aggregerede og anonymiserede",
+      "p3": "De eneste oplysninger, der indsamles, inkluderer: side-URL'er, henvisninger, land/region, enhedstype, browser og operativsystem. Disse data kan ikke bruges til at identificere individuelle brugere."
     },
     "authenticated": {
-      "title": "Authenticated users",
-      "p1": "When you connect your {bold} account to npmx, we store your OAuth access token in a secure, HTTP-only session cookie. This token is used solely to authenticate requests on your behalf.",
+      "title": "Autentificerede brugere",
+      "p1": "Når du forbinder din {bold} konto til npmx, gemmer vi dit OAuth-adgangstoken i en sikker, HTTP-only sessionscookie. Dette token bruges udelukkende til at autentificere forespørgsler på dine vegne.",
       "bold": "Atmosphere",
-      "p2": "We do not store your credentials, and we do not access any data beyond what is necessary to provide the features you use. You can disconnect your account at any time from the {settings} page.",
-      "settings": "settings"
+      "p2": "Vi gemmer ikke dine legitimationsoplysninger, og vi får ikke adgang til nogen data ud over det, der er nødvendigt for at levere de funktioner, du bruger. Du kan til enhver tid afbryde din konto fra {settings}-siden.",
+      "settings": "indstillinger"
     },
     "data_retention": {
-      "title": "Data retention",
-      "p1": "Session cookies are automatically deleted when you close your browser or after a period of inactivity. Local storage preferences remain on your device until you clear your browser data. Analytics data is retained in aggregate form and cannot be linked to individual users."
+      "title": "Opbevaring af data",
+      "p1": "Sessionscookies slettes automatisk, når du lukker din browser eller efter en periode med inaktivitet. Lokale lagringspræferencer forbliver på din enhed, indtil du rydder dine browserdata. Analytics-data opbevares i aggregeret form og kan ikke knyttes til individuelle brugere."
     },
     "your_rights": {
-      "title": "Your rights",
-      "p1": "You have the right to:",
-      "li1": "Access information about what data we collect",
-      "li2": "Clear your local storage and cookies at any time",
-      "li3": "Disconnect your authenticated session",
-      "li4": "Request information about our data practices",
-      "p2": "Since we do not collect personal data, there is typically no personal information to delete or export."
+      "title": "Dine rettigheder",
+      "p1": "Du har ret til:",
+      "li1": "At få adgang til oplysninger om, hvilke data vi indsamler",
+      "li2": "At rydde din lokale lagring og cookies når som helst",
+      "li3": "At afbryde din autentificerede session",
+      "li4": "At anmode om oplysninger om vores datapolitikker",
+      "p2": "Da vi ikke indsamler personlige data, er der typisk ingen personlige oplysninger at slette eller eksportere."
     },
     "contact": {
-      "title": "Contact us",
-      "p1": "For any questions or concerns about this privacy policy, you can contact us by opening an issue on our {link}.",
+      "title": "Kontakt os",
+      "p1": "For spørgsmål eller bekymringer om denne privatlivspolitik, kan du kontakte os ved at åbne en sag på vores {link}.",
       "link": "GitHub repository"
     },
     "changes": {
-      "title": "Changes to this policy",
-      "p1": "We may update this privacy policy from time to time. Any changes will be published on this page with an updated revision date."
+      "title": "Ændringer i denne politik",
+      "p1": "Vi kan opdatere denne privatlivspolitik fra tid til anden. Eventuelle ændringer vil blive offentliggjort på denne side med en opdateret revisionsdato."
     }
   },
   "a11y": {
-    "title": "accessibility",
+    "title": "tilgængelighed",
     "footer_title": "a11y",
-    "welcome": "We want {app} to be usable by as many people as possible.",
+    "welcome": "Vi ønsker, at {app} skal være brugbar for så mange mennesker som muligt.",
     "approach": {
-      "title": "Our approach",
-      "p1": "We try to follow the Web Content Accessibility Guidelines (WCAG) 2.2 and use them as a reference when building features. We don't claim full conformance with any level of WCAG — accessibility is a continual process and there is always more work to do.",
-      "p2": "This site is an {about}. Accessibility improvements are made incrementally as part of our regular development.",
-      "about_link": "open-source, community-driven project"
+      "title": "Vores tilgang",
+      "p1": "Vi forsøger at følge Web Content Accessibility Guidelines (WCAG) 2.2 og bruger dem som reference, når vi bygger funktioner. Vi hævder ikke fuld overensstemmelse med nogen WCAG-niveau — tilgængelighed er en kontinuerlig proces, og der er altid mere arbejde at gøre.",
+      "p2": "Dette websted er et {about}. Tilgængelighedsforbedringer foretages gradvist som en del af vores regelmæssige udvikling.",
+      "about_link": "open-source, community-drevet projekt"
     },
     "measures": {
-      "title": "What we do",
-      "p1": "Some of the things we aim to do across the site:",
-      "li1": "Use semantic HTML and ARIA attributes where appropriate.",
-      "li2": "Use relative text sizes so you can adjust them in your browser.",
-      "li3": "Support keyboard navigation throughout the interface.",
-      "li4": "Respect the prefers-reduced-motion and prefers-color-scheme media queries.",
-      "li5": "Design with sufficient color contrast in mind.",
-      "li6": "Ensure essential content is available without JavaScript, though some interactive features require it."
+      "title": "Hvad vi gør",
+      "p1": "Nogle af de ting, vi stræber efter at gøre på tværs af webstedet:",
+      "li1": "Brug semantisk HTML og ARIA-attributter, hvor det er relevant.",
+      "li2": "Brug relative tekststørrelser, så du kan justere dem i din browser.",
+      "li3": "Understøt tastaturnavigation i hele grænsefladen.",
+      "li4": "Respekter mediernes forespørgsler om reduceret bevægelse og farveskema.",
+      "li5": "Design med tilstrækkelig farvekontrast i tankerne.",
+      "li6": "Sørg for, at væsentligt indhold er tilgængeligt uden JavaScript, selvom nogle interaktive funktioner kræver det."
     },
     "limitations": {
-      "title": "Known limitations",
-      "p1": "Some parts of the site — particularly third-party content like package READMEs — may not meet accessibility standards. We are working to improve these areas over time."
+      "title": "Kendte begrænsninger",
+      "p1": "Nogle dele af webstedet — især tredjepartsindhold som pakke-README'er — opfylder muligvis ikke tilgængelighedsstandarder. Vi arbejder på at forbedre disse områder over tid."
     },
     "contact": {
       "title": "Feedback",
-      "p1": "If you encounter an accessibility barrier on {app}, please let us know by opening an issue on our {link}. We take these reports seriously and will do our best to address them.",
+      "p1": "Hvis du støder på en tilgængelighedsbarriere på {app}, bedes du give os besked ved at åbne en sag på vores {link}. Vi tager disse rapporter alvorligt og vil gøre vores bedste for at løse dem.",
       "link": "GitHub repository"
     }
   },
   "translation_status": {
-    "title": "translation status",
-    "generated_at": "Generation date: {date}",
-    "welcome": "If you're interested in helping us to translate {npmx} into one of the languages listed below, you've come to the right place! This auto-updating page always lists all the content that could use your help right now.",
-    "p1": "We use {lang} as the default language, with a total of {count}. If you'd like to help add translations, locate the language in {bylang} and expand the details.",
-    "p1_lang": "American English (en-US)",
-    "p1_count": "0 messages | 1 message |{count} messages",
-    "p2": "Before starting, please read our {guide} to learn about our translation process and how you can get involved.",
-    "guide": "localization (i18n) guide",
-    "by_locale": "Translation progress by locale",
-    "by_file": "Translation progress by file",
-    "complete_text": "This translation is complete, amazing job!",
-    "missing_text": "missing",
+    "title": "oversættelsesstatus",
+    "generated_at": "Genereringsdato: {date}",
+    "welcome": "Hvis du er interesseret i at hjælpe os med at oversætte {npmx} til et af de sprog, der er angivet nedenfor, er du kommet til det rigtige sted! Denne automatisk opdaterende side viser altid alt indhold, der kunne bruge din hjælp lige nu.",
+    "p1": "Vi bruger {lang} som standardsprog, med i alt {count}. Hvis du gerne vil hjælpe med at tilføje oversættelser, skal du finde sproget i {bylang} og udvide detaljerne.",
+    "p1_lang": "Amerikansk engelsk (en-US)",
+    "p1_count": "0 beskeder | 1 besked |{count} beskeder",
+    "p2": "Før du går i gang, bedes du læse vores {guide} for at lære om vores oversættelsesproces og hvordan du kan deltage.",
+    "guide": "lokaliseringsguide (i18n)",
+    "by_locale": "Oversættelsesfremskridt efter lokalitet",
+    "by_file": "Oversættelsesfremskridt efter fil",
+    "complete_text": "Denne oversættelse er fuldført, fantastisk arbejde!",
+    "missing_text": "mangler",
     "missing_keys": "There is no missing translations | Missing translation | Missing translations",
     "progress_label": "Progress status for {locale}",
     "table": {
