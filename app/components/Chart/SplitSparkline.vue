@@ -66,15 +66,20 @@ const { colors } = useCssVariables(
 )
 
 const isDarkMode = computed(() => resolvedMode.value === 'dark')
+const isRtl = computed(() => {
+  if (import.meta.server) return false
+  return document.documentElement.dir === 'rtl'
+})
 
 const datasets = computed<VueUiSparklineDatasetItem[][]>(() => {
   return (props.dataset ?? []).map(unit => {
-    return props.dates.map((period, i) => {
+    const items = props.dates.map((period, i) => {
       return {
         period,
         value: unit.series[i] ?? 0,
       }
     })
+    return isRtl.value ? items.toReversed() : items
   })
 })
 
@@ -192,7 +197,12 @@ const configs = computed(() => {
 <template>
   <div class="grid gap-8 sm:grid-cols-2">
     <ClientOnly v-for="(config, i) in configs" :key="`config_${i}`">
-      <div @mouseleave="resetHover" @keydown.esc="resetHover" class="w-full max-w-[400px] mx-auto">
+      <div
+        @mouseleave="resetHover"
+        @keydown.esc="resetHover"
+        class="w-full max-w-[400px] mx-auto"
+        dir="ltr"
+      >
         <div class="flex gap-2 place-items-center">
           <div class="h-3 w-3">
             <svg viewBox="0 0 2 2" class="w-full">
