@@ -459,6 +459,15 @@ const versionUrlPattern = computed(
   () => `/package/${pkg.value?.name || packageName.value}/v/{version}`,
 )
 
+//delete
+watch(
+  resolvedVersion,
+  newV => {
+    console.log('#1 resolvedVersion ', newV)
+  },
+  { immediate: true },
+)
+
 const dependencyCount = computed(() => getDependencyCount(displayVersion.value))
 
 const numberFormatter = useNumberFormatter()
@@ -582,11 +591,7 @@ const showSkeleton = shallowRef(false)
                 {{ $t('package.stats.license') }}
               </dt>
               <dd class="font-mono text-sm text-fg">
-                <LicenseDisplay
-                  v-if="pkg.license"
-                  :license="pkg.license"
-                  :package-name="pkg.name"
-                />
+                <LicenseDisplay v-if="pkg.license" :license="pkg.license" />
                 <span v-else>{{ $t('package.license.none') }}</span>
               </dd>
             </div>
@@ -887,6 +892,8 @@ const showSkeleton = shallowRef(false)
         </section>
 
         <div class="space-y-6" :class="$style.areaVulns">
+          <!-- license change warning -->
+          <LicenseChangeWarning :packageName="pkg.name" :resolvedVersion="resolvedVersion" />
           <!-- Bad package warning -->
           <PackageReplacement v-if="moduleReplacement" :replacement="moduleReplacement" />
           <!-- Size / dependency increase notice -->

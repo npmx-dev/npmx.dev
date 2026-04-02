@@ -26,11 +26,19 @@ interface NpmRegistryResponse {
 /**
  * Composable to detect license changes across all versions of a package
  */
-export function useLicenseChanges(packageName: MaybeRefOrGetter<string | null | undefined>) {
+export function useLicenseChanges(
+  packageName: MaybeRefOrGetter<string | null | undefined>,
+  resolvedVersion: MaybeRefOrGetter<string | null | undefined> = () => undefined,
+) {
   return useAsyncData<LicenseChangesResult>(
-    () => `license-changes:${toValue(packageName)}`,
+    () => {
+      const name = toValue(packageName)
+      const version = toValue(resolvedVersion) ?? 'latest'
+      return `license-changes:${name}:${version}`
+    },
     async () => {
       const name = toValue(packageName)
+      const resolvedVer = toValue(resolvedVersion)
       if (!name) return { changes: [] }
 
       // Fetch full package metadata from npm registry
@@ -38,7 +46,6 @@ export function useLicenseChanges(packageName: MaybeRefOrGetter<string | null | 
       const data = await $fetch<NpmRegistryResponse>(url)
 
       const changes: LicenseChange[] = []
-      let prevLicense: string | undefined = undefined
 
       // `data.versions` is an object with version keys
       const versions = Object.values(data.versions) as NpmRegistryVersion[]
@@ -52,23 +59,30 @@ export function useLicenseChanges(packageName: MaybeRefOrGetter<string | null | 
         return dateA - dateB
       })
 
-      // Detect license changes
-      for (const version of versions) {
-        const license = (version.license as string) ?? 'UNKNOWN'
-        if (prevLicense && license !== prevLicense) {
-          changes.push({
-            from: prevLicense,
-            to: license,
-            version: version.version as string,
-          })
+      // When resolvedVer is not provided, check changes across all versions
+      const targetVersion = resolvedVer ?? versions[versions.length - 1]?.version
+
+      if (targetVersion) {
+        const resolvedIndex = versions.findIndex(v => v.version === targetVersion)
+
+        if (resolvedIndex > 0) {
+          const currentLicense = (versions[resolvedIndex]?.license as string) ?? 'UNKNOWN'
+          const previousLicense = (versions[resolvedIndex - 1]?.license as string) ?? 'UNKNOWN'
+
+          if (currentLicense !== previousLicense) {
+            changes.push({
+              from: previousLicense,
+              to: currentLicense,
+              version: (versions[resolvedIndex]?.version as string) || 'UNKNOWN',
+            })
+          }
         }
-        prevLicense = license
       }
       return { changes }
     },
     {
       default: () => ({ changes: [] }),
-      watch: [() => toValue(packageName)],
+      watch: [() => toValue(packageName), () => toValue(resolvedVersion)],
     },
   )
 }
