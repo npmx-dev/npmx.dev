@@ -3,10 +3,6 @@
   "trailingSlash": false,
   "redirects": [
     {
-      "source": "/theme-research",
-      "destination": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-    },
-    {
       "source": "/(.*)",
       "has": [
         {

@@ -2,7 +2,7 @@
 const router = useRouter()
 const { settings } = useSettings()
 const { locale: currentLocale, locales, setLocale: setNuxti18nLocale } = useI18n()
-// const colorMode = useColorMode()
+const colorMode = useColorMode()
 const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
 const keyboardShortcutsEnabled = useKeyboardShortcuts()
 
@@ -66,7 +66,7 @@ const setLocale: typeof setNuxti18nLocale = newLocale => {
           </h2>
           <div class="bg-bg-subtle border border-border rounded-lg p-4 sm:p-6 space-y-6">
             <!-- Theme selector -->
-            <!-- <div class="space-y-2">
+            <div class="space-y-2">
               <label for="theme-select" class="block text-sm text-fg font-medium">
                 {{ $t('settings.theme') }}
               </label>
@@ -82,7 +82,7 @@ const setLocale: typeof setNuxti18nLocale = newLocale => {
                   { label: $t('settings.theme_dark'), value: 'dark' },
                 ]"
               />
-            </div> -->
+            </div>
 
             <!-- Accent colors -->
             <div class="space-y-3">

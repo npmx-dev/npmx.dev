@@ -92,16 +92,6 @@ defineOgImageComponent('Default', {
         </search>
 
         <BuildEnvironment class="mt-4" />
-        <p class="max-w-3xl mx-auto text-center">
-          <b>Update:</b>
-          We’ve completed our user experience research and carefully reviewed the results. To
-          deliver the best possible experience, we’ve decided to <b>remove the dark theme</b>. We’re
-          committed to making decisions based on what works best for our users and are glad we took
-          the time to validate this through
-          <a href="/theme-research" target="_blank" rel="noopener noreferrer" class="underline"
-            >user research</a
-          >. Thank you for participating 🤍
-        </p>
       </header>
 
       <nav
