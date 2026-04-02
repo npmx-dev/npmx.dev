@@ -7,6 +7,7 @@ import {
   type VueUiXyDatasetItem,
 } from 'vue-data-ui'
 import { getPalette, lightenColor } from 'vue-data-ui/utils'
+import { useTextDirection } from '@vueuse/core'
 
 import('vue-data-ui/style.css')
 
@@ -66,10 +67,8 @@ const { colors } = useCssVariables(
 )
 
 const isDarkMode = computed(() => resolvedMode.value === 'dark')
-const isRtl = computed(() => {
-  if (import.meta.server) return false
-  return document.documentElement.dir === 'rtl'
-})
+const dir = useTextDirection()
+const isRtl = computed(() => dir.value === 'rtl')
 
 const datasets = computed<VueUiSparklineDatasetItem[][]>(() => {
   return (props.dataset ?? []).map(unit => {
