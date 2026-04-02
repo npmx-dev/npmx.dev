@@ -153,6 +153,7 @@
     --fg: oklch(1 0 0);
     --fg-muted: oklch(0.769 0 0);
     --fg-subtle: oklch(0.693 0 0);
+
     /* border, separator colors */
     --border: oklch(0.769 0 0);
     --border-subtle: oklch(0.739 0 0);
@@ -274,8 +275,7 @@ dd {
 }
 
 /* Shiki theme colors */
-/* html.light .shiki { */
-html .shiki {
+html.light .shiki {
   color: var(--shiki-light) !important;
   background-color: var(--shiki-light-bg) !important;
 
