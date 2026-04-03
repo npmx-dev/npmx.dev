@@ -1,9 +1,8 @@
-import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite-plus'
 import { defineVitestProject } from '@nuxt/test-utils/config'
 import { playwright } from 'vite-plus/test/browser-playwright'
 
-const rootDir = fileURLToPath(new URL('.', import.meta.url))
+const rootDir = import.meta.dirname
 
 export default defineConfig({
   run: {
@@ -187,7 +186,7 @@ export default defineConfig({
             environment: 'nuxt',
             environmentOptions: {
               nuxt: {
-                rootDir: fileURLToPath(new URL('.', import.meta.url)),
+                rootDir,
                 overrides: {
                   vue: {
                     runtimeCompiler: true,
