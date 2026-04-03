@@ -125,6 +125,24 @@ export interface ExecuteCommandOptions extends InstallCommandOptions {
   isCreatePackage?: boolean
 }
 
+function getCreatePackageSpecifier(options: ExecuteCommandOptions): string | null {
+  const { packageName, packageManager, isCreatePackage } = options
+
+  if (!isCreatePackage) {
+    return null
+  }
+  const shortName = getCreateShortName(packageName)
+  if (shortName === packageName) {
+    return null
+  }
+  if (packageManager === 'deno') {
+    // npm compatibility: npm:package
+    return `npm:${shortName}`
+  }
+
+  return shortName
+}
+
 export function getExecuteCommand(options: ExecuteCommandOptions): string {
   return getExecuteCommandParts(options).join(' ')
 }
@@ -133,15 +151,10 @@ export function getExecuteCommandParts(options: ExecuteCommandOptions): string[]
   const pm = packageManagers.find(p => p.id === options.packageManager)
   if (!pm) return []
 
-  // For create-* packages, use the shorthand create command
-  if (options.isCreatePackage) {
-    const shortName = getCreateShortName(options.packageName, options.packageManager)
-    if (shortName !== options.packageName) {
-      if (options.packageManager === 'deno') {
-        return ['deno', 'create', `npm:${shortName}`]
-      }
-      return [...pm.create.split(' '), shortName]
-    }
+  // For create-* packages, use the shorthand create command.
+  const createSpecifier = getCreatePackageSpecifier(options)
+  if (createSpecifier) {
+    return [...pm.create.split(' '), createSpecifier]
   }
 
   // Choose remote or local execute based on package type
