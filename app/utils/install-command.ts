@@ -135,7 +135,7 @@ export function getExecuteCommandParts(options: ExecuteCommandOptions): string[]
 
   // For create-* packages, use the shorthand create command
   if (options.isCreatePackage) {
-    const shortName = getCreateShortName(options.packageName)
+    const shortName = getCreateShortName(options.packageName, options.packageManager)
     if (shortName !== options.packageName) {
       if (options.packageManager === 'deno') {
         return ['deno', 'create', `npm:${shortName}`]

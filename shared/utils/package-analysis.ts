@@ -207,7 +207,7 @@ export function getCreatePackageName(packageName: string): string {
  * Extract the short name from a create-* package for display.
  * e.g., "create-vite" -> "vite", "@scope/create-foo" -> "@scope/foo", "@scope/create" -> "@scope"
  */
-export function getCreateShortName(createPackageName: string): string {
+export function getCreateShortName(createPackageName: string, packageManager: string): string {
   if (createPackageName.startsWith('@')) {
     // @scope/create -> @scope, @scope/create-foo -> @scope/foo
     const slashIndex = createPackageName.indexOf('/')
@@ -224,6 +224,9 @@ export function getCreateShortName(createPackageName: string): string {
   // create-vite -> vite
   if (createPackageName.startsWith('create-')) {
     return createPackageName.slice('create-'.length)
+  }
+  if (packageManager === 'deno') {
+    createPackageName = `npm:${createPackageName}`
   }
   return createPackageName
 }
