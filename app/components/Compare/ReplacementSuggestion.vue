@@ -22,8 +22,13 @@ const nodeVersion = computed(() => {
   return nodeEngine?.minVersion || null
 })
 
+function getReplacementDescription(replacement: ModuleReplacement) {
+  if (replacement.type === 'documented') return ''
+  return props.replacement.description ?? ''
+}
+
 const replacementDescription = useMarkdown(() => ({
-  text: (props.replacement as { description?: string }).description ?? '',
+  text: getReplacementDescription(props.replacement),
 }))
 </script>
 
