@@ -459,15 +459,6 @@ const versionUrlPattern = computed(
   () => `/package/${pkg.value?.name || packageName.value}/v/{version}`,
 )
 
-//delete
-watch(
-  resolvedVersion,
-  newV => {
-    console.log('#1 resolvedVersion ', newV)
-  },
-  { immediate: true },
-)
-
 const dependencyCount = computed(() => getDependencyCount(displayVersion.value))
 
 const numberFormatter = useNumberFormatter()
