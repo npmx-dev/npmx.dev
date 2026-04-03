@@ -233,6 +233,7 @@ import {
   PackageSelectionView,
   PackageSelectionCheckbox,
   PackageExternalLinks,
+  LicenseChangeWarning,
 } from '#components'
 
 // Server variant components must be imported directly to test the server-side render
@@ -333,6 +334,22 @@ describe('component accessibility audits', () => {
     })
   })
 
+describe('LicenseChangeWarning', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(LicenseChangeWarning, {
+        props: {
+          packageName: 'vue',
+          resolvedVersion: '3.4.0',
+        },
+        global: {
+          mocks: { $t: (key: string) => key },
+          stubs: { 'i18n-t': { template: '<span><slot name="license_change" /></span>' } },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
   describe('AppLogo', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(AppLogo)
