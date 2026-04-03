@@ -72,7 +72,6 @@ function hasProvenance(version: PackumentVersion | null): boolean {
   return !!(version.dist as { attestations?: unknown }).attestations
 }
 
-const router = useRouter()
 // Docs URL: use our generated API docs
 const docsLink = computed(() => {
   if (!props.resolvedVersion) return null
@@ -122,57 +121,26 @@ const diffLink = computed((): RouteLocationRaw | null => {
 
 const keyboardShortcuts = useKeyboardShortcuts()
 
-onKeyStroke(
-  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, '.') && !isEditableElement(e.target),
-  e => {
-    if (codeLink.value === null) return
-    e.preventDefault()
+const shortcuts: [string, () => RouteLocationRaw | null | false | undefined][] = [
+  ['.', () => codeLink.value],
+  ['m', () => mainLink.value],
+  ['d', () => docsLink.value],
+  ['c', () => props.pkg && { name: 'compare' as const, query: { packages: props.pkg.name } }],
+  ['f', () => diffLink.value],
+]
 
-    navigateTo(codeLink.value)
-  },
-  { dedupe: true },
-)
-
-onKeyStroke(
-  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, 'm') && !isEditableElement(e.target),
-  e => {
-    if (mainLink.value === null) return
-    e.preventDefault()
-
-    navigateTo(mainLink.value)
-  },
-  { dedupe: true },
-)
-
-onKeyStroke(
-  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, 'd') && !isEditableElement(e.target),
-  e => {
-    if (!docsLink.value) return
-    e.preventDefault()
-    navigateTo(docsLink.value)
-  },
-  { dedupe: true },
-)
-
-onKeyStroke(
-  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, 'c') && !isEditableElement(e.target),
-  e => {
-    if (!props.pkg) return
-    e.preventDefault()
-    router.push({ name: 'compare', query: { packages: props.pkg.name } })
-  },
-  { dedupe: true },
-)
-
-onKeyStroke(
-  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, 'f') && !isEditableElement(e.target),
-  e => {
-    if (diffLink.value === null) return
-    e.preventDefault()
-    navigateTo(diffLink.value)
-  },
-  { dedupe: true },
-)
+for (const [key, getTarget] of shortcuts) {
+  onKeyStroke(
+    e => keyboardShortcuts.value && isKeyWithoutModifiers(e, key) && !isEditableElement(e.target),
+    e => {
+      const target = getTarget()
+      if (!target) return
+      e.preventDefault()
+      navigateTo(target)
+    },
+    { dedupe: true },
+  )
+}
 
 const fundingUrl = computed(() => {
   let funding = props.displayVersion?.funding
