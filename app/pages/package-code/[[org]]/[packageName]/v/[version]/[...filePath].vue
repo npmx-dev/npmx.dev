@@ -292,7 +292,7 @@ onPrehydrate(el => {
   const settingsSaved = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
   const container = el.querySelector('#code-page-container')
 
-  if (settingsSaved?.codeContainerFull === true && container) {
+  if (settingsSaved?.codeContainerFull !== false && container) {
     container.classList.add('container-full')
   }
 })
