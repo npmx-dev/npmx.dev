@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import type { RouteLocationRaw } from 'vue-router'
 import { SCROLL_TO_TOP_THRESHOLD } from '~/composables/useScrollToTop'
-import { isEditableElement } from '~/utils/input'
 
 const props = defineProps<{
   pkg?: Pick<SlimPackument, 'name' | 'versions' | 'dist-tags'> | null
@@ -119,28 +117,13 @@ const diffLink = computed((): RouteLocationRaw | null => {
   return diffRoute(props.pkg.name, props.resolvedVersion, props.latestVersion.version)
 })
 
-const keyboardShortcuts = useKeyboardShortcuts()
-
-const shortcuts: [string, () => RouteLocationRaw | null | false | undefined][] = [
-  ['.', () => codeLink.value],
-  ['m', () => mainLink.value],
-  ['d', () => docsLink.value],
-  ['c', () => props.pkg && { name: 'compare' as const, query: { packages: props.pkg.name } }],
-  ['f', () => diffLink.value],
-]
-
-for (const [key, getTarget] of shortcuts) {
-  onKeyStroke(
-    e => keyboardShortcuts.value && isKeyWithoutModifiers(e, key) && !isEditableElement(e.target),
-    e => {
-      const target = getTarget()
-      if (!target) return
-      e.preventDefault()
-      navigateTo(target)
-    },
-    { dedupe: true },
-  )
-}
+useShortcuts({
+  '.': () => codeLink.value,
+  'm': () => mainLink.value,
+  'd': () => docsLink.value,
+  'c': () => props.pkg && { name: 'compare' as const, query: { packages: props.pkg.name } },
+  'f': () => diffLink.value,
+})
 
 const fundingUrl = computed(() => {
   let funding = props.displayVersion?.funding
