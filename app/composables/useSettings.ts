@@ -38,7 +38,8 @@ export interface AppSettings {
     /** Automatically open the web auth page in the browser */
     autoOpenURL: boolean
   }
-  codeContainerFull: boolean
+  /** Container width on code page */
+  codeContainerFull: true
   sidebar: {
     collapsed: string[]
   }
