@@ -825,12 +825,10 @@
   "code": {
     "files_label": "Filer",
     "no_files": "Ingen filer i denne mappe",
-    "root": "rod",
     "lines": "{count} linje | {count} linjer",
     "toggle_tree": "Skift filtræ",
     "close_tree": "Luk filtræ",
     "copy_link": "Kopiér link",
-    "raw": "Rå",
     "view_raw": "Se rå fil",
     "file_too_large": "Fil for stor til forhåndsvisning",
     "file_size_warning": "{size} overskrider 500KB-grænsen for syntaksfremhævning",
