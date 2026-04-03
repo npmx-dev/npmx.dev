@@ -13,11 +13,10 @@ import {
   type BlogPostFrontmatter,
   type ResolvedAuthor,
 } from '../shared/schemas/blog'
-import { globSync } from 'tinyglobby'
 import { isProduction } from '../config/env'
 import { BLUESKY_API } from '../shared/utils/constants'
 import { mkdir, writeFile } from 'node:fs/promises'
-import { existsSync } from 'node:fs'
+import { existsSync, globSync } from 'node:fs'
 import crypto from 'node:crypto'
 
 /**
@@ -89,7 +88,7 @@ function resolveAuthors(authors: Author[], avatarMap: Map<string, string>): Reso
  * Resolves Bluesky avatars at build time.
  */
 async function loadBlogPosts(blogDir: string, imagesDir: string): Promise<BlogPostFrontmatter[]> {
-  const files: string[] = globSync(join(blogDir, '*.md').replace(/\\/g, '/'))
+  const files = globSync('*.md', { cwd: blogDir }).map(file => join(blogDir, file))
 
   // First pass: extract raw frontmatter and collect all Bluesky handles
   const rawPosts: Array<{ frontmatter: Record<string, unknown> }> = []
