@@ -175,6 +175,14 @@ useCommandPaletteContextCommands(
     </li>
     <li>
       <LinkBase
+        :to="`https://socket.dev/npm/package/${pkg.name}`"
+        :title="$t('common.view_on.socket_dev')"
+      >
+        socket.dev
+      </LinkBase>
+    </li>
+    <li>
+      <LinkBase
         :to="`https://www.npmjs.com/package/${pkg.name}`"
         :title="$t('common.view_on.npm')"
         classicon="i-simple-icons:npm"
