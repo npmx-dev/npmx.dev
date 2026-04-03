@@ -199,7 +199,7 @@ function handleSearchFocus() {
 }
 
 useShortcuts({
-  c: () => ({ name: 'compare' }),
+  'c': () => ({ name: 'compare' }),
   ',': () => ({ name: 'settings' }),
 })
 </script>
