@@ -949,25 +949,25 @@
       "table": "Tabelvisning"
     },
     "pagination": {
-      "mode_label": "Pagination mode",
-      "infinite": "Infinite",
-      "paginated": "Paginated",
-      "items_per_page": "Items per page",
-      "per_page": "{count} / page",
-      "showing": "{range} of {total}",
-      "previous": "Previous page",
-      "next": "Next page",
-      "nav_label": "Pagination"
+      "mode_label": "Pagineringstilstand",
+      "infinite": "Uendelig",
+      "paginated": "Pagineret",
+      "items_per_page": "Elementer pr. side",
+      "per_page": "{count} / side",
+      "showing": "{range} ud af {total}",
+      "previous": "Forrige side",
+      "next": "Næste side",
+      "nav_label": "Paginering"
     },
     "count": {
-      "showing_filtered": "{filtered} of {count} package | {filtered} of {count} packages",
-      "showing_all": "{count} package | {count} packages",
-      "showing_paginated": "{pageSize} of {count} package | {pageSize} of {count} packages"
+      "showing_filtered": "{filtered} ud af {count} pakke | {filtered} ud af {count} pakker",
+      "showing_all": "{count} pakke | {count} pakker",
+      "showing_paginated": "{pageSize} ud af {count} pakke | {pageSize} ud af {count} pakker"
     },
     "table": {
-      "security_warning": "Security warning",
-      "secure": "Secure",
-      "no_packages": "No packages found"
+      "security_warning": "Sikkerhedsadvarsel",
+      "secure": "Sikker",
+      "no_packages": "Ingen pakker fundet"
     }
   },
   "about": {
@@ -1043,15 +1043,15 @@
     }
   },
   "account_menu": {
-    "connect": "connect",
-    "account": "Account",
+    "connect": "forbind",
+    "account": "Konto",
     "npm_cli": "npm CLI",
     "atmosphere": "Atmosphere",
-    "npm_cli_desc": "Manage packages & orgs",
-    "atmosphere_desc": "Social features & identity",
-    "connect_npm_cli": "Connect to npm CLI",
-    "connect_atmosphere": "Connect to Atmosphere",
-    "connecting": "Connecting...",
+    "npm_cli_desc": "Administrer pakker & organisationer",
+    "atmosphere_desc": "Sociale funktioner & identitet",
+    "connect_npm_cli": "Forbind til npm CLI",
+    "connect_atmosphere": "Forbind til Atmosphere",
+    "connecting": "Forbinder...",
     "ops": "{count} op | {count} ops"
   },
   "auth": {
@@ -1280,23 +1280,23 @@
       "migrate": "Migrate with PDS MOOver"
     },
     "server": {
-      "title": "Server Details",
-      "location_label": "Location:",
-      "location_value": "Nuremberg, Germany",
-      "infrastructure_label": "Infrastructure:",
-      "infrastructure_value": "Hosted on Hetzner",
-      "privacy_label": "Privacy:",
-      "privacy_value": "Subject to strict EU Data Protection laws",
-      "learn_more": "Learn how npmx uses the Atmosphere"
+      "title": "Serverdetaljer",
+      "location_label": "Placering:",
+      "location_value": "Nürnberg, Tyskland",
+      "infrastructure_label": "Infrastruktur:",
+      "infrastructure_value": "Hostet på Hetzner",
+      "privacy_label": "Privatliv:",
+      "privacy_value": "Underlagt strenge EU-databeskyttelseslove",
+      "learn_more": "Lær hvordan npmx bruger Atmosphere"
     },
     "community": {
-      "title": "Who is here",
-      "description": "Some of the {count} accounts that are already calling npmx.social home:",
-      "loading": "Loading PDS community...",
-      "error": "Failed to load PDS community.",
-      "empty": "No community members to display.",
-      "view_profile": "View {handle}'s profile",
-      "new_accounts": "...plus {count} more that are new to the atmosphere"
+      "title": "Hvem er her",
+      "description": "Nogle af de {count} konti, der allerede kalder npmx.social hjem:",
+      "loading": "Indlæser PDS-fællesskab...",
+      "error": "Kunne ikke indlæse PDS-fællesskab.",
+      "empty": "Ingen fællesskabsmedlemmer at vise.",
+      "view_profile": "Se {handle}'s profil",
+      "new_accounts": "...plus {count} nye, der er nye i atmosfæren"
     }
   },
   "privacy_policy": {
