@@ -783,12 +783,10 @@
   "code": {
     "files_label": "文件",
     "no_files": "这个目录中没有文件",
-    "root": "根目录",
     "lines": "{count} 行",
     "toggle_tree": "切换文件树",
     "close_tree": "关闭文件树",
     "copy_link": "复制链接",
-    "raw": "原始文件",
     "view_raw": "查看原始文件",
     "file_too_large": "文件过大，无法预览",
     "file_size_warning": "{size} 超出了 500KB 的语法高亮限制",

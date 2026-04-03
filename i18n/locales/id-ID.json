@@ -825,12 +825,10 @@
   "code": {
     "files_label": "Berkas",
     "no_files": "Tidak ada file di direktori ini",
-    "root": "root",
     "lines": "{count} baris",
     "toggle_tree": "Ganti file tree",
     "close_tree": "Tutup file tree",
     "copy_link": "Salin tautan",
-    "raw": "Raw",
     "view_raw": "Lihat file mentah",
     "file_too_large": "Berkas terlalu besar untuk pratinjau",
     "file_size_warning": "{size} melebihi batas 500KB untuk penyorotan sintaksis",
@@ -1493,8 +1491,8 @@
       "mark_light_alt": "Logo mark npmx dengan titik dan garis di latar terang",
       "on_dark": "di latar gelap",
       "on_light": "di latar terang",
-      "download_png": "PNG",
       "download_svg": "SVG",
+      "download_png": "PNG",
       "download_svg_aria": "Unduh {name} sebagai SVG",
       "download_png_aria": "Unduh {name} sebagai PNG"
     },

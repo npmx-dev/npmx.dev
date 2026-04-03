@@ -109,7 +109,7 @@
     "vite-plugin-pwa": "1.2.0",
     "vite-plus": "0.1.12",
     "vue": "3.5.30",
-    "vue-data-ui": "3.17.1"
+    "vue-data-ui": "3.17.3"
   },
   "devDependencies": {
     "@e18e/eslint-plugin": "0.3.0",
