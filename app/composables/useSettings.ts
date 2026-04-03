@@ -39,7 +39,7 @@ export interface AppSettings {
     autoOpenURL: boolean
   }
   /** Container width on code page */
-  codeContainerFull: true
+  codeContainerFull: boolean
   sidebar: {
     collapsed: string[]
   }
@@ -65,7 +65,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   connector: {
     autoOpenURL: false,
   },
-  codeContainerFull: false,
+  codeContainerFull: true,
   sidebar: {
     collapsed: [],
   },
