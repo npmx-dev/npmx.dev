@@ -24,7 +24,7 @@ const nodeVersion = computed(() => {
 
 function getReplacementDescription(replacement: ModuleReplacement) {
   if (replacement.type === 'documented') return ''
-  return props.replacement.description ?? ''
+  return replacement.description ?? ''
 }
 
 const replacementDescription = useMarkdown(() => ({
