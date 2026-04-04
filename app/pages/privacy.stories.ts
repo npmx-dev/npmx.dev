@@ -1,14 +1,14 @@
-import About from './about.vue'
+import Privacy from './privacy.vue'
 import type { Meta, StoryObj } from '@storybook-vue/nuxt'
 import { pageDecorator } from '../../.storybook/decorators'
 
 const meta = {
-  component: About,
+  component: Privacy,
   parameters: {
     layout: 'fullscreen',
   },
   decorators: [pageDecorator],
-} satisfies Meta<typeof About>
+} satisfies Meta<typeof Privacy>
 
 export default meta
 type Story = StoryObj<typeof meta>

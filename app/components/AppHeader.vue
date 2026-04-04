@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { LinkBase } from '#components'
 import type { NavigationConfig, NavigationConfigWithGroups } from '~/types'
-import { isEditableElement } from '~/utils/input'
 import { NPMX_DOCS_SITE } from '#shared/utils/constants'
 
-const keyboardShortcuts = useKeyboardShortcuts()
 const discord = useDiscordLink()
 
 withDefaults(
@@ -200,22 +198,10 @@ function handleSearchFocus() {
   showFullSearch.value = true
 }
 
-onKeyStroke(
-  e => {
-    if (!keyboardShortcuts.value || isEditableElement(e.target)) {
-      return
-    }
-
-    for (const link of desktopLinks.value) {
-      if (link.to && link.keyshortcut && isKeyWithoutModifiers(e, link.keyshortcut)) {
-        e.preventDefault()
-        navigateTo(link.to)
-        break
-      }
-    }
-  },
-  { dedupe: true },
-)
+useShortcuts({
+  'c': () => ({ name: 'compare' }),
+  ',': () => ({ name: 'settings' }),
+})
 </script>
 
 <template>

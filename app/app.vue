@@ -50,6 +50,8 @@ if (import.meta.server) {
 const keyboardShortcuts = useKeyboardShortcuts()
 const { settings } = useSettings()
 
+initKeyShortcuts()
+
 onKeyDown(
   '/',
   e => {
