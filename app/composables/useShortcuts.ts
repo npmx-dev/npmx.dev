@@ -1,7 +1,7 @@
 import type { RouteLocationRaw } from 'vue-router'
 import { isEditableElement, isKeyWithoutModifiers } from '~/utils/input'
 
-type ShortcutTarget = RouteLocationRaw | null | false | undefined
+type ShortcutTarget = RouteLocationRaw | null | undefined
 type ShortcutTargetFactory = () => ShortcutTarget
 
 const registry = new Map<string, ShortcutTargetFactory[]>()
