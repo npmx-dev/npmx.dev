@@ -53,9 +53,7 @@ export default defineNuxtModule({
     const possiblePublication = await checkPublication(handle, pdsPublicClient)
 
     nuxt.hook('build:before', async () => {
-      const files = (await Array.fromAsync(glob('**/*.md', { cwd: contentDir }))).map(file =>
-        join(contentDir, file),
-      )
+      const files = await Array.fromAsync(glob(join(contentDir, '**/*.md')))
 
       // INFO: Arbitrarily chosen concurrency limit, can be changed if needed
       const concurrencyLimit = 5
