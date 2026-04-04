@@ -716,12 +716,10 @@
   "code": {
     "files_label": "Fájlok",
     "no_files": "Nincsenek fájlok ebben a könyvtárban",
-    "root": "gyökér",
     "lines": "{count} sor | {count} sor",
     "toggle_tree": "Fájlfa kapcsolása",
     "close_tree": "Fájlfa bezárása",
     "copy_link": "Link másolása",
-    "raw": "Nyers",
     "view_raw": "Nyers fájl megtekintése",
     "file_too_large": "A fájl túl nagy az előnézethez",
     "file_size_warning": "{size} meghaladja az 500KB-os limitet a szintaxis alapú formázáshoz",
