@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { RouteLocationRaw } from 'vue-router'
 import { SCROLL_TO_TOP_THRESHOLD } from '~/composables/useScrollToTop'
 
 const props = defineProps<{
