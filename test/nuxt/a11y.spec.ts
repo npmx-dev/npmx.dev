@@ -141,12 +141,14 @@ import {
   BlueskyPostEmbed,
   BuildEnvironment,
   ButtonBase,
+  LandingLogo,
   LinkBase,
   CallToAction,
-  ChartPatternSlot,
   CodeDirectoryListing,
   CodeFileTree,
+  CodeHeader,
   CodeMobileTreeDrawer,
+  CodeSkeletonLoader,
   CodeViewer,
   CopyToClipboardButton,
   CollapsibleSection,
@@ -326,6 +328,14 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(AppHeader, {
         props: { showConnector: false },
       })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('LandingLogo', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(LandingLogo)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
@@ -1242,6 +1252,44 @@ describe('component accessibility audits', () => {
           keywords: ['keyword1', 'keyword2'],
         },
       })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('CodeHeader', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(CodeHeader, {
+        props: {
+          filePath: 'misc/true.js',
+          loading: false,
+          isViewingFile: true,
+          isBinaryFile: false,
+          fileContent: {
+            package: 'vite',
+            version: '1.0.0',
+            path: 'misc/true.js',
+            language: 'javascript',
+            contentType: 'application/javascript',
+            content: 'const x = 1;',
+            html: '<pre><code><span class="line">const x = 1;</span></code></pre>',
+            lines: 1,
+          },
+          markdownViewMode: 'preview',
+          selectedLines: null,
+          getCodeUrlWithPath: (path = '') => `/package-code/vite/v/1.0.0/${path}`,
+          packageName: 'vite',
+          version: '1.0.0',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('CodeSkeletonLoader', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(CodeSkeletonLoader)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
@@ -2247,23 +2295,6 @@ describe('component accessibility audits', () => {
   describe('CallToAction', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(CallToAction)
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-  })
-
-  describe('ChartPatternSlot', () => {
-    it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(ChartPatternSlot, {
-        props: {
-          id: 'perennius',
-          seed: 1,
-          foregroundColor: 'black',
-          fallbackColor: 'transparent',
-          maxSize: 24,
-          minSize: 16,
-        },
-      })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })

@@ -12,9 +12,8 @@
 
 import { writeFileSync, mkdirSync, existsSync } from 'node:fs'
 import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url'
 
-const FIXTURES_DIR = fileURLToPath(new URL('../test/fixtures', import.meta.url))
+const FIXTURES_DIR = join(import.meta.dirname, '../test/fixtures')
 
 const NPM_REGISTRY = 'https://registry.npmjs.org'
 const NPM_API = 'https://api.npmjs.org'
