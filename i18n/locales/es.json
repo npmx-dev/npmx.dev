@@ -772,12 +772,10 @@
   "code": {
     "files_label": "Archivos",
     "no_files": "No hay archivos en este directorio",
-    "root": "raíz",
     "lines": "{count} líneas",
     "toggle_tree": "Alternar árbol de archivos",
     "close_tree": "Cerrar árbol de archivos",
     "copy_link": "Copiar enlace",
-    "raw": "Crudo",
     "view_raw": "Ver archivo crudo",
     "file_too_large": "Archivo demasiado grande para previsualizar",
     "file_size_warning": "{size} excede el límite de 500KB para resaltado de sintaxis",

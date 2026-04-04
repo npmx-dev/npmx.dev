@@ -634,12 +634,10 @@
   "code": {
     "files_label": "File",
     "no_files": "Nessun file in questa directory",
-    "root": "root",
     "lines": "{count} riga | {count} righe",
     "toggle_tree": "Attiva/disattiva albero dei file",
     "close_tree": "Chiudi albero dei file",
     "copy_link": "Copia link",
-    "raw": "Raw",
     "view_raw": "Visualizza file raw",
     "file_too_large": "File troppo grande per visualizzare l'anteprima",
     "file_size_warning": "{size} supera il limite di 500 KB per l'evidenziatore di sintassi",
