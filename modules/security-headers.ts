@@ -24,10 +24,10 @@ export default defineNuxtModule({
     const devtools = nuxt.options.devtools
 
     const isDevtoolsRuntime =
-      nuxt.options.dev
-      && devtools !== false
-      && (devtools == null || typeof devtools !== 'object' || devtools.enabled !== false)
-      && !process.env.TEST
+      nuxt.options.dev &&
+      devtools !== false &&
+      (devtools == null || typeof devtools !== 'object' || devtools.enabled !== false) &&
+      !process.env.TEST
 
     // These assets are embedded directly on blog pages and should not affect image-proxy trust.
     const cspOnlyImgOrigins = ['https://api.star-history.com', 'https://cdn.bsky.app']
@@ -99,8 +99,7 @@ export default defineNuxtModule({
       },
     }
 
-    if (!isDevtoolsRuntime)
-      return
+    if (!isDevtoolsRuntime) return
 
     const devtoolsRule = nuxt.options.routeRules['/__nuxt_devtools__/**']
     nuxt.options.routeRules['/__nuxt_devtools__/**'] = {

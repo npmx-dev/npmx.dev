@@ -42,9 +42,8 @@ function createNuxt(options: Partial<MockNuxt['options']> = {}): MockNuxt {
 }
 
 function getCsp(nuxt: MockNuxt) {
-  return nuxt.options.app.head?.meta?.find(
-    meta => meta['http-equiv'] === 'Content-Security-Policy',
-  )?.content
+  return nuxt.options.app.head?.meta?.find(meta => meta['http-equiv'] === 'Content-Security-Policy')
+    ?.content
 }
 
 describe('security headers module', () => {
@@ -79,12 +78,14 @@ describe('security headers module', () => {
 
     expect(csp).toContain('ws://localhost:*')
     expect(csp).toContain("frame-src https://bsky.app https://pdsmoover.com 'self'")
-    expect(nuxt.options.routeRules['/**']?.headers).toEqual(expect.objectContaining({
-      'Permissions-Policy': 'camera=()',
-      'Referrer-Policy': 'strict-origin-when-cross-origin',
-      'X-Content-Type-Options': 'nosniff',
-      'X-Frame-Options': 'DENY',
-    }))
+    expect(nuxt.options.routeRules['/**']?.headers).toEqual(
+      expect.objectContaining({
+        'Permissions-Policy': 'camera=()',
+        'Referrer-Policy': 'strict-origin-when-cross-origin',
+        'X-Content-Type-Options': 'nosniff',
+        'X-Frame-Options': 'DENY',
+      }),
+    )
     expect(nuxt.options.routeRules['/__nuxt_devtools__/**']).toEqual({
       headers: {
         'Cache-Control': 'no-store',
