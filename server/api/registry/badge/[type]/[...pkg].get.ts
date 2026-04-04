@@ -6,12 +6,12 @@ import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import { CACHE_MAX_AGE_ONE_HOUR, ERROR_NPM_FETCH_FAILED } from '#shared/utils/constants'
 import { fetchNpmPackage } from '#server/utils/npm'
 import { assertValidPackageName } from '#shared/utils/npm'
+import { fetchPackageWithTypesAndFiles } from '#server/utils/file-tree'
 import { handleApiError } from '#server/utils/error-handler'
 
 const NPM_DOWNLOADS_API = 'https://api.npmjs.org/downloads/point'
 const OSV_QUERY_API = 'https://api.osv.dev/v1/query'
 const BUNDLEPHOBIA_API = 'https://bundlephobia.com/api/size'
-const NPMS_API = 'https://api.npms.io/v2/package'
 
 const SafeStringSchema = v.pipe(v.string(), v.regex(/^[^<>"&]*$/, 'Invalid characters'))
 const SafeColorSchema = v.pipe(
@@ -23,6 +23,7 @@ const SafeColorSchema = v.pipe(
 const QUERY_SCHEMA = v.object({
   name: v.optional(v.string()),
   label: v.optional(SafeStringSchema),
+  value: v.optional(SafeStringSchema),
   color: v.optional(SafeColorSchema),
   labelColor: v.optional(SafeColorSchema),
 })
@@ -40,17 +41,86 @@ const COLORS = {
   white: '#ffffff',
 }
 
-const CHAR_WIDTH = 7
-const SHIELDS_CHAR_WIDTH = 6
-
 const BADGE_PADDING_X = 8
 const MIN_BADGE_TEXT_WIDTH = 40
+const FALLBACK_VALUE_EXTRA_PADDING_X = 8
 const SHIELDS_LABEL_PADDING_X = 5
 
 const BADGE_FONT_SHORTHAND = 'normal normal 400 11px Geist, system-ui, -apple-system, sans-serif'
 const SHIELDS_FONT_SHORTHAND = 'normal normal 400 11px Verdana, Geneva, DejaVu Sans, sans-serif'
 
 let cachedCanvasContext: SKRSContext2D | null | undefined
+
+const NARROW_CHARS = new Set([' ', '!', '"', "'", '(', ')', '*', ',', '-', '.', ':', ';', '|'])
+const MEDIUM_CHARS = new Set([
+  '#',
+  '$',
+  '+',
+  '/',
+  '<',
+  '=',
+  '>',
+  '?',
+  '@',
+  '[',
+  '\\',
+  ']',
+  '^',
+  '_',
+  '`',
+  '{',
+  '}',
+  '~',
+])
+
+const FALLBACK_WIDTHS = {
+  default: {
+    narrow: 3,
+    medium: 5,
+    digit: 6,
+    uppercase: 7,
+    other: 6,
+  },
+  shieldsio: {
+    narrow: 3,
+    medium: 5,
+    digit: 6,
+    uppercase: 7,
+    other: 5.5,
+  },
+} as const
+
+function estimateTextWidth(text: string, fallbackFont: 'default' | 'shieldsio'): number {
+  // Heuristic coefficients tuned to keep fallback rendering close to canvas metrics.
+  const widths = FALLBACK_WIDTHS[fallbackFont]
+  let totalWidth = 0
+
+  for (const character of text) {
+    if (NARROW_CHARS.has(character)) {
+      totalWidth += widths.narrow
+      continue
+    }
+
+    if (MEDIUM_CHARS.has(character)) {
+      totalWidth += widths.medium
+      continue
+    }
+
+    if (/\d/.test(character)) {
+      totalWidth += widths.digit
+      continue
+    }
+
+    if (/[A-Z]/.test(character)) {
+      totalWidth += widths.uppercase
+      continue
+    }
+
+    totalWidth += widths.other
+  }
+
+  return Math.max(1, Math.round(totalWidth))
+}
 
 function getCanvasContext(): SKRSContext2D | null {
   if (cachedCanvasContext !== undefined) {
@@ -82,14 +152,17 @@ function measureTextWidth(text: string, font: string): number | null {
   return null
 }
 
-function measureDefaultTextWidth(text: string): number {
+function measureDefaultTextWidth(text: string, fallbackExtraPadding = 0): number {
   const measuredWidth = measureTextWidth(text, BADGE_FONT_SHORTHAND)
 
   if (measuredWidth !== null) {
     return Math.max(MIN_BADGE_TEXT_WIDTH, measuredWidth + BADGE_PADDING_X * 2)
   }
 
-  return Math.max(MIN_BADGE_TEXT_WIDTH, Math.round(text.length * CHAR_WIDTH) + BADGE_PADDING_X * 2)
+  return Math.max(
+    MIN_BADGE_TEXT_WIDTH,
+    estimateTextWidth(text, 'default') + BADGE_PADDING_X * 2 + fallbackExtraPadding,
+  )
 }
 
 function escapeXML(str: string): string {
@@ -124,7 +197,7 @@ function measureShieldsTextLength(text: string): number {
     return Math.max(1, measuredWidth)
   }
 
-  return Math.max(1, Math.round(text.length * SHIELDS_CHAR_WIDTH))
+  return estimateTextWidth(text, 'shieldsio')
 }
 
 function renderDefaultBadgeSvg(params: {
@@ -138,7 +211,7 @@ function renderDefaultBadgeSvg(params: {
   const { finalColor, finalLabel, finalLabelColor, finalValue, labelTextColor, valueTextColor } =
     params
   const leftWidth = finalLabel.trim().length === 0 ? 0 : measureDefaultTextWidth(finalLabel)
-  const rightWidth = measureDefaultTextWidth(finalValue)
+  const rightWidth = measureDefaultTextWidth(finalValue, FALLBACK_VALUE_EXTRA_PADDING_X)
   const totalWidth = leftWidth + rightWidth
   const height = 20
   const escapedLabel = escapeXML(finalLabel)
@@ -252,16 +325,6 @@ async function fetchDownloads(
   }
 }
 
-async function fetchNpmsScore(packageName: string) {
-  try {
-    const response = await fetch(`${NPMS_API}/${encodeURIComponent(packageName)}`)
-    const data = await response.json()
-    return data.score
-  } catch {
-    return null
-  }
-}
-
 async function fetchVulnerabilities(packageName: string, version: string): Promise<number> {
   try {
     const response = await fetch(OSV_QUERY_API, {
@@ -289,6 +352,10 @@ async function fetchInstallSize(packageName: string, version: string): Promise<n
 }
 
 const badgeStrategies = {
+  'name': async (pkgData: globalThis.Packument) => {
+    return { label: 'npm', value: pkgData.name, color: COLORS.slate }
+  },
+
   'version': async (pkgData: globalThis.Packument, requestedVersion?: string) => {
     const version = requestedVersion ?? getLatestVersion(pkgData) ?? 'unknown'
     return {
@@ -372,12 +439,46 @@ const badgeStrategies = {
     return { label: 'node', value: nodeVersion, color: COLORS.yellow }
   },
 
-  'types': async (pkgData: globalThis.Packument) => {
-    const latest = getLatestVersion(pkgData)
-    const versionData = latest ? pkgData.versions?.[latest] : undefined
-    const hasTypes = !!(versionData?.types || versionData?.typings)
-    const value = hasTypes ? 'included' : 'missing'
-    const color = hasTypes ? COLORS.blue : COLORS.slate
+  'types': async (pkgData: globalThis.Packument, requestedVersion?: string) => {
+    const targetVersion = requestedVersion ?? getLatestVersion(pkgData)
+    const versionData = targetVersion ? pkgData.versions?.[targetVersion] : undefined
+
+    if (versionData && hasBuiltInTypes(versionData)) {
+      return { label: 'types', value: 'included', color: COLORS.blue }
+    }
+
+    const { pkg, typesPackage, files } = await fetchPackageWithTypesAndFiles(
+      pkgData.name,
+      targetVersion,
+    )
+
+    const typesStatus = detectTypesStatus(pkg, typesPackage, files)
+
+    let value: string
+    let color: string
+
+    switch (typesStatus.kind) {
+      case 'included':
+        value = 'included'
+        color = COLORS.blue
+        break
+
+      case '@types':
+        value = '@types'
+        color = COLORS.purple
+        if (typesStatus.deprecated) {
+          value += ' (deprecated)'
+          color = COLORS.red
+        }
+        break
+
+      case 'none':
+      default:
+        value = 'missing'
+        color = COLORS.slate
+        break
+    }
+
     return { label: 'types', value, color }
   },
 
@@ -394,30 +495,6 @@ const badgeStrategies = {
       value: isDeprecated ? 'deprecated' : 'active',
       color: isDeprecated ? COLORS.red : COLORS.green,
     }
-  },
-
-  'quality': async (pkgData: globalThis.Packument) => {
-    const score = await fetchNpmsScore(pkgData.name)
-    const value = score ? `${Math.round(score.detail.quality * 100)}%` : 'unknown'
-    return { label: 'quality', value, color: COLORS.purple }
-  },
-
-  'popularity': async (pkgData: globalThis.Packument) => {
-    const score = await fetchNpmsScore(pkgData.name)
-    const value = score ? `${Math.round(score.detail.popularity * 100)}%` : 'unknown'
-    return { label: 'popularity', value, color: COLORS.cyan }
-  },
-
-  'maintenance': async (pkgData: globalThis.Packument) => {
-    const score = await fetchNpmsScore(pkgData.name)
-    const value = score ? `${Math.round(score.detail.maintenance * 100)}%` : 'unknown'
-    return { label: 'maintenance', value, color: COLORS.yellow }
-  },
-
-  'score': async (pkgData: globalThis.Packument) => {
-    const score = await fetchNpmsScore(pkgData.name)
-    const value = score ? `${Math.round(score.final * 100)}%` : 'unknown'
-    return { label: 'score', value, color: COLORS.blue }
   },
 }
 
@@ -448,6 +525,7 @@ export default defineCachedEventHandler(
       const labelColor = queryParams.success ? queryParams.output.labelColor : undefined
       const showName = queryParams.success && queryParams.output.name === 'true'
       const userLabel = queryParams.success ? queryParams.output.label : undefined
+      const userValue = queryParams.success ? queryParams.output.value : undefined
       const badgeStyleResult = v.safeParse(BadgeStyleSchema, query.style)
       const badgeStyle = badgeStyleResult.success ? badgeStyleResult.output : 'default'
 
@@ -461,7 +539,7 @@ export default defineCachedEventHandler(
       const strategyResult = await strategy(pkgData, requestedVersion)
 
       const finalLabel = userLabel ? userLabel : showName ? packageName : strategyResult.label
-      const finalValue = strategyResult.value
+      const finalValue = userValue ? userValue : strategyResult.value
 
       const rawColor = userColor ?? strategyResult.color
       const finalColor = rawColor?.startsWith('#') ? rawColor : `#${rawColor}`

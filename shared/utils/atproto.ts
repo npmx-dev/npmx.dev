@@ -15,7 +15,7 @@ const simpleHash = (str: string): number => {
 
 // Parse date from frontmatter, add slug-path entropy for same-date collision resolution
 export const generateBlogTID = (dateString: string, slug: string): string => {
-  let timestamp = new Date(dateString).getTime()
+  let timestamp = Date.parse(dateString)
 
   if (timestamp % ONE_DAY_MILLISECONDS === 0) {
     const offset = simpleHash(slug) % 1000000
@@ -28,4 +28,4 @@ export const generateBlogTID = (dateString: string, slug: string): string => {
 
 // Using our release date as the tid for the publication
 export const npmxPublicationRkey = () =>
-  TID.create(new Date('2026-03-03').getTime() * MS_TO_MICROSECONDS, TID_CLOCK_ID)
+  TID.create(Date.parse('2026-03-03') * MS_TO_MICROSECONDS, TID_CLOCK_ID)

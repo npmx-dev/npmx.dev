@@ -339,7 +339,7 @@ watch(lastExecutionTime, () => {
           :placeholder="$t('org.members.filter_placeholder')"
           no-correct
           class="w-full min-w-25 ps-7"
-          size="small"
+          size="sm"
         />
       </div>
       <div
@@ -526,7 +526,7 @@ watch(lastExecutionTime, () => {
             :placeholder="$t('org.members.username_placeholder')"
             no-correct
             class="w-full min-w-25"
-            size="small"
+            size="sm"
           />
           <div class="flex items-center gap-2">
             <SelectField

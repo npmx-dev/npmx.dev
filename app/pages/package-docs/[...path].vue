@@ -10,6 +10,7 @@ definePageMeta({
 
 const route = useRoute('docs')
 const router = useRouter()
+const { t } = useI18n()
 
 const parsedRoute = computed(() => {
   const segments = route.params.path?.filter(Boolean)
@@ -87,7 +88,7 @@ const { data: docsData, status: docsStatus } = useLazyFetch<DocsResponse>(
       html: '',
       toc: null,
       status: 'missing' as const,
-      message: 'Docs are not available for this version.',
+      message: t('package.docs.default_not_available'),
     }),
   },
 )
@@ -104,9 +105,11 @@ const versionUrlPattern = computed(
 )
 
 const pageTitle = computed(() => {
-  if (!packageName.value) return 'API Docs - npmx'
-  if (!resolvedVersion.value) return `${packageName.value} docs - npmx`
-  return `${packageName.value}@${resolvedVersion.value} docs - npmx`
+  if (!packageName.value) return t('package.docs.page_title')
+  if (!resolvedVersion.value) return t('package.docs.page_title_name', { name: packageName.value })
+  return t('package.docs.page_title_version', {
+    name: `${packageName.value}@${resolvedVersion.value}`,
+  })
 })
 
 useSeoMeta({
@@ -119,7 +122,7 @@ useSeoMeta({
 })
 
 defineOgImageComponent('Default', {
-  title: () => `${pkg.value?.name ?? 'Package'} - Docs`,
+  title: () => t('package.docs.og_title', { name: pkg.value?.name ?? 'Package' }),
   description: () => pkg.value?.license ?? '',
   primaryColor: '#60a5fa',
 })
@@ -156,7 +159,7 @@ const stickyStyle = computed(() => {
       >
         <div class="docs-sidebar sticky overflow-y-auto p-4">
           <h2 class="text-xs font-semibold text-fg-subtle uppercase tracking-wider mb-4">
-            Contents
+            {{ $t('package.docs.contents') }}
           </h2>
           <!-- eslint-disable vue/no-v-html -->
           <div class="toc-content" v-html="docsData.toc" />
@@ -184,7 +187,7 @@ const stickyStyle = computed(() => {
                 :to="packageRoute(packageName)"
                 class="link-subtle font-mono text-sm"
               >
-                View package
+                {{ $t('package.docs.view_package') }}
               </NuxtLink>
             </div>
           </div>

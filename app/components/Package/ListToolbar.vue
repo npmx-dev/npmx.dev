@@ -102,10 +102,6 @@ const sortKeyLabelKeys = computed<Record<SortKey, string>>(() => ({
   'downloads-year': t('filters.sort.downloads_year'),
   'updated': t('filters.sort.published'),
   'name': t('filters.sort.name'),
-  'quality': t('filters.sort.quality'),
-  'popularity': t('filters.sort.popularity'),
-  'maintenance': t('filters.sort.maintenance'),
-  'score': t('filters.sort.score'),
 }))
 
 function getSortKeyLabelKey(key: SortKey): string {

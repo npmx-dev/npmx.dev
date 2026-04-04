@@ -27,6 +27,7 @@ export const calculateInstallSize = defineCachedFunction(
         name: dep.name,
         version: dep.version,
         size: dep.size,
+        tarballUrl: dep.tarballUrl,
         optional: dep.optional || undefined,
       })
       totalSize += dep.size

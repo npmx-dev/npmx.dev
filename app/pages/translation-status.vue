@@ -186,7 +186,7 @@ ${template}`
                   <h4 class="text-sm font-medium text-fg my-0">
                     {{ $t('translation_status.missing_keys', {}, { locale: localeEntry.lang }) }}
                   </h4>
-                  <ButtonBase type="button" size="small" @click="copyMissingKeys(localeEntry)">
+                  <ButtonBase type="button" size="sm" @click="copyMissingKeys(localeEntry)">
                     {{
                       copied
                         ? $t('common.copied', {}, { locale: localeEntry.lang })
@@ -209,11 +209,7 @@ ${template}`
                   </ul>
                 </div>
                 <div class="mt-4">
-                  <LinkBase
-                    :to="localeEntry.githubEditUrl"
-                    variant="button-secondary"
-                    size="medium"
-                  >
+                  <LinkBase :to="localeEntry.githubEditUrl" variant="button-secondary" size="md">
                     {{ $t('i18n.edit_on_github', {}, { locale: localeEntry.lang }) }}
                   </LinkBase>
                 </div>

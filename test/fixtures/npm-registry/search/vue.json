@@ -46,14 +46,6 @@
           "npm": "https://www.npmjs.com/package/vue"
         }
       },
-      "score": {
-        "final": 1816.6842,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -98,14 +90,6 @@
           "repository": "git+https://github.com/vuejs/core.git",
           "bugs": "https://github.com/vuejs/core/issues",
           "npm": "https://www.npmjs.com/package/@vue/reactivity"
-        }
-      },
-      "score": {
-        "final": 332.15305,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -154,14 +138,6 @@
           "npm": "https://www.npmjs.com/package/@vue/compiler-sfc"
         }
       },
-      "score": {
-        "final": 328.89764,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -206,14 +182,6 @@
           "repository": "git+https://github.com/vuejs/core.git",
           "bugs": "https://github.com/vuejs/core/issues",
           "npm": "https://www.npmjs.com/package/@vue/compiler-core"
-        }
-      },
-      "score": {
-        "final": 327.33432,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -262,14 +230,6 @@
           "npm": "https://www.npmjs.com/package/@vue/compiler-ssr"
         }
       },
-      "score": {
-        "final": 325.90848,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -314,14 +274,6 @@
           "repository": "git+https://github.com/vuejs/core.git",
           "bugs": "https://github.com/vuejs/core/issues",
           "npm": "https://www.npmjs.com/package/@vue/compiler-dom"
-        }
-      },
-      "score": {
-        "final": 324.55,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -370,14 +322,6 @@
           "npm": "https://www.npmjs.com/package/@vue/runtime-core"
         }
       },
-      "score": {
-        "final": 312.23926,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -422,14 +366,6 @@
           "repository": "git+https://github.com/vuejs/core.git",
           "bugs": "https://github.com/vuejs/core/issues",
           "npm": "https://www.npmjs.com/package/@vue/runtime-dom"
-        }
-      },
-      "score": {
-        "final": 311.60114,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -478,14 +414,6 @@
           "npm": "https://www.npmjs.com/package/@vue/shared"
         }
       },
-      "score": {
-        "final": 311.49493,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -530,14 +458,6 @@
           "repository": "git+https://github.com/vuejs/core.git",
           "bugs": "https://github.com/vuejs/core/issues",
           "npm": "https://www.npmjs.com/package/@vue/server-renderer"
-        }
-      },
-      "score": {
-        "final": 310.99023,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -585,14 +505,6 @@
           "npm": "https://www.npmjs.com/package/vue-router"
         }
       },
-      "score": {
-        "final": 293.8123,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -634,14 +546,6 @@
           "npm": "https://www.npmjs.com/package/vue-template-compiler"
         }
       },
-      "score": {
-        "final": 273.08698,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -677,14 +581,6 @@
           "repository": "git+https://github.com/vuejs/core.git",
           "bugs": "https://github.com/vuejs/core/issues",
           "npm": "https://www.npmjs.com/package/@vue/reactivity-transform"
-        }
-      },
-      "score": {
-        "final": 272.5972,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -735,14 +631,6 @@
           "repository": "git+https://github.com/floating-ui/floating-ui.git",
           "bugs": "https://github.com/floating-ui/floating-ui",
           "npm": "https://www.npmjs.com/package/@floating-ui/vue"
-        }
-      },
-      "score": {
-        "final": 271.86765,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -822,14 +710,6 @@
           "npm": "https://www.npmjs.com/package/@vue/compiler-vue2"
         }
       },
-      "score": {
-        "final": 269.01633,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -876,14 +756,6 @@
           "npm": "https://www.npmjs.com/package/@vue/compat"
         }
       },
-      "score": {
-        "final": 266.73676,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -928,14 +800,6 @@
           "repository": "git+https://github.com/vuejs/vue-eslint-parser.git",
           "bugs": "https://github.com/vuejs/vue-eslint-parser/issues",
           "npm": "https://www.npmjs.com/package/vue-eslint-parser"
-        }
-      },
-      "score": {
-        "final": 265.0513,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -986,14 +850,6 @@
           "repository": "git+https://github.com/vuejs/language-tools.git",
           "bugs": "https://github.com/vuejs/language-tools/issues",
           "npm": "https://www.npmjs.com/package/vue-tsc"
-        }
-      },
-      "score": {
-        "final": 262.94705,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -1058,14 +914,6 @@
           "npm": "https://www.npmjs.com/package/@vitejs/plugin-vue"
         }
       },
-      "score": {
-        "final": 262.3455,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -1114,14 +962,6 @@
           "npm": "https://www.npmjs.com/package/@intlify/vue-i18n-extensions"
         }
       },
-      "score": {
-        "final": 260.7798,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -1161,14 +1001,6 @@
           "repository": "git+https://github.com/vuejs/vue-loader.git",
           "bugs": "https://github.com/vuejs/vue-loader/issues",
           "npm": "https://www.npmjs.com/package/vue-loader"
-        }
-      },
-      "score": {
-        "final": 259.08713,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -1230,14 +1062,6 @@
         "links": {
           "repository": "git+https://github.com/vuejs/vue-jest.git",
           "npm": "https://www.npmjs.com/package/vue-jest"
-        }
-      },
-      "score": {
-        "final": 257.40042,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -1306,14 +1130,6 @@
           "npm": "https://www.npmjs.com/package/@tiptap/vue-3"
         }
       },
-      "score": {
-        "final": 257.2942,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -1367,14 +1183,6 @@
           "npm": "https://www.npmjs.com/package/@vue/test-utils"
         }
       },
-      "score": {
-        "final": 256.06604,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -1415,14 +1223,6 @@
           "repository": "https://github.com/streetsidesoftware/cspell-dicts",
           "bugs": "https://github.com/streetsidesoftware/cspell-dicts/issues",
           "npm": "https://www.npmjs.com/package/@cspell/dict-vue"
-        }
-      },
-      "score": {
-        "final": 255.1951,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {

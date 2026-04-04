@@ -112,6 +112,12 @@ watch(
   { immediate: true },
 )
 
+// Tracks how many items came from the last new-search batch.
+// Items at index < newSearchBatchSize are from the new search → no animation.
+// Items at index >= newSearchBatchSize were loaded via scroll → animate with stagger.
+// Using an index threshold avoids any timing dependency on nextTick / virtual list paint.
+const newSearchBatchSize = shallowRef(Infinity)
+
 // Reset scroll state when results change significantly (new search)
 watch(
   () => props.results,
@@ -123,6 +129,7 @@ watch(
       (oldResults.length > 0 && newResults[0]?.package.name !== oldResults[0]?.package.name)
     ) {
       hasScrolledToInitial.value = false
+      newSearchBatchSize.value = newResults.length
     }
   },
 )
@@ -172,9 +179,16 @@ defineExpose({
                 :show-publisher="showPublisher"
                 :index="index"
                 :search-query="searchQuery"
-                class="motion-safe:animate-fade-in motion-safe:animate-fill-both"
+                :class="
+                  index >= newSearchBatchSize &&
+                  'motion-safe:animate-fade-in motion-safe:animate-fill-both'
+                "
+                :style="
+                  index >= newSearchBatchSize
+                    ? { animationDelay: `${Math.min((index - newSearchBatchSize) * 0.02, 0.3)}s` }
+                    : {}
+                "
                 :filters="filters"
-                :style="{ animationDelay: `${Math.min(index * 0.02, 0.3)}s` }"
                 @click-keyword="emit('clickKeyword', $event)"
               />
             </div>
@@ -224,8 +238,15 @@ defineExpose({
             :show-publisher="showPublisher"
             :index="index"
             :search-query="searchQuery"
-            class="motion-safe:animate-fade-in motion-safe:animate-fill-both"
-            :style="{ animationDelay: `${Math.min(index * 0.02, 0.3)}s` }"
+            :class="
+              index >= newSearchBatchSize &&
+              'motion-safe:animate-fade-in motion-safe:animate-fill-both'
+            "
+            :style="
+              index >= newSearchBatchSize
+                ? { animationDelay: `${Math.min((index - newSearchBatchSize) * 0.02, 0.3)}s` }
+                : {}
+            "
             :filters="filters"
             @click-keyword="emit('clickKeyword', $event)"
           />

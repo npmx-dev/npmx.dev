@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const router = useRouter()
-const canGoBack = useCanGoBack()
 const { settings } = useSettings()
 const { locale: currentLocale, locales, setLocale: setNuxti18nLocale } = useI18n()
 const colorMode = useColorMode()
@@ -51,15 +50,7 @@ const setLocale: typeof setNuxti18nLocale = newLocale => {
           <h1 class="font-mono text-3xl sm:text-4xl font-medium">
             {{ $t('settings.title') }}
           </h1>
-          <button
-            type="button"
-            class="cursor-pointer inline-flex items-center gap-2 p-1.5 -mx-1.5 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
-            @click="router.back()"
-            v-if="canGoBack"
-          >
-            <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
-            <span class="sr-only sm:not-sr-only">{{ $t('nav.back') }}</span>
-          </button>
+          <BackButton />
         </div>
         <p class="text-fg-muted text-lg">
           {{ $t('settings.tagline') }}
@@ -96,7 +87,7 @@ const setLocale: typeof setNuxti18nLocale = newLocale => {
             <!-- Accent colors -->
             <div class="space-y-3">
               <span class="block text-sm text-fg font-medium">
-                {{ $t('settings.accent_colors') }}
+                {{ $t('settings.accent_colors.label') }}
               </span>
               <SettingsAccentColorPicker />
             </div>
@@ -104,7 +95,7 @@ const setLocale: typeof setNuxti18nLocale = newLocale => {
             <!-- Background themes -->
             <div class="space-y-3">
               <span class="block text-sm text-fg font-medium">
-                {{ $t('settings.background_themes') }}
+                {{ $t('settings.background_themes.label') }}
               </span>
               <SettingsBgThemePicker />
             </div>

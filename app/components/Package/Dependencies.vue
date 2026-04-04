@@ -126,7 +126,7 @@ const numberFormatter = useNumberFormatter()
             >
               <button
                 type="button"
-                class="p-2 -m-2"
+                class="inline-flex items-center justify-center p-2 -m-2"
                 :aria-label="getOutdatedTooltip(outdatedDeps[dep], $t)"
               >
                 <span class="i-lucide:circle-alert w-3 h-3" aria-hidden="true" />
@@ -139,7 +139,7 @@ const numberFormatter = useNumberFormatter()
             >
               <button
                 type="button"
-                class="p-2 -m-2"
+                class="inline-flex items-center justify-center p-2 -m-2"
                 :aria-label="$t('package.dependencies.has_replacement')"
               >
                 <span class="i-lucide:lightbulb w-3 h-3" aria-hidden="true" />

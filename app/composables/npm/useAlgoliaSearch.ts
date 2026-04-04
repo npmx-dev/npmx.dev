@@ -91,14 +91,6 @@ function hitToSearchResult(hit: AlgoliaHit): NpmSearchResult {
           }))
         : [],
     },
-    score: {
-      final: 0,
-      detail: {
-        quality: hit.popular ? 1 : 0,
-        popularity: hit.downloadsRatio,
-        maintenance: 0,
-      },
-    },
     searchScore: 0,
     downloads: {
       weekly: Math.round(hit.downloadsLast30Days / 4.3),

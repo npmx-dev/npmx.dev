@@ -4,6 +4,8 @@ import { debounce } from 'perfect-debounce'
 // Pages that have their own local filter using ?q
 const pagesWithLocalFilter = new Set(['~username', 'org'])
 
+const SEARCH_DEBOUNCE_MS = 100
+
 export function useGlobalSearch(place: 'header' | 'content' = 'content') {
   const { settings } = useSettings()
   const { searchProvider } = useSearchProvider()
@@ -27,10 +29,14 @@ export function useGlobalSearch(place: 'header' | 'content' = 'content') {
   // Syncs instantly when instantSearch is on, but only on Enter press when off
   const committedSearchQuery = useState<string>('committed-search-query', () => searchQuery.value)
 
+  const commitSearchQuery = debounce((val: string) => {
+    committedSearchQuery.value = val
+  }, SEARCH_DEBOUNCE_MS)
+
   // This is basically doing instant search as user types
   watch(searchQuery, val => {
     if (settings.value.instantSearch) {
-      committedSearchQuery.value = val
+      commitSearchQuery(val)
     }
   })
 
@@ -71,10 +77,11 @@ export function useGlobalSearch(place: 'header' | 'content' = 'content') {
     })
   }
 
-  const updateUrlQuery = debounce(updateUrlQueryImpl, 250)
+  const updateUrlQuery = debounce(updateUrlQueryImpl, SEARCH_DEBOUNCE_MS)
 
   function flushUpdateUrlQuery() {
     // Commit the current query when explicitly submitted (Enter pressed)
+    commitSearchQuery.cancel()
     committedSearchQuery.value = searchQuery.value
     // When instant search is off the debounce queue is empty, so call directly
     if (!settings.value.instantSearch) {

@@ -11,7 +11,7 @@ const { model } = useGlobalSearch()
       <li v-for="keyword in keywords.slice(0, 15)" :key="keyword">
         <LinkBase
           variant="button-secondary"
-          size="small"
+          size="sm"
           :to="{ name: 'search', query: { q: `keyword:${keyword}` } }"
           @click="model = `keyword:${keyword}`"
         >

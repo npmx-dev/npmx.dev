@@ -1388,6 +1388,15 @@ watch(
 const chartConfig = computed<VueUiXyConfig>(() => {
   return {
     theme: isDarkMode.value ? 'dark' : ('' as VueDataUiTheme),
+    a11y: {
+      translations: {
+        keyboardNavigation: $t(
+          'package.trends.chart_assistive_text.keyboard_navigation_horizontal',
+        ),
+        tableAvailable: $t('package.trends.chart_assistive_text.table_available'),
+        tableCaption: $t('package.trends.chart_assistive_text.table_caption'),
+      },
+    },
     chart: {
       height: chartHeight.value,
       backgroundColor: colors.value.bg,
@@ -1613,6 +1622,15 @@ watch(selectedMetric, value => {
   if (!isMounted.value) return
   loadMetric(value)
 })
+
+// Sparkline charts (a11y alternative display for multi series)
+const chartLayout = usePermalink<'combined' | 'split'>('layout', 'combined')
+const isSparklineLayout = computed({
+  get: () => chartLayout.value === 'split',
+  set: (v: boolean) => {
+    chartLayout.value = v ? 'split' : 'combined'
+  },
+})
 </script>
 
 <template>
@@ -1621,6 +1639,26 @@ watch(selectedMetric, value => {
     id="trends-chart"
     :aria-busy="activeMetricState.pending ? 'true' : 'false'"
   >
+    <TabRoot
+      v-if="isMultiPackageMode"
+      v-model="chartLayout"
+      id-prefix="chart-layout"
+      class="mt-4 mb-8"
+    >
+      <TabList :ariaLabel="$t('package.trends.chart_view_toggle')">
+        <TabItem value="combined" tab-id="combined-chart-layout-tab" icon="i-lucide:chart-line">
+          {{ $t('package.trends.chart_view_combined') }}
+        </TabItem>
+        <TabItem
+          value="split"
+          tab-id="split-chart-layout-tab"
+          icon="i-lucide:square-split-horizontal"
+        >
+          {{ $t('package.trends.chart_view_split') }}
+        </TabItem>
+      </TabList>
+    </TabRoot>
+
     <div class="w-full mb-4 flex flex-col gap-3">
       <div class="grid grid-cols-2 sm:flex sm:flex-row gap-3 sm:gap-2 sm:items-end">
         <SelectField
@@ -1657,7 +1695,6 @@ watch(selectedMetric, value => {
                 type="date"
                 :max="DATE_INPUT_MAX"
                 class="w-full min-w-0 bg-transparent"
-                size="medium"
               />
             </div>
           </div>
@@ -1673,7 +1710,6 @@ watch(selectedMetric, value => {
                 type="date"
                 :max="DATE_INPUT_MAX"
                 class="w-full min-w-0 bg-transparent"
-                size="medium"
               />
             </div>
           </div>
@@ -1860,15 +1896,38 @@ watch(selectedMetric, value => {
       role="region"
       aria-labelledby="trends-chart-title"
       :class="
-        isMobile === false && width > 0
-          ? showCorrectionControls
-            ? 'h-[491px]'
-            : 'h-[567px]'
-          : 'min-h-[260px]'
+        isSparklineLayout || !inModal
+          ? undefined
+          : isMobile === false && width > 0
+            ? showCorrectionControls
+              ? 'h-[491px]'
+              : 'h-[567px]'
+            : 'min-h-[260px]'
       "
     >
       <ClientOnly v-if="chartData.dataset">
-        <div :data-pending="pending" :data-minimap-visible="maxDatapoints > 6">
+        <div
+          v-if="isSparklineLayout"
+          id="split-chart-layout-panel"
+          :role="isMultiPackageMode ? 'tabpanel' : undefined"
+          :aria-labelledby="isMultiPackageMode ? 'split-chart-layout-tab' : undefined"
+        >
+          <ChartSplitSparkline
+            :dataset="normalisedDataset"
+            :dates="chartData.dates"
+            :datetimeFormatterOptions
+            :showLastDatapointEstimation="shouldRenderEstimationOverlay && !isEndDateOnPeriodEnd"
+          />
+        </div>
+
+        <div
+          :data-pending="pending"
+          :data-minimap-visible="maxDatapoints > 6"
+          v-else
+          id="combined-chart-layout-panel"
+          :role="isMultiPackageMode ? 'tabpanel' : undefined"
+          :aria-labelledby="isMultiPackageMode ? 'combined-chart-layout-tab' : undefined"
+        >
           <VueUiXy
             :dataset="normalisedDataset"
             :config="chartConfig"
@@ -1880,6 +1939,13 @@ watch(selectedMetric, value => {
             @zoomEnd="setIsZoom"
             @zoomReset="isZoomed = false"
           >
+            <!-- Keyboard navigation hint -->
+            <template #hint="{ isVisible }">
+              <p v-if="isVisible" class="text-accent text-xs -mt-6 text-center" aria-hidden="true">
+                {{ $t('compare.packages.line_chart_nav_hint') }}
+              </p>
+            </template>
+
             <!-- Injecting custom svg elements -->
             <template #svg="{ svg }">
               <!-- Estimation lines for monthly & yearly granularities when the end date induces a downwards trend -->
@@ -2131,6 +2197,19 @@ watch(selectedMetric, value => {
     </div>
   </div>
 </template>
+
+<style scoped>
+:deep(.vue-data-ui-component svg:focus-visible) {
+  outline: 1px solid var(--accent-color) !important;
+  border-radius: 0.1rem;
+  outline-offset: 0;
+}
+:deep(.vue-ui-user-options-button:focus-visible),
+:deep(.vue-ui-user-options :first-child:focus-visible) {
+  outline: 0.1rem solid var(--accent-color) !important;
+  border-radius: 0.25rem;
+}
+</style>
 
 <style>
 .vue-ui-pen-and-paper-actions {

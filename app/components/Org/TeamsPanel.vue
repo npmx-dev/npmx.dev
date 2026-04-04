@@ -295,7 +295,6 @@ watch(lastExecutionTime, () => {
           :placeholder="$t('org.teams.filter_placeholder')"
           no-correct
           class="w-full min-w-25 ps-7"
-          size="medium"
         />
       </div>
       <div
@@ -452,7 +451,6 @@ watch(lastExecutionTime, () => {
                 :placeholder="$t('org.teams.username_placeholder')"
                 no-correct
                 class="flex-1 min-w-25"
-                size="medium"
               />
               <button
                 type="submit"
@@ -509,7 +507,6 @@ watch(lastExecutionTime, () => {
               :placeholder="$t('org.teams.team_name_placeholder')"
               no-correct
               class="flex-1 min-w-25 rounded-is-none"
-              size="medium"
             />
           </div>
           <button

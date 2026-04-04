@@ -2,7 +2,7 @@ import crypto from 'node:crypto'
 import process from 'node:process'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
-import { mkdtemp, writeFile, rm } from 'node:fs/promises'
+import { mkdtempDisposable, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import * as v from 'valibot'
@@ -10,6 +10,16 @@ import { PackageNameSchema, UsernameSchema, OrgNameSchema, ScopeTeamSchema } fro
 import { logCommand, logSuccess, logError, logDebug } from './logger.ts'
 
 const execFileAsync = promisify(execFile)
+export const NPM_REGISTRY_URL = 'https://registry.npmjs.org/'
+
+function createNpmEnv(overrides: Record<string, string> = {}): Record<string, string> {
+  return {
+    ...process.env,
+    ...overrides,
+    FORCE_COLOR: '0',
+    npm_config_registry: NPM_REGISTRY_URL,
+  }
+}
 
 /**
  * Validates an npm package name using the official npm validation package
@@ -191,10 +201,7 @@ async function execNpmInteractive(
     let authUrlTimeout: ReturnType<typeof setTimeout> | null = null
     let authUrlTimedOut = false
 
-    const env: Record<string, string> = {
-      ...(process.env as Record<string, string>),
-      FORCE_COLOR: '0',
-    }
+    const env = createNpmEnv()
 
     // When openUrls is false, tell npm not to open the browser.
     // npm still prints the auth URL and polls doneUrl
@@ -330,7 +337,7 @@ async function execNpm(args: string[], options: ExecNpmOptions = {}): Promise<Np
     // On Unix, we keep it false for better security and performance
     const { stdout, stderr } = await execFileAsync('npm', npmArgs, {
       timeout: 60000,
-      env: { ...process.env, FORCE_COLOR: '0' },
+      env: createNpmEnv(),
       shell: process.platform === 'win32',
     })
 
@@ -562,91 +569,84 @@ export async function packageInit(
 ): Promise<NpmExecResult> {
   validatePackageName(name)
 
-  // Create a temporary directory
-  const tempDir = await mkdtemp(join(tmpdir(), 'npmx-init-'))
+  // Let Node clean up the temp directory automatically when this scope exits.
+  await using tempDir = await mkdtempDisposable(join(tmpdir(), 'npmx-init-'))
+
+  // Determine access type based on whether it's a scoped package
+  const isScoped = name.startsWith('@')
+  const access = isScoped ? 'public' : undefined
+
+  // Create minimal package.json
+  const packageJson = {
+    name,
+    version: '0.0.0',
+    description: `Placeholder for ${name}`,
+    main: 'index.js',
+    scripts: {},
+    keywords: [],
+    author: author ? `${author} (https://www.npmjs.com/~${author})` : '',
+    license: 'UNLICENSED',
+    private: false,
+    ...(access && { publishConfig: { access } }),
+  }
+
+  await writeFile(join(tempDir.path, 'package.json'), JSON.stringify(packageJson, null, 2))
+
+  // Create empty index.js
+  await writeFile(join(tempDir.path, 'index.js'), '// Placeholder\n')
+
+  // Build npm publish args
+  const args = ['publish']
+  if (access) {
+    args.push('--access', access)
+  }
+
+  // Run npm publish from the temp directory
+  const npmArgs = otp ? [...args, '--otp', otp] : args
+
+  // Log the command being run (hide OTP value for security)
+  const displayCmd = otp ? `npm ${args.join(' ')} --otp ******` : `npm ${args.join(' ')}`
+  logCommand(`${displayCmd} (in temp dir for ${name})`)
 
   try {
-    // Determine access type based on whether it's a scoped package
-    const isScoped = name.startsWith('@')
-    const access = isScoped ? 'public' : undefined
-
-    // Create minimal package.json
-    const packageJson = {
-      name,
-      version: '0.0.0',
-      description: `Placeholder for ${name}`,
-      main: 'index.js',
-      scripts: {},
-      keywords: [],
-      author: author ? `${author} (https://www.npmjs.com/~${author})` : '',
-      license: 'UNLICENSED',
-      private: false,
-      ...(access && { publishConfig: { access } }),
-    }
-
-    await writeFile(join(tempDir, 'package.json'), JSON.stringify(packageJson, null, 2))
-
-    // Create empty index.js
-    await writeFile(join(tempDir, 'index.js'), '// Placeholder\n')
-
-    // Build npm publish args
-    const args = ['publish']
-    if (access) {
-      args.push('--access', access)
-    }
-
-    // Run npm publish from the temp directory
-    const npmArgs = otp ? [...args, '--otp', otp] : args
-
-    // Log the command being run (hide OTP value for security)
-    const displayCmd = otp ? `npm ${args.join(' ')} --otp ******` : `npm ${args.join(' ')}`
-    logCommand(`${displayCmd} (in temp dir for ${name})`)
-
-    try {
-      const { stdout, stderr } = await execFileAsync('npm', npmArgs, {
-        timeout: 60000,
-        cwd: tempDir,
-        env: { ...process.env, FORCE_COLOR: '0' },
-        shell: process.platform === 'win32',
-      })
-
-      logSuccess(`Published ${name}@0.0.0`)
-
-      return {
-        stdout: stdout.trim(),
-        stderr: filterNpmWarnings(stderr),
-        exitCode: 0,
-      }
-    } catch (error) {
-      const err = error as { stdout?: string; stderr?: string; code?: number }
-      const stderr = err.stderr?.trim() ?? String(error)
-      const requiresOtp = detectOtpRequired(stderr)
-      const authFailure = detectAuthFailure(stderr)
-
-      if (requiresOtp) {
-        logError('OTP required')
-      } else if (authFailure) {
-        logError('Authentication required - please run "npm login" and restart the connector')
-      } else {
-        logError(filterNpmWarnings(stderr).split('\n')[0] || 'Command failed')
-      }
-
-      return {
-        stdout: err.stdout?.trim() ?? '',
-        stderr: requiresOtp
-          ? 'This operation requires a one-time password (OTP).'
-          : authFailure
-            ? 'Authentication failed. Please run "npm login" and restart the connector.'
-            : filterNpmWarnings(stderr),
-        exitCode: err.code ?? 1,
-        requiresOtp,
-        authFailure,
-      }
-    }
-  } finally {
-    // Clean up temp directory
-    await rm(tempDir, { recursive: true, force: true }).catch(() => {
-      // Ignore cleanup errors
+    const { stdout, stderr } = await execFileAsync('npm', npmArgs, {
+      timeout: 60000,
+      cwd: tempDir.path,
+      env: createNpmEnv(),
+      shell: process.platform === 'win32',
     })
+
+    logSuccess(`Published ${name}@0.0.0`)
+
+    return {
+      stdout: stdout.trim(),
+      stderr: filterNpmWarnings(stderr),
+      exitCode: 0,
+    }
+  } catch (error) {
+    const err = error as { stdout?: string; stderr?: string; code?: number }
+    const stderr = err.stderr?.trim() ?? String(error)
+    const requiresOtp = detectOtpRequired(stderr)
+    const authFailure = detectAuthFailure(stderr)
+
+    if (requiresOtp) {
+      logError('OTP required')
+    } else if (authFailure) {
+      logError('Authentication required - please run "npm login" and restart the connector')
+    } else {
+      logError(filterNpmWarnings(stderr).split('\n')[0] || 'Command failed')
+    }
+
+    return {
+      stdout: err.stdout?.trim() ?? '',
+      stderr: requiresOtp
+        ? 'This operation requires a one-time password (OTP).'
+        : authFailure
+          ? 'Authentication failed. Please run "npm login" and restart the connector.'
+          : filterNpmWarnings(stderr),
+      exitCode: err.code ?? 1,
+      requiresOtp,
+      authFailure,
+    }
   }
 }

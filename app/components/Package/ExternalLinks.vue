@@ -23,15 +23,6 @@ const homepageUrl = computed(() => {
   return homepage
 })
 
-const fundingUrl = computed(() => {
-  let funding = displayVersion.value?.funding
-  if (Array.isArray(funding)) funding = funding[0]
-
-  if (!funding) return null
-
-  return typeof funding === 'string' ? funding : funding.url
-})
-
 const PROVIDER_ICONS: Record<string, IconClass> = {
   github: 'i-simple-icons:github',
   gitlab: 'i-simple-icons:gitlab',
@@ -95,11 +86,6 @@ const repoProviderIcon = computed((): IconClass => {
     <li v-if="jsrInfo?.exists && jsrInfo.url">
       <LinkBase :to="jsrInfo.url" :title="$t('badges.jsr.title')" classicon="i-simple-icons:jsr">
         {{ $t('package.links.jsr') }}
-      </LinkBase>
-    </li>
-    <li v-if="fundingUrl">
-      <LinkBase :to="fundingUrl" classicon="i-lucide:heart">
-        {{ $t('package.links.fund') }}
       </LinkBase>
     </li>
   </ul>

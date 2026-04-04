@@ -6,7 +6,7 @@ import * as p from '@clack/prompts'
 import { defineCommand, runMain } from 'citty'
 import { serve } from 'srvx'
 import { createConnectorApp, generateToken, CONNECTOR_VERSION } from './server.ts'
-import { getNpmUser } from './npm-client.ts'
+import { getNpmUser, NPM_REGISTRY_URL } from './npm-client.ts'
 import { initLogger, showToken, logInfo, logWarning, logError } from './logger.ts'
 
 const DEFAULT_PORT = 31415
@@ -15,7 +15,7 @@ const DEV_FRONTEND_URL = 'http://127.0.0.1:3000/'
 
 async function runNpmLogin(): Promise<boolean> {
   return new Promise(resolve => {
-    const child = spawn('npm', ['login'], {
+    const child = spawn('npm', ['login', `--registry=${NPM_REGISTRY_URL}`], {
       stdio: 'inherit',
       shell: true,
     })

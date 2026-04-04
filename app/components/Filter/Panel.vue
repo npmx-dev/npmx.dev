@@ -246,7 +246,6 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
             :placeholder="searchPlaceholder"
             autocomplete="off"
             class="w-full min-w-25"
-            size="medium"
             no-correct
           />
         </div>
@@ -328,7 +327,7 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
             <ButtonBase
               v-for="keyword in displayedKeywords"
               :key="keyword"
-              size="small"
+              size="sm"
               :aria-pressed="filters.keywords.includes(keyword)"
               @click="emit('toggleKeyword', keyword)"
             >

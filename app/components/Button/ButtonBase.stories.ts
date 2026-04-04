@@ -52,7 +52,7 @@ export const Secondary: Story = {
 
 export const Small: Story = {
   args: {
-    size: 'small',
+    size: 'sm',
   },
   render: args => ({
     components: { ButtonBase },

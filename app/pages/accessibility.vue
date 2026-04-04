@@ -12,9 +12,6 @@ defineOgImageComponent('Default', {
   title: () => $t('a11y.title'),
   description: () => $t('a11y.welcome', { app: 'npmx' }),
 })
-
-const router = useRouter()
-const canGoBack = useCanGoBack()
 </script>
 
 <template>
@@ -25,15 +22,7 @@ const canGoBack = useCanGoBack()
           <h1 class="font-mono text-3xl sm:text-4xl font-medium">
             {{ $t('a11y.title') }}
           </h1>
-          <button
-            type="button"
-            class="cursor-pointer inline-flex items-center gap-2 p-1.5 -mx-1.5 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded shrink-0"
-            @click="router.back()"
-            v-if="canGoBack"
-          >
-            <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
-            <span class="sr-only sm:not-sr-only">{{ $t('nav.back') }}</span>
-          </button>
+          <BackButton />
         </div>
       </header>
 

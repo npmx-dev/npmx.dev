@@ -22,7 +22,7 @@ function month(monthStr: string, value: number): MonthlyDataPoint {
   return {
     value,
     month: monthStr,
-    timestamp: new Date(`${monthStr}-01T00:00:00Z`).getTime(),
+    timestamp: Date.parse(`${monthStr}-01T00:00:00Z`),
   }
 }
 
@@ -30,7 +30,7 @@ function year(yearStr: string, value: number): YearlyDataPoint {
   return {
     value,
     year: yearStr,
-    timestamp: new Date(`${yearStr}-01-01T00:00:00Z`).getTime(),
+    timestamp: Date.parse(`${yearStr}-01-01T00:00:00Z`),
   }
 }
 
