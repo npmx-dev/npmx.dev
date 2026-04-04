@@ -441,8 +441,6 @@
       },
       "page_title": "Historie verzí",
       "current_tags": "Aktuální značky",
-      "version_filter_placeholder": "Filtrovat verze…",
-      "version_filter_label": "Filtrovat verze",
       "no_match_filter": "Žádné verze neodpovídají {filter}"
     },
     "dependencies": {

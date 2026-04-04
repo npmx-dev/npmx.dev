@@ -441,8 +441,6 @@
       },
       "page_title": "Riwayat Versi",
       "current_tags": "Tag Saat Ini",
-      "version_filter_placeholder": "Filter versi…",
-      "version_filter_label": "Filter versi",
       "no_match_filter": "Tidak ada versi yang cocok dengan {filter}"
     },
     "dependencies": {
