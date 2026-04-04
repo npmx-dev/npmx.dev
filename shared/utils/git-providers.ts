@@ -387,3 +387,24 @@ export function convertBlobOrFileToRawUrl(url: string, providerId: ProviderId): 
 export function isKnownGitProvider(url: string): boolean {
   return parseRepoUrl(url) !== null
 }
+
+/**
+ * API origins used by each provider for client-side repo metadata fetches.
+ * Self-hosted providers are excluded because their origins can be anything.
+ */
+export const GIT_PROVIDER_API_ORIGINS = {
+  github: 'https://ungh.cc', // via UNGH proxy to avoid rate limits
+  bitbucket: 'https://api.bitbucket.org',
+  codeberg: 'https://codeberg.org',
+  gitee: 'https://gitee.com',
+  radicle: 'https://seed.radicle.at',
+} as const satisfies Partial<Record<ProviderId, string>>
+
+/**
+ * All known external API origins that git provider adapters may fetch from.
+ * Includes both the per-provider origins and known self-hosted instances.
+ */
+export const ALL_KNOWN_GIT_API_ORIGINS: readonly string[] = [
+  ...Object.values(GIT_PROVIDER_API_ORIGINS),
+  ...GITLAB_HOSTS.map(host => `https://${host}`),
+]

@@ -343,13 +343,13 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
       code: 'tl-PH',
       file: 'tl-PH.json',
       name: 'Tagalog',
-    },
-    {
-      code: 'vi-VN',
-      file: 'vi-VN.json',
-      name: 'Tiếng Việt',
-    },
-    {
+    },*/
+  {
+    code: 'vi-VN',
+    file: 'vi-VN.json',
+    name: 'Tiếng Việt',
+  },
+  /*{
       code: 'cy',
       file: 'cy.json',
       name: 'Cymraeg',

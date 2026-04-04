@@ -140,6 +140,7 @@ export default defineConfig({
     // Layout
     ['container', 'max-w-6xl mx-auto px-4 sm:px-6'],
     ['container-sm', 'max-w-5xl mx-auto px-4 sm:px-6'],
+    ['flex-split', 'flex items-center justify-between'],
 
     // Focus states - subtle but accessible
     ['focus-ring', 'outline-none focus-visible:(ring-2 ring-fg/50 ring-offset-2)'],

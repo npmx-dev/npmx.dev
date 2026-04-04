@@ -1622,6 +1622,15 @@ watch(selectedMetric, value => {
   if (!isMounted.value) return
   loadMetric(value)
 })
+
+// Sparkline charts (a11y alternative display for multi series)
+const chartLayout = usePermalink<'combined' | 'split'>('layout', 'combined')
+const isSparklineLayout = computed({
+  get: () => chartLayout.value === 'split',
+  set: (v: boolean) => {
+    chartLayout.value = v ? 'split' : 'combined'
+  },
+})
 </script>
 
 <template>
@@ -1630,6 +1639,26 @@ watch(selectedMetric, value => {
     id="trends-chart"
     :aria-busy="activeMetricState.pending ? 'true' : 'false'"
   >
+    <TabRoot
+      v-if="isMultiPackageMode"
+      v-model="chartLayout"
+      id-prefix="chart-layout"
+      class="mt-4 mb-8"
+    >
+      <TabList :ariaLabel="$t('package.trends.chart_view_toggle')">
+        <TabItem value="combined" tab-id="combined-chart-layout-tab" icon="i-lucide:chart-line">
+          {{ $t('package.trends.chart_view_combined') }}
+        </TabItem>
+        <TabItem
+          value="split"
+          tab-id="split-chart-layout-tab"
+          icon="i-lucide:square-split-horizontal"
+        >
+          {{ $t('package.trends.chart_view_split') }}
+        </TabItem>
+      </TabList>
+    </TabRoot>
+
     <div class="w-full mb-4 flex flex-col gap-3">
       <div class="grid grid-cols-2 sm:flex sm:flex-row gap-3 sm:gap-2 sm:items-end">
         <SelectField
@@ -1867,15 +1896,38 @@ watch(selectedMetric, value => {
       role="region"
       aria-labelledby="trends-chart-title"
       :class="
-        isMobile === false && width > 0
-          ? showCorrectionControls
-            ? 'h-[491px]'
-            : 'h-[567px]'
-          : 'min-h-[260px]'
+        isSparklineLayout || !inModal
+          ? undefined
+          : isMobile === false && width > 0
+            ? showCorrectionControls
+              ? 'h-[491px]'
+              : 'h-[567px]'
+            : 'min-h-[260px]'
       "
     >
       <ClientOnly v-if="chartData.dataset">
-        <div :data-pending="pending" :data-minimap-visible="maxDatapoints > 6">
+        <div
+          v-if="isSparklineLayout"
+          id="split-chart-layout-panel"
+          :role="isMultiPackageMode ? 'tabpanel' : undefined"
+          :aria-labelledby="isMultiPackageMode ? 'split-chart-layout-tab' : undefined"
+        >
+          <ChartSplitSparkline
+            :dataset="normalisedDataset"
+            :dates="chartData.dates"
+            :datetimeFormatterOptions
+            :showLastDatapointEstimation="shouldRenderEstimationOverlay && !isEndDateOnPeriodEnd"
+          />
+        </div>
+
+        <div
+          :data-pending="pending"
+          :data-minimap-visible="maxDatapoints > 6"
+          v-else
+          id="combined-chart-layout-panel"
+          :role="isMultiPackageMode ? 'tabpanel' : undefined"
+          :aria-labelledby="isMultiPackageMode ? 'combined-chart-layout-tab' : undefined"
+        >
           <VueUiXy
             :dataset="normalisedDataset"
             :config="chartConfig"

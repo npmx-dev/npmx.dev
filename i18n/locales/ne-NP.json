@@ -531,12 +531,10 @@
   "code": {
     "files_label": "फाइलहरू",
     "no_files": "यो डाइरेक्टरीमा कुनै फाइल छैन",
-    "root": "root",
     "lines": "{count} लाइन",
     "toggle_tree": "फाइल ट्री टगल",
     "close_tree": "फाइल ट्री बन्द",
     "copy_link": "लिङ्क कपी",
-    "raw": "Raw",
     "view_raw": "raw फाइल हेर्नुहोस्",
     "file_too_large": "प्रिभ्यू गर्न फाइल धेरै ठूलो छ",
     "file_size_warning": "syntax highlighting का लागि 500KB सीमा भन्दा {size} ठूलो छ",
