@@ -15,8 +15,8 @@ import {
 } from '../shared/schemas/blog'
 import { isProduction } from '../config/env'
 import { BLUESKY_API } from '../shared/utils/constants'
-import { mkdir, writeFile } from 'node:fs/promises'
-import { existsSync, globSync } from 'node:fs'
+import { glob, mkdir, writeFile } from 'node:fs/promises'
+import { existsSync } from 'node:fs'
 import crypto from 'node:crypto'
 
 /**
@@ -88,7 +88,9 @@ function resolveAuthors(authors: Author[], avatarMap: Map<string, string>): Reso
  * Resolves Bluesky avatars at build time.
  */
 async function loadBlogPosts(blogDir: string, imagesDir: string): Promise<BlogPostFrontmatter[]> {
-  const files = globSync('*.md', { cwd: blogDir }).map(file => join(blogDir, file))
+  const files = (await Array.fromAsync(glob('*.md', { cwd: blogDir }))).map(file =>
+    join(blogDir, file),
+  )
 
   // First pass: extract raw frontmatter and collect all Bluesky handles
   const rawPosts: Array<{ frontmatter: Record<string, unknown> }> = []
