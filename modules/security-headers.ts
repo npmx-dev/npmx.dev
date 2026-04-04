@@ -1,4 +1,4 @@
-import { defineNuxtModule } from 'nuxt/kit'
+import { defineNuxtModule, useNuxt } from 'nuxt/kit'
 import { BLUESKY_API } from '#shared/utils/constants'
 import { ALL_KNOWN_GIT_API_ORIGINS } from '#shared/utils/git-providers'
 import { TRUSTED_IMAGE_DOMAINS } from '#server/utils/image-proxy'
@@ -19,13 +19,15 @@ import { TRUSTED_IMAGE_DOMAINS } from '#server/utils/image-proxy'
  */
 export default defineNuxtModule({
   meta: { name: 'security-headers' },
-  setup(_, nuxt) {
-    const isDevtoolsRuntime =
-      nuxt.options.dev && nuxt.options.devtools !== false && !process.env.TEST
+  setup() {
+    const nuxt = useNuxt()
+    const devtools = nuxt.options.devtools
 
-    // Nuxt DevTools relies on injected client assets and an iframe-based UI in dev.
-    // Keep strict CSP/frame restrictions for non-dev environments.
-    if (isDevtoolsRuntime) return
+    const isDevtoolsRuntime =
+      nuxt.options.dev
+      && devtools !== false
+      && (devtools == null || typeof devtools !== 'object' || devtools.enabled !== false)
+      && !process.env.TEST
 
     // These assets are embedded directly on blog pages and should not affect image-proxy trust.
     const cspOnlyImgOrigins = ['https://api.star-history.com', 'https://cdn.bsky.app']
@@ -46,9 +48,21 @@ export default defineNuxtModule({
       ...ALL_KNOWN_GIT_API_ORIGINS,
       // Local CLI connector (npmx CLI communicates via localhost)
       'http://127.0.0.1:*',
+      // Devtools runtime (Vue Devtools, Nuxt Devtools, etc) — only in dev mode with devtools enabled
+      ...(isDevtoolsRuntime ? ['ws://localhost:*'] : []),
     ].join(' ')
 
-    const frameSrc = ['https://bsky.app', 'https://pdsmoover.com'].join(' ')
+    const frameSrc = [
+      'https://bsky.app',
+      'https://pdsmoover.com',
+      ...(isDevtoolsRuntime ? ["'self'"] : []),
+    ].join(' ')
+
+    const securityHeaders = {
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'DENY',
+      'Referrer-Policy': 'strict-origin-when-cross-origin',
+    }
 
     const csp = [
       `default-src 'none'`,
@@ -81,9 +95,21 @@ export default defineNuxtModule({
       ...wildCardRules,
       headers: {
         ...wildCardRules?.headers,
-        'X-Content-Type-Options': 'nosniff',
-        'X-Frame-Options': 'DENY',
-        'Referrer-Policy': 'strict-origin-when-cross-origin',
+        ...securityHeaders,
+      },
+    }
+
+    if (!isDevtoolsRuntime)
+      return
+
+    const devtoolsRule = nuxt.options.routeRules['/__nuxt_devtools__/**']
+    nuxt.options.routeRules['/__nuxt_devtools__/**'] = {
+      ...devtoolsRule,
+      headers: {
+        ...wildCardRules?.headers,
+        ...securityHeaders,
+        ...devtoolsRule?.headers,
+        'X-Frame-Options': 'SAMEORIGIN',
       },
     }
   },
