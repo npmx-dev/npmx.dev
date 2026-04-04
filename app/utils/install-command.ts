@@ -126,17 +126,17 @@ export interface ExecuteCommandOptions extends InstallCommandOptions {
 }
 
 function getCreatePackageSpecifier(options: ExecuteCommandOptions): string | null {
-  const { packageName, packageManager, isCreatePackage } = options
+  if (!options.isCreatePackage) {
+    return null
+  }
 
-  if (!isCreatePackage) {
+  const shortName = getCreateShortName(options.packageName)
+  if (shortName === options.packageName) {
     return null
   }
-  const shortName = getCreateShortName(packageName)
-  if (shortName === packageName) {
-    return null
-  }
-  if (packageManager === 'deno') {
-    // npm compatibility: npm:package
+
+  if (options.packageManager === 'deno') {
+    // npm compatibility: npm:package-name
     return `npm:${shortName}`
   }
 
