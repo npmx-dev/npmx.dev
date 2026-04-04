@@ -1,10 +1,9 @@
 /* oxlint-disable no-console */
 import { readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { colors } from './utils/colors.ts'
 
-const I18N_DIRECTORY = fileURLToPath(new URL('../i18n', import.meta.url))
+const I18N_DIRECTORY = join(import.meta.dirname, '../i18n')
 const LOCALES_DIRECTORY = join(I18N_DIRECTORY, 'locales')
 const REFERENCE_FILE_NAME = 'en.json'
 const SCHEMA_FILE_NAME = 'schema.json'

@@ -11,7 +11,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { assert, describe, it } from 'vitest'
-import { fileURLToPath } from 'node:url'
 
 /**
  * Components explicitly skipped from a11y testing with reasons.
@@ -152,9 +151,9 @@ function getTestedComponents(
 }
 
 describe('a11y component test coverage', () => {
-  const componentsDir = fileURLToPath(new URL('../../app/components', import.meta.url))
-  const componentsDtsPath = fileURLToPath(new URL('../../.nuxt/components.d.ts', import.meta.url))
-  const testFilePath = fileURLToPath(new URL('../nuxt/a11y.spec.ts', import.meta.url))
+  const componentsDir = path.join(import.meta.dirname, '../../app/components')
+  const componentsDtsPath = path.join(import.meta.dirname, '../../.nuxt/components.d.ts')
+  const testFilePath = path.join(import.meta.dirname, '../nuxt/a11y.spec.ts')
 
   it('should have accessibility tests for all components (or be explicitly skipped)', () => {
     // Get all Vue components
