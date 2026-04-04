@@ -22,23 +22,7 @@
     "keyboard_shortcuts": "कीबोर्ड शॉर्टकट"
   },
   "shortcuts": {
-    "section": {
-      "global": "जागतिक",
-      "search": "शोध",
-      "package": "पॅकेज"
-    },
-    "focus_search": "शोधावर फोकस करा",
-    "show_kbd_hints": "कीबोर्ड सूचनांना ठळक करा",
-    "settings": "सेटिंग्ज उघडा",
-    "compare": "तुलना उघडा",
-    "compare_from_package": "तुलना उघडा (सध्याच्या पॅकेजसह पूर्वभरलेले)",
-    "navigate_results": "परिणामांमध्ये फिरा",
-    "go_to_result": "परिणामाकडे जा",
-    "open_code_view": "कोड दृश्य उघडा",
-    "open_docs": "दस्तऐवज उघडा",
-    "disable_shortcuts": "तुम्ही {settings} मध्ये कीबोर्ड शॉर्टकट अक्षम करू शकता.",
-    "open_main": "मुख्य माहिती उघडा",
-    "open_diff": "आवृत्तीतील फरक उघडा"
+    "section": {}
   },
   "search": {
     "label": "npm पॅकेजेस शोधा",
@@ -229,21 +213,7 @@
     "expand": "विस्तृत करा"
   },
   "profile": {
-    "display_name": "प्रदर्शन नाव",
-    "description": "वर्णन",
-    "no_description": "वर्णन नाही",
-    "website": "वेबसाइट",
-    "website_placeholder": "https://example.com",
-    "likes": "पसंती",
-    "seo_title": "{handle} - npmx",
-    "seo_description": "{handle} द्वारे npmx प्रोफाइल",
-    "not_found": "प्रोफाइल सापडले नाही",
-    "not_found_message": "{handle} साठीचे प्रोफाइल सापडले नाही.",
-    "invite": {
-      "message": "ते अजून npmx वापरत आहेत असे दिसत नाही. त्यांना याबद्दल सांगायचे का?",
-      "share_button": "Bluesky वर शेअर करा",
-      "compose_text": "अहो {'@'}{handle}! तुम्ही अजून npmx.dev पाहिले आहे का? हा npm नोंदणीसाठी जलद, आधुनिक आणि मुक्त-स्रोत ब्राउझर आहे.\nhttps://npmx.dev"
-    }
+    "invite": {}
   },
   "package": {
     "not_found": "पॅकेज सापडले नाही",
@@ -815,12 +785,10 @@
   "code": {
     "files_label": "फायली",
     "no_files": "कोणत्याही फाइल्स उपलब्ध नाहीत",
-    "root": "मूळ",
     "lines": "{count} ओळी",
     "toggle_tree": "फाइल ट्री टॉगल करा",
     "close_tree": "फाइल ट्री बंद करा",
     "copy_link": "लिंक कॉपी करा",
-    "raw": "कच्चा",
     "view_raw": "कच्ची फाइल पहा",
     "file_too_large": "पूर्वावलोकनासाठी फाइल खूप मोठी आहे",
     "file_size_warning": "{size} हे सिंटॅक्स हायलाइटिंगसाठीच्या 500KB मर्यादेपेक्षा जास्त आहे",

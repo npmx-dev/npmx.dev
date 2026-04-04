@@ -8,8 +8,6 @@ async function search() {
   startSearch()
 }
 
-const { env } = useAppConfig().buildInfo
-
 useSeoMeta({
   title: () => $t('seo.home.title'),
   ogTitle: () => $t('seo.home.title'),
@@ -32,25 +30,7 @@ defineOgImageComponent('Default', {
       <header
         class="flex-1 flex flex-col items-center justify-center text-center pt-20 pb-4 md:pb-8 lg:pb-20"
       >
-        <h1
-          dir="ltr"
-          class="relative flex items-center justify-center gap-2 header-logo font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-6 motion-safe:animate-fade-in motion-safe:animate-fill-both"
-        >
-          <AppLogo class="w-42 h-auto sm:w-58 md:w-70" />
-          <span
-            aria-hidden="true"
-            class="text-sm sm:text-base md:text-lg transform-origin-br font-mono tracking-widest text-accent absolute -bottom-4 -inset-ie-1.5"
-          >
-            {{ env === 'release' ? 'alpha' : env }}
-          </span>
-        </h1>
-
-        <p
-          class="text-fg-muted text-lg sm:text-xl max-w-xl mb-12 lg:mb-14 motion-safe:animate-slide-up motion-safe:animate-fill-both"
-          style="animation-delay: 0.1s"
-        >
-          {{ $t('tagline') }}
-        </p>
+        <LandingLogo class="w-42 h-auto sm:w-58 md:w-70" />
         <search
           class="w-full max-w-2xl motion-safe:animate-slide-up motion-safe:animate-fill-both"
           style="animation-delay: 0.2s"

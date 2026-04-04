@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { VueUiSparkline } from 'vue-data-ui/vue-ui-sparkline'
+import { VueUiPatternSeed } from 'vue-data-ui/vue-ui-pattern-seed'
 import { useCssVariables } from '~/composables/useColors'
 import {
   type VueUiSparklineConfig,
@@ -7,6 +8,7 @@ import {
   type VueUiXyDatasetItem,
 } from 'vue-data-ui'
 import { getPalette, lightenColor } from 'vue-data-ui/utils'
+import { CHART_PATTERN_CONFIG } from '~/utils/charts'
 
 import('vue-data-ui/style.css')
 
@@ -194,19 +196,37 @@ const configs = computed(() => {
     <ClientOnly v-for="(config, i) in configs" :key="`config_${i}`">
       <div @mouseleave="resetHover" @keydown.esc="resetHover" class="w-full max-w-[400px] mx-auto">
         <div class="flex gap-2 place-items-center">
-          <div class="h-3 w-3">
-            <svg viewBox="0 0 2 2" class="w-full">
+          <div class="h-5 w-5">
+            <svg viewBox="0 0 30 30" class="w-full">
+              <defs>
+                <VueUiPatternSeed
+                  v-if="i != 0"
+                  :id="`marker_${i}`"
+                  :seed="i"
+                  :foreground-color="colors.bg!"
+                  :background-color="
+                    dataset?.[i]?.color ??
+                    palette[i] ??
+                    palette[i % palette.length] ??
+                    palette[0] ??
+                    'transparent'
+                  "
+                  :max-size="CHART_PATTERN_CONFIG.maxSize"
+                  :min-size="CHART_PATTERN_CONFIG.minSize"
+                  :disambiguator="CHART_PATTERN_CONFIG.disambiguator"
+                />
+              </defs>
               <rect
                 x="0"
                 y="0"
-                width="2"
-                height="2"
-                rx="0.3"
-                :fill="dataset?.[i]?.color ?? palette[i]"
+                width="30"
+                height="30"
+                rx="3"
+                :fill="i === 0 ? (dataset?.[0]?.color ?? palette[0]) : `url(#marker_${i})`"
               />
             </svg>
           </div>
-          {{ applyEllipsis(dataset?.[i]?.name ?? '', 28) }}
+          {{ applyEllipsis(dataset?.[i]?.name ?? '', 27) }}
         </div>
         <VueUiSparkline
           :key="`${i}_${step}`"

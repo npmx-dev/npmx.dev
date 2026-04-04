@@ -822,12 +822,10 @@
   "code": {
     "files_label": "Filer",
     "no_files": "Ingen filer i denne mappen",
-    "root": "rot",
     "lines": "{count} linje | {count} linjer",
     "toggle_tree": "Veksle filtre",
     "close_tree": "Lukk filtre",
     "copy_link": "Kopier lenke",
-    "raw": "Rå",
     "view_raw": "Vis råfil",
     "file_too_large": "Filen er for stor til å forhåndsvises",
     "file_size_warning": "{size} overstiger grensen på 500KB for syntaksmarkering",

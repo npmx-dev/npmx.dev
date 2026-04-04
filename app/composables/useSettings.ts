@@ -38,6 +38,7 @@ export interface AppSettings {
     /** Automatically open the web auth page in the browser */
     autoOpenURL: boolean
   }
+  codeContainerFull: boolean
   sidebar: {
     collapsed: string[]
   }
@@ -63,6 +64,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   connector: {
     autoOpenURL: false,
   },
+  codeContainerFull: false,
   sidebar: {
     collapsed: [],
   },
@@ -234,5 +236,20 @@ export function useBackgroundTheme() {
     backgroundThemes,
     selectedBackgroundTheme: computed(() => settings.value.preferredBackgroundTheme),
     setBackgroundTheme,
+  }
+}
+
+export function useCodeContainer() {
+  const { settings } = useSettings()
+
+  const codeContainerFull = computed(() => settings.value.codeContainerFull)
+
+  function toggleCodeContainer() {
+    settings.value.codeContainerFull = !settings.value.codeContainerFull
+  }
+
+  return {
+    codeContainerFull,
+    toggleCodeContainer,
   }
 }
