@@ -783,12 +783,10 @@
   "code": {
     "files_label": "檔案",
     "no_files": "此目錄中沒有檔案",
-    "root": "根目錄",
     "lines": "{count} 行",
     "toggle_tree": "切換檔案樹",
     "close_tree": "關閉檔案樹",
     "copy_link": "複製連結",
-    "raw": "原始",
     "view_raw": "檢視原始檔",
     "file_too_large": "檔案太大無法預覽",
     "file_size_warning": "{size} 超過 500KB 的語法高亮限制",
@@ -1085,14 +1083,11 @@
       "add_column": "在比較中加入「無相依套件」欄位"
     },
     "facets": {
-      "group_label": "比較維度",
       "all": "全選",
       "none": "取消全選",
       "coming_soon": "即將推出",
       "select_all": "選擇所有維度",
       "deselect_all": "取消選擇所有維度",
-      "select_category": "選擇所有{category}維度",
-      "deselect_category": "取消選擇所有{category}維度",
       "binary_only_tooltip": "此套件僅提供二進位檔且沒有匯出",
       "categories": {
         "performance": "效能",

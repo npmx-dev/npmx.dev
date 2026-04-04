@@ -392,6 +392,12 @@ function matchJsdelivrDataApi(urlString) {
   const packageMatch = pathname.match(/^\/v1\/packages\/npm\/(.+)$/)
   if (packageMatch && packageMatch[1]) {
     const parsed = parseScopedPackage(packageMatch[1])
+
+    const fixture = readFixture(`jsdelivr/${parsed.name}.json`)
+    if (fixture) {
+      return json(fixture)
+    }
+
     return json({
       type: 'npm',
       name: parsed.name,
@@ -461,6 +467,111 @@ function matchConstellationApi(urlString) {
   return json(null)
 }
 
+const BLUESKY_EMBED_DID = 'did:plc:2gkh62xvzokhlf6li4ol3b3d'
+
+/**
+ * @param {string} urlString
+ * @returns {MockResponse | null}
+ */
+function matchBlueskyApi(urlString) {
+  const url = new URL(urlString)
+
+  if (url.pathname === '/xrpc/com.atproto.identity.resolveHandle') {
+    return json({ did: BLUESKY_EMBED_DID })
+  }
+
+  if (url.pathname === '/xrpc/app.bsky.feed.getPosts') {
+    const requestedUri =
+      url.searchParams.getAll('uris')[0] ||
+      `at://${BLUESKY_EMBED_DID}/app.bsky.feed.post/3md3cmrg56k2r`
+
+    return json({
+      posts: [
+        {
+          uri: requestedUri,
+          author: {
+            did: BLUESKY_EMBED_DID,
+            handle: 'danielroe.dev',
+            displayName: 'Daniel Roe',
+            avatar: `https://cdn.bsky.app/img/avatar/plain/${BLUESKY_EMBED_DID}/mock-avatar@jpeg`,
+          },
+          record: {
+            text: 'Mock Bluesky post for CSP coverage.',
+            createdAt: '2026-03-03T12:00:00.000Z',
+          },
+          embed: {
+            $type: 'app.bsky.embed.images#view',
+            images: [
+              {
+                thumb: `https://cdn.bsky.app/img/feed_thumbnail/plain/${BLUESKY_EMBED_DID}/mock-image@jpeg`,
+                fullsize: `https://cdn.bsky.app/img/feed_fullsize/plain/${BLUESKY_EMBED_DID}/mock-image@jpeg`,
+                alt: 'Mock Bluesky image',
+                aspectRatio: { width: 1200, height: 630 },
+              },
+            ],
+          },
+          likeCount: 42,
+          replyCount: 7,
+          repostCount: 3,
+        },
+      ],
+    })
+  }
+
+  if (url.pathname === '/xrpc/app.bsky.actor.getProfiles') {
+    const actors = url.searchParams.getAll('actors')
+
+    return json({
+      profiles: actors.map(handle => ({
+        handle,
+        avatar: `https://cdn.bsky.app/img/avatar/plain/${BLUESKY_EMBED_DID}/mock-avatar`,
+      })),
+    })
+  }
+
+  return null
+}
+
+/**
+ * @param {string} _urlString
+ * @returns {MockResponse}
+ */
+function matchBlueskyCdn(_urlString) {
+  return {
+    status: 200,
+    contentType: 'image/svg+xml',
+    body:
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
+      '<rect width="120" height="120" fill="#0ea5e9"/>' +
+      '<circle cx="60" cy="44" r="18" fill="#f8fafc"/>' +
+      '<rect x="24" y="74" width="72" height="18" rx="9" fill="#f8fafc"/>' +
+      '</svg>',
+  }
+}
+
+/**
+ * @param {string} urlString
+ * @returns {MockResponse | null}
+ */
+function matchStarHistoryApi(urlString) {
+  const url = new URL(urlString)
+
+  if (url.pathname === '/svg') {
+    return {
+      status: 200,
+      contentType: 'image/svg+xml',
+      body:
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 320">' +
+        '<rect width="640" height="320" fill="#0f172a"/>' +
+        '<path d="M32 256 L160 220 L288 168 L416 120 L544 88 L608 64" stroke="#f59e0b" stroke-width="8" fill="none"/>' +
+        '<text x="32" y="44" fill="#f8fafc" font-family="monospace" font-size="24">Mock Star History</text>' +
+        '</svg>',
+    }
+  }
+
+  return null
+}
+
 /**
  * @param {string} urlString
  * @returns {MockResponse | null}
@@ -517,6 +628,13 @@ const routes = [
     name: 'Constellation API',
     pattern: 'https://constellation.microcosm.blue/**',
     match: matchConstellationApi,
+  },
+  { name: 'Bluesky API', pattern: 'https://public.api.bsky.app/**', match: matchBlueskyApi },
+  { name: 'Bluesky CDN', pattern: 'https://cdn.bsky.app/**', match: matchBlueskyCdn },
+  {
+    name: 'Star History API',
+    pattern: 'https://api.star-history.com/**',
+    match: matchStarHistoryApi,
   },
 ]
 

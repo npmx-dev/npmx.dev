@@ -343,13 +343,13 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
       code: 'tl-PH',
       file: 'tl-PH.json',
       name: 'Tagalog',
-    },
-    {
-      code: 'vi-VN',
-      file: 'vi-VN.json',
-      name: 'Tiếng Việt',
-    },
-    {
+    },*/
+  {
+    code: 'vi-VN',
+    file: 'vi-VN.json',
+    name: 'Tiếng Việt',
+  },
+  /*{
       code: 'cy',
       file: 'cy.json',
       name: 'Cymraeg',
@@ -358,6 +358,19 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     code: 'nb-NO',
     file: 'nb-NO.json',
     name: 'Norsk (Bokmål)',
+  },
+  {
+    code: 'sr-Latn-RS',
+    file: 'sr-Latn-RS.json',
+    name: 'Srpski (Latinica)',
+    pluralRule: createPluralRule('sr-Latn-RS', {
+      zero: 2,
+      one: 0,
+      two: 1,
+      few: 1,
+      many: 2,
+      other: 2,
+    }),
   },
 ]
 

@@ -651,12 +651,10 @@
   "code": {
     "files_label": "الملفات",
     "no_files": "لا توجد ملفات في هذا المجلد",
-    "root": "الجذر",
     "lines": "{count} سطر",
     "toggle_tree": "إظهار/إخفاء شجرة الملفات",
     "close_tree": "إغلاق شجرة الملفات",
     "copy_link": "نسخ الرابط",
-    "raw": "خام (Raw)",
     "view_raw": "عرض الملف الخام (Raw)",
     "file_too_large": "الملف كبير جدًا للمعاينة",
     "file_size_warning": "{size} يتجاوز حد 500KB للتظليل النحوي (syntax highlighting)",
@@ -937,14 +935,11 @@
       "add_column": "إضافة عمود «بدون تبعية» إلى المقارنة"
     },
     "facets": {
-      "group_label": "محاور المقارنة",
       "all": "الكل",
       "none": "لا شيء",
       "coming_soon": "قريبًا",
       "select_all": "تحديد كل المحاور",
       "deselect_all": "إلغاء تحديد كل المحاور",
-      "select_category": "تحديد جميع محاور {category}",
-      "deselect_category": "إلغاء تحديد جميع محاور {category}",
       "binary_only_tooltip": "هذه الحزمة تعرض ملفات تنفيذية فقط دون تصديرات",
       "categories": {
         "performance": "الأداء",

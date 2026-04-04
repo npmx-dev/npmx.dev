@@ -141,12 +141,14 @@ import {
   BlueskyPostEmbed,
   BuildEnvironment,
   ButtonBase,
+  LandingLogo,
   LinkBase,
   CallToAction,
-  ChartPatternSlot,
   CodeDirectoryListing,
   CodeFileTree,
+  CodeHeader,
   CodeMobileTreeDrawer,
+  CodeSkeletonLoader,
   CodeViewer,
   CopyToClipboardButton,
   CollapsibleSection,
@@ -234,6 +236,11 @@ import {
   PackageSelectionCheckbox,
   PackageExternalLinks,
   LicenseChangeWarning,
+  ChartSplitSparkline,
+  TabRoot,
+  TabList,
+  TabItem,
+  TabPanel,
 } from '#components'
 
 // Server variant components must be imported directly to test the server-side render
@@ -247,6 +254,7 @@ import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
 import PackageLikeCard from '~/components/Package/LikeCard.vue'
 import SizeIncrease from '~/components/Package/SizeIncrease.vue'
 import Likes from '~/components/Package/Likes.vue'
+import type { VueUiXyDatasetItem } from 'vue-data-ui'
 
 describe('component accessibility audits', () => {
   describe('DateTime', () => {
@@ -326,6 +334,14 @@ describe('component accessibility audits', () => {
     })
   })
 
+  describe('LandingLogo', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(LandingLogo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
   describe('AppFooter', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(AppFooter)
@@ -334,7 +350,7 @@ describe('component accessibility audits', () => {
     })
   })
 
-describe('LicenseChangeWarning', () => {
+  describe('LicenseChangeWarning', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(LicenseChangeWarning, {
         props: {
@@ -958,6 +974,93 @@ describe('LicenseChangeWarning', () => {
     })
   })
 
+  describe('ChartSplitSparkline', () => {
+    const dataset = [
+      {
+        color: 'oklch(0.7025 0.132 160.37)',
+        name: 'vue',
+        series: [100_000, 200_000, 150_000],
+        type: 'line',
+        dashIndices: [],
+      },
+      {
+        color: 'oklch(0.6917 0.1865 35.04)',
+        name: 'svelte',
+        series: [100_000, 200_000, 150_000],
+        type: 'line',
+        dashIndices: [],
+      },
+    ] as Array<
+      VueUiXyDatasetItem & {
+        color?: string
+        series: number[]
+        dashIndices?: number[]
+      }
+    >
+    const dates = [1743465600000, 1744070400000, 1744675200000]
+    const datetimeFormatterOptions = {
+      year: 'yyyy-MM-dd',
+      month: 'yyyy-MM-dd',
+      day: 'yyyy-MM-dd',
+    }
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(ChartSplitSparkline, {
+        props: {
+          dataset,
+          dates,
+          datetimeFormatterOptions,
+          showLastDatapointEstimation: false,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations when empty', async () => {
+      const component = await mountSuspended(ChartSplitSparkline, {
+        props: {
+          dataset: [],
+          dates: [],
+          datetimeFormatterOptions,
+          showLastDatapointEstimation: false,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('TabRoot + TabList + TabItem + TabPanel', () => {
+    function createTabsFixture(modelValue: string, idPrefix: string) {
+      return defineComponent({
+        setup() {
+          return () =>
+            h(TabRoot, { modelValue, idPrefix }, () => [
+              h(TabList, { ariaLabel: 'Test tabs' }, () => [
+                h(TabItem, { value: 'first' }, () => 'First'),
+                h(TabItem, { value: 'second' }, () => 'Second'),
+              ]),
+              h(TabPanel, { value: 'first' }, () => 'First content'),
+              h(TabPanel, { value: 'second' }, () => 'Second content'),
+            ])
+        },
+      })
+    }
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(createTabsFixture('first', 'a11y-test'))
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with second tab selected', async () => {
+      const component = await mountSuspended(createTabsFixture('second', 'a11y-test2'))
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
   describe('PackagePlaygrounds', () => {
     it('should have no accessibility violations with single link', async () => {
       const links = [
@@ -1166,6 +1269,44 @@ describe('LicenseChangeWarning', () => {
           keywords: ['keyword1', 'keyword2'],
         },
       })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('CodeHeader', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(CodeHeader, {
+        props: {
+          filePath: 'misc/true.js',
+          loading: false,
+          isViewingFile: true,
+          isBinaryFile: false,
+          fileContent: {
+            package: 'vite',
+            version: '1.0.0',
+            path: 'misc/true.js',
+            language: 'javascript',
+            contentType: 'application/javascript',
+            content: 'const x = 1;',
+            html: '<pre><code><span class="line">const x = 1;</span></code></pre>',
+            lines: 1,
+          },
+          markdownViewMode: 'preview',
+          selectedLines: null,
+          getCodeUrlWithPath: (path = '') => `/package-code/vite/v/1.0.0/${path}`,
+          packageName: 'vite',
+          version: '1.0.0',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('CodeSkeletonLoader', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(CodeSkeletonLoader)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
@@ -2171,23 +2312,6 @@ describe('LicenseChangeWarning', () => {
   describe('CallToAction', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(CallToAction)
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-  })
-
-  describe('ChartPatternSlot', () => {
-    it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(ChartPatternSlot, {
-        props: {
-          id: 'perennius',
-          seed: 1,
-          foregroundColor: 'black',
-          fallbackColor: 'transparent',
-          maxSize: 24,
-          minSize: 16,
-        },
-      })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })

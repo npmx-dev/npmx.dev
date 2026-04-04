@@ -9,7 +9,7 @@ const config = {
     'storybook-i18n',
   ],
   framework: '@storybook-vue/nuxt',
-  staticDirs: ['./.public'],
+  staticDirs: ['./.public', { from: '../public', to: '/' }],
   features: {
     backgrounds: false,
   },

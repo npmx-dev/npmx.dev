@@ -1,5 +1,19 @@
-User-agent: *
-Allow: /
+Allow: /$
+Allow: /about$
+Allow: /accessibility$
+Allow: /blog
+Allow: /brand$
+Allow: /pds$
+Allow: /privacy$
+Allow: /translation-status$
+Allow: /recharging$
+Allow: /__og-image__/*
+Allow: /opensearch.xml$
+
+Disallow: /
+
+# User-agent: *
+# Allow: /
 
 # Search pages: infinite query-param combinations
 Disallow: /search

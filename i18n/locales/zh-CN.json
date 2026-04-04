@@ -783,12 +783,10 @@
   "code": {
     "files_label": "文件",
     "no_files": "这个目录中没有文件",
-    "root": "根目录",
     "lines": "{count} 行",
     "toggle_tree": "切换文件树",
     "close_tree": "关闭文件树",
     "copy_link": "复制链接",
-    "raw": "原始文件",
     "view_raw": "查看原始文件",
     "file_too_large": "文件过大，无法预览",
     "file_size_warning": "{size} 超出了 500KB 的语法高亮限制",
@@ -1086,14 +1084,11 @@
       "add_column": "添加与“不使用依赖”的比较"
     },
     "facets": {
-      "group_label": "比较维度",
       "all": "全选",
       "none": "取消全选",
       "coming_soon": "即将推出",
       "select_all": "选择所有维度",
       "deselect_all": "取消选择所有维度",
-      "select_category": "选择所有{category}维度",
-      "deselect_category": "取消选择所有{category}维度",
       "binary_only_tooltip": "此包仅暴露二进制文件且无导出",
       "categories": {
         "performance": "性能",

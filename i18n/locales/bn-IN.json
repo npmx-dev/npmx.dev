@@ -545,12 +545,10 @@
   "code": {
     "files_label": "ফাইলগুলি",
     "no_files": "এই ডাইরেক্টরিতে কোনো ফাইল নেই",
-    "root": "রুট",
     "lines": "{count}টি লাইন",
     "toggle_tree": "ফাইল ট্রি টগল করুন",
     "close_tree": "ফাইল ট্রি বন্ধ করুন",
     "copy_link": "লিঙ্ক কপি করুন",
-    "raw": "রও",
     "view_raw": "রও ফাইল দেখুন",
     "file_too_large": "প্রিভিউ-র জন্য ফাইল খুব বড়",
     "file_size_warning": "{size} সিনট্যাক্স হাইলাইটিং-এর জন্য 500KB সীমার চেয়ে বেশি",
@@ -807,14 +805,11 @@
     },
     "no_dependency": {},
     "facets": {
-      "group_label": "তুলনা ফ্যাসেট",
       "all": "সব",
       "none": "কিছু না",
       "coming_soon": "শীঘ্রই আসছে",
       "select_all": "সব ফ্যাসেট নির্বাচন করুন",
       "deselect_all": "সব ফ্যাসেট অনির্বাচিত করুন",
-      "select_category": "সব {category} ফ্যাসেট নির্বাচন করুন",
-      "deselect_category": "সব {category} ফ্যাসেট অনির্বাচিত করুন",
       "categories": {
         "performance": "কর্মক্ষমতা",
         "health": "স্বাস্থ্য",

@@ -716,12 +716,10 @@
   "code": {
     "files_label": "Fájlok",
     "no_files": "Nincsenek fájlok ebben a könyvtárban",
-    "root": "gyökér",
     "lines": "{count} sor | {count} sor",
     "toggle_tree": "Fájlfa kapcsolása",
     "close_tree": "Fájlfa bezárása",
     "copy_link": "Link másolása",
-    "raw": "Nyers",
     "view_raw": "Nyers fájl megtekintése",
     "file_too_large": "A fájl túl nagy az előnézethez",
     "file_size_warning": "{size} meghaladja az 500KB-os limitet a szintaxis alapú formázáshoz",
@@ -1008,14 +1006,11 @@
       "add_column": "Nincs függőség oszlop hozzáadása az összehasonlításhoz"
     },
     "facets": {
-      "group_label": "Összehasonlítási aspektusok",
       "all": "összes",
       "none": "nincs",
       "coming_soon": "Hamarosan",
       "select_all": "Az összes aspektus kiválasztása",
       "deselect_all": "Az összes aspektus kijelölésének törlése",
-      "select_category": "Az összes {category} aspektus kiválasztása",
-      "deselect_category": "Az összes {category} aspektus kijelölésének törlése",
       "binary_only_tooltip": "Ez a csomag binárisokat mutat ki és nincsenek exportok",
       "categories": {
         "performance": "Teljesítmény",

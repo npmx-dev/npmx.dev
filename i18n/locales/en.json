@@ -493,6 +493,9 @@
         "table_available": "A data table for this chart is available below.",
         "table_caption": "Chart data table"
       },
+      "chart_view_toggle": "Toggle view",
+      "chart_view_combined": "Combined view",
+      "chart_view_split": "Split view",
       "granularity": "Granularity",
       "granularity_daily": "Daily",
       "granularity_weekly": "Weekly",
@@ -826,13 +829,15 @@
   "code": {
     "files_label": "Files",
     "no_files": "No files in this directory",
-    "root": "root",
     "lines": "{count} line | {count} lines",
     "toggle_tree": "Toggle file tree",
     "close_tree": "Close file tree",
+    "copy_content": "Copy file content",
     "copy_link": "Copy link",
-    "raw": "Raw",
     "view_raw": "View raw file",
+    "toggle_container": "Toggle code container width",
+    "open_raw_file": "Open raw file",
+    "open_path_dropdown": "Open path segments dropdown",
     "file_too_large": "File too large to preview",
     "file_size_warning": "{size} exceeds the 500KB limit for syntax highlighting",
     "failed_to_load": "Failed to load file",
@@ -847,8 +852,8 @@
       "size": "Size"
     },
     "markdown_view_mode": {
-      "preview": "preview",
-      "code": "code"
+      "preview": "Preview",
+      "code": "Code"
     },
     "file_path": "File path",
     "binary_file": "Binary file",
@@ -1110,6 +1115,7 @@
       "empty_description": "Search and add at least 2 packages above to see a side-by-side comparison of their metrics.",
       "table_view": "Table",
       "charts_view": "Charts",
+      "no_chartable_data": "No chartable data available for the selected facets.",
       "bar_chart_nav_hint": "Use ↑ ↓",
       "line_chart_nav_hint": "Use ← →"
     },
@@ -1132,14 +1138,15 @@
       "add_column": "Add no dependency column to comparison"
     },
     "facets": {
-      "group_label": "Comparison facets",
       "all": "all",
       "none": "none",
+      "select_all_category_facets": "Select all {category} facets",
+      "deselect_all_category_facets": "Deselect all {category} facets",
+      "selected_all_category_facets": "Selected all {category} facets",
+      "deselected_all_category_facets": "Deselected all {category} facets",
       "coming_soon": "Coming soon",
       "select_all": "Select all facets",
       "deselect_all": "Deselect all facets",
-      "select_category": "Select all {category} facets",
-      "deselect_category": "Deselect all {category} facets",
       "binary_only_tooltip": "This package exposes binaries and no exports",
       "categories": {
         "performance": "Performance",
@@ -1520,5 +1527,6 @@
       "message": "Accessibility matters to us, and we would love you to follow us in this vision. When using mentioned media, ensure there is enough contrast against the background, and don't go smaller than 24px. If you need any other resources or additional information about the project, feel free to reach us at {link}.",
       "discord_link_text": "chat.npmx.dev"
     }
-  }
+  },
+  "alt_logo_kawaii": "A cute, rounded, and colorful version of the npmx logo."
 }

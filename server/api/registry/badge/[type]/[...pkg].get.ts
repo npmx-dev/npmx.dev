@@ -6,6 +6,7 @@ import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import { CACHE_MAX_AGE_ONE_HOUR, ERROR_NPM_FETCH_FAILED } from '#shared/utils/constants'
 import { fetchNpmPackage } from '#server/utils/npm'
 import { assertValidPackageName } from '#shared/utils/npm'
+import { fetchPackageWithTypesAndFiles } from '#server/utils/file-tree'
 import { handleApiError } from '#server/utils/error-handler'
 
 const NPM_DOWNLOADS_API = 'https://api.npmjs.org/downloads/point'
@@ -438,12 +439,46 @@ const badgeStrategies = {
     return { label: 'node', value: nodeVersion, color: COLORS.yellow }
   },
 
-  'types': async (pkgData: globalThis.Packument) => {
-    const latest = getLatestVersion(pkgData)
-    const versionData = latest ? pkgData.versions?.[latest] : undefined
-    const hasTypes = !!(versionData?.types || versionData?.typings)
-    const value = hasTypes ? 'included' : 'missing'
-    const color = hasTypes ? COLORS.blue : COLORS.slate
+  'types': async (pkgData: globalThis.Packument, requestedVersion?: string) => {
+    const targetVersion = requestedVersion ?? getLatestVersion(pkgData)
+    const versionData = targetVersion ? pkgData.versions?.[targetVersion] : undefined
+
+    if (versionData && hasBuiltInTypes(versionData)) {
+      return { label: 'types', value: 'included', color: COLORS.blue }
+    }
+
+    const { pkg, typesPackage, files } = await fetchPackageWithTypesAndFiles(
+      pkgData.name,
+      targetVersion,
+    )
+
+    const typesStatus = detectTypesStatus(pkg, typesPackage, files)
+
+    let value: string
+    let color: string
+
+    switch (typesStatus.kind) {
+      case 'included':
+        value = 'included'
+        color = COLORS.blue
+        break
+
+      case '@types':
+        value = '@types'
+        color = COLORS.purple
+        if (typesStatus.deprecated) {
+          value += ' (deprecated)'
+          color = COLORS.red
+        }
+        break
+
+      case 'none':
+      default:
+        value = 'missing'
+        color = COLORS.slate
+        break
+    }
+
     return { label: 'types', value, color }
   },
 

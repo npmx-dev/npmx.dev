@@ -1,3 +1,7 @@
+import { getLatestVersion } from 'fast-npm-meta'
+import { flattenFileTree } from '#server/utils/import-resolver'
+import type { ExtendedPackageJson, TypesPackageInfo } from '#shared/utils/package-analysis'
+
 /**
  * Fetch the file tree from jsDelivr API.
  * Returns a nested tree structure of all files in the package.
@@ -82,4 +86,63 @@ export async function getPackageFileTree(
     default: jsDelivrData.default ?? undefined,
     tree,
   }
+}
+
+/**
+ * Fetch @types package info including deprecation status using fast-npm-meta.
+ * Returns undefined if the package doesn't exist.
+ */
+async function fetchTypesPackageInfo(packageName: string): Promise<TypesPackageInfo | undefined> {
+  const result = await getLatestVersion(packageName, { metadata: true, throw: false })
+  if ('error' in result) {
+    return undefined
+  }
+  return {
+    packageName,
+    deprecated: result.deprecated,
+  }
+}
+
+interface AnalysisPackageJson extends ExtendedPackageJson {
+  readme?: string
+}
+
+export async function fetchPackageWithTypesAndFiles(
+  packageName: string,
+  version?: string,
+): Promise<{
+  pkg: AnalysisPackageJson
+  typesPackage?: TypesPackageInfo
+  files?: Set<string>
+}> {
+  // Fetch main package data
+  const encodedName = encodePackageName(packageName)
+  const versionSuffix = version ? `/${version}` : '/latest'
+
+  const pkg = await $fetch<AnalysisPackageJson>(`${NPM_REGISTRY}/${encodedName}${versionSuffix}`)
+
+  let typesPackage: TypesPackageInfo | undefined
+  let files: Set<string> | undefined
+
+  // Only attempt to fetch @types + file tree when the package doesn't ship its own types
+  if (!hasBuiltInTypes(pkg)) {
+    const typesPkgName = getTypesPackageName(packageName)
+    const resolvedVersion = pkg.version ?? version ?? 'latest'
+
+    // Fetch both in parallel — they're independent
+    const [typesResult, fileTreeResult] = await Promise.allSettled([
+      fetchTypesPackageInfo(typesPkgName),
+      getPackageFileTree(packageName, resolvedVersion),
+    ])
+
+    if (typesResult.status === 'fulfilled') {
+      typesPackage = typesResult.value
+    }
+
+    if (fileTreeResult.status === 'fulfilled') {
+      files = flattenFileTree(fileTreeResult.value.tree)
+    }
+  }
+
+  return { pkg, typesPackage, files }
 }

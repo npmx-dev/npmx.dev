@@ -546,12 +546,10 @@
   "code": {
     "files_label": "ಫೈಲ್‌ಗಳು",
     "no_files": "ಈ ಡೈರೆಕ್ಟರಿಯಲ್ಲಿ ಯಾವುದೇ ಫೈಲ್‌ಗಳಿಲ್ಲ",
-    "root": "ಮೂಲ",
     "lines": "{count} ಸಾಲುಗಳು",
     "toggle_tree": "ಫೈಲ್ ಮರವನ್ನು ಟಾಗಲ್ ಮಾಡಿ",
     "close_tree": "ಫೈಲ್ ಮರ ಮುಚ್ಚಿ",
     "copy_link": "ಲಿಂಕ್ ನಕಲಿಸಿ",
-    "raw": "ರಾ",
     "view_raw": "ರಾ ಫೈಲ್ ನೋಡಿ",
     "file_too_large": "ಪೂರ್ವದೃಶ್ಯಕ್ಕಾಗಿ ಫೈಲ್ ತುಂಬಾ ದೊಡ್ಡದು",
     "file_size_warning": "{size} ಸಿಂಟ್ಯಾಕ್ಸ್ ಹೈಲೈಟಿಂಗ್‌ಗೆ 500KB ಮಿತಿಯನ್ನು ಮೀರಿದೆ",
@@ -808,14 +806,11 @@
     },
     "no_dependency": {},
     "facets": {
-      "group_label": "ಹೋಲಿಕೆ ಫ್ಯಾಸೆಟ್‌ಗಳು",
       "all": "ಎಲ್ಲ",
       "none": "ಯಾವುದೂ ಇಲ್ಲ",
       "coming_soon": "ಶೀಘ್ರದಲ್ಲೇ",
       "select_all": "ಎಲ್ಲ ಫ್ಯಾಸೆಟ್‌ಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ",
       "deselect_all": "ಎಲ್ಲ ಫ್ಯಾಸೆಟ್‌ಗಳನ್ನು ಅನಾಯ್ಕೆಮಾಡಿ",
-      "select_category": "ಎಲ್ಲ {category} ಫ್ಯಾಸೆಟ್‌ಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ",
-      "deselect_category": "ಎಲ್ಲ {category} ಫ್ಯಾಸೆಟ್‌ಗಳನ್ನು ಅನಾಯ್ಕೆಮಾಡಿ",
       "categories": {
         "performance": "ಕಾರ್ಯಕ್ಷಮತೆ",
         "health": "ಆರೋಗ್ಯ",

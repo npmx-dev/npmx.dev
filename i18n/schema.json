@@ -1483,6 +1483,15 @@
               },
               "additionalProperties": false
             },
+            "chart_view_toggle": {
+              "type": "string"
+            },
+            "chart_view_combined": {
+              "type": "string"
+            },
+            "chart_view_split": {
+              "type": "string"
+            },
             "granularity": {
               "type": "string"
             },
@@ -2482,9 +2491,6 @@
         "no_files": {
           "type": "string"
         },
-        "root": {
-          "type": "string"
-        },
         "lines": {
           "type": "string"
         },
@@ -2494,13 +2500,22 @@
         "close_tree": {
           "type": "string"
         },
+        "copy_content": {
+          "type": "string"
+        },
         "copy_link": {
           "type": "string"
         },
-        "raw": {
+        "view_raw": {
           "type": "string"
         },
-        "view_raw": {
+        "toggle_container": {
+          "type": "string"
+        },
+        "open_raw_file": {
+          "type": "string"
+        },
+        "open_path_dropdown": {
           "type": "string"
         },
         "file_too_large": {
@@ -3334,6 +3349,9 @@
             "charts_view": {
               "type": "string"
             },
+            "no_chartable_data": {
+              "type": "string"
+            },
             "bar_chart_nav_hint": {
               "type": "string"
             },
@@ -3400,13 +3418,22 @@
         "facets": {
           "type": "object",
           "properties": {
-            "group_label": {
-              "type": "string"
-            },
             "all": {
               "type": "string"
             },
             "none": {
+              "type": "string"
+            },
+            "select_all_category_facets": {
+              "type": "string"
+            },
+            "deselect_all_category_facets": {
+              "type": "string"
+            },
+            "selected_all_category_facets": {
+              "type": "string"
+            },
+            "deselected_all_category_facets": {
               "type": "string"
             },
             "coming_soon": {
@@ -3416,12 +3443,6 @@
               "type": "string"
             },
             "deselect_all": {
-              "type": "string"
-            },
-            "select_category": {
-              "type": "string"
-            },
-            "deselect_category": {
               "type": "string"
             },
             "binary_only_tooltip": {
@@ -4566,6 +4587,9 @@
         }
       },
       "additionalProperties": false
+    },
+    "alt_logo_kawaii": {
+      "type": "string"
     },
     "$schema": {
       "type": "string"
