@@ -822,12 +822,10 @@
   "code": {
     "files_label": "Datoteke",
     "no_files": "Nema datoteka u ovom direktorijumu",
-    "root": "root",
     "lines": "{count} linija | {count} linije | {count} linija",
     "toggle_tree": "Uključite/isključite stablo datoteka",
     "close_tree": "Zatvorite stablo datoteka",
     "copy_link": "Kopirajte link",
-    "raw": "Izvorni format",
     "view_raw": "Pogledajte izvornu datoteku",
     "file_too_large": "Datoteka je prevelika za pregled",
     "file_size_warning": "{size} premašuje ograničenje od 500KB za isticanje sintakse",
