@@ -172,6 +172,17 @@ test.describe('badge API', () => {
     expect(body).toContain(customLabel)
   })
 
+  test('custom value parameter is applied to SVG', async ({ page, baseURL }) => {
+    const customValue = 'custom-value-123'
+    const url = toLocalUrl(
+      baseURL,
+      `/api/registry/badge/version/nuxt?value=${encodeURIComponent(customValue)}`,
+    )
+    const { body } = await fetchBadge(page, url)
+
+    expect(body).toContain(customValue)
+  })
+
   test('style=default keeps current badge renderer', async ({ page, baseURL }) => {
     const url = toLocalUrl(baseURL, '/api/registry/badge/version/nuxt?style=default')
     const { body } = await fetchBadge(page, url)

@@ -651,12 +651,10 @@
   "code": {
     "files_label": "الملفات",
     "no_files": "لا توجد ملفات في هذا المجلد",
-    "root": "الجذر",
     "lines": "{count} سطر",
     "toggle_tree": "إظهار/إخفاء شجرة الملفات",
     "close_tree": "إغلاق شجرة الملفات",
     "copy_link": "نسخ الرابط",
-    "raw": "خام (Raw)",
     "view_raw": "عرض الملف الخام (Raw)",
     "file_too_large": "الملف كبير جدًا للمعاينة",
     "file_size_warning": "{size} يتجاوز حد 500KB للتظليل النحوي (syntax highlighting)",

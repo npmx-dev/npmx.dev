@@ -84,7 +84,7 @@ describe('useInstallSizeDiff', () => {
       expect(comparisonVersion.value).toBe('1.0.0')
     })
 
-    it('uses the latest dist-tag for a prerelease version', () => {
+    it('compares a prerelease against the previous stable version', () => {
       const pkg = createPackage(
         'test',
         { '1.0.0': '2020-01-01', '2.0.0-beta.1': '2021-01-01' },
@@ -95,20 +95,28 @@ describe('useInstallSizeDiff', () => {
       expect(comparisonVersion.value).toBe('1.0.0')
     })
 
-    it('returns null when the prerelease version is already latest', () => {
+    it('compares an old prerelease against the stable version before it, not latest', () => {
+      const pkg = createPackage(
+        'test',
+        {
+          '1.16.0': '2024-01-01',
+          '1.17.0-alpha.0': '2024-02-01',
+          '1.18.0': '2024-03-01',
+          '1.50.0': '2025-01-01',
+        },
+        { latest: '1.50.0' },
+      )
+
+      const { comparisonVersion } = useInstallSizeDiff('test', '1.17.0-alpha.0', pkg, null)
+      expect(comparisonVersion.value).toBe('1.16.0')
+    })
+
+    it('returns null for a prerelease with no prior stable versions', () => {
       const pkg = createPackage(
         'test',
         { '2.0.0-beta.1': '2021-01-01' },
         { latest: '2.0.0-beta.1' },
       )
-
-      const { comparisonVersion } = useInstallSizeDiff('test', '2.0.0-beta.1', pkg, null)
-      expect(comparisonVersion.value).toBeNull()
-    })
-
-    it('returns null for a prerelease when there is no latest tag', () => {
-      const pkg = createPackage('test', { '2.0.0-beta.1': '2021-01-01' }, {})
-      pkg['dist-tags'] = {}
 
       const { comparisonVersion } = useInstallSizeDiff('test', '2.0.0-beta.1', pkg, null)
       expect(comparisonVersion.value).toBeNull()

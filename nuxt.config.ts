@@ -104,7 +104,7 @@ export default defineNuxtConfig({
       isr: {
         expiration: 60 * 60 /* one hour */,
         passQuery: true,
-        allowQuery: ['color', 'labelColor', 'label', 'name', 'style'],
+        allowQuery: ['color', 'labelColor', 'label', 'name', 'style', 'value'],
       },
     },
     '/api/registry/image-proxy': {
@@ -276,6 +276,12 @@ export default defineNuxtConfig({
         weights: ['400', '500'],
         preload: true,
         global: true,
+      },
+      {
+        name: 'IBM Plex Sans Arabic',
+        weights: ['400', '500', '600'],
+        global: true,
+        subsets: ['arabic'],
       },
     ],
   },

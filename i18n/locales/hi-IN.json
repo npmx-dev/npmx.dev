@@ -229,21 +229,7 @@
     "expand": "विस्तृत करें"
   },
   "profile": {
-    "display_name": "प्रदर्शित नाम",
-    "description": "विवरण",
-    "no_description": "कोई विवरण नहीं",
-    "website": "वेबसाइट",
-    "website_placeholder": "https://example.com",
-    "likes": "लाइक्स",
-    "seo_title": "{handle} - npmx",
-    "seo_description": "{handle} द्वारा npmx प्रोफ़ाइल",
-    "not_found": "प्रोफ़ाइल नहीं मिली",
-    "not_found_message": "{handle} की प्रोफ़ाइल नहीं मिल सकी।",
-    "invite": {
-      "message": "ऐसा नहीं लगता कि वे अभी npmx का उपयोग कर रहे हैं। क्या आप उन्हें इसके बारे में बताना चाहते हैं?",
-      "share_button": "Bluesky पर साझा करें",
-      "compose_text": "Hey {'@'}{handle}! Have you checked out npmx.dev yet? It's a browser for the npm registry that's fast, modern, and open-source.\nhttps://npmx.dev"
-    }
+    "invite": {}
   },
   "package": {
     "not_found": "पैकेज नहीं मिला",
@@ -819,12 +805,10 @@
   "code": {
     "files_label": "फ़ाइलें",
     "no_files": "इस डायरेक्टरी में कोई फ़ाइलें नहीं",
-    "root": "रूट",
     "lines": "{count} पंक्तियाँ",
     "toggle_tree": "फ़ाइल ट्री टॉगल करें",
     "close_tree": "फ़ाइल ट्री बंद करें",
     "copy_link": "लिंक कॉपी करें",
-    "raw": "रॉ",
     "view_raw": "रॉ फ़ाइल देखें",
     "file_too_large": "फ़ाइल पूर्वावलोकन के लिए बहुत बड़ी है",
     "file_size_warning": "{size} सिंटैक्स हाइलाइटिंग के लिए 500KB सीमा से अधिक है",
