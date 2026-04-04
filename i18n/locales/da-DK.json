@@ -1184,7 +1184,7 @@
           "description": "Node.js version krav"
         },
         "types": {
-          "label": "Types",
+          "label": "Typer",
           "description": "TypeScript type definitioner"
         },
         "moduleFormat": {
