@@ -1394,12 +1394,5 @@
     "selection": "0 निवडले | 1 निवडले | {count} निवडले",
     "shortcut": "\"{key}\" दाबून क्रियांवर फोकस करा",
     "button_close_aria_label": "क्रिया पट्टी बंद करा"
-  },
-  "logo_menu": {},
-  "brand": {
-    "logos": {},
-    "customize": {},
-    "typography": {},
-    "guidelines": {}
   }
 }
