@@ -14,20 +14,21 @@ const DEFAULT_FRONTEND_URL = 'https://npmx.dev/'
 const DEV_FRONTEND_URL = 'http://127.0.0.1:3000/'
 
 async function runNpmLogin(): Promise<boolean> {
-  return new Promise(resolve => {
-    const child = spawn('npm', ['login', `--registry=${NPM_REGISTRY_URL}`], {
-      stdio: 'inherit',
-      shell: true,
-    })
-
-    child.on('close', code => {
-      resolve(code === 0)
-    })
-
-    child.on('error', () => {
-      resolve(false)
-    })
+  const { promise, resolve } = Promise.withResolvers<boolean>()
+  const child = spawn('npm', ['login', `--registry=${NPM_REGISTRY_URL}`], {
+    stdio: 'inherit',
+    shell: true,
   })
+
+  child.on('close', code => {
+    resolve(code === 0)
+  })
+
+  child.on('error', () => {
+    resolve(false)
+  })
+
+  return promise
 }
 
 const main = defineCommand({

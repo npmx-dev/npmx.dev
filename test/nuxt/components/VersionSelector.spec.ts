@@ -519,11 +519,8 @@ describe('VersionSelector', () => {
 
   describe('loading states', () => {
     it('shows loading spinner when fetching versions', async () => {
-      let resolvePromise: (value: unknown[]) => void
-      const loadingPromise = new Promise<unknown[]>(resolve => {
-        resolvePromise = resolve
-      })
-      mockFetchAllPackageVersions.mockReturnValue(loadingPromise)
+      const { promise, resolve } = Promise.withResolvers<unknown[]>()
+      mockFetchAllPackageVersions.mockReturnValue(promise)
 
       const component = await mountSuspended(VersionSelector, {
         props: {
@@ -549,7 +546,7 @@ describe('VersionSelector', () => {
       })
 
       // Resolve the promise to clean up
-      resolvePromise!([])
+      resolve([])
     })
   })
 

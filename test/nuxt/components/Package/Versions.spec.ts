@@ -815,11 +815,8 @@ describe('PackageVersions', () => {
   describe('loading states', () => {
     it('shows loading spinner when fetching versions', async () => {
       // Create a promise that won't resolve immediately
-      let resolvePromise: (value: unknown[]) => void
-      const loadingPromise = new Promise<unknown[]>(resolve => {
-        resolvePromise = resolve
-      })
-      mockFetchAllPackageVersions.mockReturnValue(loadingPromise)
+      const { promise, resolve } = Promise.withResolvers<unknown[]>()
+      mockFetchAllPackageVersions.mockReturnValue(promise)
 
       const component = await mountSuspended(PackageVersions, {
         props: {
@@ -842,14 +839,12 @@ describe('PackageVersions', () => {
       })
 
       // Resolve the promise to clean up
-      resolvePromise!([])
+      resolve([])
     })
 
     it('shows loading spinner for other versions when fetching', async () => {
-      let resolvePromise: (value: unknown[]) => void
-      const loadingPromise = new Promise<unknown[]>(resolve => {
-        resolvePromise = resolve
-      })
+      const { promise: loadingPromise, resolve: resolvePromise } =
+        Promise.withResolvers<unknown[]>()
       mockFetchAllPackageVersions.mockReturnValue(loadingPromise)
 
       const component = await mountSuspended(PackageVersions, {
@@ -876,7 +871,7 @@ describe('PackageVersions', () => {
       })
 
       // Resolve the promise to clean up
-      resolvePromise!([])
+      resolvePromise([])
     })
   })
 

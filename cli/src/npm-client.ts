@@ -179,139 +179,140 @@ async function execNpmInteractive(
   options: ExecNpmOptions = {},
 ): Promise<NpmExecResult> {
   const openUrls = options.openUrls === true
+  const { promise, resolve } = Promise.withResolvers<NpmExecResult>()
 
   // Lazy-load node-pty so the native addon is only required when interactive mode is actually used.
   const pty = await import('@lydell/node-pty')
 
-  return new Promise(resolve => {
-    const npmArgs = options.otp ? [...args, '--otp', options.otp] : args
+  const npmArgs = options.otp ? [...args, '--otp', options.otp] : args
+
+  if (!options.silent) {
+    const displayCmd = options.otp
+      ? ['npm', ...args, '--otp', '******'].join(' ')
+      : ['npm', ...args].join(' ')
+    logCommand(`${displayCmd} (interactive/pty)`)
+  }
+
+  let output = ''
+  let resolved = false
+  let otpPromptSeen = false
+  let authUrlSeen = false
+  let enterSent = false
+  let authUrlTimeout: ReturnType<typeof setTimeout> | null = null
+  let authUrlTimedOut = false
+
+  const env = createNpmEnv()
+
+  // When openUrls is false, tell npm not to open the browser.
+  // npm still prints the auth URL and polls doneUrl
+  if (!openUrls) {
+    env.npm_config_browser = 'false'
+  }
+
+  const child = pty.spawn('npm', npmArgs, {
+    name: 'xterm-256color',
+    cols: 120,
+    rows: 30,
+    env,
+  })
+
+  // General timeout: 5 minutes (covers non-auth interactive commands)
+  const timeout = setTimeout(() => {
+    if (resolved) return
+    logDebug('Interactive command timed out', { output })
+    child.kill()
+  }, 300000)
+
+  child.onData((data: string) => {
+    output += data
+    const clean = stripAnsi(data)
+    logDebug('pty data:', { text: clean.trim() })
+
+    const cleanAll = stripAnsi(output)
+
+    // Detect auth URL in output and notify the caller.
+    if (!authUrlSeen) {
+      const urlMatch = cleanAll.match(AUTH_URL_TITLE_RE)
+
+      if (urlMatch && urlMatch[1]) {
+        authUrlSeen = true
+        const authUrl = urlMatch[1].replace(/[.,;:!?)]+$/, '')
+        logDebug('Auth URL detected:', { authUrl, openUrls })
+        options.onAuthUrl?.(authUrl)
+
+        authUrlTimeout = setTimeout(() => {
+          if (resolved) return
+          authUrlTimedOut = true
+          logDebug('Auth URL timeout (90s) — killing process')
+          logError('Authentication timed out after 90 seconds')
+          child.kill()
+        }, AUTH_URL_TIMEOUT_MS)
+      }
+    }
+
+    if (authUrlSeen && openUrls && !enterSent && AUTH_URL_PROMPT_RE.test(cleanAll)) {
+      enterSent = true
+      logDebug('Web auth prompt detected, pressing ENTER')
+      child.write('\r')
+    }
+
+    if (!otpPromptSeen && OTP_PROMPT_RE.test(cleanAll)) {
+      otpPromptSeen = true
+      if (options.otp) {
+        logDebug('OTP prompt detected, writing OTP')
+        child.write(options.otp + '\r')
+      } else {
+        logDebug('OTP prompt detected but no OTP provided, killing process')
+        child.kill()
+      }
+    }
+  })
+
+  child.onExit(({ exitCode }) => {
+    if (resolved) return
+    resolved = true
+    clearTimeout(timeout)
+    if (authUrlTimeout) clearTimeout(authUrlTimeout)
+
+    const cleanOutput = stripAnsi(output)
+    logDebug('Interactive command exited:', { exitCode, output: cleanOutput })
+
+    const requiresOtp =
+      authUrlTimedOut || (otpPromptSeen && !options.otp) || detectOtpRequired(cleanOutput)
+    const authFailure = detectAuthFailure(cleanOutput)
+    const urls = extractUrls(cleanOutput)
 
     if (!options.silent) {
-      const displayCmd = options.otp
-        ? ['npm', ...args, '--otp', '******'].join(' ')
-        : ['npm', ...args].join(' ')
-      logCommand(`${displayCmd} (interactive/pty)`)
+      if (exitCode === 0) {
+        logSuccess('Done')
+      } else if (requiresOtp) {
+        logError('OTP required')
+      } else if (authFailure) {
+        logError('Authentication required - please run "npm login" and restart the connector')
+      } else {
+        const firstLine = filterNpmWarnings(cleanOutput).split('\n')[0] || 'Command failed'
+        logError(firstLine)
+      }
     }
 
-    let output = ''
-    let resolved = false
-    let otpPromptSeen = false
-    let authUrlSeen = false
-    let enterSent = false
-    let authUrlTimeout: ReturnType<typeof setTimeout> | null = null
-    let authUrlTimedOut = false
+    // If auth URL timed out, force a non-zero exit code so it's marked as failed
+    const finalExitCode = authUrlTimedOut ? 1 : exitCode
 
-    const env = createNpmEnv()
-
-    // When openUrls is false, tell npm not to open the browser.
-    // npm still prints the auth URL and polls doneUrl
-    if (!openUrls) {
-      env.npm_config_browser = 'false'
-    }
-
-    const child = pty.spawn('npm', npmArgs, {
-      name: 'xterm-256color',
-      cols: 120,
-      rows: 30,
-      env,
-    })
-
-    // General timeout: 5 minutes (covers non-auth interactive commands)
-    const timeout = setTimeout(() => {
-      if (resolved) return
-      logDebug('Interactive command timed out', { output })
-      child.kill()
-    }, 300000)
-
-    child.onData((data: string) => {
-      output += data
-      const clean = stripAnsi(data)
-      logDebug('pty data:', { text: clean.trim() })
-
-      const cleanAll = stripAnsi(output)
-
-      // Detect auth URL in output and notify the caller.
-      if (!authUrlSeen) {
-        const urlMatch = cleanAll.match(AUTH_URL_TITLE_RE)
-
-        if (urlMatch && urlMatch[1]) {
-          authUrlSeen = true
-          const authUrl = urlMatch[1].replace(/[.,;:!?)]+$/, '')
-          logDebug('Auth URL detected:', { authUrl, openUrls })
-          options.onAuthUrl?.(authUrl)
-
-          authUrlTimeout = setTimeout(() => {
-            if (resolved) return
-            authUrlTimedOut = true
-            logDebug('Auth URL timeout (90s) — killing process')
-            logError('Authentication timed out after 90 seconds')
-            child.kill()
-          }, AUTH_URL_TIMEOUT_MS)
-        }
-      }
-
-      if (authUrlSeen && openUrls && !enterSent && AUTH_URL_PROMPT_RE.test(cleanAll)) {
-        enterSent = true
-        logDebug('Web auth prompt detected, pressing ENTER')
-        child.write('\r')
-      }
-
-      if (!otpPromptSeen && OTP_PROMPT_RE.test(cleanAll)) {
-        otpPromptSeen = true
-        if (options.otp) {
-          logDebug('OTP prompt detected, writing OTP')
-          child.write(options.otp + '\r')
-        } else {
-          logDebug('OTP prompt detected but no OTP provided, killing process')
-          child.kill()
-        }
-      }
-    })
-
-    child.onExit(({ exitCode }) => {
-      if (resolved) return
-      resolved = true
-      clearTimeout(timeout)
-      if (authUrlTimeout) clearTimeout(authUrlTimeout)
-
-      const cleanOutput = stripAnsi(output)
-      logDebug('Interactive command exited:', { exitCode, output: cleanOutput })
-
-      const requiresOtp =
-        authUrlTimedOut || (otpPromptSeen && !options.otp) || detectOtpRequired(cleanOutput)
-      const authFailure = detectAuthFailure(cleanOutput)
-      const urls = extractUrls(cleanOutput)
-
-      if (!options.silent) {
-        if (exitCode === 0) {
-          logSuccess('Done')
-        } else if (requiresOtp) {
-          logError('OTP required')
-        } else if (authFailure) {
-          logError('Authentication required - please run "npm login" and restart the connector')
-        } else {
-          const firstLine = filterNpmWarnings(cleanOutput).split('\n')[0] || 'Command failed'
-          logError(firstLine)
-        }
-      }
-
-      // If auth URL timed out, force a non-zero exit code so it's marked as failed
-      const finalExitCode = authUrlTimedOut ? 1 : exitCode
-
-      resolve({
-        stdout: cleanOutput.trim(),
-        stderr: requiresOtp
-          ? 'This operation requires a one-time password (OTP).'
-          : authFailure
-            ? 'Authentication failed. Please run "npm login" and restart the connector.'
-            : filterNpmWarnings(cleanOutput),
-        exitCode: finalExitCode,
-        requiresOtp,
-        authFailure,
-        urls: urls.length > 0 ? urls : undefined,
-      })
+    resolve({
+      stdout: cleanOutput.trim(),
+      stderr: requiresOtp
+        ? 'This operation requires a one-time password (OTP).'
+        : authFailure
+          ? 'Authentication failed. Please run "npm login" and restart the connector.'
+          : filterNpmWarnings(cleanOutput),
+      exitCode: finalExitCode,
+      requiresOtp,
+      authFailure,
+      urls: urls.length > 0 ? urls : undefined,
     })
   })
+
+  return promise
 }
 
 async function execNpm(args: string[], options: ExecNpmOptions = {}): Promise<NpmExecResult> {
