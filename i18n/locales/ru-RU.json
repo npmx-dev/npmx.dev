@@ -441,8 +441,6 @@
       },
       "page_title": "История версий",
       "current_tags": "Текущие теги",
-      "version_filter_placeholder": "Фильтр версий…",
-      "version_filter_label": "Фильтр версий",
       "no_match_filter": "Нет версий по фильтру «{filter}»"
     },
     "dependencies": {
@@ -825,12 +823,10 @@
   "code": {
     "files_label": "Файлы",
     "no_files": "В этой директории нет файлов",
-    "root": "корневая директория",
     "lines": "{count} строк",
     "toggle_tree": "Переключить дерево файлов",
     "close_tree": "Закрыть дерево файлов",
     "copy_link": "Скопировать ссылку",
-    "raw": "Raw",
     "view_raw": "Посмотреть исходный файл",
     "file_too_large": "Файл слишком большой для предпросмотра",
     "file_size_warning": "{size} превышает лимит в 500 КБ для подсветки синтаксиса",

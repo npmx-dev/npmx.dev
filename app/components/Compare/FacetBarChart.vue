@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { VueUiHorizontalBar } from 'vue-data-ui/vue-ui-horizontal-bar'
+import { VueUiPatternSeed } from 'vue-data-ui/vue-ui-pattern-seed'
 import type { VueUiHorizontalBarConfig, VueUiHorizontalBarDatasetItem } from 'vue-data-ui'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
-import { createChartPatternSlotMarkup } from '~/utils/charts'
+import { createPatternDef } from 'vue-data-ui/utils'
 import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
 
 import {
@@ -12,6 +13,7 @@ import {
   sanitise,
   applyEllipsis,
   copyAltTextForCompareFacetBarChart,
+  CHART_PATTERN_CONFIG,
 } from '~/utils/charts'
 
 import('vue-data-ui/style.css')
@@ -227,14 +229,15 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
             const patternId = `tooltip-pattern-${safeSeriesIndex}`
             const usePattern = safeSeriesIndex !== 0
 
-            const patternMarkup = usePattern
-              ? createChartPatternSlotMarkup({
+            const patternDef = usePattern
+              ? createPatternDef({
                   id: patternId,
                   seed: safeSeriesIndex,
                   foregroundColor: colors.value.bg!,
-                  fallbackColor: 'transparent',
-                  maxSize: 24,
-                  minSize: 16,
+                  backgroundColor: 'transparent',
+                  maxSize: CHART_PATTERN_CONFIG.maxSize,
+                  minSize: CHART_PATTERN_CONFIG.minSize,
+                  disambiguator: CHART_PATTERN_CONFIG.disambiguator,
                 })
               : ''
 
@@ -252,9 +255,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
               <div class="grid grid-cols-[12px_minmax(0,1fr)_max-content] items-center gap-x-3">
                 <div class="w-3 h-3">
                   <svg viewBox="0 0 20 20" class="w-full h-full" aria-hidden="true">
-                    <defs>
-                      ${patternMarkup}
-                    </defs>
+                    ${patternDef}
                     ${markerMarkup}
                   </svg>
                 </div>
@@ -286,14 +287,15 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
         </template>
 
         <template #pattern="{ patternId, seriesIndex }">
-          <ChartPatternSlot
+          <VueUiPatternSeed
             v-if="seriesIndex != 0"
             :id="patternId"
             :seed="seriesIndex"
             :foreground-color="colors.bg!"
-            fallback-color="transparent"
-            :max-size="24"
-            :min-size="16"
+            background-color="transparent"
+            :max-size="CHART_PATTERN_CONFIG.maxSize"
+            :min-size="CHART_PATTERN_CONFIG.minSize"
+            :disambiguator="CHART_PATTERN_CONFIG.disambiguator"
           />
         </template>
 

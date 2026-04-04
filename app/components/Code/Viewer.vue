@@ -86,7 +86,7 @@ watch(
 </script>
 
 <template>
-  <div class="code-viewer flex min-h-full max-w-full">
+  <div class="code-viewer flex min-h-full max-w-full overflow-x-auto">
     <!-- Line numbers column -->
     <div
       class="line-numbers shrink-0 bg-bg-subtle border-ie border-solid border-border text-end select-none relative"

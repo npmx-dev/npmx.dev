@@ -755,12 +755,10 @@
   "code": {
     "files_label": "Fayllar",
     "no_files": "Bu qovluqda fayl yoxdur",
-    "root": "kök",
     "lines": "{count} sətir",
     "toggle_tree": "Fayl ağacını keçir",
     "close_tree": "Fayl ağacını bağla",
     "copy_link": "Linki kopyala",
-    "raw": "Xam",
     "view_raw": "Xam faylı göstər",
     "file_too_large": "Fayl önbaxış üçün çox böyükdür",
     "file_size_warning": "{size} sintaksis vurğulama üçün 500KB limitini keçir",

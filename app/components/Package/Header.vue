@@ -2,7 +2,6 @@
 import type { RouteLocationRaw } from 'vue-router'
 import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
 import { SCROLL_TO_TOP_THRESHOLD } from '~/composables/useScrollToTop'
-import { isEditableElement } from '~/utils/input'
 
 const props = defineProps<{
   pkg?: Pick<SlimPackument, 'name' | 'versions' | 'dist-tags'> | null
@@ -116,7 +115,6 @@ useCommandPaletteContextCommands(
   }),
 )
 
-const router = useRouter()
 // Docs URL: use our generated API docs
 const docsLink = computed(() => {
   if (!props.resolvedVersion) return null
@@ -164,59 +162,13 @@ const diffLink = computed((): RouteLocationRaw | null => {
   return diffRoute(props.pkg.name, props.resolvedVersion, props.latestVersion.version)
 })
 
-const keyboardShortcuts = useKeyboardShortcuts()
-
-onKeyStroke(
-  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, '.') && !isEditableElement(e.target),
-  e => {
-    if (codeLink.value === null) return
-    e.preventDefault()
-
-    navigateTo(codeLink.value)
-  },
-  { dedupe: true },
-)
-
-onKeyStroke(
-  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, 'm') && !isEditableElement(e.target),
-  e => {
-    if (mainLink.value === null) return
-    e.preventDefault()
-
-    navigateTo(mainLink.value)
-  },
-  { dedupe: true },
-)
-
-onKeyStroke(
-  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, 'd') && !isEditableElement(e.target),
-  e => {
-    if (!docsLink.value) return
-    e.preventDefault()
-    navigateTo(docsLink.value)
-  },
-  { dedupe: true },
-)
-
-onKeyStroke(
-  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, 'c') && !isEditableElement(e.target),
-  e => {
-    if (!props.pkg) return
-    e.preventDefault()
-    router.push({ name: 'compare', query: { packages: props.pkg.name } })
-  },
-  { dedupe: true },
-)
-
-onKeyStroke(
-  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, 'f') && !isEditableElement(e.target),
-  e => {
-    if (diffLink.value === null) return
-    e.preventDefault()
-    navigateTo(diffLink.value)
-  },
-  { dedupe: true },
-)
+useShortcuts({
+  '.': () => codeLink.value,
+  'm': () => mainLink.value,
+  'd': () => docsLink.value,
+  'c': () => props.pkg && { name: 'compare' as const, query: { packages: props.pkg.name } },
+  'f': () => diffLink.value,
+})
 </script>
 
 <template>

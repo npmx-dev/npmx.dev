@@ -43,8 +43,8 @@ export default defineConfig({
   theme: {
     spacing: { DEFAULT: '4px' },
     font: {
-      mono: "'Geist Mono', monospace",
-      sans: "'Geist', system-ui, -apple-system, sans-serif",
+      mono: "'Geist Mono', 'IBM Plex Sans Arabic', monospace",
+      sans: "'Geist', 'IBM Plex Sans Arabic', system-ui, -apple-system, sans-serif",
     },
     text: {
       '2xs': { fontSize: '0.6875rem' }, // 11px
@@ -140,6 +140,7 @@ export default defineConfig({
     // Layout
     ['container', 'max-w-6xl mx-auto px-4 sm:px-6'],
     ['container-sm', 'max-w-5xl mx-auto px-4 sm:px-6'],
+    ['flex-split', 'flex items-center justify-between'],
 
     // Focus states - subtle but accessible
     ['focus-ring', 'outline-none focus-visible:(ring-2 ring-fg/50 ring-offset-2)'],

@@ -414,8 +414,6 @@
       },
       "page_title": "版本歷史記錄",
       "current_tags": "當前標籤",
-      "version_filter_placeholder": "篩選版本…",
-      "version_filter_label": "篩選版本",
       "no_match_filter": "沒有版本符合 {filter}"
     },
     "dependencies": {
@@ -783,12 +781,10 @@
   "code": {
     "files_label": "檔案",
     "no_files": "此目錄中沒有檔案",
-    "root": "根目錄",
     "lines": "{count} 行",
     "toggle_tree": "切換檔案樹",
     "close_tree": "關閉檔案樹",
     "copy_link": "複製連結",
-    "raw": "原始",
     "view_raw": "檢視原始檔",
     "file_too_large": "檔案太大無法預覽",
     "file_size_warning": "{size} 超過 500KB 的語法高亮限制",

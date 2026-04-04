@@ -381,7 +381,7 @@ describe('install command generation', () => {
         ['pnpm', ['pnpm', 'create', 'vite']],
         ['yarn', ['yarn', 'create', 'vite']],
         ['bun', ['bun', 'create', 'vite']],
-        ['deno', ['deno', 'run', 'vite']],
+        ['deno', ['deno', 'create', 'npm:vite']],
         ['vlt', ['vlx', 'vite']],
       ] as const)('%s → %s', (pm, expected) => {
         expect(

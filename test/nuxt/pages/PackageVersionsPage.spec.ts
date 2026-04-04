@@ -5,7 +5,7 @@ import VersionsPage from '~/pages/package/[[org]]/[name]/versions.vue'
 
 // ── Mocks ─────────────────────────────────────────────────────────────────────
 
-// Phase 2: full metadata (loaded on first group expand)
+// Phase 2: full metadata (fired automatically after phase 1 completes)
 const mockFetchAllPackageVersions = vi.fn()
 vi.mock('~/utils/npm/api', async importOriginal => {
   const actual = await importOriginal<typeof NpmApi>()
@@ -67,6 +67,7 @@ describe('package versions page', () => {
     nextFetchResponse = null
     mockFetchAllPackageVersions.mockReset()
     globalThis.fetch = mockFetch as typeof globalThis.fetch
+    mockFetchAllPackageVersions.mockResolvedValue([])
     clearNuxtData()
   })
 
@@ -153,23 +154,16 @@ describe('package versions page', () => {
       })
     })
 
-    it('only fetches full metadata once across multiple group expansions', async () => {
+    it('fetches full metadata automatically after phase 1 completes, exactly once', async () => {
       nextFetchResponse = makeVersionData(['2.0.0', '1.0.0'], { latest: '2.0.0' })
       mockFetchAllPackageVersions.mockResolvedValue([
         { version: '2.0.0', time: '2024-01-15T00:00:00.000Z', hasProvenance: false },
         { version: '1.0.0', time: '2024-01-10T00:00:00.000Z', hasProvenance: false },
       ])
-      const component = await mountPage()
-      await vi.waitFor(() => {
-        expect(component.findAll('button[aria-expanded="false"]').length).toBeGreaterThanOrEqual(2)
-      })
 
-      const [first, second] = component.findAll('button[aria-expanded="false"]')
-      await first!.trigger('click')
+      await mountPage()
+
       await vi.waitFor(() => expect(mockFetchAllPackageVersions).toHaveBeenCalledTimes(1))
-
-      await second!.trigger('click')
-      expect(mockFetchAllPackageVersions).toHaveBeenCalledTimes(1)
     })
   })
 
@@ -184,7 +178,7 @@ describe('package versions page', () => {
         expect(component.text()).toContain('3.x')
       })
 
-      const input = component.find('input[placeholder="Filter versions\u2026"]')
+      const input = component.find('input[autocomplete="off"]')
       await input.setValue('1.0')
 
       await vi.waitFor(() => {

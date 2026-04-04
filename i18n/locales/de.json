@@ -440,8 +440,6 @@
       },
       "page_title": "Versionshistorie",
       "current_tags": "Aktuelle Tags",
-      "version_filter_placeholder": "Versionen filtern…",
-      "version_filter_label": "Versionen filtern",
       "no_match_filter": "Keine Versionen entsprechen {filter}"
     },
     "dependencies": {
@@ -821,12 +819,10 @@
   "code": {
     "files_label": "Dateien",
     "no_files": "Keine Dateien in diesem Verzeichnis",
-    "root": "Wurzel",
     "lines": "{count} Zeile | {count} Zeilen",
     "toggle_tree": "Dateibaum umschalten",
     "close_tree": "Dateibaum schließen",
     "copy_link": "Link kopieren",
-    "raw": "Roh",
     "view_raw": "Rohdatei anzeigen",
     "file_too_large": "Datei zu groß für Vorschau",
     "file_size_warning": "{size} überschreitet das 500KB-Limit für Syntax-Highlighting",
@@ -1462,5 +1458,12 @@
     "selection": "0 ausgewählt | 1 ausgewählt | {count} ausgewählt",
     "shortcut": "Drücke „{key}“, um Aktionen zu fokussieren",
     "button_close_aria_label": "Aktionsleiste schließen"
+  },
+  "logo_menu": {},
+  "brand": {
+    "logos": {},
+    "customize": {},
+    "typography": {},
+    "guidelines": {}
   }
 }
