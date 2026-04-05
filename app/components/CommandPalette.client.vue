@@ -25,14 +25,14 @@ const nuxtLinkComponent = resolveComponent('NuxtLink')
 
 const previouslyFocused = shallowRef<HTMLElement | null>(null)
 
-const dialogId = 'command-palette-modal'
-const inputId = `${dialogId}-input`
-const descriptionId = `${dialogId}-description`
-const statusId = `${dialogId}-status`
-const announcementId = `${dialogId}-announcement`
-const resultsId = `${dialogId}-results`
+const DIALOG_ID = 'command-palette-modal'
+const INPUT_ID = `${DIALOG_ID}-input`
+const DESCRIPTION_ID = `${DIALOG_ID}-description`
+const STATUS_ID = `${DIALOG_ID}-status`
+const ANNOUNCEMENT_ID = `${DIALOG_ID}-announcement`
+const RESULTS_ID = `${DIALOG_ID}-results`
 
-const inputDescribedBy = computed(() => `${descriptionId} ${statusId}`)
+const inputDescribedBy = computed(() => `${DESCRIPTION_ID} ${STATUS_ID}`)
 const statusContextLabel = computed(() =>
   view.value === 'root' ? $t('command_palette.title') : viewMeta.value.placeholder,
 )
@@ -63,11 +63,11 @@ const statusMessage = computed(() => {
 })
 
 function getDialog() {
-  return document.querySelector<HTMLDialogElement>(`#${dialogId}`)
+  return document.querySelector<HTMLDialogElement>(`#${DIALOG_ID}`)
 }
 
 function getInputElement() {
-  return document.querySelector<HTMLInputElement>(`#${inputId}`)
+  return document.querySelector<HTMLInputElement>(`#${INPUT_ID}`)
 }
 
 function isInputEventTarget(target: EventTarget | null) {
@@ -280,7 +280,7 @@ useEventListener(document, 'keydown', handleGlobalKeydown)
 
 <template>
   <div>
-    <p :id="announcementId" class="sr-only" role="status" aria-live="polite" aria-atomic="true">
+    <p :id="ANNOUNCEMENT_ID" class="sr-only" role="status" aria-live="polite" aria-atomic="true">
       {{ announcement }}
     </p>
 
@@ -288,7 +288,7 @@ useEventListener(document, 'keydown', handleGlobalKeydown)
          a second scrollbar on the dialog element -->
     <Modal
       ref="modalRef"
-      :id="dialogId"
+      :id="DIALOG_ID"
       :modalTitle="$t('command_palette.title')"
       :modalSubtitle="viewMeta.subtitle"
       class="mx-auto mb-0 mt-4 max-w-[48rem] p-0 sm:mt-[10vh]"
@@ -296,10 +296,10 @@ useEventListener(document, 'keydown', handleGlobalKeydown)
       @close="handleDialogClose"
     >
       <div v-if="isOpen" class="-mx-6 -mt-6">
-        <p :id="descriptionId" class="sr-only">
+        <p :id="DESCRIPTION_ID" class="sr-only">
           {{ $t('command_palette.instructions') }}
         </p>
-        <p :id="statusId" class="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        <p :id="STATUS_ID" class="sr-only" role="status" aria-live="polite" aria-atomic="true">
           {{ statusMessage }}
         </p>
 
@@ -316,9 +316,9 @@ useEventListener(document, 'keydown', handleGlobalKeydown)
             />
             {{ $t('command_palette.back') }}
           </button>
-          <label :for="inputId" class="sr-only">{{ $t('command_palette.input_label') }}</label>
+          <label :for="INPUT_ID" class="sr-only">{{ $t('command_palette.input_label') }}</label>
           <InputBase
-            :id="inputId"
+            :id="INPUT_ID"
             ref="inputRef"
             v-model="query"
             type="text"
@@ -327,12 +327,12 @@ useEventListener(document, 'keydown', handleGlobalKeydown)
             size="lg"
             class="w-full"
             :aria-describedby="inputDescribedBy"
-            :aria-controls="resultsId"
+            :aria-controls="RESULTS_ID"
           />
         </div>
 
         <div
-          :id="resultsId"
+          :id="RESULTS_ID"
           class="max-h-[60vh] overflow-y-auto bg-bg-muted/30 px-2 py-2 sm:px-3 sm:py-3"
           :aria-label="$t('command_palette.results_label')"
           role="region"
@@ -356,7 +356,7 @@ useEventListener(document, 'keydown', handleGlobalKeydown)
               class="rounded-xl border border-border/70 bg-bg-subtle/70 p-1 sm:p-1.5"
             >
               <h3
-                :id="`${dialogId}-group-${group.id}`"
+                :id="`${DIALOG_ID}-group-${group.id}`"
                 class="px-3 pb-2 pt-2 text-sm uppercase tracking-[0.14em] text-fg-subtle"
               >
                 {{ group.label }}
