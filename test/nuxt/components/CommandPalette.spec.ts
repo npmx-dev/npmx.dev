@@ -168,8 +168,9 @@ describe('CommandPalette', () => {
       '[data-command-id="background-themes"] [data-command-preview="true"]',
     )
 
-    expect(accentPreview).not.toBeNull()
-    expect(backgroundPreview).not.toBeNull()
+    // No accent color or background theme set by default, so no preview swatches
+    expect(accentPreview).toBeNull()
+    expect(backgroundPreview).toBeNull()
   })
 
   it('announces setting changes after the palette closes', async () => {
