@@ -1136,6 +1136,7 @@
         "side_analysis_bottom_left": "Les paquets suivants sont positionnés dans le quadrant en bas à gauche (faible impact) : {packages}"
       },
       "explanation": {
+        "tooltip_help": "Afficher l'explication du score",
         "introduction": "Le score est calculé en combinant plusieurs signaux selon deux axes :",
         "adoption": "Adoption : reflète l’utilisation et l’activité (téléchargements, fraîcheur, likes)",
         "efficiency": "Efficacité du paquet : reflète l’empreinte et la qualité (taille installée, dépendances, vulnérabilités, support TypeScript)",

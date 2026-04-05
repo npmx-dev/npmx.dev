@@ -3430,6 +3430,9 @@
             "explanation": {
               "type": "object",
               "properties": {
+                "tooltip_help": {
+                  "type": "string"
+                },
                 "introduction": {
                   "type": "string"
                 },

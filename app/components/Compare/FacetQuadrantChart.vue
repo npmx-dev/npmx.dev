@@ -335,7 +335,7 @@ const config = computed<VueUiQuadrantConfig>(() => {
         <button
           type="button"
           class="i-lucide:info w-3.5 h-3.5 text-fg-muted cursor-help"
-          :aria-label="$t('compare.quadrant_chart.title')"
+          :aria-label="$t('compare.quadrant_chart.explanation.tooltip_help')"
         />
         <template #content>
           <div class="flex flex-col gap-3">

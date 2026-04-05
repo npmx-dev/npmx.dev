@@ -1142,6 +1142,7 @@
         "side_analysis_bottom_left": "The following packages are positioned on the bottom-left quadrant (low-impact): {packages}"
       },
       "explanation": {
+        "tooltip_help": "Show scoring explanation",
         "introduction": "The score is calculated by combining multiple signals into two axes:",
         "adoption": "Adoption: reflects usage and activity (downloads, freshness, likes)",
         "efficiency": "Package efficiency: reflects footprint and quality (install size, dependencies, vulnerabilities, type support)",
