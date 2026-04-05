@@ -344,6 +344,9 @@ function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo)
     // Normalize markdown-style heading fragments to the same slug format used
     // for generated README heading IDs, but leave already-prefixed values as-is.
     const fragment = url.slice(1)
+    if (!fragment) {
+      return '#'
+    }
     if (fragment.startsWith(USER_CONTENT_PREFIX)) {
       return `#${fragment}`
     }
