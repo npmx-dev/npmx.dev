@@ -2821,6 +2821,9 @@
         "copy_link": {
           "type": "string"
         },
+        "raw": {
+          "type": "string"
+        },
         "view_raw": {
           "type": "string"
         },
