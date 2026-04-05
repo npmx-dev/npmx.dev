@@ -63,12 +63,10 @@ const allowedWarnings: RegExp[] = [
   // DiffFileTree instances), this triggers a duplicate expose() call on the
   // inner wrapper. The warning does not affect test correctness.
   /expose\(\) should be called only once/,
-  // Vue Teleport warnings (vue-data-ui / test env, does not affect text correctness)
-  /Failed to locate Teleport target.*legend-bottom/,
 ]
 
 beforeEach(() => {
-  warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+  warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => { })
 })
 
 afterEach(() => {
@@ -952,25 +950,25 @@ describe('component accessibility audits', () => {
             packagesData: [
               {
                 package: {
-                  name: 'vue',
-                  version: '3.5.32',
+                  name: "vue",
+                  version: "3.5.32"
                 },
                 downloads: 10979552,
                 packageSize: 2480183,
                 directDeps: 5,
                 analysis: {
-                  package: 'vue',
-                  version: '3.5.32',
+                  package: "vue",
+                  version: "3.5.32",
                   devDependencySuggestion: {
-                    recommended: false,
+                    recommended: false
                   },
-                  moduleFormat: 'dual',
+                  moduleFormat: "dual",
                   types: {
-                    kind: 'included',
+                    kind: "included"
                   },
                   createPackage: {
-                    packageName: 'create-vue',
-                  },
+                    packageName: "create-vue"
+                  }
                 },
                 vulnerabilities: {
                   count: 0,
@@ -978,42 +976,41 @@ describe('component accessibility audits', () => {
                     critical: 0,
                     high: 0,
                     moderate: 0,
-                    low: 0,
-                  },
+                    low: 0
+                  }
                 },
                 metadata: {
-                  license: 'MIT',
-                  lastUpdated: '2026-04-03T05:41:39.680Z',
+                  license: "MIT",
+                  lastUpdated: "2026-04-03T05:41:39.680Z"
                 },
                 isBinaryOnly: false,
-                totalLikes: 85,
+                totalLikes: 85
               },
               {
                 package: {
-                  name: 'svelte',
-                  version: '5.55.1',
+                  name: "svelte",
+                  version: "5.55.1"
                 },
                 downloads: 4378382,
                 packageSize: 2823272,
                 directDeps: 16,
                 analysis: {
-                  package: 'svelte',
-                  version: '5.55.1',
+                  package: "svelte",
+                  version: "5.55.1",
                   devDependencySuggestion: {
-                    recommended: false,
+                    recommended: false
                   },
-                  moduleFormat: 'dual',
+                  moduleFormat: "dual",
                   types: {
-                    kind: 'included',
+                    kind: "included"
                   },
                   engines: {
-                    node: '>=18',
+                    node: ">=18"
                   },
                   createPackage: {
-                    packageName: 'create-svelte',
-                    deprecated:
-                      'create-svelte has been deprecated - please use https://www.npmjs.com/package/sv instead',
-                  },
+                    packageName: "create-svelte",
+                    deprecated: "create-svelte has been deprecated - please use https://www.npmjs.com/package/sv instead"
+                  }
                 },
                 vulnerabilities: {
                   count: 0,
@@ -1021,21 +1018,32 @@ describe('component accessibility audits', () => {
                     critical: 0,
                     high: 0,
                     moderate: 0,
-                    low: 0,
-                  },
+                    low: 0
+                  }
                 },
                 metadata: {
-                  license: 'MIT',
-                  lastUpdated: '2026-03-29T20:58:44.673Z',
+                  license: "MIT",
+                  lastUpdated: "2026-03-29T20:58:44.673Z",
                   engines: {
-                    node: '>=18',
-                  },
+                    node: ">=18"
+                  }
                 },
                 isBinaryOnly: false,
-                totalLikes: 191,
-              },
+                totalLikes: 191
+              }
             ],
             packages: ['vue', 'svelte'],
+          },
+        })
+        const results = await runAxe(wrapper)
+        expect(results.violations).toEqual([])
+      })
+
+      it('should have no accessibility violations with empty data', async () => {
+        const wrapper = await mountSuspended(FacetQuadrantChart, {
+          props: {
+            packagesData: [],
+            packages: [],
           },
         })
         const results = await runAxe(wrapper)
