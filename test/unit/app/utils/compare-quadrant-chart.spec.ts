@@ -1,13 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import {
-  createQuadrantDataset,
-  type PackageQuadrantInput,
-} from '~/utils/compare-quadrant-chart'
+import { createQuadrantDataset, type PackageQuadrantInput } from '~/utils/compare-quadrant-chart'
 
-function getPointById(
-  dataset: ReturnType<typeof createQuadrantDataset>,
-  id: string,
-) {
+function getPointById(dataset: ReturnType<typeof createQuadrantDataset>, id: string) {
   const point = dataset.find(packagePoint => packagePoint.id === id)
   expect(point).toBeDefined()
   return point!

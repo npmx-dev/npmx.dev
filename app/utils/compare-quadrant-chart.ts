@@ -72,8 +72,8 @@ const WEIGHTS = {
     packageSize: 0.1, // publication weight, less important than installed footprint
     vulnerabilities: 0.2, // penalize security burden
     types: 0.1, // TS support
-    deprecation: 0.05
-  }
+    deprecation: 0.05,
+  },
 }
 const VULNERABILITY_PENALTY_MULTIPLIER = 2
 
@@ -135,11 +135,7 @@ function getFreshnessPercentage(
   return Math.max(0, Math.min(1, normalisedAge)) * 100
 }
 
-function getVulnerabilityPenalty(
-  value: number,
-  minimum: number,
-  maximum: number,
-): number {
+function getVulnerabilityPenalty(value: number, minimum: number, maximum: number): number {
   const normalised = normalizeInverseNumber(value, minimum, maximum)
   return normalised < 0 ? normalised * VULNERABILITY_PENALTY_MULTIPLIER : normalised
 }
@@ -249,23 +245,21 @@ function createQuadrantPoint(
 
   const adoptionScore = clampInRange(
     normalisedDownloads * WEIGHTS.adoption.downloads +
-    freshnessScore * WEIGHTS.adoption.freshness +
-    normalisedTotalLikes * WEIGHTS.adoption.likes, 
+      freshnessScore * WEIGHTS.adoption.freshness +
+      normalisedTotalLikes * WEIGHTS.adoption.likes,
   )
 
-const rawEfficiencyScore =
-  normalisedInstallSize * WEIGHTS.efficiency.installSize +
-  normalisedDependencies * WEIGHTS.efficiency.dependencies +
-  normalisedTotalDependencies * WEIGHTS.efficiency.totalDependencies +
-  normalisedPackageSize * WEIGHTS.efficiency.packageSize +
-  normalisedVulnerabilities * WEIGHTS.efficiency.vulnerabilities +
-  typesScore * WEIGHTS.efficiency.types +
-  deprecationScore * WEIGHTS.efficiency.deprecation
+  const rawEfficiencyScore =
+    normalisedInstallSize * WEIGHTS.efficiency.installSize +
+    normalisedDependencies * WEIGHTS.efficiency.dependencies +
+    normalisedTotalDependencies * WEIGHTS.efficiency.totalDependencies +
+    normalisedPackageSize * WEIGHTS.efficiency.packageSize +
+    normalisedVulnerabilities * WEIGHTS.efficiency.vulnerabilities +
+    typesScore * WEIGHTS.efficiency.types +
+    deprecationScore * WEIGHTS.efficiency.deprecation
 
-// Deprecation considered harmful
-const efficiencyScore = deprecated
-  ? -1
-  : clampInRange(rawEfficiencyScore)
+  // Deprecation considered harmful
+  const efficiencyScore = deprecated ? -1 : clampInRange(rawEfficiencyScore)
 
   const quadrant = resolveQuadrant(adoptionScore, efficiencyScore)
 

@@ -639,44 +639,50 @@ export async function copyAltTextForCompareFacetBarChart({
 
 export function createAltTextForCompareQuadrantChart({
   dataset,
-  config
+  config,
 }: AltCopyArgs<VueUiQuadrantDatapoint[], any>) {
   const packages = {
     topRight: dataset.filter(d => d.quadrant === 'TOP_RIGHT'),
     topLeft: dataset.filter(d => d.quadrant === 'TOP_LEFT'),
     bottomRight: dataset.filter(d => d.quadrant === 'BOTTOM_RIGHT'),
-    bottomLeft: dataset.filter(d => d.quadrant === 'BOTTOM_LEFT')
+    bottomLeft: dataset.filter(d => d.quadrant === 'BOTTOM_LEFT'),
   }
 
   const descriptions = {
     topRight: '',
     topLeft: '',
     bottomRight: '',
-    bottomLeft: ''
+    bottomLeft: '',
   }
 
   if (packages.topRight.length) {
     descriptions.topRight = config.$t('compare.quadrant_chart.copy_alt.side_analysis_top_right', {
-      packages: packages.topRight.map(p => p.fullname).join(', ')
+      packages: packages.topRight.map(p => p.fullname).join(', '),
     })
   }
 
   if (packages.topLeft.length) {
     descriptions.topLeft = config.$t('compare.quadrant_chart.copy_alt.side_analysis_top_left', {
-      packages: packages.topLeft.map(p => p.fullname).join(', ')
+      packages: packages.topLeft.map(p => p.fullname).join(', '),
     })
   }
 
   if (packages.bottomRight.length) {
-    descriptions.bottomRight = config.$t('compare.quadrant_chart.copy_alt.side_analysis_bottom_right', {
-      packages: packages.bottomRight.map(p => p.fullname).join(', ')
-    })
+    descriptions.bottomRight = config.$t(
+      'compare.quadrant_chart.copy_alt.side_analysis_bottom_right',
+      {
+        packages: packages.bottomRight.map(p => p.fullname).join(', '),
+      },
+    )
   }
 
   if (packages.bottomLeft.length) {
-    descriptions.bottomLeft = config.$t('compare.quadrant_chart.copy_alt.side_analysis_bottom_left', {
-      packages: packages.bottomLeft.map(p => p.fullname).join(', ')
-    })
+    descriptions.bottomLeft = config.$t(
+      'compare.quadrant_chart.copy_alt.side_analysis_bottom_left',
+      {
+        packages: packages.bottomLeft.map(p => p.fullname).join(', '),
+      },
+    )
   }
 
   const analysis = Object.values(descriptions).filter(Boolean).join('. ')
@@ -692,11 +698,10 @@ export function createAltTextForCompareQuadrantChart({
 
 export async function copyAltTextForCompareQuadrantChart({
   dataset,
-  config
+  config,
 }: AltCopyArgs<VueUiQuadrantDatapoint[], any>) {
-
-const altText = createAltTextForCompareQuadrantChart({ dataset, config })
-  await config.copy(altText)  
+  const altText = createAltTextForCompareQuadrantChart({ dataset, config })
+  await config.copy(altText)
 }
 
 // Used in chart context menu callbacks

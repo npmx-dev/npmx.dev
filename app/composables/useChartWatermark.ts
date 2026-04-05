@@ -79,7 +79,7 @@ export function drawNpmxLogoAndTaglineWatermark({
   sizeRatioLogo = 1,
   sizeRatioTagline = 1,
   offsetYTagline = -6,
-  offsetYLogo = 0
+  offsetYLogo = 0,
 }: {
   svg: Record<string, any>
   colors: WatermarkColors
@@ -102,7 +102,9 @@ export function drawNpmxLogoAndTaglineWatermark({
       : svg.height - npmxLogoHeight
 
   const taglineY =
-    positioning === 'belowDrawingArea' ? watermarkY + offsetYTagline : svg.height - npmxLogoHeight + offsetYTagline
+    positioning === 'belowDrawingArea'
+      ? watermarkY + offsetYTagline
+      : svg.height - npmxLogoHeight + offsetYTagline
 
   // Center the watermark horizontally relative to the full SVG width
   const watermarkX = svg.width / 2 - npmxLogoWidth / 2
