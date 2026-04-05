@@ -210,14 +210,7 @@ const visibleTagRows = computed(() => {
           getTagVersions(row.tag).some(v => filteredVersionSet.value.has(v.version)),
       )
     : rowsMaybeFilteredForDeprecation
-  const first = rows.slice(0, MAX_VISIBLE_TAGS)
-  const latestTagRow = rows.find(row => row.tag === 'latest')
-  // Ensure 'latest' tag is always included (at the end) if not already present
-  if (latestTagRow && !first.includes(latestTagRow)) {
-    first.pop()
-    first.push(latestTagRow)
-  }
-  return first
+  return rows.slice(0, MAX_VISIBLE_TAGS)
 })
 
 // Hidden tag rows (all other tags) - shown in "Other versions"
