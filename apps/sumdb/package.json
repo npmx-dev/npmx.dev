@@ -1,0 +1,9 @@
+{
+  "name": "@npmx/sumdb",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --experimental-strip-types src/cli.ts"
+  }
+}

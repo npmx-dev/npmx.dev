@@ -1,0 +1,9 @@
+{
+  "name": "@npmx/registry-core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test --experimental-strip-types src/*.test.ts"
+  }
+}

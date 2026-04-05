@@ -1,0 +1,12 @@
+{
+  "name": "@npmx/registry-demo",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "keys": "node --experimental-strip-types src/generate-keys.ts",
+    "run": "node --experimental-strip-types src/run-demo.ts",
+    "test": "node --test --experimental-strip-types src/integration.test.ts",
+    "verify": "node --experimental-strip-types src/verify.ts"
+  }
+}

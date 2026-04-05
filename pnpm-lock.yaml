@@ -335,6 +335,14 @@ importers:
         specifier: 3.2.6
         version: 3.2.6(typescript@6.0.2)
 
+  apps/demo: {}
+
+  apps/registry-core: {}
+
+  apps/registry-proxy: {}
+
+  apps/sumdb: {}
+
   cli:
     dependencies:
       '@clack/prompts':
