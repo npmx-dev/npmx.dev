@@ -298,6 +298,14 @@ function toUserContentHash(value: string): string {
   return `#${withUserContentPrefix(value)}`
 }
 
+function decodeHashFragment(value: string): string {
+  try {
+    return decodeURIComponent(value)
+  } catch {
+    return value
+  }
+}
+
 function normalizePreservedAnchorAttrs(attrs: string): string {
   const cleanedAttrs = attrs
     .replace(/\s+href\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '')
@@ -333,8 +341,18 @@ function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo)
   if (!url) return url
   if (url.startsWith('#')) {
     // Prefix anchor links to match heading IDs (avoids collision with page IDs)
-    // Idempotent: don't double-prefix if already prefixed
-    return toUserContentHash(url.slice(1))
+    // Normalize markdown-style heading fragments to the same slug format used
+    // for generated README heading IDs, but leave already-prefixed values as-is.
+    const fragment = url.slice(1)
+    if (!fragment) {
+      return '#'
+    }
+    if (fragment.startsWith(USER_CONTENT_PREFIX)) {
+      return `#${fragment}`
+    }
+
+    const normalizedFragment = slugify(decodeHashFragment(fragment))
+    return toUserContentHash(normalizedFragment || fragment)
   }
   // Absolute paths (e.g. /package/foo from a previous npmjs redirect) are already resolved
   if (url.startsWith('/')) return url
