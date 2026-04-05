@@ -293,6 +293,13 @@ describe('Markdown File URL Resolution', () => {
 
       expect(result.html).toContain('href="#user-content-installation"')
     })
+
+    it('normalizes mixed-case heading fragments to lowercase slugs', async () => {
+      const markdown = `[Associations section](#Associations)`
+      const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+      expect(result.html).toContain('href="#user-content-associations"')
+    })
   })
 
   describe('different git providers', () => {
