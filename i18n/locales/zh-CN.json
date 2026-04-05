@@ -414,8 +414,6 @@
       },
       "page_title": "版本历史",
       "current_tags": "当前标签",
-      "version_filter_placeholder": "筛选版本…",
-      "version_filter_label": "筛选版本",
       "no_match_filter": "没有与“{filter}”匹配的版本"
     },
     "dependencies": {

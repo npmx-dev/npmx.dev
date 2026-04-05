@@ -426,8 +426,6 @@
       },
       "page_title": "संस्करण इतिहास",
       "current_tags": "वर्तमान टैग्स",
-      "version_filter_placeholder": "संस्करण फ़िल्टर करें…",
-      "version_filter_label": "संस्करण फ़िल्टर करें",
       "no_match_filter": "कोई संस्करण {filter} से मेल नहीं खाता"
     },
     "dependencies": {

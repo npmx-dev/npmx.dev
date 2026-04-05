@@ -437,8 +437,6 @@
       "no_matches": "Aucune version ne correspond à cette plage",
       "page_title": "Historique des versions",
       "current_tags": "Tags actuels",
-      "version_filter_placeholder": "Filtrer les versions...",
-      "version_filter_label": "Filtrer les versions",
       "no_match_filter": "Aucune version ne correspond à {filter}",
       "copy_alt": {
         "per_version_analysis": "La version {version} a été téléchargée {downloads} fois",

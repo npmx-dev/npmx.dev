@@ -441,8 +441,6 @@
       },
       "page_title": "Version History",
       "current_tags": "Current Tags",
-      "version_filter_placeholder": "Filter versions…",
-      "version_filter_label": "Filter versions",
       "no_match_filter": "No versions match {filter}"
     },
     "dependencies": {

@@ -440,8 +440,6 @@
       },
       "page_title": "Versionshistorie",
       "current_tags": "Aktuelle Tags",
-      "version_filter_placeholder": "Versionen filtern…",
-      "version_filter_label": "Versionen filtern",
       "no_match_filter": "Keine Versionen entsprechen {filter}"
     },
     "dependencies": {

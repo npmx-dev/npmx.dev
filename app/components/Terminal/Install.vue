@@ -60,22 +60,12 @@ function getRunPartsForPM(pmId: PackageManagerId, command?: string) {
 // Generate create command parts for a specific package manager
 function getCreatePartsForPM(pmId: PackageManagerId) {
   if (!props.createPackageInfo) return []
-  const pm = packageManagers.find(p => p.id === pmId)
-  if (!pm) return []
-
-  const createPkgName = props.createPackageInfo.packageName
-  let shortName: string
-  if (createPkgName.startsWith('@')) {
-    const slashIndex = createPkgName.indexOf('/')
-    const name = createPkgName.slice(slashIndex + 1)
-    shortName = name.startsWith('create-') ? name.slice('create-'.length) : name
-  } else {
-    shortName = createPkgName.startsWith('create-')
-      ? createPkgName.slice('create-'.length)
-      : createPkgName
-  }
-
-  return [...pm.create.split(' '), shortName]
+  return getExecuteCommandParts({
+    packageName: props.createPackageInfo.packageName,
+    packageManager: pmId,
+    jsrInfo: null,
+    isCreatePackage: true,
+  })
 }
 
 // Generate @types install command parts for a specific package manager
@@ -102,7 +92,14 @@ function getFullRunCommand(command?: string) {
 
 // Full create command for copying (uses current selected PM)
 function getFullCreateCommand() {
-  return getCreatePartsForPM(selectedPM.value).join(' ')
+  if (!props.createPackageInfo) return ''
+
+  return getExecuteCommand({
+    packageName: props.createPackageInfo.packageName,
+    packageManager: selectedPM.value,
+    jsrInfo: null,
+    isCreatePackage: true,
+  })
 }
 
 // Copy handlers
