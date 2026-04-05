@@ -19,8 +19,6 @@ const props = defineProps<{
   packages: string[]
 }>()
 
-console.log(props.packagesData)
-
 const colorMode = useColorMode()
 const resolvedMode = shallowRef<'light' | 'dark'>('light')
 const rootEl = shallowRef<HTMLElement | null>(null)
