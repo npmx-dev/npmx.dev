@@ -617,9 +617,7 @@ const flatItems = computed<FlatItem[]>(() => {
                       <span v-else class="flex-1" />
 
                       <!-- Date + Provenance -->
-                      <div
-                        class="flex items-center gap-2 shrink-0 relative z-10"
-                      >
+                      <div class="flex items-center gap-2 shrink-0 relative z-10">
                         <DateTime
                           v-if="getVersionTime(item.version)"
                           :datetime="getVersionTime(item.version)!"
@@ -670,7 +668,10 @@ const flatItems = computed<FlatItem[]>(() => {
                     <span>{{ numberFormatter.format(getGroupDownloads(item.versions)!) }}</span>
                     <span class="i-lucide:chart-line" aria-hidden="true"></span>
                   </span>
-                  <span class="flex items-center gap-3 shrink-0" :class="!getGroupDownloads(item.versions) ? 'ms-auto' : ''">
+                  <span
+                    class="flex items-center gap-3 shrink-0"
+                    :class="!getGroupDownloads(item.versions) ? 'ms-auto' : ''"
+                  >
                     <DateTime
                       v-if="getVersionTime(item.versions[0] ?? '')"
                       :datetime="getVersionTime(item.versions[0] ?? '')!"
