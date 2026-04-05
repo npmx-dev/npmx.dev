@@ -189,8 +189,7 @@ onUnmounted(deactivate)
                 {{ $t('command_palette.title') }}
               </span>
 
-              <button
-                type="button"
+              <ButtonBase
                 class="w-full flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200 text-start"
                 :aria-label="$t('shortcuts.command_palette')"
                 @click="handleOpenCommandPalette"
@@ -199,7 +198,7 @@ onUnmounted(deactivate)
                   <span class="i-lucide:command w-3 h-3 text-fg-muted" aria-hidden="true" />
                 </span>
                 <span class="flex-1">{{ $t('command_palette.quick_actions') }}</span>
-              </button>
+              </ButtonBase>
             </div>
 
             <!-- Divider -->
