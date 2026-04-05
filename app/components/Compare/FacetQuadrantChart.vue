@@ -251,7 +251,7 @@ const config = computed<VueUiQuadrantConfig>(() => {
           customFormat: ({ datapoint }) => {
             const isDeprecated = !!datapoint?.category?.metrics?.deprecated
             return `
-            <div class="font-mono p-3 border border-border rounded-md bg-[var(--bg)]/10 backdrop-blur-md">
+            <div class="font-mono p-3 border border-border rounded-md bg-bg/10 backdrop-blur-md">
               <div class="grid grid-cols-[12px_minmax(0,1fr)_max-content] items-center gap-x-3 border-b border-border pb-2 mb-2">
 
                 <div class="w-3 h-3">
@@ -259,12 +259,12 @@ const config = computed<VueUiQuadrantConfig>(() => {
                     <circle cx="10" cy="10" r="10" fill="${datapoint?.color ?? 'transparent'}" />
                   </svg>
                 </div>
-                <span class="text-3xs uppercase tracking-wide text-[var(--fg)]/70 truncate">
-                  ${datapoint?.name ?? ''}
+                <span class="text-3xs uppercase tracking-wide text-fg/70 truncate">
+                  ${sanitise(datapoint?.name ?? '')}
                 </span>
 
                 <div class="text-fg-subtle text-xs border border-border rounded-sm px-1">
-                  ${datapoint?.category?.license}
+                  ${sanitise(datapoint?.category?.license)}
                 </div>
               </div>
 
@@ -308,7 +308,7 @@ const config = computed<VueUiQuadrantConfig>(() => {
                 </div>
                 <div class="flex flex-row items-baseline gap-2">
                   <span class="text-fg-subtle">${$t('compare.facets.items.types.label')}</span>
-                  <span class="text-fg text-sm">${datapoint?.category?.metrics.types ? 'Yes' : 'No'}</span>
+                  <span class="text-fg text-sm">${datapoint?.category?.metrics.types ? $t('common.yes') : $t('common.no')}</span>
                 </div>
               </div>
             </div>
@@ -324,7 +324,9 @@ const config = computed<VueUiQuadrantConfig>(() => {
 <template>
   <div class="font-mono">
     <div class="flex items-center justify-center gap-2">
-      {{ $t('compare.quadrant_chart.title') }}
+      <h3>
+        {{ $t('compare.quadrant_chart.title') }}
+      </h3>
       <TooltipApp interactive>
         <button
           type="button"
