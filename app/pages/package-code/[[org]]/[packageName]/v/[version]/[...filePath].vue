@@ -333,7 +333,7 @@ useCommandPaletteContextCommands(
       commands.push({
         id: 'code-open-raw',
         group: 'links',
-        label: $t('code.raw'),
+        label: $t('code.view_raw'),
         keywords: [packageName.value, filePath.value],
         iconClass: 'i-lucide:file-output',
         href: `https://cdn.jsdelivr.net/npm/${packageName.value}@${version.value}/${filePath.value}`,
