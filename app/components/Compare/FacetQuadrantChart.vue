@@ -286,29 +286,29 @@ const config = computed<VueUiQuadrantConfig>(() => {
                 </div>
                 <div class="flex flex-row items-baseline gap-2">
                   <span class="text-fg-subtle">${$t('compare.quadrant_chart.label_freshness_score')}</span>
-                  <span class="text-fg text-sm">${Math.round(datapoint?.category?.metrics.freshnessPercent)}%</span>
+                  <span class="text-fg text-sm">${Math.round(datapoint?.category?.metrics.freshnessPercent ?? 0)}%</span>
                 </div>
 
                 <div class="text-fg text-xs mt-4">${$t('compare.quadrant_chart.label_y_axis')}</div>
                 <div class="flex flex-row items-baseline gap-2">
                   <span class="text-fg-subtle">${$t('compare.facets.items.installSize.label')}</span>
-                  <span class="text-fg text-sm">${bytesFormatter.format(datapoint?.category?.metrics.installSize)}</span>
+                  <span class="text-fg text-sm">${bytesFormatter.format(datapoint?.category?.metrics.installSize ?? 0)}</span>
                 </div>
                 <div class="flex flex-row items-baseline gap-2">
                   <span class="text-fg-subtle">${$t('compare.facets.items.packageSize.label')}</span>
-                  <span class="text-fg text-sm">${bytesFormatter.format(datapoint?.category?.metrics.packageSize)}</span>
+                  <span class="text-fg text-sm">${bytesFormatter.format(datapoint?.category?.metrics.packageSize ?? 0)}</span>
                 </div>
                 <div class="flex flex-row items-baseline gap-2">
                   <span class="text-fg-subtle">${$t('compare.facets.items.dependencies.label')}</span>
-                  <span class="text-fg text-sm">${datapoint?.category?.metrics.dependencies}</span>
+                  <span class="text-fg text-sm">${datapoint?.category?.metrics.dependencies ?? 0}</span>
                 </div>
                 <div class="flex flex-row items-baseline gap-2">
                   <span class="text-fg-subtle">${$t('compare.facets.items.totalDependencies.label')}</span>
-                  <span class="text-fg text-sm">${datapoint?.category?.metrics.totalDependencies}</span>
+                  <span class="text-fg text-sm">${datapoint?.category?.metrics.totalDependencies ?? 0}</span>
                 </div>
                 <div class="flex flex-row items-baseline gap-2">
                   <span class="text-fg-subtle">${$t('compare.facets.items.vulnerabilities.label')}</span>
-                  <span class="text-fg text-sm">${datapoint?.category?.metrics.vulnerabilities}</span>
+                  <span class="text-fg text-sm">${datapoint?.category?.metrics.vulnerabilities ?? 0}</span>
                 </div>
                 <div class="flex flex-row items-baseline gap-2">
                   <span class="text-fg-subtle">${$t('compare.facets.items.types.label')}</span>
