@@ -73,9 +73,8 @@ export function useCommandPaletteGlobalCommands() {
   const { locale, locales, setLocale, t } = useI18n()
   const route = useRoute()
   const colorMode = useColorMode()
-  const { accentColors, selectedAccentColorOptionId, setAccentColor } = useAccentColor()
-  const { backgroundThemes, selectedBackgroundThemeOptionId, setBackgroundTheme } =
-    useBackgroundTheme()
+  const { accentColors, selectedAccentColor, setAccentColor } = useAccentColor()
+  const { backgroundThemes, selectedBackgroundTheme, setBackgroundTheme } = useBackgroundTheme()
   const connectorModal = useModal('connector-modal')
   const authModal = useModal('auth-modal')
   const keyboardShortcutsModal = useModal('keyboard-shortcuts-modal')
@@ -108,28 +107,25 @@ export function useCommandPaletteGlobalCommands() {
     return typeof current === 'string' ? current : (current.name ?? current.code)
   })
   const currentAccentColorLabel = computed(() => {
-    const activeAccentColorId = selectedAccentColorOptionId.value
-    const activeAccentColor = accentColors.value.find(color => color.id === activeAccentColorId)
-
-    if (!activeAccentColor) return activeAccentColorId
-    return activeAccentColor.id === 'neutral'
-      ? t('settings.accent_colors.neutral')
-      : activeAccentColor.label
+    const id = selectedAccentColor.value
+    if (!id) return t('settings.accent_colors.neutral')
+    const color = accentColors.value.find(c => c.id === id)
+    return color?.label ?? id
   })
   const currentAccentColorPreview = computed(() => {
-    const activeAccentColorId = selectedAccentColorOptionId.value
-    return accentColors.value.find(color => color.id === activeAccentColorId)?.value ?? null
+    const id = selectedAccentColor.value
+    if (!id) return null
+    return accentColors.value.find(c => c.id === id)?.value ?? null
   })
   const currentBackgroundThemeLabel = computed(() => {
-    const activeBackgroundThemeId = selectedBackgroundThemeOptionId.value
-    return (
-      backgroundThemes.value.find(theme => theme.id === activeBackgroundThemeId)?.label ??
-      activeBackgroundThemeId
-    )
+    const id = selectedBackgroundTheme.value
+    if (!id) return t('settings.background_themes.neutral')
+    return backgroundThemes.value.find(t => t.id === id)?.label ?? id
   })
   const currentBackgroundThemePreview = computed(() => {
-    const activeBackgroundThemeId = selectedBackgroundThemeOptionId.value
-    return backgroundThemes.value.find(theme => theme.id === activeBackgroundThemeId)?.value ?? null
+    const id = selectedBackgroundTheme.value
+    if (!id) return null
+    return backgroundThemes.value.find(t => t.id === id)?.value ?? null
   })
   const localeCommands = computed<CommandPaletteCommand[]>(() =>
     locales.value.map(entry => {
@@ -159,7 +155,7 @@ export function useCommandPaletteGlobalCommands() {
     }),
   )
   const accentColorCommands = computed<CommandPaletteCommand[]>(() => {
-    const activeAccentColorId = selectedAccentColorOptionId.value
+    const activeId = selectedAccentColor.value
 
     return accentColors.value.map(color => ({
       id: `accent-color:${color.id}`,
@@ -168,11 +164,13 @@ export function useCommandPaletteGlobalCommands() {
       keywords: [color.label, color.id, t('settings.accent_colors.label'), t('settings.theme')],
       iconClass: 'i-lucide:palette',
       previewColor: color.value,
-      active: color.id === activeAccentColorId,
-      activeLabel: color.id === activeAccentColorId ? t('command_palette.current') : null,
+      active: color.id === 'neutral' ? !activeId : color.id === activeId,
+      activeLabel: (color.id === 'neutral' ? !activeId : color.id === activeId)
+        ? t('command_palette.current')
+        : null,
       action: runThenAnnounce(
         () => {
-          setAccentColor(color.id)
+          setAccentColor(color.id === 'neutral' ? null : color.id)
         },
         () =>
           t('command_palette.announcements.accent_color_changed', {
@@ -182,7 +180,7 @@ export function useCommandPaletteGlobalCommands() {
     }))
   })
   const backgroundThemeCommands = computed<CommandPaletteCommand[]>(() => {
-    const activeBackgroundThemeId = selectedBackgroundThemeOptionId.value
+    const activeId = selectedBackgroundTheme.value
 
     return backgroundThemes.value.map(theme => ({
       id: `background-theme:${theme.id}`,
@@ -191,8 +189,10 @@ export function useCommandPaletteGlobalCommands() {
       keywords: [theme.label, theme.id, t('settings.background_themes.label'), t('settings.theme')],
       iconClass: 'i-lucide:swatch-book',
       previewColor: theme.value,
-      active: theme.id === activeBackgroundThemeId,
-      activeLabel: theme.id === activeBackgroundThemeId ? t('command_palette.current') : null,
+      active: theme.id === 'neutral' ? !activeId : theme.id === activeId,
+      activeLabel: (theme.id === 'neutral' ? !activeId : theme.id === activeId)
+        ? t('command_palette.current')
+        : null,
       action: runThenAnnounce(
         () => {
           setBackgroundTheme(theme.id)

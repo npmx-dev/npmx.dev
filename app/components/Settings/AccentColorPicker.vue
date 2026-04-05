@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useAccentColor } from '~/composables/useSettings'
 
-const { accentColors, selectedAccentColorOptionId, setAccentColor } = useAccentColor()
+const { accentColors, selectedAccentColor, setAccentColor } = useAccentColor()
 
 onPrehydrate(el => {
   const settings = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
   // Hardcoded — onPrehydrate is serialized into a <script> tag and cannot reference imports
   const defaultId = 'sky'
-  const id = settings.accentColorId ?? defaultId
+  const id = settings.accentColorId
   if (id) {
     const input = el.querySelector<HTMLInputElement>(`input[value="${id}"]`)
     if (input) {
@@ -43,7 +43,7 @@ onPrehydrate(el => {
         name="accent-color"
         class="sr-only"
         :value="color.id"
-        :checked="selectedAccentColorOptionId === color.id"
+        :checked="selectedAccentColor === color.id || (!selectedAccentColor && color.id === 'sky')"
         :aria-label="color.label"
         @change="setAccentColor(color.id)"
       />

@@ -1,12 +1,11 @@
 <script setup lang="ts">
-const { backgroundThemes, selectedBackgroundThemeOptionId, setBackgroundTheme } =
-  useBackgroundTheme()
+const { backgroundThemes, selectedBackgroundTheme, setBackgroundTheme } = useBackgroundTheme()
 
 onPrehydrate(el => {
   const settings = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
   // Hardcoded — onPrehydrate is serialized into a <script> tag and cannot reference imports
   const defaultId = 'neutral'
-  const id = settings.preferredBackgroundTheme ?? defaultId
+  const id = settings.preferredBackgroundTheme
   if (id) {
     const input = el.querySelector<HTMLInputElement>(`input[value="${id}"]`)
     if (input) {
@@ -41,7 +40,10 @@ onPrehydrate(el => {
         name="background-theme"
         class="sr-only"
         :value="theme.id"
-        :checked="selectedBackgroundThemeOptionId === theme.id"
+        :checked="
+          selectedBackgroundTheme === theme.id ||
+          (!selectedBackgroundTheme && theme.id === 'neutral')
+        "
         :aria-label="theme.label"
         @change="setBackgroundTheme(theme.id)"
       />
