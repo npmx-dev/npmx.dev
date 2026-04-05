@@ -520,7 +520,10 @@ const flatItems = computed<FlatItem[]>(() => {
                       <span>{{ numberFormatter.format(getGroupDownloads(item.versions)!) }}</span>
                       <span class="i-lucide:chart-line" aria-hidden="true"></span>
                     </span>
-                    <span class="flex items-center gap-3 shrink-0" :class="!getGroupDownloads(item.versions) ? 'ms-auto' : ''">
+                    <span
+                      class="flex items-center gap-3 shrink-0"
+                      :class="!getGroupDownloads(item.versions) ? 'ms-auto' : ''"
+                    >
                       <span class="text-xs text-fg-muted" :title="item.versions[0]" dir="ltr">{{
                         item.versions[0]
                       }}</span>
