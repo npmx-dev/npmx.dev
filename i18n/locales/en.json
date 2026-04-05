@@ -455,8 +455,6 @@
       "has_replacement": "This dependency has suggested replacements",
       "vulnerabilities_count": "{count} vulnerability | {count} vulnerabilities",
       "none": "No dependencies"
-
-
     },
     "peer_dependencies": {
       "title": "Peer Dependency ({count}) | Peer Dependencies ({count})",

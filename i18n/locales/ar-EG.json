@@ -166,7 +166,6 @@
     "dependencies": {
       "vulnerabilities_count": "{count} ثغرات | ثغرة أمنية واحدة | ثغرتان أمنيتان | {count} ثغرات أمنية | {count} ثغرة أمنية | {count} ثغرات أمنية",
       "none": "No dependencies"
-
     },
     "maintainers": {
       "maintainer_template": "المشرف {name}"

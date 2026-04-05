@@ -94,10 +94,13 @@ const numberFormatter = useNumberFormatter()
 
 <template>
   <div class="space-y-8">
-
-   <!-- Empty state -->
+    <!-- Empty state -->
     <p
-      v-if="!sortedDependencies.length && !sortedPeerDependencies.length && !sortedOptionalDependencies.length"
+      v-if="
+        !sortedDependencies.length &&
+        !sortedPeerDependencies.length &&
+        !sortedOptionalDependencies.length
+      "
       class="text-sm text-fg-subtle italic"
     >
       {{ $t('package.dependencies.none') }}
