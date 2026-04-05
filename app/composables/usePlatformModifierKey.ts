@@ -1,3 +1,5 @@
+const APPLE_PLATFORM_RE = /Mac|iPhone|iPad|iPod/i
+
 function detectApplePlatform() {
   if (!import.meta.client) return false
 
@@ -10,7 +12,7 @@ function detectApplePlatform() {
   const platform = nav.userAgentData?.platform ?? nav.platform ?? ''
   const userAgent = navigator.userAgent ?? ''
 
-  return /Mac|iPhone|iPad|iPod/i.test(platform) || /Mac|iPhone|iPad|iPod/i.test(userAgent)
+  return APPLE_PLATFORM_RE.test(platform) || APPLE_PLATFORM_RE.test(userAgent)
 }
 
 export function usePlatformModifierKey() {
