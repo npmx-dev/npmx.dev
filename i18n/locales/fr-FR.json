@@ -1133,7 +1133,7 @@
         "side_analysis_top_right": "Les paquets suivants se trouvent dans le quadrant supérieur droit (fort impact) : {packages}",
         "side_analysis_top_left": "Les paquets suivants se trouvent dans le quadrant supérieur gauche (efficient) : {packages}",
         "side_analysis_bottom_right": "Les paquets suivants se trouvent dans le quadrant inférieur droit (gourmand en ressources) : {packages}",
-        "side_analysis_bottom_left": "Les paquets suivants se trouvent dans le quadrant inférieur droit (faible impact) : {packages}"
+        "side_analysis_bottom_left": "Les paquets suivants se trouvent dans le quadrant inférieur gauche (faible impact) : {packages}"
       },
       "explanation": {
         "introduction": "Le score est calculé en combinant plusieurs signaux sur deux axes :",

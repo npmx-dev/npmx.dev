@@ -201,6 +201,8 @@
     "warnings": "Warnings:",
     "go_back_home": "Go back home",
     "per_week": "/ week",
+    "yes": "Yes",
+    "no": "No",
     "vanity_downloads_hint": "Vanity number: no packages displayed | Vanity number: for the displayed package | Vanity number: Sum of {count} displayed packages",
     "sort": {
       "name": "name",
@@ -1137,7 +1139,7 @@
         "side_analysis_top_right": "The following packages are positioned on the top-right quadrant (high-impact): {packages}",
         "side_analysis_top_left": "The following packages are positioned on the top-left quadrant (efficient): {packages}",
         "side_analysis_bottom_right": "The following packages are positioned on the bottom-right quadrant (resource-heavy): {packages}",
-        "side_analysis_bottom_left": "The following packages are positioned on the bottom-right quadrant (low-impact): {packages}"
+        "side_analysis_bottom_left": "The following packages are positioned on the bottom-left quadrant (low-impact): {packages}"
       },
       "explanation": {
         "introduction": "The score is calculated by combining multiple signals into two axes:",
