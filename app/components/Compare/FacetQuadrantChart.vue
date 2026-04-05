@@ -202,14 +202,15 @@ const config = computed<VueUiQuadrantConfig>(() => {
           },
           labels: {
             axisLabels: {
-              fontSize: 12,
+              fontSize: 14,
               color: {
                 positive: colors.value.fgSubtle,
                 negative: colors.value.fgSubtle,
               },
             },
             plotLabels: {
-              offsetY: 12,
+              fontSize: 14,
+              offsetY: 16,
               color: colors.value.fg,
             },
             quadrantLabels: {

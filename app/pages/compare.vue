@@ -354,11 +354,13 @@ useSeoMeta({
               <p v-else class="py-12 text-center text-fg-subtle">
                 {{ $t('compare.packages.no_chartable_data') }}
               </p>
-              <FacetQuadrantChart
-                v-if="packages.length"
-                :packages-data="packagesData"
-                :packages="packages"
-              />
+              <div class="max-w-[450px] mx-auto">
+                <FacetQuadrantChart
+                  v-if="packages.length"
+                  :packages-data="packagesData"
+                  :packages="packages"
+                />
+              </div>
             </TabPanel>
           </TabRoot>
 
