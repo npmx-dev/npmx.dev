@@ -53,7 +53,7 @@ const WEIGHTS = {
 
     packageSize: 0.1,
     vulnerabilities: 0.2, // penalize security burden
-    types: 0.2, // TS support
+    types: 0.15, // TS support
     // Note: the 'deprecated' metric is not weighed because it just forces a -1 evaluation
   },
 }
