@@ -63,6 +63,8 @@ const allowedWarnings: RegExp[] = [
   // DiffFileTree instances), this triggers a duplicate expose() call on the
   // inner wrapper. The warning does not affect test correctness.
   /expose\(\) should be called only once/,
+  // Vue Teleport warnings (vue-data-ui / test env, does not affect text correctness)
+  /Failed to locate Teleport target.*legend-bottom/,
 ]
 
 beforeEach(() => {
