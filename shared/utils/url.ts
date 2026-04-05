@@ -30,16 +30,12 @@ export function areUrlsEquivalent(url1: string, url2: string): boolean {
 export function getSafeHttpUrl(url?: string | null): string | null {
   if (!url) return null
 
-  try {
-    const parsed = new URL(url)
-    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
-      return null
-    }
-
-    return parsed.href
-  } catch {
+  const parsed = URL.parse(url)
+  if (!parsed || (parsed.protocol !== 'http:' && parsed.protocol !== 'https:')) {
     return null
   }
+
+  return parsed.href
 }
 
 export function normalizeSearchParam(query?: LocationQueryValue | LocationQueryValue[]): string {
