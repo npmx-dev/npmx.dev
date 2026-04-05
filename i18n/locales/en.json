@@ -1127,11 +1127,11 @@
     "quadrant_chart": {
       "label_x_axis": "Adoption",
       "label_y_axis": "Efficiency",
-      "label_top_right": "high-impact",
-      "label_bottom_right": "resource-heavy",
-      "label_bottom_left": "low-impact",
-      "label_top_left": "efficient",
-      "title": "Adoption vs Efficiency matrix",
+      "label_top_right": "high impact",
+      "label_bottom_right": "popular but heavy",
+      "label_bottom_left": "low impact",
+      "label_top_left": "promising",
+      "title": "Adoption vs Package efficiency",
       "filename": "package-adoption-vs-efficiency-matrix",
       "label_freshness_score": "Freshness score",
       "copy_alt": {
@@ -1143,9 +1143,9 @@
       },
       "explanation": {
         "introduction": "The score is calculated by combining multiple signals into two axes:",
-        "adoption": "Adoption: how widely used and actively maintained a package is",
-        "efficiency": "Efficiency: how lightweight, safe, and maintainable a package is",
-        "impact_details": "Each metric contributes differently to the final score. Key factors like downloads and install size have the biggest impact, while others refine the result. Some signals (like vulnerabilities or deprecation) apply penalties."
+        "adoption": "Adoption: reflects usage and activity (downloads, freshness, likes)",
+        "efficiency": "Package efficiency: reflects footprint and quality (install size, dependencies, vulnerabilities, type support)",
+        "impact_details": "Each metric contributes with a different weight. Strong signals like downloads and install size have the largest impact, while others refine the result. Some signals (such as vulnerabilities or deprecation) apply penalties."
       }
     },
     "no_dependency": {
