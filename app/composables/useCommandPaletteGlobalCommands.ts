@@ -120,12 +120,12 @@ export function useCommandPaletteGlobalCommands() {
   const currentBackgroundThemeLabel = computed(() => {
     const id = selectedBackgroundTheme.value
     if (!id) return t('settings.background_themes.neutral')
-    return backgroundThemes.value.find(t => t.id === id)?.label ?? id
+    return backgroundThemes.value.find(theme => theme.id === id)?.label ?? id
   })
   const currentBackgroundThemePreview = computed(() => {
     const id = selectedBackgroundTheme.value
     if (!id) return null
-    return backgroundThemes.value.find(t => t.id === id)?.value ?? null
+    return backgroundThemes.value.find(theme => theme.id === id)?.value ?? null
   })
   const localeCommands = computed<CommandPaletteCommand[]>(() =>
     locales.value.map(entry => {

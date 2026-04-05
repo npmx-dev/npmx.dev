@@ -145,10 +145,11 @@ export function useCommandPaletteCommands() {
             ]
           : rootViewCommands.value
 
-    return base.map(command => ({
-      ...command,
-      keywords: [...command.keywords, groupLabel(command.group)],
-    }))
+    return base.map(command =>
+      Object.assign(command, {
+        keywords: [...command.keywords, groupLabel(command.group)],
+      }),
+    )
   })
 
   const { results } = useFuse(trimmedQuery, commands, {
