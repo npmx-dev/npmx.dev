@@ -1,36 +1,36 @@
 <script setup lang="ts">
-import { VueUiQuadrant } from 'vue-data-ui/vue-ui-quadrant';
-import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison';
-import { getFrameworkColor, isListedFramework } from '~/utils/frameworks';
-import { createQuadrantDataset } from '~/utils/compare-quadrant-chart';
-import type {
-  VueUiQuadrantConfig,
-  VueUiQuadrantDatasetItem,
-} from 'vue-data-ui';
-import { sanitise, loadFile, applyEllipsis, copyAltTextForCompareQuadrantChart } from '~/utils/charts';
+import { VueUiQuadrant } from 'vue-data-ui/vue-ui-quadrant'
+import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison'
+import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
+import { createQuadrantDataset } from '~/utils/compare-quadrant-chart'
+import type { VueUiQuadrantConfig, VueUiQuadrantDatasetItem } from 'vue-data-ui'
+import {
+  sanitise,
+  loadFile,
+  applyEllipsis,
+  copyAltTextForCompareQuadrantChart,
+} from '~/utils/charts'
 import { drawNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
 
-import('vue-data-ui/style.css');
+import('vue-data-ui/style.css')
 
 const props = defineProps<{
-  packagesData: ReadonlyArray<PackageComparisonData | null>;
-  packages: string[];
-}>();
+  packagesData: ReadonlyArray<PackageComparisonData | null>
+  packages: string[]
+}>()
 
 console.log(props.packagesData)
 
-const colorMode = useColorMode();
-const resolvedMode = shallowRef<'light' | 'dark'>('light');
-const rootEl = shallowRef<HTMLElement | null>(null);
-const { width } = useElementSize(rootEl);
-const { copy, copied } = useClipboard();
-const compactNumberFormatter = useCompactNumberFormatter();
-const bytesFormatter = useBytesFormatter();
+const colorMode = useColorMode()
+const resolvedMode = shallowRef<'light' | 'dark'>('light')
+const rootEl = shallowRef<HTMLElement | null>(null)
+const { width } = useElementSize(rootEl)
+const { copy, copied } = useClipboard()
+const compactNumberFormatter = useCompactNumberFormatter()
+const bytesFormatter = useBytesFormatter()
 
-const mobileBreakpointWidth = 640;
-const isMobile = computed(
-  () => width.value > 0 && width.value < mobileBreakpointWidth,
-);
+const mobileBreakpointWidth = 640
+const isMobile = computed(() => width.value > 0 && width.value < mobileBreakpointWidth)
 
 const { colors } = useCssVariables(
   [
@@ -49,28 +49,28 @@ const { colors } = useCssVariables(
     watchHtmlAttributes: true,
     watchResize: false,
   },
-);
+)
 
 const watermarkColors = computed(() => ({
   fg: colors.value.fg ?? OKLCH_NEUTRAL_FALLBACK,
   bg: colors.value.bg ?? OKLCH_NEUTRAL_FALLBACK,
   fgSubtle: colors.value.fgSubtle ?? OKLCH_NEUTRAL_FALLBACK,
-}));
+}))
 
 onMounted(async () => {
-  rootEl.value = document.documentElement;
-  resolvedMode.value = colorMode.value === 'dark' ? 'dark' : 'light';
-});
+  rootEl.value = document.documentElement
+  resolvedMode.value = colorMode.value === 'dark' ? 'dark' : 'light'
+})
 
 watch(
   () => colorMode.value,
-  (value) => {
-    resolvedMode.value = value === 'dark' ? 'dark' : 'light';
+  value => {
+    resolvedMode.value = value === 'dark' ? 'dark' : 'light'
   },
   { flush: 'sync' },
-);
+)
 
-const isDarkMode = computed(() => resolvedMode.value === 'dark');
+const isDarkMode = computed(() => resolvedMode.value === 'dark')
 
 const source = computed<PackageQuadrantInput[]>(() => {
   if (!props.packagesData?.length) return []
@@ -88,7 +88,7 @@ const source = computed<PackageQuadrantInput[]>(() => {
       const hasTypes = typesKind === 'included' || typesKind === '@types'
 
       return {
-        license: packageItem.metadata?.license ?? "",
+        license: packageItem.metadata?.license ?? '',
         id: packageItem.package.name,
         name: packageItem.package.name,
         downloads: Number(packageItem.downloads ?? 0),
@@ -106,7 +106,7 @@ const source = computed<PackageQuadrantInput[]>(() => {
     .filter((packageItem): packageItem is PackageQuadrantInput => packageItem !== null)
 })
 
-const rawQuadrant = computed(() => createQuadrantDataset(source.value));
+const rawQuadrant = computed(() => createQuadrantDataset(source.value))
 const dataset = computed<VueUiQuadrantDatasetItem[]>(() => {
   return rawQuadrant.value.map((el: any) => {
     return {
@@ -114,9 +114,7 @@ const dataset = computed<VueUiQuadrantDatasetItem[]>(() => {
       fullname: el.name,
       name: applyEllipsis(el.name, 20),
       shape: 'circle',
-      color: isListedFramework(el.name)
-        ? getFrameworkColor(el.name)
-        : undefined,
+      color: isListedFramework(el.name) ? getFrameworkColor(el.name) : undefined,
       series: [
         {
           name: applyEllipsis(el.name, 20),
@@ -124,9 +122,9 @@ const dataset = computed<VueUiQuadrantDatasetItem[]>(() => {
           y: el.y,
         },
       ],
-    };
-  });
-});
+    }
+  })
+})
 
 function buildExportFilename(extension: string): string {
   const translatedPrefix = sanitise($t('compare.quadrant_chart.filename'))
@@ -156,17 +154,17 @@ const config = computed<VueUiQuadrantConfig>(() => {
         close: $t('package.trends.close_options'),
       },
       callbacks: {
-        img: (args) => {
-          const imageUri = args?.imageUri;
-          if (!imageUri) return;
-          loadFile(imageUri, buildExportFilename('png'));
+        img: args => {
+          const imageUri = args?.imageUri
+          if (!imageUri) return
+          loadFile(imageUri, buildExportFilename('png'))
         },
-        svg: (args) => {
-          const blob = args?.blob;
-          if (!blob) return;
-          const url = URL.createObjectURL(blob);
-          loadFile(url, buildExportFilename('svg'));
-          URL.revokeObjectURL(url);
+        svg: args => {
+          const blob = args?.blob
+          if (!blob) return
+          const url = URL.createObjectURL(blob)
+          loadFile(url, buildExportFilename('svg'))
+          URL.revokeObjectURL(url)
         },
         altCopy: ({ dataset: dst, config: cfg }) => {
           copyAltTextForCompareQuadrantChart({
@@ -193,7 +191,7 @@ const config = computed<VueUiQuadrantConfig>(() => {
               color: colors.value.border,
               steps: 5,
               roundingForce: 6,
-              fill: isDarkMode.value
+              fill: isDarkMode.value,
             },
             xAxis: {
               name: $t('compare.quadrant_chart.label_x_axis'),
@@ -214,7 +212,7 @@ const config = computed<VueUiQuadrantConfig>(() => {
             },
             plotLabels: {
               offsetY: 12,
-              color: colors.value.fg
+              color: colors.value.fg,
             },
             quadrantLabels: {
               tr: {
@@ -252,26 +250,26 @@ const config = computed<VueUiQuadrantConfig>(() => {
           backgroundColor: 'transparent',
           showShape: false,
           customFormat: ({ datapoint }) => {
-            const isDeprecated = !!datapoint?.category?.metrics?.deprecated;
+            const isDeprecated = !!datapoint?.category?.metrics?.deprecated
             return `
             <div class="font-mono p-3 border border-border rounded-md bg-[var(--bg)]/10 backdrop-blur-md">
               <div class="grid grid-cols-[12px_minmax(0,1fr)_max-content] items-center gap-x-3 border-b border-border pb-2 mb-2">
 
                 <div class="w-3 h-3">
                   <svg viewBox="0 0 20 20" class="w-full h-full" aria-hidden="true">
-                    <circle cx="10" cy="10" r="10" fill="${datapoint?.color ?? "transparent"}" />
+                    <circle cx="10" cy="10" r="10" fill="${datapoint?.color ?? 'transparent'}" />
                   </svg>
                 </div>
                 <span class="text-3xs uppercase tracking-wide text-[var(--fg)]/70 truncate">
                   ${datapoint?.name ?? ''}
                 </span>
-                
+
                 <div class="text-fg-subtle text-xs border border-border rounded-sm px-1">
                   ${datapoint?.category?.license}
                 </div>
               </div>
-            
-              ${isDeprecated ? `<div class="text-xs text-red-700 dark:text-red-400 my-1">${$t("package.deprecation.package")}</div>` : ``}
+
+              ${isDeprecated ? `<div class="text-xs text-red-700 dark:text-red-400 my-1">${$t('package.deprecation.package')}</div>` : ``}
 
               <div class="text-fg text-xs">${$t('compare.quadrant_chart.label_x_axis')}</div>
               <div class="flex flex-col text-xs">
@@ -311,18 +309,17 @@ const config = computed<VueUiQuadrantConfig>(() => {
                 </div>
                 <div class="flex flex-row items-baseline gap-2">
                   <span class="text-fg-subtle">${$t('compare.facets.items.types.label')}</span>
-                  <span class="text-fg text-sm">${datapoint?.category?.metrics.types ? "Yes" : "No"}</span>
+                  <span class="text-fg text-sm">${datapoint?.category?.metrics.types ? 'Yes' : 'No'}</span>
                 </div>
               </div>
             </div>
-            `;
+            `
           },
         },
       },
     },
-  };
-});
-
+  }
+})
 </script>
 
 <template>
@@ -331,24 +328,24 @@ const config = computed<VueUiQuadrantConfig>(() => {
       {{ $t('compare.quadrant_chart.title') }}
       <TooltipApp interactive>
         <button
-            type="button"
-            class="i-lucide:info w-3.5 h-3.5 text-fg-muted cursor-help"
-            :aria-label="$t('compare.quadrant_chart.title')"
-          />
-          <template #content>
-            <div class="flex flex-col gap-3">
-              <p class="text-xs text-fg-muted">
-                {{ $t('compare.quadrant_chart.explanation.introduction') }}
-              </p>
-              <ul class="text-xs text-fg-subtle list-disc list-inside">
-                <li>{{ $t('compare.quadrant_chart.explanation.adoption') }}</li>
-                <li>{{ $t('compare.quadrant_chart.explanation.efficiency') }}</li>
-              </ul>
-              <p class="text-xs text-fg-muted">
-                {{ $t('compare.quadrant_chart.explanation.impact_details') }}
-              </p>
-            </div>
-          </template>
+          type="button"
+          class="i-lucide:info w-3.5 h-3.5 text-fg-muted cursor-help"
+          :aria-label="$t('compare.quadrant_chart.title')"
+        />
+        <template #content>
+          <div class="flex flex-col gap-3">
+            <p class="text-xs text-fg-muted">
+              {{ $t('compare.quadrant_chart.explanation.introduction') }}
+            </p>
+            <ul class="text-xs text-fg-subtle list-disc list-inside">
+              <li>{{ $t('compare.quadrant_chart.explanation.adoption') }}</li>
+              <li>{{ $t('compare.quadrant_chart.explanation.efficiency') }}</li>
+            </ul>
+            <p class="text-xs text-fg-muted">
+              {{ $t('compare.quadrant_chart.explanation.impact_details') }}
+            </p>
+          </div>
+        </template>
       </TooltipApp>
     </div>
     <ClientOnly>
@@ -364,7 +361,7 @@ const config = computed<VueUiQuadrantConfig>(() => {
                   drawingArea: {
                     top: svg.top,
                     height: svg.height,
-                  }
+                  },
                 },
                 colors: watermarkColors,
                 translateFn: $t,
@@ -372,7 +369,7 @@ const config = computed<VueUiQuadrantConfig>(() => {
                 sizeRatioTagline: 0.6,
                 sizeRatioLogo: 0.4,
                 offsetYTagline: 20,
-                offsetYLogo: 12
+                offsetYLogo: 12,
               })
             "
           />
@@ -380,11 +377,7 @@ const config = computed<VueUiQuadrantConfig>(() => {
 
         <template #menuIcon="{ isOpen }">
           <span v-if="isOpen" class="i-lucide:x w-6 h-6" aria-hidden="true" />
-          <span
-            v-else
-            class="i-lucide:ellipsis-vertical w-6 h-6"
-            aria-hidden="true"
-          />
+          <span v-else class="i-lucide:ellipsis-vertical w-6 h-6" aria-hidden="true" />
         </template>
         <template #optionImg>
           <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
@@ -401,11 +394,7 @@ const config = computed<VueUiQuadrantConfig>(() => {
           />
         </template>
         <template #annotator-action-color="{ color }">
-          <span
-            class="i-lucide:palette w-6 h-6"
-            :style="{ color }"
-            aria-hidden="true"
-          />
+          <span class="i-lucide:palette w-6 h-6" :style="{ color }" aria-hidden="true" />
         </template>
         <template #annotator-action-draw="{ mode }">
           <span
@@ -468,9 +457,7 @@ const config = computed<VueUiQuadrantConfig>(() => {
           <span
             class="w-6 h-6"
             :class="
-              copied
-                ? 'i-lucide:check text-accent'
-                : 'i-lucide:person-standing text-fg-subtle'
+              copied ? 'i-lucide:check text-accent' : 'i-lucide:person-standing text-fg-subtle'
             "
             style="pointer-events: none"
             aria-hidden="true"

@@ -273,7 +273,6 @@ useSeoMeta({
         </div>
 
         <div v-else-if="packagesData && packagesData.some(p => p !== null)">
-
           <!-- View tabs -->
           <TabRoot
             v-model="comparisonView"
@@ -355,10 +354,7 @@ useSeoMeta({
               <p v-else class="py-12 text-center text-fg-subtle">
                 {{ $t('compare.packages.no_chartable_data') }}
               </p>
-              <FacetQuadrantChart
-                :packages-data="packagesData"
-                :packages="packages"
-              />
+              <FacetQuadrantChart :packages-data="packagesData" :packages="packages" />
             </TabPanel>
           </TabRoot>
 
