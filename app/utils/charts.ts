@@ -2,6 +2,7 @@ import type {
   AltCopyArgs,
   VueUiHorizontalBarConfig,
   VueUiHorizontalBarDatapoint,
+  VueUiQuadrantDatapoint,
   VueUiXyConfig,
   VueUiXyDatasetBarItem,
   VueUiXyDatasetLineItem,
@@ -634,6 +635,68 @@ export async function copyAltTextForCompareFacetBarChart({
 }: AltCopyArgs<VueUiHorizontalBarDatapoint[], FacetBarChartConfig>) {
   const altText = createAltTextForCompareFacetBarChart({ dataset, config })
   await config.copy(altText)
+}
+
+export function createAltTextForCompareQuadrantChart({
+  dataset,
+  config
+}: AltCopyArgs<VueUiQuadrantDatapoint[], any>) {
+  const packages = {
+    topRight: dataset.filter(d => d.quadrant === 'TOP_RIGHT'),
+    topLeft: dataset.filter(d => d.quadrant === 'TOP_LEFT'),
+    bottomRight: dataset.filter(d => d.quadrant === 'BOTTOM_RIGHT'),
+    bottomLeft: dataset.filter(d => d.quadrant === 'BOTTOM_LEFT')
+  }
+
+  const descriptions = {
+    topRight: '',
+    topLeft: '',
+    bottomRight: '',
+    bottomLeft: ''
+  }
+
+  if (packages.topRight.length) {
+    descriptions.topRight = config.$t('compare.quadrant_chart.copy_alt.side_analysis_top_right', {
+      packages: packages.topRight.map(p => p.fullname).join(', ')
+    })
+  }
+
+  if (packages.topLeft.length) {
+    descriptions.topLeft = config.$t('compare.quadrant_chart.copy_alt.side_analysis_top_left', {
+      packages: packages.topLeft.map(p => p.fullname).join(', ')
+    })
+  }
+
+  if (packages.bottomRight.length) {
+    descriptions.bottomRight = config.$t('compare.quadrant_chart.copy_alt.side_analysis_bottom_right', {
+      packages: packages.bottomRight.map(p => p.fullname).join(', ')
+    })
+  }
+
+  if (packages.bottomLeft.length) {
+    descriptions.bottomLeft = config.$t('compare.quadrant_chart.copy_alt.side_analysis_bottom_left', {
+      packages: packages.bottomLeft.map(p => p.fullname).join(', ')
+    })
+  }
+
+  const analysis = Object.values(descriptions).filter(Boolean).join('. ')
+
+  const altText = config.$t('compare.quadrant_chart.copy_alt.description', {
+    packages: dataset.map(p => p.fullname).join(', '),
+    analysis,
+    watermark: config.$t('package.trends.copy_alt.watermark'),
+  })
+
+  return altText
+}
+
+export async function copyAltTextForCompareQuadrantChart({
+  dataset,
+  config
+}: AltCopyArgs<VueUiQuadrantDatapoint[], any>) {
+
+const altText = createAltTextForCompareQuadrantChart({ dataset, config })
+  await config.copy(altText)  
 }
 
 // Used in chart context menu callbacks
