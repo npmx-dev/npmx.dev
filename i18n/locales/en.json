@@ -939,6 +939,7 @@
     "close_tree": "Close file tree",
     "copy_content": "Copy file content",
     "copy_link": "Copy link",
+    "raw": "Raw",
     "view_raw": "View raw file",
     "toggle_container": "Toggle code container width",
     "open_raw_file": "Open raw file",

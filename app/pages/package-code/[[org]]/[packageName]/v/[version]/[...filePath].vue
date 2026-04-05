@@ -262,6 +262,18 @@ function handleLineClick(lineNum: number, event: MouseEvent) {
   currentHash.value = newHash
 }
 
+// Copy link to current line(s)
+const { copy: copyPermalink } = useClipboard({ copiedDuring: 2000 })
+function copyPermalinkUrl() {
+  const url = new URL(window.location.href)
+  copyPermalink(url.toString())
+}
+
+const { copy: copyFileContent } = useClipboard({
+  source: () => fileContent.value?.content || '',
+  copiedDuring: 2000,
+})
+
 // Canonical URL for this code page
 const canonicalUrl = computed(() => `https://npmx.dev${getCodeUrl(route.params)}`)
 
