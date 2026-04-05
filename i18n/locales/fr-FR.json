@@ -1131,7 +1131,7 @@
       "copy_alt": {
         "description": "Graphique en quadrants représentant l’adoption et l’efficacité pour les paquets {packages}. {analysis}. {watermark}.",
         "side_analysis_top_right": "Les paquets suivants sont positionnés dans le quadrant en haut à droite (fort impact) : {packages}",
-        "side_analysis_top_left": "Les paquets suivants sont positionnés dans le quadrant en haut à gauche (efficaces mais de niche) : {packages}",
+        "side_analysis_top_left": "Les paquets suivants sont positionnés dans le quadrant en haut à gauche (prometteur) : {packages}",
         "side_analysis_bottom_right": "Les paquets suivants sont positionnés dans le quadrant en bas à droite (populaires mais lourds) : {packages}",
         "side_analysis_bottom_left": "Les paquets suivants sont positionnés dans le quadrant en bas à gauche (faible impact) : {packages}"
       },

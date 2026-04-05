@@ -1137,8 +1137,8 @@
       "copy_alt": {
         "description": "Quadrant chart mapping adoption versus efficiency for the {packages} packages. {analysis}. {watermark}.",
         "side_analysis_top_right": "The following packages are positioned on the top-right quadrant (high-impact): {packages}",
-        "side_analysis_top_left": "The following packages are positioned on the top-left quadrant (efficient): {packages}",
-        "side_analysis_bottom_right": "The following packages are positioned on the bottom-right quadrant (resource-heavy): {packages}",
+        "side_analysis_top_left": "The following packages are positioned on the top-left quadrant (promising): {packages}",
+        "side_analysis_bottom_right": "The following packages are positioned on the bottom-right quadrant (popular but heavy): {packages}",
         "side_analysis_bottom_left": "The following packages are positioned on the bottom-left quadrant (low-impact): {packages}"
       },
       "explanation": {
