@@ -46,12 +46,7 @@ function mockFetch(input: RequestInfo | URL, init?: RequestInit): Promise<Respon
   const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url
   if (url.includes('npm.antfu.dev/versions/')) {
     const body = nextFetchResponse ?? { distTags: {}, versions: [], time: {} }
-    return Promise.resolve(
-      new Response(JSON.stringify(body), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' },
-      }),
-    )
+    return Promise.resolve(Response.json(body))
   }
   return originalFetch(input, init)
 }
