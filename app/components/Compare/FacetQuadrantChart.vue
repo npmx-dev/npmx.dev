@@ -2,7 +2,11 @@
 import { VueUiQuadrant } from 'vue-data-ui/vue-ui-quadrant'
 import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
-import { createQuadrantDataset, type PackageQuadrantInput, type PackageQuadrantPoint } from '~/utils/compare-quadrant-chart'
+import {
+  createQuadrantDataset,
+  type PackageQuadrantInput,
+  type PackageQuadrantPoint,
+} from '~/utils/compare-quadrant-chart'
 import type { VueUiQuadrantConfig, VueUiQuadrantDatasetItem } from 'vue-data-ui'
 import {
   sanitise,
