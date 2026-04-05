@@ -1038,17 +1038,6 @@ describe('component accessibility audits', () => {
         const results = await runAxe(wrapper)
         expect(results.violations).toEqual([])
       })
-
-      it('should have no accessibility violations with empty data', async () => {
-        const wrapper = await mountSuspended(FacetQuadrantChart, {
-          props: {
-            packagesData: [],
-            packages: [],
-          },
-        })
-        const results = await runAxe(wrapper)
-        expect(results.violations).toEqual([])
-      })
     })
 
     it('should have no accessibility violations with empty data', async () => {

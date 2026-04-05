@@ -356,6 +356,7 @@ useSeoMeta({
                 {{ $t('compare.packages.no_chartable_data') }}
               </p>
               <FacetQuadrantChart
+                v-if="packages.length"
                 :packages-data="packagesData"
                 :packages="packages"
               />
