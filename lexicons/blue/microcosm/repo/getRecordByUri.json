@@ -1,0 +1,50 @@
+{
+  "id": "blue.microcosm.repo.getRecordByUri",
+  "defs": {
+    "main": {
+      "type": "query",
+      "description": "Slingshot: ergonomic complement to com.atproto.repo.getRecord which accepts an at-uri instead of individual repo/collection/rkey params",
+      "parameters": {
+        "type": "params",
+        "required": ["at_uri"],
+        "properties": {
+          "at_uri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "the at-uri of the record (identifier can be a DID or handle)"
+          },
+          "cid": {
+            "type": "string",
+            "format": "cid",
+            "description": "optional CID of the version of the record. if not specified, return the most recent version. if specified and a newer version exists, returns 404."
+          }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["uri", "value"],
+          "properties": {
+            "uri": {
+              "type": "string",
+              "format": "at-uri",
+              "description": "at-uri for this record"
+            },
+            "cid": {
+              "type": "string",
+              "format": "cid",
+              "description": "CID for this exact version of the record"
+            },
+            "value": {
+              "type": "unknown",
+              "description": "the record itself"
+            }
+          }
+        }
+      }
+    }
+  },
+  "$type": "com.atproto.lexicon.schema",
+  "lexicon": 1
+}

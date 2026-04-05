@@ -1,14 +1,15 @@
 <script setup lang="ts">
 const router = useRouter()
-const canGoBack = useCanGoBack()
 const { settings } = useSettings()
-const { locale, locales, setLocale: setNuxti18nLocale } = useI18n()
+const { locale: currentLocale, locales, setLocale: setNuxti18nLocale } = useI18n()
 const colorMode = useColorMode()
 const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
+const keyboardShortcutsEnabled = useKeyboardShortcuts()
 
 // Escape to go back (but not when focused on form elements or modal is open)
 onKeyStroke(
   e =>
+    keyboardShortcutsEnabled.value &&
     isKeyWithoutModifiers(e, 'Escape') &&
     !isEditableElement(e.target) &&
     !document.documentElement.matches('html:has(:modal)'),
@@ -34,9 +35,9 @@ defineOgImageComponent('Default', {
   primaryColor: '#60a5fa',
 })
 
-const setLocale: typeof setNuxti18nLocale = locale => {
-  settings.value.selectedLocale = locale
-  return setNuxti18nLocale(locale)
+const setLocale: typeof setNuxti18nLocale = newLocale => {
+  settings.value.selectedLocale = newLocale
+  return setNuxti18nLocale(newLocale)
 }
 </script>
 
@@ -49,15 +50,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
           <h1 class="font-mono text-3xl sm:text-4xl font-medium">
             {{ $t('settings.title') }}
           </h1>
-          <button
-            type="button"
-            class="cursor-pointer inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0 p-1.5 -mx-1.5"
-            @click="router.back()"
-            v-if="canGoBack"
-          >
-            <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
-            <span class="sr-only sm:not-sr-only">{{ $t('nav.back') }}</span>
-          </button>
+          <BackButton />
         </div>
         <p class="text-fg-muted text-lg">
           {{ $t('settings.tagline') }}
@@ -94,7 +87,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
             <!-- Accent colors -->
             <div class="space-y-3">
               <span class="block text-sm text-fg font-medium">
-                {{ $t('settings.accent_colors') }}
+                {{ $t('settings.accent_colors.label') }}
               </span>
               <SettingsAccentColorPicker />
             </div>
@@ -102,7 +95,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
             <!-- Background themes -->
             <div class="space-y-3">
               <span class="block text-sm text-fg font-medium">
-                {{ $t('settings.background_themes') }}
+                {{ $t('settings.background_themes.label') }}
               </span>
               <SettingsBgThemePicker />
             </div>
@@ -140,10 +133,20 @@ const setLocale: typeof setNuxti18nLocale = locale => {
               :description="$t('settings.hide_platform_packages_description')"
               v-model="settings.hidePlatformPackages"
             />
+
+            <!-- Divider -->
+            <div class="border-t border-border my-4" />
+
+            <!-- Enable weekly download graph pulse looping animation -->
+            <SettingsToggle
+              :label="$t('settings.enable_graph_pulse_loop')"
+              :description="$t('settings.enable_graph_pulse_loop_description')"
+              v-model="settings.enableGraphPulseLooping"
+            />
           </div>
         </section>
 
-        <!-- DATA SOURCE Section -->
+        <!-- SEARCH FEATURES Section -->
         <section>
           <h2 class="text-xs text-fg-muted uppercase tracking-wider mb-4">
             {{ $t('settings.sections.search') }}
@@ -202,9 +205,19 @@ const setLocale: typeof setNuxti18nLocale = locale => {
                 <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
               </a>
             </div>
+
+            <div class="border-t border-border my-4" />
+
+            <!-- Instant Search toggle -->
+            <SettingsToggle
+              :label="$t('settings.instant_search')"
+              :description="$t('settings.instant_search_description')"
+              v-model="settings.instantSearch"
+            />
           </div>
         </section>
 
+        <!-- LANGUAGE Section -->
         <section>
           <h2 class="text-xs text-fg-muted uppercase tracking-wider mb-4">
             {{ $t('settings.sections.language') }}
@@ -220,8 +233,8 @@ const setLocale: typeof setNuxti18nLocale = locale => {
                 <SelectField
                   id="language-select"
                   :items="locales.map(loc => ({ label: loc.name ?? '', value: loc.code }))"
-                  v-model="locale"
-                  @update:modelValue="setLocale($event as typeof locale)"
+                  v-model="currentLocale"
+                  @update:modelValue="setLocale($event as typeof currentLocale)"
                   block
                   size="sm"
                   class="max-w-48"
@@ -258,6 +271,29 @@ const setLocale: typeof setNuxti18nLocale = locale => {
                 {{ $t('settings.help_translate') }}
               </a>
             </template>
+            <div>
+              <LinkBase
+                :to="{ name: 'translation-status' }"
+                class="font-sans text-fg-muted text-sm"
+              >
+                <span class="i-lucide:languages w-4 h-4" aria-hidden="true" />
+                {{ $t('settings.translation_status') }}
+              </LinkBase>
+            </div>
+          </div>
+        </section>
+
+        <!-- KEYBOARD SHORTCUTS Section -->
+        <section>
+          <h2 class="text-xs text-fg-muted uppercase tracking-wider mb-4">
+            {{ $t('settings.sections.keyboard_shortcuts') }}
+          </h2>
+          <div class="bg-bg-subtle border border-border rounded-lg p-4 sm:p-6">
+            <SettingsToggle
+              :label="$t('settings.keyboard_shortcuts_enabled')"
+              :description="$t('settings.keyboard_shortcuts_enabled_description')"
+              v-model="settings.keyboardShortcuts"
+            />
           </div>
         </section>
       </div>

@@ -85,7 +85,9 @@ vi.mock('~/composables/useFacetSelection', () => ({
     facetsByCategory: computed(() => {
       const result: Record<string, ReturnType<typeof buildFacetInfo>[]> = {}
       for (const category of CATEGORY_ORDER) {
-        result[category] = FACETS_BY_CATEGORY[category].map(facet => buildFacetInfo(facet))
+        result[category] = FACETS_BY_CATEGORY[category].map((facet: ComparisonFacet) =>
+          buildFacetInfo(facet),
+        )
       }
       return result
     }),
@@ -164,14 +166,14 @@ describe('FacetSelector', () => {
       expect(component.find('.i-lucide\\:plus').exists()).toBe(true)
     })
 
-    it('applies aria-pressed for selected state', async () => {
+    it('applies aria-checked for selected checkbox state', async () => {
       mockSelectedFacets.value = ['downloads']
       mockIsFacetSelected.mockImplementation((f: string) => f === 'downloads')
 
       const component = await mountSuspended(FacetSelector)
 
-      const buttons = component.findAll('button[aria-pressed]')
-      const selectedButton = buttons.find(b => b.attributes('aria-pressed') === 'true')
+      const buttons = component.findAll('button[role="checkbox"][aria-checked="true"]')
+      const selectedButton = buttons[0]
       expect(selectedButton).toBeDefined()
     })
 
@@ -179,7 +181,9 @@ describe('FacetSelector', () => {
       const component = await mountSuspended(FacetSelector)
 
       // Find a facet button (not all/none)
-      const facetButton = component.findAll('button').find(b => b.text().includes('Downloads'))
+      const facetButton = component
+        .findAll('button[role="checkbox"]')
+        .find(b => b.text().includes('Downloads'))
       await facetButton?.trigger('click')
 
       expect(mockToggleFacet).toHaveBeenCalled()
@@ -191,10 +195,10 @@ describe('FacetSelector', () => {
       const component = await mountSuspended(FacetSelector)
 
       // totalDependencies is marked as comingSoon
-      const buttons = component.findAll('button')
+      const buttons = component.findAll('button[role="checkbox"]')
       const comingSoonButton = buttons.find(b => b.text().includes(comingSoonFacetLabel))
 
-      expect(comingSoonButton?.attributes('disabled')).toBeDefined()
+      expect(comingSoonButton?.attributes('aria-disabled')).toBe('true')
     })
 
     it('shows coming soon text for comingSoon facets', async () => {
@@ -228,12 +232,21 @@ describe('FacetSelector', () => {
   })
 
   describe('category all/none buttons', () => {
+    function findCategoryActionButton(
+      component: Awaited<ReturnType<typeof mountSuspended>>,
+      category: string,
+      action: 'all' | 'none',
+    ) {
+      return component.find(
+        `button[data-facet-category="${category}"][data-facet-category-action="${action}"]`,
+      )
+    }
+
     it('calls selectCategory when all button is clicked', async () => {
       const component = await mountSuspended(FacetSelector)
 
-      // Find the first 'all' button (for performance category)
-      const allButton = component.findAll('button').find(b => b.text() === 'all')
-      await allButton!.trigger('click')
+      const allButton = findCategoryActionButton(component, 'performance', 'all')
+      await allButton.trigger('click')
 
       expect(mockSelectCategory).toHaveBeenCalledWith('performance')
     })
@@ -245,56 +258,64 @@ describe('FacetSelector', () => {
 
       const component = await mountSuspended(FacetSelector)
 
-      // Find the first 'none' button (for performance category)
-      const noneButton = component.findAll('button').find(b => b.text() === 'none')
-      await noneButton!.trigger('click')
+      const noneButton = findCategoryActionButton(component, 'performance', 'none')
+      await noneButton.trigger('click')
 
       expect(mockDeselectCategory).toHaveBeenCalledWith('performance')
     })
 
-    it('disables all button when all facets in category are selected', async () => {
+    it('marks all button as aria-disabled when all facets in category are selected', async () => {
       // Select all performance facets
       const performanceFacets: (string | ComparisonFacet)[] = FACETS_BY_CATEGORY.performance.filter(
-        f => !FACET_INFO[f].comingSoon,
+        (f: ComparisonFacet) => !FACET_INFO[f].comingSoon,
       )
       mockSelectedFacets.value = performanceFacets
       mockIsFacetSelected.mockImplementation((f: string) => performanceFacets.includes(f))
 
       const component = await mountSuspended(FacetSelector)
 
-      const allButton = component.findAll('button').find(b => b.text() === 'all')
-      // First all button (performance) should be disabled
-      expect(allButton!.attributes('disabled')).toBeDefined()
+      const allButton = findCategoryActionButton(component, 'performance', 'all')
+
+      expect(allButton.attributes('aria-disabled')).toBe('true')
     })
 
-    it('disables none button when no facets in category are selected', async () => {
+    it('marks none button as aria-disabled when no facets in category are selected', async () => {
       // Deselect all performance facets
       mockSelectedFacets.value = ['downloads'] // only health facet selected
       mockIsFacetSelected.mockImplementation((f: string) => f === 'downloads')
 
       const component = await mountSuspended(FacetSelector)
 
-      const noneButton = component.findAll('button').find(b => b.text() === 'none')
-      // First none button (performance) should be disabled
-      expect(noneButton!.attributes('disabled')).toBeDefined()
-    })
-  })
+      const noneButton = findCategoryActionButton(component, 'performance', 'none')
 
-  describe('styling', () => {
-    it('applies selected styling to selected facets', async () => {
+      expect(noneButton.attributes('aria-disabled')).toBe('true')
+    })
+
+    it('does not call selectCategory when all button action is already fulfilled', async () => {
+      const performanceFacets: (string | ComparisonFacet)[] = FACETS_BY_CATEGORY.performance.filter(
+        (f: ComparisonFacet) => !FACET_INFO[f].comingSoon,
+      )
+      mockSelectedFacets.value = performanceFacets
+      mockIsFacetSelected.mockImplementation((f: string) => performanceFacets.includes(f))
+
+      const component = await mountSuspended(FacetSelector)
+
+      const allButton = findCategoryActionButton(component, 'performance', 'all')
+      await allButton.trigger('click')
+
+      expect(mockSelectCategory).not.toHaveBeenCalled()
+    })
+
+    it('does not call deselectCategory when none button action is already fulfilled', async () => {
       mockSelectedFacets.value = ['downloads']
       mockIsFacetSelected.mockImplementation((f: string) => f === 'downloads')
 
       const component = await mountSuspended(FacetSelector)
 
-      // Selected facets have bg-bg-muted class
-      expect(component.find('.bg-bg-muted').exists()).toBe(true)
-    })
+      const noneButton = findCategoryActionButton(component, 'performance', 'none')
+      await noneButton.trigger('click')
 
-    it.runIf(hasComingSoonFacets)('applies cursor-not-allowed to comingSoon facets', async () => {
-      const component = await mountSuspended(FacetSelector)
-
-      expect(component.find('.cursor-not-allowed').exists()).toBe(true)
+      expect(mockDeselectCategory).not.toHaveBeenCalled()
     })
   })
 })

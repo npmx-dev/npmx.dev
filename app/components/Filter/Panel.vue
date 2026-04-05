@@ -217,7 +217,7 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
             </label>
             <!-- Search scope toggle -->
             <div
-              class="inline-flex rounded-md border border-border p-0.5 bg-bg"
+              class="inline-flex rounded-md border border-border p-0.5 bg-bg-muted"
               role="group"
               :aria-label="$t('filters.search_scope')"
             >
@@ -225,11 +225,11 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
                 v-for="scope in SEARCH_SCOPE_VALUES"
                 :key="scope"
                 type="button"
-                class="px-2 py-0.5 text-xs font-mono rounded-sm transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
+                class="px-2 py-0.5 text-xs font-mono rounded-sm border transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
                 :class="
                   filters.searchScope === scope
-                    ? 'bg-bg-muted text-fg'
-                    : 'text-fg-muted hover:text-fg'
+                    ? 'bg-bg-subtle text-fg border-fg-subtle'
+                    : 'text-fg-muted hover:text-fg border-transparent'
                 "
                 :aria-pressed="filters.searchScope === scope"
                 :title="getScopeDescriptionKey(scope)"
@@ -246,7 +246,6 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
             :placeholder="searchPlaceholder"
             autocomplete="off"
             class="w-full min-w-25"
-            size="medium"
             no-correct
           />
         </div>
@@ -328,7 +327,7 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
             <ButtonBase
               v-for="keyword in displayedKeywords"
               :key="keyword"
-              size="small"
+              size="sm"
               :aria-pressed="filters.keywords.includes(keyword)"
               @click="emit('toggleKeyword', keyword)"
             >

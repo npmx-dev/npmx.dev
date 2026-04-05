@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import type { NpmSearchResult } from '#shared/types'
 
 // Helper to create mock package results
 function createPackage(overrides: {
@@ -25,7 +24,6 @@ function createPackage(overrides: {
     downloads: { weekly: overrides.downloads ?? 0 },
     updated: overrides.updated ?? '2024-01-01T00:00:00.000Z',
     flags: { insecure: overrides.insecure ?? 0 },
-    score: { final: 0.5, detail: { quality: 0.5, popularity: 0.5, maintenance: 0.5 } },
     searchScore: 1000,
   }
 }

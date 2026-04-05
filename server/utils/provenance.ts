@@ -1,5 +1,3 @@
-import type { ProvenanceDetails } from '#shared/types'
-
 const SLSA_PROVENANCE_V1 = 'https://slsa.dev/provenance/v1'
 const SLSA_PROVENANCE_V0_2 = 'https://slsa.dev/provenance/v0.2'
 

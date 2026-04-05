@@ -1,8 +1,3 @@
-import type { DocsResponse } from '#shared/types'
-import { assertValidPackageName } from '#shared/utils/npm'
-import { parsePackageParam } from '#shared/utils/parse-package-param'
-import { generateDocsWithDeno } from '#server/utils/docs'
-
 export default defineCachedEventHandler(
   async event => {
     const pkgParam = getRouterParam(event, 'pkg')

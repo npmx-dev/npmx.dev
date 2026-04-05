@@ -1,5 +1,5 @@
 import * as v from 'valibot'
-import { Client } from '@atproto/lex'
+import { Client, toDatetimeString } from '@atproto/lex'
 import * as dev from '#shared/types/lexicons/dev'
 import type { UriString } from '@atproto/lex'
 import { LIKES_SCOPE } from '#shared/utils/constants'
@@ -30,7 +30,7 @@ export default eventHandlerWithOAuthSession(async (event, oAuthSession) => {
   const client = new Client(oAuthSession)
 
   const like = dev.npmx.feed.like.$build({
-    createdAt: new Date().toISOString(),
+    createdAt: toDatetimeString(new Date()),
     subjectRef: subjectRef as UriString,
   })
 

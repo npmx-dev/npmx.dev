@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { hasSearchOperators, parseSearchOperators } from '~/composables/useStructuredFilters'
+import {
+  hasSearchOperators,
+  parseSearchOperators,
+  removeKeywordFromQuery,
+} from '~/composables/useStructuredFilters'
 
 describe('parseSearchOperators', () => {
   describe('basic operator parsing', () => {
@@ -183,5 +187,168 @@ describe('hasSearchOperators', () => {
 
   it('returns false for empty arrays', () => {
     expect(hasSearchOperators({ name: [], keywords: [] })).toBe(false)
+  })
+})
+
+describe('keyword deduplication', () => {
+  it('deduplicates same keyword from kw: and keyword: operators', () => {
+    const result = parseSearchOperators('kw:react keyword:react')
+    expect(result.keywords).toEqual(['react'])
+  })
+
+  it('deduplicates case-insensitively', () => {
+    const result = parseSearchOperators('kw:React keyword:REACT kw:react')
+    expect(result.keywords).toEqual(['React'])
+  })
+
+  it('preserves different keywords', () => {
+    const result = parseSearchOperators('kw:react keyword:vue')
+    expect(result.keywords).toEqual(['react', 'vue'])
+  })
+
+  it('deduplicates within comma-separated values', () => {
+    const result = parseSearchOperators('kw:react,vue keyword:react,angular')
+    expect(result.keywords).toEqual(['react', 'vue', 'angular'])
+  })
+})
+
+describe('keyword clearing scenarios', () => {
+  it('returns keywords when kw: operator is present', () => {
+    const result = parseSearchOperators('test kw:react')
+    expect(result.keywords).toEqual(['react'])
+    expect(result.text).toBe('test')
+  })
+
+  it('returns undefined keywords when kw: operator is removed', () => {
+    const result = parseSearchOperators('test')
+    expect(result.keywords).toBeUndefined()
+    expect(result.text).toBe('test')
+  })
+
+  it('handles transition from keyword to no keyword', () => {
+    // Simulate the state transition when user removes keyword from search
+    const withKeyword = parseSearchOperators('test kw:react')
+    expect(withKeyword.keywords).toEqual(['react'])
+
+    const withoutKeyword = parseSearchOperators('test')
+    expect(withoutKeyword.keywords).toBeUndefined()
+
+    // This is what useStructuredFilters does in the watcher:
+    // filters.value.keywords = [...(parsed.keywords ?? [])]
+    const updatedKeywords = [...(withoutKeyword.keywords ?? [])]
+    expect(updatedKeywords).toEqual([])
+  })
+
+  it('returns empty keywords array after nullish coalescing', () => {
+    // Verify the exact logic used in useStructuredFilters watcher
+    const testCases = ['', 'test', 'some search query', 'name:package', 'desc:something']
+
+    for (const query of testCases) {
+      const parsed = parseSearchOperators(query)
+      // This is the exact line from useStructuredFilters.ts:
+      const keywords = [...(parsed.keywords ?? [])]
+      expect(keywords).toEqual([])
+    }
+  })
+})
+
+describe('removeKeywordFromQuery', () => {
+  describe('standalone keyword removal', () => {
+    it('removes standalone kw:value', () => {
+      expect(removeKeywordFromQuery('test kw:react', 'react')).toBe('test')
+    })
+
+    it('removes standalone keyword:value', () => {
+      expect(removeKeywordFromQuery('test keyword:react', 'react')).toBe('test')
+    })
+
+    it('removes keyword at start of query', () => {
+      expect(removeKeywordFromQuery('kw:react test', 'react')).toBe('test')
+    })
+
+    it('removes keyword when it is the entire query', () => {
+      expect(removeKeywordFromQuery('kw:react', 'react')).toBe('')
+    })
+
+    it('is case-insensitive', () => {
+      expect(removeKeywordFromQuery('kw:React', 'react')).toBe('')
+      expect(removeKeywordFromQuery('kw:react', 'React')).toBe('')
+      expect(removeKeywordFromQuery('kw:REACT', 'react')).toBe('')
+    })
+  })
+
+  describe('comma-separated keyword removal', () => {
+    it('removes keyword from middle of comma list', () => {
+      expect(removeKeywordFromQuery('kw:foo,bar,baz', 'bar')).toBe('kw:foo,baz')
+    })
+
+    it('removes keyword from start of comma list', () => {
+      expect(removeKeywordFromQuery('kw:foo,bar,baz', 'foo')).toBe('kw:bar,baz')
+    })
+
+    it('removes keyword from end of comma list', () => {
+      expect(removeKeywordFromQuery('kw:foo,bar,baz', 'baz')).toBe('kw:foo,bar')
+    })
+
+    it('removes only keyword in comma list (drops operator)', () => {
+      expect(removeKeywordFromQuery('test kw:react', 'react')).toBe('test')
+    })
+
+    it('removes keyword from two-item list', () => {
+      expect(removeKeywordFromQuery('kw:foo,bar', 'foo')).toBe('kw:bar')
+      expect(removeKeywordFromQuery('kw:foo,bar', 'bar')).toBe('kw:foo')
+    })
+
+    it('is case-insensitive within comma list', () => {
+      expect(removeKeywordFromQuery('kw:Foo,Bar,Baz', 'bar')).toBe('kw:Foo,Baz')
+    })
+  })
+
+  describe('duplicate keyword removal', () => {
+    it('removes all occurrences across multiple operators', () => {
+      expect(removeKeywordFromQuery('kw:react keyword:react', 'react')).toBe('')
+    })
+
+    it('removes from both standalone and comma-separated', () => {
+      expect(removeKeywordFromQuery('kw:react,vue keyword:react', 'react')).toBe('kw:vue')
+    })
+
+    it('removes duplicate within same comma list', () => {
+      expect(removeKeywordFromQuery('kw:react,vue,react', 'react')).toBe('kw:vue')
+    })
+  })
+
+  describe('preserves unrelated content', () => {
+    it('preserves other operators', () => {
+      expect(removeKeywordFromQuery('name:foo kw:react desc:bar', 'react')).toBe(
+        'name:foo desc:bar',
+      )
+    })
+
+    it('preserves free text', () => {
+      expect(removeKeywordFromQuery('hello world kw:react', 'react')).toBe('hello world')
+    })
+
+    it('does not remove substring matches', () => {
+      expect(removeKeywordFromQuery('kw:react-hooks', 'react')).toBe('kw:react-hooks')
+    })
+
+    it('does not remove keyword that is a prefix of another in comma list', () => {
+      expect(removeKeywordFromQuery('kw:react,react-hooks', 'react')).toBe('kw:react-hooks')
+    })
+
+    it('does not modify query when keyword is not present', () => {
+      expect(removeKeywordFromQuery('kw:vue,angular test', 'react')).toBe('kw:vue,angular test')
+    })
+  })
+
+  describe('whitespace handling', () => {
+    it('collapses multiple spaces after removal', () => {
+      expect(removeKeywordFromQuery('test  kw:react  more', 'react')).toBe('test more')
+    })
+
+    it('trims leading and trailing spaces', () => {
+      expect(removeKeywordFromQuery('  kw:react  ', 'react')).toBe('')
+    })
   })
 })

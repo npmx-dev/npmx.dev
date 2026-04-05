@@ -1,0 +1,124 @@
+name: release-tag
+
+on:
+  push:
+    branches:
+      - release
+
+permissions: {}
+
+jobs:
+  tag:
+    name: 🏷️ Tag release and create GitHub Release
+    runs-on: ubuntu-slim
+    if: github.repository == 'npmx-dev/npmx.dev'
+    permissions:
+      contents: write
+    outputs:
+      version: ${{ steps.version.outputs.next }}
+      skipped: ${{ steps.check.outputs.skip }}
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - uses: voidzero-dev/setup-vp@a03302daa50cf2f017c8c7345730c2740df207d6 # v1
+        with:
+          node-version: lts/*
+          run-install: false
+
+      - name: 🔢 Determine next version
+        id: version
+        run: |
+          VERSION_JSON=$(node scripts/next-version.ts)
+          echo "current=$(echo "$VERSION_JSON" | jq -r .current)" >> "$GITHUB_OUTPUT"
+          echo "next=v$(echo "$VERSION_JSON" | jq -r .next)" >> "$GITHUB_OUTPUT"
+          echo "from=$(echo "$VERSION_JSON" | jq -r .from)" >> "$GITHUB_OUTPUT"
+          echo "Bumping from v$(echo "$VERSION_JSON" | jq -r .current) to v$(echo "$VERSION_JSON" | jq -r .next)"
+
+      - name: 🔍 Check if tag already exists
+        id: check
+        env:
+          VERSION: ${{ steps.version.outputs.next }}
+        run: |
+          if git rev-parse "$VERSION" >/dev/null 2>&1; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "Tag $VERSION already exists, skipping"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 🏷️ Create and push tag
+        if: steps.check.outputs.skip == 'false'
+        env:
+          VERSION: ${{ steps.version.outputs.next }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$VERSION" -m "Release $VERSION"
+          git push origin "$VERSION"
+
+      - name: 📦 Install dependencies
+        if: steps.check.outputs.skip == 'false'
+        run: vp install --filter . --ignore-scripts
+
+      - name: 📝 Generate release notes
+        if: steps.check.outputs.skip == 'false'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FROM_REF: ${{ steps.version.outputs.from }}
+        run: node scripts/release-notes.ts "$FROM_REF" > /tmp/release-notes.md
+
+      - name: 🚀 Create GitHub Release
+        if: steps.check.outputs.skip == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.version.outputs.next }}
+        run: |
+          gh release create "$VERSION" \
+            --notes-file /tmp/release-notes.md \
+            --title "$VERSION"
+
+  publish-connector:
+    name: 📦 Publish npmx-connector to npm
+    runs-on: ubuntu-slim
+    needs: tag
+    if: needs.tag.outputs.skipped == 'false'
+    permissions:
+      contents: read
+      id-token: write
+    environment: npm-publish
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: release
+
+      - uses: voidzero-dev/setup-vp@a03302daa50cf2f017c8c7345730c2740df207d6 # v1
+        with:
+          node-version: lts/*
+          registry-url: https://registry.npmjs.org
+          run-install: false
+
+      - name: 📦 Install dependencies
+        run: vp install --filter npmx-connector...
+
+      - name: 🔢 Set connector version
+        env:
+          VERSION: ${{ needs.tag.outputs.version }}
+        run: |
+          # Strip the 'v' prefix for package.json
+          PKG_VERSION="${VERSION#v}"
+          cd cli
+          npm version "$PKG_VERSION" --no-git-tag-version
+          echo "Publishing npmx-connector@${PKG_VERSION}"
+
+      - name: 🏗️ Build connector
+        run: vp run --filter npmx-connector build
+
+      - name: 📤 Publish to npm with provenance
+        # Uses OIDC trusted publishing — no NPM_TOKEN needed.
+        # Configure on npmjs.com: repo npmx-dev/npmx.dev, workflow release-tag.yml, environment npm-publish
+        run: npm publish --provenance --access public
+        working-directory: cli

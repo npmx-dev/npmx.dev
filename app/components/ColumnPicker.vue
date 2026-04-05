@@ -49,11 +49,8 @@ const columnLabels = computed(() => ({
   updated: $t('filters.columns.published'),
   maintainers: $t('filters.columns.maintainers'),
   keywords: $t('filters.columns.keywords'),
-  qualityScore: $t('filters.columns.quality_score'),
-  popularityScore: $t('filters.columns.popularity_score'),
-  maintenanceScore: $t('filters.columns.maintenance_score'),
-  combinedScore: $t('filters.columns.combined_score'),
   security: $t('filters.columns.security'),
+  selection: $t('filters.columns.selection'),
 }))
 
 function getColumnLabel(id: ColumnId): string {
@@ -85,7 +82,7 @@ function handleReset() {
         v-if="isOpen"
         ref="menuRef"
         :id="menuId"
-        class="absolute top-full inset-ie-0 sm:inset-is-auto sm:inset-ie-0 mt-2 w-60 bg-bg-subtle border border-border rounded-lg shadow-lg z-20"
+        class="absolute top-full inset-is-auto sm:inset-ie-0 mt-2 w-60 bg-bg-subtle border border-border rounded-lg shadow-lg z-20"
         role="group"
         :aria-label="$t('filters.columns.show')"
       >
@@ -129,7 +126,7 @@ function handleReset() {
             </label>
           </div>
 
-          <div class="border-t border-border py-1">
+          <div class="border-t border-border p-2 pb-1">
             <ButtonBase @click="handleReset">
               {{ $t('filters.columns.reset') }}
             </ButtonBase>

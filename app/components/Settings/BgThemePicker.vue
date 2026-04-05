@@ -3,12 +3,21 @@ const { backgroundThemes, selectedBackgroundTheme, setBackgroundTheme } = useBac
 
 onPrehydrate(el => {
   const settings = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
+  const defaultId = 'neutral'
   const id = settings.preferredBackgroundTheme
   if (id) {
     const input = el.querySelector<HTMLInputElement>(`input[value="${id}"]`)
     if (input) {
       input.checked = true
       input.setAttribute('checked', '')
+    }
+    // Remove checked from the server-default (clear button, value="")
+    if (id !== defaultId) {
+      const clearInput = el.querySelector<HTMLInputElement>(`input[value="${defaultId}"]`)
+      if (clearInput) {
+        clearInput.checked = false
+        clearInput.removeAttribute('checked')
+      }
     }
   }
 })
@@ -18,7 +27,7 @@ onPrehydrate(el => {
   <fieldset
     class="flex items-center gap-4 has-[input:focus-visible]:(outline-solid outline-accent/70 outline-offset-4) rounded-xl w-fit"
   >
-    <legend class="sr-only">{{ $t('settings.background_themes') }}</legend>
+    <legend class="sr-only">{{ $t('settings.background_themes.label') }}</legend>
     <label
       v-for="theme in backgroundThemes"
       :key="theme.id"
@@ -30,8 +39,11 @@ onPrehydrate(el => {
         name="background-theme"
         class="sr-only"
         :value="theme.id"
-        :checked="selectedBackgroundTheme === theme.id"
-        :aria-label="theme.name"
+        :checked="
+          selectedBackgroundTheme === theme.id ||
+          (!selectedBackgroundTheme && theme.id === 'neutral')
+        "
+        :aria-label="theme.label"
         @change="setBackgroundTheme(theme.id)"
       />
     </label>

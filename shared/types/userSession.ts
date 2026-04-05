@@ -11,6 +11,12 @@ export interface UserServerSession {
       }
     | undefined
 
+  profile: {
+    website?: string
+    description?: string
+    displayName?: string
+  }
+
   // DO NOT USE
   // Here for historic reasons to redirect users logged in with the previous oauth to login again
   oauthSession?: NodeSavedSession | undefined

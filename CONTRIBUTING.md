@@ -31,6 +31,7 @@ This focus helps guide our project decisions as a community and what we choose t
   - [Setup](#setup)
 - [Development workflow](#development-workflow)
   - [Available commands](#available-commands)
+  - [Clearing caches during development](#clearing-caches-during-development)
   - [Project structure](#project-structure)
   - [Local connector CLI](#local-connector-cli)
   - [Mock connector (for local development)](#mock-connector-for-local-development)
@@ -59,6 +60,13 @@ This focus helps guide our project decisions as a community and what we choose t
   - [Lighthouse performance tests](#lighthouse-performance-tests)
   - [End to end tests](#end-to-end-tests)
   - [Test fixtures (mocking external APIs)](#test-fixtures-mocking-external-apis)
+- [Storybook](#storybook)
+  - [Component categories](#component-categories)
+  - [Coverage guidelines](#coverage-guidelines)
+  - [Project conventions](#project-conventions)
+  - [Configuration](#configuration)
+  - [Global app settings](#global-app-settings)
+  - [Known limitations](#known-limitations)
 - [Submitting changes](#submitting-changes)
   - [Before submitting](#before-submitting)
   - [Pull request process](#pull-request-process)
@@ -111,7 +119,7 @@ pnpm npmx-connector   # Start the real connector (requires npm login)
 pnpm mock-connector   # Start the mock connector (no npm login needed)
 
 # Code Quality
-pnpm lint             # Run linter (oxlint + oxfmt)
+pnpm vp run lint      # Run linter (oxlint + oxfmt)
 pnpm lint:fix         # Auto-fix lint issues
 pnpm test:types       # TypeScript type checking
 
@@ -123,6 +131,34 @@ pnpm test:browser     # Playwright E2E tests
 pnpm test:a11y        # Lighthouse accessibility audits
 pnpm test:perf        # Lighthouse performance audits (CLS)
 ```
+
+### Clearing caches during development
+
+Nitro persists `defineCachedEventHandler` results to disk at `.nuxt/cache/nitro/`. This cache **survives dev server restarts**. If you're iterating on a cached API route and want fresh results, delete the relevant cache directory:
+
+```bash
+# Clear all Nitro handler caches
+rm -rf .nuxt/cache/nitro/handlers/
+
+# Clear a specific handler cache (e.g. picks)
+rm -rf .nuxt/cache/nitro/handlers/npmx-picks/
+```
+
+Alternatively, you can bypass the cache entirely in development by adding `shouldBypassCache: () => import.meta.dev` to your `defineCachedEventHandler` options:
+
+```ts
+export default defineCachedEventHandler(
+  async event => {
+    // ...
+  },
+  {
+    maxAge: 60 * 5,
+    shouldBypassCache: () => import.meta.dev,
+  },
+)
+```
+
+The `.cache/` directory is a separate storage mount used for fetch-cache and atproto data.
 
 ### Project structure
 
@@ -143,10 +179,11 @@ shared/                 # Shared between app and server
 └── types/              # TypeScript type definitions
 
 cli/                    # Local connector CLI (separate workspace)
+
 test/                   # Vitest tests
 ├── unit/               # Unit tests (*.spec.ts)
-└── nuxt/               # Nuxt component tests
-tests/                  # Playwright E2E tests
+├── nuxt/               # Nuxt component tests
+└── e2e/                # Playwright E2E tests
 ```
 
 > [!TIP]
@@ -423,12 +460,13 @@ npmx.dev uses [@nuxtjs/i18n](https://i18n.nuxtjs.org/) for internationalization.
 
 The following scripts help manage translation files. `en.json` is the reference locale.
 
-| Command                        | Description                                                                                                                                                                             |
-| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm i18n:check [locale]`     | Compares `en.json` with other locale files. Shows missing and extra keys. Optionally filter output by locale (e.g. `pnpm i18n:check ja-JP`).                                            |
-| `pnpm i18n:check:fix [locale]` | Same as check, but adds missing keys to other locales with English placeholders.                                                                                                        |
-| `pnpm i18n:report`             | Audits translation keys against code usage in `.vue` and `.ts` files. Reports missing keys (used in code but not in locale), unused keys (in locale but not in code), and dynamic keys. |
-| `pnpm i18n:report:fix`         | Removes unused keys from `en.json` and all other locale files.                                                                                                                          |
+| Command                           | Description                                                                                                                                                                             |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm i18n:check:fix [locale]`    | Compares `en.json` with other locale files and adds missing keys with English placeholders. Optionally filter output by locale (e.g. `pnpm i18n:check:fix ja-JP`).                      |
+| `pnpm i18n:report:fix`            | Removes unused keys from `en.json` and all other locale files.                                                                                                                          |
+| `pnpm vp run i18n:check [locale]` | Same as check:fix, but only show missing and extra keys.                                                                                                                                |
+| `pnpm vp run i18n:report`         | Audits translation keys against code usage in `.vue` and `.ts` files. Reports missing keys (used in code but not in locale), unused keys (in locale but not in code), and dynamic keys. |
+| `pnpm vp run i18n:schema`         | Generates a JSON Schema from `en.json` at `i18n/schema.json`. Locale files reference this schema for IDE validation and autocompletion.                                                 |
 
 ### Adding a new locale
 
@@ -454,17 +492,8 @@ To add a new locale:
    },
    ```
 
-4. Copy your translation file to `lunaria/files/` for translation tracking:
-
-   ```bash
-   cp i18n/locales/uk-UA.json lunaria/files/uk-UA.json
-   ```
-
-   > ⚠**Important:**
-   > This file must be committed. Lunaria uses git history to track translation progress, so the build will fail if this file is missing.
-
-5. If the language is `right-to-left`, add `dir: 'rtl'` (see `ar-EG` in config for example)
-6. If the language requires special pluralization rules, add a `pluralRule` callback (see `ar-EG` or `ru-RU` in config for examples)
+4. If the language is `right-to-left`, add `dir: 'rtl'` (see `ar-EG` in config for example)
+5. If the language requires special pluralization rules, add a `pluralRule` callback (see `ar-EG` or `ru-RU` in config for examples)
 
 Check [Pluralization rule callback](https://vue-i18n.intlify.dev/guide/essentials/pluralization#custom-pluralization) and [Plural Rules](https://cldr.unicode.org/index/cldr-spec/plural-rules#TOC-Determining-Plural-Categories) for more info.
 
@@ -473,7 +502,7 @@ Check [Pluralization rule callback](https://vue-i18n.intlify.dev/guide/essential
 We track the current progress of translations with [Lunaria](https://lunaria.dev/) on this site: https://i18n.npmx.dev/
 If you see any outdated translations in your language, feel free to update the keys to match the English version.
 
-Use `pnpm i18n:check` and `pnpm i18n:check:fix` to verify and fix your locale (see [i18n commands](#i18n-commands) above for details).
+Use `pnpm i18n:check:fix` to fix your locale (see [i18n commands](#i18n-commands) above for details).
 
 #### Country variants (advanced)
 
@@ -561,7 +590,7 @@ See how `es`, `es-ES`, and `es-419` are configured in [config/i18n.ts](./config/
 - Use `common.*` for shared strings (loading, retry, close, etc.)
 - Use component-specific prefixes: `package.card.*`, `settings.*`, `nav.*`
 - Do not use dashes (`-`) in translation keys; always use underscore (`_`): e.g., `privacy_policy` instead of `privacy-policy`
-- **Always use static string literals as translation keys.** Our i18n scripts (`pnpm i18n:report`) rely on static analysis to detect unused and missing keys. Dynamic keys cannot be analyzed and will be flagged as errors.
+- **Always use static string literals as translation keys.** Our i18n scripts (`pnpm i18n:report:fix`) rely on static analysis to detect unused and missing keys. Dynamic keys cannot be analyzed and will be flagged as errors.
 
   **Bad:**
 
@@ -723,6 +752,23 @@ pnpm test:browser:ui     # Run with Playwright UI
 
 Make sure to read about [Playwright best practices](https://playwright.dev/docs/best-practices) and don't rely on classes/IDs but try to follow user-replicable behaviour (like selecting an element based on text content instead).
 
+#### Updating snapshots
+
+Some tests use image snapshots that must match the CI environment (Linux). If you need to update them, and aren't running Linux, you can use Docker to run in the same environment:
+
+```bash
+docker run --rm \
+  -e CI=true \
+  -e NODE_OPTIONS="--max-old-space-size=4096" \
+  -v $(pwd):/work \
+  -w /work \
+  mcr.microsoft.com/playwright:v1.58.2-noble \
+  sh -c "npm install -g pnpm && pnpm install && pnpm vp run build:test && pnpm vp run test:browser:prebuilt --update-snapshots"
+```
+
+> [!NOTE]
+> If the build runs out of memory, increase `--max-old-space-size` to `8192`.
+
 ### Test fixtures (mocking external APIs)
 
 E2E tests use a fixture system to mock external API requests, ensuring tests are deterministic and don't hit real APIs. This is handled at two levels:
@@ -856,6 +902,117 @@ The mock connector supports test endpoints for state manipulation:
 - `/__test__/user-packages` - Set user's packages
 - `/__test__/package` - Set package collaborators
 
+## Storybook
+
+Storybook is a development environment for UI components that helps catch UI changes and provides integrations for various testing types. For testing, Storybook offers:
+
+- **Accessibility tests** - Built-in a11y checks
+- **Visual tests** - Compare JPG screenshots
+- **Vitest tests** - Use stories directly in the unit tests
+
+### Component categories
+
+The plan is to organize components into 3 categories.
+
+#### UI Library Components
+
+Generic and reusable components used throughout the application.
+
+- Examples: Button, Input, Modal, Card
+- **Testing focus:** Props, variants, accessibility
+- **Coverage:** All variants and states
+
+#### Composite Components
+
+Single-use components that encapsulate one feature.
+
+- Examples: UserProfile, WeeklyDownloadStats
+- **Testing focus:** Integration patterns, user interactions
+- **Coverage:** Common usage scenarios
+
+#### Page Components
+
+**Full-page layouts** should match what the users see.
+
+- Examples: HomePage, Dashboard, CheckoutPage
+- **Testing focus:** Layout, responsive behavior, integration testing
+- **Coverage:** Critical user flows and breakpoints
+
+### Coverage guidelines
+
+#### Which Components Need Stories?
+
+TBD
+
+### Project conventions
+
+#### Place `.stories.ts` files next to the component
+
+```sh
+components/
+├── Button.vue
+└── Button.stories.ts
+```
+
+#### Story Template
+
+```ts
+// *.stories.ts
+import type { Meta, StoryObj } from '@storybook-vue/nuxt'
+import Component from './Button.vue'
+
+const meta = {
+  component: Component,
+  // component scope configuration goes here
+} satisfies Meta<typeof Component>
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const Default: Story = {
+  // story scope configuration goes here
+}
+```
+
+#### JSDocs Annotation
+
+The component should include descriptive comments.
+
+```ts
+// Button.vue
+<script setup lang="ts">
+const props = withDefaults(
+  defineProps<{
+    /** Whether the button is disabled */
+    disabled?: boolean
+    /**
+     * HTML button type attribute
+     * @default "button"
+    type?: 'button' | 'submit'
+    // ...
+  }>)
+</script>
+```
+
+### Configuration
+
+Stories can be configured at three levels:
+
+- **Global scope** (`.storybook/preview.ts`) - Applies to all stories
+- **Component scope** - Applies to all stories for a specific component
+- **Story scope** - Applies to individual stories only
+
+### Global app settings
+
+Global application settings are added to the Storybook toolbar for easy testing and viewing. Configure these in `.storybook/preview.ts` under the `globalTypes` and `decorators` properties.
+
+### Known limitations
+
+- Changing `i18n` in the toolbar doesn't update the language. A manual story reload is required.
+- `autodocs` currently is non-functional due bugs, its usage is discouraged at this time.
+- `pnpm storybook` may log warnings or non-breaking errors for Nuxt modules due to the lack of mocks. If the UI renders correctly, these can be safely ignored.
+- Do not `import type` from `.vue` files. The `vue-docgen-api` parser used by `@storybook/addon-docs` cannot follow type imports across SFCs and will crash. Extract shared types into a separate `.ts` file instead.
+
 ## Submitting changes
 
 ### Before submitting
@@ -884,7 +1041,7 @@ Format: `type(scope): description`
 
 **Types:** `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`
 
-**Scopes (optional):** `docs`, `i18n`, `deps`
+**Scopes (optional):** `a11y`, `blog`, `deps`, `docs`, `cli`, `i18n`, `ui`
 
 **Examples:**
 

@@ -132,7 +132,7 @@ function parseThread(
         if (parsed) replies.push(parsed)
       }
     }
-    replies.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+    replies.sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt))
   }
 
   return {

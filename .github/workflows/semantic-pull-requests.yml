@@ -24,6 +24,7 @@ jobs:
         with:
           scopes: |
             a11y
+            blog
             deps
             docs
             cli

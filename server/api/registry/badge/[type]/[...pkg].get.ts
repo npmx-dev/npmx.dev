@@ -6,20 +6,26 @@ import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import { CACHE_MAX_AGE_ONE_HOUR, ERROR_NPM_FETCH_FAILED } from '#shared/utils/constants'
 import { fetchNpmPackage } from '#server/utils/npm'
 import { assertValidPackageName } from '#shared/utils/npm'
+import { fetchPackageWithTypesAndFiles } from '#server/utils/file-tree'
 import { handleApiError } from '#server/utils/error-handler'
 
 const NPM_DOWNLOADS_API = 'https://api.npmjs.org/downloads/point'
 const OSV_QUERY_API = 'https://api.osv.dev/v1/query'
 const BUNDLEPHOBIA_API = 'https://bundlephobia.com/api/size'
-const NPMS_API = 'https://api.npms.io/v2/package'
 
 const SafeStringSchema = v.pipe(v.string(), v.regex(/^[^<>"&]*$/, 'Invalid characters'))
+const SafeColorSchema = v.pipe(
+  v.string(),
+  v.transform(value => (value.startsWith('#') ? value : `#${value}`)),
+  v.hexColor(),
+)
 
 const QUERY_SCHEMA = v.object({
-  color: v.optional(SafeStringSchema),
   name: v.optional(v.string()),
-  labelColor: v.optional(SafeStringSchema),
   label: v.optional(SafeStringSchema),
+  value: v.optional(SafeStringSchema),
+  color: v.optional(SafeColorSchema),
+  labelColor: v.optional(SafeColorSchema),
 })
 
 const COLORS = {
@@ -35,17 +41,86 @@ const COLORS = {
   white: '#ffffff',
 }
 
-const CHAR_WIDTH = 7
-const SHIELDS_CHAR_WIDTH = 6
-
 const BADGE_PADDING_X = 8
 const MIN_BADGE_TEXT_WIDTH = 40
+const FALLBACK_VALUE_EXTRA_PADDING_X = 8
 const SHIELDS_LABEL_PADDING_X = 5
 
 const BADGE_FONT_SHORTHAND = 'normal normal 400 11px Geist, system-ui, -apple-system, sans-serif'
 const SHIELDS_FONT_SHORTHAND = 'normal normal 400 11px Verdana, Geneva, DejaVu Sans, sans-serif'
 
 let cachedCanvasContext: SKRSContext2D | null | undefined
+
+const NARROW_CHARS = new Set([' ', '!', '"', "'", '(', ')', '*', ',', '-', '.', ':', ';', '|'])
+const MEDIUM_CHARS = new Set([
+  '#',
+  '$',
+  '+',
+  '/',
+  '<',
+  '=',
+  '>',
+  '?',
+  '@',
+  '[',
+  '\\',
+  ']',
+  '^',
+  '_',
+  '`',
+  '{',
+  '}',
+  '~',
+])
+
+const FALLBACK_WIDTHS = {
+  default: {
+    narrow: 3,
+    medium: 5,
+    digit: 6,
+    uppercase: 7,
+    other: 6,
+  },
+  shieldsio: {
+    narrow: 3,
+    medium: 5,
+    digit: 6,
+    uppercase: 7,
+    other: 5.5,
+  },
+} as const
+
+function estimateTextWidth(text: string, fallbackFont: 'default' | 'shieldsio'): number {
+  // Heuristic coefficients tuned to keep fallback rendering close to canvas metrics.
+  const widths = FALLBACK_WIDTHS[fallbackFont]
+  let totalWidth = 0
+
+  for (const character of text) {
+    if (NARROW_CHARS.has(character)) {
+      totalWidth += widths.narrow
+      continue
+    }
+
+    if (MEDIUM_CHARS.has(character)) {
+      totalWidth += widths.medium
+      continue
+    }
+
+    if (/\d/.test(character)) {
+      totalWidth += widths.digit
+      continue
+    }
+
+    if (/[A-Z]/.test(character)) {
+      totalWidth += widths.uppercase
+      continue
+    }
+
+    totalWidth += widths.other
+  }
+
+  return Math.max(1, Math.round(totalWidth))
+}
 
 function getCanvasContext(): SKRSContext2D | null {
   if (cachedCanvasContext !== undefined) {
@@ -77,14 +152,42 @@ function measureTextWidth(text: string, font: string): number | null {
   return null
 }
 
-function measureDefaultTextWidth(text: string): number {
+function measureDefaultTextWidth(text: string, fallbackExtraPadding = 0): number {
   const measuredWidth = measureTextWidth(text, BADGE_FONT_SHORTHAND)
 
   if (measuredWidth !== null) {
     return Math.max(MIN_BADGE_TEXT_WIDTH, measuredWidth + BADGE_PADDING_X * 2)
   }
 
-  return Math.max(MIN_BADGE_TEXT_WIDTH, Math.round(text.length * CHAR_WIDTH) + BADGE_PADDING_X * 2)
+  return Math.max(
+    MIN_BADGE_TEXT_WIDTH,
+    estimateTextWidth(text, 'default') + BADGE_PADDING_X * 2 + fallbackExtraPadding,
+  )
+}
+
+function escapeXML(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
+function toLinear(c: number): number {
+  return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)
+}
+
+function getContrastTextColor(bgHex: string): string {
+  let clean = bgHex.replace('#', '')
+  if (clean.length === 3)
+    clean = clean[0]! + clean[0]! + clean[1]! + clean[1]! + clean[2]! + clean[2]!
+  if (!/^[0-9a-f]{6}$/i.test(clean)) return '#ffffff'
+  const r = parseInt(clean.slice(0, 2), 16) / 255
+  const g = parseInt(clean.slice(2, 4), 16) / 255
+  const b = parseInt(clean.slice(4, 6), 16) / 255
+  const luminance = 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b)
+  // threshold where contrast ratio with white equals contrast ratio with black
+  return luminance > 0.179 ? '#000000' : '#ffffff'
 }
 
 function measureShieldsTextLength(text: string): number {
@@ -94,7 +197,7 @@ function measureShieldsTextLength(text: string): number {
     return Math.max(1, measuredWidth)
   }
 
-  return Math.max(1, Math.round(text.length * SHIELDS_CHAR_WIDTH))
+  return estimateTextWidth(text, 'shieldsio')
 }
 
 function renderDefaultBadgeSvg(params: {
@@ -102,27 +205,32 @@ function renderDefaultBadgeSvg(params: {
   finalLabel: string
   finalLabelColor: string
   finalValue: string
+  labelTextColor: string
+  valueTextColor: string
 }): string {
-  const { finalColor, finalLabel, finalLabelColor, finalValue } = params
+  const { finalColor, finalLabel, finalLabelColor, finalValue, labelTextColor, valueTextColor } =
+    params
   const leftWidth = finalLabel.trim().length === 0 ? 0 : measureDefaultTextWidth(finalLabel)
-  const rightWidth = measureDefaultTextWidth(finalValue)
+  const rightWidth = measureDefaultTextWidth(finalValue, FALLBACK_VALUE_EXTRA_PADDING_X)
   const totalWidth = leftWidth + rightWidth
   const height = 20
+  const escapedLabel = escapeXML(finalLabel)
+  const escapedValue = escapeXML(finalValue)
 
   return `
-    <svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="${height}" role="img" aria-label="${finalLabel}: ${finalValue}">
-      <clipPath id="r">
-        <rect width="${totalWidth}" height="${height}" rx="3" fill="#fff"/>
-      </clipPath>
-      <g clip-path="url(#r)">
-        <rect width="${leftWidth}" height="${height}" fill="${finalLabelColor}"/>
-        <rect x="${leftWidth}" width="${rightWidth}" height="${height}" fill="${finalColor}"/>
-      </g>
-      <g text-anchor="middle" font-family="Geist, system-ui, -apple-system, sans-serif" font-size="11">
-        <text x="${leftWidth / 2}" y="14" fill="#ffffff">${finalLabel}</text>
-        <text x="${leftWidth + rightWidth / 2}" y="14" fill="#ffffff">${finalValue}</text>
-      </g>
-    </svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="${height}" role="img" aria-label="${escapedLabel}: ${escapedValue}">
+  <clipPath id="r">
+    <rect width="${totalWidth}" height="${height}" rx="3" fill="#fff"/>
+  </clipPath>
+  <g clip-path="url(#r)">
+    <rect width="${leftWidth}" height="${height}" fill="${finalLabelColor}"/>
+    <rect x="${leftWidth}" width="${rightWidth}" height="${height}" fill="${finalColor}"/>
+  </g>
+  <g text-anchor="middle" font-family="Geist, system-ui, -apple-system, sans-serif" font-size="11">
+    <text x="${leftWidth / 2}" y="14" fill="${labelTextColor}">${escapedLabel}</text>
+    <text x="${leftWidth + rightWidth / 2}" y="14" fill="${valueTextColor}">${escapedValue}</text>
+  </g>
+</svg>
   `.trim()
 }
 
@@ -131,8 +239,11 @@ function renderShieldsBadgeSvg(params: {
   finalLabel: string
   finalLabelColor: string
   finalValue: string
+  labelTextColor: string
+  valueTextColor: string
 }): string {
-  const { finalColor, finalLabel, finalLabelColor, finalValue } = params
+  const { finalColor, finalLabel, finalLabelColor, finalValue, labelTextColor, valueTextColor } =
+    params
   const hasLabel = finalLabel.trim().length > 0
 
   const leftTextLength = hasLabel ? measureShieldsTextLength(finalLabel) : 0
@@ -141,7 +252,9 @@ function renderShieldsBadgeSvg(params: {
   const rightWidth = rightTextLength + SHIELDS_LABEL_PADDING_X * 2
   const totalWidth = leftWidth + rightWidth
   const height = 20
-  const title = `${finalLabel}: ${finalValue}`
+  const escapedLabel = escapeXML(finalLabel)
+  const escapedValue = escapeXML(finalValue)
+  const title = `${escapedLabel}: ${escapedValue}`
 
   const leftCenter = Math.round((leftWidth / 2) * 10)
   const rightCenter = Math.round((leftWidth + rightWidth / 2) * 10)
@@ -149,26 +262,26 @@ function renderShieldsBadgeSvg(params: {
   const rightTextLengthAttr = rightTextLength * 10
 
   return `
-    <svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="${height}" role="img" aria-label="${title}">
-      <linearGradient id="s" x2="0" y2="100%">
-        <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
-        <stop offset="1" stop-opacity=".1"/>
-      </linearGradient>
-      <clipPath id="r">
-        <rect width="${totalWidth}" height="${height}" rx="3" fill="#fff"/>
-      </clipPath>
-      <g clip-path="url(#r)">
-        <rect width="${leftWidth}" height="${height}" fill="${finalLabelColor}"/>
-        <rect x="${leftWidth}" width="${rightWidth}" height="${height}" fill="${finalColor}"/>
-        <rect width="${totalWidth}" height="${height}" fill="url(#s)"/>
-      </g>
-      <g fill="#fff" text-anchor="middle" font-family="Verdana, Geneva, DejaVu Sans, sans-serif" text-rendering="geometricPrecision" font-size="110">
-        <text aria-hidden="true" x="${leftCenter}" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="${leftTextLengthAttr}">${finalLabel}</text>
-        <text x="${leftCenter}" y="140" transform="scale(.1)" fill="#fff" textLength="${leftTextLengthAttr}">${finalLabel}</text>
-        <text aria-hidden="true" x="${rightCenter}" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="${rightTextLengthAttr}">${finalValue}</text>
-        <text x="${rightCenter}" y="140" transform="scale(.1)" fill="#fff" textLength="${rightTextLengthAttr}">${finalValue}</text>
-      </g>
-    </svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="${height}" role="img" aria-label="${title}">
+  <linearGradient id="s" x2="0" y2="100%">
+    <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+    <stop offset="1" stop-opacity=".1"/>
+  </linearGradient>
+  <clipPath id="r">
+    <rect width="${totalWidth}" height="${height}" rx="3" fill="#fff"/>
+  </clipPath>
+  <g clip-path="url(#r)">
+    <rect width="${leftWidth}" height="${height}" fill="${finalLabelColor}"/>
+    <rect x="${leftWidth}" width="${rightWidth}" height="${height}" fill="${finalColor}"/>
+    <rect width="${totalWidth}" height="${height}" fill="url(#s)"/>
+  </g>
+  <g text-anchor="middle" font-family="Verdana, Geneva, DejaVu Sans, sans-serif" text-rendering="geometricPrecision" font-size="110">
+    <text aria-hidden="true" x="${leftCenter}" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="${leftTextLengthAttr}">${escapedLabel}</text>
+    <text x="${leftCenter}" y="140" transform="scale(.1)" fill="${labelTextColor}" textLength="${leftTextLengthAttr}">${escapedLabel}</text>
+    <text aria-hidden="true" x="${rightCenter}" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="${rightTextLengthAttr}">${escapedValue}</text>
+    <text x="${rightCenter}" y="140" transform="scale(.1)" fill="${valueTextColor}" textLength="${rightTextLengthAttr}">${escapedValue}</text>
+  </g>
+</svg>
   `.trim()
 }
 
@@ -212,16 +325,6 @@ async function fetchDownloads(
   }
 }
 
-async function fetchNpmsScore(packageName: string) {
-  try {
-    const response = await fetch(`${NPMS_API}/${encodeURIComponent(packageName)}`)
-    const data = await response.json()
-    return data.score
-  } catch {
-    return null
-  }
-}
-
 async function fetchVulnerabilities(packageName: string, version: string): Promise<number> {
   try {
     const response = await fetch(OSV_QUERY_API, {
@@ -249,6 +352,10 @@ async function fetchInstallSize(packageName: string, version: string): Promise<n
 }
 
 const badgeStrategies = {
+  'name': async (pkgData: globalThis.Packument) => {
+    return { label: 'npm', value: pkgData.name, color: COLORS.slate }
+  },
+
   'version': async (pkgData: globalThis.Packument, requestedVersion?: string) => {
     const version = requestedVersion ?? getLatestVersion(pkgData) ?? 'unknown'
     return {
@@ -332,12 +439,46 @@ const badgeStrategies = {
     return { label: 'node', value: nodeVersion, color: COLORS.yellow }
   },
 
-  'types': async (pkgData: globalThis.Packument) => {
-    const latest = getLatestVersion(pkgData)
-    const versionData = latest ? pkgData.versions?.[latest] : undefined
-    const hasTypes = !!(versionData?.types || versionData?.typings)
-    const value = hasTypes ? 'included' : 'missing'
-    const color = hasTypes ? COLORS.blue : COLORS.slate
+  'types': async (pkgData: globalThis.Packument, requestedVersion?: string) => {
+    const targetVersion = requestedVersion ?? getLatestVersion(pkgData)
+    const versionData = targetVersion ? pkgData.versions?.[targetVersion] : undefined
+
+    if (versionData && hasBuiltInTypes(versionData)) {
+      return { label: 'types', value: 'included', color: COLORS.blue }
+    }
+
+    const { pkg, typesPackage, files } = await fetchPackageWithTypesAndFiles(
+      pkgData.name,
+      targetVersion,
+    )
+
+    const typesStatus = detectTypesStatus(pkg, typesPackage, files)
+
+    let value: string
+    let color: string
+
+    switch (typesStatus.kind) {
+      case 'included':
+        value = 'included'
+        color = COLORS.blue
+        break
+
+      case '@types':
+        value = '@types'
+        color = COLORS.purple
+        if (typesStatus.deprecated) {
+          value += ' (deprecated)'
+          color = COLORS.red
+        }
+        break
+
+      case 'none':
+      default:
+        value = 'missing'
+        color = COLORS.slate
+        break
+    }
+
     return { label: 'types', value, color }
   },
 
@@ -354,30 +495,6 @@ const badgeStrategies = {
       value: isDeprecated ? 'deprecated' : 'active',
       color: isDeprecated ? COLORS.red : COLORS.green,
     }
-  },
-
-  'quality': async (pkgData: globalThis.Packument) => {
-    const score = await fetchNpmsScore(pkgData.name)
-    const value = score ? `${Math.round(score.detail.quality * 100)}%` : 'unknown'
-    return { label: 'quality', value, color: COLORS.purple }
-  },
-
-  'popularity': async (pkgData: globalThis.Packument) => {
-    const score = await fetchNpmsScore(pkgData.name)
-    const value = score ? `${Math.round(score.detail.popularity * 100)}%` : 'unknown'
-    return { label: 'popularity', value, color: COLORS.cyan }
-  },
-
-  'maintenance': async (pkgData: globalThis.Packument) => {
-    const score = await fetchNpmsScore(pkgData.name)
-    const value = score ? `${Math.round(score.detail.maintenance * 100)}%` : 'unknown'
-    return { label: 'maintenance', value, color: COLORS.yellow }
-  },
-
-  'score': async (pkgData: globalThis.Packument) => {
-    const score = await fetchNpmsScore(pkgData.name)
-    const value = score ? `${Math.round(score.final * 100)}%` : 'unknown'
-    return { label: 'score', value, color: COLORS.blue }
   },
 }
 
@@ -408,6 +525,7 @@ export default defineCachedEventHandler(
       const labelColor = queryParams.success ? queryParams.output.labelColor : undefined
       const showName = queryParams.success && queryParams.output.name === 'true'
       const userLabel = queryParams.success ? queryParams.output.label : undefined
+      const userValue = queryParams.success ? queryParams.output.value : undefined
       const badgeStyleResult = v.safeParse(BadgeStyleSchema, query.style)
       const badgeStyle = badgeStyleResult.success ? badgeStyleResult.output : 'default'
 
@@ -421,7 +539,7 @@ export default defineCachedEventHandler(
       const strategyResult = await strategy(pkgData, requestedVersion)
 
       const finalLabel = userLabel ? userLabel : showName ? packageName : strategyResult.label
-      const finalValue = strategyResult.value
+      const finalValue = userValue ? userValue : strategyResult.value
 
       const rawColor = userColor ?? strategyResult.color
       const finalColor = rawColor?.startsWith('#') ? rawColor : `#${rawColor}`
@@ -430,8 +548,18 @@ export default defineCachedEventHandler(
       const rawLabelColor = labelColor ?? defaultLabelColor
       const finalLabelColor = rawLabelColor.startsWith('#') ? rawLabelColor : `#${rawLabelColor}`
 
+      const labelTextColor = getContrastTextColor(finalLabelColor)
+      const valueTextColor = getContrastTextColor(finalColor)
+
       const renderFn = badgeStyle === 'shieldsio' ? renderShieldsBadgeSvg : renderDefaultBadgeSvg
-      const svg = renderFn({ finalColor, finalLabel, finalLabelColor, finalValue })
+      const svg = renderFn({
+        finalColor,
+        finalLabel,
+        finalLabelColor,
+        finalValue,
+        labelTextColor,
+        valueTextColor,
+      })
 
       setHeader(event, 'Content-Type', 'image/svg+xml')
       setHeader(

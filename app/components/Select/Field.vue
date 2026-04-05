@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SelectBaseProps } from './Base.vue'
+import type { SelectBaseProps } from './types'
 
 const SELECT_FIELD_SIZES = {
   sm: 'text-xs py-1.75 ps-2 pe-6 rounded-md',
@@ -19,7 +19,7 @@ const SELECT_FIELD_LABEL_SIZES = {
 
 const model = defineModel<string | undefined>({ default: undefined })
 
-export interface SelectFieldProps extends SelectBaseProps {
+interface SelectFieldProps extends SelectBaseProps {
   items: { label: string; value: string; disabled?: boolean }[]
   size?: keyof typeof SELECT_FIELD_SIZES
   selectAttrs?: Omit<SelectBaseProps, 'size' | 'id'> &

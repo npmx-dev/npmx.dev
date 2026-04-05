@@ -17,7 +17,6 @@ import {
   parseSortOption,
   UPDATED_WITHIN_OPTIONS,
 } from '#shared/types/preferences'
-import { regExpEscape } from '@li/regexp-escape-polyfill'
 
 /**
  * Parsed search operators from text input
@@ -76,6 +75,17 @@ export function parseSearchOperators(input: string): ParsedSearchOperators {
     result.text = cleanedText
   }
 
+  // Deduplicate keywords (case-insensitive)
+  if (result.keywords) {
+    const seen = new Set<string>()
+    result.keywords = result.keywords.filter(kw => {
+      const lower = kw.toLowerCase()
+      if (seen.has(lower)) return false
+      seen.add(lower)
+      return true
+    })
+  }
+
   return result
 }
 
@@ -84,6 +94,34 @@ export function parseSearchOperators(input: string): ParsedSearchOperators {
  */
 export function hasSearchOperators(parsed: ParsedSearchOperators): boolean {
   return !!(parsed.name?.length || parsed.description?.length || parsed.keywords?.length)
+}
+
+/**
+ * Remove a keyword from a search query string.
+ * Handles kw:xxx and keyword:xxx formats, including comma-separated values.
+ */
+export function removeKeywordFromQuery(query: string, keyword: string): string {
+  const operatorRegex = /\b((?:kw|keyword):)(\S+)/gi
+  const lowerKeyword = keyword.toLowerCase()
+
+  let result = query.replace(operatorRegex, (match, prefix: string, value: string) => {
+    const values = value.split(',').filter(Boolean)
+    const filtered = values.filter(v => v.toLowerCase() !== lowerKeyword)
+
+    if (filtered.length === 0) {
+      // All values removed — drop the entire operator
+      return ''
+    }
+    if (filtered.length === values.length) {
+      // Nothing was removed — keep original
+      return match
+    }
+    return `${prefix}${filtered.join(',')}`
+  })
+
+  // Clean up double spaces and trim
+  result = result.replace(/\s+/g, ' ').trim()
+  return result
 }
 
 interface UseStructuredFiltersOptions {
@@ -120,6 +158,14 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
   const { t } = useI18n()
 
   const searchQuery = shallowRef(normalizeSearchParam(route.query.q))
+
+  // Filter state - must be declared before the watcher that uses it
+  const filters = ref<StructuredFilters>({
+    ...DEFAULT_FILTERS,
+    ...initialFilters,
+  })
+
+  // Watch route query changes and sync filter state
   watch(
     () => route.query.q,
     urlQuery => {
@@ -127,14 +173,21 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
       if (searchQuery.value !== value) {
         searchQuery.value = value
       }
-    },
-  )
 
-  // Filter state
-  const filters = ref<StructuredFilters>({
-    ...DEFAULT_FILTERS,
-    ...initialFilters,
-  })
+      // Sync filters with URL
+      // When URL changes (e.g. from search input or navigation),
+      // we need to update our local filter state to match
+      const parsed = parseSearchOperators(value)
+
+      filters.value.text = parsed.text ?? ''
+      // Deduplicate keywords (in case of both kw: and keyword: for same value)
+      filters.value.keywords = parsed.keywords ?? []
+
+      // Note: We intentionally don't reset other filters (security, downloadRange, etc.)
+      // as those are not typically driven by the search query string structure
+    },
+    { immediate: true },
+  )
 
   // Sort state
   const sortOption = shallowRef<SortOption>(initialSort ?? 'updated-desc')
@@ -274,22 +327,10 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
         diff = (a.downloads?.weekly ?? 0) - (b.downloads?.weekly ?? 0)
         break
       case 'updated':
-        diff = new Date(a.package.date).getTime() - new Date(b.package.date).getTime()
+        diff = Date.parse(a.package.date) - Date.parse(b.package.date)
         break
       case 'name':
         diff = a.package.name.localeCompare(b.package.name)
-        break
-      case 'quality':
-        diff = (a.score?.detail?.quality ?? 0) - (b.score?.detail?.quality ?? 0)
-        break
-      case 'popularity':
-        diff = (a.score?.detail?.popularity ?? 0) - (b.score?.detail?.popularity ?? 0)
-        break
-      case 'maintenance':
-        diff = (a.score?.detail?.maintenance ?? 0) - (b.score?.detail?.maintenance ?? 0)
-        break
-      case 'score':
-        diff = (a.score?.final ?? 0) - (b.score?.final ?? 0)
         break
       case 'relevance':
         // Relevance preserves server order (already sorted by search relevance)
@@ -400,7 +441,9 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
   }
 
   function addKeyword(keyword: string) {
-    if (!filters.value.keywords.includes(keyword)) {
+    const lowerKeyword = keyword.toLowerCase()
+    const alreadyExists = filters.value.keywords.some(k => k.toLowerCase() === lowerKeyword)
+    if (!alreadyExists) {
       filters.value.keywords = [...filters.value.keywords, keyword]
       const newQ = searchQuery.value
         ? `${searchQuery.value.trim()} keyword:${keyword}`
@@ -412,16 +455,21 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
   }
 
   function removeKeyword(keyword: string) {
-    filters.value.keywords = filters.value.keywords.filter(k => k !== keyword)
-    const newQ = searchQuery.value
-      .replace(new RegExp(`keyword:${regExpEscape(keyword)}($| )`, 'g'), '')
-      .trim()
+    const lowerKeyword = keyword.toLowerCase()
+    filters.value.keywords = filters.value.keywords.filter(k => k.toLowerCase() !== lowerKeyword)
+
+    // Remove the keyword from the search query string.
+    // Handles both kw:xxx and keyword:xxx formats, including comma-separated values.
+    const newQ = removeKeywordFromQuery(searchQuery.value, keyword)
+
     router.replace({ query: { ...route.query, q: newQ || undefined } })
     if (searchQueryModel) searchQueryModel.value = newQ
   }
 
   function toggleKeyword(keyword: string) {
-    if (filters.value.keywords.includes(keyword)) {
+    const lowerKeyword = keyword.toLowerCase()
+    const exists = filters.value.keywords.some(k => k.toLowerCase() === lowerKeyword)
+    if (exists) {
       removeKeyword(keyword)
     } else {
       addKeyword(keyword)

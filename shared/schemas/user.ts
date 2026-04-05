@@ -6,7 +6,7 @@ const NPM_USERNAME_MAX_LENGTH = 50
 /**
  * Schema for npm usernames.
  */
-export const NpmUsernameSchema = v.pipe(
+const NpmUsernameSchema = v.pipe(
   v.string(),
   v.trim(),
   v.nonEmpty('Username is required'),
@@ -20,6 +20,3 @@ export const NpmUsernameSchema = v.pipe(
 export const GravatarQuerySchema = v.object({
   username: NpmUsernameSchema,
 })
-
-export type NpmUsername = v.InferOutput<typeof NpmUsernameSchema>
-export type GravatarQuery = v.InferOutput<typeof GravatarQuerySchema>

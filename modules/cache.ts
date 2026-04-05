@@ -5,6 +5,9 @@ import { provider } from 'std-env'
 // Storage key for fetch cache - must match shared/utils/fetch-cache-config.ts
 const FETCH_CACHE_STORAGE_BASE = 'fetch-cache'
 
+// Storage key for payload cache - must match server/plugins/payload-cache.ts
+const PAYLOAD_CACHE_STORAGE_KEY = 'payload-cache'
+
 export default defineNuxtModule({
   meta: {
     name: 'vercel-cache',
@@ -35,6 +38,12 @@ export default defineNuxtModule({
         // Fetch cache storage (for SWR fetch caching)
         nitroConfig.storage[FETCH_CACHE_STORAGE_BASE] = {
           ...nitroConfig.storage[FETCH_CACHE_STORAGE_BASE],
+          driver: 'vercel-runtime-cache',
+        }
+
+        // Payload cache storage (for runtime payload caching)
+        nitroConfig.storage[PAYLOAD_CACHE_STORAGE_KEY] = {
+          ...nitroConfig.storage[PAYLOAD_CACHE_STORAGE_KEY],
           driver: 'vercel-runtime-cache',
         }
       }

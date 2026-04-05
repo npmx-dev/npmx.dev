@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { setResponseHeader } from 'h3'
-import type { DocsResponse } from '#shared/types'
-import { assertValidPackageName, fetchLatestVersion } from '#shared/utils/npm'
 
 definePageMeta({
   name: 'docs',
@@ -12,6 +10,7 @@ definePageMeta({
 
 const route = useRoute('docs')
 const router = useRouter()
+const { t } = useI18n()
 
 const parsedRoute = computed(() => {
   const segments = route.params.path?.filter(Boolean)
@@ -89,15 +88,28 @@ const { data: docsData, status: docsStatus } = useLazyFetch<DocsResponse>(
       html: '',
       toc: null,
       status: 'missing' as const,
-      message: 'Docs are not available for this version.',
+      message: t('package.docs.default_not_available'),
     }),
   },
 )
+// Keep latestVersion for comparison (to show "(latest)" badge)
+const latestVersionDetailed = computed(() => {
+  if (!pkg.value) return null
+  const latestTag = pkg.value['dist-tags']?.latest
+  if (!latestTag) return null
+  return pkg.value.versions[latestTag] ?? null
+})
+
+const versionUrlPattern = computed(
+  () => `/package-docs/${pkg.value?.name || packageName.value}/v/{version}`,
+)
 
 const pageTitle = computed(() => {
-  if (!packageName.value) return 'API Docs - npmx'
-  if (!resolvedVersion.value) return `${packageName.value} docs - npmx`
-  return `${packageName.value}@${resolvedVersion.value} docs - npmx`
+  if (!packageName.value) return t('package.docs.page_title')
+  if (!resolvedVersion.value) return t('package.docs.page_title_name', { name: packageName.value })
+  return t('package.docs.page_title_version', {
+    name: `${packageName.value}@${resolvedVersion.value}`,
+  })
 })
 
 useSeoMeta({
@@ -110,7 +122,7 @@ useSeoMeta({
 })
 
 defineOgImageComponent('Default', {
-  title: () => `${pkg.value?.name ?? 'Package'} - Docs`,
+  title: () => t('package.docs.og_title', { name: pkg.value?.name ?? 'Package' }),
   description: () => pkg.value?.license ?? '',
   primaryColor: '#60a5fa',
 })
@@ -119,49 +131,25 @@ const showLoading = computed(
   () => docsStatus.value === 'pending' || (docsStatus.value === 'idle' && docsUrl.value !== null),
 )
 const showEmptyState = computed(() => docsData.value?.status !== 'ok')
+
+const packageHeaderHeight = usePackageHeaderHeight()
+const stickyStyle = computed(() => {
+  return {
+    '--combined-header-height': `${56 + (packageHeaderHeight.value || 44)}px`,
+  }
+})
 </script>
 
 <template>
-  <div class="docs-page flex-1 flex flex-col">
-    <!-- Visually hidden h1 for accessibility -->
-    <h1 class="sr-only">{{ packageName }} API Documentation</h1>
-
-    <!-- Sticky header - positioned below AppHeader -->
-    <header
-      aria-label="Package documentation header"
-      class="docs-header sticky z-10 border-b border-border"
-    >
-      <div class="absolute inset-0 bg-bg/90 backdrop-blur" />
-      <div class="relative px-4 sm:px-6 lg:px-8 py-4 z-1">
-        <div class="flex items-center justify-between gap-4">
-          <div class="flex items-center gap-3 min-w-0">
-            <NuxtLink
-              v-if="packageName"
-              :to="packageRoute(packageName)"
-              class="font-mono text-lg sm:text-xl font-semibold text-fg hover:text-fg-muted transition-colors truncate"
-            >
-              {{ packageName }}
-            </NuxtLink>
-            <VersionSelector
-              v-if="resolvedVersion && pkg?.versions && pkg?.['dist-tags']"
-              :package-name="packageName"
-              :current-version="resolvedVersion"
-              :versions="pkg.versions"
-              :dist-tags="pkg['dist-tags']"
-              :url-pattern="`/package-docs/${packageName}/v/{version}`"
-            />
-            <span v-else-if="resolvedVersion" class="text-fg-subtle font-mono text-sm shrink-0">
-              {{ resolvedVersion }}
-            </span>
-          </div>
-          <div class="flex items-center gap-3 shrink-0">
-            <span class="text-xs px-2 py-1 rounded badge-green border border-badge-green/50">
-              API Docs
-            </span>
-          </div>
-        </div>
-      </div>
-    </header>
+  <div class="docs-page flex-1 flex flex-col" :style="stickyStyle">
+    <PackageHeader
+      :pkg="pkg"
+      :resolved-version="resolvedVersion"
+      :display-version="pkg?.requestedVersion"
+      :latest-version="latestVersionDetailed"
+      :version-url-pattern="versionUrlPattern"
+      page="docs"
+    />
 
     <div class="flex" dir="ltr">
       <!-- Sidebar TOC -->
@@ -171,7 +159,7 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
       >
         <div class="docs-sidebar sticky overflow-y-auto p-4">
           <h2 class="text-xs font-semibold text-fg-subtle uppercase tracking-wider mb-4">
-            Contents
+            {{ $t('package.docs.contents') }}
           </h2>
           <!-- eslint-disable vue/no-v-html -->
           <div class="toc-content" v-html="docsData.toc" />
@@ -199,7 +187,7 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
                 :to="packageRoute(packageName)"
                 class="link-subtle font-mono text-sm"
               >
-                View package
+                {{ $t('package.docs.view_package') }}
               </NuxtLink>
             </div>
           </div>
@@ -213,13 +201,6 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
 </template>
 
 <style>
-/* Layout constants - must match AppHeader height */
-.docs-page {
-  --app-header-height: 57px;
-  --docs-header-height: 57px;
-  --combined-header-height: calc(var(--app-header-height) + var(--docs-header-height));
-}
-
 .docs-header {
   top: var(--app-header-height);
 }

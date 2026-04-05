@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { LinkBase } from '#components'
 import type { NavigationConfig, NavigationConfigWithGroups } from '~/types'
-import { isEditableElement } from '~/utils/input'
 import { NPMX_DOCS_SITE } from '#shared/utils/constants'
+
+const discord = useDiscordLink()
 
 withDefaults(
   defineProps<{
@@ -58,6 +59,14 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         iconClass: 'i-lucide:info',
       },
       {
+        name: 'Blog',
+        label: $t('footer.blog'),
+        to: { name: 'blog' },
+        type: 'link',
+        external: false,
+        iconClass: 'i-lucide:notebook-pen',
+      },
+      {
         name: 'Privacy Policy',
         label: $t('privacy_policy.title'),
         to: { name: 'privacy' },
@@ -72,6 +81,22 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         type: 'link',
         external: false,
         iconClass: 'i-custom:a11y',
+      },
+      {
+        name: 'Translation Status',
+        label: $t('translation_status.title'),
+        to: { name: 'translation-status' },
+        type: 'link',
+        external: false,
+        iconClass: 'i-lucide:languages',
+      },
+      {
+        name: 'Brand',
+        label: $t('footer.brand'),
+        to: { name: 'brand' },
+        type: 'link',
+        external: false,
+        iconClass: 'i-lucide:palette',
       },
     ],
   },
@@ -112,8 +137,8 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
       },
       {
         name: 'Chat',
-        label: $t('footer.chat'),
-        href: 'https://chat.npmx.dev',
+        label: discord.value.label,
+        href: discord.value.url,
         target: '_blank',
         type: 'link',
         external: true,
@@ -125,7 +150,7 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
 
 const showFullSearch = shallowRef(false)
 const showMobileMenu = shallowRef(false)
-const { env } = useAppConfig().buildInfo
+const { env, prNumber } = useAppConfig().buildInfo
 
 // On mobile, clicking logo+search button expands search
 const route = useRoute()
@@ -173,22 +198,10 @@ function handleSearchFocus() {
   showFullSearch.value = true
 }
 
-onKeyStroke(
-  e => {
-    if (isEditableElement(e.target)) {
-      return
-    }
-
-    for (const link of desktopLinks.value) {
-      if (link.to && link.keyshortcut && isKeyWithoutModifiers(e, link.keyshortcut)) {
-        e.preventDefault()
-        navigateTo(link.to)
-        break
-      }
-    }
-  },
-  { dedupe: true },
-)
+useShortcuts({
+  'c': () => ({ name: 'compare' }),
+  ',': () => ({ name: 'settings' }),
+})
 </script>
 
 <template>
@@ -199,33 +212,44 @@ onKeyStroke(
       class="relative container min-h-14 flex items-center gap-2 z-1 justify-end"
     >
       <!-- Mobile: Logo (navigates home) -->
-      <NuxtLink
-        v-if="!isSearchExpanded && !isOnHomePage"
-        to="/"
-        :aria-label="$t('header.home')"
-        class="sm:hidden flex-shrink-0 font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring"
-      >
-        <AppLogo class="w-8 h-8 rounded-lg" />
-      </NuxtLink>
+      <LogoContextMenu v-if="!isSearchExpanded && !isOnHomePage" class="sm:hidden flex-shrink-0">
+        <NuxtLink
+          to="/"
+          :aria-label="$t('header.home')"
+          class="font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring me-4"
+        >
+          <AppMark class="w-6 h-auto" />
+        </NuxtLink>
+      </LogoContextMenu>
 
       <!-- Desktop: Logo (navigates home) -->
-      <div v-if="showLogo" class="hidden sm:flex flex-shrink-0 items-center">
+      <LogoContextMenu v-if="showLogo" class="hidden sm:flex flex-shrink-0 items-center">
         <NuxtLink
           :to="{ name: 'index' }"
           :aria-label="$t('header.home')"
           dir="ltr"
-          class="relative inline-flex items-center gap-1 header-logo font-mono text-lg font-medium text-fg hover:text-fg/90 transition-colors duration-200 rounded"
+          class="relative inline-flex items-center gap-1 py-2 header-logo font-mono text-lg font-medium text-fg hover:text-fg/90 transition-colors duration-200 me-4"
         >
-          <AppLogo class="w-7 h-7 rounded-lg" />
-          <span class="pb-0.5">npmx</span>
+          <AppLogo class="h-4.5 w-auto" />
           <span
             aria-hidden="true"
-            class="scale-35 transform-origin-br font-mono tracking-wide text-accent absolute bottom-0.5 -inset-ie-1"
+            class="scale-35 transform-origin-br font-mono tracking-wide text-accent absolute bottom-0.75 -inset-ie-1"
           >
             {{ env === 'release' ? 'alpha' : env }}
           </span>
         </NuxtLink>
-      </div>
+      </LogoContextMenu>
+
+      <NuxtLink
+        v-if="showLogo && !isSearchExpanded && prNumber"
+        :to="`https://github.com/npmx-dev/npmx.dev/pull/${prNumber}`"
+        :aria-label="$t('header.pr', { prNumber })"
+      >
+        <span class="text-xs px-1.5 py-0.5 rounded badge-green font-sans font-medium">
+          PR #{{ prNumber }}
+        </span>
+      </NuxtLink>
+
       <!-- Spacer when logo is hidden on desktop -->
       <span v-else class="hidden sm:block w-1" />
 

@@ -12,9 +12,8 @@
 
 import { writeFileSync, mkdirSync, existsSync } from 'node:fs'
 import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url'
 
-const FIXTURES_DIR = fileURLToPath(new URL('../test/fixtures', import.meta.url))
+const FIXTURES_DIR = join(import.meta.dirname, '../test/fixtures')
 
 const NPM_REGISTRY = 'https://registry.npmjs.org'
 const NPM_API = 'https://api.npmjs.org'
@@ -183,7 +182,7 @@ function slimPackument(pkg: Record<string, unknown>): Record<string, unknown> {
       const timeA = time[a]
       const timeB = time[b]
       if (!timeA || !timeB) return 0
-      return new Date(timeB).getTime() - new Date(timeA).getTime()
+      return Date.parse(timeB) - Date.parse(timeA)
     })
     .slice(0, RECENT_VERSIONS_COUNT)
 

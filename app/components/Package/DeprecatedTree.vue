@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { DependencyDepth } from '#shared/types'
-
 const props = defineProps<{
   packageName: string
   version: string

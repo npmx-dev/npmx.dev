@@ -1,11 +1,5 @@
 import * as v from 'valibot'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
-import type { NpmVersionDist } from '#shared/types'
-import { CACHE_MAX_AGE_ONE_HOUR, ERROR_PROVENANCE_FETCH_FAILED } from '#shared/utils/constants'
-import {
-  parseAttestationToProvenanceDetails,
-  type NpmAttestationsResponse,
-} from '#server/utils/provenance'
 
 /**
  * GET /api/registry/provenance/:name/v/:version

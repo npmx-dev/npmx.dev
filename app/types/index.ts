@@ -10,5 +10,9 @@ declare module '#app' {
      * @default 70
      */
     scrollMargin?: number
+    /**
+     * preserve scroll position when only query params change on same path/hash
+     */
+    preserveScrollOnQuery?: boolean
   }
 }

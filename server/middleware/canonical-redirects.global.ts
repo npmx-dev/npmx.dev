@@ -18,14 +18,18 @@ const pages = [
   '/opensearch.xml',
   '/about',
   '/accessibility',
+  '/blog',
+  '/brand',
   '/compare',
   '/org',
   '/package',
   '/package-code',
   '/package-docs',
+  '/pds',
   '/privacy',
   '/search',
   '/settings',
+  '/translation-status',
   '/recharging',
 ]
 

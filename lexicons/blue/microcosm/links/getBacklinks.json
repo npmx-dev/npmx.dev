@@ -1,0 +1,87 @@
+{
+  "id": "blue.microcosm.links.getBacklinks",
+  "defs": {
+    "main": {
+      "type": "query",
+      "description": "Constellation: list records linking to any record, identity, or uri",
+      "parameters": {
+        "type": "params",
+        "required": ["subject", "source"],
+        "properties": {
+          "subject": {
+            "type": "string",
+            "format": "uri",
+            "description": "the target being linked to (at-uri, did, or uri)"
+          },
+          "source": {
+            "type": "string",
+            "description": "collection and path specification (e.g., 'app.bsky.feed.like:subject.uri')"
+          },
+          "did": {
+            "type": "array",
+            "description": "filter links to those from specific users",
+            "items": {
+              "type": "string",
+              "format": "did"
+            }
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 16,
+            "description": "number of results to return"
+          }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["total", "records"],
+          "properties": {
+            "total": {
+              "type": "integer",
+              "description": "total number of matching links"
+            },
+            "records": {
+              "type": "array",
+              "items": {
+                "type": "ref",
+                "ref": "#linkRecord"
+              }
+            },
+            "cursor": {
+              "type": "string",
+              "description": "pagination cursor"
+            }
+          }
+        }
+      }
+    },
+    "linkRecord": {
+      "type": "object",
+      "description": "a record linking to the subject",
+      "required": ["did", "collection", "rkey"],
+      "properties": {
+        "did": {
+          "type": "string",
+          "format": "did",
+          "description": "the DID of the linking record's repository"
+        },
+        "collection": {
+          "type": "string",
+          "format": "nsid",
+          "description": "the collection of the linking record"
+        },
+        "rkey": {
+          "type": "string",
+          "format": "record-key",
+          "description": "the record key of the linking record"
+        }
+      }
+    }
+  },
+  "$type": "com.atproto.lexicon.schema",
+  "lexicon": 1
+}

@@ -1,5 +1,3 @@
-import type { PackageFileTree } from '#shared/types'
-
 /**
  * Flattened file set for quick lookups.
  * Maps file paths to true for existence checks.

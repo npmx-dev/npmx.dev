@@ -4,27 +4,14 @@ const config: KnipConfig = {
   workspaces: {
     '.': {
       entry: [
-        'app/router.options.ts!',
-        'app/app.vue!',
-        'app/error.vue!',
-        'app/pages/**/*.vue!',
-        'app/components/**/*.vue!',
-        'app/components/**/*.d.vue.ts!',
-        'app/composables/**/*.ts!',
-        'app/middleware/**/*.ts!',
-        'app/plugins/**/*.ts!',
-        'app/utils/**/*.ts!',
-        'server/**/*.ts!',
-        'modules/**/*.ts!',
-        'config/**/*.ts!',
-        'lunaria/**/*.ts!',
-        'shared/**/*.ts!',
         'i18n/**/*.ts',
         'lunaria.config.ts',
+        'lunaria/lunaria.ts',
         'pwa-assets.config.ts',
+        'modules/*.ts',
         '.lighthouserc.cjs',
         'lighthouse-setup.cjs',
-        'uno-preset-rtl.ts!',
+        'uno-preset-*.ts!',
         'scripts/**/*.ts',
       ],
       project: [
@@ -33,11 +20,10 @@ const config: KnipConfig = {
         '!test/test-utils/**',
         '!test/e2e/helpers/**',
         '!cli/src/**',
+        '!lexicons/**',
       ],
       ignoreDependencies: [
         '@iconify-json/*',
-        '@voidzero-dev/vite-plus-core',
-        'vite-plus!',
         'puppeteer',
         /** Needs to be explicitly installed, even though it is not imported, to avoid type errors. */
         'unplugin-vue-router',
@@ -54,14 +40,20 @@ const config: KnipConfig = {
         /** Used in test/e2e/helpers/ which is excluded from knip project scope */
         'h3-next',
       ],
-      ignoreUnresolved: ['#components', '#oauth/config'],
+      ignoreUnresolved: ['#oauth/config'],
+      ignoreFiles: [
+        'app/components/Tooltip/Announce.vue',
+        'app/components/UserCombobox.vue',
+        '**/*.unused.*',
+      ],
     },
     'cli': {
       project: ['src/**/*.ts!', '!src/mock-*.ts'],
     },
     'docs': {
-      entry: ['app/**/*.{ts,vue}'],
-      ignoreDependencies: ['docus', 'better-sqlite3', '@nuxtjs/mdc', 'nuxt!'],
+      entry: ['app/**/*.{ts,vue,css}', 'shared/**/*.{ts,vue,css}'],
+      project: ['**/*.{ts,vue,cjs,mjs}'],
+      ignoreDependencies: ['@nuxtjs/mdc'],
     },
   },
 }

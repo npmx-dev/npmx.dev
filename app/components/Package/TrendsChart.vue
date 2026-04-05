@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { VueUiXyConfig, VueUiXyDatasetItem } from 'vue-data-ui'
+import type { Theme as VueDataUiTheme, VueUiXyConfig, VueUiXyDatasetItem } from 'vue-data-ui'
 import { VueUiXy } from 'vue-data-ui/vue-ui-xy'
-import { useDebounceFn, useElementSize } from '@vueuse/core'
+import { useDebounceFn, useElementSize, useTimeoutFn } from '@vueuse/core'
 import { useCssVariables } from '~/composables/useColors'
 import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch, lightenOklch } from '~/utils/colors'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
@@ -18,6 +18,15 @@ import type {
   YearlyDataPoint,
 } from '~/types/chart'
 import { DATE_INPUT_MAX } from '~/utils/input'
+import {
+  applyDataPipeline,
+  endDateOnlyToUtcMs,
+  DEFAULT_PREDICTION_POINTS,
+} from '~/utils/chart-data-prediction'
+import { applyBlocklistCorrection, getAnomaliesForPackages } from '~/utils/download-anomalies'
+import { copyAltTextForTrendLineChart, sanitise, loadFile, applyEllipsis } from '~/utils/charts'
+
+import('vue-data-ui/style.css')
 
 const props = withDefaults(
   defineProps<{
@@ -50,6 +59,9 @@ const props = withDefaults(
 
 const { locale } = useI18n()
 const { accentColors, selectedAccentColor } = useAccentColor()
+const { settings } = useSettings()
+const { copy, copied } = useClipboard()
+
 const colorMode = useColorMode()
 const resolvedMode = shallowRef<'light' | 'dark'>('light')
 const rootEl = shallowRef<HTMLElement | null>(null)
@@ -207,12 +219,15 @@ function formatXyDataset(
   const temperatureColors = lightColor ? [lightColor, accent.value] : undefined
 
   const datasetItem: VueUiXyDatasetItem = {
-    name: seriesName,
+    name: applyEllipsis(seriesName, 32),
     type: 'line',
     series: dataset.map(d => d.value),
     color: accent.value,
     temperatureColors,
     useArea: true,
+    dashIndices: dataset
+      .map((item, index) => (item.hasAnomaly ? index : -1))
+      .filter(index => index !== -1),
   }
 
   if (selectedGranularity === 'weekly' && isWeeklyDataset(dataset)) {
@@ -269,19 +284,26 @@ function formatXyDataset(
 function extractSeriesPoints(
   selectedGranularity: ChartTimeGranularity,
   dataset: EvolutionData,
-): Array<{ timestamp: number; value: number }> {
+): Array<{ timestamp: number; value: number; hasAnomaly: boolean }> {
   if (selectedGranularity === 'weekly' && isWeeklyDataset(dataset)) {
-    return dataset.map(d => ({ timestamp: d.timestampEnd, value: d.value }))
+    return dataset.map(d => ({
+      timestamp: d.timestampEnd,
+      value: d.value,
+      hasAnomaly: !!d.hasAnomaly,
+    }))
   }
   if (
     (selectedGranularity === 'daily' && isDailyDataset(dataset)) ||
     (selectedGranularity === 'monthly' && isMonthlyDataset(dataset)) ||
     (selectedGranularity === 'yearly' && isYearlyDataset(dataset))
   ) {
-    return (dataset as Array<{ timestamp: number; value: number }>).map(d => ({
-      timestamp: d.timestamp,
-      value: d.value,
-    }))
+    return (dataset as Array<{ timestamp: number; value: number; hasAnomaly?: boolean }>).map(
+      d => ({
+        timestamp: d.timestamp,
+        value: d.value,
+        hasAnomaly: !!d.hasAnomaly,
+      }),
+    )
   }
   return []
 }
@@ -350,13 +372,24 @@ const displayedGranularity = shallowRef<ChartTimeGranularity>(DEFAULT_GRANULARIT
 
 const isEndDateOnPeriodEnd = computed(() => {
   const g = selectedGranularity.value
-  if (g !== 'monthly' && g !== 'yearly') return false
 
   const iso = String(endDate.value ?? '').slice(0, 10)
   if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return false
 
   const [year, month, day] = iso.split('-').map(Number)
   if (!year || !month || !day) return false
+
+  if (g === 'daily') return true // every day is a complete period
+
+  if (g === 'weekly') {
+    // The last week bucket is complete when the range length is divisible by 7
+    const startIso = String(startDate.value ?? '').slice(0, 10)
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(startIso)) return false
+    const startMs = Date.UTC(...(startIso.split('-').map(Number) as [number, number, number]))
+    const endMs = Date.UTC(year, month - 1, day)
+    const totalDays = Math.floor((endMs - startMs) / 86400000) + 1
+    return totalDays % 7 === 0
+  }
 
   // Monthly: endDate is the last day of its month (UTC)
   if (g === 'monthly') {
@@ -368,12 +401,16 @@ const isEndDateOnPeriodEnd = computed(() => {
   return month === 12 && day === 31
 })
 
-const isEstimationGranularity = computed(
-  () => displayedGranularity.value === 'monthly' || displayedGranularity.value === 'yearly',
-)
 const supportsEstimation = computed(
-  () => isEstimationGranularity.value && selectedMetric.value !== 'contributors',
+  () =>
+    !['daily', 'weekly'].includes(displayedGranularity.value) &&
+    selectedMetric.value !== 'contributors',
 )
+
+const hasDownloadAnomalies = computed(() =>
+  normalisedDataset.value?.some(datapoint => !!datapoint.dashIndices.length),
+)
+
 const shouldRenderEstimationOverlay = computed(() => !pending.value && supportsEstimation.value)
 
 const startDate = usePermalink<string>('start', '', {
@@ -926,15 +963,32 @@ watch(
 
 const effectiveDataSingle = computed<EvolutionData>(() => {
   const state = activeMetricState.value
+  let data: EvolutionData
   if (
     selectedMetric.value === DEFAULT_METRIC_ID &&
     displayedGranularity.value === DEFAULT_GRANULARITY &&
     props.weeklyDownloads?.length
   ) {
-    if (isWeeklyDataset(state.evolution) && state.evolution.length) return state.evolution
-    return props.weeklyDownloads
+    data =
+      isWeeklyDataset(state.evolution) && state.evolution.length
+        ? state.evolution
+        : props.weeklyDownloads
+  } else {
+    data = state.evolution
   }
-  return state.evolution
+
+  if (isDownloadsMetric.value && data.length) {
+    const pkg = effectivePackageNames.value[0] ?? props.packageName ?? ''
+    if (settings.value.chartFilter.anomaliesFixed) {
+      data = applyBlocklistCorrection({
+        data,
+        packageName: pkg,
+        granularity: displayedGranularity.value,
+      })
+    }
+  }
+
+  return data
 })
 
 /**
@@ -965,11 +1019,20 @@ const chartData = computed<{
   const granularity = displayedGranularity.value
 
   const timestampSet = new Set<number>()
-  const pointsByPackage = new Map<string, Array<{ timestamp: number; value: number }>>()
+  const pointsByPackage = new Map<
+    string,
+    Array<{ timestamp: number; value: number; hasAnomaly?: boolean }>
+  >()
 
   for (const pkg of names) {
-    const data = state.evolutionsByPackage[pkg] ?? []
+    let data = state.evolutionsByPackage[pkg] ?? []
+    if (isDownloadsMetric.value && data.length) {
+      if (settings.value.chartFilter.anomaliesFixed) {
+        data = applyBlocklistCorrection({ data, packageName: pkg, granularity })
+      }
+    }
     const points = extractSeriesPoints(granularity, data)
+
     pointsByPackage.set(pkg, points)
     for (const p of points) timestampSet.add(p.timestamp)
   }
@@ -979,15 +1042,23 @@ const chartData = computed<{
 
   const dataset: VueUiXyDatasetItem[] = names.map(pkg => {
     const points = pointsByPackage.get(pkg) ?? []
-    const map = new Map<number, number>()
-    for (const p of points) map.set(p.timestamp, p.value)
+    const valueByTimestamp = new Map<number, number>()
+    const anomalyTimestamps = new Set<number>()
+    for (const p of points) {
+      valueByTimestamp.set(p.timestamp, p.value)
+      if (p.hasAnomaly) anomalyTimestamps.add(p.timestamp)
+    }
 
-    const series = dates.map(t => map.get(t) ?? 0)
+    const series = dates.map(t => valueByTimestamp.get(t) ?? 0)
+    const dashIndices = dates
+      .map((t, index) => (anomalyTimestamps.has(t) ? index : -1))
+      .filter(index => index !== -1)
 
     const item: VueUiXyDatasetItem = {
-      name: pkg,
+      name: applyEllipsis(pkg, 32),
       type: 'line',
       series,
+      dashIndices,
     } as VueUiXyDatasetItem
 
     if (isListedFramework(pkg)) {
@@ -1000,16 +1071,30 @@ const chartData = computed<{
 })
 
 const normalisedDataset = computed(() => {
-  return chartData.value.dataset?.map(d => {
-    const lastValue = d.series.at(-1) ?? 0
+  const granularity = displayedGranularity.value
+  const endDateMs = endDate.value ? endDateOnlyToUtcMs(endDate.value) : null
+  const referenceMs = endDateMs ?? Date.now()
+  const lastDateMs = chartData.value.dates.at(-1) ?? 0
+  const isAbsoluteMetric = selectedMetric.value === 'contributors'
 
-    // Contributors is an absolute metric: keep the partial period value as-is.
-    const projectedLastValue =
-      selectedMetric.value === 'contributors' ? lastValue : extrapolateLastValue(lastValue)
+  return chartData.value.dataset?.map(d => {
+    const series = applyDataPipeline(
+      d.series.map(v => v ?? 0),
+      {
+        averageWindow: settings.value.chartFilter.averageWindow,
+        smoothingTau: settings.value.chartFilter.smoothingTau,
+        predictionPoints:
+          granularity === 'weekly'
+            ? 0 // weekly buckets are end-aligned → always complete, no prediction needed
+            : (settings.value.chartFilter.predictionPoints ?? DEFAULT_PREDICTION_POINTS),
+      },
+      { granularity, lastDateMs, referenceMs, isAbsoluteMetric },
+    )
 
     return {
       ...d,
-      series: [...d.series.slice(0, -1), projectedLastValue],
+      series,
+      dashIndices: d.dashIndices ?? [],
     }
   })
 })
@@ -1017,14 +1102,6 @@ const normalisedDataset = computed(() => {
 const maxDatapoints = computed(() =>
   Math.max(0, ...(chartData.value.dataset ?? []).map(d => d.series.length)),
 )
-
-const loadFile = (link: string, filename: string) => {
-  const a = document.createElement('a')
-  a.href = link
-  a.download = filename
-  a.click()
-  a.remove()
-}
 
 const datetimeFormatterOptions = computed(() => {
   return {
@@ -1035,11 +1112,16 @@ const datetimeFormatterOptions = computed(() => {
   }[selectedGranularity.value]
 })
 
-const sanitise = (value: string) =>
-  value
-    .replace(/^@/, '')
-    .replace(/[\\/:"*?<>|]/g, '-')
-    .replace(/\//g, '-')
+// Cached date formatter for tooltip
+const tooltipDateFormatter = computed(() => {
+  const granularity = displayedGranularity.value
+  return new Intl.DateTimeFormat(locale.value, {
+    year: 'numeric',
+    month: granularity === 'yearly' ? undefined : 'short',
+    day: granularity === 'daily' || granularity === 'weekly' ? 'numeric' : undefined,
+    timeZone: 'UTC',
+  })
+})
 
 function buildExportFilename(extension: string): string {
   const g = selectedGranularity.value
@@ -1047,10 +1129,10 @@ function buildExportFilename(extension: string): string {
 
   if (!isMultiPackageMode.value) {
     const name = effectivePackageNames.value[0] ?? props.packageName ?? 'package'
-    return `${sanitise(name)}-${g}_${range}.${extension}`
+    return `${sanitise(applyEllipsis(name, 32))}-${g}_${range}.${extension}`
   }
 
-  const names = effectivePackageNames.value
+  const names = effectivePackageNames.value.map(name => applyEllipsis(name, 32))
   const label = names.length === 1 ? names[0] : names.join('_')
   return `${sanitise(label ?? '')}-${g}_${range}.${extension}`
 }
@@ -1072,144 +1154,6 @@ const granularityItems = computed(() =>
     value: granularity,
   })),
 )
-
-function clampRatio(value: number): number {
-  if (value < 0) return 0
-  if (value > 1) return 1
-  return value
-}
-
-/**
- * Convert a `YYYY-MM-DD` date to UTC timestamp representing the end of that day.
- * The returned timestamp corresponds to `23:59:59.999` in UTC
- *
- * @param endDateOnly - ISO-like date string (`YYYY-MM-DD`)
- * @returns The UTC timestamp in milliseconds for the end of the given day,
- * or `null` if the input is invalid.
- */
-function endDateOnlyToUtcMs(endDateOnly: string): number | null {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(endDateOnly)) return null
-  const [y, m, d] = endDateOnly.split('-').map(Number)
-  if (!y || !m || !d) return null
-  return Date.UTC(y, m - 1, d, 23, 59, 59, 999)
-}
-
-/**
- * Computes the UTC timestamp corresponding to the start of the time bucket
- * that contains the given timestamp.
- *
- * This function is used to derive period boundaries when computing completion
- * ratios or extrapolating values for partially completed periods.
- *
- * Bucket boundaries are defined in UTC:
- * - **monthly** : first day of the month at `00:00:00.000` UTC
- * - **yearly** : January 1st of the year at `00:00:00.000` UTC
- *
- * @param timestampMs - Reference timestamp in milliseconds
- * @param granularity - Bucket granularity (`monthly` or `yearly`)
- * @returns The UTC timestamp representing the start of the corresponding
- * time bucket.
- */
-function getBucketStartUtc(timestampMs: number, granularity: 'monthly' | 'yearly'): number {
-  const date = new Date(timestampMs)
-  if (granularity === 'yearly') return Date.UTC(date.getUTCFullYear(), 0, 1, 0, 0, 0, 0)
-  return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1, 0, 0, 0, 0)
-}
-
-/**
- * Computes the UTC timestamp corresponding to the end of the time
- * bucket that contains the given timestamp. This end timestamp is paired with `getBucketStartUtc` to define
- * a half-open interval `[start, end)` when computing elapsed time or completion
- * ratios within a period.
- *
- * Bucket boundaries are defined in UTC and are **exclusive**:
- * - **monthly** : first day of the following month at `00:00:00.000` UTC
- * - **yearly** : January 1st of the following year at `00:00:00.000` UTC
- *
- * @param timestampMs - Reference timestamp in milliseconds
- * @param granularity - Bucket granularity (`monthly` or `yearly`)
- * @returns The UTC timestamp (in milliseconds) representing the exclusive end
- * of the corresponding time bucket.
- */
-function getBucketEndUtc(timestampMs: number, granularity: 'monthly' | 'yearly'): number {
-  const date = new Date(timestampMs)
-  if (granularity === 'yearly') return Date.UTC(date.getUTCFullYear() + 1, 0, 1, 0, 0, 0, 0)
-  return Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + 1, 1, 0, 0, 0, 0)
-}
-
-/**
- * Computes the completion ratio of a time bucket relative to a reference time.
- *
- * The ratio represents how much of the bucket’s duration has elapsed at
- * `referenceMs`, expressed as a normalized value in the range `[0, 1]`.
- *
- * The bucket is defined by the calendar period (monthly or yearly) that
- * contains `bucketTimestampMs`, using UTC boundaries:
- * - start: `getBucketStartUtc(...)`
- * - end: `getBucketEndUtc(...)`
- *
- * The returned value is clamped to `[0, 1]`:
- * - `0`: reference time is at or before the start of the bucket
- * - `1`: reference time is at or after the end of the bucket
- *
- * This function is used to detect partially completed periods and to
- * extrapolate full period values from partial data.
- *
- * @param params.bucketTimestampMs - Timestamp belonging to the bucket
- * @param params.granularity - Bucket granularity (`monthly` or `yearly`)
- * @param params.referenceMs - Reference timestamp used to measure progress
- * @returns A normalized completion ratio in the range `[0, 1]`.
- */
-function getCompletionRatioForBucket(params: {
-  bucketTimestampMs: number
-  granularity: 'monthly' | 'yearly'
-  referenceMs: number
-}): number {
-  const start = getBucketStartUtc(params.bucketTimestampMs, params.granularity)
-  const end = getBucketEndUtc(params.bucketTimestampMs, params.granularity)
-  const total = end - start
-  if (total <= 0) return 1
-  return clampRatio((params.referenceMs - start) / total)
-}
-
-/**
- * Extrapolate the last observed value of a time series when the last bucket
- * (month or year) is only partially complete.
- *
- * This is used to replace the final value in each `VueUiXy` series
- * before rendering, so the chart can display an estimated full-period value
- * for the current month or year.
- *
- * Notes:
- * - This function assumes `lastValue` is the value corresponding to the last
- *   date in `chartData.value.dates`
- *
- * @param lastValue - The last observed numeric value for a series.
- * @returns The extrapolated value for partially completed monthly or yearly granularities,
- * or the original `lastValue` when no extrapolation should be applied.
- */
-function extrapolateLastValue(lastValue: number) {
-  if (selectedMetric.value === 'contributors') return lastValue
-
-  if (displayedGranularity.value !== 'monthly' && displayedGranularity.value !== 'yearly')
-    return lastValue
-
-  const endDateMs = endDate.value ? endDateOnlyToUtcMs(endDate.value) : null
-  const referenceMs = endDateMs ?? Date.now()
-
-  const completionRatio = getCompletionRatioForBucket({
-    bucketTimestampMs: chartData.value.dates.at(-1) ?? 0,
-    granularity: displayedGranularity.value,
-    referenceMs,
-  })
-
-  if (!(completionRatio > 0 && completionRatio < 1)) return lastValue
-
-  const extrapolatedValue = lastValue / completionRatio
-  if (!Number.isFinite(extrapolatedValue)) return lastValue
-
-  return extrapolatedValue
-}
 
 /**
  * Build and return svg markup for estimation overlays on the chart.
@@ -1373,7 +1317,10 @@ function drawSvgPrintLegend(svg: Record<string, any>) {
   })
 
   // Inject the estimation legend item when necessary
-  if (supportsEstimation.value && !isEndDateOnPeriodEnd.value && !isZoomed.value) {
+  if (
+    (supportsEstimation.value && !isEndDateOnPeriodEnd.value && !isZoomed.value) ||
+    hasDownloadAnomalies.value
+  ) {
     seriesNames.push(`
         <line
           x1="${svg.drawingArea.left + 12}"
@@ -1403,14 +1350,57 @@ function drawSvgPrintLegend(svg: Record<string, any>) {
   return seriesNames.join('\n')
 }
 
+const showCorrectionControls = shallowRef(false)
+const isResizing = shallowRef(false)
+
+const chartHeight = computed(() => {
+  if (isMobile.value) {
+    return 950
+  }
+  return showCorrectionControls.value && props.inModal ? 494 : 600
+})
+
+const { start } = useTimeoutFn(
+  () => {
+    isResizing.value = false
+  },
+  200,
+  { immediate: false },
+)
+
+function pauseChartTransitions() {
+  isResizing.value = true
+  start()
+}
+
+watch(
+  chartHeight,
+  (newH, oldH) => {
+    if (newH !== oldH) {
+      // Avoids triggering chart line transitions when the chart is resized
+      pauseChartTransitions()
+    }
+  },
+  { immediate: true },
+)
+
 // VueUiXy chart component configuration
 const chartConfig = computed<VueUiXyConfig>(() => {
   return {
-    theme: isDarkMode.value ? 'dark' : '',
+    theme: isDarkMode.value ? 'dark' : ('' as VueDataUiTheme),
+    a11y: {
+      translations: {
+        keyboardNavigation: $t(
+          'package.trends.chart_assistive_text.keyboard_navigation_horizontal',
+        ),
+        tableAvailable: $t('package.trends.chart_assistive_text.table_available'),
+        tableCaption: $t('package.trends.chart_assistive_text.table_caption'),
+      },
+    },
     chart: {
-      height: isMobile.value ? 950 : 600,
+      height: chartHeight.value,
       backgroundColor: colors.value.bg,
-      padding: { bottom: displayedGranularity.value === 'yearly' ? 84 : 64, right: 100 }, // padding right is set to leave space of last datapoint label(s)
+      padding: { bottom: displayedGranularity.value === 'yearly' ? 84 : 64, right: 128 }, // padding right is set to leave space of last datapoint label(s)
       userOptions: {
         buttons: {
           pdf: false,
@@ -1418,14 +1408,17 @@ const chartConfig = computed<VueUiXyConfig>(() => {
           fullscreen: false,
           table: false,
           tooltip: false,
-          altCopy: false, // TODO: set to true to enable the alt copy feature
+          altCopy: true,
         },
         buttonTitles: {
           csv: $t('package.trends.download_file', { fileType: 'CSV' }),
           img: $t('package.trends.download_file', { fileType: 'PNG' }),
           svg: $t('package.trends.download_file', { fileType: 'SVG' }),
           annotator: $t('package.trends.toggle_annotator'),
-          altCopy: undefined, // TODO: set to proper translation key
+          stack: $t('package.trends.toggle_stack_mode'),
+          altCopy: $t('package.trends.copy_alt.button_label'), // Do not make this text dependant on the `copied` variable, since this would re-render the component, which is undesirable if the minimap was used to select a time frame.
+          open: $t('package.trends.open_options'),
+          close: $t('package.trends.close_options'),
         },
         callbacks: {
           img: args => {
@@ -1458,10 +1451,22 @@ const chartConfig = computed<VueUiXyConfig>(() => {
             loadFile(url, buildExportFilename('svg'))
             URL.revokeObjectURL(url)
           },
-          // altCopy: ({ dataset: dst, config: cfg }: { dataset: Array<VueUiXyDatasetItem>; config: VueUiXyConfig}) => {
-          //   // TODO: implement a reusable copy-alt-text-to-clipboard feature based on the dataset & configuration
-          //   console.log({ dst, cfg})
-          // }
+          altCopy: ({ dataset: dst, config: cfg }) =>
+            copyAltTextForTrendLineChart({
+              dataset: dst,
+              config: {
+                ...cfg,
+                formattedDatasetValues: (dst?.lines || []).map(d =>
+                  d.series.map(n => compactNumberFormatter.value.format(n ?? 0)),
+                ),
+                hasEstimation:
+                  supportsEstimation.value && !isEndDateOnPeriodEnd.value && !isZoomed.value,
+                granularity: displayedGranularity.value,
+                copy,
+                $t,
+                numberFormatter: compactNumberFormatter.value.format,
+              },
+            }),
         },
       },
       grid: {
@@ -1515,10 +1520,22 @@ const chartConfig = computed<VueUiXyConfig>(() => {
         borderColor: 'transparent',
         backdropFilter: false,
         backgroundColor: 'transparent',
-        customFormat: ({ datapoint: items }) => {
+        customFormat: ({ datapoint: items, absoluteIndex }) => {
           if (!items || pending.value) return ''
 
           const hasMultipleItems = items.length > 1
+
+          // Format date for multiple series datasets
+          let formattedDate = ''
+          if (hasMultipleItems && absoluteIndex !== undefined) {
+            const index = Number(absoluteIndex)
+            if (Number.isInteger(index) && index >= 0 && index < chartData.value.dates.length) {
+              const timestamp = chartData.value.dates[index]
+              if (typeof timestamp === 'number') {
+                formattedDate = tooltipDateFormatter.value.format(new Date(timestamp))
+              }
+            }
+          }
 
           const rows = items
             .map((d: Record<string, any>) => {
@@ -1552,6 +1569,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
             .join('')
 
           return `<div class="font-mono text-xs p-3 border border-border rounded-md bg-[var(--bg)]/10 backdrop-blur-md">
+            ${formattedDate ? `<div class="text-2xs text-[var(--fg-subtle)] mb-2">${formattedDate}</div>` : ''}
             <div class="${hasMultipleItems ? 'flex flex-col gap-2' : ''}">
               ${rows}
             </div>
@@ -1583,10 +1601,35 @@ const chartConfig = computed<VueUiXyConfig>(() => {
   }
 })
 
+const isDownloadsMetric = computed(() => selectedMetric.value === 'downloads')
+
+const packageAnomalies = computed(() => getAnomaliesForPackages(effectivePackageNames.value))
+const hasAnomalies = computed(() => packageAnomalies.value.length > 0)
+
+function formatAnomalyDate(dateStr: string) {
+  const [y, m, d] = dateStr.split('-').map(Number)
+  if (!y || !m || !d) return dateStr
+  return new Intl.DateTimeFormat(locale.value, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    timeZone: 'UTC',
+  }).format(new Date(Date.UTC(y, m - 1, d)))
+}
+
 // Trigger data loading when the metric is switched
 watch(selectedMetric, value => {
   if (!isMounted.value) return
   loadMetric(value)
+})
+
+// Sparkline charts (a11y alternative display for multi series)
+const chartLayout = usePermalink<'combined' | 'split'>('layout', 'combined')
+const isSparklineLayout = computed({
+  get: () => chartLayout.value === 'split',
+  set: (v: boolean) => {
+    chartLayout.value = v ? 'split' : 'combined'
+  },
 })
 </script>
 
@@ -1596,8 +1639,28 @@ watch(selectedMetric, value => {
     id="trends-chart"
     :aria-busy="activeMetricState.pending ? 'true' : 'false'"
   >
+    <TabRoot
+      v-if="isMultiPackageMode"
+      v-model="chartLayout"
+      id-prefix="chart-layout"
+      class="mt-4 mb-8"
+    >
+      <TabList :ariaLabel="$t('package.trends.chart_view_toggle')">
+        <TabItem value="combined" tab-id="combined-chart-layout-tab" icon="i-lucide:chart-line">
+          {{ $t('package.trends.chart_view_combined') }}
+        </TabItem>
+        <TabItem
+          value="split"
+          tab-id="split-chart-layout-tab"
+          icon="i-lucide:square-split-horizontal"
+        >
+          {{ $t('package.trends.chart_view_split') }}
+        </TabItem>
+      </TabList>
+    </TabRoot>
+
     <div class="w-full mb-4 flex flex-col gap-3">
-      <div class="flex flex-col sm:flex-row gap-3 sm:gap-2 sm:items-end">
+      <div class="grid grid-cols-2 sm:flex sm:flex-row gap-3 sm:gap-2 sm:items-end">
         <SelectField
           v-if="showFacetSelector"
           id="trends-metric-select"
@@ -1605,6 +1668,7 @@ watch(selectedMetric, value => {
           :disabled="activeMetricState.pending"
           :items="METRICS.map(m => ({ label: m.label, value: m.id }))"
           :label="$t('package.trends.facet')"
+          block
         />
 
         <SelectField
@@ -1613,9 +1677,10 @@ watch(selectedMetric, value => {
           v-model="selectedGranularity"
           :disabled="activeMetricState.pending"
           :items="granularityItems"
+          block
         />
 
-        <div class="grid grid-cols-2 gap-2 flex-1">
+        <div class="col-span-2 sm:col-span-1 grid grid-cols-2 gap-2 flex-1">
           <div class="flex flex-col gap-1">
             <label
               for="startDate"
@@ -1624,17 +1689,12 @@ watch(selectedMetric, value => {
               {{ $t('package.trends.start_date') }}
             </label>
             <div class="relative flex items-center">
-              <span
-                class="absolute inset-is-2 i-lucide:calendar w-4 h-4 text-fg-subtle shrink-0 pointer-events-none"
-                aria-hidden="true"
-              />
               <InputBase
                 id="startDate"
                 v-model="startDate"
                 type="date"
                 :max="DATE_INPUT_MAX"
-                class="w-full min-w-0 bg-transparent ps-7"
-                size="medium"
+                class="w-full min-w-0 bg-transparent"
               />
             </div>
           </div>
@@ -1644,17 +1704,12 @@ watch(selectedMetric, value => {
               {{ $t('package.trends.end_date') }}
             </label>
             <div class="relative flex items-center">
-              <span
-                class="absolute inset-is-2 i-lucide:calendar w-4 h-4 text-fg-subtle shrink-0 pointer-events-none"
-                aria-hidden="true"
-              />
               <InputBase
                 id="endDate"
                 v-model="endDate"
                 type="date"
                 :max="DATE_INPUT_MAX"
-                class="w-full min-w-0 bg-transparent ps-7"
-                size="medium"
+                class="w-full min-w-0 bg-transparent"
               />
             </div>
           </div>
@@ -1662,13 +1717,168 @@ watch(selectedMetric, value => {
 
         <button
           v-if="showResetButton"
+          :aria-expanded="showCorrectionControls"
+          aria-controls="trends-correction-controls"
           type="button"
           aria-label="Reset date range"
-          class="self-end flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
+          class="self-end flex items-center justify-center px-2.5 py-2.25 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
           @click="resetDateRange"
         >
-          <span class="i-lucide:undo-2 w-5 h-5" aria-hidden="true" />
+          <span class="block i-lucide:undo-2 w-5 h-5" aria-hidden="true" />
         </button>
+      </div>
+
+      <!-- Download filter controls -->
+      <div v-if="isDownloadsMetric" class="flex flex-col gap-2">
+        <button
+          type="button"
+          class="self-start flex items-center gap-1 text-2xs font-mono text-fg-subtle hover:text-fg transition-colors"
+          @click="showCorrectionControls = !showCorrectionControls"
+        >
+          <span
+            class="w-3.5 h-3.5 transition-transform"
+            :class="showCorrectionControls ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'"
+            aria-hidden="true"
+          />
+          {{ $t('package.trends.data_correction') }}
+        </button>
+        <div
+          class="overflow-hidden transition-[opacity] duration-200 ease-out"
+          id="trends-correction-controls"
+          :aria-hidden="!showCorrectionControls"
+          :inert="!showCorrectionControls"
+          :class="
+            showCorrectionControls
+              ? 'max-h-[220px] opacity-100'
+              : 'max-h-0 opacity-0 pointer-events-none'
+          "
+        >
+          <div class="pt-1 min-h-[160px] sm:min-h-[76px]">
+            <div class="grid grid-cols-2 sm:flex items-end gap-3">
+              <label class="flex flex-col gap-1 flex-1">
+                <span class="text-2xs font-mono text-fg-subtle tracking-wide uppercase">
+                  {{ $t('package.trends.average_window') }}
+                  <span class="text-fg-muted">({{ settings.chartFilter.averageWindow }})</span>
+                </span>
+                <input
+                  v-model.number="settings.chartFilter.averageWindow"
+                  :disabled="!showCorrectionControls"
+                  type="range"
+                  min="0"
+                  max="20"
+                  step="1"
+                  class="accent-[var(--accent-color,var(--fg-subtle))]"
+                />
+              </label>
+              <label class="flex flex-col gap-1 flex-1">
+                <span class="text-2xs font-mono text-fg-subtle tracking-wide uppercase">
+                  {{ $t('package.trends.smoothing') }}
+                  <span class="text-fg-muted">({{ settings.chartFilter.smoothingTau }})</span>
+                </span>
+                <input
+                  v-model.number="settings.chartFilter.smoothingTau"
+                  :disabled="!showCorrectionControls"
+                  type="range"
+                  min="0"
+                  max="20"
+                  step="1"
+                  class="accent-[var(--accent-color,var(--fg-subtle))]"
+                />
+              </label>
+              <label class="flex flex-col gap-1 flex-1">
+                <span class="text-2xs font-mono text-fg-subtle tracking-wide uppercase">
+                  {{ $t('package.trends.prediction') }}
+                  <span class="text-fg-muted">({{ settings.chartFilter.predictionPoints }})</span>
+                </span>
+                <input
+                  v-model.number="settings.chartFilter.predictionPoints"
+                  :disabled="!showCorrectionControls"
+                  type="range"
+                  min="0"
+                  max="30"
+                  step="1"
+                  class="accent-[var(--accent-color,var(--fg-subtle))]"
+                />
+              </label>
+              <div class="flex flex-col gap-1 shrink-0">
+                <span
+                  class="text-2xs font-mono text-fg-subtle tracking-wide uppercase flex items-center justify-between"
+                >
+                  {{ $t('package.trends.known_anomalies') }}
+                  <TooltipApp
+                    interactive
+                    :to="inModal ? '#chart-modal' : undefined"
+                    v-if="showCorrectionControls"
+                  >
+                    <button
+                      type="button"
+                      class="i-lucide:info w-3.5 h-3.5 text-fg-muted cursor-help"
+                      :aria-label="$t('package.trends.known_anomalies')"
+                    />
+                    <template #content>
+                      <div class="flex flex-col gap-3">
+                        <p class="text-xs text-fg-muted">
+                          {{ $t('package.trends.known_anomalies_description') }}
+                        </p>
+                        <div v-if="hasAnomalies">
+                          <p class="text-xs text-fg-subtle font-medium">
+                            {{ $t('package.trends.known_anomalies_ranges') }}
+                          </p>
+                          <ul class="text-xs text-fg-subtle list-disc list-inside">
+                            <li v-for="a in packageAnomalies" :key="`${a.packageName}-${a.start}`">
+                              {{
+                                isMultiPackageMode
+                                  ? $t('package.trends.known_anomalies_range_named', {
+                                      packageName: a.packageName,
+                                      start: formatAnomalyDate(a.start),
+                                      end: formatAnomalyDate(a.end),
+                                    })
+                                  : $t('package.trends.known_anomalies_range', {
+                                      start: formatAnomalyDate(a.start),
+                                      end: formatAnomalyDate(a.end),
+                                    })
+                              }}
+                            </li>
+                          </ul>
+                        </div>
+                        <p v-else class="text-xs text-fg-muted">
+                          {{
+                            $t('package.trends.known_anomalies_none', effectivePackageNames.length)
+                          }}
+                        </p>
+                        <div class="flex justify-end">
+                          <LinkBase
+                            to="https://github.com/npmx-dev/npmx.dev/edit/main/app/utils/download-anomalies.data.ts"
+                            class="text-xs text-accent"
+                          >
+                            {{ $t('package.trends.known_anomalies_contribute') }}
+                          </LinkBase>
+                        </div>
+                      </div>
+                    </template>
+                  </TooltipApp>
+                </span>
+                <label
+                  class="flex items-center gap-1.5 text-2xs font-mono text-fg-subtle cursor-pointer h-4"
+                  :class="{ 'opacity-50': !hasAnomalies }"
+                >
+                  <input
+                    :checked="settings.chartFilter.anomaliesFixed"
+                    :disabled="!showCorrectionControls"
+                    @change="
+                      settings.chartFilter.anomaliesFixed = (
+                        $event.target as HTMLInputElement
+                      ).checked
+                    "
+                    type="checkbox"
+                    class="accent-[var(--accent-color,var(--fg-subtle))]"
+                  />
+                  {{ $t('package.trends.apply_correction') }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <p v-if="skippedPackagesWithoutGitHub.length > 0" class="text-2xs font-mono text-fg-subtle">
@@ -1682,17 +1892,60 @@ watch(selectedMetric, value => {
     </h2>
 
     <!-- Chart panel (active metric) -->
-    <div role="region" aria-labelledby="trends-chart-title" class="min-h-[260px]">
+    <div
+      role="region"
+      aria-labelledby="trends-chart-title"
+      :class="
+        isSparklineLayout || !inModal
+          ? undefined
+          : isMobile === false && width > 0
+            ? showCorrectionControls
+              ? 'h-[491px]'
+              : 'h-[567px]'
+            : 'min-h-[260px]'
+      "
+    >
       <ClientOnly v-if="chartData.dataset">
-        <div :data-pending="pending" :data-minimap-visible="maxDatapoints > 6">
+        <div
+          v-if="isSparklineLayout"
+          id="split-chart-layout-panel"
+          :role="isMultiPackageMode ? 'tabpanel' : undefined"
+          :aria-labelledby="isMultiPackageMode ? 'split-chart-layout-tab' : undefined"
+        >
+          <ChartSplitSparkline
+            :dataset="normalisedDataset"
+            :dates="chartData.dates"
+            :datetimeFormatterOptions
+            :showLastDatapointEstimation="shouldRenderEstimationOverlay && !isEndDateOnPeriodEnd"
+          />
+        </div>
+
+        <div
+          :data-pending="pending"
+          :data-minimap-visible="maxDatapoints > 6"
+          v-else
+          id="combined-chart-layout-panel"
+          :role="isMultiPackageMode ? 'tabpanel' : undefined"
+          :aria-labelledby="isMultiPackageMode ? 'combined-chart-layout-tab' : undefined"
+        >
           <VueUiXy
             :dataset="normalisedDataset"
             :config="chartConfig"
-            class="[direction:ltr]"
+            :class="{
+              '[direction:ltr]': true,
+              'no-transition': isResizing,
+            }"
             @zoomStart="setIsZoom"
             @zoomEnd="setIsZoom"
             @zoomReset="isZoomed = false"
           >
+            <!-- Keyboard navigation hint -->
+            <template #hint="{ isVisible }">
+              <p v-if="isVisible" class="text-accent text-xs -mt-6 text-center" aria-hidden="true">
+                {{ $t('compare.packages.line_chart_nav_hint') }}
+              </p>
+            </template>
+
             <!-- Injecting custom svg elements -->
             <template #svg="{ svg }">
               <!-- Estimation lines for monthly & yearly granularities when the end date induces a downwards trend -->
@@ -1710,7 +1963,14 @@ watch(selectedMetric, value => {
               <!-- Inject npmx logo & tagline during SVG and PNG print -->
               <g
                 v-if="svg.isPrintingSvg || svg.isPrintingImg"
-                v-html="drawNpmxLogoAndTaglineWatermark(svg, watermarkColors, $t, 'bottom')"
+                v-html="
+                  drawNpmxLogoAndTaglineWatermark({
+                    svg,
+                    colors: watermarkColors,
+                    translateFn: $t,
+                    positioning: 'bottom',
+                  })
+                "
               />
 
               <!-- Overlay covering the chart area to hide line resizing when switching granularities recalculates VueUiXy scaleMax when estimation lines are necessary -->
@@ -1775,7 +2035,10 @@ watch(selectedMetric, value => {
                 </template>
 
                 <!-- Estimation extra legend item -->
-                <div class="flex gap-1 place-items-center" v-if="supportsEstimation">
+                <div
+                  class="flex gap-1 place-items-center"
+                  v-if="supportsEstimation || hasDownloadAnomalies"
+                >
                   <svg viewBox="0 0 20 2" width="20">
                     <line
                       x1="0"
@@ -1818,6 +2081,18 @@ watch(selectedMetric, value => {
             <template #optionSvg>
               <span class="text-fg-subtle font-mono pointer-events-none">SVG</span>
             </template>
+            <template #optionStack="{ isStack }">
+              <span
+                v-if="isStack"
+                class="i-lucide:layers-2 text-fg-subtle w-6 h-6 pointer-events-none"
+                aria-hidden="true"
+              />
+              <span
+                v-else
+                class="i-lucide:chart-line text-fg-subtle w-6 h-6 pointer-events-none"
+                aria-hidden="true"
+              />
+            </template>
 
             <template #annotator-action-close>
               <span
@@ -1828,6 +2103,28 @@ watch(selectedMetric, value => {
             </template>
             <template #annotator-action-color="{ color }">
               <span class="i-lucide:palette w-6 h-6" :style="{ color }" aria-hidden="true" />
+            </template>
+            <template #annotator-action-draw="{ mode }">
+              <span
+                v-if="mode === 'arrow'"
+                class="i-lucide:move-up-right text-fg-subtle w-6 h-6"
+                aria-hidden="true"
+              />
+              <span
+                v-if="mode === 'text'"
+                class="i-lucide:type text-fg-subtle w-6 h-6"
+                aria-hidden="true"
+              />
+              <span
+                v-if="mode === 'line'"
+                class="i-lucide:pen-line text-fg-subtle w-6 h-6"
+                aria-hidden="true"
+              />
+              <span
+                v-if="mode === 'draw'"
+                class="i-lucide:line-squiggle text-fg-subtle w-6 h-6"
+                aria-hidden="true"
+              />
             </template>
             <template #annotator-action-undo>
               <span
@@ -1866,7 +2163,10 @@ watch(selectedMetric, value => {
             </template>
             <template #optionAltCopy>
               <span
-                class="i-lucide:person-standing w-6 h-6 text-fg-subtle"
+                class="w-6 h-6"
+                :class="
+                  copied ? 'i-lucide:check text-accent' : 'i-lucide:person-standing text-fg-subtle'
+                "
                 style="pointer-events: none"
                 aria-hidden="true"
               />
@@ -1897,6 +2197,19 @@ watch(selectedMetric, value => {
     </div>
   </div>
 </template>
+
+<style scoped>
+:deep(.vue-data-ui-component svg:focus-visible) {
+  outline: 1px solid var(--accent-color) !important;
+  border-radius: 0.1rem;
+  outline-offset: 0;
+}
+:deep(.vue-ui-user-options-button:focus-visible),
+:deep(.vue-ui-user-options :first-child:focus-visible) {
+  outline: 0.1rem solid var(--accent-color) !important;
+  border-radius: 0.25rem;
+}
+</style>
 
 <style>
 .vue-ui-pen-and-paper-actions {
@@ -1936,5 +2249,14 @@ watch(selectedMetric, value => {
 
 [data-minimap-visible='false'] .vue-data-ui-watermark {
   top: calc(100% - 2rem) !important;
+}
+
+.no-transition line,
+.no-transition circle {
+  transition: none !important;
+}
+
+input::-webkit-date-and-time-value {
+  margin-inline: 4px;
 }
 </style>

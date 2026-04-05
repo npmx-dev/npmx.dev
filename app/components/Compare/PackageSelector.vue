@@ -8,7 +8,7 @@ const props = defineProps<{
   max?: number
 }>()
 
-const maxPackages = computed(() => props.max ?? 4)
+const maxPackages = computed(() => props.max ?? MAX_PACKAGE_SELECTION)
 
 // Input state
 const inputValue = shallowRef('')
@@ -75,6 +75,8 @@ const resultIndexOffset = computed(() => (showNoDependencyOption.value ? 1 : 0))
 
 const numberFormatter = useNumberFormatter()
 
+const keyboardShortcuts = useKeyboardShortcuts()
+
 function addPackage(name: string) {
   if (packages.value.length >= maxPackages.value) return
   if (packages.value.includes(name)) return
@@ -98,6 +100,10 @@ function removePackage(name: string) {
 }
 
 function handleKeydown(e: KeyboardEvent) {
+  if (!keyboardShortcuts.value) {
+    return
+  }
+
   const items = navigableItems.value
   const count = items.length
 
@@ -183,18 +189,12 @@ watch(highlightedIndex, index => {
   }
 })
 
-const { start, stop } = useTimeoutFn(() => {
+const containerRef = useTemplateRef('containerRef')
+
+onClickOutside(containerRef, () => {
   isInputFocused.value = false
-}, 200)
-
-function handleBlur() {
-  start()
-}
-
-function handleFocus() {
-  stop()
-  isInputFocused.value = true
-}
+  highlightedIndex.value = -1
+})
 </script>
 
 <template>
@@ -213,7 +213,7 @@ function handleFocus() {
           {{ pkg }}
         </LinkBase>
         <ButtonBase
-          size="small"
+          size="sm"
           :aria-label="
             $t('compare.selector.remove_package', {
               package: pkg === NO_DEPENDENCY_ID ? $t('compare.no_dependency.label') : pkg,
@@ -226,7 +226,7 @@ function handleFocus() {
     </div>
 
     <!-- Add package input -->
-    <div v-if="packages.length < maxPackages" class="relative">
+    <div v-if="packages.length < maxPackages" ref="containerRef" class="relative">
       <div class="relative group flex items-center">
         <label for="package-search" class="sr-only">
           {{ $t('compare.selector.search_label') }}
@@ -246,11 +246,10 @@ function handleFocus() {
               : $t('compare.selector.search_add')
           "
           no-correct
-          size="medium"
           class="w-full min-w-25 ps-7"
           aria-autocomplete="list"
-          @focus="handleFocus"
-          @blur="handleBlur"
+          ref="inputRef"
+          @focus="isInputFocused = true"
           @keydown="handleKeydown"
         />
       </div>
@@ -266,13 +265,13 @@ function handleFocus() {
         <div
           v-if="isInputFocused && (navigableItems.length > 0 || isSearching)"
           ref="listRef"
-          class="absolute top-full inset-x-0 mt-1 bg-bg-elevated border border-border rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
+          class="absolute top-full inset-x-0 mt-1 px-0.5 bg-bg-elevated border border-border rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
         >
           <!-- No dependency option (easter egg with James) -->
           <ButtonBase
             v-if="showNoDependencyOption"
             data-navigable
-            class="block w-full text-start"
+            class="block w-full text-start !border-transparent"
             :class="highlightedIndex === 0 ? '!bg-accent/15' : ''"
             :aria-label="$t('compare.no_dependency.add_column')"
             @mouseenter="highlightedIndex = 0"
@@ -297,7 +296,7 @@ function handleFocus() {
             v-for="(result, index) in filteredResults"
             :key="result.name"
             data-navigable
-            class="block w-full text-start"
+            class="block w-full text-start my-0.5 !border-transparent"
             :class="highlightedIndex === index + resultIndexOffset ? '!bg-accent/15' : ''"
             @mouseenter="highlightedIndex = index + resultIndexOffset"
             @click="addPackage(result.name)"
@@ -307,7 +306,7 @@ function handleFocus() {
               v-if="result.description"
               class="text-xs text-fg-muted truncate mt-0.5 w-full block"
             >
-              {{ decodeHtmlEntities(result.description) }}
+              {{ stripHtmlTags(decodeHtmlEntities(result.description)) }}
             </span>
           </ButtonBase>
         </div>

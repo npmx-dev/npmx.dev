@@ -1,6 +1,4 @@
-import type { Packument, PackumentVersion, DependencyDepth } from '#shared/types'
 import { mapWithConcurrency } from '#shared/utils/async'
-import { encodePackageName } from '#shared/utils/npm'
 import { maxSatisfying } from 'semver'
 
 /** Concurrency limit for fetching packuments during dependency resolution */
@@ -17,27 +15,20 @@ export const TARGET_PLATFORM = {
 }
 
 /**
- * Fetch packument with caching (returns null on error for tree traversal)
+ * Fetch packument with caching (returns null on error for tree traversal).
+ * Delegates to fetchNpmPackage() to share a single cache for all packument fetches.
  */
-export const fetchPackument = defineCachedFunction(
-  async (name: string): Promise<Packument | null> => {
-    try {
-      return await $fetch<Packument>(`https://registry.npmjs.org/${encodePackageName(name)}`)
-    } catch (error) {
-      if (import.meta.dev) {
-        // oxlint-disable-next-line no-console -- log npm registry failures for debugging
-        console.warn(`[dep-resolver] Failed to fetch packument for ${name}:`, error)
-      }
-      return null
+async function fetchPackument(name: string): Promise<Packument | null> {
+  try {
+    return await fetchNpmPackage(name)
+  } catch (error) {
+    if (import.meta.dev) {
+      // oxlint-disable-next-line no-console -- log npm registry failures for debugging
+      console.warn(`[dep-resolver] Failed to fetch packument for ${name}:`, error)
     }
-  },
-  {
-    maxAge: 60 * 60,
-    swr: true,
-    name: 'packument',
-    getKey: (name: string) => name,
-  },
-)
+    return null
+  }
+}
 
 /**
  * Check if a package version matches the target platform.
@@ -107,6 +98,7 @@ export interface ResolvedPackage {
   name: string
   version: string
   size: number
+  tarballUrl: string
   optional: boolean
   /** Depth level (only when trackDepth is enabled) */
   depth?: DependencyDepth
@@ -161,13 +153,14 @@ export async function resolveDependencyTree(
         if (!matchesPlatform(versionData)) return
 
         const size = (versionData.dist as { unpackedSize?: number })?.unpackedSize ?? 0
+        const tarballUrl = versionData.dist?.tarball ?? ''
         const key = `${name}@${version}`
 
         // Build path for this package (path to parent + this package with version)
         const currentPath = [...path, `${name}@${version}`]
 
         if (!resolved.has(key)) {
-          const pkg: ResolvedPackage = { name, version, size, optional }
+          const pkg: ResolvedPackage = { name, version, size, tarballUrl, optional }
           if (options.trackDepth) {
             pkg.depth = level === 0 ? 'root' : level === 1 ? 'direct' : 'transitive'
             pkg.path = currentPath

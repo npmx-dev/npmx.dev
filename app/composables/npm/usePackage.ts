@@ -1,13 +1,3 @@
-import type {
-  Packument,
-  SlimPackument,
-  SlimVersion,
-  SlimPackumentVersion,
-  PackumentVersion,
-  PublishTrustLevel,
-} from '#shared/types'
-import { extractInstallScriptsInfo } from '~/utils/install-scripts'
-
 /** Number of recent versions to include in initial payload */
 const RECENT_VERSIONS_COUNT = 5
 
@@ -47,7 +37,7 @@ export function transformPackument(
       const timeA = pkg.time[a]
       const timeB = pkg.time[b]
       if (!timeA || !timeB) return 0
-      return new Date(timeB).getTime() - new Date(timeA).getTime()
+      return Date.parse(timeB) - Date.parse(timeA)
     })
     .slice(0, RECENT_VERSIONS_COUNT)
 
@@ -120,6 +110,14 @@ export function transformPackument(
     license = license.type
   }
 
+  // Extract storybook field from the requested version (custom package.json field)
+  const requestedPkgVersion = requestedVersion ? pkg.versions[requestedVersion] : null
+  const rawStorybook = requestedPkgVersion?.storybook
+  const storybook =
+    rawStorybook && typeof rawStorybook === 'object' && 'url' in rawStorybook
+      ? ({ url: rawStorybook.url } as { url: string })
+      : undefined
+
   return {
     '_id': pkg._id,
     '_rev': pkg._rev,
@@ -134,6 +132,7 @@ export function transformPackument(
     'keywords': pkg.keywords,
     'repository': pkg.repository,
     'bugs': pkg.bugs,
+    ...(storybook && { storybook }),
     'requestedVersion': versionData,
     'versions': filteredVersions,
     'securityVersions': securityVersions,

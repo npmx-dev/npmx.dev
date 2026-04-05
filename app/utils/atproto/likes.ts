@@ -2,15 +2,12 @@ import { FetchError } from 'ofetch'
 import { handleAuthError } from '~/utils/atproto/helpers'
 import type { PackageLikes } from '#shared/types/social'
 
-export type LikeResult = { success: true; data: PackageLikes } | { success: false; error: Error }
+type LikeResult = { success: true; data: PackageLikes } | { success: false; error: Error }
 
 /**
  * Like a package via the API
  */
-export async function likePackage(
-  packageName: string,
-  userHandle?: string | null,
-): Promise<LikeResult> {
+async function likePackage(packageName: string, userHandle?: string | null): Promise<LikeResult> {
   try {
     const result = await $fetch<PackageLikes>('/api/social/like', {
       method: 'POST',
@@ -28,10 +25,7 @@ export async function likePackage(
 /**
  * Unlike a package via the API
  */
-export async function unlikePackage(
-  packageName: string,
-  userHandle?: string | null,
-): Promise<LikeResult> {
+async function unlikePackage(packageName: string, userHandle?: string | null): Promise<LikeResult> {
   try {
     const result = await $fetch<PackageLikes>('/api/social/like', {
       method: 'DELETE',

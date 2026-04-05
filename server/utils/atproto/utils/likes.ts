@@ -1,6 +1,9 @@
 import { $nsid as likeNsid } from '#shared/types/lexicons/dev/npmx/feed/like.defs'
 import type { Backlink } from '#shared/utils/constellation'
-import { TID } from '@atproto/common'
+import type * as blue from '#shared/types/lexicons/blue'
+import * as dev from '#shared/types/lexicons/dev'
+import { Client } from '@atproto/lex'
+import * as TID from '@atcute/tid'
 
 //Cache keys and helpers
 const CACHE_PREFIX = 'atproto-likes:'
@@ -23,8 +26,8 @@ export function aggregateBacklinksByDay(
   const countsByDay = new Map<string, number>()
   for (const backlink of backlinks) {
     try {
-      const tid = TID.fromStr(backlink.rkey)
-      const timestampMs = tid.timestamp() / 1000
+      const { timestamp } = TID.parse(backlink.rkey)
+      const timestampMs = timestamp / 1000
       const date = new Date(timestampMs)
       const day = date.toISOString().slice(0, 10)
       countsByDay.set(day, (countsByDay.get(day) ?? 0) + 1)
@@ -281,6 +284,26 @@ export class PackageLikesUtils {
   }
 
   /**
+   * Gets a list of likes for a user. Newest first
+   * @param miniDoc
+   * @param limit
+   * @returns
+   */
+  async getUserLikes(
+    miniDoc: blue.microcosm.identity.resolveMiniDoc.$OutputBody,
+    limit: number = 10,
+  ) {
+    const client = new Client(miniDoc.pds, {
+      headers: { 'User-Agent': 'npmx' },
+    })
+    const result = await client.list(dev.npmx.feed.like, {
+      limit,
+      repo: miniDoc.did,
+    })
+    return result
+  }
+
+  /*
    * Gets the likes evolution for a package as daily {day, likes} points.
    * Fetches ALL backlinks via paginated constellation calls, decodes TID
    * timestamps from each rkey, and groups by day.

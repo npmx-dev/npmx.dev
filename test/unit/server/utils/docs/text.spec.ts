@@ -1,12 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import * as fc from 'fast-check'
-import {
-  escapeHtml,
-  parseJsDocLinks,
-  renderMarkdown,
-  stripAnsi,
-} from '../../../../../server/utils/docs/text'
-import type { SymbolLookup } from '../../../../../server/utils/docs/types'
+import { escapeHtml, parseJsDocLinks, renderMarkdown, stripAnsi } from '#server/utils/docs/text'
+import type { SymbolLookup } from '#server/utils/docs/types'
 
 describe('stripAnsi', () => {
   it('should strip basic color codes', () => {

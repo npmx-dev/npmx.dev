@@ -41,6 +41,22 @@ export function usePackageListPreferences() {
     },
   })
 
+  // One-time migration: replace legacy 'all' with the current maximum page size
+  watch(
+    isHydrated,
+    hydrated => {
+      if (!hydrated) {
+        return
+      }
+
+      if ((preferences.value.pageSize as unknown) === 'all') {
+        preferences.value.pageSize = Math.max(...PAGE_SIZE_OPTIONS) as PageSize
+        save()
+      }
+    },
+    { immediate: true },
+  )
+
   const pageSize = computed({
     get: () => preferences.value.pageSize,
     set: (value: PageSize) => {

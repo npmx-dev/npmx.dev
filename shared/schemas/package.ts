@@ -19,7 +19,7 @@ export const PackageNameSchema = v.pipe(
  * Enforces a SemVer-like pattern to prevent directory traversal or complex injection attacks
  * includes: alphanumeric, dots, underscores, dashes, and plus signs (for build metadata)
  */
-export const VersionSchema = v.pipe(
+const VersionSchema = v.pipe(
   v.string(),
   v.nonEmpty('Version is required'),
   v.regex(/^[\w.+-]+$/, 'Invalid version format'),
@@ -29,7 +29,7 @@ export const VersionSchema = v.pipe(
  *
  * Allows standard subdirectories and extensions but prevents directory traversal
  */
-export const FilePathSchema = v.pipe(
+const FilePathSchema = v.pipe(
   v.string(),
   v.nonEmpty('File path is required'),
   v.check(input => !input.includes('..'), 'Invalid path: directory traversal not allowed'),
@@ -71,9 +71,24 @@ export const PackageFileQuerySchema = v.object({
 })
 
 /**
- * Automatically infer types for routes
- * Usage - prefer this over manually defining interfaces
+ * Schema for version comparison (from...to range)
  */
-export type PackageRouteParams = v.InferOutput<typeof PackageRouteParamsSchema>
-export type PackageVersionQuery = v.InferOutput<typeof PackageVersionQuerySchema>
-export type PackageFileQuery = v.InferOutput<typeof PackageFileQuerySchema>
+export const PackageCompareQuerySchema = v.object({
+  packageName: PackageNameSchema,
+  fromVersion: VersionSchema,
+  toVersion: VersionSchema,
+})
+
+/**
+ * Schema for file diff between versions
+ */
+export const PackageFileDiffQuerySchema = v.object({
+  packageName: PackageNameSchema,
+  fromVersion: VersionSchema,
+  toVersion: VersionSchema,
+  filePath: FilePathSchema,
+})
+/** @public */
+export type PackageCompareQuery = v.InferOutput<typeof PackageCompareQuerySchema>
+/** @public */
+export type PackageFileDiffQuery = v.InferOutput<typeof PackageFileDiffQuerySchema>

@@ -43,6 +43,7 @@ const pageSize = defineModel<PageSize>('pageSize', { required: true })
 
 const emit = defineEmits<{
   'toggleColumn': [columnId: ColumnId]
+  'toggleSelection': []
   'resetColumns': []
   'clearFilter': [chip: FilterChip]
   'clearAllFilters': []
@@ -101,15 +102,13 @@ const sortKeyLabelKeys = computed<Record<SortKey, string>>(() => ({
   'downloads-year': t('filters.sort.downloads_year'),
   'updated': t('filters.sort.published'),
   'name': t('filters.sort.name'),
-  'quality': t('filters.sort.quality'),
-  'popularity': t('filters.sort.popularity'),
-  'maintenance': t('filters.sort.maintenance'),
-  'score': t('filters.sort.score'),
 }))
 
 function getSortKeyLabelKey(key: SortKey): string {
   return sortKeyLabelKeys.value[key]
 }
+
+const { selectedPackages, clearSelectedPackages } = usePackageSelection()
 </script>
 
 <template>
@@ -147,7 +146,7 @@ function getSortKeyLabelKey(key: SortKey): string {
           $t(
             'filters.count.showing_paginated',
             {
-              pageSize: pageSize === 'all' ? $n(filteredCount) : Math.min(pageSize, filteredCount),
+              pageSize: Math.min(pageSize, filteredCount),
               count: $n(filteredCount),
             },
             filteredCount,
@@ -157,11 +156,9 @@ function getSortKeyLabelKey(key: SortKey): string {
 
       <div class="flex-1" />
 
-      <div
-        class="flex flex-wrap items-center gap-3 sm:justify-end justify-between w-full sm:w-auto"
-      >
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
         <!-- Sort controls -->
-        <div class="flex items-center gap-1 shrink-0 order-1 sm:order-1">
+        <div class="flex items-center gap-1 shrink-0">
           <!-- Sort key dropdown -->
           <SelectField
             :label="$t('filters.sort.label')"
@@ -181,7 +178,7 @@ function getSortKeyLabelKey(key: SortKey): string {
           <button
             v-if="!searchContext || currentSort.key !== 'relevance'"
             type="button"
-            class="p-1.5 rounded border border-border bg-bg-subtle text-fg-muted hover:text-fg hover:border-border-hover transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+            class="p-2.5 rounded-md border border-border bg-bg-subtle text-fg-muted hover:text-fg hover:border-border-hover transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
             :aria-label="$t('filters.sort.toggle_direction')"
             :title="
               currentSort.direction === 'asc'
@@ -203,29 +200,35 @@ function getSortKeyLabelKey(key: SortKey): string {
         </div>
 
         <!-- View mode toggle - mobile (left side, row 2) -->
-        <div class="flex sm:hidden items-center gap-1 order-2">
-          <ViewModeToggle v-model="viewMode" />
-        </div>
-
-        <!-- Column picker - mobile (right side, row 2) -->
-        <ColumnPicker
-          v-if="viewMode === 'table'"
-          class="flex sm:hidden order-3"
-          :columns="columns"
-          @toggle="emit('toggleColumn', $event)"
-          @reset="emit('resetColumns')"
-        />
-
-        <!-- View mode toggle + Column picker - desktop (right side, row 1) -->
-        <div class="hidden sm:flex items-center gap-1 order-2">
-          <ViewModeToggle v-model="viewMode" />
-
+        <div class="flex flex-row-reverse sm:flex-row items-center gap-1">
           <ColumnPicker
             v-if="viewMode === 'table'"
             :columns="columns"
             @toggle="emit('toggleColumn', $event)"
             @reset="emit('resetColumns')"
           />
+
+          <ViewModeToggle v-model="viewMode" />
+        </div>
+
+        <div
+          class="flex items-center order-3 sm:border-is sm:border-fg-subtle/20 sm:ps-3"
+          v-if="selectedPackages.length"
+        >
+          <ButtonBase
+            variant="secondary"
+            @click="emit('toggleSelection')"
+            classicon="i-lucide:package-check"
+          >
+            {{ t('filters.view_selected') }} ({{ selectedPackages.length }})
+          </ButtonBase>
+          <button
+            @click="clearSelectedPackages"
+            :aria-label="$t('filters.clear_selected_label')"
+            class="flex items-center ms-2"
+          >
+            <span class="i-lucide:x text-sm" />
+          </button>
         </div>
       </div>
     </div>

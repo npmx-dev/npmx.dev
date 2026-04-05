@@ -4,6 +4,7 @@ import { LinkBase } from '#components'
 
 interface Props {
   title: string
+  subtitle?: string
   isLoading?: boolean
   headingLevel?: `h${number}`
   id: string
@@ -70,6 +71,7 @@ useHead({
       innerHTML: `
 :root[data-collapsed~='${props.id}'] section[data-anchor-id='${props.id}'] .collapsible-content {
   grid-template-rows: 0fr;
+  overflow: hidden;
 }`,
     },
   ],
@@ -78,15 +80,16 @@ useHead({
 
 <template>
   <section :id="id" :data-anchor-id="id" class="scroll-mt-20 xl:scroll-mt-0">
-    <div class="flex items-center justify-between mb-3 px-1">
+    <div class="flex items-center justify-between mb-3 ps-1">
       <component
         :is="headingLevel"
-        class="group text-xs text-fg-subtle uppercase tracking-wider flex items-center gap-2"
+        class="group text-xs text-fg-subtle uppercase tracking-wider flex gap-2"
+        :class="subtitle ? 'items-start' : 'items-center'"
       >
         <button
           :id="buttonId"
           type="button"
-          class="w-4 h-4 flex items-center justify-center text-fg-subtle hover:text-fg-muted transition-colors duration-200 shrink-0 focus-visible:outline-accent/70 rounded"
+          class="size-5 -me-1 flex items-center justify-center text-fg-subtle hover:text-fg-muted transition-colors duration-200 shrink-0 focus-visible:outline-accent/70 rounded"
           :aria-expanded="isOpen"
           :aria-controls="contentId"
           :aria-label="ariaLabel"
@@ -101,9 +104,14 @@ useHead({
           />
         </button>
 
-        <LinkBase :to="`#${id}`">
-          {{ title }}
-        </LinkBase>
+        <span>
+          <LinkBase :to="`#${id}`">
+            {{ title }}
+          </LinkBase>
+          <span v-if="subtitle" class="block text-2xs normal-case tracking-normal">{{
+            subtitle
+          }}</span>
+        </span>
       </component>
 
       <!-- Actions slot for buttons or other elements -->
@@ -114,7 +122,7 @@ useHead({
 
     <div
       :id="contentId"
-      class="grid ms-6 grid-rows-[1fr] transition-[grid-template-rows] duration-200 ease-in-out collapsible-content overflow-hidden"
+      class="grid ms-6 ps-1 grid-rows-[1fr] transition-[grid-template-rows] duration-200 ease-in-out collapsible-content"
       :inert="!isOpen"
     >
       <div class="min-h-0 min-w-0">

@@ -1,6 +1,3 @@
-import type { NpmSearchResponse, NpmSearchResult } from '#shared/types'
-import { emptySearchResponse } from './search-utils'
-
 /** Default page size for incremental loading (npm registry path) */
 const PAGE_SIZE = 50 as const
 
@@ -50,7 +47,7 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
 
   const asyncData = useLazyAsyncData(
     () => `user-packages:${searchProviderValue.value}:${toValue(username)}`,
-    async ({ $npmRegistry }, { signal }) => {
+    async (_nuxtApp, { signal }) => {
       const user = toValue(username)
       if (!user) {
         return emptySearchResponse()

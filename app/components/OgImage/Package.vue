@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { joinURL } from 'ufo'
-
 const props = withDefaults(
   defineProps<{
     name: string
@@ -38,16 +36,7 @@ const { data: pkg, refresh: refreshPkg } = usePackage(
 )
 const displayVersion = computed(() => pkg.value?.requestedVersion ?? null)
 
-const repositoryUrl = computed(() => {
-  const repo = displayVersion.value?.repository
-  if (!repo?.url) return null
-  let url = normalizeGitUrl(repo.url)
-  // append `repository.directory` for monorepo packages
-  if (repo.directory) {
-    url = joinURL(`${url}/tree/HEAD`, repo.directory)
-  }
-  return url
-})
+const { repositoryUrl } = useRepositoryUrl(displayVersion)
 
 const { data: likes, refresh: refreshLikes } = useFetch(() => `/api/social/likes/${name.value}`, {
   default: () => ({ totalLikes: 0, userHasLiked: false }),

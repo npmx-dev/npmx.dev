@@ -28,6 +28,8 @@ export interface TocItem {
  * Response from README API endpoint
  */
 export interface ReadmeResponse {
+  /** Whether the response is the default value */
+  defaultValue?: boolean
   /** Whether the README exists */
   mdExists?: boolean
   /** Rendered HTML content */

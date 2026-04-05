@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { I18nLocaleStatus } from '#shared/types'
-
 const props = defineProps<{
   status: I18nLocaleStatus
 }>()

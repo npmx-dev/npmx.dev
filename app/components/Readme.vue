@@ -61,7 +61,7 @@ function handleClick(event: MouseEvent) {
 
 <template>
   <article
-    class="readme prose prose-invert max-w-[70ch] lg:max-w-none px-1"
+    class="readme max-w-[70ch] lg:max-w-none px-1"
     dir="auto"
     v-html="html"
     :style="{
@@ -150,14 +150,14 @@ function handleClick(event: MouseEvent) {
   @apply inline i-lucide:external-link rtl-flip ms-1 opacity-50;
 }
 
-.readme :deep(a[href^='#']::after) {
+.readme :deep(:is(h1, h2, h3, h4, h5, h6) a[href^='#']::after) {
   /* I don't know what kind of sorcery this is, but it ensures this icon can't wrap to a new line on its own. */
   content: '__';
   @apply inline i-lucide:link rtl-flip ms-1 opacity-0;
   font-size: 0.75em;
 }
 
-.readme :deep(a[href^='#']:hover::after) {
+.readme :deep(:is(h1, h2, h3, h4, h5, h6) a[href^='#']:hover::after) {
   @apply opacity-100;
 }
 

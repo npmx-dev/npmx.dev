@@ -7,7 +7,7 @@ import {
   getCreateShortName,
   getTypesPackageName,
   hasBuiltInTypes,
-} from '../../../../shared/utils/package-analysis'
+} from '#shared/utils/package-analysis'
 
 describe('detectModuleFormat', () => {
   it('detects ESM from type: module', () => {
@@ -122,6 +122,10 @@ describe('detectModuleFormat', () => {
       }),
     ).toBe('esm')
   })
+
+  it('detects WASM from main field', () => {
+    expect(detectModuleFormat({ main: 'main.wasm' })).toBe('wasm')
+  })
 })
 
 describe('detectTypesStatus', () => {
@@ -165,6 +169,107 @@ describe('detectTypesStatus', () => {
 
   it('returns none when no types detected', () => {
     expect(detectTypesStatus({})).toEqual({ kind: 'none' })
+  })
+
+  it('detects included types when matching declaration file exists for entry point', () => {
+    expect(
+      detectTypesStatus(
+        { type: 'module', exports: { '.': './dist/index.mjs' } },
+        undefined,
+        new Set(['dist/index.mjs', 'dist/index.d.mts']),
+      ),
+    ).toEqual({ kind: 'included' })
+  })
+
+  it('does not detect types from unrelated .d.ts files in the package', () => {
+    expect(
+      detectTypesStatus(
+        { type: 'module', exports: { '.': './dist/index.mjs' } },
+        undefined,
+        new Set(['dist/index.mjs', 'env.d.ts', 'shims-vue.d.ts']),
+      ),
+    ).toEqual({ kind: 'none' })
+  })
+})
+
+describe('detectTypesStatus implicit types from entry points', () => {
+  it('finds .d.mts matching .mjs export entry point', () => {
+    expect(
+      detectTypesStatus(
+        { type: 'module', exports: { '.': './dist/index.mjs' } },
+        undefined,
+        new Set(['dist/index.d.mts']),
+      ),
+    ).toEqual({ kind: 'included' })
+  })
+
+  it('finds .d.cts matching .cjs export entry point', () => {
+    expect(
+      detectTypesStatus(
+        { exports: { '.': { require: './dist/index.cjs' } } },
+        undefined,
+        new Set(['dist/index.d.cts']),
+      ),
+    ).toEqual({ kind: 'included' })
+  })
+
+  it('finds .d.ts matching .js export entry point', () => {
+    expect(
+      detectTypesStatus(
+        { exports: { '.': './dist/index.js' } },
+        undefined,
+        new Set(['dist/index.d.ts']),
+      ),
+    ).toEqual({ kind: 'included' })
+  })
+
+  it('finds .d.mts matching .mjs main entry point', () => {
+    expect(
+      detectTypesStatus(
+        { type: 'module', main: 'dist/index.mjs' },
+        undefined,
+        new Set(['dist/index.d.mts']),
+      ),
+    ).toEqual({ kind: 'included' })
+  })
+
+  it('finds .d.ts matching .js module entry point', () => {
+    expect(
+      detectTypesStatus({ module: './dist/index.js' }, undefined, new Set(['dist/index.d.ts'])),
+    ).toEqual({ kind: 'included' })
+  })
+
+  it('returns none when no declaration file matches any entry point', () => {
+    expect(
+      detectTypesStatus(
+        { type: 'module', exports: { '.': './dist/index.mjs' } },
+        undefined,
+        new Set(['dist/other.d.mts', 'types/env.d.ts']),
+      ),
+    ).toEqual({ kind: 'none' })
+  })
+})
+
+describe('analyzePackage with files (implicit types)', () => {
+  it('detects included types when matching declaration file exists for entry point', () => {
+    const pkg = { type: 'module' as const, exports: { '.': './dist/index.mjs' } }
+    const files = new Set(['dist/index.mjs', 'dist/index.d.mts'])
+    const result = analyzePackage(pkg, { files })
+    expect(result.types).toEqual({ kind: 'included' })
+  })
+
+  it('returns none when no declaration file matches entry point', () => {
+    const pkg = { type: 'module' as const, exports: { '.': './dist/index.mjs' } }
+    const files = new Set(['dist/index.mjs'])
+    const result = analyzePackage(pkg, { files })
+    expect(result.types).toEqual({ kind: 'none' })
+  })
+
+  it('returns none when only unrelated .d.ts files exist', () => {
+    const pkg = { type: 'module' as const, exports: { '.': './dist/index.mjs' } }
+    const files = new Set(['dist/index.mjs', 'env.d.ts'])
+    const result = analyzePackage(pkg, { files })
+    expect(result.types).toEqual({ kind: 'none' })
   })
 })
 
@@ -328,19 +433,23 @@ describe('getCreateShortName', () => {
     expect(getCreateShortName('create-vite')).toBe('vite')
   })
 
-  it('extracts name from scoped create-* package', () => {
-    expect(getCreateShortName('@vue/create-app')).toBe('app')
+  it('extracts name from scoped create-* package preserving scope', () => {
+    expect(getCreateShortName('@vue/create-app')).toBe('@vue/app')
   })
 
   it('returns full name if not a create-* package', () => {
     expect(getCreateShortName('vite')).toBe('vite')
   })
 
-  it('handles scoped package without create- prefix', () => {
-    expect(getCreateShortName('@scope/foo')).toBe('foo')
+  it('returns full name for scoped package without create- prefix', () => {
+    expect(getCreateShortName('@scope/foo')).toBe('@scope/foo')
   })
 
   it('extracts name from create-next-app style packages', () => {
     expect(getCreateShortName('create-next-app')).toBe('next-app')
+  })
+
+  it('returns scope only for @scope/create packages', () => {
+    expect(getCreateShortName('@angular/create')).toBe('@angular')
   })
 })

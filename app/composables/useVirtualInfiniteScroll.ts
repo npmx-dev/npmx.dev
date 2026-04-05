@@ -11,7 +11,7 @@ export interface WindowVirtualizerHandle {
   ) => void
 }
 
-export interface UseVirtualInfiniteScrollOptions {
+interface UseVirtualInfiniteScrollOptions {
   /** Reference to the WindowVirtualizer component */
   listRef: Ref<WindowVirtualizerHandle | null>
   /** Current item count */

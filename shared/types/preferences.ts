@@ -15,11 +15,8 @@ export type ColumnId =
   | 'updated'
   | 'maintainers'
   | 'keywords'
-  | 'qualityScore'
-  | 'popularityScore'
-  | 'maintenanceScore'
-  | 'combinedScore'
   | 'security'
+  | 'selection'
 
 export interface ColumnConfig {
   id: ColumnId
@@ -45,34 +42,6 @@ export const DEFAULT_COLUMNS: ColumnConfig[] = [
   { id: 'maintainers', visible: false, sortable: false, width: '150px' },
   { id: 'keywords', visible: false, sortable: false, width: '200px' },
   {
-    id: 'qualityScore',
-    visible: false,
-    sortable: true,
-    width: '100px',
-    disabled: true,
-  },
-  {
-    id: 'popularityScore',
-    visible: false,
-    sortable: true,
-    width: '100px',
-    disabled: true,
-  },
-  {
-    id: 'maintenanceScore',
-    visible: false,
-    sortable: true,
-    width: '100px',
-    disabled: true,
-  },
-  {
-    id: 'combinedScore',
-    visible: false,
-    sortable: true,
-    width: '100px',
-    disabled: true,
-  },
-  {
     id: 'security',
     visible: false,
     sortable: false,
@@ -89,10 +58,6 @@ export type SortKey =
   | 'downloads-year'
   | 'updated'
   | 'name'
-  | 'quality'
-  | 'popularity'
-  | 'maintenance'
-  | 'score'
   | 'relevance'
 
 export type SortDirection = 'asc' | 'desc'
@@ -111,14 +76,6 @@ export type SortOption =
   | 'updated-asc'
   | 'name-asc'
   | 'name-desc'
-  | 'quality-desc'
-  | 'quality-asc'
-  | 'popularity-desc'
-  | 'popularity-asc'
-  | 'maintenance-desc'
-  | 'maintenance-asc'
-  | 'score-desc'
-  | 'score-asc'
   | 'relevance-desc'
   | 'relevance-asc'
 
@@ -140,13 +97,6 @@ export const SORT_KEYS: SortKeyConfig[] = [
   { key: 'downloads-year', defaultDirection: 'desc', disabled: true },
   { key: 'updated', defaultDirection: 'desc' },
   { key: 'name', defaultDirection: 'asc' },
-  // quality/popularity/maintenance: npm returns 1 for all, Algolia returns synthetic values.
-  // Neither provider produces meaningful values for these.
-  { key: 'quality', defaultDirection: 'desc', disabled: true },
-  { key: 'popularity', defaultDirection: 'desc', disabled: true },
-  { key: 'maintenance', defaultDirection: 'desc', disabled: true },
-  // score.final === searchScore (identical to relevance), redundant sort key
-  { key: 'score', defaultDirection: 'desc', disabled: true },
 ]
 
 /**
@@ -177,10 +127,6 @@ const VALID_SORT_KEYS = new Set<SortKey>([
   'downloads-year',
   'updated',
   'name',
-  'quality',
-  'popularity',
-  'maintenance',
-  'score',
 ])
 
 /** Parse a SortOption into key and direction */
@@ -279,7 +225,7 @@ export const DEFAULT_FILTERS: StructuredFilters = {
 // Pagination modes
 export type PaginationMode = 'infinite' | 'paginated'
 
-export const PAGE_SIZE_OPTIONS = [10, 25, 50, 100, 'all'] as const
+export const PAGE_SIZE_OPTIONS = [10, 25, 50, 100, 250] as const
 export type PageSize = (typeof PAGE_SIZE_OPTIONS)[number]
 
 // Complete preferences state

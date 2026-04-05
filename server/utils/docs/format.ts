@@ -25,7 +25,7 @@ export function getNodeSignature(node: DenoDocNode): string | null {
       return `${asyncStr}function ${name}${typeParamsStr}(${params}): ${ret}`
     }
     case 'class': {
-      const ext = node.classDef?.extends ? ` extends ${formatType(node.classDef.extends)}` : ''
+      const ext = node.classDef?.extends ? ` extends ${node.classDef.extends}` : ''
       const impl = node.classDef?.implements?.map(t => formatType(t)).join(', ')
       const implStr = impl ? ` implements ${impl}` : ''
       const abstractStr = node.classDef?.isAbstract ? 'abstract ' : ''
@@ -72,25 +72,66 @@ export function formatParam(param: FunctionParam): string {
 export function formatType(type?: TsType): string {
   if (!type) return ''
 
-  // Strip ANSI codes from repr (deno doc may include terminal colors since it's built for that)
-  if (type.repr) return stripAnsi(type.repr)
+  const formatter = TYPE_FORMATTERS[type.kind]
+  const formatted = formatter?.(type)
 
-  if (type.kind === 'keyword' && type.keyword) {
-    return type.keyword
-  }
+  if (formatted) return formatted
+  return type.repr ? stripAnsi(type.repr) : 'unknown'
+}
 
-  if (type.kind === 'typeRef' && type.typeRef) {
+const TYPE_FORMATTERS: Partial<Record<TsType['kind'], (type: TsType) => string>> = {
+  keyword: type => type.keyword || '',
+  literal: type => {
+    if (!type.literal) return ''
+    if (type.literal.kind === 'string') return `"${type.literal.string}"`
+    if (type.literal.kind === 'number') return String(type.literal.number)
+    if (type.literal.kind === 'boolean') return String(type.literal.boolean)
+    return ''
+  },
+  typeRef: type => {
+    if (!type.typeRef) return ''
     const params = type.typeRef.typeParams?.map(t => formatType(t)).join(', ')
     return params ? `${type.typeRef.typeName}<${params}>` : type.typeRef.typeName
-  }
+  },
+  array: type => {
+    if (!type.array) return ''
+    const element = formatType(type.array)
+    return type.array.kind === 'union' ? `(${element})[]` : `${element}[]`
+  },
+  union: type => (type.union ? type.union.map(t => formatType(t)).join(' | ') : ''),
+  this: () => 'this',
+  indexedAccess: type => {
+    if (!type.indexedAccess) return ''
+    return `${formatType(type.indexedAccess.objType)}[${formatType(type.indexedAccess.indexType)}]`
+  },
+  typeOperator: type => {
+    if (!type.typeOperator) return ''
+    return `${type.typeOperator.operator} ${formatType(type.typeOperator.tsType)}`
+  },
+  fnOrConstructor: type =>
+    type.fnOrConstructor ? formatFnOrConstructorType(type.fnOrConstructor) : '',
+  typeLiteral: type => (type.typeLiteral ? formatTypeLiteralType(type.typeLiteral) : ''),
+}
 
-  if (type.kind === 'array' && type.array) {
-    return `${formatType(type.array)}[]`
-  }
+function formatFnOrConstructorType(fn: NonNullable<TsType['fnOrConstructor']>): string {
+  const typeParams = fn.typeParams?.map(t => t.name).join(', ')
+  const typeParamsStr = typeParams ? `<${typeParams}>` : ''
+  const params = fn.params.map(p => formatParam(p)).join(', ')
+  const ret = formatType(fn.tsType) || 'void'
+  return `${typeParamsStr}(${params}) => ${ret}`
+}
 
-  if (type.kind === 'union' && type.union) {
-    return type.union.map(t => formatType(t)).join(' | ')
+function formatTypeLiteralType(lit: NonNullable<TsType['typeLiteral']>): string {
+  const parts: string[] = []
+  for (const prop of lit.properties) {
+    const opt = prop.optional ? '?' : ''
+    const ro = prop.readonly ? 'readonly ' : ''
+    parts.push(`${ro}${prop.name}${opt}: ${formatType(prop.tsType) || 'unknown'}`)
   }
-
-  return type.repr ? stripAnsi(type.repr) : 'unknown'
+  for (const method of lit.methods) {
+    const params = method.params?.map(p => formatParam(p)).join(', ') || ''
+    const ret = formatType(method.returnType) || 'void'
+    parts.push(`${method.name}(${params}): ${ret}`)
+  }
+  return `{ ${parts.join('; ')} }`
 }

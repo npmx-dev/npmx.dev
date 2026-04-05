@@ -1,14 +1,4 @@
 <script setup lang="ts">
-import type { NpmSearchResult } from '#shared/types'
-import type { WindowVirtualizerHandle } from '~/composables/useVirtualInfiniteScroll'
-import type {
-  ColumnConfig,
-  PageSize,
-  PaginationMode,
-  SortOption,
-  ViewMode,
-} from '#shared/types/preferences'
-import { DEFAULT_COLUMNS } from '#shared/types/preferences'
 import { WindowVirtualizer } from 'virtua/vue'
 
 /** Number of items to render statically during SSR */
@@ -75,18 +65,15 @@ const paginationMode = computed(() =>
 )
 const currentPage = computed(() => props.currentPage ?? 1)
 const pageSize = computed(() => props.pageSize ?? 25)
-// Numeric page size for virtual scroll and arithmetic (when 'all' is selected, use 25 as default)
-const numericPageSize = computed(() => (pageSize.value === 'all' ? 25 : pageSize.value))
+// Numeric page size for virtual scroll and arithmetic (use 25 as default)
+const numericPageSize = computed(() => pageSize.value)
 
 // Compute paginated results for paginated mode
 const displayedResults = computed(() => {
   if (paginationMode.value === 'infinite') {
     return props.results
   }
-  // 'all' page size means show everything (YOLO)
-  if (pageSize.value === 'all') {
-    return props.results
-  }
+
   const start = (currentPage.value - 1) * numericPageSize.value
   const end = start + numericPageSize.value
   return props.results.slice(start, end)
@@ -125,6 +112,12 @@ watch(
   { immediate: true },
 )
 
+// Tracks how many items came from the last new-search batch.
+// Items at index < newSearchBatchSize are from the new search → no animation.
+// Items at index >= newSearchBatchSize were loaded via scroll → animate with stagger.
+// Using an index threshold avoids any timing dependency on nextTick / virtual list paint.
+const newSearchBatchSize = shallowRef(Infinity)
+
 // Reset scroll state when results change significantly (new search)
 watch(
   () => props.results,
@@ -136,6 +129,7 @@ watch(
       (oldResults.length > 0 && newResults[0]?.package.name !== oldResults[0]?.package.name)
     ) {
       hasScrolledToInitial.value = false
+      newSearchBatchSize.value = newResults.length
     }
   },
 )
@@ -179,14 +173,22 @@ defineExpose({
           <template #default="{ item, index }">
             <div class="pb-4">
               <PackageCard
-                :result="item as NpmSearchResult"
+                :key="item.package.name"
+                :result="item"
                 :heading-level="headingLevel"
                 :show-publisher="showPublisher"
                 :index="index"
                 :search-query="searchQuery"
-                class="motion-safe:animate-fade-in motion-safe:animate-fill-both"
+                :class="
+                  index >= newSearchBatchSize &&
+                  'motion-safe:animate-fade-in motion-safe:animate-fill-both'
+                "
+                :style="
+                  index >= newSearchBatchSize
+                    ? { animationDelay: `${Math.min((index - newSearchBatchSize) * 0.02, 0.3)}s` }
+                    : {}
+                "
                 :filters="filters"
-                :style="{ animationDelay: `${Math.min(index * 0.02, 0.3)}s` }"
                 @click-keyword="emit('clickKeyword', $event)"
               />
             </div>
@@ -236,8 +238,15 @@ defineExpose({
             :show-publisher="showPublisher"
             :index="index"
             :search-query="searchQuery"
-            class="motion-safe:animate-fade-in motion-safe:animate-fill-both"
-            :style="{ animationDelay: `${Math.min(index * 0.02, 0.3)}s` }"
+            :class="
+              index >= newSearchBatchSize &&
+              'motion-safe:animate-fade-in motion-safe:animate-fill-both'
+            "
+            :style="
+              index >= newSearchBatchSize
+                ? { animationDelay: `${Math.min((index - newSearchBatchSize) * 0.02, 0.3)}s` }
+                : {}
+            "
             :filters="filters"
             @click-keyword="emit('clickKeyword', $event)"
           />

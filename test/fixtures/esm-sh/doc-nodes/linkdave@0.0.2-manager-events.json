@@ -1,0 +1,98 @@
+{
+  "name": "ManagerEvents",
+  "kind": "interface",
+  "interfaceDef": {
+    "extends": [{ "repr": "Events", "kind": "typeRef", "typeRef": { "typeName": "Events" } }],
+    "constructors": [],
+    "methods": [],
+    "properties": [
+      {
+        "name": "[ManagerEventName.NodeAdd]",
+        "computed": true,
+        "optional": false,
+        "tsType": {
+          "repr": "",
+          "kind": "typeLiteral",
+          "typeLiteral": {
+            "properties": [
+              {
+                "name": "node",
+                "optional": false,
+                "tsType": {
+                  "repr": "Node",
+                  "kind": "typeRef",
+                  "typeRef": { "typeName": "Node" }
+                }
+              }
+            ],
+            "methods": [],
+            "callSignatures": [],
+            "indexSignatures": []
+          }
+        }
+      },
+      {
+        "name": "[ManagerEventName.NodeRemove]",
+        "computed": true,
+        "optional": false,
+        "tsType": {
+          "repr": "",
+          "kind": "typeLiteral",
+          "typeLiteral": {
+            "properties": [
+              {
+                "name": "node",
+                "optional": false,
+                "tsType": {
+                  "repr": "Node",
+                  "kind": "typeRef",
+                  "typeRef": { "typeName": "Node" }
+                }
+              }
+            ],
+            "methods": [],
+            "callSignatures": [],
+            "indexSignatures": []
+          }
+        }
+      },
+      {
+        "name": "[ManagerEventName.NodeReconnectAttempt]",
+        "computed": true,
+        "optional": false,
+        "tsType": {
+          "repr": "",
+          "kind": "typeLiteral",
+          "typeLiteral": {
+            "properties": [
+              {
+                "name": "node",
+                "optional": false,
+                "tsType": {
+                  "repr": "Node",
+                  "kind": "typeRef",
+                  "typeRef": { "typeName": "Node" }
+                }
+              },
+              {
+                "name": "attempt",
+                "optional": false,
+                "tsType": {
+                  "repr": "number",
+                  "kind": "keyword",
+                  "keyword": "number"
+                }
+              }
+            ],
+            "methods": [],
+            "callSignatures": [],
+            "indexSignatures": []
+          }
+        }
+      }
+    ],
+    "callSignatures": [],
+    "indexSignatures": [],
+    "typeParams": []
+  }
+}

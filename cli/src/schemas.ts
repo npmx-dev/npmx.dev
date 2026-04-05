@@ -95,6 +95,7 @@ export const PermissionSchema = v.picklist(
 
 /**
  * Validates operation types
+ * @internal
  */
 export const OperationTypeSchema = v.picklist([
   'org:add-user',

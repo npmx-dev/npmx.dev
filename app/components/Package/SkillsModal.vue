@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { SkillListItem } from '#shared/types'
-
 const props = defineProps<{
   skills: SkillListItem[]
   packageName: string
@@ -85,7 +83,7 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
           "
           @click="selectedMethod = 'skills-cli'"
         >
-          skills CLI
+          {{ $t('package.skills.skills_cli') }}
         </button>
       </div>
     </div>

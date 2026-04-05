@@ -41,7 +41,7 @@ Not every contributor will reach this level, and that's okay! Maintainers still 
 The npmx project Stewards are currently:
 
 - **Daniel Roe** ([website](https://roe.dev), [social](https://bsky.app/profile/danielroe.dev), [github](https://github.com/danielroe), [@danielroe](https://chat.npmx.dev))
-- **Matias Capeletto** ([website](https://patak.dev), [social](https://bsky.app/profile/patak.dev), [github](https://github.com/patak-dev), [@patak.dev](https://chat.npmx.dev))
+- **Matias Capeletto** ([website](https://patak.cat), [social](https://bsky.app/profile/patak.cat), [github](https://github.com/patak-cat), [@patak.cat](https://chat.npmx.dev))
 
 ---
 

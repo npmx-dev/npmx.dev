@@ -29,13 +29,7 @@ test.describe('badge API', () => {
     'created': 'created',
     'maintainers': 'maintainers',
     'deprecated': 'status',
-    'quality': 'quality',
-    'popularity': 'popularity',
-    'maintenance': 'maintenance',
-    'score': 'score',
   }
-
-  const percentageTypes = new Set(['quality', 'popularity', 'maintenance', 'score'])
 
   for (const [type, expectedLabel] of Object.entries(badgeMap)) {
     test.describe(`${type} badge`, () => {
@@ -56,12 +50,12 @@ test.describe('badge API', () => {
       })
 
       test('explicit version badge renders successfully', async ({ page, baseURL }) => {
-        const url = toLocalUrl(baseURL, `/api/registry/badge/${type}/nuxt/v/3.12.0`)
+        const url = toLocalUrl(baseURL, `/api/registry/badge/${type}/nuxt/v/3.21.0`)
         const { response, body } = await fetchBadge(page, url)
 
         expect(response.status()).toBe(200)
         if (type === 'version') {
-          expect(body).toContain('v3.12.0')
+          expect(body).toContain('v3.21.0')
         }
       })
 
@@ -73,15 +67,6 @@ test.describe('badge API', () => {
         expect(body).toContain(packageName)
         expect(body).not.toContain(expectedLabel)
       })
-
-      if (percentageTypes.has(type)) {
-        test('contains percentage value', async ({ page, baseURL }) => {
-          const url = toLocalUrl(baseURL, `/api/registry/badge/${type}/vue`)
-          const { body } = await fetchBadge(page, url)
-
-          expect(body).toMatch(/\d+%|unknown/)
-        })
-      }
     })
   }
 
@@ -99,6 +84,25 @@ test.describe('badge API', () => {
       const { body } = await fetchBadge(page, url)
 
       expect(body).toContain('active')
+    })
+
+    test('types badge shows @types badge', async ({ page, baseURL }) => {
+      const url = toLocalUrl(baseURL, '/api/registry/badge/types/is-odd')
+      const { body } = await fetchBadge(page, url)
+
+      expect(body).toContain('@types')
+      expect(body).not.toContain('missing')
+    })
+
+    test('types badge shows included badge when types not declared explicitly', async ({
+      page,
+      baseURL,
+    }) => {
+      const url = toLocalUrl(baseURL, '/api/registry/badge/types/nano-stringify-object')
+      const { body } = await fetchBadge(page, url)
+
+      expect(body).toContain('included')
+      expect(body).not.toContain('missing')
     })
   })
 
@@ -118,12 +122,65 @@ test.describe('badge API', () => {
     expect(body).toContain(`fill="#${customColor}"`)
   })
 
+  test('light color produces dark text for contrast', async ({ page, baseURL }) => {
+    const url = toLocalUrl(baseURL, '/api/registry/badge/version/nuxt?color=FFDC3B')
+    const { body } = await fetchBadge(page, url)
+
+    expect(body).toContain('fill="#ffffff">version')
+    expect(body).toMatch(/fill="#000000">v\d/)
+  })
+
+  test('dark color keeps white text for contrast', async ({ page, baseURL }) => {
+    const url = toLocalUrl(baseURL, '/api/registry/badge/version/nuxt?color=0a0a0a')
+    const { body } = await fetchBadge(page, url)
+
+    expect(body).toContain('fill="#ffffff">version')
+    expect(body).toMatch(/fill="#ffffff">v\d/)
+  })
+
+  test('light labelColor produces dark label text for contrast', async ({ page, baseURL }) => {
+    const url = toLocalUrl(baseURL, '/api/registry/badge/version/nuxt?labelColor=ffffff')
+    const { body } = await fetchBadge(page, url)
+
+    expect(body).toContain('fill="#000000">version')
+  })
+
+  test('3-char hex color is handled correctly for contrast', async ({ page, baseURL }) => {
+    const url = toLocalUrl(baseURL, '/api/registry/badge/version/nuxt?color=CCC')
+    const { body } = await fetchBadge(page, url)
+
+    expect(body).toContain('fill="#ffffff">version')
+    expect(body).toMatch(/fill="#000000">v\d/)
+  })
+
+  test('light colour produces dark text for contrast in shieldsio style', async ({
+    page,
+    baseURL,
+  }) => {
+    const url = toLocalUrl(baseURL, '/api/registry/badge/version/nuxt?style=shieldsio&color=FFDC3B')
+    const { body } = await fetchBadge(page, url)
+
+    expect(body).toMatch(/fill="#ffffff"(\stextLength="\d+")?>version/)
+    expect(body).toMatch(/fill="#000000"(\stextLength="\d+")?>v\d/)
+  })
+
   test('custom label parameter is applied to SVG', async ({ page, baseURL }) => {
     const customLabel = 'my-label'
     const url = toLocalUrl(baseURL, `/api/registry/badge/version/nuxt?label=${customLabel}`)
     const { body } = await fetchBadge(page, url)
 
     expect(body).toContain(customLabel)
+  })
+
+  test('custom value parameter is applied to SVG', async ({ page, baseURL }) => {
+    const customValue = 'custom-value-123'
+    const url = toLocalUrl(
+      baseURL,
+      `/api/registry/badge/version/nuxt?value=${encodeURIComponent(customValue)}`,
+    )
+    const { body } = await fetchBadge(page, url)
+
+    expect(body).toContain(customValue)
   })
 
   test('style=default keeps current badge renderer', async ({ page, baseURL }) => {

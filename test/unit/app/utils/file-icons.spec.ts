@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { getFileIcon } from '../../../../app/utils/file-icons'
+import { getFileIcon } from '~/utils/file-icons'
 
 describe('getFileIcon', () => {
   it('returns correct icons for exact filename matches', () => {

@@ -1,7 +1,7 @@
 import { createLunaria } from '@lunariajs/core'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { Page } from './components.ts'
-import { lunariaJSONFiles, prepareJsonFiles } from './prepare-json-files.ts'
+import { countryLocaleVariants, currentLocales } from '../config/i18n.ts'
 import type { I18nStatus } from '../shared/types/i18n-status.ts'
 
 // skip lunaria during git merges as git history may be in an inconsistent state.
@@ -11,16 +11,11 @@ if (existsSync('.git/MERGE_HEAD')) {
   process.exit(0)
 }
 
-await prepareJsonFiles()
-
 const lunaria = await createLunaria()
 const status = await lunaria.getFullStatus()
 
-// Generate HTML dashboard
-const html = Page(lunaria.config, status, lunaria)
-
 // Generate JSON status for the app
-const { sourceLocale, locales } = lunaria.config
+const { sourceLocale } = lunaria.config
 const links = lunaria.gitHostingLinks()
 
 // For dictionary files, we track the first (and only) entry
@@ -29,7 +24,7 @@ if (!fileStatus) {
   throw new Error('No file status found')
 }
 
-// Count keys in a nested object
+// Count keys in the source locale file (en.json), excluding non-translation keys.
 function countKeys(obj: Record<string, unknown>): number {
   let count = 0
   for (const key in obj) {
@@ -43,21 +38,44 @@ function countKeys(obj: Record<string, unknown>): number {
   return count
 }
 
-// Read source locale file from prepared files
-const englishFile = JSON.parse(readFileSync('lunaria/files/en-US.json', 'utf-8')) as Record<
-  string,
-  unknown
->
-const totalKeys = countKeys(englishFile)
+const sourceContent = JSON.parse(readFileSync('i18n/locales/en.json', 'utf-8'))
+const { $schema: _, vacations: __, ...sourceWithoutMeta } = sourceContent
+const totalKeys = countKeys(sourceWithoutMeta)
+
+// Build a mapping from locale code to the primary file translators should edit.
+// Country variants (e.g. ar-EG, es-ES) point to the base file (ar.json, es.json).
+// Non-country variants (e.g. en-GB, es-419) point to their own file.
+// Standalone locales (e.g. de-DE, fr-FR) point to their own file.
+const localeToFile: Record<string, string> = {}
+for (const locale of currentLocales) {
+  let found = false
+  for (const [baseLang, variants] of Object.entries(countryLocaleVariants)) {
+    const variant = variants.find(v => v.code === locale.code)
+    if (variant) {
+      localeToFile[locale.code] = variant.country ? `${baseLang}.json` : `${locale.code}.json`
+      found = true
+      break
+    }
+  }
+  if (!found) {
+    localeToFile[locale.code] = (locale.file as string) ?? `${locale.code}.json`
+  }
+}
+
+// Only output status for locales in currentLocales (the app-facing locales).
+// Lunaria also tracks base language codes (ar, es) but those are internal to
+// the merge config and not visible in the app.
+const appLocales = currentLocales.filter(l => l.code !== sourceLocale.lang && l.name)
 
 const jsonStatus: I18nStatus = {
   generatedAt: new Date().toISOString(),
   sourceLocale: {
     lang: sourceLocale.lang,
     label: sourceLocale.label,
+    totalKeys,
   },
-  locales: locales.map(locale => {
-    const localization = fileStatus.localizations.find(l => l.lang === locale.lang)
+  locales: appLocales.map(locale => {
+    const localization = fileStatus.localizations.find(l => l.lang === locale.code)
 
     // Get missing keys if available
     const missingKeys: string[] = []
@@ -68,11 +86,12 @@ const jsonStatus: I18nStatus = {
     }
 
     const completedKeys = totalKeys - missingKeys.length
-    const localeFilePath = `i18n/locales/${lunariaJSONFiles[locale.lang]!}`
+    const localeFilePath = `i18n/locales/${localeToFile[locale.code]!}`
 
     return {
-      lang: locale.lang,
-      label: locale.label,
+      lang: locale.code,
+      label: locale.name!,
+      dir: locale?.dir ?? 'ltr',
       totalKeys,
       completedKeys,
       missingKeys,
@@ -82,6 +101,9 @@ const jsonStatus: I18nStatus = {
     }
   }),
 }
+
+// Generate HTML dashboard using processed jsonStatus
+const html = Page(lunaria.config, jsonStatus, lunaria)
 
 mkdirSync('dist/lunaria', { recursive: true })
 writeFileSync('dist/lunaria/index.html', html)

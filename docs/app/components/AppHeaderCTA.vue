@@ -1,0 +1,11 @@
+<template>
+  <UButton
+    to="https://npmx.dev"
+    external
+    color="neutral"
+    variant="subtle"
+    size="xs"
+    trailingIcon="i-lucide-arrow-up-right"
+    label="npmx.dev"
+  />
+</template>

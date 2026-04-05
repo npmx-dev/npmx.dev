@@ -167,7 +167,7 @@ interface LinkifyOptions {
  * @param html - The HTML to process
  * @param options - Dependencies map and optional relative import resolver
  */
-function linkifyImports(html: string, options?: LinkifyOptions): string {
+export function linkifyModuleSpecifiers(html: string, options?: LinkifyOptions): string {
   const { dependencies, resolveRelative } = options ?? {}
 
   const getHref = (moduleSpecifier: string): string | null => {
@@ -196,7 +196,7 @@ function linkifyImports(html: string, options?: LinkifyOptions): string {
   // Match: from keyword span followed by string span containing module specifier
   // Pattern: <span style="...">from</span><span style="..."> 'module'</span>
   let result = html.replace(
-    /(<span[^>]*>from<\/span>)(<span[^>]*>) (['"][^'"]+['"])<\/span>/g,
+    /(<span[^>]*> ?from<\/span>)(<span[^>]*>) (['"][^'"]+['"])<\/span>/g,
     (match, fromSpan, stringSpanOpen, moduleSpecifier) => {
       const href = getHref(moduleSpecifier)
       if (!href) return match
@@ -285,7 +285,7 @@ export async function highlightCode(
 
       // Make import statements clickable for JS/TS languages
       if (IMPORT_LANGUAGES.has(language)) {
-        html = linkifyImports(html, {
+        html = linkifyModuleSpecifiers(html, {
           dependencies: options?.dependencies,
           resolveRelative: options?.resolveRelative,
         })

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { parseSuggestionIntent } from '../../app/composables/npm/search-utils'
+import { parseSuggestionIntent } from '~/composables/npm/search-utils'
 
 describe('Search case normalization', () => {
   describe('parseSuggestionIntent', () => {

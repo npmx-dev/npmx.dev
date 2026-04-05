@@ -1,3 +1,4 @@
+import { setTimeout } from 'node:timers/promises'
 import { CACHE_MAX_AGE_ONE_DAY } from '#shared/utils/constants'
 
 type GitHubContributorWeek = {
@@ -30,7 +31,6 @@ export default defineCachedEventHandler(
       'Accept': 'application/vnd.github+json',
     }
 
-    const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
     const maxAttempts = 6
     let delayMs = 1000
 
@@ -49,7 +49,7 @@ export default defineCachedEventHandler(
 
         if (status === 202) {
           if (attempt === maxAttempts - 1) return []
-          await sleep(delayMs)
+          await setTimeout(delayMs)
           delayMs = Math.min(delayMs * 2, 16_000)
           continue
         }

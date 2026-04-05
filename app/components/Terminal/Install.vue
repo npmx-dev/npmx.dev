@@ -60,22 +60,12 @@ function getRunPartsForPM(pmId: PackageManagerId, command?: string) {
 // Generate create command parts for a specific package manager
 function getCreatePartsForPM(pmId: PackageManagerId) {
   if (!props.createPackageInfo) return []
-  const pm = packageManagers.find(p => p.id === pmId)
-  if (!pm) return []
-
-  const createPkgName = props.createPackageInfo.packageName
-  let shortName: string
-  if (createPkgName.startsWith('@')) {
-    const slashIndex = createPkgName.indexOf('/')
-    const name = createPkgName.slice(slashIndex + 1)
-    shortName = name.startsWith('create-') ? name.slice('create-'.length) : name
-  } else {
-    shortName = createPkgName.startsWith('create-')
-      ? createPkgName.slice('create-'.length)
-      : createPkgName
-  }
-
-  return [...pm.create.split(' '), shortName]
+  return getExecuteCommandParts({
+    packageName: props.createPackageInfo.packageName,
+    packageManager: pmId,
+    jsrInfo: null,
+    isCreatePackage: true,
+  })
 }
 
 // Generate @types install command parts for a specific package manager
@@ -102,7 +92,14 @@ function getFullRunCommand(command?: string) {
 
 // Full create command for copying (uses current selected PM)
 function getFullCreateCommand() {
-  return getCreatePartsForPM(selectedPM.value).join(' ')
+  if (!props.createPackageInfo) return ''
+
+  return getExecuteCommand({
+    packageName: props.createPackageInfo.packageName,
+    packageManager: selectedPM.value,
+    jsrInfo: null,
+    isCreatePackage: true,
+  })
 }
 
 // Copy handlers
@@ -185,7 +182,7 @@ const copyDevInstallCommand = () =>
             >
             <ButtonBase
               type="button"
-              size="small"
+              size="sm"
               class="text-fg-muted bg-bg-subtle/80 border-border opacity-0 group-hover/devinstallcmd:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
               :aria-label="$t('package.get_started.copy_dev_command')"
               @click.stop="copyDevInstallCommand"
@@ -216,7 +213,7 @@ const copyDevInstallCommand = () =>
             >
             <NuxtLink
               :to="packageRoute(typesPackageName!)"
-              class="text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-accent/70 rounded select-none"
+              class="text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-accent/70 rounded select-none -m-1 p-1"
               :title="$t('package.get_started.view_types', { package: typesPackageName })"
             >
               <span class="i-lucide:arrow-right rtl-flip w-3 h-3 align-middle" aria-hidden="true" />

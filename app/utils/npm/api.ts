@@ -1,4 +1,3 @@
-import type { PackageVersionInfo } from '#shared/types'
 import { getVersions } from 'fast-npm-meta'
 import { compare } from 'semver'
 
