@@ -38,59 +38,47 @@ export interface PackageQuadrantPoint {
   }
 }
 
-interface QuadrantMetricRanges {
-  minimumDownloads: number
-  maximumDownloads: number
-  minimumTotalLikes: number
-  maximumTotalLikes: number
-  minimumPackageSize: number
-  maximumPackageSize: number
-  minimumInstallSize: number
-  maximumInstallSize: number
-  minimumDependencies: number
-  maximumDependencies: number
-  minimumTotalDependencies: number
-  maximumTotalDependencies: number
-  minimumVulnerabilities: number
-  maximumVulnerabilities: number
-  minimumLogarithmicDownloads: number
-  maximumLogarithmicDownloads: number
-}
-
 const WEIGHTS = {
-  // Quadrant X axis
   adoption: {
-    downloads: 0.7, // dominant signal because they best reflect real-world adoption
-    freshness: 0.1, // small correction so stale packages are slightly penalized
-    likes: 0.01, // might be pumped up in the future when ./npmx likes are more mainstream
+    downloads: 0.75, // dominant signal because they best reflect real-world adoption (in the data we have through facets currently)
+    freshness: 0.15, // small correction so stale packages are slightly 
+    likes: 0.1, // might be pumped up in the future when ./npmx likes are more mainstream
   },
-  // Quadrant Y axis
   efficiency: {
     installSize: 0.3, // weighted highest because it best reflects consumer footprint
-    dependencies: 0.2, // direct deps capture architectural and supply-chain complexity
-    totalDependencies: 0.15, // same for total deps
-    packageSize: 0.1, // publication weight, less important than installed footprint
+
+    // dependency weights are already measured in install size in some way, but still useful knobs to find the sweet spot
+    dependencies: 0.05, // direct deps capture architectural and supply-chain complexity
+    totalDependencies: 0.2, // same for total deps
+
+    packageSize: 0.1,
     vulnerabilities: 0.2, // penalize security burden
-    types: 0.1, // TS support
-    deprecation: 0.05,
+    types: 0.2, // TS support
+    // Note: the 'deprecated' metric is not weighed because it just forces a -1 evaluation
   },
 }
+
+/* Fixed logarithmic ceilings to normalize metrics onto a stable [-1, 1] scale.
+*  This avoids dataset-relative min/max normalization, which would shift scores depending
+*  on which packages are being compared. Ceilings act as reference points for what is
+*  considered 'high' for each metric, ensuring consistent positioning across different
+*  datasets while preserving meaningful differences via log scaling. 
+*/
+const LOG_CEILINGS = {
+  downloads: 100_000_000,
+  likes: 1000, // might be pumped up in the future when ./npmx likes are more mainstream
+  installSize: 25_000_000,
+  dependencies: 100,
+  totalDependencies: 1_000,
+  packageSize: 15_000_000,
+}
+
 const VULNERABILITY_PENALTY_MULTIPLIER = 2
 
 function clampInRange(value: number, min = -1, max = 1): number {
   if (value < min) return min
   if (value > max) return max
   return value
-}
-
-function normalizeNumber(value: number, min: number, max: number): number {
-  if (max === min) return 0
-  const normalisedValue = (value - min) / (max - min)
-  return clampInRange(normalisedValue * 2 - 1)
-}
-
-function normalizeInverseNumber(value: number, min: number, max: number): number {
-  return -normalizeNumber(value, min, max)
 }
 
 function normalizeBoolean(value: boolean): number {
@@ -101,7 +89,7 @@ function toSafeNumber(value: number | null | undefined, fallback = 0): number {
   return typeof value === 'number' && Number.isFinite(value) ? value : fallback
 }
 
-function getnormalisedFreshness(
+function getNormalisedFreshness(
   value: string | Date | null | undefined,
   maximumAgeInDays = 365,
 ): number | null {
@@ -121,7 +109,7 @@ function getFreshnessScore(
   value: string | Date | null | undefined,
   maximumAgeInDays = 365,
 ): number {
-  const normalisedAge = getnormalisedFreshness(value, maximumAgeInDays)
+  const normalisedAge = getNormalisedFreshness(value, maximumAgeInDays)
   if (normalisedAge === null) return -1
   return clampInRange(normalisedAge * 2 - 1)
 }
@@ -130,14 +118,27 @@ function getFreshnessPercentage(
   value: string | Date | null | undefined,
   maximumAgeInDays = 365,
 ): number {
-  const normalisedAge = getnormalisedFreshness(value, maximumAgeInDays)
+  const normalisedAge = getNormalisedFreshness(value, maximumAgeInDays)
   if (normalisedAge === null) return 0
   return Math.max(0, Math.min(1, normalisedAge)) * 100
 }
 
-function getVulnerabilityPenalty(value: number, minimum: number, maximum: number): number {
-  const normalised = normalizeInverseNumber(value, minimum, maximum)
-  return normalised < 0 ? normalised * VULNERABILITY_PENALTY_MULTIPLIER : normalised
+function normalizeLogHigherBetter(value: number, upperBound: number): number {
+  const safeValue = Math.max(0, value)
+  const safeUpperBound = Math.max(1, upperBound)
+  const normalised = Math.log(safeValue + 1) / Math.log(safeUpperBound + 1)
+  return clampInRange(normalised * 2 - 1)
+}
+
+function normalizeLogLowerBetter(value: number, upperBound: number): number {
+  return -normalizeLogHigherBetter(value, upperBound)
+}
+
+function getVulnerabilityPenalty(value: number): number {
+  if (value <= 0) return 1
+
+  const penalty = normalizeLogLowerBetter(value, 10)
+  return penalty < 0 ? penalty * VULNERABILITY_PENALTY_MULTIPLIER : penalty
 }
 
 function resolveQuadrant(x: number, y: number): PackageQuadrantPoint['quadrant'] {
@@ -147,44 +148,7 @@ function resolveQuadrant(x: number, y: number): PackageQuadrantPoint['quadrant']
   return 'BOTTOM_LEFT'
 }
 
-function getQuadrantMetricRanges(packages: PackageQuadrantInput[]): QuadrantMetricRanges {
-  const downloadsValues = packages.map(packageItem => toSafeNumber(packageItem.downloads))
-  const totalLikesValues = packages.map(packageItem => toSafeNumber(packageItem.totalLikes))
-  const packageSizeValues = packages.map(packageItem => toSafeNumber(packageItem.packageSize))
-  const installSizeValues = packages.map(packageItem => toSafeNumber(packageItem.installSize))
-  const dependenciesValues = packages.map(packageItem => toSafeNumber(packageItem.dependencies))
-  const totalDependenciesValues = packages.map(packageItem =>
-    toSafeNumber(packageItem.totalDependencies),
-  )
-  const vulnerabilitiesValues = packages.map(packageItem =>
-    toSafeNumber(packageItem.vulnerabilities),
-  )
-  const logarithmicDownloadsValues = downloadsValues.map(value => Math.log(value + 1))
-
-  return {
-    minimumDownloads: Math.min(...downloadsValues),
-    maximumDownloads: Math.max(...downloadsValues),
-    minimumTotalLikes: Math.min(...totalLikesValues),
-    maximumTotalLikes: Math.max(...totalLikesValues),
-    minimumPackageSize: Math.min(...packageSizeValues),
-    maximumPackageSize: Math.max(...packageSizeValues),
-    minimumInstallSize: Math.min(...installSizeValues),
-    maximumInstallSize: Math.max(...installSizeValues),
-    minimumDependencies: Math.min(...dependenciesValues),
-    maximumDependencies: Math.max(...dependenciesValues),
-    minimumTotalDependencies: Math.min(...totalDependenciesValues),
-    maximumTotalDependencies: Math.max(...totalDependenciesValues),
-    minimumVulnerabilities: Math.min(...vulnerabilitiesValues),
-    maximumVulnerabilities: Math.max(...vulnerabilitiesValues),
-    minimumLogarithmicDownloads: Math.min(...logarithmicDownloadsValues),
-    maximumLogarithmicDownloads: Math.max(...logarithmicDownloadsValues),
-  }
-}
-
-function createQuadrantPoint(
-  packageItem: PackageQuadrantInput,
-  metricRanges: QuadrantMetricRanges,
-): PackageQuadrantPoint {
+function createQuadrantPoint(packageItem: PackageQuadrantInput): PackageQuadrantPoint {
   const downloads = toSafeNumber(packageItem.downloads)
   const totalLikes = toSafeNumber(packageItem.totalLikes)
   const packageSize = toSafeNumber(packageItem.packageSize)
@@ -197,56 +161,20 @@ function createQuadrantPoint(
   const freshnessScore = getFreshnessScore(packageItem.lastUpdated) // for weighing
   const freshnessPercent = getFreshnessPercentage(packageItem.lastUpdated) // for display
 
-  // Since downloads can span multiple orders of magnitude, log is used to normalise them to produce comparable scores instead of collapsing most values into noise
-  const normalisedDownloads = normalizeNumber(
-    Math.log(downloads + 1),
-    metricRanges.minimumLogarithmicDownloads,
-    metricRanges.maximumLogarithmicDownloads,
-  )
+  const normalisedDownloads = normalizeLogHigherBetter(downloads, LOG_CEILINGS.downloads)
+  const normalisedLikes = normalizeLogHigherBetter(totalLikes, LOG_CEILINGS.likes)
+  const normalisedInstallSize = normalizeLogLowerBetter(installSize, LOG_CEILINGS.installSize)
+  const normalisedDependencies = normalizeLogLowerBetter(dependencies, LOG_CEILINGS.dependencies)
+  const normalisedTotalDependencies = normalizeLogLowerBetter(totalDependencies, LOG_CEILINGS.totalDependencies)
+  const normalisedPackageSize = normalizeLogLowerBetter(packageSize, LOG_CEILINGS.packageSize)
 
-  const normalisedTotalLikes = normalizeNumber(
-    totalLikes,
-    metricRanges.minimumTotalLikes,
-    metricRanges.maximumTotalLikes,
-  )
-
-  const normalisedInstallSize = normalizeInverseNumber(
-    installSize,
-    metricRanges.minimumInstallSize,
-    metricRanges.maximumInstallSize,
-  )
-
-  const normalisedDependencies = normalizeInverseNumber(
-    dependencies,
-    metricRanges.minimumDependencies,
-    metricRanges.maximumDependencies,
-  )
-
-  const normalisedTotalDependencies = normalizeInverseNumber(
-    totalDependencies,
-    metricRanges.minimumTotalDependencies,
-    metricRanges.maximumTotalDependencies,
-  )
-
-  const normalisedPackageSize = normalizeInverseNumber(
-    packageSize,
-    metricRanges.minimumPackageSize,
-    metricRanges.maximumPackageSize,
-  )
-
-  const normalisedVulnerabilities = getVulnerabilityPenalty(
-    vulnerabilities,
-    metricRanges.minimumVulnerabilities,
-    metricRanges.maximumVulnerabilities,
-  )
-
-  const deprecationScore = normalizeBoolean(!deprecated)
+  const normalisedVulnerabilities = getVulnerabilityPenalty(vulnerabilities)
   const typesScore = normalizeBoolean(types)
 
   const adoptionScore = clampInRange(
     normalisedDownloads * WEIGHTS.adoption.downloads +
       freshnessScore * WEIGHTS.adoption.freshness +
-      normalisedTotalLikes * WEIGHTS.adoption.likes,
+      normalisedLikes * WEIGHTS.adoption.likes,
   )
 
   const rawEfficiencyScore =
@@ -255,12 +183,9 @@ function createQuadrantPoint(
     normalisedTotalDependencies * WEIGHTS.efficiency.totalDependencies +
     normalisedPackageSize * WEIGHTS.efficiency.packageSize +
     normalisedVulnerabilities * WEIGHTS.efficiency.vulnerabilities +
-    typesScore * WEIGHTS.efficiency.types +
-    deprecationScore * WEIGHTS.efficiency.deprecation
+    typesScore * WEIGHTS.efficiency.types
 
-  // Deprecation considered harmful
   const efficiencyScore = deprecated ? -1 : clampInRange(rawEfficiencyScore)
-
   const quadrant = resolveQuadrant(adoptionScore, efficiencyScore)
 
   return {
@@ -290,6 +215,5 @@ function createQuadrantPoint(
 
 export function createQuadrantDataset(packages: PackageQuadrantInput[]): PackageQuadrantPoint[] {
   if (!packages.length) return []
-  const metricRanges = getQuadrantMetricRanges(packages)
-  return packages.map(packageItem => createQuadrantPoint(packageItem, metricRanges))
+  return packages.map(packageItem => createQuadrantPoint(packageItem))
 }

@@ -213,10 +213,10 @@ describe('createQuadrantDataset', () => {
         name: 'healthy-package',
         downloads: 10,
         totalLikes: 0,
-        packageSize: 1_000,
-        installSize: 1_000,
-        dependencies: 50,
-        totalDependencies: 100,
+        packageSize: 10_000,
+        installSize: 10_000,
+        dependencies: 100,
+        totalDependencies: 1_000,
         vulnerabilities: 10,
         deprecated: false,
         types: false,
@@ -265,21 +265,6 @@ describe('createQuadrantDataset', () => {
         types: false,
         lastUpdated: '2026-04-05T12:00:00.000Z',
       },
-      {
-        id: 'range-anchor',
-        license: 'MIT',
-        name: 'range-anchor',
-        downloads: 200,
-        totalLikes: 20,
-        packageSize: 100,
-        installSize: 150,
-        dependencies: 10,
-        totalDependencies: 20,
-        vulnerabilities: 2,
-        deprecated: false,
-        types: true,
-        lastUpdated: '2025-04-05T12:00:00.000Z',
-      },
     ]
 
     const dataset = createQuadrantDataset(input)
@@ -289,7 +274,7 @@ describe('createQuadrantDataset', () => {
     expect(typedPoint.efficiencyScore).toBeGreaterThan(untypedPoint.efficiencyScore)
   })
 
-  it('penalizes vulnerabilities more aggressively than a standard inverse normalization', () => {
+  it('penalises vulnerabilities more aggressively as they increase', () => {
     const input: PackageQuadrantInput[] = [
       {
         id: 'secure',
@@ -321,21 +306,6 @@ describe('createQuadrantDataset', () => {
         types: true,
         lastUpdated: '2026-04-05T12:00:00.000Z',
       },
-      {
-        id: 'range-anchor',
-        license: 'MIT',
-        name: 'range-anchor',
-        downloads: 200,
-        totalLikes: 20,
-        packageSize: 100,
-        installSize: 100,
-        dependencies: 10,
-        totalDependencies: 20,
-        vulnerabilities: 5,
-        deprecated: false,
-        types: true,
-        lastUpdated: '2025-04-05T12:00:00.000Z',
-      },
     ]
 
     const dataset = createQuadrantDataset(input)
@@ -351,10 +321,10 @@ describe('createQuadrantDataset', () => {
         id: 'best',
         license: 'MIT',
         name: 'best',
-        downloads: 1_000_000,
-        totalLikes: 500,
-        packageSize: 10,
-        installSize: 10,
+        downloads: 100_000_000,
+        totalLikes: 1_000,
+        packageSize: 1,
+        installSize: 1,
         dependencies: 0,
         totalDependencies: 0,
         vulnerabilities: 0,
@@ -368,10 +338,10 @@ describe('createQuadrantDataset', () => {
         name: 'worst',
         downloads: 1,
         totalLikes: 0,
-        packageSize: 1_000,
-        installSize: 1_000,
+        packageSize: 15_000_000,
+        installSize: 25_000_000,
         dependencies: 100,
-        totalDependencies: 200,
+        totalDependencies: 1_000,
         vulnerabilities: 10,
         deprecated: false,
         types: false,
@@ -410,12 +380,12 @@ describe('createQuadrantDataset', () => {
         id: 'popular-and-heavy',
         license: 'MIT',
         name: 'popular-and-heavy',
-        downloads: 1_000_000,
-        totalLikes: 500,
-        packageSize: 1_000,
-        installSize: 1_000,
+        downloads: 100_000_000,
+        totalLikes: 1_000,
+        packageSize: 15_000_000,
+        installSize: 25_000_000,
         dependencies: 100,
-        totalDependencies: 200,
+        totalDependencies: 1_000,
         vulnerabilities: 10,
         deprecated: false,
         types: false,
@@ -437,12 +407,12 @@ describe('createQuadrantDataset', () => {
         id: 'popular-but-inefficient',
         license: 'MIT',
         name: 'popular-but-inefficient',
-        downloads: 1_000_000,
-        totalLikes: 500,
-        packageSize: 1_000,
-        installSize: 1_000,
+        downloads: 100_000_000,
+        totalLikes: 1_000,
+        packageSize: 15_000_000,
+        installSize: 25_000_000,
         dependencies: 100,
-        totalDependencies: 200,
+        totalDependencies: 1_000,
         vulnerabilities: 10,
         deprecated: false,
         types: false,
@@ -481,10 +451,10 @@ describe('createQuadrantDataset', () => {
         name: 'worst',
         downloads: 1,
         totalLikes: 0,
-        packageSize: 1_000,
-        installSize: 1_000,
+        packageSize: 15_000_000,
+        installSize: 25_000_000,
         dependencies: 100,
-        totalDependencies: 200,
+        totalDependencies: 1_000,
         vulnerabilities: 10,
         deprecated: false,
         types: false,
@@ -494,8 +464,8 @@ describe('createQuadrantDataset', () => {
         id: 'best',
         license: 'MIT',
         name: 'best',
-        downloads: 1_000_000,
-        totalLikes: 500,
+        downloads: 100_000_000,
+        totalLikes: 1_000,
         packageSize: 1,
         installSize: 1,
         dependencies: 0,
@@ -552,6 +522,47 @@ describe('createQuadrantDataset', () => {
     expect(medium.adoptionScore).toBeLessThan(large.adoptionScore)
   })
 
+  it('penalises larger install sizes when other efficiency metrics are equal', () => {
+    const input: PackageQuadrantInput[] = [
+      {
+        id: 'small-install',
+        license: 'MIT',
+        name: 'small-install',
+        downloads: 1_000,
+        totalLikes: 10,
+        packageSize: 10_000,
+        installSize: 50_000,
+        dependencies: 10,
+        totalDependencies: 50,
+        vulnerabilities: 0,
+        deprecated: false,
+        types: true,
+        lastUpdated: '2026-04-05T12:00:00.000Z',
+      },
+      {
+        id: 'large-install',
+        license: 'MIT',
+        name: 'large-install',
+        downloads: 1_000,
+        totalLikes: 10,
+        packageSize: 10_000,
+        installSize: 10_000_000,
+        dependencies: 10,
+        totalDependencies: 50,
+        vulnerabilities: 0,
+        deprecated: false,
+        types: true,
+        lastUpdated: '2026-04-05T12:00:00.000Z',
+      },
+    ]
+
+    const dataset = createQuadrantDataset(input)
+    const smallInstall = getPointById(dataset, 'small-install')
+    const largeInstall = getPointById(dataset, 'large-install')
+
+    expect(smallInstall.efficiencyScore).toBeGreaterThan(largeInstall.efficiencyScore)
+  })
+
   it('returns one point per input package and keeps the input order', () => {
     const input: PackageQuadrantInput[] = [
       { id: 'one', license: 'MIT', name: 'one', downloads: 1 },
@@ -571,7 +582,7 @@ describe('createQuadrantDataset', () => {
         id: 'extreme-best',
         license: 'MIT',
         name: 'extreme-best',
-        downloads: 10_000_000,
+        downloads: 10_000_000_000,
         totalLikes: 10_000,
         packageSize: 1,
         installSize: 1,
@@ -588,8 +599,8 @@ describe('createQuadrantDataset', () => {
         name: 'extreme-worst',
         downloads: 0,
         totalLikes: 0,
-        packageSize: 100_000,
-        installSize: 100_000,
+        packageSize: 100_000_000,
+        installSize: 100_000_000,
         dependencies: 10_000,
         totalDependencies: 20_000,
         vulnerabilities: 10_000,
