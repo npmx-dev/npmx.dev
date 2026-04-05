@@ -1122,6 +1122,30 @@
       "packages_selected": "{count}/{max} packages selected.",
       "add_hint": "Add at least 2 packages to compare."
     },
+    "quadrant_chart": {
+      "label_x_axis": "Adoption",
+      "label_y_axis": "Efficiency",
+      "label_top_right": "high-impact",
+      "label_bottom_right": "resource-heavy",
+      "label_bottom_left": "low-impact",
+      "label_top_left": "efficient",
+      "title": "Adoption vs Efficiency matrix",
+      "filename": "package-adoption-vs-efficiency-matrix",
+      "label_freshness_score": "Freshness score",
+      "copy_alt": {
+        "description": "Quadrant chart mapping adoption versus efficiency for the {packages} packages. {analysis}. {watermark}.",
+        "side_analysis_top_right": "The following packages are positioned on the top-right quadrant (high-impact): {packages}",
+        "side_analysis_top_left": "The following packages are positioned on the top-left quadrant (efficient): {packages}",
+        "side_analysis_bottom_right": "The following packages are positioned on the bottom-right quadrant (resource-heavy): {packages}",
+        "side_analysis_bottom_left": "The following packages are positioned on the bottom-right quadrant (low-impact): {packages}"
+      },
+      "explanation": {
+        "introduction": "The score is calculated by combining multiple signals into two axes:",
+        "adoption": "Adoption: how widely used and actively maintained a package is",
+        "efficiency": "Efficiency: how lightweight, safe, and maintainable a package is",
+        "impact_details": "Each metric contributes differently to the final score. Key factors like downloads and install size have the biggest impact, while others refine the result. Some signals (like vulnerabilities or deprecation) apply penalties."
+      }
+    },
     "no_dependency": {
       "label": "(No dependency)",
       "typeahead_title": "What Would James Do?",

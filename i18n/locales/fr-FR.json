@@ -1118,6 +1118,30 @@
       "packages_selected": "{count}/{max} paquets sélectionnés.",
       "add_hint": "Ajoutez au moins 2 paquets à comparer."
     },
+    "quadrant_chart": {
+      "label_x_axis": "Adoption",
+      "label_y_axis": "Efficacité",
+      "label_top_right": "fort impact",
+      "label_bottom_right": "gourmand en ressources",
+      "label_bottom_left": "faible impact",
+      "label_top_left": "efficient",
+      "title": "Matrice Adoption vs Efficacité",
+      "filename": "matrice-adoption-vs-efficacite-des-paquets",
+      "label_freshness_score": "Score de fraîcheur",
+      "copy_alt": {
+        "description": "Graphique en quadrants représentant l’adoption par rapport à l’efficacité pour les paquets {packages}. {analysis}. {watermark}.",
+        "side_analysis_top_right": "Les paquets suivants se trouvent dans le quadrant supérieur droit (fort impact) : {packages}",
+        "side_analysis_top_left": "Les paquets suivants se trouvent dans le quadrant supérieur gauche (efficient) : {packages}",
+        "side_analysis_bottom_right": "Les paquets suivants se trouvent dans le quadrant inférieur droit (gourmand en ressources) : {packages}",
+        "side_analysis_bottom_left": "Les paquets suivants se trouvent dans le quadrant inférieur droit (faible impact) : {packages}"
+      },
+      "explanation": {
+        "introduction": "Le score est calculé en combinant plusieurs signaux sur deux axes :",
+        "adoption": "Adoption : à quel point un package est utilisé et activement maintenu",
+        "efficiency": "Efficacité : à quel point un package est léger, sûr et facile à maintenir",
+        "impact_details": "Chaque métrique contribue différemment au score final. Les facteurs clés comme les téléchargements et la taille d’installation ont le plus d’impact, tandis que d’autres affinent le résultat. Certains signaux, comme les vulnérabilités ou l’obsolescence, appliquent des pénalités."
+      }
+    },
     "no_dependency": {
       "label": "(Sans dépendance)",
       "typeahead_title": "Et sans dépendance ?",

@@ -3370,6 +3370,78 @@
           },
           "additionalProperties": false
         },
+        "quadrant_chart": {
+          "type": "object",
+          "properties": {
+            "label_x_axis": {
+              "type": "string"
+            },
+            "label_y_axis": {
+              "type": "string"
+            },
+            "label_top_right": {
+              "type": "string"
+            },
+            "label_bottom_right": {
+              "type": "string"
+            },
+            "label_bottom_left": {
+              "type": "string"
+            },
+            "label_top_left": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "filename": {
+              "type": "string"
+            },
+            "label_freshness_score": {
+              "type": "string"
+            },
+            "copy_alt": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "side_analysis_top_right": {
+                  "type": "string"
+                },
+                "side_analysis_top_left": {
+                  "type": "string"
+                },
+                "side_analysis_bottom_right": {
+                  "type": "string"
+                },
+                "side_analysis_bottom_left": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "explanation": {
+              "type": "object",
+              "properties": {
+                "introduction": {
+                  "type": "string"
+                },
+                "adoption": {
+                  "type": "string"
+                },
+                "efficiency": {
+                  "type": "string"
+                },
+                "impact_details": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
         "no_dependency": {
           "type": "object",
           "properties": {
