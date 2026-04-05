@@ -358,7 +358,7 @@ useSeoMeta({
                 <FacetQuadrantChart
                   v-if="packages.length"
                   :packages-data="packagesData"
-                  :packages="packages"
+                  :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)"
                 />
               </div>
             </TabPanel>
