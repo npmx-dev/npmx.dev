@@ -2,7 +2,7 @@
 import { VueUiQuadrant } from 'vue-data-ui/vue-ui-quadrant'
 import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
-import { createQuadrantDataset, type PackageQuadrantInput } from '~/utils/compare-quadrant-chart'
+import { createQuadrantDataset, type PackageQuadrantInput, type PackageQuadrantPoint } from '~/utils/compare-quadrant-chart'
 import type { VueUiQuadrantConfig, VueUiQuadrantDatasetItem } from 'vue-data-ui'
 import {
   sanitise,
@@ -106,7 +106,7 @@ const source = computed<PackageQuadrantInput[]>(() => {
 
 const rawQuadrant = computed(() => createQuadrantDataset(source.value))
 const dataset = computed<VueUiQuadrantDatasetItem[]>(() => {
-  return rawQuadrant.value.map((el: any) => {
+  return rawQuadrant.value.map((el: PackageQuadrantPoint) => {
     return {
       ...el,
       fullname: el.name,
