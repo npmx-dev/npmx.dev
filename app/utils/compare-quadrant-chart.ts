@@ -41,7 +41,7 @@ export interface PackageQuadrantPoint {
 const WEIGHTS = {
   adoption: {
     downloads: 0.75, // dominant signal because they best reflect real-world adoption (in the data we have through facets currently)
-    freshness: 0.15, // small correction so stale packages are slightly 
+    freshness: 0.15, // small correction so stale packages are slightly
     likes: 0.1, // might be pumped up in the future when ./npmx likes are more mainstream
   },
   efficiency: {
@@ -59,11 +59,11 @@ const WEIGHTS = {
 }
 
 /* Fixed logarithmic ceilings to normalize metrics onto a stable [-1, 1] scale.
-*  This avoids dataset-relative min/max normalization, which would shift scores depending
-*  on which packages are being compared. Ceilings act as reference points for what is
-*  considered 'high' for each metric, ensuring consistent positioning across different
-*  datasets while preserving meaningful differences via log scaling. 
-*/
+ *  This avoids dataset-relative min/max normalization, which would shift scores depending
+ *  on which packages are being compared. Ceilings act as reference points for what is
+ *  considered 'high' for each metric, ensuring consistent positioning across different
+ *  datasets while preserving meaningful differences via log scaling.
+ */
 const LOG_CEILINGS = {
   downloads: 100_000_000,
   likes: 1000, // might be pumped up in the future when ./npmx likes are more mainstream
@@ -165,7 +165,10 @@ function createQuadrantPoint(packageItem: PackageQuadrantInput): PackageQuadrant
   const normalisedLikes = normalizeLogHigherBetter(totalLikes, LOG_CEILINGS.likes)
   const normalisedInstallSize = normalizeLogLowerBetter(installSize, LOG_CEILINGS.installSize)
   const normalisedDependencies = normalizeLogLowerBetter(dependencies, LOG_CEILINGS.dependencies)
-  const normalisedTotalDependencies = normalizeLogLowerBetter(totalDependencies, LOG_CEILINGS.totalDependencies)
+  const normalisedTotalDependencies = normalizeLogLowerBetter(
+    totalDependencies,
+    LOG_CEILINGS.totalDependencies,
+  )
   const normalisedPackageSize = normalizeLogLowerBetter(packageSize, LOG_CEILINGS.packageSize)
 
   const normalisedVulnerabilities = getVulnerabilityPenalty(vulnerabilities)

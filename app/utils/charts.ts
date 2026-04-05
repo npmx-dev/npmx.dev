@@ -649,7 +649,7 @@ export function createAltTextForCompareQuadrantChart({
   config,
 }: AltCopyArgs<VueUiQuadrantDatapoint[], CompareQuadrantChartConfig>) {
   if (!dataset) return ''
-  
+
   const packages = {
     topRight: dataset.filter(d => d.quadrant === 'TOP_RIGHT'),
     topLeft: dataset.filter(d => d.quadrant === 'TOP_LEFT'),
