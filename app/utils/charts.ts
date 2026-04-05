@@ -2,6 +2,7 @@ import type {
   AltCopyArgs,
   VueUiHorizontalBarConfig,
   VueUiHorizontalBarDatapoint,
+  VueUiQuadrantConfig,
   VueUiQuadrantDatapoint,
   VueUiXyConfig,
   VueUiXyDatasetBarItem,
@@ -637,10 +638,18 @@ export async function copyAltTextForCompareFacetBarChart({
   await config.copy(altText)
 }
 
+type CompareQuadrantChartConfig = VueUiQuadrantConfig & {
+  copy: (text: string) => Promise<void>
+  $t: TrendTranslateFunction
+}
+
+// Used for FacetQuadrantChart.vue
 export function createAltTextForCompareQuadrantChart({
   dataset,
   config,
-}: AltCopyArgs<VueUiQuadrantDatapoint[], any>) {
+}: AltCopyArgs<VueUiQuadrantDatapoint[], CompareQuadrantChartConfig>) {
+  if (!dataset) return ''
+  
   const packages = {
     topRight: dataset.filter(d => d.quadrant === 'TOP_RIGHT'),
     topLeft: dataset.filter(d => d.quadrant === 'TOP_LEFT'),
