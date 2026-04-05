@@ -1,3 +1,4 @@
+import { setTimeout } from 'node:timers/promises'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 
 const mockRedisSet = vi.fn()
@@ -145,7 +146,7 @@ describe('lock', () => {
 
     const lock = getUpstashLock()
     const result = await lock('async-key', async () => {
-      await new Promise(resolve => setTimeout(resolve, 10))
+      await setTimeout(10)
       return 'async-result'
     })
 
