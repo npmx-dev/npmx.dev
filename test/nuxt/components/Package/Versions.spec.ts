@@ -1281,6 +1281,21 @@ describe('PackageVersions', () => {
         expect(text).not.toContain('0.5.0')
       })
     })
+
+    it('does not show latest tag when it does not match the filter', async () => {
+      const component = await mountSuspended(PackageVersions, { props: multiVersionProps })
+
+      const input = component.find('input[type="text"]')
+      await input.setValue('^1.0.0 <2.0.0')
+
+      const versionLinks = component.findAll('a').filter(isVersionLink)
+      const versions = versionLinks.map(l => l.text())
+
+      // 3.0.0 is latest but does NOT match the filter
+      expect(versions).not.toContain('3.0.0')
+      // 1.0.0 does match
+      expect(versions).toContain('1.0.0')
+    })
   })
 
   describe('error handling', () => {
