@@ -8,6 +8,7 @@ const { links } = defineProps<{
   links: NavigationConfigWithGroups
 }>()
 
+const { open: openCommandPalette } = useCommandPalette()
 const { isConnected, npmUser, avatar: npmAvatar } = useConnector()
 const { user: atprotoUser } = useAtproto()
 
@@ -16,6 +17,13 @@ const { activate, deactivate } = useFocusTrap(navRef, { allowOutsideClick: true 
 
 function closeMenu() {
   isOpen.value = false
+}
+
+function handleOpenCommandPalette() {
+  closeMenu()
+  nextTick(() => {
+    openCommandPalette()
+  })
 }
 
 function handleShowConnector() {
@@ -172,6 +180,25 @@ onUnmounted(deactivate)
                 </span>
                 <span class="flex-1">{{ $t('account_menu.connect_atmosphere') }}</span>
               </button>
+            </div>
+
+            <div class="px-2 py-2">
+              <span
+                class="px-3 py-2 block font-mono text-xs text-fg-subtle uppercase tracking-wider"
+              >
+                {{ $t('command_palette.title') }}
+              </span>
+
+              <ButtonBase
+                class="w-full flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200 text-start"
+                :aria-label="$t('shortcuts.command_palette')"
+                @click="handleOpenCommandPalette"
+              >
+                <span class="w-5 h-5 rounded-full bg-bg-muted flex items-center justify-center">
+                  <span class="i-lucide:command w-3 h-3 text-fg-muted" aria-hidden="true" />
+                </span>
+                <span class="flex-1">{{ $t('command_palette.quick_actions') }}</span>
+              </ButtonBase>
             </div>
 
             <!-- Divider -->

@@ -3,6 +3,7 @@ const { backgroundThemes, selectedBackgroundTheme, setBackgroundTheme } = useBac
 
 onPrehydrate(el => {
   const settings = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
+  // Hardcoded — onPrehydrate is serialized into a <script> tag and cannot reference imports
   const defaultId = 'neutral'
   const id = settings.preferredBackgroundTheme
   if (id) {

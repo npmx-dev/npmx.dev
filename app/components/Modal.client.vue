@@ -2,6 +2,7 @@
 const props = defineProps<{
   modalTitle: string
   modalSubtitle?: string
+  noScroll?: boolean
 }>()
 
 const dialogRef = useTemplateRef('dialogRef')
@@ -50,7 +51,8 @@ defineExpose({
     <dialog
       ref="dialogRef"
       closedby="any"
-      class="w-[calc(100%-2rem)] bg-bg border border-border rounded-lg shadow-xl max-h-[90vh] overflow-y-auto overscroll-contain m-0 m-auto p-6 text-fg focus-visible:outline focus-visible:outline-accent/70"
+      class="w-[calc(100%-2rem)] bg-bg border border-border rounded-lg shadow-xl max-h-[90vh] overscroll-contain m-0 m-auto p-6 text-fg focus-visible:outline focus-visible:outline-accent/70"
+      :class="noScroll ? 'overflow-hidden' : 'overflow-y-auto'"
       :aria-labelledby="modalTitleId"
       :aria-describedby="modalSubtitleId"
       v-bind="$attrs"

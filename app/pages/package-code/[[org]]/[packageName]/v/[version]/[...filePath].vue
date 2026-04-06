@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
+
 // Maximum file size we'll try to load (500KB) - must match server
 const MAX_FILE_SIZE = 500 * 1024
 
@@ -54,6 +56,25 @@ function getCodeUrl(args: {
 
 // Fetch package data for version list
 const { data: pkg } = usePackage(packageName)
+const { versions: commandPaletteVersions, ensureLoaded: ensureCommandPaletteVersionsLoaded } =
+  useCommandPalettePackageVersions(packageName)
+
+const commandPalettePackageContext = computed(() => {
+  const packageData = pkg.value
+  if (!packageData) return null
+
+  return {
+    packageName: packageData.name,
+    resolvedVersion: version.value ?? packageData['dist-tags']?.latest ?? null,
+    latestVersion: packageData['dist-tags']?.latest ?? null,
+    versions: commandPaletteVersions.value ?? Object.keys(packageData.versions ?? {}),
+  }
+})
+
+useCommandPalettePackageContext(commandPalettePackageContext, {
+  onOpen: ensureCommandPaletteVersionsLoaded,
+})
+useCommandPalettePackageCommands(commandPalettePackageContext)
 
 // URL pattern for version selector - includes file path if present
 const versionUrlPattern = computed(() =>
@@ -64,6 +85,8 @@ const versionUrlPattern = computed(() =>
     filePath: filePath.value,
   }),
 )
+
+useCommandPaletteVersionCommands(commandPalettePackageContext, versionUrlPattern)
 
 // Fetch file tree
 const { data: fileTree, status: treeStatus } = useFetch<PackageFileTreeResponse>(
@@ -239,6 +262,18 @@ function handleLineClick(lineNum: number, event: MouseEvent) {
   currentHash.value = newHash
 }
 
+// Copy link to current line(s)
+const { copy: copyPermalink } = useClipboard({ copiedDuring: 2000 })
+function copyPermalinkUrl() {
+  const url = new URL(window.location.href)
+  copyPermalink(url.toString())
+}
+
+const { copy: copyFileContent } = useClipboard({
+  source: () => fileContent.value?.content || '',
+  copiedDuring: 2000,
+})
+
 // Canonical URL for this code page
 const canonicalUrl = computed(() => `https://npmx.dev${getCodeUrl(route.params)}`)
 
@@ -287,6 +322,79 @@ defineOgImageComponent('Default', {
   description: () => pkg.value?.license ?? '',
   primaryColor: '#60a5fa',
 })
+
+useCommandPaletteContextCommands(
+  computed((): CommandPaletteContextCommandInput[] => {
+    if (!isViewingFile.value) return []
+
+    const commands: CommandPaletteContextCommandInput[] = []
+
+    if (filePath.value) {
+      commands.push({
+        id: 'code-open-raw',
+        group: 'links',
+        label: $t('code.view_raw'),
+        keywords: [packageName.value, filePath.value],
+        iconClass: 'i-lucide:file-output',
+        href: `https://cdn.jsdelivr.net/npm/${packageName.value}@${version.value}/${filePath.value}`,
+      })
+    }
+
+    if (isBinaryFile.value || !fileContent.value) return commands
+
+    commands.push(
+      {
+        id: 'code-copy-link',
+        group: 'actions',
+        label: $t('code.copy_link'),
+        keywords: [packageName.value, filePath.value ?? ''],
+        iconClass: 'i-lucide:link',
+        action: () => {
+          copyPermalinkUrl()
+        },
+      },
+      {
+        id: 'code-copy-file',
+        group: 'actions',
+        label: $t('command_palette.code.copy_file'),
+        keywords: [packageName.value, filePath.value ?? '', $t('common.copy')],
+        iconClass: 'i-lucide:file',
+        action: () => {
+          copyFileContent()
+        },
+      },
+    )
+
+    if (fileContent.value.markdownHtml) {
+      commands.push(
+        {
+          id: 'code-markdown-preview',
+          group: 'actions',
+          label: $t('code.markdown_view_mode.preview'),
+          keywords: [packageName.value, filePath.value ?? ''],
+          iconClass: 'i-lucide:eye',
+          active: markdownViewMode.value === 'preview',
+          action: () => {
+            markdownViewMode.value = 'preview'
+          },
+        },
+        {
+          id: 'code-markdown-source',
+          group: 'actions',
+          label: $t('code.markdown_view_mode.code'),
+          keywords: [packageName.value, filePath.value ?? ''],
+          iconClass: 'i-lucide:code',
+          active: markdownViewMode.value === 'code',
+          action: () => {
+            markdownViewMode.value = 'code'
+          },
+        },
+      )
+    }
+
+    return commands
+  }),
+)
 
 onPrehydrate(el => {
   const settingsSaved = JSON.parse(localStorage.getItem('npmx-settings') || '{}')

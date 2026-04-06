@@ -28,6 +28,25 @@ const toVersion = computed(() => versionRange.value?.to ?? '')
 
 const router = useRouter()
 const { data: pkg } = usePackage(packageName)
+const { versions: commandPaletteVersions, ensureLoaded: ensureCommandPaletteVersionsLoaded } =
+  useCommandPalettePackageVersions(packageName)
+
+const commandPalettePackageContext = computed(() => {
+  const packageData = pkg.value
+  if (!packageData) return null
+
+  return {
+    packageName: packageData.name,
+    resolvedVersion: fromVersion.value || packageData['dist-tags']?.latest || null,
+    latestVersion: packageData['dist-tags']?.latest ?? null,
+    versions: commandPaletteVersions.value ?? Object.keys(packageData.versions ?? {}),
+  }
+})
+
+useCommandPalettePackageContext(commandPalettePackageContext, {
+  onOpen: ensureCommandPaletteVersionsLoaded,
+})
+useCommandPalettePackageCommands(commandPalettePackageContext)
 
 const { data: compare, status: compareStatus } = useFetch<CompareResponse>(
   () => `/api/registry/compare/${packageName.value}/v/${fromVersion.value}...${toVersion.value}`,
@@ -108,6 +127,8 @@ const fromVersionUrlPattern = computed(() => {
 const toVersionUrlPattern = computed(() => {
   return normalizeRoutePath(diffRoute(packageName.value, fromVersion.value, '{version}'))
 })
+
+useCommandPaletteVersionCommands(commandPalettePackageContext, fromVersionUrlPattern)
 
 useSeoMeta({
   title: () => {

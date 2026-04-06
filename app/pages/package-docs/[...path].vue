@@ -38,6 +38,8 @@ if (import.meta.server && packageName.value) {
 }
 
 const { data: pkg } = usePackage(packageName)
+const { versions: commandPaletteVersions, ensureLoaded: ensureCommandPaletteVersionsLoaded } =
+  useCommandPalettePackageVersions(packageName)
 
 const latestVersion = computed(() => pkg.value?.['dist-tags']?.latest ?? null)
 
@@ -68,6 +70,23 @@ watch(
 )
 
 const resolvedVersion = computed(() => requestedVersion.value ?? latestVersion.value)
+
+const commandPalettePackageContext = computed(() => {
+  const packageData = pkg.value
+  if (!packageData) return null
+
+  return {
+    packageName: packageData.name,
+    resolvedVersion: resolvedVersion.value ?? packageData['dist-tags']?.latest ?? null,
+    latestVersion: packageData['dist-tags']?.latest ?? null,
+    versions: commandPaletteVersions.value ?? Object.keys(packageData.versions ?? {}),
+  }
+})
+
+useCommandPalettePackageContext(commandPalettePackageContext, {
+  onOpen: ensureCommandPaletteVersionsLoaded,
+})
+useCommandPalettePackageCommands(commandPalettePackageContext)
 
 const docsUrl = computed(() => {
   if (!packageName.value || !resolvedVersion.value) return null
@@ -103,6 +122,8 @@ const latestVersionDetailed = computed(() => {
 const versionUrlPattern = computed(
   () => `/package-docs/${pkg.value?.name || packageName.value}/v/{version}`,
 )
+
+useCommandPaletteVersionCommands(commandPalettePackageContext, versionUrlPattern)
 
 const pageTitle = computed(() => {
   if (!packageName.value) return t('package.docs.page_title')
