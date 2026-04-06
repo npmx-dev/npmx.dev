@@ -90,7 +90,7 @@ const gridHeaders = computed(() =>
 /*
  * Convert the comparison grid data to a Markdown table.
  */
-function exportComparisonDataAsMarkdown() {
+async function exportComparisonDataAsMarkdown() {
   const mdData: Array<Array<string>> = []
   const headers = [
     '',
@@ -135,7 +135,7 @@ function exportComparisonDataAsMarkdown() {
     return result
   }, '')
 
-  copy(markdown)
+  await copy(markdown)
 }
 
 const { announce } = useCommandPalette()
@@ -174,8 +174,8 @@ useCommandPaletteContextCommands(
         label: $t('compare.packages.copy_as_markdown'),
         keywords: [$t('compare.packages.section_comparison')],
         iconClass: 'i-lucide:copy',
-        action: () => {
-          exportComparisonDataAsMarkdown()
+        action: async () => {
+          await exportComparisonDataAsMarkdown()
           announce($t('command_palette.announcements.copied_to_clipboard'))
         },
       })
