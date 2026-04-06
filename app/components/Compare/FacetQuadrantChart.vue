@@ -112,7 +112,12 @@ const rawQuadrant = computed(() => createQuadrantDataset(source.value))
 const dataset = computed<VueUiQuadrantDatasetItem[]>(() => {
   return rawQuadrant.value.map((el: PackageQuadrantPoint) => {
     return {
-      ...el,
+      adoptionScore: el.adoptionScore,
+      efficiencyScore: el.efficiencyScore,
+      id: el.id,
+      license: el.license,
+      metrics: el.metrics,
+      quadrant: el.quadrant,
       fullname: el.name,
       name: applyEllipsis(el.name, 20),
       shape: 'circle',
