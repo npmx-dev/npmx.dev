@@ -489,4 +489,13 @@ const config = computed<VueUiQuadrantConfig>(() => {
   outline: 0.1rem solid var(--accent-color) !important;
   border-radius: 0.25rem;
 }
+
+/**
+* Temporary override (to be removed if/when a fix in vue-data-ui is found, like a dynamic repositioning of labels, or line-break forcing)
+* a long label for a datapoint placed on the border of the svg might be cropped by the overflow-hidden
+* set by the library on the chart component.
+*/
+:deep(.vue-ui-quadrant svg) {
+  overflow: visible !important;
+}
 </style>
