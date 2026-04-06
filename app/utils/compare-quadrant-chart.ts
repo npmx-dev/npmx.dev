@@ -217,6 +217,5 @@ function createQuadrantPoint(packageItem: PackageQuadrantInput): PackageQuadrant
 }
 
 export function createQuadrantDataset(packages: PackageQuadrantInput[]): PackageQuadrantPoint[] {
-  if (!packages.length) return []
   return packages.map(packageItem => createQuadrantPoint(packageItem))
 }
