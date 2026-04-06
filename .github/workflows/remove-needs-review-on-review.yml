@@ -8,9 +8,10 @@ on:
 jobs:
   remove-needs-review:
     name: 🏷️ Remove needs review label
-    if: github.repository == 'npmx-dev/npmx.dev' && contains(fromJson('["MEMBER","OWNER"]'), github.event.review.author_association)
+    if: github.repository == 'npmx-dev/npmx.dev'
     runs-on: ubuntu-slim
     permissions:
+      contents: read
       issues: write
     steps:
       - name: 🏷️ Remove needs review label
@@ -18,10 +19,30 @@ jobs:
         with:
           script: |
             const pr = context.payload.pull_request;
+            const review = context.payload.review;
             const LABEL = 'needs review';
+            const reviewer = review?.user?.login;
+
+            if (!reviewer) {
+              console.log('No reviewer login found in payload, skipping.');
+              return;
+            }
 
             if (!pr.labels.some(({ name }) => name === LABEL)) {
               console.log(`PR #${pr.number} does not have the "${LABEL}" label.`);
+              return;
+            }
+
+            const { data: permission } = await github.rest.repos.getCollaboratorPermissionLevel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              username: reviewer,
+            });
+
+            console.log(`Reviewer @${reviewer} permission is "${permission.permission}".`);
+
+            if (!['admin', 'maintain', 'write'].includes(permission.permission)) {
+              console.log(`Reviewer @${reviewer} is not a maintainer, skipping.`);
               return;
             }
 
