@@ -1,5 +1,3 @@
-import { regExpEscape } from '@li/regexp-escape-polyfill'
-
 // copied from https://github.com/markdown-it/markdown-it-emoji/blob/master/lib/data/full.mjs
 const emojis = {
   '100': '💯',
@@ -1909,7 +1907,7 @@ const emojis = {
 
 const emojisKeysRegex = new RegExp(
   Object.keys(emojis)
-    .map(key => `:${regExpEscape(key)}:`)
+    .map(key => `:${key}:`)
     .join('|'),
   'g',
 )
