@@ -2,6 +2,13 @@ import validatePackageName from 'validate-npm-package-name'
 import { NPM_REGISTRY } from '#shared/utils/constants'
 import { encodePackageName } from '#shared/utils/npm'
 
+export function splitPackageName(packageName: string): { org: string; name: string } {
+  const [org = '', name = ''] = packageName.startsWith('@')
+    ? packageName.split('/')
+    : ['', packageName]
+  return { org, name }
+}
+
 /**
  * Normalize a package name for comparison by removing common variations.
  * This aims to mirror npm's typosquatting detection algorithm.

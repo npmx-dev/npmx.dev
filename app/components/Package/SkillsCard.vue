@@ -1,11 +1,32 @@
 <script setup lang="ts">
-defineProps<{
+import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
+
+const props = defineProps<{
   skills: SkillListItem[]
   packageName: string
   version?: string
 }>()
 
 const skillsModal = useModal('skills-modal')
+
+useCommandPaletteContextCommands(
+  computed((): CommandPaletteContextCommandInput[] => {
+    if (!props.skills.length) return []
+
+    return [
+      {
+        id: 'package-skills-modal',
+        group: 'package',
+        label: $t('package.skills.title'),
+        keywords: [props.packageName, $t('package.skills.title')],
+        iconClass: 'i-custom:agent-skills',
+        action: () => {
+          skillsModal.open()
+        },
+      },
+    ]
+  }),
+)
 </script>
 
 <template>
