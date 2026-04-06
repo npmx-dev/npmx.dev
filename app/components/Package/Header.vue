@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { RouteLocationRaw } from 'vue-router'
+import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
 import { SCROLL_TO_TOP_THRESHOLD } from '~/composables/useScrollToTop'
 
 const props = defineProps<{
@@ -60,6 +61,14 @@ const { y: scrollY } = useScroll(window)
 const showScrollToTop = computed(() => scrollY.value > SCROLL_TO_TOP_THRESHOLD)
 
 const packageName = computed(() => props.pkg?.name ?? '')
+const fundingUrl = computed(() => {
+  let funding = props.displayVersion?.funding
+  if (Array.isArray(funding)) funding = funding[0]
+
+  if (!funding) return null
+
+  return typeof funding === 'string' ? funding : funding.url
+})
 
 const { copied: copiedPkgName, copy: copyPkgName } = useClipboard({
   source: packageName,
@@ -70,6 +79,41 @@ function hasProvenance(version: PackumentVersion | null): boolean {
   if (!version?.dist) return false
   return !!(version.dist as { attestations?: unknown }).attestations
 }
+
+const { announce } = useCommandPalette()
+
+useCommandPaletteContextCommands(
+  computed((): CommandPaletteContextCommandInput[] => {
+    if (!packageName.value) return []
+
+    const commands: CommandPaletteContextCommandInput[] = [
+      {
+        id: 'package-copy-name',
+        group: 'package',
+        label: $t('package.copy_name'),
+        keywords: [packageName.value],
+        iconClass: 'i-lucide:copy',
+        action: () => {
+          copyPkgName()
+          announce($t('command_palette.announcements.copied_to_clipboard'))
+        },
+      },
+    ]
+
+    if (fundingUrl.value) {
+      commands.push({
+        id: 'package-link-funding',
+        group: 'links',
+        label: $t('package.links.fund'),
+        keywords: [packageName.value, $t('package.links.fund')],
+        iconClass: 'i-lucide:heart',
+        href: fundingUrl.value,
+      })
+    }
+
+    return commands
+  }),
+)
 
 // Docs URL: use our generated API docs
 const docsLink = computed(() => {
@@ -124,15 +168,6 @@ useShortcuts({
   'd': () => docsLink.value,
   'c': () => props.pkg && { name: 'compare' as const, query: { packages: props.pkg.name } },
   'f': () => diffLink.value,
-})
-
-const fundingUrl = computed(() => {
-  let funding = props.displayVersion?.funding
-  if (Array.isArray(funding)) funding = funding[0]
-
-  if (!funding) return null
-
-  return typeof funding === 'string' ? funding : funding.url
 })
 </script>
 

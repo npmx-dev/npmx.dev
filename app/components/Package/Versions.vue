@@ -211,12 +211,16 @@ const visibleTagRows = computed(() => {
       )
     : rowsMaybeFilteredForDeprecation
   const first = rows.slice(0, MAX_VISIBLE_TAGS)
-  const latestTagRow = rows.find(row => row.tag === 'latest')
-  // Ensure 'latest' tag is always included (at the end) if not already present
-  if (latestTagRow && !first.includes(latestTagRow)) {
-    first.pop()
-    first.push(latestTagRow)
+
+  // When no filter is active, ensure 'latest' is always shown (even if not fully loaded)
+  if (!isFilterActive.value) {
+    const latestTagRow = rows.find(row => row.tag === 'latest')
+    if (latestTagRow && !first.includes(latestTagRow)) {
+      first.pop()
+      first.push(latestTagRow)
+    }
   }
+
   return first
 })
 

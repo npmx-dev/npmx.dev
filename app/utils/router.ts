@@ -1,11 +1,12 @@
 import type { RouteLocationRaw } from 'vue-router'
+import { splitPackageName } from '~/utils/package-name'
 
 export function packageRoute(
   packageName: string,
   version?: string | null,
   hash?: string,
 ): RouteLocationRaw {
-  const [org, name = ''] = packageName.startsWith('@') ? packageName.split('/') : ['', packageName]
+  const { org, name } = splitPackageName(packageName)
 
   if (version) {
     return {
@@ -40,7 +41,7 @@ export function diffRoute(
   fromVersion: string,
   toVersion: string,
 ): RouteLocationRaw {
-  const [org, name = ''] = packageName.startsWith('@') ? packageName.split('/') : ['', packageName]
+  const { org, name } = splitPackageName(packageName)
 
   return {
     name: 'diff',

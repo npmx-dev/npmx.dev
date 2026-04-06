@@ -1,3 +1,5 @@
+import { regExpEscape } from '@li/regexp-escape-polyfill'
+
 export type DevDependencySuggestionReason = 'known-package' | 'readme-hint'
 
 export interface DevDependencySuggestion {
@@ -59,15 +61,11 @@ function isKnownDevDependencyPackage(packageName: string): boolean {
   )
 }
 
-function escapeRegExp(text: string): string {
-  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-}
-
 function hasReadmeDevInstallHint(packageName: string, readmeContent?: string | null): boolean {
   if (!readmeContent) return false
 
-  const escapedName = escapeRegExp(packageName)
-  const escapedNpmName = escapeRegExp(`npm:${packageName}`)
+  const escapedName = regExpEscape(packageName)
+  const escapedNpmName = regExpEscape(`npm:${packageName}`)
   const packageSpec = `(?:${escapedName}|${escapedNpmName})(?:@[\\w.-]+)?`
 
   const patterns = [

@@ -87,7 +87,7 @@ const corsOptions: CorsOptions = {
   allowHeaders: ['Content-Type', 'Authorization'],
 }
 
-export function createConnectorApp(expectedToken: string) {
+export function createConnectorApp(expectedToken: string): H3 {
   const state: ConnectorState = {
     session: {
       token: expectedToken,

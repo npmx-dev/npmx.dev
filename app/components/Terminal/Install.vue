@@ -2,6 +2,7 @@
 import type { JsrPackageInfo } from '#shared/types/jsr'
 import type { DevDependencySuggestion } from '#shared/utils/dev-dependency'
 import type { PackageManagerId } from '~/utils/install-command'
+import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
 
 const props = defineProps<{
   packageName: string
@@ -120,6 +121,92 @@ const copyDevInstallCommand = () =>
       dev: true,
     }),
   )
+
+const { announce } = useCommandPalette()
+
+useCommandPaletteContextCommands(
+  computed((): CommandPaletteContextCommandInput[] => {
+    const commands: CommandPaletteContextCommandInput[] = [
+      {
+        id: 'package-copy-install',
+        group: 'package',
+        label: $t('package.get_started.copy_command'),
+        keywords: [props.packageName],
+        iconClass: 'i-lucide:copy',
+        action: () => {
+          copyInstallCommand()
+          announce($t('command_palette.announcements.copied_to_clipboard'))
+        },
+      },
+    ]
+
+    if (devDependencySuggestion.value.recommended) {
+      commands.push({
+        id: 'package-copy-dev-install',
+        group: 'package',
+        label: $t('package.get_started.copy_dev_command'),
+        keywords: [props.packageName],
+        iconClass: 'i-lucide:copy-plus',
+        action: () => {
+          copyDevInstallCommand()
+          announce($t('command_palette.announcements.copied_to_clipboard'))
+        },
+      })
+    }
+
+    if (props.executableInfo?.hasExecutable) {
+      commands.push({
+        id: 'package-copy-run',
+        group: 'package',
+        label: $t('command_palette.package_actions.copy_run'),
+        keywords: [props.packageName, $t('package.run.locally')],
+        iconClass: 'i-lucide:terminal-square',
+        action: () => {
+          copyRunCommand(props.executableInfo?.primaryCommand)
+          announce($t('command_palette.announcements.copied_to_clipboard'))
+        },
+      })
+    }
+
+    if (props.createPackageInfo) {
+      commands.push({
+        id: 'package-copy-create',
+        group: 'package',
+        label: $t('package.create.copy_command'),
+        keywords: [props.packageName, props.createPackageInfo.packageName],
+        iconClass: 'i-lucide:wand-sparkles',
+        action: () => {
+          copyCreateCommand()
+          announce($t('command_palette.announcements.copied_to_clipboard'))
+        },
+      })
+    }
+
+    if (props.typesPackageName && showTypesInInstall.value) {
+      commands.push({
+        id: 'package-view-types',
+        group: 'package',
+        label: $t('package.get_started.view_types', { package: props.typesPackageName }),
+        keywords: [props.packageName, props.typesPackageName],
+        iconClass: 'i-lucide:arrow-right',
+        to: packageRoute(props.typesPackageName!),
+      })
+    }
+
+    if (props.createPackageInfo) {
+      commands.push({
+        id: 'package-open-create-info',
+        group: 'package',
+        label: props.createPackageInfo.packageName,
+        keywords: [props.packageName, props.createPackageInfo.packageName],
+        iconClass: 'i-lucide:info',
+        to: packageRoute(props.createPackageInfo.packageName),
+      })
+    }
+
+    return commands
+  }),
+)
 </script>
 
 <template>
