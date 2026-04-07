@@ -1,6 +1,7 @@
 export interface ConfiguredRegistrySource {
   label: string
   registryBaseUrl: string
+  kind?: 'mirror' | 'registry'
 }
 
 // This is the repo-level source of truth for source registries.
@@ -10,9 +11,11 @@ export const registryCatalog: ConfiguredRegistrySource[] = [
   {
     label: 'yarn',
     registryBaseUrl: 'https://registry.yarnpkg.com',
+    kind: 'mirror',
   },
   {
     label: 'npm',
     registryBaseUrl: 'https://registry.npmjs.org',
+    kind: 'registry',
   },
 ]

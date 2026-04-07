@@ -4,6 +4,7 @@ import http from 'node:http'
 import path from 'node:path'
 import { URL } from 'node:url'
 import {
+  collectPublishedKeys,
   createArtifactDigest,
   createRegistryIdentity,
   hydrateSourceRegistries,
@@ -27,6 +28,7 @@ interface ProxyServerOptions {
   sumDbBaseUrl?: string
   registryPrivateKey?: string
   registryPublicKey?: string
+  random?: () => number
 }
 
 type VerifiedVersionSignature = {
@@ -215,6 +217,21 @@ async function fetchPackument(packageName: string, sourceRegistry: SourceRegistr
   return (await upstreamResponse.json()) as Record<string, unknown>
 }
 
+async function fetchPackumentIfPresent(packageName: string, sourceRegistry: SourceRegistry) {
+  try {
+    const packument = await fetchPackument(packageName, sourceRegistry)
+    return {
+      sourceRegistry,
+      packument,
+    }
+  } catch (error) {
+    if (error instanceof Error && error.message === 'upstream returned 404') {
+      return null
+    }
+    throw error
+  }
+}
+
 function getVersionMetadata(packument: Record<string, unknown>, version: string) {
   const versions = packument.versions
   if (!versions || typeof versions !== 'object') {
@@ -227,6 +244,80 @@ function getVersionMetadata(packument: Record<string, unknown>, version: string)
   }
 
   return versionMetadata as Record<string, unknown>
+}
+
+async function findPackumentCandidates(packageName: string, sourceRegistries: SourceRegistry[]) {
+  const candidates = await Promise.all(
+    sourceRegistries.map(sourceRegistry => fetchPackumentIfPresent(packageName, sourceRegistry)),
+  )
+
+  return candidates.filter(
+    (
+      candidate,
+    ): candidate is {
+      sourceRegistry: SourceRegistry
+      packument: Record<string, unknown>
+    } => candidate !== null,
+  )
+}
+
+async function resolvePackumentCandidate(
+  packageName: string,
+  sourceRegistries: SourceRegistry[],
+  random: () => number,
+) {
+  const candidates = await findPackumentCandidates(packageName, sourceRegistries)
+  if (candidates.length === 0) {
+    throw new Error(`Package ${packageName} was not found in any configured source registry`)
+  }
+
+  const chosenRegistry = resolveSourceRegistry(
+    candidates.map(candidate => candidate.sourceRegistry),
+    random,
+  )
+
+  return candidates.find(candidate => candidate.sourceRegistry.registryBaseUrl === chosenRegistry.registryBaseUrl)!
+}
+
+async function resolveVersionCandidate(input: {
+  packageName: string
+  version: string
+  sourceRegistries: SourceRegistry[]
+  random: () => number
+}) {
+  const candidates = await findPackumentCandidates(input.packageName, input.sourceRegistries)
+  const versionCandidates = candidates
+    .map(candidate => {
+      const versionMetadata = getVersionMetadata(candidate.packument, input.version)
+      if (!versionMetadata) {
+        return null
+      }
+
+      return {
+        sourceRegistry: candidate.sourceRegistry,
+        packument: candidate.packument,
+        versionMetadata,
+      }
+    })
+    .filter(
+      (
+        candidate,
+      ): candidate is {
+        sourceRegistry: SourceRegistry
+        packument: Record<string, unknown>
+        versionMetadata: Record<string, unknown>
+      } => candidate !== null,
+    )
+
+  if (versionCandidates.length === 0) {
+    return null
+  }
+
+  const chosenRegistry = resolveSourceRegistry(
+    versionCandidates.map(candidate => candidate.sourceRegistry),
+    input.random,
+  )
+  return versionCandidates.find(candidate => candidate.sourceRegistry.registryBaseUrl === chosenRegistry.registryBaseUrl)
 }
 
 async function fetchAndIngestTarball(input: {
@@ -353,6 +444,11 @@ export async function createRegistryProxyServer(options: ProxyServerOptions) {
   })
 
   const sourceRegistries = await hydrateSourceRegistries(options.sourceRegistries ?? [], options.upstreamBaseUrl)
+  const publishedUpstreamKeys = collectPublishedKeys(sourceRegistries)
+  const servedKeys = [keyPair.npmKey, ...publishedUpstreamKeys].filter(
+    (key, index, keys) => keys.findIndex(candidate => candidate.keyid === key.keyid) === index,
+  )
+  const random = options.random ?? Math.random
 
   const server = http.createServer(async (request, response) => {
     const method = request.method ?? 'GET'
@@ -361,7 +457,7 @@ export async function createRegistryProxyServer(options: ProxyServerOptions) {
 
     if (method === 'GET' && pathname === '/-/npm/v1/keys') {
       sendJson(response, 200, {
-        keys: [keyPair.npmKey],
+        keys: servedKeys,
       })
       return
     }
@@ -374,9 +470,22 @@ export async function createRegistryProxyServer(options: ProxyServerOptions) {
     try {
       const tarballRequest = parseTarballRequest(pathname)
       if (tarballRequest) {
-        const sourceRegistry = resolveSourceRegistry(sourceRegistries)
+        const candidate = await resolveVersionCandidate({
+          packageName: tarballRequest.packageName,
+          version: tarballRequest.version,
+          sourceRegistries,
+          random,
+        })
+        if (!candidate) {
+          sendError(response, 404, `Unable to find ${tarballRequest.packageName}@${tarballRequest.version}`)
+          return
+        }
+
+        const sourceRegistry = candidate.sourceRegistry
         const requestId = createRequestId()
-        const upstreamTarballUrl = `${sourceRegistry.registryBaseUrl}${pathname}`
+        const dist = candidate.versionMetadata.dist as Record<string, unknown>
+        const upstreamTarballUrl =
+          typeof dist.tarball === 'string' ? dist.tarball : `${sourceRegistry.registryBaseUrl}${pathname}`
         const upstreamResponse = await fetch(upstreamTarballUrl)
         if (!upstreamResponse.ok || !upstreamResponse.body) {
           sendError(response, upstreamResponse.status || 502, `Unable to fetch ${upstreamTarballUrl}`)
@@ -403,16 +512,12 @@ export async function createRegistryProxyServer(options: ProxyServerOptions) {
         response.end()
 
         const body = Buffer.concat(chunks)
-        const packument = await fetchPackument(tarballRequest.packageName, sourceRegistry)
-        const versionMetadata = getVersionMetadata(packument, tarballRequest.version)
-        const verifiedSignature =
-          versionMetadata &&
-          verifyVersionSignature({
-            packageName: tarballRequest.packageName,
-            version: tarballRequest.version,
-            versionMetadata,
-            sourceRegistry,
-          })
+        const verifiedSignature = verifyVersionSignature({
+          packageName: tarballRequest.packageName,
+          version: tarballRequest.version,
+          versionMetadata: candidate.versionMetadata,
+          sourceRegistry,
+        })
 
         if (!verifiedSignature) {
           console.log(`[proxy] tarball ${tarballRequest.packageName}@${tarballRequest.version} checkpointed=false reason=signature verification failed`)
@@ -448,12 +553,12 @@ export async function createRegistryProxyServer(options: ProxyServerOptions) {
         sendError(response, 400, `Invalid package path ${pathname}`)
         return
       }
-      const sourceRegistry = resolveSourceRegistry(sourceRegistries)
-
       const requestId = createRequestId()
       let body: string | null = null
       try {
-        const upstreamPackument = await fetchPackument(packageName, sourceRegistry)
+        const chosenCandidate = await resolvePackumentCandidate(packageName, sourceRegistries, random)
+        const sourceRegistry = chosenCandidate.sourceRegistry
+        const upstreamPackument = chosenCandidate.packument
         await ensureInstallTarballRecorded({
           packageName,
           packument: upstreamPackument,

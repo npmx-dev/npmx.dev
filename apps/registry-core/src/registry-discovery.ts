@@ -4,6 +4,7 @@ import type { SourceRegistry } from './protocol.ts'
 export interface ConfiguredSourceRegistry {
   label: string
   registryBaseUrl: string
+  kind?: 'mirror' | 'registry'
   npmKeys?: NpmKey[]
 }
 
@@ -39,6 +40,7 @@ export async function hydrateSourceRegistries(
     effective.map(async registry => ({
       label: registry.label,
       registryBaseUrl: registry.registryBaseUrl,
+      kind: registry.kind,
       keysEndpoint: `${registry.registryBaseUrl}/-/npm/v1/keys`,
       npmKeys: registry.npmKeys ?? (await fetchRegistryKeys(registry.registryBaseUrl)),
     })),

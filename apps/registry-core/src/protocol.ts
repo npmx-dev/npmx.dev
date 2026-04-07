@@ -13,6 +13,7 @@ export interface RegistryIdentity {
 export interface SourceRegistry {
   label: string
   registryBaseUrl: string
+  kind?: 'mirror' | 'registry'
   keysEndpoint: string
   npmKeys: NpmKey[]
 }
@@ -97,14 +98,19 @@ export function createRegistryIdentity(input: {
   }
 }
 
-export function resolveSourceRegistry(registries: SourceRegistry[]): SourceRegistry {
-  const matched = registries[0]
-  if (!matched) {
+export function resolveSourceRegistry(
+  registries: SourceRegistry[],
+  random: () => number = Math.random,
+): SourceRegistry {
+  if (registries.length === 0) {
     throw new Error('No source registry configured')
   }
 
-  // With package-level routing removed, the first configured registry is the fetch source.
-  return matched
+  // We randomize only after the candidate list has already been narrowed to registries that can
+  // actually serve the package/version. This keeps mirror-vs-registry routing simple without
+  // reviving static package-pattern rules.
+  const index = Math.min(registries.length - 1, Math.floor(random() * registries.length))
+  return registries[index]!
 }
 
 export function createArtifactDigest(input: Buffer | string): string {
