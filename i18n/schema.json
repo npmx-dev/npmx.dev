@@ -1012,6 +1012,9 @@
             "radicle": {
               "type": "string"
             },
+            "socket_dev": {
+              "type": "string"
+            },
             "sourcehut": {
               "type": "string"
             },

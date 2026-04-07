@@ -336,6 +336,7 @@
       "gitea": "View on Gitea",
       "gitee": "View on Gitee",
       "radicle": "View on Radicle",
+      "socket_dev": "view on socket.dev",
       "sourcehut": "View on SourceHut",
       "tangled": "View on Tangled"
     },

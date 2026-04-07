@@ -177,6 +177,7 @@ useCommandPaletteContextCommands(
       <LinkBase
         :to="`https://socket.dev/npm/package/${pkg.name}`"
         :title="$t('common.view_on.socket_dev')"
+        classicon="i-simple-icons:socket"
       >
         socket.dev
       </LinkBase>
