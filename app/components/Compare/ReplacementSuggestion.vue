@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ModuleReplacement } from 'module-replacements'
 import { resolveDocUrl } from 'module-replacements'
+import { getReplacementDescription, getReplacementNodeVersion } from '~/utils/module-replacements'
 
 const props = defineProps<{
   packageName: string
@@ -17,15 +18,7 @@ const emit = defineEmits<{
 
 const docUrl = computed(() => resolveDocUrl(props.replacement.url))
 
-const nodeVersion = computed(() => {
-  const nodeEngine = props.replacement.engines?.find(e => e.engine === 'nodejs')
-  return nodeEngine?.minVersion || null
-})
-
-function getReplacementDescription(replacement: ModuleReplacement) {
-  if (replacement.type === 'documented') return ''
-  return replacement.description ?? ''
-}
+const nodeVersion = computed(() => getReplacementNodeVersion(props.replacement))
 
 const replacementDescription = useMarkdown(() => ({
   text: getReplacementDescription(props.replacement),

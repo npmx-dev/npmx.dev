@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ModuleReplacement, ModuleReplacementMapping } from 'module-replacements'
 import { resolveDocUrl } from 'module-replacements'
+import { getReplacementDescription, getReplacementNodeVersion } from '~/utils/module-replacements'
 
 const props = defineProps<{
   mapping: ModuleReplacementMapping
@@ -9,13 +10,10 @@ const props = defineProps<{
 
 const externalUrl = computed(() => resolveDocUrl(props.mapping.url ?? props.replacement.url))
 
-const nodeVersion = computed(() => {
-  const nodeEngine = props.replacement.engines?.find(e => e.engine === 'nodejs')
-  return nodeEngine?.minVersion || null
-})
+const nodeVersion = computed(() => getReplacementNodeVersion(props.replacement))
 
 const replacementDescription = useMarkdown(() => ({
-  text: (props.replacement as { description?: string }).description ?? '',
+  text: getReplacementDescription(props.replacement),
 }))
 </script>
 
