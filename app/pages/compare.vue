@@ -2,6 +2,7 @@
 import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison'
 import { useRouteQuery } from '@vueuse/router'
 import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
+import FacetQuadrantChart from '~/components/Compare/FacetQuadrantChart.vue'
 import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
 
 definePageMeta({
@@ -423,7 +424,7 @@ useSeoMeta({
               </div>
             </TabPanel>
 
-            <!-- bar charts -->
+            <!-- Charts: per-facet bars & quadrant -->
             <TabPanel value="charts" panel-id="comparison-panel-charts">
               <div
                 v-if="selectedFacets.some(facet => facet.chartable)"
@@ -446,6 +447,13 @@ useSeoMeta({
               <p v-else class="py-12 text-center text-fg-subtle">
                 {{ $t('compare.packages.no_chartable_data') }}
               </p>
+              <div class="max-w-[450px] mx-auto">
+                <FacetQuadrantChart
+                  v-if="packages.length"
+                  :packages-data="packagesData"
+                  :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)"
+                />
+              </div>
             </TabPanel>
           </TabRoot>
 

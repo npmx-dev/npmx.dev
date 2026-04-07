@@ -196,7 +196,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
             },
             nameLabels: {
               fontSize: isMobile.value ? 12 : 18,
-              color: colors.value.fgSubtle,
+              color: colors.value.fg,
             },
             underlayerColor: colors.value.bg,
           },
