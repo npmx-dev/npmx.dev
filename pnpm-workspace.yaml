@@ -7,17 +7,15 @@ ignoreDepScripts: true
 
 ignoreWorkspaceRootCheck: true
 
-ignoredBuiltDependencies:
-  - '@parcel/watcher'
-  - core-js
-  - esbuild
-  - unrs-resolver
-  - vue-demi
-
-onlyBuiltDependencies:
-  - '@resvg/resvg-js'
-  - better-sqlite3
-  - sharp@0.34.5
+allowBuilds:
+  '@resvg/resvg-js': true
+  'better-sqlite3': true
+  'sharp@0.34.5': true
+  '@parcel/watcher': false
+  'core-js': false
+  'esbuild': false
+  'unrs-resolver': false
+  'vue-demi': false
 
 overrides:
   sharp: 0.34.5

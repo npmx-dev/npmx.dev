@@ -146,6 +146,8 @@ if (import.meta.client) {
       <NuxtPage />
     </div>
 
+    <CommandPalette />
+
     <AppFooter />
 
     <ScrollToTop />

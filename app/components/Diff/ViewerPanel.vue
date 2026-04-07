@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core'
+import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
 
 const bytesFormatter = useBytesFormatter()
 
@@ -86,6 +87,51 @@ const charEditPercent = computed(() => calcPercent(inlineMaxCharEdits.value, 0, 
 function getCodeUrl(version: string): string {
   return `/package-code/${props.packageName}/v/${version}/${props.file.path}`
 }
+
+const { announce } = useCommandPalette()
+
+useCommandPaletteContextCommands(
+  computed((): CommandPaletteContextCommandInput[] => [
+    {
+      id: 'diff-toggle-merge-modified-lines',
+      group: 'actions',
+      label: $t('command_palette.diff.merge_modified_lines'),
+      keywords: [props.packageName, props.file.path],
+      iconClass: 'i-lucide:git-compare',
+      badge: mergeModifiedLines.value
+        ? $t('command_palette.state.on')
+        : $t('command_palette.state.off'),
+      action: () => {
+        mergeModifiedLines.value = !mergeModifiedLines.value
+        announce(
+          $t('command_palette.announcements.setting_toggled', {
+            setting: $t('command_palette.diff.merge_modified_lines'),
+            state: $t(
+              mergeModifiedLines.value ? 'command_palette.state.on' : 'command_palette.state.off',
+            ),
+          }),
+        )
+      },
+    },
+    {
+      id: 'diff-toggle-word-wrap',
+      group: 'actions',
+      label: $t('command_palette.diff.word_wrap'),
+      keywords: [props.packageName, props.file.path],
+      iconClass: 'i-lucide:align-justify',
+      badge: wordWrap.value ? $t('command_palette.state.on') : $t('command_palette.state.off'),
+      action: () => {
+        wordWrap.value = !wordWrap.value
+        announce(
+          $t('command_palette.announcements.setting_toggled', {
+            setting: $t('command_palette.diff.word_wrap'),
+            state: $t(wordWrap.value ? 'command_palette.state.on' : 'command_palette.state.off'),
+          }),
+        )
+      },
+    },
+  ]),
+)
 </script>
 
 <template>

@@ -42,6 +42,7 @@ This focus helps guide our project decisions as a community and what we choose t
   - [Naming conventions](#naming-conventions)
   - [Vue components](#vue-components)
   - [Internal linking](#internal-linking)
+  - [Command palette](#command-palette)
   - [Cursor and navigation](#cursor-and-navigation)
 - [RTL Support](#rtl-support)
 - [Localization (i18n)](#localization-i18n)
@@ -399,6 +400,14 @@ For package links, use the auto-imported `packageRoute()` utility from `app/util
 
 > [!IMPORTANT]
 > Never construct package URLs as strings. The route structure uses separate `org` and `name` params, and `packageRoute()` handles the splitting correctly.
+
+### Command palette
+
+The command palette is a first-class navigation surface. When you add a new user-facing capability to the app, you should also register a corresponding command palette entry for it whenever that action or destination makes sense outside its immediate UI.
+
+- Add global entries in the command palette composables.
+- Add page- or component-scoped entries from the page/component that owns the capability.
+- Prefer palette entries for actions users may reasonably want to trigger from the keyboard or jump to directly.
 
 #### Available route names
 
