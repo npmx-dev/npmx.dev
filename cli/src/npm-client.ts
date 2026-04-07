@@ -157,6 +157,8 @@ const AUTH_URL_TIMEOUT_MS = 90_000
 export interface ExecNpmOptions {
   otp?: string
   silent?: boolean
+  /** Working directory for the npm command. */
+  cwd?: string
   /** When true, use PTY-based interactive execution instead of execFile. */
   interactive?: boolean
   /** When true, npm opens auth URLs in the user's browser.
@@ -214,6 +216,7 @@ async function execNpmInteractive(
     name: 'xterm-256color',
     cols: 120,
     rows: 30,
+    cwd: options.cwd,
     env,
   })
 
@@ -337,6 +340,7 @@ async function execNpm(args: string[], options: ExecNpmOptions = {}): Promise<Np
     const { command, args: processArgs } = resolveNpmProcessCommand(npmArgs)
     const { stdout, stderr } = await execFileAsync(command, processArgs, {
       timeout: 60000,
+      cwd: options.cwd,
       env: createNpmEnv(),
     })
 
@@ -559,12 +563,12 @@ export async function listUserPackages(user: string): Promise<NpmExecResult> {
  * Creates a minimal package.json in a temp directory and publishes it.
  * @param name Package name to claim
  * @param author npm username of the publisher (for author field)
- * @param otp Optional OTP for 2FA
+ * @param options Execution options (otp, interactive, etc.)
  */
 export async function packageInit(
   name: string,
   author?: string,
-  otp?: string,
+  options?: ExecNpmOptions,
 ): Promise<NpmExecResult> {
   validatePackageName(name)
 
@@ -600,52 +604,22 @@ export async function packageInit(
     args.push('--access', access)
   }
 
-  // Run npm publish from the temp directory
-  const npmArgs = otp ? [...args, '--otp', otp] : args
-
-  // Log the command being run (hide OTP value for security)
-  const displayCmd = otp ? `npm ${args.join(' ')} --otp ******` : `npm ${args.join(' ')}`
+  const displayCmd = options?.otp
+    ? ['npm', ...args, '--otp', '******'].join(' ')
+    : ['npm', ...args].join(' ')
   logCommand(`${displayCmd} (in temp dir for ${name})`)
 
-  try {
-    const { command, args: processArgs } = resolveNpmProcessCommand(npmArgs)
-    const { stdout, stderr } = await execFileAsync(command, processArgs, {
-      timeout: 60000,
-      cwd: tempDir.path,
-      env: createNpmEnv(),
-    })
+  const result = await execNpm(args, { ...options, cwd: tempDir.path, silent: true })
 
+  if (result.exitCode === 0) {
     logSuccess(`Published ${name}@0.0.0`)
-
-    return {
-      stdout: stdout.trim(),
-      stderr: filterNpmWarnings(stderr),
-      exitCode: 0,
-    }
-  } catch (error) {
-    const err = error as { stdout?: string; stderr?: string; code?: number }
-    const stderr = err.stderr?.trim() ?? String(error)
-    const requiresOtp = detectOtpRequired(stderr)
-    const authFailure = detectAuthFailure(stderr)
-
-    if (requiresOtp) {
-      logError('OTP required')
-    } else if (authFailure) {
-      logError('Authentication required - please run "npm login" and restart the connector')
-    } else {
-      logError(filterNpmWarnings(stderr).split('\n')[0] || 'Command failed')
-    }
-
-    return {
-      stdout: err.stdout?.trim() ?? '',
-      stderr: requiresOtp
-        ? 'This operation requires a one-time password (OTP).'
-        : authFailure
-          ? 'Authentication failed. Please run "npm login" and restart the connector.'
-          : filterNpmWarnings(stderr),
-      exitCode: err.code ?? 1,
-      requiresOtp,
-      authFailure,
-    }
+  } else if (result.requiresOtp) {
+    logError('OTP required')
+  } else if (result.authFailure) {
+    logError('Authentication required - please run "npm login" and restart the connector')
+  } else {
+    logError(result.stderr.split('\n')[0] || 'Command failed')
   }
+
+  return result
 }
