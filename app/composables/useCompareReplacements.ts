@@ -8,7 +8,11 @@ export interface ReplacementSuggestion {
 /**
  * Replacement types that suggest "no dependency" (can be replaced with native code or inline).
  */
-const NO_DEP_REPLACEMENT_TYPES = ['native', 'simple', 'removal'] as const satisfies ModuleReplacement['type'][]
+const NO_DEP_REPLACEMENT_TYPES = [
+  'native',
+  'simple',
+  'removal',
+] as const satisfies ModuleReplacement['type'][]
 
 /**
  * Replacement types that are informational only.
