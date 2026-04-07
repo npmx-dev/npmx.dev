@@ -77,7 +77,7 @@ What npmx offers:
 | Organization pages             |    ✅     |    ✅    |
 | Provenance indicators          |    ✅     |    ✅    |
 | Code browser                   |    ✅     |    ✅    |
-| Dark mode                      |    ❌     |    ✅    |
+| Dark mode                      |    ✅     |    ✅    |
 | Outdated dependency warnings   |    ❌     |    ✅    |
 | Module format badges (ESM/CJS) |    ❌     |    ✅    |
 | TypeScript types indicator     |    ✅     |    ✅    |
