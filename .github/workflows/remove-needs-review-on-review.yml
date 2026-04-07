@@ -23,9 +23,21 @@ jobs:
             const review = context.payload.review;
             const LABEL = 'needs review';
             const reviewer = review?.user?.login;
+            const author = pr.user?.login;
+            const reviewerType = review?.user?.type;
 
             if (!reviewer) {
               console.log('No reviewer login found in payload, skipping.');
+              return;
+            }
+
+            if (reviewerType === 'Bot') {
+              console.log(`Skipping bot review from @${reviewer} on PR #${pr.number}.`);
+              return;
+            }
+
+            if (reviewer === author) {
+              console.log(`Skipping self-review from @${reviewer} on PR #${pr.number}.`);
               return;
             }
 
