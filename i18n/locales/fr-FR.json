@@ -1248,6 +1248,8 @@
       },
       "explanation": {
         "tooltip_help": "Afficher l’explication du score",
+        "tooltip_help_adoption": "Afficher l'explication du score de popularité",
+        "tooltip_help_efficiency": "Afficher l'explication du score d'ergonomie",
         "introduction": "Le score est calculé en combinant plusieurs signaux sur deux axes :",
         "adoption": "Popularité : reflète l’utilisation et l’activité (téléchargements, fraîcheur, mentions)",
         "efficiency": "Ergonomie : reflète l’empreinte et la qualité (taille d’installation, dépendances, vulnérabilités, support des types)",
