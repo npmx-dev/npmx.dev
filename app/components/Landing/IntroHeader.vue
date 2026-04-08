@@ -61,12 +61,14 @@ onPrehydrate(el => {
       year: 'numeric',
     }).format(new Date())
 
-    const noodleDate = noodle.date && new Intl.DateTimeFormat('en-US', {
-      timeZone: noodle.timezone === 'auto' ? undefined : noodle.timezone,
-      month: '2-digit',
-      day: '2-digit',
-      year: 'numeric',
-    }).format(new Date(noodle.date))
+    const noodleDate =
+      noodle.date &&
+      new Intl.DateTimeFormat('en-US', {
+        timeZone: noodle.timezone === 'auto' ? undefined : noodle.timezone,
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric',
+      }).format(new Date(noodle.date))
     return todayDate === noodleDate
   })
 
