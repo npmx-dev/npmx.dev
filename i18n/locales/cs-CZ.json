@@ -28,6 +28,9 @@
       "search": "Hledání",
       "package": "Balíček"
     },
+    "ctrl_key": "Ctrl",
+    "command_palette": "Otevřít panel příkazů",
+    "command_palette_description": "Použijte panel příkazů k přechodu mezi stránkami, zobrazeními balíčků, nastaveními a externími odkazy, aniž byste opustili klávesnici. Na macOS stiskněte ⌘K. Na Windows a Linux stiskněte {ctrlKey}+K.",
     "focus_search": "Zaměřit hledání",
     "show_kbd_hints": "Zvýraznit klávesové zkratky",
     "settings": "Otevřít nastavení",
@@ -75,6 +78,113 @@
     "instant_search_turn_on": "zapnout",
     "instant_search_turn_off": "vypnout",
     "instant_search_advisory": "{label} {state} — {action}"
+  },
+  "command_palette": {
+    "title": "panel příkazů",
+    "quick_actions": "skočit na...",
+    "subtitle": "rychle přepínejte npmx stránky a nastavení",
+    "subtitle_languages": "vyberte jazyk nebo pomozte zlepšit překlady",
+    "instructions": "Zadejte text pro filtrování příkazů. Použijte šipky pro pohyb mezi výsledky a Enter pro spuštění příkazu.",
+    "input_label": "Hledání v panelu příkazů",
+    "results_label": "Výsledky hledání",
+    "placeholder": "zadejte příkaz...",
+    "back": "Zpět",
+    "empty": "Žádné odpovídající příkazy",
+    "empty_search_hint": "Stiskněte Enter pro hledání \"{query}\".",
+    "current": "aktuální",
+    "here": "tady jste",
+    "connected": "připojeno",
+    "state": {
+      "on": "zapnuto",
+      "off": "vypnuto"
+    },
+    "groups": {
+      "actions": "Akce",
+      "help": "Nápověda",
+      "language": "Jazyk",
+      "connections": "Připojení",
+      "navigation": "Navigace",
+      "links": "Odkazy",
+      "npmx": "npmx",
+      "package": "Balíček",
+      "package_with_name": "Balíček ({name})",
+      "versions": "Verze",
+      "versions_with_name": "Verze {name}"
+    },
+    "actions": {
+      "search": "Hledat",
+      "search_for": "Hledání \"{query}\"",
+      "keyboard_shortcuts": "Klávesové zkratky",
+      "help_translate": "Pomozte s překladem"
+    },
+    "connections": {
+      "npm_connect": "Připojit k npm CLI",
+      "npm_connected": "npm CLI (~{username})",
+      "npm_disconnect": "Odpojit npm CLI",
+      "atmosphere_connect": "Připojit k Atmosphere",
+      "atmosphere_connected": "atmosphere ({'@'}{handle})",
+      "atmosphere_disconnect": "Odpojit Atmosphere"
+    },
+    "navigation": {
+      "home": "domů",
+      "packages": "balíčky (~{username})",
+      "orgs": "organizace (~{username})",
+      "profile": "profil ({'@'}{handle})"
+    },
+    "links": {
+      "external": "Externí odkaz"
+    },
+    "package_links": {
+      "stars": "Hvězdičky repozitáře",
+      "forks": "Forky repozitáře"
+    },
+    "theme": {
+      "system": "Použít systémové téma",
+      "light": "Použít světlé téma",
+      "dark": "Použít tmavé téma"
+    },
+    "package": {
+      "main": "Stránka balíčku",
+      "docs": "Dokumentace",
+      "code": "Kód",
+      "diff": "Rozdíl",
+      "compare": "Porovnat tento balíček",
+      "download": "Stáhnout tarball"
+    },
+    "package_actions": {
+      "copy_run": "Kopírovat příkaz spuštění"
+    },
+    "code": {
+      "copy_file": "Kopírovat obsah souboru"
+    },
+    "diff": {
+      "merge_modified_lines": "Sloučit upravené řádky",
+      "word_wrap": "Zalomit slova"
+    },
+    "version": {
+      "label": "{version}"
+    },
+    "status": {
+      "available_in_context": "{context}. {count} dostupný příkaz | {context}. {count} dostupné příkazy | {context}. {count} dostupných příkazů",
+      "matching_in_context": "{context}. {count} odpovídající příkaz | {context}. {count} odpovídající příkazy | {context}. {count} odpovídajících příkazů",
+      "no_matches_search_in_context": "{context}. Žádné odpovídající příkazy. Stiskněte Enter pro hledání \"{query}\"."
+    },
+    "announcements": {
+      "language_changed": "Jazyk nastaven na {language}.",
+      "relative_dates_on": "Relativní data zapnuta.",
+      "relative_dates_off": "Relativní data vypnuta.",
+      "theme_changed": "Téma nastaveno na {theme}.",
+      "accent_color_changed": "Akcentová barva nastavena na {color}.",
+      "background_theme_changed": "Odstín pozadí nastaven na {theme}.",
+      "download_started": "Stahování tarballu {package} zahájeno.",
+      "copied_to_clipboard": "Zkopírováno do schránky.",
+      "npm_disconnected": "Odpojeno od npm CLI.",
+      "atmosphere_disconnected": "Odpojeno od Atmosphere.",
+      "facets_all_selected": "Všechny vlastnosti vybrány.",
+      "facets_all_deselected": "Výběr vlastností zrušen.",
+      "view_switched": "Přepnuto na zobrazení {view}.",
+      "setting_toggled": "{setting} {state}."
+    }
   },
   "nav": {
     "main_navigation": "Hlavní",
@@ -150,7 +260,8 @@
     "help_translate": "Pomozte přeložit npmx",
     "translation_status": "Zkontrolovat globální stav překladu",
     "accent_colors": {
-      "label": "Barvy akcentu",
+      "label": "Akcentová barva",
+      "neutral": "Neutrální",
       "sky": "Obloha",
       "coral": "Korál",
       "amber": "Jantar",
@@ -201,6 +312,8 @@
     "warnings": "Varování:",
     "go_back_home": "Zpět na začátek",
     "per_week": "/ týden",
+    "yes": "Ano",
+    "no": "Ne",
     "vanity_downloads_hint": "Pro zobrazený balíček | Součet pro {count} zobrazené balíčky | Součet pro {count} zobrazených balíčků",
     "sort": {
       "name": "jméno",
@@ -223,11 +336,14 @@
       "gitea": "Zobrazit na Gitea",
       "gitee": "Zobrazit na Gitee",
       "radicle": "Zobrazit na Radicle",
+      "socket_dev": "Zobrazit na socket.dev",
       "sourcehut": "Zobrazit na SourceHutu",
       "tangled": "Zobrazit na Tangled"
     },
     "collapse": "Sbalit",
-    "expand": "Rozbalit"
+    "collapse_with_name": "Sbalit sekci {name}",
+    "expand": "Rozbalit",
+    "expand_with_name": "Rozbalit sekci {name}"
   },
   "profile": {
     "display_name": "Zobrazované jméno",
@@ -1121,6 +1237,33 @@
       "remove_package": "Odebrat {package}",
       "packages_selected": "Vybrané balíčky: {count}/{max}.",
       "add_hint": "Přidejte alespoň 2 balíčky ke srovnání."
+    },
+    "quadrant_chart": {
+      "label_x_axis": "Trakce",
+      "label_y_axis": "Ergonomie",
+      "label_top_right": "Solidní volby",
+      "label_bottom_right": "populární s kompromisy",
+      "label_bottom_left": "vyhněte se",
+      "label_top_left": "skryté poklady",
+      "title": "Trakce vs ergonomie balíčku",
+      "filename": "trakce-vs-ergonomie-balicku-kvadrant",
+      "label_freshness_score": "Skóre čerstvosti",
+      "copy_alt": {
+        "description": "Graf kvadrantu zobrazující trakci versus ergonomii pro balíčky {packages}. {analysis}. {watermark}.",
+        "side_analysis_top_right": "Následující balíčky jsou umístěny v pravém horním kvadrantu (solidní volby): {packages}",
+        "side_analysis_top_left": "Následující balíčky jsou umístěny v levém horním kvadrantu (skryté poklady): {packages}",
+        "side_analysis_bottom_right": "Následující balíčky jsou umístěny v pravém dolním kvadrantu (populární s kompromisy): {packages}",
+        "side_analysis_bottom_left": "Následující balíčky jsou umístěny v levém dolním kvadrantu (vyhněte se): {packages}"
+      },
+      "explanation": {
+        "tooltip_help": "Zobrazit vysvětlení skóre",
+        "tooltip_help_adoption": "Zobrazit vysvětlení skóre trakce",
+        "tooltip_help_efficiency": "Zobrazit vysvětlení skóre ergonomie",
+        "introduction": "Skóre je vypočítáno kombinací několika signálů do dvou os:",
+        "adoption": "Trakce: odráží použití a aktivitu (stahování, čerstvost, lajky)",
+        "efficiency": "Ergonomie: odráží stopu a kvalitu (velikost instalace, závislosti, zranitelnosti, otypování)",
+        "impact_details": "Každá metrika přispívá s různou váhou. Silné signály, jako jsou stahování a velikost instalace, mají největší dopad, zatímco jiné výsledky upřesňují výsledné skóre. Některé signály (např. zranitelnosti nebo zastarání) aplikují penalizace."
+      }
     },
     "no_dependency": {
       "label": "(Žádná závislost)",

@@ -62,8 +62,13 @@ function toggle() {
 }
 
 const ariaLabel = computed(() => {
-  const action = isOpen.value ? 'Collapse' : 'Expand'
-  return props.title ? `${action} ${props.title}` : action
+  if (!props.title) {
+    return isOpen.value ? $t('common.collapse') : $t('common.expand')
+  }
+
+  return isOpen.value
+    ? $t('common.collapse_with_name', { name: props.title })
+    : $t('common.expand_with_name', { name: props.title })
 })
 useHead({
   style: [
