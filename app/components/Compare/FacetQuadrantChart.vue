@@ -383,57 +383,51 @@ const config = computed<VueUiQuadrantConfig>(() => {
               })
             "
           />
-          
-          <foreignObject
-              :x="0"
-              :y="30"
-              style="overflow: visible;"
-              :width="svg.width"
-              :height="12"
-          >
-          <div class="flex items-center justify-center gap-2">
-            <TooltipApp interactive>
-              <button
-                data-dom-to-png-ignore
-                type="button"
-                class="i-lucide:info w-3.5 h-3.5 text-fg-muted cursor-help"
-                :aria-label="$t('compare.quadrant_chart.explanation.tooltip_help_efficiency')"
-              />
-              <template #content>
-                <div class="flex flex-col gap-3">
-                  <p class="text-xs text-fg-muted">
-                    {{ $t('compare.quadrant_chart.explanation.efficiency') }}
-                  </p>
-                </div>
-              </template>
-            </TooltipApp>
-          </div>
+
+          <foreignObject :x="0" :y="30" style="overflow: visible" :width="svg.width" :height="12">
+            <div class="flex items-center justify-center gap-2">
+              <TooltipApp interactive>
+                <button
+                  data-dom-to-png-ignore
+                  type="button"
+                  class="i-lucide:info w-3.5 h-3.5 text-fg-muted cursor-help"
+                  :aria-label="$t('compare.quadrant_chart.explanation.tooltip_help_efficiency')"
+                />
+                <template #content>
+                  <div class="flex flex-col gap-3">
+                    <p class="text-xs text-fg-muted">
+                      {{ $t('compare.quadrant_chart.explanation.efficiency') }}
+                    </p>
+                  </div>
+                </template>
+              </TooltipApp>
+            </div>
           </foreignObject>
 
           <foreignObject
-              :x="svg.width - 40"
-              :y="svg.height / 2 - 8"
-              style="overflow: visible;"
-              :width="20"
-              :height="12"
+            :x="svg.width - 40"
+            :y="svg.height / 2 - 8"
+            style="overflow: visible"
+            :width="20"
+            :height="12"
           >
-          <div class="flex items-center justify-center gap-2">
-            <TooltipApp interactive>
-              <button
-                data-dom-to-png-ignore
-                type="button"
-                class="i-lucide:info w-3.5 h-3.5 text-fg-muted cursor-help"
-                :aria-label="$t('compare.quadrant_chart.explanation.tooltip_help_adoption')"
-              />
-              <template #content>
-                <div class="flex flex-col gap-3">
-                  <p class="text-xs text-fg-muted">
-                    {{ $t('compare.quadrant_chart.explanation.adoption') }}
-                  </p>
-                </div>
-              </template>
-            </TooltipApp>
-          </div>
+            <div class="flex items-center justify-center gap-2">
+              <TooltipApp interactive>
+                <button
+                  data-dom-to-png-ignore
+                  type="button"
+                  class="i-lucide:info w-3.5 h-3.5 text-fg-muted cursor-help"
+                  :aria-label="$t('compare.quadrant_chart.explanation.tooltip_help_adoption')"
+                />
+                <template #content>
+                  <div class="flex flex-col gap-3">
+                    <p class="text-xs text-fg-muted">
+                      {{ $t('compare.quadrant_chart.explanation.adoption') }}
+                    </p>
+                  </div>
+                </template>
+              </TooltipApp>
+            </div>
           </foreignObject>
         </template>
 
