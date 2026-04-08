@@ -1255,6 +1255,8 @@
       },
       "explanation": {
         "tooltip_help": "Show scoring explanation",
+        "tooltip_help_adoption": "Show traction scoring explanation",
+        "tooltip_help_efficiency": "Show ergonomics scoring explanation",
         "introduction": "The score is calculated by combining multiple signals into two axes:",
         "adoption": "Traction: reflects usage and activity (downloads, freshness, likes)",
         "efficiency": "Ergonomics: reflects footprint and quality (install size, dependencies, vulnerabilities, type support)",

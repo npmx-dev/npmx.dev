@@ -3769,6 +3769,12 @@
                 "tooltip_help": {
                   "type": "string"
                 },
+                "tooltip_help_adoption": {
+                  "type": "string"
+                },
+                "tooltip_help_efficiency": {
+                  "type": "string"
+                },
                 "introduction": {
                   "type": "string"
                 },
