@@ -376,10 +376,10 @@ const config = computed<VueUiQuadrantConfig>(() => {
                 colors: watermarkColors,
                 translateFn: $t,
                 positioning: 'bottom',
-                sizeRatioTagline: 0.6,
+                sizeRatioTagline: 0.5,
                 sizeRatioLogo: 0.4,
-                offsetYTagline: 20,
-                offsetYLogo: 12,
+                offsetYTagline: 0,
+                offsetYLogo: -8,
               })
             "
           />

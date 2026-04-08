@@ -1230,28 +1230,28 @@
       "add_hint": "Ajoutez au moins 2 paquets à comparer."
     },
     "quadrant_chart": {
-      "label_x_axis": "Adoption",
-      "label_y_axis": "Efficacité du paquet",
-      "label_top_right": "fort impact",
-      "label_bottom_right": "populaire mais lourd",
-      "label_bottom_left": "faible impact",
-      "label_top_left": "prometteur",
-      "title": "Adoption vs efficacité du paquet",
-      "filename": "matrice-adoption-vs-efficacite-paquet",
+      "label_x_axis": "Traction",
+      "label_y_axis": "Ergonomie",
+      "label_top_right": "Choix sûrs",
+      "label_bottom_right": "Populaires avec compromis",
+      "label_bottom_left": "À éviter",
+      "label_top_left": "Pépites cachées",
+      "title": "Traction vs ergonomie des paquets",
+      "filename": "quadrant-traction-vs-ergonomie-paquets",
       "label_freshness_score": "Score de fraîcheur",
       "copy_alt": {
-        "description": "Graphique en quadrants représentant l’adoption et l’efficacité pour les paquets {packages}. {analysis}. {watermark}.",
-        "side_analysis_top_right": "Les paquets suivants sont positionnés dans le quadrant en haut à droite (fort impact) : {packages}",
-        "side_analysis_top_left": "Les paquets suivants sont positionnés dans le quadrant en haut à gauche (prometteur) : {packages}",
-        "side_analysis_bottom_right": "Les paquets suivants sont positionnés dans le quadrant en bas à droite (populaires mais lourds) : {packages}",
-        "side_analysis_bottom_left": "Les paquets suivants sont positionnés dans le quadrant en bas à gauche (faible impact) : {packages}"
+        "description": "Diagramme en quadrants représentant la traction par rapport à l’ergonomie pour les paquets {packages}. {analysis}. {watermark}.",
+        "side_analysis_top_right": "Les paquets suivants sont positionnés dans le quadrant supérieur droit (choix sûrs) : {packages}",
+        "side_analysis_top_left": "Les paquets suivants sont positionnés dans le quadrant supérieur gauche (pépites cachées) : {packages}",
+        "side_analysis_bottom_right": "Les paquets suivants sont positionnés dans le quadrant inférieur droit (populaires avec compromis) : {packages}",
+        "side_analysis_bottom_left": "Les paquets suivants sont positionnés dans le quadrant inférieur gauche (à éviter) : {packages}"
       },
       "explanation": {
-        "tooltip_help": "Afficher l'explication du score",
-        "introduction": "Le score est calculé en combinant plusieurs signaux selon deux axes :",
-        "adoption": "Adoption : reflète l’utilisation et l’activité (téléchargements, fraîcheur, likes)",
-        "efficiency": "Efficacité du paquet : reflète l’empreinte et la qualité (taille installée, dépendances, vulnérabilités, support TypeScript)",
-        "impact_details": "Chaque métrique contribue avec un poids différent. Les signaux forts comme les téléchargements et la taille installée ont le plus d’impact, tandis que les autres affinent le résultat. Certains signaux (comme les vulnérabilités ou la dépréciation) appliquent des pénalités."
+        "tooltip_help": "Afficher l’explication du score",
+        "introduction": "Le score est calculé en combinant plusieurs signaux sur deux axes :",
+        "adoption": "Traction : reflète l’utilisation et l’activité (téléchargements, fraîcheur, mentions)",
+        "efficiency": "Ergonomie : reflète l’empreinte et la qualité (taille d’installation, dépendances, vulnérabilités, support des types)",
+        "impact_details": "Chaque métrique contribue avec un poids différent. Les signaux forts comme les téléchargements et la taille d’installation ont le plus d’impact, tandis que d’autres affinent le résultat. Certains signaux (comme les vulnérabilités ou l'obsolescence) appliquent des pénalités."
       }
     },
     "no_dependency": {
