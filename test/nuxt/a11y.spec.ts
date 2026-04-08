@@ -158,7 +158,6 @@ import {
   LandingIntroHeader,
   NoodleKawaiiLogo,
   NoodleArtemisLogo,
-  NoodleTkawaiiLogo,
   LinkBase,
   CallToAction,
   CodeDirectoryListing,
@@ -369,12 +368,6 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(NoodleArtemisLogo)
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-
-    it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(NoodleTkawaiiLogo)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
