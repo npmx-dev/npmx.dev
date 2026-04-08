@@ -413,7 +413,9 @@ const config = computed<VueUiQuadrantConfig>(() => {
             :height="12"
           >
             <div class="flex items-center justify-center gap-2">
-              <TooltipApp>
+              <TooltipApp
+                :aria-label="$t('compare.quadrant_chart.explanation.adoption')"
+              >
                 <button
                   data-dom-to-png-ignore
                   class="i-lucide:info w-3.5 h-3.5 text-fg-muted cursor-help"
