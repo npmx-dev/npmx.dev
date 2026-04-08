@@ -80,13 +80,8 @@ const allowedWarnings: RegExp[] = [
 ]
 
 // Filter specific violations for rare edge cases (typically complex custom interactions in charts)
-function filterViolations(
-  results: AxeResults,
-  ignoredRuleIds: string[],
-): AxeResults['violations'] {
-  return results.violations.filter(
-    violation => !ignoredRuleIds.includes(violation.id),
-  )
+function filterViolations(results: AxeResults, ignoredRuleIds: string[]): AxeResults['violations'] {
+  return results.violations.filter(violation => !ignoredRuleIds.includes(violation.id))
 }
 
 beforeEach(() => {
@@ -1106,10 +1101,7 @@ describe('component accessibility audits', () => {
         })
         const results = await runAxe(wrapper)
 
-        const violations = filterViolations(results, [
-          'nested-interactive',
-          'button-name',
-        ])
+        const violations = filterViolations(results, ['nested-interactive', 'button-name'])
         expect(violations).toEqual([])
       })
 
