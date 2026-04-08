@@ -1,6 +1,6 @@
 import NoodleKawaiiLogo from './Kawaii/Logo.vue'
 import NoodleArtemisLogo from './Artemis/Logo.vue'
-import NoodleTkawaiiLogo from './Tkawaii/Logo.vue'
+// import NoodleTkawaiiLogo from './Tkawaii/Logo.vue'
 
 export type Noodle = {
   // Unique identifier for the noodle
