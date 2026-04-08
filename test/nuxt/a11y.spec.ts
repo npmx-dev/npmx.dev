@@ -372,7 +372,7 @@ describe('component accessibility audits', () => {
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
-    
+
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(NoodleTkawaiiLogo)
       const results = await runAxe(component)
