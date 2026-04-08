@@ -1237,27 +1237,29 @@
       "add_hint": "Add at least 2 packages to compare."
     },
     "quadrant_chart": {
-      "label_x_axis": "Adoption",
-      "label_y_axis": "Efficiency",
-      "label_top_right": "high impact",
-      "label_bottom_right": "popular but heavy",
-      "label_bottom_left": "low impact",
-      "label_top_left": "promising",
-      "title": "Adoption vs Package efficiency",
-      "filename": "package-adoption-vs-efficiency-matrix",
+      "label_x_axis": "Traction",
+      "label_y_axis": "Ergonomics",
+      "label_top_right": "Solid picks",
+      "label_bottom_right": "popular with tradeoffs",
+      "label_bottom_left": "avoid",
+      "label_top_left": "hidden gems",
+      "title": "Package traction vs ergonomics",
+      "filename": "package-traction-vs-ergonomics-quadrant",
       "label_freshness_score": "Freshness score",
       "copy_alt": {
-        "description": "Quadrant chart mapping adoption versus efficiency for the {packages} packages. {analysis}. {watermark}.",
-        "side_analysis_top_right": "The following packages are positioned on the top-right quadrant (high-impact): {packages}",
-        "side_analysis_top_left": "The following packages are positioned on the top-left quadrant (promising): {packages}",
-        "side_analysis_bottom_right": "The following packages are positioned on the bottom-right quadrant (popular but heavy): {packages}",
-        "side_analysis_bottom_left": "The following packages are positioned on the bottom-left quadrant (low-impact): {packages}"
+        "description": "Quadrant chart mapping traction versus ergonomics for the {packages} packages. {analysis}. {watermark}.",
+        "side_analysis_top_right": "The following packages are positioned on the top-right quadrant (solid picks): {packages}",
+        "side_analysis_top_left": "The following packages are positioned on the top-left quadrant (hidden gems): {packages}",
+        "side_analysis_bottom_right": "The following packages are positioned on the bottom-right quadrant (popular with tradeoffs): {packages}",
+        "side_analysis_bottom_left": "The following packages are positioned on the bottom-left quadrant (avoid): {packages}"
       },
       "explanation": {
         "tooltip_help": "Show scoring explanation",
+        "tooltip_help_adoption": "Show traction scoring explanation",
+        "tooltip_help_efficiency": "Show ergonomics scoring explanation",
         "introduction": "The score is calculated by combining multiple signals into two axes:",
-        "adoption": "Adoption: reflects usage and activity (downloads, freshness, likes)",
-        "efficiency": "Package efficiency: reflects footprint and quality (install size, dependencies, vulnerabilities, type support)",
+        "adoption": "Traction: reflects usage and activity (downloads, freshness, likes)",
+        "efficiency": "Ergonomics: reflects footprint and quality (install size, dependencies, vulnerabilities, type support)",
         "impact_details": "Each metric contributes with a different weight. Strong signals like downloads and install size have the largest impact, while others refine the result. Some signals (such as vulnerabilities or deprecation) apply penalties."
       }
     },
