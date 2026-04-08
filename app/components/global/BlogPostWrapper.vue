@@ -15,6 +15,7 @@ useSeoMeta({
   ogTitle: props.frontmatter.title,
   ogDescription: props.frontmatter.description || props.frontmatter.excerpt,
   ogType: 'article',
+  ogImage: props.frontmatter.image,
   ...(props.frontmatter.draft ? { robots: 'noindex, nofollow' } : {}),
 })
 
@@ -27,11 +28,13 @@ useHead({
   ],
 })
 
-defineOgImageComponent('BlogPost', {
-  title: props.frontmatter.title,
-  authors: post.value?.authors ?? [],
-  date: props.frontmatter.date,
-})
+if (!props.frontmatter.image) {
+  defineOgImageComponent('BlogPost', {
+    title: props.frontmatter.title,
+    authors: post.value?.authors ?? [],
+    date: props.frontmatter.date,
+  })
+}
 
 const slug = computed(() => props.frontmatter.slug)
 
