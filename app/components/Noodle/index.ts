@@ -40,7 +40,7 @@ export const ACTIVE_NOODLES: Noodle[] = [
   {
     key: 'artemis',
     logo: NoodleArtemisLogo,
-    date: '2026-04-08T12:00:00UTC',
+    date: '2026-04-08T12:00:00Z',
     timezone: 'America/Los_Angeles',
     tagline: true,
   },
