@@ -16,15 +16,15 @@ export type Noodle = {
 }
 
 // Archive noodles - might be shown on special page
-export const ARCHIVE_NOODLES: Noodle[] = [
-  {
-    key: 'tkawaii',
-    date: '2026-04-08T12:00:00UTC',
-    timezone: 'auto',
-    logo: NoodleTkawaiiLogo,
-    tagline: false,
-  },
-]
+// export const ARCHIVE_NOODLES: Noodle[] = [
+//   {
+//     key: 'tkawaii',
+//     date: '2026-04-08T12:00:00UTC',
+//     timezone: 'auto',
+//     logo: NoodleTkawaiiLogo,
+//     tagline: false,
+//   },
+// ]
 
 // Permanent noodles - always shown on specific query param (e.g. ?kawaii)
 export const PERMANENT_NOODLES: Noodle[] = [
