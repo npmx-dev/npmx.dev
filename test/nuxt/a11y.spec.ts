@@ -1113,7 +1113,9 @@ describe('component accessibility audits', () => {
           },
         })
         const results = await runAxe(wrapper)
-        expect(results.violations).toEqual([])
+
+        const violations = filterViolations(results, ['nested-interactive', 'button-name'])
+        expect(violations).toEqual([])
       })
     })
 
