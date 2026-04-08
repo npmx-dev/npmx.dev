@@ -386,9 +386,7 @@ const config = computed<VueUiQuadrantConfig>(() => {
 
           <foreignObject :x="0" :y="30" style="overflow: visible" :width="svg.width" :height="12">
             <div class="flex items-center justify-center gap-2">
-              <TooltipApp
-                :aria-label="$t('compare.quadrant_chart.explanation.tooltip_help_efficiency')"
-              >
+              <TooltipApp>
                 <button
                   data-dom-to-png-ignore
                   class="i-lucide:info w-3.5 h-3.5 text-fg-muted cursor-help"
@@ -413,9 +411,7 @@ const config = computed<VueUiQuadrantConfig>(() => {
             :height="12"
           >
             <div class="flex items-center justify-center gap-2">
-              <TooltipApp
-                :aria-label="$t('compare.quadrant_chart.explanation.adoption')"
-              >
+              <TooltipApp>
                 <button
                   data-dom-to-png-ignore
                   class="i-lucide:info w-3.5 h-3.5 text-fg-muted cursor-help"
