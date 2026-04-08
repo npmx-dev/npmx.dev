@@ -55,6 +55,7 @@ export default defineNuxtModule({
     const frameSrc = [
       'https://bsky.app',
       'https://pdsmoover.com',
+      'https://www.youtube-nocookie.com/',
       ...(isDevtoolsRuntime ? ["'self'"] : []),
     ].join(' ')
 
