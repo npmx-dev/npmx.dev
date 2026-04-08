@@ -52,6 +52,7 @@ const SKIPPED_COMPONENTS: Record<string, string> = {
   'SkeletonInline.vue': 'Already covered indirectly via other component tests',
   'Button/Group.vue': "Wrapper component, tests wouldn't make much sense here",
   'Translation/StatusByFile.unused.vue': 'Unused component, might be needed in the future',
+  'ColorScheme/Img.vue': 'Image component, basic ui',
 }
 
 function normalizeComponentPath(filePath: string): string {
