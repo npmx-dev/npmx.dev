@@ -1236,11 +1236,11 @@
       "label_bottom_right": "Populaires avec compromis",
       "label_bottom_left": "À éviter",
       "label_top_left": "Pépites cachées",
-      "title": "Traction vs ergonomie des paquets",
-      "filename": "quadrant-traction-vs-ergonomie-paquets",
+      "title": "Popularité vs ergonomie des paquets",
+      "filename": "quadrant-popularite-vs-ergonomie-paquets",
       "label_freshness_score": "Score de fraîcheur",
       "copy_alt": {
-        "description": "Diagramme en quadrants représentant la traction par rapport à l’ergonomie pour les paquets {packages}. {analysis}. {watermark}.",
+        "description": "Diagramme en quadrants représentant la popularité par rapport à l’ergonomie pour les paquets {packages}. {analysis}. {watermark}.",
         "side_analysis_top_right": "Les paquets suivants sont positionnés dans le quadrant supérieur droit (choix sûrs) : {packages}",
         "side_analysis_top_left": "Les paquets suivants sont positionnés dans le quadrant supérieur gauche (pépites cachées) : {packages}",
         "side_analysis_bottom_right": "Les paquets suivants sont positionnés dans le quadrant inférieur droit (populaires avec compromis) : {packages}",
@@ -1249,7 +1249,7 @@
       "explanation": {
         "tooltip_help": "Afficher l’explication du score",
         "introduction": "Le score est calculé en combinant plusieurs signaux sur deux axes :",
-        "adoption": "Traction : reflète l’utilisation et l’activité (téléchargements, fraîcheur, mentions)",
+        "adoption": "Popularité : reflète l’utilisation et l’activité (téléchargements, fraîcheur, mentions)",
         "efficiency": "Ergonomie : reflète l’empreinte et la qualité (taille d’installation, dépendances, vulnérabilités, support des types)",
         "impact_details": "Chaque métrique contribue avec un poids différent. Les signaux forts comme les téléchargements et la taille d’installation ont le plus d’impact, tandis que d’autres affinent le résultat. Certains signaux (comme les vulnérabilités ou l'obsolescence) appliquent des pénalités."
       }

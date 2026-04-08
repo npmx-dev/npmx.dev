@@ -1247,7 +1247,7 @@
       "filename": "package-traction-vs-ergonomics-quadrant",
       "label_freshness_score": "Freshness score",
       "copy_alt": {
-        "description": "Quadrant chart mapping traction versus efficiency for the {packages} packages. {analysis}. {watermark}.",
+        "description": "Quadrant chart mapping traction versus ergonomics for the {packages} packages. {analysis}. {watermark}.",
         "side_analysis_top_right": "The following packages are positioned on the top-right quadrant (solid picks): {packages}",
         "side_analysis_top_left": "The following packages are positioned on the top-left quadrant (hidden gems): {packages}",
         "side_analysis_bottom_right": "The following packages are positioned on the bottom-right quadrant (popular with tradeoffs): {packages}",
