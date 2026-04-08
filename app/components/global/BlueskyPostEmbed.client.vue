@@ -88,7 +88,6 @@ const { data: post, status } = useAsyncData(
 )
 
 const postUrl = computed(() => {
-  console.log(post.value?.embed)
   // Prefer the explicit URL prop if provided
   if (props.url) return props.url
 
@@ -168,7 +167,7 @@ const postUrl = computed(() => {
         <img
           v-if="post.embed.external.thumb"
           :src="post.embed.external.thumb"
-          :alt="post.embed.external.title"
+          alt=""
           class="w-full rounded-lg object-cover"
           loading="lazy"
         />
