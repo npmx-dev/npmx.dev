@@ -70,6 +70,7 @@ export default defineNuxtModule({
       `script-src 'self' 'unsafe-inline'`,
       `style-src 'self' 'unsafe-inline'`,
       `img-src ${imgSrc}`,
+      `media-src 'self'`,
       `font-src 'self'`,
       `connect-src ${connectSrc}`,
       `frame-src ${frameSrc}`,
