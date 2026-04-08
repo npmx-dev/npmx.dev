@@ -1,4 +1,5 @@
 import NoodleKawaiiLogo from './Kawaii/Logo.vue'
+import NoodleArtemisLogo from './Artemis/Logo.vue'
 import NoodleTkawaiiLogo from './Tkawaii/Logo.vue'
 
 export type Noodle = {
@@ -35,4 +36,12 @@ export const PERMANENT_NOODLES: Noodle[] = [
 ]
 
 // Active noodles - shown based on date and timezone
-export const ACTIVE_NOODLES: Noodle[] = []
+export const ACTIVE_NOODLES: Noodle[] = [
+  {
+    key: 'artemis',
+    logo: NoodleArtemisLogo,
+    date: '2026-04-08T12:00:00UTC',
+    timezone: 'America/Los_Angeles',
+    tagline: true,
+  },
+]
