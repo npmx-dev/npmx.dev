@@ -88,7 +88,7 @@ function resolveAuthors(authors: Author[], avatarMap: Map<string, string>): Reso
  * Resolves Bluesky avatars at build time.
  */
 async function loadBlogPosts(blogDir: string, imagesDir: string): Promise<BlogPostFrontmatter[]> {
-  const files = await Array.fromAsync(glob(join(blogDir, '*.md').replace(/\\/g, '/')))
+  const files = await Array.fromAsync(glob(join(blogDir, '**/*.md').replace(/\\/g, '/')))
 
   // First pass: extract raw frontmatter and collect all Bluesky handles
   const rawPosts: Array<{ frontmatter: Record<string, unknown> }> = []
