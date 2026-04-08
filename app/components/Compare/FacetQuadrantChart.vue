@@ -389,10 +389,10 @@ const config = computed<VueUiQuadrantConfig>(() => {
               <TooltipApp
                 :aria-label="$t('compare.quadrant_chart.explanation.tooltip_help_efficiency')"
               >
-                <span
+                <button
                   data-dom-to-png-ignore
                   class="i-lucide:info w-3.5 h-3.5 text-fg-muted cursor-help"
-                  aria-hidden="true"
+                  type="button"
                 />
                 <template #content>
                   <div class="flex flex-col gap-3">
@@ -414,11 +414,10 @@ const config = computed<VueUiQuadrantConfig>(() => {
           >
             <div class="flex items-center justify-center gap-2">
               <TooltipApp>
-                <span
+                <button
                   data-dom-to-png-ignore
-                  type="button"
                   class="i-lucide:info w-3.5 h-3.5 text-fg-muted cursor-help"
-                  :aria-label="$t('compare.quadrant_chart.explanation.tooltip_help_adoption')"
+                  type="button"
                 />
                 <template #content>
                   <div class="flex flex-col gap-3">
