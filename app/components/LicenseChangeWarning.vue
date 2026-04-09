@@ -11,6 +11,7 @@ const { data: licenseData } = useLicenseChanges(
   () => props.packageName,
   () => props.resolvedVersion,
 )
+
 const licenseChangeRecord = computed(() => licenseData?.value?.change ?? null)
 </script>
 
