@@ -39,7 +39,6 @@ const parsedRoute = computed(() => {
 
 const packageName = computed(() => parsedRoute.value.packageName)
 const version = computed(() => parsedRoute.value.version)
-
 const filePathOrig = computed(() => parsedRoute.value.filePath)
 const filePath = computed(() => parsedRoute.value.filePath?.replace(/\/$/, ''))
 
@@ -360,7 +359,6 @@ defineOgImageComponent('Default', {
     <div v-else-if="fileTree" class="flex flex-1" dir="ltr">
       <!-- File tree sidebar - sticky with internal scroll -->
       <aside
-        ref="file-tree-sidebar"
         class="w-64 lg:w-72 border-ie border-border shrink-0 hidden md:block bg-bg-subtle sticky top-25 self-start h-[calc(100vh-7rem)] overflow-y-auto"
       >
         <CodeFileTree
