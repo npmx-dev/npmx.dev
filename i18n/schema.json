@@ -1648,19 +1648,19 @@
             "filter_help": {
               "type": "string"
             },
-            "license_change_help": {
-              "type": "string"
-            },
             "filter_tooltip": {
               "type": "string"
             },
-            "license_change_record": {
+            "filter_tooltip_link": {
+              "type": "string"
+            },
+            "license_change_help": {
               "type": "string"
             },
             "license_change_warning": {
               "type": "string"
             },
-            "filter_tooltip_link": {
+            "license_change_record": {
               "type": "string"
             },
             "no_matches": {
