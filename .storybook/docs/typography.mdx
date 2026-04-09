@@ -1,0 +1,166 @@
+import { Meta, Typeset } from '@storybook/addon-docs/blocks'
+import { theme } from '../../uno.theme.ts'
+
+<Meta title="Typography" tags={['hide-toolbar']} />
+
+export const wind4FontSizes = {
+  'xs': '0.75rem',
+  'sm': '0.875rem',
+  'base': '1rem',
+  'lg': '1.125rem',
+  'xl': '1.25rem',
+  '2xl': '1.5rem',
+  '3xl': '1.875rem',
+  '4xl': '2.25rem',
+  '5xl': '3rem',
+}
+
+# Typography
+
+The npmx typography system uses Geist for sans-serif text and Geist Mono for monospace code.
+
+Typography values are defined in `uno.theme.ts`.
+
+## Font Families
+
+### Sans Serif — Geist
+
+<Typeset
+  fontFamily={theme.font.sans}
+  fontSizes={[
+    wind4FontSizes['base'], // 16px
+  ]}
+  fontWeight={400}
+  sampleText="The quick brown fox jumps over the lazy dog"
+/>
+
+<Typeset
+  fontFamily={theme.font.sans}
+  fontSizes={[
+    wind4FontSizes['5xl'], // 48px
+    wind4FontSizes['4xl'], // 36px
+    wind4FontSizes['3xl'], // 30px
+    wind4FontSizes['2xl'], // 24px
+    wind4FontSizes['xl'], // 20px
+    wind4FontSizes['lg'], // 18px
+    wind4FontSizes['base'], // 16px
+    wind4FontSizes['sm'], // 14px
+    wind4FontSizes['xs'], // 12px
+    theme.text['2xs'].fontSize, // 11px
+    theme.text['3xs'].fontSize, // 10px
+    theme.text['4xs'].fontSize, // 9px
+    theme.text['5xs'].fontSize, // 8px
+  ]}
+  fontWeight={400}
+  sampleText="The quick brown fox jumps over the lazy dog"
+/>
+
+### Monospace — Geist Mono
+
+Code and monospace typography scale:
+
+<Typeset
+  fontFamily={theme.font.mono}
+  fontSizes={[
+    wind4FontSizes['base'], // 16px
+  ]}
+  fontWeight={400}
+  sampleText="const greeting = 'Hello, World!';"
+/>
+
+<Typeset
+  fontFamily={theme.font.mono}
+  fontSizes={[
+    wind4FontSizes['5xl'], // 48px
+    wind4FontSizes['4xl'], // 36px
+    wind4FontSizes['3xl'], // 30px
+    wind4FontSizes['2xl'], // 24px
+    wind4FontSizes['xl'], // 20px
+    wind4FontSizes['lg'], // 18px
+    wind4FontSizes['base'], // 16px
+    wind4FontSizes['sm'], // 14px
+    wind4FontSizes['xs'], // 12px
+    theme.text['2xs'].fontSize, // 11px
+    theme.text['3xs'].fontSize, // 10px
+    theme.text['4xs'].fontSize, // 9px
+    theme.text['5xs'].fontSize, // 8px
+  ]}
+  fontWeight={400}
+  sampleText="const greeting = 'Hello, World!';"
+/>
+
+## Font Sizes
+
+The complete typography scale combines custom micro sizes (`5xs`-`2xs` from our theme) with standard Wind4 preset sizes (`xs`-`5xl`).
+
+**Custom Micro Sizes (from `theme.text`):**
+
+- `5xs` = {theme.text['5xs'].fontSize} (8px)
+- `4xs` = {theme.text['4xs'].fontSize} (9px)
+- `3xs` = {theme.text['3xs'].fontSize} (10px)
+- `2xs` = {theme.text['2xs'].fontSize} (11px)
+
+**Wind4 Standard Sizes:**
+
+- `xs` = {wind4FontSizes['xs']} (12px)
+- `sm` = {wind4FontSizes['sm']} (14px)
+- `base` = {wind4FontSizes['base']} (16px)
+- `lg` = {wind4FontSizes['lg']} (18px)
+- `xl` = {wind4FontSizes['xl']} (20px)
+- `2xl` = {wind4FontSizes['2xl']} (24px)
+- `3xl` = {wind4FontSizes['3xl']} (30px)
+- `4xl` = {wind4FontSizes['4xl']} (36px)
+- `5xl` = {wind4FontSizes['5xl']} (48px)
+
+## Font Weights
+
+<Typeset
+  fontFamily={theme.font.sans}
+  fontSizes={['1rem']}
+  fontWeight={300}
+  sampleText="Light (300) — Used sparingly for decorative purposes"
+/>
+
+<Typeset
+  fontFamily={theme.font.sans}
+  fontSizes={['1rem']}
+  fontWeight={400}
+  sampleText="Regular (400) — Default weight for body text and most content"
+/>
+
+<Typeset
+  fontFamily={theme.font.sans}
+  fontSizes={['1rem']}
+  fontWeight={500}
+  sampleText="Medium (500) — Used for emphasis and section headings"
+/>
+
+<Typeset
+  fontFamily={theme.font.sans}
+  fontSizes={['1rem']}
+  fontWeight={600}
+  sampleText="Semibold (600) — Used for strong emphasis and primary actions"
+/>
+
+<Typeset
+  fontFamily={theme.font.sans}
+  fontSizes={['1rem']}
+  fontWeight={700}
+  sampleText="Bold (700) — Used for headings and important labels"
+/>
+
+## Line Height
+
+Base line height is set to **1.6** for optimal readability. This provides comfortable spacing for multi-line text blocks while maintaining density for UI components.
+
+## Typography Features
+
+- **Font smoothing**: Antialiased rendering (`-webkit-font-smoothing: antialiased`) applied globally
+- **Text rendering**: `optimizeLegibility` applied globally for consistent cross-browser rendering
+
+---
+
+## Related
+
+- [Design System Guidelines](https://storybook.npmx.dev/?path=/docs/guidelines--docs) - See typography guidelines and usage
+- [Colors](https://storybook.npmx.dev/?path=/docs/colors--docs) - View the color system

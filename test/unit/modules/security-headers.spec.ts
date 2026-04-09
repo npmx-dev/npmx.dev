@@ -77,7 +77,9 @@ describe('security headers module', () => {
     const csp = getCsp(nuxt)
 
     expect(csp).toContain('ws://localhost:*')
-    expect(csp).toContain("frame-src https://bsky.app https://pdsmoover.com 'self'")
+    expect(csp).toContain(
+      "frame-src https://bsky.app https://pdsmoover.com https://www.youtube-nocookie.com/ 'self'",
+    )
     expect(nuxt.options.routeRules['/**']?.headers).toEqual(
       expect.objectContaining({
         'Permissions-Policy': 'camera=()',
@@ -110,7 +112,9 @@ describe('security headers module', () => {
     const csp = getCsp(nuxt)
 
     expect(csp).not.toContain('ws://localhost:*')
-    expect(csp).not.toContain("frame-src https://bsky.app https://pdsmoover.com 'self'")
+    expect(csp).not.toContain(
+      "frame-src https://bsky.app https://pdsmoover.com https://www.youtube-nocookie.com/ 'self'",
+    )
     expect(nuxt.options.routeRules['/__nuxt_devtools__/**']).toBeUndefined()
   })
 })

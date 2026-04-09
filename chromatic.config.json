@@ -3,5 +3,5 @@
   "onlyChanged": true,
   "autoAcceptChanges": "main",
   "exitZeroOnChanges": false,
-  "externals": [".storybook/**", "uno.config.ts"]
+  "externals": [".storybook/**", "uno.config.ts", "uno.theme.ts"]
 }

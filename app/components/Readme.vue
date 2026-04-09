@@ -112,20 +112,25 @@ function handleClick(event: MouseEvent) {
 .readme :deep([data-level='1']) {
   font-size: 1.5rem;
 }
+
 .readme :deep([data-level='2']) {
   font-size: 1.25rem;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--border);
 }
+
 .readme :deep([data-level='3']) {
   font-size: 1.125rem;
 }
+
 .readme :deep([data-level='4']) {
   font-size: 1rem;
 }
+
 .readme :deep([data-level='5']) {
   font-size: 0.925rem;
 }
+
 .readme :deep([data-level='6']) {
   font-size: 0.875rem;
 }
@@ -137,9 +142,11 @@ function handleClick(event: MouseEvent) {
 .readme :deep(a) {
   @apply underline-offset-[0.2rem] underline decoration-1 decoration-fg/30 font-mono text-fg transition-colors duration-200;
 }
+
 .readme :deep(a:hover) {
   @apply decoration-accent text-accent;
 }
+
 .readme :deep(a:focus-visible) {
   @apply decoration-accent text-accent;
 }
@@ -318,10 +325,12 @@ function handleClick(event: MouseEvent) {
   border-inline-start-color: var(--syntax-str);
   background: rgba(59, 130, 246, 0.05);
 }
+
 .readme :deep(blockquote[data-callout='note']::before) {
   content: var(--i18n-note, 'Note');
   color: #3b82f6;
 }
+
 .readme :deep(blockquote[data-callout='note']::after) {
   background-color: #3b82f6;
   -webkit-mask: icon('i-lucide:info') no-repeat;
@@ -333,10 +342,12 @@ function handleClick(event: MouseEvent) {
   border-inline-start-color: #22c55e;
   background: rgba(34, 197, 94, 0.05);
 }
+
 .readme :deep(blockquote[data-callout='tip']::before) {
   content: var(--i18n-tip, 'Tip');
   color: #22c55e;
 }
+
 .readme :deep(blockquote[data-callout='tip']::after) {
   background-color: #22c55e;
   -webkit-mask: icon('i-lucide:lightbulb') no-repeat;
@@ -348,10 +359,12 @@ function handleClick(event: MouseEvent) {
   border-inline-start-color: var(--syntax-fn);
   background: rgba(168, 85, 247, 0.05);
 }
+
 .readme :deep(blockquote[data-callout='important']::before) {
   content: var(--i18n-important, 'Important');
   color: var(--syntax-fn);
 }
+
 .readme :deep(blockquote[data-callout='important']::after) {
   background-color: var(--syntax-fn);
   -webkit-mask: icon('i-lucide:pin') no-repeat;
@@ -363,10 +376,12 @@ function handleClick(event: MouseEvent) {
   border-inline-start-color: #eab308;
   background: rgba(234, 179, 8, 0.05);
 }
+
 .readme :deep(blockquote[data-callout='warning']::before) {
   content: var(--i18n-warning, 'Warning');
   color: #eab308;
 }
+
 .readme :deep(blockquote[data-callout='warning']::after) {
   background-color: #eab308;
   -webkit-mask: icon('i-lucide:triangle-alert') no-repeat;
@@ -378,10 +393,12 @@ function handleClick(event: MouseEvent) {
   border-inline-start-color: #ef4444;
   background: rgba(239, 68, 68, 0.05);
 }
+
 .readme :deep(blockquote[data-callout='caution']::before) {
   content: var(--i18n-caution, 'Caution');
   color: #ef4444;
 }
+
 .readme :deep(blockquote[data-callout='caution']::after) {
   background-color: #ef4444;
   -webkit-mask: icon('i-lucide:circle-alert') no-repeat;
@@ -456,5 +473,19 @@ function handleClick(event: MouseEvent) {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+/* Details element */
+.readme :deep(details) {
+  /**
+   * same size as [data-level='5']
+   */
+  font-size: 0.925rem;
+  color: var(--fg-subtle);
+
+  summary {
+    font-size: 1rem;
+    color: var(--fg-muted);
+  }
 }
 </style>

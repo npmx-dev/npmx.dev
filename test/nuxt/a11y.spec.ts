@@ -48,6 +48,20 @@ async function runAxe(wrapper: VueWrapper): Promise<AxeResults> {
   return axe.run(container, axeRunOptions)
 }
 
+async function runAxeElements(elements: Array<Element | null | undefined>): Promise<AxeResults> {
+  const container = document.createElement('div')
+  container.id = `test-container-${Date.now()}`
+  document.body.appendChild(container)
+  mountedContainers.push(container)
+
+  for (const element of elements) {
+    if (!element) continue
+    container.appendChild(element.cloneNode(true))
+  }
+
+  return axe.run(container, axeRunOptions)
+}
+
 // --- Console warning assertion --------------------------------------------------
 // Fail any test that emits unexpected console.warn calls. This catches issues
 // like missing/invalid props that would otherwise silently pass.
@@ -64,6 +78,11 @@ const allowedWarnings: RegExp[] = [
   // inner wrapper. The warning does not affect test correctness.
   /expose\(\) should be called only once/,
 ]
+
+// Filter specific violations for rare edge cases (typically complex custom interactions in charts)
+function filterViolations(results: AxeResults, ignoredRuleIds: string[]): AxeResults['violations'] {
+  return results.violations.filter(violation => !ignoredRuleIds.includes(violation.id))
+}
 
 beforeEach(() => {
   warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
@@ -141,7 +160,9 @@ import {
   BlueskyPostEmbed,
   BuildEnvironment,
   ButtonBase,
-  LandingLogo,
+  LandingIntroHeader,
+  NoodleKawaiiLogo,
+  NoodleArtemisLogo,
   LinkBase,
   CallToAction,
   CodeDirectoryListing,
@@ -246,11 +267,13 @@ import {
 // Server variant components must be imported directly to test the server-side render
 // The #components import automatically provides the client variant
 import LogoNuxt from '~/assets/logos/oss-partners/nuxt.svg'
+import CommandPaletteComponent from '~/components/CommandPalette.client.vue'
 import HeaderAccountMenuServer from '~/components/Header/AccountMenu.server.vue'
 import ToggleServer from '~/components/Settings/Toggle.server.vue'
 import SearchProviderToggleServer from '~/components/SearchProviderToggle.server.vue'
 import PackageTrendsChart from '~/components/Package/TrendsChart.vue'
 import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
+import FacetQuadrantChart from '~/components/Compare/FacetQuadrantChart.vue'
 import PackageLikeCard from '~/components/Package/LikeCard.vue'
 import SizeIncrease from '~/components/Package/SizeIncrease.vue'
 import Likes from '~/components/Package/Likes.vue'
@@ -334,9 +357,23 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe('LandingLogo', () => {
+  describe('LandingIntroHeader', () => {
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(LandingLogo)
+      const component = await mountSuspended(LandingIntroHeader)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('Noodles', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleKawaiiLogo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleArtemisLogo)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
@@ -504,6 +541,49 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(BackButton)
       expect(component.find('button').exists()).toBe(true)
       const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('CommandPalette', () => {
+    let commandPalette: ReturnType<typeof useCommandPalette> | null = null
+
+    const CommandPaletteHarness = defineComponent({
+      name: 'CommandPaletteHarness',
+      setup() {
+        commandPalette = useCommandPalette()
+
+        onMounted(() => {
+          commandPalette?.open()
+        })
+
+        onBeforeUnmount(() => {
+          commandPalette?.close()
+          commandPalette?.clearPackageContext()
+        })
+
+        return () => h('div', [h(CommandPaletteComponent)])
+      },
+    })
+
+    afterEach(() => {
+      commandPalette?.close()
+      commandPalette?.clearPackageContext()
+      commandPalette = null
+    })
+
+    it('should have no accessibility violations when open', async () => {
+      const wrapper = await mountSuspended(CommandPaletteHarness)
+      await nextTick()
+      await nextTick()
+
+      const dialog = document.getElementById('command-palette-modal')
+      const announcer = wrapper.element.querySelector('#command-palette-modal-announcement')
+
+      expect(dialog).not.toBeNull()
+      expect(announcer).not.toBeNull()
+
+      const results = await runAxeElements([announcer, dialog])
       expect(results.violations).toEqual([])
     })
   })
@@ -956,6 +1036,119 @@ describe('component accessibility audits', () => {
         })
         const results = await runAxe(wrapper)
         expect(results.violations).toEqual([])
+      })
+    })
+
+    describe('FacetQuadrantChart', () => {
+      it('should have no accessibility violations', async () => {
+        const wrapper = await mountSuspended(FacetQuadrantChart, {
+          props: {
+            packagesData: [
+              {
+                package: {
+                  name: 'vue',
+                  version: '3.5.32',
+                },
+                downloads: 10979552,
+                packageSize: 2480183,
+                directDeps: 5,
+                analysis: {
+                  package: 'vue',
+                  version: '3.5.32',
+                  devDependencySuggestion: {
+                    recommended: false,
+                  },
+                  moduleFormat: 'dual',
+                  types: {
+                    kind: 'included',
+                  },
+                  createPackage: {
+                    packageName: 'create-vue',
+                  },
+                },
+                vulnerabilities: {
+                  count: 0,
+                  severity: {
+                    critical: 0,
+                    high: 0,
+                    moderate: 0,
+                    low: 0,
+                  },
+                },
+                metadata: {
+                  license: 'MIT',
+                  lastUpdated: '2026-04-03T05:41:39.680Z',
+                },
+                isBinaryOnly: false,
+                totalLikes: 85,
+              },
+              {
+                package: {
+                  name: 'svelte',
+                  version: '5.55.1',
+                },
+                downloads: 4378382,
+                packageSize: 2823272,
+                directDeps: 16,
+                analysis: {
+                  package: 'svelte',
+                  version: '5.55.1',
+                  devDependencySuggestion: {
+                    recommended: false,
+                  },
+                  moduleFormat: 'dual',
+                  types: {
+                    kind: 'included',
+                  },
+                  engines: {
+                    node: '>=18',
+                  },
+                  createPackage: {
+                    packageName: 'create-svelte',
+                    deprecated:
+                      'create-svelte has been deprecated - please use https://www.npmjs.com/package/sv instead',
+                  },
+                },
+                vulnerabilities: {
+                  count: 0,
+                  severity: {
+                    critical: 0,
+                    high: 0,
+                    moderate: 0,
+                    low: 0,
+                  },
+                },
+                metadata: {
+                  license: 'MIT',
+                  lastUpdated: '2026-03-29T20:58:44.673Z',
+                  engines: {
+                    node: '>=18',
+                  },
+                },
+                isBinaryOnly: false,
+                totalLikes: 191,
+              },
+            ],
+            packages: ['vue', 'svelte'],
+          },
+        })
+        const results = await runAxe(wrapper)
+
+        const violations = filterViolations(results, ['nested-interactive', 'button-name'])
+        expect(violations).toEqual([])
+      })
+
+      it('should have no accessibility violations with empty data', async () => {
+        const wrapper = await mountSuspended(FacetQuadrantChart, {
+          props: {
+            packagesData: [],
+            packages: [],
+          },
+        })
+        const results = await runAxe(wrapper)
+
+        const violations = filterViolations(results, ['nested-interactive', 'button-name'])
+        expect(violations).toEqual([])
       })
     })
 

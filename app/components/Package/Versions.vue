@@ -96,12 +96,7 @@ function versionRoute(version: string): RouteLocationRaw {
 }
 
 // Route to the full versions history page
-const versionsPageRoute = computed((): RouteLocationRaw => {
-  const [org, name = ''] = props.packageName.startsWith('@')
-    ? props.packageName.split('/')
-    : ['', props.packageName]
-  return { name: 'package-versions', params: { org, name } }
-})
+const versionsPageRoute = computed(() => packageVersionsRoute(props.packageName))
 
 // Version to tags lookup (supports multiple tags per version)
 const versionToTags = computed(() => buildVersionToTagsMap(props.distTags))
@@ -216,12 +211,16 @@ const visibleTagRows = computed(() => {
       )
     : rowsMaybeFilteredForDeprecation
   const first = rows.slice(0, MAX_VISIBLE_TAGS)
-  const latestTagRow = rows.find(row => row.tag === 'latest')
-  // Ensure 'latest' tag is always included (at the end) if not already present
-  if (latestTagRow && !first.includes(latestTagRow)) {
-    first.pop()
-    first.push(latestTagRow)
+
+  // When no filter is active, ensure 'latest' is always shown (even if not fully loaded)
+  if (!isFilterActive.value) {
+    const latestTagRow = rows.find(row => row.tag === 'latest')
+    if (latestTagRow && !first.includes(latestTagRow)) {
+      first.pop()
+      first.push(latestTagRow)
+    }
   }
+
   return first
 })
 

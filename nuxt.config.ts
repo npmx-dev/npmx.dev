@@ -277,6 +277,12 @@ export default defineNuxtConfig({
         preload: true,
         global: true,
       },
+      {
+        name: 'IBM Plex Sans Arabic',
+        weights: ['400', '500', '600'],
+        global: true,
+        subsets: ['arabic'],
+      },
     ],
   },
 
@@ -379,6 +385,8 @@ export default defineNuxtConfig({
         '@vueuse/integrations/useFocusTrap/component',
         'vue-data-ui/vue-ui-sparkline',
         'vue-data-ui/vue-ui-xy',
+        'vue-data-ui/vue-ui-quadrant',
+        'vue-data-ui/vue-ui-horizontal-bar',
         'virtua/vue',
         'semver',
         'validate-npm-package-name',

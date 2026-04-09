@@ -55,6 +55,7 @@ export default defineNuxtModule({
     const frameSrc = [
       'https://bsky.app',
       'https://pdsmoover.com',
+      'https://www.youtube-nocookie.com/',
       ...(isDevtoolsRuntime ? ["'self'"] : []),
     ].join(' ')
 
@@ -69,6 +70,7 @@ export default defineNuxtModule({
       `script-src 'self' 'unsafe-inline'`,
       `style-src 'self' 'unsafe-inline'`,
       `img-src ${imgSrc}`,
+      `media-src 'self'`,
       `font-src 'self'`,
       `connect-src ${connectSrc}`,
       `frame-src ${frameSrc}`,
