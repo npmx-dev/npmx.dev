@@ -1,0 +1,39 @@
+name: dependency-diff
+
+on:
+  pull_request:
+    branches:
+      - main
+      - release
+    paths:
+      - package.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - docs/package.json
+      - cli/package.json
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.sha }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  dependency-diff:
+    name: 🔎 Dependency diff
+    runs-on: ubuntu-slim
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: 🔎 Compare dependencies
+        uses: e18e/action-dependency-diff@d995338f3b229fe7b2cd82048df5da930f70c7c3 # v1.4.4
+        with:
+          detect-replacements: 'true'
+          duplicate-threshold: '4'
+          dependency-threshold: '15'
+          size-threshold: '200000'
