@@ -7,29 +7,16 @@ const props = defineProps<{
   resolvedVersion: string | null | undefined
 }>()
 
-const licenseChanges = useLicenseChanges(
+const { data: licenseData } = useLicenseChanges(
   () => props.packageName,
   () => props.resolvedVersion,
 )
-
-const changes = computed(() => licenseChanges.data.value?.changes ?? [])
-
-const licenseChangeText = computed(() =>
-  changes.value
-    .map(item =>
-      $t('package.versions.license_change_item', {
-        from: item.from,
-        to: item.to,
-        version: item.version,
-      }),
-    )
-    .join('; '),
-)
+const licenseChangeRecord = computed(() => licenseData?.value?.change ?? null)
 </script>
 
 <template>
   <div
-    v-if="changes && changes.length > 0"
+    v-if="licenseChangeRecord"
     class="border border-amber-600/40 bg-amber-500/10 rounded-lg mt-1 gap-x-1 py-2 px-3"
     :aria-label="$t('package.versions.license_change_help')"
   >
@@ -42,9 +29,12 @@ const licenseChangeText = computed(() =>
       {{ $t('package.versions.license_change_warning') }}
     </p>
     <p class="text-md text-amber-800 dark:text-amber-400 mt-1">
-      <i18n-t keypath="package.versions.changed_license" tag="span">
-        <template #license_change>{{ licenseChangeText }}</template>
-      </i18n-t>
+      {{
+        $t('package.versions.license_change_record', {
+          from: licenseChangeRecord?.from,
+          to: licenseChangeRecord?.to,
+        })
+      }}
     </p>
   </div>
 </template>

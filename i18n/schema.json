@@ -1303,13 +1303,10 @@
             "license_change_help": {
               "type": "string"
             },
-            "license_change_item": {
-              "type": "string"
-            },
             "filter_tooltip": {
               "type": "string"
             },
-            "changed_license": {
+            "license_change_record": {
               "type": "string"
             },
             "license_change_warning": {
