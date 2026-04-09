@@ -8,6 +8,16 @@ definePageMeta({
     // '/code/@:org?/:packageName/v/:version/:filePath(.*)?',
   ],
   scrollMargin: 160,
+  // needed to keep the file-tree in-place when navigating files (otherwise the filetree scroll position snaps to the top)
+  // changing the version (or org/packageName for that matter) causes a re-render
+  key: route => {
+    const { org, packageName, version } = route.params as {
+      org?: string
+      packageName: string
+      version: string
+    }
+    return `/package-code/${org ?? ''}/${packageName}/v/${version}`
+  },
 })
 
 const route = useRoute('code')
@@ -29,30 +39,6 @@ const parsedRoute = computed(() => {
 
 const packageName = computed(() => parsedRoute.value.packageName)
 const version = computed(() => parsedRoute.value.version)
-
-// Preserve file-tree scroll position across navigation within same package (+ version)
-const fileTreeKey = computed(() => `${packageName.value}@${version.value}`)
-const fileTreeSidebarRef = useTemplateRef('file-tree-sidebar')
-const savedFileTreeSidebarScroll = useState('code-sidebar-scroll', () => ({
-  key: '',
-  scrollTop: 0,
-}))
-
-onBeforeUnmount(() => {
-  savedFileTreeSidebarScroll.value = {
-    key: fileTreeKey.value,
-    scrollTop: fileTreeSidebarRef.value?.scrollTop ?? 0,
-  }
-})
-
-watch(
-  fileTreeSidebarRef,
-  fileTreeSidebarElement => {
-    if (fileTreeSidebarElement && savedFileTreeSidebarScroll.value.key === fileTreeKey.value)
-      fileTreeSidebarElement.scrollTop = savedFileTreeSidebarScroll.value.scrollTop
-  },
-  { once: true, flush: 'post' },
-)
 
 const filePathOrig = computed(() => parsedRoute.value.filePath)
 const filePath = computed(() => parsedRoute.value.filePath?.replace(/\/$/, ''))
