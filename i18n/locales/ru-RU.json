@@ -165,7 +165,7 @@
       "label": "{version}"
     },
     "status": {
-      "available_in_context": "{context}. Команд нет | {context}. Доступна 1 команда | {context}. Доступно {count} команды | {count}. Доступно {count} команд",
+      "available_in_context": "{context}. Команд нет | {context}. Доступна 1 команда | {context}. Доступно {count} команды | {context}. Доступно {count} команд",
       "matching_in_context": "{context}. Нет подходящих команд | {context}. Найдена 1 команда | {context}. Найдено {count} команды | {context}. Найдено {count} команд",
       "no_matches_search_in_context": "{context}. Нет подходящих команд. Нажмите Enter для поиска «{query}»."
     },
