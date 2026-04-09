@@ -432,10 +432,7 @@
       "filter_placeholder": "Filtrar versiones (ej: ^1.0.0, >2.0)...",
       "filter_invalid": "Rango semver inválido",
       "filter_help": "Usa sintaxis semver estándar",
-      "license_change_help": "EN TEXT TO REPLACE: License Change Details",
       "filter_tooltip": "Filtra versiones usando rangos semver. Ejemplos:",
-      "license_change_warning": "EN TEXT TO REPLACE: License change!",
-      "license_change_record": "EN TEXT TO REPLACE: License changed from {from} to {to}.",
       "filter_tooltip_link": "Calculadora Semver",
       "no_matches": "Ninguna versión coincide con el filtro",
       "copy_alt": {
@@ -444,8 +441,6 @@
       },
       "page_title": "Historial de versiones",
       "current_tags": "Etiquetas actuales",
-      "version_filter_placeholder": "Filtrar versiones…",
-      "version_filter_label": "Filtrar versiones",
       "no_match_filter": "Ninguna versión coincide con {filter}"
     },
     "dependencies": {
@@ -831,12 +826,8 @@
     "lines": "{count} líneas",
     "toggle_tree": "Alternar árbol de archivos",
     "close_tree": "Cerrar árbol de archivos",
-    "copy_content": "EN TEXT TO REPLACE: Copy file content",
     "copy_link": "Copiar enlace",
     "view_raw": "Ver archivo crudo",
-    "toggle_container": "EN TEXT TO REPLACE: Toggle code container width",
-    "open_raw_file": "EN TEXT TO REPLACE: Open raw file",
-    "open_path_dropdown": "EN TEXT TO REPLACE: Open path segments dropdown",
     "file_too_large": "Archivo demasiado grande para previsualizar",
     "file_size_warning": "{size} excede el límite de 500KB para resaltado de sintaxis",
     "failed_to_load": "Error al cargar archivo",
@@ -1526,6 +1517,5 @@
       "message": "La accesibilidad es importante para nosotros, y nos encantaría que nos acompañaras en esta visión. Cuando uses los medios mencionados, asegúrate de que haya suficiente contraste con el fondo, y no uses un tamaño más pequeño que 24px. Si necesitas algún otro recurso o información adicional sobre el proyecto, no dudes en contactarnos a través de {link}.",
       "discord_link_text": "chat.npmx.dev"
     }
-  },
-  "alt_logo_kawaii": "EN TEXT TO REPLACE: A cute, rounded, and colorful version of the npmx logo."
+  }
 }

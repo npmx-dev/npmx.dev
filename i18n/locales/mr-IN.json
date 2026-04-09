@@ -19,27 +19,10 @@
     "social": "सोशल",
     "chat": "चॅट",
     "builders_chat": "बिल्डर्स",
-    "keyboard_shortcuts": "कीबोर्ड शॉर्टकट",
-    "brand": "EN TEXT TO REPLACE: brand"
+    "keyboard_shortcuts": "कीबोर्ड शॉर्टकट"
   },
   "shortcuts": {
-    "section": {
-      "global": "EN TEXT TO REPLACE: Global",
-      "search": "EN TEXT TO REPLACE: Search",
-      "package": "EN TEXT TO REPLACE: Package"
-    },
-    "focus_search": "EN TEXT TO REPLACE: Focus search",
-    "show_kbd_hints": "EN TEXT TO REPLACE: Highlight keyboard hints",
-    "settings": "EN TEXT TO REPLACE: Open settings",
-    "compare": "EN TEXT TO REPLACE: Open compare",
-    "compare_from_package": "EN TEXT TO REPLACE: Open compare (prefilled with current package)",
-    "navigate_results": "EN TEXT TO REPLACE: Navigate results",
-    "go_to_result": "EN TEXT TO REPLACE: Go to result",
-    "open_code_view": "EN TEXT TO REPLACE: Open code view",
-    "open_docs": "EN TEXT TO REPLACE: Open docs",
-    "disable_shortcuts": "EN TEXT TO REPLACE: You can disable keyboard shortcuts in {settings}.",
-    "open_main": "EN TEXT TO REPLACE: Open main information",
-    "open_diff": "EN TEXT TO REPLACE: Open version differences"
+    "section": {}
   },
   "search": {
     "label": "npm पॅकेजेस शोधा",
@@ -230,21 +213,7 @@
     "expand": "विस्तृत करा"
   },
   "profile": {
-    "display_name": "EN TEXT TO REPLACE: Display Name",
-    "description": "EN TEXT TO REPLACE: Description",
-    "no_description": "EN TEXT TO REPLACE: No description",
-    "website": "EN TEXT TO REPLACE: Website",
-    "website_placeholder": "EN TEXT TO REPLACE: https://example.com",
-    "likes": "EN TEXT TO REPLACE: Likes",
-    "seo_title": "EN TEXT TO REPLACE: {handle} - npmx",
-    "seo_description": "EN TEXT TO REPLACE: npmx profile by {handle}",
-    "not_found": "EN TEXT TO REPLACE: Profile Not Found",
-    "not_found_message": "EN TEXT TO REPLACE: The profile for {handle} could not be found.",
-    "invite": {
-      "message": "EN TEXT TO REPLACE: It doesn't look like they're using npmx yet. Want to tell them about it?",
-      "share_button": "EN TEXT TO REPLACE: Share on Bluesky",
-      "compose_text": "EN TEXT TO REPLACE: Hey {'@'}{handle}! Have you checked out npmx.dev yet? It's a browser for the npm registry that's fast, modern, and open-source.\nhttps://npmx.dev"
-    }
+    "invite": {}
   },
   "package": {
     "not_found": "पॅकेज सापडले नाही",
@@ -432,10 +401,7 @@
       "filter_placeholder": "semver ने फिल्टर करा (उदा. ^3.0.0)",
       "filter_invalid": "अवैध semver श्रेणी",
       "filter_help": "Semver श्रेणी फिल्टर मदत",
-      "license_change_help": "EN TEXT TO REPLACE: License Change Details",
       "filter_tooltip": "{link} वापरून आवृत्त्या फिल्टर करा. उदाहरणार्थ, ^3.0.0 सर्व 3.x आवृत्त्या दाखवते.",
-      "license_change_warning": "EN TEXT TO REPLACE: License change!",
-      "license_change_record": "EN TEXT TO REPLACE: License changed from {from} to {to}.",
       "filter_tooltip_link": "semver श्रेणी",
       "no_matches": "या श्रेणीशी जुळणारी कोणतीही आवृत्ती नाही",
       "copy_alt": {
@@ -444,8 +410,6 @@
       },
       "page_title": "आवृत्ती इतिहास",
       "current_tags": "सध्याचे टॅग्स",
-      "version_filter_placeholder": "आवृत्त्या फिल्टर करा…",
-      "version_filter_label": "आवृत्त्या फिल्टर करा",
       "no_match_filter": "{filter} शी जुळणारी कोणतीही आवृत्ती नाही"
     },
     "dependencies": {
@@ -486,15 +450,7 @@
       "maintainer_template": "{avatar} {char126}{name}"
     },
     "trends": {
-      "chart_assistive_text": {
-        "keyboard_navigation_horizontal": "EN TEXT TO REPLACE: Use the left and right arrow keys to cycle through data points.",
-        "keyboard_navigation_vertical": "EN TEXT TO REPLACE: Use the up and down arrow keys to cycle through data points.",
-        "table_available": "EN TEXT TO REPLACE: A data table for this chart is available below.",
-        "table_caption": "EN TEXT TO REPLACE: Chart data table"
-      },
-      "chart_view_toggle": "EN TEXT TO REPLACE: Toggle view",
-      "chart_view_combined": "EN TEXT TO REPLACE: Combined view",
-      "chart_view_split": "EN TEXT TO REPLACE: Split view",
+      "chart_assistive_text": {},
       "granularity": "ग्रॅन्युलॅरिटी",
       "granularity_daily": "दैनिक",
       "granularity_weekly": "साप्ताहिक",
@@ -553,8 +509,7 @@
     "downloads": {
       "title": "साप्ताहिक डाउनलोड्स",
       "community_distribution": "समुदाय स्वीकार वितरण पहा",
-      "subtitle": "सर्व आवृत्त्यांमध्ये",
-      "sparkline_nav_hint": "EN TEXT TO REPLACE: Use ← →"
+      "subtitle": "सर्व आवृत्त्यांमध्ये"
     },
     "install_scripts": {
       "title": "इंस्टॉल स्क्रिप्ट्स",
@@ -831,12 +786,8 @@
     "lines": "{count} ओळी",
     "toggle_tree": "फाइल ट्री टॉगल करा",
     "close_tree": "फाइल ट्री बंद करा",
-    "copy_content": "EN TEXT TO REPLACE: Copy file content",
     "copy_link": "लिंक कॉपी करा",
     "view_raw": "कच्ची फाइल पहा",
-    "toggle_container": "EN TEXT TO REPLACE: Toggle code container width",
-    "open_raw_file": "EN TEXT TO REPLACE: Open raw file",
-    "open_path_dropdown": "EN TEXT TO REPLACE: Open path segments dropdown",
     "file_too_large": "पूर्वावलोकनासाठी फाइल खूप मोठी आहे",
     "file_size_warning": "{size} हे सिंटॅक्स हायलाइटिंगसाठीच्या 500KB मर्यादेपेक्षा जास्त आहे",
     "failed_to_load": "फाइल लोड करण्यात अयशस्वी",
@@ -1113,10 +1064,7 @@
       "empty_title": "तुलनेसाठी पॅकेजेस निवडा",
       "empty_description": "त्यांचे मेट्रिक्स शेजारी-शेजारी पाहण्यासाठी वर किमान 2 पॅकेजेस शोधा आणि जोडा.",
       "table_view": "तक्ता",
-      "charts_view": "चार्ट्स",
-      "no_chartable_data": "EN TEXT TO REPLACE: No chartable data available for the selected facets.",
-      "bar_chart_nav_hint": "EN TEXT TO REPLACE: Use ↑ ↓",
-      "line_chart_nav_hint": "EN TEXT TO REPLACE: Use ← →"
+      "charts_view": "चार्ट्स"
     },
     "selector": {
       "search_label": "पॅकेजेस शोधा",
@@ -1139,10 +1087,6 @@
     "facets": {
       "all": "सर्व",
       "none": "काहीही नाही",
-      "select_all_category_facets": "EN TEXT TO REPLACE: Select all {category} facets",
-      "deselect_all_category_facets": "EN TEXT TO REPLACE: Deselect all {category} facets",
-      "selected_all_category_facets": "EN TEXT TO REPLACE: Selected all {category} facets",
-      "deselected_all_category_facets": "EN TEXT TO REPLACE: Deselected all {category} facets",
       "coming_soon": "लवकरच येत आहे",
       "select_all": "सर्व घटक निवडा",
       "deselect_all": "सर्व घटकांची निवड रद्द करा",
@@ -1438,37 +1382,11 @@
     }
   },
   "vacations": {
-    "title": "EN TEXT TO REPLACE: on vacation",
-    "meta_description": "EN TEXT TO REPLACE: The npmx team was recharging. Discord reopened after a week.",
-    "heading": "EN TEXT TO REPLACE: recharging",
-    "subtitle": "EN TEXT TO REPLACE: we were building npmx at a pace that was costing {some} of us sleep. we didn't want that to be the norm! so we took a week off. together.",
-    "illustration_alt": "EN TEXT TO REPLACE: a single row of cosy icons",
-    "poke_log": "EN TEXT TO REPLACE: Poke the campfire",
-    "what": {
-      "title": "EN TEXT TO REPLACE: what happened",
-      "p1": "EN TEXT TO REPLACE: discord was closed {dates}.",
-      "dates": "EN TEXT TO REPLACE: February 14 – 21",
-      "p2": "EN TEXT TO REPLACE: all invite links were gone and channels were locked – except {garden}, which stayed open for folks who wanted to keep hanging out.",
-      "garden": "EN TEXT TO REPLACE: #garden"
-    },
-    "meantime": {
-      "title": "EN TEXT TO REPLACE: in the meantime",
-      "p1": "EN TEXT TO REPLACE: {site} and {repo} stayed open – people still dug in, filed some issues, opened a few PRs, but mainly everyone spent time somewhere near a cosy fireplace.",
-      "repo_link": "EN TEXT TO REPLACE: the repo"
-    },
-    "return": {
-      "title": "EN TEXT TO REPLACE: we came back!",
-      "p1": "EN TEXT TO REPLACE: we came back recharged and ready for the final push to March 3rd. {social} for updates.",
-      "social_link": "EN TEXT TO REPLACE: follow us on Bluesky"
-    },
+    "what": {},
+    "meantime": {},
+    "return": {},
     "stats": {
-      "contributors": "EN TEXT TO REPLACE: Contributors",
-      "commits": "EN TEXT TO REPLACE: Commits",
-      "pr": "EN TEXT TO REPLACE: PRs Merged",
-      "subtitle": {
-        "some": "EN TEXT TO REPLACE: some",
-        "all": "EN TEXT TO REPLACE: all"
-      }
+      "subtitle": {}
     }
   },
   "action_bar": {
@@ -1476,56 +1394,5 @@
     "selection": "0 निवडले | 1 निवडले | {count} निवडले",
     "shortcut": "\"{key}\" दाबून क्रियांवर फोकस करा",
     "button_close_aria_label": "क्रिया पट्टी बंद करा"
-  },
-  "logo_menu": {
-    "copy_svg": "EN TEXT TO REPLACE: Copy logo as SVG",
-    "copied": "EN TEXT TO REPLACE: Copied!",
-    "browse_brand": "EN TEXT TO REPLACE: Browse brand kit"
-  },
-  "brand": {
-    "title": "EN TEXT TO REPLACE: Brand",
-    "heading": "EN TEXT TO REPLACE: brand",
-    "meta_description": "EN TEXT TO REPLACE: npmx brand guidelines, logos, colors, and typography for use in press and media.",
-    "intro": "EN TEXT TO REPLACE: Resources and guidelines for using the npmx brand in your projects, articles, and media.",
-    "logos": {
-      "title": "EN TEXT TO REPLACE: logos",
-      "description": "EN TEXT TO REPLACE: Download npmx logos in SVG and PNG formats. Use the appropriate variant for your background.",
-      "wordmark": "EN TEXT TO REPLACE: FULL WORDMARK",
-      "wordmark_alt": "EN TEXT TO REPLACE: npmx full wordmark logo with blue slash on dark background",
-      "wordmark_light_alt": "EN TEXT TO REPLACE: npmx full wordmark logo with accent slash on light background",
-      "mark": "EN TEXT TO REPLACE: LOGO MARK",
-      "mark_alt": "EN TEXT TO REPLACE: npmx logo mark with dot and slash on dark background",
-      "mark_light_alt": "EN TEXT TO REPLACE: npmx logo mark with dot and slash on light background",
-      "on_dark": "EN TEXT TO REPLACE: on dark",
-      "on_light": "EN TEXT TO REPLACE: on light",
-      "download_svg": "EN TEXT TO REPLACE: SVG",
-      "download_png": "EN TEXT TO REPLACE: PNG",
-      "download_svg_aria": "EN TEXT TO REPLACE: Download {name} as SVG",
-      "download_png_aria": "EN TEXT TO REPLACE: Download {name} as PNG"
-    },
-    "customize": {
-      "title": "EN TEXT TO REPLACE: customize your logo",
-      "description": "EN TEXT TO REPLACE: Preview the npmx logo with your accent color and background. The preview reflects your current settings — pick a color, toggle the background, and download.",
-      "accent_label": "EN TEXT TO REPLACE: accent",
-      "bg_label": "EN TEXT TO REPLACE: background",
-      "download_svg_aria": "EN TEXT TO REPLACE: Download customized logo as SVG",
-      "download_png_aria": "EN TEXT TO REPLACE: Download customized logo as PNG"
-    },
-    "typography": {
-      "title": "EN TEXT TO REPLACE: typography",
-      "description": "EN TEXT TO REPLACE: npmx uses the Geist font family by Vercel for both interface text and code.",
-      "sans": "EN TEXT TO REPLACE: Geist Sans",
-      "sans_desc": "EN TEXT TO REPLACE: Used for body text and UI elements.",
-      "mono": "EN TEXT TO REPLACE: Geist Mono",
-      "mono_desc": "EN TEXT TO REPLACE: Used for code, headings, and technical content.",
-      "pangram": "EN TEXT TO REPLACE: The quick brown fox jumps over the lazy dog",
-      "numbers": "EN TEXT TO REPLACE: 0123456789"
-    },
-    "guidelines": {
-      "title": "EN TEXT TO REPLACE: just a note",
-      "message": "EN TEXT TO REPLACE: Accessibility matters to us, and we would love you to follow us in this vision. When using mentioned media, ensure there is enough contrast against the background, and don't go smaller than 24px. If you need any other resources or additional information about the project, feel free to reach us at {link}.",
-      "discord_link_text": "EN TEXT TO REPLACE: chat.npmx.dev"
-    }
-  },
-  "alt_logo_kawaii": "EN TEXT TO REPLACE: A cute, rounded, and colorful version of the npmx logo."
+  }
 }

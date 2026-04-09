@@ -432,10 +432,7 @@
       "filter_placeholder": "Фільтр за semver (напр. ^3.0.0)",
       "filter_invalid": "Недійсний діапазон semver",
       "filter_help": "Довідка з фільтра діапазону semver",
-      "license_change_help": "EN TEXT TO REPLACE: License Change Details",
       "filter_tooltip": "Фільтрувати версії за {link}. Наприклад, ^3.0.0 показує всі версії 3.x.",
-      "license_change_warning": "EN TEXT TO REPLACE: License change!",
-      "license_change_record": "EN TEXT TO REPLACE: License changed from {from} to {to}.",
       "filter_tooltip_link": "діапазоном semver",
       "no_matches": "Жодна версія не відповідає цьому діапазону",
       "copy_alt": {
@@ -444,8 +441,6 @@
       },
       "page_title": "Історія версій",
       "current_tags": "Поточні теги",
-      "version_filter_placeholder": "Фільтрувати версії…",
-      "version_filter_label": "Фільтрувати версії",
       "no_match_filter": "Версій за фільтром \"{filter}\" не знайдено"
     },
     "dependencies": {
@@ -492,9 +487,6 @@
         "table_available": "Таблиця даних для цього графіка доступна нижче.",
         "table_caption": "Таблиця даних графіка"
       },
-      "chart_view_toggle": "EN TEXT TO REPLACE: Toggle view",
-      "chart_view_combined": "EN TEXT TO REPLACE: Combined view",
-      "chart_view_split": "EN TEXT TO REPLACE: Split view",
       "granularity": "Деталізація",
       "granularity_daily": "Щоденні",
       "granularity_weekly": "Щотижневі",
@@ -831,12 +823,8 @@
     "lines": "{count} рядків",
     "toggle_tree": "Переключити дерево файлів",
     "close_tree": "Закрити дерево файлів",
-    "copy_content": "EN TEXT TO REPLACE: Copy file content",
     "copy_link": "Копіювати посилання",
     "view_raw": "Переглянути необроблений файл",
-    "toggle_container": "EN TEXT TO REPLACE: Toggle code container width",
-    "open_raw_file": "EN TEXT TO REPLACE: Open raw file",
-    "open_path_dropdown": "EN TEXT TO REPLACE: Open path segments dropdown",
     "file_too_large": "Файл занадто великий для попереду",
     "file_size_warning": "{size} перевищує ліміт 500KB для виділення синтаксису",
     "failed_to_load": "Не вдалося завантажити файл",
@@ -1114,7 +1102,6 @@
       "empty_description": "Знайдіть та додайте щонайменше 2 пакети вище, щоб побачити порівняння їх метрик.",
       "table_view": "Таблиця",
       "charts_view": "Діаграми",
-      "no_chartable_data": "EN TEXT TO REPLACE: No chartable data available for the selected facets.",
       "bar_chart_nav_hint": "Використовуйте ↑ ↓",
       "line_chart_nav_hint": "Використовуйте ← →"
     },
@@ -1526,6 +1513,5 @@
       "message": "Доступність важлива для нас і ми хотіли б, щоб ви поділяли цю позицію. Використовуючи зазначені матеріали, переконайтеся, що є достатній контраст із фоном, і не зменшуйте розмір менше 24px. Якщо вам потрібні інші ресурси або додаткова інформація про проєкт, зв'яжіться з нами за посиланням {link}.",
       "discord_link_text": "chat.npmx.dev"
     }
-  },
-  "alt_logo_kawaii": "EN TEXT TO REPLACE: A cute, rounded, and colorful version of the npmx logo."
+  }
 }

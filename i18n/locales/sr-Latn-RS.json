@@ -432,10 +432,7 @@
       "filter_placeholder": "Filtrirajte po semver-u (npr. ^3.0.0)",
       "filter_invalid": "Neispravan semver opseg",
       "filter_help": "Pomoć za filtriranje semver opsega",
-      "license_change_help": "EN TEXT TO REPLACE: License Change Details",
       "filter_tooltip": "Filtrirajte verzije koristeći {link}. Na primer, ^3.0.0 prikazuje sve 3.x verzije.",
-      "license_change_warning": "EN TEXT TO REPLACE: License change!",
-      "license_change_record": "EN TEXT TO REPLACE: License changed from {from} to {to}.",
       "filter_tooltip_link": "semver opseg",
       "no_matches": "Nijedna verzija ne odgovara ovom opsegu",
       "copy_alt": {
@@ -444,8 +441,6 @@
       },
       "page_title": "Istorija verzija",
       "current_tags": "Trenutne oznake",
-      "version_filter_placeholder": "Filtrirajte verzije…",
-      "version_filter_label": "Filtrirajte verzije",
       "no_match_filter": "Nijedna verzija ne odgovara filteru {filter}"
     },
     "dependencies": {
@@ -492,9 +487,6 @@
         "table_available": "Tabela podataka za ovaj grafikon je dostupna ispod.",
         "table_caption": "Tabela podataka grafikona"
       },
-      "chart_view_toggle": "EN TEXT TO REPLACE: Toggle view",
-      "chart_view_combined": "EN TEXT TO REPLACE: Combined view",
-      "chart_view_split": "EN TEXT TO REPLACE: Split view",
       "granularity": "Granularnost",
       "granularity_daily": "Dnevno",
       "granularity_weekly": "Nedeljno",
@@ -831,12 +823,8 @@
     "lines": "{count} linija | {count} linije | {count} linija",
     "toggle_tree": "Uključite/isključite stablo datoteka",
     "close_tree": "Zatvorite stablo datoteka",
-    "copy_content": "EN TEXT TO REPLACE: Copy file content",
     "copy_link": "Kopirajte link",
     "view_raw": "Pogledajte izvornu datoteku",
-    "toggle_container": "EN TEXT TO REPLACE: Toggle code container width",
-    "open_raw_file": "EN TEXT TO REPLACE: Open raw file",
-    "open_path_dropdown": "EN TEXT TO REPLACE: Open path segments dropdown",
     "file_too_large": "Datoteka je prevelika za pregled",
     "file_size_warning": "{size} premašuje ograničenje od 500KB za isticanje sintakse",
     "failed_to_load": "Neuspešno učitavanje",
@@ -1114,7 +1102,6 @@
       "empty_description": "Pretražite i dodajte najmanje 2 paketa iznad da biste videli uporedni prikaz njihovih metrika.",
       "table_view": "Tabela",
       "charts_view": "Grafikoni",
-      "no_chartable_data": "EN TEXT TO REPLACE: No chartable data available for the selected facets.",
       "bar_chart_nav_hint": "Koristite ↑ ↓",
       "line_chart_nav_hint": "Koristite ← →"
     },
@@ -1526,6 +1513,5 @@
       "message": "Pristupačnost nam je važna, i voleli bismo da nas pratite u ovoj viziji. Kada koristite pomenute medije, osigurajte dovoljan kontrast u odnosu na pozadinu i nemojte ići manje od 24px. Ako su vam potrebni bilo kakvi drugi resursi ili dodatne informacije o projektu, slobodno nas kontaktirajte na {link}.",
       "discord_link_text": "chat.npmx.dev"
     }
-  },
-  "alt_logo_kawaii": "EN TEXT TO REPLACE: A cute, rounded, and colorful version of the npmx logo."
+  }
 }

@@ -432,10 +432,7 @@
       "filter_placeholder": "Filtrer etter semver (f.eks. ^3.0.0)",
       "filter_invalid": "Ugyldig semver-område",
       "filter_help": "Hjelp for semver-områdefilter",
-      "license_change_help": "EN TEXT TO REPLACE: License Change Details",
       "filter_tooltip": "Filtrer versjoner ved hjelp av et {link}. For eksempel viser ^3.0.0 alle 3.x-versjoner.",
-      "license_change_warning": "EN TEXT TO REPLACE: License change!",
-      "license_change_record": "EN TEXT TO REPLACE: License changed from {from} to {to}.",
       "filter_tooltip_link": "semver-område",
       "no_matches": "Ingen versjoner matcher dette området",
       "copy_alt": {
@@ -444,8 +441,6 @@
       },
       "page_title": "Versjonshistorikk",
       "current_tags": "Nåværende tagger",
-      "version_filter_placeholder": "Filtrer versjoner…",
-      "version_filter_label": "Filtrer versjoner",
       "no_match_filter": "Ingen versjoner matcher {filter}"
     },
     "dependencies": {
@@ -492,9 +487,6 @@
         "table_available": "En datatabell for dette diagrammet er tilgjengelig nedenfor.",
         "table_caption": "Diagramdatatabell"
       },
-      "chart_view_toggle": "EN TEXT TO REPLACE: Toggle view",
-      "chart_view_combined": "EN TEXT TO REPLACE: Combined view",
-      "chart_view_split": "EN TEXT TO REPLACE: Split view",
       "granularity": "Oppløsning",
       "granularity_daily": "Daglig",
       "granularity_weekly": "Ukentlig",
@@ -831,12 +823,8 @@
     "lines": "{count} linje | {count} linjer",
     "toggle_tree": "Veksle filtre",
     "close_tree": "Lukk filtre",
-    "copy_content": "EN TEXT TO REPLACE: Copy file content",
     "copy_link": "Kopier lenke",
     "view_raw": "Vis råfil",
-    "toggle_container": "EN TEXT TO REPLACE: Toggle code container width",
-    "open_raw_file": "EN TEXT TO REPLACE: Open raw file",
-    "open_path_dropdown": "EN TEXT TO REPLACE: Open path segments dropdown",
     "file_too_large": "Filen er for stor til å forhåndsvises",
     "file_size_warning": "{size} overstiger grensen på 500KB for syntaksmarkering",
     "failed_to_load": "Kunne ikke laste fil",
@@ -1114,7 +1102,6 @@
       "empty_description": "Søk og legg til minst 2 pakker ovenfor for å se en side-om-side sammenligning av deres metrikker.",
       "table_view": "Tabell",
       "charts_view": "Diagrammer",
-      "no_chartable_data": "EN TEXT TO REPLACE: No chartable data available for the selected facets.",
       "bar_chart_nav_hint": "Bruk ↑ ↓",
       "line_chart_nav_hint": "Bruk ← →"
     },
@@ -1526,6 +1513,5 @@
       "message": "Tilgjengelighet er viktig for oss, og vi vil gjerne at du følger oss i denne visjonen. Når du bruker nevnte media, sørg for at det er nok kontrast mot bakgrunnen, og ikke gå mindre enn 24px. Hvis du trenger andre ressurser eller tilleggsinformasjon om prosjektet, ta gjerne kontakt med oss på {link}.",
       "discord_link_text": "chat.npmx.dev"
     }
-  },
-  "alt_logo_kawaii": "EN TEXT TO REPLACE: A cute, rounded, and colorful version of the npmx logo."
+  }
 }

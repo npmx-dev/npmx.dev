@@ -20,7 +20,7 @@
     "chat": "聊天",
     "builders_chat": "開發者聊天",
     "keyboard_shortcuts": "鍵盤快捷鍵",
-    "brand": "EN TEXT TO REPLACE: brand"
+    "brand": "品牌"
   },
   "shortcuts": {
     "section": {
@@ -28,11 +28,14 @@
       "search": "搜尋",
       "package": "套件"
     },
+    "ctrl_key": "Ctrl",
+    "command_palette": "開啟指令面板",
+    "command_palette_description": "使用指令面板，不用離開鍵盤就能在頁面、套件檢視、設定與外部連結之間跳來跳去。在 macOS 上請按 ⌘K；在 Windows 與 Linux 上請按 {ctrlKey}+K。",
     "focus_search": "焦點搜尋",
     "show_kbd_hints": "顯示鍵盤快速鍵提示",
     "settings": "開啟設定",
     "compare": "開啟比較",
-    "compare_from_package": "開啟比較 (預填目前套件)",
+    "compare_from_package": "開啟比較（預填目前套件）",
     "navigate_results": "瀏覽搜尋結果",
     "go_to_result": "前往搜尋結果",
     "open_code_view": "開啟程式碼檢視",
@@ -76,6 +79,113 @@
     "instant_search_turn_off": "關閉",
     "instant_search_advisory": "{label} {state} — {action}"
   },
+  "command_palette": {
+    "title": "指令面板",
+    "quick_actions": "跳轉到…",
+    "subtitle": "在 npmx 中快速導覽、切換設定",
+    "subtitle_languages": "選擇語言，或幫忙改善翻譯",
+    "instructions": "輸入關鍵字過濾指令。用方向鍵移動選取結果，按 Enter 執行指令。",
+    "input_label": "指令面板搜尋",
+    "results_label": "指令結果",
+    "placeholder": "輸入指令…",
+    "back": "返回",
+    "empty": "沒有符合的指令",
+    "empty_search_hint": "按 Enter 搜尋「{query}」。",
+    "current": "目前",
+    "here": "你所在的位置",
+    "connected": "已連線",
+    "state": {
+      "on": "開",
+      "off": "關"
+    },
+    "groups": {
+      "actions": "動作",
+      "help": "說明",
+      "language": "語言",
+      "connections": "連線",
+      "navigation": "導覽",
+      "links": "連結",
+      "npmx": "npmx",
+      "package": "套件",
+      "package_with_name": "套件 ({name})",
+      "versions": "版本",
+      "versions_with_name": "{name} 的版本"
+    },
+    "actions": {
+      "search": "搜尋",
+      "search_for": "搜尋「{query}」",
+      "keyboard_shortcuts": "鍵盤快速鍵",
+      "help_translate": "幫忙翻譯"
+    },
+    "connections": {
+      "npm_connect": "連線到 npm CLI",
+      "npm_connected": "npm CLI (~{username})",
+      "npm_disconnect": "中斷 npm CLI 連線",
+      "atmosphere_connect": "連線到 Atmosphere",
+      "atmosphere_connected": "atmosphere ({'@'}{handle})",
+      "atmosphere_disconnect": "中斷 Atmosphere 連線"
+    },
+    "navigation": {
+      "home": "首頁",
+      "packages": "套件 (~{username})",
+      "orgs": "組織 (~{username})",
+      "profile": "個人檔案 ({'@'}{handle})"
+    },
+    "links": {
+      "external": "外部連結"
+    },
+    "package_links": {
+      "stars": "儲存庫星星數",
+      "forks": "儲存庫複刻數"
+    },
+    "theme": {
+      "system": "跟隨系統主題",
+      "light": "使用淺色主題",
+      "dark": "使用深色主題"
+    },
+    "package": {
+      "main": "套件頁面",
+      "docs": "文件",
+      "code": "程式碼",
+      "diff": "差異",
+      "compare": "比較這個套件",
+      "download": "下載 tarball"
+    },
+    "package_actions": {
+      "copy_run": "複製執行指令"
+    },
+    "code": {
+      "copy_file": "複製檔案內容"
+    },
+    "diff": {
+      "merge_modified_lines": "合併修改過的行",
+      "word_wrap": "自動換行"
+    },
+    "version": {
+      "label": "{version}"
+    },
+    "status": {
+      "available_in_context": "{context}。沒有可用的指令 | {context}。1 個可用的指令 | {context}。{count} 個可用的指令",
+      "matching_in_context": "{context}。沒有符合的指令 | {context}。1 個符合的指令 | {context}。{count} 個符合的指令",
+      "no_matches_search_in_context": "{context}。沒有符合的指令。按 Enter 搜尋「{query}」。"
+    },
+    "announcements": {
+      "language_changed": "語言已設為 {language}。",
+      "relative_dates_on": "相對日期已開啟。",
+      "relative_dates_off": "相對日期已關閉。",
+      "theme_changed": "主題已設為 {theme}。",
+      "accent_color_changed": "強調色已設為 {color}。",
+      "background_theme_changed": "背景色調已設為 {theme}。",
+      "download_started": "正在下載 {package} tarball。",
+      "copied_to_clipboard": "已複製到剪貼簿。",
+      "npm_disconnected": "npm CLI 已中斷連線。",
+      "atmosphere_disconnected": "Atmosphere 已中斷連線。",
+      "facets_all_selected": "已選取所有篩選條件。",
+      "facets_all_deselected": "已取消選取所有篩選條件。",
+      "view_switched": "已切換到 {view} 檢視。",
+      "setting_toggled": "{setting} {state}。"
+    }
+  },
   "nav": {
     "main_navigation": "首頁",
     "popular_packages": "熱門套件",
@@ -97,7 +207,7 @@
     },
     "draft_badge": "草稿",
     "draft_banner": "這是尚未發佈的草稿。內容可能不完整或包含不準確的資訊。",
-    "no_posts": "EN TEXT TO REPLACE: No posts found.",
+    "no_posts": "找不到任何文章。",
     "atproto": {
       "view_on_bluesky": "在 Bluesky 上查看",
       "reply_on_bluesky": "在 Bluesky 上回覆",
@@ -148,25 +258,26 @@
     "theme_system": "跟隨系統",
     "language": "語言",
     "help_translate": "協助翻譯 npmx",
-    "translation_status": "EN TEXT TO REPLACE: Check global translation status",
+    "translation_status": "查看整體翻譯進度",
     "accent_colors": {
       "label": "強調色",
-      "sky": "EN TEXT TO REPLACE: Sky",
-      "coral": "EN TEXT TO REPLACE: Coral",
-      "amber": "EN TEXT TO REPLACE: Amber",
-      "emerald": "EN TEXT TO REPLACE: Emerald",
-      "violet": "EN TEXT TO REPLACE: Violet",
-      "magenta": "EN TEXT TO REPLACE: Magenta"
+      "neutral": "中性灰",
+      "sky": "天空藍",
+      "coral": "珊瑚橘",
+      "amber": "琥珀色",
+      "emerald": "祖母綠",
+      "violet": "紫羅蘭",
+      "magenta": "洋紅色"
     },
     "clear_accent": "清除強調色",
     "translation_progress": "翻譯進度",
     "background_themes": {
       "label": "背景色調",
-      "neutral": "EN TEXT TO REPLACE: Neutral",
-      "stone": "EN TEXT TO REPLACE: Stone",
-      "zinc": "EN TEXT TO REPLACE: Zinc",
-      "slate": "EN TEXT TO REPLACE: Slate",
-      "black": "EN TEXT TO REPLACE: Black"
+      "neutral": "中性灰",
+      "stone": "岩石灰",
+      "zinc": "鋅灰色",
+      "slate": "板岩灰",
+      "black": "黑色"
     },
     "keyboard_shortcuts_enabled": "啟用鍵盤快速鍵",
     "keyboard_shortcuts_enabled_description": "若與其他瀏覽器或系統快捷鍵衝突，可停用鍵盤快速鍵"
@@ -201,6 +312,8 @@
     "warnings": "警告：",
     "go_back_home": "回到首頁",
     "per_week": "/ 週",
+    "yes": "是",
+    "no": "否",
     "vanity_downloads_hint": "顯示下載量：未顯示套件 | 顯示下載量：顯示的套件 | 顯示下載量：顯示的 {count} 個套件總和",
     "sort": {
       "name": "名稱",
@@ -226,8 +339,8 @@
       "sourcehut": "在 SourceHut 上檢視",
       "tangled": "在 Tangled 上檢視"
     },
-    "collapse": "EN TEXT TO REPLACE: Collapse",
-    "expand": "EN TEXT TO REPLACE: Expand"
+    "collapse": "收合",
+    "expand": "展開"
   },
   "profile": {
     "display_name": "顯示名稱",
@@ -243,7 +356,7 @@
     "invite": {
       "message": "看起來對方還沒在用 npmx。要不要跟他們分享一下？",
       "share_button": "分享到 Bluesky",
-      "compose_text": "Hey {'@'}{handle}！你用過 npmx.dev 了嗎？它是 npm Registry 的瀏覽器，快速、現代，而且是開源的。\\nhttps://npmx.dev"
+      "compose_text": "Hey {'@'}{handle}！你用過 npmx.dev 了嗎？它是 npm Registry 的瀏覽器，快速、現代，而且是開源的。\nhttps://npmx.dev"
     }
   },
   "package": {
@@ -307,7 +420,7 @@
         "assets": "{count} 個資源 | {count} 個資源"
       },
       "view_source": "檢視原始碼",
-      "skills_cli": "EN TEXT TO REPLACE: skills CLI"
+      "skills_cli": "技能 CLI"
     },
     "links": {
       "main": "main",
@@ -319,22 +432,22 @@
       "docs": "文件",
       "fund": "贊助",
       "compare": "比較",
-      "compare_this_package": "EN TEXT TO REPLACE: compare this package"
+      "compare_this_package": "比較這個套件"
     },
     "likes": {
       "like": "喜歡這個套件",
       "unlike": "取消喜歡這個套件"
     },
     "docs": {
-      "contents": "EN TEXT TO REPLACE: Contents",
-      "default_not_available": "EN TEXT TO REPLACE: Docs are not available for this version.",
+      "contents": "目錄",
+      "default_not_available": "此版本沒有可用的文件。",
       "not_available": "文件不可用",
       "not_available_detail": "我們無法為此版本產生文件。",
-      "page_title": "EN TEXT TO REPLACE: API Docs - npmx",
-      "page_title_name": "EN TEXT TO REPLACE: {name} docs - npmx",
-      "page_title_version": "EN TEXT TO REPLACE: {name} docs - npmx",
-      "og_title": "EN TEXT TO REPLACE: {name} - Docs",
-      "view_package": "EN TEXT TO REPLACE: View package"
+      "page_title": "API 文件 - npmx",
+      "page_title_name": "{name} 文件 - npmx",
+      "page_title_version": "{name} 文件 - npmx",
+      "og_title": "{name} - 文件",
+      "view_package": "檢視套件"
     },
     "get_started": {
       "title": "開始使用",
@@ -419,11 +532,11 @@
       "grouping_major": "主",
       "grouping_minor": "次",
       "grouping_versions_title": "版本",
-      "grouping_versions_about": "EN TEXT TO REPLACE: About version grouping",
+      "grouping_versions_about": "關於版本分組",
       "grouping_versions_all": "全部",
       "grouping_versions_only_recent": "僅顯示近期版本",
       "grouping_usage_title": "使用量",
-      "grouping_usage_about": "EN TEXT TO REPLACE: About usage grouping",
+      "grouping_usage_about": "關於使用量分組",
       "grouping_usage_all": "全部",
       "grouping_usage_most_used": "最常使用版本",
       "recent_versions_only_tooltip": "僅顯示過去一年內發布的版本。",
@@ -432,10 +545,7 @@
       "filter_placeholder": "依語義化版本篩選 (例如：^3.0.0)",
       "filter_invalid": "無效的語義化版本範圍",
       "filter_help": "語義化版本範圍篩選說明",
-      "license_change_help": "EN TEXT TO REPLACE: License Change Details",
       "filter_tooltip": "使用 {link} 篩選版本。例如：^3.0.0 會顯示所有 3.x 版本。",
-      "license_change_warning": "EN TEXT TO REPLACE: License change!",
-      "license_change_record": "EN TEXT TO REPLACE: License changed from {from} to {to}.",
       "filter_tooltip_link": "語義化版本範圍",
       "no_matches": "沒有符合此範圍的版本",
       "copy_alt": {
@@ -444,8 +554,6 @@
       },
       "page_title": "版本歷史記錄",
       "current_tags": "當前標籤",
-      "version_filter_placeholder": "篩選版本…",
-      "version_filter_label": "篩選版本",
       "no_match_filter": "沒有版本符合 {filter}"
     },
     "dependencies": {
@@ -458,7 +566,7 @@
       "outdated_minor": "落後 {count} 個次要版本（最新：{latest}）",
       "outdated_patch": "有可用的修補更新（最新：{latest}）",
       "has_replacement": "此相依套件有建議的替代方案",
-      "vulnerabilities_count": "EN TEXT TO REPLACE: {count} vulnerability | {count} vulnerabilities"
+      "vulnerabilities_count": "{count} 個漏洞"
     },
     "peer_dependencies": {
       "title": "peer 相依（{count} 個）",
@@ -487,14 +595,14 @@
     },
     "trends": {
       "chart_assistive_text": {
-        "keyboard_navigation_horizontal": "EN TEXT TO REPLACE: Use the left and right arrow keys to cycle through data points.",
-        "keyboard_navigation_vertical": "EN TEXT TO REPLACE: Use the up and down arrow keys to cycle through data points.",
-        "table_available": "EN TEXT TO REPLACE: A data table for this chart is available below.",
-        "table_caption": "EN TEXT TO REPLACE: Chart data table"
+        "keyboard_navigation_horizontal": "使用左右方向鍵切換資料點。",
+        "keyboard_navigation_vertical": "使用上下方向鍵切換資料點。",
+        "table_available": "下方提供此圖表的資料表格。",
+        "table_caption": "圖表資料表格"
       },
-      "chart_view_toggle": "EN TEXT TO REPLACE: Toggle view",
-      "chart_view_combined": "EN TEXT TO REPLACE: Combined view",
-      "chart_view_split": "EN TEXT TO REPLACE: Split view",
+      "chart_view_toggle": "切換檢視模式",
+      "chart_view_combined": "合併檢視",
+      "chart_view_split": "分割檢視",
       "granularity": "週期",
       "granularity_daily": "每日",
       "granularity_weekly": "每週",
@@ -554,7 +662,7 @@
       "title": "每週下載量",
       "community_distribution": "檢視社群採用分布",
       "subtitle": "所有版本",
-      "sparkline_nav_hint": "EN TEXT TO REPLACE: Use ← →"
+      "sparkline_nav_hint": "使用 ← →"
     },
     "install_scripts": {
       "title": "安裝腳本",
@@ -570,7 +678,7 @@
       "esm": "支援 ES 模組",
       "cjs": "支援 CommonJS",
       "no_esm": "不支援 ES 模組",
-      "wasm": "EN TEXT TO REPLACE: Has WebAssembly",
+      "wasm": "支援 WebAssembly",
       "types_label": "型別",
       "types_included": "包含型別",
       "types_available": "由 {package} 提供型別",
@@ -646,8 +754,8 @@
       "mb": "{size} MB"
     },
     "download": {
-      "button": "EN TEXT TO REPLACE: Download",
-      "tarball": "EN TEXT TO REPLACE: Download Tarball as .tar.gz"
+      "button": "下載",
+      "tarball": "下載 Tarball（.tar.gz）"
     }
   },
   "connector": {
@@ -831,12 +939,12 @@
     "lines": "{count} 行",
     "toggle_tree": "切換檔案樹",
     "close_tree": "關閉檔案樹",
-    "copy_content": "EN TEXT TO REPLACE: Copy file content",
+    "copy_content": "複製檔案內容",
     "copy_link": "複製連結",
     "view_raw": "檢視原始檔",
-    "toggle_container": "EN TEXT TO REPLACE: Toggle code container width",
-    "open_raw_file": "EN TEXT TO REPLACE: Open raw file",
-    "open_path_dropdown": "EN TEXT TO REPLACE: Open path segments dropdown",
+    "toggle_container": "切換程式碼容器寬度",
+    "open_raw_file": "開啟原始檔",
+    "open_path_dropdown": "開啟路徑區段下拉選單",
     "file_too_large": "檔案太大無法預覽",
     "file_size_warning": "{size} 超過 500KB 的語法高亮限制",
     "failed_to_load": "載入檔案失敗",
@@ -919,7 +1027,7 @@
       "insecure": "有警告"
     },
     "view_selected": "檢視已選擇套件",
-    "clear_selected_label": "EN TEXT TO REPLACE: Clear selected",
+    "clear_selected_label": "清除選取項目",
     "sort": {
       "label": "排序套件",
       "toggle_direction": "切換排序方向",
@@ -1094,7 +1202,7 @@
       "empty": "找不到組織",
       "view_all": "檢視全部"
     },
-    "pr": "EN TEXT TO REPLACE: Open GitHub pull request #{prNumber}"
+    "pr": "在 GitHub 上開啟拉取請求 #{prNumber}"
   },
   "compare": {
     "packages": {
@@ -1114,9 +1222,9 @@
       "empty_description": "在上方搜尋並新增至少 2 個套件，以查看它們指標的並排比較。",
       "table_view": "表格檢視",
       "charts_view": "圖表檢視",
-      "no_chartable_data": "EN TEXT TO REPLACE: No chartable data available for the selected facets.",
-      "bar_chart_nav_hint": "EN TEXT TO REPLACE: Use ↑ ↓",
-      "line_chart_nav_hint": "EN TEXT TO REPLACE: Use ← →"
+      "no_chartable_data": "所選面向沒有可用的圖表資料。",
+      "bar_chart_nav_hint": "使用 ↑ ↓",
+      "line_chart_nav_hint": "使用 ← →"
     },
     "selector": {
       "search_label": "搜尋套件",
@@ -1126,6 +1234,31 @@
       "remove_package": "移除 {package}",
       "packages_selected": "已選擇 {count}/{max} 個套件。",
       "add_hint": "至少新增 2 個套件以進行比較。"
+    },
+    "quadrant_chart": {
+      "label_x_axis": "採用度",
+      "label_y_axis": "效率",
+      "label_top_right": "高價值",
+      "label_bottom_right": "熱門但偏重",
+      "label_bottom_left": "低價值",
+      "label_top_left": "有潛力",
+      "title": "套件採用度 vs 效率",
+      "filename": "套件-採用度-vs-效率-矩陣",
+      "label_freshness_score": "新鮮度",
+      "copy_alt": {
+        "description": "{packages} 套件的採用度與效率四象限圖。{analysis}。{watermark}。",
+        "side_analysis_top_right": "位於右上象限（高價值）的套件：{packages}",
+        "side_analysis_top_left": "位於左上象限（有潛力）的套件：{packages}",
+        "side_analysis_bottom_right": "位於右下象限（熱門但偏重）的套件：{packages}",
+        "side_analysis_bottom_left": "位於左下象限（低價值）的套件：{packages}"
+      },
+      "explanation": {
+        "tooltip_help": "查看評分說明",
+        "introduction": "分數由多種訊號組合成兩個維度計算得出：",
+        "adoption": "採用度：反映使用和活躍情況（下載量、更新頻率、點讚數）",
+        "efficiency": "效率：反映體積和品質（安裝大小、依賴項數量、漏洞情況、型別支援）",
+        "impact_details": "各指標權重不同。下載量和安裝大小等強訊號影響最大，其他訊號用於微調。部分訊號（如漏洞或棄用）會扣減分數。"
+      }
     },
     "no_dependency": {
       "label": "(無相依套件)",
@@ -1139,10 +1272,10 @@
     "facets": {
       "all": "全選",
       "none": "取消全選",
-      "select_all_category_facets": "EN TEXT TO REPLACE: Select all {category} facets",
-      "deselect_all_category_facets": "EN TEXT TO REPLACE: Deselect all {category} facets",
-      "selected_all_category_facets": "EN TEXT TO REPLACE: Selected all {category} facets",
-      "deselected_all_category_facets": "EN TEXT TO REPLACE: Deselected all {category} facets",
+      "select_all_category_facets": "選取所有 {category} 面向",
+      "deselect_all_category_facets": "取消選取所有 {category} 面向",
+      "selected_all_category_facets": "已選取所有 {category} 面向",
+      "deselected_all_category_facets": "已取消選取所有 {category} 面向",
       "coming_soon": "即將推出",
       "select_all": "選擇所有維度",
       "deselect_all": "取消選擇所有維度",
@@ -1229,13 +1362,13 @@
     "file_size_warning": "檔案大小 {size} 超過 250KB，無法比較",
     "compare_versions": "差異",
     "compare_versions_title": "比較最新版本",
-    "comparing_versions_label": "EN TEXT TO REPLACE: Comparing versions...",
-    "version_back_to_package": "EN TEXT TO REPLACE: Back to package",
-    "version_error_message": "EN TEXT TO REPLACE: Failed to compare versions.",
+    "comparing_versions_label": "正在比較版本…",
+    "version_back_to_package": "返回套件",
+    "version_error_message": "無法比較版本。",
     "version_invalid_url_format": {
-      "hint": "EN TEXT TO REPLACE: Invalid comparison URL. Use format: {0}",
-      "from_version": "EN TEXT TO REPLACE: from",
-      "to_version": "EN TEXT TO REPLACE: to"
+      "hint": "無效的比較網址。請使用格式：{0}",
+      "from_version": "從",
+      "to_version": "到"
     },
     "version_selector_title": "比較版本",
     "summary": "摘要",
@@ -1264,17 +1397,17 @@
     "select_file_prompt": "請先從側邊欄選擇檔案以檢視差異",
     "close_files_panel": "關閉檔案面板",
     "filter_files_label": "依變更類型篩選檔案",
-    "change_ratio": "EN TEXT TO REPLACE: Change ratio",
-    "char_edits": "EN TEXT TO REPLACE: Char edits",
-    "diff_distance": "EN TEXT TO REPLACE: Diff distance",
-    "loading_diff": "EN TEXT TO REPLACE: Loading diff...",
-    "loading_diff_error": "EN TEXT TO REPLACE: Failed to load diff",
-    "merge_modified_lines": "EN TEXT TO REPLACE: Merge modified lines",
-    "no_content_changes": "EN TEXT TO REPLACE: No content changes detected",
-    "options": "EN TEXT TO REPLACE: Options",
-    "view_file": "EN TEXT TO REPLACE: View file",
-    "view_in_code_browser": "EN TEXT TO REPLACE: View in code browser",
-    "word_wrap": "EN TEXT TO REPLACE: Word wrap"
+    "change_ratio": "變更比例",
+    "char_edits": "字元編輯數",
+    "diff_distance": "差異距離",
+    "loading_diff": "載入差異中…",
+    "loading_diff_error": "載入差異失敗",
+    "merge_modified_lines": "合併修改過的行",
+    "no_content_changes": "未偵測到內容變更",
+    "options": "選項",
+    "view_file": "檢視檔案",
+    "view_in_code_browser": "在程式碼瀏覽器中檢視",
+    "word_wrap": "自動換行"
   },
   "pds": {
     "title": "npmx.social",
@@ -1415,59 +1548,59 @@
     }
   },
   "translation_status": {
-    "title": "EN TEXT TO REPLACE: translation status",
-    "generated_at": "EN TEXT TO REPLACE: Generation date: {date}",
-    "welcome": "EN TEXT TO REPLACE: If you're interested in helping us to translate {npmx} into one of the languages listed below, you've come to the right place! This auto-updating page always lists all the content that could use your help right now.",
-    "p1": "EN TEXT TO REPLACE: We use {lang} as the default language, with a total of {count}. If you'd like to help add translations, locate the language in {bylang} and expand the details.",
-    "p1_lang": "EN TEXT TO REPLACE: American English (en-US)",
-    "p1_count": "EN TEXT TO REPLACE: 0 messages | 1 message |{count} messages",
-    "p2": "EN TEXT TO REPLACE: Before starting, please read our {guide} to learn about our translation process and how you can get involved.",
-    "guide": "EN TEXT TO REPLACE: localization (i18n) guide",
-    "by_locale": "EN TEXT TO REPLACE: Translation progress by locale",
-    "by_file": "EN TEXT TO REPLACE: Translation progress by file",
-    "complete_text": "EN TEXT TO REPLACE: This translation is complete, amazing job!",
-    "missing_text": "EN TEXT TO REPLACE: missing",
-    "missing_keys": "EN TEXT TO REPLACE: There is no missing translations | Missing translation | Missing translations",
-    "progress_label": "EN TEXT TO REPLACE: Progress status for {locale}",
+    "title": "翻譯狀態",
+    "generated_at": "產生日期：{date}",
+    "welcome": "如果你有興趣幫我們把 {npmx} 翻譯成下面列出的某一種語言，那你就來對地方了！這個自動更新的頁面會隨時列出所有目前需要你協助的內容。",
+    "p1": "我們以 {lang} 作為預設語言，總共有 {count}。如果你想協助新增翻譯，請在 {bylang} 中找到該語言，然後展開詳細內容。",
+    "p1_lang": "美式英語 (en-US)",
+    "p1_count": "0 則訊息 | 1 則訊息 |{count} 則訊息",
+    "p2": "開始之前，請先閱讀我們的 {guide}，瞭解翻譯流程以及參與方式。",
+    "guide": "在地化（i18n）指南",
+    "by_locale": "依語言的翻譯進度",
+    "by_file": "依檔案的翻譯進度",
+    "complete_text": "這個翻譯已經完成，超棒的！",
+    "missing_text": "缺少",
+    "missing_keys": "沒有缺少的翻譯 | 缺少 1 處翻譯 | 缺少 {count} 處翻譯",
+    "progress_label": "{locale} 的翻譯進度狀態",
     "table": {
-      "file": "EN TEXT TO REPLACE: File",
-      "status": "EN TEXT TO REPLACE: Status",
-      "error": "EN TEXT TO REPLACE: Error while loading file list.",
-      "empty": "EN TEXT TO REPLACE: No files found",
-      "file_link": "EN TEXT TO REPLACE: Edit {file} ({lang}) on GitHub"
+      "file": "檔案",
+      "status": "狀態",
+      "error": "載入檔案清單時發生錯誤。",
+      "empty": "找不到任何檔案",
+      "file_link": "在 GitHub 上編輯 {file}（{lang}）"
     }
   },
   "vacations": {
-    "title": "EN TEXT TO REPLACE: on vacation",
-    "meta_description": "EN TEXT TO REPLACE: The npmx team was recharging. Discord reopened after a week.",
-    "heading": "EN TEXT TO REPLACE: recharging",
-    "subtitle": "EN TEXT TO REPLACE: we were building npmx at a pace that was costing {some} of us sleep. we didn't want that to be the norm! so we took a week off. together.",
-    "illustration_alt": "EN TEXT TO REPLACE: a single row of cosy icons",
-    "poke_log": "EN TEXT TO REPLACE: Poke the campfire",
+    "title": "休假中",
+    "meta_description": "npmx 團隊正在充電中。Discord 會在一週後重新開放。",
+    "heading": "充電中",
+    "subtitle": "先前我們為了趕 npmx 的進度，讓 {some} 夥伴犧牲了睡眠。我們可不希望這變成常態！所以大家一起放了一週的假。",
+    "illustration_alt": "一排舒適可愛的小圖示",
+    "poke_log": "戳一下營火",
     "what": {
-      "title": "EN TEXT TO REPLACE: what happened",
-      "p1": "EN TEXT TO REPLACE: discord was closed {dates}.",
-      "dates": "EN TEXT TO REPLACE: February 14 – 21",
-      "p2": "EN TEXT TO REPLACE: all invite links were gone and channels were locked – except {garden}, which stayed open for folks who wanted to keep hanging out.",
-      "garden": "EN TEXT TO REPLACE: #garden"
+      "title": "發生了什麼事",
+      "p1": "Discord 在 {dates} 這段期間關閉。",
+      "dates": "2 月 14 日到 21 日",
+      "p2": "所有邀請連結都失效，頻道也鎖起來了——除了 {garden} 還留著，給想繼續一起閒聊的人。",
+      "garden": "#garden 頻道"
     },
     "meantime": {
-      "title": "EN TEXT TO REPLACE: in the meantime",
-      "p1": "EN TEXT TO REPLACE: {site} and {repo} stayed open – people still dug in, filed some issues, opened a few PRs, but mainly everyone spent time somewhere near a cosy fireplace.",
-      "repo_link": "EN TEXT TO REPLACE: the repo"
+      "title": "在此期間",
+      "p1": "{site} 和 {repo} 照常開放——大家還是會來逛逛、開 issue、送一些 PR，但大部分時間都窩在溫暖的壁爐附近休息。",
+      "repo_link": "程式碼儲存庫"
     },
     "return": {
-      "title": "EN TEXT TO REPLACE: we came back!",
-      "p1": "EN TEXT TO REPLACE: we came back recharged and ready for the final push to March 3rd. {social} for updates.",
-      "social_link": "EN TEXT TO REPLACE: follow us on Bluesky"
+      "title": "我們回來啦！",
+      "p1": "充電完畢，準備全力衝刺到 3 月 3 日！想知道最新消息就追蹤 {social}。",
+      "social_link": "在 Bluesky 上追蹤我們"
     },
     "stats": {
-      "contributors": "EN TEXT TO REPLACE: Contributors",
-      "commits": "EN TEXT TO REPLACE: Commits",
-      "pr": "EN TEXT TO REPLACE: PRs Merged",
+      "contributors": "貢獻者",
+      "commits": "提交次數",
+      "pr": "已合併的 PR 數",
       "subtitle": {
-        "some": "EN TEXT TO REPLACE: some",
-        "all": "EN TEXT TO REPLACE: all"
+        "some": "一部分",
+        "all": "所有人"
       }
     }
   },
@@ -1478,54 +1611,54 @@
     "button_close_aria_label": "關閉操作列"
   },
   "logo_menu": {
-    "copy_svg": "EN TEXT TO REPLACE: Copy logo as SVG",
-    "copied": "EN TEXT TO REPLACE: Copied!",
-    "browse_brand": "EN TEXT TO REPLACE: Browse brand kit"
+    "copy_svg": "複製 SVG 格式的標誌",
+    "copied": "已複製！",
+    "browse_brand": "瀏覽品牌素材包"
   },
   "brand": {
-    "title": "EN TEXT TO REPLACE: Brand",
-    "heading": "EN TEXT TO REPLACE: brand",
-    "meta_description": "EN TEXT TO REPLACE: npmx brand guidelines, logos, colors, and typography for use in press and media.",
-    "intro": "EN TEXT TO REPLACE: Resources and guidelines for using the npmx brand in your projects, articles, and media.",
+    "title": "品牌",
+    "heading": "品牌",
+    "meta_description": "npmx 品牌指南、標誌、顏色與字型，供新聞與媒體使用。",
+    "intro": "在你的專案、文章或媒體中使用 npmx 品牌的相關資源與指南。",
     "logos": {
-      "title": "EN TEXT TO REPLACE: logos",
-      "description": "EN TEXT TO REPLACE: Download npmx logos in SVG and PNG formats. Use the appropriate variant for your background.",
-      "wordmark": "EN TEXT TO REPLACE: FULL WORDMARK",
-      "wordmark_alt": "EN TEXT TO REPLACE: npmx full wordmark logo with blue slash on dark background",
-      "wordmark_light_alt": "EN TEXT TO REPLACE: npmx full wordmark logo with accent slash on light background",
-      "mark": "EN TEXT TO REPLACE: LOGO MARK",
-      "mark_alt": "EN TEXT TO REPLACE: npmx logo mark with dot and slash on dark background",
-      "mark_light_alt": "EN TEXT TO REPLACE: npmx logo mark with dot and slash on light background",
-      "on_dark": "EN TEXT TO REPLACE: on dark",
-      "on_light": "EN TEXT TO REPLACE: on light",
-      "download_svg": "EN TEXT TO REPLACE: SVG",
-      "download_png": "EN TEXT TO REPLACE: PNG",
-      "download_svg_aria": "EN TEXT TO REPLACE: Download {name} as SVG",
-      "download_png_aria": "EN TEXT TO REPLACE: Download {name} as PNG"
+      "title": "標誌",
+      "description": "下載 SVG 或 PNG 格式的 npmx 標誌。請根據你的背景選用合適的版本。",
+      "wordmark": "完整文字標誌",
+      "wordmark_alt": "深色背景上帶有藍色斜線的 npmx 完整文字標誌",
+      "wordmark_light_alt": "淺色背景上帶有強調色斜線的 npmx 完整文字標誌",
+      "mark": "圖案標誌",
+      "mark_alt": "深色背景上帶有圓點與斜線的 npmx 圖案標誌",
+      "mark_light_alt": "淺色背景上帶有圓點與斜線的 npmx 圖案標誌",
+      "on_dark": "深色背景用",
+      "on_light": "淺色背景用",
+      "download_svg": "SVG",
+      "download_png": "PNG",
+      "download_svg_aria": "下載 {name} 的 SVG 格式",
+      "download_png_aria": "下載 {name} 的 PNG 格式"
     },
     "customize": {
-      "title": "EN TEXT TO REPLACE: customize your logo",
-      "description": "EN TEXT TO REPLACE: Preview the npmx logo with your accent color and background. The preview reflects your current settings — pick a color, toggle the background, and download.",
-      "accent_label": "EN TEXT TO REPLACE: accent",
-      "bg_label": "EN TEXT TO REPLACE: background",
-      "download_svg_aria": "EN TEXT TO REPLACE: Download customized logo as SVG",
-      "download_png_aria": "EN TEXT TO REPLACE: Download customized logo as PNG"
+      "title": "自訂你的標誌",
+      "description": "使用你的強調色與背景預覽 npmx 標誌。預覽會反映你目前的設定——選個顏色、切換背景，然後下載。",
+      "accent_label": "強調色",
+      "bg_label": "背景",
+      "download_svg_aria": "下載自訂標誌的 SVG 格式",
+      "download_png_aria": "下載自訂標誌的 PNG 格式"
     },
     "typography": {
-      "title": "EN TEXT TO REPLACE: typography",
-      "description": "EN TEXT TO REPLACE: npmx uses the Geist font family by Vercel for both interface text and code.",
-      "sans": "EN TEXT TO REPLACE: Geist Sans",
-      "sans_desc": "EN TEXT TO REPLACE: Used for body text and UI elements.",
-      "mono": "EN TEXT TO REPLACE: Geist Mono",
-      "mono_desc": "EN TEXT TO REPLACE: Used for code, headings, and technical content.",
-      "pangram": "EN TEXT TO REPLACE: The quick brown fox jumps over the lazy dog",
-      "numbers": "EN TEXT TO REPLACE: 0123456789"
+      "title": "字型",
+      "description": "npmx 的介面文字與程式碼皆採用 Vercel 的 Geist 字型家族。",
+      "sans": "Geist Sans",
+      "sans_desc": "用於內文與 UI 元素。",
+      "mono": "Geist Mono",
+      "mono_desc": "用於程式碼、標題與技術內容。",
+      "pangram": "The quick brown fox jumps over the lazy dog",
+      "numbers": "0123456789"
     },
     "guidelines": {
-      "title": "EN TEXT TO REPLACE: just a note",
-      "message": "EN TEXT TO REPLACE: Accessibility matters to us, and we would love you to follow us in this vision. When using mentioned media, ensure there is enough contrast against the background, and don't go smaller than 24px. If you need any other resources or additional information about the project, feel free to reach us at {link}.",
-      "discord_link_text": "EN TEXT TO REPLACE: chat.npmx.dev"
+      "title": "小提醒",
+      "message": "無障礙體驗對我們來說很重要，我們也很希望你能認同這個理念。使用上述素材時，請確保與背景有足夠的對比度，並且不要小於 24px。如果你需要其他資源或關於專案的更多資訊，隨時透過 {link} 與我們聯絡。",
+      "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "EN TEXT TO REPLACE: A cute, rounded, and colorful version of the npmx logo."
+  "alt_logo_kawaii": "一個可愛、圓潤且色彩繽紛的 npmx 標誌版本。"
 }

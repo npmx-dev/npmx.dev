@@ -28,6 +28,9 @@
       "search": "Search",
       "package": "Package"
     },
+    "ctrl_key": "Ctrl",
+    "command_palette": "Open command palette",
+    "command_palette_description": "Use the command palette to jump between pages, package views, settings, and external links without leaving the keyboard. On macOS, press ⌘K. On Windows and Linux, press {ctrlKey}+K.",
     "focus_search": "Focus search",
     "show_kbd_hints": "Highlight keyboard hints",
     "settings": "Open settings",
@@ -75,6 +78,113 @@
     "instant_search_turn_on": "turn on",
     "instant_search_turn_off": "turn off",
     "instant_search_advisory": "{label} {state} — {action}"
+  },
+  "command_palette": {
+    "title": "command palette",
+    "quick_actions": "jump to...",
+    "subtitle": "navigate across npmx and switch settings quickly",
+    "subtitle_languages": "choose a language or help improve translations",
+    "instructions": "Type to filter commands. Use the arrow keys to move through results and Enter to run a command.",
+    "input_label": "Command palette search",
+    "results_label": "Command results",
+    "placeholder": "type a command...",
+    "back": "Back",
+    "empty": "No matching commands",
+    "empty_search_hint": "Press Enter to search for \"{query}\".",
+    "current": "current",
+    "here": "you are here",
+    "connected": "connected",
+    "state": {
+      "on": "on",
+      "off": "off"
+    },
+    "groups": {
+      "actions": "Actions",
+      "help": "Help",
+      "language": "Language",
+      "connections": "Connections",
+      "navigation": "Navigation",
+      "links": "Links",
+      "npmx": "npmx",
+      "package": "Package",
+      "package_with_name": "Package ({name})",
+      "versions": "Versions",
+      "versions_with_name": "Versions of {name}"
+    },
+    "actions": {
+      "search": "Search",
+      "search_for": "Search for \"{query}\"",
+      "keyboard_shortcuts": "Keyboard shortcuts",
+      "help_translate": "Help translate"
+    },
+    "connections": {
+      "npm_connect": "Connect to npm CLI",
+      "npm_connected": "npm CLI (~{username})",
+      "npm_disconnect": "Disconnect npm CLI",
+      "atmosphere_connect": "Connect to Atmosphere",
+      "atmosphere_connected": "atmosphere ({'@'}{handle})",
+      "atmosphere_disconnect": "Disconnect Atmosphere"
+    },
+    "navigation": {
+      "home": "home",
+      "packages": "packages (~{username})",
+      "orgs": "orgs (~{username})",
+      "profile": "profile ({'@'}{handle})"
+    },
+    "links": {
+      "external": "External link"
+    },
+    "package_links": {
+      "stars": "Repository stars",
+      "forks": "Repository forks"
+    },
+    "theme": {
+      "system": "Use system theme",
+      "light": "Use light theme",
+      "dark": "Use dark theme"
+    },
+    "package": {
+      "main": "Package page",
+      "docs": "Docs",
+      "code": "Code",
+      "diff": "Diff",
+      "compare": "Compare this package",
+      "download": "Download tarball"
+    },
+    "package_actions": {
+      "copy_run": "Copy run command"
+    },
+    "code": {
+      "copy_file": "Copy file contents"
+    },
+    "diff": {
+      "merge_modified_lines": "Merge modified lines",
+      "word_wrap": "Word wrap"
+    },
+    "version": {
+      "label": "{version}"
+    },
+    "status": {
+      "available_in_context": "{context}. No commands available | {context}. 1 command available | {context}. {count} commands available",
+      "matching_in_context": "{context}. No matching commands | {context}. 1 matching command | {context}. {count} matching commands",
+      "no_matches_search_in_context": "{context}. No matching commands. Press Enter to search for \"{query}\"."
+    },
+    "announcements": {
+      "language_changed": "Language set to {language}.",
+      "relative_dates_on": "Relative dates on.",
+      "relative_dates_off": "Relative dates off.",
+      "theme_changed": "Theme set to {theme}.",
+      "accent_color_changed": "Accent color set to {color}.",
+      "background_theme_changed": "Background shade set to {theme}.",
+      "download_started": "Downloading {package} tarball.",
+      "copied_to_clipboard": "Copied to clipboard.",
+      "npm_disconnected": "npm CLI disconnected.",
+      "atmosphere_disconnected": "Atmosphere disconnected.",
+      "facets_all_selected": "All facets selected.",
+      "facets_all_deselected": "All facets deselected.",
+      "view_switched": "Switched to {view} view.",
+      "setting_toggled": "{setting} {state}."
+    }
   },
   "nav": {
     "main_navigation": "Main",
@@ -151,6 +261,7 @@
     "translation_status": "Check global translation status",
     "accent_colors": {
       "label": "Accent colors",
+      "neutral": "Neutral",
       "sky": "Sky",
       "coral": "Coral",
       "amber": "Amber",
@@ -201,6 +312,8 @@
     "warnings": "Warnings:",
     "go_back_home": "Go back home",
     "per_week": "/ week",
+    "yes": "Yes",
+    "no": "No",
     "vanity_downloads_hint": "Vanity number: no packages displayed | Vanity number: for the displayed package | Vanity number: Sum of {count} displayed packages",
     "sort": {
       "name": "name",
@@ -223,11 +336,14 @@
       "gitea": "View on Gitea",
       "gitee": "View on Gitee",
       "radicle": "View on Radicle",
+      "socket_dev": "view on socket.dev",
       "sourcehut": "View on SourceHut",
       "tangled": "View on Tangled"
     },
     "collapse": "Collapse",
-    "expand": "Expand"
+    "collapse_with_name": "Collapse {name}",
+    "expand": "Expand",
+    "expand_with_name": "Expand {name}"
   },
   "profile": {
     "display_name": "Display Name",
@@ -432,11 +548,11 @@
       "filter_placeholder": "Filter by semver (e.g. ^3.0.0)",
       "filter_invalid": "Invalid semver range",
       "filter_help": "Semver range filter help",
-      "license_change_help": "License Change Details",
       "filter_tooltip": "Filter versions using a {link}. For example, ^3.0.0 shows all 3.x versions.",
+      "filter_tooltip_link": "semver range",
+      "license_change_help": "License Change Details",
       "license_change_warning": "License change!",
       "license_change_record": "License changed from {from} to {to}.",
-      "filter_tooltip_link": "semver range",
       "no_matches": "No versions match this range",
       "copy_alt": {
         "per_version_analysis": "{version} version was downloaded {downloads} times",
@@ -444,8 +560,6 @@
       },
       "page_title": "Version History",
       "current_tags": "Current Tags",
-      "version_filter_placeholder": "Filter versions…",
-      "version_filter_label": "Filter versions",
       "no_match_filter": "No versions match {filter}"
     },
     "dependencies": {
@@ -1126,6 +1240,33 @@
       "remove_package": "Remove {package}",
       "packages_selected": "{count}/{max} packages selected.",
       "add_hint": "Add at least 2 packages to compare."
+    },
+    "quadrant_chart": {
+      "label_x_axis": "Traction",
+      "label_y_axis": "Ergonomics",
+      "label_top_right": "Solid picks",
+      "label_bottom_right": "popular with tradeoffs",
+      "label_bottom_left": "avoid",
+      "label_top_left": "hidden gems",
+      "title": "Package traction vs ergonomics",
+      "filename": "package-traction-vs-ergonomics-quadrant",
+      "label_freshness_score": "Freshness score",
+      "copy_alt": {
+        "description": "Quadrant chart mapping traction versus ergonomics for the {packages} packages. {analysis}. {watermark}.",
+        "side_analysis_top_right": "The following packages are positioned on the top-right quadrant (solid picks): {packages}",
+        "side_analysis_top_left": "The following packages are positioned on the top-left quadrant (hidden gems): {packages}",
+        "side_analysis_bottom_right": "The following packages are positioned on the bottom-right quadrant (popular with tradeoffs): {packages}",
+        "side_analysis_bottom_left": "The following packages are positioned on the bottom-left quadrant (avoid): {packages}"
+      },
+      "explanation": {
+        "tooltip_help": "Show scoring explanation",
+        "tooltip_help_adoption": "Show traction scoring explanation",
+        "tooltip_help_efficiency": "Show ergonomics scoring explanation",
+        "introduction": "The score is calculated by combining multiple signals into two axes:",
+        "adoption": "Traction: reflects usage and activity (downloads, freshness, likes)",
+        "efficiency": "Ergonomics: reflects footprint and quality (install size, dependencies, vulnerabilities, type support)",
+        "impact_details": "Each metric contributes with a different weight. Strong signals like downloads and install size have the largest impact, while others refine the result. Some signals (such as vulnerabilities or deprecation) apply penalties."
+      }
     },
     "no_dependency": {
       "label": "(No dependency)",

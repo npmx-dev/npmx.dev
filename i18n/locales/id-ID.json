@@ -432,10 +432,7 @@
       "filter_placeholder": "Filter dengan semver (cth. ^3.0.0)",
       "filter_invalid": "Rentang semver tidak valid",
       "filter_help": "Bantuan filter rentang semver",
-      "license_change_help": "EN TEXT TO REPLACE: License Change Details",
       "filter_tooltip": "Saring versi menggunakan {link}. Sebagai contoh, ^3.0.0 menampilkan semua versi 3.x.",
-      "license_change_warning": "EN TEXT TO REPLACE: License change!",
-      "license_change_record": "EN TEXT TO REPLACE: License changed from {from} to {to}.",
       "filter_tooltip_link": "rentang semver",
       "no_matches": "Tidak ada versi yang cocok dengan rentang ini",
       "copy_alt": {
@@ -444,8 +441,6 @@
       },
       "page_title": "Riwayat Versi",
       "current_tags": "Tag Saat Ini",
-      "version_filter_placeholder": "Filter versi…",
-      "version_filter_label": "Filter versi",
       "no_match_filter": "Tidak ada versi yang cocok dengan {filter}"
     },
     "dependencies": {
@@ -831,12 +826,8 @@
     "lines": "{count} baris",
     "toggle_tree": "Ganti file tree",
     "close_tree": "Tutup file tree",
-    "copy_content": "EN TEXT TO REPLACE: Copy file content",
     "copy_link": "Salin tautan",
     "view_raw": "Lihat file mentah",
-    "toggle_container": "EN TEXT TO REPLACE: Toggle code container width",
-    "open_raw_file": "EN TEXT TO REPLACE: Open raw file",
-    "open_path_dropdown": "EN TEXT TO REPLACE: Open path segments dropdown",
     "file_too_large": "Berkas terlalu besar untuk pratinjau",
     "file_size_warning": "{size} melebihi batas 500KB untuk penyorotan sintaksis",
     "failed_to_load": "Gagal memuat file",
@@ -1526,6 +1517,5 @@
       "message": "Aksesibilitas penting bagi kami, dan kami ingin Anda ikut mendukung visi ini. Saat menggunakan media yang disebutkan, pastikan kontras dengan latar cukup, dan jangan gunakan ukuran kurang dari 24px. Jika Anda membutuhkan sumber daya lain atau informasi tambahan tentang proyek ini, silakan hubungi kami di {link}.",
       "discord_link_text": "chat.npmx.dev"
     }
-  },
-  "alt_logo_kawaii": "EN TEXT TO REPLACE: A cute, rounded, and colorful version of the npmx logo."
+  }
 }

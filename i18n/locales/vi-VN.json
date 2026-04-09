@@ -432,10 +432,7 @@
       "filter_placeholder": "Lọc theo semver (ví dụ ^3.0.0)",
       "filter_invalid": "Khoảng semver không hợp lệ",
       "filter_help": "Trợ giúp lọc theo khoảng semver",
-      "license_change_help": "EN TEXT TO REPLACE: License Change Details",
       "filter_tooltip": "Lọc phiên bản bằng {link}. Ví dụ, ^3.0.0 sẽ hiện tất cả phiên bản 3.x.",
-      "license_change_warning": "EN TEXT TO REPLACE: License change!",
-      "license_change_record": "EN TEXT TO REPLACE: License changed from {from} to {to}.",
       "filter_tooltip_link": "khoảng semver",
       "no_matches": "Không có phiên bản khớp khoảng này",
       "copy_alt": {
@@ -444,8 +441,6 @@
       },
       "page_title": "Lịch sử phiên bản",
       "current_tags": "Thẻ hiện tại",
-      "version_filter_placeholder": "Lọc phiên bản…",
-      "version_filter_label": "Lọc phiên bản",
       "no_match_filter": "Không có phiên bản khớp {filter}"
     },
     "dependencies": {
@@ -492,9 +487,6 @@
         "table_available": "Bên dưới có bảng dữ liệu cho biểu đồ này.",
         "table_caption": "Bảng dữ liệu biểu đồ"
       },
-      "chart_view_toggle": "EN TEXT TO REPLACE: Toggle view",
-      "chart_view_combined": "EN TEXT TO REPLACE: Combined view",
-      "chart_view_split": "EN TEXT TO REPLACE: Split view",
       "granularity": "Độ chi tiết",
       "granularity_daily": "Hàng ngày",
       "granularity_weekly": "Hàng tuần",
@@ -831,12 +823,8 @@
     "lines": "{count} dòng | {count} dòng",
     "toggle_tree": "Bật/tắt cây thư mục",
     "close_tree": "Đóng cây thư mục",
-    "copy_content": "EN TEXT TO REPLACE: Copy file content",
     "copy_link": "Sao chép liên kết",
     "view_raw": "Xem tệp thô",
-    "toggle_container": "EN TEXT TO REPLACE: Toggle code container width",
-    "open_raw_file": "EN TEXT TO REPLACE: Open raw file",
-    "open_path_dropdown": "EN TEXT TO REPLACE: Open path segments dropdown",
     "file_too_large": "Tệp quá lớn để xem trước",
     "file_size_warning": "{size} vượt quá giới hạn 500KB để tô màu cú pháp (syntax highlight)",
     "failed_to_load": "Không thể tải tệp",
@@ -1114,7 +1102,6 @@
       "empty_description": "Tìm và thêm ít nhất 2 package để đối chiếu dựa trên thông số của chúng.",
       "table_view": "Bảng",
       "charts_view": "Biểu đồ",
-      "no_chartable_data": "EN TEXT TO REPLACE: No chartable data available for the selected facets.",
       "bar_chart_nav_hint": "Dùng ↑ ↓",
       "line_chart_nav_hint": "Dùng ← →"
     },
@@ -1526,6 +1513,5 @@
       "message": "Trợ năng là vấn đề rất quan trọng đối với chúng tôi và chúng tôi rất mong bạn cùng chia sẻ tầm nhìn này. Khi sử dụng các phương tiện truyền thông đã đề cập, hãy đảm bảo có đủ độ tương phản với nền và không để kích thước nhỏ hơn 24px. Nếu bạn cần bất kỳ tài nguyên nào khác hoặc thông tin bổ sung về dự án, vui lòng liên hệ với chúng tôi tại {link}.",
       "discord_link_text": "chat.npmx.dev"
     }
-  },
-  "alt_logo_kawaii": "EN TEXT TO REPLACE: A cute, rounded, and colorful version of the npmx logo."
+  }
 }

@@ -19,8 +19,7 @@
     "social": "social media",
     "chat": "chat",
     "builders_chat": "builders chat",
-    "keyboard_shortcuts": "tastaturkürzel",
-    "brand": "EN TEXT TO REPLACE: brand"
+    "keyboard_shortcuts": "tastaturkürzel"
   },
   "shortcuts": {
     "section": {
@@ -432,10 +431,7 @@
       "filter_placeholder": "Nach SemVer filtern (z.B. ^3.0.0)",
       "filter_invalid": "Ungültiger SemVer-Bereich",
       "filter_help": "Hilfe zum SemVer-Filter",
-      "license_change_help": "EN TEXT TO REPLACE: License Change Details",
       "filter_tooltip": "Filtere Versionen mit einem {link}. Zum Beispiel zeigt ^3.0.0 alle 3.x-Versionen.",
-      "license_change_warning": "EN TEXT TO REPLACE: License change!",
-      "license_change_record": "EN TEXT TO REPLACE: License changed from {from} to {to}.",
       "filter_tooltip_link": "SemVer-Bereich",
       "no_matches": "Keine Versionen entsprechen diesem Bereich",
       "copy_alt": {
@@ -444,8 +440,6 @@
       },
       "page_title": "Versionshistorie",
       "current_tags": "Aktuelle Tags",
-      "version_filter_placeholder": "Versionen filtern…",
-      "version_filter_label": "Versionen filtern",
       "no_match_filter": "Keine Versionen entsprechen {filter}"
     },
     "dependencies": {
@@ -492,9 +486,6 @@
         "table_available": "Eine Datentabelle für dieses Diagramm ist unten verfügbar.",
         "table_caption": "Diagramm-Datentabelle"
       },
-      "chart_view_toggle": "EN TEXT TO REPLACE: Toggle view",
-      "chart_view_combined": "EN TEXT TO REPLACE: Combined view",
-      "chart_view_split": "EN TEXT TO REPLACE: Split view",
       "granularity": "Granularität",
       "granularity_daily": "Täglich",
       "granularity_weekly": "Wöchentlich",
@@ -831,12 +822,8 @@
     "lines": "{count} Zeile | {count} Zeilen",
     "toggle_tree": "Dateibaum umschalten",
     "close_tree": "Dateibaum schließen",
-    "copy_content": "EN TEXT TO REPLACE: Copy file content",
     "copy_link": "Link kopieren",
     "view_raw": "Rohdatei anzeigen",
-    "toggle_container": "EN TEXT TO REPLACE: Toggle code container width",
-    "open_raw_file": "EN TEXT TO REPLACE: Open raw file",
-    "open_path_dropdown": "EN TEXT TO REPLACE: Open path segments dropdown",
     "file_too_large": "Datei zu groß für Vorschau",
     "file_size_warning": "{size} überschreitet das 500KB-Limit für Syntax-Highlighting",
     "failed_to_load": "Datei konnte nicht geladen werden",
@@ -1114,7 +1101,6 @@
       "empty_description": "Suche und füge oben mindestens 2 Pakete hinzu, um einen direkten Vergleich ihrer Metriken zu sehen.",
       "table_view": "Tabelle",
       "charts_view": "Diagramme",
-      "no_chartable_data": "EN TEXT TO REPLACE: No chartable data available for the selected facets.",
       "bar_chart_nav_hint": "Verwende ↑ ↓",
       "line_chart_nav_hint": "Verwende ← →"
     },
@@ -1139,10 +1125,6 @@
     "facets": {
       "all": "Alle",
       "none": "Keine",
-      "select_all_category_facets": "EN TEXT TO REPLACE: Select all {category} facets",
-      "deselect_all_category_facets": "EN TEXT TO REPLACE: Deselect all {category} facets",
-      "selected_all_category_facets": "EN TEXT TO REPLACE: Selected all {category} facets",
-      "deselected_all_category_facets": "EN TEXT TO REPLACE: Deselected all {category} facets",
       "coming_soon": "Demnächst verfügbar",
       "select_all": "Alle Facetten auswählen",
       "deselect_all": "Alle Facetten abwählen",
@@ -1477,55 +1459,11 @@
     "shortcut": "Drücke „{key}“, um Aktionen zu fokussieren",
     "button_close_aria_label": "Aktionsleiste schließen"
   },
-  "logo_menu": {
-    "copy_svg": "EN TEXT TO REPLACE: Copy logo as SVG",
-    "copied": "EN TEXT TO REPLACE: Copied!",
-    "browse_brand": "EN TEXT TO REPLACE: Browse brand kit"
-  },
+  "logo_menu": {},
   "brand": {
-    "title": "EN TEXT TO REPLACE: Brand",
-    "heading": "EN TEXT TO REPLACE: brand",
-    "meta_description": "EN TEXT TO REPLACE: npmx brand guidelines, logos, colors, and typography for use in press and media.",
-    "intro": "EN TEXT TO REPLACE: Resources and guidelines for using the npmx brand in your projects, articles, and media.",
-    "logos": {
-      "title": "EN TEXT TO REPLACE: logos",
-      "description": "EN TEXT TO REPLACE: Download npmx logos in SVG and PNG formats. Use the appropriate variant for your background.",
-      "wordmark": "EN TEXT TO REPLACE: FULL WORDMARK",
-      "wordmark_alt": "EN TEXT TO REPLACE: npmx full wordmark logo with blue slash on dark background",
-      "wordmark_light_alt": "EN TEXT TO REPLACE: npmx full wordmark logo with accent slash on light background",
-      "mark": "EN TEXT TO REPLACE: LOGO MARK",
-      "mark_alt": "EN TEXT TO REPLACE: npmx logo mark with dot and slash on dark background",
-      "mark_light_alt": "EN TEXT TO REPLACE: npmx logo mark with dot and slash on light background",
-      "on_dark": "EN TEXT TO REPLACE: on dark",
-      "on_light": "EN TEXT TO REPLACE: on light",
-      "download_svg": "EN TEXT TO REPLACE: SVG",
-      "download_png": "EN TEXT TO REPLACE: PNG",
-      "download_svg_aria": "EN TEXT TO REPLACE: Download {name} as SVG",
-      "download_png_aria": "EN TEXT TO REPLACE: Download {name} as PNG"
-    },
-    "customize": {
-      "title": "EN TEXT TO REPLACE: customize your logo",
-      "description": "EN TEXT TO REPLACE: Preview the npmx logo with your accent color and background. The preview reflects your current settings — pick a color, toggle the background, and download.",
-      "accent_label": "EN TEXT TO REPLACE: accent",
-      "bg_label": "EN TEXT TO REPLACE: background",
-      "download_svg_aria": "EN TEXT TO REPLACE: Download customized logo as SVG",
-      "download_png_aria": "EN TEXT TO REPLACE: Download customized logo as PNG"
-    },
-    "typography": {
-      "title": "EN TEXT TO REPLACE: typography",
-      "description": "EN TEXT TO REPLACE: npmx uses the Geist font family by Vercel for both interface text and code.",
-      "sans": "EN TEXT TO REPLACE: Geist Sans",
-      "sans_desc": "EN TEXT TO REPLACE: Used for body text and UI elements.",
-      "mono": "EN TEXT TO REPLACE: Geist Mono",
-      "mono_desc": "EN TEXT TO REPLACE: Used for code, headings, and technical content.",
-      "pangram": "EN TEXT TO REPLACE: The quick brown fox jumps over the lazy dog",
-      "numbers": "EN TEXT TO REPLACE: 0123456789"
-    },
-    "guidelines": {
-      "title": "EN TEXT TO REPLACE: just a note",
-      "message": "EN TEXT TO REPLACE: Accessibility matters to us, and we would love you to follow us in this vision. When using mentioned media, ensure there is enough contrast against the background, and don't go smaller than 24px. If you need any other resources or additional information about the project, feel free to reach us at {link}.",
-      "discord_link_text": "EN TEXT TO REPLACE: chat.npmx.dev"
-    }
-  },
-  "alt_logo_kawaii": "EN TEXT TO REPLACE: A cute, rounded, and colorful version of the npmx logo."
+    "logos": {},
+    "customize": {},
+    "typography": {},
+    "guidelines": {}
+  }
 }

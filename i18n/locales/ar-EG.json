@@ -161,8 +161,6 @@
       },
       "page_title": "إصدارات {name} — npmx",
       "current_tags": "الوسوم الحالية",
-      "version_filter_placeholder": "تصفية الإصدارات…",
-      "version_filter_label": "تصفية الإصدارات",
       "no_match_filter": "لا توجد إصدارات مطابقة"
     },
     "dependencies": {
