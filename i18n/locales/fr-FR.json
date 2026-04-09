@@ -432,18 +432,21 @@
       "filter_placeholder": "Filtrer par plage semver (ex. ^3.0.0)",
       "filter_invalid": "Plage semver invalide",
       "filter_help": "Infos sur le filtre de plage semver",
+      "license_change_help": "EN TEXT TO REPLACE: License Change Details",
       "filter_tooltip": "Filtrer les versions avec une {link}. Par exemple, ^3.0.0 affiche toutes les versions 3.x.",
+      "license_change_warning": "EN TEXT TO REPLACE: License change!",
+      "license_change_record": "EN TEXT TO REPLACE: License changed from {from} to {to}.",
       "filter_tooltip_link": "plage semver",
       "no_matches": "Aucune version ne correspond à cette plage",
+      "copy_alt": {
+        "per_version_analysis": "La version {version} a été téléchargée {downloads} fois",
+        "general_description": "Graphique en barres montrant les téléchargements par version pour {versions_count} versions {semver_grouping_mode} du paquet {package_name}, {date_range_label} de la version {first_version} à la version {last_version}. La version la plus téléchargée est {max_downloaded_version} avec {max_version_downloads} téléchargements. {per_version_analysis}. {watermark}."
+      },
       "page_title": "Historique des versions",
       "current_tags": "Tags actuels",
       "version_filter_placeholder": "Filtrer les versions...",
       "version_filter_label": "Filtrer les versions",
-      "no_match_filter": "Aucune version ne correspond à {filter}",
-      "copy_alt": {
-        "per_version_analysis": "La version {version} a été téléchargée {downloads} fois",
-        "general_description": "Graphique en barres montrant les téléchargements par version pour {versions_count} versions {semver_grouping_mode} du paquet {package_name}, {date_range_label} de la version {first_version} à la version {last_version}. La version la plus téléchargée est {max_downloaded_version} avec {max_version_downloads} téléchargements. {per_version_analysis}. {watermark}."
-      }
+      "no_match_filter": "Aucune version ne correspond à {filter}"
     },
     "dependencies": {
       "title": "Dépendances ({count})",
@@ -828,8 +831,12 @@
     "lines": "{count} lignes",
     "toggle_tree": "Basculer l'arborescence",
     "close_tree": "Fermer l'arborescence",
+    "copy_content": "EN TEXT TO REPLACE: Copy file content",
     "copy_link": "Copier le lien",
     "view_raw": "Voir le fichier brut",
+    "toggle_container": "EN TEXT TO REPLACE: Toggle code container width",
+    "open_raw_file": "EN TEXT TO REPLACE: Open raw file",
+    "open_path_dropdown": "EN TEXT TO REPLACE: Open path segments dropdown",
     "file_too_large": "Fichier trop volumineux pour l'aperçu",
     "file_size_warning": "{size} dépasse la limite de 500 Ko pour la coloration syntaxique",
     "failed_to_load": "Échec du chargement du fichier",
@@ -1107,9 +1114,9 @@
       "empty_description": "Recherchez et ajoutez au moins 2 paquets ci-dessus pour voir une comparaison côte à côte de leurs facettes.",
       "table_view": "Tableau",
       "charts_view": "Graphiques",
+      "no_chartable_data": "Aucune donnée représentable",
       "bar_chart_nav_hint": "Utilisez ↑ ↓",
-      "line_chart_nav_hint": "Utilisez ← →",
-      "no_chartable_data": "Aucune donnée représentable"
+      "line_chart_nav_hint": "Utilisez ← →"
     },
     "selector": {
       "search_label": "Rechercher des paquets",
@@ -1132,6 +1139,10 @@
     "facets": {
       "all": "tout",
       "none": "aucun",
+      "select_all_category_facets": "Sélectionner toutes les facettes de la catégorie",
+      "deselect_all_category_facets": "Désélectionner toutes les facettes de la catégorie",
+      "selected_all_category_facets": "Toutes les facettes de la catégorie sont sélectionnées",
+      "deselected_all_category_facets": "Toutes les facettes de la catégorie sont désélectionnées",
       "coming_soon": "Bientôt disponible",
       "select_all": "Sélectionner toutes les facettes",
       "deselect_all": "Désélectionner toutes les facettes",
@@ -1209,11 +1220,7 @@
       },
       "trends": {
         "title": "Comparer les tendances"
-      },
-      "select_all_category_facets": "Sélectionner toutes les facettes de la catégorie",
-      "deselect_all_category_facets": "Désélectionner toutes les facettes de la catégorie",
-      "selected_all_category_facets": "Toutes les facettes de la catégorie sont sélectionnées",
-      "deselected_all_category_facets": "Toutes les facettes de la catégorie sont désélectionnées"
+      }
     },
     "file_changes": "Modifications de fichiers",
     "files_count": "{count} fichiers",
@@ -1428,6 +1435,40 @@
       "error": "Erreur lors du chargement de la liste des fichiers.",
       "empty": "Aucun fichier trouvé",
       "file_link": "Modifier {file} ({lang}) sur GitHub"
+    }
+  },
+  "vacations": {
+    "title": "EN TEXT TO REPLACE: on vacation",
+    "meta_description": "EN TEXT TO REPLACE: The npmx team was recharging. Discord reopened after a week.",
+    "heading": "EN TEXT TO REPLACE: recharging",
+    "subtitle": "EN TEXT TO REPLACE: we were building npmx at a pace that was costing {some} of us sleep. we didn't want that to be the norm! so we took a week off. together.",
+    "illustration_alt": "EN TEXT TO REPLACE: a single row of cosy icons",
+    "poke_log": "EN TEXT TO REPLACE: Poke the campfire",
+    "what": {
+      "title": "EN TEXT TO REPLACE: what happened",
+      "p1": "EN TEXT TO REPLACE: discord was closed {dates}.",
+      "dates": "EN TEXT TO REPLACE: February 14 – 21",
+      "p2": "EN TEXT TO REPLACE: all invite links were gone and channels were locked – except {garden}, which stayed open for folks who wanted to keep hanging out.",
+      "garden": "EN TEXT TO REPLACE: #garden"
+    },
+    "meantime": {
+      "title": "EN TEXT TO REPLACE: in the meantime",
+      "p1": "EN TEXT TO REPLACE: {site} and {repo} stayed open – people still dug in, filed some issues, opened a few PRs, but mainly everyone spent time somewhere near a cosy fireplace.",
+      "repo_link": "EN TEXT TO REPLACE: the repo"
+    },
+    "return": {
+      "title": "EN TEXT TO REPLACE: we came back!",
+      "p1": "EN TEXT TO REPLACE: we came back recharged and ready for the final push to March 3rd. {social} for updates.",
+      "social_link": "EN TEXT TO REPLACE: follow us on Bluesky"
+    },
+    "stats": {
+      "contributors": "EN TEXT TO REPLACE: Contributors",
+      "commits": "EN TEXT TO REPLACE: Commits",
+      "pr": "EN TEXT TO REPLACE: PRs Merged",
+      "subtitle": {
+        "some": "EN TEXT TO REPLACE: some",
+        "all": "EN TEXT TO REPLACE: all"
+      }
     }
   },
   "action_bar": {

@@ -432,7 +432,10 @@
       "filter_placeholder": "Фильтр по semver (напр. ^3.0.0)",
       "filter_invalid": "Некорректный диапазон semver",
       "filter_help": "Справка по фильтру диапазона semver",
+      "license_change_help": "EN TEXT TO REPLACE: License Change Details",
       "filter_tooltip": "Фильтруйте версии, используя {link}. Например, ^3.0.0 покажет все версии 3.x.",
+      "license_change_warning": "EN TEXT TO REPLACE: License change!",
+      "license_change_record": "EN TEXT TO REPLACE: License changed from {from} to {to}.",
       "filter_tooltip_link": "диапазон semver",
       "no_matches": "Нет версий, соответствующих этому диапазону",
       "copy_alt": {
@@ -828,8 +831,12 @@
     "lines": "{count} строк",
     "toggle_tree": "Переключить дерево файлов",
     "close_tree": "Закрыть дерево файлов",
+    "copy_content": "EN TEXT TO REPLACE: Copy file content",
     "copy_link": "Скопировать ссылку",
     "view_raw": "Посмотреть исходный файл",
+    "toggle_container": "EN TEXT TO REPLACE: Toggle code container width",
+    "open_raw_file": "EN TEXT TO REPLACE: Open raw file",
+    "open_path_dropdown": "EN TEXT TO REPLACE: Open path segments dropdown",
     "file_too_large": "Файл слишком большой для предпросмотра",
     "file_size_warning": "{size} превышает лимит в 500 КБ для подсветки синтаксиса",
     "failed_to_load": "Не удалось загрузить файл",
@@ -1519,5 +1526,6 @@
       "message": "Для нас важна доступность, и мы будем рады, если вы разделите этот подход. При использовании материалов обеспечьте достаточный контраст с фоном и не уменьшайте размер меньше 24px. Если нужны другие ресурсы или информация о проекте, напишите нам: {link}.",
       "discord_link_text": "chat.npmx.dev"
     }
-  }
+  },
+  "alt_logo_kawaii": "EN TEXT TO REPLACE: A cute, rounded, and colorful version of the npmx logo."
 }

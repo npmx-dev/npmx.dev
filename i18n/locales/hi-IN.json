@@ -19,7 +19,8 @@
     "social": "सोशल",
     "chat": "चैट",
     "builders_chat": "बिल्डर्स",
-    "keyboard_shortcuts": "कीबोर्ड शॉर्टकट"
+    "keyboard_shortcuts": "कीबोर्ड शॉर्टकट",
+    "brand": "EN TEXT TO REPLACE: brand"
   },
   "shortcuts": {
     "section": {
@@ -229,7 +230,21 @@
     "expand": "विस्तृत करें"
   },
   "profile": {
-    "invite": {}
+    "display_name": "EN TEXT TO REPLACE: Display Name",
+    "description": "EN TEXT TO REPLACE: Description",
+    "no_description": "EN TEXT TO REPLACE: No description",
+    "website": "EN TEXT TO REPLACE: Website",
+    "website_placeholder": "EN TEXT TO REPLACE: https://example.com",
+    "likes": "EN TEXT TO REPLACE: Likes",
+    "seo_title": "EN TEXT TO REPLACE: {handle} - npmx",
+    "seo_description": "EN TEXT TO REPLACE: npmx profile by {handle}",
+    "not_found": "EN TEXT TO REPLACE: Profile Not Found",
+    "not_found_message": "EN TEXT TO REPLACE: The profile for {handle} could not be found.",
+    "invite": {
+      "message": "EN TEXT TO REPLACE: It doesn't look like they're using npmx yet. Want to tell them about it?",
+      "share_button": "EN TEXT TO REPLACE: Share on Bluesky",
+      "compose_text": "EN TEXT TO REPLACE: Hey {'@'}{handle}! Have you checked out npmx.dev yet? It's a browser for the npm registry that's fast, modern, and open-source.\nhttps://npmx.dev"
+    }
   },
   "package": {
     "not_found": "पैकेज नहीं मिला",
@@ -417,7 +432,10 @@
       "filter_placeholder": "semver से फ़िल्टर करें (उदा. ^3.0.0)",
       "filter_invalid": "अमान्य semver range",
       "filter_help": "Semver range फ़िल्टर सहायता",
+      "license_change_help": "EN TEXT TO REPLACE: License Change Details",
       "filter_tooltip": "{link} का उपयोग करके संस्करण फ़िल्टर करें। उदाहरण के लिए, ^3.0.0 सभी 3.x संस्करण दिखाता है।",
+      "license_change_warning": "EN TEXT TO REPLACE: License change!",
+      "license_change_record": "EN TEXT TO REPLACE: License changed from {from} to {to}.",
       "filter_tooltip_link": "semver range",
       "no_matches": "इस range से कोई संस्करण मेल नहीं खाता",
       "copy_alt": {
@@ -474,6 +492,9 @@
         "table_available": "इस चार्ट के लिए नीचे एक डेटा तालिका उपलब्ध है।",
         "table_caption": "चार्ट डेटा तालिका"
       },
+      "chart_view_toggle": "EN TEXT TO REPLACE: Toggle view",
+      "chart_view_combined": "EN TEXT TO REPLACE: Combined view",
+      "chart_view_split": "EN TEXT TO REPLACE: Split view",
       "granularity": "ग्रैन्युलैरिटी",
       "granularity_daily": "दैनिक",
       "granularity_weekly": "साप्ताहिक",
@@ -810,8 +831,12 @@
     "lines": "{count} पंक्तियाँ",
     "toggle_tree": "फ़ाइल ट्री टॉगल करें",
     "close_tree": "फ़ाइल ट्री बंद करें",
+    "copy_content": "EN TEXT TO REPLACE: Copy file content",
     "copy_link": "लिंक कॉपी करें",
     "view_raw": "रॉ फ़ाइल देखें",
+    "toggle_container": "EN TEXT TO REPLACE: Toggle code container width",
+    "open_raw_file": "EN TEXT TO REPLACE: Open raw file",
+    "open_path_dropdown": "EN TEXT TO REPLACE: Open path segments dropdown",
     "file_too_large": "फ़ाइल पूर्वावलोकन के लिए बहुत बड़ी है",
     "file_size_warning": "{size} सिंटैक्स हाइलाइटिंग के लिए 500KB सीमा से अधिक है",
     "failed_to_load": "फ़ाइल लोड करने में विफल",
@@ -1089,6 +1114,7 @@
       "empty_description": "उनके मेट्रिक्स की साथ-साथ तुलना देखने के लिए ऊपर कम से कम 2 पैकेज खोजें और जोड़ें।",
       "table_view": "तालिका",
       "charts_view": "चार्ट्स",
+      "no_chartable_data": "EN TEXT TO REPLACE: No chartable data available for the selected facets.",
       "bar_chart_nav_hint": "↑ ↓ का उपयोग करें",
       "line_chart_nav_hint": "← → का उपयोग करें"
     },
@@ -1113,6 +1139,10 @@
     "facets": {
       "all": "सभी",
       "none": "कोई नहीं",
+      "select_all_category_facets": "EN TEXT TO REPLACE: Select all {category} facets",
+      "deselect_all_category_facets": "EN TEXT TO REPLACE: Deselect all {category} facets",
+      "selected_all_category_facets": "EN TEXT TO REPLACE: Selected all {category} facets",
+      "deselected_all_category_facets": "EN TEXT TO REPLACE: Deselected all {category} facets",
       "coming_soon": "जल्द आ रहा है",
       "select_all": "सभी फेसेट्स चुनें",
       "deselect_all": "सभी फेसेट्स अचयनित करें",
@@ -1447,11 +1477,55 @@
     "shortcut": "क्रियाओं पर फ़ोकस करने के लिए \"{key}\" दबाएँ",
     "button_close_aria_label": "एक्शन बार बंद करें"
   },
-  "logo_menu": {},
+  "logo_menu": {
+    "copy_svg": "EN TEXT TO REPLACE: Copy logo as SVG",
+    "copied": "EN TEXT TO REPLACE: Copied!",
+    "browse_brand": "EN TEXT TO REPLACE: Browse brand kit"
+  },
   "brand": {
-    "logos": {},
-    "customize": {},
-    "typography": {},
-    "guidelines": {}
-  }
+    "title": "EN TEXT TO REPLACE: Brand",
+    "heading": "EN TEXT TO REPLACE: brand",
+    "meta_description": "EN TEXT TO REPLACE: npmx brand guidelines, logos, colors, and typography for use in press and media.",
+    "intro": "EN TEXT TO REPLACE: Resources and guidelines for using the npmx brand in your projects, articles, and media.",
+    "logos": {
+      "title": "EN TEXT TO REPLACE: logos",
+      "description": "EN TEXT TO REPLACE: Download npmx logos in SVG and PNG formats. Use the appropriate variant for your background.",
+      "wordmark": "EN TEXT TO REPLACE: FULL WORDMARK",
+      "wordmark_alt": "EN TEXT TO REPLACE: npmx full wordmark logo with blue slash on dark background",
+      "wordmark_light_alt": "EN TEXT TO REPLACE: npmx full wordmark logo with accent slash on light background",
+      "mark": "EN TEXT TO REPLACE: LOGO MARK",
+      "mark_alt": "EN TEXT TO REPLACE: npmx logo mark with dot and slash on dark background",
+      "mark_light_alt": "EN TEXT TO REPLACE: npmx logo mark with dot and slash on light background",
+      "on_dark": "EN TEXT TO REPLACE: on dark",
+      "on_light": "EN TEXT TO REPLACE: on light",
+      "download_svg": "EN TEXT TO REPLACE: SVG",
+      "download_png": "EN TEXT TO REPLACE: PNG",
+      "download_svg_aria": "EN TEXT TO REPLACE: Download {name} as SVG",
+      "download_png_aria": "EN TEXT TO REPLACE: Download {name} as PNG"
+    },
+    "customize": {
+      "title": "EN TEXT TO REPLACE: customize your logo",
+      "description": "EN TEXT TO REPLACE: Preview the npmx logo with your accent color and background. The preview reflects your current settings — pick a color, toggle the background, and download.",
+      "accent_label": "EN TEXT TO REPLACE: accent",
+      "bg_label": "EN TEXT TO REPLACE: background",
+      "download_svg_aria": "EN TEXT TO REPLACE: Download customized logo as SVG",
+      "download_png_aria": "EN TEXT TO REPLACE: Download customized logo as PNG"
+    },
+    "typography": {
+      "title": "EN TEXT TO REPLACE: typography",
+      "description": "EN TEXT TO REPLACE: npmx uses the Geist font family by Vercel for both interface text and code.",
+      "sans": "EN TEXT TO REPLACE: Geist Sans",
+      "sans_desc": "EN TEXT TO REPLACE: Used for body text and UI elements.",
+      "mono": "EN TEXT TO REPLACE: Geist Mono",
+      "mono_desc": "EN TEXT TO REPLACE: Used for code, headings, and technical content.",
+      "pangram": "EN TEXT TO REPLACE: The quick brown fox jumps over the lazy dog",
+      "numbers": "EN TEXT TO REPLACE: 0123456789"
+    },
+    "guidelines": {
+      "title": "EN TEXT TO REPLACE: just a note",
+      "message": "EN TEXT TO REPLACE: Accessibility matters to us, and we would love you to follow us in this vision. When using mentioned media, ensure there is enough contrast against the background, and don't go smaller than 24px. If you need any other resources or additional information about the project, feel free to reach us at {link}.",
+      "discord_link_text": "EN TEXT TO REPLACE: chat.npmx.dev"
+    }
+  },
+  "alt_logo_kawaii": "EN TEXT TO REPLACE: A cute, rounded, and colorful version of the npmx logo."
 }

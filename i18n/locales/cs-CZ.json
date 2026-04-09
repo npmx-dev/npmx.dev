@@ -432,7 +432,10 @@
       "filter_placeholder": "Filtrovat podle semver (např. ^3.0.0)",
       "filter_invalid": "Neplatný rozsah semver",
       "filter_help": "Pomoc s filtrováním rozsahu semver",
+      "license_change_help": "EN TEXT TO REPLACE: License Change Details",
       "filter_tooltip": "Filtrovat verze pomocí {link}. Například ^3.0.0 zobrazí všechny verze 3.x.",
+      "license_change_warning": "EN TEXT TO REPLACE: License change!",
+      "license_change_record": "EN TEXT TO REPLACE: License changed from {from} to {to}.",
       "filter_tooltip_link": "semver rozsahu",
       "no_matches": "Žádné verze neodpovídají tomuto rozsahu",
       "copy_alt": {
