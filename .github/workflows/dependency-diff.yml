@@ -18,7 +18,6 @@ concurrency:
 
 permissions:
   contents: read
-  pull-requests: write
 
 jobs:
   dependency-diff:
@@ -31,9 +30,18 @@ jobs:
           fetch-depth: 0
 
       - name: 🔎 Compare dependencies
+        id: analyze
         uses: e18e/action-dependency-diff@d995338f3b229fe7b2cd82048df5da930f70c7c3 # v1.4.4
         with:
+          mode: artifact
           detect-replacements: 'true'
           duplicate-threshold: '4'
           dependency-threshold: '15'
           size-threshold: '200000'
+
+      - name: 📤 Upload artifact
+        if: steps.analyze.outputs.artifact-path
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: e18e-diff-result
+          path: ${{ steps.analyze.outputs.artifact-path }}
