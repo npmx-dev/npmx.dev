@@ -391,8 +391,7 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(LicenseChangeWarning, {
         props: {
-          packageName: 'vue',
-          resolvedVersion: '3.4.0',
+          change: { from: 'MIT', to: 'GPL-3.0' },
         },
         global: {
           mocks: { $t: (key: string) => key },

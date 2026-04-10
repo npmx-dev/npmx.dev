@@ -1,6 +1,7 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { toValue } from 'vue'
-interface LicenseChangeResponse {
+
+export interface LicenseChangeResponse {
   change: { from: string; to: string } | null
 }
 

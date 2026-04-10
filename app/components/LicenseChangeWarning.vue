@@ -1,23 +1,14 @@
 <script setup lang="ts">
-import { useLicenseChanges } from '~/composables/useLicenseChanges'
+import type { LicenseChangeResponse } from '~/composables/useLicenseChanges'
 
 const props = defineProps<{
-  license?: string
-  packageName?: string
-  resolvedVersion: string | null | undefined
+  change: LicenseChangeResponse['change']
 }>()
-
-const { data: licenseData } = useLicenseChanges(
-  () => props.packageName,
-  () => props.resolvedVersion,
-)
-
-const licenseChangeRecord = computed(() => licenseData?.value?.change ?? null)
 </script>
 
 <template>
   <div
-    v-if="licenseChangeRecord"
+    v-if="props.change"
     class="border border-amber-600/40 bg-amber-500/10 rounded-lg mt-1 gap-x-1 py-2 px-3"
     :aria-label="$t('package.versions.license_change_help')"
   >
@@ -32,8 +23,8 @@ const licenseChangeRecord = computed(() => licenseData?.value?.change ?? null)
     <p class="text-md text-amber-800 dark:text-amber-400 mt-1">
       {{
         $t('package.versions.license_change_record', {
-          from: licenseChangeRecord?.from,
-          to: licenseChangeRecord?.to,
+          from: props.change?.from,
+          to: props.change?.to,
         })
       }}
     </p>
