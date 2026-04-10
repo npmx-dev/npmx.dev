@@ -167,6 +167,7 @@ export default defineNuxtConfig({
       },
     },
     // pages
+    '/leaderboard/likes': getISRConfig(900),
     '/package/**': getISRConfig(300, { fallback: 'html' }),
     '/package/:name/_payload.json': getISRConfig(300, { fallback: 'json' }),
     '/package/:name/v/:version/_payload.json': getISRConfig(300, { fallback: 'json' }),

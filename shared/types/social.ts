@@ -6,6 +6,15 @@ export type PackageLikes = {
   totalLikes: number
   // If the logged in user has liked the package, false if not logged in
   userHasLiked: boolean
+  // Top-likes leaderboard rank if the package is in the top 10
+  topLikedRank: number | null
+}
+
+export type LikesLeaderboardEntry = {
+  rank: number
+  packageName: string
+  subjectRef: string
+  totalLikes: number
 }
 
 /**

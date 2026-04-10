@@ -451,7 +451,10 @@
     },
     "likes": {
       "like": "Like this package",
-      "unlike": "Unlike this package"
+      "unlike": "Unlike this package",
+      "top_rank_tooltip": "This is in the top 10 most liked packages on npmx! (#{rank})",
+      "top_rank_label": "#{rank}",
+      "top_rank_link_label": "View likes leaderboard. This package is ranked #{rank}."
     },
     "docs": {
       "contents": "Contents",
@@ -789,6 +792,16 @@
     "download": {
       "button": "Download",
       "tarball": "Download Tarball as .tar.gz"
+    }
+  },
+  "leaderboard": {
+    "likes": {
+      "title": "Likes Leaderboard",
+      "description": "The 10 most liked packages on npmx right now.",
+      "rank": "Rank",
+      "likes": "Likes",
+      "unavailable_title": "No likes leaderboard yet",
+      "unavailable_description": "We don't have a likes leaderboard to show right now."
     }
   },
   "connector": {

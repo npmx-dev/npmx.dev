@@ -439,7 +439,10 @@
     },
     "likes": {
       "like": "Liker ce paquet",
-      "unlike": "Retirer le like"
+      "unlike": "Retirer le like",
+      "top_rank_tooltip": "Ce paquet figure parmi les 10 ayant le plus de likes sur npmx (n°{rank})",
+      "top_rank_label": "n°{rank}",
+      "top_rank_link_label": "Voir le classement des likes. Ce paquet est classé n°{rank}."
     },
     "docs": {
       "contents": "Sommaire",
@@ -777,6 +780,16 @@
     "download": {
       "button": "Télécharger",
       "tarball": "Télécharger le tarball au format .tar.gz"
+    }
+  },
+  "leaderboard": {
+    "likes": {
+      "title": "Classement des likes",
+      "description": "Les 10 paquets les plus likés sur npmx en ce moment.",
+      "rank": "Rang",
+      "likes": "Likes",
+      "unavailable_title": "Pas encore de classement des likes",
+      "unavailable_description": "Nous n'avons pas encore de classement des likes à afficher."
     }
   },
   "connector": {
