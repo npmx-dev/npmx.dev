@@ -10,24 +10,10 @@ const UpstreamLikesLeaderboardEntrySchema = v.object({
 })
 
 const UpstreamLikesLeaderboardResponseSchema = v.object({
-  totalLikes: v.optional(v.number()),
-  totalUniqueLikers: v.optional(v.number()),
   leaderBoard: v.array(UpstreamLikesLeaderboardEntrySchema),
 })
 
-type UpstreamLikesLeaderboardResponse = v.InferOutput<typeof UpstreamLikesLeaderboardResponseSchema>
-
-export type ResolvedLikesLeaderboard = {
-  totalLikes: number | null
-  totalUniqueLikers: number | null
-  entries: LikesLeaderboardEntry[]
-}
-
 const LIKES_LEADERBOARD_FETCH_TIMEOUT_MS = 750
-
-type LikesLeaderboardOptions = {
-  timeoutMs?: number
-}
 
 export const LIKES_LEADERBOARD_MAX_ENTRIES = 10
 
@@ -42,51 +28,39 @@ export function extractPackageNameFromSubjectRef(subjectRef: string): string | n
   }
 }
 
-export function normalizeLikesLeaderboardPayload(
-  payload: unknown,
-): ResolvedLikesLeaderboard | null {
+export function normalizeLikesLeaderboardPayload(payload: unknown): LikesLeaderboardEntry[] | null {
   const parsedPayload = v.safeParse(UpstreamLikesLeaderboardResponseSchema, payload)
   if (!parsedPayload.success) {
     return null
   }
 
   // PRECONDITION: the response is already sorted by totalLikes in descending order
-  const entries = parsedPayload.output.leaderBoard
-    .map((entry): LikesLeaderboardEntry | null => {
-      const packageName = extractPackageNameFromSubjectRef(entry.subjectRef)
-      if (!packageName) return null
+  return (
+    parsedPayload.output.leaderBoard
+      .map((entry): LikesLeaderboardEntry | null => {
+        const packageName = extractPackageNameFromSubjectRef(entry.subjectRef)
+        if (!packageName) return null
 
-      return {
-        rank: 0,
-        packageName,
-        subjectRef: entry.subjectRef,
-        totalLikes: entry.totalLikes,
-      }
-    })
-    .filter((entry): entry is LikesLeaderboardEntry => entry !== null)
-    // oxlint-disable-next-line no-map-spread -- only a few elements
-    .map((entry, index) => ({
-      ...entry,
-      rank: index + 1,
-    }))
-
-  return {
-    totalLikes: parsedPayload.output.totalLikes ?? null,
-    totalUniqueLikers: parsedPayload.output.totalUniqueLikers ?? null,
-    entries,
-  }
+        return {
+          rank: 0,
+          packageName,
+          subjectRef: entry.subjectRef,
+          totalLikes: entry.totalLikes,
+        }
+      })
+      .filter((entry): entry is LikesLeaderboardEntry => entry !== null)
+      // oxlint-disable-next-line no-map-spread -- only a few elements
+      .map((entry, index) => ({
+        ...entry,
+        rank: index + 1,
+      }))
+  )
 }
 
-export async function getLikesLeaderboard(
-  event: H3Event,
-  options: LikesLeaderboardOptions = {},
-): Promise<ResolvedLikesLeaderboard | null> {
-  const timeoutMs = options.timeoutMs ?? LIKES_LEADERBOARD_FETCH_TIMEOUT_MS
+export async function getLikesLeaderboard(event: H3Event): Promise<LikesLeaderboardEntry[] | null> {
   const cachedFetch = event.context.cachedFetch as CachedFetchFunction | undefined
   if (!cachedFetch) {
-    console.error('Something went wrong: event.context.cachedFetch is missing. Aborting fetch.', {
-      eventContext: event.context,
-    })
+    console.error('[likes-leaderboard] Missing cachedFetch in request context')
     return null
   }
 
@@ -94,30 +68,29 @@ export async function getLikesLeaderboard(
     const url = new URL(LIKES_LEADERBOARD_API_URL)
     url.searchParams.set('limit', LIKES_LEADERBOARD_MAX_ENTRIES.toString())
 
-    const { data } = await cachedFetch<UpstreamLikesLeaderboardResponse>(
+    const { data } = await cachedFetch(
       url.toString(),
       {
         headers: {
           'User-Agent': 'npmx',
           'Accept': 'application/json',
         },
-        signal: AbortSignal.timeout(timeoutMs),
+        signal: AbortSignal.timeout(LIKES_LEADERBOARD_FETCH_TIMEOUT_MS),
       },
       CACHE_MAX_AGE_ONE_HOUR,
     )
 
     return normalizeLikesLeaderboardPayload(data)
   } catch (err) {
-    console.error('Failed to fetch likes leaderboard', { err })
+    console.error(
+      '[likes-leaderboard] Failed to fetch likes leaderboard:',
+      err instanceof Error ? err.message : 'Unknown error',
+    )
     return null
   }
 }
 
-export async function getTopLikedRank(
-  event: H3Event,
-  subjectRef: string,
-  options: LikesLeaderboardOptions = {},
-): Promise<number | null> {
-  const leaderboard = await getLikesLeaderboard(event, options)
-  return leaderboard?.entries.find(entry => entry.subjectRef === subjectRef)?.rank ?? null
+export async function getTopLikedRank(event: H3Event, subjectRef: string): Promise<number | null> {
+  const leaderboard = await getLikesLeaderboard(event)
+  return leaderboard?.find(entry => entry.subjectRef === subjectRef)?.rank ?? null
 }

@@ -3,6 +3,5 @@ import type { LikesLeaderboardEntry } from '#shared/types/social'
 import { getLikesLeaderboard } from '#server/utils/likes-leaderboard'
 
 export default eventHandler(async (event): Promise<LikesLeaderboardEntry[]> => {
-  const leaderboard = await getLikesLeaderboard(event)
-  return leaderboard?.entries ?? []
+  return (await getLikesLeaderboard(event)) ?? []
 })

@@ -111,23 +111,16 @@ const likeAction = async () => {
 
   try {
     const result = await togglePackageLike(props.packageName, currentlyLiked, user.value?.handle)
-
-    isLikeActionPending.value = false
-
-    if (result.success) {
-      // Update with server response
-      likesData.value = {
-        ...previousLikesState,
-        ...result.data,
-        topLikedRank: result.data.topLikedRank ?? previousLikesState.topLikedRank,
-      }
-    } else {
-      // Revert on error
-      likesData.value = previousLikesState
-    }
+    likesData.value = result.success
+      ? {
+          ...previousLikesState,
+          ...result.data,
+          topLikedRank: result.data.topLikedRank ?? previousLikesState.topLikedRank,
+        }
+      : previousLikesState
   } catch {
-    // Revert on error
     likesData.value = previousLikesState
+  } finally {
     isLikeActionPending.value = false
   }
 }
@@ -203,7 +196,7 @@ const likeAction = async () => {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .likeFloat {
+  .like-float {
     display: none;
   }
 }

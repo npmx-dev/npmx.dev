@@ -32,32 +32,26 @@ describe('extractPackageNameFromSubjectRef', () => {
 describe('normalizeLikesLeaderboardPayload', () => {
   it('normalizes upstream leaderboard payload into ranked entries', () => {
     const result = normalizeLikesLeaderboardPayload({
-      totalLikes: 320,
-      totalUniqueLikers: 75,
       leaderBoard: [
         { subjectRef: 'https://npmx.dev/package/vue', totalLikes: 120 },
         { subjectRef: 'https://npmx.dev/package/@nuxt/kit', totalLikes: 90 },
       ],
     })
 
-    expect(result).toEqual({
-      totalLikes: 320,
-      totalUniqueLikers: 75,
-      entries: [
-        {
-          rank: 1,
-          packageName: 'vue',
-          subjectRef: 'https://npmx.dev/package/vue',
-          totalLikes: 120,
-        },
-        {
-          rank: 2,
-          packageName: '@nuxt/kit',
-          subjectRef: 'https://npmx.dev/package/@nuxt/kit',
-          totalLikes: 90,
-        },
-      ],
-    })
+    expect(result).toEqual([
+      {
+        rank: 1,
+        packageName: 'vue',
+        subjectRef: 'https://npmx.dev/package/vue',
+        totalLikes: 120,
+      },
+      {
+        rank: 2,
+        packageName: '@nuxt/kit',
+        subjectRef: 'https://npmx.dev/package/@nuxt/kit',
+        totalLikes: 90,
+      },
+    ])
   })
 
   it('returns null for invalid upstream payloads', () => {
@@ -78,8 +72,6 @@ describe('getLikesLeaderboard', () => {
   it('fetches from the external leaderboard API with limit=10', async () => {
     const cachedFetch = vi.fn().mockResolvedValue({
       data: {
-        totalLikes: 320,
-        totalUniqueLikers: 75,
         leaderBoard: [{ subjectRef: 'https://npmx.dev/package/vue', totalLikes: 120 }],
       },
       isStale: false,
@@ -106,8 +98,6 @@ describe('getTopLikedRank', () => {
   it('returns the matching top liked rank for a subject ref', async () => {
     const cachedFetch = vi.fn().mockResolvedValue({
       data: {
-        totalLikes: 320,
-        totalUniqueLikers: 75,
         leaderBoard: [
           { subjectRef: 'https://npmx.dev/package/vue', totalLikes: 120 },
           { subjectRef: 'https://npmx.dev/package/nuxt', totalLikes: 90 },
