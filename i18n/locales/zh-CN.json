@@ -336,6 +336,7 @@
       "gitea": "在 Gitea 上查看",
       "gitee": "在 Gitee 上查看",
       "radicle": "在 Radicle 上查看",
+      "socket_dev": "在 socket.dev 上查看",
       "sourcehut": "在 SourceHut 上查看",
       "tangled": "在 Tangled 上查看"
     },
@@ -1254,6 +1255,8 @@
       },
       "explanation": {
         "tooltip_help": "查看评分说明",
+        "tooltip_help_adoption": "查看采用度评分说明",
+        "tooltip_help_efficiency": "查看效率评分说明",
         "introduction": "分数由多种信号组合成两个维度计算得出：",
         "adoption": "采用度：反映使用和活跃情况（下载量、更新频率、点赞数）",
         "efficiency": "效率：反映体积和质量（安装大小、依赖项数量、漏洞情况、类型支持）",
