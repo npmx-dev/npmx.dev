@@ -55,8 +55,8 @@ export default defineCachedEventHandler(
         version === 'latest' ? versions.length - 1 : versions.findIndex(v => v.version === version)
 
       const previousVersionIndex = currentVersionIndex - 1
-      const currentLicense = versions[currentVersionIndex]?.license || 'UNKNOWN'
-      const previousLicense = versions[previousVersionIndex]?.license || 'UNKNOWN'
+      const currentLicense = String(versions[currentVersionIndex]?.license || 'UNKNOWN')
+      const previousLicense = String(versions[previousVersionIndex]?.license || 'UNKNOWN')
 
       if (currentLicense !== previousLicense) {
         change = {
