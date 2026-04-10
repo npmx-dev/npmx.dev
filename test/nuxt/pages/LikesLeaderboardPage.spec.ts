@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
 import type { VueWrapper } from '@vue/test-utils'
 import LikesLeaderboardPage from '~/pages/leaderboard/likes.vue'
@@ -36,9 +36,12 @@ describe('likes leaderboard page', () => {
       route: '/leaderboard/likes',
     })
 
-    expect(wrapper.text()).toContain('Likes Leaderboard')
-    expect(wrapper.text()).toContain('vue')
-    expect(wrapper.text()).toContain('@nuxt/kit')
+    await vi.waitFor(() => {
+      expect(wrapper?.text()).toContain('Likes Leaderboard')
+      expect(wrapper?.text()).toContain('vue')
+      expect(wrapper?.text()).toContain('@nuxt/kit')
+    })
+
     expect(wrapper.text()).toContain('#1')
     expect(wrapper.find('a[href="/package/vue"]').exists()).toBe(true)
   })
@@ -50,7 +53,10 @@ describe('likes leaderboard page', () => {
       route: '/leaderboard/likes',
     })
 
-    expect(wrapper.text()).toContain('No likes leaderboard yet')
+    await vi.waitFor(() => {
+      expect(wrapper?.text()).toContain('No likes leaderboard yet')
+    })
+
     expect(wrapper.text()).toContain("We don't have a likes leaderboard to show right now.")
   })
 })

@@ -143,6 +143,7 @@ export default defineNuxtConfig({
     // never cache
     '/api/auth/**': { isr: false, cache: false },
     '/api/social/**': { isr: false, cache: false },
+    '/api/leaderboard/likes': { isr: false, cache: false },
     '/api/atproto/bluesky-comments': {
       isr: {
         expiration: 60 * 60 /* one hour */,

@@ -12,11 +12,16 @@ useSeoMeta({
 
 const compactNumberFormatter = useCompactNumberFormatter()
 
-const { data: leaderboardEntries } = await useFetch<LikesLeaderboardEntry[]>(
+const { data: leaderboardEntries, status: leaderboardStatus } = useFetch<LikesLeaderboardEntry[]>(
   '/api/leaderboard/likes',
   {
     default: () => [],
+    server: false,
   },
+)
+
+const isLoadingLeaderboard = computed(
+  () => leaderboardStatus.value === 'pending' || leaderboardStatus.value === 'idle',
 )
 </script>
 
@@ -36,7 +41,16 @@ const { data: leaderboardEntries } = await useFetch<LikesLeaderboardEntry[]>(
       </header>
 
       <BaseCard
-        v-if="leaderboardEntries.length === 0"
+        v-if="isLoadingLeaderboard"
+        class="cursor-default hover:(border-border bg-bg-subtle)"
+      >
+        <p class="text-fg-muted">
+          {{ $t('common.loading') }}
+        </p>
+      </BaseCard>
+
+      <BaseCard
+        v-else-if="leaderboardEntries.length === 0"
         class="cursor-default hover:(border-border bg-bg-subtle)"
       >
         <h2 class="font-mono text-lg mb-2">

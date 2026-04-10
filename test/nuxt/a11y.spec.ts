@@ -731,8 +731,11 @@ describe('component accessibility audits', () => {
         route: '/leaderboard/likes',
       })
 
-      expect(component.text()).toContain('Likes Leaderboard')
-      expect(component.text()).toContain('vue')
+      await vi.waitFor(() => {
+        expect(component.text()).toContain('Likes Leaderboard')
+        expect(component.text()).toContain('vue')
+      })
+
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
@@ -745,7 +748,10 @@ describe('component accessibility audits', () => {
         route: '/leaderboard/likes',
       })
 
-      expect(component.text()).toContain('No likes leaderboard yet')
+      await vi.waitFor(() => {
+        expect(component.text()).toContain('No likes leaderboard yet')
+      })
+
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })

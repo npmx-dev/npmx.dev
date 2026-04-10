@@ -115,7 +115,6 @@ const likeAction = async () => {
       ? {
           ...previousLikesState,
           ...result.data,
-          topLikedRank: result.data.topLikedRank ?? previousLikesState.topLikedRank,
         }
       : previousLikesState
   } catch {
