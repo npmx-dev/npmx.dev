@@ -31,7 +31,7 @@ jobs:
 
       - name: 🔎 Compare dependencies
         id: analyze
-        uses: e18e/action-dependency-diff@d995338f3b229fe7b2cd82048df5da930f70c7c3 # v1.4.4
+        uses: e18e/action-dependency-diff@f825d5b5c5ce0a42dc46c47ec20de24460affcd8 # v1.5.0
         with:
           mode: artifact
           detect-replacements: 'true'
