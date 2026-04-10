@@ -106,7 +106,7 @@
     "validate-npm-package-name": "7.0.2",
     "virtua": "0.48.8",
     "vite-plugin-pwa": "1.2.0",
-    "vite-plus": "0.1.12",
+    "vite-plus": "0.1.16",
     "vue": "3.5.30",
     "vue-data-ui": "3.17.11"
   },
@@ -140,14 +140,14 @@
     "storybook-i18n": "catalog:storybook",
     "typescript": "6.0.2",
     "unplugin-vue-markdown": "30.0.0",
-    "vitest": "npm:@voidzero-dev/vite-plus-test@0.1.12",
+    "vitest": "npm:@voidzero-dev/vite-plus-test@0.1.16",
     "vue-i18n-extract": "2.0.7",
     "vue-tsc": "3.2.6"
   },
   "engines": {
     "node": "24"
   },
-  "packageManager": "pnpm@10.32.1",
+  "packageManager": "pnpm@10.33.0",
   "storybook": {
     "url": "https://storybook.npmx.dev"
   }

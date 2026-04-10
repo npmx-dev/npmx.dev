@@ -28,6 +28,9 @@
       "search": "Поиск",
       "package": "Пакет"
     },
+    "ctrl_key": "Ctrl",
+    "command_palette": "Открыть палитру команд",
+    "command_palette_description": "Используйте палитру команд для перехода между страницами, представлениями пакетов, настройками и внешними ссылками, не отрывая рук от клавиатуры. На macOS нажмите ⌘K. На Windows и Linux нажмите {ctrlKey}+K.",
     "focus_search": "Фокус на поиске",
     "show_kbd_hints": "Подсветить подсказки клавиш",
     "settings": "Открыть настройки",
@@ -75,6 +78,113 @@
     "instant_search_turn_on": "включить",
     "instant_search_turn_off": "выключить",
     "instant_search_advisory": "{label} {state} — {action}"
+  },
+  "command_palette": {
+    "title": "палитра команд",
+    "quick_actions": "перейти к...",
+    "subtitle": "быстрая навигация по npmx и переключение настроек",
+    "subtitle_languages": "выберите язык или помогите улучшить переводы",
+    "instructions": "Введите текст для фильтрации команд. Используйте стрелки для перемещения по результатам и Enter для выполнения команды.",
+    "input_label": "Поиск в палитре команд",
+    "results_label": "Результаты команд",
+    "placeholder": "введите команду...",
+    "back": "Назад",
+    "empty": "Нет подходящих команд",
+    "empty_search_hint": "Нажмите Enter для поиска «{query}».",
+    "current": "текущий",
+    "here": "вы здесь",
+    "connected": "подключено",
+    "state": {
+      "on": "вкл",
+      "off": "выкл"
+    },
+    "groups": {
+      "actions": "Действия",
+      "help": "Помощь",
+      "language": "Язык",
+      "connections": "Подключения",
+      "navigation": "Навигация",
+      "links": "Ссылки",
+      "npmx": "npmx",
+      "package": "Пакет",
+      "package_with_name": "Пакет ({name})",
+      "versions": "Версии",
+      "versions_with_name": "Версии {name}"
+    },
+    "actions": {
+      "search": "Поиск",
+      "search_for": "Искать «{query}»",
+      "keyboard_shortcuts": "Горячие клавиши",
+      "help_translate": "Помочь с переводом"
+    },
+    "connections": {
+      "npm_connect": "Подключить npm CLI",
+      "npm_connected": "npm CLI (~{username})",
+      "npm_disconnect": "Отключить npm CLI",
+      "atmosphere_connect": "Подключить Atmosphere",
+      "atmosphere_connected": "atmosphere ({'@'}{handle})",
+      "atmosphere_disconnect": "Отключить Atmosphere"
+    },
+    "navigation": {
+      "home": "главная",
+      "packages": "пакеты (~{username})",
+      "orgs": "организации (~{username})",
+      "profile": "профиль ({'@'}{handle})"
+    },
+    "links": {
+      "external": "Внешняя ссылка"
+    },
+    "package_links": {
+      "stars": "Звёзды репозитория",
+      "forks": "Форки репозитория"
+    },
+    "theme": {
+      "system": "Использовать системную тему",
+      "light": "Использовать светлую тему",
+      "dark": "Использовать тёмную тему"
+    },
+    "package": {
+      "main": "Страница пакета",
+      "docs": "Документация",
+      "code": "Код",
+      "diff": "Различия",
+      "compare": "Сравнить этот пакет",
+      "download": "Скачать архив"
+    },
+    "package_actions": {
+      "copy_run": "Скопировать команду запуска"
+    },
+    "code": {
+      "copy_file": "Скопировать содержимое файла"
+    },
+    "diff": {
+      "merge_modified_lines": "Объединить изменённые строки",
+      "word_wrap": "Перенос строк"
+    },
+    "version": {
+      "label": "{version}"
+    },
+    "status": {
+      "available_in_context": "{context}. Команд нет | {context}. Доступна 1 команда | {context}. Доступно {count} команды | {context}. Доступно {count} команд",
+      "matching_in_context": "{context}. Нет подходящих команд | {context}. Найдена 1 команда | {context}. Найдено {count} команды | {context}. Найдено {count} команд",
+      "no_matches_search_in_context": "{context}. Нет подходящих команд. Нажмите Enter для поиска «{query}»."
+    },
+    "announcements": {
+      "language_changed": "Язык изменён на {language}.",
+      "relative_dates_on": "Относительные даты включены.",
+      "relative_dates_off": "Относительные даты выключены.",
+      "theme_changed": "Тема изменена на {theme}.",
+      "accent_color_changed": "Акцентный цвет изменён на {color}.",
+      "background_theme_changed": "Оттенок фона изменён на {theme}.",
+      "download_started": "Скачивание архива {package}.",
+      "copied_to_clipboard": "Скопировано в буфер обмена.",
+      "npm_disconnected": "npm CLI отключён.",
+      "atmosphere_disconnected": "Atmosphere отключён.",
+      "facets_all_selected": "Выбраны все фасеты.",
+      "facets_all_deselected": "Выбор всех фасетов снят.",
+      "view_switched": "Переключено на вид «{view}».",
+      "setting_toggled": "{setting} {state}."
+    }
   },
   "nav": {
     "main_navigation": "Главное",
@@ -151,6 +261,7 @@
     "translation_status": "Статус переводов по всему проекту",
     "accent_colors": {
       "label": "Акцентные цвета",
+      "neutral": "Нейтральный",
       "sky": "Небесный",
       "coral": "Коралловый",
       "amber": "Янтарный",
@@ -201,6 +312,8 @@
     "warnings": "Предупреждения:",
     "go_back_home": "Вернуться на главную",
     "per_week": "/ неделю",
+    "yes": "Да",
+    "no": "Нет",
     "vanity_downloads_hint": "Метрика тщеславия: пакеты не отображаются | Метрика тщеславия: для отображаемого пакета | Метрика тщеславия: сумма {count} отображаемых пакетов",
     "sort": {
       "name": "имя",
@@ -223,11 +336,14 @@
       "gitea": "Открыть на Gitea",
       "gitee": "Открыть на Gitee",
       "radicle": "Открыть на Radicle",
+      "socket_dev": "Посмотреть на socket.dev",
       "sourcehut": "Открыть на SourceHut",
       "tangled": "Открыть на Tangled"
     },
     "collapse": "Свернуть",
-    "expand": "Развернуть"
+    "collapse_with_name": "Свернуть {name}",
+    "expand": "Развернуть",
+    "expand_with_name": "Развернуть {name}"
   },
   "profile": {
     "display_name": "Отображаемое имя",
@@ -826,8 +942,12 @@
     "lines": "{count} строк",
     "toggle_tree": "Переключить дерево файлов",
     "close_tree": "Закрыть дерево файлов",
+    "copy_content": "Скопировать содержимое файла",
     "copy_link": "Скопировать ссылку",
     "view_raw": "Посмотреть исходный файл",
+    "toggle_container": "Переключить ширину контейнера кода",
+    "open_raw_file": "Открыть исходный файл",
+    "open_path_dropdown": "Открыть список сегментов пути",
     "file_too_large": "Файл слишком большой для предпросмотра",
     "file_size_warning": "{size} превышает лимит в 500 КБ для подсветки синтаксиса",
     "failed_to_load": "Не удалось загрузить файл",
@@ -1118,6 +1238,33 @@
       "packages_selected": "Выбрано пакетов: {count}/{max}.",
       "add_hint": "Добавьте как минимум 2 пакета для сравнения."
     },
+    "quadrant_chart": {
+      "label_x_axis": "Востребованность",
+      "label_y_axis": "Эргономичность",
+      "label_top_right": "Надёжный выбор",
+      "label_bottom_right": "Популярно с компромиссами",
+      "label_bottom_left": "Избегать",
+      "label_top_left": "Скрытые жемчужины",
+      "title": "Востребованность против эргономичности пакетов",
+      "filename": "quadrant-ergonomics-traction-packages",
+      "label_freshness_score": "Оценка актуальности",
+      "copy_alt": {
+        "description": "Диаграмма-квадрант, сопоставляющая востребованность и эргономичность для {packages} пакетов. {analysis}. {watermark}.",
+        "side_analysis_top_right": "Следующие пакеты расположены в правом верхнем квадранте (надёжный выбор): {packages}",
+        "side_analysis_top_left": "Следующие пакеты расположены в левом верхнем квадранте (скрытые жемчужины): {packages}",
+        "side_analysis_bottom_right": "Следующие пакеты расположены в правом нижнем квадранте (популярно с компромиссами): {packages}",
+        "side_analysis_bottom_left": "Следующие пакеты расположены в левом нижнем квадранте (избегать): {packages}"
+      },
+      "explanation": {
+        "tooltip_help": "Показать объяснение оценок",
+        "tooltip_help_adoption": "Показать объяснение оценки востребованности",
+        "tooltip_help_efficiency": "Показать объяснение оценки эргономичности",
+        "introduction": "Оценка вычисляется путём комбинирования нескольких сигналов по двум осям:",
+        "adoption": "Востребованность: отражает использование и активность (загрузки, актуальность, лайки)",
+        "efficiency": "Эргономичность: отражает footprint и качество (размер установки, зависимости, уязвимости, поддержка типов)",
+        "impact_details": "Каждая метрика вносит вклад с разным весом. Сильные сигналы, такие как загрузки и размер установки, оказывают наибольшее влияние, а остальные уточняют результат. Некоторые сигналы (например, уязвимости или устаревание) накладывают штрафы."
+      }
+    },
     "no_dependency": {
       "label": "(Без зависимости)",
       "typeahead_title": "Что бы сделал Джеймс?",
@@ -1401,7 +1548,7 @@
     },
     "contact": {
       "title": "Обратная связь",
-      "p1": "Если вы столкнулись с какими-либо препятствиями при использовании {app}, пожалуйста, сообщите нам об этом, создав тикет (issue) в нашем {link}. Мы серьезно относимся к таким сообщениям и сделаем все возможное, чтобы исправить ситуацию.",
+      "p1": "Если вы столкнулись с какими-либо препятствиями при использовании {app}, пожалуйста, сообщите нам об этом, создав тикет (issue) в нашем {link}. Мы серьезно относимся к таким сообщениям и сделаем всё возможное, чтобы исправить ситуацию.",
       "link": "репозитории GitHub"
     }
   },
@@ -1517,5 +1664,6 @@
       "message": "Для нас важна доступность, и мы будем рады, если вы разделите этот подход. При использовании материалов обеспечьте достаточный контраст с фоном и не уменьшайте размер меньше 24px. Если нужны другие ресурсы или информация о проекте, напишите нам: {link}.",
       "discord_link_text": "chat.npmx.dev"
     }
-  }
+  },
+  "alt_logo_kawaii": "Милая, округлая и красочная версия логотипа npmx."
 }

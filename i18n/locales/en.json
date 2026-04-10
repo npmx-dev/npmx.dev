@@ -341,7 +341,9 @@
       "tangled": "View on Tangled"
     },
     "collapse": "Collapse",
-    "expand": "Expand"
+    "collapse_with_name": "Collapse {name}",
+    "expand": "Expand",
+    "expand_with_name": "Expand {name}"
   },
   "profile": {
     "display_name": "Display Name",

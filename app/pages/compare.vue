@@ -140,7 +140,7 @@ async function exportComparisonDataAsMarkdown() {
 }
 
 defineOgImageComponent('Compare', {
-  packages: () => packages.value,
+  packages: () => packages.value.toSorted((a, b) => a.localeCompare(b)),
   emptyDescription: () => $t('compare.packages.meta_description_empty'),
 })
 

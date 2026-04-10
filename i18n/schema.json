@@ -1027,7 +1027,13 @@
         "collapse": {
           "type": "string"
         },
+        "collapse_with_name": {
+          "type": "string"
+        },
         "expand": {
+          "type": "string"
+        },
+        "expand_with_name": {
           "type": "string"
         }
       },

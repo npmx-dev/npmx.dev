@@ -129,6 +129,13 @@ export default defineNuxtConfig({
     '/:pkg/.well-known/skills/**': { isr: 3600 },
     '/:scope/:pkg/.well-known/skills/**': { isr: 3600 },
     '/__og-image__/**': getISRConfig(3600),
+    '/__og-image__/image/compare/**': {
+      isr: {
+        expiration: 3600,
+        passQuery: true,
+        allowQuery: ['packages', '_query'],
+      },
+    },
     '/_avatar/**': { isr: 3600, proxy: 'https://www.gravatar.com/avatar/**' },
     '/opensearch.xml': { isr: true },
     '/oauth-client-metadata.json': { prerender: true },

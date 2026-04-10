@@ -17,10 +17,12 @@ allowBuilds:
   'unrs-resolver': false
   'vue-demi': false
 
+dedupePeers: true
+
 overrides:
   sharp: 0.34.5
-  vite: npm:@voidzero-dev/vite-plus-core@0.1.12
-  vitest: npm:@voidzero-dev/vite-plus-test@0.1.12
+  vite: npm:@voidzero-dev/vite-plus-core@0.1.16
+  vitest: npm:@voidzero-dev/vite-plus-test@0.1.16
   storybook: ^10.3.1
 
 packageExtensions:

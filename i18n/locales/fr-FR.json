@@ -312,6 +312,8 @@
     "warnings": "Avertissements :",
     "go_back_home": "Retour à l'accueil",
     "per_week": "/ semaine",
+    "yes": "Oui",
+    "no": "Non",
     "vanity_downloads_hint": "Métrique de vanité : aucun paquet affiché | Métrique de vanité : pour le paquet affiché | Métrique de vanité : somme des {count} paquets affichés",
     "sort": {
       "name": "nom",
@@ -334,6 +336,7 @@
       "gitea": "Voir sur Gitea",
       "gitee": "Voir sur Gitee",
       "radicle": "Voir sur Radicle",
+      "socket_dev": "Voir sur socket.dev",
       "sourcehut": "Voir sur SourceHut",
       "tangled": "Voir sur Tangled"
     },
@@ -937,8 +940,11 @@
     "lines": "{count} lignes",
     "toggle_tree": "Basculer l'arborescence",
     "close_tree": "Fermer l'arborescence",
+    "copy_content": "Copier le contenu du fichier",
     "copy_link": "Copier le lien",
     "view_raw": "Voir le fichier brut",
+    "toggle_container": "Changer la largeur du conteneur",
+    "open_raw_file": "Ouvrir le fichier brut",
     "file_too_large": "Fichier trop volumineux pour l'aperçu",
     "file_size_warning": "{size} dépasse la limite de 500 Ko pour la coloration syntaxique",
     "failed_to_load": "Échec du chargement du fichier",
