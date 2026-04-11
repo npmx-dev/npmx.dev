@@ -76,6 +76,23 @@
     "instant_search_turn_off": "sluk",
     "instant_search_advisory": "{label} {state} — {action}"
   },
+  "command_palette": {
+    "state": {},
+    "groups": {},
+    "actions": {},
+    "connections": {},
+    "navigation": {},
+    "links": {},
+    "package_links": {},
+    "theme": {},
+    "package": {},
+    "package_actions": {},
+    "code": {},
+    "diff": {},
+    "version": {},
+    "status": {},
+    "announcements": {}
+  },
   "nav": {
     "main_navigation": "Hovednavigation",
     "popular_packages": "Populære pakker",
@@ -441,8 +458,6 @@
       },
       "page_title": "Versionshistorik",
       "current_tags": "Nuværende tags",
-      "version_filter_placeholder": "Filtrer versioner…",
-      "version_filter_label": "Filtrer versioner",
       "no_match_filter": "Ingen versioner matcher {filter}"
     },
     "dependencies": {
@@ -1119,6 +1134,10 @@
       "remove_package": "Fjern {package}",
       "packages_selected": "{count}/{max} pakker valgt.",
       "add_hint": "Tilføj mindst 2 pakker for at sammenligne."
+    },
+    "quadrant_chart": {
+      "copy_alt": {},
+      "explanation": {}
     },
     "no_dependency": {
       "label": "(Ingen afhængighed)",
