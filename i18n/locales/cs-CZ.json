@@ -312,8 +312,6 @@
     "warnings": "Varování:",
     "go_back_home": "Zpět na začátek",
     "per_week": "/ týden",
-    "yes": "Ano",
-    "no": "Ne",
     "vanity_downloads_hint": "Pro zobrazený balíček | Součet pro {count} zobrazené balíčky | Součet pro {count} zobrazených balíčků",
     "sort": {
       "name": "jméno",

@@ -940,12 +940,6 @@
         "per_week": {
           "type": "string"
         },
-        "yes": {
-          "type": "string"
-        },
-        "no": {
-          "type": "string"
-        },
         "vanity_downloads_hint": {
           "type": "string"
         },

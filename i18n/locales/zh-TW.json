@@ -312,8 +312,6 @@
     "warnings": "警告：",
     "go_back_home": "回到首頁",
     "per_week": "/ 週",
-    "yes": "是",
-    "no": "否",
     "vanity_downloads_hint": "顯示下載量：未顯示套件 | 顯示下載量：顯示的套件 | 顯示下載量：顯示的 {count} 個套件總和",
     "sort": {
       "name": "名稱",
