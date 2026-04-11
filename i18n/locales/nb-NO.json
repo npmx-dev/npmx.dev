@@ -28,6 +28,9 @@
       "search": "Søk",
       "package": "Pakke"
     },
+    "ctrl_key": "Ctrl",
+    "command_palette": "Åpne kommandopaletten",
+    "command_palette_description": "Bruk kommandopaletten til å hoppe mellom sider, pakkevisninger, innstillinger og eksterne lenker uten å forlate tastaturet. På macOS trykker du ⌘K. På Windows og Linux trykker du {ctrlKey}+K.",
     "focus_search": "Fokuser søk",
     "show_kbd_hints": "Vis tastaturtips",
     "settings": "Åpne innstillinger",
@@ -75,6 +78,113 @@
     "instant_search_turn_on": "slå på",
     "instant_search_turn_off": "slå av",
     "instant_search_advisory": "{label} {state} — {action}"
+  },
+  "command_palette": {
+    "title": "kommandopalett",
+    "quick_actions": "hopp til …",
+    "subtitle": "naviger i npmx og bytt innstillinger raskt",
+    "subtitle_languages": "velg språk eller hjelp til med å forbedre oversettelser",
+    "instructions": "Skriv for å filtrere kommandoer. Bruk piltastene for å flytte gjennom resultatene og Enter for å kjøre en kommando.",
+    "input_label": "Søk i kommandopaletten",
+    "results_label": "Kommandoresultater",
+    "placeholder": "skriv en kommando …",
+    "back": "Tilbake",
+    "empty": "Ingen treff på kommandoer",
+    "empty_search_hint": "Trykk Enter for å søke etter «{query}».",
+    "current": "gjeldende",
+    "here": "du er her",
+    "connected": "tilkoblet",
+    "state": {
+      "on": "på",
+      "off": "av"
+    },
+    "groups": {
+      "actions": "Handlinger",
+      "help": "Hjelp",
+      "language": "Språk",
+      "connections": "Tilkoblinger",
+      "navigation": "Navigasjon",
+      "links": "Lenker",
+      "npmx": "npmx",
+      "package": "Pakke",
+      "package_with_name": "Pakke ({name})",
+      "versions": "Versjoner",
+      "versions_with_name": "Versjoner av {name}"
+    },
+    "actions": {
+      "search": "Søk",
+      "search_for": "Søk etter «{query}»",
+      "keyboard_shortcuts": "Tastatursnarveier",
+      "help_translate": "Hjelp med å oversette"
+    },
+    "connections": {
+      "npm_connect": "Koble til npm CLI",
+      "npm_connected": "npm CLI (~{username})",
+      "npm_disconnect": "Koble fra npm CLI",
+      "atmosphere_connect": "Koble til Atmosphere",
+      "atmosphere_connected": "atmosphere ({'@'}{handle})",
+      "atmosphere_disconnect": "Koble fra Atmosphere"
+    },
+    "navigation": {
+      "home": "hjem",
+      "packages": "pakker (~{username})",
+      "orgs": "organisasjoner (~{username})",
+      "profile": "profil ({'@'}{handle})"
+    },
+    "links": {
+      "external": "Ekstern lenke"
+    },
+    "package_links": {
+      "stars": "Stjerner på repositoriet",
+      "forks": "Forks på repositoriet"
+    },
+    "theme": {
+      "system": "Bruk systemtema",
+      "light": "Bruk lyst tema",
+      "dark": "Bruk mørkt tema"
+    },
+    "package": {
+      "main": "Pakkeside",
+      "docs": "Dokumentasjon",
+      "code": "Kode",
+      "diff": "Diff",
+      "compare": "Sammenlign denne pakken",
+      "download": "Last ned tarball"
+    },
+    "package_actions": {
+      "copy_run": "Kopier kjørekommando"
+    },
+    "code": {
+      "copy_file": "Kopier filinnhold"
+    },
+    "diff": {
+      "merge_modified_lines": "Slå sammen endrede linjer",
+      "word_wrap": "Tekstbryting"
+    },
+    "version": {
+      "label": "{version}"
+    },
+    "status": {
+      "available_in_context": "{context}. Ingen kommandoer tilgjengelig | {context}. 1 kommando tilgjengelig | {context}. {count} kommandoer tilgjengelig",
+      "matching_in_context": "{context}. Ingen treff på kommandoer | {context}. 1 treff på kommando | {context}. {count} treff på kommandoer",
+      "no_matches_search_in_context": "{context}. Ingen treff på kommandoer. Trykk Enter for å søke etter «{query}»."
+    },
+    "announcements": {
+      "language_changed": "Språk satt til {language}.",
+      "relative_dates_on": "Relative datoer på.",
+      "relative_dates_off": "Relative datoer av.",
+      "theme_changed": "Tema satt til {theme}.",
+      "accent_color_changed": "Aksentfarge satt til {color}.",
+      "background_theme_changed": "Bakgrunnsnyanse satt til {theme}.",
+      "download_started": "Laster ned tarball for {package}.",
+      "copied_to_clipboard": "Kopiert til utklippstavlen.",
+      "npm_disconnected": "npm CLI frakoblet.",
+      "atmosphere_disconnected": "Atmosphere frakoblet.",
+      "facets_all_selected": "Alle fasetter valgt.",
+      "facets_all_deselected": "Alle fasetter fravalgt.",
+      "view_switched": "Byttet til {view}-visning.",
+      "setting_toggled": "{setting} {state}."
+    }
   },
   "nav": {
     "main_navigation": "Hovedmeny",
@@ -151,6 +261,7 @@
     "translation_status": "Sjekk global oversettelsesstatus",
     "accent_colors": {
       "label": "Aksentfarger",
+      "neutral": "Nøytral",
       "sky": "Himmel",
       "coral": "Korall",
       "amber": "Rav",
@@ -201,6 +312,8 @@
     "warnings": "Advarsler:",
     "go_back_home": "Gå tilbake til start",
     "per_week": "/ uke",
+    "yes": "Ja",
+    "no": "Nei",
     "vanity_downloads_hint": "Visningstall: ingen pakker vist | Visningstall: for den viste pakken | Visningstall: Sum av {count} viste pakker",
     "sort": {
       "name": "navn",
@@ -223,11 +336,14 @@
       "gitea": "Vis på Gitea",
       "gitee": "Vis på Gitee",
       "radicle": "Vis på Radicle",
+      "socket_dev": "vis på socket.dev",
       "sourcehut": "Vis på SourceHut",
       "tangled": "Vis på Tangled"
     },
     "collapse": "Skjul",
-    "expand": "Utvid"
+    "collapse_with_name": "Skjul {name}",
+    "expand": "Utvid",
+    "expand_with_name": "Utvid {name}"
   },
   "profile": {
     "display_name": "Visningsnavn",
@@ -487,6 +603,9 @@
         "table_available": "En datatabell for dette diagrammet er tilgjengelig nedenfor.",
         "table_caption": "Diagramdatatabell"
       },
+      "chart_view_toggle": "Veksle visning",
+      "chart_view_combined": "Kombinert visning",
+      "chart_view_split": "Delt visning",
       "granularity": "Oppløsning",
       "granularity_daily": "Daglig",
       "granularity_weekly": "Ukentlig",
@@ -823,8 +942,12 @@
     "lines": "{count} linje | {count} linjer",
     "toggle_tree": "Veksle filtre",
     "close_tree": "Lukk filtre",
+    "copy_content": "Kopier filinnhold",
     "copy_link": "Kopier lenke",
     "view_raw": "Vis råfil",
+    "toggle_container": "Veksle bredde på kodebeholder",
+    "open_raw_file": "Åpne råfil",
+    "open_path_dropdown": "Åpne rullegardin for mappestier",
     "file_too_large": "Filen er for stor til å forhåndsvises",
     "file_size_warning": "{size} overstiger grensen på 500KB for syntaksmarkering",
     "failed_to_load": "Kunne ikke laste fil",
@@ -1102,6 +1225,7 @@
       "empty_description": "Søk og legg til minst 2 pakker ovenfor for å se en side-om-side sammenligning av deres metrikker.",
       "table_view": "Tabell",
       "charts_view": "Diagrammer",
+      "no_chartable_data": "Ingen diagramdata tilgjengelig for de valgte fasettene.",
       "bar_chart_nav_hint": "Bruk ↑ ↓",
       "line_chart_nav_hint": "Bruk ← →"
     },
@@ -1113,6 +1237,33 @@
       "remove_package": "Fjern {package}",
       "packages_selected": "{count}/{max} pakker valgt.",
       "add_hint": "Legg til minst 2 pakker for å sammenligne."
+    },
+    "quadrant_chart": {
+      "label_x_axis": "Gjennomslag",
+      "label_y_axis": "Ergonomi",
+      "label_top_right": "Solide valg",
+      "label_bottom_right": "populære med kompromisser",
+      "label_bottom_left": "unngå",
+      "label_top_left": "skjulte perler",
+      "title": "Pakkegjennomslag mot ergonomi",
+      "filename": "pakke-gjennomslag-vs-ergonomi-kvadrant",
+      "label_freshness_score": "Oppdateringspoeng",
+      "copy_alt": {
+        "description": "Kvadrantdiagram som viser gjennomslag mot ergonomi for pakkene {packages}. {analysis}. {watermark}.",
+        "side_analysis_top_right": "Følgende pakker ligger i øvre høyre kvadrant (solide valg): {packages}",
+        "side_analysis_top_left": "Følgende pakker ligger i øvre venstre kvadrant (skjulte perler): {packages}",
+        "side_analysis_bottom_right": "Følgende pakker ligger i nedre høyre kvadrant (populære med kompromisser): {packages}",
+        "side_analysis_bottom_left": "Følgende pakker ligger i nedre venstre kvadrant (unngå): {packages}"
+      },
+      "explanation": {
+        "tooltip_help": "Vis forklaring av poengberegning",
+        "tooltip_help_adoption": "Vis forklaring av gjennomslagspoeng",
+        "tooltip_help_efficiency": "Vis forklaring av ergonomipoeng",
+        "introduction": "Poenget beregnes ved å kombinere flere signaler i to akser:",
+        "adoption": "Gjennomslag: gjenspeiler bruk og aktivitet (nedlastinger, oppdaterthet, likes)",
+        "efficiency": "Ergonomi: gjenspeiler fotavtrykk og kvalitet (installasjonsstørrelse, avhengigheter, sårbarheter, typestøtte)",
+        "impact_details": "Hver metrikk bidrar med ulik vekt. Sterke signaler som nedlastinger og installasjonsstørrelse har størst effekt, mens andre finjusterer resultatet. Noen signaler (som sårbarheter eller utfasing) gir trekk."
+      }
     },
     "no_dependency": {
       "label": "(Ingen avhengighet)",
@@ -1513,5 +1664,6 @@
       "message": "Tilgjengelighet er viktig for oss, og vi vil gjerne at du følger oss i denne visjonen. Når du bruker nevnte media, sørg for at det er nok kontrast mot bakgrunnen, og ikke gå mindre enn 24px. Hvis du trenger andre ressurser eller tilleggsinformasjon om prosjektet, ta gjerne kontakt med oss på {link}.",
       "discord_link_text": "chat.npmx.dev"
     }
-  }
+  },
+  "alt_logo_kawaii": "En søt, avrundet og fargerik versjon av npmx-logoen."
 }

@@ -39,7 +39,7 @@ jobs:
             const body = [
               `Thanks for your first contribution, @${author}! ${emoji}`,
               '',
-              `We'd love to welcome you to the npmx community. Come and say hi on [Discord](https://chat.npmx.dev)! And once you've joined, visit [npmx.wamellow.com](https://npmx.wamellow.com/) to claim the **contributor** role.`,
+              `We'd love to welcome you to the npmx community. Come and say hi on [Discord](https://build.npmx.dev)! And once you've joined, visit [npmx.wamellow.com](https://npmx.wamellow.com/) to claim the **contributor** role.`,
             ].join('\n');
 
             await github.rest.issues.createComment({

@@ -1,0 +1,47 @@
+name: dependency-diff
+
+on:
+  pull_request:
+    branches:
+      - main
+      - release
+    paths:
+      - package.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - docs/package.json
+      - cli/package.json
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.sha }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-diff:
+    name: 🔎 Dependency diff
+    runs-on: ubuntu-slim
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: 🔎 Compare dependencies
+        id: analyze
+        uses: e18e/action-dependency-diff@f825d5b5c5ce0a42dc46c47ec20de24460affcd8 # v1.5.0
+        with:
+          mode: artifact
+          detect-replacements: 'true'
+          duplicate-threshold: '4'
+          dependency-threshold: '15'
+          size-threshold: '200000'
+
+      - name: 📤 Upload artifact
+        if: steps.analyze.outputs.artifact-path
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: e18e-diff-result
+          path: ${{ steps.analyze.outputs.artifact-path }}

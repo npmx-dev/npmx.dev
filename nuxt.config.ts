@@ -192,8 +192,8 @@ export default defineNuxtConfig({
     '/translation-status': { prerender: true },
     '/recharging': { prerender: true },
     '/pds': { isr: 86400 }, // revalidate daily
-    // proxy for insights
     '/blog/**': { prerender: true },
+    // proxy for insights
     '/_v/script.js': {
       proxy: 'https://npmx.dev/_vercel/insights/script.js',
     },

@@ -21,7 +21,7 @@ export function initPreferencesOnPrehydrate() {
     ] satisfies typeof ACCENT_COLOR_IDS)
 
     // Valid package manager IDs
-    const validPMs = new Set(['npm', 'pnpm', 'yarn', 'bun', 'deno', 'vlt'])
+    const validPMs = new Set(['npm', 'pnpm', 'yarn', 'bun', 'deno', 'vlt', 'vp'])
 
     // Read settings from localStorage
     const settings = JSON.parse(

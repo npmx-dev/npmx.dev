@@ -336,6 +336,7 @@
       "gitea": "在 Gitea 上查看",
       "gitee": "在 Gitee 上查看",
       "radicle": "在 Radicle 上查看",
+      "socket_dev": "在 socket.dev 上查看",
       "sourcehut": "在 SourceHut 上查看",
       "tangled": "在 Tangled 上查看"
     },
