@@ -57,7 +57,7 @@ const {
   setSort,
 } = useStructuredFilters({
   packages,
-  initialSort: (normalizeSearchParam(route.query.sort) as SortOption) ?? 'updated-desc',
+  initialSort: (normalizeSearchParam(route.query.sort) as SortOption) ?? 'downloads-week-desc',
 })
 
 // Pagination state
@@ -86,7 +86,7 @@ const updateUrl = debounce((updates: { filter?: string; sort?: string }) => {
     query: {
       ...route.query,
       q: updates.filter || undefined,
-      sort: updates.sort && updates.sort !== 'updated-desc' ? updates.sort : undefined,
+      sort: updates.sort && updates.sort !== 'downloads-week-desc' ? updates.sort : undefined,
     },
   })
 }, 300)
