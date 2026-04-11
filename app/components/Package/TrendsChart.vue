@@ -1994,7 +1994,7 @@ const isSparklineLayout = computed({
 
             <!-- Custom legend for multiple series -->
             <template #legend="{ legend }">
-              <div class="flex gap-4 flex-wrap justify-center">
+              <div class="flex gap-x-6 gap-y-2 flex-wrap justify-center text-sm">
                 <template v-if="isMultiPackageMode">
                   <button
                     v-for="datapoint in legend"
