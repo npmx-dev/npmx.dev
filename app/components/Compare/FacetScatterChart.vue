@@ -465,6 +465,10 @@ const step = shallowRef(0)
             </template>
           </VueUiScatter>
         </div>
+
+        <template #fallback>
+          <SkeletonInline class="w-full sm:max-w-[450px] h-[400px]" />
+        </template>
       </ClientOnly>
     </div>
   </div>
