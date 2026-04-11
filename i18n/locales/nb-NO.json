@@ -1236,9 +1236,6 @@
       "packages_selected": "{count}/{max} pakker valgt.",
       "add_hint": "Legg til minst 2 pakker for å sammenligne."
     },
-    "scatter_chart": {
-      "copy_alt": {}
-    },
     "no_dependency": {
       "label": "(Ingen avhengighet)",
       "typeahead_title": "Hva ville James gjort?",
