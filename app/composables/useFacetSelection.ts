@@ -89,6 +89,21 @@ export function useFacetSelection(queryParam = 'facets') {
         description: t(`compare.facets.items.deprecated.description`),
         chartable: false,
       },
+      githubStars: {
+        label: t(`compare.facets.items.github_stars.label`),
+        description: t(`compare.facets.items.github_stars.description`),
+        chartable: true,
+      },
+      githubIssues: {
+        label: t(`compare.facets.items.github_issues.label`),
+        description: t(`compare.facets.items.github_issues.description`),
+        chartable: true,
+      },
+      createdAt: {
+        label: t(`compare.facets.items.created_at.label`),
+        description: t(`compare.facets.items.created_at.description`),
+        chartable: false,
+      },
     }),
   )
 

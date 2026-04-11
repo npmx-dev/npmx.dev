@@ -44,8 +44,14 @@ export interface PackageComparisonData {
      * but a maintainer was removed last week, this would show the '3 years ago' time.
      */
     lastUpdated?: string
+    /** Creation date of the package (ISO 8601 date-time string) */
+    createdAt?: string
     engines?: { node?: string; npm?: string }
-    deprecated?: string
+    deprecated?: string,
+    github?: {
+      stars?: number
+      issues?: number
+    }
   }
   /** Whether this is a binary-only package (CLI without library entry points) */
   isBinaryOnly?: boolean
@@ -115,12 +121,11 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
           try {
             // Fetch basic package info first (required)
             const { data: pkgData } = await $npmRegistry<Packument>(`/${encodePackageName(name)}`)
-
             const latestVersion = pkgData['dist-tags']?.latest
             if (!latestVersion) return null
 
             // Fetch fast additional data in parallel (optional - failures are ok)
-            const [downloads, analysis, vulns, likes] = await Promise.all([
+            const [downloads, analysis, vulns, likes, ghStars, ghIssues] = await Promise.all([
               $fetch<{ downloads: number }>(
                 `https://api.npmjs.org/downloads/point/last-week/${encodePackageName(name)}`,
               ).catch(() => null),
@@ -133,6 +138,8 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               $fetch<PackageLikes>(`/api/social/likes/${encodePackageName(name)}`).catch(
                 () => null,
               ),
+              $fetch<{ repo: { stars: number } }>(`https://ungh.cc/repos/${parseRepositoryInfo(pkgData.repository)?.owner}/${parseRepositoryInfo(pkgData.repository)?.repo}`).then(res => res?.repo.stars || 0).catch(() => null),
+              $fetch<{issues: number}>(`/api/github/issues/${parseRepositoryInfo(pkgData.repository)?.owner}/${parseRepositoryInfo(pkgData.repository)?.repo}`).then(res => res?.issues || 0).catch(() => null),
             ])
             const versionData = pkgData.versions[latestVersion]
             const packageSize = versionData?.dist?.unpackedSize
@@ -179,8 +186,13 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
                 // Use version-specific publish time, NOT time.modified (which can be
                 // updated by metadata changes like maintainer additions)
                 lastUpdated: pkgData.time?.[latestVersion],
+                createdAt: pkgData.time?.created,
                 engines: analysis?.engines,
                 deprecated: versionData?.deprecated,
+                github: {
+                  stars: ghStars ?? undefined,
+                  issues: ghIssues ?? undefined,
+                },
               },
               isBinaryOnly: isBinary,
               totalLikes: likes?.totalLikes,
@@ -252,6 +264,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
 
     return packagesData.value.map(pkg => {
       if (!pkg) return null
+      console.log(pkg.package.name, {pkg})
       return computeFacetValue(
         facet,
         pkg,
@@ -536,6 +549,43 @@ function computeFacetValue(
         raw: totalDepCount,
         display: formatNumber(totalDepCount),
         status: totalDepCount > 50 ? 'warning' : 'neutral',
+      }
+    }
+    case 'githubStars': {
+      const stars = data.metadata?.github?.stars
+      if (stars == null) return null
+      return {
+        raw: stars,
+        display: formatCompactNumber(stars),
+        status: stars > 1000 ? 'good' : 'neutral',
+      }
+    }
+    case 'githubIssues': {
+      const issues = data.metadata?.github?.issues
+      if (issues == null) return null
+      const stars = data.metadata?.github?.stars
+      const ratio = stars && issues > 0 ? issues / stars : null
+      return {
+        raw: issues,
+        display: formatCompactNumber(issues),
+        // High issues-to-stars ratio suggests the project is struggling relative to its popularity
+        status: ratio == null || ratio < 0.1 ? 'good' : ratio < 0.5 ? 'neutral' : 'warning',
+      }
+    }
+    case 'createdAt': {
+      const createdAt = data.metadata?.createdAt
+      const resolved = createdAt ? resolveNoDependencyDisplay(createdAt, t) : null
+      if (resolved) return { raw: 0, ...resolved }
+      if (!createdAt) return null
+      const date = new Date(createdAt)
+      const oneMonthAgo = new Date()
+      oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1)
+      return {
+        raw: date.getTime(),
+        display: createdAt,
+        // Package is rated "good" if it was created more than a month ago (not brand new)
+        status: date < oneMonthAgo ? 'good' : 'neutral',
+        type: 'date',
       }
     }
     default: {

@@ -1343,6 +1343,18 @@
         "vulnerabilities": {
           "label": "Vulnerabilities",
           "description": "Known security vulnerabilities"
+        },
+        "github_stars": {
+          "label": "GitHub Stars",
+          "description": "Number of stars on the GitHub repository"
+        },
+        "github_issues": {
+          "label": "GitHub Issues",
+          "description": "Number of issues on the GitHub repository"
+        },
+        "created_at": {
+          "label": "Created At",
+          "description": "When the package was created"
         }
       },
       "values": {
