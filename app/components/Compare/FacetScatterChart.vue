@@ -4,7 +4,7 @@ import { ref, computed } from 'vue'
 import type { FormatterParams, VueUiScatterConfig, VueUiScatterDatasetItem } from 'vue-data-ui'
 import { VueUiScatter } from 'vue-data-ui/vue-ui-scatter'
 import { buildCompareScatterChartDataset } from '~/utils/compare-scatter-chart'
-import { loadFile, applyEllipsis } from '~/utils/charts'
+import { loadFile } from '~/utils/charts'
 
 import('vue-data-ui/style.css')
 
