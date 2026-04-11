@@ -21,7 +21,6 @@ export type ComparisonFacet =
   | 'githubIssues'
   | 'createdAt'
 
-
 /** Facet metadata for UI display */
 export interface FacetInfo {
   id: ComparisonFacet

@@ -47,7 +47,7 @@ export interface PackageComparisonData {
     /** Creation date of the package (ISO 8601 date-time string) */
     createdAt?: string
     engines?: { node?: string; npm?: string }
-    deprecated?: string,
+    deprecated?: string
     github?: {
       stars?: number
       issues?: number
@@ -138,8 +138,16 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               $fetch<PackageLikes>(`/api/social/likes/${encodePackageName(name)}`).catch(
                 () => null,
               ),
-              $fetch<{ repo: { stars: number } }>(`https://ungh.cc/repos/${parseRepositoryInfo(pkgData.repository)?.owner}/${parseRepositoryInfo(pkgData.repository)?.repo}`).then(res => res?.repo.stars || 0).catch(() => null),
-              $fetch<{issues: number}>(`/api/github/issues/${parseRepositoryInfo(pkgData.repository)?.owner}/${parseRepositoryInfo(pkgData.repository)?.repo}`).then(res => res?.issues || 0).catch(() => null),
+              $fetch<{ repo: { stars: number } }>(
+                `https://ungh.cc/repos/${parseRepositoryInfo(pkgData.repository)?.owner}/${parseRepositoryInfo(pkgData.repository)?.repo}`,
+              )
+                .then(res => res?.repo.stars || 0)
+                .catch(() => null),
+              $fetch<{ issues: number }>(
+                `/api/github/issues/${parseRepositoryInfo(pkgData.repository)?.owner}/${parseRepositoryInfo(pkgData.repository)?.repo}`,
+              )
+                .then(res => res?.issues || 0)
+                .catch(() => null),
             ])
             const versionData = pkgData.versions[latestVersion]
             const packageSize = versionData?.dist?.unpackedSize
@@ -264,7 +272,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
 
     return packagesData.value.map(pkg => {
       if (!pkg) return null
-      console.log(pkg.package.name, {pkg})
+      console.log(pkg.package.name, { pkg })
       return computeFacetValue(
         facet,
         pkg,

@@ -51,7 +51,7 @@ export default defineCachedEventHandler(
     maxAge: CACHE_MAX_AGE_ONE_HOUR,
     swr: true,
     name: 'github-issue-count',
-    getKey: (event) => {
+    getKey: event => {
       const owner = getRouterParam(event, 'owner')
       const repo = getRouterParam(event, 'repo')
       return `${owner}/${repo}`
