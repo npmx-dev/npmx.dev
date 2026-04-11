@@ -66,5 +66,10 @@ export function initPreferencesOnPrehydrate() {
     if (settings.keyboardShortcuts === false) {
       document.documentElement.dataset.kbdShortcuts = 'false'
     }
+
+    // Code font ligatures (default: true)
+    if (settings.codeLigatures === false) {
+      document.documentElement.dataset.codeLigatures = 'false'
+    }
   })
 }

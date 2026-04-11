@@ -280,7 +280,8 @@
       "black": "Black"
     },
     "keyboard_shortcuts_enabled": "Enable keyboard shortcuts",
-    "keyboard_shortcuts_enabled_description": "Keyboard shortcuts can be disabled if they conflict with other browser or system shortcuts"
+    "keyboard_shortcuts_enabled_description": "Keyboard shortcuts can be disabled if they conflict with other browser or system shortcuts",
+    "enable_code_ligatures": "Enable ligatures in code"
   },
   "i18n": {
     "missing_keys": "{count} missing translation | {count} missing translations",

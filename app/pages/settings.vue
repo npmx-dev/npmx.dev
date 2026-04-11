@@ -5,6 +5,7 @@ const { locale: currentLocale, locales, setLocale: setNuxti18nLocale } = useI18n
 const colorMode = useColorMode()
 const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
 const keyboardShortcutsEnabled = useKeyboardShortcuts()
+const { toggleCodeLigatures } = useCodeLigatures()
 
 // Escape to go back (but not when focused on form elements or modal is open)
 onKeyStroke(
@@ -142,6 +143,16 @@ const setLocale: typeof setNuxti18nLocale = newLocale => {
               :label="$t('settings.enable_graph_pulse_loop')"
               :description="$t('settings.enable_graph_pulse_loop_description')"
               v-model="settings.enableGraphPulseLooping"
+            />
+
+            <!-- Divider -->
+            <div class="border-t border-border my-4" />
+
+            <!-- Code ligatures toggle -->
+            <SettingsToggle
+              :label="$t('settings.enable_code_ligatures')"
+              :modelValue="settings.codeLigatures"
+              @update:modelValue="() => toggleCodeLigatures()"
             />
           </div>
         </section>

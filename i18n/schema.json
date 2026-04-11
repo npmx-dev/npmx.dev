@@ -846,6 +846,9 @@
         },
         "keyboard_shortcuts_enabled_description": {
           "type": "string"
+        },
+        "enable_code_ligatures": {
+          "type": "string"
         }
       },
       "additionalProperties": false
