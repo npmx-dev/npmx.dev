@@ -1234,13 +1234,15 @@
       "add_hint": "Ajoutez au moins 2 paquets à comparer."
     },
     "scatter_chart": {
-      "title": "Comparaison {x} vs ${y}",
+      "title": "Comparaison {x} vs {y}",
       "freshness_score": "Score de récence",
       "copy_alt": {
         "analysis": "{package} : {x_name} ({x_value}) et {y_name} ({y_value})",
         "description": "Graphique en nuage de points représentant {x_name} en fonction de {y_name} pour les paquets {packages}. {analysis}. {watermark}"
       },
-      "filename": "{x}-vs-{y}-scatter-chart"
+      "filename": "{x}-vs-{y}-scatter-chart",
+      "x_axis": "Abscisses",
+      "y_axis": "Ordonnées"
     },
     "no_dependency": {
       "label": "(Sans dépendance)",

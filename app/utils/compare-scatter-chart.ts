@@ -28,7 +28,7 @@ function toFreshnessScore(value: unknown, maximumAgeInDays = 365): number | null
   }
 
   if (normalizedFreshness > 1) {
-    return 1
+    return 100
   }
 
   return normalizedFreshness * 100

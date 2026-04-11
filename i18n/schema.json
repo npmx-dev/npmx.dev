@@ -3735,6 +3735,12 @@
             },
             "filename": {
               "type": "string"
+            },
+            "x_axis": {
+              "type": "string"
+            },
+            "y_axis": {
+              "type": "string"
             }
           },
           "additionalProperties": false

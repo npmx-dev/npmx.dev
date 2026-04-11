@@ -296,7 +296,7 @@ const step = shallowRef(0)
           id="select-facet-scatter-x"
           v-model="selectedFacetX"
           :items="chartableFacets.map(f => ({ label: resolveAxisLabel(f.name), value: f.name }))"
-          :label="'X-AXIS'"
+          :label="$t('compare.scatter_chart.x_axis')"
           size="sm"
           block
           @change="step += 1"
@@ -306,7 +306,7 @@ const step = shallowRef(0)
           id="select-facet-scatter-y"
           v-model="selectedFacetY"
           :items="chartableFacets.map(f => ({ label: resolveAxisLabel(f.name), value: f.name }))"
-          :label="'Y-AXIS'"
+          :label="$t('compare.scatter_chart.y_axis')"
           size="sm"
           block
           @change="step += 1"

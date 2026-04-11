@@ -659,7 +659,7 @@ describe('buildCompareScatterChartDataset', () => {
         color: undefined,
         values: [
           {
-            x: 1,
+            x: 100,
             y: 100,
             name: 'ellipsis(future-package,14)',
             fullName: 'future-package',
