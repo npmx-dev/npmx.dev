@@ -257,7 +257,7 @@ export function useCodeContainer() {
   }
 }
 
-export function useCodeLigatures() {
+export const useCodeLigatures = createSharedComposable(function useCodeLigatures() {
   const { settings } = useSettings()
 
   const codeLigatures = computed(() => settings.value.codeLigatures)
@@ -285,4 +285,4 @@ export function useCodeLigatures() {
     codeLigatures,
     toggleCodeLigatures,
   }
-}
+})
