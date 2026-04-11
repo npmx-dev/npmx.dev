@@ -697,7 +697,7 @@ export function createAltTextForCompareScatterChart({
   return altText
 }
 
-export async function coopyAltTextForCompareScatterChart({
+export async function copyAltTextForCompareScatterChart({
   dataset,
   config,
 }: AltCopyArgs<VueUiScatterSeries[], CompareScatterChartConfig>) {

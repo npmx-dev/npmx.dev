@@ -4,7 +4,7 @@ import { ref, computed } from 'vue'
 import type { FormatterParams, VueUiScatterConfig, VueUiScatterDatasetItem } from 'vue-data-ui'
 import { VueUiScatter } from 'vue-data-ui/vue-ui-scatter'
 import { buildCompareScatterChartDataset } from '~/utils/compare-scatter-chart'
-import { loadFile } from '~/utils/charts'
+import { loadFile, copyAltTextForCompareScatterChart } from '~/utils/charts'
 
 import('vue-data-ui/style.css')
 
@@ -156,7 +156,7 @@ const config = computed<VueUiScatterConfig>(() => {
           URL.revokeObjectURL(url)
         },
         altCopy: ({ dataset: dst, config: cfg }) => {
-          coopyAltTextForCompareScatterChart({
+          copyAltTextForCompareScatterChart({
             dataset: dst,
             config: {
               ...cfg,
