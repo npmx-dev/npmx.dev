@@ -2,8 +2,8 @@
 import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison'
 import { useRouteQuery } from '@vueuse/router'
 import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
-import FacetQuadrantChart from '~/components/Compare/FacetQuadrantChart.vue'
 import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
+import FacetScatterChart from '~/components/Compare/FacetScatterChart.vue'
 
 definePageMeta({
   name: 'compare',
@@ -140,7 +140,7 @@ async function exportComparisonDataAsMarkdown() {
 }
 
 defineOgImageComponent('Compare', {
-  packages: () => packages.value,
+  packages: () => packages.value.toSorted((a, b) => a.localeCompare(b)),
   emptyDescription: () => $t('compare.packages.meta_description_empty'),
 })
 
@@ -424,7 +424,7 @@ useSeoMeta({
               </div>
             </TabPanel>
 
-            <!-- Charts: per-facet bars & quadrant -->
+            <!-- Charts: per-facet bars & scatter -->
             <TabPanel value="charts" panel-id="comparison-panel-charts">
               <div
                 v-if="selectedFacets.some(facet => facet.chartable)"
@@ -447,8 +447,8 @@ useSeoMeta({
               <p v-else class="py-12 text-center text-fg-subtle">
                 {{ $t('compare.packages.no_chartable_data') }}
               </p>
-              <div class="max-w-[450px] mx-auto">
-                <FacetQuadrantChart
+              <div>
+                <FacetScatterChart
                   v-if="packages.length"
                   :packages-data="packagesData"
                   :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)"

@@ -7,22 +7,22 @@ ignoreDepScripts: true
 
 ignoreWorkspaceRootCheck: true
 
-ignoredBuiltDependencies:
-  - '@parcel/watcher'
-  - core-js
-  - esbuild
-  - unrs-resolver
-  - vue-demi
+allowBuilds:
+  '@resvg/resvg-js': true
+  'better-sqlite3': true
+  'sharp@0.34.5': true
+  '@parcel/watcher': false
+  'core-js': false
+  'esbuild': false
+  'unrs-resolver': false
+  'vue-demi': false
 
-onlyBuiltDependencies:
-  - '@resvg/resvg-js'
-  - better-sqlite3
-  - sharp@0.34.5
+dedupePeers: true
 
 overrides:
   sharp: 0.34.5
-  vite: npm:@voidzero-dev/vite-plus-core@0.1.12
-  vitest: npm:@voidzero-dev/vite-plus-test@0.1.12
+  vite: npm:@voidzero-dev/vite-plus-core@0.1.16
+  vitest: npm:@voidzero-dev/vite-plus-test@0.1.16
   storybook: ^10.3.1
 
 packageExtensions:

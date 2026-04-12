@@ -45,6 +45,7 @@ export default defineConfig({
       perf: 'warn',
     },
     rules: {
+      'vitest/require-mock-type-parameters': 'off',
       'no-console': 'warn',
       'no-await-in-loop': 'off',
       'unicorn/no-array-sort': 'off',

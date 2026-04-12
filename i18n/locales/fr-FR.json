@@ -334,6 +334,7 @@
       "gitea": "Voir sur Gitea",
       "gitee": "Voir sur Gitee",
       "radicle": "Voir sur Radicle",
+      "socket_dev": "Voir sur socket.dev",
       "sourcehut": "Voir sur SourceHut",
       "tangled": "Voir sur Tangled"
     },
@@ -936,8 +937,11 @@
     "lines": "{count} lignes",
     "toggle_tree": "Basculer l'arborescence",
     "close_tree": "Fermer l'arborescence",
+    "copy_content": "Copier le contenu du fichier",
     "copy_link": "Copier le lien",
     "view_raw": "Voir le fichier brut",
+    "toggle_container": "Changer la largeur du conteneur",
+    "open_raw_file": "Ouvrir le fichier brut",
     "file_too_large": "Fichier trop volumineux pour l'aperçu",
     "file_size_warning": "{size} dépasse la limite de 500 Ko pour la coloration syntaxique",
     "failed_to_load": "Échec du chargement du fichier",
@@ -1228,30 +1232,16 @@
       "packages_selected": "{count}/{max} paquets sélectionnés.",
       "add_hint": "Ajoutez au moins 2 paquets à comparer."
     },
-    "quadrant_chart": {
-      "label_x_axis": "Adoption",
-      "label_y_axis": "Efficacité du paquet",
-      "label_top_right": "fort impact",
-      "label_bottom_right": "populaire mais lourd",
-      "label_bottom_left": "faible impact",
-      "label_top_left": "prometteur",
-      "title": "Adoption vs efficacité du paquet",
-      "filename": "matrice-adoption-vs-efficacite-paquet",
-      "label_freshness_score": "Score de fraîcheur",
+    "scatter_chart": {
+      "title": "Comparaison {x} vs {y}",
+      "freshness_score": "Score de récence",
       "copy_alt": {
-        "description": "Graphique en quadrants représentant l’adoption et l’efficacité pour les paquets {packages}. {analysis}. {watermark}.",
-        "side_analysis_top_right": "Les paquets suivants sont positionnés dans le quadrant en haut à droite (fort impact) : {packages}",
-        "side_analysis_top_left": "Les paquets suivants sont positionnés dans le quadrant en haut à gauche (prometteur) : {packages}",
-        "side_analysis_bottom_right": "Les paquets suivants sont positionnés dans le quadrant en bas à droite (populaires mais lourds) : {packages}",
-        "side_analysis_bottom_left": "Les paquets suivants sont positionnés dans le quadrant en bas à gauche (faible impact) : {packages}"
+        "analysis": "{package} : {x_name} ({x_value}) et {y_name} ({y_value})",
+        "description": "Graphique en nuage de points représentant {x_name} en fonction de {y_name} pour les paquets {packages}. {analysis}. {watermark}"
       },
-      "explanation": {
-        "tooltip_help": "Afficher l'explication du score",
-        "introduction": "Le score est calculé en combinant plusieurs signaux selon deux axes :",
-        "adoption": "Adoption : reflète l’utilisation et l’activité (téléchargements, fraîcheur, likes)",
-        "efficiency": "Efficacité du paquet : reflète l’empreinte et la qualité (taille installée, dépendances, vulnérabilités, support TypeScript)",
-        "impact_details": "Chaque métrique contribue avec un poids différent. Les signaux forts comme les téléchargements et la taille installée ont le plus d’impact, tandis que les autres affinent le résultat. Certains signaux (comme les vulnérabilités ou la dépréciation) appliquent des pénalités."
-      }
+      "filename": "{x}-vs-{y}-scatter-chart",
+      "x_axis": "Abscisses ↦",
+      "y_axis": "Ordonnées ↥"
     },
     "no_dependency": {
       "label": "(Sans dépendance)",

@@ -118,6 +118,15 @@ useCommandPaletteContextCommands(
     }
 
     commands.push({
+      id: 'package-link-socket.dev',
+      group: 'links',
+      label: 'socket.dev',
+      keywords: [...packageKeywords, 'socket.dev'],
+      iconClass: 'i-simple-icons:socket',
+      href: `https://socket.dev/npm/package/${props.pkg.name}`,
+    })
+
+    commands.push({
       id: 'package-link-npm',
       group: 'links',
       label: 'npm',
@@ -171,6 +180,15 @@ useCommandPaletteContextCommands(
     <li v-if="displayVersion?.bugs?.url">
       <LinkBase :to="displayVersion.bugs.url" classicon="i-lucide:circle-alert">
         {{ $t('package.links.issues') }}
+      </LinkBase>
+    </li>
+    <li>
+      <LinkBase
+        :to="`https://socket.dev/npm/package/${pkg.name}`"
+        :title="$t('common.view_on.socket_dev')"
+        classicon="i-simple-icons:socket"
+      >
+        socket.dev
       </LinkBase>
     </li>
     <li>

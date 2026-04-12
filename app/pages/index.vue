@@ -26,11 +26,11 @@ defineOgImageComponent('Default', {
 
 <template>
   <main>
-    <section class="container min-h-screen flex flex-col">
+    <section class="relative container min-h-[calc(100dvh-3.5rem)] flex flex-col overflow-hidden">
       <header
         class="flex-1 flex flex-col items-center justify-center text-center pt-20 pb-4 md:pb-8 lg:pb-20"
       >
-        <LandingLogo class="w-42 h-auto sm:w-58 md:w-70" />
+        <LandingIntroHeader />
         <search
           class="w-full max-w-2xl motion-safe:animate-slide-up motion-safe:animate-fill-both"
           style="animation-delay: 0.2s"

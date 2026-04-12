@@ -4,6 +4,8 @@ export interface FacetInfoWithLabels extends Omit<FacetInfo, 'id'> {
   label: string
   description: string
   chartable: boolean
+  chartable_scatter: boolean
+  formatter?: (value: number) => string
 }
 
 // Get facets in a category (excluding coming soon)
@@ -21,73 +23,104 @@ function getFacetsInCategory(category: string): ComparisonFacet[] {
  */
 export function useFacetSelection(queryParam = 'facets') {
   const { t } = useI18n()
+  const compactNumberFormatter = useCompactNumberFormatter()
+  const bytesFormatter = useBytesFormatter()
 
   const facetLabels = computed(
-    (): Record<ComparisonFacet, { label: string; description: string; chartable: boolean }> => ({
+    (): Record<
+      ComparisonFacet,
+      {
+        label: string
+        description: string
+        chartable: boolean
+        chartable_scatter: boolean
+        formatter?: (value: number) => string
+      }
+    > => ({
       downloads: {
         label: t(`compare.facets.items.downloads.label`),
         description: t(`compare.facets.items.downloads.description`),
-        chartable: true,
+        chartable: true, // TODO: rename to chartable_bar
+        chartable_scatter: true,
+        formatter: v => compactNumberFormatter.value.format(v),
       },
       totalLikes: {
         label: t(`compare.facets.items.totalLikes.label`),
         description: t(`compare.facets.items.totalLikes.description`),
         chartable: true,
+        chartable_scatter: true,
+        formatter: v => compactNumberFormatter.value.format(v),
       },
       packageSize: {
         label: t(`compare.facets.items.packageSize.label`),
         description: t(`compare.facets.items.packageSize.description`),
         chartable: true,
+        chartable_scatter: true,
+        formatter: v => bytesFormatter.format(v),
       },
       installSize: {
         label: t(`compare.facets.items.installSize.label`),
         description: t(`compare.facets.items.installSize.description`),
         chartable: true,
+        chartable_scatter: true,
+        formatter: v => bytesFormatter.format(v),
       },
       moduleFormat: {
         label: t(`compare.facets.items.moduleFormat.label`),
         description: t(`compare.facets.items.moduleFormat.description`),
         chartable: false,
+        chartable_scatter: false,
       },
       types: {
         label: t(`compare.facets.items.types.label`),
         description: t(`compare.facets.items.types.description`),
         chartable: false,
+        chartable_scatter: false,
       },
       engines: {
         label: t(`compare.facets.items.engines.label`),
         description: t(`compare.facets.items.engines.description`),
         chartable: false,
+        chartable_scatter: false,
       },
       vulnerabilities: {
         label: t(`compare.facets.items.vulnerabilities.label`),
         description: t(`compare.facets.items.vulnerabilities.description`),
         chartable: false,
+        chartable_scatter: true,
+        formatter: v => compactNumberFormatter.value.format(v),
       },
       lastUpdated: {
         label: t(`compare.facets.items.lastUpdated.label`),
         description: t(`compare.facets.items.lastUpdated.description`),
         chartable: false,
+        chartable_scatter: true,
       },
       license: {
         label: t(`compare.facets.items.license.label`),
         description: t(`compare.facets.items.license.description`),
         chartable: false,
+        chartable_scatter: false,
       },
       dependencies: {
         label: t(`compare.facets.items.dependencies.label`),
         description: t(`compare.facets.items.dependencies.description`),
         chartable: true,
+        chartable_scatter: true,
+        formatter: v => compactNumberFormatter.value.format(v),
       },
       totalDependencies: {
         label: t(`compare.facets.items.totalDependencies.label`),
         description: t(`compare.facets.items.totalDependencies.description`),
         chartable: true,
+        chartable_scatter: true,
+        formatter: v => compactNumberFormatter.value.format(v),
       },
       deprecated: {
         label: t(`compare.facets.items.deprecated.label`),
         description: t(`compare.facets.items.deprecated.description`),
         chartable: false,
+        chartable_scatter: false,
       },
     }),
   )
@@ -100,6 +133,8 @@ export function useFacetSelection(queryParam = 'facets') {
       label: facetLabels.value[facet].label,
       description: facetLabels.value[facet].description,
       chartable: facetLabels.value[facet].chartable,
+      chartable_scatter: facetLabels.value[facet].chartable_scatter,
+      formatter: facetLabels.value[facet].formatter ?? undefined,
     }
   }
 
@@ -224,6 +259,7 @@ export function useFacetSelection(queryParam = 'facets') {
     isAllSelected,
     isNoneSelected,
     allFacets: ALL_FACETS,
+    facetLabels,
     // Facet info with i18n
     getCategoryLabel,
     facetsByCategory,

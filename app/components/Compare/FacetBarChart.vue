@@ -170,6 +170,9 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
       style: {
         chart: {
           backgroundColor: colors.value.bg,
+          legend: {
+            show: false,
+          },
         },
       },
     },
@@ -278,7 +281,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
 
 <template>
   <div class="font-mono facet-bar">
-    <ClientOnly v-if="dataset.length">
+    <ClientOnly v-if="packages.length">
       <VueUiHorizontalBar :key="chartKey" :dataset :config class="[direction:ltr]">
         <template #hint="{ isVisible }">
           <p v-if="isVisible" class="text-accent text-xs pt-2" aria-hidden="true">
@@ -339,40 +342,25 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
             aria-hidden="true"
           />
         </template>
+
+        <template #skeleton>
+          <!-- This empty div overrides the default built-in scanning animation on load -->
+          <div></div>
+        </template>
       </VueUiHorizontalBar>
-
-      <template #fallback>
-        <div class="flex flex-col gap-2 justify-center items-center mb-2">
-          <SkeletonInline class="h-4 w-16" />
-          <SkeletonInline class="h-4 w-28" />
-        </div>
-        <div class="flex flex-col gap-1">
-          <SkeletonInline class="h-7 w-full" v-for="pkg in packages" :key="pkg" />
-        </div>
-      </template>
     </ClientOnly>
-
-    <template v-else>
-      <div class="flex flex-col gap-2 justify-center items-center mb-2">
-        <SkeletonInline class="h-4 w-16" />
-        <SkeletonInline class="h-4 w-28" />
-      </div>
-      <div class="flex flex-col gap-1">
-        <SkeletonInline class="h-7 w-full" v-for="pkg in packages" :key="pkg" />
-      </div>
-    </template>
   </div>
 </template>
 
 <style scoped>
 :deep(.vue-data-ui-component svg:focus-visible) {
-  outline: 1px solid var(--accent-color) !important;
+  outline: 1px solid var(--accent) !important;
   border-radius: 0.1rem;
   outline-offset: 3px !important;
 }
 :deep(.vue-ui-user-options-button:focus-visible),
 :deep(.vue-ui-user-options :first-child:focus-visible) {
-  outline: 0.1rem solid var(--accent-color) !important;
+  outline: 0.1rem solid var(--accent) !important;
   border-radius: 0.25rem;
 }
 </style>

@@ -49,16 +49,17 @@ export function useCompareReplacements(packageNames: MaybeRefOrGetter<string[]>)
               mapping: ModuleReplacementMapping
               replacement: ModuleReplacement
             } | null>(`/api/replacements/${name}`)
-            return { name, replacement: result?.replacement ?? null }
+            return { name, replacement: result?.replacement ?? null, failed: false as const }
           } catch {
-            return { name, replacement: null }
+            return { name, failed: true as const }
           }
         }),
       )
 
       const newReplacements = new Map(replacements.value)
-      for (const { name, replacement } of results) {
-        newReplacements.set(name, replacement)
+      for (const result of results) {
+        if (result.failed) continue
+        newReplacements.set(result.name, result.replacement)
       }
       replacements.value = newReplacements
     } finally {

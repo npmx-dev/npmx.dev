@@ -312,8 +312,6 @@
     "warnings": "Warnings:",
     "go_back_home": "Go back home",
     "per_week": "/ week",
-    "yes": "Yes",
-    "no": "No",
     "vanity_downloads_hint": "Vanity number: no packages displayed | Vanity number: for the displayed package | Vanity number: Sum of {count} displayed packages",
     "sort": {
       "name": "name",
@@ -326,7 +324,7 @@
     "edit": "Edit",
     "error": "Error",
     "view_on": {
-      "npm": "view on npm",
+      "npm": "View on npm",
       "github": "View on GitHub",
       "gitlab": "View on GitLab",
       "bitbucket": "View on Bitbucket",
@@ -336,11 +334,14 @@
       "gitea": "View on Gitea",
       "gitee": "View on Gitee",
       "radicle": "View on Radicle",
+      "socket_dev": "View on socket.dev",
       "sourcehut": "View on SourceHut",
       "tangled": "View on Tangled"
     },
     "collapse": "Collapse",
-    "expand": "Expand"
+    "collapse_with_name": "Collapse {name}",
+    "expand": "Expand",
+    "expand_with_name": "Expand {name}"
   },
   "profile": {
     "display_name": "Display Name",
@@ -1236,30 +1237,16 @@
       "packages_selected": "{count}/{max} packages selected.",
       "add_hint": "Add at least 2 packages to compare."
     },
-    "quadrant_chart": {
-      "label_x_axis": "Adoption",
-      "label_y_axis": "Efficiency",
-      "label_top_right": "high impact",
-      "label_bottom_right": "popular but heavy",
-      "label_bottom_left": "low impact",
-      "label_top_left": "promising",
-      "title": "Adoption vs Package efficiency",
-      "filename": "package-adoption-vs-efficiency-matrix",
-      "label_freshness_score": "Freshness score",
+    "scatter_chart": {
+      "title": "Compare {x} vs {y}",
+      "freshness_score": "Freshness score",
       "copy_alt": {
-        "description": "Quadrant chart mapping adoption versus efficiency for the {packages} packages. {analysis}. {watermark}.",
-        "side_analysis_top_right": "The following packages are positioned on the top-right quadrant (high-impact): {packages}",
-        "side_analysis_top_left": "The following packages are positioned on the top-left quadrant (promising): {packages}",
-        "side_analysis_bottom_right": "The following packages are positioned on the bottom-right quadrant (popular but heavy): {packages}",
-        "side_analysis_bottom_left": "The following packages are positioned on the bottom-left quadrant (low-impact): {packages}"
+        "analysis": "{package} : {x_name} ({x_value}) and {y_name} ({y_value})",
+        "description": "Scatter plot chart mapping {x_name} versus {y_name} for the {packages} packages. {analysis}. {watermark}"
       },
-      "explanation": {
-        "tooltip_help": "Show scoring explanation",
-        "introduction": "The score is calculated by combining multiple signals into two axes:",
-        "adoption": "Adoption: reflects usage and activity (downloads, freshness, likes)",
-        "efficiency": "Package efficiency: reflects footprint and quality (install size, dependencies, vulnerabilities, type support)",
-        "impact_details": "Each metric contributes with a different weight. Strong signals like downloads and install size have the largest impact, while others refine the result. Some signals (such as vulnerabilities or deprecation) apply penalties."
-      }
+      "filename": "{x}-vs-{y}-scatter-chart",
+      "x_axis": "X-AXIS ↦",
+      "y_axis": "Y-AXIS ↥"
     },
     "no_dependency": {
       "label": "(No dependency)",
