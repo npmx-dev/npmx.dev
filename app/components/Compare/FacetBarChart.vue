@@ -345,7 +345,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
 
         <template #skeleton>
           <!-- This empty div overrides the default built-in scanning animation on load -->
-          <div />
+          <div></div>
         </template>
       </VueUiHorizontalBar>
     </ClientOnly>
