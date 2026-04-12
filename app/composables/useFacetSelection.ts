@@ -141,7 +141,6 @@ export function useFacetSelection(queryParam = 'facets') {
         description: t(`compare.facets.items.createdAt.description`),
         chartable: false,
         chartable_scatter: false,
-        formatter: v => new Date(v).toLocaleDateString(),
       },
     }),
   )
