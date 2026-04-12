@@ -343,13 +343,23 @@ const flatItems = computed<FlatItem[]>(() => {
                 >deprecated</span
               >
             </div>
-            <LinkBase
-              :to="packageRoute(packageName, latestTagRow!.version)"
-              class="text-2xl font-semibold tracking-tight after:absolute after:inset-0 after:content-['']"
-              :title="latestTagRow!.version"
-              dir="ltr"
-              >v{{ latestTagRow!.version }}</LinkBase
-            >
+            <div class="flex items-center gap-2">
+              <LinkBase
+                :to="packageRoute(packageName, latestTagRow!.version)"
+                class="text-2xl font-semibold tracking-tight after:absolute after:inset-0 after:content-['']"
+                :title="latestTagRow!.version"
+                dir="ltr"
+                >v{{ latestTagRow!.version }}</LinkBase
+              >
+              <ProvenanceBadge
+                v-if="fullVersionMap?.get(latestTagRow!.version)?.hasProvenance"
+                :package-name="packageName"
+                :version="latestTagRow!.version"
+                compact
+                :linked="false"
+                class="relative z-10"
+              />
+            </div>
           </div>
           <!-- Right: downloads + date + provenance -->
           <div
@@ -363,13 +373,6 @@ const flatItems = computed<FlatItem[]>(() => {
             <span class="i-lucide:chart-line" aria-hidden="true"></span>
           </div>
           <div class="flex flex-col items-end gap-1.5 shrink-0 relative z-10">
-            <ProvenanceBadge
-              v-if="fullVersionMap?.get(latestTagRow!.version)?.hasProvenance"
-              :package-name="packageName"
-              :version="latestTagRow!.version"
-              compact
-              :linked="false"
-            />
             <DateTime
               v-if="getVersionTime(latestTagRow!.version)"
               :datetime="getVersionTime(latestTagRow!.version)!"
@@ -402,7 +405,7 @@ const flatItems = computed<FlatItem[]>(() => {
               >
             </div>
 
-            <!-- Version + Deprecated -->
+            <!-- Version + Provenance + Deprecated -->
             <div class="flex-1 min-w-0 flex items-center gap-2">
               <LinkBase
                 :to="packageRoute(packageName, row.version)"
@@ -412,6 +415,14 @@ const flatItems = computed<FlatItem[]>(() => {
               >
                 v{{ row.version }}
               </LinkBase>
+              <ProvenanceBadge
+                v-if="fullVersionMap?.get(row.version)?.hasProvenance"
+                :package-name="packageName"
+                :version="row.version"
+                compact
+                :linked="false"
+                class="relative z-10"
+              />
               <span
                 v-if="fullVersionMap?.get(row.version)?.deprecated"
                 class="text-3xs font-medium text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded relative z-10"
@@ -433,7 +444,7 @@ const flatItems = computed<FlatItem[]>(() => {
             </span>
             <span v-else class="w-28 shrink-0" />
 
-            <!-- Date + Provenance -->
+            <!-- Date -->
             <div class="flex items-center gap-2 shrink-0 relative z-10">
               <DateTime
                 v-if="getVersionTime(row.version)"
@@ -442,13 +453,6 @@ const flatItems = computed<FlatItem[]>(() => {
                 year="numeric"
                 month="short"
                 day="numeric"
-              />
-              <ProvenanceBadge
-                v-if="fullVersionMap?.get(row.version)?.hasProvenance"
-                :package-name="packageName"
-                :version="row.version"
-                compact
-                :linked="false"
               />
             </div>
           </div>
@@ -575,6 +579,14 @@ const flatItems = computed<FlatItem[]>(() => {
                         >
                           v{{ item.version }}
                         </LinkBase>
+                        <ProvenanceBadge
+                          v-if="fullVersionMap?.get(item.version)?.hasProvenance"
+                          :package-name="packageName"
+                          :version="item.version"
+                          compact
+                          :linked="false"
+                          class="relative z-10"
+                        />
                         <div
                           v-if="versionToTagsMap.get(item.version)?.length"
                           class="flex items-center gap-1 flex-wrap relative z-10"
@@ -613,7 +625,7 @@ const flatItems = computed<FlatItem[]>(() => {
                       </span>
                       <span v-else class="w-28 shrink-0" />
 
-                      <!-- Date + Provenance -->
+                      <!-- Date -->
                       <div class="flex items-center gap-2 shrink-0 relative z-10">
                         <DateTime
                           v-if="getVersionTime(item.version)"
@@ -622,13 +634,6 @@ const flatItems = computed<FlatItem[]>(() => {
                           year="numeric"
                           month="short"
                           day="numeric"
-                        />
-                        <ProvenanceBadge
-                          v-if="fullVersionMap?.get(item.version)?.hasProvenance"
-                          :package-name="packageName"
-                          :version="item.version"
-                          compact
-                          :linked="false"
                         />
                       </div>
                     </div>
