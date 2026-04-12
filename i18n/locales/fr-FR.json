@@ -1241,8 +1241,8 @@
         "description": "Graphique en nuage de points représentant {x_name} en fonction de {y_name} pour les paquets {packages}. {analysis}. {watermark}"
       },
       "filename": "{x}-vs-{y}-scatter-chart",
-      "x_axis": "Abscisses",
-      "y_axis": "Ordonnées"
+      "x_axis": "Abscisses ↦",
+      "y_axis": "Ordonnées ↥"
     },
     "no_dependency": {
       "label": "(Sans dépendance)",

@@ -1244,8 +1244,8 @@
         "description": "Scatter plot chart mapping {x_name} versus {y_name} for the {packages} packages. {analysis}. {watermark}"
       },
       "filename": "{x}-vs-{y}-scatter-chart",
-      "x_axis": "X-AXIS",
-      "y_axis": "Y-AXIS"
+      "x_axis": "X-AXIS ↦",
+      "y_axis": "Y-AXIS ↥"
     },
     "no_dependency": {
       "label": "(No dependency)",
