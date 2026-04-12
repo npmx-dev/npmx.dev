@@ -125,6 +125,8 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
             if (!latestVersion) return null
 
             // Fetch fast additional data in parallel (optional - failures are ok)
+            const repoInfo = parseRepositoryInfo(pkgData.repository)
+            const isGitHub = repoInfo?.provider === 'github'
             const [downloads, analysis, vulns, likes, ghStars, ghIssues] = await Promise.all([
               $fetch<{ downloads: number }>(
                 `https://api.npmjs.org/downloads/point/last-week/${encodePackageName(name)}`,
@@ -138,16 +140,20 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               $fetch<PackageLikes>(`/api/social/likes/${encodePackageName(name)}`).catch(
                 () => null,
               ),
-              $fetch<{ repo: { stars: number } }>(
-                `https://ungh.cc/repos/${parseRepositoryInfo(pkgData.repository)?.owner}/${parseRepositoryInfo(pkgData.repository)?.repo}`,
-              )
-                .then(res => res?.repo.stars || 0)
-                .catch(() => null),
-              $fetch<{ issues: number }>(
-                `/api/github/issues/${parseRepositoryInfo(pkgData.repository)?.owner}/${parseRepositoryInfo(pkgData.repository)?.repo}`,
-              )
-                .then(res => res?.issues || 0)
-                .catch(() => null),
+              isGitHub
+                ? $fetch<{ repo: { stars: number } }>(
+                    `https://ungh.cc/repos/${repoInfo.owner}/${repoInfo.repo}`,
+                  )
+                    .then(res => res?.repo.stars || 0)
+                    .catch(() => null)
+                : Promise.resolve(null),
+              isGitHub
+                ? $fetch<{ issues: number }>(
+                    `/api/github/issues/${repoInfo.owner}/${repoInfo.repo}`,
+                  )
+                    .then(res => res?.issues || 0)
+                    .catch(() => null)
+                : Promise.resolve(null),
             ])
             const versionData = pkgData.versions[latestVersion]
             const packageSize = versionData?.dist?.unpackedSize
@@ -272,7 +278,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
 
     return packagesData.value.map(pkg => {
       if (!pkg) return null
-      console.log(pkg.package.name, { pkg })
+
       return computeFacetValue(
         facet,
         pkg,
@@ -565,34 +571,24 @@ function computeFacetValue(
       return {
         raw: stars,
         display: formatCompactNumber(stars),
-        status: stars > 1000 ? 'good' : 'neutral',
+        status: 'neutral',
       }
     }
     case 'githubIssues': {
       const issues = data.metadata?.github?.issues
       if (issues == null) return null
-      const stars = data.metadata?.github?.stars
-      const ratio = stars && issues > 0 ? issues / stars : null
       return {
         raw: issues,
         display: formatCompactNumber(issues),
-        // High issues-to-stars ratio suggests the project is struggling relative to its popularity
-        status: ratio == null || ratio < 0.1 ? 'good' : ratio < 0.5 ? 'neutral' : 'warning',
+        status: 'neutral',
       }
     }
     case 'createdAt': {
       const createdAt = data.metadata?.createdAt
-      const resolved = createdAt ? resolveNoDependencyDisplay(createdAt, t) : null
-      if (resolved) return { raw: 0, ...resolved }
       if (!createdAt) return null
-      const date = new Date(createdAt)
-      const oneMonthAgo = new Date()
-      oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1)
       return {
-        raw: date.getTime(),
+        raw: createdAt,
         display: createdAt,
-        // Package is rated "good" if it was created more than a month ago (not brand new)
-        status: date < oneMonthAgo ? 'good' : 'neutral',
         type: 'date',
       }
     }
