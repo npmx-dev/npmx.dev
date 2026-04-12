@@ -2,7 +2,7 @@
   "$schema": "../schema.json",
   "seo": {
     "home": {
-      "title": "npmx - Pakke Browser til npm Registry",
+      "title": "npmx - pakkebrowser til npm-registret",
       "description": "en hurtig, moderne browser til npm-registret. Søg, gennemse og udforsk pakker med en moderne grænseflade."
     }
   },
@@ -28,6 +28,9 @@
       "search": "Søg",
       "package": "Pakke"
     },
+    "ctrl_key": "Ctrl",
+    "command_palette": "Åbn kommandopaletten",
+    "command_palette_description": "Brug kommandopaletten til at hoppe mellem sider, pakkevisninger, indstillinger og eksterne links uden at forlade tastaturet. På macOS skal du trykke på ⌘K. På Windows og Linux skal du trykke på {ctrlKey}+K.",
     "focus_search": "Fokusér søgning",
     "show_kbd_hints": "Fremhæv tastaturgenveje",
     "settings": "Åbn indstillinger",
@@ -50,15 +53,15 @@
     "found_packages_sorted": "Ingen resultater fundet | Sortering af top {count} resultat | Sortering af top {count} resultater",
     "updating": "(opdaterer...)",
     "no_results": "Ingen pakker fundet for \"{query}\"",
-    "rate_limited": "Ramte npm rate limit, prøv igen om et øjeblik",
+    "rate_limited": "For mange forespørgsler til npm, prøv igen om et øjeblik",
     "title": "søg",
     "title_search": "søg: {search}",
     "title_packages": "søg pakker",
     "meta_description": "Søgeresultater for '{search}'",
     "meta_description_packages": "Søg npm-pakker",
     "not_taken": "{name} er ikke taget",
-    "claim_prompt": "Krav dette pakkenavn på npm",
-    "claim_button": "Krav \"{name}\"",
+    "claim_prompt": "Gør krav på dette pakkenavn på npm",
+    "claim_button": "Gør krav på \"{name}\"",
     "want_to_claim": "Vil du kræve dette pakkenavn?",
     "start_typing": "Begynd at skrive for at søge efter pakker",
     "algolia_disclaimer": "Drevet af Algolia",
@@ -77,21 +80,111 @@
     "instant_search_advisory": "{label} {state} — {action}"
   },
   "command_palette": {
-    "state": {},
-    "groups": {},
-    "actions": {},
-    "connections": {},
-    "navigation": {},
-    "links": {},
-    "package_links": {},
-    "theme": {},
-    "package": {},
-    "package_actions": {},
-    "code": {},
-    "diff": {},
-    "version": {},
-    "status": {},
-    "announcements": {}
+    "title": "kommandopalet",
+    "quick_actions": "gå til...",
+    "subtitle": "naviger rundt i npmx og skift hurtigt indstillinger",
+    "subtitle_languages": "vælg et sprog eller hjælp med at forbedre oversættelserne",
+    "instructions": "Skriv for at filtrere kommandoer. Brug piletasterne til at bevæge dig gennem resultaterne, og tryk på Enter for at køre en kommando.",
+    "input_label": "Søgning i kommandopaletten",
+    "results_label": "Kommandoresultater",
+    "placeholder": "skriv en kommando...",
+    "back": "Tilbage",
+    "empty": "Ingen matchende kommandoer",
+    "empty_search_hint": "Tryk på Enter for at søge efter \"{query}\".",
+    "current": "aktuel",
+    "here": "du er her",
+    "connected": "forbundet",
+    "state": {
+      "on": "til",
+      "off": "fra"
+    },
+    "groups": {
+      "actions": "Handlinger",
+      "help": "Hjælp",
+      "language": "Sprog",
+      "connections": "Forbindelser",
+      "navigation": "Navigation",
+      "links": "Links",
+      "npmx": "npmx",
+      "package": "Pakke",
+      "package_with_name": "Pakke ({name})",
+      "versions": "Versioner",
+      "versions_with_name": "Versioner af {name}"
+    },
+    "actions": {
+      "search": "Søg",
+      "search_for": "Søg efter \"{query}\"",
+      "keyboard_shortcuts": "Tastaturgenveje",
+      "help_translate": "Hjælp med at oversætte"
+    },
+    "connections": {
+      "npm_connect": "Forbind til npm CLI",
+      "npm_connected": "npm CLI (~{username})",
+      "npm_disconnect": "Afbryd forbindelsen til npm CLI",
+      "atmosphere_connect": "Forbind til Atmosphere",
+      "atmosphere_connected": "atmosphere ({'@'}{handle})",
+      "atmosphere_disconnect": "Afbryd forbindelsen til Atmosphere"
+    },
+    "navigation": {
+      "home": "hjem",
+      "packages": "pakker (~{username})",
+      "orgs": "organisationer (~{username})",
+      "profile": "profil ({'@'}{handle})"
+    },
+    "links": {
+      "external": "Eksternt link"
+    },
+    "package_links": {
+      "stars": "Stjerner",
+      "forks": "Forks"
+    },
+    "theme": {
+      "system": "Brug systemtema",
+      "light": "Brug lyst tema",
+      "dark": "Brug mørkt tema"
+    },
+    "package": {
+      "main": "Pakkeside",
+      "docs": "Dokumentation",
+      "code": "Kode",
+      "diff": "Diff",
+      "compare": "Sammenlign denne pakke",
+      "download": "Hent tarball"
+    },
+    "package_actions": {
+      "copy_run": "Kopiér kør-kommando"
+    },
+    "code": {
+      "copy_file": "Kopiér filindhold"
+    },
+    "diff": {
+      "merge_modified_lines": "Flet ændrede linjer",
+      "word_wrap": "Linjebrud"
+    },
+    "version": {
+      "label": "{version}"
+    },
+    "status": {
+      "available_in_context": "{context}. Ingen kommandoer tilgængelige | {context}. 1 kommando tilgængelig | {context}. {count} kommandoer tilgængelige",
+      "matching_in_context": "{context}. Ingen matchende kommandoer | {context}. 1 matchende kommando | {context}. {count} matchende kommandoer",
+      "no_matches_search_in_context": "{context}. Ingen matchende kommandoer. Tryk på Enter for at søge efter \"{query}\"."
+    },
+    "announcements": {
+      "language_changed": "Sprog sat til {language}.",
+      "relative_dates_on": "Relative datoer slået til.",
+      "relative_dates_off": "Relative datoer slået fra.",
+      "theme_changed": "Tema sat til {theme}.",
+      "accent_color_changed": "Accentfarve sat til {color}.",
+      "background_theme_changed": "Baggrundsnuance sat til {theme}.",
+      "download_started": "Downloader {package}-tarball.",
+      "copied_to_clipboard": "Kopieret til udklipsholderen.",
+      "npm_disconnected": "npm CLI blev afbrudt.",
+      "atmosphere_disconnected": "Atmosphere blev afbrudt.",
+      "facets_all_selected": "Alle facetter er valgt.",
+      "facets_all_deselected": "Alle facetter er fravalgt.",
+      "view_switched": "Skiftede til visningen {view}.",
+      "setting_toggled": "{setting} {state}."
+    }
   },
   "nav": {
     "main_navigation": "Hovednavigation",
@@ -168,6 +261,7 @@
     "translation_status": "Tjek global oversættelsesstatus",
     "accent_colors": {
       "label": "Accentfarver",
+      "neutral": "Neutral",
       "sky": "Himmel",
       "coral": "Koraller",
       "amber": "Amber",
@@ -218,6 +312,8 @@
     "warnings": "Advarsler:",
     "go_back_home": "Gå tilbage til forsiden",
     "per_week": "/ uge",
+    "yes": "Ja",
+    "no": "Nej",
     "vanity_downloads_hint": "Vanity-nummer: ingen pakker vist | Vanity-nummer: for den viste pakke | Vanity-nummer: Summen af {count} viste pakker",
     "sort": {
       "name": "navn",
@@ -240,11 +336,14 @@
       "gitea": "Vis på Gitea",
       "gitee": "Vis på Gitee",
       "radicle": "Vis på Radicle",
+      "socket_dev": "vis på socket.dev",
       "sourcehut": "Vis på SourceHut",
       "tangled": "Vis på Tangled"
     },
     "collapse": "Skjul",
-    "expand": "Udvid"
+    "collapse_with_name": "Skjul {name}",
+    "expand": "Udvid",
+    "expand_with_name": "Udvid {name}"
   },
   "profile": {
     "display_name": "Visningsnavn",
@@ -390,7 +489,7 @@
       "source_commit": "Kilde Commit",
       "build_file": "Byg fil",
       "public_ledger": "Offentlig Ledger",
-      "transparency_log_entry": "Transparency log entry",
+      "transparency_log_entry": "Entry i transparensloggen",
       "view_more_details": "Se flere detaljer",
       "error_loading": "Kunne ikke indlæse provenance-detaljer"
     },
@@ -473,7 +572,7 @@
       "vulnerabilities_count": "{count} sårbarhed | {count} sårbarheder"
     },
     "peer_dependencies": {
-      "title": "Peer Dependency ({count}) | Peer Dependencies ({count})",
+      "title": "Peer-afhængighed ({count}) | Peer-afhængigheder ({count})",
       "list_label": "Pakke peer afhængigheder",
       "show_all": "vis {count} peer afhængighed | vis alle {count} peer afhængigheder"
     },
@@ -517,7 +616,7 @@
       "loading": "Indlæser...",
       "date_range": "{start} til {end}",
       "date_range_multiline": "{start}\ntil {end}",
-      "download_file": "Download {fileType}",
+      "download_file": "Hent {fileType}",
       "toggle_annotator": "Skift annotator",
       "toggle_stack_mode": "Skift staktilstand",
       "open_options": "Åbn indstillinger",
@@ -552,7 +651,7 @@
         "trend_undefined": "undefined (utilstrækkelige data)",
         "button_label": "Kopiér alternativ tekst",
         "watermark": "Nederst står der et vandmærke \"./npmx en hurtig, moderne browser til npm-registret\"",
-        "analysis": "{package_name} starter ved {start_value} og slutter ved {end_value}, hvilket viser en {trend} trend med en hældning på {downloads_slope} downloads pr. tidsinterval. Den mest downloadede version er {max_downloaded_version} med {max_version_downloads} downloads. {per_version_analysis}. {estimation_notice}",
+        "analysis": "{package_name} starter ved {start_value} og slutter ved {end_value}, hvilket viser en {trend} trend med en hældning på {downloads_slope} downloads pr. tidsinterval.",
         "estimation": "Den endelige værdi er et skøn baseret på delvise data for den aktuelle periode.",
         "estimations": "De endelige værdier er skøn baseret på delvise data for den aktuelle periode.",
         "compare": "Sammenligning af pakkedownloads linjediagram for: {packages}.",
@@ -572,7 +671,7 @@
       "title": "Installationsscripts",
       "script_label": "(script)",
       "npx_packages": "{count} npx pakke | {count} npx pakker",
-      "currently": "currently {version}"
+      "currently": "aktuelt {version}"
     },
     "playgrounds": {
       "title": "Prøv det",
@@ -843,8 +942,12 @@
     "lines": "{count} linje | {count} linjer",
     "toggle_tree": "Skift filtræ",
     "close_tree": "Luk filtræ",
+    "copy_content": "Kopiér filindhold",
     "copy_link": "Kopiér link",
     "view_raw": "Se rå fil",
+    "toggle_container": "Skift bredden på kodevisningen",
+    "open_raw_file": "Åbn rå fil",
+    "open_path_dropdown": "Åbn rullemenuen for stisegmenter",
     "file_too_large": "Fil for stor til forhåndsvisning",
     "file_size_warning": "{size} overskrider 500KB-grænsen for syntaksfremhævning",
     "failed_to_load": "Kunne ikke indlæse fil",
@@ -1136,8 +1239,31 @@
       "add_hint": "Tilføj mindst 2 pakker for at sammenligne."
     },
     "quadrant_chart": {
-      "copy_alt": {},
-      "explanation": {}
+      "label_x_axis": "Momentum",
+      "label_y_axis": "Ergonomi",
+      "label_top_right": "Solide valg",
+      "label_bottom_right": "populære med kompromiser",
+      "label_bottom_left": "undgå",
+      "label_top_left": "skjulte perler",
+      "title": "Pakkers momentum vs. ergonomi",
+      "filename": "pakke-momentum-vs-ergonomi-kvadrant",
+      "label_freshness_score": "Aktualitetsscore",
+      "copy_alt": {
+        "description": "Kvadrantdiagram, der viser momentum versus ergonomi for de {packages} pakker. {analysis}. {watermark}.",
+        "side_analysis_top_right": "Følgende pakker er placeret i kvadranten øverst til højre (solide valg): {packages}",
+        "side_analysis_top_left": "Følgende pakker er placeret i kvadranten øverst til venstre (skjulte perler): {packages}",
+        "side_analysis_bottom_right": "Følgende pakker er placeret i kvadranten nederst til højre (populære med kompromiser): {packages}",
+        "side_analysis_bottom_left": "Følgende pakker er placeret i kvadranten nederst til venstre (undgå): {packages}"
+      },
+      "explanation": {
+        "tooltip_help": "Vis forklaring på scoren",
+        "tooltip_help_adoption": "Vis forklaring på momentumscoren",
+        "tooltip_help_efficiency": "Vis forklaring på ergonomiscoren",
+        "introduction": "Scoren beregnes ved at kombinere flere signaler i to akser:",
+        "adoption": "Momentum: afspejler brug og aktivitet (downloads, aktualitet, likes)",
+        "efficiency": "Ergonomi: afspejler størrelse og kvalitet (installationsstørrelse, afhængigheder, sårbarheder, typesupport)",
+        "impact_details": "Hver metrik bidrager med en forskellig vægt. Stærke signaler som downloads og installationsstørrelse har størst indflydelse, mens andre finjusterer resultatet. Nogle signaler (såsom sårbarheder eller udfasning) giver strafpoint."
+      }
     },
     "no_dependency": {
       "label": "(Ingen afhængighed)",
@@ -1208,7 +1334,7 @@
         },
         "moduleFormat": {
           "label": "Module Format",
-          "description": "ESM/CJS support"
+          "description": "ESM/CJS-understøttelse"
         },
         "license": {
           "label": "Licens",
@@ -1290,11 +1416,11 @@
   },
   "pds": {
     "title": "npmx.social",
-    "meta_description": "The official AT Protocol Personal Data Server (PDS) for the npmx community.",
+    "meta_description": "Den officielle AT Protocol Personal Data Server (PDS) for npmx-fællesskabet.",
     "join": {
-      "title": "Join the Community",
-      "description": "Whether you are creating your first account on the atmosphere or migrating an existing one, you belong here. You can migrate your current account without losing your handle, your posts, or your followers.",
-      "migrate": "Migrate with PDS MOOver"
+      "title": "Deltag i fællesskabet",
+      "description": "Uanset om du opretter din første konto på Atmosphere eller migrerer en eksisterende, hører du til her. Du kan migrere din nuværende konto uden at miste dit handle, dine opslag eller dine følgere.",
+      "migrate": "Migrer med PDS MOOver"
     },
     "server": {
       "title": "Serverdetaljer",
@@ -1538,5 +1664,6 @@
       "message": "Tilgængelighed betyder noget for os, og vi vil elske, at du følger os i denne vision. Når du bruger nævnte medier, skal du sikre, at der er tilstrækkelig kontrast mod baggrunden, og gå ikke mindre end 24px. Hvis du har brug for andre ressourcer eller yderligere oplysninger om projektet, er du velkommen til at kontakte os på {link}.",
       "discord_link_text": "chat.npmx.dev"
     }
-  }
+  },
+  "alt_logo_kawaii": "En sød, rund og farverig version af npmx-logoet."
 }
