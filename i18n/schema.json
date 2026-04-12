@@ -3982,7 +3982,7 @@
                   },
                   "additionalProperties": false
                 },
-                "github_stars": {
+                "githubStars": {
                   "type": "object",
                   "properties": {
                     "label": {
@@ -3994,7 +3994,7 @@
                   },
                   "additionalProperties": false
                 },
-                "github_issues": {
+                "githubIssues": {
                   "type": "object",
                   "properties": {
                     "label": {
@@ -4006,7 +4006,7 @@
                   },
                   "additionalProperties": false
                 },
-                "created_at": {
+                "createdAt": {
                   "type": "object",
                   "properties": {
                     "label": {

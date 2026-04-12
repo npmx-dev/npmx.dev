@@ -1326,15 +1326,15 @@
           "label": "Vulnerabilities",
           "description": "Known security vulnerabilities"
         },
-        "github_stars": {
+        "githubStars": {
           "label": "GitHub Stars",
           "description": "Number of stars on the GitHub repository"
         },
-        "github_issues": {
+        "githubIssues": {
           "label": "GitHub Issues",
           "description": "Number of issues on the GitHub repository"
         },
-        "created_at": {
+        "createdAt": {
           "label": "Created At",
           "description": "When the package was created"
         }
