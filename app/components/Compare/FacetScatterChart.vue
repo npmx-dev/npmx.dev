@@ -369,13 +369,14 @@ onMounted(async () => {
             </template>
 
             <!-- Custom legend -->
-            <template #legend="{ legend }" v-if="readyTeleport">
+            <template #legend="{ legend }">
               <div
                 id="compare-scatter-legend-inner"
                 :role="isMobile ? 'group' : undefined"
                 :aria-labelledby="isMobile ? 'scatter-chart-legend-packages' : undefined"
               ></div>
               <Teleport
+                v-if="readyTeleport"
                 :to="isMobile ? '#compare-scatter-legend-inner' : '#compare-scatter-legend'"
               >
                 <ul
