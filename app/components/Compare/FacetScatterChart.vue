@@ -323,7 +323,7 @@ function toggleAxisHighlight(state: AxisHighlight) {
           block
           @change="step += 1"
           @mouseenter="toggleAxisHighlight('y')"
-          @focus="toggleAxisHighlight('y')"
+          @mouseleave="toggleAxisHighlight(null)"
           @focusin="toggleAxisHighlight('y')"
           @focusout="toggleAxisHighlight(null)"
         />
