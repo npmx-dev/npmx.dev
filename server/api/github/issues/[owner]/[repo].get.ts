@@ -1,11 +1,4 @@
-import { setTimeout } from 'node:timers/promises'
 import { CACHE_MAX_AGE_ONE_HOUR } from '#shared/utils/constants'
-
-const GITHUB_HEADERS = {
-  'Accept': 'application/vnd.github.v3+json',
-  'User-Agent': 'npmx',
-  'X-GitHub-Api-Version': '2022-11-28',
-} as const
 
 interface GitHubSearchResponse {
   total_count: number
@@ -32,50 +25,23 @@ export default defineCachedEventHandler(
     const query = `repo:${owner}/${repo} is:issue is:open`
     const url = `https://api.github.com/search/issues?q=${encodeURIComponent(query)}&per_page=1`
 
-    const maxAttempts = 3
-    let delayMs = 1000
+    try {
+      const data = await fetchGitHubWithRetries<GitHubSearchResponse>(url, {
+        maxAttempts: 3,
+        timeout: 10000,
+      })
 
-    for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
-      try {
-        const response = await $fetch.raw<GitHubSearchResponse>(url, {
-          headers: GITHUB_HEADERS,
-          timeout: 10000,
-        })
-
-        if (response.status === 200) {
-          return {
-            owner,
-            repo,
-            issues:
-              typeof response._data?.total_count === 'number' ? response._data.total_count : null,
-          }
-        }
-
-        if (response.status === 202) {
-          if (attempt === maxAttempts - 1) break
-          await setTimeout(delayMs)
-          delayMs = Math.min(delayMs * 2, 16_000)
-          continue
-        }
-
-        break
-      } catch (error: any) {
-        if (attempt === maxAttempts - 1) {
-          throw createError({
-            statusCode: error.response?.status || 500,
-            statusMessage:
-              error.response?._data?.message || 'Failed to fetch issue count from GitHub',
-          })
-        }
-        await setTimeout(delayMs)
-        delayMs = Math.min(delayMs * 2, 16_000)
+      return {
+        owner,
+        repo,
+        issues: typeof data?.total_count === 'number' ? data.total_count : null,
       }
+    } catch {
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'Failed to fetch issue count from GitHub',
+      })
     }
-
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'Failed to fetch issue count from GitHub after retries',
-    })
   },
   {
     maxAge: CACHE_MAX_AGE_ONE_HOUR,
