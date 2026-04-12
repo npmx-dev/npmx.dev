@@ -63,20 +63,33 @@ const { data: readmeData } = useLazyFetch<ReadmeResponse>(
   },
 )
 
-const playgroundLinks = computed(() => [
-  ...readmeData.value.playgroundLinks,
+const playgroundLinks = computed(() => {
+  const links = [...readmeData.value.playgroundLinks]
+
+  const packageData = pkg.value
+  if (!packageData) {
+    return links
+  }
+
   // Libraries with a storybook field in package.json contain a link to their deployed playground
-  ...(pkg.value?.storybook?.url
-    ? [
-        {
-          url: pkg.value.storybook.url,
-          provider: 'storybook',
-          providerName: 'Storybook',
-          label: 'Storybook',
-        },
-      ]
-    : []),
-])
+  if (packageData.storybook?.url) {
+    links.push({
+      url: packageData.storybook.url,
+      provider: 'storybook',
+      providerName: 'Storybook',
+      label: 'Storybook',
+    })
+  }
+
+  links.push({
+    url: `https://npmjs.dev/${packageData.name}`,
+    provider: 'npmjs.dev',
+    providerName: 'npmjs.dev',
+    label: 'npmjs.dev',
+  })
+
+  return links
+})
 
 const {
   data: readmeMarkdownData,
