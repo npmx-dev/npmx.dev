@@ -97,7 +97,7 @@ describe('useCompareReplacements', () => {
                 type: 'simple',
                 description: 'You can use the modulo operator to check if a number is even.',
                 example: '(n % 2) === 0',
-              } satisfies ModuleReplacement,
+              } satisfies SimpleModuleReplacement,
             })
           }
           return Promise.resolve(null)
@@ -250,15 +250,17 @@ describe('useCompareReplacements', () => {
   describe('caching', () => {
     it('retries a package after a transient fetch failure', async () => {
       const packageNames = ref(['is-even'])
-      const fetchMock = vi
-        .fn()
-        .mockRejectedValueOnce(new Error('Temporary network error'))
-        .mockResolvedValueOnce({
-          id: 'snippet::is-even',
-          type: 'simple',
-          description: 'You can use the modulo operator to check if a number is even.',
-          example: '(n % 2) === 0',
-        } satisfies SimpleModuleReplacement)
+        const fetchMock = vi.fn()
+    .mockRejectedValueOnce(new Error('Temporary network error'))
+    .mockResolvedValueOnce({
+      mapping: { replacements: ['snippet::is-even'] },
+      replacement: {
+        id: 'snippet::is-even',
+        type: 'simple',
+        description: 'You can use the modulo operator to check if a number is even.',
+        example: '(n % 2) === 0',
+      } satisfies SimpleModuleReplacement,
+    })
 
       vi.stubGlobal('$fetch', fetchMock)
 
@@ -314,7 +316,7 @@ describe('useCompareReplacements', () => {
               type: 'simple',
               description: 'Check even',
               example: '(n % 2) === 0',
-            } satisfies ModuleReplacement,
+            } satisfies SimpleModuleReplacement,
           })
         }
         return Promise.resolve(null)
