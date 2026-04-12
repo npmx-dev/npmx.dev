@@ -1,7 +1,6 @@
 import { setTimeout } from 'node:timers/promises'
-import type { NitroFetchOptions } from 'nitropack'
 
-export interface GitHubFetchOptions extends NitroFetchOptions<string> {
+export interface GitHubFetchOptions extends NonNullable<Parameters<typeof $fetch.raw>[1]> {
   maxAttempts?: number
 }
 
