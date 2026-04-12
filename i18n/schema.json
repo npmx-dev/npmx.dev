@@ -940,12 +940,6 @@
         "per_week": {
           "type": "string"
         },
-        "yes": {
-          "type": "string"
-        },
-        "no": {
-          "type": "string"
-        },
         "vanity_downloads_hint": {
           "type": "string"
         },
@@ -3718,83 +3712,35 @@
           },
           "additionalProperties": false
         },
-        "quadrant_chart": {
+        "scatter_chart": {
           "type": "object",
           "properties": {
-            "label_x_axis": {
-              "type": "string"
-            },
-            "label_y_axis": {
-              "type": "string"
-            },
-            "label_top_right": {
-              "type": "string"
-            },
-            "label_bottom_right": {
-              "type": "string"
-            },
-            "label_bottom_left": {
-              "type": "string"
-            },
-            "label_top_left": {
-              "type": "string"
-            },
             "title": {
               "type": "string"
             },
-            "filename": {
-              "type": "string"
-            },
-            "label_freshness_score": {
+            "freshness_score": {
               "type": "string"
             },
             "copy_alt": {
               "type": "object",
               "properties": {
+                "analysis": {
+                  "type": "string"
+                },
                 "description": {
-                  "type": "string"
-                },
-                "side_analysis_top_right": {
-                  "type": "string"
-                },
-                "side_analysis_top_left": {
-                  "type": "string"
-                },
-                "side_analysis_bottom_right": {
-                  "type": "string"
-                },
-                "side_analysis_bottom_left": {
                   "type": "string"
                 }
               },
               "additionalProperties": false
             },
-            "explanation": {
-              "type": "object",
-              "properties": {
-                "tooltip_help": {
-                  "type": "string"
-                },
-                "tooltip_help_adoption": {
-                  "type": "string"
-                },
-                "tooltip_help_efficiency": {
-                  "type": "string"
-                },
-                "introduction": {
-                  "type": "string"
-                },
-                "adoption": {
-                  "type": "string"
-                },
-                "efficiency": {
-                  "type": "string"
-                },
-                "impact_details": {
-                  "type": "string"
-                }
-              },
-              "additionalProperties": false
+            "filename": {
+              "type": "string"
+            },
+            "x_axis": {
+              "type": "string"
+            },
+            "y_axis": {
+              "type": "string"
             }
           },
           "additionalProperties": false

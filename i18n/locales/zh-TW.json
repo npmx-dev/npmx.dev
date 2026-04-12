@@ -312,8 +312,6 @@
     "warnings": "警告：",
     "go_back_home": "回到首頁",
     "per_week": "/ 週",
-    "yes": "是",
-    "no": "否",
     "vanity_downloads_hint": "顯示下載量：未顯示套件 | 顯示下載量：顯示的套件 | 顯示下載量：顯示的 {count} 個套件總和",
     "sort": {
       "name": "名稱",
@@ -1234,31 +1232,6 @@
       "remove_package": "移除 {package}",
       "packages_selected": "已選擇 {count}/{max} 個套件。",
       "add_hint": "至少新增 2 個套件以進行比較。"
-    },
-    "quadrant_chart": {
-      "label_x_axis": "採用度",
-      "label_y_axis": "效率",
-      "label_top_right": "高價值",
-      "label_bottom_right": "熱門但偏重",
-      "label_bottom_left": "低價值",
-      "label_top_left": "有潛力",
-      "title": "套件採用度 vs 效率",
-      "filename": "套件-採用度-vs-效率-矩陣",
-      "label_freshness_score": "新鮮度",
-      "copy_alt": {
-        "description": "{packages} 套件的採用度與效率四象限圖。{analysis}。{watermark}。",
-        "side_analysis_top_right": "位於右上象限（高價值）的套件：{packages}",
-        "side_analysis_top_left": "位於左上象限（有潛力）的套件：{packages}",
-        "side_analysis_bottom_right": "位於右下象限（熱門但偏重）的套件：{packages}",
-        "side_analysis_bottom_left": "位於左下象限（低價值）的套件：{packages}"
-      },
-      "explanation": {
-        "tooltip_help": "查看評分說明",
-        "introduction": "分數由多種訊號組合成兩個維度計算得出：",
-        "adoption": "採用度：反映使用和活躍情況（下載量、更新頻率、點讚數）",
-        "efficiency": "效率：反映體積和品質（安裝大小、依賴項數量、漏洞情況、型別支援）",
-        "impact_details": "各指標權重不同。下載量和安裝大小等強訊號影響最大，其他訊號用於微調。部分訊號（如漏洞或棄用）會扣減分數。"
-      }
     },
     "no_dependency": {
       "label": "(無相依套件)",

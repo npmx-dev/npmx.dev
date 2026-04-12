@@ -312,8 +312,6 @@
     "warnings": "Warnings:",
     "go_back_home": "Go back home",
     "per_week": "/ week",
-    "yes": "Yes",
-    "no": "No",
     "vanity_downloads_hint": "Vanity number: no packages displayed | Vanity number: for the displayed package | Vanity number: Sum of {count} displayed packages",
     "sort": {
       "name": "name",
@@ -1238,32 +1236,16 @@
       "packages_selected": "{count}/{max} packages selected.",
       "add_hint": "Add at least 2 packages to compare."
     },
-    "quadrant_chart": {
-      "label_x_axis": "Traction",
-      "label_y_axis": "Ergonomics",
-      "label_top_right": "Solid picks",
-      "label_bottom_right": "popular with tradeoffs",
-      "label_bottom_left": "avoid",
-      "label_top_left": "hidden gems",
-      "title": "Package traction vs ergonomics",
-      "filename": "package-traction-vs-ergonomics-quadrant",
-      "label_freshness_score": "Freshness score",
+    "scatter_chart": {
+      "title": "Compare {x} vs {y}",
+      "freshness_score": "Freshness score",
       "copy_alt": {
-        "description": "Quadrant chart mapping traction versus ergonomics for the {packages} packages. {analysis}. {watermark}.",
-        "side_analysis_top_right": "The following packages are positioned on the top-right quadrant (solid picks): {packages}",
-        "side_analysis_top_left": "The following packages are positioned on the top-left quadrant (hidden gems): {packages}",
-        "side_analysis_bottom_right": "The following packages are positioned on the bottom-right quadrant (popular with tradeoffs): {packages}",
-        "side_analysis_bottom_left": "The following packages are positioned on the bottom-left quadrant (avoid): {packages}"
+        "analysis": "{package} : {x_name} ({x_value}) and {y_name} ({y_value})",
+        "description": "Scatter plot chart mapping {x_name} versus {y_name} for the {packages} packages. {analysis}. {watermark}"
       },
-      "explanation": {
-        "tooltip_help": "Show scoring explanation",
-        "tooltip_help_adoption": "Show traction scoring explanation",
-        "tooltip_help_efficiency": "Show ergonomics scoring explanation",
-        "introduction": "The score is calculated by combining multiple signals into two axes:",
-        "adoption": "Traction: reflects usage and activity (downloads, freshness, likes)",
-        "efficiency": "Ergonomics: reflects footprint and quality (install size, dependencies, vulnerabilities, type support)",
-        "impact_details": "Each metric contributes with a different weight. Strong signals like downloads and install size have the largest impact, while others refine the result. Some signals (such as vulnerabilities or deprecation) apply penalties."
-      }
+      "filename": "{x}-vs-{y}-scatter-chart",
+      "x_axis": "X-AXIS ↦",
+      "y_axis": "Y-AXIS ↥"
     },
     "no_dependency": {
       "label": "(No dependency)",

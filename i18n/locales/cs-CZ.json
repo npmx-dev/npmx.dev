@@ -312,8 +312,6 @@
     "warnings": "Varování:",
     "go_back_home": "Zpět na začátek",
     "per_week": "/ týden",
-    "yes": "Ano",
-    "no": "Ne",
     "vanity_downloads_hint": "Pro zobrazený balíček | Součet pro {count} zobrazené balíčky | Součet pro {count} zobrazených balíčků",
     "sort": {
       "name": "jméno",
@@ -1237,33 +1235,6 @@
       "remove_package": "Odebrat {package}",
       "packages_selected": "Vybrané balíčky: {count}/{max}.",
       "add_hint": "Přidejte alespoň 2 balíčky ke srovnání."
-    },
-    "quadrant_chart": {
-      "label_x_axis": "Trakce",
-      "label_y_axis": "Ergonomie",
-      "label_top_right": "Solidní volby",
-      "label_bottom_right": "populární s kompromisy",
-      "label_bottom_left": "vyhněte se",
-      "label_top_left": "skryté poklady",
-      "title": "Trakce vs ergonomie balíčku",
-      "filename": "trakce-vs-ergonomie-balicku-kvadrant",
-      "label_freshness_score": "Skóre čerstvosti",
-      "copy_alt": {
-        "description": "Graf kvadrantu zobrazující trakci versus ergonomii pro balíčky {packages}. {analysis}. {watermark}.",
-        "side_analysis_top_right": "Následující balíčky jsou umístěny v pravém horním kvadrantu (solidní volby): {packages}",
-        "side_analysis_top_left": "Následující balíčky jsou umístěny v levém horním kvadrantu (skryté poklady): {packages}",
-        "side_analysis_bottom_right": "Následující balíčky jsou umístěny v pravém dolním kvadrantu (populární s kompromisy): {packages}",
-        "side_analysis_bottom_left": "Následující balíčky jsou umístěny v levém dolním kvadrantu (vyhněte se): {packages}"
-      },
-      "explanation": {
-        "tooltip_help": "Zobrazit vysvětlení skóre",
-        "tooltip_help_adoption": "Zobrazit vysvětlení skóre trakce",
-        "tooltip_help_efficiency": "Zobrazit vysvětlení skóre ergonomie",
-        "introduction": "Skóre je vypočítáno kombinací několika signálů do dvou os:",
-        "adoption": "Trakce: odráží použití a aktivitu (stahování, čerstvost, lajky)",
-        "efficiency": "Ergonomie: odráží stopu a kvalitu (velikost instalace, závislosti, zranitelnosti, otypování)",
-        "impact_details": "Každá metrika přispívá s různou váhou. Silné signály, jako jsou stahování a velikost instalace, mají největší dopad, zatímco jiné výsledky upřesňují výsledné skóre. Některé signály (např. zranitelnosti nebo zastarání) aplikují penalizace."
-      }
     },
     "no_dependency": {
       "label": "(Žádná závislost)",

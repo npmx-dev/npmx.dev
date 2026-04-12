@@ -39,7 +39,7 @@ const { toggleDir, isExpanded, autoExpandAncestors } = useFileTreeState(props.ba
 watch(
   () => props.currentPath,
   path => {
-    if (path) {
+    if (depth.value === 0 && path) {
       autoExpandAncestors(path)
     }
   },

@@ -392,7 +392,7 @@ export default defineNuxtConfig({
         '@vueuse/integrations/useFocusTrap/component',
         'vue-data-ui/vue-ui-sparkline',
         'vue-data-ui/vue-ui-xy',
-        'vue-data-ui/vue-ui-quadrant',
+        'vue-data-ui/vue-ui-scatter',
         'vue-data-ui/vue-ui-horizontal-bar',
         'virtua/vue',
         'semver',

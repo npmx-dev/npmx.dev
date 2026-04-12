@@ -233,8 +233,8 @@ importers:
         specifier: 3.5.30
         version: 3.5.30(typescript@6.0.2)
       vue-data-ui:
-        specifier: 3.17.11
-        version: 3.17.11(vue@3.5.30)
+        specifier: 3.17.13
+        version: 3.17.13(vue@3.5.30)
     devDependencies:
       '@e18e/eslint-plugin':
         specifier: 0.3.0
@@ -10669,8 +10669,8 @@ packages:
   vue-component-type-helpers@3.2.6:
     resolution: {integrity: sha512-O02tnvIfOQVmnvoWwuSydwRoHjZVt8UEBR+2p4rT35p8GAy5VTlWP8o5qXfJR/GWCN0nVZoYWsVUvx2jwgdBmQ==}
 
-  vue-data-ui@3.17.11:
-    resolution: {integrity: sha512-ZwKPjdg8a5FXaVJpXx+nHGfBwlL/qZqOk+9y3Pk7OJxKz3th0S6h/ANvwiAAVnLYlp1wKDzDuXm6am//+bUWRg==}
+  vue-data-ui@3.17.13:
+    resolution: {integrity: sha512-o/nvORpKD+iqZH4f+sc3lDkY81dXScq7Hr3+TQmKiQMxHd0eCxsMQ6nXI+zbqToFaHuTaQIDuhiNAjhF+KJiyw==}
     peerDependencies:
       jspdf: '>=3.0.1'
       vue: '>=3.3.0'
@@ -22940,7 +22940,7 @@ snapshots:
 
   vue-component-type-helpers@3.2.6: {}
 
-  vue-data-ui@3.17.11(vue@3.5.30):
+  vue-data-ui@3.17.13(vue@3.5.30):
     dependencies:
       vue: 3.5.30(typescript@6.0.2)
 

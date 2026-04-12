@@ -682,14 +682,14 @@ const chartConfig = computed<VueUiXyConfig>(() => {
 }
 
 :deep(.vue-data-ui-component svg:focus-visible) {
-  outline: 1px solid var(--accent-color) !important;
+  outline: 1px solid var(--accent) !important;
   border-radius: 0.1rem;
   outline-offset: 0 !important;
 }
 
 :deep(.vue-ui-user-options-button:focus-visible),
 :deep(.vue-ui-user-options :first-child:focus-visible) {
-  outline: 0.1rem solid var(--accent-color) !important;
+  outline: 0.1rem solid var(--accent) !important;
   border-radius: 0.25rem;
 }
 </style>

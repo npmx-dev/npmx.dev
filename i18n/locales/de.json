@@ -19,7 +19,8 @@
     "social": "social media",
     "chat": "chat",
     "builders_chat": "builders chat",
-    "keyboard_shortcuts": "tastaturkürzel"
+    "keyboard_shortcuts": "tastaturkürzel",
+    "brand": "marke"
   },
   "shortcuts": {
     "section": {
@@ -27,6 +28,9 @@
       "search": "Suche",
       "package": "Paket"
     },
+    "ctrl_key": "Ctrl",
+    "command_palette": "Befehlspalette öffnen",
+    "command_palette_description": "Benutze die Befehlspalette, um zwischen Seiten, Paketansichten, Einstellungen und externen Links zu wechseln, ohne die Tastatur zu verlassen. Drücke ⌘K unter macOS. Drücke {ctrlKey}+K unter Windows und Linux.",
     "focus_search": "Suche fokussieren",
     "show_kbd_hints": "Tastaturkürzel anzeigen",
     "settings": "Einstellungen öffnen",
@@ -74,6 +78,113 @@
     "instant_search_turn_on": "einschalten",
     "instant_search_turn_off": "ausschalten",
     "instant_search_advisory": "{label} {state} — {action}"
+  },
+  "command_palette": {
+    "title": "befehlspalette",
+    "quick_actions": "springe zu...",
+    "subtitle": "navigiere durch npmx und wechsel schnell die Einstellungen",
+    "subtitle_languages": "wähle eine Sprache oder hilf, Übersetzungen zu verbessern",
+    "instructions": "Tippe, um Befehle zu filtern. Benutze die Pfeiltasten, um durch die Ergebnisse zu navigieren, und Enter, um einen Befehl auszuführen.",
+    "input_label": "Befehlspalettensuche",
+    "results_label": "Befehlsergebnisse",
+    "placeholder": "befehl eingeben...",
+    "back": "Zurück",
+    "empty": "Keine übereinstimmenden Befehle",
+    "empty_search_hint": "Drücke Enter, um nach \"{query}\" zu suchen.",
+    "current": "aktuell",
+    "here": "du bist hier",
+    "connected": "verbunden",
+    "state": {
+      "on": "an",
+      "off": "aus"
+    },
+    "groups": {
+      "actions": "Aktionen",
+      "help": "Hilfe",
+      "language": "Sprache",
+      "connections": "Verbindungen",
+      "navigation": "Navigation",
+      "links": "Links",
+      "npmx": "npmx",
+      "package": "Paket",
+      "package_with_name": "Paket ({name})",
+      "versions": "Versionen",
+      "versions_with_name": "Versionen von {name}"
+    },
+    "actions": {
+      "search": "Suchen",
+      "search_for": "Suche nach \"{query}\"",
+      "keyboard_shortcuts": "Tastaturkürzel",
+      "help_translate": "Hilf bei der Übersetzung"
+    },
+    "connections": {
+      "npm_connect": "Mit npm CLI verbinden",
+      "npm_connected": "npm CLI (~{username})",
+      "npm_disconnect": "npm CLI trennen",
+      "atmosphere_connect": "Mit Atmosphere verbinden",
+      "atmosphere_connected": "atmosphere ({'@'}{handle})",
+      "atmosphere_disconnect": "Atmosphere trennen"
+    },
+    "navigation": {
+      "home": "startseite",
+      "packages": "pakete (~{username})",
+      "orgs": "organisationen (~{username})",
+      "profile": "profil ({'@'}{handle})"
+    },
+    "links": {
+      "external": "Externer Link"
+    },
+    "package_links": {
+      "stars": "Repository-Sterne",
+      "forks": "Repository-Forks"
+    },
+    "theme": {
+      "system": "Systemstandard verwenden",
+      "light": "Hellmodus verwenden",
+      "dark": "Dunkelmodus verwenden"
+    },
+    "package": {
+      "main": "Paketseite",
+      "docs": "Docs",
+      "code": "Code",
+      "diff": "Diff",
+      "compare": "Dieses Paket vergleichen",
+      "download": "Tarball herunterladen"
+    },
+    "package_actions": {
+      "copy_run": "Befehl zum Ausführen kopieren"
+    },
+    "code": {
+      "copy_file": "Dateiinhalt kopieren"
+    },
+    "diff": {
+      "merge_modified_lines": "Bearbeitete Zeilen zusammenführen",
+      "word_wrap": "Zeilenumbruch"
+    },
+    "version": {
+      "label": "{version}"
+    },
+    "status": {
+      "available_in_context": "{context}. Keine Befehle verfügbar | {context}. Ein Befehl verfügbar | {context}. {count} Befehle verfügbar",
+      "matching_in_context": "{context}. Keine übereinstimmenden Befehle | {context}. Ein übereinstimmender Befehl | {context}. {count} übereinstimmende Befehle",
+      "no_matches_search_in_context": "{context}. Keine übereinstimmenden Befehle. Drücke Enter, um nach „{query}“ zu suchen."
+    },
+    "announcements": {
+      "language_changed": "Sprache auf {language} gestellt.",
+      "relative_dates_on": "Relative Datumsangaben an.",
+      "relative_dates_off": "Relative Datumsangaben aus.",
+      "theme_changed": "Design auf {theme} eingestellt.",
+      "accent_color_changed": "Akzentfarbe auf {color} eingestellt.",
+      "background_theme_changed": "Hintergrundfarbton auf {theme} eingestellt.",
+      "download_started": "{package}-Tarball wird heruntergeladen.",
+      "copied_to_clipboard": "In die Zwischenablage kopiert.",
+      "npm_disconnected": "npm CLI getrennt.",
+      "atmosphere_disconnected": "Atmosphere getrennt.",
+      "facets_all_selected": "Alle Facetten ausgewählt.",
+      "facets_all_deselected": "Alle Facetten abgewählt.",
+      "view_switched": "Zur {view}-Ansicht gewechselt.",
+      "setting_toggled": "{setting} {state}."
+    }
   },
   "nav": {
     "main_navigation": "Hauptnavigation",
@@ -150,6 +261,7 @@
     "translation_status": "Globalen Übersetzungsstatus prüfen",
     "accent_colors": {
       "label": "Akzentfarben",
+      "neutral": "Neutral",
       "sky": "Himmelblau",
       "coral": "Koralle",
       "amber": "Bernstein",
@@ -222,11 +334,14 @@
       "gitea": "Auf Gitea ansehen",
       "gitee": "Auf Gitee ansehen",
       "radicle": "Auf Radicle ansehen",
+      "socket_dev": "Auf socket.dev ansehen",
       "sourcehut": "Auf SourceHut ansehen",
       "tangled": "Auf Tangled ansehen"
     },
     "collapse": "Einklappen",
-    "expand": "Ausklappen"
+    "collapse_with_name": "{name} einklappen",
+    "expand": "Ausklappen",
+    "expand_with_name": "{name} ausklappen"
   },
   "profile": {
     "display_name": "Anzeigename",
@@ -398,7 +513,7 @@
       "select_maximum": "Maximal {count} Pakete können ausgewählt werden"
     },
     "versions": {
-      "title": "versionen",
+      "title": "Versionen",
       "collapse": "{tag} einklappen",
       "expand": "{tag} ausklappen",
       "collapse_other": "Andere Versionen einklappen",
@@ -486,6 +601,9 @@
         "table_available": "Eine Datentabelle für dieses Diagramm ist unten verfügbar.",
         "table_caption": "Diagramm-Datentabelle"
       },
+      "chart_view_toggle": "Ansicht umschalten",
+      "chart_view_combined": "Kombinierte Ansicht",
+      "chart_view_split": "Geteilte Ansicht",
       "granularity": "Granularität",
       "granularity_daily": "Täglich",
       "granularity_weekly": "Wöchentlich",
@@ -822,8 +940,12 @@
     "lines": "{count} Zeile | {count} Zeilen",
     "toggle_tree": "Dateibaum umschalten",
     "close_tree": "Dateibaum schließen",
+    "copy_content": "Dateiinhalt kopieren",
     "copy_link": "Link kopieren",
     "view_raw": "Rohdatei anzeigen",
+    "toggle_container": "Code-Containerbreite umschalten",
+    "open_raw_file": "Rohdatei öffnen",
+    "open_path_dropdown": "Dropdown für Pfadsegmente öffnen",
     "file_too_large": "Datei zu groß für Vorschau",
     "file_size_warning": "{size} überschreitet das 500KB-Limit für Syntax-Highlighting",
     "failed_to_load": "Datei konnte nicht geladen werden",
@@ -1101,6 +1223,7 @@
       "empty_description": "Suche und füge oben mindestens 2 Pakete hinzu, um einen direkten Vergleich ihrer Metriken zu sehen.",
       "table_view": "Tabelle",
       "charts_view": "Diagramme",
+      "no_chartable_data": "Für die ausgewählten Facetten sind keine diagrammfähigen Daten verfügbar.",
       "bar_chart_nav_hint": "Verwende ↑ ↓",
       "line_chart_nav_hint": "Verwende ← →"
     },
@@ -1112,6 +1235,9 @@
       "remove_package": "{package} entfernen",
       "packages_selected": "{count}/{max} Pakete ausgewählt.",
       "add_hint": "Füge mindestens 2 Pakete zum Vergleichen hinzu."
+    },
+    "scatter_chart": {
+      "copy_alt": {}
     },
     "no_dependency": {
       "label": "(Keine Abhängigkeit)",
@@ -1125,6 +1251,10 @@
     "facets": {
       "all": "Alle",
       "none": "Keine",
+      "select_all_category_facets": "Alle {category}-Facetten auswählen",
+      "deselect_all_category_facets": "Alle {category}-Facetten abwählen",
+      "selected_all_category_facets": "Alle {category}-Facetten ausgewählt",
+      "deselected_all_category_facets": "Alle {category}-Facetten abgewählt",
       "coming_soon": "Demnächst verfügbar",
       "select_all": "Alle Facetten auswählen",
       "deselect_all": "Alle Facetten abwählen",
@@ -1459,11 +1589,55 @@
     "shortcut": "Drücke „{key}“, um Aktionen zu fokussieren",
     "button_close_aria_label": "Aktionsleiste schließen"
   },
-  "logo_menu": {},
+  "logo_menu": {
+    "copy_svg": "Logo als SVG kopieren",
+    "copied": "Kopiert!",
+    "browse_brand": "Marken-Kit durchsuchen"
+  },
   "brand": {
-    "logos": {},
-    "customize": {},
-    "typography": {},
-    "guidelines": {}
-  }
+    "title": "marke",
+    "heading": "marke",
+    "meta_description": "npmx-Markenrichtlinien, Logos, Farben und Typografie zur Verwendung in Presse und Medien.",
+    "intro": "Ressourcen und Richtlinien für die Verwendung der npmx-Marke in deinen Projekten, Artikeln und Medien.",
+    "logos": {
+      "title": "Logos",
+      "description": "Lade npmx-Logos im SVG- und PNG-Format herunter. Verwende die passende Variante für deinen Hintergrund.",
+      "wordmark": "VOLLSTÄNDIGE WORTMARKE",
+      "wordmark_alt": "Vollständiges npmx-Wortmarken-Logo mit blauem Schrägstrich auf dunklem Hintergrund",
+      "wordmark_light_alt": "Vollständiges npmx-Wortmarken-Logo mit Akzent-Schrägstrich auf hellem Hintergrund",
+      "mark": "BILDMARKE",
+      "mark_alt": "npmx-Bildmarke mit Punkt und Schrägstrich auf dunklem Hintergrund",
+      "mark_light_alt": "npmx-Bildmarke mit Punkt und Schrägstrich auf hellem Hintergrund",
+      "on_dark": "auf dunkel",
+      "on_light": "auf hell",
+      "download_svg": "SVG",
+      "download_png": "PNG",
+      "download_svg_aria": "{name} als SVG herunterladen",
+      "download_png_aria": "{name} als PNG herunterladen"
+    },
+    "customize": {
+      "title": "passe dein logo an",
+      "description": "Sieh dir eine Vorschau des npmx-Logos mit deiner Akzentfarbe und deinem Hintergrund an. Die Vorschau spiegelt deine aktuellen Einstellungen wider – wähle eine Farbe, schalte den Hintergrund um und lade es herunter.",
+      "accent_label": "Akzent",
+      "bg_label": "Hintergrund",
+      "download_svg_aria": "Angepasstes Logo als SVG herunterladen",
+      "download_png_aria": "Angepasstes Logo als PNG herunterladen"
+    },
+    "typography": {
+      "title": "Typografie",
+      "description": "npmx verwendet die Schriftfamilie Geist von Vercel sowohl für den Interface-Text als auch für den Code.",
+      "sans": "Geist Sans",
+      "sans_desc": "Wird für Fließtext und UI-Elemente verwendet.",
+      "mono": "Geist Mono",
+      "mono_desc": "Wird für Code, Überschriften und technische Inhalte verwendet.",
+      "pangram": "Franz jagt im komplett verwahrlosten Taxi quer durch Bayern",
+      "numbers": "0123456789"
+    },
+    "guidelines": {
+      "title": "Eine letzte Bitte",
+      "message": "Barrierefreiheit ist uns wichtig, und wir würden uns freuen, wenn du dieser Vision folgst. Wenn du die genannten Medien verwendest, stelle sicher, dass der Kontrast zum Hintergrund ausreichend ist und die Größe mindestens 24 px beträgt. Wenn du andere Ressourcen oder zusätzliche Infos zum Projekt brauchst, melde dich einfach unter {link} bei uns.",
+      "discord_link_text": "chat.npmx.dev"
+    }
+  },
+  "alt_logo_kawaii": "Eine süße, abgerundete und bunte Version des npmx-Logos."
 }

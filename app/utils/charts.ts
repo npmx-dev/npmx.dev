@@ -2,8 +2,8 @@ import type {
   AltCopyArgs,
   VueUiHorizontalBarConfig,
   VueUiHorizontalBarDatapoint,
-  VueUiQuadrantConfig,
-  VueUiQuadrantDatapoint,
+  VueUiScatterConfig,
+  VueUiScatterSeries,
   VueUiXyConfig,
   VueUiXyDatasetBarItem,
   VueUiXyDatasetLineItem,
@@ -638,66 +638,58 @@ export async function copyAltTextForCompareFacetBarChart({
   await config.copy(altText)
 }
 
-type CompareQuadrantChartConfig = VueUiQuadrantConfig & {
+type CompareScatterChartConfig = VueUiScatterConfig & {
   copy: (text: string) => Promise<void>
   $t: TrendTranslateFunction
+  x: {
+    label: string
+    formatter: (v: number) => string
+  }
+  y: {
+    label: string
+    formatter: (v: number) => string
+  }
 }
 
-// Used for FacetQuadrantChart.vue
-export function createAltTextForCompareQuadrantChart({
+// Used for FacetScatterChart.vue
+export function createAltTextForCompareScatterChart({
   dataset,
   config,
-}: AltCopyArgs<VueUiQuadrantDatapoint[], CompareQuadrantChartConfig>) {
+}: AltCopyArgs<VueUiScatterSeries[], CompareScatterChartConfig>) {
   if (!dataset) return ''
 
-  const packages = {
-    topRight: dataset.filter(d => d.quadrant === 'TOP_RIGHT'),
-    topLeft: dataset.filter(d => d.quadrant === 'TOP_LEFT'),
-    bottomRight: dataset.filter(d => d.quadrant === 'BOTTOM_RIGHT'),
-    bottomLeft: dataset.filter(d => d.quadrant === 'BOTTOM_LEFT'),
-  }
+  const { x, y } = config
+  const { label: labelX, formatter: formatterX } = x
+  const { label: labelY, formatter: formatterY } = y
 
-  const descriptions = {
-    topRight: '',
-    topLeft: '',
-    bottomRight: '',
-    bottomLeft: '',
-  }
+  const datapoints = dataset.map(d => {
+    const rawX = d.values?.[0]?.x ?? 0
+    const rawY = d.values?.[0]?.y ?? 0
+    const name = d.fullName ?? ''
 
-  if (packages.topRight.length) {
-    descriptions.topRight = config.$t('compare.quadrant_chart.copy_alt.side_analysis_top_right', {
-      packages: packages.topRight.map(p => p.fullname).join(', '),
-    })
-  }
+    return {
+      x: formatterX(rawX),
+      y: formatterY(rawY),
+      name,
+    }
+  })
 
-  if (packages.topLeft.length) {
-    descriptions.topLeft = config.$t('compare.quadrant_chart.copy_alt.side_analysis_top_left', {
-      packages: packages.topLeft.map(p => p.fullname).join(', '),
-    })
-  }
-
-  if (packages.bottomRight.length) {
-    descriptions.bottomRight = config.$t(
-      'compare.quadrant_chart.copy_alt.side_analysis_bottom_right',
-      {
-        packages: packages.bottomRight.map(p => p.fullname).join(', '),
-      },
+  const analysis = datapoints
+    .map(d =>
+      config.$t('compare.scatter_chart.copy_alt.analysis', {
+        package: d.name,
+        x_name: labelX,
+        y_name: labelY,
+        x_value: d.x,
+        y_value: d.y,
+      }),
     )
-  }
+    .join(', ')
 
-  if (packages.bottomLeft.length) {
-    descriptions.bottomLeft = config.$t(
-      'compare.quadrant_chart.copy_alt.side_analysis_bottom_left',
-      {
-        packages: packages.bottomLeft.map(p => p.fullname).join(', '),
-      },
-    )
-  }
-
-  const analysis = Object.values(descriptions).filter(Boolean).join('. ')
-
-  const altText = config.$t('compare.quadrant_chart.copy_alt.description', {
-    packages: dataset.map(p => p.fullname).join(', '),
+  const altText = config.$t('compare.scatter_chart.copy_alt.description', {
+    x_name: labelX,
+    y_name: labelY,
+    packages: datapoints.map(d => d.name).join(', '),
     analysis,
     watermark: config.$t('package.trends.copy_alt.watermark'),
   })
@@ -705,11 +697,11 @@ export function createAltTextForCompareQuadrantChart({
   return altText
 }
 
-export async function copyAltTextForCompareQuadrantChart({
+export async function copyAltTextForCompareScatterChart({
   dataset,
   config,
-}: AltCopyArgs<VueUiQuadrantDatapoint[], any>) {
-  const altText = createAltTextForCompareQuadrantChart({ dataset, config })
+}: AltCopyArgs<VueUiScatterSeries[], CompareScatterChartConfig>) {
+  const altText = createAltTextForCompareScatterChart({ dataset, config })
   await config.copy(altText)
 }
 

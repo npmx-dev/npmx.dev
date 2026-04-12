@@ -312,8 +312,6 @@
     "warnings": "Avertissements :",
     "go_back_home": "Retour à l'accueil",
     "per_week": "/ semaine",
-    "yes": "Oui",
-    "no": "Non",
     "vanity_downloads_hint": "Métrique de vanité : aucun paquet affiché | Métrique de vanité : pour le paquet affiché | Métrique de vanité : somme des {count} paquets affichés",
     "sort": {
       "name": "nom",
@@ -1235,32 +1233,16 @@
       "packages_selected": "{count}/{max} paquets sélectionnés.",
       "add_hint": "Ajoutez au moins 2 paquets à comparer."
     },
-    "quadrant_chart": {
-      "label_x_axis": "Traction",
-      "label_y_axis": "Ergonomie",
-      "label_top_right": "Choix sûrs",
-      "label_bottom_right": "Populaires avec compromis",
-      "label_bottom_left": "À éviter",
-      "label_top_left": "Pépites cachées",
-      "title": "Popularité vs ergonomie des paquets",
-      "filename": "quadrant-popularite-vs-ergonomie-paquets",
-      "label_freshness_score": "Score de fraîcheur",
+    "scatter_chart": {
+      "title": "Comparaison {x} vs {y}",
+      "freshness_score": "Score de récence",
       "copy_alt": {
-        "description": "Diagramme en quadrants représentant la popularité par rapport à l’ergonomie pour les paquets {packages}. {analysis}. {watermark}.",
-        "side_analysis_top_right": "Les paquets suivants sont positionnés dans le quadrant supérieur droit (choix sûrs) : {packages}",
-        "side_analysis_top_left": "Les paquets suivants sont positionnés dans le quadrant supérieur gauche (pépites cachées) : {packages}",
-        "side_analysis_bottom_right": "Les paquets suivants sont positionnés dans le quadrant inférieur droit (populaires avec compromis) : {packages}",
-        "side_analysis_bottom_left": "Les paquets suivants sont positionnés dans le quadrant inférieur gauche (à éviter) : {packages}"
+        "analysis": "{package} : {x_name} ({x_value}) et {y_name} ({y_value})",
+        "description": "Graphique en nuage de points représentant {x_name} en fonction de {y_name} pour les paquets {packages}. {analysis}. {watermark}"
       },
-      "explanation": {
-        "tooltip_help": "Afficher l’explication du score",
-        "tooltip_help_adoption": "Afficher l'explication du score de popularité",
-        "tooltip_help_efficiency": "Afficher l'explication du score d'ergonomie",
-        "introduction": "Le score est calculé en combinant plusieurs signaux sur deux axes :",
-        "adoption": "Popularité : reflète l’utilisation et l’activité (téléchargements, fraîcheur, mentions)",
-        "efficiency": "Ergonomie : reflète l’empreinte et la qualité (taille d’installation, dépendances, vulnérabilités, support des types)",
-        "impact_details": "Chaque métrique contribue avec un poids différent. Les signaux forts comme les téléchargements et la taille d’installation ont le plus d’impact, tandis que d’autres affinent le résultat. Certains signaux (comme les vulnérabilités ou l'obsolescence) appliquent des pénalités."
-      }
+      "filename": "{x}-vs-{y}-scatter-chart",
+      "x_axis": "Abscisses ↦",
+      "y_axis": "Ordonnées ↥"
     },
     "no_dependency": {
       "label": "(Sans dépendance)",

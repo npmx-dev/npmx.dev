@@ -132,27 +132,35 @@ export function drawSmallNpmxLogoAndTaglineWatermark({
   colors,
   translateFn,
   logoWidth = 36,
+  taglineFontSize = 8,
+  offsetYTagline = 0,
+  offsetXTagline = 0,
+  offsetYLogo = 0,
 }: {
   svg: Record<string, any>
   colors: WatermarkColors
   translateFn: (key: string) => string
   logoWidth?: number
+  taglineFontSize?: number
+  offsetYTagline?: number
+  offsetXTagline?: number
+  offsetYLogo?: number
 }) {
   if (!svg.height) return
 
   const npmxLogoWidthToHeight = 2.64
   const npmxLogoHeight = logoWidth / npmxLogoWidthToHeight
   const offsetX = 6
-  const watermarkY = svg.height - npmxLogoHeight
+  const watermarkY = svg.height - npmxLogoHeight + offsetYLogo
   const taglineY = svg.height - 3
 
   return `
     ${generateWatermarkLogo({ x: offsetX, y: watermarkY, width: logoWidth, height: npmxLogoHeight, fill: colors.fg })}
     <text
       fill="${colors.fgSubtle}"
-      x="${logoWidth + offsetX * 2}"
-      y="${taglineY}"
-      font-size="8"
+      x="${logoWidth + offsetX * 2 + offsetXTagline}"
+      y="${taglineY + offsetYTagline}"
+      font-size="${taglineFontSize}"
       text-anchor="start"
     >
       ${translateFn('tagline')}

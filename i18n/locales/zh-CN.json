@@ -312,8 +312,6 @@
     "warnings": "警告：",
     "go_back_home": "返回首页",
     "per_week": "/ 周",
-    "yes": "是",
-    "no": "否",
     "vanity_downloads_hint": "累计下载量：未显示包 | 累计下载量：显示的包 | 累计下载量：{count} 个显示的包的总和",
     "sort": {
       "name": "名称",
@@ -1235,33 +1233,6 @@
       "remove_package": "移除 {package}",
       "packages_selected": "已选择 {count}/{max} 个包。",
       "add_hint": "至少添加 2 个包以进行比较。"
-    },
-    "quadrant_chart": {
-      "label_x_axis": "采用度",
-      "label_y_axis": "效率",
-      "label_top_right": "高价值",
-      "label_bottom_right": "热门但偏重",
-      "label_bottom_left": "低价值",
-      "label_top_left": "有潜力",
-      "title": "包采用度 vs 效率",
-      "filename": "包-采用度-vs-效率-矩阵",
-      "label_freshness_score": "新鲜度",
-      "copy_alt": {
-        "description": "{packages} 包的采用度与效率四象限图。{analysis}。{watermark}。",
-        "side_analysis_top_right": "位于右上象限（高价值）的包：{packages}",
-        "side_analysis_top_left": "位于左上象限（有潜力）的包：{packages}",
-        "side_analysis_bottom_right": "位于右下象限（热门但偏重）的包：{packages}",
-        "side_analysis_bottom_left": "位于左下象限（低价值）的包：{packages}"
-      },
-      "explanation": {
-        "tooltip_help": "查看评分说明",
-        "tooltip_help_adoption": "查看采用度评分说明",
-        "tooltip_help_efficiency": "查看效率评分说明",
-        "introduction": "分数由多种信号组合成两个维度计算得出：",
-        "adoption": "采用度：反映使用和活跃情况（下载量、更新频率、点赞数）",
-        "efficiency": "效率：反映体积和质量（安装大小、依赖项数量、漏洞情况、类型支持）",
-        "impact_details": "各指标权重不同。下载量和安装大小等强信号影响最大，其他信号用于微调。部分信号（如漏洞或弃用）会扣减分数。"
-      }
     },
     "no_dependency": {
       "label": "(不使用依赖)",

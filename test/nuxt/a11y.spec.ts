@@ -79,11 +79,6 @@ const allowedWarnings: RegExp[] = [
   /expose\(\) should be called only once/,
 ]
 
-// Filter specific violations for rare edge cases (typically complex custom interactions in charts)
-function filterViolations(results: AxeResults, ignoredRuleIds: string[]): AxeResults['violations'] {
-  return results.violations.filter(violation => !ignoredRuleIds.includes(violation.id))
-}
-
 beforeEach(() => {
   warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
 })
@@ -272,7 +267,7 @@ import ToggleServer from '~/components/Settings/Toggle.server.vue'
 import SearchProviderToggleServer from '~/components/SearchProviderToggle.server.vue'
 import PackageTrendsChart from '~/components/Package/TrendsChart.vue'
 import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
-import FacetQuadrantChart from '~/components/Compare/FacetQuadrantChart.vue'
+import FacetScatterChart from '~/components/Compare/FacetScatterChart.vue'
 import PackageLikeCard from '~/components/Package/LikeCard.vue'
 import SizeIncrease from '~/components/Package/SizeIncrease.vue'
 import Likes from '~/components/Package/Likes.vue'
@@ -1022,9 +1017,9 @@ describe('component accessibility audits', () => {
       })
     })
 
-    describe('FacetQuadrantChart', () => {
+    describe('FacetScatterChart', () => {
       it('should have no accessibility violations', async () => {
-        const wrapper = await mountSuspended(FacetQuadrantChart, {
+        const wrapper = await mountSuspended(FacetScatterChart, {
           props: {
             packagesData: [
               {
@@ -1116,22 +1111,19 @@ describe('component accessibility audits', () => {
           },
         })
         const results = await runAxe(wrapper)
-
-        const violations = filterViolations(results, ['nested-interactive', 'button-name'])
-        expect(violations).toEqual([])
+        expect(results.violations).toEqual([])
       })
 
       it('should have no accessibility violations with empty data', async () => {
-        const wrapper = await mountSuspended(FacetQuadrantChart, {
+        const wrapper = await mountSuspended(FacetScatterChart, {
           props: {
             packagesData: [],
             packages: [],
           },
         })
-        const results = await runAxe(wrapper)
 
-        const violations = filterViolations(results, ['nested-interactive', 'button-name'])
-        expect(violations).toEqual([])
+        const results = await runAxe(wrapper)
+        expect(results.violations).toEqual([])
       })
     })
 
