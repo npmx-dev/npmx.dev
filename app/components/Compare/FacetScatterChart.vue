@@ -29,6 +29,7 @@ const { colors } = useCssVariables(
     '--border',
     '--border-subtle',
     '--border-hover',
+    '--accent',
   ],
   {
     element: rootEl,
@@ -269,6 +270,13 @@ const config = computed<VueUiScatterConfig>(() => {
 })
 
 const step = shallowRef(0)
+
+type AxisHighlight = 'x' | 'y' | null
+const highlightedAxis = shallowRef<AxisHighlight>(null)
+
+function toggleAxisHighlight(state: AxisHighlight) {
+  highlightedAxis.value = state
+}
 </script>
 
 <template>
@@ -300,6 +308,9 @@ const step = shallowRef(0)
           size="sm"
           block
           @change="step += 1"
+          @mouseenter="toggleAxisHighlight('x')"
+          @mouseleave="toggleAxisHighlight(null)"
+          @blur="toggleAxisHighlight(null)"
         />
         <SelectField
           class="w-full"
@@ -310,6 +321,9 @@ const step = shallowRef(0)
           size="sm"
           block
           @change="step += 1"
+          @mouseenter="toggleAxisHighlight('y')"
+          @mouseleave="toggleAxisHighlight(null)"
+          @blur="toggleAxisHighlight(null)"
         />
       </div>
 
@@ -374,6 +388,32 @@ const step = shallowRef(0)
                   })
                 "
               />
+
+              <!-- Highlighted axes when hovering facet inputs -->
+              <template v-if="highlightedAxis">
+                <line
+                  v-if="highlightedAxis === 'x'"
+                  :x1="svg.drawingArea.left"
+                  :x2="svg.drawingArea.right"
+                  :y1="svg.drawingArea.bottom"
+                  :y2="svg.drawingArea.bottom"
+                  :stroke="colors.accent"
+                  stroke-dasharray="5"
+                  stroke-linecap="round"
+                  stroke-width="2"
+                />
+                <line
+                  v-if="highlightedAxis === 'y'"
+                  :x1="svg.drawingArea.left"
+                  :x2="svg.drawingArea.left"
+                  :y1="svg.drawingArea.top"
+                  :y2="svg.drawingArea.bottom"
+                  :stroke="colors.accent"
+                  stroke-dasharray="5"
+                  stroke-linecap="round"
+                  stroke-width="2"
+                />
+              </template>
             </template>
 
             <template #menuIcon="{ isOpen }">
