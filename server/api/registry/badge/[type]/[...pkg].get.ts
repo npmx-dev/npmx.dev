@@ -501,7 +501,7 @@ const badgeStrategies = {
     const likesUtil = new PackageLikesUtils()
     const { totalLikes } = await likesUtil.getLikes(pkgData.name)
 
-    return { label: 'likes', value: String(totalLikes ?? 0), color: COLORS.blue }
+    return { label: 'likes', value: String(totalLikes ?? 0), color: COLORS.red }
   },
 }
 
