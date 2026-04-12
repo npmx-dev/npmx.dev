@@ -27,7 +27,6 @@ export default defineCachedEventHandler(
 
     try {
       const data = await fetchGitHubWithRetries<GitHubSearchResponse>(url, {
-        maxAttempts: 3,
         timeout: 10000,
       })
 
