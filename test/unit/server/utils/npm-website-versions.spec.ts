@@ -11,6 +11,7 @@ const { fetchNpmVersionDownloadsFromApi } = await import('#server/utils/npm-webs
 
 afterEach(() => {
   vi.restoreAllMocks()
+  vi.unstubAllGlobals()
 })
 
 describe('fetchNpmVersionDownloadsFromApi', () => {
