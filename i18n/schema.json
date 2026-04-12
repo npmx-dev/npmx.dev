@@ -3991,7 +3991,8 @@
                     "description": {
                       "type": "string"
                     }
-                  }
+                  },
+                  "additionalProperties": false
                 },
                 "github_issues": {
                   "type": "object",
@@ -4002,7 +4003,8 @@
                     "description": {
                       "type": "string"
                     }
-                  }
+                  },
+                  "additionalProperties": false
                 },
                 "created_at": {
                   "type": "object",
@@ -4013,7 +4015,8 @@
                     "description": {
                       "type": "string"
                     }
-                  }
+                  },
+                  "additionalProperties": false
                 }
               },
               "additionalProperties": false
