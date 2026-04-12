@@ -1,0 +1,1651 @@
+{
+  "$schema": "../schema.json",
+  "seo": {
+    "home": {
+      "title": "npmx - npm registry uchun paket brauzeri",
+      "description": "npm registry uchun tez va zamonaviy brauzer. Paketlarni qidiring, koʻring va qulay interfeys bilan oʻrganing."
+    }
+  },
+  "built_at": "yigʻilgan {0}",
+  "alt_logo": "npmx logotipi",
+  "tagline": "npm registry uchun tez va zamonaviy brauzer",
+  "non_affiliation_disclaimer": "npm, Inc. bilan aloqador emas.",
+  "trademark_disclaimer": "npm — npm, Inc. kompaniyasining roʻyxatga olingan savdo belgisi. Ushbu sayt npm, Inc. bilan aloqador emas.",
+  "footer": {
+    "about": "haqida",
+    "blog": "blog",
+    "docs": "hujjatlar",
+    "source": "manba",
+    "social": "ijtimoiy",
+    "chat": "chat",
+    "builders_chat": "ishlab chiquvchilar",
+    "keyboard_shortcuts": "klaviatura yorliqlari",
+    "brand": "brend"
+  },
+  "shortcuts": {
+    "section": {
+      "global": "Global",
+      "search": "Qidiruv",
+      "package": "Paket"
+    },
+    "ctrl_key": "Ctrl",
+    "command_palette": "Buyruq panelini ochish",
+    "command_palette_description": "Sahifalar, paket koʻrinishlari, sozlamalar va tashqi havolalar oʻrtasida klaviaturani tark etmasdan oʻtish uchun buyruq panelidan foydalaning. macOS’da ⌘K bosing. Windows va Linux’da {ctrlKey}+K bosing.",
+    "focus_search": "Qidiruvni faollashtirish",
+    "show_kbd_hints": "Klaviatura maslahatlarini ajratib koʻrsatish",
+    "settings": "Sozlamalarni ochish",
+    "compare": "Taqqoslashni ochish",
+    "compare_from_package": "Taqqoslashni ochish (joriy paket bilan toʻldirilgan)",
+    "navigate_results": "Natijalar boʻylab harakatlanish",
+    "go_to_result": "Natijaga oʻtish",
+    "open_code_view": "Kod koʻrinishini ochish",
+    "open_docs": "Hujjatlarni ochish",
+    "disable_shortcuts": "Klaviatura yorliqlarini {settings} boʻlimida oʻchirib qoʻyishingiz mumkin.",
+    "open_main": "Asosiy maʼlumotni ochish",
+    "open_diff": "Versiyalar farqini ochish"
+  },
+  "search": {
+    "label": "npm paketlarini qidirish",
+    "placeholder": "paketlarni qidirish...",
+    "button": "qidirish",
+    "searching": "Qidirilmoqda...",
+    "found_packages": "Paketlar topilmadi | 1 ta paket topildi | {count} ta paket topildi",
+    "found_packages_sorted": "Natija topilmadi | Eng yaxshi {count} ta natija saralanmoqda | Eng yaxshi {count} ta natija saralanmoqda",
+    "updating": "(yangilanmoqda...)",
+    "no_results": "\"{query}\" boʻyicha paketlar topilmadi",
+    "rate_limited": "npm soʻrov limitiga yetildi, biroz kutib qayta urinib koʻring",
+    "title": "qidiruv",
+    "title_search": "qidiruv: {search}",
+    "title_packages": "paketlarni qidirish",
+    "meta_description": "'{search}' boʻyicha qidiruv natijalari",
+    "meta_description_packages": "npm paketlarini qidirish",
+    "not_taken": "{name} hali band qilinmagan",
+    "claim_prompt": "Ushbu paket nomini npm’da band qilish",
+    "claim_button": "\"{name}\" nomini band qilish",
+    "want_to_claim": "Ushbu paket nomini band qilmoqchimisiz?",
+    "start_typing": "Paketlarni qidirish uchun yozishni boshlang",
+    "algolia_disclaimer": "Algolia yordamida",
+    "exact_match": "aniq",
+    "suggestion": {
+      "user": "foydalanuvchi",
+      "org": "tashkilot",
+      "view_user_packages": "Ushbu foydalanuvchining paketlarini koʻrish",
+      "view_org_packages": "Ushbu tashkilotning paketlarini koʻrish"
+    },
+    "instant_search": "Tezkor qidiruv",
+    "instant_search_on": "yoqilgan",
+    "instant_search_off": "oʻchirilgan",
+    "instant_search_turn_on": "yoqish",
+    "instant_search_turn_off": "oʻchirish",
+    "instant_search_advisory": "{label} {state} — {action}"
+  },
+  "command_palette": {
+    "title": "buyruq paneli",
+    "quick_actions": "oʻtish...",
+    "subtitle": "npmx boʻylab harakatlaning va sozlamalarni tez almashtiring",
+    "subtitle_languages": "tilni tanlang yoki tarjimalarni yaxshilashga yordam bering",
+    "instructions": "Buyruqlarni filtrlash uchun yozing. Natijalar boʻylab harakatlanish uchun strelka tugmalarini, buyruqni ishga tushirish uchun Enter tugmasini bosing.",
+    "input_label": "Buyruq paneli qidiruvi",
+    "results_label": "Buyruq natijalari",
+    "placeholder": "buyruq yozing...",
+    "back": "Orqaga",
+    "empty": "Mos buyruq yoʻq",
+    "empty_search_hint": "\"{query}\" ni qidirish uchun Enter tugmasini bosing.",
+    "current": "joriy",
+    "here": "siz shu yerdasiz",
+    "connected": "ulangan",
+    "state": {
+      "on": "yoqilgan",
+      "off": "oʻchirilgan"
+    },
+    "groups": {
+      "actions": "Amallar",
+      "help": "Yordam",
+      "language": "Til",
+      "connections": "Ulanishlar",
+      "navigation": "Navigatsiya",
+      "links": "Havolalar",
+      "npmx": "npmx",
+      "package": "Paket",
+      "package_with_name": "Paket ({name})",
+      "versions": "Versiyalar",
+      "versions_with_name": "{name} versiyalari"
+    },
+    "actions": {
+      "search": "Qidirish",
+      "search_for": "\"{query}\" ni qidirish",
+      "keyboard_shortcuts": "Klaviatura yorliqlari",
+      "help_translate": "Tarjimaga yordam bering"
+    },
+    "connections": {
+      "npm_connect": "npm CLI’ga ulanish",
+      "npm_connected": "npm CLI (~{username})",
+      "npm_disconnect": "npm CLI’ni uzish",
+      "atmosphere_connect": "Atmosphere’ga ulanish",
+      "atmosphere_connected": "atmosphere ({'@'}{handle})",
+      "atmosphere_disconnect": "Atmosphere’ni uzish"
+    },
+    "navigation": {
+      "home": "bosh sahifa",
+      "packages": "paketlar (~{username})",
+      "orgs": "tashkilotlar (~{username})",
+      "profile": "profil ({'@'}{handle})"
+    },
+    "links": {
+      "external": "Tashqi havola"
+    },
+    "package_links": {
+      "stars": "Repozitoriy yulduzlari",
+      "forks": "Repozitoriy forklari"
+    },
+    "theme": {
+      "system": "Tizim mavzusidan foydalanish",
+      "light": "Yorugʻ mavzudan foydalanish",
+      "dark": "Qorongʻi mavzudan foydalanish"
+    },
+    "package": {
+      "main": "Paket sahifasi",
+      "docs": "Hujjatlar",
+      "code": "Kod",
+      "diff": "Farq",
+      "compare": "Ushbu paketni taqqoslash",
+      "download": "Tarball’ni yuklab olish"
+    },
+    "package_actions": {
+      "copy_run": "Ishga tushirish buyrugʻini nusxalash"
+    },
+    "code": {
+      "copy_file": "Fayl tarkibini nusxalash"
+    },
+    "diff": {
+      "merge_modified_lines": "Oʻzgartirilgan qatorlarni birlashtirish",
+      "word_wrap": "Soʻzlarni oʻrash"
+    },
+    "version": {
+      "label": "{version}"
+    },
+    "status": {
+      "available_in_context": "{context}. Mavjud buyruqlar yoʻq | {context}. 1 ta buyruq mavjud | {context}. {count} ta buyruq mavjud",
+      "matching_in_context": "{context}. Mos buyruqlar yoʻq | {context}. 1 ta mos buyruq | {context}. {count} ta mos buyruq",
+      "no_matches_search_in_context": "{context}. Mos buyruqlar yoʻq. \"{query}\" ni qidirish uchun Enter tugmasini bosing."
+    },
+    "announcements": {
+      "language_changed": "Til {language} ga oʻrnatildi.",
+      "relative_dates_on": "Nisbiy sanalar yoqildi.",
+      "relative_dates_off": "Nisbiy sanalar oʻchirildi.",
+      "theme_changed": "Mavzu {theme} ga oʻrnatildi.",
+      "accent_color_changed": "Urgʻu rangi {color} ga oʻrnatildi.",
+      "background_theme_changed": "Fon toni {theme} ga oʻrnatildi.",
+      "download_started": "{package} tarball’i yuklab olinmoqda.",
+      "copied_to_clipboard": "Vaqtinchalik xotiraga nusxalandi.",
+      "npm_disconnected": "npm CLI uzildi.",
+      "atmosphere_disconnected": "Atmosphere uzildi.",
+      "facets_all_selected": "Barcha xossalar tanlandi.",
+      "facets_all_deselected": "Barcha xossalar bekor qilindi.",
+      "view_switched": "{view} koʻrinishiga oʻtildi.",
+      "setting_toggled": "{setting} {state}."
+    }
+  },
+  "nav": {
+    "main_navigation": "Asosiy",
+    "popular_packages": "Mashhur paketlar",
+    "settings": "sozlamalar",
+    "compare": "taqqoslash",
+    "back": "orqaga",
+    "menu": "Menyu",
+    "mobile_menu": "Navigatsiya menyusi",
+    "open_menu": "Menyuni ochish",
+    "links": "Havolalar",
+    "tap_to_search": "Qidirish uchun bosing"
+  },
+  "blog": {
+    "title": "Blog",
+    "heading": "blog",
+    "meta_description": "npmx hamjamiyatidan tahlillar va yangiliklar",
+    "author": {
+      "view_profile": "{name} ning Bluesky profilini koʻrish"
+    },
+    "draft_badge": "Qoralama",
+    "draft_banner": "Bu nashr qilinmagan qoralama. U toʻliq boʻlmasligi yoki xatoliklar boʻlishi mumkin.",
+    "no_posts": "Postlar topilmadi.",
+    "atproto": {
+      "view_on_bluesky": "Bluesky’da koʻrish",
+      "reply_on_bluesky": "Bluesky’da javob berish",
+      "likes_on_bluesky": "Bluesky’dagi yoqtirishlar",
+      "like_or_reply_on_bluesky": "Bu postni Bluesky’da yoqtiring yoki izoh qoldiring",
+      "no_comments_yet": "Hali izohlar yoʻq.",
+      "could_not_load_comments": "Izohlarni yuklab boʻlmadi.",
+      "comments": "Izohlar",
+      "loading_comments": "Izohlar yuklanmoqda...",
+      "updating": "Yangilanmoqda...",
+      "reply_count": "{count} ta javob | {count} ta javob",
+      "like_count": "{count} ta yoqtirish | {count} ta yoqtirish",
+      "repost_count": "{count} ta qayta post | {count} ta qayta post",
+      "more_replies": "yana {count} ta javob... | yana {count} ta javob..."
+    }
+  },
+  "settings": {
+    "title": "sozlamalar",
+    "tagline": "npmx tajribangizni moslashtiring",
+    "meta_description": "npmx.dev tajribangizni mavzu, til va koʻrinish sozlamalari bilan moslashtiring.",
+    "sections": {
+      "appearance": "Koʻrinish",
+      "display": "Ekran",
+      "search": "Qidiruv imkoniyatlari",
+      "language": "Til",
+      "keyboard_shortcuts": "Klaviatura yorliqlari"
+    },
+    "data_source": {
+      "label": "Maʼlumot manbai",
+      "description": "npmx qidiruv maʼlumotlarini qayerdan olishini tanlang. Alohida paket sahifalari har doim bevosita npm registry’dan foydalanadi.",
+      "npm": "npm Registry",
+      "npm_description": "Qidiruv, tashkilot va foydalanuvchi roʻyxatlarini bevosita rasmiy npm registry’dan oladi. Ishonchli, ammo sekinroq boʻlishi mumkin.",
+      "algolia": "Algolia",
+      "algolia_description": "Tezroq qidiruv, tashkilot va foydalanuvchi sahifalari uchun Algolia’dan foydalanadi."
+    },
+    "instant_search": "Tezkor qidiruv",
+    "instant_search_description": "Qidiruv sahifasiga oʻtadi va siz yozar ekan natijalarni yangilaydi.",
+    "relative_dates": "Nisbiy sanalar",
+    "include_types": "Oʻrnatishga {'@'}types ni qoʻshish",
+    "include_types_description": "Tiplanmagan paketlar uchun oʻrnatish buyruqlariga {'@'}types paketini qoʻshish",
+    "hide_platform_packages": "Qidiruvda platformaga xos paketlarni yashirish",
+    "hide_platform_packages_description": "{'@'}esbuild/linux-x64 kabi native binary paketlarni natijalardan yashirish",
+    "enable_graph_pulse_loop": "Kichik grafikdagi puls effektini takroriy qilishni yoqish",
+    "enable_graph_pulse_loop_description": "Haftalik yuklab olish grafikidagi uzluksiz puls animatsiyasini faollashtirish. Bu animatsiya baʼzi foydalanuvchilarga xalaqit berishi mumkin.",
+    "theme": "Mavzu",
+    "theme_light": "Yorugʻ",
+    "theme_dark": "Qorongʻi",
+    "theme_system": "Tizim",
+    "language": "Til",
+    "help_translate": "npmx’ni tarjima qilishga yordam bering",
+    "translation_status": "Umumiy tarjima holatini tekshirish",
+    "accent_colors": {
+      "label": "Urgʻu ranglari",
+      "neutral": "Neutral",
+      "sky": "Sky",
+      "coral": "Coral",
+      "amber": "Amber",
+      "emerald": "Emerald",
+      "violet": "Violet",
+      "magenta": "Magenta"
+    },
+    "clear_accent": "Urgʻu rangini tozalash",
+    "translation_progress": "Tarjima jarayoni",
+    "background_themes": {
+      "label": "Fon toni",
+      "neutral": "Neutral",
+      "stone": "Stone",
+      "zinc": "Zinc",
+      "slate": "Slate",
+      "black": "Black"
+    },
+    "keyboard_shortcuts_enabled": "Klaviatura yorliqlarini yoqish",
+    "keyboard_shortcuts_enabled_description": "Agar klaviatura yorliqlari boshqa brauzer yoki tizim yorliqlari bilan zid kelsa, ularni oʻchirib qoʻyish mumkin"
+  },
+  "i18n": {
+    "missing_keys": "{count} ta yetishmayotgan tarjima | {count} ta yetishmayotgan tarjima",
+    "copy_keys": "Kalitlarni nusxalash",
+    "show_more_keys": "Yana {count} tasini koʻrsatish...",
+    "contribute_hint": "Yetishmayotgan kalitlarni qoʻshib ushbu tarjimani yaxshilashga yordam bering.",
+    "edit_on_github": "GitHub’da tahrirlash",
+    "view_guide": "Tarjima qoʻllanmasi"
+  },
+  "error": {
+    "401": "Ruxsat yoʻq",
+    "404": "Sahifa topilmadi",
+    "500": "Ichki server xatosi",
+    "503": "Xizmat mavjud emas",
+    "default": "Nimadir xato ketdi"
+  },
+  "common": {
+    "loading": "Yuklanmoqda...",
+    "loading_more": "Yana yuklanmoqda...",
+    "loading_packages": "Paketlar yuklanmoqda...",
+    "end_of_results": "Natijalar tugadi",
+    "try_again": "Qayta urinish",
+    "close": "Yopish",
+    "or": "yoki",
+    "retry": "Qayta urinish",
+    "copy": "nusxalash",
+    "copied": "nusxalandi!",
+    "skip_link": "Asosiy kontentga oʻtish",
+    "warnings": "Ogohlantirishlar:",
+    "go_back_home": "Bosh sahifaga qaytish",
+    "per_week": "/ hafta",
+    "vanity_downloads_hint": "Umumiy raqam: paketlar koʻrsatilmagan | Umumiy raqam: koʻrsatilgan paket uchun | Umumiy raqam: {count} ta koʻrsatilgan paket yigʻindisi",
+    "sort": {
+      "name": "nom",
+      "role": "rol",
+      "members": "aʼzolar"
+    },
+    "scroll_to_top": "Yuqoriga qaytish",
+    "cancel": "Bekor qilish",
+    "save": "Saqlash",
+    "edit": "Tahrirlash",
+    "error": "Xato",
+    "view_on": {
+      "npm": "npm’da koʻrish",
+      "github": "GitHub’da koʻrish",
+      "gitlab": "GitLab’da koʻrish",
+      "bitbucket": "Bitbucket’da koʻrish",
+      "codeberg": "Codeberg’da koʻrish",
+      "git_repo": "Git repozitoriysida koʻrish",
+      "forgejo": "Forgejo’da koʻrish",
+      "gitea": "Gitea’da koʻrish",
+      "gitee": "Gitee’da koʻrish",
+      "radicle": "Radicle’da koʻrish",
+      "socket_dev": "socket.dev’da koʻrish",
+      "sourcehut": "SourceHut’da koʻrish",
+      "tangled": "Tangled’da koʻrish"
+    },
+    "collapse": "Yigʻish",
+    "collapse_with_name": "{name} ni yigʻish",
+    "expand": "Yoyish",
+    "expand_with_name": "{name} ni yoyish"
+  },
+  "profile": {
+    "display_name": "Koʻrsatiladigan nom",
+    "description": "Tavsif",
+    "no_description": "Tavsif yoʻq",
+    "website": "Veb-sayt",
+    "website_placeholder": "https://example.com",
+    "likes": "Yoqtirishlar",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "{handle} ning npmx profili",
+    "not_found": "Profil topilmadi",
+    "not_found_message": "{handle} profili topilmadi.",
+    "invite": {
+      "message": "Ular hali npmx’dan foydalanmayotganga oʻxshaydi. Ularga bu haqida aytmoqchimisiz?",
+      "share_button": "Bluesky’da ulashish",
+      "compose_text": "Salom {'@'}{handle}! Hali npmx.dev’ni koʻrib chiqdingizmi? Bu npm registry uchun tez, zamonaviy va ochiq manbali brauzer.\nhttps://npmx.dev"
+    }
+  },
+  "package": {
+    "not_found": "Paket topilmadi",
+    "not_found_message": "Paket topilmadi.",
+    "no_description": "Tavsif berilmagan",
+    "verified_provenance": "Tasdiqlangan provenance",
+    "navigation": "Paket",
+    "copy_name": "Paket nomini nusxalash",
+    "deprecation": {
+      "package": "Ushbu paket eskirgan deb belgilangan.",
+      "version": "Ushbu versiya eskirgan deb belgilangan.",
+      "no_reason": "Sabab koʻrsatilmagan"
+    },
+    "size_increase": {
+      "title_size": "v{version} dan beri sezilarli hajm oshishi",
+      "title_deps": "v{version} dan beri sezilarli bogʻliqliklar sonining oshishi",
+      "title_both": "v{version} dan beri sezilarli hajm va bogʻliqliklar oshishi",
+      "size": "Oʻrnatish hajmi {percent} ga oshdi ({size} kattaroq)",
+      "deps": "{count} ta qoʻshimcha bogʻliqlik"
+    },
+    "replacement": {
+      "title": "Ushbu bogʻliqlik sizga kerak boʻlmasligi mumkin.",
+      "native": "Buni Node {nodeVersion} dan beri mavjud boʻlgan {replacement} bilan almashtirish mumkin.",
+      "simple": "{community} ushbu paketni ortiqcha deb belgilagan, tavsiya: {replacement}.",
+      "documented": "{community} ushbu paketda samaraliroq muqobillar borligini belgilagan.",
+      "none": "Ushbu paket endi kerak emas deb belgilangan va uning funksiyasi barcha engine’larda native tarzda mavjud boʻlishi mumkin.",
+      "learn_more": "Batafsil",
+      "learn_more_above": "Yuqorida batafsil.",
+      "mdn": "MDN",
+      "community": "hamjamiyat",
+      "consider_no_dep": "+ Bogʻliqliksiz variantni koʻrib chiqing?"
+    },
+    "stats": {
+      "license": "Litsenziya",
+      "deps": "Deps",
+      "install_size": "Oʻrnatish hajmi",
+      "vulns": "Zaifliklar",
+      "published": "Nashr etilgan",
+      "published_tooltip": "{package}{'@'}{version} nashr etilgan sana",
+      "view_dependency_graph": "Bogʻliqliklar grafigini koʻrish",
+      "inspect_dependency_tree": "Bogʻliqliklar daraxtini tekshirish",
+      "size_tooltip": {
+        "unpacked": "{size} ochilgan hajm (ushbu paket)",
+        "total": "{size} jami ochilgan hajm (linux-x64 uchun {count} ta bogʻliqlik bilan) | {size} jami ochilgan hajm (linux-x64 uchun barcha {count} ta bogʻliqlik bilan)"
+      }
+    },
+    "skills": {
+      "title": "Agent Skills",
+      "skills_available": "{count} ta skill mavjud | {count} ta skill mavjud",
+      "compatible_with": "{tool} bilan mos",
+      "install": "Oʻrnatish",
+      "installation_method": "Oʻrnatish usuli",
+      "learn_more": "Batafsil",
+      "available_skills": "Mavjud Skills",
+      "click_to_expand": "Yoyish uchun bosing",
+      "no_description": "Tavsif yoʻq",
+      "file_counts": {
+        "scripts": "{count} ta skript | {count} ta skript",
+        "refs": "{count} ta ref | {count} ta ref",
+        "assets": "{count} ta asset | {count} ta asset"
+      },
+      "view_source": "Manbani koʻrish",
+      "skills_cli": "skills CLI"
+    },
+    "links": {
+      "main": "asosiy",
+      "repo": "repo",
+      "homepage": "bosh sahifa",
+      "issues": "masalalar",
+      "jsr": "jsr",
+      "code": "kod",
+      "docs": "hujjatlar",
+      "fund": "moliyalash",
+      "compare": "taqqoslash",
+      "compare_this_package": "ushbu paketni taqqoslash"
+    },
+    "likes": {
+      "like": "Ushbu paketni yoqtirish",
+      "unlike": "Yoqtirishni bekor qilish"
+    },
+    "docs": {
+      "contents": "Mundarija",
+      "default_not_available": "Ushbu versiya uchun hujjatlar mavjud emas.",
+      "not_available": "Hujjatlar mavjud emas",
+      "not_available_detail": "Ushbu versiya uchun hujjatlarni yarata olmadik.",
+      "page_title": "API Docs - npmx",
+      "page_title_name": "{name} hujjatlari - npmx",
+      "page_title_version": "{name} hujjatlari - npmx",
+      "og_title": "{name} - Hujjatlar",
+      "view_package": "Paketni koʻrish"
+    },
+    "get_started": {
+      "title": "Boshlash",
+      "pm_label": "Paket menejeri",
+      "copy_command": "Oʻrnatish buyrugʻini nusxalash",
+      "copy_dev_command": "Dev oʻrnatish buyrugʻini nusxalash",
+      "dev_dependency_hint": "Odatda dev-bogʻliqlik sifatida oʻrnatiladi",
+      "view_types": "{package} ni koʻrish"
+    },
+    "create": {
+      "title": "Yangi loyiha yaratish",
+      "copy_command": "Yaratish buyrugʻini nusxalash",
+      "view": "{packageName} bir xil maintainer’ga ega. Batafsil uchun bosing."
+    },
+    "run": {
+      "title": "Ishga tushirish",
+      "locally": "Lokal ishga tushirish"
+    },
+    "readme": {
+      "title": "Readme",
+      "no_readme": "README mavjud emas.",
+      "toc_title": "Mundarija",
+      "callout": {
+        "note": "Izoh",
+        "tip": "Maslahat",
+        "important": "Muhim",
+        "warning": "Ogohlantirish",
+        "caution": "Ehtiyot"
+      },
+      "copy_as_markdown": "README ni Markdown sifatida nusxalash"
+    },
+    "provenance_section": {
+      "title": "Provenance",
+      "built_and_signed_on": "{provider} da yigʻilgan va imzolangan",
+      "view_build_summary": "Build xulosasini koʻrish",
+      "source_commit": "Manba commit",
+      "build_file": "Build fayli",
+      "public_ledger": "Ochiq reyestr",
+      "transparency_log_entry": "Shaffoflik jurnali yozuvi",
+      "view_more_details": "Batafsil koʻrish",
+      "error_loading": "Provenance tafsilotlarini yuklab boʻlmadi"
+    },
+    "security_downgrade": {
+      "title": "Ishonch darajasi pasaytirilgan",
+      "description_to_none_provenance": "Ushbu versiya {provenance} siz nashr etilgan.",
+      "description_to_none_trustedPublisher": "Ushbu versiya {trustedPublishing} siz nashr etilgan.",
+      "description_to_provenance_trustedPublisher": "Ushbu versiya {provenance} dan foydalanadi, ammo {trustedPublishing} dan emas.",
+      "fallback_install_provenance": "Oʻrnatish buyruqlari provenance bilan nashr etilgan oxirgi versiya — {version} ga mahkamlangan.",
+      "fallback_install_trustedPublisher": "Oʻrnatish buyruqlari trusted publishing bilan nashr etilgan oxirgi versiya — {version} ga mahkamlangan.",
+      "provenance_link_text": "provenance",
+      "trusted_publishing_link_text": "trusted publishing"
+    },
+    "keywords_title": "Kalit soʻzlar",
+    "compatibility": "Moslik",
+    "card": {
+      "publisher": "Nashriyotchi",
+      "published": "Nashr etilgan",
+      "weekly_downloads": "Haftalik yuklab olishlar",
+      "keywords": "Kalit soʻzlar",
+      "license": "Litsenziya",
+      "select": "Paketni tanlash",
+      "select_maximum": "Maksimal {count} ta paket tanlash mumkin"
+    },
+    "versions": {
+      "title": "Versiyalar",
+      "collapse": "{tag} ni yigʻish",
+      "expand": "{tag} ni yoyish",
+      "collapse_other": "Boshqa versiyalarni yigʻish",
+      "expand_other": "Boshqa versiyalarni yoyish",
+      "collapse_major": "Major {major} ni yigʻish",
+      "expand_major": "Major {major} ni yoyish",
+      "other_versions": "Boshqa versiyalar",
+      "more_tagged": "yana {count} ta tegli",
+      "all_covered": "Barcha versiyalar yuqoridagi teglar bilan qamrab olingan",
+      "deprecated_title": "{version} (eskirgan)",
+      "view_all": "{count} ta versiyani koʻrish | Barcha {count} ta versiyani koʻrish",
+      "view_all_versions": "Barcha versiyalarni koʻrish",
+      "distribution_title": "Semver guruhi",
+      "distribution_modal_title": "Versiyalar",
+      "distribution_range_date_same_year": "{from} dan {to} gacha, {endYear}",
+      "distribution_range_date_multiple_years": "{from}, {startYear} dan {to}, {endYear} gacha",
+      "grouping_major": "Major",
+      "grouping_minor": "Minor",
+      "grouping_versions_title": "Versiyalar",
+      "grouping_versions_about": "Versiyalarni guruhlash haqida",
+      "grouping_versions_all": "Hammasi",
+      "grouping_versions_only_recent": "Faqat soʻnggi",
+      "grouping_usage_title": "Foydalanish",
+      "grouping_usage_about": "Foydalanish boʻyicha guruhlash haqida",
+      "grouping_usage_all": "Hammasi",
+      "grouping_usage_most_used": "Koʻp foydalanilgan",
+      "recent_versions_only_tooltip": "Faqat oxirgi yil ichida nashr etilgan versiyalarni koʻrsatish.",
+      "show_low_usage_tooltip": "Umumiy yuklab olishlarning 1% dan kam qismiga ega versiya guruhlarini qoʻshish.",
+      "y_axis_label": "Yuklab olishlar",
+      "filter_placeholder": "Semver boʻyicha filtrlash (masalan: ^3.0.0)",
+      "filter_invalid": "Yaroqsiz semver diapazoni",
+      "filter_help": "Semver diapazon filtri yordami",
+      "filter_tooltip": "Versiyalarni {link} yordamida filtrlang. Masalan, ^3.0.0 barcha 3.x versiyalarini koʻrsatadi.",
+      "filter_tooltip_link": "semver diapazoni",
+      "no_matches": "Ushbu diapazonga mos versiya yoʻq",
+      "copy_alt": {
+        "per_version_analysis": "{version} versiyasi {downloads} marta yuklab olingan",
+        "general_description": "{package_name} paketining {versions_count} ta {semver_grouping_mode} versiyasi boʻyicha versiyalarga koʻra yuklab olishlarni koʻrsatuvchi bar grafik, {first_version} versiyadan {last_version} versiyagacha {date_range_label}. Eng koʻp yuklab olingan versiya — {max_downloaded_version}, {max_version_downloads} marta yuklab olingan. {per_version_analysis}. {watermark}."
+      },
+      "page_title": "Versiyalar tarixi",
+      "current_tags": "Joriy teglar",
+      "no_match_filter": "{filter} ga mos versiya yoʻq"
+    },
+    "dependencies": {
+      "title": "Bogʻliqlik ({count}) | Bogʻliqliklar ({count})",
+      "list_label": "Paket bogʻliqliklari",
+      "show_all": "{count} ta dep koʻrsatish | barcha {count} ta dep’ni koʻrsatish",
+      "optional": "ixtiyoriy",
+      "view_vulnerabilities": "Zaifliklarni koʻrish",
+      "outdated_major": "{count} ta major versiyadan orqada (oxirgi: {latest}) | {count} ta major versiyadan orqada (oxirgi: {latest})",
+      "outdated_minor": "{count} ta minor versiyadan orqada (oxirgi: {latest}) | {count} ta minor versiyadan orqada (oxirgi: {latest})",
+      "outdated_patch": "Patch yangilanishi mavjud (oxirgi: {latest})",
+      "has_replacement": "Ushbu bogʻliqlik uchun muqobil tavsiyalar mavjud",
+      "vulnerabilities_count": "{count} ta zaiflik | {count} ta zaiflik"
+    },
+    "peer_dependencies": {
+      "title": "Peer bogʻliqlik ({count}) | Peer bogʻliqliklar ({count})",
+      "list_label": "Paketning peer bogʻliqliklari",
+      "show_all": "{count} ta peer dep koʻrsatish | barcha {count} ta peer dep’ni koʻrsatish"
+    },
+    "optional_dependencies": {
+      "title": "Ixtiyoriy bogʻliqlik ({count}) | Ixtiyoriy bogʻliqliklar ({count})",
+      "list_label": "Paketning ixtiyoriy bogʻliqliklari",
+      "show_all": "{count} ta ixtiyoriy dep koʻrsatish | barcha {count} ta ixtiyoriy dep’ni koʻrsatish"
+    },
+    "maintainers": {
+      "title": "Maintainer’lar",
+      "list_label": "Paket maintainer’lari",
+      "you": "(siz)",
+      "via": "{teams} orqali",
+      "remove_owner": "{name} ni egalik roʻyxatidan olib tashlash",
+      "username_to_add": "Egalik qoʻshish uchun foydalanuvchi nomi",
+      "username_placeholder": "foydalanuvchi nomi...",
+      "add_button": "qoʻshish",
+      "cancel_add": "Egalik qoʻshishni bekor qilish",
+      "add_owner": "+ Egalik qoʻshish",
+      "show_more": "(yana {count} tasini koʻrsatish)",
+      "show_less": "(kamroq koʻrsatish)",
+      "maintainer_template": "{avatar} {char126}{name}"
+    },
+    "trends": {
+      "chart_assistive_text": {
+        "keyboard_navigation_horizontal": "Maʼlumot nuqtalari boʻylab harakatlanish uchun chap va oʻng strelka tugmalaridan foydalaning.",
+        "keyboard_navigation_vertical": "Maʼlumot nuqtalari boʻylab harakatlanish uchun yuqori va pastki strelka tugmalaridan foydalaning.",
+        "table_available": "Ushbu grafik uchun maʼlumot jadvali quyida mavjud.",
+        "table_caption": "Grafik maʼlumotlari jadvali"
+      },
+      "chart_view_toggle": "Koʻrinishni almashtirish",
+      "chart_view_combined": "Birlashtirilgan koʻrinish",
+      "chart_view_split": "Boʻlingan koʻrinish",
+      "granularity": "Granularlik",
+      "granularity_daily": "Kunlik",
+      "granularity_weekly": "Haftalik",
+      "granularity_monthly": "Oylik",
+      "granularity_yearly": "Yillik",
+      "start_date": "Boshlanish",
+      "end_date": "Tugash",
+      "loading": "Yuklanmoqda...",
+      "date_range": "{start} dan {end} gacha",
+      "date_range_multiline": "{start}\ndan {end} gacha",
+      "download_file": "{fileType} ni yuklab olish",
+      "toggle_annotator": "Izohlovchini almashtirish",
+      "toggle_stack_mode": "Stack rejimini almashtirish",
+      "open_options": "Sozlamalarni ochish",
+      "close_options": "Sozlamalarni yopish",
+      "legend_estimation": "Taxmin",
+      "no_data": "Maʼlumot mavjud emas",
+      "y_axis_label": "{granularity} {facet}",
+      "facet": "Xossa",
+      "title": "Tendensiyalar",
+      "contributors_skip": "Contributors’da koʻrsatilmagan (GitHub repo yoʻq):",
+      "items": {
+        "downloads": "Yuklab olishlar",
+        "likes": "Yoqtirishlar",
+        "contributors": "Contributors"
+      },
+      "data_correction": "Maʼlumot tuzatish",
+      "average_window": "Oʻrtacha oyna",
+      "smoothing": "Silliqlash",
+      "prediction": "Bashorat",
+      "known_anomalies": "Maʼlum anomaliyalar",
+      "known_anomalies_description": "Botlar yoki CI muammolari sababli yuz bergan maʼlum yuklab olish chuqqilari ustidan interpolyatsiya qiladi.",
+      "known_anomalies_ranges": "Anomaliya diapazonlari",
+      "known_anomalies_range": "{start} dan {end} gacha",
+      "known_anomalies_range_named": "{packageName}: {start} dan {end} gacha",
+      "known_anomalies_none": "Ushbu paket uchun maʼlum anomaliyalar yoʻq. | Ushbu paketlar uchun maʼlum anomaliyalar yoʻq.",
+      "known_anomalies_contribute": "Anomaliya maʼlumotlarini qoʻshish",
+      "apply_correction": "Tuzatishni qoʻllash",
+      "copy_alt": {
+        "trend_none": "asosan tekis",
+        "trend_strong": "kuchli",
+        "trend_weak": "kuchsiz",
+        "trend_undefined": "aniqlanmagan (maʼlumot yetarli emas)",
+        "button_label": "Alt matnni nusxalash",
+        "watermark": "Pastda suv belgisi yozuvi: \"./npmx a fast, modern browser for the npm registry\"",
+        "analysis": "{package_name} {start_value} dan boshlanib {end_value} bilan tugaydi, vaqt oraligʻi boshiga {downloads_slope} yuklab olish qiyaligi bilan {trend} tendensiyani koʻrsatadi",
+        "estimation": "Yakuniy qiymat joriy davr uchun qisman maʼlumotga asoslangan taxmindir.",
+        "estimations": "Yakuniy qiymatlar joriy davr uchun qisman maʼlumotga asoslangan taxminlardir.",
+        "compare": "Paketlarni yuklab olish taqqoslash chiziqli grafigi: {packages}.",
+        "single_package": "{package} paketi uchun yuklab olishlar chiziqli grafigi.",
+        "general_description": "Y oʻqi yuklab olishlar sonini ifodalaydi. X oʻqi {start_date} dan {end_date} gacha boʻlgan sana oraligʻini, {granularity} vaqt davri bilan ifodalaydi.{estimation_notice} {packages_analysis}. {watermark}.",
+        "facet_bar_general_description": "{packages} uchun gorizontal bar grafik, {facet} ({description}) ni taqqoslaydi. {facet_analysis} {watermark}.",
+        "facet_bar_analysis": "{package_name} qiymati {value}."
+      }
+    },
+    "downloads": {
+      "title": "Haftalik yuklab olishlar",
+      "community_distribution": "Hamjamiyat qabul qilish taqsimotini koʻrish",
+      "subtitle": "Barcha versiyalar boʻyicha",
+      "sparkline_nav_hint": "← → dan foydalaning"
+    },
+    "install_scripts": {
+      "title": "Oʻrnatish skriptlari",
+      "script_label": "(skript)",
+      "npx_packages": "{count} ta npx paket | {count} ta npx paket",
+      "currently": "hozirda {version}"
+    },
+    "playgrounds": {
+      "title": "Sinab koʻring",
+      "choose": "playground tanlang"
+    },
+    "metrics": {
+      "esm": "ES Modules qoʻllab-quvvatlanadi",
+      "cjs": "CommonJS qoʻllab-quvvatlanadi",
+      "no_esm": "ES Modules qoʻllab-quvvatlanmaydi",
+      "wasm": "WebAssembly mavjud",
+      "types_label": "Types",
+      "types_included": "Types ichida mavjud",
+      "types_available": "Types {package} orqali mavjud",
+      "no_types": "Types yoʻq"
+    },
+    "license": {
+      "view_spdx": "Litsenziya matnini SPDX’da koʻrish",
+      "none": "Yoʻq"
+    },
+    "vulnerabilities": {
+      "tree_found": "{packages}/{total} ta paketda {vulns} ta zaiflik | {packages}/{total} ta paketda {vulns} ta zaiflik",
+      "show_all_packages": "{count} ta taʼsirlangan paketni koʻrsatish | barcha {count} ta taʼsirlangan paketni koʻrsatish",
+      "path": "yoʻl",
+      "more": "+{count} tani koʻrsatish",
+      "packages_failed": "{count} ta paketni tekshirib boʻlmadi | {count} ta paketni tekshirib boʻlmadi",
+      "scan_failed": "Zaifliklarni skanerlab boʻlmadi",
+      "severity": {
+        "critical": "kritik",
+        "high": "yuqori",
+        "moderate": "oʻrtacha",
+        "low": "past"
+      },
+      "fixed_in_title": "{version} versiyasida tuzatilgan"
+    },
+    "deprecated": {
+      "label": "Eskirgan",
+      "tree_found": "{count} ta eskirgan bogʻliqlik | {count} ta eskirgan bogʻliqlik",
+      "show_all": "{count} ta eskirgan paketni koʻrsatish | barcha {count} ta eskirgan paketni koʻrsatish"
+    },
+    "access": {
+      "title": "Jamoa kirishi",
+      "refresh": "Jamoa kirishini yangilash",
+      "list_label": "Jamoa kirishi roʻyxati",
+      "owner": "egalik",
+      "rw": "rw",
+      "ro": "ro",
+      "revoke_access": "{name} kirishini bekor qilish",
+      "no_access": "Jamoa kirishi sozlanmagan",
+      "select_team_label": "Jamoani tanlash",
+      "loading_teams": "Jamoalar yuklanmoqda...",
+      "select_team": "Jamoani tanlash",
+      "permission_label": "Ruxsat darajasi",
+      "permission": {
+        "read_only": "faqat oʻqish",
+        "read_write": "oʻqish-yozish"
+      },
+      "grant_button": "berish",
+      "cancel_grant": "Kirish berishni bekor qilish",
+      "grant_access": "+ Jamoa kirishini berish"
+    },
+    "list": {
+      "filter_label": "Paketlarni filtrlash",
+      "filter_placeholder": "Paketlarni filtrlash...",
+      "sort_label": "Paketlarni saralash",
+      "showing_count": "{total} ta paketdan {filtered} tasi koʻrsatilmoqda"
+    },
+    "skeleton": {
+      "loading": "Paket tafsilotlari yuklanmoqda",
+      "maintainers": "Maintainer’lar",
+      "keywords": "Kalit soʻzlar",
+      "versions": "Versiyalar",
+      "dependencies": "Bogʻliqliklar"
+    },
+    "sort": {
+      "downloads": "Eng koʻp yuklab olingan",
+      "published": "Yaqinda nashr etilgan",
+      "name_asc": "Nom (A-Z)",
+      "name_desc": "Nom (Z-A)"
+    },
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
+    },
+    "download": {
+      "button": "Yuklab olish",
+      "tarball": "Tarball’ni .tar.gz sifatida yuklab olish"
+    }
+  },
+  "connector": {
+    "modal": {
+      "title": "Lokal konnektor",
+      "connected": "Ulangan",
+      "connected_as_user": "~{user} sifatida ulangan",
+      "connected_hint": "Endi veb-interfeys orqali paketlar va tashkilotlarni boshqarishingiz mumkin.",
+      "disconnect": "Uzish",
+      "run_hint": "Admin funksiyalarini yoqish uchun konnektorni oʻz kompyuteringizda ishga tushiring.",
+      "copy_command": "Buyruqni nusxalash",
+      "copied": "Nusxalandi",
+      "paste_token": "Soʻng ulanish uchun tokenni quyiga joylashtiring:",
+      "token_label": "Token",
+      "token_placeholder": "tokenni shu yerga joylashtiring...",
+      "advanced": "Kengaytirilgan sozlamalar",
+      "port_label": "Port",
+      "warning": "OGOHLANTIRISH",
+      "warning_text": "Bu npmx ga sizning npm CLI’ingizga kirish imkonini beradi. Faqat ishonchli saytlarga ulaning.",
+      "connect": "Ulanish",
+      "connecting": "Ulanmoqda...",
+      "auto_open_url": "Avtomatik ravishda avtorizatsiya sahifasini ochish"
+    }
+  },
+  "operations": {
+    "queue": {
+      "title": "Amallar navbati",
+      "clear_all": "hammasini tozalash",
+      "refresh": "Amallarni yangilash",
+      "empty": "Navbatda amallar yoʻq",
+      "empty_hint": "Paket yoki tashkilot sahifalaridan amallar qoʻshing",
+      "active_label": "Faol amallar",
+      "otp_required": "OTP talab qilinadi",
+      "otp_prompt": "Davom etish uchun OTP kiriting",
+      "otp_placeholder": "OTP kodini kiriting...",
+      "otp_label": "Bir martalik parol",
+      "retry_otp": "OTP bilan qayta urinish",
+      "retry_web_auth": "Web auth bilan qayta urinish",
+      "retrying": "Qayta urinilmoqda...",
+      "open_web_auth": "Web auth havolasini ochish",
+      "approve_operation": "Amalni tasdiqlash",
+      "remove_operation": "Amalni olib tashlash",
+      "approve_all": "Hammasini tasdiqlash",
+      "execute": "Bajarish",
+      "executing": "Bajarilmoqda...",
+      "log": "Jurnal",
+      "log_label": "Yakunlangan amallar jurnali",
+      "remove_from_log": "Jurnaldan olib tashlash"
+    }
+  },
+  "org": {
+    "teams": {
+      "title": "Jamoalar",
+      "refresh": "Jamoalarni yangilash",
+      "filter_label": "Jamoalarni filtrlash",
+      "filter_placeholder": "Jamoalarni filtrlash...",
+      "sort_by": "Saralash",
+      "loading": "Jamoalar yuklanmoqda...",
+      "no_teams": "Jamoalar topilmadi",
+      "list_label": "Tashkilot jamoalari",
+      "delete_team": "{name} jamoasini oʻchirish",
+      "member_count": "{count} ta aʼzo | {count} ta aʼzo",
+      "members_of": "{team} aʼzolari",
+      "no_members": "Aʼzolar yoʻq",
+      "remove_user": "{user} ni jamoadan olib tashlash",
+      "username_to_add": "{team} ga qoʻshish uchun foydalanuvchi nomi",
+      "username_placeholder": "foydalanuvchi nomi...",
+      "add_button": "qoʻshish",
+      "cancel_add_user": "Foydalanuvchi qoʻshishni bekor qilish",
+      "add_member": "+ Aʼzo qoʻshish",
+      "team_name_label": "Jamoa nomi",
+      "team_name_placeholder": "jamoa-nomi...",
+      "create_button": "yaratish",
+      "no_match": "\"{query}\" ga mos jamoa yoʻq",
+      "cancel_create": "Jamoa yaratishni bekor qilish",
+      "create_team": "+ Jamoa yaratish"
+    },
+    "members": {
+      "title": "Aʼzolar",
+      "refresh": "Aʼzolarni yangilash",
+      "filter_label": "Aʼzolarni filtrlash",
+      "filter_placeholder": "Aʼzolarni filtrlash...",
+      "filter_by_role": "Rol boʻyicha filtrlash",
+      "filter_by_team": "Jamoa boʻyicha filtrlash",
+      "all_teams": "barcha jamoalar",
+      "sort_by": "Saralash",
+      "loading": "Aʼzolar yuklanmoqda...",
+      "no_members": "Aʼzolar topilmadi",
+      "list_label": "Tashkilot aʼzolari",
+      "change_role_for": "{name} uchun rolni oʻzgartirish",
+      "remove_from_org": "{name} ni tashkilotdan olib tashlash",
+      "view_team": "{team} jamoasini koʻrish",
+      "no_match": "Filtrlaringizga mos aʼzo yoʻq",
+      "username_label": "Foydalanuvchi nomi",
+      "username_placeholder": "foydalanuvchi nomi...",
+      "role_label": "Rol",
+      "role": {
+        "all": "barchasi",
+        "developer": "developer",
+        "admin": "admin",
+        "owner": "egalik"
+      },
+      "team_label": "Jamoa",
+      "no_team": "jamoasiz",
+      "add_button": "qoʻshish",
+      "cancel_add": "Aʼzo qoʻshishni bekor qilish",
+      "add_member": "+ Aʼzo qoʻshish"
+    },
+    "public_packages": "{count} ta ommaviy paket | {count} ta ommaviy paket",
+    "page": {
+      "packages_title": "Paketlar",
+      "members_tab": "Aʼzolar",
+      "teams_tab": "Jamoalar",
+      "no_packages": "Quyidagi uchun ommaviy paketlar topilmadi:",
+      "no_packages_hint": "Bu tashkilot mavjud boʻlmasligi yoki ommaviy paketlari yoʻq boʻlishi mumkin.",
+      "failed_to_load": "Tashkilot paketlarini yuklab boʻlmadi",
+      "no_match": "\"{query}\" ga mos paket yoʻq",
+      "not_found": "Tashkilot topilmadi",
+      "not_found_message": "\"{'@'}{name}\" tashkiloti npm’da mavjud emas"
+    }
+  },
+  "user": {
+    "combobox": {
+      "add_to_org_hint": "(tashkilotga ham qoʻshiladi)",
+      "press_enter_to_add": "{'@'}{username} ni qoʻshish uchun Enter tugmasini bosing",
+      "default_placeholder": "foydalanuvchi nomi...",
+      "suggestions_label": "Foydalanuvchi takliflari"
+    },
+    "page": {
+      "packages_title": "Paketlar",
+      "no_packages": "Quyidagi uchun ommaviy paketlar topilmadi:",
+      "no_packages_hint": "Bu foydalanuvchi mavjud boʻlmasligi yoki ommaviy paketlari yoʻq boʻlishi mumkin.",
+      "failed_to_load": "Foydalanuvchi paketlarini yuklab boʻlmadi",
+      "no_match": "\"{query}\" ga mos paket yoʻq",
+      "filter_placeholder": "{count} ta paketni filtrlash... | {count} ta paketni filtrlash..."
+    },
+    "orgs_page": {
+      "title": "Tashkilotlar",
+      "back_to_profile": "Profilga qaytish",
+      "connect_required": "Tashkilotlaringizni koʻrish uchun lokal CLI’ni ulang.",
+      "connect_hint_prefix": "Boshlash uchun",
+      "connect_hint_suffix": "ni ishga tushiring.",
+      "own_orgs_only": "Siz faqat oʻz tashkilotlaringizni koʻra olasiz.",
+      "view_your_orgs": "Tashkilotlaringizni koʻrish",
+      "loading": "Tashkilotlar yuklanmoqda...",
+      "empty": "Tashkilotlar topilmadi.",
+      "empty_hint": "Tashkilotlar sizning scope’li paketlaringizdan aniqlanadi.",
+      "count": "{count} ta tashkilot | {count} ta tashkilot",
+      "packages_count": "{count} ta paket | {count} ta paket"
+    }
+  },
+  "claim": {
+    "modal": {
+      "title": "Paket nomini band qilish",
+      "success": "Paket band qilindi!",
+      "success_detail": "{name}{'@'}0.0.0 npm’da nashr etildi.",
+      "success_hint": "Endi ushbu paketga npm publish yordamida yangi versiyalarni nashr etishingiz mumkin.",
+      "view_package": "Paketni koʻrish",
+      "invalid_name": "Yaroqsiz paket nomi:",
+      "available": "Bu nom mavjud!",
+      "taken": "Bu nom allaqachon band qilingan.",
+      "missing_permission": "Sizda {'@'}{scope} scope’iga paket qoʻshish uchun ruxsat yoʻq.",
+      "similar_warning": "Oʻxshash paketlar mavjud — npm bu nomni rad etishi mumkin:",
+      "related": "Aloqador paketlar:",
+      "scope_warning_title": "Buning oʻrniga scope’li paketdan foydalanishni koʻrib chiqing",
+      "scope_warning_text": "Scope’siz paket nomlari umumiy resursdir. Nomni faqat paketni nashr etish va qoʻllab-quvvatlash niyatida boʻlsangizgina band qiling. Shaxsiy yoki tashkilot loyihalari uchun {'@'}{username}/{name} kabi scope’li nomdan foydalaning.",
+      "connect_required": "Ushbu paket nomini band qilish uchun lokal konnektorga ulaning.",
+      "connect_button": "Konnektorga ulanish",
+      "publish_hint": "Bu minimal placeholder paketni nashr etadi.",
+      "preview_json": "package.json oldindan koʻrish",
+      "claim_button": "Paket nomini band qilish",
+      "publishing": "Nashr etilmoqda...",
+      "checking": "Mavjudligi tekshirilmoqda...",
+      "failed_to_check": "Nom mavjudligini tekshirib boʻlmadi",
+      "failed_to_claim": "Paketni band qilib boʻlmadi"
+    }
+  },
+  "code": {
+    "files_label": "Fayllar",
+    "no_files": "Ushbu papkada fayllar yoʻq",
+    "lines": "{count} ta qator | {count} ta qator",
+    "toggle_tree": "Fayl daraxtini almashtirish",
+    "close_tree": "Fayl daraxtini yopish",
+    "copy_content": "Fayl tarkibini nusxalash",
+    "copy_link": "Havolani nusxalash",
+    "view_raw": "Xom faylni koʻrish",
+    "toggle_container": "Kod konteyneri kengligini almashtirish",
+    "open_raw_file": "Xom faylni ochish",
+    "open_path_dropdown": "Yoʻl segmentlari dropdown’ini ochish",
+    "file_too_large": "Fayl oldindan koʻrish uchun juda katta",
+    "file_size_warning": "{size} sintaksisni ajratib koʻrsatish uchun 500KB limitdan oshadi",
+    "failed_to_load": "Faylni yuklab boʻlmadi",
+    "unavailable_hint": "Fayl juda katta yoki mavjud boʻlmasligi mumkin",
+    "version_required": "Kodni koʻrib chiqish uchun versiya talab qilinadi",
+    "go_to_package": "Paketga oʻtish",
+    "loading_tree": "Fayl daraxti yuklanmoqda...",
+    "failed_to_load_tree": "Ushbu paket versiyasi uchun fayllarni yuklab boʻlmadi",
+    "back_to_package": "Paketga qaytish",
+    "table": {
+      "name": "Nom",
+      "size": "Hajm"
+    },
+    "markdown_view_mode": {
+      "preview": "Oldindan koʻrish",
+      "code": "Kod"
+    },
+    "file_path": "Fayl yoʻli",
+    "binary_file": "Binary fayl",
+    "binary_rendering_warning": "\"{contentType}\" fayl turi oldindan koʻrish uchun qoʻllab-quvvatlanmaydi."
+  },
+  "badges": {
+    "provenance": {
+      "verified": "tasdiqlangan",
+      "verified_title": "Tasdiqlangan provenance",
+      "verified_via": "Tasdiqlangan: {provider} orqali nashr etilgan"
+    },
+    "jsr": {
+      "title": "JSR’da ham mavjud"
+    }
+  },
+  "filters": {
+    "title": "Filtrlar",
+    "search": "Qidiruv",
+    "search_scope": "Qidiruv doirasi",
+    "search_placeholder_name": "Paket nomi boʻyicha filtrlash...",
+    "search_placeholder_description": "Tavsif boʻyicha filtrlash...",
+    "search_placeholder_keywords": "Kalit soʻzlar boʻyicha filtrlash...",
+    "search_placeholder_all": "Hammasini qidiring yoki name: desc: kw: dan foydalaning",
+    "scope_name": "Nom",
+    "scope_name_description": "Faqat paket nomlarini qidirish",
+    "scope_description": "Tavsif",
+    "scope_description_description": "Faqat tavsiflarni qidirish",
+    "scope_keywords": "Kalit soʻzlar",
+    "scope_keywords_description": "Faqat kalit soʻzlarni qidirish",
+    "scope_all": "Hammasi",
+    "scope_all_description": "Barcha maydonlarni qidiradi, name: desc: kw: operatorlarini qoʻllab-quvvatlaydi",
+    "weekly_downloads": "Haftalik yuklab olishlar",
+    "updated_within": "Yangilangan davri",
+    "security": "Xavfsizlik",
+    "keywords": "Kalit soʻzlar",
+    "more_keywords": "+{count} tani koʻrsatish",
+    "clear_all": "Hammasini tozalash",
+    "remove_filter": "{label} filtrini olib tashlash",
+    "chips": {
+      "search": "Qidiruv",
+      "downloads": "Yuklab olishlar",
+      "keyword": "Kalit soʻz",
+      "security": "Xavfsizlik",
+      "updated": "Yangilangan"
+    },
+    "download_range": {
+      "any": "Har qanday",
+      "lt100": "< 100",
+      "100_1k": "100 - 1K",
+      "1k_10k": "1K - 10K",
+      "10k_100k": "10K - 100K",
+      "gt100k": "> 100K"
+    },
+    "updated": {
+      "any": "Har qanday vaqt",
+      "week": "Oxirgi hafta",
+      "month": "Oxirgi oy",
+      "quarter": "Oxirgi 3 oy",
+      "year": "Oxirgi yil"
+    },
+    "security_options": {
+      "all": "Barcha paketlar",
+      "secure": "Ogohlantirishlarsiz",
+      "insecure": "Ogohlantirishlar bilan"
+    },
+    "view_selected": "Tanlanganlarni koʻrish",
+    "clear_selected_label": "Tanlanganlarni tozalash",
+    "sort": {
+      "label": "Paketlarni saralash",
+      "toggle_direction": "Saralash yoʻnalishini almashtirish",
+      "ascending": "Oʻsish tartibida",
+      "descending": "Kamayish tartibida",
+      "relevance": "Moslik",
+      "downloads_week": "Yuklab olish/hafta",
+      "downloads_day": "Yuklab olish/kun",
+      "downloads_month": "Yuklab olish/oy",
+      "downloads_year": "Yuklab olish/yil",
+      "published": "Oxirgi nashr",
+      "name": "Nom"
+    },
+    "columns": {
+      "title": "Ustunlar",
+      "show": "Ustunlarni koʻrsatish",
+      "reset": "Standartga qaytarish",
+      "coming_soon": "Tez orada",
+      "name": "Nom",
+      "version": "Versiya",
+      "description": "Tavsif",
+      "downloads": "Yuklab olish/hafta",
+      "published": "Oxirgi nashr",
+      "maintainers": "Maintainer’lar",
+      "keywords": "Kalit soʻzlar",
+      "security": "Xavfsizlik",
+      "selection": "Paketni tanlash"
+    },
+    "view_mode": {
+      "label": "Koʻrinish rejimi",
+      "cards": "Karta koʻrinishi",
+      "table": "Jadval koʻrinishi"
+    },
+    "pagination": {
+      "mode_label": "Sahifalash rejimi",
+      "infinite": "Cheksiz",
+      "paginated": "Sahifalangan",
+      "items_per_page": "Har sahifada elementlar",
+      "per_page": "{count} / sahifa",
+      "showing": "{total} dan {range}",
+      "previous": "Oldingi sahifa",
+      "next": "Keyingi sahifa",
+      "nav_label": "Sahifalash"
+    },
+    "count": {
+      "showing_filtered": "{count} ta paketdan {filtered} tasi | {count} ta paketdan {filtered} tasi",
+      "showing_all": "{count} ta paket | {count} ta paket",
+      "showing_paginated": "{count} ta paketdan {pageSize} tasi | {count} ta paketdan {pageSize} tasi"
+    },
+    "table": {
+      "security_warning": "Xavfsizlik ogohlantirishi",
+      "secure": "Xavfsiz",
+      "no_packages": "Paketlar topilmadi"
+    }
+  },
+  "about": {
+    "title": "Biz haqimizda",
+    "heading": "biz haqimizda",
+    "meta_description": "npmx — npm registry uchun tez va zamonaviy brauzer. npm paketlarini oʻrganish uchun ajoyib UX/DX.",
+    "what_we_are": {
+      "title": "Biz nima",
+      "better_ux_dx": "ajoyib UX/DX",
+      "admin_ui": "admin UI",
+      "description": "npmx — npm paketlar registry va toolchain’i uchun {betterUxDx}. Biz paketlarni oʻrganish uchun tez va zamonaviy interfeys taqdim etishga intilamiz: qorongʻi rejim, klaviatura navigatsiyasi, kod koʻrish va {jsr} kabi muqobil registry’larga ulanishlar.",
+      "admin_description": "Bundan tashqari, biz paketlar, jamoalar va tashkilotlarni boshqarish uchun ajoyib {adminUi} taqdim etishni maqsad qilganmiz — hammasi brauzer orqali, sizning lokal npm CLI’ingiz yordamida."
+    },
+    "what_we_are_not": {
+      "title": "Biz nima emas",
+      "not_package_manager": "Paket menejeri emas.",
+      "not_registry": "Registry emas.",
+      "registry_description": "Biz paketlarni hostlamaymiz. Biz faqat ularni koʻrishning tez va zamonaviy usuliyiz.",
+      "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}.",
+      "words": {
+        "already": "Mavjud",
+        "people": "allaqachon",
+        "building": "odamlar",
+        "really": "quradigan",
+        "cool": "haqiqatan",
+        "package": "zoʻr",
+        "managers": "paket menejerlari"
+      }
+    },
+    "sponsors": {
+      "title": "Homiylar"
+    },
+    "oss_partners": {
+      "title": "OSS hamkorlar"
+    },
+    "team": {
+      "title": "Jamoa",
+      "governance": "Boshqaruv",
+      "role_steward": "steward",
+      "role_maintainer": "maintainer",
+      "sponsor": "homiylik",
+      "sponsor_aria": "{name} ga GitHub’da homiylik qilish"
+    },
+    "contributors": {
+      "title": "... va yana {count} ta contributor | ... va yana {count} ta contributor",
+      "description": "npmx toʻliq ochiq manbali, contributors’ning ajoyib hamjamiyati tomonidan qurilgan. Bizga qoʻshiling va biz har doim istagan npm koʻrish tajribasini birgalikda quramiz.",
+      "loading": "Contributors yuklanmoqda...",
+      "error": "Contributors’ni yuklab boʻlmadi",
+      "view_profile": "{name} ning GitHub profilini koʻrish"
+    },
+    "get_involved": {
+      "title": "Qoʻshiling",
+      "contribute": {
+        "title": "Hissa qoʻshing",
+        "description": "Biz hammamiz istagan npm tajribasini qurishga yordam bering.",
+        "cta": "GitHub’da koʻrish"
+      },
+      "community": {
+        "title": "Hamjamiyatga qoʻshiling",
+        "description": "Suhbatlashing, savollar bering va gʻoyalarni ulashing.",
+        "cta": "Discord’ga qoʻshiling"
+      },
+      "builders": {
+        "title": "npmx’ni qurishga yordam bering",
+        "description": "npmx kelajagini shakllantirayotgan quruvchilarga qoʻshiling.",
+        "cta": "Builders Discord’ga qoʻshiling"
+      },
+      "follow": {
+        "title": "Xabardor boʻling",
+        "description": "npmx haqidagi eng soʻnggi yangiliklarni bilib oling.",
+        "cta": "Bluesky’da kuzating"
+      }
+    }
+  },
+  "account_menu": {
+    "connect": "ulanish",
+    "account": "Hisob",
+    "npm_cli": "npm CLI",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "Paketlar va tashkilotlarni boshqarish",
+    "atmosphere_desc": "Ijtimoiy funksiyalar va identifikatsiya",
+    "connect_npm_cli": "npm CLI’ga ulanish",
+    "connect_atmosphere": "Atmosphere’ga ulanish",
+    "connecting": "Ulanmoqda...",
+    "ops": "{count} ta amal | {count} ta amal"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosphere",
+      "connected_as": "{'@'}{handle} sifatida ulangan",
+      "disconnect": "Uzish",
+      "connect_prompt": "Atmosphere hisobingiz bilan ulaning",
+      "handle_label": "Handle",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "Ulanish",
+      "create_account": "Yangi hisob yaratish",
+      "connect_bluesky": "Bluesky bilan ulanish",
+      "what_is_atmosphere": "Atmosphere hisobi nima?",
+      "atmosphere_explanation": "{npmx} koʻplab ijtimoiy funksiyalarini quvvatlantirish uchun {atproto} dan foydalanadi, bu foydalanuvchilarga oʻz maʼlumotlariga egalik qilish va barcha mos ilovalar uchun bitta hisobdan foydalanish imkonini beradi. Hisob yaratganingizdan soʻng, {bluesky} va {tangled} kabi boshqa ilovalardan ham xuddi shu hisob bilan foydalanishingiz mumkin.",
+      "default_input_error": "Iltimos, yaroqli handle, DID yoki toʻliq PDS URL kiriting",
+      "profile": "Profil"
+    }
+  },
+  "header": {
+    "home": "npmx bosh sahifa",
+    "packages": "paketlar",
+    "packages_dropdown": {
+      "title": "Sizning paketlaringiz",
+      "loading": "Yuklanmoqda...",
+      "error": "Paketlarni yuklab boʻlmadi",
+      "empty": "Paketlar topilmadi",
+      "view_all": "Hammasini koʻrish"
+    },
+    "orgs": "tashkilotlar",
+    "orgs_dropdown": {
+      "title": "Sizning tashkilotlaringiz",
+      "loading": "Yuklanmoqda...",
+      "error": "Tashkilotlarni yuklab boʻlmadi",
+      "empty": "Tashkilotlar topilmadi",
+      "view_all": "Hammasini koʻrish"
+    },
+    "pr": "GitHub pull request #{prNumber} ni ochish"
+  },
+  "compare": {
+    "packages": {
+      "title": "paketlarni taqqoslash",
+      "tagline": "toʻgʻri paketni tanlashga yordam berish uchun npm paketlarini yonma-yon taqqoslang.",
+      "meta_title": "{packages} ni taqqoslash - npmx",
+      "meta_title_empty": "Paketlarni taqqoslash - npmx",
+      "meta_description": "{packages} ning yonma-yon taqqoslovi",
+      "meta_description_empty": "npm paketlarini yonma-yon taqqoslash",
+      "section_packages": "Paketlar",
+      "section_facets": "Xossalar",
+      "section_comparison": "Taqqoslash",
+      "copy_as_markdown": "Jadvalni nusxalash",
+      "loading": "Paket maʼlumotlari yuklanmoqda...",
+      "error": "Paket maʼlumotlarini yuklab boʻlmadi. Iltimos, qayta urinib koʻring.",
+      "empty_title": "Taqqoslash uchun paketlarni tanlang",
+      "empty_description": "Ularning koʻrsatkichlarini yonma-yon taqqoslash uchun yuqorida kamida 2 ta paketni qidirib qoʻshing.",
+      "table_view": "Jadval",
+      "charts_view": "Grafiklar",
+      "no_chartable_data": "Tanlangan xossalar uchun grafikka mos maʼlumot yoʻq.",
+      "bar_chart_nav_hint": "↑ ↓ dan foydalaning",
+      "line_chart_nav_hint": "← → dan foydalaning"
+    },
+    "selector": {
+      "search_label": "Paketlarni qidirish",
+      "search_first": "Paketni qidirish...",
+      "search_add": "Yana paket qoʻshish...",
+      "searching": "Qidirilmoqda...",
+      "remove_package": "{package} ni olib tashlash",
+      "packages_selected": "{count}/{max} ta paket tanlandi.",
+      "add_hint": "Taqqoslash uchun kamida 2 ta paket qoʻshing."
+    },
+    "scatter_chart": {
+      "title": "{x} va {y} ni taqqoslash",
+      "freshness_score": "Yangilik reytingi",
+      "copy_alt": {
+        "analysis": "{package} : {x_name} ({x_value}) va {y_name} ({y_value})",
+        "description": "{packages} paketlari uchun {x_name} va {y_name} ni taqqoslovchi scatter grafik. {analysis}. {watermark}"
+      },
+      "filename": "{x}-vs-{y}-scatter-chart",
+      "x_axis": "X OʻQI ↦",
+      "y_axis": "Y OʻQI ↥"
+    },
+    "no_dependency": {
+      "label": "(Bogʻliqliksiz)",
+      "typeahead_title": "James nima qilardi?",
+      "typeahead_description": "Bogʻliqliksiz variant bilan taqqoslang! e18e tomonidan tasdiqlangan.",
+      "tooltip_title": "Sizga bogʻliqlik kerak boʻlmasligi mumkin",
+      "tooltip_description": "Bogʻliqliksiz variant bilan taqqoslang! {link} native API’lar yoki oddiyroq muqobillar bilan almashtirish mumkin boʻlgan paketlar roʻyxatini yuritadi.",
+      "e18e_community": "e18e hamjamiyati",
+      "add_column": "Taqqoslashga bogʻliqliksiz ustun qoʻshish"
+    },
+    "facets": {
+      "all": "hammasi",
+      "none": "hech biri",
+      "select_all_category_facets": "Barcha {category} xossalarini tanlash",
+      "deselect_all_category_facets": "Barcha {category} xossalarini bekor qilish",
+      "selected_all_category_facets": "Barcha {category} xossalari tanlandi",
+      "deselected_all_category_facets": "Barcha {category} xossalari bekor qilindi",
+      "coming_soon": "Tez orada",
+      "select_all": "Barcha xossalarni tanlash",
+      "deselect_all": "Barcha xossalarni bekor qilish",
+      "binary_only_tooltip": "Bu paket binary’lar taqdim etadi va export’larga ega emas",
+      "categories": {
+        "performance": "Ishlash",
+        "health": "Sogʻlomlik",
+        "compatibility": "Moslik",
+        "security": "Xavfsizlik va muvofiqlik"
+      },
+      "items": {
+        "packageSize": {
+          "label": "Paket hajmi",
+          "description": "Paketning oʻzining hajmi (ochilgan)"
+        },
+        "installSize": {
+          "label": "Oʻrnatish hajmi",
+          "description": "Barcha bogʻliqliklarni hisobga olgan holda umumiy oʻrnatish hajmi"
+        },
+        "dependencies": {
+          "label": "Bevosita deps",
+          "description": "Bevosita bogʻliqliklar soni"
+        },
+        "totalDependencies": {
+          "label": "Jami deps",
+          "description": "Tranzitiv bogʻliqliklarni qoʻshgan holda jami bogʻliqliklar soni"
+        },
+        "downloads": {
+          "label": "Yuklab olish/hafta",
+          "description": "Haftalik yuklab olishlar soni"
+        },
+        "totalLikes": {
+          "label": "Yoqtirishlar",
+          "description": "Yoqtirishlar soni"
+        },
+        "lastUpdated": {
+          "label": "Nashr etilgan",
+          "description": "Ushbu versiya qachon nashr etilgan"
+        },
+        "deprecated": {
+          "label": "Eskirgan?",
+          "description": "Paket eskirgan yoki yoʻqligi"
+        },
+        "engines": {
+          "label": "Engines",
+          "description": "Node.js versiya talablari"
+        },
+        "types": {
+          "label": "Types",
+          "description": "TypeScript type aniqlashlari"
+        },
+        "moduleFormat": {
+          "label": "Modul formati",
+          "description": "ESM/CJS qoʻllab-quvvatlash"
+        },
+        "license": {
+          "label": "Litsenziya",
+          "description": "Paket litsenziyasi"
+        },
+        "vulnerabilities": {
+          "label": "Zaifliklar",
+          "description": "Maʼlum xavfsizlik zaifliklari"
+        }
+      },
+      "values": {
+        "any": "Har qanday",
+        "none": "Yoʻq",
+        "unknown": "Nomaʼlum",
+        "deprecated": "Eskirgan",
+        "not_deprecated": "Yoʻq",
+        "types_included": "Mavjud",
+        "types_none": "Yoʻq",
+        "vulnerabilities_summary": "{count} ({critical}K/{high}Y)",
+        "up_to_you": "Oʻzingiz hal qiling!"
+      },
+      "trends": {
+        "title": "Tendensiyalarni taqqoslash"
+      }
+    },
+    "file_changes": "Fayl oʻzgarishlari",
+    "files_count": "{count} ta fayl | {count} ta fayl",
+    "lines_hidden": "{count} ta qator yashirilgan | {count} ta qator yashirilgan",
+    "file_too_large": "Fayl taqqoslash uchun juda katta",
+    "file_size_warning": "{size} taqqoslash uchun 250KB limitdan oshadi",
+    "compare_versions": "diff",
+    "compare_versions_title": "Oxirgi versiya bilan taqqoslash",
+    "comparing_versions_label": "Versiyalar taqqoslanmoqda...",
+    "version_back_to_package": "Paketga qaytish",
+    "version_error_message": "Versiyalarni taqqoslab boʻlmadi.",
+    "version_invalid_url_format": {
+      "hint": "Yaroqsiz taqqoslash URL’i. Formatdan foydalaning: {0}",
+      "from_version": "dan",
+      "to_version": "gacha"
+    },
+    "version_selector_title": "Versiya bilan taqqoslash",
+    "summary": "Xulosa",
+    "deps_count": "{count} ta dep | {count} ta dep",
+    "dependencies": "Bogʻliqliklar",
+    "dev_dependencies": "Dev bogʻliqliklar",
+    "peer_dependencies": "Peer bogʻliqliklar",
+    "optional_dependencies": "Ixtiyoriy bogʻliqliklar",
+    "no_dependency_changes": "Bogʻliqlik oʻzgarishlari yoʻq",
+    "file_filter_option": {
+      "all": "Hammasi ({count})",
+      "added": "Qoʻshilgan ({count})",
+      "removed": "Olib tashlangan ({count})",
+      "modified": "Oʻzgartirilgan ({count})"
+    },
+    "search_files_placeholder": "Fayllarni qidirish...",
+    "no_files_all": "Fayllar yoʻq",
+    "no_files_search": "\"{query}\" ga mos fayl yoʻq",
+    "no_files_filtered": "{filter} fayllar yoʻq",
+    "filter": {
+      "added": "qoʻshilgan",
+      "removed": "olib tashlangan",
+      "modified": "oʻzgartirilgan"
+    },
+    "files_button": "Fayllar",
+    "select_file_prompt": "Diff’ni koʻrish uchun yon paneldan faylni tanlang",
+    "close_files_panel": "Fayllar panelini yopish",
+    "filter_files_label": "Fayllarni oʻzgarish turi boʻyicha filtrlash",
+    "change_ratio": "Oʻzgarish nisbati",
+    "char_edits": "Belgi tahrirlari",
+    "diff_distance": "Diff masofasi",
+    "loading_diff": "Diff yuklanmoqda...",
+    "loading_diff_error": "Diff’ni yuklab boʻlmadi",
+    "merge_modified_lines": "Oʻzgartirilgan qatorlarni birlashtirish",
+    "no_content_changes": "Kontent oʻzgarishlari aniqlanmadi",
+    "options": "Sozlamalar",
+    "view_file": "Faylni koʻrish",
+    "view_in_code_browser": "Kod brauzerida koʻrish",
+    "word_wrap": "Soʻzlarni oʻrash"
+  },
+  "pds": {
+    "title": "npmx.social",
+    "meta_description": "npmx hamjamiyati uchun rasmiy AT Protocol Personal Data Server (PDS).",
+    "join": {
+      "title": "Hamjamiyatga qoʻshiling",
+      "description": "Atmosphere’da birinchi hisobingizni yaratayotgan boʻlsangiz ham, mavjud hisobni koʻchirayotgan boʻlsangiz ham, bu yerda sizga joy bor. Joriy hisobingizni handle’ingizni, postlaringizni yoki obunachilaringizni yoʻqotmasdan koʻchirishingiz mumkin.",
+      "migrate": "PDS MOOver bilan koʻchirish"
+    },
+    "server": {
+      "title": "Server tafsilotlari",
+      "location_label": "Joylashuv:",
+      "location_value": "Nyurnberg, Germaniya",
+      "infrastructure_label": "Infratuzilma:",
+      "infrastructure_value": "Hetzner’da hostlangan",
+      "privacy_label": "Maxfiylik:",
+      "privacy_value": "Qatʼiy EU Maʼlumotlarni Himoya qilish qonunlariga boʻysunadi",
+      "learn_more": "npmx Atmosphere’dan qanday foydalanishini bilib oling"
+    },
+    "community": {
+      "title": "Kim shu yerda",
+      "description": "npmx.social’ni allaqachon oʻz uylari deb atayotgan {count} ta hisobning bir qismi:",
+      "loading": "PDS hamjamiyati yuklanmoqda...",
+      "error": "PDS hamjamiyatini yuklab boʻlmadi.",
+      "empty": "Koʻrsatiladigan hamjamiyat aʼzolari yoʻq.",
+      "view_profile": "{handle} ning profilini koʻrish",
+      "new_accounts": "...hamda Atmosphere’ga yangi qoʻshilgan yana {count} ta"
+    }
+  },
+  "privacy_policy": {
+    "title": "maxfiylik siyosati",
+    "last_updated": "Oxirgi yangilanish: {date}",
+    "welcome": "{app} ga xush kelibsiz. Biz sizning maxfiyligingizni himoya qilishga sodiqmiz. Ushbu siyosat qanday maʼlumotlarni yigʻishimizni, ulardan qanday foydalanishimizni va maʼlumotlaringizga oid huquqlaringizni tushuntiradi.",
+    "cookies": {
+      "what_are": {
+        "title": "Cookie fayllari nima?",
+        "p1": "Cookie fayllari veb-saytga tashrif buyurganingizda qurilmangizda saqlanadigan kichik matn fayllaridir. Ularning maqsadi ayrim sozlamalaringizni eslab qolish orqali brauzer tajribangizni yaxshilashdir."
+      },
+      "types": {
+        "title": "Biz qanday cookie fayllaridan foydalanamiz?",
+        "p1": "Biz faqat saytning funksionalligi uchun qatʼiy zarur boʻlgan maqsadlarda {bold} dan foydalanamiz. Uchinchi tomon yoki reklama cookie’laridan foydalanmaymiz.",
+        "bold": "zarur texnik cookie’lar",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": ":",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "Bu cookie bizning hosting provayderimiz (Vercel) tomonidan skew protection uchun ishlatiladi. U siz brauzer qilayotganingizda yangi yangilanish chiqqan boʻlsa, assetlarni toʻgʻri deployment versiyasidan olishingizni taʼminlaydi. U sizni kuzatmaydi.",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "Bu bizning xavfsiz sessiya cookie’imiz. U Atmosphere hisobingizni ulaganingizda OAuth access tokenni saqlaydi. Autentifikatsiya qilingan sessiyani saqlab qolish uchun zarur."
+      },
+      "local_storage": {
+        "title": "Local storage",
+        "p1": "Sessiya cookie’laridan tashqari, biz sizning koʻrish sozlamalaringizni saqlash uchun brauzeringizning {bold} dan foydalanamiz. Bu bizga siz tanlagan mavzu (yorugʻ/qorongʻi) va boshqa baʼzi {settings} ni eslab qolish imkonini beradi, shunday qilib har tashrif boʻyicha ularni qayta sozlashingiz shart emas.",
+        "bold": "Local Storage",
+        "p2": "Bu maʼlumot sof funksional, faqat qurilmangizda saqlanadi va {bold2}. Biz undan faqat saytimizdagi tajribangizni yaxshilash uchun foydalanamiz.",
+        "bold2": "shaxsiy maʼlumotlarni oʻz ichiga olmaydi va sizni kuzatish uchun ishlatilmaydi",
+        "settings": "sozlamalar"
+      },
+      "management": {
+        "title": "Cookie fayllarini boshqarish",
+        "p1": "Brauzeringizni cookie fayllarini qabul qilish, rad etish yoki oʻchirish uchun xohlaganingizcha sozlashingiz mumkin. Biroq, eʼtibor bering, {bold}.",
+        "bold": "zarur cookie’larni rad etish ilovaga toʻliq kirishni cheklab qoʻyishi mumkin",
+        "p2": "Quyida eng koʻp ishlatiladigan brauzerlarda cookie fayllarini boshqarish boʻyicha koʻrsatmalar havolalari:",
+        "chrome": "Google Chrome (yangi oynada ochiladi)",
+        "firefox": "Mozilla Firefox (yangi oynada ochiladi)",
+        "edge": "Microsoft Edge (yangi oynada ochiladi)"
+      }
+    },
+    "analytics": {
+      "title": "Analitika",
+      "p1": "Tashrif buyuruvchilar saytimizdan qanday foydalanishini tushunish uchun {bold} dan foydalanamiz. Bu bizga foydalanuvchi tajribasini yaxshilash va muammolarni aniqlashga yordam beradi.",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analytics maxfiylikni hisobga olgan holda ishlab chiqilgan:",
+      "li1": "U cookie fayllaridan foydalanmaydi",
+      "li2": "U shaxsiy identifikatorlarni yigʻmaydi",
+      "li3": "U foydalanuvchilarni saytlar boʻyicha kuzatmaydi",
+      "li4": "Barcha maʼlumotlar umumlashtirilgan va anonim",
+      "p3": "Yigʻiladigan yagona maʼlumot: sahifa URL’lari, referrer, davlat/mintaqa, qurilma turi, brauzer va operatsion tizim. Bu maʼlumotdan alohida foydalanuvchilarni aniqlash uchun foydalanib boʻlmaydi."
+    },
+    "authenticated": {
+      "title": "Autentifikatsiya qilingan foydalanuvchilar",
+      "p1": "Siz {bold} hisobingizni npmx’ga ulaganingizda, biz sizning OAuth access tokeningizni xavfsiz, HTTP-only sessiya cookie’sida saqlaymiz. Bu token faqat sizning nomingizdan soʻrovlarni autentifikatsiya qilish uchun ishlatiladi.",
+      "bold": "Atmosphere",
+      "p2": "Biz sizning hisob maʼlumotlaringizni saqlamaymiz va foydalanayotgan funksiyalarni taʼminlash uchun zarur boʻlgan maʼlumotlardan tashqari hech qanday maʼlumotga kirmaymiz. Hisobingizni istalgan vaqtda {settings} sahifasidan uzishingiz mumkin.",
+      "settings": "sozlamalar"
+    },
+    "data_retention": {
+      "title": "Maʼlumotlarni saqlash",
+      "p1": "Sessiya cookie’lari brauzeringizni yopganingizda yoki faolsizlik davridan soʻng avtomatik ravishda oʻchiriladi. Local storage sozlamalari brauzer maʼlumotlaringizni tozalamaguningizcha qurilmangizda qoladi. Analitika maʼlumotlari umumlashtirilgan shaklda saqlanadi va alohida foydalanuvchilarga bogʻlab boʻlmaydi."
+    },
+    "your_rights": {
+      "title": "Sizning huquqlaringiz",
+      "p1": "Sizda quyidagi huquqlar bor:",
+      "li1": "Biz qanday maʼlumotlarni yigʻishimiz haqidagi maʼlumotga kirish",
+      "li2": "Local storage va cookie fayllaringizni istalgan vaqtda tozalash",
+      "li3": "Autentifikatsiya qilingan sessiyangizni uzish",
+      "li4": "Bizning maʼlumotlar bilan ishlash amaliyotimiz haqida maʼlumot soʻrash",
+      "p2": "Biz shaxsiy maʼlumotlarni yigʻmasligimiz sababli, odatda oʻchiriladigan yoki eksport qilinadigan shaxsiy maʼlumot yoʻq."
+    },
+    "contact": {
+      "title": "Biz bilan bogʻlanish",
+      "p1": "Ushbu maxfiylik siyosatiga oid savollar yoki tashvishlar uchun {link} da masala ochish orqali biz bilan bogʻlanishingiz mumkin.",
+      "link": "GitHub repozitoriyimiz"
+    },
+    "changes": {
+      "title": "Ushbu siyosatga oʻzgarishlar",
+      "p1": "Biz vaqti-vaqti bilan ushbu maxfiylik siyosatini yangilashimiz mumkin. Har qanday oʻzgarish yangilangan sana bilan ushbu sahifada eʼlon qilinadi."
+    }
+  },
+  "a11y": {
+    "title": "imkoniyatlar",
+    "footer_title": "a11y",
+    "welcome": "Biz {app} ni iloji boricha koʻproq odamlar foydalana olishini xohlaymiz.",
+    "approach": {
+      "title": "Bizning yondashuv",
+      "p1": "Biz Web Content Accessibility Guidelines (WCAG) 2.2 ga amal qilishga harakat qilamiz va funksiyalarni qurayotganda ulardan manba sifatida foydalanamiz. Biz WCAG’ning biror darajasiga toʻliq mosligini daʼvo qilmaymiz — imkoniyatlar uzluksiz jarayondir va har doim yana koʻproq qilinadigan ish bor.",
+      "p2": "Ushbu sayt — {about}. Imkoniyatlar boʻyicha yaxshilanishlar muntazam dasturlashning bir qismi sifatida bosqichma-bosqich amalga oshiriladi.",
+      "about_link": "ochiq manbali, hamjamiyat yetakchiligidagi loyiha"
+    },
+    "measures": {
+      "title": "Biz nima qilamiz",
+      "p1": "Sayt boʻylab amalga oshirishga intilayotgan ishlarimizdan baʼzilari:",
+      "li1": "Tegishli joylarda semantik HTML va ARIA atributlaridan foydalanish.",
+      "li2": "Nisbiy matn oʻlchamlaridan foydalanish, shunday qilib ularni brauzeringizda sozlashingiz mumkin.",
+      "li3": "Interfeys boʻylab klaviatura navigatsiyasini qoʻllab-quvvatlash.",
+      "li4": "prefers-reduced-motion va prefers-color-scheme media soʻrovlariga hurmat koʻrsatish.",
+      "li5": "Yetarli rang kontrasti bilan dizayn qilish.",
+      "li6": "Zarur kontent JavaScript’siz ham mavjud boʻlishini taʼminlash, garchi baʼzi interaktiv funksiyalar uni talab qilsa ham."
+    },
+    "limitations": {
+      "title": "Maʼlum cheklovlar",
+      "p1": "Saytning baʼzi qismlari — ayniqsa uchinchi tomon kontenti, masalan, paket READMElari — imkoniyatlar standartlariga mos kelmasligi mumkin. Biz vaqt oʻtishi bilan bu sohalarni yaxshilash ustida ishlamoqdamiz."
+    },
+    "contact": {
+      "title": "Fikr-mulohaza",
+      "p1": "Agar {app} da imkoniyatlar toʻsigʻini uchratsangiz, iltimos, {link} da masala ochish orqali bizga xabar bering. Biz bunday xabarlarni jiddiy qabul qilamiz va ularni hal qilish uchun imkoniyatimizni ishga solamiz.",
+      "link": "GitHub repozitoriyimiz"
+    }
+  },
+  "translation_status": {
+    "title": "tarjima holati",
+    "generated_at": "Yaratilgan sana: {date}",
+    "welcome": "Agar siz {npmx} ni quyida keltirilgan tillardan biriga tarjima qilishga yordam berish bilan qiziqsangiz, toʻgʻri joyga keldingiz! Ushbu avtomatik yangilanadigan sahifa har doim hoziroq sizning yordamingizga muhtoj boʻlgan barcha kontentni roʻyxatga oladi.",
+    "p1": "Biz standart til sifatida {lang} dan foydalanamiz, jami {count}. Agar tarjimalar qoʻshishga yordam bermoqchi boʻlsangiz, tilni {bylang} dan toping va tafsilotlarni yoying.",
+    "p1_lang": "Amerika inglizchasi (en-US)",
+    "p1_count": "0 ta xabar | 1 ta xabar |{count} ta xabar",
+    "p2": "Boshlashdan oldin, iltimos, bizning tarjima jarayonimiz va qanday qoʻshilishingiz mumkinligi haqida bilish uchun {guide} ni oʻqing.",
+    "guide": "lokalizatsiya (i18n) qoʻllanmasi",
+    "by_locale": "Locale boʻyicha tarjima jarayoni",
+    "by_file": "Fayl boʻyicha tarjima jarayoni",
+    "complete_text": "Ushbu tarjima toʻliq, ajoyib ish!",
+    "missing_text": "yetishmayapti",
+    "missing_keys": "Yetishmayotgan tarjimalar yoʻq | Yetishmayotgan tarjima | Yetishmayotgan tarjimalar",
+    "progress_label": "{locale} uchun jarayon holati",
+    "table": {
+      "file": "Fayl",
+      "status": "Holat",
+      "error": "Fayl roʻyxatini yuklashda xato.",
+      "empty": "Fayllar topilmadi",
+      "file_link": "{file} ({lang}) ni GitHub’da tahrirlash"
+    }
+  },
+  "vacations": {
+    "title": "taʼtilda",
+    "meta_description": "npmx jamoasi quvvat toʻplamoqda edi. Discord bir haftadan soʻng qayta ochildi.",
+    "heading": "quvvat toʻplash",
+    "subtitle": "biz npmx’ni shunday tezlikda qurayotgan edikki, bu {some} imizni uyqudan mahrum qilardi. bu meʼyor boʻlishini xohlamadik! shuning uchun bir haftaga taʼtilga chiqdik. birgalikda.",
+    "illustration_alt": "issiqligina ikonalarning bitta qatori",
+    "poke_log": "Gulxanni koʻzgʻating",
+    "what": {
+      "title": "nima boʻldi",
+      "p1": "discord {dates} da yopilgan edi.",
+      "dates": "14 – 21 fevral",
+      "p2": "barcha taklif havolalari yoʻqoldi va kanallar qulflandi – {garden} bundan mustasno, u suhbatlashishni davom ettirmoqchi boʻlganlar uchun ochiq qoldi.",
+      "garden": "#garden"
+    },
+    "meantime": {
+      "title": "shu oraliqda",
+      "p1": "{site} va {repo} ochiq qoldi – odamlar baribir ishlashni davom ettirdi, bir nechta masala ochdi, bir nechta PR qoʻshdi, ammo asosan hamma issiq gulxan yonida vaqt oʻtkazdi.",
+      "repo_link": "repo"
+    },
+    "return": {
+      "title": "biz qaytdik!",
+      "p1": "biz quvvat toʻplab qaytdik va 3-martgacha boʻlgan yakuniy bosqichga tayyormiz. yangiliklar uchun {social}.",
+      "social_link": "bizni Bluesky’da kuzating"
+    },
+    "stats": {
+      "contributors": "Contributors",
+      "commits": "Commit’lar",
+      "pr": "Birlashtirilgan PR’lar",
+      "subtitle": {
+        "some": "baʼzi",
+        "all": "barcha"
+      }
+    }
+  },
+  "action_bar": {
+    "title": "amallar paneli",
+    "selection": "0 ta tanlandi | 1 ta tanlandi | {count} ta tanlandi",
+    "shortcut": "Amallarga fokuslash uchun \"{key}\" tugmasini bosing",
+    "button_close_aria_label": "Amallar panelini yopish"
+  },
+  "logo_menu": {
+    "copy_svg": "Logotipni SVG sifatida nusxalash",
+    "copied": "Nusxalandi!",
+    "browse_brand": "Brend kitni koʻrish"
+  },
+  "brand": {
+    "title": "Brend",
+    "heading": "brend",
+    "meta_description": "Matbuot va mediada foydalanish uchun npmx brend qoʻllanmalari, logotiplari, ranglari va tipografiyasi.",
+    "intro": "Loyihalaringiz, maqolalaringiz va mediangizda npmx brendidan foydalanish uchun resurslar va qoʻllanmalar.",
+    "logos": {
+      "title": "logotiplar",
+      "description": "npmx logotiplarini SVG va PNG formatlarida yuklab oling. Foningizga mos variantdan foydalaning.",
+      "wordmark": "TOʻLIQ WORDMARK",
+      "wordmark_alt": "qorongʻi fonda koʻk slash bilan npmx toʻliq wordmark logotipi",
+      "wordmark_light_alt": "yorugʻ fonda urgʻu slash bilan npmx toʻliq wordmark logotipi",
+      "mark": "LOGO MARK",
+      "mark_alt": "qorongʻi fonda nuqta va slash bilan npmx logo mark",
+      "mark_light_alt": "yorugʻ fonda nuqta va slash bilan npmx logo mark",
+      "on_dark": "qorongʻida",
+      "on_light": "yorugʻda",
+      "download_svg": "SVG",
+      "download_png": "PNG",
+      "download_svg_aria": "{name} ni SVG sifatida yuklab olish",
+      "download_png_aria": "{name} ni PNG sifatida yuklab olish"
+    },
+    "customize": {
+      "title": "logotipingizni moslashtiring",
+      "description": "npmx logotipini urgʻu rangingiz va foningiz bilan oldindan koʻring. Oldindan koʻrish joriy sozlamalaringizni aks ettiradi — rangni tanlang, fonni almashtiring va yuklab oling.",
+      "accent_label": "urgʻu",
+      "bg_label": "fon",
+      "download_svg_aria": "Moslashtirilgan logotipni SVG sifatida yuklab olish",
+      "download_png_aria": "Moslashtirilgan logotipni PNG sifatida yuklab olish"
+    },
+    "typography": {
+      "title": "tipografiya",
+      "description": "npmx interfeys matni va kod uchun Vercel’ning Geist font oilasidan foydalanadi.",
+      "sans": "Geist Sans",
+      "sans_desc": "Asosiy matn va UI elementlari uchun ishlatiladi.",
+      "mono": "Geist Mono",
+      "mono_desc": "Kod, sarlavhalar va texnik kontent uchun ishlatiladi.",
+      "pangram": "Tez qoʻngʻir tulki dangasa itning ustidan sakraydi",
+      "numbers": "0123456789"
+    },
+    "guidelines": {
+      "title": "bir izoh",
+      "message": "Bizga imkoniyatlar muhim va biz bu qarashda sizni ergashishimizni xohlaymiz. Eslatilgan mediadan foydalanganda, fonga qarshi yetarli kontrast borligiga ishonch hosil qiling va 24px dan kichik qilmang. Agar loyiha haqida boshqa resurslar yoki qoʻshimcha maʼlumot kerak boʻlsa, bemalol {link} orqali biz bilan bogʻlaning.",
+      "discord_link_text": "chat.npmx.dev"
+    }
+  },
+  "alt_logo_kawaii": "npmx logotipining yoqimli, yumaloq va rang-barang versiyasi."
+}

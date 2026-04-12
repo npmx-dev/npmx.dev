@@ -270,6 +270,11 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     file: 'tr-TR.json',
     name: 'Türkçe',
   },
+  {
+    code: 'uz-Latn-UZ',
+    file: 'uz-Latn-UZ.json',
+    name: 'Oʻzbekcha',
+  },
   /*
     {
       code: 'pl-PL',
