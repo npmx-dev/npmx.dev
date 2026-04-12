@@ -112,7 +112,7 @@ const totalWeeklyDownloads = computed(() =>
 // Reset state when org changes
 watch(orgName, () => {
   clearAllFilters()
-  setSort('updated-desc')
+  setSort('downloads-week-desc')
   currentPage.value = 1
 })
 
