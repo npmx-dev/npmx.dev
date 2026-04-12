@@ -325,7 +325,7 @@ const flatItems = computed<FlatItem[]>(() => {
           v-if="latestTagRow"
           class="border-y sm:rounded-lg sm:border border-accent/40 bg-accent/5 px-5 py-4 relative flex items-center justify-between gap-4 hover:bg-accent/8 transition-colors"
         >
-          <!-- Left: tags + version -->
+          <!-- Left: tags + version + deprecated -->
           <div>
             <div class="flex items-center gap-2 mb-1.5 flex-wrap">
               <span class="text-3xs font-bold uppercase tracking-widest text-accent">latest</span>
@@ -336,6 +336,12 @@ const flatItems = computed<FlatItem[]>(() => {
                 :title="tag"
                 >{{ tag }}</span
               >
+              <span
+                v-if="fullVersionMap?.get(latestTagRow!.version)?.deprecated"
+                class="text-3xs font-medium text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded"
+                :title="fullVersionMap!.get(latestTagRow!.version)!.deprecated"
+                >deprecated</span
+              >
             </div>
             <LinkBase
               :to="packageRoute(packageName, latestTagRow!.version)"
@@ -345,7 +351,7 @@ const flatItems = computed<FlatItem[]>(() => {
               >v{{ latestTagRow!.version }}</LinkBase
             >
           </div>
-          <!-- Right: downloads + deprecated + date + provenance -->
+          <!-- Right: downloads + date + provenance -->
           <div
             v-if="getVersionDownloads(latestTagRow!.version)"
             class="grid grid-flow-col auto-cols-max items-center gap-1 text-sm font-medium text-fg tabular-nums shrink-0"
@@ -357,12 +363,6 @@ const flatItems = computed<FlatItem[]>(() => {
             <span class="i-lucide:chart-line" aria-hidden="true"></span>
           </div>
           <div class="flex flex-col items-end gap-1.5 shrink-0 relative z-10">
-            <span
-              v-if="fullVersionMap?.get(latestTagRow!.version)?.deprecated"
-              class="text-3xs font-medium text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded"
-              :title="fullVersionMap!.get(latestTagRow!.version)!.deprecated"
-              >deprecated</span
-            >
             <ProvenanceBadge
               v-if="fullVersionMap?.get(latestTagRow!.version)?.hasProvenance"
               :package-name="packageName"
@@ -402,15 +402,23 @@ const flatItems = computed<FlatItem[]>(() => {
               >
             </div>
 
-            <!-- Version -->
-            <LinkBase
-              :to="packageRoute(packageName, row.version)"
-              class="text-sm flex-1 min-w-0 after:absolute after:inset-0 after:content-['']"
-              :title="row.version"
-              dir="ltr"
-            >
-              v{{ row.version }}
-            </LinkBase>
+            <!-- Version + Deprecated -->
+            <div class="flex-1 min-w-0 flex items-center gap-2">
+              <LinkBase
+                :to="packageRoute(packageName, row.version)"
+                class="text-sm after:absolute after:inset-0 after:content-['']"
+                :title="row.version"
+                dir="ltr"
+              >
+                v{{ row.version }}
+              </LinkBase>
+              <span
+                v-if="fullVersionMap?.get(row.version)?.deprecated"
+                class="text-3xs font-medium text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded relative z-10"
+                :title="fullVersionMap!.get(row.version)!.deprecated"
+                >deprecated</span
+              >
+            </div>
 
             <!-- Downloads -->
             <span
@@ -425,14 +433,8 @@ const flatItems = computed<FlatItem[]>(() => {
             </span>
             <span v-else class="w-28 shrink-0" />
 
-            <!-- Deprecated + Date + Provenance -->
+            <!-- Date + Provenance -->
             <div class="flex items-center gap-2 shrink-0 relative z-10">
-              <span
-                v-if="fullVersionMap?.get(row.version)?.deprecated"
-                class="text-3xs font-medium text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded"
-                :title="fullVersionMap!.get(row.version)!.deprecated"
-                >deprecated</span
-              >
               <DateTime
                 v-if="getVersionTime(row.version)"
                 :datetime="getVersionTime(row.version)!"
