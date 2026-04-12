@@ -324,8 +324,8 @@
     "edit": "Изменить",
     "error": "Ошибка",
     "view_on": {
-      "npm": "посмотреть на npm",
-      "github": "Посмотреть на GitHub",
+      "npm": "Открыть на npm",
+      "github": "Открыть на GitHub",
       "gitlab": "Открыть на GitLab",
       "bitbucket": "Открыть на Bitbucket",
       "codeberg": "Открыть на Codeberg",
@@ -334,7 +334,7 @@
       "gitea": "Открыть на Gitea",
       "gitee": "Открыть на Gitee",
       "radicle": "Открыть на Radicle",
-      "socket_dev": "Посмотреть на socket.dev",
+      "socket_dev": "Открыть на socket.dev",
       "sourcehut": "Открыть на SourceHut",
       "tangled": "Открыть на Tangled"
     },
