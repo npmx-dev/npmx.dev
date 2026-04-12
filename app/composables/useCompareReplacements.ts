@@ -52,9 +52,7 @@ export function useCompareReplacements(packageNames: MaybeRefOrGetter<string[]>)
       const newReplacements = new Map(replacements.value)
       for (const result of results) {
         if (result.failed) continue
-
-        const { name, replacement } = result
-        newReplacements.set(name, replacement)
+        newReplacements.set(result.name, result.replacement)
       }
       replacements.value = newReplacements
     } finally {
