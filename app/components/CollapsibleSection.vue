@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { shallowRef, computed } from 'vue'
 import { LinkBase } from '#components'
+import type { IconClass } from '~/types/icon'
 
 interface Props {
   title: string
@@ -8,7 +9,7 @@ interface Props {
   isLoading?: boolean
   headingLevel?: `h${number}`
   id: string
-  icon?: string
+  icon?: IconClass
 }
 
 const props = withDefaults(defineProps<Props>(), {

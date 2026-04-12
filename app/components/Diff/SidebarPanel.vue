@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { packageRoute } from '~/utils/router'
+import type { IconClass } from '~/types/icon'
 
 const props = defineProps<{
   compare: CompareResponse
@@ -19,7 +20,7 @@ const fileFilter = defineModel<'all' | 'added' | 'removed' | 'modified'>('fileFi
 
 const sectionOrder = ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies']
 const { t } = useI18n()
-const sectionMeta = computed<Record<string, { label: string; icon: string }>>(() => ({
+const sectionMeta = computed<Record<string, { label: string; icon: IconClass }>>(() => ({
   dependencies: { label: t('compare.dependencies'), icon: 'i-lucide:box' },
   devDependencies: { label: t('compare.dev_dependencies'), icon: 'i-lucide:wrench' },
   peerDependencies: { label: t('compare.peer_dependencies'), icon: 'i-lucide:users' },
