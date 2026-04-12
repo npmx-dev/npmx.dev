@@ -310,7 +310,8 @@ function toggleAxisHighlight(state: AxisHighlight) {
           @change="step += 1"
           @mouseenter="toggleAxisHighlight('x')"
           @mouseleave="toggleAxisHighlight(null)"
-          @blur="toggleAxisHighlight(null)"
+          @focusin="toggleAxisHighlight('x')"
+          @focusout="toggleAxisHighlight(null)"
         />
         <SelectField
           class="w-full"
@@ -322,8 +323,9 @@ function toggleAxisHighlight(state: AxisHighlight) {
           block
           @change="step += 1"
           @mouseenter="toggleAxisHighlight('y')"
-          @mouseleave="toggleAxisHighlight(null)"
-          @blur="toggleAxisHighlight(null)"
+          @focus="toggleAxisHighlight('y')"
+          @focusin="toggleAxisHighlight('y')"
+          @focusout="toggleAxisHighlight(null)"
         />
       </div>
 
