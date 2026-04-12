@@ -241,7 +241,6 @@ describe('useCompareReplacements', () => {
         expect(fetchMock).toHaveBeenCalledTimes(1)
       })
 
-      expect(replacements.value.get('some-package')).toBeNull()
       expect(replacements.value.has('some-package')).toBe(false)
       expect(noDepSuggestions.value).toHaveLength(0)
       expect(infoSuggestions.value).toHaveLength(0)
