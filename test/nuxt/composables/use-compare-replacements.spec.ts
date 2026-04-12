@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import type { ModuleReplacement } from 'module-replacements'
+import type { ModuleReplacement, SimpleModuleReplacement } from 'module-replacements'
 import type { ReplacementSuggestion } from '~/composables/useCompareReplacements'
 
 /**
@@ -234,7 +234,7 @@ describe('useCompareReplacements', () => {
 
       vi.stubGlobal('$fetch', fetchMock)
 
-      const { replacements } = await useCompareReplacementsInComponent(['some-package'])
+      const { noDepSuggestions, infoSuggestions, replacements } = await useCompareReplacementsInComponent(['some-package'])
 
       await vi.waitFor(() => {
         expect(fetchMock).toHaveBeenCalledTimes(1)
@@ -254,11 +254,11 @@ describe('useCompareReplacements', () => {
         .fn()
         .mockRejectedValueOnce(new Error('Temporary network error'))
         .mockResolvedValueOnce({
-          type: 'simple',
-          moduleName: 'is-even',
-          replacement: 'Use (n % 2) === 0',
-          category: 'micro-utilities',
-        } satisfies ModuleReplacement)
+          "id": "snippet::is-even",
+          "type": "simple",
+          "description": "You can use the modulo operator to check if a number is even.",
+          "example": "(n % 2) === 0",
+        } satisfies SimpleModuleReplacement)
 
       vi.stubGlobal('$fetch', fetchMock)
 
