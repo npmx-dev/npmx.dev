@@ -312,8 +312,6 @@
     "warnings": "Warnungen:",
     "go_back_home": "Zur Startseite",
     "per_week": "/ Woche",
-    "yes": "Ja",
-    "no": "Nein",
     "vanity_downloads_hint": "Vanity-Zahl: keine Pakete angezeigt | Vanity-Zahl: für das angezeigte Paket | Vanity-Zahl: Summe von {count} angezeigten Paketen",
     "sort": {
       "name": "Name",
@@ -1238,32 +1236,8 @@
       "packages_selected": "{count}/{max} Pakete ausgewählt.",
       "add_hint": "Füge mindestens 2 Pakete zum Vergleichen hinzu."
     },
-    "quadrant_chart": {
-      "label_x_axis": "Traktion",
-      "label_y_axis": "Ergonomie",
-      "label_top_right": "Gute Wahl",
-      "label_bottom_right": "beliebt, aber mit Abstrichen",
-      "label_bottom_left": "vermeiden",
-      "label_top_left": "versteckte Schätze",
-      "title": "Paket-Traktion vs. Ergonomie",
-      "filename": "paket-traktion-vs-ergonomie-quadrant",
-      "label_freshness_score": "Aktualitätswert",
-      "copy_alt": {
-        "description": "Quadranten-Diagramm, das Traktion gegenüber Ergonomie für die Pakete {packages} abbildet. {analysis}. {watermark}.",
-        "side_analysis_top_right": "Die folgenden Pakete liegen im oberen rechten Quadranten (gute Wahl): {packages}",
-        "side_analysis_top_left": "Die folgenden Pakete liegen im oberen linken Quadranten (versteckte Schätze): {packages}",
-        "side_analysis_bottom_right": "Die folgenden Pakete liegen im unteren rechten Quadranten (beliebt, aber mit Abstrichen): {packages}",
-        "side_analysis_bottom_left": "Die folgenden Pakete liegen im unteren linken Quadranten (vermeiden): {packages}"
-      },
-      "explanation": {
-        "tooltip_help": "Erklärung der Bewertung anzeigen",
-        "tooltip_help_adoption": "Erklärung der Traktionsbewertung anzeigen",
-        "tooltip_help_efficiency": "Erklärung der Ergonomiebewertung anzeigen",
-        "introduction": "Der Wert wird berechnet, indem mehrere Signale zu zwei Achsen kombiniert werden:",
-        "adoption": "Traktion: spiegelt Nutzung und Aktivität wider (Downloads, Aktualität, Likes)",
-        "efficiency": "Ergonomie: spiegelt Umfang und Qualität wider (Installationsgröße, Abhängigkeiten, Sicherheitslücken, Typunterstützung)",
-        "impact_details": "Jede Kennzahl trägt mit unterschiedlicher Gewichtung bei. Starke Signale wie Downloads und Installationsgröße haben den größten Einfluss, während andere das Ergebnis verfeinern. Einige Signale (z. B. Sicherheitslücken oder Veraltung) wirken als Abzüge."
-      }
+    "scatter_chart": {
+      "copy_alt": {}
     },
     "no_dependency": {
       "label": "(Keine Abhängigkeit)",
