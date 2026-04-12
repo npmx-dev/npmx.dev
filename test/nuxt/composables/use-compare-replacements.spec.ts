@@ -234,7 +234,8 @@ describe('useCompareReplacements', () => {
 
       vi.stubGlobal('$fetch', fetchMock)
 
-      const { noDepSuggestions, infoSuggestions, replacements } = await useCompareReplacementsInComponent(['some-package'])
+      const { noDepSuggestions, infoSuggestions, replacements } =
+        await useCompareReplacementsInComponent(['some-package'])
 
       await vi.waitFor(() => {
         expect(fetchMock).toHaveBeenCalledTimes(1)
@@ -254,10 +255,10 @@ describe('useCompareReplacements', () => {
         .fn()
         .mockRejectedValueOnce(new Error('Temporary network error'))
         .mockResolvedValueOnce({
-          "id": "snippet::is-even",
-          "type": "simple",
-          "description": "You can use the modulo operator to check if a number is even.",
-          "example": "(n % 2) === 0",
+          id: 'snippet::is-even',
+          type: 'simple',
+          description: 'You can use the modulo operator to check if a number is even.',
+          example: '(n % 2) === 0',
         } satisfies SimpleModuleReplacement)
 
       vi.stubGlobal('$fetch', fetchMock)
