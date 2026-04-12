@@ -324,7 +324,7 @@
     "edit": "Edit",
     "error": "Error",
     "view_on": {
-      "npm": "view on npm",
+      "npm": "View on npm",
       "github": "View on GitHub",
       "gitlab": "View on GitLab",
       "bitbucket": "View on Bitbucket",
@@ -334,7 +334,7 @@
       "gitea": "View on Gitea",
       "gitee": "View on Gitee",
       "radicle": "View on Radicle",
-      "socket_dev": "view on socket.dev",
+      "socket_dev": "View on socket.dev",
       "sourcehut": "View on SourceHut",
       "tangled": "View on Tangled"
     },
