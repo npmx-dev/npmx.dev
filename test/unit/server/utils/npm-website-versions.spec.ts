@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterAll, afterEach, describe, expect, it, vi } from 'vitest'
 import { createError } from 'h3'
 
 vi.stubGlobal('encodePackageName', (name: string) => {
@@ -11,6 +11,9 @@ const { fetchNpmVersionDownloadsFromApi } = await import('#server/utils/npm-webs
 
 afterEach(() => {
   vi.restoreAllMocks()
+})
+
+afterAll(() => {
   vi.unstubAllGlobals()
 })
 
