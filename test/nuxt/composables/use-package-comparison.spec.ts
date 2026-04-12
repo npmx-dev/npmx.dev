@@ -232,6 +232,43 @@ describe('usePackageComparison', () => {
       expect(issues).toMatchObject({ raw: 50, status: 'neutral' })
     })
 
+    it('returns null for missing or non-numeric github metrics', async () => {
+      const pkgName = 'missing-metrics-pkg'
+      vi.stubGlobal(
+        '$fetch',
+        vi.fn().mockImplementation((url: string, options?: { baseURL?: string }) => {
+          const fullUrl = options?.baseURL ? `${options.baseURL}${url}` : url
+          if (fullUrl.startsWith('https://registry.npmjs.org/')) {
+            return Promise.resolve({
+              'name': pkgName,
+              'dist-tags': { latest: '1.0.0' },
+              'repository': { type: 'git', url: 'https://github.com/owner/repo' },
+              'versions': {
+                '1.0.0': { dist: { unpackedSize: 1000 } },
+              },
+            })
+          }
+          if (fullUrl.includes('ungh.cc/repos/owner/repo')) {
+            // Return malformed data (stars missing)
+            return Promise.resolve({ repo: {} })
+          }
+          if (fullUrl.includes('/api/github/issues/owner/repo')) {
+            // Return non-numeric data
+            return Promise.resolve({ issues: 'not-a-number' })
+          }
+          return Promise.resolve(null)
+        }),
+      )
+
+      const { status, getFacetValues } = await usePackageComparisonInComponent([pkgName])
+      await vi.waitFor(() => {
+        expect(status.value).toBe('success')
+      })
+
+      expect(getFacetValues('githubStars')[0]).toBeNull()
+      expect(getFacetValues('githubIssues')[0]).toBeNull()
+    })
+
     it('skips github fetches for non-github repositories', async () => {
       const pkgName = 'gitlab-pkg'
       const fetchMock = vi

@@ -144,14 +144,14 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
                 ? $fetch<{ repo: { stars: number } }>(
                     `https://ungh.cc/repos/${repoInfo.owner}/${repoInfo.repo}`,
                   )
-                    .then(res => res?.repo.stars || 0)
+                    .then(res => (typeof res?.repo?.stars === 'number' ? res.repo.stars : null))
                     .catch(() => null)
                 : Promise.resolve(null),
               isGitHub
-                ? $fetch<{ issues: number }>(
+                ? $fetch<{ issues: number | null }>(
                     `/api/github/issues/${repoInfo.owner}/${repoInfo.repo}`,
                   )
-                    .then(res => res?.issues || 0)
+                    .then(res => (typeof res?.issues === 'number' ? res.issues : null))
                     .catch(() => null)
                 : Promise.resolve(null),
             ])

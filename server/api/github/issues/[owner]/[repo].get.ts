@@ -14,7 +14,7 @@ interface GitHubSearchResponse {
 export interface GithubIssueCountResponse {
   owner: string
   repo: string
-  issues: number
+  issues: number | null
 }
 
 export default defineCachedEventHandler(
@@ -46,7 +46,8 @@ export default defineCachedEventHandler(
           return {
             owner,
             repo,
-            issues: response._data?.total_count ?? 0,
+            issues:
+              typeof response._data?.total_count === 'number' ? response._data.total_count : null,
           }
         }
 
