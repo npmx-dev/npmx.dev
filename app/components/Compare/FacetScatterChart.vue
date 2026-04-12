@@ -349,8 +349,8 @@ onMounted(async () => {
 
         <div
           id="compare-scatter-legend"
-          role="group"
-          aria-labelledby="scatter-chart-legend-packages"
+          :role="isMobile ? undefined : 'group'"
+          :aria-labelledby="isMobile ? undefined : 'scatter-chart-legend-packages'"
         ></div>
       </div>
 
@@ -372,8 +372,8 @@ onMounted(async () => {
             <template #legend="{ legend }" v-if="readyTeleport">
               <div
                 id="compare-scatter-legend-inner"
-                role="group"
-                aria-labelledby="scatter-chart-legend-packages"
+                :role="isMobile ? 'group' : undefined"
+                :aria-labelledby="isMobile ? 'scatter-chart-legend-packages' : undefined"
               ></div>
               <Teleport
                 :to="isMobile ? '#compare-scatter-legend-inner' : '#compare-scatter-legend'"
