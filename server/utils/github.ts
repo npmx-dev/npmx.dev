@@ -19,12 +19,13 @@ export async function fetchGitHubWithRetries<T>(
 
   for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
     try {
+      const headers = new Headers(defaultHeaders)
+      for (const [key, value] of new Headers(fetchOptions.headers)) {
+        headers.set(key, value)
+      }
       const response = await $fetch.raw(url, {
         ...fetchOptions,
-        headers: {
-          ...defaultHeaders,
-          ...fetchOptions.headers,
-        },
+        headers,
       })
 
       if (response.status === 200) {
