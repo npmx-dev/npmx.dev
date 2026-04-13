@@ -551,7 +551,7 @@
       "filter_tooltip": "Filter versions using a {link}. For example, ^3.0.0 shows all 3.x versions.",
       "filter_tooltip_link": "semver range",
       "license_change_help": "License Change Details",
-      "license_change_warning": "License change!",
+      "license_change_warning": "License changed since previous version.",
       "license_change_record": "License changed from {from} to {to}.",
       "no_matches": "No versions match this range",
       "copy_alt": {
