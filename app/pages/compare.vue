@@ -80,9 +80,7 @@ const canCompare = computed(() => packages.value.length >= 2)
 
 // Allow copying only after all data is loaded
 const canCopyTable = computed(
-  () =>
-    packagesData.value.length >= 1 &&
-    packagesData.value.every(data => data !== null),
+  () => packagesData.value.length >= 1 && packagesData.value.every(data => data !== null),
 )
 
 const comparisonView = usePermalink<'table' | 'charts'>('view', 'table')
