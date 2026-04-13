@@ -1236,6 +1236,17 @@
       "packages_selected": "Выбрано пакетов: {count}/{max}.",
       "add_hint": "Добавьте как минимум 2 пакета для сравнения."
     },
+    "scatter_chart": {
+      "title": "Сравнить {x} с {y}",
+      "freshness_score": "Оценка свежести",
+      "copy_alt": {
+        "analysis": "{package} : {x_name} ({x_value}) и {y_name} ({y_value})",
+        "description": "Точечная диаграмма, сопоставляющая {x_name} с {y_name} для пакетов {packages}. {analysis}. {watermark}"
+      },
+      "filename": "{x}-vs-{y}-точечный-график",
+      "x_axis": "Ось X ↦",
+      "y_axis": "Ось Y ↥"
+    },
     "no_dependency": {
       "label": "(Без зависимости)",
       "typeahead_title": "Что бы сделал Джеймс?",
