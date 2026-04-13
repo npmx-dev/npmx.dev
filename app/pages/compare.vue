@@ -82,7 +82,7 @@ const canCompare = computed(() => packages.value.length >= 2)
 const canCopyTable = computed(
   () =>
     packagesData.value.length >= 1 &&
-    packagesData.value.every(data => data !== null && data !== undefined),
+    packagesData.value.every(data => data !== null),
 )
 
 const comparisonView = usePermalink<'table' | 'charts'>('view', 'table')
