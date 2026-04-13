@@ -24,7 +24,7 @@
   },
   "shortcuts": {
     "section": {
-      "global": "Global",
+      "global": "Generelt",
       "search": "Søg",
       "package": "Pakke"
     },
@@ -573,8 +573,8 @@
     },
     "peer_dependencies": {
       "title": "Peer-afhængighed ({count}) | Peer-afhængigheder ({count})",
-      "list_label": "Pakke peer afhængigheder",
-      "show_all": "vis {count} peer afhængighed | vis alle {count} peer afhængigheder"
+      "list_label": "Pakkens peer-afhængigheder",
+      "show_all": "vis {count} peer-afhængighed | vis alle {count} peer-afhængigheder"
     },
     "optional_dependencies": {
       "title": "Valgfri afhængighed ({count}) | Valgfri afhængigheder ({count})",
@@ -629,7 +629,7 @@
       "contributors_skip": "Vises ikke i Bidragydere (ingen GitHub-repo):",
       "items": {
         "downloads": "Downloads",
-        "likes": "Likes",
+        "likes": "Synes godt om",
         "contributors": "Bidragydere"
       },
       "data_correction": "Datakorrektion",
@@ -662,7 +662,7 @@
       }
     },
     "downloads": {
-      "title": "Ugentlige Downloads",
+      "title": "Ugentlige downloads",
       "community_distribution": "Se distributionen af fællesskabsadoption",
       "subtitle": "På tværs af alle versioner",
       "sparkline_nav_hint": "Brug ← →"
@@ -1380,7 +1380,7 @@
     "deps_count": "{count} afhængighed | {count} afhængigheder",
     "dependencies": "Afhængigheder",
     "dev_dependencies": "Dev Afhængigheder",
-    "peer_dependencies": "Peer Afhængigheder",
+    "peer_dependencies": "Peer-afhængigheder",
     "optional_dependencies": "Valgfrie Afhængigheder",
     "no_dependency_changes": "Ingen ændringer i afhængigheder",
     "file_filter_option": {
