@@ -312,8 +312,6 @@
     "warnings": "Advarsler:",
     "go_back_home": "Gå tilbage til forsiden",
     "per_week": "/ uge",
-    "yes": "Ja",
-    "no": "Nej",
     "vanity_downloads_hint": "Vanity-nummer: ingen pakker vist | Vanity-nummer: for den viste pakke | Vanity-nummer: Summen af {count} viste pakker",
     "sort": {
       "name": "navn",
@@ -1238,32 +1236,8 @@
       "packages_selected": "{count}/{max} pakker valgt.",
       "add_hint": "Tilføj mindst 2 pakker for at sammenligne."
     },
-    "quadrant_chart": {
-      "label_x_axis": "Momentum",
-      "label_y_axis": "Ergonomi",
-      "label_top_right": "Solide valg",
-      "label_bottom_right": "populære med kompromiser",
-      "label_bottom_left": "undgå",
-      "label_top_left": "skjulte perler",
-      "title": "Pakkers momentum vs. ergonomi",
-      "filename": "pakke-momentum-vs-ergonomi-kvadrant",
-      "label_freshness_score": "Aktualitetsscore",
-      "copy_alt": {
-        "description": "Kvadrantdiagram, der viser momentum versus ergonomi for de {packages} pakker. {analysis}. {watermark}.",
-        "side_analysis_top_right": "Følgende pakker er placeret i kvadranten øverst til højre (solide valg): {packages}",
-        "side_analysis_top_left": "Følgende pakker er placeret i kvadranten øverst til venstre (skjulte perler): {packages}",
-        "side_analysis_bottom_right": "Følgende pakker er placeret i kvadranten nederst til højre (populære med kompromiser): {packages}",
-        "side_analysis_bottom_left": "Følgende pakker er placeret i kvadranten nederst til venstre (undgå): {packages}"
-      },
-      "explanation": {
-        "tooltip_help": "Vis forklaring på scoren",
-        "tooltip_help_adoption": "Vis forklaring på momentumscoren",
-        "tooltip_help_efficiency": "Vis forklaring på ergonomiscoren",
-        "introduction": "Scoren beregnes ved at kombinere flere signaler i to akser:",
-        "adoption": "Momentum: afspejler brug og aktivitet (downloads, aktualitet, likes)",
-        "efficiency": "Ergonomi: afspejler størrelse og kvalitet (installationsstørrelse, afhængigheder, sårbarheder, typesupport)",
-        "impact_details": "Hver metrik bidrager med en forskellig vægt. Stærke signaler som downloads og installationsstørrelse har størst indflydelse, mens andre finjusterer resultatet. Nogle signaler (såsom sårbarheder eller udfasning) giver strafpoint."
-      }
+    "scatter_chart": {
+      "copy_alt": {}
     },
     "no_dependency": {
       "label": "(Ingen afhængighed)",
