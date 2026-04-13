@@ -86,7 +86,7 @@
     "focus-trap": "^8.0.0",
     "gray-matter": "4.0.3",
     "ipaddr.js": "2.3.0",
-    "marked": "17.0.4",
+    "marked": "18.0.0",
     "module-replacements": "2.11.0",
     "nuxt": "4.3.1",
     "nuxt-og-image": "5.1.13",
