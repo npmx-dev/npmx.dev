@@ -42,7 +42,7 @@ export function initPreferencesOnPrehydrate() {
     let pm = 'npm'
 
     // Support package manager preference in query string (for example, ?pm=pnpm)
-    const queryPM = new URLSearchParams(document.location.search).get('pm')
+    const queryPM = new URLSearchParams(window.location.search).get('pm')
     if (queryPM && validPMs.has(queryPM)) {
       pm = queryPM
       localStorage.setItem('npmx-pm', pm)
