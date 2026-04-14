@@ -293,6 +293,17 @@ describe('renderMarkdown', () => {
     expect(result).not.toContain('```')
   })
 
+  it('should handle fenced code blocks with hyphenated language (e.g. glimmer-ts)', async () => {
+    // Regression test for #2437: regex used \w which dropped the `-ts` suffix,
+    // leaving it at the start of the code body and breaking highlighting.
+    const input = '```glimmer-ts\nconst x = 1;\n```'
+    const result = await renderMarkdown(input, emptyLookup)
+    // Code must not leak the truncated language suffix into the body
+    expect(result).not.toContain('-ts')
+    expect(result).toContain('const')
+    expect(result).not.toContain('```')
+  })
+
   it('should escape HTML inside fenced code blocks', async () => {
     const input = '```ts\nconst arr: Array<string> = [];\n```'
     const result = await renderMarkdown(input, emptyLookup)
