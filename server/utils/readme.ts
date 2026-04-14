@@ -198,9 +198,9 @@ const ALLOWED_ATTR: Record<string, string[]> = {
   'blockquote': ['data-callout'],
   'details': ['open'],
   'code': ['class'],
-  'pre': ['class', 'style'],
+  'pre': ['class'],
   'span': ['class', 'style'],
-  'div': ['class', 'style', 'align'],
+  'div': ['class', 'align'],
   'p': ['align'],
 }
 
@@ -609,8 +609,8 @@ ${html}
   // Resolve image URLs (with GitHub blob → raw conversion)
   renderer.image = ({ href, title, text }: Tokens.Image) => {
     const resolvedHref = resolveImageUrl(href, packageName, repoInfo)
-    const titleAttr = title ? ` title="${title}"` : ''
-    const altAttr = text ? ` alt="${text}"` : ''
+    const titleAttr = title ? ` title="${escapeHtml(title)}"` : ''
+    const altAttr = text ? ` alt="${escapeHtml(text)}"` : ''
     return `<img src="${resolvedHref}"${altAttr}${titleAttr}>`
   }
 
@@ -687,6 +687,13 @@ ${html}
     allowedTags: ALLOWED_TAGS,
     allowedAttributes: ALLOWED_ATTR,
     allowedSchemes: ['http', 'https', 'mailto'],
+    // disallow styles other than the ones shiki emits
+    allowedStyles: {
+      'span': {
+        'color': [/^#[0-9a-fA-F]{3,8}$/],
+        '--shiki-light': [/^#[0-9a-fA-F]{3,8}$/],
+      },
+    },
     // Transform img src URLs (GitHub blob → raw, relative → GitHub raw)
     transformTags: {
       // Headings are already processed to correct semantic levels by processHeading()
