@@ -455,7 +455,6 @@ useSeoMeta({
                   v-if="packages.length"
                   :packages-data="packagesData"
                   :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)"
-                  :is-active-tab="comparisonView === 'charts'"
                 />
               </div>
             </TabPanel>
