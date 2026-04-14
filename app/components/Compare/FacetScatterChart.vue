@@ -11,6 +11,7 @@ import('vue-data-ui/style.css')
 const props = defineProps<{
   packagesData: ReadonlyArray<PackageComparisonData | null>
   packages: string[]
+  isActiveTab: boolean
 }>()
 
 const colorMode = useColorMode()
@@ -288,6 +289,17 @@ onMounted(async () => {
   await nextTick()
   readyTeleport.value = true
 })
+
+// When he tab contents are hidden through v-show on load, the chart is mounted, but its internal autosizing feature trigger on an empty size, which leads to overlapping between scale labels and axis label on Y. This triggers a re-render of the chart when the tab is active.
+watch(
+  () => props.isActiveTab,
+  isActive => {
+    if (isActive) {
+      step.value += 1
+    }
+  },
+  { flush: 'post' },
+)
 </script>
 
 <template>
