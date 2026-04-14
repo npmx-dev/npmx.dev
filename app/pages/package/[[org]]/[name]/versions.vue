@@ -108,6 +108,17 @@ function getGroupDownloads(versions: string[]): number | undefined {
   return hasValue ? total : undefined
 }
 
+const groupDownloadsMap = computed(() => {
+  const map = new Map<string, number>()
+  for (const group of versionGroups.value) {
+    const downloads = getGroupDownloads(group.versions)
+    if (downloads !== undefined) {
+      map.set(group.groupKey, downloads)
+    }
+  }
+  return map
+})
+
 function getDownloadsAriaLabel(downloads: number): string {
   return `${numberFormatter.value.format(downloads)} ${t('package.downloads.title')}`
 }
@@ -523,13 +534,13 @@ const flatItems = computed<FlatItem[]>(() => {
                       >v{{ item.versions[0] }}</span
                     >
                     <span
-                      v-if="getGroupDownloads(item.versions)"
+                      v-if="groupDownloadsMap.has(item.groupKey)"
                       class="ms-auto w-28 grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums shrink-0"
-                      :aria-label="getDownloadsAriaLabel(getGroupDownloads(item.versions)!)"
+                      :aria-label="getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!)"
                       dir="ltr"
-                      :title="getDownloadsAriaLabel(getGroupDownloads(item.versions)!)"
+                      :title="getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!)"
                     >
-                      <span>{{ numberFormatter.format(getGroupDownloads(item.versions)!) }}</span>
+                      <span>{{ numberFormatter.format(groupDownloadsMap.get(item.groupKey)!) }}</span>
                       <span class="i-lucide:chart-line" aria-hidden="true"></span>
                     </span>
                     <span v-else class="ms-auto w-28 shrink-0" />
@@ -661,13 +672,13 @@ const flatItems = computed<FlatItem[]>(() => {
                     >v{{ item.versions[0] }}</span
                   >
                   <span
-                    v-if="getGroupDownloads(item.versions)"
+                    v-if="groupDownloadsMap.has(item.groupKey)"
                     class="ms-auto w-28 grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums shrink-0"
-                    :aria-label="getDownloadsAriaLabel(getGroupDownloads(item.versions)!)"
+                    :aria-label="getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!)"
                     dir="ltr"
-                    :title="getDownloadsAriaLabel(getGroupDownloads(item.versions)!)"
+                    :title="getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!)"
                   >
-                    <span>{{ numberFormatter.format(getGroupDownloads(item.versions)!) }}</span>
+                    <span>{{ numberFormatter.format(groupDownloadsMap.get(item.groupKey)!) }}</span>
                     <span class="i-lucide:chart-line" aria-hidden="true"></span>
                   </span>
                   <span v-else class="ms-auto w-28 shrink-0" />
