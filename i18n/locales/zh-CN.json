@@ -280,7 +280,8 @@
       "black": "黑色"
     },
     "keyboard_shortcuts_enabled": "启用快捷键",
-    "keyboard_shortcuts_enabled_description": "如果某些快捷键与其他浏览器或系统快捷键冲突，可以选择将其禁用。"
+    "keyboard_shortcuts_enabled_description": "如果某些快捷键与其他浏览器或系统快捷键冲突，可以选择将其禁用。",
+    "enable_code_ligatures": "在代码中启用连字"
   },
   "i18n": {
     "missing_keys": "{count} 项缺少翻译",
@@ -1325,6 +1326,18 @@
         "vulnerabilities": {
           "label": "漏洞",
           "description": "已知安全漏洞"
+        },
+        "githubStars": {
+          "label": "GitHub 星标",
+          "description": "GitHub 仓库的星标数量"
+        },
+        "githubIssues": {
+          "label": "GitHub 问题数",
+          "description": "GitHub 仓库的问题数量"
+        },
+        "createdAt": {
+          "label": "创建时间",
+          "description": "包创建时间"
         }
       },
       "values": {
