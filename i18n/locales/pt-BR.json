@@ -27,6 +27,9 @@
       "search": "Pesquisar",
       "package": "Pacote"
     },
+    "ctrl_key": "Ctrl",
+    "command_palette": "Abrir paleta de comandos",
+    "command_palette_description": "Use a paleta de comandos para navegar entre páginas, visualizações de pacote, configurações e links externos sem sair do teclado. No macOS, pressione ⌘K. No Windows e Linux, pressione {ctrlKey}+K.",
     "focus_search": "Focar pesquisa",
     "show_kbd_hints": "Destacar dicas de teclado",
     "settings": "Abrir configurações",
