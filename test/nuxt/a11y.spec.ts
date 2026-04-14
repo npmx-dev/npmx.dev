@@ -1021,6 +1021,7 @@ describe('component accessibility audits', () => {
       it('should have no accessibility violations', async () => {
         const wrapper = await mountSuspended(FacetScatterChart, {
           props: {
+            isActiveTab: true,
             packagesData: [
               {
                 package: {
