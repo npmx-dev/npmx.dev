@@ -540,7 +540,9 @@ const flatItems = computed<FlatItem[]>(() => {
                       dir="ltr"
                       :title="getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!)"
                     >
-                      <span>{{ numberFormatter.format(groupDownloadsMap.get(item.groupKey)!) }}</span>
+                      <span>{{
+                        numberFormatter.format(groupDownloadsMap.get(item.groupKey)!)
+                      }}</span>
                       <span class="i-lucide:chart-line" aria-hidden="true"></span>
                     </span>
                     <span v-else class="ms-auto w-28 shrink-0" />
