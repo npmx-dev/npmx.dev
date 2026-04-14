@@ -671,7 +671,7 @@ const showSkeleton = shallowRef(false)
                 <TooltipApp v-if="sizeTooltip" :text="sizeTooltip" interactive>
                   <span
                     tabindex="0"
-                    class="inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 text-fg-subtle cursor-help focus-visible:outline-2 focus-visible:outline-accent/70 rounded"
+                    class="inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 text-fg-subtle hover:text-fg transition-colors cursor-help focus-visible:outline-2 focus-visible:outline-accent/70 rounded"
                   >
                     <span class="i-lucide:info w-3 h-3" aria-hidden="true" />
                   </span>
@@ -925,7 +925,7 @@ const showSkeleton = shallowRef(false)
         </div>
 
         <PackageSidebar :class="$style.areaSidebar">
-          <div class="flex flex-col gap-4 sm:gap-6 xl:pt-4">
+          <div class="flex flex-col gap-4 sm:gap-6 lg:pt-4">
             <!-- Team access controls (for scoped packages when connected) -->
             <ClientOnly>
               <PackageAccessControls :package-name="pkg.name" />
