@@ -689,9 +689,9 @@ ${html}
     allowedSchemes: ['http', 'https', 'mailto'],
     // disallow styles other than the ones shiki emits
     allowedStyles: {
-      'span': {
-        'color': [/^#[0-9a-fA-F]{3,8}$/],
-        '--shiki-light': [/^#[0-9a-fA-F]{3,8}$/],
+      span: {
+        'color': [/^#[0-9a-f]{3,8}$/i],
+        '--shiki-light': [/^#[0-9a-f]{3,8}$/i],
       },
     },
     // Transform img src URLs (GitHub blob → raw, relative → GitHub raw)
