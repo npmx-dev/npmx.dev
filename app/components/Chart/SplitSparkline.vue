@@ -31,7 +31,9 @@ const props = defineProps<{
 
 const { locale } = useI18n()
 const colorMode = useColorMode()
-const numberFormatter = useNumberFormatter()
+const numberFormatter = useNumberFormatter({
+  maximumFractionDigits: 0,
+})
 const resolvedMode = shallowRef<'light' | 'dark'>('light')
 const rootEl = shallowRef<HTMLElement | null>(null)
 const palette = getPalette('')
