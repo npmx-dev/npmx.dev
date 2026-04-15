@@ -414,8 +414,7 @@
         "refs": "{count} ref | {count} refs",
         "assets": "{count} asset | {count} assets"
       },
-      "view_source": "Ver código-fonte",
-      "skills_cli": "skills CLI"
+      "view_source": "Ver código-fonte"
     },
     "links": {
       "main": "principal",
@@ -438,7 +437,7 @@
       "default_not_available": "Documentação não disponível para esta versão.",
       "not_available": "Documentação não disponível",
       "not_available_detail": "Não conseguimos gerar documentação para esta versão.",
-      "page_title": "API Docs - npmx",
+      "page_title": "Documentação API - npmx",
       "page_title_name": "{name} docs - npmx",
       "page_title_version": "{name} docs - npmx",
       "og_title": "{name} - Docs",
@@ -1317,11 +1316,9 @@
           "description": "Vulnerabilidades de segurança conhecidas"
         },
         "githubStars": {
-          "label": "GitHub Stars",
           "description": "Número de estrelas no repositório GitHub"
         },
         "githubIssues": {
-          "label": "GitHub Issues",
           "description": "Número de issues no repositório GitHub"
         },
         "createdAt": {
@@ -1580,7 +1577,6 @@
     },
     "stats": {
       "contributors": "Contribuidores",
-      "commits": "Commits",
       "pr": "PRs Mergeados",
       "subtitle": {
         "some": "alguns",
@@ -1605,12 +1601,9 @@
     "meta_description": "Diretrizes da marca npmx, logotipos, cores e tipografia para uso em imprensa e mídia.",
     "intro": "Recursos e diretrizes para usar a marca npmx em seus projetos, artigos e mídias.",
     "logos": {
-      "title": "logos",
       "description": "Baixe as logos do npmx em formato SVG e PNG. Use a variante apropriada para o seu fundo.",
       "on_dark": "escuro",
       "on_light": "claro",
-      "download_svg": "SVG",
-      "download_png": "PNG",
       "download_svg_aria": "Baixar {name} como SVG",
       "download_png_aria": "Baixar {name} como PNG"
     },
@@ -1633,9 +1626,8 @@
       "numbers": "0123456789"
     },
     "guidelines": {
-      "title": "apenas um detalhe",
-      "message": "Acessibilidade é importante para nós, e gostaríamos de que você o acompanhasse nessa visão. Quando usar os mídias mencionados, certifique-se de que há contraste suficiente com o fundo, e não seja menor que 24px. Se precisar de qualquer outro recurso ou informações adicionais sobre o projeto, fique à vontade para nos contatar em {link}.",
-      "discord_link_text": "chat.npmx.dev"
+      "title": "apenas uma nota",
+      "message": "Acessibilidade é importante para nós, e gostaríamos de que você o acompanhasse nessa visão. Quando usar os mídias mencionados, certifique-se de que há contraste suficiente com o fundo, e não seja menor que 24px. Se precisar de qualquer outro recurso ou informações adicionais sobre o projeto, fique à vontade para nos contatar em {link}."
     }
   },
   "alt_logo_kawaii": "Uma versão fofa, arredondada e colorida do logotipo do npmx."
