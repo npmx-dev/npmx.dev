@@ -73,7 +73,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   },
   chartFilter: {
     averageWindow: 0,
-    smoothingTau: 1,
+    smoothingTau: 0,
     anomaliesFixed: true,
     predictionPoints: 4,
   },
