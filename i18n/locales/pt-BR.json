@@ -1544,13 +1544,13 @@
     "p1_lang": "Inglês Americano (en-US)",
     "p1_count": "0 mensagens | 1 mensagem |{count} mensagens",
     "p2": "Antes de começar, por favor, leia nosso {guide} para aprender sobre nosso processo de tradução e como você pode contribuir.",
-    "guide": "localization (i18n) guide",
+    "guide": "Guia de tradução (i18n)",
     "by_locale": "Progresso de tradução por localidade",
     "by_file": "Progresso de tradução por arquivo",
     "complete_text": "Esta tradução está completa, ótimo trabalho!",
-    "missing_text": "missing",
+    "missing_text": "faltando",
     "missing_keys": "Não existem traduções faltando | Tradução faltando | Traduções faltando",
-    "progress_label": "Progress status for {locale}",
+    "progress_label": "Status de progresso para {locale}",
     "table": {
       "file": "Arquivo",
       "status": "Status",
@@ -1563,7 +1563,7 @@
     "title": "de férias",
     "meta_description": "A equipe do npmx estava recarregando as energias. O Discord reabre depois de uma semana.",
     "heading": "recarregando",
-    "subtitle": "estávamos construindo o npmx a uma velocidade que está nos custando {some} de nossos sono. Não queríamos que isso virasse uma rotina! então tiramos uma semana de férias. Juntos.",
+    "subtitle": "estávamos construindo o npmx a uma velocidade que está nos custando {some} nosso sono. Não queríamos que isso virasse uma rotina! então tiramos uma semana de férias. Juntos.",
     "what": {
       "title": "o que aconteceu",
       "dates": "Fevereiro 14 – 21"
