@@ -334,7 +334,7 @@ const flatItems = computed<FlatItem[]>(() => {
         <!-- Latest — featured card -->
         <div
           v-if="latestTagRow"
-          class="border-y sm:rounded-lg sm:border border-accent/40 bg-accent/5 px-5 py-4 relative flex items-center justify-between gap-4 hover:bg-accent/8 transition-colors"
+          class="border-y sm:rounded-lg sm:border border-accent/40 bg-accent/5 px-4 py-4 relative flex items-center justify-between gap-4 hover:bg-accent/8 transition-colors"
         >
           <!-- Left: tags + version + deprecated -->
           <div>
@@ -372,22 +372,22 @@ const flatItems = computed<FlatItem[]>(() => {
               />
             </div>
           </div>
-          <!-- Right: downloads + date + provenance -->
-          <div
-            v-if="getVersionDownloads(latestTagRow!.version)"
-            class="grid grid-flow-col auto-cols-max items-center gap-1 text-sm font-medium text-fg tabular-nums shrink-0"
-            :aria-label="getDownloadsAriaLabel(getVersionDownloads(latestTagRow!.version)!)"
-            dir="ltr"
-            :title="getDownloadsAriaLabel(getVersionDownloads(latestTagRow!.version)!)"
-          >
-            <span>{{ numberFormatter.format(getVersionDownloads(latestTagRow!.version)!) }}</span>
-            <span class="i-lucide:chart-line" aria-hidden="true"></span>
-          </div>
-          <div class="flex flex-col items-end gap-1.5 shrink-0 relative z-10">
+          <!-- Right: downloads + date -->
+          <div class="flex items-center gap-4 shrink-0 relative z-10">
+            <span
+              v-if="getVersionDownloads(latestTagRow!.version)"
+              class="w-28 grid grid-flow-col auto-cols-max items-center gap-1 text-xs text-fg-muted tabular-nums justify-end"
+              :aria-label="getDownloadsAriaLabel(getVersionDownloads(latestTagRow!.version)!)"
+              dir="ltr"
+              :title="getDownloadsAriaLabel(getVersionDownloads(latestTagRow!.version)!)"
+            >
+              <span>{{ numberFormatter.format(getVersionDownloads(latestTagRow!.version)!) }}</span>
+              <span class="i-lucide:chart-line" aria-hidden="true"></span>
+            </span>
             <DateTime
               v-if="getVersionTime(latestTagRow!.version)"
               :datetime="getVersionTime(latestTagRow!.version)!"
-              class="text-xs text-fg-subtle whitespace-nowrap"
+              class="text-xs text-fg-subtle whitespace-nowrap w-24 text-end"
               year="numeric"
               month="short"
               day="numeric"
