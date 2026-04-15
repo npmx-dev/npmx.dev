@@ -11,7 +11,12 @@ if (existsSync('.git/MERGE_HEAD')) {
   process.exit(0)
 }
 
-const lunaria = await createLunaria()
+const lunaria = await createLunaria({
+  // `force: true` configures lunaria to bypass git caching and always read the latest commit from git history,
+  // workarounds issue where lunaria caches becomes stale after rebasing or merging, which causes lunaria to crash
+  // https://github.com/npmx-dev/npmx.dev/issues/2527
+  force: true,
+})
 const status = await lunaria.getFullStatus()
 
 // Generate JSON status for the app

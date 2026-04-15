@@ -121,6 +121,13 @@ export default defineNuxtConfig({
         allowQuery: ['mode', 'filterOldVersions', 'filterThreshold'],
       },
     },
+    '/api/registry/timeline/**': {
+      isr: {
+        expiration: 300,
+        passQuery: true,
+        allowQuery: ['offset', 'limit'],
+      },
+    },
     '/api/registry/docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/file/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/provenance/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
