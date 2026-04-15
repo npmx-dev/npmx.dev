@@ -23,7 +23,8 @@ export function useLicenseChanges(
 
   const result = useFetch<LicenseChangeResponse>(url, {
     query: computed(() => ({ version: version.value })),
-    watch: [url, version],
+    key: `license-change:${name.value}:${version.value}`,
+    watch: [name, version],
   })
 
   return result

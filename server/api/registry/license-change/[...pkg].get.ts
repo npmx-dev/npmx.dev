@@ -39,8 +39,7 @@ export default defineCachedEventHandler(
           statusMessage: 'Package metadata not found',
         })
       }
-
-      // 3. Process the logic (moved from your composable)
+      // 3. Process the logic
       const versions = Object.values(data.versions)
 
       // Sort versions chronologically using the 'time' object
@@ -86,8 +85,8 @@ export default defineCachedEventHandler(
       // 2. Get the version (default to 'latest' if not provided)
       const version = query.version || 'latest'
 
-      // 3. Create a unique string including the version
-      // Result: "license-change:v1:lodash:4.17.21"
+      // 3. Create a unique string such that it takes into account the pckage name and version
+      // sample result: "license-change:v1:faker:2.1.15"
       return `license-change:v2:${cleanPkg}:${version}`
     },
   },
