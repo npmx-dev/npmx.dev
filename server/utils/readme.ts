@@ -198,9 +198,9 @@ const ALLOWED_ATTR: Record<string, string[]> = {
   'blockquote': ['data-callout'],
   'details': ['open'],
   'code': ['class'],
-  'pre': ['class', 'style'],
+  'pre': ['class'],
   'span': ['class', 'style'],
-  'div': ['class', 'style', 'align'],
+  'div': ['class', 'align'],
   'p': ['align'],
 }
 
@@ -549,11 +549,23 @@ export async function renderReadmeHtml(
       toc.push({ text: plainText, id, depth })
     }
 
+    // The browser doesn't support anchors within anchors and automatically extracts them from each other,
+    // causing a hydration error. To prevent this from happening in such cases, we use the anchor separately
+    if (htmlAnchorRe.test(displayHtml)) {
+      return `<h${semanticLevel} id="${id}" data-level="${depth}"${preservedAttrs}>${displayHtml}<a href="#${id}"></a></h${semanticLevel}>\n`
+    }
+
     return `<h${semanticLevel} id="${id}" data-level="${depth}"${preservedAttrs}><a href="#${id}">${displayHtml}</a></h${semanticLevel}>\n`
   }
 
+  const anchorTokenRegex = /^<a(\s.+)?\/?>$/
   renderer.heading = function ({ tokens, depth }: Tokens.Heading) {
-    const displayHtml = this.parser.parseInline(tokens)
+    const isAnchorHeading =
+      anchorTokenRegex.test(tokens[0]?.raw ?? '') && tokens[tokens.length - 1]?.raw === '</a>'
+
+    // for anchor headings, we will ignore user-added id and add our own
+    const tokensWithoutAnchor = isAnchorHeading ? tokens.slice(1, -1) : tokens
+    const displayHtml = this.parser.parseInline(tokensWithoutAnchor)
     const plainText = getHeadingPlainText(displayHtml)
     const slugSource = getHeadingSlugSource(displayHtml)
     return processHeading(depth, displayHtml, plainText, slugSource)
@@ -597,8 +609,8 @@ ${html}
   // Resolve image URLs (with GitHub blob → raw conversion)
   renderer.image = ({ href, title, text }: Tokens.Image) => {
     const resolvedHref = resolveImageUrl(href, packageName, repoInfo)
-    const titleAttr = title ? ` title="${title}"` : ''
-    const altAttr = text ? ` alt="${text}"` : ''
+    const titleAttr = title ? ` title="${escapeHtml(title)}"` : ''
+    const altAttr = text ? ` alt="${escapeHtml(text)}"` : ''
     return `<img src="${resolvedHref}"${altAttr}${titleAttr}>`
   }
 
@@ -643,6 +655,8 @@ ${html}
 
     const { resolvedHref, extraAttrs } = processLink(href, plainText || title || '')
 
+    if (!resolvedHref) return text
+
     return `<a href="${resolvedHref}"${titleAttr}${extraAttrs}>${text}</a>`
   }
 
@@ -673,6 +687,13 @@ ${html}
     allowedTags: ALLOWED_TAGS,
     allowedAttributes: ALLOWED_ATTR,
     allowedSchemes: ['http', 'https', 'mailto'],
+    // disallow styles other than the ones shiki emits
+    allowedStyles: {
+      span: {
+        'color': [/^#[0-9a-f]{3,8}$/i],
+        '--shiki-light': [/^#[0-9a-f]{3,8}$/i],
+      },
+    },
     // Transform img src URLs (GitHub blob → raw, relative → GitHub raw)
     transformTags: {
       // Headings are already processed to correct semantic levels by processHeading()

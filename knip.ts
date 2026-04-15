@@ -22,6 +22,9 @@ const config: KnipConfig = {
         '!cli/src/**',
         '!lexicons/**',
       ],
+      msw: {
+        entry: ['.storybook/.public/mockServiceWorker.js'],
+      },
       ignoreDependencies: [
         '@iconify-json/*',
         'puppeteer',

@@ -4,8 +4,11 @@ import { addons } from 'storybook/preview-api'
 import { currentLocales } from '../config/i18n'
 import { fn } from 'storybook/test'
 import { ACCENT_COLORS } from '../shared/utils/constants'
+import { initialize, mswLoader } from 'msw-storybook-addon'
 
 import npmxDark from './theme'
+
+initialize()
 
 // related: https://github.com/npmx-dev/npmx.dev/blob/1431d24be555bca5e1ae6264434d49ca15173c43/test/nuxt/setup.ts#L12-L26
 // Stub Nuxt specific globals
@@ -102,6 +105,7 @@ const preview: Preview = {
       }
     },
   ],
+  loaders: [mswLoader],
 }
 
 export default preview

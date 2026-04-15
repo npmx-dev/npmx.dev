@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { mountSuspended, mockNuxtImport } from '@nuxt/test-utils/runtime'
 import type { PackageComparisonData } from '~/composables/usePackageComparison'
+import CopyToClipboardButtonComponent from '~/components/CopyToClipboardButton.vue'
 
 const mockPackagesData = ref<(PackageComparisonData | null)[]>([])
 const mockStatus = ref<'idle' | 'pending' | 'success' | 'error'>('idle')
@@ -80,6 +81,55 @@ describe('compare page command palette commands', () => {
 
     const allCommands = contextCommands.value.flatMap(entry => entry.commands)
     expect(allCommands.find(c => c.id === 'compare-copy-markdown')).toBeTruthy()
+
+    wrapper.unmount()
+  })
+})
+
+describe('compare page copy-as-markdown button', () => {
+  afterEach(() => {
+    mockPackagesData.value = []
+    mockStatus.value = 'idle'
+    const commandPalette = useCommandPalette()
+    commandPalette.close()
+    commandPalette.contextCommands.value = []
+  })
+
+  it('shows copy-as-markdown button when all packages have loaded data', async () => {
+    mockPackagesData.value = [makePackageData('react'), makePackageData('vue')]
+    mockStatus.value = 'success'
+
+    const wrapper = await mountComparePage('/compare?packages=react,vue')
+
+    expect(wrapper.findComponent(CopyToClipboardButtonComponent).exists()).toBe(true)
+
+    wrapper.unmount()
+  })
+
+  it('does not show copy-as-markdown button when only some packages have loaded data', async () => {
+    // Simulate a partial-load race: 2 packages in the URL but only the first has data yet.
+    mockPackagesData.value = [makePackageData('react'), null]
+    mockStatus.value = 'pending'
+
+    const wrapper = await mountComparePage('/compare?packages=react,vue')
+
+    // The button must not appear until every requested package has loaded its data.
+    expect(wrapper.findComponent(CopyToClipboardButtonComponent).exists()).toBe(false)
+
+    wrapper.unmount()
+  })
+
+  it('does not register copy-markdown command when only some packages have loaded data', async () => {
+    // Same race: 2 packages in the URL but only the first has data yet.
+    mockPackagesData.value = [makePackageData('react'), null]
+    mockStatus.value = 'pending'
+
+    const wrapper = await mountComparePage('/compare?packages=react,vue')
+    const { contextCommands } = useCommandPalette()
+
+    const allCommands = contextCommands.value.flatMap(entry => entry.commands)
+    // The command-palette entry must not appear until every requested package has loaded.
+    expect(allCommands.find(c => c.id === 'compare-copy-markdown')).toBeUndefined()
 
     wrapper.unmount()
   })

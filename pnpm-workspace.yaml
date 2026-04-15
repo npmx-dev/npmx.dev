@@ -41,10 +41,14 @@ savePrefix: ''
 shellEmulator: true
 
 catalogs:
+  msw:
+    'msw': '^2.13.2'
+
   storybook:
     '@storybook-vue/nuxt': '9.0.1'
     '@storybook/addon-a11y': '^10.3.1'
     '@storybook/addon-docs': '^10.3.1'
     '@storybook/addon-themes': '^10.3.1'
+    'msw-storybook-addon': '^2.0.7'
     'storybook': '^10.3.1'
     'storybook-i18n': '^10.1.1'

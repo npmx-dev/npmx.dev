@@ -32,6 +32,9 @@ const facetLabels: Record<ComparisonFacet, { label: string; description: string 
   },
   deprecated: { label: 'Deprecated?', description: 'Whether the package is deprecated' },
   totalLikes: { label: 'Likes', description: 'Number of likes' },
+  githubStars: { label: 'GitHub Stars', description: 'Number of GitHub stars' },
+  githubIssues: { label: 'GitHub Issues', description: 'Number of open GitHub issues' },
+  createdAt: { label: 'Created', description: 'When the package was first created' },
 }
 
 const categoryLabels: Record<string, string> = {

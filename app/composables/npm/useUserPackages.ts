@@ -28,7 +28,7 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
   })
   // this is only used in npm path, but we need to extract it when the composable runs
   const { $npmRegistry } = useNuxtApp()
-  const { searchByOwner } = useAlgoliaSearch()
+  const { searchByMaintainer } = useAlgoliaSearch()
 
   // --- Incremental loading state (npm path) ---
   const currentPage = shallowRef(1)
@@ -58,7 +58,7 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
       // --- Algolia: fetch all at once ---
       if (provider === 'algolia') {
         try {
-          const response = await searchByOwner(user)
+          const response = await searchByMaintainer(user)
 
           // Guard against stale response (user/provider changed during await)
           if (user !== toValue(username) || provider !== searchProviderValue.value) {

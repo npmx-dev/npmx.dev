@@ -161,8 +161,8 @@ export function useAlgoliaSearch() {
     }
   }
 
-  /** Fetch all packages for an owner using `owner.name` filter with pagination. */
-  async function searchByOwner(
+  /** Fetch all packages for a maintainer using `owners.name` filter with pagination. */
+  async function searchByMaintainer(
     ownerName: string,
     options: { maxResults?: number } = {},
   ): Promise<NpmSearchResponse> {
@@ -185,7 +185,7 @@ export function useAlgoliaSearch() {
             query: '',
             offset,
             length,
-            filters: `owner.name:${ownerName}`,
+            filters: `owners.name:${ownerName}`,
             analyticsTags: ['npmx.dev'],
             attributesToRetrieve: ATTRIBUTES_TO_RETRIEVE,
             attributesToHighlight: [],
@@ -286,7 +286,7 @@ export function useAlgoliaSearch() {
       requests.push({
         indexName,
         query: '',
-        filters: `owner.name:${checks.name}`,
+        filters: `owners.name:${checks.name}`,
         length: 1,
         analyticsTags: ['npmx.dev'],
         attributesToRetrieve: EXISTENCE_CHECK_ATTRS,
@@ -347,7 +347,7 @@ export function useAlgoliaSearch() {
   return {
     search,
     searchWithSuggestions,
-    searchByOwner,
+    searchByMaintainer,
     getPackagesByName,
   }
 }

@@ -75,10 +75,13 @@ function addNoDep() {
 // Get loading state for each column
 const columnLoading = computed(() => packages.value.map((_, i) => isColumnLoading(i)))
 
-// FIXME(serhalp): canCompare only checks package count, not whether data has loaded.
-// Copy-markdown and view-switching commands appear as soon as one package loads, even if
-// other packages are still loading. The UI copy button has the same issue.
+// Makes sense to compare if there's 2 or more packages
 const canCompare = computed(() => packages.value.length >= 2)
+
+// Allow copying only after all data is loaded
+const canCopyTable = computed(
+  () => packagesData.value.length >= 1 && packagesData.value.every(data => data !== null),
+)
 
 const comparisonView = usePermalink<'table' | 'charts'>('view', 'table')
 const hasChartableFacets = computed(() => selectedFacets.value.some(facet => facet.chartable))
@@ -173,7 +176,7 @@ useCommandPaletteContextCommands(
       },
     ]
 
-    if (canCompare.value && packagesData.value && packagesData.value.some(p => p !== null)) {
+    if (canCompare.value && canCopyTable.value) {
       commands.push({
         id: 'compare-copy-markdown',
         group: 'actions',
@@ -335,7 +338,7 @@ useSeoMeta({
       <!-- Comparison grid -->
       <section v-if="canCompare" class="mt-10" aria-labelledby="comparison-heading">
         <CopyToClipboardButton
-          v-if="packagesData && packagesData.some(p => p !== null)"
+          v-if="canCopyTable"
           :copied="copied"
           :copy-text="$t('compare.packages.copy_as_markdown')"
           class="mb-4"

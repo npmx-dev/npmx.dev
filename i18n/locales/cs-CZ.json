@@ -280,7 +280,8 @@
       "black": "Černá"
     },
     "keyboard_shortcuts_enabled": "Povolit klávesové zkratky",
-    "keyboard_shortcuts_enabled_description": "Klávesové zkratky lze zakázat, pokud se střetávají s jinými zkratkami prohlížeče nebo systému"
+    "keyboard_shortcuts_enabled_description": "Klávesové zkratky lze zakázat, pokud se střetávají s jinými zkratkami prohlížeče nebo systému",
+    "enable_code_ligatures": "Zapnout ligatury v kódu"
   },
   "i18n": {
     "missing_keys": "{count} chybějící překlad | {count} chybějící překlady | {count} chybějících překladů",
