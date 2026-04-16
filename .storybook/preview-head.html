@@ -61,3 +61,19 @@
     background-color: var(--bg, oklch(0.171 0 0)) !important;
   }
 </style>
+<script>
+  // related: https://github.com/npmx-dev/npmx.dev/blob/1431d24be555bca5e1ae6264434d49ca15173c43/test/nuxt/setup.ts#L12-L26
+  // Stub Nuxt specific globals
+  // @nuxtjs/color-mode's plugin.client.js reads window[globalName] at module
+  // evaluation time — before any Storybook setup() callback runs — so the
+  // global must exist in the HTML head, not in preview.ts.
+  window.__NUXT_COLOR_MODE__ ??= {
+    preference: 'system',
+    value: 'dark',
+    getColorScheme: function () {
+      return 'dark'
+    },
+    addColorScheme: function () {},
+    removeColorScheme: function () {},
+  }
+</script>

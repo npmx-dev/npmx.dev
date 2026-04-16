@@ -15,7 +15,8 @@ export default defineNuxtConfig({
     '@vite-pwa/nuxt',
     '@vueuse/nuxt',
     '@nuxtjs/i18n',
-    ...(isStorybook ? [] : ['@nuxt/fonts', '@nuxtjs/color-mode']),
+    '@nuxtjs/color-mode',
+    ...(isStorybook ? [] : ['@nuxt/fonts']),
   ],
 
   $test: {
