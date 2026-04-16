@@ -21,9 +21,10 @@ dedupePeers: true
 
 overrides:
   sharp: 0.34.5
+  storybook: ^10.3.1
   vite: npm:@voidzero-dev/vite-plus-core@0.1.16
   vitest: npm:@voidzero-dev/vite-plus-test@0.1.16
-  storybook: ^10.3.1
+  vue-router: 5.0.4
 
 packageExtensions:
   '@nuxt/scripts':
