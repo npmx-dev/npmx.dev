@@ -74,6 +74,9 @@ function setIsZoom({ isZoom }: { isZoom: boolean }) {
 const { width } = useElementSize(rootEl)
 
 const compactNumberFormatter = useCompactNumberFormatter()
+const integerFormatter = useNumberFormatter({
+  maximumFractionDigits: 0,
+})
 
 onMounted(async () => {
   rootEl.value = document.documentElement
@@ -1541,7 +1544,10 @@ const chartConfig = computed<VueUiXyConfig>(() => {
             .map((d: Record<string, any>) => {
               const label = String(d?.name ?? '').trim()
               const raw = Number(d?.value ?? 0)
-              const v = compactNumberFormatter.value.format(Number.isFinite(raw) ? raw : 0)
+              const v =
+                raw > 1_000
+                  ? compactNumberFormatter.value.format(Number.isFinite(raw) ? raw : 0)
+                  : integerFormatter.value.format(Number.isFinite(raw) ? raw : 0)
 
               if (!hasMultipleItems) {
                 // We don't need the name of the package in this case, since it is shown in the xAxis label
