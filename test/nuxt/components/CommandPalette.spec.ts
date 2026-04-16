@@ -236,6 +236,52 @@ describe('CommandPalette', () => {
     expect(document.activeElement).toBe(input)
   })
 
+  it('moves focus through commands with Ctrl+N and Ctrl+P', async () => {
+    await mountPalette()
+
+    const input = document.getElementById('command-palette-modal-input')
+    const commands = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-command-item="true"]'),
+    )
+
+    expect(document.activeElement).toBe(input)
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, ctrlKey: true, key: 'n' }))
+    await nextTick()
+    expect(document.activeElement).toBe(commands[0])
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, ctrlKey: true, key: 'n' }))
+    await nextTick()
+    expect(document.activeElement).toBe(commands[1])
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, ctrlKey: true, key: 'p' }))
+    await nextTick()
+    expect(document.activeElement).toBe(commands[0])
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, ctrlKey: true, key: 'p' }))
+    await nextTick()
+    expect(document.activeElement).toBe(input)
+  })
+
+  it('does not navigate with Ctrl+N/P when additional modifiers are held', async () => {
+    await mountPalette()
+
+    const input = document.getElementById('command-palette-modal-input')
+    expect(document.activeElement).toBe(input)
+
+    document.dispatchEvent(
+      new KeyboardEvent('keydown', { bubbles: true, ctrlKey: true, altKey: true, key: 'n' }),
+    )
+    await nextTick()
+    expect(document.activeElement).toBe(input)
+
+    document.dispatchEvent(
+      new KeyboardEvent('keydown', { bubbles: true, ctrlKey: true, shiftKey: true, key: 'p' }),
+    )
+    await nextTick()
+    expect(document.activeElement).toBe(input)
+  })
+
   it('does not change the active command when another item is hovered', async () => {
     await mountPalette()
 
