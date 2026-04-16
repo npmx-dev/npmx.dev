@@ -1,3 +1,5 @@
+import { getVersions } from 'fast-npm-meta'
+
 const DEFAULT_LIMIT = 25
 
 export interface TimelineSizeEntry {
@@ -39,11 +41,11 @@ export default defineCachedEventHandler(
     const limit = Math.max(1, Math.min(100, Number(query.limit) || DEFAULT_LIMIT))
 
     try {
-      const packument = await fetchNpmPackage(packageName)
+      const { versions, time } = await getVersions(packageName)
 
-      const allVersions = Object.keys(packument.versions)
-        .filter(v => packument.time[v])
-        .sort((a, b) => Date.parse(packument.time[b]!) - Date.parse(packument.time[a]!))
+      const allVersions = versions
+        .filter(v => time[v])
+        .sort((a, b) => Date.parse(time[b]!) - Date.parse(time[a]!))
 
       const pageVersions = allVersions.slice(offset, offset + limit)
 
