@@ -173,7 +173,14 @@ function handleGlobalKeydown(event: KeyboardEvent) {
 
   if (!isOpen.value) return
 
-  if (event.key === 'ArrowDown' || (event.ctrlKey && event.key.toLowerCase() === 'n')) {
+  if (
+    event.key === 'ArrowDown' ||
+    (event.ctrlKey &&
+      !event.altKey &&
+      !event.metaKey &&
+      !event.shiftKey &&
+      event.key.toLowerCase() === 'n')
+  ) {
     event.preventDefault()
     const currentIndex = getCommandElements().findIndex(el => el === document.activeElement)
     const nextIndex =
@@ -182,7 +189,14 @@ function handleGlobalKeydown(event: KeyboardEvent) {
     return
   }
 
-  if (event.key === 'ArrowUp' || (event.ctrlKey && event.key.toLowerCase() === 'p')) {
+  if (
+    event.key === 'ArrowUp' ||
+    (event.ctrlKey &&
+      !event.altKey &&
+      !event.metaKey &&
+      !event.shiftKey &&
+      event.key.toLowerCase() === 'p')
+  ) {
     event.preventDefault()
     const currentIndex = getCommandElements().findIndex(el => el === document.activeElement)
     if (currentIndex <= 0) {
