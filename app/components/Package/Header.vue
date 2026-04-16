@@ -10,7 +10,7 @@ const props = defineProps<{
   latestVersion?: SlimVersion | null
   provenanceData?: ProvenanceDetails | null
   provenanceStatus?: string | null
-  page: 'main' | 'docs' | 'code' | 'diff'
+  page: 'main' | 'docs' | 'code' | 'diff' | 'timeline'
   versionUrlPattern: string
 }>()
 
@@ -162,12 +162,26 @@ const diffLink = computed((): RouteLocationRaw | null => {
   return diffRoute(props.pkg.name, props.resolvedVersion, props.latestVersion.version)
 })
 
+const timelineLink = computed((): RouteLocationRaw | null => {
+  if (props.pkg == null || props.resolvedVersion == null) return null
+  const split = props.pkg.name.split('/')
+  return {
+    name: 'timeline',
+    params: {
+      org: split.length === 2 ? split[0] : undefined,
+      packageName: split.length === 2 ? split[1]! : split[0]!,
+      version: props.resolvedVersion,
+    },
+  }
+})
+
 useShortcuts({
   '.': () => codeLink.value,
   'm': () => mainLink.value,
   'd': () => docsLink.value,
   'c': () => props.pkg && { name: 'compare' as const, query: { packages: props.pkg.name } },
   'f': () => diffLink.value,
+  't': () => timelineLink.value,
 })
 </script>
 
@@ -329,6 +343,15 @@ useShortcuts({
           :class="page === 'diff' ? 'border-accent text-accent!' : 'border-transparent'"
         >
           {{ $t('compare.compare_versions') }}
+        </LinkBase>
+        <LinkBase
+          v-if="timelineLink"
+          :to="timelineLink"
+          aria-keyshortcuts="t"
+          class="decoration-none border-b-2 p-1 hover:border-accent/50 focus-visible:[outline-offset:-2px]!"
+          :class="page === 'timeline' ? 'border-accent text-accent!' : 'border-transparent'"
+        >
+          {{ $t('package.links.timeline') }}
         </LinkBase>
       </nav>
     </div>

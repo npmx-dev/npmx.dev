@@ -15,7 +15,8 @@ export default defineNuxtConfig({
     '@vite-pwa/nuxt',
     '@vueuse/nuxt',
     '@nuxtjs/i18n',
-    ...(isStorybook ? [] : ['@nuxt/fonts', '@nuxtjs/color-mode']),
+    '@nuxtjs/color-mode',
+    ...(isStorybook ? [] : ['@nuxt/fonts']),
   ],
 
   $test: {
@@ -119,6 +120,13 @@ export default defineNuxtConfig({
         expiration: 60 * 60 /* one hour */,
         passQuery: true,
         allowQuery: ['mode', 'filterOldVersions', 'filterThreshold'],
+      },
+    },
+    '/api/registry/timeline/**': {
+      isr: {
+        expiration: 300,
+        passQuery: true,
+        allowQuery: ['offset', 'limit'],
       },
     },
     '/api/registry/docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
