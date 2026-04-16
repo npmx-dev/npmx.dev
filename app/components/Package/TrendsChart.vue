@@ -74,9 +74,6 @@ function setIsZoom({ isZoom }: { isZoom: boolean }) {
 const { width } = useElementSize(rootEl)
 
 const compactNumberFormatter = useCompactNumberFormatter()
-const integerFormatter = useNumberFormatter({
-  maximumFractionDigits: 0,
-})
 
 onMounted(async () => {
   rootEl.value = document.documentElement
@@ -1543,11 +1540,8 @@ const chartConfig = computed<VueUiXyConfig>(() => {
           const rows = items
             .map((d: Record<string, any>) => {
               const label = String(d?.name ?? '').trim()
-              const raw = Number(d?.value ?? 0)
-              const v =
-                raw > 1_000
-                  ? compactNumberFormatter.value.format(Number.isFinite(raw) ? raw : 0)
-                  : integerFormatter.value.format(Number.isFinite(raw) ? raw : 0)
+              const raw = Math.round(Number(d?.value ?? 0))
+              const v = compactNumberFormatter.value.format(Number.isFinite(raw) ? raw : 0)
 
               if (!hasMultipleItems) {
                 // We don't need the name of the package in this case, since it is shown in the xAxis label
@@ -2000,7 +1994,7 @@ const isSparklineLayout = computed({
 
             <!-- Custom legend for multiple series -->
             <template #legend="{ legend }">
-              <div class="flex gap-x-6 gap-y-2 flex-wrap justify-center text-sm">
+              <div class="flex gap-4 flex-wrap justify-center">
                 <template v-if="isMultiPackageMode">
                   <button
                     v-for="datapoint in legend"
@@ -2206,13 +2200,13 @@ const isSparklineLayout = computed({
 
 <style scoped>
 :deep(.vue-data-ui-component svg:focus-visible) {
-  outline: 1px solid var(--accent) !important;
+  outline: 1px solid var(--accent-color) !important;
   border-radius: 0.1rem;
   outline-offset: 0;
 }
 :deep(.vue-ui-user-options-button:focus-visible),
 :deep(.vue-ui-user-options :first-child:focus-visible) {
-  outline: 0.1rem solid var(--accent) !important;
+  outline: 0.1rem solid var(--accent-color) !important;
   border-radius: 0.25rem;
 }
 </style>
