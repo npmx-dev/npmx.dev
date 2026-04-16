@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { VueUiHorizontalBar } from 'vue-data-ui/vue-ui-horizontal-bar'
+import { VueUiPatternSeed } from 'vue-data-ui/vue-ui-pattern-seed'
 import type { VueUiHorizontalBarConfig, VueUiHorizontalBarDatasetItem } from 'vue-data-ui'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
+import { createPatternDef } from 'vue-data-ui/utils'
 import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
+
 import {
   loadFile,
   insertLineBreaks,
   sanitise,
   applyEllipsis,
   copyAltTextForCompareFacetBarChart,
+  CHART_PATTERN_CONFIG,
 } from '~/utils/charts'
 
 import('vue-data-ui/style.css')
@@ -111,6 +115,13 @@ function buildExportFilename(extension: string): string {
 const config = computed<VueUiHorizontalBarConfig>(() => {
   return {
     theme: isDarkMode.value ? 'dark' : '',
+    a11y: {
+      translations: {
+        keyboardNavigation: $t('package.trends.chart_assistive_text.keyboard_navigation_vertical'),
+        tableAvailable: $t('package.trends.chart_assistive_text.table_available'),
+        tableCaption: $t('package.trends.chart_assistive_text.table_caption'),
+      },
+    },
     userOptions: {
       buttons: {
         tooltip: false,
@@ -122,7 +133,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
         csv: false,
         altCopy: true,
       },
-      buttonTitle: {
+      buttonTitles: {
         img: $t('package.trends.download_file', { fileType: 'PNG' }),
         svg: $t('package.trends.download_file', { fileType: 'SVG' }),
         altCopy: $t('package.trends.copy_alt.button_label'),
@@ -159,6 +170,9 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
       style: {
         chart: {
           backgroundColor: colors.value.bg,
+          legend: {
+            show: false,
+          },
         },
       },
     },
@@ -185,7 +199,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
             },
             nameLabels: {
               fontSize: isMobile.value ? 12 : 18,
-              color: colors.value.fgSubtle,
+              color: colors.value.fg,
             },
             underlayerColor: colors.value.bg,
           },
@@ -213,13 +227,39 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
           backdropFilter: false,
           backgroundColor: 'transparent',
           customFormat: ({ datapoint }) => {
-            const name = datapoint?.name?.replace(/\n/g, '<br>')
+            const name = datapoint?.name?.replace(/\n/g, '<br>') ?? ''
+            const safeSeriesIndex = (datapoint?.absoluteIndex as number) ?? 0
+            const patternId = `tooltip-pattern-${safeSeriesIndex}`
+            const usePattern = safeSeriesIndex !== 0
+
+            const patternDef = usePattern
+              ? createPatternDef({
+                  id: patternId,
+                  seed: safeSeriesIndex,
+                  foregroundColor: colors.value.bg!,
+                  backgroundColor: 'transparent',
+                  maxSize: CHART_PATTERN_CONFIG.maxSize,
+                  minSize: CHART_PATTERN_CONFIG.minSize,
+                  disambiguator: CHART_PATTERN_CONFIG.disambiguator,
+                })
+              : ''
+
+            const markerMarkup = usePattern
+              ? `
+              <rect x="0" y="0" width="20" height="20" rx="3" fill="${datapoint?.color ?? 'transparent'}" />
+              <rect x="0" y="0" width="20" height="20" rx="3" fill="url(#${patternId})" />
+            `
+              : `
+              <rect x="0" y="0" width="20" height="20" rx="3" fill="${datapoint?.color ?? 'transparent'}" />
+            `
+
             return `
             <div class="font-mono p-3 border border-border rounded-md bg-[var(--bg)]/10 backdrop-blur-md">
               <div class="grid grid-cols-[12px_minmax(0,1fr)_max-content] items-center gap-x-3">
                 <div class="w-3 h-3">
-                  <svg viewBox="0 0 2 2" class="w-full h-full">
-                    <rect x="0" y="0" width="2" height="2" rx="0.3" fill="${datapoint?.color}" />
+                  <svg viewBox="0 0 20 20" class="w-full h-full" aria-hidden="true">
+                    ${patternDef}
+                    ${markerMarkup}
                   </svg>
                 </div>
                 <span class="text-3xs uppercase tracking-wide text-[var(--fg)]/70 truncate">
@@ -230,7 +270,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
                 </span>
               </div>
             </div>
-            `
+          `
           },
         },
       },
@@ -241,10 +281,28 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
 
 <template>
   <div class="font-mono facet-bar">
-    <ClientOnly v-if="dataset.length">
+    <ClientOnly v-if="packages.length">
       <VueUiHorizontalBar :key="chartKey" :dataset :config class="[direction:ltr]">
+        <template #hint="{ isVisible }">
+          <p v-if="isVisible" class="text-accent text-xs pt-2" aria-hidden="true">
+            {{ $t('compare.packages.bar_chart_nav_hint') }}
+          </p>
+        </template>
+
+        <template #pattern="{ patternId, seriesIndex }">
+          <VueUiPatternSeed
+            v-if="seriesIndex != 0"
+            :id="patternId"
+            :seed="seriesIndex"
+            :foreground-color="colors.bg!"
+            background-color="transparent"
+            :max-size="CHART_PATTERN_CONFIG.maxSize"
+            :min-size="CHART_PATTERN_CONFIG.minSize"
+            :disambiguator="CHART_PATTERN_CONFIG.disambiguator"
+          />
+        </template>
+
         <template #svg="{ svg }">
-          <!-- Inject npmx logo & tagline during SVG and PNG print -->
           <g
             v-if="svg.isPrintingSvg || svg.isPrintingImg"
             v-html="
@@ -261,15 +319,19 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
           <span v-if="isOpen" class="i-lucide:x w-6 h-6" aria-hidden="true" />
           <span v-else class="i-lucide:ellipsis-vertical w-6 h-6" aria-hidden="true" />
         </template>
+
         <template #optionCsv>
           <span class="text-fg-subtle font-mono pointer-events-none">CSV</span>
         </template>
+
         <template #optionImg>
           <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
         </template>
+
         <template #optionSvg>
           <span class="text-fg-subtle font-mono pointer-events-none">SVG</span>
         </template>
+
         <template #optionAltCopy>
           <span
             class="w-6 h-6"
@@ -280,30 +342,28 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
             aria-hidden="true"
           />
         </template>
+
+        <template #skeleton>
+          <!-- This empty div overrides the default built-in scanning animation on load -->
+          <div></div>
+        </template>
       </VueUiHorizontalBar>
-
-      <template #fallback>
-        <div class="flex flex-col gap-2 justify-center items-center mb-2">
-          <SkeletonInline class="h-4 w-16" />
-          <SkeletonInline class="h-4 w-28" />
-        </div>
-        <div class="flex flex-col gap-1">
-          <SkeletonInline class="h-7 w-full" v-for="pkg in packages" :key="pkg" />
-        </div>
-      </template>
     </ClientOnly>
-
-    <template v-else>
-      <div class="flex flex-col gap-2 justify-center items-center mb-2">
-        <SkeletonInline class="h-4 w-16" />
-        <SkeletonInline class="h-4 w-28" />
-      </div>
-      <div class="flex flex-col gap-1">
-        <SkeletonInline class="h-7 w-full" v-for="pkg in packages" :key="pkg" />
-      </div>
-    </template>
   </div>
 </template>
+
+<style scoped>
+:deep(.vue-data-ui-component svg:focus-visible) {
+  outline: 1px solid var(--accent) !important;
+  border-radius: 0.1rem;
+  outline-offset: 3px !important;
+}
+:deep(.vue-ui-user-options-button:focus-visible),
+:deep(.vue-ui-user-options :first-child:focus-visible) {
+  outline: 0.1rem solid var(--accent) !important;
+  border-radius: 0.25rem;
+}
+</style>
 
 <style>
 .facet-bar .atom-subtitle {

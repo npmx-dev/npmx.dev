@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
+
+// Maximum file size we'll try to load (500KB) - must match server
+const MAX_FILE_SIZE = 500 * 1024
+
 definePageMeta({
   name: 'code',
   path: '/package-code/:org?/:packageName/v/:version/:filePath(.*)?',
@@ -11,6 +16,10 @@ definePageMeta({
 })
 
 const route = useRoute('code')
+
+const mobileFileTreeRef = useTemplateRef('mobileFileTreeRef')
+
+const { codeContainerFull } = useCodeContainer()
 
 // Parse package name, version, and file path from URL
 // Patterns:
@@ -47,6 +56,25 @@ function getCodeUrl(args: {
 
 // Fetch package data for version list
 const { data: pkg } = usePackage(packageName)
+const { versions: commandPaletteVersions, ensureLoaded: ensureCommandPaletteVersionsLoaded } =
+  useCommandPalettePackageVersions(packageName)
+
+const commandPalettePackageContext = computed(() => {
+  const packageData = pkg.value
+  if (!packageData) return null
+
+  return {
+    packageName: packageData.name,
+    resolvedVersion: version.value ?? packageData['dist-tags']?.latest ?? null,
+    latestVersion: packageData['dist-tags']?.latest ?? null,
+    versions: commandPaletteVersions.value ?? Object.keys(packageData.versions ?? {}),
+  }
+})
+
+useCommandPalettePackageContext(commandPalettePackageContext, {
+  onOpen: ensureCommandPaletteVersionsLoaded,
+})
+useCommandPalettePackageCommands(commandPalettePackageContext)
 
 // URL pattern for version selector - includes file path if present
 const versionUrlPattern = computed(() =>
@@ -57,6 +85,8 @@ const versionUrlPattern = computed(() =>
     filePath: filePath.value,
   }),
 )
+
+useCommandPaletteVersionCommands(commandPalettePackageContext, versionUrlPattern)
 
 // Fetch file tree
 const { data: fileTree, status: treeStatus } = useFetch<PackageFileTreeResponse>(
@@ -95,25 +125,26 @@ const currentNode = computed(() => {
   return lastFound
 })
 
-const isViewingFile = computed(() => currentNode.value?.type === 'file')
-
-// Maximum file size we'll try to load (500KB) - must match server
-const MAX_FILE_SIZE = 500 * 1024
+const isViewingFile = computed<boolean>(() => currentNode.value?.type === 'file')
 
 // Estimate binary file based on mime type
-const isBinaryFile = computed(() => {
+const isBinaryFile = computed<boolean>(() => {
+  if (!isViewingFile.value) return false
+
   const contentType = fileContent.value?.contentType
   if (!contentType) return false
   return isBinaryContentType(contentType)
 })
 
-const isFileTooLarge = computed(() => {
+const isFileTooLarge = computed<boolean>(() => {
+  if (!isViewingFile.value) return false
+
   const size = currentNode.value?.size
   return size !== undefined && size > MAX_FILE_SIZE
 })
 
 // Fetch file content when a file is selected (and not too large)
-const fileContentUrl = computed(() => {
+const fileContentUrl = computed<string | null>(() => {
   // Don't fetch if no file path, file tree not loaded, file is too large, or it's a directory
   if (!filePath.value || !fileTree.value || isFileTooLarge.value || !isViewingFile.value) {
     return null
@@ -126,6 +157,19 @@ const {
   status: fileStatus,
   execute: fetchFileContent,
 } = useFetch<PackageFileContentResponse>(() => fileContentUrl.value!, { immediate: false })
+
+// Loading skeleton state
+const isLoading = computed<boolean>(() => {
+  if (!isViewingFile.value) {
+    return treeStatus.value !== 'success' && treeStatus.value !== 'error'
+  }
+
+  return !fileStatus.value || fileStatus.value === 'pending' || fileStatus.value === 'idle'
+})
+
+function toggleMobileTreeDrawer(): void {
+  mobileFileTreeRef.value?.toggle()
+}
 
 watch(
   fileContentUrl,
@@ -185,24 +229,6 @@ watch(fileContent, () => {
   nextTick(scrollToLine)
 })
 
-// Build breadcrumb path segments
-const breadcrumbs = computed(() => {
-  const parts = filePath.value?.split('/').filter(Boolean) ?? []
-  const result: { name: string; path: string }[] = []
-
-  for (let i = 0; i < parts.length; i++) {
-    const part = parts[i]
-    if (part) {
-      result.push({
-        name: part,
-        path: parts.slice(0, i + 1).join('/'),
-      })
-    }
-  }
-
-  return result
-})
-
 // Navigation helper - build URL for a path
 function getCurrentCodeUrlWithPath(path?: string): string {
   return getCodeUrl({
@@ -237,13 +263,13 @@ function handleLineClick(lineNum: number, event: MouseEvent) {
 }
 
 // Copy link to current line(s)
-const { copied: permalinkCopied, copy: copyPermalink } = useClipboard({ copiedDuring: 2000 })
+const { copy: copyPermalink } = useClipboard({ copiedDuring: 2000 })
 function copyPermalinkUrl() {
   const url = new URL(window.location.href)
   copyPermalink(url.toString())
 }
 
-const { copied: fileContentCopied, copy: copyFileContent } = useClipboard({
+const { copy: copyFileContent } = useClipboard({
   source: () => fileContent.value?.content || '',
   copiedDuring: 2000,
 })
@@ -251,21 +277,7 @@ const { copied: fileContentCopied, copy: copyFileContent } = useClipboard({
 // Canonical URL for this code page
 const canonicalUrl = computed(() => `https://npmx.dev${getCodeUrl(route.params)}`)
 
-// Toggle markdown view mode
-const markdownViewModes = [
-  {
-    key: 'preview',
-    label: $t('code.markdown_view_mode.preview'),
-    icon: 'i-lucide:eye',
-  },
-  {
-    key: 'code',
-    label: $t('code.markdown_view_mode.code'),
-    icon: 'i-lucide:code',
-  },
-] as const
-
-const markdownViewMode = shallowRef<(typeof markdownViewModes)[number]['key']>('preview')
+const markdownViewMode = shallowRef<'preview' | 'code'>('preview')
 
 const bytesFormatter = useBytesFormatter()
 
@@ -310,6 +322,88 @@ defineOgImageComponent('Default', {
   description: () => pkg.value?.license ?? '',
   primaryColor: '#60a5fa',
 })
+
+useCommandPaletteContextCommands(
+  computed((): CommandPaletteContextCommandInput[] => {
+    if (!isViewingFile.value) return []
+
+    const commands: CommandPaletteContextCommandInput[] = []
+
+    if (filePath.value) {
+      commands.push({
+        id: 'code-open-raw',
+        group: 'links',
+        label: $t('code.view_raw'),
+        keywords: [packageName.value, filePath.value],
+        iconClass: 'i-lucide:file-output',
+        href: `https://cdn.jsdelivr.net/npm/${packageName.value}@${version.value}/${filePath.value}`,
+      })
+    }
+
+    if (isBinaryFile.value || !fileContent.value) return commands
+
+    commands.push(
+      {
+        id: 'code-copy-link',
+        group: 'actions',
+        label: $t('code.copy_link'),
+        keywords: [packageName.value, filePath.value ?? ''],
+        iconClass: 'i-lucide:link',
+        action: () => {
+          copyPermalinkUrl()
+        },
+      },
+      {
+        id: 'code-copy-file',
+        group: 'actions',
+        label: $t('command_palette.code.copy_file'),
+        keywords: [packageName.value, filePath.value ?? '', $t('common.copy')],
+        iconClass: 'i-lucide:file',
+        action: () => {
+          copyFileContent()
+        },
+      },
+    )
+
+    if (fileContent.value.markdownHtml) {
+      commands.push(
+        {
+          id: 'code-markdown-preview',
+          group: 'actions',
+          label: $t('code.markdown_view_mode.preview'),
+          keywords: [packageName.value, filePath.value ?? ''],
+          iconClass: 'i-lucide:eye',
+          active: markdownViewMode.value === 'preview',
+          action: () => {
+            markdownViewMode.value = 'preview'
+          },
+        },
+        {
+          id: 'code-markdown-source',
+          group: 'actions',
+          label: $t('code.markdown_view_mode.code'),
+          keywords: [packageName.value, filePath.value ?? ''],
+          iconClass: 'i-lucide:code',
+          active: markdownViewMode.value === 'code',
+          action: () => {
+            markdownViewMode.value = 'code'
+          },
+        },
+      )
+    }
+
+    return commands
+  }),
+)
+
+onPrehydrate(el => {
+  const settingsSaved = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
+  const container = el.querySelector('#code-page-container')
+
+  if (settingsSaved?.codeContainerFull === true && container) {
+    container.classList.add('container-full')
+  }
+})
 </script>
 
 <template>
@@ -346,113 +440,51 @@ defineOgImageComponent('Default', {
     </div>
 
     <!-- Main content: file tree + file viewer -->
-    <div v-else-if="fileTree" class="flex flex-1" dir="ltr">
+    <div
+      v-else-if="!!fileTree"
+      id="code-page-container"
+      class="w-full container grid grid-cols-[18rem_1fr] max-lg:grid-cols-[16rem_1fr] max-md:grid-cols-[1fr] border-border border-x px-0 mx-auto transition-[max-width] duration-300"
+      :class="codeContainerFull ? 'container-full' : ''"
+      dir="ltr"
+    >
       <!-- File tree sidebar - sticky with internal scroll -->
       <aside
-        class="w-64 lg:w-72 border-ie border-border shrink-0 hidden md:block bg-bg-subtle sticky top-25 self-start h-[calc(100vh-7rem)] overflow-y-auto"
+        class="sticky top-25 w-64 lg:w-72 hidden md:block h-[calc(100vh-10.5rem)] shrink-0 self-start bg-bg-subtle border-ie border-border"
       >
-        <CodeFileTree
-          :tree="fileTree.tree"
-          :current-path="filePath ?? ''"
-          :base-url="getCurrentCodeUrlWithPath()"
-          :base-route="route"
-        />
+        <div class="h-[calc(100vh-10.5rem)] overflow-y-auto">
+          <CodeFileTree
+            :tree="fileTree.tree"
+            :current-path="filePath ?? ''"
+            :base-url="getCurrentCodeUrlWithPath()"
+            :base-route="route"
+          />
+        </div>
       </aside>
 
       <!-- File content / Directory listing - sticky with internal scroll on desktop -->
-      <div class="flex-1 min-w-0 self-start">
-        <div
-          class="sticky z-5 top-25 bg-bg border-b border-border px-4 py-2 flex items-center justify-between gap-2 text-nowrap overflow-x-auto max-w-full"
-        >
-          <div class="flex items-center gap-2">
-            <div
-              v-if="fileContent?.markdownHtml"
-              class="flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md overflow-x-auto"
-              role="tablist"
-              aria-label="Markdown view mode selector"
-            >
-              <button
-                v-for="mode in markdownViewModes"
-                :key="mode.key"
-                role="tab"
-                class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-solid focus-visible:outline-accent/70 inline-flex items-center gap-1.5"
-                :class="
-                  markdownViewMode === mode.key
-                    ? 'bg-bg shadow text-fg border-border'
-                    : 'text-fg-subtle hover:text-fg border-transparent'
-                "
-                :aria-selected="markdownViewMode === mode.key"
-                @click="markdownViewMode = mode.key"
-              >
-                <span class="inline-block h-3 w-3" :class="mode.icon" aria-hidden="true" />
-                {{ mode.label }}
-              </button>
-            </div>
-            <!-- Breadcrumb navigation -->
-            <nav
-              :aria-label="$t('code.file_path')"
-              class="flex items-center gap-0.5 font-mono text-sm overflow-x-auto"
-              dir="ltr"
-            >
-              <NuxtLink
-                v-if="filePath"
-                :to="getCurrentCodeUrlWithPath()"
-                class="text-fg-muted hover:text-fg transition-colors shrink-0"
-              >
-                {{ $t('code.root') }}
-              </NuxtLink>
-              <span v-else class="text-fg shrink-0">{{ $t('code.root') }}</span>
-              <template v-for="(crumb, i) in breadcrumbs" :key="crumb.path">
-                <span class="text-fg-subtle">/</span>
-                <NuxtLink
-                  v-if="i < breadcrumbs.length - 1"
-                  :to="getCurrentCodeUrlWithPath(crumb.path)"
-                  class="text-fg-muted hover:text-fg transition-colors"
-                >
-                  {{ crumb.name }}
-                </NuxtLink>
-                <span v-else class="text-fg">{{ crumb.name }}</span>
-              </template>
-            </nav>
-          </div>
-          <div class="flex items-center gap-2" v-if="isViewingFile && !isBinaryFile && fileContent">
-            <button
-              v-if="selectedLines"
-              type="button"
-              class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors active:scale-95"
-              @click="copyPermalinkUrl"
-            >
-              {{ permalinkCopied ? $t('common.copied') : $t('code.copy_link') }}
-            </button>
-            <button
-              v-if="!!fileContent?.content"
-              type="button"
-              class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors inline-flex items-center gap-1 capitalize"
-              @click="copyFileContent()"
-            >
-              <span
-                class="w-3 h-3"
-                :class="fileContentCopied ? 'i-lucide:check' : 'i-lucide:file'"
-              />
-              {{ fileContentCopied ? $t('common.copied') : $t('common.copy') }}
-            </button>
-            <a
-              :href="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors inline-flex items-center gap-1"
-            >
-              {{ $t('code.raw') }}
-              <span class="i-lucide:external-link w-3 h-3" />
-            </a>
-          </div>
-        </div>
+      <div class="flex-1 grid grid-rows-[auto_1fr_auto] h-full min-h-full min-w-0 self-start">
+        <CodeHeader
+          :file-path="filePath"
+          :loading="isLoading"
+          :is-viewing-file="isViewingFile"
+          :is-binary-file="isBinaryFile"
+          :file-content="fileContent"
+          v-model:markdown-view-mode="markdownViewMode"
+          :selected-lines="selectedLines"
+          :get-code-url-with-path="getCurrentCodeUrlWithPath"
+          :package-name="packageName"
+          :version="version"
+          @mobile-tree-drawer-toggle="toggleMobileTreeDrawer()"
+        />
+        <!-- Loading file/directory content -->
+        <CodeSkeletonLoader v-if="isLoading" />
+
         <!-- File viewer -->
-        <template v-if="isViewingFile && !isBinaryFile && fileContent">
+        <template v-else-if="isViewingFile && !isBinaryFile && fileContent">
           <div
             v-if="fileContent.markdownHtml"
             v-show="markdownViewMode === 'preview'"
-            class="flex justify-center p-4"
+            class="flex min-h-full overflow-x-auto justify-center p-4"
           >
             <Readme :html="fileContent.markdownHtml.html" />
           </div>
@@ -462,10 +494,12 @@ defineOgImageComponent('Default', {
             :html="fileContent.html"
             :lines="fileContent.lines"
             :selected-lines="selectedLines"
+            class="flex-1"
             @line-click="handleLineClick"
           />
-          <div class="sticky bottom-0 bg-bg border-t border-border px-4 py-1">
-            <div class="flex items-center gap-3 text-sm justify-end">
+          <!-- Bottom status bar -->
+          <div class="sticky flex-auto bottom-0 bg-bg-subtle border-t border-border px-4 py-1">
+            <div class="flex items-center h-5 font-mono gap-3 text-sm justify-end">
               <span class="text-fg-muted" dir="auto">{{
                 $t('code.lines', { count: fileContent.lines })
               }}</span>
@@ -477,7 +511,7 @@ defineOgImageComponent('Default', {
         </template>
 
         <!-- Binary file warning -->
-        <div v-else-if="isViewingFile && isBinaryFile" class="py-20 text-center">
+        <div v-else-if="isBinaryFile" class="py-20 text-center">
           <div class="i-lucide:binary w-12 h-12 mx-auto text-fg-subtle mb-4" />
           <p class="text-fg-muted mb-2">{{ $t('code.binary_file') }}</p>
           <p class="text-fg-subtle text-sm mb-4">
@@ -496,7 +530,7 @@ defineOgImageComponent('Default', {
         </div>
 
         <!-- File too large warning -->
-        <div v-else-if="isViewingFile && isFileTooLarge" class="py-20 text-center">
+        <div v-else-if="isFileTooLarge" class="py-20 text-center">
           <div class="i-lucide:file-text w-12 h-12 mx-auto text-fg-subtle mb-4" />
           <p class="text-fg-muted mb-2">{{ $t('code.file_too_large') }}</p>
           <p class="text-fg-subtle text-sm mb-4">
@@ -510,44 +544,6 @@ defineOgImageComponent('Default', {
           >
             {{ $t('code.view_raw') }}
           </LinkBase>
-        </div>
-
-        <!-- Loading file content -->
-        <div
-          v-else-if="filePath && fileStatus === 'pending'"
-          class="flex min-h-full"
-          aria-busy="true"
-          :aria-label="$t('common.loading')"
-        >
-          <!-- Fake line numbers column -->
-          <div class="shrink-0 bg-bg-subtle border-ie border-border w-14 py-0">
-            <div v-for="n in 20" :key="n" class="px-3 h-6 flex items-center justify-end">
-              <SkeletonInline class="w-4 h-3 rounded-sm" />
-            </div>
-          </div>
-          <!-- Fake code content -->
-          <div class="flex-1 p-4 space-y-1.5">
-            <SkeletonBlock class="h-4 w-32 rounded-sm" />
-            <SkeletonBlock class="h-4 w-48 rounded-sm" />
-            <SkeletonBlock class="h-4 w-24 rounded-sm" />
-            <div class="h-4" />
-            <SkeletonBlock class="h-4 w-64 rounded-sm" />
-            <SkeletonBlock class="h-4 w-56 rounded-sm" />
-            <SkeletonBlock class="h-4 w-40 rounded-sm" />
-            <SkeletonBlock class="h-4 w-72 rounded-sm" />
-            <div class="h-4" />
-            <SkeletonBlock class="h-4 w-36 rounded-sm" />
-            <SkeletonBlock class="h-4 w-52 rounded-sm" />
-            <SkeletonBlock class="h-4 w-44 rounded-sm" />
-            <SkeletonBlock class="h-4 w-28 rounded-sm" />
-            <div class="h-4" />
-            <SkeletonBlock class="h-4 w-60 rounded-sm" />
-            <SkeletonBlock class="h-4 w-48 rounded-sm" />
-            <SkeletonBlock class="h-4 w-32 rounded-sm" />
-            <SkeletonBlock class="h-4 w-56 rounded-sm" />
-            <SkeletonBlock class="h-4 w-40 rounded-sm" />
-            <SkeletonBlock class="h-4 w-24 rounded-sm" />
-          </div>
         </div>
 
         <!-- Error loading file -->
@@ -580,6 +576,7 @@ defineOgImageComponent('Default', {
       <Teleport to="body">
         <CodeMobileTreeDrawer
           v-if="fileTree"
+          ref="mobileFileTreeRef"
           :tree="fileTree.tree"
           :current-path="filePath ?? ''"
           :base-url="getCurrentCodeUrlWithPath()"
@@ -589,3 +586,9 @@ defineOgImageComponent('Default', {
     </ClientOnly>
   </main>
 </template>
+
+<style>
+.container-full.container-full {
+  @apply max-w-full border-0;
+}
+</style>

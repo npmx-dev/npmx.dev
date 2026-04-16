@@ -200,6 +200,26 @@ const {
 } = usePackage(packageName, () => resolvedVersion.value ?? requestedVersion.value)
 
 const { diff: sizeDiff } = useInstallSizeDiff(packageName, resolvedVersion, pkg, installSize)
+const { versions: commandPaletteVersions, ensureLoaded: ensureCommandPaletteVersionsLoaded } =
+  useCommandPalettePackageVersions(packageName)
+
+const commandPalettePackageContext = computed(() => {
+  const packageData = pkg.value
+  if (!packageData) return null
+
+  return {
+    packageName: packageData.name,
+    resolvedVersion: resolvedVersion.value ?? packageData['dist-tags']?.latest ?? null,
+    latestVersion: packageData['dist-tags']?.latest ?? null,
+    versions: commandPaletteVersions.value ?? Object.keys(packageData.versions ?? {}),
+    tarballUrl: packageData.requestedVersion?.dist.tarball ?? null,
+  }
+})
+
+useCommandPalettePackageContext(commandPalettePackageContext, {
+  onOpen: ensureCommandPaletteVersionsLoaded,
+})
+useCommandPalettePackageCommands(commandPalettePackageContext)
 
 // Detect two hydration scenarios where the external _payload.json is missing:
 //
@@ -257,7 +277,6 @@ const versionSecurityMetadata = computed<PackageVersionInfo[]>(() => {
 // Process package description
 const pkgDescription = useMarkdown(() => ({
   text: pkg.value?.description ?? '',
-  packageName: pkg.value?.name,
 }))
 
 // Fetch dependency analysis (lazy, client-side)
@@ -460,6 +479,8 @@ const versionUrlPattern = computed(
   () => `/package/${pkg.value?.name || packageName.value}/v/{version}`,
 )
 
+useCommandPaletteVersionCommands(commandPalettePackageContext, versionUrlPattern)
+
 const dependencyCount = computed(() => getDependencyCount(displayVersion.value))
 
 const numberFormatter = useNumberFormatter()
@@ -527,7 +548,6 @@ const showSkeleton = shallowRef(false)
         :latest-version="latestVersion"
         :provenance-data="provenanceData"
         :provenance-status="provenanceStatus"
-        :class="$style.areaHeader"
         page="main"
         :version-url-pattern="versionUrlPattern"
       />
@@ -624,7 +644,7 @@ const showSkeleton = shallowRef(false)
                 <ButtonGroup v-if="dependencyCount > 0" class="ms-auto">
                   <LinkBase
                     variant="button-secondary"
-                    size="small"
+                    size="sm"
                     :to="`https://npmgraph.js.org/?q=${pkg.name}${resolvedVersion ? `@${resolvedVersion}` : ''}`"
                     :title="$t('package.stats.view_dependency_graph')"
                     classicon="i-lucide:network -rotate-90"
@@ -634,7 +654,7 @@ const showSkeleton = shallowRef(false)
 
                   <LinkBase
                     variant="button-secondary"
-                    size="small"
+                    size="sm"
                     :to="`https://node-modules.dev/grid/depth#install=${pkg.name}${resolvedVersion ? `@${resolvedVersion}` : ''}`"
                     :title="$t('package.stats.inspect_dependency_tree')"
                     classicon="i-lucide:table"
@@ -771,8 +791,15 @@ const showSkeleton = shallowRef(false)
                 {{ $t('package.get_started.title') }}
               </LinkBase>
             </h2>
-            <!-- Package manager dropdown -->
-            <PackageManagerSelect />
+            <!-- Package manager dropdown + Download button -->
+            <div class="flex items-center gap-2">
+              <PackageDownloadButton
+                v-if="displayVersion"
+                :package-name="pkg.name"
+                :version="displayVersion"
+              />
+              <PackageManagerSelect />
+            </div>
           </div>
           <div>
             <div
@@ -863,7 +890,9 @@ const showSkeleton = shallowRef(false)
             </div>
             <TerminalInstall
               :package-name="pkg.name"
-              :requested-version="resolvedVersion"
+              :requested-version="
+                requestedVersion && requestedVersion !== 'latest' ? resolvedVersion : null
+              "
               :install-version-override="installVersionOverride"
               :jsr-info="jsrInfo"
               :dev-dependency-suggestion="packageAnalysis?.devDependencySuggestion"
@@ -1098,7 +1127,7 @@ const showSkeleton = shallowRef(false)
       'install sidebar'
       'vulns   sidebar'
       'readme  sidebar';
-    grid-template-rows: auto auto auto auto 1fr;
+    grid-template-rows: auto auto auto 1fr;
   }
 }
 
@@ -1111,6 +1140,7 @@ const showSkeleton = shallowRef(false)
       'install sidebar'
       'vulns   sidebar'
       'readme  sidebar';
+    grid-template-rows: auto auto auto 1fr;
   }
 }
 

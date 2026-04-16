@@ -68,7 +68,6 @@ const showFilteredCount = computed(() => {
         :placeholder="placeholder ?? $t('package.list.filter_placeholder')"
         no-correct
         class="w-full min-w-25 ps-10"
-        size="medium"
       />
     </div>
 

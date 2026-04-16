@@ -61,8 +61,19 @@ describe('useInstallSizeDiff', () => {
       expect(comparisonVersion.value).toBeNull()
     })
 
+    it('returns null for the second stable version (no baseline for first)', () => {
+      const pkg = createPackage('test', {
+        '1.0.0': '2020-01-01',
+        '1.1.0': '2021-01-01',
+      })
+
+      const { comparisonVersion } = useInstallSizeDiff('test', '1.1.0', pkg, null)
+      expect(comparisonVersion.value).toBeNull()
+    })
+
     it('skips prerelease versions when finding previous stable', () => {
       const pkg = createPackage('test', {
+        '0.9.0': '2019-01-01',
         '1.0.0': '2020-01-01',
         '2.0.0-beta.1': '2021-01-01',
         '2.0.0-beta.2': '2021-06-01',
@@ -73,7 +84,7 @@ describe('useInstallSizeDiff', () => {
       expect(comparisonVersion.value).toBe('1.0.0')
     })
 
-    it('uses the latest dist-tag for a prerelease version', () => {
+    it('compares a prerelease against the previous stable version', () => {
       const pkg = createPackage(
         'test',
         { '1.0.0': '2020-01-01', '2.0.0-beta.1': '2021-01-01' },
@@ -84,20 +95,28 @@ describe('useInstallSizeDiff', () => {
       expect(comparisonVersion.value).toBe('1.0.0')
     })
 
-    it('returns null when the prerelease version is already latest', () => {
+    it('compares an old prerelease against the stable version before it, not latest', () => {
+      const pkg = createPackage(
+        'test',
+        {
+          '1.16.0': '2024-01-01',
+          '1.17.0-alpha.0': '2024-02-01',
+          '1.18.0': '2024-03-01',
+          '1.50.0': '2025-01-01',
+        },
+        { latest: '1.50.0' },
+      )
+
+      const { comparisonVersion } = useInstallSizeDiff('test', '1.17.0-alpha.0', pkg, null)
+      expect(comparisonVersion.value).toBe('1.16.0')
+    })
+
+    it('returns null for a prerelease with no prior stable versions', () => {
       const pkg = createPackage(
         'test',
         { '2.0.0-beta.1': '2021-01-01' },
         { latest: '2.0.0-beta.1' },
       )
-
-      const { comparisonVersion } = useInstallSizeDiff('test', '2.0.0-beta.1', pkg, null)
-      expect(comparisonVersion.value).toBeNull()
-    })
-
-    it('returns null for a prerelease when there is no latest tag', () => {
-      const pkg = createPackage('test', { '2.0.0-beta.1': '2021-01-01' }, {})
-      pkg['dist-tags'] = {}
 
       const { comparisonVersion } = useInstallSizeDiff('test', '2.0.0-beta.1', pkg, null)
       expect(comparisonVersion.value).toBeNull()
@@ -117,6 +136,7 @@ describe('useInstallSizeDiff', () => {
 
     it('returns null when both thresholds are not met', async () => {
       const pkg = createPackage('pkg-no-threshold', {
+        '0.9.0': '2019-01-01',
         '1.0.0': '2020-01-01',
         '1.1.0': '2021-01-01',
       })
@@ -140,7 +160,11 @@ describe('useInstallSizeDiff', () => {
     })
 
     it('sets sizeThresholdExceeded when size increased by more than 25%', async () => {
-      const pkg = createPackage('pkg-size-only', { '1.0.0': '2020-01-01', '1.1.0': '2021-01-01' })
+      const pkg = createPackage('pkg-size-only', {
+        '0.9.0': '2019-01-01',
+        '1.0.0': '2020-01-01',
+        '1.1.0': '2021-01-01',
+      })
       const current = createInstallSize('pkg-size-only', {
         version: '1.1.0',
         totalSize: 7000,
@@ -172,7 +196,11 @@ describe('useInstallSizeDiff', () => {
     })
 
     it('sets depThresholdExceeded when more than 5 dependencies were added', async () => {
-      const pkg = createPackage('pkg-deps-only', { '1.0.0': '2020-01-01', '1.1.0': '2021-01-01' })
+      const pkg = createPackage('pkg-deps-only', {
+        '0.9.0': '2019-01-01',
+        '1.0.0': '2020-01-01',
+        '1.1.0': '2021-01-01',
+      })
       const current = createInstallSize('pkg-deps-only', {
         version: '1.1.0',
         totalSize: 5100,
@@ -204,7 +232,11 @@ describe('useInstallSizeDiff', () => {
     })
 
     it('returns correct diff values', async () => {
-      const pkg = createPackage('pkg-both', { '1.0.0': '2020-01-01', '1.1.0': '2021-01-01' })
+      const pkg = createPackage('pkg-both', {
+        '0.9.0': '2019-01-01',
+        '1.0.0': '2020-01-01',
+        '1.1.0': '2021-01-01',
+      })
       const current = createInstallSize('pkg-both', {
         version: '1.1.0',
         totalSize: 10000,
@@ -234,7 +266,11 @@ describe('useInstallSizeDiff', () => {
 
   describe('fetch behavior', () => {
     it('calls the correct API endpoint for the comparison version', async () => {
-      const pkg = createPackage('my-pkg', { '1.0.0': '2020-01-01', '1.1.0': '2021-01-01' })
+      const pkg = createPackage('my-pkg', {
+        '0.9.0': '2019-01-01',
+        '1.0.0': '2020-01-01',
+        '1.1.0': '2021-01-01',
+      })
       const current = createInstallSize('my-pkg', { version: '1.1.0', totalSize: 7000 })
       fetchSpy.mockResolvedValue(createInstallSize('my-pkg', { version: '1.0.0', totalSize: 5000 }))
 

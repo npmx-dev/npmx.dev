@@ -44,8 +44,14 @@ export interface PackageComparisonData {
      * but a maintainer was removed last week, this would show the '3 years ago' time.
      */
     lastUpdated?: string
+    /** Creation date of the package (ISO 8601 date-time string) */
+    createdAt?: string
     engines?: { node?: string; npm?: string }
     deprecated?: string
+    github?: {
+      stars?: number
+      issues?: number
+    }
   }
   /** Whether this is a binary-only package (CLI without library entry points) */
   isBinaryOnly?: boolean
@@ -115,12 +121,13 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
           try {
             // Fetch basic package info first (required)
             const { data: pkgData } = await $npmRegistry<Packument>(`/${encodePackageName(name)}`)
-
             const latestVersion = pkgData['dist-tags']?.latest
             if (!latestVersion) return null
 
             // Fetch fast additional data in parallel (optional - failures are ok)
-            const [downloads, analysis, vulns, likes] = await Promise.all([
+            const repoInfo = parseRepositoryInfo(pkgData.repository)
+            const isGitHub = repoInfo?.provider === 'github'
+            const [downloads, analysis, vulns, likes, ghStars, ghIssues] = await Promise.all([
               $fetch<{ downloads: number }>(
                 `https://api.npmjs.org/downloads/point/last-week/${encodePackageName(name)}`,
               ).catch(() => null),
@@ -133,6 +140,20 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               $fetch<PackageLikes>(`/api/social/likes/${encodePackageName(name)}`).catch(
                 () => null,
               ),
+              isGitHub
+                ? $fetch<{ repo: { stars: number } }>(
+                    `https://ungh.cc/repos/${repoInfo.owner}/${repoInfo.repo}`,
+                  )
+                    .then(res => (typeof res?.repo?.stars === 'number' ? res.repo.stars : null))
+                    .catch(() => null)
+                : Promise.resolve(null),
+              isGitHub
+                ? $fetch<{ issues: number | null }>(
+                    `/api/github/issues/${repoInfo.owner}/${repoInfo.repo}`,
+                  )
+                    .then(res => (typeof res?.issues === 'number' ? res.issues : null))
+                    .catch(() => null)
+                : Promise.resolve(null),
             ])
             const versionData = pkgData.versions[latestVersion]
             const packageSize = versionData?.dist?.unpackedSize
@@ -179,8 +200,13 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
                 // Use version-specific publish time, NOT time.modified (which can be
                 // updated by metadata changes like maintainer additions)
                 lastUpdated: pkgData.time?.[latestVersion],
+                createdAt: pkgData.time?.created,
                 engines: analysis?.engines,
                 deprecated: versionData?.deprecated,
+                github: {
+                  stars: ghStars ?? undefined,
+                  issues: ghIssues ?? undefined,
+                },
               },
               isBinaryOnly: isBinary,
               totalLikes: likes?.totalLikes,
@@ -252,6 +278,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
 
     return packagesData.value.map(pkg => {
       if (!pkg) return null
+
       return computeFacetValue(
         facet,
         pkg,
@@ -536,6 +563,33 @@ function computeFacetValue(
         raw: totalDepCount,
         display: formatNumber(totalDepCount),
         status: totalDepCount > 50 ? 'warning' : 'neutral',
+      }
+    }
+    case 'githubStars': {
+      const stars = data.metadata?.github?.stars
+      if (stars == null) return null
+      return {
+        raw: stars,
+        display: formatCompactNumber(stars),
+        status: 'neutral',
+      }
+    }
+    case 'githubIssues': {
+      const issues = data.metadata?.github?.issues
+      if (issues == null) return null
+      return {
+        raw: issues,
+        display: formatCompactNumber(issues),
+        status: 'neutral',
+      }
+    }
+    case 'createdAt': {
+      const createdAt = data.metadata?.createdAt
+      if (!createdAt) return null
+      return {
+        raw: createdAt,
+        display: createdAt,
+        type: 'date',
       }
     }
     default: {

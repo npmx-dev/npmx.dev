@@ -42,6 +42,7 @@ This focus helps guide our project decisions as a community and what we choose t
   - [Naming conventions](#naming-conventions)
   - [Vue components](#vue-components)
   - [Internal linking](#internal-linking)
+  - [Command palette](#command-palette)
   - [Cursor and navigation](#cursor-and-navigation)
 - [RTL Support](#rtl-support)
 - [Localization (i18n)](#localization-i18n)
@@ -119,7 +120,7 @@ pnpm npmx-connector   # Start the real connector (requires npm login)
 pnpm mock-connector   # Start the mock connector (no npm login needed)
 
 # Code Quality
-pnpm lint             # Run linter (oxlint + oxfmt)
+pnpm vp run lint      # Run linter (oxlint + oxfmt)
 pnpm lint:fix         # Auto-fix lint issues
 pnpm test:types       # TypeScript type checking
 
@@ -400,6 +401,14 @@ For package links, use the auto-imported `packageRoute()` utility from `app/util
 > [!IMPORTANT]
 > Never construct package URLs as strings. The route structure uses separate `org` and `name` params, and `packageRoute()` handles the splitting correctly.
 
+### Command palette
+
+The command palette is a first-class navigation surface. When you add a new user-facing capability to the app, you should also register a corresponding command palette entry for it whenever that action or destination makes sense outside its immediate UI.
+
+- Add global entries in the command palette composables.
+- Add page- or component-scoped entries from the page/component that owns the capability.
+- Prefer palette entries for actions users may reasonably want to trigger from the keyboard or jump to directly.
+
 #### Available route names
 
 | Route name        | URL pattern                       | Parameters                |
@@ -460,13 +469,13 @@ npmx.dev uses [@nuxtjs/i18n](https://i18n.nuxtjs.org/) for internationalization.
 
 The following scripts help manage translation files. `en.json` is the reference locale.
 
-| Command                        | Description                                                                                                                                                                             |
-| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm i18n:check [locale]`     | Compares `en.json` with other locale files. Shows missing and extra keys. Optionally filter output by locale (e.g. `pnpm i18n:check ja-JP`).                                            |
-| `pnpm i18n:check:fix [locale]` | Same as check, but adds missing keys to other locales with English placeholders.                                                                                                        |
-| `pnpm i18n:report`             | Audits translation keys against code usage in `.vue` and `.ts` files. Reports missing keys (used in code but not in locale), unused keys (in locale but not in code), and dynamic keys. |
-| `pnpm i18n:report:fix`         | Removes unused keys from `en.json` and all other locale files.                                                                                                                          |
-| `pnpm i18n:schema`             | Generates a JSON Schema from `en.json` at `i18n/schema.json`. Locale files reference this schema for IDE validation and autocompletion.                                                 |
+| Command                           | Description                                                                                                                                                                             |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm i18n:check:fix [locale]`    | Compares `en.json` with other locale files and adds missing keys with English placeholders. Optionally filter output by locale (e.g. `pnpm i18n:check:fix ja-JP`).                      |
+| `pnpm i18n:report:fix`            | Removes unused keys from `en.json` and all other locale files.                                                                                                                          |
+| `pnpm vp run i18n:check [locale]` | Same as check:fix, but only show missing and extra keys.                                                                                                                                |
+| `pnpm vp run i18n:report`         | Audits translation keys against code usage in `.vue` and `.ts` files. Reports missing keys (used in code but not in locale), unused keys (in locale but not in code), and dynamic keys. |
+| `pnpm vp run i18n:schema`         | Generates a JSON Schema from `en.json` at `i18n/schema.json`. Locale files reference this schema for IDE validation and autocompletion.                                                 |
 
 ### Adding a new locale
 
@@ -502,7 +511,7 @@ Check [Pluralization rule callback](https://vue-i18n.intlify.dev/guide/essential
 We track the current progress of translations with [Lunaria](https://lunaria.dev/) on this site: https://i18n.npmx.dev/
 If you see any outdated translations in your language, feel free to update the keys to match the English version.
 
-Use `pnpm i18n:check` and `pnpm i18n:check:fix` to verify and fix your locale (see [i18n commands](#i18n-commands) above for details).
+Use `pnpm i18n:check:fix` to fix your locale (see [i18n commands](#i18n-commands) above for details).
 
 #### Country variants (advanced)
 
@@ -590,7 +599,7 @@ See how `es`, `es-ES`, and `es-419` are configured in [config/i18n.ts](./config/
 - Use `common.*` for shared strings (loading, retry, close, etc.)
 - Use component-specific prefixes: `package.card.*`, `settings.*`, `nav.*`
 - Do not use dashes (`-`) in translation keys; always use underscore (`_`): e.g., `privacy_policy` instead of `privacy-policy`
-- **Always use static string literals as translation keys.** Our i18n scripts (`pnpm i18n:report`) rely on static analysis to detect unused and missing keys. Dynamic keys cannot be analyzed and will be flagged as errors.
+- **Always use static string literals as translation keys.** Our i18n scripts (`pnpm i18n:report:fix`) rely on static analysis to detect unused and missing keys. Dynamic keys cannot be analyzed and will be flagged as errors.
 
   **Bad:**
 
@@ -751,6 +760,23 @@ pnpm test:browser:ui     # Run with Playwright UI
 ```
 
 Make sure to read about [Playwright best practices](https://playwright.dev/docs/best-practices) and don't rely on classes/IDs but try to follow user-replicable behaviour (like selecting an element based on text content instead).
+
+#### Updating snapshots
+
+Some tests use image snapshots that must match the CI environment (Linux). If you need to update them, and aren't running Linux, you can use Docker to run in the same environment:
+
+```bash
+docker run --rm \
+  -e CI=true \
+  -e NODE_OPTIONS="--max-old-space-size=4096" \
+  -v $(pwd):/work \
+  -w /work \
+  mcr.microsoft.com/playwright:v1.58.2-noble \
+  sh -c "npm install -g pnpm && pnpm install && pnpm vp run build:test && pnpm vp run test:browser:prebuilt --update-snapshots"
+```
+
+> [!NOTE]
+> If the build runs out of memory, increase `--max-old-space-size` to `8192`.
 
 ### Test fixtures (mocking external APIs)
 

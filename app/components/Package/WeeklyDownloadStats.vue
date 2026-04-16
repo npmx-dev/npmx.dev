@@ -60,6 +60,9 @@ function handleModalTransitioned() {
 }
 
 const { fetchPackageDownloadEvolution } = useCharts()
+const numberFormatter = useNumberFormatter({
+  maximumFractionDigits: 0,
+})
 
 const { accentColors, selectedAccentColor } = useAccentColor()
 
@@ -313,6 +316,15 @@ function layEgg() {
 
 const config = computed<VueUiSparklineConfig>(() => {
   return {
+    a11y: {
+      translations: {
+        keyboardNavigation: $t(
+          'package.trends.chart_assistive_text.keyboard_navigation_horizontal',
+        ),
+        tableAvailable: $t('package.trends.chart_assistive_text.table_available'),
+        tableCaption: $t('package.trends.chart_assistive_text.table_caption'),
+      },
+    },
     theme: 'dark',
     /**
      * The built-in skeleton loader kicks in when the component is mounted but the data is not yet ready.
@@ -350,6 +362,9 @@ const config = computed<VueUiSparklineConfig>(() => {
         fontSize: 28,
         bold: false,
         color: colors.value.fg,
+        formatter: ({ value }) => {
+          return numberFormatter.value.format(value)
+        },
       },
       line: {
         color: colors.value.borderHover,
@@ -416,9 +431,16 @@ const config = computed<VueUiSparklineConfig>(() => {
         <template v-if="isLoadingWeeklyDownloads || hasWeeklyDownloads">
           <ClientOnly>
             <VueUiSparkline class="w-full max-w-xs" :dataset :config>
+              <!-- Keyboard navigation hint -->
+              <template #hint="{ isVisible }">
+                <p v-if="isVisible" class="text-accent text-xs text-center mt-2" aria-hidden="true">
+                  {{ $t('package.downloads.sparkline_nav_hint') }}
+                </p>
+              </template>
+
               <template #skeleton>
                 <!-- This empty div overrides the default built-in scanning animation on load -->
-                <div />
+                <div></div>
               </template>
             </VueUiSparkline>
             <template #fallback>
@@ -492,6 +514,12 @@ const config = computed<VueUiSparklineConfig>(() => {
 .opacity-enter-to,
 .opacity-leave-from {
   opacity: 1;
+}
+
+:deep(.vue-data-ui-component svg:focus-visible) {
+  outline: 0.1rem solid var(--accent) !important;
+  border-radius: 0.1rem;
+  outline-offset: 3px;
 }
 </style>
 

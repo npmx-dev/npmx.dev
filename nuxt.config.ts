@@ -99,12 +99,12 @@ export default defineNuxtConfig({
 
   routeRules: {
     // API routes
-    '/api/**': { isr: 60 },
+    '/api/**': { isr: 300 },
     '/api/registry/badge/**': {
       isr: {
         expiration: 60 * 60 /* one hour */,
         passQuery: true,
-        allowQuery: ['color', 'labelColor', 'label', 'name', 'style'],
+        allowQuery: ['color', 'labelColor', 'label', 'name', 'style', 'value'],
       },
     },
     '/api/registry/image-proxy': {
@@ -121,6 +121,13 @@ export default defineNuxtConfig({
         allowQuery: ['mode', 'filterOldVersions', 'filterThreshold'],
       },
     },
+    '/api/registry/timeline/**': {
+      isr: {
+        expiration: 300,
+        passQuery: true,
+        allowQuery: ['offset', 'limit'],
+      },
+    },
     '/api/registry/docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/file/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/provenance/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
@@ -128,7 +135,14 @@ export default defineNuxtConfig({
     '/api/registry/package-meta/**': { isr: 300 },
     '/:pkg/.well-known/skills/**': { isr: 3600 },
     '/:scope/:pkg/.well-known/skills/**': { isr: 3600 },
-    '/__og-image__/**': getISRConfig(60),
+    '/__og-image__/**': getISRConfig(3600),
+    '/__og-image__/image/compare/**': {
+      isr: {
+        expiration: 3600,
+        passQuery: true,
+        allowQuery: ['packages', '_query'],
+      },
+    },
     '/_avatar/**': { isr: 3600, proxy: 'https://www.gravatar.com/avatar/**' },
     '/opensearch.xml': { isr: true },
     '/oauth-client-metadata.json': { prerender: true },
@@ -161,26 +175,32 @@ export default defineNuxtConfig({
       },
     },
     // pages
-    '/package/**': getISRConfig(60, { fallback: 'html' }),
-    '/package/:name/_payload.json': getISRConfig(60, { fallback: 'json' }),
-    '/package/:name/v/:version/_payload.json': getISRConfig(60, { fallback: 'json' }),
-    '/package/:org/:name/_payload.json': getISRConfig(60, { fallback: 'json' }),
-    '/package/:org/:name/v/:version/_payload.json': getISRConfig(60, { fallback: 'json' }),
+    '/package/**': getISRConfig(300, { fallback: 'html' }),
+    '/package/:name/_payload.json': getISRConfig(300, { fallback: 'json' }),
+    '/package/:name/v/:version/_payload.json': getISRConfig(300, { fallback: 'json' }),
+    '/package/:org/:name/_payload.json': getISRConfig(300, { fallback: 'json' }),
+    '/package/:org/:name/v/:version/_payload.json': getISRConfig(300, { fallback: 'json' }),
     // infinite cache (versioned - doesn't change)
-    '/package-code/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
-    '/package-docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
+    '/package-code/**': {
+      headers: { 'Cache-Control': 'public, s-maxage=31536000, stale-while-revalidate=31536000' },
+    },
+    '/package-docs/**': {
+      headers: { 'Cache-Control': 'public, s-maxage=31536000, stale-while-revalidate=31536000' },
+    },
     // static pages
     '/': { prerender: true },
     '/200.html': { prerender: true },
     '/about': { prerender: true },
     '/accessibility': { prerender: true },
+    '/brand': { prerender: true },
     '/privacy': { prerender: true },
     '/search': { isr: false, cache: false }, // never cache
     '/settings': { prerender: true },
+    '/translation-status': { prerender: true },
     '/recharging': { prerender: true },
     '/pds': { isr: 86400 }, // revalidate daily
-    // proxy for insights
     '/blog/**': { prerender: true },
+    // proxy for insights
     '/_v/script.js': {
       proxy: 'https://npmx.dev/_vercel/insights/script.js',
     },
@@ -270,6 +290,12 @@ export default defineNuxtConfig({
         weights: ['400', '500'],
         preload: true,
         global: true,
+      },
+      {
+        name: 'IBM Plex Sans Arabic',
+        weights: ['400', '500', '600'],
+        global: true,
+        subsets: ['arabic'],
       },
     ],
   },
@@ -373,6 +399,8 @@ export default defineNuxtConfig({
         '@vueuse/integrations/useFocusTrap/component',
         'vue-data-ui/vue-ui-sparkline',
         'vue-data-ui/vue-ui-xy',
+        'vue-data-ui/vue-ui-scatter',
+        'vue-data-ui/vue-ui-horizontal-bar',
         'virtua/vue',
         'semver',
         'validate-npm-package-name',

@@ -38,6 +38,9 @@ export interface AppSettings {
     /** Automatically open the web auth page in the browser */
     autoOpenURL: boolean
   }
+  codeContainerFull: boolean
+  /** Enable/disable ligatures in code */
+  codeLigatures: boolean
   sidebar: {
     collapsed: string[]
   }
@@ -63,12 +66,14 @@ const DEFAULT_SETTINGS: AppSettings = {
   connector: {
     autoOpenURL: false,
   },
+  codeContainerFull: false,
+  codeLigatures: true,
   sidebar: {
     collapsed: [],
   },
   chartFilter: {
     averageWindow: 0,
-    smoothingTau: 1,
+    smoothingTau: 0,
     anomaliesFixed: true,
     predictionPoints: 4,
   },
@@ -135,6 +140,17 @@ export const useKeyboardShortcuts = createSharedComposable(function useKeyboardS
 export function useAccentColor() {
   const { settings } = useSettings()
   const colorMode = useColorMode()
+  const { t } = useI18n()
+
+  const accentColorLabels = computed<Record<AccentColorId, string>>(() => ({
+    sky: t('settings.accent_colors.sky'),
+    coral: t('settings.accent_colors.coral'),
+    amber: t('settings.accent_colors.amber'),
+    emerald: t('settings.accent_colors.emerald'),
+    violet: t('settings.accent_colors.violet'),
+    magenta: t('settings.accent_colors.magenta'),
+    neutral: t('settings.clear_accent'),
+  }))
 
   const accentColors = computed(() => {
     const isDark = colorMode.value === 'dark'
@@ -142,7 +158,7 @@ export function useAccentColor() {
 
     return Object.entries(colors).map(([id, value]) => ({
       id: id as AccentColorId,
-      name: id,
+      label: accentColorLabels.value[id as AccentColorId],
       value,
     }))
   })
@@ -190,11 +206,23 @@ export function useSearchProvider() {
 }
 
 export function useBackgroundTheme() {
-  const backgroundThemes = Object.entries(BACKGROUND_THEMES).map(([id, value]) => ({
-    id: id as BackgroundThemeId,
-    name: id,
-    value,
+  const { t } = useI18n()
+
+  const bgThemeLabels = computed<Record<BackgroundThemeId, string>>(() => ({
+    neutral: t('settings.background_themes.neutral'),
+    stone: t('settings.background_themes.stone'),
+    zinc: t('settings.background_themes.zinc'),
+    slate: t('settings.background_themes.slate'),
+    black: t('settings.background_themes.black'),
   }))
+
+  const backgroundThemes = computed(() =>
+    Object.entries(BACKGROUND_THEMES).map(([id, value]) => ({
+      id: id as BackgroundThemeId,
+      label: bgThemeLabels.value[id as BackgroundThemeId],
+      value,
+    })),
+  )
 
   const { settings } = useSettings()
 
@@ -213,3 +241,48 @@ export function useBackgroundTheme() {
     setBackgroundTheme,
   }
 }
+
+export function useCodeContainer() {
+  const { settings } = useSettings()
+
+  const codeContainerFull = computed(() => settings.value.codeContainerFull)
+
+  function toggleCodeContainer() {
+    settings.value.codeContainerFull = !settings.value.codeContainerFull
+  }
+
+  return {
+    codeContainerFull,
+    toggleCodeContainer,
+  }
+}
+
+export const useCodeLigatures = createSharedComposable(function useCodeLigatures() {
+  const { settings } = useSettings()
+
+  const codeLigatures = computed(() => settings.value.codeLigatures)
+
+  if (import.meta.client) {
+    // Sync the data attribute on root to the setting
+    watch(
+      codeLigatures,
+      value => {
+        if (value) {
+          delete document.documentElement.dataset.codeLigatures
+        } else {
+          document.documentElement.dataset.codeLigatures = 'false'
+        }
+      },
+      { immediate: true },
+    )
+  }
+
+  function toggleCodeLigatures() {
+    settings.value.codeLigatures = !settings.value.codeLigatures
+  }
+
+  return {
+    codeLigatures,
+    toggleCodeLigatures,
+  }
+})

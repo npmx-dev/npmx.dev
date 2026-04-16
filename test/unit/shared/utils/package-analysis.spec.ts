@@ -122,6 +122,10 @@ describe('detectModuleFormat', () => {
       }),
     ).toBe('esm')
   })
+
+  it('detects WASM from main field', () => {
+    expect(detectModuleFormat({ main: 'main.wasm' })).toBe('wasm')
+  })
 })
 
 describe('detectTypesStatus', () => {

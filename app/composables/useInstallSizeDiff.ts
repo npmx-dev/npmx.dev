@@ -19,19 +19,19 @@ const DEP_INCREASE_THRESHOLD = 5
 function getComparisonVersion(pkg: SlimPackument, resolvedVersion: string): string | null {
   const isCurrentPrerelease = prerelease(resolvedVersion) !== null
 
-  if (isCurrentPrerelease) {
-    const latest = pkg['dist-tags']?.latest
-    if (!latest || latest === resolvedVersion) return null
-    return latest
-  }
-
-  // Find the previous version in time that was stable
   const stableVersions = Object.keys(pkg.time)
     .filter(v => v !== 'modified' && v !== 'created' && valid(v) !== null && prerelease(v) === null)
     .sort((a, b) => compare(a, b))
 
+  if (isCurrentPrerelease) {
+    // Find the highest stable version before this prerelease in semver order
+    return stableVersions.findLast(v => compare(v, resolvedVersion) < 0) ?? null
+  }
+
   const currentIdx = stableVersions.indexOf(resolvedVersion)
-  if (currentIdx <= 0) return null
+  // Don't compare the second version against the first as the first
+  // has no baseline so a large size difference is expected
+  if (currentIdx <= 1) return null
 
   return stableVersions[currentIdx - 1]!
 }

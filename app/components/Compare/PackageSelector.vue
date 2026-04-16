@@ -8,7 +8,7 @@ const props = defineProps<{
   max?: number
 }>()
 
-const maxPackages = computed(() => props.max ?? 4)
+const maxPackages = computed(() => props.max ?? MAX_PACKAGE_SELECTION)
 
 // Input state
 const inputValue = shallowRef('')
@@ -213,7 +213,7 @@ onClickOutside(containerRef, () => {
           {{ pkg }}
         </LinkBase>
         <ButtonBase
-          size="small"
+          size="sm"
           :aria-label="
             $t('compare.selector.remove_package', {
               package: pkg === NO_DEPENDENCY_ID ? $t('compare.no_dependency.label') : pkg,
@@ -246,7 +246,6 @@ onClickOutside(containerRef, () => {
               : $t('compare.selector.search_add')
           "
           no-correct
-          size="medium"
           class="w-full min-w-25 ps-7"
           aria-autocomplete="list"
           ref="inputRef"

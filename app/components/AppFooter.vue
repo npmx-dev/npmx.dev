@@ -5,6 +5,7 @@ const route = useRoute()
 const isHome = computed(() => route.name === 'index')
 
 const discord = useDiscordLink()
+const { commandPaletteShortcutLabel } = usePlatformModifierKey()
 const modalRef = useTemplateRef('modalRef')
 const showModal = () => modalRef.value?.showModal?.()
 const closeModal = () => modalRef.value?.close?.()
@@ -35,6 +36,12 @@ const closeModal = () => modalRef.value?.close?.()
             <LinkBase :to="{ name: 'accessibility' }">
               {{ $t('a11y.footer_title') }}
             </LinkBase>
+            <LinkBase :to="{ name: 'translation-status' }">
+              {{ $t('translation_status.title') }}
+            </LinkBase>
+            <LinkBase :to="{ name: 'brand' }">
+              {{ $t('footer.brand') }}
+            </LinkBase>
             <button
               type="button"
               class="cursor-pointer group inline-flex gap-x-1 items-center justify-center underline-offset-[0.2rem] underline decoration-1 decoration-fg/30 font-mono text-fg hover:(decoration-accent text-accent) focus-visible:(decoration-accent text-accent) transition-colors duration-200"
@@ -45,14 +52,24 @@ const closeModal = () => modalRef.value?.close?.()
             </button>
 
             <Modal
+              id="keyboard-shortcuts-modal"
               ref="modalRef"
               :modalTitle="$t('footer.keyboard_shortcuts')"
               class="w-auto max-w-lg"
             >
+              <p class="mb-4 text-sm leading-relaxed text-fg-muted">
+                {{
+                  $t('shortcuts.command_palette_description', { ctrlKey: $t('shortcuts.ctrl_key') })
+                }}
+              </p>
               <p class="mb-2 font-mono text-fg-subtle">
                 {{ $t('shortcuts.section.global') }}
               </p>
               <ul class="mb-6 flex flex-col gap-2">
+                <li class="flex gap-2 items-center">
+                  <kbd class="kbd">{{ commandPaletteShortcutLabel }}</kbd>
+                  <span>{{ $t('shortcuts.command_palette') }}</span>
+                </li>
                 <li class="flex gap-2 items-center">
                   <kbd class="kbd">/</kbd>
                   <span>{{ $t('shortcuts.focus_search') }}</span>
@@ -102,6 +119,10 @@ const closeModal = () => modalRef.value?.close?.()
                 <li class="flex gap-2 items-center">
                   <kbd class="kbd">f</kbd>
                   <span>{{ $t('shortcuts.open_diff') }}</span>
+                </li>
+                <li class="flex gap-2 items-center">
+                  <kbd class="kbd">t</kbd>
+                  <span>{{ $t('shortcuts.open_timeline') }}</span>
                 </li>
                 <li class="flex gap-2 items-center">
                   <kbd class="kbd">c</kbd>

@@ -16,8 +16,6 @@ describe('parseSortOption', () => {
     ['updated-asc', 'updated', 'asc'],
     ['name-asc', 'name', 'asc'],
     ['name-desc', 'name', 'desc'],
-    ['quality-desc', 'quality', 'desc'],
-    ['score-asc', 'score', 'asc'],
     ['relevance-desc', 'relevance', 'desc'],
     ['relevance-asc', 'relevance', 'asc'],
   ])('parses "%s" to key="%s" direction="%s"', (option, expectedKey, expectedDirection) => {
@@ -45,7 +43,6 @@ describe('buildSortOption', () => {
     ['downloads-week', 'asc', 'downloads-week-asc'],
     ['updated', 'desc', 'updated-desc'],
     ['name', 'asc', 'name-asc'],
-    ['quality', 'desc', 'quality-desc'],
     ['relevance', 'desc', 'relevance-desc'],
   ])('builds "%s" + "%s" to "%s"', (key, direction, expected) => {
     expect(buildSortOption(key, direction)).toBe(expected)
@@ -70,10 +67,6 @@ describe('parseSortOption and buildSortOption roundtrip', () => {
     'downloads-month-asc',
     'updated-desc',
     'name-asc',
-    'quality-desc',
-    'popularity-asc',
-    'maintenance-desc',
-    'score-asc',
     'relevance-desc',
     'relevance-asc',
   ])('roundtrips "%s" correctly', option => {

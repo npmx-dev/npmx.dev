@@ -3,7 +3,7 @@
  * Provides information about translation progress for each locale.
  */
 export function useI18nStatus() {
-  const { locale } = useI18n()
+  const { locale: currentLocale } = useI18n()
 
   const {
     data: status,
@@ -16,20 +16,26 @@ export function useI18nStatus() {
     getCachedData: (key, nuxtApp) => nuxtApp.payload.data[key] ?? nuxtApp.static.data[key],
   })
 
+  const localesMap = computed<Map<string, I18nLocaleStatus> | undefined>(() => {
+    return status.value?.locales.reduce((acc, locale) => {
+      acc.set(locale.lang, locale)
+      return acc
+    }, new Map())
+  })
+
   /**
    * Get the translation status for a specific locale
    */
   function getLocaleStatus(langCode: string): I18nLocaleStatus | null {
-    if (!status.value) return null
-    return status.value.locales.find(l => l.lang === langCode) ?? null
+    return localesMap.value?.get(langCode) ?? null
   }
 
   /**
    * Translation status for the current locale
    */
-  const currentLocaleStatus = computed<I18nLocaleStatus | null>(() => {
-    return getLocaleStatus(locale.value)
-  })
+  const currentLocaleStatus = computed<I18nLocaleStatus | null>(() =>
+    getLocaleStatus(currentLocale.value),
+  )
 
   /**
    * Whether the current locale's translation is 100% complete
@@ -47,7 +53,7 @@ export function useI18nStatus() {
    */
   const isSourceLocale = computed(() => {
     const sourceLang = status.value?.sourceLocale.lang ?? 'en'
-    return locale.value === sourceLang || locale.value.startsWith(`${sourceLang}-`)
+    return currentLocale.value === sourceLang || currentLocale.value.startsWith(`${sourceLang}-`)
   })
 
   /**
@@ -74,5 +80,7 @@ export function useI18nStatus() {
     isSourceLocale,
     /** GitHub edit URL for current locale */
     githubEditUrl,
+    /** locale info map by lang */
+    localesMap,
   }
 }

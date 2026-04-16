@@ -1,3 +1,4 @@
+import { setTimeout } from 'node:timers/promises'
 import { describe, expect, it, vi } from 'vitest'
 import * as fc from 'fast-check'
 import { mapWithConcurrency } from '#shared/utils/async'
@@ -21,7 +22,7 @@ describe('mapWithConcurrency', () => {
       async () => {
         concurrent++
         maxConcurrent = Math.max(maxConcurrent, concurrent)
-        await new Promise(resolve => setTimeout(resolve, 10))
+        await setTimeout(10)
         concurrent--
       },
       3,
@@ -66,7 +67,7 @@ describe('mapWithConcurrency', () => {
     await mapWithConcurrency(items, async () => {
       concurrent++
       maxConcurrent = Math.max(maxConcurrent, concurrent)
-      await new Promise(resolve => setTimeout(resolve, 5))
+      await setTimeout(5)
       concurrent--
     })
 
@@ -84,7 +85,7 @@ describe('mapWithConcurrency', () => {
       async () => {
         concurrent++
         maxConcurrent = Math.max(maxConcurrent, concurrent)
-        await new Promise(resolve => setTimeout(resolve, 10))
+        await setTimeout(10)
         concurrent--
       },
       10,

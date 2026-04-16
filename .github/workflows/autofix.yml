@@ -20,26 +20,21 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1
         with:
           node-version: lts/*
-
-      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: 🟧 Install pnpm
-
-      - name: 📦 Install dependencies
-        run: pnpm install
+          cache: true
 
       - name: 🎨 Check for non-RTL/non-a11y CSS classes
-        run: pnpm vp run lint:css
+        run: vp run lint:css
 
       - name: 🌐 Compare translations
-        run: pnpm vp run i18n:check
+        run: vp run i18n:check
 
       - name: 🌍 Update lunaria data
-        run: pnpm vp run build:lunaria
+        run: vp run build:lunaria
 
       - name: 🔠 Fix lint errors
-        run: pnpm vp run lint:fix
+        run: vp run lint:fix
 
       - uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27 # 635ffb0c9798bd160680f18fd73371e355b85f27

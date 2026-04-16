@@ -28,3 +28,15 @@ export function isKeyWithoutModifiers(event: KeyboardEvent, key: string): boolea
 }
 
 export const DATE_INPUT_MAX = '9999-12-31'
+
+/** Attributes to prevent password managers from recognizing an input as a password field. */
+export const noPasswordManager = {
+  /* ProtonPass, https://stackoverflow.com/a/51272839 */
+  ['data-protonpass-ignore']: 'true',
+  /* LastPass, https://stackoverflow.com/a/51272839 */
+  ['data-lpignore']: 'true',
+  /* 1Password, https://stackoverflow.com/a/51272839 */
+  ['data-1p-ignore']: 'true',
+  /* Bitwarden, https://stackoverflow.com/questions/41945535/html-disable-password-manager#comment139327111_51272839 */
+  ['data-bwignore']: 'true',
+} as const

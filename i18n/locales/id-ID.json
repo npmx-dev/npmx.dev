@@ -19,7 +19,8 @@
     "social": "sosial media",
     "chat": "obrolan",
     "builders_chat": "builders",
-    "keyboard_shortcuts": "pintasan papan ketik"
+    "keyboard_shortcuts": "pintasan papan ketik",
+    "brand": "merek"
   },
   "shortcuts": {
     "section": {
@@ -96,6 +97,7 @@
     },
     "draft_badge": "Draft",
     "draft_banner": "Ini adalah draf yang belum dipublikasikan. Kontennya mungkin belum lengkap atau mengandung ketidakakuratan",
+    "no_posts": "Belum ada postingan.",
     "atproto": {
       "view_on_bluesky": "Lihat di Bluesky",
       "reply_on_bluesky": "Balas di Bluesky",
@@ -109,7 +111,7 @@
       "reply_count": "{count} balasan | {count} balasan",
       "like_count": "{count} suka | {count} suka",
       "repost_count": "{count} repost | {count} repost",
-      "more_replies": "{count} balasan lainnya... | {count} balasan lainnya..."
+      "more_replies": "{count} balasan lagi... | {count} balasan lagi..."
     }
   },
   "settings": {
@@ -138,16 +140,34 @@
     "include_types_description": "Sertakan paket {'@'}types ke perintah instalasi untuk paket yang tidak memiliki types",
     "hide_platform_packages": "Sembunyikan paket spesifik-platform",
     "hide_platform_packages_description": "Sembunyikan paket biner spesifik platform seperti {'@'}esbuild/linux-x64 dari hasil",
+    "enable_graph_pulse_loop": "Aktifkan animasi pulse berulang pada grafik unduhan mingguan",
+    "enable_graph_pulse_loop_description": "Aktifkan animasi pulse berulang pada grafik unduhan mingguan. Animasi ini mungkin mengganggu bagi sebagian pengguna.",
     "theme": "Tema",
     "theme_light": "Terang",
     "theme_dark": "Gelap",
     "theme_system": "Sistem",
     "language": "Bahasa",
     "help_translate": "Bantu terjemahkan npmx",
-    "accent_colors": "Warna aksen",
+    "translation_status": "Periksa status terjemahan global",
+    "accent_colors": {
+      "label": "Warna aksen",
+      "sky": "Biru langit",
+      "coral": "Merah koral",
+      "amber": "Kuning jingga",
+      "emerald": "Hijau zamrud",
+      "violet": "Ungu",
+      "magenta": "Magenta"
+    },
     "clear_accent": "Hapus warna aksen",
     "translation_progress": "Progres terjemahan",
-    "background_themes": "Warna latar belakang",
+    "background_themes": {
+      "label": "Warna latar belakang",
+      "neutral": "Netral",
+      "stone": "Stone",
+      "zinc": "Zinc",
+      "slate": "Slate",
+      "black": "Hitam"
+    },
     "keyboard_shortcuts_enabled": "Aktifkan pintasan papan ketik",
     "keyboard_shortcuts_enabled_description": "Pintasan papan ketik dapat dinonaktifkan jika bertentangan dengan pintasan peramban atau sistem lainnya."
   },
@@ -205,7 +225,9 @@
       "radicle": "Lihat di Radicle",
       "sourcehut": "Lihat di SourceHut",
       "tangled": "Lihat di Tangled"
-    }
+    },
+    "collapse": "Ciutkan",
+    "expand": "Perluas"
   },
   "profile": {
     "display_name": "Nama tampilan",
@@ -284,7 +306,8 @@
         "refs": "{count} ref | {count} ref",
         "assets": "{count} aset | {count} aset"
       },
-      "view_source": "Lihat sumber"
+      "view_source": "Lihat sumber",
+      "skills_cli": "CLI keahlian"
     },
     "links": {
       "main": "utama",
@@ -295,15 +318,23 @@
       "code": "kode",
       "docs": "dokumentasi",
       "fund": "donasi",
-      "compare": "bandingkan"
+      "compare": "bandingkan",
+      "compare_this_package": "Bandingkan paket ini"
     },
     "likes": {
       "like": "Sukai paket ini",
       "unlike": "Batal sukai paket ini"
     },
     "docs": {
-      "not_available": "Dokumen tidak tersedia",
-      "not_available_detail": "Kami tidak dapat membuat dokumen untuk versi ini."
+      "contents": "Daftar Isi",
+      "default_not_available": "Dokumentasi tidak tersedia untuk versi ini.",
+      "not_available": "Dokumentasi tidak tersedia",
+      "not_available_detail": "Kami tidak dapat membuat dokumentasi untuk versi ini.",
+      "page_title": "Dokumentasi API - npmx",
+      "page_title_name": "Dokumentasi {name} - npmx",
+      "page_title_version": "Dokumentasi {name} - npmx",
+      "og_title": "{name} - Dokumentasi",
+      "view_package": "Lihat paket"
     },
     "get_started": {
       "title": "Memulai",
@@ -363,7 +394,9 @@
       "published": "Diterbitkan",
       "weekly_downloads": "Total unduhan mingguan",
       "keywords": "Kata kunci",
-      "license": "Lisensi"
+      "license": "Lisensi",
+      "select": "Pilih paket",
+      "select_maximum": "Maksimum {count} paket dapat dipilih"
     },
     "versions": {
       "title": "Versi",
@@ -378,6 +411,7 @@
       "all_covered": "Semua versi sudah tercakup oleh tag di atas",
       "deprecated_title": "{version} (usang)",
       "view_all": "Lihat {count} versi | Lihat semua {count} versi",
+      "view_all_versions": "Lihat semua versi",
       "distribution_title": "Grup Semver",
       "distribution_modal_title": "Versi",
       "distribution_range_date_same_year": "dari {from} hingga {to}, {endYear}",
@@ -385,9 +419,11 @@
       "grouping_major": "Mayor",
       "grouping_minor": "Minor",
       "grouping_versions_title": "Versi",
+      "grouping_versions_about": "Tentang pengelompokan versi",
       "grouping_versions_all": "Semua",
       "grouping_versions_only_recent": "Hanya baru-baru ini",
       "grouping_usage_title": "Penggunaan",
+      "grouping_usage_about": "Tentang pengelompokan penggunaan",
       "grouping_usage_all": "Semua",
       "grouping_usage_most_used": "Paling sering digunakan",
       "recent_versions_only_tooltip": "Tampilkan hanya versi yang diterbitkan dalam satu tahun terakhir.",
@@ -402,7 +438,10 @@
       "copy_alt": {
         "per_version_analysis": "Versi {version} diunduh {downloads} kali",
         "general_description": "Grafik batang yang menampilkan jumlah unduhan per versi untuk {versions_count} versi grup {semver_grouping_mode} dari paket {package_name}, {date_range_label} mulai dari versi {first_version} hingga {last_version}. Versi yang paling banyak diunduh adalah {max_downloaded_version} dengan {max_version_downloads} unduhan. {per_version_analysis}. {watermark}."
-      }
+      },
+      "page_title": "Riwayat Versi",
+      "current_tags": "Tag Saat Ini",
+      "no_match_filter": "Tidak ada versi yang cocok dengan {filter}"
     },
     "dependencies": {
       "title": "Dependensi ({count})",
@@ -413,7 +452,8 @@
       "outdated_major": "Tertinggal {count} versi major (terbaru: {latest}) | Tertinggal {count} versi major (terbaru: {latest})",
       "outdated_minor": "Tertinggal {count} versi minor (terbaru: {latest}) | Tertinggal {count} versi minor (terbaru: {latest})",
       "outdated_patch": "Pembaruan patch tersedia (terbaru: {latest})",
-      "has_replacement": "Ketergantungan ini telah menyarankan beberapa alternatif"
+      "has_replacement": "Ketergantungan ini telah menyarankan beberapa alternatif",
+      "vulnerabilities_count": "{count} kerentanan | {count} kerentanan"
     },
     "peer_dependencies": {
       "title": "Peer Dependencies ({count})",
@@ -437,9 +477,19 @@
       "cancel_add": "Batal menambah pemilik",
       "add_owner": "+ Tambah pemilik",
       "show_more": "(tampilkan {count} lagi)",
-      "show_less": "(tampilkan lebih sedikit)"
+      "show_less": "(tampilkan lebih sedikit)",
+      "maintainer_template": "{avatar} {char126}{name}"
     },
     "trends": {
+      "chart_assistive_text": {
+        "keyboard_navigation_horizontal": "Gunakan tombol panah kiri dan kanan untuk beralih melalui titik data.",
+        "keyboard_navigation_vertical": "Gunakan tombol panah atas dan bawah untuk beralih melalui titik data.",
+        "table_available": "Tabel data untuk grafik ini tersedia di bawah.",
+        "table_caption": "Tabel data grafik"
+      },
+      "chart_view_toggle": "Ganti tampilan",
+      "chart_view_combined": "Tampilan gabungan",
+      "chart_view_split": "Tampilan terpisah",
       "granularity": "Granularitas",
       "granularity_daily": "Harian",
       "granularity_weekly": "Mingguan",
@@ -498,7 +548,8 @@
     "downloads": {
       "title": "Unduhan Mingguan",
       "community_distribution": "Lihat sebaran penggunaan komunitas",
-      "subtitle": "Di semua versi"
+      "subtitle": "Di semua versi",
+      "sparkline_nav_hint": "Gunakan ← →"
     },
     "install_scripts": {
       "title": "Skrip Instalasi",
@@ -514,6 +565,7 @@
       "esm": "Mendukung ES Modules",
       "cjs": "Mendukung CommonJS",
       "no_esm": "Tidak mendukung ES Modules",
+      "wasm": "Mendukung WebAssembly",
       "types_label": "Types",
       "types_included": "Types sudah disertakan",
       "types_available": "Types tersedia via {package}",
@@ -587,6 +639,10 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
+    },
+    "download": {
+      "button": "Unduh",
+      "tarball": "Unduh Tarball sebagai .tar.gz"
     }
   },
   "connector": {
@@ -766,22 +822,20 @@
   },
   "code": {
     "files_label": "Berkas",
-    "no_files": "Tidak ada berkas di direktori ini",
-    "root": "root",
+    "no_files": "Tidak ada file di direktori ini",
     "lines": "{count} baris",
-    "toggle_tree": "Ganti pohon berkas",
-    "close_tree": "Tutup pohon berkas",
+    "toggle_tree": "Ganti file tree",
+    "close_tree": "Tutup file tree",
     "copy_link": "Salin tautan",
-    "raw": "Raw",
-    "view_raw": "Lihat berkas mentah",
+    "view_raw": "Lihat file mentah",
     "file_too_large": "Berkas terlalu besar untuk pratinjau",
     "file_size_warning": "{size} melebihi batas 500KB untuk penyorotan sintaksis",
-    "failed_to_load": "Gagal memuat berkas",
+    "failed_to_load": "Gagal memuat file",
     "unavailable_hint": "Berkas mungkin terlalu besar atau tidak tersedia",
     "version_required": "Versi diperlukan untuk menjelajahi kode",
     "go_to_package": "Buka paket",
-    "loading_tree": "Memuat pohon berkas...",
-    "failed_to_load_tree": "Gagal memuat berkas untuk versi paket ini",
+    "loading_tree": "Memuat file tree...",
+    "failed_to_load_tree": "Gagal memuat file untuk versi paket ini",
     "back_to_package": "Kembali ke paket",
     "table": {
       "name": "Nama",
@@ -791,7 +845,7 @@
       "preview": "pratinjau",
       "code": "kode"
     },
-    "file_path": "Jalur berkas",
+    "file_path": "Path file",
     "binary_file": "File biner",
     "binary_rendering_warning": "File ini adalah file biner dan tidak dapat ditampilkan sebagai teks."
   },
@@ -855,6 +909,8 @@
       "secure": "Tanpa peringatan",
       "insecure": "Dengan peringatan"
     },
+    "view_selected": "Lihat yang dipilih",
+    "clear_selected_label": "Hapus yang dipilih",
     "sort": {
       "label": "Urutkan paket",
       "toggle_direction": "Ganti arah urutan",
@@ -866,11 +922,7 @@
       "downloads_month": "Unduhan/bulan",
       "downloads_year": "Unduhan/tahun",
       "published": "Paling Akhir Diterbitkan",
-      "name": "Nama",
-      "quality": "Kualitas",
-      "popularity": "Popularitas",
-      "maintenance": "Pemeliharaan",
-      "score": "Skor"
+      "name": "Nama"
     },
     "columns": {
       "title": "Kolom",
@@ -884,11 +936,8 @@
       "published": "Paling Akhir Diterbitkan",
       "maintainers": "Pemelihara",
       "keywords": "Kata kunci",
-      "quality_score": "Skor kualitas",
-      "popularity_score": "Skor popularitas",
-      "maintenance_score": "Skor pemeliharaan",
-      "combined_score": "Skor gabungan",
-      "security": "Keamanan"
+      "security": "Keamanan",
+      "selection": "Pilih paket"
     },
     "view_mode": {
       "label": "Mode tampilan",
@@ -1035,7 +1084,8 @@
       "error": "Gagal memuat organisasi",
       "empty": "Organisasi tidak ditemukan",
       "view_all": "Lihat semua"
-    }
+    },
+    "pr": "Buka pull request GitHub #{prNumber}"
   },
   "compare": {
     "packages": {
@@ -1054,7 +1104,10 @@
       "empty_title": "Pilih paket untuk dibandingkan",
       "empty_description": "Cari dan tambahkan setidaknya 2 paket di atas untuk melihat perbandingan metrik mereka secara berdampingan.",
       "table_view": "Tabel",
-      "charts_view": "Grafik"
+      "charts_view": "Grafik",
+      "no_chartable_data": "Tidak ada data yang dapat digrafikkan untuk aspek yang dipilih.",
+      "bar_chart_nav_hint": "Gunakan ↑ ↓",
+      "line_chart_nav_hint": "Gunakan ← →"
     },
     "selector": {
       "search_label": "Cari paket",
@@ -1075,15 +1128,16 @@
       "add_column": "Menambahkan kolom tanpa ketergantungan ke perbandingan"
     },
     "facets": {
-      "group_label": "Aspek perbandingan",
       "all": "semua",
       "none": "tidak ada",
+      "select_all_category_facets": "Pilih semua aspek {category}",
+      "deselect_all_category_facets": "Batalkan pilihan semua aspek {category}",
+      "selected_all_category_facets": "Terpilih semua aspek {category}",
+      "deselected_all_category_facets": "Terbatalkan semua aspek {category}",
       "coming_soon": "Segera hadir",
       "select_all": "Pilih semua aspek",
       "deselect_all": "Batalkan semua aspek",
-      "select_category": "Pilih semua aspek {category}",
-      "deselect_category": "Batalkan semua aspek {category}",
-      "binary_only_tooltip": "Paket ini hanya mengekspos berkas biner dan bukan eksport",
+      "binary_only_tooltip": "Paket ini hanya mengekspos biner dan bukan eksport",
       "categories": {
         "performance": "Performa",
         "health": "Kesehatan",
@@ -1160,12 +1214,20 @@
       }
     },
     "file_changes": "Perubahan Berkas",
-    "files_count": "{count} berkas",
+    "files_count": "{count} file",
     "lines_hidden": "{count} baris disembunyikan",
     "file_too_large": "File terlalu besar untuk dibandingkan",
     "file_size_warning": "{size} melebihi batas 250KB untuk perbandingan",
-    "compare_versions": "perbarui",
+    "compare_versions": "diff",
     "compare_versions_title": "Bandingkan dengan versi terbaru",
+    "comparing_versions_label": "Membandingkan versi...",
+    "version_back_to_package": "Kembali ke paket",
+    "version_error_message": "Gagal membandingkan versi.",
+    "version_invalid_url_format": {
+      "hint": "URL perbandingan tidak valid. Gunakan format: {0}",
+      "from_version": "dari",
+      "to_version": "ke"
+    },
     "version_selector_title": "Bandingkan dengan versi",
     "summary": "Ringkasan",
     "deps_count": "{count} ketergantungan",
@@ -1180,19 +1242,30 @@
       "removed": "Dihapus ({count})",
       "modified": "Dimodifikasi ({count})"
     },
-    "search_files_placeholder": "Cari berkas...",
-    "no_files_all": "Tidak ada berkas",
-    "no_files_search": "Tidak ada berkas yang sesuai dengan \"{query}\"",
-    "no_files_filtered": "Tidak ada berkas {filter}",
+    "search_files_placeholder": "Cari file...",
+    "no_files_all": "Tidak ada file",
+    "no_files_search": "Tidak ada file yang sesuai dengan \"{query}\"",
+    "no_files_filtered": "Tidak ada file {filter}",
     "filter": {
       "added": "ditambah",
       "removed": "dihapus",
       "modified": "dimodifikasi"
     },
     "files_button": "Berkas",
-    "select_file_prompt": "Pilih berkas dari bilah sisi untuk melihat perbedaan",
-    "close_files_panel": "Tutup panel berkas",
-    "filter_files_label": "Filter berkas menurut jenis tindakan"
+    "select_file_prompt": "Pilih file dari bilah sisi untuk melihat perbedaan",
+    "close_files_panel": "Tutup panel file",
+    "filter_files_label": "Filter file menurut jenis tindakan",
+    "change_ratio": "Ubah rasio",
+    "char_edits": "Perubahan karakter",
+    "diff_distance": "Jarak perbedaan",
+    "loading_diff": "Memuat perbedaan...",
+    "loading_diff_error": "Gagal memuat perbedaan",
+    "merge_modified_lines": "Gabungkan baris yang dimodifikasi",
+    "no_content_changes": "Tidak ada perubahan konten yang terdeteksi",
+    "options": "Pengaturan",
+    "view_file": "Lihat file",
+    "view_in_code_browser": "Lihat di code browser",
+    "word_wrap": "Bungkus kata"
   },
   "pds": {
     "title": "npmx.social",
@@ -1330,6 +1403,119 @@
       "title": "Timbal Balik Peringatan Laporan Fitur Interaktif Kami.",
       "p1": "Jika kamu menemukan kendala terkait fitur aksesibilitas bagi penyandang disabilitas atau masalah tampilan di platform {app}, silakan laporkan masalahnya di {link}. Setiap laporan yang masuk akan kami tindak lanjuti dengan prioritas tinggi agar layanan kita lebih baik bagi seluruh pengguna.",
       "link": "Repositori Pengembangan Isu Github"
+    }
+  },
+  "translation_status": {
+    "title": "status terjemahan",
+    "generated_at": "Dihasilkan pada: {date}",
+    "welcome": "Jika Anda tertarik membantu menerjemahkan {npmx} ke salah satu bahasa yang tercantum di bawah ini, Anda berada di tempat yang tepat! Halaman ini diperbarui secara otomatis dan selalu menampilkan semua konten yang saat ini membutuhkan bantuan Anda.",
+    "p1": "Kami menggunakan {lang} sebagai bahasa default, dengan total {count} bahasa. Jika Anda ingin membantu menambahkan terjemahan, temukan bahasa di {bylang} dan perluas detailnya.",
+    "p1_lang": "Bahasa Inggris Amerika (en-US)",
+    "p1_count": "0 pesan | 1 pesan | {count} pesan",
+    "p2": "Sebelum memulai, silakan baca {guide} kami untuk mempelajari proses penerjemahan dan bagaimana Anda dapat berkontribusi.",
+    "guide": "panduan lokalisasi (i18n)",
+    "by_locale": "Progres terjemahan per locale",
+    "by_file": "Progres terjemahan per file",
+    "complete_text": "Terjemahan ini sudah lengkap, pekerjaan yang luar biasa!",
+    "missing_text": "tidak ditemukan",
+    "missing_keys": "Tidak ada terjemahan yang hilang | Terjemahan hilang | Terjemahan hilang",
+    "progress_label": "Status progres untuk {locale}",
+    "table": {
+      "file": "File",
+      "status": "Status",
+      "error": "Terjadi kesalahan saat memuat daftar file.",
+      "empty": "Tidak ada file yang ditemukan",
+      "file_link": "Ubah {file} ({lang}) di GitHub"
+    }
+  },
+  "vacations": {
+    "title": "sedang liburan",
+    "meta_description": "Tim npmx sedang mengisi energi. Discord dibuka kembali setelah seminggu.",
+    "heading": "mengisi energi",
+    "subtitle": "kami membangun npmx dengan ritme yang sampai membuat beberapa dari kami kehilangan tidur. kami tidak ingin itu menjadi kebiasaan! jadi, kami mengambil cuti seminggu. bersama-sama.",
+    "illustration_alt": "satu baris ikon yang nyaman",
+    "poke_log": "sentuh api unggun",
+    "what": {
+      "title": "apa yang terjadi",
+      "p1": "discord ditutup dari {dates}",
+      "dates": "14 - 21 Februari",
+      "p2": "semua tautan undangan hilang dan saluran dikunci – kecuali {garden}, yang tetap terbuka bagi mereka yang ingin terus nongkrong.",
+      "garden": "#garden"
+    },
+    "meantime": {
+      "title": "sementara itu",
+      "p1": "{site} dan {repo} tetap terbuka – orang-orang masih menelusuri, membuat beberapa isu, membuka beberapa PR, tapi sebagian besar menghabiskan waktu di dekat perapian yang nyaman.",
+      "repo_link": "repositori"
+    },
+    "return": {
+      "title": "kami kembali!",
+      "p1": "kami kembali dengan energi penuh dan siap untuk dorongan terakhir menuju 3 Maret. {social} untuk pembaruan.",
+      "social_link": "ikuti kami di Bluesky"
+    },
+    "stats": {
+      "contributors": "Kontributor",
+      "commits": "Commit",
+      "pr": "PR yang tergabung",
+      "subtitle": {
+        "some": "beberapa",
+        "all": "seluruh"
+      }
+    }
+  },
+  "action_bar": {
+    "title": "bar aksi",
+    "selection": "0 dipilih | 1 dipilih | {count} dipilih",
+    "shortcut": "Tekan \"{key}\" untuk memfokuskan aksi",
+    "button_close_aria_label": "Tutup bar aksi"
+  },
+  "logo_menu": {
+    "copy_svg": "Salin logo sebagai SVG",
+    "copied": "Tersalin!",
+    "browse_brand": "Jelajahi kit merek"
+  },
+  "brand": {
+    "title": "Merek",
+    "heading": "merek",
+    "meta_description": "Panduan merek npmx, termasuk logo, warna, dan tipografi untuk digunakan dalam pers dan media.",
+    "intro": "Sumber daya dan panduan untuk menggunakan merek npmx dalam proyek, artikel, dan media Anda.",
+    "logos": {
+      "title": "logo",
+      "description": "Unduh logo npmx dalam format SVG dan PNG. Gunakan varian yang sesuai untuk latar belakang Anda.",
+      "wordmark": "WORDMARK LENGKAP",
+      "wordmark_alt": "Logo wordmark lengkap npmx dengan garis biru di latar gelap",
+      "wordmark_light_alt": "Logo wordmark lengkap npmx dengan garis aksen di latar terang",
+      "mark": "LOGO MARK",
+      "mark_alt": "Logo mark npmx dengan titik dan garis di latar gelap",
+      "mark_light_alt": "Logo mark npmx dengan titik dan garis di latar terang",
+      "on_dark": "di latar gelap",
+      "on_light": "di latar terang",
+      "download_svg": "SVG",
+      "download_png": "PNG",
+      "download_svg_aria": "Unduh {name} sebagai SVG",
+      "download_png_aria": "Unduh {name} sebagai PNG"
+    },
+    "customize": {
+      "title": "Sesuaikan logo Anda",
+      "description": "Pratinjau logo npmx dengan warna aksen dan latar belakang pilihan Anda. Pratinjau mencerminkan pengaturan saat ini — pilih warna, ubah latar, dan unduh.",
+      "accent_label": "aksen",
+      "bg_label": "latar belakang",
+      "download_svg_aria": "Unduh logo yang disesuaikan sebagai SVG",
+      "download_png_aria": "Unduh logo yang disesuaikan sebagai PNG"
+    },
+    "typography": {
+      "title": "Tipografi",
+      "description": "npmx menggunakan keluarga font Geist dari Vercel untuk teks antarmuka maupun kode.",
+      "sans": "Geist Sans",
+      "sans_desc": "Digunakan untuk teks tubuh dan elemen UI.",
+      "mono": "Geist Mono",
+      "mono_desc": "Digunakan untuk kode, judul, dan konten teknis.",
+      "pangram": "The quick brown fox jumps over the lazy dog",
+      "numbers": "0123456789"
+    },
+    "guidelines": {
+      "title": "hanya catatan",
+      "message": "Aksesibilitas penting bagi kami, dan kami ingin Anda ikut mendukung visi ini. Saat menggunakan media yang disebutkan, pastikan kontras dengan latar cukup, dan jangan gunakan ukuran kurang dari 24px. Jika Anda membutuhkan sumber daya lain atau informasi tambahan tentang proyek ini, silakan hubungi kami di {link}.",
+      "discord_link_text": "chat.npmx.dev"
     }
   }
 }

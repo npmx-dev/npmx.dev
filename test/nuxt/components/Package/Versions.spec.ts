@@ -1,0 +1,1374 @@
+import { describe, expect, it, vi, beforeEach } from 'vitest'
+import { mountSuspended } from '@nuxt/test-utils/runtime'
+import type { DOMWrapper } from '@vue/test-utils'
+import PackageVersions from '~/components/Package/Versions.vue'
+import { packageVersionsRoute } from '~/utils/router'
+
+// Mock the fetchAllPackageVersions function
+const mockFetchAllPackageVersions = vi.fn()
+vi.mock('~/utils/npm/api', () => ({
+  fetchAllPackageVersions: (...args: unknown[]) => mockFetchAllPackageVersions(...args),
+}))
+
+/**
+ * Helper to create a minimal SlimVersion for testing
+ */
+function createVersion(
+  version: string,
+  options: {
+    deprecated?: string
+    hasProvenance?: boolean
+  } = {},
+): SlimVersion {
+  return {
+    version,
+    deprecated: options.deprecated,
+    tags: undefined,
+    ...(options.hasProvenance ? { hasProvenance: true } : {}),
+  } as SlimVersion
+}
+
+/**
+ * Predicate for filtering anchor elements to version links only,
+ * excluding anchor links, external links, and action buttons.
+ */
+function isVersionLink(a: DOMWrapper<Element>): boolean {
+  return (
+    !a.attributes('href')?.startsWith('#') &&
+    a.attributes('target') !== '_blank' &&
+    !a.attributes('data-testid')?.includes('view-all-versions')
+  )
+}
+
+function getRouter(
+  component: Awaited<ReturnType<typeof mountSuspended>>,
+): Pick<typeof component.vm.$router, 'resolve'> {
+  return component.vm.$router
+}
+
+describe('PackageVersions', () => {
+  beforeEach(() => {
+    mockFetchAllPackageVersions.mockReset()
+  })
+
+  describe('basic rendering', () => {
+    it('renders the Versions section', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      expect(component.find('#versions').exists()).toBe(true)
+    })
+
+    it('does not render when there are no dist-tags', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {},
+          distTags: {},
+          time: {},
+        },
+      })
+
+      expect(component.find('section').exists()).toBe(false)
+    })
+
+    it('renders version links with correct routes', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '2.0.0': createVersion('2.0.0'),
+          },
+          distTags: { latest: '2.0.0' },
+          time: { '2.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      // Find version links (exclude anchor links, external links, and action buttons)
+      const versionLinks = component.findAll('a').filter(isVersionLink)
+      expect(versionLinks.length).toBeGreaterThan(0)
+      expect(versionLinks[0]?.text()).toBe('2.0.0')
+    })
+
+    it('renders scoped package version links correctly', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: '@scope/test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      // Find version links (exclude anchor links, external links, and action buttons)
+      const versionLinks = component.findAll('a').filter(isVersionLink)
+      expect(versionLinks.length).toBeGreaterThan(0)
+      expect(versionLinks[0]?.text()).toBe('1.0.0')
+    })
+
+    it('view-all-versions link uses packageVersionsRoute for unscoped packages', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      const router = getRouter(component)
+      const expectedHref = router.resolve(packageVersionsRoute('test-package')).href
+      const viewAll = component.find('[data-testid="view-all-versions-link"]')
+      expect(viewAll.attributes('href')).toBe(expectedHref)
+    })
+
+    it('view-all-versions link uses packageVersionsRoute for scoped packages', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: '@scope/test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      const router = getRouter(component)
+      const expectedHref = router.resolve(packageVersionsRoute('@scope/test-package')).href
+      const viewAll = component.find('[data-testid="view-all-versions-link"]')
+      expect(viewAll.attributes('href')).toBe(expectedHref)
+    })
+
+    it('highlights the current version row when selectedVersion prop matches', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '2.0.0': createVersion('2.0.0'),
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '2.0.0', stable: '1.0.0' },
+          time: {
+            '2.0.0': '2024-01-15T12:00:00.000Z',
+            '1.0.0': '2024-01-01T12:00:00.000Z',
+          },
+          selectedVersion: '1.0.0',
+        },
+      })
+
+      // Find the version row divs that are direct children of the tag row containers
+      const versionRows = component.findAll('[class*="group/version-row"]')
+      const highlightedRows = versionRows.filter(row => row.classes().includes('bg-bg-subtle'))
+      expect(highlightedRows.length).toBe(1)
+      expect(highlightedRows[0]!.text()).toContain('1.0.0')
+    })
+
+    it('uses accent color for latest tag', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '2.0.0': createVersion('2.0.0'),
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '2.0.0', stable: '1.0.0' },
+          time: {
+            '2.0.0': '2024-01-15T12:00:00.000Z',
+            '1.0.0': '2024-01-01T12:00:00.000Z',
+          },
+          selectedVersion: '1.0.0',
+        },
+      })
+
+      const latestTag = component.findAll('span').find(span => span.text() === 'latest')
+      expect(latestTag?.classes()).toContain('text-accent')
+    })
+  })
+
+  describe('dist-tag display', () => {
+    it('displays dist-tag labels below version', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      expect(component.text()).toContain('latest')
+    })
+
+    it('displays multiple tags for same version', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: {
+            latest: '1.0.0',
+            stable: '1.0.0',
+          },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      const text = component.text()
+      expect(text).toContain('latest')
+      expect(text).toContain('stable')
+    })
+
+    it('shows "latest" tag first when multiple tags exist', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: {
+            alpha: '1.0.0',
+            latest: '1.0.0',
+            beta: '1.0.0',
+          },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      // Find all tag spans
+      const tagSpans = component.findAll('span').filter(span => {
+        const text = span.text()
+        return text === 'latest' || text === 'alpha' || text === 'beta'
+      })
+
+      expect(tagSpans.length).toBeGreaterThanOrEqual(3)
+      // latest should be first
+      expect(tagSpans[0]?.text()).toBe('latest')
+    })
+
+    it('sorts tag rows by version descending', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+            '2.0.0': createVersion('2.0.0'),
+            '1.5.0': createVersion('1.5.0'),
+          },
+          distTags: {
+            old: '1.0.0',
+            latest: '2.0.0',
+            stable: '1.5.0',
+          },
+          time: {
+            '1.0.0': '2024-01-01T00:00:00.000Z',
+            '1.5.0': '2024-01-10T00:00:00.000Z',
+            '2.0.0': '2024-01-15T00:00:00.000Z',
+          },
+        },
+      })
+
+      // Find version links (exclude anchor links that start with # and external links)
+      const versionLinks = component.findAll('a').filter(isVersionLink)
+      const versions = versionLinks.map(l => l.text())
+      // Should be sorted by version descending
+      expect(versions[0]).toBe('2.0.0')
+    })
+  })
+
+  describe('deprecated versions', () => {
+    it('applies deprecated styling to deprecated versions', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0', { deprecated: 'Use 2.0.0 instead' }),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      // Find version links (exclude anchor links that start with # and external links)
+      const versionLinks = component.findAll('a').filter(isVersionLink)
+      expect(versionLinks.length).toBeGreaterThan(0)
+      expect(versionLinks[0]?.classes()).toContain('text-red-800')
+    })
+
+    it('shows deprecated version in title attribute', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0', { deprecated: 'Use 2.0.0 instead' }),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      // Find version links (exclude anchor links that start with # and external links)
+      const versionLinks = component.findAll('a').filter(isVersionLink)
+      expect(versionLinks.length).toBeGreaterThan(0)
+      expect(versionLinks[0]?.attributes('title')).toContain('deprecated')
+    })
+
+    it('filters deprecated tags from visible list when package is not deprecated', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0', { deprecated: 'Old version' }),
+            '2.0.0': createVersion('2.0.0'),
+          },
+          distTags: {
+            old: '1.0.0',
+            latest: '2.0.0',
+          },
+          time: {
+            '1.0.0': '2024-01-01T00:00:00.000Z',
+            '2.0.0': '2024-01-15T00:00:00.000Z',
+          },
+        },
+      })
+
+      // The deprecated version should not appear in visible tags (only in "Other versions")
+      const visibleLinks = component.findAll('a').filter(l => l.text() === '1.0.0')
+      expect(visibleLinks.length).toBe(0)
+    })
+  })
+
+  describe('provenance badge', () => {
+    it('shows provenance badge for versions with attestations', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0', { hasProvenance: true }),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      // ProvenanceBadge component should be rendered
+      const provenanceBadge = component.findComponent({ name: 'ProvenanceBadge' })
+      expect(provenanceBadge.exists()).toBe(true)
+    })
+
+    it('does not show provenance badge for versions without attestations', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0', { hasProvenance: false }),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      const provenanceBadge = component.findComponent({ name: 'ProvenanceBadge' })
+      expect(provenanceBadge.exists()).toBe(false)
+    })
+  })
+
+  describe('datetime display', () => {
+    it('shows DateTime component for versions with time', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      const dateTime = component.findComponent({ name: 'DateTime' })
+      expect(dateTime.exists()).toBe(true)
+    })
+  })
+
+  describe('expand/collapse tag rows', () => {
+    it('shows expand button for tag rows', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      const expandButton = component.find('[data-testid="tag-expand-button"]')
+      expect(expandButton.exists()).toBe(true)
+      expect(expandButton.attributes('aria-expanded')).toBe('false')
+    })
+
+    it('has correct aria-label on expand button', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      const expandButton = component.find('[data-testid="tag-expand-button"]')
+      expect(expandButton.attributes('aria-label')).toBe('Expand latest')
+    })
+
+    it('loads versions and toggles expanded state on click', async () => {
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '1.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
+        { version: '0.9.0', time: '2024-01-10T12:00:00.000Z', hasProvenance: false },
+      ])
+
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      const expandButton = component.find('[data-testid="tag-expand-button"]')
+      await expandButton.trigger('click')
+
+      // Wait for async operation
+      await vi.waitFor(() => {
+        expect(mockFetchAllPackageVersions).toHaveBeenCalledWith('test-package')
+      })
+    })
+
+    it('collapses when clicking expanded row', async () => {
+      // Return multiple versions so the expand button stays visible after loading
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '1.2.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
+        { version: '1.1.0', time: '2024-01-12T12:00:00.000Z', hasProvenance: false },
+        { version: '1.0.0', time: '2024-01-10T12:00:00.000Z', hasProvenance: false },
+      ])
+
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.2.0': createVersion('1.2.0'),
+          },
+          distTags: { latest: '1.2.0' },
+          time: { '1.2.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      // Get initial expand button
+      const expandButton = component.find('[data-testid="tag-expand-button"]')
+      expect(expandButton.exists()).toBe(true)
+
+      // Expand
+      await expandButton.trigger('click')
+
+      // Wait for versions to load and expansion to happen
+      await vi.waitFor(() => {
+        expect(mockFetchAllPackageVersions).toHaveBeenCalled()
+      })
+
+      // Wait for the component to update after loading
+      await vi.waitFor(
+        () => {
+          const btn = component.find('[data-testid="tag-expand-button"][aria-expanded="true"]')
+          expect(btn.exists()).toBe(true)
+        },
+        { timeout: 2000 },
+      )
+
+      // Now collapse by clicking again
+      const expandedButton = component.find(
+        '[data-testid="tag-expand-button"][aria-expanded="true"]',
+      )
+      await expandedButton.trigger('click')
+
+      await vi.waitFor(
+        () => {
+          const btn = component.find('[data-testid="tag-expand-button"][aria-expanded="false"]')
+          expect(btn.exists()).toBe(true)
+        },
+        { timeout: 2000 },
+      )
+    })
+  })
+
+  describe('other versions section', () => {
+    it('renders "Other versions" button', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      expect(component.text()).toContain('Other versions')
+    })
+
+    it('shows count of hidden tagged versions', async () => {
+      // Create more than MAX_VISIBLE_TAGS (10) dist-tags
+      const versions: Record<string, SlimVersion> = {}
+      const distTags: Record<string, string> = {}
+      const time: Record<string, string> = {}
+
+      for (let i = 0; i < 12; i++) {
+        const version = `1.${i}.0`
+        versions[version] = createVersion(version)
+        distTags[`tag-${i}`] = version
+        time[version] = `2024-01-${String(i + 1).padStart(2, '0')}T12:00:00.000Z`
+      }
+
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions,
+          distTags,
+          time,
+        },
+      })
+
+      // Should show "(2 more tagged)" for the overflow
+      expect(component.text()).toContain('more tagged')
+    })
+
+    it('expands other versions section on click', async () => {
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '1.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
+        { version: '0.5.0', time: '2024-01-01T12:00:00.000Z', hasProvenance: false },
+      ])
+
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      // Find the "Other versions" button
+      const otherVersionsButton = component
+        .findAll('button')
+        .find(btn => btn.text().includes('Other versions'))
+
+      expect(otherVersionsButton?.exists()).toBe(true)
+      await otherVersionsButton!.trigger('click')
+
+      // Should call fetchAllPackageVersions
+      await vi.waitFor(() => {
+        expect(mockFetchAllPackageVersions).toHaveBeenCalledWith('test-package')
+      })
+    })
+
+    it('collapses other versions section when clicking again', async () => {
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '1.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
+      ])
+
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      const otherVersionsButton = component
+        .findAll('button')
+        .find(btn => btn.text().includes('Other versions'))
+
+      // Expand
+      await otherVersionsButton!.trigger('click')
+      await vi.waitFor(() => {
+        expect(otherVersionsButton!.attributes('aria-expanded')).toBe('true')
+      })
+
+      // Collapse
+      await otherVersionsButton!.trigger('click')
+      await vi.waitFor(() => {
+        expect(otherVersionsButton!.attributes('aria-expanded')).toBe('false')
+      })
+    })
+  })
+
+  describe('MAX_VISIBLE_TAGS limit', () => {
+    it('limits visible tag rows to 10', async () => {
+      // Create 15 dist-tags
+      const versions: Record<string, SlimVersion> = {}
+      const distTags: Record<string, string> = {}
+      const time: Record<string, string> = {}
+
+      for (let i = 0; i < 15; i++) {
+        const version = `${i + 1}.0.0`
+        versions[version] = createVersion(version)
+        distTags[`tag-${i}`] = version
+        time[version] = `2024-01-${String(i + 1).padStart(2, '0')}T12:00:00.000Z`
+      }
+
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions,
+          distTags,
+          time,
+        },
+      })
+
+      // Count visible version links (excluding anchor links that start with # and external links)
+      const visibleLinks = component.findAll('a').filter(isVersionLink)
+      // Should have max 10 visible links in the main section
+      expect(visibleLinks.length).toBeLessThanOrEqual(10)
+    })
+  })
+
+  describe('major version groups', () => {
+    it('groups unclaimed versions by major version in other versions', async () => {
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '2.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
+        { version: '1.1.0', time: '2024-01-10T12:00:00.000Z', hasProvenance: false },
+        { version: '1.0.0', time: '2024-01-05T12:00:00.000Z', hasProvenance: false },
+        { version: '0.9.0', time: '2024-01-01T12:00:00.000Z', hasProvenance: false },
+      ])
+
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '2.0.0': createVersion('2.0.0'),
+          },
+          distTags: { latest: '2.0.0' },
+          time: { '2.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      // Expand "Other versions"
+      const otherVersionsButton = component
+        .findAll('button')
+        .find(btn => btn.text().includes('Other versions'))
+
+      await otherVersionsButton!.trigger('click')
+
+      await vi.waitFor(() => {
+        // Major groups should be created for unclaimed versions
+        expect(mockFetchAllPackageVersions).toHaveBeenCalled()
+      })
+    })
+
+    it('allows expanding major version groups', async () => {
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '2.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
+        { version: '1.1.0', time: '2024-01-10T12:00:00.000Z', hasProvenance: false },
+        { version: '1.0.0', time: '2024-01-05T12:00:00.000Z', hasProvenance: false },
+      ])
+
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '2.0.0': createVersion('2.0.0'),
+          },
+          distTags: { latest: '2.0.0' },
+          time: { '2.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      // Expand "Other versions"
+      const otherVersionsButton = component
+        .findAll('button')
+        .find(btn => btn.text().includes('Other versions'))
+
+      await otherVersionsButton!.trigger('click')
+
+      // Wait for data to load and verify versions are shown
+      await vi.waitFor(() => {
+        const text = component.text()
+        expect(text.includes('1.1.0') || component.findAll('button').length > 2).toBe(true)
+      })
+    })
+
+    it('shows DateTime for major group versions', async () => {
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '2.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
+        { version: '1.1.0', time: '2024-01-10T12:00:00.000Z', hasProvenance: false },
+      ])
+
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '2.0.0': createVersion('2.0.0'),
+          },
+          distTags: { latest: '2.0.0' },
+          time: { '2.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      // Expand "Other versions"
+      const otherVersionsButton = component
+        .findAll('button')
+        .find(btn => btn.text().includes('Other versions'))
+
+      await otherVersionsButton!.trigger('click')
+
+      await vi.waitFor(() => {
+        // Should have DateTime components for both the main version and other versions
+        const dateTimeComponents = component.findAllComponents({ name: 'DateTime' })
+        expect(dateTimeComponents.length).toBeGreaterThan(1)
+      })
+    })
+
+    it('shows ProvenanceBadge for major group versions with provenance', async () => {
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '2.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: true },
+        { version: '1.1.0', time: '2024-01-10T12:00:00.000Z', hasProvenance: true },
+      ])
+
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '2.0.0': createVersion('2.0.0', { hasProvenance: true }),
+          },
+          distTags: { latest: '2.0.0' },
+          time: { '2.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      // Expand "Other versions"
+      const otherVersionsButton = component
+        .findAll('button')
+        .find(btn => btn.text().includes('Other versions'))
+
+      await otherVersionsButton!.trigger('click')
+
+      await vi.waitFor(() => {
+        // Should have ProvenanceBadge components for versions with provenance
+        const provenanceBadges = component.findAllComponents({ name: 'ProvenanceBadge' })
+        expect(provenanceBadges.length).toBeGreaterThan(1)
+      })
+    })
+
+    it('renders major group header as clickable link', async () => {
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '2.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
+        { version: '1.1.0', time: '2024-01-10T12:00:00.000Z', hasProvenance: false },
+        { version: '1.0.0', time: '2024-01-05T12:00:00.000Z', hasProvenance: false },
+      ])
+
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '2.0.0': createVersion('2.0.0'),
+          },
+          distTags: { latest: '2.0.0' },
+          time: { '2.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      // Expand "Other versions"
+      const otherVersionsButton = component
+        .findAll('button')
+        .find(btn => btn.text().includes('Other versions'))
+
+      await otherVersionsButton!.trigger('click')
+
+      await vi.waitFor(() => {
+        // Find the major group header - should be a link (NuxtLink renders as <a>)
+        const links = component.findAll('a')
+        const majorGroupLink = links.find(l => l.text() === '1.1.0')
+        expect(majorGroupLink?.exists()).toBe(true)
+      })
+    })
+
+    it('shows DateTime and ProvenanceBadge for single version in major group', async () => {
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '2.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
+        { version: '1.0.0', time: '2024-01-05T12:00:00.000Z', hasProvenance: true },
+      ])
+
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '2.0.0': createVersion('2.0.0'),
+          },
+          distTags: { latest: '2.0.0' },
+          time: { '2.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      // Expand "Other versions"
+      const otherVersionsButton = component
+        .findAll('button')
+        .find(btn => btn.text().includes('Other versions'))
+
+      await otherVersionsButton!.trigger('click')
+
+      await vi.waitFor(() => {
+        // Single version group (1.0.0) should still have DateTime
+        const dateTimeComponents = component.findAllComponents({ name: 'DateTime' })
+        expect(dateTimeComponents.length).toBeGreaterThan(1)
+
+        // And ProvenanceBadge for the version with provenance
+        const provenanceBadges = component.findAllComponents({ name: 'ProvenanceBadge' })
+        expect(provenanceBadges.length).toBeGreaterThan(0)
+      })
+    })
+  })
+
+  describe('loading states', () => {
+    it('shows loading spinner when fetching versions', async () => {
+      // Create a promise that won't resolve immediately
+      const { promise, resolve } = Promise.withResolvers<unknown[]>()
+      mockFetchAllPackageVersions.mockReturnValue(promise)
+
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      // Click expand
+      const expandButton = component.find('[data-testid="tag-expand-button"]')
+      await expandButton.trigger('click')
+
+      // Should show loading spinner (animate-spin class)
+      await vi.waitFor(() => {
+        expect(component.find('[data-testid="loading-spinner"]').exists()).toBe(true)
+      })
+
+      // Resolve the promise to clean up
+      resolve([])
+    })
+
+    it('shows loading spinner for other versions when fetching', async () => {
+      const { promise: loadingPromise, resolve: resolvePromise } =
+        Promise.withResolvers<unknown[]>()
+      mockFetchAllPackageVersions.mockReturnValue(loadingPromise)
+
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      // Click "Other versions"
+      const otherVersionsButton = component
+        .findAll('button')
+        .find(btn => btn.text().includes('Other versions'))
+
+      await otherVersionsButton!.trigger('click')
+
+      // Should show loading spinner
+      await vi.waitFor(() => {
+        expect(component.find('[data-testid="loading-spinner"]').exists()).toBe(true)
+      })
+
+      // Resolve the promise to clean up
+      resolvePromise([])
+    })
+  })
+
+  describe('accessibility', () => {
+    it('expand buttons have aria-expanded attribute', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      const expandButtons = component.findAll('button[aria-expanded]')
+      expect(expandButtons.length).toBeGreaterThan(0)
+      for (const button of expandButtons) {
+        expect(['true', 'false']).toContain(button.attributes('aria-expanded'))
+      }
+    })
+
+    it('expand buttons have aria-label attribute', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      const expandButton = component.find('button[aria-label]')
+      expect(expandButton.exists()).toBe(true)
+      expect(expandButton.attributes('aria-label')).toMatch(/Expand|Collapse/)
+    })
+
+    it('other versions button has aria-label', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      const otherVersionsButton = component
+        .findAll('button')
+        .find(btn => btn.text().includes('Other versions'))
+
+      expect(otherVersionsButton?.attributes('aria-label')).toMatch(/Expand other versions/)
+    })
+
+    it('expand buttons have visible focus states', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      const expandButton = component.find('button[aria-expanded]')
+      expect(expandButton.classes().some(c => c.includes('focus-visible'))).toBe(true)
+    })
+
+    it('icons have aria-hidden attribute', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      // Find chevron icons inside buttons
+      const chevronIcons = component.findAll('button span.i-lucide\\:chevron-right')
+      expect(chevronIcons.length).toBeGreaterThan(0)
+      for (const icon of chevronIcons) {
+        expect(icon.attributes('aria-hidden')).toBe('true')
+      }
+    })
+  })
+
+  describe('semver range filter', () => {
+    const multiVersionProps = {
+      packageName: 'test-package',
+      versions: {
+        '3.0.0': createVersion('3.0.0'),
+        '2.1.0': createVersion('2.1.0'),
+        '2.0.0': createVersion('2.0.0'),
+        '1.0.0': createVersion('1.0.0'),
+      },
+      distTags: {
+        latest: '3.0.0',
+        stable: '2.1.0',
+        legacy: '1.0.0',
+      },
+      time: {
+        '3.0.0': '2024-04-01T00:00:00.000Z',
+        '2.1.0': '2024-03-01T00:00:00.000Z',
+        '2.0.0': '2024-02-01T00:00:00.000Z',
+        '1.0.0': '2024-01-01T00:00:00.000Z',
+      },
+    }
+
+    it('renders the filter input', async () => {
+      const component = await mountSuspended(PackageVersions, { props: multiVersionProps })
+
+      const input = component.find('input[type="text"]')
+      expect(input.exists()).toBe(true)
+      expect(input.attributes('placeholder')).toContain('semver')
+    })
+
+    it('filters visible tag rows by semver range', async () => {
+      const component = await mountSuspended(PackageVersions, { props: multiVersionProps })
+
+      const input = component.find('input[type="text"]')
+      await input.setValue('^2.0.0')
+
+      // 2.1.0 matches ^2.0.0, so the "stable" tag row should be visible
+      const text = component.text()
+      expect(text).toContain('2.1.0')
+      // 3.0.0 does NOT match ^2.0.0
+      // Find version links (exclude anchor and external links)
+      const versionLinks = component.findAll('a').filter(isVersionLink)
+      const versions = versionLinks.map(l => l.text())
+      expect(versions).not.toContain('3.0.0')
+    })
+
+    it('shows "no matches" message when no versions match', async () => {
+      const component = await mountSuspended(PackageVersions, { props: multiVersionProps })
+
+      const input = component.find('input[type="text"]')
+      await input.setValue('^99.0.0')
+
+      expect(component.text()).toContain('No versions match this range')
+    })
+
+    it('no matches message has aria-live for screen readers', async () => {
+      const component = await mountSuspended(PackageVersions, { props: multiVersionProps })
+
+      const input = component.find('input[type="text"]')
+      await input.setValue('^99.0.0')
+
+      const noMatchesEl = component.find('[role="status"]')
+      expect(noMatchesEl.exists()).toBe(true)
+      expect(noMatchesEl.attributes('aria-live')).toBe('polite')
+    })
+
+    it('shows all versions when filter is cleared', async () => {
+      const component = await mountSuspended(PackageVersions, { props: multiVersionProps })
+
+      const input = component.find('input[type="text"]')
+      await input.setValue('^2.0.0')
+      await input.setValue('')
+
+      // All tag rows should be visible again
+      const text = component.text()
+      expect(text).toContain('3.0.0')
+      expect(text).toContain('2.1.0')
+      expect(text).toContain('1.0.0')
+    })
+
+    it('shows invalid range indicator for bad input', async () => {
+      const component = await mountSuspended(PackageVersions, { props: multiVersionProps })
+
+      const input = component.find('input[type="text"]')
+      await input.setValue('not-a-range!!!')
+
+      // Error message should appear
+      const errorEl = component.find('#semver-filter-error')
+      expect(errorEl.exists()).toBe(true)
+      expect(errorEl.attributes('role')).toBe('alert')
+
+      // Input should be marked invalid
+      expect(input.attributes('aria-invalid')).toBe('true')
+      expect(input.attributes('aria-describedby')).toBe('semver-filter-error')
+    })
+
+    it('does not show invalid range indicator for valid input', async () => {
+      const component = await mountSuspended(PackageVersions, { props: multiVersionProps })
+
+      const input = component.find('input[type="text"]')
+      await input.setValue('^2.0.0')
+
+      expect(component.find('#semver-filter-error').exists()).toBe(false)
+      expect(input.attributes('aria-invalid')).toBeUndefined()
+    })
+
+    it('does not show invalid range indicator when input is empty', async () => {
+      const component = await mountSuspended(PackageVersions, { props: multiVersionProps })
+
+      const input = component.find('input[type="text"]')
+      await input.setValue('')
+
+      expect(component.find('#semver-filter-error').exists()).toBe(false)
+    })
+
+    it('filters expanded tag child versions', async () => {
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '3.0.0', time: '2024-04-01T00:00:00.000Z', hasProvenance: false },
+        { version: '2.1.0', time: '2024-03-01T00:00:00.000Z', hasProvenance: false },
+        { version: '2.0.0', time: '2024-02-01T00:00:00.000Z', hasProvenance: false },
+        { version: '1.0.0', time: '2024-01-01T00:00:00.000Z', hasProvenance: false },
+      ])
+
+      const component = await mountSuspended(PackageVersions, { props: multiVersionProps })
+
+      // Expand the "stable" tag (2.1.0)
+      const expandButtons = component.findAll('[data-testid="tag-expand-button"]')
+      const stableButton = expandButtons.find(btn =>
+        btn.attributes('aria-label')?.includes('stable'),
+      )
+      expect(stableButton?.exists()).toBe(true)
+      await stableButton!.trigger('click')
+      await vi.waitFor(() => {
+        expect(mockFetchAllPackageVersions).toHaveBeenCalled()
+      })
+
+      // Now filter to only 2.1.x
+      const input = component.find('input[type="text"]')
+      await input.setValue('~2.1.0')
+
+      // 2.0.0 should not appear in the expanded list
+      await vi.waitFor(() => {
+        const versionLinks = component.findAll('a').filter(isVersionLink)
+        const versions = versionLinks.map(l => l.text())
+        expect(versions).not.toContain('2.0.0')
+      })
+    })
+
+    it('loads all versions when a valid semver filter is entered', async () => {
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '3.5.0', time: '2024-04-01T00:00:00.000Z', hasProvenance: false },
+        { version: '3.4.0', time: '2024-03-01T00:00:00.000Z', hasProvenance: false },
+        { version: '3.3.0', time: '2024-02-01T00:00:00.000Z', hasProvenance: false },
+        { version: '2.0.0', time: '2024-01-15T00:00:00.000Z', hasProvenance: false },
+        { version: '1.0.0', time: '2024-01-01T00:00:00.000Z', hasProvenance: false },
+      ])
+
+      // Only provide latest in props (simulating initial SSR payload)
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '3.5.0': createVersion('3.5.0'),
+          },
+          distTags: { latest: '3.5.0' },
+          time: { '3.5.0': '2024-04-01T00:00:00.000Z' },
+        },
+      })
+
+      // Filter for a version in the SAME major group as latest (claimed by the tag)
+      const input = component.find('input[type="text"]')
+      await input.setValue('~3.4.0')
+
+      // Should trigger loading all versions
+      await vi.waitFor(() => {
+        expect(mockFetchAllPackageVersions).toHaveBeenCalledWith('test-package')
+      })
+
+      // After loading, 3.4.0 should appear as an auto-expanded child of the latest tag
+      await vi.waitFor(() => {
+        const versionLinks = component.findAll('a').filter(isVersionLink)
+        const versions = versionLinks.map(l => l.text())
+        expect(versions).toContain('3.4.0')
+      })
+    })
+
+    it('does not load all versions for invalid semver filter', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '3.0.0': createVersion('3.0.0'),
+          },
+          distTags: { latest: '3.0.0' },
+          time: { '3.0.0': '2024-04-01T00:00:00.000Z' },
+        },
+      })
+
+      const input = component.find('input[type="text"]')
+      await input.setValue('not-a-range!!!')
+
+      // Should NOT trigger loading
+      expect(mockFetchAllPackageVersions).not.toHaveBeenCalled()
+    })
+
+    it('only fetches versions once across multiple filter changes', async () => {
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '3.0.0', time: '2024-04-01T00:00:00.000Z', hasProvenance: false },
+        { version: '2.0.0', time: '2024-02-01T00:00:00.000Z', hasProvenance: false },
+        { version: '1.0.0', time: '2024-01-01T00:00:00.000Z', hasProvenance: false },
+      ])
+
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '3.0.0': createVersion('3.0.0'),
+          },
+          distTags: { latest: '3.0.0' },
+          time: { '3.0.0': '2024-04-01T00:00:00.000Z' },
+        },
+      })
+
+      const input = component.find('input[type="text"]')
+
+      // First valid filter triggers fetch
+      await input.setValue('^1.0.0')
+      await vi.waitFor(() => {
+        expect(mockFetchAllPackageVersions).toHaveBeenCalledTimes(1)
+      })
+
+      // Subsequent filter changes should NOT fetch again
+      await input.setValue('^2.0.0')
+      await input.setValue('~3.0.0')
+      await input.setValue('>=1.0.0')
+
+      expect(mockFetchAllPackageVersions).toHaveBeenCalledTimes(1)
+    })
+
+    it('filters other major version groups', async () => {
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '3.0.0', time: '2024-04-01T00:00:00.000Z', hasProvenance: false },
+        { version: '2.1.0', time: '2024-03-01T00:00:00.000Z', hasProvenance: false },
+        { version: '2.0.0', time: '2024-02-01T00:00:00.000Z', hasProvenance: false },
+        { version: '1.0.0', time: '2024-01-01T00:00:00.000Z', hasProvenance: false },
+        { version: '0.5.0', time: '2023-06-01T00:00:00.000Z', hasProvenance: false },
+      ])
+
+      const component = await mountSuspended(PackageVersions, { props: multiVersionProps })
+
+      // Expand "Other versions"
+      const otherVersionsButton = component
+        .findAll('button')
+        .find(btn => btn.text().includes('Other versions'))
+      await otherVersionsButton!.trigger('click')
+
+      await vi.waitFor(() => {
+        expect(mockFetchAllPackageVersions).toHaveBeenCalled()
+      })
+
+      // Filter to >=2.0.0
+      const input = component.find('input[type="text"]')
+      await input.setValue('>=2.0.0')
+
+      // 0.5.0 should not appear
+      await vi.waitFor(() => {
+        const text = component.text()
+        expect(text).not.toContain('0.5.0')
+      })
+    })
+
+    it('does not show latest tag when it does not match the filter', async () => {
+      const component = await mountSuspended(PackageVersions, { props: multiVersionProps })
+
+      const input = component.find('input[type="text"]')
+      await input.setValue('^1.0.0 <2.0.0')
+
+      const versionLinks = component.findAll('a').filter(isVersionLink)
+      const versions = versionLinks.map(l => l.text())
+
+      // 3.0.0 is latest but does NOT match the filter
+      expect(versions).not.toContain('3.0.0')
+      // 1.0.0 does match
+      expect(versions).toContain('1.0.0')
+    })
+  })
+
+  describe('error handling', () => {
+    it('handles fetch errors gracefully', async () => {
+      mockFetchAllPackageVersions.mockRejectedValue(new Error('Network error'))
+
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      // Click expand
+      const expandButton = component.find('[data-testid="tag-expand-button"]')
+      await expandButton.trigger('click')
+
+      // Wait for error to be logged
+      await vi.waitFor(() => {
+        expect(consoleSpy).toHaveBeenCalledWith('Failed to load versions:', expect.any(Error))
+      })
+
+      consoleSpy.mockRestore()
+    })
+  })
+
+  describe('caching behavior', () => {
+    it('only fetches versions once when expanding multiple tags', async () => {
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '2.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
+        { version: '1.0.0', time: '2024-01-10T12:00:00.000Z', hasProvenance: false },
+      ])
+
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '2.0.0': createVersion('2.0.0'),
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: {
+            latest: '2.0.0',
+            stable: '1.0.0',
+          },
+          time: {
+            '2.0.0': '2024-01-15T12:00:00.000Z',
+            '1.0.0': '2024-01-10T12:00:00.000Z',
+          },
+        },
+      })
+
+      // Expand first tag row
+      const expandButtons = component.findAll('[data-testid="tag-expand-button"]')
+      await expandButtons[0]?.trigger('click')
+
+      await vi.waitFor(() => {
+        expect(mockFetchAllPackageVersions).toHaveBeenCalledTimes(1)
+      })
+
+      // Expand second tag row - should not fetch again
+      const updatedButtons = component.findAll('[data-testid="tag-expand-button"]')
+      if (updatedButtons[1]) {
+        await updatedButtons[1].trigger('click')
+      }
+
+      // Should still only have been called once
+      expect(mockFetchAllPackageVersions).toHaveBeenCalledTimes(1)
+    })
+  })
+})

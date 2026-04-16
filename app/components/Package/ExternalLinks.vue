@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { IconClass } from '~/types'
+import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
 
 const props = defineProps<{
   pkg: SlimPackument
@@ -23,15 +24,6 @@ const homepageUrl = computed(() => {
   return homepage
 })
 
-const fundingUrl = computed(() => {
-  let funding = displayVersion.value?.funding
-  if (Array.isArray(funding)) funding = funding[0]
-
-  if (!funding) return null
-
-  return typeof funding === 'string' ? funding : funding.url
-})
-
 const PROVIDER_ICONS: Record<string, IconClass> = {
   github: 'i-simple-icons:github',
   gitlab: 'i-simple-icons:gitlab',
@@ -50,6 +42,113 @@ const repoProviderIcon = computed((): IconClass => {
   if (!provider) return 'i-simple-icons:github'
   return PROVIDER_ICONS[provider] ?? 'i-lucide:code'
 })
+
+const repositoryCommandLabel = computed(() => {
+  if (!repoRef.value) {
+    return $t('package.links.repo')
+  }
+
+  const provider = repoRef.value.provider ? ` (${repoRef.value.provider})` : ''
+  return `${$t('package.links.repo')}${provider}: ${repoRef.value.owner}/${repoRef.value.repo}`
+})
+
+useCommandPaletteContextCommands(
+  computed(() => {
+    const commands: CommandPaletteContextCommandInput[] = []
+    const packageKeywords = [props.pkg.name]
+
+    if (repositoryUrl.value) {
+      commands.push({
+        id: 'package-link-repo',
+        group: 'links',
+        label: repositoryCommandLabel.value,
+        keywords: [
+          ...packageKeywords,
+          $t('package.links.repo'),
+          repoRef.value?.provider ?? '',
+          repoRef.value ? `${repoRef.value.owner}/${repoRef.value.repo}` : '',
+        ],
+        iconClass: repoProviderIcon.value,
+        href: repositoryUrl.value,
+      })
+    }
+
+    if (repositoryUrl.value && starsLink.value) {
+      commands.push({
+        id: 'package-link-stars',
+        group: 'links',
+        label: $t('command_palette.package_links.stars'),
+        keywords: [...packageKeywords, $t('command_palette.package_links.stars')],
+        iconClass: 'i-lucide:star',
+        href: starsLink.value,
+      })
+    }
+
+    if (forksLink.value) {
+      commands.push({
+        id: 'package-link-forks',
+        group: 'links',
+        label: $t('command_palette.package_links.forks'),
+        keywords: [...packageKeywords, $t('command_palette.package_links.forks')],
+        iconClass: 'i-lucide:git-fork',
+        href: forksLink.value,
+      })
+    }
+
+    if (homepageUrl.value) {
+      commands.push({
+        id: 'package-link-homepage',
+        group: 'links',
+        label: $t('package.links.homepage'),
+        keywords: [...packageKeywords, $t('package.links.homepage')],
+        iconClass: 'i-lucide:link',
+        href: homepageUrl.value,
+      })
+    }
+
+    if (displayVersion.value?.bugs?.url) {
+      commands.push({
+        id: 'package-link-issues',
+        group: 'links',
+        label: $t('package.links.issues'),
+        keywords: [...packageKeywords, $t('package.links.issues')],
+        iconClass: 'i-lucide:circle-alert',
+        href: displayVersion.value!.bugs!.url!,
+      })
+    }
+
+    commands.push({
+      id: 'package-link-socket.dev',
+      group: 'links',
+      label: 'socket.dev',
+      keywords: [...packageKeywords, 'socket.dev'],
+      iconClass: 'i-simple-icons:socket',
+      href: `https://socket.dev/npm/package/${props.pkg.name}`,
+    })
+
+    commands.push({
+      id: 'package-link-npm',
+      group: 'links',
+      label: 'npm',
+      keywords: [...packageKeywords, $t('common.view_on.npm')],
+      iconClass: 'i-simple-icons:npm',
+      href: `https://www.npmjs.com/package/${props.pkg.name}`,
+    })
+
+    if (props.jsrInfo?.exists && props.jsrInfo.url) {
+      commands.push({
+        id: 'package-link-jsr',
+        group: 'links',
+        label: $t('package.links.jsr'),
+        keywords: [...packageKeywords, $t('package.links.jsr')],
+        iconClass: 'i-simple-icons:jsr',
+        href: props.jsrInfo.url,
+      })
+    }
+
+    return commands
+  }),
+)
 </script>
 
 <template>
@@ -85,6 +184,15 @@ const repoProviderIcon = computed((): IconClass => {
     </li>
     <li>
       <LinkBase
+        :to="`https://socket.dev/npm/package/${pkg.name}`"
+        :title="$t('common.view_on.socket_dev')"
+        classicon="i-simple-icons:socket"
+      >
+        socket.dev
+      </LinkBase>
+    </li>
+    <li>
+      <LinkBase
         :to="`https://www.npmjs.com/package/${pkg.name}`"
         :title="$t('common.view_on.npm')"
         classicon="i-simple-icons:npm"
@@ -95,11 +203,6 @@ const repoProviderIcon = computed((): IconClass => {
     <li v-if="jsrInfo?.exists && jsrInfo.url">
       <LinkBase :to="jsrInfo.url" :title="$t('badges.jsr.title')" classicon="i-simple-icons:jsr">
         {{ $t('package.links.jsr') }}
-      </LinkBase>
-    </li>
-    <li v-if="fundingUrl">
-      <LinkBase :to="fundingUrl" classicon="i-lucide:heart">
-        {{ $t('package.links.fund') }}
       </LinkBase>
     </li>
   </ul>

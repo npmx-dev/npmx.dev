@@ -2,6 +2,8 @@ import type {
   AltCopyArgs,
   VueUiHorizontalBarConfig,
   VueUiHorizontalBarDatapoint,
+  VueUiScatterConfig,
+  VueUiScatterSeries,
   VueUiXyConfig,
   VueUiXyDatasetBarItem,
   VueUiXyDatasetLineItem,
@@ -636,7 +638,75 @@ export async function copyAltTextForCompareFacetBarChart({
   await config.copy(altText)
 }
 
+type CompareScatterChartConfig = VueUiScatterConfig & {
+  copy: (text: string) => Promise<void>
+  $t: TrendTranslateFunction
+  x: {
+    label: string
+    formatter: (v: number) => string
+  }
+  y: {
+    label: string
+    formatter: (v: number) => string
+  }
+}
+
+// Used for FacetScatterChart.vue
+export function createAltTextForCompareScatterChart({
+  dataset,
+  config,
+}: AltCopyArgs<VueUiScatterSeries[], CompareScatterChartConfig>) {
+  if (!dataset) return ''
+
+  const { x, y } = config
+  const { label: labelX, formatter: formatterX } = x
+  const { label: labelY, formatter: formatterY } = y
+
+  const datapoints = dataset.map(d => {
+    const rawX = d.values?.[0]?.x ?? 0
+    const rawY = d.values?.[0]?.y ?? 0
+    const name = d.fullName ?? ''
+
+    return {
+      x: formatterX(rawX),
+      y: formatterY(rawY),
+      name,
+    }
+  })
+
+  const analysis = datapoints
+    .map(d =>
+      config.$t('compare.scatter_chart.copy_alt.analysis', {
+        package: d.name,
+        x_name: labelX,
+        y_name: labelY,
+        x_value: d.x,
+        y_value: d.y,
+      }),
+    )
+    .join(', ')
+
+  const altText = config.$t('compare.scatter_chart.copy_alt.description', {
+    x_name: labelX,
+    y_name: labelY,
+    packages: datapoints.map(d => d.name).join(', '),
+    analysis,
+    watermark: config.$t('package.trends.copy_alt.watermark'),
+  })
+
+  return altText
+}
+
+export async function copyAltTextForCompareScatterChart({
+  dataset,
+  config,
+}: AltCopyArgs<VueUiScatterSeries[], CompareScatterChartConfig>) {
+  const altText = createAltTextForCompareScatterChart({ dataset, config })
+  await config.copy(altText)
+}
+
 // Used in chart context menu callbacks
+// @todo replace with downloadFileLink
 export function loadFile(link: string, filename: string) {
   const a = document.createElement('a')
   a.href = link
@@ -719,4 +789,15 @@ export function applyEllipsis(text: string, maxLength = 45) {
     return text
   }
   return text.slice(0, maxLength) + '...'
+}
+
+/**
+ * Constants shared among chart components using seeded patterns with the <VueUiPatternSeed> component.
+ * Important: `disambiguator` can be any number, and is used to cycle through different pattern sets. Its
+ * value was chosen for the diversity of its motifs.
+ */
+export const CHART_PATTERN_CONFIG = {
+  disambiguator: 1,
+  minSize: 16,
+  maxSize: 24,
 }
