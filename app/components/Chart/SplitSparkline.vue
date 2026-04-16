@@ -31,6 +31,9 @@ const props = defineProps<{
 
 const { locale } = useI18n()
 const colorMode = useColorMode()
+const numberFormatter = useNumberFormatter({
+  maximumFractionDigits: 0,
+})
 const resolvedMode = shallowRef<'light' | 'dark'>('light')
 const rootEl = shallowRef<HTMLElement | null>(null)
 const palette = getPalette('')
@@ -153,6 +156,9 @@ const configs = computed(() => {
           fontSize: 24,
           bold: false,
           color: colors.value.fg,
+          formatter: ({ value }) => {
+            return numberFormatter.value.format(value)
+          },
           datetimeFormatter: {
             enable: true,
             locale: locale.value,

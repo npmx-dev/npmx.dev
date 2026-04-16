@@ -252,6 +252,7 @@
     "hide_platform_packages_description": "Masquer les paquets binaires natifs comme {'@'}esbuild/linux-x64 des résultats",
     "enable_graph_pulse_loop": "Activer la boucle de l'effet de pulsation sur le mini-graphe",
     "enable_graph_pulse_loop_description": "Activer une animation de pulsation continue sur le graphique des téléchargements hebdomadaires. Cette animation peut être gênante pour certaines personnes.",
+    "enable_code_ligatures": "Activer les ligatures de code",
     "theme": "Thème",
     "theme_light": "Clair",
     "theme_dark": "Sombre",
@@ -339,7 +340,9 @@
       "tangled": "Voir sur Tangled"
     },
     "collapse": "Réduire",
-    "expand": "Développer"
+    "expand": "Développer",
+    "collapse_with_name": "Réduire {name}",
+    "expand_with_name": "Développer {name}"
   },
   "profile": {
     "display_name": "Nom d'affichage",
@@ -960,6 +963,7 @@
       "preview": "aperçu",
       "code": "code"
     },
+    "open_path_dropdown": "Ouvrir le menu du chemin",
     "file_path": "Chemin du fichier",
     "binary_file": "Fichier binaire",
     "binary_rendering_warning": "Le type de fichier \"{contentType}\" n'est pas pris en charge pour l'aperçu."
@@ -1318,6 +1322,18 @@
         "vulnerabilities": {
           "label": "Vulnérabilités",
           "description": "Vulnérabilités de sécurité connues"
+        },
+        "githubStars": {
+          "label": "Étoiles GitHub",
+          "description": "Nombre d’étoiles du dépôt GitHub"
+        },
+        "githubIssues": {
+          "label": "Issues GitHub",
+          "description": "Nombre d’issues ouvertes sur GitHub"
+        },
+        "createdAt": {
+          "label": "Date de création",
+          "description": "Date de création du paquet"
         }
       },
       "values": {

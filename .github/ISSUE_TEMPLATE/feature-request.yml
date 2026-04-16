@@ -1,5 +1,6 @@
 name: '🚀 Feature request'
 description: Suggest a feature that will improve npmx
+type: feature
 labels: ['pending triage']
 body:
   - type: markdown
