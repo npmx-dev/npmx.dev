@@ -85,7 +85,7 @@
     "quick_actions": "jump to...",
     "subtitle": "navigate across npmx and switch settings quickly",
     "subtitle_languages": "choose a language or help improve translations",
-    "instructions": "Type to filter commands. Use the arrow keys to move through results and Enter to run a command.",
+    "instructions": "Type to filter commands. Use the arrow keys or Ctrl+N/P to move through results and Enter to run a command.",
     "input_label": "Command palette search",
     "results_label": "Command results",
     "placeholder": "type a command...",
