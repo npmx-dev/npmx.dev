@@ -1606,7 +1606,7 @@
     },
     "meantime": {
       "title": "pendant ce temps",
-      "p1": "{site} et {repo} sont restés ouverts – les gens ont continué à creuser le code, créer quelques issues, ouvrir quelques PRs, main tout le monde a principalement passé du temps quelque part près d'un feu de camp.",
+      "p1": "{site} et {repo} sont restés ouverts – les gens ont continué à creuser le code, créer quelques issues, ouvrir quelques PRs, mais tout le monde a principalement passé du temps quelque part près d'un feu de camp.",
       "repo_link": "le repo"
     },
     "return": {
