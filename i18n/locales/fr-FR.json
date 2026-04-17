@@ -1592,7 +1592,7 @@
   },
   "vacations": {
     "title": "en vacances",
-    "meta_description": "L'équipe npmx se rechargeait. Notre discord a réouvert au bout d'une semaine.",
+    "meta_description": "L'équipe npmx se rechargeait. Notre discord a rouvert au bout d'une semaine.",
     "heading": "se recharger",
     "subtitle": "nous avons construit npmx à une vitesse qui a coûté du sommeil à {some} d'entre nous. nous ne voulions pas que ça devienne la norme ! donc nous avons pris une semaine de vacances. ensemble.",
     "illustration_alt": "une seule ligne d'icônes cosy",
@@ -1666,7 +1666,7 @@
     },
     "typography": {
       "title": "typographie",
-      "description": "npmx utilise la police Geist par Vercel pour l'interface textuelle et le code.",
+      "description": "npmx utilise la police Geist de Vercel pour l'interface textuelle et le code.",
       "sans": "Geist Sans",
       "sans_desc": "Utilisée pour le texte et les éléments UI.",
       "mono": "Geist Mono",
@@ -1676,7 +1676,7 @@
     },
     "guidelines": {
       "title": "juste une note",
-      "message": "L'accessibilité nous est chère, et nous adorions que vous nous suiviez dans cette vision. Lors de l'utilisation des médias mentionnés, assurez-vous qu'il y a assez de contraste avec l'arrière-plan, et ne descendez pas en dessous de 24px. Si vous avez besoin d'une quelconque ressource ou info additionnelle sur le projet, n'hésitez pas à nous contacter à {link}.",
+      "message": "L'accessibilité nous est chère, et nous adorerions que vous nous suiviez dans cette vision. Lors de l'utilisation des médias mentionnés, assurez-vous qu'il y a assez de contraste avec l'arrière-plan, et ne descendez pas en dessous de 24 px. Si vous avez besoin d'une quelconque ressource ou info supplémentaire sur le projet, n'hésitez pas à nous contacter à {link}.",
       "discord_link_text": "chat.npmx.dev"
     }
   },
