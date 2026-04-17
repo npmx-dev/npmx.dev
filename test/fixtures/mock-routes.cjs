@@ -181,10 +181,33 @@ function matchNpmApi(urlString) {
   }
 
   // Downloads range
-  const rangeMatch = pathname.match(/^\/downloads\/range\/[^/]+\/(.+)$/)
-  if (rangeMatch && rangeMatch[1]) {
-    const packageName = rangeMatch[1]
-    return json({ downloads: [], start: '2025-01-01', end: '2025-01-31', package: packageName })
+  const rangeMatch = pathname.match(/^\/downloads\/range\/([^/]+)\/(.+)$/)
+  if (rangeMatch && rangeMatch[1] && rangeMatch[2]) {
+    const dateRange = rangeMatch[1]
+    const packageName = rangeMatch[2]
+    const [start, end] = dateRange.split(':')
+    if (!start || !end) return null
+
+    // Generate deterministic daily download data from the package name
+    const seed = packageName.split('').reduce((s, c) => s + c.charCodeAt(0), 0)
+    const base = (seed % 9000) + 1000
+    const downloads = []
+    const startDate = new Date(start)
+    const endDate = new Date(end)
+    if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) return null
+
+    const cursor = new Date(startDate)
+    while (cursor.getTime() <= endDate.getTime()) {
+      const day = cursor.toISOString().slice(0, 10)
+      // Sine wave + noise for a realistic-looking sparkline
+      const dayIndex = downloads.length
+      const wave = Math.sin(dayIndex / 30) * base * 0.3
+      const noise = Math.sin(dayIndex * 7 + seed) * base * 0.1
+      downloads.push({ day, downloads: Math.max(0, Math.round(base + wave + noise)) })
+      cursor.setUTCDate(cursor.getUTCDate() + 1)
+    }
+
+    return json({ downloads, start, end, package: packageName })
   }
 
   return null

@@ -2,12 +2,6 @@
 import { assertValidPackageName } from '#shared/utils/npm'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
 
-defineOgImageComponent('Package', {
-  name: () => packageName.value,
-  version: () => requestedVersion.value ?? '',
-  primaryColor: '#60a5fa',
-})
-
 const readmeHeader = useTemplateRef('readmeHeader')
 const isReadmeHeaderPinned = shallowRef(false)
 const packageHeaderHeight = usePackageHeaderHeight()
@@ -39,6 +33,24 @@ const { packageName, requestedVersion } = usePackageRoute()
 const { data: resolvedVersion, status: resolvedStatus } = await useResolvedVersion(
   packageName,
   requestedVersion,
+)
+
+defineOgImage(
+  'Package.takumi',
+  {
+    name: () => packageName.value,
+    version: () => requestedVersion.value,
+    variant: 'download-chart',
+  },
+  [
+    { key: 'og', alt: () => `npm package ${packageName.value} download chart and stats` },
+    {
+      key: 'whatsapp',
+      width: 800,
+      height: 800,
+      alt: () => `npm package ${packageName.value} download chart and stats`,
+    },
+  ],
 )
 
 if (import.meta.server) {
@@ -96,24 +108,20 @@ const {
 )
 
 //copy README file as Markdown
-const { copied: copiedReadme, copy: copyReadme } = useClipboard({
-  source: () => '',
-  copiedDuring: 2000,
-})
+const { copied: copiedReadme, copy: copyReadme } = useClipboardAsync(
+  async () => {
+    await fetchReadmeMarkdown()
+    return readmeMarkdownData.value?.markdown ?? ''
+  },
+  {
+    copiedDuring: 2000,
+  },
+)
 
 function prefetchReadmeMarkdown() {
   if (readmeMarkdownStatus.value === 'idle') {
     fetchReadmeMarkdown()
   }
-}
-
-async function copyReadmeHandler() {
-  await fetchReadmeMarkdown()
-
-  const markdown = readmeMarkdownData.value?.markdown
-  if (!markdown) return
-
-  await copyReadme(markdown)
 }
 
 // Track active TOC item based on scroll position
@@ -1019,7 +1027,7 @@ const showSkeleton = shallowRef(false)
                 <ButtonBase
                   @mouseenter="prefetchReadmeMarkdown"
                   @focus="prefetchReadmeMarkdown"
-                  @click="copyReadmeHandler()"
+                  @click="copyReadme"
                   :aria-pressed="copiedReadme"
                   :aria-label="
                     copiedReadme ? $t('common.copied') : $t('package.readme.copy_as_markdown')

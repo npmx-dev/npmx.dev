@@ -8,10 +8,14 @@ useSeoMeta({
   description: () => $t('translation_status.welcome', { npmx: 'npmx' }),
 })
 
-defineOgImageComponent('Default', {
-  title: () => $t('translation_status.title'),
-  description: () => $t('translation_status.welcome', { npmx: 'npmx' }),
-})
+defineOgImage(
+  'Page.takumi',
+  {
+    title: () => $t('translation_status.title'),
+    description: () => $t('translation_status.welcome', { npmx: 'npmx' }),
+  },
+  { alt: () => `${$t('translation_status.title')} — npmx` },
+)
 
 const nuxt = useNuxtApp()
 const router = useRouter()

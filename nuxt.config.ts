@@ -7,10 +7,10 @@ const isStorybook = process.env.STORYBOOK === 'true' || process.env.VITEST_STORY
 export default defineNuxtConfig({
   modules: [
     '@unocss/nuxt',
+    'nuxt-og-image',
     '@nuxtjs/html-validator',
     '@nuxt/scripts',
     '@nuxt/a11y',
-    'nuxt-og-image',
     '@nuxt/test-utils',
     '@vite-pwa/nuxt',
     '@vueuse/nuxt',
@@ -76,7 +76,6 @@ export default defineNuxtConfig({
           href: '/opensearch.xml',
         },
       ],
-      meta: [{ name: 'twitter:card', content: 'summary_large_image' }],
     },
   },
 
@@ -136,14 +135,6 @@ export default defineNuxtConfig({
     '/api/registry/package-meta/**': { isr: 300 },
     '/:pkg/.well-known/skills/**': { isr: 3600 },
     '/:scope/:pkg/.well-known/skills/**': { isr: 3600 },
-    '/__og-image__/**': getISRConfig(3600),
-    '/__og-image__/image/compare/**': {
-      isr: {
-        expiration: 3600,
-        passQuery: true,
-        allowQuery: ['packages', '_query'],
-      },
-    },
     '/_avatar/**': { isr: 3600, proxy: 'https://www.gravatar.com/avatar/**' },
     '/opensearch.xml': { isr: true },
     '/oauth-client-metadata.json': { prerender: true },
@@ -311,18 +302,16 @@ export default defineNuxtConfig({
 
   ogImage: {
     enabled: !isStorybook,
-    defaults: {
-      component: 'Default',
+    cacheMaxAgeSeconds: 60 * 60 * 24, // 1 day, download counts change daily
+    security: {
+      // Reuse image-proxy HMAC secret to avoid managing a second secret.
+      // Strict mode only activates when a secret is present (CI builds without one).
+      strict: !!process.env.NUXT_IMAGE_PROXY_SECRET,
+      secret: process.env.NUXT_IMAGE_PROXY_SECRET,
+      // HMAC signing is sufficient; origin pinning blocks localhost e2e runs
+      // and adds no meaningful security on top of signed URLs.
+      restrictRuntimeImagesToOrigin: false,
     },
-    fonts: [
-      { name: 'Geist', weight: 400, path: '/fonts/Geist-Regular.ttf' },
-      { name: 'Geist', weight: 500, path: '/fonts/Geist-Medium.ttf' },
-      { name: 'Geist', weight: 600, path: '/fonts/Geist-SemiBold.ttf' },
-      { name: 'Geist', weight: 700, path: '/fonts/Geist-Bold.ttf' },
-      { name: 'Geist Mono', weight: 400, path: '/fonts/GeistMono-Regular.ttf' },
-      { name: 'Geist Mono', weight: 500, path: '/fonts/GeistMono-Medium.ttf' },
-      { name: 'Geist Mono', weight: 700, path: '/fonts/GeistMono-Bold.ttf' },
-    ],
   },
 
   pwa: {

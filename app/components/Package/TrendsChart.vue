@@ -1540,7 +1540,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
           const rows = items
             .map((d: Record<string, any>) => {
               const label = String(d?.name ?? '').trim()
-              const raw = Number(d?.value ?? 0)
+              const raw = Math.round(Number(d?.value ?? 0))
               const v = compactNumberFormatter.value.format(Number.isFinite(raw) ? raw : 0)
 
               if (!hasMultipleItems) {
