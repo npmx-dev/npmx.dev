@@ -423,7 +423,7 @@
         "assets": "{count} ressource | {count} ressources"
       },
       "view_source": "Voir la source",
-      "skills_cli": "CLI de skills"
+      "skills_cli": "CLI skills"
     },
     "links": {
       "main": "principal",
