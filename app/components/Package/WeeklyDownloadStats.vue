@@ -201,7 +201,7 @@ const correctedDownloads = computed<WeeklyDataPoint[]>(() => {
 
 const dataset = computed<VueUiSparklineDatasetItem[]>(() =>
   correctedDownloads.value.map(d => ({
-    value: Math.ceil(d?.value ?? 0),
+    value: d?.value ?? 0,
     period: $t('package.trends.date_range', {
       start: d.weekStart ?? '-',
       end: d.weekEnd ?? '-',
