@@ -42,7 +42,8 @@
     "open_docs": "Ouvrir la doc",
     "disable_shortcuts": "Vous pouvez désactiver les raccourcis clavier dans {settings}.",
     "open_main": "Ouvrir les informations principales",
-    "open_diff": "Ouvrir les différences de version"
+    "open_diff": "Ouvrir les différences de version",
+    "open_timeline": "Ouvrir la timeline"
   },
   "search": {
     "label": "Rechercher des paquets npm",
@@ -434,6 +435,7 @@
       "docs": "docs",
       "fund": "donner",
       "compare": "comparer",
+      "timeline": "timeline",
       "compare_this_package": "comparer ce paquet"
     },
     "likes": {
@@ -479,7 +481,8 @@
         "warning": "Avertissement",
         "caution": "Attention"
       },
-      "copy_as_markdown": "Copier le README en markdown"
+      "copy_as_markdown": "Copier le README en markdown",
+      "error_loading": "Échec de chargement des détails du README"
     },
     "provenance_section": {
       "title": "Provenance",
@@ -550,13 +553,30 @@
       "filter_tooltip": "Filtrer les versions avec une {link}. Par exemple, ^3.0.0 affiche toutes les versions 3.x.",
       "filter_tooltip_link": "plage semver",
       "no_matches": "Aucune version ne correspond à cette plage",
-      "page_title": "Historique des versions",
-      "current_tags": "Tags actuels",
-      "no_match_filter": "Aucune version ne correspond à {filter}",
       "copy_alt": {
         "per_version_analysis": "La version {version} a été téléchargée {downloads} fois",
         "general_description": "Graphique en barres montrant les téléchargements par version pour {versions_count} versions {semver_grouping_mode} du paquet {package_name}, {date_range_label} de la version {first_version} à la version {last_version}. La version la plus téléchargée est {max_downloaded_version} avec {max_version_downloads} téléchargements. {per_version_analysis}. {watermark}."
-      }
+      },
+      "page_title": "Historique des versions",
+      "current_tags": "Tags actuels",
+      "no_match_filter": "Aucune version ne correspond à {filter}"
+    },
+    "timeline": {
+      "load_more": "Charger plus",
+      "load_error": "Échec de chargement de la timeline. Veuillez réessayer plus tard.",
+      "size_increase": "La taille d'installation a augmenté de {percent}% ({size})",
+      "size_decrease": "La taille d'installation a diminué de {percent}% ({size})",
+      "dep_increase": "{count} dépendances ajoutées",
+      "dep_decrease": "{count} dépendances enlevées",
+      "license_change": "La licence a changé de {from} à {to}",
+      "esm_added": "Le type de module a changé à ESM",
+      "esm_removed": "Le type de module a changé de ESM à CJS",
+      "types_added": "Les types TypeScript ont été ajoutés",
+      "types_removed": "Les types TypeScript ont été supprimés",
+      "trusted_publisher_added": "Vérification ajoutée",
+      "trusted_publisher_removed": "Vérification enlevée",
+      "provenance_added": "Preuve de provenance ajoutée",
+      "provenance_removed": "Preuve de provenance enlevée"
     },
     "dependencies": {
       "title": "Dépendances ({count})",
@@ -1568,6 +1588,40 @@
       "error": "Erreur lors du chargement de la liste des fichiers.",
       "empty": "Aucun fichier trouvé",
       "file_link": "Modifier {file} ({lang}) sur GitHub"
+    }
+  },
+  "vacations": {
+    "title": "en vacances",
+    "meta_description": "L'équipe npmx se rechargeait. Notre discord a réouvert au bout d'une semaine.",
+    "heading": "se recharger",
+    "subtitle": "nous avons construit npmx à une vitesse qui a coûté du sommeil à {some} d'entre nous. nous ne voulions pas que ça devienne la norme ! donc nous avons pris une semaine de vacances. ensemble.",
+    "illustration_alt": "une seule ligne d'icônes cosy",
+    "poke_log": "Rallumer le feu de camp",
+    "what": {
+      "title": "ce qu'il s'est passé",
+      "p1": "notre discord était fermé du {dates}.",
+      "dates": "14 au 21 février",
+      "p2": "tous les liens d'invitation ont été supprimés et les channels verrouillés – sauf {garden}, qui est resté ouvert pour ceux qui voulaient papoter.",
+      "garden": "#garden"
+    },
+    "meantime": {
+      "title": "pendant ce temps",
+      "p1": "{site} et {repo} sont restés ouverts – les gens ont continué à creuser le code, créer quelques issues, ouvrir quelques PRs, main tout le monde a principalement passé du temps quelque part près d'un feu de camp.",
+      "repo_link": "le repo"
+    },
+    "return": {
+      "title": "nous sommes revenus !",
+      "p1": "nous sommes revenus revigorés et prêts pour la dernière ligne droite jusqu'au 3 mars. {social} pour voir les mises à jour.",
+      "social_link": "suivez-nous sur Bluesky"
+    },
+    "stats": {
+      "contributors": "Contributeurs",
+      "commits": "Commits",
+      "pr": "PRs fusionnées",
+      "subtitle": {
+        "some": "certains",
+        "all": "tous"
+      }
     }
   },
   "action_bar": {
