@@ -92,5 +92,6 @@ export function applyDataCorrection<T extends { value: number }>(
   let result = data
   result = movingAverage(result, settings.averageWindow)
   result = smoothing(result, settings.smoothingTau)
+  result = result.map(d => ({ ...d, value: Math.ceil(d.value) }))
   return result
 }
