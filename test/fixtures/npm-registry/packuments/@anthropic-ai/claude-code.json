@@ -1,0 +1,27 @@
+{
+  "_id": "@anthropic-ai/claude-code",
+  "name": "@anthropic-ai/claude-code",
+  "description": "Claude Code is an agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster through natural language commands",
+  "dist-tags": {
+    "latest": "1.0.52"
+  },
+  "time": {
+    "1.0.52": "2025-02-20T00:00:00.000Z"
+  },
+  "versions": {
+    "1.0.52": {
+      "name": "@anthropic-ai/claude-code",
+      "version": "1.0.52",
+      "description": "Claude Code is an agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster through natural language commands",
+      "license": "Apache-2.0",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/anthropics/claude-code.git"
+      },
+      "dist": {
+        "tarball": "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-1.0.52.tgz",
+        "shasum": "abc123"
+      }
+    }
+  }
+}

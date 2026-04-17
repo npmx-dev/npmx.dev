@@ -2,12 +2,6 @@
 import { assertValidPackageName } from '#shared/utils/npm'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
 
-defineOgImageComponent('Package', {
-  name: () => packageName.value,
-  version: () => requestedVersion.value ?? '',
-  primaryColor: '#60a5fa',
-})
-
 const readmeHeader = useTemplateRef('readmeHeader')
 const isReadmeHeaderPinned = shallowRef(false)
 const packageHeaderHeight = usePackageHeaderHeight()
@@ -39,6 +33,24 @@ const { packageName, requestedVersion } = usePackageRoute()
 const { data: resolvedVersion, status: resolvedStatus } = await useResolvedVersion(
   packageName,
   requestedVersion,
+)
+
+defineOgImage(
+  'Package.takumi',
+  {
+    name: () => packageName.value,
+    version: () => requestedVersion.value,
+    variant: 'download-chart',
+  },
+  [
+    { key: 'og', alt: () => `npm package ${packageName.value} download chart and stats` },
+    {
+      key: 'whatsapp',
+      width: 800,
+      height: 800,
+      alt: () => `npm package ${packageName.value} download chart and stats`,
+    },
+  ],
 )
 
 if (import.meta.server) {

@@ -142,10 +142,14 @@ async function exportComparisonDataAsMarkdown() {
   await copy(markdown)
 }
 
-defineOgImageComponent('Compare', {
-  packages: () => packages.value.toSorted((a, b) => a.localeCompare(b)),
-  emptyDescription: () => $t('compare.packages.meta_description_empty'),
-})
+defineOgImage(
+  'Compare.takumi',
+  {
+    packages: () => packages.value.toSorted((a, b) => a.localeCompare(b)),
+    emptyDescription: () => $t('compare.packages.meta_description_empty'),
+  },
+  { alt: () => $t('compare.packages.meta_description_empty') },
+)
 
 const { announce } = useCommandPalette()
 
