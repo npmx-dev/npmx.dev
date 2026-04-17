@@ -96,24 +96,20 @@ const {
 )
 
 //copy README file as Markdown
-const { copied: copiedReadme, copy: copyReadme } = useClipboard({
-  source: () => '',
-  copiedDuring: 2000,
-})
+const { copied: copiedReadme, copy: copyReadme } = useClipboardAsync(
+  async () => {
+    await fetchReadmeMarkdown()
+    return readmeMarkdownData.value?.markdown ?? ''
+  },
+  {
+    copiedDuring: 2000,
+  },
+)
 
 function prefetchReadmeMarkdown() {
   if (readmeMarkdownStatus.value === 'idle') {
     fetchReadmeMarkdown()
   }
-}
-
-async function copyReadmeHandler() {
-  await fetchReadmeMarkdown()
-
-  const markdown = readmeMarkdownData.value?.markdown
-  if (!markdown) return
-
-  await copyReadme(markdown)
 }
 
 // Track active TOC item based on scroll position
@@ -1019,7 +1015,7 @@ const showSkeleton = shallowRef(false)
                 <ButtonBase
                   @mouseenter="prefetchReadmeMarkdown"
                   @focus="prefetchReadmeMarkdown"
-                  @click="copyReadmeHandler()"
+                  @click="copyReadme"
                   :aria-pressed="copiedReadme"
                   :aria-label="
                     copiedReadme ? $t('common.copied') : $t('package.readme.copy_as_markdown')
