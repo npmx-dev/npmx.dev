@@ -43,7 +43,7 @@
     "disable_shortcuts": "Vous pouvez désactiver les raccourcis clavier dans {settings}.",
     "open_main": "Ouvrir les informations principales",
     "open_diff": "Ouvrir les différences de version",
-    "open_timeline": "Ouvrir la timeline"
+    "open_timeline": "Ouvrir l'historique"
   },
   "search": {
     "label": "Rechercher des paquets npm",
@@ -435,7 +435,7 @@
       "docs": "docs",
       "fund": "donner",
       "compare": "comparer",
-      "timeline": "timeline",
+      "timeline": "historique",
       "compare_this_package": "comparer ce paquet"
     },
     "likes": {
@@ -563,7 +563,7 @@
     },
     "timeline": {
       "load_more": "Charger plus",
-      "load_error": "Échec de chargement de la timeline. Veuillez réessayer plus tard.",
+      "load_error": "Échec de chargement de l'historique. Veuillez réessayer plus tard.",
       "size_increase": "La taille d'installation a augmenté de {percent}% ({size})",
       "size_decrease": "La taille d'installation a diminué de {percent}% ({size})",
       "dep_increase": "{count} dépendance ajoutée | {count} dépendances ajoutées",
@@ -1606,7 +1606,7 @@
     },
     "meantime": {
       "title": "pendant ce temps",
-      "p1": "{site} et {repo} sont restés ouverts — les gens ont continué à explorer le code, à créer quelques issues et à ouvrir quelques PR, mais la plupart ont surtout passé du temps quelque part près d'un feu de camp.",
+      "p1": "{site} et {repo} sont restés ouverts — les contributeurs ont continué à explorer le code, à créer quelques issues et à ouvrir quelques PR, mais la plupart ont surtout passé du temps quelque part près d'un feu de camp.",
       "repo_link": "le repo"
     },
     "return": {
@@ -1644,11 +1644,11 @@
       "title": "Logos",
       "description": "Télécharger les logos de npmx en formats SVG et PNG. Utilisez la variante appropriée pour votre arrière-plan.",
       "wordmark": "LOGOTYPE COMPLET",
-      "wordmark_alt": "Logotype complet de npmx avec le slash bleu sur fond noir",
-      "wordmark_light_alt": "Logotype complet de npmx avec le slash accentué sur fond clair",
+      "wordmark_alt": "Logotype complet de npmx avec la barre oblique bleue sur fond noir",
+      "wordmark_light_alt": "Logotype complet de npmx avec la barre oblique accentuée sur fond clair",
       "mark": "SYMBOLE",
-      "mark_alt": "Symbole npmx avec le point et le slash sur fond noir",
-      "mark_light_alt": "Symbole npmx avec le point et le slash sur fond clair",
+      "mark_alt": "Symbole npmx avec le point et la barre oblique sur fond noir",
+      "mark_light_alt": "Symbole npmx avec le point et la barre oblique sur fond clair",
       "on_dark": "sur fond sombre",
       "on_light": "sur fond clair",
       "download_svg": "SVG",
