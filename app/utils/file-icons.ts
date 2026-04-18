@@ -264,12 +264,12 @@ export const FILENAME_ICONS: Record<string, string> = {
   'CONTRIBUTING.md': 'vscode-icons-file-type-markdown',
   'contributing.md': 'vscode-icons-file-type-markdown',
   'CODE_OF_CONDUCT.md': 'vscode-icons-file-type-markdown',
-  'LICENSE': 'vscode-icons-file-type-license',
-  'LICENSE.md': 'vscode-icons-file-type-license',
-  'LICENSE.txt': 'vscode-icons-file-type-license',
-  'license': 'vscode-icons-file-type-license',
-  'license.md': 'vscode-icons-file-type-license',
-  'license.txt': 'vscode-icons-file-type-license',
+  'LICENSE': 'vscode-icons-default-file',
+  'LICENSE.md': 'vscode-icons-default-file',
+  'LICENSE.txt': 'vscode-icons-default-file',
+  'license': 'vscode-icons-default-file',
+  'license.md': 'vscode-icons-default-file',
+  'license.txt': 'vscode-icons-default-file',
 
   // Node
   '.npmrc': 'vscode-icons-file-type-npm',

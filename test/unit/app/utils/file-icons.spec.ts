@@ -9,6 +9,12 @@ describe('getFileIcon', () => {
     expect(getFileIcon('eslint.config.js')).toBe('vscode-icons-file-type-eslint')
     expect(getFileIcon('vitest.config.ts')).toBe('vscode-icons-file-type-vitest')
     expect(getFileIcon('.env')).toBe('vscode-icons-file-type-dotenv')
+    expect(getFileIcon('LICENSE')).toBe('vscode-icons-default-file')
+    expect(getFileIcon('LICENSE.md')).toBe('vscode-icons-default-file')
+    expect(getFileIcon('LICENSE.txt')).toBe('vscode-icons-default-file')
+    expect(getFileIcon('license')).toBe('vscode-icons-default-file')
+    expect(getFileIcon('license.md')).toBe('vscode-icons-default-file')
+    expect(getFileIcon('license.txt')).toBe('vscode-icons-default-file')
   })
 
   it('returns correct icons for compound extensions', () => {
