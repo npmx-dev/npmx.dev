@@ -65,4 +65,4 @@ jobs:
             - Leave a comment explaining your progress
 
             We appreciate your interest in npmx and hope you'll continue contributing! 💙
-          operations-per-run: 300
+          operations-per-run: 500
