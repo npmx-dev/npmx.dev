@@ -18,6 +18,8 @@ jobs:
         with:
           days-before-issue-stale: 30
           days-before-issue-close: 7
+          days-before-pr-stale: -1
+          days-before-pr-close: -1
           remove-stale-when-updated: true
           only-issue-types: 'bug'
           stale-issue-label: 'stale'
@@ -29,6 +31,8 @@ jobs:
     steps:
       - uses: actions/stale@b5d41d4e1d5dceea10e7104786b73624c18a190f
         with:
+          days-before-issue-stale: -1
+          days-before-issue-close: -1
           days-before-pr-stale: 30
           days-before-pr-close: 7
           remove-stale-when-updated: true
