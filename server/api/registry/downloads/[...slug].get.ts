@@ -1,9 +1,5 @@
-import { getQuery } from 'h3'
 import * as v from 'valibot'
 import { hash } from 'ohash'
-import type { VersionDistributionResponse } from '#shared/types'
-import { CACHE_MAX_AGE_ONE_HOUR } from '#shared/utils/constants'
-import { groupVersionDownloads } from '#server/utils/version-downloads'
 
 /**
  * Raw response from npm downloads API

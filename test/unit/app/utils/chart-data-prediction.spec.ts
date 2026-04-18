@@ -11,7 +11,7 @@ import {
   getCompletionRatio,
   linearProject,
   extrapolateLastValue,
-} from '../../../../app/utils/chart-data-prediction'
+} from '~/utils/chart-data-prediction'
 
 describe('endDateOnlyToUtcMs', () => {
   it('parses a valid date', () => {

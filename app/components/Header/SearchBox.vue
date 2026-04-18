@@ -62,7 +62,7 @@ defineExpose({ focus })
             class="w-full min-w-25 ps-7 pe-8"
             @focus="isSearchFocused = true"
             @blur="isSearchFocused = false"
-            size="small"
+            size="sm"
             ariaKeyshortcuts="/"
           />
           <button

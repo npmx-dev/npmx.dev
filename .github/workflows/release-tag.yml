@@ -23,9 +23,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1
         with:
           node-version: lts/*
+          run-install: false
 
       - name: 🔢 Determine next version
         id: version
@@ -58,13 +59,9 @@ jobs:
           git tag -a "$VERSION" -m "Release $VERSION"
           git push origin "$VERSION"
 
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        if: steps.check.outputs.skip == 'false'
-        name: 🟧 Install pnpm
-
       - name: 📦 Install dependencies
         if: steps.check.outputs.skip == 'false'
-        run: pnpm install --filter . --ignore-scripts
+        run: vp install --filter . --ignore-scripts
 
       - name: 📝 Generate release notes
         if: steps.check.outputs.skip == 'false'
@@ -98,18 +95,14 @@ jobs:
         with:
           ref: release
 
-      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1
         with:
           node-version: lts/*
           registry-url: https://registry.npmjs.org
-
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: 🟧 Install pnpm
-        with:
-          cache: false
+          run-install: false
 
       - name: 📦 Install dependencies
-        run: pnpm install --filter npmx-connector...
+        run: vp install --filter npmx-connector...
 
       - name: 🔢 Set connector version
         env:
@@ -122,7 +115,7 @@ jobs:
           echo "Publishing npmx-connector@${PKG_VERSION}"
 
       - name: 🏗️ Build connector
-        run: pnpm --filter npmx-connector build
+        run: vp run --filter npmx-connector build
 
       - name: 📤 Publish to npm with provenance
         # Uses OIDC trusted publishing — no NPM_TOKEN needed.

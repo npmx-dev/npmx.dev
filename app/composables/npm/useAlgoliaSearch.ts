@@ -1,4 +1,3 @@
-import type { NpmSearchResponse, NpmSearchResult } from '#shared/types'
 import {
   liteClient as algoliasearch,
   type LiteClient,
@@ -92,14 +91,6 @@ function hitToSearchResult(hit: AlgoliaHit): NpmSearchResult {
           }))
         : [],
     },
-    score: {
-      final: 0,
-      detail: {
-        quality: hit.popular ? 1 : 0,
-        popularity: hit.downloadsRatio,
-        maintenance: 0,
-      },
-    },
     searchScore: 0,
     downloads: {
       weekly: Math.round(hit.downloadsLast30Days / 4.3),
@@ -108,7 +99,7 @@ function hitToSearchResult(hit: AlgoliaHit): NpmSearchResult {
   }
 }
 
-export interface AlgoliaSearchOptions {
+interface AlgoliaSearchOptions {
   size?: number
   from?: number
   filters?: string
@@ -122,7 +113,7 @@ export interface AlgoliaMultiSearchChecks {
   checkPackage?: string
 }
 
-export interface AlgoliaSearchWithSuggestionsResult {
+interface AlgoliaSearchWithSuggestionsResult {
   search: NpmSearchResponse
   orgExists: boolean
   userExists: boolean
@@ -170,8 +161,8 @@ export function useAlgoliaSearch() {
     }
   }
 
-  /** Fetch all packages for an owner using `owner.name` filter with pagination. */
-  async function searchByOwner(
+  /** Fetch all packages for a maintainer using `owners.name` filter with pagination. */
+  async function searchByMaintainer(
     ownerName: string,
     options: { maxResults?: number } = {},
   ): Promise<NpmSearchResponse> {
@@ -194,7 +185,7 @@ export function useAlgoliaSearch() {
             query: '',
             offset,
             length,
-            filters: `owner.name:${ownerName}`,
+            filters: `owners.name:${ownerName}`,
             analyticsTags: ['npmx.dev'],
             attributesToRetrieve: ATTRIBUTES_TO_RETRIEVE,
             attributesToHighlight: [],
@@ -295,7 +286,7 @@ export function useAlgoliaSearch() {
       requests.push({
         indexName,
         query: '',
-        filters: `owner.name:${checks.name}`,
+        filters: `owners.name:${checks.name}`,
         length: 1,
         analyticsTags: ['npmx.dev'],
         attributesToRetrieve: EXISTENCE_CHECK_ATTRS,
@@ -356,7 +347,7 @@ export function useAlgoliaSearch() {
   return {
     search,
     searchWithSuggestions,
-    searchByOwner,
+    searchByMaintainer,
     getPackagesByName,
   }
 }

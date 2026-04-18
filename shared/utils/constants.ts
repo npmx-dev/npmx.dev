@@ -59,6 +59,18 @@ export const DISCORD_COMMUNITY_URL = 'https://chat.npmx.dev'
 export const DISCORD_BUILDERS_URL = 'https://build.npmx.dev'
 
 // Theming
+export const ACCENT_COLOR_IDS = [
+  'sky',
+  'coral',
+  'amber',
+  'emerald',
+  'violet',
+  'magenta',
+  'neutral',
+] as const
+
+export type AccentColorId = (typeof ACCENT_COLOR_IDS)[number]
+
 export const ACCENT_COLORS = {
   light: {
     sky: 'oklch(0.53 0.16 247.27)',
@@ -78,7 +90,7 @@ export const ACCENT_COLORS = {
     magenta: 'oklch(0.78 0.15 330)',
     neutral: 'oklch(1 0 0)',
   },
-} as const
+} as const satisfies Record<'light' | 'dark', Record<AccentColorId, string>>
 
 export const BACKGROUND_THEMES = {
   neutral: 'oklch(0.555 0 0)',

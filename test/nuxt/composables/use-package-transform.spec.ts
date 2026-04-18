@@ -1,7 +1,4 @@
 import { describe, expect, it } from 'vitest'
-import type { Packument, PackageVersionInfo } from '#shared/types'
-import { transformPackument } from '~/composables/npm/usePackage'
-import { detectPublishSecurityDowngradeForVersion } from '~/utils/publish-security'
 
 function createVersion(version: string, hasAttestations = false): Packument['versions'][string] {
   return {

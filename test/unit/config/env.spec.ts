@@ -30,7 +30,7 @@ describe('isCanary', () => {
   it('returns true when VERCEL_ENV is "production" and branch is "main"', async () => {
     vi.stubEnv('VERCEL_ENV', 'production')
     vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'main')
-    const { isCanary } = await import('../../../config/env')
+    const { isCanary } = await import('~~/config/env')
 
     expect(isCanary).toBe(true)
   })
@@ -38,7 +38,7 @@ describe('isCanary', () => {
   it('returns true when VERCEL_ENV is "preview" and branch is "main" (non-PR)', async () => {
     vi.stubEnv('VERCEL_ENV', 'preview')
     vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'main')
-    const { isCanary } = await import('../../../config/env')
+    const { isCanary } = await import('~~/config/env')
 
     expect(isCanary).toBe(true)
   })
@@ -46,7 +46,7 @@ describe('isCanary', () => {
   it('returns true when VERCEL_ENV is custom "canary" and branch is "main"', async () => {
     vi.stubEnv('VERCEL_ENV', 'canary')
     vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'main')
-    const { isCanary } = await import('../../../config/env')
+    const { isCanary } = await import('~~/config/env')
 
     expect(isCanary).toBe(true)
   })
@@ -55,7 +55,7 @@ describe('isCanary', () => {
     vi.stubEnv('VERCEL_ENV', 'preview')
     vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'main')
     vi.stubEnv('VERCEL_GIT_PULL_REQUEST_ID', '123')
-    const { isCanary } = await import('../../../config/env')
+    const { isCanary } = await import('~~/config/env')
 
     expect(isCanary).toBe(false)
   })
@@ -68,7 +68,7 @@ describe('isCanary', () => {
   ])('returns false when VERCEL_ENV is %s', async (_label, value, branch) => {
     if (value !== undefined) vi.stubEnv('VERCEL_ENV', value)
     if (branch !== undefined) vi.stubEnv('VERCEL_GIT_COMMIT_REF', branch)
-    const { isCanary } = await import('../../../config/env')
+    const { isCanary } = await import('~~/config/env')
 
     expect(isCanary).toBe(false)
   })
@@ -90,7 +90,7 @@ describe('getEnv', () => {
   })
 
   it('returns "dev" in development mode', async () => {
-    const { getEnv } = await import('../../../config/env')
+    const { getEnv } = await import('~~/config/env')
     const result = await getEnv(true)
 
     expect(result.env).toBe('dev')
@@ -99,7 +99,7 @@ describe('getEnv', () => {
   it('returns "canary" for Vercel preview deploys from main branch (non-PR)', async () => {
     vi.stubEnv('VERCEL_ENV', 'preview')
     vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'main')
-    const { getEnv } = await import('../../../config/env')
+    const { getEnv } = await import('~~/config/env')
     const result = await getEnv(false)
 
     expect(result.env).toBe('canary')
@@ -108,7 +108,7 @@ describe('getEnv', () => {
   it('returns "canary" for custom Vercel "canary" environment on main branch', async () => {
     vi.stubEnv('VERCEL_ENV', 'canary')
     vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'main')
-    const { getEnv } = await import('../../../config/env')
+    const { getEnv } = await import('~~/config/env')
     const result = await getEnv(false)
 
     expect(result.env).toBe('canary')
@@ -118,7 +118,7 @@ describe('getEnv', () => {
     vi.stubEnv('VERCEL_ENV', 'preview')
     vi.stubEnv('VERCEL_GIT_PULL_REQUEST_ID', '123')
     vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'feat/foo')
-    const { getEnv } = await import('../../../config/env')
+    const { getEnv } = await import('~~/config/env')
     const result = await getEnv(false)
 
     expect(result.env).toBe('preview')
@@ -128,7 +128,7 @@ describe('getEnv', () => {
     vi.stubEnv('VERCEL_ENV', 'preview')
     vi.stubEnv('VERCEL_GIT_PULL_REQUEST_ID', '456')
     vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'main')
-    const { getEnv } = await import('../../../config/env')
+    const { getEnv } = await import('~~/config/env')
     const result = await getEnv(false)
 
     expect(result.env).toBe('preview')
@@ -137,7 +137,7 @@ describe('getEnv', () => {
   it('returns "canary" for Vercel production deploys from main branch', async () => {
     vi.stubEnv('VERCEL_ENV', 'production')
     vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'main')
-    const { getEnv } = await import('../../../config/env')
+    const { getEnv } = await import('~~/config/env')
     const result = await getEnv(false)
 
     expect(result.env).toBe('canary')
@@ -146,7 +146,7 @@ describe('getEnv', () => {
   it('returns "release" for Vercel production deploys from non-main branch', async () => {
     vi.stubEnv('VERCEL_ENV', 'production')
     vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'v1.0.0')
-    const { getEnv } = await import('../../../config/env')
+    const { getEnv } = await import('~~/config/env')
     const result = await getEnv(false)
 
     expect(result.env).toBe('release')
@@ -155,7 +155,7 @@ describe('getEnv', () => {
   it('prioritises "dev" over "canary" in development mode', async () => {
     vi.stubEnv('VERCEL_ENV', 'preview')
     vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'main')
-    const { getEnv } = await import('../../../config/env')
+    const { getEnv } = await import('~~/config/env')
     const result = await getEnv(true)
 
     expect(result.env).toBe('dev')
@@ -179,7 +179,7 @@ describe('getPreviewUrl', () => {
   })
 
   it('returns `undefined` if no known preview env is detected', async () => {
-    const { getPreviewUrl } = await import('../../../config/env')
+    const { getPreviewUrl } = await import('~~/config/env')
 
     expect(getPreviewUrl()).toBeUndefined()
   })
@@ -191,7 +191,7 @@ describe('getPreviewUrl', () => {
     for (const [key, value] of Object.entries(envVars)) {
       vi.stubEnv(key, value)
     }
-    const { getPreviewUrl } = await import('../../../config/env')
+    const { getPreviewUrl } = await import('~~/config/env')
 
     expect(getPreviewUrl()).toBeUndefined()
   })
@@ -234,7 +234,7 @@ describe('getPreviewUrl', () => {
       vi.stubEnv(key, value)
     }
 
-    const { getPreviewUrl } = await import('../../../config/env')
+    const { getPreviewUrl } = await import('~~/config/env')
 
     expect(getPreviewUrl()).toBe(expectedUrl)
   })
@@ -257,7 +257,7 @@ describe('getProductionUrl', () => {
   })
 
   it('returns `undefined` if no known production env is detected', async () => {
-    const { getProductionUrl } = await import('../../../config/env')
+    const { getProductionUrl } = await import('~~/config/env')
 
     expect(getProductionUrl()).toBeUndefined()
   })
@@ -297,7 +297,7 @@ describe('getProductionUrl', () => {
     for (const [key, value] of Object.entries(envVars)) {
       vi.stubEnv(key, value)
     }
-    const { getProductionUrl } = await import('../../../config/env')
+    const { getProductionUrl } = await import('~~/config/env')
 
     expect(getProductionUrl()).toBeUndefined()
   })
@@ -320,7 +320,7 @@ describe('getProductionUrl', () => {
     for (const [key, value] of Object.entries(envVars)) {
       vi.stubEnv(key, value)
     }
-    const { getProductionUrl } = await import('../../../config/env')
+    const { getProductionUrl } = await import('~~/config/env')
 
     expect(getProductionUrl()).toBe(expectedUrl)
   })
@@ -328,7 +328,7 @@ describe('getProductionUrl', () => {
 
 describe('getVersion', () => {
   it('returns a valid semver string without a leading "v"', async () => {
-    const { getVersion } = await import('../../../config/env')
+    const { getVersion } = await import('~~/config/env')
     const result = await getVersion()
 
     expect(result).not.toMatch(/^v/)

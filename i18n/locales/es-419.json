@@ -5,8 +5,16 @@
   "shortcuts": {
     "settings": "Abrir configuración"
   },
+  "blog": {
+    "atproto": {
+      "like_or_reply_on_bluesky": "Dale me gusta a esta publicación o agrega tu comentario en Bluesky"
+    }
+  },
   "settings": {
     "keyboard_shortcuts_enabled": "Habilitar atajos de teclado"
+  },
+  "error": {
+    "default": "Algo salió mal"
   },
   "auth": {
     "modal": {
@@ -53,11 +61,15 @@
     },
     "trends": {
       "copy_alt": {
-        "compare": "Gráfica de líneas de comparación de descargas de paquetes para: {packages}."
+        "compare": "Gráfica de líneas de comparación de descargas de paquetes para: {packages}.",
+        "facet_bar_general_description": "Gráfica de barras horizontal para: {packages}, comparando {facet} ({description}). {facet_analysis} {watermark}."
       }
     }
   },
   "compare": {
+    "packages": {
+      "charts_view": "Gráficas"
+    },
     "no_dependency": {
       "typeahead_description": "¡Compara contra no usar una dependencia! Aprobado por e18e.",
       "tooltip_description": "¡Compara contra no usar una dependencia! La {link} mantiene una lista de paquetes que pueden ser reemplazados con APIs nativas o alternativas más simples."
@@ -67,6 +79,14 @@
     },
     "filter": {
       "added": "agregado"
+    }
+  },
+  "pds": {
+    "join": {
+      "description": "Ya sea que estés creando tu primera cuenta en la atmósfera o migrando una existente, tu lugar está aquí. Puedes migrar tu cuenta actual sin perder tu usuario, tus publicaciones o tus seguidores."
+    },
+    "server": {
+      "learn_more": "Conoce cómo npmx usa la Atmósfera"
     }
   },
   "a11y": {

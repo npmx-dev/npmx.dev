@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
-import { buildScopeTeam } from '../../../../../app/utils/npm/common'
-import { validateScopeTeam } from '../../../../../cli/src/npm-client'
+import { buildScopeTeam } from '~/utils/npm/common'
+import { validateScopeTeam } from '~~/cli/src/npm-client'
 
 describe('buildScopeTeam', () => {
   it('constructs scope:team with @ prefix', () => {

@@ -1,5 +1,3 @@
-import type { MaybeRefOrGetter } from 'vue'
-import { toValue } from 'vue'
 import type {
   DailyDataPoint,
   DailyRawPoint,
@@ -8,24 +6,11 @@ import type {
   WeeklyDataPoint,
   YearlyDataPoint,
 } from '~/types/chart'
-import type { RepoRef } from '#shared/utils/git-providers'
-import { parseRepoUrl } from '#shared/utils/git-providers'
-import type { PackageMetaResponse } from '#shared/types'
-import { encodePackageName } from '#shared/utils/npm'
+import { mapWithConcurrency } from '#shared/utils/async'
 import { fetchNpmDownloadsRange } from '~/utils/npm/api'
 
 export type PackumentLikeForTime = {
   time?: Record<string, string>
-}
-
-function toIsoDateString(date: Date): string {
-  return date.toISOString().slice(0, 10)
-}
-
-function addDays(date: Date, days: number): Date {
-  const updatedDate = new Date(date)
-  updatedDate.setUTCDate(updatedDate.getUTCDate() + days)
-  return updatedDate
 }
 
 function startOfUtcMonth(date: Date): Date {
@@ -36,17 +21,9 @@ function startOfUtcYear(date: Date): Date {
   return new Date(Date.UTC(date.getUTCFullYear(), 0, 1))
 }
 
-function parseIsoDateOnly(value: string): Date {
-  return new Date(`${value}T00:00:00.000Z`)
-}
-
-function formatIsoDateOnly(date: Date): string {
-  return date.toISOString().slice(0, 10)
-}
-
 function differenceInUtcDaysInclusive(startIso: string, endIso: string): number {
-  const start = parseIsoDateOnly(startIso)
-  const end = parseIsoDateOnly(endIso)
+  const start = parseIsoDate(startIso)
+  const end = parseIsoDate(endIso)
   return Math.floor((end.getTime() - start.getTime()) / 86400000) + 1
 }
 
@@ -59,16 +36,16 @@ function splitIsoRangeIntoChunksInclusive(
   if (totalDays <= maximumDaysPerRequest) return [{ startIso, endIso }]
 
   const chunks: Array<{ startIso: string; endIso: string }> = []
-  let cursorStart = parseIsoDateOnly(startIso)
-  const finalEnd = parseIsoDateOnly(endIso)
+  let cursorStart = parseIsoDate(startIso)
+  const finalEnd = parseIsoDate(endIso)
 
   while (cursorStart.getTime() <= finalEnd.getTime()) {
     const cursorEnd = addDays(cursorStart, maximumDaysPerRequest - 1)
     const actualEnd = cursorEnd.getTime() < finalEnd.getTime() ? cursorEnd : finalEnd
 
     chunks.push({
-      startIso: formatIsoDateOnly(cursorStart),
-      endIso: formatIsoDateOnly(actualEnd),
+      startIso: toIsoDate(cursorStart),
+      endIso: toIsoDate(actualEnd),
     })
 
     cursorStart = addDays(actualEnd, 1)
@@ -89,99 +66,44 @@ function mergeDailyPoints(points: DailyRawPoint[]): DailyRawPoint[] {
     .map(([day, value]) => ({ day, value }))
 }
 
-export function buildDailyEvolutionFromDaily(daily: DailyRawPoint[]): DailyDataPoint[] {
-  return daily
-    .slice()
-    .sort((a, b) => a.day.localeCompare(b.day))
-    .map(item => {
-      const dayDate = parseIsoDateOnly(item.day)
-      const timestamp = dayDate.getTime()
-
-      return { day: item.day, value: item.value, timestamp }
-    })
+function roundToHundredths(value: number): number {
+  return Math.round(value * 100) / 100
 }
 
-export function buildRollingWeeklyEvolutionFromDaily(
-  daily: DailyRawPoint[],
-  rangeStartIso: string,
-  rangeEndIso: string,
-): WeeklyDataPoint[] {
-  const sorted = daily.slice().sort((a, b) => a.day.localeCompare(b.day))
-  const rangeStartDate = parseIsoDateOnly(rangeStartIso)
-  const rangeEndDate = parseIsoDateOnly(rangeEndIso)
+/** Catmull-Rom monotone cubic spline — same algorithm as vue-data-ui's smoothPath for OG Images */
+export function smoothPath(pts: { x: number; y: number }[]): string {
+  if (pts.length < 2) return '0,0'
+  const n = pts.length - 1
+  const out = [`${roundToHundredths(pts[0]!.x)},${roundToHundredths(pts[0]!.y)}`]
+  const dx: number[] = []
+  const dy: number[] = []
+  const m: number[] = []
+  const t: number[] = []
 
-  const groupedByIndex = new Map<number, number>()
-
-  for (const item of sorted) {
-    const itemDate = parseIsoDateOnly(item.day)
-    const dayOffset = Math.floor((itemDate.getTime() - rangeStartDate.getTime()) / 86400000)
-    if (dayOffset < 0) continue
-
-    const weekIndex = Math.floor(dayOffset / 7)
-    groupedByIndex.set(weekIndex, (groupedByIndex.get(weekIndex) ?? 0) + item.value)
+  for (let i = 0; i < n; i++) {
+    dx[i] = pts[i + 1]!.x - pts[i]!.x
+    dy[i] = pts[i + 1]!.y - pts[i]!.y
+    m[i] = dx[i] === 0 ? 0 : dy[i]! / dx[i]!
   }
 
-  return Array.from(groupedByIndex.entries())
-    .sort(([a], [b]) => a - b)
-    .map(([weekIndex, value]) => {
-      const weekStartDate = addDays(rangeStartDate, weekIndex * 7)
-      const weekEndDate = addDays(weekStartDate, 6)
-
-      // Clamp weekEnd to the actual data range end date
-      const clampedWeekEndDate =
-        weekEndDate.getTime() > rangeEndDate.getTime() ? rangeEndDate : weekEndDate
-
-      const weekStartIso = toIsoDateString(weekStartDate)
-      const weekEndIso = toIsoDateString(clampedWeekEndDate)
-
-      const timestampStart = weekStartDate.getTime()
-      const timestampEnd = clampedWeekEndDate.getTime()
-
-      return {
-        value,
-        weekKey: `${weekStartIso}_${weekEndIso}`,
-        weekStart: weekStartIso,
-        weekEnd: weekEndIso,
-        timestampStart,
-        timestampEnd,
-      }
-    })
-}
-
-export function buildMonthlyEvolutionFromDaily(daily: DailyRawPoint[]): MonthlyDataPoint[] {
-  const sorted = daily.slice().sort((a, b) => a.day.localeCompare(b.day))
-  const valuesByMonth = new Map<string, number>()
-
-  for (const item of sorted) {
-    const month = item.day.slice(0, 7)
-    valuesByMonth.set(month, (valuesByMonth.get(month) ?? 0) + item.value)
+  t[0] = m[0]!
+  t[n] = m[n - 1]!
+  for (let i = 1; i < n; i++) {
+    t[i] = m[i - 1]! * m[i]! <= 0 ? 0 : (2 * m[i - 1]! * m[i]!) / (m[i - 1]! + m[i]!)
   }
 
-  return Array.from(valuesByMonth.entries())
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([month, value]) => {
-      const monthStartDate = parseIsoDateOnly(`${month}-01`)
-      const timestamp = monthStartDate.getTime()
-      return { month, value, timestamp }
-    })
-}
-
-export function buildYearlyEvolutionFromDaily(daily: DailyRawPoint[]): YearlyDataPoint[] {
-  const sorted = daily.slice().sort((a, b) => a.day.localeCompare(b.day))
-  const valuesByYear = new Map<string, number>()
-
-  for (const item of sorted) {
-    const year = item.day.slice(0, 4)
-    valuesByYear.set(year, (valuesByYear.get(year) ?? 0) + item.value)
+  for (let i = 0; i < n; i++) {
+    const x0 = pts[i]!.x,
+      y0 = pts[i]!.y
+    const x1 = pts[i + 1]!.x,
+      y1 = pts[i + 1]!.y
+    const seg = x1 - x0
+    out.push(
+      `C ${roundToHundredths(x0 + seg / 3)},${roundToHundredths(y0 + (t[i]! * seg) / 3)} ${roundToHundredths(x1 - seg / 3)},${roundToHundredths(y1 - (t[i + 1]! * seg) / 3)} ${roundToHundredths(x1)},${roundToHundredths(y1)}`,
+    )
   }
 
-  return Array.from(valuesByYear.entries())
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([year, value]) => {
-      const yearStartDate = parseIsoDateOnly(`${year}-01-01`)
-      const timestamp = yearStartDate.getTime()
-      return { year, value, timestamp }
-    })
+  return out.join(' ')
 }
 
 const npmDailyRangeCache = import.meta.client ? new Map<string, Promise<DailyRawPoint[]>>() : null
@@ -238,8 +160,8 @@ function buildWeeklyEvolutionFromContributorCounts(
 
       const clampedWeekEndDate = weekEndDate.getTime() > rangeEnd.getTime() ? rangeEnd : weekEndDate
 
-      const weekStartIso = toIsoDateString(weekStartDate)
-      const weekEndIso = toIsoDateString(clampedWeekEndDate)
+      const weekStartIso = toIsoDate(weekStartDate)
+      const weekEndIso = toIsoDate(clampedWeekEndDate)
 
       return {
         value,
@@ -375,12 +297,12 @@ async function fetchDailyRangeChunked(packageName: string, startIso: string, end
     return fetchDailyRangeCached(packageName, startIso, endIso)
   }
 
-  const all: DailyRawPoint[] = []
-
-  for (const range of ranges) {
-    const part = await fetchDailyRangeCached(packageName, range.startIso, range.endIso)
-    all.push(...part)
-  }
+  const parts = await mapWithConcurrency(
+    ranges,
+    range => fetchDailyRangeCached(packageName, range.startIso, range.endIso),
+    10,
+  )
+  const all = parts.flat()
 
   return mergeDailyPoints(all)
 }
@@ -415,11 +337,11 @@ export function useCharts() {
     )
 
     const endDateOnly = toDateOnly(evolutionOptions.endDate)
-    const end = endDateOnly ? parseIsoDateOnly(endDateOnly) : yesterday
+    const end = endDateOnly ? parseIsoDate(endDateOnly) : yesterday
 
     const startDateOnly = toDateOnly(evolutionOptions.startDate)
     if (startDateOnly) {
-      const start = parseIsoDateOnly(startDateOnly)
+      const start = parseIsoDate(startDateOnly)
       return { start, end }
     }
 
@@ -465,16 +387,17 @@ export function useCharts() {
 
     const { start, end } = resolveDateRange(resolvedOptions, resolvedCreatedIso)
 
-    const startIso = toIsoDateString(start)
-    const endIso = toIsoDateString(end)
+    const startIso = toIsoDate(start)
+    const endIso = toIsoDate(end)
 
     const sortedDaily = await fetchDailyRangeChunked(resolvedPackageName, startIso, endIso)
 
-    if (resolvedOptions.granularity === 'day') return buildDailyEvolutionFromDaily(sortedDaily)
+    if (resolvedOptions.granularity === 'day') return buildDailyEvolution(sortedDaily)
     if (resolvedOptions.granularity === 'week')
-      return buildRollingWeeklyEvolutionFromDaily(sortedDaily, startIso, endIso)
-    if (resolvedOptions.granularity === 'month') return buildMonthlyEvolutionFromDaily(sortedDaily)
-    return buildYearlyEvolutionFromDaily(sortedDaily)
+      return buildWeeklyEvolution(sortedDaily, startIso, endIso)
+    if (resolvedOptions.granularity === 'month')
+      return buildMonthlyEvolution(sortedDaily, startIso, endIso)
+    return buildYearlyEvolution(sortedDaily, startIso, endIso)
   }
 
   async function fetchPackageLikesEvolution(
@@ -508,17 +431,17 @@ export function useCharts() {
     const sortedDaily = await dailyLikesPromise
 
     const { start, end } = resolveDateRange(resolvedOptions, null)
-    const startIso = toIsoDateString(start)
-    const endIso = toIsoDateString(end)
+    const startIso = toIsoDate(start)
+    const endIso = toIsoDate(end)
 
     const filteredDaily = sortedDaily.filter(d => d.day >= startIso && d.day <= endIso)
 
-    if (resolvedOptions.granularity === 'day') return buildDailyEvolutionFromDaily(filteredDaily)
+    if (resolvedOptions.granularity === 'day') return buildDailyEvolution(filteredDaily)
     if (resolvedOptions.granularity === 'week')
-      return buildRollingWeeklyEvolutionFromDaily(filteredDaily, startIso, endIso)
+      return buildWeeklyEvolution(filteredDaily, startIso, endIso)
     if (resolvedOptions.granularity === 'month')
-      return buildMonthlyEvolutionFromDaily(filteredDaily)
-    return buildYearlyEvolutionFromDaily(filteredDaily)
+      return buildMonthlyEvolution(filteredDaily, startIso, endIso)
+    return buildYearlyEvolution(filteredDaily, startIso, endIso)
   }
 
   async function fetchRepoContributorsEvolution(

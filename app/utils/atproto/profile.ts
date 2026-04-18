@@ -1,7 +1,7 @@
 import { FetchError } from 'ofetch'
 import { handleAuthError } from './helpers'
 
-export type UpdateProfileResult = {
+type UpdateProfileResult = {
   success: boolean
   error?: Error
 }

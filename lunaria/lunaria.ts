@@ -11,11 +11,13 @@ if (existsSync('.git/MERGE_HEAD')) {
   process.exit(0)
 }
 
-const lunaria = await createLunaria()
+const lunaria = await createLunaria({
+  // `force: true` configures lunaria to bypass git caching and always read the latest commit from git history,
+  // workarounds issue where lunaria caches becomes stale after rebasing or merging, which causes lunaria to crash
+  // https://github.com/npmx-dev/npmx.dev/issues/2527
+  force: true,
+})
 const status = await lunaria.getFullStatus()
-
-// Generate HTML dashboard
-const html = Page(lunaria.config, status, lunaria)
 
 // Generate JSON status for the app
 const { sourceLocale } = lunaria.config
@@ -75,6 +77,7 @@ const jsonStatus: I18nStatus = {
   sourceLocale: {
     lang: sourceLocale.lang,
     label: sourceLocale.label,
+    totalKeys,
   },
   locales: appLocales.map(locale => {
     const localization = fileStatus.localizations.find(l => l.lang === locale.code)
@@ -93,6 +96,7 @@ const jsonStatus: I18nStatus = {
     return {
       lang: locale.code,
       label: locale.name!,
+      dir: locale?.dir ?? 'ltr',
       totalKeys,
       completedKeys,
       missingKeys,
@@ -102,6 +106,9 @@ const jsonStatus: I18nStatus = {
     }
   }),
 }
+
+// Generate HTML dashboard using processed jsonStatus
+const html = Page(lunaria.config, jsonStatus, lunaria)
 
 mkdirSync('dist/lunaria', { recursive: true })
 writeFileSync('dist/lunaria/index.html', html)

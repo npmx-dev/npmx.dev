@@ -1,0 +1,1517 @@
+{
+  "$schema": "../schema.json",
+  "seo": {
+    "home": {
+      "title": "npmx - Pretraživač paketa za npm registar",
+      "description": "brzi, moderan pretraživač za npm registar. Pretražujte, pregledajte i istražujte pakete kroz moderan interfejs."
+    }
+  },
+  "built_at": "napravljeno {0}",
+  "alt_logo": "npmx logo",
+  "tagline": "brz, moderan pretraživač za npm registar",
+  "non_affiliation_disclaimer": "nije povezano sa npm, Inc.",
+  "trademark_disclaimer": "npm je registrovani zaštitni znak kompanije npm, Inc. Ovaj sajt nije povezan sa kompanijom npm, Inc.",
+  "footer": {
+    "about": "o nama",
+    "blog": "blog",
+    "docs": "dokumentacija",
+    "source": "izvor",
+    "social": "društvene mreže",
+    "chat": "ćaskanje",
+    "builders_chat": "builders",
+    "keyboard_shortcuts": "prečice na tastaturi",
+    "brand": "brend"
+  },
+  "shortcuts": {
+    "section": {
+      "global": "Globalno",
+      "search": "Pretraga",
+      "package": "Paket"
+    },
+    "focus_search": "Fokusirajte pretragu",
+    "show_kbd_hints": "Istaknite prečice na tastaturi",
+    "settings": "Otvorite podešavanja",
+    "compare": "Otvorite poređenje",
+    "compare_from_package": "Otvorite poređenje (sa trenutnim paketom)",
+    "navigate_results": "Krećite se kroz rezultate",
+    "go_to_result": "Idite na rezultat",
+    "open_code_view": "Otvorite pregled koda",
+    "open_docs": "Otvorite dokumentaciju",
+    "disable_shortcuts": "Možete isključiti prečice na tastaturi u {settings}.",
+    "open_main": "Otvorite glavne informacije",
+    "open_diff": "Otvorite razlike verzija"
+  },
+  "search": {
+    "label": "Pretražite npm pakete",
+    "placeholder": "pretražite pakete...",
+    "button": "pretražite",
+    "searching": "Pretražujem...",
+    "found_packages": "Nije pronađen nijedan paket | Pronađen 1 paket | Pronađeno {count} paketa",
+    "found_packages_sorted": "Nema rezultata | Sortiranje prvog {count} rezultata | Sortiranje prvih {count} rezultata",
+    "updating": "(ažuriranje...)",
+    "no_results": "Nema paketa za \"{query}\"",
+    "rate_limited": "Dostignuto npm ograničenje, pokušajte ponovo za trenutak",
+    "title": "pretraga",
+    "title_search": "pretraga: {search}",
+    "title_packages": "pretražite pakete",
+    "meta_description": "Rezultati pretrage za '{search}'",
+    "meta_description_packages": "Pretražite npm pakete",
+    "not_taken": "{name} nije zauzet",
+    "claim_prompt": "Zauzmite ovo ime paketa na npm-u",
+    "claim_button": "Zauzmite \"{name}\"",
+    "want_to_claim": "Želite da zauzmete ovo ime paketa?",
+    "start_typing": "Počnite da kucate za pretragu paketa",
+    "algolia_disclaimer": "Omogućio Algolia",
+    "exact_match": "tačno",
+    "suggestion": {
+      "user": "korisnik",
+      "org": "organizacija",
+      "view_user_packages": "Pogledajte pakete ovog korisnika",
+      "view_org_packages": "Pogledajte pakete ove organizacije"
+    },
+    "instant_search": "Trenutna pretraga",
+    "instant_search_on": "uključeno",
+    "instant_search_off": "isključeno",
+    "instant_search_turn_on": "uključite",
+    "instant_search_turn_off": "isključite",
+    "instant_search_advisory": "{label} {state} — {action}"
+  },
+  "nav": {
+    "main_navigation": "Glavno",
+    "popular_packages": "Popularni paketi",
+    "settings": "podešavanja",
+    "compare": "poređenje",
+    "back": "nazad",
+    "menu": "Meni",
+    "mobile_menu": "Meni za navigaciju",
+    "open_menu": "Otvorite meni",
+    "links": "Linkovi",
+    "tap_to_search": "Dodirnite za pretragu"
+  },
+  "blog": {
+    "title": "Blog",
+    "heading": "blog",
+    "meta_description": "Uvidi i novosti iz npmx zajednice",
+    "author": {
+      "view_profile": "Pogledajte profil {name} na Bluesky-u"
+    },
+    "draft_badge": "Nacrt",
+    "draft_banner": "Ovo je neobjavljeni nacrt. Može biti nepotpun ili sadržati netačnosti.",
+    "no_posts": "Nema pronađenih objava.",
+    "atproto": {
+      "view_on_bluesky": "Pogledajte na Bluesky-u",
+      "reply_on_bluesky": "Odgovorite na Bluesky-u",
+      "likes_on_bluesky": "Sviđanja na Bluesky-u",
+      "like_or_reply_on_bluesky": "Lajkujte ovu objavu ili dodajte komentar na Bluesky-u",
+      "no_comments_yet": "Još nema komentara.",
+      "could_not_load_comments": "Nije moguće učitati komentare.",
+      "comments": "Komentari",
+      "loading_comments": "Učitavanje komentara...",
+      "updating": "Ažuriranje...",
+      "reply_count": "{count} odgovor | {count} odgovora | {count} odgovora",
+      "like_count": "{count} sviđanje | {count} sviđanja | {count} sviđanja",
+      "repost_count": "{count} prosleđivanje | {count} prosleđivanja | {count} prosleđivanja",
+      "more_replies": "{count} još odgovor... | {count} još odgovora... | {count} još odgovora..."
+    }
+  },
+  "settings": {
+    "title": "podešavanja",
+    "tagline": "prilagodite svoje npmx iskustvo",
+    "meta_description": "Prilagodite svoje npmx.dev iskustvo pomoću podešavanja teme, jezika i prikaza.",
+    "sections": {
+      "appearance": "Izgled",
+      "display": "Prikaz",
+      "search": "Mogućnosti pretrage",
+      "language": "Jezik",
+      "keyboard_shortcuts": "Prečice na tastaturi"
+    },
+    "data_source": {
+      "label": "Izvor podataka",
+      "description": "Izaberite odakle npmx dobija podatke za pretragu. Stranice pojedinačnih paketa uvek koriste direktno npm registar.",
+      "npm": "npm registar",
+      "npm_description": "Dohvata pretragu, liste organizacija i korisnika direktno iz zvaničnog npm registra. Verodostojno, ali može biti sporije.",
+      "algolia": "Algolia",
+      "algolia_description": "Koristi Algolia za bržu pretragu, stranice organizacija i korisnika."
+    },
+    "instant_search": "Trenutna pretraga",
+    "instant_search_description": "Preusmerava na stranicu za pretragu i ažurira rezultate dok kucate.",
+    "relative_dates": "Relativni datumi",
+    "include_types": "Uključite {'@'}types u instalaciju",
+    "include_types_description": "Dodajte {'@'}types paket u komande za instalaciju za pakete bez tipova",
+    "hide_platform_packages": "Sakrijte pakete specifične za platformu u pretrazi",
+    "hide_platform_packages_description": "Sakrijte izvorne binarne pakete poput {'@'}esbuild/linux-x64 iz rezultata",
+    "enable_graph_pulse_loop": "Omogućite ponavljanje puls efekta na malom grafiku",
+    "enable_graph_pulse_loop_description": "Aktivirajte neprekidnu pulsirajuću animaciju na grafiku nedeljnih preuzimanja. Ova animacija može ometati neke korisnike.",
+    "theme": "Tema",
+    "theme_light": "Svetla",
+    "theme_dark": "Tamna",
+    "theme_system": "Sistemska",
+    "language": "Jezik",
+    "help_translate": "Pomozite u prevodu npmx-a",
+    "translation_status": "Proverite globalni status prevoda",
+    "accent_colors": {
+      "label": "Akcent boje",
+      "sky": "Nebeska",
+      "coral": "Koral",
+      "amber": "Ćilibar",
+      "emerald": "Smaragd",
+      "violet": "Ljubičasta",
+      "magenta": "Magenta"
+    },
+    "clear_accent": "Obrišite akcent boju",
+    "translation_progress": "Napredak prevoda",
+    "background_themes": {
+      "label": "Nijansa pozadine",
+      "neutral": "Neutralna",
+      "stone": "Kamena",
+      "zinc": "Cink",
+      "slate": "Škriljac",
+      "black": "Crna"
+    },
+    "keyboard_shortcuts_enabled": "Omogućite prečice na tastaturi",
+    "keyboard_shortcuts_enabled_description": "Prečice na tastaturi mogu biti isključene ako su u sukobu sa drugim prečicama pregledača ili sistema"
+  },
+  "i18n": {
+    "missing_keys": "{count} nedostajući prevod | {count} nedostajuća prevoda | {count} nedostajućih prevoda",
+    "copy_keys": "Kopirajte ključeve",
+    "show_more_keys": "Prikažite još {count}...",
+    "contribute_hint": "Pomozite poboljšanju ovog prevoda dodavanjem ključeva koji nedostaju.",
+    "edit_on_github": "Uredite na GitHub-u",
+    "view_guide": "Vodič za prevod"
+  },
+  "error": {
+    "401": "Neovlašćeno",
+    "404": "Stranica nije pronađena",
+    "500": "Interna greška servera",
+    "503": "Usluga nedostupna",
+    "default": "Nešto je pošlo naopako"
+  },
+  "common": {
+    "loading": "Učitavanje...",
+    "loading_more": "Učitavanje još...",
+    "loading_packages": "Učitavanje paketa...",
+    "end_of_results": "Kraj rezultata",
+    "try_again": "Pokušajte ponovo",
+    "close": "Zatvorite",
+    "or": "ili",
+    "retry": "Ponovite",
+    "copy": "kopirajte",
+    "copied": "kopirano!",
+    "skip_link": "Preskočite na glavni sadržaj",
+    "warnings": "Upozorenja:",
+    "go_back_home": "Vratite se na početnu",
+    "per_week": "/ nedeljno",
+    "vanity_downloads_hint": "Ukrasni broj: nema prikazanih paketa | Ukrasni broj: za prikazani paket | Ukrasni broj: Zbir {count} prikazanih paketa",
+    "sort": {
+      "name": "ime",
+      "role": "uloga",
+      "members": "članovi"
+    },
+    "scroll_to_top": "Vratite se na vrh",
+    "cancel": "Otkažite",
+    "save": "Sačuvajte",
+    "edit": "Uredite",
+    "error": "Greška",
+    "view_on": {
+      "npm": "pogledajte na npm-u",
+      "github": "Pogledajte na GitHub-u",
+      "gitlab": "Pogledajte na GitLab-u",
+      "bitbucket": "Pogledajte na Bitbucket-u",
+      "codeberg": "Pogledajte na Codeberg-u",
+      "git_repo": "Pogledajte u Git repozitorijumu",
+      "forgejo": "Pogledajte na Forgejo-u",
+      "gitea": "Pogledajte na Gitea-i",
+      "gitee": "Pogledajte na Gitee-u",
+      "radicle": "Pogledajte na Radicle-u",
+      "sourcehut": "Pogledajte na SourceHut-u",
+      "tangled": "Pogledajte na Tangled-u"
+    },
+    "collapse": "Skupite",
+    "expand": "Proširite"
+  },
+  "profile": {
+    "display_name": "Ime za prikaz",
+    "description": "Opis",
+    "no_description": "Nema opisa",
+    "website": "Veb sajt",
+    "website_placeholder": "https://example.com",
+    "likes": "Sviđanja",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "npmx profil korisnika {handle}",
+    "not_found": "Profil nije pronađen",
+    "not_found_message": "Profil za {handle} nije moguće pronaći.",
+    "invite": {
+      "message": "Izgleda da još uvek ne koriste npmx. Želite li da im kažete nešto više o tome?",
+      "share_button": "Podelite na Bluesky-u",
+      "compose_text": "Hej {'@'}{handle}! Da li ste već pogledali npmx.dev? To je pretraživač za npm registar koji je brz, moderan i otvorenog koda.\nhttps://npmx.dev"
+    }
+  },
+  "package": {
+    "not_found": "Paket nije pronađen",
+    "not_found_message": "Paket nije moguće pronaći.",
+    "no_description": "Nema opisa",
+    "verified_provenance": "Verifikovano poreklo",
+    "navigation": "Paket",
+    "copy_name": "Kopirajte ime paketa",
+    "deprecation": {
+      "package": "Ovaj paket je zastareo.",
+      "version": "Ova verzija je zastarela.",
+      "no_reason": "Nije naveden razlog"
+    },
+    "size_increase": {
+      "title_size": "Značajno povećanje veličine od verzije v{version}",
+      "title_deps": "Značajno povećanje broja zavisnosti od verzije v{version}",
+      "title_both": "Značajno povećanje veličine i broja zavisnosti od verzije v{version}",
+      "size": "Veličina instalacije povećana za {percent} ({size} veća)",
+      "deps": "{count} više zavisnosti"
+    },
+    "replacement": {
+      "title": "Možda vam ova zavisnost ne treba.",
+      "native": "Ovo se može zameniti sa {replacement}, dostupno od Node verzije {nodeVersion}.",
+      "simple": "{community} je označio ovaj paket kao suvišan, sa savetom: {replacement}.",
+      "documented": "{community} je označio ovaj paket kao onaj koji ima performantnije alternative.",
+      "none": "Ovaj paket je označen kao nepotreban, a njegova funkcionalnost je verovatno dostupna izvorno u svim okruženjima.",
+      "learn_more": "Saznajte više",
+      "learn_more_above": "Saznajte više iznad.",
+      "mdn": "MDN",
+      "community": "zajednica",
+      "consider_no_dep": "+ Razmislite bez zavisnosti?"
+    },
+    "stats": {
+      "license": "Licenca",
+      "deps": "Zavisnosti",
+      "install_size": "Veličina instalacije",
+      "vulns": "Ranjivosti",
+      "published": "Objavljen",
+      "published_tooltip": "Datum kada je {package}{'@'}{version} objavljen",
+      "view_dependency_graph": "Pogledajte grafikon zavisnosti",
+      "inspect_dependency_tree": "Pregledajte stablo zavisnosti",
+      "size_tooltip": {
+        "unpacked": "{size} raspakovana veličina (ovaj paket)",
+        "total": "{size} ukupna raspakovana veličina (uključujući {count} zavisnost za linux-x64) | {size} ukupna raspakovana veličina (uključujući {count} zavisnosti za linux-x64) | {size} ukupna raspakovana veličina (uključujući svih {count} zavisnosti za linux-x64)"
+      }
+    },
+    "skills": {
+      "title": "Agent veštine",
+      "skills_available": "{count} veština dostupna | {count} veštine dostupne | {count} veština dostupno",
+      "compatible_with": "Kompatibilno sa {tool}",
+      "install": "Instalirajte",
+      "installation_method": "Metoda instalacije",
+      "learn_more": "Saznajte više",
+      "available_skills": "Dostupne veštine",
+      "click_to_expand": "Kliknite za proširenje",
+      "no_description": "Nema opisa",
+      "file_counts": {
+        "scripts": "{count} skripta | {count} skripte | {count} skripti",
+        "refs": "{count} referenca | {count} reference | {count} referenci",
+        "assets": "{count} stavka | {count} stavke | {count} stavki"
+      },
+      "view_source": "Pogledajte izvorni kod",
+      "skills_cli": "skills CLI"
+    },
+    "links": {
+      "main": "glavno",
+      "repo": "repozitorijum",
+      "homepage": "početna stranica",
+      "issues": "prijave problema",
+      "jsr": "jsr",
+      "code": "kod",
+      "docs": "dokumentacija",
+      "fund": "podržite",
+      "compare": "uporedite",
+      "compare_this_package": "uporedite ovaj paket"
+    },
+    "likes": {
+      "like": "Sviđa mi se ovaj paket",
+      "unlike": "Uklonite sviđanje"
+    },
+    "docs": {
+      "contents": "Sadržaj",
+      "default_not_available": "Dokumentacija nije dostupna za ovu verziju.",
+      "not_available": "Dokumentacija nije dostupna",
+      "not_available_detail": "Nismo uspeli da generišemo dokumentaciju za ovu verziju.",
+      "page_title": "API dokumentacija - npmx",
+      "page_title_name": "{name} dokumentacija - npmx",
+      "page_title_version": "{name} dokumentacija - npmx",
+      "og_title": "{name} - Dokumentacija",
+      "view_package": "Pogledajte paket"
+    },
+    "get_started": {
+      "title": "Početak",
+      "pm_label": "Upravljač paketima",
+      "copy_command": "Kopirajte komandu za instalaciju",
+      "copy_dev_command": "Kopirajte komandu za razvojnu instalaciju",
+      "dev_dependency_hint": "Obično se instalira kao razvojna zavisnost",
+      "view_types": "Pogledajte {package}"
+    },
+    "create": {
+      "title": "Kreirajte novi projekat",
+      "copy_command": "Kopirajte komandu za kreiranje",
+      "view": "{packageName} ima istog održavaoca. Kliknite za više detalja."
+    },
+    "run": {
+      "title": "Pokrenite",
+      "locally": "Pokrenite lokalno"
+    },
+    "readme": {
+      "title": "Readme",
+      "no_readme": "Nema README datoteke.",
+      "toc_title": "Sadržaj",
+      "callout": {
+        "note": "Napomena",
+        "tip": "Savet",
+        "important": "Važno",
+        "warning": "Upozorenje",
+        "caution": "Oprez"
+      },
+      "copy_as_markdown": "Kopirajte README kao Markdown"
+    },
+    "provenance_section": {
+      "title": "Poreklo",
+      "built_and_signed_on": "Izgrađeno i potpisano na {provider}",
+      "view_build_summary": "Pogledajte sažetak izgradnje",
+      "source_commit": "Izvorni commit",
+      "build_file": "Build datoteka",
+      "public_ledger": "Javni dnevnik",
+      "transparency_log_entry": "Zapis u transparentnom dnevniku",
+      "view_more_details": "Pogledajte više detalja",
+      "error_loading": "Neuspešno učitavanje detalja o poreklu"
+    },
+    "security_downgrade": {
+      "title": "Smanjenje poverenja",
+      "description_to_none_provenance": "Ova verzija je objavljena bez {provenance}.",
+      "description_to_none_trustedPublisher": "Ova verzija je objavljena bez {trustedPublishing}.",
+      "description_to_provenance_trustedPublisher": "Ova verzija koristi {provenance}, ali ne i {trustedPublishing}.",
+      "fallback_install_provenance": "Komande za instalaciju su zaključane na {version}, poslednju verziju sa poreklom.",
+      "fallback_install_trustedPublisher": "Komande za instalaciju su zaključane na {version}, poslednju verziju sa poverljivim objavljivanjem.",
+      "provenance_link_text": "poreklo",
+      "trusted_publishing_link_text": "poverljivo objavljivanje"
+    },
+    "keywords_title": "Ključne reči",
+    "compatibility": "Kompatibilnost",
+    "card": {
+      "publisher": "Izdavač",
+      "published": "Objavljen",
+      "weekly_downloads": "Nedeljna preuzimanja",
+      "keywords": "Ključne reči",
+      "license": "Licenca",
+      "select": "Izaberite paket",
+      "select_maximum": "Maksimalno {count} paketa može biti izabrano"
+    },
+    "versions": {
+      "title": "Verzije",
+      "collapse": "Skupite {tag}",
+      "expand": "Proširite {tag}",
+      "collapse_other": "Skupite ostale verzije",
+      "expand_other": "Proširite ostale verzije",
+      "collapse_major": "Skupite glavnu verziju {major}",
+      "expand_major": "Proširite glavnu verziju {major}",
+      "other_versions": "Ostale verzije",
+      "more_tagged": "još {count} sa oznakom",
+      "all_covered": "Sve verzije su pokrivene gornjim oznakama",
+      "deprecated_title": "{version} (zastarelo)",
+      "view_all": "Pogledajte {count} verziju | Pogledajte {count} verzije | Pogledajte svih {count} verzija",
+      "view_all_versions": "Pogledajte sve verzije",
+      "distribution_title": "Semver grupa",
+      "distribution_modal_title": "Verzije",
+      "distribution_range_date_same_year": "od {from} do {to}, {endYear}",
+      "distribution_range_date_multiple_years": "od {from}, {startYear} do {to}, {endYear}",
+      "grouping_major": "Glavni",
+      "grouping_minor": "Sporedni",
+      "grouping_versions_title": "Verzije",
+      "grouping_versions_about": "O grupisanju verzija",
+      "grouping_versions_all": "Sve",
+      "grouping_versions_only_recent": "Samo nedavne",
+      "grouping_usage_title": "Korišćenje",
+      "grouping_usage_about": "O grupisanju po korišćenju",
+      "grouping_usage_all": "Sve",
+      "grouping_usage_most_used": "Najčešće korišćeno",
+      "recent_versions_only_tooltip": "Prikažite samo verzije objavljene u poslednjih godinu dana.",
+      "show_low_usage_tooltip": "Uključite grupe verzija sa manje od 1% ukupnih preuzimanja.",
+      "y_axis_label": "Preuzimanja",
+      "filter_placeholder": "Filtrirajte po semver-u (npr. ^3.0.0)",
+      "filter_invalid": "Neispravan semver opseg",
+      "filter_help": "Pomoć za filtriranje semver opsega",
+      "filter_tooltip": "Filtrirajte verzije koristeći {link}. Na primer, ^3.0.0 prikazuje sve 3.x verzije.",
+      "filter_tooltip_link": "semver opseg",
+      "no_matches": "Nijedna verzija ne odgovara ovom opsegu",
+      "copy_alt": {
+        "per_version_analysis": "Verzija {version} je preuzeta {downloads} puta",
+        "general_description": "Stubni grafikon koji prikazuje broj preuzimanja po verziji za {versions_count} {semver_grouping_mode} verzija paketa {package_name}, {date_range_label} od verzije {first_version} do verzije {last_version}. Najviše preuzimana verzija je {max_downloaded_version} sa {max_version_downloads} preuzimanja. {per_version_analysis}. {watermark}."
+      },
+      "page_title": "Istorija verzija",
+      "current_tags": "Trenutne oznake",
+      "no_match_filter": "Nijedna verzija ne odgovara filteru {filter}"
+    },
+    "dependencies": {
+      "title": "Zavisnost ({count}) | Zavisnosti ({count})",
+      "list_label": "Zavisnosti paketa",
+      "show_all": "prikažite {count} zavisnost | prikažite {count} zavisnosti | prikažite svih {count} zavisnosti",
+      "optional": "opciono",
+      "view_vulnerabilities": "Pogledajte ranljivosti",
+      "outdated_major": "{count} glavna verzija kasni (najnovija: {latest}) | {count} glavne verzije kasne (najnovija: {latest}) | {count} glavnih verzija kasni (najnovija: {latest})",
+      "outdated_minor": "{count} sporedna verzija kasni (najnovija: {latest}) | {count} sporedne verzije kasne (najnovija: {latest}) | {count} sporednih verzija kasni (najnovija: {latest})",
+      "outdated_patch": "Dostupno je ažuriranje zakrpe (najnovija: {latest})",
+      "has_replacement": "Ova zavisnost ima predložene zamene",
+      "vulnerabilities_count": "{count} ranjivost | {count} ranjivosti | {count} ranjivosti"
+    },
+    "peer_dependencies": {
+      "title": "Peer zavisnost ({count}) | Peer zavisnosti ({count})",
+      "list_label": "Peer zavisnosti",
+      "show_all": "prikažite {count} peer zavisnost | prikažite {count} peer zavisnosti | prikažite svih {count} peer zavisnosti"
+    },
+    "optional_dependencies": {
+      "title": "Opciona zavisnost ({count}) | Opcione zavisnosti ({count})",
+      "list_label": "Opcione zavisnosti paketa",
+      "show_all": "prikažite {count} opcionu zavisnost | prikažite {count} opcione zavisnosti | prikažite svih {count} opcionih zavisnosti"
+    },
+    "maintainers": {
+      "title": "Održavaoci",
+      "list_label": "Održavaoci paketa",
+      "you": "(vi)",
+      "via": "preko {teams}",
+      "remove_owner": "Uklonite {name} kao vlasnika",
+      "username_to_add": "Korisničko ime za dodavanje kao vlasnika",
+      "username_placeholder": "korisničko ime...",
+      "add_button": "dodajte",
+      "cancel_add": "Otkažite dodavanje vlasnika",
+      "add_owner": "+ Dodajte vlasnika",
+      "show_more": "(prikažite još {count})",
+      "show_less": "(prikažite manje)",
+      "maintainer_template": "{avatar} {char126}{name}"
+    },
+    "trends": {
+      "chart_assistive_text": {
+        "keyboard_navigation_horizontal": "Koristite strelice levo i desno za kretanje kroz podatke.",
+        "keyboard_navigation_vertical": "Koristite strelice gore i dole za kretanje kroz podatke.",
+        "table_available": "Tabela podataka za ovaj grafikon je dostupna ispod.",
+        "table_caption": "Tabela podataka grafikona"
+      },
+      "granularity": "Granularnost",
+      "granularity_daily": "Dnevno",
+      "granularity_weekly": "Nedeljno",
+      "granularity_monthly": "Mesečno",
+      "granularity_yearly": "Godišnje",
+      "start_date": "Početak",
+      "end_date": "Kraj",
+      "loading": "Učitavanje...",
+      "date_range": "{start} do {end}",
+      "date_range_multiline": "{start}\ndo {end}",
+      "download_file": "Preuzmite {fileType}",
+      "toggle_annotator": "Uključite/isključite anotator",
+      "toggle_stack_mode": "Uključite/isključite slogovni način",
+      "open_options": "Otvorite opcije",
+      "close_options": "Zatvorite opcije",
+      "legend_estimation": "Procena",
+      "no_data": "Nema dostupnih podataka",
+      "y_axis_label": "{granularity} {facet}",
+      "facet": "Aspekt",
+      "title": "Trendovi",
+      "contributors_skip": "Nije prikazano u saradnicima (nema GitHub repozitorijuma):",
+      "items": {
+        "downloads": "Preuzimanja",
+        "likes": "Sviđanja",
+        "contributors": "Saradnici"
+      },
+      "data_correction": "Korekcija podataka",
+      "average_window": "Prozor proseka",
+      "smoothing": "Izglađivanje",
+      "prediction": "Predviđanje",
+      "known_anomalies": "Poznate anomalije",
+      "known_anomalies_description": "Interpolacija preko poznatih skokova u preuzimanjima uzrokovanih botovima ili CI problemima.",
+      "known_anomalies_ranges": "Opsezi anomalija",
+      "known_anomalies_range": "Od {start} do {end}",
+      "known_anomalies_range_named": "{packageName}: od {start} do {end}",
+      "known_anomalies_none": "Nema poznatih anomalija za ovaj paket. | Nema poznatih anomalija za ove pakete.",
+      "known_anomalies_contribute": "Doprinesite podacima o anomalijama",
+      "apply_correction": "Primenite ispravku",
+      "copy_alt": {
+        "trend_none": "uglavnom ravno",
+        "trend_strong": "jak",
+        "trend_weak": "slab",
+        "trend_undefined": "nedefinisano (nedovoljno podataka)",
+        "button_label": "Kopirajte alt tekst",
+        "watermark": "Pri dnu, vodeni žig kaže \"./npmx a fast, modern browser for the npm registry\"",
+        "analysis": "{package_name} počinje od {start_value} i završava na {end_value}, pokazujući {trend} trend sa nagibom od {downloads_slope} preuzimanja po vremenskom intervalu",
+        "estimation": "Konačna vrednost je procena zasnovana na delimičnim podacima za tekući period.",
+        "estimations": "Konačne vrednosti su procene zasnovane na delimičnim podacima za tekući period.",
+        "compare": "Uporedni linijski grafikon preuzimanja paketa za: {packages}.",
+        "single_package": "Linijski grafikon preuzimanja za paket {package}.",
+        "general_description": "Y osa predstavlja broj preuzimanja. X osa predstavlja opseg datuma, od {start_date} do {end_date}, sa vremenskim periodom {granularity}.{estimation_notice} {packages_analysis}. {watermark}.",
+        "facet_bar_general_description": "Horizontalni stubičasti grafikon za: {packages}, poređenje {facet} ({description}). {facet_analysis} {watermark}.",
+        "facet_bar_analysis": "{package_name} ima vrednost {value}."
+      }
+    },
+    "downloads": {
+      "title": "Nedeljna preuzimanja",
+      "community_distribution": "Pogledajte distribuciju prihvatanja u zajednici",
+      "subtitle": "Kroz sve verzije",
+      "sparkline_nav_hint": "Koristite ← →"
+    },
+    "install_scripts": {
+      "title": "Skripte za instalaciju",
+      "script_label": "(skripta)",
+      "npx_packages": "{count} npx paket | {count} npx paketa | {count} npx paketa",
+      "currently": "trenutno {version}"
+    },
+    "playgrounds": {
+      "title": "Isprobajte",
+      "choose": "izaberite igralište"
+    },
+    "metrics": {
+      "esm": "ES moduli podržani",
+      "cjs": "CommonJS podržan",
+      "no_esm": "ES moduli nisu podržani",
+      "wasm": "Ima WebAssembly",
+      "types_label": "Tipovi",
+      "types_included": "Uključeni tipovi",
+      "types_available": "Tipovi dostupni preko {package}",
+      "no_types": "Nema tipova"
+    },
+    "license": {
+      "view_spdx": "Pogledajte tekst licence na SPDX-u",
+      "none": "Nema"
+    },
+    "vulnerabilities": {
+      "tree_found": "{vulns} ranjivost u {packages}/{total} paketa | {vulns} ranjivosti u {packages}/{total} paketa | {vulns} ranjivosti u {packages}/{total} paketa",
+      "show_all_packages": "prikažite {count} pogođeni paket | prikažite svih {count} pogođenih paketa",
+      "path": "putanja",
+      "more": "+ {count} još",
+      "packages_failed": "{count} paket nije mogao biti proveren | {count} paketa nije moglo biti provereno",
+      "scan_failed": "Nije moguće skenirati ranjivosti",
+      "severity": {
+        "critical": "kritična",
+        "high": "visoka",
+        "moderate": "umerena",
+        "low": "niska"
+      },
+      "fixed_in_title": "Popravljeno u verziji {version}"
+    },
+    "deprecated": {
+      "label": "Zastarelo",
+      "tree_found": "{count} zastarela zavisnost | {count} zastarele zavisnosti | {count} zastarelih zavisnosti",
+      "show_all": "prikažite {count} zastareli paket | prikažite svih {count} zastarelih paketa"
+    },
+    "access": {
+      "title": "Pristup timu",
+      "refresh": "Osvežite pristup timu",
+      "list_label": "Lista pristupa timu",
+      "owner": "vlasnik",
+      "rw": "rw",
+      "ro": "ro",
+      "revoke_access": "Opozovite pristup za {name}",
+      "no_access": "Nije podešen pristup timu",
+      "select_team_label": "Izaberite tim",
+      "loading_teams": "Učitavanje timova...",
+      "select_team": "Izaberite tim",
+      "permission_label": "Nivo dozvole",
+      "permission": {
+        "read_only": "samo čitanje",
+        "read_write": "čitanje i pisanje"
+      },
+      "grant_button": "odobrite",
+      "cancel_grant": "Otkažite odobravanje pristupa",
+      "grant_access": "+ Odobrite pristup timu"
+    },
+    "list": {
+      "filter_label": "Filtrirajte pakete",
+      "filter_placeholder": "Filtrirajte pakete...",
+      "sort_label": "Sortirajte pakete",
+      "showing_count": "Prikazano {filtered} od {total} paketa"
+    },
+    "skeleton": {
+      "loading": "Učitavanje detalja paketa",
+      "maintainers": "Održavaoci",
+      "keywords": "Ključne reči",
+      "versions": "Verzije",
+      "dependencies": "Zavisnosti"
+    },
+    "sort": {
+      "downloads": "Najviše preuzimanja",
+      "published": "Najnovije objavljeni",
+      "name_asc": "Ime (A-Z)",
+      "name_desc": "Ime (Z-A)"
+    },
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
+    },
+    "download": {
+      "button": "Preuzmite",
+      "tarball": "Preuzmite Tarball kao .tar.gz"
+    }
+  },
+  "connector": {
+    "modal": {
+      "title": "Lokalni konektor",
+      "connected": "Povezano",
+      "connected_as_user": "Povezano kao ~{user}",
+      "connected_hint": "Sada možete upravljati paketima i organizacijama putem veb interfejsa.",
+      "disconnect": "Prekinite vezu",
+      "run_hint": "Pokrenite konektor na svom računaru da biste omogućili administratorske funkcije.",
+      "copy_command": "Kopirajte komandu",
+      "copied": "Kopirano",
+      "paste_token": "Zatim nalepite token ispod za povezivanje:",
+      "token_label": "Token",
+      "token_placeholder": "nalepite token ovde...",
+      "advanced": "Napredne opcije",
+      "port_label": "Port",
+      "warning": "UPOZORENJE",
+      "warning_text": "Ovo dozvoljava npmx-u pristup vašem npm CLI-ju. Povezujte se samo sa sajtovima kojima verujete.",
+      "connect": "Povežite se",
+      "connecting": "Povezivanje...",
+      "auto_open_url": "Automatski otvorite stranicu za autentifikaciju"
+    }
+  },
+  "operations": {
+    "queue": {
+      "title": "Red operacija",
+      "clear_all": "obrišite sve",
+      "refresh": "Osvežite operacije",
+      "empty": "Nema operacija u redu",
+      "empty_hint": "Dodajte operacije sa stranica paketa ili organizacija",
+      "active_label": "Aktivne operacije",
+      "otp_required": "OTP potreban",
+      "otp_prompt": "Unesite OTP za nastavak",
+      "otp_placeholder": "Unesite OTP kod...",
+      "otp_label": "Jednokratna lozinka",
+      "retry_otp": "Ponovite sa OTP-om",
+      "retry_web_auth": "Ponovite sa veb autentifikacijom",
+      "retrying": "Ponavljanje...",
+      "open_web_auth": "Otvorite veb link za autentifikaciju",
+      "approve_operation": "Odobrite operaciju",
+      "remove_operation": "Uklonite operaciju",
+      "approve_all": "Odobrite sve",
+      "execute": "Izvršite",
+      "executing": "Izvršavanje...",
+      "log": "Dnevnik",
+      "log_label": "Dnevnik završenih operacija",
+      "remove_from_log": "Uklonite iz dnevnika"
+    }
+  },
+  "org": {
+    "teams": {
+      "title": "Timovi",
+      "refresh": "Osvežite timove",
+      "filter_label": "Filtrirajte timove",
+      "filter_placeholder": "Filtrirajte timove...",
+      "sort_by": "Sortirajte po",
+      "loading": "Učitavanje timova...",
+      "no_teams": "Nije pronađen nijedan tim",
+      "list_label": "Timovi organizacije",
+      "delete_team": "Obrišite tim {name}",
+      "member_count": "{count} član | {count} člana | {count} članova",
+      "members_of": "Članovi tima {team}",
+      "no_members": "Nema članova",
+      "remove_user": "Uklonite {user} iz tima",
+      "username_to_add": "Korisničko ime za dodavanje u {team}",
+      "username_placeholder": "korisničko ime...",
+      "add_button": "dodajte",
+      "cancel_add_user": "Otkažite dodavanje korisnika",
+      "add_member": "+ Dodajte člana",
+      "team_name_label": "Ime tima",
+      "team_name_placeholder": "ime-tima...",
+      "create_button": "napravite",
+      "no_match": "Nijedan tim ne odgovara \"{query}\"",
+      "cancel_create": "Otkažite kreiranje tima",
+      "create_team": "+ Kreirajte tim"
+    },
+    "members": {
+      "title": "Članovi",
+      "refresh": "Osvežite članove",
+      "filter_label": "Filtrirajte članove",
+      "filter_placeholder": "Filtrirajte članove...",
+      "filter_by_role": "Filtrirajte po ulozi",
+      "filter_by_team": "Filtrirajte po timu",
+      "all_teams": "svi timovi",
+      "sort_by": "Sortirajte po",
+      "loading": "Učitavanje članova...",
+      "no_members": "Nema pronađenih članova",
+      "list_label": "Članovi organizacije",
+      "change_role_for": "Promenite ulogu za {name}",
+      "remove_from_org": "Uklonite {name} iz organizacije",
+      "view_team": "Pogledajte tim {team}",
+      "no_match": "Nijedan član ne odgovara vašim filterima",
+      "username_label": "Korisničko ime",
+      "username_placeholder": "korisničko ime...",
+      "role_label": "Uloga",
+      "role": {
+        "all": "sve",
+        "developer": "developer",
+        "admin": "admin",
+        "owner": "vlasnik"
+      },
+      "team_label": "Tim",
+      "no_team": "bez tima",
+      "add_button": "dodajte",
+      "cancel_add": "Otkažite dodavanje člana",
+      "add_member": "+ Dodajte člana"
+    },
+    "public_packages": "{count} javni paket | {count} javna paketa | {count} javnih paketa",
+    "page": {
+      "packages_title": "Paketi",
+      "members_tab": "Članovi",
+      "teams_tab": "Timovi",
+      "no_packages": "Nema javnih paketa za",
+      "no_packages_hint": "Ova organizacija možda ne postoji ili nema javne pakete.",
+      "failed_to_load": "Neuspešno učitavanje paketa organizacije",
+      "no_match": "Nijedan paket ne odgovara \"{query}\"",
+      "not_found": "Organizacija nije pronađena",
+      "not_found_message": "Organizacija \"{'@'}{name}\" ne postoji na npm-u"
+    }
+  },
+  "user": {
+    "combobox": {
+      "add_to_org_hint": "(takođe će dodati u organizaciju)",
+      "press_enter_to_add": "Pritisnite Enter za dodavanje {'@'}{username}",
+      "default_placeholder": "korisničko ime...",
+      "suggestions_label": "Predlozi korisnika"
+    },
+    "page": {
+      "packages_title": "Paketi",
+      "no_packages": "Nema javnih paketa za",
+      "no_packages_hint": "Ovaj korisnik možda ne postoji ili nema javne pakete.",
+      "failed_to_load": "Neuspešno učitavanje korisničkih paketa",
+      "no_match": "Nijedan paket ne odgovara \"{query}\"",
+      "filter_placeholder": "Filtrirajte {count} paket... | Filtrirajte {count} paketa... | Filtrirajte {count} paketa..."
+    },
+    "orgs_page": {
+      "title": "Organizacije",
+      "back_to_profile": "Nazad na profil",
+      "connect_required": "Povežite lokalni CLI da biste videli svoje organizacije.",
+      "connect_hint_prefix": "Pokrenite",
+      "connect_hint_suffix": "da biste počeli.",
+      "own_orgs_only": "Možete videti samo svoje organizacije.",
+      "view_your_orgs": "Pogledajte svoje organizacije",
+      "loading": "Učitavanje organizacija...",
+      "empty": "Nema pronađenih organizacija.",
+      "empty_hint": "Organizacije se otkrivaju iz vaših scoped paketa.",
+      "count": "{count} organizacija | {count} organizacije | {count} organizacija",
+      "packages_count": "{count} paket | {count} paketa | {count} paketa"
+    }
+  },
+  "claim": {
+    "modal": {
+      "title": "Zauzmite ime paketa",
+      "success": "Paket je zauzet!",
+      "success_detail": "{name}{'@'}0.0.0 je objavljen na npm-u.",
+      "success_hint": "Sada možete objavljivati nove verzije ovog paketa pomoću npm publish.",
+      "view_package": "Pogledajte paket",
+      "invalid_name": "Neispravno ime paketa:",
+      "available": "Ovo ime je dostupno!",
+      "taken": "Ovo ime je već zauzeto.",
+      "missing_permission": "Nemate dozvolu da dodate paket u scope {'@'}{scope}.",
+      "similar_warning": "Postoje slični paketi - npm može odbiti ovo ime:",
+      "related": "Povezani paketi:",
+      "scope_warning_title": "Razmislite o korišćenju scoped paketa",
+      "scope_warning_text": "Nazivi paketa bez scope-a su zajednički resurs. Zauzmite ime samo ako zaista nameravate da objavite i održavate paket. Za lične ili organizacione projekte, koristite scoped naziv, na primer {'@'}{username}/{name}.",
+      "connect_required": "Povežite se sa lokalnim konektorom da biste zauzeli ovo ime paketa.",
+      "connect_button": "Povežite se na konektor",
+      "publish_hint": "Ovo će objaviti minimalni paket za rezervaciju mesta.",
+      "preview_json": "Pregledajte package.json",
+      "claim_button": "Zauzmite ime paketa",
+      "publishing": "Objavljivanje...",
+      "checking": "Provera dostupnosti...",
+      "failed_to_check": "Neuspešna provera dostupnosti imena",
+      "failed_to_claim": "Neuspešno zauzimanje paketa"
+    }
+  },
+  "code": {
+    "files_label": "Datoteke",
+    "no_files": "Nema datoteka u ovom direktorijumu",
+    "lines": "{count} linija | {count} linije | {count} linija",
+    "toggle_tree": "Uključite/isključite stablo datoteka",
+    "close_tree": "Zatvorite stablo datoteka",
+    "copy_link": "Kopirajte link",
+    "view_raw": "Pogledajte izvornu datoteku",
+    "file_too_large": "Datoteka je prevelika za pregled",
+    "file_size_warning": "{size} premašuje ograničenje od 500KB za isticanje sintakse",
+    "failed_to_load": "Neuspešno učitavanje",
+    "unavailable_hint": "Datoteka je možda prevelika ili nedostupna",
+    "version_required": "Verzija je potrebna za pregled koda",
+    "go_to_package": "Idite na paket",
+    "loading_tree": "Učitavanje stabla datoteka...",
+    "failed_to_load_tree": "Neuspešno učitavanje datoteka za ovu verziju paketa",
+    "back_to_package": "Nazad na paket",
+    "table": {
+      "name": "Ime",
+      "size": "Veličina"
+    },
+    "markdown_view_mode": {
+      "preview": "pregled",
+      "code": "kod"
+    },
+    "file_path": "Putanja datoteke",
+    "binary_file": "Binarna datoteka",
+    "binary_rendering_warning": "Tip datoteke \"{contentType}\" nije podržan za pregled."
+  },
+  "badges": {
+    "provenance": {
+      "verified": "verifikovano",
+      "verified_title": "Verifikovano poreklo",
+      "verified_via": "Verifikovano: objavljeno preko {provider}"
+    },
+    "jsr": {
+      "title": "takođe dostupno na JSR-u"
+    }
+  },
+  "filters": {
+    "title": "Filteri",
+    "search": "Pretraga",
+    "search_scope": "Opseg pretrage",
+    "search_placeholder_name": "Filtrirajte po imenu paketa...",
+    "search_placeholder_description": "Filtrirajte po opisu...",
+    "search_placeholder_keywords": "Filtrirajte po ključnim rečima...",
+    "search_placeholder_all": "Pretražite sve ili koristite name: desc: kw:",
+    "scope_name": "Ime",
+    "scope_name_description": "Pretražuje samo imena paketa",
+    "scope_description": "Opis",
+    "scope_description_description": "Pretražuje samo opise",
+    "scope_keywords": "Ključne reči",
+    "scope_keywords_description": "Pretražuje samo ključne reči",
+    "scope_all": "Sve",
+    "scope_all_description": "Pretražuje sva polja, podržava operatore name: desc: kw:",
+    "weekly_downloads": "Nedeljna preuzimanja",
+    "updated_within": "Ažurirano u poslednjih",
+    "security": "Bezbednost",
+    "keywords": "Ključne reči",
+    "more_keywords": "+{count} još",
+    "clear_all": "Obrišite sve",
+    "remove_filter": "Uklonite filter {label}",
+    "chips": {
+      "search": "Pretraga",
+      "downloads": "Preuzimanja",
+      "keyword": "Ključna reč",
+      "security": "Bezbednost",
+      "updated": "Ažurirano"
+    },
+    "download_range": {
+      "any": "Bilo koje",
+      "lt100": "< 100",
+      "100_1k": "100 - 1K",
+      "1k_10k": "1K - 10K",
+      "10k_100k": "10K - 100K",
+      "gt100k": "> 100K"
+    },
+    "updated": {
+      "any": "Bilo kada",
+      "week": "Prošle nedelje",
+      "month": "Prošlog meseca",
+      "quarter": "Poslednja 3 meseca",
+      "year": "Prošle godine"
+    },
+    "security_options": {
+      "all": "Svi paketi",
+      "secure": "Bez upozorenja",
+      "insecure": "Sa upozorenjima"
+    },
+    "view_selected": "Pogledajte izabrano",
+    "clear_selected_label": "Obrišite izabrano",
+    "sort": {
+      "label": "Sortirajte pakete",
+      "toggle_direction": "Promenite smer sortiranja",
+      "ascending": "Rastuće",
+      "descending": "Opadajuće",
+      "relevance": "Relevantnost",
+      "downloads_week": "Preuzimanja/ned",
+      "downloads_day": "Preuzimanja/dan",
+      "downloads_month": "Preuzimanja/mes",
+      "downloads_year": "Preuzimanja/god",
+      "published": "Poslednje objavljivanje",
+      "name": "Ime"
+    },
+    "columns": {
+      "title": "Kolone",
+      "show": "Prikažite kolone",
+      "reset": "Vratite na podrazumevano",
+      "coming_soon": "Uskoro",
+      "name": "Ime",
+      "version": "Verzija",
+      "description": "Opis",
+      "downloads": "Preuzimanja/nedeljno",
+      "published": "Poslednje objavljeno",
+      "maintainers": "Održavaoci",
+      "keywords": "Ključne reči",
+      "security": "Bezbednost",
+      "selection": "Izaberite paket"
+    },
+    "view_mode": {
+      "label": "Režim prikaza",
+      "cards": "Kartice",
+      "table": "Tabela"
+    },
+    "pagination": {
+      "mode_label": "Režim paginacije",
+      "infinite": "Beskonačno",
+      "paginated": "Sa stranicama",
+      "items_per_page": "Stavki po stranici",
+      "per_page": "{count} / stranici",
+      "showing": "{range} od {total}",
+      "previous": "Prethodna stranica",
+      "next": "Sledeća stranica",
+      "nav_label": "Paginacija"
+    },
+    "count": {
+      "showing_filtered": "{filtered} od {count} paketa",
+      "showing_all": "{count} paket | {count} paketa",
+      "showing_paginated": "{pageSize} od {count} paketa"
+    },
+    "table": {
+      "security_warning": "Bezbednosno upozorenje",
+      "secure": "Bezbedno",
+      "no_packages": "Nema pronađenih paketa"
+    }
+  },
+  "about": {
+    "title": "O nama",
+    "heading": "o nama",
+    "meta_description": "npmx je brz, moderan pretraživač za npm registar. Odlično korisničko i programersko iskustvo za istraživanje npm paketa.",
+    "what_we_are": {
+      "title": "Šta smo",
+      "better_ux_dx": "odlično korisničko/programersko iskustvo",
+      "admin_ui": "admin interfejs",
+      "description": "npmx je {betterUxDx} za npm registar paketa i alat. Težimo da pružimo brz, moderan interfejs za istraživanje paketa, sa funkcijama poput tamnog režima, navigacije tastaturom, pregledom koda i vezama ka alternativnim registrima poput {jsr}.",
+      "admin_description": "Takođe ciljamo da pružimo odličan {adminUi} za upravljanje vašim paketima, timovima i organizacijama — sve iz pretraživača, pokretano vašim lokalnim npm CLI-jem."
+    },
+    "what_we_are_not": {
+      "title": "Šta nismo",
+      "not_package_manager": "Nismo upravljač paketima.",
+      "not_registry": "Nismo registar.",
+      "registry_description": "Ne hostujemo pakete. Samo smo brzi, moderni način za njihovo pregledanje.",
+      "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}.",
+      "words": {
+        "already": "Već postoje",
+        "people": "već",
+        "building": "ljudi",
+        "really": "grade",
+        "cool": "stvarno",
+        "package": "cool",
+        "managers": "package managers"
+      }
+    },
+    "sponsors": {
+      "title": "Sponzori"
+    },
+    "oss_partners": {
+      "title": "OSS partneri"
+    },
+    "team": {
+      "title": "Tim",
+      "governance": "Upravljanje",
+      "role_steward": "steward",
+      "role_maintainer": "održavalac",
+      "sponsor": "sponzor",
+      "sponsor_aria": "Sponzorišite {name} na GitHub-u"
+    },
+    "contributors": {
+      "title": "... i još {count} saradnik | ... i još {count} saradnika | ... i još {count} saradnika",
+      "description": "npmx je potpuno otvorenog koda, izgrađen od strane neverovatne zajednice saradnika. Pridružite nam se i zajedno izgradimo iskustvo pregledanja npm-a koje smo oduvek želeli.",
+      "loading": "Učitavanje saradnika...",
+      "error": "Neuspešno učitavanje saradnika",
+      "view_profile": "Pogledajte GitHub profil {name}"
+    },
+    "get_involved": {
+      "title": "Uključite se",
+      "contribute": {
+        "title": "Doprinesite",
+        "description": "Pomozite nam da izgradimo npm iskustvo koje svi želimo.",
+        "cta": "Pogledajte na GitHub-u"
+      },
+      "community": {
+        "title": "Pridružite se zajednici",
+        "description": "Ćaskajte, postavljajte pitanja i delite ideje.",
+        "cta": "Pridružite se Discord-u"
+      },
+      "builders": {
+        "title": "Pomozite u izgradnji npmx-a",
+        "description": "Pridružite se graditeljima koji oblikuju budućnost npmx-a.",
+        "cta": "Pridružite se Builders Discord-u"
+      },
+      "follow": {
+        "title": "Ostanite u toku",
+        "description": "Saznajte najnovije o npmx-u.",
+        "cta": "Zapratite na Bluesky-u"
+      }
+    }
+  },
+  "account_menu": {
+    "connect": "povežite se",
+    "account": "Nalog",
+    "npm_cli": "npm CLI",
+    "atmosphere": "Atmosfera",
+    "npm_cli_desc": "Upravljajte paketima i organizacijama",
+    "atmosphere_desc": "Društvene funkcije i identitet",
+    "connect_npm_cli": "Povežite se na npm CLI",
+    "connect_atmosphere": "Povežite se na Atmosferu",
+    "connecting": "Povezivanje...",
+    "ops": "{count} op | {count} ops"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosfera",
+      "connected_as": "Povezani ste kao {'@'}{handle}",
+      "disconnect": "Prekinite vezu",
+      "connect_prompt": "Povežite se sa svojim nalogom na Atmosferi",
+      "handle_label": "Korisničko ime",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "Povežite se",
+      "create_account": "Napravite novi nalog",
+      "connect_bluesky": "Povežite se preko Bluesky-a",
+      "what_is_atmosphere": "Šta je Atmosphere nalog?",
+      "atmosphere_explanation": "{npmx} koristi {atproto} za pokretanje mnogih svojih društvenih funkcija, omogućavajući korisnicima da poseduju svoje podatke i koriste jedan nalog za sve kompatibilne aplikacije. Kada napravite nalog, možete ga koristiti sa drugim aplikacijama poput {bluesky} i {tangled}.",
+      "default_input_error": "Unesite važeće korisničko ime, DID ili puni PDS URL",
+      "profile": "Profil"
+    }
+  },
+  "header": {
+    "home": "npmx početna",
+    "packages": "paketi",
+    "packages_dropdown": {
+      "title": "Vaši paketi",
+      "loading": "Učitavanje...",
+      "error": "Neuspešno učitavanje paketa",
+      "empty": "Nema pronađenih paketa",
+      "view_all": "Pogledajte sve"
+    },
+    "orgs": "organizacije",
+    "orgs_dropdown": {
+      "title": "Vaše organizacije",
+      "loading": "Učitavanje...",
+      "error": "Neuspešno učitavanje organizacija",
+      "empty": "Nema pronađenih organizacija",
+      "view_all": "Pogledajte sve"
+    },
+    "pr": "Otvorite GitHub pull request #{prNumber}"
+  },
+  "compare": {
+    "packages": {
+      "title": "uporedite pakete",
+      "tagline": "uporedite npm pakete jedan pored drugog da bi vam pomoglo da izaberete pravi.",
+      "meta_title": "Uporedite {packages} - npmx",
+      "meta_title_empty": "Uporedite pakete - npmx",
+      "meta_description": "Uporedni prikaz paketa {packages}",
+      "meta_description_empty": "Uporedite npm pakete jedan pored drugog",
+      "section_packages": "Paketi",
+      "section_facets": "Aspekti",
+      "section_comparison": "Poređenje",
+      "copy_as_markdown": "Kopirajte tabelu",
+      "loading": "Učitavanje podataka o paketu...",
+      "error": "Neuspešno učitavanje podataka o paketu. Pokušajte ponovo.",
+      "empty_title": "Izaberite pakete za poređenje",
+      "empty_description": "Pretražite i dodajte najmanje 2 paketa iznad da biste videli uporedni prikaz njihovih metrika.",
+      "table_view": "Tabela",
+      "charts_view": "Grafikoni",
+      "bar_chart_nav_hint": "Koristite ↑ ↓",
+      "line_chart_nav_hint": "Koristite ← →"
+    },
+    "selector": {
+      "search_label": "Pretražite pakete",
+      "search_first": "Pretražite paket...",
+      "search_add": "Dodajte još jedan paket...",
+      "searching": "Pretraživanje...",
+      "remove_package": "Uklonite {package}",
+      "packages_selected": "{count}/{max} paketa izabrano.",
+      "add_hint": "Dodajte najmanje 2 paketa za poređenje."
+    },
+    "no_dependency": {
+      "label": "(Bez zavisnosti)",
+      "typeahead_title": "Šta bi James uradio?",
+      "typeahead_description": "Uporedite sa nekorišćenjem zavisnosti! e18e odobreno.",
+      "tooltip_title": "Možda vam zavisnost ne treba",
+      "tooltip_description": "Uporedite sa nekorišćenjem zavisnosti! {link} održava listu paketa koji se mogu zameniti izvornim API-jima ili jednostavnijim alternativama.",
+      "e18e_community": "e18e zajednica",
+      "add_column": "Dodajte kolonu \"bez zavisnosti\" u poređenje"
+    },
+    "facets": {
+      "all": "sve",
+      "none": "ništa",
+      "select_all_category_facets": "Izaberite sve aspekte kategorije {category}",
+      "deselect_all_category_facets": "Poništite izbor svih aspekata kategorije {category}",
+      "selected_all_category_facets": "Izabrani svi aspekti kategorije {category}",
+      "deselected_all_category_facets": "Poništen izbor svih aspekata kategorije {category}",
+      "coming_soon": "Uskoro",
+      "select_all": "Izaberite sve aspekte",
+      "deselect_all": "Poništite izbor svih aspekata",
+      "binary_only_tooltip": "Ovaj paket izlaže binarne datoteke i nema izvoze",
+      "categories": {
+        "performance": "Performanse",
+        "health": "Zdravlje",
+        "compatibility": "Kompatibilnost",
+        "security": "Bezbednost i usaglašenost"
+      },
+      "items": {
+        "packageSize": {
+          "label": "Veličina paketa",
+          "description": "Veličina samog paketa (raspakovano)"
+        },
+        "installSize": {
+          "label": "Veličina instalacije",
+          "description": "Ukupna veličina instalacije uključujući sve zavisnosti"
+        },
+        "dependencies": {
+          "label": "Direktne zavisnosti",
+          "description": "Broj direktnih zavisnosti"
+        },
+        "totalDependencies": {
+          "label": "Ukupno zavisnosti",
+          "description": "Ukupan broj zavisnosti uključujući prenosive"
+        },
+        "downloads": {
+          "label": "Preuzimanja/nedeljno",
+          "description": "Nedeljni broj preuzimanja"
+        },
+        "totalLikes": {
+          "label": "Sviđanja",
+          "description": "Broj sviđanja"
+        },
+        "lastUpdated": {
+          "label": "Objavljen",
+          "description": "Kada je ova verzija objavljena"
+        },
+        "deprecated": {
+          "label": "Zastareo?",
+          "description": "Da li je paket zastareo"
+        },
+        "engines": {
+          "label": "Okruženja",
+          "description": "Zahtevi za verziju Node.js-a"
+        },
+        "types": {
+          "label": "Tipovi",
+          "description": "TypeScript definicije tipova"
+        },
+        "moduleFormat": {
+          "label": "Format modula",
+          "description": "ESM/CJS podrška"
+        },
+        "license": {
+          "label": "Licenca",
+          "description": "Licenca paketa"
+        },
+        "vulnerabilities": {
+          "label": "Ranjivosti",
+          "description": "Poznate bezbednosne ranjivosti"
+        }
+      },
+      "values": {
+        "any": "Bilo koje",
+        "none": "Nema",
+        "unknown": "Nepoznato",
+        "deprecated": "Zastarelo",
+        "not_deprecated": "Ne",
+        "types_included": "Uključeni",
+        "types_none": "Nema",
+        "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
+        "up_to_you": "Na vama je!"
+      },
+      "trends": {
+        "title": "Uporedite trendove"
+      }
+    },
+    "file_changes": "Izmene datoteka",
+    "files_count": "{count} datoteka | {count} datoteke | {count} datoteka",
+    "lines_hidden": "{count} linija sakrivena | {count} linije sakrivene | {count} linija sakriveno",
+    "file_too_large": "Datoteka je prevelika za poređenje",
+    "file_size_warning": "{size} premašuje ograničenje od 250KB za poređenje",
+    "compare_versions": "razlika",
+    "compare_versions_title": "Uporedite sa najnovijom verzijom",
+    "comparing_versions_label": "Poređenje verzija...",
+    "version_back_to_package": "Nazad na paket",
+    "version_error_message": "Neuspelo poređenje verzija.",
+    "version_invalid_url_format": {
+      "hint": "Neispravan URL za poređenje. Koristite format: {0}",
+      "from_version": "od",
+      "to_version": "do"
+    },
+    "version_selector_title": "Uporedite sa verzijom",
+    "summary": "Sažetak",
+    "deps_count": "{count} zavisnost | {count} zavisnosti | {count} zavisnosti",
+    "dependencies": "Zavisnosti",
+    "dev_dependencies": "Razvojne zavisnosti",
+    "peer_dependencies": "Peer zavisnosti",
+    "optional_dependencies": "Opcione zavisnosti",
+    "no_dependency_changes": "Nema promena u zavisnostima",
+    "file_filter_option": {
+      "all": "Sve ({count})",
+      "added": "Dodato ({count})",
+      "removed": "Uklonjeno ({count})",
+      "modified": "Izmenjeno ({count})"
+    },
+    "search_files_placeholder": "Pretražite datoteke...",
+    "no_files_all": "Nema datoteka",
+    "no_files_search": "Nema datoteka koje odgovaraju \"{query}\"",
+    "no_files_filtered": "Nema {filter} datoteka",
+    "filter": {
+      "added": "dodato",
+      "removed": "uklonjeno",
+      "modified": "izmenjeno"
+    },
+    "files_button": "Datoteke",
+    "select_file_prompt": "Izaberite datoteku sa bočne trake da biste videli njene razlike",
+    "close_files_panel": "Zatvorite panel sa datotekama",
+    "filter_files_label": "Filtrirajte datoteke po tipu izmene",
+    "change_ratio": "Odnos promene",
+    "char_edits": "Izmene znakova",
+    "diff_distance": "Udaljenost razlike",
+    "loading_diff": "Učitavanje razlike...",
+    "loading_diff_error": "Neuspešno učitavanje razlike",
+    "merge_modified_lines": "Spojite izmenjene linije",
+    "no_content_changes": "Nema otkrivenih promena u sadržaju",
+    "options": "Opcije",
+    "view_file": "Pogledajte datoteku",
+    "view_in_code_browser": "Pogledajte u pregledaču koda",
+    "word_wrap": "Prelamanje reči"
+  },
+  "pds": {
+    "title": "npmx.social",
+    "meta_description": "Zvanični AT Protocol Personal Data Server (PDS) za npmx zajednicu.",
+    "join": {
+      "title": "Pridružite se zajednici",
+      "description": "Bilo da kreirate svoj prvi nalog na atmosferi ili migrirate postojeći, pripadate ovde. Možete migrirati svoj trenutni nalog bez gubitka korisničkog imena, objava ili pratilaca.",
+      "migrate": "Migrirajte sa PDS MOOver-om"
+    },
+    "server": {
+      "title": "Detalji servera",
+      "location_label": "Lokacija:",
+      "location_value": "Nuremberg, Nemačka",
+      "infrastructure_label": "Infrastruktura:",
+      "infrastructure_value": "Hostovan na Hetzner-u",
+      "privacy_label": "Privatnost:",
+      "privacy_value": "Podleže strogim zakonima EU o zaštiti podataka",
+      "learn_more": "Saznajte kako npmx koristi Atmosferu"
+    },
+    "community": {
+      "title": "Ko je ovde",
+      "description": "Neki od {count} naloga koji već zovu npmx.social domom:",
+      "loading": "Učitavanje PDS zajednice...",
+      "error": "Neuspešno učitavanje PDS zajednice.",
+      "empty": "Nema prikazanih članova zajednice.",
+      "view_profile": "Pogledajte profil {handle}",
+      "new_accounts": "...plus još {count} koji su novi na atmosferi"
+    }
+  },
+  "privacy_policy": {
+    "title": "politika privatnosti",
+    "last_updated": "Poslednje ažuriranje: {date}",
+    "welcome": "Dobrodošli na {app}. Posvećeni smo zaštiti vaše privatnosti. Ova politika objašnjava koje podatke prikupljamo, kako ih koristimo i vaša prava u vezi sa vašim informacijama.",
+    "cookies": {
+      "what_are": {
+        "title": "Šta su kolačići?",
+        "p1": "Kolačići su male tekstualne datoteke koje se čuvaju na vašem uređaju kada posetite veb sajt. Njihova svrha je da poboljšaju vaše iskustvo pretraživanja pamćenjem određenih preferenci i podešavanja."
+      },
+      "types": {
+        "title": "Koje kolačiće koristimo?",
+        "p1": "Koristimo {bold} isključivo u svrhe koje su neophodne za funkcionalnost sajta. Ne koristimo kolačiće trećih strana ili reklamne kolačiće.",
+        "bold": "esencijalne tehničke kolačiće",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": ":",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "Ovaj kolačić koristi naš hosting provajder (Vercel) radi zaštite od neslaganja između verzija. Osigurava da preuzimate resurse iz ispravne verzije deploy-a ako se tokom pregledanja objavi novo ažuriranje. Ne koristi se za vaše praćenje.",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "Ovo je naš bezbednosni sesijski kolačić. Čuva OAuth pristupni token kada povežete svoj nalog na Atmosferi. Neophodan je za održavanje vaše autentifikovane sesije."
+      },
+      "local_storage": {
+        "title": "Lokalno skladište",
+        "p1": "Pored kolačića sesije, koristimo {bold} vašeg pregledača kako bismo sačuvali vaša podešavanja prikaza. To nam omogućava da zapamtimo temu (svetlo/tamno) i neka druga {settings} koja ste izabrali, tako da ne morate da ih ponovo podešavate pri svakoj poseti.",
+        "bold": "Lokalno skladište",
+        "p2": "Ova informacija je isključivo funkcionalna, čuva se samo na vašem uređaju i {bold2}. Koristimo je isključivo da poboljšamo vaše iskustvo na našem veb sajtu.",
+        "bold2": "ne sadrži lične podatke niti se koristi za praćenje",
+        "settings": "podešavanja"
+      },
+      "management": {
+        "title": "Upravljanje kolačićima",
+        "p1": "Možete podesiti svoj pretraživač da prihvati, odbije ili obriše kolačiće prema vašim željama. Međutim, imajte na umu da {bold}.",
+        "bold": "odbijanje esencijalnih kolačića može sprečiti potpuni pristup aplikaciji",
+        "p2": "Ispod su linkovi sa uputstvima za upravljanje kolačićima u najčešće korišćenim pretraživačima:",
+        "chrome": "Google Chrome (otvara se u novom prozoru)",
+        "firefox": "Mozilla Firefox (otvara se u novom prozoru)",
+        "edge": "Microsoft Edge (otvara se u novom prozoru)"
+      }
+    },
+    "analytics": {
+      "title": "Analitika",
+      "p1": "Koristimo {bold} da bismo razumeli kako posetioci koriste naš veb sajt. To nam pomaže da poboljšamo korisničko iskustvo i identifikujemo probleme.",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analytics je dizajniran sa privatnošću na umu:",
+      "li1": "Ne koristi kolačiće",
+      "li2": "Ne prikuplja lične identifikatore",
+      "li3": "Ne prati korisnike na različitim veb sajtovima",
+      "li4": "Svi podaci su agregirani i anonimizovani",
+      "p3": "Jedine informacije koje se prikupljaju uključuju: URL-ove stranica, referer, zemlju/region, vrstu uređaja, pregledač i operativni sistem. Ovi podaci se ne mogu koristiti za identifikaciju pojedinačnih korisnika."
+    },
+    "authenticated": {
+      "title": "Autentifikovani korisnici",
+      "p1": "Kada povežete svoj {bold} nalog sa npmx-om, čuvamo vaš OAuth pristupni token u bezbednom, HTTP-only kolačiću sesije. Ovaj token se koristi isključivo za autentifikaciju zahteva u vaše ime.",
+      "bold": "Atmosfera",
+      "p2": "Ne čuvamo vaše akreditive i ne pristupamo nijednim podacima izvan onoga što je neophodno za pružanje funkcija koje koristite. Možete prekinuti vezu sa svojim nalogom u bilo kom trenutku sa stranice {settings}.",
+      "settings": "podešavanja"
+    },
+    "data_retention": {
+      "title": "Čuvanje podataka",
+      "p1": "Kolačići sesije se automatski brišu kada zatvorite pregledač ili nakon perioda neaktivnosti. Podešavanja u lokalnom skladištu ostaju na vašem uređaju dok ne obrišete podatke pregledača. Analitički podaci se čuvaju u agregiranom obliku i ne mogu se povezati sa pojedinačnim korisnicima."
+    },
+    "your_rights": {
+      "title": "Vaša prava",
+      "p1": "Imate pravo na:",
+      "li1": "Pristup informacijama o tome koje podatke prikupljamo",
+      "li2": "Brisanje vašeg lokalnog skladišta i kolačića u bilo kom trenutku",
+      "li3": "Prekid vaše autentifikovane sesije",
+      "li4": "Zahtev za informacijama o našim praksama u vezi sa podacima",
+      "p2": "Pošto ne prikupljamo lične podatke, obično nema ličnih informacija za brisanje ili izvoz."
+    },
+    "contact": {
+      "title": "Kontaktirajte nas",
+      "p1": "Za sva pitanja ili nedoumice u vezi sa ovom politikom privatnosti, možete nas kontaktirati otvaranjem issue-a na našem {link}.",
+      "link": "GitHub repozitorijumu"
+    },
+    "changes": {
+      "title": "Izmene ove politike",
+      "p1": "Možemo povremeno ažurirati ovu politiku privatnosti. Sve izmene biće objavljene na ovoj stranici sa ažuriranim datumom revizije."
+    }
+  },
+  "a11y": {
+    "title": "pristupačnost",
+    "footer_title": "a11y",
+    "welcome": "Želimo da {app} bude upotrebljiv što većem broju ljudi.",
+    "approach": {
+      "title": "Naš pristup",
+      "p1": "Trudimo se da pratimo Smernice za pristupačnost veb sadržaja (WCAG) 2.2 i koristimo ih kao referencu prilikom izrade funkcija. Ne tvrdimo da smo u potpunosti usklađeni ni sa jednim nivoom WCAG-a — pristupačnost je stalan proces i uvek ima još posla.",
+      "p2": "Ovaj sajt je {about}. Poboljšanja pristupačnosti se uvode postepeno kao deo našeg redovnog razvoja.",
+      "about_link": "projekat otvorenog koda kojim upravlja zajednica"
+    },
+    "measures": {
+      "title": "Šta radimo",
+      "p1": "Neke od stvari kojima težimo na celom sajtu:",
+      "li1": "Korišćenje semantičkog HTML-a i ARIA atributa gde je to prikladno.",
+      "li2": "Korišćenje relativnih veličina teksta tako da ih možete prilagoditi u svom pregledaču.",
+      "li3": "Podrška za navigaciju tastaturom kroz ceo interfejs.",
+      "li4": "Poštovanje prefers-reduced-motion i prefers-color-scheme medijskih upita.",
+      "li5": "Dizajniranje sa dovoljnim kontrastom boja na umu.",
+      "li6": "Osiguravanje da je suštinski sadržaj dostupan bez JavaScript-a, iako neke interaktivne funkcije zahtevaju njegovo korišćenje."
+    },
+    "limitations": {
+      "title": "Poznata ograničenja",
+      "p1": "Neki delovi sajta — posebno sadržaj trećih strana poput README datoteka paketa — možda ne ispunjavaju standarde pristupačnosti. Radimo na poboljšanju ovih oblasti tokom vremena."
+    },
+    "contact": {
+      "title": "Povratne informacije",
+      "p1": "Ako naiđete na prepreku u pristupačnosti na {app}, obavestite nas otvaranjem prijave problema u našem {link}. Ove prijave shvatamo ozbiljno i potrudićemo se da ih rešimo.",
+      "link": "GitHub repozitorijumu"
+    }
+  },
+  "translation_status": {
+    "title": "status prevoda",
+    "generated_at": "Datum generisanja: {date}",
+    "welcome": "Ako ste zainteresovani da nam pomognete da prevedemo {npmx} na neki od jezika navedenih ispod, na pravom ste mestu! Ova stranica koja se automatski ažurira uvek prikazuje sav sadržaj kome je trenutno potrebna vaša pomoć.",
+    "p1": "Koristimo {lang} kao podrazumevani jezik, sa ukupno {count}. Ako želite da pomognete u dodavanju prevoda, pronađite jezik u {bylang} i proširite detalje.",
+    "p1_lang": "američki engleski (en-US)",
+    "p1_count": "{count} poruka | {count} poruke | {count} poruka",
+    "p2": "Pre nego što počnete, pročitajte naš {guide} da biste naučili o našem procesu prevođenja i kako možete da se uključite.",
+    "guide": "vodič za lokalizaciju (i18n)",
+    "by_locale": "Napredak prevoda po lokalitetu",
+    "by_file": "Napredak prevoda po datoteci",
+    "complete_text": "Ovaj prevod je kompletan, neverovatan posao!",
+    "missing_text": "nedostaje",
+    "missing_keys": "{count} nedostajući prevod | {count} nedostajuća prevoda | {count} nedostajućih prevoda",
+    "progress_label": "Status napretka za {locale}",
+    "table": {
+      "file": "Datoteka",
+      "status": "Status",
+      "error": "Greška pri učitavanju liste datoteka.",
+      "empty": "Nema pronađenih datoteka",
+      "file_link": "Uredite {file} ({lang}) na GitHub-u"
+    }
+  },
+  "vacations": {
+    "title": "na odmoru",
+    "meta_description": "npmx tim se punio energijom. Discord je ponovo otvoren nakon nedelju dana.",
+    "heading": "punjenje energijom",
+    "subtitle": "gradili smo npmx tempom koji je koštao {some} od nas sna. nismo želeli da to postane norma! zato smo uzeli nedelju dana odmora. zajedno.",
+    "illustration_alt": "jedan red udobnih ikonica",
+    "poke_log": "Dodirnite logorsku vatru",
+    "what": {
+      "title": "šta se dogodilo",
+      "p1": "discord je bio zatvoren {dates}.",
+      "dates": "14 – 21. februar",
+      "p2": "svi pozivni linkovi su nestali i kanali su zaključani – osim {garden}, koji je ostao otvoren za one koji su želeli da se i dalje druže.",
+      "garden": "#garden"
+    },
+    "meantime": {
+      "title": "u međuvremenu",
+      "p1": "{site} i {repo} su ostali otvoreni – ljudi su i dalje ulazili, prijavljivali probleme, otvarali po koji PR, ali uglavnom su svi provodili vreme negde blizu udobnog kamina.",
+      "repo_link": "repozitorijum"
+    },
+    "return": {
+      "title": "vratili smo se!",
+      "p1": "vratili smo se napunjeni energijom i spremni za poslednji pritisak do 3. marta. {social} za novosti.",
+      "social_link": "zapratite nas na Bluesky-u"
+    },
+    "stats": {
+      "contributors": "Saradnici",
+      "commits": "Commit-ovi",
+      "pr": "Spojeni PR-ovi",
+      "subtitle": {
+        "some": "neki",
+        "all": "svi"
+      }
+    }
+  },
+  "action_bar": {
+    "title": "traka akcija",
+    "selection": "{count} izabran | {count} izabrana | {count} izabrano",
+    "shortcut": "Pritisnite \"{key}\" da fokusirate akcije",
+    "button_close_aria_label": "Zatvorite traku akcija"
+  },
+  "logo_menu": {
+    "copy_svg": "Kopirajte logo kao SVG",
+    "copied": "Kopirano!",
+    "browse_brand": "Pregledajte brand kit"
+  },
+  "brand": {
+    "title": "Brend",
+    "heading": "brend",
+    "meta_description": "Smernice za npmx brend, logotipi, boje i tipografija za upotrebu u štampi i medijima.",
+    "intro": "Resursi i smernice za korišćenje npmx brenda u vašim projektima, člancima i medijima.",
+    "logos": {
+      "title": "logotipi",
+      "description": "Preuzmite npmx logotipe u SVG i PNG formatima. Koristite odgovarajuću varijantu za svoju pozadinu.",
+      "wordmark": "PUNI ZNAK",
+      "wordmark_alt": "npmx puni znak logotipa sa plavom kosom crtom na tamnoj pozadini",
+      "wordmark_light_alt": "npmx puni znak logotipa sa akcentovanom kosom crtom na svetloj pozadini",
+      "mark": "ZNAK",
+      "mark_alt": "npmx znak logotipa sa tačkom i kosom crtom na tamnoj pozadini",
+      "mark_light_alt": "npmx znak logotipa sa tačkom i kosom crtom na svetloj pozadini",
+      "on_dark": "na tamnom",
+      "on_light": "na svetlom",
+      "download_svg": "SVG",
+      "download_png": "PNG",
+      "download_svg_aria": "Preuzmite {name} kao SVG",
+      "download_png_aria": "Preuzmite {name} kao PNG"
+    },
+    "customize": {
+      "title": "prilagodite svoj logo",
+      "description": "Pregledajte npmx logo sa svojom akcent bojom i pozadinom. Pregled odražava vaša trenutna podešavanja — izaberite boju, promenite pozadinu i preuzmite.",
+      "accent_label": "akcent",
+      "bg_label": "pozadina",
+      "download_svg_aria": "Preuzmite prilagođeni logo kao SVG",
+      "download_png_aria": "Preuzmite prilagođeni logo kao PNG"
+    },
+    "typography": {
+      "title": "tipografija",
+      "description": "npmx koristi Geist familiju fontova od Vercel-a i za interfejs tekst i za kod.",
+      "sans": "Geist Sans",
+      "sans_desc": "Koristi se za osnovni tekst i elemente korisničkog interfejsa.",
+      "mono": "Geist Mono",
+      "mono_desc": "Koristi se za kod, naslove i tehnički sadržaj.",
+      "pangram": "Ljubazni fenjerdžija čađavog lica hoće da mi pokaže štos.",
+      "numbers": "0123456789"
+    },
+    "guidelines": {
+      "title": "samo napomena",
+      "message": "Pristupačnost nam je važna, i voleli bismo da nas pratite u ovoj viziji. Kada koristite pomenute medije, osigurajte dovoljan kontrast u odnosu na pozadinu i nemojte ići manje od 24px. Ako su vam potrebni bilo kakvi drugi resursi ili dodatne informacije o projektu, slobodno nas kontaktirajte na {link}.",
+      "discord_link_text": "chat.npmx.dev"
+    }
+  }
+}

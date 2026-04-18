@@ -41,11 +41,11 @@ export function getOauthClientMetadata(pkAlg: string | undefined = undefined): O
     ? webUriSchema.parse(`${clientUri}/.well-known/jwks.json`)
     : undefined
 
-  // If anything changes here, please make sure to also update /shared/schemas/oauth.ts to match
   return {
     client_name: 'npmx.dev',
     client_id,
     client_uri: clientUri,
+    logo_uri: webUriSchema.parse(`${clientUri}/logo-icon.svg`),
     scope,
     redirect_uris: [redirect_uri],
     grant_types: ['authorization_code', 'refresh_token'],

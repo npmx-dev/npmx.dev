@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { decodeHtmlEntities, stripHtmlTags } from '../../../../shared/utils/html'
+import { decodeHtmlEntities, stripHtmlTags } from '#shared/utils/html'
 
 describe('decodeHtmlEntities', () => {
   it.each([

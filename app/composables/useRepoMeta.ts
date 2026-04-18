@@ -1,8 +1,10 @@
 import type { ProviderId, RepoRef } from '#shared/utils/git-providers'
-import { parseRepoUrl, GITLAB_HOSTS } from '#shared/utils/git-providers'
+import { GIT_PROVIDER_API_ORIGINS, parseRepoUrl, GITLAB_HOSTS } from '#shared/utils/git-providers'
 
 // TTL for git repo metadata (10 minutes - repo stats don't change frequently)
 const REPO_META_TTL = 60 * 10
+// Other TTLs for known sources
+const UNGH_REPO_META_TTL = 60 * 60 * 3 // 3 hours (ungh caches 6 hours server-side, but we run it half more frequently)
 
 export type RepoMetaLinks = {
   repo: string
@@ -132,9 +134,9 @@ const githubAdapter: ProviderAdapter = {
     let res: UnghRepoResponse | null = null
     try {
       const { data } = await cachedFetch<UnghRepoResponse>(
-        `https://ungh.cc/repos/${ref.owner}/${ref.repo}`,
+        `${GIT_PROVIDER_API_ORIGINS.github}/repos/${ref.owner}/${ref.repo}`,
         { headers: { 'User-Agent': 'npmx', ...options.headers }, ...options },
-        REPO_META_TTL,
+        UNGH_REPO_META_TTL,
       )
       res = data
     } catch {
@@ -254,7 +256,7 @@ const bitbucketAdapter: ProviderAdapter = {
     let res: BitbucketRepoResponse | null = null
     try {
       const { data } = await cachedFetch<BitbucketRepoResponse>(
-        `https://api.bitbucket.org/2.0/repositories/${ref.owner}/${ref.repo}`,
+        `${GIT_PROVIDER_API_ORIGINS.bitbucket}/2.0/repositories/${ref.owner}/${ref.repo}`,
         { headers: { 'User-Agent': 'npmx', ...options.headers }, ...options },
         REPO_META_TTL,
       )
@@ -312,7 +314,7 @@ const codebergAdapter: ProviderAdapter = {
     let res: GiteaRepoResponse | null = null
     try {
       const { data } = await cachedFetch<GiteaRepoResponse>(
-        `https://codeberg.org/api/v1/repos/${ref.owner}/${ref.repo}`,
+        `${GIT_PROVIDER_API_ORIGINS.codeberg}/api/v1/repos/${ref.owner}/${ref.repo}`,
         { headers: { 'User-Agent': 'npmx', ...options.headers }, ...options },
         REPO_META_TTL,
       )
@@ -370,7 +372,7 @@ const giteeAdapter: ProviderAdapter = {
     let res: GiteeRepoResponse | null = null
     try {
       const { data } = await cachedFetch<GiteeRepoResponse>(
-        `https://gitee.com/api/v5/repos/${ref.owner}/${ref.repo}`,
+        `${GIT_PROVIDER_API_ORIGINS.gitee}/api/v5/repos/${ref.owner}/${ref.repo}`,
         { headers: { 'User-Agent': 'npmx', ...options.headers }, ...options },
         REPO_META_TTL,
       )
@@ -623,7 +625,7 @@ const radicleAdapter: ProviderAdapter = {
     let res: RadicleProjectResponse | null = null
     try {
       const { data } = await cachedFetch<RadicleProjectResponse>(
-        `https://seed.radicle.at/api/v1/projects/${ref.repo}`,
+        `${GIT_PROVIDER_API_ORIGINS.radicle}/api/v1/projects/${ref.repo}`,
         { headers: { 'User-Agent': 'npmx', ...options.headers }, ...options },
         REPO_META_TTL,
       )

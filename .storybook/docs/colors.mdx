@@ -1,0 +1,110 @@
+import { Meta, ColorPalette, ColorItem } from '@storybook/addon-docs/blocks'
+import { theme } from '../../uno.theme.ts'
+
+<Meta title="Colors" tags={['hide-toolbar']} />
+
+# Colors
+
+The npmx color system is built on CSS custom properties with support for light/dark themes and multiple background variants.
+
+Color values are defined in `uno.theme.ts`.
+
+## Background Colors
+
+<ColorPalette>
+  <ColorItem
+    title="Background"
+    subtitle="Main background colors"
+    colors={Object.entries(theme.colors.bg).reduce(
+      (acc, [key, value]) => ({
+        ...acc,
+        [key === 'DEFAULT' ? 'bg' : `bg-${key}`]: value,
+      }),
+      {},
+    )}
+  />
+</ColorPalette>
+
+## Foreground Colors
+
+<ColorPalette>
+  <ColorItem
+    title="Foreground"
+    subtitle="Text and content colors"
+    colors={Object.entries(theme.colors.fg).reduce(
+      (acc, [key, value]) => ({
+        ...acc,
+        [key === 'DEFAULT' ? 'fg' : `fg-${key}`]: value,
+      }),
+      {},
+    )}
+  />
+</ColorPalette>
+
+## Border Colors
+
+<ColorPalette>
+  <ColorItem
+    title="Border"
+    subtitle="Border and separator colors"
+    colors={Object.entries(theme.colors.border).reduce(
+      (acc, [key, value]) => ({
+        ...acc,
+        [key === 'DEFAULT' ? 'border' : `border-${key}`]: value,
+      }),
+      {},
+    )}
+  />
+</ColorPalette>
+
+## Accent Colors
+
+<ColorPalette>
+  <ColorItem
+    title="Primary Accent"
+    subtitle="User-settable accent color"
+    colors={Object.entries(theme.colors.accent).reduce(
+      (acc, [key, value]) => ({
+        ...acc,
+        [key === 'DEFAULT' ? 'accent' : `accent-${key}`]: value,
+      }),
+      {},
+    )}
+  />
+</ColorPalette>
+
+## Syntax Highlighting
+
+<ColorPalette>
+  <ColorItem
+    title="Syntax"
+    subtitle="Code syntax highlighting colors"
+    colors={theme.colors.syntax}
+  />
+</ColorPalette>
+
+## Badge Colors
+
+<ColorPalette>
+  <ColorItem
+    title="Badges"
+    subtitle="Badge background and text colors"
+    colors={theme.colors.badge}
+  />
+</ColorPalette>
+
+## Provider Brand Colors
+
+<ColorPalette>
+  <ColorItem
+    title="Provider Brand Colors"
+    subtitle="Playground provider and framework brand colors"
+    colors={theme.colors.provider}
+  />
+</ColorPalette>
+
+---
+
+## Related
+
+- [Design System Guidelines](https://storybook.npmx.dev/?path=/docs/guidelines--docs)

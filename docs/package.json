@@ -2,14 +2,14 @@
   "name": "npmx-docs",
   "private": true,
   "description": "npmx public docs site",
+  "bugs": {
+    "url": "https://github.com/npmx-dev/npmx.dev/issues"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/npmx-dev/npmx.dev.git",
     "directory": "docs"
-  },
-  "bugs": {
-    "url": "https://github.com/npmx-dev/npmx.dev/issues"
   },
   "scripts": {
     "dev": "nuxt dev",
@@ -20,10 +20,10 @@
   },
   "dependencies": {
     "@nuxt/ui": "4.5.1",
-    "@nuxtjs/mdc": "0.20.1",
-    "better-sqlite3": "12.6.2",
-    "docus": "5.7.0",
+    "@nuxtjs/mdc": "0.20.2",
+    "better-sqlite3": "12.8.0",
+    "docus": "5.8.1",
     "nuxt": "4.3.1",
-    "tailwindcss": "4.2.1"
+    "tailwindcss": "4.2.2"
   }
 }

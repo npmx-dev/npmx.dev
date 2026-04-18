@@ -1,7 +1,7 @@
 import { describe, expect, it, vi, beforeEach, type Mocked } from 'vitest'
 import * as TID from '@atcute/tid'
-import type { ConstellationLike } from '../../../../server/utils/atproto/utils/likes'
-import type { CacheAdapter } from '../../../../server/utils/cache/shared'
+import type { ConstellationLike } from '#server/utils/atproto/utils/likes'
+import type { CacheAdapter } from '#server/utils/cache/shared'
 
 vi.stubGlobal('CACHE_MAX_AGE_ONE_MINUTE', 60)
 vi.stubGlobal('PACKAGE_SUBJECT_REF', (pkg: string) => `https://npmx.dev/package/${pkg}`)
@@ -14,7 +14,7 @@ vi.mock('#shared/types/lexicons/dev/npmx/feed/like.defs', () => ({
 }))
 
 const { aggregateBacklinksByDay, PackageLikesUtils } =
-  await import('../../../../server/utils/atproto/utils/likes')
+  await import('#server/utils/atproto/utils/likes')
 
 function tidFromDate(date: Date): string {
   const microseconds = date.getTime() * 1000

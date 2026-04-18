@@ -199,28 +199,26 @@ const previewPackageJson = computed(() => {
       </div>
 
       <!-- Validation errors -->
-      <div
+      <Alert
         v-if="checkResult.validationErrors?.length"
-        class="p-3 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-md"
-        role="alert"
+        variant="error"
+        :title="$t('claim.modal.invalid_name')"
       >
-        <p class="font-medium mb-1">{{ $t('claim.modal.invalid_name') }}</p>
         <ul class="list-disc list-inside space-y-1">
           <li v-for="err in checkResult.validationErrors" :key="err">{{ err }}</li>
         </ul>
-      </div>
+      </Alert>
 
       <!-- Validation warnings -->
-      <div
+      <Alert
         v-if="checkResult.validationWarnings?.length"
-        class="p-3 text-sm text-yellow-400 bg-yellow-500/10 border border-yellow-500/20 rounded-md"
-        role="alert"
+        variant="warning"
+        :title="$t('common.warnings')"
       >
-        <p class="font-medium mb-1">{{ $t('common.warnings') }}</p>
         <ul class="list-disc list-inside space-y-1">
           <li v-for="warn in checkResult.validationWarnings" :key="warn">{{ warn }}</li>
         </ul>
-      </div>
+      </Alert>
 
       <!-- Availability status -->
       <template v-if="checkResult.valid">
@@ -305,39 +303,23 @@ const previewPackageJson = computed(() => {
       </template>
 
       <!-- Error message -->
-      <div
-        v-if="mergedError"
-        role="alert"
-        class="p-3 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-md"
-      >
-        {{ mergedError }}
-      </div>
+      <Alert v-if="mergedError" variant="error">{{ mergedError }}</Alert>
 
       <!-- Actions -->
       <div v-if="checkResult.available && checkResult.valid" class="space-y-3">
         <!-- Warning for unscoped packages -->
-        <div
-          v-if="!isScoped"
-          class="p-3 text-sm text-yellow-400 bg-yellow-500/10 border border-yellow-500/20 rounded-md"
-        >
-          <p class="font-medium mb-1">{{ $t('claim.modal.scope_warning_title') }}</p>
-          <p class="text-xs text-yellow-400/80">
-            {{
-              $t('claim.modal.scope_warning_text', {
-                username: npmUser || 'username',
-                name: packageName,
-              })
-            }}
-          </p>
-        </div>
+        <Alert v-if="!isScoped" variant="warning" :title="$t('claim.modal.scope_warning_title')">
+          {{
+            $t('claim.modal.scope_warning_text', {
+              username: npmUser || 'username',
+              name: packageName,
+            })
+          }}
+        </Alert>
 
         <!-- Not connected warning -->
         <div v-if="!isConnected" class="space-y-3">
-          <div
-            class="p-3 text-sm text-yellow-400 bg-yellow-500/10 border border-yellow-500/20 rounded-md"
-          >
-            <p>{{ $t('claim.modal.connect_required') }}</p>
-          </div>
+          <Alert variant="warning">{{ $t('claim.modal.connect_required') }}</Alert>
           <button
             type="button"
             class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 focus-visible:outline-accent/70"
@@ -389,12 +371,7 @@ const previewPackageJson = computed(() => {
 
     <!-- Error state -->
     <div v-else-if="mergedError" class="space-y-4">
-      <div
-        role="alert"
-        class="p-3 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-md"
-      >
-        {{ mergedError }}
-      </div>
+      <Alert variant="error">{{ mergedError }}</Alert>
       <button
         type="button"
         class="w-full px-4 py-2 font-mono text-sm text-fg-muted bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-accent/70"

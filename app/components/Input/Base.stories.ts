@@ -8,7 +8,7 @@ const meta = {
     disabled: { control: 'boolean' },
     size: {
       control: 'select',
-      options: ['small', 'medium', 'large'],
+      options: ['sm', 'md', 'lg'],
     },
     noCorrect: {
       control: 'boolean',
@@ -29,10 +29,10 @@ export const Snapshot: Story = {
   render: () => ({
     template: `
       <div style="display: flex; flex-direction: column; gap: 1rem; padding: 1rem;">
-          <Component size="small" model-value="Small input" />
-          <Component size="medium" model-value="Medium input" />
-          <Component size="large" model-value="Large input" />
-          <Component size="large" model-value="disabled" disabled />
+          <Component size="sm" model-value="Small input" />
+          <Component size="md" model-value="Medium input" />
+          <Component size="lg" model-value="Large input" />
+          <Component size="lg" model-value="disabled" disabled />
       </div>
     `,
     components: { Component },

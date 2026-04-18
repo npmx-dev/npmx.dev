@@ -54,14 +54,6 @@
           "npm": "https://www.npmjs.com/package/vite"
         }
       },
-      "score": {
-        "final": 46.90461,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -126,14 +118,6 @@
           "npm": "https://www.npmjs.com/package/express"
         }
       },
-      "score": {
-        "final": 46.49283,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -189,14 +173,6 @@
           "repository": "git+https://github.com/vercel/next.js.git",
           "bugs": "https://github.com/vercel/next.js/issues",
           "npm": "https://www.npmjs.com/package/next"
-        }
-      },
-      "score": {
-        "final": 45.319336,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -257,14 +233,6 @@
           "npm": "https://www.npmjs.com/package/hono"
         }
       },
-      "score": {
-        "final": 43.785503,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -310,14 +278,6 @@
           "npm": "https://www.npmjs.com/package/socket.io-client"
         }
       },
-      "score": {
-        "final": 43.05912,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -361,14 +321,6 @@
           "repository": "git+https://github.com/socketio/socket.io.git",
           "bugs": "https://github.com/socketio/socket.io/issues",
           "npm": "https://www.npmjs.com/package/socket.io"
-        }
-      },
-      "score": {
-        "final": 42.95133,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -443,14 +395,6 @@
           "npm": "https://www.npmjs.com/package/preact"
         }
       },
-      "score": {
-        "final": 41.794792,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -486,14 +430,6 @@
           "repository": "git+https://github.com/senchalabs/connect.git",
           "bugs": "https://github.com/senchalabs/connect/issues",
           "npm": "https://www.npmjs.com/package/connect"
-        }
-      },
-      "score": {
-        "final": 41.599102,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -546,14 +482,6 @@
           "npm": "https://www.npmjs.com/package/bootstrap"
         }
       },
-      "score": {
-        "final": 41.536163,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -602,14 +530,6 @@
           "repository": "git+https://github.com/graphql-hive/envelop.git",
           "bugs": "https://github.com/graphql-hive/envelop/issues",
           "npm": "https://www.npmjs.com/package/@envelop/core"
-        }
-      },
-      "score": {
-        "final": 41.44943,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -693,14 +613,6 @@
           "npm": "https://www.npmjs.com/package/koa"
         }
       },
-      "score": {
-        "final": 41.321415,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -777,14 +689,6 @@
           "npm": "https://www.npmjs.com/package/antd"
         }
       },
-      "score": {
-        "final": 40.321957,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -834,14 +738,6 @@
           "npm": "https://www.npmjs.com/package/quill"
         }
       },
-      "score": {
-        "final": 39.642365,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -886,14 +782,6 @@
           "repository": "git+https://github.com/svitejs/vitefu.git",
           "bugs": "https://github.com/svitejs/vitefu/issues",
           "npm": "https://www.npmjs.com/package/vitefu"
-        }
-      },
-      "score": {
-        "final": 39.552883,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -947,14 +835,6 @@
           "repository": "git+https://github.com/fastify/fastify.git",
           "bugs": "https://github.com/fastify/fastify/issues",
           "npm": "https://www.npmjs.com/package/fastify"
-        }
-      },
-      "score": {
-        "final": 39.484047,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -1017,14 +897,6 @@
           "npm": "https://www.npmjs.com/package/@ckeditor/ckeditor5-core"
         }
       },
-      "score": {
-        "final": 38.754627,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -1085,14 +957,6 @@
           "npm": "https://www.npmjs.com/package/swiper"
         }
       },
-      "score": {
-        "final": 38.736828,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -1145,14 +1009,6 @@
           "repository": "git+https://github.com/sveltejs/svelte.git",
           "bugs": "https://github.com/sveltejs/svelte/issues",
           "npm": "https://www.npmjs.com/package/svelte"
-        }
-      },
-      "score": {
-        "final": 38.628876,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -1216,14 +1072,6 @@
           "npm": "https://www.npmjs.com/package/@hapi/hapi"
         }
       },
-      "score": {
-        "final": 38.406395,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -1282,14 +1130,6 @@
           "npm": "https://www.npmjs.com/package/@sveltejs/kit"
         }
       },
-      "score": {
-        "final": 37.343987,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -1340,14 +1180,6 @@
           "npm": "https://www.npmjs.com/package/@modern-js/utils"
         }
       },
-      "score": {
-        "final": 37.03993,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -1394,14 +1226,6 @@
           "repository": "git+https://github.com/MohammadYounes/rtlcss.git",
           "bugs": "https://github.com/MohammadYounes/rtlcss/issues",
           "npm": "https://www.npmjs.com/package/rtlcss"
-        }
-      },
-      "score": {
-        "final": 36.917053,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -1452,14 +1276,6 @@
           "repository": "git+https://github.com/web-infra-dev/modern.js.git",
           "bugs": "https://github.com/web-infra-dev/modern.js/issues",
           "npm": "https://www.npmjs.com/package/@modern-js/node-bundle-require"
-        }
-      },
-      "score": {
-        "final": 36.915737,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
@@ -1522,14 +1338,6 @@
           "npm": "https://www.npmjs.com/package/@ckeditor/ckeditor5-engine"
         }
       },
-      "score": {
-        "final": 36.902973,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -1586,14 +1394,6 @@
           "repository": "git+https://github.com/ckeditor/ckeditor5.git",
           "bugs": "https://github.com/ckeditor/ckeditor5/issues",
           "npm": "https://www.npmjs.com/package/ckeditor5"
-        }
-      },
-      "score": {
-        "final": 36.308823,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {
