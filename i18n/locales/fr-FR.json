@@ -568,8 +568,8 @@
       "size_decrease": "La taille d'installation a diminué de {percent}% ({size})",
       "dep_increase": "{count} dépendance ajoutée | {count} dépendances ajoutées",
       "dep_decrease": "{count} dépendance retirée | {count} dépendances retirées",
-      "license_change": "La licence a changé de {from} à {to}",
-      "esm_added": "Le type de module a changé à ESM",
+      "license_change": "La licence est passée de {from} à {to}",
+      "esm_added": "Le type de module est passé à ESM",
       "esm_removed": "Le type de module a changé de ESM à CJS",
       "types_added": "Les types TypeScript ont été ajoutés",
       "types_removed": "Les types TypeScript ont été supprimés",
@@ -1595,7 +1595,7 @@
     "meta_description": "L'équipe npmx se rechargeait. Notre discord a rouvert au bout d'une semaine.",
     "heading": "se recharger",
     "subtitle": "nous avons construit npmx à une vitesse qui a coûté du sommeil à {some} d'entre nous. nous ne voulions pas que ça devienne la norme ! donc nous avons pris une semaine de vacances. ensemble.",
-    "illustration_alt": "une seule ligne d'icônes cosy",
+    "illustration_alt": "une rangée d'icônes cosy",
     "poke_log": "Rallumer le feu de camp",
     "what": {
       "title": "ce qu'il s'est passé",
@@ -1606,11 +1606,11 @@
     },
     "meantime": {
       "title": "pendant ce temps",
-      "p1": "{site} et {repo} sont restés ouverts – les gens ont continué à creuser le code, créer quelques issues, ouvrir quelques PRs, mais tout le monde a principalement passé du temps quelque part près d'un feu de camp.",
+      "p1": "{site} et {repo} sont restés ouverts — les gens ont continué à explorer le code, à créer quelques issues et à ouvrir quelques PR, mais la plupart ont surtout passé du temps quelque part près d'un feu de camp.",
       "repo_link": "le repo"
     },
     "return": {
-      "title": "nous sommes revenus !",
+      "title": "nous sommes de retour !",
       "p1": "nous sommes revenus revigorés et prêts pour la dernière ligne droite jusqu'au 3 mars. {social} pour voir les mises à jour.",
       "social_link": "suivez-nous sur Bluesky"
     },
@@ -1633,7 +1633,7 @@
   "logo_menu": {
     "copy_svg": "Copier le logo en SVG",
     "copied": "Copié !",
-    "browse_brand": "Parcourir le kit de marque"
+    "browse_brand": "Consulter le kit de marque"
   },
   "brand": {
     "title": "Marque",
@@ -1666,17 +1666,17 @@
     },
     "typography": {
       "title": "typographie",
-      "description": "npmx utilise la police Geist de Vercel pour l'interface textuelle et le code.",
+      "description": "npmx utilise la police Geist de Vercel pour les textes de l'interface et le code.",
       "sans": "Geist Sans",
       "sans_desc": "Utilisée pour le texte et les éléments UI.",
       "mono": "Geist Mono",
-      "mono_desc": "Utilisée pour le code, les titres et le contenu technique.",
-      "pangram": "Voix ambiguë d'un cœur qui, au zéphyr, préfère les jattes de kiwis",
+      "mono_desc": "Utilisée pour le code, les titres et contenus techniques.",
+      "pangram": "Vif juge, trempez ce blond whisky aqueux",
       "numbers": "0123456789"
     },
     "guidelines": {
       "title": "juste une note",
-      "message": "L'accessibilité nous est chère, et nous adorerions que vous nous suiviez dans cette vision. Lors de l'utilisation des médias mentionnés, assurez-vous qu'il y a assez de contraste avec l'arrière-plan, et ne descendez pas en dessous de 24 px. Si vous avez besoin d'une quelconque ressource ou info supplémentaire sur le projet, n'hésitez pas à nous contacter à {link}.",
+      "message": "L'accessibilité compte beaucoup pour nous, et nous serions ravis que vous partagiez cette vision. Lors de l'utilisation des médias mentionnés, assurez-vous qu'il y a suffisamment de contraste avec l'arrière-plan, et ne descendez pas en dessous de 24 px. Si vous avez besoin d'autres ressources ou d'informations supplémentaires sur le projet, n'hésitez pas à nous contacter à {link}.",
       "discord_link_text": "chat.npmx.dev"
     }
   },
