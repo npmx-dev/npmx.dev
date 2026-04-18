@@ -50,6 +50,7 @@ interface AlgoliaHit {
   deprecated: boolean | string
   isDeprecated: boolean
   license: string | null
+  isSecurityHeld: boolean
 }
 
 const ATTRIBUTES_TO_RETRIEVE = [
@@ -67,6 +68,7 @@ const ATTRIBUTES_TO_RETRIEVE = [
   'deprecated',
   'isDeprecated',
   'license',
+  'isSecurityHeld',
 ]
 
 const EXISTENCE_CHECK_ATTRS = ['name']
@@ -90,6 +92,7 @@ function hitToSearchResult(hit: AlgoliaHit): NpmSearchResult {
             email: owner.email,
           }))
         : [],
+      isSecurityHeld: hit.isSecurityHeld,
     },
     searchScore: 0,
     downloads: {

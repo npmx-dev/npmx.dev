@@ -189,7 +189,8 @@ export interface NpmSearchPackage {
   publisher?: NpmSearchPublisher
   maintainers?: NpmPerson[]
   license?: string
-  repository?: NpmSearchRepository
+  /** Algolia-only: package is an npm-owned security-holder takedown */
+  isSecurityHeld?: boolean
 }
 
 /**
@@ -304,20 +305,6 @@ export interface NpmTrustedPublisher {
   namespace?: string
   project?: string
   ciConfigPath?: string
-}
-
-/**
- * Repository types
- * Note: Not covered by @npm/types
- */
-export interface NpmSearchRepository {
-  type: 'git'
-  url: string
-  project: string
-  user: string
-  host: string
-  path: string
-  branch: string
 }
 
 /**
