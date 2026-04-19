@@ -280,7 +280,8 @@
       "black": "黑色"
     },
     "keyboard_shortcuts_enabled": "启用快捷键",
-    "keyboard_shortcuts_enabled_description": "如果某些快捷键与其他浏览器或系统快捷键冲突，可以选择将其禁用。"
+    "keyboard_shortcuts_enabled_description": "如果某些快捷键与其他浏览器或系统快捷键冲突，可以选择将其禁用。",
+    "enable_code_ligatures": "在代码中启用连字"
   },
   "i18n": {
     "missing_keys": "{count} 项缺少翻译",
@@ -339,7 +340,9 @@
       "tangled": "在 Tangled 上查看"
     },
     "collapse": "收起",
-    "expand": "展开"
+    "collapse_with_name": "收起 {name}",
+    "expand": "展开",
+    "expand_with_name": "展开 {name}"
   },
   "profile": {
     "display_name": "显示名称",
@@ -1234,6 +1237,17 @@
       "packages_selected": "已选择 {count}/{max} 个包。",
       "add_hint": "至少添加 2 个包以进行比较。"
     },
+    "scatter_chart": {
+      "title": "对比 {x} 与 {y}",
+      "freshness_score": "新鲜度评分",
+      "copy_alt": {
+        "analysis": "{package} : {x_name} ({x_value}) 和 {y_name} ({y_value})",
+        "description": "散点图：展示 {x_name} 和 {y_name} 对比结果。 {analysis}。 {watermark}"
+      },
+      "filename": "{x}-vs-{y}-散点图",
+      "x_axis": "X 轴 ↦",
+      "y_axis": "Y 轴 ↥"
+    },
     "no_dependency": {
       "label": "(不使用依赖)",
       "typeahead_title": "James 会怎么做？",
@@ -1312,6 +1326,18 @@
         "vulnerabilities": {
           "label": "漏洞",
           "description": "已知安全漏洞"
+        },
+        "githubStars": {
+          "label": "GitHub 星标",
+          "description": "GitHub 仓库的星标数量"
+        },
+        "githubIssues": {
+          "label": "GitHub 问题数",
+          "description": "GitHub 仓库的问题数量"
+        },
+        "createdAt": {
+          "label": "创建时间",
+          "description": "包创建时间"
         }
       },
       "values": {

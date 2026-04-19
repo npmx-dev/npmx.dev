@@ -16,7 +16,11 @@ const props = defineProps<{
 const colorMode = useColorMode()
 const resolvedMode = shallowRef<'light' | 'dark'>('light')
 const rootEl = shallowRef<HTMLElement | null>(null)
+const { width } = useElementSize(rootEl)
 const { copy, copied } = useClipboard()
+
+const mobileBreakpointWidth = 640
+const isMobile = computed(() => width.value > 0 && width.value < mobileBreakpointWidth)
 
 const { colors } = useCssVariables(
   [
@@ -277,6 +281,13 @@ const highlightedAxis = shallowRef<AxisHighlight>(null)
 function toggleAxisHighlight(state: AxisHighlight) {
   highlightedAxis.value = state
 }
+
+const readyTeleport = shallowRef(false)
+
+onMounted(async () => {
+  await nextTick()
+  readyTeleport.value = true
+})
 </script>
 
 <template>
@@ -296,9 +307,7 @@ function toggleAxisHighlight(state: AxisHighlight) {
     </div>
 
     <div class="flex flex-col sm:flex-row gap-4 items-start">
-      <div
-        class="w-full sm:w-fit order-1 sm:order-2 flex flex-row sm:flex-col gap-2 sm:self-end sm:mb-17"
-      >
+      <div class="w-full sm:w-fit order-1 sm:order-2 flex flex-row sm:flex-col gap-2">
         <SelectField
           class="w-full"
           id="select-facet-scatter-x"
@@ -327,6 +336,22 @@ function toggleAxisHighlight(state: AxisHighlight) {
           @focusin="toggleAxisHighlight('y')"
           @focusout="toggleAxisHighlight(null)"
         />
+
+        <h3
+          id="scatter-chart-legend-packages"
+          :class="[
+            'mb-1 font-mono text-fg-subtle tracking-wide uppercase mt-4 text-2xs',
+            isMobile ? 'sr-only' : 'block',
+          ]"
+        >
+          {{ $t('compare.packages.section_packages') }}
+        </h3>
+
+        <div
+          id="compare-scatter-legend"
+          :role="isMobile ? undefined : 'group'"
+          :aria-labelledby="isMobile ? undefined : 'scatter-chart-legend-packages'"
+        ></div>
       </div>
 
       <ClientOnly>
@@ -346,32 +371,46 @@ function toggleAxisHighlight(state: AxisHighlight) {
             <!-- Custom legend -->
             <template #legend="{ legend }">
               <div
-                class="flex flex-row flex-wrap gap-x-6 justify-center gap-y-2 px-6 sm:px-10 text-xs"
+                id="compare-scatter-legend-inner"
+                :role="isMobile ? 'group' : undefined"
+                :aria-labelledby="isMobile ? 'scatter-chart-legend-packages' : undefined"
+              ></div>
+              <Teleport
+                v-if="readyTeleport"
+                :to="isMobile ? '#compare-scatter-legend-inner' : '#compare-scatter-legend'"
               >
-                <button
-                  v-for="datapoint in legend"
-                  :key="datapoint.name"
-                  :aria-pressed="datapoint.isSegregated"
-                  :aria-label="datapoint.name"
-                  type="button"
-                  class="flex gap-1 place-items-center"
-                  @click="datapoint.segregate()"
+                <ul
+                  :class="
+                    isMobile
+                      ? 'flex flex-row flex-wrap gap-x-6 justify-center gap-y-2 px-6 sm:px-10 text-xs'
+                      : 'text-sm leading-6'
+                  "
                 >
-                  <div class="h-3 w-3">
-                    <svg viewBox="0 0 2 2" class="w-full">
-                      <circle cx="1" cy="1" r="1" :fill="datapoint.color" />
-                    </svg>
-                  </div>
-                  <span
-                    class="text-fg"
-                    :style="{
-                      textDecoration: datapoint.isSegregated ? 'line-through' : undefined,
-                    }"
-                  >
-                    {{ datapoint.name }}
-                  </span>
-                </button>
-              </div>
+                  <li v-for="datapoint in legend" :key="datapoint.name">
+                    <button
+                      :aria-pressed="datapoint.isSegregated"
+                      :aria-label="datapoint.name"
+                      type="button"
+                      class="flex gap-1.5 place-items-center"
+                      @click="datapoint.segregate()"
+                    >
+                      <div class="h-3 w-3" aria-hidden="true">
+                        <svg viewBox="0 0 2 2" class="w-full">
+                          <circle cx="1" cy="1" r="1" :fill="datapoint.color" />
+                        </svg>
+                      </div>
+                      <span
+                        class="text-fg"
+                        :style="{
+                          textDecoration: datapoint.isSegregated ? 'line-through' : undefined,
+                        }"
+                      >
+                        {{ datapoint.name }}
+                      </span>
+                    </button>
+                  </li>
+                </ul>
+              </Teleport>
             </template>
 
             <!-- Custom svg content -->

@@ -7,7 +7,7 @@ Allow: /pds$
 Allow: /privacy$
 Allow: /translation-status$
 Allow: /recharging$
-Allow: /__og-image__/*
+Allow: /_og/d/*
 Allow: /opensearch.xml$
 
 Disallow: /

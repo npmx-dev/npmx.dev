@@ -42,7 +42,8 @@
     "open_docs": "Ouvrir la doc",
     "disable_shortcuts": "Vous pouvez désactiver les raccourcis clavier dans {settings}.",
     "open_main": "Ouvrir les informations principales",
-    "open_diff": "Ouvrir les différences de version"
+    "open_diff": "Ouvrir les différences de version",
+    "open_timeline": "Ouvrir l'historique"
   },
   "search": {
     "label": "Rechercher des paquets npm",
@@ -252,6 +253,7 @@
     "hide_platform_packages_description": "Masquer les paquets binaires natifs comme {'@'}esbuild/linux-x64 des résultats",
     "enable_graph_pulse_loop": "Activer la boucle de l'effet de pulsation sur le mini-graphe",
     "enable_graph_pulse_loop_description": "Activer une animation de pulsation continue sur le graphique des téléchargements hebdomadaires. Cette animation peut être gênante pour certaines personnes.",
+    "enable_code_ligatures": "Activer les ligatures de code",
     "theme": "Thème",
     "theme_light": "Clair",
     "theme_dark": "Sombre",
@@ -339,7 +341,9 @@
       "tangled": "Voir sur Tangled"
     },
     "collapse": "Réduire",
-    "expand": "Développer"
+    "expand": "Développer",
+    "collapse_with_name": "Réduire {name}",
+    "expand_with_name": "Développer {name}"
   },
   "profile": {
     "display_name": "Nom d'affichage",
@@ -419,7 +423,7 @@
         "assets": "{count} ressource | {count} ressources"
       },
       "view_source": "Voir la source",
-      "skills_cli": "Skills CLI"
+      "skills_cli": "CLI skills"
     },
     "links": {
       "main": "principal",
@@ -431,6 +435,7 @@
       "docs": "docs",
       "fund": "donner",
       "compare": "comparer",
+      "timeline": "historique",
       "compare_this_package": "comparer ce paquet"
     },
     "likes": {
@@ -476,7 +481,8 @@
         "warning": "Avertissement",
         "caution": "Attention"
       },
-      "copy_as_markdown": "Copier le README en markdown"
+      "copy_as_markdown": "Copier le README en markdown",
+      "error_loading": "Échec de chargement des détails du README"
     },
     "provenance_section": {
       "title": "Provenance",
@@ -547,13 +553,30 @@
       "filter_tooltip": "Filtrer les versions avec une {link}. Par exemple, ^3.0.0 affiche toutes les versions 3.x.",
       "filter_tooltip_link": "plage semver",
       "no_matches": "Aucune version ne correspond à cette plage",
-      "page_title": "Historique des versions",
-      "current_tags": "Tags actuels",
-      "no_match_filter": "Aucune version ne correspond à {filter}",
       "copy_alt": {
         "per_version_analysis": "La version {version} a été téléchargée {downloads} fois",
         "general_description": "Graphique en barres montrant les téléchargements par version pour {versions_count} versions {semver_grouping_mode} du paquet {package_name}, {date_range_label} de la version {first_version} à la version {last_version}. La version la plus téléchargée est {max_downloaded_version} avec {max_version_downloads} téléchargements. {per_version_analysis}. {watermark}."
-      }
+      },
+      "page_title": "Historique des versions",
+      "current_tags": "Tags actuels",
+      "no_match_filter": "Aucune version ne correspond à {filter}"
+    },
+    "timeline": {
+      "load_more": "Charger plus",
+      "load_error": "Échec de chargement de l'historique. Veuillez réessayer plus tard.",
+      "size_increase": "La taille d'installation a augmenté de {percent}% ({size})",
+      "size_decrease": "La taille d'installation a diminué de {percent}% ({size})",
+      "dep_increase": "{count} dépendance ajoutée | {count} dépendances ajoutées",
+      "dep_decrease": "{count} dépendance retirée | {count} dépendances retirées",
+      "license_change": "La licence est passée de {from} à {to}",
+      "esm_added": "Le type de module est passé à ESM",
+      "esm_removed": "Le type de module a changé de ESM à CJS",
+      "types_added": "Les types TypeScript ont été ajoutés",
+      "types_removed": "Les types TypeScript ont été supprimés",
+      "trusted_publisher_added": "Vérification ajoutée",
+      "trusted_publisher_removed": "Vérification enlevée",
+      "provenance_added": "Preuve de provenance ajoutée",
+      "provenance_removed": "Preuve de provenance enlevée"
     },
     "dependencies": {
       "title": "Dépendances ({count})",
@@ -590,7 +613,7 @@
       "add_owner": "+ Ajouter un propriétaire",
       "show_more": "(afficher {count} de plus)",
       "show_less": "(afficher moins)",
-      "maintainer_template": "Mainteneur {name}"
+      "maintainer_template": "{avatar} {char126}{name}"
     },
     "trends": {
       "chart_assistive_text": {
@@ -960,6 +983,7 @@
       "preview": "aperçu",
       "code": "code"
     },
+    "open_path_dropdown": "Ouvrir le menu du chemin",
     "file_path": "Chemin du fichier",
     "binary_file": "Fichier binaire",
     "binary_rendering_warning": "Le type de fichier \"{contentType}\" n'est pas pris en charge pour l'aperçu."
@@ -1220,9 +1244,9 @@
       "empty_description": "Recherchez et ajoutez au moins 2 paquets ci-dessus pour voir une comparaison côte à côte de leurs facettes.",
       "table_view": "Tableau",
       "charts_view": "Graphiques",
+      "no_chartable_data": "Aucune donnée représentable disponible pour les facettes sélectionnées.",
       "bar_chart_nav_hint": "Utilisez ↑ ↓",
-      "line_chart_nav_hint": "Utilisez ← →",
-      "no_chartable_data": "Aucune donnée représentable"
+      "line_chart_nav_hint": "Utilisez ← →"
     },
     "selector": {
       "search_label": "Rechercher des paquets",
@@ -1256,6 +1280,10 @@
     "facets": {
       "all": "tout",
       "none": "aucun",
+      "select_all_category_facets": "Sélectionner toutes les facettes de {category}",
+      "deselect_all_category_facets": "Désélectionner toutes les facettes de {category}",
+      "selected_all_category_facets": "Toutes les facettes de {category} sont sélectionnées",
+      "deselected_all_category_facets": "Toutes les facettes de {category} sont désélectionnées",
       "coming_soon": "Bientôt disponible",
       "select_all": "Sélectionner toutes les facettes",
       "deselect_all": "Désélectionner toutes les facettes",
@@ -1318,6 +1346,18 @@
         "vulnerabilities": {
           "label": "Vulnérabilités",
           "description": "Vulnérabilités de sécurité connues"
+        },
+        "githubStars": {
+          "label": "Étoiles GitHub",
+          "description": "Nombre d’étoiles du dépôt GitHub"
+        },
+        "githubIssues": {
+          "label": "Issues GitHub",
+          "description": "Nombre d’issues ouvertes sur GitHub"
+        },
+        "createdAt": {
+          "label": "Date de création",
+          "description": "Date de création du paquet"
         }
       },
       "values": {
@@ -1333,11 +1373,7 @@
       },
       "trends": {
         "title": "Comparer les tendances"
-      },
-      "select_all_category_facets": "Sélectionner toutes les facettes de la catégorie",
-      "deselect_all_category_facets": "Désélectionner toutes les facettes de la catégorie",
-      "selected_all_category_facets": "Toutes les facettes de la catégorie sont sélectionnées",
-      "deselected_all_category_facets": "Toutes les facettes de la catégorie sont désélectionnées"
+      }
     },
     "file_changes": "Modifications de fichiers",
     "files_count": "{count} fichiers",
@@ -1554,6 +1590,40 @@
       "file_link": "Modifier {file} ({lang}) sur GitHub"
     }
   },
+  "vacations": {
+    "title": "en vacances",
+    "meta_description": "L'équipe npmx se rechargeait. Notre discord a rouvert au bout d'une semaine.",
+    "heading": "se recharger",
+    "subtitle": "nous avons construit npmx à une vitesse qui a coûté du sommeil à {some} d'entre nous. nous ne voulions pas que ça devienne la norme ! donc nous avons pris une semaine de vacances. ensemble.",
+    "illustration_alt": "une rangée d'icônes cosy",
+    "poke_log": "Rallumer le feu de camp",
+    "what": {
+      "title": "ce qu'il s'est passé",
+      "p1": "notre discord était fermé du {dates}.",
+      "dates": "14 au 21 février",
+      "p2": "tous les liens d'invitation ont été supprimés et les channels verrouillés – sauf {garden}, qui est resté ouvert pour ceux qui voulaient papoter.",
+      "garden": "#garden"
+    },
+    "meantime": {
+      "title": "pendant ce temps",
+      "p1": "{site} et {repo} sont restés ouverts — les contributeurs ont continué à explorer le code, à créer quelques issues et à ouvrir quelques PR, mais la plupart ont surtout passé du temps quelque part près d'un feu de camp.",
+      "repo_link": "le repo"
+    },
+    "return": {
+      "title": "nous sommes de retour !",
+      "p1": "nous sommes revenus revigorés et prêts pour la dernière ligne droite jusqu'au 3 mars. {social} pour voir les mises à jour.",
+      "social_link": "suivez-nous sur Bluesky"
+    },
+    "stats": {
+      "contributors": "Contributeurs",
+      "commits": "Commits",
+      "pr": "PRs fusionnées",
+      "subtitle": {
+        "some": "certains",
+        "all": "tous"
+      }
+    }
+  },
   "action_bar": {
     "title": "barre d'actions",
     "selection": "0 sélectionné | 1 sélectionné | {count} sélectionnés",
@@ -1563,51 +1633,51 @@
   "logo_menu": {
     "copy_svg": "Copier le logo en SVG",
     "copied": "Copié !",
-    "browse_brand": "Parcourir la marque"
+    "browse_brand": "Consulter le kit de marque"
   },
   "brand": {
     "title": "Marque",
-    "heading": "Marque",
-    "meta_description": "Ressources et directives de la marque npmx",
-    "intro": "Bienvenue sur la page des ressources de la marque npmx",
+    "heading": "marque",
+    "meta_description": "Les directives, logos, couleurs et typographies de la marque npmx pour utilisation dans la presse et les médias.",
+    "intro": "Ressources et directives pour utiliser la marque npmx dans vos projets, articles et médias.",
     "logos": {
       "title": "Logos",
-      "description": "Télécharger les logos officiels de npmx",
-      "wordmark": "Logotype",
-      "wordmark_alt": "Logotype npmx",
-      "wordmark_light_alt": "Logotype npmx clair",
-      "mark": "Symbole",
-      "mark_alt": "Symbole npmx",
-      "mark_light_alt": "Symbole npmx clair",
-      "on_dark": "Sur fond sombre",
-      "on_light": "Sur fond clair",
-      "download_svg": "Télécharger en SVG",
-      "download_png": "Télécharger en PNG",
+      "description": "Télécharger les logos de npmx en formats SVG et PNG. Utilisez la variante appropriée pour votre arrière-plan.",
+      "wordmark": "LOGOTYPE COMPLET",
+      "wordmark_alt": "Logotype complet de npmx avec la barre oblique bleue sur fond noir",
+      "wordmark_light_alt": "Logotype complet de npmx avec la barre oblique accentuée sur fond clair",
+      "mark": "SYMBOLE",
+      "mark_alt": "Symbole npmx avec le point et la barre oblique sur fond noir",
+      "mark_light_alt": "Symbole npmx avec le point et la barre oblique sur fond clair",
+      "on_dark": "sur fond sombre",
+      "on_light": "sur fond clair",
+      "download_svg": "SVG",
+      "download_png": "PNG",
       "download_svg_aria": "Télécharger {name} en SVG",
       "download_png_aria": "Télécharger {name} en PNG"
     },
     "customize": {
-      "title": "Personnalisation",
-      "description": "Personnalisez l'apparence du logo",
-      "accent_label": "Couleur d'accentuation",
-      "bg_label": "Couleur de fond",
+      "title": "personnaliser votre logo",
+      "description": "Personnalisez l'apparence du logo avec votre couleur d'accentuation et votre fond. L'aperçu reflète vos réglages actuels — choisissez une couleur, changez le fond et téléchargez.",
+      "accent_label": "couleur d'accentuation",
+      "bg_label": "arrière-plan",
       "download_svg_aria": "Télécharger le logo personnalisé en SVG",
       "download_png_aria": "Télécharger le logo personnalisé en PNG"
     },
     "typography": {
-      "title": "Typographie",
-      "description": "Polices utilisées dans npmx",
-      "sans": "Sans",
-      "sans_desc": "Police du contenu principal",
-      "mono": "Mono",
-      "mono_desc": "Police du code",
-      "pangram": "Phrase contenant tous les caractères",
-      "numbers": "Chiffres"
+      "title": "typographie",
+      "description": "npmx utilise la police Geist de Vercel pour les textes de l'interface et le code.",
+      "sans": "Geist Sans",
+      "sans_desc": "Utilisée pour le texte et les éléments UI.",
+      "mono": "Geist Mono",
+      "mono_desc": "Utilisée pour le code, les titres et contenus techniques.",
+      "pangram": "Vif juge, trempez ce blond whisky aqueux",
+      "numbers": "0123456789"
     },
     "guidelines": {
-      "title": "Directives de marque",
-      "message": "Pour un usage commercial, veuillez nous contacter.",
-      "discord_link_text": "Discussion Discord"
+      "title": "juste une note",
+      "message": "L'accessibilité compte beaucoup pour nous, et nous serions ravis que vous partagiez cette vision. Lors de l'utilisation des médias mentionnés, assurez-vous qu'il y a suffisamment de contraste avec l'arrière-plan, et ne descendez pas en dessous de 24 px. Si vous avez besoin d'autres ressources ou d'informations supplémentaires sur le projet, n'hésitez pas à nous contacter à {link}.",
+      "discord_link_text": "chat.npmx.dev"
     }
   },
   "alt_logo_kawaii": "Une version mignonne, arrondie et colorée du logo npmx."

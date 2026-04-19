@@ -1,19 +1,10 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
 import { encodePackageName } from '#shared/utils/npm'
 
-const props = withDefaults(
-  defineProps<{
-    packages?: string | string[]
-    emptyDescription?: string
-    primaryColor?: string
-  }>(),
-  {
-    packages: () => [],
-    emptyDescription: 'Compare npm packages side-by-side',
-    primaryColor: '#60a5fa',
-  },
-)
+const { packages = [], emptyDescription = 'Compare npm packages side-by-side' } = defineProps<{
+  packages?: string | string[]
+  emptyDescription?: string
+}>()
 
 const ACCENT_COLORS = [
   '#60a5fa',
@@ -37,7 +28,7 @@ const GRID_MAX = 12
 const SUMMARY_TOP_COUNT = 3
 
 const displayPackages = computed(() => {
-  const raw = props.packages
+  const raw = packages
   return (typeof raw === 'string' ? raw.split(',') : raw).map(p => p.trim()).filter(Boolean)
 })
 
@@ -57,7 +48,7 @@ interface PkgStats {
   color: string
 }
 
-const stats = ref<PkgStats[]>([])
+const stats = shallowRef<PkgStats[]>([])
 
 const FETCH_TIMEOUT_MS = 2500
 
@@ -122,61 +113,27 @@ const summaryRemainder = computed(() =>
 </script>
 
 <template>
-  <div
-    class="h-full w-full flex flex-col justify-center relative overflow-hidden bg-[#050505] text-[#fafafa] px-20"
-    style="font-family: 'Geist Mono', sans-serif"
-  >
-    <div class="relative z-10 flex flex-col gap-5">
-      <!-- Icon + title row -->
-      <div class="flex items-start gap-4">
-        <div
-          class="flex items-center justify-center w-16 h-16 p-3.5 rounded-xl shadow-lg"
-          :style="{ background: `linear-gradient(to top right, #3b82f6, ${primaryColor})` }"
-        >
-          <svg
-            width="36"
-            height="36"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="white"
-            stroke-width="2.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="m7.5 4.27 9 5.15" />
-            <path
-              d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"
-            />
-            <path d="m3.3 7 8.7 5 8.7-5" />
-            <path d="M12 22V12" />
-          </svg>
-        </div>
+  <OgLayout>
+    <div class="px-15 py-12 flex flex-col justify-center gap-10 h-full">
+      <OgBrand :height="48" />
 
-        <h1 class="text-7xl font-bold tracking-tight">
-          <span
-            class="opacity-80 tracking-[-0.1em]"
-            :style="{ color: primaryColor }"
-            style="margin-right: 0.25rem"
-            >./</span
-          >compare
+      <div class="flex items-baseline gap-3">
+        <h1 class="text-7xl font-mono tracking-tighter leading-none">
+          <span class="opacity-50">./</span>compare
         </h1>
       </div>
 
       <!-- Empty state -->
-      <div
-        v-if="displayPackages.length === 0"
-        class="text-4xl text-[#a3a3a3]"
-        style="font-family: 'Geist', sans-serif"
-      >
+      <div v-if="displayPackages.length === 0" class="text-4xl text-fg-muted">
         {{ emptyDescription }}
       </div>
 
       <!-- FULL layout (1-4 packages): name + downloads + version badge + bar -->
       <div v-else-if="layoutTier === 'full'" class="flex flex-col gap-2">
         <div v-for="pkg in stats" :key="pkg.name" class="flex flex-col gap-1">
-          <div class="flex items-center gap-3" style="font-family: 'Geist', sans-serif">
+          <div class="flex items-center gap-3">
             <span
-              class="text-2xl font-semibold tracking-tight"
+              class="text-2xl font-semibold tracking-tight font-mono"
               :style="{
                 color: pkg.color,
                 maxWidth: '400px',
@@ -189,7 +146,7 @@ const summaryRemainder = computed(() =>
             </span>
             <span
               v-if="pkg.version"
-              class="text-lg px-2 py-0.5 rounded-md border"
+              class="text-lg px-2 py-0.5 rounded-md border font-mono"
               :style="{
                 color: pkg.color,
                 backgroundColor: pkg.color + '10',
@@ -198,7 +155,7 @@ const summaryRemainder = computed(() =>
             >
               {{ pkg.version }}
             </span>
-            <span class="text-3xl font-bold text-[#fafafa]">
+            <span class="text-3xl font-bold text-fg">
               {{ formatDownloads(pkg.downloads) }}/wk
             </span>
           </div>
@@ -215,9 +172,9 @@ const summaryRemainder = computed(() =>
       <!-- COMPACT layout (5-6 packages): name + downloads + thinner bar, no version -->
       <div v-else-if="layoutTier === 'compact'" class="flex flex-col gap-2">
         <div v-for="pkg in stats" :key="pkg.name" class="flex flex-col gap-0.5">
-          <div class="flex items-center gap-2" style="font-family: 'Geist', sans-serif">
+          <div class="flex items-center gap-2">
             <span
-              class="text-xl font-semibold tracking-tight"
+              class="text-xl font-semibold tracking-tight font-mono"
               :style="{
                 color: pkg.color,
                 maxWidth: '300px',
@@ -230,7 +187,7 @@ const summaryRemainder = computed(() =>
             </span>
             <span
               v-if="pkg.version"
-              class="text-sm px-1.5 py-0.5 rounded border"
+              class="text-sm px-1.5 py-0.5 rounded border font-mono"
               :style="{
                 color: pkg.color,
                 backgroundColor: pkg.color + '10',
@@ -239,9 +196,7 @@ const summaryRemainder = computed(() =>
             >
               {{ pkg.version }}
             </span>
-            <span class="text-xl font-bold text-[#fafafa]">
-              {{ formatDownloads(pkg.downloads) }}/wk
-            </span>
+            <span class="text-xl font-bold text-fg"> {{ formatDownloads(pkg.downloads) }}/wk </span>
           </div>
           <div
             class="h-3 rounded-sm"
@@ -261,7 +216,6 @@ const summaryRemainder = computed(() =>
           flexWrap: 'wrap',
           rowGap: 24,
           columnGap: 40,
-          fontFamily: 'Geist, sans-serif',
         }"
       >
         <span
@@ -275,7 +229,7 @@ const summaryRemainder = computed(() =>
           }"
         >
           <span
-            class="font-semibold tracking-tight"
+            class="font-semibold tracking-tight font-mono"
             :style="{
               fontSize: '18px',
               maxWidth: '220px',
@@ -287,25 +241,23 @@ const summaryRemainder = computed(() =>
             >{{ pkg.name }}</span
           >
           <span :style="{ display: 'flex', alignItems: 'baseline', gap: 2 }">
-            <span class="text-2xl font-bold text-[#e5e5e5]">{{
-              formatDownloads(pkg.downloads)
-            }}</span>
-            <span class="text-sm font-medium text-[#d4d4d4]">/wk</span>
+            <span class="text-2xl font-bold text-fg">{{ formatDownloads(pkg.downloads) }}</span>
+            <span class="text-sm font-medium text-fg-muted">/wk</span>
           </span>
         </span>
       </div>
 
       <!-- SUMMARY layout (13+ packages): package count + top names -->
-      <div v-else class="flex flex-col gap-3" style="font-family: 'Geist', sans-serif">
-        <div class="text-2xl text-[#a3a3a3]">
-          <span class="text-4xl font-bold text-[#fafafa]">{{ displayPackages.length }}</span>
+      <div v-else class="flex flex-col gap-3">
+        <div class="text-2xl text-fg-muted">
+          <span class="text-4xl font-bold text-fg">{{ displayPackages.length }}</span>
           packages
         </div>
         <div :style="{ display: 'flex', alignItems: 'baseline', gap: 8, whiteSpace: 'nowrap' }">
           <span
             v-for="(name, i) in summaryTopNames"
             :key="name"
-            class="text-xl font-semibold"
+            class="text-xl font-semibold font-mono"
             :style="{
               color: ACCENT_COLORS[i % ACCENT_COLORS.length],
               maxWidth: '280px',
@@ -316,24 +268,11 @@ const summaryRemainder = computed(() =>
             }"
             >{{ name }}{{ i < summaryTopNames.length - 1 ? ',' : '' }}</span
           >
-          <span v-if="summaryRemainder > 0" class="text-xl text-[#737373]">
+          <span v-if="summaryRemainder > 0" class="text-xl text-fg-subtle">
             +{{ summaryRemainder }} more
           </span>
         </div>
       </div>
     </div>
-
-    <!-- Branding -->
-    <div
-      class="absolute bottom-6 inset-ie-20 text-lg font-semibold tracking-tight text-[#525252]"
-      style="font-family: 'Geist Mono', sans-serif"
-    >
-      <span :style="{ color: primaryColor }" class="opacity-80 tracking-[-0.1em]">./</span>npmx
-    </div>
-
-    <div
-      class="absolute -top-32 -inset-ie-32 w-[550px] h-[550px] rounded-full blur-3xl"
-      :style="{ backgroundColor: primaryColor + '10' }"
-    />
-  </div>
+  </OgLayout>
 </template>

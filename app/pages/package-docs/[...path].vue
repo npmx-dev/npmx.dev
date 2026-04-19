@@ -135,18 +135,30 @@ const pageTitle = computed(() => {
 
 useSeoMeta({
   title: () => pageTitle.value,
-  ogTitle: () => pageTitle.value,
+  ogTitle: () => t('package.docs.og_title', { name: packageName.value }),
   twitterTitle: () => pageTitle.value,
   description: () => pkg.value?.license ?? '',
   ogDescription: () => pkg.value?.license ?? '',
   twitterDescription: () => pkg.value?.license ?? '',
 })
 
-defineOgImageComponent('Default', {
-  title: () => t('package.docs.og_title', { name: pkg.value?.name ?? 'Package' }),
-  description: () => pkg.value?.license ?? '',
-  primaryColor: '#60a5fa',
-})
+defineOgImage(
+  'Package.takumi',
+  {
+    name: () => packageName.value,
+    version: () => resolvedVersion.value,
+    variant: 'function-tree',
+  },
+  [
+    { key: 'og', alt: () => `API documentation for ${packageName.value}` },
+    {
+      key: 'whatsapp',
+      width: 800,
+      height: 800,
+      alt: () => `API documentation for ${packageName.value}`,
+    },
+  ],
+)
 
 const showLoading = computed(
   () => docsStatus.value === 'pending' || (docsStatus.value === 'idle' && docsUrl.value !== null),

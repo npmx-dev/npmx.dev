@@ -10,11 +10,14 @@ useSeoMeta({
   twitterDescription: () => $t('brand.meta_description'),
 })
 
-defineOgImageComponent('Default', {
-  primaryColor: '#51c8fc',
-  title: $t('brand.title'),
-  description: $t('brand.meta_description'),
-})
+defineOgImage(
+  'Page.takumi',
+  {
+    title: () => $t('brand.title'),
+    description: () => $t('brand.meta_description'),
+  },
+  { alt: () => `${$t('brand.title')} — npmx` },
+)
 
 const logos = [
   {

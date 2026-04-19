@@ -89,6 +89,7 @@ function handleClick(event: MouseEvent) {
   min-width: 0;
   /* Contain all children z-index values inside this container */
   isolation: isolate;
+  contain: layout paint;
 }
 
 /* README headings - styled by visual level (data-level), not semantic level */

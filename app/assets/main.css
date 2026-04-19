@@ -287,6 +287,11 @@ html.light .shiki {
   }
 }
 
+/* Settings-based configuration for code ligatures. On by default. */
+:root[data-code-ligatures='false'] code {
+  font-variant-ligatures: none;
+}
+
 /* Inline code in package descriptions */
 p > span > code,
 .line-clamp-2 code {

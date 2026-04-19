@@ -6,7 +6,9 @@ import type { ReplacementSuggestion } from '~/composables/useCompareReplacements
 /**
  * Helper to test useCompareReplacements by wrapping it in a component.
  */
-async function useCompareReplacementsInComponent(packageNames: string[]) {
+async function useCompareReplacementsInComponent(
+  packageNames: Parameters<typeof useCompareReplacements>[0],
+) {
   const capturedNoDepSuggestions = ref<ReplacementSuggestion[]>([])
   const capturedInfoSuggestions = ref<ReplacementSuggestion[]>([])
   const capturedLoading = ref(false)
@@ -212,27 +214,82 @@ describe('useCompareReplacements', () => {
     })
 
     it('handles fetch errors gracefully', async () => {
-      vi.stubGlobal(
-        '$fetch',
-        vi.fn().mockImplementation(() => {
-          return Promise.reject(new Error('Network error'))
-        }),
-      )
+      const fetchMock = vi.fn().mockImplementation(() => {
+        return Promise.reject(new Error('Network error'))
+      })
+
+      vi.stubGlobal('$fetch', fetchMock)
 
       const { noDepSuggestions, infoSuggestions, replacements } =
         await useCompareReplacementsInComponent(['some-package'])
 
       await vi.waitFor(() => {
-        expect(replacements.value.has('some-package')).toBe(true)
+        expect(fetchMock).toHaveBeenCalledTimes(1)
       })
 
-      expect(replacements.value.get('some-package')).toBeNull()
+      expect(replacements.value.has('some-package')).toBe(false)
       expect(noDepSuggestions.value).toHaveLength(0)
       expect(infoSuggestions.value).toHaveLength(0)
     })
   })
 
   describe('caching', () => {
+    it('retries a package after a transient fetch failure', async () => {
+      const packageNames = ref(['is-even'])
+      const fetchMock = vi
+        .fn()
+        .mockRejectedValueOnce(new Error('Temporary network error'))
+        .mockResolvedValueOnce({
+          type: 'simple',
+          moduleName: 'is-even',
+          replacement: 'Use (n % 2) === 0',
+          category: 'micro-utilities',
+        } satisfies ModuleReplacement)
+
+      vi.stubGlobal('$fetch', fetchMock)
+
+      const { noDepSuggestions, replacements } =
+        await useCompareReplacementsInComponent(packageNames)
+
+      await vi.waitFor(() => {
+        expect(fetchMock).toHaveBeenCalledTimes(1)
+      })
+
+      expect(replacements.value.has('is-even')).toBe(false)
+
+      packageNames.value = []
+      await nextTick()
+      packageNames.value = ['is-even']
+
+      await vi.waitFor(() => {
+        expect(fetchMock).toHaveBeenCalledTimes(2)
+        expect(noDepSuggestions.value).toHaveLength(1)
+      })
+
+      expect(replacements.value.get('is-even')?.type).toBe('simple')
+    })
+
+    it('caches successful null replacement data and does not refetch', async () => {
+      const fetchMock = vi.fn().mockResolvedValue(null)
+
+      vi.stubGlobal('$fetch', fetchMock)
+
+      const packageNames = ref(['react'])
+      const { replacements } = await useCompareReplacementsInComponent(packageNames)
+
+      await vi.waitFor(() => {
+        expect(replacements.value.has('react')).toBe(true)
+      })
+
+      packageNames.value = []
+      await nextTick()
+      packageNames.value = ['react']
+
+      await vi.waitFor(() => {
+        expect(fetchMock).toHaveBeenCalledTimes(1)
+      })
+    })
+
     it('caches replacement data and does not refetch', async () => {
       const fetchMock = vi.fn().mockImplementation((url: string) => {
         if (url.includes('/api/replacements/is-even')) {

@@ -5,6 +5,7 @@ const { locale: currentLocale, locales, setLocale: setNuxti18nLocale } = useI18n
 const colorMode = useColorMode()
 const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
 const keyboardShortcutsEnabled = useKeyboardShortcuts()
+const { toggleCodeLigatures } = useCodeLigatures()
 
 // Escape to go back (but not when focused on form elements or modal is open)
 onKeyStroke(
@@ -29,11 +30,14 @@ useSeoMeta({
   twitterDescription: () => $t('settings.meta_description'),
 })
 
-defineOgImageComponent('Default', {
-  title: () => $t('settings.title'),
-  description: () => $t('settings.tagline'),
-  primaryColor: '#60a5fa',
-})
+defineOgImage(
+  'Page.takumi',
+  {
+    title: () => $t('settings.title'),
+    description: () => $t('settings.tagline'),
+  },
+  { alt: () => `${$t('settings.title')} — npmx` },
+)
 
 const setLocale: typeof setNuxti18nLocale = newLocale => {
   settings.value.selectedLocale = newLocale
@@ -142,6 +146,16 @@ const setLocale: typeof setNuxti18nLocale = newLocale => {
               :label="$t('settings.enable_graph_pulse_loop')"
               :description="$t('settings.enable_graph_pulse_loop_description')"
               v-model="settings.enableGraphPulseLooping"
+            />
+
+            <!-- Divider -->
+            <div class="border-t border-border my-4" />
+
+            <!-- Code ligatures toggle -->
+            <SettingsToggle
+              :label="$t('settings.enable_code_ligatures')"
+              :modelValue="settings.codeLigatures"
+              @update:modelValue="() => toggleCodeLigatures()"
             />
           </div>
         </section>
