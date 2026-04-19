@@ -12,10 +12,13 @@ useSeoMeta({
   twitterDescription: () => $t('vacations.meta_description'),
 })
 
-defineOgImageComponent('Default', {
-  title: () => $t('vacations.title'),
-  description: () => $t('vacations.meta_description'),
-})
+defineOgImage(
+  'Page.takumi',
+  {
+    title: () => $t('vacations.title'),
+  },
+  { alt: () => `${$t('vacations.title')} — npmx` },
+)
 
 const { data: stats } = useFetch('/api/repo-stats')
 

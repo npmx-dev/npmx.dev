@@ -2,12 +2,6 @@
 import { assertValidPackageName } from '#shared/utils/npm'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
 
-defineOgImageComponent('Package', {
-  name: () => packageName.value,
-  version: () => requestedVersion.value ?? '',
-  primaryColor: '#60a5fa',
-})
-
 const readmeHeader = useTemplateRef('readmeHeader')
 const isReadmeHeaderPinned = shallowRef(false)
 const packageHeaderHeight = usePackageHeaderHeight()
@@ -41,12 +35,30 @@ const { data: resolvedVersion, status: resolvedStatus } = await useResolvedVersi
   requestedVersion,
 )
 
+defineOgImage(
+  'Package.takumi',
+  {
+    name: () => packageName.value,
+    version: () => requestedVersion.value,
+    variant: 'download-chart',
+  },
+  [
+    { key: 'og', alt: () => `npm package ${packageName.value} download chart and stats` },
+    {
+      key: 'whatsapp',
+      width: 800,
+      height: 800,
+      alt: () => `npm package ${packageName.value} download chart and stats`,
+    },
+  ],
+)
+
 if (import.meta.server) {
   assertValidPackageName(packageName.value)
 }
 
 // Fetch README for specific version if requested, otherwise latest
-const { data: readmeData } = useLazyFetch<ReadmeResponse>(
+const { data: readmeData, status: readmeStatus } = useLazyFetch<ReadmeResponse>(
   () => {
     const base = `/api/registry/readme/${packageName.value}`
     const version = resolvedVersion.value
@@ -96,24 +108,20 @@ const {
 )
 
 //copy README file as Markdown
-const { copied: copiedReadme, copy: copyReadme } = useClipboard({
-  source: () => '',
-  copiedDuring: 2000,
-})
+const { copied: copiedReadme, copy: copyReadme } = useClipboardAsync(
+  async () => {
+    await fetchReadmeMarkdown()
+    return readmeMarkdownData.value?.markdown ?? ''
+  },
+  {
+    copiedDuring: 2000,
+  },
+)
 
 function prefetchReadmeMarkdown() {
   if (readmeMarkdownStatus.value === 'idle') {
     fetchReadmeMarkdown()
   }
-}
-
-async function copyReadmeHandler() {
-  await fetchReadmeMarkdown()
-
-  const markdown = readmeMarkdownData.value?.markdown
-  if (!markdown) return
-
-  await copyReadme(markdown)
 }
 
 // Track active TOC item based on scroll position
@@ -1023,7 +1031,7 @@ const showSkeleton = shallowRef(false)
                 <ButtonBase
                   @mouseenter="prefetchReadmeMarkdown"
                   @focus="prefetchReadmeMarkdown"
-                  @click="copyReadmeHandler()"
+                  @click="copyReadme"
                   :aria-pressed="copiedReadme"
                   :aria-label="
                     copiedReadme ? $t('common.copied') : $t('package.readme.copy_as_markdown')
@@ -1043,7 +1051,20 @@ const showSkeleton = shallowRef(false)
 
           <!-- eslint-disable vue/no-v-html -- HTML is sanitized server-side -->
           <Readme v-if="readmeData?.html" :html="readmeData.html" />
-          <p v-else class="text-fg-muted italic">
+          <p
+            v-else-if="readmeStatus === 'pending'"
+            class="flex items-center gap-2 text-fg-subtle italic"
+          >
+            <span class="i-svg-spinners:ring-resize w-4 h-4" aria-hidden="true" />
+            <span>{{ $t('common.loading') }}…</span>
+          </p>
+          <p v-else-if="readmeStatus === 'error'" class="text-fg-muted italic">
+            {{ $t('package.readme.error_loading') }}
+          </p>
+          <p
+            v-else-if="readmeStatus === 'success' && !readmeData?.html"
+            class="text-fg-muted italic"
+          >
             {{ $t('package.readme.no_readme') }}
             <a
               v-if="repositoryUrl"
