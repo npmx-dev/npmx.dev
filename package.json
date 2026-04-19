@@ -11,7 +11,7 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "build:test": "NODE_ENV=test vp run build",
+    "build:test": "TEST=1 vp run build",
     "dev": "nuxt dev",
     "dev:docs": "vp run --filter npmx-docs dev --port=3001",
     "i18n:check:fix": "node scripts/compare-translations.ts --fix",
@@ -38,7 +38,7 @@
     "test:nuxt": "vp test --project nuxt",
     "test:types": "vp run generate:lexicons && nuxt prepare && vue-tsc -b --noEmit && vp run --filter npmx-connector test:types",
     "test:unit": "vp test --project unit",
-    "start:playwright:webserver": "NODE_ENV=test vp run preview --port 5678",
+    "start:playwright:webserver": "TEST=1 vp run preview --port 5678",
     "storybook": "STORYBOOK=true storybook dev -p 6006",
     "build-storybook": "STORYBOOK=true storybook build",
     "chromatic": "chromatic"
