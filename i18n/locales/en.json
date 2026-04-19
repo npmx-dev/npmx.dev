@@ -481,7 +481,8 @@
         "warning": "Warning",
         "caution": "Caution"
       },
-      "copy_as_markdown": "Copy README as Markdown"
+      "copy_as_markdown": "Copy README as Markdown",
+      "error_loading": "Failed to load README details"
     },
     "provenance_section": {
       "title": "Provenance",

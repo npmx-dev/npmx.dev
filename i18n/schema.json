@@ -1449,6 +1449,9 @@
             },
             "copy_as_markdown": {
               "type": "string"
+            },
+            "error_loading": {
+              "type": "string"
             }
           },
           "additionalProperties": false

@@ -58,7 +58,7 @@ if (import.meta.server) {
 }
 
 // Fetch README for specific version if requested, otherwise latest
-const { data: readmeData } = useLazyFetch<ReadmeResponse>(
+const { data: readmeData, status: readmeStatus } = useLazyFetch<ReadmeResponse>(
   () => {
     const base = `/api/registry/readme/${packageName.value}`
     const version = resolvedVersion.value
@@ -1047,7 +1047,20 @@ const showSkeleton = shallowRef(false)
 
           <!-- eslint-disable vue/no-v-html -- HTML is sanitized server-side -->
           <Readme v-if="readmeData?.html" :html="readmeData.html" />
-          <p v-else class="text-fg-muted italic">
+          <p
+            v-else-if="readmeStatus === 'pending'"
+            class="flex items-center gap-2 text-fg-subtle italic"
+          >
+            <span class="i-svg-spinners:ring-resize w-4 h-4" aria-hidden="true" />
+            <span>{{ $t('common.loading') }}…</span>
+          </p>
+          <p v-else-if="readmeStatus === 'error'" class="text-fg-muted italic">
+            {{ $t('package.readme.error_loading') }}
+          </p>
+          <p
+            v-else-if="readmeStatus === 'success' && !readmeData?.html"
+            class="text-fg-muted italic"
+          >
             {{ $t('package.readme.no_readme') }}
             <a
               v-if="repositoryUrl"
