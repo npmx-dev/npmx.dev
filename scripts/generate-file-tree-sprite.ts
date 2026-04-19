@@ -49,13 +49,12 @@ function buildSprite(
   let symbols = ''
   Object.entries(grouped).forEach(([prefix, iconNames]) => {
     const collection = collections[prefix]
-
     if (!collection?.icons) return
 
     const defaultWidth = collection.width ?? 16
     const defaultHeight = collection.height ?? 16
 
-    iconNames.forEach(name => {
+    new Set(iconNames).forEach(name => {
       const icon = collection.icons[name]
 
       if (!icon?.body) return
