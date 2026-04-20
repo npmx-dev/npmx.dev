@@ -32,9 +32,14 @@ async function loadCollections() {
 
 function groupByCollection(iconNames: string[]) {
   const grouped: { [key: string]: string[] } = {}
+  const seen = new Set<string>()
+
   for (const name of iconNames) {
     const [, group, iconName] = name.match(COLLECTION_REGEXP) || []
     if (group && iconName) {
+      const key = `${group}-${iconName}`
+      if (seen.has(key)) continue
+      seen.add(key)
       grouped[group] ||= []
       grouped[group].push(iconName)
     }
