@@ -35,7 +35,8 @@ jobs:
         with:
           mode: artifact
           detect-replacements: 'true'
-          duplicate-threshold: '4'
+          # Too noisy. Disabling until this can report on duplicate CHANGES in this PR.
+          duplicate-threshold: '999'
           dependency-threshold: '15'
           size-threshold: '200000'
 
