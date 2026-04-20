@@ -15,6 +15,7 @@ export const BLUESKY_API = 'https://public.api.bsky.app'
 export const BLUESKY_COMMENTS_REQUEST = '/api/atproto/bluesky-comments'
 export const NPM_REGISTRY = 'https://registry.npmjs.org'
 export const NPM_API = 'https://api.npmjs.org'
+export const MICROLINK_API = 'https://api.microlink.io'
 // Repo: https://tangled.org/baileytownsend.dev/npmx-likes-leaderboard
 export const LIKES_LEADERBOARD_API_URL =
   'https://npmx-likes-leaderboard-api-production.up.railway.app/api/leaderboard/likes'

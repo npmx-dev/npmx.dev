@@ -15,6 +15,15 @@ export type LikesLeaderboardEntry = {
   packageName: string
   subjectRef: string
   totalLikes: number
+  packageDescription: string | null
+  weeklyDownloads: number | null
+  repositoryStars: number | null
+  homepagePreviewUrl: string | null
+  homepagePreviewWidth: number | null
+  homepagePreviewHeight: number | null
+  homepageLogoUrl: string | null
+  homepageLogoWidth: number | null
+  homepageLogoHeight: number | null
 }
 
 /**

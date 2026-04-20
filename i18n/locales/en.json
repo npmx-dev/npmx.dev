@@ -317,6 +317,9 @@
     "warnings": "Warnings:",
     "go_back_home": "Go back home",
     "per_week": "/ week",
+    "per_week_short": "/wk",
+    "yes": "Yes",
+    "no": "No",
     "vanity_downloads_hint": "Vanity number: no packages displayed | Vanity number: for the displayed package | Vanity number: Sum of {count} displayed packages",
     "sort": {
       "name": "name",

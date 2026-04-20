@@ -5,7 +5,12 @@
  * using Nitro's storage layer (backed by Vercel's runtime cache in production).
  */
 
-import { CONSTELLATION_HOST, LIKES_LEADERBOARD_API_URL, SLINGSHOT_HOST } from './constants'
+import {
+  CONSTELLATION_HOST,
+  LIKES_LEADERBOARD_API_URL,
+  MICROLINK_API,
+  SLINGSHOT_HOST,
+} from './constants'
 
 /**
  * Domains that should have their fetch responses cached.
@@ -30,6 +35,7 @@ export const FETCH_CACHE_ALLOWED_DOMAINS = [
   CONSTELLATION_HOST,
   SLINGSHOT_HOST,
   new URL(LIKES_LEADERBOARD_API_URL).host,
+  new URL(MICROLINK_API).host,
 ] as const
 
 /**

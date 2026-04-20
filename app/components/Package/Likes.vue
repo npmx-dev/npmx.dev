@@ -38,28 +38,18 @@ const { user } = useAtproto()
 const authModal = useModal('auth-modal')
 const compactNumberFormatter = useCompactNumberFormatter()
 
-const { data: likesData, status: likeStatus } = useFetch<PackageLikes>(
-  () => `/api/social/likes/${props.packageName}`,
-  {
-    default: () => ({
-      totalLikes: 0,
-      userHasLiked: false,
-      topLikedRank: null,
-    }),
-    server: false,
-  },
-)
-
-const isLoadingLikeData = computed(
-  () => likeStatus.value === 'pending' || likeStatus.value === 'idle',
-)
+const { data: likesData } = useFetch<PackageLikes>(() => `/api/social/likes/${props.packageName}`, {
+  default: () => ({
+    totalLikes: 0,
+    userHasLiked: false,
+    topLikedRank: null,
+  }),
+  server: false,
+})
 const isPackageLiked = computed(() => likesData.value?.userHasLiked ?? false)
 const topLikedRank = computed(() => likesData.value?.topLikedRank ?? null)
 const likeButtonLabel = computed(() =>
   isPackageLiked.value ? $t('package.likes.unlike') : $t('package.likes.like'),
-)
-const likeTooltipText = computed(() =>
-  isLoadingLikeData.value ? $t('common.loading') : likeButtonLabel.value,
 )
 const topLikedBadgeLabel = computed(() =>
   topLikedRank.value == null
@@ -127,7 +117,7 @@ const likeAction = async () => {
 
 <template>
   <div class="relative inline-flex items-center">
-    <TooltipApp :text="likeTooltipText" position="bottom" class="items-center" strategy="fixed">
+    <TooltipApp :text="likeButtonLabel" position="bottom" class="items-center" strategy="fixed">
       <div class="relative inline-flex">
         <span v-if="showLikeFloat" :key="likeFloatKey" aria-hidden="true" class="like-float"
           >+1</span
@@ -149,14 +139,7 @@ const likeAction = async () => {
             aria-hidden="true"
             class="inline-block w-4 h-4"
           />
-          <span
-            v-if="isLoadingLikeData"
-            class="i-svg-spinners:ring-resize w-3 h-3 my-0.5"
-            aria-hidden="true"
-          />
-          <span v-else>
-            {{ compactNumberFormatter.format(likesData?.totalLikes ?? 0) }}
-          </span>
+          <span>{{ compactNumberFormatter.format(likesData?.totalLikes ?? 0) }}</span>
         </ButtonBase>
       </div>
     </TooltipApp>
