@@ -237,8 +237,8 @@ useCommandPaletteContextCommands(
           >
           <ButtonBase
             type="button"
-            size="square"
-            class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
+            size="icon"
+            class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover/installcmd:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
             :aria-label="$t('package.get_started.copy_command')"
             :classicon="copied ? 'i-lucide:check' : 'i-lucide:copy'"
             @click.stop="copyInstallCommand"
@@ -269,8 +269,8 @@ useCommandPaletteContextCommands(
             >
             <ButtonBase
               type="button"
-              size="sm"
-              class="text-fg-muted bg-bg-subtle/80 border-border opacity-0 group-hover/devinstallcmd:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
+              size="icon"
+              class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover/devinstallcmd:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
               :aria-label="$t('package.get_started.copy_dev_command')"
               :classicon="devInstallCopied ? 'i-lucide:check' : 'i-lucide:copy'"
               @click.stop="copyDevInstallCommand"
@@ -332,8 +332,8 @@ useCommandPaletteContextCommands(
             >
             <ButtonBase
               type="button"
-              size="square"
-              class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
+              size="icon"
+              class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover/runcmd:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
               :aria-label="$t('package.run.copy_command')"
               :classicon="runCopied ? 'i-lucide:check' : 'i-lucide:copy'"
               @click.stop="copyRunCommand(executableInfo?.primaryCommand)"
@@ -378,8 +378,8 @@ useCommandPaletteContextCommands(
             >
             <ButtonBase
               type="button"
-              size="square"
-              class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
+              size="icon"
+              class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover/createcmd:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
               :aria-label="$t('package.create.copy_command')"
               :classicon="createCopied ? 'i-lucide:check' : 'i-lucide:copy'"
               @click.stop="copyCreateCommand"

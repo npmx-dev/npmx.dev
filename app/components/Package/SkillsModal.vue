@@ -123,16 +123,16 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
         <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
       </div>
       <div class="px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 overflow-x-auto">
-        <div class="relative group/cmd">
-          <code class="font-mono text-sm whitespace-nowrap">
+        <div class="relative flex items-center gap-2 group/cmd">
+          <code class="font-mono text-sm">
             <span class="text-fg-subtle select-none">$ </span>
             <span class="text-fg">npx </span>
             <span class="text-fg-muted">skills add {{ baseUrl }}/{{ packageName }}</span>
           </code>
           <ButtonBase
             type="button"
-            size="square"
-            class="absolute top-0 inset-ie-0 px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100"
+            size="icon"
+            class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover/cmd:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
             :aria-label="$t('package.get_started.copy_command')"
             :classicon="copied ? 'i-lucide:check' : 'i-lucide:copy'"
             @click.stop="copyCommand"
