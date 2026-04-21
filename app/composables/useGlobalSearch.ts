@@ -6,7 +6,14 @@ import { debounce } from 'perfect-debounce'
 const pagesWithLocalFilter = new Set(['~username', 'org'])
 
 const SEARCH_DEBOUNCE_MS = 100
+const getFocusedSearchInputValue = () => {
+  if (!import.meta.client) return ''
 
+  const active = document.activeElement
+  if (!(active instanceof HTMLInputElement)) return ''
+  if (active.type !== 'search' && active.name !== 'q') return ''
+  return active.value
+}
 export function useGlobalSearch(place: 'header' | 'content' = 'content') {
   const { settings } = useSettings()
   const { searchProvider } = useSearchProvider()
@@ -18,14 +25,7 @@ export function useGlobalSearch(place: 'header' | 'content' = 'content') {
 
   const router = useRouter()
   const route = useRoute()
-  const getFocusedSearchInputValue = () => {
-    if (!import.meta.client) return ''
 
-    const active = document.activeElement
-    if (!(active instanceof HTMLInputElement)) return ''
-    if (active.type !== 'search' && active.name !== 'q') return ''
-    return active.value
-  }
   // Internally used searchQuery state
   const searchQuery = useState<string>('search-query', () => {
     // Preserve fast typing before hydration (e.g. homepage autofocus search input).
@@ -62,18 +62,14 @@ export function useGlobalSearch(place: 'header' | 'content' = 'content') {
     ([routeName, urlQuery]) => {
       if (routeName !== 'search') return
 
-      // Never clobber in-progress typing while any search input is focused.
+      const value = normalizeSearchParam(urlQuery)
+      // Only skip when the focused input already reflects this URL value.
       if (import.meta.client) {
-        const active = document.activeElement
-        if (
-          active instanceof HTMLInputElement &&
-          (active.type === 'search' || active.name === 'q')
-        ) {
+        const activeValue = getFocusedSearchInputValue()
+        if (activeValue && activeValue === value) {
           return
         }
       }
-
-      const value = normalizeSearchParam(urlQuery)
       if (searchQuery.value !== value) {
         searchQuery.value = value
       }
