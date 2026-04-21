@@ -57,15 +57,16 @@ function handleSvgDownload(src: string) {
   }
 }
 
-async function handlePngDownload(logo: (typeof logos)[number]) {
-  if (pngLoading.value.has(logo.src)) return
-  pngLoading.value.add(logo.src)
+async function handlePngDownload(logo: (typeof logos)[number], variant: 'dark' | 'light' = 'dark') {
+  const src = variant === 'light' ? (logo.srcLight ?? logo.src) : logo.src
+  if (pngLoading.value.has(src)) return
+  pngLoading.value.add(src)
   try {
-    const blob = await svgToPng(logo.src, logo.width, logo.height)
-    const filename = logo.src.replace(/^\//, '').replace('.svg', '.png')
+    const blob = await svgToPng(src, logo.width, logo.height)
+    const filename = src.replace(/^\//, '').replace('.svg', '.png')
     downloadFile(blob, filename)
   } finally {
-    pngLoading.value.delete(logo.src)
+    pngLoading.value.delete(src)
   }
 }
 </script>
@@ -224,14 +225,14 @@ async function handlePngDownload(logo: (typeof logos)[number]) {
                             name: `${logo.name()} (${$t('brand.logos.on_light')})`,
                           })
                         "
-                        :disabled="pngLoading.has(logo.src)"
-                        @click="handlePngDownload(logo)"
+                        :disabled="pngLoading.has(logo.srcLight ?? logo.src)"
+                        @click="handlePngDownload(logo, 'light')"
                       >
                         <span
                           class="size-[1em]"
                           aria-hidden="true"
                           :class="
-                            pngLoading.has(logo.src)
+                            pngLoading.has(logo.srcLight ?? logo.src)
                               ? 'i-lucide:loader-circle animate-spin'
                               : 'i-lucide:download'
                           "
@@ -246,10 +247,8 @@ async function handlePngDownload(logo: (typeof logos)[number]) {
           </div>
         </section>
 
-        <!-- Customize Section (client-only: needs DOM for accent colors + canvas export) -->
-        <ClientOnly>
-          <BrandCustomize />
-        </ClientOnly>
+        <!-- Customize Section -->
+        <BrandCustomize />
 
         <!-- Typography Section -->
         <section aria-labelledby="brand-typography-heading">

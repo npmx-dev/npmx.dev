@@ -1,7 +1,7 @@
 import Pds from './pds.vue'
 import type { Meta, StoryObj } from '@storybook-vue/nuxt'
 import { pageDecorator } from '../../.storybook/decorators'
-import { pdsUsersHandler } from '../../.storybook/handlers'
+import { pdsUsersHandler } from '../storybook/mocks/handlers'
 
 const meta = {
   component: Pds,

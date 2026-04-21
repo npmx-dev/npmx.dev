@@ -78,7 +78,8 @@ export const useConnector = createSharedComposable(function useConnector() {
   const route = useRoute()
   const router = useRouter()
 
-  onMounted(() => {
+  // onNuxtReady is post-hydration, so `route.query` is populated even if the page was prerendered
+  onNuxtReady(() => {
     const urlToken = route.query.token as string | undefined
     const urlPort = route.query.port as string | undefined
 

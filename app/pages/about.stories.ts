@@ -1,7 +1,7 @@
 import About from './about.vue'
 import type { Meta, StoryObj } from '@storybook-vue/nuxt'
 import { pageDecorator } from '../../.storybook/decorators'
-import { contributorsHandler } from '../../.storybook/handlers'
+import { contributorsHandler } from '../storybook/mocks/handlers'
 
 const meta = {
   component: About,

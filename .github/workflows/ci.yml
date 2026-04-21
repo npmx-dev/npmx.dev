@@ -114,6 +114,9 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
+      - name: 👑 Fix Git ownership
+        run: git config --global --add safe.directory /__w/npmx.dev/npmx.dev
+
       - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1
         with:
           node-version: lts/*

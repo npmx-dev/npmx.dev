@@ -189,6 +189,8 @@ export interface NpmSearchPackage {
   publisher?: NpmSearchPublisher
   maintainers?: NpmPerson[]
   license?: string
+  /** Algolia-only: package is an npm-owned security-holder takedown */
+  isSecurityHeld?: boolean
 }
 
 /**

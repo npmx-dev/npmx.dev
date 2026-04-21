@@ -487,6 +487,20 @@ function handleClick(event: MouseEvent) {
   summary {
     font-size: 1rem;
     color: var(--fg-muted);
+
+    /* Markdown often wraps headings/paragraphs inside <summary>, which
+       forces them onto new lines. Inline them so the disclosure marker
+       sits next to the label while preserving heading styles. */
+    > h1,
+    > h2,
+    > h3,
+    > h4,
+    > h5,
+    > h6,
+    > p {
+      display: inline;
+      margin: 0;
+    }
   }
 }
 </style>

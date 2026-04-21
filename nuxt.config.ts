@@ -118,7 +118,7 @@ export default defineNuxtConfig({
       isr: {
         expiration: 60 * 60 /* one hour */,
         passQuery: true,
-        allowQuery: ['mode', 'filterOldVersions', 'filterThreshold'],
+        allowQuery: ['mode', 'filterOldVersions', 'filterThreshold', 'packages'],
       },
     },
     '/api/registry/timeline/**': {

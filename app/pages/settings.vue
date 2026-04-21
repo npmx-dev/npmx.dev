@@ -1,11 +1,32 @@
 <script setup lang="ts">
+import type { LocaleObject } from '@nuxtjs/i18n'
+
 const router = useRouter()
 const { settings } = useSettings()
-const { locale: currentLocale, locales, setLocale: setNuxti18nLocale } = useI18n()
+const { locale, locales, setLocale: setNuxti18nLocale } = useI18n()
 const colorMode = useColorMode()
 const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
 const keyboardShortcutsEnabled = useKeyboardShortcuts()
 const { toggleCodeLigatures } = useCodeLigatures()
+
+// Create a computed property to handle locale binding properly
+const localeCodes = computed<LocaleObject['code'][]>(() =>
+  locales.value.map(loc => loc.code as LocaleObject['code']),
+)
+
+function isLocaleCode(value: string): value is LocaleObject['code'] {
+  return localeCodes.value.includes(value as LocaleObject['code'])
+}
+
+const currentLocale = computed<string>({
+  get: () => locale.value as string,
+  set: (newLocale: string) => {
+    if (!newLocale || !isLocaleCode(newLocale)) return
+
+    settings.value.selectedLocale = newLocale
+    setNuxti18nLocale(newLocale)
+  },
+})
 
 // Escape to go back (but not when focused on form elements or modal is open)
 onKeyStroke(
@@ -29,20 +50,6 @@ useSeoMeta({
   ogDescription: () => $t('settings.meta_description'),
   twitterDescription: () => $t('settings.meta_description'),
 })
-
-defineOgImage(
-  'Page.takumi',
-  {
-    title: () => $t('settings.title'),
-    description: () => $t('settings.tagline'),
-  },
-  { alt: () => `${$t('settings.title')} — npmx` },
-)
-
-const setLocale: typeof setNuxti18nLocale = newLocale => {
-  settings.value.selectedLocale = newLocale
-  return setNuxti18nLocale(newLocale)
-}
 </script>
 
 <template>
@@ -248,7 +255,6 @@ const setLocale: typeof setNuxti18nLocale = newLocale => {
                   id="language-select"
                   :items="locales.map(loc => ({ label: loc.name ?? '', value: loc.code }))"
                   v-model="currentLocale"
-                  @update:modelValue="setLocale($event as typeof currentLocale)"
                   block
                   size="sm"
                   class="max-w-48"
