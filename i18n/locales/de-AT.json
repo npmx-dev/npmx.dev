@@ -1,0 +1,25 @@
+{
+  "$schema": "../schema.json",
+  "footer": {
+    "keyboard_shortcuts": "Tastaturkürzel"
+  },
+  "shortcuts": {
+    "show_kbd_hints": "Tastaturkürzel hervorheben",
+    "disable_shortcuts": "Tastaturkürzel können in den {settings} deaktiviert werden."
+  },
+  "settings": {
+    "sections": {
+      "keyboard_shortcuts": "Tastaturkürzel"
+    },
+    "keyboard_shortcuts_enabled": "Tastaturkürzel aktivieren",
+    "keyboard_shortcuts_enabled_description": "Tastaturkürzel können deaktiviert werden, wenn sie mit anderen Browser- oder Systemkürzeln in Konflikt stehen"
+  },
+  "search": {
+    "instant_search": "Schnellsuche",
+    "instant_search_on": "Schnellsuche aktiviert",
+    "instant_search_off": "Schnellsuche deaktiviert",
+    "instant_search_turn_on": "Schnellsuche aktivieren",
+    "instant_search_turn_off": "Schnellsuche deaktivieren",
+    "instant_search_advisory": "Die Schnellsuche sendet bei jedem Tastendruck eine Anfrage."
+  }
+}

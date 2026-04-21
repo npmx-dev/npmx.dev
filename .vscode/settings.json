@@ -3,7 +3,7 @@
   "editor.formatOnSave": true,
   "i18n-ally.keystyle": "nested",
   "i18n-ally.localesPaths": ["./i18n/locales"],
-  "typescript.tsdk": "node_modules/typescript/lib",
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
     "*.vue": "${capture}.stories.ts"

@@ -12,6 +12,10 @@ export const useSelectedPackageManager = createSharedComposable(
 
     // Sync to data-pm attribute on the client
     if (import.meta.client) {
+      const queryPM = new URLSearchParams(window.location.search).get('pm')
+      if (queryPM && packageManagers.some(pm => pm.id === queryPM)) {
+        pm.value = queryPM as PackageManagerId
+      }
       // Watch for changes and update the attribute
       watch(
         pm,

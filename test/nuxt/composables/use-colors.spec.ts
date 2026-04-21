@@ -64,7 +64,7 @@ describe('useCssVariables', () => {
   })
 
   it('does not attach html mutation observer when client is not supported', async () => {
-    const { useCssVariables } = await import('../../../app/composables/useColors')
+    const { useCssVariables } = await import('~/composables/useColors')
 
     useSupportedMock.mockReturnValueOnce(computed(() => false))
     mockComputedStyle({ '--bg': 'oklch(1 0 0)' })
@@ -84,7 +84,7 @@ describe('useCssVariables', () => {
   })
 
   it('attaches html mutation observer when client is supported', async () => {
-    const { useCssVariables } = await import('../../../app/composables/useColors')
+    const { useCssVariables } = await import('~/composables/useColors')
 
     useSupportedMock.mockReturnValueOnce(computed(() => true))
     mockComputedStyle({ '--bg': 'oklch(1 0 0)' })

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Theme as VueDataUiTheme, VueUiXyConfig, VueUiXyDatasetItem } from 'vue-data-ui'
 import { VueUiXy } from 'vue-data-ui/vue-ui-xy'
-import { useDebounceFn, useElementSize } from '@vueuse/core'
+import { useDebounceFn, useElementSize, useTimeoutFn } from '@vueuse/core'
 import { useCssVariables } from '~/composables/useColors'
 import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch, lightenOklch } from '~/utils/colors'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
@@ -402,7 +402,9 @@ const isEndDateOnPeriodEnd = computed(() => {
 })
 
 const supportsEstimation = computed(
-  () => displayedGranularity.value !== 'daily' && selectedMetric.value !== 'contributors',
+  () =>
+    !['daily', 'weekly'].includes(displayedGranularity.value) &&
+    selectedMetric.value !== 'contributors',
 )
 
 const hasDownloadAnomalies = computed(() =>
@@ -1081,7 +1083,10 @@ const normalisedDataset = computed(() => {
       {
         averageWindow: settings.value.chartFilter.averageWindow,
         smoothingTau: settings.value.chartFilter.smoothingTau,
-        predictionPoints: settings.value.chartFilter.predictionPoints ?? DEFAULT_PREDICTION_POINTS,
+        predictionPoints:
+          granularity === 'weekly'
+            ? 0 // weekly buckets are end-aligned → always complete, no prediction needed
+            : (settings.value.chartFilter.predictionPoints ?? DEFAULT_PREDICTION_POINTS),
       },
       { granularity, lastDateMs, referenceMs, isAbsoluteMetric },
     )
@@ -1345,12 +1350,55 @@ function drawSvgPrintLegend(svg: Record<string, any>) {
   return seriesNames.join('\n')
 }
 
+const showCorrectionControls = shallowRef(false)
+const isResizing = shallowRef(false)
+
+const chartHeight = computed(() => {
+  if (isMobile.value) {
+    return 950
+  }
+  return showCorrectionControls.value && props.inModal ? 494 : 600
+})
+
+const { start } = useTimeoutFn(
+  () => {
+    isResizing.value = false
+  },
+  200,
+  { immediate: false },
+)
+
+function pauseChartTransitions() {
+  isResizing.value = true
+  start()
+}
+
+watch(
+  chartHeight,
+  (newH, oldH) => {
+    if (newH !== oldH) {
+      // Avoids triggering chart line transitions when the chart is resized
+      pauseChartTransitions()
+    }
+  },
+  { immediate: true },
+)
+
 // VueUiXy chart component configuration
 const chartConfig = computed<VueUiXyConfig>(() => {
   return {
     theme: isDarkMode.value ? 'dark' : ('' as VueDataUiTheme),
+    a11y: {
+      translations: {
+        keyboardNavigation: $t(
+          'package.trends.chart_assistive_text.keyboard_navigation_horizontal',
+        ),
+        tableAvailable: $t('package.trends.chart_assistive_text.table_available'),
+        tableCaption: $t('package.trends.chart_assistive_text.table_caption'),
+      },
+    },
     chart: {
-      height: isMobile.value ? 950 : 600,
+      height: chartHeight.value,
       backgroundColor: colors.value.bg,
       padding: { bottom: displayedGranularity.value === 'yearly' ? 84 : 64, right: 128 }, // padding right is set to leave space of last datapoint label(s)
       userOptions: {
@@ -1554,7 +1602,6 @@ const chartConfig = computed<VueUiXyConfig>(() => {
 })
 
 const isDownloadsMetric = computed(() => selectedMetric.value === 'downloads')
-const showCorrectionControls = shallowRef(false)
 
 const packageAnomalies = computed(() => getAnomaliesForPackages(effectivePackageNames.value))
 const hasAnomalies = computed(() => packageAnomalies.value.length > 0)
@@ -1575,6 +1622,15 @@ watch(selectedMetric, value => {
   if (!isMounted.value) return
   loadMetric(value)
 })
+
+// Sparkline charts (a11y alternative display for multi series)
+const chartLayout = usePermalink<'combined' | 'split'>('layout', 'combined')
+const isSparklineLayout = computed({
+  get: () => chartLayout.value === 'split',
+  set: (v: boolean) => {
+    chartLayout.value = v ? 'split' : 'combined'
+  },
+})
 </script>
 
 <template>
@@ -1583,6 +1639,26 @@ watch(selectedMetric, value => {
     id="trends-chart"
     :aria-busy="activeMetricState.pending ? 'true' : 'false'"
   >
+    <TabRoot
+      v-if="isMultiPackageMode"
+      v-model="chartLayout"
+      id-prefix="chart-layout"
+      class="mt-4 mb-8"
+    >
+      <TabList :ariaLabel="$t('package.trends.chart_view_toggle')">
+        <TabItem value="combined" tab-id="combined-chart-layout-tab" icon="i-lucide:chart-line">
+          {{ $t('package.trends.chart_view_combined') }}
+        </TabItem>
+        <TabItem
+          value="split"
+          tab-id="split-chart-layout-tab"
+          icon="i-lucide:square-split-horizontal"
+        >
+          {{ $t('package.trends.chart_view_split') }}
+        </TabItem>
+      </TabList>
+    </TabRoot>
+
     <div class="w-full mb-4 flex flex-col gap-3">
       <div class="grid grid-cols-2 sm:flex sm:flex-row gap-3 sm:gap-2 sm:items-end">
         <SelectField
@@ -1613,17 +1689,12 @@ watch(selectedMetric, value => {
               {{ $t('package.trends.start_date') }}
             </label>
             <div class="relative flex items-center">
-              <span
-                class="absolute inset-is-2 i-lucide:calendar w-4 h-4 text-fg-subtle shrink-0 pointer-events-none"
-                aria-hidden="true"
-              />
               <InputBase
                 id="startDate"
                 v-model="startDate"
                 type="date"
                 :max="DATE_INPUT_MAX"
-                class="w-full min-w-0 bg-transparent ps-7"
-                size="medium"
+                class="w-full min-w-0 bg-transparent"
               />
             </div>
           </div>
@@ -1633,17 +1704,12 @@ watch(selectedMetric, value => {
               {{ $t('package.trends.end_date') }}
             </label>
             <div class="relative flex items-center">
-              <span
-                class="absolute inset-is-2 i-lucide:calendar w-4 h-4 text-fg-subtle shrink-0 pointer-events-none"
-                aria-hidden="true"
-              />
               <InputBase
                 id="endDate"
                 v-model="endDate"
                 type="date"
                 :max="DATE_INPUT_MAX"
-                class="w-full min-w-0 bg-transparent ps-7"
-                size="medium"
+                class="w-full min-w-0 bg-transparent"
               />
             </div>
           </div>
@@ -1651,6 +1717,8 @@ watch(selectedMetric, value => {
 
         <button
           v-if="showResetButton"
+          :aria-expanded="showCorrectionControls"
+          aria-controls="trends-correction-controls"
           type="button"
           aria-label="Reset date range"
           class="self-end flex items-center justify-center px-2.5 py-2.25 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
@@ -1674,116 +1742,141 @@ watch(selectedMetric, value => {
           />
           {{ $t('package.trends.data_correction') }}
         </button>
-        <div v-if="showCorrectionControls" class="grid grid-cols-2 sm:flex items-end gap-3">
-          <label class="flex flex-col gap-1 flex-1">
-            <span class="text-2xs font-mono text-fg-subtle tracking-wide uppercase">
-              {{ $t('package.trends.average_window') }}
-              <span class="text-fg-muted">({{ settings.chartFilter.averageWindow }})</span>
-            </span>
-            <input
-              v-model.number="settings.chartFilter.averageWindow"
-              type="range"
-              min="0"
-              max="20"
-              step="1"
-              class="accent-[var(--accent-color,var(--fg-subtle))]"
-            />
-          </label>
-          <label class="flex flex-col gap-1 flex-1">
-            <span class="text-2xs font-mono text-fg-subtle tracking-wide uppercase">
-              {{ $t('package.trends.smoothing') }}
-              <span class="text-fg-muted">({{ settings.chartFilter.smoothingTau }})</span>
-            </span>
-            <input
-              v-model.number="settings.chartFilter.smoothingTau"
-              type="range"
-              min="0"
-              max="20"
-              step="1"
-              class="accent-[var(--accent-color,var(--fg-subtle))]"
-            />
-          </label>
-          <label class="flex flex-col gap-1 flex-1">
-            <span class="text-2xs font-mono text-fg-subtle tracking-wide uppercase">
-              {{ $t('package.trends.prediction') }}
-              <span class="text-fg-muted">({{ settings.chartFilter.predictionPoints }})</span>
-            </span>
-            <input
-              v-model.number="settings.chartFilter.predictionPoints"
-              type="range"
-              min="0"
-              max="30"
-              step="1"
-              class="accent-[var(--accent-color,var(--fg-subtle))]"
-            />
-          </label>
-          <div class="flex flex-col gap-1 shrink-0">
-            <span
-              class="text-2xs font-mono text-fg-subtle tracking-wide uppercase flex items-center justify-between"
-            >
-              {{ $t('package.trends.known_anomalies') }}
-              <TooltipApp interactive :to="inModal ? '#chart-modal' : undefined">
-                <button
-                  type="button"
-                  class="i-lucide:info w-3.5 h-3.5 text-fg-muted cursor-help"
-                  :aria-label="$t('package.trends.known_anomalies')"
+        <div
+          class="overflow-hidden transition-[opacity] duration-200 ease-out"
+          id="trends-correction-controls"
+          :aria-hidden="!showCorrectionControls"
+          :inert="!showCorrectionControls"
+          :class="
+            showCorrectionControls
+              ? 'max-h-[220px] opacity-100'
+              : 'max-h-0 opacity-0 pointer-events-none'
+          "
+        >
+          <div class="pt-1 min-h-[160px] sm:min-h-[76px]">
+            <div class="grid grid-cols-2 sm:flex items-end gap-3">
+              <label class="flex flex-col gap-1 flex-1">
+                <span class="text-2xs font-mono text-fg-subtle tracking-wide uppercase">
+                  {{ $t('package.trends.average_window') }}
+                  <span class="text-fg-muted">({{ settings.chartFilter.averageWindow }})</span>
+                </span>
+                <input
+                  v-model.number="settings.chartFilter.averageWindow"
+                  :disabled="!showCorrectionControls"
+                  type="range"
+                  min="0"
+                  max="20"
+                  step="1"
+                  class="accent-[var(--accent-color,var(--fg-subtle))]"
                 />
-                <template #content>
-                  <div class="flex flex-col gap-3">
-                    <p class="text-xs text-fg-muted">
-                      {{ $t('package.trends.known_anomalies_description') }}
-                    </p>
-                    <div v-if="hasAnomalies">
-                      <p class="text-xs text-fg-subtle font-medium">
-                        {{ $t('package.trends.known_anomalies_ranges') }}
-                      </p>
-                      <ul class="text-xs text-fg-subtle list-disc list-inside">
-                        <li v-for="a in packageAnomalies" :key="`${a.packageName}-${a.start}`">
+              </label>
+              <label class="flex flex-col gap-1 flex-1">
+                <span class="text-2xs font-mono text-fg-subtle tracking-wide uppercase">
+                  {{ $t('package.trends.smoothing') }}
+                  <span class="text-fg-muted">({{ settings.chartFilter.smoothingTau }})</span>
+                </span>
+                <input
+                  v-model.number="settings.chartFilter.smoothingTau"
+                  :disabled="!showCorrectionControls"
+                  type="range"
+                  min="0"
+                  max="20"
+                  step="1"
+                  class="accent-[var(--accent-color,var(--fg-subtle))]"
+                />
+              </label>
+              <label class="flex flex-col gap-1 flex-1">
+                <span class="text-2xs font-mono text-fg-subtle tracking-wide uppercase">
+                  {{ $t('package.trends.prediction') }}
+                  <span class="text-fg-muted">({{ settings.chartFilter.predictionPoints }})</span>
+                </span>
+                <input
+                  v-model.number="settings.chartFilter.predictionPoints"
+                  :disabled="!showCorrectionControls"
+                  type="range"
+                  min="0"
+                  max="30"
+                  step="1"
+                  class="accent-[var(--accent-color,var(--fg-subtle))]"
+                />
+              </label>
+              <div class="flex flex-col gap-1 shrink-0">
+                <span
+                  class="text-2xs font-mono text-fg-subtle tracking-wide uppercase flex items-center justify-between"
+                >
+                  {{ $t('package.trends.known_anomalies') }}
+                  <TooltipApp
+                    interactive
+                    :to="inModal ? '#chart-modal' : undefined"
+                    v-if="showCorrectionControls"
+                  >
+                    <button
+                      type="button"
+                      class="i-lucide:info w-3.5 h-3.5 text-fg-muted cursor-help"
+                      :aria-label="$t('package.trends.known_anomalies')"
+                    />
+                    <template #content>
+                      <div class="flex flex-col gap-3">
+                        <p class="text-xs text-fg-muted">
+                          {{ $t('package.trends.known_anomalies_description') }}
+                        </p>
+                        <div v-if="hasAnomalies">
+                          <p class="text-xs text-fg-subtle font-medium">
+                            {{ $t('package.trends.known_anomalies_ranges') }}
+                          </p>
+                          <ul class="text-xs text-fg-subtle list-disc list-inside">
+                            <li v-for="a in packageAnomalies" :key="`${a.packageName}-${a.start}`">
+                              {{
+                                isMultiPackageMode
+                                  ? $t('package.trends.known_anomalies_range_named', {
+                                      packageName: a.packageName,
+                                      start: formatAnomalyDate(a.start),
+                                      end: formatAnomalyDate(a.end),
+                                    })
+                                  : $t('package.trends.known_anomalies_range', {
+                                      start: formatAnomalyDate(a.start),
+                                      end: formatAnomalyDate(a.end),
+                                    })
+                              }}
+                            </li>
+                          </ul>
+                        </div>
+                        <p v-else class="text-xs text-fg-muted">
                           {{
-                            isMultiPackageMode
-                              ? $t('package.trends.known_anomalies_range_named', {
-                                  packageName: a.packageName,
-                                  start: formatAnomalyDate(a.start),
-                                  end: formatAnomalyDate(a.end),
-                                })
-                              : $t('package.trends.known_anomalies_range', {
-                                  start: formatAnomalyDate(a.start),
-                                  end: formatAnomalyDate(a.end),
-                                })
+                            $t('package.trends.known_anomalies_none', effectivePackageNames.length)
                           }}
-                        </li>
-                      </ul>
-                    </div>
-                    <p v-else class="text-xs text-fg-muted">
-                      {{ $t('package.trends.known_anomalies_none', effectivePackageNames.length) }}
-                    </p>
-                    <div class="flex justify-end">
-                      <LinkBase
-                        to="https://github.com/npmx-dev/npmx.dev/edit/main/app/utils/download-anomalies.data.ts"
-                        class="text-xs text-accent"
-                      >
-                        {{ $t('package.trends.known_anomalies_contribute') }}
-                      </LinkBase>
-                    </div>
-                  </div>
-                </template>
-              </TooltipApp>
-            </span>
-            <label
-              class="flex items-center gap-1.5 text-2xs font-mono text-fg-subtle cursor-pointer h-4"
-              :class="{ 'opacity-50 pointer-events-none': !hasAnomalies }"
-            >
-              <input
-                :checked="settings.chartFilter.anomaliesFixed && hasAnomalies"
-                @change="
-                  settings.chartFilter.anomaliesFixed = ($event.target as HTMLInputElement).checked
-                "
-                type="checkbox"
-                :disabled="!hasAnomalies"
-                class="accent-[var(--accent-color,var(--fg-subtle))]"
-              />
-              {{ $t('package.trends.apply_correction') }}
-            </label>
+                        </p>
+                        <div class="flex justify-end">
+                          <LinkBase
+                            to="https://github.com/npmx-dev/npmx.dev/edit/main/app/utils/download-anomalies.data.ts"
+                            class="text-xs text-accent"
+                          >
+                            {{ $t('package.trends.known_anomalies_contribute') }}
+                          </LinkBase>
+                        </div>
+                      </div>
+                    </template>
+                  </TooltipApp>
+                </span>
+                <label
+                  class="flex items-center gap-1.5 text-2xs font-mono text-fg-subtle cursor-pointer h-4"
+                  :class="{ 'opacity-50': !hasAnomalies }"
+                >
+                  <input
+                    :checked="settings.chartFilter.anomaliesFixed"
+                    :disabled="!showCorrectionControls"
+                    @change="
+                      settings.chartFilter.anomaliesFixed = (
+                        $event.target as HTMLInputElement
+                      ).checked
+                    "
+                    type="checkbox"
+                    class="accent-[var(--accent-color,var(--fg-subtle))]"
+                  />
+                  {{ $t('package.trends.apply_correction') }}
+                </label>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1802,18 +1895,57 @@ watch(selectedMetric, value => {
     <div
       role="region"
       aria-labelledby="trends-chart-title"
-      :class="isMobile === false && width > 0 ? 'min-h-[567px]' : 'min-h-[260px]'"
+      :class="
+        isSparklineLayout || !inModal
+          ? undefined
+          : isMobile === false && width > 0
+            ? showCorrectionControls
+              ? 'h-[491px]'
+              : 'h-[567px]'
+            : 'min-h-[260px]'
+      "
     >
       <ClientOnly v-if="chartData.dataset">
-        <div :data-pending="pending" :data-minimap-visible="maxDatapoints > 6">
+        <div
+          v-if="isSparklineLayout"
+          id="split-chart-layout-panel"
+          :role="isMultiPackageMode ? 'tabpanel' : undefined"
+          :aria-labelledby="isMultiPackageMode ? 'split-chart-layout-tab' : undefined"
+        >
+          <ChartSplitSparkline
+            :dataset="normalisedDataset"
+            :dates="chartData.dates"
+            :datetimeFormatterOptions
+            :showLastDatapointEstimation="shouldRenderEstimationOverlay && !isEndDateOnPeriodEnd"
+          />
+        </div>
+
+        <div
+          :data-pending="pending"
+          :data-minimap-visible="maxDatapoints > 6"
+          v-else
+          id="combined-chart-layout-panel"
+          :role="isMultiPackageMode ? 'tabpanel' : undefined"
+          :aria-labelledby="isMultiPackageMode ? 'combined-chart-layout-tab' : undefined"
+        >
           <VueUiXy
             :dataset="normalisedDataset"
             :config="chartConfig"
-            class="[direction:ltr]"
+            :class="{
+              '[direction:ltr]': true,
+              'no-transition': isResizing,
+            }"
             @zoomStart="setIsZoom"
             @zoomEnd="setIsZoom"
             @zoomReset="isZoomed = false"
           >
+            <!-- Keyboard navigation hint -->
+            <template #hint="{ isVisible }">
+              <p v-if="isVisible" class="text-accent text-xs -mt-6 text-center" aria-hidden="true">
+                {{ $t('compare.packages.line_chart_nav_hint') }}
+              </p>
+            </template>
+
             <!-- Injecting custom svg elements -->
             <template #svg="{ svg }">
               <!-- Estimation lines for monthly & yearly granularities when the end date induces a downwards trend -->
@@ -1862,7 +1994,7 @@ watch(selectedMetric, value => {
 
             <!-- Custom legend for multiple series -->
             <template #legend="{ legend }">
-              <div class="flex gap-4 flex-wrap justify-center">
+              <div class="flex gap-x-6 gap-y-2 flex-wrap justify-center text-sm">
                 <template v-if="isMultiPackageMode">
                   <button
                     v-for="datapoint in legend"
@@ -2066,6 +2198,19 @@ watch(selectedMetric, value => {
   </div>
 </template>
 
+<style scoped>
+:deep(.vue-data-ui-component svg:focus-visible) {
+  outline: 1px solid var(--accent) !important;
+  border-radius: 0.1rem;
+  outline-offset: 0;
+}
+:deep(.vue-ui-user-options-button:focus-visible),
+:deep(.vue-ui-user-options :first-child:focus-visible) {
+  outline: 0.1rem solid var(--accent) !important;
+  border-radius: 0.25rem;
+}
+</style>
+
 <style>
 .vue-ui-pen-and-paper-actions {
   background: var(--bg-elevated) !important;
@@ -2104,5 +2249,14 @@ watch(selectedMetric, value => {
 
 [data-minimap-visible='false'] .vue-data-ui-watermark {
   top: calc(100% - 2rem) !important;
+}
+
+.no-transition line,
+.no-transition circle {
+  transition: none !important;
+}
+
+input::-webkit-date-and-time-value {
+  margin-inline: 4px;
 }
 </style>

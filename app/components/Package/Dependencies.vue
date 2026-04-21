@@ -37,11 +37,6 @@ function getDeprecatedDepInfo(depName: string) {
   return vulnTree.value.deprecatedPackages.find(p => p.name === depName && p.depth === 'direct')
 }
 
-// Expanded state for each section
-const depsExpanded = shallowRef(false)
-const peerDepsExpanded = shallowRef(false)
-const optionalDepsExpanded = shallowRef(false)
-
 // Sort dependencies alphabetically
 const sortedDependencies = computed(() => {
   if (!props.dependencies) return []
@@ -89,6 +84,24 @@ function getDepVersionClass(dep: string) {
   return getVersionClass(undefined)
 }
 
+const {
+  visibleItems: visibleDeps,
+  hasMore: hasMoreDeps,
+  expand: expandDeps,
+} = useVisibleItems(sortedDependencies, 10)
+
+const {
+  visibleItems: visiblePeerDeps,
+  hasMore: hasMorePeerDeps,
+  expand: expandPeerDeps,
+} = useVisibleItems(sortedPeerDependencies, 10)
+
+const {
+  visibleItems: visibleOptionalDeps,
+  hasMore: hasMoreOptionalDeps,
+  expand: expandOptionalDeps,
+} = useVisibleItems(sortedOptionalDependencies, 10)
+
 const numberFormatter = useNumberFormatter()
 </script>
 
@@ -110,7 +123,7 @@ const numberFormatter = useNumberFormatter()
     >
       <ul class="space-y-1 list-none m-0" :aria-label="$t('package.dependencies.list_label')">
         <li
-          v-for="[dep, version] in sortedDependencies.slice(0, depsExpanded ? undefined : 10)"
+          v-for="[dep, version] in visibleDeps"
           :key="dep"
           class="flex items-center justify-between py-1 text-sm gap-2"
         >
@@ -126,7 +139,7 @@ const numberFormatter = useNumberFormatter()
             >
               <button
                 type="button"
-                class="p-2 -m-2"
+                class="inline-flex items-center justify-center p-2 -m-2"
                 :aria-label="getOutdatedTooltip(outdatedDeps[dep], $t)"
               >
                 <span class="i-lucide:circle-alert w-3 h-3" aria-hidden="true" />
@@ -139,7 +152,7 @@ const numberFormatter = useNumberFormatter()
             >
               <button
                 type="button"
-                class="p-2 -m-2"
+                class="inline-flex items-center justify-center p-2 -m-2"
                 :aria-label="$t('package.dependencies.has_replacement')"
               >
                 <span class="i-lucide:lightbulb w-3 h-3" aria-hidden="true" />
@@ -150,7 +163,11 @@ const numberFormatter = useNumberFormatter()
               :to="packageRoute(dep, getVulnerableDepInfo(dep)!.version)"
               class="shrink-0"
               :class="SEVERITY_TEXT_COLORS[getHighestSeverity(getVulnerableDepInfo(dep)!.counts)]"
-              :title="`${getVulnerableDepInfo(dep)!.counts.total} vulnerabilities`"
+              :title="
+                $t('package.dependencies.vulnerabilities_count', {
+                  count: getVulnerableDepInfo(dep)!.counts.total,
+                })
+              "
               classicon="i-lucide:shield-check"
             >
               <span class="sr-only">{{ $t('package.dependencies.view_vulnerabilities') }}</span>
@@ -176,16 +193,20 @@ const numberFormatter = useNumberFormatter()
               ({{ getOutdatedTooltip(outdatedDeps[dep], $t) }})
             </span>
             <span v-if="getVulnerableDepInfo(dep)" class="sr-only">
-              ({{ getVulnerableDepInfo(dep)!.counts.total }} vulnerabilities)
+              ({{
+                $t('package.dependencies.vulnerabilities_count', {
+                  count: getVulnerableDepInfo(dep)!.counts.total,
+                })
+              }})
             </span>
           </span>
         </li>
       </ul>
       <button
-        v-if="sortedDependencies.length > 10 && !depsExpanded"
+        v-if="hasMoreDeps"
         type="button"
         class="my-2 ms-1 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70"
-        @click="depsExpanded = true"
+        @click="expandDeps"
       >
         {{
           $t(
@@ -214,7 +235,7 @@ const numberFormatter = useNumberFormatter()
         :aria-label="$t('package.peer_dependencies.list_label')"
       >
         <li
-          v-for="peer in sortedPeerDependencies.slice(0, peerDepsExpanded ? undefined : 10)"
+          v-for="peer in visiblePeerDeps"
           :key="peer.name"
           class="flex items-center justify-between py-1 text-sm gap-1 min-w-0"
         >
@@ -237,10 +258,10 @@ const numberFormatter = useNumberFormatter()
         </li>
       </ul>
       <button
-        v-if="sortedPeerDependencies.length > 10 && !peerDepsExpanded"
+        v-if="hasMorePeerDeps"
         type="button"
         class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70"
-        @click="peerDepsExpanded = true"
+        @click="expandPeerDeps"
       >
         {{
           $t(
@@ -273,10 +294,7 @@ const numberFormatter = useNumberFormatter()
         :aria-label="$t('package.optional_dependencies.list_label')"
       >
         <li
-          v-for="[dep, version] in sortedOptionalDependencies.slice(
-            0,
-            optionalDepsExpanded ? undefined : 10,
-          )"
+          v-for="[dep, version] in visibleOptionalDeps"
           :key="dep"
           class="flex items-baseline justify-between py-1 text-sm gap-2"
         >
@@ -294,10 +312,10 @@ const numberFormatter = useNumberFormatter()
         </li>
       </ul>
       <button
-        v-if="sortedOptionalDependencies.length > 10 && !optionalDepsExpanded"
+        v-if="hasMoreOptionalDeps"
         type="button"
         class="mt-2 truncate"
-        @click="optionalDepsExpanded = true"
+        @click="expandOptionalDeps"
       >
         {{
           $t(

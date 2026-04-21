@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PackageFileTree } from '#shared/types'
 import type { RouteLocationRaw } from 'vue-router'
 import type { RouteNamedMap } from 'vue-router/auto-routes'
 import { ADDITIONAL_ICONS, getFileIcon } from '~/utils/file-icons'
@@ -59,6 +58,7 @@ const bytesFormatter = useBytesFormatter()
   <div class="directory-listing">
     <!-- Empty state -->
     <div v-if="currentContents.length === 0" class="py-20 text-center text-fg-muted">
+      <span class="i-lucide:folder-open w-12 h-12 text-fg-subtle mx-auto mb-4"> </span>
       <p>{{ $t('code.no_files') }}</p>
     </div>
 

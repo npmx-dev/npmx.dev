@@ -1,11 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import {
-  getExecutableInfo,
-  getRunCommand,
-  getRunCommandParts,
-} from '../../../../app/utils/run-command'
-import { isBinaryOnlyPackage, isCreatePackage } from '../../../../shared/utils/binary-detection'
-import type { JsrPackageInfo } from '../../../../shared/types/jsr'
+import { getExecutableInfo, getRunCommand, getRunCommandParts } from '~/utils/run-command'
+import { isBinaryOnlyPackage, isCreatePackage } from '#shared/utils/binary-detection'
+import type { JsrPackageInfo } from '#shared/types/jsr'
 
 describe('executable detection and run commands', () => {
   const jsrNotAvailable: JsrPackageInfo = { exists: false }

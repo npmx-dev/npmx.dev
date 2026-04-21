@@ -1,5 +1,3 @@
-import type { NpmSearchResponse, NpmSearchResult, PackageMetaResponse } from '#shared/types'
-
 export function metaToSearchResult(meta: PackageMetaResponse): NpmSearchResult {
   return {
     package: {
@@ -13,7 +11,6 @@ export function metaToSearchResult(meta: PackageMetaResponse): NpmSearchResult {
       author: meta.author,
       maintainers: meta.maintainers,
     },
-    score: { final: 0, detail: { quality: 0, popularity: 0, maintenance: 0 } },
     searchScore: 0,
     downloads: meta.weeklyDownloads !== undefined ? { weekly: meta.weeklyDownloads } : undefined,
     updated: meta.date,

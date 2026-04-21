@@ -1,4 +1,3 @@
-import type { PackageVersionInfo, PublishTrustLevel } from '#shared/types'
 import { compare, major } from 'semver'
 
 export interface PublishSecurityDowngrade {

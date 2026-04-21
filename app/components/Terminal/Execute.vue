@@ -94,7 +94,8 @@ const copyExecuteCommand = () => copyExecute(getFullExecuteCommand())
 :root[data-pm='yarn'] [data-pm-cmd='yarn'],
 :root[data-pm='bun'] [data-pm-cmd='bun'],
 :root[data-pm='deno'] [data-pm-cmd='deno'],
-:root[data-pm='vlt'] [data-pm-cmd='vlt'] {
+:root[data-pm='vlt'] [data-pm-cmd='vlt'],
+:root[data-pm='vp'] [data-pm-cmd='vp'] {
   display: flex;
 }
 

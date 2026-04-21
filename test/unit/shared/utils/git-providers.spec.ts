@@ -1,5 +1,86 @@
 import { describe, expect, it } from 'vitest'
-import { parseRepositoryInfo, type RepositoryInfo } from '#shared/utils/git-providers'
+import {
+  normalizeGitUrl,
+  parseRepositoryInfo,
+  type RepositoryInfo,
+} from '#shared/utils/git-providers'
+
+describe('normalizeGitUrl', () => {
+  it('should return null for empty input', () => {
+    expect.soft(normalizeGitUrl('')).toBeNull()
+  })
+
+  it('should leave plain HTTPS URLs unchanged', () => {
+    expect
+      .soft(normalizeGitUrl('https://github.com/user/repo'))
+      .toBe('https://github.com/user/repo')
+  })
+
+  it('should remove git+ prefix', () => {
+    expect
+      .soft(normalizeGitUrl('git+https://github.com/user/repo'))
+      .toBe('https://github.com/user/repo')
+    expect
+      .soft(normalizeGitUrl('git+https://github.com/user/repo.git'))
+      .toBe('https://github.com/user/repo')
+    expect
+      .soft(normalizeGitUrl('git+ssh://git@github.com/user/repo.git'))
+      .toBe('https://github.com/user/repo')
+  })
+
+  it('should remove .git suffix', () => {
+    expect
+      .soft(normalizeGitUrl('https://github.com/user/repo.git'))
+      .toBe('https://github.com/user/repo')
+    expect
+      .soft(normalizeGitUrl('https://gitlab.com/user/repo.git'))
+      .toBe('https://gitlab.com/user/repo')
+    expect
+      .soft(normalizeGitUrl('https://bitbucket.org/user/repo.git'))
+      .toBe('https://bitbucket.org/user/repo')
+    expect
+      .soft(normalizeGitUrl('git+https://github.com/user/repo.git#readme'))
+      .toBe('https://github.com/user/repo#readme')
+    expect
+      .soft(normalizeGitUrl('git+https://github.com/user/repo.git?path=packages/core'))
+      .toBe('https://github.com/user/repo?path=packages/core')
+  })
+
+  it('should convert git:// protocol to https://', () => {
+    expect.soft(normalizeGitUrl('git://github.com/user/repo')).toBe('https://github.com/user/repo')
+    expect
+      .soft(normalizeGitUrl('git://github.com/user/repo.git'))
+      .toBe('https://github.com/user/repo')
+  })
+
+  it('should convert ssh:// protocol to https://', () => {
+    expect
+      .soft(normalizeGitUrl('ssh://git@github.com/user/repo'))
+      .toBe('https://github.com/user/repo')
+    expect
+      .soft(normalizeGitUrl('ssh://git@github.com/user/repo.git'))
+      .toBe('https://github.com/user/repo')
+  })
+
+  it('should convert SSH format to https://', () => {
+    expect.soft(normalizeGitUrl('git@github.com:user/repo')).toBe('https://github.com/user/repo')
+    expect
+      .soft(normalizeGitUrl('git@github.com:user/repo.git'))
+      .toBe('https://github.com/user/repo')
+    expect
+      .soft(normalizeGitUrl('git@github.com/user/repo:123'))
+      .toBe('https://github.com/user/repo:123')
+  })
+
+  it('should handle combined permutations', () => {
+    expect
+      .soft(normalizeGitUrl('git+git://github.com/user/repo.git'))
+      .toBe('https://github.com/user/repo')
+    expect
+      .soft(normalizeGitUrl('git+ssh://git@gitlab.com/user/repo.git'))
+      .toBe('https://gitlab.com/user/repo')
+  })
+})
 
 describe('parseRepositoryInfo', () => {
   it('returns undefined for undefined input', () => {

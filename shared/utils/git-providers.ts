@@ -293,33 +293,16 @@ const providers: ProviderConfig[] = [
  * Handles: git+https://, git://, git@host:path, ssh://git@host/path
  */
 export function normalizeGitUrl(input: string): string | null {
-  const raw = input.trim()
-  if (!raw) return null
-
-  const normalized = raw.replace(/^git\+/, '')
-
-  // Handle ssh:// and git:// URLs by converting to https://
-  if (/^(?:ssh|git):\/\//i.test(normalized)) {
-    try {
-      const url = new URL(normalized)
-      const path = url.pathname.replace(/^\/*/, '')
-      return `https://${url.hostname}/${path}`
-    } catch {
-      // Fall through to SCP handling
-    }
-  }
-
-  if (!/^https?:\/\//i.test(normalized)) {
-    // Handle SCP-style URLs: git@host:path
-    const scp = normalized.match(/^(?:git@)?([^:/]+):(.+)$/i)
-    if (scp?.[1] && scp?.[2]) {
-      const host = scp[1]
-      const path = scp[2].replace(/^\/*/, '')
-      return `https://${host}/${path}`
-    }
-  }
-
-  return normalized
+  const url = input
+    .trim()
+    .replace(/^git\+/, '')
+    .replace(/\.git(?=[/#?]|$)/i, '')
+    .replace(/(^|\/)[^/]+?@/, '$1') // remove "user@" from "ssh://user@host.com:..."
+    .replace(/(\.[^./]+?):/, '$1/') // change ".com:" to ".com/" from "ssh://user@host.com:..."
+    .replace(/^git:\/\//, 'https://')
+    .replace(/^ssh:\/\//, 'https://')
+  if (!url) return null
+  return url.includes('://') ? url : `https://${url}`
 }
 
 export function parseRepoUrl(input: string): RepoRef | null {
@@ -404,3 +387,24 @@ export function convertBlobOrFileToRawUrl(url: string, providerId: ProviderId): 
 export function isKnownGitProvider(url: string): boolean {
   return parseRepoUrl(url) !== null
 }
+
+/**
+ * API origins used by each provider for client-side repo metadata fetches.
+ * Self-hosted providers are excluded because their origins can be anything.
+ */
+export const GIT_PROVIDER_API_ORIGINS = {
+  github: 'https://ungh.cc', // via UNGH proxy to avoid rate limits
+  bitbucket: 'https://api.bitbucket.org',
+  codeberg: 'https://codeberg.org',
+  gitee: 'https://gitee.com',
+  radicle: 'https://seed.radicle.at',
+} as const satisfies Partial<Record<ProviderId, string>>
+
+/**
+ * All known external API origins that git provider adapters may fetch from.
+ * Includes both the per-provider origins and known self-hosted instances.
+ */
+export const ALL_KNOWN_GIT_API_ORIGINS: readonly string[] = [
+  ...Object.values(GIT_PROVIDER_API_ORIGINS),
+  ...GITLAB_HOSTS.map(host => `https://${host}`),
+]

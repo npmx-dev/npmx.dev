@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { computed, ref } from 'vue'
-import { useBytesFormatter } from '../../../../app/composables/useNumberFormatter'
+import { useBytesFormatter } from '~/composables/useNumberFormatter'
 
 describe('useBytesFormatter', () => {
   beforeEach(() => {

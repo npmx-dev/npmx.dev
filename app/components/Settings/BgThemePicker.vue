@@ -3,6 +3,7 @@ const { backgroundThemes, selectedBackgroundTheme, setBackgroundTheme } = useBac
 
 onPrehydrate(el => {
   const settings = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
+  // Hardcoded — onPrehydrate is serialized into a <script> tag and cannot reference imports
   const defaultId = 'neutral'
   const id = settings.preferredBackgroundTheme
   if (id) {
@@ -27,7 +28,7 @@ onPrehydrate(el => {
   <fieldset
     class="flex items-center gap-4 has-[input:focus-visible]:(outline-solid outline-accent/70 outline-offset-4) rounded-xl w-fit"
   >
-    <legend class="sr-only">{{ $t('settings.background_themes') }}</legend>
+    <legend class="sr-only">{{ $t('settings.background_themes.label') }}</legend>
     <label
       v-for="theme in backgroundThemes"
       :key="theme.id"
@@ -43,7 +44,7 @@ onPrehydrate(el => {
           selectedBackgroundTheme === theme.id ||
           (!selectedBackgroundTheme && theme.id === 'neutral')
         "
-        :aria-label="theme.name"
+        :aria-label="theme.label"
         @change="setBackgroundTheme(theme.id)"
       />
     </label>

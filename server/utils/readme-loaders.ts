@@ -19,14 +19,28 @@ const standardReadmeFilenames = [
 
 /** Matches standard README filenames (case-insensitive, for checking registry metadata) */
 const standardReadmePattern = /^readme(?:\.md|\.markdown)?$/i
+const JSDELIVR_README_FETCH_BATCH_SIZE = 3
 
 export function isStandardReadme(filename: string | undefined): boolean {
   return !!filename && standardReadmePattern.test(filename)
 }
 
+async function cancelUnreadBatchResponses(
+  responses: Array<Response | null>,
+  startIndex: number,
+): Promise<void> {
+  await Promise.allSettled(responses.slice(startIndex).map(response => response?.body?.cancel()))
+}
+
+function buildReadmeFetchCandidates(readmeFilename: string | undefined): string[] {
+  return readmeFilename
+    ? standardReadmeFilenames.filter(name => name !== readmeFilename)
+    : standardReadmeFilenames
+}
+
 /**
  * Fetch README from jsdelivr CDN for a specific package version.
- * Falls back through common README filenames.
+ * Falls back through candidate README filenames in small parallel batches.
  */
 export async function fetchReadmeFromJsdelivr(
   packageName: string,
@@ -35,15 +49,30 @@ export async function fetchReadmeFromJsdelivr(
 ): Promise<string | null> {
   const versionSuffix = version ? `@${version}` : ''
 
-  for (const filename of readmeFilenames) {
-    try {
-      const url = `https://cdn.jsdelivr.net/npm/${packageName}${versionSuffix}/${filename}`
-      const response = await fetch(url)
-      if (response.ok) {
-        return await response.text()
+  for (let index = 0; index < readmeFilenames.length; index += JSDELIVR_README_FETCH_BATCH_SIZE) {
+    const batch = readmeFilenames.slice(index, index + JSDELIVR_README_FETCH_BATCH_SIZE)
+    const responses = await Promise.all(
+      batch.map(async filename => {
+        try {
+          const url = `https://cdn.jsdelivr.net/npm/${packageName}${versionSuffix}/${filename}`
+          const response = await fetch(url)
+          if (!response.ok) {
+            return null
+          }
+
+          return response
+        } catch {
+          return null
+        }
+      }),
+    )
+
+    for (const [responseIndex, response] of responses.entries()) {
+      const text = await response?.text()
+      if (text?.trim()) {
+        await cancelUnreadBatchResponses(responses, responseIndex + 1)
+        return text
       }
-    } catch {
-      // Try next filename
     }
   }
 
@@ -85,11 +114,23 @@ export const resolvePackageReadmeSource = defineCachedFunction(
       readmeContent!.length >= NPM_README_TRUNCATION_THRESHOLD
     ) {
       const resolvedVersion = version ?? packageData['dist-tags']?.latest
-      const jsdelivrReadme = await fetchReadmeFromJsdelivr(
-        packageName,
-        standardReadmeFilenames,
-        resolvedVersion,
-      )
+
+      // try fetching the given readme file first
+      let jsdelivrReadme =
+        readmeFilename &&
+        (await fetchReadmeFromJsdelivr(packageName, [readmeFilename], resolvedVersion))
+
+      // if it's unsuccessful, fetch all known readme filenames
+      if (!jsdelivrReadme) {
+        const readmeCandidates = buildReadmeFetchCandidates(readmeFilename)
+        jsdelivrReadme = await fetchReadmeFromJsdelivr(
+          packageName,
+          readmeCandidates,
+          resolvedVersion,
+        )
+      }
+
+      // if we found something, use it
       if (jsdelivrReadme) {
         readmeContent = jsdelivrReadme
       }

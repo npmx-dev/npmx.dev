@@ -1,5 +1,4 @@
 import * as v from 'valibot'
-import type { InferOutput } from 'valibot'
 
 export const PublicUserSessionSchema = v.object({
   // Safe to pass to the frontend
@@ -9,5 +8,3 @@ export const PublicUserSessionSchema = v.object({
   avatar: v.optional(v.pipe(v.string(), v.url())),
   relogin: v.optional(v.boolean()),
 })
-
-export type PublicUserSession = InferOutput<typeof PublicUserSessionSchema>

@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { formatType, getNodeSignature } from '../../../../../server/utils/docs/format'
+import { formatType, getNodeSignature } from '#server/utils/docs/format'
 import type { DenoDocNode } from '#shared/types/deno-doc'
 
 function loadFixture(name: string): DenoDocNode {

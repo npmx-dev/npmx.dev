@@ -1,6 +1,5 @@
 import type { Dirent } from 'node:fs'
 import { glob, readFile } from 'node:fs/promises'
-import { fileURLToPath } from 'node:url'
 import { resolve } from 'node:path'
 import { createGenerator } from 'unocss'
 import { presetRtl } from '../uno-preset-rtl.ts'
@@ -9,7 +8,7 @@ import { COLORS } from './utils.ts'
 import { presetWind4 } from 'unocss'
 
 const argvFiles = process.argv.slice(2)
-const APP_DIRECTORY = fileURLToPath(new URL('../app', import.meta.url))
+const APP_DIRECTORY = resolve(import.meta.dirname, '../app')
 
 async function checkFile(path: Dirent): Promise<string | undefined> {
   if (path.isDirectory() || !path.name.endsWith('.vue')) {

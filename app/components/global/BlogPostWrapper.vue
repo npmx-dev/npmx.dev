@@ -15,6 +15,7 @@ useSeoMeta({
   ogTitle: props.frontmatter.title,
   ogDescription: props.frontmatter.description || props.frontmatter.excerpt,
   ogType: 'article',
+  ogImage: props.frontmatter.image,
   ...(props.frontmatter.draft ? { robots: 'noindex, nofollow' } : {}),
 })
 
@@ -27,11 +28,17 @@ useHead({
   ],
 })
 
-defineOgImageComponent('BlogPost', {
-  title: props.frontmatter.title,
-  authors: post.value?.authors ?? [],
-  date: props.frontmatter.date,
-})
+if (!props.frontmatter.image) {
+  defineOgImage(
+    'BlogPost.takumi',
+    {
+      title: props.frontmatter.title,
+      authors: post.value?.authors ?? [],
+      date: props.frontmatter.date,
+    },
+    { alt: `Blog post: ${props.frontmatter.title}` },
+  )
+}
 
 const slug = computed(() => props.frontmatter.slug)
 
@@ -58,7 +65,7 @@ const blueskyPostUri = computed(() => blueskyLink.value?.postUri ?? null)
         <AuthorList :authors="post.authors" variant="expanded" />
       </div>
     </div>
-    <article class="max-w-prose mx-auto p-2 prose dark:prose-invert">
+    <article class="max-w-prose mx-auto prose dark:prose-invert">
       <div class="text-sm text-fg-muted font-mono mb-4">
         <DateTime :datetime="frontmatter.date" year="numeric" month="short" day="numeric" />
       </div>
@@ -76,5 +83,20 @@ const blueskyPostUri = computed(() => blueskyLink.value?.postUri ?? null)
 <style scoped>
 :deep(.markdown-body) {
   @apply prose dark:prose-invert;
+}
+
+:deep(.prose a:not(.not-prose a):not([class*='no-underline'])) {
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--fg-subtle);
+  transition:
+    text-decoration-color 0.2s,
+    color 0.2s;
+}
+
+:deep(.prose a:not(.not-prose a):not([class*='no-underline']):hover) {
+  text-decoration-color: var(--fg);
+  color: var(--fg);
 }
 </style>
