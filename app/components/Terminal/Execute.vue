@@ -14,6 +14,7 @@ const props = defineProps<{
 }>()
 
 const selectedPM = useSelectedPackageManager()
+const { polite } = useAnnouncer()
 
 // Generate execute command parts for a specific package manager
 function getExecutePartsForPM(pmId: PackageManagerId) {
@@ -39,7 +40,10 @@ function getFullExecuteCommand() {
 
 // Copy handler
 const { copied: executeCopied, copy: copyExecute } = useClipboard({ copiedDuring: 2000 })
-const copyExecuteCommand = () => copyExecute(getFullExecuteCommand())
+const copyExecuteCommand = () => {
+  copyExecute(getFullExecuteCommand())
+  polite($t('package.command.copied_execute'))
+}
 </script>
 
 <template>

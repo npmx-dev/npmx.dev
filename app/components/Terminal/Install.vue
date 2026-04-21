@@ -23,6 +23,14 @@ const { selectedPM, showTypesInInstall, copied, copyInstallCommand } = useInstal
   () => props.installVersionOverride ?? null,
 )
 
+const { announce } = useCommandPalette()
+const { polite } = useAnnouncer()
+
+async function copyInstallCommandWithAnnounce() {
+  const success = await copyInstallCommand()
+  if (success) polite($t('package.command.copied_install'))
+}
+
 // Generate install command parts for a specific package manager
 function getInstallPartsForPM(pmId: PackageManagerId) {
   return getInstallCommandParts({
@@ -105,13 +113,19 @@ function getFullCreateCommand() {
 
 // Copy handlers
 const { copied: runCopied, copy: copyRun } = useClipboard({ copiedDuring: 2000 })
-const copyRunCommand = (command?: string) => copyRun(getFullRunCommand(command))
+const copyRunCommand = (command?: string) => {
+  copyRun(getFullRunCommand(command))
+  polite($t('package.command.copied_run'))
+}
 
 const { copied: createCopied, copy: copyCreate } = useClipboard({ copiedDuring: 2000 })
-const copyCreateCommand = () => copyCreate(getFullCreateCommand())
+const copyCreateCommand = () => {
+  copyCreate(getFullCreateCommand())
+  polite($t('package.command.copied_create'))
+}
 
 const { copied: devInstallCopied, copy: copyDevInstall } = useClipboard({ copiedDuring: 2000 })
-const copyDevInstallCommand = () =>
+const copyDevInstallCommand = () => {
   copyDevInstall(
     getInstallCommand({
       packageName: props.packageName,
@@ -121,8 +135,8 @@ const copyDevInstallCommand = () =>
       dev: true,
     }),
   )
-
-const { announce } = useCommandPalette()
+  polite($t('package.command.copied_dev_install'))
+}
 
 useCommandPaletteContextCommands(
   computed((): CommandPaletteContextCommandInput[] => {
@@ -241,7 +255,7 @@ useCommandPaletteContextCommands(
             class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover/installcmd:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
             :aria-label="$t('package.get_started.copy_command')"
             :classicon="copied ? 'i-lucide:check' : 'i-lucide:copy'"
-            @click.stop="copyInstallCommand"
+            @click.stop="copyInstallCommandWithAnnounce"
           />
         </div>
 

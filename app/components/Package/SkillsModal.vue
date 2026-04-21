@@ -35,7 +35,12 @@ const installCommand = computed(() => {
 })
 
 const { copied, copy } = useClipboard({ copiedDuring: 2000 })
-const copyCommand = () => installCommand.value && copy(installCommand.value)
+const { polite } = useAnnouncer()
+const copyCommand = () => {
+  if (!installCommand.value) return
+  copy(installCommand.value)
+  polite($t('package.command.copied_skills'))
+}
 
 function getWarningTooltip(skill: SkillListItem): string | undefined {
   if (!skill.warnings?.length) return undefined
