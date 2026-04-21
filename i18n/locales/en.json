@@ -472,7 +472,12 @@
       "copy_command": "Copy command to run locally"
     },
     "command": {
-      "copied": "Command copied"
+      "copied_install": "Install command copied",
+      "copied_dev_install": "Dev install command copied",
+      "copied_run": "Run command copied",
+      "copied_create": "Create command copied",
+      "copied_execute": "Execute command copied",
+      "copied_skills": "Skills command copied"
     },
     "readme": {
       "title": "Readme",

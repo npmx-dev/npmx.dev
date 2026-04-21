@@ -1420,7 +1420,22 @@
         "command": {
           "type": "object",
           "properties": {
-            "copied": {
+            "copied_install": {
+              "type": "string"
+            },
+            "copied_dev_install": {
+              "type": "string"
+            },
+            "copied_run": {
+              "type": "string"
+            },
+            "copied_create": {
+              "type": "string"
+            },
+            "copied_execute": {
+              "type": "string"
+            },
+            "copied_skills": {
               "type": "string"
             }
           },
