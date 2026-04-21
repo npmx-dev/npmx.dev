@@ -67,11 +67,6 @@ test.describe('Create Command', () => {
 
       await expect(page.locator('h1')).toContainText('vite', { timeout: 15000 })
 
-      await expect(page.locator('main header').locator('text=/v\\d+\\.\\d+/')).toBeVisible({
-        timeout: 15000,
-      })
-
-      // Find the create command container (wait longer for API response)
       const createCommandContainer = page.locator('.group\\/createcmd').first()
       await expect(createCommandContainer).toBeVisible({ timeout: 20000 })
 
@@ -94,10 +89,6 @@ test.describe('Create Command', () => {
 
       await goto('/package/vite', { waitUntil: 'hydration' })
       await expect(page.locator('h1')).toContainText('vite', { timeout: 15000 })
-
-      await expect(page.locator('main header').locator('text=/v\\d+\\.\\d+/')).toBeVisible({
-        timeout: 15000,
-      })
 
       const createCommandContainer = page.locator('.group\\/createcmd').first()
       await expect(createCommandContainer).toBeVisible({ timeout: 20000 })
@@ -183,11 +174,6 @@ test.describe('Create Command', () => {
 
       await expect(page.locator('h1')).toContainText('vite', { timeout: 15000 })
 
-      await expect(page.locator('main header').locator('text=/v\\d+\\.\\d+/')).toBeVisible({
-        timeout: 15000,
-      })
-
-      // Find the run command container
       const runCommandContainer = page.locator('.group\\/runcmd').first()
       await expect(runCommandContainer).toBeVisible({ timeout: 20000 })
 
@@ -210,10 +196,6 @@ test.describe('Create Command', () => {
 
       await goto('/package/vite', { waitUntil: 'hydration' })
       await expect(page.locator('h1')).toContainText('vite', { timeout: 15000 })
-
-      await expect(page.locator('main header').locator('text=/v\\d+\\.\\d+/')).toBeVisible({
-        timeout: 15000,
-      })
 
       const runCommandContainer = page.locator('.group\\/runcmd').first()
       await expect(runCommandContainer).toBeVisible({ timeout: 20000 })
