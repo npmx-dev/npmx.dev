@@ -103,17 +103,25 @@ test.describe('Create Command', () => {
       await expect(createCommandContainer).toBeVisible({ timeout: 20000 })
 
       const copyButton = createCommandContainer.locator('button')
+
+      await copyButton.focus()
+      await expect(copyButton).toBeFocused()
+
       await copyButton.click()
 
-      // Button text should change to "copied!"
-      await expect(copyButton).toContainText(/copied/i)
+      await expect(copyButton.locator('span[aria-hidden="true"]')).toHaveClass(/i-lucide:check/)
 
-      // Verify clipboard content contains the create command
       const clipboardContent = await page.evaluate(() => navigator.clipboard.readText())
       expect(clipboardContent).toMatch(/create vite/i)
 
-      await expect(copyButton).toContainText(/copy/i, { timeout: 5000 })
-      await expect(copyButton).not.toContainText(/copied/i)
+      await expect(page.locator('.nuxt-announcer [aria-live="polite"]')).toContainText(
+        'Create command copied',
+      )
+
+      await expect(copyButton.locator('span[aria-hidden="true"]')).toHaveClass(/i-lucide:copy/, {
+        timeout: 5000,
+      })
+      await expect(copyButton.locator('span[aria-hidden="true"]')).not.toHaveClass(/i-lucide:check/)
     })
   })
 
@@ -146,17 +154,26 @@ test.describe('Create Command', () => {
 
       const installCommandContainer = page.locator('.group\\/installcmd').first()
       const copyButton = installCommandContainer.locator('button')
+
+      await copyButton.focus()
+      await expect(copyButton).toBeFocused()
+
       await copyButton.click()
 
-      // Button text should change to "copied!"
-      await expect(copyButton).toContainText(/copied/i)
+      await expect(copyButton.locator('span[aria-hidden="true"]')).toHaveClass(/i-lucide:check/)
 
       // Verify clipboard content contains the install command
       const clipboardContent = await page.evaluate(() => navigator.clipboard.readText())
       expect(clipboardContent).toMatch(/install is-odd|add is-odd/i)
 
-      await expect(copyButton).toContainText(/copy/i, { timeout: 5000 })
-      await expect(copyButton).not.toContainText(/copied/i)
+      await expect(page.locator('.nuxt-announcer [aria-live="polite"]')).toContainText(
+        'Install command copied',
+      )
+
+      await expect(copyButton.locator('span[aria-hidden="true"]')).toHaveClass(/i-lucide:copy/, {
+        timeout: 5000,
+      })
+      await expect(copyButton.locator('span[aria-hidden="true"]')).not.toHaveClass(/i-lucide:check/)
     })
   })
 
@@ -202,17 +219,26 @@ test.describe('Create Command', () => {
       await expect(runCommandContainer).toBeVisible({ timeout: 20000 })
 
       const copyButton = runCommandContainer.locator('button')
+
+      await copyButton.focus()
+      await expect(copyButton).toBeFocused()
+
       await copyButton.click()
 
-      // Button text should change to "copied!"
-      await expect(copyButton).toContainText(/copied/i)
+      await expect(copyButton.locator('span[aria-hidden="true"]')).toHaveClass(/i-lucide:check/)
 
       // Verify clipboard content contains the run command
       const clipboardContent = await page.evaluate(() => navigator.clipboard.readText())
       expect(clipboardContent).toMatch(/npx vite/i)
 
-      await expect(copyButton).toContainText(/copy/i, { timeout: 5000 })
-      await expect(copyButton).not.toContainText(/copied/i)
+      await expect(page.locator('.nuxt-announcer [aria-live="polite"]')).toContainText(
+        'Run command copied',
+      )
+
+      await expect(copyButton.locator('span[aria-hidden="true"]')).toHaveClass(/i-lucide:copy/, {
+        timeout: 5000,
+      })
+      await expect(copyButton.locator('span[aria-hidden="true"]')).not.toHaveClass(/i-lucide:check/)
     })
   })
 })
