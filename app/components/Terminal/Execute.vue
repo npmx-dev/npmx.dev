@@ -59,7 +59,7 @@ const copyExecuteCommand = () => copyExecute(getFullExecuteCommand())
           :data-pm-cmd="pm.id"
           class="flex items-center gap-2 group/executecmd"
         >
-          <span class="text-fg-subtle font-mono text-sm select-none">$</span>
+          <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
           <code class="font-mono text-sm"
             ><span
               v-for="(part, i) in getExecutePartsForPM(pm.id)"
