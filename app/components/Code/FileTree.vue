@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PackageFileTree } from '#shared/types'
 import type { RouteLocationRaw } from 'vue-router'
 import type { RouteNamedMap } from 'vue-router/auto-routes'
 import { ADDITIONAL_ICONS, getFileIcon } from '~/utils/file-icons'
@@ -40,7 +39,7 @@ const { toggleDir, isExpanded, autoExpandAncestors } = useFileTreeState(props.ba
 watch(
   () => props.currentPath,
   path => {
-    if (path) {
+    if (depth.value === 0 && path) {
       autoExpandAncestors(path)
     }
   },

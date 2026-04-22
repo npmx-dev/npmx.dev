@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { lightenHex, oklchToHex, transparentizeOklch } from '../../../../app/utils/colors'
+import { lightenHex, oklchToHex, transparentizeOklch } from '~/utils/colors'
 
 describe('lightenHex', () => {
   it('lightens a color by the default factor (0.5)', () => {

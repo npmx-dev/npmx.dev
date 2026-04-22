@@ -108,17 +108,20 @@ useSeoMeta({
   twitterDescription: () => `npm organizations for ${username.value}`,
 })
 
-defineOgImageComponent('Default', {
-  title: () => `@${username.value}`,
-  description: () => {
-    if (isLoading.value) return 'npm organizations'
-    if (orgs.value.length === 0) return 'No organizations found'
+defineOgImage(
+  'Page.takumi',
+  {
+    title: () => `@${username.value}`,
+    description: () => {
+      if (isLoading.value) return 'npm organizations'
+      if (orgs.value.length === 0) return 'No organizations found'
 
-    const count = orgs.value.length
-    return `${count} ${count === 1 ? 'organization' : 'organizations'}`
+      const count = orgs.value.length
+      return `${count} ${count === 1 ? 'organization' : 'organizations'}`
+    },
   },
-  primaryColor: '#60a5fa',
-})
+  { alt: () => `Organizations for @${username.value} on npmx` },
+)
 </script>
 
 <template>
@@ -126,7 +129,7 @@ defineOgImageComponent('Default', {
     <!-- Header -->
     <header class="mb-8 pb-8 border-b border-border">
       <div class="flex flex-wrap items-center gap-4 mb-4">
-        <UserAvatar :username="username" />
+        <UserAvatar :username="username" size="lg" />
         <div>
           <h1 class="font-mono text-2xl sm:text-3xl font-medium">~{{ username }}</h1>
           <p class="text-fg-muted text-sm mt-1">{{ $t('user.orgs_page.title') }}</p>

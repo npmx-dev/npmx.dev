@@ -37,7 +37,7 @@ useSeoMeta({
             :authors="post.authors"
             :title="post.title"
             :path="post.slug"
-            :excerpt="post.excerpt || post.description || 'No Excerpt Available'"
+            :excerpt="post.excerpt || post.description"
             :topics="Array.isArray(post.tags) ? post.tags : placeHolder"
             :published="post.date"
             :index="idx"
@@ -47,7 +47,7 @@ useSeoMeta({
         </template>
       </article>
 
-      <p v-else class="text-center py-20 text-fg-subtle">No posts found.</p>
+      <p v-else class="text-center py-20 text-fg-subtle">{{ $t('blog.no_posts') }}</p>
     </article>
   </main>
 </template>

@@ -1,9 +1,4 @@
 import semver from 'semver'
-import type {
-  VersionDownloadPoint,
-  VersionGroupDownloads,
-  VersionGroupingMode,
-} from '#shared/types'
 
 /**
  * Intermediate data structure for version processing

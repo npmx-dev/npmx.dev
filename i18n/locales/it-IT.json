@@ -76,6 +76,10 @@
     "links": "Link",
     "tap_to_search": "Tocca per cercare"
   },
+  "blog": {
+    "author": {},
+    "atproto": {}
+  },
   "settings": {
     "title": "impostazioni",
     "tagline": "personalizza la tua esperienza npmx",
@@ -105,10 +109,14 @@
     "theme_system": "Sistema",
     "language": "Lingua",
     "help_translate": "Aiuta a tradurre npmx",
-    "accent_colors": "Colori di accento",
+    "accent_colors": {
+      "label": "Colori di accento"
+    },
     "clear_accent": "Cancella colore di accento",
     "translation_progress": "Progresso della traduzione",
-    "background_themes": "Sfumatura di sfondo"
+    "background_themes": {
+      "label": "Sfumatura di sfondo"
+    }
   },
   "i18n": {
     "missing_keys": "{count} chiave mancante | {count} chiavi mancanti",
@@ -118,6 +126,7 @@
     "edit_on_github": "Modifica su GitHub",
     "view_guide": "Guida alla traduzione"
   },
+  "error": {},
   "common": {
     "loading": "Caricando...",
     "loading_more": "Caricando altri...",
@@ -132,7 +141,6 @@
     "skip_link": "Salta al contenuto principale",
     "warnings": "Avvisi:",
     "go_back_home": "Torna alla home",
-    "view_on_npm": "vedi su npm",
     "per_week": "/ settimana",
     "vanity_downloads_hint": "Numero di vanità: nessun pacchetto visualizzato | Numero di vanità: per il pacchetto visualizzato | Numero di vanità: somma di {count} pacchetti visualizzati",
     "sort": {
@@ -140,18 +148,22 @@
       "role": "ruolo",
       "members": "membri"
     },
-    "scroll_to_top": "Torna su"
+    "scroll_to_top": "Torna su",
+    "view_on": {
+      "npm": "vedi su npm",
+      "github": "Vedi su GitHub"
+    }
+  },
+  "profile": {
+    "invite": {}
   },
   "package": {
     "not_found": "Pacchetto Non Trovato",
     "not_found_message": "Impossibile trovare il pacchetto.",
     "no_description": "Nessuna descrizione fornita",
-    "not_latest": "(non recente)",
     "verified_provenance": "Provenienza verificata",
-    "view_permalink": "Vedi il link permanente per questa versione",
     "navigation": "Pacchetto",
     "copy_name": "Copia nome pacchetto",
-    "copy_version": "Copia versione pacchetto",
     "deprecation": {
       "package": "Questo pacchetto è stato deprecato.",
       "version": "Questa versione è stata deprecata.",
@@ -172,7 +184,6 @@
       "none": "Questo pacchetto è stato segnalato come non più necessario, e la sua funzionalità è probabilmente disponibile nativamente in tutti i motori.",
       "learn_more": "Scopri di più",
       "learn_more_above": "Scopri di più sopra",
-      "mdn": "MDN",
       "community": "comunità",
       "consider_no_dep": "Considera nessuna dipendenza?"
     },
@@ -229,9 +240,9 @@
       "title": "Inizia",
       "pm_label": "Gestore di pacchetti",
       "copy_command": "Copia comando di installazione",
-      "view_types": "Vedi {package}",
       "copy_dev_command": "Copia comando di installazione dev",
-      "dev_dependency_hint": "Di solito installato come dev dependency"
+      "dev_dependency_hint": "Di solito installato come dev dependency",
+      "view_types": "Vedi {package}"
     },
     "create": {
       "title": "Crea nuovo progetto",
@@ -245,7 +256,6 @@
     "readme": {
       "title": "Readme",
       "no_readme": "Nessuno README disponibile.",
-      "view_on_github": "Vedi su GitHub",
       "toc_title": "Contorno",
       "callout": {
         "note": "Nota",
@@ -298,7 +308,8 @@
       "more_tagged": "{count} altri taggati",
       "all_covered": "Tutte le versioni sono coperte dai tag sopra",
       "deprecated_title": "{version} (deprecato)",
-      "view_all": "Visualizza {count} versione | Visualizza tutte le {count} versioni"
+      "view_all": "Visualizza {count} versione | Visualizza tutte le {count} versioni",
+      "copy_alt": {}
     },
     "dependencies": {
       "title": "Dipendenza ({count}) | Dipendenze ({count})",
@@ -352,7 +363,8 @@
       "y_axis_label": "{granularity} {facet}",
       "items": {
         "downloads": "Download"
-      }
+      },
+      "copy_alt": {}
     },
     "downloads": {
       "title": "Download settimanali",
@@ -444,7 +456,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -620,12 +633,10 @@
   "code": {
     "files_label": "File",
     "no_files": "Nessun file in questa directory",
-    "root": "root",
     "lines": "{count} riga | {count} righe",
     "toggle_tree": "Attiva/disattiva albero dei file",
     "close_tree": "Chiudi albero dei file",
     "copy_link": "Copia link",
-    "raw": "Raw",
     "view_raw": "Visualizza file raw",
     "file_too_large": "File troppo grande per visualizzare l'anteprima",
     "file_size_warning": "{size} supera il limite di 500 KB per l'evidenziatore di sintassi",
@@ -717,11 +728,7 @@
       "downloads_month": "Download/mese",
       "downloads_year": "Download/anno",
       "published": "Ultimo pubblicato",
-      "name": "Nome",
-      "quality": "Qualità",
-      "popularity": "Popolarità",
-      "maintenance": "Manutenzione",
-      "score": "Punteggio"
+      "name": "Nome"
     },
     "columns": {
       "title": "Colonne",
@@ -735,10 +742,6 @@
       "published": "Ultimo pubblicato",
       "maintainers": "Manutentori",
       "keywords": "Keywords",
-      "quality_score": "Punteggio di qualità",
-      "popularity_score": "Punteggio di popolarità",
-      "maintenance_score": "Punteggio di manutenzione",
-      "combined_score": "Punteggio combinato",
       "security": "Sicurezza"
     },
     "view_mode": {
@@ -752,7 +755,7 @@
       "paginated": "Paginato",
       "items_per_page": "Elementi per pagina",
       "per_page": "{count} / pagina",
-      "showing": "{start}-{end} su {total}",
+      "showing": "{range} su {total}",
       "previous": "Pagina precedente",
       "next": "Pagina successiva",
       "nav_label": "Paginazione"
@@ -795,6 +798,8 @@
         "managers": "gestori di pacchetti"
       }
     },
+    "sponsors": {},
+    "oss_partners": {},
     "team": {},
     "contributors": {
       "title": "{count} Collaboratore | {count} Collaboratori",
@@ -815,6 +820,7 @@
         "description": "Chatta, fai domande e condividi idee.",
         "cta": "Unisciti a Discord"
       },
+      "builders": {},
       "follow": {
         "title": "Rimani aggiornato",
         "description": "Scopri le ultime novità su npmx.",
@@ -904,14 +910,11 @@
       "add_column": "Aggiungi una colonna per il confronto senza dipendenze"
     },
     "facets": {
-      "group_label": "Sfaccettature di confronto",
       "all": "tutto",
       "none": "niente",
       "coming_soon": "Prossimamente",
       "select_all": "Seleziona tutte le sfaccettature",
       "deselect_all": "Deseleziona tutte le sfaccettature",
-      "select_category": "Seleziona tutte le sfaccettature {category}",
-      "deselect_category": "Deseleziona tutte le sfaccettature {category}",
       "binary_only_tooltip": "Questo pacchetto espone binari e nessuna esportazione",
       "categories": {
         "performance": "Prestazioni",
@@ -985,7 +988,15 @@
         "up_to_you": "A tua scelta!"
       },
       "trends": {}
-    }
+    },
+    "version_invalid_url_format": {},
+    "file_filter_option": {},
+    "filter": {}
+  },
+  "pds": {
+    "join": {},
+    "server": {},
+    "community": {}
   },
   "privacy_policy": {
     "title": "Informativa sulla privacy",
@@ -1072,5 +1083,9 @@
     "measures": {},
     "limitations": {},
     "contact": {}
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

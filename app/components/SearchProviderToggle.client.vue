@@ -28,7 +28,7 @@ useEventListener('keydown', event => {
       :aria-label="$t('settings.data_source.label')"
       :aria-expanded="isOpen"
       aria-haspopup="true"
-      size="small"
+      size="sm"
       class="border-none w-8 h-8 !px-0 justify-center"
       classicon="i-lucide:settings"
       @click="isOpen = !isOpen"

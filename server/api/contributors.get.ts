@@ -14,7 +14,7 @@ type GitHubAPIContributor = Omit<GitHubContributor, 'role' | 'sponsors_url'>
 
 // Fallback when no GitHub token is available (e.g. preview environments).
 // Only stewards are shown as maintainers; everyone else is a contributor.
-const FALLBACK_STEWARDS = new Set(['danielroe', 'patak-dev'])
+const FALLBACK_STEWARDS = new Set(['danielroe', 'patak-cat'])
 
 interface TeamMembers {
   steward: Set<string>

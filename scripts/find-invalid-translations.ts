@@ -1,10 +1,9 @@
 /* eslint-disable no-console */
 import { join } from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { createI18NReport, type I18NItem } from 'vue-i18n-extract'
 import { colors } from './utils/colors.ts'
 
-const LOCALES_DIRECTORY = fileURLToPath(new URL('../i18n/locales', import.meta.url))
+const LOCALES_DIRECTORY = join(import.meta.dirname, '../i18n/locales')
 const REFERENCE_FILE_NAME = 'en.json'
 const VUE_FILES_GLOB = './app/**/*.?(vue|ts|js)'
 

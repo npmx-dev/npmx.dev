@@ -17,8 +17,10 @@ describe('ComparisonGrid', () => {
           columns: cols('lodash@4.17.21', 'underscore@1.13.6'),
         },
       })
-      expect(component.text()).toContain('lodash@4.17.21')
-      expect(component.text()).toContain('underscore@1.13.6')
+      expect(component.text()).toContain('lodash')
+      expect(component.text()).toContain('@4.17.21')
+      expect(component.text()).toContain('underscore')
+      expect(component.text()).toContain('@1.13.6')
     })
 
     it('renders correct number of header cells', async () => {
@@ -43,74 +45,61 @@ describe('ComparisonGrid', () => {
       expect(component.find('.comparison-cell-nodep').exists()).toBe(true)
     })
 
-    it('truncates long header text with title attribute', async () => {
+    it('renders package name and version on separate clamped lines with a full title attribute', async () => {
       const longName = 'very-long-package-name@1.0.0-beta.1'
       const component = await mountSuspended(ComparisonGrid, {
         props: {
           columns: cols(longName, 'short'),
         },
       })
-      const links = component.findAll('a.truncate')
-      const longLink = links.find(a => a.text() === longName)
-      expect(longLink?.attributes('title')).toBe(longName)
+
+      const link = component.find(`a[title="${longName}"]`)
+      expect(link.exists()).toBe(true)
+      expect(link.attributes('title')).toBe(longName)
+      expect(link.findAll('.line-clamp-1')).toHaveLength(2)
     })
   })
 
   describe('column layout', () => {
-    it('applies columns-2 class for 2 columns', async () => {
+    it('sets --package-count to the number of package columns', async () => {
       const component = await mountSuspended(ComparisonGrid, {
         props: {
           columns: cols('a', 'b'),
         },
       })
-      expect(component.find('.columns-2').exists()).toBe(true)
+      const grid = component.find('.comparison-grid')
+      expect(grid.attributes('style')).toContain('--package-count: 2')
     })
 
-    it('applies columns-3 class for 2 packages + no-dep', async () => {
+    it('includes the no-dependency column in --package-count', async () => {
       const component = await mountSuspended(ComparisonGrid, {
         props: {
           columns: cols('a', 'b'),
           showNoDependency: true,
         },
       })
-      expect(component.find('.columns-3').exists()).toBe(true)
+      const grid = component.find('.comparison-grid')
+      expect(grid.attributes('style')).toContain('--package-count: 3')
     })
 
-    it('applies columns-4 class for 4 columns', async () => {
+    it('supports four package columns with the generic grid layout', async () => {
       const component = await mountSuspended(ComparisonGrid, {
         props: {
           columns: cols('a', 'b', 'c', 'd'),
         },
       })
-      expect(component.find('.columns-4').exists()).toBe(true)
+      const grid = component.find('.comparison-grid')
+      expect(grid.attributes('style')).toContain('--package-count: 4')
     })
 
-    it('sets min-width for 4 columns to 800px', async () => {
-      const component = await mountSuspended(ComparisonGrid, {
-        props: {
-          columns: cols('a', 'b', 'c', 'd'),
-        },
-      })
-      expect(component.find('.min-w-\\[800px\\]').exists()).toBe(true)
-    })
-
-    it('sets min-width for 2-3 columns to 600px', async () => {
-      const component = await mountSuspended(ComparisonGrid, {
-        props: {
-          columns: cols('a', 'b'),
-        },
-      })
-      expect(component.find('.min-w-\\[600px\\]').exists()).toBe(true)
-    })
-
-    it('sets --columns CSS variable', async () => {
+    it('sets --package-count CSS variable', async () => {
       const component = await mountSuspended(ComparisonGrid, {
         props: {
           columns: cols('a', 'b', 'c'),
         },
       })
       const grid = component.find('.comparison-grid')
-      expect(grid.attributes('style')).toContain('--columns: 3')
+      expect(grid.attributes('style')).toContain('--package-count: 3')
     })
   })
 

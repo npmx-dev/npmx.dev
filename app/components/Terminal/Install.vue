@@ -2,6 +2,7 @@
 import type { JsrPackageInfo } from '#shared/types/jsr'
 import type { DevDependencySuggestion } from '#shared/utils/dev-dependency'
 import type { PackageManagerId } from '~/utils/install-command'
+import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
 
 const props = defineProps<{
   packageName: string
@@ -60,22 +61,12 @@ function getRunPartsForPM(pmId: PackageManagerId, command?: string) {
 // Generate create command parts for a specific package manager
 function getCreatePartsForPM(pmId: PackageManagerId) {
   if (!props.createPackageInfo) return []
-  const pm = packageManagers.find(p => p.id === pmId)
-  if (!pm) return []
-
-  const createPkgName = props.createPackageInfo.packageName
-  let shortName: string
-  if (createPkgName.startsWith('@')) {
-    const slashIndex = createPkgName.indexOf('/')
-    const name = createPkgName.slice(slashIndex + 1)
-    shortName = name.startsWith('create-') ? name.slice('create-'.length) : name
-  } else {
-    shortName = createPkgName.startsWith('create-')
-      ? createPkgName.slice('create-'.length)
-      : createPkgName
-  }
-
-  return [...pm.create.split(' '), shortName]
+  return getExecuteCommandParts({
+    packageName: props.createPackageInfo.packageName,
+    packageManager: pmId,
+    jsrInfo: null,
+    isCreatePackage: true,
+  })
 }
 
 // Generate @types install command parts for a specific package manager
@@ -102,7 +93,14 @@ function getFullRunCommand(command?: string) {
 
 // Full create command for copying (uses current selected PM)
 function getFullCreateCommand() {
-  return getCreatePartsForPM(selectedPM.value).join(' ')
+  if (!props.createPackageInfo) return ''
+
+  return getExecuteCommand({
+    packageName: props.createPackageInfo.packageName,
+    packageManager: selectedPM.value,
+    jsrInfo: null,
+    isCreatePackage: true,
+  })
 }
 
 // Copy handlers
@@ -123,6 +121,92 @@ const copyDevInstallCommand = () =>
       dev: true,
     }),
   )
+
+const { announce } = useCommandPalette()
+
+useCommandPaletteContextCommands(
+  computed((): CommandPaletteContextCommandInput[] => {
+    const commands: CommandPaletteContextCommandInput[] = [
+      {
+        id: 'package-copy-install',
+        group: 'package',
+        label: $t('package.get_started.copy_command'),
+        keywords: [props.packageName],
+        iconClass: 'i-lucide:copy',
+        action: () => {
+          copyInstallCommand()
+          announce($t('command_palette.announcements.copied_to_clipboard'))
+        },
+      },
+    ]
+
+    if (devDependencySuggestion.value.recommended) {
+      commands.push({
+        id: 'package-copy-dev-install',
+        group: 'package',
+        label: $t('package.get_started.copy_dev_command'),
+        keywords: [props.packageName],
+        iconClass: 'i-lucide:copy-plus',
+        action: () => {
+          copyDevInstallCommand()
+          announce($t('command_palette.announcements.copied_to_clipboard'))
+        },
+      })
+    }
+
+    if (props.executableInfo?.hasExecutable) {
+      commands.push({
+        id: 'package-copy-run',
+        group: 'package',
+        label: $t('command_palette.package_actions.copy_run'),
+        keywords: [props.packageName, $t('package.run.locally')],
+        iconClass: 'i-lucide:terminal-square',
+        action: () => {
+          copyRunCommand(props.executableInfo?.primaryCommand)
+          announce($t('command_palette.announcements.copied_to_clipboard'))
+        },
+      })
+    }
+
+    if (props.createPackageInfo) {
+      commands.push({
+        id: 'package-copy-create',
+        group: 'package',
+        label: $t('package.create.copy_command'),
+        keywords: [props.packageName, props.createPackageInfo.packageName],
+        iconClass: 'i-lucide:wand-sparkles',
+        action: () => {
+          copyCreateCommand()
+          announce($t('command_palette.announcements.copied_to_clipboard'))
+        },
+      })
+    }
+
+    if (props.typesPackageName && showTypesInInstall.value) {
+      commands.push({
+        id: 'package-view-types',
+        group: 'package',
+        label: $t('package.get_started.view_types', { package: props.typesPackageName }),
+        keywords: [props.packageName, props.typesPackageName],
+        iconClass: 'i-lucide:arrow-right',
+        to: packageRoute(props.typesPackageName!),
+      })
+    }
+
+    if (props.createPackageInfo) {
+      commands.push({
+        id: 'package-open-create-info',
+        group: 'package',
+        label: props.createPackageInfo.packageName,
+        keywords: [props.packageName, props.createPackageInfo.packageName],
+        iconClass: 'i-lucide:info',
+        to: packageRoute(props.createPackageInfo.packageName),
+      })
+    }
+
+    return commands
+  }),
+)
 </script>
 
 <template>
@@ -185,7 +269,7 @@ const copyDevInstallCommand = () =>
             >
             <ButtonBase
               type="button"
-              size="small"
+              size="sm"
               class="text-fg-muted bg-bg-subtle/80 border-border opacity-0 group-hover/devinstallcmd:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
               :aria-label="$t('package.get_started.copy_dev_command')"
               @click.stop="copyDevInstallCommand"
@@ -328,7 +412,8 @@ const copyDevInstallCommand = () =>
 :root[data-pm='yarn'] [data-pm-cmd='yarn'],
 :root[data-pm='bun'] [data-pm-cmd='bun'],
 :root[data-pm='deno'] [data-pm-cmd='deno'],
-:root[data-pm='vlt'] [data-pm-cmd='vlt'] {
+:root[data-pm='vlt'] [data-pm-cmd='vlt'],
+:root[data-pm='vp'] [data-pm-cmd='vp'] {
   display: flex;
 }
 

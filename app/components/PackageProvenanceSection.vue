@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { ProvenanceDetails } from '#shared/types'
-
 defineProps<{
   details: ProvenanceDetails
 }>()

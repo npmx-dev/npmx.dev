@@ -1,11 +1,32 @@
 <script setup lang="ts">
+import type { LocaleObject } from '@nuxtjs/i18n'
+
 const router = useRouter()
-const canGoBack = useCanGoBack()
 const { settings } = useSettings()
 const { locale, locales, setLocale: setNuxti18nLocale } = useI18n()
 const colorMode = useColorMode()
 const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
 const keyboardShortcutsEnabled = useKeyboardShortcuts()
+const { toggleCodeLigatures } = useCodeLigatures()
+
+// Create a computed property to handle locale binding properly
+const localeCodes = computed<LocaleObject['code'][]>(() =>
+  locales.value.map(loc => loc.code as LocaleObject['code']),
+)
+
+function isLocaleCode(value: string): value is LocaleObject['code'] {
+  return localeCodes.value.includes(value as LocaleObject['code'])
+}
+
+const currentLocale = computed<string>({
+  get: () => locale.value as string,
+  set: (newLocale: string) => {
+    if (!newLocale || !isLocaleCode(newLocale)) return
+
+    settings.value.selectedLocale = newLocale
+    setNuxti18nLocale(newLocale)
+  },
+})
 
 // Escape to go back (but not when focused on form elements or modal is open)
 onKeyStroke(
@@ -29,17 +50,6 @@ useSeoMeta({
   ogDescription: () => $t('settings.meta_description'),
   twitterDescription: () => $t('settings.meta_description'),
 })
-
-defineOgImageComponent('Default', {
-  title: () => $t('settings.title'),
-  description: () => $t('settings.tagline'),
-  primaryColor: '#60a5fa',
-})
-
-const setLocale: typeof setNuxti18nLocale = locale => {
-  settings.value.selectedLocale = locale
-  return setNuxti18nLocale(locale)
-}
 </script>
 
 <template>
@@ -51,15 +61,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
           <h1 class="font-mono text-3xl sm:text-4xl font-medium">
             {{ $t('settings.title') }}
           </h1>
-          <button
-            type="button"
-            class="cursor-pointer inline-flex items-center gap-2 p-1.5 -mx-1.5 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
-            @click="router.back()"
-            v-if="canGoBack"
-          >
-            <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
-            <span class="sr-only sm:not-sr-only">{{ $t('nav.back') }}</span>
-          </button>
+          <BackButton />
         </div>
         <p class="text-fg-muted text-lg">
           {{ $t('settings.tagline') }}
@@ -96,7 +98,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
             <!-- Accent colors -->
             <div class="space-y-3">
               <span class="block text-sm text-fg font-medium">
-                {{ $t('settings.accent_colors') }}
+                {{ $t('settings.accent_colors.label') }}
               </span>
               <SettingsAccentColorPicker />
             </div>
@@ -104,7 +106,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
             <!-- Background themes -->
             <div class="space-y-3">
               <span class="block text-sm text-fg font-medium">
-                {{ $t('settings.background_themes') }}
+                {{ $t('settings.background_themes.label') }}
               </span>
               <SettingsBgThemePicker />
             </div>
@@ -141,6 +143,26 @@ const setLocale: typeof setNuxti18nLocale = locale => {
               :label="$t('settings.hide_platform_packages')"
               :description="$t('settings.hide_platform_packages_description')"
               v-model="settings.hidePlatformPackages"
+            />
+
+            <!-- Divider -->
+            <div class="border-t border-border my-4" />
+
+            <!-- Enable weekly download graph pulse looping animation -->
+            <SettingsToggle
+              :label="$t('settings.enable_graph_pulse_loop')"
+              :description="$t('settings.enable_graph_pulse_loop_description')"
+              v-model="settings.enableGraphPulseLooping"
+            />
+
+            <!-- Divider -->
+            <div class="border-t border-border my-4" />
+
+            <!-- Code ligatures toggle -->
+            <SettingsToggle
+              :label="$t('settings.enable_code_ligatures')"
+              :modelValue="settings.codeLigatures"
+              @update:modelValue="() => toggleCodeLigatures()"
             />
           </div>
         </section>
@@ -232,8 +254,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
                 <SelectField
                   id="language-select"
                   :items="locales.map(loc => ({ label: loc.name ?? '', value: loc.code }))"
-                  v-model="locale"
-                  @update:modelValue="setLocale($event as typeof locale)"
+                  v-model="currentLocale"
                   block
                   size="sm"
                   class="max-w-48"
@@ -261,15 +282,24 @@ const setLocale: typeof setNuxti18nLocale = locale => {
             <!-- Simple help link for source locale -->
             <template v-else>
               <a
-                href="https://i18n.npmx.dev/"
+                href="https://github.com/npmx-dev/npmx.dev/tree/main/i18n/locales"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="inline-flex items-center gap-2 text-sm text-fg-muted hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
               >
-                <span class="i-lucide:languages w-4 h-4" aria-hidden="true" />
+                <span class="i-simple-icons:github w-4 h-4" aria-hidden="true" />
                 {{ $t('settings.help_translate') }}
               </a>
             </template>
+            <div>
+              <LinkBase
+                :to="{ name: 'translation-status' }"
+                class="font-sans text-fg-muted text-sm"
+              >
+                <span class="i-lucide:languages w-4 h-4" aria-hidden="true" />
+                {{ $t('settings.translation_status') }}
+              </LinkBase>
+            </div>
           </div>
         </section>
 

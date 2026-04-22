@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { FacetValue } from '#shared/types'
-
 const props = defineProps<{
   /** Facet label */
   label: string

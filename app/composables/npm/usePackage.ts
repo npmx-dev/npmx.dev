@@ -1,13 +1,3 @@
-import type {
-  Packument,
-  SlimPackument,
-  SlimVersion,
-  SlimPackumentVersion,
-  PackumentVersion,
-  PublishTrustLevel,
-} from '#shared/types'
-import { extractInstallScriptsInfo } from '~/utils/install-scripts'
-
 /** Number of recent versions to include in initial payload */
 const RECENT_VERSIONS_COUNT = 5
 
@@ -47,7 +37,7 @@ export function transformPackument(
       const timeA = pkg.time[a]
       const timeB = pkg.time[b]
       if (!timeA || !timeB) return 0
-      return new Date(timeB).getTime() - new Date(timeA).getTime()
+      return Date.parse(timeB) - Date.parse(timeA)
     })
     .slice(0, RECENT_VERSIONS_COUNT)
 
@@ -96,12 +86,20 @@ export function transformPackument(
       const trustLevel = getTrustLevel(version)
       const hasProvenance = trustLevel !== 'none'
 
+      // Normalize license: some versions use { type: "MIT" } instead of "MIT"
+      let versionLicense = version.license
+      if (versionLicense && typeof versionLicense === 'object' && 'type' in versionLicense) {
+        versionLicense = (versionLicense as { type: string }).type
+      }
+
       filteredVersions[v] = {
         hasProvenance,
         trustLevel,
         version: version.version,
         deprecated: version.deprecated,
         tags: version.tags as string[],
+        license: typeof versionLicense === 'string' ? versionLicense : undefined,
+        type: typeof version.type === 'string' ? version.type : undefined,
       }
     }
   }

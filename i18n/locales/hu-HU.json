@@ -77,6 +77,10 @@
     "links": "Linkek",
     "tap_to_search": "Koppints a kereséshez"
   },
+  "blog": {
+    "author": {},
+    "atproto": {}
+  },
   "settings": {
     "title": "beállítások",
     "tagline": "szabd személyre az npmx élményed",
@@ -107,10 +111,14 @@
     "theme_system": "Rendszer",
     "language": "Nyelv",
     "help_translate": "Segíts lefordítani az npmx-et",
-    "accent_colors": "Akcentus színek",
+    "accent_colors": {
+      "label": "Akcentus színek"
+    },
     "clear_accent": "Akcentus szín törlése",
     "translation_progress": "Fordítás állapota",
-    "background_themes": "Háttér árnyalata",
+    "background_themes": {
+      "label": "Háttér árnyalata"
+    },
     "keyboard_shortcuts_enabled": "Billentyűzet parancsikonok engedélyezése",
     "keyboard_shortcuts_enabled_description": "A billentyűzet parancsikonok letilthatók, ha ütköznek más böngésző vagy rendszer parancsikonokkal"
   },
@@ -122,6 +130,7 @@
     "edit_on_github": "Szerkesztés GitHub-on",
     "view_guide": "Fordítási útmutató"
   },
+  "error": {},
   "common": {
     "loading": "Betöltés...",
     "loading_more": "Továbbiak betöltése...",
@@ -136,7 +145,6 @@
     "skip_link": "Ugrás a fő tartalomra",
     "warnings": "Figyelmeztetések:",
     "go_back_home": "Vissza a főoldalra",
-    "view_on_npm": "megtekintés npm-en",
     "per_week": "/ hét",
     "vanity_downloads_hint": "Vanity szám: nincsenek csomagok megjelenítve | Vanity szám: a megjelenített csomagra | Vanity szám: {count} megjelenített csomag összege",
     "sort": {
@@ -148,7 +156,11 @@
     "cancel": "Mégse",
     "save": "Mentés",
     "edit": "Szerkesztés",
-    "error": "Hiba"
+    "error": "Hiba",
+    "view_on": {
+      "npm": "megtekintés npm-en",
+      "github": "Megtekintés GitHubon"
+    }
   },
   "profile": {
     "display_name": "Megjelenítési név",
@@ -171,12 +183,9 @@
     "not_found": "Csomag Nem Található",
     "not_found_message": "A csomag nem található.",
     "no_description": "Nincs leírás",
-    "not_latest": "(nem a legfrissebb)",
     "verified_provenance": "Hitelesített eredet",
-    "view_permalink": "Verzió permalinkjének megtekintése",
     "navigation": "Csomag",
     "copy_name": "Csomagnév másolása",
-    "copy_version": "Csomag verziójának másolása",
     "deprecation": {
       "package": "Ez a csomag elavult (deprecated).",
       "version": "Ez a verzió elavult (deprecated).",
@@ -197,7 +206,6 @@
       "none": "Ez a csomag feleslegesnek lett jelölve, a funkció valószínűleg natívan elérhető.",
       "learn_more": "Tudj meg többet",
       "learn_more_above": "Tudj meg többet fentebb.",
-      "mdn": "MDN",
       "community": "közösség",
       "consider_no_dep": "+ Fontold meg a függőség nélkülözést?"
     },
@@ -270,7 +278,6 @@
     "readme": {
       "title": "Readme",
       "no_readme": "Nincs elérhető README.",
-      "view_on_github": "Megtekintés GitHubon",
       "toc_title": "Témakörök",
       "callout": {
         "note": "Megjegyzés",
@@ -335,7 +342,6 @@
       "grouping_versions_only_recent": "Csak a közelmúltbeli",
       "grouping_usage_title": "Használat",
       "grouping_usage_all": "Összes",
-      "grouping_usage_low": "Alacsony",
       "recent_versions_only_tooltip": "Csak az elmúlt év során közzétett verziókat mutasd meg.",
       "show_low_usage_tooltip": "Tartalmazzon olyan verziós csoportokat az összes letöltés 1%-ánál kevesebb.",
       "y_axis_label": "Letöltések",
@@ -528,7 +534,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -708,12 +715,10 @@
   "code": {
     "files_label": "Fájlok",
     "no_files": "Nincsenek fájlok ebben a könyvtárban",
-    "root": "gyökér",
     "lines": "{count} sor | {count} sor",
     "toggle_tree": "Fájlfa kapcsolása",
     "close_tree": "Fájlfa bezárása",
     "copy_link": "Link másolása",
-    "raw": "Nyers",
     "view_raw": "Nyers fájl megtekintése",
     "file_too_large": "A fájl túl nagy az előnézethez",
     "file_size_warning": "{size} meghaladja az 500KB-os limitet a szintaxis alapú formázáshoz",
@@ -732,8 +737,7 @@
       "preview": "előnézet",
       "code": "kód"
     },
-    "file_path": "Fájl elérési útja",
-    "scroll_to_top": "Görgetés a tetejére"
+    "file_path": "Fájl elérési útja"
   },
   "badges": {
     "provenance": {
@@ -806,11 +810,7 @@
       "downloads_month": "Letöltés/hó",
       "downloads_year": "Letöltés/év",
       "published": "Utoljára közzétéve",
-      "name": "Név",
-      "quality": "Minőség",
-      "popularity": "Népszerűség",
-      "maintenance": "Karbantartás",
-      "score": "Pontszám"
+      "name": "Név"
     },
     "columns": {
       "title": "Oszlopok",
@@ -824,10 +824,6 @@
       "published": "Utoljára közzétéve",
       "maintainers": "Karbantartók",
       "keywords": "Kulcsszavak",
-      "quality_score": "Minőség pontszám",
-      "popularity_score": "Népszerűség pontszám",
-      "maintenance_score": "Karbantartás pontszám",
-      "combined_score": "Összesített pontszám",
       "security": "Biztonság"
     },
     "view_mode": {
@@ -841,7 +837,7 @@
       "paginated": "Lapozható",
       "items_per_page": "Elem per oldal",
       "per_page": "{count} / oldal",
-      "showing": "{start}-{end} / {total}",
+      "showing": "{range} / {total}",
       "previous": "Előző oldal",
       "next": "Következő oldal",
       "nav_label": "Lapozás"
@@ -917,6 +913,7 @@
         "description": "Chat, kérdések és ötletelés.",
         "cta": "Csatlakozás a Discord-hoz"
       },
+      "builders": {},
       "follow": {
         "title": "Maradj naprakész",
         "description": "Értesülj a legújabb npmx hírekről.",
@@ -1008,14 +1005,11 @@
       "add_column": "Nincs függőség oszlop hozzáadása az összehasonlításhoz"
     },
     "facets": {
-      "group_label": "Összehasonlítási aspektusok",
       "all": "összes",
       "none": "nincs",
       "coming_soon": "Hamarosan",
       "select_all": "Az összes aspektus kiválasztása",
       "deselect_all": "Az összes aspektus kijelölésének törlése",
-      "select_category": "Az összes {category} aspektus kiválasztása",
-      "deselect_category": "Az összes {category} aspektus kijelölésének törlése",
       "binary_only_tooltip": "Ez a csomag binárisokat mutat ki és nincsenek exportok",
       "categories": {
         "performance": "Teljesítmény",
@@ -1098,6 +1092,7 @@
     "file_too_large": "A fájl túl nagy az összehasonlításhoz",
     "file_size_warning": "{size} meghaladja a 250KB-os limitet az összehasonlításhoz",
     "compare_versions": "diff",
+    "version_invalid_url_format": {},
     "summary": "Összegzés",
     "deps_count": "{count} függ",
     "dependencies": "Függőségek",
@@ -1124,6 +1119,11 @@
     "select_file_prompt": "Válassz egy fájlt az oldalsávból a diff megtekintéséhez",
     "close_files_panel": "Fájlok panel bezárása",
     "filter_files_label": "Fájlok szűrése módosítás típusa szerint"
+  },
+  "pds": {
+    "join": {},
+    "server": {},
+    "community": {}
   },
   "privacy_policy": {
     "title": "adatvédelmi nyilatkozat",
@@ -1234,5 +1234,9 @@
       "p1": "Ha akadálymentességi problémákat tapasztalsz a(z) {app} -on, kérjük, közölj velünk egy kérdés megnyitásával a(z) {link} -ben. Komolyan vesszük ezeket a jelentéseket, és mindent megteszünk a megoldásukért.",
       "link": "GitHub tárhelyen"
     }
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

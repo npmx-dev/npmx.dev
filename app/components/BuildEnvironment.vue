@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { BuildInfo } from '#shared/types'
-
 const { footer = false, buildInfo: buildInfoProp } = defineProps<{
   footer?: boolean
   buildInfo?: BuildInfo

@@ -35,18 +35,26 @@ interface CachedPayload {
   buildId: string
 }
 
+/**
+ * Get the route path from a _payload.json URL.
+ * e.g. "/package/vue/v/3.4.0/_payload.json?abc123" → "/package/vue/v/3.4.0"
+ */
+function getRouteFromPayloadUrl(url: string): string {
+  const withoutQuery = url.replace(/\?.*$/, '')
+  return withoutQuery.substring(0, withoutQuery.lastIndexOf('/')) || '/'
+}
+
+/**
+ * Check if a route has ISR or cache rules enabled.
+ */
+function isISRRoute(event: H3Event): boolean {
+  const rules = getRouteRules(event)
+  return !!(rules.isr || rules.cache)
+}
+
 export default defineNitroPlugin(nitroApp => {
   const storage = useStorage(PAYLOAD_CACHE_STORAGE_KEY)
   const buildId = useRuntimeConfig().app.buildId as string
-
-  /**
-   * Get the route path from a _payload.json URL.
-   * e.g. "/package/vue/v/3.4.0/_payload.json?abc123" → "/package/vue/v/3.4.0"
-   */
-  function getRouteFromPayloadUrl(url: string): string {
-    const withoutQuery = url.replace(/\?.*$/, '')
-    return withoutQuery.substring(0, withoutQuery.lastIndexOf('/')) || '/'
-  }
 
   /**
    * Generate a cache key for a route path.
@@ -54,14 +62,6 @@ export default defineNitroPlugin(nitroApp => {
    */
   function getCacheKey(routePath: string): string {
     return `${buildId}:${routePath}`
-  }
-
-  /**
-   * Check if a route has ISR or cache rules enabled.
-   */
-  function isISRRoute(event: H3Event): boolean {
-    const rules = getRouteRules(event)
-    return !!(rules.isr || rules.cache)
   }
 
   // -------------------------------------------------------------------------

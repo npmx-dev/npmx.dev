@@ -49,13 +49,12 @@ function buildSprite(
   let symbols = ''
   Object.entries(grouped).forEach(([prefix, iconNames]) => {
     const collection = collections[prefix]
-
     if (!collection?.icons) return
 
     const defaultWidth = collection.width ?? 16
     const defaultHeight = collection.height ?? 16
 
-    iconNames.forEach(name => {
+    new Set(iconNames).forEach(name => {
       const icon = collection.icons[name]
 
       if (!icon?.body) return
@@ -70,30 +69,23 @@ function buildSprite(
   return `<svg xmlns="http://www.w3.org/2000/svg" style="display:none">${symbols}</svg>\n`
 }
 
-async function main() {
-  const collections = await loadCollections()
-  const iconNames = [
-    ...Object.values(EXTENSION_ICONS),
-    ...Object.values(FILENAME_ICONS),
-    ...Object.values(COMPOUND_EXTENSIONS),
-    ...Object.values(ADDITIONAL_ICONS),
-    DEFAULT_ICON,
-  ]
-  const grouped = groupByCollection(iconNames)
-  const sprite = buildSprite(grouped, collections)
-  await Promise.all([
-    fs.mkdir(path.dirname(outputDevPath), { recursive: true }),
-    fs.mkdir(path.dirname(outputStagePath), { recursive: true }),
-    fs.mkdir(path.dirname(outputProdPath), { recursive: true }),
-  ])
-  await Promise.all([
-    fs.writeFile(outputDevPath, sprite, 'utf8'),
-    fs.writeFile(outputStagePath, sprite, 'utf8'),
-    fs.writeFile(outputProdPath, sprite, 'utf8'),
-  ])
-}
-
-main().catch(error => {
-  console.error(error)
-  process.exitCode = 1
-})
+const collections = await loadCollections()
+const iconNames = [
+  ...Object.values(EXTENSION_ICONS),
+  ...Object.values(FILENAME_ICONS),
+  ...Object.values(COMPOUND_EXTENSIONS),
+  ...Object.values(ADDITIONAL_ICONS),
+  DEFAULT_ICON,
+]
+const grouped = groupByCollection(iconNames)
+const sprite = buildSprite(grouped, collections)
+await Promise.all([
+  fs.mkdir(path.dirname(outputDevPath), { recursive: true }),
+  fs.mkdir(path.dirname(outputStagePath), { recursive: true }),
+  fs.mkdir(path.dirname(outputProdPath), { recursive: true }),
+])
+await Promise.all([
+  fs.writeFile(outputDevPath, sprite, 'utf8'),
+  fs.writeFile(outputStagePath, sprite, 'utf8'),
+  fs.writeFile(outputProdPath, sprite, 'utf8'),
+])

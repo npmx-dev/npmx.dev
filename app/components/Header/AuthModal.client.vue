@@ -112,7 +112,6 @@ watch(user, async newUser => {
             :placeholder="$t('auth.modal.handle_placeholder')"
             no-correct
             class="w-full"
-            size="medium"
           />
           <p v-if="errorMessage" class="text-red-500 text-xs mt-1" role="alert">
             {{ errorMessage }}

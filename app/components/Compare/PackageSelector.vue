@@ -8,7 +8,7 @@ const props = defineProps<{
   max?: number
 }>()
 
-const maxPackages = computed(() => props.max ?? 4)
+const maxPackages = computed(() => props.max ?? MAX_PACKAGE_SELECTION)
 
 // Input state
 const inputValue = shallowRef('')
@@ -213,7 +213,7 @@ onClickOutside(containerRef, () => {
           {{ pkg }}
         </LinkBase>
         <ButtonBase
-          size="small"
+          size="sm"
           :aria-label="
             $t('compare.selector.remove_package', {
               package: pkg === NO_DEPENDENCY_ID ? $t('compare.no_dependency.label') : pkg,
@@ -246,7 +246,6 @@ onClickOutside(containerRef, () => {
               : $t('compare.selector.search_add')
           "
           no-correct
-          size="medium"
           class="w-full min-w-25 ps-7"
           aria-autocomplete="list"
           ref="inputRef"
@@ -272,7 +271,7 @@ onClickOutside(containerRef, () => {
           <ButtonBase
             v-if="showNoDependencyOption"
             data-navigable
-            class="block w-full text-start"
+            class="block w-full text-start !border-transparent"
             :class="highlightedIndex === 0 ? '!bg-accent/15' : ''"
             :aria-label="$t('compare.no_dependency.add_column')"
             @mouseenter="highlightedIndex = 0"
@@ -297,7 +296,7 @@ onClickOutside(containerRef, () => {
             v-for="(result, index) in filteredResults"
             :key="result.name"
             data-navigable
-            class="block w-full text-start my-0.5"
+            class="block w-full text-start my-0.5 !border-transparent"
             :class="highlightedIndex === index + resultIndexOffset ? '!bg-accent/15' : ''"
             @mouseenter="highlightedIndex = index + resultIndexOffset"
             @click="addPackage(result.name)"

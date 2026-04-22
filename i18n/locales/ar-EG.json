@@ -1,3 +1,441 @@
 {
-  "$schema": "../schema.json"
+  "$schema": "../schema.json",
+  "footer": {
+    "blog": "المدونة",
+    "builders_chat": "محادثة المطورين",
+    "brand": "العلامة التجارية"
+  },
+  "shortcuts": {
+    "disable_shortcuts": "يمكنك تعطيل اختصارات لوحة المفاتيح من {settings}.",
+    "open_main": "فتح المعلومات الرئيسية",
+    "open_diff": "فتح مقارنة الإصدارات"
+  },
+  "search": {
+    "instant_search": "البحث الفوري",
+    "instant_search_on": "مفعّل",
+    "instant_search_off": "معطّل",
+    "instant_search_turn_on": "تفعيل",
+    "instant_search_turn_off": "تعطيل",
+    "instant_search_advisory": "{label} {state} — {action}"
+  },
+  "blog": {
+    "title": "المدونة",
+    "heading": "المدونة",
+    "meta_description": "أخبار وتحديثات من مجتمع npmx",
+    "author": {
+      "view_profile": "عرض الملف الشخصي"
+    },
+    "draft_badge": "مسودة",
+    "draft_banner": "هذا المقال مسودة وغير متاح للعموم بعد",
+    "no_posts": "لا توجد مقالات بعد",
+    "atproto": {
+      "view_on_bluesky": "عرض على Bluesky",
+      "reply_on_bluesky": "الرد على Bluesky",
+      "likes_on_bluesky": "{count} إعجاب على Bluesky",
+      "like_or_reply_on_bluesky": "أعجبني أو ردّ على Bluesky",
+      "no_comments_yet": "لا توجد تعليقات بعد",
+      "could_not_load_comments": "تعذّر تحميل التعليقات",
+      "comments": "التعليقات",
+      "loading_comments": "جاري تحميل التعليقات…",
+      "updating": "جاري التحديث…",
+      "reply_count": "{count} ردود | ردّ واحد | ردّان | {count} ردود | {count} ردًّا | {count} ردود",
+      "like_count": "{count} إعجاب | إعجاب واحد | إعجابان | {count} إعجابات | {count} إعجابًا | {count} إعجاب",
+      "repost_count": "{count} إعادة نشر | إعادة نشر واحدة | إعادتا نشر | {count} إعادات نشر | {count} إعادة نشر | {count} إعادة نشر",
+      "more_replies": "المزيد من الردود"
+    }
+  },
+  "settings": {
+    "sections": {
+      "keyboard_shortcuts": "اختصارات لوحة المفاتيح"
+    },
+    "instant_search": "البحث الفوري",
+    "instant_search_description": "ينتقل إلى صفحة البحث ويحدّث النتائج تلقائيًا أثناء الكتابة.",
+    "enable_graph_pulse_loop": "تفعيل حلقة نبض الرسم البياني",
+    "enable_graph_pulse_loop_description": "تشغيل تأثير نبض متكرر على الرسوم البيانية",
+    "translation_status": "حالة الترجمة",
+    "accent_colors": {
+      "sky": "سماوي",
+      "coral": "مرجاني",
+      "amber": "كهرماني",
+      "emerald": "زمرّدي",
+      "violet": "بنفسجي",
+      "magenta": "قرمزي"
+    },
+    "background_themes": {
+      "neutral": "محايد",
+      "stone": "حجري",
+      "zinc": "رصاصي",
+      "slate": "أردوازي",
+      "black": "أسود"
+    },
+    "keyboard_shortcuts_enabled": "تفعيل اختصارات لوحة المفاتيح",
+    "keyboard_shortcuts_enabled_description": "يمكن تعطيل الاختصارات إذا تعارضت مع اختصارات المتصفح أو النظام"
+  },
+  "error": {
+    "401": "غير مصرح",
+    "404": "الصفحة غير موجودة",
+    "500": "خطأ داخلي في الخادم",
+    "503": "الخدمة غير متاحة",
+    "default": "حدث خطأ ما"
+  },
+  "common": {
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "edit": "تعديل",
+    "error": "خطأ",
+    "view_on": {
+      "gitlab": "عرض على GitLab",
+      "bitbucket": "عرض على Bitbucket",
+      "codeberg": "عرض على Codeberg",
+      "git_repo": "عرض على مستودع Git",
+      "forgejo": "عرض على Forgejo",
+      "gitea": "عرض على Gitea",
+      "gitee": "عرض على Gitee",
+      "radicle": "عرض على Radicle",
+      "sourcehut": "عرض على SourceHut",
+      "tangled": "عرض على Tangled"
+    },
+    "collapse": "طيّ",
+    "expand": "توسيع"
+  },
+  "profile": {
+    "display_name": "الاسم المعروض",
+    "description": "الوصف",
+    "no_description": "لا يوجد وصف",
+    "website": "الموقع الإلكتروني",
+    "website_placeholder": "https://example.com",
+    "likes": "الإعجابات",
+    "seo_title": "ملف {name} الشخصي على npmx",
+    "seo_description": "استعرض ملف {name} الشخصي والحزم التي أعجبته على npmx",
+    "not_found": "الملف الشخصي غير موجود",
+    "not_found_message": "لم نتمكن من إيجاد هذا الملف الشخصي",
+    "invite": {
+      "message": "انضم إليّ على npmx",
+      "share_button": "دعوة صديق",
+      "compose_text": "جرّب npmx، المتصفح السريع لحزم npm!"
+    }
+  },
+  "package": {
+    "size_increase": {
+      "title_size": "زيادة ملحوظة في الحجم منذ الإصدار v{version}",
+      "title_deps": "زيادة ملحوظة في عدد التبعيات منذ الإصدار v{version}",
+      "title_both": "زيادة ملحوظة في الحجم والتبعيات منذ الإصدار v{version}",
+      "size": "زاد حجم التثبيت بمقدار {percent} ({size} إضافية)",
+      "deps": "زاد عدد التبعيات بمقدار {count}"
+    },
+    "skills": {
+      "skills_cli": "مهارات CLI"
+    },
+    "links": {
+      "main": "الرئيسي",
+      "compare_this_package": "مقارنة هذه الحزمة"
+    },
+    "docs": {
+      "contents": "المحتويات",
+      "default_not_available": "التوثيق الافتراضي غير متاح",
+      "page_title": "توثيق API — npmx",
+      "page_title_name": "توثيق {name} — npmx",
+      "page_title_version": "توثيق {name} — npmx",
+      "og_title": "توثيق {name}",
+      "view_package": "عرض الحزمة"
+    },
+    "card": {
+      "select": "تحديد",
+      "select_maximum": "وصلت للحد الأقصى من التحديدات"
+    },
+    "versions": {
+      "view_all_versions": "عرض جميع الإصدارات | عرض الإصدار | عرض الإصدارين | عرض {count} إصدارات | عرض {count} إصدارًا | عرض {count} إصدار",
+      "distribution_range_date_same_year": "{from} — {to}",
+      "distribution_range_date_multiple_years": "{from} — {to}",
+      "grouping_versions_title": "تجميع الإصدارات",
+      "grouping_versions_about": "تجميع الإصدارات حسب SemVer",
+      "grouping_versions_all": "جميع الإصدارات",
+      "grouping_versions_only_recent": "الإصدارات الحديثة فقط",
+      "grouping_usage_title": "تجميع الاستخدام",
+      "grouping_usage_about": "تجميع الإصدارات حسب نسبة الاستخدام",
+      "grouping_usage_all": "جميع الإصدارات",
+      "grouping_usage_most_used": "الأكثر استخدامًا",
+      "copy_alt": {
+        "per_version_analysis": "تحليل لكل إصدار",
+        "general_description": "وصف عام للإصدارات"
+      },
+      "page_title": "إصدارات {name} — npmx",
+      "current_tags": "الوسوم الحالية",
+      "no_match_filter": "لا توجد إصدارات مطابقة"
+    },
+    "dependencies": {
+      "vulnerabilities_count": "{count} ثغرات | ثغرة أمنية واحدة | ثغرتان أمنيتان | {count} ثغرات أمنية | {count} ثغرة أمنية | {count} ثغرات أمنية"
+    },
+    "maintainers": {
+      "maintainer_template": "المشرف {name}"
+    },
+    "trends": {
+      "chart_assistive_text": {
+        "keyboard_navigation_horizontal": "استخدم مفاتيح الأسهم اليمين واليسار للتنقل أفقيًا",
+        "keyboard_navigation_vertical": "استخدم مفاتيح الأسهم للأعلى والأسفل للتنقل عموديًا",
+        "table_available": "الجدول متاح للقراءة",
+        "table_caption": "بيانات الاتجاهات"
+      },
+      "chart_view_toggle": "تبديل عرض الرسم البياني",
+      "chart_view_combined": "عرض مدمج",
+      "chart_view_split": "عرض مقسّم",
+      "toggle_stack_mode": "تبديل وضع التكديس",
+      "open_options": "فتح الخيارات",
+      "close_options": "إغلاق الخيارات",
+      "data_correction": "تصحيح البيانات",
+      "average_window": "نافذة المتوسط",
+      "smoothing": "التمهيد",
+      "prediction": "التنبؤ",
+      "known_anomalies": "الشذوذات المعروفة",
+      "known_anomalies_description": "الشذوذات المعروفة التي تؤثر على دقة البيانات",
+      "known_anomalies_ranges": "نطاقات الشذوذات",
+      "known_anomalies_range": "نطاق الشذوذ",
+      "known_anomalies_range_named": "نطاق الشذوذ: {name}",
+      "known_anomalies_none": "لا توجد شذوذات معروفة",
+      "known_anomalies_contribute": "المساهمة في توثيق الشذوذات",
+      "apply_correction": "تطبيق التصحيح",
+      "copy_alt": {
+        "trend_none": "لا يوجد اتجاه",
+        "trend_strong": "اتجاه قوي",
+        "trend_weak": "اتجاه ضعيف",
+        "trend_undefined": "اتجاه غير محدد",
+        "button_label": "نسخ النص البديل",
+        "watermark": "العلامة المائية",
+        "analysis": "التحليل",
+        "estimation": "التقدير",
+        "estimations": "التقديرات",
+        "compare": "المقارنة",
+        "single_package": "حزمة واحدة",
+        "general_description": "وصف عام",
+        "facet_bar_general_description": "وصف عام لشريط الأوجه",
+        "facet_bar_analysis": "تحليل شريط الأوجه"
+      }
+    },
+    "downloads": {
+      "subtitle": "الإصدار {version}",
+      "sparkline_nav_hint": "استخدم مفاتيح الأسهم للتنقل في الرسم البياني المصغّر"
+    },
+    "metrics": {
+      "wasm": "WebAssembly"
+    },
+    "download": {
+      "button": "تحميل",
+      "tarball": "تحميل ملف Tarball بصيغة .tar.gz"
+    }
+  },
+  "claim": {
+    "modal": {
+      "missing_permission": "لا تملك الصلاحية الكافية للقيام بهذا الإجراء"
+    }
+  },
+  "code": {
+    "binary_file": "ملف ثنائي",
+    "binary_rendering_warning": "لا يمكن عرض هذا الملف الثنائي في المتصفح"
+  },
+  "filters": {
+    "view_selected": "عرض المحدد",
+    "clear_selected_label": "مسح التحديد",
+    "columns": {
+      "selection": "التحديد"
+    }
+  },
+  "about": {
+    "sponsors": {
+      "title": "الرعاة"
+    },
+    "oss_partners": {
+      "title": "شركاء المصادر المفتوحة"
+    },
+    "get_involved": {
+      "builders": {
+        "title": "المطورون",
+        "description": "انضم إلى مجتمع مطوري npmx وساهم في تطوير المشروع",
+        "cta": "انضم إلى المطورين"
+      }
+    }
+  },
+  "auth": {
+    "modal": {
+      "profile": "الملف الشخصي"
+    }
+  },
+  "header": {
+    "pr": "طلب دمج"
+  },
+  "compare": {
+    "packages": {
+      "copy_as_markdown": "نسخ كـ Markdown",
+      "table_view": "عرض الجدول",
+      "charts_view": "عرض الرسوم البيانية",
+      "no_chartable_data": "لا توجد بيانات قابلة للرسم",
+      "bar_chart_nav_hint": "استخدم مفاتيح الأسهم للتنقل في الرسم البياني الشريطي",
+      "line_chart_nav_hint": "استخدم مفاتيح الأسهم للتنقل في الرسم البياني الخطي"
+    },
+    "facets": {
+      "select_all_category_facets": "تحديد جميع أوجه الفئة",
+      "deselect_all_category_facets": "إلغاء تحديد جميع أوجه الفئة",
+      "selected_all_category_facets": "تم تحديد جميع أوجه الفئة",
+      "deselected_all_category_facets": "تم إلغاء تحديد جميع أوجه الفئة"
+    },
+    "file_changes": "تغييرات الملفات",
+    "files_count": "{count} ملفات | ملف واحد | ملفان | {count} ملفات | {count} ملفًا | {count} ملف",
+    "lines_hidden": "{count} أسطر مخفية | سطر مخفي واحد | سطران مخفيان | {count} أسطر مخفية | {count} سطرًا مخفيًا | {count} سطر مخفي",
+    "file_too_large": "الملف كبير جدًا للعرض",
+    "file_size_warning": "تحذير: حجم هذا الملف كبير",
+    "compare_versions": "مقارنة الإصدارات",
+    "compare_versions_title": "مقارنة الإصدارات",
+    "comparing_versions_label": "مقارنة {from} بـ {to}",
+    "version_back_to_package": "العودة إلى الحزمة",
+    "version_error_message": "حدث خطأ أثناء تحميل المقارنة",
+    "version_invalid_url_format": {
+      "hint": "تلميح: تحقق من صحة تنسيق الرابط",
+      "from_version": "الإصدار الأول",
+      "to_version": "الإصدار الثاني"
+    },
+    "version_selector_title": "اختيار الإصدار",
+    "summary": "الملخص",
+    "deps_count": "{count} تبعيات | تبعية واحدة | تبعيتان | {count} تبعيات | {count} تبعية | {count} تبعيات",
+    "dependencies": "التبعيات",
+    "dev_dependencies": "تبعيات التطوير",
+    "peer_dependencies": "التبعيات المشتركة",
+    "optional_dependencies": "التبعيات الاختيارية",
+    "no_dependency_changes": "لا توجد تغييرات في التبعيات",
+    "file_filter_option": {
+      "all": "الكل",
+      "added": "مضاف",
+      "removed": "محذوف",
+      "modified": "معدّل"
+    },
+    "search_files_placeholder": "ابحث في الملفات…",
+    "no_files_all": "لا توجد ملفات",
+    "no_files_search": "لا توجد نتائج للبحث",
+    "no_files_filtered": "لا توجد ملفات تطابق الفلتر",
+    "filter": {
+      "added": "مضاف",
+      "removed": "محذوف",
+      "modified": "معدّل"
+    },
+    "files_button": "الملفات",
+    "select_file_prompt": "اختر ملفًا لعرض الاختلافات",
+    "close_files_panel": "إغلاق لوحة الملفات",
+    "filter_files_label": "تصفية الملفات",
+    "change_ratio": "نسبة التغيير",
+    "char_edits": "تعديلات الأحرف",
+    "diff_distance": "مسافة الاختلاف",
+    "loading_diff": "جاري تحميل الاختلافات…",
+    "loading_diff_error": "خطأ في تحميل الاختلافات",
+    "merge_modified_lines": "دمج الأسطر المعدّلة",
+    "no_content_changes": "لا توجد تغييرات في المحتوى",
+    "options": "الخيارات",
+    "view_file": "عرض الملف",
+    "view_in_code_browser": "عرض في متصفح الكود",
+    "word_wrap": "التفاف الكلمات"
+  },
+  "pds": {
+    "title": "npmx.social",
+    "meta_description": "خادم البيانات الشخصية لـ npmx على بروتوكول AT",
+    "join": {
+      "title": "انضم إلى المجتمع",
+      "description": "انضم إلى خادم PDS الخاص بـ npmx على بروتوكول AT",
+      "migrate": "الانتقال إلى هذا الخادم"
+    },
+    "server": {
+      "title": "معلومات الخادم",
+      "location_label": "الموقع",
+      "location_value": "متعدد المناطق",
+      "infrastructure_label": "البنية التحتية",
+      "infrastructure_value": "سحابية",
+      "privacy_label": "الخصوصية",
+      "privacy_value": "سياسة الخصوصية",
+      "learn_more": "معرفة المزيد"
+    },
+    "community": {
+      "title": "المجتمع",
+      "description": "أعضاء مجتمع npmx",
+      "loading": "جاري التحميل…",
+      "error": "خطأ في تحميل بيانات المجتمع",
+      "empty": "لا يوجد أعضاء بعد",
+      "view_profile": "عرض الملف الشخصي",
+      "new_accounts": "حسابات جديدة"
+    }
+  },
+  "translation_status": {
+    "title": "حالة الترجمة",
+    "generated_at": "تم الإنشاء في {date}",
+    "welcome": "مرحبًا بك",
+    "p1": "يستخدم npmx الإنجليزية الأمريكية كلغة أساسية.",
+    "p1_lang": "{lang}",
+    "p1_count": "{count} مفتاح",
+    "p2": "نرحّب بمساهماتك في الترجمة.",
+    "guide": "دليل الترجمة",
+    "by_locale": "التقدم حسب اللغة",
+    "by_file": "التقدم حسب الملف",
+    "complete_text": "مكتمل",
+    "missing_text": "مفقود",
+    "missing_keys": "المفاتيح المفقودة",
+    "progress_label": "نسبة الاكتمال",
+    "table": {
+      "file": "الملف",
+      "status": "الحالة",
+      "error": "خطأ",
+      "empty": "لا توجد بيانات",
+      "file_link": "رابط الملف"
+    }
+  },
+  "action_bar": {
+    "title": "شريط الإجراءات",
+    "selection": "غير محدد | محدد واحد | محددان | {count} محددات | {count} محددًا | {count} محدد",
+    "shortcut": "الاختصار",
+    "button_close_aria_label": "إغلاق شريط الإجراءات"
+  },
+  "logo_menu": {
+    "copy_svg": "نسخ الشعار بصيغة SVG",
+    "copied": "تم النسخ!",
+    "browse_brand": "تصفح العلامة التجارية"
+  },
+  "brand": {
+    "title": "العلامة التجارية",
+    "heading": "العلامة التجارية",
+    "meta_description": "موارد وإرشادات العلامة التجارية لـ npmx",
+    "intro": "مرحبًا بك في صفحة موارد العلامة التجارية لـ npmx",
+    "logos": {
+      "title": "الشعارات",
+      "description": "تحميل شعارات npmx الرسمية",
+      "wordmark": "الشعار الكتابي",
+      "wordmark_alt": "شعار npmx الكتابي",
+      "wordmark_light_alt": "شعار npmx الكتابي الفاتح",
+      "mark": "العلامة",
+      "mark_alt": "علامة npmx",
+      "mark_light_alt": "علامة npmx الفاتحة",
+      "on_dark": "على خلفية داكنة",
+      "on_light": "على خلفية فاتحة",
+      "download_svg": "تحميل SVG",
+      "download_png": "تحميل PNG",
+      "download_svg_aria": "تحميل {name} بصيغة SVG",
+      "download_png_aria": "تحميل {name} بصيغة PNG"
+    },
+    "customize": {
+      "title": "التخصيص",
+      "description": "خصّص مظهر الشعار",
+      "accent_label": "لون التمييز",
+      "bg_label": "لون الخلفية",
+      "download_svg_aria": "تحميل الشعار المخصص بصيغة SVG",
+      "download_png_aria": "تحميل الشعار المخصص بصيغة PNG"
+    },
+    "typography": {
+      "title": "الخطوط",
+      "description": "الخطوط المستخدمة في npmx",
+      "sans": "Sans",
+      "sans_desc": "خط المحتوى الرئيسي",
+      "mono": "Mono",
+      "mono_desc": "خط الكود البرمجي",
+      "pangram": "جملة تحتوي جميع الأحرف",
+      "numbers": "الأرقام"
+    },
+    "guidelines": {
+      "title": "إرشادات العلامة التجارية",
+      "message": "للاستخدام التجاري، يرجى التواصل معنا.",
+      "discord_link_text": "نقاش Discord"
+    }
+  }
 }

@@ -8,8 +8,6 @@ async function search() {
   startSearch()
 }
 
-const { env } = useAppConfig().buildInfo
-
 useSeoMeta({
   title: () => $t('seo.home.title'),
   ogTitle: () => $t('seo.home.title'),
@@ -19,38 +17,16 @@ useSeoMeta({
   twitterDescription: () => $t('seo.home.description'),
 })
 
-defineOgImageComponent('Default', {
-  primaryColor: '#60a5fa',
-  title: 'npmx',
-  description: 'a fast, modern browser for the **npm registry**',
-})
+defineOgImage('Splash.takumi', {}, { alt: () => $t('seo.home.description') })
 </script>
 
 <template>
   <main>
-    <section class="container min-h-screen flex flex-col">
+    <section class="relative container min-h-[calc(100dvh-3.5rem)] flex flex-col overflow-hidden">
       <header
         class="flex-1 flex flex-col items-center justify-center text-center pt-20 pb-4 md:pb-8 lg:pb-20"
       >
-        <h1
-          dir="ltr"
-          class="relative flex items-center justify-center gap-2 header-logo font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-6 motion-safe:animate-fade-in motion-safe:animate-fill-both"
-        >
-          <AppLogo class="w-42 h-auto sm:w-58 md:w-70" />
-          <span
-            aria-hidden="true"
-            class="text-sm sm:text-base md:text-lg transform-origin-br font-mono tracking-widest text-accent absolute -bottom-4 -inset-ie-1.5"
-          >
-            {{ env === 'release' ? 'alpha' : env }}
-          </span>
-        </h1>
-
-        <p
-          class="text-fg-muted text-lg sm:text-xl max-w-xl mb-12 lg:mb-14 motion-safe:animate-slide-up motion-safe:animate-fill-both"
-          style="animation-delay: 0.1s"
-        >
-          {{ $t('tagline') }}
-        </p>
+        <LandingIntroHeader />
         <search
           class="w-full max-w-2xl motion-safe:animate-slide-up motion-safe:animate-fill-both"
           style="animation-delay: 0.2s"
@@ -71,11 +47,12 @@ defineOgImageComponent('Default', {
               />
 
               <div class="search-box relative flex items-center">
-                <span
-                  class="absolute inset-is-4 text-fg-subtle font-mono text-lg pointer-events-none transition-colors duration-200 motion-reduce:transition-none [.group:hover:not(:focus-within)_&]:text-fg/80 group-focus-within:text-accent z-1"
+                <kbd
+                  class="absolute inset-is-4 text-fg-subtle font-mono text-lg pointer-events-none transition-colors duration-200 motion-reduce:transition-none [.group:hover:not(:focus-within)_&]:text-fg/80 group-focus-within:text-accent z-1 rounded"
+                  aria-hidden="true"
                 >
                   /
-                </span>
+                </kbd>
 
                 <InputBase
                   id="home-search"
@@ -85,11 +62,12 @@ defineOgImageComponent('Default', {
                   autofocus
                   :placeholder="$t('search.placeholder')"
                   no-correct
-                  size="large"
+                  size="lg"
                   class="w-full ps-8 pe-24"
                   aria-describedby="instant-search-advisory"
                   @focus="isSearchFocused = true"
                   @blur="isSearchFocused = false"
+                  ariaKeyshortcuts="/"
                 />
 
                 <ButtonBase

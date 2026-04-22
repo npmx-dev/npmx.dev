@@ -73,6 +73,18 @@
     "instant_search_turn_off": "kapat",
     "instant_search_advisory": "{label} {state} — {action}"
   },
+  "nav": {
+    "main_navigation": "Ana",
+    "popular_packages": "Popüler paketler",
+    "settings": "ayarlar",
+    "compare": "karşılaştır",
+    "back": "geri",
+    "menu": "Menü",
+    "mobile_menu": "Navigasyon menüsü",
+    "open_menu": "Menüyü aç",
+    "links": "Bağlantılar",
+    "tap_to_search": "Aramak için dokunun"
+  },
   "blog": {
     "title": "Blog",
     "heading": "blog",
@@ -95,20 +107,8 @@
       "reply_count": "{count} yanıt",
       "like_count": "{count} beğeni",
       "repost_count": "{count} yeniden paylaşım",
-      "more_replies": "{count} yanıt daha..."
+      "more_replies": "{count} yanıt daha... | {count} yanıt daha..."
     }
-  },
-  "nav": {
-    "main_navigation": "Ana",
-    "popular_packages": "Popüler paketler",
-    "settings": "ayarlar",
-    "compare": "karşılaştır",
-    "back": "geri",
-    "menu": "Menü",
-    "mobile_menu": "Navigasyon menüsü",
-    "open_menu": "Menüyü aç",
-    "links": "Bağlantılar",
-    "tap_to_search": "Aramak için dokunun"
   },
   "settings": {
     "title": "ayarlar",
@@ -142,10 +142,14 @@
     "theme_system": "Sistem",
     "language": "Dil",
     "help_translate": "npmx'i çevirmeye yardım edin",
-    "accent_colors": "Vurgu renkleri",
+    "accent_colors": {
+      "label": "Vurgu renkleri"
+    },
     "clear_accent": "Vurgu rengini temizle",
     "translation_progress": "Çeviri ilerlemesi",
-    "background_themes": "Arka plan tonu",
+    "background_themes": {
+      "label": "Arka plan tonu"
+    },
     "keyboard_shortcuts_enabled": "Klavye kısayolları etkin",
     "keyboard_shortcuts_enabled_description": "Hızlı navigasyon için klavye kısayollarını etkinleştir"
   },
@@ -178,7 +182,6 @@
     "skip_link": "Ana içeriğe geç",
     "warnings": "Uyarılar:",
     "go_back_home": "Ana sayfaya dön",
-    "view_on_npm": "npm'de görüntüle",
     "per_week": "/ hafta",
     "vanity_downloads_hint": "Gösterge: paket gösterilmiyor | Gösterge: gösterilen paket için | Gösterge: {count} gösterilen paketin toplamı",
     "sort": {
@@ -190,7 +193,11 @@
     "cancel": "İptal",
     "save": "Kaydet",
     "edit": "Düzenle",
-    "error": "Hata"
+    "error": "Hata",
+    "view_on": {
+      "npm": "npm'de görüntüle",
+      "github": "GitHub'da görüntüle"
+    }
   },
   "profile": {
     "display_name": "Görünen ad",
@@ -213,12 +220,9 @@
     "not_found": "Paket Bulunamadı",
     "not_found_message": "Paket bulunamadı.",
     "no_description": "Açıklama verilmemiş",
-    "not_latest": "(en son değil)",
     "verified_provenance": "Doğrulanmış köken",
-    "view_permalink": "Bu sürüm için kalıcı bağlantıya bak",
     "navigation": "Paket",
     "copy_name": "Paket adını kopyala",
-    "copy_version": "Paket sürümünü kopyala",
     "deprecation": {
       "package": "Bu paket kullanımdan kaldırılmıştır.",
       "version": "Bu sürüm kullanımdan kaldırılmıştır.",
@@ -239,7 +243,6 @@
       "none": "Bu paket artık gereksiz olarak işaretlendi ve işlevselliği tüm motorlarda yerel olarak mevcuttur.",
       "learn_more": "Daha fazla bilgi",
       "learn_more_above": "Yukarıda daha fazla bilgi edinin.",
-      "mdn": "MDN",
       "community": "topluluk",
       "consider_no_dep": "+ Bağımlılıksız düşünün?"
     },
@@ -312,7 +315,6 @@
     "readme": {
       "title": "Readme",
       "no_readme": "README mevcut değil.",
-      "view_on_github": "GitHub'da görüntüle",
       "toc_title": "İçindekiler",
       "callout": {
         "note": "Not",
@@ -377,7 +379,6 @@
       "grouping_versions_only_recent": "Yalnızca son",
       "grouping_usage_title": "Kullanım",
       "grouping_usage_all": "Tümü",
-      "grouping_usage_low": "Düşük",
       "recent_versions_only_tooltip": "Yalnızca son bir yıl içinde yayınlanan sürümleri göster.",
       "show_low_usage_tooltip": "Toplam indirmelerin %1'inden azını oluşturan sürüm gruplarını dahil et.",
       "y_axis_label": "İndirmeler",
@@ -572,7 +573,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -752,12 +754,10 @@
   "code": {
     "files_label": "Dosyalar",
     "no_files": "Bu klasörde dosya yok",
-    "root": "kök",
     "lines": "{count} satır",
     "toggle_tree": "Dosya ağacını değiştir",
     "close_tree": "Dosya ağacını kapat",
     "copy_link": "Bağlantıyı kopyala",
-    "raw": "Ham",
     "view_raw": "Ham dosyayı göster",
     "file_too_large": "Dosya önizleme için çok büyük",
     "file_size_warning": "{size} sözdizimi vurgulama için 500KB limitini aşıyor",
@@ -776,8 +776,7 @@
       "preview": "önizleme",
       "code": "kod"
     },
-    "file_path": "Dosya yolu",
-    "scroll_to_top": "Yukarı dön"
+    "file_path": "Dosya yolu"
   },
   "badges": {
     "provenance": {
@@ -850,11 +849,7 @@
       "downloads_month": "Aylık indirmeler",
       "downloads_year": "Yıllık indirmeler",
       "published": "Yayınlanma tarihi",
-      "name": "Ad",
-      "quality": "Kalite",
-      "popularity": "Popülerlik",
-      "maintenance": "Bakım",
-      "score": "Skor"
+      "name": "Ad"
     },
     "columns": {
       "title": "Sütunlar",
@@ -868,10 +863,6 @@
       "published": "Yayınlandı",
       "maintainers": "Geliştiriciler",
       "keywords": "Anahtar kelimeler",
-      "quality_score": "Kalite skoru",
-      "popularity_score": "Popülerlik skoru",
-      "maintenance_score": "Bakım skoru",
-      "combined_score": "Birleşik skor",
       "security": "Güvenlik"
     },
     "view_mode": {
@@ -885,7 +876,7 @@
       "paginated": "Sayfalı",
       "items_per_page": "Sayfa başına öğe",
       "per_page": "/ sayfa",
-      "showing": "Gösteriliyor",
+      "showing": "{range} / {total} gösteriliyor",
       "previous": "Önceki",
       "next": "Sonraki",
       "nav_label": "Sayfalama navigasyonu"
@@ -961,15 +952,15 @@
         "description": "Discord'da topluluğa katılın",
         "cta": "Discord'a katıl"
       },
-      "follow": {
-        "title": "Takip edin",
-        "description": "Güncellemeler için bizi takip edin",
-        "cta": "Bluesky'da takip et"
-      },
       "builders": {
         "title": "Yapımcılar",
         "description": "Yapımcı topluluğumuza katılın ve npmx'in geleceğini şekillendirin",
         "cta": "Yapımcı sohbetine katıl"
+      },
+      "follow": {
+        "title": "Takip edin",
+        "description": "Güncellemeler için bizi takip edin",
+        "cta": "Bluesky'da takip et"
       }
     }
   },
@@ -1022,7 +1013,6 @@
     }
   },
   "compare": {
-    "compare_versions_title": "Sürümleri karşılaştır",
     "packages": {
       "title": "Paketleri Karşılaştır",
       "tagline": "npm paketlerini yan yana karşılaştırın",
@@ -1058,14 +1048,11 @@
       "add_column": "Sütun ekle"
     },
     "facets": {
-      "group_label": "Özellik grubu",
       "all": "Tümü",
       "none": "Hiçbiri",
       "coming_soon": "Yakında",
       "select_all": "Tümünü seç",
       "deselect_all": "Tümünün seçimini kaldır",
-      "select_category": "{category} kategorisini seç",
-      "deselect_category": "{category} kategorisinin seçimini kaldır",
       "binary_only_tooltip": "Yalnızca binary paketler için",
       "categories": {
         "performance": "Performans",
@@ -1147,6 +1134,8 @@
     "lines_hidden": "{count} satır gizlendi",
     "file_too_large": "Dosya çok büyük",
     "file_size_warning": "Dosya boyutu {size}",
+    "compare_versions_title": "Sürümleri karşılaştır",
+    "version_invalid_url_format": {},
     "summary": "Özet",
     "deps_count": "{count} bağımlılık",
     "dependencies": "Bağımlılıklar",
@@ -1311,5 +1300,9 @@
       "p1": "Erişilebilirlik sorunları için:",
       "link": "GitHub'da issue açın"
     }
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

@@ -9,7 +9,7 @@ import {
   drawNpmxLogoAndTaglineWatermark,
 } from '~/composables/useChartWatermark'
 import TooltipApp from '~/components/Tooltip/App.vue'
-import { copyAltTextForVersionsBarChart } from '~/utils/charts'
+import { copyAltTextForVersionsBarChart, sanitise, loadFile, applyEllipsis } from '~/utils/charts'
 
 import('vue-data-ui/style.css')
 
@@ -89,20 +89,6 @@ const compactNumberFormatter = useCompactNumberFormatter()
 // Show loading indicator immediately to maintain stable layout
 const showLoadingIndicator = computed(() => pending.value)
 
-const loadFile = (link: string, filename: string) => {
-  const a = document.createElement('a')
-  a.href = link
-  a.download = filename
-  a.click()
-  a.remove()
-}
-
-const sanitise = (value: string) =>
-  value
-    .replace(/^@/, '')
-    .replace(/[\\/:"*?<>|]/g, '-')
-    .replace(/\//g, '-')
-
 const { locale } = useI18n()
 function formatDate(date: Date) {
   return date.toLocaleString(locale.value, {
@@ -145,7 +131,7 @@ const dateRangeLabel = computed(() => {
 function buildExportFilename(extension: string): string {
   const range = dateRangeLabel.value.replaceAll(' ', '_').replaceAll(',', '')
 
-  const label = props.packageName
+  const label = applyEllipsis(props.packageName, 32)
   return `${sanitise(label ?? '')}_${range}.${extension}`
 }
 
@@ -155,7 +141,7 @@ const xyDataset = computed<VueUiXyDatasetItem[]>(() => {
 
   return [
     {
-      name: props.packageName,
+      name: applyEllipsis(props.packageName, 32),
       series: chartDataset.value.map(item => item.downloads),
       type: 'bar' as const,
       color: accent.value,
@@ -175,6 +161,15 @@ const hasMinimap = computed<boolean>(() => {
 const chartConfig = computed<VueUiXyConfig>(() => {
   return {
     theme: isDarkMode.value ? 'dark' : '',
+    a11y: {
+      translations: {
+        keyboardNavigation: $t(
+          'package.trends.chart_assistive_text.keyboard_navigation_horizontal',
+        ),
+        tableAvailable: $t('package.trends.chart_assistive_text.table_available'),
+        tableCaption: $t('package.trends.chart_assistive_text.table_caption'),
+      },
+    },
     chart: {
       title: {
         text: dateRangeLabel.value,
@@ -389,7 +384,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
               tabindex="0"
               class="i-lucide:info w-3.5 h-3.5 text-fg-subtle cursor-help shrink-0 rounded-sm"
               role="img"
-              aria-label="versions info"
+              :aria-label="$t('package.versions.grouping_versions_about')"
             />
           </TooltipApp>
         </label>
@@ -426,7 +421,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
               tabindex="0"
               class="i-lucide:info w-3.5 h-3.5 text-fg-subtle cursor-help shrink-0 rounded-sm"
               role="img"
-              aria-label="versions info"
+              :aria-label="$t('package.versions.grouping_usage_about')"
             />
           </TooltipApp>
         </label>
@@ -435,13 +430,13 @@ const chartConfig = computed<VueUiXyConfig>(() => {
             @click="showLowUsageVersions = false"
             :variant="showLowUsageVersions ? 'secondary' : 'primary'"
           >
-            {{ $t('package.versions.grouping_usage_all') }}
+            {{ $t('package.versions.grouping_usage_most_used') }}
           </ButtonBase>
           <ButtonBase
             @click="showLowUsageVersions = true"
             :variant="showLowUsageVersions ? 'primary' : 'secondary'"
           >
-            {{ $t('package.versions.grouping_usage_low') }}
+            {{ $t('package.versions.grouping_usage_all') }}
           </ButtonBase>
         </ButtonGroup>
       </div>
@@ -461,6 +456,13 @@ const chartConfig = computed<VueUiXyConfig>(() => {
       <ClientOnly v-if="xyDataset.length > 0 && !error">
         <div class="chart-container w-full" :key="groupingMode">
           <VueUiXy :dataset="xyDataset" :config="chartConfig" class="[direction:ltr]">
+            <!-- Keyboard navigation hint -->
+            <template #hint="{ isVisible }">
+              <p v-if="isVisible" class="text-accent text-xs -mt-6 text-center" aria-hidden="true">
+                {{ $t('compare.packages.line_chart_nav_hint') }}
+              </p>
+            </template>
+
             <!-- Injecting custom svg elements -->
             <template #svg="{ svg }">
               <!-- Inject legend during SVG print only -->
@@ -469,7 +471,14 @@ const chartConfig = computed<VueUiXyConfig>(() => {
               <!-- Inject npmx logo & tagline during SVG and PNG print -->
               <g
                 v-if="svg.isPrintingSvg || svg.isPrintingImg"
-                v-html="drawNpmxLogoAndTaglineWatermark(svg, watermarkColors, $t, 'bottom')"
+                v-html="
+                  drawNpmxLogoAndTaglineWatermark({
+                    svg,
+                    colors: watermarkColors,
+                    translateFn: $t,
+                    positioning: 'bottom',
+                  })
+                "
               />
 
               <!-- Overlay covering the chart area to hide line resizing when switching granularities recalculates VueUiXy scaleMax when estimation lines are necessary -->
@@ -670,6 +679,18 @@ const chartConfig = computed<VueUiXyConfig>(() => {
 /* Disable all transitions on SVG elements to prevent repositioning animation */
 :deep(.vue-ui-xy) svg rect {
   transition: none !important;
+}
+
+:deep(.vue-data-ui-component svg:focus-visible) {
+  outline: 1px solid var(--accent) !important;
+  border-radius: 0.1rem;
+  outline-offset: 0 !important;
+}
+
+:deep(.vue-ui-user-options-button:focus-visible),
+:deep(.vue-ui-user-options :first-child:focus-visible) {
+  outline: 0.1rem solid var(--accent) !important;
+  border-radius: 0.25rem;
 }
 </style>
 

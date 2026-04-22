@@ -325,7 +325,7 @@ watch(isExecuting, executing => {
             autocomplete="one-time-code"
             spellcheck="false"
             :class="['flex-1 min-w-25', otpError ? 'border-red-500 focus:outline-red-500' : '']"
-            size="small"
+            size="sm"
             @input="otpError = ''"
           />
           <button
