@@ -919,7 +919,9 @@ const showSkeleton = shallowRef(false)
             :replacement="moduleReplacement.replacement"
           />
           <!-- Size / dependency increase notice -->
-          <PackageSizeIncrease v-if="sizeDiff" :diff="sizeDiff" />
+          <PackageSizeIncrease v-if="sizeDiff?.direction === 'increase'" :diff="sizeDiff" />
+          <!-- Size / dependency decrease celebration -->
+          <PackageSizeDecrease v-else-if="sizeDiff?.direction === 'decrease'" :diff="sizeDiff" />
           <!-- Vulnerability scan -->
           <ClientOnly>
             <PackageVulnerabilityTree

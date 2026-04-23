@@ -384,6 +384,13 @@
       "size": "Install size increased by {percent} ({size} larger)",
       "deps": "{count} more dependencies"
     },
+    "size_decrease": {
+      "title_size": "Package size decreased since v{version}!",
+      "title_deps": "Dependency count decreased since v{version}!",
+      "title_both": "Package size and dependency count decreased since v{version}!",
+      "size": "Install size reduced by {percent} ({size} smaller)",
+      "deps": "{count} fewer dependencies"
+    },
     "replacement": {
       "title": "You might not need this dependency.",
       "example": "Example:",

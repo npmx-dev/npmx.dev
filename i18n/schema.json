@@ -1156,6 +1156,27 @@
           },
           "additionalProperties": false
         },
+        "size_decrease": {
+          "type": "object",
+          "properties": {
+            "title_size": {
+              "type": "string"
+            },
+            "title_deps": {
+              "type": "string"
+            },
+            "title_both": {
+              "type": "string"
+            },
+            "size": {
+              "type": "string"
+            },
+            "deps": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
         "replacement": {
           "type": "object",
           "properties": {
