@@ -270,6 +270,7 @@ import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
 import FacetScatterChart from '~/components/Compare/FacetScatterChart.vue'
 import PackageLikeCard from '~/components/Package/LikeCard.vue'
 import SizeIncrease from '~/components/Package/SizeIncrease.vue'
+import SizeDecrease from '~/components/Package/SizeDecrease.vue'
 import Likes from '~/components/Package/Likes.vue'
 import type { VueUiXyDatasetItem } from 'vue-data-ui'
 
@@ -3966,6 +3967,7 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(SizeIncrease, {
         props: {
           diff: {
+            direction: 'increase',
             comparisonVersion: '1.0.0',
             sizeRatio: 1,
             sizeIncrease: 200,
@@ -3987,6 +3989,7 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(SizeIncrease, {
         props: {
           diff: {
+            direction: 'increase',
             comparisonVersion: '1.0.0',
             sizeRatio: 1,
             sizeIncrease: 200,
@@ -4008,6 +4011,7 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(SizeIncrease, {
         props: {
           diff: {
+            direction: 'increase',
             comparisonVersion: '1.0.0',
             sizeRatio: 0,
             sizeIncrease: 0,
@@ -4016,6 +4020,74 @@ describe('component accessibility audits', () => {
             depDiff: 5,
             currentDeps: 10,
             previousDeps: 5,
+            sizeThresholdExceeded: false,
+            depThresholdExceeded: true,
+          },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('SizeDecrease', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(SizeDecrease, {
+        props: {
+          diff: {
+            direction: 'decrease',
+            comparisonVersion: '1.0.0',
+            sizeRatio: -0.5,
+            sizeIncrease: -200,
+            currentSize: 200,
+            previousSize: 400,
+            depDiff: -5,
+            currentDeps: 5,
+            previousDeps: 10,
+            sizeThresholdExceeded: true,
+            depThresholdExceeded: true,
+          },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with only size decrease', async () => {
+      const component = await mountSuspended(SizeDecrease, {
+        props: {
+          diff: {
+            direction: 'decrease',
+            comparisonVersion: '1.0.0',
+            sizeRatio: -0.5,
+            sizeIncrease: -200,
+            currentSize: 200,
+            previousSize: 400,
+            depDiff: 0,
+            currentDeps: 5,
+            previousDeps: 5,
+            sizeThresholdExceeded: true,
+            depThresholdExceeded: false,
+          },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with only dependency decrease', async () => {
+      const component = await mountSuspended(SizeDecrease, {
+        props: {
+          diff: {
+            direction: 'decrease',
+            comparisonVersion: '1.0.0',
+            sizeRatio: 0,
+            sizeIncrease: 0,
+            currentSize: 200,
+            previousSize: 200,
+            depDiff: -5,
+            currentDeps: 5,
+            previousDeps: 10,
             sizeThresholdExceeded: false,
             depThresholdExceeded: true,
           },
