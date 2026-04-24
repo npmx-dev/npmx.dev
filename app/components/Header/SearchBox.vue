@@ -57,6 +57,7 @@ defineExpose({ focus })
             v-model="searchQuery"
             type="search"
             name="q"
+            data-global-search
             :placeholder="$t('search.placeholder')"
             no-correct
             class="w-full min-w-25 ps-7 pe-8"

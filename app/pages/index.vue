@@ -59,6 +59,7 @@ defineOgImage('Splash.takumi', {}, { alt: () => $t('seo.home.description') })
                   v-model="searchQuery"
                   type="search"
                   name="q"
+                  data-global-search
                   autofocus
                   :placeholder="$t('search.placeholder')"
                   no-correct

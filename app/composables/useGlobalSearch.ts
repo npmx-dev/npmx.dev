@@ -6,12 +6,18 @@ import { debounce } from 'perfect-debounce'
 const pagesWithLocalFilter = new Set(['~username', 'org'])
 
 const SEARCH_DEBOUNCE_MS = 100
+
+/**
+ * Returns the value of the focused global search input, if any.
+ * Only matches inputs explicitly marked with data-global-search attribute
+ * to avoid capturing page-local filter inputs.
+ */
 const getFocusedSearchInputValue = () => {
   if (!import.meta.client) return ''
 
   const active = document.activeElement
   if (!(active instanceof HTMLInputElement)) return ''
-  if (active.type !== 'search' && active.name !== 'q') return ''
+  if (!active.hasAttribute('data-global-search')) return ''
   return active.value
 }
 export function useGlobalSearch(place: 'header' | 'content' = 'content') {
@@ -28,15 +34,18 @@ export function useGlobalSearch(place: 'header' | 'content' = 'content') {
 
   // Internally used searchQuery state
   const searchQuery = useState<string>('search-query', () => {
+    // Skip reading focused input on pages with local filters - they use ?q for local state
+    if (pagesWithLocalFilter.has(route.name as string)) {
+      return ''
+    }
+
     // Preserve fast typing before hydration (e.g. homepage autofocus search input).
+    // Only captures inputs with data-global-search marker attribute.
     const focusedInputValue = getFocusedSearchInputValue()
     if (focusedInputValue) {
       return focusedInputValue
     }
 
-    if (pagesWithLocalFilter.has(route.name as string)) {
-      return ''
-    }
     return normalizeSearchParam(route.query.q)
   })
 
@@ -159,8 +168,10 @@ export function useGlobalSearch(place: 'header' | 'content' = 'content') {
 
   // On hydration, useState can reuse SSR payload (often empty), skipping initializer.
   // Recover fast-typed value from the focused input once on client mount.
+  // Skip on pages with local filters to avoid importing local ?q state.
   if (import.meta.client) {
     onMounted(() => {
+      if (pagesWithLocalFilter.has(route.name as string)) return
       const focusedInputValue = getFocusedSearchInputValue()
       if (!focusedInputValue) return
       if (searchQuery.value) return
