@@ -146,7 +146,9 @@ export function useGlobalSearch(place: 'header' | 'content' = 'content') {
   // When navigating back to the homepage (e.g. via logo click from /search),
   // reset the global search state so the home input starts fresh and re-focus
   // the dedicated home search input.
-  if (import.meta.client) {
+  // Only register in one place (content instance) to avoid duplicate reset/refocus handlers
+  // when useGlobalSearch is called from multiple callsites (e.g., Header/SearchBox and page components).
+  if (import.meta.client && place === 'content') {
     watch(
       () => route.name,
       name => {
@@ -173,7 +175,8 @@ export function useGlobalSearch(place: 'header' | 'content' = 'content') {
   // On hydration, useState can reuse SSR payload (often empty), skipping initializer.
   // Recover fast-typed value from the focused input once on client mount.
   // Skip on pages with local filters to avoid importing local ?q state.
-  if (import.meta.client) {
+  // Only register in one place (content instance) to avoid duplicate hydration recovery.
+  if (import.meta.client && place === 'content') {
     onMounted(() => {
       if (pagesWithLocalFilter.has(route.name as string)) return
       const focusedInputValue = getFocusedSearchInputValue()
