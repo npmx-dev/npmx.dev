@@ -151,6 +151,10 @@ export function useGlobalSearch(place: 'header' | 'content' = 'content') {
       () => route.name,
       name => {
         if (name !== 'index') return
+        // Drop any in-flight URL/commit updates so they can't navigate
+        // back to /search or revive the old committed value after reset.
+        updateUrlQuery.cancel()
+        commitSearchQuery.cancel()
         searchQuery.value = ''
         committedSearchQuery.value = ''
         // Use nextTick so we run after the homepage has rendered.
