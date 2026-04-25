@@ -60,6 +60,12 @@ describe('likes leaderboard page', () => {
 
     expect(wrapper.text()).toContain('#1')
     expect(wrapper.find('img[src="https://images.example.com/vue-home.png"]').exists()).toBe(true)
+    expect(
+      wrapper
+        .find('[data-testid="likes-leaderboard-desktop-podium"]')
+        .findAll('a')
+        .map(link => link.attributes('href')),
+    ).toEqual(['/package/vue', '/package/@nuxt/kit', '/package/react'])
     expect(wrapper.find('img[src="https://images.example.com/svelte-logo.svg"]').exists()).toBe(
       true,
     )

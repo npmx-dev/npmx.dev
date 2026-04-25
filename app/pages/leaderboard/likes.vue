@@ -38,11 +38,6 @@ const isLoadingLeaderboard = computed(
 )
 
 const highlightedEntries = computed(() => leaderboardEntries.value.slice(0, 3))
-const desktopPodiumEntries = computed(() =>
-  [2, 1, 3]
-    .map(rank => highlightedEntries.value.find(entry => entry.rank === rank))
-    .filter((entry): entry is LikesLeaderboardEntry => entry != null),
-)
 const remainingEntries = computed(() => leaderboardEntries.value.slice(3))
 
 function getPreviewFallbackClass(rank: number): string {
@@ -74,11 +69,11 @@ function getMedalBadgeClass(rank: number): string {
 function getPodiumItemClass(rank: number): string {
   switch (rank) {
     case 1:
-      return 'lg:-translate-y-6'
+      return 'lg:col-start-2 lg:row-start-1 lg:-translate-y-6'
     case 2:
-      return 'lg:translate-y-8'
+      return 'lg:col-start-1 lg:row-start-1 lg:translate-y-8'
     case 3:
-      return 'lg:translate-y-14'
+      return 'lg:col-start-3 lg:row-start-1 lg:translate-y-14'
     default:
       return ''
   }
@@ -168,7 +163,7 @@ function formatCompactStat(value: number | null): string | null {
           class="hidden list-none m-0 gap-4 p-0 pb-4 lg:grid lg:grid-cols-[minmax(0,0.96fr)_minmax(0,1.08fr)_minmax(0,0.96fr)] lg:items-end lg:gap-6 lg:pb-16"
         >
           <li
-            v-for="rank in [2, 1, 3]"
+            v-for="rank in [1, 2, 3]"
             :key="rank"
             class="space-y-4"
             :class="getPodiumItemClass(rank)"
@@ -371,10 +366,11 @@ function formatCompactStat(value: number | null): string | null {
         </ol>
 
         <ol
+          data-testid="likes-leaderboard-desktop-podium"
           class="hidden list-none m-0 gap-4 p-0 pb-4 lg:grid lg:grid-cols-[minmax(0,0.96fr)_minmax(0,1.08fr)_minmax(0,0.96fr)] lg:items-end lg:gap-6 lg:pb-16"
         >
           <li
-            v-for="entry in desktopPodiumEntries"
+            v-for="entry in highlightedEntries"
             :key="entry.subjectRef"
             class="space-y-4"
             :class="getPodiumItemClass(entry.rank)"
