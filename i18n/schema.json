@@ -955,6 +955,9 @@
         "per_week": {
           "type": "string"
         },
+        "per_week_short": {
+          "type": "string"
+        },
         "vanity_downloads_hint": {
           "type": "string"
         },
