@@ -1,10 +1,27 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
-import { mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
 import type { VueWrapper } from '@vue/test-utils'
+import { mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { ref } from 'vue'
 import Likes from '~/components/Package/Likes.vue'
+
+const { mockUseAtproto } = vi.hoisted(() => ({
+  mockUseAtproto: vi.fn(),
+}))
+
+vi.mock('~/composables/atproto/useAtproto', () => ({
+  useAtproto: mockUseAtproto,
+}))
 
 describe('PackageLikes', () => {
   let wrapper: VueWrapper | undefined
+
+  beforeEach(() => {
+    mockUseAtproto.mockReturnValue({
+      user: ref(null),
+      pending: ref(false),
+      logout: vi.fn(),
+    })
+  })
 
   afterEach(() => {
     wrapper?.unmount()
@@ -54,5 +71,47 @@ describe('PackageLikes', () => {
     })
 
     expect(wrapper.find('[data-testid="top-liked-badge"]').exists()).toBe(false)
+  })
+
+  it('keeps the top liked badge when a like response omits the rank', async () => {
+    let likeRequests = 0
+
+    mockUseAtproto.mockReturnValue({
+      user: ref({ handle: 'tester.test' }),
+      pending: ref(false),
+      logout: vi.fn(),
+    })
+
+    registerEndpoint('/api/social/likes/svelte', () => ({
+      totalLikes: 42,
+      userHasLiked: false,
+      topLikedRank: 3,
+    }))
+    registerEndpoint('/api/social/like', () => {
+      likeRequests++
+
+      return {
+        totalLikes: 43,
+        userHasLiked: true,
+        topLikedRank: null,
+      }
+    })
+
+    wrapper = await mountSuspended(Likes, {
+      props: { packageName: 'svelte' },
+      attachTo: document.body,
+    })
+
+    await vi.waitFor(() => {
+      expect(wrapper?.find('[data-testid="top-liked-badge"]').text()).toContain('#3')
+    })
+
+    await wrapper.get('button').trigger('click')
+
+    await vi.waitFor(() => {
+      expect(likeRequests).toBe(1)
+      expect(wrapper?.text()).toContain('43')
+      expect(wrapper?.find('[data-testid="top-liked-badge"]').text()).toContain('#3')
+    })
   })
 })

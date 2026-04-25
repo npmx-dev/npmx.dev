@@ -38,18 +38,27 @@ const { user } = useAtproto()
 const authModal = useModal('auth-modal')
 const compactNumberFormatter = useCompactNumberFormatter()
 
-const { data: likesData } = useFetch<PackageLikes>(() => `/api/social/likes/${props.packageName}`, {
-  default: () => ({
-    totalLikes: 0,
-    userHasLiked: false,
-    topLikedRank: null,
-  }),
-  server: false,
-})
+const { data: likesData, status: likeStatus } = useFetch<PackageLikes>(
+  () => `/api/social/likes/${props.packageName}`,
+  {
+    default: () => ({
+      totalLikes: 0,
+      userHasLiked: false,
+      topLikedRank: null,
+    }),
+    server: false,
+  },
+)
+const isLoadingLikeData = computed(
+  () => likeStatus.value === 'pending' || likeStatus.value === 'idle',
+)
 const isPackageLiked = computed(() => likesData.value?.userHasLiked ?? false)
 const topLikedRank = computed(() => likesData.value?.topLikedRank ?? null)
 const likeButtonLabel = computed(() =>
   isPackageLiked.value ? $t('package.likes.unlike') : $t('package.likes.like'),
+)
+const likeTooltipLabel = computed(() =>
+  isLoadingLikeData.value ? $t('common.loading') : likeButtonLabel.value,
 )
 const topLikedBadgeLabel = computed(() =>
   topLikedRank.value == null
@@ -105,6 +114,7 @@ const likeAction = async () => {
       ? {
           ...previousLikesState,
           ...result.data,
+          topLikedRank: result.data.topLikedRank ?? previousLikesState.topLikedRank,
         }
       : previousLikesState
   } catch {
@@ -117,7 +127,7 @@ const likeAction = async () => {
 
 <template>
   <div class="relative inline-flex items-center">
-    <TooltipApp :text="likeButtonLabel" position="bottom" class="items-center" strategy="fixed">
+    <TooltipApp :text="likeTooltipLabel" position="bottom" class="items-center" strategy="fixed">
       <div class="relative inline-flex">
         <span v-if="showLikeFloat" :key="likeFloatKey" aria-hidden="true" class="like-float"
           >+1</span
@@ -139,7 +149,12 @@ const likeAction = async () => {
             aria-hidden="true"
             class="inline-block w-4 h-4"
           />
-          <span>{{ compactNumberFormatter.format(likesData?.totalLikes ?? 0) }}</span>
+          <span
+            v-if="isLoadingLikeData"
+            class="i-svg-spinners:ring-resize w-3 h-3 my-0.5"
+            aria-hidden="true"
+          />
+          <span v-else>{{ compactNumberFormatter.format(likesData?.totalLikes ?? 0) }}</span>
         </ButtonBase>
       </div>
     </TooltipApp>
@@ -150,13 +165,13 @@ const likeAction = async () => {
       position="left"
       :offset="8"
       strategy="fixed"
-      class="absolute [inset-inline-end:-0.5rem] top-[-0.4rem] z-1"
+      class="top-liked-badge-anchor"
     >
       <NuxtLink
         :to="{ name: 'leaderboard-likes' }"
         :aria-label="topLikedBadgeLabel"
         data-testid="top-liked-badge"
-        class="inline-flex items-center justify-center min-w-5 rounded-full px-1.5 py-0.5 text-2xs font-bold leading-none no-underline text-[var(--bg)] border border-[var(--bg)] bg-[radial-gradient(circle_at_28%_25%,rgb(255_255_255_/_0.34),transparent_38%),linear-gradient(135deg,color-mix(in_oklab,white_10%,var(--accent))_0%,var(--accent)_100%)] shadow-[0_1px_0_rgb(255_255_255_/_0.32)_inset,0_2px_6px_color-mix(in_oklab,var(--accent)_14%,transparent)] transition-shadow duration-[160ms] hover:shadow-[0_1px_0_rgb(255_255_255_/_0.38)_inset,0_4px_10px_color-mix(in_oklab,var(--accent)_18%,transparent)] focus-visible:outline-2 focus-visible:outline-fg focus-visible:outline-offset-2"
+        class="top-liked-badge"
       >
         <span>{{ $t('package.likes.top_rank_label', { rank: topLikedRank }) }}</span>
       </NuxtLink>
@@ -175,6 +190,40 @@ const likeAction = async () => {
   pointer-events: none;
   white-space: nowrap;
   animation: float-up 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.top-liked-badge-anchor {
+  position: absolute;
+  inset-inline-end: -0.5rem;
+  top: -0.4rem;
+  z-index: 1;
+}
+
+.top-liked-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  padding: 0.125rem 0.375rem;
+  border: 1px solid var(--bg);
+  border-radius: 9999px;
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  box-shadow: 0 2px 6px color-mix(in oklab, var(--accent) 14%, transparent);
+  transition: box-shadow 160ms ease;
+}
+
+.top-liked-badge:hover {
+  box-shadow: 0 4px 10px color-mix(in oklab, var(--accent) 18%, transparent);
+}
+
+.top-liked-badge:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {
