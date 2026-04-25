@@ -38,7 +38,7 @@ useHead({
     'data-kbd-hints': () => showKbdHints.value,
   },
   titleTemplate: titleChunk => {
-    return titleChunk ? titleChunk : 'npmx - Better npm Package Browser'
+    return titleChunk ? titleChunk : 'hello from a fork'
   },
   meta: [{ name: 'color-scheme', content: colorScheme }],
 })
@@ -79,11 +79,11 @@ onKeyDown(
 )
 
 onKeyDown(
-  '?',
+  'f',
   e => {
     if (!keyboardShortcuts.value || isEditableElement(e.target)) return
     e.preventDefault()
-    showKbdHints.value = true
+    window.alert("hello from a fork")
   },
   { dedupe: true },
 )
