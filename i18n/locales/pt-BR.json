@@ -1611,7 +1611,7 @@
     "what": {
       "title": "o que aconteceu",
       "p1": "o discord ficou fechado {dates}.",
-      "dates": "Fevereiro 14 – 21",
+      "dates": "14 – 21 de fevereiro",
       "p2": "todos os links de convite foram removidos e os canais foram bloqueados – exceto {garden}, que ficou aberto para quem quisesse continuar por lá.",
       "garden": "#garden"
     },
