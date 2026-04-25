@@ -16,7 +16,14 @@ jobs:
     runs-on: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - run: npx vercel deploy --target=canary
+
+      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1
+        with:
+          node-version: lts/*
+          run-install: false
+
+      - run: vp install -g vercel
+      - run: vercel deploy --target=canary
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
