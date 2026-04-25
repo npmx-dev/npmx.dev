@@ -1,8 +1,8 @@
-import { readFileSync } from 'node:fs'
-import { resolve } from 'node:path'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { fetchNpmPackage } from '#server/utils/npm'
-import { MICROLINK_API, NPM_API } from '#shared/utils/constants'
+import { getHomepageMetadata } from '#server/utils/npm-homepage'
+import { NPM_API } from '#shared/utils/constants'
+import { createLikesLeaderboardEntry } from '~~/test/fixtures/likes-leaderboard'
 import {
   enrichLikesLeaderboardEntries,
   extractPackageNameFromSubjectRef,
@@ -15,9 +15,25 @@ vi.mock('#server/utils/npm', () => ({
   fetchNpmPackage: vi.fn(),
 }))
 
+vi.mock('#server/utils/npm-homepage', () => ({
+  getHomepageMetadata: vi.fn(),
+}))
+
 type TestEvent = Parameters<typeof getLikesLeaderboard>[0]
 type TestCachedFetch = NonNullable<TestEvent['context']['cachedFetch']>
+type HomepageMetadata = Awaited<ReturnType<typeof getHomepageMetadata>>
 const fetchNpmPackageMock = vi.mocked(fetchNpmPackage)
+const getHomepageMetadataMock = vi.mocked(getHomepageMetadata)
+
+const emptyHomepageMetadata: HomepageMetadata = {
+  homepageUrl: null,
+  homepagePreviewUrl: null,
+  homepagePreviewWidth: null,
+  homepagePreviewHeight: null,
+  homepageLogoUrl: null,
+  homepageLogoWidth: null,
+  homepageLogoHeight: null,
+}
 
 function createEvent(cachedFetch: TestCachedFetch): TestEvent {
   return {
@@ -25,15 +41,19 @@ function createEvent(cachedFetch: TestCachedFetch): TestEvent {
   } as TestEvent
 }
 
-function loadMicrolinkFixture(homepageUrl: string): unknown {
-  const url = new URL(homepageUrl)
-  const pathname = url.pathname === '/' ? '' : url.pathname.replaceAll('/', '_')
-  const fixturePath = resolve(
-    __dirname,
-    '../../../fixtures/microlink',
-    `${url.hostname}${pathname}.json`,
-  )
-  return JSON.parse(readFileSync(fixturePath, 'utf-8'))
+function homepageMetadata(overrides: Partial<HomepageMetadata> = {}): HomepageMetadata {
+  return {
+    ...emptyHomepageMetadata,
+    ...overrides,
+  }
+}
+
+function cachedResult(data: unknown) {
+  return {
+    data,
+    isStale: false,
+    cachedAt: null,
+  }
 }
 
 beforeEach(() => {
@@ -63,36 +83,14 @@ describe('normalizeLikesLeaderboardPayload', () => {
     })
 
     expect(result).toEqual([
-      {
+      createLikesLeaderboardEntry('vue', {
         rank: 1,
-        packageName: 'vue',
-        subjectRef: 'https://npmx.dev/package/vue',
         totalLikes: 120,
-        packageDescription: null,
-        weeklyDownloads: null,
-        repositoryStars: null,
-        homepagePreviewUrl: null,
-        homepagePreviewWidth: null,
-        homepagePreviewHeight: null,
-        homepageLogoUrl: null,
-        homepageLogoWidth: null,
-        homepageLogoHeight: null,
-      },
-      {
+      }),
+      createLikesLeaderboardEntry('@nuxt/kit', {
         rank: 2,
-        packageName: '@nuxt/kit',
-        subjectRef: 'https://npmx.dev/package/@nuxt/kit',
         totalLikes: 90,
-        packageDescription: null,
-        weeklyDownloads: null,
-        repositoryStars: null,
-        homepagePreviewUrl: null,
-        homepagePreviewWidth: null,
-        homepagePreviewHeight: null,
-        homepageLogoUrl: null,
-        homepageLogoWidth: null,
-        homepageLogoHeight: null,
-      },
+      }),
     ])
   })
 
@@ -112,13 +110,11 @@ describe('getLikesLeaderboard', () => {
   })
 
   it('fetches from the external leaderboard API with limit=10', async () => {
-    const cachedFetch = vi.fn().mockResolvedValue({
-      data: {
+    const cachedFetch = vi.fn().mockResolvedValue(
+      cachedResult({
         leaderBoard: [{ subjectRef: 'https://npmx.dev/package/vue', totalLikes: 120 }],
-      },
-      isStale: false,
-      cachedAt: null,
-    })
+      }),
+    )
 
     await getLikesLeaderboard(createEvent(cachedFetch))
 
@@ -137,27 +133,47 @@ describe('getLikesLeaderboard', () => {
 })
 
 describe('enrichLikesLeaderboardEntries', () => {
-  it('adds github social preview images for highlighted entries only', async () => {
-    fetchNpmPackageMock
-      .mockResolvedValueOnce({
+  it('enriches entries with package, download, github, and homepage metadata', async () => {
+    const packuments: Record<string, Partial<Packument>> = {
+      'vue': {
         description: 'The Progressive JavaScript Framework.',
         homepage: 'https://vuejs.org',
         repository: { url: 'https://github.com/vuejs/core' },
-      } as Packument)
-      .mockResolvedValueOnce({
+      },
+      'nuxt': {
         description: 'The Intuitive Vue Framework.',
         homepage: 'https://nuxt.com',
         repository: { url: 'git+https://github.com/nuxt/nuxt.git' },
-      } as Packument)
-      .mockResolvedValueOnce({
+      },
+      '@sveltejs/kit': {
         description: 'The web framework for Svelte.',
         homepage: 'https://kit.svelte.dev',
         repository: { url: 'https://gitlab.com/sveltejs/kit' },
-      } as Packument)
-      .mockResolvedValueOnce({
+      },
+      'react': {
         description: 'The library for web and native user interfaces.',
         homepage: 'https://react.dev',
-      } as Packument)
+      },
+    }
+    fetchNpmPackageMock.mockImplementation(async packageName => {
+      const packument = packuments[packageName]
+      if (!packument) {
+        throw new Error(`Unexpected package lookup: ${packageName}`)
+      }
+
+      return packument as Packument
+    })
+    getHomepageMetadataMock.mockImplementation(async (_event, homepageUrl) =>
+      homepageMetadata({
+        homepageUrl,
+        homepagePreviewUrl: homepageUrl === 'https://vuejs.org' ? 'preview:vue' : null,
+        homepagePreviewWidth: homepageUrl === 'https://vuejs.org' ? 1200 : null,
+        homepagePreviewHeight: homepageUrl === 'https://vuejs.org' ? 630 : null,
+        homepageLogoUrl: homepageUrl ? `logo:${homepageUrl}` : null,
+        homepageLogoWidth: homepageUrl ? 256 : null,
+        homepageLogoHeight: homepageUrl ? 256 : null,
+      }),
+    )
 
     const cachedFetchMock = vi.fn(async (url: string) => {
       if (url.includes(`${NPM_API}/downloads/point/last-week/`)) {
@@ -169,26 +185,9 @@ describe('enrichLikesLeaderboardEntries', () => {
           'react': 600,
         }
 
-        return {
-          data: {
-            downloads: downloadsMap[packageName] ?? 0,
-          },
-          isStale: false,
-          cachedAt: null,
-        }
-      }
-
-      if (url.startsWith(`${MICROLINK_API}/?url=`)) {
-        const homepageUrl = new URL(url).searchParams.get('url')
-        if (!homepageUrl) {
-          throw new Error(`Microlink request missing homepage URL: ${url}`)
-        }
-
-        return {
-          data: loadMicrolinkFixture(homepageUrl),
-          isStale: false,
-          cachedAt: null,
-        }
+        return cachedResult({
+          downloads: downloadsMap[packageName] ?? 0,
+        })
       }
 
       if (url.startsWith('https://ungh.cc/repos/')) {
@@ -197,147 +196,74 @@ describe('enrichLikesLeaderboardEntries', () => {
           'https://ungh.cc/repos/nuxt/nuxt': 59000,
         }
 
-        return {
-          data: {
-            repo: {
-              stars: starsMap[url] ?? 0,
-            },
+        return cachedResult({
+          repo: {
+            stars: starsMap[url] ?? 0,
           },
-          isStale: false,
-          cachedAt: null,
-        }
+        })
       }
 
       throw new Error(`Unexpected URL: ${url}`)
     })
     const cachedFetch = cachedFetchMock as unknown as TestCachedFetch
 
-    const result = await enrichLikesLeaderboardEntries(createEvent(cachedFetch), [
-      {
+    const event = createEvent(cachedFetch)
+    const result = await enrichLikesLeaderboardEntries(event, [
+      createLikesLeaderboardEntry('vue', {
         rank: 1,
-        packageName: 'vue',
-        subjectRef: 'https://npmx.dev/package/vue',
         totalLikes: 120,
-        packageDescription: null,
-        weeklyDownloads: null,
-        repositoryStars: null,
-        homepagePreviewUrl: null,
-        homepagePreviewWidth: null,
-        homepagePreviewHeight: null,
-        homepageLogoUrl: null,
-        homepageLogoWidth: null,
-        homepageLogoHeight: null,
-      },
-      {
+      }),
+      createLikesLeaderboardEntry('nuxt', {
         rank: 2,
-        packageName: 'nuxt',
-        subjectRef: 'https://npmx.dev/package/nuxt',
         totalLikes: 90,
-        packageDescription: null,
-        weeklyDownloads: null,
-        repositoryStars: null,
-        homepagePreviewUrl: null,
-        homepagePreviewWidth: null,
-        homepagePreviewHeight: null,
-        homepageLogoUrl: null,
-        homepageLogoWidth: null,
-        homepageLogoHeight: null,
-      },
-      {
+      }),
+      createLikesLeaderboardEntry('@sveltejs/kit', {
         rank: 3,
-        packageName: '@sveltejs/kit',
-        subjectRef: 'https://npmx.dev/package/@sveltejs/kit',
         totalLikes: 75,
-        packageDescription: null,
-        weeklyDownloads: null,
-        repositoryStars: null,
-        homepagePreviewUrl: null,
-        homepagePreviewWidth: null,
-        homepagePreviewHeight: null,
-        homepageLogoUrl: null,
-        homepageLogoWidth: null,
-        homepageLogoHeight: null,
-      },
-      {
+      }),
+      createLikesLeaderboardEntry('react', {
         rank: 4,
-        packageName: 'react',
-        subjectRef: 'https://npmx.dev/package/react',
         totalLikes: 60,
-        packageDescription: null,
-        weeklyDownloads: null,
-        repositoryStars: null,
-        homepagePreviewUrl: null,
-        homepagePreviewWidth: null,
-        homepagePreviewHeight: null,
-        homepageLogoUrl: null,
-        homepageLogoWidth: null,
-        homepageLogoHeight: null,
-      },
+      }),
     ])
 
-    expect(result).toEqual([
-      expect.objectContaining({
+    expect(result).toMatchObject([
+      {
         packageName: 'vue',
         packageDescription: 'The Progressive JavaScript Framework.',
         weeklyDownloads: 1200,
         repositoryStars: 208000,
-        homepagePreviewUrl: expect.stringContaining('/api/registry/image-proxy?'),
-        homepagePreviewWidth: 1200,
-        homepagePreviewHeight: 630,
-        homepageLogoUrl: expect.stringContaining('/api/registry/image-proxy?'),
-        homepageLogoWidth: 256,
-        homepageLogoHeight: 256,
-      }),
-      expect.objectContaining({
+        homepagePreviewUrl: 'preview:vue',
+        homepageLogoUrl: 'logo:https://vuejs.org',
+      },
+      {
         packageName: 'nuxt',
         packageDescription: 'The Intuitive Vue Framework.',
         weeklyDownloads: 900,
         repositoryStars: 59000,
         homepagePreviewUrl: null,
-        homepagePreviewWidth: null,
-        homepagePreviewHeight: null,
-        homepageLogoUrl: expect.stringContaining('/api/registry/image-proxy?'),
-        homepageLogoWidth: 256,
-        homepageLogoHeight: 256,
-      }),
-      expect.objectContaining({
+        homepageLogoUrl: 'logo:https://nuxt.com',
+      },
+      {
         packageName: '@sveltejs/kit',
         packageDescription: 'The web framework for Svelte.',
         weeklyDownloads: 750,
         repositoryStars: null,
         homepagePreviewUrl: null,
-        homepagePreviewWidth: null,
-        homepagePreviewHeight: null,
-        homepageLogoUrl: expect.stringContaining('/api/registry/image-proxy?'),
-        homepageLogoWidth: 256,
-        homepageLogoHeight: 256,
-      }),
-      expect.objectContaining({
+        homepageLogoUrl: 'logo:https://kit.svelte.dev',
+      },
+      {
         packageName: 'react',
         packageDescription: 'The library for web and native user interfaces.',
         weeklyDownloads: 600,
         repositoryStars: null,
         homepagePreviewUrl: null,
-        homepagePreviewWidth: null,
-        homepagePreviewHeight: null,
-        homepageLogoUrl: expect.stringContaining('/api/registry/image-proxy?'),
-        homepageLogoWidth: 256,
-        homepageLogoHeight: 256,
-      }),
+        homepageLogoUrl: 'logo:https://react.dev',
+      },
     ])
 
     expect(fetchNpmPackageMock).toHaveBeenCalledTimes(4)
-    expect(cachedFetchMock).toHaveBeenCalledWith(
-      'https://api.microlink.io/?url=https%3A%2F%2Fvuejs.org',
-      expect.objectContaining({
-        headers: {
-          'User-Agent': 'npmx',
-          'Accept': 'application/json',
-        },
-        signal: expect.any(AbortSignal),
-      }),
-      86400,
-    )
+    expect(getHomepageMetadataMock).toHaveBeenCalledWith(event, 'https://vuejs.org')
     expect(cachedFetchMock).toHaveBeenCalledWith(
       'https://ungh.cc/repos/vuejs/core',
       expect.objectContaining({
@@ -353,16 +279,14 @@ describe('enrichLikesLeaderboardEntries', () => {
 
 describe('getTopLikedRank', () => {
   it('returns the matching top liked rank for a subject ref', async () => {
-    const cachedFetch = vi.fn().mockResolvedValue({
-      data: {
+    const cachedFetch = vi.fn().mockResolvedValue(
+      cachedResult({
         leaderBoard: [
           { subjectRef: 'https://npmx.dev/package/vue', totalLikes: 120 },
           { subjectRef: 'https://npmx.dev/package/nuxt', totalLikes: 90 },
         ],
-      },
-      isStale: false,
-      cachedAt: null,
-    })
+      }),
+    )
 
     const rank = await getTopLikedRank(createEvent(cachedFetch), 'https://npmx.dev/package/nuxt')
 

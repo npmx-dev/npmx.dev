@@ -30,6 +30,23 @@ function loadMicrolinkFixture(homepageUrl: string): unknown {
   return JSON.parse(readFileSync(fixturePath, 'utf-8'))
 }
 
+function createMicrolinkCachedFetch(): TestCachedFetch {
+  return vi.fn(async (url: string) => {
+    if (url.startsWith(`${MICROLINK_API}/?url=`)) {
+      const homepageUrl = new URL(url).searchParams.get('url')
+      if (!homepageUrl) throw new Error(`Microlink request missing homepage URL: ${url}`)
+
+      return {
+        data: loadMicrolinkFixture(homepageUrl),
+        isStale: false,
+        cachedAt: null,
+      }
+    }
+
+    throw new Error(`Unexpected URL: ${url}`)
+  }) as TestCachedFetch
+}
+
 beforeEach(() => {
   vi.clearAllMocks()
   vi.stubGlobal('useRuntimeConfig', () => ({
@@ -39,21 +56,7 @@ beforeEach(() => {
 
 describe('getHomepageMetadata', () => {
   it('returns proxied preview and logo URLs from Microlink fixtures', async () => {
-    const cachedFetch = vi.fn(async (url: string) => {
-      if (url.startsWith(`${MICROLINK_API}/?url=`)) {
-        const homepageUrl = new URL(url).searchParams.get('url')
-        if (!homepageUrl) throw new Error(`Microlink request missing homepage URL: ${url}`)
-
-        return {
-          data: loadMicrolinkFixture(homepageUrl),
-          isStale: false,
-          cachedAt: null,
-        }
-      }
-
-      throw new Error(`Unexpected URL: ${url}`)
-    }) as TestCachedFetch
-
+    const cachedFetch = createMicrolinkCachedFetch()
     const result = await getHomepageMetadata(createEvent(cachedFetch), 'https://vuejs.org')
 
     expect(result).toEqual({
@@ -91,21 +94,7 @@ describe('getPackageHomepageMetadata', () => {
       homepage: 'https://nuxt.com',
     } as Packument)
 
-    const cachedFetch = vi.fn(async (url: string) => {
-      if (url.startsWith(`${MICROLINK_API}/?url=`)) {
-        const homepageUrl = new URL(url).searchParams.get('url')
-        if (!homepageUrl) throw new Error(`Microlink request missing homepage URL: ${url}`)
-
-        return {
-          data: loadMicrolinkFixture(homepageUrl),
-          isStale: false,
-          cachedAt: null,
-        }
-      }
-
-      throw new Error(`Unexpected URL: ${url}`)
-    }) as TestCachedFetch
-
+    const cachedFetch = createMicrolinkCachedFetch()
     const result = await getPackageHomepageMetadata(createEvent(cachedFetch), 'nuxt')
 
     expect(result).toEqual({

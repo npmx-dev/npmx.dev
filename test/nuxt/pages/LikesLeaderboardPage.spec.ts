@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
 import type { VueWrapper } from '@vue/test-utils'
+import { createLikesLeaderboardEntry } from '~~/test/fixtures/likes-leaderboard'
 import LikesLeaderboardPage from '~/pages/leaderboard/likes.vue'
 
 describe('likes leaderboard page', () => {
@@ -18,66 +19,30 @@ describe('likes leaderboard page', () => {
 
   it('renders ranked rows from the local leaderboard API', async () => {
     registerEndpoint('/api/leaderboard/likes', () => [
-      {
+      createLikesLeaderboardEntry('vue', {
         rank: 1,
-        packageName: 'vue',
-        subjectRef: 'https://npmx.dev/package/vue',
         totalLikes: 120,
-        packageDescription: 'The Progressive JavaScript Framework.',
-        weeklyDownloads: 1200,
-        repositoryStars: 208000,
         homepagePreviewUrl: 'https://images.example.com/vue-home.png',
         homepagePreviewWidth: 1200,
         homepagePreviewHeight: 630,
-        homepageLogoUrl: 'https://images.example.com/vue-logo.svg',
-        homepageLogoWidth: 256,
-        homepageLogoHeight: 256,
-      },
-      {
+      }),
+      createLikesLeaderboardEntry('@nuxt/kit', {
         rank: 2,
-        packageName: '@nuxt/kit',
-        subjectRef: 'https://npmx.dev/package/@nuxt/kit',
         totalLikes: 90,
-        packageDescription: 'Nuxt internals for module authors.',
-        weeklyDownloads: 900,
-        repositoryStars: 59000,
-        homepagePreviewUrl: null,
-        homepagePreviewWidth: null,
-        homepagePreviewHeight: null,
-        homepageLogoUrl: 'https://images.example.com/nuxt-logo.svg',
-        homepageLogoWidth: 256,
-        homepageLogoHeight: 256,
-      },
-      {
+      }),
+      createLikesLeaderboardEntry('react', {
         rank: 3,
-        packageName: 'react',
-        subjectRef: 'https://npmx.dev/package/react',
         totalLikes: 80,
-        packageDescription: 'The library for web and native user interfaces.',
-        weeklyDownloads: 800,
-        repositoryStars: 230000,
-        homepagePreviewUrl: null,
-        homepagePreviewWidth: null,
-        homepagePreviewHeight: null,
-        homepageLogoUrl: null,
-        homepageLogoWidth: null,
-        homepageLogoHeight: null,
-      },
-      {
+      }),
+      createLikesLeaderboardEntry('svelte', {
         rank: 4,
-        packageName: 'svelte',
-        subjectRef: 'https://npmx.dev/package/svelte',
         totalLikes: 70,
         packageDescription: 'Cybernetically enhanced web apps.',
         weeklyDownloads: 700,
-        repositoryStars: 82000,
-        homepagePreviewUrl: null,
-        homepagePreviewWidth: null,
-        homepagePreviewHeight: null,
         homepageLogoUrl: 'https://images.example.com/svelte-logo.svg',
         homepageLogoWidth: 256,
         homepageLogoHeight: 256,
-      },
+      }),
     ])
 
     wrapper = await mountSuspended(LikesLeaderboardPage, {

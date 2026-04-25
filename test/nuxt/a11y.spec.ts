@@ -4,6 +4,7 @@ import type { VueWrapper } from '@vue/test-utils'
 import 'axe-core'
 import type { AxeResults, RunOptions } from 'axe-core'
 import { afterEach, beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest'
+import { createLikesLeaderboardEntry } from '~~/test/fixtures/likes-leaderboard'
 
 // axe-core is a UMD module that exposes itself as window.axe in the browser
 declare const axe: {
@@ -709,40 +710,15 @@ describe('component accessibility audits', () => {
 
   describe('LikesLeaderboardPage', () => {
     it('should have no accessibility violations when data is available', async () => {
-      // This page remounts the same useFetch source with different mocked responses
-      // across tests, so reset Nuxt's async-data store between cases.
       clearNuxtData()
       registerEndpoint('/api/leaderboard/likes', () => [
-        {
+        createLikesLeaderboardEntry('vue', {
           rank: 1,
-          packageName: 'vue',
-          subjectRef: 'https://npmx.dev/package/vue',
           totalLikes: 120,
-          packageDescription: 'The Progressive JavaScript Framework.',
-          weeklyDownloads: 1200,
-          repositoryStars: 208000,
           homepagePreviewUrl: 'https://images.example.com/vue-home.png',
           homepagePreviewWidth: 1200,
           homepagePreviewHeight: 630,
-          homepageLogoUrl: 'https://images.example.com/vue-logo.svg',
-          homepageLogoWidth: 256,
-          homepageLogoHeight: 256,
-        },
-        {
-          rank: 2,
-          packageName: '@nuxt/kit',
-          subjectRef: 'https://npmx.dev/package/@nuxt/kit',
-          totalLikes: 90,
-          packageDescription: 'Nuxt internals for module authors.',
-          weeklyDownloads: 900,
-          repositoryStars: 59000,
-          homepagePreviewUrl: null,
-          homepagePreviewWidth: null,
-          homepagePreviewHeight: null,
-          homepageLogoUrl: 'https://images.example.com/nuxt-logo.svg',
-          homepageLogoWidth: 256,
-          homepageLogoHeight: 256,
-        },
+        }),
       ])
 
       const component = await mountSuspended(LikesLeaderboardPage, {
