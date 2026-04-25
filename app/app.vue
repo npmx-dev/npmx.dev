@@ -83,7 +83,7 @@ onKeyDown(
   e => {
     if (!keyboardShortcuts.value || isEditableElement(e.target)) return
     e.preventDefault()
-    window.alert("hello from a fork")
+    window.alert('hello from a fork')
   },
   { dedupe: true },
 )
