@@ -2,6 +2,9 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   deploy-canary:
     if: github.repository == 'npmx-dev/npmx.dev'
