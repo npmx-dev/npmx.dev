@@ -1,0 +1,32 @@
+name: Deploy canary
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-canary-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-canary:
+    if: github.repository == 'npmx-dev/npmx.dev'
+    name: 🚀 Deploy to canary (main.npmx.dev)
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1
+        with:
+          node-version: lts/*
+          run-install: false
+
+      - run: vp install -g vercel
+      - run: vercel deploy --target=canary
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
