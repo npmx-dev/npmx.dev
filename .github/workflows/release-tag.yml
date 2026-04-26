@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-slim
     if: github.repository == 'npmx-dev/npmx.dev'
     permissions:
-      contents: write
+      contents: write # create release tags and GitHub releases
     outputs:
       version: ${{ steps.version.outputs.next }}
       skipped: ${{ steps.check.outputs.skip }}
@@ -92,7 +92,7 @@ jobs:
     if: needs.tag.outputs.skipped == 'false'
     permissions:
       contents: read
-      id-token: write
+      id-token: write # authenticate npm trusted publishing via OIDC
     environment: npm-publish
 
     steps:
