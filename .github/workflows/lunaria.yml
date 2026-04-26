@@ -29,10 +29,10 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1
+      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1.6.0
         with:
           node-version: lts/*
           cache: true
 
       - name: Generate Lunaria Overview
-        uses: lunariajs/action@4911ad0736d1e3b20af4cb70f5079aea2327ed8e # v1-prerelease
+        uses: lunariajs/action@4911ad0736d1e3b20af4cb70f5079aea2327ed8e # astro-docs
