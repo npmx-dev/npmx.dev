@@ -123,6 +123,7 @@ pnpm mock-connector   # Start the mock connector (no npm login needed)
 pnpm vp run lint      # Run linter (oxlint + oxfmt)
 pnpm lint:fix         # Auto-fix lint issues
 pnpm test:types       # TypeScript type checking
+pnpm vp run zizmor    # GitHub Actions security analysis
 
 # Testing
 pnpm test             # Run all Vitest tests
@@ -131,6 +132,28 @@ pnpm test:nuxt        # Nuxt component tests
 pnpm test:browser     # Playwright E2E tests
 pnpm test:a11y        # Lighthouse accessibility audits
 pnpm test:perf        # Lighthouse performance audits (CLS)
+```
+
+### GitHub Actions security analysis
+
+CI runs [zizmor](https://docs.zizmor.sh/) against the repository's GitHub Actions workflows. The shared policy lives in `.github/zizmor.yml`, and the `zizmor` task uses the same pedantic persona as CI.
+
+You may run it locally by [installing `zizmor`](https://docs.zizmor.sh/installation/) and running:
+
+```bash
+pnpm vp run zizmor
+```
+
+Some audits resolve action refs and vulnerability metadata through GitHub. To run those online checks locally, authenticate with the GitHub CLI and pass its token:
+
+```bash
+GH_TOKEN="$(gh auth token)" pnpm vp run zizmor
+```
+
+To fix audit findings automatically, run:
+
+```bash
+GH_TOKEN="$(gh auth token)" pnpm vp run zizmor:fix
 ```
 
 ### Clearing caches during development
