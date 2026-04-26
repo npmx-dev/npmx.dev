@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { RouteLocationRaw } from 'vue-router'
 import { setResponseHeader } from 'h3'
 
 definePageMeta({
@@ -123,7 +124,19 @@ const versionUrlPattern = computed(
   () => `/package-docs/${pkg.value?.name || packageName.value}/v/{version}`,
 )
 
-useCommandPaletteVersionCommands(commandPalettePackageContext, versionUrlPattern)
+function docsVersionRoute(version: string): RouteLocationRaw {
+  const name = pkg.value?.name || packageName.value
+  const [firstSegment = name, ...remainingSegments] = name.split('/')
+
+  return {
+    name: 'docs',
+    params: {
+      path: [firstSegment, ...remainingSegments, 'v', version],
+    },
+  }
+}
+
+useCommandPaletteVersionCommands(commandPalettePackageContext, docsVersionRoute)
 
 const pageTitle = computed(() => {
   if (!packageName.value) return t('package.docs.page_title')

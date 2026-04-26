@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { computed, defineComponent, h, ref, watchEffect, type Ref } from 'vue'
+import type { RouteLocationRaw } from 'vue-router'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import { downloadPackageTarball } from '~/utils/package-download'
 import type {
@@ -49,7 +50,7 @@ async function captureCommandPalette(options?: {
   npmUser?: string | null
   atprotoHandle?: string | null
   packageContext?: CommandPalettePackageContext | null
-  versionUrlPattern?: string
+  versionRoute?: (version: string) => RouteLocationRaw
   contextCommands?: CommandPaletteContextCommandInput[]
 }) {
   const groupedCommands = ref<CommandPaletteCommandGroup[]>([]) as Ref<CommandPaletteCommandGroup[]>
@@ -76,10 +77,7 @@ async function captureCommandPalette(options?: {
       if (options?.packageContext) {
         setPackageContext(options.packageContext)
         useCommandPalettePackageCommands(() => options.packageContext ?? null)
-        useCommandPaletteVersionCommands(
-          () => options.packageContext ?? null,
-          () => options.versionUrlPattern,
-        )
+        useCommandPaletteVersionCommands(() => options.packageContext ?? null, options.versionRoute)
       } else {
         clearPackageContext()
       }
@@ -345,7 +343,7 @@ describe('useCommandPaletteCommands', () => {
     wrapper.unmount()
   })
 
-  it('keeps version navigation on the current surface when a version URL pattern is provided', async () => {
+  it('keeps version navigation on the current surface when a version route builder is provided', async () => {
     const { wrapper, flatCommands, routePath } = await captureCommandPalette({
       route: '/package-code/vue/v/3.4.2/src/index.ts',
       packageContext: {
@@ -354,7 +352,7 @@ describe('useCommandPaletteCommands', () => {
         latestVersion: '4.0.0',
         versions: ['4.0.0', '3.5.0', '3.4.2'],
       },
-      versionUrlPattern: '/package-code/vue/v/{version}/src/index.ts',
+      versionRoute: version => `/package-code/vue/v/${version}/src/index.ts`,
     })
 
     const versionCommand = flatCommands.value.find(command => command.id === 'version:3.5.0')
