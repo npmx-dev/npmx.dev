@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Theme as VueDataUiTheme, VueUiXyConfig, VueUiXyDatasetItem } from 'vue-data-ui'
-import { VueUiXy } from 'vue-data-ui/vue-ui-xy'
+import type { Theme as VueDataUiTheme } from 'vue-data-ui'
+import { VueUiXy, type VueUiXyConfig, type VueUiXyDatasetItem } from 'vue-data-ui/vue-ui-xy'
 import { useDebounceFn, useElementSize, useTimeoutFn } from '@vueuse/core'
 import { useCssVariables } from '~/composables/useColors'
 import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch, lightenOklch } from '~/utils/colors'
@@ -1077,7 +1077,7 @@ const normalisedDataset = computed(() => {
   const lastDateMs = chartData.value.dates.at(-1) ?? 0
   const isAbsoluteMetric = selectedMetric.value === 'contributors'
 
-  return chartData.value.dataset?.map(d => {
+  return (chartData.value.dataset || []).map(d => {
     const series = applyDataPipeline(
       d.series.map(v => v ?? 0),
       {

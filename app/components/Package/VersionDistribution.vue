@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { VueUiXy } from 'vue-data-ui/vue-ui-xy'
-import { type VueUiXyDatasetItem, type VueUiXyConfig } from 'vue-data-ui'
+import { VueUiXy, type VueUiXyDatasetItem, type VueUiXyConfig } from 'vue-data-ui/vue-ui-xy'
 import { useElementSize } from '@vueuse/core'
 import { useCssVariables } from '~/composables/useColors'
 import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch, lightenHex } from '~/utils/colors'
