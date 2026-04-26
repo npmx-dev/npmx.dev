@@ -19,7 +19,7 @@ jobs:
     permissions:
       pull-requests: write # post first-time contributor greeting comments
     steps:
-      - uses: zephyrproject-rtos/action-first-interaction@58853996b1ac504b8e0f6964301f369d2bb22e5c
+      - uses: zephyrproject-rtos/action-first-interaction@58853996b1ac504b8e0f6964301f369d2bb22e5c # tag=v1.1.1+zephyr.6
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           pr-opened-message: |
