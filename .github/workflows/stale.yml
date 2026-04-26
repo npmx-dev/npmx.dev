@@ -6,13 +6,13 @@ on:
     - cron: '0 2 * * *'
   workflow_dispatch: # Allow manual trigger
 
-permissions:
-  issues: write
-  pull-requests: write
+permissions: {}
 
 jobs:
   stale-bugs:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     steps:
       - uses: actions/stale@b5d41d4e1d5dceea10e7104786b73624c18a190f
         with:
@@ -28,6 +28,8 @@ jobs:
 
   stale-prs:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - uses: actions/stale@b5d41d4e1d5dceea10e7104786b73624c18a190f
         with:
