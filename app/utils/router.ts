@@ -52,3 +52,16 @@ export function diffRoute(
     },
   }
 }
+
+export function packageTimelineRoute(packageName: string, version: string): RouteLocationRaw {
+  const { org, name } = splitPackageName(packageName)
+
+  return {
+    name: 'timeline',
+    params: {
+      org: org || undefined,
+      packageName: name,
+      version: version.replace(/\s+/g, ''),
+    },
+  }
+}

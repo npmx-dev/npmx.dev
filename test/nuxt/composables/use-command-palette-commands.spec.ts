@@ -230,6 +230,14 @@ describe('useCommandPaletteCommands', () => {
     expect(flatCommands.value.find(command => command.id === 'package-diff')).toBeTruthy()
     expect(flatCommands.value.find(command => command.id === 'package-download')).toBeTruthy()
     expect(flatCommands.value.find(command => command.id === 'package-main')?.to).toBeTruthy()
+    expect(flatCommands.value.find(command => command.id === 'package-timeline')?.to).toEqual({
+      name: 'timeline',
+      params: {
+        org: undefined,
+        packageName: 'vue',
+        version: '3.4.0',
+      },
+    })
     expect(groupedCommands.value.at(-1)?.id).toBe('versions')
     expect(groupedCommands.value.at(-1)?.items[0]?.id).toBe('version:3.4.0')
     expect(groupedCommands.value.at(-1)?.items[0]?.active).toBe(true)
@@ -509,6 +517,14 @@ describe('useCommandPaletteCommands', () => {
       name: 'docs',
       params: {
         path: ['@scope', 'pkg', 'v', '1.0.0'],
+      },
+    })
+    expect(flatCommands.value.find(command => command.id === 'package-timeline')?.to).toEqual({
+      name: 'timeline',
+      params: {
+        org: '@scope',
+        packageName: 'pkg',
+        version: '1.0.0',
       },
     })
 
