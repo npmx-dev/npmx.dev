@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { SelectField } from '#components'
 import { ref, computed } from 'vue'
-import type { FormatterParams, VueUiScatterConfig, VueUiScatterDatasetItem } from 'vue-data-ui'
-import { VueUiScatter } from 'vue-data-ui/vue-ui-scatter'
+import {
+  VueUiScatter,
+  type VueUiScatterConfig,
+  type VueUiScatterDatasetItem,
+} from 'vue-data-ui/vue-ui-scatter'
 import { buildCompareScatterChartDataset } from '~/utils/compare-scatter-chart'
 import { loadFile, copyAltTextForCompareScatterChart } from '~/utils/charts'
 
@@ -210,7 +213,7 @@ const config = computed<VueUiScatterConfig>(() => {
                 color: colors.value.fgSubtle,
                 offsetY: 10,
                 fontSize: 14,
-                formatter: (args: FormatterParams) => {
+                formatter: args => {
                   return formatters.value.x!(args.value)
                 },
               },
@@ -231,7 +234,7 @@ const config = computed<VueUiScatterConfig>(() => {
               labels: {
                 color: colors.value.fgSubtle,
                 fontSize: 14,
-                formatter: (args: FormatterParams) => {
+                formatter: args => {
                   return formatters.value.y!(args.value)
                 },
               },

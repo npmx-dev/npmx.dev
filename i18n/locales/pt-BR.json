@@ -20,7 +20,10 @@
     "chat": "chat",
     "builders_chat": "construtores",
     "keyboard_shortcuts": "atalhos de teclado",
-    "brand": "marca"
+    "brand": "marca",
+    "resources": "Recursos",
+    "features": "Funcionalidades",
+    "other": "Outros"
   },
   "shortcuts": {
     "section": {
@@ -42,7 +45,8 @@
     "open_docs": "Abrir documentação",
     "disable_shortcuts": "Pode desativar os atalhos do teclado em {settings}.",
     "open_main": "Abrir informação principal",
-    "open_diff": "Abrir diferença de versões"
+    "open_diff": "Abrir diferença de versões",
+    "open_timeline": "Abrir linha do tempo"
   },
   "search": {
     "label": "Pesquisar pacotes npm",
@@ -262,6 +266,7 @@
     "accent_colors": {
       "label": "Cores de destaque",
       "neutral": "Neutro",
+      "sky": "Celeste",
       "coral": "Coral",
       "amber": "Âmbar",
       "emerald": "Esmeralda",
@@ -273,6 +278,9 @@
     "background_themes": {
       "label": "Tom de fundo",
       "neutral": "Neutro",
+      "stone": "Pedra",
+      "zinc": "Zinco",
+      "slate": "Ardósia",
       "black": "Preto"
     },
     "keyboard_shortcuts_enabled": "Habilitar atalhos de teclado",
@@ -376,9 +384,18 @@
       "size": "O tamanho da instalação aumentou em {percent} ({size} maior)",
       "deps": "{count} mais dependências"
     },
+    "size_decrease": {
+      "title_size": "Tamanho do pacote diminuiu desde v{version}!",
+      "title_deps": "Número de dependências diminuiu desde v{version}!",
+      "title_both": "Tamanho do pacote e número de dependências diminuíram desde v{version}!",
+      "size": "Tamanho da instalação reduzido em {percent} ({size} menor)",
+      "deps": "{count} menos dependências"
+    },
     "replacement": {
       "title": "Você pode não precisar desta dependência.",
-      "native": "Isso pode ser substituído por {replacement}, disponível desde Node {nodeVersion}.",
+      "example": "Exemplo:",
+      "native": "Este pacote pode ser substituído por {replacement}, disponível desde Node {nodeVersion}.",
+      "native_no_version": "Este pacote pode ser substituído por {replacement}.",
       "simple": "A {community} marcou este pacote como redundante, com o conselho: {replacement}.",
       "documented": "A {community} marcou este pacote como tendo alternativas mais performáticas.",
       "none": "Este pacote foi marcado como não mais necessário, e sua funcionalidade provavelmente está disponível nativamente em todas as engines.",
@@ -416,7 +433,8 @@
         "refs": "{count} ref | {count} refs",
         "assets": "{count} asset | {count} assets"
       },
-      "view_source": "Ver código-fonte"
+      "view_source": "Ver código-fonte",
+      "skills_cli": "skills CLI"
     },
     "links": {
       "main": "principal",
@@ -428,6 +446,7 @@
       "docs": "documentação",
       "fund": "financiar",
       "compare": "comparar",
+      "timeline": "linha do tempo",
       "compare_this_package": "comparar este pacote"
     },
     "likes": {
@@ -473,7 +492,8 @@
         "warning": "Aviso",
         "caution": "Cuidado"
       },
-      "copy_as_markdown": "Copiar README como Markdown"
+      "copy_as_markdown": "Copiar README como Markdown",
+      "error_loading": "Falha ao carregar detalhes do README"
     },
     "provenance_section": {
       "title": "Proveniência",
@@ -551,6 +571,23 @@
       "page_title": "Histórico de versões",
       "current_tags": "Tags atuais",
       "no_match_filter": "Nenhuma versão corresponde a {filter}"
+    },
+    "timeline": {
+      "load_more": "Carregar mais",
+      "load_error": "Falha ao carregar a linha do tempo. Tente novamente mais tarde.",
+      "size_increase": "Tamanho da instalação aumentou em {percent}% ({size})",
+      "size_decrease": "Tamanho da instalação diminuiu em {percent}% ({size})",
+      "dep_increase": "{count} dependências adicionadas",
+      "dep_decrease": "{count} dependências removidas",
+      "license_change": "Licença alterada de {from} para {to}",
+      "esm_added": "Tipo de módulo alterado para ESM",
+      "esm_removed": "Tipo de módulo alterado de ESM para CJS",
+      "types_added": "Tipos TypeScript adicionados",
+      "types_removed": "Tipos TypeScript removidos",
+      "trusted_publisher_added": "Publicação de confiança ativada",
+      "trusted_publisher_removed": "Publicação de confiança removida",
+      "provenance_added": "Proveniência ativada",
+      "provenance_removed": "Proveniência removida"
     },
     "dependencies": {
       "title": "Dependências ({count})",
@@ -630,7 +667,7 @@
       "smoothing": "Suavização",
       "prediction": "Previsão",
       "known_anomalies": "Anomalias conhecidas",
-      "known_anomalies_description": "Interpola sobre picos de download conhecidos causados ​​por bots ou problemas de CI.",
+      "known_anomalies_description": "Interpola sobre picos de download conhecidos causados por bots ou problemas de CI.",
       "known_anomalies_ranges": "Intervalos de anomalia",
       "known_anomalies_range": "De {start} a {end}",
       "known_anomalies_range_named": "{packageName}: de {start} a {end}",
@@ -940,6 +977,7 @@
     "view_raw": "Ver arquivo bruto",
     "toggle_container": "Alternar largura do contêiner de código",
     "open_raw_file": "Abrir arquivo bruto",
+    "open_path_dropdown": "Abrir menu suspenso de segmentos do caminho",
     "file_too_large": "Arquivo muito grande para visualizar",
     "file_size_warning": "{size} excede o limite de 500KB para destaque de sintaxe",
     "failed_to_load": "Falha ao carregar arquivo",
@@ -1232,9 +1270,12 @@
     },
     "scatter_chart": {
       "title": "Comparar {x} vs {y}",
+      "freshness_score": "Pontuação de atualidade",
       "copy_alt": {
-        "analysis": "{package} : {x_name} ({x_value}) e {y_name} ({y_value})"
+        "analysis": "{package} : {x_name} ({x_value}) e {y_name} ({y_value})",
+        "description": "Gráfico de dispersão mapeando {x_name} versus {y_name} para os pacotes {packages}. {analysis}. {watermark}"
       },
+      "filename": "{x}-vs-{y}-grafico-de-dispersao",
       "x_axis": "EIXO-X ↦",
       "y_axis": "EIXO-Y ↥"
     },
@@ -1475,7 +1516,7 @@
       "li2": "Não coleta identificadores pessoais",
       "li3": "Não rastreia usuários em sites",
       "li4": "Todos os dados são agregados e anonimizados",
-      "p3": "As únicas informações coletadas incluem: URLs de páginas, referenciador, país/região, tipo de dispositivo, navegador e sistema operacional. \nEsses dados não podem ser usados ​​para identificar usuários individuais."
+      "p3": "As únicas informações coletadas incluem: URLs de páginas, referenciador, país/região, tipo de dispositivo, navegador e sistema operacional. \nEsses dados não podem ser usados para identificar usuários individuais."
     },
     "authenticated": {
       "title": "Usuários autenticados",
@@ -1565,9 +1606,14 @@
     "meta_description": "A equipe do npmx estava recarregando as energias. O Discord reabre depois de uma semana.",
     "heading": "recarregando",
     "subtitle": "estávamos construindo o npmx a uma velocidade que está nos custando {some} nosso sono. Não queríamos que isso virasse uma rotina! então tiramos uma semana de férias. Juntos.",
+    "illustration_alt": "uma única fileira de ícones aconchegantes",
+    "poke_log": "Cutucar a fogueira",
     "what": {
       "title": "o que aconteceu",
-      "dates": "Fevereiro 14 – 21"
+      "p1": "o discord ficou fechado {dates}.",
+      "dates": "14 – 21 de fevereiro",
+      "p2": "todos os links de convite foram removidos e os canais foram bloqueados – exceto {garden}, que ficou aberto para quem quisesse continuar por lá.",
+      "garden": "#garden"
     },
     "meantime": {
       "title": "em breve",
@@ -1581,6 +1627,7 @@
     },
     "stats": {
       "contributors": "Contribuidores",
+      "commits": "Commits",
       "pr": "PRs Mergeados",
       "subtitle": {
         "some": "alguns",
@@ -1605,9 +1652,18 @@
     "meta_description": "Diretrizes da marca npmx, logotipos, cores e tipografia para uso em imprensa e mídia.",
     "intro": "Recursos e diretrizes para usar a marca npmx em seus projetos, artigos e mídias.",
     "logos": {
+      "title": "logotipos",
       "description": "Baixe as logos do npmx em formato SVG e PNG. Use a variante apropriada para o seu fundo.",
+      "wordmark": "LOGOTIPO COMPLETO",
+      "wordmark_alt": "logotipo completo do npmx com barra azul em fundo escuro",
+      "wordmark_light_alt": "logotipo completo do npmx com barra de destaque em fundo claro",
+      "mark": "SÍMBOLO DA MARCA",
+      "mark_alt": "símbolo da marca npmx com ponto e barra em fundo escuro",
+      "mark_light_alt": "símbolo da marca npmx com ponto e barra em fundo claro",
       "on_dark": "escuro",
       "on_light": "claro",
+      "download_svg": "SVG",
+      "download_png": "PNG",
       "download_svg_aria": "Baixar {name} como SVG",
       "download_png_aria": "Baixar {name} como PNG"
     },
@@ -1631,7 +1687,8 @@
     },
     "guidelines": {
       "title": "apenas uma nota",
-      "message": "Acessibilidade é importante para nós, e gostaríamos de que você o acompanhasse nessa visão. Quando usar os mídias mencionados, certifique-se de que há contraste suficiente com o fundo, e não seja menor que 24px. Se precisar de qualquer outro recurso ou informações adicionais sobre o projeto, fique à vontade para nos contatar em {link}."
+      "message": "A acessibilidade é importante para nós, e gostaríamos que você compartilhasse essa visão. Ao usar os recursos mencionados, certifique-se de que há contraste suficiente com o fundo e não os utilize em tamanho menor que 24 px. Se precisar de outros recursos ou informações adicionais sobre o projeto, fique à vontade para entrar em contato pelo {link}.",
+      "discord_link_text": "chat.npmx.dev"
     }
   },
   "alt_logo_kawaii": "Uma versão fofa, arredondada e colorida do logotipo do npmx."

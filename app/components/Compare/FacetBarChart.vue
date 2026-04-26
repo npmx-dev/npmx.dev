@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { VueUiHorizontalBar } from 'vue-data-ui/vue-ui-horizontal-bar'
+import {
+  VueUiHorizontalBar,
+  type VueUiHorizontalBarConfig,
+  type VueUiHorizontalBarDatasetItem,
+} from 'vue-data-ui/vue-ui-horizontal-bar'
 import { VueUiPatternSeed } from 'vue-data-ui/vue-ui-pattern-seed'
-import type { VueUiHorizontalBarConfig, VueUiHorizontalBarDatasetItem } from 'vue-data-ui'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
 import { createPatternDef } from 'vue-data-ui/utils'
 import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
