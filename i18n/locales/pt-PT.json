@@ -1508,43 +1508,43 @@
       }
     },
     "analytics": {
-      "title": "Análise",
-      "p1": "Usamos {bold} para entender como os visitantes utilizam o nosso site. Isto ajuda-nos a melhorar a experiência do utilizador e a identificar problemas.",
+      "title": "Analytics",
+      "p1": "Usamos {bold} para perceber como os visitantes utilizam o nosso site. Isto ajuda-nos a melhorar a experiência do utilizador e a identificar problemas.",
       "bold": "Vercel Web Analytics",
       "p2": "O Vercel Analytics foi concebido com a privacidade em mente:",
       "li1": "Não usa cookies",
       "li2": "Não recolhe identificadores pessoais",
       "li3": "Não rastreia utilizadores entre sites",
       "li4": "Todos os dados são agregados e anonimizados",
-      "p3": "As únicas informações recolhidas incluem: URLs de páginas, referenciador, país/região, tipo de dispositivo, navegador e sistema operacional. \nEstes dados não podem ser usados para identificar utilizadores individuais."
+      "p3": "As únicas informações recolhidas incluem: URLs de páginas, referrer, país/região, tipo de dispositivo, navegador e sistema operativo. \nEstes dados não podem ser usados para identificar utilizadores individuais."
     },
     "authenticated": {
       "title": "Utilizadores autenticados",
-      "p1": "Quando ligas a tua conta {bold} ao npmx, armazenamos o teu token de acesso OAuth num cookie de sessão seguro somente HTTP. \nEste token é usado exclusivamente para autenticar pedidos em teu nome.",
-      "bold": "Atmosfera",
+      "p1": "Quando ligas a tua conta {bold} ao npmx, armazenamos o teu token de acesso OAuth num cookie de sessão seguro e HTTP-only. \nEste token é usado exclusivamente para autenticar pedidos em teu nome.",
+      "bold": "Atmosphere",
       "p2": "Não armazenamos as tuas credenciais e não acedemos a nenhum dado além do necessário para fornecer as funcionalidades que utilizas. Podes desligar a tua conta a qualquer momento na página {settings}.",
       "settings": "definições"
     },
     "data_retention": {
       "title": "Retenção de dados",
-      "p1": "Os cookies de sessão são automaticamente eliminados quando fecha o navegador ou após um período de inatividade. As preferências de armazenamento local permanecem no teu dispositivo até que limpes os dados do navegador. Os dados analíticos são retidos de forma agregada e não podem ser vinculados a utilizadores individuais."
+      "p1": "Os cookies de sessão são automaticamente eliminados quando fechas o navegador ou após um período de inatividade. As preferências de armazenamento local permanecem no teu dispositivo até que limpes os dados do navegador. Os dados analíticos são retidos de forma agregada e não podem ser vinculados a utilizadores individuais."
     },
     "your_rights": {
       "title": "Os teus direitos",
       "p1": "Tens o direito de:",
-      "li1": "Acede a informações sobre que dados recolhemos",
-      "li2": "Limpa o teu armazenamento local e cookies a qualquer momento",
-      "li3": "Desliga a tua sessão autenticada",
-      "li4": "Solicita informações sobre as nossas práticas de dados",
+      "li1": "Aceder a informações sobre que dados recolhemos",
+      "li2": "Limpar o teu armazenamento local e cookies a qualquer momento",
+      "li3": "Desligar a tua sessão autenticada",
+      "li4": "Solicitar informações sobre as nossas práticas de dados",
       "p2": "Como não recolhemos dados pessoais, normalmente não há informações pessoais para eliminar ou exportar."
     },
     "contact": {
-      "title": "Contacte-nos",
-      "p1": "Para qualquer dúvida ou preocupação sobre esta política de privacidade, pode contactar-nos abrindo um problema no nosso {link}.",
-      "link": "Repositório GitHub"
+      "title": "Contacta-nos",
+      "p1": "Para qualquer dúvida ou preocupação sobre esta política de privacidade, podes contactar-nos ao abrir um issue no nosso {link}.",
+      "link": "repositório GitHub"
     },
     "changes": {
-      "title": "Alterações nesta política",
+      "title": "Alterações a esta política",
       "p1": "Poderemos atualizar esta política de privacidade de tempos em tempos. Quaisquer alterações serão publicadas nesta página com uma data de revisão atualizada."
     }
   },
@@ -1553,28 +1553,28 @@
     "footer_title": "a11y",
     "welcome": "Queremos que o {app} possa ser usado pelo maior número de pessoas possível.",
     "approach": {
-      "title": "Nossa abordagem",
-      "p1": "Tentamos seguir as Diretrizes de Acessibilidade de Conteúdo da Web (WCAG) 2.2 e usá-las como referência ao construir recursos. Não reivindicamos conformidade total com nenhum nível das WCAG — a acessibilidade é um processo contínuo e há sempre mais trabalho a fazer.",
+      "title": "A nossa abordagem",
+      "p1": "Tentamos seguir as Diretrizes de Acessibilidade para Conteúdo Web (WCAG) 2.2 e usá-las como referência ao desenvolver funcionalidades. Não reivindicamos conformidade total com nenhum nível das WCAG — a acessibilidade é um processo contínuo e há sempre mais trabalho a fazer.",
       "p2": "Este site é um {about}. As melhorias de acessibilidade são feitas de forma incremental como parte do nosso desenvolvimento regular.",
       "about_link": "projeto de código aberto voltado para a comunidade"
     },
     "measures": {
       "title": "O que fazemos",
       "p1": "Algumas das coisas que pretendemos fazer em todo o site:",
-      "li1": "Usar atributos semânticos HTML e ARIA quando apropriado.",
+      "li1": "Usar HTML semântico e atributos ARIA quando apropriado.",
       "li2": "Usar tamanhos de texto relativos para poderes ajustá-los no teu navegador.",
-      "li3": "Suportar navegação pelo teclado em toda a interface.",
-      "li4": "Respeitar as preferências de media prefers-reduced-motion e prefers-color-scheme.",
+      "li3": "Suportar navegação por teclado em toda a interface.",
+      "li4": "Respeitar as media queries prefers-reduced-motion e prefers-color-scheme.",
       "li5": "Conceber com contraste de cores suficiente em mente.",
       "li6": "Garantir que o conteúdo essencial esteja disponível sem JavaScript, embora algumas funcionalidades interativas o exijam."
     },
     "limitations": {
       "title": "Limitações conhecidas",
-      "p1": "Algumas partes do site, principalmente conteúdo de terceiros, como READMEs de pacotes, podem não cumprir com padrões de acessibilidade. Estamos trabalhando para melhorar essas áreas ao longo do tempo."
+      "p1": "Algumas partes do site, principalmente conteúdo de terceiros, como READMEs de pacotes, podem não cumprir com padrões de acessibilidade. Estamos a trabalhar para melhorar estas áreas ao longo do tempo."
     },
     "contact": {
       "title": "Feedback",
-      "p1": "Se encontrares uma barreira de acessibilidade no {app}, informe-nos abrindo um problema no nosso {link}. Levamos esses relatórios a sério e faremos o nosso melhor para os resolver.",
+      "p1": "Se encontrares uma barreira de acessibilidade no {app}, por favor informa-nos ao abrir um issue no nosso {link}. Levamos estes relatórios a sério e faremos o nosso melhor para os resolver.",
       "link": "Repositório GitHub"
     }
   },
@@ -1582,12 +1582,12 @@
     "title": "estado da tradução",
     "generated_at": "Data de geração: {date}",
     "welcome": "Se tens interesse em ajudar-nos a traduzir o {npmx} para um dos idiomas listados abaixo, vieste ao sítio certo! Esta página de atualização automática lista sempre todo o conteúdo que precisa da tua ajuda no momento.",
-    "p1": "Usamos {lang} como idioma padrão, com um total de {count}. Se gostarias de ajudar a adicionar traduções, localiza o idioma em {bylang} e expande os detalhes.",
+    "p1": "Usamos {lang} como idioma predefinido, com um total de {count}. Se gostarias de ajudar a adicionar traduções, localiza o idioma em {bylang} e expande os detalhes.",
     "p1_lang": "Inglês Americano (en-US)",
     "p1_count": "0 mensagens | 1 mensagem |{count} mensagens",
-    "p2": "Antes de começar, por favor, lê o nosso {guide} para saber mais sobre o nosso processo de tradução e como podes contribuir.",
+    "p2": "Antes de começar, por favor lê o nosso {guide} para saberes mais sobre o nosso processo de tradução e como podes contribuir.",
     "guide": "Guia de tradução (i18n)",
-    "by_locale": "Progresso de tradução por localidade",
+    "by_locale": "Progresso de tradução por locale",
     "by_file": "Progresso de tradução por ficheiro",
     "complete_text": "Esta tradução está completa, ótimo trabalho!",
     "missing_text": "em falta",
@@ -1596,33 +1596,33 @@
     "table": {
       "file": "Ficheiro",
       "status": "Estado",
-      "error": "Erro enquanto carregava a lista de ficheiros.",
+      "error": "Erro ao carregar a lista de ficheiros.",
       "empty": "Nenhum ficheiro encontrado",
       "file_link": "Editar {file} ({lang}) no GitHub"
     }
   },
   "vacations": {
     "title": "de férias",
-    "meta_description": "A equipa do npmx estava a recarregar energias. O Discord reabre depois de uma semana.",
+    "meta_description": "A equipa do npmx estava a recarregar energias. O Discord reabriu depois de uma semana.",
     "heading": "a recarregar",
-    "subtitle": "estávamos a construir o npmx a uma velocidade que nos estava a custar {some} do nosso sono. Não queríamos que isso se tornasse uma rotina! por isso tirámos uma semana de férias. Juntos.",
-    "illustration_alt": "uma única fileira de ícones acolhedores",
+    "subtitle": "estávamos a desenvolver o npmx a uma velocidade que nos estava a custar {some} do nosso sono. não queríamos que isso se tornasse uma rotina! por isso tirámos uma semana de férias. juntos.",
+    "illustration_alt": "uma fileira de ícones acolhedores",
     "poke_log": "Atiçar a fogueira",
     "what": {
       "title": "o que aconteceu",
-      "p1": "o discord ficou fechado {dates}.",
+      "p1": "o discord ficou fechado de {dates}.",
       "dates": "14 – 21 de fevereiro",
       "p2": "todas as ligações de convite foram removidas e os canais foram bloqueados – exceto {garden}, que ficou aberto para quem quisesse continuar por lá.",
       "garden": "#garden"
     },
     "meantime": {
       "title": "entretanto",
-      "p1": "O {site} e o {repo} continuaram abertos – as pessoas ainda se envolveram, reportaram problemas, abriram alguns PRs, mas principalmente todos passaram tempo perto de uma lareira acolhedora.",
+      "p1": "o {site} e o {repo} continuaram abertos – as pessoas ainda se envolveram, reportaram problemas, abriram alguns PRs, mas principalmente todos passaram tempo perto de uma lareira acolhedora.",
       "repo_link": "o repo"
     },
     "return": {
       "title": "estamos de volta!",
-      "p1": "Estamos de volta recarregados e prontos para o último empurrão até ao dia 3 de março. {social} para atualizações.",
+      "p1": "voltamos recarregados e prontos para o último empurrão até ao dia 3 de março. {social} para atualizações.",
       "social_link": "segue-nos no Bluesky"
     },
     "stats": {
@@ -1637,14 +1637,14 @@
   },
   "action_bar": {
     "title": "Barra de ações",
-    "selection": "0 selecionados | 1 selecionado | {count} selecionados",
+    "selection": "0 selecionadas | 1 selecionado | {count} selecionadas",
     "shortcut": "Prime \"{key}\" para focar nas ações",
     "button_close_aria_label": "Fechar barra de ações"
   },
   "logo_menu": {
     "copy_svg": "Copiar logótipo como SVG",
     "copied": "Copiado!",
-    "browse_brand": "Navegar kit da marca"
+    "browse_brand": "Explorar kit de marca"
   },
   "brand": {
     "title": "Marca",
@@ -1654,9 +1654,9 @@
     "logos": {
       "title": "logótipos",
       "description": "Transfira os logótipos do npmx em formato SVG e PNG. Usa a variante apropriada para o teu fundo.",
-      "wordmark": "LOGOTIPO COMPLETO",
-      "wordmark_alt": "logotipo completo do npmx com barra azul em fundo escuro",
-      "wordmark_light_alt": "logotipo completo do npmx com barra de destaque em fundo claro",
+      "wordmark": "LOGÓTIPO COMPLETO",
+      "wordmark_alt": "logótipo completo do npmx com barra azul em fundo escuro",
+      "wordmark_light_alt": "logótipo completo do npmx com barra de destaque em fundo claro",
       "mark": "SÍMBOLO DA MARCA",
       "mark_alt": "símbolo da marca npmx com ponto e barra em fundo escuro",
       "mark_light_alt": "símbolo da marca npmx com ponto e barra em fundo claro",
