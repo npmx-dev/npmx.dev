@@ -710,12 +710,12 @@
     "metrics": {
       "esm": "ES Modules suportados",
       "cjs": "CommonJS suportado",
-      "no_esm": "Sem suporte a ES Modules",
+      "no_esm": "ES Modules não suportados",
       "wasm": "Tem WebAssembly",
       "types_label": "Tipos",
       "types_included": "Tipos incluídos",
       "types_available": "Tipos disponíveis via {package}",
-      "no_types": "Sem tipos TypeScript"
+      "no_types": "Sem tipos"
     },
     "license": {
       "view_spdx": "Ver texto da licença no SPDX",
@@ -742,9 +742,9 @@
       "show_all": "mostrar {count} pacote descontinuado | mostrar todos os {count} pacotes descontinuados"
     },
     "access": {
-      "title": "Acesso da Equipa",
-      "refresh": "Atualizar acesso da equipa",
-      "list_label": "Lista de acesso da equipa",
+      "title": "Acesso de Equipa",
+      "refresh": "Atualizar acesso de equipa",
+      "list_label": "Lista de acesso de equipa",
       "owner": "proprietário",
       "rw": "rw",
       "ro": "ro",
@@ -755,22 +755,22 @@
       "select_team": "Selecionar equipa",
       "permission_label": "Nível de permissão",
       "permission": {
-        "read_only": "somente leitura",
-        "read_write": "leitura-escrita"
+        "read_only": "só de leitura",
+        "read_write": "leitura e escrita"
       },
       "grant_button": "conceder",
       "cancel_grant": "Cancelar concessão de acesso",
-      "grant_access": "+ Conceder acesso da equipa"
+      "grant_access": "+ Conceder acesso de equipa"
     },
     "list": {
       "filter_label": "Filtrar pacotes",
       "filter_placeholder": "Filtrar pacotes...",
       "sort_label": "Ordenar pacotes",
-      "showing_count": "Mostrando {filtered} de {total} pacotes"
+      "showing_count": "A mostrar {filtered} de {total} pacotes"
     },
     "skeleton": {
       "loading": "A carregar detalhes do pacote",
-      "maintainers": "Mantenedores",
+      "maintainers": "Responsáveis",
       "keywords": "Palavras-chave",
       "versions": "Versões",
       "dependencies": "Dependências"
@@ -783,7 +783,7 @@
     },
     "size": {
       "b": "{size} B",
-      "kb": "{size} KB",
+      "kb": "{size} kB",
       "mb": "{size} MB"
     },
     "download": {
@@ -801,13 +801,13 @@
       "run_hint": "Executa o conector na tua máquina para ativar funcionalidades de administrador.",
       "copy_command": "Copiar comando",
       "copied": "Copiado",
-      "paste_token": "Em seguida, cole o token abaixo para ligar:",
+      "paste_token": "Em seguida, cola o token abaixo para ligar:",
       "token_label": "Token",
-      "token_placeholder": "cole o token aqui...",
+      "token_placeholder": "cola o token aqui...",
       "advanced": "Opções avançadas",
       "port_label": "Porta",
       "warning": "AVISO",
-      "warning_text": "Isto permite que o npmx aceda ao teu CLI do npm. Liga-te apenas a sites em que confias.",
+      "warning_text": "Isto permite que o npmx aceda ao teu npm CLI. Liga-te apenas a sites em que confias.",
       "connect": "Ligar",
       "connecting": "A ligar...",
       "auto_open_url": "Abrir página de autenticação automaticamente"
@@ -826,9 +826,9 @@
       "otp_placeholder": "Introduz o código OTP...",
       "otp_label": "Palavra-passe de utilização única",
       "retry_otp": "Tentar novamente com OTP",
-      "retry_web_auth": "Tenta novamente com autenticação da Web",
+      "retry_web_auth": "Tentar novamente com autenticação web",
       "retrying": "A tentar novamente...",
-      "open_web_auth": "Abrir ligação de autenticação da web",
+      "open_web_auth": "Abrir ligação de autenticação web",
       "approve_operation": "Aprovar operação",
       "remove_operation": "Remover operação",
       "approve_all": "Aprovar Tudo",
@@ -887,8 +887,8 @@
       "role_label": "Função",
       "role": {
         "all": "todos",
-        "developer": "desenvolvedor",
-        "admin": "administrador",
+        "developer": "programador",
+        "admin": "admin",
         "owner": "proprietário"
       },
       "team_label": "Equipa",
@@ -1084,7 +1084,7 @@
       "description": "Descrição",
       "downloads": "Downloads/sem",
       "published": "Última publicação",
-      "maintainers": "Mantenedores",
+      "maintainers": "Responsáveis",
       "keywords": "Palavras-chave",
       "security": "Segurança",
       "selection": "Selecionar pacote"
@@ -1153,7 +1153,7 @@
       "title": "Equipa",
       "governance": "Governança",
       "role_steward": "administrador",
-      "role_maintainer": "mantenedor",
+      "role_maintainer": "responsável",
       "sponsor": "patrocinador",
       "sponsor_aria": "Patrocinador {name} no GitHub"
     },
