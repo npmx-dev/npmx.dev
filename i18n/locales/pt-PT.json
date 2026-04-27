@@ -1240,7 +1240,7 @@
   "compare": {
     "packages": {
       "title": "comparar pacotes",
-      "tagline": "compare pacotes npm lado a lado para ajudá-lo a escolher o certo.",
+      "tagline": "compara pacotes npm lado a lado para te ajudar a escolher o mais adequado.",
       "meta_title": "Comparar {packages} - npmx",
       "meta_title_empty": "Comparar Pacotes - npmx",
       "meta_description": "Comparação lado a lado de {packages}",
@@ -1249,13 +1249,13 @@
       "section_facets": "Critérios",
       "section_comparison": "Comparação",
       "copy_as_markdown": "Copiar tabela",
-      "loading": "A carregar dados do pacote...",
-      "error": "Falha ao carregar dados do pacote. Por favor, tenta novamente.",
+      "loading": "A carregar dados dos pacotes...",
+      "error": "Falha ao carregar dados dos pacotes. Por favor, tenta novamente.",
       "empty_title": "Seleciona pacotes para comparar",
       "empty_description": "Pesquisa e adiciona pelo menos 2 pacotes acima para veres uma comparação lado a lado das suas métricas.",
       "table_view": "Tabela",
       "charts_view": "Gráficos",
-      "no_chartable_data": "Nenhum dado do gráfico disponível para os filtros selecionados.",
+      "no_chartable_data": "Não há dados disponíveis para os critérios selecionados.",
       "bar_chart_nav_hint": "Usa ↑ ↓",
       "line_chart_nav_hint": "Usa ← →"
     },
@@ -1273,7 +1273,7 @@
       "freshness_score": "Pontuação de atualidade",
       "copy_alt": {
         "analysis": "{package} : {x_name} ({x_value}) e {y_name} ({y_value})",
-        "description": "Gráfico de dispersão mapeando {x_name} versus {y_name} para os pacotes {packages}. {analysis}. {watermark}"
+        "description": "Gráfico de dispersão a mapear {x_name} versus {y_name} para os pacotes {packages}. {analysis}. {watermark}"
       },
       "filename": "{x}-vs-{y}-grafico-de-dispersao",
       "x_axis": "EIXO-X ↦",
@@ -1281,7 +1281,7 @@
     },
     "no_dependency": {
       "label": "(Sem dependência)",
-      "typeahead_title": "O que Tiago faria?",
+      "typeahead_title": "O que faria o João?",
       "typeahead_description": "Compara com não usar uma dependência! Aprovado por e18e.",
       "tooltip_title": "Podes não precisar de uma dependência",
       "tooltip_description": "Compara com não usar uma dependência! O {link} mantém uma lista de pacotes que podem ser substituídos por APIs nativas ou alternativas mais simples.",
@@ -1298,7 +1298,7 @@
       "coming_soon": "Em breve",
       "select_all": "Selecionar todos os critérios",
       "deselect_all": "Desselecionar todos os critérios",
-      "binary_only_tooltip": "Este pacote expõe binários e nenhuma exportação",
+      "binary_only_tooltip": "Este pacote expõe binários e nenhum export",
       "categories": {
         "performance": "Performance",
         "health": "Saúde",
@@ -1307,24 +1307,24 @@
       },
       "items": {
         "packageSize": {
-          "label": "Tamanho do pacote",
+          "label": "Tamanho do Pacote",
           "description": "Tamanho do pacote em si (descompactado)"
         },
         "installSize": {
-          "label": "Tamanho da instalação",
+          "label": "Tamanho da Instalação",
           "description": "Tamanho total da instalação, incluindo todas as dependências"
         },
         "dependencies": {
-          "label": "Dependências Diretas",
+          "label": "Deps Diretas",
           "description": "Número de dependências diretas"
         },
         "totalDependencies": {
-          "label": "Dependências totais",
+          "label": "Deps Totais",
           "description": "Número total de dependências, incluindo transitivas"
         },
         "downloads": {
-          "label": "Downloads/semana",
-          "description": "Contagem de downloads semanais"
+          "label": "Transferências/sem",
+          "description": "Contagem de transferências semanais"
         },
         "totalLikes": {
           "label": "Gostos",
@@ -1335,11 +1335,11 @@
           "description": "Quando esta versão foi publicada"
         },
         "deprecated": {
-          "label": "Obsoleto?",
-          "description": "Se o pacote está obsoleto"
+          "label": "Descontinuado?",
+          "description": "Se o pacote está descontinuado"
         },
         "engines": {
-          "label": "Motores",
+          "label": "Engines",
           "description": "Requisitos de versão do Node.js."
         },
         "types": {
@@ -1347,7 +1347,7 @@
           "description": "Definições de tipos TypeScript"
         },
         "moduleFormat": {
-          "label": "Formato do módulo",
+          "label": "Formato de Módulo",
           "description": "Suporte ESM/CJS"
         },
         "license": {
@@ -1367,7 +1367,7 @@
           "description": "Número de issues no repositório GitHub"
         },
         "createdAt": {
-          "label": "Criado em",
+          "label": "Criado Em",
           "description": "Quando o pacote foi criado"
         }
       },
@@ -1375,12 +1375,12 @@
         "any": "Qualquer",
         "none": "Nenhum",
         "unknown": "Desconhecido",
-        "deprecated": "Obsoleto",
+        "deprecated": "Descontinuado",
         "not_deprecated": "Não",
         "types_included": "Incluído",
         "types_none": "Nenhum",
         "vulnerabilities_summary": "{count} ({critical}C/{high}A)",
-        "up_to_you": "A seu critério!"
+        "up_to_you": "Depende de ti!"
       },
       "trends": {
         "title": "Comparar tendências"
