@@ -323,7 +323,7 @@
       "role": "função",
       "members": "membros"
     },
-    "scroll_to_top": "Deslocar para o topo",
+    "scroll_to_top": "Voltar ao topo",
     "cancel": "Cancelar",
     "save": "Guardar",
     "edit": "Editar",
@@ -335,13 +335,13 @@
       "bitbucket": "Ver no Bitbucket",
       "codeberg": "Ver no Codeberg",
       "git_repo": "Ver no repositório Git",
-      "forgejo": "Ver em Forgejo",
+      "forgejo": "Ver no Forgejo",
       "gitea": "Ver no Gitea",
       "gitee": "Ver no Gitee",
-      "radicle": "Ver na Radicle",
-      "socket_dev": "Visualizar no socket.dev",
+      "radicle": "Ver no Radicle",
+      "socket_dev": "Ver no socket.dev",
       "sourcehut": "Ver no SourceHut",
-      "tangled": "Ver em Tangled"
+      "tangled": "Ver no Tangled"
     },
     "collapse": "Recolher",
     "collapse_with_name": "Recolher {name}",
