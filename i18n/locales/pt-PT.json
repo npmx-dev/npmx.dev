@@ -186,7 +186,7 @@
       "atmosphere_disconnected": "Atmosphere desligado.",
       "facets_all_selected": "Todos os critérios selecionados.",
       "facets_all_deselected": "Todos os critérios desselecionados.",
-      "view_switched": "Mudou para a vista {view}.",
+      "view_switched": "Vista alterada para {view}.",
       "setting_toggled": "{setting} {state}."
     }
   },
@@ -205,13 +205,13 @@
   "blog": {
     "title": "Blog",
     "heading": "blog",
-    "meta_description": "Insights e atualizações da comunidade npmx",
+    "meta_description": "Artigos e novidades da comunidade npmx",
     "author": {
       "view_profile": "Vê o perfil de {name} no Bluesky"
     },
     "draft_badge": "Rascunho",
     "draft_banner": "Este é um rascunho não publicado. Pode estar incompleto ou conter imprecisões.",
-    "no_posts": "Nenhum post encontrado.",
+    "no_posts": "Nenhum artigo encontrado.",
     "atproto": {
       "view_on_bluesky": "Ver no Bluesky",
       "reply_on_bluesky": "Responder no Bluesky",
@@ -224,8 +224,8 @@
       "updating": "A atualizar...",
       "reply_count": "{count} resposta | {count} respostas",
       "like_count": "{count} gosto | {count} gostos",
-      "repost_count": "{count} repostagem | {count} repostagens",
-      "more_replies": "{count} mais resposta... | {count} mais respostas..."
+      "repost_count": "{count} partilha | {count} partilhas",
+      "more_replies": "mais {count} resposta... | mais {count} respostas..."
     }
   },
   "settings": {
@@ -235,34 +235,34 @@
     "sections": {
       "appearance": "Aparência",
       "display": "Apresentação",
-      "search": "Recursos de pesquisa",
+      "search": "Pesquisa",
       "language": "Idioma",
       "keyboard_shortcuts": "Atalhos de teclado"
     },
     "data_source": {
       "label": "Fonte de dados",
-      "description": "Escolhe onde o npmx obtém os dados de pesquisa. As páginas de pacotes individuais sempre usam o registo npm diretamente.",
+      "description": "Escolhe onde o npmx obtém os dados de pesquisa. As páginas de pacotes individuais usam sempre o registo npm diretamente.",
       "npm": "Registo npm",
-      "npm_description": "Pesquisa listagens de pesquisa, organização e utilizadores diretamente do registo oficial do npm. \nAutoritário, mas pode ser mais lento.",
+      "npm_description": "Pesquisa, organizações e utilizadores obtidos diretamente do registo npm oficial. Fidedigno, mas pode ser mais lento.",
       "algolia": "Algolia",
-      "algolia_description": "Usa Algolia para pesquisas e páginas organizacionais e de utilizadores mais rápidas."
+      "algolia_description": "Usa Algolia para pesquisas e páginas de organizações e utilizadores mais rápidas."
     },
     "instant_search": "Pesquisa instantânea",
     "instant_search_description": "Navega até à página de pesquisa e atualiza os resultados conforme escreves.",
     "relative_dates": "Datas relativas",
     "include_types": "Incluir {'@'}types na instalação",
-    "include_types_description": "Adicionar pacote {'@'}types aos comandos de instalação para pacotes sem tipo",
+    "include_types_description": "Adicionar pacote {'@'}types aos comandos de instalação para pacotes sem tipos",
     "hide_platform_packages": "Ocultar pacotes específicos de plataforma na pesquisa",
     "hide_platform_packages_description": "Ocultar pacotes binários nativos como {'@'}esbuild/linux-x64 dos resultados",
-    "enable_graph_pulse_loop": "Ativar loop do efeito de pulso no gráfico mini",
-    "enable_graph_pulse_loop_description": "Ativar uma animação contínua de pulso no gráfico de downloads semanal. Esta animação pode ser distraente para alguns utilizadores.",
+    "enable_graph_pulse_loop": "Ativar repetição do efeito de pulsação no gráfico em miniatura",
+    "enable_graph_pulse_loop_description": "Ativa uma animação de pulsação contínua no gráfico semanal de transferências. Esta animação pode ser uma distração para alguns utilizadores.",
     "theme": "Tema",
     "theme_light": "Claro",
     "theme_dark": "Escuro",
     "theme_system": "Sistema",
     "language": "Idioma",
-    "help_translate": "Ajuda a traduzir npmx",
-    "translation_status": "Verificar estado global de tradução",
+    "help_translate": "Ajuda a traduzir o npmx",
+    "translation_status": "Verificar estado global da tradução",
     "accent_colors": {
       "label": "Cores de destaque",
       "neutral": "Neutro",
@@ -290,7 +290,7 @@
   "i18n": {
     "missing_keys": "{count} tradução em falta | {count} traduções em falta",
     "copy_keys": "Copiar chaves",
-    "show_more_keys": "Mostrar {count} mais...",
+    "show_more_keys": "Mostrar mais {count}...",
     "contribute_hint": "Ajuda a melhorar esta tradução adicionando as chaves em falta.",
     "edit_on_github": "Editar no GitHub",
     "view_guide": "Guia de tradução"
@@ -298,9 +298,9 @@
   "error": {
     "401": "Não autorizado",
     "404": "Página não encontrada",
-    "500": "Erro do Servidor Interno",
-    "503": "Serviço não disponível",
-    "default": "Algo deu errado"
+    "500": "Erro interno do servidor",
+    "503": "Serviço indisponível",
+    "default": "Algo correu mal"
   },
   "common": {
     "loading": "A carregar...",
