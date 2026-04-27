@@ -381,14 +381,14 @@
       "title_size": "Aumento significativo de tamanho desde v{version}",
       "title_deps": "Aumento significativo no número de dependências desde v{version}",
       "title_both": "Aumento significativo de tamanho e dependências desde v{version}",
-      "size": "O tamanho da instalação aumentou em {percent} (mais {size})",
+      "size": "Tamanho da instalação aumentou em {percent} (mais {size})",
       "deps": "mais {count} dependências"
     },
     "size_decrease": {
       "title_size": "Tamanho do pacote diminuiu desde v{version}!",
       "title_deps": "Número de dependências diminuiu desde v{version}!",
       "title_both": "Tamanho do pacote e número de dependências diminuíram desde v{version}!",
-      "size": "O tamanho da instalação diminuiu em {percent} (menos {size})",
+      "size": "Tamanho da instalação diminuiu em {percent} (menos {size})",
       "deps": "menos {count} dependências"
     },
     "replacement": {
@@ -455,27 +455,27 @@
     },
     "docs": {
       "contents": "Conteúdo",
-      "default_not_available": "Documentação não disponível para esta versão.",
-      "not_available": "Documentação não disponível",
+      "default_not_available": "Documentação indisponível para esta versão.",
+      "not_available": "Documentação indisponível",
       "not_available_detail": "Não conseguimos gerar documentação para esta versão.",
-      "page_title": "Documentação API - npmx",
-      "page_title_name": "{name} docs - npmx",
-      "page_title_version": "{name} docs - npmx",
+      "page_title": "Docs API - npmx",
+      "page_title_name": "Docs {name} - npmx",
+      "page_title_version": "Docs {name} - npmx",
       "og_title": "{name} - Docs",
-      "view_package": "Visualizar pacote"
+      "view_package": "Ver pacote"
     },
     "get_started": {
       "title": "Começar",
       "pm_label": "Gestor de pacotes",
       "copy_command": "Copiar comando de instalação",
-      "copy_dev_command": "Copiar o comando de instalação dev",
+      "copy_dev_command": "Copiar comando de instalação dev",
       "dev_dependency_hint": "Geralmente instalado como uma dependência de desenvolvimento",
       "view_types": "Ver {package}"
     },
     "create": {
       "title": "Criar novo projeto",
       "copy_command": "Copiar comando de criação",
-      "view": "{packageName} tem o mesmo mantenedor. Clica para mais detalhes."
+      "view": "{packageName} tem o mesmo responsável. Clica para mais detalhes."
     },
     "run": {
       "title": "Executar",
@@ -483,8 +483,8 @@
     },
     "readme": {
       "title": "Readme",
-      "no_readme": "README não disponível.",
-      "toc_title": "Sumário",
+      "no_readme": "README indisponível.",
+      "toc_title": "Índice",
       "callout": {
         "note": "Nota",
         "tip": "Dica",
@@ -497,11 +497,11 @@
     },
     "provenance_section": {
       "title": "Proveniência",
-      "built_and_signed_on": "Criado e assinado em {provider}",
+      "built_and_signed_on": "Compilado e assinado em {provider}",
       "view_build_summary": "Ver resumo da compilação",
-      "source_commit": "Commit de origem",
-      "build_file": "Ficheiro de compilação",
-      "public_ledger": "Registo público",
+      "source_commit": "Commit de Origem",
+      "build_file": "Ficheiro de Compilação",
+      "public_ledger": "Registo Público",
       "transparency_log_entry": "Entrada de registo de transparência",
       "view_more_details": "Ver mais detalhes",
       "error_loading": "Falha ao carregar detalhes de proveniência"
@@ -511,21 +511,21 @@
       "description_to_none_provenance": "Esta versão foi publicada sem {provenance}.",
       "description_to_none_trustedPublisher": "Esta versão foi publicada sem {trustedPublishing}.",
       "description_to_provenance_trustedPublisher": "Esta versão usa {provenance} mas não {trustedPublishing}.",
-      "fallback_install_provenance": "Os comandos de instalação estão fixados na versão {version}, a última versão com proveniência.",
-      "fallback_install_trustedPublisher": "Os comandos de instalação são fixados em {version}, a última versão com publicação de confiança.",
+      "fallback_install_provenance": "Os comandos de instalação estão fixos em {version}, a última versão com proveniência.",
+      "fallback_install_trustedPublisher": "Os comandos de instalação estão fixos em {version}, a última versão com publicação de confiança.",
       "provenance_link_text": "proveniência",
       "trusted_publishing_link_text": "publicação de confiança"
     },
     "keywords_title": "Palavras-chave",
     "compatibility": "Compatibilidade",
     "card": {
-      "publisher": "Editor",
+      "publisher": "Publicado por",
       "published": "Publicado",
-      "weekly_downloads": "Downloads semanais",
+      "weekly_downloads": "Transferências semanais",
       "keywords": "Palavras-chave",
       "license": "Licença",
       "select": "Selecionar pacote",
-      "select_maximum": "No máximo {count} pacotes podem ser selecionados"
+      "select_maximum": "Podem ser selecionados {count} pacotes no máximo"
     },
     "versions": {
       "title": "Versões",
@@ -533,10 +533,10 @@
       "expand": "Expandir {tag}",
       "collapse_other": "Recolher outras versões",
       "expand_other": "Expandir outras versões",
-      "collapse_major": "Recolher versão principal {major}",
-      "expand_major": "Expandir versão principal {major}",
+      "collapse_major": "Recolher major {major}",
+      "expand_major": "Expandir major {major}",
       "other_versions": "Outras versões",
-      "more_tagged": "{count} mais marcadas",
+      "more_tagged": "mais {count} marcadas",
       "all_covered": "Todas as versões estão cobertas pelas tags acima",
       "deprecated_title": "{version} (descontinuada)",
       "view_all": "Ver {count} versão | Ver todas as {count} versões",
@@ -545,8 +545,8 @@
       "distribution_modal_title": "Versões",
       "distribution_range_date_same_year": "de {from} a {to}, {endYear}",
       "distribution_range_date_multiple_years": "de {from}, {startYear} a {to}, {endYear}",
-      "grouping_major": "Principal",
-      "grouping_minor": "Menor",
+      "grouping_major": "Major",
+      "grouping_minor": "Minor",
       "grouping_versions_title": "Versões",
       "grouping_versions_about": "Sobre o agrupamento de versões",
       "grouping_versions_all": "Todos",
@@ -556,17 +556,17 @@
       "grouping_usage_all": "Todos",
       "grouping_usage_most_used": "Mais usado",
       "recent_versions_only_tooltip": "Mostrar apenas versões publicadas no último ano.",
-      "show_low_usage_tooltip": "Incluir grupos de versões com menos de 1% do total de downloads.",
+      "show_low_usage_tooltip": "Incluir grupos de versões com menos de 1% do total de transferências.",
       "y_axis_label": "Transferências",
       "filter_placeholder": "Filtrar por semver (por exemplo, ^3.0.0)",
       "filter_invalid": "Intervalo semver inválido",
-      "filter_help": "Ajuda do filtro de Semver",
+      "filter_help": "Ajuda do filtro de semver",
       "filter_tooltip": "Filtra as versões usando um {link}. Por exemplo, ^3.0.0 mostra todas as versões 3.x.",
-      "filter_tooltip_link": "faixa semver",
-      "no_matches": "Nenhuma versão corresponde a esta faixa",
+      "filter_tooltip_link": "intervalo semver",
+      "no_matches": "Nenhuma versão corresponde a este intervalo",
       "copy_alt": {
         "per_version_analysis": "A versão {version} foi transferida {downloads} vezes",
-        "general_description": "Gráfico de barras mostrando downloads por versão para {versions_count} versões {semver_grouping_mode} do pacote {package_name}, {date_range_label} da versão {first_version} até à versão {last_version}. A versão mais transferida é {max_downloaded_version} com {max_version_downloads} downloads. {per_version_analysis}. {watermark}"
+        "general_description": "Gráfico de barras a mostrar as transferências por versão para {versions_count} versões {semver_grouping_mode} do pacote {package_name}, {date_range_label} desde a versão {first_version} até à versão {last_version}. A versão mais transferida é {max_downloaded_version}, com {max_version_downloads} transferências. {per_version_analysis}. {watermark}"
       },
       "page_title": "Histórico de versões",
       "current_tags": "Tags atuais",
@@ -595,16 +595,16 @@
       "show_all": "mostrar {count} dep | mostrar todas as {count} deps",
       "optional": "opcional",
       "view_vulnerabilities": "Ver vulnerabilidades",
-      "outdated_major": "{count} versão principal desatualizada (mais recente: {latest}) | {count} versões principais desatualizadas (mais recente: {latest})",
-      "outdated_minor": "{count} versão secundária desatualizada (mais recente: {latest}) | {count} versões secundárias desatualizadas (mais recente: {latest})",
+      "outdated_major": "{count} versão major desatualizada (mais recente: {latest}) | {count} versões major desatualizadas (mais recente: {latest})",
+      "outdated_minor": "{count} versão minor desatualizada (mais recente: {latest}) | {count} versões minor desatualizadas (mais recente: {latest})",
       "outdated_patch": "Atualização de patch disponível (mais recente: {latest})",
-      "has_replacement": "Esta dependência tem substituições sugeridas",
+      "has_replacement": "Esta dependência tem alternativas sugeridas",
       "vulnerabilities_count": "{count} vulnerabilidade | {count} vulnerabilidades"
     },
     "peer_dependencies": {
-      "title": "Dependência Par ({count}) | Dependências Pares ({count})",
-      "list_label": "Dependências pares do pacote",
-      "show_all": "mostrar {count} dep par | mostrar todas as {count} deps pares"
+      "title": "Dependência Peer ({count}) | Dependências Peer ({count})",
+      "list_label": "Dependências peer do pacote",
+      "show_all": "mostrar {count} dep peer | mostrar todas as {count} deps peer"
     },
     "optional_dependencies": {
       "title": "Dependência Opcional ({count}) | Dependências Opcionais ({count})",
@@ -612,8 +612,8 @@
       "show_all": "mostrar {count} dep opcional | mostrar todas as {count} deps opcionais"
     },
     "maintainers": {
-      "title": "Mantenedores",
-      "list_label": "Mantenedores do pacote",
+      "title": "Responsáveis",
+      "list_label": "Responsáveis pelo pacote",
       "you": "(tu)",
       "via": "via {teams}",
       "remove_owner": "Remover {name} como proprietário",
@@ -622,7 +622,7 @@
       "add_button": "adicionar",
       "cancel_add": "Cancelar adição de proprietário",
       "add_owner": "+ Adicionar proprietário",
-      "show_more": "(mostrar {count} mais)",
+      "show_more": "(mostrar mais {count})",
       "show_less": "(mostrar menos)",
       "maintainer_template": "{avatar} {char126}{name}"
     },
@@ -667,7 +667,7 @@
       "smoothing": "Suavização",
       "prediction": "Previsão",
       "known_anomalies": "Anomalias conhecidas",
-      "known_anomalies_description": "Interpola sobre picos de download conhecidos causados por bots ou problemas de CI.",
+      "known_anomalies_description": "Interpola sobre picos de transferência conhecidos causados por bots ou problemas de CI.",
       "known_anomalies_ranges": "Intervalos de anomalia",
       "known_anomalies_range": "De {start} a {end}",
       "known_anomalies_range_named": "{packageName}: de {start} a {end}",
@@ -681,18 +681,18 @@
         "trend_undefined": "indefinido (dados insuficientes)",
         "button_label": "Copiar texto alternativo",
         "watermark": "Na parte inferior, uma marca d'água diz \"./npmx um navegador rápido e moderno para o registo npm\"",
-        "analysis": "{package_name} começa em {start_value} e termina em {end_value}, mostrando uma tendência {trend} com uma inclinação de {downloads_slope} downloads por intervalo de tempo",
+        "analysis": "{package_name} começa em {start_value} e termina em {end_value}, mostrando uma tendência {trend} com uma inclinação de {downloads_slope} transferências por intervalo de tempo",
         "estimation": "O valor final é uma estimativa baseada em dados parciais do período atual.",
         "estimations": "Os valores finais são estimativas baseadas em dados parciais do período corrente.",
-        "compare": "Gráfico de linhas de comparação de download de pacotes para: {packages}.",
-        "single_package": "Gráfico de linhas de downloads para o pacote {package}.",
-        "general_description": "O eixo Y representa o número de downloads. O eixo X representa o intervalo de datas, de {start_date} a {end_date}, com um período de {granularity}.{estimation_notice} {packages_analysis}. {watermark}.",
+        "compare": "Gráfico de linhas de comparação de transferência de pacotes para: {packages}.",
+        "single_package": "Gráfico de linhas de transferências para o pacote {package}.",
+        "general_description": "O eixo Y representa o número de transferências. O eixo X representa o intervalo de datas, de {start_date} a {end_date}, com um período de {granularity}.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Gráfico de barras horizontais para: {packages}, comparando {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} tem um valor de {value}."
       }
     },
     "downloads": {
-      "title": "Downloads Semanais",
+      "title": "Transferências Semanais",
       "community_distribution": "Ver distribuição de adoção pela comunidade",
       "subtitle": "Em todas as versões",
       "sparkline_nav_hint": "Usa ← →"
