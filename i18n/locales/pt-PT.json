@@ -349,7 +349,7 @@
     "expand_with_name": "Expandir {name}"
   },
   "profile": {
-    "display_name": "Nome visível",
+    "display_name": "Nome a apresentar",
     "description": "Descrição",
     "no_description": "Sem descrição",
     "website": "Site",
@@ -381,15 +381,15 @@
       "title_size": "Aumento significativo de tamanho desde v{version}",
       "title_deps": "Aumento significativo no número de dependências desde v{version}",
       "title_both": "Aumento significativo de tamanho e dependências desde v{version}",
-      "size": "O tamanho da instalação aumentou em {percent} ({size} maior)",
-      "deps": "{count} mais dependências"
+      "size": "O tamanho da instalação aumentou em {percent} (mais {size})",
+      "deps": "mais {count} dependências"
     },
     "size_decrease": {
       "title_size": "Tamanho do pacote diminuiu desde v{version}!",
       "title_deps": "Número de dependências diminuiu desde v{version}!",
       "title_both": "Tamanho do pacote e número de dependências diminuíram desde v{version}!",
-      "size": "Tamanho da instalação reduzido em {percent} ({size} menor)",
-      "deps": "{count} menos dependências"
+      "size": "O tamanho da instalação diminuiu em {percent} (menos {size})",
+      "deps": "menos {count} dependências"
     },
     "replacement": {
       "title": "Podes não precisar desta dependência.",
@@ -408,7 +408,7 @@
       "license": "Licença",
       "deps": "Deps",
       "install_size": "Tamanho de Instalação",
-      "vulns": "Vulnerabilidades",
+      "vulns": "Vulns",
       "published": "Publicado",
       "published_tooltip": "Data em que {package}{'@'}{version} foi publicado",
       "view_dependency_graph": "Ver gráfico de dependências",
@@ -419,13 +419,13 @@
       }
     },
     "skills": {
-      "title": "Capacidades do Agente",
-      "skills_available": "{count} capacidade disponível | {count} capacidades disponíveis",
+      "title": "Agent Skills",
+      "skills_available": "{count} skill disponível | {count} skills disponíveis",
       "compatible_with": "Compatível com {tool}",
       "install": "Instalar",
-      "installation_method": "Método de Instalação",
+      "installation_method": "Método de instalação",
       "learn_more": "Sabe mais",
-      "available_skills": "Capacidades Disponíveis",
+      "available_skills": "Skills Disponíveis",
       "click_to_expand": "Clica para expandir",
       "no_description": "Sem descrição",
       "file_counts": {
@@ -433,7 +433,7 @@
         "refs": "{count} ref | {count} refs",
         "assets": "{count} asset | {count} assets"
       },
-      "view_source": "Ver código-fonte",
+      "view_source": "Ver fonte",
       "skills_cli": "skills CLI"
     },
     "links": {
@@ -443,15 +443,15 @@
       "issues": "problemas",
       "jsr": "jsr",
       "code": "código",
-      "docs": "documentação",
+      "docs": "docs",
       "fund": "financiar",
       "compare": "comparar",
       "timeline": "linha do tempo",
       "compare_this_package": "comparar este pacote"
     },
     "likes": {
-      "like": "Gosto deste pacote",
-      "unlike": "Não gosto deste pacote"
+      "like": "Gostar deste pacote",
+      "unlike": "Remover gosto deste pacote"
     },
     "docs": {
       "contents": "Conteúdo",
