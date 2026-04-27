@@ -928,14 +928,14 @@
     "orgs_page": {
       "title": "Organizações",
       "back_to_profile": "Voltar para o perfil",
-      "connect_required": "Liga o CLI local para veres as tuas organizações.",
+      "connect_required": "Liga a CLI local para veres as tuas organizações.",
       "connect_hint_prefix": "Executa",
       "connect_hint_suffix": "para começar.",
       "own_orgs_only": "Só podes ver as tuas próprias organizações.",
       "view_your_orgs": "Ver as tuas organizações",
       "loading": "A carregar organizações...",
       "empty": "Nenhuma organização encontrada.",
-      "empty_hint": "As organizações são detetadas a partir dos teus pacotes com escopo.",
+      "empty_hint": "As organizações são detetadas a partir dos teus pacotes scoped.",
       "count": "{count} Organização | {count} Organizações",
       "packages_count": "{count} pacote | {count} pacotes"
     }
@@ -951,14 +951,14 @@
       "available": "Este nome está disponível!",
       "taken": "Este nome já foi reivindicado.",
       "missing_permission": "Não tens permissão para adicionar um pacote no scope {'@'}{scope}.",
-      "similar_warning": "Pacotes similares existem - npm pode rejeitar este nome:",
+      "similar_warning": "Existem pacotes similares - o npm pode rejeitar este nome:",
       "related": "Pacotes relacionados:",
-      "scope_warning_title": "Considera usar um pacote com escopo em vez disso",
-      "scope_warning_text": "Nomes de pacotes sem escopo são um recurso partilhado. Reivindica um nome apenas se pretendes publicar e manter um pacote. Para projetos pessoais ou organizacionais, usa um nome com escopo como {'@'}{username}/{name}.",
-      "connect_required": "Liga ao conector local para reivindicar este nome de pacote.",
+      "scope_warning_title": "Considera usar um pacote scoped em vez disso",
+      "scope_warning_text": "Nomes de pacotes unscoped são um recurso partilhado. Reivindica um nome apenas se pretendes publicar e manter um pacote. Para projetos pessoais ou organizacionais, usa um nome scoped como {'@'}{username}/{name}.",
+      "connect_required": "Ligar ao conector local para reivindicar este nome de pacote.",
       "connect_button": "Ligar ao Conector",
-      "publish_hint": "Isso publicará um pacote espaçador mínimo.",
-      "preview_json": "Visualizar package.json",
+      "publish_hint": "Isto vai publicar um pacote provisório mínimo.",
+      "preview_json": "Pré-visualizar package.json",
       "claim_button": "Reivindicar Nome de Pacote",
       "publishing": "A publicar...",
       "checking": "A verificar disponibilidade...",
@@ -968,36 +968,36 @@
   },
   "code": {
     "files_label": "Ficheiros",
-    "no_files": "Nenhum ficheiro neste diretório",
+    "no_files": "Nenhum ficheiro nesta pasta",
     "lines": "{count} linha | {count} linhas",
     "toggle_tree": "Alternar árvore de ficheiros",
     "close_tree": "Fechar árvore de ficheiros",
     "copy_content": "Copiar conteúdo do ficheiro",
     "copy_link": "Copiar ligação",
-    "view_raw": "Ver ficheiro bruto",
-    "toggle_container": "Alternar largura do contentor de código",
-    "open_raw_file": "Abrir ficheiro bruto",
+    "view_raw": "Ver ficheiro em bruto",
+    "toggle_container": "Alternar largura do código",
+    "open_raw_file": "Abrir ficheiro em bruto",
     "open_path_dropdown": "Abrir menu pendente de segmentos do caminho",
-    "file_too_large": "Ficheiro muito grande para visualizar",
-    "file_size_warning": "{size} excede o limite de 500KB para destaque de sintaxe",
+    "file_too_large": "Ficheiro muito grande para pré-visualizar",
+    "file_size_warning": "{size} excede o limite de 500KB para realce de sintaxe",
     "failed_to_load": "Falha ao carregar ficheiro",
-    "unavailable_hint": "O ficheiro pode ser muito grande ou indisponível",
-    "version_required": "Versão é obrigatória para navegar pelo código",
+    "unavailable_hint": "O ficheiro pode ser muito grande ou estar indisponível",
+    "version_required": "É necessária uma versão para navegar pelo código",
     "go_to_package": "Ir para pacote",
     "loading_tree": "A carregar árvore de ficheiros...",
     "failed_to_load_tree": "Falha ao carregar ficheiros para esta versão do pacote",
-    "back_to_package": "Voltar para pacote",
+    "back_to_package": "Voltar para o pacote",
     "table": {
       "name": "Nome",
       "size": "Tamanho"
     },
     "markdown_view_mode": {
-      "preview": "visualizar",
-      "code": "código"
+      "preview": "Pré-visualização",
+      "code": "Código"
     },
     "file_path": "Caminho do ficheiro",
     "binary_file": "Ficheiro binário",
-    "binary_rendering_warning": "Tipo de ficheiro \"{contentType}\" não suportado para visualização."
+    "binary_rendering_warning": "Tipo de ficheiro \"{contentType}\" não suportado para pré-visualização."
   },
   "badges": {
     "provenance": {
@@ -1012,7 +1012,7 @@
   "filters": {
     "title": "Filtros",
     "search": "Pesquisar",
-    "search_scope": "Escopo de pesquisa",
+    "search_scope": "Âmbito da pesquisa",
     "search_placeholder_name": "Filtrar por nome de pacote...",
     "search_placeholder_description": "Filtrar por descrição...",
     "search_placeholder_keywords": "Filtrar por palavras-chave...",
@@ -1025,7 +1025,7 @@
     "scope_keywords_description": "Pesquisar apenas palavras-chave",
     "scope_all": "Tudo",
     "scope_all_description": "Pesquisar todos os campos, suporta operadores name: desc: kw:",
-    "weekly_downloads": "Downloads semanais",
+    "weekly_downloads": "Transferências semanais",
     "updated_within": "Atualizado em",
     "security": "Segurança",
     "keywords": "Palavras-chave",
@@ -1063,14 +1063,14 @@
     "clear_selected_label": "Limpar seleção",
     "sort": {
       "label": "Ordenar pacotes",
-      "toggle_direction": "Alternar direção de classificação",
+      "toggle_direction": "Alternar direção de ordenação",
       "ascending": "Ascendente",
       "descending": "Descendente",
       "relevance": "Relevância",
-      "downloads_week": "Downloads/sem",
-      "downloads_day": "Downloads/dia",
-      "downloads_month": "Downloads/mês",
-      "downloads_year": "Downloads/ano",
+      "downloads_week": "Transferências/sem",
+      "downloads_day": "Transferências/dia",
+      "downloads_month": "Transferências/mês",
+      "downloads_year": "Transferências/ano",
       "published": "Última publicação",
       "name": "Nome"
     },
@@ -1082,7 +1082,7 @@
       "name": "Nome",
       "version": "Versão",
       "description": "Descrição",
-      "downloads": "Downloads/sem",
+      "downloads": "Transferências/sem",
       "published": "Última publicação",
       "maintainers": "Responsáveis",
       "keywords": "Palavras-chave",
@@ -1091,8 +1091,8 @@
     },
     "view_mode": {
       "label": "Modo de apresentação",
-      "cards": "Visualização de cartão",
-      "table": "Visualização de tabela"
+      "cards": "Vista de cartões",
+      "table": "Vista de tabela"
     },
     "pagination": {
       "mode_label": "Modo de paginação",
@@ -1102,7 +1102,7 @@
       "per_page": "{count} / página",
       "showing": "{range} de {total}",
       "previous": "Página anterior",
-      "next": "Próxima página",
+      "next": "Página seguinte",
       "nav_label": "Paginação"
     },
     "count": {
@@ -1119,13 +1119,13 @@
   "about": {
     "title": "Sobre",
     "heading": "sobre",
-    "meta_description": "npmx é um navegador rápido e moderno para o registo npm. Uma excelente UX/DX para explorar pacotes npm.",
+    "meta_description": "npmx é um navegador rápido e moderno para o registo npm, com uma excelente UX/DX para explorar pacotes npm.",
     "what_we_are": {
       "title": "O que somos",
       "better_ux_dx": "excelente UX/DX",
-      "admin_ui": "interface de administrador",
+      "admin_ui": "interface de administração",
       "description": "npmx é uma {betterUxDx} para o registo de pacotes npm e ferramentas. Procuramos fornecer uma interface rápida e moderna para explorar pacotes, com funcionalidades como modo escuro, navegação por teclado, navegação de código e ligações para registos alternativos como {jsr}.",
-      "admin_description": "Também pretendemos fornecer uma {adminUi} melhor para gerires os teus pacotes, equipas e organizações — tudo no navegador, alimentado pelo teu CLI npm local."
+      "admin_description": "Também pretendemos fornecer uma {adminUi} melhor para gerires os teus pacotes, equipas e organizações — tudo no navegador, com o teu npm CLI local."
     },
     "what_we_are_not": {
       "title": "O que não somos",
@@ -1152,14 +1152,14 @@
     "team": {
       "title": "Equipa",
       "governance": "Governança",
-      "role_steward": "administrador",
+      "role_steward": "curador",
       "role_maintainer": "responsável",
       "sponsor": "patrocinador",
       "sponsor_aria": "Patrocinador {name} no GitHub"
     },
     "contributors": {
       "title": "... e mais {count} contribuidor | ... e mais {count} contribuidores",
-      "description": "npmx é totalmente de código aberto, construído por uma comunidade incrível de contribuidores. Junta-te a nós e vamos construir juntos a experiência de navegação npm que sempre quisemos.",
+      "description": "npmx é totalmente de código aberto, construído por uma comunidade incrível de contribuidores. Junta-te a nós e vamos construir a experiência de navegação npm que sempre quisemos, juntos.",
       "loading": "A carregar contribuidores...",
       "error": "Falha ao carregar contribuidores",
       "view_profile": "Ver perfil do GitHub de {name}"
@@ -1168,7 +1168,7 @@
       "title": "Envolve-te",
       "contribute": {
         "title": "Contribuir",
-        "description": "Ajude-nos a construir a experiência npm que todos queremos.",
+        "description": "Ajuda-nos a construir a experiência npm que todos queremos.",
         "cta": "Ver no GitHub"
       },
       "community": {
@@ -1178,12 +1178,12 @@
       },
       "builders": {
         "title": "Ajuda a construir o npmx",
-        "description": "Junta-te aos construtores que moldam o futuro do npmx.",
-        "cta": "Junta-te ao Discord dos Construtores"
+        "description": "Junta-te aos builders que moldam o futuro do npmx.",
+        "cta": "Junta-te ao Discord dos Builders"
       },
       "follow": {
         "title": "Mantém-te atualizado",
-        "description": "Descobre as novidades sobre npmx.",
+        "description": "Descobre as novidades sobre o npmx.",
         "cta": "Segue no Bluesky"
       }
     }
@@ -1192,33 +1192,33 @@
     "connect": "ligar",
     "account": "Conta",
     "npm_cli": "npm CLI",
-    "atmosphere": "Atmosfera",
+    "atmosphere": "Atmosphere",
     "npm_cli_desc": "Gerir pacotes e organizações",
     "atmosphere_desc": "Funcionalidades sociais e identidade",
-    "connect_npm_cli": "Ligar ao CLI npm",
-    "connect_atmosphere": "Ligar à Atmosfera",
+    "connect_npm_cli": "Ligar ao npm CLI",
+    "connect_atmosphere": "Ligar ao Atmosphere",
     "connecting": "A ligar...",
     "ops": "{count} op | {count} ops"
   },
   "auth": {
     "modal": {
-      "title": "Atmosfera",
+      "title": "Atmosphere",
       "connected_as": "Ligado como {'@'}{handle}",
       "disconnect": "Desligar",
-      "connect_prompt": "Liga-te com a tua conta da Atmosfera",
-      "handle_label": "Nome de identificação",
+      "connect_prompt": "Liga-te com a tua conta do Atmosphere",
+      "handle_label": "Handle",
       "handle_placeholder": "alice.npmx.social",
       "connect": "Ligar",
       "create_account": "Criar uma nova conta",
       "connect_bluesky": "Ligar com Bluesky",
-      "what_is_atmosphere": "O que é uma conta da Atmosfera?",
-      "atmosphere_explanation": "{npmx} usa o {atproto} para alimentar muitas das suas funcionalidades sociais, permitindo que os utilizadores possuam os seus dados e usem uma conta para todas as aplicações compatíveis. Depois de criares uma conta, podes usar outras aplicações como {bluesky} e {tangled} com a mesma conta.",
-      "default_input_error": "Insere um identificador válido, DID ou um URL PDS completo",
+      "what_is_atmosphere": "O que é uma conta do Atmosphere?",
+      "atmosphere_explanation": "{npmx} usa o {atproto} para suportar muitas das suas funcionalidades sociais, permitindo que os utilizadores controlem os seus dados e usem uma única conta em todas as aplicações compatíveis. Depois de criares uma conta, podes usá-la noutras aplicações como o {bluesky} e o {tangled}.",
+      "default_input_error": "Insere um identificador válido, um DID ou um URL de PDS completo",
       "profile": "Perfil"
     }
   },
   "header": {
-    "home": "página inicial npmx",
+    "home": "página inicial do npmx",
     "packages": "pacotes",
     "packages_dropdown": {
       "title": "Os Teus Pacotes",
@@ -1235,7 +1235,7 @@
       "empty": "Nenhuma organização encontrada",
       "view_all": "Ver tudo"
     },
-    "pr": "Abrir GitHub pull request #{prNumber}"
+    "pr": "Abrir pull request do GitHub #{prNumber}"
   },
   "compare": {
     "packages": {
