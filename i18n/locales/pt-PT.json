@@ -469,7 +469,7 @@
       "pm_label": "Gestor de pacotes",
       "copy_command": "Copiar comando de instalação",
       "copy_dev_command": "Copiar comando de instalação dev",
-      "dev_dependency_hint": "Geralmente instalado como uma dependência de desenvolvimento",
+      "dev_dependency_hint": "Geralmente instalado como uma dependência dev",
       "view_types": "Ver {package}"
     },
     "create": {
@@ -1386,33 +1386,33 @@
         "title": "Comparar tendências"
       }
     },
-    "file_changes": "Alterações de ficheiro",
+    "file_changes": "Alterações de Ficheiro",
     "files_count": "{count} ficheiro | {count} ficheiros",
     "lines_hidden": "{count} linha escondida | {count} linhas escondidas",
     "file_too_large": "Ficheiro muito grande para comparar",
-    "file_size_warning": "{size} excede o limite de 250 KB para comparação",
-    "compare_versions": "diferença",
-    "compare_versions_title": "Compare com a versão mais recente",
-    "comparing_versions_label": "Comparando versões...",
+    "file_size_warning": "{size} excede o limite de 250KB para comparação",
+    "compare_versions": "diff",
+    "compare_versions_title": "Compara com a versão mais recente",
+    "comparing_versions_label": "A comparar versões...",
     "version_back_to_package": "Voltar para o pacote",
     "version_error_message": "Falha ao comparar versões.",
     "version_invalid_url_format": {
-      "hint": "Comparação de URL inválida. Use o formato: {0}",
+      "hint": "Comparação de URL inválida. Usa o formato: {0}",
       "from_version": "de",
       "to_version": "para"
     },
     "version_selector_title": "Comparar com versão",
     "summary": "Resumo",
-    "deps_count": "{count} dependência | {count} dependências",
+    "deps_count": "{count} dep | {count} deps",
     "dependencies": "Dependências",
-    "dev_dependencies": "Dependências de desenvolvimento",
-    "peer_dependencies": "Dependências de pares",
-    "optional_dependencies": "Dependências opcionais",
+    "dev_dependencies": "Dependências Dev",
+    "peer_dependencies": "Dependências Peer",
+    "optional_dependencies": "Dependências Opcionais",
     "no_dependency_changes": "Sem alterações de dependência",
     "file_filter_option": {
       "all": "Todos ({count})",
       "added": "Adicionado ({count})",
-      "removed": "Removidos ({count})",
+      "removed": "Removido ({count})",
       "modified": "Modificado ({count})"
     },
     "search_files_placeholder": "Pesquisar ficheiros...",
@@ -1425,19 +1425,19 @@
       "modified": "modificado"
     },
     "files_button": "Ficheiros",
-    "select_file_prompt": "Seleciona um ficheiro na barra lateral para ver suas diferenças",
+    "select_file_prompt": "Seleciona um ficheiro na barra lateral para ver o seu diff",
     "close_files_panel": "Fechar painel de ficheiros",
     "filter_files_label": "Filtrar ficheiros por tipo de alteração",
-    "change_ratio": "Alterar proporção",
+    "change_ratio": "Proporção de alterações",
     "char_edits": "Edições de caracteres",
-    "diff_distance": "Distância do diff",
+    "diff_distance": "Distância de diff",
     "loading_diff": "A carregar diff...",
     "loading_diff_error": "Falha ao carregar diff",
     "merge_modified_lines": "Fundir linhas modificadas",
     "no_content_changes": "Nenhuma alteração de conteúdo detetada",
     "options": "Opções",
-    "view_file": "Visualizar ficheiro",
-    "view_in_code_browser": "Visualizar código no navegador",
+    "view_file": "Ver ficheiro",
+    "view_in_code_browser": "Ver código no navegador",
     "word_wrap": "Quebra de linha"
   },
   "pds": {
@@ -1445,27 +1445,27 @@
     "meta_description": "O AT Protocol Personal Data Server (PDS) oficial para a comunidade npmx.",
     "join": {
       "title": "Junta-te à comunidade",
-      "description": "Quer estejas a criar a tua primeira conta na atmosfera ou a migrar uma já existente, pertences aqui. Podes migrar a tua conta atual sem perder o teu controlo, as tuas publicações ou os teus seguidores.",
+      "description": "Quer estejas a criar a tua primeira conta no atmosphere ou a migrar uma já existente, pertences aqui. Podes migrar a tua conta atual sem perder o teu handle, as tuas publicações ou os teus seguidores.",
       "migrate": "Migrar com PDS MOOver"
     },
     "server": {
-      "title": "Detalhes do servidor",
+      "title": "Detalhes do Servidor",
       "location_label": "Localização:",
       "location_value": "Nuremberga, Alemanha",
       "infrastructure_label": "Infraestrutura:",
       "infrastructure_value": "Alojado em Hetzner",
       "privacy_label": "Privacidade:",
-      "privacy_value": "Sujeito às rigorosas leis de proteção de dados da UE",
-      "learn_more": "Aprende como o npmx usa a atmosfera"
+      "privacy_value": "Sujeito às rigorosas leis de Proteção de Dados da UE",
+      "learn_more": "Aprende como o npmx usa o Atmosphere"
     },
     "community": {
       "title": "Quem está aqui",
-      "description": "Algumas das {count} contas que já estão chamando npmx.social sua casa:",
+      "description": "Algumas das {count} contas que já fazem do npmx.social a sua casa:",
       "loading": "A carregar comunidade PDS...",
       "error": "Falha ao carregar a comunidade PDS.",
       "empty": "Nenhum membro da comunidade para apresentar.",
       "view_profile": "Vê o perfil de {handle}",
-      "new_accounts": "...e mais {count} que são novos na atmosfera"
+      "new_accounts": "...e mais {count} que são novas no atmosphere"
     }
   },
   "privacy_policy": {
@@ -1485,16 +1485,16 @@
         "li2": "{li21}{separator} {li22}",
         "separator": ":",
         "cookie_vdpl": "__vdpl",
-        "cookie_vdpl_desc": "Este cookie é usado pelo nosso fornecedor de alojamento (Vercel) para proteção contra distorção. Garante que obténs os recursos da versão de implementação correta se uma nova atualização for lançada enquanto navegas. Não te rastreia.",
+        "cookie_vdpl_desc": "Este cookie é usado pelo nosso fornecedor de alojamento (Vercel) para Skew Protection. Garante que obténs os ficheiros da versão em produção correta se uma nova atualização for lançada enquanto navegas. Não te rastreia.",
         "cookie_h3": "h3",
-        "cookie_h3_desc": "Este é o nosso cookie de sessão segura. Armazena o token de acesso OAuth quando ligas a tua conta Atmosphere. É essencial para manter a tua sessão autenticada."
+        "cookie_h3_desc": "Este é o nosso cookie de sessão segura. Armazena o token de acesso OAuth quando ligas a tua conta do Atmosphere. É essencial para manter a tua sessão autenticada."
       },
       "local_storage": {
         "title": "Armazenamento local",
-        "p1": "Além dos cookies de sessão, usamos o {bold} do teu navegador para guardar as tuas preferências de apresentação. \nIsto permite-nos lembrar o tema (claro/escuro) e algumas outras {settings} que selecionaste, para que não precises de as reconfigurar a cada visita.",
-        "bold": "Armazenamento local",
+        "p1": "Além dos cookies de sessão, usamos o {bold} do teu navegador para guardar as tuas preferências de apresentação. \nIsto permite-nos recordar o tema (claro/escuro) e algumas outras {settings} que selecionaste, para que não precises de as reconfigurar a cada visita.",
+        "bold": "Armazenamento Local",
         "p2": "Esta informação é puramente funcional, armazenada apenas no teu dispositivo e {bold2}. Utilizamo-la exclusivamente para melhorar a tua experiência no nosso site.",
-        "bold2": "não contém dados pessoais nem é usado para rastreá-lo",
+        "bold2": "não contém dados pessoais nem é usado para te rastrear",
         "settings": "definições"
       },
       "management": {
@@ -1502,9 +1502,9 @@
         "p1": "Podes configurar o teu navegador para aceitar, rejeitar ou eliminar cookies de acordo com as tuas preferências. No entanto, tem em conta que {bold}.",
         "bold": "rejeitar cookies essenciais pode impedir o acesso total à aplicação",
         "p2": "Abaixo estão ligações com instruções para gestão de cookies nos navegadores mais utilizados:",
-        "chrome": "Google Chrome (abre em uma nova janela)",
-        "firefox": "Mozilla Firefox (abre em uma nova janela)",
-        "edge": "Microsoft Edge (abre em uma nova janela)"
+        "chrome": "Google Chrome (abre numa nova janela)",
+        "firefox": "Mozilla Firefox (abre numa nova janela)",
+        "edge": "Microsoft Edge (abre numa nova janela)"
       }
     },
     "analytics": {
