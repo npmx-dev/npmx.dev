@@ -62,7 +62,7 @@
     "@nuxt/a11y": "1.0.0-alpha.1",
     "@nuxt/fonts": "0.14.0",
     "@nuxt/scripts": "1.0.1",
-    "@nuxt/test-utils": "4.0.2",
+    "@nuxt/test-utils": "4.0.3",
     "@nuxtjs/color-mode": "4.0.0",
     "@nuxtjs/html-validator": "2.1.0",
     "@nuxtjs/i18n": "10.2.4",
