@@ -1359,11 +1359,11 @@
           "description": "Vulnerabilidades de segurança conhecidas"
         },
         "githubStars": {
-          "label": "Estrelas no Github",
+          "label": "Estrelas no GitHub",
           "description": "Número de estrelas no repositório GitHub"
         },
         "githubIssues": {
-          "label": "Issues no Github",
+          "label": "Issues no GitHub",
           "description": "Número de issues no repositório GitHub"
         },
         "createdAt": {
