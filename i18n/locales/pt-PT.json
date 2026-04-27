@@ -979,7 +979,7 @@
     "open_raw_file": "Abrir ficheiro em bruto",
     "open_path_dropdown": "Abrir menu pendente de segmentos do caminho",
     "file_too_large": "Ficheiro muito grande para pré-visualizar",
-    "file_size_warning": "{size} excede o limite de 500KB para realce de sintaxe",
+    "file_size_warning": "{size} excede o limite de 500 kB para realce de sintaxe",
     "failed_to_load": "Falha ao carregar ficheiro",
     "unavailable_hint": "O ficheiro pode ser muito grande ou estar indisponível",
     "version_required": "É necessária uma versão para navegar pelo código",
@@ -1390,7 +1390,7 @@
     "files_count": "{count} ficheiro | {count} ficheiros",
     "lines_hidden": "{count} linha escondida | {count} linhas escondidas",
     "file_too_large": "Ficheiro muito grande para comparar",
-    "file_size_warning": "{size} excede o limite de 250KB para comparação",
+    "file_size_warning": "{size} excede o limite de 250 kB para comparação",
     "compare_versions": "diff",
     "compare_versions_title": "Compara com a versão mais recente",
     "comparing_versions_label": "A comparar versões...",
@@ -1649,11 +1649,11 @@
   "brand": {
     "title": "Marca",
     "heading": "marca",
-    "meta_description": "Diretrizes da marca npmx, logótipos, cores e tipografia para uso em imprensa e média.",
-    "intro": "Recursos e diretrizes para usar a marca npmx nos teus projetos, artigos e média.",
+    "meta_description": "Diretrizes da marca npmx, logótipos, cores e tipografia para uso em imprensa e media.",
+    "intro": "Recursos e diretrizes para usar a marca npmx nos teus projetos, artigos e media.",
     "logos": {
       "title": "logótipos",
-      "description": "Transfira os logótipos do npmx em formato SVG e PNG. Usa a variante apropriada para o teu fundo.",
+      "description": "Transfere os logótipos do npmx em formato SVG e PNG. Usa a variante apropriada para o teu fundo.",
       "wordmark": "LOGÓTIPO COMPLETO",
       "wordmark_alt": "logótipo completo do npmx com barra azul em fundo escuro",
       "wordmark_light_alt": "logótipo completo do npmx com barra de destaque em fundo claro",
@@ -1669,7 +1669,7 @@
     },
     "customize": {
       "title": "personalizar o logótipo",
-      "description": "Pré-visualiza o logótipo do npmx com a tua cor de destaque e fundo. A visualização reflete as tuas definições atuais — escolhe uma cor, alterna o fundo e transfere.",
+      "description": "Pré-visualiza o logótipo do npmx com a tua cor de destaque e fundo. A pré-visualização reflete as tuas definições atuais — escolhe uma cor, muda o fundo e transfere.",
       "accent_label": "destaque",
       "bg_label": "cor de fundo",
       "download_svg_aria": "Transferir logótipo personalizado como SVG",
@@ -1677,7 +1677,7 @@
     },
     "typography": {
       "title": "tipografia",
-      "description": "npmx usa a fonte Geist da Vercel para ambos o texto da interface e o código.",
+      "description": "O npmx usa a fonte Geist da Vercel para o texto da interface e para o código.",
       "sans": "Geist Sans",
       "sans_desc": "Usada para texto e elementos da interface.",
       "mono": "Geist Mono",
@@ -1687,7 +1687,7 @@
     },
     "guidelines": {
       "title": "apenas uma nota",
-      "message": "A acessibilidade é importante para nós, e gostaríamos que partilhasses essa visão. Ao usar os recursos mencionados, certifica-te de que há contraste suficiente com o fundo e não os utilizes em tamanho menor que 24 px. Se precisares de outros recursos ou informações adicionais sobre o projeto, não hesites em contactar-nos pelo {link}.",
+      "message": "A acessibilidade é importante para nós, e gostaríamos que partilhasses esta visão. Ao usar os recursos mencionados, certifica-te de que há contraste suficiente com o fundo e não os utilizes em tamanho menor que 24 px. Se precisares de outros recursos ou informações adicionais sobre o projeto, não hesites em contactar-nos pelo {link}.",
       "discord_link_text": "chat.npmx.dev"
     }
   },
