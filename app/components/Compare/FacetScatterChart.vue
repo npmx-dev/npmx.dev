@@ -395,19 +395,27 @@ onMounted(async () => {
                       :aria-label="datapoint.name"
                       type="button"
                       class="flex gap-1.5 place-items-center"
-                      @click="datapoint.segregate()"
+                      :class="{
+                        'hover:underline': !datapoint.isSegregated,
+                        'line-through': datapoint.isSegregated,
+                      }"
+                      @click="
+                        () => {
+                          datapoint.segregate()
+                          datapoint.onEnter()
+                        }
+                      "
+                      @mouseenter="datapoint.onEnter()"
+                      @mouseleave="datapoint.onLeave()"
+                      @focus="datapoint.onEnter()"
+                      @blur="datapoint.onLeave()"
                     >
                       <div class="h-3 w-3" aria-hidden="true">
                         <svg viewBox="0 0 2 2" class="w-full">
                           <circle cx="1" cy="1" r="1" :fill="datapoint.color" />
                         </svg>
                       </div>
-                      <span
-                        class="text-fg"
-                        :style="{
-                          textDecoration: datapoint.isSegregated ? 'line-through' : undefined,
-                        }"
-                      >
+                      <span class="text-fg">
                         {{ datapoint.name }}
                       </span>
                     </button>
@@ -559,14 +567,35 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+:deep(.vue-data-ui-component) {
+  --super-ease-out: cubic-bezier(0.15, 0.75, 0.35, 1);
+}
+
 :deep(.vue-data-ui-component svg:focus-visible) {
   outline: 1px solid var(--accent) !important;
   border-radius: 0.1rem;
   outline-offset: 0;
 }
+
 :deep(.vue-ui-user-options-button:focus-visible),
 :deep(.vue-ui-user-options :first-child:focus-visible) {
   outline: 0.1rem solid var(--accent) !important;
   border-radius: 0.25rem;
+}
+
+:deep(.vue-ui-scatter-scale-group),
+:deep(.vue-ui-scatter-datapoint text),
+:deep(.vue-ui-scatter-datapoint circle),
+:deep(.vue-ui-scatter-datapoint-label) {
+  transition: all 0.5s var(--super-ease-out) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :deep(.vue-ui-scatter-scale-group),
+  :deep(.vue-ui-scatter-datapoint text),
+  :deep(.vue-ui-scatter-datapoint circle),
+  :deep(.vue-ui-scatter-datapoint-label) {
+    transition: none !important;
+  }
 }
 </style>
