@@ -15,7 +15,8 @@ const KIND_ICONS: Record<string, string> = {
 <script setup lang="ts">
 import type { JsDelivrFileNode } from '#shared/types'
 import { joinURL } from 'ufo'
-import { smoothPath, useCharts } from '~/composables/useCharts'
+import { useCharts } from '~/composables/useCharts'
+import { createSmoothPath as smoothPath } from 'vue-data-ui/utils'
 
 const REPO_PROVIDER_ICONS: Record<string, string> = {
   github: 'i-simple-icons:github',
