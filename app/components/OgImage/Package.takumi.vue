@@ -15,7 +15,8 @@ const KIND_ICONS: Record<string, string> = {
 <script setup lang="ts">
 import type { JsDelivrFileNode } from '#shared/types'
 import { joinURL } from 'ufo'
-import { smoothPath, useCharts } from '~/composables/useCharts'
+import { useCharts } from '~/composables/useCharts'
+import { createSmoothPath } from 'vue-data-ui/utils'
 
 const REPO_PROVIDER_ICONS: Record<string, string> = {
   github: 'i-simple-icons:github',
@@ -239,7 +240,7 @@ const sparklineSrc = computed(() => {
     y: padY + (1 - (v - min) / range) * (height - padY * 2),
   }))
 
-  const pathData = smoothPath(points)
+  const pathData = createSmoothPath(points)
   const firstX = points[0]!.x
   const lastX = points.at(-1)!.x
 
