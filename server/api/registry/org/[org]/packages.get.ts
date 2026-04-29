@@ -1,7 +1,7 @@
 import { CACHE_MAX_AGE_ONE_HOUR, NPM_REGISTRY } from '#shared/utils/constants'
 import { FetchError } from 'ofetch'
 
-// Validation pattern for npm org names - url-sage symbol and not start with a dot (incl. ~test24214. or -ex~-)
+// Validation pattern for npm org names - url-safe symbol and not start with a dot (incl. ~test24214. or -ex~-)
 const NPM_ORG_NAME_RE = /^[\w~-][\w.~-]*$/
 
 function validateOrgName(name: string): void {
