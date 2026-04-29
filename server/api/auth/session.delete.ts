@@ -1,5 +1,5 @@
 export default eventHandlerWithOAuthSession(async (event, oAuthSession, serverSession) => {
-  // Even tho the signOut also clears part of the server cache should be done in order
+  // Even though the signOut also clears part of the server cache should be done in order
   // to let the OAuth package do any other clean up it may need
   await oAuthSession?.signOut()
   await serverSession.clear()
