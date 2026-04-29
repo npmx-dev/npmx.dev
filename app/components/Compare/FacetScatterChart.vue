@@ -395,7 +395,7 @@ onMounted(async () => {
                       : 'text-sm leading-6'
                   "
                 >
-                  <li v-for="legendItem in legend" :key="legendItem.name">
+                  <li v-for="legendItem in legend" :key="legendItem.id">
                     <button
                       :aria-pressed="legendItem.isSegregated"
                       :aria-label="legendItem.name"
