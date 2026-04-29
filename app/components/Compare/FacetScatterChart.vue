@@ -402,7 +402,7 @@ onMounted(async () => {
                       type="button"
                       class="flex gap-1.5 place-items-center"
                       :class="legendItem.isSegregated ? 'line-through' : 'hover:underline'"
-                      @click="() => toggleLegendItem(legendItem)"
+                      @click="toggleLegendItem(legendItem)"
                       @mouseenter="legendItem.onEnter()"
                       @mouseleave="legendItem.onLeave()"
                       @focus="legendItem.onEnter()"
