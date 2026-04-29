@@ -54,7 +54,7 @@ export class PackageLikesUtils {
     this.constellation =
       deps?.constellation ??
       new Constellation(
-        // Passes in a fetch wrapped as CachedFetch since are already doing some heavy caching here
+        // Passes in a fetch wrapped as CachedFetch because we're already doing some heavy caching here
         async <T = unknown>(
           url: string,
           options: Parameters<typeof $fetch>[1] = {},
