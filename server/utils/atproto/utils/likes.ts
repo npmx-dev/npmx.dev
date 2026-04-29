@@ -168,8 +168,8 @@ export class PackageLikesUtils {
   }
 
   /**
-   * It is assumed it has been checked by this point that if a user has liked a package and the new like was made as a record
-   * to the user's atproto repository
+   * Assumes the caller has already verified that a user's like for a package was stored as a record in the user's AT Protocol
+   * repository (atUri refers to that like record).
    * @param packageName
    * @param usersDid
    * @param atUri - The URI of the like record
