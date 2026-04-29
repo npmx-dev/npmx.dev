@@ -195,10 +195,9 @@ export class PackageLikesUtils {
       rkey,
     }
 
-    // We store the backlink incase a user is liking and unliking rapidly. constellation takes a few seconds to capture the backlink
+    // We store the backlink in case a user is liking and unliking rapidly. constellation takes a few seconds to capture the backlink
     const usersBackLinkKey = CACHE_USERS_BACK_LINK(packageName, usersDid)
     await this.cache.set(usersBackLinkKey, backLink, CACHE_MAX_AGE)
-
     let totalLikes = await this.cache.get<number>(totalLikesKey)
     if (!totalLikes) {
       totalLikes = await this.constellationLikes(subjectRef)
