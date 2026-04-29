@@ -5,6 +5,7 @@ import {
   VueUiScatter,
   type VueUiScatterConfig,
   type VueUiScatterDatasetItem,
+  type VueUiScatterSeries,
 } from 'vue-data-ui/vue-ui-scatter'
 import { buildCompareScatterChartDataset } from '~/utils/compare-scatter-chart'
 import { loadFile, copyAltTextForCompareScatterChart } from '~/utils/charts'
@@ -285,6 +286,11 @@ function toggleAxisHighlight(state: AxisHighlight) {
   highlightedAxis.value = state
 }
 
+function toggleLegendItem(legendItem: VueUiScatterSeries) {
+  legendItem.segregate()
+  legendItem.onEnter()
+}
+
 const readyTeleport = shallowRef(false)
 
 onMounted(async () => {
@@ -389,34 +395,26 @@ onMounted(async () => {
                       : 'text-sm leading-6'
                   "
                 >
-                  <li v-for="datapoint in legend" :key="datapoint.name">
+                  <li v-for="legendItem in legend" :key="legendItem.name">
                     <button
-                      :aria-pressed="datapoint.isSegregated"
-                      :aria-label="datapoint.name"
+                      :aria-pressed="legendItem.isSegregated"
+                      :aria-label="legendItem.name"
                       type="button"
                       class="flex gap-1.5 place-items-center"
-                      :class="{
-                        'hover:underline': !datapoint.isSegregated,
-                        'line-through': datapoint.isSegregated,
-                      }"
-                      @click="
-                        () => {
-                          datapoint.segregate()
-                          datapoint.onEnter()
-                        }
-                      "
-                      @mouseenter="datapoint.onEnter()"
-                      @mouseleave="datapoint.onLeave()"
-                      @focus="datapoint.onEnter()"
-                      @blur="datapoint.onLeave()"
+                      :class="legendItem.isSegregated ? 'line-through' : 'hover:underline'"
+                      @click="() => toggleLegendItem(legendItem)"
+                      @mouseenter="legendItem.onEnter()"
+                      @mouseleave="legendItem.onLeave()"
+                      @focus="legendItem.onEnter()"
+                      @blur="legendItem.onLeave()"
                     >
                       <div class="h-3 w-3" aria-hidden="true">
                         <svg viewBox="0 0 2 2" class="w-full">
-                          <circle cx="1" cy="1" r="1" :fill="datapoint.color" />
+                          <circle cx="1" cy="1" r="1" :fill="legendItem.color" />
                         </svg>
                       </div>
                       <span class="text-fg">
-                        {{ datapoint.name }}
+                        {{ legendItem.name }}
                       </span>
                     </button>
                   </li>
