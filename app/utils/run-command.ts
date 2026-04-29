@@ -17,7 +17,7 @@ export interface ExecutableInfo {
 /**
  * Extract basename from package
  */
-function getPackageBaseName(packageName: string): string {
+function getPackageBaseName(packageName: string): string | undefined {
   return packageName.startsWith('@') ? packageName.split('/')[1] : packageName
 }
 
