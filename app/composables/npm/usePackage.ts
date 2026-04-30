@@ -17,10 +17,10 @@ function getTrustLevel(version: PackumentVersion): PublishTrustLevel {
 }
 
 function normalizeLicense(license?: PackumentLicense): string | undefined {
-  if (license && typeof license === 'object' && 'type' in license) {
-    return license.type
-  }
-  return typeof license === 'string' ? license : undefined
+  if (!license) return undefined
+  if (typeof license === 'string') return license
+  if (typeof license.type === 'string') return license.type
+  return undefined
 }
 
 /**
@@ -116,7 +116,7 @@ export function transformPackument(
   }
 
   // Normalize license field
-  const license = normalizeLicense(versionData?.license || pkg.license)
+  const license = normalizeLicense(requestedVersion ? versionData?.license : pkg.license)
 
   // Extract storybook field from the requested version (custom package.json field)
   const requestedPkgVersion = requestedVersion ? pkg.versions[requestedVersion] : null
