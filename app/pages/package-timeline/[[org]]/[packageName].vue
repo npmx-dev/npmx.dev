@@ -4,6 +4,7 @@ import { compare } from 'semver'
 import type {
   TimelineResponse,
   TimelineVersion,
+  SubEvent,
 } from '~~/server/api/registry/timeline/[...pkg].get'
 import type { TimelineSizeResponse } from '~~/server/api/registry/timeline/sizes/[...pkg].get'
 
@@ -142,13 +143,6 @@ if (import.meta.client) {
 }
 
 const bytesFormatter = useBytesFormatter()
-
-interface SubEvent {
-  key: string
-  positive: boolean
-  icon: string
-  text: string
-}
 
 // Detect notable changes between consecutive versions (size, license, ESM, types)
 // Versions are compared against their semver predecessor, not chronological neighbor,
@@ -308,6 +302,8 @@ const versionSubEvents = computed(() => {
   return result
 })
 
+const selectedVersion = shallowRef<string | null>(null)
+
 useSeoMeta({
   title: () => `Timeline - ${packageName.value} - npmx`,
   description: () => `Version timeline for ${packageName.value}`,
@@ -325,6 +321,14 @@ useSeoMeta({
       page="timeline"
     />
 
+    <div class="sticky top-14 z-10 bg-bg mt-8">
+      <div class="container w-full">
+        <div class="mx-auto">
+          <PackageTimelineChart :sizeCache :versionSubEvents :timelineEntries :selectedVersion />
+        </div>
+      </div>
+    </div>
+
     <div class="container w-full py-8">
       <!-- Sizes loading indicator -->
       <div v-if="sizesLoading" class="h-0.5 mb-4 rounded-full bg-bg-muted overflow-hidden">
@@ -333,7 +337,7 @@ useSeoMeta({
 
       <!-- Timeline -->
       <ol v-if="timelineEntries.length" class="relative border-s border-border ms-4">
-        <li v-for="entry in timelineEntries" :key="entry.version" class="mb-6 ms-6">
+        <li v-for="(entry, i) in timelineEntries" :key="entry.version" class="mb-6 ms-6">
           <!-- Dot -->
           <span
             class="absolute -start-2 flex items-center justify-center w-4 h-4 rounded-full border border-border"
@@ -346,6 +350,10 @@ useSeoMeta({
               class="text-sm font-medium"
               :class="entry.version === version ? 'text-accent' : ''"
               dir="ltr"
+              @mouseenter="selectedVersion = entry.version"
+              @mouseleave="selectedVersion = null"
+              @focus="selectedVersion = entry.version"
+              @blur="selectedVersion = null"
             >
               {{ entry.version }}
             </LinkBase>
@@ -371,7 +379,7 @@ useSeoMeta({
             class="relative border-s border-border/50 ms-3 mt-2"
           >
             <li
-              v-for="ev in versionSubEvents.get(entry.version)"
+              v-for="(ev, i) in versionSubEvents.get(entry.version)"
               :key="ev.key"
               class="mb-2 ms-4 relative last:mb-0"
             >
