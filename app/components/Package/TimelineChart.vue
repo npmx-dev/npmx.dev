@@ -93,7 +93,7 @@ const activeVersionIndex = computed(() => {
 const seriesTotalSize = computed(() => {
   const values = convertedData.value.map(d => d.totalSize)
   if (!values.length) {
-    return { values, min: 0, max: 1 }
+    return { values, min: 0, max: 0 }
   }
   return {
     values,
@@ -105,7 +105,7 @@ const seriesTotalSize = computed(() => {
 const seriesDependencies = computed(() => {
   const values = convertedData.value.map(d => d.dependencyCount)
   if (!values.length) {
-    return { values, min: 0, max: 1 }
+    return { values, min: 0, max: 0 }
   }
   return {
     values,
