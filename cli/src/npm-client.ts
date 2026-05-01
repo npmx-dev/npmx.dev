@@ -2,7 +2,7 @@ import crypto from 'node:crypto'
 import process from 'node:process'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
-import { mkdtempDisposable, writeFile } from 'node:fs/promises'
+import { mkdtemp, writeFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import * as v from 'valibot'
@@ -572,54 +572,57 @@ export async function packageInit(
 ): Promise<NpmExecResult> {
   validatePackageName(name)
 
-  // Let Node clean up the temp directory automatically when this scope exits.
-  await using tempDir = await mkdtempDisposable(join(tmpdir(), 'npmx-init-'))
+  const tempDirPath = await mkdtemp(join(tmpdir(), 'npmx-init-'))
 
-  // Determine access type based on whether it's a scoped package
-  const isScoped = name.startsWith('@')
-  const access = isScoped ? 'public' : undefined
+  try {
+    // Determine access type based on whether it's a scoped package
+    const isScoped = name.startsWith('@')
+    const access = isScoped ? 'public' : undefined
 
-  // Create minimal package.json
-  const packageJson = {
-    name,
-    version: '0.0.0',
-    description: `Placeholder for ${name}`,
-    main: 'index.js',
-    scripts: {},
-    keywords: [],
-    author: author ? `${author} (https://www.npmjs.com/~${author})` : '',
-    license: 'UNLICENSED',
-    private: false,
-    ...(access && { publishConfig: { access } }),
+    // Create minimal package.json
+    const packageJson = {
+      name,
+      version: '0.0.0',
+      description: `Placeholder for ${name}`,
+      main: 'index.js',
+      scripts: {},
+      keywords: [],
+      author: author ? `${author} (https://www.npmjs.com/~${author})` : '',
+      license: 'UNLICENSED',
+      private: false,
+      ...(access && { publishConfig: { access } }),
+    }
+
+    await writeFile(join(tempDirPath, 'package.json'), JSON.stringify(packageJson, null, 2))
+
+    // Create empty index.js
+    await writeFile(join(tempDirPath, 'index.js'), '// Placeholder\n')
+
+    // Build npm publish args
+    const args = ['publish']
+    if (access) {
+      args.push('--access', access)
+    }
+
+    const displayCmd = options?.otp
+      ? ['npm', ...args, '--otp', '******'].join(' ')
+      : ['npm', ...args].join(' ')
+    logCommand(`${displayCmd} (in temp dir for ${name})`)
+
+    const result = await execNpm(args, { ...options, cwd: tempDirPath, silent: true })
+
+    if (result.exitCode === 0) {
+      logSuccess(`Published ${name}@0.0.0`)
+    } else if (result.requiresOtp) {
+      logError('OTP required')
+    } else if (result.authFailure) {
+      logError('Authentication required - please run "npm login" and restart the connector')
+    } else {
+      logError(result.stderr.split('\n')[0] || 'Command failed')
+    }
+
+    return result
+  } finally {
+    await rm(tempDirPath, { recursive: true, force: true })
   }
-
-  await writeFile(join(tempDir.path, 'package.json'), JSON.stringify(packageJson, null, 2))
-
-  // Create empty index.js
-  await writeFile(join(tempDir.path, 'index.js'), '// Placeholder\n')
-
-  // Build npm publish args
-  const args = ['publish']
-  if (access) {
-    args.push('--access', access)
-  }
-
-  const displayCmd = options?.otp
-    ? ['npm', ...args, '--otp', '******'].join(' ')
-    : ['npm', ...args].join(' ')
-  logCommand(`${displayCmd} (in temp dir for ${name})`)
-
-  const result = await execNpm(args, { ...options, cwd: tempDir.path, silent: true })
-
-  if (result.exitCode === 0) {
-    logSuccess(`Published ${name}@0.0.0`)
-  } else if (result.requiresOtp) {
-    logError('OTP required')
-  } else if (result.authFailure) {
-    logError('Authentication required - please run "npm login" and restart the connector')
-  } else {
-    logError(result.stderr.split('\n')[0] || 'Command failed')
-  }
-
-  return result
 }
