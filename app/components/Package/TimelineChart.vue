@@ -31,7 +31,7 @@ const props = defineProps<{
 
 const { settings } = useSettings()
 const route = useRoute('timeline')
-const chart = ref<typeof VueUiXy | null>(null)
+const chart = ref<InstanceType<typeof VueUiXy> | null>(null)
 const activeVersion = computed(() => route.params.version)
 
 const packageName = computed(() =>
@@ -86,7 +86,8 @@ const convertedData = computed(() => {
 
 watch(
   () => convertedData.value,
-  () => {
+  async () => {
+    await nextTick()
     chart.value?.resetZoom()
   },
   { flush: 'post' },
