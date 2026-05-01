@@ -591,8 +591,8 @@
       "chart": {
         "base_scale": "Start y-axis at zero",
         "copy_alt": {
-          "version_events": "version {version}: {events}",
           "key_changes": "Key changes: {version_events}.",
+          "version_events": "version {version}: {events}",
           "general_description": "Line chart showing the {metric} of the {package} package, from version {first} to {last}. The {metric} in version {first} is {first_value}, in version {last} is {last_value} ({overall_progress_percentage}% overall). {key_changes} {watermark}."
         }
       }
