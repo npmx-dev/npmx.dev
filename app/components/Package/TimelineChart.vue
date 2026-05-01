@@ -432,6 +432,7 @@ function getDatapointPlots(
   item: TimelineDatasetItem,
   predicate: (datapoint: TimelineSourceItem, index: number) => boolean,
   markerKey: string,
+  zoomOffset: number,
 ): TimelineMarkerItem[] {
   if (!item || !Array.isArray(item.source) || !Array.isArray(item.plots)) {
     return []
@@ -440,9 +441,10 @@ function getDatapointPlots(
   const timelineItem = item as TimelineSvgDataItem
 
   return timelineItem.source.flatMap((datapoint, index) => {
-    const plot = timelineItem.plots[index]
+    const plotIndex = index - zoomOffset
+    const plot = timelineItem.plots[plotIndex]
 
-    if (!plot || !predicate(datapoint, index)) {
+    if (plotIndex < 0 || !plot || !predicate(datapoint, index)) {
       return []
     }
 
@@ -461,16 +463,35 @@ function getDatapointPlots(
   })
 }
 
-function getLatestDatapointPlot(item: TimelineDatasetItem): TimelinePlotItem | null {
-  return item?.plots?.[activeVersionIndex.value] ?? null
+function getActiveVersionDatapointPlot(
+  item: TimelineDatasetItem,
+  zoomOffset: number,
+): TimelinePlotItem | null {
+  return item?.plots?.[activeVersionIndex.value - zoomOffset] ?? null
 }
 
-function getPositiveDatapointPlots(item: TimelineDatasetItem): TimelineMarkerItem[] {
-  return getDatapointPlots(item, datapoint => datapoint.hasPositive === true, 'positive')
+function getPositiveDatapointPlots(
+  item: TimelineDatasetItem,
+  zoomOffset: number,
+): TimelineMarkerItem[] {
+  return getDatapointPlots(
+    item,
+    datapoint => datapoint.hasPositive === true,
+    'positive',
+    zoomOffset,
+  )
 }
 
-function getNegativeDatapointPlots(item: TimelineDatasetItem): TimelineMarkerItem[] {
-  return getDatapointPlots(item, datapoint => datapoint.hasNegative === true, 'negative')
+function getNegativeDatapointPlots(
+  item: TimelineDatasetItem,
+  zoomOffset: number,
+): TimelineMarkerItem[] {
+  return getDatapointPlots(
+    item,
+    datapoint => datapoint.hasNegative === true,
+    'negative',
+    zoomOffset,
+  )
 }
 
 const indexSelection = computed(() => {
@@ -507,13 +528,13 @@ const indexSelection = computed(() => {
     <ClientOnly>
       <VueUiXy :dataset="datasets[activeTab]" :config :selected-x-index="indexSelection">
         <!-- Custom tooltip -->
-        <template #tooltip="{ seriesIndex }">
+        <template #tooltip="{ timeLabel }">
           <div class="font-mono text-xs flex flex-col">
             <div class="border-border border-b pb-2 mb-2 flex flex-col">
               <div class="flex flex-row gap-4">
-                <span class="text-fg">{{ convertedData[seriesIndex]?.version }}</span>
+                <span class="text-fg">{{ convertedData[timeLabel.absoluteIndex]?.version }}</span>
                 <span
-                  v-for="tag in convertedData[seriesIndex]?.tags"
+                  v-for="tag in convertedData[timeLabel.absoluteIndex]?.tags"
                   :key="tag"
                   class="text-3xs font-semibold uppercase tracking-wide"
                   :class="tag === 'latest' ? 'text-accent' : 'text-fg-subtle'"
@@ -522,7 +543,7 @@ const indexSelection = computed(() => {
                 </span>
               </div>
               <DateTime
-                :datetime="convertedData[seriesIndex]?.time!"
+                :datetime="convertedData[timeLabel.absoluteIndex]?.time!"
                 class="text-xs text-fg-subtle"
                 year="numeric"
                 month="short"
@@ -535,7 +556,9 @@ const indexSelection = computed(() => {
               <div class="flex flex-row gap-2 items-end">
                 <span class="text-[var(--fg)]/70">{{ $t('package.stats.install_size') }}</span>
                 <span class="text-sm">
-                  {{ bytesFormatter.format(convertedData[seriesIndex]?.totalSize ?? 0) }}
+                  {{
+                    bytesFormatter.format(convertedData[timeLabel.absoluteIndex]?.totalSize ?? 0)
+                  }}
                 </span>
               </div>
 
@@ -544,15 +567,20 @@ const indexSelection = computed(() => {
                 <span class="text-[var(--fg)]/70">{{ $t('compare.dependencies') }}</span>
                 <span class="text-sm">
                   {{
-                    compactNumberFormatter.format(convertedData[seriesIndex]?.dependencyCount ?? 0)
+                    compactNumberFormatter.format(
+                      convertedData[timeLabel.absoluteIndex]?.dependencyCount ?? 0,
+                    )
                   }}
                 </span>
               </div>
             </div>
 
-            <ol v-if="convertedData[seriesIndex]?.events.length" class="relative font-[Geist] mt-2">
+            <ol
+              v-if="convertedData[timeLabel.absoluteIndex]?.events.length"
+              class="relative font-[Geist] mt-2"
+            >
               <li
-                v-for="event in convertedData[seriesIndex]?.events"
+                v-for="event in convertedData[timeLabel.absoluteIndex]?.events"
                 :key="event.key"
                 class="relative mb-1 ms-4 last:mb-0"
               >
@@ -611,9 +639,9 @@ const indexSelection = computed(() => {
             <!-- Marker for selected version -->
             <circle
               class="pointer-events-none svg-element-transition"
-              v-if="getLatestDatapointPlot(svg.data[0])"
-              :cx="getLatestDatapointPlot(svg.data[0])!.x"
-              :cy="getLatestDatapointPlot(svg.data[0])!.y"
+              v-if="getActiveVersionDatapointPlot(svg.data[0], svg.slicer.start)"
+              :cx="getActiveVersionDatapointPlot(svg.data[0], svg.slicer.start)!.x"
+              :cy="getActiveVersionDatapointPlot(svg.data[0], svg.slicer.start)!.y"
               r="8"
               :fill="colors.accent"
               :stroke="colors.bg"
@@ -622,7 +650,7 @@ const indexSelection = computed(() => {
 
             <!-- Marker for positive events -->
             <g
-              v-for="plot in getPositiveDatapointPlots(svg.data[0])"
+              v-for="plot in getPositiveDatapointPlots(svg.data[0], svg.slicer.start)"
               :key="`pos_${plot.key}`"
               class="pointer-events-none"
             >
@@ -648,7 +676,7 @@ const indexSelection = computed(() => {
 
             <!-- Marker for negative events -->
             <g
-              v-for="plot in getNegativeDatapointPlots(svg.data[0])"
+              v-for="plot in getNegativeDatapointPlots(svg.data[0], svg.slicer.start)"
               :key="`neg_${plot.key}`"
               class="pointer-events-none"
             >
