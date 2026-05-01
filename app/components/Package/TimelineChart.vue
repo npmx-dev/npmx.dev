@@ -245,7 +245,7 @@ const config = computed<VueUiXyConfig>(() => {
     theme: isDarkMode.value ? 'dark' : '',
     line: {
       useGradient: false,
-      radius: 0.01,
+      radius: 2,
       dot: {
         useSerieColor: false,
         fill: colors.value.bg,
