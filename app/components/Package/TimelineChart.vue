@@ -852,13 +852,15 @@ const indexSelection = computed(() => {
 }
 
 :deep(.vue-data-ui-component .serie_line_0 path),
-.svg-element-transition {
+.svg-element-transition,
+:deep(.vdui-shape-circle) {
   transition: all 0.5s var(--super-ease-out) !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
   ::deep(.vue-data-ui-component .serie_line_0 path),
-  .svg-element-transition {
+  .svg-element-transition,
+  :deep(.vdui-shape-circle) {
     transition: none !important;
   }
 }
