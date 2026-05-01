@@ -82,7 +82,7 @@ const convertedData = computed(() => {
   return addEvaluationFlags(entries, props.versionSubEvents).toReversed()
 })
 
-const versions = computed(() => convertedData.value.map(d => d.name.split('@')[1] ?? ''))
+const versions = computed(() => convertedData.value.map(d => d.version))
 
 const activeVersionIndex = computed(() => {
   if (!activeVersion.value) return -1

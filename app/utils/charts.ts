@@ -755,7 +755,10 @@ export function createAltTextForTimelineChart({
 
   const firstValue = config.metric === 'totalSize' ? first?.totalSize : first?.dependencyCount
   const lastValue = config.metric === 'totalSize' ? last?.totalSize : last?.dependencyCount
-  const overall_progress_percentage = Math.round(((lastValue ?? 0) / (firstValue ?? 1) - 1) * 100)
+  const baseline = firstValue ?? 0
+  const current = lastValue ?? baseline
+  const overall_progress_percentage =
+    baseline > 0 ? Math.round(((current - baseline) / baseline) * 100) : 0
 
   const version_events = withEvents
     .map(item =>
