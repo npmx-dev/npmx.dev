@@ -452,14 +452,10 @@ const indexSelection = computed(() => {
     <div class="mt-4 flex flex-row flex-wrap items-center justify-between gap-4">
       <TabRoot v-model="activeTab" default-value="totalSize" id-prefix="timeline">
         <TabList :ariaLabel="$t('package.timeline.chart.tab_aria_label')">
-          <TabItem value="totalSize" tab-id="timeline-totalSize" icon="i-lucide:package-open">
+          <TabItem value="totalSize" icon="i-lucide:package-open">
             {{ $t('package.stats.install_size') }}
           </TabItem>
-          <TabItem
-            value="dependencyCount"
-            tab-id="timeline-dependencyCount"
-            icon="i-lucide:network"
-          >
+          <TabItem value="dependencyCount" icon="i-lucide:network">
             {{ $t('compare.dependencies') }}
           </TabItem>
         </TabList>
