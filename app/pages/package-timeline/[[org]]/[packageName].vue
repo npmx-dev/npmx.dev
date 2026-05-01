@@ -337,7 +337,7 @@ useSeoMeta({
 
       <!-- Timeline -->
       <ol v-if="timelineEntries.length" class="relative border-s border-border ms-4">
-        <li v-for="(entry, i) in timelineEntries" :key="entry.version" class="mb-6 ms-6">
+        <li v-for="entry in timelineEntries" :key="entry.version" class="mb-6 ms-6">
           <!-- Dot -->
           <span
             class="absolute -start-2 flex items-center justify-center w-4 h-4 rounded-full border border-border"
@@ -379,7 +379,7 @@ useSeoMeta({
             class="relative border-s border-border/50 ms-3 mt-2"
           >
             <li
-              v-for="(ev, i) in versionSubEvents.get(entry.version)"
+              v-for="ev in versionSubEvents.get(entry.version)"
               :key="ev.key"
               class="mb-2 ms-4 relative last:mb-0"
             >
