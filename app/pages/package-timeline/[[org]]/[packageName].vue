@@ -112,14 +112,17 @@ function sizeKey(ver: string) {
 }
 
 async function fetchSizes(offset: number) {
+  const requestedPackage = packageName.value
   sizeFetchesInFlight.value++
   try {
     const data = await $fetch<TimelineSizeResponse>(
-      `/api/registry/timeline/sizes/${packageName.value}`,
+      `/api/registry/timeline/sizes/${requestedPackage}`,
       { query: { offset, limit: PAGE_SIZE } },
     )
+    if (requestedPackage !== packageName.value) return
+
     for (const entry of data.sizes) {
-      sizeCache.set(sizeKey(entry.version), {
+      sizeCache.set(`${requestedPackage}@${entry.version}`, {
         totalSize: entry.totalSize,
         dependencyCount: entry.dependencyCount,
       })
