@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
+import type {
+  VueUiXy} from 'vue-data-ui/vue-ui-xy';
 import {
-  VueUiXy,
   type VueUiXyConfig,
   type VueUiXyDatasetBarItem,
   type VueUiXyDatasetItem,
@@ -30,7 +31,7 @@ const props = defineProps<{
 
 const { settings } = useSettings()
 const route = useRoute('timeline')
-
+const chart = ref<typeof VueUiXy | null>(null)
 const activeVersion = computed(() => route.params.version)
 
 const packageName = computed(() =>
@@ -82,6 +83,14 @@ const convertedData = computed(() => {
 
   return addEvaluationFlags(entries, props.versionSubEvents).toReversed()
 })
+
+watch(
+  () => convertedData.value,
+  () => {
+    chart.value?.resetZoom()
+  },
+  { flush: 'post' },
+)
 
 const versions = computed(() => convertedData.value.map(d => d.version))
 
@@ -377,6 +386,7 @@ const config = computed<VueUiXyConfig>(() => {
         maxWidth: isMobile.value ? 350 : 500,
         highlightColor: colors.value.bgElevated,
         useResetSlot: true,
+        keepState: true,
         minimap: {
           show: true,
           lineColor: '#FAFAFA',
@@ -526,7 +536,12 @@ const indexSelection = computed(() => {
       </div>
     </div>
     <ClientOnly>
-      <VueUiXy :dataset="datasets[activeTab]" :config :selected-x-index="indexSelection">
+      <VueUiXy
+        ref="chart"
+        :dataset="datasets[activeTab]"
+        :config
+        :selected-x-index="indexSelection"
+      >
         <!-- Custom tooltip -->
         <template #tooltip="{ timeLabel }">
           <div class="font-mono text-xs flex flex-col">
@@ -826,12 +841,12 @@ const indexSelection = computed(() => {
           "
         />
       </template>
-    </ClientOnly>
 
-    <!-- Sizes loading indicator -->
-    <div v-if="loading" class="h-0.5 rounded-full bg-bg-muted overflow-hidden">
-      <div class="h-full w-1/3 bg-accent rounded-full animate-indeterminate" />
-    </div>
+      <!-- Sizes loading indicator -->
+      <div v-if="loading" class="h-0.5 rounded-full bg-bg-muted overflow-hidden">
+        <div class="h-full w-1/3 bg-accent rounded-full animate-indeterminate" />
+      </div>
+    </ClientOnly>
   </div>
 </template>
 
