@@ -1009,6 +1009,7 @@ describe('component accessibility audits', () => {
             versionSubEvents: new Map(),
             timelineEntries: [],
             selectedVersion: null,
+            loading: false,
           },
         })
         const results = await runAxe(wrapper)
