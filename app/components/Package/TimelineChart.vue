@@ -575,6 +575,7 @@ const indexSelection = computed(() => {
               </div>
             </div>
 
+            <!-- Positive & negative events -->
             <ol
               v-if="convertedData[timeLabel.absoluteIndex]?.events.length"
               class="relative font-[Geist] mt-2"
@@ -607,7 +608,6 @@ const indexSelection = computed(() => {
               </li>
             </ol>
           </div>
-          <!-- {{ log({ seriesIndex, versionLabel, datapoint: datapoint[0], data: convertedData[seriesIndex] }) }} -->
         </template>
 
         <!-- Keyboard navigation hint -->
