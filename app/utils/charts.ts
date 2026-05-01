@@ -750,6 +750,9 @@ export function createAltTextForTimelineChart({
   const withEvents = dataset.filter(d => d.events.length)
   const first = dataset[0]
   const last = dataset.at(-1)
+
+  if (!first || !last) return ''
+
   const firstValue = config.metric === 'totalSize' ? first?.totalSize : first?.dependencyCount
   const lastValue = config.metric === 'totalSize' ? last?.totalSize : last?.dependencyCount
   const overall_progress_percentage = Math.round(((lastValue ?? 0) / (firstValue ?? 1) - 1) * 100)

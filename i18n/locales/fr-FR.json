@@ -581,7 +581,7 @@
         "copy_alt": {
           "key_changes": "Principaux changements: {version_events}",
           "version_events": "version {version}: {events}",
-          "general_description": "Graphique en ligne montrant la métrique {metric} pour le paquet {package}, depuis la version {first} à {last}. La valeur de la métrique {metric} pour la version {first} est {first_value}, et {last_value} pour la version {last} ({overall_progress_percentage}% overall). {key_changes} {watermark}."
+          "general_description": "Graphique en ligne montrant la métrique {metric} pour le paquet {package}, depuis la version {first} à {last}. La valeur de la métrique {metric} pour la version {first} est {first_value}, et {last_value} pour la version {last} ({overall_progress_percentage}% dans l'ensemble). {key_changes} {watermark}."
         }
       }
     },

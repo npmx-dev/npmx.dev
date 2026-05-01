@@ -28,6 +28,7 @@ const props = defineProps<{
   selectedVersion: string | null
 }>()
 
+const { settings } = useSettings()
 const route = useRoute('timeline')
 
 const activeVersion = computed(() => route.params.version)
@@ -35,43 +36,6 @@ const activeVersion = computed(() => route.params.version)
 const packageName = computed(() =>
   route.params.org ? `${route.params.org}/${route.params.packageName}` : route.params.packageName,
 )
-
-function addTimelineEntries(
-  entries: ConvertedTimelineSizeCacheEntry[],
-  timelineEntries: TimelineVersion[],
-): EnrichedTimelineSizeCacheEntry[] {
-  const timelineEntryByVersion = new Map(timelineEntries.map(entry => [entry.version, entry]))
-
-  return entries.map(entry => {
-    const version = entry.name.split('@')[1] ?? ''
-    const timelineEntry = timelineEntryByVersion.get(version)
-
-    return {
-      ...entry,
-      version,
-      time: timelineEntry?.time,
-      license: timelineEntry?.license,
-      type: timelineEntry?.type,
-      hasTypes: timelineEntry?.hasTypes,
-      hasTrustedPublisher: timelineEntry?.hasTrustedPublisher,
-      hasProvenance: timelineEntry?.hasProvenance,
-      tags: timelineEntry?.tags ?? [],
-      events: [],
-      hasPositive: false,
-      hasNegative: false,
-    }
-  })
-}
-
-function convertMapEntries(
-  entries: Array<{ key: string; value: TimelineSizeCacheValue }>,
-): ConvertedTimelineSizeCacheEntry[] {
-  return entries.map(({ key, value }) => ({
-    name: key,
-    totalSize: value.totalSize,
-    dependencyCount: value.dependencyCount,
-  }))
-}
 
 function addEvaluationFlags(
   entries: EnrichedTimelineSizeCacheEntry[],
@@ -90,9 +54,33 @@ function addEvaluationFlags(
 }
 
 const convertedData = computed(() => {
-  const base = convertMapEntries(Array.from(props.sizeCache, ([key, value]) => ({ key, value })))
-  const withTimelineEntries = addTimelineEntries(base, props.timelineEntries)
-  return addEvaluationFlags(withTimelineEntries, props.versionSubEvents).toReversed()
+  const entries = props.timelineEntries.flatMap(timelineEntry => {
+    const key = `${packageName.value}@${timelineEntry.version}`
+    const value = props.sizeCache.get(key)
+
+    if (!value) {
+      return []
+    }
+
+    return {
+      name: key,
+      totalSize: value.totalSize,
+      dependencyCount: value.dependencyCount,
+      version: timelineEntry.version,
+      time: timelineEntry.time,
+      license: timelineEntry.license,
+      type: timelineEntry.type,
+      hasTypes: timelineEntry.hasTypes,
+      hasTrustedPublisher: timelineEntry.hasTrustedPublisher,
+      hasProvenance: timelineEntry.hasProvenance,
+      tags: timelineEntry.tags ?? [],
+      events: [],
+      hasPositive: false,
+      hasNegative: false,
+    }
+  })
+
+  return addEvaluationFlags(entries, props.versionSubEvents).toReversed()
 })
 
 const versions = computed(() => convertedData.value.map(d => d.name.split('@')[1] ?? ''))
@@ -230,7 +218,7 @@ const watermarkColors = computed(() => ({
 
 const mobileBreakpointWidth = 640
 const isMobile = computed(() => width.value > 0 && width.value < mobileBreakpointWidth)
-const isZeroBase = shallowRef(false)
+
 const commonScaleSteps = computed(() => {
   if (activeTab.value === 'totalSize') {
     return seriesTotalSize.value.max - seriesTotalSize.value.min > 5 ? 6 : 3
@@ -283,7 +271,7 @@ const config = computed<VueUiXyConfig>(() => {
             formatter: ({ value }) => {
               return formatter.value.format(value ?? 0)
             },
-            scaleMin: isZeroBase.value
+            scaleMin: settings.value.timelineChart.isZeroBased
               ? 0
               : activeTab.value === 'totalSize'
                 ? seriesTotalSize.value.min
@@ -478,7 +466,10 @@ const indexSelection = computed(() => {
         </TabList>
       </TabRoot>
 
-      <SettingsToggle v-model="isZeroBase" :label="$t('package.timeline.chart.base_scale')" />
+      <SettingsToggle
+        v-model="settings.timelineChart.isZeroBased"
+        :label="$t('package.timeline.chart.base_scale')"
+      />
     </div>
     <ClientOnly>
       <VueUiXy :dataset="datasets[activeTab]" :config :selected-x-index="indexSelection">
