@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import type {
-  VueUiXy} from 'vue-data-ui/vue-ui-xy';
 import {
+  VueUiXy,
   type VueUiXyConfig,
   type VueUiXyDatasetBarItem,
   type VueUiXyDatasetItem,
@@ -31,7 +30,7 @@ const props = defineProps<{
 
 const { settings } = useSettings()
 const route = useRoute('timeline')
-const chart = ref<InstanceType<typeof VueUiXy> | null>(null)
+const chart = ref<any>(null)
 const activeVersion = computed(() => route.params.version)
 
 const packageName = computed(() =>
