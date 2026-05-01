@@ -13,7 +13,6 @@ import {
   loadFile,
   applyEllipsis,
   copyAltTextForTimelineChart,
-  type ConvertedTimelineSizeCacheEntry,
   type EnrichedTimelineSizeCacheEntry,
   type TimelineSizeCacheValue,
 } from '~/utils/charts'

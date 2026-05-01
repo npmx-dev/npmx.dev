@@ -321,7 +321,7 @@ useSeoMeta({
       page="timeline"
     />
 
-    <div class="sticky top-14 z-10 bg-bg mt-8">
+    <div class="sticky top-24 z-10 bg-bg mt-8">
       <div class="container w-full">
         <div class="mx-auto">
           <PackageTimelineChart :sizeCache :versionSubEvents :timelineEntries :selectedVersion />
