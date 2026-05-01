@@ -157,7 +157,7 @@ import {
   ButtonBase,
   LandingIntroHeader,
   NoodleKawaiiLogo,
-  NoodleArtemisLogo,
+  NoodlePressLogo,
   LinkBase,
   CallToAction,
   CodeDirectoryListing,
@@ -368,7 +368,7 @@ describe('component accessibility audits', () => {
     })
 
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(NoodleArtemisLogo)
+      const component = await mountSuspended(NoodlePressLogo)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
