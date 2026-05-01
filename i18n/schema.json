@@ -1777,6 +1777,9 @@
                 "base_scale": {
                   "type": "string"
                 },
+                "zoom": {
+                  "type": "string"
+                },
                 "copy_alt": {
                   "type": "object",
                   "properties": {

@@ -25,6 +25,7 @@ const props = defineProps<{
   versionSubEvents: Map<string, SubEvent[]>
   timelineEntries: TimelineVersion[]
   selectedVersion: string | null
+  loading: boolean
 }>()
 
 const { settings } = useSettings()
@@ -226,9 +227,9 @@ const isMobile = computed(() => width.value > 0 && width.value < mobileBreakpoin
 
 const commonScaleSteps = computed(() => {
   if (activeTab.value === 'totalSize') {
-    return seriesTotalSize.value.max - seriesTotalSize.value.min > 5 ? 6 : 3
+    return seriesTotalSize.value.max - seriesTotalSize.value.min > 5 ? 6 : 2
   }
-  return seriesDependencies.value.max - seriesDependencies.value.min > 5 ? 6 : 3
+  return seriesDependencies.value.max - seriesDependencies.value.min > 5 ? 6 : 2
 })
 
 const metricLabel = computed(() =>
@@ -252,7 +253,7 @@ const config = computed<VueUiXyConfig>(() => {
     },
     chart: {
       backgroundColor: colors.value.bg,
-      height: 232,
+      height: 200,
       highlighter: { useLine: true },
       grid: {
         showHorizontalLines: true,
@@ -367,7 +368,28 @@ const config = computed<VueUiXyConfig>(() => {
             }),
         },
       },
-      zoom: { show: false },
+      zoom: {
+        show: settings.value.timelineChart.showZoom,
+        maxWidth: isMobile.value ? 350 : 500,
+        highlightColor: colors.value.bgElevated,
+        useResetSlot: true,
+        minimap: {
+          show: true,
+          lineColor: '#FAFAFA',
+          selectedColor: colors.value.accent,
+          selectedColorOpacity: 0.06,
+          frameColor: colors.value.border,
+          handleWidth: isMobile.value ? 40 : 20, // does not affect the size of the touch area
+          handleBorderColor: colors.value.fgSubtle,
+          handleType: 'grab', // 'empty' | 'chevron' | 'arrow' | 'grab'
+        },
+        preview: {
+          fill: transparentizeOklch(colors.value.accent, isDarkMode.value ? 0.95 : 0.92),
+          stroke: transparentizeOklch(colors.value.accent, 0.5),
+          strokeWidth: 1,
+          strokeDasharray: 3,
+        },
+      },
     },
   }
 })
@@ -454,7 +476,7 @@ const indexSelection = computed(() => {
 </script>
 
 <template>
-  <div style="width: 100%" class="font-mono border-b border-border">
+  <div style="width: 100%" class="font-mono border-b border-border" id="timeline-chart">
     <div class="mt-4 flex flex-row flex-wrap items-center justify-between gap-4">
       <TabRoot v-model="activeTab" default-value="totalSize">
         <TabList :ariaLabel="$t('package.timeline.chart.tab_aria_label')">
@@ -467,10 +489,16 @@ const indexSelection = computed(() => {
         </TabList>
       </TabRoot>
 
-      <SettingsToggle
-        v-model="settings.timelineChart.isZeroBased"
-        :label="$t('package.timeline.chart.base_scale')"
-      />
+      <div class="flex flex-row flex-wrap gap-4">
+        <SettingsToggle
+          v-model="settings.timelineChart.isZeroBased"
+          :label="$t('package.timeline.chart.base_scale')"
+        />
+        <SettingsToggle
+          v-model="settings.timelineChart.showZoom"
+          :label="$t('package.timeline.chart.zoom')"
+        />
+      </div>
     </div>
     <ClientOnly>
       <VueUiXy :dataset="datasets[activeTab]" :config :selected-x-index="indexSelection">
@@ -621,7 +649,7 @@ const indexSelection = computed(() => {
               class="pointer-events-none"
             >
               <path
-                :d="`M ${plot.x - 1} ${plot.y - 32 - (plot.offsetY ?? 0)} l -6 10 l 12 0 l -6 -10 m 0 5 l 0 2`"
+                :d="`M ${plot.x - 1} ${plot.y - 20 - (plot.offsetY ?? 0)} l -6 10 l 12 0 l -6 -10 m 0 5 l 0 2`"
                 fill="none"
                 :stroke="colors.bg"
                 stroke-width="6"
@@ -745,11 +773,33 @@ const indexSelection = computed(() => {
             aria-hidden="true"
           />
         </template>
+
+        <!-- Custom minimap reset button -->
+        <template #reset-action="{ reset: resetMinimap }">
+          <button
+            type="button"
+            aria-label="reset minimap"
+            class="absolute inset-is-1/2 -translate-x-1/2 -bottom-18 sm:inset-is-unset sm:translate-x-0 sm:bottom-auto sm:-inset-ie-20 sm:-top-3 flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
+            style="pointer-events: all !important"
+            @click="resetMinimap"
+          >
+            <span class="i-lucide:undo-2 w-5 h-5" aria-hidden="true" />
+          </button>
+        </template>
       </VueUiXy>
       <template #fallback>
-        <SkeletonBlock class="aspect-[1104/256.797]" />
+        <SkeletonBlock
+          :class="
+            settings.timelineChart.showZoom ? 'aspect-[1104/374.797]' : 'aspect-[1152/254.59]'
+          "
+        />
       </template>
     </ClientOnly>
+
+    <!-- Sizes loading indicator -->
+    <div v-if="loading" class="h-0.5 rounded-full bg-bg-muted overflow-hidden">
+      <div class="h-full w-1/3 bg-accent rounded-full animate-indeterminate" />
+    </div>
   </div>
 </template>
 
@@ -793,5 +843,26 @@ const indexSelection = computed(() => {
 :deep(.vue-ui-pen-and-paper-action:hover) {
   background: var(--bg-elevated) !important;
   box-shadow: none !important;
+}
+
+/* Override default placement of the refresh button to have it to the minimap's side */
+@media screen and (min-width: 767px) {
+  :deep(.vue-data-ui-refresh-button) {
+    top: -0.6rem !important;
+    left: calc(100% + 4rem) !important;
+  }
+}
+
+@keyframes indeterminate {
+  0% {
+    translate: -100%;
+  }
+  100% {
+    translate: 400%;
+  }
+}
+
+.animate-indeterminate {
+  animation: indeterminate 1.5s ease-in-out infinite;
 }
 </style>

@@ -590,7 +590,8 @@
       "provenance_removed": "Provenance removed",
       "chart": {
         "tab_aria_label": "Metric selection",
-        "base_scale": "Start y-axis at zero",
+        "base_scale": "start y-axis at zero",
+        "zoom": "zoom",
         "copy_alt": {
           "key_changes": "Key changes: {version_events}.",
           "version_events": "version {version}: {events}",

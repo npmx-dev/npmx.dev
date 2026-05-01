@@ -327,17 +327,18 @@ useSeoMeta({
     <div class="sticky top-24 z-10 bg-bg mt-8">
       <div class="container w-full">
         <div class="mx-auto">
-          <PackageTimelineChart :sizeCache :versionSubEvents :timelineEntries :selectedVersion />
+          <PackageTimelineChart
+            :sizeCache
+            :versionSubEvents
+            :timelineEntries
+            :selectedVersion
+            :loading="sizesLoading"
+          />
         </div>
       </div>
     </div>
 
     <div class="container w-full py-8">
-      <!-- Sizes loading indicator -->
-      <div v-if="sizesLoading" class="h-0.5 mb-4 rounded-full bg-bg-muted overflow-hidden">
-        <div class="h-full w-1/3 bg-accent rounded-full animate-indeterminate" />
-      </div>
-
       <!-- Timeline -->
       <ol v-if="timelineEntries.length" class="relative border-s border-border ms-4">
         <li v-for="entry in timelineEntries" :key="entry.version" class="mb-6 ms-6">
@@ -438,18 +439,3 @@ useSeoMeta({
     </div>
   </main>
 </template>
-
-<style scoped>
-@keyframes indeterminate {
-  0% {
-    translate: -100%;
-  }
-  100% {
-    translate: 400%;
-  }
-}
-
-.animate-indeterminate {
-  animation: indeterminate 1.5s ease-in-out infinite;
-}
-</style>
