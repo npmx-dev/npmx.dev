@@ -1771,6 +1771,9 @@
             "chart": {
               "type": "object",
               "properties": {
+                "tab_aria_label": {
+                  "type": "string"
+                },
                 "base_scale": {
                   "type": "string"
                 },

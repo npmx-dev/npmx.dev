@@ -577,6 +577,7 @@
       "provenance_added": "Preuve de provenance ajoutée",
       "provenance_removed": "Preuve de provenance enlevée",
       "chart": {
+        "tab_aria_label": "Sélection de métrique",
         "base_scale": "Positionner les ordonnées à zéro",
         "copy_alt": {
           "key_changes": "Principaux changements: {version_events}",

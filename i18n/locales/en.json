@@ -589,6 +589,7 @@
       "provenance_added": "Provenance enabled",
       "provenance_removed": "Provenance removed",
       "chart": {
+        "tab_aria_label": "Metric selection",
         "base_scale": "Start y-axis at zero",
         "copy_alt": {
           "key_changes": "Key changes: {version_events}.",
