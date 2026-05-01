@@ -574,6 +574,9 @@ export async function packageInit(
 
   const tempDirPath = await mkdtemp(join(tmpdir(), 'npmx-init-'))
 
+  let publishResult: NpmExecResult | null = null
+  let publishError: unknown = null
+
   try {
     // Determine access type based on whether it's a scoped package
     const isScoped = name.startsWith('@')
@@ -621,8 +624,29 @@ export async function packageInit(
       logError(result.stderr.split('\n')[0] || 'Command failed')
     }
 
-    return result
-  } finally {
-    await rm(tempDirPath, { recursive: true, force: true })
+    publishResult = result
+  } catch (error) {
+    publishError = error
   }
+
+  try {
+    await rm(tempDirPath, { recursive: true, force: true })
+  } catch (cleanupError) {
+    if (publishError) {
+      // Preserve original error
+      Object.assign(cleanupError as Error, { cause: publishError })
+    }
+
+    throw cleanupError
+  }
+
+  if (publishError) {
+    throw publishError
+  }
+
+  if (!publishResult) {
+    throw new Error('packageInit completed without a publish result')
+  }
+
+  return publishResult
 }
