@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import type {
-  VueUiXy} from 'vue-data-ui/vue-ui-xy';
+import type { VueUiXy } from 'vue-data-ui/vue-ui-xy'
 import {
   type VueUiXyConfig,
   type VueUiXyDatasetBarItem,
