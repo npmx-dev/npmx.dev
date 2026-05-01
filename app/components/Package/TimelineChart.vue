@@ -272,7 +272,9 @@ const config = computed<VueUiXyConfig>(() => {
             showOnlyAtModulo: versions.value.length > 24,
             values: versions.value.map(v => applyEllipsis(v, 20)),
             rotation: -30,
-            autoRotate: false,
+            autoRotate: {
+              enable: false,
+            },
           },
           yAxis: {
             commonScaleSteps: commonScaleSteps.value,
