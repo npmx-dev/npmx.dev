@@ -267,7 +267,7 @@ const config = computed<VueUiXyConfig>(() => {
           },
           xAxisLabels: {
             color: colors.value.fgSubtle,
-            fontSize: 12,
+            fontSize: isMobile.value ? 12 : 10,
             modulo: 24,
             showOnlyAtModulo: versions.value.length > 24,
             values: versions.value.map(v => applyEllipsis(v, 20)),
@@ -627,7 +627,7 @@ const indexSelection = computed(() => {
               class="pointer-events-none"
             >
               <path
-                :d="`M ${plot.x - 5} ${plot.y - 20} l 4 8 l 12 -16`"
+                :d="`M ${plot.x - 5} ${plot.y - 20} l 4 6 l 10 -12`"
                 fill="none"
                 :stroke="colors.bg"
                 stroke-width="6"
