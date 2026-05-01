@@ -575,7 +575,15 @@
       "trusted_publisher_added": "Vérification ajoutée",
       "trusted_publisher_removed": "Vérification enlevée",
       "provenance_added": "Preuve de provenance ajoutée",
-      "provenance_removed": "Preuve de provenance enlevée"
+      "provenance_removed": "Preuve de provenance enlevée",
+      "chart": {
+        "base_scale": "Positionner les ordonnées à zéro",
+        "copy_alt": {
+          "version_events": "version {version}: {events}",
+          "key_changes": "Principaux changements: {version_events}",
+          "general_description": "Graphique en ligne montrant la métrique {metric} pour le paquet {package}, depuis la version {first} à {last}. La valeur de la métrique {metric} pour la version {first} est {first_value}, et {last_value} pour la version {last} ({overall_progress_percentage}% overall). {key_changes} {watermark}."
+        }
+      }
     },
     "dependencies": {
       "title": "Dépendances ({count})",

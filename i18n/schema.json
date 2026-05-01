@@ -1767,6 +1767,30 @@
             },
             "provenance_removed": {
               "type": "string"
+            },
+            "chart": {
+              "type": "object",
+              "properties": {
+                "base_scale": {
+                  "type": "string"
+                },
+                "copy_alt": {
+                  "type": "object",
+                  "properties": {
+                    "key_changes": {
+                      "type": "string"
+                    },
+                    "version_events": {
+                      "type": "string"
+                    },
+                    "general_description": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
             }
           },
           "additionalProperties": false
