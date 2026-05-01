@@ -30,7 +30,7 @@ const props = defineProps<{
 
 const { settings } = useSettings()
 const route = useRoute('timeline')
-const chart = ref<any>(null)
+const chart = ref<any>(null) // typing with InstanceType<typeof VueUiXy> leads to autofix.ci setting the import as a type which breaks everything
 const activeVersion = computed(() => route.params.version)
 
 const packageName = computed(() =>
@@ -836,10 +836,13 @@ const indexSelection = computed(() => {
       </VueUiXy>
       <template #fallback>
         <SkeletonBlock
+          class="flex place-items-center justify-center"
           :class="
             settings.timelineChart.showZoom ? 'aspect-[1104/374.797]' : 'aspect-[1152/254.59]'
           "
-        />
+        >
+          <span class="i-lucide:chart-line w-10 h-10 text-fg-muted" aria-hidden="true" />
+        </SkeletonBlock>
       </template>
 
       <!-- Sizes loading indicator -->
