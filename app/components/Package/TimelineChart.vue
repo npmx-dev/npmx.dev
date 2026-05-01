@@ -450,12 +450,12 @@ const indexSelection = computed(() => {
 <template>
   <div style="width: 100%" class="font-mono border-b border-border">
     <div class="mt-4 flex flex-row flex-wrap items-center justify-between gap-4">
-      <TabRoot v-model="activeTab" default-value="totalSize" id-prefix="timeline">
+      <TabRoot v-model="activeTab" default-value="totalSize">
         <TabList :ariaLabel="$t('package.timeline.chart.tab_aria_label')">
-          <TabItem value="totalSize" icon="i-lucide:package-open">
+          <TabItem value="totalSize" icon="i-lucide:package-open" :controls-panel="false">
             {{ $t('package.stats.install_size') }}
           </TabItem>
-          <TabItem value="dependencyCount" icon="i-lucide:network">
+          <TabItem value="dependencyCount" icon="i-lucide:network" :controls-panel="false">
             {{ $t('compare.dependencies') }}
           </TabItem>
         </TabList>
