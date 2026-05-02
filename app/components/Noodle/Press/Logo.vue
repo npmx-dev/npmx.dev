@@ -2,8 +2,7 @@
   <TooltipApp interactive position="top">
     <template #content>
       <p class="text-sm font-medium text-fg mb-1">
-        We make noodles to share what matters to us. A free press makes openness possible for
-        everyone.
+        A free press makes openness possible for everyone.
         <LinkBase to="https://en.wikipedia.org/wiki/World_Press_Freedom_Day"
           >Read more about Press Freedom Day</LinkBase
         >
