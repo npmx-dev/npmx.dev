@@ -3,21 +3,11 @@ interface LicenseChangeRecord {
   to: string
 }
 
-interface NpmRegistryVersion {
-  version: string
-  license?: string
-}
-
-interface NpmRegistryResponse {
-  time: Record<string, string>
-  versions: Record<string, NpmRegistryVersion>
-}
-
 export default defineCachedEventHandler(
   async event => {
     // 1. Extract the package name from the catch-all parameter
-    const rawPkg = getRouterParam(event, 'pkg')
-    if (!rawPkg) {
+    const packageName = getRouterParam(event, 'pkg')
+    if (!packageName) {
       throw createError({
         statusCode: 400,
         statusMessage: 'Package name is required',
@@ -26,12 +16,10 @@ export default defineCachedEventHandler(
     const query = getQuery(event)
     const version = query.version || 'latest'
 
-    const packageName = decodeURIComponent(rawPkg).replace(/\/+$/, '').trim()
-
     try {
       // 2. Fetch the "Packument" on the server
       // This stays on the server, so the client never downloads this massive JSON
-      const data = await $fetch<NpmRegistryResponse>(`https://registry.npmjs.org/${packageName}`)
+      const data = await fetchNpmPackage(packageName)
 
       if (!data.versions || !data.time) {
         throw createError({
@@ -59,8 +47,8 @@ export default defineCachedEventHandler(
 
       if (currentLicense !== previousLicense) {
         change = {
-          from: previousLicense as string,
-          to: currentLicense as string,
+          from: previousLicense,
+          to: currentLicense,
         }
       }
       return { change }
