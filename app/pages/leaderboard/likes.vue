@@ -479,11 +479,11 @@ function formatCompactStat(value: number | null): string | null {
                     #{{ entry.rank }}
                   </div>
                   <div
-                    v-if="entry.homepageLogoUrl"
                     aria-hidden="true"
                     class="hidden h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border bg-bg-subtle/70 p-2 sm:flex"
                   >
                     <img
+                      v-if="entry.homepageLogoUrl"
                       :src="entry.homepageLogoUrl"
                       alt=""
                       loading="lazy"
@@ -491,15 +491,16 @@ function formatCompactStat(value: number | null): string | null {
                       :height="entry.homepageLogoHeight ?? undefined"
                       class="max-h-full max-w-full object-contain"
                     />
+                    <span v-else class="i-lucide:package h-6 w-6 text-fg-muted" />
                   </div>
                   <div class="min-w-0">
                     <div class="flex items-center gap-2 min-w-0">
                       <div
-                        v-if="entry.homepageLogoUrl"
                         aria-hidden="true"
                         class="flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-bg-subtle/70 p-1 sm:hidden"
                       >
                         <img
+                          v-if="entry.homepageLogoUrl"
                           :src="entry.homepageLogoUrl"
                           alt=""
                           loading="lazy"
@@ -507,6 +508,7 @@ function formatCompactStat(value: number | null): string | null {
                           :height="entry.homepageLogoHeight ?? undefined"
                           class="max-h-full max-w-full object-contain"
                         />
+                        <span v-else class="i-lucide:package h-3.5 w-3.5 text-fg-muted" />
                       </div>
                       <p class="min-w-0 font-mono text-lg truncate" :title="entry.packageName">
                         <span class="sr-only"
