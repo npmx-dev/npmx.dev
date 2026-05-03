@@ -119,7 +119,7 @@ function formatCompactStat(value: number | null): string | null {
           <li v-for="rank in [1, 2, 3]" :key="rank" class="space-y-4">
             <div class="flex justify-center">
               <div
-                class="inline-flex items-center rounded-full border px-3.5 py-2 text-lg font-mono shadow-sm"
+                class="inline-flex h-12 w-12 items-center justify-center rounded-full border text-lg font-mono shadow-sm"
                 :class="getMedalBadgeClass(rank)"
               >
                 <span>#{{ rank }}</span>
@@ -170,7 +170,7 @@ function formatCompactStat(value: number | null): string | null {
           >
             <div class="flex justify-center">
               <div
-                class="inline-flex items-center rounded-full border px-3.5 py-2 text-lg font-mono shadow-sm"
+                class="inline-flex h-12 w-12 items-center justify-center rounded-full border text-lg font-mono shadow-sm"
                 :class="getMedalBadgeClass(rank)"
               >
                 <span>#{{ rank }}</span>
@@ -282,7 +282,7 @@ function formatCompactStat(value: number | null): string | null {
           <li v-for="entry in highlightedEntries" :key="entry.subjectRef" class="space-y-4">
             <div class="flex justify-center">
               <div
-                class="inline-flex items-center rounded-full border px-3.5 py-2 text-lg font-mono shadow-sm"
+                class="inline-flex h-12 w-12 items-center justify-center rounded-full border text-lg font-mono shadow-sm"
                 :class="getMedalBadgeClass(entry.rank)"
               >
                 <span>#{{ entry.rank }}</span>
@@ -377,7 +377,7 @@ function formatCompactStat(value: number | null): string | null {
           >
             <div class="flex justify-center">
               <div
-                class="inline-flex items-center rounded-full border px-3.5 py-2 text-lg font-mono shadow-sm"
+                class="inline-flex h-12 w-12 items-center justify-center rounded-full border text-lg font-mono shadow-sm"
                 :class="getMedalBadgeClass(entry.rank)"
               >
                 <span>#{{ entry.rank }}</span>
