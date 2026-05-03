@@ -255,7 +255,7 @@ function formatCompactStat(value: number | null): string | null {
               </div>
 
               <div class="shrink-0 text-end">
-                <p class="mb-1 text-3xs font-medium uppercase tracking-[0.18em] text-fg">
+                <p class="mb-1 text-3xs font-medium uppercase tracking-[0.18em] text-fg-muted">
                   {{ $t('leaderboard.likes.likes') }}
                 </p>
                 <SkeletonBlock class="ms-auto mt-2 h-8 w-12" />
@@ -551,7 +551,7 @@ function formatCompactStat(value: number | null): string | null {
 
                 <div class="shrink-0 text-end">
                   <div>
-                    <p class="mb-1 text-3xs font-medium uppercase tracking-[0.18em] text-fg">
+                    <p class="mb-1 text-3xs font-medium uppercase tracking-[0.18em] text-fg-muted">
                       {{ $t('leaderboard.likes.likes') }}
                     </p>
                     <p class="font-mono text-2xl leading-none">
