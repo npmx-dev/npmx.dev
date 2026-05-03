@@ -489,7 +489,7 @@ function formatCompactStat(value: number | null): string | null {
                       loading="lazy"
                       :width="entry.homepageLogoWidth ?? undefined"
                       :height="entry.homepageLogoHeight ?? undefined"
-                      class="max-h-full max-w-full object-contain"
+                      class="max-h-full max-w-full rounded-sm object-contain"
                     />
                     <span v-else class="i-lucide:package h-6 w-6 text-fg-muted" />
                   </div>
@@ -506,7 +506,7 @@ function formatCompactStat(value: number | null): string | null {
                           loading="lazy"
                           :width="entry.homepageLogoWidth ?? undefined"
                           :height="entry.homepageLogoHeight ?? undefined"
-                          class="max-h-full max-w-full object-contain"
+                          class="max-h-full max-w-full rounded-sm object-contain"
                         />
                         <span v-else class="i-lucide:package h-3.5 w-3.5 text-fg-muted" />
                       </div>
