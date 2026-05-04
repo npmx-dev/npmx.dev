@@ -18,7 +18,7 @@ catalogs:
     'msw': '^2.13.2'
 
   storybook:
-    '@storybook-vue/nuxt': '9.0.1'
+    '@storybook-vue/nuxt': 'https://pkg.pr.new/@storybook-vue/nuxt@1021'
     '@storybook/addon-a11y': '^10.3.5'
     '@storybook/addon-docs': '^10.3.5'
     '@storybook/addon-themes': '^10.3.5'
@@ -36,7 +36,6 @@ overrides:
   '@types/node': 24.12.0
   nuxt-og-image: ^6.4.3
   sharp: 0.34.5
-  storybook: ^10.3.1
   vite: npm:@voidzero-dev/vite-plus-core@0.1.16
   vitest: npm:@voidzero-dev/vite-plus-test@0.1.16
   vue-router: 5.0.4

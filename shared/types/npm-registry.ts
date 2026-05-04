@@ -23,10 +23,12 @@ export interface PackumentVersion extends PackumentVersionWithoutAttestations {
   dist: PackumentVersionWithoutAttestations['dist'] & { attestations?: NpmVersionAttestations }
 }
 
+export type PackumentLicense = string | { type: string; url?: string }
+
 export type Packument = Omit<PackumentWithoutLicenseObjects, 'license' | 'versions'> & {
   // Fix for license field being incorrectly typed in @npm/types
   // TODO: Remove this type override when @npm/types fixes the license field typing
-  license?: string | { type: string; url?: string }
+  license?: PackumentLicense
   versions: Record<string, PackumentVersion>
 }
 

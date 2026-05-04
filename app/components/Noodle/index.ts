@@ -1,6 +1,5 @@
 import NoodleKawaiiLogo from './Kawaii/Logo.vue'
-import NoodleArtemisLogo from './Artemis/Logo.vue'
-// import NoodleTkawaiiLogo from './Tkawaii/Logo.vue'
+import NoodlePressLogo from './Press/Logo.vue'
 
 export type Noodle = {
   // Unique identifier for the noodle
@@ -17,17 +16,6 @@ export type Noodle = {
   tagline?: boolean
 }
 
-// Archive noodles - might be shown on special page
-// export const ARCHIVE_NOODLES: Noodle[] = [
-//   {
-//     key: 'tkawaii',
-//     date: '2026-04-08T12:00:00UTC',
-//     timezone: 'auto',
-//     logo: NoodleTkawaiiLogo,
-//     tagline: false,
-//   },
-// ]
-
 // Permanent noodles - always shown on specific query param (e.g. ?kawaii)
 export const PERMANENT_NOODLES: Noodle[] = [
   {
@@ -40,11 +28,11 @@ export const PERMANENT_NOODLES: Noodle[] = [
 // Active noodles - shown based on date and timezone
 export const ACTIVE_NOODLES: Noodle[] = [
   {
-    key: 'artemis',
-    logo: NoodleArtemisLogo,
-    date: '2026-04-08T12:00:00Z',
-    dateTo: '2026-04-12T01:00:00Z',
-    timezone: 'America/Los_Angeles',
-    tagline: true,
+    key: 'press',
+    logo: NoodlePressLogo,
+    date: '2026-05-01',
+    dateTo: '2026-05-04',
+    timezone: 'auto',
+    tagline: false,
   },
 ]
