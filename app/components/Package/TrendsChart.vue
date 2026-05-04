@@ -1077,6 +1077,7 @@ const normalisedDataset = computed(() => {
   const lastDateMs = chartData.value.dates.at(-1) ?? 0
   const isAbsoluteMetric = selectedMetric.value === 'contributors'
 
+  // oxlint-disable-next-line oxc-no-map-spread
   return (chartData.value.dataset || []).map(d => {
     const series = applyDataPipeline(
       d.series.map(v => v ?? 0),
