@@ -249,8 +249,8 @@ importers:
         specifier: 3.5.33
         version: 3.5.33(typescript@6.0.2)
       vue-data-ui:
-        specifier: 3.18.5
-        version: 3.18.5(vue@3.5.33)
+        specifier: 3.19.1
+        version: 3.19.1(vue@3.5.33)
       vue-router:
         specifier: 5.0.4
         version: 5.0.4(@vue/compiler-sfc@3.5.33)(vue@3.5.33)
@@ -11129,8 +11129,11 @@ packages:
   vue-component-type-helpers@3.2.7:
     resolution: {integrity: sha512-+gPp5YGmhfsj1IN+xUo7y0fb4clfnOiiUA39y07yW1VzCRjzVgwLbtmdWlghh7mXrPsEaYc7rrIir/HT6C8vYQ==}
 
-  vue-data-ui@3.18.5:
-    resolution: {integrity: sha512-AnfGe8YKriAE8QsxhBskKP7KPXoXrf07WM+rxK10nZcS1AOHaKeFbdgDQN1fhTpIWoGY0qVDuEtzcpLqQOjbYg==}
+  vue-component-type-helpers@3.2.8:
+    resolution: {integrity: sha512-9689efAXhN/EV86plgkL/XFiJSXhGtWPG6JDboZ+QnjlUWUUQrQ0ILKQtw4iQsuwIwu5k6Aw+JnehDe7161e7A==}
+
+  vue-data-ui@3.19.1:
+    resolution: {integrity: sha512-nQNPUgPNKKGKa8ZLzhK4dnSPU2CI6puKSYLTPPva26VL/73tu9li/3KVeLtJwaeQl5OXBvWuWq70JHk1P9XCpA==}
     peerDependencies:
       jspdf: '>=3.0.1'
       vue: '>=3.3.0'
@@ -15941,7 +15944,7 @@ snapshots:
       storybook: 10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@19.2.4)(react@19.2.4)
       type-fest: 2.19.0
       vue: 3.5.33(typescript@6.0.2)
-      vue-component-type-helpers: 3.2.7
+      vue-component-type-helpers: 3.2.8
 
   '@surma/rollup-plugin-off-main-thread@2.2.3':
     dependencies:
@@ -23836,7 +23839,9 @@ snapshots:
 
   vue-component-type-helpers@3.2.7: {}
 
-  vue-data-ui@3.18.5(vue@3.5.33):
+  vue-component-type-helpers@3.2.8: {}
+
+  vue-data-ui@3.19.1(vue@3.5.33):
     dependencies:
       vue: 3.5.33(typescript@6.0.2)
 
