@@ -1,0 +1,15 @@
+{
+  "status": "success",
+  "data": {
+    "image": {
+      "url": "https://images.example.com/vue-home.png",
+      "width": 1200,
+      "height": 630
+    },
+    "logo": {
+      "url": "https://images.example.com/vue-logo.svg",
+      "width": 256,
+      "height": 256
+    }
+  }
+}

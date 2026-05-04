@@ -144,8 +144,9 @@ export class PackageLikesUtils {
     }
 
     return {
-      totalLikes: totalLikes,
+      totalLikes,
       userHasLiked,
+      topLikedRank: null,
     }
   }
 
@@ -208,8 +209,9 @@ export class PackageLikesUtils {
     // We already know the user has not liked the package before so set in the cache
     await this.cache.set(CACHE_USER_LIKES_KEY(packageName, usersDid), true, CACHE_MAX_AGE)
     return {
-      totalLikes: totalLikes,
+      totalLikes,
       userHasLiked: true,
+      topLikedRank: null,
     }
   }
 
@@ -277,8 +279,9 @@ export class PackageLikesUtils {
     await this.cache.delete(CACHE_USERS_BACK_LINK(packageName, usersDid))
 
     return {
-      totalLikes: totalLikes,
+      totalLikes,
       userHasLiked: false,
+      topLikedRank: null,
     }
   }
 
