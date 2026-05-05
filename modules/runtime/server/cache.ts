@@ -863,6 +863,9 @@ export default defineNitroPlugin(nitroApp => {
   const original$fetch = globalThis.$fetch
 
   // Override native fetch for esm.sh requests and to inject test fixture responses
+  // @ts-expect-error @atcute/tid depends on @atcute/time-ms@1.2.2 which depends on @types/bun causing this type conflict.
+  // they fixed this in @atcute/time-ms@^1.3.0 but the tid package needs an update. Doing a ts-expect-error rather than an override
+  // so we remember to remove this when the tid package updates
   globalThis.fetch = async (input: URL | RequestInfo, init?: RequestInit): Promise<Response> => {
     const urlStr =
       typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url
