@@ -1286,7 +1286,7 @@
       "title": "Sammenlign {x} vs {y}",
       "freshness_score": "Ferskhetspoeng",
       "copy_alt": {
-        "analysis": "{package}: {x_name} ({x_value}) og {y_name} ({y_value})",
+        "analysis": "{package} : {x_name} ({x_value}) og {y_name} ({y_value})",
         "description": "Punktdiagram som viser {x_name} mot {y_name} for {packages} pakker. {analysis}. {watermark}"
       },
       "filename": "{x}-vs-{y}-punktdiagram",
