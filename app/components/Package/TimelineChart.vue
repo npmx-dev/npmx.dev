@@ -30,7 +30,7 @@ const props = defineProps<{
 
 const { settings } = useSettings()
 const route = useRoute('timeline')
-const chart = ref<any>(null) // typing with InstanceType<typeof VueUiXy> leads to autofix.ci setting the import as a type which breaks everything
+const chartRef = useTemplateRef('chartRef')
 const activeVersion = computed(() => route.params.version)
 
 const packageName = computed(() =>
@@ -87,7 +87,7 @@ watch(
   () => convertedData.value,
   async () => {
     await nextTick()
-    chart.value?.resetZoom()
+    chartRef.value?.resetZoom()
   },
   { flush: 'post' },
 )
@@ -541,7 +541,7 @@ const indexSelection = computed(() => {
     </div>
     <ClientOnly>
       <VueUiXy
-        ref="chart"
+        ref="chartRef"
         :dataset="datasets[activeTab]"
         :config
         :selected-x-index="indexSelection"
@@ -670,7 +670,7 @@ const indexSelection = computed(() => {
             <!-- Marker for positive events -->
             <g
               v-for="plot in getPositiveDatapointPlots(svg.data[0], svg.slicer.start)"
-              :key="`pos_${plot.key}`"
+              :key="plot.key"
               class="pointer-events-none"
             >
               <path
@@ -696,7 +696,7 @@ const indexSelection = computed(() => {
             <!-- Marker for negative events -->
             <g
               v-for="plot in getNegativeDatapointPlots(svg.data[0], svg.slicer.start)"
-              :key="`neg_${plot.key}`"
+              :key="plot.key"
               class="pointer-events-none"
             >
               <path
@@ -839,12 +839,7 @@ const indexSelection = computed(() => {
         </template>
       </VueUiXy>
       <template #fallback>
-        <SkeletonBlock
-          class="flex place-items-center justify-center"
-          :class="
-            settings.timelineChart.showZoom ? 'aspect-[1104/374.797]' : 'aspect-[1152/254.59]'
-          "
-        >
+        <SkeletonBlock class="flex place-items-center justify-center aspect-[1152/254.59]">
           <span class="i-lucide:chart-line w-10 h-10 text-fg-muted" aria-hidden="true" />
         </SkeletonBlock>
       </template>
