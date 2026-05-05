@@ -263,7 +263,10 @@ const config = computed<VueUiXyConfig>(() => {
     chart: {
       backgroundColor: colors.value.bg,
       height: 200,
-      highlighter: { useLine: true },
+      highlighter: {
+        useLine: true,
+        color: colors.value.accent,
+      },
       grid: {
         showHorizontalLines: true,
         stroke: colors.value.border,
@@ -390,6 +393,7 @@ const config = computed<VueUiXyConfig>(() => {
         minimap: {
           show: true,
           lineColor: '#FAFAFA',
+          indicatorColor: colors.value.accent,
           selectedColor: colors.value.accent,
           selectedColorOpacity: 0.06,
           frameColor: colors.value.border,
