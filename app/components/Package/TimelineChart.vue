@@ -84,7 +84,7 @@ const convertedData = computed(() => {
 })
 
 watch(
-  () => convertedData.value,
+  convertedData,
   async () => {
     await nextTick()
     chartRef.value?.resetZoom()
