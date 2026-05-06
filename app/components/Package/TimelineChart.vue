@@ -17,6 +17,7 @@ import {
   type TimelineSizeCacheValue,
 } from '~/utils/charts'
 import type { TimelineVersion, SubEvent } from '~~/server/api/registry/timeline/[...pkg].get'
+import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
 
 import('vue-data-ui/style.css')
 
