@@ -250,6 +250,8 @@ function buildExportFilename(extension: 'png' | 'csv' | 'svg') {
   return `${sanitise(packageName.value)}_${$t('package.links.timeline')}_${metricLabel.value.toLocaleLowerCase().replaceAll(' ', '-')}.${extension}`
 }
 
+const tooltipPosition = useChartTooltipPosition(chartRef)
+
 const config = computed<VueUiXyConfig>(() => {
   return {
     theme: isDarkMode.value ? 'dark' : '',
@@ -316,6 +318,8 @@ const config = computed<VueUiXyConfig>(() => {
         color: colors.value.fg,
       },
       tooltip: {
+        position: tooltipPosition.value,
+        offsetX: 24,
         borderColor: colors.value.border,
         borderRadius: 6,
         backgroundColor: colors.value.bg,
