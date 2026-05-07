@@ -83,7 +83,7 @@ function formatCompactStat(value: number | null): string | null {
 
 function getEntryAnimationStyle(index: number): Record<string, string> {
   return {
-    animationDelay: `${Math.min(index * 60, 420)}ms`,
+    animationDelay: `${Math.min(index * 100, 600)}ms`,
   }
 }
 </script>
@@ -431,22 +431,33 @@ function getEntryAnimationStyle(index: number): Record<string, string> {
 
 <style scoped>
 .likes-leaderboard-entry-motion {
-  animation: likes-leaderboard-slide-up 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: likes-leaderboard-pop-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transform-origin: center top;
+  will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .likes-leaderboard-entry-motion {
     animation: none;
+    will-change: auto;
   }
 }
 
-@keyframes likes-leaderboard-slide-up {
+@keyframes likes-leaderboard-pop-in {
   from {
-    transform: translateY(8px);
+    transform: translate3d(0, 20px, 0) scale(0.96);
+  }
+
+  50% {
+    transform: translate3d(0, -6px, 0) scale(1.02);
+  }
+
+  70% {
+    transform: translate3d(0, 2px, 0) scale(0.998);
   }
 
   to {
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0) scale(1);
   }
 }
 </style>
