@@ -11,7 +11,9 @@ const elementX = ref(0)
 const elementWidth = ref(0)
 const isOutside = ref(true)
 
-class MockHTMLElement {}
+const MockHTMLElement = class {
+  public readonly nodeType = 1
+}
 
 vi.stubGlobal('HTMLElement', MockHTMLElement)
 
