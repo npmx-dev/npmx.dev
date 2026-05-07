@@ -126,7 +126,7 @@ function getEntryAnimationStyle(index: number): Record<string, string> {
             :class="getResponsivePodiumItemClass(entry.rank)"
           >
             <div
-              class="space-y-4 motion-safe:animate-slide-up motion-safe:animate-fill-both"
+              class="space-y-4 likes-leaderboard-entry-motion"
               :style="getEntryAnimationStyle(index)"
             >
               <div class="flex justify-center">
@@ -226,7 +226,7 @@ function getEntryAnimationStyle(index: number): Record<string, string> {
             :class="getPodiumItemClass(entry.rank)"
           >
             <div
-              class="space-y-4 motion-safe:animate-slide-up motion-safe:animate-fill-both"
+              class="space-y-4 likes-leaderboard-entry-motion"
               :style="getEntryAnimationStyle(index)"
             >
               <div class="flex justify-center">
@@ -322,7 +322,7 @@ function getEntryAnimationStyle(index: number): Record<string, string> {
           <li
             v-for="(entry, index) in remainingEntries"
             :key="entry.subjectRef"
-            class="motion-safe:animate-slide-up motion-safe:animate-fill-both"
+            class="likes-leaderboard-entry-motion"
             :style="getEntryAnimationStyle(index + highlightedEntries.length)"
           >
             <NuxtLink
@@ -428,3 +428,25 @@ function getEntryAnimationStyle(index: number): Record<string, string> {
     </article>
   </main>
 </template>
+
+<style scoped>
+.likes-leaderboard-entry-motion {
+  animation: likes-leaderboard-slide-up 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .likes-leaderboard-entry-motion {
+    animation: none;
+  }
+}
+
+@keyframes likes-leaderboard-slide-up {
+  from {
+    transform: translateY(8px);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+</style>
