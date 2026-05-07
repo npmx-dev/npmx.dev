@@ -141,10 +141,10 @@ export default defineNuxtConfig({
     '/oauth-client-metadata.json': { prerender: true },
     '/.well-known/jwks.json': { prerender: true },
     '/.well-known/site.standard.publication': { prerender: true },
+    '/api/leaderboard/likes': { isr: 900 },
     // never cache
     '/api/auth/**': { isr: false, cache: false },
     '/api/social/**': { isr: false, cache: false },
-    '/api/leaderboard/likes': { isr: false, cache: false },
     '/api/atproto/bluesky-comments': {
       isr: {
         expiration: 60 * 60 /* one hour */,
