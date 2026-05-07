@@ -79,6 +79,15 @@ function getPodiumItemClass(rank: number): string {
   }
 }
 
+function getResponsivePodiumItemClass(rank: number): string {
+  switch (rank) {
+    case 1:
+      return 'md:col-span-2'
+    default:
+      return 'md:max-w-none'
+  }
+}
+
 function getPodiumCardClass(rank: number): string {
   switch (rank) {
     case 1:
@@ -163,10 +172,10 @@ function formatCompactStat(value: number | null): string | null {
           class="hidden list-none m-0 gap-4 p-0 pb-4 lg:grid lg:grid-cols-[minmax(0,0.96fr)_minmax(0,1.08fr)_minmax(0,0.96fr)] lg:items-end lg:gap-6 lg:pb-16"
         >
           <li
-            v-for="rank in [1, 2, 3]"
-            :key="rank"
-            class="space-y-4"
-            :class="getPodiumItemClass(rank)"
+            v-for="(entry, index) in highlightedEntries"
+            :key="entry.subjectRef"
+            class="mx-auto w-full max-w-xl"
+            :class="getResponsivePodiumItemClass(entry.rank)"
           >
             <div class="flex justify-center">
               <div
