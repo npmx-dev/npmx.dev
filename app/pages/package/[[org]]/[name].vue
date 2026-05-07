@@ -108,15 +108,20 @@ const {
 )
 
 //copy README file as Markdown
-const { copied: copiedReadme, copy: copyReadme } = useClipboardAsync(
-  async () => {
+const {
+  copied: copiedReadme,
+  copy,
+  copyPending: copyReadmePending,
+} = useClipboard({
+  copiedDuring: 2000,
+})
+
+function copyReadme() {
+  copy(async () => {
     await fetchReadmeMarkdown()
     return readmeMarkdownData.value?.markdown ?? ''
-  },
-  {
-    copiedDuring: 2000,
-  },
-)
+  })
+}
 
 function prefetchReadmeMarkdown() {
   if (readmeMarkdownStatus.value === 'idle') {
@@ -1040,7 +1045,11 @@ const showSkeleton = shallowRef(false)
                   "
                   :classicon="copiedReadme ? 'i-lucide:check' : 'i-simple-icons:markdown'"
                 >
-                  {{ copiedReadme ? $t('common.copied') : $t('common.copy') }}
+                  <span>{{ copiedReadme ? $t('common.copied') : $t('common.copy') }}</span>
+                  <span
+                    v-if="copyReadmePending"
+                    class="i-lucide:loader-circle animate-spin size-4"
+                  ></span>
                 </ButtonBase>
               </TooltipApp>
               <ReadmeTocDropdown
