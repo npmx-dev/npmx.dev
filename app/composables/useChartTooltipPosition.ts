@@ -1,7 +1,7 @@
 /**
  * This composable returns a dynamic position to be fed to vue-data-ui components configugration for the `tooltip.position` attribute. Use it to position tooltips to the right or left side to free the view for datapoints, typically on line charts.
  */
-
+import { computed, toValue } from 'vue'
 import { useMouseInElement } from '@vueuse/core'
 
 type TooltipPosition = 'left' | 'right' | 'center'

@@ -1,5 +1,6 @@
-import { computed, ref, shallowRef, toValue } from 'vue'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import type { computed} from 'vue';
+import { ref, shallowRef } from 'vue'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useChartTooltipPosition } from '~/composables/useChartTooltipPosition'
 
 const mouseState = vi.hoisted(() => ({
@@ -13,12 +14,15 @@ const isOutside = ref(true)
 class MockHTMLElement {}
 
 vi.stubGlobal('HTMLElement', MockHTMLElement)
-vi.stubGlobal('computed', computed)
-vi.stubGlobal('toValue', toValue)
+
+afterEach(() => {
+  vi.unstubAllGlobals()
+})
 
 vi.mock('@vueuse/core', () => ({
   useMouseInElement: vi.fn(target => {
     mouseState.target = target
+
     return {
       elementX,
       elementWidth,
@@ -29,6 +33,7 @@ vi.mock('@vueuse/core', () => ({
 
 describe('useChartTooltipPosition', () => {
   beforeEach(() => {
+    vi.stubGlobal('HTMLElement', MockHTMLElement)
     elementX.value = 0
     elementWidth.value = 0
     isOutside.value = true
@@ -38,9 +43,11 @@ describe('useChartTooltipPosition', () => {
   it('returns center when the mouse is outside', () => {
     const element = new MockHTMLElement() as HTMLElement
     const position = useChartTooltipPosition(shallowRef(element))
+
     isOutside.value = true
     elementWidth.value = 100
     elementX.value = 75
+
     expect(position.value).toBe('center')
   })
 
