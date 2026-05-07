@@ -1,4 +1,4 @@
-import type { computed} from 'vue';
+import type { computed } from 'vue'
 import { ref, shallowRef } from 'vue'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useChartTooltipPosition } from '~/composables/useChartTooltipPosition'
