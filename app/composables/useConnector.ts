@@ -115,7 +115,7 @@ export const useConnector = createSharedComposable(function useConnector() {
       const response = await $fetch<ConnectResponse>(`http://127.0.0.1:${port}/connect`, {
         method: 'POST',
         body: { token },
-        timeout: 5000,
+        timeout: 30000,
       })
 
       if (response.success && response.data) {
