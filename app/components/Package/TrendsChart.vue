@@ -1589,6 +1589,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
         maxWidth: isMobile.value ? 350 : 500,
         highlightColor: colors.value.bgElevated,
         useResetSlot: true,
+        keepState: true,
         minimap: {
           show: true,
           lineColor: '#FAFAFA',
