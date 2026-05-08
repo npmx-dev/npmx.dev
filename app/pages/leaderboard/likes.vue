@@ -16,8 +16,13 @@ const { data: leaderboardEntries } = useFetch<LikesLeaderboardEntry[]>('/api/lea
   default: () => [],
 })
 
+const shouldAnimateEntries = ref(false)
 const highlightedEntries = computed(() => leaderboardEntries.value.slice(0, 3))
 const remainingEntries = computed(() => leaderboardEntries.value.slice(3))
+
+onMounted(() => {
+  shouldAnimateEntries.value = true
+})
 
 function getPreviewFallbackClass(rank: number): string {
   switch (rank) {
@@ -126,7 +131,8 @@ function getEntryAnimationStyle(index: number): Record<string, string> {
             :class="getResponsivePodiumItemClass(entry.rank)"
           >
             <div
-              class="space-y-4 likes-leaderboard-entry-motion"
+              class="space-y-4"
+              :class="{ 'likes-leaderboard-entry-motion': shouldAnimateEntries }"
               :style="getEntryAnimationStyle(index)"
             >
               <div class="flex justify-center">
@@ -226,7 +232,8 @@ function getEntryAnimationStyle(index: number): Record<string, string> {
             :class="getPodiumItemClass(entry.rank)"
           >
             <div
-              class="space-y-4 likes-leaderboard-entry-motion"
+              class="space-y-4"
+              :class="{ 'likes-leaderboard-entry-motion': shouldAnimateEntries }"
               :style="getEntryAnimationStyle(index)"
             >
               <div class="flex justify-center">
@@ -322,7 +329,7 @@ function getEntryAnimationStyle(index: number): Record<string, string> {
           <li
             v-for="(entry, index) in remainingEntries"
             :key="entry.subjectRef"
-            class="likes-leaderboard-entry-motion"
+            :class="{ 'likes-leaderboard-entry-motion': shouldAnimateEntries }"
             :style="getEntryAnimationStyle(index + highlightedEntries.length)"
           >
             <NuxtLink
