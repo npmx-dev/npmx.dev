@@ -9,6 +9,7 @@ import type {
   VueUiXyDatasetLineItem,
 } from 'vue-data-ui'
 import type { ChartTimeGranularity } from '~/types/chart'
+import type { SubEvent } from '~~/server/api/registry/timeline/[...pkg].get'
 
 export function sum(numbers: number[]): number {
   return numbers.reduce((a, b) => a + b, 0)
@@ -451,6 +452,37 @@ export type FacetBarChartConfig = VueUiHorizontalBarConfig & {
   $t: TrendTranslateFunction
 }
 
+export type TimelineSizeCacheValue = {
+  totalSize: number
+  dependencyCount: number
+}
+
+export type ConvertedTimelineSizeCacheEntry = TimelineSizeCacheValue & {
+  name: string
+}
+
+export type EnrichedTimelineSizeCacheEntry = ConvertedTimelineSizeCacheEntry & {
+  version: string
+  time?: string
+  license?: string
+  type?: string
+  hasTypes?: boolean
+  hasTrustedPublisher?: boolean
+  hasProvenance?: boolean
+  tags: string[]
+  events: SubEvent[]
+  hasPositive: boolean
+  hasNegative: boolean
+}
+
+export type TimelineChartConfig = VueUiXyConfig & {
+  metric: 'totalSize' | 'dependencyCount'
+  packageName: string
+  copy: (text: string) => Promise<void>
+  $t: TrendTranslateFunction
+  numberFormatter: (value: number) => string
+}
+
 // Used for TrendsChart.vue
 export function createAltTextForTrendLineChart({
   dataset,
@@ -702,6 +734,68 @@ export async function copyAltTextForCompareScatterChart({
   config,
 }: AltCopyArgs<VueUiScatterSeries[], CompareScatterChartConfig>) {
   const altText = createAltTextForCompareScatterChart({ dataset, config })
+  await config.copy(altText)
+}
+
+// Used for TimelineChart.vue
+export function createAltTextForTimelineChart({
+  dataset,
+  config,
+}: AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>) {
+  if (!dataset) return ''
+  const metric =
+    config.metric === 'totalSize'
+      ? config.$t('package.stats.install_size')
+      : config.$t('compare.dependencies')
+  const withEvents = dataset.filter(d => d.events.length)
+  const first = dataset[0]
+  const last = dataset.at(-1)
+
+  if (!first || !last) return ''
+
+  const firstValue = config.metric === 'totalSize' ? first?.totalSize : first?.dependencyCount
+  const lastValue = config.metric === 'totalSize' ? last?.totalSize : last?.dependencyCount
+  const baseline = firstValue ?? 0
+  const current = lastValue ?? baseline
+  const overall_progress_percentage =
+    baseline > 0 ? Math.round(((current - baseline) / baseline) * 100) : 0
+
+  const version_events = withEvents
+    .map(item =>
+      config.$t('package.timeline.chart.copy_alt.version_events', {
+        version: item.version,
+        // eslint-disable-next-line @intlify/vue-i18n/no-dynamic-keys
+        events: item.events.map(e => config.$t(e.text).toLocaleLowerCase()).join(', '),
+      }),
+    )
+    .join('; ')
+
+  const key_changes = !withEvents.length
+    ? ''
+    : config.$t('package.timeline.chart.copy_alt.key_changes', {
+        version_events,
+      })
+
+  const altText = config.$t('package.timeline.chart.copy_alt.general_description', {
+    metric: metric.toLocaleLowerCase(),
+    package: config.packageName,
+    first: first?.version ?? '',
+    last: last?.version ?? '',
+    first_value: config.numberFormatter(firstValue ?? 0),
+    last_value: config.numberFormatter(lastValue ?? 0),
+    overall_progress_percentage,
+    key_changes,
+    watermark: config.$t('package.trends.copy_alt.watermark'),
+  })
+
+  return altText
+}
+
+export async function copyAltTextForTimelineChart({
+  dataset,
+  config,
+}: AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>) {
+  const altText = createAltTextForTimelineChart({ dataset, config })
   await config.copy(altText)
 }
 

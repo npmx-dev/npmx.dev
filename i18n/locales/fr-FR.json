@@ -579,7 +579,18 @@
       "trusted_publisher_added": "Vérification ajoutée",
       "trusted_publisher_removed": "Vérification enlevée",
       "provenance_added": "Preuve de provenance ajoutée",
-      "provenance_removed": "Preuve de provenance enlevée"
+      "provenance_removed": "Preuve de provenance enlevée",
+      "chart": {
+        "tab_aria_label": "Sélection de métrique",
+        "base_scale": "positionner les ordonnées à zéro",
+        "zoom": "zoom",
+        "reset_minimap": "Réinitialiser la mini-carte",
+        "copy_alt": {
+          "key_changes": "Principaux changements: {version_events}",
+          "version_events": "version {version}: {events}",
+          "general_description": "Graphique en ligne montrant la métrique {metric} pour le paquet {package}, depuis la version {first} à {last}. La valeur de la métrique {metric} pour la version {first} est {first_value}, et {last_value} pour la version {last} ({overall_progress_percentage}% dans l'ensemble). {key_changes} {watermark}."
+        }
+      }
     },
     "dependencies": {
       "title": "Dépendances ({count})",
