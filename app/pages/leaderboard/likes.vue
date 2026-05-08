@@ -146,10 +146,10 @@ function getEntryAnimationStyle(index: number): Record<string, string> {
 
               <NuxtLink
                 :to="packageRoute(entry.packageName)"
-                class="block w-full no-underline text-inherit hover:no-underline"
+                class="leaderboard-package-link block w-full rounded-lg no-underline text-inherit hover:no-underline focus-visible:outline-none"
               >
                 <BaseCard
-                  class="w-full overflow-hidden p-0! transition-transform"
+                  class="leaderboard-package-card w-full overflow-hidden p-0! transition-[border-color,background-color,outline-color,transform]"
                   :class="getPodiumCardClass(entry.rank)"
                 >
                   <div class="-mx-px -mt-px overflow-hidden rounded-t-lg border-b border-border">
@@ -247,10 +247,10 @@ function getEntryAnimationStyle(index: number): Record<string, string> {
 
               <NuxtLink
                 :to="packageRoute(entry.packageName)"
-                class="block h-full w-full no-underline text-inherit hover:no-underline"
+                class="leaderboard-package-link block h-full w-full rounded-lg no-underline text-inherit hover:no-underline focus-visible:outline-none"
               >
                 <BaseCard
-                  class="h-full w-full overflow-hidden p-0! transition-transform"
+                  class="leaderboard-package-card h-full w-full overflow-hidden p-0! transition-[border-color,background-color,outline-color,transform]"
                   :class="getPodiumCardClass(entry.rank)"
                 >
                   <div class="-mx-px -mt-px overflow-hidden rounded-t-lg border-b border-border">
@@ -334,9 +334,11 @@ function getEntryAnimationStyle(index: number): Record<string, string> {
           >
             <NuxtLink
               :to="packageRoute(entry.packageName)"
-              class="block w-full no-underline hover:no-underline"
+              class="leaderboard-package-link block w-full rounded-lg no-underline hover:no-underline focus-visible:outline-none"
             >
-              <BaseCard class="flex w-full items-center justify-between gap-4 min-w-0">
+              <BaseCard
+                class="leaderboard-package-card flex w-full items-center justify-between gap-4 min-w-0"
+              >
                 <div class="flex items-center gap-4 min-w-0">
                   <div
                     aria-hidden="true"
@@ -437,6 +439,17 @@ function getEntryAnimationStyle(index: number): Record<string, string> {
 </template>
 
 <style scoped>
+.leaderboard-package-card {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.leaderboard-package-link:focus-visible .leaderboard-package-card {
+  background: var(--bg-muted);
+  border-color: var(--border-hover);
+  outline-color: color-mix(in oklab, var(--fg) 60%, transparent);
+}
+
 .likes-leaderboard-entry-motion {
   animation: likes-leaderboard-pop-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
   transform-origin: center top;
