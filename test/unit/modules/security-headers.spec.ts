@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const { useNuxt } = vi.hoisted(() => ({
