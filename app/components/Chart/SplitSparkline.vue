@@ -5,7 +5,7 @@ import {
   type VueUiSparklineDatasetItem,
 } from 'vue-data-ui/vue-ui-sparkline'
 import { VueUiPatternSeed } from 'vue-data-ui/vue-ui-pattern-seed'
-import { useCssVariables } from '~/composables/useColors'
+import { useColors } from '~/composables/useColors'
 import type { VueUiXyDatasetItem } from 'vue-data-ui/vue-ui-xy'
 import { getPalette, lightenColor } from 'vue-data-ui/utils'
 import { CHART_PATTERN_CONFIG } from '~/utils/charts'
@@ -50,23 +50,7 @@ watch(
   { flush: 'sync', immediate: true },
 )
 
-const { colors } = useCssVariables(
-  [
-    '--bg',
-    '--fg',
-    '--bg-subtle',
-    '--bg-elevated',
-    '--border-hover',
-    '--fg-subtle',
-    '--border',
-    '--border-subtle',
-  ],
-  {
-    element: rootEl,
-    watchHtmlAttributes: true,
-    watchResize: false, // set to true only if a var changes color on resize
-  },
-)
+const { colors } = useColors(rootEl)
 
 const isDarkMode = computed(() => resolvedMode.value === 'dark')
 

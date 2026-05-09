@@ -4,7 +4,7 @@ import {
   type VueUiSparklineConfig,
   type VueUiSparklineDatasetItem,
 } from 'vue-data-ui/vue-ui-sparkline'
-import { useCssVariables } from '~/composables/useColors'
+import { useColors } from '~/composables/useColors'
 import type { WeeklyDataPoint } from '~/types/chart'
 import { applyDataCorrection } from '~/utils/chart-data-correction'
 import { OKLCH_NEUTRAL_FALLBACK, lightenOklch } from '~/utils/colors'
@@ -86,23 +86,7 @@ watch(
   { flush: 'sync' },
 )
 
-const { colors } = useCssVariables(
-  [
-    '--bg',
-    '--fg',
-    '--bg-subtle',
-    '--bg-elevated',
-    '--border-hover',
-    '--fg-subtle',
-    '--border',
-    '--border-subtle',
-  ],
-  {
-    element: rootEl,
-    watchHtmlAttributes: true,
-    watchResize: false, // set to true only if a var changes color on resize
-  },
-)
+const { colors } = useColors(rootEl)
 
 const isDarkMode = computed(() => resolvedMode.value === 'dark')
 

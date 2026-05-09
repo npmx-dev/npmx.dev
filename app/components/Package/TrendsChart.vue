@@ -2,7 +2,7 @@
 import type { Theme as VueDataUiTheme } from 'vue-data-ui'
 import { VueUiXy, type VueUiXyConfig, type VueUiXyDatasetItem } from 'vue-data-ui/vue-ui-xy'
 import { useDebounceFn, useElementSize, useTimeoutFn } from '@vueuse/core'
-import { useCssVariables } from '~/composables/useColors'
+import { useColors } from '~/composables/useColors'
 import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch, lightenOklch } from '~/utils/colors'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
 import { drawNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
@@ -92,23 +92,7 @@ onMounted(async () => {
   loadMetric(selectedMetric.value)
 })
 
-const { colors } = useCssVariables(
-  [
-    '--bg',
-    '--fg',
-    '--bg-subtle',
-    '--bg-elevated',
-    '--fg-subtle',
-    '--fg-muted',
-    '--border',
-    '--border-subtle',
-  ],
-  {
-    element: rootEl,
-    watchHtmlAttributes: true,
-    watchResize: false,
-  },
-)
+const { colors } = useColors(rootEl)
 
 watch(
   () => colorMode.value,

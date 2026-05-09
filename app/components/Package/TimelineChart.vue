@@ -19,6 +19,7 @@ import {
 import type { TimelineVersion, SubEvent } from '~~/server/api/registry/timeline/[...pkg].get'
 import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
 import { useChartTooltipPosition } from '~/composables/useChartTooltipPosition'
+import { useColors } from '~/composables/useColors'
 
 import('vue-data-ui/style.css')
 
@@ -198,24 +199,7 @@ onMounted(async () => {
   resolvedMode.value = colorMode.value === 'dark' ? 'dark' : 'light'
 })
 
-const { colors } = useCssVariables(
-  [
-    '--bg',
-    '--fg',
-    '--bg-subtle',
-    '--bg-elevated',
-    '--fg-subtle',
-    '--fg-muted',
-    '--border',
-    '--border-subtle',
-    '--accent',
-  ],
-  {
-    element: rootEl,
-    watchHtmlAttributes: true,
-    watchResize: false,
-  },
-)
+const { colors } = useColors(rootEl)
 
 watch(
   () => colorMode.value,

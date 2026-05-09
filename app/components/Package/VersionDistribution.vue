@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { VueUiXy, type VueUiXyDatasetItem, type VueUiXyConfig } from 'vue-data-ui/vue-ui-xy'
 import { useElementSize } from '@vueuse/core'
-import { useCssVariables } from '~/composables/useColors'
+import { useColors } from '~/composables/useColors'
 import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch, lightenHex } from '~/utils/colors'
 import {
   drawSvgPrintLegend,
@@ -29,14 +29,7 @@ onMounted(async () => {
   resolvedMode.value = colorMode.value === 'dark' ? 'dark' : 'light'
 })
 
-const { colors } = useCssVariables(
-  ['--bg', '--fg', '--bg-subtle', '--bg-elevated', '--fg-subtle', '--border', '--border-subtle'],
-  {
-    element: rootEl,
-    watchHtmlAttributes: true,
-    watchResize: false,
-  },
-)
+const { colors } = useColors(rootEl)
 
 watch(
   () => colorMode.value,
