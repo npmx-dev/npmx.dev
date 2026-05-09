@@ -1680,7 +1680,7 @@
     "browse_brand": "Browse brand kit"
   },
   "brand": {
-    "heading": "Brand",
+    "title": "Brand",
     "heading": "brand",
     "meta_description": "npmx brand guidelines, logos, colors, and typography for use in press and media.",
     "intro": "Resources and guidelines for using the npmx brand in your projects, articles, and media.",
