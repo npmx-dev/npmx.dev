@@ -118,7 +118,7 @@ export default defineCachedEventHandler(
   async (): Promise<GitHubContributor[]> => {
     const githubToken = useRuntimeConfig().github.orgToken
 
-    // Fetch team members dynamically if token is available, otherwise use fallback
+    // Fetch team members dynamically if token is available; otherwise, use fallback
     const teams: TeamMembers = await (async () => {
       if (githubToken) {
         const fetched = await fetchTeamMembers(githubToken)

@@ -42,7 +42,8 @@
     "open_docs": "Открыть документацию",
     "disable_shortcuts": "Для отключения горячих клавиш загляните в {settings}.",
     "open_main": "Открыть основную информацию",
-    "open_diff": "Открыть различия версий"
+    "open_diff": "Открыть различия версий",
+    "open_timeline": "Открыть хронологию"
   },
   "search": {
     "label": "Поиск пакетов npm",
@@ -280,7 +281,8 @@
       "black": "Чёрный"
     },
     "keyboard_shortcuts_enabled": "Использовать горячие клавиши",
-    "keyboard_shortcuts_enabled_description": "Горячие клавиши можно выключить, если возникают конфликты с сочетаниями клавиш браузера или операционной системы"
+    "keyboard_shortcuts_enabled_description": "Горячие клавиши можно выключить, если возникают конфликты с сочетаниями клавиш браузера или операционной системы",
+    "enable_code_ligatures": "Включить лигатуры в коде"
   },
   "i18n": {
     "missing_keys": "{count} отсутствующий перевод | {count} отсутствующих перевода | {count} отсутствующих переводов",
@@ -387,7 +389,6 @@
       "none": "Этот пакет был отмечен как ненужный, так как его функциональность, вероятно, доступна нативно во всех движках.",
       "learn_more": "Подробнее",
       "learn_more_above": "Узнайте больше выше.",
-      "mdn": "MDN",
       "community": "сообщество",
       "consider_no_dep": "+ Рассмотреть вариант без зависимости?"
     },
@@ -433,6 +434,7 @@
       "docs": "доки",
       "fund": "поддержать",
       "compare": "сравнить",
+      "timeline": "хронология",
       "compare_this_package": "сравнить этот пакет"
     },
     "likes": {
@@ -478,7 +480,8 @@
         "warning": "Предупреждение",
         "caution": "Внимание"
       },
-      "copy_as_markdown": "Скопировать README как Markdown"
+      "copy_as_markdown": "Скопировать README как Markdown",
+      "error_loading": "Не удалось загрузить README"
     },
     "provenance_section": {
       "title": "Происхождение",
@@ -556,6 +559,23 @@
       "page_title": "История версий",
       "current_tags": "Текущие теги",
       "no_match_filter": "Нет версий по фильтру «{filter}»"
+    },
+    "timeline": {
+      "load_more": "Загрузить ещё",
+      "load_error": "Не удалось загрузить хронологию. Попробуйте позже.",
+      "size_increase": "Размер установки увеличился на {percent}% ({size})",
+      "size_decrease": "Размер установки уменьшился на {percent}% ({size})",
+      "dep_increase": "Добавлена {count} зависимость | Добавлено {count} зависимости | Добавлено {count} зависимостей",
+      "dep_decrease": "Удалена {count} зависимость | Удалено {count} зависимости | Удалено {count} зависимостей",
+      "license_change": "Лицензия изменена с {from} на {to}",
+      "esm_added": "Тип модуля изменён на ESM",
+      "esm_removed": "Тип модуля изменён с ESM на CJS",
+      "types_added": "Добавлены типы TypeScript",
+      "types_removed": "Удалены типы TypeScript",
+      "trusted_publisher_added": "Доверенная публикация включена",
+      "trusted_publisher_removed": "Доверенная публикация удалена",
+      "provenance_added": "Происхождение включено",
+      "provenance_removed": "Происхождение удалено"
     },
     "dependencies": {
       "title": "Зависимости ({count})",
@@ -1325,6 +1345,18 @@
         "vulnerabilities": {
           "label": "Уязвимости",
           "description": "Известные уязвимости безопасности"
+        },
+        "githubStars": {
+          "label": "Звёзды GitHub",
+          "description": "Количество звёзд у GitHub-репозитория"
+        },
+        "githubIssues": {
+          "label": "Тикеты GitHub",
+          "description": "Количество тикетов в GitHub-репозитории"
+        },
+        "createdAt": {
+          "label": "Дата создания",
+          "description": "Когда пакет был создан"
         }
       },
       "values": {

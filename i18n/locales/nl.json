@@ -387,7 +387,6 @@
       "none": "Dit pakket is gemarkeerd als overbodig en de functionaliteit ervan is waarschijnlijk standaard beschikbaar in alle omgevingen.",
       "learn_more": "Leer meer",
       "learn_more_above": "Lees hierboven meer.",
-      "mdn": "MDN",
       "community": "gemeenschap",
       "consider_no_dep": "+ Geen dependency overwegen?"
     },
@@ -1317,7 +1316,10 @@
         "vulnerabilities": {
           "label": "Kwetsbaarheden",
           "description": "Bekende beveiliging kwetsbaarheden"
-        }
+        },
+        "githubStars": {},
+        "githubIssues": {},
+        "createdAt": {}
       },
       "values": {
         "any": "Alle",

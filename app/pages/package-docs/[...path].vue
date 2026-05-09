@@ -149,15 +149,7 @@ defineOgImage(
     version: () => resolvedVersion.value,
     variant: 'function-tree',
   },
-  [
-    { key: 'og', alt: () => `API documentation for ${packageName.value}` },
-    {
-      key: 'whatsapp',
-      width: 800,
-      height: 800,
-      alt: () => `API documentation for ${packageName.value}`,
-    },
-  ],
+  { alt: () => `API documentation for ${packageName.value}` },
 )
 
 const showLoading = computed(

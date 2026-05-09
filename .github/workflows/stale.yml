@@ -6,15 +6,20 @@ on:
     - cron: '0 2 * * *'
   workflow_dispatch: # Allow manual trigger
 
-permissions:
-  issues: write
-  pull-requests: write
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+permissions: {}
 
 jobs:
   stale-bugs:
+    name: 🧹 Mark stale bug issues
     runs-on: ubuntu-latest
+    permissions:
+      issues: write # mark and close stale bug issues
     steps:
-      - uses: actions/stale@b5d41d4e1d5dceea10e7104786b73624c18a190f
+      - uses: actions/stale@b5d41d4e1d5dceea10e7104786b73624c18a190f # v10.2.0
         with:
           days-before-issue-stale: 30
           days-before-issue-close: 7
@@ -27,9 +32,12 @@ jobs:
           operations-per-run: 500
 
   stale-prs:
+    name: 🧹 Mark stale pull requests
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write # mark and close stale pull requests
     steps:
-      - uses: actions/stale@b5d41d4e1d5dceea10e7104786b73624c18a190f
+      - uses: actions/stale@b5d41d4e1d5dceea10e7104786b73624c18a190f # v10.2.0
         with:
           days-before-issue-stale: -1
           days-before-issue-close: -1

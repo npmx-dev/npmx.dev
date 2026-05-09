@@ -15,6 +15,10 @@ export const BLUESKY_API = 'https://public.api.bsky.app'
 export const BLUESKY_COMMENTS_REQUEST = '/api/atproto/bluesky-comments'
 export const NPM_REGISTRY = 'https://registry.npmjs.org'
 export const NPM_API = 'https://api.npmjs.org'
+export const MICROLINK_API = 'https://api.microlink.io'
+// Repo: https://tangled.org/baileytownsend.dev/npmx-likes-leaderboard
+export const LIKES_LEADERBOARD_API_URL =
+  'https://npmx-likes-leaderboard-api-production.up.railway.app/api/leaderboard/likes'
 // Error Messages
 export const ERROR_PACKAGE_ANALYSIS_FAILED = 'Failed to analyze package.'
 export const ERROR_PACKAGE_VERSION_AND_FILE_FAILED = 'Version and file path are required.'
@@ -45,7 +49,7 @@ export const CONSTELLATION_HOST = 'constellation.microcosm.blue'
 export const SLINGSHOT_HOST = 'slingshot.microcosm.blue'
 
 // ATProtocol
-// Refrences used to link packages to things that are not inherently atproto
+// References used to link packages to things that are not inherently atproto
 export const PACKAGE_SUBJECT_REF = (packageName: string) =>
   `https://npmx.dev/package/${packageName}`
 // OAuth scopes as we add new ones we need to check these on certain actions. If not redirect the user to login again to upgrade the scopes

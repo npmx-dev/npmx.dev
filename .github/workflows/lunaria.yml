@@ -10,15 +10,15 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event_name == 'pull_request_target' && github.head_ref || github.ref }}
   cancel-in-progress: true
 
-# Allow this job to clone the repository and comment on the pull request
-permissions:
-  contents: read
-  pull-requests: write
+permissions: {}
 
 jobs:
   lunaria-overview:
     name: 🌝 Generate Lunaria Overview
     runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+      pull-requests: write # post Lunaria overview comments on pull requests
 
     steps:
       - name: Checkout
@@ -27,11 +27,12 @@ jobs:
           # Necessary for Lunaria to work properly
           # Makes the action clone the entire git history
           fetch-depth: 0
+          persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1
+      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1.6.0
         with:
           node-version: lts/*
           cache: true
 
       - name: Generate Lunaria Overview
-        uses: lunariajs/action@4911ad0736d1e3b20af4cb70f5079aea2327ed8e # v1-prerelease
+        uses: lunariajs/action@4911ad0736d1e3b20af4cb70f5079aea2327ed8e # astro-docs

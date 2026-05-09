@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { VueUiSparkline } from 'vue-data-ui/vue-ui-sparkline'
-import { VueUiPatternSeed } from 'vue-data-ui/vue-ui-pattern-seed'
-import { useCssVariables } from '~/composables/useColors'
 import {
+  VueUiSparkline,
   type VueUiSparklineConfig,
   type VueUiSparklineDatasetItem,
-  type VueUiXyDatasetItem,
-} from 'vue-data-ui'
+} from 'vue-data-ui/vue-ui-sparkline'
+import { VueUiPatternSeed } from 'vue-data-ui/vue-ui-pattern-seed'
+import { useColors } from '~/composables/useColors'
+import type { VueUiXyDatasetItem } from 'vue-data-ui/vue-ui-xy'
 import { getPalette, lightenColor } from 'vue-data-ui/utils'
 import { CHART_PATTERN_CONFIG } from '~/utils/charts'
 
@@ -50,23 +50,7 @@ watch(
   { flush: 'sync', immediate: true },
 )
 
-const { colors } = useCssVariables(
-  [
-    '--bg',
-    '--fg',
-    '--bg-subtle',
-    '--bg-elevated',
-    '--border-hover',
-    '--fg-subtle',
-    '--border',
-    '--border-subtle',
-  ],
-  {
-    element: rootEl,
-    watchHtmlAttributes: true,
-    watchResize: false, // set to true only if a var changes color on resize
-  },
-)
+const { colors } = useColors(rootEl)
 
 const isDarkMode = computed(() => resolvedMode.value === 'dark')
 
@@ -101,7 +85,7 @@ const configs = computed(() => {
       ? Array.from(new Set([...(unit.dashIndices ?? []), lastIndex]))
       : unit.dashIndices
 
-    // Ensure we loop through available palette colours when the series count is higher than the avalable palette
+    // Ensure we loop through available palette colours when the series count is higher than the available palette
     const fallbackColor = palette[i] ?? palette[i % palette.length] ?? palette[0]!
     const seriesColor = unit.color ?? fallbackColor
     const lightenedSeriesColor: string = unit.color
@@ -233,9 +217,10 @@ const configs = computed(() => {
           {{ applyEllipsis(dataset?.[i]?.name ?? '', 27) }}
         </div>
         <VueUiSparkline
+          v-if="datasets[i]"
           :key="`${i}_${step}`"
           :config
-          :dataset="datasets?.[i]"
+          :dataset="datasets[i]"
           :selectedIndex
           @hoverIndex="hoverIndex"
         >

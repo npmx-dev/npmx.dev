@@ -1,0 +1,14 @@
+# Existing privileged PR automation is intentionally isolated to these workflows:
+# they do not checkout pull request head code, and they only comment or set status.
+rules:
+  stale-action-refs:
+    ignore:
+      # lunariajs/action has no tag refs; keep the branch commit hash-pinned.
+      - lunaria.yml:38
+  dangerous-triggers:
+    ignore:
+      - dependency-diff-comment.yml
+      - lunaria.yml
+      - semantic-pull-requests.yml
+      - welcome-close.yml
+      - welcome-open.yml

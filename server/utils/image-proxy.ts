@@ -34,9 +34,9 @@ export const TRUSTED_IMAGE_DOMAINS = [
   'npmx.dev',
 
   // GitHub (already proxied by GitHub's own camo)
+  // We do not include github.com and user-images.githubusercontent.com because they
+  // might return redirects to s3 which will be blocked by the CSP
   'raw.githubusercontent.com',
-  'github.com',
-  'user-images.githubusercontent.com',
   'avatars.githubusercontent.com',
   'repository-images.githubusercontent.com',
   'github.githubassets.com',
@@ -69,6 +69,7 @@ export const TRUSTED_IMAGE_DOMAINS = [
   'deepwiki.com',
   'saucelabs.github.io',
   'opencollective.com',
+  'images.opencollective.com',
   'circleci.com',
   'www.codetriage.com',
   'badges.gitter.im',
@@ -86,9 +87,8 @@ export function isTrustedImageDomain(url: string): boolean {
   if (!parsed?.hostname) return false
 
   const hostname = parsed.hostname.toLowerCase()
-  return TRUSTED_IMAGE_DOMAINS.some(
-    domain => hostname === domain || hostname.endsWith(`.${domain}`),
-  )
+  // We only look at exact matches (not subdomains), since the same array is used as a check in CSP
+  return TRUSTED_IMAGE_DOMAINS.includes(hostname)
 }
 
 /**

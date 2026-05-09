@@ -123,6 +123,7 @@ pnpm mock-connector   # Start the mock connector (no npm login needed)
 pnpm vp run lint      # Run linter (oxlint + oxfmt)
 pnpm lint:fix         # Auto-fix lint issues
 pnpm test:types       # TypeScript type checking
+pnpm vp run zizmor    # GitHub Actions security analysis
 
 # Testing
 pnpm test             # Run all Vitest tests
@@ -131,6 +132,28 @@ pnpm test:nuxt        # Nuxt component tests
 pnpm test:browser     # Playwright E2E tests
 pnpm test:a11y        # Lighthouse accessibility audits
 pnpm test:perf        # Lighthouse performance audits (CLS)
+```
+
+### GitHub Actions security analysis
+
+CI runs [zizmor](https://docs.zizmor.sh/) against the repository's GitHub Actions workflows. The shared policy lives in `.github/zizmor.yml`, and the `zizmor` task uses the same pedantic persona as CI.
+
+You may run it locally by [installing `zizmor`](https://docs.zizmor.sh/installation/) and running:
+
+```bash
+pnpm vp run zizmor
+```
+
+Some audits resolve action refs and vulnerability metadata through GitHub. To run those online checks locally, authenticate with the GitHub CLI and pass its token:
+
+```bash
+GH_TOKEN="$(gh auth token)" pnpm vp run zizmor
+```
+
+To fix audit findings automatically, run:
+
+```bash
+GH_TOKEN="$(gh auth token)" pnpm vp run zizmor:fix
 ```
 
 ### Clearing caches during development
@@ -209,7 +232,7 @@ If you're working on admin features (org management, package access controls, op
 pnpm mock-connector
 ```
 
-This starts a mock connector server pre-populated with sample data (orgs, teams, members, packages). No npm login is required &mdash; operations succeed immediately without making real npm CLI calls.
+This starts a mock connector server prepopulated with sample data (orgs, teams, members, packages). No npm login is required &mdash; operations succeed immediately without making real npm CLI calls.
 
 The mock connector prints a connection URL to the terminal, just like the real connector. Click it (or paste the token manually) to connect the UI.
 
@@ -219,7 +242,7 @@ The mock connector prints a connection URL to the terminal, just like the real c
 pnpm mock-connector                # default: port 31415, user "mock-user", sample data
 pnpm mock-connector --port 9999    # custom port
 pnpm mock-connector --user alice   # custom username
-pnpm mock-connector --empty        # start with no pre-populated data
+pnpm mock-connector --empty        # start with no prepopulated data
 ```
 
 **Default sample data:**

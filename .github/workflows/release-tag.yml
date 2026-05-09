@@ -5,6 +5,10 @@ on:
     branches:
       - release
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions: {}
 
 jobs:
@@ -13,7 +17,7 @@ jobs:
     runs-on: ubuntu-slim
     if: github.repository == 'npmx-dev/npmx.dev'
     permissions:
-      contents: write
+      contents: write # create release tags and GitHub releases
     outputs:
       version: ${{ steps.version.outputs.next }}
       skipped: ${{ steps.check.outputs.skip }}
@@ -22,8 +26,9 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
+          persist-credentials: true
 
-      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1
+      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1.6.0
         with:
           node-version: lts/*
           run-install: false
@@ -87,15 +92,16 @@ jobs:
     if: needs.tag.outputs.skipped == 'false'
     permissions:
       contents: read
-      id-token: write
+      id-token: write # authenticate npm trusted publishing via OIDC
     environment: npm-publish
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: release
+          persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1
+      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1.6.0
         with:
           node-version: lts/*
           registry-url: https://registry.npmjs.org

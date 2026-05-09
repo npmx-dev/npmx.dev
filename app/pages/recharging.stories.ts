@@ -1,7 +1,7 @@
 import Recharging from './recharging.vue'
 import type { Meta, StoryObj } from '@storybook-vue/nuxt'
 import { pageDecorator } from '../../.storybook/decorators'
-import { repoStatsHandler } from '../../.storybook/handlers'
+import { repoStatsHandler } from '../storybook/mocks/handlers'
 
 const meta = {
   component: Recharging,

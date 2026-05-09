@@ -18,6 +18,13 @@ export interface TimelineResponse {
   total: number
 }
 
+export interface SubEvent {
+  key: string
+  positive: boolean
+  icon: string
+  text: string
+}
+
 /**
  * Returns paginated version timeline data for a package.
  *

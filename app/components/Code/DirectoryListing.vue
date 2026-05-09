@@ -74,7 +74,7 @@ const bytesFormatter = useBytesFormatter()
         <!-- Parent directory link -->
         <tr
           v-if="parentPath !== null"
-          class="border-b border-border hover:bg-bg-subtle transition-colors"
+          class="border-b border-border hover:bg-bg-subtle transition-[color,background-color] duration-100"
         >
           <td colspan="2">
             <LinkBase
@@ -98,7 +98,7 @@ const bytesFormatter = useBytesFormatter()
         <tr
           v-for="node in currentContents"
           :key="node.path"
-          class="border-b border-border hover:bg-bg-subtle transition-colors"
+          class="border-b border-border hover:bg-bg-subtle transition-[color,background-color] duration-100"
         >
           <td colspan="2">
             <LinkBase

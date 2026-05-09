@@ -53,7 +53,7 @@ watch(
       <!-- Directory -->
       <template v-if="node.type === 'directory'">
         <ButtonBase
-          class="w-full justify-start! rounded-none! border-none!"
+          class="w-full justify-start! rounded-none! border-none! transition-[color,background-color]! duration-100!"
           block
           :aria-pressed="isNodeActive(node)"
           :style="{ paddingLeft: `${depth * 12 + 12}px` }"
@@ -88,7 +88,7 @@ watch(
           variant="button-secondary"
           :to="getFileRoute(node.path)"
           :aria-current="currentPath === node.path"
-          class="w-full justify-start! rounded-none! border-none!"
+          class="w-full justify-start! rounded-none! border-none! transition-[color,background-color]! duration-100!"
           block
           :style="{ paddingLeft: `${depth * 12 + 32}px` }"
         >

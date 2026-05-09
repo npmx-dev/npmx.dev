@@ -6,6 +6,7 @@ const isStorybook = process.env.STORYBOOK === 'true' || process.env.VITEST_STORY
 
 export default defineNuxtConfig({
   modules: [
+    '@vercel/speed-insights',
     '@unocss/nuxt',
     'nuxt-og-image',
     '@nuxtjs/html-validator',
@@ -140,6 +141,7 @@ export default defineNuxtConfig({
     '/oauth-client-metadata.json': { prerender: true },
     '/.well-known/jwks.json': { prerender: true },
     '/.well-known/site.standard.publication': { prerender: true },
+    '/api/leaderboard/likes': { isr: 900 },
     // never cache
     '/api/auth/**': { isr: false, cache: false },
     '/api/social/**': { isr: false, cache: false },
@@ -167,6 +169,7 @@ export default defineNuxtConfig({
       },
     },
     // pages
+    '/leaderboard/likes': getISRConfig(900),
     '/package/**': getISRConfig(300, { fallback: 'html' }),
     '/package/:name/_payload.json': getISRConfig(300, { fallback: 'json' }),
     '/package/:name/v/:version/_payload.json': getISRConfig(300, { fallback: 'json' }),

@@ -18,12 +18,6 @@ describe('Image Proxy Utils', () => {
       ).toBe(true)
     })
 
-    it('trusts GitHub user images', () => {
-      expect(isTrustedImageDomain('https://user-images.githubusercontent.com/123/image.png')).toBe(
-        true,
-      )
-    })
-
     it('trusts shields.io badge URLs', () => {
       expect(isTrustedImageDomain('https://img.shields.io/badge/test-passing-green')).toBe(true)
     })
@@ -36,8 +30,8 @@ describe('Image Proxy Utils', () => {
       expect(isTrustedImageDomain('https://npmx.dev/images/logo.png')).toBe(true)
     })
 
-    it('trusts subdomain of trusted domains', () => {
-      expect(isTrustedImageDomain('https://sub.gitlab.com/image.png')).toBe(true)
+    it('does not trust subdomain of trusted domains', () => {
+      expect(isTrustedImageDomain('https://sub.gitlab.com/image.png')).toBe(false)
     })
 
     it('does not trust arbitrary domains', () => {
@@ -265,7 +259,7 @@ describe('Image Proxy Utils', () => {
     })
 
     it('does not proxy GitHub blob URLs', () => {
-      const url = 'https://github.com/owner/repo/blob/main/assets/logo.png'
+      const url = 'https://cloud.githubusercontent.com/assets/123/logo.png'
       expect(toProxiedImageUrl(url, TEST_SECRET)).toBe(url)
     })
 

@@ -386,7 +386,6 @@
       "none": "此套件已被標記為不再需要，其功能很可能已由所有引擎原生提供。",
       "learn_more": "了解更多",
       "learn_more_above": "參閱上方說明",
-      "mdn": "MDN",
       "community": "社群",
       "consider_no_dep": "+ 考慮不使用相依套件？"
     },

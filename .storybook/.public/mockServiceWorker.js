@@ -123,7 +123,7 @@ async function handleRequest(event, requestId, requestInterceptedAt) {
   const response = await getResponse(event, client, requestId, requestInterceptedAt)
 
   // Send back the response clone for the "response:*" life-cycle events.
-  // Ensure MSW is active and ready to handle the message, otherwise
+  // Ensure MSW is active and ready to handle the message; otherwise,
   // this message will pend indefinitely.
   if (client && activeClientIds.has(client.id)) {
     const serializedRequest = await serializeRequest(requestCloneForEvents)

@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import { SelectField } from '#components'
 import { ref, computed } from 'vue'
-import type { FormatterParams, VueUiScatterConfig, VueUiScatterDatasetItem } from 'vue-data-ui'
-import { VueUiScatter } from 'vue-data-ui/vue-ui-scatter'
+import {
+  VueUiScatter,
+  type VueUiScatterConfig,
+  type VueUiScatterDatasetItem,
+  type VueUiScatterSeries,
+} from 'vue-data-ui/vue-ui-scatter'
 import { buildCompareScatterChartDataset } from '~/utils/compare-scatter-chart'
 import { loadFile, copyAltTextForCompareScatterChart } from '~/utils/charts'
+import { useColors } from '~/composables/useColors'
 
 import('vue-data-ui/style.css')
 
@@ -22,25 +27,7 @@ const { copy, copied } = useClipboard()
 const mobileBreakpointWidth = 640
 const isMobile = computed(() => width.value > 0 && width.value < mobileBreakpointWidth)
 
-const { colors } = useCssVariables(
-  [
-    '--bg',
-    '--fg',
-    '--bg-subtle',
-    '--bg-elevated',
-    '--fg-subtle',
-    '--fg-muted',
-    '--border',
-    '--border-subtle',
-    '--border-hover',
-    '--accent',
-  ],
-  {
-    element: rootEl,
-    watchHtmlAttributes: true,
-    watchResize: false,
-  },
-)
+const { colors } = useColors(rootEl)
 
 const watermarkColors = computed(() => ({
   fg: colors.value.fg ?? OKLCH_NEUTRAL_FALLBACK,
@@ -210,7 +197,7 @@ const config = computed<VueUiScatterConfig>(() => {
                 color: colors.value.fgSubtle,
                 offsetY: 10,
                 fontSize: 14,
-                formatter: (args: FormatterParams) => {
+                formatter: args => {
                   return formatters.value.x!(args.value)
                 },
               },
@@ -231,7 +218,7 @@ const config = computed<VueUiScatterConfig>(() => {
               labels: {
                 color: colors.value.fgSubtle,
                 fontSize: 14,
-                formatter: (args: FormatterParams) => {
+                formatter: args => {
                   return formatters.value.y!(args.value)
                 },
               },
@@ -280,6 +267,11 @@ const highlightedAxis = shallowRef<AxisHighlight>(null)
 
 function toggleAxisHighlight(state: AxisHighlight) {
   highlightedAxis.value = state
+}
+
+function toggleLegendItem(legendItem: VueUiScatterSeries) {
+  legendItem.segregate()
+  legendItem.onEnter()
 }
 
 const readyTeleport = shallowRef(false)
@@ -386,26 +378,26 @@ onMounted(async () => {
                       : 'text-sm leading-6'
                   "
                 >
-                  <li v-for="datapoint in legend" :key="datapoint.name">
+                  <li v-for="legendItem in legend" :key="legendItem.id">
                     <button
-                      :aria-pressed="datapoint.isSegregated"
-                      :aria-label="datapoint.name"
+                      :aria-pressed="legendItem.isSegregated"
+                      :aria-label="legendItem.name"
                       type="button"
                       class="flex gap-1.5 place-items-center"
-                      @click="datapoint.segregate()"
+                      :class="legendItem.isSegregated ? 'line-through' : 'hover:underline'"
+                      @click="toggleLegendItem(legendItem)"
+                      @mouseenter="legendItem.onEnter()"
+                      @mouseleave="legendItem.onLeave()"
+                      @focus="legendItem.onEnter()"
+                      @blur="legendItem.onLeave()"
                     >
                       <div class="h-3 w-3" aria-hidden="true">
                         <svg viewBox="0 0 2 2" class="w-full">
-                          <circle cx="1" cy="1" r="1" :fill="datapoint.color" />
+                          <circle cx="1" cy="1" r="1" :fill="legendItem.color" />
                         </svg>
                       </div>
-                      <span
-                        class="text-fg"
-                        :style="{
-                          textDecoration: datapoint.isSegregated ? 'line-through' : undefined,
-                        }"
-                      >
-                        {{ datapoint.name }}
+                      <span class="text-fg">
+                        {{ legendItem.name }}
                       </span>
                     </button>
                   </li>
@@ -556,14 +548,35 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+:deep(.vue-data-ui-component) {
+  --super-ease-out: cubic-bezier(0.15, 0.75, 0.35, 1);
+}
+
 :deep(.vue-data-ui-component svg:focus-visible) {
   outline: 1px solid var(--accent) !important;
   border-radius: 0.1rem;
   outline-offset: 0;
 }
+
 :deep(.vue-ui-user-options-button:focus-visible),
 :deep(.vue-ui-user-options :first-child:focus-visible) {
   outline: 0.1rem solid var(--accent) !important;
   border-radius: 0.25rem;
+}
+
+:deep(.vue-ui-scatter-scale-group),
+:deep(.vue-ui-scatter-datapoint text),
+:deep(.vue-ui-scatter-datapoint circle),
+:deep(.vue-ui-scatter-datapoint-label) {
+  transition: all 0.5s var(--super-ease-out) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :deep(.vue-ui-scatter-scale-group),
+  :deep(.vue-ui-scatter-datapoint text),
+  :deep(.vue-ui-scatter-datapoint circle),
+  :deep(.vue-ui-scatter-datapoint-label) {
+    transition: none !important;
+  }
 }
 </style>

@@ -196,7 +196,7 @@ watch(searchProvider, provider => {
 })
 
 // Use incremental search with client-side caching + org/user suggestions
-// committedQuery only updates on Enter when instant search is off, otherwise tracks query as user types
+// committedQuery only updates on Enter when instant search is off; otherwise, tracks query as user types
 const {
   data: results,
   status,

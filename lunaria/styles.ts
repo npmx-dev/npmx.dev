@@ -172,7 +172,7 @@ export const BaseStyles = html`
       margin-left: 1rem;
     }
 
-    /* Progress deatils per locale */
+    /* Progress details per locale */
     .progress-details {
       border: 1px solid var(--ln-color-gray-6);
       margin-bottom: 1.25rem;

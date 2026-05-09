@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { VueUiHorizontalBar } from 'vue-data-ui/vue-ui-horizontal-bar'
+import {
+  VueUiHorizontalBar,
+  type VueUiHorizontalBarConfig,
+  type VueUiHorizontalBarDatasetItem,
+} from 'vue-data-ui/vue-ui-horizontal-bar'
 import { VueUiPatternSeed } from 'vue-data-ui/vue-ui-pattern-seed'
-import type { VueUiHorizontalBarConfig, VueUiHorizontalBarDatasetItem } from 'vue-data-ui'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
 import { createPatternDef } from 'vue-data-ui/utils'
 import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
+import { useColors } from '~/composables/useColors'
 
 import {
   loadFile,
@@ -37,23 +41,7 @@ const isMobile = computed(() => width.value > 0 && width.value < mobileBreakpoin
 
 const chartKey = ref(0)
 
-const { colors } = useCssVariables(
-  [
-    '--bg',
-    '--fg',
-    '--bg-subtle',
-    '--bg-elevated',
-    '--fg-subtle',
-    '--fg-muted',
-    '--border',
-    '--border-subtle',
-  ],
-  {
-    element: rootEl,
-    watchHtmlAttributes: true,
-    watchResize: false,
-  },
-)
+const { colors } = useColors(rootEl)
 
 const watermarkColors = computed(() => ({
   fg: colors.value.fg ?? OKLCH_NEUTRAL_FALLBACK,
