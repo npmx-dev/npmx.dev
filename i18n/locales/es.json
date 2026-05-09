@@ -76,6 +76,23 @@
     "instant_search_turn_off": "desactivar",
     "instant_search_advisory": "{label} {state} — {action}"
   },
+  "command_palette": {
+    "state": {},
+    "groups": {},
+    "actions": {},
+    "connections": {},
+    "navigation": {},
+    "links": {},
+    "package_links": {},
+    "theme": {},
+    "package": {},
+    "package_actions": {},
+    "code": {},
+    "diff": {},
+    "version": {},
+    "status": {},
+    "announcements": {}
+  },
   "nav": {
     "main_navigation": "Principal",
     "popular_packages": "Paquetes populares",
@@ -265,6 +282,7 @@
       "size": "El tamaño de instalación aumentó un {percent} ({size} más grande)",
       "deps": "{count} dependencias más"
     },
+    "size_decrease": {},
     "replacement": {
       "title": "Es posible que no necesite esta dependencia.",
       "native": "Esto se puede reemplazar con {replacement}, disponible desde Node {nodeVersion}.",
@@ -441,6 +459,11 @@
       "page_title": "Historial de versiones",
       "current_tags": "Etiquetas actuales",
       "no_match_filter": "Ninguna versión coincide con {filter}"
+    },
+    "timeline": {
+      "chart": {
+        "copy_alt": {}
+      }
     },
     "dependencies": {
       "title": "Dependencias ({count})",
@@ -643,6 +666,9 @@
       "button": "Descargar",
       "tarball": "Descargar Tarball como .tar.gz"
     }
+  },
+  "leaderboard": {
+    "likes": {}
   },
   "connector": {
     "modal": {
@@ -1117,6 +1143,9 @@
       "packages_selected": "{count}/{max} paquetes seleccionados.",
       "add_hint": "Añade al menos 2 paquetes para comparar."
     },
+    "scatter_chart": {
+      "copy_alt": {}
+    },
     "no_dependency": {
       "label": "(Sin dependencia)",
       "typeahead_title": "¿Qué haría James?",
@@ -1195,7 +1224,10 @@
         "vulnerabilities": {
           "label": "Vulnerabilidades",
           "description": "Vulnerabilidades de seguridad conocidas"
-        }
+        },
+        "githubStars": {},
+        "githubIssues": {},
+        "createdAt": {}
       },
       "values": {
         "any": "Cualquiera",
@@ -1473,7 +1505,6 @@
     "browse_brand": "Explorar kit de marca"
   },
   "brand": {
-    "title": "Marca",
     "heading": "marca",
     "meta_description": "Directrices de la marca npmx, logotipos, colores y tipografía para uso en prensa y medios.",
     "intro": "Recursos y directrices para usar la marca npmx en tus proyectos, artículos y medios.",

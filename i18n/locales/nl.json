@@ -383,6 +383,7 @@
       "size": "De installatiegrootte is toegenomen met {percent} ({size} groter)",
       "deps": "{count} meer dependencies"
     },
+    "size_decrease": {},
     "replacement": {
       "title": "U heeft waarschijnlijk dit niet nodig",
       "native": "Dit kan vervangen worden door {replacement}, Beschikbaar sinds node {nodeVersion}.",
@@ -562,6 +563,11 @@
       "page_title": "Versie geschiedenis",
       "current_tags": "Huidige tags",
       "no_match_filter": "Geen versies die voldoen aan {filter}"
+    },
+    "timeline": {
+      "chart": {
+        "copy_alt": {}
+      }
     },
     "dependencies": {
       "title": "Dependency ({count}) | Dependencies ({count})",
@@ -764,6 +770,9 @@
       "button": "Download",
       "tarball": "Download Tarball als .tar.gz"
     }
+  },
+  "leaderboard": {
+    "likes": {}
   },
   "connector": {
     "modal": {
@@ -1522,7 +1531,6 @@
     "browse_brand": "Bekijk brand kit"
   },
   "brand": {
-    "title": "Merk",
     "heading": "merk",
     "meta_description": "npmx merkrichtlijnen, logo’s, kleuren en typografie voor gebruik in de pers en de media.",
     "intro": "Hulpbronnen en richtlijnen voor het gebruik van het merk npmx in uw projecten, artikelen en media.",

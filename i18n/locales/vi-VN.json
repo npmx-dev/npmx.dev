@@ -76,6 +76,23 @@
     "instant_search_turn_off": "tắt",
     "instant_search_advisory": "{label} {state} — {action}"
   },
+  "command_palette": {
+    "state": {},
+    "groups": {},
+    "actions": {},
+    "connections": {},
+    "navigation": {},
+    "links": {},
+    "package_links": {},
+    "theme": {},
+    "package": {},
+    "package_actions": {},
+    "code": {},
+    "diff": {},
+    "version": {},
+    "status": {},
+    "announcements": {}
+  },
   "nav": {
     "main_navigation": "Trang chính",
     "popular_packages": "Package phổ biến",
@@ -265,6 +282,7 @@
       "size": "Kích thước cài đặt tăng {percent} (lớn hơn {size})",
       "deps": "Thêm {count} dependency"
     },
+    "size_decrease": {},
     "replacement": {
       "title": "Bạn có thể không cần dependency này.",
       "native": "Có thể thay thế bằng {replacement}, có sẵn từ Node {nodeVersion}.",
@@ -441,6 +459,11 @@
       "page_title": "Lịch sử phiên bản",
       "current_tags": "Thẻ hiện tại",
       "no_match_filter": "Không có phiên bản khớp {filter}"
+    },
+    "timeline": {
+      "chart": {
+        "copy_alt": {}
+      }
     },
     "dependencies": {
       "title": "Dependency ({count}) | Dependency ({count})",
@@ -640,6 +663,9 @@
       "button": "Tải xuống",
       "tarball": "Tải tarball dạng .tar.gz"
     }
+  },
+  "leaderboard": {
+    "likes": {}
   },
   "connector": {
     "modal": {
@@ -1113,6 +1139,9 @@
       "packages_selected": "Đã chọn {count}/{max} package.",
       "add_hint": "Thêm ít nhất 2 package để so sánh."
     },
+    "scatter_chart": {
+      "copy_alt": {}
+    },
     "no_dependency": {
       "label": "(Không dependency)",
       "typeahead_title": "Văn sẽ làm gì?",
@@ -1191,7 +1220,10 @@
         "vulnerabilities": {
           "label": "Lỗ hổng",
           "description": "Các lỗ hổng bảo mật phổ biến"
-        }
+        },
+        "githubStars": {},
+        "githubIssues": {},
+        "createdAt": {}
       },
       "values": {
         "any": "Bất kỳ",
@@ -1469,7 +1501,6 @@
     "browse_brand": "Xem bộ công cụ thương hiệu (brand kit)"
   },
   "brand": {
-    "title": "Thương hiệu",
     "heading": "thương hiệu",
     "meta_description": "Hướng dẫn về thương hiệu npmx, logo, màu sắc và kiểu chữ để sử dụng trong báo chí và truyền thông.",
     "intro": "Các tài nguyên và nguyên tắc sử dụng thương hiệu npmx trong các dự án, bài viết và truyền thông của bạn.",

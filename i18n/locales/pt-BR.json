@@ -587,7 +587,10 @@
       "trusted_publisher_added": "Publicação de confiança ativada",
       "trusted_publisher_removed": "Publicação de confiança removida",
       "provenance_added": "Proveniência ativada",
-      "provenance_removed": "Proveniência removida"
+      "provenance_removed": "Proveniência removida",
+      "chart": {
+        "copy_alt": {}
+      }
     },
     "dependencies": {
       "title": "Dependências ({count})",
@@ -790,6 +793,9 @@
       "button": "Baixar",
       "tarball": "Baixar Tarball como .tar.gz"
     }
+  },
+  "leaderboard": {
+    "likes": {}
   },
   "connector": {
     "modal": {
@@ -1647,7 +1653,6 @@
     "browse_brand": "Navegar kit da marca"
   },
   "brand": {
-    "title": "Marca",
     "heading": "marca",
     "meta_description": "Diretrizes da marca npmx, logotipos, cores e tipografia para uso em imprensa e mídia.",
     "intro": "Recursos e diretrizes para usar a marca npmx em seus projetos, artigos e mídias.",

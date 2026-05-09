@@ -381,6 +381,7 @@
       "size": "Размер при установке увеличился на {percent} (на {size} больше)",
       "deps": "На {count} зависимостей больше"
     },
+    "size_decrease": {},
     "replacement": {
       "title": "Возможно, вам не нужна эта зависимость.",
       "native": "Это можно заменить на {replacement}, доступный начиная с Node {nodeVersion}.",
@@ -575,7 +576,10 @@
       "trusted_publisher_added": "Доверенная публикация включена",
       "trusted_publisher_removed": "Доверенная публикация удалена",
       "provenance_added": "Происхождение включено",
-      "provenance_removed": "Происхождение удалено"
+      "provenance_removed": "Происхождение удалено",
+      "chart": {
+        "copy_alt": {}
+      }
     },
     "dependencies": {
       "title": "Зависимости ({count})",
@@ -778,6 +782,9 @@
       "button": "Скачать",
       "tarball": "Скачать tarball (.tar.gz)"
     }
+  },
+  "leaderboard": {
+    "likes": {}
   },
   "connector": {
     "modal": {
@@ -1635,7 +1642,6 @@
     "browse_brand": "Набор бренда"
   },
   "brand": {
-    "title": "Бренд",
     "heading": "бренд",
     "meta_description": "Бренд npmx: логотипы, цвета и типографика для прессы и медиа.",
     "intro": "Ресурсы и правила использования бренда npmx в проектах, статьях и медиа.",

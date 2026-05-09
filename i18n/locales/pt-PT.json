@@ -591,7 +591,10 @@
       "trusted_publisher_added": "Publicação de confiança ativada",
       "trusted_publisher_removed": "Publicação de confiança removida",
       "provenance_added": "Proveniência ativada",
-      "provenance_removed": "Proveniência removida"
+      "provenance_removed": "Proveniência removida",
+      "chart": {
+        "copy_alt": {}
+      }
     },
     "dependencies": {
       "title": "Dependência ({count}) | Dependências ({count})",
@@ -1661,7 +1664,6 @@
     "browse_brand": "Explorar kit de marca"
   },
   "brand": {
-    "title": "Marca",
     "heading": "marca",
     "meta_description": "Diretrizes da marca npmx, logótipos, cores e tipografia para uso em imprensa e media.",
     "intro": "Recursos e diretrizes para usar a marca npmx nos teus projetos, artigos e media.",
