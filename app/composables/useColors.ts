@@ -1,4 +1,4 @@
-import { computed, type ComputedRef, type Ref, type ShallowRef, unref } from 'vue'
+import { computed, shallowRef, type ComputedRef, type Ref, type ShallowRef, unref } from 'vue'
 import { useMutationObserver, useResizeObserver, useSupported } from '@vueuse/core'
 
 type CssVariableSource = HTMLElement | null | undefined | Ref<HTMLElement | null | undefined>
@@ -35,11 +35,17 @@ export function useColors(
   element: ShallowRef<HTMLElement | null, HTMLElement | null>,
   options: { watchHtmlAttributes?: boolean; watchResize?: boolean } = {},
 ): { colors: ComputedRef<Record<string, string>> } {
+  const recomputeToken = shallowRef(0)
+  const invalidateColors = () => {
+    recomputeToken.value += 1
+  }
+
   const isClientSupported = useSupported(
     () => typeof window !== 'undefined' && typeof document !== 'undefined',
   )
 
   const colors = computed<Record<string, string>>(() => {
+    void recomputeToken.value
     const resolvedElement = resolveElement(element)
     if (!resolvedElement) return {}
     const result: Record<string, string> = {}
@@ -50,11 +56,11 @@ export function useColors(
   })
 
   if (options.watchResize) {
-    useResizeObserver(element, () => void colors.value)
+    useResizeObserver(element, invalidateColors)
   }
 
   if (options.watchHtmlAttributes && isClientSupported.value) {
-    useMutationObserver(document.documentElement, () => void colors.value, {
+    useMutationObserver(document.documentElement, invalidateColors, {
       attributes: true,
       attributeFilter: ['class', 'style', 'data-theme', 'data-bg-theme'],
     })
