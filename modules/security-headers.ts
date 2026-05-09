@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { defineNuxtModule, useNuxt } from 'nuxt/kit'
 import { BLUESKY_API } from '#shared/utils/constants'
 import { ALL_KNOWN_GIT_API_ORIGINS } from '#shared/utils/git-providers'

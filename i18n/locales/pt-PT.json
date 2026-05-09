@@ -317,6 +317,7 @@
     "warnings": "Avisos:",
     "go_back_home": "Voltar para a página inicial",
     "per_week": "/ semana",
+    "per_week_short": "/sem",
     "vanity_downloads_hint": "Número de vaidade: nenhum pacote apresentado | Número de vaidade: para o pacote apresentado | Número de vaidade: Soma de {count} pacotes apresentados",
     "sort": {
       "name": "nome",
@@ -451,7 +452,10 @@
     },
     "likes": {
       "like": "Gostar deste pacote",
-      "unlike": "Remover gosto deste pacote"
+      "unlike": "Remover gosto deste pacote",
+      "top_rank_tooltip": "Este está entre os 10 pacotes com mais gostos no npmx! (#{rank})",
+      "top_rank_label": "#{rank}",
+      "top_rank_link_label": "Ver tabela de classificação de gostos. Este pacote está em #{rank}."
     },
     "docs": {
       "contents": "Conteúdo",
@@ -789,6 +793,16 @@
     "download": {
       "button": "Transferir",
       "tarball": "Transferir Tarball como .tar.gz"
+    }
+  },
+  "leaderboard": {
+    "likes": {
+      "title": "Tabela de Classificação de Gostos",
+      "description": "Os 10 pacotes com mais gostos no npmx neste momento.",
+      "rank": "Classificação",
+      "likes": "Gostos",
+      "unavailable_title": "Ainda não há tabela de classificação de gostos",
+      "unavailable_description": "Não temos uma tabela de classificação de gostos para mostrar neste momento."
     }
   },
   "connector": {

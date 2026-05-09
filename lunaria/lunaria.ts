@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { createLunaria } from '@lunariajs/core'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { Page } from './components.ts'
