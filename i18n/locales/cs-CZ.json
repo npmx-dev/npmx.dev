@@ -1607,6 +1607,7 @@
     "browse_brand": "Procházet sadu značky"
   },
   "brand": {
+    "title": "Značka",
     "heading": "značka",
     "meta_description": "Pokyny k značce npmx, loga, barvy a typografie pro použití v tisku a médiích.",
     "intro": "Zdroje a pokyny pro používání značky npmx ve vašich projektech, článcích a médiích.",

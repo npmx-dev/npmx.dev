@@ -1501,6 +1501,7 @@
     "browse_brand": "Pregledajte brand kit"
   },
   "brand": {
+    "title": "Brend",
     "heading": "brend",
     "meta_description": "Smernice za npmx brend, logotipi, boje i tipografija za upotrebu u štampi i medijima.",
     "intro": "Resursi i smernice za korišćenje npmx brenda u vašim projektima, člancima i medijima.",

@@ -1606,6 +1606,7 @@
     "browse_brand": "Marken-Kit durchsuchen"
   },
   "brand": {
+    "title": "marke",
     "heading": "marke",
     "meta_description": "npmx-Markenrichtlinien, Logos, Farben und Typografie zur Verwendung in Presse und Medien.",
     "intro": "Ressourcen und Richtlinien für die Verwendung der npmx-Marke in deinen Projekten, Artikeln und Medien.",

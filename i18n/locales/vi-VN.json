@@ -1501,6 +1501,7 @@
     "browse_brand": "Xem bộ công cụ thương hiệu (brand kit)"
   },
   "brand": {
+    "title": "Thương hiệu",
     "heading": "thương hiệu",
     "meta_description": "Hướng dẫn về thương hiệu npmx, logo, màu sắc và kiểu chữ để sử dụng trong báo chí và truyền thông.",
     "intro": "Các tài nguyên và nguyên tắc sử dụng thương hiệu npmx trong các dự án, bài viết và truyền thông của bạn.",

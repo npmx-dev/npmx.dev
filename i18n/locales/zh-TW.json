@@ -1673,6 +1673,7 @@
     "browse_brand": "瀏覽品牌素材包"
   },
   "brand": {
+    "title": "品牌指南",
     "heading": "品牌",
     "meta_description": "npmx 品牌指南、標誌、顏色與字型，供新聞與媒體使用。",
     "intro": "在你的專案、文章或媒體中使用 npmx 品牌的相關資源與指南。",

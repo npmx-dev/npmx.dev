@@ -1653,6 +1653,7 @@
     "browse_brand": "Navegar kit da marca"
   },
   "brand": {
+    "title": "Marca",
     "heading": "marca",
     "meta_description": "Diretrizes da marca npmx, logotipos, cores e tipografia para uso em imprensa e mídia.",
     "intro": "Recursos e diretrizes para usar a marca npmx em seus projetos, artigos e mídias.",

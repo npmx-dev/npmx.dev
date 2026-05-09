@@ -1505,6 +1505,7 @@
     "browse_brand": "Jelajahi kit merek"
   },
   "brand": {
+    "title": "Merek",
     "heading": "merek",
     "meta_description": "Panduan merek npmx, termasuk logo, warna, dan tipografi untuk digunakan dalam pers dan media.",
     "intro": "Sumber daya dan panduan untuk menggunakan merek npmx dalam proyek, artikel, dan media Anda.",
