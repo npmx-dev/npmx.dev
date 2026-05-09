@@ -20,7 +20,10 @@
     "chat": "聊天",
     "builders_chat": "開發者聊天",
     "keyboard_shortcuts": "鍵盤快捷鍵",
-    "brand": "品牌"
+    "brand": "品牌",
+    "resources": "資源",
+    "features": "功能特色",
+    "other": "其他"
   },
   "shortcuts": {
     "section": {
@@ -42,7 +45,8 @@
     "open_docs": "開啟文件",
     "disable_shortcuts": "你可以在 {settings} 中停用鍵盤快速鍵。",
     "open_main": "開啟主要資訊",
-    "open_diff": "開啟版本差異"
+    "open_diff": "開啟版本差異",
+    "open_timeline": "開啟時間軸"
   },
   "search": {
     "label": "搜尋 npm 套件",
@@ -280,7 +284,8 @@
       "black": "黑色"
     },
     "keyboard_shortcuts_enabled": "啟用鍵盤快速鍵",
-    "keyboard_shortcuts_enabled_description": "若與其他瀏覽器或系統快捷鍵衝突，可停用鍵盤快速鍵"
+    "keyboard_shortcuts_enabled_description": "若與其他瀏覽器或系統快捷鍵衝突，可停用鍵盤快速鍵",
+    "enable_code_ligatures": "啟用程式碼連字"
   },
   "i18n": {
     "missing_keys": "{count} 項缺少翻譯",
@@ -312,6 +317,7 @@
     "warnings": "警告：",
     "go_back_home": "回到首頁",
     "per_week": "/ 週",
+    "per_week_short": "/週",
     "vanity_downloads_hint": "顯示下載量：未顯示套件 | 顯示下載量：顯示的套件 | 顯示下載量：顯示的 {count} 個套件總和",
     "sort": {
       "name": "名稱",
@@ -334,6 +340,7 @@
       "gitea": "在 Gitea 上檢視",
       "gitee": "在 Gitee 上檢視",
       "radicle": "在 Radicle 上檢視",
+      "socket_dev": "在 socket.dev 上檢視",
       "sourcehut": "在 SourceHut 上檢視",
       "tangled": "在 Tangled 上檢視"
     },
@@ -378,9 +385,18 @@
       "size": "安裝大小增加了 {percent}（多出 {size}）",
       "deps": "增加了 {count} 個相依套件"
     },
+    "size_decrease": {
+      "title_size": "自 v{version} 起，套件大小顯著減少！",
+      "title_deps": "自 v{version} 起，相依套件數量顯著減少！",
+      "title_both": "自 v{version} 起，套件大小與相依套件數量皆顯著減少！",
+      "size": "安裝大小減少了 {percent}（減少了 {size}）",
+      "deps": "減少了 {count} 個相依套件"
+    },
     "replacement": {
       "title": "你可能不需要這個相依套件。",
+      "example": "範例：",
       "native": "此功能自 Node.js {nodeVersion} 起已內建，可直接使用 {replacement} 取代。",
+      "native_no_version": "此套件可以用 {replacement} 取代。",
       "simple": "社群標記此套件為冗餘，建議改用：{replacement}。",
       "documented": "社群標記此套件有更高效能的替代方案",
       "none": "此套件已被標記為不再需要，其功能很可能已由所有引擎原生提供。",
@@ -431,11 +447,15 @@
       "docs": "文件",
       "fund": "贊助",
       "compare": "比較",
+      "timeline": "時間軸",
       "compare_this_package": "比較這個套件"
     },
     "likes": {
       "like": "喜歡這個套件",
-      "unlike": "取消喜歡這個套件"
+      "unlike": "取消喜歡這個套件",
+      "top_rank_tooltip": "這是 npmx 上喜歡數最多的前 10 名套件之一！（第 #{rank} 名）",
+      "top_rank_label": "#{rank}",
+      "top_rank_link_label": "查看喜歡排行榜。此套件排名第 #{rank}。"
     },
     "docs": {
       "contents": "目錄",
@@ -476,7 +496,8 @@
         "warning": "警告",
         "caution": "小心"
       },
-      "copy_as_markdown": "複製 README 為 Markdown 格式"
+      "copy_as_markdown": "複製 README 為 Markdown 格式",
+      "error_loading": "載入 README 詳情失敗"
     },
     "provenance_section": {
       "title": "來源",
@@ -554,6 +575,34 @@
       "page_title": "版本歷史記錄",
       "current_tags": "當前標籤",
       "no_match_filter": "沒有版本符合 {filter}"
+    },
+    "timeline": {
+      "load_more": "載入更多",
+      "load_error": "載入時間軸失敗。請稍後再試。",
+      "size_increase": "安裝大小增加了 {percent}%（{size}）",
+      "size_decrease": "安裝大小減少了 {percent}%（{size}）",
+      "dep_increase": "新增了 {count} 個相依套件",
+      "dep_decrease": "移除了 {count} 個相依套件",
+      "license_change": "授權從 {from} 變更為 {to}",
+      "esm_added": "模組類型已變更為 ESM",
+      "esm_removed": "模組類型已從 ESM 變更為 CJS",
+      "types_added": "已新增 TypeScript 型別",
+      "types_removed": "已移除 TypeScript 型別",
+      "trusted_publisher_added": "已啟用信任發佈",
+      "trusted_publisher_removed": "已移除信任發佈",
+      "provenance_added": "已啟用來源證明",
+      "provenance_removed": "已移除來源證明",
+      "chart": {
+        "tab_aria_label": "指標選取",
+        "base_scale": "Y 軸從零開始",
+        "zoom": "縮放",
+        "reset_minimap": "重置縮略圖",
+        "copy_alt": {
+          "key_changes": "主要變更：{version_events}。",
+          "version_events": "版本 {version}：{events}",
+          "general_description": "折線圖呈現 {package} 套件的 {metric}，從版本 {first} 到 {last}。版本 {first} 的 {metric} 為 {first_value}，版本 {last} 的 {metric} 為 {last_value}（整體變化 {overall_progress_percentage}%）。{key_changes} {watermark}。"
+        }
+      }
     },
     "dependencies": {
       "title": "相依（{count} 個）",
@@ -659,6 +708,7 @@
     },
     "downloads": {
       "title": "每週下載量",
+      "version_distribution_title": "{version} 每週下載量",
       "community_distribution": "檢視社群採用分布",
       "subtitle": "所有版本",
       "sparkline_nav_hint": "使用 ← →"
@@ -755,6 +805,16 @@
     "download": {
       "button": "下載",
       "tarball": "下載 Tarball（.tar.gz）"
+    }
+  },
+  "leaderboard": {
+    "likes": {
+      "title": "喜歡排行榜",
+      "description": "目前 npmx 上喜歡數最多的 10 個套件。",
+      "rank": "排名",
+      "likes": "喜歡數",
+      "unavailable_title": "目前尚無喜歡排行榜",
+      "unavailable_description": "目前沒有可顯示的喜歡排行榜。"
     }
   },
   "connector": {
@@ -1323,6 +1383,18 @@
         "vulnerabilities": {
           "label": "漏洞",
           "description": "已知安全漏洞"
+        },
+        "githubStars": {
+          "label": "GitHub 星星數",
+          "description": "GitHub 儲存庫的星星數量"
+        },
+        "githubIssues": {
+          "label": "GitHub Issues",
+          "description": "GitHub 儲存庫的 Issue 數量"
+        },
+        "createdAt": {
+          "label": "建立時間",
+          "description": "套件建立時間"
         }
       },
       "values": {

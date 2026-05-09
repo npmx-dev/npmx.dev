@@ -8,8 +8,8 @@
   },
   "built_at": "built {0}",
   "alt_logo": "npmx logo",
-  "tagline": "a fast, modern browser for the npm registry",
-  "non_affiliation_disclaimer": "not affiliated with npm, Inc.",
+  "tagline": "A fast, modern browser for the npm registry",
+  "non_affiliation_disclaimer": "Not affiliated with npm, Inc.",
   "trademark_disclaimer": "npm is a registered trademark of npm, Inc. This site is not affiliated with npm, Inc.",
   "footer": {
     "about": "about",
@@ -50,7 +50,7 @@
   },
   "search": {
     "label": "Search npm packages",
-    "placeholder": "search packages...",
+    "placeholder": "Search packages...",
     "button": "search",
     "searching": "Searching...",
     "found_packages": "No packages found | Found 1 package | Found {count} packages",
@@ -58,7 +58,7 @@
     "updating": "(updating...)",
     "no_results": "No packages found for \"{query}\"",
     "rate_limited": "Hit npm rate limit, try again in a moment",
-    "title": "search",
+    "title": "Search",
     "title_search": "search: {search}",
     "title_packages": "search packages",
     "meta_description": "Search results for '{search}'",
@@ -84,14 +84,14 @@
     "instant_search_advisory": "{label} {state} — {action}"
   },
   "command_palette": {
-    "title": "command palette",
+    "title": "Command palette",
     "quick_actions": "jump to...",
     "subtitle": "navigate across npmx and switch settings quickly",
     "subtitle_languages": "choose a language or help improve translations",
     "instructions": "Type to filter commands. Use the arrow keys to move through results and Enter to run a command.",
     "input_label": "Command palette search",
     "results_label": "Command results",
-    "placeholder": "type a command...",
+    "placeholder": "Type a command...",
     "back": "Back",
     "empty": "No matching commands",
     "empty_search_hint": "Press Enter to search for \"{query}\".",
@@ -205,7 +205,7 @@
   },
   "blog": {
     "title": "Blog",
-    "heading": "blog",
+    "heading": "Blog",
     "meta_description": "Insights and updates from the npmx community",
     "author": {
       "view_profile": "View {name}'s profile on Bluesky"
@@ -230,8 +230,8 @@
     }
   },
   "settings": {
-    "title": "settings",
-    "tagline": "customize your npmx experience",
+    "title": "Settings",
+    "tagline": "Customize your npmx experience",
     "meta_description": "Customize your npmx.dev experience with theme, language, and display preferences.",
     "sections": {
       "appearance": "Appearance",
@@ -715,6 +715,7 @@
     },
     "downloads": {
       "title": "Weekly Downloads",
+      "version_distribution_title": "weekly downloads for version {version}",
       "community_distribution": "View community adoption distribution",
       "subtitle": "Across all versions",
       "sparkline_nav_hint": "Use ← →"
@@ -835,7 +836,7 @@
       "copied": "Copied",
       "paste_token": "Then paste the token below to connect:",
       "token_label": "Token",
-      "token_placeholder": "paste token here...",
+      "token_placeholder": "Paste token here...",
       "advanced": "Advanced options",
       "port_label": "Port",
       "warning": "WARNING",
@@ -851,7 +852,7 @@
       "clear_all": "clear all",
       "refresh": "Refresh operations",
       "empty": "No operations queued",
-      "empty_hint": "Add operations from package or org pages",
+      "empty_hint": "Add operations from package or organization pages",
       "active_label": "Active operations",
       "otp_required": "OTP required",
       "otp_prompt": "Enter OTP to continue",
@@ -952,7 +953,7 @@
     "page": {
       "packages_title": "Packages",
       "no_packages": "No public packages found for",
-      "no_packages_hint": "This user may not exist or has no public packages.",
+      "no_packages_hint": "This user may not exist, or has no public packages.",
       "failed_to_load": "Failed to load user packages",
       "no_match": "No packages match \"{query}\"",
       "filter_placeholder": "Filter {count} package... | Filter {count} packages..."
@@ -1150,7 +1151,7 @@
   },
   "about": {
     "title": "About",
-    "heading": "about",
+    "heading": "About",
     "meta_description": "npmx is a fast, modern browser for the npm registry. A great UX/DX for exploring npm packages.",
     "what_we_are": {
       "title": "What we are",
@@ -1501,7 +1502,7 @@
     }
   },
   "privacy_policy": {
-    "title": "privacy policy",
+    "title": "Privacy policy",
     "last_updated": "Last updated: {date}",
     "welcome": "Welcome to {app}. We are committed to protecting your privacy. This policy explains what data we collect, how we use it, and your rights regarding your information.",
     "cookies": {
@@ -1581,7 +1582,7 @@
     }
   },
   "a11y": {
-    "title": "accessibility",
+    "title": "Accessibility",
     "footer_title": "a11y",
     "welcome": "We want {app} to be usable by as many people as possible.",
     "approach": {
@@ -1611,7 +1612,7 @@
     }
   },
   "translation_status": {
-    "title": "translation status",
+    "title": "Translation status",
     "generated_at": "Generation date: {date}",
     "welcome": "If you're interested in helping us to translate {npmx} into one of the languages listed below, you've come to the right place! This auto-updating page always lists all the content that could use your help right now.",
     "p1": "We use {lang} as the default language, with a total of {count}. If you'd like to help add translations, locate the language in {bylang} and expand the details.",
@@ -1679,7 +1680,7 @@
     "browse_brand": "Browse brand kit"
   },
   "brand": {
-    "title": "Brand",
+    "heading": "Brand",
     "heading": "brand",
     "meta_description": "npmx brand guidelines, logos, colors, and typography for use in press and media.",
     "intro": "Resources and guidelines for using the npmx brand in your projects, articles, and media.",
