@@ -451,7 +451,7 @@ function getEntryAnimationStyle(index: number): Record<string, string> {
 }
 
 .likes-leaderboard-entry-motion {
-  animation: likes-leaderboard-pop-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: likes-leaderboard-pop-in 0.8s cubic-bezier(0.16, 0.3, 0.3, 1) both;
   transform-origin: center top;
   will-change: transform;
 }
