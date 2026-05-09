@@ -39,6 +39,7 @@ describe('useColors', () => {
     expect(useResizeObserverMock).toHaveBeenCalledTimes(1)
     expect(useResizeObserverMock).toHaveBeenCalledWith(expect.any(Object), expect.any(Function))
     const resizeCallback = useResizeObserverMock.mock.calls?.[0]?.[1]
+    expect(resizeCallback).toBeDefined()
     expect(() => resizeCallback()).not.toThrow()
   })
 
