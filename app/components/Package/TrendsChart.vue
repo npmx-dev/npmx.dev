@@ -1628,8 +1628,6 @@ const isSparklineLayout = computed({
   },
 })
 
-const chartKey = shallowRef(0)
-
 const { start: resetZoomState } = useTimeoutFn(
   () => {
     keepZoomState.value = true
@@ -1950,7 +1948,6 @@ watch([selectedGranularity, startDate, endDate], async () => {
         >
           <VueUiXy
             ref="chartRef"
-            :key="chartKey"
             :dataset="normalisedDataset"
             :config="chartConfig"
             :class="{
