@@ -1374,6 +1374,8 @@ watch(
 
 const tooltipPosition = useChartTooltipPosition(chartRef)
 
+const keepZoomState = shallowRef(true)
+
 // VueUiXy chart component configuration
 const chartConfig = computed<VueUiXyConfig>(() => {
   return {
@@ -1573,7 +1575,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
         maxWidth: isMobile.value ? 350 : 500,
         highlightColor: colors.value.bgElevated,
         useResetSlot: true,
-        keepState: true,
+        keepState: keepZoomState.value,
         minimap: {
           show: true,
           lineColor: '#FAFAFA',
@@ -1624,6 +1626,30 @@ const isSparklineLayout = computed({
   set: (v: boolean) => {
     chartLayout.value = v ? 'split' : 'combined'
   },
+})
+
+const chartKey = shallowRef(0)
+
+const { start: resetZoomState } = useTimeoutFn(
+  () => {
+    keepZoomState.value = true
+  },
+  1000,
+  { immediate: false },
+)
+
+async function resetZoom() {
+  keepZoomState.value = false
+  await nextTick()
+  chartRef.value?.resetZoom()
+  resetZoomState()
+}
+
+onMounted(resetZoom)
+
+watch([normalisedDataset], async () => {
+  if (!isMounted.value) return
+  await resetZoom()
 })
 </script>
 
@@ -1924,6 +1950,7 @@ const isSparklineLayout = computed({
         >
           <VueUiXy
             ref="chartRef"
+            :key="chartKey"
             :dataset="normalisedDataset"
             :config="chartConfig"
             :class="{
