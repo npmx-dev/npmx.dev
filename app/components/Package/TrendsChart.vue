@@ -1647,7 +1647,7 @@ async function resetZoom() {
 
 onMounted(resetZoom)
 
-watch([normalisedDataset], async () => {
+watch([selectedGranularity, startDate, endDate], async () => {
   if (!isMounted.value) return
   await resetZoom()
 })
