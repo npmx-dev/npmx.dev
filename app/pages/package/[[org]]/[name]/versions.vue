@@ -547,11 +547,11 @@ const flatItems = computed<FlatItem[]>(() => {
                       v-if="groupDownloadsMap.has(item.groupKey)"
                       class="ms-auto w-28 grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums shrink-0"
                       :aria-label="
-                        getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!, item.groupKey)
+                        getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!, item.label)
                       "
                       dir="ltr"
                       :title="
-                        getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!, item.groupKey)
+                        getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!, item.label)
                       "
                     >
                       <span>{{
@@ -695,11 +695,11 @@ const flatItems = computed<FlatItem[]>(() => {
                     v-if="groupDownloadsMap.has(item.groupKey)"
                     class="ms-auto w-28 grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums shrink-0"
                     :aria-label="
-                      getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!, item.groupKey)
+                      getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!, item.label)
                     "
                     dir="ltr"
                     :title="
-                      getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!, item.groupKey)
+                      getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!, item.label)
                     "
                   >
                     <span>{{ numberFormatter.format(groupDownloadsMap.get(item.groupKey)!) }}</span>
