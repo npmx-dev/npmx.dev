@@ -31,12 +31,15 @@ const textClass = computed(() => {
   }
 })
 
-const { data: gravatarUrl } = useLazyFetch(() => `/api/gravatar/${props.username}`, {
-  transform: res => (res.hash ? `/_avatar/${res.hash}?s=128&d=404` : null),
-  getCachedData(key, nuxtApp) {
-    return nuxtApp.static.data[key] ?? nuxtApp.payload.data[key]
+const { data: gravatarUrl } = useLazyFetch(
+  () => `/api/gravatar/${encodeURIComponent(props.username)}`,
+  {
+    transform: res => (res.hash ? `/_avatar/${res.hash}?s=128&d=404` : null),
+    getCachedData(key, nuxtApp) {
+      return nuxtApp.static.data[key] ?? nuxtApp.payload.data[key]
+    },
   },
-})
+)
 </script>
 
 <template>
@@ -56,7 +59,7 @@ const { data: gravatarUrl } = useLazyFetch(() => `/api/gravatar/${props.username
       :height="sizePixels"
       class="w-full h-full object-cover"
     />
-    <!-- Else fallback to initials (use svg to avoid underline styling) -->
+    <!-- Else fall back to initials (use svg to avoid underline styling) -->
     <svg
       v-else
       xmlns="http://www.w3.org/2000/svg"

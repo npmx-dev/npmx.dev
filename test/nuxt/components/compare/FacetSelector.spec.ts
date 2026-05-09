@@ -32,6 +32,9 @@ const facetLabels: Record<ComparisonFacet, { label: string; description: string 
   },
   deprecated: { label: 'Deprecated?', description: 'Whether the package is deprecated' },
   totalLikes: { label: 'Likes', description: 'Number of likes' },
+  githubStars: { label: 'GitHub Stars', description: 'Number of GitHub stars' },
+  githubIssues: { label: 'GitHub Issues', description: 'Number of open GitHub issues' },
+  createdAt: { label: 'Created', description: 'When the package was first created' },
 }
 
 const categoryLabels: Record<string, string> = {
@@ -99,6 +102,16 @@ vi.mock('~/composables/useFacetSelection', () => ({
 vi.mock('@vueuse/router', () => ({
   useRouteQuery: () => ref(''),
 }))
+
+function findCategoryActionButton(
+  component: Awaited<ReturnType<typeof mountSuspended>>,
+  category: string,
+  action: 'all' | 'none',
+) {
+  return component.find(
+    `button[data-facet-category="${category}"][data-facet-category-action="${action}"]`,
+  )
+}
 
 describe('FacetSelector', () => {
   beforeEach(() => {
@@ -232,16 +245,6 @@ describe('FacetSelector', () => {
   })
 
   describe('category all/none buttons', () => {
-    function findCategoryActionButton(
-      component: Awaited<ReturnType<typeof mountSuspended>>,
-      category: string,
-      action: 'all' | 'none',
-    ) {
-      return component.find(
-        `button[data-facet-category="${category}"][data-facet-category-action="${action}"]`,
-      )
-    }
-
     it('calls selectCategory when all button is clicked', async () => {
       const component = await mountSuspended(FacetSelector)
 

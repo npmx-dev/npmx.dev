@@ -50,6 +50,8 @@ if (import.meta.server) {
 const keyboardShortcuts = useKeyboardShortcuts()
 const { settings } = useSettings()
 
+initKeyShortcuts()
+
 onKeyDown(
   '/',
   e => {
@@ -125,6 +127,10 @@ if (import.meta.client) {
     useEventListener(document, 'click', handleModalLightDismiss)
   }
 }
+
+// title and description will be inferred
+// this will be overridden by upstream pages that use different templates
+defineOgImage('Page.takumi', {}, { alt: 'npmx — a fast, modern browser for the npm registry' })
 </script>
 
 <template>
@@ -143,6 +149,8 @@ if (import.meta.client) {
     <div id="main-content" class="flex-1 flex flex-col" tabindex="-1">
       <NuxtPage />
     </div>
+
+    <CommandPalette />
 
     <AppFooter />
 

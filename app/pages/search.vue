@@ -86,13 +86,16 @@ const { settings } = useSettings()
 
 /**
  * Reorder results to put exact package name match at the top,
- * and optionally filter out platform-specific packages.
+ * and optionally filter out platform-specific packages or security holding packages.
  */
 const visibleResults = computed(() => {
   const raw = rawVisibleResults.value
   if (!raw) return raw
 
   let objects = raw.objects
+
+  // Filter out "Security holding package" packages taken down by npm registry
+  objects = objects.filter(r => !r.package.isSecurityHeld)
 
   // Filter out platform-specific packages if setting is enabled
   if (settings.value.hidePlatformPackages) {
@@ -193,7 +196,7 @@ watch(searchProvider, provider => {
 })
 
 // Use incremental search with client-side caching + org/user suggestions
-// committedQuery only updates on Enter when instant search is off, otherwise tracks query as user types
+// committedQuery only updates on Enter when instant search is off; otherwise, tracks query as user types
 const {
   data: results,
   status,
@@ -573,15 +576,21 @@ useSeoMeta({
       : $t('search.meta_description_packages'),
 })
 
-defineOgImageComponent('Default', {
-  title: () =>
-    `${query.value ? $t('search.title_search', { search: query.value }) : $t('search.title_packages')} - npmx`,
-  description: () =>
-    query.value
-      ? $t('search.meta_description', { search: query.value })
-      : $t('search.meta_description_packages'),
-  primaryColor: '#60a5fa',
-})
+defineOgImage(
+  'Page.takumi',
+  {
+    title: () =>
+      `${query.value ? $t('search.title_search', { search: query.value }) : $t('search.title_packages')} - npmx`,
+    description: () =>
+      query.value
+        ? $t('search.meta_description', { search: query.value })
+        : $t('search.meta_description_packages'),
+  },
+  {
+    alt: () =>
+      query.value ? `Search results for "${query.value}" on npmx` : 'Search npm packages on npmx',
+  },
+)
 
 // -----------------------------------
 // Live region debouncing logic

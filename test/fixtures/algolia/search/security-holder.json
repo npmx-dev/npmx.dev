@@ -1,0 +1,69 @@
+[
+  {
+    "name": "vuln-npm",
+    "downloadsLast30Days": 0,
+    "downloadsRatio": 0,
+    "popular": false,
+    "version": "0.0.1-security",
+    "description": "security holding package",
+    "repository": {
+      "type": "git",
+      "url": "npm/security-holder",
+      "project": "security-holder",
+      "user": "npm",
+      "host": "github.com",
+      "path": "",
+      "branch": "master"
+    },
+    "deprecated": false,
+    "isDeprecated": false,
+    "isSecurityHeld": true,
+    "homepage": null,
+    "license": null,
+    "keywords": [],
+    "modified": 1692592458394,
+    "owners": [
+      {
+        "email": "npm@npmjs.com",
+        "name": "npm",
+        "avatar": "https://gravatar.com/avatar/46d8d00e190be647053f7d97fd0478e4",
+        "link": "https://www.npmjs.com/~npm"
+      }
+    ],
+    "objectID": "vuln-npm"
+  },
+  {
+    "name": "npmx-connector",
+    "downloadsLast30Days": 1047,
+    "downloadsRatio": 0,
+    "popular": false,
+    "version": "0.9.0",
+    "description": "Local connector for npmx.dev - enables authenticated npm operations from the web UI",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/npmx-dev/npmx.dev",
+      "project": "npmx.dev",
+      "user": "npmx-dev",
+      "host": "github.com",
+      "path": "",
+      "head": "1f574e52f494032683c1aec7f64f6de72d4413a0",
+      "branch": "1f574e52f494032683c1aec7f64f6de72d4413a0"
+    },
+    "deprecated": false,
+    "isDeprecated": false,
+    "isSecurityHeld": false,
+    "homepage": "https://npmx.dev",
+    "license": "MIT",
+    "keywords": [],
+    "modified": 1776194979856,
+    "owners": [
+      {
+        "name": "danielroe",
+        "email": "daniel@roe.dev",
+        "avatar": "https://gravatar.com/avatar/f366ee6556b7307a1a2a253c8fb842ca",
+        "link": "https://www.npmjs.com/~danielroe"
+      }
+    ],
+    "objectID": "npmx-connector"
+  }
+]

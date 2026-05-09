@@ -12,11 +12,14 @@ useSeoMeta({
   twitterDescription: () => $t('about.meta_description'),
 })
 
-defineOgImageComponent('Default', {
-  primaryColor: '#60a5fa',
-  title: 'about npmx',
-  description: 'a fast, modern browser for the **npm registry**',
-})
+defineOgImage(
+  'Page.takumi',
+  {
+    title: () => `${$t('about.title')}`,
+    description: 'a fast, modern browser for the npm registry',
+  },
+  { alt: () => `${$t('about.title')} — npmx` },
+)
 
 const pmLinks = {
   npm: 'https://www.npmjs.com/',
@@ -153,7 +156,7 @@ const roleLabels = computed(
           </h2>
           <AboutLogoList
             :list="SPONSORS"
-            class="grid grid-cols-2 md:flex md:flex-row md:items-center"
+            class="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-4 grid-flow-row-dense"
           />
         </div>
 
@@ -162,7 +165,10 @@ const roleLabels = computed(
           <h2 class="text-lg text-fg uppercase tracking-wider mb-4">
             {{ $t('about.oss_partners.title') }}
           </h2>
-          <AboutLogoList :list="OSS_PARTNERS" class="items-center" />
+          <AboutLogoList
+            :list="OSS_PARTNERS"
+            class="grid grid-cols-[repeat(auto-fill,minmax(64px,1fr))] gap-4 grid-flow-row-dense"
+          />
         </div>
 
         <div>

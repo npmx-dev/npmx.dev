@@ -2,6 +2,7 @@ import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import type { DOMWrapper } from '@vue/test-utils'
 import PackageVersions from '~/components/Package/Versions.vue'
+import { packageVersionsRoute } from '~/utils/router'
 
 // Mock the fetchAllPackageVersions function
 const mockFetchAllPackageVersions = vi.fn()
@@ -37,6 +38,12 @@ function isVersionLink(a: DOMWrapper<Element>): boolean {
     a.attributes('target') !== '_blank' &&
     !a.attributes('data-testid')?.includes('view-all-versions')
   )
+}
+
+function getRouter(
+  component: Awaited<ReturnType<typeof mountSuspended>>,
+): Pick<typeof component.vm.$router, 'resolve'> {
+  return component.vm.$router
 }
 
 describe('PackageVersions', () => {
@@ -107,6 +114,42 @@ describe('PackageVersions', () => {
       const versionLinks = component.findAll('a').filter(isVersionLink)
       expect(versionLinks.length).toBeGreaterThan(0)
       expect(versionLinks[0]?.text()).toBe('1.0.0')
+    })
+
+    it('view-all-versions link uses packageVersionsRoute for unscoped packages', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      const router = getRouter(component)
+      const expectedHref = router.resolve(packageVersionsRoute('test-package')).href
+      const viewAll = component.find('[data-testid="view-all-versions-link"]')
+      expect(viewAll.attributes('href')).toBe(expectedHref)
+    })
+
+    it('view-all-versions link uses packageVersionsRoute for scoped packages', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: '@scope/test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      const router = getRouter(component)
+      const expectedHref = router.resolve(packageVersionsRoute('@scope/test-package')).href
+      const viewAll = component.find('[data-testid="view-all-versions-link"]')
+      expect(viewAll.attributes('href')).toBe(expectedHref)
     })
 
     it('highlights the current version row when selectedVersion prop matches', async () => {
@@ -815,11 +858,8 @@ describe('PackageVersions', () => {
   describe('loading states', () => {
     it('shows loading spinner when fetching versions', async () => {
       // Create a promise that won't resolve immediately
-      let resolvePromise: (value: unknown[]) => void
-      const loadingPromise = new Promise<unknown[]>(resolve => {
-        resolvePromise = resolve
-      })
-      mockFetchAllPackageVersions.mockReturnValue(loadingPromise)
+      const { promise, resolve } = Promise.withResolvers<unknown[]>()
+      mockFetchAllPackageVersions.mockReturnValue(promise)
 
       const component = await mountSuspended(PackageVersions, {
         props: {
@@ -842,14 +882,12 @@ describe('PackageVersions', () => {
       })
 
       // Resolve the promise to clean up
-      resolvePromise!([])
+      resolve([])
     })
 
     it('shows loading spinner for other versions when fetching', async () => {
-      let resolvePromise: (value: unknown[]) => void
-      const loadingPromise = new Promise<unknown[]>(resolve => {
-        resolvePromise = resolve
-      })
+      const { promise: loadingPromise, resolve: resolvePromise } =
+        Promise.withResolvers<unknown[]>()
       mockFetchAllPackageVersions.mockReturnValue(loadingPromise)
 
       const component = await mountSuspended(PackageVersions, {
@@ -876,7 +914,7 @@ describe('PackageVersions', () => {
       })
 
       // Resolve the promise to clean up
-      resolvePromise!([])
+      resolvePromise([])
     })
   })
 
@@ -1242,6 +1280,21 @@ describe('PackageVersions', () => {
         const text = component.text()
         expect(text).not.toContain('0.5.0')
       })
+    })
+
+    it('does not show latest tag when it does not match the filter', async () => {
+      const component = await mountSuspended(PackageVersions, { props: multiVersionProps })
+
+      const input = component.find('input[type="text"]')
+      await input.setValue('^1.0.0 <2.0.0')
+
+      const versionLinks = component.findAll('a').filter(isVersionLink)
+      const versions = versionLinks.map(l => l.text())
+
+      // 3.0.0 is latest but does NOT match the filter
+      expect(versions).not.toContain('3.0.0')
+      // 1.0.0 does match
+      expect(versions).toContain('1.0.0')
     })
   })
 

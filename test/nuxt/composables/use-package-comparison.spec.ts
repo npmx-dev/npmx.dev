@@ -192,4 +192,152 @@ describe('usePackageComparison', () => {
       expect(values[0]?.status).toBe('neutral')
     })
   })
+
+  describe('github metadata', () => {
+    it('fetches github stars and issues when repository is on github', async () => {
+      const pkgName = 'github-pkg'
+      vi.stubGlobal(
+        '$fetch',
+        vi.fn().mockImplementation((url: string, options?: { baseURL?: string }) => {
+          const fullUrl = options?.baseURL ? `${options.baseURL}${url}` : url
+          if (fullUrl.startsWith('https://registry.npmjs.org/')) {
+            return Promise.resolve({
+              'name': pkgName,
+              'dist-tags': { latest: '1.0.0' },
+              'repository': { type: 'git', url: 'https://github.com/owner/repo' },
+              'versions': {
+                '1.0.0': { dist: { unpackedSize: 1000 } },
+              },
+            })
+          }
+          if (fullUrl.includes('ungh.cc/repos/owner/repo')) {
+            return Promise.resolve({ repo: { stars: 1500 } })
+          }
+          if (fullUrl.includes('/api/github/issues/owner/repo')) {
+            return Promise.resolve({ issues: 50 })
+          }
+          return Promise.resolve(null)
+        }),
+      )
+
+      const { status, getFacetValues } = await usePackageComparisonInComponent([pkgName])
+      await vi.waitFor(() => {
+        expect(status.value).toBe('success')
+      })
+
+      const stars = getFacetValues('githubStars')[0]
+      const issues = getFacetValues('githubIssues')[0]
+
+      expect(stars).toMatchObject({ raw: 1500, status: 'neutral' })
+      expect(issues).toMatchObject({ raw: 50, status: 'neutral' })
+    })
+
+    it('returns null for missing or non-numeric github metrics', async () => {
+      const pkgName = 'missing-metrics-pkg'
+      vi.stubGlobal(
+        '$fetch',
+        vi.fn().mockImplementation((url: string, options?: { baseURL?: string }) => {
+          const fullUrl = options?.baseURL ? `${options.baseURL}${url}` : url
+          if (fullUrl.startsWith('https://registry.npmjs.org/')) {
+            return Promise.resolve({
+              'name': pkgName,
+              'dist-tags': { latest: '1.0.0' },
+              'repository': { type: 'git', url: 'https://github.com/owner/repo' },
+              'versions': {
+                '1.0.0': { dist: { unpackedSize: 1000 } },
+              },
+            })
+          }
+          if (fullUrl.includes('ungh.cc/repos/owner/repo')) {
+            // Return malformed data (stars missing)
+            return Promise.resolve({ repo: {} })
+          }
+          if (fullUrl.includes('/api/github/issues/owner/repo')) {
+            // Return non-numeric data
+            return Promise.resolve({ issues: 'not-a-number' })
+          }
+          return Promise.resolve(null)
+        }),
+      )
+
+      const { status, getFacetValues } = await usePackageComparisonInComponent([pkgName])
+      await vi.waitFor(() => {
+        expect(status.value).toBe('success')
+      })
+
+      expect(getFacetValues('githubStars')[0]).toBeNull()
+      expect(getFacetValues('githubIssues')[0]).toBeNull()
+    })
+
+    it('skips github fetches for non-github repositories', async () => {
+      const pkgName = 'gitlab-pkg'
+      const fetchMock = vi
+        .fn()
+        .mockImplementation((url: string, options?: { baseURL?: string }) => {
+          const fullUrl = options?.baseURL ? `${options.baseURL}${url}` : url
+          if (fullUrl.startsWith('https://registry.npmjs.org/')) {
+            return Promise.resolve({
+              'name': pkgName,
+              'dist-tags': { latest: '1.0.0' },
+              'repository': { type: 'git', url: 'https://gitlab.com/owner/repo' },
+              'versions': {
+                '1.0.0': { dist: { unpackedSize: 1000 } },
+              },
+            })
+          }
+          return Promise.resolve(null)
+        })
+      vi.stubGlobal('$fetch', fetchMock)
+
+      const { status, getFacetValues } = await usePackageComparisonInComponent([pkgName])
+      await vi.waitFor(() => {
+        expect(status.value).toBe('success')
+      })
+
+      expect(fetchMock).not.toHaveBeenCalledWith(expect.stringContaining('ungh.cc'))
+      expect(fetchMock).not.toHaveBeenCalledWith(expect.stringContaining('/api/github/issues'))
+
+      expect(getFacetValues('githubStars')[0]).toBeNull()
+      expect(getFacetValues('githubIssues')[0]).toBeNull()
+    })
+  })
+
+  describe('createdAt facet', () => {
+    it('displays the creation date without status', async () => {
+      const createdDate = '2020-01-01T00:00:00.000Z'
+      vi.stubGlobal(
+        '$fetch',
+        vi.fn().mockImplementation((url: string, options?: { baseURL?: string }) => {
+          const fullUrl = options?.baseURL ? `${options.baseURL}${url}` : url
+          if (fullUrl.startsWith('https://registry.npmjs.org/')) {
+            return Promise.resolve({
+              'name': 'test-package',
+              'dist-tags': { latest: '1.0.0' },
+              'time': {
+                'created': createdDate,
+                '1.0.0': createdDate,
+              },
+              'versions': {
+                '1.0.0': { dist: { unpackedSize: 1000 } },
+              },
+            })
+          }
+          return Promise.resolve(null)
+        }),
+      )
+
+      const { status, getFacetValues } = await usePackageComparisonInComponent(['test-package'])
+      await vi.waitFor(() => {
+        expect(status.value).toBe('success')
+      })
+
+      const value = getFacetValues('createdAt')[0]
+      expect(value).toMatchObject({
+        raw: createdDate,
+        display: createdDate,
+        type: 'date',
+      })
+      expect(value?.status).toBeUndefined()
+    })
+  })
 })

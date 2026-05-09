@@ -54,7 +54,7 @@ export const SPONSORS = [
       dark: LogoNetlify,
       light: LogoNetlifyLight,
     },
-    normalisingIndent: '0.125rem',
+    normalisingIndent: '0.25rem',
     url: 'https://netlify.com/',
   },
   {

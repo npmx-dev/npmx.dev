@@ -1,0 +1,83 @@
+language: en-GB
+
+reviews:
+  profile: chill
+  # Keep the high-level summary enabled (default), but place it in the
+  # walkthrough comment instead of relying on PR description updates.
+  high_level_summary_in_walkthrough: true
+  review_status: true
+  review_details: false
+  changed_files_summary: true
+  sequence_diagrams: true
+  estimate_code_review_effort: false
+  assess_linked_issues: true
+  related_issues: true
+  related_prs: true
+  suggested_labels: false
+  suggested_reviewers: true
+  in_progress_fortune: false
+  poem: false
+
+  slop_detection:
+    enabled: true
+    label: '007'
+
+  auto_review:
+    auto_pause_after_reviewed_commits: 5
+    labels:
+      - '!release'
+    ignore_title_keywords:
+      - 'WIP'
+      - '[skip-review]'
+      - 'chore(release)'
+    ignore_usernames:
+      - 'renovate[bot]'
+      - 'dependabot[bot]'
+      - 'github-actions[bot]'
+
+  # Built-in PR metadata/content checks. Modes are: off, warning, error.
+  pre_merge_checks:
+    docstrings:
+      mode: off
+    title:
+      mode: error
+    description:
+      mode: warning
+    issue_assessment:
+      mode: warning
+
+  tools:
+    gitleaks:
+      enabled: true
+    osvScanner:
+      enabled: true
+    actionlint:
+      enabled: true
+    yamllint:
+      enabled: true
+    shellcheck:
+      enabled: true
+    dotenvLint:
+      enabled: true
+
+    # Disable tools redundant with our own CI
+    eslint:
+      enabled: false
+    biome:
+      enabled: false
+    oxc:
+      enabled: false
+    markdownlint:
+      enabled: false
+    languagetool:
+      enabled: false
+    github-checks:
+      enabled: false
+
+    # Security-related, but not a good fit for this repo
+    checkov:
+      enabled: false
+    trivy:
+      enabled: false
+    opengrep:
+      enabled: false

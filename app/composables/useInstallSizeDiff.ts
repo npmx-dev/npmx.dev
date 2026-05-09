@@ -1,6 +1,7 @@
 import { compare, prerelease, valid } from 'semver'
 
 export interface InstallSizeDiff {
+  direction: 'increase' | 'decrease'
   comparisonVersion: string
   sizeRatio: number
   sizeIncrease: number
@@ -15,20 +16,20 @@ export interface InstallSizeDiff {
 
 const SIZE_INCREASE_THRESHOLD = 0.25
 const DEP_INCREASE_THRESHOLD = 5
+const SIZE_DECREASE_THRESHOLD = 0.2
+const DEP_DECREASE_THRESHOLD = 3
 
 function getComparisonVersion(pkg: SlimPackument, resolvedVersion: string): string | null {
   const isCurrentPrerelease = prerelease(resolvedVersion) !== null
 
-  if (isCurrentPrerelease) {
-    const latest = pkg['dist-tags']?.latest
-    if (!latest || latest === resolvedVersion) return null
-    return latest
-  }
-
-  // Find the previous version in time that was stable
   const stableVersions = Object.keys(pkg.time)
     .filter(v => v !== 'modified' && v !== 'created' && valid(v) !== null && prerelease(v) === null)
     .sort((a, b) => compare(a, b))
+
+  if (isCurrentPrerelease) {
+    // Find the highest stable version before this prerelease in semver order
+    return stableVersions.findLast(v => compare(v, resolvedVersion) < 0) ?? null
+  }
 
   const currentIdx = stableVersions.indexOf(resolvedVersion)
   // Don't compare the second version against the first as the first
@@ -93,12 +94,23 @@ export function useInstallSizeDiff(
       previous.totalSize > 0 ? (current.totalSize - previous.totalSize) / previous.totalSize : 0
     const depDiff = current.dependencyCount - previous.dependencyCount
 
-    const sizeThresholdExceeded = sizeRatio > SIZE_INCREASE_THRESHOLD
-    const depThresholdExceeded = depDiff > DEP_INCREASE_THRESHOLD
+    const increaseSize = sizeRatio > SIZE_INCREASE_THRESHOLD
+    const increaseDeps = depDiff > DEP_INCREASE_THRESHOLD
+    const decreaseSize = sizeRatio < -SIZE_DECREASE_THRESHOLD
+    const decreaseDeps = depDiff < -DEP_DECREASE_THRESHOLD
 
-    if (!sizeThresholdExceeded && !depThresholdExceeded) return null
+    const isIncrease = increaseSize || increaseDeps
+    const isDecrease =
+      !isIncrease && sizeRatio <= 0 && depDiff <= 0 && (decreaseSize || decreaseDeps)
+
+    if (!isIncrease && !isDecrease) return null
+
+    const direction: 'increase' | 'decrease' = isIncrease ? 'increase' : 'decrease'
+    const sizeThresholdExceeded = isIncrease ? increaseSize : decreaseSize
+    const depThresholdExceeded = isIncrease ? increaseDeps : decreaseDeps
 
     return {
+      direction,
       comparisonVersion: cv,
       sizeRatio,
       sizeIncrease: current.totalSize - previous.totalSize,

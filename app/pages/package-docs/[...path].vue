@@ -38,6 +38,8 @@ if (import.meta.server && packageName.value) {
 }
 
 const { data: pkg } = usePackage(packageName)
+const { versions: commandPaletteVersions, ensureLoaded: ensureCommandPaletteVersionsLoaded } =
+  useCommandPalettePackageVersions(packageName)
 
 const latestVersion = computed(() => pkg.value?.['dist-tags']?.latest ?? null)
 
@@ -68,6 +70,23 @@ watch(
 )
 
 const resolvedVersion = computed(() => requestedVersion.value ?? latestVersion.value)
+
+const commandPalettePackageContext = computed(() => {
+  const packageData = pkg.value
+  if (!packageData) return null
+
+  return {
+    packageName: packageData.name,
+    resolvedVersion: resolvedVersion.value ?? packageData['dist-tags']?.latest ?? null,
+    latestVersion: packageData['dist-tags']?.latest ?? null,
+    versions: commandPaletteVersions.value ?? Object.keys(packageData.versions ?? {}),
+  }
+})
+
+useCommandPalettePackageContext(commandPalettePackageContext, {
+  onOpen: ensureCommandPaletteVersionsLoaded,
+})
+useCommandPalettePackageCommands(commandPalettePackageContext)
 
 const docsUrl = computed(() => {
   if (!packageName.value || !resolvedVersion.value) return null
@@ -104,6 +123,8 @@ const versionUrlPattern = computed(
   () => `/package-docs/${pkg.value?.name || packageName.value}/v/{version}`,
 )
 
+useCommandPaletteVersionCommands(commandPalettePackageContext, versionUrlPattern)
+
 const pageTitle = computed(() => {
   if (!packageName.value) return t('package.docs.page_title')
   if (!resolvedVersion.value) return t('package.docs.page_title_name', { name: packageName.value })
@@ -114,18 +135,22 @@ const pageTitle = computed(() => {
 
 useSeoMeta({
   title: () => pageTitle.value,
-  ogTitle: () => pageTitle.value,
+  ogTitle: () => t('package.docs.og_title', { name: packageName.value }),
   twitterTitle: () => pageTitle.value,
   description: () => pkg.value?.license ?? '',
   ogDescription: () => pkg.value?.license ?? '',
   twitterDescription: () => pkg.value?.license ?? '',
 })
 
-defineOgImageComponent('Default', {
-  title: () => t('package.docs.og_title', { name: pkg.value?.name ?? 'Package' }),
-  description: () => pkg.value?.license ?? '',
-  primaryColor: '#60a5fa',
-})
+defineOgImage(
+  'Package.takumi',
+  {
+    name: () => packageName.value,
+    version: () => resolvedVersion.value,
+    variant: 'function-tree',
+  },
+  { alt: () => `API documentation for ${packageName.value}` },
+)
 
 const showLoading = computed(
   () => docsStatus.value === 'pending' || (docsStatus.value === 'idle' && docsUrl.value !== null),

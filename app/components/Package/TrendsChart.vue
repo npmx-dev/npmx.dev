@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Theme as VueDataUiTheme, VueUiXyConfig, VueUiXyDatasetItem } from 'vue-data-ui'
-import { VueUiXy } from 'vue-data-ui/vue-ui-xy'
+import type { Theme as VueDataUiTheme } from 'vue-data-ui'
+import { VueUiXy, type VueUiXyConfig, type VueUiXyDatasetItem } from 'vue-data-ui/vue-ui-xy'
 import { useDebounceFn, useElementSize, useTimeoutFn } from '@vueuse/core'
-import { useCssVariables } from '~/composables/useColors'
+import { useColors } from '~/composables/useColors'
 import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch, lightenOklch } from '~/utils/colors'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
 import { drawNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
@@ -25,6 +25,7 @@ import {
 } from '~/utils/chart-data-prediction'
 import { applyBlocklistCorrection, getAnomaliesForPackages } from '~/utils/download-anomalies'
 import { copyAltTextForTrendLineChart, sanitise, loadFile, applyEllipsis } from '~/utils/charts'
+import { useChartTooltipPosition } from '~/composables/useChartTooltipPosition'
 
 import('vue-data-ui/style.css')
 
@@ -67,6 +68,8 @@ const resolvedMode = shallowRef<'light' | 'dark'>('light')
 const rootEl = shallowRef<HTMLElement | null>(null)
 const isZoomed = shallowRef(false)
 
+const chartRef = useTemplateRef('chartRef')
+
 function setIsZoom({ isZoom }: { isZoom: boolean }) {
   isZoomed.value = isZoom
 }
@@ -89,23 +92,7 @@ onMounted(async () => {
   loadMetric(selectedMetric.value)
 })
 
-const { colors } = useCssVariables(
-  [
-    '--bg',
-    '--fg',
-    '--bg-subtle',
-    '--bg-elevated',
-    '--fg-subtle',
-    '--fg-muted',
-    '--border',
-    '--border-subtle',
-  ],
-  {
-    element: rootEl,
-    watchHtmlAttributes: true,
-    watchResize: false,
-  },
-)
+const { colors } = useColors(rootEl)
 
 watch(
   () => colorMode.value,
@@ -1077,7 +1064,8 @@ const normalisedDataset = computed(() => {
   const lastDateMs = chartData.value.dates.at(-1) ?? 0
   const isAbsoluteMetric = selectedMetric.value === 'contributors'
 
-  return chartData.value.dataset?.map(d => {
+  // oxlint-disable-next-line oxc-no-map-spread
+  return (chartData.value.dataset || []).map(d => {
     const series = applyDataPipeline(
       d.series.map(v => v ?? 0),
       {
@@ -1190,7 +1178,7 @@ function drawEstimationLine(svg: Record<string, any>) {
 
     /**
      * The following svg elements are injected in the #svg slot of VueUiXy:
-     * - a line overlay covering the plain path bewteen the last datapoint and its ancestor
+     * - a line overlay covering the plain path between the last datapoint and its ancestor
      * - a dashed line connecting the last datapoint to its ancestor
      * - a circle for the last datapoint
      */
@@ -1280,9 +1268,9 @@ function drawLastDatapointLabel(svg: Record<string, any>) {
 
 /**
  * Build and return a legend to be injected during the SVG export only, since the custom legend is
- * displayed as an independant div, content has to be injected within the chart's viewBox.
+ * displayed as an independent div, content has to be injected within the chart's viewBox.
  *
- * Legend items are displayed in a column, on the top left of the chart.
+ * Legend items are displayed in a column, at the top left of the chart.
  */
 function drawSvgPrintLegend(svg: Record<string, any>) {
   const data = Array.isArray(svg?.data) ? svg.data : []
@@ -1384,6 +1372,10 @@ watch(
   { immediate: true },
 )
 
+const tooltipPosition = useChartTooltipPosition(chartRef)
+
+const keepZoomState = shallowRef(true)
+
 // VueUiXy chart component configuration
 const chartConfig = computed<VueUiXyConfig>(() => {
   return {
@@ -1416,7 +1408,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
           svg: $t('package.trends.download_file', { fileType: 'SVG' }),
           annotator: $t('package.trends.toggle_annotator'),
           stack: $t('package.trends.toggle_stack_mode'),
-          altCopy: $t('package.trends.copy_alt.button_label'), // Do not make this text dependant on the `copied` variable, since this would re-render the component, which is undesirable if the minimap was used to select a time frame.
+          altCopy: $t('package.trends.copy_alt.button_label'), // Do not make this text dependent on the `copied` variable, since this would re-render the component, which is undesirable if the minimap was used to select a time frame.
           open: $t('package.trends.open_options'),
           close: $t('package.trends.close_options'),
         },
@@ -1517,6 +1509,9 @@ const chartConfig = computed<VueUiXyConfig>(() => {
       legend: { show: false, position: 'top' },
       tooltip: {
         teleportTo: props.inModal ? '#chart-modal' : undefined,
+        position: tooltipPosition.value,
+        offsetX: 24,
+        offsetY: isMultiPackageMode.value ? undefined : -24,
         borderColor: 'transparent',
         backdropFilter: false,
         backgroundColor: 'transparent',
@@ -1580,6 +1575,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
         maxWidth: isMobile.value ? 350 : 500,
         highlightColor: colors.value.bgElevated,
         useResetSlot: true,
+        keepState: keepZoomState.value,
         minimap: {
           show: true,
           lineColor: '#FAFAFA',
@@ -1622,6 +1618,37 @@ watch(selectedMetric, value => {
   if (!isMounted.value) return
   loadMetric(value)
 })
+
+// Sparkline charts (a11y alternative display for multi series)
+const chartLayout = usePermalink<'combined' | 'split'>('layout', 'combined')
+const isSparklineLayout = computed({
+  get: () => chartLayout.value === 'split',
+  set: (v: boolean) => {
+    chartLayout.value = v ? 'split' : 'combined'
+  },
+})
+
+const { start: resetZoomState } = useTimeoutFn(
+  () => {
+    keepZoomState.value = true
+  },
+  1000,
+  { immediate: false },
+)
+
+async function resetZoom() {
+  keepZoomState.value = false
+  await nextTick()
+  chartRef.value?.resetZoom?.()
+  resetZoomState()
+}
+
+onMounted(resetZoom)
+
+watch([selectedGranularity, startDate, endDate], async () => {
+  if (!isMounted.value) return
+  await resetZoom()
+})
 </script>
 
 <template>
@@ -1630,6 +1657,26 @@ watch(selectedMetric, value => {
     id="trends-chart"
     :aria-busy="activeMetricState.pending ? 'true' : 'false'"
   >
+    <TabRoot
+      v-if="isMultiPackageMode"
+      v-model="chartLayout"
+      id-prefix="chart-layout"
+      class="mt-4 mb-8"
+    >
+      <TabList :ariaLabel="$t('package.trends.chart_view_toggle')">
+        <TabItem value="combined" tab-id="combined-chart-layout-tab" icon="i-lucide:chart-line">
+          {{ $t('package.trends.chart_view_combined') }}
+        </TabItem>
+        <TabItem
+          value="split"
+          tab-id="split-chart-layout-tab"
+          icon="i-lucide:square-split-horizontal"
+        >
+          {{ $t('package.trends.chart_view_split') }}
+        </TabItem>
+      </TabList>
+    </TabRoot>
+
     <div class="w-full mb-4 flex flex-col gap-3">
       <div class="grid grid-cols-2 sm:flex sm:flex-row gap-3 sm:gap-2 sm:items-end">
         <SelectField
@@ -1867,16 +1914,40 @@ watch(selectedMetric, value => {
       role="region"
       aria-labelledby="trends-chart-title"
       :class="
-        isMobile === false && width > 0
-          ? showCorrectionControls
-            ? 'h-[491px]'
-            : 'h-[567px]'
-          : 'min-h-[260px]'
+        isSparklineLayout || !inModal
+          ? undefined
+          : isMobile === false && width > 0
+            ? showCorrectionControls
+              ? 'h-[491px]'
+              : 'h-[567px]'
+            : 'min-h-[260px]'
       "
     >
       <ClientOnly v-if="chartData.dataset">
-        <div :data-pending="pending" :data-minimap-visible="maxDatapoints > 6">
+        <div
+          v-if="isSparklineLayout"
+          id="split-chart-layout-panel"
+          :role="isMultiPackageMode ? 'tabpanel' : undefined"
+          :aria-labelledby="isMultiPackageMode ? 'split-chart-layout-tab' : undefined"
+        >
+          <ChartSplitSparkline
+            :dataset="normalisedDataset"
+            :dates="chartData.dates"
+            :datetimeFormatterOptions
+            :showLastDatapointEstimation="shouldRenderEstimationOverlay && !isEndDateOnPeriodEnd"
+          />
+        </div>
+
+        <div
+          :data-pending="pending"
+          :data-minimap-visible="maxDatapoints > 6"
+          v-else
+          id="combined-chart-layout-panel"
+          :role="isMultiPackageMode ? 'tabpanel' : undefined"
+          :aria-labelledby="isMultiPackageMode ? 'combined-chart-layout-tab' : undefined"
+        >
           <VueUiXy
+            ref="chartRef"
             :dataset="normalisedDataset"
             :config="chartConfig"
             :class="{
@@ -1942,7 +2013,7 @@ watch(selectedMetric, value => {
 
             <!-- Custom legend for multiple series -->
             <template #legend="{ legend }">
-              <div class="flex gap-4 flex-wrap justify-center">
+              <div class="flex gap-x-6 gap-y-2 flex-wrap justify-center text-sm">
                 <template v-if="isMultiPackageMode">
                   <button
                     v-for="datapoint in legend"
@@ -2148,13 +2219,13 @@ watch(selectedMetric, value => {
 
 <style scoped>
 :deep(.vue-data-ui-component svg:focus-visible) {
-  outline: 1px solid var(--accent-color) !important;
+  outline: 1px solid var(--accent) !important;
   border-radius: 0.1rem;
   outline-offset: 0;
 }
 :deep(.vue-ui-user-options-button:focus-visible),
 :deep(.vue-ui-user-options :first-child:focus-visible) {
-  outline: 0.1rem solid var(--accent-color) !important;
+  outline: 0.1rem solid var(--accent) !important;
   border-radius: 0.25rem;
 }
 </style>

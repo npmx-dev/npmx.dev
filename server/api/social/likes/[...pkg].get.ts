@@ -1,5 +1,7 @@
 import * as v from 'valibot'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
+import { PACKAGE_SUBJECT_REF } from '#shared/utils/constants'
+import { getTopLikedRank } from '#server/utils/likes-leaderboard'
 
 /**
  * GET /api/social/likes/:name
@@ -23,7 +25,15 @@ export default eventHandlerWithOAuthSession(async (event, oAuthSession, _) => {
     })
 
     const likesUtil = new PackageLikesUtils()
-    return await likesUtil.getLikes(packageName, oAuthSession?.did.toString())
+    const [likes, topLikedRank] = await Promise.all([
+      likesUtil.getLikes(packageName, oAuthSession?.did.toString()),
+      getTopLikedRank(event, PACKAGE_SUBJECT_REF(packageName)),
+    ])
+
+    return {
+      ...likes,
+      topLikedRank,
+    }
   } catch (error: unknown) {
     handleApiError(error, {
       statusCode: 502,

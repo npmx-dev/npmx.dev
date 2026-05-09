@@ -131,11 +131,13 @@ export async function renderMarkdown(text: string, symbolLookup: SymbolLookup): 
     .replace(/\n/g, '<br>')
 
   // Highlight and restore code blocks
-  for (let i = 0; i < codeBlockData.length; i++) {
-    const { lang, code } = codeBlockData[i]!
-    const highlighted = await highlightCodeBlock(code, lang)
-    result = result.replace(`__CODE_BLOCK_${i}__`, highlighted)
-  }
+  const highlightedCodeBlocks = await Promise.all(
+    codeBlockData.map(({ lang, code }) => highlightCodeBlock(code, lang)),
+  )
+
+  highlightedCodeBlocks.forEach((highlighted, i) => {
+    result = result.replace(`__CODE_BLOCK_${i}__`, () => highlighted)
+  })
 
   return result
 }

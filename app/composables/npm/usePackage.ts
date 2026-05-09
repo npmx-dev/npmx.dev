@@ -16,6 +16,13 @@ function getTrustLevel(version: PackumentVersion): PublishTrustLevel {
   return 'none'
 }
 
+function normalizeLicense(license?: PackumentLicense): string | undefined {
+  if (!license) return undefined
+  if (typeof license === 'string') return license
+  if (typeof license.type === 'string') return license.type
+  return undefined
+}
+
 /**
  * Transform a full Packument into a slimmed version for client-side use.
  * Reduces payload size by:
@@ -72,6 +79,7 @@ export function transformPackument(
   for (const v of includedVersions) {
     const version = pkg.versions[v]
     if (version) {
+      const versionLicense = normalizeLicense(version.license)
       if (version.version === requestedVersion) {
         // Strip readme from each version, extract install scripts info
         const { readme: _readme, scripts, ...slimVersion } = version
@@ -80,6 +88,7 @@ export function transformPackument(
         const installScripts = scripts ? extractInstallScriptsInfo(scripts) : null
         versionData = {
           ...slimVersion,
+          license: versionLicense,
           installScripts: installScripts ?? undefined,
         }
       }
@@ -92,6 +101,8 @@ export function transformPackument(
         version: version.version,
         deprecated: version.deprecated,
         tags: version.tags as string[],
+        license: versionLicense,
+        type: typeof version.type === 'string' ? version.type : undefined,
       }
     }
   }
@@ -105,10 +116,7 @@ export function transformPackument(
   }
 
   // Normalize license field
-  let license = pkg.license
-  if (license && typeof license === 'object' && 'type' in license) {
-    license = license.type
-  }
+  const license = normalizeLicense(requestedVersion ? versionData?.license : pkg.license)
 
   // Extract storybook field from the requested version (custom package.json field)
   const requestedPkgVersion = requestedVersion ? pkg.versions[requestedVersion] : null

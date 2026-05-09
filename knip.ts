@@ -22,11 +22,12 @@ const config: KnipConfig = {
         '!cli/src/**',
         '!lexicons/**',
       ],
+      msw: {
+        entry: ['.storybook/.public/mockServiceWorker.js'],
+      },
       ignoreDependencies: [
         '@iconify-json/*',
         'puppeteer',
-        /** Needs to be explicitly installed, even though it is not imported, to avoid type errors. */
-        'unplugin-vue-router',
         'vite-plugin-pwa',
         '@vueuse/shared',
 

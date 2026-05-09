@@ -22,6 +22,7 @@
  */
 
 import { execFileSync } from 'node:child_process'
+import process from 'node:process'
 
 function git(...args: string[]): string {
   return execFileSync('git', args, { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] }).trim()

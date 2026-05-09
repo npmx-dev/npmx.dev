@@ -21,6 +21,37 @@ function createClassSymbol(classDef: DenoDocNode['classDef']): MergedSymbol {
   }
 }
 
+function createFunctionSymbol(name: string): MergedSymbol {
+  const node: DenoDocNode = {
+    name,
+    kind: 'function',
+    functionDef: {
+      params: [],
+      returnType: { repr: 'void', kind: 'keyword', keyword: 'void' },
+    },
+  }
+
+  return {
+    name,
+    kind: 'function',
+    nodes: [node],
+  }
+}
+
+function createInterfaceSymbol(name: string): MergedSymbol {
+  const node: DenoDocNode = {
+    name,
+    kind: 'interface',
+    interfaceDef: {},
+  }
+
+  return {
+    name,
+    kind: 'interface',
+    nodes: [node],
+  }
+}
+
 describe('issue #1943 - class getters separated from methods', () => {
   it('renders getters under a "Getters" heading, not "Methods"', async () => {
     const symbol = createClassSymbol({
@@ -129,5 +160,35 @@ describe('issue #1943 - class getters separated from methods', () => {
     const html = await renderDocNodes([symbol], new Map())
 
     expect(html).toContain('static get instance')
+  })
+})
+
+describe('renderDocNodes ordering', () => {
+  it('preserves kind display order while rendering sections in parallel', async () => {
+    const html = await renderDocNodes(
+      [createInterfaceSymbol('Config'), createFunctionSymbol('run')],
+      new Map(),
+    )
+
+    const functionsIndex = html.indexOf('id="section-function"')
+    const interfacesIndex = html.indexOf('id="section-interface"')
+
+    expect(functionsIndex).toBeGreaterThanOrEqual(0)
+    expect(interfacesIndex).toBeGreaterThanOrEqual(0)
+    expect(functionsIndex).toBeLessThan(interfacesIndex)
+  })
+
+  it('preserves symbol order within a section while rendering symbols in parallel', async () => {
+    const html = await renderDocNodes(
+      [createFunctionSymbol('alpha'), createFunctionSymbol('beta')],
+      new Map(),
+    )
+
+    const alphaIndex = html.indexOf('id="function-alpha"')
+    const betaIndex = html.indexOf('id="function-beta"')
+
+    expect(alphaIndex).toBeGreaterThanOrEqual(0)
+    expect(betaIndex).toBeGreaterThanOrEqual(0)
+    expect(alphaIndex).toBeLessThan(betaIndex)
   })
 })

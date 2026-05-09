@@ -15,6 +15,13 @@ export interface ExecutableInfo {
 }
 
 /**
+ * Extract basename from package
+ */
+function getPackageBaseName(packageName: string): string | undefined {
+  return packageName.startsWith('@') ? packageName.split('/')[1] : packageName
+}
+
+/**
  * Extract executable command information from a package's bin field.
  * Handles both string format ("bin": "./cli.js") and object format ("bin": { "cmd": "./cli.js" }).
  */
@@ -42,8 +49,8 @@ export function getExecutableInfo(
     return { primaryCommand: '', commands: [], hasExecutable: false }
   }
 
-  // Prefer command matching package name if it exists, otherwise use first
-  const baseName = packageName.startsWith('@') ? packageName.split('/')[1] : packageName
+  // Prefer command matching package name if it exists; otherwise, use first
+  const baseName = getPackageBaseName(packageName)
   const primaryCommand = baseName && commands.includes(baseName) ? baseName : firstCommand
 
   return {
@@ -87,9 +94,7 @@ export function getRunCommandParts(options: RunCommandOptions): string[] {
   // For local execute with specific command name different from package name
   // e.g., `pnpm exec tsc` for typescript package
   if (options.command && options.command !== options.packageName) {
-    const baseName = options.packageName.startsWith('@')
-      ? options.packageName.split('/')[1]
-      : options.packageName
+    const baseName = getPackageBaseName(options.packageName)
     // If command matches base package name, use the package spec
     if (options.command === baseName) {
       return [...executeParts, spec]

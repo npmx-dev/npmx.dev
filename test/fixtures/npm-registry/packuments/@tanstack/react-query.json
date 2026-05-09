@@ -1,0 +1,1797 @@
+{
+  "_id": "@tanstack/react-query",
+  "_rev": "500-1cbcccba1070ef141d18b6e0b3766795",
+  "name": "@tanstack/react-query",
+  "description": "Hooks for managing, caching and syncing asynchronous and remote data in React",
+  "dist-tags": {
+    "alpha": "5.0.0-alpha.91",
+    "beta": "5.0.0-beta.35",
+    "rc": "5.0.0-rc.16",
+    "latest": "5.90.21",
+    "previous": "4.43.0"
+  },
+  "versions": {
+    "5.90.21": {
+      "name": "@tanstack/react-query",
+      "version": "5.90.21",
+      "description": "Hooks for managing, caching and syncing asynchronous and remote data in React",
+      "author": {
+        "name": "tannerlinsley"
+      },
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/TanStack/query.git",
+        "directory": "packages/react-query"
+      },
+      "homepage": "https://tanstack.com/query",
+      "funding": {
+        "type": "github",
+        "url": "https://github.com/sponsors/tannerlinsley"
+      },
+      "type": "module",
+      "types": "build/legacy/index.d.ts",
+      "main": "build/legacy/index.cjs",
+      "module": "build/legacy/index.js",
+      "react-native": "src/index.ts",
+      "exports": {
+        ".": {
+          "@tanstack/custom-condition": "./src/index.ts",
+          "import": {
+            "types": "./build/modern/index.d.ts",
+            "default": "./build/modern/index.js"
+          },
+          "require": {
+            "types": "./build/modern/index.d.cts",
+            "default": "./build/modern/index.cjs"
+          }
+        },
+        "./package.json": "./package.json"
+      },
+      "sideEffects": false,
+      "dependencies": {
+        "@tanstack/query-core": "5.90.20"
+      },
+      "devDependencies": {
+        "@testing-library/react": "^16.1.0",
+        "@testing-library/react-render-stream": "^2.0.2",
+        "@types/react": "^19.2.7",
+        "@types/react-dom": "^19.2.3",
+        "@vitejs/plugin-react": "^4.3.4",
+        "cpy-cli": "^5.0.0",
+        "npm-run-all2": "^5.0.0",
+        "react": "^19.2.1",
+        "react-dom": "^19.2.1",
+        "react-error-boundary": "^4.1.2",
+        "@tanstack/query-persist-client-core": "5.91.19",
+        "@tanstack/query-test-utils": "0.0.0"
+      },
+      "peerDependencies": {
+        "react": "^18 || ^19"
+      },
+      "scripts": {
+        "clean": "premove ./build ./coverage ./dist-ts",
+        "compile": "tsc --build",
+        "test:eslint": "eslint --concurrency=auto ./src",
+        "test:types": "npm-run-all --serial test:types:*",
+        "test:types:ts50": "node ../../node_modules/typescript50/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts51": "node ../../node_modules/typescript51/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts52": "node ../../node_modules/typescript52/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts53": "node ../../node_modules/typescript53/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts54": "node ../../node_modules/typescript54/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts55": "node ../../node_modules/typescript55/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts56": "node ../../node_modules/typescript56/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts57": "node ../../node_modules/typescript57/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:tscurrent": "tsc --build",
+        "test:lib": "vitest",
+        "test:lib:dev": "pnpm run test:lib --watch",
+        "test:build": "publint --strict && attw --pack",
+        "build": "pnpm build:tsup && pnpm build:codemods",
+        "build:tsup": "tsup --tsconfig tsconfig.prod.json",
+        "build:codemods": "cpy ../query-codemods/* ./build/codemods"
+      },
+      "_id": "@tanstack/react-query@5.90.21",
+      "bugs": {
+        "url": "https://github.com/TanStack/query/issues"
+      },
+      "_integrity": "sha512-0Lu6y5t+tvlTJMTO7oh5NSpJfpg/5D41LlThfepTixPYkJ0sE2Jj0m0f6yYqujBwIXlId87e234+MxG3D3g7kg==",
+      "_resolved": "/tmp/b06705ea12e7b7ab956529da1dfd7fde/tanstack-react-query-5.90.21.tgz",
+      "_from": "file:tanstack-react-query-5.90.21.tgz",
+      "_nodeVersion": "24.8.0",
+      "_npmVersion": "11.6.0",
+      "dist": {
+        "integrity": "sha512-0Lu6y5t+tvlTJMTO7oh5NSpJfpg/5D41LlThfepTixPYkJ0sE2Jj0m0f6yYqujBwIXlId87e234+MxG3D3g7kg==",
+        "shasum": "e0eb40831a76510be438109435b8807ef63ab1b9",
+        "tarball": "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.90.21.tgz",
+        "fileCount": 325,
+        "unpackedSize": 734321,
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@tanstack%2freact-query@5.90.21",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIFOpsN6lPMnkiugzAVJV4jVUTtxapIXnMiI/yaxMs8I1AiEAmSR3tAKHWsL2Msp67Ov5w6497Lr4uh0kk6HB8R/W4MY="
+          }
+        ]
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:723a6f52-dd1e-45dd-997e-011d5c0b77a0"
+        }
+      },
+      "directories": {},
+      "maintainers": [
+        {
+          "name": "tannerlinsley",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "kevinvandy",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "tkdodo",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "schiller-manuel",
+          "email": "user5@example.com"
+        },
+        {
+          "name": "lachlancollins",
+          "email": "user6@example.com"
+        },
+        {
+          "name": "kylemathews",
+          "email": "user7@example.com"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages-npm-production",
+        "tmp": "tmp/react-query_5.90.21_1770801448640_0.9831099673767618"
+      },
+      "_hasShrinkwrap": false
+    },
+    "4.43.0": {
+      "name": "@tanstack/react-query",
+      "version": "4.43.0",
+      "author": {
+        "name": "tannerlinsley"
+      },
+      "license": "MIT",
+      "_id": "@tanstack/react-query@4.43.0",
+      "maintainers": [
+        {
+          "name": "tannerlinsley",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "schiller-manuel",
+          "email": "user5@example.com"
+        },
+        {
+          "name": "lachlancollins",
+          "email": "user6@example.com"
+        },
+        {
+          "name": "kylemathews",
+          "email": "user7@example.com"
+        }
+      ],
+      "homepage": "https://tanstack.com/query",
+      "bugs": {
+        "url": "https://github.com/TanStack/query/issues"
+      },
+      "dist": {
+        "shasum": "f993211864c2070ba7f764971901bd3e60c886d1",
+        "tarball": "https://registry.npmjs.org/@tanstack/react-query/-/react-query-4.43.0.tgz",
+        "fileCount": 327,
+        "integrity": "sha512-Lj8luFKHQL27oZbw5T8xdTbsfAPp2+bCtSCa2bAVvIwnvNfRP0hpB1GxfKFgCktat8lPcYBHAu8eMTXzz2sQtQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIDu5W6jKK2QCeuPB4n/cGPor5zyyZ7orZ7d79Pe5JcVFAiEAuQdHTVfXx9RVHsj3TFe73tYPgOrmpLQWZq5X38A8+rM=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@tanstack%2freact-query@4.43.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 1513928
+      },
+      "main": "build/lib/index.js",
+      "_from": "file:tanstack-react-query-4.43.0.tgz",
+      "types": "build/lib/index.d.ts",
+      "module": "build/lib/index.esm.js",
+      "exports": {
+        ".": {
+          "types": "./build/lib/index.d.ts",
+          "import": "./build/lib/index.mjs",
+          "default": "./build/lib/index.js"
+        },
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/tannerlinsley",
+        "type": "github"
+      },
+      "scripts": {
+        "clean": "rimraf ./build",
+        "test:lib": "jest --config ./jest.config.ts",
+        "test:types": "tsc",
+        "build:types": "tsc --build",
+        "test:eslint": "eslint --ext .ts,.tsx ./src",
+        "test:lib:dev": "pnpm run test:lib --watch"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:723a6f52-dd1e-45dd-997e-011d5c0b77a0"
+        }
+      },
+      "_resolved": "/tmp/701e0dbdd9e20eac14b78e6166fbe3fb/tanstack-react-query-4.43.0.tgz",
+      "_integrity": "sha512-Lj8luFKHQL27oZbw5T8xdTbsfAPp2+bCtSCa2bAVvIwnvNfRP0hpB1GxfKFgCktat8lPcYBHAu8eMTXzz2sQtQ==",
+      "repository": {
+        "url": "git+https://github.com/TanStack/query.git",
+        "type": "git",
+        "directory": "packages/react-query"
+      },
+      "_npmVersion": "11.6.0",
+      "description": "Hooks for managing, caching and syncing asynchronous and remote data in React",
+      "directories": {},
+      "sideEffects": ["./src/setBatchUpdatesFn.ts"],
+      "_nodeVersion": "24.8.0",
+      "dependencies": {
+        "@tanstack/query-core": "4.43.0",
+        "use-sync-external-store": "^1.6.0"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "react": "^19.1.1",
+        "react-17": "npm:react@^17.0.2",
+        "react-18": "npm:react@^18.2.0",
+        "react-dom": "^19.1.1",
+        "jscodeshift": "^0.13.1",
+        "@types/react": "^19.1.9",
+        "react-dom-17": "npm:react-dom@^17.0.2",
+        "react-dom-18": "npm:react-dom@^18.2.0",
+        "@types/react-dom": "^19.1.7",
+        "@types/jscodeshift": "^0.11.3",
+        "react-error-boundary": "^3.1.4",
+        "@types/use-sync-external-store": "^1.5.0"
+      },
+      "peerDependencies": {
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+        "react-native": "*"
+      },
+      "peerDependenciesMeta": {
+        "react-dom": {
+          "optional": true
+        },
+        "react-native": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/react-query_4.43.0_1769600930550_0.5751096993571483",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "5.90.20": {
+      "name": "@tanstack/react-query",
+      "version": "5.90.20",
+      "author": {
+        "name": "tannerlinsley"
+      },
+      "license": "MIT",
+      "_id": "@tanstack/react-query@5.90.20",
+      "maintainers": [
+        {
+          "name": "tannerlinsley",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "schiller-manuel",
+          "email": "user5@example.com"
+        },
+        {
+          "name": "lachlancollins",
+          "email": "user6@example.com"
+        },
+        {
+          "name": "kylemathews",
+          "email": "user7@example.com"
+        }
+      ],
+      "homepage": "https://tanstack.com/query",
+      "bugs": {
+        "url": "https://github.com/TanStack/query/issues"
+      },
+      "dist": {
+        "shasum": "42bb7018bfedc72f216b6e9b4052c919063f350b",
+        "tarball": "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.90.20.tgz",
+        "fileCount": 325,
+        "integrity": "sha512-vXBxa+qeyveVO7OA0jX1z+DeyCA4JKnThKv411jd5SORpBKgkcVnYKCiBgECvADvniBX7tobwBmg01qq9JmMJw==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCCxqI7Go9yn8Yuw2qn068QQnh5sb6+vkgJzokbpGIeAwIhALaa+G+HSLiyMC4OpXAd0QzA74tzdmTTajcu8o/VbFla",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@tanstack%2freact-query@5.90.20",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 736257
+      },
+      "main": "build/legacy/index.cjs",
+      "type": "module",
+      "_from": "file:tanstack-react-query-5.90.20.tgz",
+      "types": "build/legacy/index.d.ts",
+      "module": "build/legacy/index.js",
+      "exports": {
+        ".": {
+          "import": {
+            "types": "./build/modern/index.d.ts",
+            "default": "./build/modern/index.js"
+          },
+          "require": {
+            "types": "./build/modern/index.d.cts",
+            "default": "./build/modern/index.cjs"
+          },
+          "@tanstack/custom-condition": "./src/index.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/tannerlinsley",
+        "type": "github"
+      },
+      "scripts": {
+        "build": "pnpm build:tsup && pnpm build:codemods",
+        "clean": "premove ./build ./coverage ./dist-ts",
+        "compile": "tsc --build",
+        "test:lib": "vitest",
+        "build:tsup": "tsup --tsconfig tsconfig.prod.json",
+        "test:build": "publint --strict && attw --pack",
+        "test:types": "npm-run-all --serial test:types:*",
+        "test:eslint": "eslint --concurrency=auto ./src",
+        "test:lib:dev": "pnpm run test:lib --watch",
+        "build:codemods": "cpy ../query-codemods/* ./build/codemods",
+        "test:types:ts50": "node ../../node_modules/typescript50/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts51": "node ../../node_modules/typescript51/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts52": "node ../../node_modules/typescript52/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts53": "node ../../node_modules/typescript53/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts54": "node ../../node_modules/typescript54/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts55": "node ../../node_modules/typescript55/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts56": "node ../../node_modules/typescript56/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts57": "node ../../node_modules/typescript57/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:tscurrent": "tsc --build"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:723a6f52-dd1e-45dd-997e-011d5c0b77a0"
+        }
+      },
+      "_resolved": "/tmp/653b73e68b46afd28cba80f697e77baa/tanstack-react-query-5.90.20.tgz",
+      "_integrity": "sha512-vXBxa+qeyveVO7OA0jX1z+DeyCA4JKnThKv411jd5SORpBKgkcVnYKCiBgECvADvniBX7tobwBmg01qq9JmMJw==",
+      "repository": {
+        "url": "git+https://github.com/TanStack/query.git",
+        "type": "git",
+        "directory": "packages/react-query"
+      },
+      "_npmVersion": "11.6.0",
+      "description": "Hooks for managing, caching and syncing asynchronous and remote data in React",
+      "directories": {},
+      "sideEffects": false,
+      "_nodeVersion": "24.8.0",
+      "dependencies": {
+        "@tanstack/query-core": "5.90.20"
+      },
+      "react-native": "src/index.ts",
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "react": "^19.2.1",
+        "cpy-cli": "^5.0.0",
+        "react-dom": "^19.2.1",
+        "@types/react": "^19.2.7",
+        "npm-run-all2": "^5.0.0",
+        "@types/react-dom": "^19.2.3",
+        "@vitejs/plugin-react": "^4.3.4",
+        "react-error-boundary": "^4.1.2",
+        "@testing-library/react": "^16.1.0",
+        "@tanstack/query-test-utils": "0.0.0",
+        "@tanstack/query-persist-client-core": "5.91.19",
+        "@testing-library/react-render-stream": "^2.0.2"
+      },
+      "peerDependencies": {
+        "react": "^18 || ^19"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/react-query_5.90.20_1769174963929_0.7036860798410287",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "4.42.2": {
+      "name": "@tanstack/react-query",
+      "version": "4.42.2",
+      "author": {
+        "name": "tannerlinsley"
+      },
+      "license": "MIT",
+      "_id": "@tanstack/react-query@4.42.2",
+      "maintainers": [
+        {
+          "name": "tannerlinsley",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "schiller-manuel",
+          "email": "user5@example.com"
+        },
+        {
+          "name": "lachlancollins",
+          "email": "user6@example.com"
+        },
+        {
+          "name": "kylemathews",
+          "email": "user7@example.com"
+        }
+      ],
+      "homepage": "https://tanstack.com/query",
+      "bugs": {
+        "url": "https://github.com/TanStack/query/issues"
+      },
+      "dist": {
+        "shasum": "7d0beaf8bad710a9309730b51fb49985f08d0026",
+        "tarball": "https://registry.npmjs.org/@tanstack/react-query/-/react-query-4.42.2.tgz",
+        "fileCount": 303,
+        "integrity": "sha512-KFqT8wb/d0bHbzvJEuD/vEU8lUSC5cZDurOMtAR3G+mUABqVWvVswQ/norjFXedjQe+nfQQ9CWrOabWcRP3TKA==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDiQXRGBDgz6GPvdV91kaa9PLXBSBxfMp8UqBWdZGXmbgIhAIwn0SZgnu3LpV2UyTXSBvgMphZf3+iH15y88ZA3GiuO",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@tanstack%2freact-query@4.42.2",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 1495040
+      },
+      "main": "build/lib/index.js",
+      "_from": "file:tanstack-react-query-4.42.2.tgz",
+      "types": "build/lib/index.d.ts",
+      "module": "build/lib/index.esm.js",
+      "exports": {
+        ".": {
+          "types": "./build/lib/index.d.ts",
+          "import": "./build/lib/index.mjs",
+          "default": "./build/lib/index.js"
+        },
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/tannerlinsley",
+        "type": "github"
+      },
+      "scripts": {
+        "clean": "rimraf ./build",
+        "test:lib": "jest --config ./jest.config.ts",
+        "test:types": "tsc",
+        "build:types": "tsc --build",
+        "test:eslint": "eslint --ext .ts,.tsx ./src",
+        "test:lib:dev": "pnpm run test:lib --watch"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:723a6f52-dd1e-45dd-997e-011d5c0b77a0"
+        }
+      },
+      "_resolved": "/tmp/bc40c9f4f5b283d8333ec6c7855e654e/tanstack-react-query-4.42.2.tgz",
+      "_integrity": "sha512-KFqT8wb/d0bHbzvJEuD/vEU8lUSC5cZDurOMtAR3G+mUABqVWvVswQ/norjFXedjQe+nfQQ9CWrOabWcRP3TKA==",
+      "repository": {
+        "url": "git+https://github.com/TanStack/query.git",
+        "type": "git",
+        "directory": "packages/react-query"
+      },
+      "_npmVersion": "11.6.0",
+      "description": "Hooks for managing, caching and syncing asynchronous and remote data in React",
+      "directories": {},
+      "sideEffects": ["./src/setBatchUpdatesFn.ts"],
+      "_nodeVersion": "24.8.0",
+      "dependencies": {
+        "@tanstack/query-core": "4.41.1",
+        "use-sync-external-store": "^1.6.0"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "react": "^19.1.1",
+        "react-17": "npm:react@^17.0.2",
+        "react-18": "npm:react@^18.2.0",
+        "react-dom": "^19.1.1",
+        "jscodeshift": "^0.13.1",
+        "@types/react": "^19.1.9",
+        "react-dom-17": "npm:react-dom@^17.0.2",
+        "react-dom-18": "npm:react-dom@^18.2.0",
+        "@types/react-dom": "^19.1.7",
+        "@types/jscodeshift": "^0.11.3",
+        "react-error-boundary": "^3.1.4",
+        "@types/use-sync-external-store": "^1.5.0"
+      },
+      "peerDependencies": {
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+        "react-native": "*"
+      },
+      "peerDependenciesMeta": {
+        "react-dom": {
+          "optional": true
+        },
+        "react-native": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/react-query_4.42.2_1768806108412_0.44720981657277736",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "4.42.1": {
+      "name": "@tanstack/react-query",
+      "version": "4.42.1",
+      "author": {
+        "name": "tannerlinsley"
+      },
+      "license": "MIT",
+      "_id": "@tanstack/react-query@4.42.1",
+      "maintainers": [
+        {
+          "name": "tannerlinsley",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "schiller-manuel",
+          "email": "user5@example.com"
+        },
+        {
+          "name": "lachlancollins",
+          "email": "user6@example.com"
+        },
+        {
+          "name": "kylemathews",
+          "email": "user7@example.com"
+        }
+      ],
+      "homepage": "https://tanstack.com/query",
+      "bugs": {
+        "url": "https://github.com/TanStack/query/issues"
+      },
+      "dist": {
+        "shasum": "7dec7196a19a045a70b97880cd85b2f49ebdc167",
+        "tarball": "https://registry.npmjs.org/@tanstack/react-query/-/react-query-4.42.1.tgz",
+        "fileCount": 303,
+        "integrity": "sha512-DRclkqyXeJ0VMTv6KgJ8cf35hIKzvjmH36emzCfVcfjZhPD9yvPvLCb13n22TLGgbVnanhL/efDufRhGDfzqDg==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDJiQGYY1hRFTwbEOP8tzd036AteY0kJR5ADEW8PbHtGgIgH2LaKHLY0Mx9bj4umW5emMkdgQcuePiJE0hvsTQsPQY=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@tanstack%2freact-query@4.42.1",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 1506121
+      },
+      "main": "build/lib/index.js",
+      "_from": "file:tanstack-react-query-4.42.1.tgz",
+      "types": "build/lib/index.d.ts",
+      "module": "build/lib/index.esm.js",
+      "exports": {
+        ".": {
+          "types": "./build/lib/index.d.ts",
+          "import": "./build/lib/index.mjs",
+          "default": "./build/lib/index.js"
+        },
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/tannerlinsley",
+        "type": "github"
+      },
+      "scripts": {
+        "clean": "rimraf ./build",
+        "test:lib": "jest --config ./jest.config.ts",
+        "test:types": "tsc",
+        "build:types": "tsc --build",
+        "test:eslint": "eslint --ext .ts,.tsx ./src",
+        "test:lib:dev": "pnpm run test:lib --watch"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:723a6f52-dd1e-45dd-997e-011d5c0b77a0"
+        }
+      },
+      "_resolved": "/tmp/579558a028052fcb5d387da08bc26310/tanstack-react-query-4.42.1.tgz",
+      "_integrity": "sha512-DRclkqyXeJ0VMTv6KgJ8cf35hIKzvjmH36emzCfVcfjZhPD9yvPvLCb13n22TLGgbVnanhL/efDufRhGDfzqDg==",
+      "repository": {
+        "url": "git+https://github.com/TanStack/query.git",
+        "type": "git",
+        "directory": "packages/react-query"
+      },
+      "_npmVersion": "11.6.0",
+      "description": "Hooks for managing, caching and syncing asynchronous and remote data in React",
+      "directories": {},
+      "sideEffects": ["./src/setBatchUpdatesFn.ts"],
+      "_nodeVersion": "24.8.0",
+      "dependencies": {
+        "@tanstack/query-core": "4.41.1",
+        "use-sync-external-store": "^1.2.0"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "react": "^19.1.1",
+        "react-17": "npm:react@^17.0.2",
+        "react-18": "npm:react@^18.2.0",
+        "react-dom": "^19.1.1",
+        "jscodeshift": "^0.13.1",
+        "@types/react": "^19.1.9",
+        "react-dom-17": "npm:react-dom@^17.0.2",
+        "react-dom-18": "npm:react-dom@^18.2.0",
+        "@types/react-dom": "^19.1.7",
+        "@types/jscodeshift": "^0.11.3",
+        "react-error-boundary": "^3.1.4",
+        "@types/use-sync-external-store": "^0.0.3"
+      },
+      "peerDependencies": {
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+        "react-native": "*"
+      },
+      "peerDependenciesMeta": {
+        "react-dom": {
+          "optional": true
+        },
+        "react-native": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/react-query_4.42.1_1768703382208_0.19662272570905803",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "5.90.19": {
+      "name": "@tanstack/react-query",
+      "version": "5.90.19",
+      "author": {
+        "name": "tannerlinsley"
+      },
+      "license": "MIT",
+      "_id": "@tanstack/react-query@5.90.19",
+      "maintainers": [
+        {
+          "name": "tannerlinsley",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "schiller-manuel",
+          "email": "user5@example.com"
+        },
+        {
+          "name": "lachlancollins",
+          "email": "user6@example.com"
+        },
+        {
+          "name": "kylemathews",
+          "email": "user7@example.com"
+        }
+      ],
+      "homepage": "https://tanstack.com/query",
+      "bugs": {
+        "url": "https://github.com/TanStack/query/issues"
+      },
+      "dist": {
+        "shasum": "461a068661610ee958b42958ec80a8b6dcd7de33",
+        "tarball": "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.90.19.tgz",
+        "fileCount": 325,
+        "integrity": "sha512-qTZRZ4QyTzQc+M0IzrbKHxSeISUmRB3RPGmao5bT+sI6ayxSRhn0FXEnT5Hg3as8SBFcRosrXXRFB+yAcxVxJQ==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDL2Aqk5zkFuf4n5kXwttw/Wxe0Gdfg1hmp7DoBToS5aAIhAJRD/OCM+MAUumOgYolQpDt4s6G69OgwqRoBODC/Uy/N",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@tanstack%2freact-query@5.90.19",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 736054
+      },
+      "main": "build/legacy/index.cjs",
+      "type": "module",
+      "_from": "file:tanstack-react-query-5.90.19.tgz",
+      "types": "build/legacy/index.d.ts",
+      "module": "build/legacy/index.js",
+      "exports": {
+        ".": {
+          "import": {
+            "types": "./build/modern/index.d.ts",
+            "default": "./build/modern/index.js"
+          },
+          "require": {
+            "types": "./build/modern/index.d.cts",
+            "default": "./build/modern/index.cjs"
+          },
+          "@tanstack/custom-condition": "./src/index.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/tannerlinsley",
+        "type": "github"
+      },
+      "scripts": {
+        "build": "pnpm build:tsup && pnpm build:codemods",
+        "clean": "premove ./build ./coverage ./dist-ts",
+        "compile": "tsc --build",
+        "test:lib": "vitest",
+        "build:tsup": "tsup --tsconfig tsconfig.prod.json",
+        "test:build": "publint --strict && attw --pack",
+        "test:types": "npm-run-all --serial test:types:*",
+        "test:eslint": "eslint --concurrency=auto ./src",
+        "test:lib:dev": "pnpm run test:lib --watch",
+        "build:codemods": "cpy ../query-codemods/* ./build/codemods",
+        "test:types:ts50": "node ../../node_modules/typescript50/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts51": "node ../../node_modules/typescript51/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts52": "node ../../node_modules/typescript52/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts53": "node ../../node_modules/typescript53/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts54": "node ../../node_modules/typescript54/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts55": "node ../../node_modules/typescript55/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts56": "node ../../node_modules/typescript56/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts57": "node ../../node_modules/typescript57/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:tscurrent": "tsc --build"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:723a6f52-dd1e-45dd-997e-011d5c0b77a0"
+        }
+      },
+      "_resolved": "/tmp/7cf1537c4d37ff29752f2d898ec4d837/tanstack-react-query-5.90.19.tgz",
+      "_integrity": "sha512-qTZRZ4QyTzQc+M0IzrbKHxSeISUmRB3RPGmao5bT+sI6ayxSRhn0FXEnT5Hg3as8SBFcRosrXXRFB+yAcxVxJQ==",
+      "repository": {
+        "url": "git+https://github.com/TanStack/query.git",
+        "type": "git",
+        "directory": "packages/react-query"
+      },
+      "_npmVersion": "11.6.0",
+      "description": "Hooks for managing, caching and syncing asynchronous and remote data in React",
+      "directories": {},
+      "sideEffects": false,
+      "_nodeVersion": "24.8.0",
+      "dependencies": {
+        "@tanstack/query-core": "5.90.19"
+      },
+      "react-native": "src/index.ts",
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "react": "^19.2.1",
+        "cpy-cli": "^5.0.0",
+        "react-dom": "^19.2.1",
+        "@types/react": "^19.2.7",
+        "npm-run-all2": "^5.0.0",
+        "@types/react-dom": "^19.2.3",
+        "@vitejs/plugin-react": "^4.3.4",
+        "react-error-boundary": "^4.1.2",
+        "@testing-library/react": "^16.1.0",
+        "@tanstack/query-test-utils": "0.0.0",
+        "@tanstack/query-persist-client-core": "5.91.18",
+        "@testing-library/react-render-stream": "^2.0.0"
+      },
+      "peerDependencies": {
+        "react": "^18 || ^19"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/react-query_5.90.19_1768678173151_0.49986932929344774",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "5.90.18": {
+      "name": "@tanstack/react-query",
+      "version": "5.90.18",
+      "author": {
+        "name": "tannerlinsley"
+      },
+      "license": "MIT",
+      "_id": "@tanstack/react-query@5.90.18",
+      "maintainers": [
+        {
+          "name": "tannerlinsley",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "schiller-manuel",
+          "email": "user5@example.com"
+        },
+        {
+          "name": "lachlancollins",
+          "email": "user6@example.com"
+        },
+        {
+          "name": "kylemathews",
+          "email": "user7@example.com"
+        }
+      ],
+      "homepage": "https://tanstack.com/query",
+      "bugs": {
+        "url": "https://github.com/TanStack/query/issues"
+      },
+      "dist": {
+        "shasum": "68ef1235ad82850d318c60136209b06a0cc16186",
+        "tarball": "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.90.18.tgz",
+        "fileCount": 325,
+        "integrity": "sha512-KqNZX0C5IFz4639zR1ilnQ288tQdJrMNLtzmlzyJ14xauBkhtLEy3mPU/V4KiHsr41eL1ILZbDP36TB12lYfCQ==",
+        "signatures": [
+          {
+            "sig": "MEQCIAEE66PmXG1QrIgC/+bFjNdwYlgKZyfim90c9qYwSZ5tAiBZOj9uQ7Bdi8R1iFOzfbTfZS02pE+zYxkUcWGXNwpowQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@tanstack%2freact-query@5.90.18",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 736054
+      },
+      "main": "build/legacy/index.cjs",
+      "type": "module",
+      "_from": "file:tanstack-react-query-5.90.18.tgz",
+      "types": "build/legacy/index.d.ts",
+      "module": "build/legacy/index.js",
+      "exports": {
+        ".": {
+          "import": {
+            "types": "./build/modern/index.d.ts",
+            "default": "./build/modern/index.js"
+          },
+          "require": {
+            "types": "./build/modern/index.d.cts",
+            "default": "./build/modern/index.cjs"
+          },
+          "@tanstack/custom-condition": "./src/index.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/tannerlinsley",
+        "type": "github"
+      },
+      "scripts": {
+        "build": "pnpm build:tsup && pnpm build:codemods",
+        "clean": "premove ./build ./coverage ./dist-ts",
+        "compile": "tsc --build",
+        "test:lib": "vitest",
+        "build:tsup": "tsup --tsconfig tsconfig.prod.json",
+        "test:build": "publint --strict && attw --pack",
+        "test:types": "npm-run-all --serial test:types:*",
+        "test:eslint": "eslint --concurrency=auto ./src",
+        "test:lib:dev": "pnpm run test:lib --watch",
+        "build:codemods": "cpy ../query-codemods/* ./build/codemods",
+        "test:types:ts50": "node ../../node_modules/typescript50/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts51": "node ../../node_modules/typescript51/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts52": "node ../../node_modules/typescript52/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts53": "node ../../node_modules/typescript53/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts54": "node ../../node_modules/typescript54/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts55": "node ../../node_modules/typescript55/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts56": "node ../../node_modules/typescript56/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts57": "node ../../node_modules/typescript57/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:tscurrent": "tsc --build"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:723a6f52-dd1e-45dd-997e-011d5c0b77a0"
+        }
+      },
+      "_resolved": "/tmp/613b3786a414584fdb95bead2c63dd32/tanstack-react-query-5.90.18.tgz",
+      "_integrity": "sha512-KqNZX0C5IFz4639zR1ilnQ288tQdJrMNLtzmlzyJ14xauBkhtLEy3mPU/V4KiHsr41eL1ILZbDP36TB12lYfCQ==",
+      "repository": {
+        "url": "git+https://github.com/TanStack/query.git",
+        "type": "git",
+        "directory": "packages/react-query"
+      },
+      "_npmVersion": "11.6.0",
+      "description": "Hooks for managing, caching and syncing asynchronous and remote data in React",
+      "directories": {},
+      "sideEffects": false,
+      "_nodeVersion": "24.8.0",
+      "dependencies": {
+        "@tanstack/query-core": "5.90.18"
+      },
+      "react-native": "src/index.ts",
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "react": "^19.2.1",
+        "cpy-cli": "^5.0.0",
+        "react-dom": "^19.2.1",
+        "@types/react": "^19.2.7",
+        "npm-run-all2": "^5.0.0",
+        "@types/react-dom": "^19.2.3",
+        "@vitejs/plugin-react": "^4.3.4",
+        "react-error-boundary": "^4.1.2",
+        "@testing-library/react": "^16.1.0",
+        "@tanstack/query-test-utils": "0.0.0",
+        "@tanstack/query-persist-client-core": "5.91.17",
+        "@testing-library/react-render-stream": "^2.0.0"
+      },
+      "peerDependencies": {
+        "react": "^18 || ^19"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/react-query_5.90.18_1768561362825_0.27479102341983563",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "5.90.17": {
+      "name": "@tanstack/react-query",
+      "version": "5.90.17",
+      "author": {
+        "name": "tannerlinsley"
+      },
+      "license": "MIT",
+      "_id": "@tanstack/react-query@5.90.17",
+      "maintainers": [
+        {
+          "name": "tannerlinsley",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "schiller-manuel",
+          "email": "user5@example.com"
+        },
+        {
+          "name": "lachlancollins",
+          "email": "user6@example.com"
+        },
+        {
+          "name": "kylemathews",
+          "email": "user7@example.com"
+        }
+      ],
+      "homepage": "https://tanstack.com/query",
+      "bugs": {
+        "url": "https://github.com/TanStack/query/issues"
+      },
+      "dist": {
+        "shasum": "509cc41ee1700b852866b477ee086fc3a4ed1e27",
+        "tarball": "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.90.17.tgz",
+        "fileCount": 325,
+        "integrity": "sha512-PGc2u9KLwohDUSchjW9MZqeDQJfJDON7y4W7REdNBgiFKxQy+Pf7eGjiFWEj5xPqKzAeHYdAb62IWI1a9UJyGQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIEm+6AwG4Ogw0jX1cQlt5FWaRX8ub5FMbrHdugTt7nuTAiEA1CS0eN4w1xJ52ilGpcgssYMSXNGuGJeshdpYaFb4N9Q=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@tanstack%2freact-query@5.90.17",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 736054
+      },
+      "main": "build/legacy/index.cjs",
+      "type": "module",
+      "_from": "file:tanstack-react-query-5.90.17.tgz",
+      "types": "build/legacy/index.d.ts",
+      "module": "build/legacy/index.js",
+      "exports": {
+        ".": {
+          "import": {
+            "types": "./build/modern/index.d.ts",
+            "default": "./build/modern/index.js"
+          },
+          "require": {
+            "types": "./build/modern/index.d.cts",
+            "default": "./build/modern/index.cjs"
+          },
+          "@tanstack/custom-condition": "./src/index.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/tannerlinsley",
+        "type": "github"
+      },
+      "scripts": {
+        "build": "pnpm build:tsup && pnpm build:codemods",
+        "clean": "premove ./build ./coverage ./dist-ts",
+        "compile": "tsc --build",
+        "test:lib": "vitest",
+        "build:tsup": "tsup --tsconfig tsconfig.prod.json",
+        "test:build": "publint --strict && attw --pack",
+        "test:types": "npm-run-all --serial test:types:*",
+        "test:eslint": "eslint --concurrency=auto ./src",
+        "test:lib:dev": "pnpm run test:lib --watch",
+        "build:codemods": "cpy ../query-codemods/* ./build/codemods",
+        "test:types:ts50": "node ../../node_modules/typescript50/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts51": "node ../../node_modules/typescript51/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts52": "node ../../node_modules/typescript52/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts53": "node ../../node_modules/typescript53/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts54": "node ../../node_modules/typescript54/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts55": "node ../../node_modules/typescript55/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts56": "node ../../node_modules/typescript56/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts57": "node ../../node_modules/typescript57/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:tscurrent": "tsc --build"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:723a6f52-dd1e-45dd-997e-011d5c0b77a0"
+        }
+      },
+      "_resolved": "/tmp/9da3f9cf93aa4cfdb75a17c6288c1da8/tanstack-react-query-5.90.17.tgz",
+      "_integrity": "sha512-PGc2u9KLwohDUSchjW9MZqeDQJfJDON7y4W7REdNBgiFKxQy+Pf7eGjiFWEj5xPqKzAeHYdAb62IWI1a9UJyGQ==",
+      "repository": {
+        "url": "git+https://github.com/TanStack/query.git",
+        "type": "git",
+        "directory": "packages/react-query"
+      },
+      "_npmVersion": "11.6.0",
+      "description": "Hooks for managing, caching and syncing asynchronous and remote data in React",
+      "directories": {},
+      "sideEffects": false,
+      "_nodeVersion": "24.8.0",
+      "dependencies": {
+        "@tanstack/query-core": "5.90.17"
+      },
+      "react-native": "src/index.ts",
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "react": "^19.2.1",
+        "cpy-cli": "^5.0.0",
+        "react-dom": "^19.2.1",
+        "@types/react": "^19.2.7",
+        "npm-run-all2": "^5.0.0",
+        "@types/react-dom": "^19.2.3",
+        "@vitejs/plugin-react": "^4.3.4",
+        "react-error-boundary": "^4.1.2",
+        "@testing-library/react": "^16.1.0",
+        "@tanstack/query-test-utils": "0.0.0",
+        "@tanstack/query-persist-client-core": "5.91.16",
+        "@testing-library/react-render-stream": "^2.0.0"
+      },
+      "peerDependencies": {
+        "react": "^18 || ^19"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/react-query_5.90.17_1768371812200_0.392965803100352",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "5.90.16": {
+      "name": "@tanstack/react-query",
+      "version": "5.90.16",
+      "author": {
+        "name": "tannerlinsley"
+      },
+      "license": "MIT",
+      "_id": "@tanstack/react-query@5.90.16",
+      "maintainers": [
+        {
+          "name": "tannerlinsley",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "schiller-manuel",
+          "email": "user5@example.com"
+        },
+        {
+          "name": "lachlancollins",
+          "email": "user6@example.com"
+        },
+        {
+          "name": "kylemathews",
+          "email": "user7@example.com"
+        }
+      ],
+      "homepage": "https://tanstack.com/query",
+      "bugs": {
+        "url": "https://github.com/TanStack/query/issues"
+      },
+      "dist": {
+        "shasum": "76955d7027b5bff3d7f51163db7ea1c0bd430cb5",
+        "tarball": "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.90.16.tgz",
+        "fileCount": 325,
+        "integrity": "sha512-bpMGOmV4OPmif7TNMteU/Ehf/hoC0Kf98PDc0F4BZkFrEapRMEqI/V6YS0lyzwSV6PQpY1y4xxArUIfBW5LVxQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCDy3BYg41d7H5BJp6UQp9IQu1ctfN+p0PqnY1YpygW+QIgdRRKrSjTqTqjksU4RVF8GsC5IWCAasjPU30WGn/MEfY=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@tanstack%2freact-query@5.90.16",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 736054
+      },
+      "main": "build/legacy/index.cjs",
+      "type": "module",
+      "_from": "file:tanstack-react-query-5.90.16.tgz",
+      "types": "build/legacy/index.d.ts",
+      "module": "build/legacy/index.js",
+      "exports": {
+        ".": {
+          "import": {
+            "types": "./build/modern/index.d.ts",
+            "default": "./build/modern/index.js"
+          },
+          "require": {
+            "types": "./build/modern/index.d.cts",
+            "default": "./build/modern/index.cjs"
+          },
+          "@tanstack/custom-condition": "./src/index.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/tannerlinsley",
+        "type": "github"
+      },
+      "scripts": {
+        "build": "pnpm build:tsup && pnpm build:codemods",
+        "clean": "premove ./build ./coverage ./dist-ts",
+        "compile": "tsc --build",
+        "test:lib": "vitest",
+        "build:tsup": "tsup --tsconfig tsconfig.prod.json",
+        "test:build": "publint --strict && attw --pack",
+        "test:types": "npm-run-all --serial test:types:*",
+        "test:eslint": "eslint --concurrency=auto ./src",
+        "test:lib:dev": "pnpm run test:lib --watch",
+        "build:codemods": "cpy ../query-codemods/* ./build/codemods",
+        "test:types:ts50": "node ../../node_modules/typescript50/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts51": "node ../../node_modules/typescript51/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts52": "node ../../node_modules/typescript52/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts53": "node ../../node_modules/typescript53/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts54": "node ../../node_modules/typescript54/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts55": "node ../../node_modules/typescript55/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts56": "node ../../node_modules/typescript56/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts57": "node ../../node_modules/typescript57/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:tscurrent": "tsc --build"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:723a6f52-dd1e-45dd-997e-011d5c0b77a0"
+        }
+      },
+      "_resolved": "/tmp/a9f54aa3b16fb7a22946df8757fcbda0/tanstack-react-query-5.90.16.tgz",
+      "_integrity": "sha512-bpMGOmV4OPmif7TNMteU/Ehf/hoC0Kf98PDc0F4BZkFrEapRMEqI/V6YS0lyzwSV6PQpY1y4xxArUIfBW5LVxQ==",
+      "repository": {
+        "url": "git+https://github.com/TanStack/query.git",
+        "type": "git",
+        "directory": "packages/react-query"
+      },
+      "_npmVersion": "11.6.0",
+      "description": "Hooks for managing, caching and syncing asynchronous and remote data in React",
+      "directories": {},
+      "sideEffects": false,
+      "_nodeVersion": "24.8.0",
+      "dependencies": {
+        "@tanstack/query-core": "5.90.16"
+      },
+      "react-native": "src/index.ts",
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "react": "^19.2.1",
+        "cpy-cli": "^5.0.0",
+        "react-dom": "^19.2.1",
+        "@types/react": "^19.2.7",
+        "npm-run-all2": "^5.0.0",
+        "@types/react-dom": "^19.2.3",
+        "@vitejs/plugin-react": "^4.3.4",
+        "react-error-boundary": "^4.1.2",
+        "@testing-library/react": "^16.1.0",
+        "@tanstack/query-test-utils": "0.0.0",
+        "@tanstack/query-persist-client-core": "5.91.15",
+        "@testing-library/react-render-stream": "^2.0.0"
+      },
+      "peerDependencies": {
+        "react": "^18 || ^19"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/react-query_5.90.16_1767106297917_0.04428341572956751",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "5.90.15": {
+      "name": "@tanstack/react-query",
+      "version": "5.90.15",
+      "author": {
+        "name": "tannerlinsley"
+      },
+      "license": "MIT",
+      "_id": "@tanstack/react-query@5.90.15",
+      "maintainers": [
+        {
+          "name": "tannerlinsley",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "schiller-manuel",
+          "email": "user5@example.com"
+        },
+        {
+          "name": "lachlancollins",
+          "email": "user6@example.com"
+        },
+        {
+          "name": "kylemathews",
+          "email": "user7@example.com"
+        }
+      ],
+      "homepage": "https://tanstack.com/query",
+      "bugs": {
+        "url": "https://github.com/TanStack/query/issues"
+      },
+      "dist": {
+        "shasum": "350f7d8ff93a10eb92c5a23b063e577f7637fefd",
+        "tarball": "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.90.15.tgz",
+        "fileCount": 325,
+        "integrity": "sha512-uQvnDDcTOgJouNtAyrgRej+Azf0U5WDov3PXmHFUBc+t1INnAYhIlpZtCGNBLwCN41b43yO7dPNZu8xWkUFBwQ==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDc2JcEVRMM+d8bPsAfklaA4GBuctpx71ywiIl65wfBWQIhAOe90mlWsCq/F9rNV2h0cHd3MbIHAYqzX1gp2+trzM8W",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@tanstack%2freact-query@5.90.15",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 732565
+      },
+      "main": "build/legacy/index.cjs",
+      "type": "module",
+      "_from": "file:tanstack-react-query-5.90.15.tgz",
+      "types": "build/legacy/index.d.ts",
+      "module": "build/legacy/index.js",
+      "exports": {
+        ".": {
+          "import": {
+            "types": "./build/modern/index.d.ts",
+            "default": "./build/modern/index.js"
+          },
+          "require": {
+            "types": "./build/modern/index.d.cts",
+            "default": "./build/modern/index.cjs"
+          },
+          "@tanstack/custom-condition": "./src/index.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/tannerlinsley",
+        "type": "github"
+      },
+      "scripts": {
+        "build": "pnpm build:tsup && pnpm build:codemods",
+        "clean": "premove ./build ./coverage ./dist-ts",
+        "compile": "tsc --build",
+        "test:lib": "vitest",
+        "build:tsup": "tsup --tsconfig tsconfig.prod.json",
+        "test:build": "publint --strict && attw --pack",
+        "test:types": "npm-run-all --serial test:types:*",
+        "test:eslint": "eslint --concurrency=auto ./src",
+        "test:lib:dev": "pnpm run test:lib --watch",
+        "build:codemods": "cpy ../query-codemods/* ./build/codemods",
+        "test:types:ts50": "node ../../node_modules/typescript50/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts51": "node ../../node_modules/typescript51/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts52": "node ../../node_modules/typescript52/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts53": "node ../../node_modules/typescript53/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts54": "node ../../node_modules/typescript54/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts55": "node ../../node_modules/typescript55/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts56": "node ../../node_modules/typescript56/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:ts57": "node ../../node_modules/typescript57/lib/tsc.js --build tsconfig.legacy.json",
+        "test:types:tscurrent": "tsc --build"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:723a6f52-dd1e-45dd-997e-011d5c0b77a0"
+        }
+      },
+      "_resolved": "/tmp/1e759d26267c22a8e8e41f7a5682b5f8/tanstack-react-query-5.90.15.tgz",
+      "_integrity": "sha512-uQvnDDcTOgJouNtAyrgRej+Azf0U5WDov3PXmHFUBc+t1INnAYhIlpZtCGNBLwCN41b43yO7dPNZu8xWkUFBwQ==",
+      "repository": {
+        "url": "git+https://github.com/TanStack/query.git",
+        "type": "git",
+        "directory": "packages/react-query"
+      },
+      "_npmVersion": "11.6.0",
+      "description": "Hooks for managing, caching and syncing asynchronous and remote data in React",
+      "directories": {},
+      "sideEffects": false,
+      "_nodeVersion": "24.8.0",
+      "dependencies": {
+        "@tanstack/query-core": "5.90.15"
+      },
+      "react-native": "src/index.ts",
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "react": "^19.2.1",
+        "cpy-cli": "^5.0.0",
+        "react-dom": "^19.2.1",
+        "@types/react": "^19.2.7",
+        "npm-run-all2": "^5.0.0",
+        "@types/react-dom": "^19.2.3",
+        "@vitejs/plugin-react": "^4.3.4",
+        "react-error-boundary": "^4.1.2",
+        "@testing-library/react": "^16.1.0",
+        "@tanstack/query-test-utils": "0.0.0",
+        "@tanstack/query-persist-client-core": "5.91.14",
+        "@testing-library/react-render-stream": "^2.0.0"
+      },
+      "peerDependencies": {
+        "react": "^18 || ^19"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/react-query_5.90.15_1767023948844_0.015732589859847046",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "5.0.0-alpha.91": {
+      "name": "@tanstack/react-query",
+      "version": "5.0.0-alpha.91",
+      "author": {
+        "name": "tannerlinsley"
+      },
+      "license": "MIT",
+      "_id": "@tanstack/react-query@5.0.0-alpha.91",
+      "maintainers": [
+        {
+          "name": "nksaraf",
+          "email": "user8@example.com"
+        },
+        {
+          "name": "tannerlinsley",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://tanstack.com/query",
+      "bugs": {
+        "url": "https://github.com/tanstack/query/issues"
+      },
+      "dist": {
+        "shasum": "7369f6ca9b76d118e7bf33bc32cf1b0c6e24e8fa",
+        "tarball": "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.0.0-alpha.91.tgz",
+        "fileCount": 292,
+        "integrity": "sha512-WkkS7gJCFlYLH8nU1Bf0W41KqJw4DC40hk3k+VEQQa+SEz/hsJ6ZfxAPMdiS4MCX5iKkYRqYjmMw0qPM5JxsTw==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDMN7Eqnb+XNdVmdFRhmNXG5iIFcJWc9TjTbS4kBjjPAwIhAL9l494G6sAeA+6xpDYhbwvie20uk+SCTmKWiVQK5O2B",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 862209
+      },
+      "main": "build/legacy/index.cjs",
+      "type": "module",
+      "_from": "file:tanstack-react-query-5.0.0-alpha.91.tgz",
+      "types": "build/legacy/index.d.ts",
+      "module": "build/legacy/index.js",
+      "exports": {
+        ".": {
+          "import": {
+            "types": "./build/modern/index.d.ts",
+            "default": "./build/modern/index.js"
+          },
+          "require": {
+            "types": "./build/modern/index.d.cts",
+            "default": "./build/modern/index.cjs"
+          }
+        },
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/tannerlinsley",
+        "type": "github"
+      },
+      "scripts": {
+        "build": "pnpm build:tsup && pnpm build:codemods",
+        "clean": "rimraf ./build && rimraf ./coverage",
+        "test:lib": "vitest run --coverage",
+        "build:tsup": "tsup",
+        "test:build": "publint --strict && attw --pack",
+        "test:types": "tsc",
+        "test:eslint": "eslint --ext .ts,.tsx ./src",
+        "test:lib:dev": "pnpm run test:lib --watch",
+        "build:codemods": "cpy ../codemods/src/**/* ./build/codemods"
+      },
+      "_npmUser": {
+        "name": "tannerlinsley",
+        "email": "user2@example.com"
+      },
+      "_resolved": "/tmp/2c01889357902a4e4afc4f8ffef426cd/tanstack-react-query-5.0.0-alpha.91.tgz",
+      "_integrity": "sha512-WkkS7gJCFlYLH8nU1Bf0W41KqJw4DC40hk3k+VEQQa+SEz/hsJ6ZfxAPMdiS4MCX5iKkYRqYjmMw0qPM5JxsTw==",
+      "repository": {
+        "url": "git+https://github.com/tanstack/query.git",
+        "type": "git"
+      },
+      "_npmVersion": "9.5.1",
+      "description": "Hooks for managing, caching and syncing asynchronous and remote data in React",
+      "directories": {},
+      "sideEffects": false,
+      "_nodeVersion": "18.16.0",
+      "dependencies": {
+        "client-only": "0.0.1",
+        "@tanstack/query-core": "5.0.0-alpha.91"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "@types/react": "^18.2.4",
+        "@types/react-dom": "^18.2.4",
+        "react-error-boundary": "^3.1.4"
+      },
+      "peerDependencies": {
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0",
+        "react-native": "*"
+      },
+      "peerDependenciesMeta": {
+        "react-dom": {
+          "optional": true
+        },
+        "react-native": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/react-query_5.0.0-alpha.91_1690189627728_0.9203557568874883",
+        "host": "s3://npm-registry-packages"
+      }
+    },
+    "5.0.0-beta.35": {
+      "name": "@tanstack/react-query",
+      "version": "5.0.0-beta.35",
+      "author": {
+        "name": "tannerlinsley"
+      },
+      "license": "MIT",
+      "_id": "@tanstack/react-query@5.0.0-beta.35",
+      "maintainers": [
+        {
+          "name": "nksaraf",
+          "email": "user8@example.com"
+        },
+        {
+          "name": "tannerlinsley",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://tanstack.com/query",
+      "bugs": {
+        "url": "https://github.com/TanStack/query/issues"
+      },
+      "dist": {
+        "shasum": "a07b5e6d62ceb89a05ce8fb092ac259548ea4a46",
+        "tarball": "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.0.0-beta.35.tgz",
+        "fileCount": 319,
+        "integrity": "sha512-9hxP/DZbGucYFaHx6Njhkrbx32lNRk4QqqkGzyQ4IPaYfJTELE7urc9LBYRwrof211cj0W76IxmpjDwZ5ljZpQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIHKQo1SNiWSRUX3Us//avR3uHZ2RGFbLDPuZGHK8XbyZAiEAzu3ChNTtwCdg/8eWm0i8+5wUNunfg8qwLdCCwO6bTCs=",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 994414
+      },
+      "main": "build/legacy/index.cjs",
+      "type": "module",
+      "_from": "file:tanstack-react-query-5.0.0-beta.35.tgz",
+      "types": "build/legacy/index.d.ts",
+      "module": "build/legacy/index.js",
+      "exports": {
+        ".": {
+          "import": {
+            "types": "./build/modern/index.d.ts",
+            "default": "./build/modern/index.js"
+          },
+          "require": {
+            "types": "./build/modern/index.d.cts",
+            "default": "./build/modern/index.cjs"
+          }
+        },
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/tannerlinsley",
+        "type": "github"
+      },
+      "scripts": {
+        "build": "pnpm build:tsup && pnpm build:codemods",
+        "clean": "rimraf ./build && rimraf ./coverage",
+        "test:lib": "vitest run --coverage",
+        "build:tsup": "tsup",
+        "test:build": "publint --strict",
+        "test:types": "tsc",
+        "test:eslint": "eslint --ext .ts,.tsx ./src",
+        "test:lib:dev": "pnpm run test:lib --watch",
+        "build:codemods": "cpy ../codemods/* ./build/codemods"
+      },
+      "_npmUser": {
+        "name": "tannerlinsley",
+        "email": "user2@example.com"
+      },
+      "_resolved": "/tmp/22582a2c8dbe3fd63394d8f5a583b625/tanstack-react-query-5.0.0-beta.35.tgz",
+      "_integrity": "sha512-9hxP/DZbGucYFaHx6Njhkrbx32lNRk4QqqkGzyQ4IPaYfJTELE7urc9LBYRwrof211cj0W76IxmpjDwZ5ljZpQ==",
+      "repository": {
+        "url": "git+https://github.com/TanStack/query.git",
+        "type": "git",
+        "directory": "packages/react-query"
+      },
+      "_npmVersion": "9.5.1",
+      "description": "Hooks for managing, caching and syncing asynchronous and remote data in React",
+      "directories": {},
+      "sideEffects": false,
+      "_nodeVersion": "18.16.0",
+      "dependencies": {
+        "client-only": "0.0.1",
+        "@tanstack/query-core": "5.0.0-beta.35"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "@types/react": "^18.2.4",
+        "@types/react-dom": "^18.2.4",
+        "react-error-boundary": "^3.1.4"
+      },
+      "peerDependencies": {
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0",
+        "react-native": "*"
+      },
+      "peerDependenciesMeta": {
+        "react-dom": {
+          "optional": true
+        },
+        "react-native": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/react-query_5.0.0-beta.35_1695382972254_0.43948593907414724",
+        "host": "s3://npm-registry-packages"
+      }
+    },
+    "5.0.0-rc.16": {
+      "name": "@tanstack/react-query",
+      "version": "5.0.0-rc.16",
+      "author": {
+        "name": "tannerlinsley"
+      },
+      "license": "MIT",
+      "_id": "@tanstack/react-query@5.0.0-rc.16",
+      "maintainers": [
+        {
+          "name": "nksaraf",
+          "email": "user8@example.com"
+        },
+        {
+          "name": "tannerlinsley",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://tanstack.com/query",
+      "bugs": {
+        "url": "https://github.com/TanStack/query/issues"
+      },
+      "dist": {
+        "shasum": "0f92f918e33652249955ae8d7878bc065affdd03",
+        "tarball": "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.0.0-rc.16.tgz",
+        "fileCount": 311,
+        "integrity": "sha512-6KA2UINzseZYqMxBaKHAj4/JOGUWqKsZEQ8eRgIo7iwWfk1wp8Pmr2Iq7xoQt5VXdjb3VFO7ox4utDIqb3uAGw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDXdgQZVukY5lHl+KYdNuY0is1dyoG9NHaehxsbxaU2UwIgRi69hT+PY7uyymS60jPwFYQ5eRO62Lw0GJSXri650Nk=",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 979172
+      },
+      "main": "build/legacy/index.cjs",
+      "type": "module",
+      "_from": "file:tanstack-react-query-5.0.0-rc.16.tgz",
+      "types": "build/legacy/index.d.ts",
+      "module": "build/legacy/index.js",
+      "exports": {
+        ".": {
+          "import": {
+            "types": "./build/modern/index.d.ts",
+            "default": "./build/modern/index.js"
+          },
+          "require": {
+            "types": "./build/modern/index.d.cts",
+            "default": "./build/modern/index.cjs"
+          }
+        },
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/tannerlinsley",
+        "type": "github"
+      },
+      "scripts": {
+        "build": "pnpm build:tsup && pnpm build:codemods",
+        "clean": "rimraf ./build && rimraf ./coverage",
+        "test:lib": "vitest run --coverage",
+        "build:tsup": "tsup",
+        "test:build": "publint --strict",
+        "test:types": "tsc",
+        "test:eslint": "eslint --ext .ts,.tsx ./src",
+        "test:lib:dev": "pnpm run test:lib --watch",
+        "build:codemods": "cpy ../codemods/* ./build/codemods"
+      },
+      "_npmUser": {
+        "name": "tannerlinsley",
+        "email": "user2@example.com"
+      },
+      "_resolved": "/tmp/ff20aef30955804bc27acbb71c5960c3/tanstack-react-query-5.0.0-rc.16.tgz",
+      "_integrity": "sha512-6KA2UINzseZYqMxBaKHAj4/JOGUWqKsZEQ8eRgIo7iwWfk1wp8Pmr2Iq7xoQt5VXdjb3VFO7ox4utDIqb3uAGw==",
+      "repository": {
+        "url": "git+https://github.com/TanStack/query.git",
+        "type": "git",
+        "directory": "packages/react-query"
+      },
+      "_npmVersion": "9.5.1",
+      "description": "Hooks for managing, caching and syncing asynchronous and remote data in React",
+      "directories": {},
+      "sideEffects": false,
+      "_nodeVersion": "18.16.0",
+      "dependencies": {
+        "@tanstack/query-core": "5.0.0-rc.12"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "@types/react": "^18.2.4",
+        "@types/react-dom": "^18.2.4",
+        "react-error-boundary": "^3.1.4"
+      },
+      "peerDependencies": {
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0",
+        "react-native": "*"
+      },
+      "peerDependenciesMeta": {
+        "react-dom": {
+          "optional": true
+        },
+        "react-native": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/react-query_5.0.0-rc.16_1697439754338_0.1457662529499495",
+        "host": "s3://npm-registry-packages"
+      }
+    }
+  },
+  "time": {
+    "modified": "2026-02-11T09:17:29.144Z",
+    "created": "2022-07-19T13:33:05.988Z",
+    "5.90.21": "2026-02-11T09:17:28.785Z",
+    "4.43.0": "2026-01-28T11:48:50.728Z",
+    "5.90.20": "2026-01-23T13:29:24.142Z",
+    "4.42.2": "2026-01-19T07:01:48.620Z",
+    "4.42.1": "2026-01-18T02:29:42.409Z",
+    "5.90.19": "2026-01-17T19:29:33.375Z",
+    "5.90.18": "2026-01-16T11:02:43.022Z",
+    "5.90.17": "2026-01-14T06:23:32.346Z",
+    "5.90.16": "2025-12-30T14:51:38.084Z",
+    "5.90.15": "2025-12-29T15:59:08.997Z",
+    "5.0.0-alpha.91": "2023-07-24T09:07:07.930Z",
+    "5.0.0-beta.35": "2023-09-22T11:42:52.492Z",
+    "5.0.0-rc.16": "2023-10-16T07:02:34.690Z"
+  },
+  "maintainers": [
+    {
+      "name": "tannerlinsley",
+      "email": "user2@example.com"
+    },
+    {
+      "name": "kevinvandy",
+      "email": "user3@example.com"
+    },
+    {
+      "name": "tkdodo",
+      "email": "user4@example.com"
+    },
+    {
+      "name": "schiller-manuel",
+      "email": "user5@example.com"
+    },
+    {
+      "name": "lachlancollins",
+      "email": "user6@example.com"
+    },
+    {
+      "name": "kylemathews",
+      "email": "user7@example.com"
+    }
+  ],
+  "author": {
+    "name": "tannerlinsley"
+  },
+  "license": "MIT",
+  "homepage": "https://tanstack.com/query",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TanStack/query.git",
+    "directory": "packages/react-query"
+  },
+  "bugs": {
+    "url": "https://github.com/TanStack/query/issues"
+  },
+  "readme": "<img src=\"https://static.scarf.sh/a.png?x-pxid=be2d8a11-9712-4c1d-9963-580b2d4fb133\" />\n\n![TanStack Query Header](https://github.com/TanStack/query/raw/main/media/repo-header.png)\n\nHooks for fetching, caching and updating asynchronous data in React\n\n<a href=\"https://twitter.com/intent/tweet?button_hashtag=TanStack\" target=\"\\_parent\">\n  <img alt=\"#TanStack\" src=\"https://img.shields.io/twitter/url?color=%2308a0e9&label=%23TanStack&style=social&url=https%3A%2F%2Ftwitter.com%2Fintent%2Ftweet%3Fbutton_hashtag%3DTanStack\">\n</a><a href=\"https://discord.com/invite/WrRKjPJ\" target=\"\\_parent\">\n  <img alt=\"\" src=\"https://img.shields.io/badge/Discord-TanStack-%235865F2\" />\n</a><a href=\"https://github.com/TanStack/query/actions?query=workflow%3A%22react-query+tests%22\">\n<img src=\"https://github.com/TanStack/query/workflows/react-query%20tests/badge.svg\" />\n</a><a href=\"https://www.npmjs.com/package/@tanstack/query-core\" target=\"\\_parent\">\n  <img alt=\"\" src=\"https://img.shields.io/npm/dm/@tanstack/query-core.svg\" />\n</a><a href=\"https://bundlejs.com/?q=%40tanstack%2Freact-query&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%2C%22react-dom%22%5D%7D%7D&badge=\" target=\"\\_parent\">\n  <img alt=\"\" src=\"https://deno.bundlejs.com/?q=@tanstack/react-query&config={%22esbuild%22:{%22external%22:[%22react%22,%22react-dom%22]}}&badge=detailed\" />\n</a><a href=\"#badge\">\n    <img alt=\"semantic-release\" src=\"https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg\">\n  </a><a href=\"https://github.com/TanStack/query/discussions\">\n  <img alt=\"Join the discussion on Github\" src=\"https://img.shields.io/badge/Github%20Discussions%20%26%20Support-Chat%20now!-blue\" />\n</a><a href=\"https://bestofjs.org/projects/tanstack-query\"><img alt=\"Best of JS\" src=\"https://img.shields.io/endpoint?url=https://bestofjs-serverless.now.sh/api/project-badge?fullName=TanStack%2Fquery%26since=daily\" /></a><a href=\"https://github.com/TanStack/query/\" target=\"\\_parent\">\n  <img alt=\"\" src=\"https://img.shields.io/github/stars/TanStack/query.svg?style=social&label=Star\" />\n</a><a href=\"https://twitter.com/tannerlinsley\" target=\"\\_parent\">\n  <img alt=\"\" src=\"https://img.shields.io/twitter/follow/tannerlinsley.svg?style=social&label=Follow\" />\n</a> <a href=\"https://gitpod.io/from-referrer/\">\n  <img src=\"https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod\" alt=\"Gitpod Ready-to-Code\"/>\n</a>\n\nEnjoy this library? Try the entire [TanStack](https://tanstack.com)! [TanStack Table](https://github.com/TanStack/table), [TanStack Router](https://github.com/tanstack/router), [TanStack Virtual](https://github.com/tanstack/virtual), [React Charts](https://github.com/TanStack/react-charts), [React Ranger](https://github.com/TanStack/ranger)\n\n## Visit [tanstack.com/query](https://tanstack.com/query) for docs, guides, API and more!\n\n## Quick Features\n\n- Transport/protocol/backend agnostic data fetching (REST, GraphQL, promises, whatever!)\n- Auto Caching + Refetching (stale-while-revalidate, Window Refocus, Polling/Realtime)\n- Parallel + Dependent Queries\n- Mutations + Reactive Query Refetching\n- Multi-layer Cache + Automatic Garbage Collection\n- Paginated + Cursor-based Queries\n- Load-More + Infinite Scroll Queries w/ Scroll Recovery\n- Request Cancellation\n- [React Suspense](https://react.dev/reference/react/Suspense) + Fetch-As-You-Render Query Prefetching\n- Dedicated Devtools\n\n### [Become a Sponsor!](https://github.com/sponsors/tannerlinsley/)\n\n<!-- Use the force, Luke -->\n",
+  "readmeFilename": "README.md"
+}

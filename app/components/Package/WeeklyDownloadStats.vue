@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { VueUiSparkline } from 'vue-data-ui/vue-ui-sparkline'
-import { useCssVariables } from '~/composables/useColors'
+import {
+  VueUiSparkline,
+  type VueUiSparklineConfig,
+  type VueUiSparklineDatasetItem,
+} from 'vue-data-ui/vue-ui-sparkline'
+import { useColors } from '~/composables/useColors'
 import type { WeeklyDataPoint } from '~/types/chart'
 import { applyDataCorrection } from '~/utils/chart-data-correction'
 import { OKLCH_NEUTRAL_FALLBACK, lightenOklch } from '~/utils/colors'
 import { applyBlocklistCorrection } from '~/utils/download-anomalies'
 import type { RepoRef } from '#shared/utils/git-providers'
-import type { VueUiSparklineConfig, VueUiSparklineDatasetItem } from 'vue-data-ui'
 import { onKeyDown } from '@vueuse/core'
 
 import('vue-data-ui/style.css')
@@ -60,6 +63,7 @@ function handleModalTransitioned() {
 }
 
 const { fetchPackageDownloadEvolution } = useCharts()
+const numberFormatter = useNumberFormatter()
 
 const { accentColors, selectedAccentColor } = useAccentColor()
 
@@ -82,23 +86,7 @@ watch(
   { flush: 'sync' },
 )
 
-const { colors } = useCssVariables(
-  [
-    '--bg',
-    '--fg',
-    '--bg-subtle',
-    '--bg-elevated',
-    '--border-hover',
-    '--fg-subtle',
-    '--border',
-    '--border-subtle',
-  ],
-  {
-    element: rootEl,
-    watchHtmlAttributes: true,
-    watchResize: false, // set to true only if a var changes color on resize
-  },
-)
+const { colors } = useColors(rootEl)
 
 const isDarkMode = computed(() => resolvedMode.value === 'dark')
 
@@ -359,6 +347,9 @@ const config = computed<VueUiSparklineConfig>(() => {
         fontSize: 28,
         bold: false,
         color: colors.value.fg,
+        formatter: ({ value }) => {
+          return numberFormatter.value.format(value)
+        },
       },
       line: {
         color: colors.value.borderHover,
@@ -434,7 +425,7 @@ const config = computed<VueUiSparklineConfig>(() => {
 
               <template #skeleton>
                 <!-- This empty div overrides the default built-in scanning animation on load -->
-                <div />
+                <div></div>
               </template>
             </VueUiSparkline>
             <template #fallback>
@@ -511,7 +502,7 @@ const config = computed<VueUiSparklineConfig>(() => {
 }
 
 :deep(.vue-data-ui-component svg:focus-visible) {
-  outline: 0.1rem solid var(--accent-color) !important;
+  outline: 0.1rem solid var(--accent) !important;
   border-radius: 0.1rem;
   outline-offset: 3px;
 }

@@ -253,7 +253,6 @@
       "none": "このパッケージは不要になったとフラグが立てられています。その機能はすべてのエンジンでネイティブに利用できる可能性があります。",
       "learn_more": "詳細はこちら",
       "learn_more_above": "詳細は上記を確認してください。",
-      "mdn": "MDN",
       "community": "コミュニティ",
       "consider_no_dep": "+ 依存関係なしを検討しますか？"
     },
@@ -769,12 +768,10 @@
   "code": {
     "files_label": "ファイル",
     "no_files": "このディレクトリにファイルはありません",
-    "root": "ルート",
     "lines": "{count} 行",
     "toggle_tree": "ファイルツリーを切り替え",
     "close_tree": "ファイルツリーを閉じる",
     "copy_link": "リンクをコピー",
-    "raw": "RAW",
     "view_raw": "RAWファイルを表示",
     "file_too_large": "ファイルが大きすぎるためプレビューできません",
     "file_size_warning": "{size} は構文強調表示の制限である500KBを超えています",

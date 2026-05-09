@@ -12,9 +12,8 @@
 
 import { writeFileSync, mkdirSync, existsSync } from 'node:fs'
 import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url'
 
-const FIXTURES_DIR = fileURLToPath(new URL('../test/fixtures', import.meta.url))
+const FIXTURES_DIR = join(import.meta.dirname, '../test/fixtures')
 
 const NPM_REGISTRY = 'https://registry.npmjs.org'
 const NPM_API = 'https://api.npmjs.org'
@@ -40,6 +39,7 @@ const REQUIRED_PACKAGES = [
   'next', // create-command test
   '@nuxt/kit', // scoped package tests, version test (3.20.0)
   '@types/node', // scoped package tests
+  '@tanstack/react-query', // OG image test (scoped with long name)
   // Docs page tests
   'ufo', // docs test with version 1.6.3
   'is-odd', // docs test (3.0.1), install copy test, "no create" test, hyphen-in-name test

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { shallowRef, computed } from 'vue'
 import { LinkBase } from '#components'
+import type { IconClass } from '~/types/icon'
 
 interface Props {
   title: string
@@ -8,7 +9,7 @@ interface Props {
   isLoading?: boolean
   headingLevel?: `h${number}`
   id: string
-  icon?: string
+  icon?: IconClass
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -62,8 +63,13 @@ function toggle() {
 }
 
 const ariaLabel = computed(() => {
-  const action = isOpen.value ? 'Collapse' : 'Expand'
-  return props.title ? `${action} ${props.title}` : action
+  if (!props.title) {
+    return isOpen.value ? $t('common.collapse') : $t('common.expand')
+  }
+
+  return isOpen.value
+    ? $t('common.collapse_with_name', { name: props.title })
+    : $t('common.expand_with_name', { name: props.title })
 })
 useHead({
   style: [

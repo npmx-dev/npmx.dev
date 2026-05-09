@@ -46,3 +46,31 @@ describe('useSettings - keyboardShortcuts', () => {
     })
   })
 })
+
+describe('useSettings - codeLigatures', () => {
+  beforeEach(() => {
+    vi.resetModules()
+  })
+
+  it('has a default value of true', async () => {
+    const { useSettings } = await import('~/composables/useSettings')
+    const codeLigatures = useSettings().settings.value.codeLigatures
+    expect(codeLigatures).toBe(true)
+  })
+
+  describe('useCodeLigatures', () => {
+    it('has a default value of true', async () => {
+      const { useCodeLigatures } = await import('~/composables/useSettings')
+      const codeLigatures = useCodeLigatures().codeLigatures
+      expect(codeLigatures.value).toBe(true)
+    })
+
+    it('updates after toggle', async () => {
+      const { useCodeLigatures } = await import('~/composables/useSettings')
+      const { codeLigatures, toggleCodeLigatures } = useCodeLigatures()
+      expect(codeLigatures.value).toBe(true)
+      toggleCodeLigatures()
+      expect(codeLigatures.value).toBe(false)
+    })
+  })
+})

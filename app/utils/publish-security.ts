@@ -104,7 +104,7 @@ export function detectPublishSecurityDowngradeForVersion(
     }
   }
 
-  // Use same-major for recommendation if available, otherwise any-major for detection only
+  // Use same-major for recommendation if available; otherwise, any-major for detection only
   const strongestOlder = strongestOlderSameMajor ?? strongestOlderAny
   if (!strongestOlder || strongestOlder.trustRank <= current.trustRank) return null
 

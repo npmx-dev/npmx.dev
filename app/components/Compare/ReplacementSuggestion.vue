@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { ModuleReplacement } from 'module-replacements'
+import { resolveDocUrl } from 'module-replacements'
+import { getReplacementDescription, getReplacementNodeVersion } from '~/utils/module-replacements'
 
 const props = defineProps<{
   packageName: string
@@ -14,10 +16,13 @@ const emit = defineEmits<{
   addNoDep: []
 }>()
 
-const docUrl = computed(() => {
-  if (props.replacement.type !== 'documented' || !props.replacement.docPath) return null
-  return `https://e18e.dev/docs/replacements/${props.replacement.docPath}.html`
-})
+const docUrl = computed(() => resolveDocUrl(props.replacement.url))
+
+const nodeVersion = computed(() => getReplacementNodeVersion(props.replacement))
+
+const replacementDescription = useMarkdown(() => ({
+  text: getReplacementDescription(props.replacement),
+}))
 </script>
 
 <template>
@@ -28,6 +33,7 @@ const docUrl = computed(() => {
         ? 'bg-amber-500/10 border border-amber-600/30 text-amber-800 dark:text-amber-400'
         : 'bg-blue-500/10 border border-blue-600/30 text-blue-700 dark:text-blue-400'
     "
+    data-testid="replacement-suggestion-card"
   >
     <span
       class="w-4 h-4 flex-shrink-0 mt-0.5"
@@ -36,33 +42,65 @@ const docUrl = computed(() => {
     <div class="min-w-0 flex-1">
       <p class="font-medium">{{ packageName }}: {{ $t('package.replacement.title') }}</p>
       <p class="text-xs mt-0.5 opacity-80">
-        <template v-if="replacement.type === 'native'">
-          {{
-            $t('package.replacement.native', {
-              replacement: replacement.replacement,
-              nodeVersion: replacement.nodeVersion,
-            })
-          }}
-        </template>
+        <i18n-t
+          v-if="nodeVersion && replacement.type === 'native'"
+          keypath="package.replacement.native"
+          scope="global"
+        >
+          <template #replacement>
+            <span v-if="replacementDescription" v-html="replacementDescription" />
+            <span v-else
+              ><code>{{ replacement.id }}</code></span
+            >
+          </template>
+          <template #nodeVersion>
+            {{ nodeVersion }}
+          </template>
+        </i18n-t>
+        <i18n-t
+          v-else-if="replacement.type === 'native'"
+          keypath="package.replacement.native_no_version"
+          scope="global"
+        >
+          <template #replacement>
+            <span v-if="replacementDescription" v-html="replacementDescription" />
+            <span v-else
+              ><code>{{ replacement.id }}</code></span
+            >
+          </template>
+        </i18n-t>
         <template v-else-if="replacement.type === 'simple'">
-          {{
-            $t('package.replacement.simple', {
-              replacement: replacement.replacement,
-              community: $t('package.replacement.community'),
-            })
-          }}
+          <i18n-t keypath="package.replacement.simple">
+            <template #replacement><span v-html="replacementDescription" /></template>
+            <template #community>{{ $t('package.replacement.community') }}</template>
+          </i18n-t>
         </template>
-        <template v-else-if="replacement.type === 'documented'">
-          {{
-            $t('package.replacement.documented', {
-              community: $t('package.replacement.community'),
-            })
-          }}
+        <i18n-t
+          v-else-if="replacement.type === 'documented'"
+          keypath="package.replacement.documented"
+          scope="global"
+        >
+          <template #replacement>
+            <code>{{ replacement.replacementModule }}</code>
+          </template>
+          <template #community>
+            <a
+              href="https://e18e.dev/docs/replacements/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1 ms-1 underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg transition-colors"
+            >
+              {{ $t('package.replacement.community') }}
+              <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
+            </a>
+          </template>
+        </i18n-t>
+        <template v-else-if="replacement.type === 'removal'">
+          <span v-html="replacementDescription" />
         </template>
       </p>
     </div>
 
-    <!-- No dependency action button -->
     <ButtonBase
       v-if="variant === 'nodep' && showAction !== false"
       size="sm"

@@ -496,6 +496,13 @@ const badgeStrategies = {
       color: isDeprecated ? COLORS.red : COLORS.green,
     }
   },
+
+  'likes': async (pkgData: globalThis.Packument) => {
+    const likesUtil = new PackageLikesUtils()
+    const { totalLikes } = await likesUtil.getLikes(pkgData.name)
+
+    return { label: 'likes', value: String(totalLikes ?? 0), color: COLORS.red }
+  },
 }
 
 const BadgeTypeSchema = v.picklist(Object.keys(badgeStrategies) as [string, ...string[]])

@@ -569,7 +569,7 @@
         },
         "isValid": {
           "type": "boolean",
-          "description": "True if the verification passes validation, otherwise false."
+          "description": "True if the verification passes validation; otherwise, false."
         },
         "createdAt": {
           "type": "string",

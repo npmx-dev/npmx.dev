@@ -1,10 +1,32 @@
 <script setup lang="ts">
+import type { LocaleObject } from '@nuxtjs/i18n'
+
 const router = useRouter()
 const { settings } = useSettings()
-const { locale: currentLocale, locales, setLocale: setNuxti18nLocale } = useI18n()
+const { locale, locales, setLocale: setNuxti18nLocale } = useI18n()
 const colorMode = useColorMode()
 const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
 const keyboardShortcutsEnabled = useKeyboardShortcuts()
+const { toggleCodeLigatures } = useCodeLigatures()
+
+// Create a computed property to handle locale binding properly
+const localeCodes = computed<LocaleObject['code'][]>(() =>
+  locales.value.map(loc => loc.code as LocaleObject['code']),
+)
+
+function isLocaleCode(value: string): value is LocaleObject['code'] {
+  return localeCodes.value.includes(value as LocaleObject['code'])
+}
+
+const currentLocale = computed<string>({
+  get: () => locale.value as string,
+  set: (newLocale: string) => {
+    if (!newLocale || !isLocaleCode(newLocale)) return
+
+    settings.value.selectedLocale = newLocale
+    setNuxti18nLocale(newLocale)
+  },
+})
 
 // Escape to go back (but not when focused on form elements or modal is open)
 onKeyStroke(
@@ -28,17 +50,6 @@ useSeoMeta({
   ogDescription: () => $t('settings.meta_description'),
   twitterDescription: () => $t('settings.meta_description'),
 })
-
-defineOgImageComponent('Default', {
-  title: () => $t('settings.title'),
-  description: () => $t('settings.tagline'),
-  primaryColor: '#60a5fa',
-})
-
-const setLocale: typeof setNuxti18nLocale = newLocale => {
-  settings.value.selectedLocale = newLocale
-  return setNuxti18nLocale(newLocale)
-}
 </script>
 
 <template>
@@ -143,6 +154,16 @@ const setLocale: typeof setNuxti18nLocale = newLocale => {
               :description="$t('settings.enable_graph_pulse_loop_description')"
               v-model="settings.enableGraphPulseLooping"
             />
+
+            <!-- Divider -->
+            <div class="border-t border-border my-4" />
+
+            <!-- Code ligatures toggle -->
+            <SettingsToggle
+              :label="$t('settings.enable_code_ligatures')"
+              :modelValue="settings.codeLigatures"
+              @update:modelValue="() => toggleCodeLigatures()"
+            />
           </div>
         </section>
 
@@ -234,7 +255,6 @@ const setLocale: typeof setNuxti18nLocale = newLocale => {
                   id="language-select"
                   :items="locales.map(loc => ({ label: loc.name ?? '', value: loc.code }))"
                   v-model="currentLocale"
-                  @update:modelValue="setLocale($event as typeof currentLocale)"
                   block
                   size="sm"
                   class="max-w-48"

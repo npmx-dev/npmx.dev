@@ -54,7 +54,7 @@ export class PackageLikesUtils {
     this.constellation =
       deps?.constellation ??
       new Constellation(
-        // Passes in a fetch wrapped as cachedfetch since are already doing some heavy caching here
+        // Passes in a fetch wrapped as CachedFetch because we're already doing some heavy caching here
         async <T = unknown>(
           url: string,
           options: Parameters<typeof $fetch>[1] = {},
@@ -107,13 +107,13 @@ export class PackageLikesUtils {
   }
 
   /**
-   * Gets the likes for a npm package on npmx. Tries a local cahce first, if not found uses constellation
+   * Gets the likes for a npm package on npmx. Tries a local cache first; if not found, uses constellation
    * @param packageName
    * @param usersDid
    * @returns
    */
   async getLikes(packageName: string, usersDid?: string | undefined): Promise<PackageLikes> {
-    //TODO: May need to do some clean up on the package name, and maybe even hash it? some of the charcteres may be a bit odd as keys
+    //TODO: May need to do some clean up on the package name, and maybe even hash it? some of the characters may be a bit odd as keys
     const totalLikesKey = CACHE_PACKAGE_TOTAL_KEY(packageName)
     const subjectRef = PACKAGE_SUBJECT_REF(packageName)
 
@@ -144,8 +144,9 @@ export class PackageLikesUtils {
     }
 
     return {
-      totalLikes: totalLikes,
+      totalLikes,
       userHasLiked,
+      topLikedRank: null,
     }
   }
 
@@ -168,8 +169,8 @@ export class PackageLikesUtils {
   }
 
   /**
-   * It is asummed it has been checked by this point that if a user has liked a package and the new like was made as a record
-   * to the user's atproto repostiory
+   * Assumes the caller has already verified that a user's like for a package was stored as a record in the user's AT Protocol
+   * repository (atUri refers to that like record).
    * @param packageName
    * @param usersDid
    * @param atUri - The URI of the like record
@@ -195,10 +196,9 @@ export class PackageLikesUtils {
       rkey,
     }
 
-    // We store the backlink incase a user is liking and unlikign rapidly. constellation takes a few seconds to capture the backlink
+    // We store the backlink in case a user is liking and unliking rapidly. constellation takes a few seconds to capture the backlink
     const usersBackLinkKey = CACHE_USERS_BACK_LINK(packageName, usersDid)
     await this.cache.set(usersBackLinkKey, backLink, CACHE_MAX_AGE)
-
     let totalLikes = await this.cache.get<number>(totalLikesKey)
     if (!totalLikes) {
       totalLikes = await this.constellationLikes(subjectRef)
@@ -209,8 +209,9 @@ export class PackageLikesUtils {
     // We already know the user has not liked the package before so set in the cache
     await this.cache.set(CACHE_USER_LIKES_KEY(packageName, usersDid), true, CACHE_MAX_AGE)
     return {
-      totalLikes: totalLikes,
+      totalLikes,
       userHasLiked: true,
+      topLikedRank: null,
     }
   }
 
@@ -278,8 +279,9 @@ export class PackageLikesUtils {
     await this.cache.delete(CACHE_USERS_BACK_LINK(packageName, usersDid))
 
     return {
-      totalLikes: totalLikes,
+      totalLikes,
       userHasLiked: false,
+      topLikedRank: null,
     }
   }
 

@@ -26,11 +26,18 @@ interface EmbedImage {
   aspectRatio?: { width: number; height: number }
 }
 
+interface EmbedExternal {
+  description?: string
+  thumb?: string
+  title?: string
+  uri: string
+}
+
 interface BlueskyPost {
   uri: string
   author: PostAuthor
   record: { text: string; createdAt: string }
-  embed?: { $type: string; images?: EmbedImage[] }
+  embed?: { $type: string; images?: EmbedImage[]; external?: EmbedExternal }
   likeCount?: number
   replyCount?: number
   repostCount?: number
@@ -107,7 +114,7 @@ const postUrl = computed(() => {
     :href="postUrl ?? '#'"
     target="_blank"
     rel="noopener noreferrer"
-    class="not-prose block rounded-lg border border-border bg-bg-subtle p-4 sm:p-5 no-underline hover:border-border-hover transition-colors duration-200 relative group"
+    class="not-prose block my-4 rounded-lg border border-border bg-bg-subtle p-4 sm:p-5 no-underline hover:border-border-hover transition-colors duration-200 relative group"
   >
     <!-- Bluesky icon -->
     <span
@@ -152,6 +159,27 @@ const postUrl = computed(() => {
         "
         loading="lazy"
       />
+    </template>
+
+    <!-- Embedded external embed -->
+    <template v-if="post.embed?.external && post.embed.external.uri">
+      <div class="block mb-3 p-0.5 bg-bg-muted rounded-lg">
+        <img
+          v-if="post.embed.external.thumb"
+          :src="post.embed.external.thumb"
+          alt=""
+          class="w-full rounded-lg object-cover"
+          loading="lazy"
+        />
+        <div class="text-fg-muted text-sm p-2">
+          <p class="font-medium truncate">
+            {{ post.embed.external.title || post.embed.external.uri }}
+          </p>
+          <p v-if="post.embed.external.description" class="text-sm line-clamp-2 mt-1">
+            {{ post.embed.external.description }}
+          </p>
+        </div>
+      </div>
     </template>
 
     <!-- Timestamp + engagement -->

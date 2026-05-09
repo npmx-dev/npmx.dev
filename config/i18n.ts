@@ -81,6 +81,10 @@ export const countryLocaleVariants: Record<string, (LocaleObjectData & { country
       { country: true, code: 'pt-PT', name: 'Português (Portugal)' },
       { code: 'pt-BR', name: 'Português (Brasil)' },
     ],*/
+  nl: [
+    { country: true, code: 'nl-NL', name: 'Nederlands' },
+    // { country: true, code: 'nl-BE', name: 'Vlaams' },
+  ],
 }
 
 function createPluralRule(locale: string, mapping: Record<string, number>) {
@@ -218,11 +222,11 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     file: 'ne-NP.json',
     name: 'नेपाली',
   },
-  /*{
-      code: 'nl-NL',
-      file: 'nl-NL.json',
-      name: 'Nederlands',
-    },*/
+  {
+    code: 'nl',
+    file: 'nl.json',
+    name: 'Nederlands',
+  },
   {
     code: 'es',
     file: 'es.json',
@@ -329,6 +333,11 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     file: 'pt-BR.json',
     name: 'Português (Brasil)',
   },
+  {
+    code: 'pt-PT',
+    file: 'pt-PT.json',
+    name: 'Português (Portugal)',
+  },
   /*{
       code: 'sv',
       file: 'sv.json',
@@ -343,13 +352,13 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
       code: 'tl-PH',
       file: 'tl-PH.json',
       name: 'Tagalog',
-    },
-    {
-      code: 'vi-VN',
-      file: 'vi-VN.json',
-      name: 'Tiếng Việt',
-    },
-    {
+    },*/
+  {
+    code: 'vi-VN',
+    file: 'vi-VN.json',
+    name: 'Tiếng Việt',
+  },
+  /*{
       code: 'cy',
       file: 'cy.json',
       name: 'Cymraeg',
@@ -358,6 +367,19 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     code: 'nb-NO',
     file: 'nb-NO.json',
     name: 'Norsk (Bokmål)',
+  },
+  {
+    code: 'sr-Latn-RS',
+    file: 'sr-Latn-RS.json',
+    name: 'Srpski (Latinica)',
+    pluralRule: createPluralRule('sr-Latn-RS', {
+      zero: 2,
+      one: 0,
+      two: 1,
+      few: 1,
+      many: 2,
+      other: 2,
+    }),
   },
 ]
 
