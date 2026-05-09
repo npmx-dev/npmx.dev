@@ -98,7 +98,7 @@ test.describe('Package Page', () => {
     const packageHeading = page.locator('h1').first()
     await expect(packageHeading).toBeVisible({ timeout: 15000 })
 
-// Hover the parent of the heading to trigger the button's visibility
+    // Hover the parent of the heading to trigger the button's visibility
     await packageHeading.locator('..').hover()
 
     const copyButton = page.locator('button[aria-label]').filter({ hasText: /copy/i }).first()
@@ -108,7 +108,7 @@ test.describe('Package Page', () => {
     if (!box) throw new Error('Copy button has no bounding box')
 
     // Define 5-point check (4 corners + center) for maximum coverage
-    const points: {    x: number;    y: number;  }[] = [
+    const points: { x: number; y: number }[] = [
       { x: box.x + 1, y: box.y + 1 }, // top-left
       { x: box.x + box.width - 1, y: box.y + 1 }, // top-right
       { x: box.x + box.width / 2, y: box.y + box.height / 2 }, // center
