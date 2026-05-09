@@ -1641,7 +1641,7 @@ const { start: resetZoomState } = useTimeoutFn(
 async function resetZoom() {
   keepZoomState.value = false
   await nextTick()
-  chartRef.value?.resetZoom()
+  chartRef.value?.resetZoom?.()
   resetZoomState()
 }
 
