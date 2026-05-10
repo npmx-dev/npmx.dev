@@ -84,6 +84,15 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
+      - name: ⬆︎ Upload coverage reports to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6
+        with:
+          disable_search: true
+          files: coverage/clover.xml
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
   test:
     name: 🧪 Component tests
     runs-on: ubuntu-24.04-arm
@@ -114,7 +123,11 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: ⬆︎ Upload coverage reports to Codecov
+        if: ${{ !cancelled() }}
         uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6
+        with:
+          disable_search: true
+          files: coverage/clover.xml
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
