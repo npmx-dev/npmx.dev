@@ -314,6 +314,7 @@
     "warnings": "Avertissements :",
     "go_back_home": "Retour à l'accueil",
     "per_week": "/ semaine",
+    "per_week_short": "/sem",
     "vanity_downloads_hint": "Métrique de vanité : aucun paquet affiché | Métrique de vanité : pour le paquet affiché | Métrique de vanité : somme des {count} paquets affichés",
     "sort": {
       "name": "nom",
@@ -439,7 +440,10 @@
     },
     "likes": {
       "like": "Liker ce paquet",
-      "unlike": "Retirer le like"
+      "unlike": "Retirer le like",
+      "top_rank_tooltip": "Ce paquet figure parmi les 10 ayant le plus de likes sur npmx (n°{rank})",
+      "top_rank_label": "n°{rank}",
+      "top_rank_link_label": "Voir le classement des likes. Ce paquet est classé n°{rank}."
     },
     "docs": {
       "contents": "Sommaire",
@@ -575,7 +579,18 @@
       "trusted_publisher_added": "Vérification ajoutée",
       "trusted_publisher_removed": "Vérification enlevée",
       "provenance_added": "Preuve de provenance ajoutée",
-      "provenance_removed": "Preuve de provenance enlevée"
+      "provenance_removed": "Preuve de provenance enlevée",
+      "chart": {
+        "tab_aria_label": "Sélection de métrique",
+        "base_scale": "positionner les ordonnées à zéro",
+        "zoom": "zoom",
+        "reset_minimap": "Réinitialiser la mini-carte",
+        "copy_alt": {
+          "key_changes": "Principaux changements: {version_events}",
+          "version_events": "version {version}: {events}",
+          "general_description": "Graphique en ligne montrant la métrique {metric} pour le paquet {package}, depuis la version {first} à {last}. La valeur de la métrique {metric} pour la version {first} est {first_value}, et {last_value} pour la version {last} ({overall_progress_percentage}% dans l'ensemble). {key_changes} {watermark}."
+        }
+      }
     },
     "dependencies": {
       "title": "Dépendances ({count})",
@@ -777,6 +792,16 @@
     "download": {
       "button": "Télécharger",
       "tarball": "Télécharger le tarball au format .tar.gz"
+    }
+  },
+  "leaderboard": {
+    "likes": {
+      "title": "Classement des likes",
+      "description": "Les 10 paquets les plus likés sur npmx en ce moment.",
+      "rank": "Rang",
+      "likes": "Likes",
+      "unavailable_title": "Pas encore de classement des likes",
+      "unavailable_description": "Nous n'avons pas encore de classement des likes à afficher."
     }
   },
   "connector": {

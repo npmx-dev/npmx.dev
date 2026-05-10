@@ -72,15 +72,16 @@ const keyboardShortcutsEnabled = useKeyboardShortcuts()
 <template>
   <span
     v-if="disabled"
+    aria-disabled="true"
     :class="{
       'flex': block,
       'inline-flex': !block,
-      'opacity-50 gap-x-1 items-center justify-center font-mono border border-transparent rounded-md':
+      'gap-x-1 items-center justify-center font-mono border border-transparent rounded-md':
         isButton,
       'text-sm px-4 py-2': isButtonMedium,
       'text-xs px-2 py-0.5': isButtonSmall,
-      'text-bg bg-fg': variant === 'button-primary',
-      'bg-transparent text-fg': variant === 'button-secondary',
+      'text-bg bg-fg-muted': variant === 'button-primary',
+      'bg-transparent text-fg-muted': variant === 'button-secondary',
     }"
     ><slot
   /></span>

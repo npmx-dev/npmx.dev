@@ -1,3 +1,4 @@
+import process from 'node:process'
 import type { Dirent } from 'node:fs'
 import { glob, readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'

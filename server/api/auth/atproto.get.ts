@@ -59,8 +59,8 @@ export default defineEventHandler(async event => {
       const redirectUrl = await event.context.oauthClient.authorize(query.handle, {
         scope,
         prompt: query.create ? 'create' : undefined,
-        // TODO: I do not beleive this is working as expected on
-        // a unsupported locale on the PDS. Gives Invalid at body.ui_locales
+        // TODO: I do not believe this is working as expected on
+        // an unsupported locale on the PDS. Gives Invalid at body.ui_locales
         // Commenting out for now
         // ui_locales: query.locale?.toString(),
         state: encodeOAuthState(event, { redirectPath }),

@@ -317,6 +317,7 @@
     "warnings": "Warnings:",
     "go_back_home": "Go back home",
     "per_week": "/ week",
+    "per_week_short": "/wk",
     "vanity_downloads_hint": "Vanity number: no packages displayed | Vanity number: for the displayed package | Vanity number: Sum of {count} displayed packages",
     "sort": {
       "name": "name",
@@ -451,7 +452,10 @@
     },
     "likes": {
       "like": "Like this package",
-      "unlike": "Unlike this package"
+      "unlike": "Unlike this package",
+      "top_rank_tooltip": "This is among the top 10 most liked packages on npmx! (#{rank})",
+      "top_rank_label": "#{rank}",
+      "top_rank_link_label": "View likes leaderboard. This package is ranked #{rank}."
     },
     "docs": {
       "contents": "Contents",
@@ -563,6 +567,9 @@
       "filter_help": "Semver range filter help",
       "filter_tooltip": "Filter versions using a {link}. For example, ^3.0.0 shows all 3.x versions.",
       "filter_tooltip_link": "semver range",
+      "license_change_help": "License Change Details",
+      "license_change_warning": "License changed since previous version.",
+      "license_change_record": "The license of this package changed from \"{from}\" to \"{to}\".",
       "no_matches": "No versions match this range",
       "copy_alt": {
         "per_version_analysis": "{version} version was downloaded {downloads} times",
@@ -587,7 +594,18 @@
       "trusted_publisher_added": "Trusted publishing enabled",
       "trusted_publisher_removed": "Trusted publishing removed",
       "provenance_added": "Provenance enabled",
-      "provenance_removed": "Provenance removed"
+      "provenance_removed": "Provenance removed",
+      "chart": {
+        "tab_aria_label": "Metric selection",
+        "base_scale": "start y-axis at zero",
+        "zoom": "zoom",
+        "reset_minimap": "reset minimap",
+        "copy_alt": {
+          "key_changes": "Key changes: {version_events}.",
+          "version_events": "version {version}: {events}",
+          "general_description": "Line chart showing the {metric} of the {package} package, from version {first} to {last}. The {metric} in version {first} is {first_value}, in version {last} is {last_value} ({overall_progress_percentage}% overall). {key_changes} {watermark}."
+        }
+      }
     },
     "dependencies": {
       "title": "Dependency ({count}) | Dependencies ({count})",
@@ -791,6 +809,16 @@
       "tarball": "Download Tarball as .tar.gz"
     }
   },
+  "leaderboard": {
+    "likes": {
+      "title": "Likes Leaderboard",
+      "description": "The 10 most liked packages on npmx right now.",
+      "rank": "Rank",
+      "likes": "Likes",
+      "unavailable_title": "No likes leaderboard yet",
+      "unavailable_description": "We don't have a likes leaderboard to show right now."
+    }
+  },
   "connector": {
     "modal": {
       "title": "Local Connector",
@@ -907,7 +935,7 @@
       "failed_to_load": "Failed to load organization packages",
       "no_match": "No packages match \"{query}\"",
       "not_found": "Organization not found",
-      "not_found_message": "The organization \"{'@'}{name}\" does not exist on npm"
+      "not_found_message": "The organization {'@'}{name} does not exist on npm"
     }
   },
   "user": {

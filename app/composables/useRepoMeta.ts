@@ -130,7 +130,7 @@ const githubAdapter: ProviderAdapter = {
   },
 
   async fetchMeta(cachedFetch, ref, links, options = {}) {
-    // Using UNGH to avoid API limitations of the Github API
+    // Using UNGH to avoid API limitations of the GitHub API
     let res: UnghRepoResponse | null = null
     try {
       const { data } = await cachedFetch<UnghRepoResponse>(

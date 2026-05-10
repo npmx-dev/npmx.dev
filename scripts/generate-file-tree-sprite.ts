@@ -1,3 +1,4 @@
+import process from 'node:process'
 import type { IconifyJSON } from '@iconify-json/lucide'
 import { promises as fs } from 'node:fs'
 import { fileURLToPath } from 'node:url'

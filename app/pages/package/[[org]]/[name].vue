@@ -42,22 +42,14 @@ defineOgImage(
     version: () => requestedVersion.value,
     variant: 'download-chart',
   },
-  [
-    { key: 'og', alt: () => `npm package ${packageName.value} download chart and stats` },
-    {
-      key: 'whatsapp',
-      width: 800,
-      height: 800,
-      alt: () => `npm package ${packageName.value} download chart and stats`,
-    },
-  ],
+  { alt: () => `npm package ${packageName.value} download chart and stats` },
 )
 
 if (import.meta.server) {
   assertValidPackageName(packageName.value)
 }
 
-// Fetch README for specific version if requested, otherwise latest
+// Fetch README for specific version if requested; otherwise, latest
 const { data: readmeData, status: readmeStatus } = useLazyFetch<ReadmeResponse>(
   () => {
     const base = `/api/registry/readme/${packageName.value}`
@@ -108,15 +100,20 @@ const {
 )
 
 //copy README file as Markdown
-const { copied: copiedReadme, copy: copyReadme } = useClipboardAsync(
-  async () => {
+const {
+  copied: copiedReadme,
+  copy,
+  copyPending: copyReadmePending,
+} = useClipboard({
+  copiedDuring: 2000,
+})
+
+function copyReadme() {
+  copy(async () => {
     await fetchReadmeMarkdown()
     return readmeMarkdownData.value?.markdown ?? ''
-  },
-  {
-    copiedDuring: 2000,
-  },
-)
+  })
+}
 
 function prefetchReadmeMarkdown() {
   if (readmeMarkdownStatus.value === 'idle') {
@@ -207,6 +204,7 @@ const {
   error,
 } = usePackage(packageName, () => resolvedVersion.value ?? requestedVersion.value)
 
+const { data: licenseChangeData } = useLicenseChanges(packageName, resolvedVersion)
 const { diff: sizeDiff } = useInstallSizeDiff(packageName, resolvedVersion, pkg, installSize)
 const { versions: commandPaletteVersions, ensureLoaded: ensureCommandPaletteVersionsLoaded } =
   useCommandPalettePackageVersions(packageName)
@@ -234,7 +232,7 @@ useCommandPalettePackageCommands(commandPalettePackageContext)
 // 1. SPA fallback (200.html): No real content was server-rendered.
 //    → Show skeleton while data fetches on the client.
 //
-// 2. SSR-rendered HTML with missing payload: Content was rendered but the external _payload.json
+// 2. SSR-rendered HTML missing payload: Content was rendered but the external _payload.json
 //    returned an ISR fallback.
 //    → Preserve the server-rendered DOM, don't flash to skeleton.
 const nuxtApp = useNuxtApp()
@@ -528,7 +526,7 @@ const showSkeleton = shallowRef(false)
   </DevOnly>
   <main v-if="!isVersionsRoute" class="flex-1 pb-8">
     <!-- Scenario 1: SPA fallback — show skeleton (no real content to preserve) -->
-    <!-- Scenario 2: SSR with missing payload — preserve server DOM, skip skeleton -->
+    <!-- Scenario 2: SSR missing payload — preserve server DOM, skip skeleton -->
     <PackageSkeleton
       v-if="isSpaFallback || (!hasServerContentOnly && (showSkeleton || status === 'pending'))"
     />
@@ -914,6 +912,8 @@ const showSkeleton = shallowRef(false)
         </section>
 
         <div class="space-y-6" :class="$style.areaVulns">
+          <!-- license change warning -->
+          <LicenseChangeWarning :change="licenseChangeData?.change ?? null" />
           <!-- Bad package warning -->
           <PackageReplacement
             v-if="moduleReplacement"
@@ -1042,7 +1042,11 @@ const showSkeleton = shallowRef(false)
                   "
                   :classicon="copiedReadme ? 'i-lucide:check' : 'i-simple-icons:markdown'"
                 >
-                  {{ copiedReadme ? $t('common.copied') : $t('common.copy') }}
+                  <span>{{ copiedReadme ? $t('common.copied') : $t('common.copy') }}</span>
+                  <span
+                    v-if="copyReadmePending"
+                    class="i-lucide:loader-circle animate-spin size-4"
+                  ></span>
                 </ButtonBase>
               </TooltipApp>
               <ReadmeTocDropdown

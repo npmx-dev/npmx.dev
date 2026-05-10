@@ -49,6 +49,10 @@ const footerSections: Array<{ label: string; links: FooterLink[] }> = [
         href: '/about',
       },
       {
+        name: t('footer.brand'),
+        href: '/brand',
+      },
+      {
         name: t('a11y.footer_title'),
         href: '/accessibility',
       },

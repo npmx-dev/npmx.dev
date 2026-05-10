@@ -59,7 +59,7 @@ const { data: gravatarUrl } = useLazyFetch(
       :height="sizePixels"
       class="w-full h-full object-cover"
     />
-    <!-- Else fallback to initials (use svg to avoid underline styling) -->
+    <!-- Else fall back to initials (use svg to avoid underline styling) -->
     <svg
       v-else
       xmlns="http://www.w3.org/2000/svg"

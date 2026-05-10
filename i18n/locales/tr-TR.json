@@ -387,6 +387,9 @@
       "filter_help": "Semver aralığı filtresi yardımı",
       "filter_tooltip": "Sürümleri {link} kullanarak filtreleyin. Örneğin, ^3.0.0 tüm 3.x sürümlerini gösterir.",
       "filter_tooltip_link": "semver aralığı",
+      "license_change_help": "Lisans Değişikliği Detayı",
+      "license_change_warning": "Önceki versiyondan sonra lisans değişikliği gerçekleşti.",
+      "license_change_record": "Lisans \"{from}\"dan \"{to}\"a değişti.",
       "no_matches": "Bu aralığa uygun sürüm yok",
       "copy_alt": {
         "per_version_analysis": "{version} sürümü {downloads} kez indirildi",

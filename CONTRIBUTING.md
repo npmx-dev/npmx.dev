@@ -232,7 +232,7 @@ If you're working on admin features (org management, package access controls, op
 pnpm mock-connector
 ```
 
-This starts a mock connector server pre-populated with sample data (orgs, teams, members, packages). No npm login is required &mdash; operations succeed immediately without making real npm CLI calls.
+This starts a mock connector server prepopulated with sample data (orgs, teams, members, packages). No npm login is required &mdash; operations succeed immediately without making real npm CLI calls.
 
 The mock connector prints a connection URL to the terminal, just like the real connector. Click it (or paste the token manually) to connect the UI.
 
@@ -242,7 +242,7 @@ The mock connector prints a connection URL to the terminal, just like the real c
 pnpm mock-connector                # default: port 31415, user "mock-user", sample data
 pnpm mock-connector --port 9999    # custom port
 pnpm mock-connector --user alice   # custom username
-pnpm mock-connector --empty        # start with no pre-populated data
+pnpm mock-connector --empty        # start with no prepopulated data
 ```
 
 **Default sample data:**

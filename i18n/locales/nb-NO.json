@@ -20,7 +20,10 @@
     "chat": "chat",
     "builders_chat": "utviklere",
     "keyboard_shortcuts": "tastatursnarveier",
-    "brand": "merkevare"
+    "brand": "merkevare",
+    "resources": "Ressurser",
+    "features": "Funksjoner",
+    "other": "Annet"
   },
   "shortcuts": {
     "section": {
@@ -42,7 +45,8 @@
     "open_docs": "Åpne dokumentasjon",
     "disable_shortcuts": "Du kan deaktivere tastatursnarveier i {settings}.",
     "open_main": "Åpne hovedinformasjon",
-    "open_diff": "Åpne versjonsforskjeller"
+    "open_diff": "Åpne versjonsforskjeller",
+    "open_timeline": "Åpne tidslinje"
   },
   "search": {
     "label": "Søk etter npm-pakker",
@@ -280,7 +284,8 @@
       "black": "Svart"
     },
     "keyboard_shortcuts_enabled": "Aktiver tastatursnarveier",
-    "keyboard_shortcuts_enabled_description": "Tastatursnarveier kan deaktiveres hvis de er i konflikt med andre nettleser- eller systemsnarveier"
+    "keyboard_shortcuts_enabled_description": "Tastatursnarveier kan deaktiveres hvis de er i konflikt med andre nettleser- eller systemsnarveier",
+    "enable_code_ligatures": "Aktiver ligaturer i kode"
   },
   "i18n": {
     "missing_keys": "{count} manglende oversettelse | {count} manglende oversettelser",
@@ -312,6 +317,7 @@
     "warnings": "Advarsler:",
     "go_back_home": "Gå tilbake til start",
     "per_week": "/ uke",
+    "per_week_short": "/u",
     "vanity_downloads_hint": "Visningstall: ingen pakker vist | Visningstall: for den viste pakken | Visningstall: Sum av {count} viste pakker",
     "sort": {
       "name": "navn",
@@ -379,9 +385,18 @@
       "size": "Installasjonsstørrelse økt med {percent} ({size} større)",
       "deps": "{count} flere avhengigheter"
     },
+    "size_decrease": {
+      "title_size": "Pakkestørrelsen har minket siden v{version}!",
+      "title_deps": "Antall avhengigheter har minket siden v{version}!",
+      "title_both": "Pakkestørrelse og antall avhengigheter har minket siden v{version}!",
+      "size": "Installasjonsstørrelse redusert med {percent} ({size} mindre)",
+      "deps": "{count} færre avhengigheter"
+    },
     "replacement": {
       "title": "Du trenger kanskje ikke denne avhengigheten.",
+      "example": "Eksempel:",
       "native": "Denne kan erstattes med {replacement}, tilgjengelig siden Node {nodeVersion}.",
+      "native_no_version": "Denne pakken kan erstattes med {replacement}.",
       "simple": "{community} har flagget denne pakken som overflødig, med rådet: {replacement}.",
       "documented": "{community} har flagget denne pakken da det finnes alternativer med bedre ytelse.",
       "none": "Denne pakken er flagget som ikke lenger nødvendig, og funksjonaliteten er sannsynligvis tilgjengelig innebygd i alle motorer.",
@@ -432,11 +447,15 @@
       "docs": "dok",
       "fund": "støtt",
       "compare": "sammenlign",
+      "timeline": "tidslinje",
       "compare_this_package": "sammenlign denne pakken"
     },
     "likes": {
       "like": "Lik denne pakken",
-      "unlike": "Fjern like fra denne pakken"
+      "unlike": "Fjern like fra denne pakken",
+      "top_rank_tooltip": "Dette er blant de 10 mest likte pakkene på npmx! (#{rank})",
+      "top_rank_label": "#{rank}",
+      "top_rank_link_label": "Vis likes-rangeringen. Denne pakken er rangert som #{rank}."
     },
     "docs": {
       "contents": "Innhold",
@@ -477,7 +496,8 @@
         "warning": "Advarsel",
         "caution": "Forsiktig"
       },
-      "copy_as_markdown": "Kopier README som Markdown"
+      "copy_as_markdown": "Kopier README som Markdown",
+      "error_loading": "Kunne ikke laste README-detaljer"
     },
     "provenance_section": {
       "title": "Opprinnelse",
@@ -555,6 +575,23 @@
       "page_title": "Versjonshistorikk",
       "current_tags": "Nåværende tagger",
       "no_match_filter": "Ingen versjoner matcher {filter}"
+    },
+    "timeline": {
+      "load_more": "Last flere",
+      "load_error": "Kunne ikke laste tidslinje. Prøv igjen senere.",
+      "size_increase": "Installasjonsstørrelse økt med {percent}% ({size})",
+      "size_decrease": "Installasjonsstørrelse minket med {percent}% ({size})",
+      "dep_increase": "{count} avhengigheter lagt til",
+      "dep_decrease": "{count} avhengigheter fjernet",
+      "license_change": "Lisens endret fra {from} til {to}",
+      "esm_added": "Modultype endret til ESM",
+      "esm_removed": "Modultype endret fra ESM til CJS",
+      "types_added": "TypeScript-typer lagt til",
+      "types_removed": "TypeScript-typer fjernet",
+      "trusted_publisher_added": "Pålitelig publisering aktivert",
+      "trusted_publisher_removed": "Pålitelig publisering fjernet",
+      "provenance_added": "Opprinnelse aktivert",
+      "provenance_removed": "Opprinnelse fjernet"
     },
     "dependencies": {
       "title": "Avhengighet ({count}) | Avhengigheter ({count})",
@@ -756,6 +793,16 @@
     "download": {
       "button": "Last ned",
       "tarball": "Last ned tarball som .tar.gz"
+    }
+  },
+  "leaderboard": {
+    "likes": {
+      "title": "Likes-rangering",
+      "description": "De 10 mest likte pakkene på npmx akkurat nå.",
+      "rank": "Rangering",
+      "likes": "Likes",
+      "unavailable_title": "Ingen likes-rangering ennå",
+      "unavailable_description": "Vi har ingen likes-rangering å vise akkurat nå."
     }
   },
   "connector": {
@@ -1235,6 +1282,17 @@
       "packages_selected": "{count}/{max} pakker valgt.",
       "add_hint": "Legg til minst 2 pakker for å sammenligne."
     },
+    "scatter_chart": {
+      "title": "Sammenlign {x} vs {y}",
+      "freshness_score": "Ferskhetspoeng",
+      "copy_alt": {
+        "analysis": "{package} : {x_name} ({x_value}) og {y_name} ({y_value})",
+        "description": "Punktdiagram som viser {x_name} mot {y_name} for {packages} pakker. {analysis}. {watermark}"
+      },
+      "filename": "{x}-vs-{y}-punktdiagram",
+      "x_axis": "X-AKSE ↦",
+      "y_axis": "Y-AKSE ↥"
+    },
     "no_dependency": {
       "label": "(Ingen avhengighet)",
       "typeahead_title": "Hva ville James gjort?",
@@ -1313,6 +1371,18 @@
         "vulnerabilities": {
           "label": "Sårbarheter",
           "description": "Kjente sikkerhetssårbarheter"
+        },
+        "githubStars": {
+          "label": "GitHub-stjerner",
+          "description": "Antall stjerner på GitHub-repositoriet"
+        },
+        "githubIssues": {
+          "label": "GitHub-saker",
+          "description": "Antall saker på GitHub-repositoriet"
+        },
+        "createdAt": {
+          "label": "Opprettet",
+          "description": "Når pakken ble opprettet"
         }
       },
       "values": {

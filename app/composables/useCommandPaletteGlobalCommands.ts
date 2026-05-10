@@ -311,6 +311,16 @@ export function useCommandPaletteGlobalCommands() {
         to: { name: 'blog' },
       },
       {
+        id: 'brand',
+        group: 'npmx',
+        label: t('footer.brand'),
+        keywords: [t('footer.brand')],
+        iconClass: 'i-lucide:palette',
+        active: route.name === 'brand',
+        activeLabel: activeLabel(route.name === 'brand', t('command_palette.here')),
+        to: { name: 'brand' },
+      },
+      {
         id: 'privacy',
         group: 'npmx',
         label: t('privacy_policy.title'),

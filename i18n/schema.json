@@ -955,6 +955,9 @@
         "per_week": {
           "type": "string"
         },
+        "per_week_short": {
+          "type": "string"
+        },
         "vanity_downloads_hint": {
           "type": "string"
         },
@@ -1359,6 +1362,15 @@
             },
             "unlike": {
               "type": "string"
+            },
+            "top_rank_tooltip": {
+              "type": "string"
+            },
+            "top_rank_label": {
+              "type": "string"
+            },
+            "top_rank_link_label": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1693,6 +1705,15 @@
             "filter_tooltip_link": {
               "type": "string"
             },
+            "license_change_help": {
+              "type": "string"
+            },
+            "license_change_warning": {
+              "type": "string"
+            },
+            "license_change_record": {
+              "type": "string"
+            },
             "no_matches": {
               "type": "string"
             },
@@ -1767,6 +1788,39 @@
             },
             "provenance_removed": {
               "type": "string"
+            },
+            "chart": {
+              "type": "object",
+              "properties": {
+                "tab_aria_label": {
+                  "type": "string"
+                },
+                "base_scale": {
+                  "type": "string"
+                },
+                "zoom": {
+                  "type": "string"
+                },
+                "reset_minimap": {
+                  "type": "string"
+                },
+                "copy_alt": {
+                  "type": "object",
+                  "properties": {
+                    "key_changes": {
+                      "type": "string"
+                    },
+                    "version_events": {
+                      "type": "string"
+                    },
+                    "general_description": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
             }
           },
           "additionalProperties": false
@@ -2369,6 +2423,36 @@
               "type": "string"
             },
             "tarball": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "leaderboard": {
+      "type": "object",
+      "properties": {
+        "likes": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "rank": {
+              "type": "string"
+            },
+            "likes": {
+              "type": "string"
+            },
+            "unavailable_title": {
+              "type": "string"
+            },
+            "unavailable_description": {
               "type": "string"
             }
           },
