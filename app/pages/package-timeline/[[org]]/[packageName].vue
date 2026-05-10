@@ -23,6 +23,8 @@ const packageName = computed(() =>
 const version = computed(() => route.params.version)
 
 const { data: pkg } = usePackage(packageName, version)
+const { versions: commandPaletteVersions, ensureLoaded: ensureCommandPaletteVersionsLoaded } =
+  useCommandPalettePackageVersions(packageName)
 
 const latestVersion = computed(() => {
   if (!pkg.value) return null
@@ -31,10 +33,31 @@ const latestVersion = computed(() => {
   return pkg.value.versions[latestTag] ?? null
 })
 
+const commandPalettePackageContext = computed(() => {
+  const packageData = pkg.value
+  if (!packageData) return null
+
+  return {
+    packageName: packageData.name,
+    resolvedVersion: version.value ?? packageData['dist-tags']?.latest ?? null,
+    latestVersion: packageData['dist-tags']?.latest ?? null,
+    versions: commandPaletteVersions.value ?? Object.keys(packageData.versions ?? {}),
+  }
+})
+
+useCommandPalettePackageContext(commandPalettePackageContext, {
+  onOpen: ensureCommandPaletteVersionsLoaded,
+})
+useCommandPalettePackageCommands(commandPalettePackageContext)
+
 const versionUrlPattern = computed(() => {
   const { org, packageName: name } = route.params
   return `/package-timeline/${org ? `${org}/` : ''}${name}/v/{version}`
 })
+
+useCommandPaletteVersionCommands(commandPalettePackageContext, nextVersion =>
+  packageTimelineRoute(packageName.value, nextVersion),
+)
 
 function packageRoute(ver: string): RouteLocationRaw {
   return {

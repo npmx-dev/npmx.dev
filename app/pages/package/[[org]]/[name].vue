@@ -485,7 +485,9 @@ const versionUrlPattern = computed(
   () => `/package/${pkg.value?.name || packageName.value}/v/{version}`,
 )
 
-useCommandPaletteVersionCommands(commandPalettePackageContext, versionUrlPattern)
+useCommandPaletteVersionCommands(commandPalettePackageContext, version =>
+  packageRoute(packageName.value, version),
+)
 
 const dependencyCount = computed(() => getDependencyCount(displayVersion.value))
 

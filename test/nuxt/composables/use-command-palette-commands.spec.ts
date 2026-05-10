@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { computed, defineComponent, h, ref, watchEffect, type Ref } from 'vue'
+import type { RouteLocationRaw } from 'vue-router'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import { downloadPackageTarball } from '~/utils/package-download'
 import type {
@@ -49,7 +50,7 @@ async function captureCommandPalette(options?: {
   npmUser?: string | null
   atprotoHandle?: string | null
   packageContext?: CommandPalettePackageContext | null
-  versionUrlPattern?: string
+  versionRoute?: (version: string) => RouteLocationRaw
   contextCommands?: CommandPaletteContextCommandInput[]
 }) {
   const groupedCommands = ref<CommandPaletteCommandGroup[]>([]) as Ref<CommandPaletteCommandGroup[]>
@@ -76,10 +77,7 @@ async function captureCommandPalette(options?: {
       if (options?.packageContext) {
         setPackageContext(options.packageContext)
         useCommandPalettePackageCommands(() => options.packageContext ?? null)
-        useCommandPaletteVersionCommands(
-          () => options.packageContext ?? null,
-          () => options.versionUrlPattern,
-        )
+        useCommandPaletteVersionCommands(() => options.packageContext ?? null, options.versionRoute)
       } else {
         clearPackageContext()
       }
@@ -232,6 +230,14 @@ describe('useCommandPaletteCommands', () => {
     expect(flatCommands.value.find(command => command.id === 'package-diff')).toBeTruthy()
     expect(flatCommands.value.find(command => command.id === 'package-download')).toBeTruthy()
     expect(flatCommands.value.find(command => command.id === 'package-main')?.to).toBeTruthy()
+    expect(flatCommands.value.find(command => command.id === 'package-timeline')?.to).toEqual({
+      name: 'timeline',
+      params: {
+        org: undefined,
+        packageName: 'vue',
+        version: '3.4.0',
+      },
+    })
     expect(groupedCommands.value.at(-1)?.id).toBe('versions')
     expect(groupedCommands.value.at(-1)?.items[0]?.id).toBe('version:3.4.0')
     expect(groupedCommands.value.at(-1)?.items[0]?.active).toBe(true)
@@ -345,7 +351,7 @@ describe('useCommandPaletteCommands', () => {
     wrapper.unmount()
   })
 
-  it('keeps version navigation on the current surface when a version URL pattern is provided', async () => {
+  it('keeps version navigation on the current surface when a version route builder is provided', async () => {
     const { wrapper, flatCommands, routePath } = await captureCommandPalette({
       route: '/package-code/vue/v/3.4.2/src/index.ts',
       packageContext: {
@@ -354,7 +360,7 @@ describe('useCommandPaletteCommands', () => {
         latestVersion: '4.0.0',
         versions: ['4.0.0', '3.5.0', '3.4.2'],
       },
-      versionUrlPattern: '/package-code/vue/v/{version}/src/index.ts',
+      versionRoute: version => `/package-code/vue/v/${version}/src/index.ts`,
     })
 
     const versionCommand = flatCommands.value.find(command => command.id === 'version:3.5.0')
@@ -511,6 +517,14 @@ describe('useCommandPaletteCommands', () => {
       name: 'docs',
       params: {
         path: ['@scope', 'pkg', 'v', '1.0.0'],
+      },
+    })
+    expect(flatCommands.value.find(command => command.id === 'package-timeline')?.to).toEqual({
+      name: 'timeline',
+      params: {
+        org: '@scope',
+        packageName: 'pkg',
+        version: '1.0.0',
       },
     })
 

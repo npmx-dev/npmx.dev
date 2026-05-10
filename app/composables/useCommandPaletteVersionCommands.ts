@@ -1,11 +1,14 @@
 // @unocss-include
-import type { MaybeRefOrGetter } from 'vue'
+import type { MaybeRef, MaybeRefOrGetter } from 'vue'
+import type { RouteLocationRaw } from 'vue-router'
 import type {
   CommandPaletteCommand,
   CommandPaletteContextCommandInput,
   CommandPalettePackageContext,
 } from '~/types/command-palette'
 import { compare, satisfies, validRange } from 'semver'
+
+type CommandPaletteVersionRoute = (version: string) => RouteLocationRaw
 
 function getSortedVersions(context: CommandPalettePackageContext) {
   return [...context.versions].sort((a, b) => {
@@ -19,7 +22,7 @@ function createVersionCommands(
   context: CommandPalettePackageContext,
   t: ReturnType<typeof useI18n>['t'],
   versions = getSortedVersions(context),
-  urlPattern?: string | null,
+  routeForVersion?: CommandPaletteVersionRoute | null,
 ): CommandPaletteCommand[] {
   return versions.map(version => ({
     id: `version:${version}`,
@@ -28,13 +31,13 @@ function createVersionCommands(
     keywords: [context.packageName, version, t('command_palette.groups.versions')],
     iconClass: 'i-lucide:tag',
     active: version === context.resolvedVersion,
-    to: urlPattern?.replace('{version}', version) ?? packageRoute(context.packageName, version),
+    to: routeForVersion?.(version) ?? packageRoute(context.packageName, version),
   }))
 }
 
 export function useCommandPaletteVersionCommands(
   context: MaybeRefOrGetter<CommandPalettePackageContext | null>,
-  urlPattern?: MaybeRefOrGetter<string | null | undefined>,
+  routeForVersion?: MaybeRef<CommandPaletteVersionRoute | null | undefined>,
 ) {
   const { t } = useI18n()
 
@@ -43,7 +46,7 @@ export function useCommandPaletteVersionCommands(
       const resolvedContext = toValue(context)
       if (!resolvedContext?.resolvedVersion) return []
 
-      return createVersionCommands(resolvedContext, t, undefined, toValue(urlPattern))
+      return createVersionCommands(resolvedContext, t, undefined, unref(routeForVersion))
     }),
   )
 
@@ -58,6 +61,6 @@ export function useCommandPaletteVersionCommands(
       satisfies(version, semverRange, { includePrerelease: true }),
     )
 
-    return createVersionCommands(resolvedContext, t, matchingVersions, toValue(urlPattern))
+    return createVersionCommands(resolvedContext, t, matchingVersions, unref(routeForVersion))
   })
 }
