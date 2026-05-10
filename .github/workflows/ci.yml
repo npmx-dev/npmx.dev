@@ -79,7 +79,9 @@ jobs:
         if: ${{ !cancelled() }}
         uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6
         with:
+          disable_search: true
           files: test-report.junit.xml
+          flags: unit
           report_type: test_results
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
@@ -90,6 +92,7 @@ jobs:
         with:
           disable_search: true
           files: coverage/clover.xml
+          flags: unit
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
@@ -117,7 +120,9 @@ jobs:
         if: ${{ !cancelled() }}
         uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6
         with:
+          disable_search: true
           files: test-report.junit.xml
+          flags: component
           report_type: test_results
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
@@ -128,6 +133,7 @@ jobs:
         with:
           disable_search: true
           files: coverage/clover.xml
+          flags: component
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
@@ -157,6 +163,18 @@ jobs:
 
       - name: 🖥️ Test project (browser)
         run: vp run test:browser:prebuilt
+
+      - name: ⬆︎ Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6
+        with:
+          disable_search: true
+          files: test-report.junit.xml
+          flags: browser
+          report_type: test_results
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      # TODO(serhalp): Upload browser *coverage* report once we've instrumented the prebuilt bundle
 
   a11y:
     name: ♿ Accessibility audit
