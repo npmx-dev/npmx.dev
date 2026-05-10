@@ -11,10 +11,7 @@ export default defineConfig<ConfigOptions>({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   reporter: process.env.CI
-    ? [
-        ['html'],
-        ['junit', { outputFile: 'test-report.junit.xml' }],
-      ]
+    ? [['html'], ['junit', { outputFile: 'test-report.junit.xml' }]]
     : 'html',
   timeout: 120_000,
   webServer: {
