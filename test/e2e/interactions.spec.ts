@@ -96,7 +96,7 @@ test.describe('Package Page', () => {
     await goto('/package/vue', { waitUntil: 'hydration' })
 
     const packageHeading = page.locator('h1').first()
-    await expect(packageHeading).toBeVisible({ timeout: 15000 })
+    await expect(packageHeading).toBeVisible({ timeout: 10000 })
 
     // Hover the parent of the heading to trigger the button's visibility
     await packageHeading.locator('..').hover()
