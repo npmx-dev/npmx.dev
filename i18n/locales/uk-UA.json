@@ -169,8 +169,8 @@
       "label": "{version}"
     },
     "status": {
-      "available_in_context": "{context}. Доступна {count} команда | {context}. Доступно {count} команди | {context}. Доступно {count} команд | {context}. Доступно {count} команди",
-      "matching_in_context": "{context}. {count} відповідна команда | {context}. {count} відповідні команди | {context}. {count} відповідних команд | {context}. {count} відповідні команди",
+      "available_in_context": "{context}. Доступна {count} команда | {context}. Доступні {count} команди | {context}. Доступно {count} команд",
+      "matching_in_context": "{context}. {count} відповідна команда | {context}. {count} відповідні команди | {context}. {count} відповідних команд",
       "no_matches_search_in_context": "{context}. Немає відповідних команд. Натисніть Enter, щоб шукати \"{query}\"."
     },
     "announcements": {
