@@ -118,12 +118,12 @@ test.describe('Package Page', () => {
 
     for (const { x, y } of points) {
       const isOnTop = await page.evaluate(
-        ({ x, y }) => {
-          const el = document.elementFromPoint(x, y)
+        ({ pointX, pointY }) => {
+          const el = document.elementFromPoint(pointX, pointY)
           // Ensure the element at this point is the button or contained within it
           return el?.closest('button[aria-label]') !== null
         },
-        { x, y },
+        { pointX: x, pointY: y },
       )
       expect(isOnTop, `Button is occluded at point (${x.toFixed(0)}, ${y.toFixed(0)})`).toBe(true)
     }
