@@ -20,7 +20,10 @@
     "chat": "聊天",
     "builders_chat": "构建者",
     "keyboard_shortcuts": "键盘快捷键",
-    "brand": "品牌"
+    "brand": "品牌",
+    "resources": "资源",
+    "features": "功能",
+    "other": "其它"
   },
   "shortcuts": {
     "section": {
@@ -42,7 +45,8 @@
     "open_docs": "打开文档",
     "disable_shortcuts": "你可以在{settings}中禁用快捷键。",
     "open_main": "查看主要信息",
-    "open_diff": "查看版本差异"
+    "open_diff": "查看版本差异",
+    "open_timeline": "时间线"
   },
   "search": {
     "label": "搜索 npm 包",
@@ -313,6 +317,7 @@
     "warnings": "警告：",
     "go_back_home": "返回首页",
     "per_week": "/ 周",
+    "per_week_short": "/周",
     "vanity_downloads_hint": "累计下载量：未显示包 | 累计下载量：显示的包 | 累计下载量：{count} 个显示的包的总和",
     "sort": {
       "name": "名称",
@@ -380,9 +385,18 @@
       "size": "安装大小增加了 {percent} (增大了 {size})",
       "deps": "{count} 个依赖项"
     },
+    "size_decrease": {
+      "title_size": "自 v{version} 起，包体积已减小！",
+      "title_deps": "自 v{version} 起，依赖数量已减少！",
+      "title_both": "自 v{version} 起，包体积和依赖数量均已减少！",
+      "size": "安装体积减少了 {percent}（缩小了 {size}）",
+      "deps": "减少了 {count} 个依赖"
+    },
     "replacement": {
       "title": "你可能不需要这个依赖。",
+      "example": "示例：",
       "native": "该功能自 Node.js {nodeVersion} 起已被内置，可直接使用 {replacement} 替代。",
+      "native_no_version": "此包可直接使用 {replacement} 替代。",
       "simple": "社区标记此包为冗余，建议替换为：{replacement}。",
       "documented": "社区标记此包存在性能更优的替代方案",
       "none": "此包已被标记为不再需要，其功能很可能已由所有引擎原生提供。",
@@ -433,11 +447,15 @@
       "docs": "文档",
       "fund": "资助",
       "compare": "比较",
+      "timeline": "时间线",
       "compare_this_package": "比较此包"
     },
     "likes": {
       "like": "点赞此包",
-      "unlike": "取消点赞"
+      "unlike": "取消点赞",
+      "top_rank_tooltip": "该包位列 npmx 点赞数前 10！（第 #{rank} 名）",
+      "top_rank_label": "第 #{rank} 名",
+      "top_rank_link_label": "查看点赞排行榜。该包当前排名第 #{rank}。"
     },
     "docs": {
       "contents": "目录",
@@ -478,7 +496,8 @@
         "warning": "警告",
         "caution": "当心"
       },
-      "copy_as_markdown": "复制为 Markdown"
+      "copy_as_markdown": "复制为 Markdown",
+      "error_loading": "加载 README 详情失败"
     },
     "provenance_section": {
       "title": "来源",
@@ -548,6 +567,9 @@
       "filter_help": "语义化版本范围过滤帮助",
       "filter_tooltip": "使用 {link} 过滤版本。例如，^3.0.0 显示所有 3.x 版本。",
       "filter_tooltip_link": "语义化版本范围",
+      "license_change_help": "许可证变更详情",
+      "license_change_warning": "与上一版本相比，许可证已发生变更。",
+      "license_change_record": "该包的许可证已从“{from}”变更为“{to}”。",
       "no_matches": "没有匹配此范围的版本",
       "copy_alt": {
         "per_version_analysis": "{version} （{downloads}次）",
@@ -556,6 +578,34 @@
       "page_title": "版本历史",
       "current_tags": "当前标签",
       "no_match_filter": "没有与“{filter}”匹配的版本"
+    },
+    "timeline": {
+      "load_more": "加载更多",
+      "load_error": "加载时间线失败，请稍后再试。",
+      "size_increase": "安装体积增加了 {percent}%（增加了 {size}）",
+      "size_decrease": "安装体积减少了 {percent}%（减少了 {size}）",
+      "dep_increase": "新增了 {count} 个依赖",
+      "dep_decrease": "移除了 {count} 个依赖",
+      "license_change": "许可证已从 {from} 变更为 {to}",
+      "esm_added": "模块类型已切换为 ESM",
+      "esm_removed": "模块类型已从 ESM 切换为 CJS",
+      "types_added": "已添加 TypeScript 类型支持",
+      "types_removed": "已移除 TypeScript 类型支持",
+      "trusted_publisher_added": "已启用可信发布",
+      "trusted_publisher_removed": "已移除可信发布",
+      "provenance_added": "已启用 Provenance",
+      "provenance_removed": "已移除 Provenance",
+      "chart": {
+        "tab_aria_label": "指标选择",
+        "base_scale": "Y 轴从 0 开始",
+        "zoom": "缩放",
+        "reset_minimap": "重置缩略图",
+        "copy_alt": {
+          "key_changes": "关键变更：{version_events}。",
+          "version_events": "版本 {version}：{events}",
+          "general_description": "折线图展示了 {package} 包从版本 {first} 到 {last} 的 {metric} 变化情况。版本 {first} 的 {metric} 为 {first_value}，版本 {last} 为 {last_value}（整体变化 {overall_progress_percentage}%）。{key_changes} {watermark}。"
+        }
+      }
     },
     "dependencies": {
       "title": "依赖（{count} 个）",
@@ -757,6 +807,16 @@
     "download": {
       "button": "下载",
       "tarball": "下载 Tarball 作为 .tar.gz"
+    }
+  },
+  "leaderboard": {
+    "likes": {
+      "title": "点赞排行榜",
+      "description": "当前 npmx 上点赞数最高的 10 个包。",
+      "rank": "排名",
+      "likes": "点赞数",
+      "unavailable_title": "暂无点赞排行榜",
+      "unavailable_description": "当前暂无可展示的点赞排行榜。"
     }
   },
   "connector": {
