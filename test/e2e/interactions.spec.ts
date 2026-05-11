@@ -101,7 +101,10 @@ test.describe('Package Page', () => {
     // Hover the parent of the heading to trigger the button's visibility
     await packageHeading.locator('..').hover()
 
-    const copyButton = page.locator('button[aria-label="copy"]').filter({ hasText: /copy/i }).first()
+    const copyButton = page
+      .locator('button[aria-label="copy"]')
+      .filter({ hasText: /copy/i })
+      .first()
     await expect(copyButton).toBeVisible({ timeout: 5000 })
 
     const box = await copyButton.boundingBox()
@@ -126,7 +129,10 @@ test.describe('Package Page', () => {
         },
         { pointX: x, pointY: y },
       )
-      expect(result.isOnTop, `Button is occluded at point (${x.toFixed(0)}, ${y.toFixed(0)}) by <${result.tagName} "${result.className}">`).toBe(true)
+      expect(
+        result.isOnTop,
+        `Button is occluded at point (${x.toFixed(0)}, ${y.toFixed(0)}) by <${result.tagName} "${result.className}">`,
+      ).toBe(true)
     }
   })
 })
