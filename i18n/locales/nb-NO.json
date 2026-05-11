@@ -567,6 +567,9 @@
       "filter_help": "Hjelp for semver-områdefilter",
       "filter_tooltip": "Filtrer versjoner ved hjelp av et {link}. For eksempel viser ^3.0.0 alle 3.x-versjoner.",
       "filter_tooltip_link": "semver-område",
+      "license_change_help": "Detaljer om lisensendring",
+      "license_change_warning": "Lisensen ble endret siden forrige versjon.",
+      "license_change_record": "Lisensen til denne pakken ble endret fra \"{from}\" til \"{to}\".",
       "no_matches": "Ingen versjoner matcher dette området",
       "copy_alt": {
         "per_version_analysis": "{version}-versjonen ble lastet ned {downloads} ganger",
@@ -591,7 +594,18 @@
       "trusted_publisher_added": "Pålitelig publisering aktivert",
       "trusted_publisher_removed": "Pålitelig publisering fjernet",
       "provenance_added": "Opprinnelse aktivert",
-      "provenance_removed": "Opprinnelse fjernet"
+      "provenance_removed": "Opprinnelse fjernet",
+      "chart": {
+        "tab_aria_label": "Valg av måleparameter",
+        "base_scale": "start y-aksen på null",
+        "zoom": "zoom",
+        "reset_minimap": "tilbakestill minikart",
+        "copy_alt": {
+          "key_changes": "Viktige endringer: {version_events}.",
+          "version_events": "versjon {version}: {events}",
+          "general_description": "Linjediagram som viser {metric} for {package}-pakken, fra versjon {first} til {last}. {metric} i versjon {first} er {first_value}, i versjon {last} er {last_value} ({overall_progress_percentage}% totalt). {key_changes} {watermark}."
+        }
+      }
     },
     "dependencies": {
       "title": "Avhengighet ({count}) | Avhengigheter ({count})",
