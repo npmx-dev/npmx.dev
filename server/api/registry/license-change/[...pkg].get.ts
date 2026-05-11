@@ -41,6 +41,13 @@ export default defineCachedEventHandler(
       const currentVersionIndex =
         version === 'latest' ? versions.length - 1 : versions.findIndex(v => v.version === version)
 
+      if (currentVersionIndex === -1) {
+        throw createError({
+          statusCode: 400,
+          statusMessage: `Version ${version} not found`,
+        })
+      }
+
       const previousVersionIndex = currentVersionIndex - 1
       if (previousVersionIndex < 0) {
         return { change }
