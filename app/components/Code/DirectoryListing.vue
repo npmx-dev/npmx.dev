@@ -106,9 +106,11 @@ const bytesFormatter = useBytesFormatter()
           <td colspan="2">
             <LinkBase
               :to="getCodeRoute(node.path)"
-              :aria-label="isPossiblyUnnecessaryContent(node.name, node.type)
-                ? `${node.name} - ${t('code.possibly_unnecessary')}`
-                : undefined"
+              :aria-label="
+                isPossiblyUnnecessaryContent(node.name, node.type)
+                  ? `${node.name} - ${t('code.possibly_unnecessary')}`
+                  : undefined
+              "
               class="py-2 px-4 font-mono text-sm w-full"
               no-underline
             >

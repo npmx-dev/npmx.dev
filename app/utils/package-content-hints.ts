@@ -53,10 +53,7 @@ const POSSIBLY_UNNECESSARY_PATTERNS: readonly RegExp[] = [
   /^\.oxfmtrc(?:\.(?:json|js|cjs|yml|yaml))?$/,
 ]
 
-export function isPossiblyUnnecessaryContent(
-  name: string,
-  type: 'file' | 'directory',
-): boolean {
+export function isPossiblyUnnecessaryContent(name: string, type: 'file' | 'directory'): boolean {
   if (type === 'directory') {
     return POSSIBLY_UNNECESSARY_DIRECTORIES.has(name)
   }

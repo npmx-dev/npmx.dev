@@ -59,9 +59,11 @@ watch(
           class="w-full justify-start! rounded-none! border-none! transition-[color,background-color]! duration-100!"
           block
           :aria-pressed="isNodeActive(node)"
-          :aria-label="isPossiblyUnnecessaryContent(node.name, 'directory')
-            ? `${node.name} - ${t('code.possibly_unnecessary')}`
-            : undefined"
+          :aria-label="
+            isPossiblyUnnecessaryContent(node.name, 'directory')
+              ? `${node.name} - ${t('code.possibly_unnecessary')}`
+              : undefined
+          "
           :style="{ paddingLeft: `${depth * 12 + 12}px` }"
           @click="toggleDir(node.path)"
           :classicon="isExpanded(node.path) ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'"
@@ -100,9 +102,11 @@ watch(
           variant="button-secondary"
           :to="getFileRoute(node.path)"
           :aria-current="currentPath === node.path"
-          :aria-label="isPossiblyUnnecessaryContent(node.name, 'file')
-            ? `${node.name} - ${t('code.possibly_unnecessary')}`
-            : undefined"
+          :aria-label="
+            isPossiblyUnnecessaryContent(node.name, 'file')
+              ? `${node.name} - ${t('code.possibly_unnecessary')}`
+              : undefined
+          "
           class="w-full justify-start! rounded-none! border-none! transition-[color,background-color]! duration-100!"
           block
           :style="{ paddingLeft: `${depth * 12 + 32}px` }"
