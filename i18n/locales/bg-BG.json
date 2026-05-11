@@ -737,7 +737,8 @@
       "preview": "преглед",
       "code": "код"
     },
-    "file_path": "Път към файл"
+    "file_path": "Път към файл",
+    "possibly_unnecessary": "May be unnecessary in a published package"
   },
   "badges": {
     "provenance": {

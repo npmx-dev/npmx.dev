@@ -964,7 +964,8 @@
     },
     "file_path": "Bestand pad",
     "binary_file": "Binair bestand",
-    "binary_rendering_warning": "Bestand type \"{contentType}\" wordt niet ondersteund om te weergeven."
+    "binary_rendering_warning": "Bestand type \"{contentType}\" wordt niet ondersteund om te weergeven.",
+    "possibly_unnecessary": "May be unnecessary in a published package"
   },
   "badges": {
     "provenance": {

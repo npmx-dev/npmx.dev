@@ -790,7 +790,8 @@
       "preview": "podgląd",
       "code": "kod"
     },
-    "file_path": "Ścieżka pliku"
+    "file_path": "Ścieżka pliku",
+    "possibly_unnecessary": "May be unnecessary in a published package"
   },
   "badges": {
     "provenance": {

@@ -1011,7 +1011,8 @@
     },
     "file_path": "Caminho do ficheiro",
     "binary_file": "Ficheiro binário",
-    "binary_rendering_warning": "Tipo de ficheiro \"{contentType}\" não suportado para pré-visualização."
+    "binary_rendering_warning": "Tipo de ficheiro \"{contentType}\" não suportado para pré-visualização.",
+    "possibly_unnecessary": "May be unnecessary in a published package"
   },
   "badges": {
     "provenance": {

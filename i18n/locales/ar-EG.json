@@ -230,7 +230,8 @@
   },
   "code": {
     "binary_file": "ملف ثنائي",
-    "binary_rendering_warning": "لا يمكن عرض هذا الملف الثنائي في المتصفح"
+    "binary_rendering_warning": "لا يمكن عرض هذا الملف الثنائي في المتصفح",
+    "possibly_unnecessary": "May be unnecessary in a published package"
   },
   "filters": {
     "view_selected": "عرض المحدد",

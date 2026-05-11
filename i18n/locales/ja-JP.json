@@ -790,7 +790,8 @@
       "preview": "プレビュー",
       "code": "コード"
     },
-    "file_path": "ファイルパス"
+    "file_path": "ファイルパス",
+    "possibly_unnecessary": "May be unnecessary in a published package"
   },
   "badges": {
     "provenance": {

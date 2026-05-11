@@ -672,7 +672,8 @@
       "preview": "معاينة",
       "code": "الكود"
     },
-    "file_path": "مسار الملف"
+    "file_path": "مسار الملف",
+    "possibly_unnecessary": "May be unnecessary in a published package"
   },
   "badges": {
     "provenance": {

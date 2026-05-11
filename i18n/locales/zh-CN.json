@@ -1025,7 +1025,8 @@
     },
     "file_path": "文件路径",
     "binary_file": "二进制文件",
-    "binary_rendering_warning": "暂不支持预览“{contentType}”类型的文件。"
+    "binary_rendering_warning": "暂不支持预览“{contentType}”类型的文件。",
+    "possibly_unnecessary": "May be unnecessary in a published package"
   },
   "badges": {
     "provenance": {

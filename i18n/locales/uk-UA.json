@@ -843,7 +843,8 @@
     },
     "file_path": "Шлях до файлу",
     "binary_file": "Бінарний файл",
-    "binary_rendering_warning": "Перегляд для даного типу файлів не підтримується"
+    "binary_rendering_warning": "Перегляд для даного типу файлів не підтримується",
+    "possibly_unnecessary": "May be unnecessary in a published package"
   },
   "badges": {
     "provenance": {

@@ -846,7 +846,8 @@
     },
     "file_path": "Ruta del archivo",
     "binary_file": "Archivo binario",
-    "binary_rendering_warning": "Tipo de archivo no compatible para vista previa."
+    "binary_rendering_warning": "Tipo de archivo no compatible para vista previa.",
+    "possibly_unnecessary": "May be unnecessary in a published package"
   },
   "badges": {
     "provenance": {

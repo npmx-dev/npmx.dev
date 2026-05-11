@@ -997,7 +997,8 @@
     },
     "file_path": "Caminho do arquivo",
     "binary_file": "Arquivo binário",
-    "binary_rendering_warning": "Tipo de arquivo não suportado para visualização."
+    "binary_rendering_warning": "Tipo de arquivo não suportado para visualização.",
+    "possibly_unnecessary": "May be unnecessary in a published package"
   },
   "badges": {
     "provenance": {

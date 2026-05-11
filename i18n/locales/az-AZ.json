@@ -776,7 +776,8 @@
       "preview": "önbaxış",
       "code": "kod"
     },
-    "file_path": "Fayl yolu"
+    "file_path": "Fayl yolu",
+    "possibly_unnecessary": "May be unnecessary in a published package"
   },
   "badges": {
     "provenance": {

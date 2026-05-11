@@ -963,7 +963,8 @@
     },
     "file_path": "檔案路徑",
     "binary_file": "二進位檔案",
-    "binary_rendering_warning": "檔案類型 \"{contentType}\" 不支援預覽。"
+    "binary_rendering_warning": "檔案類型 \"{contentType}\" 不支援預覽。",
+    "possibly_unnecessary": "May be unnecessary in a published package"
   },
   "badges": {
     "provenance": {

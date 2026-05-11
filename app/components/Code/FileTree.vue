@@ -2,6 +2,7 @@
 import type { RouteLocationRaw } from 'vue-router'
 import type { RouteNamedMap } from 'vue-router/auto-routes'
 import { ADDITIONAL_ICONS, getFileIcon } from '~/utils/file-icons'
+import { isPossiblyUnnecessaryContent } from '~/utils/package-content-hints'
 
 const props = defineProps<{
   tree: PackageFileTree[]
@@ -10,6 +11,8 @@ const props = defineProps<{
   baseRoute: Pick<RouteNamedMap['code'], 'params'>
   depth?: number
 }>()
+
+const { t } = useI18n()
 
 const depth = computed(() => props.depth ?? 0)
 
@@ -56,6 +59,9 @@ watch(
           class="w-full justify-start! rounded-none! border-none! transition-[color,background-color]! duration-100!"
           block
           :aria-pressed="isNodeActive(node)"
+          :aria-label="isPossiblyUnnecessaryContent(node.name, 'directory')
+            ? `${node.name} - ${t('code.possibly_unnecessary')}`
+            : undefined"
           :style="{ paddingLeft: `${depth * 12 + 12}px` }"
           @click="toggleDir(node.path)"
           :classicon="isExpanded(node.path) ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'"
@@ -71,6 +77,12 @@ watch(
             />
           </svg>
           <span class="truncate">{{ node.name }}</span>
+          <span
+            v-if="isPossiblyUnnecessaryContent(node.name, 'directory')"
+            class="i-lucide:info size-[0.85em] ms-1 shrink-0 text-amber-600 dark:text-amber-400"
+            aria-hidden="true"
+            :title="t('code.possibly_unnecessary')"
+          />
         </ButtonBase>
         <CodeFileTree
           v-if="isExpanded(node.path) && node.children"
@@ -88,6 +100,9 @@ watch(
           variant="button-secondary"
           :to="getFileRoute(node.path)"
           :aria-current="currentPath === node.path"
+          :aria-label="isPossiblyUnnecessaryContent(node.name, 'file')
+            ? `${node.name} - ${t('code.possibly_unnecessary')}`
+            : undefined"
           class="w-full justify-start! rounded-none! border-none! transition-[color,background-color]! duration-100!"
           block
           :style="{ paddingLeft: `${depth * 12 + 32}px` }"
@@ -96,6 +111,12 @@ watch(
             <use :href="`/file-tree-sprite.svg#${getFileIcon(node.name)}`" />
           </svg>
           <span class="truncate">{{ node.name }}</span>
+          <span
+            v-if="isPossiblyUnnecessaryContent(node.name, 'file')"
+            class="i-lucide:info size-[0.85em] ms-1 shrink-0 text-amber-600 dark:text-amber-400"
+            aria-hidden="true"
+            :title="t('code.possibly_unnecessary')"
+          />
         </LinkBase>
       </template>
     </li>

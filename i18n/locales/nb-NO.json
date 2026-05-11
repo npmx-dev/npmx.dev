@@ -1011,7 +1011,8 @@
     },
     "file_path": "Filsti",
     "binary_file": "Binærfil",
-    "binary_rendering_warning": "Filtypen «{contentType}» støttes ikke for forhåndsvisning."
+    "binary_rendering_warning": "Filtypen «{contentType}» støttes ikke for forhåndsvisning.",
+    "possibly_unnecessary": "May be unnecessary in a published package"
   },
   "badges": {
     "provenance": {
