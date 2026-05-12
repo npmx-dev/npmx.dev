@@ -191,7 +191,7 @@ describe('license-change API', () => {
 
     const result = await handler(fakeEvent)
     expect(result.change).toEqual({
-      from: '[object Object]',
+      from: 'Apache-2.0',
       to: 'ISC',
     })
   })
