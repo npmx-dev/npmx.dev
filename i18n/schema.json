@@ -4393,6 +4393,15 @@
         "diff_distance": {
           "type": "string"
         },
+        "diff_truncated": {
+          "type": "string"
+        },
+        "large_diff_mode": {
+          "type": "string"
+        },
+        "large_diff_options_disabled": {
+          "type": "string"
+        },
         "loading_diff": {
           "type": "string"
         },
