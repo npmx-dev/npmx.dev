@@ -254,8 +254,8 @@ importers:
         specifier: 3.5.34
         version: 3.5.34(typescript@6.0.2)
       vue-data-ui:
-        specifier: 3.19.4
-        version: 3.19.4(vue@3.5.34)
+        specifier: 3.19.6
+        version: 3.19.6(vue@3.5.34)
       vue-router:
         specifier: 5.0.4
         version: 5.0.4(@vue/compiler-sfc@3.5.34)(vue@3.5.34)
@@ -11362,8 +11362,8 @@ packages:
   vue-component-type-helpers@3.2.8:
     resolution: {integrity: sha512-9689efAXhN/EV86plgkL/XFiJSXhGtWPG6JDboZ+QnjlUWUUQrQ0ILKQtw4iQsuwIwu5k6Aw+JnehDe7161e7A==}
 
-  vue-data-ui@3.19.4:
-    resolution: {integrity: sha512-kp12dZnHWCwCczscGbmwec9rjtCFqYFDO5Abenpn2mKaZUUNWrMwnoCVwYtdu8LeBBhs/JQLX7Ty6OjlK05kag==}
+  vue-data-ui@3.19.6:
+    resolution: {integrity: sha512-b2S9RjAqWSdPmdSb0TjBNXkto1xfw5UwVZmsuQsTV8qOatAhsGnDnoMIvgcfw2kzJ54IRSZauoFOQ9g9V/bdbg==}
     peerDependencies:
       jspdf: '>=3.0.1'
       vue: '>=3.3.0'
@@ -24135,7 +24135,7 @@ snapshots:
 
   vue-component-type-helpers@3.2.8: {}
 
-  vue-data-ui@3.19.4(vue@3.5.34):
+  vue-data-ui@3.19.6(vue@3.5.34):
     dependencies:
       vue: 3.5.34(typescript@6.0.2)
 
