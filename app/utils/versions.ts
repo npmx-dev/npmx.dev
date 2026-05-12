@@ -40,6 +40,21 @@ export function parseVersion(version: string): ParsedVersion {
 }
 
 /**
+ * Parse a semver stable version string into its components
+ * @param version - The version string (e.g., "1.2.3" or "1.0.0-beta.1")
+ * @returns Parsed version object with major, minor, patch or null
+ */
+export function parseStableVersion(version: string): Omit<ParsedVersion, 'prerelease'> | null {
+  const match = version.match(/^v?(\d+)\.(\d+)\.(\d+)(?:\+[\w.-]+)?$/)
+  if (!match) return null
+  return {
+    major: Number(match[1]),
+    minor: Number(match[2]),
+    patch: Number(match[3]),
+  }
+}
+
+/**
  * Extract the prerelease channel from a version string
  * @param version - The version string (e.g., "1.0.0-beta.1")
  * @returns The channel name (e.g., "beta") or empty string for stable versions
