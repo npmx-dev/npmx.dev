@@ -24,9 +24,10 @@ export interface ParsedVersion {
 }
 
 /**
- * Parse a semver version string into its components
- * @param version - The version string (e.g., "1.2.3" or "1.0.0-beta.1")
- * @returns Parsed version object with major, minor, patch, and prerelease
+ * Parse a semver stable version string into its components
+ * `@param` version - The version string (e.g., "1.2.3")
+ * `@returns` Parsed version object with major, minor, patch, or null for
+ *   invalid versions and for prerelease versions (e.g., "1.0.0-beta.1")
  */
 export function parseVersion(version: string): ParsedVersion {
   const parsedVersion = parse(version)
