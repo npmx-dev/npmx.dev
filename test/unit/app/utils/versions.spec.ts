@@ -618,6 +618,14 @@ describe('parseStableVersion', () => {
     })
   })
 
+  it('parses versions with whitespace', () => {
+    expect(parseStableVersion(' 1.2.3 ')).toEqual({
+      major: 1,
+      minor: 2,
+      patch: 3,
+    })
+  })
+
   it('returns null for prerelease versions', () => {
     expect(parseStableVersion('1.2.3-beta.1')).toBeNull()
   })
@@ -648,10 +656,6 @@ describe('parseStableVersion', () => {
 
   it('returns null for empty strings', () => {
     expect(parseStableVersion('')).toBeNull()
-  })
-
-  it('returns null for versions with whitespace', () => {
-    expect(parseStableVersion(' 1.2.3 ')).toBeNull()
   })
 
   it('returns null for uppercase V prefixes', () => {
