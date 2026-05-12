@@ -737,8 +737,7 @@
       "preview": "előnézet",
       "code": "kód"
     },
-    "file_path": "Fájl elérési útja",
-    "possibly_unnecessary": "May be unnecessary in a published package"
+    "file_path": "Fájl elérési útja"
   },
   "badges": {
     "provenance": {

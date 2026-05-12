@@ -806,8 +806,7 @@
     },
     "file_path": "फाइल मार्ग",
     "binary_file": "बायनरी फाइल",
-    "binary_rendering_warning": "\"{contentType}\" फाइल प्रकार पूर्वावलोकनासाठी समर्थित नाही.",
-    "possibly_unnecessary": "May be unnecessary in a published package"
+    "binary_rendering_warning": "\"{contentType}\" फाइल प्रकार पूर्वावलोकनासाठी समर्थित नाही."
   },
   "badges": {
     "provenance": {

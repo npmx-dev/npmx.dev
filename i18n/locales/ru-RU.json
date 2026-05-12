@@ -985,8 +985,7 @@
     },
     "file_path": "Путь к файлу",
     "binary_file": "Бинарный файл",
-    "binary_rendering_warning": "Предпросмотр для типа «{contentType}» не поддерживается.",
-    "possibly_unnecessary": "May be unnecessary in a published package"
+    "binary_rendering_warning": "Предпросмотр для типа «{contentType}» не поддерживается."
   },
   "badges": {
     "provenance": {

@@ -779,8 +779,7 @@
       "preview": "önizleme",
       "code": "kod"
     },
-    "file_path": "Dosya yolu",
-    "possibly_unnecessary": "May be unnecessary in a published package"
+    "file_path": "Dosya yolu"
   },
   "badges": {
     "provenance": {

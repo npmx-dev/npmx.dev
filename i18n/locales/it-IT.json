@@ -655,8 +655,7 @@
       "preview": "anteprima",
       "code": "codice"
     },
-    "file_path": "Percorso del file",
-    "possibly_unnecessary": "May be unnecessary in a published package"
+    "file_path": "Percorso del file"
   },
   "badges": {
     "provenance": {

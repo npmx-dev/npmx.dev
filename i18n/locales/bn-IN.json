@@ -566,8 +566,7 @@
       "preview": "প্রিভিউ",
       "code": "কোড"
     },
-    "file_path": "ফাইল পাথ",
-    "possibly_unnecessary": "May be unnecessary in a published package"
+    "file_path": "ফাইল পাথ"
   },
   "badges": {
     "provenance": {

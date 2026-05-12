@@ -12,8 +12,6 @@ const props = defineProps<{
   depth?: number
 }>()
 
-const { t } = useI18n()
-
 const depth = computed(() => props.depth ?? 0)
 
 // Check if a node or any of its children is currently selected
@@ -61,7 +59,7 @@ watch(
           :aria-pressed="isNodeActive(node)"
           :aria-label="
             isPossiblyUnnecessaryContent(node.name, 'directory')
-              ? `${node.name} - ${t('code.possibly_unnecessary')}`
+              ? `${node.name} - ${$t('code.possibly_unnecessary')}`
               : undefined
           "
           :style="{ paddingLeft: `${depth * 12 + 12}px` }"
@@ -83,7 +81,7 @@ watch(
             v-if="isPossiblyUnnecessaryContent(node.name, 'directory')"
             class="i-lucide:info size-[0.85em] ms-1 shrink-0 text-amber-600 dark:text-amber-400"
             aria-hidden="true"
-            :title="t('code.possibly_unnecessary')"
+            :title="$t('code.possibly_unnecessary')"
           />
         </ButtonBase>
         <CodeFileTree
@@ -104,7 +102,7 @@ watch(
           :aria-current="currentPath === node.path"
           :aria-label="
             isPossiblyUnnecessaryContent(node.name, 'file')
-              ? `${node.name} - ${t('code.possibly_unnecessary')}`
+              ? `${node.name} - ${$t('code.possibly_unnecessary')}`
               : undefined
           "
           class="w-full justify-start! rounded-none! border-none! transition-[color,background-color]! duration-100!"
@@ -119,7 +117,7 @@ watch(
             v-if="isPossiblyUnnecessaryContent(node.name, 'file')"
             class="i-lucide:info size-[0.85em] ms-1 shrink-0 text-amber-600 dark:text-amber-400"
             aria-hidden="true"
-            :title="t('code.possibly_unnecessary')"
+            :title="$t('code.possibly_unnecessary')"
           />
         </LinkBase>
       </template>

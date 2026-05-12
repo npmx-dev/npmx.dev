@@ -552,8 +552,7 @@
       "preview": "preview",
       "code": "code"
     },
-    "file_path": "फाइल पथ",
-    "possibly_unnecessary": "May be unnecessary in a published package"
+    "file_path": "फाइल पथ"
   },
   "badges": {
     "provenance": {

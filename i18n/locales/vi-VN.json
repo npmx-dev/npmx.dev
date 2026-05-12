@@ -843,8 +843,7 @@
     },
     "file_path": "Đường dẫn tệp",
     "binary_file": "Tệp binary",
-    "binary_rendering_warning": "Loại tệp \"{contentType}\" không hỗ trợ xem trước.",
-    "possibly_unnecessary": "May be unnecessary in a published package"
+    "binary_rendering_warning": "Loại tệp \"{contentType}\" không hỗ trợ xem trước."
   },
   "badges": {
     "provenance": {

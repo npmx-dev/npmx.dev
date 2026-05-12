@@ -965,8 +965,7 @@
     },
     "file_path": "Cesta k souboru",
     "binary_file": "Binární soubor",
-    "binary_rendering_warning": "Náhled pro typy souborů \"{contentType}\" není k dispozici.",
-    "possibly_unnecessary": "May be unnecessary in a published package"
+    "binary_rendering_warning": "Náhled pro typy souborů \"{contentType}\" není k dispozici."
   },
   "badges": {
     "provenance": {

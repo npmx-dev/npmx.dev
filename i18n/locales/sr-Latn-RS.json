@@ -843,8 +843,7 @@
     },
     "file_path": "Putanja datoteke",
     "binary_file": "Binarna datoteka",
-    "binary_rendering_warning": "Tip datoteke \"{contentType}\" nije podržan za pregled.",
-    "possibly_unnecessary": "May be unnecessary in a published package"
+    "binary_rendering_warning": "Tip datoteke \"{contentType}\" nije podržan za pregled."
   },
   "badges": {
     "provenance": {

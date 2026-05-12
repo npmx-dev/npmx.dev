@@ -964,8 +964,7 @@
     },
     "file_path": "Dateipfad",
     "binary_file": "Binärdatei",
-    "binary_rendering_warning": "Dateityp „{contentType}“ wird für die Vorschau nicht unterstützt.",
-    "possibly_unnecessary": "May be unnecessary in a published package"
+    "binary_rendering_warning": "Dateityp „{contentType}“ wird für die Vorschau nicht unterstützt."
   },
   "badges": {
     "provenance": {

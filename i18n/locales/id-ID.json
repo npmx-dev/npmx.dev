@@ -846,8 +846,7 @@
     },
     "file_path": "Path file",
     "binary_file": "File biner",
-    "binary_rendering_warning": "File ini adalah file biner dan tidak dapat ditampilkan sebagai teks.",
-    "possibly_unnecessary": "May be unnecessary in a published package"
+    "binary_rendering_warning": "File ini adalah file biner dan tidak dapat ditampilkan sebagai teks."
   },
   "badges": {
     "provenance": {

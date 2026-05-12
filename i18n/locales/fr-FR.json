@@ -1010,8 +1010,7 @@
     "open_path_dropdown": "Ouvrir le menu du chemin",
     "file_path": "Chemin du fichier",
     "binary_file": "Fichier binaire",
-    "binary_rendering_warning": "Le type de fichier \"{contentType}\" n'est pas pris en charge pour l'aperçu.",
-    "possibly_unnecessary": "May be unnecessary in a published package"
+    "binary_rendering_warning": "Le type de fichier \"{contentType}\" n'est pas pris en charge pour l'aperçu."
   },
   "badges": {
     "provenance": {
