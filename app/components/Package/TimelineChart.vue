@@ -400,7 +400,7 @@ const config = computed<VueUiXyConfig>(() => {
           },
           altCopy: () =>
             copyAltTextForTimelineChart({
-              dataset: convertedData.value,
+              dataset: orderedConvertedData.value,
               config: {
                 packageName: packageName.value,
                 metric: activeTab.value,
