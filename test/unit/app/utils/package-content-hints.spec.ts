@@ -51,6 +51,15 @@ describe('isPossiblyUnnecessaryContent', () => {
     expect(isPossiblyUnnecessaryContent('.oxfmtrc.json', 'file')).toBe(true)
   })
 
+  it('matches common dot-prefixed configuration patterns without over-flagging', () => {
+    expect(isPossiblyUnnecessaryContent('.babelrc', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('.stylelintrc.json', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('.browserslistrc', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('.tailwind.config.js', 'file')).toBe(true)
+    // .npmrc is sometimes an intentional shipped artifact; do not flag it.
+    expect(isPossiblyUnnecessaryContent('.npmrc', 'file')).toBe(false)
+  })
+
   it('flags editor and CI directories', () => {
     expect(isPossiblyUnnecessaryContent('.vscode', 'directory')).toBe(true)
     expect(isPossiblyUnnecessaryContent('.claude', 'directory')).toBe(true)
@@ -63,6 +72,8 @@ describe('isPossiblyUnnecessaryContent', () => {
     expect(isPossiblyUnnecessaryContent('test', 'directory')).toBe(true)
     expect(isPossiblyUnnecessaryContent('tests', 'directory')).toBe(true)
     expect(isPossiblyUnnecessaryContent('__tests__', 'directory')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('__mocks__', 'directory')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('__snapshots__', 'directory')).toBe(true)
     expect(isPossiblyUnnecessaryContent('spec', 'directory')).toBe(true)
     expect(isPossiblyUnnecessaryContent('specs', 'directory')).toBe(true)
   })

@@ -125,7 +125,15 @@ const bytesFormatter = useBytesFormatter()
                 />
               </svg>
               <span class="w-full flex justify-self-stretch items-center gap-2">
-                <span class="flex-1">{{ node.name }}</span>
+                <span
+                  class="flex-1"
+                  :class="
+                    isPossiblyUnnecessaryContent(node.name, node.type)
+                      ? 'text-yellow-600 dark:text-yellow-400'
+                      : undefined
+                  "
+                  >{{ node.name }}</span
+                >
                 <span
                   v-if="isPossiblyUnnecessaryContent(node.name, node.type)"
                   class="i-lucide:info size-[0.85em] shrink-0 text-amber-600 dark:text-amber-400"

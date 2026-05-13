@@ -76,7 +76,15 @@ watch(
               :href="`/file-tree-sprite.svg#${isExpanded(node.path) ? ADDITIONAL_ICONS['folder-open'] : ADDITIONAL_ICONS['folder']}`"
             />
           </svg>
-          <span class="truncate">{{ node.name }}</span>
+          <span
+            class="truncate"
+            :class="
+              isPossiblyUnnecessaryContent(node.name, 'directory')
+                ? 'text-yellow-600 dark:text-yellow-400'
+                : undefined
+            "
+            >{{ node.name }}</span
+          >
           <span
             v-if="isPossiblyUnnecessaryContent(node.name, 'directory')"
             class="i-lucide:info size-[0.85em] ms-1 shrink-0 text-amber-600 dark:text-amber-400"
@@ -112,7 +120,15 @@ watch(
           <svg class="size-[1em] me-1 shrink-0" viewBox="0 0 16 16" aria-hidden="true">
             <use :href="`/file-tree-sprite.svg#${getFileIcon(node.name)}`" />
           </svg>
-          <span class="truncate">{{ node.name }}</span>
+          <span
+            class="truncate"
+            :class="
+              isPossiblyUnnecessaryContent(node.name, 'file')
+                ? 'text-yellow-600 dark:text-yellow-400'
+                : undefined
+            "
+            >{{ node.name }}</span
+          >
           <span
             v-if="isPossiblyUnnecessaryContent(node.name, 'file')"
             class="i-lucide:info size-[0.85em] ms-1 shrink-0 text-amber-600 dark:text-amber-400"
