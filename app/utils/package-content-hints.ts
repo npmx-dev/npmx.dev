@@ -42,9 +42,7 @@ const POSSIBLY_UNNECESSARY_DIRECTORIES: ReadonlySet<string> = new Set([
   'specs',
 ])
 
-const POSSIBLY_UNNECESSARY_DIRECTORY_PATTERNS: readonly RegExp[] = [
-  /^__.+__$/,
-]
+const POSSIBLY_UNNECESSARY_DIRECTORY_PATTERNS: readonly RegExp[] = [/^__.+__$/]
 
 const POSSIBLY_UNNECESSARY_PATTERNS: readonly RegExp[] = [
   /^eslint\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
@@ -58,7 +56,7 @@ const POSSIBLY_UNNECESSARY_PATTERNS: readonly RegExp[] = [
   // Match common dot-prefixed config files without flagging all dotfiles;
   // files like .npmrc, .npmignore, and .gitkeep can be intentional artifacts.
   /^\.(?!npmrc$)[a-z][a-z0-9_-]*rc$/,
-  /^\.(?!npmrc\.)(?:[a-z][a-z0-9_-]*rc)\.(?:json|js|cjs|mjs|yml|yaml|toml)$/,
+  /^\.(?!npmrc\.)[a-z][a-z0-9_-]*rc\.(?:json|js|cjs|mjs|yml|yaml|toml)$/,
   /^\.[a-z][a-z0-9_-]*\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
 ]
 
