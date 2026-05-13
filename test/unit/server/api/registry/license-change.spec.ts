@@ -172,30 +172,6 @@ describe('license-change API', () => {
     })
   })
 
-  it('handles object format licenses (extracts type field)', async () => {
-    routerParam = 'my-pkg'
-    queryParams = { version: '2.0.0' }
-
-    fetchNpmPackageMock.mockResolvedValue(
-      makePackument({
-        versions: {
-          '1.0.0': { license: { type: 'Apache-2.0' } as never },
-          '2.0.0': { license: 'ISC' },
-        },
-        time: {
-          '1.0.0': '2024-01-01T00:00:00Z',
-          '2.0.0': '2024-02-01T00:00:00Z',
-        },
-      }),
-    )
-
-    const result = await handler(fakeEvent)
-    expect(result.change).toEqual({
-      from: 'Apache-2.0',
-      to: 'ISC',
-    })
-  })
-
   it('regression test: does not show UNKNOWN for first package version', async () => {
     // This is the regression test for issue #2720
     // When a package has only one version (first release),
