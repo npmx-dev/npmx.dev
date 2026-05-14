@@ -79,8 +79,8 @@ function getDepVersionTooltip(dep: string, version: string) {
 function getDepVersionClass(dep: string) {
   const outdated = outdatedDeps.value[dep]
   if (outdated) return getVersionClass(outdated)
-  if (getVulnerableDepInfo(dep) || getDeprecatedDepInfo(dep)) return getVersionClass(undefined)
   if (replacementDeps.value[dep]) return 'text-amber-700 dark:text-amber-500'
+  if (getVulnerableDepInfo(dep) || getDeprecatedDepInfo(dep)) return getVersionClass(undefined)
   return getVersionClass(undefined)
 }
 
