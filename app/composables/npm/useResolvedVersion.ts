@@ -13,6 +13,11 @@ export function useResolvedVersion(
         ? `https://npm.antfu.dev/${name}@${version}`
         : `https://npm.antfu.dev/${name}`
       const data = await $fetch<ResolvedPackageVersion>(url)
+
+      if (data.version === '0.0.0') {
+        throw createError({ statusCode: 404, message: 'Package not found' })
+      }
+
       return data.version
     },
     { default: () => undefined },
