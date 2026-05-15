@@ -20,6 +20,7 @@ import type { TimelineVersion, SubEvent } from '~~/server/api/registry/timeline/
 import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
 import { useChartTooltipPosition } from '~/composables/useChartTooltipPosition'
 import { useColors } from '~/composables/useColors'
+import { parseStableVersion } from '~/utils/versions'
 
 import('vue-data-ui/style.css')
 
@@ -86,8 +87,44 @@ const convertedData = computed(() => {
   return addEvaluationFlags(entries, props.versionSubEvents).toReversed()
 })
 
+type StableVersion = {
+  major: number
+  minor: number
+  patch: number
+}
+
+const orderedConvertedData = computed(() => {
+  if (!settings.value.timelineChart.isOrdered) {
+    return convertedData.value
+  }
+
+  // Hide pre-releases and reorder stable versions semantically
+  return convertedData.value
+    .map(entry => ({
+      entry,
+      parsedVersion: parseStableVersion(entry.version),
+    }))
+    .filter(
+      (
+        item,
+      ): item is { entry: (typeof convertedData.value)[number]; parsedVersion: StableVersion } => {
+        return item.parsedVersion !== null
+      },
+    )
+    .toSorted((a, b) => {
+      if (a.parsedVersion.major !== b.parsedVersion.major) {
+        return a.parsedVersion.major - b.parsedVersion.major
+      }
+      if (a.parsedVersion.minor !== b.parsedVersion.minor) {
+        return a.parsedVersion.minor - b.parsedVersion.minor
+      }
+      return a.parsedVersion.patch - b.parsedVersion.patch
+    })
+    .map(item => item.entry)
+})
+
 watch(
-  convertedData,
+  orderedConvertedData,
   async () => {
     await nextTick()
     chartRef.value?.resetZoom()
@@ -95,7 +132,7 @@ watch(
   { flush: 'post' },
 )
 
-const versions = computed(() => convertedData.value.map(d => d.version))
+const versions = computed(() => orderedConvertedData.value.map(d => d.version))
 
 const activeVersionIndex = computed(() => {
   if (!activeVersion.value) return -1
@@ -103,7 +140,7 @@ const activeVersionIndex = computed(() => {
 })
 
 const seriesTotalSize = computed(() => {
-  const values = convertedData.value.map(d => d.totalSize)
+  const values = orderedConvertedData.value.map(d => d.totalSize)
   if (!values.length) {
     return { values, min: 0, max: 0 }
   }
@@ -115,7 +152,7 @@ const seriesTotalSize = computed(() => {
 })
 
 const seriesDependencies = computed(() => {
-  const values = convertedData.value.map(d => d.dependencyCount)
+  const values = orderedConvertedData.value.map(d => d.dependencyCount)
   if (!values.length) {
     return { values, min: 0, max: 0 }
   }
@@ -156,7 +193,7 @@ const datasets = computed<{
           ? undefined
           : e18eGradientColors,
         color: colors.value.fgSubtle,
-        source: convertedData.value,
+        source: orderedConvertedData.value,
       },
     ],
     dependencyCount: [
@@ -169,7 +206,7 @@ const datasets = computed<{
           ? undefined
           : e18eGradientColors,
         color: colors.value.fgSubtle,
-        source: convertedData.value,
+        source: orderedConvertedData.value,
       },
     ],
   }
@@ -363,7 +400,7 @@ const config = computed<VueUiXyConfig>(() => {
           },
           altCopy: () =>
             copyAltTextForTimelineChart({
-              dataset: convertedData.value,
+              dataset: orderedConvertedData.value,
               config: {
                 packageName: packageName.value,
                 metric: activeTab.value,
@@ -500,7 +537,7 @@ function getNegativeDatapointPlots(
 
 const indexSelection = computed(() => {
   if (props.selectedVersion == null) return null
-  return convertedData.value.findIndex(v => v.version === props.selectedVersion)
+  return orderedConvertedData.value.findIndex(v => v.version === props.selectedVersion)
 })
 </script>
 
@@ -519,6 +556,10 @@ const indexSelection = computed(() => {
       </TabRoot>
 
       <div class="flex flex-row flex-wrap gap-4">
+        <SettingsToggle
+          v-model="settings.timelineChart.isOrdered"
+          :label="$t('package.timeline.chart.ordered_versions')"
+        />
         <SettingsToggle
           v-model="settings.timelineChart.isZeroBased"
           :label="$t('package.timeline.chart.base_scale')"
@@ -541,9 +582,11 @@ const indexSelection = computed(() => {
           <div class="font-mono text-xs flex flex-col">
             <div class="border-border border-b pb-2 mb-2 flex flex-col">
               <div class="flex flex-row gap-4">
-                <span class="text-fg">{{ convertedData[timeLabel.absoluteIndex]?.version }}</span>
+                <span class="text-fg">{{
+                  orderedConvertedData[timeLabel.absoluteIndex]?.version
+                }}</span>
                 <span
-                  v-for="tag in convertedData[timeLabel.absoluteIndex]?.tags"
+                  v-for="tag in orderedConvertedData[timeLabel.absoluteIndex]?.tags"
                   :key="tag"
                   class="text-3xs font-semibold uppercase tracking-wide"
                   :class="tag === 'latest' ? 'text-accent' : 'text-fg-subtle'"
@@ -552,7 +595,7 @@ const indexSelection = computed(() => {
                 </span>
               </div>
               <DateTime
-                :datetime="convertedData[timeLabel.absoluteIndex]?.time!"
+                :datetime="orderedConvertedData[timeLabel.absoluteIndex]?.time!"
                 class="text-xs text-fg-subtle"
                 year="numeric"
                 month="short"
@@ -566,7 +609,9 @@ const indexSelection = computed(() => {
                 <span class="text-[var(--fg)]/70">{{ $t('package.stats.install_size') }}</span>
                 <span class="text-sm">
                   {{
-                    bytesFormatter.format(convertedData[timeLabel.absoluteIndex]?.totalSize ?? 0)
+                    bytesFormatter.format(
+                      orderedConvertedData[timeLabel.absoluteIndex]?.totalSize ?? 0,
+                    )
                   }}
                 </span>
               </div>
@@ -577,7 +622,7 @@ const indexSelection = computed(() => {
                 <span class="text-sm">
                   {{
                     compactNumberFormatter.format(
-                      convertedData[timeLabel.absoluteIndex]?.dependencyCount ?? 0,
+                      orderedConvertedData[timeLabel.absoluteIndex]?.dependencyCount ?? 0,
                     )
                   }}
                 </span>
@@ -586,11 +631,11 @@ const indexSelection = computed(() => {
 
             <!-- Positive & negative events -->
             <ol
-              v-if="convertedData[timeLabel.absoluteIndex]?.events.length"
+              v-if="orderedConvertedData[timeLabel.absoluteIndex]?.events.length"
               class="relative font-[Geist] mt-2"
             >
               <li
-                v-for="event in convertedData[timeLabel.absoluteIndex]?.events"
+                v-for="event in orderedConvertedData[timeLabel.absoluteIndex]?.events"
                 :key="event.key"
                 class="relative mb-1 ms-4 last:mb-0"
               >

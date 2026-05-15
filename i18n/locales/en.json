@@ -604,6 +604,7 @@
         "base_scale": "start y-axis at zero",
         "zoom": "zoom",
         "reset_minimap": "reset minimap",
+        "ordered_versions": "stable only",
         "copy_alt": {
           "key_changes": "Key changes: {version_events}.",
           "version_events": "version {version}: {events}",

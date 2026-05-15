@@ -7,6 +7,7 @@ rules:
       - lunaria.yml:38
   dangerous-triggers:
     ignore:
+      - enforce-release-source.yml
       - dependency-diff-comment.yml
       - lunaria.yml
       - semantic-pull-requests.yml
