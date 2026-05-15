@@ -1671,7 +1671,7 @@
   "action_bar": {
     "title": "アクションバー",
     "selection": "0 選択済み | 1 選択済み | {count} 選択済み",
-    "shortcut": "\"\"\"{key}\"\" を押してアクションにフォーカス\"",
+    "shortcut": "「{key}」を押してアクションにフォーカス",
     "button_close_aria_label": "アクションバーを閉じる"
   },
   "logo_menu": {
