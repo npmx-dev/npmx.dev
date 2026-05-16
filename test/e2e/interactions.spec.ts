@@ -91,6 +91,52 @@ test.describe('Compare Page', () => {
   })
 })
 
+test.describe('Package Page', () => {
+  test('CopyToClipboardButton is fully unoccluded', async ({ page, goto }) => {
+    await goto('/package/vue', { waitUntil: 'hydration' })
+
+    const packageHeading = page.locator('h1').first()
+    await expect(packageHeading).toBeVisible({ timeout: 10000 })
+
+    // Hover the parent of the heading to trigger the button's visibility
+    await packageHeading.locator('..').hover()
+
+    const copyButton = page
+      .locator('button[aria-label="copy"]')
+      .filter({ hasText: /copy/i })
+      .first()
+    await expect(copyButton).toBeVisible({ timeout: 5000 })
+
+    const box = await copyButton.boundingBox()
+    if (!box) throw new Error('Copy button has no bounding box')
+
+    // Define 5-point check (4 corners + center) for maximum coverage
+    const points: { x: number; y: number }[] = [
+      { x: box.x + 1, y: box.y + 1 }, // top-left
+      { x: box.x + box.width - 1, y: box.y + 1 }, // top-right
+      { x: box.x + box.width / 2, y: box.y + box.height / 2 }, // center
+      { x: box.x + 1, y: box.y + box.height - 1 }, // bottom-left
+      { x: box.x + box.width - 1, y: box.y + box.height - 1 }, // bottom-right
+    ]
+
+    for (const { x, y } of points) {
+      const result = await page.evaluate(
+        ({ pointX, pointY }) => {
+          const el = document.elementFromPoint(pointX, pointY)
+          // Ensure the element at this point is the button or contained within it
+          const isOnTop = el?.closest('button[aria-label="copy"]') !== null
+          return { isOnTop, tagName: el?.tagName, className: el?.className }
+        },
+        { pointX: x, pointY: y },
+      )
+      expect(
+        result.isOnTop,
+        `Button is occluded at point (${x.toFixed(0)}, ${y.toFixed(0)}) by <${result.tagName} "${result.className}">`,
+      ).toBe(true)
+    }
+  })
+})
+
 test.describe('Search Pages', () => {
   test('/search?q=vue → keyboard navigation (arrow keys + enter)', async ({ page, goto }) => {
     await goto('/search?q=vue', { waitUntil: 'hydration' })
