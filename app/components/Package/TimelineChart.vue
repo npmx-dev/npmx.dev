@@ -293,6 +293,7 @@ const config = computed<VueUiXyConfig>(() => {
         color: colors.value.accent,
       },
       grid: {
+        position: 'start',
         showHorizontalLines: true,
         stroke: colors.value.border,
         labels: {

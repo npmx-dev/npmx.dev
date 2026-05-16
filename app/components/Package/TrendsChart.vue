@@ -1462,6 +1462,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
         },
       },
       grid: {
+        position: 'start',
         stroke: colors.value.border,
         showHorizontalLines: true,
         labels: {
@@ -1995,9 +1996,9 @@ watch([selectedGranularity, startDate, endDate], async () => {
               <!-- Overlay covering the chart area to hide line resizing when switching granularities recalculates VueUiXy scaleMax when estimation lines are necessary -->
               <rect
                 v-if="pending"
-                :x="svg.drawingArea.left"
+                :x="svg.drawingArea.left - 3"
                 :y="svg.drawingArea.top - 12"
-                :width="svg.drawingArea.width + 12"
+                :width="svg.drawingArea.width + 15"
                 :height="svg.drawingArea.height + 48"
                 :fill="colors.bg"
               />
