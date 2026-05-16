@@ -1392,7 +1392,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
     chart: {
       height: chartHeight.value,
       backgroundColor: colors.value.bg,
-      padding: { bottom: displayedGranularity.value === 'yearly' ? 84 : 64, right: 128 }, // padding right is set to leave space of last datapoint label(s)
+      padding: { bottom: displayedGranularity.value === 'yearly' ? 84 : 64, right: 145 }, // padding right is set to leave space of last datapoint label(s)
       userOptions: {
         buttons: {
           pdf: false,
