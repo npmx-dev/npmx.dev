@@ -1,5 +1,5 @@
 import type { ProviderId, RepoRef } from '#shared/utils/git-providers'
-import { GIT_PROVIDER_API_ORIGINS, parseRepoUrl, GITLAB_HOSTS } from '#shared/utils/git-providers'
+import { GIT_PROVIDER_API_ORIGINS, parseRepoUrl } from '#shared/utils/git-providers'
 
 // TTL for git repo metadata (10 minutes - repo stats don't change frequently)
 const REPO_META_TTL = 60 * 10
@@ -88,8 +88,6 @@ type RadicleProjectResponse = {
 }
 
 type ProviderAdapter = {
-  id: ProviderId
-  parse(url: URL): RepoRef | null
   links(ref: RepoRef): RepoMetaLinks
   fetchMeta(
     cachedFetch: CachedFetchFunction,
@@ -100,25 +98,6 @@ type ProviderAdapter = {
 }
 
 const githubAdapter: ProviderAdapter = {
-  id: 'github',
-
-  parse(url) {
-    const host = url.hostname.toLowerCase()
-    if (host !== 'github.com' && host !== 'www.github.com') return null
-
-    const parts = url.pathname.split('/').filter(Boolean)
-    if (parts.length < 2) return null
-
-    const owner = decodeURIComponent(parts[0] ?? '').trim()
-    const repo = decodeURIComponent(parts[1] ?? '')
-      .trim()
-      .replace(/\.git$/i, '')
-
-    if (!owner || !repo) return null
-
-    return { provider: 'github', owner, repo }
-  },
-
   links(ref) {
     const base = `https://github.com/${ref.owner}/${ref.repo}`
     return {
@@ -160,30 +139,6 @@ const githubAdapter: ProviderAdapter = {
 }
 
 const gitlabAdapter: ProviderAdapter = {
-  id: 'gitlab',
-
-  parse(url) {
-    const host = url.hostname.toLowerCase()
-    const isGitLab = GITLAB_HOSTS.some(h => host === h || host === `www.${h}`)
-    if (!isGitLab) return null
-
-    const parts = url.pathname.split('/').filter(Boolean)
-    if (parts.length < 2) return null
-
-    // GitLab supports nested groups, so we join all parts except the last as owner
-    const repo = decodeURIComponent(parts[parts.length - 1] ?? '')
-      .trim()
-      .replace(/\.git$/i, '')
-    const owner = parts
-      .slice(0, -1)
-      .map(p => decodeURIComponent(p).trim())
-      .join('/')
-
-    if (!owner || !repo) return null
-
-    return { provider: 'gitlab', owner, repo, host }
-  },
-
   links(ref) {
     const baseHost = ref.host ?? 'gitlab.com'
     const base = `https://${baseHost}/${ref.owner}/${ref.repo}`
@@ -224,25 +179,6 @@ const gitlabAdapter: ProviderAdapter = {
 }
 
 const bitbucketAdapter: ProviderAdapter = {
-  id: 'bitbucket',
-
-  parse(url) {
-    const host = url.hostname.toLowerCase()
-    if (host !== 'bitbucket.org' && host !== 'www.bitbucket.org') return null
-
-    const parts = url.pathname.split('/').filter(Boolean)
-    if (parts.length < 2) return null
-
-    const owner = decodeURIComponent(parts[0] ?? '').trim()
-    const repo = decodeURIComponent(parts[1] ?? '')
-      .trim()
-      .replace(/\.git$/i, '')
-
-    if (!owner || !repo) return null
-
-    return { provider: 'bitbucket', owner, repo }
-  },
-
   links(ref) {
     const base = `https://bitbucket.org/${ref.owner}/${ref.repo}`
     return {
@@ -281,25 +217,6 @@ const bitbucketAdapter: ProviderAdapter = {
 }
 
 const codebergAdapter: ProviderAdapter = {
-  id: 'codeberg',
-
-  parse(url) {
-    const host = url.hostname.toLowerCase()
-    if (host !== 'codeberg.org' && host !== 'www.codeberg.org') return null
-
-    const parts = url.pathname.split('/').filter(Boolean)
-    if (parts.length < 2) return null
-
-    const owner = decodeURIComponent(parts[0] ?? '').trim()
-    const repo = decodeURIComponent(parts[1] ?? '')
-      .trim()
-      .replace(/\.git$/i, '')
-
-    if (!owner || !repo) return null
-
-    return { provider: 'codeberg', owner, repo, host: 'codeberg.org' }
-  },
-
   links(ref) {
     const base = `https://codeberg.org/${ref.owner}/${ref.repo}`
     return {
@@ -339,25 +256,6 @@ const codebergAdapter: ProviderAdapter = {
 }
 
 const giteeAdapter: ProviderAdapter = {
-  id: 'gitee',
-
-  parse(url) {
-    const host = url.hostname.toLowerCase()
-    if (host !== 'gitee.com' && host !== 'www.gitee.com') return null
-
-    const parts = url.pathname.split('/').filter(Boolean)
-    if (parts.length < 2) return null
-
-    const owner = decodeURIComponent(parts[0] ?? '').trim()
-    const repo = decodeURIComponent(parts[1] ?? '')
-      .trim()
-      .replace(/\.git$/i, '')
-
-    if (!owner || !repo) return null
-
-    return { provider: 'gitee', owner, repo }
-  },
-
   links(ref) {
     const base = `https://gitee.com/${ref.owner}/${ref.repo}`
     return {
@@ -398,53 +296,8 @@ const giteeAdapter: ProviderAdapter = {
 
 /**
  * Generic Gitea adapter for self-hosted instances.
- * Matches common Gitea/Forgejo hosting patterns.
  */
 const giteaAdapter: ProviderAdapter = {
-  id: 'gitea',
-
-  parse(url) {
-    const host = url.hostname.toLowerCase()
-
-    // Match common Gitea/Forgejo hosting patterns
-    const giteaPatterns = [
-      /^git\./i, // git.example.com
-      /^gitea\./i, // gitea.example.com
-      /^forgejo\./i, // forgejo.example.com
-      /^code\./i, // code.example.com
-      /^src\./i, // src.example.com
-      /gitea\.io$/i, // *.gitea.io
-    ]
-
-    // Skip if it matches other known providers
-    const skipHosts = [
-      'github.com',
-      'gitlab.com',
-      'codeberg.org',
-      'bitbucket.org',
-      'gitee.com',
-      'sr.ht',
-      'git.sr.ht',
-      ...GITLAB_HOSTS,
-    ]
-    if (skipHosts.some(h => host === h || host.endsWith(`.${h}`))) return null
-
-    // Check if matches Gitea patterns
-    if (!giteaPatterns.some(p => p.test(host))) return null
-
-    const parts = url.pathname.split('/').filter(Boolean)
-    if (parts.length < 2) return null
-
-    const owner = decodeURIComponent(parts[0] ?? '').trim()
-    const repo = decodeURIComponent(parts[1] ?? '')
-      .trim()
-      .replace(/\.git$/i, '')
-
-    if (!owner || !repo) return null
-
-    return { provider: 'gitea', owner, repo, host }
-  },
-
   links(ref) {
     const base = `https://${ref.host}/${ref.owner}/${ref.repo}`
     return {
@@ -488,27 +341,8 @@ const giteaAdapter: ProviderAdapter = {
 }
 
 const sourcehutAdapter: ProviderAdapter = {
-  id: 'sourcehut',
-
-  parse(url) {
-    const host = url.hostname.toLowerCase()
-    if (host !== 'sr.ht' && host !== 'git.sr.ht') return null
-
-    const parts = url.pathname.split('/').filter(Boolean)
-    if (parts.length < 2) return null
-
-    // Sourcehut uses ~username/repo format
-    const owner = decodeURIComponent(parts[0] ?? '').trim()
-    const repo = decodeURIComponent(parts[1] ?? '')
-      .trim()
-      .replace(/\.git$/i, '')
-
-    if (!owner || !repo) return null
-
-    return { provider: 'sourcehut', owner, repo }
-  },
-
   links(ref) {
+    // Sourcehut uses ~username/repo format.
     const base = `https://git.sr.ht/${ref.owner}/${ref.repo}`
     return {
       repo: base,
@@ -531,34 +365,8 @@ const sourcehutAdapter: ProviderAdapter = {
 }
 
 const tangledAdapter: ProviderAdapter = {
-  id: 'tangled',
-
-  parse(url) {
-    const host = url.hostname.toLowerCase()
-    if (
-      host !== 'tangled.sh' &&
-      host !== 'www.tangled.sh' &&
-      host !== 'tangled.org' &&
-      host !== 'www.tangled.org'
-    ) {
-      return null
-    }
-
-    const parts = url.pathname.split('/').filter(Boolean)
-    if (parts.length < 2) return null
-
-    // Tangled uses owner/repo format (owner is a domain-like identifier)
-    const owner = decodeURIComponent(parts[0] ?? '').trim()
-    const repo = decodeURIComponent(parts[1] ?? '')
-      .trim()
-      .replace(/\.git$/i, '')
-
-    if (!owner || !repo) return null
-
-    return { provider: 'tangled', owner, repo }
-  },
-
   links(ref) {
+    // Tangled uses owner/repo format, where owner is a domain-like identifier.
     const base = `https://tangled.org/${ref.owner}/${ref.repo}`
     return {
       repo: base,
@@ -595,24 +403,8 @@ const tangledAdapter: ProviderAdapter = {
 }
 
 const radicleAdapter: ProviderAdapter = {
-  id: 'radicle',
-
-  parse(url) {
-    const host = url.hostname.toLowerCase()
-    if (host !== 'radicle.at' && host !== 'app.radicle.at' && host !== 'seed.radicle.at') {
-      return null
-    }
-
-    // Radicle URLs: app.radicle.at/nodes/seed.radicle.at/rad:z3nP4yT1PE3m1PxLEzr173sZtJVnT
-    const path = url.pathname
-    const radMatch = path.match(/rad:[a-zA-Z0-9]+/)
-    if (!radMatch?.[0]) return null
-
-    // Use empty owner, store full rad: ID as repo
-    return { provider: 'radicle', owner: '', repo: radMatch[0], host }
-  },
-
   links(ref) {
+    // Radicle refs store the full rad: ID as repo with no owner.
     const base = `https://app.radicle.at/nodes/seed.radicle.at/${ref.repo}`
     return {
       repo: base,
@@ -649,32 +441,10 @@ const radicleAdapter: ProviderAdapter = {
   },
 }
 
+/**
+ * Adapter for explicit Forgejo instances.
+ */
 const forgejoAdapter: ProviderAdapter = {
-  id: 'forgejo',
-
-  parse(url) {
-    const host = url.hostname.toLowerCase()
-
-    // Match explicit Forgejo instances
-    const forgejoPatterns = [/^forgejo\./i, /\.forgejo\./i]
-    const knownInstances = ['next.forgejo.org', 'try.next.forgejo.org']
-
-    const isMatch = knownInstances.some(h => host === h) || forgejoPatterns.some(p => p.test(host))
-    if (!isMatch) return null
-
-    const parts = url.pathname.split('/').filter(Boolean)
-    if (parts.length < 2) return null
-
-    const owner = decodeURIComponent(parts[0] ?? '').trim()
-    const repo = decodeURIComponent(parts[1] ?? '')
-      .trim()
-      .replace(/\.git$/i, '')
-
-    if (!owner || !repo) return null
-
-    return { provider: 'forgejo', owner, repo, host }
-  },
-
   links(ref) {
     const base = `https://${ref.host}/${ref.owner}/${ref.repo}`
     return {
@@ -715,21 +485,18 @@ const forgejoAdapter: ProviderAdapter = {
   },
 }
 
-// Order matters: more specific adapters should come before generic ones
-const providers: readonly ProviderAdapter[] = [
-  githubAdapter,
-  gitlabAdapter,
-  bitbucketAdapter,
-  codebergAdapter,
-  giteeAdapter,
-  sourcehutAdapter,
-  tangledAdapter,
-  radicleAdapter,
-  forgejoAdapter,
-  giteaAdapter, // Generic Gitea adapter last as fallback for self-hosted instances
-] as const
-
-const parseRepoFromUrl = parseRepoUrl
+const providers = {
+  github: githubAdapter,
+  gitlab: gitlabAdapter,
+  bitbucket: bitbucketAdapter,
+  codeberg: codebergAdapter,
+  gitee: giteeAdapter,
+  sourcehut: sourcehutAdapter,
+  tangled: tangledAdapter,
+  radicle: radicleAdapter,
+  forgejo: forgejoAdapter,
+  gitea: giteaAdapter,
+} satisfies Record<ProviderId, ProviderAdapter>
 
 export function useRepoMeta(repositoryUrl: MaybeRefOrGetter<string | null | undefined>) {
   // Get cachedFetch in setup context (outside async handler)
@@ -738,7 +505,7 @@ export function useRepoMeta(repositoryUrl: MaybeRefOrGetter<string | null | unde
   const repoRef = computed(() => {
     const url = toValue(repositoryUrl)
     if (!url) return null
-    return parseRepoFromUrl(url)
+    return parseRepoUrl(url)
   })
 
   const { data, pending, error, refresh } = useLazyAsyncData<RepoMeta | null>(
@@ -750,7 +517,7 @@ export function useRepoMeta(repositoryUrl: MaybeRefOrGetter<string | null | unde
       const ref = repoRef.value
       if (!ref) return null
 
-      const adapter = providers.find(provider => provider.id === ref.provider)
+      const adapter = providers[ref.provider]
       if (!adapter) return null
 
       const links = adapter.links(ref)
