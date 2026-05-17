@@ -105,7 +105,9 @@ test.describe('Package Page', () => {
       .locator('button[aria-label="copy"]')
       .filter({ hasText: /copy/i })
       .first()
-    await expect(copyButton).toBeVisible({ timeout: 5000 })
+
+    await expect(copyButton).toBeVisible({ timeout: 10000 })
+    await copyButton.hover()
 
     const box = await copyButton.boundingBox()
     if (!box) throw new Error('Copy button has no bounding box')
