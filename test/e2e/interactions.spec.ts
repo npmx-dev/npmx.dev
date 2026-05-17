@@ -112,7 +112,7 @@ test.describe('Package Page', () => {
     const box = await copyButton.boundingBox()
     if (!box) throw new Error('Copy button has no bounding box')
 
-    const OFFSET = 3;
+    const OFFSET = 3
 
     // Define 5-point check (4 corners + center) for maximum coverage
     const points: { x: number; y: number }[] = [
