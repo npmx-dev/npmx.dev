@@ -589,6 +589,7 @@
         "base_scale": "positionner les ordonnées à zéro",
         "zoom": "zoom",
         "reset_minimap": "Réinitialiser la mini-carte",
+        "ordered_versions": "stable uniquement",
         "copy_alt": {
           "key_changes": "Principaux changements: {version_events}",
           "version_events": "version {version}: {events}",

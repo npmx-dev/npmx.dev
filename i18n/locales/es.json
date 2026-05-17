@@ -20,7 +20,10 @@
     "chat": "chat",
     "builders_chat": "builders",
     "keyboard_shortcuts": "atajos de teclado",
-    "brand": "marca"
+    "brand": "marca",
+    "resources": "Recursos",
+    "features": "Funcionalidades",
+    "other": "Otros"
   },
   "shortcuts": {
     "section": {
@@ -28,6 +31,9 @@
       "search": "Búsqueda",
       "package": "Paquete"
     },
+    "ctrl_key": "Ctrl",
+    "command_palette": "Abrir paleta de comandos",
+    "command_palette_description": "Usa la paleta de comandos para saltar entre páginas, vistas de paquetes, ajustes y enlaces externos sin dejar el teclado. En macOS, pulsa ⌘K. En Windows y Linux, pulsa {ctrlKey}+K.",
     "focus_search": "Enfocar búsqueda",
     "show_kbd_hints": "Resaltar atajos de teclado",
     "settings": "Abrir ajustes",
@@ -39,7 +45,8 @@
     "open_docs": "Abrir documentación",
     "disable_shortcuts": "Puedes desactivar los atajos de teclado en {settings}.",
     "open_main": "Abrir información principal",
-    "open_diff": "Abrir diferencias de versión"
+    "open_diff": "Abrir diferencias de versión",
+    "open_timeline": "Abrir línea temporal"
   },
   "search": {
     "label": "Buscar paquetes npm",
@@ -75,6 +82,114 @@
     "instant_search_turn_on": "activar",
     "instant_search_turn_off": "desactivar",
     "instant_search_advisory": "{label} {state} — {action}"
+  },
+  "command_palette": {
+    "title": "paleta de comandos",
+    "quick_actions": "ir a...",
+    "subtitle": "navega por npmx y cambia ajustes rápidamente",
+    "subtitle_languages": "elige un idioma o ayuda a mejorar las traducciones",
+    "instructions": "Escribe para filtrar comandos. Usa las teclas de flecha para moverte por los resultados y Enter para ejecutar un comando.",
+    "input_label": "Búsqueda en la paleta de comandos",
+    "results_label": "Resultados de comandos",
+    "placeholder": "escribe un comando...",
+    "back": "Atrás",
+    "empty": "No hay comandos que coincidan",
+    "empty_search_hint": "Presiona Enter para buscar \"{query}\".",
+    "current": "actual",
+    "here": "estás aquí",
+    "connected": "conectado",
+    "state": {
+      "on": "activado",
+      "off": "desactivado"
+    },
+    "groups": {
+      "actions": "Acciones",
+      "help": "Ayuda",
+      "language": "Idioma",
+      "connections": "Conexiones",
+      "navigation": "Navegación",
+      "links": "Enlaces",
+      "npmx": "npmx",
+      "package": "Paquete",
+      "package_with_name": "Paquete ({name})",
+      "versions": "Versiones",
+      "versions_with_name": "Versiones de {name}"
+    },
+    "actions": {
+      "search": "Buscar",
+      "search_for": "Buscar \"{query}\"",
+      "keyboard_shortcuts": "Atajos de teclado",
+      "help_translate": "Ayuda a traducir"
+    },
+    "connections": {
+      "npm_connect": "Conectar a la CLI de npm",
+      "npm_connected": "CLI de npm (~{username})",
+      "npm_disconnect": "Desconectar CLI de npm",
+      "atmosphere_connect": "Conectar a Atmosphere",
+      "atmosphere_connected": "atmosphere ({'@'}{handle})",
+      "atmosphere_disconnect": "Desconectar Atmosphere"
+    },
+    "navigation": {
+      "home": "inicio",
+      "packages": "paquetes (~{username})",
+      "orgs": "orgs (~{username})",
+      "profile": "perfil ({'@'}{handle})"
+    },
+    "links": {
+      "external": "Enlace externo"
+    },
+    "package_links": {
+      "stars": "Estrellas del repositorio",
+      "forks": "Bifurcaciones del repositorio"
+    },
+    "theme": {
+      "system": "Usar tema del sistema",
+      "light": "Usar tema claro",
+      "dark": "Usar tema oscuro"
+    },
+    "package": {
+      "main": "Página del paquete",
+      "docs": "Documentación",
+      "code": "Código",
+      "diff": "Diferencias",
+      "compare": "Comparar este paquete",
+      "download": "Descargar tarball",
+      "changelog": "Registro de cambios"
+    },
+    "package_actions": {
+      "copy_run": "Copiar comando de ejecución"
+    },
+    "code": {
+      "copy_file": "Copiar contenido del archivo"
+    },
+    "diff": {
+      "merge_modified_lines": "Combinar líneas modificadas",
+      "word_wrap": "Ajuste de línea"
+    },
+    "version": {
+      "label": "{version}"
+    },
+    "status": {
+      "available_in_context": "{context}. No hay comandos disponibles | {context}. 1 comando disponible | {context}. {count} comandos disponibles",
+      "matching_in_context": "{context}. No hay comandos que coincidan | {context}. 1 comando coincide | {context}. {count} comandos coinciden",
+      "no_matches_search_in_context": "{context}. No hay comandos que coincidan. Presiona Enter para buscar \"{query}\"."
+    },
+    "announcements": {
+      "language_changed": "Idioma cambiado a {language}.",
+      "relative_dates_on": "Fechas relativas activadas.",
+      "relative_dates_off": "Fechas relativas desactivadas.",
+      "theme_changed": "Tema cambiado a {theme}.",
+      "accent_color_changed": "Color de acento cambiado a {color}.",
+      "background_theme_changed": "Tono de fondo cambiado a {theme}.",
+      "download_started": "Descargando tarball de {package}.",
+      "copied_to_clipboard": "Copiado al portapapeles.",
+      "npm_disconnected": "CLI de npm desconectada.",
+      "atmosphere_disconnected": "Atmosphere desconectada.",
+      "facets_all_selected": "Todas las facetas seleccionadas.",
+      "facets_all_deselected": "Todas las facetas deseleccionadas.",
+      "view_switched": "Vista cambiada a {view}.",
+      "setting_toggled": "{setting} {state}."
+    }
   },
   "nav": {
     "main_navigation": "Principal",
@@ -151,6 +266,7 @@
     "translation_status": "Comprueba el estado global de las traducciones",
     "accent_colors": {
       "label": "Colores de acento",
+      "neutral": "Neutral",
       "sky": "Cielo",
       "coral": "Coral",
       "amber": "Ámbar",
@@ -169,7 +285,10 @@
       "black": "Negro"
     },
     "keyboard_shortcuts_enabled": "Activar atajos de teclado",
-    "keyboard_shortcuts_enabled_description": "Los atajos de teclado pueden desactivarse si entran en conflicto con otros atajos del navegador o del sistema"
+    "keyboard_shortcuts_enabled_description": "Los atajos de teclado pueden desactivarse si entran en conflicto con otros atajos del navegador o del sistema",
+    "enable_code_ligatures": "Activar ligaduras en código",
+    "enable_changelog_autoscroll": "Desplazar automáticamente a la versión solicitada",
+    "enable_changelog_autoscroll_description": "Desplazar automáticamente a la versión solicitada o cerca de ella en el registro de cambios del paquete"
   },
   "i18n": {
     "missing_keys": "{count} traducción faltante | {count} traducciones faltantes",
@@ -201,6 +320,7 @@
     "warnings": "Advertencias:",
     "go_back_home": "Volver al inicio",
     "per_week": "/ semana",
+    "per_week_short": "/sem",
     "vanity_downloads_hint": "Número de vanidad: no se muestran paquetes | Número de vanidad: para el paquete mostrado | Número de vanidad: Suma de {count} paquetes mostrados",
     "sort": {
       "name": "nombre",
@@ -223,11 +343,14 @@
       "gitea": "Ver en Gitea",
       "gitee": "Ver en Gitee",
       "radicle": "Ver en Radicle",
+      "socket_dev": "Ver en socket.dev",
       "sourcehut": "Ver en SourceHut",
       "tangled": "Ver en Tangled"
     },
     "collapse": "Contraer",
-    "expand": "Expandir"
+    "collapse_with_name": "Contraer {name}",
+    "expand": "Expandir",
+    "expand_with_name": "Expandir {name}"
   },
   "profile": {
     "display_name": "Nombre visible",
@@ -265,9 +388,18 @@
       "size": "El tamaño de instalación aumentó un {percent} ({size} más grande)",
       "deps": "{count} dependencias más"
     },
+    "size_decrease": {
+      "title_size": "¡El tamaño del paquete ha disminuido desde v{version}!",
+      "title_deps": "¡El número de dependencias ha disminuido desde v{version}!",
+      "title_both": "¡El tamaño del paquete y el número de dependencias han disminuido desde v{version}!",
+      "size": "Tamaño de instalación reducido un {percent} ({size} más pequeño)",
+      "deps": "{count} dependencias menos"
+    },
     "replacement": {
       "title": "Es posible que no necesite esta dependencia.",
+      "example": "Ejemplo:",
       "native": "Esto se puede reemplazar con {replacement}, disponible desde Node {nodeVersion}.",
+      "native_no_version": "Este paquete se puede reemplazar con {replacement}.",
       "simple": "La {community} ha marcado este paquete como redundante, con el siguiente consejo: {replacement}.",
       "documented": "La {community} ha señalado que este paquete tiene alternativas con mejor rendimiento.",
       "none": "Este paquete se ha marcado como ya no necesario y es probable que su funcionalidad esté disponible de forma nativa en todos los motores.",
@@ -318,11 +450,16 @@
       "docs": "documentación",
       "fund": "financiar",
       "compare": "comparar",
-      "compare_this_package": "comparar este paquete"
+      "timeline": "línea temporal",
+      "compare_this_package": "comparar este paquete",
+      "changelog": "registro de cambios"
     },
     "likes": {
       "like": "Me gusta este paquete",
-      "unlike": "Ya no me gusta este paquete"
+      "unlike": "Ya no me gusta este paquete",
+      "top_rank_tooltip": "¡Este está entre los 10 paquetes con más me gusta en npmx! (#{rank})",
+      "top_rank_label": "#{rank}",
+      "top_rank_link_label": "Ver clasificación de 'me gusta'. Este paquete está en el puesto #{rank}."
     },
     "docs": {
       "contents": "Contenido",
@@ -363,7 +500,8 @@
         "warning": "Advertencia",
         "caution": "Precaución"
       },
-      "copy_as_markdown": "Copiar README como Markdown"
+      "copy_as_markdown": "Copiar README como Markdown",
+      "error_loading": "Error al cargar los detalles del README"
     },
     "provenance_section": {
       "title": "Procedencia",
@@ -433,6 +571,9 @@
       "filter_help": "Usa sintaxis semver estándar",
       "filter_tooltip": "Filtra versiones usando rangos semver. Ejemplos:",
       "filter_tooltip_link": "Calculadora Semver",
+      "license_change_help": "Detalles del cambio de licencia",
+      "license_change_warning": "La licencia ha cambiado desde la versión anterior.",
+      "license_change_record": "La licencia de este paquete cambió de \"{from}\" a \"{to}\".",
       "no_matches": "Ninguna versión coincide con el filtro",
       "copy_alt": {
         "per_version_analysis": "La versión {version} se descargó {downloads} veces",
@@ -441,6 +582,35 @@
       "page_title": "Historial de versiones",
       "current_tags": "Etiquetas actuales",
       "no_match_filter": "Ninguna versión coincide con {filter}"
+    },
+    "timeline": {
+      "load_more": "Cargar más",
+      "load_error": "Error al cargar la línea temporal. Inténtalo de nuevo más tarde.",
+      "size_increase": "Tamaño de instalación aumentado un {percent}% ({size})",
+      "size_decrease": "Tamaño de instalación reducido un {percent}% ({size})",
+      "dep_increase": "{count} dependencias añadidas",
+      "dep_decrease": "{count} dependencias eliminadas",
+      "license_change": "Licencia cambiada de {from} a {to}",
+      "esm_added": "Tipo de módulo cambiado a ESM",
+      "esm_removed": "Tipo de módulo cambiado de ESM a CJS",
+      "types_added": "Tipos de TypeScript añadidos",
+      "types_removed": "Tipos de TypeScript eliminados",
+      "trusted_publisher_added": "Publicación verificada activada",
+      "trusted_publisher_removed": "Publicación verificada eliminada",
+      "provenance_added": "Procedencia activada",
+      "provenance_removed": "Procedencia eliminada",
+      "chart": {
+        "tab_aria_label": "Selección de métrica",
+        "base_scale": "iniciar eje Y en cero",
+        "zoom": "zoom",
+        "reset_minimap": "restablecer minimapa",
+        "ordered_versions": "solo estables",
+        "copy_alt": {
+          "key_changes": "Cambios clave: {version_events}.",
+          "version_events": "versión {version}: {events}",
+          "general_description": "Gráfico de líneas que muestra {metric} del paquete {package}, desde la versión {first} hasta {last}. {metric} en la versión {first} es {first_value}, en la versión {last} es {last_value} ({overall_progress_percentage}% total). {key_changes} {watermark}."
+        }
+      }
     },
     "dependencies": {
       "title": "Dependencias ({count})",
@@ -644,6 +814,16 @@
       "tarball": "Descargar Tarball como .tar.gz"
     }
   },
+  "leaderboard": {
+    "likes": {
+      "title": "Clasificación de 'me gusta'",
+      "description": "Los 10 paquetes con más me gusta en npmx ahora mismo.",
+      "rank": "Puesto",
+      "likes": "Me gusta",
+      "unavailable_title": "No hay clasificación de 'me gusta' todavía",
+      "unavailable_description": "No tenemos una clasificación de 'me gusta' que mostrar ahora mismo."
+    }
+  },
   "connector": {
     "modal": {
       "title": "Conector Local",
@@ -825,8 +1005,12 @@
     "lines": "{count} líneas",
     "toggle_tree": "Alternar árbol de archivos",
     "close_tree": "Cerrar árbol de archivos",
+    "copy_content": "Copiar contenido del archivo",
     "copy_link": "Copiar enlace",
     "view_raw": "Ver archivo crudo",
+    "toggle_container": "Alternar ancho del contenedor de código",
+    "open_raw_file": "Abrir archivo crudo",
+    "open_path_dropdown": "Abrir menú de segmentos de ruta",
     "file_too_large": "Archivo demasiado grande para previsualizar",
     "file_size_warning": "{size} excede el límite de 500KB para resaltado de sintaxis",
     "failed_to_load": "Error al cargar archivo",
@@ -1117,6 +1301,17 @@
       "packages_selected": "{count}/{max} paquetes seleccionados.",
       "add_hint": "Añade al menos 2 paquetes para comparar."
     },
+    "scatter_chart": {
+      "title": "Comparar {x} vs {y}",
+      "freshness_score": "Índice de frescura",
+      "copy_alt": {
+        "analysis": "{package} : {x_name} ({x_value}) y {y_name} ({y_value})",
+        "description": "Gráfico de dispersión que mapea {x_name} versus {y_name} para los paquetes {packages}. {analysis}. {watermark}"
+      },
+      "filename": "{x}-vs-{y}-scatter-chart",
+      "x_axis": "EJE-X ↦",
+      "y_axis": "EJE-Y ↥"
+    },
     "no_dependency": {
       "label": "(Sin dependencia)",
       "typeahead_title": "¿Qué haría James?",
@@ -1166,7 +1361,7 @@
         },
         "totalLikes": {
           "label": "Me gusta",
-          "description": "Número de me gusta"
+          "description": "Número de 'me gusta'"
         },
         "lastUpdated": {
           "label": "Publicado",
@@ -1195,6 +1390,18 @@
         "vulnerabilities": {
           "label": "Vulnerabilidades",
           "description": "Vulnerabilidades de seguridad conocidas"
+        },
+        "githubStars": {
+          "label": "Estrellas de GitHub",
+          "description": "Número de estrellas en el repositorio de GitHub"
+        },
+        "githubIssues": {
+          "label": "Incidencias de GitHub",
+          "description": "Número de incidencias en el repositorio de GitHub"
+        },
+        "createdAt": {
+          "label": "Fecha de creación",
+          "description": "Cuándo se creó el paquete"
         }
       },
       "values": {
@@ -1516,5 +1723,17 @@
       "message": "La accesibilidad es importante para nosotros, y nos encantaría que nos acompañaras en esta visión. Cuando uses los medios mencionados, asegúrate de que haya suficiente contraste con el fondo, y no uses un tamaño más pequeño que 24px. Si necesitas algún otro recurso o información adicional sobre el proyecto, no dudes en contactarnos a través de {link}.",
       "discord_link_text": "chat.npmx.dev"
     }
+  },
+  "alt_logo_kawaii": "Una versión cuqui, redondeada y colorida del logotipo de npmx.",
+  "changelog": {
+    "pre_release": "Pre-lanzamiento",
+    "draft": "Borrador",
+    "no_logs": "Lo sentimos, este paquete no publica registros de cambios o su formato no es compatible.",
+    "error": {
+      "p1": "Lo sentimos, no se pudo cargar el registro de cambios de {package}",
+      "p2": "Inténtalo de nuevo más tarde o {viewon}"
+    },
+    "rate_limit_ungh": "Lo sentimos, se alcanzó el límite de tasa de GitHub, inténtalo de nuevo en un momento",
+    "version_unavailable": "La versión solicitada no está disponible."
   }
 }
