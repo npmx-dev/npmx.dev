@@ -1460,6 +1460,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
               },
             }),
         },
+        useCursorPointer: true,
       },
       grid: {
         position: 'start',

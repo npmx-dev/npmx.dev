@@ -411,6 +411,7 @@ const config = computed<VueUiXyConfig>(() => {
               },
             }),
         },
+        useCursorPointer: true,
       },
       zoom: {
         show: settings.value.timelineChart.showZoom,
