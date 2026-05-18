@@ -243,7 +243,7 @@ useShortcuts({
   </header>
   <div
     ref="header"
-    class="w-full bg-bg sticky top-14 z-50 border-b border-border pt-2"
+    class="w-full bg-bg sticky top-14 z-40 border-b border-border pt-2"
     :class="[$style.packageHeader]"
     data-testid="package-subheader"
   >
