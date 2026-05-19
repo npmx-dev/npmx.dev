@@ -238,6 +238,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
               },
             }),
         },
+        useCursorPointer: true,
       },
       grid: {
         stroke: colors.value.border,

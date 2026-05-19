@@ -5,6 +5,7 @@ import { debounce } from 'perfect-debounce'
 
 definePageMeta({
   name: 'org',
+  preserveScrollOnQuery: true,
 })
 
 const route = useRoute('org')
@@ -128,6 +129,15 @@ const activeTab = shallowRef<'members' | 'teams'>('members')
 // Canonical URL for this org page
 const canonicalUrl = computed(() => `https://npmx.dev/@${orgName.value}`)
 
+const { selectedPackages, showSelectionView, openSelectionView, closeSelectionView } =
+  usePackageSelection()
+
+watch(selectedPackages, newSelectedPackages => {
+  if (newSelectedPackages.length === 0) {
+    closeSelectionView()
+  }
+})
+
 useHead({
   link: [{ rel: 'canonical', href: canonicalUrl }],
 })
@@ -152,6 +162,8 @@ defineOgImage(
 </script>
 
 <template>
+  <PackageActionBar v-if="!showSelectionView" />
+
   <main class="container flex-1 py-8 sm:py-12 w-full">
     <!-- Header -->
     <header class="mb-8 pb-8 border-b border-border">
@@ -259,6 +271,22 @@ defineOgImage(
       </p>
     </div>
 
+    <section v-else-if="showSelectionView && selectedPackages.length">
+      <header class="flex justify-end mb-4">
+        <button
+          type="button"
+          class="cursor-pointer inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
+          @click="closeSelectionView"
+          :aria-label="$t('nav.back')"
+        >
+          <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
+          <span class="hidden sm:inline">{{ $t('nav.back') }}</span>
+        </button>
+      </header>
+
+      <PackageSelectionView :view-mode="viewMode" />
+    </section>
+
     <!-- Package list -->
     <section v-else-if="packages.length > 0" :aria-label="$t('org.page.packages_title')">
       <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
@@ -282,6 +310,7 @@ defineOgImage(
         @clear-filter="handleClearFilter"
         @clear-all-filters="clearAllFilters"
         @update:text="setTextFilter"
+        @toggle-selection="openSelectionView"
         @update:search-scope="setSearchScope"
         @update:download-range="setDownloadRange"
         @update:security="setSecurity"
@@ -306,6 +335,7 @@ defineOgImage(
           :page-size="pageSize"
           :current-page="currentPage"
           @click-keyword="toggleKeyword"
+          selectable
         />
 
         <!-- Pagination controls -->

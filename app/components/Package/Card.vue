@@ -16,6 +16,7 @@ const props = defineProps<{
   searchQuery?: string
 }>()
 
+const { selectable } = usePackageSelectionContext()
 const { isPackageSelected, togglePackageSelection, canSelectMore } = usePackageSelection()
 const isSelected = computed<boolean>(() => {
   return isPackageSelected(props.result.package.name)
@@ -65,6 +66,7 @@ const numberFormatter = useNumberFormatter()
       </component>
 
       <PackageSelectionCheckbox
+        v-if="selectable"
         :package-name="result.package.name"
         :disabled="!canSelectMore && !isSelected"
         :checked="isSelected"
