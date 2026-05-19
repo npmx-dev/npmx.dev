@@ -30,10 +30,13 @@ onMounted(() => {
 
 const { packageName, requestedVersion } = usePackageRoute()
 
-const { data: resolvedVersion, status: resolvedStatus } = await useResolvedVersion(
-  packageName,
-  requestedVersion,
-)
+// On server: await so 404 can be detected and thrown synchronously below.
+// On client (SPA fallback): skip await to avoid Suspense suspension → white page.
+const _resolvedVersionData = useResolvedVersion(packageName, requestedVersion)
+if (import.meta.server) {
+  await _resolvedVersionData
+}
+const { data: resolvedVersion, status: resolvedStatus } = _resolvedVersionData
 
 defineOgImage(
   'Package.takumi',
@@ -528,7 +531,11 @@ const showSkeleton = shallowRef(false)
     <!-- Scenario 1: SPA fallback — show skeleton (no real content to preserve) -->
     <!-- Scenario 2: SSR missing payload — preserve server DOM, skip skeleton -->
     <PackageSkeleton
-      v-if="isSpaFallback || (!hasServerContentOnly && (showSkeleton || status === 'pending'))"
+      v-if="
+        isSpaFallback ||
+        (!hasServerContentOnly &&
+          (showSkeleton || status === 'pending' || resolvedStatus === 'pending'))
+      "
     />
 
     <!-- During hydration without payload, show captured server HTML as a static snapshot.
