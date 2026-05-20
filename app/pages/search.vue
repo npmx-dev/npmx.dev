@@ -895,6 +895,7 @@ onBeforeUnmount(() => {
             @load-more="loadMore"
             @page-change="handlePageChange"
             @click-keyword="toggleKeyword"
+            selectable
           />
 
           <PaginationControls

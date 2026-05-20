@@ -166,6 +166,7 @@ const config = computed<VueUiScatterConfig>(() => {
           })
         },
       },
+      useCursorPointer: true,
     },
     style: {
       backgroundColor: colors.value.bg,

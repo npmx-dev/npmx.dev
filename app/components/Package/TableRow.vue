@@ -33,6 +33,8 @@ const allMaintainersText = computed(() => {
 })
 
 const compactNumberFormatter = useCompactNumberFormatter()
+
+const { selectable } = usePackageSelectionContext()
 </script>
 
 <template>
@@ -41,7 +43,7 @@ const compactNumberFormatter = useCompactNumberFormatter()
     tabindex="0"
     :data-result-index="index"
   >
-    <td class="ps-3">
+    <td class="ps-3" v-if="selectable">
       <PackageSelectionCheckbox
         :package-name="result.package.name"
         :disabled="!canSelectMore && !isSelected"

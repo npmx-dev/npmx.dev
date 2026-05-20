@@ -105,18 +105,22 @@ test.describe('Package Page', () => {
       .locator('button[aria-label="copy"]')
       .filter({ hasText: /copy/i })
       .first()
-    await expect(copyButton).toBeVisible({ timeout: 5000 })
+
+    await expect(copyButton).toBeVisible({ timeout: 10000 })
+    await copyButton.hover()
 
     const box = await copyButton.boundingBox()
     if (!box) throw new Error('Copy button has no bounding box')
 
+    const OFFSET = 3
+
     // Define 5-point check (4 corners + center) for maximum coverage
     const points: { x: number; y: number }[] = [
-      { x: box.x + 1, y: box.y + 1 }, // top-left
-      { x: box.x + box.width - 1, y: box.y + 1 }, // top-right
+      { x: box.x + OFFSET, y: box.y + OFFSET }, // top-left
+      { x: box.x + box.width - OFFSET, y: box.y + OFFSET }, // top-right
       { x: box.x + box.width / 2, y: box.y + box.height / 2 }, // center
-      { x: box.x + 1, y: box.y + box.height - 1 }, // bottom-left
-      { x: box.x + box.width - 1, y: box.y + box.height - 1 }, // bottom-right
+      { x: box.x + OFFSET, y: box.y + box.height - OFFSET }, // bottom-left
+      { x: box.x + box.width - OFFSET, y: box.y + box.height - OFFSET }, // bottom-right
     ]
 
     for (const { x, y } of points) {

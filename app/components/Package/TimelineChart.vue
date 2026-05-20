@@ -293,6 +293,7 @@ const config = computed<VueUiXyConfig>(() => {
         color: colors.value.accent,
       },
       grid: {
+        position: 'start',
         showHorizontalLines: true,
         stroke: colors.value.border,
         labels: {
@@ -410,6 +411,7 @@ const config = computed<VueUiXyConfig>(() => {
               },
             }),
         },
+        useCursorPointer: true,
       },
       zoom: {
         show: settings.value.timelineChart.showZoom,
