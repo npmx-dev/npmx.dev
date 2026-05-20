@@ -3556,7 +3556,7 @@
             "title": {
               "type": "string"
             },
-            "governance": {
+            "core": {
               "type": "string"
             },
             "maintainers": {

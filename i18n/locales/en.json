@@ -1184,7 +1184,7 @@
     },
     "team": {
       "title": "Team",
-      "governance": "Governance",
+      "core": "Core",
       "maintainers": "Maintainers",
       "role_core": "core",
       "role_steward": "steward",

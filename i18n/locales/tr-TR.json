@@ -930,7 +930,6 @@
     },
     "team": {
       "title": "Ekip",
-      "governance": "Yönetişim",
       "role_steward": "Yönetici",
       "role_maintainer": "Geliştirici",
       "sponsor": "Sponsor",

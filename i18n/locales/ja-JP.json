@@ -941,7 +941,6 @@
     },
     "team": {
       "title": "チーム",
-      "governance": "ガバナンス",
       "role_steward": "スチュワード",
       "role_maintainer": "メンテナ",
       "sponsor": "スポンサー",

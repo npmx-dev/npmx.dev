@@ -175,13 +175,9 @@ const communityContributors = computed(
           </p>
 
           <!-- Governance: stewards + core -->
-          <section
-            v-if="governanceMembers.length"
-            class="mb-12"
-            aria-labelledby="governance-heading"
-          >
-            <h3 id="governance-heading" class="text-sm text-fg uppercase tracking-wider mb-4">
-              {{ $t('about.team.governance') }}
+          <section v-if="governanceMembers.length" class="mb-12" aria-labelledby="core-heading">
+            <h3 id="core-heading" class="text-sm text-fg uppercase tracking-wider mb-4">
+              {{ $t('about.team.core') }}
             </h3>
 
             <AboutGovernanceList :members="governanceMembers" />
