@@ -1,5 +1,5 @@
 <template>
-  <TooltipApp interactive position="top" :tooltipAttr="{ class: 'w-[calc(100%-2rem)]! max-w-sm!' }">
+  <TooltipApp interactive :tooltipAttr="{ class: 'w-[calc(100%-2rem)]! max-w-sm!' }">
     <template #content>
       <p class="text-sm font-medium text-fg mb-1">
         <span class="text-fg-subtle">
