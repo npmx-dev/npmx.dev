@@ -8,6 +8,7 @@
           //&nbsp;<a
             href="https://github.com/nodejs/node-v0.x-archive/releases/tag/v0.0.1"
             target="_blank"
+            rel="noopener noreferrer"
             class="underline"
             >github.com/nodejs/node-v0.x-archive/releases/tag/v0.0.1</a
           >
