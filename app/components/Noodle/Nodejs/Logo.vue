@@ -20,50 +20,41 @@
       </p>
     </template>
     <svg
-      width="996"
-      height="305"
-      viewBox="0 0 996 305"
+      width="962"
+      height="292"
+      viewBox="0 0 962 292"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       :alt="$t('alt_logo')"
       class="mb-8 mx-auto w-72 h-auto sm:w-92 max-w-full"
     >
       <path
-        d="M304.5 212.5V100.5L364.5 60.5L424.5 100.5V212.5L388.5 188.5V120.5L364.5 104.5L340.5 120.5V188.5L304.5 212.5Z"
+        d="M269 198.684V86.2912L329 46.1509L389 86.2912V198.684L353 174.6V106.361L329 90.3053L305 106.361V174.6L269 198.684Z"
         fill="currentColor"
         stroke="currentColor"
         stroke-width="5"
         stroke-linejoin="round"
       />
       <path
-        d="M904.5 184.5L868.5 208.5V172.5L957.5 84.5L993.5 60.5V96.5L904.5 184.5Z"
+        d="M833 194.67V154.53L958 46.1509V86.2912L833 194.67Z"
         fill="currentColor"
         stroke="currentColor"
         stroke-width="5"
         stroke-linejoin="round"
       />
       <path
-        d="M957.5 184.5L993.5 208.5V172.5L904.5 84.5L868.5 60.5V96.5L957.5 184.5Z"
+        d="M958 194.67V154.53L833 46.1509V86.2912L958 194.67Z"
         fill="currentColor"
         stroke="currentColor"
         stroke-width="5"
         stroke-linejoin="round"
       />
       <path
-        d="M624.5 212.5V100.5L684.5 60.5L726.5 88.5L768.5 60.5L828.5 100.5V188.5L792.5 212.5V120.5L768.5 104.5L744.5 120.5V188.5L708.5 212.5V188.5V120.5L684.5 104.5L660.5 120.5V188.5L624.5 212.5Z"
+        d="M589 198.684V86.2912L649 46.1509L691 74.2491L733 46.1509L793 86.2912V174.6L757 198.684V106.361L733 90.3053L709 106.361V174.6L673 198.684V174.6V106.361L649 90.3053L625 106.361V174.6L589 198.684Z"
         fill="currentColor"
       />
       <path
-        d="M744.5 188.5H708.5V120.5L684.5 104.5L660.5 120.5V188.5L624.5 212.5V100.5L684.5 60.5L744.5 100.5V188.5ZM744.5 188.5L708.5 212.5V100.5L768.5 60.5L828.5 100.5V188.5L792.5 212.5V120.5L768.5 104.5L744.5 120.5V188.5Z"
-        stroke="currentColor"
-        stroke-width="5"
-        stroke-linejoin="round"
-      />
-      <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
-        d="M464.5 100.5V164.5V302.5L500.5 278.5L500.5 188.5L524.5 204.5L548.5 188.5L584.5 164.5V100.5L524.5 60.5L464.5 100.5ZM548.5 144.5V120.5L524.5 104.5L500.5 120.5L500.5 144.5L524.5 160.5L548.5 144.5Z"
-        fill="currentColor"
+        d="M709 174.6H673V106.361L649 90.3053L625 106.361V174.6L589 198.684V86.2912L649 46.1509L709 86.2912V174.6ZM709 174.6L673 198.684V86.2912L733 46.1509L793 86.2912V174.6L757 198.684V106.361L733 90.3053L709 106.361V174.6Z"
         stroke="currentColor"
         stroke-width="5"
         stroke-linejoin="round"
@@ -71,16 +62,23 @@
       <path
         fill-rule="evenodd"
         clip-rule="evenodd"
-        d="M50.5 172.5V196.5L26.5 212.5L2.5 196.5L2.5 172.5L26.5 156.5L50.5 172.5Z"
+        d="M429 86.2912V150.516V289L465 264.916L465 174.6L489 190.656L513 174.6L549 150.516V86.2912L489 46.1509L429 86.2912ZM513 130.446V106.361L489 90.3053L465 106.361L465 130.446L489 146.502L513 130.446Z"
+        fill="currentColor"
+        stroke="currentColor"
+        stroke-width="5"
+        stroke-linejoin="round"
+      />
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M52 158.544V182.628L28 198.684L4 182.628L4 158.544L28 142.488L52 158.544Z"
         fill="#689F63"
         stroke="#689F63"
         stroke-width="5"
         stroke-linejoin="round"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
-        d="M164.501 26.5L102.5 212.5L146.5 188.5L208.5 2.50003L164.501 26.5Z"
+        d="M187 3H228L113 223.772H72L187 3Z"
         fill="#689F63"
         stroke="#689F63"
         stroke-width="5"
