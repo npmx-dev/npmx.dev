@@ -82,46 +82,46 @@ What npmx offers:
 
 ### Comparison with npmjs.com
 
-| Feature                                | npmjs.com | npmx.dev |
-| -------------------------------------- | :-------: | :------: |
-| Package search                         |    ✅     |    ✅    |
-| Package details & README               |    ✅     |    ✅    |
-| Version history                        |    ✅     |    ✅    |
-| Dependencies list                      |    ✅     |    ✅    |
-| Dependents list                        |    ✅     |    🚧    |
-| User profiles                          |    ✅     |    ✅    |
-| Organization pages                     |    ✅     |    ✅    |
-| Package comparison                     |    ❌     |    ✅    |
-| URL-driven/shareable feature views     |    ❌     |    ✅    |
-| Provenance indicators                  |    ✅     |    ✅    |
-| Code browser                           |    ✅     |    ✅    |
-| Generated API docs                     |    ❌     |    ✅    |
-| Version diff                           |    ❌     |    ✅    |
-| Changelog view                         |    ❌     |    ✅    |
-| Timeline view                          |    ❌     |    ✅    |
-| Dark mode                              |    ✅ 🆕  |    ✅    |
-| Internationalization                   |    ❌     |    ✅    |
-| Accessibility statement and audits     |    ❌     |    ✅    |
-| Outdated dependency warnings           |    ❌     |    ✅    |
-| Module format badges (ESM/CJS/WASM)    |    ❌     |    ✅    |
-| TypeScript types indicator             |    ✅     |    ✅    |
-| Install size calculation               |    ❌     |    ✅    |
-| Install script warnings                |    ❌     |    ✅    |
-| License change warnings                |    ❌     |    ✅    |
-| Module replacement suggestions         |    ❌     |    ✅    |
-| JSR cross-reference                    |    ❌     |    ✅    |
-| Vulnerability warnings                 |    ✅     |    ✅    |
-| Deprecation notices                    |    ✅     |    ✅    |
-| Download charts                        |    ✅     |    ✅    |
-| Package likes and leaderboard          |    ❌     |    ✅    |
-| Playground links                       |    ❌     |    ✅    |
-| Keyboard navigation                    |    ❌     |    ✅    |
-| Multi-provider repo support            |    ❌     |    ✅    |
-| Version range resolution               |    ❌     |    ✅    |
-| Package admin (access/owners)          |    ✅     |    ✅    |
-| Org/team management                    |    ✅     |    ✅    |
-| 2FA/account settings                   |    ✅     |    ❌    |
-| Claim new package names                |    ✅     |    ✅    |
+| Feature                             | npmjs.com | npmx.dev |
+| ----------------------------------- | :-------: | :------: |
+| Package search                      |    ✅     |    ✅    |
+| Package details & README            |    ✅     |    ✅    |
+| Version history                     |    ✅     |    ✅    |
+| Dependencies list                   |    ✅     |    ✅    |
+| Dependents list                     |    ✅     |    🚧    |
+| User profiles                       |    ✅     |    ✅    |
+| Organization pages                  |    ✅     |    ✅    |
+| Package comparison                  |    ❌     |    ✅    |
+| URL-driven/shareable feature views  |    ❌     |    ✅    |
+| Provenance indicators               |    ✅     |    ✅    |
+| Code browser                        |    ✅     |    ✅    |
+| Generated API docs                  |    ❌     |    ✅    |
+| Version diff                        |    ❌     |    ✅    |
+| Changelog view                      |    ❌     |    ✅    |
+| Timeline view                       |    ❌     |    ✅    |
+| Dark mode                           |   ✅ 🆕   |    ✅    |
+| Internationalization                |    ❌     |    ✅    |
+| Accessibility statement and audits  |    ❌     |    ✅    |
+| Outdated dependency warnings        |    ❌     |    ✅    |
+| Module format badges (ESM/CJS/WASM) |    ❌     |    ✅    |
+| TypeScript types indicator          |    ✅     |    ✅    |
+| Install size calculation            |    ❌     |    ✅    |
+| Install script warnings             |    ❌     |    ✅    |
+| License change warnings             |    ❌     |    ✅    |
+| Module replacement suggestions      |    ❌     |    ✅    |
+| JSR cross-reference                 |    ❌     |    ✅    |
+| Vulnerability warnings              |    ✅     |    ✅    |
+| Deprecation notices                 |    ✅     |    ✅    |
+| Download charts                     |    ✅     |    ✅    |
+| Package likes and leaderboard       |    ❌     |    ✅    |
+| Playground links                    |    ❌     |    ✅    |
+| Keyboard navigation                 |    ❌     |    ✅    |
+| Multi-provider repo support         |    ❌     |    ✅    |
+| Version range resolution            |    ❌     |    ✅    |
+| Package admin (access/owners)       |    ✅     |    ✅    |
+| Org/team management                 |    ✅     |    ✅    |
+| 2FA/account settings                |    ✅     |    ❌    |
+| Claim new package names             |    ✅     |    ✅    |
 
 🚧 = coming soon
 
