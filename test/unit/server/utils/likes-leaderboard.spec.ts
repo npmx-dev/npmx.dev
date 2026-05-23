@@ -267,12 +267,11 @@ describe('enrichLikesLeaderboardEntries', () => {
     expect(cachedFetchMock).toHaveBeenCalledWith(
       'https://ungh.cc/repos/vuejs/core',
       expect.objectContaining({
-        headers: {
+        headers: expect.objectContaining({
           'User-Agent': 'npmx',
-          'Accept': 'application/json',
-        },
+        }),
       }),
-      3600,
+      10800,
     )
   })
 })

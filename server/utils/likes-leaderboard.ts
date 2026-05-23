@@ -2,9 +2,10 @@ import type { H3Event } from 'h3'
 import * as v from 'valibot'
 import type { LikesLeaderboardEntry } from '#shared/types/social'
 import type { CachedFetchFunction } from '#shared/utils/fetch-cache-config'
+import { getRepositoryStars } from '#shared/utils/repository-meta'
 import { getHomepageMetadata } from '#server/utils/npm-homepage'
 import { fetchNpmPackage } from '#server/utils/npm'
-import { GIT_PROVIDER_API_ORIGINS, parseRepoUrl, type RepoRef } from '#shared/utils/git-providers'
+import { parseRepoUrl, type RepoRef } from '#shared/utils/git-providers'
 import { encodePackageName } from '#shared/utils/npm'
 import {
   CACHE_MAX_AGE_FIVE_MINUTES,
@@ -23,14 +24,6 @@ const UpstreamLikesLeaderboardResponseSchema = v.object({
 })
 
 const LIKES_LEADERBOARD_FETCH_TIMEOUT_MS = 750
-
-const GithubRepositoryMetaResponseSchema = v.object({
-  repo: v.nullable(
-    v.object({
-      stars: v.optional(v.number()),
-    }),
-  ),
-})
 
 const NpmDownloadCountSchema = v.object({
   downloads: v.number(),
@@ -94,7 +87,7 @@ async function getLeaderboardEntryMetadata(
   packageDescription: string | null
   weeklyDownloads: number | null
   homepageUrl: string | null
-  githubRepositoryRef: RepoRef | null
+  repositoryRef: RepoRef | null
 }> {
   try {
     const encodedPackageName = encodePackageName(packageName)
@@ -125,17 +118,17 @@ async function getLeaderboardEntryMetadata(
         packageDescription,
         weeklyDownloads,
         homepageUrl,
-        githubRepositoryRef: null,
+        repositoryRef: null,
       }
     }
 
     const repositoryRef = parseRepoUrl(rawRepositoryUrl)
-    if (!repositoryRef || repositoryRef.provider !== 'github') {
+    if (!repositoryRef) {
       return {
         packageDescription,
         weeklyDownloads,
         homepageUrl,
-        githubRepositoryRef: null,
+        repositoryRef: null,
       }
     }
 
@@ -143,40 +136,15 @@ async function getLeaderboardEntryMetadata(
       packageDescription,
       weeklyDownloads,
       homepageUrl,
-      githubRepositoryRef: repositoryRef,
+      repositoryRef,
     }
   } catch {
     return {
       packageDescription: null,
       weeklyDownloads: null,
       homepageUrl: null,
-      githubRepositoryRef: null,
+      repositoryRef: null,
     }
-  }
-}
-
-async function getGithubRepositoryStars(
-  cachedFetch: CachedFetchFunction,
-  githubRepositoryRef: RepoRef,
-): Promise<number | null> {
-  try {
-    const { data } = await cachedFetch<unknown>(
-      `${GIT_PROVIDER_API_ORIGINS.github}/repos/${githubRepositoryRef.owner}/${githubRepositoryRef.repo}`,
-      {
-        headers: {
-          'User-Agent': 'npmx',
-          'Accept': 'application/json',
-        },
-      },
-      CACHE_MAX_AGE_ONE_HOUR,
-    )
-
-    const parsedResponse = v.safeParse(GithubRepositoryMetaResponseSchema, data)
-    if (!parsedResponse.success) return null
-
-    return parsedResponse.output.repo?.stars ?? null
-  } catch {
-    return null
   }
 }
 
@@ -224,11 +192,11 @@ export async function enrichLikesLeaderboardEntries(
 
   return await Promise.all(
     leaderboardEntries.map(async entry => {
-      const { packageDescription, weeklyDownloads, homepageUrl, githubRepositoryRef } =
+      const { packageDescription, weeklyDownloads, homepageUrl, repositoryRef } =
         await getLeaderboardEntryMetadata(cachedFetch, entry.packageName)
       const [homepageMetadata, repositoryStars] = await Promise.all([
         getHomepageMetadata(event, homepageUrl),
-        githubRepositoryRef ? getGithubRepositoryStars(cachedFetch, githubRepositoryRef) : null,
+        repositoryRef ? getRepositoryStars(cachedFetch, repositoryRef) : null,
       ])
 
       return {

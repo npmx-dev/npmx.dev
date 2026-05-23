@@ -419,4 +419,5 @@ export interface PackageMetaResponse {
   author?: NpmPerson
   maintainers?: NpmPerson[]
   weeklyDownloads?: number
+  repositoryStars?: number | null
 }
