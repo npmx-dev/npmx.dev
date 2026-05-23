@@ -211,6 +211,7 @@ describe('renderDocNodes examples', () => {
     expect(html).toContain('<h4>Example</h4>')
     expect(html).toContain('shiki')
     expect(html).toContain('greeting')
+    expect(html).not.toMatch(/(^|[>\s])-ts([<\s]|$)/)
     expect(html).not.toContain('-ts')
     expect(html).not.toContain('```')
   })
