@@ -296,7 +296,7 @@ const giteeAdapter: ProviderAdapter = {
 }
 
 /**
- * Generic Gitea adapter for self-hosted instances.
+ * Adapter for exact allowlisted Gitea instances.
  */
 const giteaAdapter: ProviderAdapter = {
   links(ref) {
@@ -312,8 +312,6 @@ const giteaAdapter: ProviderAdapter = {
   async fetchMeta(cachedFetch, ref, links, options = {}) {
     if (!ref.host) return null
 
-    // Note: Generic Gitea instances may not be in the allowlist,
-    // so caching may not apply for self-hosted instances
     let res: GiteaRepoResponse | null = null
     try {
       const { data } = await cachedFetch<GiteaRepoResponse>(
@@ -443,7 +441,7 @@ const radicleAdapter: ProviderAdapter = {
 }
 
 /**
- * Adapter for explicit Forgejo instances.
+ * Adapter for exact allowlisted Forgejo instances.
  */
 const forgejoAdapter: ProviderAdapter = {
   links(ref) {
