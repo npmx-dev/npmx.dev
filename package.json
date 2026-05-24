@@ -117,7 +117,7 @@
     "@e18e/eslint-plugin": "0.4.1",
     "@intlify/core-base": "11.3.0",
     "@npm/types": "2.1.0",
-    "@playwright/test": "1.58.2",
+    "@playwright/test": "1.60.0",
     "@storybook-vue/nuxt": "catalog:storybook",
     "@storybook/addon-a11y": "catalog:storybook",
     "@storybook/addon-docs": "catalog:storybook",
