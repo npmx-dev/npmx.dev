@@ -11,7 +11,8 @@ export default defineConfig({
         command: 'vp lint && vp fmt --check',
       },
       'knip': {
-        command: 'knip && knip --production --exclude dependencies',
+        command:
+          'knip --treat-config-hints-as-errors && knip --production --exclude dependencies --treat-config-hints-as-errors',
       },
       'generate:lexicons': {
         command: 'lex build --lexicons lexicons --out shared/types/lexicons --clear',

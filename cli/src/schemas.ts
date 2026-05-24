@@ -95,7 +95,6 @@ export const PermissionSchema = v.picklist(
 
 /**
  * Validates operation types
- * @internal
  */
 export const OperationTypeSchema = v.picklist([
   'org:add-user',
@@ -132,7 +131,6 @@ export const HexTokenSchema = v.pipe(
 
 /**
  * Validates operation ID (16-char hex)
- * @internal
  */
 export const OperationIdSchema = v.pipe(
   v.string(),
