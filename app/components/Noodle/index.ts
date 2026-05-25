@@ -1,5 +1,5 @@
 import NoodleKawaiiLogo from './Kawaii/Logo.vue'
-import NoodlePressLogo from './Press/Logo.vue'
+import NoodleNodejsLogo from './Nodejs/Logo.vue'
 
 export type Noodle = {
   // Unique identifier for the noodle
@@ -28,11 +28,9 @@ export const PERMANENT_NOODLES: Noodle[] = [
 // Active noodles - shown based on date and timezone
 export const ACTIVE_NOODLES: Noodle[] = [
   {
-    key: 'press',
-    logo: NoodlePressLogo,
-    date: '2026-05-01',
-    dateTo: '2026-05-04',
+    key: 'nodejs',
+    logo: NoodleNodejsLogo,
+    date: '2026-05-27',
     timezone: 'auto',
-    tagline: false,
   },
 ]
