@@ -1,3 +1,5 @@
+import { normalizeLicense } from '#shared/utils/npm'
+
 /** Number of recent versions to include in initial payload */
 const RECENT_VERSIONS_COUNT = 5
 
@@ -14,13 +16,6 @@ function getTrustLevel(version: PackumentVersion): PublishTrustLevel {
   if (hasTrustedPublisher(version)) return 'trustedPublisher'
   if (hasAttestations(version)) return 'provenance'
   return 'none'
-}
-
-function normalizeLicense(license?: PackumentLicense): string | undefined {
-  if (!license) return undefined
-  if (typeof license === 'string') return license
-  if (typeof license.type === 'string') return license.type
-  return undefined
 }
 
 /**
