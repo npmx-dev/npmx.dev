@@ -100,6 +100,26 @@ describe('license-change API', () => {
     expect(result.change).toBeNull()
   })
 
+  it('extracts license string from object format', async () => {
+    routerParam = 'my-pkg'
+
+    fetchNpmPackageMock.mockResolvedValue(
+      makePackument({
+        versions: {
+          '1.0.0': { license: { type: 'MIT' } as never },
+          '2.0.0': { license: { type: 'Apache-2.0', url: 'https://example.com' } as never },
+        },
+        time: {
+          '1.0.0': '2024-01-01T00:00:00Z',
+          '2.0.0': '2024-06-01T00:00:00Z',
+        },
+      }),
+    )
+
+    const result = await handler(fakeEvent)
+    expect(result.change).toEqual({ from: 'MIT', to: 'Apache-2.0' })
+  })
+
   it('defaults to the latest (chronologically newest) version', async () => {
     routerParam = 'my-pkg'
     queryParams = {}
@@ -186,25 +206,5 @@ describe('license-change API', () => {
 
     const result = await handler(fakeEvent)
     expect(result.change).toBeNull()
-  })
-
-  it('normalizes object-shaped licenses by extracting the type field', async () => {
-    routerParam = 'my-pkg'
-
-    fetchNpmPackageMock.mockResolvedValue(
-      makePackument({
-        versions: {
-          '1.0.0': { license: { type: 'MIT' } as never },
-          '2.0.0': { license: { type: 'Apache-2.0', url: 'https://example.com' } as never },
-        },
-        time: {
-          '1.0.0': '2024-01-01T00:00:00Z',
-          '2.0.0': '2024-06-01T00:00:00Z',
-        },
-      }),
-    )
-
-    const result = await handler(fakeEvent)
-    expect(result.change).toEqual({ from: 'MIT', to: 'Apache-2.0' })
   })
 })
