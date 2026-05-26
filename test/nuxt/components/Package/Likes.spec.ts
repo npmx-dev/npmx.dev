@@ -1,26 +1,26 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue'
 import Likes from '~/components/Package/Likes.vue'
 
-const { mockUseAtproto } = vi.hoisted(() => ({
-  mockUseAtproto: vi.fn(),
-}))
+function createAtprotoUser(handle: string) {
+  return {
+    did: `did:plc:${handle}`,
+    handle,
+    pds: 'https://bsky.social',
+  }
+}
 
-vi.mock('~/composables/atproto/useAtproto', () => ({
-  useAtproto: mockUseAtproto,
-}))
+let authSessionHandler: () => unknown = () => null
+
+registerEndpoint('/api/auth/session', () => authSessionHandler())
 
 describe('PackageLikes', () => {
   let wrapper: VueWrapper | undefined
 
   beforeEach(() => {
-    mockUseAtproto.mockReturnValue({
-      user: ref(null),
-      pending: ref(false),
-      logout: vi.fn(),
-    })
+    clearNuxtData()
+    authSessionHandler = () => null
   })
 
   afterEach(() => {
@@ -74,27 +74,29 @@ describe('PackageLikes', () => {
   })
 
   it('keeps the top liked badge when a like response omits the rank', async () => {
+    let authSessionRequests = 0
     let likeRequests = 0
-
-    mockUseAtproto.mockReturnValue({
-      user: ref({ handle: 'tester.test' }),
-      pending: ref(false),
-      logout: vi.fn(),
-    })
+    authSessionHandler = () => {
+      authSessionRequests++
+      return createAtprotoUser('tester.test')
+    }
 
     registerEndpoint('/api/social/likes/svelte', () => ({
       totalLikes: 42,
       userHasLiked: false,
       topLikedRank: 3,
     }))
-    registerEndpoint('/api/social/like', () => {
-      likeRequests++
+    registerEndpoint('/api/social/like', {
+      method: 'POST',
+      handler: () => {
+        likeRequests++
 
-      return {
-        totalLikes: 43,
-        userHasLiked: true,
-        topLikedRank: null,
-      }
+        return {
+          totalLikes: 43,
+          userHasLiked: true,
+          topLikedRank: null,
+        }
+      },
     })
 
     wrapper = await mountSuspended(Likes, {
@@ -104,6 +106,7 @@ describe('PackageLikes', () => {
 
     await vi.waitFor(() => {
       expect(wrapper?.find('[data-testid="top-liked-badge"]').text()).toContain('#3')
+      expect(authSessionRequests).toBeGreaterThan(0)
     })
 
     await wrapper.get('button').trigger('click')
