@@ -139,6 +139,40 @@ test.describe('Package Page', () => {
       ).toBe(true)
     }
   })
+
+  test('AccountMenu dropdown items are clickable on package pages', async ({ page, goto }) => {
+    await goto('/package/vue', { waitUntil: 'hydration' })
+
+    await page.getByRole('button', { name: /^connect$/i }).click()
+    const items = page.getByRole('menuitem')
+    await expect(items.first()).toBeVisible()
+
+    // Verify each menu item is the topmost element at its own center.
+    for (const item of await items.all()) {
+      const box = await item.boundingBox()
+      if (!box) throw new Error('Menu item has no bounding box')
+      const cx = box.x + box.width / 2
+      const cy = box.y + box.height / 2
+
+      const hit = await page.evaluate(
+        ({ x, y }) => {
+          const el = document.elementFromPoint(x, y)
+          return {
+            insideMenuitem: el?.closest('[role="menuitem"]') !== null,
+            occluderTag: el?.tagName,
+            occluderClass: typeof el?.className === 'string' ? el.className.slice(0, 100) : '',
+            occluderText: el?.textContent?.trim().slice(0, 60),
+          }
+        },
+        { x: cx, y: cy },
+      )
+
+      expect(
+        hit.insideMenuitem,
+        `Menu item center (${cx.toFixed(0)}, ${cy.toFixed(0)}) is occluded by <${hit.occluderTag} class="${hit.occluderClass}">${hit.occluderText ? ` "${hit.occluderText}"` : ''}`,
+      ).toBe(true)
+    }
+  })
 })
 
 test.describe('Search Pages', () => {

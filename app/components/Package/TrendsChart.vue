@@ -1067,7 +1067,7 @@ const normalisedDataset = computed(() => {
   // oxlint-disable-next-line oxc-no-map-spread
   return (chartData.value.dataset || []).map(d => {
     const series = applyDataPipeline(
-      d.series.map(v => v ?? 0),
+      d.series.map(v => (typeof v === 'number' ? v : (v?.y ?? 0))),
       {
         averageWindow: settings.value.chartFilter.averageWindow,
         smoothingTau: settings.value.chartFilter.smoothingTau,

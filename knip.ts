@@ -1,6 +1,7 @@
 import type { KnipConfig } from 'knip'
 
 const config: KnipConfig = {
+  treatConfigHintsAsErrors: true,
   workspaces: {
     '.': {
       entry: [
@@ -31,9 +32,6 @@ const config: KnipConfig = {
         'vite-plugin-pwa',
         '@vueuse/shared',
 
-        /** Some components import types from here, but installing it directly could lead to a version mismatch */
-        'vue-router',
-
         /** Oxlint plugins don't get picked up yet */
         '@e18e/eslint-plugin',
         'eslint-plugin-regexp',
@@ -45,6 +43,7 @@ const config: KnipConfig = {
       ignoreFiles: [
         'app/components/Tooltip/Announce.vue',
         'app/components/UserCombobox.vue',
+        'app/components/ColorScheme/Img.vue',
         '**/*.unused.*',
       ],
     },

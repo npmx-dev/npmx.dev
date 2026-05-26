@@ -115,7 +115,7 @@ const githubAdapter: ProviderAdapter = {
     try {
       const { data } = await cachedFetch<UnghRepoResponse>(
         `${GIT_PROVIDER_API_ORIGINS.github}/repos/${ref.owner}/${ref.repo}`,
-        { headers: { 'User-Agent': 'npmx', ...options.headers }, ...options },
+        { ...options, headers: { 'User-Agent': 'npmx', ...options.headers } },
         UNGH_REPO_META_TTL,
       )
       res = data
@@ -157,7 +157,7 @@ const gitlabAdapter: ProviderAdapter = {
     try {
       const { data } = await cachedFetch<GitLabProjectResponse>(
         `https://${baseHost}/api/v4/projects/${projectPath}`,
-        { headers: { 'User-Agent': 'npmx', ...options.headers }, ...options },
+        { ...options, headers: { 'User-Agent': 'npmx', ...options.headers } },
         REPO_META_TTL,
       )
       res = data
@@ -194,7 +194,7 @@ const bitbucketAdapter: ProviderAdapter = {
     try {
       const { data } = await cachedFetch<BitbucketRepoResponse>(
         `${GIT_PROVIDER_API_ORIGINS.bitbucket}/2.0/repositories/${ref.owner}/${ref.repo}`,
-        { headers: { 'User-Agent': 'npmx', ...options.headers }, ...options },
+        { ...options, headers: { 'User-Agent': 'npmx', ...options.headers } },
         REPO_META_TTL,
       )
       res = data
@@ -233,7 +233,7 @@ const codebergAdapter: ProviderAdapter = {
     try {
       const { data } = await cachedFetch<GiteaRepoResponse>(
         `${GIT_PROVIDER_API_ORIGINS.codeberg}/api/v1/repos/${ref.owner}/${ref.repo}`,
-        { headers: { 'User-Agent': 'npmx', ...options.headers }, ...options },
+        { ...options, headers: { 'User-Agent': 'npmx', ...options.headers } },
         REPO_META_TTL,
       )
       res = data
@@ -272,7 +272,7 @@ const giteeAdapter: ProviderAdapter = {
     try {
       const { data } = await cachedFetch<GiteeRepoResponse>(
         `${GIT_PROVIDER_API_ORIGINS.gitee}/api/v5/repos/${ref.owner}/${ref.repo}`,
-        { headers: { 'User-Agent': 'npmx', ...options.headers }, ...options },
+        { ...options, headers: { 'User-Agent': 'npmx', ...options.headers } },
         REPO_META_TTL,
       )
       res = data
@@ -318,7 +318,7 @@ const giteaAdapter: ProviderAdapter = {
     try {
       const { data } = await cachedFetch<GiteaRepoResponse>(
         `https://${ref.host}/api/v1/repos/${ref.owner}/${ref.repo}`,
-        { headers: { 'User-Agent': 'npmx', ...options.headers }, ...options },
+        { ...options, headers: { 'User-Agent': 'npmx', ...options.headers } },
         REPO_META_TTL,
       )
       res = data
@@ -419,7 +419,7 @@ const radicleAdapter: ProviderAdapter = {
     try {
       const { data } = await cachedFetch<RadicleProjectResponse>(
         `${GIT_PROVIDER_API_ORIGINS.radicle}/api/v1/projects/${ref.repo}`,
-        { headers: { 'User-Agent': 'npmx', ...options.headers }, ...options },
+        { ...options, headers: { 'User-Agent': 'npmx', ...options.headers } },
         REPO_META_TTL,
       )
       res = data
@@ -463,7 +463,7 @@ const forgejoAdapter: ProviderAdapter = {
     try {
       const { data } = await cachedFetch<GiteaRepoResponse>(
         `https://${ref.host}/api/v1/repos/${ref.owner}/${ref.repo}`,
-        { headers: { 'User-Agent': 'npmx', ...options.headers }, ...options },
+        { ...options, headers: { 'User-Agent': 'npmx', ...options.headers } },
         REPO_META_TTL,
       )
       res = data
