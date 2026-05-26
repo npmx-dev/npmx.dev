@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, beforeEach, afterAll } from 'vitest'
 import { createError, type H3Event } from 'h3'
-import type { Packument, PackumentVersion } from '#shared/types/npm-registry'
+import type { Packument, PackumentLicense, PackumentVersion } from '#shared/types/npm-registry'
 
 const fetchNpmPackageMock = vi.fn()
 vi.stubGlobal('fetchNpmPackage', fetchNpmPackageMock)
@@ -16,7 +16,10 @@ vi.stubGlobal('createError', createError)
 const handler = (await import('#server/api/registry/license-change/[...pkg].get')).default
 
 function makePackument(opts: {
-  versions: Record<string, Partial<PackumentVersion>>
+  versions: Record<
+    string,
+    Partial<Omit<PackumentVersion, 'license'>> & { license?: PackumentLicense }
+  >
   time: Record<string, string>
 }): Packument {
   return {
@@ -106,8 +109,8 @@ describe('license-change API', () => {
     fetchNpmPackageMock.mockResolvedValue(
       makePackument({
         versions: {
-          '1.0.0': { license: { type: 'MIT' } as never },
-          '2.0.0': { license: { type: 'Apache-2.0', url: 'https://example.com' } as never },
+          '1.0.0': { license: { type: 'MIT' } },
+          '2.0.0': { license: { type: 'Apache-2.0', url: 'https://example.com' } },
         },
         time: {
           '1.0.0': '2024-01-01T00:00:00Z',
