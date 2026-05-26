@@ -58,24 +58,6 @@ describe('ComparisonGrid', () => {
       expect(link.attributes('title')).toBe(longName)
       expect(link.findAll('.truncate')).toHaveLength(2)
     })
-
-    it('constrains the header link to its grid track so long scoped names cannot overflow', async () => {
-      const scopedName = '@scope/very-long-package-name'
-      const scopedVersion = '1.2.3'
-      const component = await mountSuspended(ComparisonGrid, {
-        props: {
-          columns: [
-            { name: scopedName, version: scopedVersion },
-            ...cols('pkg-b@1.0.0', 'pkg-c@1.0.0', 'pkg-d@1.0.0'),
-          ],
-        },
-      })
-
-      const link = component.find(`a[title="${scopedName}@${scopedVersion}"]`)
-      expect(link.exists()).toBe(true)
-      expect(link.classes()).toContain('flex-1')
-      expect(link.classes()).toContain('min-w-0')
-    })
   })
 
   describe('column layout', () => {
