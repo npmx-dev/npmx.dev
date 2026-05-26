@@ -204,6 +204,9 @@ importers:
       ohash:
         specifier: 2.0.11
         version: 2.0.11
+      packumeta:
+        specifier: 0.3.0
+        version: 0.3.0
       perfect-debounce:
         specifier: 2.1.0
         version: 2.1.0
@@ -9138,6 +9141,10 @@ packages:
 
   package-manager-detector@1.6.0:
     resolution: {integrity: sha512-61A5ThoTiDG/C8s8UMZwSorAGwMJ0ERVGj2OjoW5pAalsNOg15+iQiPzrLJ4jhZ1HJzmC2PIHT2oEiH3R5fzNA==}
+
+  packumeta@0.3.0:
+    resolution: {integrity: sha512-b+Mawn0OBuoYMJKwOrOr0pr3Z/iCENdc1g84I/xMgDENUd4YXVZSsS7+gCMXGZSIYt+TW7jWzSf3ggiSkn4zmQ==}
+    engines: {node: '>=20.0.0'}
 
   pako@0.2.9:
     resolution: {integrity: sha512-NUcwaKxUxWrZLpDG+z/xZaCgQITkA/Dv4V/T6bw7VON6l1Xz/VnrBqrYjZQ12TamKHzITTfOEIYUj48y2KXImA==}
@@ -21279,6 +21286,8 @@ snapshots:
   package-json-from-dist@1.0.1: {}
 
   package-manager-detector@1.6.0: {}
+
+  packumeta@0.3.0: {}
 
   pako@0.2.9: {}
 

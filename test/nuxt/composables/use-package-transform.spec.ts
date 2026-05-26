@@ -69,8 +69,7 @@ function toVersionInfos(packument: ReturnType<typeof transformPackument>): Packa
     Object.entries(packument.versions).map(([version, metadata]) => ({
       version,
       time: packument.time[version],
-      hasProvenance: !!metadata.hasProvenance,
-      trustLevel: metadata.trustLevel,
+      trustStatus: metadata.trustStatus,
       deprecated: metadata.deprecated,
     }))
   )
@@ -106,7 +105,11 @@ describe('transformPackument', () => {
 
     const transformed = transformPackument(packument, '1.0.0')
 
-    expect(transformed.versions['1.0.0']?.hasProvenance).toBe(true)
+    expect(transformed.versions['1.0.0']?.trustStatus).toEqual({
+      provenance: true,
+      trustedPublisher: false,
+      stagedPublish: false,
+    })
     expect(transformed.versions['1.0.1']).toBeUndefined()
     expect(transformed.versions['1.0.2']).toBeUndefined()
     expect(transformed.securityVersions).toHaveLength(8)
@@ -206,7 +209,11 @@ describe('transformPackument', () => {
     const transformed = transformPackument(packument, '1.0.1')
     const infos = toVersionInfos(transformed)
 
-    expect(infos.find(v => v.version === '1.0.0')?.hasProvenance).toBe(true)
+    expect(infos.find(v => v.version === '1.0.0')?.trustStatus).toEqual({
+      provenance: false,
+      trustedPublisher: true,
+      stagedPublish: false,
+    })
     expect(detectPublishSecurityDowngradeForVersion(infos, '1.0.1')?.trustedVersion).toBe('1.0.0')
   })
 
@@ -227,7 +234,11 @@ describe('transformPackument', () => {
 
     const transformed = transformPackument(packument, '1.0.1')
 
-    expect(transformed.versions['1.0.0']?.trustLevel).toBe('trustedPublisher')
+    expect(transformed.versions['1.0.0']?.trustStatus).toEqual({
+      provenance: true,
+      trustedPublisher: true,
+      stagedPublish: false,
+    })
   })
 
   // https://github.com/npmx-dev/npmx.dev/issues/1292
@@ -252,8 +263,16 @@ describe('transformPackument', () => {
     const infos = toVersionInfos(transformed)
 
     // Both versions should be trustedPublisher — no downgrade
-    expect(infos.find(v => v.version === '7.0.0')?.trustLevel).toBe('trustedPublisher')
-    expect(infos.find(v => v.version === '7.0.1')?.trustLevel).toBe('trustedPublisher')
+    expect(infos.find(v => v.version === '7.0.0')?.trustStatus).toEqual({
+      provenance: true,
+      trustedPublisher: true,
+      stagedPublish: false,
+    })
+    expect(infos.find(v => v.version === '7.0.1')?.trustStatus).toEqual({
+      provenance: true,
+      trustedPublisher: true,
+      stagedPublish: false,
+    })
     expect(detectPublishSecurityDowngradeForVersion(infos, '7.0.1')).toBeNull()
   })
 

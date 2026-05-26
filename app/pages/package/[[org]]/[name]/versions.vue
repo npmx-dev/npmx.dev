@@ -126,10 +126,7 @@ function getDownloadsAriaLabel(downloads: number): string {
 // ─── Phase 2: full metadata (fired automatically after phase 1 completes) ────
 // Fetches deprecated status, provenance, and exact times needed for version rows.
 
-const fullVersionMap = shallowRef<Map<
-  string,
-  { time?: string; deprecated?: string; hasProvenance: boolean }
-> | null>(null)
+const fullVersionMap = shallowRef<Map<string, PackageVersionInfo> | null>(null)
 
 async function ensureFullDataLoaded() {
   if (fullVersionMap.value) return
@@ -363,7 +360,7 @@ const flatItems = computed<FlatItem[]>(() => {
                 >v{{ latestTagRow!.version }}</LinkBase
               >
               <ProvenanceBadge
-                v-if="fullVersionMap?.get(latestTagRow!.version)?.hasProvenance"
+                v-if="fullVersionMap?.get(latestTagRow!.version)?.trustStatus?.provenance"
                 :package-name="packageName"
                 :version="latestTagRow!.version"
                 compact
@@ -427,7 +424,7 @@ const flatItems = computed<FlatItem[]>(() => {
                 v{{ row.version }}
               </LinkBase>
               <ProvenanceBadge
-                v-if="fullVersionMap?.get(row.version)?.hasProvenance"
+                v-if="fullVersionMap?.get(row.version)?.trustStatus?.provenance"
                 :package-name="packageName"
                 :version="row.version"
                 compact
@@ -593,7 +590,7 @@ const flatItems = computed<FlatItem[]>(() => {
                           v{{ item.version }}
                         </LinkBase>
                         <ProvenanceBadge
-                          v-if="fullVersionMap?.get(item.version)?.hasProvenance"
+                          v-if="fullVersionMap?.get(item.version)?.trustStatus?.provenance"
                           :package-name="packageName"
                           :version="item.version"
                           compact

@@ -923,7 +923,11 @@ describe('component accessibility audits', () => {
             'versions': {
               '18.2.0': {
                 version: '18.2.0',
-                hasProvenance: false,
+                trustStatus: {
+                  provenance: false,
+                  trustedPublisher: false,
+                  stagedPublish: false,
+                },
                 tags: [],
               },
             },
