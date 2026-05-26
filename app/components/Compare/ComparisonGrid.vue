@@ -49,7 +49,7 @@ function getReplacementTooltip(col: ComparisonGridColumn): string {
           <div class="flex items-start justify-center gap-1.5 min-w-0">
             <LinkBase
               :to="packageRoute(col.name, col.version)"
-              class="flex min-w-0 flex-col items-center text-center text-sm"
+              class="flex min-w-0 flex-1 flex-col items-center text-center text-sm"
               :title="col.version ? `${col.name}@${col.version}` : col.name"
             >
               <span class="min-w-0 break-words line-clamp-1">

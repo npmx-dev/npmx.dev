@@ -58,6 +58,20 @@ describe('ComparisonGrid', () => {
       expect(link.attributes('title')).toBe(longName)
       expect(link.findAll('.line-clamp-1')).toHaveLength(2)
     })
+
+    it('constrains the header link to its grid track so long scoped names cannot overflow', async () => {
+      const longName = '@agentmemory/agentmemory@0.9.22'
+      const component = await mountSuspended(ComparisonGrid, {
+        props: {
+          columns: cols(longName, 'claude-mem@13.3.0', 'supermemory@4.21.1', 'mem0ai@3.0.3'),
+        },
+      })
+
+      const link = component.find(`a[title="${longName}"]`)
+      expect(link.exists()).toBe(true)
+      expect(link.classes()).toContain('flex-1')
+      expect(link.classes()).toContain('min-w-0')
+    })
   })
 
   describe('column layout', () => {
