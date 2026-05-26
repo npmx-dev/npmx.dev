@@ -192,7 +192,7 @@ describe('transformPackument', () => {
   it('treats trustedPublisher as trust evidence for downgrade checks', () => {
     const packument = createPackument(
       {
-        '1.0.0': createTrustedPublisherVersion('1.0.0'),
+        '1.0.0': createTrustedPublisherWithAttestationsVersion('1.0.0'),
         '1.0.1': createVersion('1.0.1'),
         '1.0.2': createVersion('1.0.2'),
       },
@@ -210,7 +210,7 @@ describe('transformPackument', () => {
     const infos = toVersionInfos(transformed)
 
     expect(infos.find(v => v.version === '1.0.0')?.trustStatus).toEqual({
-      provenance: false,
+      provenance: true,
       trustedPublisher: true,
       stagedPublish: false,
     })
