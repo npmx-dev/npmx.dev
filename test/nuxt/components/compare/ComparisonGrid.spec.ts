@@ -60,10 +60,10 @@ describe('ComparisonGrid', () => {
     })
 
     it('constrains the header link to its grid track so long scoped names cannot overflow', async () => {
-      const longName = '@agentmemory/agentmemory@0.9.22'
+      const longName = '@scope/very-long-package-name@1.2.3'
       const component = await mountSuspended(ComparisonGrid, {
         props: {
-          columns: cols(longName, 'claude-mem@13.3.0', 'supermemory@4.21.1', 'mem0ai@3.0.3'),
+          columns: cols(longName, 'pkg-b@1.0.0', 'pkg-c@1.0.0', 'pkg-d@1.0.0'),
         },
       })
 
