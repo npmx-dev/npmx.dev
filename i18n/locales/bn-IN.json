@@ -519,8 +519,8 @@
       "description_to_none_provenance": "এই সংস্করণটি {provenance} ছাড়াই প্রকাশিত হয়েছিল৷",
       "description_to_none_trustedPublisher": "এই সংস্করণটি {trustedPublishing} ছাড়াই প্রকাশিত হয়েছিল৷",
       "description_to_provenance_trustedPublisher": "এই সংস্করণটি {provenance} ব্যবহার করে কিন্তু {trustedPublishing} ব্যবহার করে না।",
-      "fallback_install_provenance": "ইনস্টল কমান্ডগুলি {সংস্করণ}-এ পিন করা হয়, মূল সংস্করণ সহ শেষ সংস্করণ৷ ইনস্টল কমান্ডগুলি {সংস্করণ}-এ পিন করা হয়, মূল সংস্করণ সহ শেষ সংস্করণ৷",
-      "fallback_install_trustedPublisher": "ইনস্টল কমান্ডগুলি {সংস্করণ}-এ পিন করা হয়, মূল সংস্করণ সহ শেষ সংস্করণ৷",
+      "fallback_install_provenance": "ইনস্টল কমান্ডগুলি {version}-এ পিন করা হয়, মূল সংস্করণ সহ শেষ সংস্করণ৷ ইনস্টল কমান্ডগুলি {version}-এ পিন করা হয়, মূল সংস্করণ সহ শেষ সংস্করণ৷",
+      "fallback_install_trustedPublisher": "ইনস্টল কমান্ডগুলি {version}-এ পিন করা হয়, মূল সংস্করণ সহ শেষ সংস্করণ৷",
       "provenance_link_text": "প্রোভেন্যান্স",
       "trusted_publishing_link_text": "বিশ্বস্ত প্রকাশনা"
     },
@@ -593,12 +593,12 @@
       "outdated_minor": "{count}টি মাইনর ভার্সন পিছিয়ে (সর্বশেষ: {latest}) | {count}টি মাইনর ভার্সন পিছিয়ে (সর্বশেষ: {latest})",
       "outdated_patch": "প্যাচ আপডেট উপলব্ধ (সর্বশেষ: {latest})",
       "has_replacement": "এই নির্ভরতা প্রতিস্থাপনের পরামর্শ দিয়েছে",
-      "vulnerabilities_count": "{গণনা} দুর্বলতা | {count} দুর্বলতা"
+      "vulnerabilities_count": "{count} দুর্বলতা | {count} দুর্বলতা"
     },
     "peer_dependencies": {
-      "title": "পিয়ার নির্ভরতা ({count})",
-      "list_label": "প্যাকেজ পিয়ার নির্ভরতা",
-      "show_all": "{count}টি পিয়ার নির্ভরতা দেখান | সব {count}টি পিয়ার নির্ভরতা দেখান"
+      "title": "পিয়ার নির্ভরতা ({count})",
+      "list_label": "প্যাকেজ পিয়ার নির্ভরতা",
+      "show_all": "{count}টি পিয়ার নির্ভরতা দেখান | সব {count}টি পিয়ার নির্ভরতা দেখান"
     },
     "optional_dependencies": {
       "title": "ঐচ্ছিক নির্ভরতা ({count})",
