@@ -1378,7 +1378,6 @@
           "description": "প্যাকেজটি কখন তৈরি হয়েছে"
         }
       },
-
       "values": {
         "any": "যেকোনো",
         "none": "কোনোটিই নয়",
@@ -1492,7 +1491,6 @@
     "title": "npmx.social",
     "meta_description": "npmx কমিউনিটির জন্য অফিসিয়াল AT Protocol Personal Data Server (PDS)।"
   },
-
   "privacy_policy": {
     "cookies": {
       "what_are": {
