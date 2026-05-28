@@ -2,8 +2,10 @@ import { describe, expect, it } from 'vitest'
 
 function createVersion(version: string, hasAttestations = false): Packument['versions'][string] {
   return {
-    _id: `foo@${version}`,
     _npmVersion: '10.0.0',
+    // TODO (43081j): _id specifically cannot be the first key for now as it is used for determining through hackery
+    // if the package was staged or not. We should remove this comment once that hackery is removed upstream.
+    _id: `foo@${version}`,
     name: 'foo',
     version,
     dist: {
