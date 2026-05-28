@@ -205,8 +205,8 @@ importers:
         specifier: 2.0.11
         version: 2.0.11
       packumeta:
-        specifier: 0.3.0
-        version: 0.3.0
+        specifier: 0.4.0
+        version: 0.4.0
       perfect-debounce:
         specifier: 2.1.0
         version: 2.1.0
@@ -9142,8 +9142,8 @@ packages:
   package-manager-detector@1.6.0:
     resolution: {integrity: sha512-61A5ThoTiDG/C8s8UMZwSorAGwMJ0ERVGj2OjoW5pAalsNOg15+iQiPzrLJ4jhZ1HJzmC2PIHT2oEiH3R5fzNA==}
 
-  packumeta@0.3.0:
-    resolution: {integrity: sha512-b+Mawn0OBuoYMJKwOrOr0pr3Z/iCENdc1g84I/xMgDENUd4YXVZSsS7+gCMXGZSIYt+TW7jWzSf3ggiSkn4zmQ==}
+  packumeta@0.4.0:
+    resolution: {integrity: sha512-RU9vc7pe32iMpUZGIkWac5gdKAUuKB4Ix77HL+Fy4Cow/W/IwO7bmHf/OhVPA9bMueU+XPzf5vm6GG9tw+sKSg==}
     engines: {node: '>=20.0.0'}
 
   pako@0.2.9:
@@ -11164,8 +11164,8 @@ packages:
   vue-component-type-helpers@3.2.8:
     resolution: {integrity: sha512-9689efAXhN/EV86plgkL/XFiJSXhGtWPG6JDboZ+QnjlUWUUQrQ0ILKQtw4iQsuwIwu5k6Aw+JnehDe7161e7A==}
 
-  vue-component-type-helpers@3.3.1:
-    resolution: {integrity: sha512-pu58kqxmVyEH6VfNYW1UyEfR3XAnJ27ZXT3yzXxxpjLxVzAbyC35Zk/nm/RMs7ijWnJNSd9fWkeex2OhUsx3MA==}
+  vue-component-type-helpers@3.3.2:
+    resolution: {integrity: sha512-l4Z2Y34m7nFMlx8vrslJaVtXxUpzgDMSESC7TakG/c5kwjYT/do+E0NcT2/vWDzaoIhsShg/2OKwX7Q4nbzC0g==}
 
   vue-data-ui@3.20.10:
     resolution: {integrity: sha512-w9RDQzyfMDIFdT2oFB9JyHebOKQww098KsLQ5fZtBGFAMEFTuSD72BEg2dYKD/UVQcu8WPV9xKSQAp7Kcjls3g==}
@@ -15857,7 +15857,7 @@ snapshots:
       storybook: 10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@19.2.4)(react@19.2.4)
       type-fest: 2.19.0
       vue: 3.5.34(typescript@6.0.2)
-      vue-component-type-helpers: 3.3.1
+      vue-component-type-helpers: 3.3.2
 
   '@surma/rollup-plugin-off-main-thread@2.2.3':
     dependencies:
@@ -21287,7 +21287,7 @@ snapshots:
 
   package-manager-detector@1.6.0: {}
 
-  packumeta@0.3.0: {}
+  packumeta@0.4.0: {}
 
   pako@0.2.9: {}
 
@@ -23687,7 +23687,7 @@ snapshots:
 
   vue-component-type-helpers@3.2.8: {}
 
-  vue-component-type-helpers@3.3.1: {}
+  vue-component-type-helpers@3.3.2: {}
 
   vue-data-ui@3.20.10(vue@3.5.34):
     dependencies:
