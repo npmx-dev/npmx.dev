@@ -277,6 +277,9 @@ const tooltipPosition = useChartTooltipPosition(chartRef)
 const config = computed<VueUiXyConfig>(() => {
   return {
     theme: isDarkMode.value ? 'dark' : '',
+    downsample: {
+      threshold: 5000,
+    },
     line: {
       useGradient: false,
       radius: 2,

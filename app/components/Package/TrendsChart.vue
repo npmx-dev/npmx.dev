@@ -1380,6 +1380,9 @@ const keepZoomState = shallowRef(true)
 const chartConfig = computed<VueUiXyConfig>(() => {
   return {
     theme: isDarkMode.value ? 'dark' : ('' as VueDataUiTheme),
+    downsample: {
+      threshold: 5000,
+    },
     a11y: {
       translations: {
         keyboardNavigation: $t(
