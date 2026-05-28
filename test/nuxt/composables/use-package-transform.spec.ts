@@ -54,8 +54,10 @@ function createPackument(
   latest: string,
 ): Packument {
   return {
-    '_id': 'foo',
     '_rev': '1',
+    // TODO (43081j): _id specifically cannot be the first key for now as it is used for determining through hackery
+    // if the package was staged or not. We should remove this comment once that hackery is removed upstream.
+    '_id': 'foo',
     'name': 'foo',
     'dist-tags': { latest },
     time,
