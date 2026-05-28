@@ -38,21 +38,26 @@ const cacheControl = 's-maxage=3600, stale-while-revalidate=36000'
 export default defineEventHandler(async event => {
   const [path = '/', query] = event.path.split('?')
 
-  // /package/name?activeTab=versions → /package/name/versions
-  // /package/@scope/name?activeTab=versions → /package/@scope/name/versions
   if (query) {
     const params = new URLSearchParams(query)
-    if (params.get('activeTab') === 'versions') {
-      const pkgPathMatch = path.match(/^\/package\/((?:@[^/]+\/)?[^/]+)$/)
-      if (pkgPathMatch) {
-        params.delete('activeTab')
-        const remaining = params.toString()
-        setHeader(event, 'cache-control', cacheControl)
-        return sendRedirect(
-          event,
-          `/package/${pkgPathMatch[1]}/versions` + (remaining ? '?' + remaining : ''),
-          301,
-        )
+
+    switch (params.get('activeTab')) {
+      case 'versions': {
+        // /package/name?activeTab=versions → /package/name/versions
+        // /package/@scope/name?activeTab=versions → /package/@scope/name/versions
+
+        const pkgPathMatch = path.match(/^\/package\/((?:@[^/]+\/)?[^/]+)$/)
+        if (pkgPathMatch) {
+          params.delete('activeTab')
+          const remaining = params.toString()
+          setHeader(event, 'cache-control', cacheControl)
+          return sendRedirect(
+            event,
+            `/package/${pkgPathMatch[1]}/versions` + (remaining ? '?' + remaining : ''),
+            301,
+          )
+        }
+        break
       }
     }
   }
