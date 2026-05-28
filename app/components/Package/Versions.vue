@@ -185,7 +185,7 @@ const allTagRows = computed(() => {
         tags,
         trustStatus: versionData?.trustStatus,
         deprecated: versionData?.deprecated,
-      } as VersionDisplay,
+      },
     }))
     .sort((a, b) => compare(b.primaryVersion.version, a.primaryVersion.version))
 })
