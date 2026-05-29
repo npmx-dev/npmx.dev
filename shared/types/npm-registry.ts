@@ -12,6 +12,7 @@ import type {
   Contact,
 } from '@npm/types'
 import type { ReadmeResponse } from './readme'
+import type { TrustStatus } from 'packumeta'
 
 // Re-export official npm types for packument/manifest
 export type { Manifest, ManifestVersion, PackageJSON } from '@npm/types'
@@ -44,11 +45,8 @@ export type SlimPackumentVersion = PackumentVersion & {
   installScripts?: InstallScriptsInfo
 }
 
-export type PublishTrustLevel = 'none' | 'trustedPublisher' | 'provenance'
-
 export type SlimVersion = Pick<SlimPackumentVersion, 'version' | 'deprecated' | 'tags'> & {
-  hasProvenance?: boolean
-  trustLevel?: PublishTrustLevel
+  trustStatus?: TrustStatus
   license?: string
   /** Package type field — "module" indicates ESM */
   type?: string
@@ -103,8 +101,7 @@ export interface SlimPackument {
 export interface PackageVersionInfo {
   version: string
   time?: string
-  hasProvenance: boolean
-  trustLevel?: PublishTrustLevel
+  trustStatus?: TrustStatus
   deprecated?: string
 }
 

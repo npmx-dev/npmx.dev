@@ -1,0 +1,1720 @@
+{
+  "$schema": "../schema.json",
+  "seo": {
+    "home": {
+      "title": "npmx - Browser de pachete pentru registrul npm",
+      "description": "un browser rapid și modern pentru registrul npm. Căutați, navigați și explorați pachetele cu ajutorul unei interfețe moderne."
+    }
+  },
+  "built_at": "compilat în data de {0}",
+  "alt_logo": "logoul npmx",
+  "tagline": "un browser rapid și modern pentru registrul npm",
+  "non_affiliation_disclaimer": "nu este afiliat cu npm, Inc.",
+  "trademark_disclaimer": "npm este o marcă comercială înregistrată a npm, Inc. Acest site nu este afiliat cu npm, Inc.",
+  "footer": {
+    "about": "despre",
+    "blog": "blog",
+    "docs": "docs",
+    "source": "sursă",
+    "social": "social",
+    "chat": "chat",
+    "builders_chat": "builders",
+    "keyboard_shortcuts": "comenzi rapide de la tastatură",
+    "brand": "marcă",
+    "resources": "Resurse",
+    "features": "Funcționalități",
+    "other": "Altele"
+  },
+  "shortcuts": {
+    "section": {
+      "global": "Global",
+      "search": "Căutare",
+      "package": "Pachet"
+    },
+    "ctrl_key": "Ctrl",
+    "command_palette": "Deschide paleta de comenzi",
+    "command_palette_description": "Folosește paleta de comenzi pentru a naviga între pagini, vizualizări de pachete, setări și linkuri externe fără a lua mâna de pe tastatură. Pe macOS, apasă ⌘K. Pe Windows și Linux, apasă {ctrlKey}+K.",
+    "focus_search": "Mergi la căutare",
+    "show_kbd_hints": "evidentiază hinturile de la tastatură",
+    "settings": "Deschide setările",
+    "compare": "Deschide comparația",
+    "compare_from_package": "Deschide comparația (cu pachetul curent)",
+    "navigate_results": "Navighează rezultatele",
+    "go_to_result": "Sari la rezultat",
+    "open_code_view": "Deschide vizualizarea codului",
+    "open_docs": "Deschide documentele",
+    "disable_shortcuts": "Poți dezactiva scurtăturile de la tastatură în {settings}.",
+    "open_main": "Deschide informațiile principale",
+    "open_diff": "Deschide diferențele de versiune",
+    "open_timeline": "Deschide cronologia"
+  },
+  "search": {
+    "label": "Caută pachete npm",
+    "placeholder": "caută pachete...",
+    "button": "caută",
+    "searching": "Căutare...",
+    "found_packages": "Nu s-au găsit pachete | S-a găsit 1 pachet | S-au găsit {count} pachete",
+    "found_packages_sorted": "Nu s-au găsit rezultate | Se afișează primele {count} rezultate | Se afișează primele {count} rezultate",
+    "updating": "(actualizare...)",
+    "no_results": "Nu s-au găsit pachete pentru \"{query}\"",
+    "rate_limited": "S-a atins limita de acces la npm; te rugăm să încerci din nou peste câteva momente",
+    "title": "căutare",
+    "title_search": "căutare: {search}",
+    "title_packages": "caută pachete",
+    "meta_description": "Rezultate ale căutării pentru '{search}'",
+    "meta_description_packages": "Caută pachete npm",
+    "not_taken": "{name} nu este deja luat",
+    "claim_prompt": "Înregistrează acest nume de pachet pe npm",
+    "claim_button": "Înregistrează \"{name}\"",
+    "want_to_claim": "Vrei să înregistrezi acest nume de pachet?",
+    "start_typing": "Începe să scrii pentru a căuta pachete",
+    "algolia_disclaimer": "Realizat cu Algolia",
+    "exact_match": "exact",
+    "suggestion": {
+      "user": "utilizator",
+      "org": "organizare",
+      "view_user_packages": "Vizualizează pachetele de acest utilizator",
+      "view_org_packages": "Vizualizează pachetele de această organizare"
+    },
+    "instant_search": "Căutare instantanee",
+    "instant_search_on": "activată",
+    "instant_search_off": "dezactivată",
+    "instant_search_turn_on": "activează",
+    "instant_search_turn_off": "dezactivează",
+    "instant_search_advisory": "{label} {state} — {action}"
+  },
+  "command_palette": {
+    "title": "paleta de comenzi",
+    "quick_actions": "sari la...",
+    "subtitle": "navighează prin npmx și schimbă setările rapid",
+    "subtitle_languages": "alege o limbă sau ajută la îmbunătățirea traducerilor",
+    "instructions": "Tipătează pentru a filtra comenzile. Folosește săgețile să navighezi prin rezultate și apasă Enter pentru a rulează o comandă.",
+    "input_label": "Căutare în paleta de comenzi",
+    "results_label": "Rezultate în paleta de comenzi",
+    "placeholder": "introduce o comandă...",
+    "back": "Înapoi",
+    "empty": "Nu s-au găsit comenzi corespunzătoare",
+    "empty_search_hint": "Apasă Enter pentru a căuta \"{query}\".",
+    "current": "actual",
+    "here": "ești aici",
+    "connected": "conectat",
+    "state": {
+      "on": "activată",
+      "off": "dezactivată"
+    },
+    "groups": {
+      "actions": "Acțiuni",
+      "help": "Ajutor",
+      "language": "Limbă",
+      "connections": "Conectări",
+      "navigation": "Navigare",
+      "links": "Link-uri",
+      "npmx": "npmx",
+      "package": "Pachet",
+      "package_with_name": "Pachet ({name})",
+      "versions": "Versiuni",
+      "versions_with_name": "Versiuni de {name}"
+    },
+    "actions": {
+      "search": "Caută",
+      "search_for": "Caută \"{query}\"",
+      "keyboard_shortcuts": "Comenzi rapide de la tastatură",
+      "help_translate": "Ajută-ne să traducem"
+    },
+    "connections": {
+      "npm_connect": "Conectează-te la npm CLI",
+      "npm_connected": "npm CLI (~{username})",
+      "npm_disconnect": "Deconectează-te de la npm CLI",
+      "atmosphere_connect": "Conectează-te la Atmosphere",
+      "atmosphere_connected": "atmosphere ({'@'}{handle})",
+      "atmosphere_disconnect": "Deconectează-te de la Atmosphere"
+    },
+    "navigation": {
+      "home": "home",
+      "packages": "pachete (~{username})",
+      "orgs": "organizații (~{username})",
+      "profile": "profil ({'@'}{handle})"
+    },
+    "links": {
+      "external": "Link extern"
+    },
+    "package_links": {
+      "stars": "Stele de repozitoriu",
+      "forks": "Forks de repozitoriu"
+    },
+    "theme": {
+      "system": "Utilizează tema sistemului",
+      "light": "Folosește tema deschisă",
+      "dark": "Folosește tema închisă"
+    },
+    "package": {
+      "main": "Pagina pachetului",
+      "docs": "Documente",
+      "code": "Cod",
+      "diff": "Diff",
+      "compare": "Compară acest pachet",
+      "download": "Descarcă arhiva tar"
+    },
+    "package_actions": {
+      "copy_run": "Copiază comandă de execuție"
+    },
+    "code": {
+      "copy_file": "Copiază conținutul fișierului"
+    },
+    "diff": {
+      "merge_modified_lines": "Combină liniile modificate",
+      "word_wrap": "Aliniere automată"
+    },
+    "version": {
+      "label": "{version}"
+    },
+    "status": {
+      "available_in_context": "{context}. Nu sunt disponibile comenzi | {context}. Este disponibilă 1 comandă | {context}. Sunt disponibile {count} comenzi",
+      "matching_in_context": "{context}. Nu există comenzi corespunzătoare | {context}. 1 comandă corespunzătoare | {context}. {count} comenzi corespunzătoare",
+      "no_matches_search_in_context": "{context}. Nu s-au găsit comenzi corespunzătoare. Apasă Enter pentru a căuta „{query}”."
+    },
+    "announcements": {
+      "language_changed": "Limba este setată la {language}.",
+      "relative_dates_on": "Datele relative sunt activate.",
+      "relative_dates_off": "Datele relative sunt dezactivate.",
+      "theme_changed": "Tema este setată la {theme}.",
+      "accent_color_changed": "Culoarea de accent este setată la {color}.",
+      "background_theme_changed": "Umbra de fundal este setată la {theme}.",
+      "download_started": "Se descarcă arhiva tar {package}.",
+      "copied_to_clipboard": "Copiat în clipboard.",
+      "npm_disconnected": "npm CLI deconectat.",
+      "atmosphere_disconnected": "Atmosphere deconectat.",
+      "facets_all_selected": "Toate fațetele au fost selectate.",
+      "facets_all_deselected": "Toate fațetele au fost deselectate.",
+      "view_switched": "S-a trecut la vizualizarea {view}.",
+      "setting_toggled": "{setting} {state}."
+    }
+  },
+  "nav": {
+    "main_navigation": "Principal",
+    "popular_packages": "Pachete populare",
+    "settings": "setări",
+    "compare": "compară",
+    "back": "Înapoi",
+    "menu": "Meniu",
+    "mobile_menu": "Meniu de navigare",
+    "open_menu": "Deschide meniu",
+    "links": "Link-uri",
+    "tap_to_search": "Apasă pentru a căuta"
+  },
+  "blog": {
+    "title": "Blog",
+    "heading": "blog",
+    "meta_description": "Informații și noutăți din partea comunității npmx",
+    "author": {
+      "view_profile": "Vizualizează profilul lui {name} pe Bluesky"
+    },
+    "draft_badge": "Schiță",
+    "draft_banner": "Acesta este o schiță nepublicată. Este posibil să fie incompletă sau să conțină inexactități.",
+    "no_posts": "Nu s-au găsit postări.",
+    "atproto": {
+      "view_on_bluesky": "Vizualizează pe Bluesky",
+      "reply_on_bluesky": "Răspunde pe Bluesky",
+      "likes_on_bluesky": "Likes on Bluesky",
+      "like_or_reply_on_bluesky": "Dă like acestei postări sau lasă un comentariu pe Bluesky",
+      "no_comments_yet": "Nu există încă comentarii.",
+      "could_not_load_comments": "Nu s-au putut încărca comentariile.",
+      "comments": "Comentarii",
+      "loading_comments": "Se încarcă comentariile...",
+      "updating": "Se actualizează...",
+      "reply_count": "{count} răspuns | {count} răspunsuri",
+      "like_count": "{count} like | {count} like-uri",
+      "repost_count": "{count} repostare | {count} repostări",
+      "more_replies": "{count} repostare în plus... | {count} repostări în plus..."
+    }
+  },
+  "settings": {
+    "title": "setări",
+    "tagline": "personalizează-ți experiența cu npmx",
+    "meta_description": "Personalizează-ți experiența pe npmx.dev folosind temele, limba și setările de afișare.",
+    "sections": {
+      "appearance": "Prezentare",
+      "display": "Afișare",
+      "search": "Funcții de căutare",
+      "language": "Limbă",
+      "keyboard_shortcuts": "Comenzi rapide de la tastatură"
+    },
+    "data_source": {
+      "label": "Sursa datelor",
+      "description": "Alege sursa din care npmx preia datele de căutare. Paginile individuale ale pachetelor utilizează întotdeauna direct registrul npm.",
+      "npm": "Registrul npm",
+      "npm_description": "Preia listele de căutare, organizații și utilizatori direct din registrul oficial npm. Este o sursă de încredere, dar poate fi mai lentă.",
+      "algolia": "Algolia",
+      "algolia_description": "Folosește Algolia pentru o căutare mai rapidă, precum și pentru paginile organizației și ale utilizatorilor."
+    },
+    "instant_search": "Căutare instantanee",
+    "instant_search_description": "Navighează la pagina de căutare și actualizează rezultatele în timp real după ce ai terminat de tipărit.",
+    "relative_dates": "Date relative",
+    "include_types": "Include tipurile {'@'} în instalare",
+    "include_types_description": "Include pachetul tipurilor {'@'} pentru a instala comenzi destinate pachetelor fără tipuri",
+    "hide_platform_packages": "Ascunde pachetele specifice platformei în căutare",
+    "hide_platform_packages_description": "Ascunde din rezultate pachetele binare native, cum ar fi {'@'}esbuild/linux-x64",
+    "enable_graph_pulse_loop": "Activează redarea în buclă a efectului de puls pe mini-grafic",
+    "enable_graph_pulse_loop_description": "Activează o animație cu impulsuri continue pe graficul descărcărilor săptămânale. Această animație poate distrage atenția unor utilizatori.",
+    "theme": "Temă",
+    "theme_light": "Deschis",
+    "theme_dark": "Închis",
+    "theme_system": "Sistem",
+    "language": "Limbă",
+    "help_translate": "Ajută la traducerea npmx",
+    "translation_status": "Verifică starea traducerii la nivel global",
+    "accent_colors": {
+      "label": "Culori de accent",
+      "neutral": "Neutru",
+      "sky": "Cer",
+      "coral": "Coral",
+      "amber": "Chihlimbar",
+      "emerald": "Smarald",
+      "violet": "Violet",
+      "magenta": "Magenta"
+    },
+    "clear_accent": "Culoare de accent clară",
+    "translation_progress": "Starea traducerii",
+    "background_themes": {
+      "label": "Umbră de fundal",
+      "neutral": "Neutru",
+      "stone": "Piatră",
+      "zinc": "Zinc",
+      "slate": "Ardezie",
+      "black": "Negru"
+    },
+    "keyboard_shortcuts_enabled": "Activează comenzile rapide de la tastatură",
+    "keyboard_shortcuts_enabled_description": "Comenzile rapide de la tastatură pot fi dezactivate dacă intră în conflict cu alte comenzi rapide ale browserului sau ale sistemului",
+    "enable_code_ligatures": "Activează litere ligaturate în cod"
+  },
+  "i18n": {
+    "missing_keys": "{count} traducere lipsește | {count} traduceri lipsesc",
+    "copy_keys": "Copiază cheile",
+    "show_more_keys": "Afișează încă {count}...",
+    "contribute_hint": "Ajută-ne să îmbunătățim această traducere completând cuvintele lipsă.",
+    "edit_on_github": "Editează pe GitHub",
+    "view_guide": "Ghid de traducere"
+  },
+  "error": {
+    "401": "Neautorizat",
+    "404": "Pagina nu a fost găsită",
+    "500": "Eroare internă a serverului",
+    "503": "Serviciu indisponibil",
+    "default": "A apărut o eroare"
+  },
+  "common": {
+    "loading": "Încărcare...",
+    "loading_more": "Încarcă mai mult...",
+    "loading_packages": "Încărcarea pachetelor...",
+    "end_of_results": "Sfârșitul rezultatelor",
+    "try_again": "Încearcă din nou",
+    "close": "Închide",
+    "or": "sau",
+    "retry": "Reîncearcă",
+    "copy": "Copiază",
+    "copied": "copiat!",
+    "skip_link": "Treci direct la conținutul principal",
+    "warnings": "Avertismente:",
+    "go_back_home": "Întoarce-te acasă",
+    "per_week": "/ săptămână",
+    "per_week_short": "/săpt",
+    "vanity_downloads_hint": "Număr de vanitate: nu sunt afișate pachete | Număr de vanitate: pentru pachetul afișat | Număr de vanitate: Suma celor {count} pachete afișate",
+    "sort": {
+      "name": "nume",
+      "role": "rol",
+      "members": "membri"
+    },
+    "scroll_to_top": "Derulează până sus",
+    "cancel": "Anulează",
+    "save": "Salvează",
+    "edit": "Editează",
+    "error": "Eroare",
+    "view_on": {
+      "npm": "Vizualizează pe npm",
+      "github": "Vizualizează pe GitHub",
+      "gitlab": "Vizualizează pe GitLab",
+      "bitbucket": "Vizualizează pe Bitbucket",
+      "codeberg": "Vizualizează pe Codeberg",
+      "git_repo": "Vizualizează pe repository Git",
+      "forgejo": "Vizualizează pe Forgejo",
+      "gitea": "Vizualizează pe Gitea",
+      "gitee": "Vizualizează pe Gitee",
+      "radicle": "Vizualizează pe Radicle",
+      "socket_dev": "Vizualizează pe socket.dev",
+      "sourcehut": "Vizualizează pe SourceHut",
+      "tangled": "Vizualizează pe Tangled"
+    },
+    "collapse": "Reduce",
+    "collapse_with_name": "Reduce {name}",
+    "expand": "Extinde",
+    "expand_with_name": "Extinde {name}"
+  },
+  "profile": {
+    "display_name": "Nume afișat",
+    "description": "Descriere",
+    "no_description": "Fără descriere",
+    "website": "Site web",
+    "website_placeholder": "https://exemplu.com",
+    "likes": "Likeuri",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "Profilul npmx al utilizatorului {handle}",
+    "not_found": "Profilul nu a fost găsit",
+    "not_found_message": "Nu s-a găsit profilul pentru {handle}.",
+    "invite": {
+      "message": "Se pare că încă nu folosesc npmx. Vrei să le spui despre asta?",
+      "share_button": "Partajează pe Bluesky",
+      "compose_text": "Salut {'@'}{handle}! Ai vizitat deja npmx.dev? Este un browser pentru registrul npm, rapid, modern și open-source.\nhttps://npmx.dev"
+    }
+  },
+  "package": {
+    "not_found": "Pachet ne găsit",
+    "not_found_message": "Pachetul nu a putut fi găsit.",
+    "no_description": "Nu s-a furnizat nicio descriere",
+    "verified_provenance": "Proveniență verificată",
+    "navigation": "Pachet",
+    "copy_name": "Copiază numele pachetului",
+    "deprecation": {
+      "package": "Acest pachet a fost declarat învechit.",
+      "version": "Această versiune a fost declarată învechită.",
+      "no_reason": "Nu s-a indicat niciun motiv"
+    },
+    "size_increase": {
+      "title_size": "Creștere semnificativă a dimensiunii față de versiunea {version}",
+      "title_deps": "Creștere semnificativă a numărului de dependențe față de versiunea v{version}",
+      "title_both": "Creștere semnificativă a dimensiunii și a dependențelor față de versiunea v{version}",
+      "size": "Dimensiunea instalării a crescut cu {percent} (cu {size} mai mare)",
+      "deps": "{count} dependențe suplimentare"
+    },
+    "size_decrease": {
+      "title_size": "Dimensiunea pachetului s-a redus față de versiunea {version}!",
+      "title_deps": "Numărul de dependențe a scăzut față de versiunea v{version}!",
+      "title_both": "Dimensiunea pachetului și numărul de dependențe au scăzut față de versiunea v{version}!",
+      "size": "Dimensiunea instalării a scăzut cu {percent} (cu {size} mai mică)",
+      "deps": "{count} dependențe mai puține"
+    },
+    "replacement": {
+      "title": "Este posibil să nu ai nevoie de această dependență.",
+      "example": "Exemplu:",
+      "native": "Acest pachet poate fi înlocuit cu {replacement}, disponibil de la Node {nodeVersion}.",
+      "native_no_version": "Acest pachet poate fi înlocuit cu {replacement}.",
+      "simple": "Comunitatea {community} a semnalat acest pachet ca redundant, cu recomandarea: {replacement}",
+      "documented": "Comunitatea {community} a semnalat acest pachet ca având alternative performante.",
+      "none": "Acest pachet a fost semnalat ca nu mai este necesar, și funcționalitatea este probabil disponibil nativ în toate motorii.",
+      "learn_more": "Află mai multe",
+      "learn_more_above": "Află mai multe mai sus.",
+      "community": "comunitate",
+      "consider_no_dep": "+ A considera fără dependențe?"
+    },
+    "stats": {
+      "license": "Licență",
+      "deps": "Dependențe",
+      "install_size": "Dimensiunea pachetului",
+      "vulns": "Vulnerabilități",
+      "published": "Publicat",
+      "published_tooltip": "Data la care a fost publicat {pachet}{'@'}{versiune}",
+      "view_dependency_graph": "Vizualizează graficul dependențelor",
+      "inspect_dependency_tree": "Verifică arborele de dependențe",
+      "size_tooltip": {
+        "unpacked": "{size} dimensiune după despachetare (acest pachet)",
+        "total": "{size} dimensiune totală după despachetare (inclusiv {count} dependențe pentru linux-x64) | {size} dimensiune totală după despachetare (inclusiv toate {count} dependențele pentru linux-x64)"
+      }
+    },
+    "skills": {
+      "title": "Competențele agentului",
+      "skills_available": "{count} competență disponibilă | {count} competențe disponibile",
+      "compatible_with": "Compatibil cu {tool}",
+      "install": "Instalează",
+      "installation_method": "Metoda de instalare",
+      "learn_more": "Află mai mult",
+      "available_skills": "Competențe Disponibile",
+      "click_to_expand": "Dă clic pentru a extinde",
+      "no_description": "Fără descriere",
+      "file_counts": {
+        "scripts": "{count} script | {count} scripturi",
+        "refs": "{count} ref | {count} referințe",
+        "assets": "{count} resursă | {count} resurse"
+      },
+      "view_source": "Vizualizează sursa",
+      "skills_cli": "skills CLI"
+    },
+    "links": {
+      "main": "principal",
+      "repo": "repozitoriu",
+      "homepage": "pagina principală",
+      "issues": "probleme",
+      "jsr": "jsr",
+      "code": "cod",
+      "docs": "documente",
+      "fund": "finanțează",
+      "compare": "compară",
+      "timeline": "cronologie",
+      "compare_this_package": "compară acest pachet"
+    },
+    "likes": {
+      "like": "Dă 'Like' la acest pachet",
+      "unlike": "Elimină 'Like' de la acest pachet",
+      "top_rank_tooltip": "Acesta se numără printre cele mai apreciate 10 pachete de pe npmx! (#{rank})",
+      "top_rank_label": "#{rank}",
+      "top_rank_link_label": "Vizualizează clasamentul like-urilor. Acest pachet ocupă locul #{rank}."
+    },
+    "docs": {
+      "contents": "Cuprins",
+      "default_not_available": "Nu există documentație disponibilă pentru această versiune.",
+      "not_available": "Documentele nu sunt disponibile",
+      "not_available_detail": "Nu am putut genera documentație pentru această versiune.",
+      "page_title": "Documentație API - npmx",
+      "page_title_name": "Documentație {name} - npmx",
+      "page_title_version": "Documentație {name} - npmx",
+      "og_title": "Documentație - {name}",
+      "view_package": "Vizualizează pachetul"
+    },
+    "get_started": {
+      "title": "Pornește",
+      "pm_label": "Gestionar de pachete",
+      "copy_command": "Copiază comanda de instalare",
+      "copy_dev_command": "Copiază comanda de instalare dev",
+      "dev_dependency_hint": "De obicei, se instalează ca dependență de dezvoltare",
+      "view_types": "Vizualizează {package}"
+    },
+    "create": {
+      "title": "Creează un proiect nou",
+      "copy_command": "Copiază comanda de creare",
+      "view": "{packageName} are același autor. Clic pentru mai multe detalii."
+    },
+    "run": {
+      "title": "Pornește",
+      "locally": "Pornește local"
+    },
+    "readme": {
+      "title": "Readme",
+      "no_readme": "Niciun README disponibil.",
+      "toc_title": "Structură",
+      "callout": {
+        "note": "Notă",
+        "tip": "Sfat",
+        "important": "Important",
+        "warning": "Avertisment",
+        "caution": "Atenție"
+      },
+      "copy_as_markdown": "Copiază fișierul README în format Markdown",
+      "error_loading": "A eşuat încărcarea detaliilor din fișierul README"
+    },
+    "provenance_section": {
+      "title": "Proveniență",
+      "built_and_signed_on": "Creat și semnat pe {provider}",
+      "view_build_summary": "Vizualizează rezumatul compilării",
+      "source_commit": "Commit Sursă",
+      "build_file": "Fișier de compilare",
+      "public_ledger": "Registrul public",
+      "transparency_log_entry": "Înregistrare în jurnalul de transparență",
+      "view_more_details": "Vezi mai multe detalii",
+      "error_loading": "A eşuat încărcarea detaliilor privind proveniența"
+    },
+    "security_downgrade": {
+      "title": "Retrogradarea ratingului de încredere",
+      "description_to_none_provenance": "Această versiune a fost publicată fără {provenance}.",
+      "description_to_none_trustedPublisher": "Această versiune a fost publicată fără {trustedPublishing}.",
+      "description_to_provenance_trustedPublisher": "Această versiune utilizează {provenance}, dar nu și {trustedPublishing}.",
+      "fallback_install_provenance": "Comenzile de instalare sunt asociate cu {version}, ultima versiune cu informații privind proveniența.",
+      "fallback_install_trustedPublisher": "Comenzile de instalare sunt asociate cu {version}, ultima versiune cu publicare verificată.",
+      "provenance_link_text": "proveniență",
+      "trusted_publishing_link_text": "publicare verificată"
+    },
+    "keywords_title": "Cuvinte cheie",
+    "compatibility": "Compatibilitate",
+    "card": {
+      "publisher": "Publicator",
+      "published": "Publicat",
+      "weekly_downloads": "Descărcări săptămânale",
+      "keywords": "Cuvinte cheie",
+      "license": "Licență",
+      "select": "Selectează pachetul",
+      "select_maximum": "Se pot selecta maximum {count} pachete"
+    },
+    "versions": {
+      "title": "Versiuni",
+      "collapse": "Reduce {tag}",
+      "expand": "Extinde {tag}",
+      "collapse_other": "Reduce celelalte versiuni",
+      "expand_other": "Extinde celelalte versiuni",
+      "collapse_major": "Reduce {major} majoră",
+      "expand_major": "Extinde {major} majoră",
+      "other_versions": "Alte versiuni",
+      "more_tagged": "{count} mai multe etichetate",
+      "all_covered": "Toate versiunile sunt incluse în etichetele de mai sus",
+      "deprecated_title": "{version} (învechit)",
+      "view_all": "Vizualizează versiunea {count} | Vizualizează toate cele {count} versiuni",
+      "view_all_versions": "Vizualizează toate versiunile",
+      "distribution_title": "Grupul Semver",
+      "distribution_modal_title": "Versiuni",
+      "distribution_range_date_same_year": "de la {from} până la {to}, {endYear}",
+      "distribution_range_date_multiple_years": "de la {from}, {startYear} până la {to}, {endYear}",
+      "grouping_major": "Majoră",
+      "grouping_minor": "Minoră",
+      "grouping_versions_title": "Versiuni",
+      "grouping_versions_about": "Despre gruparea versiunilor",
+      "grouping_versions_all": "Toate",
+      "grouping_versions_only_recent": "Doar recente",
+      "grouping_usage_title": "Folosință",
+      "grouping_usage_about": "Despre gruparea pe folosință",
+      "grouping_usage_all": "Toate",
+      "grouping_usage_most_used": "Cele mai folosite",
+      "recent_versions_only_tooltip": "Afișează numai versiunile publicate în ultimul an.",
+      "show_low_usage_tooltip": "Include grupuri de versiuni care reprezintă mai puțin de 1% din totalul descărcărilor.",
+      "y_axis_label": "Descărcări",
+      "filter_placeholder": "Filtrează după semver (ex. ^3.0.0)",
+      "filter_invalid": "Interval SemVer invalid",
+      "filter_help": "Ajutor pentru filtrul de intervale Semver",
+      "filter_tooltip": "Filtrează versiunile folosind un {link}. De exemplu, ^3.0.0 afișează toate versiunile 3.x.",
+      "filter_tooltip_link": "interval semver",
+      "no_matches": "Nu există versiuni care să corespundă acestui interval",
+      "copy_alt": {
+        "per_version_analysis": "Versiunea {version} a fost descărcată de {downloads} ori",
+        "general_description": "Diagrama cu bare care prezintă numărul de descărcări pe versiune pentru {versions_count} versiuni ale pachetului {package_name}, grupate după {semver_grouping_mode}, în intervalul {date_range_label}, de la versiunea {first_version} până la versiunea {last_version}. Versiunea cea mai descărcată este {max_downloaded_version}, cu {max_version_downloads} descărcări. {per_version_analysis}. {watermark}."
+      },
+      "page_title": "Istoric versiuni",
+      "current_tags": "Etichete actuale",
+      "no_match_filter": "Nu există versiuni care să corespundă criteriilor de filtrare {filter}"
+    },
+    "timeline": {
+      "load_more": "Încarcă mai multe",
+      "load_error": "Nu s-a putut încărca cronologia. Încearcă din nou mai târziu.",
+      "size_increase": "Dimensiunea instalării a crescut cu {percent}% ({size})",
+      "size_decrease": "Dimensiunea instalării a scăzut cu {percent}% ({size})",
+      "dep_increase": "{count} dependențe adăugate",
+      "dep_decrease": "{count} dependențe retrase",
+      "license_change": "Licența a fost modificată de la {from} la {to}",
+      "esm_added": "Tipul modulului a fost schimbat în ESM",
+      "esm_removed": "Tipul modulului a fost schimbat din ESM în CJS",
+      "types_added": "Au fost adăugate tipuri TypeScript",
+      "types_removed": "Au fost retrase tipuri TypeScript",
+      "trusted_publisher_added": "Funcția de publicare de încredere este activată",
+      "trusted_publisher_removed": "Funcția de publicare de încredere este dezactivată",
+      "provenance_added": "Funcția de proveniență este activată",
+      "provenance_removed": "Funcția de proveniență este dezactivată",
+      "chart": {
+        "tab_aria_label": "Selectarea sistemului metric",
+        "base_scale": "inițializează ordonatele la zero",
+        "zoom": "zoom",
+        "reset_minimap": "resetare minimapă",
+        "copy_alt": {
+          "key_changes": "Modificări importante: {version_events}.",
+          "version_events": "versiune {version}: {events}",
+          "general_description": "Grafic liniar care prezintă {metric} pentru pachetul {package}, de la versiunea {first} la {last}. Valoarea {metric} în versiunea {first} este {first_value}, iar în versiunea {last} este {last_value} ({overall_progress_percentage}% în total). {key_changes} {watermark}."
+        }
+      }
+    },
+    "dependencies": {
+      "title": "Dependență ({count}) | Dependențe ({count})",
+      "list_label": "Dependențele pachetului",
+      "show_all": "Afișează {count} dependențe | Afișează toate {count} dependențele",
+      "optional": "opțional",
+      "view_vulnerabilities": "Afișează vulnerabilitățile",
+      "outdated_major": "{count} versiuni majore în urmă (ultima: {latest}) | {count} versiuni majore în urmă (ultima: {latest})",
+      "outdated_minor": "{count} versiuni minore în urmă (ultima: {latest}) | {count} versiuni minore în urmă (ultima: {latest})",
+      "outdated_patch": "Patch de actualizare disponibil (ultima versiune: {latest})",
+      "has_replacement": "Această dependență are propuneri de înlocuire",
+      "vulnerabilities_count": "{count} vulnerabilitate | {count} vulnerabilități"
+    },
+    "peer_dependencies": {
+      "title": "Dependență Pereche ({count}) | Dependențe Pereche ({count})",
+      "list_label": "Dependențe Pereche la Pachet",
+      "show_all": "afișează {count} dependențe pereche | afișează toate {count} dependențe pereche"
+    },
+    "optional_dependencies": {
+      "title": "Dependență Opțională ({count}) | Dependențe Opționale ({count})",
+      "list_label": "Dependențe Opționale la Pachet",
+      "show_all": "afișează {count} dependențe opționale | afișează toate {count} dependențe opționale"
+    },
+    "maintainers": {
+      "title": "Menținători",
+      "list_label": "Menținători pachet",
+      "you": "(tu)",
+      "via": "via {teams}",
+      "remove_owner": "Elimină {name} ca proprietar",
+      "username_to_add": "Numele de utilizator care trebuie adăugat ca proprietar",
+      "username_placeholder": "nume de utilizator...",
+      "add_button": "adaugă",
+      "cancel_add": "Anuleaza adăugarea proprietarului",
+      "add_owner": "+ Adaugă proprietar",
+      "show_more": "(afișează încă {count} rezultate)",
+      "show_less": "(afișează mai puține)",
+      "maintainer_template": "{avatar} {char126}{name}"
+    },
+    "trends": {
+      "chart_assistive_text": {
+        "keyboard_navigation_horizontal": "Folosiți tastele săgeată stânga și dreapta pentru a parcurge punctele de date.",
+        "keyboard_navigation_vertical": "Folosiți tastele săgeată sus și jos pentru a parcurge punctele de date.",
+        "table_available": "Un tabel de date pentru acest grafic este disponibil mai jos.",
+        "table_caption": "Tabel de date pentru grafic"
+      },
+      "chart_view_toggle": "Comută vizualizarea",
+      "chart_view_combined": "Vizualizare combinată",
+      "chart_view_split": "Vizualizare separată",
+      "granularity": "Granularitate",
+      "granularity_daily": "Zilnic",
+      "granularity_weekly": "Săptămânal",
+      "granularity_monthly": "Lunar",
+      "granularity_yearly": "Anual",
+      "start_date": "Început",
+      "end_date": "Sfârșit",
+      "loading": "Încărcare...",
+      "date_range": "{start} la {end}",
+      "date_range_multiline": "{start}\nla {end}",
+      "download_file": "Descărcare {fileType}",
+      "toggle_annotator": "Comută anotatorul",
+      "toggle_stack_mode": "Comută modul stivă",
+      "open_options": "Deschide opțiunile",
+      "close_options": "Închide opțiunile",
+      "legend_estimation": "Estimare",
+      "no_data": "Nu există date disponibile",
+      "y_axis_label": "{granularity} {facet}",
+      "facet": "Fațetă",
+      "title": "Tendințe",
+      "contributors_skip": "Nu apare în lista contribuitorilor (nu există un depozit GitHub):",
+      "items": {
+        "downloads": "Descărcări",
+        "likes": "Like-uri",
+        "contributors": "Contribuitori"
+      },
+      "data_correction": "Corectarea datelor",
+      "average_window": "Fereastră medie",
+      "smoothing": "Netezire",
+      "prediction": "Previziune",
+      "known_anomalies": "Anomalii cunoscute",
+      "known_anomalies_description": "Interpolează peste vârfurile de trafic de descărcare cunoscute, cauzate de boți sau de probleme legate de CI.",
+      "known_anomalies_ranges": "Intervale de anomalie",
+      "known_anomalies_range": "De la {start} la {end}",
+      "known_anomalies_range_named": "{packageName}: de la {start} la {end}",
+      "known_anomalies_none": "Nu există anomalii cunoscute pentru acest pachet. | Nu există anomalii cunoscute pentru aceste pachete.",
+      "known_anomalies_contribute": "Contribuie cu date privind anomaliile",
+      "apply_correction": "Aplică corectarea",
+      "copy_alt": {
+        "trend_none": "în mare parte plat",
+        "trend_strong": "puternic",
+        "trend_weak": "slab",
+        "trend_undefined": "nedefinit (date insuficiente)",
+        "button_label": "Copiază textul alternativ",
+        "watermark": "În partea de jos, un filigran afișează textul \"./npmx – un browser rapid și modern pentru registrul npm\"",
+        "analysis": "{package_name} începe de la {start_value} și se termină la {end_value}, prezentând o tendință de {trend} cu o pantă de {downloads_slope} descărcări pe interval de timp",
+        "estimation": "Valoarea finală este o estimare bazată pe date parțiale pentru perioada curentă.",
+        "estimations": "Valorile finale sunt estimări bazate pe date parțiale pentru perioada curentă.",
+        "compare": "Grafic liniar comparativ al descărcărilor de pachete pentru: {packages}.",
+        "single_package": "Grafic liniar al descărcărilor pentru pachetul {package}.",
+        "general_description": "Axa Y reprezintă numărul de descărcări. Axa X reprezintă intervalul de date, de la {start_date} până la {end_date}, cu o perioadă de timp de {granularity}.{estimation_notice} {packages_analysis}. {watermark}.",
+        "facet_bar_general_description": "Diagramă cu bare orizontale pentru: {packages}, comparând {facet} ({description}). {facet_analysis} {watermark}.",
+        "facet_bar_analysis": "{package_name} are valoarea {value}."
+      }
+    },
+    "downloads": {
+      "title": "Descărcări Săptămânale",
+      "community_distribution": "Vizualizează distribuția adoptării în comunitate",
+      "subtitle": "Pe toate versiunile",
+      "sparkline_nav_hint": "Folosește ← →"
+    },
+    "install_scripts": {
+      "title": "Instalează scripturi",
+      "script_label": "(script)",
+      "npx_packages": "{count} pachet npx | {count} pachete npx",
+      "currently": "actual {version}"
+    },
+    "playgrounds": {
+      "title": "Încearcă",
+      "choose": "alege un playground"
+    },
+    "metrics": {
+      "esm": "Module ES acceptate",
+      "cjs": "CommonJS acceptat",
+      "no_esm": "Module ES neacceptate",
+      "wasm": "Folosește WebAssembly",
+      "types_label": "Tipuri",
+      "types_included": "Tipuri incluse",
+      "types_available": "Tipuri disponibile prin {package}",
+      "no_types": "Fără tipuri"
+    },
+    "license": {
+      "view_spdx": "Vizualizează textul licenței pe SPDX",
+      "none": "Niciuna"
+    },
+    "vulnerabilities": {
+      "tree_found": "{vulns} vulnerabilitate în {packages} din {total} pachete | {vulns} vulnerabilități în {packages} din {total} pachete",
+      "show_all_packages": "Afișează {count} pachete afectate | Afișează toate cele {count} pachete afectate",
+      "path": "cale",
+      "more": "+{count} mai multe",
+      "packages_failed": "Nu s-a putut verifica pachetul {count} | Nu s-au putut verifica {count} pachete",
+      "scan_failed": "Nu s-au putut analiza vulnerabilitățile",
+      "severity": {
+        "critical": "critic",
+        "high": "ridicat",
+        "moderate": "moderat",
+        "low": "scăzut"
+      },
+      "fixed_in_title": "Rezolvat în versiunea {version}"
+    },
+    "deprecated": {
+      "label": "Învechit",
+      "tree_found": "{count} dependență învechită | {count} dependențe învechite",
+      "show_all": "Afișează {count} pachete învechite | Afișează toate cele {count} pachete învechite"
+    },
+    "access": {
+      "title": "Accesele echipelor",
+      "refresh": "actualizează accesele echipelor",
+      "list_label": "Lista acceselor echipelor",
+      "owner": "proprietar",
+      "rw": "citire/scriere",
+      "ro": "citire",
+      "revoke_access": "Retrage accesul {name}",
+      "no_access": "Nu este configurat accesul echipei",
+      "select_team_label": "Alege echipa",
+      "loading_teams": "Se încarcă echipele...",
+      "select_team": "Alege echipa",
+      "permission_label": "Nivel de permisie",
+      "permission": {
+        "read_only": "citire",
+        "read_write": "citire-scriere"
+      },
+      "grant_button": "acordă",
+      "cancel_grant": "Anulează acordarea accesului",
+      "grant_access": "+ Acordă accesul echipei"
+    },
+    "list": {
+      "filter_label": "Filtrează pachetele",
+      "filter_placeholder": "Filtrează pachetele...",
+      "sort_label": "Sortează pachetele",
+      "showing_count": "Se afișează {filtered} din {total} pachete"
+    },
+    "skeleton": {
+      "loading": "Se încarcă detaliile pachetului",
+      "maintainers": "Menținători",
+      "keywords": "Cuvinte Cheie",
+      "versions": "Versiuni",
+      "dependencies": "Dependențe"
+    },
+    "sort": {
+      "downloads": "Cele mai descărcate",
+      "published": "Publicat recent",
+      "name_asc": "Nume (A-Z)",
+      "name_desc": "Nume (Z-A)"
+    },
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
+    },
+    "download": {
+      "button": "Descarcă",
+      "tarball": "Descarcă Tarball ca .tar.gz"
+    }
+  },
+  "leaderboard": {
+    "likes": {
+      "title": "Clasamentul Like-urilor",
+      "description": "Cele mai apreciate 10 pachete de pe npmx în acest moment.",
+      "rank": "Clasament",
+      "likes": "Like-uri",
+      "unavailable_title": "Încă nu există un clasament al Like-urilor",
+      "unavailable_description": "Nu avem un clasament al Like-urilor să arătăm in acest moment"
+    }
+  },
+  "connector": {
+    "modal": {
+      "title": "Conector Local",
+      "connected": "Conectat",
+      "connected_as_user": "Conectat ca ~{user}",
+      "connected_hint": "Acum poți gestiona pachetele și organizațiile din interfața web.",
+      "disconnect": "Deconectează",
+      "run_hint": "Rulează conectorul pe computerul tău pentru a activa funcțiile de administrator.",
+      "copy_command": "Copiază comanda",
+      "copied": "Copiat",
+      "paste_token": "Apoi, lipește tokenul de mai jos pentru a te conecta:",
+      "token_label": "Token",
+      "token_placeholder": "lipește tokenul aici...",
+      "advanced": "Opțiuni avansate",
+      "port_label": "Port",
+      "warning": "AVERTISMENT",
+      "warning_text": "Acesta permite lui npmx să acceseze interfața CLI npm. A se conecta numai la site-uri de încredere.",
+      "connect": "Conectează",
+      "connecting": "Conectare...",
+      "auto_open_url": "Deschide automat pagina de autentificare"
+    }
+  },
+  "operations": {
+    "queue": {
+      "title": "Coada operațiunilor",
+      "clear_all": "șterge tot",
+      "refresh": "Actualizează operațiunile",
+      "empty": "Nu sunt operațiuni în coadă",
+      "empty_hint": "Adaugă operațiuni de la paginile de pachete sau organizații",
+      "active_label": "Operațiuni active",
+      "otp_required": "OTP necesar",
+      "otp_prompt": "Introduce OTP pentru a continua",
+      "otp_placeholder": "Introduce cod OTP...",
+      "otp_label": "Parola unică",
+      "retry_otp": "Reîncearcă cu OTP",
+      "retry_web_auth": "Reîncearcă cu autentificare web",
+      "retrying": "Reîncercare...",
+      "open_web_auth": "Deschide link de autentificare web",
+      "approve_operation": "Aprobare operație",
+      "remove_operation": "Elimină operație",
+      "approve_all": "Aprobă Toate",
+      "execute": "Execută",
+      "executing": "Executare...",
+      "log": "Log",
+      "log_label": "Registrul operațiunilor finalizate",
+      "remove_from_log": "Șterge din registru"
+    }
+  },
+  "org": {
+    "teams": {
+      "title": "Echipe",
+      "refresh": "Actualizează echipele",
+      "filter_label": "Filtrează echipele",
+      "filter_placeholder": "Filtrează echipe...",
+      "sort_by": "Sortează după",
+      "loading": "Se încarcă echipele...",
+      "no_teams": "Nu s-au găsit echipe",
+      "list_label": "Echipele organizației",
+      "delete_team": "Șterge echipa {name}",
+      "member_count": "{count} membru | {count} membri",
+      "members_of": "Membrii {team}",
+      "no_members": "Nu există membri",
+      "remove_user": "Șterge {user} din echipa",
+      "username_to_add": "Nume de utilizator pentru adăugare în {team}",
+      "username_placeholder": "nume de utilizator...",
+      "add_button": "adaugă",
+      "cancel_add_user": "Anulează adăugarea utilizatorului",
+      "add_member": "+ Adaugă membru",
+      "team_name_label": "Nume echipă",
+      "team_name_placeholder": "nume-echipă...",
+      "create_button": "creează",
+      "no_match": "Nu există echipe care să corespundă \"{query}\"",
+      "cancel_create": "Anulează crearea echipei",
+      "create_team": "+ Creează echipă"
+    },
+    "members": {
+      "title": "Membrii",
+      "refresh": "Actualizează membrii",
+      "filter_label": "Filtrează membrii",
+      "filter_placeholder": "Filtrează membrii...",
+      "filter_by_role": "Filtrează după rol",
+      "filter_by_team": "Filtrează după echipă",
+      "all_teams": "toate echipele",
+      "sort_by": "Sortează după",
+      "loading": "Se încarcă membrii...",
+      "no_members": "Nu există membri",
+      "list_label": "Membrii organizației",
+      "change_role_for": "Schimbă rol pentru {name}",
+      "remove_from_org": "Șterge {name} din organizație",
+      "view_team": "Vezi echipa {team}",
+      "no_match": "Nu există membri care să corespundă filtrului",
+      "username_label": "Nume de utilizator",
+      "username_placeholder": "nume de utilizator...",
+      "role_label": "Rol",
+      "role": {
+        "all": "toate",
+        "developer": "dezvoltator",
+        "admin": "admin",
+        "owner": "proprietar"
+      },
+      "team_label": "Echipă",
+      "no_team": "fără echipă",
+      "add_button": "adaugă",
+      "cancel_add": "Anulează adăugarea",
+      "add_member": "+ Adaugă membru"
+    },
+    "public_packages": "{count} pachet public | {count} pachete publice",
+    "page": {
+      "packages_title": "Pachete",
+      "members_tab": "Membrii",
+      "teams_tab": "Echipe",
+      "no_packages": "Nu s-au găsit pachete publice pentru",
+      "no_packages_hint": "Este posibil ca această organizație să nu existe sau să nu aibă pachete publice.",
+      "failed_to_load": "Nu s-au putut încărca pachetele organizației",
+      "no_match": "Nu s-au găsit rezultate corespunzătoare \"{query}\"",
+      "not_found": "Organizația nu a fost găsită",
+      "not_found_message": "Organizația \"{'@'}{name}\" nu există pe npm"
+    }
+  },
+  "user": {
+    "combobox": {
+      "add_to_org_hint": "(va fi adăugat și la organizație)",
+      "press_enter_to_add": "Apăsați Enter pentru a adăuga {'@'}{username}",
+      "default_placeholder": "nume de utilizator...",
+      "suggestions_label": "Sugestii utilizator"
+    },
+    "page": {
+      "packages_title": "Pachete",
+      "no_packages": "Nu s-au găsit pachete publice pentru",
+      "no_packages_hint": "Este posibil ca acest utilizator să nu existe sau să nu aibă pachete publice.",
+      "failed_to_load": "Nu s-au putut încărca pachetele utilizatorului",
+      "no_match": "Nu s-au găsit pachete corespunzătoare \"{query}\"",
+      "filter_placeholder": "Filtrează {count} pachet... | Filtrează {count} pachete..."
+    },
+    "orgs_page": {
+      "title": "Organizații",
+      "back_to_profile": "Înapoi la profil",
+      "connect_required": "Conectează CLI locală pentru a vedea organizațiile tale.",
+      "connect_hint_prefix": "Rulează",
+      "connect_hint_suffix": "pentru a începe.",
+      "own_orgs_only": "Poți vedea doar organizațiile tale.",
+      "view_your_orgs": "Vezi organizațiile tale",
+      "loading": "Se încarcă organizațiile...",
+      "empty": "Nu s-au găsit organizații.",
+      "empty_hint": "Organizațiile sunt detectate din pachetele scoped.",
+      "count": "{count} Organizare | {count} Organizări",
+      "packages_count": "{count} pachet | {count} pachete"
+    }
+  },
+  "claim": {
+    "modal": {
+      "title": "Reclamează numele pachetului",
+      "success": "Pachet Reclamat!",
+      "success_detail": "{name}{'@'}0.0.0 a fost publicat pe npm.",
+      "success_hint": "Acum poți publica versiuni noi ale acestui pachet folosind comanda npm publish.",
+      "view_package": "Vizualizează pachetul",
+      "invalid_name": "Nume pachet nevalid:",
+      "available": "Acest nume nu este disponibil!",
+      "taken": "Acest nume este deja luat.",
+      "missing_permission": "Nu ai permisiunea de a adăuga un pachet la scop {'@'}{scope}.",
+      "similar_warning": "Există pachete similare - npm poate refuza acest nume:",
+      "related": "Pachete legate:",
+      "scope_warning_title": "Consideră folosirea unui pachet cu scop",
+      "scope_warning_text": "Numele de pachet ne-scoped sunt resurse comune. Reclamează doar un nume dacă vrei să publicei și să întrebi un pachet. Pentru proiecte personale sau organizaționale, folosește un nume scoped precum {'@'}{username}/{name}.",
+      "connect_required": "Conectează la connectorul local pentru a reclama acest nume de pachet.",
+      "connect_button": "Conectează la Connector",
+      "publish_hint": "Aceasta va publica un pachet de bază minim.",
+      "preview_json": "Previzualizează package.json",
+      "claim_button": "Reclamează Numele Pachetului",
+      "publishing": "Publicare...",
+      "checking": "Verificarea disponibilității...",
+      "failed_to_check": "Nu s-a putut verifica disponibilitatea numelui",
+      "failed_to_claim": "Nu s-a putut reclama pachetul"
+    }
+  },
+  "code": {
+    "files_label": "Fișiere",
+    "no_files": "Nu există fișiere în acest dosar",
+    "lines": "{count} linie | {count} linii",
+    "toggle_tree": "Comută arborele de fișiere",
+    "close_tree": "Închide arborele de fișiere",
+    "copy_content": "Copiază conținutul fișierului",
+    "copy_link": "Copiază link-ul",
+    "view_raw": "Vezi fișierul brut",
+    "toggle_container": "Comută lățimea containerului de cod",
+    "open_raw_file": "Deschide fișierul brut",
+    "open_path_dropdown": "Deschide dropdown-ul pentru segmentele de cale",
+    "file_too_large": "Fișierul este prea mare pentru a fi previzualizat",
+    "file_size_warning": "{size} depășește limita de 500KB pentru evidențierea sintaxei",
+    "failed_to_load": "Eroare la încărcarea fișierului",
+    "unavailable_hint": "Fișierul poate fi prea mare sau indisponibil",
+    "version_required": "Versiunea este necesară pentru a naviga prin cod",
+    "go_to_package": "Vezi pachetul",
+    "loading_tree": "Se încarcă arborele de fișiere...",
+    "failed_to_load_tree": "Eroare la încărcarea fișierelor pentru această versiune a pachetului",
+    "back_to_package": "Înapoi la pachet",
+    "table": {
+      "name": "Nume",
+      "size": "Talie"
+    },
+    "markdown_view_mode": {
+      "preview": "Previzualizare",
+      "code": "Cod"
+    },
+    "file_path": "Calea fișierului",
+    "binary_file": "Fișier binar",
+    "binary_rendering_warning": "Tipul de fișier \"{contentType}\" nu este suportat pentru previzualizare."
+  },
+  "badges": {
+    "provenance": {
+      "verified": "verificat",
+      "verified_title": "Provenanță verificată",
+      "verified_via": "Verificat: publicat via {provider}"
+    },
+    "jsr": {
+      "title": "disponibil și pe JSR"
+    }
+  },
+  "filters": {
+    "title": "Filtre",
+    "search": "Caută",
+    "search_scope": "Caută în scop",
+    "search_placeholder_name": "Caută după nume...",
+    "search_placeholder_description": "Caută după descriere...",
+    "search_placeholder_keywords": "Caută după cuvinte cheie...",
+    "search_placeholder_all": "Caută toate sau folosește nume: desc: kw:",
+    "scope_name": "Nume",
+    "scope_name_description": "Caută numai numele pachetelor",
+    "scope_description": "Descriere",
+    "scope_description_description": "Caută numai descrierile",
+    "scope_keywords": "Cuvinte cheie",
+    "scope_keywords_description": "Caută numai cuvintele cheie",
+    "scope_all": "Toate",
+    "scope_all_description": "Caută în toate câmpurile, suportă operatorii name: desc: kw:",
+    "weekly_downloads": "Descărcări săptămânale",
+    "updated_within": "Actualizat în",
+    "security": "Securitate",
+    "keywords": "Cuvinte cheie",
+    "more_keywords": "+{count} mai multe",
+    "clear_all": "Șterge toate",
+    "remove_filter": "Șterge filtrul {label}",
+    "chips": {
+      "search": "Caută",
+      "downloads": "Descărcări",
+      "keyword": "Cuvinte cheie",
+      "security": "Securitate",
+      "updated": "Actualizat"
+    },
+    "download_range": {
+      "any": "Oricât",
+      "lt100": "< 100",
+      "100_1k": "100 - 1K",
+      "1k_10k": "1K - 10K",
+      "10k_100k": "10K - 100K",
+      "gt100k": "> 100K"
+    },
+    "updated": {
+      "any": "Oricând",
+      "week": "În ultima săptămână",
+      "month": "În ultima lună",
+      "quarter": "În ultimele 3 luni",
+      "year": "În ultimul an"
+    },
+    "security_options": {
+      "all": "Toate pachetele",
+      "secure": "Fără avertismente",
+      "insecure": "Cu avertismente"
+    },
+    "view_selected": "Vizualizează selecția",
+    "clear_selected_label": "Șterge selecția",
+    "sort": {
+      "label": "Sortează pachetele",
+      "toggle_direction": "Comută direcția de sortare",
+      "ascending": "Ascendent",
+      "descending": "Descendent",
+      "relevance": "Relevanță",
+      "downloads_week": "Descărcări/săpt",
+      "downloads_day": "Descărcări/zi",
+      "downloads_month": "Descărcări/lună",
+      "downloads_year": "Descărcări/an",
+      "published": "Ultima publicare",
+      "name": "Nume"
+    },
+    "columns": {
+      "title": "Coloane",
+      "show": "Arată coloane",
+      "reset": "Resetează la valorile implicite",
+      "coming_soon": "În curând",
+      "name": "Nume",
+      "version": "Versiune",
+      "description": "Descriere",
+      "downloads": "Descărcări/săpt",
+      "published": "Ultima publicare",
+      "maintainers": "Menținători",
+      "keywords": "Cuvinte cheie",
+      "security": "Securitate",
+      "selection": "Selectează pachet"
+    },
+    "view_mode": {
+      "label": "Modul de afișare",
+      "cards": "Vizualizare fișe",
+      "table": "Vizualizare tabel"
+    },
+    "pagination": {
+      "mode_label": "Mod de paginare",
+      "infinite": "Infinit",
+      "paginated": "Paginat",
+      "items_per_page": "Elemente pe pagină",
+      "per_page": "{count} / pagină",
+      "showing": "{range} din {total}",
+      "previous": "Pagina anterioară",
+      "next": "Pagina următoare",
+      "nav_label": "Paginare"
+    },
+    "count": {
+      "showing_filtered": "{filtered} din {count} pachet | {filtered} din {count} pachete",
+      "showing_all": "{count} pachet | {count} pachete",
+      "showing_paginated": "{pageSize} din {count} pachet | {pageSize} din {count} pachete"
+    },
+    "table": {
+      "security_warning": "Avertisment de securitate",
+      "secure": "Securizat",
+      "no_packages": "Nu s-au găsit pachete"
+    }
+  },
+  "about": {
+    "title": "Despre",
+    "heading": "despre",
+    "meta_description": "npmx este un browser rapid și modern pentru registrul npm. O experiență UX/DX excelentă în explorarea pachetelor npm.",
+    "what_we_are": {
+      "title": "Ce suntem noi",
+      "better_ux_dx": "o experiență UX/DX excelentă",
+      "admin_ui": "interfața de administrare",
+      "description": "npmx este o soluție {betterUxDx} pentru registrul de pachete și instrumentele npm. Ne străduim să oferim o interfață rapidă și modernă pentru explorarea pachetelor, cu funcții precum modul întunecat, navigarea cu tastatura, răsfoirea codului și conexiuni la registre alternative precum {jsr}.",
+      "admin_description": "De asemenea, ne propunem să oferim o interfață de administrare excelentă pentru gestionarea pachetelor, echipelor și organizațiilor tale — totul direct din browser, cu ajutorul CLI-ului npm local."
+    },
+    "what_we_are_not": {
+      "title": "Ce nu suntem noi",
+      "not_package_manager": "Nu suntem un gestionar de pachete.",
+      "not_registry": "Nu suntem un registru.",
+      "registry_description": "Nu găzduim pachete. Suntem doar o modalitate rapidă și modernă de a le răsfoi.",
+      "package_managers_exist": "{already} {people} {building} {managers} {package} {really} {cool}.",
+      "words": {
+        "already": "Există",
+        "people": "déjà oameni",
+        "building": "care creează",
+        "really": "foarte",
+        "cool": "cool",
+        "package": "de pachete",
+        "managers": "gestionari"
+      }
+    },
+    "sponsors": {
+      "title": "Sponsori"
+    },
+    "oss_partners": {
+      "title": "Partneri OSS"
+    },
+    "team": {
+      "title": "Echipă",
+      "governance": "Guvernanță",
+      "role_steward": "steward",
+      "role_maintainer": "menținător(toare)",
+      "sponsor": "sponsor",
+      "sponsor_aria": "Sponsorizează pe {name} pe GitHub"
+    },
+    "contributors": {
+      "title": "... și încă {count} contribuitor | ... și încă {count} contribuitori",
+      "description": "npmx este un proiect complet open source, creat de o comunitate extraordinară de contribuitori. Alătură-te nouă și hai să construim împreună experiența de navigare pe npm pe care ne-am dorit-o dintotdeauna.",
+      "loading": "Se încarcă lista contribuitorilor...",
+      "error": "Nu s-au putut încărca contribuitorii",
+      "view_profile": "Vizualizează profilul {name} pe GitHub"
+    },
+    "get_involved": {
+      "title": "Implică-te",
+      "contribute": {
+        "title": "Contribuie",
+        "description": "Ajută-ne să construim experiența de navigare pe npm pe care ne-o dorim.",
+        "cta": "Vizualizează pe GitHub"
+      },
+      "community": {
+        "title": "Alătură-te comunității",
+        "description": "Discută, pune întrebări și împărtășește idei.",
+        "cta": "Alătură-te pe Discord"
+      },
+      "builders": {
+        "title": "Ajută la dezvoltarea npmx",
+        "description": "Alătură-te echipei care modelează viitorul npmx.",
+        "cta": "Alătură-te comunității Builders pe Discord"
+      },
+      "follow": {
+        "title": "Rămâi la curent",
+        "description": "Află ultimele noutăți despre npmx.",
+        "cta": "Urmărește-ne pe Bluesky"
+      }
+    }
+  },
+  "account_menu": {
+    "connect": "conectează",
+    "account": "Cont",
+    "npm_cli": "CLI npm",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "Gestionarea pachetelor și organizațiilor",
+    "atmosphere_desc": "Funcții sociale și identitate",
+    "connect_npm_cli": "Conectare la CLI-ul npm",
+    "connect_atmosphere": "Conectare la Atmosphere",
+    "connecting": "Conectare...",
+    "ops": "{count} op | {count} ops"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosphere",
+      "connected_as": "Conectat ca {'@'}{handle}",
+      "disconnect": "Deconectare",
+      "connect_prompt": "Conectare cu contul Atmosphere",
+      "handle_label": "Identificator",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "Conectare",
+      "create_account": "Creează un cont nou",
+      "connect_bluesky": "Conectare cu Bluesky",
+      "what_is_atmosphere": "Ce este un cont Atmosphere?",
+      "atmosphere_explanation": "{npmx} folosește {atproto} pentru a alimenta multe funcții sociale, permitând utilizatorilor să își controleze datele și să utilizeze un singur cont pentru toate aplicațiile compatibile. Odată ce ai creat un cont, poți folosi alte aplicații precum {bluesky} și {tangled} cu acelasi cont.",
+      "default_input_error": "Te rugăm să introduci un nume de utilizator valid, un DID sau o adresă URL PDS completă",
+      "profile": "Profil"
+    }
+  },
+  "header": {
+    "home": "pagina principală npmx",
+    "packages": "pachete",
+    "packages_dropdown": {
+      "title": "Pachetele tale",
+      "loading": "Se încarcă...",
+      "error": "Eroare la încărcarea pachetelor",
+      "empty": "Nu s-au găsit pachete",
+      "view_all": "Vezi toate"
+    },
+    "orgs": "orgs",
+    "orgs_dropdown": {
+      "title": "Organizațiile tale",
+      "loading": "Se încarcă...",
+      "error": "Eroare la încărcarea organizațiilor",
+      "empty": "Nu s-au găsit organizații",
+      "view_all": "Vezi toate"
+    },
+    "pr": "Deschide pull request #{prNumber} de pe GitHub"
+  },
+  "compare": {
+    "packages": {
+      "title": "compară pachetele",
+      "tagline": "compară pachetele npm unul lângă altul pentru a te ajuta să îl alegi pe cel potrivit.",
+      "meta_title": "Compară {packages} - npmx",
+      "meta_title_empty": "Compară Pachete - npmx",
+      "meta_description": "Comparație directă între {packages}",
+      "meta_description_empty": "Compară pachetele npm unul lângă altul",
+      "section_packages": "Pachete",
+      "section_facets": "Fațete",
+      "section_comparison": "Comparație",
+      "copy_as_markdown": "Copiere tabel",
+      "loading": "Se încarcă datele pachetului...",
+      "error": "Nu s-au putut încărca datele pachetului. Te rugăm să încerci din nou.",
+      "empty_title": "Selectează pachete pentru a le compara",
+      "empty_description": "Caută și adaugă cel puțin două pachete din lista de mai sus pentru a vedea o comparație directă a parametrilor acestora.",
+      "table_view": "Tabel",
+      "charts_view": "Grafice",
+      "no_chartable_data": "Nu sunt disponibile date care pot fi reprezentate grafic pentru criteriile selectate.",
+      "bar_chart_nav_hint": "Folosește ↑ ↓",
+      "line_chart_nav_hint": "Folosește ← →"
+    },
+    "selector": {
+      "search_label": "Căută pachete",
+      "search_first": "Căută pachetul...",
+      "search_add": "Adaugă alt pachet...",
+      "searching": "Căutare...",
+      "remove_package": "Șterge {package}",
+      "packages_selected": "{count}/{max} pachete selectate.",
+      "add_hint": "Adaugă cel puțin 2 pachete pentru a le compara."
+    },
+    "scatter_chart": {
+      "title": "Compară {x} cu {y}",
+      "freshness_score": "Scor de prospețime",
+      "copy_alt": {
+        "analysis": "{package} : {x_name} ({x_value}) și {y_name} ({y_value})",
+        "description": "Diagrama de dispersie care reprezintă grafic {x_name} în funcție de {y_name} pentru pachetele {packages}. {analysis}. {watermark}"
+      },
+      "filename": "{x}-vs-{y}-scatter-chart",
+      "x_axis": "Abscise ↦",
+      "y_axis": "Ordonate ↥"
+    },
+    "no_dependency": {
+      "label": "(Fără dependențe)",
+      "typeahead_title": "Cum ar fi fără?",
+      "typeahead_description": "Compară cu situația în care nu se folosește o dependență! Aprobat de e18e.",
+      "tooltip_title": "S-ar putea să nu ai nevoie de o dependență",
+      "tooltip_description": "Compară cu cazul în care nu se folosește o dependență! {link} conține o listă de pachete care pot fi înlocuite cu API-uri native sau cu alternative mai simple.",
+      "e18e_community": "comunitatea e18e",
+      "add_column": "Include coloana „Fără Dependențe” în comparație"
+    },
+    "facets": {
+      "all": "toate",
+      "none": "niciuna",
+      "select_all_category_facets": "Selectează toate fațetele {category}",
+      "deselect_all_category_facets": "Deselectează toate fațetele {category}",
+      "selected_all_category_facets": "Toate fațetele {category} selectate",
+      "deselected_all_category_facets": "Toate fațetele {category} deselectate",
+      "coming_soon": "În curând",
+      "select_all": "Selectează toate fațetele",
+      "deselect_all": "Deselectează toate fațetele",
+      "binary_only_tooltip": "Acest pachet conține doar fișiere binare și nu exportă nimic",
+      "categories": {
+        "performance": "Performanță",
+        "health": "Sănătate",
+        "compatibility": "Compatibilitate",
+        "security": "Securitate și Conformitate"
+      },
+      "items": {
+        "packageSize": {
+          "label": "Dimensiune Pachet",
+          "description": "Dimensiunea pachetului în sine (despachetat)"
+        },
+        "installSize": {
+          "label": "Dimensiune instalare",
+          "description": "Dimensiunea totală a instalării, inclusiv toate dependențele"
+        },
+        "dependencies": {
+          "label": "Dependențe Directe",
+          "description": "Numărul de dependențe directe"
+        },
+        "totalDependencies": {
+          "label": "Dependențe Totale",
+          "description": "Numărul total de dependențe, inclusiv transitive"
+        },
+        "downloads": {
+          "label": "Descărcări/săpt",
+          "description": "Numărul de descărcări pe săptămână"
+        },
+        "totalLikes": {
+          "label": "Like-uri",
+          "description": "Numărul de like-uri"
+        },
+        "lastUpdated": {
+          "label": "Publicat",
+          "description": "Când a fost publicată această versiune"
+        },
+        "deprecated": {
+          "label": "Învechit?",
+          "description": "Dacă pachetul este învechit"
+        },
+        "engines": {
+          "label": "Motoare",
+          "description": "Versiunile Node.js necesare"
+        },
+        "types": {
+          "label": "Tipuri",
+          "description": "Definiții de tipuri TypeScript"
+        },
+        "moduleFormat": {
+          "label": "Format Modul",
+          "description": "Suport ESM/CJS"
+        },
+        "license": {
+          "label": "Licență",
+          "description": "Licența pachetului"
+        },
+        "vulnerabilities": {
+          "label": "Vulnerabilități",
+          "description": "Vulnerabilități de securitate cunoscute"
+        },
+        "githubStars": {
+          "label": "Stele GitHub",
+          "description": "Numărul de stele din repository-ul GitHub"
+        },
+        "githubIssues": {
+          "label": "Probleme GitHub",
+          "description": "Numărul de probleme din repository-ul GitHub"
+        },
+        "createdAt": {
+          "label": "Creat la",
+          "description": "Când pachetul a fost creat"
+        }
+      },
+      "values": {
+        "any": "Oricare",
+        "none": "Niciuna",
+        "unknown": "Necunoscută",
+        "deprecated": "Învechit",
+        "not_deprecated": "Nu",
+        "types_included": "Inclus",
+        "types_none": "Niciun",
+        "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
+        "up_to_you": "Tu decizi!"
+      },
+      "trends": {
+        "title": "Compară Tendințe"
+      }
+    },
+    "file_changes": "Modificări Fișier",
+    "files_count": "{count} fișier | {count} fișiere",
+    "lines_hidden": "{count} linie ascunsă | {count} linii ascunse",
+    "file_too_large": "Fișier prea mare pentru comparare",
+    "file_size_warning": "{size} depășește limita de 250KB pentru comparare",
+    "compare_versions": "diff",
+    "compare_versions_title": "Compară cu cea mai recentă versiune",
+    "comparing_versions_label": "Se compară versiunile...",
+    "version_back_to_package": "Înapoi la pachet",
+    "version_error_message": "Eroare la compararea versiunilor.",
+    "version_invalid_url_format": {
+      "hint": "URL de comparare nevalid. Folosește formatul: {0}",
+      "from_version": "de la",
+      "to_version": "până la"
+    },
+    "version_selector_title": "Compară cu versiunea",
+    "summary": "Rezumat",
+    "deps_count": "{count} dep | {count} deps",
+    "dependencies": "Dependențe",
+    "dev_dependencies": "Dependențe Dev",
+    "peer_dependencies": "Dependențe Peer",
+    "optional_dependencies": "Dependențe Opționale",
+    "no_dependency_changes": "Nu există modificări de dependențe",
+    "file_filter_option": {
+      "all": "Toate ({count})",
+      "added": "Adaugate ({count})",
+      "removed": "Șterse ({count})",
+      "modified": "Modificate ({count})"
+    },
+    "search_files_placeholder": "Caută fișiere...",
+    "no_files_all": "Nu există fișiere",
+    "no_files_search": "Nu există fișiere care să corespundă \"{query}\"",
+    "no_files_filtered": "Nu există fișiere {filter}",
+    "filter": {
+      "added": "adăugate",
+      "removed": "șterse",
+      "modified": "modificate"
+    },
+    "files_button": "Fișiere",
+    "select_file_prompt": "Selectează un fișier din bara laterală pentru a vizualiza diferențele",
+    "close_files_panel": "Închide panoul de fișiere",
+    "filter_files_label": "Filtrează fișierele după tipul modificării",
+    "change_ratio": "Raportul de modificării",
+    "char_edits": "Modificări de caractere",
+    "diff_distance": "Distanța de diff",
+    "loading_diff": "Se încarcă diff...",
+    "loading_diff_error": "Eroare la încărcarea diff",
+    "merge_modified_lines": "Îmbină linii modificate",
+    "no_content_changes": "Nu există modificări de conținut detectate",
+    "options": "Opțiuni",
+    "view_file": "Vezi fișier",
+    "view_in_code_browser": "Vezi în browser de cod",
+    "word_wrap": "Aliniere automată"
+  },
+  "pds": {
+    "title": "npmx.social",
+    "meta_description": "Serverul oficial de date personale (PDS) al Protocolului AT pentru comunitatea npmx.",
+    "join": {
+      "title": "Alătură-te Comunității",
+      "description": "Fie că îți creezi primul cont pe Atmosphere, fie că îți migrezi unul existent, locul tău este aici. Îți poți migra contul actual fără a-ți pierde numele de utilizator, postările sau urmăritorii.",
+      "migrate": "Migrează cu PDS MOOver"
+    },
+    "server": {
+      "title": "Detalii Server",
+      "location_label": "Localizare:",
+      "location_value": "Nuremberg, Germania",
+      "infrastructure_label": "Infrastructură:",
+      "infrastructure_value": "Hosted on Hetzner",
+      "privacy_label": "Confidențialitate:",
+      "privacy_value": "Subiect regulilor stricte de protecție a datelor EU",
+      "learn_more": "Află cum utilizează npmx platforma Atmosphere"
+    },
+    "community": {
+      "title": "Cine este aici",
+      "description": "Iată câteva dintre cele {count} conturi care au ales deja npmx.social ca platformă preferată:",
+      "loading": "Se încarcă comunitatea PDS...",
+      "error": "Nu s-a putut încărca comunitatea PDS.",
+      "empty": "Nu există membri ai comunității care să fie afișați.",
+      "view_profile": "Vizualizează profilul lui {handle}",
+      "new_accounts": "...plus încă {count} care sunt noi în această atmosferă"
+    }
+  },
+  "privacy_policy": {
+    "title": "politica de confidențialitate",
+    "last_updated": "Ultima actualizare: {date}",
+    "welcome": "Bine ai venit la {app}. Ne angajăm să îți protejăm confidențialitatea. Această politică explică ce date colectăm, cum le utilizăm și care sunt drepturile tale în ceea ce privește informațiile tale.",
+    "cookies": {
+      "what_are": {
+        "title": "Ce sunt cookie-urile?",
+        "p1": "Cookie-urile sunt mici fișiere text stocate pe dispozitivul tău când vizitezi un site web. Scopul lor este de a-ți îmbunătăți experiența de navigare, memorând anumite preferințe și setări."
+      },
+      "types": {
+        "title": "Ce cookie-uri folosim?",
+        "p1": "Folosim cookie-urile {bold} numai în scopuri strict necesare pentru funcționalitatea site-ului. Nu folosim cookie-uri de la terți sau cookie-uri publicitare.",
+        "bold": "cookie-uri tehnice esențiale",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": ":",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "Acest cookie este utilizat de furnizorul nostru de servicii de găzduire (Vercel) pentru protecția împotriva erorilor de sincronizare. Acesta asigură că descarci resursele din versiunea corectă a aplicației în cazul în care este lansată o nouă actualizare în timp ce navighezi. Acesta nu te urmărește.",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "Acesta este cookie-ul nostru de sesiune securizat. Acesta stochează tokenul de acces OAuth atunci când te conectezi la contul tău Atmosphere. Este esențial pentru menținerea sesiunii tale autentificate."
+      },
+      "local_storage": {
+        "title": "Stocare Locală",
+        "p1": "Pe lângă cookie-urile de sesiune, folosim {bold} din browserul tău pentru a salva preferințele tale de afișare. Acest lucru ne permite să reținem tema (deschisă/închisă) și alte {settings} pe care le-ai selectat, astfel încât să nu fie nevoie să le reconfigurezi la fiecare vizită.",
+        "bold": "Stocare Locală",
+        "p2": "Aceste informații au un caracter strict funcțional, sunt stocate exclusiv pe dispozitivul tău și {bold2}. Le folosim exclusiv pentru a-ți îmbunătăți experiența pe site-ul nostru.",
+        "bold2": "nu conține date cu caracter personal și nu este utilizat pentru a te urmări",
+        "settings": "setări"
+      },
+      "management": {
+        "title": "Gestionarea cookie-urilor",
+        "p1": "Poți configura browserul pentru a accepta, respinge sau șterge cookie-urile, în funcție de preferințele tale. Totuși, te rugăm să reții că {bold}.",
+        "bold": "refuzarea cookie-urilor esențiale poate împiedica accesul complet la aplicație",
+        "p2": "Mai jos găsești linkuri cu instrucțiuni privind gestionarea cookie-urilor în cele mai utilizate browsere:",
+        "chrome": "Google Chrome (se deschide într-o fereastră nouă)",
+        "firefox": "Mozilla Firefox (se deschide într-o fereastră nouă)",
+        "edge": "Microsoft Edge (se deschide într-o fereastră nouă)"
+      }
+    },
+    "analytics": {
+      "title": "Analize",
+      "p1": "Folosim {bold} pentru a înțelege modul în care vizitatorii utilizează site-ul nostru. Acest lucru ne ajută să îmbunătățim experiența utilizatorilor și să identificăm eventualele probleme.",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analytics a fost conceput având în vedere protecția datelor:",
+      "li1": "Nu utilizează cookie-uri",
+      "li2": "Nu colectează date de identificare personală",
+      "li3": "Nu urmărește utilizatorii pe diferite site-uri web",
+      "li4": "Toate datele sunt agregate și anonimizate",
+      "p3": "Singurele informații colectate includ: adresele URL ale paginilor, sursa de proveniență, țara/regiunea, tipul dispozitivului, browserul și sistemul de operare. Aceste date nu pot fi utilizate pentru a identifica utilizatorii individuali."
+    },
+    "authenticated": {
+      "title": "Utilizatori autentificați",
+      "p1": "Când îți conectezi contul {bold} la npmx, stocăm tokenul tău de acces OAuth într-un cookie de sesiune securizat, care funcționează exclusiv prin HTTP. Acest token este utilizat exclusiv pentru a autentifica solicitările în numele tău.",
+      "bold": "Atmosphere",
+      "p2": "Nu stocăm datele tale de autentificare și nu accesăm alte date în afara celor necesare pentru a-ți oferi funcționalitățile pe care le utilizezi. Îți poți deconecta contul în orice moment din pagina {settings}.",
+      "settings": "setări"
+    },
+    "data_retention": {
+      "title": "Păstrarea datelor",
+      "p1": "Cookie-urile de sesiune sunt șterse automat atunci când îți închizi browserul sau după o perioadă de inactivitate. Preferințele de stocare locală rămân pe dispozitivul tău până când ștergi datele din browser. Datele analitice sunt păstrate sub formă agregată și nu pot fi asociate cu utilizatori individuali."
+    },
+    "your_rights": {
+      "title": "Drepturile tale",
+      "p1": "Ai dreptul să:",
+      "li1": "Accesezi informații despre datele pe care le colectăm",
+      "li2": "Ștergi memoria locală și cookie-urile în orice moment",
+      "li3": "Deconectezi sesiunea autentificată",
+      "li4": "Soliciți informații despre practicile noastre privind protecția datelor",
+      "p2": "Întrucât nu colectăm date cu caracter personal, de obicei nu există informații personale care să fie șterse sau exportate."
+    },
+    "contact": {
+      "title": "Contactează-ne",
+      "p1": "Dacă ai întrebări sau nelămuriri cu privire la această politică de confidențialitate, ne poți contacta deschizând un tichet pe {link}.",
+      "link": "Repozitoriul GitHub"
+    },
+    "changes": {
+      "title": "Modificări aduse acestei politici",
+      "p1": "Este posibil să actualizăm periodic această politică de confidențialitate. Orice modificare va fi publicată pe această pagină, împreună cu data actualizării."
+    }
+  },
+  "a11y": {
+    "title": "accesibilitate",
+    "footer_title": "a11y",
+    "welcome": "Ne dorim ca {app} să poată fi folosit de cât mai multe persoane posibil.",
+    "approach": {
+      "title": "Abordarea noastră",
+      "p1": "Încercăm să respectăm Ghidul de accesibilitate a conținutului web (WCAG) 2.2 și îl folosim ca referință atunci când dezvoltăm funcționalități. Nu pretindem că respectăm în totalitate niciun nivel al WCAG — accesibilitatea este un proces continuu și întotdeauna mai sunt lucruri de făcut.",
+      "p2": "Acest site este un {about}. Îmbunătățirile privind accesibilitatea sunt implementate treptat, în cadrul procesului nostru de dezvoltare continuă.",
+      "about_link": "proiect open-source, condus de comunitate"
+    },
+    "measures": {
+      "title": "Ce facem noi",
+      "p1": "Iată câteva dintre obiectivele pe care ni le-am propus pentru acest site:",
+      "li1": "Folosim HTML semantic și atribute ARIA acolo unde este cazul.",
+      "li2": "Folosim dimensiuni relative ale textului, astfel încât să le poți modifica în browserul tău.",
+      "li3": "Oferim suport pentru navigarea cu tastatura în întreaga interfață.",
+      "li4": "Respectăm interogările media prefers-reduced-motion și prefers-color-scheme.",
+      "li5": "Proiectăm ținând cont de un contrast cromatic suficient.",
+      "li6": "Ne asigurăm că conținutul esențial este disponibil fără JavaScript, deși unele funcții interactive necesită acest lucru."
+    },
+    "limitations": {
+      "title": "Limitări cunoscute",
+      "p1": "Este posibil ca anumite secțiuni ale site-ului — în special conținutul provenit de la terți, cum ar fi fișierele README ale pachetelor — să nu respecte standardele de accesibilitate. Ne străduim să îmbunătățim aceste aspecte pe parcurs."
+    },
+    "contact": {
+      "title": "Feedback",
+      "p1": "Dacă întâmpini o problemă de accesibilitate în {app}, te rugăm să ne anunți deschizând un tichet pe {link}. Luăm aceste sesizări în serios și vom face tot posibilul să le rezolvăm.",
+      "link": "Repozitoriul GitHub"
+    }
+  },
+  "translation_status": {
+    "title": "starea traducerii",
+    "generated_at": "Data generării: {date}",
+    "welcome": "Dacă ești interesat să ne ajuți să traducem {npmx} într-una dintre limbile enumerate mai jos, ai ajuns în locul potrivit! Această pagină, care se actualizează automat, afișează întotdeauna tot conținutul pentru care ai putea fi de ajutor în acest moment.",
+    "p1": "Folosim {lang} ca limbă implicită, cu un total de {count}. Dacă vrei să ne ajuți să adăugăm traduceri, caută limba în {bylang} și deschide detaliile.",
+    "p1_lang": "Engleză americană (en-US)",
+    "p1_count": "0 mesaje | 1 mesaj |{count} mesaje",
+    "p2": "Înainte de a începe, te rugăm să citești al nostru {guide} pentru a afla mai multe despre procesul nostru de traducere și despre cum te poți implica.",
+    "guide": "ghid de localizare (i18n)",
+    "by_locale": "Progresul traducerii pe setări de localizare",
+    "by_file": "Progresul traducerii pe fișier",
+    "complete_text": "Traducerea aceasta este completă, o treabă excelentă!",
+    "missing_text": "lipsește",
+    "missing_keys": "Nu există traduceri care lipsesc | Traducere care lipsește | Traduceri care lipsesc",
+    "progress_label": "Starea progresului pentru {locale}",
+    "table": {
+      "file": "Fișier",
+      "status": "Statut",
+      "error": "A apărut o eroare la încărcarea listei de fișiere.",
+      "empty": "Nu s-au găsit fișiere",
+      "file_link": "Editează {file} ({lang}) pe GitHub"
+    }
+  },
+  "vacations": {
+    "title": "în vacanță",
+    "meta_description": "Echipa npmx și-a luat o pauză. Discord s-a redeschis după o săptămână.",
+    "heading": "reîncărcare",
+    "subtitle": "Construiam npmx într-un ritm care ne priva pe {some} dintre noi de somn. Nu voiam ca asta să devină o obișnuință! Așa că ne-am luat o săptămână liberă. Împreună.",
+    "illustration_alt": "un singur rând de pictograme prietenoase",
+    "poke_log": "Zgâlțâie focul de tabără",
+    "what": {
+      "title": "ce s-a întâmplat",
+      "p1": "Discord a fost închis în perioada {dates}.",
+      "dates": "14 – 21 Februarie",
+      "p2": "Toate linkurile de invitație au dispărut, iar canalele au fost blocate – cu excepția canalului {garden}, care a rămas deschis pentru cei care doreau să mai petreacă timp împreună.",
+      "garden": "#garden"
+    },
+    "meantime": {
+      "title": "între timp",
+      "p1": "{site} și {repo} au rămas deschise – oamenii au continuat să se implice, au raportat câteva probleme, au deschis câteva cereri de pull, dar, în general, toată lumea și-a petrecut timpul lângă un șemineu confortabil.",
+      "repo_link": "repo-ul"
+    },
+    "return": {
+      "title": "Ne-am întors!",
+      "p1": "Ne-am întors plini de energie și pregătiți pentru sprintul final până pe 3 martie. {social} pentru noutăți.",
+      "social_link": "Urmărește-ne pe Bluesky"
+    },
+    "stats": {
+      "contributors": "Contribuitori",
+      "commits": "Commit-uri",
+      "pr": "PR Fuzionate",
+      "subtitle": {
+        "some": "câțiva",
+        "all": "toți"
+      }
+    }
+  },
+  "action_bar": {
+    "title": "bara de acțiuni",
+    "selection": "0 selecționate | 1 selecționat | {count} selecționate",
+    "shortcut": "Apasă \"{key}\" pentru a selecta acțiunile",
+    "button_close_aria_label": "Închide bara de acțiuni"
+  },
+  "logo_menu": {
+    "copy_svg": "Copiază logo-ul în format SVG",
+    "copied": "Copiat!",
+    "browse_brand": "Răsfoiește kitul de brand"
+  },
+  "brand": {
+    "title": "Brand",
+    "heading": "brand",
+    "meta_description": "Ghidul de identitate vizuală npmx, logo-uri, culori și tipografie pentru utilizare în presă și mass-media.",
+    "intro": "Resurse și îndrumări pentru utilizarea mărcii npmx în proiectele, articolele și materialele media ale tale.",
+    "logos": {
+      "title": "logouri",
+      "description": "Descarcă logo-urile npmx în formatele SVG și PNG. Alege varianta potrivită pentru fundalul tău.",
+      "wordmark": "LOGO CU TEXT",
+      "wordmark_alt": "Logo-ul npmx cu textul complet și o linie oblică albastră pe fundal întunecat",
+      "wordmark_light_alt": "Logo-ul npmx cu text complet și bară oblică de accentuare pe fundal deschis",
+      "mark": "SIMBOL",
+      "mark_alt": "Logo-ul npmx cu punct și bară oblică pe fundal întunecat",
+      "mark_light_alt": "Logo-ul npmx cu un punct și o bară oblică pe un fundal deschis",
+      "on_dark": "pe întunecat",
+      "on_light": "pe deschis",
+      "download_svg": "SVG",
+      "download_png": "PNG",
+      "download_svg_aria": "Descarcă {name} ca SVG",
+      "download_png_aria": "Descarcă {name} ca PNG"
+    },
+    "customize": {
+      "title": "personalizează-ți logo-ul",
+      "description": "Previzualizează logo-ul npmx cu culoarea de accent și fundalul ales de tine. Previzualizarea reflectă setările tale actuale — alege o culoare, activează sau dezactivează fundalul și descarcă.",
+      "accent_label": "accent",
+      "bg_label": "fundal",
+      "download_svg_aria": "Descarcă logo-ul personalizat ca SVG",
+      "download_png_aria": "Descarcă logo-ul personalizat ca PNG"
+    },
+    "typography": {
+      "title": "tipografie",
+      "description": "npmx utilizează familia de fonturi Geist de la Vercel atât pentru textul din interfață, cât și pentru cod.",
+      "sans": "Geist Sans",
+      "sans_desc": "Se utilizează pentru textul principal și elementele interfeței utilizatorului.",
+      "mono": "Geist Mono",
+      "mono_desc": "Se utilizează pentru coduri, titluri și conținut tehnic.",
+      "pangram": "Muzicologă în bej, vând whisky și tequila, preț fix",
+      "numbers": "0123456789"
+    },
+    "guidelines": {
+      "title": "doar o notă",
+      "message": "Accesibilitatea este importantă pentru noi și ne-ar plăcea să ne fii alături în această viziune. Atunci când folosești materialele menționate, asigură-te că există un contrast suficient față de fundal și nu reduce dimensiunea sub 24px. Dacă ai nevoie de alte resurse sau de informații suplimentare despre proiect, nu ezita să ne contactezi la {link}.",
+      "discord_link_text": "chat.npmx.dev"
+    }
+  },
+  "alt_logo_kawaii": "O versiune drăguță, rotunjită și colorată a logo-ului npmx."
+}
