@@ -711,6 +711,7 @@
     },
     "downloads": {
       "title": "每周下载量",
+      "version_distribution_title": "{version} 版本的每周下载量",
       "community_distribution": "查看社区采用分布",
       "subtitle": "涵盖所有版本",
       "sparkline_nav_hint": "使用 ← →"

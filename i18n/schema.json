@@ -1816,6 +1816,9 @@
                 "reset_minimap": {
                   "type": "string"
                 },
+                "ordered_versions": {
+                  "type": "string"
+                },
                 "copy_alt": {
                   "type": "object",
                   "properties": {
@@ -2147,6 +2150,9 @@
           "type": "object",
           "properties": {
             "title": {
+              "type": "string"
+            },
+            "version_distribution_title": {
               "type": "string"
             },
             "community_distribution": {

@@ -22,7 +22,10 @@ What npmx offers:
 - **Speed** &ndash; Fast searching, filtering, and navigation.
 - **Simplicity** &ndash; Get the information you need when you need it in an intuitive UI.
 - **URL Compatibility** &ndash; Replace `npmjs.com` with `xnpmjs.com` or `npmx.dev` in any URL and it just works.
+- **First-class accessibility** &ndash; Keyboard-friendly, screen-reader-aware experience baked in from the start.
+- **Internationalized UI** &ndash; Use npmx in dozens of locales, including RTL languages.
 - **Enhanced admin experience** &ndash; Manage your packages, teams, and organizations from the browser, powered by your local npm CLI.
+- **Shareable URLs** &ndash; Every view on every page is shareable through the URL, making sharing a breeze.
 
 ## Shortcuts
 
@@ -39,62 +42,86 @@ What npmx offers:
 ### Package browsing
 
 - **Dark mode and light mode** &ndash; plus customize the color palette to your preferences
+- **Translated interface** &ndash; localized UI across 39+ locales, including RTL support
+- **First-class accessibility** &ndash; accessible components, keyboard workflows, and automated axe/Lighthouse checks
+- **URL-driven feature views** &ndash; share exact package versions, search results, compare sets, source files and lines, diffs, docs, changelogs, and timelines
 - **Fast search** &ndash; quick package search with instant results
 - **Package details** &ndash; READMEs, versions, dependencies, and metadata
 - **Code viewer** &ndash; browse package source code with syntax highlighting and permalink to specific lines
+- **Generated API docs** &ndash; browse generated docs for typed packages when available
+- **Version diff** &ndash; inspect source and dependency changes between package versions
+- **Changelog view** &ndash; read release notes when packages publish them
+- **Timeline view** &ndash; scan publish history and notable version events such as deprecations and install size changes
 - **Provenance indicators** &ndash; verified build badges and provenance section below the README
 - **Multi-provider repository support** &ndash; stars/forks from GitHub, GitLab, Bitbucket, Codeberg, Gitee, Sourcehut, Forgejo, Gitea, Radicle, and Tangled
 - **JSR availability** &ndash; see if scoped packages are also available on JSR
 - **Package badges** &ndash; module format (ESM/CJS/dual), TypeScript types (with `@types/*` links), and engine constraints
 - **Outdated dependency indicators** &ndash; visual cues showing which dependencies are behind
 - **Vulnerability warnings** &ndash; security advisories from the OSV database
+- **License, replacement, install script, and size-change warnings** &ndash; spot package health and maintenance signals quickly
 - **Download statistics** &ndash; weekly download counts with sparkline charts
 - **Install size** &ndash; total install size (including transitive dependencies)
+- **Package comparison** &ndash; compare packages by downloads, size, dependencies, types, security, repository health, and more
+- **Social signals** &ndash; like packages, view profile likes, and browse the most-liked packages leaderboard
 - **Playground links** &ndash; quick access to StackBlitz, CodeSandbox, and other demo environments from READMEs
 - **Infinite search** &ndash; auto-load additional search pages as you scroll
 - **Keyboard navigation** &ndash; press `/` to focus search, `.` to open code viewer, arrow keys to navigate results
 - **Deprecation notices** &ndash; clear warnings for deprecated packages and versions
 - **Version range resolution** &ndash; dependency ranges (e.g., `^1.0.0`) resolve to actual installed versions
-- **Claim new packages** &ndash; register new package names directly from search results (via local connector)
+- **Claim new packages** &ndash; register new package names directly from search results
 - **Clickable version tags** &ndash; navigate directly to any version from the versions list
 
 ### User & org pages
 
 - **User profiles** &ndash; view any npm user's public packages at `/~username`
 - **Organization pages** &ndash; browse org packages at `/@orgname`
+- **Package access and owner management** &ndash; grant package access, revoke team access, and add/remove package owners
+- **Organization member and team management** &ndash; add/remove org members, change roles, create teams, and manage team membership
 - **Search, filter & sort** &ndash; find packages within user/org lists
 - **Infinite scroll** &ndash; paginated lists that load as you scroll
 
 ### Comparison with npmjs.com
 
-| Feature                        | npmjs.com | npmx.dev |
-| ------------------------------ | :-------: | :------: |
-| Package search                 |    ✅     |    ✅    |
-| Package details & README       |    ✅     |    ✅    |
-| Version history                |    ✅     |    ✅    |
-| Dependencies list              |    ✅     |    ✅    |
-| User profiles                  |    ✅     |    ✅    |
-| Organization pages             |    ✅     |    ✅    |
-| Provenance indicators          |    ✅     |    ✅    |
-| Code browser                   |    ✅     |    ✅    |
-| Dark mode                      |    ✅     |    ✅    |
-| Outdated dependency warnings   |    ❌     |    ✅    |
-| Module format badges (ESM/CJS) |    ❌     |    ✅    |
-| TypeScript types indicator     |    ✅     |    ✅    |
-| Install size calculation       |    ❌     |    ✅    |
-| JSR cross-reference            |    ❌     |    ✅    |
-| Vulnerability warnings         |    ✅     |    ✅    |
-| Deprecation notices            |    ✅     |    ✅    |
-| Download charts                |    ✅     |    ✅    |
-| Playground links               |    ❌     |    ✅    |
-| Keyboard navigation            |    ❌     |    ✅    |
-| Multi-provider repo support    |    ❌     |    ✅    |
-| Version range resolution       |    ❌     |    ✅    |
-| Dependents list                |    ✅     |    🚧    |
-| Package admin (access/owners)  |    ✅     |    🚧    |
-| Org/team management            |    ✅     |    🚧    |
-| 2FA/account settings           |    ✅     |    ❌    |
-| Claim new package names        |    ✅     |    ✅    |
+| Feature                             | npmjs.com | npmx.dev |
+| ----------------------------------- | :-------: | :------: |
+| Package search                      |    ✅     |    ✅    |
+| Package details & README            |    ✅     |    ✅    |
+| Version history                     |    ✅     |    ✅    |
+| Dependencies list                   |    ✅     |    ✅    |
+| Dependents list                     |    ✅     |    🚧    |
+| User profiles                       |    ✅     |    ✅    |
+| Organization pages                  |    ✅     |    ✅    |
+| Package comparison                  |    ❌     |    ✅    |
+| URL-driven/shareable feature views  |    ❌     |    ✅    |
+| Provenance indicators               |    ✅     |    ✅    |
+| Code browser                        |    ✅     |    ✅    |
+| Generated API docs                  |    ❌     |    ✅    |
+| Version diff                        |    ❌     |    ✅    |
+| Changelog view                      |    ❌     |    ✅    |
+| Timeline view                       |    ❌     |    ✅    |
+| Dark mode                           |   ✅ 🆕   |    ✅    |
+| Internationalization                |    ❌     |    ✅    |
+| Accessibility statement and audits  |    ❌     |    ✅    |
+| Outdated dependency warnings        |    ❌     |    ✅    |
+| Module format badges (ESM/CJS/WASM) |    ❌     |    ✅    |
+| TypeScript types indicator          |    ✅     |    ✅    |
+| Install size calculation            |    ❌     |    ✅    |
+| Install script warnings             |    ❌     |    ✅    |
+| License change warnings             |    ❌     |    ✅    |
+| Module replacement suggestions      |    ❌     |    ✅    |
+| JSR cross-reference                 |    ❌     |    ✅    |
+| Vulnerability warnings              |    ✅     |    ✅    |
+| Deprecation notices                 |    ✅     |    ✅    |
+| Download charts                     |    ✅     |    ✅    |
+| Package likes and leaderboard       |    ❌     |    ✅    |
+| Playground links                    |    ❌     |    ✅    |
+| Keyboard navigation                 |    ❌     |    ✅    |
+| Multi-provider repo support         |    ❌     |    ✅    |
+| Version range resolution            |    ❌     |    ✅    |
+| Package admin (access/owners)       |    ✅     |    ✅    |
+| Org/team management                 |    ✅     |    ✅    |
+| 2FA/account settings                |    ✅     |    ❌    |
+| Claim new package names             |    ✅     |    ✅    |
 
 🚧 = coming soon
 
@@ -118,7 +145,7 @@ npmx.dev supports npm permalinks &ndash; just replace `npmjs.com` with `npmx.dev
 
 #### Not yet supported
 
-- `/package/<name>/access` &ndash; package access settings
+- `/package/<name>/access` &ndash; dedicated npm-compatible access settings URL
 - `/package/<name>/dependents` &ndash; dependent packages list
 - `/settings/*` &ndash; account settings pages
 
