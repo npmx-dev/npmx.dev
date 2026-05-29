@@ -115,7 +115,7 @@ describe('CommandPalette', () => {
     await mountPalette()
 
     const status = document.getElementById('command-palette-modal-status')
-    expect(status?.textContent).toContain('Command palette')
+    expect(status?.textContent).toContain('command palette')
 
     commandPalette!.setView('languages')
     await flushPalette()
@@ -130,7 +130,7 @@ describe('CommandPalette', () => {
     await mountPalette()
 
     const input = document.getElementById('command-palette-modal-input')
-    expect(input?.getAttribute('placeholder')).toBe('Type a command...')
+    expect(input?.getAttribute('placeholder')).toBe('type a command...')
 
     commandPalette!.setView('languages')
     await nextTick()
@@ -265,7 +265,7 @@ describe('CommandPalette', () => {
 
     document.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, key: 'ArrowLeft' }))
     await flushPalette()
-    expect(input?.getAttribute('placeholder')).toBe('Type a command...')
+    expect(input?.getAttribute('placeholder')).toBe('type a command...')
 
     commandPalette!.setView('languages')
     commandPalette!.query.value = 'fr'

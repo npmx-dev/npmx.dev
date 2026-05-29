@@ -379,7 +379,6 @@
       "size": "Installationsgröße um {percent} gestiegen ({size} größer)",
       "deps": "{count} zusätzliche Abhängigkeiten"
     },
-    "size_decrease": {},
     "replacement": {
       "title": "Du brauchst diese Abhängigkeit vielleicht nicht.",
       "native": "Dies kann durch {replacement} ersetzt werden, verfügbar seit Node {nodeVersion}.",
@@ -556,11 +555,6 @@
       "page_title": "Versionshistorie",
       "current_tags": "Aktuelle Tags",
       "no_match_filter": "Keine Versionen entsprechen {filter}"
-    },
-    "timeline": {
-      "chart": {
-        "copy_alt": {}
-      }
     },
     "dependencies": {
       "title": "Abhängigkeit ({count}) | Abhängigkeiten ({count})",
@@ -763,9 +757,6 @@
       "button": "Herunterladen",
       "tarball": "Tarball als .tar.gz herunterladen"
     }
-  },
-  "leaderboard": {
-    "likes": {}
   },
   "connector": {
     "modal": {
@@ -1325,10 +1316,7 @@
         "vulnerabilities": {
           "label": "Sicherheitslücken",
           "description": "Bekannte Sicherheitsrisiken"
-        },
-        "githubStars": {},
-        "githubIssues": {},
-        "createdAt": {}
+        }
       },
       "values": {
         "any": "Beliebig",

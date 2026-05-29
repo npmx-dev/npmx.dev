@@ -587,10 +587,7 @@
       "trusted_publisher_added": "Publicação de confiança ativada",
       "trusted_publisher_removed": "Publicação de confiança removida",
       "provenance_added": "Proveniência ativada",
-      "provenance_removed": "Proveniência removida",
-      "chart": {
-        "copy_alt": {}
-      }
+      "provenance_removed": "Proveniência removida"
     },
     "dependencies": {
       "title": "Dependências ({count})",
@@ -793,9 +790,6 @@
       "button": "Baixar",
       "tarball": "Baixar Tarball como .tar.gz"
     }
-  },
-  "leaderboard": {
-    "likes": {}
   },
   "connector": {
     "modal": {

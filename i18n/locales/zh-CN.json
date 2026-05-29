@@ -23,7 +23,7 @@
     "brand": "品牌",
     "resources": "资源",
     "features": "功能",
-    "other": "其他"
+    "other": "其它"
   },
   "shortcuts": {
     "section": {
@@ -46,7 +46,7 @@
     "disable_shortcuts": "你可以在{settings}中禁用快捷键。",
     "open_main": "查看主要信息",
     "open_diff": "查看版本差异",
-    "open_timeline": "查看时间线"
+    "open_timeline": "时间线"
   },
   "search": {
     "label": "搜索 npm 包",
@@ -386,11 +386,11 @@
       "deps": "{count} 个依赖项"
     },
     "size_decrease": {
-      "title_size": "自 v{version} 以来体积显著减少",
-      "title_deps": "自 v{version} 以来依赖项数量显著减少",
-      "title_both": "自 v{version} 以来体积和依赖项显著减少",
-      "size": "安装大小减少了 {percent} (减少了 {size})",
-      "deps": "{count} 个依赖项减少"
+      "title_size": "自 v{version} 起，包体积已减小！",
+      "title_deps": "自 v{version} 起，依赖数量已减少！",
+      "title_both": "自 v{version} 起，包体积和依赖数量均已减少！",
+      "size": "安装体积减少了 {percent}（缩小了 {size}）",
+      "deps": "减少了 {count} 个依赖"
     },
     "replacement": {
       "title": "你可能不需要这个依赖。",

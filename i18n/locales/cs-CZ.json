@@ -380,7 +380,6 @@
       "size": "Velikost instalace se zvýšila o {percent} (větší o {size})",
       "deps": "{count} další závislostí"
     },
-    "size_decrease": {},
     "replacement": {
       "title": "Možná tuto závislost nepotřebujete.",
       "native": "Tento balíček lze nahradit {replacement}, dostupné od Node {nodeVersion}.",
@@ -557,11 +556,6 @@
       "page_title": "Historie verzí",
       "current_tags": "Aktuální značky",
       "no_match_filter": "Žádné verze neodpovídají {filter}"
-    },
-    "timeline": {
-      "chart": {
-        "copy_alt": {}
-      }
     },
     "dependencies": {
       "title": "Závislosti ({count})",
@@ -764,9 +758,6 @@
       "button": "Stáhnout",
       "tarball": "Stáhnout Tarball jako .tar.gz"
     }
-  },
-  "leaderboard": {
-    "likes": {}
   },
   "connector": {
     "modal": {
@@ -1245,9 +1236,6 @@
       "packages_selected": "Vybrané balíčky: {count}/{max}.",
       "add_hint": "Přidejte alespoň 2 balíčky ke srovnání."
     },
-    "scatter_chart": {
-      "copy_alt": {}
-    },
     "no_dependency": {
       "label": "(Žádná závislost)",
       "typeahead_title": "Co by udělal James?",
@@ -1326,10 +1314,7 @@
         "vulnerabilities": {
           "label": "Zranitelnosti",
           "description": "Známé bezpečnostní zranitelnosti"
-        },
-        "githubStars": {},
-        "githubIssues": {},
-        "createdAt": {}
+        }
       },
       "values": {
         "any": "Jakékoliv",
