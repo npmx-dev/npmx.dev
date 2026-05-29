@@ -205,8 +205,8 @@ importers:
         specifier: 2.0.11
         version: 2.0.11
       packumeta:
-        specifier: 0.4.0
-        version: 0.4.0
+        specifier: 0.4.1
+        version: 0.4.1
       perfect-debounce:
         specifier: 2.1.0
         version: 2.1.0
@@ -9142,8 +9142,8 @@ packages:
   package-manager-detector@1.6.0:
     resolution: {integrity: sha512-61A5ThoTiDG/C8s8UMZwSorAGwMJ0ERVGj2OjoW5pAalsNOg15+iQiPzrLJ4jhZ1HJzmC2PIHT2oEiH3R5fzNA==}
 
-  packumeta@0.4.0:
-    resolution: {integrity: sha512-RU9vc7pe32iMpUZGIkWac5gdKAUuKB4Ix77HL+Fy4Cow/W/IwO7bmHf/OhVPA9bMueU+XPzf5vm6GG9tw+sKSg==}
+  packumeta@0.4.1:
+    resolution: {integrity: sha512-n+4VKW4+05duTeQP8BRUDke6rTHYqxqsrVyLEt0Y4Kmisp+ZL3JKREjaxv+ajSd9GpjZkJLY+zG1A0f1Jib21A==}
     engines: {node: '>=20.0.0'}
 
   pako@0.2.9:
@@ -21287,7 +21287,7 @@ snapshots:
 
   package-manager-detector@1.6.0: {}
 
-  packumeta@0.4.0: {}
+  packumeta@0.4.1: {}
 
   pako@0.2.9: {}
 
