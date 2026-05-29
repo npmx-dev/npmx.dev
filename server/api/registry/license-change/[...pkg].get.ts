@@ -42,6 +42,10 @@ export default defineCachedEventHandler(
         version === 'latest' ? versions.length - 1 : versions.findIndex(v => v.version === version)
 
       const previousVersionIndex = currentVersionIndex - 1
+      if (previousVersionIndex < 0) {
+        return { change }
+      }
+
       const currentLicense = String(versions[currentVersionIndex]?.license || 'UNKNOWN')
       const previousLicense = String(versions[previousVersionIndex]?.license || 'UNKNOWN')
 
