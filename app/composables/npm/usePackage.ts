@@ -16,7 +16,7 @@ function getTrustLevel(version: PackumentVersion): PublishTrustLevel {
   return 'none'
 }
 
-function normalizeLicense(license?: PackumentLicense): string | undefined {
+export function normalizeLicense(license?: PackumentLicense): string | undefined {
   if (!license) return undefined
   if (typeof license === 'string') return license
   if (typeof license.type === 'string') return license.type
