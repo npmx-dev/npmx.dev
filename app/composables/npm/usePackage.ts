@@ -1,3 +1,4 @@
+import { getTrustLevel as getPackumetaTrustLevel, getTrustStatus } from 'packumeta'
 import { normalizeLicense } from '#shared/utils/npm'
 
 /** Number of recent versions to include in initial payload */
@@ -54,17 +55,16 @@ export function transformPackument(
   // Build security metadata for all versions, but only include in payload
   // when the package has mixed trust levels (i.e. a downgrade could exist)
   const securityVersionEntries = Object.entries(pkg.versions).map(([version, metadata]) => {
-    const trustLevel = getTrustLevel(metadata)
+    const trustStatus = getTrustStatus(metadata)
     return {
       version,
       time: pkg.time[version],
-      hasProvenance: trustLevel !== 'none',
-      trustLevel,
+      trustStatus,
       deprecated: metadata.deprecated,
     }
   })
 
-  const trustLevels = new Set(securityVersionEntries.map(v => v.trustLevel))
+  const trustLevels = new Set(securityVersionEntries.map(v => getTrustLevel(v.trustStatus)))
   const hasMixedTrust = trustLevels.size > 1
   const securityVersions = hasMixedTrust ? securityVersionEntries : undefined
 
@@ -87,12 +87,9 @@ export function transformPackument(
           installScripts: installScripts ?? undefined,
         }
       }
-      const trustLevel = getTrustLevel(version)
-      const hasProvenance = trustLevel !== 'none'
 
       filteredVersions[v] = {
-        hasProvenance,
-        trustLevel,
+        trustStatus: getTrustStatus(version),
         version: version.version,
         deprecated: version.deprecated,
         tags: version.tags as string[],

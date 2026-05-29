@@ -277,6 +277,9 @@ const tooltipPosition = useChartTooltipPosition(chartRef)
 const config = computed<VueUiXyConfig>(() => {
   return {
     theme: isDarkMode.value ? 'dark' : '',
+    downsample: {
+      threshold: 5000,
+    },
     line: {
       useGradient: false,
       radius: 2,
@@ -711,7 +714,7 @@ const indexSelection = computed(() => {
               class="pointer-events-none"
             >
               <path
-                :d="`M ${plot.x - 5} ${plot.y - 20} l 4 6 l 10 -12`"
+                :d="`M ${plot.x - 4} ${plot.y - 20} l 4 6 l 10 -12`"
                 fill="none"
                 :stroke="colors.bg"
                 stroke-width="6"
@@ -720,7 +723,7 @@ const indexSelection = computed(() => {
                 class="svg-element-transition"
               />
               <path
-                :d="`M ${plot.x - 5} ${plot.y - 20} l 4 6 l 10 -12`"
+                :d="`M ${plot.x - 4} ${plot.y - 20} l 4 6 l 10 -12`"
                 fill="none"
                 :stroke="e18eGradientColors.at(-1)"
                 stroke-width="2"
@@ -737,7 +740,7 @@ const indexSelection = computed(() => {
               class="pointer-events-none"
             >
               <path
-                :d="`M ${plot.x - 1} ${plot.y - 20 - (plot.offsetY ?? 0)} l -6 10 l 12 0 l -6 -10 m 0 5 l 0 2`"
+                :d="`M ${plot.x} ${plot.y - 20 - (plot.offsetY ?? 0)} l -6 10 l 12 0 l -6 -10 m 0 5 l 0 2`"
                 fill="none"
                 :stroke="colors.bg"
                 stroke-width="6"
@@ -746,7 +749,7 @@ const indexSelection = computed(() => {
                 class="svg-element-transition"
               />
               <path
-                :d="`M ${plot.x - 1} ${plot.y - 20 - (plot.offsetY ?? 0)} l -6 10 l 12 0 l -6 -10 m 0 5 l 0 2`"
+                :d="`M ${plot.x} ${plot.y - 20 - (plot.offsetY ?? 0)} l -6 10 l 12 0 l -6 -10 m 0 5 l 0 2`"
                 fill="none"
                 :stroke="e18eGradientColors[0]"
                 stroke-width="2"

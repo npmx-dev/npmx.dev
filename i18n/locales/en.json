@@ -716,6 +716,7 @@
     },
     "downloads": {
       "title": "Weekly Downloads",
+      "version_distribution_title": "weekly downloads for version {version}",
       "community_distribution": "View community adoption distribution",
       "subtitle": "Across all versions",
       "sparkline_nav_hint": "Use ← →"

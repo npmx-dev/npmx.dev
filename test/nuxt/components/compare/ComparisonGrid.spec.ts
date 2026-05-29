@@ -45,7 +45,7 @@ describe('ComparisonGrid', () => {
       expect(component.find('.comparison-cell-nodep').exists()).toBe(true)
     })
 
-    it('renders package name and version on separate clamped lines with a full title attribute', async () => {
+    it('renders package name and version on separate truncated lines with a full title attribute', async () => {
       const longName = 'very-long-package-name@1.0.0-beta.1'
       const component = await mountSuspended(ComparisonGrid, {
         props: {
@@ -56,7 +56,7 @@ describe('ComparisonGrid', () => {
       const link = component.find(`a[title="${longName}"]`)
       expect(link.exists()).toBe(true)
       expect(link.attributes('title')).toBe(longName)
-      expect(link.findAll('.line-clamp-1')).toHaveLength(2)
+      expect(link.findAll('.truncate')).toHaveLength(2)
     })
   })
 

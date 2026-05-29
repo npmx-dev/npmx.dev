@@ -19,7 +19,11 @@
     "social": "sosyal",
     "chat": "sohbet",
     "builders_chat": "yapımcılar",
-    "keyboard_shortcuts": "klavye kısayolları"
+    "keyboard_shortcuts": "klavye kısayolları",
+    "brand": "marka",
+    "resources": "Kaynaklar",
+    "features": "Özellikler",
+    "other": "Diğer"
   },
   "shortcuts": {
     "section": {
@@ -27,6 +31,9 @@
       "search": "Arama",
       "package": "Paket"
     },
+    "ctrl_key": "Ctrl",
+    "command_palette": "Komut paletini aç",
+    "command_palette_description": "Klavyeden ayrılmadan sayfalar, paket görünümleri, ayarlar ve harici bağlantılar arasında geçiş yapmak için komut paletini kullanın. macOS'ta ⌘K, Windows ve Linux'ta {ctrlKey}+K tuşuna basın.",
     "focus_search": "Aramaya odaklan",
     "show_kbd_hints": "Klavye ipuçlarını vurgula",
     "settings": "Ayarları aç",
@@ -36,7 +43,10 @@
     "go_to_result": "Sonuca git",
     "open_code_view": "Kod görünümünü aç",
     "open_docs": "Belgeleri aç",
-    "disable_shortcuts": "Klavye kısayollarını devre dışı bırak"
+    "disable_shortcuts": "Klavye kısayollarını devre dışı bırak",
+    "open_main": "Ana bilgileri aç",
+    "open_diff": "Sürüm farklılıklarını aç",
+    "open_timeline": "Zaman çizelgesini aç"
   },
   "search": {
     "label": "npm paketlerini ara",
@@ -73,6 +83,114 @@
     "instant_search_turn_off": "kapat",
     "instant_search_advisory": "{label} {state} — {action}"
   },
+  "command_palette": {
+    "title": "komut paleti",
+    "quick_actions": "atla...",
+    "subtitle": "npmx genelinde gezinin ve ayarlar arasında hızlıca geçiş yapın",
+    "subtitle_languages": "bir dil seçin veya çevirileri geliştirmeye yardım edin",
+    "instructions": "Komutları filtrelemek için yazın. Sonuçlar arasında gezinmek için ok tuşlarını, komut çalıştırmak için Enter'ı kullanın.",
+    "input_label": "Komut paleti araması",
+    "results_label": "Komut sonuçları",
+    "placeholder": "komut yazın...",
+    "back": "Geri",
+    "empty": "Eşleşen komut yok",
+    "empty_search_hint": "\"{query}\" için arama yapmak üzere Enter'a basın.",
+    "current": "mevcut",
+    "here": "buradasınız",
+    "connected": "bağlı",
+    "state": {
+      "on": "açık",
+      "off": "kapalı"
+    },
+    "groups": {
+      "actions": "İşlemler",
+      "help": "Yardım",
+      "language": "Dil",
+      "connections": "Bağlantılar",
+      "navigation": "Gezinti",
+      "links": "Bağlantılar",
+      "npmx": "npmx",
+      "package": "Paket",
+      "package_with_name": "Paket ({name})",
+      "versions": "Sürümler",
+      "versions_with_name": "{name} sürümleri"
+    },
+    "actions": {
+      "search": "Ara",
+      "search_for": "\"{query}\" ara",
+      "keyboard_shortcuts": "Klavye kısayolları",
+      "help_translate": "Çeviriye yardım et"
+    },
+    "connections": {
+      "npm_connect": "npm CLI'ya bağlan",
+      "npm_connected": "npm CLI (~{username})",
+      "npm_disconnect": "npm CLI bağlantısını kes",
+      "atmosphere_connect": "Atmosphere'e bağlan",
+      "atmosphere_connected": "atmosphere ({'@'}{handle})",
+      "atmosphere_disconnect": "Atmosphere bağlantısını kes"
+    },
+    "navigation": {
+      "home": "ana sayfa",
+      "packages": "paketler (~{username})",
+      "orgs": "organizasyonlar (~{username})",
+      "profile": "profil ({'@'}{handle})"
+    },
+    "links": {
+      "external": "Harici bağlantı"
+    },
+    "package_links": {
+      "stars": "Depo yıldızları",
+      "forks": "Depo fork'ları"
+    },
+    "theme": {
+      "system": "Sistem temasını kullan",
+      "light": "Açık temayı kullan",
+      "dark": "Koyu temayı kullan"
+    },
+    "package": {
+      "main": "Paket sayfası",
+      "docs": "Belgeler",
+      "code": "Kod",
+      "diff": "Fark",
+      "compare": "Bu paketi karşılaştır",
+      "download": "Tarball indir",
+      "changelog": "Değişiklik günlüğü"
+    },
+    "package_actions": {
+      "copy_run": "Çalıştırma komutunu kopyala"
+    },
+    "code": {
+      "copy_file": "Dosya içeriğini kopyala"
+    },
+    "diff": {
+      "merge_modified_lines": "Değiştirilen satırları birleştir",
+      "word_wrap": "Kelime kaydırma"
+    },
+    "version": {
+      "label": "{version}"
+    },
+    "status": {
+      "available_in_context": "{context}. Kullanılabilir komut yok | {context}. 1 komut mevcut | {context}. {count} komut mevcut",
+      "matching_in_context": "{context}. Eşleşen komut yok | {context}. 1 eşleşen komut | {context}. {count} eşleşen komut",
+      "no_matches_search_in_context": "{context}. Eşleşen komut yok. \"{query}\" aramak için Enter'a basın."
+    },
+    "announcements": {
+      "language_changed": "Dil {language} olarak ayarlandı.",
+      "relative_dates_on": "Göreceli tarihler açık.",
+      "relative_dates_off": "Göreceli tarihler kapalı.",
+      "theme_changed": "Tema {theme} olarak ayarlandı.",
+      "accent_color_changed": "Vurgu rengi {color} olarak ayarlandı.",
+      "background_theme_changed": "Arka plan tonu {theme} olarak ayarlandı.",
+      "download_started": "{package} tarball'ı indiriliyor.",
+      "copied_to_clipboard": "Panoya kopyalandı.",
+      "npm_disconnected": "npm CLI bağlantısı kesildi.",
+      "atmosphere_disconnected": "Atmosphere bağlantısı kesildi.",
+      "facets_all_selected": "Tüm özellikler seçildi.",
+      "facets_all_deselected": "Tüm özelliklerin seçimi kaldırıldı.",
+      "view_switched": "{view} görünümüne geçildi.",
+      "setting_toggled": "{setting} {state}."
+    }
+  },
   "nav": {
     "main_navigation": "Ana",
     "popular_packages": "Popüler paketler",
@@ -94,6 +212,7 @@
     },
     "draft_badge": "Taslak",
     "draft_banner": "Bu yayınlanmamış bir taslaktır. Eksik veya hatalı bilgiler içerebilir.",
+    "no_posts": "Gönderi bulunamadı.",
     "atproto": {
       "view_on_bluesky": "Bluesky'da görüntüle",
       "reply_on_bluesky": "Bluesky'da yanıtla",
@@ -136,22 +255,40 @@
     "include_types_description": "Tipsiz paketler için kurulum komutlarına {'@'}types paketi ekle",
     "hide_platform_packages": "Aramada platforma özgü paketleri gizle",
     "hide_platform_packages_description": "Sonuçlarda {'@'}esbuild/linux-x64 gibi yerel binary paketleri gizle",
+    "enable_graph_pulse_loop": "Mini grafikte nabız efekti döngüsünü etkinleştir",
+    "enable_graph_pulse_loop_description": "Haftalık indirme grafiğinde sürekli nabız animasyonunu etkinleştir. Bu animasyon bazı kullanıcılar için dikkat dağıtıcı olabilir.",
     "theme": "Tema",
     "theme_light": "Açık",
     "theme_dark": "Koyu",
     "theme_system": "Sistem",
     "language": "Dil",
     "help_translate": "npmx'i çevirmeye yardım edin",
+    "translation_status": "Genel çeviri durumunu görüntüle",
     "accent_colors": {
-      "label": "Vurgu renkleri"
+      "label": "Vurgu renkleri",
+      "neutral": "Nötr",
+      "sky": "Gök",
+      "coral": "Mercan",
+      "amber": "Kehribar",
+      "emerald": "Zümrüt",
+      "violet": "Mor",
+      "magenta": "Fuşya"
     },
     "clear_accent": "Vurgu rengini temizle",
     "translation_progress": "Çeviri ilerlemesi",
     "background_themes": {
-      "label": "Arka plan tonu"
+      "label": "Arka plan tonu",
+      "neutral": "Nötr",
+      "stone": "Taş",
+      "zinc": "Çinko",
+      "slate": "Arduvaz",
+      "black": "Siyah"
     },
     "keyboard_shortcuts_enabled": "Klavye kısayolları etkin",
-    "keyboard_shortcuts_enabled_description": "Hızlı navigasyon için klavye kısayollarını etkinleştir"
+    "keyboard_shortcuts_enabled_description": "Hızlı navigasyon için klavye kısayollarını etkinleştir",
+    "enable_code_ligatures": "Kodda ligature'ları etkinleştir",
+    "enable_changelog_autoscroll": "İstenen sürüme otomatik kaydır",
+    "enable_changelog_autoscroll_description": "Paket değişiklik günlüğünde istenen sürüme veya yakınına otomatik kaydır"
   },
   "i18n": {
     "missing_keys": "{count} eksik çeviri | {count} eksik çeviri",
@@ -183,6 +320,7 @@
     "warnings": "Uyarılar:",
     "go_back_home": "Ana sayfaya dön",
     "per_week": "/ hafta",
+    "per_week_short": "/hft",
     "vanity_downloads_hint": "Gösterge: paket gösterilmiyor | Gösterge: gösterilen paket için | Gösterge: {count} gösterilen paketin toplamı",
     "sort": {
       "name": "ad",
@@ -196,8 +334,23 @@
     "error": "Hata",
     "view_on": {
       "npm": "npm'de görüntüle",
-      "github": "GitHub'da görüntüle"
-    }
+      "github": "GitHub'da görüntüle",
+      "gitlab": "GitLab'da görüntüle",
+      "bitbucket": "Bitbucket'ta görüntüle",
+      "codeberg": "Codeberg'de görüntüle",
+      "git_repo": "Git deposunda görüntüle",
+      "forgejo": "Forgejo'da görüntüle",
+      "gitea": "Gitea'da görüntüle",
+      "gitee": "Gitee'de görüntüle",
+      "radicle": "Radicle'da görüntüle",
+      "socket_dev": "socket.dev'de görüntüle",
+      "sourcehut": "SourceHut'ta görüntüle",
+      "tangled": "Tangled'da görüntüle"
+    },
+    "collapse": "Daralt",
+    "collapse_with_name": "{name} daralt",
+    "expand": "Genişlet",
+    "expand_with_name": "{name} genişlet"
   },
   "profile": {
     "display_name": "Görünen ad",
@@ -235,9 +388,18 @@
       "size": "Kurulum boyutu {percent} arttı ({size} daha büyük)",
       "deps": "{count} daha fazla bağımlılık"
     },
+    "size_decrease": {
+      "title_size": "v{version}'dan beri paket boyutu azaldı!",
+      "title_deps": "v{version}'dan beri bağımlılık sayısı azaldı!",
+      "title_both": "v{version}'dan beri paket boyutu ve bağımlılık sayısı azaldı!",
+      "size": "Kurulum boyutu {percent} azaldı ({size} daha küçük)",
+      "deps": "{count} daha az bağımlılık"
+    },
     "replacement": {
       "title": "Bu bağımlılığa ihtiyacınız olmayabilir.",
+      "example": "Örnek:",
       "native": "Bu, Node {nodeVersion}'dan beri mevcut olan {replacement} ile değiştirilebilir.",
+      "native_no_version": "Bu paket {replacement} ile değiştirilebilir.",
       "simple": "{community} bu paketi artık gereksiz olarak işaretledi, önerisi: {replacement}.",
       "documented": "{community} bu paketin daha performanslı alternatiflerinin olduğunu belirtti.",
       "none": "Bu paket artık gereksiz olarak işaretlendi ve işlevselliği tüm motorlarda yerel olarak mevcuttur.",
@@ -275,9 +437,11 @@
         "refs": "{count} referans | {count} referans",
         "assets": "{count} varlık | {count} varlık"
       },
-      "view_source": "Kaynağa bak"
+      "view_source": "Kaynağa bak",
+      "skills_cli": "skills CLI"
     },
     "links": {
+      "main": "ana",
       "repo": "repo",
       "homepage": "ana sayfa",
       "issues": "hatalar",
@@ -285,15 +449,28 @@
       "code": "kod",
       "docs": "belgeler",
       "fund": "fonlama",
-      "compare": "karşılaştır"
+      "compare": "karşılaştır",
+      "timeline": "zaman çizelgesi",
+      "compare_this_package": "bu paketi karşılaştır",
+      "changelog": "değişiklik günlüğü"
     },
     "likes": {
       "like": "Bu paketi beğen",
-      "unlike": "Beğeniyi geri al"
+      "unlike": "Beğeniyi geri al",
+      "top_rank_tooltip": "Bu, npmx'teki en çok beğenilen 10 paket arasında! (#{rank})",
+      "top_rank_label": "#{rank}",
+      "top_rank_link_label": "Beğeni sıralamasını görüntüle. Bu paket #{rank}. sırada."
     },
     "docs": {
+      "contents": "İçindekiler",
+      "default_not_available": "Bu sürüm için belgeler mevcut değil.",
       "not_available": "Belgeler mevcut değil",
-      "not_available_detail": "Bu sürüm için belgeler oluşturulamadı."
+      "not_available_detail": "Bu sürüm için belgeler oluşturulamadı.",
+      "page_title": "API Belgeleri - npmx",
+      "page_title_name": "{name} belgeleri - npmx",
+      "page_title_version": "{name} belgeleri - npmx",
+      "og_title": "{name} - Belgeler",
+      "view_package": "Paketi görüntüle"
     },
     "get_started": {
       "title": "Başla",
@@ -323,7 +500,8 @@
         "warning": "Uyarı",
         "caution": "Dikkat"
       },
-      "copy_as_markdown": "README'yi Markdown olarak kopyala"
+      "copy_as_markdown": "README'yi Markdown olarak kopyala",
+      "error_loading": "README detayları yüklenemedi"
     },
     "provenance_section": {
       "title": "Köken",
@@ -353,7 +531,9 @@
       "published": "Yayınlandı",
       "weekly_downloads": "Haftalık indirmeler",
       "keywords": "Anahtar kelimeler",
-      "license": "Lisans"
+      "license": "Lisans",
+      "select": "Paketi seç",
+      "select_maximum": "En fazla {count} paket seçilebilir"
     },
     "versions": {
       "title": "Sürümler",
@@ -368,6 +548,7 @@
       "all_covered": "Tüm sürümler yukarıdaki etiketler tarafından kapsanıyor",
       "deprecated_title": "{version} (kullanımdan kaldırılmış)",
       "view_all": "{count} sürümü göster | Tüm {count} sürümü göster",
+      "view_all_versions": "Tüm sürümleri görüntüle",
       "distribution_title": "Semver Grubu",
       "distribution_modal_title": "Sürümler",
       "distribution_range_date_same_year": "{from}'den {to}'ya, {endYear}",
@@ -375,10 +556,13 @@
       "grouping_major": "Major",
       "grouping_minor": "Minor",
       "grouping_versions_title": "Sürümler",
+      "grouping_versions_about": "Sürüm gruplandırması hakkında",
       "grouping_versions_all": "Tümü",
       "grouping_versions_only_recent": "Yalnızca son",
       "grouping_usage_title": "Kullanım",
+      "grouping_usage_about": "Kullanım gruplandırması hakkında",
       "grouping_usage_all": "Tümü",
+      "grouping_usage_most_used": "En çok kullanılan",
       "recent_versions_only_tooltip": "Yalnızca son bir yıl içinde yayınlanan sürümleri göster.",
       "show_low_usage_tooltip": "Toplam indirmelerin %1'inden azını oluşturan sürüm gruplarını dahil et.",
       "y_axis_label": "İndirmeler",
@@ -394,6 +578,38 @@
       "copy_alt": {
         "per_version_analysis": "{version} sürümü {downloads} kez indirildi",
         "general_description": "{package_name} paketinin {versions_count} {semver_grouping_mode} sürümü için sürüm başına indirmeleri gösteren çubuk grafiği, {date_range_label} {first_version} sürümünden {last_version} sürümüne kadar. En çok indirilen sürüm {max_version_downloads} indirme ile {max_downloaded_version}'dır. {per_version_analysis}. {watermark}."
+      },
+      "page_title": "Sürüm Geçmişi",
+      "current_tags": "Mevcut Etiketler",
+      "no_match_filter": "{filter} ile eşleşen sürüm yok"
+    },
+    "timeline": {
+      "load_more": "Daha fazla yükle",
+      "load_error": "Zaman çizelgesi yüklenemedi. Lütfen daha sonra tekrar deneyin.",
+      "size_increase": "Kurulum boyutu {percent}% arttı ({size})",
+      "size_decrease": "Kurulum boyutu {percent}% azaldı ({size})",
+      "dep_increase": "{count} bağımlılık eklendi",
+      "dep_decrease": "{count} bağımlılık kaldırıldı",
+      "license_change": "Lisans {from}'dan {to}'ya değişti",
+      "esm_added": "Modül türü ESM'ye geçti",
+      "esm_removed": "Modül türü ESM'den CJS'ye döndü",
+      "types_added": "TypeScript tipleri eklendi",
+      "types_removed": "TypeScript tipleri kaldırıldı",
+      "trusted_publisher_added": "Güvenilir yayın etkinleştirildi",
+      "trusted_publisher_removed": "Güvenilir yayın kaldırıldı",
+      "provenance_added": "Köken doğrulama etkinleştirildi",
+      "provenance_removed": "Köken doğrulama kaldırıldı",
+      "chart": {
+        "tab_aria_label": "Metrik seçimi",
+        "base_scale": "y eksenini sıfırdan başlat",
+        "zoom": "yakınlaştır",
+        "reset_minimap": "minimapı sıfırla",
+        "ordered_versions": "yalnızca kararlı",
+        "copy_alt": {
+          "key_changes": "Önemli değişiklikler: {version_events}.",
+          "version_events": "{version} sürümü: {events}",
+          "general_description": "{package} paketinin {first} sürümünden {last} sürümüne kadar {metric} değerini gösteren çizgi grafiği. {first} sürümündeki {metric}: {first_value}, {last} sürümündeki {metric}: {last_value} (toplamda %{overall_progress_percentage}). {key_changes} {watermark}."
+        }
       }
     },
     "dependencies": {
@@ -405,7 +621,8 @@
       "outdated_major": "{count} major sürüm geride (son: {latest}) | {count} major sürüm geride (son: {latest})",
       "outdated_minor": "{count} minor sürüm geride (son: {latest}) | {count} minor sürüm geride (son: {latest})",
       "outdated_patch": "Patch güncellemesi mevcut (son: {latest})",
-      "has_replacement": "Bu bağımlılığın önerilen değiştiricileri var"
+      "has_replacement": "Bu bağımlılığın önerilen alternatifleri var",
+      "vulnerabilities_count": "{count} güvenlik açığı | {count} güvenlik açığı"
     },
     "peer_dependencies": {
       "title": "Peer Bağımlılık ({count}) | Peer Bağımlılıklar ({count})",
@@ -429,9 +646,19 @@
       "cancel_add": "Sahip eklemeyi iptal et",
       "add_owner": "+ Sahip ekle",
       "show_more": "({count} daha fazla göster)",
-      "show_less": "(daha az göster)"
+      "show_less": "(daha az göster)",
+      "maintainer_template": "{avatar} {char126}{name}"
     },
     "trends": {
+      "chart_assistive_text": {
+        "keyboard_navigation_horizontal": "Veri noktaları arasında gezinmek için sol ve sağ ok tuşlarını kullanın.",
+        "keyboard_navigation_vertical": "Veri noktaları arasında gezinmek için yukarı ve aşağı ok tuşlarını kullanın.",
+        "table_available": "Bu grafiğin veri tablosu aşağıda mevcuttur.",
+        "table_caption": "Grafik veri tablosu"
+      },
+      "chart_view_toggle": "Görünümü değiştir",
+      "chart_view_combined": "Birleşik görünüm",
+      "chart_view_split": "Bölünmüş görünüm",
       "granularity": "Ayrıntı düzeyi",
       "granularity_daily": "Günlük",
       "granularity_weekly": "Haftalık",
@@ -461,6 +688,7 @@
       "data_correction": "Veri düzeltme",
       "average_window": "Ortalama penceresi",
       "smoothing": "Yumuşatma",
+      "prediction": "Tahmin",
       "known_anomalies": "Bilinen anomaliler",
       "known_anomalies_description": "npm kayıt defterinde bilinen veri anomalileri",
       "known_anomalies_ranges": "Etkilenen tarih aralıkları",
@@ -481,13 +709,16 @@
         "estimations": "Son değerler mevcut dönem için kısmi verilere dayalı tahminlerdir.",
         "compare": "Paket indirme karşılaştırması çizgi grafiği: {packages}.",
         "single_package": "{package} paketi için indirme çizgi grafiği.",
-        "general_description": "Y ekseni indirme sayısını temsil eder. X ekseni tarih aralığını temsil eder, {start_date}'den {end_date}'e, {granularity} zaman dönemi ile.{estimation_notice} {packages_analysis}. {watermark}."
+        "general_description": "Y ekseni indirme sayısını temsil eder. X ekseni tarih aralığını temsil eder, {start_date}'den {end_date}'e, {granularity} zaman dönemi ile.{estimation_notice} {packages_analysis}. {watermark}.",
+        "facet_bar_general_description": "{packages} paketleri için yatay çubuk grafiği, {facet} karşılaştırması ({description}). {facet_analysis} {watermark}.",
+        "facet_bar_analysis": "{package_name} paketi {value} değerine sahip."
       }
     },
     "downloads": {
       "title": "Haftalık İndirmeler",
       "community_distribution": "Topluluk adaptasyon dağılımına bak",
-      "subtitle": "Son 7 gün"
+      "subtitle": "Son 7 gün",
+      "sparkline_nav_hint": "← → kullanın"
     },
     "install_scripts": {
       "title": "Kurulum Betikleri",
@@ -503,6 +734,7 @@
       "esm": "ES Modülleri destekleniyor",
       "cjs": "CommonJS destekleniyor",
       "no_esm": "ES Modülleri desteklenmiyor",
+      "wasm": "WebAssembly desteği var",
       "types_label": "Tipler",
       "types_included": "Tipler dahil",
       "types_available": "Tipler {package} aracılığıyla mevcut",
@@ -577,7 +809,20 @@
       "kb": "{size} kB",
       "mb": "{size} MB"
     },
-    "download": {}
+    "download": {
+      "button": "İndir",
+      "tarball": "Tarball'ı .tar.gz olarak indir"
+    }
+  },
+  "leaderboard": {
+    "likes": {
+      "title": "Beğeni Sıralaması",
+      "description": "Şu an npmx'teki en çok beğenilen 10 paket.",
+      "rank": "Sıra",
+      "likes": "Beğeniler",
+      "unavailable_title": "Henüz beğeni sıralaması yok",
+      "unavailable_description": "Şu an gösterecek bir beğeni sıralaması bulunmuyor."
+    }
   },
   "connector": {
     "modal": {
@@ -760,8 +1005,12 @@
     "lines": "{count} satır",
     "toggle_tree": "Dosya ağacını değiştir",
     "close_tree": "Dosya ağacını kapat",
+    "copy_content": "Dosya içeriğini kopyala",
     "copy_link": "Bağlantıyı kopyala",
     "view_raw": "Ham dosyayı göster",
+    "toggle_container": "Kod kapsayıcı genişliğini değiştir",
+    "open_raw_file": "Ham dosyayı aç",
+    "open_path_dropdown": "Yol bölümlerini aç",
     "file_too_large": "Dosya önizleme için çok büyük",
     "file_size_warning": "{size} sözdizimi vurgulama için 500KB limitini aşıyor",
     "failed_to_load": "Dosya yüklenemedi",
@@ -779,7 +1028,9 @@
       "preview": "önizleme",
       "code": "kod"
     },
-    "file_path": "Dosya yolu"
+    "file_path": "Dosya yolu",
+    "binary_file": "Binary dosya",
+    "binary_rendering_warning": "\"{contentType}\" dosya türü önizleme için desteklenmiyor."
   },
   "badges": {
     "provenance": {
@@ -841,6 +1092,8 @@
       "secure": "Güvenli",
       "insecure": "Güvensiz"
     },
+    "view_selected": "Seçilenleri görüntüle",
+    "clear_selected_label": "Seçimi temizle",
     "sort": {
       "label": "Sırala",
       "toggle_direction": "Sıralama yönünü değiştir",
@@ -866,7 +1119,8 @@
       "published": "Yayınlandı",
       "maintainers": "Geliştiriciler",
       "keywords": "Anahtar kelimeler",
-      "security": "Güvenlik"
+      "security": "Güvenlik",
+      "selection": "Paketi seç"
     },
     "view_mode": {
       "label": "Görünüm modu",
@@ -1013,7 +1267,8 @@
       "error": "Organizasyonlar yüklenemedi",
       "empty": "Organizasyon bulunamadı",
       "view_all": "Tümünü görüntüle"
-    }
+    },
+    "pr": "GitHub pull request #{prNumber} aç"
   },
   "compare": {
     "packages": {
@@ -1030,7 +1285,12 @@
       "loading": "Yükleniyor...",
       "error": "Hata",
       "empty_title": "Karşılaştırmak için paket ekleyin",
-      "empty_description": "Başlamak için yukarıdan paket arayın"
+      "empty_description": "Başlamak için yukarıdan paket arayın",
+      "table_view": "Tablo",
+      "charts_view": "Grafikler",
+      "no_chartable_data": "Seçilen özellikler için grafik verisi mevcut değil.",
+      "bar_chart_nav_hint": "↑ ↓ kullanın",
+      "line_chart_nav_hint": "← → kullanın"
     },
     "selector": {
       "search_label": "Paket ara",
@@ -1040,6 +1300,17 @@
       "remove_package": "{name} paketini kaldır",
       "packages_selected": "{count} paket seçildi",
       "add_hint": "Karşılaştırmak için paket ekleyin"
+    },
+    "scatter_chart": {
+      "title": "{x} ile {y} karşılaştırması",
+      "freshness_score": "Tazelik skoru",
+      "copy_alt": {
+        "analysis": "{package} : {x_name} ({x_value}) ve {y_name} ({y_value})",
+        "description": "{packages} paketleri için {x_name} ile {y_name} karşılaştırmasını gösteren dağılım grafiği. {analysis}. {watermark}"
+      },
+      "filename": "{x}-vs-{y}-dagilim-grafigi",
+      "x_axis": "X EKSENİ ↦",
+      "y_axis": "Y EKSENİ ↥"
     },
     "no_dependency": {
       "label": "Bağımlılık yok",
@@ -1053,6 +1324,10 @@
     "facets": {
       "all": "Tümü",
       "none": "Hiçbiri",
+      "select_all_category_facets": "Tüm {category} özelliklerini seç",
+      "deselect_all_category_facets": "Tüm {category} özelliklerinin seçimini kaldır",
+      "selected_all_category_facets": "Tüm {category} özellikleri seçildi",
+      "deselected_all_category_facets": "Tüm {category} özelliklerinin seçimi kaldırıldı",
       "coming_soon": "Yakında",
       "select_all": "Tümünü seç",
       "deselect_all": "Tümünün seçimini kaldır",
@@ -1115,6 +1390,18 @@
         "vulnerabilities": {
           "label": "Güvenlik açıkları",
           "description": "Bilinen güvenlik açıkları"
+        },
+        "githubStars": {
+          "label": "GitHub Yıldızları",
+          "description": "GitHub deposundaki yıldız sayısı"
+        },
+        "githubIssues": {
+          "label": "GitHub Sorunları",
+          "description": "GitHub deposundaki sorun sayısı"
+        },
+        "createdAt": {
+          "label": "Oluşturulma Tarihi",
+          "description": "Paketin oluşturulma tarihi"
         }
       },
       "values": {
@@ -1137,8 +1424,17 @@
     "lines_hidden": "{count} satır gizlendi",
     "file_too_large": "Dosya çok büyük",
     "file_size_warning": "Dosya boyutu {size}",
+    "compare_versions": "fark",
     "compare_versions_title": "Sürümleri karşılaştır",
-    "version_invalid_url_format": {},
+    "comparing_versions_label": "Sürümler karşılaştırılıyor...",
+    "version_back_to_package": "Pakete dön",
+    "version_error_message": "Sürümler karşılaştırılamadı.",
+    "version_invalid_url_format": {
+      "hint": "Geçersiz karşılaştırma URL'si. Kullanılacak format: {0}",
+      "from_version": "kaynak",
+      "to_version": "hedef"
+    },
+    "version_selector_title": "Sürümle karşılaştır",
     "summary": "Özet",
     "deps_count": "{count} bağımlılık",
     "dependencies": "Bağımlılıklar",
@@ -1164,7 +1460,18 @@
     "files_button": "Dosyalar",
     "select_file_prompt": "Görüntülemek için bir dosya seçin",
     "close_files_panel": "Dosya panelini kapat",
-    "filter_files_label": "Dosyaları filtrele"
+    "filter_files_label": "Dosyaları filtrele",
+    "change_ratio": "Değişim oranı",
+    "char_edits": "Karakter düzenlemeleri",
+    "diff_distance": "Fark mesafesi",
+    "loading_diff": "Fark yükleniyor...",
+    "loading_diff_error": "Fark yüklenemedi",
+    "merge_modified_lines": "Değiştirilen satırları birleştir",
+    "no_content_changes": "İçerik değişikliği tespit edilmedi",
+    "options": "Seçenekler",
+    "view_file": "Dosyayı görüntüle",
+    "view_in_code_browser": "Kod tarayıcısında aç",
+    "word_wrap": "Kelime kaydırma"
   },
   "pds": {
     "title": "PDS",
@@ -1304,9 +1611,129 @@
       "link": "GitHub'da issue açın"
     }
   },
-  "changelog": {},
   "translation_status": {
-    "table": {}
+    "title": "çeviri durumu",
+    "generated_at": "Oluşturulma tarihi: {date}",
+    "welcome": "Aşağıda listelenen dillerden birine {npmx} çevirmemize yardımcı olmak istiyorsanız doğru yere geldiniz! Otomatik güncellenen bu sayfa, şu anda yardımınıza ihtiyaç duyulan tüm içerikleri listeler.",
+    "p1": "Varsayılan dil olarak {lang} kullanıyoruz ve toplam {count} mevcuttur. Çeviri eklemek isterseniz, dili {bylang} içinde bulun ve detayları genişletin.",
+    "p1_lang": "Amerikan İngilizcesi (en-US)",
+    "p1_count": "0 mesaj | 1 mesaj | {count} mesaj",
+    "p2": "Başlamadan önce çeviri sürecimiz ve nasıl katkıda bulunabileceğiniz hakkında bilgi edinmek için {guide} okuyun.",
+    "guide": "yerelleştirme (i18n) rehberi",
+    "by_locale": "Yerel ayara göre çeviri ilerleme durumu",
+    "by_file": "Dosyaya göre çeviri ilerleme durumu",
+    "complete_text": "Bu çeviri tamamlandı, harika iş!",
+    "missing_text": "eksik",
+    "missing_keys": "Eksik çeviri yok | Eksik çeviri | Eksik çeviri",
+    "progress_label": "{locale} için ilerleme durumu",
+    "table": {
+      "file": "Dosya",
+      "status": "Durum",
+      "error": "Dosya listesi yüklenirken hata oluştu.",
+      "empty": "Dosya bulunamadı",
+      "file_link": "GitHub'da {file} ({lang}) düzenle"
+    }
   },
-  "action_bar": {}
+  "vacations": {
+    "title": "tatilde",
+    "meta_description": "npmx ekibi dinleniyor. Discord bir hafta sonra yeniden açıldı.",
+    "heading": "şarj oluyoruz",
+    "subtitle": "npmx'i {some}imizin uykusuna mal olan bir tempoyla inşa ediyorduk. bunun bir alışkanlığa dönüşmesini istemedik! bu yüzden bir haftalığına mola verdik. birlikte.",
+    "illustration_alt": "sıralı sevimli ikonlar",
+    "poke_log": "Kamp ateşini dürt",
+    "what": {
+      "title": "ne oldu",
+      "p1": "discord {dates} tarihleri arasında kapalıydı.",
+      "dates": "14 – 21 Şubat",
+      "p2": "tüm davet bağlantıları kaldırıldı ve kanallar kilitlendi – sohbet etmeye devam etmek isteyen kullanıcılar için açık kalan {garden} dışında.",
+      "garden": "#garden"
+    },
+    "meantime": {
+      "title": "bu süre zarfında",
+      "p1": "{site} ve {repo} açık kaldı – insanlar issue açıp birkaç PR gönderse de çoğunlukla herkes sıcak bir şöminenin keyfini çıkardı.",
+      "repo_link": "depo"
+    },
+    "return": {
+      "title": "geri döndük!",
+      "p1": "3 Mart'a son atılım için enerjimizi yenileyerek geri döndük. Güncellemeler için {social}.",
+      "social_link": "Bluesky'da bizi takip edin"
+    },
+    "stats": {
+      "contributors": "Katkıda Bulunanlar",
+      "commits": "Commit'ler",
+      "pr": "Birleştirilen PR'lar",
+      "subtitle": {
+        "some": "bazı",
+        "all": "tüm"
+      }
+    }
+  },
+  "action_bar": {
+    "title": "işlem çubuğu",
+    "selection": "0 seçili | 1 seçili | {count} seçili",
+    "shortcut": "İşlemlere odaklanmak için \"{key}\" tuşuna basın",
+    "button_close_aria_label": "İşlem çubuğunu kapat"
+  },
+  "logo_menu": {
+    "copy_svg": "Logoyu SVG olarak kopyala",
+    "copied": "Kopyalandı!",
+    "browse_brand": "Marka kitini görüntüle"
+  },
+  "brand": {
+    "title": "Marka",
+    "heading": "marka",
+    "meta_description": "Basın ve medyada kullanım için npmx marka yönergeleri, logolar, renkler ve tipografi.",
+    "intro": "npmx markasını projelerinizde, makalelerinizde ve medyada kullanmak için kaynaklar ve yönergeler.",
+    "logos": {
+      "title": "logolar",
+      "description": "npmx logolarını SVG ve PNG formatlarında indirin. Arka planınıza uygun varyantı kullanın.",
+      "wordmark": "TAM WORDMARK",
+      "wordmark_alt": "Koyu arka planda mavi çizgili npmx tam wordmark logosu",
+      "wordmark_light_alt": "Açık arka planda vurgulu çizgili npmx tam wordmark logosu",
+      "mark": "LOGO İŞARETİ",
+      "mark_alt": "Koyu arka planda nokta ve çizgili npmx logo işareti",
+      "mark_light_alt": "Açık arka planda nokta ve çizgili npmx logo işareti",
+      "on_dark": "koyu zeminde",
+      "on_light": "açık zeminde",
+      "download_svg": "SVG",
+      "download_png": "PNG",
+      "download_svg_aria": "{name} logoyu SVG olarak indir",
+      "download_png_aria": "{name} logoyu PNG olarak indir"
+    },
+    "customize": {
+      "title": "logonuzu özelleştirin",
+      "description": "npmx logosunu kendi vurgu renginiz ve arka planınızla önizleyin. Önizleme mevcut ayarlarınızı yansıtır — bir renk seçin, arka planı değiştirin ve indirin.",
+      "accent_label": "vurgu",
+      "bg_label": "arka plan",
+      "download_svg_aria": "Özelleştirilmiş logoyu SVG olarak indir",
+      "download_png_aria": "Özelleştirilmiş logoyu PNG olarak indir"
+    },
+    "typography": {
+      "title": "tipografi",
+      "description": "npmx, arayüz metni ve kod için Vercel'in Geist yazı tipi ailesini kullanır.",
+      "sans": "Geist Sans",
+      "sans_desc": "Gövde metni ve arayüz öğeleri için kullanılır.",
+      "mono": "Geist Mono",
+      "mono_desc": "Kod, başlıklar ve teknik içerik için kullanılır.",
+      "pangram": "Pijamalı hasta yağız şoföre çabucak güvendi",
+      "numbers": "0123456789"
+    },
+    "guidelines": {
+      "title": "küçük bir not",
+      "message": "Erişilebilirlik bizim için önemlidir ve bu anlayışı paylaşmanızı isteriz. Bahsedilen medyaları kullanırken arka plan ile yeterli kontrastın sağlandığından emin olun ve 24px'in altına düşmeyin. Proje hakkında başka kaynaklara veya ek bilgiye ihtiyacınız olursa {link} üzerinden bize ulaşabilirsiniz.",
+      "discord_link_text": "chat.npmx.dev"
+    }
+  },
+  "alt_logo_kawaii": "npmx logosunun sevimli, yuvarlak ve renkli bir versiyonu.",
+  "changelog": {
+    "pre_release": "Ön sürüm",
+    "draft": "Taslak",
+    "no_logs": "Üzgünüz, bu paket değişiklik günlüğü yayınlamıyor veya değişiklik günlüğü formatı desteklenmiyor.",
+    "error": {
+      "p1": "Üzgünüz, {package} için değişiklik günlüğü yüklenemedi",
+      "p2": "Lütfen daha sonra tekrar deneyin veya {viewon}"
+    },
+    "rate_limit_ungh": "Üzgünüz, GitHub'ın istek limiti aşıldı, bir süre sonra tekrar deneyin",
+    "version_unavailable": "İstenen sürüm mevcut değil."
+  }
 }
