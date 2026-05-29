@@ -1,23 +1,8 @@
-import { getTrustLevel as getPackumetaTrustLevel, getTrustStatus } from 'packumeta'
+import { getTrustLevel, getTrustStatus } from 'packumeta'
 import { normalizeLicense } from '#shared/utils/npm'
 
 /** Number of recent versions to include in initial payload */
 const RECENT_VERSIONS_COUNT = 5
-
-function hasAttestations(version: PackumentVersion): boolean {
-  return Boolean(version.dist.attestations)
-}
-
-function hasTrustedPublisher(version: PackumentVersion): boolean {
-  return Boolean(version._npmUser?.trustedPublisher)
-}
-
-function getTrustLevel(version: PackumentVersion): PublishTrustLevel {
-  // trusted publishing automatically generates provenance attestations
-  if (hasTrustedPublisher(version)) return 'trustedPublisher'
-  if (hasAttestations(version)) return 'provenance'
-  return 'none'
-}
 
 /**
  * Transform a full Packument into a slimmed version for client-side use.
