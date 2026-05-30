@@ -2,6 +2,16 @@ import { FetchError } from 'ofetch'
 import { handleAuthError } from '~/utils/atproto/helpers'
 import type { PackageLikes } from '#shared/types/social'
 
+export type PaginatedProfileLikes = {
+  records: {
+    value: {
+      subjectRef: string
+    }
+  }[]
+  cursor: string | null
+  hasNextPage: boolean
+}
+
 type LikeResult = { success: true; data: PackageLikes } | { success: false; error: Error }
 
 /**
@@ -51,4 +61,30 @@ export async function togglePackageLike(
   return currentlyLiked
     ? unlikePackage(packageName, userHandle)
     : likePackage(packageName, userHandle)
+}
+
+/**
+ * Fetches paginated profile likes for a given handle.
+ */
+export async function fetchProfileLikes(
+  handle: string,
+  cursor?: string | null,
+  limit = 20,
+): Promise<PaginatedProfileLikes> {
+  const params = new URLSearchParams({ limit: String(limit) })
+  if (cursor) {
+    params.set('cursor', cursor)
+  }
+
+  try {
+    const result = await $fetch<PaginatedProfileLikes>(
+      `/api/social/profile/${handle}/likes?${params.toString()}`,
+    )
+    return result
+  } catch (e) {
+    if (e instanceof FetchError) {
+      await handleAuthError(e, undefined)
+    }
+    return { records: [], cursor: null, hasNextPage: false }
+  }
 }

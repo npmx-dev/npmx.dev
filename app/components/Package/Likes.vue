@@ -68,6 +68,8 @@ const topLikedBadgeLabel = computed(() =>
 
 const isLikeActionPending = shallowRef(false)
 
+const isCountTruncated = computed(() => (likesData.value?.totalLikes ?? 0) >= 1000)
+
 const likeAction = async () => {
   if (user.value?.handle == null) {
     authModal.open()
@@ -154,7 +156,18 @@ const likeAction = async () => {
             class="i-svg-spinners:ring-resize w-3 h-3 my-0.5"
             aria-hidden="true"
           />
-          <span v-else>{{ compactNumberFormatter.format(likesData?.totalLikes ?? 0) }}</span>
+          <span v-else class="inline-flex items-center gap-0.5">
+            {{ compactNumberFormatter.format(likesData?.totalLikes ?? 0) }}
+            <span
+              v-if="isCountTruncated"
+              class="text-fg-subtle text-3xs leading-none"
+              :aria-label="
+                $t('package.likes.count_truncated', { count: likesData?.totalLikes ?? 0 })
+              "
+            >
+              +
+            </span>
+          </span>
         </ButtonBase>
       </div>
     </TooltipApp>

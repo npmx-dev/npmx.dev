@@ -9,9 +9,14 @@ export default defineEventHandler(async event => {
     })
   }
 
+  const query = getQuery(event)
+  const cursor = typeof query.cursor === 'string' ? query.cursor : undefined
+  const limit =
+    typeof query.limit === 'string' ? Math.min(Math.max(Number(query.limit), 1), 100) : 20
+
   const utils = new IdentityUtils()
   const minidoc = await utils.getMiniDoc(identifier)
   const likesUtil = new PackageLikesUtils()
 
-  return likesUtil.getUserLikes(minidoc)
+  return likesUtil.getUserLikes(minidoc, limit, cursor)
 })

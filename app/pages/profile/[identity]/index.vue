@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { updateProfile as updateProfileUtil } from '~/utils/atproto/profile'
+import { fetchProfileLikes } from '~/utils/atproto/likes'
 import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
 import { getSafeHttpUrl } from '#shared/utils/url'
 
@@ -79,13 +80,85 @@ async function updateProfile() {
   }
 }
 
-const { data: likes, status } = useProfileLikes(identity)
+const allLikesRecords = ref<Array<{ value: { subjectRef: string } }>>([])
+const likesCursor = shallowRef<string | null>(null)
+const likesLoadingMore = shallowRef(false)
+const likesError = shallowRef(false)
+
+async function loadInitialLikes() {
+  try {
+    const result = await fetchProfileLikes(identity.value, null, 20)
+    allLikesRecords.value = result.records
+    likesCursor.value = result.cursor
+    likesError.value = false
+  } catch {
+    likesError.value = true
+  }
+}
+
+async function loadMoreLikes() {
+  if (likesLoadingMore.value || !likesCursor.value) return
+  likesLoadingMore.value = true
+  try {
+    const result = await fetchProfileLikes(identity.value, likesCursor.value, 20)
+    allLikesRecords.value = [...allLikesRecords.value, ...result.records]
+    likesCursor.value = result.cursor
+  } catch {
+    likesError.value = true
+  } finally {
+    likesLoadingMore.value = false
+  }
+}
+
+const hasMoreLikes = computed(() => likesCursor.value !== null)
+const isLoadingInitialLikes = computed(
+  () => allLikesRecords.value.length === 0 && !likesError.value,
+)
+
+onMounted(() => {
+  loadInitialLikes()
+})
+
+let observer: IntersectionObserver | null = null
+
+onUnmounted(() => {
+  if (observer) {
+    observer.disconnect()
+    observer = null
+  }
+})
+
+function setupInfiniteScroll() {
+  if (observer) {
+    observer.disconnect()
+  }
+  observer = new IntersectionObserver(
+    entries => {
+      const target = entries[0]
+      if (target?.isIntersecting && hasMoreLikes.value && !likesLoadingMore.value) {
+        loadMoreLikes()
+      }
+    },
+    { rootMargin: '200px' },
+  )
+
+  nextTick(() => {
+    const sentinel = document.getElementById('likes-scroll-sentinel')
+    if (sentinel && observer) {
+      observer.observe(sentinel)
+    }
+  })
+}
+
+watch(allLikesRecords, () => {
+  setupInfiniteScroll()
+})
 
 const showInviteSection = computed(() => {
   return (
     profile.value.recordExists === false &&
-    status.value === 'success' &&
-    !likes.value?.records?.length &&
+    !likesError.value &&
+    allLikesRecords.value.length === 0 &&
     !userPending.value &&
     user.value?.handle !== profile.value.handle
   )
@@ -239,17 +312,26 @@ defineOgImage(
         dir="ltr"
       >
         {{ $t('profile.likes') }}
-        <span v-if="likes">({{ likes.records?.length ?? 0 }})</span>
+        <span>({{ allLikesRecords.length ?? 0 }})</span>
       </h2>
-      <div v-if="status === 'pending'" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div v-if="isLoadingInitialLikes" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <SkeletonBlock v-for="i in 4" :key="i" class="h-16 rounded-lg" />
       </div>
-      <div v-else-if="status === 'error'">
+      <div v-else-if="likesError">
         <p>{{ $t('common.error') }}</p>
       </div>
-      <div v-else-if="likes?.records" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <PackageLikeCard v-for="like in likes.records" :packageUrl="like.value.subjectRef" />
+      <div v-else-if="allLikesRecords.length > 0" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <PackageLikeCard v-for="like in allLikesRecords" :packageUrl="like.value.subjectRef" />
       </div>
+
+      <!-- Loading more indicator for infinite scroll -->
+      <div v-if="likesLoadingMore" class="flex items-center justify-center py-4 gap-2">
+        <span class="i-svg-spinners:ring-resize w-4 h-4" aria-hidden="true" />
+        <span class="text-fg-muted text-sm">{{ $t('common.loading') }}</span>
+      </div>
+
+      <!-- Scroll sentinel for intersection observer -->
+      <div id="likes-scroll-sentinel" class="h-1" />
 
       <!-- Invite section: shown when user does not have npmx profile or any like lexicons -->
       <div
