@@ -16,6 +16,18 @@ export function encodePackageName(name: string): string {
   return encodeURIComponent(name)
 }
 
+export function normalizePackageLicense(license: unknown): string | undefined {
+  if (!license) return undefined
+  if (typeof license === 'string') return license
+
+  if (typeof license === 'object' && 'type' in license) {
+    const { type } = license as { type?: unknown }
+    return typeof type === 'string' ? type : undefined
+  }
+
+  return undefined
+}
+
 /**
  * Fetch the latest version of a package using fast-npm-meta API.
  * This is a lightweight alternative to fetching the full packument.

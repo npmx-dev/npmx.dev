@@ -1,15 +1,8 @@
+import { normalizePackageLicense } from '#shared/utils/npm'
+
 interface LicenseChangeRecord {
   from: string
   to: string
-}
-
-function normalizeLicense(license: unknown): string {
-  if (typeof license === 'string') return license
-  if (license && typeof license === 'object' && 'type' in license) {
-    const { type } = license as { type?: unknown }
-    if (typeof type === 'string') return type
-  }
-  return 'UNKNOWN'
 }
 
 export default defineCachedEventHandler(
@@ -55,8 +48,10 @@ export default defineCachedEventHandler(
         return { change }
       }
 
-      const currentLicense = normalizeLicense(versions[currentVersionIndex]?.license)
-      const previousLicense = normalizeLicense(versions[previousVersionIndex]?.license)
+      const currentLicense =
+        normalizePackageLicense(versions[currentVersionIndex]?.license) ?? 'UNKNOWN'
+      const previousLicense =
+        normalizePackageLicense(versions[previousVersionIndex]?.license) ?? 'UNKNOWN'
 
       if (currentLicense !== previousLicense) {
         change = {
