@@ -1,6 +1,7 @@
 import { getLatestVersion } from 'fast-npm-meta'
 import { createError } from 'h3'
 import validatePackageName from 'validate-npm-package-name'
+import type { PackumentLicense } from '#shared/types/npm-registry'
 
 const NPM_USERNAME_RE = /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i
 const NPM_USERNAME_MAX_LENGTH = 50
@@ -16,15 +17,10 @@ export function encodePackageName(name: string): string {
   return encodeURIComponent(name)
 }
 
-export function normalizePackageLicense(license: unknown): string | undefined {
+export function normalizePackageLicense(license?: PackumentLicense): string | undefined {
   if (!license) return undefined
   if (typeof license === 'string') return license
-
-  if (typeof license === 'object' && 'type' in license) {
-    const { type } = license as { type?: unknown }
-    return typeof type === 'string' ? type : undefined
-  }
-
+  if (typeof license.type === 'string') return license.type
   return undefined
 }
 

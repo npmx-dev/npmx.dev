@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { normalizePackageLicense } from '#shared/utils/npm'
+import type { PackumentLicense } from '#shared/types/npm-registry'
 
 describe('normalizePackageLicense', () => {
   it('returns string licenses unchanged', () => {
@@ -14,12 +15,11 @@ describe('normalizePackageLicense', () => {
 
   it('returns undefined for empty licenses', () => {
     expect(normalizePackageLicense(undefined)).toBeUndefined()
-    expect(normalizePackageLicense(null)).toBeUndefined()
     expect(normalizePackageLicense('')).toBeUndefined()
   })
 
   it('returns undefined for malformed object licenses', () => {
-    expect(normalizePackageLicense({})).toBeUndefined()
-    expect(normalizePackageLicense({ type: 123 })).toBeUndefined()
+    expect(normalizePackageLicense({} as PackumentLicense)).toBeUndefined()
+    expect(normalizePackageLicense({ type: 123 } as unknown as PackumentLicense)).toBeUndefined()
   })
 })
