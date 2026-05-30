@@ -3,6 +3,15 @@ interface LicenseChangeRecord {
   to: string
 }
 
+function normalizeLicense(license: unknown): string {
+  if (typeof license === 'string') return license
+  if (license && typeof license === 'object' && 'type' in license) {
+    const { type } = license as { type?: unknown }
+    if (typeof type === 'string') return type
+  }
+  return 'UNKNOWN'
+}
+
 export default defineCachedEventHandler(
   async event => {
     // 1. Extract the package name from the catch-all parameter
@@ -46,8 +55,8 @@ export default defineCachedEventHandler(
         return { change }
       }
 
-      const currentLicense = String(versions[currentVersionIndex]?.license || 'UNKNOWN')
-      const previousLicense = String(versions[previousVersionIndex]?.license || 'UNKNOWN')
+      const currentLicense = normalizeLicense(versions[currentVersionIndex]?.license)
+      const previousLicense = normalizeLicense(versions[previousVersionIndex]?.license)
 
       if (currentLicense !== previousLicense) {
         change = {

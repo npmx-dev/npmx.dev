@@ -81,4 +81,22 @@ describe('license-change API', () => {
       },
     })
   })
+
+  it('normalizes license object types before comparing versions', async () => {
+    queryParams = { version: '2.0.0' }
+    fetchNpmPackageMock.mockResolvedValue(
+      makePackument({
+        versions: {
+          '1.0.0': { license: 'MIT' },
+          '2.0.0': { license: { type: 'MIT' } as never },
+        },
+        time: {
+          '1.0.0': '2024-01-01T00:00:00Z',
+          '2.0.0': '2024-06-01T00:00:00Z',
+        },
+      }),
+    )
+
+    await expect(handler(fakeEvent)).resolves.toEqual({ change: null })
+  })
 })
