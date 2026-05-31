@@ -1904,17 +1904,42 @@ const emojis: Record<string, string> = {
   'scotland': '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
   'wales': '🏴󠁧󠁢󠁷󠁬󠁳󠁿',
 }
+const SKIP_EMOJI_TAGS = new Set(['code', 'pre'])
 
 export function convertToEmoji(html: string): string {
-  return html.replace(
-    /(<code[\s>][\s\S]*?<\/code>|<pre[\s>][\s\S]*?<\/pre>)|(:[\w+-]+:)/gi,
-    (match, codeBlock: string | undefined, shortcode: string | undefined) => {
-      if (codeBlock) return codeBlock
-      if (shortcode) {
-        const key = shortcode.slice(1, -1)
-        return emojis[key] ?? shortcode
+  let output = ''
+  let position = 0
+  let skipDepth = 0
+
+  for (const match of html.matchAll(/<\/?([a-z][\w:-]*)(?:\s[^>]*)?>|:[\w+-]+:/gi)) {
+    const token = match[0]
+    const tagName = match[1]?.toLowerCase()
+    const index = match.index ?? 0
+
+    if (index > position) {
+      output += html.slice(position, index)
+    }
+
+    if (tagName) {
+      if (SKIP_EMOJI_TAGS.has(tagName)) {
+        if (token.startsWith('</')) {
+          skipDepth = Math.max(0, skipDepth - 1)
+        } else if (!token.endsWith('/>')) {
+          skipDepth += 1
+        }
       }
-      return match
-    },
-  )
+      output += token
+    } else if (skipDepth > 0) {
+      output += token
+    } else {
+      const key = token.slice(1, -1)
+      output += emojis[key] ?? token
+    }
+
+    position = index + token.length
+  }
+
+  output += html.slice(position)
+  return output
 }
+
