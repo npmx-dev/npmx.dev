@@ -53,6 +53,35 @@ export function diffRoute(
   }
 }
 
+export function changelogRoute(
+  packageName: string,
+  version?: string | null,
+  hash?: string,
+): RouteLocationRaw {
+  const [org, name = ''] = packageName.startsWith('@') ? packageName.split('/') : ['', packageName]
+
+  if (version) {
+    return {
+      name: 'changelog-version',
+      params: {
+        org,
+        name,
+        // remove spaces to be correctly resolved by router
+        version: version.replace(/\s+/g, ''),
+      },
+      hash,
+    }
+  }
+
+  return {
+    name: 'changelog',
+    params: {
+      org,
+      name,
+    },
+  }
+}
+
 export function packageTimelineRoute(packageName: string, version: string): RouteLocationRaw {
   const { org, name } = splitPackageName(packageName)
 

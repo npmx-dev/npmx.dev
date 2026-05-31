@@ -27,6 +27,11 @@ export function useCommandPalettePackageCommands(
       .includes(packageName)
   }
 
+  const { data: changelog } = usePackageChangelog(
+    () => toValue(context)?.packageName,
+    () => toValue(context)?.resolvedVersion,
+  )
+
   useCommandPaletteContextCommands(
     computed((): CommandPaletteContextCommandInput[] => {
       const resolvedContext = toValue(context)
@@ -102,25 +107,43 @@ export function useCommandPalettePackageCommands(
           activeLabel: activeLabel(route.name === 'timeline', t('command_palette.here')),
           to: packageTimelineRoute(resolvedContext.packageName, resolvedContext.resolvedVersion),
         },
-        {
-          id: 'package-compare',
+      ]
+
+      const uChangelog = changelog.value
+      if (uChangelog?.type === 'md' || uChangelog?.type === 'release') {
+        commands.push({
+          id: 'package-changelog',
           group: 'package',
-          label: t('command_palette.package.compare'),
-          keywords: [resolvedContext.packageName, t('shortcuts.compare_from_package')],
-          iconClass: 'i-lucide:git-compare',
-          active: route.name === 'compare' && isCurrentPackageCompare(resolvedContext.packageName),
+          label: t('command_palette.package.changelog'),
+          keywords: [resolvedContext.packageName, t('command_palette.package.changelog')],
+          iconClass: 'i-lucide:notebook-text',
+          to: changelogRoute(resolvedContext.packageName, resolvedContext.resolvedVersion),
+          active: route.name === 'changelog' || route.name === 'changelog-version',
           activeLabel: activeLabel(
-            route.name === 'compare' && isCurrentPackageCompare(resolvedContext.packageName),
+            route.name === 'changelog' || route.name === 'changelog-version',
             t('command_palette.here'),
           ),
-          to: {
-            name: 'compare',
-            query: {
-              packages: resolvedContext.packageName,
-            },
+        })
+      }
+
+      commands.push({
+        id: 'package-compare',
+        group: 'package',
+        label: t('command_palette.package.compare'),
+        keywords: [resolvedContext.packageName, t('shortcuts.compare_from_package')],
+        iconClass: 'i-lucide:git-compare',
+        active: route.name === 'compare' && isCurrentPackageCompare(resolvedContext.packageName),
+        activeLabel: activeLabel(
+          route.name === 'compare' && isCurrentPackageCompare(resolvedContext.packageName),
+          t('command_palette.here'),
+        ),
+        to: {
+          name: 'compare',
+          query: {
+            packages: resolvedContext.packageName,
           },
         },
-      ]
+      })
 
       if (resolvedContext.tarballUrl) {
         commands.push({

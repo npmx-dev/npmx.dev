@@ -33,6 +33,8 @@ export interface AppSettings {
   instantSearch: boolean
   /** Enable/disable keyboard shortcuts */
   keyboardShortcuts: boolean
+  /** Enable/disable auto scrolling to requested version at package changelog */
+  changelogAutoScroll: boolean
   /** Connector preferences */
   connector: {
     /** Automatically open the web auth page in the browser */
@@ -53,6 +55,7 @@ export interface AppSettings {
   timelineChart: {
     isZeroBased: boolean
     showZoom: boolean
+    isOrdered: boolean
   }
 }
 
@@ -67,6 +70,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   searchProvider: import.meta.test ? 'npm' : 'algolia',
   instantSearch: true,
   keyboardShortcuts: true,
+  changelogAutoScroll: true,
   connector: {
     autoOpenURL: false,
   },
@@ -84,6 +88,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   timelineChart: {
     isZeroBased: false,
     showZoom: false,
+    isOrdered: true,
   },
 }
 

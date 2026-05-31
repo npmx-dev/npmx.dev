@@ -1,15 +1,15 @@
 import NoodleKawaiiLogo from './Kawaii/Logo.vue'
-import NoodlePressLogo from './Press/Logo.vue'
+import NoodleNodejsLogo from './Nodejs/Logo.vue'
 
 export type Noodle = {
   // Unique identifier for the noodle
   key: string
   // Timezone for the noodle (default is auto, i.e. user's timezone)
   timezone?: string
-  // Date for the noodle
-  date?: string
-  // `Date to` for the noodle
-  dateTo?: string
+  // Date for the noodle (YYYY-MM-DD)
+  date?: `${number}-${number}-${number}`
+  // `Date to` for the noodle (YYYY-MM-DD)
+  dateTo?: `${number}-${number}-${number}`
   // Logo for the noodle - could be any component. Relative parent - intro section
   logo: Component
   // Show npmx tagline or not (default is true)
@@ -28,11 +28,9 @@ export const PERMANENT_NOODLES: Noodle[] = [
 // Active noodles - shown based on date and timezone
 export const ACTIVE_NOODLES: Noodle[] = [
   {
-    key: 'press',
-    logo: NoodlePressLogo,
-    date: '2026-05-01',
-    dateTo: '2026-05-04',
+    key: 'nodejs',
+    logo: NoodleNodejsLogo,
+    date: '2026-05-27',
     timezone: 'auto',
-    tagline: false,
   },
 ]

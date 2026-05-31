@@ -165,7 +165,8 @@ function handleClick(event: MouseEvent) {
   font-size: 0.75em;
 }
 
-.readme :deep(:is(h1, h2, h3, h4, h5, h6) a[href^='#']:hover::after) {
+.readme
+  :deep(:is(h1, h2, h3, h4, h5, h6):is(:hover, :focus-visible, :focus-within) a[href^='#']::after) {
   @apply opacity-100;
 }
 

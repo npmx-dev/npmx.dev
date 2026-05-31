@@ -152,6 +152,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
           })
         },
       },
+      useCursorPointer: true,
     },
     skeletonDataset: skeletonDataset.value,
     skeletonConfig: {

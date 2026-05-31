@@ -36,12 +36,36 @@ const pages = [
 const cacheControl = 's-maxage=3600, stale-while-revalidate=36000'
 
 export default defineEventHandler(async event => {
+  const [path = '/', query] = event.path.split('?')
+
+  if (query) {
+    const params = new URLSearchParams(query)
+
+    switch (params.get('activeTab')) {
+      case 'versions': {
+        // /package/name?activeTab=versions → /package/name/versions
+        // /package/@scope/name?activeTab=versions → /package/@scope/name/versions
+
+        const pkgPathMatch = path.match(/^\/package\/((?:@[^/]+\/)?[^/]+)$/)
+        if (pkgPathMatch) {
+          params.delete('activeTab')
+          const remaining = params.toString()
+          setHeader(event, 'cache-control', cacheControl)
+          return sendRedirect(
+            event,
+            `/package/${pkgPathMatch[1]}/versions` + (remaining ? '?' + remaining : ''),
+            301,
+          )
+        }
+        break
+      }
+    }
+  }
+
   const routeRules = getRouteRules(event)
   if (Object.keys(routeRules).length > 1) {
     return
   }
-
-  const [path = '/', query] = event.path.split('?')
 
   // username
   if (path.startsWith('/~') || path.startsWith('/_')) {

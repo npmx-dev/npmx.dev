@@ -1,3 +1,5 @@
+import { normalizeLicense } from '#shared/utils/npm'
+
 /**
  * Returns lightweight package metadata for search results.
  *
@@ -66,14 +68,7 @@ export default defineCachedEventHandler(
         author = typeof a === 'string' ? { name: a } : { name: a.name, email: a.email, url: a.url }
       }
 
-      // Normalize license to a string
-      // TODO: @npm/types types license as string, but some old packages use
-      // the deprecated { type, url } object format
-      const license = packument.license
-        ? typeof packument.license === 'string'
-          ? packument.license
-          : (packument.license as { type: string }).type
-        : undefined
+      const license = normalizeLicense(packument.license)
 
       return {
         name: packument.name,
