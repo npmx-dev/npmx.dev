@@ -30,7 +30,7 @@ export const ACTIVE_NOODLES: Noodle[] = [
   {
     key: 'pride-1',
     logo: NoodlePride1Logo,
-    date: '2026-05-21',
+    date: '2026-06-01',
     dateTo: '2026-06-30',
     timezone: 'auto',
   },
