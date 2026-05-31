@@ -1,4 +1,4 @@
-import { normalizePackageLicense } from '#shared/utils/npm'
+import { normalizeLicense } from '#shared/utils/npm'
 
 interface LicenseChangeRecord {
   from: string
@@ -44,19 +44,18 @@ export default defineCachedEventHandler(
         version === 'latest' ? versions.length - 1 : versions.findIndex(v => v.version === version)
 
       const previousVersionIndex = currentVersionIndex - 1
-      if (previousVersionIndex < 0) {
-        return { change }
-      }
 
-      const currentLicense =
-        normalizePackageLicense(versions[currentVersionIndex]?.license) ?? 'UNKNOWN'
-      const previousLicense =
-        normalizePackageLicense(versions[previousVersionIndex]?.license) ?? 'UNKNOWN'
+      // Skip when there's no real previous version, else we'd diff against a phantom 'UNKNOWN'.
+      if (currentVersionIndex > 0) {
+        const currentLicense = normalizeLicense(versions[currentVersionIndex]?.license) ?? 'UNKNOWN'
+        const previousLicense =
+          normalizeLicense(versions[previousVersionIndex]?.license) ?? 'UNKNOWN'
 
-      if (currentLicense !== previousLicense) {
-        change = {
-          from: previousLicense,
-          to: currentLicense,
+        if (currentLicense !== previousLicense) {
+          change = {
+            from: previousLicense,
+            to: currentLicense,
+          }
         }
       }
       return { change }

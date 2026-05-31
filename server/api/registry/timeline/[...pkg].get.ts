@@ -1,4 +1,4 @@
-import { normalizePackageLicense } from '#shared/utils/npm'
+import { normalizeLicense } from '#shared/utils/npm'
 import { hasBuiltInTypes } from '~~/shared/utils/package-analysis'
 
 const DEFAULT_LIMIT = 25
@@ -73,7 +73,7 @@ export default defineCachedEventHandler(
           return {
             version: v,
             time: packument.time[v]!,
-            license: normalizePackageLicense(version.license),
+            license: normalizeLicense(version.license),
             type: typeof version.type === 'string' ? version.type : undefined,
             hasTypes: hasBuiltInTypes(version) || undefined,
             hasTrustedPublisher: version._npmUser?.trustedPublisher ? true : undefined,

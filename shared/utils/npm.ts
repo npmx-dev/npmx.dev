@@ -17,13 +17,6 @@ export function encodePackageName(name: string): string {
   return encodeURIComponent(name)
 }
 
-export function normalizePackageLicense(license?: PackumentLicense): string | undefined {
-  if (!license) return undefined
-  if (typeof license === 'string') return license
-  if (typeof license.type === 'string') return license.type
-  return undefined
-}
-
 /**
  * Fetch the latest version of a package using fast-npm-meta API.
  * This is a lightweight alternative to fetching the full packument.
@@ -69,4 +62,18 @@ export function assertValidUsername(username: string): void {
       message: `Invalid username: ${username}`,
     })
   }
+}
+
+/**
+ * Normalize a packument `license` field to a plain string.
+ * The field can be a string or an object with a `type` property.
+ *
+ * @param license Raw license value from a packument
+ * @returns License string, or `undefined` if not present or unrecognized
+ */
+export function normalizeLicense(license?: PackumentLicense): string | undefined {
+  if (!license) return undefined
+  if (typeof license === 'string') return license
+  if (typeof license.type === 'string') return license.type
+  return undefined
 }

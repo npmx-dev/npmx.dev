@@ -1,5 +1,5 @@
 import { getTrustLevel, getTrustStatus } from 'packumeta'
-import { normalizePackageLicense } from '#shared/utils/npm'
+import { normalizeLicense } from '#shared/utils/npm'
 
 /** Number of recent versions to include in initial payload */
 const RECENT_VERSIONS_COUNT = 5
@@ -59,7 +59,7 @@ export function transformPackument(
   for (const v of includedVersions) {
     const version = pkg.versions[v]
     if (version) {
-      const versionLicense = normalizePackageLicense(version.license)
+      const versionLicense = normalizeLicense(version.license)
       if (version.version === requestedVersion) {
         // Strip readme from each version, extract install scripts info
         const { readme: _readme, scripts, ...slimVersion } = version
@@ -93,7 +93,7 @@ export function transformPackument(
   }
 
   // Normalize license field
-  const license = normalizePackageLicense(requestedVersion ? versionData?.license : pkg.license)
+  const license = normalizeLicense(requestedVersion ? versionData?.license : pkg.license)
 
   // Extract storybook field from the requested version (custom package.json field)
   const requestedPkgVersion = requestedVersion ? pkg.versions[requestedVersion] : null

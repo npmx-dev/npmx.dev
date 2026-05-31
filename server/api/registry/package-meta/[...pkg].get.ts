@@ -1,4 +1,4 @@
-import { normalizePackageLicense } from '#shared/utils/npm'
+import { normalizeLicense } from '#shared/utils/npm'
 
 /**
  * Returns lightweight package metadata for search results.
@@ -68,7 +68,7 @@ export default defineCachedEventHandler(
         author = typeof a === 'string' ? { name: a } : { name: a.name, email: a.email, url: a.url }
       }
 
-      const license = normalizePackageLicense(packument.license)
+      const license = normalizeLicense(packument.license)
 
       return {
         name: packument.name,

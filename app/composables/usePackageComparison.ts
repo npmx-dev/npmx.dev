@@ -1,4 +1,4 @@
-import { normalizePackageLicense } from '#shared/utils/npm'
+import { normalizeLicense } from '#shared/utils/npm'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
 
 /** Special identifier for the "What Would James Do?" comparison column */
@@ -194,7 +194,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
                 severity: vulnsSeverity,
               },
               metadata: {
-                license: normalizePackageLicense(pkgData.license),
+                license: normalizeLicense(pkgData.license),
                 // Use version-specific publish time, NOT time.modified (which can be
                 // updated by metadata changes like maintainer additions)
                 lastUpdated: pkgData.time?.[latestVersion],
