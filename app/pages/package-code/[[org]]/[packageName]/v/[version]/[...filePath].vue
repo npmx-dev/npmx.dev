@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { RouteLocationRaw } from 'vue-router'
 import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
 
 // Maximum file size we'll try to load (500KB) - must match server
@@ -86,7 +87,16 @@ const versionUrlPattern = computed(() =>
   }),
 )
 
-useCommandPaletteVersionCommands(commandPalettePackageContext, versionUrlPattern)
+function codeVersionRoute(nextVersion: string): RouteLocationRaw {
+  return getCodeUrl({
+    org: route.params.org,
+    packageName: route.params.packageName,
+    version: nextVersion,
+    filePath: filePath.value,
+  })
+}
+
+useCommandPaletteVersionCommands(commandPalettePackageContext, codeVersionRoute)
 
 // Fetch file tree
 const { data: fileTree, status: treeStatus } = useFetch<PackageFileTreeResponse>(
@@ -317,11 +327,15 @@ useSeoMeta({
   twitterDescription: () => `Browse source code for ${packageName.value}@${version.value}`,
 })
 
-defineOgImageComponent('Default', {
-  title: () => `${pkg.value?.name ?? 'Package'} - Code`,
-  description: () => pkg.value?.license ?? '',
-  primaryColor: '#60a5fa',
-})
+defineOgImage(
+  'Package.takumi',
+  {
+    name: () => packageName.value,
+    version: () => version.value,
+    variant: 'code-tree',
+  },
+  { alt: () => `Source code file tree for ${packageName.value}@${version.value}` },
+)
 
 useCommandPaletteContextCommands(
   computed((): CommandPaletteContextCommandInput[] => {

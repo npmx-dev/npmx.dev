@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { RouteLocationRaw } from 'vue-router'
 import { setResponseHeader } from 'h3'
 
 definePageMeta({
@@ -123,7 +124,19 @@ const versionUrlPattern = computed(
   () => `/package-docs/${pkg.value?.name || packageName.value}/v/{version}`,
 )
 
-useCommandPaletteVersionCommands(commandPalettePackageContext, versionUrlPattern)
+function docsVersionRoute(version: string): RouteLocationRaw {
+  const name = pkg.value?.name || packageName.value
+  const [firstSegment = name, ...remainingSegments] = name.split('/')
+
+  return {
+    name: 'docs',
+    params: {
+      path: [firstSegment, ...remainingSegments, 'v', version],
+    },
+  }
+}
+
+useCommandPaletteVersionCommands(commandPalettePackageContext, docsVersionRoute)
 
 const pageTitle = computed(() => {
   if (!packageName.value) return t('package.docs.page_title')
@@ -135,18 +148,22 @@ const pageTitle = computed(() => {
 
 useSeoMeta({
   title: () => pageTitle.value,
-  ogTitle: () => pageTitle.value,
+  ogTitle: () => t('package.docs.og_title', { name: packageName.value }),
   twitterTitle: () => pageTitle.value,
   description: () => pkg.value?.license ?? '',
   ogDescription: () => pkg.value?.license ?? '',
   twitterDescription: () => pkg.value?.license ?? '',
 })
 
-defineOgImageComponent('Default', {
-  title: () => t('package.docs.og_title', { name: pkg.value?.name ?? 'Package' }),
-  description: () => pkg.value?.license ?? '',
-  primaryColor: '#60a5fa',
-})
+defineOgImage(
+  'Package.takumi',
+  {
+    name: () => packageName.value,
+    version: () => resolvedVersion.value,
+    variant: 'function-tree',
+  },
+  { alt: () => `API documentation for ${packageName.value}` },
+)
 
 const showLoading = computed(
   () => docsStatus.value === 'pending' || (docsStatus.value === 'idle' && docsUrl.value !== null),

@@ -41,7 +41,7 @@ function getDevInstallPartsForPM(pmId: PackageManagerId) {
   return getInstallCommandParts({
     packageName: props.packageName,
     packageManager: pmId,
-    version: props.requestedVersion,
+    version: props.installVersionOverride ?? props.requestedVersion,
     jsrInfo: props.jsrInfo,
     dev: true,
   })
@@ -116,7 +116,7 @@ const copyDevInstallCommand = () =>
     getInstallCommand({
       packageName: props.packageName,
       packageManager: selectedPM.value,
-      version: props.requestedVersion,
+      version: props.installVersionOverride ?? props.requestedVersion,
       jsrInfo: props.jsrInfo,
       dev: true,
     }),
@@ -412,7 +412,8 @@ useCommandPaletteContextCommands(
 :root[data-pm='yarn'] [data-pm-cmd='yarn'],
 :root[data-pm='bun'] [data-pm-cmd='bun'],
 :root[data-pm='deno'] [data-pm-cmd='deno'],
-:root[data-pm='vlt'] [data-pm-cmd='vlt'] {
+:root[data-pm='vlt'] [data-pm-cmd='vlt'],
+:root[data-pm='vp'] [data-pm-cmd='vp'] {
   display: flex;
 }
 

@@ -15,11 +15,16 @@ export const BLUESKY_API = 'https://public.api.bsky.app'
 export const BLUESKY_COMMENTS_REQUEST = '/api/atproto/bluesky-comments'
 export const NPM_REGISTRY = 'https://registry.npmjs.org'
 export const NPM_API = 'https://api.npmjs.org'
+export const MICROLINK_API = 'https://api.microlink.io'
+// Repo: https://tangled.org/baileytownsend.dev/npmx-likes-leaderboard
+export const LIKES_LEADERBOARD_API_URL =
+  'https://npmx-likes-leaderboard-api-production.up.railway.app/api/leaderboard/likes'
 // Error Messages
 export const ERROR_PACKAGE_ANALYSIS_FAILED = 'Failed to analyze package.'
 export const ERROR_PACKAGE_VERSION_AND_FILE_FAILED = 'Version and file path are required.'
 export const ERROR_PACKAGE_REQUIREMENTS_FAILED =
   'Package name, version, and file path are required.'
+export const ERROR_PACKAGE_DETECT_CHANGELOG = 'failed to detect package has changelog'
 export const ERROR_BLUESKY_URL_FAILED =
   'Invalid Bluesky URL format. Expected: https://bsky.app/profile/HANDLE/post/POST_ID'
 export const ERROR_FILE_LIST_FETCH_FAILED = 'Failed to fetch file list.'
@@ -40,12 +45,21 @@ export const ERROR_GRAVATAR_FETCH_FAILED = 'Failed to fetch Gravatar profile.'
 export const ERROR_GRAVATAR_EMAIL_UNAVAILABLE = "User's email not accessible."
 export const ERROR_NEED_REAUTH = 'User needs to reauthenticate'
 
+export const ERROR_CHANGELOG_NOT_FOUND =
+  'No releases or changelogs have been found for this package'
+export const ERROR_CHANGELOG_RELEASES_FAILED = 'Failed to get releases'
+export const ERROR_CHANGELOG_FILE_FAILED = 'Failed to get changelog markdown'
+export const ERROR_THROW_INCOMPLETE_PARAM = "Couldn't do request due to incomplete parameters"
+// for ungh.cc when api keys are exhausted, name is broad in case more proxies are going to be used
+export const ERROR_UNGH_API_KEY_EXHAUSTED =
+  "Couldn't fetch resources due to ungh api keys being exhausted"
+
 // microcosm services
 export const CONSTELLATION_HOST = 'constellation.microcosm.blue'
 export const SLINGSHOT_HOST = 'slingshot.microcosm.blue'
 
 // ATProtocol
-// Refrences used to link packages to things that are not inherently atproto
+// References used to link packages to things that are not inherently atproto
 export const PACKAGE_SUBJECT_REF = (packageName: string) =>
   `https://npmx.dev/package/${packageName}`
 // OAuth scopes as we add new ones we need to check these on certain actions. If not redirect the user to login again to upgrade the scopes

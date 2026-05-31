@@ -66,6 +66,15 @@
         },
         "brand": {
           "type": "string"
+        },
+        "resources": {
+          "type": "string"
+        },
+        "features": {
+          "type": "string"
+        },
+        "other": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -131,6 +140,9 @@
           "type": "string"
         },
         "open_diff": {
+          "type": "string"
+        },
+        "open_timeline": {
           "type": "string"
         }
       },
@@ -452,6 +464,9 @@
               "type": "string"
             },
             "download": {
+              "type": "string"
+            },
+            "changelog": {
               "type": "string"
             }
           },
@@ -846,6 +861,15 @@
         },
         "keyboard_shortcuts_enabled_description": {
           "type": "string"
+        },
+        "enable_code_ligatures": {
+          "type": "string"
+        },
+        "enable_changelog_autoscroll": {
+          "type": "string"
+        },
+        "enable_changelog_autoscroll_description": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -940,10 +964,7 @@
         "per_week": {
           "type": "string"
         },
-        "yes": {
-          "type": "string"
-        },
-        "no": {
+        "per_week_short": {
           "type": "string"
         },
         "vanity_downloads_hint": {
@@ -1147,13 +1168,40 @@
           },
           "additionalProperties": false
         },
+        "size_decrease": {
+          "type": "object",
+          "properties": {
+            "title_size": {
+              "type": "string"
+            },
+            "title_deps": {
+              "type": "string"
+            },
+            "title_both": {
+              "type": "string"
+            },
+            "size": {
+              "type": "string"
+            },
+            "deps": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
         "replacement": {
           "type": "object",
           "properties": {
             "title": {
               "type": "string"
             },
+            "example": {
+              "type": "string"
+            },
             "native": {
+              "type": "string"
+            },
+            "native_no_version": {
               "type": "string"
             },
             "simple": {
@@ -1169,9 +1217,6 @@
               "type": "string"
             },
             "learn_more_above": {
-              "type": "string"
-            },
-            "mdn": {
               "type": "string"
             },
             "community": {
@@ -1309,7 +1354,13 @@
             "compare": {
               "type": "string"
             },
+            "timeline": {
+              "type": "string"
+            },
             "compare_this_package": {
+              "type": "string"
+            },
+            "changelog": {
               "type": "string"
             }
           },
@@ -1322,6 +1373,15 @@
               "type": "string"
             },
             "unlike": {
+              "type": "string"
+            },
+            "top_rank_tooltip": {
+              "type": "string"
+            },
+            "top_rank_label": {
+              "type": "string"
+            },
+            "top_rank_link_label": {
               "type": "string"
             }
           },
@@ -1445,6 +1505,9 @@
               "additionalProperties": false
             },
             "copy_as_markdown": {
+              "type": "string"
+            },
+            "error_loading": {
               "type": "string"
             }
           },
@@ -1654,6 +1717,15 @@
             "filter_tooltip_link": {
               "type": "string"
             },
+            "license_change_help": {
+              "type": "string"
+            },
+            "license_change_warning": {
+              "type": "string"
+            },
+            "license_change_record": {
+              "type": "string"
+            },
             "no_matches": {
               "type": "string"
             },
@@ -1677,6 +1749,93 @@
             },
             "no_match_filter": {
               "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "timeline": {
+          "type": "object",
+          "properties": {
+            "load_more": {
+              "type": "string"
+            },
+            "load_error": {
+              "type": "string"
+            },
+            "size_increase": {
+              "type": "string"
+            },
+            "size_decrease": {
+              "type": "string"
+            },
+            "dep_increase": {
+              "type": "string"
+            },
+            "dep_decrease": {
+              "type": "string"
+            },
+            "license_change": {
+              "type": "string"
+            },
+            "esm_added": {
+              "type": "string"
+            },
+            "esm_removed": {
+              "type": "string"
+            },
+            "types_added": {
+              "type": "string"
+            },
+            "types_removed": {
+              "type": "string"
+            },
+            "trusted_publisher_added": {
+              "type": "string"
+            },
+            "trusted_publisher_removed": {
+              "type": "string"
+            },
+            "provenance_added": {
+              "type": "string"
+            },
+            "provenance_removed": {
+              "type": "string"
+            },
+            "chart": {
+              "type": "object",
+              "properties": {
+                "tab_aria_label": {
+                  "type": "string"
+                },
+                "base_scale": {
+                  "type": "string"
+                },
+                "zoom": {
+                  "type": "string"
+                },
+                "reset_minimap": {
+                  "type": "string"
+                },
+                "ordered_versions": {
+                  "type": "string"
+                },
+                "copy_alt": {
+                  "type": "object",
+                  "properties": {
+                    "key_changes": {
+                      "type": "string"
+                    },
+                    "version_events": {
+                      "type": "string"
+                    },
+                    "general_description": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
             }
           },
           "additionalProperties": false
@@ -1993,6 +2152,9 @@
             "title": {
               "type": "string"
             },
+            "version_distribution_title": {
+              "type": "string"
+            },
             "community_distribution": {
               "type": "string"
             },
@@ -2279,6 +2441,36 @@
               "type": "string"
             },
             "tarball": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "leaderboard": {
+      "type": "object",
+      "properties": {
+        "likes": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "rank": {
+              "type": "string"
+            },
+            "likes": {
+              "type": "string"
+            },
+            "unavailable_title": {
+              "type": "string"
+            },
+            "unavailable_description": {
               "type": "string"
             }
           },
@@ -3367,7 +3559,13 @@
             "title": {
               "type": "string"
             },
-            "governance": {
+            "core": {
+              "type": "string"
+            },
+            "maintainers": {
+              "type": "string"
+            },
+            "role_core": {
               "type": "string"
             },
             "role_steward": {
@@ -3718,83 +3916,35 @@
           },
           "additionalProperties": false
         },
-        "quadrant_chart": {
+        "scatter_chart": {
           "type": "object",
           "properties": {
-            "label_x_axis": {
-              "type": "string"
-            },
-            "label_y_axis": {
-              "type": "string"
-            },
-            "label_top_right": {
-              "type": "string"
-            },
-            "label_bottom_right": {
-              "type": "string"
-            },
-            "label_bottom_left": {
-              "type": "string"
-            },
-            "label_top_left": {
-              "type": "string"
-            },
             "title": {
               "type": "string"
             },
-            "filename": {
-              "type": "string"
-            },
-            "label_freshness_score": {
+            "freshness_score": {
               "type": "string"
             },
             "copy_alt": {
               "type": "object",
               "properties": {
+                "analysis": {
+                  "type": "string"
+                },
                 "description": {
-                  "type": "string"
-                },
-                "side_analysis_top_right": {
-                  "type": "string"
-                },
-                "side_analysis_top_left": {
-                  "type": "string"
-                },
-                "side_analysis_bottom_right": {
-                  "type": "string"
-                },
-                "side_analysis_bottom_left": {
                   "type": "string"
                 }
               },
               "additionalProperties": false
             },
-            "explanation": {
-              "type": "object",
-              "properties": {
-                "tooltip_help": {
-                  "type": "string"
-                },
-                "tooltip_help_adoption": {
-                  "type": "string"
-                },
-                "tooltip_help_efficiency": {
-                  "type": "string"
-                },
-                "introduction": {
-                  "type": "string"
-                },
-                "adoption": {
-                  "type": "string"
-                },
-                "efficiency": {
-                  "type": "string"
-                },
-                "impact_details": {
-                  "type": "string"
-                }
-              },
-              "additionalProperties": false
+            "filename": {
+              "type": "string"
+            },
+            "x_axis": {
+              "type": "string"
+            },
+            "y_axis": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -4025,6 +4175,42 @@
                   "additionalProperties": false
                 },
                 "vulnerabilities": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "githubStars": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "githubIssues": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "createdAt": {
                   "type": "object",
                   "properties": {
                     "label": {
@@ -5001,6 +5187,39 @@
     },
     "alt_logo_kawaii": {
       "type": "string"
+    },
+    "changelog": {
+      "type": "object",
+      "properties": {
+        "pre_release": {
+          "type": "string"
+        },
+        "draft": {
+          "type": "string"
+        },
+        "no_logs": {
+          "type": "string"
+        },
+        "error": {
+          "type": "object",
+          "properties": {
+            "p1": {
+              "type": "string"
+            },
+            "p2": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "rate_limit_ungh": {
+          "type": "string"
+        },
+        "version_unavailable": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
     },
     "$schema": {
       "type": "string"

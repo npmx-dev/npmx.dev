@@ -31,6 +31,12 @@ export default defineConfig({
       'lint:css': {
         command: 'node scripts/unocss-checker.ts',
       },
+      'zizmor': {
+        command: 'zizmor --pedantic .',
+      },
+      'zizmor:fix': {
+        command: 'zizmor --pedantic --fix .',
+      },
       'build:lunaria': {
         command: 'node ./lunaria/lunaria.ts',
       },

@@ -20,7 +20,10 @@
     "chat": "чат",
     "builders_chat": "разработчики",
     "keyboard_shortcuts": "горячие клавиши",
-    "brand": "бренд"
+    "brand": "бренд",
+    "resources": "Ресурсы",
+    "features": "Функции",
+    "other": "Дополнительно"
   },
   "shortcuts": {
     "section": {
@@ -42,7 +45,8 @@
     "open_docs": "Открыть документацию",
     "disable_shortcuts": "Для отключения горячих клавиш загляните в {settings}.",
     "open_main": "Открыть основную информацию",
-    "open_diff": "Открыть различия версий"
+    "open_diff": "Открыть различия версий",
+    "open_timeline": "Открыть хронологию"
   },
   "search": {
     "label": "Поиск пакетов npm",
@@ -149,7 +153,8 @@
       "code": "Код",
       "diff": "Различия",
       "compare": "Сравнить этот пакет",
-      "download": "Скачать архив"
+      "download": "Скачать архив",
+      "changelog": "Изменения"
     },
     "package_actions": {
       "copy_run": "Скопировать команду запуска"
@@ -280,7 +285,10 @@
       "black": "Чёрный"
     },
     "keyboard_shortcuts_enabled": "Использовать горячие клавиши",
-    "keyboard_shortcuts_enabled_description": "Горячие клавиши можно выключить, если возникают конфликты с сочетаниями клавиш браузера или операционной системы"
+    "keyboard_shortcuts_enabled_description": "Горячие клавиши можно выключить, если возникают конфликты с сочетаниями клавиш браузера или операционной системы",
+    "enable_code_ligatures": "Включить лигатуры в коде",
+    "enable_changelog_autoscroll": "Автоматическая прокрутка до запрошенной версии",
+    "enable_changelog_autoscroll_description": "Автоматически прокручивать к нужной версии (или близко к ней) в списке изменений пакета"
   },
   "i18n": {
     "missing_keys": "{count} отсутствующий перевод | {count} отсутствующих перевода | {count} отсутствующих переводов",
@@ -312,8 +320,7 @@
     "warnings": "Предупреждения:",
     "go_back_home": "Вернуться на главную",
     "per_week": "/ неделю",
-    "yes": "Да",
-    "no": "Нет",
+    "per_week_short": "/нед",
     "vanity_downloads_hint": "Метрика тщеславия: пакеты не отображаются | Метрика тщеславия: для отображаемого пакета | Метрика тщеславия: сумма {count} отображаемых пакетов",
     "sort": {
       "name": "имя",
@@ -326,8 +333,8 @@
     "edit": "Изменить",
     "error": "Ошибка",
     "view_on": {
-      "npm": "посмотреть на npm",
-      "github": "Посмотреть на GitHub",
+      "npm": "Открыть на npm",
+      "github": "Открыть на GitHub",
       "gitlab": "Открыть на GitLab",
       "bitbucket": "Открыть на Bitbucket",
       "codeberg": "Открыть на Codeberg",
@@ -336,7 +343,7 @@
       "gitea": "Открыть на Gitea",
       "gitee": "Открыть на Gitee",
       "radicle": "Открыть на Radicle",
-      "socket_dev": "Посмотреть на socket.dev",
+      "socket_dev": "Открыть на socket.dev",
       "sourcehut": "Открыть на SourceHut",
       "tangled": "Открыть на Tangled"
     },
@@ -381,15 +388,23 @@
       "size": "Размер при установке увеличился на {percent} (на {size} больше)",
       "deps": "На {count} зависимостей больше"
     },
+    "size_decrease": {
+      "title_size": "Размер пакета уменьшился с версии v{version}!",
+      "title_deps": "Количество зависимостей уменьшилось с версии v{version}!",
+      "title_both": "Размер пакета и количество зависимостей уменьшились с версии v{version}!",
+      "size": "Размер установки уменьшился на {percent} (на {size} меньше)",
+      "deps": "На {count} зависимостей меньше"
+    },
     "replacement": {
       "title": "Возможно, вам не нужна эта зависимость.",
-      "native": "Это можно заменить на {replacement}, доступный начиная с Node {nodeVersion}.",
-      "simple": "Сообщество отметило этот пакет как избыточный, совет: {replacement}.",
+      "example": "Пример:",
+      "native": "Этот пакет можно заменить на {replacement}, доступный начиная с Node {nodeVersion}.",
+      "native_no_version": "Этот пакет можно заменить на {replacement}.",
+      "simple": "Сообщество отметило этот пакет как избыточный, с рекомендацией: {replacement}.",
       "documented": "Сообщество отметило, что у этого пакета есть более производительные альтернативы.",
       "none": "Этот пакет был отмечен как ненужный, так как его функциональность, вероятно, доступна нативно во всех движках.",
       "learn_more": "Подробнее",
       "learn_more_above": "Узнайте больше выше.",
-      "mdn": "MDN",
       "community": "сообщество",
       "consider_no_dep": "+ Рассмотреть вариант без зависимости?"
     },
@@ -435,11 +450,16 @@
       "docs": "доки",
       "fund": "поддержать",
       "compare": "сравнить",
-      "compare_this_package": "сравнить этот пакет"
+      "timeline": "хронология",
+      "compare_this_package": "сравнить этот пакет",
+      "changelog": "изменения"
     },
     "likes": {
       "like": "Поставить лайк этому пакету",
-      "unlike": "Убрать лайк с этого пакета"
+      "unlike": "Убрать лайк с этого пакета",
+      "top_rank_tooltip": "Этот пакет входит в топ-10 самых любимых пакетов на npmx! (#{rank})",
+      "top_rank_label": "#{rank}",
+      "top_rank_link_label": "Посмотреть таблицу лидеров по лайкам. Этот пакет занимает #{rank} место."
     },
     "docs": {
       "contents": "Содержание",
@@ -480,7 +500,8 @@
         "warning": "Предупреждение",
         "caution": "Внимание"
       },
-      "copy_as_markdown": "Скопировать README как Markdown"
+      "copy_as_markdown": "Скопировать README как Markdown",
+      "error_loading": "Не удалось загрузить README"
     },
     "provenance_section": {
       "title": "Происхождение",
@@ -550,6 +571,9 @@
       "filter_help": "Справка по фильтру диапазона semver",
       "filter_tooltip": "Фильтруйте версии, используя {link}. Например, ^3.0.0 покажет все версии 3.x.",
       "filter_tooltip_link": "диапазон semver",
+      "license_change_help": "Подробности изменения лицензии",
+      "license_change_warning": "Лицензия изменилась по сравнению с предыдущей версией.",
+      "license_change_record": "Лицензия этого пакета изменилась с «{from}» на «{to}».",
       "no_matches": "Нет версий, соответствующих этому диапазону",
       "copy_alt": {
         "per_version_analysis": "версия {version} была загружена {downloads} раз",
@@ -558,6 +582,34 @@
       "page_title": "История версий",
       "current_tags": "Текущие теги",
       "no_match_filter": "Нет версий по фильтру «{filter}»"
+    },
+    "timeline": {
+      "load_more": "Загрузить ещё",
+      "load_error": "Не удалось загрузить хронологию. Попробуйте позже.",
+      "size_increase": "Размер установки увеличился на {percent}% ({size})",
+      "size_decrease": "Размер установки уменьшился на {percent}% ({size})",
+      "dep_increase": "Добавлена {count} зависимость | Добавлено {count} зависимости | Добавлено {count} зависимостей",
+      "dep_decrease": "Удалена {count} зависимость | Удалено {count} зависимости | Удалено {count} зависимостей",
+      "license_change": "Лицензия изменена с {from} на {to}",
+      "esm_added": "Тип модуля изменён на ESM",
+      "esm_removed": "Тип модуля изменён с ESM на CJS",
+      "types_added": "Добавлены типы TypeScript",
+      "types_removed": "Удалены типы TypeScript",
+      "trusted_publisher_added": "Доверенная публикация включена",
+      "trusted_publisher_removed": "Доверенная публикация удалена",
+      "provenance_added": "Происхождение включено",
+      "provenance_removed": "Происхождение удалено",
+      "chart": {
+        "tab_aria_label": "Выбор метрики",
+        "base_scale": "начинать ось Y с нуля",
+        "zoom": "масштабировать",
+        "reset_minimap": "сбросить миникарту",
+        "copy_alt": {
+          "key_changes": "Ключевые изменения: {version_events}.",
+          "version_events": "версия {version}: {events}",
+          "general_description": "Линейный график, показывающий {metric} пакета {package} с версии {first} по {last}. В версии {first} значение {metric} составляло {first_value}, в версии {last} — {last_value} (общее изменение {overall_progress_percentage}%). {key_changes} {watermark}."
+        }
+      }
     },
     "dependencies": {
       "title": "Зависимости ({count})",
@@ -759,6 +811,16 @@
     "download": {
       "button": "Скачать",
       "tarball": "Скачать tarball (.tar.gz)"
+    }
+  },
+  "leaderboard": {
+    "likes": {
+      "title": "Таблица лидеров по лайкам",
+      "description": "10 самых любимых пакетов на npmx прямо сейчас.",
+      "rank": "Место",
+      "likes": "Лайки",
+      "unavailable_title": "Таблица лидеров по лайкам пока отсутствует",
+      "unavailable_description": "У нас пока нет таблицы лидеров по лайкам для отображения."
     }
   },
   "connector": {
@@ -1121,7 +1183,6 @@
     },
     "team": {
       "title": "Команда",
-      "governance": "Управление",
       "role_steward": "управляющий",
       "role_maintainer": "мейнтейнер",
       "sponsor": "спонсировать",
@@ -1147,7 +1208,7 @@
         "cta": "Присоединиться к Discord"
       },
       "builders": {
-        "title": "Создавайте npmx вместе с нами",
+        "title": "Участвовать в разработке",
         "description": "Присоединяйтесь к тем, кто формирует будущее npmx.",
         "cta": "Вступить в Discord для разработчиков"
       },
@@ -1238,32 +1299,16 @@
       "packages_selected": "Выбрано пакетов: {count}/{max}.",
       "add_hint": "Добавьте как минимум 2 пакета для сравнения."
     },
-    "quadrant_chart": {
-      "label_x_axis": "Востребованность",
-      "label_y_axis": "Эргономичность",
-      "label_top_right": "Надёжный выбор",
-      "label_bottom_right": "Популярно с компромиссами",
-      "label_bottom_left": "Избегать",
-      "label_top_left": "Скрытые жемчужины",
-      "title": "Востребованность против эргономичности пакетов",
-      "filename": "quadrant-ergonomics-traction-packages",
-      "label_freshness_score": "Оценка актуальности",
+    "scatter_chart": {
+      "title": "Сравнить {x} с {y}",
+      "freshness_score": "Оценка свежести",
       "copy_alt": {
-        "description": "Диаграмма-квадрант, сопоставляющая востребованность и эргономичность для {packages} пакетов. {analysis}. {watermark}.",
-        "side_analysis_top_right": "Следующие пакеты расположены в правом верхнем квадранте (надёжный выбор): {packages}",
-        "side_analysis_top_left": "Следующие пакеты расположены в левом верхнем квадранте (скрытые жемчужины): {packages}",
-        "side_analysis_bottom_right": "Следующие пакеты расположены в правом нижнем квадранте (популярно с компромиссами): {packages}",
-        "side_analysis_bottom_left": "Следующие пакеты расположены в левом нижнем квадранте (избегать): {packages}"
+        "analysis": "{package} : {x_name} ({x_value}) и {y_name} ({y_value})",
+        "description": "Точечная диаграмма, сопоставляющая {x_name} с {y_name} для пакетов {packages}. {analysis}. {watermark}"
       },
-      "explanation": {
-        "tooltip_help": "Показать объяснение оценок",
-        "tooltip_help_adoption": "Показать объяснение оценки востребованности",
-        "tooltip_help_efficiency": "Показать объяснение оценки эргономичности",
-        "introduction": "Оценка вычисляется путём комбинирования нескольких сигналов по двум осям:",
-        "adoption": "Востребованность: отражает использование и активность (загрузки, актуальность, лайки)",
-        "efficiency": "Эргономичность: отражает footprint и качество (размер установки, зависимости, уязвимости, поддержка типов)",
-        "impact_details": "Каждая метрика вносит вклад с разным весом. Сильные сигналы, такие как загрузки и размер установки, оказывают наибольшее влияние, а остальные уточняют результат. Некоторые сигналы (например, уязвимости или устаревание) накладывают штрафы."
-      }
+      "filename": "{x}-vs-{y}-точечный-график",
+      "x_axis": "Ось X ↦",
+      "y_axis": "Ось Y ↥"
     },
     "no_dependency": {
       "label": "(Без зависимости)",
@@ -1343,6 +1388,18 @@
         "vulnerabilities": {
           "label": "Уязвимости",
           "description": "Известные уязвимости безопасности"
+        },
+        "githubStars": {
+          "label": "Звёзды GitHub",
+          "description": "Количество звёзд у GitHub-репозитория"
+        },
+        "githubIssues": {
+          "label": "Тикеты GitHub",
+          "description": "Количество тикетов в GitHub-репозитории"
+        },
+        "createdAt": {
+          "label": "Дата создания",
+          "description": "Когда пакет был создан"
         }
       },
       "values": {
@@ -1665,5 +1722,16 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "Милая, округлая и красочная версия логотипа npmx."
+  "alt_logo_kawaii": "Милая, округлая и красочная версия логотипа npmx.",
+  "changelog": {
+    "pre_release": "Предрелизная версия",
+    "draft": "Черновик",
+    "no_logs": "К сожалению, этот пакет не публикует список изменений или его формат не поддерживается.",
+    "error": {
+      "p1": "Не удалось загрузить список изменений для пакета {package}",
+      "p2": "Пожалуйста, попробуйте позже или {viewon}"
+    },
+    "rate_limit_ungh": "К сожалению, достигнут лимит запросов GitHub. Попробуйте снова через некоторое время.",
+    "version_unavailable": "Запрошенная версия недоступна."
+  }
 }

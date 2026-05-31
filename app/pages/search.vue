@@ -52,6 +52,16 @@ const {
 } = useGlobalSearch()
 const query = computed(() => searchQuery.value)
 
+const {
+  scope: packageScope,
+  name: queryPackageName,
+  trailing: queryTrailing,
+} = useParsedSearchQuery(committedQuery)
+
+const versionStrippedQuery = computed(() =>
+  `${queryPackageName.value}${queryTrailing.value ?? ''}`.trim(),
+)
+
 // Track if page just loaded (for hiding "Searching..." during view transition)
 const hasInteracted = shallowRef(false)
 onMounted(() => {
@@ -86,7 +96,7 @@ const { settings } = useSettings()
 
 /**
  * Reorder results to put exact package name match at the top,
- * and optionally filter out platform-specific packages.
+ * and optionally filter out platform-specific packages or security holding packages.
  */
 const visibleResults = computed(() => {
   const raw = rawVisibleResults.value
@@ -94,12 +104,15 @@ const visibleResults = computed(() => {
 
   let objects = raw.objects
 
+  // Filter out "Security holding package" packages taken down by npm registry
+  objects = objects.filter(r => !r.package.isSecurityHeld)
+
   // Filter out platform-specific packages if setting is enabled
   if (settings.value.hidePlatformPackages) {
     objects = objects.filter(r => !isPlatformSpecificPackage(r.package.name))
   }
 
-  const q = query.value.trim().toLowerCase()
+  const q = versionStrippedQuery.value.trim().toLowerCase()
   if (!q) {
     return objects === raw.objects ? raw : { ...raw, objects }
   }
@@ -193,7 +206,7 @@ watch(searchProvider, provider => {
 })
 
 // Use incremental search with client-side caching + org/user suggestions
-// committedQuery only updates on Enter when instant search is off, otherwise tracks query as user types
+// committedQuery only updates on Enter when instant search is off; otherwise, tracks query as user types
 const {
   data: results,
   status,
@@ -204,7 +217,7 @@ const {
   suggestions: validatedSuggestions,
   packageAvailability,
 } = useSearch(
-  committedQuery,
+  versionStrippedQuery,
   searchProvider,
   () => ({
     size: requestedSize.value,
@@ -303,14 +316,6 @@ const isValidPackageName = computed(() => isValidNewPackageName(query.value.trim
 // Get connector state
 const { isConnected, npmUser, listOrgUsers } = useConnector()
 
-// Check if this is a scoped package and extract scope
-const packageScope = computed(() => {
-  const q = query.value.trim()
-  if (!q.startsWith('@')) return null
-  const match = q.match(/^@([^/]+)\//)
-  return match ? match[1] : null
-})
-
 // Track org membership for scoped packages
 const orgMembership = ref<Record<string, boolean>>({})
 
@@ -369,7 +374,7 @@ const claimPackageModalRef = useTemplateRef('claimPackageModalRef')
 
 /** Check if there's an exact package match in results */
 const hasExactPackageMatch = computed(() => {
-  const q = query.value.trim().toLowerCase()
+  const q = versionStrippedQuery.value.trim().toLowerCase()
   if (!q || !visibleResults.value) return false
   return visibleResults.value.objects.some(r => r.package.name.toLowerCase() === q)
 })
@@ -499,13 +504,13 @@ function handleResultsKeydown(e: KeyboardEvent) {
 
     // Check if first result matches the input value exactly
     const firstResult = displayResults.value[0]
-    if (firstResult?.package.name === inputValue) {
+    if (firstResult?.package.name === committedQuery.value) {
       pendingEnterQuery.value = null
       return navigateToPackage(firstResult.package.name)
     }
 
     // No match yet - store input value, watcher will handle navigation when results arrive
-    pendingEnterQuery.value = inputValue
+    pendingEnterQuery.value = committedQuery.value
     return
   }
 
@@ -573,15 +578,21 @@ useSeoMeta({
       : $t('search.meta_description_packages'),
 })
 
-defineOgImageComponent('Default', {
-  title: () =>
-    `${query.value ? $t('search.title_search', { search: query.value }) : $t('search.title_packages')} - npmx`,
-  description: () =>
-    query.value
-      ? $t('search.meta_description', { search: query.value })
-      : $t('search.meta_description_packages'),
-  primaryColor: '#60a5fa',
-})
+defineOgImage(
+  'Page.takumi',
+  {
+    title: () =>
+      `${query.value ? $t('search.title_search', { search: query.value }) : $t('search.title_packages')} - npmx`,
+    description: () =>
+      query.value
+        ? $t('search.meta_description', { search: query.value })
+        : $t('search.meta_description_packages'),
+  },
+  {
+    alt: () =>
+      query.value ? `Search results for "${query.value}" on npmx` : 'Search npm packages on npmx',
+  },
+)
 
 // -----------------------------------
 // Live region debouncing logic
@@ -629,8 +640,8 @@ const rawLiveRegionMessage = computed(() => {
   }
 
   if (status.value === 'success' || status.value === 'error') {
-    if (displayResults.value.length === 0 && query.value) {
-      return $t('search.no_results', { query: query.value })
+    if (displayResults.value.length === 0 && versionStrippedQuery.value) {
+      return $t('search.no_results', { query: versionStrippedQuery.value })
     }
   }
 
@@ -829,7 +840,7 @@ onBeforeUnmount(() => {
 
           <div v-else-if="status === 'success' || status === 'error'" class="py-12">
             <p class="text-fg-muted font-mono mb-6 text-center">
-              {{ $t('search.no_results', { query }) }}
+              {{ $t('search.no_results', { query: versionStrippedQuery }) }}
             </p>
 
             <Transition
@@ -869,7 +880,7 @@ onBeforeUnmount(() => {
           <PackageList
             v-show="displayResults.length > 0 && !isRateLimited"
             :results="displayResults"
-            :search-query="query"
+            :search-query="versionStrippedQuery"
             :filters="filters"
             search-context
             heading-level="h2"
@@ -886,6 +897,7 @@ onBeforeUnmount(() => {
             @load-more="loadMore"
             @page-change="handlePageChange"
             @click-keyword="toggleKeyword"
+            selectable
           />
 
           <PaginationControls

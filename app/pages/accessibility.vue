@@ -8,10 +8,14 @@ useSeoMeta({
   description: () => $t('a11y.welcome', { app: 'npmx' }),
 })
 
-defineOgImageComponent('Default', {
-  title: () => $t('a11y.title'),
-  description: () => $t('a11y.welcome', { app: 'npmx' }),
-})
+defineOgImage(
+  'Page.takumi',
+  {
+    title: () => $t('a11y.title'),
+    description: () => $t('a11y.welcome', { app: 'npmx' }),
+  },
+  { alt: () => `${$t('a11y.title')} — npmx` },
+)
 </script>
 
 <template>

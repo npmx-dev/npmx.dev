@@ -1,3 +1,4 @@
+import process from 'node:process'
 import {
   defineConfig,
   presetIcons,
@@ -22,6 +23,18 @@ const customIcons = {
 }
 
 export default defineConfig({
+  // og-image uses hardcoded classes we don't want bundled into main app
+  content: {
+    pipeline: {
+      exclude: [
+        // Preserve the UnoCSS defaults that @unocss/nuxt normally sets
+        /\.(css|postcss|sass|scss|less|stylus|styl)($|\?)/,
+        /\?macro=true/,
+        // Exclude OG image templates from the pipeline
+        '**/OgImage/*.takumi.vue',
+      ],
+    },
+  },
   presets: [
     presetWind4(),
     presetIcons({

@@ -1,4 +1,4 @@
-import type { ModuleReplacement } from 'module-replacements'
+import type { ModuleReplacement, ModuleReplacementMapping } from 'module-replacements'
 
 export interface ReplacementSuggestion {
   forPackage: string
@@ -8,13 +8,17 @@ export interface ReplacementSuggestion {
 /**
  * Replacement types that suggest "no dependency" (can be replaced with native code or inline).
  */
-const NO_DEP_REPLACEMENT_TYPES = ['native', 'simple'] as const
+const NO_DEP_REPLACEMENT_TYPES = [
+  'native',
+  'simple',
+  'removal',
+] as const satisfies ModuleReplacement['type'][]
 
 /**
  * Replacement types that are informational only.
  * These suggest alternative packages exist but don't fit the "no dependency" pattern.
  */
-const INFO_REPLACEMENT_TYPES = ['documented'] as const
+const INFO_REPLACEMENT_TYPES = ['documented'] as const satisfies ModuleReplacement['type'][]
 
 /**
  * Composable for fetching module replacement suggestions for packages in comparison.
@@ -41,17 +45,21 @@ export function useCompareReplacements(packageNames: MaybeRefOrGetter<string[]>)
       const results = await Promise.all(
         namesToCheck.map(async name => {
           try {
-            const replacement = await $fetch<ModuleReplacement | null>(`/api/replacements/${name}`)
-            return { name, replacement }
+            const result = await $fetch<{
+              mapping: ModuleReplacementMapping
+              replacement: ModuleReplacement
+            } | null>(`/api/replacements/${name}`)
+            return { name, replacement: result?.replacement ?? null, failed: false as const }
           } catch {
-            return { name, replacement: null }
+            return { name, failed: true as const }
           }
         }),
       )
 
       const newReplacements = new Map(replacements.value)
-      for (const { name, replacement } of results) {
-        newReplacements.set(name, replacement)
+      for (const result of results) {
+        if (result.failed) continue
+        newReplacements.set(result.name, result.replacement)
       }
       replacements.value = newReplacements
     } finally {
@@ -99,9 +107,9 @@ export function useCompareReplacements(packageNames: MaybeRefOrGetter<string[]>)
   )
 
   return {
-    replacements: readonly(replacements),
-    noDepSuggestions: readonly(noDepSuggestions),
-    infoSuggestions: readonly(infoSuggestions),
+    replacements,
+    noDepSuggestions,
+    infoSuggestions,
     loading: readonly(loading),
   }
 }

@@ -16,7 +16,9 @@ function detectApplePlatform() {
 }
 
 export function usePlatformModifierKey() {
+  const { t } = useI18n()
   const isApplePlatform = useState('platform:is-apple', detectApplePlatform)
+  const ctrlKeyLabel = computed(() => t('shortcuts.ctrl_key'))
 
   if (import.meta.client) {
     onMounted(() => {
@@ -26,7 +28,9 @@ export function usePlatformModifierKey() {
 
   return {
     isApplePlatform: computed(() => isApplePlatform.value),
-    primaryModifierKeyLabel: computed(() => (isApplePlatform.value ? '⌘' : 'Ctrl')),
-    commandPaletteShortcutLabel: computed(() => (isApplePlatform.value ? '⌘ K' : 'Ctrl+K')),
+    primaryModifierKeyLabel: computed(() => (isApplePlatform.value ? '⌘' : ctrlKeyLabel.value)),
+    commandPaletteShortcutLabel: computed(() =>
+      isApplePlatform.value ? '⌘ K' : `${ctrlKeyLabel.value}+K`,
+    ),
   }
 }

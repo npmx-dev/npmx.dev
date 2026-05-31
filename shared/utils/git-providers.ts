@@ -38,6 +38,18 @@ export const GITLAB_HOSTS = [
   'framagit.org',
 ]
 
+/**
+ * Repo URLs come from npm package metadata, so package publishers can specify any hostname. As this
+ * is effectively user-controlled input that can point at a malicious user-controlled server, this
+ * would put us at risk of Server-Side Request Forgery (SSRF). Thus we only support allowlisted hosts.
+ */
+export const FORGEJO_HOSTS = ['next.forgejo.org', 'try.next.forgejo.org']
+
+/**
+ * No open-ended Gitea host detection for the same reason as Forgejo above.
+ */
+export const GITEA_HOSTS = ['gitea.com']
+
 interface ProviderConfig {
   id: ProviderId
   /** Check if hostname matches this provider */
@@ -215,14 +227,7 @@ const providers: ProviderConfig[] = [
   },
   {
     id: 'forgejo',
-    matchHost: host => {
-      // Match explicit Forgejo instances
-      const forgejoPatterns = [/^forgejo\./i, /\.forgejo\./i]
-      // Known Forgejo instances
-      const knownInstances = ['next.forgejo.org', 'try.next.forgejo.org']
-      if (knownInstances.some(h => host === h)) return true
-      return forgejoPatterns.some(p => p.test(host))
-    },
+    matchHost: host => FORGEJO_HOSTS.includes(host),
     parsePath: parts => {
       if (parts.length < 2) return null
       const owner = decodeURIComponent(parts[0] ?? '').trim()
@@ -244,29 +249,7 @@ const providers: ProviderConfig[] = [
   },
   {
     id: 'gitea',
-    matchHost: host => {
-      // Match common Gitea hosting patterns (Forgejo has its own adapter)
-      const giteaPatterns = [/^git\./i, /^gitea\./i, /^code\./i, /^src\./i, /gitea\.io$/i]
-      // Skip known providers (including Forgejo patterns)
-      const skipHosts = [
-        'github.com',
-        'gitlab.com',
-        'codeberg.org',
-        'bitbucket.org',
-        'gitee.com',
-        'sr.ht',
-        'git.sr.ht',
-        'tangled.sh',
-        'tangled.org',
-        'next.forgejo.org',
-        'try.next.forgejo.org',
-        ...GITLAB_HOSTS,
-      ]
-      if (skipHosts.some(h => host === h || host.endsWith(`.${h}`))) return false
-      // Skip Forgejo patterns
-      if (/^forgejo\./i.test(host) || /\.forgejo\./i.test(host)) return false
-      return giteaPatterns.some(p => p.test(host))
-    },
+    matchHost: host => GITEA_HOSTS.includes(host),
     parsePath: parts => {
       if (parts.length < 2) return null
       const owner = decodeURIComponent(parts[0] ?? '').trim()
@@ -407,4 +390,6 @@ export const GIT_PROVIDER_API_ORIGINS = {
 export const ALL_KNOWN_GIT_API_ORIGINS: readonly string[] = [
   ...Object.values(GIT_PROVIDER_API_ORIGINS),
   ...GITLAB_HOSTS.map(host => `https://${host}`),
+  ...FORGEJO_HOSTS.map(host => `https://${host}`),
+  ...GITEA_HOSTS.map(host => `https://${host}`),
 ]

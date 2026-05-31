@@ -324,6 +324,7 @@ useEventListener(document, 'keydown', handleGlobalKeydown)
             type="text"
             :placeholder="viewMeta.placeholder"
             no-correct
+            no-password-manager
             size="lg"
             class="w-full"
             :aria-describedby="inputDescribedBy"

@@ -35,7 +35,7 @@ function collapsePath(path: string) {
 export const Page = (
   config: LunariaConfig,
   status: I18nStatus,
-  _lunaria: LunariaInstance, // currenly not in use
+  _lunaria: LunariaInstance, // currently not in use
 ): string => {
   return html`
     <!doctype html>

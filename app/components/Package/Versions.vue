@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { compare, validRange } from 'semver'
 import type { RouteLocationRaw } from 'vue-router'
+import type { TrustStatus } from 'packumeta'
 import { fetchAllPackageVersions } from '~/utils/npm/api'
 
 const props = defineProps<{
@@ -86,7 +87,7 @@ interface VersionDisplay {
   version: string
   time?: string
   tags?: string[]
-  hasProvenance: boolean
+  trustStatus?: TrustStatus
   deprecated?: string
 }
 
@@ -182,9 +183,9 @@ const allTagRows = computed(() => {
         version,
         time: props.time[version],
         tags,
-        hasProvenance: versionData?.hasProvenance,
+        trustStatus: versionData?.trustStatus,
         deprecated: versionData?.deprecated,
-      } as VersionDisplay,
+      },
     }))
     .sort((a, b) => compare(b.primaryVersion.version, a.primaryVersion.version))
 })
@@ -328,7 +329,7 @@ function processLoadedVersions(allVersions: PackageVersionInfo[]) {
         version: v.version,
         time: v.time,
         tags: versionToTags.value.get(v.version),
-        hasProvenance: v.hasProvenance,
+        trustStatus: v.trustStatus,
         deprecated: v.deprecated,
       }))
 
@@ -355,7 +356,7 @@ function processLoadedVersions(allVersions: PackageVersionInfo[]) {
       version: v.version,
       time: v.time,
       tags: versionToTags.value.get(v.version),
-      hasProvenance: v.hasProvenance,
+      trustStatus: v.trustStatus,
       deprecated: v.deprecated,
     })
   }
@@ -569,10 +570,10 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
           <TooltipApp interactive position="top">
             <span
               tabindex="0"
-              class="block cursor-help shrink-0 -m-2 p-2 -me-1 focus-visible:outline-2 focus-visible:outline-accent/70 rounded"
+              class="group/tooltip block cursor-help shrink-0 -m-2 p-2 -me-1 focus-visible:outline-2 focus-visible:outline-accent/70 rounded"
             >
               <span
-                class="block i-lucide:info w-3.5 h-3.5 text-fg-subtle"
+                class="block i-lucide:info w-3.5 h-3.5 text-fg-subtle transition-colors group-hover/tooltip:text-fg"
                 role="img"
                 :aria-label="$t('package.versions.filter_help')"
               />
@@ -699,7 +700,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                 class="text-xs text-fg-subtle"
               />
               <ProvenanceBadge
-                v-if="row.primaryVersion.hasProvenance"
+                v-if="row.primaryVersion.trustStatus?.provenance"
                 :package-name="packageName"
                 :version="row.primaryVersion.version"
                 compact
@@ -753,7 +754,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                   day="numeric"
                 />
                 <ProvenanceBadge
-                  v-if="v.hasProvenance"
+                  v-if="v.trustStatus?.provenance"
                   :package-name="packageName"
                   :version="v.version"
                   compact
@@ -783,7 +784,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
       <div class="p-1">
         <button
           type="button"
-          class="flex items-center gap-2 text-start rounded-sm w-full"
+          class="group/version-row flex items-center gap-2 text-start rounded-sm w-full"
           :class="otherVersionsContainsCurrent() ? 'bg-bg-subtle' : ''"
           :aria-expanded="otherVersionsExpanded"
           :aria-label="
@@ -809,7 +810,9 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
               aria-hidden="true"
             />
           </span>
-          <span class="text-xs text-fg-muted py-1.5">
+          <span
+            class="text-xs text-fg-muted py-1.5 group-hover/version-row:text-fg transition-colors"
+          >
             {{ $t('package.versions.other_versions') }}
             <span v-if="hiddenTagRows.length > 0" class="text-fg-subtle">
               ({{
@@ -955,7 +958,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                       day="numeric"
                     />
                     <ProvenanceBadge
-                      v-if="group.versions[0]?.hasProvenance"
+                      v-if="group.versions[0]?.trustStatus?.provenance"
                       :package-name="packageName"
                       :version="group.versions[0]?.version"
                       compact
@@ -1022,7 +1025,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                       day="numeric"
                     />
                     <ProvenanceBadge
-                      v-if="group.versions[0]?.hasProvenance"
+                      v-if="group.versions[0]?.trustStatus?.provenance"
                       :package-name="packageName"
                       :version="group.versions[0]?.version"
                       compact
@@ -1089,7 +1092,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                         day="numeric"
                       />
                       <ProvenanceBadge
-                        v-if="v.hasProvenance"
+                        v-if="v.trustStatus?.provenance"
                         :package-name="packageName"
                         :version="v.version"
                         compact

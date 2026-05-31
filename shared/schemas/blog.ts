@@ -22,7 +22,7 @@ export const AuthorSchema = object({
   ),
 })
 
-export const ResolvedAuthorSchema = object({
+const ResolvedAuthorSchema = object({
   name: string(),
   blueskyHandle: optional(
     pipe(

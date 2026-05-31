@@ -325,18 +325,6 @@ describe('parseRepositoryInfo', () => {
   })
 
   describe('Forgejo support', () => {
-    it('parses Forgejo URL from forgejo subdomain', () => {
-      const result = parseRepositoryInfo({
-        url: 'https://forgejo.example.com/owner/repo',
-      })
-      expect(result).toMatchObject({
-        provider: 'forgejo',
-        owner: 'owner',
-        repo: 'repo',
-        host: 'forgejo.example.com',
-      })
-    })
-
     it('parses Forgejo URL from next.forgejo.org', () => {
       const result = parseRepositoryInfo({
         url: 'https://next.forgejo.org/forgejo/forgejo',
@@ -348,16 +336,19 @@ describe('parseRepositoryInfo', () => {
         host: 'next.forgejo.org',
       })
     })
+  })
 
-    it('parses Forgejo URL with .git suffix', () => {
+  describe('Gitea support', () => {
+    it('parses exact allowlisted Gitea hosts', () => {
       const result = parseRepositoryInfo({
-        url: 'git+ssh://git@forgejo.myserver.com/user/project.git',
+        url: 'https://gitea.com/owner/repo',
       })
       expect(result).toMatchObject({
-        provider: 'forgejo',
-        owner: 'user',
-        repo: 'project',
-        host: 'forgejo.myserver.com',
+        provider: 'gitea',
+        owner: 'owner',
+        repo: 'repo',
+        host: 'gitea.com',
+        rawBaseUrl: 'https://gitea.com/owner/repo/raw/branch/main',
       })
     })
   })

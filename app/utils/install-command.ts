@@ -59,6 +59,15 @@ export const packageManagers = [
     create: 'vlx',
     icon: 'i-custom-vlt',
   },
+  {
+    id: 'vp',
+    label: 'vp',
+    action: 'add',
+    executeLocal: 'vp exec',
+    executeRemote: 'vp dlx',
+    create: 'vp create',
+    icon: 'i-simple-icons:vite',
+  },
 ] as const
 
 export type PackageManagerId = (typeof packageManagers)[number]['id']

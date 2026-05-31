@@ -11,6 +11,8 @@ import {
   copyAltTextForTrendLineChart,
   createAltTextForVersionsBarChart,
   copyAltTextForVersionsBarChart,
+  createAltTextForTimelineChart,
+  copyAltTextForTimelineChart,
   loadFile,
   sanitise,
   insertLineBreaks,
@@ -19,6 +21,8 @@ import {
   type TrendLineDataset,
   type VersionsBarConfig,
   type VersionsBarDataset,
+  type TimelineChartConfig,
+  type EnrichedTimelineSizeCacheEntry,
 } from '~/utils/charts'
 import type { AltCopyArgs } from 'vue-data-ui'
 
@@ -33,6 +37,19 @@ function createTranslateMock() {
   }) as TrendLineConfig['$t']
 
   return { translate, calls }
+}
+
+function createTimelineConfig(overrides: Partial<TimelineChartConfig> = {}): TimelineChartConfig {
+  const { translate } = createTranslateMock()
+  const config: TimelineChartConfig = {
+    numberFormatter: (value: number) => `nf${value}`,
+    packageName: 'nuxt',
+    metric: 'totalSize',
+    copy: vi.fn(async () => undefined),
+    $t: translate,
+  } as unknown as TimelineChartConfig
+
+  return { ...config, ...overrides }
 }
 
 function createTrendLineConfig(overrides: Partial<TrendLineConfig> = {}): TrendLineConfig {
@@ -1181,6 +1198,80 @@ describe('copyAltTextForVersionsBarChart', () => {
       dataset,
       config,
     } as AltCopyArgs<VersionsBarDataset, VersionsBarConfig>)
+
+    expect(copyMock).toHaveBeenCalledTimes(1)
+    expect(copyMock).toHaveBeenCalledWith(expected)
+  })
+})
+
+const timelineDataset = [
+  {
+    dependencyCount: 100,
+    events: [],
+    version: '4.0.0',
+    totalSize: 120_000_000,
+  },
+  {
+    dependencyCount: 80,
+    events: [],
+    version: '4.0.1',
+    totalSize: 115_000_000,
+  },
+] as unknown as EnrichedTimelineSizeCacheEntry[]
+
+describe('createAltTextForTimelineChart', () => {
+  it('handles empty dataset without throwing', () => {
+    const { translate } = createTranslateMock()
+    const config = createTimelineConfig({ $t: translate })
+
+    expect(() =>
+      createAltTextForTimelineChart({
+        dataset: [],
+        config,
+      } as AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>),
+    ).not.toThrow()
+  })
+
+  it('returns empty string when dataset is null', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineConfig({ $t: translateMock.translate })
+
+    const result = createAltTextForTimelineChart({
+      dataset: null,
+      config,
+    } as unknown as AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>)
+
+    expect(result).toBe('')
+    expect(translateMock.calls).toHaveLength(0)
+  })
+
+  it('returns an alt text', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineConfig({ $t: translateMock.translate })
+
+    const result = createAltTextForTimelineChart({
+      dataset: timelineDataset,
+      config,
+    } as unknown as AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>)
+
+    expect(result).toBe('t:package.timeline.chart.copy_alt.general_description')
+    expect(translateMock.calls).toHaveLength(3)
+  })
+})
+
+describe('copyAltTextForTimelineChart', () => {
+  it('forwards createAltTextForTimelineChart result to config.copy', async () => {
+    const copyMock = vi.fn(async () => undefined)
+    const config = createTimelineConfig({ copy: copyMock })
+    const expected = createAltTextForTimelineChart({
+      dataset: timelineDataset,
+      config,
+    })
+
+    await copyAltTextForTimelineChart({
+      dataset: timelineDataset,
+      config,
+    } as AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>)
 
     expect(copyMock).toHaveBeenCalledTimes(1)
     expect(copyMock).toHaveBeenCalledWith(expected)

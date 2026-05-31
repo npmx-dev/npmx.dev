@@ -28,6 +28,7 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: 🔎 Compare dependencies
         id: analyze
@@ -35,13 +36,14 @@ jobs:
         with:
           mode: artifact
           detect-replacements: 'true'
-          duplicate-threshold: '4'
+          # Too noisy. Disabling until this can report on duplicate CHANGES in this PR.
+          duplicate-threshold: '999'
           dependency-threshold: '15'
           size-threshold: '200000'
 
       - name: 📤 Upload artifact
         if: steps.analyze.outputs.artifact-path
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: e18e-diff-result
           path: ${{ steps.analyze.outputs.artifact-path }}
