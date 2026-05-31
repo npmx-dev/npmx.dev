@@ -5,7 +5,7 @@ import { createError, getRouterParam, getQuery, setHeader } from 'h3'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import { CACHE_MAX_AGE_ONE_HOUR, ERROR_NPM_FETCH_FAILED } from '#shared/utils/constants'
 import { fetchNpmPackage } from '#server/utils/npm'
-import { assertValidPackageName } from '#shared/utils/npm'
+import { assertValidPackageName, normalizeLicense } from '#shared/utils/npm'
 import { fetchPackageWithTypesAndFiles } from '#server/utils/file-tree'
 import { handleApiError } from '#server/utils/error-handler'
 
@@ -528,7 +528,7 @@ const badgeStrategies = {
   'license': async (pkgData: globalThis.Packument) => {
     const latest = getLatestVersion(pkgData)
     const versionData = latest ? pkgData.versions?.[latest] : undefined
-    const value = versionData?.license ?? 'unknown'
+    const value = normalizeLicense(versionData?.license) ?? 'unknown'
     return { label: 'license', value, color: COLORS.green }
   },
 

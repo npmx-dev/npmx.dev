@@ -452,7 +452,7 @@ The command palette is a first-class navigation surface. When you add a new user
 
 ### Cursor and navigation
 
-**npmx** uses `cursor: pointer` only for links to match users’ everyday experience. For all other interactive elements, including buttons, use the default cursor (_or another appropriate cursor to indicate state_).
+**npmx** uses `cursor: pointer` for links and buttons to match users’ everyday experience. For all other interactive elements, use the default cursor (_or another appropriate cursor to indicate state_).
 
 > [!NOTE]
 > A link is any element that leads to another content (_go to another page, authorize_)

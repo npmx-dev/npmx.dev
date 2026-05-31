@@ -119,17 +119,14 @@ const groupDownloadsMap = computed(() => {
   return map
 })
 
-function getDownloadsAriaLabel(downloads: number): string {
-  return `${numberFormatter.value.format(downloads)} ${t('package.downloads.title')}`
+function getDownloadsAriaLabel(downloads: number, version: string): string {
+  return `${numberFormatter.value.format(downloads)} ${t('package.downloads.version_distribution_title', { version })}`
 }
 
 // ─── Phase 2: full metadata (fired automatically after phase 1 completes) ────
 // Fetches deprecated status, provenance, and exact times needed for version rows.
 
-const fullVersionMap = shallowRef<Map<
-  string,
-  { time?: string; deprecated?: string; hasProvenance: boolean }
-> | null>(null)
+const fullVersionMap = shallowRef<Map<string, PackageVersionInfo> | null>(null)
 
 async function ensureFullDataLoaded() {
   if (fullVersionMap.value) return
@@ -363,7 +360,7 @@ const flatItems = computed<FlatItem[]>(() => {
                 >v{{ latestTagRow!.version }}</LinkBase
               >
               <ProvenanceBadge
-                v-if="fullVersionMap?.get(latestTagRow!.version)?.hasProvenance"
+                v-if="fullVersionMap?.get(latestTagRow!.version)?.trustStatus?.provenance"
                 :package-name="packageName"
                 :version="latestTagRow!.version"
                 compact
@@ -377,9 +374,19 @@ const flatItems = computed<FlatItem[]>(() => {
             <span
               v-if="getVersionDownloads(latestTagRow!.version)"
               class="w-28 grid grid-flow-col auto-cols-max items-center gap-1 text-xs text-fg-muted tabular-nums justify-end"
-              :aria-label="getDownloadsAriaLabel(getVersionDownloads(latestTagRow!.version)!)"
+              :aria-label="
+                getDownloadsAriaLabel(
+                  getVersionDownloads(latestTagRow!.version)!,
+                  latestTagRow!.version,
+                )
+              "
               dir="ltr"
-              :title="getDownloadsAriaLabel(getVersionDownloads(latestTagRow!.version)!)"
+              :title="
+                getDownloadsAriaLabel(
+                  getVersionDownloads(latestTagRow!.version)!,
+                  latestTagRow!.version,
+                )
+              "
             >
               <span>{{ numberFormatter.format(getVersionDownloads(latestTagRow!.version)!) }}</span>
               <span class="i-lucide:chart-line" aria-hidden="true"></span>
@@ -427,7 +434,7 @@ const flatItems = computed<FlatItem[]>(() => {
                 v{{ row.version }}
               </LinkBase>
               <ProvenanceBadge
-                v-if="fullVersionMap?.get(row.version)?.hasProvenance"
+                v-if="fullVersionMap?.get(row.version)?.trustStatus?.provenance"
                 :package-name="packageName"
                 :version="row.version"
                 compact
@@ -446,9 +453,9 @@ const flatItems = computed<FlatItem[]>(() => {
             <span
               v-if="getVersionDownloads(row.version)"
               class="w-28 grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums shrink-0 relative z-10"
-              :aria-label="getDownloadsAriaLabel(getVersionDownloads(row.version)!)"
+              :aria-label="getDownloadsAriaLabel(getVersionDownloads(row.version)!, row.version)"
               dir="ltr"
-              :title="getDownloadsAriaLabel(getVersionDownloads(row.version)!)"
+              :title="getDownloadsAriaLabel(getVersionDownloads(row.version)!, row.version)"
             >
               <span>{{ numberFormatter.format(getVersionDownloads(row.version)!) }}</span>
               <span class="i-lucide:chart-line" aria-hidden="true"></span>
@@ -536,9 +543,13 @@ const flatItems = computed<FlatItem[]>(() => {
                     <span
                       v-if="groupDownloadsMap.has(item.groupKey)"
                       class="ms-auto w-28 grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums shrink-0"
-                      :aria-label="getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!)"
+                      :aria-label="
+                        getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!, item.label)
+                      "
                       dir="ltr"
-                      :title="getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!)"
+                      :title="
+                        getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!, item.label)
+                      "
                     >
                       <span>{{
                         numberFormatter.format(groupDownloadsMap.get(item.groupKey)!)
@@ -593,7 +604,7 @@ const flatItems = computed<FlatItem[]>(() => {
                           v{{ item.version }}
                         </LinkBase>
                         <ProvenanceBadge
-                          v-if="fullVersionMap?.get(item.version)?.hasProvenance"
+                          v-if="fullVersionMap?.get(item.version)?.trustStatus?.provenance"
                           :package-name="packageName"
                           :version="item.version"
                           compact
@@ -627,8 +638,12 @@ const flatItems = computed<FlatItem[]>(() => {
                       <span
                         v-if="getVersionDownloads(item.version)"
                         class="w-28 grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums shrink-0 relative z-10"
-                        :aria-label="getDownloadsAriaLabel(getVersionDownloads(item.version)!)"
-                        :title="getDownloadsAriaLabel(getVersionDownloads(item.version)!)"
+                        :aria-label="
+                          getDownloadsAriaLabel(getVersionDownloads(item.version)!, item.version)
+                        "
+                        :title="
+                          getDownloadsAriaLabel(getVersionDownloads(item.version)!, item.version)
+                        "
                         dir="ltr"
                       >
                         <span>{{
@@ -676,9 +691,13 @@ const flatItems = computed<FlatItem[]>(() => {
                   <span
                     v-if="groupDownloadsMap.has(item.groupKey)"
                     class="ms-auto w-28 grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums shrink-0"
-                    :aria-label="getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!)"
+                    :aria-label="
+                      getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!, item.label)
+                    "
                     dir="ltr"
-                    :title="getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!)"
+                    :title="
+                      getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!, item.label)
+                    "
                   >
                     <span>{{ numberFormatter.format(groupDownloadsMap.get(item.groupKey)!) }}</span>
                     <span class="i-lucide:chart-line" aria-hidden="true"></span>

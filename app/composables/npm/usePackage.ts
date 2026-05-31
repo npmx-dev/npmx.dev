@@ -1,27 +1,8 @@
+import { getTrustLevel, getTrustStatus } from 'packumeta'
+import { normalizeLicense } from '#shared/utils/npm'
+
 /** Number of recent versions to include in initial payload */
 const RECENT_VERSIONS_COUNT = 5
-
-function hasAttestations(version: PackumentVersion): boolean {
-  return Boolean(version.dist.attestations)
-}
-
-function hasTrustedPublisher(version: PackumentVersion): boolean {
-  return Boolean(version._npmUser?.trustedPublisher)
-}
-
-function getTrustLevel(version: PackumentVersion): PublishTrustLevel {
-  // trusted publishing automatically generates provenance attestations
-  if (hasTrustedPublisher(version)) return 'trustedPublisher'
-  if (hasAttestations(version)) return 'provenance'
-  return 'none'
-}
-
-function normalizeLicense(license?: PackumentLicense): string | undefined {
-  if (!license) return undefined
-  if (typeof license === 'string') return license
-  if (typeof license.type === 'string') return license.type
-  return undefined
-}
 
 /**
  * Transform a full Packument into a slimmed version for client-side use.
@@ -59,17 +40,16 @@ export function transformPackument(
   // Build security metadata for all versions, but only include in payload
   // when the package has mixed trust levels (i.e. a downgrade could exist)
   const securityVersionEntries = Object.entries(pkg.versions).map(([version, metadata]) => {
-    const trustLevel = getTrustLevel(metadata)
+    const trustStatus = getTrustStatus(metadata)
     return {
       version,
       time: pkg.time[version],
-      hasProvenance: trustLevel !== 'none',
-      trustLevel,
+      trustStatus,
       deprecated: metadata.deprecated,
     }
   })
 
-  const trustLevels = new Set(securityVersionEntries.map(v => v.trustLevel))
+  const trustLevels = new Set(securityVersionEntries.map(v => getTrustLevel(v.trustStatus)))
   const hasMixedTrust = trustLevels.size > 1
   const securityVersions = hasMixedTrust ? securityVersionEntries : undefined
 
@@ -92,12 +72,9 @@ export function transformPackument(
           installScripts: installScripts ?? undefined,
         }
       }
-      const trustLevel = getTrustLevel(version)
-      const hasProvenance = trustLevel !== 'none'
 
       filteredVersions[v] = {
-        hasProvenance,
-        trustLevel,
+        trustStatus: getTrustStatus(version),
         version: version.version,
         deprecated: version.deprecated,
         tags: version.tags as string[],

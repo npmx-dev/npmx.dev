@@ -159,7 +159,7 @@ import {
   ButtonBase,
   LandingIntroHeader,
   NoodleKawaiiLogo,
-  NoodlePressLogo,
+  NoodleNodejsLogo,
   LinkBase,
   CallToAction,
   ChangelogCard,
@@ -375,7 +375,7 @@ describe('component accessibility audits', () => {
     })
 
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(NoodlePressLogo)
+      const component = await mountSuspended(NoodleNodejsLogo)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
@@ -955,7 +955,11 @@ describe('component accessibility audits', () => {
             'versions': {
               '18.2.0': {
                 version: '18.2.0',
-                hasProvenance: false,
+                trustStatus: {
+                  provenance: false,
+                  trustedPublisher: false,
+                  stagedPublish: false,
+                },
                 tags: [],
               },
             },

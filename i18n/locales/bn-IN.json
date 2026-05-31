@@ -1,4 +1,5 @@
 {
+  "$schema": "../schema.json",
   "seo": {
     "home": {
       "title": "npmx - npm রেজিস্ট্রির জন্য প্যাকেজ ব্রাউজার",
@@ -15,10 +16,37 @@
     "docs": "ডকুমেন্টেশন",
     "source": "সোর্স",
     "social": "সোশ্যাল",
-    "chat": "চ্যাট"
+    "chat": "চ্যাট",
+    "blog": "ব্লগ",
+    "builders_chat": "নির্মাতাদের চ্যাট",
+    "keyboard_shortcuts": "কীবোর্ড শর্টকাটস",
+    "brand": "ব্র্যান্ড",
+    "resources": "রিসোর্সেস",
+    "features": "ফিচারস",
+    "other": "অন্যান্য"
   },
   "shortcuts": {
-    "section": {}
+    "section": {
+      "global": "গ্লোবাল",
+      "search": "অনুসন্ধান",
+      "package": "প্যাকেজ"
+    },
+    "ctrl_key": "{ctrlKey} (Windows/Linux) অথবা ⌘ (macOS)",
+    "command_palette": "কমান্ড প্যালেট",
+    "command_palette_description": "কিবোর্ড না ছেড়েই পেজ, প্যাকেজ ভিউ, সেটিংস এবং এক্সটার্নাল লিঙ্কের মধ্যে যাতায়াত করতে কমান্ড প্যালেট ব্যবহার করুন। macOS-এ, ⌘K চাপুন। Windows এবং Linux-এ, {ctrlKey}+K চাপুন।",
+    "focus_search": "ফোকাস অনুসন্ধান",
+    "show_kbd_hints": "কীবোর্ড ইঙ্গিতগুলি হাইলাইট করুন",
+    "settings": "সেটিংস খুলুন",
+    "compare": "খোলা তুলনা",
+    "compare_from_package": "তুলনা খুলুন (বর্তমান প্যাকেজ দিয়ে আগে থেকেই পূরণ করা)",
+    "navigate_results": "ফলাফলগুলি নেভিগেট করুন",
+    "go_to_result": "ফলাফলে যান",
+    "open_code_view": "কোড ভিউ খুলুন",
+    "open_docs": "ডক্স খুলুন",
+    "disable_shortcuts": "আপনি {settings} এ কীবোর্ড শর্টকাটগুলি নিষ্ক্রিয় করতে পারেন।",
+    "open_main": "প্রধান তথ্য খুলুন",
+    "open_diff": "ভার্সন পার্থক্য খুলুন",
+    "open_timeline": "টাইমলাইন খুলুন"
   },
   "search": {
     "label": "npm প্যাকেজ অনুসন্ধান করুন",
@@ -26,19 +54,141 @@
     "button": "অনুসন্ধান করুন",
     "searching": "অনুসন্ধান করা হচ্ছে...",
     "found_packages": "কোনো প্যাকেজ পাওয়া যায়নি | ১টি প্যাকেজ পাওয়া গেছে | {count}টি প্যাকেজ পাওয়া গেছে",
+    "found_packages_sorted": "কোন ফলাফল পাওয়া যায়নি | শীর্ষ {count} টি ফলাফল সাজানো হচ্ছে | শীর্ষ {count} টি ফলাফল সাজানো হচ্ছে",
     "updating": "(আপডেট করা হচ্ছে...)",
     "no_results": "\"{query}\" এর জন্য কোনো প্যাকেজ পাওয়া যায়নি",
+    "rate_limited": "npm রেট লিমিটে পৌঁছে গেছে, কিছুক্ষণ পর আবার চেষ্টা করুন।",
+    "title": "অনুসন্ধান",
+    "title_search": "অনুসন্ধান: {search}",
+    "title_packages": "প্যাকেজ অনুসন্ধান",
+    "meta_description": "'{search}' এর জন্য অনুসন্ধান ফলাফল",
+    "meta_description_packages": "npm প্যাকেজ অনুসন্ধান",
     "not_taken": "{name} উপলব্ধ রয়েছে",
     "claim_prompt": "npm এ এই প্যাকেজের নাম দাবি করুন",
     "claim_button": "\"{name}\" দাবি করুন",
     "want_to_claim": "এই প্যাকেজের নাম দাবি করতে চান?",
     "start_typing": "প্যাকেজ অনুসন্ধানের জন্য টাইপ করা শুরু করুন",
-    "exact_match": "সঠিক",
+    "algolia_disclaimer": "অ্যালগোলিয়া দ্বারা চালিত",
+    "exact_match": "ঠিক মিল",
     "suggestion": {
       "user": "ব্যবহারকারী",
       "org": "সংস্থা",
       "view_user_packages": "এই ব্যবহারকারীর প্যাকেজগুলি দেখুন",
       "view_org_packages": "এই সংস্থার প্যাকেজগুলি দেখুন"
+    },
+    "instant_search": "তাত্ক্ষণিক অনুসন্ধান",
+    "instant_search_on": "চালু",
+    "instant_search_off": "বন্ধ",
+    "instant_search_turn_on": "চালু করুন",
+    "instant_search_turn_off": "বন্ধ করুন",
+    "instant_search_advisory": "{label} {state} — {action}"
+  },
+  "command_palette": {
+    "title": "কমান্ড প্যালেট",
+    "quick_actions": "এখানে যান...",
+    "subtitle": "npmx জুড়ে নেভিগেট করুন এবং দ্রুত সেটিংস পরিবর্তন করুন",
+    "subtitle_languages": "একটি ভাষা নির্বাচন করুন অথবা অনুবাদ উন্নত করতে সাহায্য করুন",
+    "instructions": "কমান্ড ফিল্টার করতে টাইপ করুন। ফলাফলের মধ্যে দিয়ে যেতে অ্যারো কী ব্যবহার করুন এবং কমান্ড চালাতে এন্টার চাপুন।",
+    "input_label": "কমান্ড প্যালেট অনুসন্ধান",
+    "results_label": "কমান্ডের ফলাফল",
+    "placeholder": "একটি কমান্ড টাইপ করুন...",
+    "back": "পিছনে",
+    "empty": "কোনো মিলযুক্ত কমান্ড নেই",
+    "empty_search_hint": "\"{query}\" অনুসন্ধান করতে এন্টার চাপুন।",
+    "current": "বর্তমান",
+    "here": "আপনি এখানে আছেন",
+    "connected": "সংযুক্ত",
+    "state": {
+      "on": "চালু",
+      "off": "বন্ধ"
+    },
+    "groups": {
+      "actions": "কর্ম",
+      "help": "সাহায্য",
+      "language": "ভাষা",
+      "connections": "সংযোগ",
+      "navigation": "নেভিগেশন",
+      "links": "লিংক",
+      "npmx": "npmx",
+      "package": "প্যাকেজ",
+      "package_with_name": "প্যাকেজ ({name})",
+      "versions": "ভার্সন",
+      "versions_with_name": " {name} এর ভার্সন"
+    },
+    "actions": {
+      "search": "অনুসন্ধান",
+      "search_for": "\"{query}\" অনুসন্ধান",
+      "keyboard_shortcuts": "কীবোর্ড শর্টকাট",
+      "help_translate": "অনুবাদে সাহায্য করুন"
+    },
+    "connections": {
+      "npm_connect": "npm CLI-এর সাথে সংযোগ করুন",
+      "npm_connected": "npm CLI (~{username})",
+      "npm_disconnect": "npm CLI থেকে সংযোগ বিচ্ছিন্ন করুন",
+      "atmosphere_connect": "Atmosphere-এর সাথে সংযোগ করুন",
+      "atmosphere_connected": "atmosphere ({'@'}{handle})",
+      "atmosphere_disconnect": "Atmosphere থেকে সংযোগ বিচ্ছিন্ন করুন"
+    },
+    "navigation": {
+      "home": "বাড়ি",
+      "packages": "প্যাকেজ (~{username})",
+      "orgs": "orgs (~{username})",
+      "profile": "profile ({'@'}{handle})"
+    },
+    "links": {
+      "external": "বাহ্যিক লিঙ্ক"
+    },
+    "package_links": {
+      "stars": "রিপোজিটরি স্টার",
+      "forks": "রিপোজিটরি ফর্ক"
+    },
+    "theme": {
+      "system": "সিস্টেম থিম ব্যবহার করুন",
+      "light": "হালকা থিম ব্যবহার করুন",
+      "dark": "অন্ধকার থিম ব্যবহার করুন"
+    },
+    "package": {
+      "main": "প্যাকেজ পেজ",
+      "docs": "ডক্স",
+      "code": "কোড",
+      "diff": "ডিফ",
+      "compare": "এই প্যাকেজটি তুলনা করুন",
+      "download": "টারবল ডাউনলোড করুন",
+      "changelog": "চেঞ্জলগ"
+    },
+    "package_actions": {
+      "copy_run": "রান কমান্ড কপি করুন"
+    },
+    "code": {
+      "copy_file": "ফাইল বিষয়বস্তু কপি করুন"
+    },
+    "diff": {
+      "merge_modified_lines": "পরিবর্তিত লাইনগুলো একত্রিত করুন",
+      "word_wrap": "শব্দ মোড়ক"
+    },
+    "version": {
+      "label": "{version}"
+    },
+    "status": {
+      "available_in_context": "{context}. কোনো কমান্ড উপলব্ধ নেই | {context}. ১টি কমান্ড উপলব্ধ আছে | {context}. {count} টি কমান্ড উপলব্ধ আছে",
+      "matching_in_context": "{context}. কোনো কমান্ড মেলেনি | {context}. ১টি কমান্ড মিলেছে | {context}. {count} টি কমান্ড মিলেছে",
+      "no_matches_search_in_context": "{context}। কোনো মিলযুক্ত কমান্ড নেই। \"{query}\" অনুসন্ধান করতে এন্টার চাপুন।"
+    },
+    "announcements": {
+      "language_changed": "ভাষা {language} এ সেট করা হয়েছে।",
+      "relative_dates_on": "আপেক্ষিক তারিখে।",
+      "relative_dates_off": "আপেক্ষিক তারিখ বন্ধ।",
+      "theme_changed": "থিম {theme} এ সেট করা হয়েছে।",
+      "accent_color_changed": "এক্সেন্ট রং {color} এ সেট করা হয়েছে।",
+      "background_theme_changed": "ব্যাকগ্রাউন্ড ছায়া {theme} এ সেট করা হয়েছে।",
+      "download_started": "{package} টারবল ডাউনলোড করা হচ্ছে।",
+      "copied_to_clipboard": "ক্লিপবোর্ডে কপি করা হয়েছে।",
+      "npm_disconnected": "npm CLI বিচ্ছিন্ন করা হয়েছে।",
+      "atmosphere_disconnected": "Atmosphere বিচ্ছিন্ন করা হয়েছে।",
+      "facets_all_selected": "সব ফ্যাসেট নির্বাচন করা হয়েছে।",
+      "facets_all_deselected": "সব ফ্যাসেট অনির্বাচন করা হয়েছে।",
+      "view_switched": "{view} ভিউতে স্যুইচ করা হয়েছে।",
+      "setting_toggled": "{setting} {state}."
     }
   },
   "nav": {
@@ -54,8 +204,30 @@
     "tap_to_search": "অনুসন্ধানের জন্য ট্যাপ করুন"
   },
   "blog": {
-    "author": {},
-    "atproto": {}
+    "title": "ব্লগ",
+    "heading": "ব্লগ",
+    "meta_description": "npmx সম্প্রদায় থেকে অন্তর্দৃষ্টি এবং আপডেট",
+    "author": {
+      "view_profile": "Bluesky-এ {name}-এর প্রোফাইল দেখুন"
+    },
+    "draft_badge": "খসড়া",
+    "draft_banner": "এটি একটি অপ্রকাশিত খসড়া। এটি অসম্পূর্ণ হতে পারে বা ভুলত্রুটি থাকতে পারে।",
+    "no_posts": "কোন পোস্ট পাওয়া যায়নি।",
+    "atproto": {
+      "view_on_bluesky": "Bluesky-এ দেখুন",
+      "reply_on_bluesky": "Bluesky-এ উত্তর দিন",
+      "likes_on_bluesky": "Bluesky-এ লাইকগুলি",
+      "like_or_reply_on_bluesky": "Bluesky-এ এই পোস্টটি লাইক করুন বা আপনার মতামত যোগ করুন",
+      "no_comments_yet": "কোন মতামত নেই।",
+      "could_not_load_comments": "মতামত লোড করা যায়নি।",
+      "comments": "মতামত",
+      "loading_comments": "মতামত লোড হচ্ছে...",
+      "updating": "আপডেট হচ্ছে...",
+      "reply_count": "{count} উত্তর | {count} উত্তর",
+      "like_count": "{count} পছন্দ | {count} পছন্দ",
+      "repost_count": "{count} repoপুনরায় পোস্টst | {count} পুনরায় পোস্ট",
+      "more_replies": "{count} আরো উত্তর... | {count} আরো উত্তর..."
+    }
   },
   "settings": {
     "title": "সেটিংস",
@@ -64,26 +236,59 @@
     "sections": {
       "appearance": "বাহ্যিক দিক",
       "display": "প্রদর্শন",
-      "language": "ভাষা"
+      "search": "অনুসন্ধান বৈশিষ্ট্য",
+      "language": "ভাষা",
+      "keyboard_shortcuts": "কীবোর্ড শর্টকাট"
     },
-    "data_source": {},
+    "data_source": {
+      "label": "তথ্য উৎস",
+      "description": "npmx কোথায় অনুসন্ধান ডেটা পায় তা চয়ন করুন৷ স্বতন্ত্র প্যাকেজ পৃষ্ঠাগুলি সর্বদা সরাসরি npm রেজিস্ট্রি ব্যবহার করে।",
+      "npm": "npm রেজিস্ট্রি",
+      "npm_description": "সরাসরি অফিসিয়াল npm রেজিস্ট্রি থেকে অনুসন্ধান, org এবং ব্যবহারকারী তালিকা নিয়ে আসে। প্রামাণিক, কিন্তু ধীর হতে পারে.",
+      "algolia": "Algolia",
+      "algolia_description": "দ্রুত অনুসন্ধান, org এবং ব্যবহারকারী পৃষ্ঠাগুলির জন্য Algolia ব্যবহার করে।"
+    },
+    "instant_search": "তৎক্ষণাত অনুসন্ধান",
+    "instant_search_description": "অনুসন্ধান পৃষ্ঠায় যায় এবং টাইপ করা হলে ফলাফলগুলি আপডেট করে।",
     "relative_dates": "আপেক্ষিক তারিখ",
     "include_types": "ইনস্টলে {'@'}types অন্তর্ভুক্ত করুন",
     "include_types_description": "নন-টাইপড প্যাকেজের ইনস্টল কমান্ডে {'@'}types প্যাকেজ যুক্ত করুন",
     "hide_platform_packages": "অনুসন্ধানে প্ল্যাটফর্ম-নির্দিষ্ট প্যাকেজগুলি লুকান",
     "hide_platform_packages_description": "ফলাফল থেকে {'@'}esbuild/linux-x64 এর মতো নেটিভ বাইনারি প্যাকেজগুলি লুকান",
+    "enable_graph_pulse_loop": "মিনি গ্রাফে পালস প্রভাবের লুপিং সক্রিয় করুন",
+    "enable_graph_pulse_loop_description": "সপ্তাহিক ডাউনলোড গ্রাফে একটি নিরন্তর পালস অ্যানিমেশন সক্রিয় করুন। এই অ্যানিমেশনটি কিছু ব্যবহারকারীদের বিভ্রান্তির কারণ হতে পারে।",
     "theme": "থিম",
     "theme_light": "হালকা",
     "theme_dark": "অন্ধকার",
     "theme_system": "সিস্টেম",
     "language": "ভাষা",
     "help_translate": "npmx অনুবাদে সাহায্য করুন",
+    "translation_status": "বিশ্বব্যাপী অনুবাদ স্থিতি পরীক্ষা করুন",
     "accent_colors": {
-      "label": "এক্সেন্ট রং"
+      "label": "এক্সেন্ট রং",
+      "neutral": "নিরপেক্ষ",
+      "sky": "আকাশ",
+      "coral": "প্রবাল",
+      "amber": "প্রবাল",
+      "emerald": "পান্না",
+      "violet": "ভায়োলেট",
+      "magenta": "ম্যাজেন্টা"
     },
     "clear_accent": "এক্সেন্ট রং সাফ করুন",
     "translation_progress": "অনুবাদের অগ্রগতি",
-    "background_themes": {}
+    "background_themes": {
+      "label": "ব্যাকগ্রাউন্ড শেড",
+      "neutral": "নিরপেক্ষ",
+      "stone": "পাথর",
+      "zinc": "দস্তা",
+      "slate": "স্লেট",
+      "black": "কালো"
+    },
+    "keyboard_shortcuts_enabled": "কীবোর্ড শর্টকাট সক্রিয় করুন",
+    "keyboard_shortcuts_enabled_description": "কীবোর্ড শর্টকাট নিষ্ক্রিয় করা যেতে পারে যদি তারা অন্যান্য ব্রাউজার বা সিস্টেম শর্টকাটের সঙ্গে দুইপাশের সমস্যা তৈরি করে",
+    "enable_code_ligatures": "কোডে লিগচারস সক্রিয় করুন",
+    "enable_changelog_autoscroll": "অনুসন্ধানযোগ্য ভার্সনে সহজেই स्क्रोल",
+    "enable_changelog_autoscroll_description": "প্যাকেজ changelog-এ requested version-এ s scroll to or close to the requested version"
   },
   "i18n": {
     "missing_keys": "{count} অনুবাদ নেই | {count} অনুবাদ নেই",
@@ -93,7 +298,13 @@
     "edit_on_github": "GitHub এ সম্পাদনা করুন",
     "view_guide": "অনুবাদ গাইড"
   },
-  "error": {},
+  "error": {
+    "401": "অননুমত",
+    "404": "পেজ পাওয়া যায়নি",
+    "500": "আন্তরিক সার্ভার ত্রুটি",
+    "503": "সেবা পাওয়া যায়নি",
+    "default": "কিছু ভুল হয়েছে"
+  },
   "common": {
     "loading": "লোড হচ্ছে...",
     "loading_more": "আরো লোড হচ্ছে...",
@@ -101,6 +312,7 @@
     "end_of_results": "ফলাফল শেষ",
     "try_again": "আবার চেষ্টা করুন",
     "close": "বন্ধ করুন",
+    "or": "অথবা",
     "retry": "আবার চেষ্টা করুন",
     "copy": "কপি করুন",
     "copied": "কপি করা হয়েছে!",
@@ -108,6 +320,7 @@
     "warnings": "সতর্কতা:",
     "go_back_home": "হোমে ফিরে যান",
     "per_week": "/ সপ্তাহ",
+    "per_week_short": "/ সপ্তাহ",
     "vanity_downloads_hint": "ভ্যানিটি নম্বর: কোন প্যাকেজ প্রদর্শিত হয়নি | ভ্যানিটি নম্বর: প্রদর্শিত প্যাকেজের জন্য | ভ্যানিটি নম্বর: {count} প্রদর্শিত প্যাকেজের মোট",
     "sort": {
       "name": "নাম",
@@ -115,13 +328,46 @@
       "members": "সদস্য"
     },
     "scroll_to_top": "উপরে স্ক্রল করুন",
+    "cancel": "বাতিল করুন",
+    "save": "সংরক্ষণ করুন",
+    "edit": "সম্পাদনা করুন",
+    "error": "ত্রুটি",
     "view_on": {
       "npm": "npm এ দেখুন",
-      "github": "GitHub এ দেখুন"
-    }
+      "github": "GitHub এ দেখুন",
+      "gitlab": "GitLab এ দেখুন",
+      "bitbucket": "Bitbucket এ দেখুন",
+      "codeberg": "Codeberg এ দেখুন",
+      "git_repo": "Git repository এ দেখুন",
+      "forgejo": "Forgejo এ দেখুন",
+      "gitea": "Gitea এ দেখুন",
+      "gitee": "Gitee এ দেখুন",
+      "radicle": "Radicle এ দেখুন",
+      "socket_dev": "socket.dev এ দেখুন",
+      "sourcehut": "SourceHut এ দেখুন",
+      "tangled": "Tangled এ দেখুন"
+    },
+    "collapse": "সংকুচিত করুন",
+    "collapse_with_name": "{name} সঙ্কুচিত করুন",
+    "expand": "বিস্তৃত করুন",
+    "expand_with_name": "{name} বিস্তৃত করুন"
   },
   "profile": {
-    "invite": {}
+    "display_name": "প্রদর্শনের নাম",
+    "description": "বর্ণনা",
+    "no_description": "কোনো বর্ণনা দেওয়া হয়নি",
+    "website": "ওয়েবসাইট",
+    "website_placeholder": "https://example.com",
+    "likes": "পছন্দ",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "{handle} দ্বারা npmx প্রোফাইল",
+    "not_found": "প্রোফাইল পাওয়া যায়নি",
+    "not_found_message": "{handle}-এর প্রোফাইল খুঁজে পাওয়া যায়নি৷",
+    "invite": {
+      "message": "তারা এখনও npmx ব্যবহার করছে বলে মনে হচ্ছে না। এটা সম্পর্কে তাদের বলতে চান?",
+      "share_button": "Bluesky এ শেয়ার করুন",
+      "compose_text": "আরে {'@'}{handle}! আপনি কি এখনও npmx.dev চেক আউট করেছেন? এটি npm রেজিস্ট্রির জন্য একটি ব্রাউজার যা দ্রুত, আধুনিক এবং ওপেন সোর্স।\nhttps://npmx.dev"
+    }
   },
   "package": {
     "not_found": "প্যাকেজ পাওয়া যায়নি",
@@ -135,21 +381,40 @@
       "version": "এই ভার্সনটি নিষ্ক্রিয় করা হয়েছে।",
       "no_reason": "কোনো কারণ দেওয়া হয়নি"
     },
-    "size_increase": {},
+    "size_increase": {
+      "title_size": "v{version} থেকে গুরুত্বপূর্ণ আকার বৃদ্ধি",
+      "title_deps": "v{version} থেকে গুরুত্বপূর্ণ নির্ভরতা গণনা বৃদ্ধি",
+      "title_both": "v{version} থেকে গুরুত্বপূর্ণ আকার এবং নির্ভরতা বৃদ্ধি",
+      "size": "ইনস্টল সাইজ {percent} ({size} larger) বৃদ্ধি",
+      "deps": "{count}টি আরও নির্ভরতা"
+    },
+    "size_decrease": {
+      "title_size": "v{version} থেকে গুরুত্বপূর্ণ আকার হ্রাস",
+      "title_deps": "v{version} থেকে গুরুত্বপূর্ণ নির্ভরতা গণনা হ্রাস",
+      "title_both": "v{version} থেকে গুরুত্বপূর্ণ আকার এবং নির্ভরতা হ্রাস",
+      "size": "ইনস্টল সাইজ {percent} ({size} smaller) হ্রাস",
+      "deps": "{count}টি কম নির্ভরতা"
+    },
     "replacement": {
       "title": "আপনার এই ডিপেনডেন্সির প্রয়োজন নাও হতে পারে।",
+      "example": "উদাহরণ:",
       "native": "এটিকে {replacement} দিয়ে প্রতিস্থাপন করা যেতে পারে, যা Node {nodeVersion} থেকে উপলব্ধ।",
+      "native_no_version": "এই প্যাকেজটি {replacement} দিয়ে প্রতিস্থাপন করা যেতে পারে।",
       "simple": "{community} এই প্যাকেজটিকে অনাবশ্যক হিসাবে চিহ্নিত করেছে, পরামর্শ: {replacement}।",
       "documented": "{community} এই প্যাকেজটিকে আরো ভাল পারফরম্যান্স অপশন হিসাবে চিহ্নিত করেছে।",
       "none": "এই প্যাকেজটি এখন অনাবশ্যক হিসাবে চিহ্নিত, এবং এর কার্যকরিতা সমস্ত ইঞ্জিনে নেটিভভাবে উপলব্ধ হওয়ার সম্ভাবনা আছে।",
       "learn_more": "আরো জানুন",
-      "community": "কমিউনিটি"
+      "learn_more_above": "আরো জানুন উপরে।",
+      "community": "কমিউনিটি",
+      "consider_no_dep": "+ কোন নির্ভরতা বিবেচনা?"
     },
     "stats": {
       "license": "লাইসেন্স",
       "deps": "নির্ভরতা",
       "install_size": "ইনস্টল সাইজ",
       "vulns": "দুর্বলতা",
+      "published": "প্রকাশিত হয়েছে",
+      "published_tooltip": "তারিখ {package}{'@'}{version} প্রকাশিত হয়েছে৷",
       "view_dependency_graph": "নির্ভরতা গ্রাফ দেখুন",
       "inspect_dependency_tree": "নির্ভরতা ট্রি পরিদর্শন করুন",
       "size_tooltip": {
@@ -172,9 +437,11 @@
         "refs": "{count}টি রেফ | {count}টি রেফ",
         "assets": "{count}টি অ্যাসেট | {count}টি অ্যাসেট"
       },
-      "view_source": "সোর্স দেখুন"
+      "view_source": "সোর্স দেখুন",
+      "skills_cli": "দক্ষতা CLI"
     },
     "links": {
+      "main": "প্রধান",
       "repo": "রিপো",
       "homepage": "হোমপেজ",
       "issues": "সমস্যা",
@@ -182,22 +449,41 @@
       "code": "কোড",
       "docs": "ডকুমেন্টেশন",
       "fund": "অর্থায়ন করুন",
-      "compare": "তুলনা করুন"
+      "compare": "তুলনা করুন",
+      "timeline": "সময়রেখা",
+      "compare_this_package": "এই প্যাকেজ তুলনা",
+      "changelog": "চেঞ্জলগ"
     },
-    "likes": {},
+    "likes": {
+      "like": "এই প্যাকেজটি পছন্দ করুন",
+      "unlike": "এই প্যাকেজটি আর পছন্দ নয়",
+      "top_rank_tooltip": "এটি npmx-এ শীর্ষ 10টি সর্বাধিক পছন্দ করা প্যাকেজের মধ্যে রয়েছে! (#{rank})",
+      "top_rank_label": "#{rank}",
+      "top_rank_link_label": "পছন্দ লিডারবোর্ড দেখুন. এই প্যাকেজটি #{rank} র‌্যাঙ্ক করা হয়েছে."
+    },
     "docs": {
       "not_available": "ডকুমেন্টেশন উপলব্ধ নেই",
-      "not_available_detail": "আমরা এই ভার্সনের জন্য ডকুমেন্টেশন তৈরি করতে পারিনি।"
+      "not_available_detail": "আমরা এই ভার্সনের জন্য ডকুমেন্টেশন তৈরি করতে পারিনি।",
+      "contents": "বিষয়বস্তু",
+      "default_not_available": "এই ভার্সনের জন্য ডকুমেন্টেশন উপলব্ধ নয়।",
+      "page_title": "API ডকুমেন্টেশন - npmx",
+      "page_title_name": "{name} ডকুমেন্টেশন - npmx",
+      "page_title_version": "{name} ডকুমেন্টেশন - npmx",
+      "og_title": "{name} - ডকুমেন্টেশন",
+      "view_package": "প্যাকেজ দেখুন"
     },
     "get_started": {
       "title": "শুরু করুন",
       "pm_label": "প্যাকেজ ম্যানেজার",
       "copy_command": "ইনস্টল কমান্ড কপি করুন",
-      "view_types": "{package} দেখুন"
+      "view_types": "{package} দেখুন",
+      "copy_dev_command": "ডেভ ইনস্টল কমান্ড কপি করুন",
+      "dev_dependency_hint": "সাধারণত ডেভ ডিপেনডেন্সি হিসেবে ইনস্টল করা হয়"
     },
     "create": {
       "title": "নতুন প্রকল্প তৈরি করুন",
-      "copy_command": "তৈরির কমান্ড কপি করুন"
+      "copy_command": "তৈরির কমান্ড কপি করুন",
+      "view": "{packageName}-এর একই রক্ষণাবেক্ষণকারী আছে। আরো বিস্তারিত জানার জন্য ক্লিক করুন."
     },
     "run": {
       "title": "চালান",
@@ -206,17 +492,48 @@
     "readme": {
       "title": "রিডমি",
       "no_readme": "README উপলব্ধ নেই।",
-      "callout": {}
+      "callout": {
+        "note": "দ্রষ্টব্য",
+        "tip": "টিপ",
+        "important": "গুরুত্বপূর্ণ",
+        "warning": "সতর্কতা",
+        "caution": "সতর্কতা"
+      },
+      "toc_title": "আউটলাইন",
+      "copy_as_markdown": "মার্কডাউন হিসাবে README কপি করুন",
+      "error_loading": "README বিশদ লোড করতে ব্যর্থ হয়েছে৷"
     },
-    "provenance_section": {},
-    "security_downgrade": {},
+    "provenance_section": {
+      "title": "উদ্ভব",
+      "built_and_signed_on": "{provider}-এ বিল্ড ও স্বাক্ষরিত",
+      "view_build_summary": "বিল্ড সারাংশ দেখুন",
+      "source_commit": "সোর্স কমিট",
+      "build_file": "বিল্ড ফাইল",
+      "public_ledger": "পাবলিক লেজার",
+      "transparency_log_entry": "ট্রান্সপারেন্সি লগ এন্ট্রি",
+      "view_more_details": "আরো বিস্তারিত দেখুন",
+      "error_loading": "প্রোভেন্যান্স তথ্য লোড করা যায়নি"
+    },
+    "security_downgrade": {
+      "title": "বিশ্বাসমান হ্রাস",
+      "description_to_none_provenance": "এই সংস্করণটি {provenance} ছাড়াই প্রকাশিত হয়েছিল৷",
+      "description_to_none_trustedPublisher": "এই সংস্করণটি {trustedPublishing} ছাড়াই প্রকাশিত হয়েছিল৷",
+      "description_to_provenance_trustedPublisher": "এই সংস্করণটি {provenance} ব্যবহার করে কিন্তু {trustedPublishing} ব্যবহার করে না।",
+      "fallback_install_provenance": "ইনস্টল কমান্ডগুলি {version}-এ পিন করা হয়, মূল সংস্করণ সহ শেষ সংস্করণ৷ ইনস্টল কমান্ডগুলি {version}-এ পিন করা হয়, মূল সংস্করণ সহ শেষ সংস্করণ৷",
+      "fallback_install_trustedPublisher": "ইনস্টল কমান্ডগুলি {version}-এ পিন করা হয়, মূল সংস্করণ সহ শেষ সংস্করণ৷",
+      "provenance_link_text": "প্রোভেন্যান্স",
+      "trusted_publishing_link_text": "বিশ্বস্ত প্রকাশনা"
+    },
     "keywords_title": "কীওয়ার্ড",
     "compatibility": "সামঞ্জস্য",
     "card": {
       "publisher": "প্রকাশক",
       "weekly_downloads": "সাপ্তাহিক ডাউনলোড",
       "keywords": "কীওয়ার্ড",
-      "license": "লাইসেন্স"
+      "license": "লাইসেন্স",
+      "published": "প্রকাশিত",
+      "select": "প্যাকেজ নির্বাচন করুন",
+      "select_maximum": "সর্বোচ্চ {count}টি প্যাকেজ নির্বাচন করা যাবে"
     },
     "versions": {
       "title": "ভার্সন",
@@ -231,7 +548,40 @@
       "all_covered": "সব ভার্সন উপরের ট্যাগ দ্বারা আবৃত",
       "deprecated_title": "{version} (নিষ্ক্রিয়)",
       "view_all": "{count}টি ভার্সন দেখুন | সব {count}টি ভার্সন দেখুন",
-      "copy_alt": {}
+      "copy_alt": {
+        "per_version_analysis": "{version} ভার্সনটি {downloads} বার ডাউনলোড করা হয়েছে",
+        "general_description": "{package_name} প্যাকেজের {versions_count}টি {semver_grouping_mode} ভার্সনের প্রতি-ভার্সন ডাউনলোড দেখানো বার চার্ট, {first_version} ভার্সন থেকে {last_version} ভার্সন পর্যন্ত, {date_range_label} সময়সীমায়। সবচেয়ে বেশি ডাউনলোড হওয়া ভার্সন হলো {max_downloaded_version}, যার ডাউনলোড সংখ্যা {max_version_downloads}। {per_version_analysis}। {watermark}।"
+      },
+      "view_all_versions": "সব ভার্সন দেখুন",
+      "distribution_title": "Semver গ্রুপ",
+      "distribution_modal_title": "ভার্সনসমূহ",
+      "distribution_range_date_same_year": "{from} থেকে {to}, {endYear}",
+      "distribution_range_date_multiple_years": "{from}, {startYear} থেকে {to}, {endYear}",
+      "grouping_major": "মেজর",
+      "grouping_minor": "মাইনর",
+      "grouping_versions_title": "ভার্সনসমূহ",
+      "grouping_versions_about": "ভার্সন গ্রুপিং সম্পর্কে",
+      "grouping_versions_all": "সব",
+      "grouping_versions_only_recent": "শুধুমাত্র সাম্প্রতিক",
+      "grouping_usage_title": "ব্যবহার",
+      "grouping_usage_about": "ব্যবহার গ্রুপিং সম্পর্কে",
+      "grouping_usage_all": "সব",
+      "grouping_usage_most_used": "সর্বাধিক ব্যবহৃত",
+      "recent_versions_only_tooltip": "শুধুমাত্র গত এক বছরের মধ্যে প্রকাশিত ভার্সনগুলো দেখান।",
+      "show_low_usage_tooltip": "মোট ডাউনলোডের ১% এর কম থাকা ভার্সন গ্রুপগুলো অন্তর্ভুক্ত করুন।",
+      "y_axis_label": "ডাউনলোড",
+      "filter_placeholder": "semver দিয়ে ফিল্টার করুন (যেমন: ^3.0.0)",
+      "filter_invalid": "অবৈধ semver পরিসর",
+      "filter_help": "Semver পরিসর ফিল্টার সহায়তা",
+      "filter_tooltip": "{link} ব্যবহার করে ভার্সন ফিল্টার করুন। উদাহরণস্বরূপ, ^3.0.0 সব 3.x ভার্সন দেখায়।",
+      "filter_tooltip_link": "semver পরিসর",
+      "license_change_help": "লাইসেন্স পরিবর্তনের বিস্তারিত",
+      "license_change_warning": "আগের ভার্সনের পর থেকে লাইসেন্স পরিবর্তিত হয়েছে।",
+      "license_change_record": "এই প্যাকেজের লাইসেন্স \"{from}\" থেকে \"{to}\" তে পরিবর্তিত হয়েছে।",
+      "no_matches": "এই পরিসরের সাথে কোনো ভার্সন মেলেনি",
+      "page_title": "ভার্সন ইতিহাস",
+      "current_tags": "বর্তমান ট্যাগসমূহ",
+      "no_match_filter": "{filter} এর সাথে কোনো ভার্সন মেলেনি"
     },
     "dependencies": {
       "title": "নির্ভরতা ({count})",
@@ -241,12 +591,14 @@
       "view_vulnerabilities": "দুর্বলতা দেখুন",
       "outdated_major": "{count}টি মেজর ভার্সন পিছিয়ে (সর্বশেষ: {latest}) | {count}টি মেজর ভার্সন পিছিয়ে (সর্বশেষ: {latest})",
       "outdated_minor": "{count}টি মাইনর ভার্সন পিছিয়ে (সর্বশেষ: {latest}) | {count}টি মাইনর ভার্সন পিছিয়ে (সর্বশেষ: {latest})",
-      "outdated_patch": "প্যাচ আপডেট উপলব্ধ (সর্বশেষ: {latest})"
+      "outdated_patch": "প্যাচ আপডেট উপলব্ধ (সর্বশেষ: {latest})",
+      "has_replacement": "এই নির্ভরতা প্রতিস্থাপনের পরামর্শ দিয়েছে",
+      "vulnerabilities_count": "{count} দুর্বলতা | {count} দুর্বলতা"
     },
     "peer_dependencies": {
-      "title": "পিয়ার নির্ভরতা ({count})",
-      "list_label": "প্যাকেজ পিয়ার নির্ভরতা",
-      "show_all": "{count}টি পিয়ার নির্ভরতা দেখান | সব {count}টি পিয়ার নির্ভরতা দেখান"
+      "title": "পিয়ার নির্ভরতা ({count})",
+      "list_label": "প্যাকেজ পিয়ার নির্ভরতা",
+      "show_all": "{count}টি পিয়ার নির্ভরতা দেখান | সব {count}টি পিয়ার নির্ভরতা দেখান"
     },
     "optional_dependencies": {
       "title": "ঐচ্ছিক নির্ভরতা ({count})",
@@ -265,7 +617,8 @@
       "cancel_add": "মালিক যোগ করা বাতিল করুন",
       "add_owner": "+ মালিক যোগ করুন",
       "show_more": "({count}টি আরো দেখান)",
-      "show_less": "(কম দেখান)"
+      "show_less": "(কম দেখান)",
+      "maintainer_template": "{avatar} {char126}{name}"
     },
     "trends": {
       "granularity": "বিস্তৃতি",
@@ -280,11 +633,63 @@
       "date_range_multiline": "{start}\nথেকে {end}",
       "download_file": "{fileType} ডাউনলোড করুন",
       "toggle_annotator": "অ্যানোটেটর টগল করুন",
-      "items": {},
-      "copy_alt": {}
+      "items": {
+        "downloads": "ডাউনলোড",
+        "likes": "পছন্দ",
+        "contributors": "অবদানকারী"
+      },
+      "copy_alt": {
+        "trend_none": "মূলত সমতল",
+        "trend_strong": "শক্তিশালী",
+        "trend_weak": "দুর্বল",
+        "trend_undefined": "অনির্ধারিত (অপর্যাপ্ত ডেটা)",
+        "button_label": "বিকল্প টেক্সট কপি করুন",
+        "watermark": "নিচে একটি ওয়াটারমার্কে লেখা আছে \"./npmx a fast, modern browser for the npm registry\"",
+        "analysis": "{package_name} এর শুরু {start_value} থেকে এবং শেষ {end_value} এ, যা প্রতি সময়সীমায় {downloads_slope} ডাউনলোডের ঢালসহ একটি {trend} প্রবণতা দেখায়",
+        "estimation": "চূড়ান্ত মানটি বর্তমান সময়সীমার আংশিক ডেটার উপর ভিত্তি করে একটি অনুমান।",
+        "estimations": "চূড়ান্ত মানগুলো বর্তমান সময়সীমার আংশিক ডেটার উপর ভিত্তি করে অনুমান করা হয়েছে।",
+        "compare": "{packages} এর জন্য প্যাকেজ ডাউনলোড তুলনামূলক লাইন চার্ট।",
+        "single_package": "{package} প্যাকেজের ডাউনলোড লাইন চার্ট।",
+        "general_description": "Y অক্ষ ডাউনলোডের সংখ্যা নির্দেশ করে। X অক্ষ {start_date} থেকে {end_date} পর্যন্ত তারিখের পরিসর নির্দেশ করে, যেখানে সময়কাল হলো {granularity}। {estimation_notice} {packages_analysis}। {watermark}।",
+        "facet_bar_general_description": "{packages} এর জন্য অনুভূমিক বার চার্ট, যেখানে {facet} ({description}) তুলনা করা হয়েছে। {facet_analysis} {watermark}।",
+        "facet_bar_analysis": "{package_name} এর মান {value}।"
+      },
+      "chart_assistive_text": {
+        "keyboard_navigation_horizontal": "ডেটা পয়েন্টগুলোর মধ্যে যেতে বাম এবং ডান অ্যারো কী ব্যবহার করুন।",
+        "keyboard_navigation_vertical": "ডেটা পয়েন্টগুলোর মধ্যে যেতে উপরে এবং নিচের অ্যারো কী ব্যবহার করুন।",
+        "table_available": "এই চার্টের জন্য একটি ডেটা টেবিল নিচে উপলব্ধ রয়েছে।",
+        "table_caption": "চার্ট ডেটা টেবিল"
+      },
+      "chart_view_toggle": "ভিউ পরিবর্তন করুন",
+      "chart_view_combined": "সমন্বিত ভিউ",
+      "chart_view_split": "বিভক্ত ভিউ",
+      "toggle_stack_mode": "স্ট্যাক মোড পরিবর্তন করুন",
+      "open_options": "অপশন খুলুন",
+      "close_options": "অপশন বন্ধ করুন",
+      "legend_estimation": "অনুমান",
+      "no_data": "কোনো ডেটা উপলব্ধ নেই",
+      "y_axis_label": "{granularity} {facet}",
+      "facet": "বিভাগ",
+      "title": "প্রবণতা",
+      "contributors_skip": "Contributors-এ দেখানো হয়নি (GitHub রিপোজিটরি নেই):",
+      "data_correction": "ডেটা সংশোধন",
+      "average_window": "গড় উইন্ডো",
+      "smoothing": "মসৃণকরণ",
+      "prediction": "পূর্বাভাস",
+      "known_anomalies": "পরিচিত অস্বাভাবিকতা",
+      "known_anomalies_description": "বট বা CI সমস্যার কারণে সৃষ্ট পরিচিত ডাউনলোড স্পাইকগুলোর উপর ইন্টারপোলেশন প্রয়োগ করে।",
+      "known_anomalies_ranges": "অস্বাভাবিকতার পরিসর",
+      "known_anomalies_range": "{start} থেকে {end}",
+      "known_anomalies_range_named": "{packageName}: {start} থেকে {end}",
+      "known_anomalies_none": "এই প্যাকেজের জন্য কোনো পরিচিত অস্বাভাবিকতা নেই। | এই প্যাকেজগুলোর জন্য কোনো পরিচিত অস্বাভাবিকতা নেই।",
+      "known_anomalies_contribute": "অস্বাভাবিকতার ডেটা যোগ করুন",
+      "apply_correction": "সংশোধন প্রয়োগ করুন"
     },
     "downloads": {
-      "title": "সাপ্তাহিক ডাউনলোড"
+      "title": "সাপ্তাহিক ডাউনলোড",
+      "community_distribution": "সম্প্রদায় দত্তক বিতরণ দেখুন",
+      "subtitle": "সব সংস্করণ জুড়ে",
+      "sparkline_nav_hint": "← → ব্যবহার করুন"
     },
     "install_scripts": {
       "title": "ইনস্টল স্ক্রিপ্ট",
@@ -303,7 +708,8 @@
       "types_label": "টাইপ",
       "types_included": "টাইপ অন্তর্ভুক্ত",
       "types_available": "টাইপ {package} এর মাধ্যমে উপলব্ধ",
-      "no_types": "TypeScript টাইপ নেই"
+      "no_types": "TypeScript টাইপ নেই",
+      "wasm": "WebAssembly রয়েছে"
     },
     "license": {
       "view_spdx": "SPDX এ লাইসেন্স টেক্সট দেখুন",
@@ -321,7 +727,8 @@
         "high": "উচ্চ",
         "moderate": "মধ্যম",
         "low": "নিম্ন"
-      }
+      },
+      "fixed_in_title": "সংস্করণ {version} এ স্থির করা হয়েছে"
     },
     "deprecated": {
       "label": "নিষ্ক্রিয়",
@@ -365,10 +772,47 @@
     "sort": {
       "downloads": "সবচেয়ে বেশি ডাউনলোডকৃত",
       "name_asc": "নাম (A-Z)",
-      "name_desc": "নাম (Z-A)"
+      "name_desc": "নাম (Z-A)",
+      "published": "সম্প্রতি প্রকাশিত"
     },
-    "size": {},
-    "download": {}
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
+    },
+    "download": {
+      "button": "ডাউনলোড",
+      "tarball": ".tar.gz হিসেবে টারবল ডাউনলোড করুন"
+    },
+    "timeline": {
+      "load_more": "আরো লোড করুন",
+      "load_error": "টাইমলাইন লোড করা যায়নি। অনুগ্রহ করে পরে আবার চেষ্টা করুন।",
+      "size_increase": "ইনস্টল সাইজ {percent}% বৃদ্ধি পেয়েছে ({size})",
+      "size_decrease": "ইনস্টল সাইজ {percent}% কমেছে ({size})",
+      "dep_increase": "{count}টি ডিপেনডেন্সি যোগ হয়েছে",
+      "dep_decrease": "{count}টি ডিপেনডেন্সি সরানো হয়েছে",
+      "license_change": "লাইসেন্স {from} থেকে {to} এ পরিবর্তিত হয়েছে",
+      "esm_added": "মডিউল টাইপ ESM এ পরিবর্তিত হয়েছে",
+      "esm_removed": "মডিউল টাইপ ESM থেকে CJS এ পরিবর্তিত হয়েছে",
+      "types_added": "TypeScript টাইপ যোগ করা হয়েছে",
+      "types_removed": "TypeScript টাইপ সরানো হয়েছে",
+      "trusted_publisher_added": "বিশ্বস্ত প্রকাশনা সক্রিয় করা হয়েছে",
+      "trusted_publisher_removed": "বিশ্বস্ত প্রকাশনা সরানো হয়েছে",
+      "provenance_added": "প্রোভেন্যান্স সক্রিয় করা হয়েছে",
+      "provenance_removed": "প্রোভেন্যান্স সরানো হয়েছে",
+      "chart": {
+        "tab_aria_label": "মেট্রিক নির্বাচন",
+        "base_scale": "y-অক্ষ শূন্য থেকে শুরু করুন",
+        "zoom": "জুম",
+        "reset_minimap": "মিনিম্যাপ রিসেট করুন",
+        "ordered_versions": "শুধুমাত্র স্থিতিশীল",
+        "copy_alt": {
+          "key_changes": "মূল পরিবর্তনসমূহ: {version_events}।",
+          "version_events": "ভার্সন {version}: {events}",
+          "general_description": "{package} প্যাকেজের {metric} প্রদর্শনকারী লাইন চার্ট, {first} ভার্সন থেকে {last} ভার্সন পর্যন্ত। {first} ভার্সনে {metric} এর মান {first_value}, এবং {last} ভার্সনে {last_value} ({overall_progress_percentage}% সামগ্রিক পরিবর্তন)। {key_changes} {watermark}।"
+        }
+      }
+    }
   },
   "connector": {
     "modal": {
@@ -388,7 +832,8 @@
       "warning": "সতর্কতা",
       "warning_text": "এটি npmx কে আপনার npm CLI এর অ্যাক্সেস অনুমতি দেয়। আপনি শুধুমাত্র বিশ্বস্ত সাইট থেকে সংযুক্ত হন।",
       "connect": "সংযুক্ত করুন",
-      "connecting": "সংযুক্ত হচ্ছে..."
+      "connecting": "সংযুক্ত হচ্ছে...",
+      "auto_open_url": "স্বয়ংক্রিয়ভাবে অনুমতি পাতা খুলুন"
     }
   },
   "operations": {
@@ -412,7 +857,9 @@
       "executing": "চালানো হচ্ছে...",
       "log": "লগ",
       "log_label": "সম্পূর্ণ অপারেশন লগ",
-      "remove_from_log": "লগ থেকে সরান"
+      "remove_from_log": "লগ থেকে সরান",
+      "retry_web_auth": "ওয়েব অথ দিয়ে আবার চেষ্টা করুন",
+      "open_web_auth": "ওয়েব অথ লিংক খুলুন"
     }
   },
   "org": {
@@ -538,7 +985,8 @@
       "publishing": "প্রকাশ করা হচ্ছে...",
       "checking": "প্রাপ্যতা যাচাই করা হচ্ছে...",
       "failed_to_check": "নামের প্রাপ্যতা যাচাই করতে ব্যর্থ",
-      "failed_to_claim": "প্যাকেজ দাবি করতে ব্যর্থ"
+      "failed_to_claim": "প্যাকেজ দাবি করতে ব্যর্থ",
+      "missing_permission": "আপনার কাছে {'@'}{scope} স্কোপে প্যাকেজ যোগ করার অনুমতি নেই।"
     }
   },
   "code": {
@@ -566,7 +1014,13 @@
       "preview": "প্রিভিউ",
       "code": "কোড"
     },
-    "file_path": "ফাইল পাথ"
+    "file_path": "ফাইল পাথ",
+    "copy_content": "ফাইল কন্টেন্ট কপি করুন",
+    "toggle_container": "কোড কন্টেইনার প্রস্থ টগল করুন",
+    "open_raw_file": "রও ফাইল খুলুন",
+    "open_path_dropdown": "পাথ সেগমেন্টস ড্রপডাউন খুলুন",
+    "binary_file": "বাইনারি ফাইল",
+    "binary_rendering_warning": "ফাইল টাইপ \"{contentType}\" প্রিভিউয়ের জন্য সমর্থিত নয়."
   },
   "badges": {
     "provenance": {
@@ -601,7 +1055,13 @@
     "more_keywords": "+{count}টি আরো",
     "clear_all": "সব সাফ করুন",
     "remove_filter": "{label} ফিল্টার সরান",
-    "chips": {},
+    "chips": {
+      "search": "অনুসন্ধান",
+      "downloads": "ডাউনলোড",
+      "keyword": "কীওয়ার্ড",
+      "security": "নিরাপত্তা",
+      "updated": "আপডেট"
+    },
     "download_range": {
       "any": "যেকোনো",
       "lt100": "< 100",
@@ -632,7 +1092,8 @@
       "downloads_day": "ডাউনলোড/দিন",
       "downloads_month": "ডাউনলোড/মাস",
       "downloads_year": "ডাউনলোড/বছর",
-      "name": "নাম"
+      "name": "নাম",
+      "published": "সর্বশেষ প্রকাশিত"
     },
     "columns": {
       "title": "কলাম",
@@ -645,7 +1106,9 @@
       "downloads": "ডাউনলোড/সপ্তাহ",
       "maintainers": "রক্ষণাবেক্ষণকারী",
       "keywords": "কীওয়ার্ড",
-      "security": "নিরাপত্তা"
+      "security": "নিরাপত্তা",
+      "published": "সর্বশেষ প্রকাশিত",
+      "selection": "প্যাকেজ নির্বাচন করুন"
     },
     "view_mode": {
       "label": "দেখার মোড",
@@ -672,7 +1135,9 @@
       "security_warning": "নিরাপত্তা সতর্কতা",
       "secure": "নিরাপদ",
       "no_packages": "কোনো প্যাকেজ পাওয়া যায়নি"
-    }
+    },
+    "view_selected": "নির্বাচিত দেখুন",
+    "clear_selected_label": "নির্বাচিত সাফ করুন"
   },
   "about": {
     "title": "আমাদের সম্পর্কে",
@@ -701,9 +1166,20 @@
         "managers": "ম্যানেজার"
       }
     },
-    "sponsors": {},
-    "oss_partners": {},
-    "team": {},
+    "sponsors": {
+      "title": "স্পনসর"
+    },
+    "oss_partners": {
+      "title": " ওএসএস অংশীদার"
+    },
+    "team": {
+      "title": "দল",
+      "governance": "শাসন",
+      "role_steward": "স্টুয়ার্ড",
+      "role_maintainer": "রক্ষণাবেক্ষণকারী",
+      "sponsor": "স্পনসর",
+      "sponsor_aria": "GitHub-এ {name} স্পনসর করুন"
+    },
     "contributors": {
       "title": "অবদানকারী",
       "description": "npmx সম্পূর্ণ ওপেন সোর্স, অসাধারণ অবদানকারীদের কমিউনিটি দ্বারা নির্মিত। আমাদের সাথে যোগ দিন এবং একসাথে আমাদের সবসময় চাওয়া npm ব্রাউজিং অভিজ্ঞতা তৈরি করি।",
@@ -723,7 +1199,11 @@
         "description": "চ্যাট করুন, প্রশ্ন জিজ্ঞাসা করুন এবং ধারণা শেয়ার করুন।",
         "cta": "Discord এ যোগ দিন"
       },
-      "builders": {},
+      "builders": {
+        "title": "npmx তৈরি করতে সাহায্য করুন",
+        "description": "npmx এর ভবিষ্যৎ গঠনে সহায়তা করতে নিজেকে যোগদান করুন।",
+        "cta": "Builders Discord এ যোগ দিন"
+      },
       "follow": {
         "title": "আপডেট পান",
         "description": "npmx এর সর্বশেষ তথ্য পান।",
@@ -755,7 +1235,9 @@
       "create_account": "নতুন অ্যাকাউন্ট তৈরি করুন",
       "connect_bluesky": "Bluesky এর সাথে সংযোগ করুন",
       "what_is_atmosphere": "Atmosphere অ্যাকাউন্ট কী?",
-      "atmosphere_explanation": "{npmx} তার অনেক সোশ্যাল ফিচার চালানোর জন্য {atproto} ব্যবহার করে, যা ব্যবহারকারীদের তাদের ডেটার মালিক হতে এবং সব কাস্টম অ্যাপ্লিকেশনের জন্য একটি অ্যাকাউন্ট ব্যবহার করতে দেয়। আপনি অ্যাকাউন্ট তৈরি করার পর, আপনি {bluesky} এবং {tangled} এর মতো অন্যান্য অ্যাপ্লিকেশন একই অ্যাকাউন্ট দিয়ে ব্যবহার করতে পারবেন।"
+      "atmosphere_explanation": "{npmx} তার অনেক সোশ্যাল ফিচার চালানোর জন্য {atproto} ব্যবহার করে, যা ব্যবহারকারীদের তাদের ডেটার মালিক হতে এবং সব কাস্টম অ্যাপ্লিকেশনের জন্য একটি অ্যাকাউন্ট ব্যবহার করতে দেয়। আপনি অ্যাকাউন্ট তৈরি করার পর, আপনি {bluesky} এবং {tangled} এর মতো অন্যান্য অ্যাপ্লিকেশন একই অ্যাকাউন্ট দিয়ে ব্যবহার করতে পারবেন।",
+      "default_input_error": "অনুগ্রহ করে একটি বৈধ হ্যান্ডেল, ডিআইডি, বা একটি সম্পূর্ণ পিডিএস URL লিখুন৷",
+      "profile": "প্রোফাইল"
     }
   },
   "header": {
@@ -775,7 +1257,8 @@
       "error": "সংস্থাগুলি লোড করতে ব্যর্থ",
       "empty": "কোনো সংস্থা পাওয়া যায়নি",
       "view_all": "সব দেখুন"
-    }
+    },
+    "pr": "GitHub টান অনুরোধ #{prNumber} খুলুন"
   },
   "compare": {
     "packages": {
@@ -791,7 +1274,13 @@
       "loading": "প্যাকেজ ডেটা লোড হচ্ছে...",
       "error": "প্যাকেজ ডেটা লোড করতে ব্যর্থ। অনুগ্রহ করে আবার চেষ্টা করুন।",
       "empty_title": "তুলনা করার জন্য প্যাকেজ নির্বাচন করুন",
-      "empty_description": "তাদের মেট্রিক্স পাশাপাশি তুলনা দেখতে উপরে কমপক্ষে ২টি প্যাকেজ অনুসন্ধান করে যোগ করুন।"
+      "empty_description": "তাদের মেট্রিক্স পাশাপাশি তুলনা দেখতে উপরে কমপক্ষে ২টি প্যাকেজ অনুসন্ধান করে যোগ করুন।",
+      "copy_as_markdown": "মার্কডাউন হিসেবে কপি করুন",
+      "table_view": "টেবিল",
+      "charts_view": "চার্ট",
+      "no_chartable_data": "নির্বাচিত ফ্যাসেটগুলোর জন্য কোনো চার্টযোগ্য ডেটা উপলব্ধ নেই।",
+      "bar_chart_nav_hint": "↑ ↓ ব্যবহার করুন",
+      "line_chart_nav_hint": "← → ব্যবহার করুন"
     },
     "selector": {
       "search_label": "প্যাকেজ অনুসন্ধান করুন",
@@ -802,7 +1291,15 @@
       "packages_selected": "{count}/{max}টি প্যাকেজ নির্বাচিত।",
       "add_hint": "তুলনা করার জন্য কমপক্ষে ২টি প্যাকেজ যোগ করুন।"
     },
-    "no_dependency": {},
+    "no_dependency": {
+      "label": "(কোনো নির্ভরতা নেই)",
+      "typeahead_title": "জেমস কী করতেন?",
+      "typeahead_description": "কোনো নির্ভরতা ব্যবহার না করার সাথে তুলনা করুন! e18e অনুমোদিত।",
+      "tooltip_title": "আপনার হয়তো কোনো নির্ভরতা প্রয়োজন নেই",
+      "tooltip_description": "কোনো নির্ভরতা ব্যবহার না করার সাথে তুলনা করুন! {link} এমন প্যাকেজগুলোর তালিকা রক্ষণাবেক্ষণ করে যেগুলো নেটিভ API বা সহজ বিকল্প দিয়ে প্রতিস্থাপন করা যেতে পারে।",
+      "e18e_community": "e18e কমিউনিটি",
+      "add_column": "তুলনায় 'কোনো নির্ভরতা নেই' কলাম যোগ করুন"
+    },
     "facets": {
       "all": "সব",
       "none": "কিছু না",
@@ -816,54 +1313,427 @@
         "security": "নিরাপত্তা এবং সম্মতি"
       },
       "items": {
-        "packageSize": {},
-        "installSize": {},
-        "dependencies": {},
-        "totalDependencies": {},
-        "downloads": {},
-        "totalLikes": {},
-        "lastUpdated": {},
-        "deprecated": {},
-        "engines": {},
-        "types": {},
-        "moduleFormat": {},
-        "license": {},
-        "vulnerabilities": {}
+        "packageSize": {
+          "label": "প্যাকেজের আকার",
+          "description": "প্যাকেজের নিজস্ব আকার (আনপ্যাকড)"
+        },
+        "installSize": {
+          "label": "ইনস্টল আকার",
+          "description": "সমস্ত নির্ভরতা সহ মোট ইনস্টল আকার"
+        },
+        "dependencies": {
+          "label": "সরাসরি নির্ভরতা",
+          "description": "সরাসরি নির্ভরতার সংখ্যা"
+        },
+        "totalDependencies": {
+          "label": "মোট নির্ভরতা",
+          "description": "ট্রানজিটিভসহ মোট নির্ভরতার সংখ্যা"
+        },
+        "downloads": {
+          "label": "ডাউনলোড/সপ্তাহ",
+          "description": "সাপ্তাহিক ডাউনলোড সংখ্যা"
+        },
+        "totalLikes": {
+          "label": "লাইক",
+          "description": "লাইক-এর সংখ্যা"
+        },
+        "lastUpdated": {
+          "label": "প্রকাশিত",
+          "description": "এই ভার্সনটি কখন প্রকাশিত হয়েছে"
+        },
+        "deprecated": {
+          "label": "অপ্রচলিত?",
+          "description": "প্যাকেজটি ডিপ্রিকেটেড কিনা"
+        },
+        "engines": {
+          "label": "ইঞ্জিনসমূহ",
+          "description": "Node.js সংস্করণ প্রয়োজনীয়তা"
+        },
+        "types": {
+          "label": "টাইপসমূহ",
+          "description": "TypeScript টাইপ ডেফিনিশন"
+        },
+        "moduleFormat": {
+          "label": "মডিউল ফরম্যাট",
+          "description": "ESM/CJS সাপোর্ট"
+        },
+        "license": {
+          "label": "লাইসেন্স",
+          "description": "প্যাকেজ লাইসেন্স"
+        },
+        "vulnerabilities": {
+          "label": "নিরাপত্তা ঝুঁকি",
+          "description": "পরিচিত নিরাপত্তা দুর্বলতা"
+        },
+        "githubStars": {
+          "label": "GitHub স্টার",
+          "description": "GitHub রিপোজিটরিতে স্টারের সংখ্যা"
+        },
+        "githubIssues": {
+          "label": "GitHub ইস্যু",
+          "description": "GitHub রিপোজিটরিতে ইস্যুর সংখ্যা"
+        },
+        "createdAt": {
+          "label": "তৈরি হয়েছে",
+          "description": "প্যাকেজটি কখন তৈরি হয়েছে"
+        }
       },
-      "values": {},
-      "trends": {}
+      "values": {
+        "any": "যেকোনো",
+        "none": "কোনোটিই নয়",
+        "unknown": "অজানা",
+        "deprecated": "অপ্রচলিত",
+        "not_deprecated": "না",
+        "types_included": "অন্তর্ভুক্ত",
+        "types_none": "কোনোটিই নয়",
+        "vulnerabilities_summary": "{count} ({critical}টি গুরুতর/{high}টি উচ্চ)",
+        "up_to_you": "আপনার ইচ্ছা!"
+      },
+      "trends": {
+        "title": "প্রবণতা তুলনা করুন"
+      },
+      "select_all_category_facets": "{category}-এর সব ফ্যাসেট নির্বাচন করুন",
+      "deselect_all_category_facets": "{category}-এর সব ফ্যাসেট নির্বাচন বাতিল করুন",
+      "selected_all_category_facets": "{category}-এর সব ফ্যাসেট নির্বাচন করা হয়েছে",
+      "deselected_all_category_facets": "{category}-এর সব ফ্যাসেট নির্বাচন বাতিল করা হয়েছে",
+      "binary_only_tooltip": "এই প্যাকেজটি বাইনারি সরবরাহ করে এবং কোনো এক্সপোর্ট নেই"
     },
-    "version_invalid_url_format": {},
-    "file_filter_option": {},
-    "filter": {}
+    "version_invalid_url_format": {
+      "hint": "অবৈধ তুলনা URL। এই ফরম্যাট ব্যবহার করুন: {0}",
+      "from_version": "থেকে",
+      "to_version": "পর্যন্ত"
+    },
+    "file_filter_option": {
+      "all": "সব ({count})",
+      "added": "যোগ করা হয়েছে ({count})",
+      "removed": "মুছে ফেলা হয়েছে ({count})",
+      "modified": "পরিবর্তিত ({count})"
+    },
+    "filter": {
+      "added": "যোগ করা",
+      "removed": "মুছে ফেলা",
+      "modified": "পরিবর্তিত"
+    },
+    "scatter_chart": {
+      "title": "{x} বনাম {y} তুলনা করুন",
+      "freshness_score": "নতুনত্ব স্কোর",
+      "copy_alt": {
+        "analysis": "{package}: {x_name} ({x_value}) এবং {y_name} ({y_value})",
+        "description": "{packages}টি প্যাকেজের জন্য {x_name} বনাম {y_name} এর স্ক্যাটার প্লট চার্ট। {analysis}. {watermark}"
+      },
+      "filename": "{x}-vs-{y}-scatter-chart",
+      "x_axis": "X-অক্ষ ↦",
+      "y_axis": "Y-অক্ষ ↥"
+    },
+    "file_changes": "ফাইল পরিবর্তন",
+    "files_count": "{count}টি ফাইল | {count}টি ফাইল",
+    "lines_hidden": "{count}টি লাইন লুকানো | {count}টি লাইন লুকানো",
+    "file_too_large": "তুলনার জন্য ফাইলটি খুব বড়",
+    "file_size_warning": "{size} তুলনার 250KB সীমা অতিক্রম করেছে",
+    "compare_versions": "ডিফ",
+    "compare_versions_title": "সর্বশেষ সংস্করণের সাথে তুলনা করুন",
+    "comparing_versions_label": "সংস্করণ তুলনা করা হচ্ছে...",
+    "version_back_to_package": "প্যাকেজে ফিরে যান",
+    "version_error_message": "সংস্করণ তুলনা ব্যর্থ হয়েছে।",
+    "version_selector_title": "সংস্করণের সাথে তুলনা করুন",
+    "summary": "সারাংশ",
+    "deps_count": "{count}টি নির্ভরতা | {count}টি নির্ভরতা",
+    "dependencies": "নির্ভরতা",
+    "dev_dependencies": "ডেভ নির্ভরতা",
+    "peer_dependencies": "পিয়ার নির্ভরতা",
+    "optional_dependencies": "ঐচ্ছিক নির্ভরতা",
+    "no_dependency_changes": "কোনো নির্ভরতা পরিবর্তন নেই",
+    "search_files_placeholder": "ফাইল খুঁজুন...",
+    "no_files_all": "কোনো ফাইল নেই",
+    "no_files_search": "\"{query}\" এর সাথে মিল থাকা কোনো ফাইল নেই",
+    "no_files_filtered": "কোনো {filter} ফাইল নেই",
+    "files_button": "ফাইলসমূহ",
+    "select_file_prompt": "ডিফ দেখতে সাইডবার থেকে একটি ফাইল নির্বাচন করুন",
+    "close_files_panel": "ফাইল প্যানেল বন্ধ করুন",
+    "filter_files_label": "পরিবর্তনের ধরন অনুযায়ী ফাইল ফিল্টার করুন",
+    "change_ratio": "পরিবর্তনের অনুপাত",
+    "char_edits": "অক্ষর সম্পাদনা",
+    "diff_distance": "ডিফ দূরত্ব",
+    "loading_diff": "ডিফ লোড হচ্ছে...",
+    "loading_diff_error": "ডিফ লোড করতে ব্যর্থ হয়েছে",
+    "merge_modified_lines": "পরিবর্তিত লাইন একত্রিত করুন",
+    "no_content_changes": "কোনো বিষয়বস্তুর পরিবর্তন পাওয়া যায়নি",
+    "options": "বিকল্পসমূহ",
+    "view_file": "ফাইল দেখুন",
+    "view_in_code_browser": "কোড ব্রাউজারে দেখুন",
+    "word_wrap": "লাইন মোড়ানো"
   },
   "pds": {
-    "join": {},
-    "server": {},
-    "community": {}
+    "join": {
+      "title": "কমিউনিটিতে যোগ দিন",
+      "description": "আপনি অ্যাটমোসফিয়ারে প্রথম অ্যাকাউন্ট তৈরি করছেন বা বিদ্যমান অ্যাকাউন্ট স্থানান্তর করছেন—আপনি এখানে স্বাগতম। আপনি আপনার বর্তমান অ্যাকাউন্ট হ্যান্ডেল, পোস্ট বা ফলোয়ার হারানো ছাড়াই স্থানান্তর করতে পারেন।",
+      "migrate": "PDS MOOver দিয়ে স্থানান্তর করুন"
+    },
+    "server": {
+      "title": "সার্ভারের বিবরণ",
+      "location_label": "অবস্থান:",
+      "location_value": "নুরেমবার্গ, জার্মানি",
+      "infrastructure_label": "ইনফ্রাস্ট্রাকচার:",
+      "infrastructure_value": "Hetzner-এ হোস্ট করা",
+      "privacy_label": "গোপনীয়তা:",
+      "privacy_value": "কঠোর EU ডেটা সুরক্ষা আইনের আওতাধীন",
+      "learn_more": "npmx কীভাবে অ্যাটমোসফিয়ার ব্যবহার করে তা জানুন"
+    },
+    "community": {
+      "title": "এখানে যারা আছেন",
+      "description": "np​​mx.social-কে হোম হিসেবে গ্রহণ করা {count}টি অ্যাকাউন্টের কিছু:",
+      "loading": "PDS কমিউনিটি লোড হচ্ছে...",
+      "error": "PDS কমিউনিটি লোড করতে ব্যর্থ হয়েছে।",
+      "empty": "দেখানোর মতো কোনো কমিউনিটি সদস্য নেই।",
+      "view_profile": "{handle}-এর প্রোফাইল দেখুন",
+      "new_accounts": "...এছাড়া আরও {count}টি নতুন অ্যাকাউন্ট অ্যাটমোসফিয়ারে যুক্ত হয়েছে"
+    },
+    "title": "npmx.social",
+    "meta_description": "npmx কমিউনিটির জন্য অফিসিয়াল AT Protocol Personal Data Server (PDS)।"
   },
   "privacy_policy": {
     "cookies": {
-      "what_are": {},
-      "types": {},
-      "local_storage": {},
-      "management": {}
+      "what_are": {
+        "title": "কুকি কী?",
+        "p1": "কুকি হলো ছোট টেক্সট ফাইল যা আপনি কোনো ওয়েবসাইট ভিজিট করলে আপনার ডিভাইসে সংরক্ষিত হয়। এগুলোর উদ্দেশ্য হলো আপনার ব্রাউজিং অভিজ্ঞতা উন্নত করা, নির্দিষ্ট পছন্দ ও সেটিংস মনে রাখা।"
+      },
+      "types": {
+        "title": "আমরা কোন কুকি ব্যবহার করি?",
+        "p1": "আমরা শুধুমাত্র {bold} ব্যবহার করি যা সাইটের কার্যকারিতার জন্য একান্ত প্রয়োজনীয়। আমরা কোনো তৃতীয় পক্ষ বা বিজ্ঞাপন কুকি ব্যবহার করি না।",
+        "bold": "প্রয়োজনীয় টেকনিক্যাল কুকি",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": ":",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "এই কুকিটি আমাদের হোস্টিং প্রদানকারী (Vercel) ব্যবহার করে স্কিউ প্রোটেকশনের জন্য। এটি নিশ্চিত করে যে আপনি সঠিক ডিপ্লয়মেন্ট ভার্সন থেকে অ্যাসেট পাচ্ছেন, যখন আপনি ব্রাউজ করছেন তখন কোনো নতুন আপডেট রিলিজ হলে। এটি আপনাকে ট্র্যাক করে না।",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "এটি আমাদের সুরক্ষিত সেশন কুকি। এটি আপনার Atmosphere অ্যাকাউন্ট সংযুক্ত করলে OAuth অ্যাক্সেস টোকেন সংরক্ষণ করে। এটি আপনার প্রমাণীকৃত সেশন বজায় রাখতে অপরিহার্য।"
+      },
+      "local_storage": {
+        "title": "লোকাল স্টোরেজ",
+        "p1": "সেশন কুকির পাশাপাশি আমরা আপনার ব্রাউজারের {bold} ব্যবহার করি আপনার প্রদর্শন পছন্দ সংরক্ষণ করতে। এতে আমরা থিম (লাইট/ডার্ক) এবং আপনি নির্বাচিত কিছু {settings} মনে রাখতে পারি, যাতে প্রতিবার পুনরায় কনফিগার করতে না হয়।",
+        "bold": "লোকাল স্টোরেজ",
+        "p2": "এই তথ্য সম্পূর্ণ কার্যকরী উদ্দেশ্যে ব্যবহৃত হয়, শুধুমাত্র আপনার ডিভাইসে সংরক্ষিত থাকে, এবং {bold2}। আমরা এটি কেবলমাত্র আপনার অভিজ্ঞতা উন্নত করার জন্য ব্যবহার করি।",
+        "bold2": "এতে কোনো ব্যক্তিগত তথ্য নেই এবং এটি আপনাকে ট্র্যাক করার জন্য ব্যবহৃত হয় না",
+        "settings": "সেটিংস"
+      },
+      "management": {
+        "title": "কুকি ব্যবস্থাপনা",
+        "p1": "আপনি আপনার ব্রাউজার কনফিগার করে কুকি গ্রহণ, প্রত্যাখ্যান বা মুছে ফেলতে পারেন। তবে দয়া করে লক্ষ্য করুন, {bold}।",
+        "bold": "প্রয়োজনীয় কুকি প্রত্যাখ্যান করলে অ্যাপ্লিকেশনের সম্পূর্ণ ব্যবহার বাধাগ্রস্ত হতে পারে",
+        "p2": "নিচে সবচেয়ে ব্যবহৃত ব্রাউজারগুলোর কুকি ব্যবস্থাপনার নির্দেশনা দেওয়া হলো:",
+        "chrome": "Google Chrome (নতুন উইন্ডোতে খুলবে)",
+        "firefox": "Mozilla Firefox (নতুন উইন্ডোতে খুলবে)",
+        "edge": "Microsoft Edge (নতুন উইন্ডোতে খুলবে)"
+      }
     },
-    "analytics": {},
-    "authenticated": {},
-    "data_retention": {},
-    "your_rights": {},
-    "contact": {},
-    "changes": {}
+    "analytics": {
+      "title": "অ্যানালিটিক্স",
+      "p1": "আমরা {bold} ব্যবহার করি যাতে বোঝা যায় ব্যবহারকারীরা কীভাবে আমাদের ওয়েবসাইট ব্যবহার করছে। এটি আমাদের ব্যবহারকারীর অভিজ্ঞতা উন্নত করতে এবং সমস্যাগুলো চিহ্নিত করতে সাহায্য করে।",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analytics গোপনীয়তা-কেন্দ্রিকভাবে ডিজাইন করা হয়েছে:",
+      "li1": "এটি কুকি ব্যবহার করে না",
+      "li2": "এটি কোনো ব্যক্তিগত শনাক্তকারী সংগ্রহ করে না",
+      "li3": "এটি বিভিন্ন ওয়েবসাইটে ব্যবহারকারীদের ট্র্যাক করে না",
+      "li4": "সমস্ত ডেটা সমষ্টিগত এবং অ্যানোনিমাইজড",
+      "p3": "সংগৃহীত তথ্যের মধ্যে রয়েছে: পেজ URL, রেফারার, দেশ/অঞ্চল, ডিভাইস টাইপ, ব্রাউজার এবং অপারেটিং সিস্টেম। এই তথ্য দিয়ে ব্যক্তিগত ব্যবহারকারীকে শনাক্ত করা যায় না।"
+    },
+    "authenticated": {
+      "title": "প্রমাণীকৃত ব্যবহারকারী",
+      "p1": "আপনি যখন আপনার {bold} অ্যাকাউন্ট npmx-এর সাথে সংযুক্ত করেন, আমরা আপনার OAuth অ্যাক্সেস টোকেন একটি সুরক্ষিত HTTP-only সেশন কুকিতে সংরক্ষণ করি। এই টোকেন শুধুমাত্র আপনার পক্ষ থেকে অনুরোধ প্রমাণীকরণের জন্য ব্যবহৃত হয়।",
+      "bold": "Atmosphere",
+      "p2": "আমরা আপনার কোনো ক্রেডেনশিয়াল সংরক্ষণ করি না এবং আপনি যে ফিচার ব্যবহার করেন তার জন্য যতটুকু প্রয়োজন তার বাইরে কোনো ডেটা অ্যাক্সেস করি না। আপনি যেকোনো সময় {settings} পেজ থেকে আপনার অ্যাকাউন্ট বিচ্ছিন্ন করতে পারেন।",
+      "settings": "সেটিংস"
+    },
+    "data_retention": {
+      "title": "ডেটা সংরক্ষণকাল",
+      "p1": "সেশন কুকি ব্রাউজার বন্ধ করলে বা নির্দিষ্ট সময় নিষ্ক্রিয় থাকলে স্বয়ংক্রিয়ভাবে মুছে যায়। লোকাল স্টোরেজে থাকা পছন্দগুলো আপনি ব্রাউজার ডেটা ক্লিয়ার না করা পর্যন্ত থাকে। অ্যানালিটিক্স ডেটা সমষ্টিগত আকারে সংরক্ষিত হয় এবং ব্যক্তিগত ব্যবহারকারীর সাথে যুক্ত করা যায় না।"
+    },
+    "your_rights": {
+      "title": "আপনার অধিকারসমূহ",
+      "p1": "আপনার অধিকার রয়েছে:",
+      "li1": "আমরা কী ডেটা সংগ্রহ করি তা সম্পর্কে তথ্য জানার",
+      "li2": "যেকোনো সময় লোকাল স্টোরেজ ও কুকি মুছে ফেলার",
+      "li3": "আপনার প্রমাণীকৃত সেশন বিচ্ছিন্ন করার",
+      "li4": "আমাদের ডেটা ব্যবহারের বিষয়ে তথ্য চাওয়ার",
+      "p2": "যেহেতু আমরা ব্যক্তিগত ডেটা সংগ্রহ করি না, সাধারণত মুছে ফেলা বা এক্সপোর্ট করার মতো ব্যক্তিগত তথ্য থাকে না।"
+    },
+    "contact": {
+      "title": "যোগাযোগ করুন",
+      "p1": "এই প্রাইভেসি পলিসি সম্পর্কে কোনো প্রশ্ন বা উদ্বেগ থাকলে আপনি আমাদের {link}-এ ইস্যু খুলে যোগাযোগ করতে পারেন।",
+      "link": "GitHub রিপোজিটরি"
+    },
+    "changes": {
+      "title": "এই নীতির পরিবর্তন",
+      "p1": "আমরা সময়ে সময়ে এই প্রাইভেসি পলিসি আপডেট করতে পারি। যেকোনো পরিবর্তন এই পাতায় আপডেটেড রিভিশন তারিখসহ প্রকাশ করা হবে।"
+    },
+    "title": "প্রাইভেসি পলিসি",
+    "last_updated": "সর্বশেষ আপডেট: {date}",
+    "welcome": "{app}-এ স্বাগতম। আমরা আপনার গোপনীয়তা রক্ষায় প্রতিশ্রুতিবদ্ধ। এই নীতিতে আমরা কী ডেটা সংগ্রহ করি, কীভাবে ব্যবহার করি এবং আপনার ডেটা সম্পর্কিত অধিকার ব্যাখ্যা করা হয়েছে।"
   },
   "a11y": {
-    "approach": {},
-    "measures": {},
-    "limitations": {},
-    "contact": {}
+    "approach": {
+      "title": "আমাদের দৃষ্টিভঙ্গি",
+      "p1": "আমরা Web Content Accessibility Guidelines (WCAG) 2.2 অনুসরণ করার চেষ্টা করি এবং ফিচার তৈরি করার সময় এটিকে রেফারেন্স হিসেবে ব্যবহার করি। আমরা কোনো WCAG স্তরের পূর্ণ সম্মতি দাবি করি না—অ্যাক্সেসিবিলিটি একটি চলমান প্রক্রিয়া এবং সবসময় উন্নতির সুযোগ থাকে।",
+      "p2": "এই সাইটটি একটি {about}। নিয়মিত ডেভেলপমেন্টের অংশ হিসেবে ধাপে ধাপে অ্যাক্সেসিবিলিটি উন্নতি করা হয়।",
+      "about_link": "ওপেন-সোর্স, কমিউনিটি-চালিত প্রকল্প"
+    },
+    "measures": {
+      "title": "আমরা যা করি",
+      "p1": "সাইটজুড়ে আমরা যেসব বিষয় লক্ষ্য রাখি:",
+      "li1": "প্রাসঙ্গিক ক্ষেত্রে সেমান্টিক HTML এবং ARIA অ্যাট্রিবিউট ব্যবহার করা।",
+      "li2": "রিলেটিভ টেক্সট সাইজ ব্যবহার করা যাতে আপনি ব্রাউজার থেকে সহজে পরিবর্তন করতে পারেন।",
+      "li3": "ইন্টারফেস জুড়ে কীবোর্ড নেভিগেশন সমর্থন করা।",
+      "li4": "prefers-reduced-motion এবং prefers-color-scheme মিডিয়া কুয়েরি সম্মান করা।",
+      "li5": "পর্যাপ্ত কালার কনট্রাস্ট বজায় রেখে ডিজাইন করা।",
+      "li6": "প্রয়োজনীয় কনটেন্ট JavaScript ছাড়াও উপলব্ধ রাখা, যদিও কিছু ইন্টারঅ্যাকটিভ ফিচারের জন্য এটি প্রয়োজন।"
+    },
+    "limitations": {
+      "title": "পরিচিত সীমাবদ্ধতা",
+      "p1": "সাইটের কিছু অংশ—বিশেষ করে থার্ড-পার্টি কনটেন্ট যেমন প্যাকেজ README—অ্যাক্সেসিবিলিটি স্ট্যান্ডার্ড পুরোপুরি পূরণ নাও করতে পারে। আমরা ধীরে ধীরে এসব উন্নত করার কাজ করছি।"
+    },
+    "contact": {
+      "title": "প্রতিক্রিয়া",
+      "p1": "{app}-এ যদি আপনি কোনো অ্যাক্সেসিবিলিটি সমস্যা পান, অনুগ্রহ করে আমাদের {link}-এ ইস্যু খুলে জানান। আমরা এসব রিপোর্ট গুরুত্ব সহকারে নেই এবং সমাধানের সর্বোচ্চ চেষ্টা করি।",
+      "link": "GitHub রিপোজিটরি"
+    },
+    "title": "অ্যাক্সেসিবিলিটি",
+    "footer_title": "a11y",
+    "welcome": "আমরা চাই {app} যত বেশি সম্ভব মানুষের জন্য ব্যবহারযোগ্য হোক।"
   },
   "translation_status": {
-    "table": {}
+    "table": {
+      "file": "ফাইল",
+      "status": "অবস্থা",
+      "error": "ফাইল তালিকা লোড করার সময় ত্রুটি হয়েছে।",
+      "empty": "কোনো ফাইল পাওয়া যায়নি",
+      "file_link": "{file} ({lang}) GitHub-এ সম্পাদনা করুন"
+    },
+    "title": "অনুবাদ অবস্থা",
+    "generated_at": "উৎপাদনের তারিখ: {date}",
+    "welcome": "{npmx}-কে বিভিন্ন ভাষায় অনুবাদ করতে সাহায্য করতে আগ্রহী হলে আপনি সঠিক জায়গায় এসেছেন! এই স্বয়ংক্রিয়ভাবে আপডেট হওয়া পেজটি বর্তমানে যেসব কনটেন্টে সাহায্য দরকার তা দেখায়।",
+    "p1": "আমরা ডিফল্ট ভাষা হিসেবে {lang} ব্যবহার করি, মোট {count}টি বার্তা সহ। আপনি যদি অনুবাদে সাহায্য করতে চান, {bylang}-এ ভাষাটি খুঁজে বিস্তারিত অংশ খুলুন।",
+    "p1_lang": "আমেরিকান ইংরেজি (en-US)",
+    "p1_count": "০টি বার্তা | ১টি বার্তা | {count}টি বার্তা",
+    "p2": "শুরু করার আগে, অনুগ্রহ করে আমাদের {guide} পড়ুন যাতে অনুবাদ প্রক্রিয়া এবং কীভাবে অংশ নিতে হয় তা জানতে পারেন।",
+    "guide": "লোকালাইজেশন (i18n) গাইড",
+    "by_locale": "লোকেল অনুযায়ী অনুবাদ অগ্রগতি",
+    "by_file": "ফাইল অনুযায়ী অনুবাদ অগ্রগতি",
+    "complete_text": "এই অনুবাদ সম্পূর্ণ হয়েছে, দারুণ কাজ!",
+    "missing_text": "অনুপস্থিত",
+    "missing_keys": "কোনো অনুবাদ অনুপস্থিত নেই | অনুপস্থিত অনুবাদ | অনুপস্থিত অনুবাদসমূহ",
+    "progress_label": "{locale}-এর জন্য অগ্রগতির অবস্থা"
   },
-  "action_bar": {}
+  "action_bar": {
+    "title": "অ্যাকশন বার",
+    "selection": "০টি নির্বাচিত | ১টি নির্বাচিত | {count}টি নির্বাচিত",
+    "shortcut": "\"{key}\" চাপুন অ্যাকশন ফোকাস করতে",
+    "button_close_aria_label": "অ্যাকশন বার বন্ধ করুন"
+  },
+  "leaderboard": {
+    "likes": {
+      "title": "লাইক লিডারবোর্ড",
+      "description": "বর্তমানে npmx-এর সবচেয়ে বেশি লাইক পাওয়া ১০টি প্যাকেজ।",
+      "rank": "র‍্যাঙ্ক",
+      "likes": "লাইক",
+      "unavailable_title": "এখনও কোনো লাইক লিডারবোর্ড নেই",
+      "unavailable_description": "এই মুহূর্তে দেখানোর মতো কোনো লাইক লিডারবোর্ড নেই।"
+    }
+  },
+  "vacations": {
+    "title": "ছুটিতে",
+    "meta_description": "npmx টিম বিশ্রামে ছিল। এক সপ্তাহ পর Discord আবার খুলে দেওয়া হয়েছে।",
+    "heading": "বিশ্রাম",
+    "subtitle": "আমরা npmx এমন গতিতে তৈরি করছিলাম যা আমাদের কিছুজনের ঘুমের ক্ষতি করছিল। আমরা চাইনি এটি স্বাভাবিক হয়ে উঠুক! তাই আমরা একসাথে এক সপ্তাহ ছুটি নিয়েছিলাম।",
+    "illustration_alt": "আরামদায়ক আইকনের একটি সারি",
+    "poke_log": "ক্যাম্পফায়ার নাড়াচাড়া করুন",
+    "what": {
+      "title": "কি ঘটেছিল",
+      "p1": "Discord {dates} বন্ধ ছিল।",
+      "dates": "১৪ – ২১ ফেব্রুয়ারি",
+      "p2": "সব ইনভাইট লিংক সরিয়ে ফেলা হয়েছিল এবং চ্যানেলগুলো লক ছিল—শুধু {garden} ব্যতীত, যা সেখানে থাকতে ইচ্ছুকদের জন্য খোলা ছিল।",
+      "garden": "#garden"
+    },
+    "meantime": {
+      "title": "এর মধ্যে",
+      "p1": "{site} এবং {repo} খোলা ছিল—মানুষ কাজ চালিয়ে গেছে, কিছু ইস্যু তৈরি করেছে, কয়েকটি PR খুলেছে, তবে বেশিরভাগই আরামদায়ক পরিবেশে সময় কাটিয়েছে।",
+      "repo_link": "রিপোজিটরি"
+    },
+    "return": {
+      "title": "আমরা ফিরে এসেছি!",
+      "p1": "আমরা নতুন উদ্যম নিয়ে ফিরে এসেছি এবং ৩ মার্চের চূড়ান্ত প্রস্তুতির জন্য প্রস্তুত। আপডেটের জন্য {social} অনুসরণ করুন।",
+      "social_link": "Bluesky-তে আমাদের অনুসরণ করুন"
+    },
+    "stats": {
+      "contributors": "অবদানকারী",
+      "commits": "কমিট",
+      "pr": "মার্জ করা PR",
+      "subtitle": {
+        "some": "কিছু",
+        "all": "সব"
+      }
+    }
+  },
+  "logo_menu": {
+    "copy_svg": "SVG হিসেবে লোগো কপি করুন",
+    "copied": "কপি হয়েছে!",
+    "browse_brand": "ব্র্যান্ড কিট দেখুন"
+  },
+  "brand": {
+    "title": "ব্র্যান্ড",
+    "heading": "ব্র্যান্ড",
+    "meta_description": "npmx-এর ব্র্যান্ড নির্দেশিকা, লোগো, রঙ এবং টাইপোগ্রাফি—প্রেস ও মিডিয়ার ব্যবহারের জন্য।",
+    "intro": "আপনার প্রজেক্ট, আর্টিকেল এবং মিডিয়ায় npmx ব্র্যান্ড ব্যবহারের জন্য রিসোর্স ও নির্দেশিকা।",
+    "logos": {
+      "title": "লোগোসমূহ",
+      "description": "SVG এবং PNG ফরম্যাটে npmx লোগো ডাউনলোড করুন। ব্যাকগ্রাউন্ড অনুযায়ী উপযুক্ত ভ্যারিয়েন্ট ব্যবহার করুন।",
+      "wordmark": "পূর্ণ ওয়ার্ডমার্ক",
+      "wordmark_alt": "ডার্ক ব্যাকগ্রাউন্ডে নীল স্ল্যাশসহ npmx পূর্ণ ওয়ার্ডমার্ক লোগো",
+      "wordmark_light_alt": "লাইট ব্যাকগ্রাউন্ডে অ্যাকসেন্ট স্ল্যাশসহ npmx পূর্ণ ওয়ার্ডমার্ক লোগো",
+      "mark": "লোগো মার্ক",
+      "mark_alt": "ডার্ক ব্যাকগ্রাউন্ডে ডট এবং স্ল্যাশসহ npmx লোগো মার্ক",
+      "mark_light_alt": "লাইট ব্যাকগ্রাউন্ডে ডট এবং স্ল্যাশসহ npmx লোগো মার্ক",
+      "on_dark": "ডার্ক ব্যাকগ্রাউন্ডে",
+      "on_light": "লাইট ব্যাকগ্রাউন্ডে",
+      "download_svg": "SVG",
+      "download_png": "PNG",
+      "download_svg_aria": "{name} SVG হিসেবে ডাউনলোড করুন",
+      "download_png_aria": "{name} PNG হিসেবে ডাউনলোড করুন"
+    },
+    "customize": {
+      "title": "আপনার লোগো কাস্টমাইজ করুন",
+      "description": "আপনার অ্যাকসেন্ট রঙ এবং ব্যাকগ্রাউন্ড দিয়ে npmx লোগো প্রিভিউ করুন। এই প্রিভিউ আপনার বর্তমান সেটিংস অনুযায়ী—রঙ নির্বাচন করুন, ব্যাকগ্রাউন্ড টগল করুন এবং ডাউনলোড করুন।",
+      "accent_label": "অ্যাকসেন্ট",
+      "bg_label": "ব্যাকগ্রাউন্ড",
+      "download_svg_aria": "কাস্টমাইজড লোগো SVG হিসেবে ডাউনলোড করুন",
+      "download_png_aria": "কাস্টমাইজড লোগো PNG হিসেবে ডাউনলোড করুন"
+    },
+    "typography": {
+      "title": "টাইপোগ্রাফি",
+      "description": "npmx UI টেক্সট এবং কোডের জন্য Vercel-এর Geist ফন্ট ফ্যামিলি ব্যবহার করে।",
+      "sans": "Geist Sans",
+      "sans_desc": "বডি টেক্সট এবং UI উপাদানের জন্য ব্যবহৃত।",
+      "mono": "Geist Mono",
+      "mono_desc": "কোড, শিরোনাম এবং প্রযুক্তিগত কনটেন্টের জন্য ব্যবহৃত।",
+      "pangram": "The quick brown fox jumps over the lazy dog",
+      "numbers": "0123456789"
+    },
+    "guidelines": {
+      "title": "একটি ছোট নোট",
+      "message": "অ্যাক্সেসিবিলিটি আমাদের জন্য গুরুত্বপূর্ণ, এবং আমরা চাই আপনিও এই দৃষ্টিভঙ্গি অনুসরণ করুন। উল্লেখিত মিডিয়া ব্যবহার করার সময় ব্যাকগ্রাউন্ডের সাথে পর্যাপ্ত কনট্রাস্ট নিশ্চিত করুন এবং 24px-এর চেয়ে ছোট করবেন না। প্রকল্প সম্পর্কে আরও রিসোর্স বা তথ্য প্রয়োজন হলে {link}-এ আমাদের সাথে যোগাযোগ করুন।",
+      "discord_link_text": "chat.npmx.dev"
+    }
+  },
+  "alt_logo_kawaii": "npmx লোগোর একটি কিউট, গোলাকার এবং রঙিন সংস্করণ।",
+  "changelog": {
+    "pre_release": "প্রি-রিলিজ",
+    "draft": "খসড়া",
+    "no_logs": "দুঃখিত, এই প্যাকেজে কোনো চেঞ্জলগ প্রকাশ করা হয়নি বা এর চেঞ্জলগ ফরম্যাট সমর্থিত নয়।",
+    "error": {
+      "p1": "দুঃখিত, {package}-এর চেঞ্জলগ লোড করা যায়নি",
+      "p2": "অনুগ্রহ করে পরে আবার চেষ্টা করুন বা {viewon} দেখুন"
+    },
+    "rate_limit_ungh": "দুঃখিত, GitHub-এর রেট লিমিট শেষ হয়ে গেছে, একটু পরে আবার চেষ্টা করুন",
+    "version_unavailable": "অনুরোধকৃত ভার্সনটি উপলব্ধ নয়।"
+  }
 }

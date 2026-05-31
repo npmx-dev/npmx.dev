@@ -1067,7 +1067,7 @@ const normalisedDataset = computed(() => {
   // oxlint-disable-next-line oxc-no-map-spread
   return (chartData.value.dataset || []).map(d => {
     const series = applyDataPipeline(
-      d.series.map(v => v ?? 0),
+      d.series.map(v => (typeof v === 'number' ? v : (v?.y ?? 0))),
       {
         averageWindow: settings.value.chartFilter.averageWindow,
         smoothingTau: settings.value.chartFilter.smoothingTau,
@@ -1380,6 +1380,9 @@ const keepZoomState = shallowRef(true)
 const chartConfig = computed<VueUiXyConfig>(() => {
   return {
     theme: isDarkMode.value ? 'dark' : ('' as VueDataUiTheme),
+    downsample: {
+      threshold: 5000,
+    },
     a11y: {
       translations: {
         keyboardNavigation: $t(
@@ -1392,7 +1395,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
     chart: {
       height: chartHeight.value,
       backgroundColor: colors.value.bg,
-      padding: { bottom: displayedGranularity.value === 'yearly' ? 84 : 64, right: 128 }, // padding right is set to leave space of last datapoint label(s)
+      padding: { bottom: displayedGranularity.value === 'yearly' ? 84 : 64, right: 145 }, // padding right is set to leave space of last datapoint label(s)
       userOptions: {
         buttons: {
           pdf: false,
@@ -1460,8 +1463,10 @@ const chartConfig = computed<VueUiXyConfig>(() => {
               },
             }),
         },
+        useCursorPointer: true,
       },
       grid: {
+        position: 'start',
         stroke: colors.value.border,
         showHorizontalLines: true,
         labels: {
@@ -1995,9 +2000,9 @@ watch([selectedGranularity, startDate, endDate], async () => {
               <!-- Overlay covering the chart area to hide line resizing when switching granularities recalculates VueUiXy scaleMax when estimation lines are necessary -->
               <rect
                 v-if="pending"
-                :x="svg.drawingArea.left"
+                :x="svg.drawingArea.left - 3"
                 :y="svg.drawingArea.top - 12"
-                :width="svg.drawingArea.width + 12"
+                :width="svg.drawingArea.width + 15"
                 :height="svg.drawingArea.height + 48"
                 :fill="colors.bg"
               />

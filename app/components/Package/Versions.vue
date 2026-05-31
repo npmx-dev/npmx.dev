@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { compare, validRange } from 'semver'
 import type { RouteLocationRaw } from 'vue-router'
+import type { TrustStatus } from 'packumeta'
 import { fetchAllPackageVersions } from '~/utils/npm/api'
 
 const props = defineProps<{
@@ -86,7 +87,7 @@ interface VersionDisplay {
   version: string
   time?: string
   tags?: string[]
-  hasProvenance: boolean
+  trustStatus?: TrustStatus
   deprecated?: string
 }
 
@@ -182,9 +183,9 @@ const allTagRows = computed(() => {
         version,
         time: props.time[version],
         tags,
-        hasProvenance: versionData?.hasProvenance,
+        trustStatus: versionData?.trustStatus,
         deprecated: versionData?.deprecated,
-      } as VersionDisplay,
+      },
     }))
     .sort((a, b) => compare(b.primaryVersion.version, a.primaryVersion.version))
 })
@@ -328,7 +329,7 @@ function processLoadedVersions(allVersions: PackageVersionInfo[]) {
         version: v.version,
         time: v.time,
         tags: versionToTags.value.get(v.version),
-        hasProvenance: v.hasProvenance,
+        trustStatus: v.trustStatus,
         deprecated: v.deprecated,
       }))
 
@@ -355,7 +356,7 @@ function processLoadedVersions(allVersions: PackageVersionInfo[]) {
       version: v.version,
       time: v.time,
       tags: versionToTags.value.get(v.version),
-      hasProvenance: v.hasProvenance,
+      trustStatus: v.trustStatus,
       deprecated: v.deprecated,
     })
   }
@@ -699,7 +700,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                 class="text-xs text-fg-subtle"
               />
               <ProvenanceBadge
-                v-if="row.primaryVersion.hasProvenance"
+                v-if="row.primaryVersion.trustStatus?.provenance"
                 :package-name="packageName"
                 :version="row.primaryVersion.version"
                 compact
@@ -753,7 +754,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                   day="numeric"
                 />
                 <ProvenanceBadge
-                  v-if="v.hasProvenance"
+                  v-if="v.trustStatus?.provenance"
                   :package-name="packageName"
                   :version="v.version"
                   compact
@@ -957,7 +958,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                       day="numeric"
                     />
                     <ProvenanceBadge
-                      v-if="group.versions[0]?.hasProvenance"
+                      v-if="group.versions[0]?.trustStatus?.provenance"
                       :package-name="packageName"
                       :version="group.versions[0]?.version"
                       compact
@@ -1024,7 +1025,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                       day="numeric"
                     />
                     <ProvenanceBadge
-                      v-if="group.versions[0]?.hasProvenance"
+                      v-if="group.versions[0]?.trustStatus?.provenance"
                       :package-name="packageName"
                       :version="group.versions[0]?.version"
                       compact
@@ -1091,7 +1092,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                         day="numeric"
                       />
                       <ProvenanceBadge
-                        v-if="v.hasProvenance"
+                        v-if="v.trustStatus?.provenance"
                         :package-name="packageName"
                         :version="v.version"
                         compact
