@@ -1176,7 +1176,6 @@
     },
     "team": {
       "title": "Echipă",
-      "governance": "Guvernanță",
       "role_steward": "steward",
       "role_maintainer": "menținător(toare)",
       "sponsor": "sponsor",
@@ -1716,5 +1715,8 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "O versiune drăguță, rotunjită și colorată a logo-ului npmx."
+  "alt_logo_kawaii": "O versiune drăguță, rotunjită și colorată a logo-ului npmx.",
+  "changelog": {
+    "error": {}
+  }
 }
