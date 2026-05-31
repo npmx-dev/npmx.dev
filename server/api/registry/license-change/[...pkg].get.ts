@@ -1,3 +1,5 @@
+import { normalizeLicense } from '#shared/utils/npm'
+
 interface LicenseChangeRecord {
   from: string
   to: string
@@ -42,13 +44,18 @@ export default defineCachedEventHandler(
         version === 'latest' ? versions.length - 1 : versions.findIndex(v => v.version === version)
 
       const previousVersionIndex = currentVersionIndex - 1
-      const currentLicense = String(versions[currentVersionIndex]?.license || 'UNKNOWN')
-      const previousLicense = String(versions[previousVersionIndex]?.license || 'UNKNOWN')
 
-      if (currentLicense !== previousLicense) {
-        change = {
-          from: previousLicense,
-          to: currentLicense,
+      // Skip when there's no real previous version, else we'd diff against a phantom 'UNKNOWN'.
+      if (currentVersionIndex > 0) {
+        const currentLicense = normalizeLicense(versions[currentVersionIndex]?.license) ?? 'UNKNOWN'
+        const previousLicense =
+          normalizeLicense(versions[previousVersionIndex]?.license) ?? 'UNKNOWN'
+
+        if (currentLicense !== previousLicense) {
+          change = {
+            from: previousLicense,
+            to: currentLicense,
+          }
         }
       }
       return { change }

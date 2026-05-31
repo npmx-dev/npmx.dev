@@ -338,6 +338,11 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     file: 'pt-PT.json',
     name: 'Português (Portugal)',
   },
+  {
+    code: 'ro-RO',
+    file: 'ro-RO.json',
+    name: 'Română',
+  },
   /*{
       code: 'sv',
       file: 'sv.json',

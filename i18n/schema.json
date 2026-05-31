@@ -2152,6 +2152,9 @@
             "title": {
               "type": "string"
             },
+            "version_distribution_title": {
+              "type": "string"
+            },
             "community_distribution": {
               "type": "string"
             },

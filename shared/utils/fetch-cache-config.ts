@@ -30,6 +30,7 @@ export const FETCH_CACHE_ALLOWED_DOMAINS = [
   'gitlab.com', // GitLab API
   'api.bitbucket.org', // Bitbucket API
   'codeberg.org', // Codeberg (Gitea-based)
+  'gitea.com', // Gitea API
   'gitee.com', // Gitee API
   // microcosm endpoints for atproto data
   CONSTELLATION_HOST,

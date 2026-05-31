@@ -6,10 +6,10 @@ export type Noodle = {
   key: string
   // Timezone for the noodle (default is auto, i.e. user's timezone)
   timezone?: string
-  // Date for the noodle
-  date?: string
-  // `Date to` for the noodle
-  dateTo?: string
+  // Date for the noodle (YYYY-MM-DD)
+  date?: `${number}-${number}-${number}`
+  // `Date to` for the noodle (YYYY-MM-DD)
+  dateTo?: `${number}-${number}-${number}`
   // Logo for the noodle - could be any component. Relative parent - intro section
   logo: Component
   // Show npmx tagline or not (default is true)

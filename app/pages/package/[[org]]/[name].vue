@@ -274,8 +274,7 @@ const versionSecurityMetadata = computed<PackageVersionInfo[]>(() => {
   return Object.entries(pkg.value.versions).map(([version, metadata]) => ({
     version,
     time: pkg.value?.time?.[version],
-    hasProvenance: !!metadata.hasProvenance,
-    trustLevel: metadata.trustLevel,
+    trustStatus: metadata.trustStatus,
     deprecated: metadata.deprecated,
   }))
 })

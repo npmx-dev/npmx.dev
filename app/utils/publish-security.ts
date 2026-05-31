@@ -1,33 +1,21 @@
+import { getTrustLevel, getTrustLevelName, type TrustLevelName } from 'packumeta'
 import { compare, major } from 'semver'
 
 export interface PublishSecurityDowngrade {
   downgradedVersion: string
   downgradedPublishedAt?: string
-  downgradedTrustLevel: PublishTrustLevel
+  downgradedTrustLevel: TrustLevelName
   /** Recommended trusted version within the same major, if one exists */
   trustedVersion?: string
   trustedPublishedAt?: string
-  trustedTrustLevel: PublishTrustLevel
+  trustedTrustLevel: TrustLevelName
 }
 
 type VersionWithIndex = PackageVersionInfo & {
   index: number
   timestamp: number
   trustRank: number
-  resolvedTrustLevel: PublishTrustLevel
-}
-
-const TRUST_RANK: Record<PublishTrustLevel, number> = {
-  none: 0,
-  provenance: 1,
-  trustedPublisher: 2,
-}
-
-function resolveTrustLevel(version: PackageVersionInfo): PublishTrustLevel {
-  if (version.trustLevel) return version.trustLevel
-  // Fallback for legacy data: hasProvenance only indicates non-'none' trust,
-  // so map it to provenance (the lower rank) to avoid over-ranking
-  return version.hasProvenance ? 'provenance' : 'none'
+  trustLevelName: TrustLevelName
 }
 
 function toTimestamp(time?: string): number {
@@ -68,13 +56,12 @@ export function detectPublishSecurityDowngradeForVersion(
 
   const sorted = versions
     .map((version, index) => {
-      const resolvedTrustLevel = resolveTrustLevel(version)
       return {
         ...version,
         index,
         timestamp: toTimestamp(version.time),
-        trustRank: TRUST_RANK[resolvedTrustLevel],
-        resolvedTrustLevel,
+        trustRank: version.trustStatus ? getTrustLevel(version.trustStatus) : 0,
+        trustLevelName: version.trustStatus ? getTrustLevelName(version.trustStatus) : 'none',
       }
     })
     .sort(sortByRecency)
@@ -114,9 +101,9 @@ export function detectPublishSecurityDowngradeForVersion(
   return {
     downgradedVersion: current.version,
     downgradedPublishedAt: current.time,
-    downgradedTrustLevel: current.resolvedTrustLevel,
+    downgradedTrustLevel: current.trustLevelName,
     trustedVersion: recommendation?.version,
     trustedPublishedAt: recommendation?.time,
-    trustedTrustLevel: strongestOlder.resolvedTrustLevel,
+    trustedTrustLevel: strongestOlder.trustLevelName,
   }
 }
