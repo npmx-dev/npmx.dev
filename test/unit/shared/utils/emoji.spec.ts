@@ -14,4 +14,12 @@ describe('convertToEmoji', () => {
     expect(convertToEmoji('<p>:1234:</p><code>:1234:</code>')).toBe('<p>🔢</p><code>:1234:</code>')
     expect(convertToEmoji('<code>:1234:</code><p>:1234:</p>')).toBe('<code>:1234:</code><p>🔢</p>')
   })
+
+  it('leaves :1234: in pre blocks untouched', () => {
+    expect(convertToEmoji('<pre><code>:1234:</code></pre>')).toBe('<pre><code>:1234:</code></pre>')
+  })
+
+  it('does not require matching code blocks with regex', () => {
+    expect(convertToEmoji('<p>:1234:</p><code>:smile:</code><p>:smile:</p>')).toBe('<p>🔢</p><code>:smile:</code><p>😄</p>')
+  })
 })
