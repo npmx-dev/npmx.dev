@@ -1942,4 +1942,3 @@ export function convertToEmoji(html: string): string {
   output += html.slice(position)
   return output
 }
-

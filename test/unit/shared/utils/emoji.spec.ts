@@ -20,6 +20,8 @@ describe('convertToEmoji', () => {
   })
 
   it('does not require matching code blocks with regex', () => {
-    expect(convertToEmoji('<p>:1234:</p><code>:smile:</code><p>:smile:</p>')).toBe('<p>🔢</p><code>:smile:</code><p>😄</p>')
+    expect(convertToEmoji('<p>:1234:</p><code>:smile:</code><p>:smile:</p>')).toBe(
+      '<p>🔢</p><code>:smile:</code><p>😄</p>',
+    )
   })
 })
