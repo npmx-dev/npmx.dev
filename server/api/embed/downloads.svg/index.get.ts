@@ -94,7 +94,7 @@ export default defineCachedEventHandler(
       colors,
       isDarkMode,
       chartFilter,
-      t: (() => {}) as any,
+      t: ((key: string) => key) as any,
       compactNumberFormatter,
       accent,
     })
@@ -126,7 +126,7 @@ export default defineCachedEventHandler(
       locale,
       chartHeight: height,
       chartFilter,
-      t: (() => {}) as any,
+      t: ((key: string) => key) as any,
       compactNumberFormatter,
       tooltipPosition: 'center',
     })
@@ -208,7 +208,7 @@ export default defineCachedEventHandler(
       additionalSvgContent: ({ series, drawingArea }) => {
         const lastPlotValues = series
           .map(serie => {
-            const lastPlot = serie.plots.at(-1)
+            const lastPlot = (serie.plots || []).at(-1)
             if (!lastPlot) return ''
             return `
               <text

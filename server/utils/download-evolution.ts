@@ -115,13 +115,14 @@ async function fetchDailyRange(
   endIso: string,
 ): Promise<DailyDownloadPoint[]> {
   const response = await fetchNpmDownloadsRangeServer(packageName, startIso, endIso)
+  const downloads = Array.isArray(response?.downloads) ? response.downloads : []
 
-  return response.downloads
+  return downloads
     .slice()
     .sort((a, b) => a.day.localeCompare(b.day))
     .map(download => ({
       day: download.day,
-      value: download.downloads,
+      value: Number(download.downloads) || 0,
     }))
 }
 
