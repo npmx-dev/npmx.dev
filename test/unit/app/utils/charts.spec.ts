@@ -1,3 +1,4 @@
+// @vitest-environment happy-dom
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 import {
   sum,
@@ -1317,6 +1318,7 @@ describe('loadFile', () => {
   })
 
   it('creates an anchor element and triggers a download', () => {
+    vi.stubEnv('CLIENT', 'true')
     const link = 'https://npmx.dev/file.png'
     const filename = 'file.png'
     loadFile(link, filename)
