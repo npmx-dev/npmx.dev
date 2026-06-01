@@ -1421,8 +1421,6 @@
     "file_changes": "Bestand Veranderingen",
     "files_count": "{count} bestand | {count} bestanden",
     "lines_hidden": "{count} verborgen lijn | {count} verborgen lijn",
-    "file_too_large": "Bestand te groot om te vergelijken",
-    "file_size_warning": "{size} overschrijdt de limiet van 250 KB voor vergelijking",
     "compare_versions": "verschillen",
     "compare_versions_title": "Vergelijk met de laatste versie",
     "comparing_versions_label": "Versies vergelijken...",

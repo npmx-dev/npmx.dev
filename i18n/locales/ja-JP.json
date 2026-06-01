@@ -1425,8 +1425,6 @@
     "file_changes": "ファイル変更",
     "files_count": "{count} ファイル",
     "lines_hidden": "{count} 行を非表示",
-    "file_too_large": "ファイルサイズが大きすぎるため比較できません",
-    "file_size_warning": "{size} は比較制限の250KBを超えています",
     "compare_versions": "diff",
     "compare_versions_title": "最新バージョンと比較",
     "comparing_versions_label": "バージョンを比較中...",

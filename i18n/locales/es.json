@@ -1421,8 +1421,6 @@
     "file_changes": "Cambios en archivos",
     "files_count": "{count} archivos",
     "lines_hidden": "{count} líneas ocultas",
-    "file_too_large": "Archivo demasiado grande para comparar",
-    "file_size_warning": "{size} excede el límite de 250KB para la comparación",
     "compare_versions": "diferencia",
     "compare_versions_title": "Comparar con la última versión",
     "comparing_versions_label": "Comparando versiones...",

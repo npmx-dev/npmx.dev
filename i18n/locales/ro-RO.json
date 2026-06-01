@@ -1413,8 +1413,6 @@
     "file_changes": "Modificări Fișier",
     "files_count": "{count} fișier | {count} fișiere",
     "lines_hidden": "{count} linie ascunsă | {count} linii ascunse",
-    "file_too_large": "Fișier prea mare pentru comparare",
-    "file_size_warning": "{size} depășește limita de 250KB pentru comparare",
     "compare_versions": "diff",
     "compare_versions_title": "Compară cu cea mai recentă versiune",
     "comparing_versions_label": "Se compară versiunile...",

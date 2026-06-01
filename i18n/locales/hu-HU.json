@@ -65,6 +65,23 @@
       "view_org_packages": "E szervezet csomagjainak megtekintése"
     }
   },
+  "command_palette": {
+    "state": {},
+    "groups": {},
+    "actions": {},
+    "connections": {},
+    "navigation": {},
+    "links": {},
+    "package_links": {},
+    "theme": {},
+    "package": {},
+    "package_actions": {},
+    "code": {},
+    "diff": {},
+    "version": {},
+    "status": {},
+    "announcements": {}
+  },
   "nav": {
     "main_navigation": "Főmenü",
     "popular_packages": "Népszerű csomagok",
@@ -198,6 +215,7 @@
       "size": "A telepítési méret {percent}-kal nőtt ({size} nagyobb)",
       "deps": "{count} további függőség"
     },
+    "size_decrease": {},
     "replacement": {
       "title": "Lehet, hogy nincs szükséged erre a függőségre.",
       "native": "Ez helyettesíthető a következővel: {replacement}, amely elérhető a Node {nodeVersion} verzió óta.",
@@ -356,6 +374,11 @@
         "general_description": "Sávdiagram, amely a(z) {package_name} csomag {semver_grouping_mode} verzióinak verzió szerinti letöltéseit mutatja, {date_range_label} a(z) {first_version} verziótól a(z) {last_version} verzióig. A legtöbbször letöltött verzió a(z) {max_downloaded_version}, {max_version_downloads} letöltéssel. {per_version_analysis}. {watermark}."
       }
     },
+    "timeline": {
+      "chart": {
+        "copy_alt": {}
+      }
+    },
     "dependencies": {
       "title": "Függőség ({count}) | Függőségek ({count})",
       "list_label": "Csomag függőségei",
@@ -392,6 +415,7 @@
       "show_less": "(kevesebb megjelenítése)"
     },
     "trends": {
+      "chart_assistive_text": {},
       "granularity": "Bontás",
       "granularity_daily": "Napi",
       "granularity_weekly": "Heti",
@@ -536,6 +560,9 @@
       "mb": "{size} MB"
     },
     "download": {}
+  },
+  "leaderboard": {
+    "likes": {}
   },
   "connector": {
     "modal": {
@@ -994,6 +1021,9 @@
       "packages_selected": "{count}/{max} csomag kiválasztva.",
       "add_hint": "Adj hozzá legalább 2 csomagot az összehasonlításhoz."
     },
+    "scatter_chart": {
+      "copy_alt": {}
+    },
     "no_dependency": {
       "label": "(Nincs függőség)",
       "typeahead_title": "Mit tenne James?",
@@ -1068,7 +1098,10 @@
         "vulnerabilities": {
           "label": "Sebezhetőségek",
           "description": "Ismert biztonsági sebezhetőségek"
-        }
+        },
+        "githubStars": {},
+        "githubIssues": {},
+        "createdAt": {}
       },
       "values": {
         "any": "Bármely",
@@ -1088,8 +1121,6 @@
     "file_changes": "Fájl módosítások",
     "files_count": "{count} fájl",
     "lines_hidden": "{count} sor elrejtve",
-    "file_too_large": "A fájl túl nagy az összehasonlításhoz",
-    "file_size_warning": "{size} meghaladja a 250KB-os limitet az összehasonlításhoz",
     "compare_versions": "diff",
     "version_invalid_url_format": {},
     "summary": "Összegzés",
@@ -1237,5 +1268,23 @@
   "translation_status": {
     "table": {}
   },
-  "action_bar": {}
+  "vacations": {
+    "what": {},
+    "meantime": {},
+    "return": {},
+    "stats": {
+      "subtitle": {}
+    }
+  },
+  "action_bar": {},
+  "logo_menu": {},
+  "brand": {
+    "logos": {},
+    "customize": {},
+    "typography": {},
+    "guidelines": {}
+  },
+  "changelog": {
+    "error": {}
+  }
 }

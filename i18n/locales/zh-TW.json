@@ -378,6 +378,7 @@
       "size": "安裝大小增加了 {percent}（多出 {size}）",
       "deps": "增加了 {count} 個相依套件"
     },
+    "size_decrease": {},
     "replacement": {
       "title": "你可能不需要這個相依套件。",
       "native": "此功能自 Node.js {nodeVersion} 起已內建，可直接使用 {replacement} 取代。",
@@ -554,6 +555,11 @@
       "page_title": "版本歷史記錄",
       "current_tags": "當前標籤",
       "no_match_filter": "沒有版本符合 {filter}"
+    },
+    "timeline": {
+      "chart": {
+        "copy_alt": {}
+      }
     },
     "dependencies": {
       "title": "相依（{count} 個）",
@@ -757,6 +763,9 @@
       "button": "下載",
       "tarball": "下載 Tarball（.tar.gz）"
     }
+  },
+  "leaderboard": {
+    "likes": {}
   },
   "connector": {
     "modal": {
@@ -1323,7 +1332,10 @@
         "vulnerabilities": {
           "label": "漏洞",
           "description": "已知安全漏洞"
-        }
+        },
+        "githubStars": {},
+        "githubIssues": {},
+        "createdAt": {}
       },
       "values": {
         "any": "不限",
@@ -1343,8 +1355,6 @@
     "file_changes": "檔案變更",
     "files_count": "{count} 個檔案",
     "lines_hidden": "已隱藏 {count} 行",
-    "file_too_large": "檔案大小過大，無法比較",
-    "file_size_warning": "檔案大小 {size} 超過 250KB，無法比較",
     "compare_versions": "差異",
     "compare_versions_title": "比較最新版本",
     "comparing_versions_label": "正在比較版本…",
@@ -1645,5 +1655,8 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "一個可愛、圓潤且色彩繽紛的 npmx 標誌版本。"
+  "alt_logo_kawaii": "一個可愛、圓潤且色彩繽紛的 npmx 標誌版本。",
+  "changelog": {
+    "error": {}
+  }
 }

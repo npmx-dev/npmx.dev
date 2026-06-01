@@ -379,6 +379,7 @@
       "size": "Installationsgröße um {percent} gestiegen ({size} größer)",
       "deps": "{count} zusätzliche Abhängigkeiten"
     },
+    "size_decrease": {},
     "replacement": {
       "title": "Du brauchst diese Abhängigkeit vielleicht nicht.",
       "native": "Dies kann durch {replacement} ersetzt werden, verfügbar seit Node {nodeVersion}.",
@@ -555,6 +556,11 @@
       "page_title": "Versionshistorie",
       "current_tags": "Aktuelle Tags",
       "no_match_filter": "Keine Versionen entsprechen {filter}"
+    },
+    "timeline": {
+      "chart": {
+        "copy_alt": {}
+      }
     },
     "dependencies": {
       "title": "Abhängigkeit ({count}) | Abhängigkeiten ({count})",
@@ -757,6 +763,9 @@
       "button": "Herunterladen",
       "tarball": "Tarball als .tar.gz herunterladen"
     }
+  },
+  "leaderboard": {
+    "likes": {}
   },
   "connector": {
     "modal": {
@@ -1315,7 +1324,10 @@
         "vulnerabilities": {
           "label": "Sicherheitslücken",
           "description": "Bekannte Sicherheitsrisiken"
-        }
+        },
+        "githubStars": {},
+        "githubIssues": {},
+        "createdAt": {}
       },
       "values": {
         "any": "Beliebig",
@@ -1335,8 +1347,6 @@
     "file_changes": "Dateiänderungen",
     "files_count": "{count} Datei | {count} Dateien",
     "lines_hidden": "{count} Zeile ausgeblendet | {count} Zeilen ausgeblendet",
-    "file_too_large": "Datei zu groß für Diff-Ansicht",
-    "file_size_warning": "{size} überschreitet das Limit für die Diff-Anzeige",
     "compare_versions": "Diff",
     "compare_versions_title": "Mit neuester Version vergleichen",
     "comparing_versions_label": "Versionen werden verglichen...",
@@ -1637,5 +1647,8 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "Eine süße, abgerundete und bunte Version des npmx-Logos."
+  "alt_logo_kawaii": "Eine süße, abgerundete und bunte Version des npmx-Logos.",
+  "changelog": {
+    "error": {}
+  }
 }

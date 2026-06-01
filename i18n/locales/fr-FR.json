@@ -254,7 +254,6 @@
     "hide_platform_packages_description": "Masquer les paquets binaires natifs comme {'@'}esbuild/linux-x64 des résultats",
     "enable_graph_pulse_loop": "Activer la boucle de l'effet de pulsation sur le mini-graphe",
     "enable_graph_pulse_loop_description": "Activer une animation de pulsation continue sur le graphique des téléchargements hebdomadaires. Cette animation peut être gênante pour certaines personnes.",
-    "enable_code_ligatures": "Activer les ligatures de code",
     "theme": "Thème",
     "theme_light": "Clair",
     "theme_dark": "Sombre",
@@ -284,6 +283,7 @@
     },
     "keyboard_shortcuts_enabled": "Activer les raccourcis clavier",
     "keyboard_shortcuts_enabled_description": "Les raccourcis clavier peuvent être désactivés s'ils entrent en conflit avec d'autres raccourcis du navigateur ou du système",
+    "enable_code_ligatures": "Activer les ligatures de code",
     "enable_changelog_autoscroll": "Scroller automatiquement à la version voulue",
     "enable_changelog_autoscroll_description": "Scroller automatiquement à — ou près — de la version voulue dans la page des changements"
   },
@@ -345,8 +345,8 @@
       "tangled": "Voir sur Tangled"
     },
     "collapse": "Réduire",
-    "expand": "Développer",
     "collapse_with_name": "Réduire {name}",
+    "expand": "Développer",
     "expand_with_name": "Développer {name}"
   },
   "profile": {
@@ -385,6 +385,7 @@
       "size": "La taille d'installation a augmenté de {percent} ({size} de plus)",
       "deps": "{count} dépendances supplémentaires"
     },
+    "size_decrease": {},
     "replacement": {
       "title": "Vous n'avez peut-être pas besoin de cette dépendance.",
       "native": "Ceci peut être remplacé par {replacement}, disponible depuis Node {nodeVersion}.",
@@ -995,6 +996,7 @@
     "view_raw": "Voir le fichier brut",
     "toggle_container": "Changer la largeur du conteneur",
     "open_raw_file": "Ouvrir le fichier brut",
+    "open_path_dropdown": "Ouvrir le menu du chemin",
     "file_too_large": "Fichier trop volumineux pour l'aperçu",
     "file_size_warning": "{size} dépasse la limite de 500 Ko pour la coloration syntaxique",
     "failed_to_load": "Échec du chargement du fichier",
@@ -1012,7 +1014,6 @@
       "preview": "aperçu",
       "code": "code"
     },
-    "open_path_dropdown": "Ouvrir le menu du chemin",
     "file_path": "Chemin du fichier",
     "binary_file": "Fichier binaire",
     "binary_rendering_warning": "Le type de fichier \"{contentType}\" n'est pas pris en charge pour l'aperçu."
@@ -1406,8 +1407,6 @@
     "file_changes": "Modifications de fichiers",
     "files_count": "{count} fichiers",
     "lines_hidden": "{count} lignes masquées",
-    "file_too_large": "Fichier trop volumineux pour être comparé",
-    "file_size_warning": "{size} dépasse la limite de 250 Ko pour la comparaison",
     "compare_versions": "diff",
     "compare_versions_title": "Comparer avec la dernière version",
     "comparing_versions_label": "Comparaison des versions...",
@@ -1708,6 +1707,7 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
+  "alt_logo_kawaii": "Une version mignonne, arrondie et colorée du logo npmx.",
   "changelog": {
     "pre_release": "Pré-version",
     "draft": "Brouillon",
@@ -1718,6 +1718,5 @@
     },
     "rate_limit_ungh": "Désolé, la limite de requêtes à l'API GitHub a été atteinte, réessayez plus tard",
     "version_unavailable": "La version demandée n'est pas disponible."
-  },
-  "alt_logo_kawaii": "Une version mignonne, arrondie et colorée du logo npmx."
+  }
 }

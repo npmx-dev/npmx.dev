@@ -1421,8 +1421,6 @@
     "file_changes": "Dosya değişiklikleri",
     "files_count": "{count} dosya",
     "lines_hidden": "{count} satır gizlendi",
-    "file_too_large": "Dosya çok büyük",
-    "file_size_warning": "Dosya boyutu {size}",
     "compare_versions": "fark",
     "compare_versions_title": "Sürümleri karşılaştır",
     "comparing_versions_label": "Sürümler karşılaştırılıyor...",

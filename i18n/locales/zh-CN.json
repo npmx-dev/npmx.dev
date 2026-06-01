@@ -1417,8 +1417,6 @@
     "file_changes": "文件更改",
     "files_count": "{count} 个文件",
     "lines_hidden": "已隐藏 {count} 行",
-    "file_too_large": "文件过大，无法对比",
-    "file_size_warning": "{size} 超出了 250KB 的对比限制",
     "compare_versions": "差异",
     "compare_versions_title": "与最新版本对比",
     "comparing_versions_label": "比较版本...",
@@ -1719,5 +1717,8 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "一个圆润可爱、色彩活泼的 npmx logo 版本。"
+  "alt_logo_kawaii": "一个圆润可爱、色彩活泼的 npmx logo 版本。",
+  "changelog": {
+    "error": {}
+  }
 }

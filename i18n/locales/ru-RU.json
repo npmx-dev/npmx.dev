@@ -1420,8 +1420,6 @@
     "file_changes": "Изменения файлов",
     "files_count": "файлов: {count}",
     "lines_hidden": "скрыто строк: {count}",
-    "file_too_large": "Файл слишком большой для сравнения",
-    "file_size_warning": "{size} превышает лимит в 250 КБ для сравнения",
     "compare_versions": "сравнение",
     "compare_versions_title": "Сравнить с последней версией",
     "comparing_versions_label": "Сравнение версий…",

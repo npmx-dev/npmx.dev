@@ -1416,8 +1416,6 @@
     "file_changes": "Filendringer",
     "files_count": "{count} fil | {count} filer",
     "lines_hidden": "{count} linje skjult | {count} linjer skjult",
-    "file_too_large": "Filen er for stor til å sammenligne",
-    "file_size_warning": "{size} overstiger grensen på 250KB for sammenligning",
     "compare_versions": "diff",
     "compare_versions_title": "Sammenlign med nyeste versjon",
     "comparing_versions_label": "Sammenligner versjoner...",
@@ -1718,5 +1716,8 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "En søt, avrundet og fargerik versjon av npmx-logoen."
+  "alt_logo_kawaii": "En søt, avrundet og fargerik versjon av npmx-logoen.",
+  "changelog": {
+    "error": {}
+  }
 }
