@@ -144,7 +144,7 @@ export default defineNuxtConfig({
     '/api/leaderboard/likes': { isr: 900 },
     '/api/embed/downloads.svg': {
       isr: {
-        expiration: 3600,
+        expiration: 60 * 60 /* one hour */,
         passQuery: true,
         allowQuery: [
           'packages',
@@ -159,10 +159,6 @@ export default defineNuxtConfig({
           'locale',
           'accent',
           'yLabel',
-          'width',
-          'height',
-          'weeks',
-          'months',
         ],
       },
     },
