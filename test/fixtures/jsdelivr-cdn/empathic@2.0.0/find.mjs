@@ -1,3 +1,4 @@
+/* eslint-disable -- fixture mirrors upstream package source */
 import { join } from 'node:path'
 import { existsSync, statSync } from 'node:fs'
 import * as walk from 'empathic/walk'
@@ -8,9 +9,10 @@ import * as walk from 'empathic/walk'
  * @returns The absolute path to the item, if found.
  */
 export function up(name, options) {
-  const start = (options && options.cwd) || ''
-  for (const dir of walk.up(start, options)) {
-    const tmp = join(dir, name)
+  let dir, tmp
+  let start = (options && options.cwd) || ''
+  for (dir of walk.up(start, options)) {
+    tmp = join(dir, name)
     if (existsSync(tmp)) return tmp
   }
 }

@@ -103,19 +103,22 @@ function getExtensionPriority(sourceFile: string): string[][] {
 
 /**
  * Resolve an alias specifier to the directory path within a file path.
- * Supports #, ~, and @ prefixes (e.g. #app, ~/app, @/app).
+ * Supports #, ~, @, and $ prefixes (e.g. #app, ~/app, @/app, $/app).
  * The alias must match a path segment exactly (no partial matches).
  */
 export function resolveAliasToDir(aliasSpec: string, filePath?: string | null): string | null {
   if (
-    (!aliasSpec.startsWith('#') && !aliasSpec.startsWith('~') && !aliasSpec.startsWith('@')) ||
+    (!aliasSpec.startsWith('#') &&
+      !aliasSpec.startsWith('~') &&
+      !aliasSpec.startsWith('@') &&
+      !aliasSpec.startsWith('$')) ||
     !filePath
   ) {
     return null
   }
 
-  // Support #app, #/app, ~app, ~/app, @app, @/app
-  const alias = aliasSpec.replace(/^[#~@]\/?/, '')
+  // Support #app, #/app, ~app, ~/app, @app, @/app, $app, $/app
+  const alias = aliasSpec.replace(/^[#~@$]\/?/, '')
   const normalizedFilePath = filePath.replace(/\/+$/, '')
   if (!normalizedFilePath) {
     return null
@@ -273,7 +276,7 @@ function normalizeInternalImportTarget(target: InternalImportTarget): string | n
 }
 
 function normalizeAliasPrefix(value: string): string {
-  return value.replace(/^([#~@])\//, '$1')
+  return value.replace(/^([#~@$])\//, '$1')
 }
 
 function guessInternalImportTarget(
@@ -341,6 +344,8 @@ function guessInternalImportTarget(
  * import ... from '#/components/Button.vue'
  * import ... from '~/components/Button.vue'
  * import ... from '~components/Button.vue'
+ * import ... from '$components/Button.vue'
+ * import ... from '$/components/Button.vue'
  */
 export function resolveInternalImport(
   specifier: string,
@@ -353,7 +358,8 @@ export function resolveInternalImport(
   if (
     (!cleanSpecifier.startsWith('#') &&
       !cleanSpecifier.startsWith('~') &&
-      !cleanSpecifier.startsWith('@')) ||
+      !cleanSpecifier.startsWith('@') &&
+      !cleanSpecifier.startsWith('$')) ||
     !imports
   ) {
     return null
@@ -519,12 +525,7 @@ export function createImportResolver(
       currentFile,
       files,
     )
-    const resolved =
-      relativeResolved != null
-        ? relativeResolved
-        : internalResolved != null
-          ? internalResolved
-          : selfResolved
+    const resolved = relativeResolved ?? internalResolved ?? selfResolved
 
     if (resolved) {
       return `/package-code/${packageName}/v/${version}/${resolved.path}`

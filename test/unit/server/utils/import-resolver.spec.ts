@@ -94,6 +94,10 @@ describe('resolveAliasToDir', () => {
     expect(resolveAliasToDir('#/dist', 'root/dist/pkg/index.js')).toBe('root/dist')
   })
 
+  it('normalizes $/foo style aliases', () => {
+    expect(resolveAliasToDir('$/dist', 'root/dist/pkg/index.js')).toBe('root/dist')
+  })
+
   it('returns null when the file path trims to empty', () => {
     expect(resolveAliasToDir('#', '///')).toBeNull()
   })
@@ -370,6 +374,21 @@ describe('resolveInternalImport', () => {
       'dist/index.js',
       {
         '@/app': './dist/app/index.js',
+      },
+      files,
+    )
+
+    expect(resolved?.path).toBe('dist/app/components/button.js')
+  })
+
+  it('resolves file that prefix is "$/"', () => {
+    const files = new Set<string>(['dist/app/components/button.js'])
+
+    const resolved = resolveInternalImport(
+      '$/app/components/button.js',
+      'dist/index.js',
+      {
+        '$/app': './dist/app/index.js',
       },
       files,
     )
