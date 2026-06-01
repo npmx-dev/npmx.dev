@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { EvolutionOptions } from '~/types/chart'
 import {
   buildDailyEvolution,
@@ -40,6 +40,11 @@ beforeEach(() => {
   buildWeeklyEvolutionMock.mockReturnValue('weekly-result' as never)
   buildMonthlyEvolutionMock.mockReturnValue('monthly-result' as never)
   buildYearlyEvolutionMock.mockReturnValue('yearly-result' as never)
+})
+
+afterEach(() => {
+  vi.useRealTimers()
+  vi.unstubAllGlobals()
 })
 
 describe('fetchDownloadsEvolution', () => {
