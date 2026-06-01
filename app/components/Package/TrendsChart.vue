@@ -15,7 +15,7 @@ import type {
 import { DATE_INPUT_MAX } from '~/utils/input'
 import { endDateOnlyToUtcMs } from '~/utils/chart-data-prediction'
 import { applyBlocklistCorrection, getAnomaliesForPackages } from '~/utils/download-anomalies'
-import { copyAltTextForTrendLineChart, sanitise, loadFile, applyEllipsis } from '~/utils/charts'
+import { copyAltTextForTrendLineChart, sanitise, applyEllipsis } from '~/utils/charts'
 import { useChartTooltipPosition } from '~/composables/useChartTooltipPosition'
 import {
   buildNormalisedTrendsDataset,
@@ -24,6 +24,7 @@ import {
   isWeeklyDataset,
   getTrendsDatetimeFormatterOptions,
 } from '#shared/utils/trends-chart'
+import { downloadFileLink } from '~/utils/download'
 
 import('vue-data-ui/style.css')
 
@@ -1161,20 +1162,20 @@ const chartConfig = computed<VueUiXyConfig>(() => {
           img: args => {
             const imageUri = args?.imageUri
             if (!imageUri) return
-            loadFile(imageUri, buildExportFilename('png'))
+            downloadFileLink(imageUri, buildExportFilename('png'))
           },
           csv: csvStr => {
             if (!csvStr) return
             const blob = new Blob([csvStr.replace('data:text/csv;charset=utf-8,', '')])
             const url = URL.createObjectURL(blob)
-            loadFile(url, buildExportFilename('csv'))
+            downloadFileLink(url, buildExportFilename('csv'))
             URL.revokeObjectURL(url)
           },
           svg: args => {
             const blob = args?.blob
             if (!blob) return
             const url = URL.createObjectURL(blob)
-            loadFile(url, buildExportFilename('svg'))
+            downloadFileLink(url, buildExportFilename('svg'))
             URL.revokeObjectURL(url)
           },
           altCopy: ({ dataset: copiedDataset, config: copiedConfig }) =>

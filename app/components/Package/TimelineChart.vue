@@ -10,7 +10,6 @@ import {
 } from 'vue-data-ui/vue-ui-xy'
 import {
   sanitise,
-  loadFile,
   applyEllipsis,
   copyAltTextForTimelineChart,
   type EnrichedTimelineSizeCacheEntry,
@@ -21,6 +20,7 @@ import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWate
 import { useChartTooltipPosition } from '~/composables/useChartTooltipPosition'
 import { useColors } from '~/composables/useColors'
 import { parseStableVersion } from '~/utils/versions'
+import { downloadFileLink } from '~/utils/download'
 
 import('vue-data-ui/style.css')
 
@@ -375,7 +375,7 @@ const config = computed<VueUiXyConfig>(() => {
           img: args => {
             const imageUri = args?.imageUri
             if (!imageUri) return
-            loadFile(imageUri, buildExportFilename('png'))
+            downloadFileLink(imageUri, buildExportFilename('png'))
           },
           csv: csvStr => {
             if (!csvStr) return
@@ -392,14 +392,14 @@ const config = computed<VueUiXyConfig>(() => {
                 .replaceAll(`\n${multilineDateTemplate}`, ` ${multilineDateTemplate}`),
             ])
             const url = URL.createObjectURL(blob)
-            loadFile(url, buildExportFilename('csv'))
+            downloadFileLink(url, buildExportFilename('csv'))
             URL.revokeObjectURL(url)
           },
           svg: args => {
             const blob = args?.blob
             if (!blob) return
             const url = URL.createObjectURL(blob)
-            loadFile(url, buildExportFilename('svg'))
+            downloadFileLink(url, buildExportFilename('svg'))
             URL.revokeObjectURL(url)
           },
           altCopy: () =>

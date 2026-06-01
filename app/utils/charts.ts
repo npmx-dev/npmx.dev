@@ -799,31 +799,6 @@ export async function copyAltTextForTimelineChart({
   await config.copy(altText)
 }
 
-type DownloadDocument = {
-  createElement: (tagName: 'a') => {
-    href: string
-    download: string
-    click: () => void
-    remove: () => void
-  }
-}
-
-// Used in chart context menu callbacks
-// @todo replace with downloadFileLink
-export function loadFile(link: string, filename: string) {
-  const documentReference = (globalThis as { document?: DownloadDocument }).document
-
-  if (!documentReference) {
-    return
-  }
-
-  const anchor = documentReference.createElement('a')
-  anchor.href = link
-  anchor.download = filename
-  anchor.click()
-  anchor.remove()
-}
-
 export function sanitise(value: string) {
   return value
     .replace(/^@/, '')
