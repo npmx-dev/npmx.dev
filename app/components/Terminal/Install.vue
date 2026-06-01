@@ -210,56 +210,64 @@ useCommandPaletteContextCommands(
 </script>
 
 <template>
-  <div class="relative group">
-    <!-- Terminal-style install command -->
-    <div class="bg-bg-subtle border border-border rounded-lg overflow-hidden">
+  <div class="space-y-2">
+    <!-- Install command - each PM variant is its own terminal card -->
+    <div
+      v-for="pm in packageManagers"
+      :key="`install-${pm.id}`"
+      :data-pm-cmd="pm.id"
+      class="bg-bg-subtle border border-border rounded-lg overflow-hidden"
+    >
       <div class="flex gap-1.5 px-3 pt-2 sm:px-4 sm:pt-3">
         <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
         <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
         <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
       </div>
-      <div class="px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 space-y-1 overflow-x-auto" dir="ltr">
-        <!-- Install command - render all PM variants, CSS controls visibility -->
-        <div
-          v-for="pm in packageManagers"
-          :key="`install-${pm.id}`"
-          :data-pm-cmd="pm.id"
-          class="flex items-center gap-2 group/installcmd min-w-0"
+      <div
+        class="flex items-center gap-2 px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 overflow-x-auto"
+        dir="ltr"
+      >
+        <span class="self-start text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
+        <code class="font-mono text-sm min-w-0 flex-1"
+          ><span
+            v-for="(part, i) in getInstallPartsForPM(pm.id)"
+            :key="i"
+            :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
+            >{{ i > 0 ? ' ' : '' }}{{ part }}</span
+          ></code
         >
-          <span class="self-start text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
-          <code class="font-mono text-sm min-w-0"
-            ><span
-              v-for="(part, i) in getInstallPartsForPM(pm.id)"
-              :key="i"
-              :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
-              >{{ i > 0 ? ' ' : '' }}{{ part }}</span
-            ></code
-          >
-          <button
-            type="button"
-            class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/installcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-accent/70 select-none"
-            :aria-label="$t('package.get_started.copy_command')"
-            @click.stop="copyInstallCommand"
-          >
-            <span aria-live="polite">{{ copied ? $t('common.copied') : $t('common.copy') }}</span>
-          </button>
-        </div>
+        <button
+          type="button"
+          class="flex items-center gap-1.5 px-2 py-1 font-mono text-xs text-fg-muted bg-bg-muted border border-border rounded transition-colors hover:(text-fg border-border-hover) active:scale-95 focus-visible:outline-accent/70 select-none shrink-0"
+          :aria-label="$t('package.get_started.copy_command')"
+          @click.stop="copyInstallCommand"
+        >
+          <span class="i-lucide:copy w-3.5 h-3.5" aria-hidden="true" />
+          <span aria-live="polite">{{ copied ? $t('common.copied') : $t('common.copy') }}</span>
+        </button>
+      </div>
+    </div>
 
-        <!-- Suggested dev dependency install command -->
-        <template v-if="devDependencySuggestion.recommended">
-          <div class="flex items-center gap-2 pt-1 select-none">
-            <span class="text-fg-subtle font-mono text-sm"
-              ># {{ $t('package.get_started.dev_dependency_hint') }}</span
-            >
+    <!-- Suggested dev dependency install command -->
+    <template v-if="devDependencySuggestion.recommended">
+      <div
+        v-for="pm in packageManagers"
+        :key="`install-dev-${pm.id}`"
+        :data-pm-cmd="pm.id"
+        class="bg-bg-subtle border border-border rounded-lg overflow-hidden"
+      >
+        <div class="flex gap-1.5 px-3 pt-2 sm:px-4 sm:pt-3">
+          <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
+          <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
+          <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
+        </div>
+        <div class="px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 overflow-x-auto" dir="ltr">
+          <div class="text-fg-subtle font-mono text-sm select-none pb-1">
+            # {{ $t('package.get_started.dev_dependency_hint') }}
           </div>
-          <div
-            v-for="pm in packageManagers"
-            :key="`install-dev-${pm.id}`"
-            :data-pm-cmd="pm.id"
-            class="flex items-center gap-2 group/devinstallcmd min-w-0"
-          >
+          <div class="flex items-center gap-2 min-w-0">
             <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
-            <code class="font-mono text-sm min-w-0"
+            <code class="font-mono text-sm min-w-0 flex-1"
               ><span
                 v-for="(part, i) in getDevInstallPartsForPM(pm.id)"
                 :key="i"
@@ -267,65 +275,80 @@ useCommandPaletteContextCommands(
                 >{{ i > 0 ? ' ' : '' }}{{ part }}</span
               ></code
             >
-            <ButtonBase
+            <button
               type="button"
-              size="sm"
-              class="text-fg-muted bg-bg-subtle/80 border-border opacity-0 group-hover/devinstallcmd:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
+              class="flex items-center gap-1.5 px-2 py-1 font-mono text-xs text-fg-muted bg-bg-muted border border-border rounded transition-colors hover:(text-fg border-border-hover) active:scale-95 focus-visible:outline-accent/70 select-none shrink-0"
               :aria-label="$t('package.get_started.copy_dev_command')"
               @click.stop="copyDevInstallCommand"
             >
+              <span class="i-lucide:copy w-3.5 h-3.5" aria-hidden="true" />
               <span aria-live="polite">{{
                 devInstallCopied ? $t('common.copied') : $t('common.copy')
               }}</span>
-            </ButtonBase>
+            </button>
           </div>
-        </template>
+        </div>
+      </div>
+    </template>
 
-        <!-- @types package install - render all PM variants when types package exists -->
-        <template v-if="typesPackageName && showTypesInInstall">
-          <div
-            v-for="pm in packageManagers"
-            :key="`types-${pm.id}`"
-            :data-pm-cmd="pm.id"
-            class="flex items-center gap-2 min-w-0"
+    <!-- @types package install -->
+    <template v-if="typesPackageName && showTypesInInstall">
+      <div
+        v-for="pm in packageManagers"
+        :key="`types-${pm.id}`"
+        :data-pm-cmd="pm.id"
+        class="bg-bg-subtle border border-border rounded-lg overflow-hidden"
+      >
+        <div class="flex gap-1.5 px-3 pt-2 sm:px-4 sm:pt-3">
+          <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
+          <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
+          <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
+        </div>
+        <div
+          class="flex items-center gap-2 px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 overflow-x-auto"
+          dir="ltr"
+        >
+          <span class="self-start text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
+          <code class="font-mono text-sm min-w-0 flex-1"
+            ><span
+              v-for="(part, i) in getTypesInstallPartsForPM(pm.id)"
+              :key="i"
+              :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
+              >{{ i > 0 ? ' ' : '' }}{{ part }}</span
+            ></code
           >
+          <NuxtLink
+            :to="packageRoute(typesPackageName!)"
+            class="text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-accent/70 rounded select-none -m-1 p-1 shrink-0"
+            :title="$t('package.get_started.view_types', { package: typesPackageName })"
+          >
+            <span class="i-lucide:arrow-right rtl-flip w-3 h-3 align-middle" aria-hidden="true" />
+            <span class="sr-only">View {{ typesPackageName }}</span>
+          </NuxtLink>
+        </div>
+      </div>
+    </template>
+
+    <!-- Run command (only if package has executables) -->
+    <template v-if="executableInfo?.hasExecutable">
+      <div
+        v-for="pm in packageManagers"
+        :key="`run-${pm.id}`"
+        :data-pm-cmd="pm.id"
+        class="bg-bg-subtle border border-border rounded-lg overflow-hidden"
+      >
+        <div class="flex gap-1.5 px-3 pt-2 sm:px-4 sm:pt-3">
+          <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
+          <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
+          <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
+        </div>
+        <div class="px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 overflow-x-auto" dir="ltr">
+          <div class="text-fg-subtle font-mono text-sm select-none pb-1" dir="auto">
+            # {{ $t('package.run.locally') }}
+          </div>
+          <div class="flex items-center gap-2">
             <span class="self-start text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
-            <code class="font-mono text-sm min-w-0"
-              ><span
-                v-for="(part, i) in getTypesInstallPartsForPM(pm.id)"
-                :key="i"
-                :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
-                >{{ i > 0 ? ' ' : '' }}{{ part }}</span
-              ></code
-            >
-            <NuxtLink
-              :to="packageRoute(typesPackageName!)"
-              class="text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-accent/70 rounded select-none -m-1 p-1"
-              :title="$t('package.get_started.view_types', { package: typesPackageName })"
-            >
-              <span class="i-lucide:arrow-right rtl-flip w-3 h-3 align-middle" aria-hidden="true" />
-              <span class="sr-only">View {{ typesPackageName }}</span>
-            </NuxtLink>
-          </div>
-        </template>
-
-        <!-- Run command (only if package has executables) - render all PM variants -->
-        <template v-if="executableInfo?.hasExecutable">
-          <!-- Comment line -->
-          <div class="flex items-center gap-2 pt-1" dir="auto">
-            <span class="text-fg-subtle font-mono text-sm select-none"
-              ># {{ $t('package.run.locally') }}</span
-            >
-          </div>
-
-          <div
-            v-for="pm in packageManagers"
-            :key="`run-${pm.id}`"
-            :data-pm-cmd="pm.id"
-            class="flex items-center gap-2 group/runcmd"
-          >
-            <span class="self-start text-fg-subtle font-mono text-sm select-none">$</span>
-            <code class="font-mono text-sm"
+            <code class="font-mono text-sm flex-1"
               ><span
                 v-for="(part, i) in getRunPartsForPM(pm.id, executableInfo?.primaryCommand)"
                 :key="i"
@@ -335,18 +358,32 @@ useCommandPaletteContextCommands(
             >
             <button
               type="button"
-              class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/runcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-accent/70 select-none"
+              class="flex items-center gap-1.5 px-2 py-1 font-mono text-xs text-fg-muted bg-bg-muted border border-border rounded transition-colors hover:(text-fg border-border-hover) active:scale-95 focus-visible:outline-accent/70 select-none shrink-0"
               @click.stop="copyRunCommand(executableInfo?.primaryCommand)"
             >
+              <span class="i-lucide:copy w-3.5 h-3.5" aria-hidden="true" />
               {{ runCopied ? $t('common.copied') : $t('common.copy') }}
             </button>
           </div>
-        </template>
+        </div>
+      </div>
+    </template>
 
-        <!-- Create command (for packages with associated create-* package) - render all PM variants -->
-        <template v-if="createPackageInfo">
-          <!-- Comment line -->
-          <div class="flex items-center gap-2 pt-1 select-none" dir="auto">
+    <!-- Create command (for packages with associated create-* package) -->
+    <template v-if="createPackageInfo">
+      <div
+        v-for="pm in packageManagers"
+        :key="`create-${pm.id}`"
+        :data-pm-cmd="pm.id"
+        class="bg-bg-subtle border border-border rounded-lg overflow-hidden"
+      >
+        <div class="flex gap-1.5 px-3 pt-2 sm:px-4 sm:pt-3">
+          <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
+          <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
+          <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
+        </div>
+        <div class="px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 overflow-x-auto" dir="ltr">
+          <div class="flex items-center gap-2 pb-1 select-none" dir="auto">
             <span class="text-fg-subtle font-mono text-sm"># {{ $t('package.create.title') }}</span>
             <TooltipApp
               :text="$t('package.create.view', { packageName: createPackageInfo.packageName })"
@@ -362,15 +399,9 @@ useCommandPaletteContextCommands(
               </NuxtLink>
             </TooltipApp>
           </div>
-
-          <div
-            v-for="pm in packageManagers"
-            :key="`create-${pm.id}`"
-            :data-pm-cmd="pm.id"
-            class="flex items-center gap-2 group/createcmd"
-          >
-            <span class="self-start text-fg-subtle font-mono text-sm select-none">$</span>
-            <code class="font-mono text-sm"
+          <div class="flex items-center gap-2">
+            <span class="self-start text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
+            <code class="font-mono text-sm flex-1"
               ><span
                 v-for="(part, i) in getCreatePartsForPM(pm.id)"
                 :key="i"
@@ -380,18 +411,19 @@ useCommandPaletteContextCommands(
             >
             <button
               type="button"
-              class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/createcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-accent/70 select-none"
+              class="flex items-center gap-1.5 px-2 py-1 font-mono text-xs text-fg-muted bg-bg-muted border border-border rounded transition-colors hover:(text-fg border-border-hover) active:scale-95 focus-visible:outline-accent/70 select-none shrink-0"
               :aria-label="$t('package.create.copy_command')"
               @click.stop="copyCreateCommand"
             >
+              <span class="i-lucide:copy w-3.5 h-3.5" aria-hidden="true" />
               <span aria-live="polite">{{
                 createCopied ? $t('common.copied') : $t('common.copy')
               }}</span>
             </button>
           </div>
-        </template>
+        </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -414,7 +446,7 @@ useCommandPaletteContextCommands(
 :root[data-pm='deno'] [data-pm-cmd='deno'],
 :root[data-pm='vlt'] [data-pm-cmd='vlt'],
 :root[data-pm='vp'] [data-pm-cmd='vp'] {
-  display: flex;
+  display: block;
 }
 
 /* Fallback: when no data-pm is set (SSR initial), show npm as default */
