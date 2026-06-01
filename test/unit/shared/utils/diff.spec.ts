@@ -51,4 +51,18 @@ describe('truncateDiffHunks', () => {
     expect(result.hunks[0]).toBe(skip)
     expect((result.hunks[1] as DiffHunk).lines).toHaveLength(1)
   })
+
+  it('does not append a skip block after the line budget is exhausted', () => {
+    const skip: DiffSkipBlock = {
+      type: 'skip',
+      count: 10,
+      content: '10 lines hidden',
+    }
+    const hunk = createHunk(1)
+
+    const result = truncateDiffHunks([hunk, skip], 1)
+
+    expect(result.truncated).toBe(true)
+    expect(result.hunks).toEqual([hunk])
+  })
 })

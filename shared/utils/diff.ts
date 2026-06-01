@@ -350,13 +350,13 @@ export function truncateDiffHunks(
   let remainingLines = maxLines
 
   for (const hunk of hunks) {
+    if (remainingLines <= 0) {
+      return { hunks: result, truncated: true }
+    }
+
     if (hunk.type === 'skip') {
       result.push(hunk)
       continue
-    }
-
-    if (remainingLines <= 0) {
-      return { hunks: result, truncated: true }
     }
 
     if (hunk.lines.length <= remainingLines) {
