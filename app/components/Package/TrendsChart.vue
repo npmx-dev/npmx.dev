@@ -1999,7 +1999,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
             <SettingsToggle v-model="isEmbedDarkMode" :label="$t('command_palette.theme.dark')" />
           </div>
           <div class="text-sm text-fg-subtle">
-            {{ $t('command_palette.theme.dark') }}
+            {{ $t('package.trends.embedding.copy_url') }}
           </div>
           <div class="flex flex-row gap-4 flex-wrap">
             <div
@@ -2010,9 +2010,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
                 size="sm"
                 @click="copyEmbedUrl"
                 :aria-pressed="copiedEmbedUrl"
-                :aria-label="
-                  copiedEmbedUrl ? $t('common.copied') : $t('package.readme.copy_as_markdown')
-                "
+                :aria-label="copiedEmbedUrl ? $t('common.copied') : $t('common.copy')"
                 :classicon="copiedEmbedUrl ? 'i-lucide:check' : 'i-lucide:chart-line'"
               >
                 <span>{{ copiedEmbedUrl ? $t('common.copied') : $t('common.copy') }}</span>
