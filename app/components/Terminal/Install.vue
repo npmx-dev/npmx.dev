@@ -324,7 +324,9 @@ useCommandPaletteContextCommands(
             :title="$t('package.get_started.view_types', { package: typesPackageName })"
           >
             <span class="i-lucide:arrow-right rtl-flip w-3 h-3 align-middle" aria-hidden="true" />
-            <span class="sr-only">View {{ typesPackageName }}</span>
+            <span class="sr-only">{{
+              $t('package.get_started.view_types', { package: typesPackageName })
+            }}</span>
           </NuxtLink>
         </div>
       </div>
