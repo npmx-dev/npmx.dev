@@ -1600,6 +1600,9 @@
             "license": {
               "type": "string"
             },
+            "version": {
+              "type": "string"
+            },
             "select": {
               "type": "string"
             },
@@ -1814,6 +1817,9 @@
                   "type": "string"
                 },
                 "reset_minimap": {
+                  "type": "string"
+                },
+                "ordered_versions": {
                   "type": "string"
                 },
                 "copy_alt": {
@@ -2147,6 +2153,9 @@
           "type": "object",
           "properties": {
             "title": {
+              "type": "string"
+            },
+            "version_distribution_title": {
               "type": "string"
             },
             "community_distribution": {
@@ -3553,7 +3562,13 @@
             "title": {
               "type": "string"
             },
-            "governance": {
+            "core": {
+              "type": "string"
+            },
+            "maintainers": {
+              "type": "string"
+            },
+            "role_core": {
               "type": "string"
             },
             "role_steward": {

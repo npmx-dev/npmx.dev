@@ -26,19 +26,19 @@ interface CommandPaletteCommandBase {
   activeLabel?: string | null
 }
 
-export type CommandPaletteActionCommand = CommandPaletteCommandBase & {
+type CommandPaletteActionCommand = CommandPaletteCommandBase & {
   action: () => void | Promise<void>
   to?: never
   href?: never
 }
 
-export type CommandPaletteRouteCommand = CommandPaletteCommandBase & {
+type CommandPaletteRouteCommand = CommandPaletteCommandBase & {
   to: RouteLocationRaw | string
   action?: never
   href?: never
 }
 
-export type CommandPaletteHrefCommand = CommandPaletteCommandBase & {
+type CommandPaletteHrefCommand = CommandPaletteCommandBase & {
   href: string
   action?: never
   to?: never

@@ -31,7 +31,12 @@ export default defineNuxtModule({
       !process.env.TEST
 
     // These assets are embedded directly on blog pages and should not affect image-proxy trust.
-    const cspOnlyImgOrigins = ['https://api.star-history.com', 'https://cdn.bsky.app']
+    const cspOnlyImgOrigins = [
+      'https://api.star-history.com',
+      'https://cdn.bsky.app',
+      'https://video.bsky.app',
+      'https://video.cdn.bsky.app',
+    ]
     const imgSrc = [
       "'self'",
       'data:',

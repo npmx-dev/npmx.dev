@@ -55,6 +55,7 @@ export interface AppSettings {
   timelineChart: {
     isZeroBased: boolean
     showZoom: boolean
+    isOrdered: boolean
   }
 }
 
@@ -87,6 +88,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   timelineChart: {
     isZeroBased: false,
     showZoom: false,
+    isOrdered: true,
   },
 }
 

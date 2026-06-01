@@ -4,11 +4,13 @@ packages:
   - docs
 
 allowBuilds:
+  '@atcute/time-ms': true
   '@parcel/watcher': false
   '@resvg/resvg-js': true
   'better-sqlite3': true
   'core-js': false
   'esbuild': false
+  msw: true
   'sharp@0.34.5': true
   'unrs-resolver': false
   'vue-demi': false

@@ -659,6 +659,7 @@
     },
     "downloads": {
       "title": "每週下載量",
+      "version_distribution_title": "{version} 每週下載量",
       "community_distribution": "檢視社群採用分布",
       "subtitle": "所有版本",
       "sparkline_nav_hint": "使用 ← →"
@@ -1117,7 +1118,6 @@
     },
     "team": {
       "title": "團隊",
-      "governance": "治理",
       "role_steward": "管理者",
       "role_maintainer": "維護者",
       "sponsor": "贊助",
