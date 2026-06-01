@@ -5,7 +5,7 @@
     </template>
     <img
       width="400"
-      class="mb-6 w-80 sm:w-140 max-w-full"
+      class="mb-6 w-80 sm:w-140 max-w-full mx-auto"
       src="/extra/pride-1.svg"
       :alt="$t('alt_logo')"
     />
