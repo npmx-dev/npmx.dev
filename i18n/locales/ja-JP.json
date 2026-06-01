@@ -716,6 +716,7 @@
     },
     "downloads": {
       "title": "週間ダウンロード数",
+      "version_distribution_title": "バージョン {version} の週間ダウンロード数",
       "community_distribution": "コミュニティの採用分布を表示",
       "subtitle": "全バージョン合計",
       "sparkline_nav_hint": "← → キーを使用してください"
@@ -1184,7 +1185,9 @@
     },
     "team": {
       "title": "チーム",
-      "governance": "ガバナンス",
+      "core": "コア",
+      "maintainers": "メンテナ",
+      "role_core": "コア",
       "role_steward": "スチュワード",
       "role_maintainer": "メンテナ",
       "sponsor": "スポンサー",

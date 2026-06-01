@@ -386,14 +386,14 @@
       "title_deps": "Significant dependency count increase since v{version}",
       "title_both": "Significant size and dependency increase since v{version}",
       "size": "Install size increased by {percent} ({size} larger)",
-      "deps": "{count} more dependencies"
+      "deps": "{count} more dependency | {count} more dependencies"
     },
     "size_decrease": {
       "title_size": "Package size decreased since v{version}!",
       "title_deps": "Dependency count decreased since v{version}!",
       "title_both": "Package size and dependency count decreased since v{version}!",
       "size": "Install size reduced by {percent} ({size} smaller)",
-      "deps": "{count} fewer dependencies"
+      "deps": "{count} fewer dependency | {count} fewer dependencies"
     },
     "replacement": {
       "title": "You might not need this dependency.",
@@ -532,6 +532,7 @@
       "weekly_downloads": "Weekly downloads",
       "keywords": "Keywords",
       "license": "License",
+      "version": "Version",
       "select": "Select package",
       "select_maximum": "Maximum {count} packages can be selected"
     },
@@ -588,8 +589,8 @@
       "load_error": "Failed to load timeline. Please try again later.",
       "size_increase": "Install size increased by {percent}% ({size})",
       "size_decrease": "Install size decreased by {percent}% ({size})",
-      "dep_increase": "{count} dependencies added",
-      "dep_decrease": "{count} dependencies removed",
+      "dep_increase": "{count} dependency added | {count} dependencies added",
+      "dep_decrease": "{count} dependency removed | {count} dependencies removed",
       "license_change": "License changed from {from} to {to}",
       "esm_added": "Module type changed to ESM",
       "esm_removed": "Module type changed from ESM to CJS",
@@ -1190,7 +1191,9 @@
     },
     "team": {
       "title": "Team",
-      "governance": "Governance",
+      "core": "Core",
+      "maintainers": "Maintainers",
+      "role_core": "core",
       "role_steward": "steward",
       "role_maintainer": "maintainer",
       "sponsor": "sponsor",

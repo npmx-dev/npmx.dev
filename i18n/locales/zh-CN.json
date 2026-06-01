@@ -1180,7 +1180,6 @@
     },
     "team": {
       "title": "团队",
-      "governance": "治理",
       "role_steward": "管理者",
       "role_maintainer": "维护者",
       "sponsor": "赞助",

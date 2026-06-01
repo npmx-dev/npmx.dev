@@ -14,7 +14,7 @@ const badgeColor = useState('badge-color', () => '')
 const usePkgName = useState('badge-use-name', () => false)
 const badgeStyle = useState('badge-style', () => 'default')
 
-const styles = ['default', 'shieldsio']
+const styles = ['default', 'shieldsio', 'compact']
 
 const validateHex = (hex: string) => {
   if (!hex) return true

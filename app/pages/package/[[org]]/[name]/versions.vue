@@ -559,8 +559,8 @@ const flatItems = computed<FlatItem[]>(() => {
                     <span v-else class="ms-auto w-28 shrink-0" />
                     <span class="flex items-center gap-3 shrink-0">
                       <DateTime
-                        v-if="getVersionTime(item.versions[0])"
-                        :datetime="getVersionTime(item.versions[0])!"
+                        v-if="getVersionTime(item.versions[0]!)"
+                        :datetime="getVersionTime(item.versions[0]!)!"
                         class="text-xs text-fg-subtle hidden sm:block whitespace-nowrap w-24 text-end"
                         year="numeric"
                         month="short"
