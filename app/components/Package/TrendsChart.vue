@@ -1953,63 +1953,65 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
     </div>
 
     <!-- Chart embedding -->
-    <div v-if="isDownloadsMetric && !!chartData.dataset" class="flex flex-col gap-2">
-      <button
-        type="button"
-        class="self-start flex items-center gap-1 text-2xs font-mono text-fg-subtle hover:text-fg transition-colors"
-        @click="showEmbedFields = !showEmbedFields"
-      >
-        <span
-          class="w-3.5 h-3.5 transition-transform"
-          :class="showEmbedFields ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'"
-          aria-hidden="true"
-        />
-        {{ $t('package.trends.embedding.chart') }}
-      </button>
-    </div>
-    <div
-      class="overflow-hidden transition-[opacity] duration-200 ease-out"
-      id="trends-embed-chart"
-      :aria-hidden="!showEmbedFields"
-      :inert="!showEmbedFields"
-      :class="
-        showEmbedFields ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
-      "
-    >
+    <div v-if="isDownloadsMetric && !!chartData.dataset">
       <div class="flex flex-col gap-2">
-        <div class="flex flex-row flex-wrap gap-2 mt-2">
-          <SettingsToggle v-model="isEmbedDarkMode" :label="$t('command_palette.theme.dark')" />
-        </div>
-        <div class="text-sm text-fg-subtle">
-          {{ $t('package.trends.embedding.copy_url') }}
-        </div>
-        <div class="flex flex-row gap-4 flex-wrap">
-          <div
-            class="bg-bg-subtle border border-border rounded-md shadow-lg text-xs break-all p-4 pt-8 relative"
-          >
-            <ButtonBase
-              class="absolute top-1 force-right-1"
-              size="sm"
-              @click="copyEmbedUrl"
-              :aria-pressed="copiedEmbedUrl"
-              :aria-label="
-                copiedEmbedUrl ? $t('common.copied') : $t('package.readme.copy_as_markdown')
-              "
-              :classicon="copiedEmbedUrl ? 'i-lucide:check' : 'i-lucide:chart-line'"
-            >
-              <span>{{ copiedEmbedUrl ? $t('common.copied') : $t('common.copy') }}</span>
-            </ButtonBase>
-            {{ embedUrl }}
+        <button
+          type="button"
+          class="self-start flex items-center gap-1 text-2xs font-mono text-fg-subtle hover:text-fg transition-colors"
+          @click="showEmbedFields = !showEmbedFields"
+        >
+          <span
+            class="w-3.5 h-3.5 transition-transform"
+            :class="showEmbedFields ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'"
+            aria-hidden="true"
+          />
+          {{ $t('package.trends.embedding.chart') }}
+        </button>
+      </div>
+      <div
+        class="overflow-hidden transition-[opacity] duration-200 ease-out"
+        id="trends-embed-chart"
+        :aria-hidden="!showEmbedFields"
+        :inert="!showEmbedFields"
+        :class="
+          showEmbedFields ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
+        "
+      >
+        <div class="flex flex-col gap-2">
+          <div class="flex flex-row flex-wrap gap-2 mt-2">
+            <SettingsToggle v-model="isEmbedDarkMode" :label="$t('command_palette.theme.dark')" />
           </div>
-          <div>
-            <span class="text-xs text-fg-subtle mb-2">
-              {{ $t('package.trends.embedding.preview') }}
-            </span>
-            <img
-              class="rounded border border-border w-full max-w-50"
-              :src="embedUrl"
-              :alt="$t('package.trends.embedding.preview')"
-            />
+          <div class="text-sm text-fg-subtle">
+            {{ $t('package.trends.embedding.copy_url') }}
+          </div>
+          <div class="flex flex-row gap-4 flex-wrap">
+            <div
+              class="bg-bg-subtle border border-border rounded-md shadow-lg text-xs break-all p-4 pt-8 relative"
+            >
+              <ButtonBase
+                class="absolute top-1 force-right-1"
+                size="sm"
+                @click="copyEmbedUrl"
+                :aria-pressed="copiedEmbedUrl"
+                :aria-label="
+                  copiedEmbedUrl ? $t('common.copied') : $t('package.readme.copy_as_markdown')
+                "
+                :classicon="copiedEmbedUrl ? 'i-lucide:check' : 'i-lucide:chart-line'"
+              >
+                <span>{{ copiedEmbedUrl ? $t('common.copied') : $t('common.copy') }}</span>
+              </ButtonBase>
+              {{ embedUrl }}
+            </div>
+            <div>
+              <span class="text-xs text-fg-subtle mb-2">
+                {{ $t('package.trends.embedding.preview') }}
+              </span>
+              <img
+                class="rounded border border-border w-full max-w-50"
+                :src="embedUrl"
+                :alt="$t('package.trends.embedding.preview')"
+              />
+            </div>
           </div>
         </div>
       </div>
