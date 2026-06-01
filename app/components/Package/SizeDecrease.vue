@@ -7,8 +7,9 @@ const props = defineProps<{
 
 const bytesFormatter = useBytesFormatter()
 const numberFormatter = useNumberFormatter()
+const percentFormatter = useNumberFormatter({ style: 'percent' })
 
-const sizePercent = computed(() => Math.round(Math.abs(props.diff.sizeRatio) * 100))
+const sizePercent = computed(() => percentFormatter.value.format(Math.abs(props.diff.sizeRatio)))
 const sizeDecreaseAbs = computed(() => Math.abs(props.diff.sizeIncrease))
 const depDecreaseAbs = computed(() => Math.abs(props.diff.depDiff))
 </script>
@@ -33,7 +34,7 @@ const depDecreaseAbs = computed(() => Math.abs(props.diff.depDiff))
     <p class="text-sm m-0 mt-1">
       <i18n-t v-if="diff.sizeThresholdExceeded" keypath="package.size_decrease.size" scope="global">
         <template #percent
-          ><strong>{{ sizePercent }}%</strong></template
+          ><strong>{{ sizePercent }}</strong></template
         >
         <template #size
           ><strong>{{ bytesFormatter.format(sizeDecreaseAbs) }}</strong></template

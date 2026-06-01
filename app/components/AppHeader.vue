@@ -258,7 +258,7 @@ useShortcuts({
       <ButtonBase
         type="button"
         variant="secondary"
-        class="hidden lg:inline-flex shrink-0 gap-2 px-2.5 me-3"
+        class="hidden lg:inline-flex shrink-0 gap-2 ps-2.5 pe-1.25 py-1.25! me-3"
         :aria-label="$t('shortcuts.command_palette')"
         :title="$t('shortcuts.command_palette_description', { ctrlKey: $t('shortcuts.ctrl_key') })"
         @click="openCommandPalette"
