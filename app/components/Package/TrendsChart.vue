@@ -1360,6 +1360,19 @@ watch(
   { immediate: true },
 )
 
+function getGranularityLabel(granularity: ChartTimeGranularity): string {
+  switch (granularity) {
+    case 'daily':
+      return $t('package.trends.granularity_daily')
+    case 'weekly':
+      return $t('package.trends.granularity_weekly')
+    case 'monthly':
+      return $t('package.trends.granularity_monthly')
+    case 'yearly':
+      return $t('package.trends.granularity_yearly')
+  }
+}
+
 const embedUrl = computed(() => {
   const query = new URLSearchParams({
     packages: effectivePackageNames.value.join(','),
@@ -1371,7 +1384,7 @@ const embedUrl = computed(() => {
     locale: locale.value,
     accent: accent.value,
     yLabel: $t('package.trends.y_axis_label', {
-      granularity: $t(`package.trends.granularity_${selectedGranularity.value}`),
+      granularity: getGranularityLabel(selectedGranularity.value),
       facet: METRICS.value.find(metric => metric.id === selectedMetric.value)?.label,
     }),
   })
