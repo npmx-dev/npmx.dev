@@ -802,14 +802,17 @@ export async function copyAltTextForTimelineChart({
 // Used in chart context menu callbacks
 // @todo replace with downloadFileLink
 export function loadFile(link: string, filename: string) {
-  if (typeof document === 'undefined') {
+  const documentReference = (globalThis as { document?: Document }).document
+
+  if (!documentReference) {
     return
   }
-  const a = document.createElement('a')
-  a.href = link
-  a.download = filename
-  a.click()
-  a.remove()
+
+  const anchor = documentReference.createElement('a')
+  anchor.href = link
+  anchor.download = filename
+  anchor.click()
+  anchor.remove()
 }
 
 export function sanitise(value: string) {
