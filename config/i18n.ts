@@ -252,7 +252,7 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     code: 'uk-UA',
     file: 'uk-UA.json',
     name: 'Українська',
-    pluralRule: createPluralRule('uk-UA', { zero: 0, one: 1, two: 0, few: 2, many: 3, other: 4 }),
+    pluralRule: createPluralRule('uk-UA', { zero: 2, one: 0, two: 1, few: 1, many: 2, other: 3 }),
   },
   /*{
       code: 'ru-RU',
@@ -332,6 +332,16 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     code: 'pt-BR',
     file: 'pt-BR.json',
     name: 'Português (Brasil)',
+  },
+  {
+    code: 'pt-PT',
+    file: 'pt-PT.json',
+    name: 'Português (Portugal)',
+  },
+  {
+    code: 'ro-RO',
+    file: 'ro-RO.json',
+    name: 'Română',
   },
   /*{
       code: 'sv',

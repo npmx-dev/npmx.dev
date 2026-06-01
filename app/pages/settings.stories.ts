@@ -2,7 +2,7 @@ import Settings from './settings.vue'
 import type { Meta, StoryObj } from '@storybook-vue/nuxt'
 import { userEvent, expect } from 'storybook/test'
 import { pageDecorator } from '../../.storybook/decorators'
-import { i18nStatusHandler } from '../../.storybook/handlers'
+import { i18nStatusHandler } from '../storybook/mocks/handlers/lunaria-status'
 
 const meta = {
   component: Settings,

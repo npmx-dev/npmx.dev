@@ -97,7 +97,7 @@ export function linearProject(pts: number[]): number | null {
  * Estimate the full-period value for a partially-complete last bucket.
  *
  * Uses linear projection when enough complete lookback points are available
- * (`>= predictionPoints`), otherwise falls back to proportional scale-up.
+ * (`>= predictionPoints`); otherwise, falls back to proportional scale-up.
  * Returns the raw last value when the period is already complete or prediction is disabled.
  */
 export function extrapolateLastValue(params: {

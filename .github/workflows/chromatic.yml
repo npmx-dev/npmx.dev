@@ -25,8 +25,9 @@ jobs:
           fetch-depth: 0
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1
+      - uses: voidzero-dev/setup-vp@ca1c46663915d6c1042ae23bd39ab85718bfb0fa # v1.10.0
         with:
           node-version: lts/*
           cache: true
@@ -35,7 +36,7 @@ jobs:
         run: vp install -g pnpm
 
       - name: 🧪 Run Chromatic Visual and Accessibility Tests
-        uses: chromaui/action@f191a0224b10e1a38b2091cefb7b7a2337009116 # v16.0.0
+        uses: chromaui/action@8a2b82547aef5a3efc8ec3c7905f4ab09a76ed0b # v16.1.0
         env:
           CHROMATIC_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
           CHROMATIC_SHA: ${{ github.event.pull_request.head.sha || github.sha }}

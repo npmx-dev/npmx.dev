@@ -1,5 +1,6 @@
 import * as v from 'valibot'
 import { hash } from 'ohash'
+import { fetchNpmVersionDownloadsFromApi } from '#server/utils/npm-website-versions'
 
 /**
  * Raw response from npm downloads API
@@ -15,6 +16,7 @@ interface NpmVersionDownloadsResponse {
  */
 const QuerySchema = v.object({
   mode: v.optional(v.picklist(['major', 'minor'] as const), 'major'),
+  packages: v.optional(v.union([v.string(), v.array(v.string())])),
   filterThreshold: v.optional(
     v.pipe(
       v.string(),
@@ -25,10 +27,21 @@ const QuerySchema = v.object({
   filterOldVersions: v.optional(v.picklist(['true', 'false'] as const), 'false'),
 })
 
+function normalizePackages(packages: string | string[] | undefined): string[] {
+  if (!packages) return []
+
+  const values = Array.isArray(packages) ? packages : [packages]
+  return [
+    ...new Set(values.flatMap(value => value.split(',').map(pkg => pkg.trim())).filter(Boolean)),
+  ]
+}
+
 /**
  * GET /api/registry/downloads/:name/versions or /api/registry/downloads/@scope/name/versions
+ * GET /api/registry/downloads/versions?packages=pkg-a,pkg-b
  *
- * Fetch per-version download statistics and group by major or minor version.
+ * Fetch per-version download statistics and group by major or minor version,
+ * or fetch raw per-version download lists for one or more packages.
  * Data is cached for 1 hour with stale-while-revalidate.
  *
  * Query parameters:
@@ -47,6 +60,46 @@ export default defineCachedEventHandler(
       throw createError({
         statusCode: 404,
         message: 'Invalid endpoint. Expected /versions',
+      })
+    }
+
+    try {
+      const query = getQuery(event)
+      const parsed = v.parse(QuerySchema, query)
+      // Supports: /downloads/versions?packages=a,b and repeated ?packages=a&packages=b
+      if (pkgParamSegments.length === 1) {
+        const packageNames = normalizePackages(parsed.packages)
+
+        if (packageNames.length === 0) {
+          return {
+            packages: [],
+            timestamp: new Date().toISOString(),
+          }
+        }
+
+        try {
+          const packages = await Promise.all(
+            packageNames.map(async packageName => ({
+              packageName,
+              versions: await fetchNpmVersionDownloadsFromApi(packageName),
+            })),
+          )
+
+          return {
+            packages,
+            timestamp: new Date().toISOString(),
+          }
+        } catch (error: unknown) {
+          handleApiError(error, {
+            statusCode: 502,
+            message: 'Failed to fetch version download data from npm API',
+          })
+        }
+      }
+    } catch (error: unknown) {
+      handleApiError(error, {
+        statusCode: 502,
+        message: 'Failed to fetch version download data from npm API',
       })
     }
 

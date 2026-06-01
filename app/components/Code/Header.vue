@@ -254,7 +254,7 @@ useEventListener('keydown', (event: KeyboardEvent) => {
           <ButtonBase
             class="px-3 max-xl:hidden"
             :disabled="loading"
-            classicon="i-lucide:unfold-horizontal [.container-full>&]:i-lucide:fold-horizontal"
+            classicon="i-lucide:unfold-horizontal [.container-full_&]:i-lucide:fold-horizontal"
             :aria-label="$t('code.toggle_container')"
             @click="toggleCodeContainer()"
           />

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { RouteLocationRaw } from 'vue-router'
 import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
 
 // Maximum file size we'll try to load (500KB) - must match server
@@ -86,7 +87,16 @@ const versionUrlPattern = computed(() =>
   }),
 )
 
-useCommandPaletteVersionCommands(commandPalettePackageContext, versionUrlPattern)
+function codeVersionRoute(nextVersion: string): RouteLocationRaw {
+  return getCodeUrl({
+    org: route.params.org,
+    packageName: route.params.packageName,
+    version: nextVersion,
+    filePath: filePath.value,
+  })
+}
+
+useCommandPaletteVersionCommands(commandPalettePackageContext, codeVersionRoute)
 
 // Fetch file tree
 const { data: fileTree, status: treeStatus } = useFetch<PackageFileTreeResponse>(
@@ -324,15 +334,7 @@ defineOgImage(
     version: () => version.value,
     variant: 'code-tree',
   },
-  [
-    { key: 'og', alt: () => `Source code file tree for ${packageName.value}@${version.value}` },
-    {
-      key: 'whatsapp',
-      width: 800,
-      height: 800,
-      alt: () => `Source code file tree for ${packageName.value}@${version.value}`,
-    },
-  ],
+  { alt: () => `Source code file tree for ${packageName.value}@${version.value}` },
 )
 
 useCommandPaletteContextCommands(

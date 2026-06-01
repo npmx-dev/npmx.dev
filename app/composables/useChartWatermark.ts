@@ -10,7 +10,7 @@ interface WatermarkColors {
 
 /**
  * Build and return legend as SVG for export
- * Legend items are displayed in a column, on the top left of the chart.
+ * Legend items are displayed in a column, at the top left of the chart.
  */
 export function drawSvgPrintLegend(svg: Record<string, any>, colors: WatermarkColors) {
   const data = Array.isArray(svg?.data) ? svg.data : []

@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { computed, defineComponent, h, ref, watchEffect, type Ref } from 'vue'
-import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
+import type { RouteLocationRaw } from 'vue-router'
+import { mockNuxtImport, mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
 import { downloadPackageTarball } from '~/utils/package-download'
 import type {
   CommandPaletteCommand,
@@ -22,9 +23,16 @@ const mockConnectorState = ref<{
   npmUser: null,
 })
 
-const mockAtprotoHandle = ref<string | null>(null)
 const mockDisconnectNpm = vi.fn()
-const mockLogout = vi.fn(async () => {})
+let authSessionHandler: () => unknown = () => null
+
+function createAtprotoUser(handle: string) {
+  return {
+    did: `did:plc:${handle}`,
+    handle,
+    pds: 'https://bsky.social',
+  }
+}
 
 mockNuxtImport('useConnector', () => {
   return () => ({
@@ -34,12 +42,7 @@ mockNuxtImport('useConnector', () => {
   })
 })
 
-mockNuxtImport('useAtproto', () => {
-  return () => ({
-    user: computed(() => (mockAtprotoHandle.value ? { handle: mockAtprotoHandle.value } : null)),
-    logout: mockLogout,
-  })
-})
+registerEndpoint('/api/auth/session', () => authSessionHandler())
 
 async function captureCommandPalette(options?: {
   route?: string
@@ -49,7 +52,7 @@ async function captureCommandPalette(options?: {
   npmUser?: string | null
   atprotoHandle?: string | null
   packageContext?: CommandPalettePackageContext | null
-  versionUrlPattern?: string
+  versionRoute?: (version: string) => RouteLocationRaw
   contextCommands?: CommandPaletteContextCommandInput[]
 }) {
   const groupedCommands = ref<CommandPaletteCommandGroup[]>([]) as Ref<CommandPaletteCommandGroup[]>
@@ -61,7 +64,8 @@ async function captureCommandPalette(options?: {
     connected: !!options?.npmUser,
     npmUser: options?.npmUser ?? null,
   }
-  mockAtprotoHandle.value = options?.atprotoHandle ?? null
+  authSessionHandler = () =>
+    options?.atprotoHandle ? createAtprotoUser(options.atprotoHandle) : null
 
   const WrapperComponent = defineComponent({
     setup() {
@@ -76,10 +80,7 @@ async function captureCommandPalette(options?: {
       if (options?.packageContext) {
         setPackageContext(options.packageContext)
         useCommandPalettePackageCommands(() => options.packageContext ?? null)
-        useCommandPaletteVersionCommands(
-          () => options.packageContext ?? null,
-          () => options.versionUrlPattern,
-        )
+        useCommandPaletteVersionCommands(() => options.packageContext ?? null, options.versionRoute)
       } else {
         clearPackageContext()
       }
@@ -124,7 +125,8 @@ afterEach(() => {
     connected: false,
     npmUser: null,
   }
-  mockAtprotoHandle.value = null
+  clearNuxtData()
+  authSessionHandler = () => null
   vi.clearAllMocks()
 })
 
@@ -232,6 +234,14 @@ describe('useCommandPaletteCommands', () => {
     expect(flatCommands.value.find(command => command.id === 'package-diff')).toBeTruthy()
     expect(flatCommands.value.find(command => command.id === 'package-download')).toBeTruthy()
     expect(flatCommands.value.find(command => command.id === 'package-main')?.to).toBeTruthy()
+    expect(flatCommands.value.find(command => command.id === 'package-timeline')?.to).toEqual({
+      name: 'timeline',
+      params: {
+        org: undefined,
+        packageName: 'vue',
+        version: '3.4.0',
+      },
+    })
     expect(groupedCommands.value.at(-1)?.id).toBe('versions')
     expect(groupedCommands.value.at(-1)?.items[0]?.id).toBe('version:3.4.0')
     expect(groupedCommands.value.at(-1)?.items[0]?.active).toBe(true)
@@ -306,6 +316,12 @@ describe('useCommandPaletteCommands', () => {
   })
 
   it('adds atproto account commands and disconnect support when a profile is connected', async () => {
+    const deleteSession = vi.fn(() => null)
+    registerEndpoint('/api/auth/session', {
+      method: 'DELETE',
+      handler: deleteSession,
+    })
+
     const { wrapper, flatCommands } = await captureCommandPalette({
       route: '/profile/alice.bsky.social',
       atprotoHandle: 'alice.bsky.social',
@@ -313,12 +329,14 @@ describe('useCommandPaletteCommands', () => {
     const commandPalette = useCommandPalette()
     commandPalette.open()
 
-    expect(flatCommands.value.find(command => command.id === 'atproto-disconnect')).toBeTruthy()
-    expect(flatCommands.value.find(command => command.id === 'my-profile')?.active).toBe(true)
+    await vi.waitFor(() => {
+      expect(flatCommands.value.find(command => command.id === 'atproto-disconnect')).toBeTruthy()
+      expect(flatCommands.value.find(command => command.id === 'my-profile')?.active).toBe(true)
+    })
 
     await flatCommands.value.find(command => command.id === 'atproto-disconnect')?.action?.()
 
-    expect(mockLogout).toHaveBeenCalledTimes(1)
+    expect(deleteSession).toHaveBeenCalledTimes(1)
     expect(commandPalette.isOpen.value).toBe(false)
 
     wrapper.unmount()
@@ -345,7 +363,7 @@ describe('useCommandPaletteCommands', () => {
     wrapper.unmount()
   })
 
-  it('keeps version navigation on the current surface when a version URL pattern is provided', async () => {
+  it('keeps version navigation on the current surface when a version route builder is provided', async () => {
     const { wrapper, flatCommands, routePath } = await captureCommandPalette({
       route: '/package-code/vue/v/3.4.2/src/index.ts',
       packageContext: {
@@ -354,7 +372,7 @@ describe('useCommandPaletteCommands', () => {
         latestVersion: '4.0.0',
         versions: ['4.0.0', '3.5.0', '3.4.2'],
       },
-      versionUrlPattern: '/package-code/vue/v/{version}/src/index.ts',
+      versionRoute: version => `/package-code/vue/v/${version}/src/index.ts`,
     })
 
     const versionCommand = flatCommands.value.find(command => command.id === 'version:3.5.0')
@@ -511,6 +529,14 @@ describe('useCommandPaletteCommands', () => {
       name: 'docs',
       params: {
         path: ['@scope', 'pkg', 'v', '1.0.0'],
+      },
+    })
+    expect(flatCommands.value.find(command => command.id === 'package-timeline')?.to).toEqual({
+      name: 'timeline',
+      params: {
+        org: '@scope',
+        packageName: 'pkg',
+        version: '1.0.0',
       },
     })
 

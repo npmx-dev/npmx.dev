@@ -6,15 +6,20 @@ on:
     types:
       - completed
 
-permissions:
-  pull-requests: write
-  actions: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.workflow_run.id }}
+  cancel-in-progress: true
+
+permissions: {}
 
 jobs:
   dependency-diff-comment:
     name: 💬 Dependency diff comment
     runs-on: ubuntu-slim
     if: github.event.workflow_run.conclusion == 'success'
+    permissions:
+      pull-requests: write # post dependency diff comments on pull requests
+      actions: read # download artifacts from dependency-diff runs
 
     steps:
       - name: 📥 Download artifact

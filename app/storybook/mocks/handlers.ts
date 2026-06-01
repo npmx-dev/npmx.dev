@@ -29,8 +29,17 @@ export const contributorsHandler = http.get('/api/contributors', () => {
       sponsors_url: null,
     },
     {
-      login: 'mock-maintainer-a',
+      login: 'mock-core-a',
       id: 1003,
+      avatar_url: 'https://api.dicebear.com/9.x/initials/svg?seed=core-a',
+      html_url: 'https://github.com/mock-core-a',
+      contributions: 9000,
+      role: 'core',
+      sponsors_url: null,
+    },
+    {
+      login: 'mock-maintainer-a',
+      id: 1004,
       avatar_url: 'https://api.dicebear.com/9.x/initials/svg?seed=maintainer-a',
       html_url: 'https://github.com/mock-maintainer-a',
       contributions: 210,
@@ -39,7 +48,7 @@ export const contributorsHandler = http.get('/api/contributors', () => {
     },
     {
       login: 'mock-contributor-a',
-      id: 1004,
+      id: 1005,
       avatar_url: 'https://api.dicebear.com/9.x/initials/svg?seed=contributor-a',
       html_url: 'https://github.com/mock-contributor-a',
       contributions: 95,
@@ -48,7 +57,7 @@ export const contributorsHandler = http.get('/api/contributors', () => {
     },
     {
       login: 'mock-contributor-b',
-      id: 1005,
+      id: 1006,
       avatar_url: 'https://api.dicebear.com/9.x/initials/svg?seed=contributor-b',
       html_url: 'https://github.com/mock-contributor-b',
       contributions: 47,
@@ -90,69 +99,4 @@ export const pdsUsersHandler = http.get('/api/atproto/pds-users', () => {
       displayName: 'Patak Goat',
     },
   ])
-})
-
-export const i18nStatusHandler = http.get('/lunaria/status.json', () => {
-  return HttpResponse.json({
-    generatedAt: '2026-01-22T10:07:07.000Z',
-    sourceLocale: {
-      lang: 'en',
-      label: 'English',
-      totalKeys: 500,
-    },
-    locales: [
-      {
-        lang: 'en-GB',
-        label: 'English (UK)',
-        dir: 'ltr',
-        totalKeys: 500,
-        completedKeys: 423,
-        percentComplete: 84,
-        missingKeys: [
-          'settings.background_themes.label',
-          'settings.enable_graph_pulse_loop',
-          'settings.enable_graph_pulse_loop_description',
-          'settings.data_source.algolia_description',
-          'settings.data_source.npm_description',
-          'i18n.contribute_hint',
-          'i18n.copy_keys',
-        ],
-        githubEditUrl: 'https://github.com/npmx-dev/npmx.dev/edit/main/i18n/locales/en-GB.json',
-        githubHistoryUrl:
-          'https://github.com/npmx-dev/npmx.dev/commits/main/i18n/locales/en-GB.json',
-      },
-      {
-        lang: 'fr-FR',
-        label: 'Français',
-        dir: 'ltr',
-        totalKeys: 500,
-        completedKeys: 423,
-        percentComplete: 84,
-        missingKeys: [
-          'settings.background_themes.label',
-          'settings.enable_graph_pulse_loop',
-          'settings.enable_graph_pulse_loop_description',
-          'settings.data_source.algolia_description',
-          'settings.data_source.npm_description',
-          'i18n.contribute_hint',
-          'i18n.copy_keys',
-        ],
-        githubEditUrl: 'https://github.com/npmx-dev/npmx.dev/edit/main/i18n/locales/fr-FR.json',
-        githubHistoryUrl:
-          'https://github.com/npmx-dev/npmx.dev/commits/main/i18n/locales/fr-FR.json',
-      },
-      {
-        lang: 'de-DE',
-        label: 'Deutsch',
-        dir: 'ltr',
-        totalKeys: 500,
-        completedKeys: 500,
-        percentComplete: 100,
-        missingKeys: [],
-        githubEditUrl: 'https://github.com/npmx-dev/npmx.dev/edit/main/i18n/locales/de-DE.json',
-        githubHistoryUrl:
-          'https://github.com/npmx-dev/npmx.dev/commits/main/i18n/locales/de-DE.json',
-      },
-    ],
-  })
 })

@@ -1,3 +1,4 @@
+import { normalizeLicense } from '#shared/utils/npm'
 import { hasBuiltInTypes } from '~~/shared/utils/package-analysis'
 
 const DEFAULT_LIMIT = 25
@@ -16,6 +17,13 @@ export interface TimelineVersion {
 export interface TimelineResponse {
   versions: TimelineVersion[]
   total: number
+}
+
+export interface SubEvent {
+  key: string
+  positive: boolean
+  icon: string
+  text: string
 }
 
 /**
@@ -61,15 +69,11 @@ export default defineCachedEventHandler(
         .filter(v => packument.time[v])
         .map(v => {
           const version = packument.versions[v]!
-          let license = version.license
-          if (license && typeof license === 'object' && 'type' in license) {
-            license = (license as { type: string }).type
-          }
 
           return {
             version: v,
             time: packument.time[v]!,
-            license: typeof license === 'string' ? license : undefined,
+            license: normalizeLicense(version.license),
             type: typeof version.type === 'string' ? version.type : undefined,
             hasTypes: hasBuiltInTypes(version) || undefined,
             hasTrustedPublisher: version._npmUser?.trustedPublisher ? true : undefined,

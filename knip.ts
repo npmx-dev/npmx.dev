@@ -1,6 +1,8 @@
 import type { KnipConfig } from 'knip'
 
 const config: KnipConfig = {
+  treatConfigHintsAsErrors: true,
+  treatTagHintsAsErrors: true,
   workspaces: {
     '.': {
       entry: [
@@ -28,13 +30,8 @@ const config: KnipConfig = {
       ignoreDependencies: [
         '@iconify-json/*',
         'puppeteer',
-        /** Needs to be explicitly installed, even though it is not imported, to avoid type errors. */
-        'unplugin-vue-router',
         'vite-plugin-pwa',
         '@vueuse/shared',
-
-        /** Some components import types from here, but installing it directly could lead to a version mismatch */
-        'vue-router',
 
         /** Oxlint plugins don't get picked up yet */
         '@e18e/eslint-plugin',
@@ -47,6 +44,8 @@ const config: KnipConfig = {
       ignoreFiles: [
         'app/components/Tooltip/Announce.vue',
         'app/components/UserCombobox.vue',
+        'app/components/ColorScheme/Img.vue',
+        'app/components/Noodle/Nodejs/Logo.vue',
         '**/*.unused.*',
       ],
     },

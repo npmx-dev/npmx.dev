@@ -1,6 +1,6 @@
 import type { NuxtLinkProps } from '#app'
 
-export type NavigationLink = {
+type NavigationLink = {
   name: string
   label: string
   iconClass?: string
@@ -12,13 +12,13 @@ export type NavigationLink = {
   external?: boolean
 }
 
-export type NavigationSeparator = {
+type NavigationSeparator = {
   type: 'separator'
 }
 
 export type NavigationConfig = NavigationLink[]
 
-export type NavigationGroup = {
+type NavigationGroup = {
   name: string
   type: 'group'
   label?: string

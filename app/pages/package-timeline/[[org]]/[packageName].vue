@@ -4,6 +4,7 @@ import { compare } from 'semver'
 import type {
   TimelineResponse,
   TimelineVersion,
+  SubEvent,
 } from '~~/server/api/registry/timeline/[...pkg].get'
 import type { TimelineSizeResponse } from '~~/server/api/registry/timeline/sizes/[...pkg].get'
 
@@ -22,6 +23,8 @@ const packageName = computed(() =>
 const version = computed(() => route.params.version)
 
 const { data: pkg } = usePackage(packageName, version)
+const { versions: commandPaletteVersions, ensureLoaded: ensureCommandPaletteVersionsLoaded } =
+  useCommandPalettePackageVersions(packageName)
 
 const latestVersion = computed(() => {
   if (!pkg.value) return null
@@ -30,10 +33,31 @@ const latestVersion = computed(() => {
   return pkg.value.versions[latestTag] ?? null
 })
 
+const commandPalettePackageContext = computed(() => {
+  const packageData = pkg.value
+  if (!packageData) return null
+
+  return {
+    packageName: packageData.name,
+    resolvedVersion: version.value ?? packageData['dist-tags']?.latest ?? null,
+    latestVersion: packageData['dist-tags']?.latest ?? null,
+    versions: commandPaletteVersions.value ?? Object.keys(packageData.versions ?? {}),
+  }
+})
+
+useCommandPalettePackageContext(commandPalettePackageContext, {
+  onOpen: ensureCommandPaletteVersionsLoaded,
+})
+useCommandPalettePackageCommands(commandPalettePackageContext)
+
 const versionUrlPattern = computed(() => {
   const { org, packageName: name } = route.params
   return `/package-timeline/${org ? `${org}/` : ''}${name}/v/{version}`
 })
+
+useCommandPaletteVersionCommands(commandPalettePackageContext, nextVersion =>
+  packageTimelineRoute(packageName.value, nextVersion),
+)
 
 function packageRoute(ver: string): RouteLocationRaw {
   return {
@@ -111,14 +135,17 @@ function sizeKey(ver: string) {
 }
 
 async function fetchSizes(offset: number) {
+  const requestedPackage = packageName.value
   sizeFetchesInFlight.value++
   try {
     const data = await $fetch<TimelineSizeResponse>(
-      `/api/registry/timeline/sizes/${packageName.value}`,
+      `/api/registry/timeline/sizes/${requestedPackage}`,
       { query: { offset, limit: PAGE_SIZE } },
     )
+    if (requestedPackage !== packageName.value) return
+
     for (const entry of data.sizes) {
-      sizeCache.set(sizeKey(entry.version), {
+      sizeCache.set(`${requestedPackage}@${entry.version}`, {
         totalSize: entry.totalSize,
         dependencyCount: entry.dependencyCount,
       })
@@ -142,13 +169,6 @@ if (import.meta.client) {
 }
 
 const bytesFormatter = useBytesFormatter()
-
-interface SubEvent {
-  key: string
-  positive: boolean
-  icon: string
-  text: string
-}
 
 // Detect notable changes between consecutive versions (size, license, ESM, types)
 // Versions are compared against their semver predecessor, not chronological neighbor,
@@ -308,6 +328,8 @@ const versionSubEvents = computed(() => {
   return result
 })
 
+const selectedVersion = shallowRef<string | null>(null)
+
 useSeoMeta({
   title: () => `Timeline - ${packageName.value} - npmx`,
   description: () => `Version timeline for ${packageName.value}`,
@@ -325,12 +347,21 @@ useSeoMeta({
       page="timeline"
     />
 
-    <div class="container w-full py-8">
-      <!-- Sizes loading indicator -->
-      <div v-if="sizesLoading" class="h-0.5 mb-4 rounded-full bg-bg-muted overflow-hidden">
-        <div class="h-full w-1/3 bg-accent rounded-full animate-indeterminate" />
+    <div class="sticky top-24 z-1 bg-bg mt-8">
+      <div class="container w-full">
+        <div class="mx-auto">
+          <PackageTimelineChart
+            :sizeCache
+            :versionSubEvents
+            :timelineEntries
+            :selectedVersion
+            :loading="sizesLoading"
+          />
+        </div>
       </div>
+    </div>
 
+    <div class="container w-full py-8">
       <!-- Timeline -->
       <ol v-if="timelineEntries.length" class="relative border-s border-border ms-4">
         <li v-for="entry in timelineEntries" :key="entry.version" class="mb-6 ms-6">
@@ -346,6 +377,10 @@ useSeoMeta({
               class="text-sm font-medium"
               :class="entry.version === version ? 'text-accent' : ''"
               dir="ltr"
+              @mouseenter="selectedVersion = entry.version"
+              @mouseleave="selectedVersion = null"
+              @focus="selectedVersion = entry.version"
+              @blur="selectedVersion = null"
             >
               {{ entry.version }}
             </LinkBase>
@@ -427,18 +462,3 @@ useSeoMeta({
     </div>
   </main>
 </template>
-
-<style scoped>
-@keyframes indeterminate {
-  0% {
-    translate: -100%;
-  }
-  100% {
-    translate: 400%;
-  }
-}
-
-.animate-indeterminate {
-  animation: indeterminate 1.5s ease-in-out infinite;
-}
-</style>

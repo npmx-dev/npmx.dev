@@ -33,7 +33,7 @@
           }
         }
       },
-      "description": "Resolves an atproto handle (hostname) to a DID. Does not necessarily bi-directionally verify against the the DID document."
+      "description": "Resolves an atproto handle (hostname) to a DID. Does not necessarily bi-directionally verify against the DID document."
     }
   },
   "$type": "com.atproto.lexicon.schema",

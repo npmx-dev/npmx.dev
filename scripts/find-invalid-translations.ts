@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import process from 'node:process'
 import { join } from 'node:path'
 import { createI18NReport, type I18NItem } from 'vue-i18n-extract'
 import { colors } from './utils/colors.ts'

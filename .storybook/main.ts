@@ -5,8 +5,7 @@ import { resolve } from 'node:path'
 const config = {
   stories: [
     // List welcome first in sidebar
-    '../.storybook/docs/welcome.mdx',
-    '../.storybook/docs/*.mdx',
+    '../app/storybook/welcome.mdx',
     '../app/**/*.@(mdx|stories.@(js|ts))',
   ],
   addons: [

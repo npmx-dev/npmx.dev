@@ -22,6 +22,11 @@ export const DOWNLOAD_ANOMALIES: DownloadAnomaly[] = [
     start: { date: '2023-11-18', weeklyDownloads: 59_611 },
     end: { date: '2023-11-21', weeklyDownloads: 150_680 },
   },
+  {
+    packageName: 'solid-js',
+    start: { date: '2024-12-22', weeklyDownloads: 21_395 },
+    end: { date: '2024-12-24', weeklyDownloads: 28_308 },
+  },
   /**
    * NOTE:
    *  - please add new entries above this comment.

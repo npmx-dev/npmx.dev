@@ -209,7 +209,7 @@ onUnmounted(deactivate)
               <template v-for="(group, index) in links">
                 <div
                   v-if="group.type === 'separator'"
-                  :key="`seperator-${index}`"
+                  :key="`separator-${index}`"
                   class="mx-4 my-2 border-t border-border"
                 />
 

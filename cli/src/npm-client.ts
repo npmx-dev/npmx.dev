@@ -173,7 +173,7 @@ export interface ExecNpmOptions {
 /**
  * PTY-based npm execution for interactive commands (uses node-pty).
  *
- * - Web OTP - either open URL in browser if openUrls is true or passes the URL to frontend. If no auth happend within AUTH_URL_TIMEOUT_MS kills the process to unlock the connector.
+ * - Web OTP - either open URL in browser if openUrls is true or passes the URL to frontend. If no auth happened within AUTH_URL_TIMEOUT_MS kills the process to unlock the connector.
  *
  * - CLI OTP - if we get a classic OTP prompt will either return OTP request to the frontend or will pass sent OTP if its provided
  */
