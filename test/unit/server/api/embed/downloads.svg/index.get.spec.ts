@@ -11,6 +11,7 @@ const createStaticVueUiXyMock = vi.fn()
 const generateWatermarkLogoMock = vi.fn()
 const isLastDayOfMonthMock = vi.fn()
 const getEffectiveEndDateIsoMock = vi.fn()
+const isLastDayOfYearMock = vi.fn()
 
 vi.mock('#server/utils/download-evolution', () => ({
   fetchDownloadsEvolution: fetchDownloadsEvolutionMock,
@@ -38,6 +39,7 @@ vi.mock('vue-data-ui/ssr', () => ({
 vi.mock('~/utils/date', () => ({
   getEffectiveEndDateIso: getEffectiveEndDateIsoMock,
   isLastDayOfMonth: isLastDayOfMonthMock,
+  isLastDayOfYear: isLastDayOfYearMock,
 }))
 
 vi.mock('~/utils/colors', () => ({
