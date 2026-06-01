@@ -7,7 +7,7 @@ test.describe('Create Command', () => {
 
       // Create command section should be visible (SSR)
       // Use specific container to avoid matching README code blocks
-      const createCommandSection = page.locator('.group\\/createcmd').first()
+      const createCommandSection = page.locator('[data-testid="create-cmd"]').first()
       await expect(createCommandSection).toBeVisible()
       await expect(createCommandSection.locator('code')).toContainText(/create vite/i)
 
@@ -23,7 +23,7 @@ test.describe('Create Command', () => {
 
       // Create command section should be visible (SSR)
       // Use specific container to avoid matching README code blocks
-      const createCommandSection = page.locator('.group\\/createcmd').first()
+      const createCommandSection = page.locator('[data-testid="create-cmd"]').first()
       await expect(createCommandSection).toBeVisible()
       await expect(createCommandSection.locator('code')).toContainText(/create next-app/i)
 
@@ -40,7 +40,7 @@ test.describe('Create Command', () => {
       // Create command section should be visible (SSR)
       // nuxt has create-nuxt package, so command is "npm create nuxt"
       // Use specific container to avoid matching README code blocks
-      const createCommandSection = page.locator('.group\\/createcmd').first()
+      const createCommandSection = page.locator('[data-testid="create-cmd"]').first()
       await expect(createCommandSection).toBeVisible()
       await expect(createCommandSection.locator('code')).toContainText(/create nuxt/i)
     })
@@ -56,27 +56,22 @@ test.describe('Create Command', () => {
 
       // Create command section should NOT be visible (no create-is-odd exists)
       // Use .first() for consistency, though none should exist
-      const createCommandSection = page.locator('.group\\/createcmd').first()
+      const createCommandSection = page.locator('[data-testid="create-cmd"]').first()
       await expect(createCommandSection).not.toBeVisible()
     })
   })
 
   test.describe('Install Command Copy', () => {
-    test('hovering install command shows copy button', async ({ page, goto }) => {
+    test('copy button is always visible on install command', async ({ page, goto }) => {
       await goto('/package/is-odd', { waitUntil: 'hydration' })
 
       // Find the install command container
-      const installCommandContainer = page.locator('.group\\/installcmd').first()
+      const installCommandContainer = page.locator('[data-testid="install-cmd"]').first()
       await expect(installCommandContainer).toBeVisible()
 
-      // Copy button should initially be hidden
+      // Copy button should always be visible (no hover required)
       const copyButton = installCommandContainer.locator('button')
-      await expect(copyButton).toHaveCSS('opacity', '0')
-
-      // Hover over the container
-      await installCommandContainer.hover()
-
-      // Copy button should become visible
+      await expect(copyButton).toBeVisible()
       await expect(copyButton).toHaveCSS('opacity', '1')
     })
 
@@ -90,11 +85,8 @@ test.describe('Create Command', () => {
 
       await goto('/package/is-odd', { waitUntil: 'hydration' })
 
-      // Find and hover over the install command container
-      const installCommandContainer = page.locator('.group\\/installcmd').first()
-      await installCommandContainer.hover()
-
-      // Click the copy button
+      // Find the install command container and click copy directly (no hover needed)
+      const installCommandContainer = page.locator('[data-testid="install-cmd"]').first()
       const copyButton = installCommandContainer.locator('button')
       await copyButton.click()
 

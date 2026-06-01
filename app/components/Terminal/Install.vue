@@ -224,6 +224,7 @@ useCommandPaletteContextCommands(
         <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
       </div>
       <div
+        data-testid="install-cmd"
         class="flex items-center gap-2 px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 overflow-x-auto"
         dir="ltr"
       >
@@ -238,7 +239,7 @@ useCommandPaletteContextCommands(
         >
         <button
           type="button"
-          class="flex items-center gap-1.5 px-2 py-1 font-mono text-xs text-fg-muted bg-bg-muted border border-border rounded transition-colors hover:(text-fg border-border-hover) active:scale-95 focus-visible:outline-accent/70 select-none shrink-0"
+          class="flex items-center gap-1.5 px-2 py-1 font-mono text-xs text-fg-muted bg-bg-muted border border-border rounded transition-colors hover:(text-fg border-border-hover) active:scale-95 select-none shrink-0"
           :aria-label="$t('package.get_started.copy_command')"
           @click.stop="copyInstallCommand"
         >
@@ -277,7 +278,7 @@ useCommandPaletteContextCommands(
             >
             <button
               type="button"
-              class="flex items-center gap-1.5 px-2 py-1 font-mono text-xs text-fg-muted bg-bg-muted border border-border rounded transition-colors hover:(text-fg border-border-hover) active:scale-95 focus-visible:outline-accent/70 select-none shrink-0"
+              class="flex items-center gap-1.5 px-2 py-1 font-mono text-xs text-fg-muted bg-bg-muted border border-border rounded transition-colors hover:(text-fg border-border-hover) active:scale-95 select-none shrink-0"
               :aria-label="$t('package.get_started.copy_dev_command')"
               @click.stop="copyDevInstallCommand"
             >
@@ -358,7 +359,7 @@ useCommandPaletteContextCommands(
             >
             <button
               type="button"
-              class="flex items-center gap-1.5 px-2 py-1 font-mono text-xs text-fg-muted bg-bg-muted border border-border rounded transition-colors hover:(text-fg border-border-hover) active:scale-95 focus-visible:outline-accent/70 select-none shrink-0"
+              class="flex items-center gap-1.5 px-2 py-1 font-mono text-xs text-fg-muted bg-bg-muted border border-border rounded transition-colors hover:(text-fg border-border-hover) active:scale-95 select-none shrink-0"
               @click.stop="copyRunCommand(executableInfo?.primaryCommand)"
             >
               <span class="i-lucide:copy w-3.5 h-3.5" aria-hidden="true" />
@@ -399,7 +400,7 @@ useCommandPaletteContextCommands(
               </NuxtLink>
             </TooltipApp>
           </div>
-          <div class="flex items-center gap-2">
+          <div data-testid="create-cmd" class="flex items-center gap-2">
             <span class="self-start text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
             <code class="font-mono text-sm flex-1"
               ><span
@@ -411,7 +412,7 @@ useCommandPaletteContextCommands(
             >
             <button
               type="button"
-              class="flex items-center gap-1.5 px-2 py-1 font-mono text-xs text-fg-muted bg-bg-muted border border-border rounded transition-colors hover:(text-fg border-border-hover) active:scale-95 focus-visible:outline-accent/70 select-none shrink-0"
+              class="flex items-center gap-1.5 px-2 py-1 font-mono text-xs text-fg-muted bg-bg-muted border border-border rounded transition-colors hover:(text-fg border-border-hover) active:scale-95 select-none shrink-0"
               :aria-label="$t('package.create.copy_command')"
               @click.stop="copyCreateCommand"
             >
