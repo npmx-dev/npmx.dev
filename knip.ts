@@ -2,6 +2,7 @@ import type { KnipConfig } from 'knip'
 
 const config: KnipConfig = {
   treatConfigHintsAsErrors: true,
+  treatTagHintsAsErrors: true,
   workspaces: {
     '.': {
       entry: [
@@ -44,6 +45,7 @@ const config: KnipConfig = {
         'app/components/Tooltip/Announce.vue',
         'app/components/UserCombobox.vue',
         'app/components/ColorScheme/Img.vue',
+        'app/components/Noodle/Nodejs/Logo.vue',
         '**/*.unused.*',
       ],
     },

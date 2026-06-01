@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { Role } from '#server/api/contributors.get'
 import { SPONSORS } from '~/assets/logos/sponsors'
 import { OSS_PARTNERS } from '~/assets/logos/oss-partners'
 
@@ -33,19 +32,15 @@ const pmLinks = {
 const { data: contributors, status: contributorsStatus } = useLazyFetch('/api/contributors')
 
 const governanceMembers = computed(
-  () => contributors.value?.filter(c => c.role !== 'contributor') ?? [],
+  () => contributors.value?.filter(c => c.role === 'steward' || c.role === 'core') ?? [],
+)
+
+const maintainersMembers = computed(
+  () => contributors.value?.filter(c => c.role === 'maintainer') ?? [],
 )
 
 const communityContributors = computed(
   () => contributors.value?.filter(c => c.role === 'contributor') ?? [],
-)
-
-const roleLabels = computed(
-  () =>
-    ({
-      steward: $t('about.team.role_steward'),
-      maintainer: $t('about.team.role_maintainer'),
-    }) as Partial<Record<Role, string>>,
 )
 </script>
 
@@ -179,60 +174,26 @@ const roleLabels = computed(
             {{ $t('about.contributors.description') }}
           </p>
 
-          <!-- Governance: stewards + maintainers -->
-          <section
-            v-if="governanceMembers.length"
-            class="mb-12"
-            aria-labelledby="governance-heading"
-          >
-            <h3 id="governance-heading" class="text-sm text-fg uppercase tracking-wider mb-4">
-              {{ $t('about.team.governance') }}
+          <!-- Governance: stewards + core -->
+          <section v-if="governanceMembers.length" class="mb-12" aria-labelledby="core-heading">
+            <h3 id="core-heading" class="text-sm text-fg uppercase tracking-wider mb-4">
+              {{ $t('about.team.core') }}
             </h3>
 
-            <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 list-none p-0">
-              <li
-                v-for="person in governanceMembers"
-                :key="person.id"
-                class="relative flex items-center gap-3 p-3 border border-border rounded-lg hover:border-border-hover hover:bg-bg-muted transition-[border-color,background-color] duration-200 cursor-pointer focus-within:ring-2 focus-within:ring-offset-bg focus-within:ring-offset-2 focus-within:ring-fg/50"
-              >
-                <img
-                  :src="`${person.avatar_url}&s=80`"
-                  :alt="`${person.login}'s avatar`"
-                  class="w-12 h-12 rounded-md ring-1 ring-border shrink-0"
-                  loading="lazy"
-                />
-                <div class="min-w-0 flex-1">
-                  <div class="font-mono text-sm text-fg truncate">
-                    <NuxtLink
-                      :to="person.html_url"
-                      target="_blank"
-                      class="decoration-none after:content-[''] after:absolute after:inset-0"
-                      :aria-label="$t('about.contributors.view_profile', { name: person.login })"
-                    >
-                      @{{ person.login }}
-                    </NuxtLink>
-                  </div>
-                  <div class="text-xs text-fg-muted tracking-tight">
-                    {{ roleLabels[person.role] ?? person.role }}
-                  </div>
-                  <LinkBase
-                    v-if="person.sponsors_url"
-                    :to="person.sponsors_url"
-                    no-underline
-                    no-external-icon
-                    classicon="i-lucide:heart"
-                    class="relative z-10 text-xs text-fg-muted hover:text-pink-400 mt-0.5"
-                    :aria-label="$t('about.team.sponsor_aria', { name: person.login })"
-                  >
-                    {{ $t('about.team.sponsor') }}
-                  </LinkBase>
-                </div>
-                <span
-                  class="i-lucide:external-link rtl-flip w-3.5 h-3.5 text-fg-muted opacity-50 shrink-0 self-start mt-0.5 pointer-events-none"
-                  aria-hidden="true"
-                />
-              </li>
-            </ul>
+            <AboutGovernanceList :members="governanceMembers" />
+          </section>
+
+          <!-- maintainers -->
+          <section
+            v-if="maintainersMembers.length"
+            class="mb-12"
+            aria-labelledby="maintainers-heading"
+          >
+            <h3 id="maintainers-heading" class="text-sm text-fg uppercase tracking-wider mb-4">
+              {{ $t('about.team.maintainers') }}
+            </h3>
+
+            <AboutGovernanceList :members="maintainersMembers" />
           </section>
 
           <!-- Contributors cloud -->
@@ -263,12 +224,12 @@ const roleLabels = computed(
             </div>
             <ul
               v-else-if="communityContributors.length"
-              class="grid grid-cols-[repeat(auto-fill,48px)] justify-center gap-2 list-none p-0"
+              class="grid grid-cols-[repeat(auto-fill,48px)] justify-center gap-1 list-none p-0"
             >
               <li
                 v-for="contributor in communityContributors"
                 :key="contributor.id"
-                class="block group relative"
+                class="block group relative hover:z-1"
               >
                 <TooltipApp :text="`@${contributor.login}`" class="block" position="top">
                   <a
@@ -283,7 +244,7 @@ const roleLabels = computed(
                       :alt="`${contributor.login}'s avatar`"
                       width="48"
                       height="48"
-                      class="w-12 h-12 rounded-lg ring-2 ring-transparent group-hover:ring-accent transition-all duration-200 ease-out group-hover:scale-125 will-change-transform"
+                      class="w-12 h-12 rounded-md ring-1 ring-transparent group-hover:ring-accent transition-all duration-200 ease-out"
                       loading="lazy"
                     />
                   </a>

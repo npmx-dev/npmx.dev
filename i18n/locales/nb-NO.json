@@ -1179,7 +1179,6 @@
     },
     "team": {
       "title": "Team",
-      "governance": "Styring",
       "role_steward": "forvalter",
       "role_maintainer": "vedlikeholder",
       "sponsor": "sponsor",

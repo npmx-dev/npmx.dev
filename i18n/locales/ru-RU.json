@@ -1183,7 +1183,6 @@
     },
     "team": {
       "title": "Команда",
-      "governance": "Управление",
       "role_steward": "управляющий",
       "role_maintainer": "мейнтейнер",
       "sponsor": "спонсировать",

@@ -941,7 +941,6 @@
     },
     "team": {
       "title": "Zespół",
-      "governance": "Zarządzanie",
       "role_steward": "steward",
       "role_maintainer": "maintainer",
       "sponsor": "sponsor",

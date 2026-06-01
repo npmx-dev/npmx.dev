@@ -5,7 +5,6 @@ export const useAtproto = createSharedComposable(function useAtproto() {
     clear,
   } = useFetch('/api/auth/session', {
     server: false,
-    immediate: !import.meta.test,
   })
 
   async function logout() {
