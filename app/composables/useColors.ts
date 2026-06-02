@@ -1,5 +1,18 @@
-import { computed, shallowRef, type ComputedRef, type Ref, type ShallowRef, unref } from 'vue'
-import { useMutationObserver, useResizeObserver, useSupported } from '@vueuse/core'
+import {
+  computed,
+  shallowRef,
+  type ComputedRef,
+  type Ref,
+  type ShallowRef,
+  unref,
+  watch,
+} from 'vue'
+import {
+  useMutationObserver,
+  useResizeObserver,
+  useSupported,
+  usePreferredDark,
+} from '@vueuse/core'
 
 type CssVariableSource = HTMLElement | null | undefined | Ref<HTMLElement | null | undefined>
 
@@ -36,6 +49,8 @@ export function useColors(
   options: { watchHtmlAttributes?: boolean; watchResize?: boolean } = {},
 ): { colors: ComputedRef<Record<string, string>> } {
   const recomputeToken = shallowRef(0)
+  const isPreferredDark = usePreferredDark()
+
   const invalidateColors = () => {
     recomputeToken.value += 1
   }
@@ -43,6 +58,8 @@ export function useColors(
   const isClientSupported = useSupported(
     () => typeof window !== 'undefined' && typeof document !== 'undefined',
   )
+
+  watch(isPreferredDark, invalidateColors)
 
   const colors = computed<Record<string, string>>(() => {
     void recomputeToken.value
