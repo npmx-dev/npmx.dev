@@ -1,51 +1,52 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { createDownloadsSvgResponse } from '../../../../server/utils/embed-downloads-svg'
 
-const fetchDownloadsEvolutionMock = vi.fn()
-const buildTrendsChartDataMock = vi.fn()
-const buildNormalisedTrendsDatasetMock = vi.fn()
-const buildTrendsChartConfigMock = vi.fn()
-const resolveEmbedChartColorsMock = vi.fn()
-const mergeConfigsMock = vi.fn()
-const createStaticVueUiXyMock = vi.fn()
-const generateWatermarkLogoMock = vi.fn()
-const isLastDayOfMonthMock = vi.fn()
-const getEffectiveEndDateIsoMock = vi.fn()
-const isLastDayOfYearMock = vi.fn()
+const mocks = vi.hoisted(() => ({
+  fetchDownloadsEvolution: vi.fn(),
+  buildTrendsChartData: vi.fn(),
+  buildNormalisedTrendsDataset: vi.fn(),
+  buildTrendsChartConfig: vi.fn(),
+  resolveEmbedChartColors: vi.fn(),
+  mergeConfigs: vi.fn(),
+  createStaticVueUiXy: vi.fn(),
+  generateWatermarkLogo: vi.fn(),
+  isLastDayOfMonth: vi.fn(),
+  getEffectiveEndDateIso: vi.fn(),
+  isLastDayOfYear: vi.fn(),
+}))
 
 vi.mock('#server/utils/download-evolution', () => ({
-  fetchDownloadsEvolution: fetchDownloadsEvolutionMock,
+  fetchDownloadsEvolution: mocks.fetchDownloadsEvolution,
 }))
 
 vi.mock('#shared/utils/trends-chart', () => ({
-  buildTrendsChartData: buildTrendsChartDataMock,
-  buildNormalisedTrendsDataset: buildNormalisedTrendsDatasetMock,
-  buildTrendsChartConfig: buildTrendsChartConfigMock,
-  generateWatermarkLogo: generateWatermarkLogoMock,
+  buildTrendsChartData: mocks.buildTrendsChartData,
+  buildNormalisedTrendsDataset: mocks.buildNormalisedTrendsDataset,
+  buildTrendsChartConfig: mocks.buildTrendsChartConfig,
+  generateWatermarkLogo: mocks.generateWatermarkLogo,
 }))
 
 vi.mock('#shared/utils/embed-chart-colors', () => ({
-  resolveEmbedChartColors: resolveEmbedChartColorsMock,
+  resolveEmbedChartColors: mocks.resolveEmbedChartColors,
 }))
 
 vi.mock('vue-data-ui/utils', () => ({
-  mergeConfigs: mergeConfigsMock,
+  mergeConfigs: mocks.mergeConfigs,
 }))
 
 vi.mock('vue-data-ui/ssr', () => ({
-  createStaticVueUiXy: createStaticVueUiXyMock,
+  createStaticVueUiXy: mocks.createStaticVueUiXy,
 }))
 
 vi.mock('~/utils/date', () => ({
-  getEffectiveEndDateIso: getEffectiveEndDateIsoMock,
-  isLastDayOfMonth: isLastDayOfMonthMock,
-  isLastDayOfYear: isLastDayOfYearMock,
+  getEffectiveEndDateIso: mocks.getEffectiveEndDateIso,
+  isLastDayOfMonth: mocks.isLastDayOfMonth,
+  isLastDayOfYear: mocks.isLastDayOfYear,
 }))
 
 vi.mock('~/utils/colors', () => ({
   OKLCH_NEUTRAL_FALLBACK: 'oklch-neutral-fallback',
 }))
-
-const { createDownloadsSvgResponse } = await import('#server/utils/embed-downloads-svg')
 
 function createEvolution(packageName: string) {
   return [
@@ -70,41 +71,41 @@ function createDataset(overrides: Record<string, unknown> = {}) {
 beforeEach(() => {
   vi.clearAllMocks()
 
-  fetchDownloadsEvolutionMock.mockImplementation(async (packageName: string) =>
+  mocks.fetchDownloadsEvolution.mockImplementation(async (packageName: string) =>
     createEvolution(packageName),
   )
 
-  resolveEmbedChartColorsMock.mockReturnValue({
+  mocks.resolveEmbedChartColors.mockReturnValue({
     fg: '#111111',
     bg: '#ffffff',
     fgMuted: '#666666',
     fgSubtle: '#999999',
   })
 
-  buildTrendsChartDataMock.mockReturnValue({
+  mocks.buildTrendsChartData.mockReturnValue({
     dates: ['2026-05-01', '2026-05-02'],
     dataset: createDataset(),
   })
 
-  buildNormalisedTrendsDatasetMock.mockReturnValue(createDataset())
+  mocks.buildNormalisedTrendsDataset.mockReturnValue(createDataset())
 
-  buildTrendsChartConfigMock.mockReturnValue({
+  mocks.buildTrendsChartConfig.mockReturnValue({
     chart: {
       base: true,
     },
   })
 
-  mergeConfigsMock.mockImplementation(({ defaultConfig, userConfig }) => ({
+  mocks.mergeConfigs.mockImplementation(({ defaultConfig, userConfig }) => ({
     defaultConfig,
     userConfig,
   }))
 
-  generateWatermarkLogoMock.mockReturnValue('<g data-logo="true" />')
-  getEffectiveEndDateIsoMock.mockReturnValue('2026-05-31')
-  isLastDayOfMonthMock.mockReturnValue(true)
-  isLastDayOfYearMock.mockReturnValue(true)
+  mocks.generateWatermarkLogo.mockReturnValue('<g data-logo="true" />')
+  mocks.getEffectiveEndDateIso.mockReturnValue('2026-05-31')
+  mocks.isLastDayOfMonth.mockReturnValue(true)
+  mocks.isLastDayOfYear.mockReturnValue(true)
 
-  createStaticVueUiXyMock.mockImplementation(async options => {
+  mocks.createStaticVueUiXy.mockImplementation(async options => {
     options.additionalSvgContent({
       drawingArea: {
         bottom: 300,
@@ -124,6 +125,7 @@ beforeEach(() => {
         },
       ],
     })
+
     return '<svg />'
   })
 })
@@ -164,7 +166,7 @@ describe('downloads SVG embed response', () => {
     })
 
     expect(result).toBe('<svg />')
-    expect(fetchDownloadsEvolutionMock).toHaveBeenCalledWith('vue', {
+    expect(mocks.fetchDownloadsEvolution).toHaveBeenCalledWith('vue', {
       granularity: 'week',
       weeks: 52,
       months: 12,
@@ -178,12 +180,16 @@ describe('downloads SVG embed response', () => {
       packages: 'Vue, @Nuxt/Kit, invalid package, React',
     })
 
-    expect(fetchDownloadsEvolutionMock).toHaveBeenCalledTimes(3)
-    expect(fetchDownloadsEvolutionMock).toHaveBeenNthCalledWith(1, 'vue', expect.any(Object))
-    expect(fetchDownloadsEvolutionMock).toHaveBeenNthCalledWith(2, '@nuxt/kit', expect.any(Object))
-    expect(fetchDownloadsEvolutionMock).toHaveBeenNthCalledWith(3, 'react', expect.any(Object))
+    expect(mocks.fetchDownloadsEvolution).toHaveBeenCalledTimes(3)
+    expect(mocks.fetchDownloadsEvolution).toHaveBeenNthCalledWith(1, 'vue', expect.any(Object))
+    expect(mocks.fetchDownloadsEvolution).toHaveBeenNthCalledWith(
+      2,
+      '@nuxt/kit',
+      expect.any(Object),
+    )
+    expect(mocks.fetchDownloadsEvolution).toHaveBeenNthCalledWith(3, 'react', expect.any(Object))
 
-    expect(buildTrendsChartDataMock).toHaveBeenCalledWith(
+    expect(mocks.buildTrendsChartData).toHaveBeenCalledWith(
       expect.objectContaining({
         packageNames: ['vue', '@nuxt/kit', 'react'],
         isMultiPackageMode: true,
@@ -196,7 +202,7 @@ describe('downloads SVG embed response', () => {
       packages: 'a,b,c,d,e,f,g,h,i,j',
     })
 
-    expect(fetchDownloadsEvolutionMock).toHaveBeenCalledTimes(8)
+    expect(mocks.fetchDownloadsEvolution).toHaveBeenCalledTimes(8)
   })
 
   it.each([
@@ -214,14 +220,14 @@ describe('downloads SVG embed response', () => {
       granularity: queryGranularity,
     })
 
-    expect(fetchDownloadsEvolutionMock).toHaveBeenCalledWith(
+    expect(mocks.fetchDownloadsEvolution).toHaveBeenCalledWith(
       'vue',
       expect.objectContaining({
         granularity: fetchGranularity,
       }),
     )
 
-    expect(buildTrendsChartDataMock).toHaveBeenCalledWith(
+    expect(mocks.buildTrendsChartData).toHaveBeenCalledWith(
       expect.objectContaining({
         selectedGranularity: chartGranularity,
         displayedGranularity: chartGranularity,
@@ -238,7 +244,7 @@ describe('downloads SVG embed response', () => {
       months: 0,
     })
 
-    expect(fetchDownloadsEvolutionMock).toHaveBeenCalledWith(
+    expect(mocks.fetchDownloadsEvolution).toHaveBeenCalledWith(
       'vue',
       expect.objectContaining({
         weeks: 260,
@@ -246,7 +252,7 @@ describe('downloads SVG embed response', () => {
       }),
     )
 
-    expect(mergeConfigsMock).toHaveBeenCalledWith(
+    expect(mocks.mergeConfigs).toHaveBeenCalledWith(
       expect.objectContaining({
         userConfig: expect.objectContaining({
           chart: expect.objectContaining({
@@ -267,7 +273,7 @@ describe('downloads SVG embed response', () => {
       months: 'nope',
     })
 
-    expect(fetchDownloadsEvolutionMock).toHaveBeenCalledWith(
+    expect(mocks.fetchDownloadsEvolution).toHaveBeenCalledWith(
       'vue',
       expect.objectContaining({
         weeks: 52,
@@ -275,7 +281,7 @@ describe('downloads SVG embed response', () => {
       }),
     )
 
-    expect(mergeConfigsMock).toHaveBeenCalledWith(
+    expect(mocks.mergeConfigs).toHaveBeenCalledWith(
       expect.objectContaining({
         userConfig: expect.objectContaining({
           chart: expect.objectContaining({
@@ -294,7 +300,7 @@ describe('downloads SVG embed response', () => {
       endDate: '2026-05-31',
     })
 
-    expect(fetchDownloadsEvolutionMock).toHaveBeenCalledWith(
+    expect(mocks.fetchDownloadsEvolution).toHaveBeenCalledWith(
       'vue',
       expect.objectContaining({
         startDate: undefined,
@@ -310,7 +316,7 @@ describe('downloads SVG embed response', () => {
       end: '2026-05-31',
     })
 
-    expect(fetchDownloadsEvolutionMock).toHaveBeenCalledWith(
+    expect(mocks.fetchDownloadsEvolution).toHaveBeenCalledWith(
       'vue',
       expect.objectContaining({
         startDate: '2026-01-01',
@@ -325,7 +331,7 @@ describe('downloads SVG embed response', () => {
       mode: 'dark',
     })
 
-    expect(resolveEmbedChartColorsMock).toHaveBeenCalledWith('dark')
+    expect(mocks.resolveEmbedChartColors).toHaveBeenCalledWith('dark')
   })
 
   it('uses light colors by default', async () => {
@@ -333,7 +339,7 @@ describe('downloads SVG embed response', () => {
       package: 'vue',
     })
 
-    expect(resolveEmbedChartColorsMock).toHaveBeenCalledWith('light')
+    expect(mocks.resolveEmbedChartColors).toHaveBeenCalledWith('light')
   })
 
   it('uses a valid locale', async () => {
@@ -342,7 +348,7 @@ describe('downloads SVG embed response', () => {
       locale: 'fr-FR',
     })
 
-    const chartDataOptions = buildTrendsChartDataMock.mock.calls[0]![0]
+    const chartDataOptions = mocks.buildTrendsChartData.mock.calls[0]![0]
     expect(chartDataOptions.compactNumberFormatter.resolvedOptions().locale).toBe('fr-FR')
   })
 
@@ -352,7 +358,7 @@ describe('downloads SVG embed response', () => {
       locale: 'not a locale',
     })
 
-    const chartDataOptions = buildTrendsChartDataMock.mock.calls[0]![0]
+    const chartDataOptions = mocks.buildTrendsChartData.mock.calls[0]![0]
     expect(chartDataOptions.compactNumberFormatter.resolvedOptions().locale).toBe('en')
   })
 
@@ -361,7 +367,7 @@ describe('downloads SVG embed response', () => {
       package: 'vue',
     })
 
-    const chartDataOptions = buildTrendsChartDataMock.mock.calls[0]![0]
+    const chartDataOptions = mocks.buildTrendsChartData.mock.calls[0]![0]
 
     expect(chartDataOptions.t('downloads')).toBe('downloads')
   })
@@ -372,7 +378,7 @@ describe('downloads SVG embed response', () => {
       yLabel: '<Downloads>&"`\u0000',
     })
 
-    const userConfig = mergeConfigsMock.mock.calls[0]![0].userConfig
+    const userConfig = mocks.mergeConfigs.mock.calls[0]![0].userConfig
     expect(userConfig.chart.grid.labels.axis.yLabel).toBe('Downloads')
   })
 
@@ -382,7 +388,7 @@ describe('downloads SVG embed response', () => {
       yLabel: 123,
     })
 
-    const userConfig = mergeConfigsMock.mock.calls[0]![0].userConfig
+    const userConfig = mocks.mergeConfigs.mock.calls[0]![0].userConfig
     expect(userConfig.chart.grid.labels.axis.yLabel).toBe('')
   })
 
@@ -392,7 +398,7 @@ describe('downloads SVG embed response', () => {
       accent: '#abc',
     })
 
-    expect(buildTrendsChartDataMock).toHaveBeenCalledWith(
+    expect(mocks.buildTrendsChartData).toHaveBeenCalledWith(
       expect.objectContaining({
         accent: '#abc',
       }),
@@ -405,7 +411,7 @@ describe('downloads SVG embed response', () => {
       accent: 'oklch(0.787 0.128 230.318)',
     })
 
-    expect(buildTrendsChartDataMock).toHaveBeenCalledWith(
+    expect(mocks.buildTrendsChartData).toHaveBeenCalledWith(
       expect.objectContaining({
         accent: 'oklch(0.787 0.128 230.318)',
       }),
@@ -418,7 +424,7 @@ describe('downloads SVG embed response', () => {
       accent: 'red',
     })
 
-    expect(buildTrendsChartDataMock).toHaveBeenCalledWith(
+    expect(mocks.buildTrendsChartData).toHaveBeenCalledWith(
       expect.objectContaining({
         accent: 'oklch-neutral-fallback',
       }),
@@ -431,7 +437,7 @@ describe('downloads SVG embed response', () => {
       accent: 42,
     })
 
-    expect(buildTrendsChartDataMock).toHaveBeenCalledWith(
+    expect(mocks.buildTrendsChartData).toHaveBeenCalledWith(
       expect.objectContaining({
         accent: 'oklch-neutral-fallback',
       }),
@@ -439,7 +445,7 @@ describe('downloads SVG embed response', () => {
   })
 
   it('throws 404 when chart dataset is empty', async () => {
-    buildTrendsChartDataMock.mockReturnValue({
+    mocks.buildTrendsChartData.mockReturnValue({
       dates: [],
       dataset: [],
     })
@@ -455,7 +461,7 @@ describe('downloads SVG embed response', () => {
   })
 
   it('throws 404 when normalized dataset is empty', async () => {
-    buildNormalisedTrendsDatasetMock.mockReturnValue([])
+    mocks.buildNormalisedTrendsDataset.mockReturnValue([])
 
     await expect(
       createDownloadsSvgResponse({
@@ -468,9 +474,9 @@ describe('downloads SVG embed response', () => {
   })
 
   it('adds a dash index to the last monthly point when the effective end date is not the last day of month', async () => {
-    isLastDayOfMonthMock.mockReturnValue(false)
-    getEffectiveEndDateIsoMock.mockReturnValue('2026-05-12')
-    buildNormalisedTrendsDatasetMock.mockReturnValue([
+    mocks.isLastDayOfMonth.mockReturnValue(false)
+    mocks.getEffectiveEndDateIso.mockReturnValue('2026-05-12')
+    mocks.buildNormalisedTrendsDataset.mockReturnValue([
       {
         name: 'vue',
         series: [10, 20, 30],
@@ -484,7 +490,7 @@ describe('downloads SVG embed response', () => {
       endDate: '2026-05-12',
     })
 
-    expect(createStaticVueUiXyMock).toHaveBeenCalledWith(
+    expect(mocks.createStaticVueUiXy).toHaveBeenCalledWith(
       expect.objectContaining({
         dataset: [
           expect.objectContaining({
@@ -496,8 +502,8 @@ describe('downloads SVG embed response', () => {
   })
 
   it('filters negative dash index for empty monthly series', async () => {
-    isLastDayOfMonthMock.mockReturnValue(false)
-    buildNormalisedTrendsDatasetMock.mockReturnValue([
+    mocks.isLastDayOfMonth.mockReturnValue(false)
+    mocks.buildNormalisedTrendsDataset.mockReturnValue([
       {
         name: 'vue',
         series: [],
@@ -509,7 +515,7 @@ describe('downloads SVG embed response', () => {
       granularity: 'month',
     })
 
-    expect(createStaticVueUiXyMock).toHaveBeenCalledWith(
+    expect(mocks.createStaticVueUiXy).toHaveBeenCalledWith(
       expect.objectContaining({
         dataset: [
           expect.objectContaining({
@@ -521,7 +527,7 @@ describe('downloads SVG embed response', () => {
   })
 
   it('keeps dash indices unchanged outside incomplete monthly data', async () => {
-    buildNormalisedTrendsDatasetMock.mockReturnValue([
+    mocks.buildNormalisedTrendsDataset.mockReturnValue([
       {
         name: 'vue',
         series: [10, 20],
@@ -533,7 +539,7 @@ describe('downloads SVG embed response', () => {
       package: 'vue',
     })
 
-    expect(createStaticVueUiXyMock).toHaveBeenCalledWith(
+    expect(mocks.createStaticVueUiXy).toHaveBeenCalledWith(
       expect.objectContaining({
         dataset: [
           expect.objectContaining({
@@ -549,7 +555,7 @@ describe('downloads SVG embed response', () => {
       package: 'vue',
     })
 
-    const options = createStaticVueUiXyMock.mock.calls[0]![0]
+    const options = mocks.createStaticVueUiXy.mock.calls[0]![0]
     const content = options.additionalSvgContent({
       drawingArea: {
         bottom: 300,
@@ -573,7 +579,7 @@ describe('downloads SVG embed response', () => {
     expect(content).toContain('<text')
     expect(content).toContain('1.2K')
     expect(content).toContain('<g data-logo="true" />')
-    expect(generateWatermarkLogoMock).toHaveBeenCalledWith({
+    expect(mocks.generateWatermarkLogo).toHaveBeenCalledWith({
       x: 12,
       y: 360,
       width: 80,
@@ -583,7 +589,7 @@ describe('downloads SVG embed response', () => {
   })
 
   it('falls back to an empty singleEvolution when the first package has no evolution', async () => {
-    fetchDownloadsEvolutionMock.mockImplementation(async (packageName: string) => {
+    mocks.fetchDownloadsEvolution.mockImplementation(async (packageName: string) => {
       if (packageName === 'vue') {
         return undefined
       }
@@ -595,13 +601,13 @@ describe('downloads SVG embed response', () => {
       package: 'vue',
     })
 
-    expect(buildTrendsChartDataMock).toHaveBeenCalledWith(
+    expect(mocks.buildTrendsChartData).toHaveBeenCalledWith(
       expect.objectContaining({
         singleEvolution: [],
       }),
     )
 
-    expect(buildTrendsChartConfigMock).toHaveBeenCalledWith(
+    expect(mocks.buildTrendsChartConfig).toHaveBeenCalledWith(
       expect.objectContaining({
         singleEvolution: [],
       }),
@@ -613,7 +619,7 @@ describe('downloads SVG embed response', () => {
       package: 'vue',
     })
 
-    const chartConfigOptions = buildTrendsChartConfigMock.mock.calls[0]![0]
+    const chartConfigOptions = mocks.buildTrendsChartConfig.mock.calls[0]![0]
 
     expect(chartConfigOptions.t('downloads')).toBe('downloads')
   })
@@ -623,7 +629,7 @@ describe('downloads SVG embed response', () => {
       package: 'vue',
     })
 
-    const options = createStaticVueUiXyMock.mock.calls[0]![0]
+    const options = mocks.createStaticVueUiXy.mock.calls[0]![0]
 
     const content = options.additionalSvgContent({
       drawingArea: {
@@ -650,7 +656,7 @@ describe('downloads SVG embed response', () => {
       package: 'vue',
     })
 
-    const options = createStaticVueUiXyMock.mock.calls[0]![0]
+    const options = mocks.createStaticVueUiXy.mock.calls[0]![0]
 
     const content = options.additionalSvgContent({
       drawingArea: {
@@ -680,7 +686,7 @@ describe('downloads SVG embed response', () => {
       locale: 'fr',
     })
 
-    const chartDataOptions = buildTrendsChartDataMock.mock.calls[0]![0]
+    const chartDataOptions = mocks.buildTrendsChartData.mock.calls[0]![0]
 
     expect(chartDataOptions.compactNumberFormatter.resolvedOptions().locale).toBe('en')
 
@@ -692,7 +698,7 @@ describe('downloads SVG embed response', () => {
       package: 'vue',
     })
 
-    const options = createStaticVueUiXyMock.mock.calls[0]![0]
+    const options = mocks.createStaticVueUiXy.mock.calls[0]![0]
 
     const content = options.additionalSvgContent({
       drawingArea: {
