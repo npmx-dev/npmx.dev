@@ -1,5 +1,4 @@
-import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import { createError, type H3Event } from 'h3'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const fetchDownloadsEvolutionMock = vi.fn()
 const buildTrendsChartDataMock = vi.fn()
@@ -46,17 +45,7 @@ vi.mock('~/utils/colors', () => ({
   OKLCH_NEUTRAL_FALLBACK: 'oklch-neutral-fallback',
 }))
 
-vi.stubGlobal('defineCachedEventHandler', (handler: Function) => handler)
-vi.stubGlobal('createError', createError)
-
-let queryParams: Record<string, unknown> = {}
-const setHeaderMock = vi.fn()
-
-vi.stubGlobal('getQuery', () => queryParams)
-vi.stubGlobal('setHeader', setHeaderMock)
-
-const handler = (await import('#server/api/embed/downloads.svg/index.get')).default
-const event = {} as H3Event
+const { createDownloadsSvgResponse } = await import('#server/utils/embed-downloads-svg')
 
 function createEvolution(packageName: string) {
   return [
@@ -80,10 +69,6 @@ function createDataset(overrides: Record<string, unknown> = {}) {
 
 beforeEach(() => {
   vi.clearAllMocks()
-
-  queryParams = {
-    package: 'vue',
-  }
 
   fetchDownloadsEvolutionMock.mockImplementation(async (packageName: string) =>
     createEvolution(packageName),
@@ -117,6 +102,7 @@ beforeEach(() => {
   generateWatermarkLogoMock.mockReturnValue('<g data-logo="true" />')
   getEffectiveEndDateIsoMock.mockReturnValue('2026-05-31')
   isLastDayOfMonthMock.mockReturnValue(true)
+  isLastDayOfYearMock.mockReturnValue(true)
 
   createStaticVueUiXyMock.mockImplementation(async options => {
     options.additionalSvgContent({
@@ -138,49 +124,44 @@ beforeEach(() => {
         },
       ],
     })
-
     return '<svg />'
   })
 })
 
-afterAll(() => {
-  vi.unstubAllGlobals()
-})
-
-describe('downloads SVG embed API', () => {
+describe('downloads SVG embed response', () => {
   it('throws 400 when no valid package name is provided', async () => {
-    queryParams = {}
-
-    await expect(handler(event)).rejects.toMatchObject({
+    await expect(createDownloadsSvgResponse({})).rejects.toMatchObject({
       statusCode: 400,
       statusMessage: 'Missing package name. Use ?package=nuxt or ?packages=vite,rolldown',
     })
   })
 
   it('throws 501 for likes metric', async () => {
-    queryParams = {
-      package: 'vue',
-      metric: 'likes',
-    }
-
-    await expect(handler(event)).rejects.toMatchObject({
+    await expect(
+      createDownloadsSvgResponse({
+        package: 'vue',
+        metric: 'likes',
+      }),
+    ).rejects.toMatchObject({
       statusCode: 501,
     })
   })
 
   it('throws 501 for contributors metric', async () => {
-    queryParams = {
-      package: 'vue',
-      metric: 'contributors',
-    }
-
-    await expect(handler(event)).rejects.toMatchObject({
+    await expect(
+      createDownloadsSvgResponse({
+        package: 'vue',
+        metric: 'contributors',
+      }),
+    ).rejects.toMatchObject({
       statusCode: 501,
     })
   })
 
   it('renders an SVG response for a single package', async () => {
-    const result = await handler(event)
+    const result = await createDownloadsSvgResponse({
+      package: 'vue',
+    })
 
     expect(result).toBe('<svg />')
     expect(fetchDownloadsEvolutionMock).toHaveBeenCalledWith('vue', {
@@ -190,24 +171,12 @@ describe('downloads SVG embed API', () => {
       startDate: undefined,
       endDate: undefined,
     })
-    expect(setHeaderMock).toHaveBeenCalledWith(
-      event,
-      'Content-Type',
-      'image/svg+xml; charset=utf-8',
-    )
-    expect(setHeaderMock).toHaveBeenCalledWith(
-      event,
-      'Cache-Control',
-      'public, max-age=3600, s-maxage=86400',
-    )
   })
 
   it('supports multiple packages from the packages query', async () => {
-    queryParams = {
+    await createDownloadsSvgResponse({
       packages: 'Vue, @Nuxt/Kit, invalid package, React',
-    }
-
-    await handler(event)
+    })
 
     expect(fetchDownloadsEvolutionMock).toHaveBeenCalledTimes(3)
     expect(fetchDownloadsEvolutionMock).toHaveBeenNthCalledWith(1, 'vue', expect.any(Object))
@@ -223,11 +192,9 @@ describe('downloads SVG embed API', () => {
   })
 
   it('limits package names to 8 entries', async () => {
-    queryParams = {
+    await createDownloadsSvgResponse({
       packages: 'a,b,c,d,e,f,g,h,i,j',
-    }
-
-    await handler(event)
+    })
 
     expect(fetchDownloadsEvolutionMock).toHaveBeenCalledTimes(8)
   })
@@ -242,12 +209,10 @@ describe('downloads SVG embed API', () => {
     ['yearly', 'year', 'yearly'],
     ['year', 'year', 'yearly'],
   ])('parses granularity %s', async (queryGranularity, fetchGranularity, chartGranularity) => {
-    queryParams = {
+    await createDownloadsSvgResponse({
       package: 'vue',
       granularity: queryGranularity,
-    }
-
-    await handler(event)
+    })
 
     expect(fetchDownloadsEvolutionMock).toHaveBeenCalledWith(
       'vue',
@@ -255,6 +220,7 @@ describe('downloads SVG embed API', () => {
         granularity: fetchGranularity,
       }),
     )
+
     expect(buildTrendsChartDataMock).toHaveBeenCalledWith(
       expect.objectContaining({
         selectedGranularity: chartGranularity,
@@ -264,15 +230,13 @@ describe('downloads SVG embed API', () => {
   })
 
   it('clamps width, height, weeks, and months', async () => {
-    queryParams = {
+    await createDownloadsSvgResponse({
       package: 'vue',
       width: 99999,
       height: 1,
       weeks: 99999,
       months: 0,
-    }
-
-    await handler(event)
+    })
 
     expect(fetchDownloadsEvolutionMock).toHaveBeenCalledWith(
       'vue',
@@ -295,15 +259,13 @@ describe('downloads SVG embed API', () => {
   })
 
   it('uses fallback dimensions and periods for invalid numeric query values', async () => {
-    queryParams = {
+    await createDownloadsSvgResponse({
       package: 'vue',
       width: 'nope',
       height: 'nope',
       weeks: 'nope',
       months: 'nope',
-    }
-
-    await handler(event)
+    })
 
     expect(fetchDownloadsEvolutionMock).toHaveBeenCalledWith(
       'vue',
@@ -326,13 +288,11 @@ describe('downloads SVG embed API', () => {
   })
 
   it('parses valid dates and ignores invalid dates', async () => {
-    queryParams = {
+    await createDownloadsSvgResponse({
       package: 'vue',
       start: 'invalid',
       endDate: '2026-05-31',
-    }
-
-    await handler(event)
+    })
 
     expect(fetchDownloadsEvolutionMock).toHaveBeenCalledWith(
       'vue',
@@ -344,13 +304,11 @@ describe('downloads SVG embed API', () => {
   })
 
   it('uses startDate and end aliases', async () => {
-    queryParams = {
+    await createDownloadsSvgResponse({
       package: 'vue',
       startDate: '2026-01-01',
       end: '2026-05-31',
-    }
-
-    await handler(event)
+    })
 
     expect(fetchDownloadsEvolutionMock).toHaveBeenCalledWith(
       'vue',
@@ -362,77 +320,77 @@ describe('downloads SVG embed API', () => {
   })
 
   it('uses dark colors when mode is dark', async () => {
-    queryParams = {
+    await createDownloadsSvgResponse({
       package: 'vue',
       mode: 'dark',
-    }
-
-    await handler(event)
+    })
 
     expect(resolveEmbedChartColorsMock).toHaveBeenCalledWith('dark')
   })
 
   it('uses light colors by default', async () => {
-    await handler(event)
+    await createDownloadsSvgResponse({
+      package: 'vue',
+    })
 
     expect(resolveEmbedChartColorsMock).toHaveBeenCalledWith('light')
   })
 
   it('uses a valid locale', async () => {
-    queryParams = {
+    await createDownloadsSvgResponse({
       package: 'vue',
       locale: 'fr-FR',
-    }
-
-    await handler(event)
+    })
 
     const chartDataOptions = buildTrendsChartDataMock.mock.calls[0]![0]
     expect(chartDataOptions.compactNumberFormatter.resolvedOptions().locale).toBe('fr-FR')
   })
 
   it('falls back to en for invalid locale', async () => {
-    queryParams = {
+    await createDownloadsSvgResponse({
       package: 'vue',
       locale: 'not a locale',
-    }
-
-    await handler(event)
+    })
 
     const chartDataOptions = buildTrendsChartDataMock.mock.calls[0]![0]
     expect(chartDataOptions.compactNumberFormatter.resolvedOptions().locale).toBe('en')
   })
 
+  it('uses an identity translation function for chart data', async () => {
+    await createDownloadsSvgResponse({
+      package: 'vue',
+    })
+
+    const chartDataOptions = buildTrendsChartDataMock.mock.calls[0]![0]
+
+    expect(chartDataOptions.t('downloads')).toBe('downloads')
+  })
+
   it('sanitizes yLabel', async () => {
-    queryParams = {
+    await createDownloadsSvgResponse({
       package: 'vue',
       yLabel: '<Downloads>&"`\u0000',
-    }
-
-    await handler(event)
+    })
 
     const userConfig = mergeConfigsMock.mock.calls[0]![0].userConfig
     expect(userConfig.chart.grid.labels.axis.yLabel).toBe('Downloads')
   })
 
   it('uses fallback yLabel for non-string values', async () => {
-    queryParams = {
+    await createDownloadsSvgResponse({
       package: 'vue',
       yLabel: 123,
-    }
-
-    await handler(event)
+    })
 
     const userConfig = mergeConfigsMock.mock.calls[0]![0].userConfig
     expect(userConfig.chart.grid.labels.axis.yLabel).toBe('')
   })
 
   it('accepts hex accent colors', async () => {
-    queryParams = {
+    await createDownloadsSvgResponse({
       package: 'vue',
       accent: '#abc',
-    }
-
-    await handler(event)
+    })
 
     expect(buildTrendsChartDataMock).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -442,12 +400,10 @@ describe('downloads SVG embed API', () => {
   })
 
   it('accepts oklch accent colors', async () => {
-    queryParams = {
+    await createDownloadsSvgResponse({
       package: 'vue',
       accent: 'oklch(0.787 0.128 230.318)',
-    }
-
-    await handler(event)
+    })
 
     expect(buildTrendsChartDataMock).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -457,12 +413,10 @@ describe('downloads SVG embed API', () => {
   })
 
   it('falls back for invalid accent colors', async () => {
-    queryParams = {
+    await createDownloadsSvgResponse({
       package: 'vue',
       accent: 'red',
-    }
-
-    await handler(event)
+    })
 
     expect(buildTrendsChartDataMock).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -472,12 +426,10 @@ describe('downloads SVG embed API', () => {
   })
 
   it('falls back for non-string accent colors', async () => {
-    queryParams = {
+    await createDownloadsSvgResponse({
       package: 'vue',
       accent: 42,
-    }
-
-    await handler(event)
+    })
 
     expect(buildTrendsChartDataMock).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -492,7 +444,11 @@ describe('downloads SVG embed API', () => {
       dataset: [],
     })
 
-    await expect(handler(event)).rejects.toMatchObject({
+    await expect(
+      createDownloadsSvgResponse({
+        package: 'vue',
+      }),
+    ).rejects.toMatchObject({
       statusCode: 404,
       statusMessage: 'No chart dataset generated',
     })
@@ -501,19 +457,17 @@ describe('downloads SVG embed API', () => {
   it('throws 404 when normalized dataset is empty', async () => {
     buildNormalisedTrendsDatasetMock.mockReturnValue([])
 
-    await expect(handler(event)).rejects.toMatchObject({
+    await expect(
+      createDownloadsSvgResponse({
+        package: 'vue',
+      }),
+    ).rejects.toMatchObject({
       statusCode: 404,
       statusMessage: 'No normalized dataset generated',
     })
   })
 
   it('adds a dash index to the last monthly point when the effective end date is not the last day of month', async () => {
-    queryParams = {
-      package: 'vue',
-      granularity: 'month',
-      endDate: '2026-05-12',
-    }
-
     isLastDayOfMonthMock.mockReturnValue(false)
     getEffectiveEndDateIsoMock.mockReturnValue('2026-05-12')
     buildNormalisedTrendsDatasetMock.mockReturnValue([
@@ -524,7 +478,11 @@ describe('downloads SVG embed API', () => {
       },
     ])
 
-    await handler(event)
+    await createDownloadsSvgResponse({
+      package: 'vue',
+      granularity: 'month',
+      endDate: '2026-05-12',
+    })
 
     expect(createStaticVueUiXyMock).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -538,11 +496,6 @@ describe('downloads SVG embed API', () => {
   })
 
   it('filters negative dash index for empty monthly series', async () => {
-    queryParams = {
-      package: 'vue',
-      granularity: 'month',
-    }
-
     isLastDayOfMonthMock.mockReturnValue(false)
     buildNormalisedTrendsDatasetMock.mockReturnValue([
       {
@@ -551,7 +504,10 @@ describe('downloads SVG embed API', () => {
       },
     ])
 
-    await handler(event)
+    await createDownloadsSvgResponse({
+      package: 'vue',
+      granularity: 'month',
+    })
 
     expect(createStaticVueUiXyMock).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -573,7 +529,9 @@ describe('downloads SVG embed API', () => {
       },
     ])
 
-    await handler(event)
+    await createDownloadsSvgResponse({
+      package: 'vue',
+    })
 
     expect(createStaticVueUiXyMock).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -587,7 +545,9 @@ describe('downloads SVG embed API', () => {
   })
 
   it('generates extra SVG labels and watermark content', async () => {
-    await handler(event)
+    await createDownloadsSvgResponse({
+      package: 'vue',
+    })
 
     const options = createStaticVueUiXyMock.mock.calls[0]![0]
     const content = options.additionalSvgContent({
@@ -631,7 +591,9 @@ describe('downloads SVG embed API', () => {
       return createEvolution(packageName)
     })
 
-    await handler(event)
+    await createDownloadsSvgResponse({
+      package: 'vue',
+    })
 
     expect(buildTrendsChartDataMock).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -646,8 +608,20 @@ describe('downloads SVG embed API', () => {
     )
   })
 
+  it('uses an identity translation function for chart config', async () => {
+    await createDownloadsSvgResponse({
+      package: 'vue',
+    })
+
+    const chartConfigOptions = buildTrendsChartConfigMock.mock.calls[0]![0]
+
+    expect(chartConfigOptions.t('downloads')).toBe('downloads')
+  })
+
   it('formats the last plot value in additionalSvgContent', async () => {
-    await handler(event)
+    await createDownloadsSvgResponse({
+      package: 'vue',
+    })
 
     const options = createStaticVueUiXyMock.mock.calls[0]![0]
 
@@ -672,7 +646,9 @@ describe('downloads SVG embed API', () => {
   })
 
   it('falls back to 0 when the last plot value is missing', async () => {
-    await handler(event)
+    await createDownloadsSvgResponse({
+      package: 'vue',
+    })
 
     const options = createStaticVueUiXyMock.mock.calls[0]![0]
 
@@ -699,17 +675,37 @@ describe('downloads SVG embed API', () => {
   it('falls back to en when canonical locales returns an empty array', async () => {
     const spy = vi.spyOn(Intl, 'getCanonicalLocales').mockReturnValue([])
 
-    queryParams = {
+    await createDownloadsSvgResponse({
       package: 'vue',
       locale: 'fr',
-    }
-
-    await handler(event)
+    })
 
     const chartDataOptions = buildTrendsChartDataMock.mock.calls[0]![0]
 
     expect(chartDataOptions.compactNumberFormatter.resolvedOptions().locale).toBe('en')
 
     spy.mockRestore()
+  })
+
+  it('handles series without plots', async () => {
+    await createDownloadsSvgResponse({
+      package: 'vue',
+    })
+
+    const options = createStaticVueUiXyMock.mock.calls[0]![0]
+
+    const content = options.additionalSvgContent({
+      drawingArea: {
+        bottom: 300,
+      },
+      series: [
+        {
+          plots: undefined,
+        },
+      ],
+    })
+
+    expect(content).toContain('<g data-logo="true" />')
+    expect(content).not.toContain('<text')
   })
 })
