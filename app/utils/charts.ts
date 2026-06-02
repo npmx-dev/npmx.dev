@@ -9,7 +9,13 @@ import type {
   VueUiXyDatasetLineItem,
 } from 'vue-data-ui'
 import type { ChartTimeGranularity } from '~/types/chart'
-import type { SubEvent } from '~~/server/api/registry/timeline/[...pkg].get'
+
+interface SubEvent {
+  key: string
+  positive: boolean
+  icon: string
+  text: string
+}
 
 export function sum(numbers: number[]): number {
   return numbers.reduce((a, b) => a + b, 0)
