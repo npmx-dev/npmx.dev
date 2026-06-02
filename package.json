@@ -90,7 +90,7 @@
     "gray-matter": "4.0.3",
     "ipaddr.js": "2.3.0",
     "marked": "18.0.0",
-    "module-replacements": "3.0.0-beta.7",
+    "module-replacements": "3.0.0-beta.8",
     "nuxt": "4.4.7",
     "nuxt-og-image": "^6.4.3",
     "ofetch": "1.5.1",
@@ -112,7 +112,7 @@
     "vite-plus": "0.1.20",
     "vue": "3.5.34",
     "vue-data-ui": "3.20.11",
-    "vue-router": "5.0.4"
+    "vue-router": "5.1.0"
   },
   "devDependencies": {
     "@e18e/eslint-plugin": "0.4.1",

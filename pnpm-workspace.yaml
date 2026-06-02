@@ -40,7 +40,7 @@ overrides:
   sharp: 0.34.5
   vite: npm:@voidzero-dev/vite-plus-core@0.1.20
   vitest: npm:@voidzero-dev/vite-plus-test@0.1.20
-  vue-router: 5.0.4
+  vue-router: 5.1.0
 
 packageExtensions:
   '@nuxt/scripts':
