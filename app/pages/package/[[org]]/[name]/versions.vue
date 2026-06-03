@@ -269,7 +269,7 @@ const flatItems = computed<FlatItem[]>(() => {
   <main class="flex-1 flex flex-col">
     <!-- Header -->
     <header class="border-b border-border bg-bg sticky top-14 z-20">
-      <div class="container py-3 flex items-center justify-between gap-4">
+      <div class="container py-3 flex items-center justify-between gap-2 sm:gap-4">
         <div class="flex items-center gap-2 min-w-0">
           <NuxtLink
             :to="packageRoute(packageName)"
@@ -297,7 +297,7 @@ const flatItems = computed<FlatItem[]>(() => {
         <!-- Latest — featured card -->
         <div
           v-if="latestTagRow"
-          class="border-y sm:rounded-lg sm:border border-accent/40 bg-accent/5 px-4 py-4 relative flex max-sm:flex-col sm:items-center justify-between gap-4 hover:bg-accent/8 transition-colors"
+          class="border-y sm:rounded-lg sm:border border-accent/40 bg-accent/5 px-4 py-4 relative flex max-sm:flex-col sm:items-center justify-between gap-2 sm:gap-4 hover:bg-accent/8 transition-colors"
         >
           <!-- Left: tags + version + deprecated -->
           <div>
@@ -312,10 +312,14 @@ const flatItems = computed<FlatItem[]>(() => {
               >
               <span
                 v-if="fullVersionMap?.get(latestTagRow!.version)?.deprecated"
-                class="text-xs font-medium text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded"
+                class="text-xs font-medium text-red-700 dark:text-red-400 relative z-10"
                 :title="fullVersionMap!.get(latestTagRow!.version)!.deprecated"
-                >deprecated</span
               >
+                <span class="sm:hidden i-lucide:octagon-alert" aria-hidden="true"></span>
+                <span class="max-sm:sr-only bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded"
+                  >deprecated</span
+                >
+              </span>
             </div>
             <div class="flex items-center gap-2">
               <LinkBase
@@ -336,7 +340,7 @@ const flatItems = computed<FlatItem[]>(() => {
             </div>
           </div>
           <!-- Right: downloads + date -->
-          <div class="flex sm:items-center gap-4 shrink-0 relative z-10">
+          <div class="flex sm:items-center gap-2 sm:gap-4 shrink-0 relative z-10">
             <span
               v-if="getVersionDownloads(latestTagRow!.version)"
               class="max-w-32 md:w-32 grid grid-flow-col auto-cols-max items-center gap-1 text-xs text-fg-muted tabular-nums sm:justify-end"
@@ -376,10 +380,10 @@ const flatItems = computed<FlatItem[]>(() => {
           <div
             v-for="row in otherTagRows"
             :key="row.id"
-            class="flex items-center gap-4 px-4 py-2.5 border-b border-border last:border-0 hover:bg-bg-subtle transition-colors relative"
+            class="flex items-center gap-2 sm:gap-4 px-4 py-2.5 border-b border-border last:border-0 hover:bg-bg-subtle transition-colors relative"
           >
             <!-- Tag labels -->
-            <div class="max-w-32 md:w-32 shrink-0 flex flex-wrap gap-x-1.5 gap-y-0.5">
+            <div class="max-w-[max(32px,32vw)] md:w-32 shrink-0 flex flex-wrap gap-x-1.5 gap-y-0.5">
               <span
                 v-for="tag in row.tags"
                 :key="tag"
@@ -390,10 +394,10 @@ const flatItems = computed<FlatItem[]>(() => {
             </div>
 
             <!-- Version + Provenance + Deprecated -->
-            <div class="flex-1 min-w-0 flex items-center gap-2 truncate overflow-hidden">
+            <div class="flex-1 flex items-center gap-2">
               <LinkBase
                 :to="packageRoute(packageName, row.version)"
-                class="block! text-sm after:absolute after:inset-0 after:content-[''] truncate"
+                class="block! min-w-16 max-sm:max-w-40 text-sm after:absolute after:inset-0 after:content-[''] truncate"
                 :title="row.version"
                 dir="ltr"
               >
@@ -409,10 +413,14 @@ const flatItems = computed<FlatItem[]>(() => {
               />
               <span
                 v-if="fullVersionMap?.get(row.version)?.deprecated"
-                class="text-xs font-medium text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded relative z-10"
+                class="text-xs font-medium text-red-700 dark:text-red-400 relative z-10"
                 :title="fullVersionMap!.get(row.version)!.deprecated"
-                >deprecated</span
               >
+                <span class="sm:hidden i-lucide:octagon-alert" aria-hidden="true"></span>
+                <span class="max-sm:sr-only bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded"
+                  >deprecated</span
+                >
+              </span>
             </div>
 
             <!-- Downloads -->
@@ -445,7 +453,7 @@ const flatItems = computed<FlatItem[]>(() => {
 
       <!-- ── Version History ───────────────────────────────────────────────── -->
       <section v-if="versionGroups.length > 0">
-        <div class="flex items-center justify-between gap-2 mb-3">
+        <div class="flex max-sm:flex-col sm:items-center justify-between gap-2 mb-3">
           <h2 class="text-sm text-fg-subtle uppercase">
             {{ $t('package.versions.page_title') }}
             <span class="ms-1 normal-case font-normal"> ({{ versionStrings.length }}) </span>
@@ -461,7 +469,7 @@ const flatItems = computed<FlatItem[]>(() => {
               :aria-describedby="isInvalidRange ? 'version-filter-error' : undefined"
               autocomplete="off"
               size="sm"
-              class="w-36 sm:w-64"
+              class="w-36 sm:w-64 max-sm:w-full"
               :class="isInvalidRange ? 'pe-7 !border-red-500' : ''"
             />
             <Transition
@@ -534,9 +542,14 @@ const flatItems = computed<FlatItem[]>(() => {
                     <span class="text-sm font-medium">{{ item.label }}</span>
                     <span
                       v-if="deprecatedGroupKeys.has(item.groupKey)"
-                      class="text-xs font-medium text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded"
-                      >deprecated</span
+                      class="text-xs font-medium text-red-700 dark:text-red-400 relative z-10"
                     >
+                      <span class="sm:hidden i-lucide:octagon-alert" aria-hidden="true"></span>
+                      <span
+                        class="max-sm:sr-only bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded"
+                        >deprecated</span
+                      >
+                    </span>
                     <span class="text-xs text-fg-subtle">({{ item.versions.length }})</span>
                     <span class="text-xs text-fg-muted truncate" :title="item.versions[0]" dir="ltr"
                       >v{{ item.versions[0] }}</span
@@ -628,10 +641,14 @@ const flatItems = computed<FlatItem[]>(() => {
                         </div>
                         <span
                           v-if="fullVersionMap?.get(item.version)?.deprecated"
-                          class="text-xs font-medium text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded relative z-10"
+                          class="text-xs font-medium text-red-700 dark:text-red-400 relative z-10"
                           :title="fullVersionMap.get(item.version)!.deprecated"
                         >
-                          deprecated
+                          <span class="sm:hidden i-lucide:octagon-alert" aria-hidden="true"></span>
+                          <span
+                            class="max-sm:sr-only bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded"
+                            >deprecated</span
+                          >
                         </span>
                       </div>
 
