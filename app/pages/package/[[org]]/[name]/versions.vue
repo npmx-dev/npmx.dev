@@ -283,40 +283,6 @@ const flatItems = computed<FlatItem[]>(() => {
           <span class="text-fg-subtle shrink-0">/</span>
           <h1 class="text-sm text-fg-muted shrink-0">{{ $t('package.versions.page_title') }}</h1>
         </div>
-        <div class="relative">
-          <InputBase
-            v-model="versionFilterInput"
-            type="text"
-            :placeholder="$t('package.versions.filter_placeholder')"
-            :aria-label="$t('package.versions.filter_placeholder')"
-            :aria-invalid="isInvalidRange ? 'true' : undefined"
-            :aria-describedby="isInvalidRange ? 'version-filter-error' : undefined"
-            autocomplete="off"
-            size="sm"
-            class="w-36 sm:w-64"
-            :class="isInvalidRange ? 'pe-7 !border-red-500' : ''"
-          />
-          <Transition
-            enter-active-class="transition-all duration-150"
-            enter-from-class="opacity-0 scale-60"
-            leave-active-class="transition-all duration-150"
-            leave-to-class="opacity-0 scale-60"
-          >
-            <TooltipApp
-              v-if="isInvalidRange"
-              :text="$t('package.versions.filter_invalid')"
-              position="bottom"
-              class="absolute end-0 inset-y-0 flex items-center pe-2"
-            >
-              <span
-                id="version-filter-error"
-                class="i-lucide:circle-alert w-3.5 h-3.5 text-red-500 block"
-                role="img"
-                :aria-label="$t('package.versions.filter_invalid')"
-              />
-            </TooltipApp>
-          </Transition>
-        </div>
       </div>
     </header>
 
@@ -479,10 +445,47 @@ const flatItems = computed<FlatItem[]>(() => {
 
       <!-- ── Version History ───────────────────────────────────────────────── -->
       <section v-if="versionGroups.length > 0">
-        <h2 class="text-sm text-fg-subtle uppercase mb-3">
-          {{ $t('package.versions.page_title') }}
-          <span class="ms-1 normal-case font-normal"> ({{ versionStrings.length }}) </span>
-        </h2>
+        <div class="flex items-center justify-between gap-2 mb-3">
+          <h2 class="text-sm text-fg-subtle uppercase mb-3">
+            {{ $t('package.versions.page_title') }}
+            <span class="ms-1 normal-case font-normal"> ({{ versionStrings.length }}) </span>
+          </h2>
+
+          <div class="relative">
+            <InputBase
+              v-model="versionFilterInput"
+              type="text"
+              :placeholder="$t('package.versions.filter_placeholder')"
+              :aria-label="$t('package.versions.filter_placeholder')"
+              :aria-invalid="isInvalidRange ? 'true' : undefined"
+              :aria-describedby="isInvalidRange ? 'version-filter-error' : undefined"
+              autocomplete="off"
+              size="sm"
+              class="w-36 sm:w-64"
+              :class="isInvalidRange ? 'pe-7 !border-red-500' : ''"
+            />
+            <Transition
+              enter-active-class="transition-all duration-150"
+              enter-from-class="opacity-0 scale-60"
+              leave-active-class="transition-all duration-150"
+              leave-to-class="opacity-0 scale-60"
+            >
+              <TooltipApp
+                v-if="isInvalidRange"
+                :text="$t('package.versions.filter_invalid')"
+                position="bottom"
+                class="absolute end-0 inset-y-0 flex items-center pe-2"
+              >
+                <span
+                  id="version-filter-error"
+                  class="i-lucide:circle-alert w-3.5 h-3.5 text-red-500 block"
+                  role="img"
+                  :aria-label="$t('package.versions.filter_invalid')"
+                />
+              </TooltipApp>
+            </Transition>
+          </div>
+        </div>
 
         <!-- No filter matches -->
         <div
