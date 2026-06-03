@@ -13,37 +13,23 @@ concurrency:
 permissions: {}
 
 jobs:
-  stale-bugs:
-    name: 🧹 Mark stale bug issues
+  stale-management:
+    name: 🧹 Mark stale bugs and PRs
     runs-on: ubuntu-latest
     permissions:
       issues: write # mark and close stale bug issues
+      pull-requests: write # mark and close stale pull requests
     steps:
       - uses: actions/stale@b5d41d4e1d5dceea10e7104786b73624c18a190f # v10.2.0
         with:
           days-before-issue-stale: 30
           days-before-issue-close: 7
-          days-before-pr-stale: -1
-          days-before-pr-close: -1
+          days-before-pr-stale: 30
+          days-before-pr-close: 7
           remove-stale-when-updated: true
           only-issue-types: 'bug'
           stale-issue-label: 'stale'
           close-issue-label: 'stale'
-          operations-per-run: 500
-
-  stale-prs:
-    name: 🧹 Mark stale pull requests
-    runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write # mark and close stale pull requests
-    steps:
-      - uses: actions/stale@b5d41d4e1d5dceea10e7104786b73624c18a190f # v10.2.0
-        with:
-          days-before-issue-stale: -1
-          days-before-issue-close: -1
-          days-before-pr-stale: 30
-          days-before-pr-close: 7
-          remove-stale-when-updated: true
           stale-pr-label: 'stale'
           close-pr-label: 'stale'
           operations-per-run: 500
