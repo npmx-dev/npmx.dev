@@ -446,7 +446,7 @@ const flatItems = computed<FlatItem[]>(() => {
       <!-- ── Version History ───────────────────────────────────────────────── -->
       <section v-if="versionGroups.length > 0">
         <div class="flex items-center justify-between gap-2 mb-3">
-          <h2 class="text-sm text-fg-subtle uppercase mb-3">
+          <h2 class="text-sm text-fg-subtle uppercase">
             {{ $t('package.versions.page_title') }}
             <span class="ms-1 normal-case font-normal"> ({{ versionStrings.length }}) </span>
           </h2>
