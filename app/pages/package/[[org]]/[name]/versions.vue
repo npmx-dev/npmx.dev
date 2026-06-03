@@ -324,7 +324,7 @@ const flatItems = computed<FlatItem[]>(() => {
     <div class="container w-full py-8 space-y-8">
       <!-- ── Current Tags ───────────────────────────────────────────────────── -->
       <section class="space-y-3">
-        <h2 class="text-fg-subtle uppercase">
+        <h2 class="text-sm text-fg-subtle uppercase">
           {{ $t('package.versions.current_tags') }}
         </h2>
 
@@ -373,7 +373,7 @@ const flatItems = computed<FlatItem[]>(() => {
           <div class="flex sm:items-center gap-4 shrink-0 relative z-10">
             <span
               v-if="getVersionDownloads(latestTagRow!.version)"
-              class="w-32 grid grid-flow-col auto-cols-max items-center gap-1 text-xs text-fg-muted tabular-nums sm:justify-end"
+              class="max-w-32 md:w-32 grid grid-flow-col auto-cols-max items-center gap-1 text-xs text-fg-muted tabular-nums sm:justify-end"
               :aria-label="
                 getDownloadsAriaLabel(
                   getVersionDownloads(latestTagRow!.version)!,
@@ -413,7 +413,7 @@ const flatItems = computed<FlatItem[]>(() => {
             class="flex items-center gap-4 px-4 py-2.5 border-b border-border last:border-0 hover:bg-bg-subtle transition-colors relative"
           >
             <!-- Tag labels -->
-            <div class="w-32 shrink-0 flex flex-wrap gap-x-1.5 gap-y-0.5">
+            <div class="max-w-32 md:w-32 shrink-0 flex flex-wrap gap-x-1.5 gap-y-0.5">
               <span
                 v-for="tag in row.tags"
                 :key="tag"
@@ -424,10 +424,10 @@ const flatItems = computed<FlatItem[]>(() => {
             </div>
 
             <!-- Version + Provenance + Deprecated -->
-            <div class="flex-1 min-w-0 flex items-center gap-2">
+            <div class="flex-1 min-w-0 flex items-center gap-2 truncate overflow-hidden">
               <LinkBase
                 :to="packageRoute(packageName, row.version)"
-                class="text-sm after:absolute after:inset-0 after:content-['']"
+                class="block! text-sm after:absolute after:inset-0 after:content-[''] truncate"
                 :title="row.version"
                 dir="ltr"
               >
@@ -452,7 +452,7 @@ const flatItems = computed<FlatItem[]>(() => {
             <!-- Downloads -->
             <span
               v-if="getVersionDownloads(row.version)"
-              class="w-32 grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums shrink-0 relative z-10"
+              class="max-w-32 md:w-32 grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums shrink-0 relative z-10"
               :aria-label="getDownloadsAriaLabel(getVersionDownloads(row.version)!, row.version)"
               dir="ltr"
               :title="getDownloadsAriaLabel(getVersionDownloads(row.version)!, row.version)"
@@ -460,7 +460,7 @@ const flatItems = computed<FlatItem[]>(() => {
               <span>{{ numberFormatter.format(getVersionDownloads(row.version)!) }}</span>
               <span class="i-lucide:chart-line" aria-hidden="true"></span>
             </span>
-            <span v-else class="w-32 shrink-0" />
+            <span v-else class="max-w-32 md:w-32 shrink-0" />
 
             <!-- Date -->
             <div class="flex items-center gap-2 shrink-0 relative z-10">
@@ -479,7 +479,7 @@ const flatItems = computed<FlatItem[]>(() => {
 
       <!-- ── Version History ───────────────────────────────────────────────── -->
       <section v-if="versionGroups.length > 0">
-        <h2 class="text-fg-subtle uppercase mb-3">
+        <h2 class="text-sm text-fg-subtle uppercase mb-3">
           {{ $t('package.versions.page_title') }}
           <span class="ms-1 normal-case font-normal"> ({{ versionStrings.length }}) </span>
         </h2>
@@ -535,12 +535,12 @@ const flatItems = computed<FlatItem[]>(() => {
                       >deprecated</span
                     >
                     <span class="text-xs text-fg-subtle">({{ item.versions.length }})</span>
-                    <span class="text-xs text-fg-muted" :title="item.versions[0]" dir="ltr"
+                    <span class="text-xs text-fg-muted truncate" :title="item.versions[0]" dir="ltr"
                       >v{{ item.versions[0] }}</span
                     >
                     <span
                       v-if="groupDownloadsMap.has(item.groupKey)"
-                      class="ms-auto w-32 grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums shrink-0"
+                      class="ms-auto max-w-32 md:w-32 grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums shrink-0"
                       :aria-label="
                         getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!, item.label)
                       "
@@ -554,7 +554,7 @@ const flatItems = computed<FlatItem[]>(() => {
                       }}</span>
                       <span class="i-lucide:chart-line" aria-hidden="true"></span>
                     </span>
-                    <span v-else class="ms-auto w-32 shrink-0" />
+                    <span v-else class="ms-auto max-w-32 md:w-32 shrink-0" />
                     <span class="flex items-center gap-3 shrink-0">
                       <DateTime
                         v-if="getVersionTime(item.versions[0]!)"
@@ -635,7 +635,7 @@ const flatItems = computed<FlatItem[]>(() => {
                       <!-- Downloads -->
                       <span
                         v-if="getVersionDownloads(item.version)"
-                        class="w-32 grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums shrink-0 relative z-10"
+                        class="max-w-32 md:w-32 grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums shrink-0 relative z-10"
                         :aria-label="
                           getDownloadsAriaLabel(getVersionDownloads(item.version)!, item.version)
                         "
@@ -649,7 +649,7 @@ const flatItems = computed<FlatItem[]>(() => {
                         }}</span>
                         <span class="i-lucide:chart-line" aria-hidden="true"></span>
                       </span>
-                      <span v-else class="w-32 shrink-0" />
+                      <span v-else class="max-w-32 md:w-32 shrink-0" />
 
                       <!-- Date -->
                       <div class="flex items-center gap-2 shrink-0 relative z-10">
@@ -688,7 +688,7 @@ const flatItems = computed<FlatItem[]>(() => {
                   >
                   <span
                     v-if="groupDownloadsMap.has(item.groupKey)"
-                    class="ms-auto w-32 grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums shrink-0"
+                    class="ms-auto max-w-32 md:w-32 grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums shrink-0"
                     :aria-label="
                       getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!, item.label)
                     "
@@ -700,7 +700,7 @@ const flatItems = computed<FlatItem[]>(() => {
                     <span>{{ numberFormatter.format(groupDownloadsMap.get(item.groupKey)!) }}</span>
                     <span class="i-lucide:chart-line" aria-hidden="true"></span>
                   </span>
-                  <span v-else class="ms-auto w-32 shrink-0" />
+                  <span v-else class="ms-auto max-w-32 md:w-32 shrink-0" />
                   <span class="flex items-center gap-3 shrink-0">
                     <DateTime
                       v-if="getVersionTime(item.versions[0] ?? '')"
