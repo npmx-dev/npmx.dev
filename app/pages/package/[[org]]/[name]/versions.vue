@@ -331,7 +331,7 @@ const flatItems = computed<FlatItem[]>(() => {
         <!-- Latest — featured card -->
         <div
           v-if="latestTagRow"
-          class="border-y sm:rounded-lg sm:border border-accent/40 bg-accent/5 px-4 py-4 relative flex items-center justify-between gap-4 hover:bg-accent/8 transition-colors"
+          class="border-y sm:rounded-lg sm:border border-accent/40 bg-accent/5 px-4 py-4 relative flex max-sm:flex-col sm:items-center justify-between gap-4 hover:bg-accent/8 transition-colors"
         >
           <!-- Left: tags + version + deprecated -->
           <div>
@@ -370,10 +370,10 @@ const flatItems = computed<FlatItem[]>(() => {
             </div>
           </div>
           <!-- Right: downloads + date -->
-          <div class="flex items-center gap-4 shrink-0 relative z-10">
+          <div class="flex sm:items-center gap-4 shrink-0 relative z-10">
             <span
               v-if="getVersionDownloads(latestTagRow!.version)"
-              class="w-32 grid grid-flow-col auto-cols-max items-center gap-1 text-xs text-fg-muted tabular-nums justify-end"
+              class="w-32 grid grid-flow-col auto-cols-max items-center gap-1 text-xs text-fg-muted tabular-nums sm:justify-end"
               :aria-label="
                 getDownloadsAriaLabel(
                   getVersionDownloads(latestTagRow!.version)!,
@@ -394,7 +394,7 @@ const flatItems = computed<FlatItem[]>(() => {
             <DateTime
               v-if="getVersionTime(latestTagRow!.version)"
               :datetime="getVersionTime(latestTagRow!.version)!"
-              class="text-xs text-fg-subtle whitespace-nowrap w-24 text-end"
+              class="text-xs text-fg-subtle whitespace-nowrap w-24 sm:text-end"
               year="numeric"
               month="short"
               day="numeric"
