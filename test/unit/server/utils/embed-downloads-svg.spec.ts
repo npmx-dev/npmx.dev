@@ -34,7 +34,7 @@ vi.mock('vue-data-ui/utils', () => ({
   mergeConfigs: mocks.mergeConfigs,
 }))
 
-vi.mock('vue-data-ui/ssr', () => ({
+vi.mock('vue-data-ui/ssr/vue-ui-xy', () => ({
   createStaticVueUiXy: mocks.createStaticVueUiXy,
 }))
 
