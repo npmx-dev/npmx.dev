@@ -1,5 +1,5 @@
 import { createError } from 'h3'
-import { createStaticVueUiXy } from 'vue-data-ui/ssr'
+import { createStaticVueUiXy } from 'vue-data-ui/ssr/vue-ui-xy'
 import { mergeConfigs } from 'vue-data-ui/utils'
 import { generateWatermarkLogo } from '#shared/utils/trends-chart'
 import {
