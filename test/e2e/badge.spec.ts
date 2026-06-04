@@ -188,6 +188,17 @@ test.describe('badge API', () => {
     expect(body).toContain(customValue)
   })
 
+  test('custom value parameter supports semver range operators', async ({ page, baseURL }) => {
+    const customValue = '>=22.13.0'
+    const url = toLocalUrl(
+      baseURL,
+      `/api/registry/badge/engines/nuxt?value=${encodeURIComponent(customValue)}`,
+    )
+    const { body } = await fetchBadge(page, url)
+
+    expect(body).toContain(customValue)
+  })
+
   test('style=default keeps current badge renderer', async ({ page, baseURL }) => {
     const url = toLocalUrl(baseURL, '/api/registry/badge/version/nuxt?style=default')
     const { body } = await fetchBadge(page, url)

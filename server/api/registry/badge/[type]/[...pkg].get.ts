@@ -13,7 +13,8 @@ const NPM_DOWNLOADS_API = 'https://api.npmjs.org/downloads/point'
 const OSV_QUERY_API = 'https://api.osv.dev/v1/query'
 const BUNDLEPHOBIA_API = 'https://bundlephobia.com/api/size'
 
-const SafeStringSchema = v.pipe(v.string(), v.regex(/^[^<>"&]*$/, 'Invalid characters'))
+// Allow semver range operators like >= and <= while still rejecting quotes and ampersands.
+const SafeStringSchema = v.pipe(v.string(), v.regex(/^[^"&]*$/, 'Invalid characters'))
 const SafeColorSchema = v.pipe(
   v.string(),
   v.transform(value => (value.startsWith('#') ? value : `#${value}`)),
