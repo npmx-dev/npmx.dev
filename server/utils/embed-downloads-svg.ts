@@ -334,6 +334,7 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
       })
 
       return `
+          <style>text {font-family:monospace;}</style>
           ${lastPlotValues}
           ${logo}
         `
