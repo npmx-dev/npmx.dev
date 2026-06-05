@@ -1,5 +1,8 @@
 import NoodleKawaiiLogo from './Kawaii/Logo.vue'
 import NoodlePride1Logo from './Pride1/Logo.vue'
+import NoodlePride2Logo from './Pride2/Logo.vue'
+import NoodlePride3Logo from './Pride3/Logo.vue'
+import NoodleTetrisLogo from './Tetris/Logo.vue'
 
 export type Noodle = {
   // Unique identifier for the noodle
@@ -31,7 +34,29 @@ export const ACTIVE_NOODLES: Noodle[] = [
     key: 'pride-1',
     logo: NoodlePride1Logo,
     date: '2026-06-01',
-    dateTo: '2026-06-30',
+    dateTo: '2026-06-06',
+    timezone: 'auto',
+  },
+  {
+    key: 'tetris',
+    logo: NoodleTetrisLogo,
+    date: '2026-06-06',
+    dateTo: '2026-06-08',
+    timezone: 'auto',
+    tagline: false,
+  },
+  {
+    key: 'pride-2',
+    logo: NoodlePride2Logo,
+    date: '2026-06-08',
+    dateTo: '2026-06-20',
+    timezone: 'auto',
+  },
+  {
+    key: 'pride-3',
+    logo: NoodlePride3Logo,
+    date: '2026-06-20',
+    dateTo: '2026-07-01',
     timezone: 'auto',
   },
 ]
