@@ -2232,6 +2232,9 @@
                 },
                 "preview": {
                   "type": "string"
+                },
+                "tip": {
+                  "type": "string"
                 }
               },
               "additionalProperties": false

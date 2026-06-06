@@ -1999,8 +1999,21 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
           <div class="flex flex-row flex-wrap gap-2 mt-2">
             <SettingsToggle v-model="isEmbedDarkMode" :label="$t('command_palette.theme.dark')" />
           </div>
-          <div class="text-sm text-fg-subtle">
+          <div class="text-sm text-fg-subtle flex gap-1">
             {{ $t('package.trends.embedding.copy_url') }}
+            <TooltipApp
+              :text="$t('package.trends.embedding.tip')"
+              interactive
+              to="#chart-modal"
+              position="top"
+            >
+              <span
+                tabindex="0"
+                class="inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 text-fg-subtle hover:text-fg transition-colors cursor-help focus-visible:outline-2 focus-visible:outline-accent/70 rounded"
+              >
+                <span class="i-lucide:info w-3 h-3" aria-hidden="true" />
+              </span>
+            </TooltipApp>
           </div>
           <div class="flex flex-row gap-4 flex-wrap">
             <div

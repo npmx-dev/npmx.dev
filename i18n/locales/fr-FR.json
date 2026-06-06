@@ -701,7 +701,8 @@
       "embedding": {
         "chart": "Intégrer ce graphique",
         "copy_url": "Copiez cette URL pour intégrer le graphique à votre site web",
-        "preview": "Aperçu"
+        "preview": "Aperçu",
+        "tip": "Par défaut, si startDate et endDate ne sont pas renseignés, la période couvre les 12 derniers mois."
       }
     },
     "downloads": {
