@@ -12,7 +12,6 @@ export default defineCachedEventHandler(
     setHeader(event, 'Content-Type', 'image/svg+xml; charset=utf-8')
     setHeader(event, 'Cache-Control', 'public, max-age=3600, s-maxage=86400')
     setHeader(event, 'Access-Control-Allow-Origin', '*')
-    setHeader(event, 'Vary', 'Origin')
 
     return svg
   },
