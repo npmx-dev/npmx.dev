@@ -2004,7 +2004,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
             <TooltipApp
               :text="$t('package.trends.embedding.tip')"
               interactive
-              to="#chart-modal"
+              :to="inModal ? '#chart-modal' : undefined"
               position="top"
             >
               <span
