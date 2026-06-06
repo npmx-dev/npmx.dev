@@ -1973,7 +1973,6 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
         <button
           type="button"
           :aria-expanded="showEmbedFields"
-          +
           aria-controls="trends-embed-chart"
           class="self-start flex items-center gap-1 text-2xs font-mono text-fg-subtle hover:text-fg transition-colors"
           @click="showEmbedFields = !showEmbedFields"
