@@ -1,31 +1,30 @@
 <script setup lang="ts">
-import type { Theme as VueDataUiTheme } from 'vue-data-ui'
-import { VueUiXy, type VueUiXyConfig, type VueUiXyDatasetItem } from 'vue-data-ui/vue-ui-xy'
+import { VueUiXy, type VueUiXyConfig } from 'vue-data-ui/vue-ui-xy'
 import { useDebounceFn, useElementSize, useTimeoutFn } from '@vueuse/core'
 import { useColors } from '~/composables/useColors'
-import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch, lightenOklch } from '~/utils/colors'
-import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
+import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch } from '~/utils/colors'
 import { drawNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
 import type { RepoRef } from '#shared/utils/git-providers'
 import type {
   ChartTimeGranularity,
-  DailyDataPoint,
   DateRangeFields,
   EvolutionData,
   EvolutionOptions,
-  MonthlyDataPoint,
   WeeklyDataPoint,
-  YearlyDataPoint,
 } from '~/types/chart'
 import { DATE_INPUT_MAX } from '~/utils/input'
-import {
-  applyDataPipeline,
-  endDateOnlyToUtcMs,
-  DEFAULT_PREDICTION_POINTS,
-} from '~/utils/chart-data-prediction'
+import { endDateOnlyToUtcMs } from '~/utils/chart-data-prediction'
 import { applyBlocklistCorrection, getAnomaliesForPackages } from '~/utils/download-anomalies'
-import { copyAltTextForTrendLineChart, sanitise, loadFile, applyEllipsis } from '~/utils/charts'
+import { copyAltTextForTrendLineChart, sanitise, applyEllipsis } from '~/utils/charts'
 import { useChartTooltipPosition } from '~/composables/useChartTooltipPosition'
+import {
+  buildNormalisedTrendsDataset,
+  buildTrendsChartConfig,
+  buildTrendsChartData,
+  isWeeklyDataset,
+  getTrendsDatetimeFormatterOptions,
+} from '#shared/utils/trends-chart'
+import { downloadFileLink } from '~/utils/download'
 
 import('vue-data-ui/style.css')
 
@@ -130,170 +129,42 @@ const isMobile = computed(() => width.value > 0 && width.value < mobileBreakpoin
 
 const DEFAULT_GRANULARITY: ChartTimeGranularity = 'weekly'
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null
-}
+const chartData = computed(() =>
+  buildTrendsChartData({
+    packageNames: effectivePackageNames.value,
+    effectivePackageNamesForMetric: effectivePackageNamesForMetric.value,
+    isMultiPackageMode: isMultiPackageMode.value,
+    selectedMetric: selectedMetric.value,
+    selectedMetricLabel: activeMetricDef.value?.label ?? '',
+    selectedGranularity: selectedGranularity.value,
+    displayedGranularity: displayedGranularity.value,
+    singleEvolution: effectiveDataSingle.value,
+    evolutionsByPackage: activeMetricState.value.evolutionsByPackage,
+    colors: colors.value,
+    accent: accent.value,
+    isDarkMode: isDarkMode.value,
+    useAnomalyCorrection: settings.value.chartFilter.anomaliesFixed,
+    applyAnomalyCorrection: applyBlocklistCorrection,
+    chartFilter: settings.value.chartFilter,
+    t: $t,
+    compactNumberFormatter: compactNumberFormatter.value,
+  }),
+)
 
-function isWeeklyDataset(data: unknown): data is WeeklyDataPoint[] {
-  return (
-    Array.isArray(data) &&
-    data.length > 0 &&
-    isRecord(data[0]) &&
-    'weekStart' in data[0] &&
-    'weekEnd' in data[0] &&
-    'value' in data[0]
-  )
-}
-function isDailyDataset(data: unknown): data is DailyDataPoint[] {
-  return (
-    Array.isArray(data) &&
-    data.length > 0 &&
-    isRecord(data[0]) &&
-    'day' in data[0] &&
-    'value' in data[0]
-  )
-}
-function isMonthlyDataset(data: unknown): data is MonthlyDataPoint[] {
-  return (
-    Array.isArray(data) &&
-    data.length > 0 &&
-    isRecord(data[0]) &&
-    'month' in data[0] &&
-    'value' in data[0]
-  )
-}
-function isYearlyDataset(data: unknown): data is YearlyDataPoint[] {
-  return (
-    Array.isArray(data) &&
-    data.length > 0 &&
-    isRecord(data[0]) &&
-    'year' in data[0] &&
-    'value' in data[0]
-  )
-}
+const normalisedDataset = computed(() =>
+  buildNormalisedTrendsDataset({
+    dataset: chartData.value.dataset,
+    dates: chartData.value.dates,
+    granularity: displayedGranularity.value,
+    selectedMetric: selectedMetric.value,
+    chartFilter: settings.value.chartFilter,
+    endDateMs: endDate.value ? endDateOnlyToUtcMs(endDate.value) : null,
+  }),
+)
 
-/**
- * Formats a single evolution dataset into the structure expected by `VueUiXy`
- * for single-series charts.
- *
- * The dataset is interpreted based on the selected time granularity:
- * - **daily**   → uses `timestamp`
- * - **weekly**  → uses `timestampEnd`
- * - **monthly** → uses `timestamp`
- * - **yearly**  → uses `timestamp`
- *
- * Only datasets matching the expected shape for the given granularity are
- * accepted. If the dataset does not match, an empty result is returned.
- *
- * The returned structure includes:
- * - a single line-series dataset with a consistent color
- * - a list of timestamps used as the x-axis values
- *
- * @param selectedGranularity - Active chart time granularity
- * @param dataset - Raw evolution dataset to format
- * @param seriesName - Display name for the resulting series
- * @returns An object containing a formatted dataset and its associated dates,
- *          or `{ dataset: null, dates: [] }` when the input is incompatible
- */
-function formatXyDataset(
-  selectedGranularity: ChartTimeGranularity,
-  dataset: EvolutionData,
-  seriesName: string,
-): { dataset: VueUiXyDatasetItem[] | null; dates: number[] } {
-  const lightColor = isDarkMode.value ? lightenOklch(accent.value, 0.618) : undefined
-
-  // Subtle path gradient applied in dark mode only
-  const temperatureColors = lightColor ? [lightColor, accent.value] : undefined
-
-  const datasetItem: VueUiXyDatasetItem = {
-    name: applyEllipsis(seriesName, 32),
-    type: 'line',
-    series: dataset.map(d => d.value),
-    color: accent.value,
-    temperatureColors,
-    useArea: true,
-    dashIndices: dataset
-      .map((item, index) => (item.hasAnomaly ? index : -1))
-      .filter(index => index !== -1),
-  }
-
-  if (selectedGranularity === 'weekly' && isWeeklyDataset(dataset)) {
-    return {
-      dataset: [datasetItem],
-      dates: dataset.map(d => d.timestampEnd),
-    }
-  }
-  if (selectedGranularity === 'daily' && isDailyDataset(dataset)) {
-    return {
-      dataset: [datasetItem],
-      dates: dataset.map(d => d.timestamp),
-    }
-  }
-  if (selectedGranularity === 'monthly' && isMonthlyDataset(dataset)) {
-    return {
-      dataset: [datasetItem],
-      dates: dataset.map(d => d.timestamp),
-    }
-  }
-  if (selectedGranularity === 'yearly' && isYearlyDataset(dataset)) {
-    return {
-      dataset: [datasetItem],
-      dates: dataset.map(d => d.timestamp),
-    }
-  }
-  return { dataset: null, dates: [] }
-}
-
-/**
- * Extracts normalized time-series points from an evolution dataset based on
- * the selected time granularity.
- *
- * Each returned point contains:
- * - `timestamp`: the numeric time value used for x-axis alignment
- * - `value`: the corresponding value at that time
- *
- * The timestamp field is selected according to granularity:
- * - **daily**   → `timestamp`
- * - **weekly**  → `timestampEnd`
- * - **monthly** → `timestamp`
- * - **yearly**  → `timestamp`
- *
- * If the dataset does not match the expected shape for the given granularity,
- * an empty array is returned.
- *
- * This helper is primarily used in multi-package mode to align multiple
- * datasets on a shared time axis.
- *
- * @param selectedGranularity - Active chart time granularity
- * @param dataset - Raw evolution dataset to extract points from
- * @returns An array of normalized `{ timestamp, value }` points
- */
-function extractSeriesPoints(
-  selectedGranularity: ChartTimeGranularity,
-  dataset: EvolutionData,
-): Array<{ timestamp: number; value: number; hasAnomaly: boolean }> {
-  if (selectedGranularity === 'weekly' && isWeeklyDataset(dataset)) {
-    return dataset.map(d => ({
-      timestamp: d.timestampEnd,
-      value: d.value,
-      hasAnomaly: !!d.hasAnomaly,
-    }))
-  }
-  if (
-    (selectedGranularity === 'daily' && isDailyDataset(dataset)) ||
-    (selectedGranularity === 'monthly' && isMonthlyDataset(dataset)) ||
-    (selectedGranularity === 'yearly' && isYearlyDataset(dataset))
-  ) {
-    return (dataset as Array<{ timestamp: number; value: number; hasAnomaly?: boolean }>).map(
-      d => ({
-        timestamp: d.timestamp,
-        value: d.value,
-        hasAnomaly: !!d.hasAnomaly,
-      }),
-    )
-  }
-  return []
-}
+const datetimeFormatterOptions = computed(() =>
+  getTrendsDatetimeFormatterOptions(selectedGranularity.value),
+)
 
 function toIsoDateOnly(value: string): string {
   return value.slice(0, 10)
@@ -395,7 +266,7 @@ const supportsEstimation = computed(
 )
 
 const hasDownloadAnomalies = computed(() =>
-  normalisedDataset.value?.some(datapoint => !!datapoint.dashIndices.length),
+  normalisedDataset.value?.some(datapoint => !!datapoint?.dashIndices?.length),
 )
 
 const shouldRenderEstimationOverlay = computed(() => !pending.value && supportsEstimation.value)
@@ -748,7 +619,7 @@ const activeMetricState = computed(() => metricStates[selectedMetric.value])
 const activeMetricDef = computed(
   () => METRICS.value.find(m => m.id === selectedMetric.value) ?? METRICS.value[0],
 )
-const pending = computed(() => activeMetricState.value.pending)
+const pending = computed(() => activeMetricState.value?.pending)
 
 const isMounted = shallowRef(false)
 
@@ -978,127 +849,9 @@ const effectiveDataSingle = computed<EvolutionData>(() => {
   return data
 })
 
-/**
- * Normalized chart data derived from the active metric's evolution datasets.
- *
- * Adapts its behavior based on the current mode:
- * - **Single-package mode**: formats via `formatXyDataset`
- * - **Multi-package mode**: merges datasets into a shared time axis
-
- * The returned structure matches the expectations of `VueUiXy`:
- * - `dataset`: array of series definitions, or `null` when no data is available
- * - `dates`: sorted list of timestamps used as the x-axis reference
- *
- * Returning `dataset: null` explicitly signals the absence of data and allows
- * the template to handle empty states without ambiguity.
- */
-const chartData = computed<{
-  dataset: VueUiXyDatasetItem[] | null
-  dates: number[]
-}>(() => {
-  if (!isMultiPackageMode.value) {
-    const pkg = effectivePackageNames.value[0] ?? props.packageName ?? ''
-    return formatXyDataset(displayedGranularity.value, effectiveDataSingle.value, pkg)
-  }
-
-  const state = activeMetricState.value
-  const names = effectivePackageNamesForMetric.value
-  const granularity = displayedGranularity.value
-
-  const timestampSet = new Set<number>()
-  const pointsByPackage = new Map<
-    string,
-    Array<{ timestamp: number; value: number; hasAnomaly?: boolean }>
-  >()
-
-  for (const pkg of names) {
-    let data = state.evolutionsByPackage[pkg] ?? []
-    if (isDownloadsMetric.value && data.length) {
-      if (settings.value.chartFilter.anomaliesFixed) {
-        data = applyBlocklistCorrection({ data, packageName: pkg, granularity })
-      }
-    }
-    const points = extractSeriesPoints(granularity, data)
-
-    pointsByPackage.set(pkg, points)
-    for (const p of points) timestampSet.add(p.timestamp)
-  }
-
-  const dates = Array.from(timestampSet).sort((a, b) => a - b)
-  if (!dates.length) return { dataset: null, dates: [] }
-
-  const dataset: VueUiXyDatasetItem[] = names.map(pkg => {
-    const points = pointsByPackage.get(pkg) ?? []
-    const valueByTimestamp = new Map<number, number>()
-    const anomalyTimestamps = new Set<number>()
-    for (const p of points) {
-      valueByTimestamp.set(p.timestamp, p.value)
-      if (p.hasAnomaly) anomalyTimestamps.add(p.timestamp)
-    }
-
-    const series = dates.map(t => valueByTimestamp.get(t) ?? 0)
-    const dashIndices = dates
-      .map((t, index) => (anomalyTimestamps.has(t) ? index : -1))
-      .filter(index => index !== -1)
-
-    const item: VueUiXyDatasetItem = {
-      name: applyEllipsis(pkg, 32),
-      type: 'line',
-      series,
-      dashIndices,
-    } as VueUiXyDatasetItem
-
-    if (isListedFramework(pkg)) {
-      item.color = getFrameworkColor(pkg)
-    }
-    return item
-  })
-
-  return { dataset, dates }
-})
-
-const normalisedDataset = computed(() => {
-  const granularity = displayedGranularity.value
-  const endDateMs = endDate.value ? endDateOnlyToUtcMs(endDate.value) : null
-  const referenceMs = endDateMs ?? Date.now()
-  const lastDateMs = chartData.value.dates.at(-1) ?? 0
-  const isAbsoluteMetric = selectedMetric.value === 'contributors'
-
-  // oxlint-disable-next-line oxc-no-map-spread
-  return (chartData.value.dataset || []).map(d => {
-    const series = applyDataPipeline(
-      d.series.map(v => (typeof v === 'number' ? v : (v?.y ?? 0))),
-      {
-        averageWindow: settings.value.chartFilter.averageWindow,
-        smoothingTau: settings.value.chartFilter.smoothingTau,
-        predictionPoints:
-          granularity === 'weekly'
-            ? 0 // weekly buckets are end-aligned → always complete, no prediction needed
-            : (settings.value.chartFilter.predictionPoints ?? DEFAULT_PREDICTION_POINTS),
-      },
-      { granularity, lastDateMs, referenceMs, isAbsoluteMetric },
-    )
-
-    return {
-      ...d,
-      series,
-      dashIndices: d.dashIndices ?? [],
-    }
-  })
-})
-
 const maxDatapoints = computed(() =>
   Math.max(0, ...(chartData.value.dataset ?? []).map(d => d.series.length)),
 )
-
-const datetimeFormatterOptions = computed(() => {
-  return {
-    daily: { year: 'yyyy-MM-dd', month: 'yyyy-MM-dd', day: 'yyyy-MM-dd' },
-    weekly: { year: 'yyyy-MM-dd', month: 'yyyy-MM-dd', day: 'yyyy-MM-dd' },
-    monthly: { year: 'MMM yyyy', month: 'MMM yyyy', day: 'MMM yyyy' },
-    yearly: { year: 'yyyy', month: 'yyyy', day: 'yyyy' },
-  }[selectedGranularity.value]
-})
 
 // Cached date formatter for tooltip
 const tooltipDateFormatter = computed(() => {
@@ -1131,10 +884,6 @@ const granularityLabels = computed(() => ({
   monthly: $t('package.trends.granularity_monthly'),
   yearly: $t('package.trends.granularity_yearly'),
 }))
-
-function getGranularityLabel(granularity: ChartTimeGranularity) {
-  return granularityLabels.value[granularity]
-}
 
 const granularityItems = computed(() =>
   availableGranularities.value.map(granularity => ({
@@ -1378,81 +1127,64 @@ const keepZoomState = shallowRef(true)
 
 // VueUiXy chart component configuration
 const chartConfig = computed<VueUiXyConfig>(() => {
+  const baseConfig = buildTrendsChartConfig({
+    packageNames: effectivePackageNames.value,
+    effectivePackageNamesForMetric: effectivePackageNamesForMetric.value,
+    isMultiPackageMode: isMultiPackageMode.value,
+    selectedMetric: selectedMetric.value,
+    selectedMetricLabel: activeMetricDef.value?.label ?? '',
+    selectedGranularity: selectedGranularity.value,
+    displayedGranularity: displayedGranularity.value,
+    singleEvolution: effectiveDataSingle.value,
+    evolutionsByPackage: activeMetricState.value.evolutionsByPackage,
+    dates: chartData.value.dates,
+    colors: colors.value,
+    accent: accent.value,
+    isDarkMode: isDarkMode.value,
+    isMobile: isMobile.value,
+    pending: pending.value,
+    locale: locale.value,
+    chartHeight: chartHeight.value,
+    inModal: props.inModal,
+    chartFilter: settings.value.chartFilter,
+    t: $t,
+    compactNumberFormatter: compactNumberFormatter.value,
+    tooltipPosition: tooltipPosition.value,
+  })
+
   return {
-    theme: isDarkMode.value ? 'dark' : ('' as VueDataUiTheme),
-    downsample: {
-      threshold: 5000,
-    },
-    a11y: {
-      translations: {
-        keyboardNavigation: $t(
-          'package.trends.chart_assistive_text.keyboard_navigation_horizontal',
-        ),
-        tableAvailable: $t('package.trends.chart_assistive_text.table_available'),
-        tableCaption: $t('package.trends.chart_assistive_text.table_caption'),
-      },
-    },
+    ...baseConfig,
     chart: {
-      height: chartHeight.value,
-      backgroundColor: colors.value.bg,
-      padding: { bottom: displayedGranularity.value === 'yearly' ? 84 : 64, right: 145 }, // padding right is set to leave space of last datapoint label(s)
+      ...baseConfig.chart,
       userOptions: {
-        buttons: {
-          pdf: false,
-          labels: false,
-          fullscreen: false,
-          table: false,
-          tooltip: false,
-          altCopy: true,
-        },
-        buttonTitles: {
-          csv: $t('package.trends.download_file', { fileType: 'CSV' }),
-          img: $t('package.trends.download_file', { fileType: 'PNG' }),
-          svg: $t('package.trends.download_file', { fileType: 'SVG' }),
-          annotator: $t('package.trends.toggle_annotator'),
-          stack: $t('package.trends.toggle_stack_mode'),
-          altCopy: $t('package.trends.copy_alt.button_label'), // Do not make this text dependent on the `copied` variable, since this would re-render the component, which is undesirable if the minimap was used to select a time frame.
-          open: $t('package.trends.open_options'),
-          close: $t('package.trends.close_options'),
-        },
+        ...baseConfig?.chart?.userOptions,
         callbacks: {
           img: args => {
             const imageUri = args?.imageUri
             if (!imageUri) return
-            loadFile(imageUri, buildExportFilename('png'))
+            downloadFileLink(imageUri, buildExportFilename('png'))
           },
           csv: csvStr => {
             if (!csvStr) return
-            const PLACEHOLDER_CHAR = '\0'
-            const multilineDateTemplate = $t('package.trends.date_range_multiline', {
-              start: PLACEHOLDER_CHAR,
-              end: PLACEHOLDER_CHAR,
-            })
-              .replaceAll(PLACEHOLDER_CHAR, '')
-              .trim()
-            const blob = new Blob([
-              csvStr
-                .replace('data:text/csv;charset=utf-8,', '')
-                .replaceAll(`\n${multilineDateTemplate}`, ` ${multilineDateTemplate}`),
-            ])
+            const blob = new Blob([csvStr.replace('data:text/csv;charset=utf-8,', '')])
             const url = URL.createObjectURL(blob)
-            loadFile(url, buildExportFilename('csv'))
+            downloadFileLink(url, buildExportFilename('csv'))
             URL.revokeObjectURL(url)
           },
           svg: args => {
             const blob = args?.blob
             if (!blob) return
             const url = URL.createObjectURL(blob)
-            loadFile(url, buildExportFilename('svg'))
+            downloadFileLink(url, buildExportFilename('svg'))
             URL.revokeObjectURL(url)
           },
-          altCopy: ({ dataset: dst, config: cfg }) =>
+          altCopy: ({ dataset: copiedDataset, config: copiedConfig }) =>
             copyAltTextForTrendLineChart({
-              dataset: dst,
+              dataset: copiedDataset,
               config: {
-                ...cfg,
-                formattedDatasetValues: (dst?.lines || []).map(d =>
-                  d.series.map(n => compactNumberFormatter.value.format(n ?? 0)),
+                ...copiedConfig,
+                formattedDatasetValues: (copiedDataset?.lines || []).map(serie =>
+                  serie.series.map(value => compactNumberFormatter.value.format(value ?? 0)),
                 ),
                 hasEstimation:
                   supportsEstimation.value && !isEndDateOnPeriodEnd.value && !isZoomed.value,
@@ -1463,116 +1195,53 @@ const chartConfig = computed<VueUiXyConfig>(() => {
               },
             }),
         },
-        useCursorPointer: true,
       },
-      grid: {
-        position: 'start',
-        stroke: colors.value.border,
-        showHorizontalLines: true,
-        labels: {
-          fontSize: isMobile.value ? 24 : 16,
-          color: pending.value ? colors.value.border : colors.value.fgSubtle,
-          axis: {
-            yLabel: $t('package.trends.y_axis_label', {
-              granularity: getGranularityLabel(selectedGranularity.value),
-              facet: activeMetricDef.value?.label,
-            }),
-            yLabelOffsetX: 12,
-            fontSize: isMobile.value ? 32 : 24,
-          },
-          xAxisLabels: {
-            show: true,
-            showOnlyAtModulo: true,
-            modulo: 12,
-            values: chartData.value?.dates,
-            datetimeFormatter: {
-              enable: true,
-              locale: locale.value,
-              useUTC: true,
-              options: datetimeFormatterOptions.value,
-            },
-          },
-          yAxis: {
-            formatter: ({ value }: { value: number }) => {
-              return compactNumberFormatter.value.format(Number.isFinite(value) ? value : 0)
-            },
-            useNiceScale: true, // daily/weekly -> true, monthly/yearly -> false
-            gap: 24, // vertical gap between individual series in stacked mode
-          },
-        },
-      },
-      timeTag: {
-        show: true,
-        backgroundColor: colors.value.bgElevated,
-        color: colors.value.fg,
-        fontSize: 16,
-        circleMarker: { radius: 3, color: colors.value.border },
-        useDefaultFormat: true,
-        timeFormat: 'yyyy-MM-dd HH:mm:ss',
-      },
-      highlighter: { useLine: true },
-      legend: { show: false, position: 'top' },
       tooltip: {
-        teleportTo: props.inModal ? '#chart-modal' : undefined,
-        position: tooltipPosition.value,
-        offsetX: 24,
-        offsetY: isMultiPackageMode.value ? undefined : -24,
-        borderColor: 'transparent',
-        backdropFilter: false,
-        backgroundColor: 'transparent',
+        ...baseConfig?.chart?.tooltip,
         customFormat: ({ datapoint: items, absoluteIndex }) => {
           if (!items || pending.value) return ''
 
           const hasMultipleItems = items.length > 1
-
-          // Format date for multiple series datasets
           let formattedDate = ''
+
           if (hasMultipleItems && absoluteIndex !== undefined) {
             const index = Number(absoluteIndex)
-            if (Number.isInteger(index) && index >= 0 && index < chartData.value.dates.length) {
-              const timestamp = chartData.value.dates[index]
-              if (typeof timestamp === 'number') {
-                formattedDate = tooltipDateFormatter.value.format(new Date(timestamp))
-              }
+            const timestamp = chartData.value.dates[index]
+
+            if (Number.isInteger(index) && typeof timestamp === 'number') {
+              formattedDate = tooltipDateFormatter.value.format(new Date(timestamp))
             }
           }
 
           const rows = items
-            .map((d: Record<string, any>) => {
-              const label = String(d?.name ?? '').trim()
-              const raw = Number(d?.value ?? 0)
-              const v = compactNumberFormatter.value.format(Number.isFinite(raw) ? raw : 0)
+            .map((datapoint: Record<string, any>) => {
+              const label = String(datapoint?.name ?? '').trim()
+              const rawValue = Number(datapoint?.value ?? 0)
+              const value = compactNumberFormatter.value.format(
+                Number.isFinite(rawValue) ? rawValue : 0,
+              )
 
               if (!hasMultipleItems) {
-                // We don't need the name of the package in this case, since it is shown in the xAxis label
                 return `<div>
-                  <span class="text-base text-[var(--fg)] font-mono tabular-nums">${v}</span>
+                  <span class="text-base text-[var(--fg)] font-mono tabular-nums">${value}</span>
                 </div>`
               }
 
               return `<div class="grid grid-cols-[12px_minmax(0,1fr)_max-content] items-center gap-x-3">
                 <div class="w-3 h-3">
                   <svg viewBox="0 0 2 2" class="w-full h-full">
-                    <rect x="0" y="0" width="2" height="2" rx="0.3" fill="${d.color}" />
+                    <rect x="0" y="0" width="2" height="2" rx="0.3" fill="${datapoint.color}" />
                   </svg>
                 </div>
-
-                <span class="text-3xs uppercase tracking-wide text-[var(--fg)]/70 truncate">
-                  ${label}
-                </span>
-
-                <span class="text-base text-[var(--fg)] font-mono tabular-nums text-end">
-                  ${v}
-                </span>
+                <span class="text-3xs uppercase tracking-wide text-[var(--fg)]/70 truncate">${label}</span>
+                <span class="text-base text-[var(--fg)] font-mono tabular-nums text-end">${value}</span>
               </div>`
             })
             .join('')
 
           return `<div class="font-mono text-xs p-3 border border-border rounded-md bg-[var(--bg)]/10 backdrop-blur-md">
             ${formattedDate ? `<div class="text-2xs text-[var(--fg-subtle)] mb-2">${formattedDate}</div>` : ''}
-            <div class="${hasMultipleItems ? 'flex flex-col gap-2' : ''}">
-              ${rows}
-            </div>
+            <div class="${hasMultipleItems ? 'flex flex-col gap-2' : ''}">${rows}</div>
           </div>`
         },
       },
@@ -1587,9 +1256,9 @@ const chartConfig = computed<VueUiXyConfig>(() => {
           selectedColor: accent.value,
           selectedColorOpacity: 0.06,
           frameColor: colors.value.border,
-          handleWidth: isMobile.value ? 40 : 20, // does not affect the size of the touch area
+          handleWidth: isMobile.value ? 40 : 20,
           handleBorderColor: colors.value.fgSubtle,
-          handleType: 'grab', // 'empty' | 'chevron' | 'arrow' | 'grab'
+          handleType: 'grab',
         },
         preview: {
           fill: transparentizeOklch(accent.value, isDarkMode.value ? 0.95 : 0.92),
@@ -1654,6 +1323,84 @@ watch([selectedGranularity, startDate, endDate], async () => {
   if (!isMounted.value) return
   await resetZoom()
 })
+
+watch(
+  () => activeMetricState.value?.pending,
+  async (currentPending, previousPending) => {
+    if (previousPending && !currentPending) {
+      await resetZoom()
+    }
+  },
+)
+
+const embedQuery = reactive({
+  metric: 'downloads',
+  startDate: startDate.value,
+  endDate: endDate.value,
+  mode: isDarkMode.value ? 'dark' : 'light',
+})
+
+watch(startDate, value => {
+  embedQuery.startDate = value
+})
+
+watch(endDate, value => {
+  embedQuery.endDate = value
+})
+
+const isEmbedDarkMode = shallowRef(true)
+
+watch(isEmbedDarkMode, value => {
+  embedQuery.mode = value ? 'dark' : 'light'
+})
+
+watch(
+  isDarkMode,
+  value => {
+    isEmbedDarkMode.value = value
+  },
+  { immediate: true },
+)
+
+function getGranularityLabel(granularity: ChartTimeGranularity): string {
+  switch (granularity) {
+    case 'daily':
+      return $t('package.trends.granularity_daily')
+    case 'weekly':
+      return $t('package.trends.granularity_weekly')
+    case 'monthly':
+      return $t('package.trends.granularity_monthly')
+    case 'yearly':
+      return $t('package.trends.granularity_yearly')
+  }
+}
+
+const embedUrl = computed(() => {
+  const query = new URLSearchParams({
+    packages: effectivePackageNames.value.join(','),
+    metric: embedQuery.metric,
+    startDate: embedQuery.startDate,
+    endDate: embedQuery.endDate,
+    mode: embedQuery.mode,
+    granularity: selectedGranularity.value,
+    locale: locale.value,
+    accent: accent.value,
+    yLabel: $t('package.trends.y_axis_label', {
+      granularity: getGranularityLabel(selectedGranularity.value),
+      facet: METRICS.value.find(metric => metric.id === selectedMetric.value)?.label,
+    }),
+  })
+
+  const path = `/api/embed/downloads.svg?${query.toString()}`
+
+  return import.meta.client ? new URL(path, window.location.origin).toString() : path
+})
+
+const showEmbedFields = shallowRef(false)
+const { copy: copyEmbed, copied: copiedEmbedUrl } = useClipboard({
+  copiedDuring: 2000,
+})
+const copyEmbedUrl = () => copyEmbed(embedUrl.value)
 </script>
 
 <template>
@@ -2218,6 +1965,72 @@ watch([selectedGranularity, startDate, endDate], async () => {
       class="absolute top-1/2 inset-is-1/2 -translate-x-1/2 -translate-y-1/2 text-xs text-fg-subtle font-mono bg-bg/70 backdrop-blur px-3 py-2 rounded-md border border-border"
     >
       {{ $t('package.trends.loading') }}
+    </div>
+
+    <!-- Chart embedding -->
+    <div v-if="isDownloadsMetric && !!chartData.dataset">
+      <div class="flex flex-col gap-2">
+        <button
+          type="button"
+          :aria-expanded="showEmbedFields"
+          +
+          aria-controls="trends-embed-chart"
+          class="self-start flex items-center gap-1 text-2xs font-mono text-fg-subtle hover:text-fg transition-colors"
+          @click="showEmbedFields = !showEmbedFields"
+        >
+          <span
+            class="w-3.5 h-3.5 transition-transform"
+            :class="showEmbedFields ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'"
+            aria-hidden="true"
+          />
+          {{ $t('package.trends.embedding.chart') }}
+        </button>
+      </div>
+      <div
+        class="overflow-hidden transition-[opacity] duration-200 ease-out"
+        id="trends-embed-chart"
+        :aria-hidden="!showEmbedFields"
+        :inert="!showEmbedFields"
+        :class="
+          showEmbedFields ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
+        "
+      >
+        <div class="flex flex-col gap-2">
+          <div class="flex flex-row flex-wrap gap-2 mt-2">
+            <SettingsToggle v-model="isEmbedDarkMode" :label="$t('command_palette.theme.dark')" />
+          </div>
+          <div class="text-sm text-fg-subtle">
+            {{ $t('package.trends.embedding.copy_url') }}
+          </div>
+          <div class="flex flex-row gap-4 flex-wrap">
+            <div
+              class="bg-bg-subtle border border-border rounded-md shadow-lg text-xs break-all p-4 pt-8 relative"
+            >
+              <ButtonBase
+                class="absolute top-1 force-right-1"
+                size="sm"
+                @click="copyEmbedUrl"
+                :aria-pressed="copiedEmbedUrl"
+                :aria-label="copiedEmbedUrl ? $t('common.copied') : $t('common.copy')"
+                :classicon="copiedEmbedUrl ? 'i-lucide:check' : 'i-lucide:chart-line'"
+              >
+                <span>{{ copiedEmbedUrl ? $t('common.copied') : $t('common.copy') }}</span>
+              </ButtonBase>
+              {{ embedUrl }}
+            </div>
+            <div>
+              <span class="text-xs text-fg-subtle mb-2">
+                {{ $t('package.trends.embedding.preview') }}
+              </span>
+              <img
+                class="rounded border border-border w-full max-w-50"
+                :src="embedUrl"
+                :alt="$t('package.trends.embedding.preview')"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>

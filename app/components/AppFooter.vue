@@ -88,6 +88,10 @@ const footerSections = computed<Array<{ label: string; links: FooterLink[] }>>((
         href: '/pds',
       },
       {
+        name: t('noodles.title'),
+        href: '/noodles',
+      },
+      {
         name: t('footer.docs'),
         href: NPMX_DOCS_SITE,
       },

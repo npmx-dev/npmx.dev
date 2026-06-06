@@ -9,7 +9,13 @@ import type {
   VueUiXyDatasetLineItem,
 } from 'vue-data-ui'
 import type { ChartTimeGranularity } from '~/types/chart'
-import type { SubEvent } from '~~/server/api/registry/timeline/[...pkg].get'
+
+interface SubEvent {
+  key: string
+  positive: boolean
+  icon: string
+  text: string
+}
 
 export function sum(numbers: number[]): number {
   return numbers.reduce((a, b) => a + b, 0)
@@ -797,16 +803,6 @@ export async function copyAltTextForTimelineChart({
 }: AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>) {
   const altText = createAltTextForTimelineChart({ dataset, config })
   await config.copy(altText)
-}
-
-// Used in chart context menu callbacks
-// @todo replace with downloadFileLink
-export function loadFile(link: string, filename: string) {
-  const a = document.createElement('a')
-  a.href = link
-  a.download = filename
-  a.click()
-  a.remove()
 }
 
 export function sanitise(value: string) {

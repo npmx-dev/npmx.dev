@@ -21,10 +21,11 @@ function createClassSymbol(classDef: DenoDocNode['classDef']): MergedSymbol {
   }
 }
 
-function createFunctionSymbol(name: string): MergedSymbol {
+function createFunctionSymbol(name: string, jsDoc?: DenoDocNode['jsDoc']): MergedSymbol {
   const node: DenoDocNode = {
     name,
     kind: 'function',
+    jsDoc,
     functionDef: {
       params: [],
       returnType: { repr: 'void', kind: 'keyword', keyword: 'void' },
@@ -34,6 +35,7 @@ function createFunctionSymbol(name: string): MergedSymbol {
   return {
     name,
     kind: 'function',
+    jsDoc,
     nodes: [node],
   }
 }
@@ -190,5 +192,27 @@ describe('renderDocNodes ordering', () => {
     expect(alphaIndex).toBeGreaterThanOrEqual(0)
     expect(betaIndex).toBeGreaterThanOrEqual(0)
     expect(alphaIndex).toBeLessThan(betaIndex)
+  })
+})
+
+describe('renderDocNodes examples', () => {
+  it('handles hyphenated fenced code languages in @example tags', async () => {
+    const symbol = createFunctionSymbol('renderTemplate', {
+      tags: [
+        {
+          kind: 'example',
+          doc: '```glimmer-ts\nconst greeting = <template>Hello</template>\n```',
+        },
+      ],
+    })
+
+    const html = await renderDocNodes([symbol], new Map())
+
+    expect(html).toContain('<h4>Example</h4>')
+    expect(html).toContain('shiki')
+    expect(html).toContain('greeting')
+    expect(html).not.toMatch(/(^|[>\s])-ts([<\s]|$)/)
+    expect(html).not.toContain('-ts')
+    expect(html).not.toContain('```')
   })
 })
