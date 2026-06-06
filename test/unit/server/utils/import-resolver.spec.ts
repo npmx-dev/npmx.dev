@@ -497,6 +497,19 @@ describe('resolveInternalImport', () => {
 
     expect(resolved).toBeNull()
   })
+
+  it('resolves #/ slash-variant specifier against a plain #app imports key', () => {
+    const files = new Set<string>(['dist/app/components/Button.vue'])
+
+    const resolved = resolveInternalImport(
+      '#/app/components/Button.vue',
+      'dist/index.js',
+      { '#app': './dist/app/index.js' },
+      files,
+    )
+
+    expect(resolved?.path).toBe('dist/app/components/Button.vue')
+  })
 })
 
 describe('resolvePackageSelfImport', () => {
