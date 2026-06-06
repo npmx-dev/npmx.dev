@@ -158,9 +158,17 @@ import {
   BuildEnvironment,
   ButtonBase,
   LandingIntroHeader,
+  NoodleArtemisLogo,
   NoodleKawaiiLogo,
+  NoodleTransgenderVisibilityLogo,
+  NoodleListCard,
   NoodleNodejsLogo,
+  NoodlePressLogo,
   NoodlePride1Logo,
+  NoodlePride2Logo,
+  NoodleLens,
+  NoodlePride3Logo,
+  NoodleTetrisLogo,
   LinkBase,
   CallToAction,
   ChangelogCard,
@@ -376,13 +384,59 @@ describe('component accessibility audits', () => {
     })
 
     it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleTransgenderVisibilityLogo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodlePressLogo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
       const component = await mountSuspended(NoodleNodejsLogo)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
 
     it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleArtemisLogo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
       const component = await mountSuspended(NoodlePride1Logo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodlePride2Logo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodlePride3Logo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleTetrisLogo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleLens, {
+        props: {
+          logo: NoodleKawaiiLogo,
+        },
+      })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
@@ -2913,6 +2967,24 @@ describe('component accessibility audits', () => {
           },
         },
         slots: { default: '<p>Blog post content here.</p>' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('NoodleListCard', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleListCard, {
+        props: {
+          noodle: {
+            key: 'press',
+            slug: 'press',
+            title: 'Press',
+            date: '2026-05-01',
+            dateTo: '2026-05-04',
+          },
+        },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])

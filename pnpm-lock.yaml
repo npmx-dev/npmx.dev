@@ -190,8 +190,8 @@ importers:
         specifier: 18.0.0
         version: 18.0.0
       module-replacements:
-        specifier: 3.0.0-beta.7
-        version: 3.0.0-beta.7
+        specifier: 3.0.0-beta.8
+        version: 3.0.0-beta.8
       nuxt:
         specifier: 4.4.5
         version: 4.4.5(@babel/core@7.29.0)(@babel/plugin-syntax-jsx@7.28.6)(@parcel/watcher@2.5.6)(@types/node@24.12.0)(@upstash/redis@1.37.0)(@vue/compiler-sfc@3.5.34)(better-sqlite3@12.8.0)(cac@6.7.14)(db0@0.3.4)(esbuild@0.27.3)(eslint@9.39.2)(ioredis@5.10.1)(magicast@0.5.2)(optionator@0.9.4)(oxlint@1.61.0)(rolldown@1.0.0-rc.16)(rollup-plugin-visualizer@7.0.1)(rollup@4.60.3)(terser@5.46.0)(typescript@6.0.2)(vite@8.0.0)(vue-tsc@3.2.6)(yaml@2.9.0)
@@ -253,8 +253,8 @@ importers:
         specifier: 3.5.34
         version: 3.5.34(typescript@6.0.2)
       vue-data-ui:
-        specifier: 3.20.11
-        version: 3.20.11(vue@3.5.34)
+        specifier: 3.21.1
+        version: 3.21.1(vue@3.5.34)
       vue-router:
         specifier: 5.0.4
         version: 5.0.4(@vue/compiler-sfc@3.5.34)(vue@3.5.34)
@@ -8845,6 +8845,9 @@ packages:
   module-replacements@3.0.0-beta.7:
     resolution: {integrity: sha512-n1F9l3gF1wNh13xmnXS2JU7P9c3DlzCgVEyLKrVN0U37RwrXyYoePMMvYvs/6aUONAxbnscphzESZTCorXFh7Q==}
 
+  module-replacements@3.0.0-beta.8:
+    resolution: {integrity: sha512-sc8TepP9elxoOBXEpxmhPzKKjTjbswHVcmsKGbgvm3k6jZlLu/WMV/Lfmga6IGMgHU/V3WtY2s6VEgM4nTElUQ==}
+
   motion-dom@12.40.0:
     resolution: {integrity: sha512-HxU3ZaBwNPVQUBQf1xxgq+7JrPNZvjLVxgbpEZL7RrWJnsxOf0/OM+yrHG9ogLQ31Do/r57Oz2gQWPK+6q62mg==}
 
@@ -11223,8 +11226,8 @@ packages:
   vue-component-type-helpers@3.3.3:
     resolution: {integrity: sha512-x4nsFpy5Pe8fqPzp/5vkTPeTTDBpAx4WVtV47Ejt0+2FQrq4pRRsJs7JmYRqMFzTu/LW+pCWEjQ3YVCkPV7f9g==}
 
-  vue-data-ui@3.20.11:
-    resolution: {integrity: sha512-BvK9amlFqGWF40J00guYmy4IYraDV1qrgMgKC48HGvn6HUCGw4HrAhRBr/7eRrRdMkR3ym6E77/GKLQhr1fQow==}
+  vue-data-ui@3.21.1:
+    resolution: {integrity: sha512-iInl5SNpQXuCF5pGrzJkdr83kfYevUP3slu9d4QMSK1qNc8WejLYeC/HHDDobei7hJvUqy8zSuZt/4vs7lhxWw==}
     peerDependencies:
       jspdf: '>=3.0.1'
       vue: '>=3.3.0'
@@ -20531,6 +20534,8 @@ snapshots:
 
   module-replacements@3.0.0-beta.7: {}
 
+  module-replacements@3.0.0-beta.8: {}
+
   motion-dom@12.40.0:
     dependencies:
       motion-utils: 12.39.0
@@ -23825,7 +23830,7 @@ snapshots:
 
   vue-component-type-helpers@3.3.3: {}
 
-  vue-data-ui@3.20.11(vue@3.5.34):
+  vue-data-ui@3.21.1(vue@3.5.34):
     dependencies:
       vue: 3.5.34(typescript@6.0.2)
 

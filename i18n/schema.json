@@ -691,6 +691,81 @@
       },
       "additionalProperties": false
     },
+    "noodles": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "meta_description": {
+          "type": "string"
+        },
+        "latest": {
+          "type": "string"
+        },
+        "what_is": {
+          "type": "string"
+        },
+        "what_is_body": {
+          "type": "string"
+        },
+        "empty": {
+          "type": "string"
+        },
+        "load_more": {
+          "type": "string"
+        },
+        "dates": {
+          "type": "string"
+        },
+        "shipped_in": {
+          "type": "string"
+        },
+        "credits": {
+          "type": "string"
+        },
+        "learn_more": {
+          "type": "string"
+        },
+        "carousel_prev": {
+          "type": "string"
+        },
+        "carousel_next": {
+          "type": "string"
+        },
+        "carousel_dots": {
+          "type": "string"
+        },
+        "carousel_jump": {
+          "type": "string"
+        },
+        "lens_label": {
+          "type": "string"
+        },
+        "lens_slide": {
+          "type": "string"
+        },
+        "lens_slide_position": {
+          "type": "string"
+        },
+        "back_to_archive": {
+          "type": "string"
+        },
+        "missing": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "body": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
     "settings": {
       "type": "object",
       "properties": {
@@ -2141,6 +2216,21 @@
                   "type": "string"
                 },
                 "facet_bar_analysis": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "embedding": {
+              "type": "object",
+              "properties": {
+                "chart": {
+                  "type": "string"
+                },
+                "copy_url": {
+                  "type": "string"
+                },
+                "preview": {
                   "type": "string"
                 }
               },

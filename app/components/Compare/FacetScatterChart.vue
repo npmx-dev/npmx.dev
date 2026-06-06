@@ -8,8 +8,9 @@ import {
   type VueUiScatterSeries,
 } from 'vue-data-ui/vue-ui-scatter'
 import { buildCompareScatterChartDataset } from '~/utils/compare-scatter-chart'
-import { loadFile, copyAltTextForCompareScatterChart } from '~/utils/charts'
+import { copyAltTextForCompareScatterChart } from '~/utils/charts'
 import { useColors } from '~/composables/useColors'
+import { downloadFileLink } from '~/utils/download'
 
 import('vue-data-ui/style.css')
 
@@ -138,13 +139,13 @@ const config = computed<VueUiScatterConfig>(() => {
         img: args => {
           const imageUri = args?.imageUri
           if (!imageUri) return
-          loadFile(imageUri, buildExportFilename('png'))
+          downloadFileLink(imageUri, buildExportFilename('png'))
         },
         svg: args => {
           const blob = args?.blob
           if (!blob) return
           const url = URL.createObjectURL(blob)
-          loadFile(url, buildExportFilename('svg'))
+          downloadFileLink(url, buildExportFilename('svg'))
           URL.revokeObjectURL(url)
         },
         altCopy: ({ dataset: dst, config: cfg }) => {

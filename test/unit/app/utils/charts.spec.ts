@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import {
   sum,
   chunkIntoWeeks,
@@ -13,7 +13,6 @@ import {
   copyAltTextForVersionsBarChart,
   createAltTextForTimelineChart,
   copyAltTextForTimelineChart,
-  loadFile,
   sanitise,
   insertLineBreaks,
   applyEllipsis,
@@ -1275,57 +1274,6 @@ describe('copyAltTextForTimelineChart', () => {
 
     expect(copyMock).toHaveBeenCalledTimes(1)
     expect(copyMock).toHaveBeenCalledWith(expected)
-  })
-})
-
-describe('loadFile', () => {
-  let createElementMock: ReturnType<typeof vi.fn>
-  let clickMock: ReturnType<typeof vi.fn>
-  let removeMock: ReturnType<typeof vi.fn>
-  let originalDocument: typeof globalThis.document | undefined
-
-  beforeEach(() => {
-    clickMock = vi.fn()
-    removeMock = vi.fn()
-
-    createElementMock = vi.fn().mockReturnValue({
-      href: '',
-      download: '',
-      click: clickMock,
-      remove: removeMock,
-    })
-
-    originalDocument = globalThis.document
-
-    Object.defineProperty(globalThis, 'document', {
-      value: {
-        createElement: createElementMock,
-      },
-      configurable: true,
-      writable: true,
-    })
-  })
-
-  afterEach(() => {
-    vi.restoreAllMocks()
-
-    Object.defineProperty(globalThis, 'document', {
-      value: originalDocument,
-      configurable: true,
-      writable: true,
-    })
-  })
-
-  it('creates an anchor element and triggers a download', () => {
-    const link = 'https://npmx.dev/file.png'
-    const filename = 'file.png'
-    loadFile(link, filename)
-    expect(createElementMock).toHaveBeenCalledWith('a')
-    const anchor = createElementMock.mock.results[0]?.value as HTMLAnchorElement
-    expect(anchor.href).toBe(link)
-    expect(anchor.download).toBe(filename)
-    expect(clickMock).toHaveBeenCalledTimes(1)
-    expect(removeMock).toHaveBeenCalledTimes(1)
   })
 })
 
