@@ -140,25 +140,12 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
   const accent = parseAccent(query.accent)
   const yLabel = parseSafeText(query.yLabel, '', 100)
 
-  const requestedEndDate = parseDateQuery(query.endDate ?? query.end)
-
-  const defaultEndDate = new Date()
-  defaultEndDate.setDate(defaultEndDate.getDate() - 1)
-
-  const effectiveEndDate: string = requestedEndDate ?? defaultEndDate.toISOString().split('T')[0]!
-
-  const defaultStartDate = new Date(effectiveEndDate)
-  defaultStartDate.setFullYear(defaultStartDate.getFullYear() - 1)
-
-  const effectiveStartDate: string =
-    parseDateQuery(query.startDate ?? query.start) ?? defaultStartDate.toISOString().split('T')[0]!
-
   const evolutionOptions = {
     granularity: fetchGranularity,
     weeks: clampNumber(query.weeks, 1, 260, 52),
     months: clampNumber(query.months, 1, 120, 12),
-    startDate: effectiveStartDate,
-    endDate: effectiveEndDate,
+    startDate: parseDateQuery(query.startDate ?? query.start),
+    endDate: parseDateQuery(query.endDate ?? query.end),
   }
 
   if (metric !== 'downloads') {
