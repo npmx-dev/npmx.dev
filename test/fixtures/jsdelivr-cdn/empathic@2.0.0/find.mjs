@@ -1,4 +1,4 @@
-/* eslint-disable -- fixture mirrors upstream package source */
+/* oxlint-disable */
 import { join } from 'node:path'
 import { existsSync, statSync } from 'node:fs'
 import * as walk from 'empathic/walk'
