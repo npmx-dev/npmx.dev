@@ -697,6 +697,11 @@
         "general_description": "L’axe Y représente le nombre de téléchargements. L’axe X représente la plage de dates, de {start_date} à {end_date}, avec une période de temps {granularity}.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Graphique en barres horizontales pour : {packages}, comparant {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} a une valeur de {value}."
+      },
+      "embedding": {
+        "chart": "Intégrer ce graphique",
+        "copy_url": "Copiez cette URL pour intégrer le graphique à votre site web",
+        "preview": "Aperçu"
       }
     },
     "downloads": {

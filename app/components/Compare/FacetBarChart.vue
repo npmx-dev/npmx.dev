@@ -10,9 +10,9 @@ import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
 import { createPatternDef } from 'vue-data-ui/utils'
 import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
 import { useColors } from '~/composables/useColors'
+import { downloadFileLink } from '~/utils/download'
 
 import {
-  loadFile,
   insertLineBreaks,
   sanitise,
   applyEllipsis,
@@ -130,13 +130,13 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
         img: args => {
           const imageUri = args?.imageUri
           if (!imageUri) return
-          loadFile(imageUri, buildExportFilename('png'))
+          downloadFileLink(imageUri, buildExportFilename('png'))
         },
         svg: args => {
           const blob = args?.blob
           if (!blob) return
           const url = URL.createObjectURL(blob)
-          loadFile(url, buildExportFilename('svg'))
+          downloadFileLink(url, buildExportFilename('svg'))
           URL.revokeObjectURL(url)
         },
         altCopy: ({ dataset: dst, config: cfg }) => {

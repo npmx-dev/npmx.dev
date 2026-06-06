@@ -20,7 +20,10 @@
     "chat": "chat",
     "builders_chat": "builders chat",
     "keyboard_shortcuts": "tastaturkürzel",
-    "brand": "marke"
+    "brand": "marke",
+    "resources": "Ressourcen",
+    "features": "Funktionen",
+    "other": "Sonstiges"
   },
   "shortcuts": {
     "section": {
@@ -28,7 +31,7 @@
       "search": "Suche",
       "package": "Paket"
     },
-    "ctrl_key": "Ctrl",
+    "ctrl_key": "Strg",
     "command_palette": "Befehlspalette öffnen",
     "command_palette_description": "Benutze die Befehlspalette, um zwischen Seiten, Paketansichten, Einstellungen und externen Links zu wechseln, ohne die Tastatur zu verlassen. Drücke ⌘K unter macOS. Drücke {ctrlKey}+K unter Windows und Linux.",
     "focus_search": "Suche fokussieren",
@@ -42,7 +45,8 @@
     "open_docs": "Dokumentation öffnen",
     "disable_shortcuts": "Tastaturkürzel deaktivieren",
     "open_main": "Hauptansicht öffnen",
-    "open_diff": "Diff-Ansicht öffnen"
+    "open_diff": "Diff-Ansicht öffnen",
+    "open_timeline": "Zeitleiste öffnen"
   },
   "search": {
     "label": "npm-Pakete durchsuchen",
@@ -50,7 +54,7 @@
     "button": "Suchen",
     "searching": "Suche läuft...",
     "found_packages": "Keine Pakete gefunden | 1 Paket gefunden | {count} Pakete gefunden",
-    "found_packages_sorted": "Keine Ergebnisse gefunden | Sortiere bestes Resultat | Sortiere beste {count} Resultate",
+    "found_packages_sorted": "Keine Ergebnisse gefunden | Nach bestem Resultat sortiert | Die besten {count} Resultate werden sortiert",
     "updating": "(wird aktualisiert...)",
     "no_results": "Keine Pakete gefunden für „{query}“",
     "rate_limited": "npm-Ratenbegrenzung erreicht, bitte versuche es gleich noch einmal",
@@ -149,7 +153,8 @@
       "code": "Code",
       "diff": "Diff",
       "compare": "Dieses Paket vergleichen",
-      "download": "Tarball herunterladen"
+      "download": "Tarball herunterladen",
+      "changelog": "Änderungsprotokoll"
     },
     "package_actions": {
       "copy_run": "Befehl zum Ausführen kopieren"
@@ -280,7 +285,10 @@
       "black": "Schwarz"
     },
     "keyboard_shortcuts_enabled": "Tastenkombinationen aktivieren",
-    "keyboard_shortcuts_enabled_description": "Tastenkombinationen können deaktiviert werden, wenn sie mit anderen Browser- oder Systemkürzeln in Konflikt stehen"
+    "keyboard_shortcuts_enabled_description": "Tastenkombinationen können deaktiviert werden, wenn sie mit anderen Browser- oder Systemkürzeln in Konflikt stehen",
+    "enable_code_ligatures": "Ligaturen im Code aktivieren",
+    "enable_changelog_autoscroll": "Automatisch zur gewünschten Version scrollen",
+    "enable_changelog_autoscroll_description": "Automatischer Sprung zur gewünschten Version oder in deren Nähe im Änderungsprotokoll des Pakets"
   },
   "i18n": {
     "missing_keys": "{count} fehlende Übersetzung | {count} fehlende Übersetzungen",
@@ -312,6 +320,7 @@
     "warnings": "Warnungen:",
     "go_back_home": "Zur Startseite",
     "per_week": "/ Woche",
+    "per_week_short": "/W",
     "vanity_downloads_hint": "Vanity-Zahl: keine Pakete angezeigt | Vanity-Zahl: für das angezeigte Paket | Vanity-Zahl: Summe von {count} angezeigten Paketen",
     "sort": {
       "name": "Name",
@@ -379,9 +388,18 @@
       "size": "Installationsgröße um {percent} gestiegen ({size} größer)",
       "deps": "{count} zusätzliche Abhängigkeiten"
     },
+    "size_decrease": {
+      "title_size": "Die Paketgröße hat sich seit Version {version} verringert!",
+      "title_deps": "Die Anzahl der Abhängigkeiten ist seit Version {version} gesunken!",
+      "title_both": "Die Paketgröße und die Anzahl der Abhängigkeiten sind seit Version {version} gesunken!",
+      "size": "Installationsgröße um {percent} reduziert (um {size} kleiner)",
+      "deps": "{count} Abhängigkeit weniger | {count} Abhängigkeiten weniger"
+    },
     "replacement": {
       "title": "Du brauchst diese Abhängigkeit vielleicht nicht.",
-      "native": "Dies kann durch {replacement} ersetzt werden, verfügbar seit Node {nodeVersion}.",
+      "example": "Beispiel:",
+      "native": "Dies kann seit Node {nodeVersion} durch {replacement} ersetzt werden.",
+      "native_no_version": "Dieses Paket kann durch {replacement} ersetzt werden.",
       "simple": "Die {community} hat dieses Paket als überflüssig markiert und empfiehlt: {replacement}.",
       "documented": "Die {community} hat leistungsstärkere Alternativen für dieses Paket aufgezeigt.",
       "none": "Dieses Paket wurde als nicht mehr nötig markiert, und seine Funktionalität ist wahrscheinlich in allen Engines nativ verfügbar.",
@@ -401,7 +419,7 @@
       "inspect_dependency_tree": "Abhängigkeitsbaum untersuchen",
       "size_tooltip": {
         "unpacked": "{size} Größe nach dem Entpacken (dieses Paket)",
-        "total": "{size} Gesamtgröße nach dem Entpacken (inklusive {count} Abhängigkeit für linux-x64) | {size} Gesamtgröße nach dem Entpacken (inklusive aller {count} Abhängigkeiten für linux-x64)"
+        "total": "{size} Gesamtgröße nach dem Entpacken (inklusive {count} Abhängigkeit für Linux-x64) | {size} Gesamtgröße nach dem Entpacken (inklusive aller {count} Abhängigkeiten für Linux-x64)"
       }
     },
     "skills": {
@@ -432,11 +450,16 @@
       "docs": "Dokumentation",
       "fund": "Spenden",
       "compare": "Vergleichen",
-      "compare_this_package": "Dieses Paket vergleichen"
+      "timeline": "Zeitleiste",
+      "compare_this_package": "Dieses Paket vergleichen",
+      "changelog": "Änderungsprotokoll"
     },
     "likes": {
       "like": "Dieses Paket liken",
-      "unlike": "Like entfernen"
+      "unlike": "Like entfernen",
+      "top_rank_tooltip": "Das gehört zu den Top 10 der beliebtesten Pakete auf npmx! (#{rank})",
+      "top_rank_label": "#{rank}",
+      "top_rank_link_label": "Rangliste der Likes anzeigen. Dieses Paket steht auf Platz #{rank}."
     },
     "docs": {
       "contents": "inhalt",
@@ -477,7 +500,8 @@
         "warning": "Warnung",
         "caution": "Vorsicht"
       },
-      "copy_as_markdown": "README als Markdown kopieren"
+      "copy_as_markdown": "README als Markdown kopieren",
+      "error_loading": "Die README-Details konnten nicht geladen werden"
     },
     "provenance_section": {
       "title": "Herkunftsnachweis",
@@ -508,6 +532,7 @@
       "weekly_downloads": "Wöchentliche Downloads",
       "keywords": "Schlüsselwörter",
       "license": "Lizenz",
+      "version": "Version",
       "select": "Paket auswählen",
       "select_maximum": "Maximal {count} Pakete können ausgewählt werden"
     },
@@ -547,6 +572,9 @@
       "filter_help": "Hilfe zum SemVer-Filter",
       "filter_tooltip": "Filtere Versionen mit einem {link}. Zum Beispiel zeigt ^3.0.0 alle 3.x-Versionen.",
       "filter_tooltip_link": "SemVer-Bereich",
+      "license_change_help": "Details zur Lizenzänderung",
+      "license_change_warning": "Die Lizenz hat sich seit der letzten Version geändert.",
+      "license_change_record": "Die Lizenz dieses Pakets hat sich von \"{from}\" zu \"{to}\" geändert.",
       "no_matches": "Keine Versionen entsprechen diesem Bereich",
       "copy_alt": {
         "per_version_analysis": "Die Version {version} wurde {downloads} mal heruntergeladen",
@@ -555,6 +583,35 @@
       "page_title": "Versionshistorie",
       "current_tags": "Aktuelle Tags",
       "no_match_filter": "Keine Versionen entsprechen {filter}"
+    },
+    "timeline": {
+      "load_more": "Mehr laden",
+      "load_error": "Die Zeitleiste konnte nicht geladen werden. Bitte versuche es später erneut.",
+      "size_increase": "Die Installationsgröße hat sich um {percent} % ({size}) erhöht",
+      "size_decrease": "Die Installationsgröße wurde um {percent} % ({size}) reduziert",
+      "dep_increase": "{count} Abhängigkeit hinzugefügt | {count} Abhängigkeiten hinzugefügt",
+      "dep_decrease": "{count} Abhängigkeit entfernt | {count} Abhängigkeiten entfernt",
+      "license_change": "Die Lizenz wurde von {from} auf {to} geändert",
+      "esm_added": "Modultyp wurde auf ESM geändert",
+      "esm_removed": "Der Modultyp wurde von ESM auf CJS geändert",
+      "types_added": "TypeScript-Typen hinzugefügt",
+      "types_removed": "TypeScript-Typen entfernt",
+      "trusted_publisher_added": "Vertrauenswürdige Veröffentlichung aktiviert",
+      "trusted_publisher_removed": "Vertrauenswürdige Veröffentlichung entfernt",
+      "provenance_added": "Herkunftsnachweis aktiviert",
+      "provenance_removed": "Herkunftsnachweis entfernt",
+      "chart": {
+        "tab_aria_label": "Auswahl der Maßeinheit",
+        "base_scale": "Die y-Achse bei Null beginnen",
+        "zoom": "Zoom",
+        "reset_minimap": "Minikarte zurücksetzen",
+        "ordered_versions": "nur stabil",
+        "copy_alt": {
+          "key_changes": "Wichtigste Änderungen: {version_events}.",
+          "version_events": "Version {version}: {events}",
+          "general_description": "Liniendiagramm, das die {metric} des Pakets {package} von Version {first} bis {last} zeigt. Die {metric} beträgt in Version {first} {first_value} und in Version {last} {last_value} ({overall_progress_percentage} % insgesamt). {key_changes} {watermark}."
+        }
+      }
     },
     "dependencies": {
       "title": "Abhängigkeit ({count}) | Abhängigkeiten ({count})",
@@ -583,12 +640,12 @@
       "list_label": "Paket-Maintainer",
       "you": "(du)",
       "via": "via {teams}",
-      "remove_owner": "{name} als Owner entfernen",
-      "username_to_add": "Benutzername zum Hinzufügen als Owner",
+      "remove_owner": "{name} als Besitzer entfernen",
+      "username_to_add": "Benutzername zum Hinzufügen als Besitzer",
       "username_placeholder": "Benutzername...",
       "add_button": "Hinzufügen",
-      "cancel_add": "Owner-Hinzufügung abbrechen",
-      "add_owner": "+ Owner hinzufügen",
+      "cancel_add": "Hinzufügen des Besitzers abbrechen",
+      "add_owner": "+ Besitzer hinzufügen",
       "show_more": "({count} weitere anzeigen)",
       "show_less": "(weniger anzeigen)",
       "maintainer_template": "{avatar} {char126}{name}"
@@ -660,6 +717,7 @@
     },
     "downloads": {
       "title": "Wöchentliche Downloads",
+      "version_distribution_title": "Wöchentliche Downloads für Version {version}",
       "community_distribution": "Community-Adoptionsverteilung ansehen",
       "subtitle": "Über alle Versionen",
       "sparkline_nav_hint": "Verwende ← →"
@@ -712,7 +770,7 @@
       "title": "Team-Zugriff",
       "refresh": "Team-Zugriff aktualisieren",
       "list_label": "Team-Zugriffsliste",
-      "owner": "Owner",
+      "owner": "Besitzer",
       "rw": "rw",
       "ro": "ro",
       "revoke_access": "Zugriff von {name} entziehen",
@@ -756,6 +814,16 @@
     "download": {
       "button": "Herunterladen",
       "tarball": "Tarball als .tar.gz herunterladen"
+    }
+  },
+  "leaderboard": {
+    "likes": {
+      "title": "Likes Leaderboard",
+      "description": "Die 10 derzeit beliebtesten Pakete auf npmx.",
+      "rank": "Rang",
+      "likes": "Likes",
+      "unavailable_title": "Es gibt noch keine Rangliste der Likes",
+      "unavailable_description": "Wir können derzeit keine Rangliste der Likes anzeigen."
     }
   },
   "connector": {
@@ -824,7 +892,7 @@
       "username_to_add": "Benutzername zum Hinzufügen zu {team}",
       "username_placeholder": "Benutzername...",
       "add_button": "Hinzufügen",
-      "cancel_add_user": "Benutzer-Hinzufügung abbrechen",
+      "cancel_add_user": "Hinzufügen des Benutzers abbrechen",
       "add_member": "+ Mitglied hinzufügen",
       "team_name_label": "Teamname",
       "team_name_placeholder": "Teamname...",
@@ -856,12 +924,12 @@
         "all": "Alle",
         "developer": "Entwickler",
         "admin": "Admin",
-        "owner": "Owner"
+        "owner": "Besitzer"
       },
       "team_label": "Team",
       "no_team": "Kein Team",
       "add_button": "Hinzufügen",
-      "cancel_add": "Mitglied-Hinzufügung abbrechen",
+      "cancel_add": "Hinzufügen des Mitglieds abbrechen",
       "add_member": "+ Mitglied hinzufügen"
     },
     "public_packages": "{count} öffentliches Paket | {count} öffentliche Pakete",
@@ -1104,10 +1172,10 @@
         "already": "Es gibt",
         "people": "bereits",
         "building": "Leute,",
-        "really": "die",
-        "cool": "wirklich",
-        "package": "coole",
-        "managers": "Paketmanager bauen"
+        "really": "die wirklich",
+        "cool": "coole",
+        "package": "Paketmanager",
+        "managers": "bauen"
       }
     },
     "sponsors": {
@@ -1118,6 +1186,9 @@
     },
     "team": {
       "title": "Team",
+      "core": "Core",
+      "maintainers": "Maintainers",
+      "role_core": "Core",
       "role_steward": "Verwalter",
       "role_maintainer": "Maintainer",
       "sponsor": "Sponsor",
@@ -1235,7 +1306,15 @@
       "add_hint": "Füge mindestens 2 Pakete zum Vergleichen hinzu."
     },
     "scatter_chart": {
-      "copy_alt": {}
+      "title": "Vergleiche {x} mit {y}",
+      "freshness_score": "Frischebewertung",
+      "copy_alt": {
+        "analysis": "{package} : {x_name} ({x_value}) und {y_name} ({y_value})",
+        "description": "Streudiagramm, das {x_name} gegen {y_name} für die Pakete aus {packages} darstellt. {analysis}. {watermark}"
+      },
+      "filename": "{x}-vs-{y}-Punktdiagramm",
+      "x_axis": "X-Achse ↦",
+      "y_axis": "Y-Achse ↥"
     },
     "no_dependency": {
       "label": "(Keine Abhängigkeit)",
@@ -1315,6 +1394,18 @@
         "vulnerabilities": {
           "label": "Sicherheitslücken",
           "description": "Bekannte Sicherheitsrisiken"
+        },
+        "githubStars": {
+          "label": "GitHub-Sterne",
+          "description": "Anzahl der Sterne im GitHub-Repository"
+        },
+        "githubIssues": {
+          "label": "GitHub-Issues",
+          "description": "Anzahl der Issues im GitHub-Repository"
+        },
+        "createdAt": {
+          "label": "Erstellt am",
+          "description": "Wann das Paket erstellt wurde"
         }
       },
       "values": {
@@ -1637,5 +1728,16 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "Eine süße, abgerundete und bunte Version des npmx-Logos."
+  "alt_logo_kawaii": "Eine süße, abgerundete und bunte Version des npmx-Logos.",
+  "changelog": {
+    "pre_release": "Vorabversion",
+    "draft": "Entwurf",
+    "no_logs": "Leider veröffentlicht dieses Paket keine Änderungsprotokolle oder das Format der Änderungsprotokolle wird nicht unterstützt.",
+    "error": {
+      "p1": "Leider konnte das Änderungsprotokoll für {package} nicht geladen werden",
+      "p2": "Bitte versuche es später noch einmal oder {viewon}"
+    },
+    "rate_limit_ungh": "Entschuldigung, die Zugriffsbeschränkung von GitHub wurde erreicht. Bitte versuche es in einem Moment erneut.",
+    "version_unavailable": "Die gewünschte Version ist nicht verfügbar."
+  }
 }
