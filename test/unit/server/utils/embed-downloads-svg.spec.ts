@@ -20,6 +20,7 @@ vi.mock('#server/utils/download-evolution', () => ({
 }))
 
 vi.mock('#shared/utils/trends-chart', () => ({
+  LOCALES_WITH_EXTRA_SPACE: ['fr', 'fr-FR'],
   buildTrendsChartData: mocks.buildTrendsChartData,
   buildNormalisedTrendsDataset: mocks.buildNormalisedTrendsDataset,
   buildTrendsChartConfig: mocks.buildTrendsChartConfig,
