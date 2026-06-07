@@ -144,6 +144,9 @@
         },
         "open_timeline": {
           "type": "string"
+        },
+        "open_stats": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -467,6 +470,9 @@
               "type": "string"
             },
             "changelog": {
+              "type": "string"
+            },
+            "stats": {
               "type": "string"
             }
           },
@@ -1341,6 +1347,15 @@
                 }
               },
               "additionalProperties": false
+            },
+            "main_information": {
+              "type": "string"
+            },
+            "trends": {
+              "type": "string"
+            },
+            "version_distribution": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1430,6 +1445,9 @@
               "type": "string"
             },
             "timeline": {
+              "type": "string"
+            },
+            "stats": {
               "type": "string"
             },
             "compare_this_package": {

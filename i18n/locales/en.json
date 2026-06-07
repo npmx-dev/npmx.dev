@@ -46,7 +46,8 @@
     "disable_shortcuts": "You can disable keyboard shortcuts in {settings}.",
     "open_main": "Open main information",
     "open_diff": "Open version differences",
-    "open_timeline": "Open timeline"
+    "open_timeline": "Open timeline",
+    "open_stats": "Open stats"
   },
   "search": {
     "label": "Search npm packages",
@@ -154,7 +155,8 @@
       "diff": "Diff",
       "compare": "Compare this package",
       "download": "Download tarball",
-      "changelog": "Changelog"
+      "changelog": "Changelog",
+      "stats": "Stats"
     },
     "package_actions": {
       "copy_run": "Copy run command"
@@ -445,7 +447,10 @@
       "size_tooltip": {
         "unpacked": "{size} unpacked size (this package)",
         "total": "{size} total unpacked size (including {count} dependency for linux-x64) | {size} total unpacked size (including all {count} dependencies for linux-x64)"
-      }
+      },
+      "main_information": "Main Information",
+      "trends": "Trends",
+      "version_distribution": "Version Distribution"
     },
     "skills": {
       "title": "Agent Skills",
@@ -476,6 +481,7 @@
       "fund": "fund",
       "compare": "compare",
       "timeline": "timeline",
+      "stats": "stats",
       "compare_this_package": "compare this package",
       "changelog": "changelog"
     },
