@@ -55,7 +55,8 @@ const comparisonSpecs = computed(() => [
   version.value ? `${packageName.value}@${version.value}` : packageName.value,
 ])
 
-const { getFacetValues, isFacetLoading, isColumnLoading } = usePackageComparison(comparisonSpecs)
+const { getFacetValues, isFacetLoading, isColumnLoading, status } =
+  usePackageComparison(comparisonSpecs)
 
 const { facetLabels } = useFacetSelection()
 
@@ -105,7 +106,13 @@ useSeoMeta({
         <div v-for="row in facetRows" :key="row.id" class="py-1">
           <dt class="text-sm text-fg-muted lowercase">{{ row.label }}</dt>
           <dd class="text-sm font-mono mt-1">
-            <span v-if="row.loading" aria-hidden="true">&nbsp;</span>
+            <span
+              v-if="
+                row.loading || status === 'pending' || (status === 'idle' && row.value === null)
+              "
+              aria-hidden="true"
+              class="block w-4 h-4 border-2 border-fg-subtle border-t-fg rounded-full motion-safe:animate-spin"
+            />
             <span v-else-if="!row.value" class="text-fg-subtle">–</span>
             <span v-else :title="formatFacetValue(row.value)" class="block truncate">{{
               formatFacetValue(row.value)
