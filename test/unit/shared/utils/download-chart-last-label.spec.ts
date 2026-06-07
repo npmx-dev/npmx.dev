@@ -228,7 +228,7 @@ describe('createLastDatapointLabelsSvg', () => {
     expect(result).toContain('y="-15"')
   })
 
-  it('uses the fallback serie color in regular label mode', () => {
+  it('renders a regular label when serie color is omitted', () => {
     const result = createLastDatapointLabelsSvg({
       series: [{ plots: [{ x: 100, y: 50, value: 10 }] }],
       drawingArea: { top: 0, height: 100 },
@@ -236,6 +236,9 @@ describe('createLastDatapointLabelsSvg', () => {
       formatValue: value => `${value}`,
       isDarkMode: false,
     })
+    expect(result).toContain('<text')
+    expect(result).not.toContain('<path')
+    expect(result).toContain('x="124"')
     expect(result).toContain('10')
   })
 
