@@ -105,7 +105,7 @@ useSeoMeta({
         <div v-for="row in facetRows" :key="row.id" class="py-1">
           <dt class="text-sm text-fg-muted lowercase">{{ row.label }}</dt>
           <dd class="text-sm font-mono mt-1">
-            <span v-if="row.loading" aria-hidden="true"></span>
+            <span v-if="row.loading" aria-hidden="true">&nbsp;</span>
             <span v-else-if="!row.value" class="text-fg-subtle">–</span>
             <span v-else :title="formatFacetValue(row.value)" class="block truncate">{{
               formatFacetValue(row.value)
