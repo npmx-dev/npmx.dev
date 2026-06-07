@@ -123,7 +123,7 @@ useSeoMeta({
     </section>
     <div class="container w-full flex max-lg:flex-col gap-8 pb-16">
       <div class="flex-1">
-        <section>
+        <section id="trends">
           <h2 class="text-fg-muted mb-6 uppercase">{{ $t('package.stats.trends') }}</h2>
           <PackageTrendsChart
             class="font-mono"
@@ -133,7 +133,7 @@ useSeoMeta({
             show-facet-selector
           />
         </section>
-        <section class="mt-12">
+        <section id="distribution" class="mt-12">
           <h2 class="text-fg-muted mb-6 uppercase">
             {{ $t('package.stats.version_distribution') }}
           </h2>
