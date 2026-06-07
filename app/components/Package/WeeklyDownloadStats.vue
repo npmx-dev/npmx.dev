@@ -18,49 +18,10 @@ const props = defineProps<{
   packageName: string
   createdIso: string | null
   repoRef?: RepoRef | null | undefined
+  version?: string | null
 }>()
 
-const router = useRouter()
-const route = useRoute()
 const { settings } = useSettings()
-
-const chartModal = useModal('chart-modal')
-const hasChartModalTransitioned = shallowRef(false)
-
-const modalTitle = computed(() => {
-  const facet = route.query.facet as string | undefined
-  if (facet === 'likes') return $t('package.trends.items.likes')
-  if (facet === 'contributors') return $t('package.trends.items.contributors')
-  return $t('package.trends.items.downloads')
-})
-
-const modalSubtitle = computed(() => {
-  const facet = route.query.facet as string | undefined
-  if (facet === 'likes' || facet === 'contributors') return undefined
-  return $t('package.downloads.subtitle')
-})
-
-const isChartModalOpen = shallowRef<boolean>(false)
-
-function handleModalClose() {
-  isChartModalOpen.value = false
-  hasChartModalTransitioned.value = false
-
-  router.replace({
-    query: {
-      ...route.query,
-      modal: undefined,
-      granularity: undefined,
-      end: undefined,
-      start: undefined,
-      facet: undefined,
-    },
-  })
-}
-
-function handleModalTransitioned() {
-  hasChartModalTransitioned.value = true
-}
 
 const { fetchPackageDownloadEvolution } = useCharts()
 const numberFormatter = useNumberFormatter()
@@ -116,25 +77,6 @@ const weeklyDownloads = shallowRef<WeeklyDataPoint[]>([])
 const isLoadingWeeklyDownloads = shallowRef(true)
 const hasWeeklyDownloads = computed(() => weeklyDownloads.value.length > 0)
 
-async function openChartModal() {
-  if (!hasWeeklyDownloads.value) return
-
-  isChartModalOpen.value = true
-  hasChartModalTransitioned.value = false
-
-  await router.replace({
-    query: {
-      ...route.query,
-      modal: 'chart',
-    },
-  })
-
-  // ensure the component renders before opening the dialog
-  await nextTick()
-  await nextTick()
-  chartModal.open()
-}
-
 async function loadWeeklyDownloads() {
   if (!import.meta.client) return
 
@@ -155,14 +97,6 @@ async function loadWeeklyDownloads() {
 
 onMounted(async () => {
   await loadWeeklyDownloads()
-
-  if (route.query.modal === 'chart') {
-    isChartModalOpen.value = true
-  }
-
-  if (isChartModalOpen.value && hasWeeklyDownloads.value) {
-    openChartModal()
-  }
 })
 
 watch(
@@ -193,6 +127,11 @@ const dataset = computed<VueUiSparklineDatasetItem[]>(() =>
     }),
   })),
 )
+
+const trendsRoute = computed(() => {
+  if (!props.version) return null
+  return packageStatsRoute(props.packageName, props.version, '#trends')
+})
 
 const lastDatapoint = computed(() => dataset.value.at(-1)?.period ?? '')
 
@@ -399,16 +338,16 @@ const config = computed<VueUiSparklineConfig>(() => {
       :subtitle="$t('package.downloads.subtitle')"
     >
       <template #actions>
-        <ButtonBase
-          v-if="hasWeeklyDownloads"
-          type="button"
-          @click="openChartModal"
+        <LinkBase
+          v-if="hasWeeklyDownloads && trendsRoute"
+          variant="button-secondary"
+          :to="trendsRoute"
           class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 focus-visible:outline-accent/70 rounded"
           :title="$t('package.trends.title')"
           classicon="i-lucide:chart-line"
         >
           <span class="sr-only">{{ $t('package.trends.title') }}</span>
-        </ButtonBase>
+        </LinkBase>
         <span v-else-if="isLoadingWeeklyDownloads" class="min-w-6 min-h-6 -m-1 p-1" />
       </template>
 
@@ -456,51 +395,9 @@ const config = computed<VueUiSparklineConfig>(() => {
       </div>
     </CollapsibleSection>
   </div>
-
-  <PackageChartModal
-    v-if="isChartModalOpen && hasWeeklyDownloads"
-    :modal-title="modalTitle"
-    :modal-subtitle="modalSubtitle"
-    @close="handleModalClose"
-    @transitioned="handleModalTransitioned"
-  >
-    <!-- The Chart is mounted after the dialog has transitioned -->
-    <!-- This avoids flaky behavior that hides the chart's minimap half of the time -->
-    <Transition name="opacity" mode="out-in">
-      <PackageTrendsChart
-        v-if="hasChartModalTransitioned"
-        :weeklyDownloads="weeklyDownloads"
-        :inModal="true"
-        :packageName="props.packageName"
-        :repoRef="props.repoRef"
-        :createdIso="createdIso"
-        permalink
-        show-facet-selector
-      />
-    </Transition>
-
-    <!-- This placeholder bears the same dimensions as the PackageTrendsChart component -->
-    <!-- Avoids CLS when the dialog has transitioned -->
-    <div v-if="!hasChartModalTransitioned" class="w-full aspect-[390/634.5] sm:aspect-[718/647]" />
-  </PackageChartModal>
 </template>
 
 <style scoped>
-.opacity-enter-active,
-.opacity-leave-active {
-  transition: opacity 200ms ease;
-}
-
-.opacity-enter-from,
-.opacity-leave-to {
-  opacity: 0;
-}
-
-.opacity-enter-to,
-.opacity-leave-from {
-  opacity: 1;
-}
-
 :deep(.vue-data-ui-component svg:focus-visible) {
   outline: 0.1rem solid var(--accent) !important;
   border-radius: 0.1rem;

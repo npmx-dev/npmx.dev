@@ -206,7 +206,6 @@ import {
   OrgTeamsPanel,
   PackageAccessControls,
   PackageCard,
-  PackageChartModal,
   PackageClaimPackageModal,
   PackageCompatibility,
   PackageDependencies,
@@ -1123,22 +1122,6 @@ describe('component accessibility audits', () => {
   // Note: PackageWeeklyDownloadStats tests are skipped because vue-data-ui VueUiSparkline
   // component has issues in the test environment (requires DOM measurements that aren't
   // available during SSR-like test mounting).
-
-  describe('PackageChartModal', () => {
-    it('should have no accessibility violations when closed', async () => {
-      const component = await mountSuspended(PackageChartModal, {
-        props: { open: false, title: 'Downloads' },
-        slots: { default: '<div>Chart content</div>' },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-
-    // Note: Testing the open state is challenging because native <dialog>.showModal()
-    // requires the element to be in the DOM and connected, which doesn't work well
-    // with the test environment's cloning approach. The dialog accessibility is
-    // inherently provided by the native <dialog> element with aria-labelledby.
-  })
 
   describe('PackageTrendsChart', () => {
     const mockWeeklyDownloads = [
