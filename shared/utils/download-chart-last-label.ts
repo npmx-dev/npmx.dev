@@ -103,15 +103,17 @@ export function createLastDatapointLabelsSvg({
   }))
 
   for (let index = 1; index < positionedLabels.length; index += 1) {
-    const previousLabel = positionedLabels[index - 1]!
-    const currentLabel = positionedLabels[index]!
-
+    const previousLabel = positionedLabels[index - 1]
+    const currentLabel = positionedLabels[index]
+    if (!previousLabel || !currentLabel) continue
     if (currentLabel.labelY - previousLabel.labelY < labelHeight) {
       currentLabel.labelY = previousLabel.labelY + labelHeight
     }
   }
 
-  const overflow = positionedLabels.at(-1)!.labelY - maximumLabelY
+  const lastLabel = positionedLabels.at(-1)
+  if (!lastLabel) return ''
+  const overflow = lastLabel.labelY - maximumLabelY
 
   if (overflow > 0) {
     for (const label of positionedLabels) {
