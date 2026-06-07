@@ -131,6 +131,7 @@ useSeoMeta({
             :package-name="packageName"
             :version="version"
             show-facet-selector
+            default-range="52-weeks"
           />
         </section>
         <section id="distribution" class="mt-12">

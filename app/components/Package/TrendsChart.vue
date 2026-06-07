@@ -51,8 +51,10 @@ const props = withDefaults(
     /** When true, shows facet selector (e.g. Downloads / Likes). */
     showFacetSelector?: boolean
     permalink?: boolean
+    defaultRange?: 'auto' | '52-weeks'
   }>(),
   {
+    defaultRange: 'auto',
     permalink: false,
   },
 )
@@ -372,7 +374,7 @@ function addUtcDays(date: Date, days: number): Date {
 function initDateRangeForMultiPackageWeekly52() {
   if (hasUserEditedDates.value) return
   if (!import.meta.client) return
-  if (!isMultiPackageMode.value) return
+  if (!isMultiPackageMode.value && props.defaultRange === 'auto') return
   if (startDate.value && endDate.value) return
 
   const today = new Date()
@@ -385,7 +387,7 @@ function initDateRangeForMultiPackageWeekly52() {
 }
 
 watch(
-  () => (props.packageNames ?? []).length,
+  () => (props.packageNames ?? []).length || props.defaultRange === '52-weeks',
   () => {
     initDateRangeForMultiPackageWeekly52()
   },
