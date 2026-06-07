@@ -1294,9 +1294,6 @@
             "learn_more_above": {
               "type": "string"
             },
-            "community": {
-              "type": "string"
-            },
             "consider_no_dep": {
               "type": "string"
             }
