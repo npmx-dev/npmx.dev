@@ -103,7 +103,7 @@ useSeoMeta({
         class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-y-2 gap-x-4 border-y-border border-y py-2"
       >
         <div v-for="row in facetRows" :key="row.id" class="py-1">
-          <dt class="text-sm text-fg-muted">{{ row.label.toLowerCase() }}</dt>
+          <dt class="text-sm text-fg-muted lowercase">{{ row.label }}</dt>
           <dd class="text-sm font-mono mt-1">
             <span v-if="row.loading" aria-hidden="true"></span>
             <span v-else-if="!row.value" class="text-fg-subtle">–</span>
