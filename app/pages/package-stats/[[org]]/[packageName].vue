@@ -125,13 +125,19 @@ useSeoMeta({
       <div class="flex-1">
         <section>
           <h2 class="text-fg-muted mb-6 uppercase">{{ $t('package.stats.trends') }}</h2>
-          <PackageTrendsChart :package-name="packageName" :version="version" show-facet-selector />
+          <PackageTrendsChart
+            class="font-mono"
+            :package-names="[packageName]"
+            :package-name="packageName"
+            :version="version"
+            show-facet-selector
+          />
         </section>
         <section class="mt-12">
           <h2 class="text-fg-muted mb-6 uppercase">
             {{ $t('package.stats.version_distribution') }}
           </h2>
-          <PackageVersionDistribution :package-name="packageName" />
+          <PackageVersionDistribution class="font-mono" :package-name="packageName" />
         </section>
       </div>
       <PackageSidebar>
