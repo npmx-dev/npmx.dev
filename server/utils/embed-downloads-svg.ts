@@ -1,7 +1,7 @@
 import { createError } from 'h3'
 import { createStaticVueUiXy } from 'vue-data-ui/ssr/vue-ui-xy'
 import { mergeConfigs } from 'vue-data-ui/utils'
-import { generateWatermarkLogo } from '#shared/utils/trends-chart'
+import { generateWatermarkLogo, LOCALES_WITH_EXTRA_SPACE } from '#shared/utils/trends-chart'
 import {
   buildNormalisedTrendsDataset,
   buildTrendsChartConfig,
@@ -11,6 +11,7 @@ import { resolveEmbedChartColors } from '#shared/utils/embed-chart-colors'
 import { OKLCH_NEUTRAL_FALLBACK } from '~/utils/colors'
 import { getEffectiveEndDateIso, isLastDayOfMonth, isLastDayOfYear } from '~/utils/date'
 import { fetchDownloadsEvolution } from '~~/server/utils/download-evolution'
+import { createLastDatapointLabelsSvg } from '#shared/utils/download-chart-last-label'
 
 type FetchGranularity = 'day' | 'week' | 'month' | 'year'
 type ChartGranularity = 'daily' | 'weekly' | 'monthly' | 'yearly'
@@ -254,7 +255,8 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
         height,
         padding: {
           left: 12,
-          right: 120,
+          right:
+            packageNames.length > 1 ? (LOCALES_WITH_EXTRA_SPACE.includes(locale) ? 180 : 160) : 145,
         },
         legend: {
           show: true,
@@ -301,29 +303,17 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
     }),
     config,
     additionalSvgContent: ({ series, drawingArea }) => {
-      const lastPlotValues = series
-        .map(serie => {
-          const lastPlot = (serie.plots || []).at(-1)
-
-          if (!lastPlot) return ''
-
-          return `
-              <text
-                  x="${lastPlot.x + 8}"
-                  y="${lastPlot.y}"
-                  fill="${colors.fg}"
-                  stroke="${colors.bg}"
-                  stroke-width="1"
-                  paint-order="stroke fill"
-                  font-size="18"
-                  dominant-baseline="middle"
-                  text-anchor="start"
-              >
-                  ${compactNumberFormatter.format(Number(lastPlot.value ?? 0))}
-              </text>
-          `
-        })
-        .join('')
+      const lastPlotValues = createLastDatapointLabelsSvg({
+        series,
+        drawingArea,
+        colors: {
+          foreground: colors.fg,
+          background: colors.bg,
+          fallbackSerieColor: colors.fg,
+        },
+        formatValue: value => compactNumberFormatter.format(value),
+        isDarkMode,
+      })
 
       const logo = generateWatermarkLogo({
         x: 12,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VueUiXy, type VueUiXyConfig } from 'vue-data-ui/vue-ui-xy'
+import { VueUiXy, type VueUiXyConfig, type VueUiXySvgSlotProps } from 'vue-data-ui/vue-ui-xy'
 import { useDebounceFn, useElementSize, useTimeoutFn } from '@vueuse/core'
 import { useColors } from '~/composables/useColors'
 import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch } from '~/utils/colors'
@@ -25,6 +25,7 @@ import {
   getTrendsDatetimeFormatterOptions,
 } from '#shared/utils/trends-chart'
 import { downloadFileLink } from '~/utils/download'
+import { createLastDatapointLabelsSvg } from '#shared/utils/download-chart-last-label'
 
 import('vue-data-ui/style.css')
 
@@ -980,41 +981,32 @@ function drawEstimationLine(svg: Record<string, any>) {
  * - renders a text label slightly offset to the right of the point
  * - formats the value using the compact number formatter
  *
+ * In case of label collisions for multiple series:
+ * - labels are evenly distributed vertically
+ * - an elbowed marker connects the last point to its label
+ *
  * Return an empty string when no series data is available.
  *
  * @param svg - SVG context object provided by `VueUiXy` via the `#svg` slot
  * @returns A string containing SVG `<text>` elements, or an empty string when
  * no labels should be rendered.
  */
-function drawLastDatapointLabel(svg: Record<string, any>) {
-  const data = Array.isArray(svg?.data) ? svg.data : []
-  if (!data.length) return ''
-
-  const dataLabels: string[] = []
-
-  for (const serie of data) {
-    const lastPlot = serie.plots.at(-1)
-
-    dataLabels.push(`
-      <text
-        text-anchor="start"
-        dominant-baseline="middle"
-        x="${lastPlot.x + 12}"
-        y="${lastPlot.y}"
-        font-size="24"
-        fill="${colors.value.fg}"
-        stroke="${colors.value.bg}"
-        stroke-width="1"
-        paint-order="stroke fill"
-      >
-        ${compactNumberFormatter.value.format(Number.isFinite(lastPlot.value) ? lastPlot.value : 0)}
-      </text>
-    `)
-  }
-
-  return dataLabels.join('\n')
+function drawLastDatapointLabel(svg: VueUiXySvgSlotProps['svg']) {
+  return createLastDatapointLabelsSvg({
+    series: Array.isArray(svg?.data) ? svg.data : [],
+    drawingArea: svg.drawingArea,
+    svgWidth: svg.width,
+    fontSize: isMultiPackageMode.value ? 20 : 24,
+    labelOffset: isMultiPackageMode.value ? 24 : 16,
+    colors: {
+      foreground: colors.value.fg!,
+      background: colors.value.bg!,
+      fallbackSerieColor: colors.value.fg!,
+    },
+    formatValue: value => compactNumberFormatter.value.format(value),
+    isDarkMode: isDarkMode.value,
+  })
 }
-
 /**
  * Build and return a legend to be injected during the SVG export only, since the custom legend is
  * displayed as an independent div, content has to be injected within the chart's viewBox.
