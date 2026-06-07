@@ -397,7 +397,6 @@
       "deprecated_title": "{version} (przestarzała)",
       "view_all": "Zobacz wszystkie {count} wersje | Zobacz {count} wersję | Zobacz {count} wersje | Zobacz {count} wersji | Zobacz {count} wersji",
       "distribution_title": "Grupa semver",
-      "distribution_modal_title": "Wersje",
       "distribution_range_date_same_year": "od {from} do {to}, {endYear}",
       "distribution_range_date_multiple_years": "od {from}, {startYear} do {to}, {endYear}",
       "grouping_major": "Major",

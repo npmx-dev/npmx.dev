@@ -550,7 +550,6 @@
       "view_all": "Посмотреть {count} версию | Посмотреть все {count} версии | Посмотреть все {count} версий",
       "view_all_versions": "Все версии",
       "distribution_title": "Группа Semver",
-      "distribution_modal_title": "Версии",
       "distribution_range_date_same_year": "с {from} по {to}, {endYear}",
       "distribution_range_date_multiple_years": "с {from} {startYear} по {to} {endYear}",
       "grouping_major": "Мажорные",

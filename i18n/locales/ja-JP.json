@@ -550,7 +550,6 @@
       "view_all": "{count} 個のバージョンを表示|{count} 個のすべてのバージョンを表示",
       "view_all_versions": "すべてのバージョンを表示",
       "distribution_title": "Semverグループ",
-      "distribution_modal_title": "バージョン",
       "distribution_range_date_same_year": "{endYear} 年 {from} から {to}",
       "distribution_range_date_multiple_years": "{startYear} 年 {from} から {endYear} 年 {to}",
       "grouping_major": "メジャー",

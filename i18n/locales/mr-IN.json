@@ -399,7 +399,6 @@
       "view_all": "{count} आवृत्ती पहा | सर्व {count} आवृत्त्या पहा",
       "view_all_versions": "सर्व आवृत्त्या पहा",
       "distribution_title": "Semver गट",
-      "distribution_modal_title": "आवृत्त्या",
       "distribution_range_date_same_year": "{from} ते {to}, {endYear}",
       "distribution_range_date_multiple_years": "{from}, {startYear} ते {to}, {endYear}",
       "grouping_major": "प्रमुख",

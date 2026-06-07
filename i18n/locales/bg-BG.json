@@ -350,7 +350,6 @@
       "deprecated_title": "{version} (остаряла)",
       "view_all": "Преглед на {count} версия | Преглед на всички {count} версии",
       "distribution_title": "Semver група",
-      "distribution_modal_title": "Версии",
       "distribution_range_date_same_year": "от {from} до {to}, {endYear}",
       "distribution_range_date_multiple_years": "от {from}, {startYear} до {to}, {endYear}",
       "grouping_major": "Major",

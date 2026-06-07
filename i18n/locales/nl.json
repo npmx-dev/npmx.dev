@@ -550,7 +550,6 @@
       "view_all": "Bekijk {count} versie | Bekijk alle {count} versies",
       "view_all_versions": "Bekijk alle versies",
       "distribution_title": "Semver Groep",
-      "distribution_modal_title": "Versies",
       "distribution_range_date_same_year": "van {from} t/m {to}, {endYear}",
       "distribution_range_date_multiple_years": "van {from}, {startYear} t/m {to}, {endYear}",
       "grouping_major": "Hoofd",

@@ -546,7 +546,6 @@
       "view_all": "Vis {count} versjon | Vis alle {count} versjoner",
       "view_all_versions": "Vis alle versjoner",
       "distribution_title": "Semver-gruppe",
-      "distribution_modal_title": "Versjoner",
       "distribution_range_date_same_year": "fra {from} til {to}, {endYear}",
       "distribution_range_date_multiple_years": "fra {from}, {startYear} til {to}, {endYear}",
       "grouping_major": "Major",

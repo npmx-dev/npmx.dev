@@ -546,7 +546,6 @@
       "view_all": "Vizualizează versiunea {count} | Vizualizează toate cele {count} versiuni",
       "view_all_versions": "Vizualizează toate versiunile",
       "distribution_title": "Grupul Semver",
-      "distribution_modal_title": "Versiuni",
       "distribution_range_date_same_year": "de la {from} până la {to}, {endYear}",
       "distribution_range_date_multiple_years": "de la {from}, {startYear} până la {to}, {endYear}",
       "grouping_major": "Majoră",

@@ -551,7 +551,6 @@
       "view_all": "{count} Version anzeigen | Alle {count} Versionen anzeigen",
       "view_all_versions": "Alle Versionen anzeigen",
       "distribution_title": "SemVer Gruppe",
-      "distribution_modal_title": "Versionen",
       "distribution_range_date_same_year": "von {from} bis {to} {endYear}",
       "distribution_range_date_multiple_years": "von {from} {startYear} bis {to} {endYear}",
       "grouping_major": "Major",

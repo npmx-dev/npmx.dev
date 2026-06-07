@@ -430,7 +430,6 @@
       "view_all": "Xem {count} phiên bản | Xem tất cả {count} phiên bản",
       "view_all_versions": "Xem tất cả phiên bản",
       "distribution_title": "Nhóm Semver",
-      "distribution_modal_title": "Phiên bản",
       "distribution_range_date_same_year": "từ {from} đến {to}, {endYear}",
       "distribution_range_date_multiple_years": "từ {from}, {startYear} đến {to}, {endYear}",
       "grouping_major": "Major",

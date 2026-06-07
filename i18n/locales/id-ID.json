@@ -430,7 +430,6 @@
       "view_all": "Lihat {count} versi | Lihat semua {count} versi",
       "view_all_versions": "Lihat semua versi",
       "distribution_title": "Grup Semver",
-      "distribution_modal_title": "Versi",
       "distribution_range_date_same_year": "dari {from} hingga {to}, {endYear}",
       "distribution_range_date_multiple_years": "dari {from}, {startYear} hingga {to}, {endYear}",
       "grouping_major": "Mayor",

@@ -1750,9 +1750,6 @@
             "distribution_title": {
               "type": "string"
             },
-            "distribution_modal_title": {
-              "type": "string"
-            },
             "distribution_range_date_same_year": {
               "type": "string"
             },

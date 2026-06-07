@@ -415,7 +415,6 @@
       "view_all": "{count} संस्करण देखें | सभी {count} संस्करण देखें",
       "view_all_versions": "सभी संस्करण देखें",
       "distribution_title": "Semver समूह",
-      "distribution_modal_title": "संस्करण",
       "distribution_range_date_same_year": "{from} से {to}, {endYear} तक",
       "distribution_range_date_multiple_years": "{from}, {startYear} से {to}, {endYear} तक",
       "grouping_major": "मेजर",

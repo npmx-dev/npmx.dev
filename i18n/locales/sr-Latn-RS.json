@@ -430,7 +430,6 @@
       "view_all": "Pogledajte {count} verziju | Pogledajte {count} verzije | Pogledajte svih {count} verzija",
       "view_all_versions": "Pogledajte sve verzije",
       "distribution_title": "Semver grupa",
-      "distribution_modal_title": "Verzije",
       "distribution_range_date_same_year": "od {from} do {to}, {endYear}",
       "distribution_range_date_multiple_years": "od {from}, {startYear} do {to}, {endYear}",
       "grouping_major": "Glavni",

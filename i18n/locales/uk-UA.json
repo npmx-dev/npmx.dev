@@ -546,7 +546,6 @@
       "view_all": "Переглянути {count} версію | Переглянути {count} версії | Переглянути {count} версій",
       "view_all_versions": "Переглянути всі версії",
       "distribution_title": "Група Semver",
-      "distribution_modal_title": "Версії",
       "distribution_range_date_same_year": "від {from} до {to}, {endYear}",
       "distribution_range_date_multiple_years": "від {from}, {startYear} до {to}, {endYear}",
       "grouping_major": "Основна",

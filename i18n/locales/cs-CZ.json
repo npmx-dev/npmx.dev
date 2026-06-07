@@ -528,7 +528,6 @@
       "view_all": "Zobrazit {count} verzi | Zobrazit {count} verze | Zobrazit {count} verzí",
       "view_all_versions": "Zobrazit všechny verze",
       "distribution_title": "Skupina Semver",
-      "distribution_modal_title": "Verze",
       "distribution_range_date_same_year": "od {from} do {to}, {endYear}",
       "distribution_range_date_multiple_years": "od {from}, {startYear} do {to}, {endYear}",
       "grouping_major": "Hlavní",

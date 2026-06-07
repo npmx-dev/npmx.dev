@@ -550,7 +550,6 @@
       "view_all": "Ver {count} versión | Ver las {count} versiones",
       "view_all_versions": "Ver todas las versiones",
       "distribution_title": "Grupo Semver",
-      "distribution_modal_title": "Versiones",
       "distribution_range_date_same_year": "de {from} a {to}, {endYear}",
       "distribution_range_date_multiple_years": "de {from}, {startYear} a {to}, {endYear}",
       "grouping_major": "Mayor",

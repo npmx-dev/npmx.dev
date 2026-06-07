@@ -304,7 +304,6 @@
       "deprecated_title": "{version} (مهمل)",
       "view_all": "عرض {count} إصدار | عرض إصدار واحدة | عرض إصدارين | عرض {count} إصدارات | عرض {count} إصدار | عرض {count} إصدار",
       "distribution_title": "مجموعة Semver",
-      "distribution_modal_title": "الإصدارات",
       "grouping_major": "رئيسي",
       "grouping_minor": "ثانوي",
       "recent_versions_only_tooltip": "إظهار الإصدارات المنشورة خلال السنة الماضية فقط.",

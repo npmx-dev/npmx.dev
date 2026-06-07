@@ -526,7 +526,6 @@
       "view_all": "檢視全部 {count} 個版本",
       "view_all_versions": "檢視全部版本",
       "distribution_title": "語義化版本群組",
-      "distribution_modal_title": "版本",
       "distribution_range_date_same_year": "從 {from} 至 {to}, {endYear}",
       "distribution_range_date_multiple_years": "從 {from}, {startYear} 至 {to}, {endYear}",
       "grouping_major": "主",

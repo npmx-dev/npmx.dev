@@ -546,7 +546,6 @@
       "view_all": "查看全部 {count} 个版本",
       "view_all_versions": "查看所有版本",
       "distribution_title": "语义化版本分组",
-      "distribution_modal_title": "版本",
       "distribution_range_date_same_year": "{endYear}年 {from} 至 {to}",
       "distribution_range_date_multiple_years": "{startYear}年 {from} 至 {endYear}年 {to}",
       "grouping_major": "主版本",

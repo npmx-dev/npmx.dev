@@ -387,7 +387,6 @@
       "deprecated_title": "{version} (köhnəlmiş)",
       "view_all": "{count} versiyanı göstər | Bütün {count} versiyanı göstər",
       "distribution_title": "Semver Qrupu",
-      "distribution_modal_title": "Versiyalar",
       "distribution_range_date_same_year": "{from}-dən {to}-yə, {endYear}",
       "distribution_range_date_multiple_years": "{from}, {startYear}-dən {to}, {endYear}-ə",
       "grouping_major": "Major",

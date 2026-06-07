@@ -350,7 +350,6 @@
       "deprecated_title": "{version} (elavult)",
       "view_all": "{count} verzió megtekintése | Az összes {count} verzió megtekintése",
       "distribution_title": "Semver csoport",
-      "distribution_modal_title": "Verziók",
       "distribution_range_date_same_year": "{from} -tól {to} -ig, {endYear}",
       "distribution_range_date_multiple_years": "{from} -tól, {startYear} -ben {to} -ig, {endYear}",
       "grouping_major": "Fő",

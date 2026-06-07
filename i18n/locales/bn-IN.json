@@ -550,7 +550,6 @@
       "view_all": "{count}টি ভার্সন দেখুন | সব {count}টি ভার্সন দেখুন",
       "view_all_versions": "সব ভার্সন দেখুন",
       "distribution_title": "Semver গ্রুপ",
-      "distribution_modal_title": "ভার্সনসমূহ",
       "distribution_range_date_same_year": "{from} থেকে {to}, {endYear}",
       "distribution_range_date_multiple_years": "{from}, {startYear} থেকে {to}, {endYear}",
       "grouping_major": "মেজর",

@@ -550,7 +550,6 @@
       "view_all": "{count} sürümü göster | Tüm {count} sürümü göster",
       "view_all_versions": "Tüm sürümleri görüntüle",
       "distribution_title": "Semver Grubu",
-      "distribution_modal_title": "Sürümler",
       "distribution_range_date_same_year": "{from}'den {to}'ya, {endYear}",
       "distribution_range_date_multiple_years": "{from}, {startYear}'den {to}, {endYear}'e",
       "grouping_major": "Major",
