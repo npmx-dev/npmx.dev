@@ -1,7 +1,6 @@
 /**
  * Utility to be used in vue-data-ui line charts (`VueUiXy`) using the `#svg` slot to display the last value as data label.
- * In case of mutliple series, if label collisions are detected, labels are distributed as close as possible to their related datapoint, and shifted to avoid overlaps.
- * and linked to the last datapoint with an elbowed marker
+ * In case of mutliple series, if label collisions are detected, labels are distributed as close as possible to their related datapoint,  shifted to avoid overlaps, and linked to the last datapoint with an elbowed marker
  */
 export function createLastDatapointLabelsSvg({
   series,
