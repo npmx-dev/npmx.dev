@@ -208,15 +208,21 @@ const {
 
 const repoRefsByPackage = shallowRef<Record<string, RepoRef | null>>({})
 const repoRefsRequestToken = shallowRef(0)
+const repoRefsPending = shallowRef(false)
 
 watch(
   () => effectivePackageNames.value,
   async names => {
     if (!import.meta.client) return
     const currentToken = ++repoRefsRequestToken.value
-    const refs = await fetchRepoRefsForPackages(names)
-    if (currentToken !== repoRefsRequestToken.value) return
-    repoRefsByPackage.value = refs
+    repoRefsPending.value = true
+    try {
+      const refs = await fetchRepoRefsForPackages(names)
+      if (currentToken !== repoRefsRequestToken.value) return
+      repoRefsByPackage.value = refs
+    } finally {
+      if (currentToken === repoRefsRequestToken.value) repoRefsPending.value = false
+    }
   },
   { immediate: true },
 )
@@ -679,6 +685,10 @@ async function loadMetric(metricId: MetricId) {
   const currentToken = ++state.requestToken
   state.pending = true
 
+  if (metricId === 'contributors' && repoRefsPending.value) {
+    return
+  }
+
   const fetchFn = (context: MetricContext) => metric.fetch(context, options.value)
 
   try {
@@ -803,7 +813,6 @@ watch(
   () => {
     if (!import.meta.client) return
     if (!isMounted.value) return
-    if (!isMultiPackageMode.value) return
     if (selectedMetric.value !== 'contributors') return
     debouncedLoadNow()
   },

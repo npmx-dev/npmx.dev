@@ -62,6 +62,7 @@ const props = withDefaults(defineProps<SelectFieldProps>(), {
           v-for="item in items"
           :key="item.value"
           :value="item.value"
+          :selected="item.value === model"
           :disabled="item.disabled"
         >
           {{ item.label }}
