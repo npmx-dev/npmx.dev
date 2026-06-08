@@ -32,6 +32,7 @@ const {
 } = await useResolvedVersion(packageName, requestedVersion)
 
 const { data: pkg } = usePackage(packageName, () => version.value ?? requestedVersion.value ?? null)
+const changelogVersion = computed(() => version.value ?? requestedVersion.value ?? null)
 
 const versionUrlPattern = computed(() => {
   return `/package-changelog/${packageName.value}/v/{version}`
@@ -45,7 +46,10 @@ const latestVersion = computed(() => {
 })
 
 // getting info
-const { data: changelog, error: changelogError } = usePackageChangelog(packageName, version)
+const { data: changelog, error: changelogError } = usePackageChangelog(
+  packageName,
+  changelogVersion,
+)
 
 const repoProviderIcon = useProviderIcon(() => changelog.value?.provider)
 const tptoc = useTemplateRef('tptoc')
@@ -195,6 +199,8 @@ defineOgImage(
       </p>
       <p class="mt-5" v-else>
         {{ $t('changelog.no_logs') }}
+        {{ version ? ` ${version} ` : '' }}
+        {{ changelogError }}
       </p>
     </section>
   </main>

@@ -4,10 +4,19 @@ export function usePackageChangelog(
   packageName: MaybeRefOrGetter<string | null | undefined>,
   version?: MaybeRefOrGetter<string | null | undefined>,
 ) {
-  return useLazyFetch<ChangelogInfo | null>(() => {
-    const name = toValue(packageName)
-    if (!name) return 'data:application/json,null' // returns null
-    const ver = toValue(version)
-    return `/api/changelog/info/${name}/v/${ver || 'latest'}`
-  })
+  const name = computed(() => toValue(packageName)?.trim() || '')
+  const ver = computed(() => toValue(version) || 'latest')
+
+  return useLazyAsyncData<ChangelogInfo | null>(
+    () => `package-changelog:${name.value}:${ver.value}`,
+    async (_, { signal }) => {
+      if (!name.value) {
+        return null
+      }
+      return $fetch<ChangelogInfo | null>(`/api/changelog/info/${name.value}/v/${ver.value}`, {
+        signal,
+      })
+    },
+    { default: () => null, watch: [name, ver] },
+  )
 }
