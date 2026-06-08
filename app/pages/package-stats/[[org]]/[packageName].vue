@@ -133,6 +133,7 @@ useSeoMeta({
             :version="version"
             show-facet-selector
             default-range="52-weeks"
+            permalink
           />
         </section>
         <section id="distribution" class="mt-12">
