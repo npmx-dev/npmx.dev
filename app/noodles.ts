@@ -9,6 +9,39 @@ const GRAPHIEROS = { name: 'Graphieros', blueskyHandle: 'graphieros.npmx.social'
 
 const entries: Noodle[] = [
   {
+    key: 'tetris',
+    title: 'World Tetris Day',
+    slug: 'tetris',
+    date: '2026-06-06',
+    dateTo: '2026-06-08',
+    timezone: 'auto',
+    tagline: false,
+    occasion:
+      'The legendary console turns 42. Yes, you matched the blocks correctly — but polyominoes are cool too!',
+    prUrl: 'https://github.com/npmx-dev/npmx.dev/pull/2855',
+    authors: [ALEX],
+    posterImage: '/extra/tetris.svg',
+    references: [
+      {
+        label: 'Tetris (1984)',
+        url: 'https://en.wikipedia.org/wiki/Tetris',
+      },
+    ],
+  },
+  {
+    key: 'pride-1',
+    title: 'Pride Month',
+    slug: 'pride',
+    date: '2026-06-01',
+    dateTo: '2026-07-01',
+    timezone: 'auto',
+    occasion: 'We stand together. Always, everywhere, for all of us. Happy Pride Month! 🏳️‍🌈',
+    prUrl: 'https://github.com/npmx-dev/npmx.dev/pull/2826',
+    authors: [ALEX],
+    posterImage: '/extra/pride-1.svg',
+    variants: ['/extra/pride-2.svg', '/extra/pride-3.png'],
+  },
+  {
     key: 'press',
     title: 'Press Freedom Day',
     slug: 'press',

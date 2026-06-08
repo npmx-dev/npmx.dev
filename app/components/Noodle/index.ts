@@ -75,6 +75,8 @@ const NOODLE_LOGOS: Record<string, Component> = {
   'transgender-visibility-day': NoodleTransgenderVisibilityLogo,
   'artemis': NoodleArtemisLogo,
   'nodejs': NoodleNodejsLogo,
+  'pride-1': NoodlePride1Logo,
+  'tetris': NoodleTetrisLogo,
 }
 
 export function resolveNoodleLogo(key: string): Component | undefined {
