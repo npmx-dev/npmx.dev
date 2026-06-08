@@ -2,6 +2,7 @@
 definePageMeta({
   name: 'stats',
   path: '/package-stats/:org?/:packageName/v/:version',
+  preserveScrollOnQuery: true,
 })
 
 const { locale } = useI18n()
