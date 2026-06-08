@@ -213,10 +213,6 @@ watch(
   () => effectivePackageNames.value,
   async names => {
     if (!import.meta.client) return
-    if (!isMultiPackageMode.value) {
-      repoRefsByPackage.value = {}
-      return
-    }
     const currentToken = ++repoRefsRequestToken.value
     const refs = await fetchRepoRefsForPackages(names)
     if (currentToken !== repoRefsRequestToken.value) return
@@ -495,14 +491,6 @@ type MetricDef = {
   supportsMulti?: boolean
 }
 
-const hasContributorsFacet = computed(() => {
-  if (isMultiPackageMode.value) {
-    return Object.values(repoRefsByPackage.value).some(ref => ref?.provider === 'github')
-  }
-  const ref = props.repoRef
-  return ref?.provider === 'github' && ref.owner && ref.repo
-})
-
 const METRICS = computed<MetricDef[]>(() => {
   const metrics: MetricDef[] = [
     {
@@ -522,16 +510,13 @@ const METRICS = computed<MetricDef[]>(() => {
       fetch: ({ packageName }, opts) => fetchPackageLikesEvolution(packageName, opts),
       supportsMulti: true,
     },
-  ]
-
-  if (hasContributorsFacet.value) {
-    metrics.push({
+    {
       id: 'contributors',
       label: $t('package.trends.items.contributors'),
       fetch: ({ repoRef }, opts) => fetchRepoContributorsEvolution(repoRef, opts),
       supportsMulti: true,
-    })
-  }
+    },
+  ]
 
   return metrics
 })
@@ -756,7 +741,10 @@ async function loadMetric(metricId: MetricId) {
       }
     }
 
-    const result = await fetchFn({ packageName: pkg, repoRef: props.repoRef })
+    const result = await fetchFn({
+      packageName: pkg,
+      repoRef: props.repoRef || repoRefsByPackage.value[pkg],
+    })
     if (currentToken !== state.requestToken) return
 
     state.evolution = (result ?? []) as EvolutionData

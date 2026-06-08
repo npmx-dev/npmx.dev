@@ -141,7 +141,7 @@ useSeoMeta({
           <PackageVersionDistribution class="font-mono" :package-name="packageName" />
         </section>
       </div>
-      <PackageSidebar>
+      <PackageSidebar class="w-80">
         <div class="flex flex-col gap-4 sm:gap-6 lg:pt-4">
           <PackageMaintainers :package-name="packageName" :maintainers="pkg?.maintainers" />
           <PackageVersions
