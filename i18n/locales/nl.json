@@ -401,7 +401,7 @@
       "native": "Dit kan vervangen worden door {replacement}, Beschikbaar sinds node {nodeVersion}.",
       "native_no_version": "Dit pakket kan vervangen worden door {replacement}.",
       "simple": "Dit pakket is als overbodig gemarkeerd, met het advies: {replacement}.",
-      "documented": "Dit pakket is gemarkeerd als pakket met beter presterende alternatieven.",
+      "documented": "Dit pakket is gemarkeerd omdat er beter presterende alternatieven beschikbaar.",
       "none": "Dit pakket is gemarkeerd als overbodig en de functionaliteit ervan is waarschijnlijk standaard beschikbaar in alle omgevingen.",
       "learn_more": "Leer meer",
       "learn_more_above": "Lees hierboven meer.",
