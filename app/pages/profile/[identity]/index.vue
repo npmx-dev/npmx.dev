@@ -84,6 +84,7 @@ const allLikesRecords = ref<Array<{ value: { subjectRef: string } }>>([])
 const likesCursor = shallowRef<string | null>(null)
 const likesLoadingMore = shallowRef(false)
 const likesError = shallowRef(false)
+const likesLoaded = shallowRef(false)
 
 async function loadInitialLikes() {
   try {
@@ -91,8 +92,10 @@ async function loadInitialLikes() {
     allLikesRecords.value = result.records
     likesCursor.value = result.cursor
     likesError.value = false
+    likesLoaded.value = true
   } catch {
     likesError.value = true
+    likesLoaded.value = true
   }
 }
 
@@ -112,7 +115,7 @@ async function loadMoreLikes() {
 
 const hasMoreLikes = computed(() => likesCursor.value !== null)
 const isLoadingInitialLikes = computed(
-  () => allLikesRecords.value.length === 0 && !likesError.value,
+  () => allLikesRecords.value.length === 0 && !likesError.value && !likesLoaded.value,
 )
 
 onMounted(() => {
@@ -321,7 +324,11 @@ defineOgImage(
         <p>{{ $t('common.error') }}</p>
       </div>
       <div v-else-if="allLikesRecords.length > 0" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <PackageLikeCard v-for="like in allLikesRecords" :packageUrl="like.value.subjectRef" />
+        <PackageLikeCard
+          v-for="like in allLikesRecords"
+          :key="like.value.subjectRef"
+          :packageUrl="like.value.subjectRef"
+        />
       </div>
 
       <!-- Loading more indicator for infinite scroll -->

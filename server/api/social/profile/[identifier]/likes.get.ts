@@ -1,3 +1,4 @@
+import { getQuery, getRouterParam } from 'h3'
 import { IdentityUtils } from '#server/utils/atproto/utils/identity'
 
 export default defineEventHandler(async event => {
@@ -10,13 +11,13 @@ export default defineEventHandler(async event => {
   }
 
   const query = getQuery(event)
-  const cursor = typeof query.cursor === 'string' ? query.cursor : undefined
-  const limit =
-    typeof query.limit === 'string' ? Math.min(Math.max(Number(query.limit), 1), 100) : 20
+  const cursor = query.cursor as string | undefined
+  const parsedLimit = typeof query.limit === 'string' ? Number(query.limit) : NaN
+  const limit = Number.isNaN(parsedLimit) ? 20 : Math.min(Math.max(parsedLimit, 1), 100)
 
   const utils = new IdentityUtils()
   const minidoc = await utils.getMiniDoc(identifier)
   const likesUtil = new PackageLikesUtils()
 
-  return likesUtil.getUserLikes(minidoc, limit, cursor)
+  return likesUtil.getUserLikes(minidoc, limit, cursor ?? undefined)
 })
