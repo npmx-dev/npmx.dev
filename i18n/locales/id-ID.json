@@ -286,8 +286,6 @@
     "replacement": {
       "title": "Mungkin Anda tidak butuh dependensi ini.",
       "native": "Paket ini dapat diganti dengan {replacement}, tersedia sejak Node {nodeVersion}.",
-      "simple": "Paket ini ditandai sebagai redundan, dengan saran: {replacement}.",
-      "documented": "Paket ini ditandai memiliki alternatif yang lebih berperforma.",
       "none": "Paket ini ditandai sudah tidak diperlukan, fungsinya kemungkinan sudah tersedia secara bawaan (native).",
       "learn_more": "Pelajari lebih lanjut",
       "learn_more_above": "Pelajari selengkapnya di atas.",

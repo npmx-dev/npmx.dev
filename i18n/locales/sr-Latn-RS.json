@@ -286,8 +286,6 @@
     "replacement": {
       "title": "Možda vam ova zavisnost ne treba.",
       "native": "Ovo se može zameniti sa {replacement}, dostupno od Node verzije {nodeVersion}.",
-      "simple": "Ovaj paket je označen kao suvišan, sa savetom: {replacement}.",
-      "documented": "Ovaj paket je označen kao onaj koji ima performantnije alternative.",
       "none": "Ovaj paket je označen kao nepotreban, a njegova funkcionalnost je verovatno dostupna izvorno u svim okruženjima.",
       "learn_more": "Saznajte više",
       "learn_more_above": "Saznajte više iznad.",

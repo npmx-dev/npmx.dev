@@ -219,8 +219,6 @@
     "replacement": {
       "title": "Lehet, hogy nincs szükséged erre a függőségre.",
       "native": "Ez helyettesíthető a következővel: {replacement}, amely elérhető a Node {nodeVersion} verzió óta.",
-      "simple": "Ez a csomag feleslegesként lett megjelölve, az alábbi javaslattal: {replacement}.",
-      "documented": "Ez a csomag jobb teljesítményű alternatívákkal rendelkezőként lett megjelölve.",
       "none": "Ez a csomag feleslegesnek lett jelölve, a funkció valószínűleg natívan elérhető.",
       "learn_more": "Tudj meg többet",
       "learn_more_above": "Tudj meg többet fentebb.",

@@ -384,8 +384,6 @@
     "replacement": {
       "title": "Možná tuto závislost nepotřebujete.",
       "native": "Tento balíček lze nahradit {replacement}, dostupné od Node {nodeVersion}.",
-      "simple": "Tento balíček byl označen jako zbytečný s doporučením: {replacement}.",
-      "documented": "Tento balíček byl označen jako balíček s výkonnějšími alternativami.",
       "none": "Tento balíček byl označen jako již nepotřebný a jeho funkčnost je pravděpodobně dostupná nativně ve všech enginech.",
       "learn_more": "Zjistit více",
       "learn_more_above": "Zjistit více výše.",

@@ -400,8 +400,6 @@
       "example": "Beispiel:",
       "native": "Dies kann seit Node {nodeVersion} durch {replacement} ersetzt werden.",
       "native_no_version": "Dieses Paket kann durch {replacement} ersetzt werden.",
-      "simple": "Dieses Paket wurde als überflüssig markiert, mit der Empfehlung: {replacement}.",
-      "documented": "Dieses Paket wurde als Paket mit leistungsstärkeren Alternativen markiert.",
       "none": "Dieses Paket wurde als nicht mehr nötig markiert, und seine Funktionalität ist wahrscheinlich in allen Engines nativ verfügbar.",
       "learn_more": "Mehr erfahren",
       "learn_more_above": "Erfahre oben mehr.",

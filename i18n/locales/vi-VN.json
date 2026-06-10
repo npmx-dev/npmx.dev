@@ -286,8 +286,6 @@
     "replacement": {
       "title": "Bạn có thể không cần dependency này.",
       "native": "Có thể thay thế bằng {replacement}, có sẵn từ Node {nodeVersion}.",
-      "simple": "Gói này đã được đánh dấu là dư thừa, với gợi ý: {replacement}.",
-      "documented": "Gói này đã được đánh dấu là có các lựa chọn thay thế hiệu năng tốt hơn.",
       "none": "Gói này đã được đánh dấu là không còn cần thiết, chức năng của nó có thể đã có sẵn sẵn trong các engine.",
       "learn_more": "Tìm hiểu thêm",
       "learn_more_above": "Tìm hiểu thêm ở trên.",

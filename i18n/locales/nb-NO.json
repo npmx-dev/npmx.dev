@@ -397,8 +397,6 @@
       "example": "Eksempel:",
       "native": "Denne kan erstattes med {replacement}, tilgjengelig siden Node {nodeVersion}.",
       "native_no_version": "Denne pakken kan erstattes med {replacement}.",
-      "simple": "Denne pakken har blitt flagget som overflødig, med rådet: {replacement}.",
-      "documented": "Denne pakken har blitt flagget som en pakke med alternativer med bedre ytelse.",
       "none": "Denne pakken er flagget som ikke lenger nødvendig, og funksjonaliteten er sannsynligvis tilgjengelig innebygd i alle motorer.",
       "learn_more": "Lær mer",
       "learn_more_above": "Lær mer ovenfor.",

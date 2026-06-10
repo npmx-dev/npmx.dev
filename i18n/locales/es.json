@@ -400,8 +400,6 @@
       "example": "Ejemplo:",
       "native": "Esto se puede reemplazar con {replacement}, disponible desde Node {nodeVersion}.",
       "native_no_version": "Este paquete se puede reemplazar con {replacement}.",
-      "simple": "Este paquete se ha marcado como redundante, con el siguiente consejo: {replacement}.",
-      "documented": "Este paquete se ha marcado como que tiene alternativas con mejor rendimiento.",
       "none": "Este paquete se ha marcado como ya no necesario y es probable que su funcionalidad esté disponible de forma nativa en todos los motores.",
       "learn_more": "Más información",
       "learn_more_above": "Más información arriba.",

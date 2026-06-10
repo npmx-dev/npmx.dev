@@ -389,8 +389,6 @@
     "replacement": {
       "title": "Vous n'avez peut-être pas besoin de cette dépendance.",
       "native": "Ceci peut être remplacé par {replacement}, disponible depuis Node {nodeVersion}.",
-      "simple": "Ce paquet a été signalé comme redondant, avec ce conseil : {replacement}.",
-      "documented": "Ce paquet a été signalé comme ayant des alternatives plus performantes.",
       "none": "Ce paquet a été signalé comme n'étant plus nécessaire, et sa fonctionnalité est probablement disponible nativement dans tous les moteurs.",
       "learn_more": "En savoir plus",
       "learn_more_above": "En savoir plus ci-dessus.",

@@ -266,8 +266,6 @@
     "replacement": {
       "title": "Możliwe, że nie potrzebujesz tej zależności.",
       "native": "Można to zastąpić {replacement}, dostępne od Node {nodeVersion}.",
-      "simple": "Ten pakiet został oznaczony jako zbędny, z sugestią: {replacement}.",
-      "documented": "Ten pakiet został oznaczony jako mający wydajniejsze alternatywy.",
       "none": "Ten pakiet został oznaczony jako zbędny, a jego funkcjonalność jest prawdopodobnie dostępna natywnie we wszystkich środowiskach.",
       "learn_more": "Dowiedz się więcej",
       "learn_more_above": "Dowiedz się więcej powyżej",

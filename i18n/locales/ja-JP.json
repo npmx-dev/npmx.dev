@@ -400,8 +400,6 @@
       "example": "例:",
       "native": "これは Node {nodeVersion} 以降で利用可能な {replacement} で置き換え可能です。",
       "native_no_version": "このパッケージは {replacement} で置き換え可能です。",
-      "simple": "このパッケージは冗長としてフラグが立てられています。推奨: {replacement}",
-      "documented": "このパッケージにはよりパフォーマンスの高い代替手段があると報告されています。",
       "none": "このパッケージは不要になったとフラグが立てられています。その機能はすべてのエンジンでネイティブに利用できる可能性があります。",
       "learn_more": "詳細はこちら",
       "learn_more_above": "詳細は上記を確認してください。",

@@ -400,8 +400,6 @@
       "example": "Örnek:",
       "native": "Bu, Node {nodeVersion}'dan beri mevcut olan {replacement} ile değiştirilebilir.",
       "native_no_version": "Bu paket {replacement} ile değiştirilebilir.",
-      "simple": "Bu paket artık gereksiz olarak işaretlendi, öneri: {replacement}.",
-      "documented": "Bu paketin daha performanslı alternatifleri olduğu belirtildi.",
       "none": "Bu paket artık gereksiz olarak işaretlendi ve işlevselliği tüm motorlarda yerel olarak mevcuttur.",
       "learn_more": "Daha fazla bilgi",
       "learn_more_above": "Yukarıda daha fazla bilgi edinin.",
