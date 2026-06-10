@@ -68,6 +68,7 @@ This focus helps guide our project decisions as a community and what we choose t
   - [Configuration](#configuration)
   - [Global app settings](#global-app-settings)
   - [Known limitations](#known-limitations)
+- [Adding a noodle](#adding-a-noodle)
 - [Submitting changes](#submitting-changes)
   - [Before submitting](#before-submitting)
   - [Pull request process](#pull-request-process)
@@ -1044,6 +1045,116 @@ Global application settings are added to the Storybook toolbar for easy testing 
 - `autodocs` currently is non-functional due bugs, its usage is discouraged at this time.
 - `pnpm storybook` may log warnings or non-breaking errors for Nuxt modules due to the lack of mocks. If the UI renders correctly, these can be safely ignored.
 - Do not `import type` from `.vue` files. The `vue-docgen-api` parser used by `@storybook/addon-docs` cannot follow type imports across SFCs and will crash. Extract shared types into a separate `.ts` file instead.
+
+## Adding a noodle
+
+"Noodles" are the occasional themed npmx logos that celebrate a day or event (Pride Month, World Tetris Day, the Node.js birthday, …). A noodle has two homes:
+
+- the **homepage**, where it temporarily replaces the logo while it is active, and
+- the **`/noodles` archive**, where every past noodle lives on permanently with its own detail page.
+
+The two are wired up independently, so shipping a noodle to the homepage **and** the archive in the same PR keeps things in sync. Do both at once.
+
+### 1. Add the logo component
+
+Create `app/components/Noodle/<Name>/Logo.vue`.
+It's recommended to add a tooltip with event information to each noodle. If the poster is an image, add it to the `public/extra` directory. If the image differs between light and dark modes - prefer `ColorSchemeImg` component for poster
+
+```vue
+<template>
+  <TooltipApp interactive position="top">
+    <template #content>
+      <p class="text-sm font-medium text-fg mb-1"><strong>World Tetris Day</strong></p>
+    </template>
+    <img
+      width="400"
+      class="w-80 sm:w-140 max-w-full mx-auto"
+      src="/extra/tetris.svg"
+      :alt="$t('alt_logo')"
+    />
+  </TooltipApp>
+</template>
+```
+
+### 2. Register the logo and show it on the homepage
+
+In `app/components/Noodle/index.ts`:
+
+- import the component, and
+- add it to the homepage rotation — `ACTIVE_NOODLES` for a date-bound noodle, or `PERMANENT_NOODLES` for one shown only behind a query param (e.g. `?kawaii`), and
+- register it in the `NOODLE_LOGOS` map so the archive can resolve it by `key`.
+
+```ts
+import NoodleTetrisLogo from './Tetris/Logo.vue'
+
+export const ACTIVE_NOODLES: Noodle[] = [
+  {
+    key: 'tetris',
+    logo: NoodleTetrisLogo,
+    date: '2026-06-06',
+    dateTo: '2026-06-08',
+    timezone: 'auto', // visitor's local time; or an IANA name like 'America/Los_Angeles'
+    tagline: false, // hide the npmx tagline while active
+  },
+]
+
+const NOODLE_LOGOS: Record<string, Component> = {
+  // …
+  tetris: NoodleTetrisLogo,
+}
+```
+
+> [!IMPORTANT]
+> The `date` and `dateTo` keys are inclusive, meaning they specify the start (at 00:00) and end (at 23:59) dates. If the dates overlap, a noodle will be randomly selected on each visit.
+
+> [!IMPORTANT]
+> The `key` here must exactly match the `key` of the archive entry you add in the next step — that is how the archive looks up the logo.
+
+### 3. Add the archive entry
+
+Append an entry to `app/noodles.ts`. Only `key`, `title`, `slug`, and `date` are required; every other field is optional, and the detail page renders a section only for the fields you fill in. The list is sorted by date automatically.
+
+```ts
+{
+  key: 'tetris',
+  title: 'World Tetris Day',
+  slug: 'tetris', // becomes /noodles/tetris — must be unique
+  date: '2026-06-06',
+  dateTo: '2026-06-08',
+  timezone: 'auto',
+  tagline: false,
+  occasion: 'The legendary console turns 42. …',
+  prUrl: 'https://github.com/npmx-dev/npmx.dev/pull/2855',
+  authors: [ALEX], // reuse the author consts at the top of the file
+  posterImage: '/extra/tetris.svg', // OG-image hero
+  references: [{ label: 'Tetris (1984)', url: 'https://en.wikipedia.org/wiki/Tetris' }],
+},
+```
+
+Authors link out to Bluesky via their `blueskyHandle`. Reuse an existing author const (`ALEX`, `ALFON`, …) or add a new one at the top of the file.
+
+#### Grouping a series with `variants`
+
+When a single occasion ships as several rotating designs (Pride Month, for example, cycles through three logos), add **one** archive entry rather than one per design. Point `posterImage` at the lead artwork and list the others in `variants` — the detail page's lens carousel shows the registered logo first, then each variant image:
+
+```ts
+{
+  key: 'pride-1', // matches the registered NOODLE_LOGOS key (renders first in the lens)
+  title: 'Pride Month',
+  slug: 'pride',
+  // …
+  posterImage: '/extra/pride-1.svg',
+  variants: ['/extra/pride-2.svg', '/extra/pride-3.png'],
+},
+```
+
+### 4. Verify
+
+```bash
+pnpm test:types
+```
+
+Then run `pnpm dev` and confirm the card appears at `/noodles` and its detail page renders at `/noodles/<slug>`. Archive routes are prerendered by crawling links from the index page, so no route list needs editing.
 
 ## Submitting changes
 

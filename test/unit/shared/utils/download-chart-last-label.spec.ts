@@ -16,6 +16,7 @@ describe('createLastDatapointLabelsSvg', () => {
       formatValue: value => String(value),
       isDarkMode: false,
     })
+
     expect(result).toBe('')
   })
 
@@ -42,6 +43,7 @@ describe('createLastDatapointLabelsSvg', () => {
       formatValue: value => `${value}`,
       isDarkMode: false,
     })
+
     expect(result).toContain('<text')
     expect(result).not.toContain('<path')
     expect(result).toContain('x="124"')
@@ -61,6 +63,7 @@ describe('createLastDatapointLabelsSvg', () => {
       fontSize: 12,
       labelOffset: 10,
     })
+
     expect(result).toContain('x="20"')
     expect(result).toContain('font-size="12"')
     expect(result).toContain('fill="#000000"')
@@ -69,6 +72,7 @@ describe('createLastDatapointLabelsSvg', () => {
 
   it('uses only the last plot of each serie', () => {
     const formatValue = vi.fn((value: number) => `${value}`)
+
     const result = createLastDatapointLabelsSvg({
       series: [
         {
@@ -84,6 +88,7 @@ describe('createLastDatapointLabelsSvg', () => {
       formatValue,
       isDarkMode: false,
     })
+
     expect(formatValue).toHaveBeenCalledTimes(1)
     expect(formatValue).toHaveBeenCalledWith(99)
     expect(result).toContain('x="74"')
@@ -93,6 +98,7 @@ describe('createLastDatapointLabelsSvg', () => {
 
   it('formats safe numeric values and falls back to zero for invalid values', () => {
     const formatValue = vi.fn((value: number) => `value:${value}`)
+
     const result = createLastDatapointLabelsSvg({
       series: [{ plots: [{ x: 10, y: 20, value: Number.NaN }] }],
       drawingArea: { top: 0, height: 100 },
@@ -100,11 +106,12 @@ describe('createLastDatapointLabelsSvg', () => {
       formatValue,
       isDarkMode: false,
     })
+
     expect(formatValue).toHaveBeenCalledWith(0)
     expect(result).toContain('value:0')
   })
 
-  it('renders collision labels as a vertically distributed label rack', () => {
+  it('renders collision labels as a compact non-overlapping label rack', () => {
     const result = createLastDatapointLabelsSvg({
       series: [
         { color: '#FF0000', plots: [{ x: 100, y: 50, value: 10 }] },
@@ -116,16 +123,17 @@ describe('createLastDatapointLabelsSvg', () => {
       formatValue: value => `value-${value}`,
       isDarkMode: false,
     })
+
     expect(result).toContain('<path')
     expect(result).toContain('opacity="1"')
     expect(result).toContain('stroke="#00FF00"')
     expect(result).toContain('stroke="#0000FF"')
     expect(result).toContain('stroke="#FF0000"')
+    expect(result.indexOf('value-10')).toBeLessThan(result.indexOf('value-30'))
     expect(result.indexOf('value-30')).toBeLessThan(result.indexOf('value-20'))
-    expect(result.indexOf('value-20')).toBeLessThan(result.indexOf('value-10'))
-    expect(result).toContain('y="25"')
-    expect(result).toContain('y="70"')
-    expect(result).toContain('y="115"')
+    expect(result).toContain('y="50"')
+    expect(result).toContain('y="80"')
+    expect(result).toContain('y="110"')
   })
 
   it('uses drawingArea.bottom when height is not provided', () => {
@@ -139,22 +147,44 @@ describe('createLastDatapointLabelsSvg', () => {
       formatValue: value => `${value}`,
       isDarkMode: false,
     })
-    expect(result).toContain('y="35"')
-    expect(result).toContain('y="105"')
+
+    expect(result).toContain('y="50"')
+    expect(result).toContain('y="80"')
   })
 
-  it('centers the collision label when only one label is rendered in rack mode', () => {
+  it('keeps colliding labels close to their related points without overlapping', () => {
     const result = createLastDatapointLabelsSvg({
       series: [
-        { color: '#FF0000', plots: [{ x: 100, y: 50, value: 10 }] },
-        { color: '#00FF00', plots: [{ x: 100, y: 50, value: 20 }] },
+        { color: '#FF0000', plots: [{ x: 100, y: 40, value: 10 }] },
+        { color: '#00FF00', plots: [{ x: 100, y: 45, value: 20 }] },
+        { color: '#0000FF', plots: [{ x: 100, y: 95, value: 30 }] },
       ],
-      drawingArea: { top: 20, height: 100 },
+      drawingArea: { top: 0, height: 120 },
       colors,
       formatValue: value => `${value}`,
       isDarkMode: false,
     })
-    expect(result).toContain('y="35"')
+
+    expect(result).toContain('y="40"')
+    expect(result).toContain('y="70"')
+    expect(result).toContain('y="100"')
+  })
+
+  it('shifts the label stack upward when it overflows the drawing area bottom', () => {
+    const result = createLastDatapointLabelsSvg({
+      series: [
+        { color: '#FF0000', plots: [{ x: 100, y: 80, value: 10 }] },
+        { color: '#00FF00', plots: [{ x: 100, y: 85, value: 20 }] },
+        { color: '#0000FF', plots: [{ x: 100, y: 90, value: 30 }] },
+      ],
+      drawingArea: { top: 0, height: 120 },
+      colors,
+      formatValue: value => `${value}`,
+      isDarkMode: false,
+    })
+
+    expect(result).toContain('y="45"')
+    expect(result).toContain('y="75"')
     expect(result).toContain('y="105"')
   })
 
@@ -208,6 +238,7 @@ describe('createLastDatapointLabelsSvg', () => {
       formatValue: value => `value-${value}`,
       isDarkMode: false,
     })
+
     expect(result).toContain('x="24"')
     expect(result).toContain('y="0"')
     expect(result).toContain('value-0')
@@ -224,7 +255,8 @@ describe('createLastDatapointLabelsSvg', () => {
       formatValue: value => `${value}`,
       isDarkMode: false,
     })
-    expect(result).toContain('y="35"')
+
+    expect(result).toContain('y="-45"')
     expect(result).toContain('y="-15"')
   })
 
@@ -236,6 +268,7 @@ describe('createLastDatapointLabelsSvg', () => {
       formatValue: value => `${value}`,
       isDarkMode: false,
     })
+
     expect(result).toContain('<text')
     expect(result).not.toContain('<path')
     expect(result).toContain('x="124"')
@@ -254,7 +287,8 @@ describe('createLastDatapointLabelsSvg', () => {
       isDarkMode: false,
       labelHeight: 20,
     })
-    expect(result).toContain('y="20"')
-    expect(result).toContain('y="110"')
+
+    expect(result).toContain('y="50"')
+    expect(result).toContain('y="70"')
   })
 })

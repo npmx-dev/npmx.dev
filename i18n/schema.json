@@ -144,6 +144,9 @@
         },
         "open_timeline": {
           "type": "string"
+        },
+        "open_stats": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -467,6 +470,9 @@
               "type": "string"
             },
             "changelog": {
+              "type": "string"
+            },
+            "stats": {
               "type": "string"
             }
           },
@@ -1338,6 +1344,15 @@
                 }
               },
               "additionalProperties": false
+            },
+            "main_information": {
+              "type": "string"
+            },
+            "trends": {
+              "type": "string"
+            },
+            "version_distribution": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1427,6 +1442,9 @@
               "type": "string"
             },
             "timeline": {
+              "type": "string"
+            },
+            "stats": {
               "type": "string"
             },
             "compare_this_package": {
@@ -1727,9 +1745,6 @@
               "type": "string"
             },
             "distribution_title": {
-              "type": "string"
-            },
-            "distribution_modal_title": {
               "type": "string"
             },
             "distribution_range_date_same_year": {

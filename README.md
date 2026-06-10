@@ -44,7 +44,7 @@ What npmx offers:
 - **Dark mode and light mode** &ndash; plus customize the color palette to your preferences
 - **Translated interface** &ndash; localized UI across 39+ locales, including RTL support
 - **First-class accessibility** &ndash; accessible components, keyboard workflows, and automated axe/Lighthouse checks
-- **URL-driven feature views** &ndash; share exact package versions, search results, compare sets, source files and lines, diffs, docs, changelogs, and timelines
+- **URL-driven feature views** &ndash; share exact package versions, search results, compare sets, source files and lines, diffs, docs, changelogs, stats and timelines
 - **Fast search** &ndash; quick package search with instant results
 - **Package details** &ndash; READMEs, versions, dependencies, and metadata
 - **Code viewer** &ndash; browse package source code with syntax highlighting and permalink to specific lines

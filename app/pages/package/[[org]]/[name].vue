@@ -964,7 +964,8 @@ const showSkeleton = shallowRef(false)
 
             <!-- Download stats -->
             <PackageWeeklyDownloadStats
-              :packageName
+              :packageName="pkg.name"
+              :version="resolvedVersion"
               :createdIso="pkg?.time?.created ?? null"
               :repoRef="repoRef"
             />

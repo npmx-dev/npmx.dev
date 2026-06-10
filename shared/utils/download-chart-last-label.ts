@@ -1,7 +1,6 @@
 /**
  * Utility to be used in vue-data-ui line charts (`VueUiXy`) using the `#svg` slot to display the last value as data label.
- * In case of mutliple series, if label collisions are detected, labels are evenly distributed vertically,
- * and linked to the last datapoint with an elbowed marker
+ * In case of mutliple series, if label collisions are detected, labels are distributed as close as possible to their related datapoint,  shifted to avoid overlaps, and linked to the last datapoint with an elbowed marker
  */
 export function createLastDatapointLabelsSvg({
   series,
@@ -91,23 +90,46 @@ export function createLastDatapointLabelsSvg({
   }
 
   const sortedLabels = [...labels].sort((firstLabel, secondLabel) => {
-    return secondLabel.value - firstLabel.value
+    return firstLabel.y - secondLabel.y
   })
 
-  const availableHeight = drawingAreaBottom - drawingAreaTop - labelHeight
-  const verticalStep = availableHeight / (sortedLabels.length - 1)
+  const minimumLabelY = drawingAreaTop + labelHeight / 2
+  const maximumLabelY = drawingAreaBottom - labelHeight / 2
 
-  const labelX = Math.max(...sortedLabels.map(label => label.x)) + labelOffset + 10
+  const positionedLabels = sortedLabels.map(label => ({
+    ...label,
+    labelY: Math.min(maximumLabelY, Math.max(minimumLabelY, label.y)),
+  }))
 
-  return sortedLabels
-    .map((label, index) => {
-      const labelY = drawingAreaTop + labelHeight / 2 + verticalStep * index
+  for (let index = 1; index < positionedLabels.length; index += 1) {
+    const previousLabel = positionedLabels[index - 1]
+    const currentLabel = positionedLabels[index]
+    if (!previousLabel || !currentLabel) continue
+    if (currentLabel.labelY - previousLabel.labelY < labelHeight) {
+      currentLabel.labelY = previousLabel.labelY + labelHeight
+    }
+  }
+
+  const lastLabel = positionedLabels.at(-1)
+  if (!lastLabel) return ''
+  const overflow = lastLabel.labelY - maximumLabelY
+
+  if (overflow > 0) {
+    for (const label of positionedLabels) {
+      label.labelY -= overflow
+    }
+  }
+
+  const labelX = Math.max(...positionedLabels.map(label => label.x)) + labelOffset + 10
+
+  return positionedLabels
+    .map(label => {
       const connectorStartX = label.x + 5
       const connectorEndX = labelX
 
       return `
         <path
-          d="M${connectorStartX},${label.y} ${connectorStartX + 6},${label.y} ${connectorEndX},${labelY} ${connectorEndX + 6},${labelY}"
+          d="M${connectorStartX},${label.y} ${connectorStartX + 6},${label.y} ${connectorEndX},${label.labelY} ${connectorEndX + 6},${label.labelY}"
           stroke="${label.color}"
           stroke-width="1"
           opacity="${isDarkMode ? '0.7' : '1'}"
@@ -117,7 +139,7 @@ export function createLastDatapointLabelsSvg({
           text-anchor="start"
           dominant-baseline="middle"
           x="${connectorEndX + 12}"
-          y="${labelY}"
+          y="${label.labelY}"
           font-size="${fontSize}"
           fill="${colors.foreground}"
           stroke="${colors.background}"

@@ -245,6 +245,10 @@ const footerSections = computed<Array<{ label: string; links: FooterLink[] }>>((
           <span>{{ $t('shortcuts.open_timeline') }}</span>
         </li>
         <li class="flex gap-2 items-center">
+          <kbd class="kbd">s</kbd>
+          <span>{{ $t('shortcuts.open_stats') }}</span>
+        </li>
+        <li class="flex gap-2 items-center">
           <kbd class="kbd">c</kbd>
           <span>{{ $t('shortcuts.compare_from_package') }}</span>
         </li>

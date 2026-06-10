@@ -52,8 +52,10 @@ const props = withDefaults(
     /** When true, shows facet selector (e.g. Downloads / Likes). */
     showFacetSelector?: boolean
     permalink?: boolean
+    defaultRange?: 'auto' | '52-weeks'
   }>(),
   {
+    defaultRange: 'auto',
     permalink: false,
   },
 )
@@ -206,19 +208,21 @@ const {
 
 const repoRefsByPackage = shallowRef<Record<string, RepoRef | null>>({})
 const repoRefsRequestToken = shallowRef(0)
+const repoRefsPending = shallowRef(false)
 
 watch(
   () => effectivePackageNames.value,
   async names => {
     if (!import.meta.client) return
-    if (!isMultiPackageMode.value) {
-      repoRefsByPackage.value = {}
-      return
-    }
     const currentToken = ++repoRefsRequestToken.value
-    const refs = await fetchRepoRefsForPackages(names)
-    if (currentToken !== repoRefsRequestToken.value) return
-    repoRefsByPackage.value = refs
+    repoRefsPending.value = true
+    try {
+      const refs = await fetchRepoRefsForPackages(names)
+      if (currentToken !== repoRefsRequestToken.value) return
+      repoRefsByPackage.value = refs
+    } finally {
+      if (currentToken === repoRefsRequestToken.value) repoRefsPending.value = false
+    }
   },
   { immediate: true },
 )
@@ -373,7 +377,7 @@ function addUtcDays(date: Date, days: number): Date {
 function initDateRangeForMultiPackageWeekly52() {
   if (hasUserEditedDates.value) return
   if (!import.meta.client) return
-  if (!isMultiPackageMode.value) return
+  if (!isMultiPackageMode.value && props.defaultRange === 'auto') return
   if (startDate.value && endDate.value) return
 
   const today = new Date()
@@ -386,7 +390,7 @@ function initDateRangeForMultiPackageWeekly52() {
 }
 
 watch(
-  () => (props.packageNames ?? []).length,
+  () => (props.packageNames ?? []).length || props.defaultRange === '52-weeks',
   () => {
     initDateRangeForMultiPackageWeekly52()
   },
@@ -493,14 +497,6 @@ type MetricDef = {
   supportsMulti?: boolean
 }
 
-const hasContributorsFacet = computed(() => {
-  if (isMultiPackageMode.value) {
-    return Object.values(repoRefsByPackage.value).some(ref => ref?.provider === 'github')
-  }
-  const ref = props.repoRef
-  return ref?.provider === 'github' && ref.owner && ref.repo
-})
-
 const METRICS = computed<MetricDef[]>(() => {
   const metrics: MetricDef[] = [
     {
@@ -520,16 +516,13 @@ const METRICS = computed<MetricDef[]>(() => {
       fetch: ({ packageName }, opts) => fetchPackageLikesEvolution(packageName, opts),
       supportsMulti: true,
     },
-  ]
-
-  if (hasContributorsFacet.value) {
-    metrics.push({
+    {
       id: 'contributors',
       label: $t('package.trends.items.contributors'),
       fetch: ({ repoRef }, opts) => fetchRepoContributorsEvolution(repoRef, opts),
       supportsMulti: true,
-    })
-  }
+    },
+  ]
 
   return metrics
 })
@@ -692,6 +685,10 @@ async function loadMetric(metricId: MetricId) {
   const currentToken = ++state.requestToken
   state.pending = true
 
+  if (metricId === 'contributors' && repoRefsPending.value) {
+    return
+  }
+
   const fetchFn = (context: MetricContext) => metric.fetch(context, options.value)
 
   try {
@@ -754,7 +751,10 @@ async function loadMetric(metricId: MetricId) {
       }
     }
 
-    const result = await fetchFn({ packageName: pkg, repoRef: props.repoRef })
+    const result = await fetchFn({
+      packageName: pkg,
+      repoRef: props.repoRef || repoRefsByPackage.value[pkg],
+    })
     if (currentToken !== state.requestToken) return
 
     state.evolution = (result ?? []) as EvolutionData
@@ -813,7 +813,6 @@ watch(
   () => {
     if (!import.meta.client) return
     if (!isMounted.value) return
-    if (!isMultiPackageMode.value) return
     if (selectedMetric.value !== 'contributors') return
     debouncedLoadNow()
   },

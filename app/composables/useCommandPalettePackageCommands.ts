@@ -107,6 +107,16 @@ export function useCommandPalettePackageCommands(
           activeLabel: activeLabel(route.name === 'timeline', t('command_palette.here')),
           to: packageTimelineRoute(resolvedContext.packageName, resolvedContext.resolvedVersion),
         },
+        {
+          id: 'package-stats',
+          group: 'package',
+          label: t('command_palette.package.stats'),
+          keywords: [resolvedContext.packageName, t('shortcuts.open_stats')],
+          iconClass: 'i-lucide:chart-bar',
+          active: route.name === 'stats',
+          activeLabel: activeLabel(route.name === 'stats', t('command_palette.here')),
+          to: packageStatsRoute(resolvedContext.packageName, resolvedContext.resolvedVersion),
+        },
       ]
 
       const uChangelog = changelog.value

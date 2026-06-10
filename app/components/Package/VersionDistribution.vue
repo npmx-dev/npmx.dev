@@ -173,7 +173,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
       backgroundColor: colors.value.bg,
       padding: {
         top: 24,
-        right: 24,
+        right: 145,
         bottom: 60,
       },
       userOptions: {
