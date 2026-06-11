@@ -33,11 +33,11 @@ jobs:
           cache: true
           sfw: true
 
-      - name: 🟧 Install pnpm globally
-        run: vp install -g pnpm
-
       - name: 🧪 Run Chromatic Visual and Accessibility Tests
         uses: chromaui/action@8a2b82547aef5a3efc8ec3c7905f4ab09a76ed0b # v16.1.0
+        with:
+          buildCommand: vp run build-storybook
+          outputDir: storybook-static
         env:
           CHROMATIC_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
           CHROMATIC_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
