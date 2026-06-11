@@ -161,6 +161,8 @@ import {
   NoodlePressLogo,
   LinkBase,
   CallToAction,
+  ChangelogCard,
+  ChangelogErrorMsg,
   CodeDirectoryListing,
   CodeFileTree,
   CodeHeader,
@@ -252,6 +254,7 @@ import {
   PackageSelectionView,
   PackageSelectionCheckbox,
   PackageExternalLinks,
+  LicenseChangeWarning,
   ChartSplitSparkline,
   TabRoot,
   TabList,
@@ -385,6 +388,21 @@ describe('component accessibility audits', () => {
     })
   })
 
+  describe('LicenseChangeWarning', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(LicenseChangeWarning, {
+        props: {
+          change: { from: 'MIT', to: 'GPL-3.0' },
+        },
+        global: {
+          mocks: { $t: (key: string) => key },
+          stubs: { 'i18n-t': { template: '<span><slot name="license_change" /></span>' } },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
   describe('AppLogo', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(AppLogo)
@@ -2613,6 +2631,36 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(CopyToClipboardButton, {
         props: { copied: true },
         slots: { default: '<code>npm install vue</code>' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('Changelog', () => {
+    it('ChangelogCard should have no accessibility violations', async () => {
+      const component = await mountSuspended(ChangelogCard, {
+        props: {
+          release: {
+            html: '<p>test a11y</p>',
+            id: 'a11y',
+            title: '1.0.0',
+            publishedAt: '2026-02-11 10:00:00.000Z',
+          },
+          tocHeaderClass: 'toc',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('ChangelogErrorMsg should have no accessibility violations for warning variant', async () => {
+      const component = await mountSuspended(ChangelogErrorMsg, {
+        props: {
+          changelogLink: 'https://github.com/npmx-dev/npmx.dev/releases/',
+          pkgName: 'npmx-dev',
+          viewOnGit: 'View on Github',
+        },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])

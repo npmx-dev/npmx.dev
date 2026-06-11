@@ -2,13 +2,13 @@
   "$schema": "../schema.json",
   "seo": {
     "home": {
-      "title": "npmx - Pakket Browser voor de npm Register",
-      "description": "Een snelle, moderne browser voor het npm register. Zoek, blader en ontdek pakketten met een moderne interface."
+      "title": "npmx - Pakket Browser voor het npm-Register",
+      "description": "Een snelle, moderne browser voor het npm-register. Zoek, blader en ontdek pakketten met een moderne interface."
     }
   },
   "built_at": "gebouwd {0}",
   "alt_logo": "npmx logo",
-  "tagline": "een snelle, moderne browser voor de npm register",
+  "tagline": "een snelle, moderne browser voor het npm-register",
   "non_affiliation_disclaimer": "niet affiliëerd met npm, Inc.",
   "trademark_disclaimer": "npm is een geregisteerd trademark van npm, Inc. Deze website is niet affiliëerd met npm, Inc.",
   "footer": {
@@ -149,7 +149,8 @@
       "code": "Code",
       "diff": "Verschillen",
       "compare": "Vergelijk dit pakket",
-      "download": "Download tarball"
+      "download": "Download tarball",
+      "changelog": "Wijzigingenoverzicht"
     },
     "package_actions": {
       "copy_run": "Kopieer uitvoor command"
@@ -238,7 +239,7 @@
     "data_source": {
       "label": "Gegevensbron",
       "description": "Kies waar npmx zoekgegevens vandaan haalt. Individuele pakketpagina's gebruiken altijd rechtstreeks het npm-register.",
-      "npm": "npm register",
+      "npm": "npm-register",
       "npm_description": "haalt zoek-, org- en gebruikerslijsten rechtstreeks op uit het officiële npm-register. Betrouwbaar, maar kan trager zijn.",
       "algolia": "Algolia",
       "algolia_description": "Gebruikt Algolia voor snellere zoekopdrachten, organisatie- en gebruikerspagina's."
@@ -280,7 +281,10 @@
       "black": "Zwart"
     },
     "keyboard_shortcuts_enabled": "toetsenbordnavigatie inschakelen",
-    "keyboard_shortcuts_enabled_description": "toetsenbordnavigatie kan worden uitgeschakeld als ze conflicteren met andere sneltoetsen van de browser of het systeem."
+    "keyboard_shortcuts_enabled_description": "toetsenbordnavigatie kan worden uitgeschakeld als ze conflicteren met andere sneltoetsen van de browser of het systeem.",
+    "enable_code_ligatures": "Verbonden tekens (ligaturen) in code inschakelen",
+    "enable_changelog_autoscroll": "Automatisch scrollen naar gevraagde versie",
+    "enable_changelog_autoscroll_description": "Automatisch scrollen naar of in de buurt van de gevraagde versie in de Wijzigingenoverzicht van een pakket"
   },
   "i18n": {
     "missing_keys": "{count} ontbrekende vertaling | {count} ontbrekende vertalingen",
@@ -357,7 +361,7 @@
     "invite": {
       "message": "Het lijkt erop dat ze npmx nog niet gebruiken. Wilt u ze hierop wijzen",
       "share_button": "Deel op Bluesky",
-      "compose_text": "Hallo {'@'}{handle}! Hebt u npmx.dev al bekeken? Het is een browser voor het npm register die snel, modern en open source is.\nhttps://npmx.dev"
+      "compose_text": "Hallo {'@'}{handle}! Hebt u npmx.dev al bekeken? Het is een browser voor het npm-register die snel, modern en open source is.\nhttps://npmx.dev"
     }
   },
   "package": {
@@ -432,7 +436,9 @@
       "docs": "docs",
       "fund": "Steunen",
       "compare": "vergelijk",
-      "compare_this_package": "Vergelijk dit pakket"
+      "compare_this_package": "Vergelijk dit pakket",
+      "changelog": "wijzigingenoverzicht",
+      "timeline": "tijdlijn"
     },
     "likes": {
       "like": "Dit pakket leuk vinden",
@@ -477,7 +483,8 @@
         "warning": "Waarschuwing",
         "caution": "Let op"
       },
-      "copy_as_markdown": "kopieer README als Markdown"
+      "copy_as_markdown": "kopieer README als Markdown",
+      "error_loading": "Het laden van de README gegevens is mislukt"
     },
     "provenance_section": {
       "title": "Herkomst verificatie gegevens",
@@ -1086,12 +1093,12 @@
   "about": {
     "title": "Over",
     "heading": "over ons",
-    "meta_description": "npmx is een snelle, moderne browser voor de npm register. Een betere UX/DX om npm-pakketten te ontdekken.",
+    "meta_description": "npmx is een snelle, moderne browser voor het npm-register. Een betere UX/DX om npm-pakketten te ontdekken.",
     "what_we_are": {
       "title": "Wat zijn we",
       "better_ux_dx": "betere UX/DX",
       "admin_ui": "admin UI",
-      "description": "npmx is een {betterUxDx} voor het npm register en bijbehorende hulpmiddelen. We bieden een snelle, moderne interface voor het ontdekken van pakketten, met functies zoals dark mode, toetsenbordnavigatie, code-browsing en koppelingen met alternatieve registers zoals {jsr}.",
+      "description": "npmx is een {betterUxDx} voor het npm-register en bijbehorende hulpmiddelen. We bieden een snelle, moderne interface voor het ontdekken van pakketten, met functies zoals dark mode, toetsenbordnavigatie, code-browsing en koppelingen met alternatieve registers zoals {jsr}.",
       "admin_description": "We streven er ook naar om een betere {adminUi} te bieden voor het beheer van uw pakketten, teams en organisaties — allemaal vanuit de browser, aangedreven door uw lokale npm CLI."
     },
     "what_we_are_not": {
@@ -1317,9 +1324,18 @@
           "label": "Kwetsbaarheden",
           "description": "Bekende beveiliging kwetsbaarheden"
         },
-        "githubStars": {},
-        "githubIssues": {},
-        "createdAt": {}
+        "githubStars": {
+          "label": "GitHub Sterren",
+          "description": "Aantal sterren van een GitHub repository"
+        },
+        "githubIssues": {
+          "label": "GitHub Issues",
+          "description": "Aantal issues van een GitHub repository"
+        },
+        "createdAt": {
+          "label": "Aangemaakt op",
+          "description": "Wanneer het pakket is aangemaakt"
+        }
       },
       "values": {
         "any": "Alle",
@@ -1550,5 +1566,16 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "Een schattige, ronde en kleurrijke versie van het npmx logo."
+  "alt_logo_kawaii": "Een schattige, ronde en kleurrijke versie van het npmx logo.",
+  "changelog": {
+    "pre_release": "Ontwikkelversie",
+    "draft": "Concept",
+    "no_logs": "Sorry dit pakket publiceert geen wijzigingenoverzicht of hun formaat van wijzigingenoverzicht wordt niet ondersteund.",
+    "error": {
+      "p1": "Sorry, de wijzigingenoverzicht van {package} kon niet geladen worden.",
+      "p2": "Probeer later opnieuw of {viewon}"
+    },
+    "rate_limit_ungh": "Sorry, de opvraaglimiet (rate limit) van GitHub is bereikt. Probeer het over een ogenblik opnieuw.",
+    "version_unavailable": "De gevraagde is niet beschikbaar."
+  }
 }

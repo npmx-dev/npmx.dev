@@ -153,7 +153,8 @@
       "code": "Code",
       "diff": "Diff",
       "compare": "Compare this package",
-      "download": "Download tarball"
+      "download": "Download tarball",
+      "changelog": "Changelog"
     },
     "package_actions": {
       "copy_run": "Copy run command"
@@ -285,7 +286,9 @@
     },
     "keyboard_shortcuts_enabled": "Enable keyboard shortcuts",
     "keyboard_shortcuts_enabled_description": "Keyboard shortcuts can be disabled if they conflict with other browser or system shortcuts",
-    "enable_code_ligatures": "Enable ligatures in code"
+    "enable_code_ligatures": "Enable ligatures in code",
+    "enable_changelog_autoscroll": "Auto scroll to requested version",
+    "enable_changelog_autoscroll_description": "Auto scroll to or close to the requested version at package changelog"
   },
   "i18n": {
     "missing_keys": "{count} missing translation | {count} missing translations",
@@ -448,7 +451,8 @@
       "fund": "fund",
       "compare": "compare",
       "timeline": "timeline",
-      "compare_this_package": "compare this package"
+      "compare_this_package": "compare this package",
+      "changelog": "changelog"
     },
     "likes": {
       "like": "Like this package",
@@ -567,6 +571,9 @@
       "filter_help": "Semver range filter help",
       "filter_tooltip": "Filter versions using a {link}. For example, ^3.0.0 shows all 3.x versions.",
       "filter_tooltip_link": "semver range",
+      "license_change_help": "License Change Details",
+      "license_change_warning": "License changed since previous version.",
+      "license_change_record": "The license of this package changed from \"{from}\" to \"{to}\".",
       "no_matches": "No versions match this range",
       "copy_alt": {
         "per_version_analysis": "{version} version was downloaded {downloads} times",
@@ -932,7 +939,7 @@
       "failed_to_load": "Failed to load organization packages",
       "no_match": "No packages match \"{query}\"",
       "not_found": "Organization not found",
-      "not_found_message": "The organization \"{'@'}{name}\" does not exist on npm"
+      "not_found_message": "The organization {'@'}{name} does not exist on npm"
     }
   },
   "user": {
@@ -1716,5 +1723,16 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "A cute, rounded, and colorful version of the npmx logo."
+  "alt_logo_kawaii": "A cute, rounded, and colorful version of the npmx logo.",
+  "changelog": {
+    "pre_release": "Pre-release",
+    "draft": "Draft",
+    "no_logs": "Sorry, this package does not publish changelogs or its changelog format is not supported.",
+    "error": {
+      "p1": "Sorry, the changelog for {package} couldn't be loaded",
+      "p2": "Please try again later or {viewon}"
+    },
+    "rate_limit_ungh": "Sorry, Github's rate limit has been hit, try again in a moment",
+    "version_unavailable": "The requested version is not available."
+  }
 }

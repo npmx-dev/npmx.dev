@@ -37,7 +37,7 @@
     "obug": "^2.1.1",
     "srvx": "^0.11.7",
     "valibot": "^1.2.0",
-    "validate-npm-package-name": "^7.0.2"
+    "validate-npm-package-name": "^8.0.0"
   },
   "devDependencies": {
     "@types/node": "24.12.0",

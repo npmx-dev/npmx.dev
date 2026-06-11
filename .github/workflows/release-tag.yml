@@ -28,7 +28,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
-      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1.6.0
+      - uses: voidzero-dev/setup-vp@ca1c46663915d6c1042ae23bd39ab85718bfb0fa # v1.10.0
         with:
           node-version: lts/*
           run-install: false
@@ -101,7 +101,7 @@ jobs:
           ref: release
           persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1.6.0
+      - uses: voidzero-dev/setup-vp@ca1c46663915d6c1042ae23bd39ab85718bfb0fa # v1.10.0
         with:
           node-version: lts/*
           registry-url: https://registry.npmjs.org

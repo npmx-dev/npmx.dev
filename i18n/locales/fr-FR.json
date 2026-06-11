@@ -150,7 +150,8 @@
       "code": "Code",
       "diff": "Diff",
       "compare": "Comparer ce paquet",
-      "download": "Télécharger le tarball"
+      "download": "Télécharger le tarball",
+      "changelog": "Changements"
     },
     "package_actions": {
       "copy_run": "Copier la commande d'exécution"
@@ -282,7 +283,9 @@
       "black": "Noir"
     },
     "keyboard_shortcuts_enabled": "Activer les raccourcis clavier",
-    "keyboard_shortcuts_enabled_description": "Les raccourcis clavier peuvent être désactivés s'ils entrent en conflit avec d'autres raccourcis du navigateur ou du système"
+    "keyboard_shortcuts_enabled_description": "Les raccourcis clavier peuvent être désactivés s'ils entrent en conflit avec d'autres raccourcis du navigateur ou du système",
+    "enable_changelog_autoscroll": "Scroller automatiquement à la version voulue",
+    "enable_changelog_autoscroll_description": "Scroller automatiquement à — ou près — de la version voulue dans la page des changements"
   },
   "i18n": {
     "missing_keys": "{count} traduction manquante | {count} traductions manquantes",
@@ -436,7 +439,8 @@
       "fund": "donner",
       "compare": "comparer",
       "timeline": "historique",
-      "compare_this_package": "comparer ce paquet"
+      "compare_this_package": "comparer ce paquet",
+      "changelog": "changements"
     },
     "likes": {
       "like": "Liker ce paquet",
@@ -1703,6 +1707,17 @@
       "message": "L'accessibilité compte beaucoup pour nous, et nous serions ravis que vous partagiez cette vision. Lors de l'utilisation des médias mentionnés, assurez-vous qu'il y a suffisamment de contraste avec l'arrière-plan, et ne descendez pas en dessous de 24 px. Si vous avez besoin d'autres ressources ou d'informations supplémentaires sur le projet, n'hésitez pas à nous contacter à {link}.",
       "discord_link_text": "chat.npmx.dev"
     }
+  },
+  "changelog": {
+    "pre_release": "Pré-version",
+    "draft": "Brouillon",
+    "no_logs": "Désolé, ce paquet ne publie pas de changements ou le format de ses changements n'est pas pris en charge.",
+    "error": {
+      "p1": "Désolé, les changements de {package} n'ont pas pu être chargés",
+      "p2": "Veuillez réessayer plus tard ou {viewon}"
+    },
+    "rate_limit_ungh": "Désolé, la limite de requêtes à l'API GitHub a été atteinte, réessayez plus tard",
+    "version_unavailable": "La version demandée n'est pas disponible."
   },
   "alt_logo_kawaii": "Une version mignonne, arrondie et colorée du logo npmx."
 }

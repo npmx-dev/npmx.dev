@@ -465,6 +465,9 @@
             },
             "download": {
               "type": "string"
+            },
+            "changelog": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -860,6 +863,12 @@
           "type": "string"
         },
         "enable_code_ligatures": {
+          "type": "string"
+        },
+        "enable_changelog_autoscroll": {
+          "type": "string"
+        },
+        "enable_changelog_autoscroll_description": {
           "type": "string"
         }
       },
@@ -1350,6 +1359,9 @@
             },
             "compare_this_package": {
               "type": "string"
+            },
+            "changelog": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1703,6 +1715,15 @@
               "type": "string"
             },
             "filter_tooltip_link": {
+              "type": "string"
+            },
+            "license_change_help": {
+              "type": "string"
+            },
+            "license_change_warning": {
+              "type": "string"
+            },
+            "license_change_record": {
               "type": "string"
             },
             "no_matches": {
@@ -5154,6 +5175,39 @@
     },
     "alt_logo_kawaii": {
       "type": "string"
+    },
+    "changelog": {
+      "type": "object",
+      "properties": {
+        "pre_release": {
+          "type": "string"
+        },
+        "draft": {
+          "type": "string"
+        },
+        "no_logs": {
+          "type": "string"
+        },
+        "error": {
+          "type": "object",
+          "properties": {
+            "p1": {
+              "type": "string"
+            },
+            "p2": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "rate_limit_ungh": {
+          "type": "string"
+        },
+        "version_unavailable": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
     },
     "$schema": {
       "type": "string"

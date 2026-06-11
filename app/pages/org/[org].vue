@@ -10,6 +10,8 @@ definePageMeta({
 const route = useRoute('org')
 const router = useRouter()
 
+const DEFAULT_SORT = 'downloads-week-desc' satisfies SortOption
+
 const orgName = computed(() => route.params.org.toLowerCase())
 
 const { isConnected } = useConnector()
@@ -57,7 +59,7 @@ const {
   setSort,
 } = useStructuredFilters({
   packages,
-  initialSort: (normalizeSearchParam(route.query.sort) as SortOption) ?? 'updated-desc',
+  initialSort: (normalizeSearchParam(route.query.sort) as SortOption) ?? DEFAULT_SORT,
 })
 
 // Pagination state
@@ -86,7 +88,7 @@ const updateUrl = debounce((updates: { filter?: string; sort?: string }) => {
     query: {
       ...route.query,
       q: updates.filter || undefined,
-      sort: updates.sort && updates.sort !== 'updated-desc' ? updates.sort : undefined,
+      sort: updates.sort && updates.sort !== DEFAULT_SORT ? updates.sort : undefined,
     },
   })
 }, 300)
@@ -112,7 +114,7 @@ const totalWeeklyDownloads = computed(() =>
 // Reset state when org changes
 watch(orgName, () => {
   clearAllFilters()
-  setSort('updated-desc')
+  setSort(DEFAULT_SORT)
   currentPage.value = 1
 })
 

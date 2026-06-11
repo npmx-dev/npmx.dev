@@ -70,7 +70,7 @@ const copyToClipboard = async () => {
   >
     <div class="flex flex-col lg:flex-row items-end gap-4">
       <div class="flex flex-col gap-1.5 flex-1 w-full">
-        <label class="text-[11px] font-bold uppercase tracking-wider text-gray-400 ml-1"
+        <label class="text-2xs font-bold uppercase tracking-wider text-gray-400 ms-1"
           >Package Name</label
         >
         <input
@@ -82,7 +82,7 @@ const copyToClipboard = async () => {
       </div>
 
       <div class="flex flex-col gap-1.5 flex-1 w-full">
-        <label class="text-[11px] font-bold uppercase tracking-wider text-gray-400 ml-1"
+        <label class="text-2xs font-bold uppercase tracking-wider text-gray-400 ms-1"
           >Badge Type</label
         >
         <div class="relative">
@@ -95,20 +95,20 @@ const copyToClipboard = async () => {
             </option>
           </select>
           <span
-            class="absolute right-3 top-1/2 -translate-y-1/2 i-lucide-chevron-down w-4 h-4 text-gray-400 pointer-events-none"
+            class="absolute inset-ie-3 top-1/2 -translate-y-1/2 i-lucide-chevron-down w-4 h-4 text-gray-400 pointer-events-none"
           />
         </div>
       </div>
 
       <div class="flex flex-col gap-1.5 flex-2 w-full">
-        <label class="text-[11px] font-bold uppercase tracking-wider text-gray-400 ml-1"
+        <label class="text-2xs font-bold uppercase tracking-wider text-gray-400 ms-1"
           >Preview & Action</label
         >
         <div
           class="flex items-center bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg h-10.5 overflow-hidden"
         >
           <div
-            class="flex-1 flex items-center justify-center px-3 border-r border-gray-200 dark:border-white/10 h-full bg-gray-50/10 dark:bg-transparent"
+            class="flex-1 flex items-center justify-center px-3 border-ie border-gray-200 dark:border-white/10 h-full bg-gray-50/10 dark:bg-transparent"
           >
             <img
               v-if="isValid && isInputValid"
@@ -117,14 +117,14 @@ const copyToClipboard = async () => {
               alt="Badge Preview"
               @error="isValid = false"
             />
-            <span v-else class="text-[10px] font-bold text-red-500 uppercase tracking-tighter">
+            <span v-else class="text-3xs font-bold text-red-500 uppercase tracking-tighter">
               {{ !isInputValid ? 'Invalid Parameters' : 'Not Found' }}
             </span>
           </div>
           <button
             @click="copyToClipboard"
             :disabled="!isValid || !isInputValid || !pkg"
-            class="px-6 h-full text-[11px] font-bold uppercase tracking-widest transition-all disabled:opacity-20 disabled:cursor-not-allowed min-w-24 hover:bg-gray-50 dark:hover:bg-white/5"
+            class="px-6 h-full text-2xs font-bold uppercase tracking-widest transition-all disabled:opacity-20 disabled:cursor-not-allowed min-w-24 hover:bg-gray-50 dark:hover:bg-white/5"
             :class="
               copied
                 ? 'text-emerald-500 bg-emerald-50/50 dark:bg-emerald-500/10'
@@ -141,7 +141,7 @@ const copyToClipboard = async () => {
 
     <div class="grid grid-cols-1 sm:grid-cols-4 gap-6">
       <div class="flex flex-col gap-1.5">
-        <label class="text-[10px] font-bold uppercase text-gray-400 ml-1">Label Text</label>
+        <label class="text-3xs font-bold uppercase text-gray-400 ms-1">Label Text</label>
         <div class="relative group">
           <input
             v-model="labelText"
@@ -149,7 +149,7 @@ const copyToClipboard = async () => {
             type="text"
             placeholder="Custom Label"
             class="w-full px-3 py-2 h-9 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-black/20 text-xs outline-none focus:border-emerald-500 disabled:cursor-not-allowed transition-all"
-            :class="{ 'opacity-50 grayscale pl-3': usePkgName }"
+            :class="{ 'opacity-50 grayscale ps-3': usePkgName }"
           />
 
           <transition
@@ -162,10 +162,10 @@ const copyToClipboard = async () => {
           >
             <div
               v-if="usePkgName"
-              class="absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none"
+              class="absolute inset-ie-1.5 top-1/2 -translate-y-1/2 pointer-events-none"
             >
               <span
-                class="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-500 text-[9px] font-bold uppercase tracking-tighter border border-emerald-500/20"
+                class="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-500 text-4xs font-bold uppercase tracking-tighter border border-emerald-500/20"
               >
                 Auto
               </span>
@@ -175,7 +175,7 @@ const copyToClipboard = async () => {
       </div>
 
       <div class="flex flex-col gap-1.5">
-        <label class="text-[10px] font-bold uppercase text-gray-400 ml-1">Badge Value</label>
+        <label class="text-3xs font-bold uppercase text-gray-400 ms-1">Badge Value</label>
         <input
           v-model="badgeValue"
           type="text"
@@ -185,7 +185,7 @@ const copyToClipboard = async () => {
       </div>
 
       <div class="flex flex-col gap-1.5">
-        <label class="text-[10px] font-bold uppercase text-gray-400 ml-1">Label Color</label>
+        <label class="text-3xs font-bold uppercase text-gray-400 ms-1">Label Color</label>
         <div
           class="flex items-center px-3 rounded-lg border bg-white dark:bg-black/20 transition-all"
           :class="
@@ -194,7 +194,7 @@ const copyToClipboard = async () => {
               : 'border-red-500 ring-1 ring-red-500/20'
           "
         >
-          <span class="text-gray-400 text-xs font-mono mr-1">#</span>
+          <span class="text-gray-400 text-xs font-mono me-1">#</span>
           <input
             v-model="labelColor"
             type="text"
@@ -203,13 +203,13 @@ const copyToClipboard = async () => {
           />
           <span
             v-if="!isLabelHexValid"
-            class="i-lucide-alert-circle w-3.5 h-3.5 text-red-500 ml-1"
+            class="i-lucide-alert-circle w-3.5 h-3.5 text-red-500 ms-1"
           />
         </div>
       </div>
 
       <div class="flex flex-col gap-1.5">
-        <label class="text-[10px] font-bold uppercase text-gray-400 ml-1">Badge Color</label>
+        <label class="text-3xs font-bold uppercase text-gray-400 ms-1">Badge Color</label>
         <div
           class="flex items-center px-3 rounded-lg border bg-white dark:bg-black/20 transition-all"
           :class="
@@ -218,7 +218,7 @@ const copyToClipboard = async () => {
               : 'border-red-500 ring-1 ring-red-500/20'
           "
         >
-          <span class="text-gray-400 text-xs font-mono mr-1">#</span>
+          <span class="text-gray-400 text-xs font-mono me-1">#</span>
           <input
             v-model="badgeColor"
             type="text"
@@ -227,7 +227,7 @@ const copyToClipboard = async () => {
           />
           <span
             v-if="!isBadgeHexValid"
-            class="i-lucide-alert-circle w-3.5 h-3.5 text-red-500 ml-1"
+            class="i-lucide-alert-circle w-3.5 h-3.5 text-red-500 ms-1"
           />
         </div>
       </div>
@@ -239,16 +239,16 @@ const copyToClipboard = async () => {
       <label class="relative inline-flex items-center cursor-pointer group">
         <input v-model="usePkgName" type="checkbox" class="sr-only peer" />
         <div
-          class="w-9 h-5 bg-gray-200 peer-focus:outline-none dark:bg-white/10 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500 rounded-full"
+          class="w-9 h-5 bg-gray-200 peer-focus:outline-none dark:bg-white/10 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:inset-is-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500 rounded-full"
         ></div>
         <span
-          class="ml-3 text-[10px] font-bold uppercase text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors"
+          class="ms-3 text-3xs font-bold uppercase text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors"
           >Use package name as label</span
         >
       </label>
 
       <div class="flex items-center gap-3">
-        <label class="text-[10px] font-bold uppercase text-gray-400 whitespace-nowrap"
+        <label class="text-3xs font-bold uppercase text-gray-400 whitespace-nowrap"
           >Badge Style</label
         >
         <select
