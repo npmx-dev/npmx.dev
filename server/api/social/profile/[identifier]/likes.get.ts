@@ -11,7 +11,7 @@ export default defineEventHandler(async event => {
   }
 
   const query = getQuery(event)
-  const cursor = query.cursor as string | undefined
+  const cursor = typeof query.cursor === 'string' ? query.cursor : undefined
   const parsedLimit = typeof query.limit === 'string' ? Number(query.limit) : NaN
   const limit = Number.isNaN(parsedLimit) ? 20 : Math.min(Math.max(parsedLimit, 1), 100)
 
