@@ -2,8 +2,10 @@ import { describe, expect, it } from 'vitest'
 
 function createVersion(version: string, hasAttestations = false): Packument['versions'][string] {
   return {
-    _id: `foo@${version}`,
     _npmVersion: '10.0.0',
+    // TODO (43081j): _id specifically cannot be the first key for now as it is used for determining through hackery
+    // if the package was staged or not. We should remove this comment once that hackery is removed upstream.
+    _id: `foo@${version}`,
     name: 'foo',
     version,
     dist: {
@@ -54,8 +56,10 @@ function createPackument(
   latest: string,
 ): Packument {
   return {
-    '_id': 'foo',
     '_rev': '1',
+    // TODO (43081j): _id specifically cannot be the first key for now as it is used for determining through hackery
+    // if the package was staged or not. We should remove this comment once that hackery is removed upstream.
+    '_id': 'foo',
     'name': 'foo',
     'dist-tags': { latest },
     time,
@@ -69,8 +73,7 @@ function toVersionInfos(packument: ReturnType<typeof transformPackument>): Packa
     Object.entries(packument.versions).map(([version, metadata]) => ({
       version,
       time: packument.time[version],
-      hasProvenance: !!metadata.hasProvenance,
-      trustLevel: metadata.trustLevel,
+      trustStatus: metadata.trustStatus,
       deprecated: metadata.deprecated,
     }))
   )
@@ -106,7 +109,11 @@ describe('transformPackument', () => {
 
     const transformed = transformPackument(packument, '1.0.0')
 
-    expect(transformed.versions['1.0.0']?.hasProvenance).toBe(true)
+    expect(transformed.versions['1.0.0']?.trustStatus).toEqual({
+      provenance: true,
+      trustedPublisher: false,
+      stagedPublish: false,
+    })
     expect(transformed.versions['1.0.1']).toBeUndefined()
     expect(transformed.versions['1.0.2']).toBeUndefined()
     expect(transformed.securityVersions).toHaveLength(8)
@@ -189,7 +196,7 @@ describe('transformPackument', () => {
   it('treats trustedPublisher as trust evidence for downgrade checks', () => {
     const packument = createPackument(
       {
-        '1.0.0': createTrustedPublisherVersion('1.0.0'),
+        '1.0.0': createTrustedPublisherWithAttestationsVersion('1.0.0'),
         '1.0.1': createVersion('1.0.1'),
         '1.0.2': createVersion('1.0.2'),
       },
@@ -206,7 +213,11 @@ describe('transformPackument', () => {
     const transformed = transformPackument(packument, '1.0.1')
     const infos = toVersionInfos(transformed)
 
-    expect(infos.find(v => v.version === '1.0.0')?.hasProvenance).toBe(true)
+    expect(infos.find(v => v.version === '1.0.0')?.trustStatus).toEqual({
+      provenance: true,
+      trustedPublisher: true,
+      stagedPublish: false,
+    })
     expect(detectPublishSecurityDowngradeForVersion(infos, '1.0.1')?.trustedVersion).toBe('1.0.0')
   })
 
@@ -227,7 +238,11 @@ describe('transformPackument', () => {
 
     const transformed = transformPackument(packument, '1.0.1')
 
-    expect(transformed.versions['1.0.0']?.trustLevel).toBe('trustedPublisher')
+    expect(transformed.versions['1.0.0']?.trustStatus).toEqual({
+      provenance: true,
+      trustedPublisher: true,
+      stagedPublish: false,
+    })
   })
 
   // https://github.com/npmx-dev/npmx.dev/issues/1292
@@ -252,8 +267,16 @@ describe('transformPackument', () => {
     const infos = toVersionInfos(transformed)
 
     // Both versions should be trustedPublisher — no downgrade
-    expect(infos.find(v => v.version === '7.0.0')?.trustLevel).toBe('trustedPublisher')
-    expect(infos.find(v => v.version === '7.0.1')?.trustLevel).toBe('trustedPublisher')
+    expect(infos.find(v => v.version === '7.0.0')?.trustStatus).toEqual({
+      provenance: true,
+      trustedPublisher: true,
+      stagedPublish: false,
+    })
+    expect(infos.find(v => v.version === '7.0.1')?.trustStatus).toEqual({
+      provenance: true,
+      trustedPublisher: true,
+      stagedPublish: false,
+    })
     expect(detectPublishSecurityDowngradeForVersion(infos, '7.0.1')).toBeNull()
   })
 

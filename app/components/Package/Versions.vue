@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { compare, validRange } from 'semver'
 import type { RouteLocationRaw } from 'vue-router'
+import type { TrustStatus } from 'packumeta'
 import { fetchAllPackageVersions } from '~/utils/npm/api'
 
 const props = defineProps<{
@@ -11,72 +12,7 @@ const props = defineProps<{
   selectedVersion?: string
 }>()
 
-const QUERY_MODAL_VALUE = 'versions'
-const chartModal = useModal('chart-modal')
-const hasDistributionModalTransitioned = shallowRef(false)
-const isDistributionModalOpen = shallowRef(false)
-let distributionModalFallbackTimer: ReturnType<typeof setTimeout> | null = null
-
-function clearDistributionModalFallbackTimer() {
-  if (distributionModalFallbackTimer) {
-    clearTimeout(distributionModalFallbackTimer)
-    distributionModalFallbackTimer = null
-  }
-}
-
-const router = useRouter()
 const route = useRoute()
-
-async function openDistributionModal() {
-  isDistributionModalOpen.value = true
-  hasDistributionModalTransitioned.value = false
-  // ensure the component renders before opening the dialog
-  await nextTick()
-  chartModal.open()
-
-  await router.replace({
-    query: {
-      ...route.query,
-      modal: QUERY_MODAL_VALUE,
-    },
-  })
-
-  // Fallback: Force mount if transition event doesn't fire
-  clearDistributionModalFallbackTimer()
-  distributionModalFallbackTimer = setTimeout(() => {
-    if (!hasDistributionModalTransitioned.value) {
-      hasDistributionModalTransitioned.value = true
-    }
-  }, 500)
-}
-
-function closeDistributionModal() {
-  isDistributionModalOpen.value = false
-
-  router.replace({
-    query: {
-      ...route.query,
-      modal: undefined,
-      grouping: undefined,
-      recent: undefined,
-      lowUsage: undefined,
-    },
-  })
-
-  hasDistributionModalTransitioned.value = false
-  clearDistributionModalFallbackTimer()
-}
-
-onMounted(() => {
-  if (route.query.modal === QUERY_MODAL_VALUE) {
-    openDistributionModal()
-  }
-})
-
-function handleDistributionModalTransitioned() {
-  hasDistributionModalTransitioned.value = true
-  clearDistributionModalFallbackTimer()
-}
 
 /** Maximum number of dist-tag rows to show before collapsing into "Other versions" */
 const MAX_VISIBLE_TAGS = 10
@@ -86,7 +22,7 @@ interface VersionDisplay {
   version: string
   time?: string
   tags?: string[]
-  hasProvenance: boolean
+  trustStatus?: TrustStatus
   deprecated?: string
 }
 
@@ -94,6 +30,13 @@ interface VersionDisplay {
 function versionRoute(version: string): RouteLocationRaw {
   return packageRoute(props.packageName, version)
 }
+
+const distributionRoute = computed(() => {
+  if (route.name === 'stats') return null
+  const version = effectiveCurrentVersion.value || props.distTags.latest
+  if (!version) return null
+  return packageStatsRoute(props.packageName, version, '#distribution')
+})
 
 // Route to the full versions history page
 const versionsPageRoute = computed(() => packageVersionsRoute(props.packageName))
@@ -182,9 +125,9 @@ const allTagRows = computed(() => {
         version,
         time: props.time[version],
         tags,
-        hasProvenance: versionData?.hasProvenance,
+        trustStatus: versionData?.trustStatus,
         deprecated: versionData?.deprecated,
-      } as VersionDisplay,
+      },
     }))
     .sort((a, b) => compare(b.primaryVersion.version, a.primaryVersion.version))
 })
@@ -328,7 +271,7 @@ function processLoadedVersions(allVersions: PackageVersionInfo[]) {
         version: v.version,
         time: v.time,
         tags: versionToTags.value.get(v.version),
-        hasProvenance: v.hasProvenance,
+        trustStatus: v.trustStatus,
         deprecated: v.deprecated,
       }))
 
@@ -355,7 +298,7 @@ function processLoadedVersions(allVersions: PackageVersionInfo[]) {
       version: v.version,
       time: v.time,
       tags: versionToTags.value.get(v.version),
-      hasProvenance: v.hasProvenance,
+      trustStatus: v.trustStatus,
       deprecated: v.deprecated,
     })
   }
@@ -539,15 +482,17 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
         >
           <span class="sr-only">{{ $t('package.versions.view_all_versions') }}</span>
         </LinkBase>
-        <ButtonBase
-          variant="secondary"
-          class="text-fg-subtle hover:text-fg transition-colors min-w-6 min-h-6 -m-1 p-1 rounded"
+        <LinkBase
+          v-if="distributionRoute"
+          :to="distributionRoute"
+          variant="button-secondary"
+          class="text-fg-subtle hover:text-fg transition-colors min-w-6 min-h-6 p-1 rounded"
           :title="$t('package.downloads.community_distribution')"
           classicon="i-lucide:file-stack"
-          @click="openDistributionModal"
+          data-testid="view-distribution-link"
         >
           <span class="sr-only">{{ $t('package.downloads.community_distribution') }}</span>
-        </ButtonBase>
+        </LinkBase>
       </div>
     </template>
     <div class="space-y-0.5 min-w-0">
@@ -699,7 +644,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                 class="text-xs text-fg-subtle"
               />
               <ProvenanceBadge
-                v-if="row.primaryVersion.hasProvenance"
+                v-if="row.primaryVersion.trustStatus?.provenance"
                 :package-name="packageName"
                 :version="row.primaryVersion.version"
                 compact
@@ -753,7 +698,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                   day="numeric"
                 />
                 <ProvenanceBadge
-                  v-if="v.hasProvenance"
+                  v-if="v.trustStatus?.provenance"
                   :package-name="packageName"
                   :version="v.version"
                   compact
@@ -957,7 +902,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                       day="numeric"
                     />
                     <ProvenanceBadge
-                      v-if="group.versions[0]?.hasProvenance"
+                      v-if="group.versions[0]?.trustStatus?.provenance"
                       :package-name="packageName"
                       :version="group.versions[0]?.version"
                       compact
@@ -1024,7 +969,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                       day="numeric"
                     />
                     <ProvenanceBadge
-                      v-if="group.versions[0]?.hasProvenance"
+                      v-if="group.versions[0]?.trustStatus?.provenance"
                       :package-name="packageName"
                       :version="group.versions[0]?.version"
                       compact
@@ -1091,7 +1036,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                         day="numeric"
                       />
                       <ProvenanceBadge
-                        v-if="v.hasProvenance"
+                        v-if="v.trustStatus?.provenance"
                         :package-name="packageName"
                         :version="v.version"
                         compact
@@ -1123,41 +1068,4 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
       </div>
     </div>
   </CollapsibleSection>
-
-  <!-- Version Distribution Modal -->
-  <PackageChartModal
-    v-if="isDistributionModalOpen"
-    :modal-title="$t('package.versions.distribution_modal_title')"
-    @close="closeDistributionModal"
-    @transitioned="handleDistributionModalTransitioned"
-  >
-    <!-- The Chart is mounted after the dialog has transitioned -->
-    <!-- This avoids flaky behavior and ensures proper modal lifecycle -->
-    <Transition name="opacity" mode="out-in">
-      <PackageVersionDistribution
-        v-if="hasDistributionModalTransitioned"
-        :package-name="packageName"
-        :in-modal="true"
-      />
-    </Transition>
-
-    <!-- This placeholder bears the same dimensions as the VersionDistribution component -->
-    <!-- Avoids CLS when the dialog has transitioned -->
-    <div
-      v-if="!hasDistributionModalTransitioned"
-      class="w-full aspect-[272/609] sm:aspect-[718/592.67]"
-    />
-  </PackageChartModal>
 </template>
-
-<style scoped>
-.opacity-enter-active,
-.opacity-leave-active {
-  transition: opacity 200ms ease;
-}
-
-.opacity-enter-from,
-.opacity-leave-to {
-  opacity: 0;
-}
-</style>

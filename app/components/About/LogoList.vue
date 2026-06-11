@@ -35,7 +35,7 @@ const props = defineProps<{
         :href="item.url"
         target="_blank"
         rel="noopener noreferrer"
-        class="relative flex items-center justify-center h-16 rounded-md bg-bg-muted hover:bg-bg-subtle border border-border transition-colors py-1 px-3"
+        class="relative flex items-center justify-center h-16 rounded-md bg-bg-muted hover:bg-bg-subtle border border-border hover:border-border-hover transition-colors py-1 px-3"
         :style="{ paddingBlock: item.normalisingIndent }"
         :aria-label="item.name"
       >
@@ -65,7 +65,7 @@ const props = defineProps<{
               :href="groupItem.url"
               target="_blank"
               rel="noopener noreferrer"
-              class="relative flex items-center justify-center h-full aspect-square rounded-md hover:bg-bg-subtle border border-transparent hover:border-border transition-colors p-1.5"
+              class="relative flex items-center justify-center h-full aspect-square rounded-md hover:bg-bg-subtle border border-transparent hover:border-border-hover transition-colors p-1.5"
               :style="{ paddingBlock: groupItem.normalisingIndent }"
               :aria-label="groupItem.name"
             >

@@ -546,7 +546,6 @@
       "view_all": "Ver {count} versão | Ver todas as {count} versões",
       "view_all_versions": "Ver todas as versões",
       "distribution_title": "Grupo Semver",
-      "distribution_modal_title": "Versões",
       "distribution_range_date_same_year": "de {from} a {to}, {endYear}",
       "distribution_range_date_multiple_years": "de {from}, {startYear} a {to}, {endYear}",
       "grouping_major": "Major",
@@ -591,7 +590,10 @@
       "trusted_publisher_added": "Publicação de confiança ativada",
       "trusted_publisher_removed": "Publicação de confiança removida",
       "provenance_added": "Proveniência ativada",
-      "provenance_removed": "Proveniência removida"
+      "provenance_removed": "Proveniência removida",
+      "chart": {
+        "copy_alt": {}
+      }
     },
     "dependencies": {
       "title": "Dependência ({count}) | Dependências ({count})",
@@ -1165,7 +1167,6 @@
     },
     "team": {
       "title": "Equipa",
-      "governance": "Governança",
       "role_steward": "curador",
       "role_maintainer": "responsável",
       "sponsor": "patrocinador",
@@ -1403,8 +1404,6 @@
     "file_changes": "Alterações de Ficheiro",
     "files_count": "{count} ficheiro | {count} ficheiros",
     "lines_hidden": "{count} linha escondida | {count} linhas escondidas",
-    "file_too_large": "Ficheiro muito grande para comparar",
-    "file_size_warning": "{size} excede o limite de 250 kB para comparação",
     "compare_versions": "diff",
     "compare_versions_title": "Compara com a versão mais recente",
     "comparing_versions_label": "A comparar versões...",
@@ -1705,5 +1704,8 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "Uma versão fofa, arredondada e colorida do logótipo do npmx."
+  "alt_logo_kawaii": "Uma versão fofa, arredondada e colorida do logótipo do npmx.",
+  "changelog": {
+    "error": {}
+  }
 }

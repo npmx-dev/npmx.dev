@@ -142,6 +142,26 @@ export default defineNuxtConfig({
     '/.well-known/jwks.json': { prerender: true },
     '/.well-known/site.standard.publication': { prerender: true },
     '/api/leaderboard/likes': { isr: 900 },
+    '/api/embed/downloads.svg': {
+      isr: {
+        expiration: 60 * 60 /* one hour */,
+        passQuery: true,
+        allowQuery: [
+          'packages',
+          'package',
+          'metric',
+          'startDate',
+          'start',
+          'endDate',
+          'end',
+          'mode',
+          'granularity',
+          'locale',
+          'accent',
+          'yLabel',
+        ],
+      },
+    },
     // never cache
     '/api/auth/**': { isr: false, cache: false },
     '/api/social/**': { isr: false, cache: false },
@@ -195,6 +215,7 @@ export default defineNuxtConfig({
     '/recharging': { prerender: true },
     '/pds': { isr: 86400 }, // revalidate daily
     '/blog/**': { prerender: true },
+    '/noodles/**': { prerender: true },
     // proxy for insights
     '/_v/script.js': {
       proxy: 'https://npmx.dev/_vercel/insights/script.js',
@@ -273,17 +294,20 @@ export default defineNuxtConfig({
     providers: {
       fontshare: false,
     },
+    experimental: {
+      disableLocalFallbacks: true,
+    },
     families: [
       {
         name: 'Geist',
-        weights: ['400', '500', '600'],
-        preload: true,
+        provider: 'local',
+        weights: [400, 500, 600],
         global: true,
       },
       {
         name: 'Geist Mono',
-        weights: ['400', '500'],
-        preload: true,
+        provider: 'local',
+        weights: [400, 500],
         global: true,
       },
       {

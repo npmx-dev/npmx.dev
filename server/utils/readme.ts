@@ -180,6 +180,9 @@ export const ALLOWED_TAGS = [
   'kbd',
   'mark',
   'button',
+  'dl',
+  'dt',
+  'dd',
 ]
 
 export const ALLOWED_ATTR: Record<string, string[]> = {

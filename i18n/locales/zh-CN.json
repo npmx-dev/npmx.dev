@@ -546,7 +546,6 @@
       "view_all": "查看全部 {count} 个版本",
       "view_all_versions": "查看所有版本",
       "distribution_title": "语义化版本分组",
-      "distribution_modal_title": "版本",
       "distribution_range_date_same_year": "{endYear}年 {from} 至 {to}",
       "distribution_range_date_multiple_years": "{startYear}年 {from} 至 {endYear}年 {to}",
       "grouping_major": "主版本",
@@ -711,6 +710,7 @@
     },
     "downloads": {
       "title": "每周下载量",
+      "version_distribution_title": "{version} 版本的每周下载量",
       "community_distribution": "查看社区采用分布",
       "subtitle": "涵盖所有版本",
       "sparkline_nav_hint": "使用 ← →"
@@ -1179,7 +1179,6 @@
     },
     "team": {
       "title": "团队",
-      "governance": "治理",
       "role_steward": "管理者",
       "role_maintainer": "维护者",
       "sponsor": "赞助",
@@ -1417,8 +1416,6 @@
     "file_changes": "文件更改",
     "files_count": "{count} 个文件",
     "lines_hidden": "已隐藏 {count} 行",
-    "file_too_large": "文件过大，无法对比",
-    "file_size_warning": "{size} 超出了 250KB 的对比限制",
     "compare_versions": "差异",
     "compare_versions_title": "与最新版本对比",
     "comparing_versions_label": "比较版本...",
@@ -1719,5 +1716,8 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "一个圆润可爱、色彩活泼的 npmx logo 版本。"
+  "alt_logo_kawaii": "一个圆润可爱、色彩活泼的 npmx logo 版本。",
+  "changelog": {
+    "error": {}
+  }
 }

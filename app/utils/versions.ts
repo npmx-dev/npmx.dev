@@ -1,4 +1,4 @@
-import { compare, satisfies, validRange, valid } from 'semver'
+import { compare, satisfies, validRange, valid, parse } from 'semver'
 
 /**
  * Utilities for handling npm package versions and dist-tags
@@ -24,18 +24,42 @@ export interface ParsedVersion {
 }
 
 /**
- * Parse a semver version string into its components
- * @param version - The version string (e.g., "1.2.3" or "1.0.0-beta.1")
- * @returns Parsed version object with major, minor, patch, and prerelease
+ * Parse a semver stable version string into its components
+ * `@param` version - The version string (e.g., "1.2.3")
+ * `@returns` Parsed version object with major, minor, patch, or null for
+ *   invalid versions and for prerelease versions (e.g., "1.0.0-beta.1")
  */
 export function parseVersion(version: string): ParsedVersion {
-  const match = version.match(/^(\d+)\.(\d+)\.(\d+)(?:-(.+))?/)
-  if (!match) return { major: 0, minor: 0, patch: 0, prerelease: '' }
+  const parsedVersion = parse(version)
+
+  if (!parsedVersion) {
+    return { major: 0, minor: 0, patch: 0, prerelease: '' }
+  }
+
   return {
-    major: Number(match[1]),
-    minor: Number(match[2]),
-    patch: Number(match[3]),
-    prerelease: match[4] ?? '',
+    major: parsedVersion.major,
+    minor: parsedVersion.minor,
+    patch: parsedVersion.patch,
+    prerelease: parsedVersion.prerelease.join('.'),
+  }
+}
+
+/**
+ * Parse a semver stable version string into its components
+ * @param version - The version string (e.g., "1.2.3" or "1.0.0-beta.1")
+ * @returns Parsed version object with major, minor, patch or null
+ */
+export function parseStableVersion(version: string): Omit<ParsedVersion, 'prerelease'> | null {
+  const parsedVersion = parse(version)
+
+  if (!parsedVersion || parsedVersion.prerelease.length > 0) {
+    return null
+  }
+
+  return {
+    major: parsedVersion.major,
+    minor: parsedVersion.minor,
+    patch: parsedVersion.patch,
   }
 }
 

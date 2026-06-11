@@ -274,8 +274,7 @@ const versionSecurityMetadata = computed<PackageVersionInfo[]>(() => {
   return Object.entries(pkg.value.versions).map(([version, metadata]) => ({
     version,
     time: pkg.value?.time?.[version],
-    hasProvenance: !!metadata.hasProvenance,
-    trustLevel: metadata.trustLevel,
+    trustStatus: metadata.trustStatus,
     deprecated: metadata.deprecated,
   }))
 })
@@ -965,7 +964,8 @@ const showSkeleton = shallowRef(false)
 
             <!-- Download stats -->
             <PackageWeeklyDownloadStats
-              :packageName
+              :packageName="pkg.name"
+              :version="resolvedVersion"
               :createdIso="pkg?.time?.created ?? null"
               :repoRef="repoRef"
             />

@@ -311,6 +311,19 @@ export function useCommandPaletteGlobalCommands() {
         to: { name: 'blog' },
       },
       {
+        id: 'noodles',
+        group: 'npmx',
+        label: t('noodles.title'),
+        keywords: [t('noodles.latest'), t('noodles.what_is')],
+        iconClass: 'i-lucide:soup',
+        active: route.name === 'noodles' || `${route.name ?? ''}`.startsWith('noodles-'),
+        activeLabel: activeLabel(
+          route.name === 'noodles' || `${route.name ?? ''}`.startsWith('noodles-'),
+          t('command_palette.here'),
+        ),
+        to: { name: 'noodles' },
+      },
+      {
         id: 'brand',
         group: 'npmx',
         label: t('footer.brand'),

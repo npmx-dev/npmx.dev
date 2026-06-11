@@ -188,6 +188,34 @@ describe('useMarkdown', () => {
       expect(processed.value).toBe('A library')
     })
 
+    it('strips reference-style linked image badges (regression #2767)', () => {
+      const processed = useMarkdown({
+        text: '[![npm version][npm-v-src]][npm-v-href] [![npm downloads][npm-d-src]][npm-d-href] A library',
+      })
+      expect(processed.value).toBe('A library')
+    })
+
+    it('returns empty when description is only reference-style badges (regression #2767)', () => {
+      const processed = useMarkdown({
+        text: '[![npm version][npm-v-src]][npm-v-href] [![npm downloads][npm-d-src]][npm-d-href]',
+      })
+      expect(processed.value).toBe('')
+    })
+
+    it('strips standalone reference-style images', () => {
+      const processed = useMarkdown({
+        text: '![badge][badge-ref] A library',
+      })
+      expect(processed.value).toBe('A library')
+    })
+
+    it('strips reference link definitions', () => {
+      const processed = useMarkdown({
+        text: 'A library\n\n[npm-v-src]: https://img.shields.io/npm/v/foo.svg\n[npm-v-href]: https://npm.im/foo',
+      })
+      expect(processed.value).toBe('A library')
+    })
+
     it('preserves regular markdown links', () => {
       const processed = useMarkdown({ text: '[documentation](https://docs.example.com) is here' })
       expect(processed.value).toBe(

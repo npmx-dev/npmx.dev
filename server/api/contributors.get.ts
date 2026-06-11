@@ -1,4 +1,4 @@
-export type Role = 'steward' | 'maintainer' | 'contributor'
+export type Role = 'steward' | 'maintainer' | 'contributor' | 'core'
 
 export interface GitHubContributor {
   login: string
@@ -18,17 +18,19 @@ const FALLBACK_STEWARDS = new Set(['danielroe', 'patak-cat'])
 
 interface TeamMembers {
   steward: Set<string>
+  core: Set<string>
   maintainer: Set<string>
 }
 
 async function fetchTeamMembers(token: string): Promise<TeamMembers | null> {
   const teams: Record<keyof TeamMembers, string> = {
     steward: 'stewards',
+    core: 'core',
     maintainer: 'maintainers',
   }
 
   try {
-    const result: TeamMembers = { steward: new Set(), maintainer: new Set() }
+    const result: TeamMembers = { steward: new Set(), maintainer: new Set(), core: new Set() }
 
     for (const [role, slug] of Object.entries(teams) as [keyof TeamMembers, string][]) {
       const response = await fetch(
@@ -110,8 +112,9 @@ async function fetchSponsorable(token: string, logins: string[]): Promise<Set<st
 
 function getRoleInfo(login: string, teams: TeamMembers): { role: Role; order: number } {
   if (teams.steward.has(login)) return { role: 'steward', order: 0 }
-  if (teams.maintainer.has(login)) return { role: 'maintainer', order: 1 }
-  return { role: 'contributor', order: 2 }
+  if (teams.core.has(login)) return { role: 'core', order: 1 }
+  if (teams.maintainer.has(login)) return { role: 'maintainer', order: 2 }
+  return { role: 'contributor', order: 3 }
 }
 
 export default defineCachedEventHandler(
@@ -124,7 +127,7 @@ export default defineCachedEventHandler(
         const fetched = await fetchTeamMembers(githubToken)
         if (fetched) return fetched
       }
-      return { steward: FALLBACK_STEWARDS, maintainer: new Set<string>() }
+      return { steward: FALLBACK_STEWARDS, maintainer: new Set<string>(), core: new Set<string>() }
     })()
 
     const allContributors: GitHubAPIContributor[] = []
@@ -169,7 +172,9 @@ export default defineCachedEventHandler(
 
     // Identify maintainers (stewards + maintainers) and check their sponsors status
     const maintainerLogins = filtered
-      .filter(c => teams.steward.has(c.login) || teams.maintainer.has(c.login))
+      .filter(
+        c => teams.steward.has(c.login) || teams.core.has(c.login) || teams.maintainer.has(c.login),
+      )
       .map(c => c.login)
 
     const sponsorable = githubToken
