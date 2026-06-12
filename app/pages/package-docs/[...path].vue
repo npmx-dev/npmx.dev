@@ -189,7 +189,7 @@ const stickyStyle = computed(() => {
       page="docs"
     />
 
-    <div class="flex" dir="ltr">
+    <div class="flex flex-1" dir="ltr">
       <!-- Sidebar TOC -->
       <aside
         v-if="docsData?.toc && !showEmptyState"
@@ -205,7 +205,7 @@ const stickyStyle = computed(() => {
       </aside>
 
       <!-- Main content -->
-      <main class="flex-1 min-w-0">
+      <main class="flex-1 min-w-0 flex flex-col">
         <div v-if="showLoading" class="p-6 sm:p-8 lg:p-12 space-y-4">
           <SkeletonBlock class="h-8 w-64 rounded" />
           <SkeletonBlock class="h-4 w-full max-w-2xl rounded" />
@@ -213,7 +213,10 @@ const stickyStyle = computed(() => {
           <SkeletonBlock class="h-4 w-3/4 max-w-2xl rounded" />
         </div>
 
-        <div v-else-if="showEmptyState" class="p-6 sm:p-8 lg:p-12">
+        <div
+          v-else-if="showEmptyState"
+          class="p-6 sm:p-8 lg:p-12 flex flex-1 items-center justify-center"
+        >
           <div class="max-w-xl rounded-lg border border-border bg-bg-muted p-6">
             <h2 class="font-mono text-lg mb-2">{{ $t('package.docs.not_available') }}</h2>
             <p class="text-fg-subtle text-sm">
