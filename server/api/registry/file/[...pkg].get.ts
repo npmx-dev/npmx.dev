@@ -1,4 +1,5 @@
 import * as v from 'valibot'
+import type { InternalImportsMap, PackageExportsMap } from '#server/utils/import-resolver'
 import { PackageFileQuerySchema } from '#shared/schemas/package'
 import type { ReadmeResponse } from '#shared/types/readme'
 import {
@@ -27,6 +28,8 @@ interface PackageJson {
   devDependencies?: Record<string, string>
   peerDependencies?: Record<string, string>
   optionalDependencies?: Record<string, string>
+  imports?: InternalImportsMap
+  exports?: PackageExportsMap
 }
 
 /**
@@ -50,7 +53,7 @@ async function fetchFileContent(
   packageName: string,
   version: string,
   filePath: string,
-): Promise<string> {
+): Promise<{ content: string; contentType: string | null }> {
   const url = `https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`
   const response = await fetch(url)
 
@@ -63,6 +66,8 @@ async function fetchFileContent(
       message: 'Failed to fetch file from jsDelivr',
     })
   }
+
+  const contentType = response.headers.get('content-type')
 
   // Check content-length header if available
   const contentLength = response.headers.get('content-length')
@@ -83,7 +88,7 @@ async function fetchFileContent(
     })
   }
 
-  return content
+  return { content, contentType }
 }
 
 /**
@@ -123,7 +128,7 @@ export default defineCachedEventHandler(
         filePath: rawFilePath,
       })
 
-      const content = await fetchFileContent(packageName, version, filePath)
+      const { content, contentType } = await fetchFileContent(packageName, version, filePath)
       const language = getLanguageFromPath(filePath)
 
       // For JS/TS files, resolve dependency versions and relative imports for linking
@@ -159,7 +164,14 @@ export default defineCachedEventHandler(
         // Create resolver for relative imports
         if (fileTreeResponse) {
           const files = flattenFileTree(fileTreeResponse.tree)
-          resolveRelative = createImportResolver(files, filePath, packageName, version)
+          resolveRelative = createImportResolver(
+            files,
+            filePath,
+            packageName,
+            version,
+            pkgJson?.imports,
+            pkgJson?.exports,
+          )
         }
       }
 
@@ -185,6 +197,7 @@ export default defineCachedEventHandler(
         version,
         path: filePath,
         language,
+        contentType,
         content,
         html,
         lines: content.split('\n').length,

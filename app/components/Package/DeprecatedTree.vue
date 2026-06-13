@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { DependencyDepth } from '#shared/types'
-
 const props = defineProps<{
   packageName: string
   version: string
@@ -12,7 +10,12 @@ const { data: analysisData, status } = useDependencyAnalysis(
 )
 
 const isExpanded = shallowRef(false)
-const showAll = shallowRef(false)
+
+const {
+  visibleItems: visiblePackages,
+  hasMore: hasMorePackages,
+  expand: expandPackages,
+} = useVisibleItems(() => analysisData.value?.deprecatedPackages ?? [], 5)
 
 const hasDeprecated = computed(
   () => analysisData.value?.deprecatedPackages && analysisData.value.deprecatedPackages.length > 0,
@@ -74,7 +77,7 @@ function getDepthStyle(depth: DependencyDepth) {
       >
         <ul class="divide-y divide-border list-none m-0 p-0">
           <li
-            v-for="pkg in analysisData!.deprecatedPackages.slice(0, showAll ? undefined : 5)"
+            v-for="pkg in visiblePackages"
             :key="`${pkg.name}@${pkg.version}`"
             class="px-4 py-3"
             :class="getDepthStyle(pkg.depth).bg"
@@ -98,10 +101,10 @@ function getDepthStyle(depth: DependencyDepth) {
         </ul>
 
         <button
-          v-if="analysisData!.deprecatedPackages.length > 5 && !showAll"
+          v-if="hasMorePackages"
           type="button"
           class="w-full px-4 py-2 text-xs font-mono text-fg-muted hover:text-fg border-t border-border transition-colors duration-200"
-          @click="showAll = true"
+          @click="expandPackages"
         >
           {{
             $t('package.deprecated.show_all', { count: analysisData!.deprecatedPackages.length })

@@ -40,6 +40,7 @@ test-results/
 # generated files
 shared/types/lexicons
 file-tree-sprite.svg
+public/blog/avatar
 
 **/__screenshots__/**
 
@@ -51,3 +52,6 @@ file-tree-sprite.svg
 storybook-static
 
 .nvmrc
+.agents
+.vscode/mcp.json
+AGENTS.md

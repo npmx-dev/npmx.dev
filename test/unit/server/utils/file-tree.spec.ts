@@ -1,10 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
-import type { JsDelivrFileNode, PackageFileTree } from '../../../../shared/types'
-import {
-  convertToFileTree,
-  fetchFileTree,
-  getPackageFileTree,
-} from '../../../../server/utils/file-tree'
+import type { JsDelivrFileNode, PackageFileTree } from '#shared/types'
+import { convertToFileTree, fetchFileTree, getPackageFileTree } from '#server/utils/file-tree'
 
 const getChildren = (node?: PackageFileTree): PackageFileTree[] => node?.children ?? []
 
@@ -48,7 +44,7 @@ describe('convertToFileTree', () => {
       {
         type: 'directory',
         name: 'assets',
-        files: [{ type: 'file', name: 'logo.svg', size: 42 }],
+        files: [{ type: 'file', name: 'logo-icon.svg', size: 42 }],
       },
     ]
 

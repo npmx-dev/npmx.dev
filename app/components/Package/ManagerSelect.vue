@@ -1,6 +1,15 @@
 <script setup lang="ts">
 import { onClickOutside, useEventListener } from '@vueuse/core'
 
+withDefaults(
+  defineProps<{
+    teleport?: boolean
+  }>(),
+  {
+    teleport: true,
+  },
+)
+
 const selectedPM = useSelectedPackageManager()
 
 const listRef = useTemplateRef('listRef')
@@ -92,7 +101,7 @@ function handleKeydown(event: KeyboardEvent) {
     :aria-expanded="isOpen"
     aria-haspopup="listbox"
     :aria-label="$t('package.get_started.pm_label')"
-    :aria-controls="listboxId"
+    :aria-controls="isOpen ? listboxId : undefined"
     @click="toggle"
     @keydown="handleKeydown"
   >
@@ -121,7 +130,7 @@ function handleKeydown(event: KeyboardEvent) {
   </button>
 
   <!-- Dropdown menu (teleported to body to avoid clipping) -->
-  <Teleport to="body">
+  <Teleport to="body" :disabled="!teleport">
     <Transition
       :enter-active-class="prefersReducedMotion ? '' : 'transition-opacity duration-150'"
       :enter-from-class="prefersReducedMotion ? '' : 'opacity-0'"
@@ -135,6 +144,7 @@ function handleKeydown(event: KeyboardEvent) {
         :id="listboxId"
         ref="listRef"
         role="listbox"
+        data-testid="package-manager-dropdown"
         :aria-activedescendant="
           highlightedIndex >= 0
             ? `${listboxId}-${packageManagers[highlightedIndex]?.id}`
@@ -181,7 +191,8 @@ function handleKeydown(event: KeyboardEvent) {
 :root[data-pm='yarn'] [data-pm-select='yarn'],
 :root[data-pm='bun'] [data-pm-select='bun'],
 :root[data-pm='deno'] [data-pm-select='deno'],
-:root[data-pm='vlt'] [data-pm-select='vlt'] {
+:root[data-pm='vlt'] [data-pm-select='vlt'],
+:root[data-pm='vp'] [data-pm-select='vp'] {
   display: inline-block;
 }
 

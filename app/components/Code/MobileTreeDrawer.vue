@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PackageFileTree } from '#shared/types'
 import type { RouteNamedMap } from 'vue-router/auto-routes'
 
 defineProps<{
@@ -23,18 +22,17 @@ watch(
 const isLocked = useScrollLock(document)
 // Prevent body scroll when drawer is open
 watch(isOpen, open => (isLocked.value = open))
+
+function toggle() {
+  isOpen.value = !isOpen.value
+}
+
+defineExpose({
+  toggle,
+})
 </script>
 
 <template>
-  <!-- Toggle button (mobile only) -->
-  <ButtonBase
-    variant="primary"
-    class="md:hidden fixed bottom-4 inset-ie-4 z-45"
-    :aria-label="$t('code.toggle_tree')"
-    @click="isOpen = !isOpen"
-    :classicon="isOpen ? 'i-lucide:x' : 'i-lucide:folder'"
-  />
-
   <!-- Backdrop -->
   <Transition
     enter-active-class="transition-opacity duration-200"

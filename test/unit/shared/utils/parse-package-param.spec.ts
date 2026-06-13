@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { parsePackageParam } from '../../../../shared/utils/parse-package-param'
+import { parsePackageParam } from '#shared/utils/parse-package-param'
 
 describe('parsePackageParam', () => {
   describe('unscoped packages', () => {
@@ -83,6 +83,15 @@ describe('parsePackageParam', () => {
         packageName: '@types/node',
         version: '22.0.0',
         rest: [],
+      })
+    })
+
+    it('parses scoped package names whose package segment is literally v', () => {
+      const result = parsePackageParam('@scope/v/v/1.2.3/dist/index.js')
+      expect(result).toEqual({
+        packageName: '@scope/v',
+        version: '1.2.3',
+        rest: ['dist', 'index.js'],
       })
     })
   })

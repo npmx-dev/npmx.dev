@@ -5,7 +5,7 @@ export type DateRangeFields = {
   endDate?: string
 }
 
-export type DailyDataPoint = { value: number; day: string; timestamp: number }
+export type DailyDataPoint = { value: number; day: string; timestamp: number; hasAnomaly?: boolean }
 export type WeeklyDataPoint = {
   value: number
   weekKey: string
@@ -13,9 +13,20 @@ export type WeeklyDataPoint = {
   weekEnd: string
   timestampStart: number
   timestampEnd: number
+  hasAnomaly?: boolean
 }
-export type MonthlyDataPoint = { value: number; month: string; timestamp: number }
-export type YearlyDataPoint = { value: number; year: string; timestamp: number }
+export type MonthlyDataPoint = {
+  value: number
+  month: string
+  timestamp: number
+  hasAnomaly?: boolean
+}
+export type YearlyDataPoint = {
+  value: number
+  year: string
+  timestamp: number
+  hasAnomaly?: boolean
+}
 
 export type EvolutionData =
   | DailyDataPoint[]
@@ -28,18 +39,18 @@ type EvolutionOptionsBase = {
   endDate?: string
 }
 
-export type EvolutionOptionsDay = EvolutionOptionsBase & {
+type EvolutionOptionsDay = EvolutionOptionsBase & {
   granularity: 'day'
 }
-export type EvolutionOptionsWeek = EvolutionOptionsBase & {
+type EvolutionOptionsWeek = EvolutionOptionsBase & {
   granularity: 'week'
   weeks?: number
 }
-export type EvolutionOptionsMonth = EvolutionOptionsBase & {
+type EvolutionOptionsMonth = EvolutionOptionsBase & {
   granularity: 'month'
   months?: number
 }
-export type EvolutionOptionsYear = EvolutionOptionsBase & {
+type EvolutionOptionsYear = EvolutionOptionsBase & {
   granularity: 'year'
 }
 

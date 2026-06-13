@@ -1,0 +1,39 @@
+{
+  "id": "blue.microcosm.links.getBacklinksCount",
+  "defs": {
+    "main": {
+      "type": "query",
+      "description": "Constellation: count records that link to another record",
+      "parameters": {
+        "type": "params",
+        "required": ["subject", "source"],
+        "properties": {
+          "subject": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "the target being linked to (at-uri, did, or uri)"
+          },
+          "source": {
+            "type": "string",
+            "description": "collection and path specification for the primary link"
+          }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["total"],
+          "properties": {
+            "total": {
+              "type": "integer",
+              "description": "total number of matching links"
+            }
+          }
+        }
+      }
+    }
+  },
+  "$type": "com.atproto.lexicon.schema",
+  "lexicon": 1
+}

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 const props = defineProps<{
   modalTitle: string
+  modalSubtitle?: string
+  noScroll?: boolean
 }>()
 
 const dialogRef = useTemplateRef('dialogRef')
@@ -12,6 +14,12 @@ const emit = defineEmits<{
 const modalTitleId = computed(() => {
   const id = getCurrentInstance()?.attrs.id
   return id ? `${id}-title` : undefined
+})
+
+const modalSubtitleId = computed(() => {
+  if (!props.modalSubtitle) return undefined
+  const id = getCurrentInstance()?.attrs.id
+  return id ? `${id}-subtitle` : undefined
 })
 
 function handleModalClose() {
@@ -43,16 +51,23 @@ defineExpose({
     <dialog
       ref="dialogRef"
       closedby="any"
-      class="w-[calc(100%-2rem)] bg-bg border border-border rounded-lg shadow-xl max-h-[90vh] overflow-y-auto overscroll-contain m-0 m-auto p-6 text-fg focus-visible:outline focus-visible:outline-accent/70"
+      class="w-[calc(100%-2rem)] bg-bg border border-border rounded-lg shadow-xl max-h-[90vh] overscroll-contain m-0 m-auto p-6 text-fg focus-visible:outline focus-visible:outline-accent/70"
+      :class="noScroll ? 'overflow-hidden' : 'overflow-y-auto'"
       :aria-labelledby="modalTitleId"
+      :aria-describedby="modalSubtitleId"
       v-bind="$attrs"
       @transitionend="onDialogTransitionEnd"
     >
       <!-- Modal top header section -->
       <div class="flex items-center justify-between mb-6">
-        <h2 :id="modalTitleId" class="font-mono text-lg font-medium">
-          {{ modalTitle }}
-        </h2>
+        <div>
+          <h2 :id="modalTitleId" class="font-mono text-lg font-medium">
+            {{ modalTitle }}
+          </h2>
+          <p v-if="modalSubtitle" :id="modalSubtitleId" class="text-xs text-fg-subtle">
+            {{ modalSubtitle }}
+          </p>
+        </div>
         <ButtonBase
           type="button"
           :aria-label="$t('common.close')"
@@ -81,6 +96,7 @@ dialog {
   opacity: 0;
   transition: opacity 200ms ease;
   transition-behavior: allow-discrete;
+  scrollbar-gutter: stable;
 }
 
 dialog:modal {

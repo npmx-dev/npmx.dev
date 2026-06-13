@@ -57,16 +57,14 @@ export async function renderDocNodes(
   symbolLookup: SymbolLookup,
 ): Promise<string> {
   const grouped = groupMergedByKind(symbols)
-  const sections: string[] = []
-
-  for (const kind of KIND_DISPLAY_ORDER) {
+  const sectionPromises = KIND_DISPLAY_ORDER.map(async kind => {
     const kindSymbols = grouped[kind]
-    if (!kindSymbols || kindSymbols.length === 0) continue
+    if (!kindSymbols || kindSymbols.length === 0) return ''
+    return renderKindSection(kind, kindSymbols, symbolLookup)
+  })
 
-    sections.push(await renderKindSection(kind, kindSymbols, symbolLookup))
-  }
-
-  return sections.join('\n')
+  const sections = await Promise.all(sectionPromises)
+  return sections.filter(Boolean).join('\n')
 }
 
 /**
@@ -79,13 +77,13 @@ async function renderKindSection(
 ): Promise<string> {
   const title = KIND_TITLES[kind] || kind
   const lines: string[] = []
+  const renderedSymbols = await Promise.all(
+    symbols.map(symbol => renderMergedSymbol(symbol, symbolLookup)),
+  )
 
   lines.push(`<section class="docs-section" id="section-${kind}">`)
   lines.push(`<h2 class="docs-section-title">${title}</h2>`)
-
-  for (const symbol of symbols) {
-    lines.push(await renderMergedSymbol(symbol, symbolLookup))
-  }
+  lines.push(...renderedSymbols)
 
   lines.push(`</section>`)
 
@@ -129,9 +127,21 @@ async function renderMergedSymbol(
     .map(n => getNodeSignature(n))
     .filter(Boolean) as string[]
 
-  if (signatures.length > 0) {
-    const signatureCode = signatures.join('\n')
-    const highlightedSignature = await highlightCodeBlock(signatureCode, 'typescript')
+  const description = symbol.jsDoc?.doc?.trim()
+  const signaturePromise =
+    signatures.length > 0 ? highlightCodeBlock(signatures.join('\n'), 'typescript') : null
+  const descriptionPromise = description ? renderMarkdown(description, symbolLookup) : null
+  const jsDocTagsPromise =
+    symbol.jsDoc?.tags && symbol.jsDoc.tags.length > 0
+      ? renderJsDocTags(symbol.jsDoc.tags, symbolLookup)
+      : null
+  const [highlightedSignature, renderedDescription, renderedJsDocTags] = await Promise.all([
+    signaturePromise,
+    descriptionPromise,
+    jsDocTagsPromise,
+  ])
+
+  if (highlightedSignature) {
     lines.push(`<div class="docs-signature">${highlightedSignature}</div>`)
 
     if (symbol.nodes.length > MAX_OVERLOAD_SIGNATURES) {
@@ -141,16 +151,13 @@ async function renderMergedSymbol(
   }
 
   // Description
-  if (symbol.jsDoc?.doc) {
-    const description = symbol.jsDoc.doc.trim()
-    lines.push(
-      `<div class="docs-description">${await renderMarkdown(description, symbolLookup)}</div>`,
-    )
+  if (renderedDescription) {
+    lines.push(`<div class="docs-description">${renderedDescription}</div>`)
   }
 
   // JSDoc tags
-  if (symbol.jsDoc?.tags && symbol.jsDoc.tags.length > 0) {
-    lines.push(await renderJsDocTags(symbol.jsDoc.tags, symbolLookup))
+  if (renderedJsDocTags) {
+    lines.push(renderedJsDocTags)
   }
 
   // Type-specific members
@@ -179,15 +186,30 @@ async function renderJsDocTags(tags: JsDocTag[], symbolLookup: SymbolLookup): Pr
   const deprecated = tags.find(t => t.kind === 'deprecated')
   const see = tags.filter(t => t.kind === 'see')
 
+  const deprecatedMessagePromise = deprecated?.doc
+    ? renderMarkdown(deprecated.doc.replace(/\n/g, ' '), symbolLookup)
+    : null
+  const examplePromises = examples.map(async example => {
+    if (!example.doc) return ''
+    const langMatch = example.doc.match(/```[ \t]*([-\w]+)?/)
+    const lang = langMatch?.[1] || 'typescript'
+    const code = example.doc.replace(/```[ \t]*[-\w]*[ \t]*(?:\r\n|\r|\n)?/g, '').trim()
+    return highlightCodeBlock(code, lang)
+  })
+
+  const [renderedDeprecatedMessage, ...renderedExamples] = await Promise.all([
+    deprecatedMessagePromise,
+    ...examplePromises,
+  ])
+
   // Deprecated warning
   if (deprecated) {
     lines.push(`<div class="docs-deprecated">`)
     lines.push(`<strong>Deprecated</strong>`)
-    if (deprecated.doc) {
+    if (renderedDeprecatedMessage) {
       // We remove new lines because they look weird when rendered into the deprecated block
       // I think markdown is actually supposed to collapse single new lines automatically but this function doesn't do that so if that changes remove this
-      const renderedMessage = await renderMarkdown(deprecated.doc.replace(/\n/g, ' '), symbolLookup)
-      lines.push(`<div class="docs-deprecated-message">${renderedMessage}</div>`)
+      lines.push(`<div class="docs-deprecated-message">${renderedDeprecatedMessage}</div>`)
     }
     lines.push(`</div>`)
   }
@@ -218,18 +240,10 @@ async function renderJsDocTags(tags: JsDocTag[], symbolLookup: SymbolLookup): Pr
   }
 
   // Examples (with syntax highlighting)
-  if (examples.length > 0) {
+  if (examples.length > 0 && renderedExamples.some(Boolean)) {
     lines.push(`<div class="docs-examples">`)
     lines.push(`<h4>Example${examples.length > 1 ? 's' : ''}</h4>`)
-    for (const example of examples) {
-      if (example.doc) {
-        const langMatch = example.doc.match(/```(\w+)?/)
-        const lang = langMatch?.[1] || 'typescript'
-        const code = example.doc.replace(/```\w*\n?/g, '').trim()
-        const highlighted = await highlightCodeBlock(code, lang)
-        lines.push(highlighted)
-      }
-    }
+    lines.push(...renderedExamples.filter(Boolean))
     lines.push(`</div>`)
   }
 
@@ -254,6 +268,33 @@ async function renderJsDocTags(tags: JsDocTag[], symbolLookup: SymbolLookup): Pr
 // Member Rendering
 // =============================================================================
 
+type DefinitionListItem = {
+  signature: string
+  description?: string
+}
+
+function renderMemberList(title: string, items: DefinitionListItem[]): string {
+  const lines: string[] = []
+
+  if (items.length === 0) {
+    return ''
+  }
+
+  lines.push(`<div class="docs-members">`)
+  lines.push(`<h4>${title}</h4>`)
+  lines.push(`<dl>`)
+  for (const item of items) {
+    lines.push(`<dt><code>${escapeHtml(item.signature)}</code></dt>`)
+    if (item.description) {
+      lines.push(`<dd>${escapeHtml(item.description.split('\n')[0] ?? '')}</dd>`)
+    }
+  }
+  lines.push(`</dl>`)
+  lines.push(`</div>`)
+
+  return lines.join('\n')
+}
+
 /**
  * Render class members (constructor, properties, methods).
  */
@@ -272,44 +313,54 @@ function renderClassMembers(def: NonNullable<DenoDocNode['classDef']>): string {
   }
 
   if (properties && properties.length > 0) {
-    lines.push(`<div class="docs-members">`)
-    lines.push(`<h4>Properties</h4>`)
-    lines.push(`<dl>`)
-    for (const prop of properties) {
+    const propertyItems: DefinitionListItem[] = properties.map(prop => {
       const modifiers: string[] = []
       if (prop.isStatic) modifiers.push('static')
       if (prop.readonly) modifiers.push('readonly')
       const modStr = modifiers.length > 0 ? `${modifiers.join(' ')} ` : ''
       const type = formatType(prop.tsType)
       const opt = prop.optional ? '?' : ''
-      lines.push(
-        `<dt><code>${escapeHtml(modStr)}${escapeHtml(prop.name)}${opt}: ${escapeHtml(type)}</code></dt>`,
-      )
-      if (prop.jsDoc?.doc) {
-        lines.push(`<dd>${escapeHtml(prop.jsDoc.doc.split('\n')[0] ?? '')}</dd>`)
+      const typeStr = type ? `: ${type}` : ''
+
+      return {
+        signature: `${modStr}${prop.name}${opt}${typeStr}`,
+        description: prop.jsDoc?.doc,
       }
-    }
-    lines.push(`</dl>`)
-    lines.push(`</div>`)
+    })
+
+    lines.push(renderMemberList('Properties', propertyItems))
   }
 
-  if (methods && methods.length > 0) {
-    lines.push(`<div class="docs-members">`)
-    lines.push(`<h4>Methods</h4>`)
-    lines.push(`<dl>`)
-    for (const method of methods) {
+  const getters = methods?.filter(m => m.kind === 'getter') || []
+  const regularMethods = methods?.filter(m => m.kind !== 'getter') || []
+
+  if (getters.length > 0) {
+    const getterItems: DefinitionListItem[] = getters.map(getter => {
+      const ret = formatType(getter.functionDef?.returnType) || 'unknown'
+      const staticStr = getter.isStatic ? 'static ' : ''
+
+      return {
+        signature: `${staticStr}get ${getter.name}: ${ret}`,
+        description: getter.jsDoc?.doc,
+      }
+    })
+
+    lines.push(renderMemberList('Getters', getterItems))
+  }
+
+  if (regularMethods.length > 0) {
+    const methodItems: DefinitionListItem[] = regularMethods.map(method => {
       const params = method.functionDef?.params?.map(p => formatParam(p)).join(', ') || ''
       const ret = formatType(method.functionDef?.returnType) || 'void'
       const staticStr = method.isStatic ? 'static ' : ''
-      lines.push(
-        `<dt><code>${escapeHtml(staticStr)}${escapeHtml(method.name)}(${escapeHtml(params)}): ${escapeHtml(ret)}</code></dt>`,
-      )
-      if (method.jsDoc?.doc) {
-        lines.push(`<dd>${escapeHtml(method.jsDoc.doc.split('\n')[0] ?? '')}</dd>`)
+
+      return {
+        signature: `${staticStr}${method.name}(${params}): ${ret}`,
+        description: method.jsDoc?.doc,
       }
-    }
-    lines.push(`</dl>`)
-    lines.push(`</div>`)
+    })
+
+    lines.push(renderMemberList('Methods', methodItems))
   }
 
   return lines.join('\n')

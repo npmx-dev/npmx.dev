@@ -8,7 +8,11 @@ test.describe('npmjs.com URL Compatibility', () => {
       // Should show package name
       await expect(page.locator('h1')).toContainText('vue')
       // Should have version badge
-      await expect(page.locator('main header').locator('text=/v\\d+\\.\\d+/')).toBeVisible()
+      await expect(
+        page
+          .locator('[data-testid="version-selector-button"]')
+          .locator('text=/\\d+\\.\\d+\\.\\d+/'),
+      ).toBeVisible()
     })
 
     test('/package/@nuxt/kit → scoped package page', async ({ page, goto }) => {
@@ -24,7 +28,9 @@ test.describe('npmjs.com URL Compatibility', () => {
       // Should show package name
       await expect(page.locator('h1')).toContainText('vue')
       // Should show the specific version
-      await expect(page.locator('text=v3.5.27')).toBeVisible()
+      await expect(
+        page.locator('[data-testid="version-selector-button"]').locator('text=3.5.27'),
+      ).toBeVisible()
     })
 
     test('/package/@nuxt/kit/v/3.20.0 → scoped package specific version', async ({
@@ -36,7 +42,7 @@ test.describe('npmjs.com URL Compatibility', () => {
       // Should show scoped package name
       await expect(page.locator('h1')).toContainText('@nuxt/kit')
       // Should show the specific version (or "not latest" indicator)
-      await expect(page.locator('text=v3.20.0').first()).toBeVisible()
+      await expect(page.locator('text=3.20.0').first()).toBeVisible()
     })
 
     test('/package/nonexistent-pkg-12345 → 404 handling', async ({ page, goto }) => {
@@ -111,6 +117,25 @@ test.describe('npmjs.com URL Compatibility', () => {
 
       // Should show 404 error page
       await expect(page.locator('h1')).toContainText('Organization not found')
+    })
+  })
+
+  test.describe('npmjs.com activeTab=versions Compatibility', () => {
+    test('/package/vue?activeTab=versions → /package/vue/versions', async ({ page, goto }) => {
+      await goto('/package/vue?activeTab=versions', { waitUntil: 'domcontentloaded' })
+
+      await expect(page).toHaveURL(/\/package\/vue\/versions$/)
+      await expect(page.locator('h1')).toContainText('Version History')
+    })
+
+    test('/package/@nuxt/kit?activeTab=versions → /package/@nuxt/kit/versions', async ({
+      page,
+      goto,
+    }) => {
+      await goto('/package/@nuxt/kit?activeTab=versions', { waitUntil: 'domcontentloaded' })
+
+      await expect(page).toHaveURL(/\/package\/@nuxt\/kit\/versions$/)
+      await expect(page.locator('h1')).toContainText('Version History')
     })
   })
 

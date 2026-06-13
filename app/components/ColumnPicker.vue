@@ -49,11 +49,8 @@ const columnLabels = computed(() => ({
   updated: $t('filters.columns.published'),
   maintainers: $t('filters.columns.maintainers'),
   keywords: $t('filters.columns.keywords'),
-  qualityScore: $t('filters.columns.quality_score'),
-  popularityScore: $t('filters.columns.popularity_score'),
-  maintenanceScore: $t('filters.columns.maintenance_score'),
-  combinedScore: $t('filters.columns.combined_score'),
   security: $t('filters.columns.security'),
+  selection: $t('filters.columns.selection'),
 }))
 
 function getColumnLabel(id: ColumnId): string {
@@ -129,7 +126,7 @@ function handleReset() {
             </label>
           </div>
 
-          <div class="border-t border-border py-1">
+          <div class="border-t border-border p-2 pb-1">
             <ButtonBase @click="handleReset">
               {{ $t('filters.columns.reset') }}
             </ButtonBase>

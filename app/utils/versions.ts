@@ -1,4 +1,4 @@
-import { compare, satisfies, validRange, valid } from 'semver'
+import { compare, satisfies, validRange, valid, parse } from 'semver'
 
 /**
  * Utilities for handling npm package versions and dist-tags
@@ -24,18 +24,42 @@ export interface ParsedVersion {
 }
 
 /**
- * Parse a semver version string into its components
- * @param version - The version string (e.g., "1.2.3" or "1.0.0-beta.1")
- * @returns Parsed version object with major, minor, patch, and prerelease
+ * Parse a semver stable version string into its components
+ * `@param` version - The version string (e.g., "1.2.3")
+ * `@returns` Parsed version object with major, minor, patch, or null for
+ *   invalid versions and for prerelease versions (e.g., "1.0.0-beta.1")
  */
 export function parseVersion(version: string): ParsedVersion {
-  const match = version.match(/^(\d+)\.(\d+)\.(\d+)(?:-(.+))?/)
-  if (!match) return { major: 0, minor: 0, patch: 0, prerelease: '' }
+  const parsedVersion = parse(version)
+
+  if (!parsedVersion) {
+    return { major: 0, minor: 0, patch: 0, prerelease: '' }
+  }
+
   return {
-    major: Number(match[1]),
-    minor: Number(match[2]),
-    patch: Number(match[3]),
-    prerelease: match[4] ?? '',
+    major: parsedVersion.major,
+    minor: parsedVersion.minor,
+    patch: parsedVersion.patch,
+    prerelease: parsedVersion.prerelease.join('.'),
+  }
+}
+
+/**
+ * Parse a semver stable version string into its components
+ * @param version - The version string (e.g., "1.2.3" or "1.0.0-beta.1")
+ * @returns Parsed version object with major, minor, patch or null
+ */
+export function parseStableVersion(version: string): Omit<ParsedVersion, 'prerelease'> | null {
+  const parsedVersion = parse(version)
+
+  if (!parsedVersion || parsedVersion.prerelease.length > 0) {
+    return null
+  }
+
+  return {
+    major: parsedVersion.major,
+    minor: parsedVersion.minor,
+    patch: parsedVersion.patch,
   }
 }
 
@@ -49,6 +73,73 @@ export function getPrereleaseChannel(version: string): string {
   if (!parsed.prerelease) return ''
   const match = parsed.prerelease.match(/^([a-z]+)/i)
   return match ? match[1]!.toLowerCase() : ''
+}
+
+/**
+ * Priority order for well-known dist-tags.
+ * Lower number = higher priority in display order.
+ * Unknown tags fall back to Infinity and are sorted by publish date descending.
+ */
+export const TAG_PRIORITY: Record<string, number> = {
+  latest: 0,
+  stable: 1,
+  rc: 2,
+  beta: 3,
+  next: 4,
+  alpha: 5,
+  canary: 6,
+  nightly: 7,
+  experimental: 8,
+  legacy: 9,
+}
+
+/**
+ * Get the display priority for a dist-tag.
+ * Uses fuzzy matching so e.g. "v2-legacy" matches "legacy".
+ * @param tag - The tag name (e.g., "beta", "v2-legacy")
+ * @returns Numeric priority (lower = higher priority); Infinity for unknown tags
+ */
+export function getTagPriority(tag: string | undefined): number {
+  if (!tag) return Infinity
+  for (const [key, priority] of Object.entries(TAG_PRIORITY)) {
+    if (tag.toLowerCase().includes(key)) return priority
+  }
+  return Infinity
+}
+
+/**
+ * Compare two tagged version rows for display ordering.
+ * Sorts by minimum tag priority first; falls back to publish date descending.
+ * @param rowA - First row
+ * @param rowB - Second row
+ * @param versionTimes - Map of version string to ISO publish time
+ * @returns Negative/zero/positive comparator value
+ */
+export function compareTagRows(
+  rowA: TaggedVersionRow,
+  rowB: TaggedVersionRow,
+  versionTimes: Record<string, string>,
+): number {
+  const priorityA = Math.min(...rowA.tags.map(getTagPriority))
+  const priorityB = Math.min(...rowB.tags.map(getTagPriority))
+  if (priorityA !== priorityB) return priorityA - priorityB
+  const timeA = versionTimes[rowA.version] ?? ''
+  const timeB = versionTimes[rowB.version] ?? ''
+  return timeB.localeCompare(timeA)
+}
+
+/**
+ * Compare two version group keys for display ordering.
+ * Sorts by major descending, then by minor descending for 0.x groups.
+ * @param a - Group key (e.g. "1", "0.9")
+ * @param b - Group key (e.g. "2", "0.10")
+ * @returns Negative/zero/positive comparator value
+ */
+export function compareVersionGroupKeys(a: string, b: string): number {
+  const [majorA, minorA] = a.split('.').map(Number)
+  const [majorB, minorB] = b.split('.').map(Number)
+  if (majorA !== majorB) return (majorB ?? 0) - (majorA ?? 0)
+  return (minorB ?? -1) - (minorA ?? -1)
 }
 
 /**

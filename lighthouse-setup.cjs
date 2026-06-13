@@ -31,7 +31,7 @@ module.exports = async function setup(browser, { url }) {
   }, colorMode)
 
   // Navigate and wait for DOM only - Lighthouse will do its own full load
-  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 })
+  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 120000 })
 
   // Close the page - Lighthouse will open its own with localStorage already set
   await page.close()

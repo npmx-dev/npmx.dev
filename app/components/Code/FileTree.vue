@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PackageFileTree } from '#shared/types'
 import type { RouteLocationRaw } from 'vue-router'
 import type { RouteNamedMap } from 'vue-router/auto-routes'
 import { ADDITIONAL_ICONS, getFileIcon } from '~/utils/file-icons'
@@ -40,7 +39,7 @@ const { toggleDir, isExpanded, autoExpandAncestors } = useFileTreeState(props.ba
 watch(
   () => props.currentPath,
   path => {
-    if (path) {
+    if (depth.value === 0 && path) {
       autoExpandAncestors(path)
     }
   },
@@ -54,7 +53,7 @@ watch(
       <!-- Directory -->
       <template v-if="node.type === 'directory'">
         <ButtonBase
-          class="w-full justify-start! rounded-none! border-none!"
+          class="w-full justify-start! rounded-none! border-none! transition-[color,background-color]! duration-100!"
           block
           :aria-pressed="isNodeActive(node)"
           :style="{ paddingLeft: `${depth * 12 + 12}px` }"
@@ -65,7 +64,6 @@ watch(
             class="size-[1em] me-1 shrink-0"
             :class="isExpanded(node.path) ? 'text-yellow-500' : 'text-yellow-600'"
             viewBox="0 0 16 16"
-            fill="currentColor"
             aria-hidden="true"
           >
             <use
@@ -90,16 +88,11 @@ watch(
           variant="button-secondary"
           :to="getFileRoute(node.path)"
           :aria-current="currentPath === node.path"
-          class="w-full justify-start! rounded-none! border-none!"
+          class="w-full justify-start! rounded-none! border-none! transition-[color,background-color]! duration-100!"
           block
           :style="{ paddingLeft: `${depth * 12 + 32}px` }"
         >
-          <svg
-            class="size-[1em] me-1 shrink-0"
-            viewBox="0 0 16 16"
-            fill="currentColor"
-            aria-hidden="true"
-          >
+          <svg class="size-[1em] me-1 shrink-0" viewBox="0 0 16 16" aria-hidden="true">
             <use :href="`/file-tree-sprite.svg#${getFileIcon(node.name)}`" />
           </svg>
           <span class="truncate">{{ node.name }}</span>

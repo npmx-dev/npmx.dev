@@ -5,20 +5,20 @@ const props = defineProps<{
   error: NuxtError
 }>()
 
-const status = computed(() => props.error.statusCode || 500)
+const status = computed(() => props.error.status || 500)
 const statusText = computed(() => {
-  if (props.error.statusMessage) return props.error.statusMessage
+  if (props.error.statusText) return props.error.statusText
   switch (status.value) {
     case 401:
-      return 'Unauthorized'
+      return $t('error.401')
     case 404:
-      return 'Page not found'
+      return $t('error.404')
     case 500:
-      return 'Internal server error'
+      return $t('error.500')
     case 503:
-      return 'Service unavailable'
+      return $t('error.503')
     default:
-      return 'Something went wrong'
+      return $t('error.default')
   }
 })
 

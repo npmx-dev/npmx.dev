@@ -29,24 +29,27 @@ import { lookup } from 'node:dns/promises'
 import ipaddr from 'ipaddr.js'
 
 /** Trusted image domains that don't need proxying (first-party or well-known CDNs) */
-const TRUSTED_IMAGE_DOMAINS = [
+export const TRUSTED_IMAGE_DOMAINS = [
   // First-party
   'npmx.dev',
 
   // GitHub (already proxied by GitHub's own camo)
+  // We do not include github.com and user-images.githubusercontent.com because they
+  // might return redirects to s3 which will be blocked by the CSP
   'raw.githubusercontent.com',
-  'github.com',
-  'user-images.githubusercontent.com',
   'avatars.githubusercontent.com',
   'repository-images.githubusercontent.com',
   'github.githubassets.com',
   'objects.githubusercontent.com',
+  'avatars2.githubusercontent.com',
+  'cloud.githubusercontent.com',
 
   // GitLab
   'gitlab.com',
 
   // CDNs commonly used in READMEs
   'cdn.jsdelivr.net',
+  'data.jsdelivr.com',
   'unpkg.com',
 
   // Well-known badge/shield services
@@ -63,6 +66,17 @@ const TRUSTED_IMAGE_DOMAINS = [
   'api.codeclimate.com',
   'bundlephobia.com',
   'packagephobia.com',
+  'deepwiki.com',
+  'saucelabs.github.io',
+  'opencollective.com',
+  'images.opencollective.com',
+  'circleci.com',
+  'www.codetriage.com',
+  'badges.gitter.im',
+  'nodei.co',
+  'travis-ci.org',
+  'secure.travis-ci.org',
+  'img.badgesize.io',
 ]
 
 /**
@@ -73,9 +87,8 @@ export function isTrustedImageDomain(url: string): boolean {
   if (!parsed?.hostname) return false
 
   const hostname = parsed.hostname.toLowerCase()
-  return TRUSTED_IMAGE_DOMAINS.some(
-    domain => hostname === domain || hostname.endsWith(`.${domain}`),
-  )
+  // We only look at exact matches (not subdomains), since the same array is used as a check in CSP
+  return TRUSTED_IMAGE_DOMAINS.includes(hostname)
 }
 
 /**

@@ -13,11 +13,17 @@
   "trademark_disclaimer": "npmはnpm, Inc.の登録商標です。当サイトはnpm, Inc.とは関係ありません。",
   "footer": {
     "about": "npmxについて",
+    "blog": "ブログ",
     "docs": "ドキュメント",
     "source": "ソースコード",
     "social": "ソーシャル",
     "chat": "チャット",
-    "keyboard_shortcuts": "キーボードショートカット"
+    "builders_chat": "ビルダー",
+    "keyboard_shortcuts": "キーボードショートカット",
+    "brand": "ブランド",
+    "resources": "リソース",
+    "features": "機能",
+    "other": "その他"
   },
   "shortcuts": {
     "section": {
@@ -25,6 +31,9 @@
       "search": "検索",
       "package": "パッケージ"
     },
+    "ctrl_key": "Ctrl",
+    "command_palette": "コマンドパレットを開く",
+    "command_palette_description": "キーボード操作だけでページ、パッケージビュー、設定、外部リンクの間を移動できます。macOSでは⌘K、WindowsやLinuxでは{ctrlKey}+Kを押してください。",
     "focus_search": "検索にフォーカス",
     "show_kbd_hints": "キーボードヒントをハイライト",
     "settings": "設定を開く",
@@ -33,7 +42,11 @@
     "navigate_results": "検索結果を移動",
     "go_to_result": "結果に移動",
     "open_code_view": "コードビューを開く",
-    "open_docs": "ドキュメントを開く"
+    "open_docs": "ドキュメントを開く",
+    "disable_shortcuts": "{settings} でキーボードショートカットを無効化できます。",
+    "open_main": "メイン情報を開く",
+    "open_diff": "バージョンの差分を開く",
+    "open_timeline": "タイムラインを開く"
   },
   "search": {
     "label": "npmパッケージを検索",
@@ -62,6 +75,120 @@
       "org": "organization",
       "view_user_packages": "このユーザーのパッケージを表示",
       "view_org_packages": "このorganizationのパッケージを表示"
+    },
+    "instant_search": "インスタント検索",
+    "instant_search_on": "オン",
+    "instant_search_off": "オフ",
+    "instant_search_turn_on": "オンにする",
+    "instant_search_turn_off": "オフにする",
+    "instant_search_advisory": "{label} {state} — {action}"
+  },
+  "command_palette": {
+    "title": "コマンドパレット",
+    "quick_actions": "ジャンプ",
+    "subtitle": "npmx内の移動と設定の素早い切り替え",
+    "subtitle_languages": "言語の選択、または翻訳の改善に協力",
+    "instructions": "入力してコマンドを絞り込みます。矢印キーで移動し、Enterで実行します。",
+    "input_label": "コマンドパレット検索",
+    "results_label": "コマンド結果",
+    "placeholder": "コマンドを入力...",
+    "back": "戻る",
+    "empty": "一致するコマンドがありません",
+    "empty_search_hint": "「{query}」を検索するにはEnterを押してください。",
+    "current": "現在",
+    "here": "現在地",
+    "connected": "接続済み",
+    "state": {
+      "on": "オン",
+      "off": "オフ"
+    },
+    "groups": {
+      "actions": "アクション",
+      "help": "ヘルプ",
+      "language": "言語",
+      "connections": "接続",
+      "navigation": "ナビゲーション",
+      "links": "リンク",
+      "npmx": "npmx",
+      "package": "パッケージ",
+      "package_with_name": "パッケージ ({name})",
+      "versions": "バージョン",
+      "versions_with_name": "{name} のバージョン"
+    },
+    "actions": {
+      "search": "検索",
+      "search_for": "「{query}」を検索",
+      "keyboard_shortcuts": "キーボードショートカット",
+      "help_translate": "翻訳に協力する"
+    },
+    "connections": {
+      "npm_connect": "npm CLIに接続",
+      "npm_connected": "npm CLI (~{username})",
+      "npm_disconnect": "npm CLIから切断",
+      "atmosphere_connect": "Atmosphereに接続",
+      "atmosphere_connected": "atmosphere ({'@'}{handle})",
+      "atmosphere_disconnect": "Atmosphereから切断"
+    },
+    "navigation": {
+      "home": "ホーム",
+      "packages": "パッケージ (~{username})",
+      "orgs": "Organization (~{username})",
+      "profile": "プロフィール ({'@'}{handle})"
+    },
+    "links": {
+      "external": "外部リンク"
+    },
+    "package_links": {
+      "stars": "リポジトリのスター数",
+      "forks": "リポジトリのフォーク数"
+    },
+    "theme": {
+      "system": "システムテーマを使用",
+      "light": "ライトテーマを使用",
+      "dark": "ダークテーマを使用"
+    },
+    "package": {
+      "main": "パッケージページ",
+      "docs": "ドキュメント",
+      "code": "コード",
+      "diff": "差分",
+      "compare": "このパッケージを比較",
+      "download": "tarballをダウンロード",
+      "changelog": "Changelog"
+    },
+    "package_actions": {
+      "copy_run": "実行コマンドをコピー"
+    },
+    "code": {
+      "copy_file": "ファイル内容をコピー"
+    },
+    "diff": {
+      "merge_modified_lines": "変更行をマージ",
+      "word_wrap": "右端で折り返す"
+    },
+    "version": {
+      "label": "{version}"
+    },
+    "status": {
+      "available_in_context": "{context}。利用可能なコマンドはありません | {context}。1つのコマンドが利用可能 | {context}。{count} つのコマンドが利用可能",
+      "matching_in_context": "{context}。一致するコマンドはありません | {context}。1つのコマンドが一致 | {context}。{count} つのコマンドが一致",
+      "no_matches_search_in_context": "{context}。一致するコマンドはありません。Enterを押すと「{query}」を検索します。"
+    },
+    "announcements": {
+      "language_changed": "言語を {language} に設定しました。",
+      "relative_dates_on": "相対日付をオンにしました。",
+      "relative_dates_off": "相対日付をオフにしました。",
+      "theme_changed": "テーマを {theme} に設定しました。",
+      "accent_color_changed": "アクセントカラーを {color} に設定しました。",
+      "background_theme_changed": "背景シェードを {theme} に設定しました。",
+      "download_started": "{package} のtarballをダウンロード中。",
+      "copied_to_clipboard": "クリップボードにコピーしました。",
+      "npm_disconnected": "npm CLIから切断しました。",
+      "atmosphere_disconnected": "Atmosphereから切断しました。",
+      "facets_all_selected": "すべてのファセットを選択しました。",
+      "facets_all_deselected": "すべてのファセットの選択を解除しました。",
+      "view_switched": "{view} ビューに切り替えました。",
+      "setting_toggled": "{setting} を {state} にしました。"
     }
   },
   "nav": {
@@ -76,6 +203,32 @@
     "links": "リンク",
     "tap_to_search": "タップして検索"
   },
+  "blog": {
+    "title": "ブログ",
+    "heading": "ブログ",
+    "meta_description": "npmxコミュニティからの知見やアップデート",
+    "author": {
+      "view_profile": "Blueskyで {name} のプロフィールを表示"
+    },
+    "draft_badge": "下書き",
+    "draft_banner": "これは未公開の下書きです。内容が不完全であったり、不正確な情報が含まれている可能性があります。",
+    "no_posts": "記事が見つかりません。",
+    "atproto": {
+      "view_on_bluesky": "Blueskyで表示",
+      "reply_on_bluesky": "Blueskyでリプライ",
+      "likes_on_bluesky": "Blueskyでいいねする",
+      "like_or_reply_on_bluesky": "Blueskyでこの投稿にいいねまたはコメントを追加",
+      "no_comments_yet": "コメントはまだありません。",
+      "could_not_load_comments": "コメントを読み込めませんでした。",
+      "comments": "コメント",
+      "loading_comments": "コメントを読み込み中...",
+      "updating": "更新中...",
+      "reply_count": "{count} 件の返信",
+      "like_count": "{count} 件のいいね",
+      "repost_count": "{count} 件のリポスト",
+      "more_replies": "さらに{count}件の返信…"
+    }
+  },
   "settings": {
     "title": "設定",
     "tagline": "npmxの体験をカスタマイズ",
@@ -84,7 +237,8 @@
       "appearance": "外観",
       "display": "表示",
       "search": "データソース",
-      "language": "言語"
+      "language": "言語",
+      "keyboard_shortcuts": "キーボードショートカット"
     },
     "data_source": {
       "label": "データソース",
@@ -94,21 +248,47 @@
       "algolia": "Algolia",
       "algolia_description": "Algoliaを使用して検索、organization、ユーザーページをより高速に取得します。"
     },
+    "instant_search": "インスタント検索",
+    "instant_search_description": "タイピング中に検索ページに移動し、検索結果を更新します。",
     "relative_dates": "日付を相対表記",
-    "include_types": "インストール時に {'@'}types を含める",
-    "include_types_description": "型定義のないパッケージのインストールコマンドに {'@'}types パッケージを追加します",
+    "include_types": "インストール時に{'@'}typesを含める",
+    "include_types_description": "型定義のないパッケージのインストールコマンドに{'@'}typesパッケージを追加します",
     "hide_platform_packages": "検索でプラットフォーム固有のパッケージを非表示",
-    "hide_platform_packages_description": "検索結果から {'@'}esbuild/linux-x64 のようなネイティブバイナリパッケージを非表示にします",
+    "hide_platform_packages_description": "検索結果から{'@'}esbuild/linux-x64のようなネイティブバイナリパッケージを非表示にします",
+    "enable_graph_pulse_loop": "ミニグラフのパルス効果のループを有効化",
+    "enable_graph_pulse_loop_description": "週間ダウンロードグラフで連続したパルスアニメーションを有効にします。このアニメーションは一部のユーザーにとって煩わしく感じられる場合があります。",
     "theme": "テーマ",
     "theme_light": "ライト",
     "theme_dark": "ダーク",
     "theme_system": "システム",
     "language": "言語",
     "help_translate": "npmxの翻訳に協力する",
-    "accent_colors": "アクセントカラー",
+    "translation_status": "全体の翻訳状況を確認",
+    "accent_colors": {
+      "label": "アクセントカラー",
+      "neutral": "ニュートラル",
+      "sky": "スカイ",
+      "coral": "コーラル",
+      "amber": "アンバー",
+      "emerald": "エメラルド",
+      "violet": "バイオレット",
+      "magenta": "マゼンタ"
+    },
     "clear_accent": "アクセントカラーをクリア",
     "translation_progress": "翻訳の進捗状況",
-    "background_themes": "背景シェード"
+    "background_themes": {
+      "label": "背景シェード",
+      "neutral": "ニュートラル",
+      "stone": "ストーン",
+      "zinc": "ジンク",
+      "slate": "スレート",
+      "black": "ブラック"
+    },
+    "keyboard_shortcuts_enabled": "キーボードショートカットを有効化",
+    "keyboard_shortcuts_enabled_description": "ブラウザやシステムのショートカットと競合する場合、キーボードショートカットを無効化できます",
+    "enable_code_ligatures": "コードのリガチャを有効化",
+    "enable_changelog_autoscroll": "要求されたバージョンへ自動スクロール",
+    "enable_changelog_autoscroll_description": "パッケージのchangelogで要求されたバージョン（またはその付近）まで自動スクロール"
   },
   "i18n": {
     "missing_keys": "{count} 件の未翻訳項目",
@@ -117,6 +297,13 @@
     "contribute_hint": "不足しているキーを追加して翻訳の改善にご協力ください。",
     "edit_on_github": "GitHubで編集",
     "view_guide": "翻訳ガイド"
+  },
+  "error": {
+    "401": "認証エラー",
+    "404": "ページが見つかりません",
+    "500": "内部サーバーエラー",
+    "503": "サービスが利用できません",
+    "default": "問題が発生しました"
   },
   "common": {
     "loading": "読み込み中...",
@@ -132,26 +319,63 @@
     "skip_link": "メインコンテンツにスキップ",
     "warnings": "警告:",
     "go_back_home": "ホームへ戻る",
-    "view_on_npm": "npmで表示",
     "per_week": "/ 週",
-    "vanity_downloads_hint": "バニティ番号: パッケージが表示されていません | バニティ番号: 表示されているパッケージの数値 | バニティ番号: 表示されている {count} 個のパッケージの合計",
+    "per_week_short": "/週",
+    "vanity_downloads_hint": "バニティ番号: パッケージが表示されていません|バニティ番号: 表示されているパッケージの数値|バニティ番号: 表示されている {count} 個のパッケージの合計",
     "sort": {
       "name": "名前",
       "role": "ロール",
       "members": "メンバー"
     },
-    "scroll_to_top": "トップへ戻る"
+    "scroll_to_top": "トップへ戻る",
+    "cancel": "キャンセル",
+    "save": "保存",
+    "edit": "編集",
+    "error": "エラー",
+    "view_on": {
+      "npm": "npmで表示",
+      "github": "GitHubで表示",
+      "gitlab": "GitLabで表示",
+      "bitbucket": "Bitbucketで表示",
+      "codeberg": "Codebergで表示",
+      "git_repo": "Gitリポジトリで表示",
+      "forgejo": "Forgejoで表示",
+      "gitea": "Giteaで表示",
+      "gitee": "Giteeで表示",
+      "radicle": "Radicleで表示",
+      "socket_dev": "socket.devで表示",
+      "sourcehut": "SourceHutで表示",
+      "tangled": "Tangledで表示"
+    },
+    "collapse": "折りたたむ",
+    "collapse_with_name": "{name} を折りたたむ",
+    "expand": "展開",
+    "expand_with_name": "{name} を展開"
+  },
+  "profile": {
+    "display_name": "表示名",
+    "description": "説明",
+    "no_description": "説明なし",
+    "website": "ウェブサイト",
+    "website_placeholder": "https://example.com",
+    "likes": "いいね",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "{handle} のnpmxプロフィール",
+    "not_found": "プロフィールが見つかりません",
+    "not_found_message": "{handle} のプロフィールは見つかりませんでした。",
+    "invite": {
+      "message": "まだnpmxを利用していないようです。npmxを紹介しますか？",
+      "share_button": "Blueskyで共有",
+      "compose_text": "{'@'}{handle} さん、npmx.devはもうチェックしましたか？ 高速でモダンなオープンソースのnpmレジストリブラウザです。\nhttps://npmx.dev"
+    }
   },
   "package": {
     "not_found": "パッケージが見つかりません",
     "not_found_message": "パッケージが見つかりませんでした。",
     "no_description": "説明はありません",
-    "not_latest": "（最新ではありません）",
     "verified_provenance": "検証済みprovenance",
-    "view_permalink": "このバージョンのパーマリンクを表示",
     "navigation": "パッケージナビゲーション",
     "copy_name": "パッケージ名をコピー",
-    "copy_version": "パッケージのバージョンをコピー",
     "deprecation": {
       "package": "このパッケージは非推奨になりました。",
       "version": "このバージョンは非推奨になりました。",
@@ -164,16 +388,21 @@
       "size": "インストールサイズが {percent} 増加（{size} 増）",
       "deps": "依存関係が {count} 件増加"
     },
+    "size_decrease": {
+      "title_size": "v{version} 以降、パッケージサイズが減少しました！",
+      "title_deps": "v{version} 以降、依存関係の数が減少しました！",
+      "title_both": "v{version} 以降、パッケージサイズと依存関係の数が減少しました！",
+      "size": "インストールサイズが {percent} ({size}) 減少",
+      "deps": "依存関係が {count} 個減少"
+    },
     "replacement": {
       "title": "この依存関係は不要な可能性があります。",
+      "example": "例:",
       "native": "これは Node {nodeVersion} 以降で利用可能な {replacement} で置き換え可能です。",
-      "simple": "{community} はこのパッケージを冗長としてフラグを立てており、次のアドバイスがあります: {replacement}",
-      "documented": "{community} により、このパッケージにはよりパフォーマンスの高い代替手段があることが報告されています。",
+      "native_no_version": "このパッケージは {replacement} で置き換え可能です。",
       "none": "このパッケージは不要になったとフラグが立てられています。その機能はすべてのエンジンでネイティブに利用できる可能性があります。",
       "learn_more": "詳細はこちら",
       "learn_more_above": "詳細は上記を確認してください。",
-      "mdn": "MDN",
-      "community": "コミュニティ",
       "consider_no_dep": "+ 依存関係なしを検討しますか？"
     },
     "stats": {
@@ -205,9 +434,11 @@
         "refs": "{count} 個の参照",
         "assets": "{count} 個のアセット"
       },
-      "view_source": "ソースを表示"
+      "view_source": "ソースを表示",
+      "skills_cli": "skills CLI"
     },
     "links": {
+      "main": "メイン",
       "repo": "リポジトリ",
       "homepage": "ホームページ",
       "issues": "issues",
@@ -215,15 +446,28 @@
       "code": "コード",
       "docs": "ドキュメント",
       "fund": "資金援助",
-      "compare": "比較"
+      "compare": "比較",
+      "timeline": "タイムライン",
+      "compare_this_package": "このパッケージを比較",
+      "changelog": "changelog"
     },
     "likes": {
       "like": "このパッケージをいいねする",
-      "unlike": "このパッケージのいいねを解除する"
+      "unlike": "このパッケージのいいねを解除する",
+      "top_rank_tooltip": "このパッケージはnpmxで最も「いいね」されている上位10パッケージの一つです！ (#{rank})",
+      "top_rank_label": "#{rank}",
+      "top_rank_link_label": "いいねリーダーボードを表示。このパッケージは #{rank} 位です。"
     },
     "docs": {
+      "contents": "目次",
+      "default_not_available": "このバージョンではドキュメントを利用できません。",
       "not_available": "ドキュメントは利用できません",
-      "not_available_detail": "このバージョンのドキュメントを生成できませんでした。"
+      "not_available_detail": "このバージョンのドキュメントを生成できませんでした。",
+      "page_title": "API ドキュメント - npmx",
+      "page_title_name": "{name} ドキュメント - npmx",
+      "page_title_version": "{name} ドキュメント - npmx",
+      "og_title": "{name} - ドキュメント",
+      "view_package": "パッケージを表示"
     },
     "get_started": {
       "title": "はじめに",
@@ -245,7 +489,6 @@
     "readme": {
       "title": "Readme",
       "no_readme": "READMEはありません。",
-      "view_on_github": "GitHubで表示",
       "toc_title": "目次",
       "callout": {
         "note": "メモ",
@@ -254,7 +497,8 @@
         "warning": "警告",
         "caution": "注意"
       },
-      "copy_as_markdown": "READMEをMarkdownとしてコピーする"
+      "copy_as_markdown": "READMEをMarkdownとしてコピーする",
+      "error_loading": "READMEの詳細の読み込みに失敗しました"
     },
     "provenance_section": {
       "title": "Provenance",
@@ -284,7 +528,9 @@
       "published": "公開済み",
       "weekly_downloads": "週間ダウンロード数",
       "keywords": "キーワード",
-      "license": "ライセンス"
+      "license": "ライセンス",
+      "select": "パッケージを選択",
+      "select_maximum": "最大 {count} 個のパッケージを選択できます"
     },
     "versions": {
       "title": "バージョン",
@@ -299,18 +545,20 @@
       "all_covered": "すべてのバージョンが上記のタグに含まれています",
       "deprecated_title": "{version}（非推奨）",
       "view_all": "{count} 個のバージョンを表示|{count} 個のすべてのバージョンを表示",
+      "view_all_versions": "すべてのバージョンを表示",
       "distribution_title": "Semverグループ",
-      "distribution_modal_title": "バージョン",
       "distribution_range_date_same_year": "{endYear} 年 {from} から {to}",
       "distribution_range_date_multiple_years": "{startYear} 年 {from} から {endYear} 年 {to}",
       "grouping_major": "メジャー",
       "grouping_minor": "マイナー",
       "grouping_versions_title": "バージョン",
+      "grouping_versions_about": "バージョンのグループ化について",
       "grouping_versions_all": "すべて",
       "grouping_versions_only_recent": "直近のみ",
       "grouping_usage_title": "使用状況",
+      "grouping_usage_about": "使用状況のグループ化について",
       "grouping_usage_all": "すべて",
-      "grouping_usage_low": "低",
+      "grouping_usage_most_used": "最多使用",
       "recent_versions_only_tooltip": "過去1年以内に公開されたバージョンのみ表示します。",
       "show_low_usage_tooltip": "総ダウンロード数の1%未満のバージョングループも含めます。",
       "y_axis_label": "ダウンロード",
@@ -319,10 +567,45 @@
       "filter_help": "semver範囲フィルタのヘルプ",
       "filter_tooltip": "{link} を使ってバージョンを絞り込みます。例えば、^3.0.0は3.xのすべてのバージョンを表示します。",
       "filter_tooltip_link": "semver範囲",
+      "license_change_help": "ライセンス変更の詳細",
+      "license_change_warning": "前のバージョンからライセンスが変更されています。",
+      "license_change_record": "このパッケージのライセンスが「{from}」から「{to}」に変更されました。",
       "no_matches": "この範囲に一致するバージョンはありません",
       "copy_alt": {
         "per_version_analysis": "バージョン {version} は {downloads} 回ダウンロードされました",
         "general_description": "{package_name} パッケージの {versions_count} 個の {semver_grouping_mode} バージョンにおけるバージョン別ダウンロード数を示す棒グラフ。期間は {date_range_label}（{first_version} から {last_version} まで）。最多ダウンロードはバージョン {max_downloaded_version} で {max_version_downloads} 回。{per_version_analysis}。{watermark}。"
+      },
+      "page_title": "バージョン履歴",
+      "current_tags": "現在のタグ",
+      "no_match_filter": "{filter} に一致するバージョンはありません"
+    },
+    "timeline": {
+      "load_more": "さらに読み込む",
+      "load_error": "タイムラインの読み込みに失敗しました。後で再試行してください。",
+      "size_increase": "インストールサイズが {percent}% ({size}) 増加",
+      "size_decrease": "インストールサイズが {percent}% ({size}) 減少",
+      "dep_increase": "依存関係を {count} 個追加",
+      "dep_decrease": "依存関係を {count} 個削除",
+      "license_change": "ライセンスを {from} から {to} に変更",
+      "esm_added": "モジュールタイプをESMに変更",
+      "esm_removed": "モジュールタイプをESMからCJSに変更",
+      "types_added": "TypeScript型定義を追加",
+      "types_removed": "TypeScript型定義を削除",
+      "trusted_publisher_added": "Trusted publishingを有効化",
+      "trusted_publisher_removed": "Trusted publishingを削除",
+      "provenance_added": "Provenanceを有効化",
+      "provenance_removed": "Provenanceを削除",
+      "chart": {
+        "tab_aria_label": "メトリクスの選択",
+        "base_scale": "Y軸を0から開始",
+        "zoom": "ズーム",
+        "reset_minimap": "ミニマップをリセット",
+        "ordered_versions": "安定版のみ",
+        "copy_alt": {
+          "key_changes": "主な変更: {version_events}",
+          "version_events": "バージョン {version}: {events}",
+          "general_description": "パッケージ {package} の {metric} をバージョン {first} から {last} まで示すラインチャート。{first} 時の {metric} は {first_value}、{last} 時は {last_value} (全体で {overall_progress_percentage}% 変化) です。{key_changes} {watermark}。"
+        }
       }
     },
     "dependencies": {
@@ -334,7 +617,8 @@
       "outdated_major": "最新から {count} 個のメジャーバージョン遅れています (最新: {latest})",
       "outdated_minor": "最新から {count} 個のマイナーバージョン遅れています (最新: {latest})",
       "outdated_patch": "パッチアップデートがあります (最新: {latest})",
-      "has_replacement": "この依存関係には代替の候補があります"
+      "has_replacement": "この依存関係には代替の候補があります",
+      "vulnerabilities_count": "{count} 件の脆弱性"
     },
     "peer_dependencies": {
       "title": "ピア依存関係（{count}）",
@@ -358,9 +642,19 @@
       "cancel_add": "ownerの追加をキャンセル",
       "add_owner": "+ ownerを追加",
       "show_more": "（他 {count} 個を表示）",
-      "show_less": "（表示を減らす）"
+      "show_less": "（表示を減らす）",
+      "maintainer_template": "{avatar} {char126}{name}"
     },
     "trends": {
+      "chart_assistive_text": {
+        "keyboard_navigation_horizontal": "左右の矢印キーでデータポイントを移動できます。",
+        "keyboard_navigation_vertical": "上下の矢印キーでデータポイントを移動できます。",
+        "table_available": "このチャートのデータテーブルを以下で利用できます。",
+        "table_caption": "チャートデータテーブル"
+      },
+      "chart_view_toggle": "表示の切り替え",
+      "chart_view_combined": "結合ビュー",
+      "chart_view_split": "分割ビュー",
       "granularity": "粒度",
       "granularity_daily": "日次",
       "granularity_weekly": "週次",
@@ -374,22 +668,23 @@
       "download_file": "{fileType} をダウンロード",
       "toggle_annotator": "アノテーターを切り替え",
       "toggle_stack_mode": "スタックモードを切り替え",
+      "open_options": "オプションを開く",
+      "close_options": "オプションを閉じる",
       "legend_estimation": "推定値",
       "no_data": "データがありません",
       "y_axis_label": "{granularity} {facet}",
       "facet": "指標",
       "title": "トレンド",
-      "contributors_skip": "コントリビューターには表示されません (GitHubリポジトリなし):",
+      "contributors_skip": "コントリビューターには表示されません（GitHubリポジトリなし）:",
       "items": {
         "downloads": "ダウンロード数",
         "likes": "いいね数",
         "contributors": "コントリビューター"
       },
-      "play_animation": "アニメーション再生",
-      "pause_animation": "アニメーション停止",
       "data_correction": "データ補正",
       "average_window": "平均ウィンドウ",
       "smoothing": "スムージング",
+      "prediction": "予測値",
       "known_anomalies": "既知のアノマリー",
       "known_anomalies_description": "ボットやCIの問題による既知のダウンロードスパイクを補完します。",
       "known_anomalies_ranges": "アノマリー範囲",
@@ -410,12 +705,17 @@
         "estimations": "最終値は、現在の期間の部分的データに基づく推定値です。",
         "compare": "パッケージダウンロード比較折れ線グラフ: {packages}",
         "single_package": "{package} パッケージのダウンロード折れ線グラフ",
-        "general_description": "Y軸はダウンロード数、X軸は {start_date} から {end_date} までの期間（単位：{granularity}）を示します。{estimation_notice} {packages_analysis}。{watermark}。"
+        "general_description": "Y軸はダウンロード数、X軸は {start_date} から {end_date} までの期間（単位：{granularity}）を示します。{estimation_notice} {packages_analysis}。{watermark}。",
+        "facet_bar_general_description": "{packages} の横棒グラフ: {facet} の比較 ({description})。{facet_analysis} {watermark}。",
+        "facet_bar_analysis": "{package_name} の値は {value} です。"
       }
     },
     "downloads": {
       "title": "週間ダウンロード数",
-      "community_distribution": "コミュニティの採用分布を表示"
+      "version_distribution_title": "バージョン {version} の週間ダウンロード数",
+      "community_distribution": "コミュニティの採用分布を表示",
+      "subtitle": "全バージョン合計",
+      "sparkline_nav_hint": "← → キーを使用してください"
     },
     "install_scripts": {
       "title": "インストールスクリプト",
@@ -431,6 +731,7 @@
       "esm": "ESモジュール対応",
       "cjs": "CommonJS対応",
       "no_esm": "ESモジュール非対応",
+      "wasm": "WebAssemblyを含む",
       "types_label": "型定義",
       "types_included": "型定義同梱",
       "types_available": "{package} 経由で型定義を利用可能",
@@ -504,14 +805,25 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
+    },
+    "download": {
+      "button": "ダウンロード",
+      "tarball": "Tarball (.tar.gz) をダウンロード"
+    }
+  },
+  "leaderboard": {
+    "likes": {
+      "title": "いいねリーダーボード",
+      "description": "現在npmxで最も「いいね」されている10パッケージ。",
+      "rank": "順位",
+      "likes": "いいね数",
+      "unavailable_title": "リーダーボードはまだありません",
+      "unavailable_description": "現在表示できるいいねリーダーボードはありません。"
     }
   },
   "connector": {
     "modal": {
       "title": "ローカルコネクタ",
-      "contributor_badge": "コントリビューター専用",
-      "contributor_notice": "コネクタはまだ npm に公開されていません。ローカルでの実行方法については {link} を参照してください。",
-      "contributor_link": "コントリビューションガイド",
       "connected": "接続済み",
       "connected_as_user": "~{user} として接続済み",
       "connected_hint": "Web UIからパッケージとorganizationを管理できるようになりました。",
@@ -676,7 +988,7 @@
       "connect_required": "パッケージ名を取得するには、ローカルコネクタに接続してください。",
       "connect_button": "コネクタに接続",
       "publish_hint": "これにより、最小限のプレースホルダーパッケージが公開されます。",
-      "preview_json": "package.json をプレビュー",
+      "preview_json": "package.jsonをプレビュー",
       "claim_button": "パッケージ名を取得",
       "publishing": "公開中...",
       "checking": "空き状況を確認中...",
@@ -687,13 +999,15 @@
   "code": {
     "files_label": "ファイル",
     "no_files": "このディレクトリにファイルはありません",
-    "root": "ルート",
     "lines": "{count} 行",
     "toggle_tree": "ファイルツリーを切り替え",
     "close_tree": "ファイルツリーを閉じる",
+    "copy_content": "ファイル内容をコピー",
     "copy_link": "リンクをコピー",
-    "raw": "RAW",
     "view_raw": "RAWファイルを表示",
+    "toggle_container": "コードコンテナの幅を切り替え",
+    "open_raw_file": "RAWファイルを開く",
+    "open_path_dropdown": "パスセグメントのドロップダウンを開く",
     "file_too_large": "ファイルが大きすぎるためプレビューできません",
     "file_size_warning": "{size} は構文強調表示の制限である500KBを超えています",
     "failed_to_load": "ファイルの読み込みに失敗しました",
@@ -711,7 +1025,9 @@
       "preview": "プレビュー",
       "code": "コード"
     },
-    "file_path": "ファイルパス"
+    "file_path": "ファイルパス",
+    "binary_file": "バイナリファイル",
+    "binary_rendering_warning": "ファイルタイプ「{contentType}」はプレビューに対応していません。"
   },
   "badges": {
     "provenance": {
@@ -773,6 +1089,8 @@
       "secure": "警告なし",
       "insecure": "警告あり"
     },
+    "view_selected": "選択したものを表示",
+    "clear_selected_label": "選択を解除",
     "sort": {
       "label": "パッケージ一覧を並び替える",
       "toggle_direction": "並び順を切り替える",
@@ -784,11 +1102,7 @@
       "downloads_month": "ダウンロード数/月",
       "downloads_year": "ダウンロード数/年",
       "published": "最新の公開日",
-      "name": "パッケージ名",
-      "quality": "品質",
-      "popularity": "人気度",
-      "maintenance": "メンテナンス",
-      "score": "スコア"
+      "name": "パッケージ名"
     },
     "columns": {
       "title": "列",
@@ -802,11 +1116,8 @@
       "published": "最新の公開",
       "maintainers": "メンテナ",
       "keywords": "キーワード",
-      "quality_score": "品質スコア",
-      "popularity_score": "人気度スコア",
-      "maintenance_score": "メンテナンススコア",
-      "combined_score": "総合スコア",
-      "security": "セキュリティ"
+      "security": "セキュリティ",
+      "selection": "パッケージを選択"
     },
     "view_mode": {
       "label": "表示モード",
@@ -819,8 +1130,7 @@
       "paginated": "ページ分割",
       "items_per_page": "1ページあたりの項目数",
       "per_page": "{count} / ページ",
-      "all_yolo": "すべて表示 (YOLO)",
-      "showing": "{total} 件中 {start}-{end}",
+      "showing": "{total} 件中 {range}",
       "previous": "前のページ",
       "next": "次のページ",
       "nav_label": "ページネーション"
@@ -871,7 +1181,9 @@
     },
     "team": {
       "title": "チーム",
-      "governance": "ガバナンス",
+      "core": "コア",
+      "maintainers": "メンテナ",
+      "role_core": "コア",
       "role_steward": "スチュワード",
       "role_maintainer": "メンテナ",
       "sponsor": "スポンサー",
@@ -888,13 +1200,18 @@
       "title": "参加するには",
       "contribute": {
         "title": "貢献する",
-        "description": "より良いnpm体験の開発に協力してください。",
+        "description": "より良いnpm体験の開発に協力しましょう。",
         "cta": "GitHubで表示"
       },
       "community": {
         "title": "コミュニティに参加",
         "description": "チャット、質問、アイデアの共有。",
         "cta": "Discordに参加"
+      },
+      "builders": {
+        "title": "npmxの開発に参加",
+        "description": "npmxの未来を形作るビルダーたちに参加しましょう。",
+        "cta": "Builders Discordに参加"
       },
       "follow": {
         "title": "最新情報を入手",
@@ -928,7 +1245,8 @@
       "connect_bluesky": "Blueskyで接続",
       "what_is_atmosphere": "Atmosphereアカウントとは？",
       "atmosphere_explanation": "{npmx} は多くのソーシャル機能に {atproto} を利用しています。AT Protocolにより、ユーザーは自分自身のデータを所有し、1つのアカウントでAT Protocolに対応するすべてのアプリケーションを利用できるようになります。アカウントを作成すると、{bluesky} や {tangled} などの他のアプリでも同じアカウントを使用できます。",
-      "default_input_error": "有効なハンドル、DID、または完全なPDS URLを入力してください"
+      "default_input_error": "有効なハンドル、DID、または完全なPDS URLを入力してください",
+      "profile": "プロフィール"
     }
   },
   "header": {
@@ -948,7 +1266,8 @@
       "error": "organizationの読み込みに失敗しました",
       "empty": "organizationは見つかりませんでした",
       "view_all": "すべて表示"
-    }
+    },
+    "pr": "GitHubのPull Request #{prNumber} を開く"
   },
   "compare": {
     "packages": {
@@ -965,7 +1284,12 @@
       "loading": "パッケージデータを読み込み中...",
       "error": "パッケージデータの読み込みに失敗しました。もう一度お試しください。",
       "empty_title": "比較するパッケージを選択",
-      "empty_description": "上から検索から2つ以上のパッケージを追加すると、メトリクスを並べて比較できます。"
+      "empty_description": "上部の検索から2つ以上のパッケージを追加すると、メトリクスを並べて比較できます。",
+      "table_view": "テーブル",
+      "charts_view": "グラフ",
+      "no_chartable_data": "選択したファセットに使用可能なチャートデータがありません。",
+      "bar_chart_nav_hint": "↑ ↓ キーを使用",
+      "line_chart_nav_hint": "← → キーを使用"
     },
     "selector": {
       "search_label": "パッケージを検索",
@@ -975,6 +1299,17 @@
       "remove_package": "{package} を削除",
       "packages_selected": "{count}/{max} パッケージ選択中。",
       "add_hint": "比較するには少なくとも2つのパッケージを追加してください。"
+    },
+    "scatter_chart": {
+      "title": "{x} と {y} の比較",
+      "freshness_score": "フレッシュネススコア",
+      "copy_alt": {
+        "analysis": "{package} : {x_name} ({x_value}) および {y_name} ({y_value})",
+        "description": "{packages} パッケージの {x_name} 対 {y_name} の散布図。{analysis}。{watermark}"
+      },
+      "filename": "{x}-vs-{y}-scatter-chart",
+      "x_axis": "X軸 ↦",
+      "y_axis": "Y軸 ↥"
     },
     "no_dependency": {
       "label": "(依存関係なし)",
@@ -986,14 +1321,15 @@
       "add_column": "比較項目に「依存関係なし」カラムを追加"
     },
     "facets": {
-      "group_label": "比較項目",
       "all": "すべて",
       "none": "なし",
+      "select_all_category_facets": "すべての {category} ファセットを選択",
+      "deselect_all_category_facets": "{category} ファセットをすべて解除",
+      "selected_all_category_facets": "すべての {category} ファセットを選択しました",
+      "deselected_all_category_facets": "{category} ファセットをすべて解除しました",
       "coming_soon": "近日公開",
       "select_all": "すべての項目を選択",
       "deselect_all": "すべての項目の選択を解除",
-      "select_category": "{category} のすべての項目を選択",
-      "deselect_category": "{category} のすべての項目の選択を解除",
       "binary_only_tooltip": "このパッケージはバイナリのみを提供し、エクスポートを含みません",
       "categories": {
         "performance": "パフォーマンス",
@@ -1053,6 +1389,18 @@
         "vulnerabilities": {
           "label": "脆弱性",
           "description": "既知のセキュリティ脆弱性"
+        },
+        "githubStars": {
+          "label": "GitHub Stars",
+          "description": "GitHubリポジトリのスター数"
+        },
+        "githubIssues": {
+          "label": "GitHub Issues",
+          "description": "GitHubリポジトリのIssues数"
+        },
+        "createdAt": {
+          "label": "作成日",
+          "description": "パッケージが作成された日時"
         }
       },
       "values": {
@@ -1074,6 +1422,16 @@
     "files_count": "{count} ファイル",
     "lines_hidden": "{count} 行を非表示",
     "compare_versions": "diff",
+    "compare_versions_title": "最新バージョンと比較",
+    "comparing_versions_label": "バージョンを比較中...",
+    "version_back_to_package": "パッケージに戻る",
+    "version_error_message": "バージョンの比較に失敗しました。",
+    "version_invalid_url_format": {
+      "hint": "無効な比較URLです。形式: {0}",
+      "from_version": "比較元",
+      "to_version": "比較先"
+    },
+    "version_selector_title": "バージョンと比較",
     "summary": "要約",
     "deps_count": "依存関係 {count} 件",
     "dependencies": "依存関係",
@@ -1099,7 +1457,46 @@
     "files_button": "ファイル",
     "select_file_prompt": "サイドバーからファイルを選択してdiffを表示",
     "close_files_panel": "ファイルパネルを閉じる",
-    "filter_files_label": "変更タイプでファイルをフィルタリング"
+    "filter_files_label": "変更タイプでファイルをフィルタリング",
+    "change_ratio": "変更率",
+    "char_edits": "文字編集数",
+    "diff_distance": "差分距離",
+    "loading_diff": "差分を読み込み中...",
+    "loading_diff_error": "差分の読み込みに失敗しました",
+    "merge_modified_lines": "変更行をマージ",
+    "no_content_changes": "コンテンツの変更は検出されませんでした",
+    "options": "オプション",
+    "view_file": "ファイルを表示",
+    "view_in_code_browser": "コードブラウザで表示",
+    "word_wrap": "右端で折り返す"
+  },
+  "pds": {
+    "title": "npmx.social",
+    "meta_description": "npmxコミュニティ向けのnpmx公式ATプロトコル パーソナルデータサーバー（PDS）",
+    "join": {
+      "title": "コミュニティに参加",
+      "description": "Atmosphereで最初の書き込みを行う場合も、既存のアカウントを移行する場合も、ここがあなたの居場所です。あなたのハンドル名、投稿、フォロワーを失うことなく現在のアカウントから移行できます。",
+      "migrate": "PDS MOOverで移行する"
+    },
+    "server": {
+      "title": "サーバーの詳細",
+      "location_label": "所在地:",
+      "location_value": "ドイツ、ニュルンベルク",
+      "infrastructure_label": "インフラストラクチャ:",
+      "infrastructure_value": "Hetznerでホスト",
+      "privacy_label": "プライバシー:",
+      "privacy_value": "厳格なEUデータ保護法を適用",
+      "learn_more": "npmxによるAtmosphereの活用方法について学ぶ"
+    },
+    "community": {
+      "title": "参加メンバー",
+      "description": "すでにnpmx.socialを拠点としている {count} アカウントの一部:",
+      "loading": "PDSコミュニティを読み込み中...",
+      "error": "PDSコミュニティの読み込みに失敗しました。",
+      "empty": "表示できるコミュニティメンバーはいません。",
+      "view_profile": "{handle} のプロフィールを表示",
+      "new_accounts": "...さらに、Atmosphereに新しく参加した {count} 名"
+    }
   },
   "privacy_policy": {
     "title": "プライバシーポリシー",
@@ -1210,5 +1607,130 @@
       "p1": "{app} でアクセシビリティ上のバリアを見つけた場合は、{link} でissueを作成して連絡してください。報告は真剣に受け止め、問題を解決するためにできる限り対応します。",
       "link": "GitHubリポジトリ"
     }
+  },
+  "translation_status": {
+    "title": "翻訳状況",
+    "generated_at": "生成日: {date}",
+    "welcome": "あなたが {npmx} の翻訳に興味があるのだとしたら、ここは最適な場所です！このページは自動的に更新され、あなたが今すぐ翻訳に協力できるすべてのコンテンツがリスト化されています。",
+    "p1": "npmx はデフォルト言語として {lang} を使用しており、合計 {count} 件あります。翻訳に協力したい場合は、{bylang} から言語を探して、詳細情報を展開してください。",
+    "p1_lang": "アメリカ英語 (en-US)",
+    "p1_count": "0 メッセージ | 1 メッセージ | {count} メッセージ",
+    "p2": "開始する前に、翻訳プロセスと参加方法について説明した {guide} を読んでください。",
+    "guide": "ローカライズ (i18n) ガイド",
+    "by_locale": "言語別の翻訳進捗",
+    "by_file": "ファイル別の翻訳進捗",
+    "complete_text": "この言語の翻訳は完了しています。素晴らしい！",
+    "missing_text": "未翻訳",
+    "missing_keys": "未翻訳はありません | 未翻訳 1 件 | 未翻訳 {count} 件",
+    "progress_label": "{locale} の進捗状況",
+    "table": {
+      "file": "ファイル",
+      "status": "ステータス",
+      "error": "ファイルリストの読み込み中にエラーが発生しました。",
+      "empty": "ファイルが見つかりません",
+      "file_link": "GitHubで {file} ({lang}) を編集"
+    }
+  },
+  "vacations": {
+    "title": "on vacation",
+    "meta_description": "The npmx team was recharging. Discord reopened after a week.",
+    "heading": "recharging",
+    "subtitle": "we were building npmx at a pace that was costing {some} of us sleep. we didn't want that to be the norm! so we took a week off. together.",
+    "illustration_alt": "a single row of cosy icons",
+    "poke_log": "Poke the campfire",
+    "what": {
+      "title": "what happened",
+      "p1": "discord was closed {dates}.",
+      "dates": "February 14 – 21",
+      "p2": "all invite links were gone and channels were locked – except {garden}, which stayed open for folks who wanted to keep hanging out.",
+      "garden": "#garden"
+    },
+    "meantime": {
+      "title": "in the meantime",
+      "p1": "{site} and {repo} stayed open – people still dug in, filed some issues, opened a few PRs, but mainly everyone spent time somewhere near a cosy fireplace.",
+      "repo_link": "the repo"
+    },
+    "return": {
+      "title": "we came back!",
+      "p1": "we came back recharged and ready for the final push to March 3rd. {social} for updates.",
+      "social_link": "follow us on Bluesky"
+    },
+    "stats": {
+      "contributors": "Contributors",
+      "commits": "Commits",
+      "pr": "PRs Merged",
+      "subtitle": {
+        "some": "some",
+        "all": "all"
+      }
+    }
+  },
+  "action_bar": {
+    "title": "アクションバー",
+    "selection": "0 選択済み | 1 選択済み | {count} 選択済み",
+    "shortcut": "「{key}」を押してアクションにフォーカス",
+    "button_close_aria_label": "アクションバーを閉じる"
+  },
+  "logo_menu": {
+    "copy_svg": "ロゴを SVG としてコピー",
+    "copied": "コピーしました！",
+    "browse_brand": "ブランドキットを見る"
+  },
+  "brand": {
+    "title": "ブランド",
+    "heading": "ブランド",
+    "meta_description": "報道・メディア向けのnpmxブランドガイドライン、ロゴ、カラー、タイポグラフィ。",
+    "intro": "プロジェクト、記事、メディアでnpmxブランドを使用するためのリソースとガイドライン。",
+    "logos": {
+      "title": "ロゴ",
+      "description": "npmxロゴをSVGおよびPNG形式でダウンロードできます。背景に合わせて適切なバリアントを使用してください。",
+      "wordmark": "フルワードマーク",
+      "wordmark_alt": "ダーク背景の青いスラッシュ付きnpmxフルワードマークロゴ",
+      "wordmark_light_alt": "ライト背景のアクセントスラッシュ付きnpmxフルワードマークロゴ",
+      "mark": "ロゴマーク",
+      "mark_alt": "ダーク背景のドットとスラッシュ付きnpmxロゴマーク",
+      "mark_light_alt": "ライト背景のドットとスラッシュ付きnpmxロゴマーク",
+      "on_dark": "ダーク背景用",
+      "on_light": "ライト背景用",
+      "download_svg": "SVG",
+      "download_png": "PNG",
+      "download_svg_aria": "{name} をSVGとしてダウンロード",
+      "download_png_aria": "{name} をPNGとしてダウンロード"
+    },
+    "customize": {
+      "title": "ロゴのカスタマイズ",
+      "description": "アクセントカラーと背景を使用してnpmxロゴをプレビューできます。プレビューには現在の設定が反映されます。色を選択し、背景を切り替えてダウンロードしてください。",
+      "accent_label": "アクセント",
+      "bg_label": "背景",
+      "download_svg_aria": "カスタマイズしたロゴをSVGとしてダウンロード",
+      "download_png_aria": "カスタマイズしたロゴをPNGとしてダウンロード"
+    },
+    "typography": {
+      "title": "タイポグラフィ",
+      "description": "npmxはインターフェースのテキストとコードの両方にVercelのGeistフォントファミリーを使用しています。",
+      "sans": "Geist Sans",
+      "sans_desc": "本文やUI要素に使用されます。",
+      "mono": "Geist Mono",
+      "mono_desc": "コード、見出し、技術的なコンテンツに使用されます。",
+      "pangram": "The quick brown fox jumps over the lazy dog",
+      "numbers": "0123456789"
+    },
+    "guidelines": {
+      "title": "注意点",
+      "message": "私たちにとってアクセシビリティはとても重要です。あなたもこのビジョンにぜひ協力してください。メディアを使用する際は、背景に対して十分なコントラストを確保し、24px未満にならないようにしてください。その他のリソースやプロジェクトに関する追加情報が必要な場合は、{link}までご連絡ください。",
+      "discord_link_text": "chat.npmx.dev"
+    }
+  },
+  "alt_logo_kawaii": "npmxロゴのキュートで丸みのあるカラフルなバージョン",
+  "changelog": {
+    "pre_release": "プレリリース",
+    "draft": "下書き",
+    "no_logs": "このパッケージはchangelogを公開していないか、形式がサポートされていません。",
+    "error": {
+      "p1": "{package} のchangelogを読み込めませんでした",
+      "p2": "後でもう一度試すか、{viewon} を確認してください"
+    },
+    "rate_limit_ungh": "GitHubのレート制限に達しました。しばらくしてから再度試してください。",
+    "version_unavailable": "リクエストされたバージョンは利用できません。"
   }
 }

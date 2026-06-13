@@ -10,10 +10,14 @@ const props = withDefaults(
      * `type` should never be used, because this will always be a link.
      * */
     type?: never
+    /** Visual style of the link */
     variant?: 'button-primary' | 'button-secondary' | 'link'
-    size?: 'small' | 'medium'
+    /** Size (only applicable for button variants) */
+    size?: 'sm' | 'md'
+    /** Makes the link take full width */
     block?: boolean
 
+    /** Keyboard shortcut hint */
     ariaKeyshortcuts?: string
 
     /**
@@ -26,8 +30,10 @@ const props = withDefaults(
      */
     rel?: never
 
+    /** Icon class to display */
     classicon?: IconClass
 
+    /** Link destination (internal or external URL) */
     to?: NuxtLinkProps['to']
 
     /** always use `to` instead of `href` */
@@ -37,11 +43,12 @@ const props = withDefaults(
     noUnderline?: boolean
 
     /**
+     * Hide external link icon (deprecated)
      * @deprecated @todo remove this property and add separate clean component without this logic
      */
     noNewTabIcon?: boolean
   }>(),
-  { variant: 'link', size: 'medium' },
+  { variant: 'link', size: 'md' },
 )
 
 const isLinkExternal = computed(
@@ -57,8 +64,8 @@ const isLinkAnchor = computed(
 /** size is only applicable for button like links */
 const isLink = computed(() => props.variant === 'link')
 const isButton = computed(() => !isLink.value)
-const isButtonSmall = computed(() => props.size === 'small' && !isLink.value)
-const isButtonMedium = computed(() => props.size === 'medium' && !isLink.value)
+const isButtonSmall = computed(() => props.size === 'sm' && !isLink.value)
+const isButtonMedium = computed(() => props.size === 'md' && !isLink.value)
 const slots = useSlots()
 const iconOnly = computed(() => !!props.classicon && !slots.default)
 const keyboardShortcutsEnabled = useKeyboardShortcuts()
@@ -67,10 +74,11 @@ const keyboardShortcutsEnabled = useKeyboardShortcuts()
 <template>
   <span
     v-if="disabled"
+    aria-disabled="true"
     :class="{
       'flex': block,
       'inline-flex': !block,
-      'opacity-50 gap-x-1 items-center justify-center font-mono border border-transparent rounded-md':
+      'gap-x-1 items-center justify-center font-mono border border-transparent rounded-md':
         isButton,
       'text-sm py-2': isButtonMedium && !iconOnly,
       'text-sm p-2': isButtonMedium && !!iconOnly,
@@ -80,8 +88,8 @@ const keyboardShortcutsEnabled = useKeyboardShortcuts()
       'text-xs p-0.5': isButtonSmall && !!iconOnly,
       'px-2': isButtonSmall && !classicon && !iconOnly,
       'ps-1.5 pe-2': isButtonSmall && !!classicon && !iconOnly,
-      'text-bg bg-fg': variant === 'button-primary',
-      'bg-transparent text-fg': variant === 'button-secondary',
+      'text-bg bg-fg-muted': variant === 'button-primary',
+      'bg-transparent text-fg-muted': variant === 'button-secondary',
     }"
     ><slot
   /></span>
@@ -131,7 +139,7 @@ const keyboardShortcutsEnabled = useKeyboardShortcuts()
     <kbd
       v-if="keyboardShortcutsEnabled && ariaKeyshortcuts"
       data-kbd-hint
-      class="ms-2 inline-flex items-center justify-center size-4 text-xs text-fg bg-bg-muted border border-border rounded no-underline"
+      class="ms-2 hidden sm:inline-flex items-center justify-center size-4 text-xs text-fg bg-bg-muted border border-border rounded no-underline"
       aria-hidden="true"
     >
       {{ ariaKeyshortcuts }}

@@ -1,0 +1,38 @@
+# https://docs.zizmor.sh/
+name: zizmor
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  merge_group:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.sha }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  zizmor:
+    name: 🌈 GitHub Actions security analysis
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read # checkout repository
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - uses: zizmorcore/zizmor-action@b1d7e1fb5de872772f31590499237e7cce841e8e # v0.5.3
+        with:
+          persona: pedantic
+          # Use annotations instead of SARIF as this doesn't need special permissions
+          annotations: true
+          advanced-security: false

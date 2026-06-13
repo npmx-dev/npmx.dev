@@ -1,18 +1,8 @@
 <script setup lang="ts">
-import type { PackageVersionInfo, SlimVersion } from '#shared/types'
 import { compare, validRange } from 'semver'
 import type { RouteLocationRaw } from 'vue-router'
+import type { TrustStatus } from 'packumeta'
 import { fetchAllPackageVersions } from '~/utils/npm/api'
-import { NPMX_DOCS_SITE } from '#shared/utils/constants'
-import {
-  buildVersionToTagsMap,
-  filterExcludedTags,
-  filterVersions,
-  getPrereleaseChannel,
-  getVersionGroupKey,
-  getVersionGroupLabel,
-  isSameVersionGroup,
-} from '~/utils/versions'
 
 const props = defineProps<{
   packageName: string
@@ -22,69 +12,7 @@ const props = defineProps<{
   selectedVersion?: string
 }>()
 
-const QUERY_MODAL_VALUE = 'versions'
-const chartModal = useModal('chart-modal')
-const hasDistributionModalTransitioned = shallowRef(false)
-const isDistributionModalOpen = shallowRef(false)
-let distributionModalFallbackTimer: ReturnType<typeof setTimeout> | null = null
-
-function clearDistributionModalFallbackTimer() {
-  if (distributionModalFallbackTimer) {
-    clearTimeout(distributionModalFallbackTimer)
-    distributionModalFallbackTimer = null
-  }
-}
-
-const router = useRouter()
 const route = useRoute()
-
-async function openDistributionModal() {
-  isDistributionModalOpen.value = true
-  hasDistributionModalTransitioned.value = false
-  // ensure the component renders before opening the dialog
-  await nextTick()
-  chartModal.open()
-
-  await router.replace({
-    query: {
-      ...route.query,
-      modal: QUERY_MODAL_VALUE,
-    },
-  })
-
-  // Fallback: Force mount if transition event doesn't fire
-  clearDistributionModalFallbackTimer()
-  distributionModalFallbackTimer = setTimeout(() => {
-    if (!hasDistributionModalTransitioned.value) {
-      hasDistributionModalTransitioned.value = true
-    }
-  }, 500)
-}
-
-function closeDistributionModal() {
-  isDistributionModalOpen.value = false
-
-  router.replace({
-    query: {
-      ...route.query,
-      modal: undefined,
-    },
-  })
-
-  hasDistributionModalTransitioned.value = false
-  clearDistributionModalFallbackTimer()
-}
-
-onMounted(() => {
-  if (route.query.modal === QUERY_MODAL_VALUE) {
-    openDistributionModal()
-  }
-})
-
-function handleDistributionModalTransitioned() {
-  hasDistributionModalTransitioned.value = true
-  clearDistributionModalFallbackTimer()
-}
 
 /** Maximum number of dist-tag rows to show before collapsing into "Other versions" */
 const MAX_VISIBLE_TAGS = 10
@@ -94,7 +22,7 @@ interface VersionDisplay {
   version: string
   time?: string
   tags?: string[]
-  hasProvenance: boolean
+  trustStatus?: TrustStatus
   deprecated?: string
 }
 
@@ -102,6 +30,16 @@ interface VersionDisplay {
 function versionRoute(version: string): RouteLocationRaw {
   return packageRoute(props.packageName, version)
 }
+
+const distributionRoute = computed(() => {
+  if (route.name === 'stats') return null
+  const version = effectiveCurrentVersion.value || props.distTags.latest
+  if (!version) return null
+  return packageStatsRoute(props.packageName, version, '#distribution')
+})
+
+// Route to the full versions history page
+const versionsPageRoute = computed(() => packageVersionsRoute(props.packageName))
 
 // Version to tags lookup (supports multiple tags per version)
 const versionToTags = computed(() => buildVersionToTagsMap(props.distTags))
@@ -112,6 +50,22 @@ const effectiveCurrentVersion = computed(
 
 // Semver range filter
 const semverFilter = ref('')
+
+// Load all versions when a valid semver filter is entered
+watch(semverFilter, async newFilter => {
+  const trimmed = newFilter.trim()
+  if (trimmed === '' || hasLoadedAll.value) return
+  if (!validRange(trimmed)) return
+
+  try {
+    const allVersions = await loadAllVersions()
+    processLoadedVersions(allVersions)
+    // Auto-expand "Other versions" so filtered results are visible
+    otherVersionsExpanded.value = true
+  } catch {
+    // Silently fail — user can still use the filter with already-known versions
+  }
+})
 // Collect all known versions: initial props + dynamically loaded ones
 const allKnownVersions = computed(() => {
   const versions = new Set(Object.keys(props.versions))
@@ -171,9 +125,9 @@ const allTagRows = computed(() => {
         version,
         time: props.time[version],
         tags,
-        hasProvenance: versionData?.hasProvenance,
+        trustStatus: versionData?.trustStatus,
         deprecated: versionData?.deprecated,
-      } as VersionDisplay,
+      },
     }))
     .sort((a, b) => compare(b.primaryVersion.version, a.primaryVersion.version))
 })
@@ -193,17 +147,23 @@ const visibleTagRows = computed(() => {
     ? allTagRows.value
     : allTagRows.value.filter(row => !row.primaryVersion.deprecated)
   const rows = isFilterActive.value
-    ? rowsMaybeFilteredForDeprecation.filter(row =>
-        filteredVersionSet.value.has(row.primaryVersion.version),
+    ? rowsMaybeFilteredForDeprecation.filter(
+        row =>
+          filteredVersionSet.value.has(row.primaryVersion.version) ||
+          getTagVersions(row.tag).some(v => filteredVersionSet.value.has(v.version)),
       )
     : rowsMaybeFilteredForDeprecation
   const first = rows.slice(0, MAX_VISIBLE_TAGS)
-  const latestTagRow = rows.find(row => row.tag === 'latest')
-  // Ensure 'latest' tag is always included (at the end) if not already present
-  if (latestTagRow && !first.includes(latestTagRow)) {
-    first.pop()
-    first.push(latestTagRow)
+
+  // When no filter is active, ensure 'latest' is always shown (even if not fully loaded)
+  if (!isFilterActive.value) {
+    const latestTagRow = rows.find(row => row.tag === 'latest')
+    if (latestTagRow && !first.includes(latestTagRow)) {
+      first.pop()
+      first.push(latestTagRow)
+    }
   }
+
   return first
 })
 
@@ -212,7 +172,11 @@ const visibleTagRows = computed(() => {
 const hiddenTagRows = computed(() => {
   const hiddenRows = allTagRows.value.filter(row => !visibleTagRows.value.includes(row))
   const rows = isFilterActive.value
-    ? hiddenRows.filter(row => filteredVersionSet.value.has(row.primaryVersion.version))
+    ? hiddenRows.filter(
+        row =>
+          filteredVersionSet.value.has(row.primaryVersion.version) ||
+          getTagVersions(row.tag).some(v => filteredVersionSet.value.has(v.version)),
+      )
     : hiddenRows
   return rows
 })
@@ -307,7 +271,7 @@ function processLoadedVersions(allVersions: PackageVersionInfo[]) {
         version: v.version,
         time: v.time,
         tags: versionToTags.value.get(v.version),
-        hasProvenance: v.hasProvenance,
+        trustStatus: v.trustStatus,
         deprecated: v.deprecated,
       }))
 
@@ -334,7 +298,7 @@ function processLoadedVersions(allVersions: PackageVersionInfo[]) {
       version: v.version,
       time: v.time,
       tags: versionToTags.value.get(v.version),
-      hasProvenance: v.hasProvenance,
+      trustStatus: v.trustStatus,
       deprecated: v.deprecated,
     })
   }
@@ -424,11 +388,20 @@ function getTagVersions(tag: string): VersionDisplay[] {
   return tagVersions.value.get(tag) ?? []
 }
 
-// Get filtered versions for a tag (applies semver filter when active)
-function getFilteredTagVersions(tag: string): VersionDisplay[] {
-  const versions = getTagVersions(tag)
+// Get the expanded child versions for a tag row (excludes the primary version shown in the row header,
+// and applies semver filter when active)
+function getExpandedTagVersions(tag: string, primaryVersion: string): VersionDisplay[] {
+  const versions = getTagVersions(tag).filter(v => v.version !== primaryVersion)
   if (!isFilterActive.value) return versions
   return versions.filter(v => filteredVersionSet.value.has(v.version))
+}
+
+// Check if a tag row's children are expanded (manually or via active filter)
+function isTagExpanded(tag: string, primaryVersion: string): boolean {
+  return (
+    expandedTags.value.has(tag) ||
+    (isFilterActive.value && getExpandedTagVersions(tag, primaryVersion).length > 0)
+  )
 }
 
 function findClaimingTag(version: string): string | null {
@@ -498,19 +471,32 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
     id="versions"
   >
     <template #actions>
-      <ButtonBase
-        variant="secondary"
-        class="text-fg-subtle hover:text-fg transition-colors min-w-6 min-h-6 -m-1 p-1 rounded"
-        :aria-label="$t('package.downloads.community_distribution')"
-        :title="$t('package.downloads.community_distribution')"
-        classicon="i-lucide:file-stack"
-        @click="openDistributionModal"
-      />
+      <div class="flex items-center gap-3">
+        <LinkBase
+          :to="versionsPageRoute"
+          variant="button-secondary"
+          class="text-fg-subtle hover:text-fg transition-colors min-w-6 min-h-6 p-1 rounded"
+          :aria-label="$t('package.versions.view_all_versions')"
+          :title="$t('package.versions.view_all_versions')"
+          classicon="i-lucide:history"
+          data-testid="view-all-versions-link"
+        />
+        <LinkBase
+          v-if="distributionRoute"
+          :to="distributionRoute"
+          variant="button-secondary"
+          class="text-fg-subtle hover:text-fg transition-colors min-w-6 min-h-6 p-1 rounded"
+          :aria-label="$t('package.downloads.community_distribution')"
+          :title="$t('package.downloads.community_distribution')"
+          classicon="i-lucide:file-stack"
+          data-testid="view-distribution-link"
+        />
+      </div>
     </template>
     <div class="space-y-0.5 min-w-0">
       <!-- Semver range filter -->
       <div>
-        <div class="flex items-center gap-2 p-1">
+        <div class="flex items-center gap-2 pb-1 pe-1">
           <InputBase
             v-model="semverFilter"
             type="text"
@@ -521,15 +507,15 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
             autocomplete="off"
             class="flex-1 min-w-0"
             :class="isInvalidRange ? '!border-red-500' : ''"
-            size="small"
+            size="sm"
           />
           <TooltipApp interactive position="top">
             <span
               tabindex="0"
-              class="block cursor-help shrink-0 -m-2 p-2 -me-1 focus-visible:outline-2 focus-visible:outline-accent/70 rounded"
+              class="group/tooltip block cursor-help shrink-0 -m-2 p-2 -me-1 focus-visible:outline-2 focus-visible:outline-accent/70 rounded"
             >
               <span
-                class="block i-lucide:info w-3.5 h-3.5 text-fg-subtle"
+                class="block i-lucide:info w-3.5 h-3.5 text-fg-subtle transition-colors group-hover/tooltip:text-fg"
                 role="img"
                 :aria-label="$t('package.versions.filter_help')"
               />
@@ -578,7 +564,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
             v-if="getTagVersions(row.tag).length > 1 || !hasLoadedAll"
             type="button"
             class="size-5 -me-1 flex items-center justify-center text-fg-subtle hover:text-fg transition-colors rounded-sm relative z-10"
-            :aria-expanded="expandedTags.has(row.tag)"
+            :aria-expanded="isTagExpanded(row.tag, row.primaryVersion.version)"
             :aria-label="
               expandedTags.has(row.tag)
                 ? $t('package.versions.collapse', { tag: row.tag })
@@ -597,7 +583,9 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
               v-else
               class="size-3 transition-transform duration-200 rtl-flip"
               :class="
-                expandedTags.has(row.tag) ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'
+                isTagExpanded(row.tag, row.primaryVersion.version)
+                  ? 'i-lucide:chevron-down'
+                  : 'i-lucide:chevron-right'
               "
               aria-hidden="true"
             />
@@ -654,7 +642,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                 class="text-xs text-fg-subtle"
               />
               <ProvenanceBadge
-                v-if="row.primaryVersion.hasProvenance"
+                v-if="row.primaryVersion.trustStatus?.provenance"
                 :package-name="packageName"
                 :version="row.primaryVersion.version"
                 compact
@@ -666,11 +654,11 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
 
         <!-- Expanded versions -->
         <div
-          v-if="expandedTags.has(row.tag) && getFilteredTagVersions(row.tag).length > 1"
+          v-if="isTagExpanded(row.tag, row.primaryVersion.version)"
           class="ms-4 ps-2 border-is border-border space-y-0.5 pe-2"
         >
           <div
-            v-for="v in getFilteredTagVersions(row.tag).slice(1)"
+            v-for="v in getExpandedTagVersions(row.tag, row.primaryVersion.version)"
             :key="v.version"
             class="py-1 relative group/version-row hover:bg-bg-elevated/20 focus-within:bg-bg-elevated/20 transition-colors duration-200"
             :class="v.version === effectiveCurrentVersion ? 'bg-bg-elevated/20 rounded' : ''"
@@ -708,7 +696,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                   day="numeric"
                 />
                 <ProvenanceBadge
-                  v-if="v.hasProvenance"
+                  v-if="v.trustStatus?.provenance"
                   :package-name="packageName"
                   :version="v.version"
                   compact
@@ -738,7 +726,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
       <div class="p-1">
         <button
           type="button"
-          class="flex items-center gap-2 text-start rounded-sm w-full"
+          class="group/version-row flex items-center gap-2 text-start rounded-sm w-full"
           :class="otherVersionsContainsCurrent() ? 'bg-bg-subtle' : ''"
           :aria-expanded="otherVersionsExpanded"
           :aria-label="
@@ -764,7 +752,9 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
               aria-hidden="true"
             />
           </span>
-          <span class="text-xs text-fg-muted py-1.5">
+          <span
+            class="text-xs text-fg-muted py-1.5 group-hover/version-row:text-fg transition-colors"
+          >
             {{ $t('package.versions.other_versions') }}
             <span v-if="hiddenTagRows.length > 0" class="text-fg-subtle">
               ({{
@@ -910,7 +900,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                       day="numeric"
                     />
                     <ProvenanceBadge
-                      v-if="group.versions[0]?.hasProvenance"
+                      v-if="group.versions[0]?.trustStatus?.provenance"
                       :package-name="packageName"
                       :version="group.versions[0]?.version"
                       compact
@@ -977,7 +967,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                       day="numeric"
                     />
                     <ProvenanceBadge
-                      v-if="group.versions[0]?.hasProvenance"
+                      v-if="group.versions[0]?.trustStatus?.provenance"
                       :package-name="packageName"
                       :version="group.versions[0]?.version"
                       compact
@@ -1044,7 +1034,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                         day="numeric"
                       />
                       <ProvenanceBadge
-                        v-if="v.hasProvenance"
+                        v-if="v.trustStatus?.provenance"
                         :package-name="packageName"
                         :version="v.version"
                         compact
@@ -1076,41 +1066,4 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
       </div>
     </div>
   </CollapsibleSection>
-
-  <!-- Version Distribution Modal -->
-  <PackageChartModal
-    v-if="isDistributionModalOpen"
-    :modal-title="$t('package.versions.distribution_modal_title')"
-    @close="closeDistributionModal"
-    @transitioned="handleDistributionModalTransitioned"
-  >
-    <!-- The Chart is mounted after the dialog has transitioned -->
-    <!-- This avoids flaky behavior and ensures proper modal lifecycle -->
-    <Transition name="opacity" mode="out-in">
-      <PackageVersionDistribution
-        v-if="hasDistributionModalTransitioned"
-        :package-name="packageName"
-        :in-modal="true"
-      />
-    </Transition>
-
-    <!-- This placeholder bears the same dimensions as the VersionDistribution component -->
-    <!-- Avoids CLS when the dialog has transitioned -->
-    <div
-      v-if="!hasDistributionModalTransitioned"
-      class="w-full aspect-[272/609] sm:aspect-[718/592.67]"
-    />
-  </PackageChartModal>
 </template>
-
-<style scoped>
-.opacity-enter-active,
-.opacity-leave-active {
-  transition: opacity 200ms ease;
-}
-
-.opacity-enter-from,
-.opacity-leave-to {
-  opacity: 0;
-}
-</style>

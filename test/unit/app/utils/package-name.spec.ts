@@ -1,9 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import {
-  checkPackageExists,
-  findSimilarPackages,
-  normalizePackageName,
-} from '../../../../app/utils/package-name'
+import { checkPackageExists, findSimilarPackages, normalizePackageName } from '~/utils/package-name'
 
 describe('normalizePackageName', () => {
   it.each([

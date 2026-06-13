@@ -29,7 +29,7 @@ export const VersionSchema = v.pipe(
  *
  * Allows standard subdirectories and extensions but prevents directory traversal
  */
-export const FilePathSchema = v.pipe(
+const FilePathSchema = v.pipe(
   v.string(),
   v.nonEmpty('File path is required'),
   v.check(input => !input.includes('..'), 'Invalid path: directory traversal not allowed'),
@@ -88,14 +88,6 @@ export const PackageFileDiffQuerySchema = v.object({
   toVersion: VersionSchema,
   filePath: FilePathSchema,
 })
-
-/**
- * Automatically infer types for routes
- * Usage - prefer this over manually defining interfaces
- */
-export type PackageRouteParams = v.InferOutput<typeof PackageRouteParamsSchema>
-export type PackageVersionQuery = v.InferOutput<typeof PackageVersionQuerySchema>
-export type PackageFileQuery = v.InferOutput<typeof PackageFileQuerySchema>
 /** @public */
 export type PackageCompareQuery = v.InferOutput<typeof PackageCompareQuerySchema>
 /** @public */

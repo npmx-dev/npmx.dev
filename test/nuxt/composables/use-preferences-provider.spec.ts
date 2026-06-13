@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { defineComponent, onMounted } from 'vue'
 import { mount } from '@vue/test-utils'
-import { usePreferencesProvider } from '../../../app/composables/usePreferencesProvider'
+import { usePreferencesProvider } from '~/composables/usePreferencesProvider'
 
 const STORAGE_KEY = 'npmx-list-prefs'
 

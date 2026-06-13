@@ -31,6 +31,7 @@ export default defineNuxtModule({
         try {
           execSync('node --experimental-transform-types ./lunaria/lunaria.ts', {
             cwd: nuxt.options.rootDir,
+            stdio: 'inherit',
           })
         } catch (e) {
           // Always throw in local dev.
@@ -38,6 +39,8 @@ export default defineNuxtModule({
           const { env } = await getEnv(!isCI)
           if (env === 'dev' || env === 'release') {
             throw e
+          } else {
+            console.error(e)
           }
         }
       })

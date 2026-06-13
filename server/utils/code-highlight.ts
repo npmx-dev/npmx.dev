@@ -167,15 +167,16 @@ interface LinkifyOptions {
  * @param html - The HTML to process
  * @param options - Dependencies map and optional relative import resolver
  */
-function linkifyImports(html: string, options?: LinkifyOptions): string {
+export function linkifyModuleSpecifiers(html: string, options?: LinkifyOptions): string {
   const { dependencies, resolveRelative } = options ?? {}
 
   const getHref = (moduleSpecifier: string): string | null => {
-    const cleanSpec = moduleSpecifier.replace(/^['"]|['"]$/g, '').trim()
-
-    // Try relative import resolution first
-    if (cleanSpec.startsWith('.') && resolveRelative) {
-      return resolveRelative(moduleSpecifier)
+    // First try file-aware resolution (relative imports, aliases, and self-package subpaths).
+    if (resolveRelative) {
+      const resolved = resolveRelative(moduleSpecifier)
+      if (resolved) {
+        return resolved
+      }
     }
 
     // Not a relative import - check if it's an npm package
@@ -196,7 +197,7 @@ function linkifyImports(html: string, options?: LinkifyOptions): string {
   // Match: from keyword span followed by string span containing module specifier
   // Pattern: <span style="...">from</span><span style="..."> 'module'</span>
   let result = html.replace(
-    /(<span[^>]*>from<\/span>)(<span[^>]*>) (['"][^'"]+['"])<\/span>/g,
+    /(<span[^>]*>\s*from\s*<\/span>)\s*(<span[^>]*>)\s*(['"][^'"]+['"])\s*<\/span>/g,
     (match, fromSpan, stringSpanOpen, moduleSpecifier) => {
       const href = getHref(moduleSpecifier)
       if (!href) return match
@@ -208,7 +209,7 @@ function linkifyImports(html: string, options?: LinkifyOptions): string {
   // Pattern: <span>import</span><span> 'module'</span>
   // But NOT: import ... from, import(, or import {
   result = result.replace(
-    /(<span[^>]*>import<\/span>)(<span[^>]*>) (['"][^'"]+['"])<\/span>/g,
+    /(<span[^>]*>\s*import\s*<\/span>)\s*(<span[^>]*>)\s*(['"][^'"]+['"])\s*<\/span>/g,
     (match, importSpan, stringSpanOpen, moduleSpecifier) => {
       const href = getHref(moduleSpecifier)
       if (!href) return match
@@ -285,7 +286,7 @@ export async function highlightCode(
 
       // Make import statements clickable for JS/TS languages
       if (IMPORT_LANGUAGES.has(language)) {
-        html = linkifyImports(html, {
+        html = linkifyModuleSpecifiers(html, {
           dependencies: options?.dependencies,
           resolveRelative: options?.resolveRelative,
         })

@@ -2,7 +2,7 @@
 const route = useRoute()
 
 // Pages where scroll-to-top should NOT be shown
-const excludedRoutes = new Set(['index', 'code'])
+const excludedRoutes = new Set(['index', 'docs', 'code'])
 const isPackagePage = computed(() => route.name === 'package' || route.name === 'package-version')
 
 const isActive = computed(() => !excludedRoutes.has(route.name as string) && !isPackagePage.value)
@@ -50,7 +50,7 @@ const shouldShowButton = computed(() => isActive.value && isTouchDeviceClient.va
       type="button"
       class="fixed bottom-4 inset-ie-4 z-50 w-12 h-12 bg-bg-elevated border border-border rounded-full shadow-lg flex items-center justify-center text-fg-muted hover:text-fg transition-colors active:scale-95"
       :aria-label="$t('common.scroll_to_top')"
-      @click="() => scrollToTop()"
+      @click="scrollToTop"
     >
       <span class="i-lucide:arrow-up w-5 h-5" aria-hidden="true" />
     </button>

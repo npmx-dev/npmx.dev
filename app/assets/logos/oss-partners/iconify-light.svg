@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+	<defs>
+		<mask id="SVGxeIcod1p">
+			<g fill="none" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M14 6v6" stroke="#fff" stroke-width="4" />
+				<path d="M10 22v16M38 22v16M24 6l17 11M24 6l-17 11M24 31v10" stroke="#000" stroke-width="8" />
+			</g>
+			<circle cx="24" cy="23" r="5" fill="#000" />
+		</mask>
+		<mask id="SVGkEkOmeaS">
+			<g fill="none" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M10 16v22" stroke="#fff" stroke-width="4" />
+				<path d="M38 22v16" stroke="#000" stroke-width="8" />
+				<path d="M38 16v22M38 38l-28 0" stroke="#fff" stroke-width="4" />
+				<path d="M24 6l17 11" stroke="#000" stroke-width="8" />
+				<path d="M24 6l17 11" stroke="#fff" stroke-width="4" />
+				<path d="M24 6l-17 11" stroke="#000" stroke-width="8" />
+				<path d="M24 6l-17 11" stroke="#fff" stroke-width="4" />
+				<path d="M24 31v10" stroke="#000" stroke-width="8" />
+			</g>
+			<circle cx="24" cy="23" r="5" fill="#000" />
+		</mask>
+		<mask id="SVGLZA82R6k">
+			<g fill="none" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M41.5 44.5h-35" stroke="#fff" stroke-width="3" />
+				<path d="M24 31v10" stroke="#000" stroke-width="8" />
+			</g>
+			<circle cx="24" cy="23" r="5" fill="#000" />
+		</mask>
+		<mask id="SVGqsGDJc7b">
+			<path d="M24 25v16" stroke="#fff" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+			<circle cx="24" cy="23" r="5" fill="#000" />
+		</mask>
+	</defs>
+	<path d="M0 0h48v48H0z" fill="#BFBFBF" mask="url(#SVGxeIcod1p)" />
+	<path d="M0 0h48v48H0z" fill="#898989" mask="url(#SVGkEkOmeaS)" />
+	<path d="M0 0h48v48H0z" fill="#BFBFBF" mask="url(#SVGLZA82R6k)" />
+	<g fill="#0066C4">
+		<path d="M0 0h48v48H0z" mask="url(#SVGqsGDJc7b)" />
+		<circle cx="24" cy="23" r="3" />
+	</g>
+</svg>

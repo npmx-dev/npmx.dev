@@ -1,30 +1,19 @@
 import type { KnipConfig } from 'knip'
 
 const config: KnipConfig = {
+  treatConfigHintsAsErrors: true,
+  treatTagHintsAsErrors: true,
   workspaces: {
     '.': {
       entry: [
-        'app/router.options.ts!',
-        'app/app.vue!',
-        'app/error.vue!',
-        'app/pages/**/*.vue!',
-        'app/components/**/*.vue!',
-        'app/components/**/*.d.vue.ts!',
-        'app/composables/**/*.ts!',
-        'app/middleware/**/*.ts!',
-        'app/plugins/**/*.ts!',
-        'app/utils/**/*.ts!',
-        'server/**/*.ts!',
-        'modules/**/*.ts!',
-        'config/**/*.ts!',
-        'lunaria/**/*.ts!',
-        'shared/**/*.ts!',
         'i18n/**/*.ts',
         'lunaria.config.ts',
+        'lunaria/lunaria.ts',
         'pwa-assets.config.ts',
+        'modules/*.ts',
         '.lighthouserc.cjs',
         'lighthouse-setup.cjs',
-        'uno-preset-rtl.ts!',
+        'uno-preset-*.ts!',
         'scripts/**/*.ts',
       ],
       project: [
@@ -33,19 +22,16 @@ const config: KnipConfig = {
         '!test/test-utils/**',
         '!test/e2e/helpers/**',
         '!cli/src/**',
+        '!lexicons/**',
       ],
+      msw: {
+        entry: ['.storybook/.public/mockServiceWorker.js'],
+      },
       ignoreDependencies: [
         '@iconify-json/*',
-        '@voidzero-dev/vite-plus-core',
-        'vite-plus!',
         'puppeteer',
-        /** Needs to be explicitly installed, even though it is not imported, to avoid type errors. */
-        'unplugin-vue-router',
         'vite-plugin-pwa',
         '@vueuse/shared',
-
-        /** Some components import types from here, but installing it directly could lead to a version mismatch */
-        'vue-router',
 
         /** Oxlint plugins don't get picked up yet */
         '@e18e/eslint-plugin',
@@ -54,21 +40,20 @@ const config: KnipConfig = {
         /** Used in test/e2e/helpers/ which is excluded from knip project scope */
         'h3-next',
       ],
-      ignoreUnresolved: ['#components', '#oauth/config'],
+      ignoreUnresolved: ['#oauth/config'],
+      ignoreFiles: [
+        'app/components/Tooltip/Announce.vue',
+        'app/components/UserCombobox.vue',
+        '**/*.unused.*',
+      ],
     },
     'cli': {
       project: ['src/**/*.ts!', '!src/mock-*.ts'],
     },
     'docs': {
-      entry: ['app/**/*.{ts,vue,css}'],
-      ignoreDependencies: [
-        'docus',
-        'better-sqlite3',
-        '@nuxtjs/mdc',
-        'nuxt!',
-        '@nuxt/ui',
-        'tailwindcss',
-      ],
+      entry: ['app/**/*.{ts,vue,css}', 'shared/**/*.{ts,vue,css}'],
+      project: ['**/*.{ts,vue,cjs,mjs}'],
+      ignoreDependencies: ['@nuxtjs/mdc'],
     },
   },
 }

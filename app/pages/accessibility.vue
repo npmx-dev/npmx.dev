@@ -8,13 +8,14 @@ useSeoMeta({
   description: () => $t('a11y.welcome', { app: 'npmx' }),
 })
 
-defineOgImageComponent('Default', {
-  title: () => $t('a11y.title'),
-  description: () => $t('a11y.welcome', { app: 'npmx' }),
-})
-
-const router = useRouter()
-const canGoBack = useCanGoBack()
+defineOgImage(
+  'Page.takumi',
+  {
+    title: () => $t('a11y.title'),
+    description: () => $t('a11y.welcome', { app: 'npmx' }),
+  },
+  { alt: () => `${$t('a11y.title')} — npmx` },
+)
 </script>
 
 <template>
@@ -25,19 +26,11 @@ const canGoBack = useCanGoBack()
           <h1 class="font-mono text-3xl sm:text-4xl font-medium">
             {{ $t('a11y.title') }}
           </h1>
-          <button
-            type="button"
-            class="cursor-pointer inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded shrink-0"
-            @click="router.back()"
-            v-if="canGoBack"
-          >
-            <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
-            <span class="sr-only sm:not-sr-only">{{ $t('nav.back') }}</span>
-          </button>
+          <BackButton />
         </div>
       </header>
 
-      <section class="prose prose-invert max-w-none space-y-8">
+      <section class="max-w-none space-y-8">
         <p class="text-fg-muted leading-relaxed">
           <i18n-t keypath="a11y.welcome" tag="span" scope="global">
             <template #app>

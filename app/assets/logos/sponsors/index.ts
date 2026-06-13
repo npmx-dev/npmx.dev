@@ -4,6 +4,14 @@ import LogoVoidZero from './void-zero.svg'
 import LogoVoidZeroLight from './void-zero-light.svg'
 import LogoVlt from './vlt.svg'
 import LogoVltLight from './vlt-light.svg'
+import LogoNetlify from './netlify.svg'
+import LogoNetlifyLight from './netlify-light.svg'
+import LogoBluesky from './bluesky.svg'
+import LogoBlueskyLight from './bluesky-light.svg'
+import LogoBadrap from './badrap.svg'
+import LogoBadrapLight from './badrap-light.svg'
+import LogoChromatic from './chromatic.svg'
+import LogoChromaticLight from './chromatic-light.svg'
 
 // The list is used on the about page. To add, simply upload the logos nearby and add an entry here. Prefer SVGs.
 // For logo src, specify a string or object with the light and dark theme variants.
@@ -37,7 +45,43 @@ export const SPONSORS = [
       dark: LogoVlt,
       light: LogoVltLight,
     },
-    normalisingIndent: '0.25rem',
+    normalisingIndent: '0.875rem',
     url: 'https://vlt.sh/',
+  },
+  {
+    name: 'Netlify',
+    logo: {
+      dark: LogoNetlify,
+      light: LogoNetlifyLight,
+    },
+    normalisingIndent: '0.25rem',
+    url: 'https://netlify.com/',
+  },
+  {
+    name: 'Bluesky',
+    logo: {
+      dark: LogoBluesky,
+      light: LogoBlueskyLight,
+    },
+    normalisingIndent: '0.625rem',
+    url: 'https://bsky.app/',
+  },
+  {
+    name: 'Chromatic',
+    logo: {
+      dark: LogoChromatic,
+      light: LogoChromaticLight,
+    },
+    normalisingIndent: '0.5rem',
+    url: 'https://chromatic.com/',
+  },
+  {
+    name: 'Badrap',
+    logo: {
+      dark: LogoBadrap,
+      light: LogoBadrapLight,
+    },
+    normalisingIndent: '0.5rem',
+    url: 'https://badrap.io/',
   },
 ]

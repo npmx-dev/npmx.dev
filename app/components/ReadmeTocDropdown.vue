@@ -139,6 +139,27 @@ function handleKeydown(event: KeyboardEvent) {
       break
   }
 }
+
+const itemScrollIntoView = (index: number) => {
+  const item = props.toc[index]
+  if (!item) return
+  const el = document.getElementById(`${listboxId}-${item.id}`)
+  if (el) {
+    el.scrollIntoView({ block: 'center' })
+  }
+}
+
+watch(
+  isOpen,
+  open => {
+    if (open && highlightedIndex.value >= 0) {
+      itemScrollIntoView(highlightedIndex.value)
+    }
+  },
+  {
+    flush: 'post',
+  },
+)
 </script>
 
 <template>
@@ -148,7 +169,7 @@ function handleKeydown(event: KeyboardEvent) {
     :aria-expanded="isOpen"
     aria-haspopup="listbox"
     :aria-label="$t('package.readme.toc_title')"
-    :aria-controls="listboxId"
+    :aria-controls="isOpen ? listboxId : undefined"
     @click="toggle"
     @keydown="handleKeydown"
     classicon="i-lucide:list"
@@ -180,7 +201,9 @@ function handleKeydown(event: KeyboardEvent) {
         ref="listRef"
         role="listbox"
         :aria-activedescendant="
-          highlightedIndex >= 0 ? `${listboxId}-${toc[highlightedIndex]?.id}` : undefined
+          highlightedIndex >= 0 && toc[highlightedIndex]?.id
+            ? `${listboxId}-${toc[highlightedIndex]?.id}`
+            : undefined
         "
         :aria-label="$t('package.readme.toc_title')"
         :style="getDropdownStyle()"
@@ -231,7 +254,7 @@ function handleKeydown(event: KeyboardEvent) {
               :aria-selected="activeId === grandchild.id"
               class="flex items-center gap-2 px-3 py-1.5 ps-9 text-sm cursor-pointer transition-colors duration-150"
               :class="[
-                activeId === grandchild.id ? 'text-fg font-medium' : 'text-fg-subtle',
+                grandchild.id === activeId ? 'text-fg font-medium' : 'text-fg-subtle',
                 highlightedIndex === getIndex(grandchild.id)
                   ? 'bg-bg-elevated'
                   : 'hover:bg-bg-elevated',

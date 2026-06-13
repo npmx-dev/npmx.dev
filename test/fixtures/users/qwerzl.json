@@ -46,14 +46,6 @@
           "npm": "https://www.npmjs.com/package/unifont"
         }
       },
-      "score": {
-        "final": 87.64574,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
       "flags": {
         "insecure": 0
       }
@@ -101,14 +93,6 @@
           "repository": "git+https://github.com/unjs/fontaine.git",
           "bugs": "https://github.com/unjs/fontaine/issues",
           "npm": "https://www.npmjs.com/package/fontless"
-        }
-      },
-      "score": {
-        "final": 75.63318,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
         }
       },
       "flags": {

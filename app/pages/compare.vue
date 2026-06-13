@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison'
 import { useRouteQuery } from '@vueuse/router'
+import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
+import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
+import FacetScatterChart from '~/components/Compare/FacetScatterChart.vue'
 
 definePageMeta({
   name: 'compare',
+  preserveScrollOnQuery: true,
 })
 
 const { locale } = useI18n()
-const router = useRouter()
-const canGoBack = useCanGoBack()
 const { copied, copy } = useClipboard({ copiedDuring: 2000 })
 
 // Sync packages with URL query param (stable ref - doesn't change on other query changes)
@@ -22,7 +24,7 @@ const packages = computed({
       .split(',')
       .map(p => p.trim())
       .filter(p => p.length > 0)
-      .slice(0, 4)
+      .slice(0, MAX_PACKAGE_SELECTION)
   },
   set(value) {
     packagesParam.value = value.length > 0 ? value.join(',') : ''
@@ -60,12 +62,12 @@ const gridColumns = computed(() =>
 
 // Whether we can add the no-dep column (not already added and have room)
 const canAddNoDep = computed(
-  () => packages.value.length < 4 && !packages.value.includes(NO_DEPENDENCY_ID),
+  () => packages.value.length < MAX_PACKAGE_SELECTION && !packages.value.includes(NO_DEPENDENCY_ID),
 )
 
 // Add "no dependency" column to comparison
 function addNoDep() {
-  if (packages.value.length >= 4) return
+  if (packages.value.length >= MAX_PACKAGE_SELECTION) return
   if (packages.value.includes(NO_DEPENDENCY_ID)) return
   packages.value = [...packages.value, NO_DEPENDENCY_ID]
 }
@@ -73,8 +75,16 @@ function addNoDep() {
 // Get loading state for each column
 const columnLoading = computed(() => packages.value.map((_, i) => isColumnLoading(i)))
 
-// Check if we have enough packages to compare
+// Makes sense to compare if there's 2 or more packages
 const canCompare = computed(() => packages.value.length >= 2)
+
+// Allow copying only after all data is loaded
+const canCopyTable = computed(
+  () => packagesData.value.length >= 1 && packagesData.value.every(data => data !== null),
+)
+
+const comparisonView = usePermalink<'table' | 'charts'>('view', 'table')
+const hasChartableFacets = computed(() => selectedFacets.value.some(facet => facet.chartable))
 
 // Extract headers from columns for facet rows
 const gridHeaders = computed(() =>
@@ -84,7 +94,7 @@ const gridHeaders = computed(() =>
 /*
  * Convert the comparison grid data to a Markdown table.
  */
-function exportComparisonDataAsMarkdown() {
+async function exportComparisonDataAsMarkdown() {
   const mdData: Array<Array<string>> = []
   const headers = [
     '',
@@ -129,8 +139,101 @@ function exportComparisonDataAsMarkdown() {
     return result
   }, '')
 
-  copy(markdown)
+  await copy(markdown)
 }
+
+defineOgImage(
+  'Compare.takumi',
+  {
+    packages: () => packages.value.toSorted((a, b) => a.localeCompare(b)),
+    emptyDescription: () => $t('compare.packages.meta_description_empty'),
+  },
+  { alt: () => $t('compare.packages.meta_description_empty') },
+)
+
+const { announce } = useCommandPalette()
+
+useCommandPaletteContextCommands(
+  computed((): CommandPaletteContextCommandInput[] => {
+    const commands: CommandPaletteContextCommandInput[] = [
+      {
+        id: 'compare-select-all',
+        group: 'actions',
+        label: $t('compare.facets.select_all'),
+        keywords: [$t('compare.packages.section_facets')],
+        iconClass: 'i-lucide:list-checks',
+        action: () => {
+          selectAll()
+          announce($t('command_palette.announcements.facets_all_selected'))
+        },
+      },
+      {
+        id: 'compare-deselect-all',
+        group: 'actions',
+        label: $t('compare.facets.deselect_all'),
+        keywords: [$t('compare.packages.section_facets')],
+        iconClass: 'i-lucide:list-x',
+        action: () => {
+          deselectAll()
+          announce($t('command_palette.announcements.facets_all_deselected'))
+        },
+      },
+    ]
+
+    if (canCompare.value && canCopyTable.value) {
+      commands.push({
+        id: 'compare-copy-markdown',
+        group: 'actions',
+        label: $t('compare.packages.copy_as_markdown'),
+        keywords: [$t('compare.packages.section_comparison')],
+        iconClass: 'i-lucide:copy',
+        action: async () => {
+          await exportComparisonDataAsMarkdown()
+          announce($t('command_palette.announcements.copied_to_clipboard'))
+        },
+      })
+    }
+
+    if (canCompare.value && hasChartableFacets.value) {
+      commands.push(
+        {
+          id: 'compare-view-table',
+          group: 'actions',
+          label: $t('compare.packages.table_view'),
+          keywords: [$t('compare.packages.section_comparison')],
+          iconClass: 'i-lucide:table',
+          active: comparisonView.value === 'table',
+          action: () => {
+            comparisonView.value = 'table'
+            announce(
+              $t('command_palette.announcements.view_switched', {
+                view: $t('compare.packages.table_view'),
+              }),
+            )
+          },
+        },
+        {
+          id: 'compare-view-charts',
+          group: 'actions',
+          label: $t('compare.packages.charts_view'),
+          keywords: [$t('compare.packages.section_comparison')],
+          iconClass: 'i-lucide:chart-bar-decreasing',
+          active: comparisonView.value === 'charts',
+          action: () => {
+            comparisonView.value = 'charts'
+            announce(
+              $t('command_palette.announcements.view_switched', {
+                view: $t('compare.packages.charts_view'),
+              }),
+            )
+          },
+        },
+      )
+    }
+
+    return commands
+  }),
+)
 
 useSeoMeta({
   title: () =>
@@ -168,15 +271,7 @@ useSeoMeta({
           <h1 class="font-mono text-3xl sm:text-4xl font-medium">
             {{ $t('compare.packages.title') }}
           </h1>
-          <button
-            type="button"
-            class="cursor-pointer inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
-            @click="router.back()"
-            v-if="canGoBack"
-          >
-            <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
-            <span class="hidden sm:inline">{{ $t('nav.back') }}</span>
-          </button>
+          <BackButton />
         </div>
         <p class="text-fg-muted text-lg">
           {{ $t('compare.packages.tagline') }}
@@ -188,7 +283,7 @@ useSeoMeta({
         <h2 id="packages-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-3">
           {{ $t('compare.packages.section_packages') }}
         </h2>
-        <ComparePackageSelector v-model="packages" :max="4" />
+        <ComparePackageSelector v-model="packages" :max="MAX_PACKAGE_SELECTION" />
 
         <!-- "No dep" replacement suggestions (native, simple) -->
         <div v-if="noDepSuggestions.length > 0" class="mt-3 space-y-2">
@@ -222,7 +317,7 @@ useSeoMeta({
             {{ $t('compare.packages.section_facets') }}
           </h2>
           <ButtonBase
-            size="small"
+            size="sm"
             :aria-pressed="isAllSelected"
             :disabled="isAllSelected"
             :aria-label="$t('compare.facets.select_all')"
@@ -232,7 +327,7 @@ useSeoMeta({
           </ButtonBase>
           <span class="text-3xs text-fg-muted/40" aria-hidden="true">/</span>
           <ButtonBase
-            size="small"
+            size="sm"
             :aria-pressed="isNoneSelected"
             :disabled="isNoneSelected"
             :aria-label="$t('compare.facets.deselect_all')"
@@ -247,7 +342,7 @@ useSeoMeta({
       <!-- Comparison grid -->
       <section v-if="canCompare" class="mt-10" aria-labelledby="comparison-heading">
         <CopyToClipboardButton
-          v-if="packagesData && packagesData.some(p => p !== null)"
+          v-if="canCopyTable"
           :copied="copied"
           :copy-text="$t('compare.packages.copy_as_markdown')"
           class="mb-4"
@@ -278,37 +373,96 @@ useSeoMeta({
         </div>
 
         <div v-else-if="packagesData && packagesData.some(p => p !== null)">
-          <!-- Desktop: Grid layout -->
-          <div class="hidden md:block overflow-x-auto">
-            <CompareComparisonGrid :columns="gridColumns" :show-no-dependency="showNoDependency">
-              <CompareFacetRow
-                v-for="facet in selectedFacets"
-                :key="facet.id"
-                :label="facet.label"
-                :description="facet.description"
-                :values="getFacetValues(facet.id)"
-                :facet-loading="isFacetLoading(facet.id)"
-                :column-loading="columnLoading"
-                :bar="facet.id !== 'lastUpdated'"
-                :headers="gridHeaders"
-              />
-            </CompareComparisonGrid>
-          </div>
+          <!-- View tabs -->
+          <TabRoot
+            v-model="comparisonView"
+            default-value="table"
+            id-prefix="comparison"
+            class="mt-4"
+          >
+            <TabList :ariaLabel="$t('compare.packages.section_comparison')">
+              <TabItem value="table" tab-id="comparison-tab-table" icon="i-lucide:table">
+                {{ $t('compare.packages.table_view') }}
+              </TabItem>
+              <TabItem
+                value="charts"
+                tab-id="comparison-tab-charts"
+                icon="i-lucide:chart-bar-decreasing"
+              >
+                {{ $t('compare.packages.charts_view') }}
+              </TabItem>
+            </TabList>
 
-          <!-- Mobile: Card-based layout -->
-          <div class="md:hidden space-y-3">
-            <CompareFacetCard
-              v-for="facet in selectedFacets"
-              :key="facet.id"
-              :label="facet.label"
-              :description="facet.description"
-              :values="getFacetValues(facet.id)"
-              :facet-loading="isFacetLoading(facet.id)"
-              :column-loading="columnLoading"
-              :bar="facet.id !== 'lastUpdated'"
-              :headers="gridHeaders"
-            />
-          </div>
+            <!-- Data table -->
+            <TabPanel value="table" panel-id="comparison-panel-table">
+              <!-- Desktop: Grid layout -->
+              <div class="hidden md:block overflow-x-auto mt-4">
+                <CompareComparisonGrid
+                  :columns="gridColumns"
+                  :show-no-dependency="showNoDependency"
+                >
+                  <CompareFacetRow
+                    v-for="facet in selectedFacets"
+                    :key="facet.id"
+                    :label="facet.label"
+                    :description="facet.description"
+                    :values="getFacetValues(facet.id)"
+                    :facet-loading="isFacetLoading(facet.id)"
+                    :column-loading="columnLoading"
+                    :bar="facet.id !== 'lastUpdated'"
+                    :headers="gridHeaders"
+                  />
+                </CompareComparisonGrid>
+              </div>
+
+              <!-- Mobile: Card-based layout -->
+              <div class="md:hidden space-y-3 mt-4">
+                <CompareFacetCard
+                  v-for="facet in selectedFacets"
+                  :key="facet.id"
+                  :label="facet.label"
+                  :description="facet.description"
+                  :values="getFacetValues(facet.id)"
+                  :facet-loading="isFacetLoading(facet.id)"
+                  :column-loading="columnLoading"
+                  :bar="facet.id !== 'lastUpdated'"
+                  :headers="gridHeaders"
+                />
+              </div>
+            </TabPanel>
+
+            <!-- Charts: per-facet bars & scatter -->
+            <TabPanel value="charts" panel-id="comparison-panel-charts">
+              <div
+                v-if="selectedFacets.some(facet => facet.chartable)"
+                class="sm:grid grid-cols-2 gap-x-4"
+              >
+                <div
+                  v-for="facet in selectedFacets.filter(facet => facet.chartable)"
+                  :key="facet.id"
+                  class="my-6"
+                >
+                  <FacetBarChart
+                    :values="getFacetValues(facet.id)"
+                    :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)"
+                    :label="facet.label"
+                    :description="facet.description"
+                    :facet-loading="isFacetLoading(facet.id)"
+                  />
+                </div>
+              </div>
+              <p v-else class="py-12 text-center text-fg-subtle">
+                {{ $t('compare.packages.no_chartable_data') }}
+              </p>
+              <div>
+                <FacetScatterChart
+                  v-if="packages.length"
+                  :packages-data="packagesData"
+                  :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)"
+                />
+              </div>
+            </TabPanel>
+          </TabRoot>
 
           <h2
             id="trends-comparison-heading"

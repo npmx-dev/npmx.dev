@@ -10,6 +10,7 @@ const emit = defineEmits<{
 }>()
 
 const codeRef = useTemplateRef('codeRef')
+const router = useRouter()
 
 // Generate line numbers array
 const lineNumbers = computed(() => {
@@ -36,7 +37,6 @@ function onLineClick(lineNum: number, event: MouseEvent) {
 function updateLineHighlighting() {
   if (!codeRef.value) return
 
-  // Lines are inside pre > code > .line
   const lines = codeRef.value.querySelectorAll('code > .line')
   lines.forEach((line, index) => {
     const lineNum = index + 1
@@ -58,7 +58,8 @@ watch(
   { immediate: true },
 )
 
-// Use Nuxt's `navigateTo` for the rendered import links
+// Route rendered import links through vue-router so native event listeners
+// still trigger in-app navigation for v-html content.
 function handleImportLinkNavigate() {
   if (!codeRef.value) return
 
@@ -70,7 +71,7 @@ function handleImportLinkNavigate() {
       const href = anchor.getAttribute('href')
       if (href) {
         event.preventDefault()
-        navigateTo(href)
+        void router.push(href)
       }
     })
   })
@@ -86,7 +87,7 @@ watch(
 </script>
 
 <template>
-  <div class="code-viewer flex min-h-full max-w-full">
+  <div class="code-viewer flex min-h-full max-w-full overflow-x-auto">
     <!-- Line numbers column -->
     <div
       class="line-numbers shrink-0 bg-bg-subtle border-ie border-solid border-border text-end select-none relative"
@@ -115,7 +116,7 @@ watch(
     <!-- Code content -->
     <div class="code-content flex-1 overflow-x-auto min-w-0">
       <!-- eslint-disable vue/no-v-html -- HTML is generated server-side by Shiki -->
-      <div ref="codeRef" class="code-lines w-fit" v-html="html" />
+      <div ref="codeRef" class="code-lines min-w-full w-fit" v-html="html" />
       <!-- eslint-enable vue/no-v-html -->
     </div>
   </div>
@@ -157,7 +158,7 @@ watch(
 
 /* Highlighted lines in code content - extend full width with negative margin */
 .code-content :deep(.line.highlighted) {
-  background: rgb(234 179 8 / 0.2); /* yellow-500/20 */
+  @apply bg-yellow-500/20;
   margin: 0 -1rem;
   padding: 0 1rem;
 }
