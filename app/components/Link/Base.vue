@@ -91,8 +91,10 @@ const keyboardShortcutsEnabled = useKeyboardShortcuts()
       'text-bg bg-fg-muted': variant === 'button-primary',
       'bg-transparent text-fg-muted': variant === 'button-secondary',
     }"
-    ><slot
-  /></span>
+  >
+    <span v-if="classicon" class="size-[1em]" :class="classicon" aria-hidden="true" />
+    <slot />
+  </span>
   <NuxtLink
     v-bind="props"
     v-else
