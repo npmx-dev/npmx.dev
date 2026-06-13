@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import type { IconClass } from '~/types'
 
+/**
+ * A base button component that supports multiple variants, sizes, and states as well as icons and keyboard shortcuts.
+ */
+defineOptions({
+  name: 'ButtonBase',
+})
+
 const props = withDefaults(
   defineProps<{
     disabled?: boolean
@@ -8,8 +15,8 @@ const props = withDefaults(
     type?: 'button' | 'submit'
     /** @default "secondary" */
     variant?: 'primary' | 'secondary'
-    /** @default "medium" */
-    size?: 'small' | 'medium'
+    /** @default "md" */
+    size?: 'sm' | 'md'
     /** Keyboard shortcut hint */
     ariaKeyshortcuts?: string
     /** Forces the button to occupy the entire width of its container. */
@@ -20,7 +27,7 @@ const props = withDefaults(
   {
     type: 'button',
     variant: 'secondary',
-    size: 'medium',
+    size: 'md',
   },
 )
 
@@ -37,12 +44,12 @@ defineExpose({
 <template>
   <button
     ref="el"
-    class="group gap-x-1 items-center justify-center font-mono border border-border rounded-md transition-all duration-200 disabled:(opacity-40 cursor-not-allowed border-transparent)"
+    class="group gap-x-1 items-center justify-center font-mono border border-border rounded-md transition-all duration-200 cursor-pointer disabled:(opacity-40 cursor-not-allowed border-transparent)"
     :class="{
       'inline-flex': !block,
       'flex': block,
-      'text-sm px-4 py-2': size === 'medium',
-      'text-xs px-2 py-0.5': size === 'small',
+      'text-sm px-4 py-2': size === 'md',
+      'text-xs px-2 py-0.5': size === 'sm',
       'bg-transparent text-fg hover:enabled:(bg-fg/10) focus-visible:enabled:(bg-fg/10) aria-pressed:(bg-fg/10 border-fg/20 hover:enabled:(bg-fg/20 text-fg/50))':
         variant === 'secondary',
       'text-bg bg-fg hover:enabled:(bg-fg/50) focus-visible:enabled:(bg-fg/50) aria-pressed:(bg-fg text-bg border-fg hover:enabled:(text-bg/50))':

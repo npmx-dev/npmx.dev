@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PackageVersionInfo } from '#shared/types'
 import { onClickOutside } from '@vueuse/core'
 import { compare } from 'semver'
 import {
@@ -11,14 +10,21 @@ import {
 } from '~/utils/versions'
 import { fetchAllPackageVersions } from '~/utils/npm/api'
 
-const props = defineProps<{
-  packageName: string
-  currentVersion: string
-  versions: Record<string, unknown>
-  distTags: Record<string, string>
-  /** URL pattern for navigation. Use {version} as placeholder. */
-  urlPattern: string
-}>()
+const props = withDefaults(
+  defineProps<{
+    packageName: string
+    currentVersion: string
+    versions: Record<string, unknown>
+    distTags: Record<string, string>
+    /** URL pattern for navigation. Use {version} as placeholder. */
+    urlPattern: string
+    /** class for the position of the dropdown, default is inset-is-0 */
+    positionClass?: string | null
+  }>(),
+  {
+    positionClass: 'inset-is-0',
+  },
+)
 
 const isOpen = shallowRef(false)
 const dropdownRef = useTemplateRef('dropdownRef')
@@ -64,6 +70,9 @@ const isLoadingAll = shallowRef(false)
 /** Cached full version list */
 const allVersionsCache = shallowRef<PackageVersionInfo[] | null>(null)
 
+/** Whether non-tagged version groups are visible */
+const showAllGroups = shallowRef(false)
+
 // ============================================================================
 // Computed
 // ============================================================================
@@ -71,6 +80,18 @@ const allVersionsCache = shallowRef<PackageVersionInfo[] | null>(null)
 const latestVersion = computed(() => props.distTags.latest)
 
 const versionToTags = computed(() => buildVersionToTagsMap(props.distTags))
+
+const visibleVersionGroups = computed(() => {
+  if (!hasLoadedAll.value || showAllGroups.value) {
+    return versionGroups.value
+  }
+
+  return versionGroups.value.filter(group => group.primaryVersion.tags?.length)
+})
+
+const hasAdditionalGroups = computed(() =>
+  versionGroups.value.some(group => !group.primaryVersion.tags?.length),
+)
 
 /** Get URL for a specific version */
 function getVersionUrl(version: string): string {
@@ -304,30 +325,40 @@ async function toggleGroup(groupId: string) {
   const group = versionGroups.value.find(g => g.id === groupId)
   if (!group) return
 
-  if (group.isExpanded) {
-    group.isExpanded = false
+  if (group.isLoading) return
+
+  if (hasLoadedAll.value) {
+    if (hasNestedVersions(group)) {
+      group.isExpanded = !group.isExpanded
+      return
+    }
+
+    if (controlsAdditionalGroups(group)) {
+      showAllGroups.value = !showAllGroups.value
+    }
+
     return
   }
 
-  // Load all versions if not yet loaded
-  if (!hasLoadedAll.value) {
-    group.isLoading = true
-    try {
-      const allVersions = await loadAllVersions()
-      processLoadedVersions(allVersions)
-      // Find the group again after processing (it may have moved)
-      const updatedGroup = versionGroups.value.find(g => g.id === groupId)
-      if (updatedGroup) {
+  group.isLoading = true
+  try {
+    const allVersions = await loadAllVersions()
+    processLoadedVersions(allVersions)
+
+    // Find the group again after processing (it may have moved)
+    const updatedGroup = versionGroups.value.find(g => g.id === groupId)
+    if (updatedGroup) {
+      if (hasNestedVersions(updatedGroup)) {
         updatedGroup.isExpanded = true
+      } else if (controlsAdditionalGroups(updatedGroup)) {
+        showAllGroups.value = true
       }
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Failed to load versions:', error)
-    } finally {
-      group.isLoading = false
     }
-  } else {
-    group.isExpanded = true
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Failed to load versions:', error)
+  } finally {
+    group.isLoading = false
   }
 }
 
@@ -339,7 +370,7 @@ async function toggleGroup(groupId: string) {
 const flatItems = computed(() => {
   const items: Array<{ type: 'group' | 'version'; groupId: string; version?: VersionDisplay }> = []
 
-  for (const group of versionGroups.value) {
+  for (const group of visibleVersionGroups.value) {
     items.push({ type: 'group', groupId: group.id, version: group.primaryVersion })
 
     if (group.isExpanded && group.versions.length > 1) {
@@ -395,7 +426,7 @@ function handleListboxKeydown(event: KeyboardEvent) {
       const item = items[focusedIndex.value]
       if (item?.type === 'group') {
         const group = versionGroups.value.find(g => g.id === item.groupId)
-        if (group && !group.isExpanded && group.versions.length > 1) {
+        if (group && !isGroupOpen(group) && canToggleGroup(group)) {
           toggleGroup(item.groupId)
         }
       }
@@ -408,6 +439,8 @@ function handleListboxKeydown(event: KeyboardEvent) {
         const group = versionGroups.value.find(g => g.id === item.groupId)
         if (group?.isExpanded) {
           group.isExpanded = false
+        } else if (group && controlsAdditionalGroups(group) && showAllGroups.value) {
+          showAllGroups.value = false
         }
       } else if (item?.type === 'version') {
         // Jump to parent group
@@ -444,6 +477,31 @@ function navigateToVersion(version: string) {
   navigateTo(getVersionUrl(version))
 }
 
+function hasNestedVersions(group: VersionGroup): boolean {
+  return group.versions.length > 1
+}
+
+function controlsAdditionalGroups(group: VersionGroup): boolean {
+  return (
+    Boolean(group.primaryVersion.tags?.length) &&
+    !hasNestedVersions(group) &&
+    hasAdditionalGroups.value
+  )
+}
+
+function isGroupOpen(group: VersionGroup): boolean {
+  return group.isExpanded || (controlsAdditionalGroups(group) && showAllGroups.value)
+}
+
+function canToggleGroup(group: VersionGroup): boolean {
+  return (
+    group.isLoading ||
+    hasNestedVersions(group) ||
+    !hasLoadedAll.value ||
+    controlsAdditionalGroups(group)
+  )
+}
+
 // Reset focused index when dropdown opens
 watch(isOpen, open => {
   if (open) {
@@ -457,6 +515,7 @@ watch(isOpen, open => {
 watch(
   () => [props.distTags, props.versions, props.currentVersion],
   () => {
+    showAllGroups.value = false
     if (hasLoadedAll.value && allVersionsCache.value) {
       processLoadedVersions(allVersionsCache.value)
     } else {
@@ -472,19 +531,20 @@ watch(
       type="button"
       aria-haspopup="listbox"
       :aria-expanded="isOpen"
-      class="flex items-center gap-1.5 text-fg-subtle font-mono text-sm hover:text-fg transition-[color] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg rounded"
+      class="break-all text-start text-fg-subtle font-mono text-sm hover:text-fg transition-[color] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg rounded"
       @click="isOpen = !isOpen"
       @keydown="handleButtonKeydown"
+      data-testid="version-selector-button"
     >
-      <span dir="ltr">{{ currentVersion }}</span>
+      <span dir="ltr" class="me-1.5">{{ currentVersion }}</span>
       <span
         v-if="currentVersion === latestVersion"
-        class="text-xs px-1.5 py-0.5 rounded badge-green font-sans font-medium"
+        class="text-xs px-1.5 py-0.5 rounded badge-accent font-sans font-medium me-1.5"
       >
         latest
       </span>
       <span
-        class="i-lucide:chevron-down w-3.5 h-3.5 transition-[transform] duration-200 motion-reduce:transition-none"
+        class="i-lucide:chevron-down w-3.5 h-3.5 transition-[transform] duration-200 motion-reduce:transition-none vertical-middle"
         :class="{ 'rotate-180': isOpen }"
         aria-hidden="true"
       />
@@ -506,11 +566,12 @@ watch(
         :aria-activedescendant="
           focusedIndex >= 0 ? `version-${flatItems[focusedIndex]?.version?.version}` : undefined
         "
-        class="absolute top-full inset-is-0 mt-2 min-w-[220px] bg-bg-subtle/80 backdrop-blur-sm border border-border-subtle rounded-lg shadow-lg shadow-fg-subtle/10 z-50 py-1 max-h-[400px] overflow-y-auto overscroll-contain focus-visible:outline-none"
+        class="absolute top-full mt-2 min-w-[220px] max-w-[calc(100vw-40px)] bg-bg-subtle/80 backdrop-blur-sm border border-border-subtle rounded-lg shadow-lg shadow-fg-subtle/10 z-50 py-1 max-h-[400px] overflow-y-auto overscroll-contain focus-visible:outline-none"
+        :class="positionClass"
         @keydown="handleListboxKeydown"
       >
         <!-- Version groups -->
-        <div v-for="group in versionGroups" :key="group.id">
+        <div v-for="group in visibleVersionGroups" :key="group.id">
           <!-- Group header (primary version) -->
           <div
             :id="`version-${group.primaryVersion.version}`"
@@ -531,11 +592,11 @@ watch(
           >
             <!-- Expand button -->
             <button
-              v-if="group.versions.length > 1 || !hasLoadedAll"
+              v-if="canToggleGroup(group)"
               type="button"
               class="w-4 h-4 flex items-center justify-center text-fg-subtle hover:text-fg transition-colors shrink-0"
-              :aria-expanded="group.isExpanded"
-              :aria-label="group.isExpanded ? 'Collapse' : 'Expand'"
+              :aria-expanded="isGroupOpen(group)"
+              :aria-label="isGroupOpen(group) ? $t('common.collapse') : $t('common.expand')"
               @click.stop="toggleGroup(group.id)"
             >
               <span
@@ -546,11 +607,11 @@ watch(
               <span
                 v-else
                 class="w-3 h-3 transition-transform duration-200 rtl-flip"
-                :class="group.isExpanded ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'"
+                :class="isGroupOpen(group) ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'"
                 aria-hidden="true"
               />
             </button>
-            <span v-else class="w-4" />
+            <span v-else class="w-4 h-4 shrink-0" />
 
             <!-- Version link -->
             <NuxtLink
@@ -569,7 +630,7 @@ watch(
                 v-for="tag in group.primaryVersion.tags"
                 :key="tag"
                 class="text-xs px-1.5 py-0.5 rounded font-sans font-medium"
-                :class="tag === 'latest' ? 'badge-green' : 'badge-subtle'"
+                :class="tag === 'latest' ? 'badge-accent' : 'badge-subtle'"
               >
                 {{ tag }}
               </span>
@@ -605,11 +666,7 @@ watch(
                     v-for="tag in v.tags"
                     :key="tag"
                     class="text-4xs px-1 py-0.5 rounded font-sans font-medium"
-                    :class="
-                      tag === 'latest'
-                        ? 'bg-emerald-500/10 text-emerald-400'
-                        : 'bg-bg-muted text-fg-subtle'
-                    "
+                    :class="tag === 'latest' ? 'badge-accent' : 'badge-subtle'"
                   >
                     {{ tag }}
                   </span>
@@ -622,7 +679,7 @@ watch(
         <!-- Link to package page for full version list -->
         <div class="border-t border-border mt-1 pt-1 px-3 py-2">
           <NuxtLink
-            :to="packageRoute(packageName)"
+            :to="packageVersionsRoute(packageName)"
             class="text-xs text-fg-subtle hover:text-fg transition-[color] focus-visible:outline-none focus-visible:text-fg"
             @click="isOpen = false"
           >

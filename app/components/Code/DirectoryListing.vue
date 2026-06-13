@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PackageFileTree } from '#shared/types'
 import type { RouteLocationRaw } from 'vue-router'
 import type { RouteNamedMap } from 'vue-router/auto-routes'
 import { ADDITIONAL_ICONS, getFileIcon } from '~/utils/file-icons'
@@ -59,6 +58,7 @@ const bytesFormatter = useBytesFormatter()
   <div class="directory-listing">
     <!-- Empty state -->
     <div v-if="currentContents.length === 0" class="py-20 text-center text-fg-muted">
+      <span class="i-lucide:folder-open w-12 h-12 text-fg-subtle mx-auto mb-4"> </span>
       <p>{{ $t('code.no_files') }}</p>
     </div>
 
@@ -74,7 +74,7 @@ const bytesFormatter = useBytesFormatter()
         <!-- Parent directory link -->
         <tr
           v-if="parentPath !== null"
-          class="border-b border-border hover:bg-bg-subtle transition-colors"
+          class="border-b border-border hover:bg-bg-subtle transition-[color,background-color] duration-100"
         >
           <td colspan="2">
             <LinkBase
@@ -98,7 +98,7 @@ const bytesFormatter = useBytesFormatter()
         <tr
           v-for="node in currentContents"
           :key="node.path"
-          class="border-b border-border hover:bg-bg-subtle transition-colors"
+          class="border-b border-border hover:bg-bg-subtle transition-[color,background-color] duration-100"
         >
           <td colspan="2">
             <LinkBase

@@ -17,7 +17,7 @@ const pageSizeSelectValue = computed(() => String(pageSize.value))
 // Whether we should show pagination controls (table view always uses pagination)
 const shouldShowControls = computed(() => props.viewMode === 'table' || mode.value === 'paginated')
 
-// Table view forces pagination mode, otherwise use the provided mode
+// Table view forces pagination mode; otherwise, use the provided mode
 const effectiveMode = computed<PaginationMode>(() =>
   shouldShowControls.value ? 'paginated' : 'infinite',
 )
@@ -35,6 +35,8 @@ const startItem = computed(() => {
 const endItem = computed(() => {
   return Math.min(currentPage.value * (pageSize.value as number), props.totalItems)
 })
+
+const numberFormatter = useNumberFormatter()
 
 const canGoPrev = computed(() => currentPage.value > 1)
 const canGoNext = computed(() => currentPage.value < totalPages.value)
@@ -153,7 +155,7 @@ function handlePageSizeChange(event: Event) {
           @change="handlePageSizeChange"
           :items="
             PAGE_SIZE_OPTIONS.map(size => ({
-              label: $t('filters.pagination.per_page', { count: size }),
+              label: $t('filters.pagination.per_page', { count: $n(size) }),
               value: String(size),
             }))
           "
@@ -167,8 +169,7 @@ function handlePageSizeChange(event: Event) {
       <span class="text-sm font-mono text-fg-muted">
         {{
           $t('filters.pagination.showing', {
-            start: startItem,
-            end: endItem,
+            range: numberFormatter.formatRange(startItem, endItem),
             total: $n(totalItems),
           })
         }}
@@ -206,7 +207,7 @@ function handlePageSizeChange(event: Event) {
             :aria-current="page === currentPage ? 'page' : undefined"
             @click="goToPage(page)"
           >
-            {{ page }}
+            {{ $n(page) }}
           </button>
         </template>
 

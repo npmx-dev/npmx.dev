@@ -72,6 +72,7 @@ export function useBlogPostBlueskyLink(slug: MaybeRefOrGetter<string | null | un
         // TODO: Will need to remove this console error to satisfy linting scan
         // Constellation unavailable or error - fail silently
         // But during dev we will get an error
+        // oxlint-disable-next-line no-console
         if (import.meta.dev) console.error('[Bluesky] Constellation error:', error)
       }
 

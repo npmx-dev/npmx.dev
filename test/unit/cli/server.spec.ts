@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { createConnectorApp } from '../../../cli/src/server.ts'
+import { createConnectorApp } from '../../../cli/src/server'
 
 const TEST_TOKEN = 'test-token-123'
 vi.mock('../../../cli/src/logger.ts', () => {

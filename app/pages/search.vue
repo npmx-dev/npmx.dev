@@ -7,7 +7,20 @@ import { isValidNewPackageName } from '~/utils/package-name'
 import { isPlatformSpecificPackage } from '~/utils/platform-packages'
 import { normalizeSearchParam } from '#shared/utils/url'
 
+definePageMeta({
+  preserveScrollOnQuery: true,
+})
+
 const route = useRoute()
+
+const { selectedPackages, showSelectionView, openSelectionView, closeSelectionView } =
+  usePackageSelection()
+
+watch(selectedPackages, packages => {
+  if (packages.length === 0) {
+    closeSelectionView()
+  }
+})
 
 // Preferences (persisted to localStorage)
 const {
@@ -38,6 +51,16 @@ const {
   provider: searchProvider,
 } = useGlobalSearch()
 const query = computed(() => searchQuery.value)
+
+const {
+  scope: packageScope,
+  name: queryPackageName,
+  trailing: queryTrailing,
+} = useParsedSearchQuery(committedQuery)
+
+const versionStrippedQuery = computed(() =>
+  `${queryPackageName.value}${queryTrailing.value ?? ''}`.trim(),
+)
 
 // Track if page just loaded (for hiding "Searching..." during view transition)
 const hasInteracted = shallowRef(false)
@@ -73,7 +96,7 @@ const { settings } = useSettings()
 
 /**
  * Reorder results to put exact package name match at the top,
- * and optionally filter out platform-specific packages.
+ * and optionally filter out platform-specific packages or security holding packages.
  */
 const visibleResults = computed(() => {
   const raw = rawVisibleResults.value
@@ -81,12 +104,15 @@ const visibleResults = computed(() => {
 
   let objects = raw.objects
 
+  // Filter out "Security holding package" packages taken down by npm registry
+  objects = objects.filter(r => !r.package.isSecurityHeld)
+
   // Filter out platform-specific packages if setting is enabled
   if (settings.value.hidePlatformPackages) {
     objects = objects.filter(r => !isPlatformSpecificPackage(r.package.name))
   }
 
-  const q = query.value.trim().toLowerCase()
+  const q = versionStrippedQuery.value.trim().toLowerCase()
   if (!q) {
     return objects === raw.objects ? raw : { ...raw, objects }
   }
@@ -121,10 +147,6 @@ const ALL_SORT_KEYS: SortKey[] = [
   'downloads-year',
   'updated',
   'name',
-  'quality',
-  'popularity',
-  'maintenance',
-  'score',
 ]
 
 // Disable sort keys the current provider can't meaningfully sort by
@@ -184,7 +206,7 @@ watch(searchProvider, provider => {
 })
 
 // Use incremental search with client-side caching + org/user suggestions
-// committedQuery only updates on Enter when instant search is off, otherwise tracks query as user types
+// committedQuery only updates on Enter when instant search is off; otherwise, tracks query as user types
 const {
   data: results,
   status,
@@ -195,7 +217,7 @@ const {
   suggestions: validatedSuggestions,
   packageAvailability,
 } = useSearch(
-  committedQuery,
+  versionStrippedQuery,
   searchProvider,
   () => ({
     size: requestedSize.value,
@@ -225,7 +247,7 @@ const displayResults = computed(() => {
         diff = (a.downloads?.weekly ?? 0) - (b.downloads?.weekly ?? 0)
         break
       case 'updated':
-        diff = new Date(a.package.date).getTime() - new Date(b.package.date).getTime()
+        diff = Date.parse(a.package.date) - Date.parse(b.package.date)
         break
       case 'name':
         diff = a.package.name.localeCompare(b.package.name)
@@ -294,14 +316,6 @@ const isValidPackageName = computed(() => isValidNewPackageName(query.value.trim
 // Get connector state
 const { isConnected, npmUser, listOrgUsers } = useConnector()
 
-// Check if this is a scoped package and extract scope
-const packageScope = computed(() => {
-  const q = query.value.trim()
-  if (!q.startsWith('@')) return null
-  const match = q.match(/^@([^/]+)\//)
-  return match ? match[1] : null
-})
-
 // Track org membership for scoped packages
 const orgMembership = ref<Record<string, boolean>>({})
 
@@ -341,20 +355,26 @@ const canPublishToScope = computed(() => {
 
 // Show claim prompt when valid name, available, either not connected or connected and has permission
 const showClaimPrompt = computed(() => {
-  return (
-    isValidPackageName.value &&
-    packageAvailability.value?.available === true &&
-    packageAvailability.value.name === query.value.trim() &&
-    (!isConnected.value || (isConnected.value && canPublishToScope.value)) &&
-    status.value !== 'pending'
-  )
+  if (!isValidPackageName.value) return false
+  if (isConnected.value && !canPublishToScope.value) return false
+
+  const avail = packageAvailability.value
+
+  // Confirmed: availability result matches current committed query
+  if (avail?.available === true && avail.name === committedQuery.value.trim()) return true
+
+  // Pending: a new fetch is in flight — keep the claim visible if the last known
+  // result was "available" so it doesn't flicker until new data arrives
+  if (status.value === 'pending' && avail?.available === true) return true
+
+  return false
 })
 
 const claimPackageModalRef = useTemplateRef('claimPackageModalRef')
 
 /** Check if there's an exact package match in results */
 const hasExactPackageMatch = computed(() => {
-  const q = query.value.trim().toLowerCase()
+  const q = versionStrippedQuery.value.trim().toLowerCase()
   if (!q || !visibleResults.value) return false
   return visibleResults.value.objects.some(r => r.package.name.toLowerCase() === q)
 })
@@ -393,12 +413,12 @@ const exactMatchType = computed<'package' | 'org' | 'user' | null>(() => {
 const suggestionCount = computed(() => validatedSuggestions.value.length)
 const totalSelectableCount = computed(() => suggestionCount.value + resultCount.value)
 
+const isVisible = (el: HTMLElement) => el.getClientRects().length > 0
+
 /**
  * Get all focusable result elements in DOM order (suggestions first, then packages)
  */
 function getFocusableElements(): HTMLElement[] {
-  const isVisible = (el: HTMLElement) => el.getClientRects().length > 0
-
   const suggestions = Array.from(document.querySelectorAll<HTMLElement>('[data-suggestion-index]'))
     .filter(isVisible)
     .sort((a, b) => {
@@ -435,7 +455,7 @@ async function navigateToPackage(packageName: string) {
 const pendingEnterQuery = shallowRef<string | null>(null)
 
 // Watch for results to navigate when Enter was pressed before results arrived
-watch(displayResults, results => {
+watch(displayResults, newResults => {
   if (!pendingEnterQuery.value) return
 
   // Check if input is still focused (user hasn't started navigating or clicked elsewhere)
@@ -445,7 +465,7 @@ watch(displayResults, results => {
   }
 
   // Navigate if first result matches the query that was entered
-  const firstResult = results[0]
+  const firstResult = newResults[0]
   // eslint-disable-next-line no-console
   console.log('[search] watcher fired', {
     pending: pendingEnterQuery.value,
@@ -484,13 +504,13 @@ function handleResultsKeydown(e: KeyboardEvent) {
 
     // Check if first result matches the input value exactly
     const firstResult = displayResults.value[0]
-    if (firstResult?.package.name === inputValue) {
+    if (firstResult?.package.name === committedQuery.value) {
       pendingEnterQuery.value = null
       return navigateToPackage(firstResult.package.name)
     }
 
     // No match yet - store input value, watcher will handle navigation when results arrive
-    pendingEnterQuery.value = inputValue
+    pendingEnterQuery.value = committedQuery.value
     return
   }
 
@@ -558,15 +578,21 @@ useSeoMeta({
       : $t('search.meta_description_packages'),
 })
 
-defineOgImageComponent('Default', {
-  title: () =>
-    `${query.value ? $t('search.title_search', { search: query.value }) : $t('search.title_packages')} - npmx`,
-  description: () =>
-    query.value
-      ? $t('search.meta_description', { search: query.value })
-      : $t('search.meta_description_packages'),
-  primaryColor: '#60a5fa',
-})
+defineOgImage(
+  'Page.takumi',
+  {
+    title: () =>
+      `${query.value ? $t('search.title_search', { search: query.value }) : $t('search.title_packages')} - npmx`,
+    description: () =>
+      query.value
+        ? $t('search.meta_description', { search: query.value })
+        : $t('search.meta_description_packages'),
+  },
+  {
+    alt: () =>
+      query.value ? `Search results for "${query.value}" on npmx` : 'Search npm packages on npmx',
+  },
+)
 
 // -----------------------------------
 // Live region debouncing logic
@@ -614,8 +640,8 @@ const rawLiveRegionMessage = computed(() => {
   }
 
   if (status.value === 'success' || status.value === 'error') {
-    if (displayResults.value.length === 0 && query.value) {
-      return $t('search.no_results', { query: query.value })
+    if (displayResults.value.length === 0 && versionStrippedQuery.value) {
+      return $t('search.no_results', { query: versionStrippedQuery.value })
     }
   }
 
@@ -660,16 +686,33 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
+  <PackageActionBar v-if="!showSelectionView" />
+
   <main class="flex-1 py-8 search-page" :class="{ 'overflow-x-hidden': viewMode !== 'table' }">
     <div class="container-sm">
       <div class="flex items-center justify-between gap-4 mb-4">
         <h1 class="font-mono text-2xl sm:text-3xl font-medium">
           {{ $t('search.title') }}
         </h1>
-        <SearchProviderToggle />
+        <button
+          v-if="showSelectionView"
+          type="button"
+          class="cursor-pointer inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
+          @click="closeSelectionView"
+          :aria-label="$t('nav.back')"
+        >
+          <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
+          <span class="hidden sm:inline">{{ $t('nav.back') }}</span>
+        </button>
+        <SearchProviderToggle v-else />
       </div>
 
-      <section v-if="committedQuery" class="results-layout">
+      <PackageSelectionView
+        v-if="showSelectionView && selectedPackages.length"
+        :view-mode="viewMode"
+      />
+
+      <section v-else-if="committedQuery" class="results-layout">
         <LoadingSpinner v-if="showSearching" :text="$t('search.searching')" />
 
         <div
@@ -681,22 +724,28 @@ onBeforeUnmount(() => {
             status === 'success'
           "
         >
-          <div
-            v-if="validatedSuggestions.length > 0 && displayResults.length > 0"
-            class="mb-6 space-y-3"
+          <Transition
+            enter-active-class="motion-safe:animate-slide-up motion-safe:animate-fill-both"
+            leave-active-class="motion-safe:transition-[opacity,transform] motion-safe:duration-200 motion-safe:ease-out"
+            leave-to-class="opacity-0 motion-safe:-translate-y-1.5"
           >
-            <SearchSuggestionCard
-              v-for="(suggestion, idx) in validatedSuggestions"
-              :key="`${suggestion.type}-${suggestion.name}`"
-              :type="suggestion.type"
-              :name="suggestion.name"
-              :index="idx"
-              :is-exact-match="
-                (exactMatchType === 'org' && suggestion.type === 'org') ||
-                (exactMatchType === 'user' && suggestion.type === 'user')
-              "
-            />
-          </div>
+            <div
+              v-if="validatedSuggestions.length > 0 && displayResults.length > 0"
+              class="mb-6 space-y-3"
+            >
+              <SearchSuggestionCard
+                v-for="(suggestion, idx) in validatedSuggestions"
+                :key="`${suggestion.type}-${suggestion.name}`"
+                :type="suggestion.type"
+                :name="suggestion.name"
+                :index="idx"
+                :is-exact-match="
+                  (exactMatchType === 'org' && suggestion.type === 'org') ||
+                  (exactMatchType === 'user' && suggestion.type === 'user')
+                "
+              />
+            </div>
+          </Transition>
 
           <div
             v-if="showClaimPrompt && visibleResults && displayResults.length > 0"
@@ -710,7 +759,8 @@ onBeforeUnmount(() => {
             </div>
             <button
               type="button"
-              class="shrink-0 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md motion-safe:transition-colors motion-safe:duration-200 hover:bg-fg/90 focus-visible:outline-accent/70"
+              class="shrink-0 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md motion-safe:transition-[color,background-color,opacity] motion-safe:duration-200 hover:bg-fg/90 focus-visible:outline-accent/70 disabled:opacity-85 disabled:cursor-not-allowed"
+              :disabled="status === 'pending'"
               @click="claimPackageModalRef?.open()"
             >
               {{ $t('search.claim_button', { name: query }) }}
@@ -738,6 +788,7 @@ onBeforeUnmount(() => {
               :disabled-sort-keys="disabledSortKeys"
               search-context
               @toggle-column="toggleColumn"
+              @toggle-selection="openSelectionView"
               @reset-columns="resetColumns"
               @clear-filter="handleClearFilter"
               @clear-all-filters="clearAllFilters"
@@ -778,7 +829,7 @@ onBeforeUnmount(() => {
                 $t(
                   'filters.count.showing_paginated',
                   {
-                    pageSize: Math.min(preferredPageSize, effectiveTotal),
+                    pageSize: $n(Math.min(preferredPageSize, effectiveTotal)),
                     count: $n(effectiveTotal),
                   },
                   effectiveTotal,
@@ -789,22 +840,28 @@ onBeforeUnmount(() => {
 
           <div v-else-if="status === 'success' || status === 'error'" class="py-12">
             <p class="text-fg-muted font-mono mb-6 text-center">
-              {{ $t('search.no_results', { query }) }}
+              {{ $t('search.no_results', { query: versionStrippedQuery }) }}
             </p>
 
-            <div v-if="validatedSuggestions.length > 0" class="max-w-md mx-auto mb-6 space-y-3">
-              <SearchSuggestionCard
-                v-for="(suggestion, idx) in validatedSuggestions"
-                :key="`${suggestion.type}-${suggestion.name}`"
-                :type="suggestion.type"
-                :name="suggestion.name"
-                :index="idx"
-                :is-exact-match="
-                  (exactMatchType === 'org' && suggestion.type === 'org') ||
-                  (exactMatchType === 'user' && suggestion.type === 'user')
-                "
-              />
-            </div>
+            <Transition
+              enter-active-class="motion-safe:animate-slide-up motion-safe:animate-fill-both"
+              leave-active-class="motion-safe:transition-[opacity,transform] motion-safe:duration-200 motion-safe:ease-out"
+              leave-to-class="opacity-0 motion-safe:-translate-y-1.5"
+            >
+              <div v-if="validatedSuggestions.length > 0" class="max-w-md mx-auto mb-6 space-y-3">
+                <SearchSuggestionCard
+                  v-for="(suggestion, idx) in validatedSuggestions"
+                  :key="`${suggestion.type}-${suggestion.name}`"
+                  :type="suggestion.type"
+                  :name="suggestion.name"
+                  :index="idx"
+                  :is-exact-match="
+                    (exactMatchType === 'org' && suggestion.type === 'org') ||
+                    (exactMatchType === 'user' && suggestion.type === 'user')
+                  "
+                />
+              </div>
+            </Transition>
 
             <div v-if="showClaimPrompt" class="max-w-md mx-auto text-center hidden sm:block">
               <div class="p-4 bg-bg-subtle border border-border rounded-lg">
@@ -823,7 +880,7 @@ onBeforeUnmount(() => {
           <PackageList
             v-show="displayResults.length > 0 && !isRateLimited"
             :results="displayResults"
-            :search-query="query"
+            :search-query="versionStrippedQuery"
             :filters="filters"
             search-context
             heading-level="h2"
@@ -840,6 +897,7 @@ onBeforeUnmount(() => {
             @load-more="loadMore"
             @page-change="handlePageChange"
             @click-keyword="toggleKeyword"
+            selectable
           />
 
           <PaginationControls

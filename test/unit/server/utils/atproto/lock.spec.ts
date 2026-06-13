@@ -1,3 +1,4 @@
+import { setTimeout } from 'node:timers/promises'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 
 const mockRedisSet = vi.fn()
@@ -28,7 +29,7 @@ vi.stubGlobal('useRuntimeConfig', () => mockConfig)
 const LOCK_UUID = '00000000-0000-0000-0000-000000000000'
 vi.spyOn(crypto, 'randomUUID').mockReturnValue(LOCK_UUID)
 
-const { getOAuthLock } = await import('../../../../../server/utils/atproto/lock')
+const { getOAuthLock } = await import('#server/utils/atproto/lock')
 
 function getUpstashLock() {
   mockConfig.upstash.redisRestUrl = 'https://redis.example.com'
@@ -145,7 +146,7 @@ describe('lock', () => {
 
     const lock = getUpstashLock()
     const result = await lock('async-key', async () => {
-      await new Promise(resolve => setTimeout(resolve, 10))
+      await setTimeout(10)
       return 'async-result'
     })
 

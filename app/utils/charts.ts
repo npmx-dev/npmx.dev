@@ -2,11 +2,20 @@ import type {
   AltCopyArgs,
   VueUiHorizontalBarConfig,
   VueUiHorizontalBarDatapoint,
+  VueUiScatterConfig,
+  VueUiScatterSeries,
   VueUiXyConfig,
   VueUiXyDatasetBarItem,
   VueUiXyDatasetLineItem,
 } from 'vue-data-ui'
 import type { ChartTimeGranularity } from '~/types/chart'
+
+interface SubEvent {
+  key: string
+  positive: boolean
+  icon: string
+  text: string
+}
 
 export function sum(numbers: number[]): number {
   return numbers.reduce((a, b) => a + b, 0)
@@ -30,12 +39,6 @@ export function buildWeeklyEvolutionFromDaily(
     const downloads = sum(weekDays.map(d => d.downloads))
     return { weekStart, weekEnd, downloads }
   })
-}
-
-export function addDays(date: Date, days: number): Date {
-  const d = new Date(date)
-  d.setUTCDate(d.getUTCDate() + days)
-  return d
 }
 
 // Statistics & Interpretation utilities
@@ -344,8 +347,8 @@ export function computeLineChartAnalysis(values: Array<number | null>): LineChar
 
     /**
      * Coefficient of variation : relative volatility
-     * - expressed in %
-     * - calculation: standard devialtion / mean
+     * - expressed as a decimal from 0 to 1
+     * - calculation: standard deviation / mean
      * |---------------|----------------------------------------------------------|
      * | VALUE         | INTERPRETATION                                           |
      * |---------------|----------------------------------------------------------|
@@ -453,6 +456,37 @@ export type FacetBarChartConfig = VueUiHorizontalBarConfig & {
   description: string // translated
   copy: (text: string) => Promise<void>
   $t: TrendTranslateFunction
+}
+
+export type TimelineSizeCacheValue = {
+  totalSize: number
+  dependencyCount: number
+}
+
+export type ConvertedTimelineSizeCacheEntry = TimelineSizeCacheValue & {
+  name: string
+}
+
+export type EnrichedTimelineSizeCacheEntry = ConvertedTimelineSizeCacheEntry & {
+  version: string
+  time?: string
+  license?: string
+  type?: string
+  hasTypes?: boolean
+  hasTrustedPublisher?: boolean
+  hasProvenance?: boolean
+  tags: string[]
+  events: SubEvent[]
+  hasPositive: boolean
+  hasNegative: boolean
+}
+
+export type TimelineChartConfig = VueUiXyConfig & {
+  metric: 'totalSize' | 'dependencyCount'
+  packageName: string
+  copy: (text: string) => Promise<void>
+  $t: TrendTranslateFunction
+  numberFormatter: (value: number) => string
 }
 
 // Used for TrendsChart.vue
@@ -642,13 +676,133 @@ export async function copyAltTextForCompareFacetBarChart({
   await config.copy(altText)
 }
 
-// Used in chart context menu callbacks
-export function loadFile(link: string, filename: string) {
-  const a = document.createElement('a')
-  a.href = link
-  a.download = filename
-  a.click()
-  a.remove()
+type CompareScatterChartConfig = VueUiScatterConfig & {
+  copy: (text: string) => Promise<void>
+  $t: TrendTranslateFunction
+  x: {
+    label: string
+    formatter: (v: number) => string
+  }
+  y: {
+    label: string
+    formatter: (v: number) => string
+  }
+}
+
+// Used for FacetScatterChart.vue
+export function createAltTextForCompareScatterChart({
+  dataset,
+  config,
+}: AltCopyArgs<VueUiScatterSeries[], CompareScatterChartConfig>) {
+  if (!dataset) return ''
+
+  const { x, y } = config
+  const { label: labelX, formatter: formatterX } = x
+  const { label: labelY, formatter: formatterY } = y
+
+  const datapoints = dataset.map(d => {
+    const rawX = d.values?.[0]?.x ?? 0
+    const rawY = d.values?.[0]?.y ?? 0
+    const name = d.fullName ?? ''
+
+    return {
+      x: formatterX(rawX),
+      y: formatterY(rawY),
+      name,
+    }
+  })
+
+  const analysis = datapoints
+    .map(d =>
+      config.$t('compare.scatter_chart.copy_alt.analysis', {
+        package: d.name,
+        x_name: labelX,
+        y_name: labelY,
+        x_value: d.x,
+        y_value: d.y,
+      }),
+    )
+    .join(', ')
+
+  const altText = config.$t('compare.scatter_chart.copy_alt.description', {
+    x_name: labelX,
+    y_name: labelY,
+    packages: datapoints.map(d => d.name).join(', '),
+    analysis,
+    watermark: config.$t('package.trends.copy_alt.watermark'),
+  })
+
+  return altText
+}
+
+export async function copyAltTextForCompareScatterChart({
+  dataset,
+  config,
+}: AltCopyArgs<VueUiScatterSeries[], CompareScatterChartConfig>) {
+  const altText = createAltTextForCompareScatterChart({ dataset, config })
+  await config.copy(altText)
+}
+
+// Used for TimelineChart.vue
+export function createAltTextForTimelineChart({
+  dataset,
+  config,
+}: AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>) {
+  if (!dataset) return ''
+  const metric =
+    config.metric === 'totalSize'
+      ? config.$t('package.stats.install_size')
+      : config.$t('compare.dependencies')
+  const withEvents = dataset.filter(d => d.events.length)
+  const first = dataset[0]
+  const last = dataset.at(-1)
+
+  if (!first || !last) return ''
+
+  const firstValue = config.metric === 'totalSize' ? first?.totalSize : first?.dependencyCount
+  const lastValue = config.metric === 'totalSize' ? last?.totalSize : last?.dependencyCount
+  const baseline = firstValue ?? 0
+  const current = lastValue ?? baseline
+  const overall_progress_percentage =
+    baseline > 0 ? Math.round(((current - baseline) / baseline) * 100) : 0
+
+  const version_events = withEvents
+    .map(item =>
+      config.$t('package.timeline.chart.copy_alt.version_events', {
+        version: item.version,
+        // eslint-disable-next-line @intlify/vue-i18n/no-dynamic-keys
+        events: item.events.map(e => config.$t(e.text).toLocaleLowerCase()).join(', '),
+      }),
+    )
+    .join('; ')
+
+  const key_changes = !withEvents.length
+    ? ''
+    : config.$t('package.timeline.chart.copy_alt.key_changes', {
+        version_events,
+      })
+
+  const altText = config.$t('package.timeline.chart.copy_alt.general_description', {
+    metric: metric.toLocaleLowerCase(),
+    package: config.packageName,
+    first: first?.version ?? '',
+    last: last?.version ?? '',
+    first_value: config.numberFormatter(firstValue ?? 0),
+    last_value: config.numberFormatter(lastValue ?? 0),
+    overall_progress_percentage,
+    key_changes,
+    watermark: config.$t('package.trends.copy_alt.watermark'),
+  })
+
+  return altText
+}
+
+export async function copyAltTextForTimelineChart({
+  dataset,
+  config,
+}: AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>) {
+  const altText = createAltTextForTimelineChart({ dataset, config })
+  await config.copy(altText)
 }
 
 export function sanitise(value: string) {
@@ -725,4 +879,15 @@ export function applyEllipsis(text: string, maxLength = 45) {
     return text
   }
   return text.slice(0, maxLength) + '...'
+}
+
+/**
+ * Constants shared among chart components using seeded patterns with the <VueUiPatternSeed> component.
+ * Important: `disambiguator` can be any number, and is used to cycle through different pattern sets. Its
+ * value was chosen for the diversity of its motifs.
+ */
+export const CHART_PATTERN_CONFIG = {
+  disambiguator: 1,
+  minSize: 16,
+  maxSize: 24,
 }

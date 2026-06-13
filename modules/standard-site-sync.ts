@@ -1,5 +1,7 @@
 import process from 'node:process'
 import { createHash } from 'node:crypto'
+import { glob } from 'node:fs/promises'
+import { join } from 'node:path'
 import { defineNuxtModule, useNuxt, createResolver } from 'nuxt/kit'
 import { safeParse } from 'valibot'
 import { BlogPostSchema, type BlogPostFrontmatter } from '#shared/schemas/blog'
@@ -9,6 +11,7 @@ import { PasswordSession } from '@atproto/lex-password-session'
 import {
   Client,
   isAtIdentifierString,
+  toDatetimeString,
   XrpcResponseError,
   type AtIdentifierString,
 } from '@atproto/lex'
@@ -50,8 +53,7 @@ export default defineNuxtModule({
     const possiblePublication = await checkPublication(handle, pdsPublicClient)
 
     nuxt.hook('build:before', async () => {
-      const { glob } = await import('tinyglobby')
-      const files: string[] = await glob(`${contentDir}/**/*.md`)
+      const files = await Array.fromAsync(glob(join(contentDir, '**/*.md')))
 
       // INFO: Arbitrarily chosen concurrency limit, can be changed if needed
       const concurrencyLimit = 5
@@ -175,7 +177,7 @@ function buildATProtoDocument(siteUrl: string, data: BlogPostDocument) {
     description: data.description ?? data.excerpt,
     tags: data.tags,
     // Publish on the record with the current date
-    publishedAt: new Date().toISOString(),
+    publishedAt: toDatetimeString(new Date()),
   })
 }
 

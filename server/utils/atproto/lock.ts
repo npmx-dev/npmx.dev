@@ -1,3 +1,4 @@
+import { setTimeout } from 'node:timers/promises'
 import type { RuntimeLock } from '@atproto/oauth-client-node'
 import { requestLocalLock } from '@atproto/oauth-client-node'
 import { Redis } from '@upstash/redis'
@@ -22,7 +23,7 @@ function createUpstashLock(redis: Redis): RuntimeLock {
 
     if (!acquired) {
       // Another instance holds the lock, wait briefly and retry once
-      await new Promise(resolve => setTimeout(resolve, 100))
+      await setTimeout(100)
       const retryAcquired = await redis.set(lockKey, lockValue, {
         nx: true,
         ex: lockTTL,

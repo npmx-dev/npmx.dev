@@ -19,7 +19,7 @@ const SELECT_FIELD_LABEL_SIZES = {
 
 const model = defineModel<string | undefined>({ default: undefined })
 
-export interface SelectFieldProps extends SelectBaseProps {
+interface SelectFieldProps extends SelectBaseProps {
   items: { label: string; value: string; disabled?: boolean }[]
   size?: keyof typeof SELECT_FIELD_SIZES
   selectAttrs?: Omit<SelectBaseProps, 'size' | 'id'> &
@@ -62,6 +62,7 @@ const props = withDefaults(defineProps<SelectFieldProps>(), {
           v-for="item in items"
           :key="item.value"
           :value="item.value"
+          :selected="item.value === model"
           :disabled="item.disabled"
         >
           {{ item.label }}

@@ -5,14 +5,17 @@ const meta = {
   component: LinkBase,
   args: {
     to: '/',
-    default: 'Click me',
   },
 } satisfies Meta<typeof LinkBase>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {}
+export const Default: Story = {
+  args: {
+    default: 'Click me',
+  },
+}
 
 export const ExternalLink: Story = {
   args: {
@@ -66,7 +69,7 @@ export const ButtonSecondary: Story = {
 export const SmallButton: Story = {
   args: {
     variant: 'button-primary',
-    size: 'small',
+    size: 'sm',
     default: 'Small Button',
   },
 }
@@ -75,16 +78,28 @@ export const WithIconButton: Story = {
   args: {
     variant: 'button-primary',
     classicon: 'i-lucide:copy',
-    default: 'Copy',
   },
+  render: args => ({
+    components: { LinkBase },
+    setup() {
+      return { args }
+    },
+    template: `<LinkBase v-bind="args">{{ $t("package.readme.copy_as_markdown") }}</LinkBase>`,
+  }),
 }
 
 export const WithKeyboardShortcut: Story = {
   args: {
     variant: 'button-secondary',
     ariaKeyshortcuts: 's',
-    default: 'Search',
   },
+  render: args => ({
+    components: { LinkBase },
+    setup() {
+      return { args }
+    },
+    template: `<LinkBase v-bind="args">{{ $t("search.button") }}</LinkBase>`,
+  }),
 }
 
 export const BlockLink: Story = {
@@ -113,16 +128,16 @@ export const Snapshot: Story = {
         <LinkBase to="/" classicon="i-lucide:check">Link with icon</LinkBase>
         <LinkBase to="/" no-underline>Link without underline</LinkBase>
         <LinkBase to="/" disabled>Disabled Link</LinkBase>
-        
+
         <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
           <LinkBase to="/" variant="button-primary">Primary</LinkBase>
           <LinkBase to="/" variant="button-secondary">Secondary</LinkBase>
           <LinkBase to="/" variant="button-primary" disabled>Disabled</LinkBase>
           <LinkBase to="/" variant="button-primary" classicon="i-lucide:copy">With Icon</LinkBase>
         </div>
-        
+
         <div style="display: flex; gap: 1rem;">
-          <LinkBase to="/" variant="button-primary" size="small">Small Button</LinkBase>
+          <LinkBase to="/" variant="button-primary" size="sm">Small Button</LinkBase>
         </div>
         <LinkBase to="/" variant="button-primary" block>Full Width Button</LinkBase>
       </div>

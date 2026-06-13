@@ -39,7 +39,7 @@ export default defineCachedEventHandler(
       return { authors: [] }
     }
 
-    const handles = authors.map(a => a.blueskyHandle).filter(v => v != null)
+    const handles = authors.map(a => a.blueskyHandle).filter(handle => handle != null)
 
     if (handles.length === 0) {
       return {

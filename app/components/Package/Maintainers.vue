@@ -189,7 +189,13 @@ watch(
             class="link-subtle text-sm shrink-0"
             dir="ltr"
           >
-            ~{{ maintainer.name }}
+            <i18n-t keypath="package.maintainers.maintainer_template">
+              <template #avatar>
+                <UserAvatar :username="maintainer.name" size="xs" aria-hidden="true" />
+              </template>
+              <template #char126>~</template>
+              <template #name>{{ maintainer.name }}</template>
+            </i18n-t>
           </LinkBase>
           <span v-else class="font-mono text-sm text-fg-muted" dir="ltr">{{
             maintainer.email
@@ -232,6 +238,7 @@ watch(
 
     <!-- Show more/less toggle (only when not managing and there are hidden maintainers) -->
     <ButtonBase
+      class="mt-2"
       v-if="!canManageOwners && hiddenMaintainersCount > 0"
       @click="showAllMaintainers = !showAllMaintainers"
     >
@@ -259,7 +266,7 @@ watch(
             :placeholder="$t('package.maintainers.username_placeholder')"
             no-correct
             class="flex-1 min-w-25 m-1"
-            size="small"
+            size="sm"
           />
           <ButtonBase type="submit" :disabled="!newOwnerUsername.trim() || isAdding">
             {{ isAdding ? '…' : $t('package.maintainers.add_button') }}

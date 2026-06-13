@@ -1,9 +1,8 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import {
   sum,
   chunkIntoWeeks,
   buildWeeklyEvolutionFromDaily,
-  addDays,
   clamp,
   quantile,
   winsorize,
@@ -12,7 +11,8 @@ import {
   copyAltTextForTrendLineChart,
   createAltTextForVersionsBarChart,
   copyAltTextForVersionsBarChart,
-  loadFile,
+  createAltTextForTimelineChart,
+  copyAltTextForTimelineChart,
   sanitise,
   insertLineBreaks,
   applyEllipsis,
@@ -20,7 +20,9 @@ import {
   type TrendLineDataset,
   type VersionsBarConfig,
   type VersionsBarDataset,
-} from '../../../../app/utils/charts'
+  type TimelineChartConfig,
+  type EnrichedTimelineSizeCacheEntry,
+} from '~/utils/charts'
 import type { AltCopyArgs } from 'vue-data-ui'
 
 type TranslateCall = { key: string | number; named?: Record<string, unknown> }
@@ -34,6 +36,19 @@ function createTranslateMock() {
   }) as TrendLineConfig['$t']
 
   return { translate, calls }
+}
+
+function createTimelineConfig(overrides: Partial<TimelineChartConfig> = {}): TimelineChartConfig {
+  const { translate } = createTranslateMock()
+  const config: TimelineChartConfig = {
+    numberFormatter: (value: number) => `nf${value}`,
+    packageName: 'nuxt',
+    metric: 'totalSize',
+    copy: vi.fn(async () => undefined),
+    $t: translate,
+  } as unknown as TimelineChartConfig
+
+  return { ...config, ...overrides }
 }
 
 function createTrendLineConfig(overrides: Partial<TrendLineConfig> = {}): TrendLineConfig {
@@ -325,59 +340,6 @@ describe('buildWeeklyEvolutionFromDaily', () => {
   })
 })
 
-describe('addDays', () => {
-  it('returns a new Date instance (does not mutate original)', () => {
-    const original = new Date('2028-01-01T00:00:00Z')
-    const result = addDays(original, 5)
-
-    expect(result).not.toBe(original)
-    expect(original.toISOString()).toBe('2028-01-01T00:00:00.000Z')
-  })
-
-  it('adds positive days correctly', () => {
-    const date = new Date('2028-01-01T00:00:00Z')
-    const result = addDays(date, 10)
-
-    expect(result.toISOString()).toBe('2028-01-11T00:00:00.000Z')
-  })
-
-  it('subtracts days when negative value is provided', () => {
-    const date = new Date('2028-01-10T00:00:00Z')
-    const result = addDays(date, -5)
-
-    expect(result.toISOString()).toBe('2028-01-05T00:00:00.000Z')
-  })
-
-  it('handles month overflow correctly', () => {
-    const date = new Date('2028-01-28T00:00:00Z')
-    const result = addDays(date, 5)
-
-    expect(result.toISOString()).toBe('2028-02-02T00:00:00.000Z')
-  })
-
-  it('handles year overflow correctly', () => {
-    const date = new Date('2027-12-29T00:00:00Z')
-    const result = addDays(date, 5)
-
-    expect(result.toISOString()).toBe('2028-01-03T00:00:00.000Z')
-  })
-
-  it('handles leap year correctly', () => {
-    const date = new Date('2028-02-27T00:00:00Z') // 2028 is leap year
-    const result = addDays(date, 2)
-
-    expect(result.toISOString()).toBe('2028-02-29T00:00:00.000Z')
-  })
-
-  it('keeps UTC behavior consistent (no timezone drift)', () => {
-    const date = new Date('2028-03-01T00:00:00Z')
-    const result = addDays(date, 1)
-
-    expect(result.getUTCHours()).toBe(0)
-    expect(result.toISOString()).toBe('2028-03-02T00:00:00.000Z')
-  })
-})
-
 describe('clamp', () => {
   it('returns the value when it is within bounds', () => {
     expect(clamp(5, 0, 10)).toBe(5)
@@ -496,30 +458,30 @@ describe('winsorize', () => {
   })
 })
 
+const computeBaseTrend = (rSquared: number | null) => {
+  if (rSquared === null) return 'undefined' as const
+  if (rSquared > 0.75) return 'strong' as const
+  if (rSquared > 0.4) return 'weak' as const
+  return 'none' as const
+}
+
+const buildSeries = (base: number, step: number, noiseAmplitude: number) => {
+  const values: number[] = []
+  for (let i = 0; i < 19; i += 1) {
+    const noise =
+      i % 4 === 0
+        ? noiseAmplitude
+        : i % 4 === 1
+          ? -noiseAmplitude
+          : i % 4 === 2
+            ? Math.floor(noiseAmplitude / 2)
+            : -Math.floor(noiseAmplitude / 2)
+    values.push(base + i * step + noise)
+  }
+  return values
+}
+
 describe('computeLineChartAnalysis', () => {
-  const computeBaseTrend = (rSquared: number | null) => {
-    if (rSquared === null) return 'undefined' as const
-    if (rSquared > 0.75) return 'strong' as const
-    if (rSquared > 0.4) return 'weak' as const
-    return 'none' as const
-  }
-
-  const buildSeries = (base: number, step: number, noiseAmplitude: number) => {
-    const values: number[] = []
-    for (let i = 0; i < 19; i += 1) {
-      const noise =
-        i % 4 === 0
-          ? noiseAmplitude
-          : i % 4 === 1
-            ? -noiseAmplitude
-            : i % 4 === 2
-              ? Math.floor(noiseAmplitude / 2)
-              : -Math.floor(noiseAmplitude / 2)
-      values.push(base + i * step + noise)
-    }
-    return values
-  }
-
   it('returns undefined interpretations for empty array', () => {
     const result = computeLineChartAnalysis([])
     expect(result.mean).toBe(0)
@@ -1241,54 +1203,77 @@ describe('copyAltTextForVersionsBarChart', () => {
   })
 })
 
-describe('loadFile', () => {
-  let createElementMock: ReturnType<typeof vi.fn>
-  let clickMock: ReturnType<typeof vi.fn>
-  let removeMock: ReturnType<typeof vi.fn>
-  let originalDocument: typeof globalThis.document | undefined
+const timelineDataset = [
+  {
+    dependencyCount: 100,
+    events: [],
+    version: '4.0.0',
+    totalSize: 120_000_000,
+  },
+  {
+    dependencyCount: 80,
+    events: [],
+    version: '4.0.1',
+    totalSize: 115_000_000,
+  },
+] as unknown as EnrichedTimelineSizeCacheEntry[]
 
-  beforeEach(() => {
-    clickMock = vi.fn()
-    removeMock = vi.fn()
+describe('createAltTextForTimelineChart', () => {
+  it('handles empty dataset without throwing', () => {
+    const { translate } = createTranslateMock()
+    const config = createTimelineConfig({ $t: translate })
 
-    createElementMock = vi.fn().mockReturnValue({
-      href: '',
-      download: '',
-      click: clickMock,
-      remove: removeMock,
-    })
-
-    originalDocument = globalThis.document
-
-    Object.defineProperty(globalThis, 'document', {
-      value: {
-        createElement: createElementMock,
-      },
-      configurable: true,
-      writable: true,
-    })
+    expect(() =>
+      createAltTextForTimelineChart({
+        dataset: [],
+        config,
+      } as AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>),
+    ).not.toThrow()
   })
 
-  afterEach(() => {
-    vi.restoreAllMocks()
+  it('returns empty string when dataset is null', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineConfig({ $t: translateMock.translate })
 
-    Object.defineProperty(globalThis, 'document', {
-      value: originalDocument,
-      configurable: true,
-      writable: true,
-    })
+    const result = createAltTextForTimelineChart({
+      dataset: null,
+      config,
+    } as unknown as AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>)
+
+    expect(result).toBe('')
+    expect(translateMock.calls).toHaveLength(0)
   })
 
-  it('creates an anchor element and triggers a download', () => {
-    const link = 'https://npmx.dev/file.png'
-    const filename = 'file.png'
-    loadFile(link, filename)
-    expect(createElementMock).toHaveBeenCalledWith('a')
-    const anchor = createElementMock.mock.results[0]?.value as HTMLAnchorElement
-    expect(anchor.href).toBe(link)
-    expect(anchor.download).toBe(filename)
-    expect(clickMock).toHaveBeenCalledTimes(1)
-    expect(removeMock).toHaveBeenCalledTimes(1)
+  it('returns an alt text', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineConfig({ $t: translateMock.translate })
+
+    const result = createAltTextForTimelineChart({
+      dataset: timelineDataset,
+      config,
+    } as unknown as AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>)
+
+    expect(result).toBe('t:package.timeline.chart.copy_alt.general_description')
+    expect(translateMock.calls).toHaveLength(3)
+  })
+})
+
+describe('copyAltTextForTimelineChart', () => {
+  it('forwards createAltTextForTimelineChart result to config.copy', async () => {
+    const copyMock = vi.fn(async () => undefined)
+    const config = createTimelineConfig({ copy: copyMock })
+    const expected = createAltTextForTimelineChart({
+      dataset: timelineDataset,
+      config,
+    })
+
+    await copyAltTextForTimelineChart({
+      dataset: timelineDataset,
+      config,
+    } as AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>)
+
+    expect(copyMock).toHaveBeenCalledTimes(1)
+    expect(copyMock).toHaveBeenCalledWith(expected)
   })
 })
 

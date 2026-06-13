@@ -50,6 +50,8 @@ if (import.meta.server) {
 const keyboardShortcuts = useKeyboardShortcuts()
 const { settings } = useSettings()
 
+initKeyShortcuts()
+
 onKeyDown(
   '/',
   e => {
@@ -125,6 +127,18 @@ if (import.meta.client) {
     useEventListener(document, 'click', handleModalLightDismiss)
   }
 }
+
+const isBlogPostRoute = computed(() => {
+  return route.path.startsWith('/blog/') && route.path !== '/blog/'
+})
+
+// This is a priority bug that when we set og:image at the component level via useSeoMeta,
+// it is ignored and the image from app.vue is written over it.
+if (!isBlogPostRoute.value) {
+  // title and description will be inferred
+  // this will be overridden by upstream pages that use different templates
+  defineOgImage('Page.takumi', {}, { alt: 'npmx — a fast, modern browser for the npm registry' })
+}
 </script>
 
 <template>
@@ -143,6 +157,8 @@ if (import.meta.client) {
     <div id="main-content" class="flex-1 flex flex-col" tabindex="-1">
       <NuxtPage />
     </div>
+
+    <CommandPalette />
 
     <AppFooter />
 

@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest'
 import {
   buildTaggedVersionRows,
   buildVersionToTagsMap,
+  compareTagRows,
+  compareVersionGroupKeys,
   filterExcludedTags,
   filterVersions,
   getPrereleaseChannel,
@@ -10,8 +12,9 @@ import {
   isExactVersion,
   isSameVersionGroup,
   parseVersion,
+  parseStableVersion,
   sortTags,
-} from '../../../../app/utils/versions'
+} from '~/utils/versions'
 
 describe('isExactVersion', () => {
   it('returns true for stable versions', () => {
@@ -423,6 +426,105 @@ describe('isSameVersionGroup', () => {
   })
 })
 
+function row(version: string, tags: string[]) {
+  return { id: `version:${version}`, primaryTag: tags[0]!, tags, version }
+}
+
+describe('compareTagRows', () => {
+  it('sorts by tag priority ascending (rc before beta)', () => {
+    const rc = row('2.0.0-rc.1', ['rc'])
+    const beta = row('2.0.0-beta.1', ['beta'])
+    expect(compareTagRows(rc, beta, {})).toBeLessThan(0)
+    expect(compareTagRows(beta, rc, {})).toBeGreaterThan(0)
+  })
+
+  it('sorts by tag priority ascending (beta before alpha)', () => {
+    const beta = row('2.0.0-beta.1', ['beta'])
+    const alpha = row('2.0.0-alpha.1', ['alpha'])
+    expect(compareTagRows(beta, alpha, {})).toBeLessThan(0)
+  })
+
+  it('falls back to publish date descending when priorities are equal', () => {
+    const newer = row('1.1.0', ['legacy'])
+    const older = row('1.0.0', ['legacy'])
+    const times = { '1.1.0': '2024-06-01T00:00:00.000Z', '1.0.0': '2024-01-01T00:00:00.000Z' }
+    expect(compareTagRows(newer, older, times)).toBeLessThan(0)
+    expect(compareTagRows(older, newer, times)).toBeGreaterThan(0)
+  })
+
+  it('returns 0 for equal priority and equal publish time', () => {
+    const a = row('1.0.0', ['legacy'])
+    const b = row('1.0.1', ['legacy'])
+    const times = { '1.0.0': '2024-01-01T00:00:00.000Z', '1.0.1': '2024-01-01T00:00:00.000Z' }
+    expect(compareTagRows(a, b, times)).toBe(0)
+  })
+
+  it('uses minimum tag priority for multi-tag rows', () => {
+    // Row with ['rc', 'next'] has min priority of rc (2)
+    // Row with ['beta'] has priority 3 — so rc-row should sort first
+    const rcAndNext = row('3.0.0-rc.1', ['rc', 'next'])
+    const beta = row('3.0.0-beta.1', ['beta'])
+    expect(compareTagRows(rcAndNext, beta, {})).toBeLessThan(0)
+  })
+
+  it('sorts unknown tags after known priority tags', () => {
+    const known = row('2.0.0-alpha.1', ['alpha'])
+    const unknown = row('2.0.0-custom.1', ['custom-tag'])
+    expect(compareTagRows(known, unknown, {})).toBeLessThan(0)
+  })
+
+  it('sorts unknown tags by publish date descending', () => {
+    const newer = row('2.0.0', ['v2-custom'])
+    const older = row('1.0.0', ['v1-custom'])
+    const times = { '2.0.0': '2025-01-01T00:00:00.000Z', '1.0.0': '2024-01-01T00:00:00.000Z' }
+    expect(compareTagRows(newer, older, times)).toBeLessThan(0)
+  })
+
+  it('treats missing publish time as empty string (sorts last among same-priority rows)', () => {
+    const withTime = row('1.1.0', ['legacy'])
+    const withoutTime = row('1.0.0', ['legacy'])
+    const times = { '1.1.0': '2024-06-01T00:00:00.000Z' }
+    expect(compareTagRows(withTime, withoutTime, times)).toBeLessThan(0)
+  })
+})
+
+describe('compareVersionGroupKeys', () => {
+  it('sorts higher major before lower major', () => {
+    expect(compareVersionGroupKeys('2', '1')).toBeLessThan(0)
+    expect(compareVersionGroupKeys('1', '2')).toBeGreaterThan(0)
+  })
+
+  it('returns 0 for equal keys', () => {
+    expect(compareVersionGroupKeys('3', '3')).toBe(0)
+    expect(compareVersionGroupKeys('0.9', '0.9')).toBe(0)
+  })
+
+  it('sorts higher minor before lower minor for 0.x groups', () => {
+    expect(compareVersionGroupKeys('0.10', '0.9')).toBeLessThan(0)
+    expect(compareVersionGroupKeys('0.9', '0.10')).toBeGreaterThan(0)
+  })
+
+  it('sorts non-0.x keys (no minor) before 0.x keys with same major', () => {
+    // major-only key "0" has no minor (undefined → -1), so "0.1" sorts before "0"
+    expect(compareVersionGroupKeys('0.1', '0')).toBeLessThan(0)
+  })
+
+  it('sorts major-version groups in descending order when used with Array.sort', () => {
+    const keys = ['1', '3', '2', '10']
+    expect(keys.sort(compareVersionGroupKeys)).toEqual(['10', '3', '2', '1'])
+  })
+
+  it('sorts 0.x groups in descending minor order when used with Array.sort', () => {
+    const keys = ['0.1', '0.10', '0.9', '0.2']
+    expect(keys.sort(compareVersionGroupKeys)).toEqual(['0.10', '0.9', '0.2', '0.1'])
+  })
+
+  it('interleaves major and 0.x groups correctly', () => {
+    const keys = ['0.9', '1', '0.10', '2']
+    expect(keys.sort(compareVersionGroupKeys)).toEqual(['2', '1', '0.10', '0.9'])
+  })
+})
+
 describe('filterVersions', () => {
   const versions = ['1.0.0', '1.1.0', '1.5.3', '2.0.0', '2.1.0', '3.0.0-beta.1']
 
@@ -464,5 +566,103 @@ describe('filterVersions', () => {
 
   it('returns empty set for empty versions array', () => {
     expect(filterVersions([], '^1.0.0')).toEqual(new Set())
+  })
+})
+
+describe('parseStableVersion', () => {
+  it('parses a standard stable semver version', () => {
+    expect(parseStableVersion('1.2.3')).toEqual({
+      major: 1,
+      minor: 2,
+      patch: 3,
+    })
+  })
+
+  it('parses a stable semver version prefixed with v', () => {
+    expect(parseStableVersion('v1.2.3')).toEqual({
+      major: 1,
+      minor: 2,
+      patch: 3,
+    })
+  })
+
+  it('parses a stable semver version with build metadata', () => {
+    expect(parseStableVersion('1.2.3+build.1')).toEqual({
+      major: 1,
+      minor: 2,
+      patch: 3,
+    })
+  })
+
+  it('parses a v-prefixed stable semver version with build metadata', () => {
+    expect(parseStableVersion('v1.2.3+build.1')).toEqual({
+      major: 1,
+      minor: 2,
+      patch: 3,
+    })
+  })
+
+  it('parses zero values', () => {
+    expect(parseStableVersion('0.0.0')).toEqual({
+      major: 0,
+      minor: 0,
+      patch: 0,
+    })
+  })
+
+  it('parses large numeric values', () => {
+    expect(parseStableVersion('123.456.789')).toEqual({
+      major: 123,
+      minor: 456,
+      patch: 789,
+    })
+  })
+
+  it('parses versions with whitespace', () => {
+    expect(parseStableVersion(' 1.2.3 ')).toEqual({
+      major: 1,
+      minor: 2,
+      patch: 3,
+    })
+  })
+
+  it('returns null for prerelease versions', () => {
+    expect(parseStableVersion('1.2.3-beta.1')).toBeNull()
+  })
+
+  it('returns null for alpha versions', () => {
+    expect(parseStableVersion('1.2.3-alpha')).toBeNull()
+  })
+
+  it('returns null for release candidate versions', () => {
+    expect(parseStableVersion('1.2.3-rc.1')).toBeNull()
+  })
+
+  it('returns null for versions missing the patch number', () => {
+    expect(parseStableVersion('1.2')).toBeNull()
+  })
+
+  it('returns null for versions missing the minor and patch numbers', () => {
+    expect(parseStableVersion('1')).toBeNull()
+  })
+
+  it('returns null for versions with extra numeric segments', () => {
+    expect(parseStableVersion('1.2.3.4')).toBeNull()
+  })
+
+  it('returns null for non-numeric versions', () => {
+    expect(parseStableVersion('latest')).toBeNull()
+  })
+
+  it('returns null for empty strings', () => {
+    expect(parseStableVersion('')).toBeNull()
+  })
+
+  it('returns null for uppercase V prefixes', () => {
+    expect(parseStableVersion('V1.2.3')).toBeNull()
+  })
+
+  it('returns null for versions with invalid build metadata characters', () => {
+    expect(parseStableVersion('1.2.3+build/1')).toBeNull()
   })
 })

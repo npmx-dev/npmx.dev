@@ -1,4 +1,3 @@
-import type { BuildInfo } from '#shared/types'
 import { describe, expect, it } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import BuildEnvironment from '~/components/BuildEnvironment.vue'

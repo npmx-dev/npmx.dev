@@ -1,4 +1,3 @@
-import type { Packument, PackumentVersion, DependencyDepth } from '#shared/types'
 import { mapWithConcurrency } from '#shared/utils/async'
 import { maxSatisfying } from 'semver'
 
@@ -99,6 +98,7 @@ export interface ResolvedPackage {
   name: string
   version: string
   size: number
+  tarballUrl: string
   optional: boolean
   /** Depth level (only when trackDepth is enabled) */
   depth?: DependencyDepth
@@ -153,13 +153,14 @@ export async function resolveDependencyTree(
         if (!matchesPlatform(versionData)) return
 
         const size = (versionData.dist as { unpackedSize?: number })?.unpackedSize ?? 0
+        const tarballUrl = versionData.dist?.tarball ?? ''
         const key = `${name}@${version}`
 
         // Build path for this package (path to parent + this package with version)
         const currentPath = [...path, `${name}@${version}`]
 
         if (!resolved.has(key)) {
-          const pkg: ResolvedPackage = { name, version, size, optional }
+          const pkg: ResolvedPackage = { name, version, size, tarballUrl, optional }
           if (options.trackDepth) {
             pkg.depth = level === 0 ? 'root' : level === 1 ? 'direct' : 'transitive'
             pkg.path = currentPath

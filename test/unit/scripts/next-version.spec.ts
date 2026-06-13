@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { getNextVersion } from '../../../scripts/next-version'
+import { getNextVersion } from '~~/scripts/next-version'
 
 describe('getNextVersion', () => {
   it('returns current, next, and from fields', async () => {

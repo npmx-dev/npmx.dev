@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { makeEnMetaJson } from '#scripts/i18n-meta/update-en-meta-json'
+import { makeEnMetaJson } from '~~/scripts/i18n-meta/update-en-meta-json'
 
 describe('Create en.meta.json', () => {
   it('should handle an empty en.json file', () => {

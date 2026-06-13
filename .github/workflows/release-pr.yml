@@ -5,24 +5,31 @@ on:
     branches:
       - main
 
-permissions:
-  contents: read
-  pull-requests: write
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
 
 jobs:
   release-pr:
     name: 🚀 Create or update release PR
     runs-on: ubuntu-slim
     if: github.repository == 'npmx-dev/npmx.dev'
+    permissions:
+      contents: read
+      pull-requests: write # create or update the release pull request
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
+          persist-credentials: false
 
-      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+      - uses: voidzero-dev/setup-vp@ca1c46663915d6c1042ae23bd39ab85718bfb0fa # v1.10.0
         with:
           node-version: lts/*
+          run-install: false
 
       - name: 🔍 Check for unreleased commits
         id: check
