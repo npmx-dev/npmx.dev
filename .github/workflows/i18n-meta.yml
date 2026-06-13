@@ -7,33 +7,35 @@ on:
     paths:
       - 'i18n/locales/en.json'
 
-permissions:
-  contents: write
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
 
 jobs:
   update:
     name: 🌐 Update en.meta.json
     runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: write # commit and push updated i18n metadata
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           fetch-depth: 2
+          persist-credentials: false
 
-      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+      - uses: voidzero-dev/setup-vp@ca1c46663915d6c1042ae23bd39ab85718bfb0fa # v1.10.0
         with:
           node-version: lts/*
-
-      - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c # 1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: 🟧 Install pnpm
-        with:
-          cache: true
+          run-install: false
 
       - name: 📦 Install dependencies
-        run: pnpm install
+        run: vp install
 
       - name: 🌐 Update i18n metadata
-        run: pnpm i18n:meta:update-en-meta
+        run: vp run i18n:meta:update-en-meta
 
       - name: ⬆︎ Commit and Push changes
         run: |
