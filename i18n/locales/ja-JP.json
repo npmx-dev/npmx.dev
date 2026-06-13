@@ -532,6 +532,7 @@
       "weekly_downloads": "週間ダウンロード数",
       "keywords": "キーワード",
       "license": "ライセンス",
+      "version": "バージョン",
       "select": "パッケージを選択",
       "select_maximum": "最大 {count} 個のパッケージを選択できます"
     },
@@ -698,17 +699,17 @@
       "apply_correction": "補正を適用",
       "copy_alt": {
         "trend_none": "ほぼ横ばい",
-        "trend_strong": "強い",
-        "trend_weak": "弱い",
+        "trend_strong": "上昇",
+        "trend_weak": "下降",
         "trend_undefined": "未定義（データ不足）",
         "button_label": "altテキストをコピー",
         "watermark": "下部に「./npmx a fast, modern browser for the npm registry」のウォーターマークあり",
-        "analysis": "{package_name} は {start_value} で始まり {end_value} で終了。{trend} 傾向を示し、時間間隔あたりのダウンロード傾斜は {downloads_slope} です。",
+        "analysis": "{package_name} は {start_value} で始まり {end_value} で終了。{trend} の傾向を示し、時間間隔あたりのダウンロード数のグラフの傾きは {downloads_slope} です。",
         "estimation": "最終値は、現在の期間の部分的データに基づく推定値です。",
         "estimations": "最終値は、現在の期間の部分的データに基づく推定値です。",
         "compare": "パッケージダウンロード比較折れ線グラフ: {packages}",
         "single_package": "{package} パッケージのダウンロード折れ線グラフ",
-        "general_description": "Y軸はダウンロード数、X軸は {start_date} から {end_date} までの期間（単位：{granularity}）を示します。{estimation_notice} {packages_analysis}。{watermark}。",
+        "general_description": "Y軸はダウンロード数、X軸は {start_date} から {end_date} までの期間（単位：{granularity}）を示します。{estimation_notice} {packages_analysis} {watermark}。",
         "facet_bar_general_description": "{packages} の横棒グラフ: {facet} の比較 ({description})。{facet_analysis} {watermark}。",
         "facet_bar_analysis": "{package_name} の値は {value} です。"
       }
