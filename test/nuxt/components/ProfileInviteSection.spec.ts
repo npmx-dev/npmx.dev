@@ -19,6 +19,8 @@ registerEndpoint('/api/social/profile/test-handle', () => ({
   recordExists: false,
 }))
 
+registerEndpoint('/api/social/profile/test-handle/likes', () => ({ records: [] }))
+
 describe('Profile invite section', () => {
   beforeEach(() => {
     mockUseAtproto.mockReset()
