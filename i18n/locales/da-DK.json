@@ -224,6 +224,9 @@
       "more_replies": "{count} flere svar... | {count} flere svar..."
     }
   },
+  "noodles": {
+    "missing": {}
+  },
   "settings": {
     "title": "Indstillinger",
     "tagline": "Tilpas din npmx-oplevelse",
@@ -379,6 +382,7 @@
       "size": "Installationsstørrelse øget med {percent} ({size} større)",
       "deps": "{count} flere afhængigheder"
     },
+    "size_decrease": {},
     "replacement": {
       "title": "Du har muligvis ikke brug for denne afhængighed.",
       "native": "Dette kan erstattes med {replacement}, tilgængelig siden Node {nodeVersion}.",
@@ -387,8 +391,6 @@
       "none": "Denne pakke er blevet markeret som ikke længere nødvendig, og dens funktionalitet er sandsynligvis tilgængelig nativt i alle motorer.",
       "learn_more": "Lær mere",
       "learn_more_above": "Lær mere ovenfor.",
-      "mdn": "MDN",
-      "community": "community",
       "consider_no_dep": "+ Overvej ingen afhængighed?"
     },
     "stats": {
@@ -527,7 +529,6 @@
       "view_all": "Se {count} version | Se alle {count} versioner",
       "view_all_versions": "Se alle versioner",
       "distribution_title": "Semver Gruppe",
-      "distribution_modal_title": "Versioner",
       "distribution_range_date_same_year": "fra {from} til {to}, {endYear}",
       "distribution_range_date_multiple_years": "fra {from}, {startYear} til {to}, {endYear}",
       "grouping_major": "Major",
@@ -556,6 +557,11 @@
       "page_title": "Versionshistorik",
       "current_tags": "Nuværende tags",
       "no_match_filter": "Ingen versioner matcher {filter}"
+    },
+    "timeline": {
+      "chart": {
+        "copy_alt": {}
+      }
     },
     "dependencies": {
       "title": "Afhængighed ({count}) | Afhængigheder ({count})",
@@ -657,7 +663,8 @@
         "general_description": "Y-aksen repræsenterer antallet af downloads. X-aksen repræsenterer datointervallet, fra {start_date} til {end_date}, med en {granularity} tidsperiode.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Horisontalt søjlediagram for: {packages}, der sammenligner {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} har en værdi på {value}."
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "Ugentlige downloads",
@@ -758,6 +765,9 @@
       "button": "Download",
       "tarball": "Download Tarball som .tar.gz"
     }
+  },
+  "leaderboard": {
+    "likes": {}
   },
   "connector": {
     "modal": {
@@ -1119,7 +1129,6 @@
     },
     "team": {
       "title": "Team",
-      "governance": "Governance",
       "role_steward": "forvalter",
       "role_maintainer": "vedligeholder",
       "sponsor": "sponsor",
@@ -1317,7 +1326,10 @@
         "vulnerabilities": {
           "label": "Sårbarheder",
           "description": "Kendte sikkerhedssårbarheder"
-        }
+        },
+        "githubStars": {},
+        "githubIssues": {},
+        "createdAt": {}
       },
       "values": {
         "any": "Alle",
@@ -1337,8 +1349,6 @@
     "file_changes": "Filændringer",
     "files_count": "{count} fil | {count} filer",
     "lines_hidden": "{count} linje skjult | {count} linjer skjult",
-    "file_too_large": "Fil for stor til at sammenligne",
-    "file_size_warning": "{size} overskrider 250KB grænsen for sammenligning",
     "compare_versions": "diff",
     "compare_versions_title": "Sammenlign med seneste version",
     "comparing_versions_label": "Sammenligner versioner...",
@@ -1639,5 +1649,8 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "En sød, rund og farverig version af npmx-logoet."
+  "alt_logo_kawaii": "En sød, rund og farverig version af npmx-logoet.",
+  "changelog": {
+    "error": {}
+  }
 }
