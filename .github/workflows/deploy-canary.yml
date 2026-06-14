@@ -30,7 +30,8 @@ jobs:
       - uses: SocketDev/action@ba6de6cc0565af1f42295590380973573297e31f # v1.3.2
         with:
           mode: firewall-free
-          firewall-version: v1.12.0
+          # Version of the underlying sfw to use (no `v` prefix): https://github.com/SocketDev/sfw-free/releases
+          firewall-version: 1.12.0
 
       - run: sfw vp i -g vercel@54.12.2
       - run: vercel deploy --target=canary
