@@ -46,7 +46,8 @@
     "disable_shortcuts": "{settings} でキーボードショートカットを無効化できます。",
     "open_main": "メイン情報を開く",
     "open_diff": "バージョンの差分を開く",
-    "open_timeline": "タイムラインを開く"
+    "open_timeline": "タイムラインを開く",
+    "open_stats": "Open stats"
   },
   "search": {
     "label": "npmパッケージを検索",
@@ -154,7 +155,8 @@
       "diff": "差分",
       "compare": "このパッケージを比較",
       "download": "tarballをダウンロード",
-      "changelog": "Changelog"
+      "changelog": "Changelog",
+      "stats": "Stats"
     },
     "package_actions": {
       "copy_run": "実行コマンドをコピー"
@@ -227,6 +229,31 @@
       "like_count": "{count} 件のいいね",
       "repost_count": "{count} 件のリポスト",
       "more_replies": "さらに{count}件の返信…"
+    }
+  },
+  "noodles": {
+    "title": "noodles",
+    "meta_description": "Every noodle we've ever shown on npmx — the seasonal logos, easter eggs, and the stories behind them.",
+    "latest": "Latest noodles",
+    "what_is": "What is noodles",
+    "what_is_body": "Noodles are the playful variants of the npmx logo we run on the homepage to mark releases, holidays, events, and other moments worth celebrating. Think of them like Google Doodles, but for npm packages.",
+    "empty": "No noodles yet.",
+    "load_more": "Load {count} more",
+    "dates": "Active dates",
+    "shipped_in": "Shipped in",
+    "credits": "Credits",
+    "learn_more": "Learn more",
+    "carousel_prev": "Previous image",
+    "carousel_next": "Next image",
+    "carousel_dots": "Variant image navigation",
+    "carousel_jump": "Go to image {index}",
+    "lens_label": "{title} — image reel",
+    "lens_slide": "image {index}",
+    "lens_slide_position": "Slide {index} of {total}",
+    "back_to_archive": "Back to all noodles",
+    "missing": {
+      "title": "This noodle never made it out of the bowl.",
+      "body": "We don't have a “{slug}” noodle on the menu. Either it's still being plated, or it was never written. Either way — back to the archive."
     }
   },
   "settings": {
@@ -400,8 +427,8 @@
       "example": "例:",
       "native": "これは Node {nodeVersion} 以降で利用可能な {replacement} で置き換え可能です。",
       "native_no_version": "このパッケージは {replacement} で置き換え可能です。",
-      "simple": "{community} はこのパッケージを冗長としてフラグを立てており、次のアドバイスがあります: {replacement}",
-      "documented": "{community} により、このパッケージにはよりパフォーマンスの高い代替手段があることが報告されています。",
+      "simple": "このパッケージは冗長としてフラグが立てられています。推奨：{replacement}",
+      "documented": "このパッケージは、よりパフォーマンスの高い代替手段があるとフラグが立てられています。",
       "none": "このパッケージは不要になったとフラグが立てられています。その機能はすべてのエンジンでネイティブに利用できる可能性があります。",
       "learn_more": "詳細はこちら",
       "learn_more_above": "詳細は上記を確認してください。",
@@ -420,7 +447,10 @@
       "size_tooltip": {
         "unpacked": "展開サイズ: {size} (このパッケージ)",
         "total": "総展開サイズ: {size} (linux-x64向けの全 {count} 個の依存関係を含む)"
-      }
+      },
+      "main_information": "Main Information",
+      "trends": "Trends",
+      "version_distribution": "Version Distribution"
     },
     "skills": {
       "title": "エージェント スキル",
@@ -451,6 +481,7 @@
       "fund": "資金援助",
       "compare": "比較",
       "timeline": "タイムライン",
+      "stats": "stats",
       "compare_this_package": "このパッケージを比較",
       "changelog": "changelog"
     },
@@ -712,6 +743,12 @@
         "general_description": "Y軸はダウンロード数、X軸は {start_date} から {end_date} までの期間（単位：{granularity}）を示します。{estimation_notice} {packages_analysis} {watermark}。",
         "facet_bar_general_description": "{packages} の横棒グラフ: {facet} の比較 ({description})。{facet_analysis} {watermark}。",
         "facet_bar_analysis": "{package_name} の値は {value} です。"
+      },
+      "embedding": {
+        "chart": "Embed this chart",
+        "copy_url": "Copy this URL to embed the chart into your website",
+        "preview": "Preview",
+        "tip": "If startDate and endDate are not provided, the chart defaults to the last 12 months."
       }
     },
     "downloads": {
@@ -1398,6 +1435,10 @@
           "label": "GitHub Stars",
           "description": "GitHubリポジトリのスター数"
         },
+        "githubForks": {
+          "label": "GitHub Forks",
+          "description": "Number of forks on the GitHub repository"
+        },
         "githubIssues": {
           "label": "GitHub Issues",
           "description": "GitHubリポジトリのIssues数"
@@ -1465,6 +1506,9 @@
     "change_ratio": "変更率",
     "char_edits": "文字編集数",
     "diff_distance": "差分距離",
+    "diff_truncated": "Diff truncated for performance. Showing the first changed lines only.",
+    "large_diff_mode": "Large file diff shown with inline edit merging disabled for performance.",
+    "large_diff_options_disabled": "Large file mode disables inline edit merging for performance.",
     "loading_diff": "差分を読み込み中...",
     "loading_diff_error": "差分の読み込みに失敗しました",
     "merge_modified_lines": "変更行をマージ",
