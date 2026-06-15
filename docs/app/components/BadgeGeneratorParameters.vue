@@ -253,9 +253,11 @@ const copyToClipboard = async () => {
         >
         <select
           v-model="badgeStyle"
-          class="min-w-30 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-black/20 text-xs outline-none cursor-pointer hover:border-emerald-500 transition-colors"
+          class="min-w-30 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-black/20 text-gray-900 dark:text-gray-100 text-xs outline-none cursor-pointer hover:border-emerald-500 transition-colors"
         >
-          <option v-for="s in styles" :key="s" :value="s">{{ s }}</option>
+          <option v-for="s in styles" :key="s" :value="s" class="dark:bg-gray-900">
+            {{ s }}
+          </option>
         </select>
       </div>
     </div>
