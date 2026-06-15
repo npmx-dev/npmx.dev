@@ -1300,9 +1300,6 @@
             "learn_more_above": {
               "type": "string"
             },
-            "community": {
-              "type": "string"
-            },
             "consider_no_dep": {
               "type": "string"
             }
@@ -4298,6 +4295,18 @@
                   "additionalProperties": false
                 },
                 "githubStars": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "githubForks": {
                   "type": "object",
                   "properties": {
                     "label": {

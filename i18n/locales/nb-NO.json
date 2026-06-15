@@ -397,12 +397,9 @@
       "example": "Eksempel:",
       "native": "Denne kan erstattes med {replacement}, tilgjengelig siden Node {nodeVersion}.",
       "native_no_version": "Denne pakken kan erstattes med {replacement}.",
-      "simple": "{community} har flagget denne pakken som overflødig, med rådet: {replacement}.",
-      "documented": "{community} har flagget denne pakken da det finnes alternativer med bedre ytelse.",
       "none": "Denne pakken er flagget som ikke lenger nødvendig, og funksjonaliteten er sannsynligvis tilgjengelig innebygd i alle motorer.",
       "learn_more": "Lær mer",
       "learn_more_above": "Lær mer ovenfor.",
-      "community": "fellesskapet",
       "consider_no_dep": "+ Vurdere ingen avhengighet?"
     },
     "stats": {

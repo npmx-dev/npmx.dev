@@ -427,12 +427,11 @@
       "example": "Example:",
       "native": "This package can be replaced with {replacement}, available since Node {nodeVersion}.",
       "native_no_version": "This package can be replaced with {replacement}.",
-      "simple": "The {community} has flagged this package as redundant, with the advice: {replacement}",
-      "documented": "The {community} has flagged this package as having more performant alternatives.",
+      "simple": "This package has been flagged as redundant, with the advice: {replacement}",
+      "documented": "This package has been flagged as having more performant alternatives.",
       "none": "This package has been flagged as no longer needed, and its functionality is likely available natively in all engines.",
       "learn_more": "Learn more",
       "learn_more_above": "Learn more above.",
-      "community": "community",
       "consider_no_dep": "+ Consider no dep?"
     },
     "stats": {
@@ -1434,6 +1433,10 @@
         "githubStars": {
           "label": "GitHub Stars",
           "description": "Number of stars on the GitHub repository"
+        },
+        "githubForks": {
+          "label": "GitHub Forks",
+          "description": "Number of forks on the GitHub repository"
         },
         "githubIssues": {
           "label": "GitHub Issues",

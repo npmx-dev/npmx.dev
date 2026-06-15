@@ -219,12 +219,9 @@
     "replacement": {
       "title": "Lehet, hogy nincs szükséged erre a függőségre.",
       "native": "Ez helyettesíthető a következővel: {replacement}, amely elérhető a Node {nodeVersion} verzió óta.",
-      "simple": "A {community} szerint ez a csomag felesleges, az alábbi javaslattal: {replacement}.",
-      "documented": "A {community} szerint ennek a csomagnak vannak jobb teljesítményű alternatívái.",
       "none": "Ez a csomag feleslegesnek lett jelölve, a funkció valószínűleg natívan elérhető.",
       "learn_more": "Tudj meg többet",
       "learn_more_above": "Tudj meg többet fentebb.",
-      "community": "közösség",
       "consider_no_dep": "+ Fontold meg a függőség nélkülözést?"
     },
     "stats": {

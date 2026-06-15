@@ -397,12 +397,9 @@
       "example": "Exemplu:",
       "native": "Acest pachet poate fi înlocuit cu {replacement}, disponibil de la Node {nodeVersion}.",
       "native_no_version": "Acest pachet poate fi înlocuit cu {replacement}.",
-      "simple": "Comunitatea {community} a semnalat acest pachet ca redundant, cu recomandarea: {replacement}",
-      "documented": "Comunitatea {community} a semnalat acest pachet ca având alternative performante.",
       "none": "Acest pachet a fost semnalat ca nu mai este necesar, și funcționalitatea este probabil disponibil nativ în toate motorii.",
       "learn_more": "Află mai multe",
       "learn_more_above": "Află mai multe mai sus.",
-      "community": "comunitate",
       "consider_no_dep": "+ A considera fără dependențe?"
     },
     "stats": {

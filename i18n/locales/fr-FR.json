@@ -389,12 +389,9 @@
     "replacement": {
       "title": "Vous n'avez peut-être pas besoin de cette dépendance.",
       "native": "Ceci peut être remplacé par {replacement}, disponible depuis Node {nodeVersion}.",
-      "simple": "La {community} a signalé ce paquet comme redondant, avec ce conseil : {replacement}.",
-      "documented": "La {community} a signalé que ce paquet a des alternatives plus performantes.",
       "none": "Ce paquet a été signalé comme n'étant plus nécessaire, et sa fonctionnalité est probablement disponible nativement dans tous les moteurs.",
       "learn_more": "En savoir plus",
       "learn_more_above": "En savoir plus ci-dessus.",
-      "community": "communauté",
       "consider_no_dep": "+ Envisager sans dépendance ?"
     },
     "stats": {

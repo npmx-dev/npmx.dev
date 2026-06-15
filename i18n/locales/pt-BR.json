@@ -396,12 +396,9 @@
       "example": "Exemplo:",
       "native": "Este pacote pode ser substituído por {replacement}, disponível desde Node {nodeVersion}.",
       "native_no_version": "Este pacote pode ser substituído por {replacement}.",
-      "simple": "A {community} marcou este pacote como redundante, com o conselho: {replacement}.",
-      "documented": "A {community} marcou este pacote como tendo alternativas mais performáticas.",
       "none": "Este pacote foi marcado como não mais necessário, e sua funcionalidade provavelmente está disponível nativamente em todas as engines.",
       "learn_more": "Saiba mais",
       "learn_more_above": "Saiba mais acima.",
-      "community": "comunidade",
       "consider_no_dep": "+ Considerar sem dependências?"
     },
     "stats": {

@@ -384,12 +384,9 @@
     "replacement": {
       "title": "Možná tuto závislost nepotřebujete.",
       "native": "Tento balíček lze nahradit {replacement}, dostupné od Node {nodeVersion}.",
-      "simple": "{community} označila tento balíček jako zbytečný s doporučením: {replacement}.",
-      "documented": "{community} označila tento balíček jako mající výkonnější alternativy.",
       "none": "Tento balíček byl označen jako již nepotřebný a jeho funkčnost je pravděpodobně dostupná nativně ve všech enginech.",
       "learn_more": "Zjistit více",
       "learn_more_above": "Zjistit více výše.",
-      "community": "komunita",
       "consider_no_dep": "+ Zvážit žádnou závislost?"
     },
     "stats": {

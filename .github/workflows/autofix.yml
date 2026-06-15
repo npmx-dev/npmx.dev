@@ -26,10 +26,11 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@ca1c46663915d6c1042ae23bd39ab85718bfb0fa # v1.10.0
+      - uses: voidzero-dev/setup-vp@2dec1e33f4ab2c6d5bce1b0c4607961bb1a3f7a1 # v1.12.0
         with:
           node-version: lts/*
           cache: true
+          sfw: true
 
       - name: 🎨 Check for non-RTL/non-a11y CSS classes
         run: vp run lint:css
