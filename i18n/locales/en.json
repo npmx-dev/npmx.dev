@@ -459,8 +459,7 @@
       "unlike": "Unlike this package",
       "top_rank_tooltip": "This is among the top 10 most liked packages on npmx! (#{rank})",
       "top_rank_label": "#{rank}",
-      "top_rank_link_label": "View likes leaderboard. This package is ranked #{rank}.",
-      "count_truncated": "{count} likes"
+      "count_truncated": "approximately {count} likes"
     },
     "docs": {
       "contents": "Contents",
