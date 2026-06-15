@@ -14,7 +14,7 @@ export default defineConfig({
         command: 'knip && knip --production --exclude dependencies',
       },
       'generate:lexicons': {
-        command: 'lex build --lexicons lexicons --out shared/types/lexicons --clear',
+        command: 'npx lex build --lexicons lexicons --out shared/types/lexicons --clear',
       },
       'generate:sprite': {
         command: 'node scripts/generate-file-tree-sprite.ts',
