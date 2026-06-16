@@ -4306,6 +4306,18 @@
                   },
                   "additionalProperties": false
                 },
+                "githubForks": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
                 "githubIssues": {
                   "type": "object",
                   "properties": {

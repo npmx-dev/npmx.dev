@@ -46,7 +46,8 @@
     "disable_shortcuts": "{settings} でキーボードショートカットを無効化できます。",
     "open_main": "メイン情報を開く",
     "open_diff": "バージョンの差分を開く",
-    "open_timeline": "タイムラインを開く"
+    "open_timeline": "タイムラインを開く",
+    "open_stats": "統計を表示"
   },
   "search": {
     "label": "npmパッケージを検索",
@@ -154,7 +155,8 @@
       "diff": "差分",
       "compare": "このパッケージを比較",
       "download": "tarballをダウンロード",
-      "changelog": "Changelog"
+      "changelog": "Changelog",
+      "stats": "統計"
     },
     "package_actions": {
       "copy_run": "実行コマンドをコピー"
@@ -227,6 +229,31 @@
       "like_count": "{count} 件のいいね",
       "repost_count": "{count} 件のリポスト",
       "more_replies": "さらに{count}件の返信…"
+    }
+  },
+  "noodles": {
+    "title": "noodles",
+    "meta_description": "季節ごとのロゴやイースターエッグ、その背景にあるストーリーなど、npmxでこれまでに公開されたすべてのnoodles。",
+    "latest": "最新のnoodles",
+    "what_is": "noodlesとは",
+    "what_is_body": "noodlesとは、リリース、祝日、イベント、その他の記念すべき瞬間を祝うためにホームページに掲載される、npmxロゴの遊び心あふれるバリエーションです。Google Doodlesのnpmパッケージ版のようなものと考えてください。",
+    "empty": "noodlesはまだありません。",
+    "load_more": "さらに {count} 件を読み込む",
+    "dates": "公開期間",
+    "shipped_in": "リリース",
+    "credits": "クレジット",
+    "learn_more": "詳細はこちら",
+    "carousel_prev": "前の画像",
+    "carousel_next": "次の画像",
+    "carousel_dots": "バリエーション画像のナビゲーション",
+    "carousel_jump": "画像 {index} へ移動",
+    "lens_label": "{title} — 画像リール",
+    "lens_slide": "画像 {index}",
+    "lens_slide_position": "スライド {index} / {total}",
+    "back_to_archive": "すべてのnoodlesに戻る",
+    "missing": {
+      "title": "このnoodleはボウルから出られませんでした。",
+      "body": "メニューに「{slug}」というnoodleはありません。まだ調理中か、作成されなかったかのどちらかです。いずれにせよ、アーカイブに戻りましょう。"
     }
   },
   "settings": {
@@ -400,6 +427,8 @@
       "example": "例:",
       "native": "これは Node {nodeVersion} 以降で利用可能な {replacement} で置き換え可能です。",
       "native_no_version": "このパッケージは {replacement} で置き換え可能です。",
+      "simple": "このパッケージは冗長としてフラグが立てられています。推奨：{replacement}",
+      "documented": "このパッケージは、よりパフォーマンスの高い代替手段があるとフラグが立てられています。",
       "none": "このパッケージは不要になったとフラグが立てられています。その機能はすべてのエンジンでネイティブに利用できる可能性があります。",
       "learn_more": "詳細はこちら",
       "learn_more_above": "詳細は上記を確認してください。",
@@ -417,7 +446,10 @@
       "size_tooltip": {
         "unpacked": "展開サイズ: {size} (このパッケージ)",
         "total": "総展開サイズ: {size} (linux-x64向けの全 {count} 個の依存関係を含む)"
-      }
+      },
+      "main_information": "主な情報",
+      "trends": "トレンド",
+      "version_distribution": "バージョン分布"
     },
     "skills": {
       "title": "エージェント スキル",
@@ -448,6 +480,7 @@
       "fund": "資金援助",
       "compare": "比較",
       "timeline": "タイムライン",
+      "stats": "統計",
       "compare_this_package": "このパッケージを比較",
       "changelog": "changelog"
     },
@@ -529,6 +562,7 @@
       "weekly_downloads": "週間ダウンロード数",
       "keywords": "キーワード",
       "license": "ライセンス",
+      "version": "バージョン",
       "select": "パッケージを選択",
       "select_maximum": "最大 {count} 個のパッケージを選択できます"
     },
@@ -695,19 +729,25 @@
       "apply_correction": "補正を適用",
       "copy_alt": {
         "trend_none": "ほぼ横ばい",
-        "trend_strong": "強い",
-        "trend_weak": "弱い",
+        "trend_strong": "上昇",
+        "trend_weak": "下降",
         "trend_undefined": "未定義（データ不足）",
         "button_label": "altテキストをコピー",
         "watermark": "下部に「./npmx a fast, modern browser for the npm registry」のウォーターマークあり",
-        "analysis": "{package_name} は {start_value} で始まり {end_value} で終了。{trend} 傾向を示し、時間間隔あたりのダウンロード傾斜は {downloads_slope} です。",
+        "analysis": "{package_name} は {start_value} で始まり {end_value} で終了。{trend} の傾向を示し、時間間隔あたりのダウンロード数のグラフの傾きは {downloads_slope} です。",
         "estimation": "最終値は、現在の期間の部分的データに基づく推定値です。",
         "estimations": "最終値は、現在の期間の部分的データに基づく推定値です。",
         "compare": "パッケージダウンロード比較折れ線グラフ: {packages}",
         "single_package": "{package} パッケージのダウンロード折れ線グラフ",
-        "general_description": "Y軸はダウンロード数、X軸は {start_date} から {end_date} までの期間（単位：{granularity}）を示します。{estimation_notice} {packages_analysis}。{watermark}。",
+        "general_description": "Y軸はダウンロード数、X軸は {start_date} から {end_date} までの期間（単位：{granularity}）を示します。{estimation_notice} {packages_analysis} {watermark}。",
         "facet_bar_general_description": "{packages} の横棒グラフ: {facet} の比較 ({description})。{facet_analysis} {watermark}。",
         "facet_bar_analysis": "{package_name} の値は {value} です。"
+      },
+      "embedding": {
+        "chart": "このチャートを埋め込む",
+        "copy_url": "ウェブサイトにチャートを埋め込むには、このURLをコピーしてください",
+        "preview": "プレビュー",
+        "tip": "startDateとendDateが指定されていない場合、チャートはデフォルトで過去12ヶ月間のデータを表示します。"
       }
     },
     "downloads": {
@@ -1394,6 +1434,10 @@
           "label": "GitHub Stars",
           "description": "GitHubリポジトリのスター数"
         },
+        "githubForks": {
+          "label": "GitHub Forks",
+          "description": "GitHubリポジトリのフォーク数"
+        },
         "githubIssues": {
           "label": "GitHub Issues",
           "description": "GitHubリポジトリのIssues数"
@@ -1461,6 +1505,9 @@
     "change_ratio": "変更率",
     "char_edits": "文字編集数",
     "diff_distance": "差分距離",
+    "diff_truncated": "パフォーマンス向上のため、diffが途中で切り捨てられました。最初の変更された行のみを表示しています。",
+    "large_diff_mode": "パフォーマンス向上のため、インライン編集のマージを無効にして大型ファイルのdiffを表示しています。",
+    "large_diff_options_disabled": "大型ファイルモードでは、パフォーマンス向上のためインライン編集のマージが無効になります。",
     "loading_diff": "差分を読み込み中...",
     "loading_diff_error": "差分の読み込みに失敗しました",
     "merge_modified_lines": "変更行をマージ",

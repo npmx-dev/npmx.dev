@@ -1,3 +1,7 @@
+# Default Settings
+User-agent: *
+
+# Pages that bots are allowed to visit
 Allow: /$
 Allow: /about$
 Allow: /accessibility$
@@ -11,9 +15,6 @@ Allow: /_og/d/*
 Allow: /opensearch.xml$
 
 Disallow: /
-
-# User-agent: *
-# Allow: /
 
 # Search pages: infinite query-param combinations
 Disallow: /search
