@@ -42,7 +42,7 @@ const entries: Noodle[] = [
     variants: ['/extra/pride-2.svg', '/extra/pride-3.png'],
     references: [
       {
-        label: 'Pride Month',
+        label: 'Pride Month - Wikipedia',
         url: 'https://en.wikipedia.org/wiki/Pride_Month',
       },
     ],
@@ -62,7 +62,7 @@ const entries: Noodle[] = [
     posterImage: '/extra/npmx-dark-press.png',
     references: [
       {
-        label: 'World Press Freedom Day',
+        label: 'World Press Freedom Day - Wikipedia',
         url: 'https://en.wikipedia.org/wiki/World_Press_Freedom_Day',
       },
     ],
@@ -92,7 +92,7 @@ const entries: Noodle[] = [
     posterImage: '/extra/npmx-cute-transgender.svg',
     references: [
       {
-        label: 'International Transgender Day of Visibility',
+        label: 'International Transgender Day of Visibility - Wikipedia',
         url: 'https://en.wikipedia.org/wiki/International_Transgender_Day_of_Visibility',
       },
     ],
@@ -112,7 +112,7 @@ const entries: Noodle[] = [
     posterImage: '/extra/npmx-dark-artemis.svg',
     references: [
       {
-        label: 'Artemis II',
+        label: 'Artemis II - Wikipedia',
         url: 'https://en.wikipedia.org/wiki/Artemis_II',
       },
     ],
