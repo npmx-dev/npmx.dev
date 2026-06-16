@@ -191,9 +191,9 @@ async function renderJsDocTags(tags: JsDocTag[], symbolLookup: SymbolLookup): Pr
     : null
   const examplePromises = examples.map(async example => {
     if (!example.doc) return ''
-    const langMatch = example.doc.match(/```(\w+)?/)
+    const langMatch = example.doc.match(/```[ \t]*([-\w]+)?/)
     const lang = langMatch?.[1] || 'typescript'
-    const code = example.doc.replace(/```\w*\n?/g, '').trim()
+    const code = example.doc.replace(/```[ \t]*[-\w]*[ \t]*(?:\r\n|\r|\n)?/g, '').trim()
     return highlightCodeBlock(code, lang)
   })
 

@@ -94,3 +94,21 @@ export function packageTimelineRoute(packageName: string, version: string): Rout
     },
   }
 }
+
+export function packageStatsRoute(
+  packageName: string,
+  version: string,
+  hash?: '#distribution' | '#trends',
+): RouteLocationRaw {
+  const { org, name } = splitPackageName(packageName)
+
+  return {
+    name: 'stats',
+    hash,
+    params: {
+      org: org || undefined,
+      packageName: name,
+      version: version.replace(/\s+/g, ''),
+    },
+  }
+}

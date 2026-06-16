@@ -347,7 +347,7 @@ useSeoMeta({
       page="timeline"
     />
 
-    <div class="sticky top-24 z-1 bg-bg mt-8">
+    <div class="[@media(min-height:1024px)]:sticky top-24 z-1 bg-bg mt-8">
       <div class="container w-full">
         <div class="mx-auto">
           <PackageTimelineChart

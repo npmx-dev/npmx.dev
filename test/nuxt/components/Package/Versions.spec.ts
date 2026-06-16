@@ -38,7 +38,8 @@ function isVersionLink(a: DOMWrapper<Element>): boolean {
   return (
     !a.attributes('href')?.startsWith('#') &&
     a.attributes('target') !== '_blank' &&
-    !a.attributes('data-testid')?.includes('view-all-versions')
+    !a.attributes('data-testid')?.includes('view-distribution-link') &&
+    !a.attributes('data-testid')?.includes('view-all-versions-link')
   )
 }
 

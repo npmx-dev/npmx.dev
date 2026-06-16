@@ -1,4 +1,11 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+
+const dnsLookupMock = vi.hoisted(() => vi.fn())
+
+vi.mock('node:dns/promises', () => ({
+  lookup: dnsLookupMock,
+}))
+
 import {
   isTrustedImageDomain,
   isAllowedImageUrl,
@@ -122,13 +129,17 @@ describe('Image Proxy Utils', () => {
   })
 
   describe('resolveAndValidateHost', () => {
+    afterEach(() => {
+      dnsLookupMock.mockReset()
+    })
+
     it('allows URLs with publicly-resolvable hostnames', async () => {
-      // example.com resolves to a public IP
+      dnsLookupMock.mockResolvedValue([{ address: '93.184.215.14', family: 4 }])
       expect(await resolveAndValidateHost('https://example.com/image.png')).toBe(true)
     })
 
     it('blocks URLs with hostnames that resolve to loopback', async () => {
-      // localhost resolves to 127.0.0.1
+      dnsLookupMock.mockResolvedValue([{ address: '127.0.0.1', family: 4 }])
       expect(await resolveAndValidateHost('http://localhost/image.png')).toBe(false)
     })
 
@@ -143,6 +154,7 @@ describe('Image Proxy Utils', () => {
     })
 
     it('blocks hostnames that fail DNS resolution', async () => {
+      dnsLookupMock.mockRejectedValue(new Error('ENOTFOUND'))
       expect(
         await resolveAndValidateHost(
           'http://this-domain-definitely-does-not-exist.invalid/img.png',

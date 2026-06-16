@@ -10,19 +10,22 @@ import {
   COMPOUND_EXTENSIONS,
   DEFAULT_ICON,
 } from '../app/utils/file-icons.ts'
+import customIcons from '../assets/media/custom-icons.json' with { type: 'json' }
 
 const rootDir = process.cwd()
-const outputDevPath = path.join(rootDir, 'public', 'file-tree-sprite.svg')
-const outputStagePath = path.join(rootDir, 'public-dev', 'file-tree-sprite.svg')
-const outputProdPath = path.join(rootDir, 'public-prod', 'file-tree-sprite.svg')
+const outputDevPath = path.join(rootDir, 'public-dev', 'file-tree-sprite.svg')
+const outputStagePath = path.join(rootDir, 'public-staging', 'file-tree-sprite.svg')
+const outputProdPath = path.join(rootDir, 'public', 'file-tree-sprite.svg')
 
-const COLLECTION_NAMES = ['lucide', 'simple-icons', 'svg-spinners', 'vscode-icons']
+const ICONIFY_COLLECTION_NAMES = ['lucide', 'simple-icons', 'svg-spinners', 'vscode-icons']
 
-const COLLECTION_REGEXP = new RegExp(`^(${COLLECTION_NAMES.join('|')})-(.+)$`)
+const COLLECTION_REGEXP = new RegExp(`^(${ICONIFY_COLLECTION_NAMES.join('|')}|custom)-(.+)$`)
 
 async function loadCollections() {
-  const collections: { [key: string]: IconifyJSON } = {}
-  for (const name of COLLECTION_NAMES) {
+  const collections: { [key: string]: IconifyJSON } = {
+    custom: { icons: customIcons, prefix: 'custom' },
+  }
+  for (const name of ICONIFY_COLLECTION_NAMES) {
     const filePathUrl = import.meta.resolve(`@iconify-json/${name}/icons.json`)
     const filePath = fileURLToPath(filePathUrl)
     const raw = await fs.readFile(filePath, 'utf8')

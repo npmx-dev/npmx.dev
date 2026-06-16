@@ -88,6 +88,10 @@ const footerSections = computed<Array<{ label: string; links: FooterLink[] }>>((
         href: '/pds',
       },
       {
+        name: t('noodles.title'),
+        href: '/noodles',
+      },
+      {
         name: t('footer.docs'),
         href: NPMX_DOCS_SITE,
       },
@@ -239,6 +243,10 @@ const footerSections = computed<Array<{ label: string; links: FooterLink[] }>>((
         <li class="flex gap-2 items-center">
           <kbd class="kbd">t</kbd>
           <span>{{ $t('shortcuts.open_timeline') }}</span>
+        </li>
+        <li class="flex gap-2 items-center">
+          <kbd class="kbd">s</kbd>
+          <span>{{ $t('shortcuts.open_stats') }}</span>
         </li>
         <li class="flex gap-2 items-center">
           <kbd class="kbd">c</kbd>

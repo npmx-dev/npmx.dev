@@ -400,12 +400,9 @@
       "example": "例:",
       "native": "これは Node {nodeVersion} 以降で利用可能な {replacement} で置き換え可能です。",
       "native_no_version": "このパッケージは {replacement} で置き換え可能です。",
-      "simple": "{community} はこのパッケージを冗長としてフラグを立てており、次のアドバイスがあります: {replacement}",
-      "documented": "{community} により、このパッケージにはよりパフォーマンスの高い代替手段があることが報告されています。",
       "none": "このパッケージは不要になったとフラグが立てられています。その機能はすべてのエンジンでネイティブに利用できる可能性があります。",
       "learn_more": "詳細はこちら",
       "learn_more_above": "詳細は上記を確認してください。",
-      "community": "コミュニティ",
       "consider_no_dep": "+ 依存関係なしを検討しますか？"
     },
     "stats": {
@@ -550,7 +547,6 @@
       "view_all": "{count} 個のバージョンを表示|{count} 個のすべてのバージョンを表示",
       "view_all_versions": "すべてのバージョンを表示",
       "distribution_title": "Semverグループ",
-      "distribution_modal_title": "バージョン",
       "distribution_range_date_same_year": "{endYear} 年 {from} から {to}",
       "distribution_range_date_multiple_years": "{startYear} 年 {from} から {endYear} 年 {to}",
       "grouping_major": "メジャー",
@@ -716,6 +712,7 @@
     },
     "downloads": {
       "title": "週間ダウンロード数",
+      "version_distribution_title": "バージョン {version} の週間ダウンロード数",
       "community_distribution": "コミュニティの採用分布を表示",
       "subtitle": "全バージョン合計",
       "sparkline_nav_hint": "← → キーを使用してください"
@@ -1184,7 +1181,9 @@
     },
     "team": {
       "title": "チーム",
-      "governance": "ガバナンス",
+      "core": "コア",
+      "maintainers": "メンテナ",
+      "role_core": "コア",
       "role_steward": "スチュワード",
       "role_maintainer": "メンテナ",
       "sponsor": "スポンサー",
@@ -1422,8 +1421,6 @@
     "file_changes": "ファイル変更",
     "files_count": "{count} ファイル",
     "lines_hidden": "{count} 行を非表示",
-    "file_too_large": "ファイルサイズが大きすぎるため比較できません",
-    "file_size_warning": "{size} は比較制限の250KBを超えています",
     "compare_versions": "diff",
     "compare_versions_title": "最新バージョンと比較",
     "comparing_versions_label": "バージョンを比較中...",

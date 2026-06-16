@@ -44,7 +44,7 @@ What npmx offers:
 - **Dark mode and light mode** &ndash; plus customize the color palette to your preferences
 - **Translated interface** &ndash; localized UI across 39+ locales, including RTL support
 - **First-class accessibility** &ndash; accessible components, keyboard workflows, and automated axe/Lighthouse checks
-- **URL-driven feature views** &ndash; share exact package versions, search results, compare sets, source files and lines, diffs, docs, changelogs, and timelines
+- **URL-driven feature views** &ndash; share exact package versions, search results, compare sets, source files and lines, diffs, docs, changelogs, stats and timelines
 - **Fast search** &ndash; quick package search with instant results
 - **Package details** &ndash; READMEs, versions, dependencies, and metadata
 - **Code viewer** &ndash; browse package source code with syntax highlighting and permalink to specific lines
@@ -186,6 +186,7 @@ We welcome contributions &ndash; please do feel free to explore the project and 
 - [npmx-weekly](https://npmx-weekly.trueberryless.org/) &ndash; A weekly newsletter for the npmx ecosystem. Add your own content via suggestions in the weekly PR on [GitHub](https://github.com/trueberryless-org/npmx-weekly/pulls?q=is%3Aopen+is%3Apr+label%3A%22%F0%9F%95%94+weekly+post%22).
 - [npmx-digest](https://npmx-digest.trueberryless.org/) &ndash; An automated news aggregation website that summarizes npmx activity from GitHub and Bluesky every 8 hours.
 - [npmx-badge](https://npmx-badge.vercel.app/) &ndash; A playground to help you create custom badges quickly.
+- [npmxers](https://npmxers.trueberryless.org/) &ndash; Discover the number of contributions you made to npmx and share your npmxer profile.
 
 If you're building something cool, let us know! 🙏
 

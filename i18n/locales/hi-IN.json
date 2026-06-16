@@ -75,6 +75,23 @@
     "instant_search_turn_off": "बंद करें",
     "instant_search_advisory": "{label} {state} — {action}"
   },
+  "command_palette": {
+    "state": {},
+    "groups": {},
+    "actions": {},
+    "connections": {},
+    "navigation": {},
+    "links": {},
+    "package_links": {},
+    "theme": {},
+    "package": {},
+    "package_actions": {},
+    "code": {},
+    "diff": {},
+    "version": {},
+    "status": {},
+    "announcements": {}
+  },
   "nav": {
     "main_navigation": "मुख्य",
     "popular_packages": "लोकप्रिय पैकेज",
@@ -250,15 +267,13 @@
       "size": "इंस्टॉल आकार {percent} बढ़ा ({size} अधिक)",
       "deps": "{count} और निर्भरताएँ"
     },
+    "size_decrease": {},
     "replacement": {
       "title": "आपको इस निर्भरता की आवश्यकता नहीं हो सकती।",
       "native": "इसे {replacement} से बदला जा सकता है, जो Node {nodeVersion} से उपलब्ध है।",
-      "simple": "{community} ने इस पैकेज को निरर्थक के रूप में फ़्लैग किया है, सलाह के साथ: {replacement}।",
-      "documented": "{community} ने इस पैकेज को अधिक प्रदर्शनकारी विकल्पों के रूप में फ़्लैग किया है।",
       "none": "यह पैकेज अब आवश्यक नहीं होने के रूप में फ़्लैग किया गया है, और इसकी कार्यक्षमता सभी इंजनों में नेटिवली उपलब्ध होने की संभावना है।",
       "learn_more": "और जानें",
       "learn_more_above": "ऊपर और जानें।",
-      "community": "समुदाय",
       "consider_no_dep": "+ बिना निर्भरता पर विचार करें?"
     },
     "stats": {
@@ -397,7 +412,6 @@
       "view_all": "{count} संस्करण देखें | सभी {count} संस्करण देखें",
       "view_all_versions": "सभी संस्करण देखें",
       "distribution_title": "Semver समूह",
-      "distribution_modal_title": "संस्करण",
       "distribution_range_date_same_year": "{from} से {to}, {endYear} तक",
       "distribution_range_date_multiple_years": "{from}, {startYear} से {to}, {endYear} तक",
       "grouping_major": "मेजर",
@@ -426,6 +440,11 @@
       "page_title": "संस्करण इतिहास",
       "current_tags": "वर्तमान टैग्स",
       "no_match_filter": "कोई संस्करण {filter} से मेल नहीं खाता"
+    },
+    "timeline": {
+      "chart": {
+        "copy_alt": {}
+      }
     },
     "dependencies": {
       "title": "निर्भरताएँ ({count})",
@@ -625,6 +644,9 @@
       "button": "डाउनलोड करें",
       "tarball": ".tar.gz के रूप में Tarball डाउनलोड करें"
     }
+  },
+  "leaderboard": {
+    "likes": {}
   },
   "connector": {
     "modal": {
@@ -982,7 +1004,6 @@
     },
     "team": {
       "title": "टीम",
-      "governance": "शासन",
       "role_steward": "संरक्षक",
       "role_maintainer": "अनुरक्षक",
       "sponsor": "प्रायोजक",
@@ -1098,6 +1119,9 @@
       "packages_selected": "{count}/{max} पैकेज चुने गए।",
       "add_hint": "तुलना करने के लिए कम से कम 2 पैकेज जोड़ें।"
     },
+    "scatter_chart": {
+      "copy_alt": {}
+    },
     "no_dependency": {
       "label": "(कोई निर्भरता नहीं)",
       "typeahead_title": "James क्या करते?",
@@ -1172,7 +1196,10 @@
         "vulnerabilities": {
           "label": "कमजोरियाँ",
           "description": "ज्ञात सुरक्षा कमजोरियाँ"
-        }
+        },
+        "githubStars": {},
+        "githubIssues": {},
+        "createdAt": {}
       },
       "values": {
         "any": "कोई भी",
@@ -1192,8 +1219,6 @@
     "file_changes": "फ़ाइल परिवर्तन",
     "files_count": "{count} फ़ाइल | {count} फ़ाइलें",
     "lines_hidden": "{count} पंक्ति छिपी | {count} पंक्तियाँ छिपी",
-    "file_too_large": "तुलना के लिए फ़ाइल बहुत बड़ी है",
-    "file_size_warning": "तुलना के लिए {size} 250KB सीमा से अधिक है",
     "compare_versions": "diff",
     "compare_versions_title": "नवीनतम संस्करण से तुलना करें",
     "comparing_versions_label": "संस्करणों की तुलना की जा रही है...",
@@ -1450,5 +1475,8 @@
     "customize": {},
     "typography": {},
     "guidelines": {}
+  },
+  "changelog": {
+    "error": {}
   }
 }

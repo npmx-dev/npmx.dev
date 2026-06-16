@@ -20,13 +20,20 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
+          fetch-depth: 2
 
-      - uses: voidzero-dev/setup-vp@ca1c46663915d6c1042ae23bd39ab85718bfb0fa # v1.10.0
+      - uses: voidzero-dev/setup-vp@2dec1e33f4ab2c6d5bce1b0c4607961bb1a3f7a1 # v1.12.0
         with:
           node-version: lts/*
           run-install: false
 
-      - run: vp install -g vercel
+      - uses: SocketDev/action@ba6de6cc0565af1f42295590380973573297e31f # v1.3.2
+        with:
+          mode: firewall-free
+          # Version of the underlying sfw to use (no `v` prefix): https://github.com/SocketDev/sfw-free/releases
+          firewall-version: 1.12.0
+
+      - run: sfw vp i -g vercel@54.12.2
       - run: vercel deploy --target=canary
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}

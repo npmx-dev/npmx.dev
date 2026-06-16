@@ -283,6 +283,14 @@ function handleClick(event: MouseEvent) {
   font-style: italic;
 }
 
+.readme :deep(dt) {
+  margin-block-start: 0.5rem;
+}
+
+.readme :deep(dd) {
+  padding-inline-start: 1.5rem;
+}
+
 /* GitHub-style callouts/alerts */
 .readme :deep(blockquote[data-callout]) {
   border-inline-start-width: 3px;

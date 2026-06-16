@@ -46,7 +46,8 @@
     "disable_shortcuts": "You can disable keyboard shortcuts in {settings}.",
     "open_main": "Open main information",
     "open_diff": "Open version differences",
-    "open_timeline": "Open timeline"
+    "open_timeline": "Open timeline",
+    "open_stats": "Open stats"
   },
   "search": {
     "label": "Search npm packages",
@@ -154,7 +155,8 @@
       "diff": "Diff",
       "compare": "Compare this package",
       "download": "Download tarball",
-      "changelog": "Changelog"
+      "changelog": "Changelog",
+      "stats": "Stats"
     },
     "package_actions": {
       "copy_run": "Copy run command"
@@ -227,6 +229,31 @@
       "like_count": "{count} like | {count} likes",
       "repost_count": "{count} repost | {count} reposts",
       "more_replies": "{count} more reply... | {count} more replies..."
+    }
+  },
+  "noodles": {
+    "title": "noodles",
+    "meta_description": "Every noodle we've ever shown on npmx — the seasonal logos, easter eggs, and the stories behind them.",
+    "latest": "Latest noodles",
+    "what_is": "What is noodles",
+    "what_is_body": "Noodles are the playful variants of the npmx logo we run on the homepage to mark releases, holidays, events, and other moments worth celebrating. Think of them like Google Doodles, but for npm packages.",
+    "empty": "No noodles yet.",
+    "load_more": "Load {count} more",
+    "dates": "Active dates",
+    "shipped_in": "Shipped in",
+    "credits": "Credits",
+    "learn_more": "Learn more",
+    "carousel_prev": "Previous image",
+    "carousel_next": "Next image",
+    "carousel_dots": "Variant image navigation",
+    "carousel_jump": "Go to image {index}",
+    "lens_label": "{title} — image reel",
+    "lens_slide": "image {index}",
+    "lens_slide_position": "Slide {index} of {total}",
+    "back_to_archive": "Back to all noodles",
+    "missing": {
+      "title": "This noodle never made it out of the bowl.",
+      "body": "We don't have a “{slug}” noodle on the menu. Either it's still being plated, or it was never written. Either way — back to the archive."
     }
   },
   "settings": {
@@ -386,26 +413,25 @@
       "title_deps": "Significant dependency count increase since v{version}",
       "title_both": "Significant size and dependency increase since v{version}",
       "size": "Install size increased by {percent} ({size} larger)",
-      "deps": "{count} more dependencies"
+      "deps": "{count} more dependency | {count} more dependencies"
     },
     "size_decrease": {
       "title_size": "Package size decreased since v{version}!",
       "title_deps": "Dependency count decreased since v{version}!",
       "title_both": "Package size and dependency count decreased since v{version}!",
       "size": "Install size reduced by {percent} ({size} smaller)",
-      "deps": "{count} fewer dependencies"
+      "deps": "{count} fewer dependency | {count} fewer dependencies"
     },
     "replacement": {
       "title": "You might not need this dependency.",
       "example": "Example:",
       "native": "This package can be replaced with {replacement}, available since Node {nodeVersion}.",
       "native_no_version": "This package can be replaced with {replacement}.",
-      "simple": "The {community} has flagged this package as redundant, with the advice: {replacement}",
-      "documented": "The {community} has flagged this package as having more performant alternatives.",
+      "simple": "This package has been flagged as redundant, with the advice: {replacement}",
+      "documented": "This package has been flagged as having more performant alternatives.",
       "none": "This package has been flagged as no longer needed, and its functionality is likely available natively in all engines.",
       "learn_more": "Learn more",
       "learn_more_above": "Learn more above.",
-      "community": "community",
       "consider_no_dep": "+ Consider no dep?"
     },
     "stats": {
@@ -420,7 +446,10 @@
       "size_tooltip": {
         "unpacked": "{size} unpacked size (this package)",
         "total": "{size} total unpacked size (including {count} dependency for linux-x64) | {size} total unpacked size (including all {count} dependencies for linux-x64)"
-      }
+      },
+      "main_information": "Main Information",
+      "trends": "Trends",
+      "version_distribution": "Version Distribution"
     },
     "skills": {
       "title": "Agent Skills",
@@ -451,6 +480,7 @@
       "fund": "fund",
       "compare": "compare",
       "timeline": "timeline",
+      "stats": "stats",
       "compare_this_package": "compare this package",
       "changelog": "changelog"
     },
@@ -532,6 +562,7 @@
       "weekly_downloads": "Weekly downloads",
       "keywords": "Keywords",
       "license": "License",
+      "version": "Version",
       "select": "Select package",
       "select_maximum": "Maximum {count} packages can be selected"
     },
@@ -550,7 +581,6 @@
       "view_all": "View {count} version | View all {count} versions",
       "view_all_versions": "View all versions",
       "distribution_title": "Semver Group",
-      "distribution_modal_title": "Versions",
       "distribution_range_date_same_year": "from {from} to {to}, {endYear}",
       "distribution_range_date_multiple_years": "from {from}, {startYear} to {to}, {endYear}",
       "grouping_major": "Major",
@@ -588,8 +618,8 @@
       "load_error": "Failed to load timeline. Please try again later.",
       "size_increase": "Install size increased by {percent}% ({size})",
       "size_decrease": "Install size decreased by {percent}% ({size})",
-      "dep_increase": "{count} dependencies added",
-      "dep_decrease": "{count} dependencies removed",
+      "dep_increase": "{count} dependency added | {count} dependencies added",
+      "dep_decrease": "{count} dependency removed | {count} dependencies removed",
       "license_change": "License changed from {from} to {to}",
       "esm_added": "Module type changed to ESM",
       "esm_removed": "Module type changed from ESM to CJS",
@@ -712,6 +742,12 @@
         "general_description": "The Y axis represents the number of downloads. The X axis represents the date range, from {start_date} to {end_date}, with a {granularity} time period.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Horizontal bar chart for: {packages}, comparing {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} has a value of {value}."
+      },
+      "embedding": {
+        "chart": "Embed this chart",
+        "copy_url": "Copy this URL to embed the chart into your website",
+        "preview": "Preview",
+        "tip": "If startDate and endDate are not provided, the chart defaults to the last 12 months."
       }
     },
     "downloads": {
@@ -1185,7 +1221,9 @@
     },
     "team": {
       "title": "Team",
-      "governance": "Governance",
+      "core": "Core",
+      "maintainers": "Maintainers",
+      "role_core": "core",
       "role_steward": "steward",
       "role_maintainer": "maintainer",
       "sponsor": "sponsor",
@@ -1396,6 +1434,10 @@
           "label": "GitHub Stars",
           "description": "Number of stars on the GitHub repository"
         },
+        "githubForks": {
+          "label": "GitHub Forks",
+          "description": "Number of forks on the GitHub repository"
+        },
         "githubIssues": {
           "label": "GitHub Issues",
           "description": "Number of issues on the GitHub repository"
@@ -1423,8 +1465,6 @@
     "file_changes": "File Changes",
     "files_count": "{count} file | {count} files",
     "lines_hidden": "{count} line hidden | {count} lines hidden",
-    "file_too_large": "File too large to compare",
-    "file_size_warning": "{size} exceeds the 250KB limit for comparison",
     "compare_versions": "diff",
     "compare_versions_title": "Compare with latest version",
     "comparing_versions_label": "Comparing versions...",
@@ -1465,6 +1505,9 @@
     "change_ratio": "Change ratio",
     "char_edits": "Char edits",
     "diff_distance": "Diff distance",
+    "diff_truncated": "Diff truncated for performance. Showing the first changed lines only.",
+    "large_diff_mode": "Large file diff shown with inline edit merging disabled for performance.",
+    "large_diff_options_disabled": "Large file mode disables inline edit merging for performance.",
     "loading_diff": "Loading diff...",
     "loading_diff_error": "Failed to load diff",
     "merge_modified_lines": "Merge modified lines",

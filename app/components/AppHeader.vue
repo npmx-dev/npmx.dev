@@ -100,6 +100,14 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         external: false,
         iconClass: 'i-lucide:palette',
       },
+      {
+        name: 'Noodles',
+        label: $t('noodles.title'),
+        to: { name: 'noodles' },
+        type: 'link',
+        external: false,
+        iconClass: 'i-lucide:soup',
+      },
     ],
   },
   {
@@ -258,7 +266,7 @@ useShortcuts({
       <ButtonBase
         type="button"
         variant="secondary"
-        class="hidden lg:inline-flex shrink-0 gap-2 px-2.5 me-3"
+        class="hidden lg:inline-flex shrink-0 gap-2 ps-2.5 pe-1.25 py-1.25! me-3"
         :aria-label="$t('shortcuts.command_palette')"
         :title="$t('shortcuts.command_palette_description', { ctrlKey: $t('shortcuts.ctrl_key') })"
         @click="openCommandPalette"
@@ -327,7 +335,7 @@ useShortcuts({
       <!-- Mobile: Search button (expands search) -->
       <ButtonBase
         type="button"
-        class="sm:hidden ms-auto"
+        class="sm:hidden ms-auto py-2.5!"
         :aria-label="$t('nav.tap_to_search')"
         :aria-expanded="showMobileMenu"
         @click="expandMobileSearch"
@@ -338,7 +346,7 @@ useShortcuts({
       <!-- Mobile: Menu button (always visible, click to open menu) -->
       <ButtonBase
         type="button"
-        class="sm:hidden"
+        class="sm:hidden py-2.5!"
         :aria-label="$t('nav.open_menu')"
         :aria-expanded="showMobileMenu"
         @click="showMobileMenu = !showMobileMenu"
