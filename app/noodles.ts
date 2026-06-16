@@ -40,6 +40,12 @@ const entries: Noodle[] = [
     authors: [ALEX],
     posterImage: '/extra/pride-1.svg',
     variants: ['/extra/pride-2.svg', '/extra/pride-3.png'],
+    references: [
+      {
+        label: 'Pride Month',
+        url: 'https://en.wikipedia.org/wiki/Pride_Month',
+      },
+    ],
   },
   {
     key: 'press',
@@ -84,6 +90,12 @@ const entries: Noodle[] = [
     prUrl: 'https://github.com/npmx-dev/npmx.dev/pull/2349',
     authors: [ALFON],
     posterImage: '/extra/npmx-cute-transgender.svg',
+    references: [
+      {
+        label: 'International Transgender Day of Visibility',
+        url: 'https://en.wikipedia.org/wiki/International_Transgender_Day_of_Visibility',
+      },
+    ],
   },
   {
     key: 'artemis',
@@ -98,6 +110,12 @@ const entries: Noodle[] = [
     prUrl: 'https://github.com/npmx-dev/npmx.dev/pull/2421',
     authors: [ALEX, ALFON],
     posterImage: '/extra/npmx-dark-artemis.svg',
+    references: [
+      {
+        label: 'Artemis II',
+        url: 'https://en.wikipedia.org/wiki/Artemis_II',
+      },
+    ],
   },
   {
     key: 'nodejs',
