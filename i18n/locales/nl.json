@@ -229,6 +229,9 @@
       "more_replies": "{count} meer reactie... | {count} meer reacties..."
     }
   },
+  "noodles": {
+    "missing": {}
+  },
   "settings": {
     "title": "instellingen",
     "tagline": "Pas uw npmx.dev ervaring aan",
@@ -457,8 +460,7 @@
       "like": "Dit pakket leuk vinden",
       "unlike": "Dit pakket niet meer leuk vinden",
       "top_rank_tooltip": "Dit is een van de 10 populairste pakketten op npmx! (#{rank})",
-      "top_rank_label": "#{rank}",
-      "top_rank_link_label": "Bekijk klassement van vind-leuks. Dit pakket staat op plaats #{rank}."
+      "top_rank_label": "#{rank}"
     },
     "docs": {
       "contents": "Inhoud",
@@ -710,7 +712,8 @@
         "general_description": "De Y-as toont het aantal downloads. De X-as toont de periode, van {start_date} tot {end_date}, met een {granularity} tijdsinterval. {estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": " Horizontaal staafdiagram voor: {packages}, ter vergelijking van {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} heeft een waarde van {value}."
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "Wekelijkse Downloads",
@@ -1392,6 +1395,7 @@
           "label": "GitHub Sterren",
           "description": "Aantal sterren van een GitHub repository"
         },
+        "githubForks": {},
         "githubIssues": {
           "label": "GitHub Issues",
           "description": "Aantal issues van een GitHub repository"

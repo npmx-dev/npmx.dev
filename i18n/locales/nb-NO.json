@@ -228,6 +228,9 @@
       "more_replies": "{count} svar til... | {count} svar til..."
     }
   },
+  "noodles": {
+    "missing": {}
+  },
   "settings": {
     "title": "innstillinger",
     "tagline": "tilpass din npmx-opplevelse",
@@ -451,8 +454,7 @@
       "like": "Lik denne pakken",
       "unlike": "Fjern like fra denne pakken",
       "top_rank_tooltip": "Dette er blant de 10 mest likte pakkene på npmx! (#{rank})",
-      "top_rank_label": "#{rank}",
-      "top_rank_link_label": "Vis likes-rangeringen. Denne pakken er rangert som #{rank}."
+      "top_rank_label": "#{rank}"
     },
     "docs": {
       "contents": "Innhold",
@@ -703,7 +705,8 @@
         "general_description": "Y-aksen representerer antall nedlastinger. X-aksen representerer datoområdet, fra {start_date} til {end_date}, med en {granularity} tidsperiode.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Horisontalt stolpediagram for: {packages}, sammenligner {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} har en verdi på {value}."
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "Ukentlige nedlastinger",
@@ -1385,6 +1388,7 @@
           "label": "GitHub-stjerner",
           "description": "Antall stjerner på GitHub-repositoriet"
         },
+        "githubForks": {},
         "githubIssues": {
           "label": "GitHub-saker",
           "description": "Antall saker på GitHub-repositoriet"

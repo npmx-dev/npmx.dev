@@ -226,6 +226,9 @@
       "more_replies": "{count} réponse supplémentaire... | {count} réponses supplémentaires..."
     }
   },
+  "noodles": {
+    "missing": {}
+  },
   "settings": {
     "title": "paramètres",
     "tagline": "personnalisez votre expérience npmx",
@@ -444,8 +447,7 @@
       "like": "Liker ce paquet",
       "unlike": "Retirer le like",
       "top_rank_tooltip": "Ce paquet figure parmi les 10 ayant le plus de likes sur npmx (n°{rank})",
-      "top_rank_label": "n°{rank}",
-      "top_rank_link_label": "Voir le classement des likes. Ce paquet est classé n°{rank}."
+      "top_rank_label": "n°{rank}"
     },
     "docs": {
       "contents": "Sommaire",
@@ -1382,6 +1384,7 @@
           "label": "Étoiles GitHub",
           "description": "Nombre d’étoiles du dépôt GitHub"
         },
+        "githubForks": {},
         "githubIssues": {
           "label": "Issues GitHub",
           "description": "Nombre d’issues ouvertes sur GitHub"

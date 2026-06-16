@@ -228,6 +228,9 @@
       "more_replies": "{count} repostare în plus... | {count} repostări în plus..."
     }
   },
+  "noodles": {
+    "missing": {}
+  },
   "settings": {
     "title": "setări",
     "tagline": "personalizează-ți experiența cu npmx",
@@ -451,8 +454,7 @@
       "like": "Dă 'Like' la acest pachet",
       "unlike": "Elimină 'Like' de la acest pachet",
       "top_rank_tooltip": "Acesta se numără printre cele mai apreciate 10 pachete de pe npmx! (#{rank})",
-      "top_rank_label": "#{rank}",
-      "top_rank_link_label": "Vizualizează clasamentul like-urilor. Acest pachet ocupă locul #{rank}."
+      "top_rank_label": "#{rank}"
     },
     "docs": {
       "contents": "Cuprins",
@@ -700,7 +702,8 @@
         "general_description": "Axa Y reprezintă numărul de descărcări. Axa X reprezintă intervalul de date, de la {start_date} până la {end_date}, cu o perioadă de timp de {granularity}.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Diagramă cu bare orizontale pentru: {packages}, comparând {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} are valoarea {value}."
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "Descărcări Săptămânale",
@@ -1382,6 +1385,7 @@
           "label": "Stele GitHub",
           "description": "Numărul de stele din repository-ul GitHub"
         },
+        "githubForks": {},
         "githubIssues": {
           "label": "Probleme GitHub",
           "description": "Numărul de probleme din repository-ul GitHub"

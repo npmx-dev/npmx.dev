@@ -229,6 +229,9 @@
       "more_replies": "{count} respuesta más... | {count} respuestas más..."
     }
   },
+  "noodles": {
+    "missing": {}
+  },
   "settings": {
     "title": "configuración",
     "tagline": "personaliza tu experiencia en npmx",
@@ -455,8 +458,7 @@
       "like": "Me gusta este paquete",
       "unlike": "Ya no me gusta este paquete",
       "top_rank_tooltip": "¡Este está entre los 10 paquetes con más me gusta en npmx! (#{rank})",
-      "top_rank_label": "#{rank}",
-      "top_rank_link_label": "Ver clasificación de 'me gusta'. Este paquete está en el puesto #{rank}."
+      "top_rank_label": "#{rank}"
     },
     "docs": {
       "contents": "Contenido",
@@ -708,7 +710,8 @@
         "general_description": "El eje Y representa el número de descargas. El eje X representa el rango de fechas, desde {start_date} hasta {end_date}, con un período de tiempo {granularity}.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Gráfico de barras horizontal para: {packages}, comparando {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} tiene un valor de {value}."
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "Descargas Semanales",
@@ -1390,6 +1393,7 @@
           "label": "Estrellas de GitHub",
           "description": "Número de estrellas en el repositorio de GitHub"
         },
+        "githubForks": {},
         "githubIssues": {
           "label": "Incidencias de GitHub",
           "description": "Número de incidencias en el repositorio de GitHub"

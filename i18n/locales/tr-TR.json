@@ -229,6 +229,9 @@
       "more_replies": "{count} yanıt daha... | {count} yanıt daha..."
     }
   },
+  "noodles": {
+    "missing": {}
+  },
   "settings": {
     "title": "ayarlar",
     "tagline": "npmx deneyiminizi kişiselleştirin",
@@ -455,8 +458,7 @@
       "like": "Bu paketi beğen",
       "unlike": "Beğeniyi geri al",
       "top_rank_tooltip": "Bu, npmx'teki en çok beğenilen 10 paket arasında! (#{rank})",
-      "top_rank_label": "#{rank}",
-      "top_rank_link_label": "Beğeni sıralamasını görüntüle. Bu paket #{rank}. sırada."
+      "top_rank_label": "#{rank}"
     },
     "docs": {
       "contents": "İçindekiler",
@@ -708,7 +710,8 @@
         "general_description": "Y ekseni indirme sayısını temsil eder. X ekseni tarih aralığını temsil eder, {start_date}'den {end_date}'e, {granularity} zaman dönemi ile.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "{packages} paketleri için yatay çubuk grafiği, {facet} karşılaştırması ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} paketi {value} değerine sahip."
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "Haftalık İndirmeler",
@@ -1390,6 +1393,7 @@
           "label": "GitHub Yıldızları",
           "description": "GitHub deposundaki yıldız sayısı"
         },
+        "githubForks": {},
         "githubIssues": {
           "label": "GitHub Sorunları",
           "description": "GitHub deposundaki sorun sayısı"

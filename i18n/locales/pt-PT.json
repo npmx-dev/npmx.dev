@@ -228,6 +228,9 @@
       "more_replies": "mais {count} resposta... | mais {count} respostas..."
     }
   },
+  "noodles": {
+    "missing": {}
+  },
   "settings": {
     "title": "definições",
     "tagline": "personaliza a tua experiência npmx",
@@ -451,8 +454,7 @@
       "like": "Gostar deste pacote",
       "unlike": "Remover gosto deste pacote",
       "top_rank_tooltip": "Este está entre os 10 pacotes com mais gostos no npmx! (#{rank})",
-      "top_rank_label": "#{rank}",
-      "top_rank_link_label": "Ver tabela de classificação de gostos. Este pacote está em #{rank}."
+      "top_rank_label": "#{rank}"
     },
     "docs": {
       "contents": "Conteúdo",
@@ -692,7 +694,8 @@
         "general_description": "O eixo Y representa o número de transferências. O eixo X representa o intervalo de datas, de {start_date} a {end_date}, com periodicidade {granularity}.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Gráfico de barras horizontais para: {packages}, comparando {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} tem um valor de {value}."
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "Transferências Semanais",
@@ -1374,6 +1377,7 @@
           "label": "Estrelas no GitHub",
           "description": "Número de estrelas no repositório GitHub"
         },
+        "githubForks": {},
         "githubIssues": {
           "label": "Issues no GitHub",
           "description": "Número de issues no repositório GitHub"

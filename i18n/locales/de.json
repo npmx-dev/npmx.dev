@@ -229,6 +229,9 @@
       "more_replies": "noch {count} Antwort… | noch {count} Antworten…"
     }
   },
+  "noodles": {
+    "missing": {}
+  },
   "settings": {
     "title": "einstellungen",
     "tagline": "Passe npmx an deine Vorlieben an",
@@ -455,8 +458,7 @@
       "like": "Dieses Paket liken",
       "unlike": "Like entfernen",
       "top_rank_tooltip": "Das gehört zu den Top 10 der beliebtesten Pakete auf npmx! (#{rank})",
-      "top_rank_label": "#{rank}",
-      "top_rank_link_label": "Rangliste der Likes anzeigen. Dieses Paket steht auf Platz #{rank}."
+      "top_rank_label": "#{rank}"
     },
     "docs": {
       "contents": "inhalt",
@@ -709,7 +711,8 @@
         "general_description": "Die Y-Achse stellt die Anzahl der Downloads dar. Die X-Achse stellt den Datumsbereich dar, von {start_date} bis {end_date}, mit einem {granularity}en Zeitraum.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Horizontales Balkendiagramm für: {packages}, Vergleich von {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} hat einen Wert von {value}."
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "Wöchentliche Downloads",
@@ -1395,6 +1398,7 @@
           "label": "GitHub-Sterne",
           "description": "Anzahl der Sterne im GitHub-Repository"
         },
+        "githubForks": {},
         "githubIssues": {
           "label": "GitHub-Issues",
           "description": "Anzahl der Issues im GitHub-Repository"

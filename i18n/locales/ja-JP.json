@@ -229,6 +229,9 @@
       "more_replies": "さらに{count}件の返信…"
     }
   },
+  "noodles": {
+    "missing": {}
+  },
   "settings": {
     "title": "設定",
     "tagline": "npmxの体験をカスタマイズ",
@@ -455,8 +458,7 @@
       "like": "このパッケージをいいねする",
       "unlike": "このパッケージのいいねを解除する",
       "top_rank_tooltip": "このパッケージはnpmxで最も「いいね」されている上位10パッケージの一つです！ (#{rank})",
-      "top_rank_label": "#{rank}",
-      "top_rank_link_label": "いいねリーダーボードを表示。このパッケージは #{rank} 位です。"
+      "top_rank_label": "#{rank}"
     },
     "docs": {
       "contents": "目次",
@@ -708,7 +710,8 @@
         "general_description": "Y軸はダウンロード数、X軸は {start_date} から {end_date} までの期間（単位：{granularity}）を示します。{estimation_notice} {packages_analysis}。{watermark}。",
         "facet_bar_general_description": "{packages} の横棒グラフ: {facet} の比較 ({description})。{facet_analysis} {watermark}。",
         "facet_bar_analysis": "{package_name} の値は {value} です。"
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "週間ダウンロード数",
@@ -1394,6 +1397,7 @@
           "label": "GitHub Stars",
           "description": "GitHubリポジトリのスター数"
         },
+        "githubForks": {},
         "githubIssues": {
           "label": "GitHub Issues",
           "description": "GitHubリポジトリのIssues数"

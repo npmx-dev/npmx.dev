@@ -228,6 +228,9 @@
       "more_replies": "ще {count} відповідь... | ще {count} відповіді... | ще {count} відповідей..."
     }
   },
+  "noodles": {
+    "missing": {}
+  },
   "settings": {
     "title": "налаштування",
     "tagline": "налаштуйте ваше середовище npmx",
@@ -451,8 +454,7 @@
       "like": "Подобається цей пакет",
       "unlike": "Прибрати вподобання",
       "top_rank_tooltip": "Цей пакет входить до 10 найбільш вподобаних на npmx! (#{rank})",
-      "top_rank_label": "#{rank}",
-      "top_rank_link_label": "Переглянути рейтинг вподобань. Цей пакет має місце #{rank}."
+      "top_rank_label": "#{rank}"
     },
     "docs": {
       "contents": "Зміст",
@@ -703,7 +705,8 @@
         "general_description": "Вісь Y відображає кількість завантажень. Вісь X відображає діапазон дат, від {start_date} до {end_date}, з часовим інтервалом {granularity}.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Горизонтальна стовпчаста діаграма для {packages}, порівнюється {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} має значення {value}."
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "Завантажень на тиждень",
@@ -1385,6 +1388,7 @@
           "label": "Зірки GitHub",
           "description": "Кількість зірок у репозиторії GitHub"
         },
+        "githubForks": {},
         "githubIssues": {
           "label": "Issues GitHub",
           "description": "Кількість issues у репозиторії GitHub"
