@@ -232,7 +232,6 @@
     }
   },
   "noodles": {
-
     "title": "noodles",
     "meta_description": "季節ごとのロゴやイースターエッグ、その背景にあるストーリーなど、npmxでこれまでに公開されたすべてのnoodles。",
     "latest": "最新のnoodles",
@@ -1435,7 +1434,6 @@
           "label": "GitHub Stars",
           "description": "GitHubリポジトリのスター数"
         },
-
 
         "githubForks": {
           "label": "GitHub Forks",
