@@ -99,7 +99,7 @@
     "current": "current",
     "here": "you are here",
     "connected": "connected",
-    "footer": {
+    "keyboard_shortcuts": {
       "navigate": "to navigate",
       "select": "to select",
       "close": "to close"

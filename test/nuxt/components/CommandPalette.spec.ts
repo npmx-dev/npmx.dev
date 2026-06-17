@@ -98,15 +98,15 @@ describe('CommandPalette', () => {
     expect(input?.getAttribute('aria-controls')).toBe('command-palette-modal-results')
   })
 
-  it('shows keyboard shortcut hints in the palette footer', async () => {
+  it('shows keyboard shortcut hints in the command palette', async () => {
     await mountPalette()
 
-    const footer = document.querySelector('[data-command-palette-footer="true"]')
+    const shortcuts = document.querySelector('[data-command-palette-keyboard-shortcuts="true"]')
 
-    expect(footer).not.toBeNull()
-    expect(footer?.textContent).toContain('to navigate')
-    expect(footer?.textContent).toContain('to select')
-    expect(footer?.textContent).toContain('to close')
+    expect(shortcuts).not.toBeNull()
+    expect(shortcuts?.textContent).toContain('to navigate')
+    expect(shortcuts?.textContent).toContain('to select')
+    expect(shortcuts?.textContent).toContain('to close')
   })
 
   it('updates the live region when the query changes', async () => {

@@ -334,7 +334,7 @@ useEventListener(document, 'keydown', handleGlobalKeydown)
 
         <div
           class="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-border/70 bg-bg-subtle/60 px-4 py-3 text-xs text-fg-subtle sm:px-5"
-          data-command-palette-footer="true"
+          data-command-palette-keyboard-shortcuts="true"
         >
           <span class="inline-flex items-center gap-1.5">
             <kbd
@@ -347,7 +347,7 @@ useEventListener(document, 'keydown', handleGlobalKeydown)
             >
               ↓
             </kbd>
-            <span class="lowercase">{{ $t('command_palette.footer.navigate') }}</span>
+            <span class="lowercase">{{ $t('command_palette.keyboard_shortcuts.navigate') }}</span>
           </span>
           <span class="inline-flex items-center gap-1.5">
             <kbd
@@ -355,7 +355,7 @@ useEventListener(document, 'keydown', handleGlobalKeydown)
             >
               ↵
             </kbd>
-            <span class="lowercase">{{ $t('command_palette.footer.select') }}</span>
+            <span class="lowercase">{{ $t('command_palette.keyboard_shortcuts.select') }}</span>
           </span>
           <span class="inline-flex items-center gap-1.5">
             <kbd
@@ -363,7 +363,7 @@ useEventListener(document, 'keydown', handleGlobalKeydown)
             >
               Esc
             </kbd>
-            <span class="lowercase">{{ $t('command_palette.footer.close') }}</span>
+            <span class="lowercase">{{ $t('command_palette.keyboard_shortcuts.close') }}</span>
           </span>
         </div>
 

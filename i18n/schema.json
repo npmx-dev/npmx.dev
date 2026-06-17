@@ -301,7 +301,7 @@
         "connected": {
           "type": "string"
         },
-        "footer": {
+        "keyboard_shortcuts": {
           "type": "object",
           "properties": {
             "navigate": {
