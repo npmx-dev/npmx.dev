@@ -914,6 +914,10 @@ const indexSelection = computed(() => {
   transition: all 0.5s var(--super-ease-out) !important;
 }
 
+:deep(.vdui-shape-no-transition) {
+  transition: none !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   ::deep(.vue-data-ui-component .serie_line_0 path),
   .svg-element-transition,
