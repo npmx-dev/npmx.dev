@@ -1,12 +1,6 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { mockNuxtImport, mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
+import { mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-
-const { mockUseProfileLikes } = vi.hoisted(() => ({
-  mockUseProfileLikes: vi.fn(),
-}))
-
-mockNuxtImport('useProfileLikes', () => mockUseProfileLikes)
 
 import ProfilePage from '~/pages/profile/[identity]/index.vue'
 
@@ -28,7 +22,6 @@ registerEndpoint('/api/social/profile/test-handle', () => ({
   recordExists: false,
 }))
 
-registerEndpoint('/api/social/profile/test-handle/likes', () => ({ records: [] }))
 registerEndpoint('/api/auth/session', () => authSessionHandler())
 
 describe('Profile invite section', () => {
@@ -37,7 +30,6 @@ describe('Profile invite section', () => {
   beforeEach(() => {
     clearNuxtData()
     authSessionHandler = () => null
-    mockUseProfileLikes.mockReset()
   })
 
   afterEach(() => {
@@ -52,11 +44,6 @@ describe('Profile invite section', () => {
         resolveAuthSession = () => resolve(null)
       })
 
-    mockUseProfileLikes.mockReturnValue({
-      data: ref({ records: [] }),
-      status: ref('success'),
-    })
-
     const component = await mountSuspended(ProfilePage, {
       route: '/profile/test-handle',
     })
@@ -68,11 +55,6 @@ describe('Profile invite section', () => {
 
   it('shows invite section after auth resolves for non-owner', async () => {
     authSessionHandler = () => createAtprotoUser('other-user')
-
-    mockUseProfileLikes.mockReturnValue({
-      data: ref({ records: [] }),
-      status: ref('success'),
-    })
 
     const component = await mountSuspended(ProfilePage, {
       route: '/profile/test-handle',
@@ -90,11 +72,6 @@ describe('Profile invite section', () => {
       authSessionRequests++
       return createAtprotoUser('test-handle')
     }
-
-    mockUseProfileLikes.mockReturnValue({
-      data: ref({ records: [] }),
-      status: ref('success'),
-    })
 
     const component = await mountSuspended(ProfilePage, {
       route: '/profile/test-handle',

@@ -1473,6 +1473,9 @@
             },
             "top_rank_link_label": {
               "type": "string"
+            },
+            "count_truncated": {
+              "type": "string"
             }
           },
           "additionalProperties": false
