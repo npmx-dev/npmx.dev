@@ -41,7 +41,8 @@
     "start:playwright:webserver": "TEST=1 vp run preview --port 5678",
     "storybook": "STORYBOOK=true storybook dev -p 6006",
     "build-storybook": "STORYBOOK=true storybook build",
-    "chromatic": "chromatic"
+    "chromatic": "chromatic",
+    "docs:dev": "vp run --filter npmx-docs dev"
   },
   "dependencies": {
     "@atcute/bluesky-richtext-segmenter": "3.0.0",
