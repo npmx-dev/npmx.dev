@@ -24,6 +24,12 @@ registerEndpoint('/api/social/profile/test-handle', () => ({
 
 registerEndpoint('/api/auth/session', () => authSessionHandler())
 
+registerEndpoint('/api/social/profile/test-handle/likes', () => ({
+  records: [],
+  cursor: null,
+  hasNextPage: false,
+}))
+
 describe('Profile invite section', () => {
   let wrapper: VueWrapper | undefined
 
