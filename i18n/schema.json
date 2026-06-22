@@ -301,6 +301,21 @@
         "connected": {
           "type": "string"
         },
+        "keyboard_shortcuts": {
+          "type": "object",
+          "properties": {
+            "navigate": {
+              "type": "string"
+            },
+            "select": {
+              "type": "string"
+            },
+            "close": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
         "state": {
           "type": "object",
           "properties": {

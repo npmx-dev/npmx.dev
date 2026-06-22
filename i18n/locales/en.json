@@ -99,6 +99,11 @@
     "current": "current",
     "here": "you are here",
     "connected": "connected",
+    "keyboard_shortcuts": {
+      "navigate": "to navigate",
+      "select": "to select",
+      "close": "to close"
+    },
     "state": {
       "on": "on",
       "off": "off"
