@@ -311,8 +311,8 @@ importers:
         specifier: 0.6.2
         version: 0.6.2(magicast@0.5.3)
       chromatic:
-        specifier: 16.1.0
-        version: 16.1.0
+        specifier: 17.5.0
+        version: 17.5.0
       devalue:
         specifier: 5.6.4
         version: 5.6.4
@@ -6667,16 +6667,20 @@ packages:
     resolution: {integrity: sha512-+IxzY9BZOQd/XuYPRmrvEVjF/nqj5kgT4kEq7VofrDoM1MxoRjEWkrCC3EtLi59TVawxTAn+orJwFQcrqEN1+g==}
     engines: {node: '>=18'}
 
-  chromatic@16.1.0:
-    resolution: {integrity: sha512-7xyOUXe8jfY6c+g9S/U/cbvzVXMjdhh9cVZYvDp8dDGonjiKSbWO1dzWApdYHIiF2xj29pvWQB7N5LT6967IDw==}
+  chromatic@17.5.0:
+    resolution: {integrity: sha512-jYtXDaY1VeaNaWMom4HewLQTL574s4wTtkg5Kryov9Cj7D6i8Pe7twpLsetG7apxD0aITWUhx6KiqfN6p380rw==}
+    engines: {node: '>=22.0.0'}
     hasBin: true
     peerDependencies:
       '@chromatic-com/cypress': ^0.*.* || ^1.0.0
       '@chromatic-com/playwright': ^0.*.* || ^1.0.0
+      '@chromatic-com/vitest': ^0.*.* || ^1.0.0
     peerDependenciesMeta:
       '@chromatic-com/cypress':
         optional: true
       '@chromatic-com/playwright':
+        optional: true
+      '@chromatic-com/vitest':
         optional: true
 
   chrome-launcher@1.2.1:
@@ -17933,7 +17937,9 @@ snapshots:
 
   chownr@3.0.0: {}
 
-  chromatic@16.1.0: {}
+  chromatic@17.5.0:
+    dependencies:
+      semver: 7.7.4
 
   chrome-launcher@1.2.1:
     dependencies:
