@@ -8,6 +8,7 @@ import {
   type VueUiXyDatasetLineItem,
   type VueUiXyDatasetPlotItem,
 } from 'vue-data-ui/vue-ui-xy'
+import { useTooltipPosition } from 'vue-data-ui/composables'
 import {
   sanitise,
   applyEllipsis,
@@ -17,7 +18,6 @@ import {
 } from '~/utils/charts'
 import type { TimelineVersion, SubEvent } from '~~/server/api/registry/timeline/[...pkg].get'
 import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
-import { useChartTooltipPosition } from '~/composables/useChartTooltipPosition'
 import { useColors } from '~/composables/useColors'
 import { parseStableVersion } from '~/utils/versions'
 import { downloadFileLink } from '~/utils/download'
@@ -272,7 +272,7 @@ function buildExportFilename(extension: 'png' | 'csv' | 'svg') {
   return `${sanitise(packageName.value)}_${$t('package.links.timeline')}_${metricLabel.value.toLocaleLowerCase().replaceAll(' ', '-')}.${extension}`
 }
 
-const tooltipPosition = useChartTooltipPosition(chartRef)
+const tooltipPosition = useTooltipPosition(chartRef)
 
 const config = computed<VueUiXyConfig>(() => {
   return {
