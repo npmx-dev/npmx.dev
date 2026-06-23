@@ -546,7 +546,6 @@ describe('buildNormalisedTrendsDataset', () => {
       selectedMetric: 'downloads',
       chartFilter: { averageWindow: 2, smoothingTau: 3 },
       endDateMs: 500,
-      nowMs: 100,
     })
 
     expect(applyDataPipelineMock).toHaveBeenCalledWith(
@@ -572,7 +571,7 @@ describe('buildNormalisedTrendsDataset', () => {
     ])
   })
 
-  it('uses Date.now when endDateMs and nowMs are missing', () => {
+  it('uses Date.now when endDateMs is missing', () => {
     const dateNowSpy = vi.spyOn(Date, 'now').mockReturnValue(999)
 
     buildNormalisedTrendsDataset({
