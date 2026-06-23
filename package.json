@@ -51,7 +51,7 @@
     "@atproto/lex-password-session": "0.0.12",
     "@atproto/oauth-client-node": "^0.3.15",
     "@deno/doc": "jsr:^0.189.1",
-    "@floating-ui/vue": "1.1.11",
+    "@floating-ui/vue": "2.0.0",
     "@iconify-json/lucide": "1.2.101",
     "@iconify-json/simple-icons": "1.2.76",
     "@iconify-json/svg-spinners": "1.2.4",
