@@ -187,7 +187,7 @@ const datasets = computed<{
       {
         name: $t('package.stats.install_size'),
         type: 'line',
-        smooth: true,
+        useStepper: true,
         series: seriesTotalSize.value.values,
         temperatureColors: areAllValuesEqual(seriesTotalSize.value.values)
           ? undefined
@@ -200,7 +200,7 @@ const datasets = computed<{
       {
         name: $t('compare.dependencies'),
         type: 'line',
-        smooth: true,
+        useStepper: true,
         series: seriesDependencies.value.values,
         temperatureColors: areAllValuesEqual(seriesDependencies.value.values)
           ? undefined
