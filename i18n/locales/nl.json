@@ -513,7 +513,7 @@
       "title": "Herkomst verificatie gegevens",
       "built_and_signed_on": "Gebouwd en getekend op {provider}",
       "view_build_summary": "Bekijk bouw samenvatting",
-      "source_commit": "Bron Commit",
+      "source_commit": "Bron commit",
       "build_file": "Bouw bestand",
       "public_ledger": "Publiek logboek",
       "transparency_log_entry": "Vermelding in het transparantielogboek",
