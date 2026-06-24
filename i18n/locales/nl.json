@@ -46,7 +46,8 @@
     "disable_shortcuts": "U kunt toetsenbordnavigatie uitschakelen in {instellingen}.",
     "open_main": "Open pakket overzicht",
     "open_diff": "Open versie verschillen",
-    "open_timeline": "Open tijdlijn"
+    "open_timeline": "Open tijdlijn",
+    "open_stats": "Open statistieken"
   },
   "search": {
     "label": "Zoek npm pakketten",
