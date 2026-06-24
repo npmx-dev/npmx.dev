@@ -29,5 +29,12 @@
       "title": "Deze noodle heeft de kom nooit verlaten.",
       "body": "We hebben geen \"{slug}\"-noodle op het menu. Hij is misschien nog in de maak, of hij heeft nooit bestaan. Hoe dan ook — terug naar het archief."
     }
+  },
+  "package": {
+    "stats": {
+      "main_information": "Hoofdgegevens",
+      "trends": "Trends",
+      "version_distribution": "Versieverdeling"
+    }
   }
 }
