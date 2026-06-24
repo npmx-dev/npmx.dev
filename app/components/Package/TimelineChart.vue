@@ -919,7 +919,7 @@ const indexSelection = computed(() => {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  ::deep(.vue-data-ui-component .serie_line_0 path),
+  :deep(.vue-data-ui-component .serie_line_0 path),
   .svg-element-transition,
   :deep(.vdui-shape-circle) {
     transition: none !important;
