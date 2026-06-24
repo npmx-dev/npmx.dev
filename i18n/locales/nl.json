@@ -717,6 +717,12 @@
         "general_description": "De Y-as toont het aantal downloads. De X-as toont de periode, van {start_date} tot {end_date}, met een {granularity} tijdsinterval. {estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": " Horizontaal staafdiagram voor: {packages}, ter vergelijking van {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} heeft een waarde van {value}."
+      },
+      "embedding": {
+        "chart": "Deze grafiek insluiten",
+        "copy_url": "Kopieer deze URL om de grafiek in uw website in te sluiten",
+        "preview": "Voorbeeld",
+        "tip": "Als startDate en endDate niet zijn opgegeven, toont de grafiek standaard de laatste 12 maanden."
       }
     },
     "downloads": {
@@ -1417,7 +1423,7 @@
         "types_included": "Inbegrepen",
         "types_none": "Geen",
         "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
-        "up_to_you": "Jij beslist!"
+        "up_to_you": "U beslist!"
       },
       "trends": {
         "title": "Trends vergelijken"
@@ -1520,9 +1526,9 @@
         "li2": "{li21}{separator} {li22}",
         "separator": ":",
         "cookie_vdpl": "__vdpl",
-        "cookie_vdpl_desc": "Dit cookie wordt door onze hostingprovider (Vercel) gebruikt voor 'skew protection' (versiebeveiliging). Het zorgt ervoor dat je de juiste bestanden van de website laadt als er een nieuwe update wordt uitgebracht terwijl je de site bezoekt. Het volgt je niet.",
+        "cookie_vdpl_desc": "Dit cookie wordt door onze hostingprovider (Vercel) gebruikt voor 'skew protection' (versiebeveiliging). Het zorgt ervoor dat u de juiste bestanden van de website laadt als er een nieuwe update wordt uitgebracht terwijl u de site bezoekt. Het volgt u niet.",
         "cookie_h3": "h3",
-        "cookie_h3_desc": "Dit is ons beveiligde sessiecookie. Het slaat het OAuth-toegangstoken op wanneer je verbinding maakt met je Atmosphere-account. Dit cookie is essentieel om je ingelogde sessie te behouden."
+        "cookie_h3_desc": "Dit is ons beveiligde sessiecookie. Het slaat het OAuth-toegangstoken op wanneer u verbinding maakt met uw Atmosphere-account. Dit cookie is essentieel om uw ingelogde sessie te behouden."
       },
       "local_storage": {
         "title": "Lokale opslag",
