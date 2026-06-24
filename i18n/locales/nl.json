@@ -1195,6 +1195,9 @@
     },
     "team": {
       "title": "Team",
+      "core": "Core",
+      "maintainers": "Onderhouders",
+      "role_core": "core",
       "role_steward": "Coördinator",
       "role_maintainer": "Onderhouder",
       "sponsor": "sponsor",
