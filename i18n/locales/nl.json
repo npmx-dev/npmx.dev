@@ -1512,6 +1512,7 @@
     "diff_distance": "Verschilafstand",
     "diff_truncated": "Diff ingekort om prestaties te verbeteren. Alleen de eerste gewijzigde regels worden getoond.",
     "large_diff_mode": "Grote bestandsdiff weergegeven met inline samenvoegen van bewerkingen uitgeschakeld om prestaties te verbeteren.",
+    "large_diff_options_disabled": "Bij grote bestanden is inline samenvoegen van bewerkingen uitgeschakeld om prestaties te verbeteren.",
     "loading_diff": "Verschillen laden...",
     "loading_diff_error": "Laden van het verschillen is mislukt",
     "merge_modified_lines": "Gewijzigde regels samenvoegen",
