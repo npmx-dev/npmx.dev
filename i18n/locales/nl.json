@@ -757,6 +757,7 @@
     },
     "downloads": {
       "title": "Wekelijkse Downloads",
+      "version_distribution_title": "wekelijkse downloads voor versie {version}",
       "community_distribution": "Bekijk adoptiegraad",
       "subtitle": "Over alle versies",
       "sparkline_nav_hint": "Gebruik ← →"
@@ -1436,11 +1437,15 @@
         },
         "githubStars": {
           "label": "GitHub Sterren",
-          "description": "Aantal sterren van een GitHub repository"
+          "description": "Aantal sterren van de GitHub-repository"
+        },
+        "githubForks": {
+          "label": "GitHub Forks",
+          "description": "Aantal forks van de GitHub-repository"
         },
         "githubIssues": {
           "label": "GitHub Issues",
-          "description": "Aantal issues van een GitHub repository"
+          "description": "Aantal issues van de GitHub-repository"
         },
         "createdAt": {
           "label": "Aangemaakt op",
@@ -1505,6 +1510,8 @@
     "change_ratio": "Wijziging verhouding",
     "char_edits": "Tekenbewerkingen",
     "diff_distance": "Verschilafstand",
+    "diff_truncated": "Diff ingekort om prestaties te verbeteren. Alleen de eerste gewijzigde regels worden getoond.",
+    "large_diff_mode": "Grote bestandsdiff weergegeven met inline samenvoegen van bewerkingen uitgeschakeld om prestaties te verbeteren.",
     "loading_diff": "Verschillen laden...",
     "loading_diff_error": "Laden van het verschillen is mislukt",
     "merge_modified_lines": "Gewijzigde regels samenvoegen",
