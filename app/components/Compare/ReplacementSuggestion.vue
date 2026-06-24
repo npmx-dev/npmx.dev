@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ModuleReplacement } from 'module-replacements'
-import { resolveDocUrl } from 'module-replacements'
+import { resolveDocUrl } from 'module-replacements/dist/util.js'
 import { getReplacementDescription, getReplacementNodeVersion } from '~/utils/module-replacements'
 
 const props = defineProps<{
