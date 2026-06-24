@@ -4,5 +4,30 @@
     "modal": {
       "handle_placeholder": "oranje.npmx.dev"
     }
+  },
+  "noodles": {
+    "title": "noodles",
+    "meta_description": "Elke noodle die ooit op npmx verscheen — de seizoenslogo's, easter eggs en de verhalen erachter.",
+    "latest": "Laatste noodles",
+    "what_is": "Wat zijn noodles",
+    "what_is_body": "Noodles zijn de speelse varianten van het npmx-logo die we op de homepage tonen bij releases, feestdagen, evenementen en andere momenten die de moeite waard zijn om te vieren. Zie ze als Google Doodles, maar dan voor npm-packages.",
+    "empty": "Nog geen noodles.",
+    "load_more": "Laad nog {count}",
+    "dates": "Actieve datums",
+    "shipped_in": "Uitgebracht in",
+    "credits": "Credits",
+    "learn_more": "Meer informatie",
+    "carousel_prev": "Vorige afbeelding",
+    "carousel_next": "Volgende afbeelding",
+    "carousel_dots": "Navigatie variantafbeeldingen",
+    "carousel_jump": "Ga naar afbeelding {index}",
+    "lens_label": "{title} — beeldreeks",
+    "lens_slide": "afbeelding {index}",
+    "lens_slide_position": "Slide {index} van {total}",
+    "back_to_archive": "Terug naar alle noodles",
+    "missing": {
+      "title": "Deze noodle heeft de kom nooit verlaten.",
+      "body": "We hebben geen \"{slug}\"-noodle op het menu. Hij is misschien nog in de maak, of hij heeft nooit bestaan. Hoe dan ook — terug naar het archief."
+    }
   }
 }
