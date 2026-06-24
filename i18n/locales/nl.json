@@ -99,6 +99,11 @@
     "current": "huidige",
     "here": "u bent hier",
     "connected": "verbonden",
+    "keyboard_shortcuts": {
+      "navigate": "navigeren",
+      "select": "selecteren",
+      "close": "sluiten"
+    },
     "state": {
       "on": "aan",
       "off": "uit"
