@@ -9,8 +9,8 @@
   "built_at": "gebouwd {0}",
   "alt_logo": "npmx logo",
   "tagline": "een snelle, moderne browser voor het npm-register",
-  "non_affiliation_disclaimer": "niet affiliëerd met npm, Inc.",
-  "trademark_disclaimer": "npm is een geregisteerd trademark van npm, Inc. Deze website is niet affiliëerd met npm, Inc.",
+  "non_affiliation_disclaimer": "niet geaffilieerd met npm, Inc.",
+  "trademark_disclaimer": "npm is een geregistreerd handelsmerk van npm, Inc. Deze website is niet geaffilieerd met npm, Inc.",
   "footer": {
     "about": "over ons",
     "blog": "blog",
