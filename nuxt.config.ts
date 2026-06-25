@@ -409,6 +409,9 @@ export default defineNuxtConfig({
   },
 
   vite: {
+    css: {
+      transformer: 'lightningcss',
+    },
     optimizeDeps: {
       include: [
         '@vueuse/core',
