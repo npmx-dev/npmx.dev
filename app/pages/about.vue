@@ -145,12 +145,22 @@ const communityContributors = computed(
         </div>
 
         <!-- Sponsors -->
-        <div class="sponsors-logos">
+        <div class="sponsors-logos" id="sponsors">
           <h2 class="text-lg text-fg uppercase tracking-wider mb-4">
             {{ $t('about.sponsors.title') }}
           </h2>
+          <h3 class="block text-sm text-fg uppercase tracking-wider mb-3">
+            {{ $t('about.sponsors.gold') }}
+          </h3>
           <AboutLogoList
-            :list="SPONSORS"
+            :list="SPONSORS.gold"
+            class="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-4 grid-flow-row-dense"
+          />
+          <h3 class="block text-sm text-fg uppercase tracking-wider mb-3 mt-8">
+            {{ $t('about.sponsors.silver') }}
+          </h3>
+          <AboutLogoList
+            :list="SPONSORS.silver"
             class="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-4 grid-flow-row-dense"
           />
         </div>

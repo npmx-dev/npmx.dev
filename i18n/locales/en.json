@@ -23,7 +23,8 @@
     "brand": "brand",
     "resources": "Resources",
     "features": "Features",
-    "other": "Other"
+    "other": "Other",
+    "sponsored_by": "Sponsored by {list}"
   },
   "shortcuts": {
     "section": {
@@ -1219,7 +1220,9 @@
       }
     },
     "sponsors": {
-      "title": "Sponsors"
+      "title": "Sponsors",
+      "gold": "Gold Sponsors",
+      "silver": "Silver Sponsors"
     },
     "oss_partners": {
       "title": "OSS Partners"
