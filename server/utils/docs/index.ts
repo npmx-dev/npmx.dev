@@ -11,7 +11,9 @@
 import type { DocsGenerationResult } from '#shared/types/deno-doc'
 import { getDocNodes } from './client'
 import { buildSymbolLookup, flattenNamespaces, mergeOverloads } from './processing'
-import { renderDocNodes, renderToc } from './render'
+import { renderDocNodes, renderGroupedDocNodes, renderGroupedToc, renderToc } from './render'
+import { entrySlug } from './text'
+import type { ProcessedEntry } from './types'
 
 /**
  * Generate API documentation for an npm package.
@@ -35,21 +37,54 @@ export async function generateDocsWithDeno(
   packageName: string,
   version: string,
 ): Promise<DocsGenerationResult | null> {
-  // Get doc nodes using @deno/doc WASM
+  // Get doc nodes (grouped by entry point) using @deno/doc WASM
   const result = await getDocNodes(packageName, version)
 
-  if (!result.nodes || result.nodes.length === 0) {
+  if (result.entries.length === 0) {
     return null
   }
 
-  // Process nodes: flatten namespaces, merge overloads, and build lookup
-  const flattenedNodes = flattenNamespaces(result.nodes)
-  const mergedSymbols = mergeOverloads(flattenedNodes)
-  const symbolLookup = buildSymbolLookup(flattenedNodes)
+  const entries = result.entries
+    .map(entry => {
+      const flattenedNodes = flattenNamespaces(entry.nodes)
+      return {
+        entryPoint: entry.entryPoint,
+        nodes: flattenedNodes,
+        symbols: mergeOverloads(flattenedNodes),
+      }
+    })
+    .filter(entry => entry.symbols.length > 0)
+
+  if (entries.length === 0) {
+    return null
+  }
+
+  const isMultiEntry = entries.length > 1
+
+  // Anchor IDs are only prefixed when multiple entry points share a page, so a
+  // single-entry package keeps the exact same IDs it had before.
+  const processed: ProcessedEntry[] = entries.map(entry => {
+    const prefix = isMultiEntry ? entrySlug(entry.entryPoint) : ''
+    return {
+      entryPoint: entry.entryPoint,
+      nodes: entry.nodes,
+      symbols: entry.symbols,
+      lookup: buildSymbolLookup(entry.nodes, prefix),
+    }
+  })
+
+  const allNodes = processed.flatMap(entry => entry.nodes)
+
+  if (!isMultiEntry) {
+    const entry = processed[0]!
+    const html = await renderDocNodes(entry.symbols, entry.lookup)
+    const toc = renderToc(entry.symbols)
+    return { html, toc, nodes: allNodes }
+  }
 
   // Render HTML and TOC from pre-computed merged symbols
-  const html = await renderDocNodes(mergedSymbols, symbolLookup)
-  const toc = renderToc(mergedSymbols)
+  const html = await renderGroupedDocNodes(processed)
+  const toc = renderGroupedToc(processed)
 
-  return { html, toc, nodes: flattenedNodes }
+  return { html, toc, nodes: allNodes }
 }

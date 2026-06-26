@@ -22,3 +22,13 @@ export interface MergedSymbol {
   nodes: DenoDocNode[]
   jsDoc?: DenoDocNode['jsDoc']
 }
+
+/**
+ * Processed entry point with merged symbols and lookup ready for rendering.
+ */
+export interface ProcessedEntry {
+  entryPoint: string
+  nodes: DenoDocNode[]
+  symbols: MergedSymbol[]
+  lookup: SymbolLookup
+}

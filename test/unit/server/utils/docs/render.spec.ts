@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { renderDocNodes } from '#server/utils/docs/render'
+import { renderDocNodes, renderGroupedDocNodes, renderGroupedToc } from '#server/utils/docs/render'
+import { buildSymbolLookup, mergeOverloads } from '#server/utils/docs/processing'
+import { entrySlug } from '#server/utils/docs/text'
 import type { DenoDocNode } from '#shared/types/deno-doc'
-import type { MergedSymbol } from '#server/utils/docs/types'
+import type { MergedSymbol, ProcessedEntry } from '#server/utils/docs/types'
 
 // =============================================================================
 // Issue #1943: class getters shown as methods
@@ -214,5 +216,84 @@ describe('renderDocNodes examples', () => {
     expect(html).not.toMatch(/(^|[>\s])-ts([<\s]|$)/)
     expect(html).not.toContain('-ts')
     expect(html).not.toContain('```')
+  })
+})
+
+// =============================================================================
+// Multi-entry packages
+// =============================================================================
+
+function createEntry(entryPoint: string, fnNames: string[]): ProcessedEntry {
+  const nodes: DenoDocNode[] = fnNames.map(name => ({
+    name,
+    kind: 'function',
+    functionDef: {
+      params: [],
+      returnType: { repr: 'void', kind: 'keyword', keyword: 'void' },
+    },
+  }))
+  const prefix = entrySlug(entryPoint)
+  return {
+    entryPoint,
+    nodes,
+    symbols: mergeOverloads(nodes),
+    lookup: buildSymbolLookup(nodes, prefix),
+  }
+}
+
+describe('renderGroupedDocNodes - multi-entry packages', () => {
+  it('keeps same-named symbols from different entries separate', async () => {
+    const entries = [
+      createEntry('./traceparent', ['make', 'parse']),
+      createEntry('./tracestate', ['make', 'parse']),
+    ]
+
+    const html = await renderGroupedDocNodes(entries)
+
+    // Both entries get their own group with a heading showing the subpath
+    // (with the leading `./` pruned).
+    expect(html).toContain('id="group-traceparent"')
+    expect(html).toContain('id="group-tracestate"')
+    expect(html).toContain('>traceparent</h2>')
+    expect(html).toContain('>tracestate</h2>')
+    expect(html).not.toContain('./traceparent')
+    expect(html).not.toContain('./tracestate')
+
+    // Same-named exports must produce distinct, namespaced anchor IDs.
+    expect(html).toContain('id="traceparent-function-make"')
+    expect(html).toContain('id="tracestate-function-make"')
+    expect(html).not.toContain('id="function-make"')
+
+    // Each "make" appears once per entry (not merged into one "2 overloads").
+    expect(html).not.toContain('2 overloads')
+  })
+
+  it('namespaces section IDs per entry', async () => {
+    const entries = [createEntry('./traceparent', ['make']), createEntry('./tracestate', ['make'])]
+
+    const html = await renderGroupedDocNodes(entries)
+
+    expect(html).toContain('id="section-traceparent-function"')
+    expect(html).toContain('id="section-tracestate-function"')
+  })
+})
+
+describe('renderGroupedToc - multi-entry packages', () => {
+  it('renders one TOC block per entry with matching anchors', () => {
+    const entries = [
+      createEntry('./traceparent', ['make', 'parse']),
+      createEntry('./tracestate', ['make']),
+    ]
+
+    const toc = renderGroupedToc(entries)
+
+    expect(toc).toContain('href="#group-traceparent"')
+    expect(toc).toContain('href="#group-tracestate"')
+    expect(toc).toContain('href="#section-traceparent-function"')
+    expect(toc).toContain('href="#traceparent-function-make"')
+    expect(toc).toContain('href="#tracestate-function-make"')
+    // Entry labels prune the leading `./` and aren't mono.
+    expect(toc).toContain('>traceparent</a>')
+    expect(toc).not.toContain('./traceparent')
   })
 })
