@@ -286,6 +286,14 @@ const stickyStyle = computed(() => {
   top: var(--combined-header-height);
 }
 
+.docs-content .docs-group-title {
+  @apply static mt-20;
+}
+
+.docs-content .docs-group:first-child .docs-group-title {
+  @apply mt-0;
+}
+
 /* Individual symbol articles */
 .docs-content .docs-symbol {
   @apply mb-10 pb-10 border-b border-border/30 last:border-0;

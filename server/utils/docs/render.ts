@@ -87,7 +87,7 @@ export async function renderGroupedDocNodes(entries: ProcessedEntry[]): Promise<
       const lines: string[] = []
       lines.push(`<section class="docs-group" id="group-${slug}">`)
       lines.push(
-        `<h2 class="docs-group-title">${escapeHtml(formatEntryPoint(entry.entryPoint))}</h2>`,
+        `<h2 class="docs-section-title docs-group-title">${escapeHtml(formatEntryPoint(entry.entryPoint))}</h2>`,
       )
       lines.push(body)
       lines.push(`</section>`)
