@@ -28,6 +28,7 @@ export interface MergedSymbol {
  */
 export interface ProcessedEntry {
   entryPoint: string
+  prefix: string
   nodes: DenoDocNode[]
   symbols: MergedSymbol[]
   lookup: SymbolLookup

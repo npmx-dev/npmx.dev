@@ -10,7 +10,7 @@ import type { DenoDocNode, JsDocTag } from '#shared/types/deno-doc'
 import { highlightCodeBlock } from '../shiki'
 import { formatParam, formatType, getNodeSignature } from './format'
 import { groupMergedByKind } from './processing'
-import { escapeHtml, createSymbolId, entrySlug, parseJsDocLinks, renderMarkdown } from './text'
+import { escapeHtml, createSymbolId, parseJsDocLinks, renderMarkdown } from './text'
 import type { MergedSymbol, ProcessedEntry, SymbolLookup } from './types'
 
 // =============================================================================
@@ -75,7 +75,7 @@ export async function renderGroupedDocNodes(entries: ProcessedEntry[]): Promise<
   const groups = await Promise.all(
     entries.map(async entry => {
       const isRoot = entry.entryPoint === '.'
-      const slug = isRoot ? '' : entrySlug(entry.entryPoint)
+      const slug = entry.prefix
       const body = await renderDocNodes(entry.symbols, entry.lookup, slug)
       // Render nothing at all for an entry that produced no content, rather
       // than an empty group wrapper + heading.
@@ -483,10 +483,20 @@ function renderEnumMembers(def: NonNullable<DenoDocNode['enumDef']>): string {
  * Render table of contents.
  */
 export function renderToc(symbols: MergedSymbol[], prefix = ''): string {
+  return [
+    `<nav class="toc text-sm" aria-label="Table of contents">`,
+    renderTocList(symbols, prefix),
+    `</nav>`,
+  ].join('\n')
+}
+
+/**
+ * Render the inner TOC list (no `<nav>` wrapper).
+ */
+function renderTocList(symbols: MergedSymbol[], prefix = ''): string {
   const grouped = groupMergedByKind(symbols)
   const lines: string[] = []
 
-  lines.push(`<nav class="toc text-sm" aria-label="Table of contents">`)
   lines.push(`<ul class="space-y-3">`)
 
   for (const kind of KIND_DISPLAY_ORDER) {
@@ -518,7 +528,6 @@ export function renderToc(symbols: MergedSymbol[], prefix = ''): string {
   }
 
   lines.push(`</ul>`)
-  lines.push(`</nav>`)
 
   return lines.join('\n')
 }
@@ -535,11 +544,11 @@ export function renderGroupedToc(entries: ProcessedEntry[]): string {
   for (const entry of entries) {
     if (entry.symbols.length === 0) continue
     const isRoot = entry.entryPoint === '.'
-    const slug = isRoot ? '' : entrySlug(entry.entryPoint)
+    const slug = entry.prefix
 
     // The root entry's contents sit flat at the top with no group label.
     if (isRoot) {
-      lines.push(renderToc(entry.symbols, slug))
+      lines.push(renderTocList(entry.symbols, slug))
       continue
     }
 
@@ -547,7 +556,7 @@ export function renderGroupedToc(entries: ProcessedEntry[]): string {
     lines.push(
       `<a href="#group-${slug}" class="font-semibold text-fg-muted hover:text-fg block mb-1">${escapeHtml(formatEntryPoint(entry.entryPoint))}</a>`,
     )
-    lines.push(renderToc(entry.symbols, slug))
+    lines.push(renderTocList(entry.symbols, slug))
     lines.push(`</div>`)
   }
 

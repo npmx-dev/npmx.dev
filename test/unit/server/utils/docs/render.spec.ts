@@ -235,6 +235,7 @@ function createEntry(entryPoint: string, fnNames: string[]): ProcessedEntry {
   const prefix = entryPoint === '.' ? '' : entrySlug(entryPoint)
   return {
     entryPoint,
+    prefix,
     nodes,
     symbols: mergeOverloads(nodes),
     lookup: buildSymbolLookup(nodes, prefix),
@@ -335,5 +336,16 @@ describe('renderGroupedToc - multi-entry packages', () => {
     // Subpath keeps its group label + namespaced anchors.
     expect(toc).toContain('href="#group-feature"')
     expect(toc).toContain('href="#feature-function-make"')
+  })
+
+  it('exposes a single table-of-contents navigation landmark', () => {
+    const entries = [createEntry('./traceparent', ['make']), createEntry('./tracestate', ['make'])]
+
+    const toc = renderGroupedToc(entries)
+
+    // Nested <nav> landmarks with the same label are noisy for assistive tech;
+    // the grouped TOC must wrap everything in exactly one landmark.
+    expect(toc.match(/<nav\b/g)).toHaveLength(1)
+    expect(toc.match(/aria-label="Table of contents"/g)).toHaveLength(1)
   })
 })

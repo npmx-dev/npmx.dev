@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import * as fc from 'fast-check'
 import {
+  computeEntryPrefixes,
   createSymbolId,
   entrySlug,
   escapeHtml,
@@ -372,6 +373,44 @@ describe('entrySlug', () => {
     fc.assert(
       fc.property(fc.string(), input => {
         expect(entrySlug(input)).toMatch(/^[a-z0-9-]+$/)
+      }),
+    )
+  })
+})
+
+describe('computeEntryPrefixes', () => {
+  it('maps the root entry to an empty prefix', () => {
+    const prefixes = computeEntryPrefixes(['.', './sub'])
+    expect(prefixes.get('.')).toBe('')
+    expect(prefixes.get('./sub')).toBe('sub')
+  })
+
+  it('keeps distinct entries on distinct prefixes', () => {
+    const prefixes = computeEntryPrefixes(['./traceparent', './tracestate'])
+    expect(prefixes.get('./traceparent')).toBe('traceparent')
+    expect(prefixes.get('./tracestate')).toBe('tracestate')
+  })
+
+  it('disambiguates entries whose slugs would otherwise collide', () => {
+    // `./foo-bar` and `./foo/bar` both slugify to `foo-bar`.
+    const prefixes = computeEntryPrefixes(['./foo-bar', './foo/bar'])
+    expect(prefixes.get('./foo-bar')).toBe('foo-bar')
+    expect(prefixes.get('./foo/bar')).toBe('foo-bar-2')
+  })
+
+  it('keeps wildcard entries from colliding with a concrete subpath', () => {
+    // `./foo/*` and `./foo` both slugify to `foo`; they must stay distinct.
+    const prefixes = computeEntryPrefixes(['./foo', './foo/*'])
+    expect(prefixes.get('./foo')).toBe('foo')
+    expect(prefixes.get('./foo/*')).toBe('foo-2')
+  })
+
+  it('produces a unique prefix for every entry point', () => {
+    fc.assert(
+      fc.property(fc.uniqueArray(fc.string(), { minLength: 1, maxLength: 12 }), entryPoints => {
+        const prefixes = computeEntryPrefixes(entryPoints)
+        const values = [...prefixes.values()].filter(value => value !== '')
+        expect(new Set(values).size).toBe(values.length)
       }),
     )
   })

@@ -12,7 +12,7 @@ import type { DocsGenerationResult } from '#shared/types/deno-doc'
 import { getDocNodes } from './client'
 import { buildSymbolLookup, flattenNamespaces, mergeOverloads } from './processing'
 import { renderDocNodes, renderGroupedDocNodes, renderGroupedToc, renderToc } from './render'
-import { entrySlug } from './text'
+import { computeEntryPrefixes } from './text'
 import type { ProcessedEntry } from './types'
 
 /**
@@ -61,13 +61,19 @@ export async function generateDocsWithDeno(
 
   const isMultiEntry = entries.length > 1
 
-  // Anchor IDs are only prefixed when multiple entry points share a page. The root entry
-  // is never prefixed, so a package that also ships a root export keeps clean
-  // root IDs while namespacing submodules.
+  // Anchor IDs are only prefixed when multiple entry points share a page. Prefixes
+  // are computed as a set so lossy slugs can't collide (see computeEntryPrefixes);
+  // the root entry is never prefixed, so a package that also ships a root export
+  // keeps clean root IDs while namespacing submodules.
+  const prefixes = isMultiEntry
+    ? computeEntryPrefixes(entries.map(entry => entry.entryPoint))
+    : null
+
   const processed: ProcessedEntry[] = entries.map(entry => {
-    const prefix = isMultiEntry && entry.entryPoint !== '.' ? entrySlug(entry.entryPoint) : ''
+    const prefix = prefixes?.get(entry.entryPoint) ?? ''
     return {
       entryPoint: entry.entryPoint,
+      prefix,
       nodes: entry.nodes,
       symbols: entry.symbols,
       lookup: buildSymbolLookup(entry.nodes, prefix),

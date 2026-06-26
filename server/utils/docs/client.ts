@@ -9,6 +9,7 @@
 
 import { doc, type DocNode } from '@deno/doc'
 import type { DenoDocNode, DenoDocResult, DocEntry } from '#shared/types/deno-doc'
+import { mapWithConcurrency } from '#shared/utils/async'
 import { isBuiltin } from 'node:module'
 
 // =============================================================================
@@ -32,8 +33,9 @@ export async function getDocNodes(packageName: string, version: string): Promise
     return { version: 1, entries: [] }
   }
 
-  const entries: (DocEntry | null)[] = await Promise.all(
-    entryPoints.map(async ({ entryPoint, typesUrl }): Promise<DocEntry | null> => {
+  const entries: (DocEntry | null)[] = await mapWithConcurrency(
+    entryPoints,
+    async ({ entryPoint, typesUrl }): Promise<DocEntry | null> => {
       let result: Record<string, DocNode[]>
       try {
         result = await doc([typesUrl], {
@@ -54,7 +56,8 @@ export async function getDocNodes(packageName: string, version: string): Promise
       }
 
       return { entryPoint, nodes }
-    }),
+    },
+    10,
   )
 
   return {
@@ -81,12 +84,14 @@ async function resolveEntryPoints(
 ): Promise<ResolvedEntryPoint[]> {
   const modules = await getModules(packageName, version)
 
-  const resolved = await Promise.all(
-    modules.map(async (entryPoint): Promise<ResolvedEntryPoint | null> => {
+  const resolved = await mapWithConcurrency(
+    modules,
+    async (entryPoint): Promise<ResolvedEntryPoint | null> => {
       const submodule = entryPoint === '.' ? '' : entryPoint.replace(/^\./, '')
       const typesUrl = await getTypesUrl(packageName, version, submodule)
       return typesUrl ? { entryPoint, typesUrl } : null
-    }),
+    },
+    10,
   )
 
   return resolved.filter((entry): entry is ResolvedEntryPoint => entry !== null)

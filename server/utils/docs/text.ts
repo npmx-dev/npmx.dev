@@ -72,6 +72,33 @@ export function entrySlug(entryPoint: string): string {
 }
 
 /**
+ * Compute collision-free anchor prefixes for a set of entry points.
+ */
+export function computeEntryPrefixes(entryPoints: string[]): Map<string, string> {
+  const prefixes = new Map<string, string>()
+  const used = new Set<string>()
+
+  for (const entryPoint of entryPoints) {
+    if (entryPoint === '.') {
+      prefixes.set(entryPoint, '')
+      continue
+    }
+
+    const base = entrySlug(entryPoint)
+    let slug = base
+    let counter = 2
+    while (used.has(slug)) {
+      slug = `${base}-${counter++}`
+    }
+
+    used.add(slug)
+    prefixes.set(entryPoint, slug)
+  }
+
+  return prefixes
+}
+
+/**
  * Parse JSDoc {@link} tags into HTML links.
  *
  * Handles:

@@ -286,6 +286,10 @@ const stickyStyle = computed(() => {
   top: var(--combined-header-height);
 }
 
+.docs-content .docs-group {
+  scroll-margin-top: var(--combined-header-height);
+}
+
 .docs-content .docs-group-title {
   @apply static mt-20;
 }
