@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import * as fc from 'fast-check'
-import { escapeHtml, parseJsDocLinks, renderMarkdown, stripAnsi } from '#server/utils/docs/text'
+import {
+  createSymbolId,
+  entrySlug,
+  escapeHtml,
+  parseJsDocLinks,
+  renderMarkdown,
+  stripAnsi,
+} from '#server/utils/docs/text'
 import type { SymbolLookup } from '#server/utils/docs/types'
 
 describe('stripAnsi', () => {
@@ -324,6 +331,48 @@ describe('renderMarkdown', () => {
     )
     expect(result).toContain(
       'This <a href="https://example.com" target="_blank" rel="noreferrer" class="docs-link">thing</a> is really important',
+    )
+  })
+})
+
+describe('createSymbolId', () => {
+  it('builds an ID without a prefix', () => {
+    expect(createSymbolId('function', 'make')).toBe('function-make')
+  })
+
+  it('namespaces the ID when a prefix is given', () => {
+    expect(createSymbolId('function', 'make', 'traceparent')).toBe('traceparent-function-make')
+  })
+
+  it('sanitises unsafe characters', () => {
+    expect(createSymbolId('typeAlias', 'Foo.Bar', 'a/b')).toBe('a_b-typeAlias-Foo_Bar')
+  })
+
+  it('produces distinct IDs for same-named symbols across prefixes', () => {
+    expect(createSymbolId('function', 'make', 'traceparent')).not.toBe(
+      createSymbolId('function', 'make', 'tracestate'),
+    )
+  })
+})
+
+describe('entrySlug', () => {
+  it('strips the leading "./" from subpath exports', () => {
+    expect(entrySlug('./traceparent')).toBe('traceparent')
+  })
+
+  it('maps the root export to "root"', () => {
+    expect(entrySlug('.')).toBe('root')
+  })
+
+  it('slugifies nested subpaths', () => {
+    expect(entrySlug('./sub/path')).toBe('sub-path')
+  })
+
+  it('always yields a URL-safe slug', () => {
+    fc.assert(
+      fc.property(fc.string(), input => {
+        expect(entrySlug(input)).toMatch(/^[a-z0-9-]+$/)
+      }),
     )
   })
 })

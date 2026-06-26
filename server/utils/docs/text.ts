@@ -54,8 +54,21 @@ export function cleanSymbolName(name: string): string {
 /**
  * Create a URL-safe HTML anchor ID for a symbol.
  */
-export function createSymbolId(kind: string, name: string): string {
-  return `${kind}-${name}`.replace(/[^a-z0-9-]/gi, '_')
+export function createSymbolId(kind: string, name: string, prefix = ''): string {
+  const base = prefix ? `${prefix}-${kind}-${name}` : `${kind}-${name}`
+  return base.replace(/[^a-z0-9-]/gi, '_')
+}
+
+/**
+ * Derive a stable, URL-safe slug from a package entry point.
+ */
+export function entrySlug(entryPoint: string): string {
+  const cleaned = entryPoint
+    .replace(/^\.\/?/, '') // ./mod -> mod
+    .replace(/[^a-z0-9]+/gi, '-') // non-alphanumeric -> dash
+    .replace(/^-+|-+$/g, '') // trim dashes from start/end
+    .toLowerCase()
+  return cleaned || 'root'
 }
 
 /**
