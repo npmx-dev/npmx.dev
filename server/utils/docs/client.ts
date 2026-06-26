@@ -10,7 +10,6 @@
 import { doc, type DocNode } from '@deno/doc'
 import type { DenoDocNode, DenoDocResult, DocEntry } from '#shared/types/deno-doc'
 import { isBuiltin } from 'node:module'
-import { exports as resolveExports } from 'resolve.exports'
 
 // =============================================================================
 // Configuration
@@ -106,7 +105,7 @@ async function getModules(packageName: string, version: string): Promise<string[
   let pkg: PackageManifest
   try {
     pkg = await $fetch<PackageManifest>(
-      `https://esm.sh/${encodePackageName(packageName)}/${version}/package.json`,
+      `https://esm.sh/${encodePackageName(packageName)}@${version}/package.json`,
       { timeout: FETCH_TIMEOUT_MS },
     )
   } catch (e) {
@@ -127,25 +126,17 @@ async function getModules(packageName: string, version: string): Promise<string[
     return ['.']
   }
 
-  const candidates = subpathKeys.filter(key => key !== './package.json' && !key.includes('*'))
-
-  // Keep only specifiers that actually resolve to a target
-  const modules = candidates.filter(key => {
-    try {
-      const target = resolveExports(pkg, key)
-      return Boolean(target && target.length > 0)
-    } catch {
-      return false
-    }
-  })
-
-  // Order module specifiers with the root `.` first, then alphabetically.
-  return [...modules].sort((a, b) => {
-    if (a === b) return 0
-    if (a === '.') return -1
-    if (b === '.') return 1
-    return a.localeCompare(b)
-  })
+  return (
+    subpathKeys
+      .filter(key => key !== './package.json' && !key.includes('*'))
+      // Order module specifiers with the root `.` first, then alphabetically.
+      .sort((a, b) => {
+        if (a === b) return 0
+        if (a === '.') return -1
+        if (b === '.') return 1
+        return a.localeCompare(b)
+      })
+  )
 }
 
 // =============================================================================
