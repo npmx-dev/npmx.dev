@@ -275,6 +275,11 @@ const stickyStyle = computed(() => {
   @apply mt-6;
 }
 
+.toc-content .docs-toc-group > a {
+  direction: rtl;
+  text-align: left;
+}
+
 /* Main docs content container - no max-width to use full space */
 .docs-content {
   @apply max-w-none;
