@@ -8,7 +8,7 @@
  */
 
 import { doc, type DocNode } from '@deno/doc'
-import type { DenoDocNode, DenoDocResult } from '#shared/types/deno-doc'
+import type { DenoDocNode, DenoDocResult, DocEntry } from '#shared/types/deno-doc'
 import { isBuiltin } from 'node:module'
 
 // =============================================================================
@@ -24,33 +24,111 @@ const FETCH_TIMEOUT_MS = 30 * 1000
 
 /**
  * Get documentation nodes for a package using @deno/doc WASM.
+ *
+ * Resolves the package's entry points:
+ * - root `.` export, or
+ * - for submodule only exports, each documented and returns doc nodes grouped by entrypoint.
  */
 export async function getDocNodes(packageName: string, version: string): Promise<DenoDocResult> {
-  // Get types URL from esm.sh header
-  const typesUrl = await getTypesUrl(packageName, version)
+  const entryPoints = await resolveEntryPoints(packageName, version)
 
-  if (!typesUrl) {
-    return { version: 1, nodes: [] }
+  if (entryPoints.length === 0) {
+    return { version: 1, entries: [] }
   }
 
-  // Generate docs using @deno/doc WASM
-  let result: Record<string, DocNode[]>
+  const entries: (DocEntry | null)[] = await Promise.all(
+    entryPoints.map(async ({ entryPoint, typesUrl }): Promise<DocEntry | null> => {
+      let result: Record<string, DocNode[]>
+      try {
+        result = await doc([typesUrl], {
+          load: createLoader(),
+          resolve: createResolver(),
+        })
+      } catch {
+        return null
+      }
+
+      const nodes: DenoDocNode[] = []
+      for (const docNodes of Object.values(result)) {
+        nodes.push(...(docNodes as DenoDocNode[]))
+      }
+
+      if (nodes.length === 0) {
+        return null
+      }
+
+      return { entryPoint, nodes }
+    }),
+  )
+
+  return {
+    version: 1,
+    entries: entries.filter((entry): entry is DocEntry => entry !== null),
+  }
+}
+
+// =============================================================================
+// Entry Point Resolution
+// =============================================================================
+
+interface ResolvedEntryPoint {
+  entryPoint: string
+  typesUrl: string
+}
+
+/**
+ * Resolve the documentable entry points for a package.
+ */
+async function resolveEntryPoints(
+  packageName: string,
+  version: string,
+): Promise<ResolvedEntryPoint[]> {
+  const rootTypes = await getTypesUrl(packageName, version, '')
+  if (rootTypes) {
+    return [{ entryPoint: '.', typesUrl: rootTypes }]
+  }
+
+  const submodules = await getSubmodules(packageName, version)
+  if (submodules.length === 0) {
+    return []
+  }
+
+  const resolved = await Promise.all(
+    submodules.map(async (submodule): Promise<ResolvedEntryPoint | null> => {
+      const typesUrl = await getTypesUrl(packageName, version, submodule.replace(/^\./, ''))
+      return typesUrl ? { entryPoint: submodule, typesUrl } : null
+    }),
+  )
+
+  return resolved
+    .filter((entry: any): entry is ResolvedEntryPoint => entry !== null)
+    .sort((a, b) => a.entryPoint.localeCompare(b.entryPoint))
+}
+
+/**
+ * Read the importable submodule exports from a package's `package.json`.
+ */
+async function getSubmodules(packageName: string, version: string): Promise<string[]> {
+  let pkg: { exports?: unknown }
   try {
-    result = await doc([typesUrl], {
-      load: createLoader(),
-      resolve: createResolver(),
-    })
-  } catch {
-    return { version: 1, nodes: [] }
+    pkg = await $fetch<{ exports?: unknown }>(
+      `https://esm.sh/${packageName}@${version}/package.json`,
+      { timeout: FETCH_TIMEOUT_MS },
+    )
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(e)
+    return []
   }
 
-  // Collect all nodes from all specifiers
-  const allNodes: DenoDocNode[] = []
-  for (const nodes of Object.values(result)) {
-    allNodes.push(...(nodes as DenoDocNode[]))
+  const exportsField = pkg.exports
+  if (!exportsField || typeof exportsField !== 'object' || Array.isArray(exportsField)) {
+    return []
   }
 
-  return { version: 1, nodes: allNodes }
+  return Object.keys(exportsField).filter(
+    key => key.startsWith('./') && key !== './package.json' && !key.includes('*'),
+  )
 }
 
 // =============================================================================
@@ -160,8 +238,12 @@ function createResolver(): (specifier: string, referrer: string) => string {
  * Example: curl -sI 'https://esm.sh/ufo@1.5.0' returns header:
  *   x-typescript-types: https://esm.sh/ufo@1.5.0/dist/index.d.ts
  */
-async function getTypesUrl(packageName: string, version: string): Promise<string | null> {
-  const url = `https://esm.sh/${packageName}@${version}`
+async function getTypesUrl(
+  packageName: string,
+  version: string,
+  submodule = '',
+): Promise<string | null> {
+  const url = `https://esm.sh/${packageName}@${version}${submodule}`
 
   try {
     const response = await $fetch.raw(url, {
