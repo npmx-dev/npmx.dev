@@ -100,9 +100,11 @@ interface PackageManifest {
 
 /**
  * Resolve importable module specifiers for a package.
+ *
+ * @internal
  */
-async function getModules(packageName: string, version: string): Promise<string[]> {
-  let pkg: PackageManifest
+export async function getModules(packageName: string, version: string): Promise<string[]> {
+  let pkg: PackageManifest | undefined
   try {
     pkg = await $fetch<PackageManifest>(
       `https://esm.sh/${encodePackageName(packageName)}@${version}/package.json`,
@@ -114,7 +116,7 @@ async function getModules(packageName: string, version: string): Promise<string[
     return ['.']
   }
 
-  const exportsField = pkg.exports
+  const exportsField = pkg?.exports
   if (!exportsField || typeof exportsField !== 'object' || Array.isArray(exportsField)) {
     return ['.']
   }
