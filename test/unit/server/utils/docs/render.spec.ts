@@ -232,7 +232,7 @@ function createEntry(entryPoint: string, fnNames: string[]): ProcessedEntry {
       returnType: { repr: 'void', kind: 'keyword', keyword: 'void' },
     },
   }))
-  const prefix = entrySlug(entryPoint)
+  const prefix = entryPoint === '.' ? '' : entrySlug(entryPoint)
   return {
     entryPoint,
     nodes,
@@ -276,6 +276,32 @@ describe('renderGroupedDocNodes - multi-entry packages', () => {
     expect(html).toContain('id="section-traceparent-function"')
     expect(html).toContain('id="section-tracestate-function"')
   })
+
+  it('renders the root entry flat while grouping subpaths', async () => {
+    const entries = [createEntry('.', ['create']), createEntry('./feature', ['make'])]
+
+    const html = await renderGroupedDocNodes(entries)
+
+    // Root content is flat: no group wrapper or heading for `.`.
+    expect(html).not.toContain('id="group-"')
+    expect(html).not.toContain('>.</h2>')
+    // Root symbols keep clean, unprefixed IDs.
+    expect(html).toContain('id="function-create"')
+    expect(html).not.toContain('id="root-function-create"')
+    // Subpaths still render as their own prefixed group.
+    expect(html).toContain('id="group-feature"')
+    expect(html).toContain('>feature</h2>')
+    expect(html).toContain('id="feature-function-make"')
+  })
+
+  it('does not collide root and subpath IDs when names match', async () => {
+    const entries = [createEntry('.', ['make']), createEntry('./feature', ['make'])]
+
+    const html = await renderGroupedDocNodes(entries)
+
+    expect(html).toContain('id="function-make"')
+    expect(html).toContain('id="feature-function-make"')
+  })
 })
 
 describe('renderGroupedToc - multi-entry packages', () => {
@@ -295,5 +321,19 @@ describe('renderGroupedToc - multi-entry packages', () => {
     // Entry labels prune the leading `./` and aren't mono.
     expect(toc).toContain('>traceparent</a>')
     expect(toc).not.toContain('./traceparent')
+  })
+
+  it('renders the root entry flat with no group label', () => {
+    const entries = [createEntry('.', ['create']), createEntry('./feature', ['make'])]
+
+    const toc = renderGroupedToc(entries)
+
+    // Root has no group label and keeps clean anchors.
+    expect(toc).not.toContain('href="#group-"')
+    expect(toc).toContain('href="#section-function"')
+    expect(toc).toContain('href="#function-create"')
+    // Subpath keeps its group label + namespaced anchors.
+    expect(toc).toContain('href="#group-feature"')
+    expect(toc).toContain('href="#feature-function-make"')
   })
 })

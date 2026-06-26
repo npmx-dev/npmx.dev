@@ -74,11 +74,15 @@ export async function renderDocNodes(
 export async function renderGroupedDocNodes(entries: ProcessedEntry[]): Promise<string> {
   const groups = await Promise.all(
     entries.map(async entry => {
-      const slug = entrySlug(entry.entryPoint)
+      const isRoot = entry.entryPoint === '.'
+      const slug = isRoot ? '' : entrySlug(entry.entryPoint)
       const body = await renderDocNodes(entry.symbols, entry.lookup, slug)
       // Render nothing at all for an entry that produced no content, rather
       // than an empty group wrapper + heading.
       if (!body) return ''
+
+      // The root entry renders flat
+      if (isRoot) return body
 
       const lines: string[] = []
       lines.push(`<section class="docs-group" id="group-${slug}">`)
@@ -98,7 +102,7 @@ export async function renderGroupedDocNodes(entries: ProcessedEntry[]): Promise<
  * Format an entry point for display.
  */
 function formatEntryPoint(entryPoint: string): string {
-  return entryPoint === '.' ? '.' : entryPoint.replace(/^\.\//, '')
+  return entryPoint.replace(/^\.\//, '')
 }
 
 /**
@@ -530,7 +534,15 @@ export function renderGroupedToc(entries: ProcessedEntry[]): string {
 
   for (const entry of entries) {
     if (entry.symbols.length === 0) continue
-    const slug = entrySlug(entry.entryPoint)
+    const isRoot = entry.entryPoint === '.'
+    const slug = isRoot ? '' : entrySlug(entry.entryPoint)
+
+    // The root entry's contents sit flat at the top with no group label.
+    if (isRoot) {
+      lines.push(renderToc(entry.symbols, slug))
+      continue
+    }
+
     lines.push(`<div>`)
     lines.push(
       `<a href="#group-${slug}" class="font-semibold text-fg-muted hover:text-fg block mb-1">${escapeHtml(formatEntryPoint(entry.entryPoint))}</a>`,

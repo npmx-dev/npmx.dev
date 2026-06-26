@@ -10,6 +10,7 @@
 import { doc, type DocNode } from '@deno/doc'
 import type { DenoDocNode, DenoDocResult, DocEntry } from '#shared/types/deno-doc'
 import { isBuiltin } from 'node:module'
+import { exports as resolveExports } from 'resolve.exports'
 
 // =============================================================================
 // Configuration
@@ -24,10 +25,6 @@ const FETCH_TIMEOUT_MS = 30 * 1000
 
 /**
  * Get documentation nodes for a package using @deno/doc WASM.
- *
- * Resolves the package's entry points:
- * - root `.` export, or
- * - for submodule only exports, each documented and returns doc nodes grouped by entrypoint.
  */
 export async function getDocNodes(packageName: string, version: string): Promise<DenoDocResult> {
   const entryPoints = await resolveEntryPoints(packageName, version)
@@ -83,52 +80,72 @@ async function resolveEntryPoints(
   packageName: string,
   version: string,
 ): Promise<ResolvedEntryPoint[]> {
-  const rootTypes = await getTypesUrl(packageName, version, '')
-  if (rootTypes) {
-    return [{ entryPoint: '.', typesUrl: rootTypes }]
-  }
-
-  const submodules = await getSubmodules(packageName, version)
-  if (submodules.length === 0) {
-    return []
-  }
+  const modules = await getModules(packageName, version)
 
   const resolved = await Promise.all(
-    submodules.map(async (submodule): Promise<ResolvedEntryPoint | null> => {
-      const typesUrl = await getTypesUrl(packageName, version, submodule.replace(/^\./, ''))
-      return typesUrl ? { entryPoint: submodule, typesUrl } : null
+    modules.map(async (entryPoint): Promise<ResolvedEntryPoint | null> => {
+      const submodule = entryPoint === '.' ? '' : entryPoint.replace(/^\./, '')
+      const typesUrl = await getTypesUrl(packageName, version, submodule)
+      return typesUrl ? { entryPoint, typesUrl } : null
     }),
   )
 
-  return resolved
-    .filter((entry: any): entry is ResolvedEntryPoint => entry !== null)
-    .sort((a, b) => a.entryPoint.localeCompare(b.entryPoint))
+  return resolved.filter((entry): entry is ResolvedEntryPoint => entry !== null)
+}
+
+/** Minimal package manifest shape needed to resolve entry points. */
+interface PackageManifest {
+  name: string
+  exports?: unknown
 }
 
 /**
- * Read the importable submodule exports from a package's `package.json`.
+ * Resolve importable module specifiers for a package.
  */
-async function getSubmodules(packageName: string, version: string): Promise<string[]> {
-  let pkg: { exports?: unknown }
+async function getModules(packageName: string, version: string): Promise<string[]> {
+  let pkg: PackageManifest
   try {
-    pkg = await $fetch<{ exports?: unknown }>(
-      `https://esm.sh/${packageName}@${version}/package.json`,
+    pkg = await $fetch<PackageManifest>(
+      `https://esm.sh/${encodePackageName(packageName)}/${version}/package.json`,
       { timeout: FETCH_TIMEOUT_MS },
     )
   } catch (e) {
     // eslint-disable-next-line no-console
     console.error(e)
-    return []
+    return ['.']
   }
 
   const exportsField = pkg.exports
   if (!exportsField || typeof exportsField !== 'object' || Array.isArray(exportsField)) {
-    return []
+    return ['.']
   }
 
-  return Object.keys(exportsField).filter(
-    key => key.startsWith('./') && key !== './package.json' && !key.includes('*'),
-  )
+  // A submodule map keys entries by `.`/`./*`; a bare conditions map (e.g. only
+  // `import`/`require`) describes the root entry, so treat it as root-only.
+  const subpathKeys = Object.keys(exportsField).filter(key => key === '.' || key.startsWith('./'))
+  if (subpathKeys.length === 0) {
+    return ['.']
+  }
+
+  const candidates = subpathKeys.filter(key => key !== './package.json' && !key.includes('*'))
+
+  // Keep only specifiers that actually resolve to a target
+  const modules = candidates.filter(key => {
+    try {
+      const target = resolveExports(pkg, key)
+      return Boolean(target && target.length > 0)
+    } catch {
+      return false
+    }
+  })
+
+  // Order module specifiers with the root `.` first, then alphabetically.
+  return [...modules].sort((a, b) => {
+    if (a === b) return 0
+    if (a === '.') return -1
+    if (b === '.') return 1
+    return a.localeCompare(b)
+  })
 }
 
 // =============================================================================

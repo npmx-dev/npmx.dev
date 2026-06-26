@@ -61,10 +61,11 @@ export async function generateDocsWithDeno(
 
   const isMultiEntry = entries.length > 1
 
-  // Anchor IDs are only prefixed when multiple entry points share a page, so a
-  // single-entry package keeps the exact same IDs it had before.
+  // Anchor IDs are only prefixed when multiple entry points share a page. The root entry
+  // is never prefixed, so a package that also ships a root export keeps clean
+  // root IDs while namespacing submodules.
   const processed: ProcessedEntry[] = entries.map(entry => {
-    const prefix = isMultiEntry ? entrySlug(entry.entryPoint) : ''
+    const prefix = isMultiEntry && entry.entryPoint !== '.' ? entrySlug(entry.entryPoint) : ''
     return {
       entryPoint: entry.entryPoint,
       nodes: entry.nodes,
