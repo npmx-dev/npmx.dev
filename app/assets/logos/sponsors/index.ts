@@ -12,6 +12,8 @@ import LogoBadrap from './badrap.svg'
 import LogoBadrapLight from './badrap-light.svg'
 import LogoChromatic from './chromatic.svg'
 import LogoChromaticLight from './chromatic-light.svg'
+import LogoCodeRabbit from './coderabbit.svg'
+import LogoCodeRabbitLight from './coderabbit-light.svg'
 
 // The list is used on the about page. To add, simply upload the logos nearby and add an entry here. Prefer SVGs.
 // For logo src, specify a string or object with the light and dark theme variants.
@@ -30,6 +32,15 @@ export const SPONSORS = {
       },
       normalisingIndent: '0.875rem',
       url: 'https://vercel.com/',
+    },
+    {
+      name: 'CodeRabbit',
+      logo: {
+        dark: LogoCodeRabbit,
+        light: LogoCodeRabbitLight,
+      },
+      normalisingIndent: '0.875rem',
+      url: 'https://www.coderabbit.ai',
     },
   ],
   silver: [
