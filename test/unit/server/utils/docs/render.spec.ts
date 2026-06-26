@@ -348,4 +348,18 @@ describe('renderGroupedToc - multi-entry packages', () => {
     expect(toc.match(/<nav\b/g)).toHaveLength(1)
     expect(toc.match(/aria-label="Table of contents"/g)).toHaveLength(1)
   })
+
+  it('nests entries under a single top-level list so the flat TOC styles apply', () => {
+    const entries = [createEntry('./traceparent', ['make']), createEntry('./tracestate', ['make'])]
+
+    const toc = renderGroupedToc(entries)
+
+    // The page styles the TOC positionally via `.toc-content > ul > li`, so the
+    // grouped output must keep exactly one top-level <ul> rather than wrapping
+    // each entry in its own list or a <div>.
+    expect(toc.match(/<nav[^>]*>\s*<ul/)).not.toBeNull()
+    expect(toc).not.toContain('<div')
+    // Group labels are top-level list items, not an extra nesting level.
+    expect(toc).toContain('<li class="docs-toc-group">')
+  })
 })

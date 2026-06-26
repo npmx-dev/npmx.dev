@@ -271,6 +271,10 @@ const stickyStyle = computed(() => {
   @apply text-xs text-fg-subtle hover:text-fg block py-0.5 truncate;
 }
 
+.toc-content > ul > li.docs-toc-group:not(:first-child) {
+  @apply mt-8;
+}
+
 /* Main docs content container - no max-width to use full space */
 .docs-content {
   @apply max-w-none;

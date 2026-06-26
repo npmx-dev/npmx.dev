@@ -494,10 +494,15 @@ export function renderToc(symbols: MergedSymbol[], prefix = ''): string {
  * Render the inner TOC list (no `<nav>` wrapper).
  */
 function renderTocList(symbols: MergedSymbol[], prefix = ''): string {
+  return [`<ul class="space-y-3">`, ...renderTocKindItems(symbols, prefix), `</ul>`].join('\n')
+}
+
+/**
+ * Render the per-kind `<li>` items for a set of symbols, without a wrapping `<ul>`.
+ */
+function renderTocKindItems(symbols: MergedSymbol[], prefix = ''): string[] {
   const grouped = groupMergedByKind(symbols)
   const lines: string[] = []
-
-  lines.push(`<ul class="space-y-3">`)
 
   for (const kind of KIND_DISPLAY_ORDER) {
     const kindSymbols = grouped[kind]
@@ -527,9 +532,7 @@ function renderTocList(symbols: MergedSymbol[], prefix = ''): string {
     lines.push(`</li>`)
   }
 
-  lines.push(`</ul>`)
-
-  return lines.join('\n')
+  return lines
 }
 
 /**
@@ -538,29 +541,33 @@ function renderTocList(symbols: MergedSymbol[], prefix = ''): string {
 export function renderGroupedToc(entries: ProcessedEntry[]): string {
   const lines: string[] = []
 
+  // A single top-level `<ul>` keeps the grouped TOC structurally identical to
+  // the flat one (`.toc-content > ul > li`), so the page's scoped styles apply
+  // to both without duplicating them inline. Each entry contributes a group
+  // label `<li>` followed by that entry's kind `<li>`s as siblings, so nesting
+  // depth matches the flat shape and the symbol-link rules still target the
+  // right level.
   lines.push(`<nav class="toc text-sm" aria-label="Table of contents">`)
-  lines.push(`<div class="space-y-8">`)
+  lines.push(`<ul class="space-y-3">`)
 
   for (const entry of entries) {
     if (entry.symbols.length === 0) continue
     const isRoot = entry.entryPoint === '.'
     const slug = entry.prefix
 
-    // The root entry's contents sit flat at the top with no group label.
-    if (isRoot) {
-      lines.push(renderTocList(entry.symbols, slug))
-      continue
+    // The root entry's kinds sit flat at the top with no group label.
+    if (!isRoot) {
+      lines.push(`<li class="docs-toc-group">`)
+      lines.push(
+        `<a href="#group-${slug}" class="font-semibold text-fg-muted hover:text-fg block mb-1">${escapeHtml(formatEntryPoint(entry.entryPoint))}</a>`,
+      )
+      lines.push(`</li>`)
     }
 
-    lines.push(`<div>`)
-    lines.push(
-      `<a href="#group-${slug}" class="font-semibold text-fg-muted hover:text-fg block mb-1">${escapeHtml(formatEntryPoint(entry.entryPoint))}</a>`,
-    )
-    lines.push(renderTocList(entry.symbols, slug))
-    lines.push(`</div>`)
+    lines.push(...renderTocKindItems(entry.symbols, slug))
   }
 
-  lines.push(`</div>`)
+  lines.push(`</ul>`)
   lines.push(`</nav>`)
 
   return lines.join('\n')
