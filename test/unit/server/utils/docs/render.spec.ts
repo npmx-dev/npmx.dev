@@ -319,9 +319,9 @@ describe('renderGroupedToc - multi-entry packages', () => {
     expect(toc).toContain('href="#section-traceparent-function"')
     expect(toc).toContain('href="#traceparent-function-make"')
     expect(toc).toContain('href="#tracestate-function-make"')
-    // Entry labels prune the leading `./` and aren't mono.
-    expect(toc).toContain('>traceparent</a>')
-    expect(toc).not.toContain('./traceparent')
+    // Entry labels keep the leading `./` and use a mono font.
+    expect(toc).toContain('>./traceparent</a>')
+    expect(toc).toContain('href="#group-traceparent" class="font-mono')
   })
 
   it('renders the root entry flat with no group label', () => {

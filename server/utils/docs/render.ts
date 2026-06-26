@@ -559,7 +559,7 @@ export function renderGroupedToc(entries: ProcessedEntry[]): string {
     if (!isRoot) {
       lines.push(`<li class="docs-toc-group">`)
       lines.push(
-        `<a href="#group-${slug}" class="font-semibold text-fg-muted hover:text-fg block mb-1">${escapeHtml(formatEntryPoint(entry.entryPoint))}</a>`,
+        `<a href="#group-${slug}" class="font-mono font-semibold text-fg-muted hover:text-fg block mb-1">${escapeHtml(entry.entryPoint)}</a>`,
       )
       lines.push(`</li>`)
     }
