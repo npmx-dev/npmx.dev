@@ -82,4 +82,15 @@ describe('getModules', () => {
 
     await expect(getModules('pkg', '1.0.0')).resolves.toEqual(['.'])
   })
+
+  it('url-encodes scoped package names when fetching the manifest', async () => {
+    $fetchMock.mockResolvedValue({ name: '@scope/pkg' })
+
+    await getModules('@scope/pkg', '1.0.0')
+
+    expect($fetchMock).toHaveBeenCalledWith(
+      'https://esm.sh/@scope%2Fpkg@1.0.0/package.json',
+      expect.anything(),
+    )
+  })
 })

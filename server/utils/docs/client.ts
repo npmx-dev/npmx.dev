@@ -258,7 +258,7 @@ async function getTypesUrl(
   version: string,
   submodule = '',
 ): Promise<string | null> {
-  const url = `https://esm.sh/${packageName}@${version}${submodule}`
+  const url = `https://esm.sh/${encodePackageName(packageName)}@${version}${submodule}`
 
   try {
     const response = await $fetch.raw(url, {
