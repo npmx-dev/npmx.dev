@@ -169,12 +169,12 @@ const footerSections = computed<Array<{ label: string; links: FooterLink[] }>>((
     </div>
     <div class="border-bg-elevated border-t mt-4">
       <div class="container flex flex-col gap-2">
-        <a
-          href="/about#sponsors"
+        <NuxtLink
+          :to="{ name: 'about', hash: '#sponsors' }"
           class="text-sm pt-4 m-0 text-fg-muted hover:text-fg text-center sm:text-start"
         >
           {{ $t('footer.sponsored_by', { list: sponsorList }) }}
-        </a>
+        </NuxtLink>
 
         <small
           class="border-bg-muted border-t pt-2 pb-4 text-xs text-fg-muted text-center sm:text-start"
