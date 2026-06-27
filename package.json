@@ -85,7 +85,7 @@
     "algoliasearch": "5.50.1",
     "defu": "6.1.6",
     "diff": "^9.0.0",
-    "fast-npm-meta": "1.4.2",
+    "fast-npm-meta": "2.1.0",
     "focus-trap": "^8.0.0",
     "gray-matter": "4.0.3",
     "hls.js": "1.6.16",

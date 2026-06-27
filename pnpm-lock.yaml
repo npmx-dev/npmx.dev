@@ -175,8 +175,8 @@ importers:
         specifier: ^9.0.0
         version: 9.0.0
       fast-npm-meta:
-        specifier: 1.4.2
-        version: 1.4.2
+        specifier: 2.1.0
+        version: 2.1.0
       focus-trap:
         specifier: ^8.0.0
         version: 8.0.0
@@ -7462,6 +7462,10 @@ packages:
 
   fast-npm-meta@1.4.2:
     resolution: {integrity: sha512-XXyd9d3ie/JeIIjm6WeKalvapGGFI4ShAjPJM78vgUFYzoEsuNSjvvVTuht0XZcwbVdOnEEGzhxwguRbxkIcDg==}
+    hasBin: true
+
+  fast-npm-meta@2.1.0:
+    resolution: {integrity: sha512-Nfk1zTQvBmvh1XMxh9VkxMfRLHgv61YlIW80s4l/ZQVUbV4k4M5HjuQLlL8TooYD0AsSl19p4DU63wHZqZ0y9Q==}
     hasBin: true
 
   fast-redact@3.5.0:
@@ -18944,6 +18948,8 @@ snapshots:
   fast-levenshtein@2.0.6: {}
 
   fast-npm-meta@1.4.2: {}
+
+  fast-npm-meta@2.1.0: {}
 
   fast-redact@3.5.0: {}
 
