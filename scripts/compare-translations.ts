@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
 import type { LocaleObject } from '@nuxtjs/i18n'
 import * as process from 'node:process'
-import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync } from 'node:fs'
+import { readdir, readFile, writeFile } from 'node:fs/promises'
 import { basename, join, resolve } from 'node:path'
 import { deepCopy } from '@intlify/shared'
 import { countryLocaleVariants, currentLocales } from '../config/i18n.ts'
@@ -117,7 +118,7 @@ const loadJson = async ({ filePath, mergeLocale, locale }: LocaleInfo): Promise<
   }
 
   if (!mergeLocale) {
-    return JSON.parse(readFileSync(filePath, 'utf-8')) as NestedObject
+    return JSON.parse(await readFile(filePath, 'utf-8')) as NestedObject
   }
 
   const localeObject = availableLocales.get(locale)
@@ -136,18 +137,18 @@ const loadJson = async ({ filePath, mergeLocale, locale }: LocaleInfo): Promise<
       (localeObject.file ? getFileName(localeObject.file) : undefined) ??
       (files[0] ? getFileName(files[0]) : undefined)
     if (!fileName) return {}
-    return JSON.parse(readFileSync(join(localesFolder, fileName), 'utf-8')) as NestedObject
+    return JSON.parse(await readFile(join(localesFolder, fileName), 'utf-8')) as NestedObject
   }
 
   const firstFile = files[0]
   if (!firstFile) return {}
   const source = JSON.parse(
-    readFileSync(join(localesFolder, getFileName(firstFile)), 'utf-8'),
+    await readFile(join(localesFolder, getFileName(firstFile)), 'utf-8'),
   ) as NestedObject
   for (let i = 1; i < files.length; i++) {
     const file = files[i]
     if (!file) continue
-    const overlay = JSON.parse(readFileSync(join(localesFolder, getFileName(file)), 'utf-8'))
+    const overlay = JSON.parse(await readFile(join(localesFolder, getFileName(file)), 'utf-8'))
     deepCopy(overlay, source)
   }
   return source
@@ -265,7 +266,7 @@ const processLocale = async (
   // Write if there are removals (always) or we are in fix mode
   if (!localeInfo.mergeLocale && (stats.extra.length > 0 || fix)) {
     const output = targetSchema ? { $schema: targetSchema, ...newContent } : newContent
-    writeFileSync(filePath, JSON.stringify(output, null, 2) + '\n', 'utf-8')
+    await writeFile(filePath, JSON.stringify(output, null, 2) + '\n', 'utf-8')
   }
 
   return stats
@@ -318,7 +319,7 @@ const runSingleLocale = async (
 }
 
 const runAllLocales = async (referenceContent: NestedObject, fix = false): Promise<void> => {
-  const localeFiles = readdirSync(LOCALES_DIRECTORY).filter(
+  const localeFiles = (await readdir(LOCALES_DIRECTORY)).filter(
     file => file.endsWith('.json') && file !== REFERENCE_FILE_NAME,
   )
 
