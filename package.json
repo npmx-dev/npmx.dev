@@ -128,7 +128,8 @@
     "@types/sanitize-html": "2.16.1",
     "@types/semver": "7.7.1",
     "@types/validate-npm-package-name": "4.0.2",
-    "@vitest/coverage-v8": "4.1.6",
+    "@vitest/browser-playwright": "4.1.9",
+    "@vitest/coverage-v8": "4.1.9",
     "@vue/test-utils": "2.4.6",
     "axe-core": "4.11.2",
     "changelogen": "0.6.2",
@@ -147,12 +148,11 @@
     "storybook-i18n": "catalog:storybook",
     "typescript": "6.0.2",
     "unplugin-vue-markdown": "32.0.0",
-    "vitest": "npm:@voidzero-dev/vite-plus-test@0.1.20",
     "vue-i18n-extract": "2.0.7",
     "vue-tsc": "3.2.6"
   },
   "engines": {
-    "node": "24"
+    "node": ">=24.11.0"
   },
   "packageManager": "pnpm@11.1.1",
   "storybook": {
