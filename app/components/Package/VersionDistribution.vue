@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { VueUiXy } from 'vue-data-ui/vue-ui-xy'
-import { type VueUiXyDatasetItem, type VueUiXyConfig } from 'vue-data-ui'
+import { VueUiXy, type VueUiXyDatasetItem, type VueUiXyConfig } from 'vue-data-ui/vue-ui-xy'
 import { useElementSize } from '@vueuse/core'
-import { useCssVariables } from '~/composables/useColors'
+import { useColors } from '~/composables/useColors'
 import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch, lightenHex } from '~/utils/colors'
 import {
   drawSvgPrintLegend,
   drawNpmxLogoAndTaglineWatermark,
 } from '~/composables/useChartWatermark'
 import TooltipApp from '~/components/Tooltip/App.vue'
-import { copyAltTextForVersionsBarChart, sanitise, loadFile, applyEllipsis } from '~/utils/charts'
+import { copyAltTextForVersionsBarChart, sanitise, applyEllipsis } from '~/utils/charts'
+import { downloadFileLink } from '~/utils/download'
 
 import('vue-data-ui/style.css')
 
@@ -30,14 +30,7 @@ onMounted(async () => {
   resolvedMode.value = colorMode.value === 'dark' ? 'dark' : 'light'
 })
 
-const { colors } = useCssVariables(
-  ['--bg', '--fg', '--bg-subtle', '--bg-elevated', '--fg-subtle', '--border', '--border-subtle'],
-  {
-    element: rootEl,
-    watchHtmlAttributes: true,
-    watchResize: false,
-  },
-)
+const { colors } = useColors(rootEl)
 
 watch(
   () => colorMode.value,
@@ -161,6 +154,15 @@ const hasMinimap = computed<boolean>(() => {
 const chartConfig = computed<VueUiXyConfig>(() => {
   return {
     theme: isDarkMode.value ? 'dark' : '',
+    a11y: {
+      translations: {
+        keyboardNavigation: $t(
+          'package.trends.chart_assistive_text.keyboard_navigation_horizontal',
+        ),
+        tableAvailable: $t('package.trends.chart_assistive_text.table_available'),
+        tableCaption: $t('package.trends.chart_assistive_text.table_caption'),
+      },
+    },
     chart: {
       title: {
         text: dateRangeLabel.value,
@@ -171,7 +173,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
       backgroundColor: colors.value.bg,
       padding: {
         top: 24,
-        right: 24,
+        right: 145,
         bottom: 60,
       },
       userOptions: {
@@ -188,7 +190,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
           img: $t('package.trends.download_file', { fileType: 'PNG' }),
           svg: $t('package.trends.download_file', { fileType: 'SVG' }),
           annotator: $t('package.trends.toggle_annotator'),
-          altCopy: $t('package.trends.copy_alt.button_label'), // Do not make this text dependant on the `copied` variable, since this would re-render the component, which is undesirable if the minimap was used to select a time frame.
+          altCopy: $t('package.trends.copy_alt.button_label'), // Do not make this text dependent on the `copied` variable, since this would re-render the component, which is undesirable if the minimap was used to select a time frame.
           open: $t('package.trends.open_options'),
           close: $t('package.trends.close_options'),
         },
@@ -196,7 +198,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
           img: args => {
             const imageUri = args?.imageUri
             if (!imageUri) return
-            loadFile(imageUri, buildExportFilename('png'))
+            downloadFileLink(imageUri, buildExportFilename('png'))
           },
           csv: csvStr => {
             if (!csvStr) return
@@ -213,14 +215,14 @@ const chartConfig = computed<VueUiXyConfig>(() => {
                 .replaceAll(`\n${multilineDateTemplate}`, ` ${multilineDateTemplate}`),
             ])
             const url = URL.createObjectURL(blob)
-            loadFile(url, buildExportFilename('csv'))
+            downloadFileLink(url, buildExportFilename('csv'))
             URL.revokeObjectURL(url)
           },
           svg: args => {
             const blob = args?.blob
             if (!blob) return
             const url = URL.createObjectURL(blob)
-            loadFile(url, buildExportFilename('svg'))
+            downloadFileLink(url, buildExportFilename('svg'))
             URL.revokeObjectURL(url)
           },
           altCopy: ({ dataset: dst, config: cfg }) =>
@@ -237,6 +239,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
               },
             }),
         },
+        useCursorPointer: true,
       },
       grid: {
         stroke: colors.value.border,
@@ -447,6 +450,13 @@ const chartConfig = computed<VueUiXyConfig>(() => {
       <ClientOnly v-if="xyDataset.length > 0 && !error">
         <div class="chart-container w-full" :key="groupingMode">
           <VueUiXy :dataset="xyDataset" :config="chartConfig" class="[direction:ltr]">
+            <!-- Keyboard navigation hint -->
+            <template #hint="{ isVisible }">
+              <p v-if="isVisible" class="text-accent text-xs -mt-6 text-center" aria-hidden="true">
+                {{ $t('compare.packages.line_chart_nav_hint') }}
+              </p>
+            </template>
+
             <!-- Injecting custom svg elements -->
             <template #svg="{ svg }">
               <!-- Inject legend during SVG print only -->
@@ -663,6 +673,18 @@ const chartConfig = computed<VueUiXyConfig>(() => {
 /* Disable all transitions on SVG elements to prevent repositioning animation */
 :deep(.vue-ui-xy) svg rect {
   transition: none !important;
+}
+
+:deep(.vue-data-ui-component svg:focus-visible) {
+  outline: 1px solid var(--accent) !important;
+  border-radius: 0.1rem;
+  outline-offset: 0 !important;
+}
+
+:deep(.vue-ui-user-options-button:focus-visible),
+:deep(.vue-ui-user-options :first-child:focus-visible) {
+  outline: 0.1rem solid var(--accent) !important;
+  border-radius: 0.25rem;
 }
 </style>
 

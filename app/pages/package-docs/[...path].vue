@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { RouteLocationRaw } from 'vue-router'
 import { setResponseHeader } from 'h3'
 
 definePageMeta({
@@ -38,6 +39,8 @@ if (import.meta.server && packageName.value) {
 }
 
 const { data: pkg } = usePackage(packageName)
+const { versions: commandPaletteVersions, ensureLoaded: ensureCommandPaletteVersionsLoaded } =
+  useCommandPalettePackageVersions(packageName)
 
 const latestVersion = computed(() => pkg.value?.['dist-tags']?.latest ?? null)
 
@@ -68,6 +71,23 @@ watch(
 )
 
 const resolvedVersion = computed(() => requestedVersion.value ?? latestVersion.value)
+
+const commandPalettePackageContext = computed(() => {
+  const packageData = pkg.value
+  if (!packageData) return null
+
+  return {
+    packageName: packageData.name,
+    resolvedVersion: resolvedVersion.value ?? packageData['dist-tags']?.latest ?? null,
+    latestVersion: packageData['dist-tags']?.latest ?? null,
+    versions: commandPaletteVersions.value ?? Object.keys(packageData.versions ?? {}),
+  }
+})
+
+useCommandPalettePackageContext(commandPalettePackageContext, {
+  onOpen: ensureCommandPaletteVersionsLoaded,
+})
+useCommandPalettePackageCommands(commandPalettePackageContext)
 
 const docsUrl = computed(() => {
   if (!packageName.value || !resolvedVersion.value) return null
@@ -104,6 +124,20 @@ const versionUrlPattern = computed(
   () => `/package-docs/${pkg.value?.name || packageName.value}/v/{version}`,
 )
 
+function docsVersionRoute(version: string): RouteLocationRaw {
+  const name = pkg.value?.name || packageName.value
+  const [firstSegment = name, ...remainingSegments] = name.split('/')
+
+  return {
+    name: 'docs',
+    params: {
+      path: [firstSegment, ...remainingSegments, 'v', version],
+    },
+  }
+}
+
+useCommandPaletteVersionCommands(commandPalettePackageContext, docsVersionRoute)
+
 const pageTitle = computed(() => {
   if (!packageName.value) return t('package.docs.page_title')
   if (!resolvedVersion.value) return t('package.docs.page_title_name', { name: packageName.value })
@@ -114,18 +148,22 @@ const pageTitle = computed(() => {
 
 useSeoMeta({
   title: () => pageTitle.value,
-  ogTitle: () => pageTitle.value,
+  ogTitle: () => t('package.docs.og_title', { name: packageName.value }),
   twitterTitle: () => pageTitle.value,
   description: () => pkg.value?.license ?? '',
   ogDescription: () => pkg.value?.license ?? '',
   twitterDescription: () => pkg.value?.license ?? '',
 })
 
-defineOgImageComponent('Default', {
-  title: () => t('package.docs.og_title', { name: pkg.value?.name ?? 'Package' }),
-  description: () => pkg.value?.license ?? '',
-  primaryColor: '#60a5fa',
-})
+defineOgImage(
+  'Package.takumi',
+  {
+    name: () => packageName.value,
+    version: () => resolvedVersion.value,
+    variant: 'function-tree',
+  },
+  { alt: () => `API documentation for ${packageName.value}` },
+)
 
 const showLoading = computed(
   () => docsStatus.value === 'pending' || (docsStatus.value === 'idle' && docsUrl.value !== null),
@@ -168,14 +206,14 @@ const stickyStyle = computed(() => {
 
       <!-- Main content -->
       <main class="flex-1 min-w-0">
-        <div v-if="showLoading" class="p-6 sm:p-8 lg:p-12 space-y-4">
+        <div v-if="showLoading" class="container mx-auto py-6 sm:py-8 lg:py-12 space-y-4">
           <SkeletonBlock class="h-8 w-64 rounded" />
           <SkeletonBlock class="h-4 w-full max-w-2xl rounded" />
           <SkeletonBlock class="h-4 w-5/6 max-w-2xl rounded" />
           <SkeletonBlock class="h-4 w-3/4 max-w-2xl rounded" />
         </div>
 
-        <div v-else-if="showEmptyState" class="p-6 sm:p-8 lg:p-12">
+        <div v-else-if="showEmptyState" class="container mx-auto py-6 sm:py-8 lg:py-12">
           <div class="max-w-xl rounded-lg border border-border bg-bg-muted p-6">
             <h2 class="font-mono text-lg mb-2">{{ $t('package.docs.not_available') }}</h2>
             <p class="text-fg-subtle text-sm">
@@ -193,8 +231,10 @@ const stickyStyle = computed(() => {
           </div>
         </div>
 
-        <!-- eslint-disable vue/no-v-html -->
-        <div v-else class="docs-content p-6 sm:p-8 lg:p-12" v-html="docsData?.html" />
+        <div v-else class="container mx-auto py-6 sm:py-8 lg:py-12">
+          <!-- eslint-disable vue/no-v-html -->
+          <div class="docs-content" v-html="docsData?.html" />
+        </div>
       </main>
     </div>
   </div>

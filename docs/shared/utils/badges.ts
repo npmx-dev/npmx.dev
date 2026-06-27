@@ -15,11 +15,8 @@ export const BADGE_TYPES = Object.freeze([
   'types',
   'maintainers',
   'deprecated',
-  'quality',
-  'popularity',
-  'maintenance',
-  'score',
   'name',
+  'likes',
 ] as const)
 
 export type BadgeType = (typeof BADGE_TYPES)[number]

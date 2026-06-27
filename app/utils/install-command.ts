@@ -47,7 +47,7 @@ export const packageManagers = [
     action: 'add',
     executeLocal: 'deno run',
     executeRemote: 'deno run',
-    create: 'deno run',
+    create: 'deno create',
     icon: 'i-simple-icons:deno',
   },
   {
@@ -58,6 +58,15 @@ export const packageManagers = [
     executeRemote: 'vlx',
     create: 'vlx',
     icon: 'i-custom-vlt',
+  },
+  {
+    id: 'vp',
+    label: 'vp',
+    action: 'add',
+    executeLocal: 'vp exec',
+    executeRemote: 'vp dlx',
+    create: 'vp create',
+    icon: 'i-simple-icons:vite',
   },
 ] as const
 
@@ -125,6 +134,24 @@ export interface ExecuteCommandOptions extends InstallCommandOptions {
   isCreatePackage?: boolean
 }
 
+function getCreatePackageSpecifier(options: ExecuteCommandOptions): string | null {
+  if (!options.isCreatePackage) {
+    return null
+  }
+
+  const shortName = getCreateShortName(options.packageName)
+  if (shortName === options.packageName) {
+    return null
+  }
+
+  if (options.packageManager === 'deno') {
+    // npm compatibility: npm:package-name
+    return `npm:${shortName}`
+  }
+
+  return shortName
+}
+
 export function getExecuteCommand(options: ExecuteCommandOptions): string {
   return getExecuteCommandParts(options).join(' ')
 }
@@ -133,12 +160,10 @@ export function getExecuteCommandParts(options: ExecuteCommandOptions): string[]
   const pm = packageManagers.find(p => p.id === options.packageManager)
   if (!pm) return []
 
-  // For create-* packages, use the shorthand create command
-  if (options.isCreatePackage) {
-    const shortName = getCreateShortName(options.packageName)
-    if (shortName !== options.packageName) {
-      return [...pm.create.split(' '), shortName]
-    }
+  // For create-* packages, use the shorthand create command.
+  const createSpecifier = getCreatePackageSpecifier(options)
+  if (createSpecifier) {
+    return [...pm.create.split(' '), createSpecifier]
   }
 
   // Choose remote or local execute based on package type

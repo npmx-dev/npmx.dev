@@ -76,6 +76,10 @@
     "links": "روابط",
     "tap_to_search": "اضغط للبحث"
   },
+  "blog": {
+    "author": {},
+    "atproto": {}
+  },
   "settings": {
     "title": "الإعدادات",
     "tagline": "تخصيص تجربتك على npmx",
@@ -122,6 +126,7 @@
     "edit_on_github": "تعديل على GitHub",
     "view_guide": "دليل الترجمة"
   },
+  "error": {},
   "common": {
     "loading": "جارٍ التحميل…",
     "loading_more": "جارٍ تحميل المزيد…",
@@ -149,6 +154,9 @@
       "github": "عرض على GitHub"
     }
   },
+  "profile": {
+    "invite": {}
+  },
   "package": {
     "not_found": "لم يتم العثور على الحزمة",
     "not_found_message": "تعذّر العثور على الحزمة.",
@@ -161,16 +169,13 @@
       "version": "تم إهمال هذا الإصدار.",
       "no_reason": "لم يتم تقديم سبب"
     },
+    "size_increase": {},
     "replacement": {
       "title": "قد لا تحتاج إلى هذه التبعية.",
       "native": "يمكن استبدالها بـ {replacement}، المتوفرة منذ Node {nodeVersion}.",
-      "simple": "أشار {community} إلى أن هذه الحزمة زائدة، مع النصيحة: {replacement}.",
-      "documented": "أشار {community} إلى أن هذه الحزمة لها بدائل أكثر أداءً.",
       "none": "تم وضع علامة على هذه الحزمة بأنها لم تعد مطلوبة، ومن المرجح أن وظيفتها متاحة أصلًا في جميع المحركات.",
       "learn_more": "اعرف المزيد",
       "learn_more_above": "اعرف المزيد أعلاه.",
-      "mdn": "MDN",
-      "community": "المجتمع",
       "consider_no_dep": "+ هل تريد خيار «بدون تبعية»؟"
     },
     "stats": {
@@ -296,7 +301,6 @@
       "deprecated_title": "{version} (مهمل)",
       "view_all": "عرض {count} إصدار | عرض إصدار واحدة | عرض إصدارين | عرض {count} إصدارات | عرض {count} إصدار | عرض {count} إصدار",
       "distribution_title": "مجموعة Semver",
-      "distribution_modal_title": "الإصدارات",
       "grouping_major": "رئيسي",
       "grouping_minor": "ثانوي",
       "recent_versions_only_tooltip": "إظهار الإصدارات المنشورة خلال السنة الماضية فقط.",
@@ -307,7 +311,8 @@
       "filter_help": "مساعدة فلتر نطاق semver",
       "filter_tooltip": "فلترة الإصدارات باستخدام {link}. مثلاً ^3.0.0 يعرض كل إصدارات 3.x.",
       "filter_tooltip_link": "نطاق semver",
-      "no_matches": "لا توجد إصدارات تطابق هذا النطاق"
+      "no_matches": "لا توجد إصدارات تطابق هذا النطاق",
+      "copy_alt": {}
     },
     "dependencies": {
       "title": "التبعيات ({count})",
@@ -367,7 +372,8 @@
         "downloads": "التنزيلات",
         "likes": "الإعجابات",
         "contributors": "المساهمون"
-      }
+      },
+      "copy_alt": {}
     },
     "downloads": {
       "title": "التنزيلات الأسبوعية",
@@ -460,7 +466,8 @@
       "b": "{size} بايت",
       "kb": "{size} كيلوبايت",
       "mb": "{size} ميجابايت"
-    }
+    },
+    "download": {}
   },
   "connector": {
     "modal": {
@@ -639,12 +646,10 @@
   "code": {
     "files_label": "الملفات",
     "no_files": "لا توجد ملفات في هذا المجلد",
-    "root": "الجذر",
     "lines": "{count} سطر",
     "toggle_tree": "إظهار/إخفاء شجرة الملفات",
     "close_tree": "إغلاق شجرة الملفات",
     "copy_link": "نسخ الرابط",
-    "raw": "خام (Raw)",
     "view_raw": "عرض الملف الخام (Raw)",
     "file_too_large": "الملف كبير جدًا للمعاينة",
     "file_size_warning": "{size} يتجاوز حد 500KB للتظليل النحوي (syntax highlighting)",
@@ -736,11 +741,7 @@
       "downloads_month": "التنزيلات/الشهر",
       "downloads_year": "التنزيلات/السنة",
       "published": "آخر نشر",
-      "name": "الاسم",
-      "quality": "الجودة",
-      "popularity": "الشعبية",
-      "maintenance": "الصيانة",
-      "score": "التنقيط"
+      "name": "الاسم"
     },
     "columns": {
       "title": "الأعمدة",
@@ -754,10 +755,6 @@
       "published": "آخر نشر",
       "maintainers": "المشرفون",
       "keywords": "الكلمات المفتاحية",
-      "quality_score": "درجة الجودة",
-      "popularity_score": "درجة الشعبية",
-      "maintenance_score": "درجة الصيانة",
-      "combined_score": "الدرجة المجمعة",
       "security": "الأمان"
     },
     "view_mode": {
@@ -814,9 +811,10 @@
         "managers": "مديري"
       }
     },
+    "sponsors": {},
+    "oss_partners": {},
     "team": {
       "title": "الفريق",
-      "governance": "الحوكمة",
       "role_steward": "راعي",
       "role_maintainer": "مشرف",
       "sponsor": "راعي",
@@ -841,6 +839,7 @@
         "description": "تحدث، اطرح الأسئلة، وشارك الأفكار.",
         "cta": "انضم إلى Discord"
       },
+      "builders": {},
       "follow": {
         "title": "ابقَ على اطلاع",
         "description": "اكتشف آخر الأخبار عن npmx.",
@@ -930,14 +929,11 @@
       "add_column": "إضافة عمود «بدون تبعية» إلى المقارنة"
     },
     "facets": {
-      "group_label": "محاور المقارنة",
       "all": "الكل",
       "none": "لا شيء",
       "coming_soon": "قريبًا",
       "select_all": "تحديد كل المحاور",
       "deselect_all": "إلغاء تحديد كل المحاور",
-      "select_category": "تحديد جميع محاور {category}",
-      "deselect_category": "إلغاء تحديد جميع محاور {category}",
       "binary_only_tooltip": "هذه الحزمة تعرض ملفات تنفيذية فقط دون تصديرات",
       "categories": {
         "performance": "الأداء",
@@ -1013,7 +1009,15 @@
       "trends": {
         "title": "مقارنة التوجهات"
       }
-    }
+    },
+    "version_invalid_url_format": {},
+    "file_filter_option": {},
+    "filter": {}
+  },
+  "pds": {
+    "join": {},
+    "server": {},
+    "community": {}
   },
   "privacy_policy": {
     "title": "سياسة الخصوصية",
@@ -1124,5 +1128,9 @@
       "p1": "إذا واجهت عائقاً في إمكانية الوصول على {app}، يرجى إبلاغنا بفتح بلاغ في {link}. نأخذ هذه البلاغات على محمل الجد وسنبذل قصارى جهدنا لمعالجتها.",
       "link": "مستودع GitHub"
     }
-  }
+  },
+  "translation_status": {
+    "table": {}
+  },
+  "action_bar": {}
 }

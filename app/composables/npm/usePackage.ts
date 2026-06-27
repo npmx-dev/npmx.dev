@@ -1,20 +1,8 @@
+import { getTrustLevel, getTrustStatus } from 'packumeta'
+import { normalizeLicense } from '#shared/utils/npm'
+
 /** Number of recent versions to include in initial payload */
 const RECENT_VERSIONS_COUNT = 5
-
-function hasAttestations(version: PackumentVersion): boolean {
-  return Boolean(version.dist.attestations)
-}
-
-function hasTrustedPublisher(version: PackumentVersion): boolean {
-  return Boolean(version._npmUser?.trustedPublisher)
-}
-
-function getTrustLevel(version: PackumentVersion): PublishTrustLevel {
-  // trusted publishing automatically generates provenance attestations
-  if (hasTrustedPublisher(version)) return 'trustedPublisher'
-  if (hasAttestations(version)) return 'provenance'
-  return 'none'
-}
 
 /**
  * Transform a full Packument into a slimmed version for client-side use.
@@ -37,7 +25,7 @@ export function transformPackument(
       const timeA = pkg.time[a]
       const timeB = pkg.time[b]
       if (!timeA || !timeB) return 0
-      return new Date(timeB).getTime() - new Date(timeA).getTime()
+      return Date.parse(timeB) - Date.parse(timeA)
     })
     .slice(0, RECENT_VERSIONS_COUNT)
 
@@ -52,17 +40,16 @@ export function transformPackument(
   // Build security metadata for all versions, but only include in payload
   // when the package has mixed trust levels (i.e. a downgrade could exist)
   const securityVersionEntries = Object.entries(pkg.versions).map(([version, metadata]) => {
-    const trustLevel = getTrustLevel(metadata)
+    const trustStatus = getTrustStatus(metadata)
     return {
       version,
       time: pkg.time[version],
-      hasProvenance: trustLevel !== 'none',
-      trustLevel,
+      trustStatus,
       deprecated: metadata.deprecated,
     }
   })
 
-  const trustLevels = new Set(securityVersionEntries.map(v => v.trustLevel))
+  const trustLevels = new Set(securityVersionEntries.map(v => getTrustLevel(v.trustStatus)))
   const hasMixedTrust = trustLevels.size > 1
   const securityVersions = hasMixedTrust ? securityVersionEntries : undefined
 
@@ -72,6 +59,7 @@ export function transformPackument(
   for (const v of includedVersions) {
     const version = pkg.versions[v]
     if (version) {
+      const versionLicense = normalizeLicense(version.license)
       if (version.version === requestedVersion) {
         // Strip readme from each version, extract install scripts info
         const { readme: _readme, scripts, ...slimVersion } = version
@@ -80,18 +68,18 @@ export function transformPackument(
         const installScripts = scripts ? extractInstallScriptsInfo(scripts) : null
         versionData = {
           ...slimVersion,
+          license: versionLicense,
           installScripts: installScripts ?? undefined,
         }
       }
-      const trustLevel = getTrustLevel(version)
-      const hasProvenance = trustLevel !== 'none'
 
       filteredVersions[v] = {
-        hasProvenance,
-        trustLevel,
+        trustStatus: getTrustStatus(version),
         version: version.version,
         deprecated: version.deprecated,
         tags: version.tags as string[],
+        license: versionLicense,
+        type: typeof version.type === 'string' ? version.type : undefined,
       }
     }
   }
@@ -105,10 +93,7 @@ export function transformPackument(
   }
 
   // Normalize license field
-  let license = pkg.license
-  if (license && typeof license === 'object' && 'type' in license) {
-    license = license.type
-  }
+  const license = normalizeLicense(requestedVersion ? versionData?.license : pkg.license)
 
   // Extract storybook field from the requested version (custom package.json field)
   const requestedPkgVersion = requestedVersion ? pkg.versions[requestedVersion] : null

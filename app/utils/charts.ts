@@ -2,11 +2,20 @@ import type {
   AltCopyArgs,
   VueUiHorizontalBarConfig,
   VueUiHorizontalBarDatapoint,
+  VueUiScatterConfig,
+  VueUiScatterSeries,
   VueUiXyConfig,
   VueUiXyDatasetBarItem,
   VueUiXyDatasetLineItem,
 } from 'vue-data-ui'
 import type { ChartTimeGranularity } from '~/types/chart'
+
+interface SubEvent {
+  key: string
+  positive: boolean
+  icon: string
+  text: string
+}
 
 export function sum(numbers: number[]): number {
   return numbers.reduce((a, b) => a + b, 0)
@@ -338,8 +347,8 @@ export function computeLineChartAnalysis(values: Array<number | null>): LineChar
 
     /**
      * Coefficient of variation : relative volatility
-     * - expressed in %
-     * - calculation: standard devialtion / mean
+     * - expressed as a decimal from 0 to 1
+     * - calculation: standard deviation / mean
      * |---------------|----------------------------------------------------------|
      * | VALUE         | INTERPRETATION                                           |
      * |---------------|----------------------------------------------------------|
@@ -447,6 +456,37 @@ export type FacetBarChartConfig = VueUiHorizontalBarConfig & {
   description: string // translated
   copy: (text: string) => Promise<void>
   $t: TrendTranslateFunction
+}
+
+export type TimelineSizeCacheValue = {
+  totalSize: number
+  dependencyCount: number
+}
+
+export type ConvertedTimelineSizeCacheEntry = TimelineSizeCacheValue & {
+  name: string
+}
+
+export type EnrichedTimelineSizeCacheEntry = ConvertedTimelineSizeCacheEntry & {
+  version: string
+  time?: string
+  license?: string
+  type?: string
+  hasTypes?: boolean
+  hasTrustedPublisher?: boolean
+  hasProvenance?: boolean
+  tags: string[]
+  events: SubEvent[]
+  hasPositive: boolean
+  hasNegative: boolean
+}
+
+export type TimelineChartConfig = VueUiXyConfig & {
+  metric: 'totalSize' | 'dependencyCount'
+  packageName: string
+  copy: (text: string) => Promise<void>
+  $t: TrendTranslateFunction
+  numberFormatter: (value: number) => string
 }
 
 // Used for TrendsChart.vue
@@ -636,13 +676,133 @@ export async function copyAltTextForCompareFacetBarChart({
   await config.copy(altText)
 }
 
-// Used in chart context menu callbacks
-export function loadFile(link: string, filename: string) {
-  const a = document.createElement('a')
-  a.href = link
-  a.download = filename
-  a.click()
-  a.remove()
+type CompareScatterChartConfig = VueUiScatterConfig & {
+  copy: (text: string) => Promise<void>
+  $t: TrendTranslateFunction
+  x: {
+    label: string
+    formatter: (v: number) => string
+  }
+  y: {
+    label: string
+    formatter: (v: number) => string
+  }
+}
+
+// Used for FacetScatterChart.vue
+export function createAltTextForCompareScatterChart({
+  dataset,
+  config,
+}: AltCopyArgs<VueUiScatterSeries[], CompareScatterChartConfig>) {
+  if (!dataset) return ''
+
+  const { x, y } = config
+  const { label: labelX, formatter: formatterX } = x
+  const { label: labelY, formatter: formatterY } = y
+
+  const datapoints = dataset.map(d => {
+    const rawX = d.values?.[0]?.x ?? 0
+    const rawY = d.values?.[0]?.y ?? 0
+    const name = d.fullName ?? ''
+
+    return {
+      x: formatterX(rawX),
+      y: formatterY(rawY),
+      name,
+    }
+  })
+
+  const analysis = datapoints
+    .map(d =>
+      config.$t('compare.scatter_chart.copy_alt.analysis', {
+        package: d.name,
+        x_name: labelX,
+        y_name: labelY,
+        x_value: d.x,
+        y_value: d.y,
+      }),
+    )
+    .join(', ')
+
+  const altText = config.$t('compare.scatter_chart.copy_alt.description', {
+    x_name: labelX,
+    y_name: labelY,
+    packages: datapoints.map(d => d.name).join(', '),
+    analysis,
+    watermark: config.$t('package.trends.copy_alt.watermark'),
+  })
+
+  return altText
+}
+
+export async function copyAltTextForCompareScatterChart({
+  dataset,
+  config,
+}: AltCopyArgs<VueUiScatterSeries[], CompareScatterChartConfig>) {
+  const altText = createAltTextForCompareScatterChart({ dataset, config })
+  await config.copy(altText)
+}
+
+// Used for TimelineChart.vue
+export function createAltTextForTimelineChart({
+  dataset,
+  config,
+}: AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>) {
+  if (!dataset) return ''
+  const metric =
+    config.metric === 'totalSize'
+      ? config.$t('package.stats.install_size')
+      : config.$t('compare.dependencies')
+  const withEvents = dataset.filter(d => d.events.length)
+  const first = dataset[0]
+  const last = dataset.at(-1)
+
+  if (!first || !last) return ''
+
+  const firstValue = config.metric === 'totalSize' ? first?.totalSize : first?.dependencyCount
+  const lastValue = config.metric === 'totalSize' ? last?.totalSize : last?.dependencyCount
+  const baseline = firstValue ?? 0
+  const current = lastValue ?? baseline
+  const overall_progress_percentage =
+    baseline > 0 ? Math.round(((current - baseline) / baseline) * 100) : 0
+
+  const version_events = withEvents
+    .map(item =>
+      config.$t('package.timeline.chart.copy_alt.version_events', {
+        version: item.version,
+        // eslint-disable-next-line @intlify/vue-i18n/no-dynamic-keys
+        events: item.events.map(e => config.$t(e.text).toLocaleLowerCase()).join(', '),
+      }),
+    )
+    .join('; ')
+
+  const key_changes = !withEvents.length
+    ? ''
+    : config.$t('package.timeline.chart.copy_alt.key_changes', {
+        version_events,
+      })
+
+  const altText = config.$t('package.timeline.chart.copy_alt.general_description', {
+    metric: metric.toLocaleLowerCase(),
+    package: config.packageName,
+    first: first?.version ?? '',
+    last: last?.version ?? '',
+    first_value: config.numberFormatter(firstValue ?? 0),
+    last_value: config.numberFormatter(lastValue ?? 0),
+    overall_progress_percentage,
+    key_changes,
+    watermark: config.$t('package.trends.copy_alt.watermark'),
+  })
+
+  return altText
+}
+
+export async function copyAltTextForTimelineChart({
+  dataset,
+  config,
+}: AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>) {
+  const altText = createAltTextForTimelineChart({ dataset, config })
+  await config.copy(altText)
 }
 
 export function sanitise(value: string) {
@@ -721,377 +881,13 @@ export function applyEllipsis(text: string, maxLength = 45) {
   return text.slice(0, maxLength) + '...'
 }
 
-// a11y pattern generation
-export type SvgPatternType =
-  | 'diagonalLines'
-  | 'verticalLines'
-  | 'horizontalLines'
-  | 'crosshatch'
-  | 'dots'
-  | 'grid'
-  | 'zigzag'
-
-export type SeededSvgPatternOptions = {
-  foregroundColor?: string
-  backgroundColor?: string
-  minimumSize?: number
-  maximumSize?: number
-}
-
-export type SeededSvgPatternResult = {
-  width: number
-  height: number
-  rotation: number
-  patternType: SvgPatternType
-  contentMarkup: string
-}
-
-type NonEmptyReadonlyArray<T> = readonly [T, ...T[]]
-
 /**
- * Generates a deterministic 32-bit unsigned integer hash from a string.
- *
- * This function is based on the FNV-1a hashing algorithm. It is used to
- * transform any string input into a stable numeric seed suitable for
- * deterministic pseudo-random number generation.
- *
- * The same input string will always produce the same output number.
- *
- * @param value - The input string to hash.
- * @returns A 32-bit unsigned integer hash.
+ * Constants shared among chart components using seeded patterns with the <VueUiPatternSeed> component.
+ * Important: `disambiguator` can be any number, and is used to cycle through different pattern sets. Its
+ * value was chosen for the diversity of its motifs.
  */
-export function createSeedNumber(value: string): number {
-  let hashValue = 2166136261
-  for (let index = 0; index < value.length; index += 1) {
-    hashValue ^= value.charCodeAt(index)
-    hashValue = Math.imul(hashValue, 16777619)
-  }
-  return hashValue >>> 0
-}
-
-/**
- * Creates a deterministic pseudo-random number generator (PRNG) based on a numeric seed.
- *
- * This function implements a fast, non-cryptographic PRNG similar to Mulberry32.
- * It produces a reproducible sequence of numbers in the range [0, 1), meaning
- * the same seed will always generate the same sequence.
- *
- * The returned function maintains internal state and should be called repeatedly
- * to obtain successive pseudo-random values.
- *
- * @param seedNumber - 32 bit integer seed
- * @returns A function that returns a pseudo rand number between 0 (inclusive) and 1 (exclusive).
- *
- * @example
- * const random = createDeterministicRandomGenerator(12345)
- * const a = random() // always the same for seed 12345
- * const b = random()
- */
-function createDeterministicRandomGenerator(seedNumber: number): () => number {
-  // Ensure the seed is treated as an unsigned 32 bit int
-  let state = seedNumber >>> 0
-
-  return function generateRandomNumber(): number {
-    // Advance internal state using a constant
-    state += 0x6d2b79f5
-    let intermediateValue = state
-
-    // First mixing step:
-    // - XOR with a right shifted version of itself
-    // - Multiply with a derived value to further scramble bits
-    intermediateValue = Math.imul(
-      intermediateValue ^ (intermediateValue >>> 15),
-      intermediateValue | 1,
-    )
-
-    // Second mixing step:
-    // - Combine current value with another transformed version of itself
-    // - Multiply again to increase entropy and spread bits
-    intermediateValue ^=
-      intermediateValue +
-      Math.imul(intermediateValue ^ (intermediateValue >>> 7), intermediateValue | 61)
-
-    // Final step:
-    // - Final XOR with shifted value for additional scrambling
-    // - Convert to unsigned 32 bit int
-    // - Normalize to a float in range 0 to 1
-    return ((intermediateValue ^ (intermediateValue >>> 14)) >>> 0) / 4294967296
-  }
-}
-
-function pickValue<T>(values: NonEmptyReadonlyArray<T>, generateRandomNumber: () => number): T {
-  const selectedIndex = Math.floor(generateRandomNumber() * values.length)
-  const selectedValue = values[selectedIndex]
-  if (selectedValue === undefined) {
-    throw new Error('pickValue requires a non-empty array')
-  }
-  return selectedValue
-}
-
-function escapeSvgAttribute(value: string): string {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/"/g, '&quot;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-}
-
-function createLineElement(
-  x1: number,
-  y1: number,
-  x2: number,
-  y2: number,
-  stroke: string,
-  strokeWidth: number,
-  opacity: number,
-): string {
-  const safeStroke = escapeSvgAttribute(stroke)
-  return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${safeStroke}" stroke-width="${strokeWidth}" opacity="${opacity}" shape-rendering="crispEdges" stroke-linecap="round" stroke-linejoin="round" />`
-}
-
-function createCircleElement(
-  centerX: number,
-  centerY: number,
-  radius: number,
-  fill: string,
-  opacity: number,
-): string {
-  const safeFill = escapeSvgAttribute(fill)
-  return `<circle cx="${centerX}" cy="${centerY}" r="${radius}" fill="${safeFill}" opacity="${opacity}" />`
-}
-
-function createPathElement(
-  pathData: string,
-  fill: string,
-  stroke: string,
-  strokeWidth: number,
-  opacity: number,
-): string {
-  const safeFill = escapeSvgAttribute(fill)
-  const safeStroke = escapeSvgAttribute(stroke)
-  return `<path d="${pathData}" fill="${safeFill}" stroke="${safeStroke}" stroke-width="${strokeWidth}" opacity="${opacity}" stroke-linecap="round" stroke-linejoin="round" />`
-}
-
-function toNonEmptyReadonlyArray<T>(values: readonly T[]): NonEmptyReadonlyArray<T> {
-  if (values.length === 0) {
-    throw new Error('Expected a non-empty array')
-  }
-
-  return values as NonEmptyReadonlyArray<T>
-}
-
-export function createSeededSvgPattern(
-  seed: string | number,
-  options?: SeededSvgPatternOptions,
-): SeededSvgPatternResult {
-  const normalizedSeed = String(seed)
-  const foregroundColor = options?.foregroundColor ?? '#111111'
-  const backgroundColor = options?.backgroundColor ?? 'transparent'
-  const minimumSize = options?.minimumSize ?? 8
-  const maximumSize = options?.maximumSize ?? 20
-
-  if (
-    !Number.isFinite(minimumSize) ||
-    !Number.isFinite(maximumSize) ||
-    minimumSize <= 0 ||
-    maximumSize <= 0 ||
-    minimumSize > maximumSize
-  ) {
-    throw new RangeError(
-      'minimumSize and maximumSize must be finite, positive, and minimumSize must not exceed maximumSize',
-    )
-  }
-
-  const seedNumber = createSeedNumber(normalizedSeed)
-  const generateRandomNumber = createDeterministicRandomGenerator(seedNumber)
-
-  const patternType = pickValue(
-    [
-      'diagonalLines',
-      'verticalLines',
-      'horizontalLines',
-      'crosshatch',
-      'dots',
-      'grid',
-      'zigzag',
-    ] as const,
-    generateRandomNumber,
-  )
-
-  const availableSizes: number[] = []
-  for (let size = minimumSize; size <= maximumSize; size += 2) {
-    availableSizes.push(size)
-  }
-
-  const tileSize = pickValue(toNonEmptyReadonlyArray(availableSizes), generateRandomNumber)
-  const gap = pickValue([2, 3, 4, 5, 6] as const, generateRandomNumber)
-  const strokeWidth = pickValue([1, 1.25, 1.5, 1.75, 2] as const, generateRandomNumber)
-  const opacity = pickValue([0.7, 0.8, 0.9, 1] as const, generateRandomNumber)
-  const rotation = pickValue([0, 15, 30, 45, 60, 75, 90, 120, 135] as const, generateRandomNumber)
-
-  let contentMarkup = ''
-
-  switch (patternType) {
-    case 'diagonalLines': {
-      contentMarkup = [
-        createLineElement(
-          -tileSize,
-          tileSize,
-          tileSize,
-          -tileSize,
-          foregroundColor,
-          strokeWidth,
-          opacity,
-        ),
-        createLineElement(0, tileSize, tileSize, 0, foregroundColor, strokeWidth, opacity),
-        createLineElement(0, tileSize * 2, tileSize * 2, 0, foregroundColor, strokeWidth, opacity),
-      ].join('')
-      break
-    }
-
-    case 'verticalLines': {
-      const positions = [0, gap + strokeWidth, (gap + strokeWidth) * 2]
-      contentMarkup = positions
-        .map(x => createLineElement(x, 0, x, tileSize, foregroundColor, strokeWidth, opacity))
-        .join('')
-      break
-    }
-
-    case 'horizontalLines': {
-      const positions = [0, gap + strokeWidth, (gap + strokeWidth) * 2]
-      contentMarkup = positions
-        .map(y => createLineElement(0, y, tileSize, y, foregroundColor, strokeWidth, opacity))
-        .join('')
-      break
-    }
-
-    case 'crosshatch': {
-      contentMarkup = [
-        createLineElement(
-          0,
-          tileSize / 2,
-          tileSize,
-          tileSize / 2,
-          foregroundColor,
-          strokeWidth,
-          opacity,
-        ),
-        createLineElement(
-          tileSize / 2,
-          0,
-          tileSize / 2,
-          tileSize,
-          foregroundColor,
-          strokeWidth,
-          opacity,
-        ),
-        createLineElement(0, 0, tileSize, tileSize, foregroundColor, strokeWidth * 0.75, opacity),
-        createLineElement(tileSize, 0, 0, tileSize, foregroundColor, strokeWidth * 0.75, opacity),
-      ].join('')
-      break
-    }
-
-    case 'dots': {
-      const radius = Math.max(1, tileSize / 12)
-      contentMarkup = [
-        createCircleElement(tileSize / 4, tileSize / 4, radius, foregroundColor, opacity),
-        createCircleElement((tileSize * 3) / 4, tileSize / 4, radius, foregroundColor, opacity),
-        createCircleElement(tileSize / 4, (tileSize * 3) / 4, radius, foregroundColor, opacity),
-        createCircleElement(
-          (tileSize * 3) / 4,
-          (tileSize * 3) / 4,
-          radius,
-          foregroundColor,
-          opacity,
-        ),
-      ].join('')
-      break
-    }
-
-    case 'grid': {
-      contentMarkup = [
-        createLineElement(0, 0, tileSize, 0, foregroundColor, strokeWidth, opacity),
-        createLineElement(0, 0, 0, tileSize, foregroundColor, strokeWidth, opacity),
-        createLineElement(
-          0,
-          tileSize / 2,
-          tileSize,
-          tileSize / 2,
-          foregroundColor,
-          strokeWidth * 0.8,
-          opacity,
-        ),
-        createLineElement(
-          tileSize / 2,
-          0,
-          tileSize / 2,
-          tileSize,
-          foregroundColor,
-          strokeWidth * 0.8,
-          opacity,
-        ),
-      ].join('')
-      break
-    }
-
-    case 'zigzag': {
-      const midPoint = tileSize / 2
-      const pathData = `M 0 ${midPoint} L ${tileSize / 4} 0 L ${tileSize / 2} ${midPoint} L ${(tileSize * 3) / 4} ${tileSize} L ${tileSize} ${midPoint}`
-      contentMarkup = createPathElement(pathData, 'none', foregroundColor, strokeWidth, opacity)
-      break
-    }
-  }
-
-  if (backgroundColor !== 'transparent') {
-    const safeBackgroundColor = escapeSvgAttribute(backgroundColor)
-    contentMarkup = `<rect x="0" y="0" width="${tileSize}" height="${tileSize}" fill="${safeBackgroundColor}" />${contentMarkup}`
-  }
-
-  return {
-    width: tileSize,
-    height: tileSize,
-    rotation,
-    patternType,
-    contentMarkup,
-  }
-}
-
-export type ChartPatternSlotProps = {
-  id: string
-  seed: string | number
-  color?: string
-  foregroundColor: string
-  fallbackColor: string
-  maxSize: number
-  minSize: number
-}
-
-// Equivalent of the PatternSlot.vue component, to be used inside tooltip.customFormat in chart configs
-export function createChartPatternSlotMarkup({
-  id,
-  seed,
-  color,
-  foregroundColor,
-  fallbackColor,
-  maxSize,
-  minSize,
-}: ChartPatternSlotProps) {
-  const pattern = createSeededSvgPattern(seed, {
-    foregroundColor,
-    backgroundColor: color ?? fallbackColor,
-    minimumSize: minSize,
-    maximumSize: maxSize,
-  })
-
-  return `
-    <pattern
-      id="${id}"
-      patternUnits="userSpaceOnUse"
-      width="${pattern.width}"
-      height="${pattern.height}"
-      patternTransform="rotate(${pattern.rotation})"
-    >
-      ${pattern.contentMarkup}
-    </pattern>
-  `
+export const CHART_PATTERN_CONFIG = {
+  disambiguator: 1,
+  minSize: 16,
+  maxSize: 24,
 }

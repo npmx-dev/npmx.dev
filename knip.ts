@@ -1,6 +1,8 @@
 import type { KnipConfig } from 'knip'
 
 const config: KnipConfig = {
+  treatConfigHintsAsErrors: true,
+  treatTagHintsAsErrors: true,
   workspaces: {
     '.': {
       entry: [
@@ -22,16 +24,14 @@ const config: KnipConfig = {
         '!cli/src/**',
         '!lexicons/**',
       ],
+      msw: {
+        entry: ['.storybook/.public/mockServiceWorker.js'],
+      },
       ignoreDependencies: [
         '@iconify-json/*',
         'puppeteer',
-        /** Needs to be explicitly installed, even though it is not imported, to avoid type errors. */
-        'unplugin-vue-router',
         'vite-plugin-pwa',
         '@vueuse/shared',
-
-        /** Some components import types from here, but installing it directly could lead to a version mismatch */
-        'vue-router',
 
         /** Oxlint plugins don't get picked up yet */
         '@e18e/eslint-plugin',

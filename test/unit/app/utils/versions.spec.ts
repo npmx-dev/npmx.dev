@@ -12,6 +12,7 @@ import {
   isExactVersion,
   isSameVersionGroup,
   parseVersion,
+  parseStableVersion,
   sortTags,
 } from '~/utils/versions'
 
@@ -425,11 +426,11 @@ describe('isSameVersionGroup', () => {
   })
 })
 
-describe('compareTagRows', () => {
-  function row(version: string, tags: string[]) {
-    return { id: `version:${version}`, primaryTag: tags[0]!, tags, version }
-  }
+function row(version: string, tags: string[]) {
+  return { id: `version:${version}`, primaryTag: tags[0]!, tags, version }
+}
 
+describe('compareTagRows', () => {
   it('sorts by tag priority ascending (rc before beta)', () => {
     const rc = row('2.0.0-rc.1', ['rc'])
     const beta = row('2.0.0-beta.1', ['beta'])
@@ -565,5 +566,103 @@ describe('filterVersions', () => {
 
   it('returns empty set for empty versions array', () => {
     expect(filterVersions([], '^1.0.0')).toEqual(new Set())
+  })
+})
+
+describe('parseStableVersion', () => {
+  it('parses a standard stable semver version', () => {
+    expect(parseStableVersion('1.2.3')).toEqual({
+      major: 1,
+      minor: 2,
+      patch: 3,
+    })
+  })
+
+  it('parses a stable semver version prefixed with v', () => {
+    expect(parseStableVersion('v1.2.3')).toEqual({
+      major: 1,
+      minor: 2,
+      patch: 3,
+    })
+  })
+
+  it('parses a stable semver version with build metadata', () => {
+    expect(parseStableVersion('1.2.3+build.1')).toEqual({
+      major: 1,
+      minor: 2,
+      patch: 3,
+    })
+  })
+
+  it('parses a v-prefixed stable semver version with build metadata', () => {
+    expect(parseStableVersion('v1.2.3+build.1')).toEqual({
+      major: 1,
+      minor: 2,
+      patch: 3,
+    })
+  })
+
+  it('parses zero values', () => {
+    expect(parseStableVersion('0.0.0')).toEqual({
+      major: 0,
+      minor: 0,
+      patch: 0,
+    })
+  })
+
+  it('parses large numeric values', () => {
+    expect(parseStableVersion('123.456.789')).toEqual({
+      major: 123,
+      minor: 456,
+      patch: 789,
+    })
+  })
+
+  it('parses versions with whitespace', () => {
+    expect(parseStableVersion(' 1.2.3 ')).toEqual({
+      major: 1,
+      minor: 2,
+      patch: 3,
+    })
+  })
+
+  it('returns null for prerelease versions', () => {
+    expect(parseStableVersion('1.2.3-beta.1')).toBeNull()
+  })
+
+  it('returns null for alpha versions', () => {
+    expect(parseStableVersion('1.2.3-alpha')).toBeNull()
+  })
+
+  it('returns null for release candidate versions', () => {
+    expect(parseStableVersion('1.2.3-rc.1')).toBeNull()
+  })
+
+  it('returns null for versions missing the patch number', () => {
+    expect(parseStableVersion('1.2')).toBeNull()
+  })
+
+  it('returns null for versions missing the minor and patch numbers', () => {
+    expect(parseStableVersion('1')).toBeNull()
+  })
+
+  it('returns null for versions with extra numeric segments', () => {
+    expect(parseStableVersion('1.2.3.4')).toBeNull()
+  })
+
+  it('returns null for non-numeric versions', () => {
+    expect(parseStableVersion('latest')).toBeNull()
+  })
+
+  it('returns null for empty strings', () => {
+    expect(parseStableVersion('')).toBeNull()
+  })
+
+  it('returns null for uppercase V prefixes', () => {
+    expect(parseStableVersion('V1.2.3')).toBeNull()
+  })
+
+  it('returns null for versions with invalid build metadata characters', () => {
+    expect(parseStableVersion('1.2.3+build/1')).toBeNull()
   })
 })

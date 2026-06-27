@@ -89,7 +89,7 @@ describe('usePackageComparison', () => {
 
       // Should use version-specific timestamp, NOT time.modified
       expect(values[0]!.display).toBe('2024-06-15T00:00:00.000Z')
-      expect(values[0]!.raw).toBe(new Date('2024-06-15T00:00:00.000Z').getTime())
+      expect(values[0]!.raw).toBe(Date.parse('2024-06-15T00:00:00.000Z'))
     })
 
     it('stores version-specific time in metadata', async () => {
@@ -190,6 +190,279 @@ describe('usePackageComparison', () => {
 
       const values = getFacetValues('lastUpdated')
       expect(values[0]?.status).toBe('neutral')
+    })
+  })
+
+  describe('github metadata', () => {
+    it('fetches github stars, forks, and issues when repository is on github', async () => {
+      const pkgName = 'github-pkg'
+      vi.stubGlobal(
+        '$fetch',
+        vi.fn().mockImplementation((url: string, options?: { baseURL?: string }) => {
+          const fullUrl = options?.baseURL ? `${options.baseURL}${url}` : url
+          if (fullUrl.startsWith('https://registry.npmjs.org/')) {
+            return Promise.resolve({
+              'name': pkgName,
+              'dist-tags': { latest: '1.0.0' },
+              'repository': { type: 'git', url: 'https://github.com/owner/repo' },
+              'versions': {
+                '1.0.0': { dist: { unpackedSize: 1000 } },
+              },
+            })
+          }
+          if (fullUrl.includes('ungh.cc/repos/owner/repo')) {
+            return Promise.resolve({ repo: { stars: 1500, forks: 100 } })
+          }
+          if (fullUrl.includes('/api/github/issues/owner/repo')) {
+            return Promise.resolve({ issues: 50 })
+          }
+          return Promise.resolve(null)
+        }),
+      )
+
+      const { status, getFacetValues } = await usePackageComparisonInComponent([pkgName])
+      await vi.waitFor(() => {
+        expect(status.value).toBe('success')
+      })
+
+      const stars = getFacetValues('githubStars')[0]
+      const forks = getFacetValues('githubForks')[0]
+      const issues = getFacetValues('githubIssues')[0]
+
+      expect(stars).toMatchObject({ raw: 1500, status: 'neutral' })
+      expect(forks).toMatchObject({ raw: 100, status: 'neutral' })
+      expect(issues).toMatchObject({ raw: 50, status: 'neutral' })
+    })
+
+    it('returns null for missing or non-numeric github metrics', async () => {
+      const pkgName = 'missing-metrics-pkg'
+      vi.stubGlobal(
+        '$fetch',
+        vi.fn().mockImplementation((url: string, options?: { baseURL?: string }) => {
+          const fullUrl = options?.baseURL ? `${options.baseURL}${url}` : url
+          if (fullUrl.startsWith('https://registry.npmjs.org/')) {
+            return Promise.resolve({
+              'name': pkgName,
+              'dist-tags': { latest: '1.0.0' },
+              'repository': { type: 'git', url: 'https://github.com/owner/repo' },
+              'versions': {
+                '1.0.0': { dist: { unpackedSize: 1000 } },
+              },
+            })
+          }
+          if (fullUrl.includes('ungh.cc/repos/owner/repo')) {
+            // Return malformed data (stars missing)
+            return Promise.resolve({ repo: {} })
+          }
+          if (fullUrl.includes('/api/github/issues/owner/repo')) {
+            // Return non-numeric data
+            return Promise.resolve({ issues: 'not-a-number' })
+          }
+          return Promise.resolve(null)
+        }),
+      )
+
+      const { status, getFacetValues } = await usePackageComparisonInComponent([pkgName])
+      await vi.waitFor(() => {
+        expect(status.value).toBe('success')
+      })
+
+      expect(getFacetValues('githubStars')[0]).toBeNull()
+      expect(getFacetValues('githubForks')[0]).toBeNull()
+      expect(getFacetValues('githubIssues')[0]).toBeNull()
+    })
+
+    it('skips github fetches for non-github repositories', async () => {
+      const pkgName = 'gitlab-pkg'
+      const fetchMock = vi
+        .fn()
+        .mockImplementation((url: string, options?: { baseURL?: string }) => {
+          const fullUrl = options?.baseURL ? `${options.baseURL}${url}` : url
+          if (fullUrl.startsWith('https://registry.npmjs.org/')) {
+            return Promise.resolve({
+              'name': pkgName,
+              'dist-tags': { latest: '1.0.0' },
+              'repository': { type: 'git', url: 'https://gitlab.com/owner/repo' },
+              'versions': {
+                '1.0.0': { dist: { unpackedSize: 1000 } },
+              },
+            })
+          }
+          return Promise.resolve(null)
+        })
+      vi.stubGlobal('$fetch', fetchMock)
+
+      const { status, getFacetValues } = await usePackageComparisonInComponent([pkgName])
+      await vi.waitFor(() => {
+        expect(status.value).toBe('success')
+      })
+
+      expect(fetchMock).not.toHaveBeenCalledWith(expect.stringContaining('ungh.cc'))
+      expect(fetchMock).not.toHaveBeenCalledWith(expect.stringContaining('/api/github/issues'))
+
+      expect(getFacetValues('githubStars')[0]).toBeNull()
+      expect(getFacetValues('githubForks')[0]).toBeNull()
+      expect(getFacetValues('githubIssues')[0]).toBeNull()
+    })
+  })
+
+  describe('custom version', () => {
+    it('fetches version-specific data when a version is pinned in the spec', async () => {
+      const requestedUrls: string[] = []
+      vi.stubGlobal(
+        '$fetch',
+        vi.fn().mockImplementation((url: string, options?: { baseURL?: string }) => {
+          const fullUrl = options?.baseURL ? `${options.baseURL}${url}` : url
+          requestedUrls.push(fullUrl)
+          if (fullUrl.startsWith('https://registry.npmjs.org/')) {
+            return Promise.resolve({
+              'name': 'test-package',
+              'dist-tags': { latest: '2.0.0' },
+              'time': {
+                'modified': '2025-01-01T00:00:00.000Z',
+                '1.0.0': '2022-03-20T00:00:00.000Z',
+                '2.0.0': '2025-01-01T00:00:00.000Z',
+              },
+              'license': 'MIT',
+              'versions': {
+                '1.0.0': { dist: { unpackedSize: 10000 } },
+                '2.0.0': { dist: { unpackedSize: 20000 } },
+              },
+            })
+          }
+          if (fullUrl.includes('/api/registry/install-size/')) {
+            return Promise.resolve({ selfSize: 1, totalSize: 2, dependencyCount: 3 })
+          }
+          return Promise.resolve(null)
+        }),
+      )
+
+      const { packagesData, status, getFacetValues } = await usePackageComparisonInComponent([
+        'test-package@1.0.0',
+      ])
+
+      await vi.waitFor(() => {
+        expect(status.value).toBe('success')
+      })
+
+      // Uses the pinned version, not the latest dist-tag
+      expect(packagesData.value[0]?.package.version).toBe('1.0.0')
+
+      // Version-specific metadata and size
+      expect(packagesData.value[0]?.metadata?.lastUpdated).toBe('2022-03-20T00:00:00.000Z')
+      expect(getFacetValues('packageSize')[0]?.raw).toBe(10000)
+
+      // Version-aware endpoints are hit with the /v/<version> segment
+      expect(requestedUrls).toContainEqual(
+        expect.stringContaining('/api/registry/analysis/test-package/v/1.0.0'),
+      )
+      expect(requestedUrls).toContainEqual(
+        expect.stringContaining('/api/registry/vulnerabilities/test-package/v/1.0.0'),
+      )
+      await vi.waitFor(() => {
+        expect(requestedUrls).toContainEqual(
+          expect.stringContaining('/api/registry/install-size/test-package/v/1.0.0'),
+        )
+      })
+    })
+
+    it('resolves a dist-tag spec to its concrete version', async () => {
+      vi.stubGlobal(
+        '$fetch',
+        vi.fn().mockImplementation((url: string, options?: { baseURL?: string }) => {
+          const fullUrl = options?.baseURL ? `${options.baseURL}${url}` : url
+          if (fullUrl.startsWith('https://registry.npmjs.org/')) {
+            return Promise.resolve({
+              'name': 'test-package',
+              'dist-tags': { latest: '1.0.0', next: '2.0.0-beta.1' },
+              'time': {
+                '1.0.0': '2024-01-01T00:00:00.000Z',
+                '2.0.0-beta.1': '2025-01-01T00:00:00.000Z',
+              },
+              'license': 'MIT',
+              'versions': {
+                '1.0.0': { dist: { unpackedSize: 10000 } },
+                '2.0.0-beta.1': { dist: { unpackedSize: 20000 } },
+              },
+            })
+          }
+          return Promise.resolve(null)
+        }),
+      )
+
+      const { packagesData, status } = await usePackageComparisonInComponent(['test-package@next'])
+
+      await vi.waitFor(() => {
+        expect(status.value).toBe('success')
+      })
+
+      expect(packagesData.value[0]?.package.version).toBe('2.0.0-beta.1')
+    })
+
+    it('returns null when the pinned version cannot be resolved', async () => {
+      vi.stubGlobal(
+        '$fetch',
+        vi.fn().mockImplementation((url: string, options?: { baseURL?: string }) => {
+          const fullUrl = options?.baseURL ? `${options.baseURL}${url}` : url
+          if (fullUrl.startsWith('https://registry.npmjs.org/')) {
+            return Promise.resolve({
+              'name': 'test-package',
+              'dist-tags': { latest: '1.0.0' },
+              'versions': {
+                '1.0.0': { dist: { unpackedSize: 10000 } },
+              },
+            })
+          }
+          return Promise.resolve(null)
+        }),
+      )
+
+      const { packagesData, status } = await usePackageComparisonInComponent(['test-package@9.9.9'])
+
+      await vi.waitFor(() => {
+        expect(status.value).toBe('success')
+      })
+
+      expect(packagesData.value[0]).toBeNull()
+    })
+  })
+
+  describe('createdAt facet', () => {
+    it('displays the creation date without status', async () => {
+      const createdDate = '2020-01-01T00:00:00.000Z'
+      vi.stubGlobal(
+        '$fetch',
+        vi.fn().mockImplementation((url: string, options?: { baseURL?: string }) => {
+          const fullUrl = options?.baseURL ? `${options.baseURL}${url}` : url
+          if (fullUrl.startsWith('https://registry.npmjs.org/')) {
+            return Promise.resolve({
+              'name': 'test-package',
+              'dist-tags': { latest: '1.0.0' },
+              'time': {
+                'created': createdDate,
+                '1.0.0': createdDate,
+              },
+              'versions': {
+                '1.0.0': { dist: { unpackedSize: 1000 } },
+              },
+            })
+          }
+          return Promise.resolve(null)
+        }),
+      )
+
+      const { status, getFacetValues } = await usePackageComparisonInComponent(['test-package'])
+      await vi.waitFor(() => {
+        expect(status.value).toBe('success')
+      })
+
+      const value = getFacetValues('createdAt')[0]
+      expect(value).toMatchObject({
+        raw: createdDate,
+        display: createdDate,
+        type: 'date',
+      })
+      expect(value?.status).toBeUndefined()
     })
   })
 })

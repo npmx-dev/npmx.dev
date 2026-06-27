@@ -14,18 +14,12 @@ const emit = defineEmits<{
 }>()
 
 const pkg = computed(() => props.result.package)
-const score = computed(() => props.result.score)
 
 const updatedDate = computed(() => props.result.package.date)
 const { isPackageSelected, togglePackageSelection, canSelectMore } = usePackageSelection()
 const isSelected = computed<boolean>(() => {
   return isPackageSelected(props.result.package.name)
 })
-
-function formatScore(value?: number): string {
-  if (value === undefined || value === 0) return '-'
-  return Math.round(value * 100).toString()
-}
 
 function isColumnVisible(id: string): boolean {
   return props.columns.find(c => c.id === id)?.visible ?? false
@@ -39,6 +33,8 @@ const allMaintainersText = computed(() => {
 })
 
 const compactNumberFormatter = useCompactNumberFormatter()
+
+const { selectable } = usePackageSelectionContext()
 </script>
 
 <template>
@@ -47,7 +43,7 @@ const compactNumberFormatter = useCompactNumberFormatter()
     tabindex="0"
     :data-result-index="index"
   >
-    <td class="ps-3">
+    <td class="ps-3" v-if="selectable">
       <PackageSelectionCheckbox
         :package-name="result.package.name"
         :disabled="!canSelectMore && !isSelected"
@@ -161,38 +157,6 @@ const compactNumberFormatter = useCompactNumberFormatter()
         </span>
       </div>
       <span v-else class="text-fg-subtle">-</span>
-    </td>
-
-    <!-- Quality Score -->
-    <td
-      v-if="isColumnVisible('qualityScore')"
-      class="py-2 px-3 font-mono text-xs text-fg-muted text-end tabular-nums"
-    >
-      {{ formatScore(score?.detail?.quality) }}
-    </td>
-
-    <!-- Popularity Score -->
-    <td
-      v-if="isColumnVisible('popularityScore')"
-      class="py-2 px-3 font-mono text-xs text-fg-muted text-end tabular-nums"
-    >
-      {{ formatScore(score?.detail?.popularity) }}
-    </td>
-
-    <!-- Maintenance Score -->
-    <td
-      v-if="isColumnVisible('maintenanceScore')"
-      class="py-2 px-3 font-mono text-xs text-fg-muted text-end tabular-nums"
-    >
-      {{ formatScore(score?.detail?.maintenance) }}
-    </td>
-
-    <!-- Combined Score -->
-    <td
-      v-if="isColumnVisible('combinedScore')"
-      class="py-2 px-3 font-mono text-xs text-fg-muted text-end tabular-nums"
-    >
-      {{ formatScore(score?.final) }}
     </td>
 
     <!-- Security -->

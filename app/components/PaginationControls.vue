@@ -17,7 +17,7 @@ const pageSizeSelectValue = computed(() => String(pageSize.value))
 // Whether we should show pagination controls (table view always uses pagination)
 const shouldShowControls = computed(() => props.viewMode === 'table' || mode.value === 'paginated')
 
-// Table view forces pagination mode, otherwise use the provided mode
+// Table view forces pagination mode; otherwise, use the provided mode
 const effectiveMode = computed<PaginationMode>(() =>
   shouldShowControls.value ? 'paginated' : 'infinite',
 )

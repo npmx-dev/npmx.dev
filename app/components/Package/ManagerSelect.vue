@@ -101,7 +101,7 @@ function handleKeydown(event: KeyboardEvent) {
     :aria-expanded="isOpen"
     aria-haspopup="listbox"
     :aria-label="$t('package.get_started.pm_label')"
-    :aria-controls="listboxId"
+    :aria-controls="isOpen ? listboxId : undefined"
     @click="toggle"
     @keydown="handleKeydown"
   >
@@ -191,7 +191,8 @@ function handleKeydown(event: KeyboardEvent) {
 :root[data-pm='yarn'] [data-pm-select='yarn'],
 :root[data-pm='bun'] [data-pm-select='bun'],
 :root[data-pm='deno'] [data-pm-select='deno'],
-:root[data-pm='vlt'] [data-pm-select='vlt'] {
+:root[data-pm='vlt'] [data-pm-select='vlt'],
+:root[data-pm='vp'] [data-pm-select='vp'] {
   display: inline-block;
 }
 

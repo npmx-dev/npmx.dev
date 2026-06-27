@@ -1,9 +1,8 @@
-import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite-plus'
 import { defineVitestProject } from '@nuxt/test-utils/config'
 import { playwright } from 'vite-plus/test/browser-playwright'
 
-const rootDir = fileURLToPath(new URL('.', import.meta.url))
+const rootDir = import.meta.dirname
 
 export default defineConfig({
   run: {
@@ -32,6 +31,12 @@ export default defineConfig({
       'lint:css': {
         command: 'node scripts/unocss-checker.ts',
       },
+      'zizmor': {
+        command: 'zizmor --pedantic .',
+      },
+      'zizmor:fix': {
+        command: 'zizmor --pedantic --fix .',
+      },
       'build:lunaria': {
         command: 'node ./lunaria/lunaria.ts',
       },
@@ -46,6 +51,7 @@ export default defineConfig({
       perf: 'warn',
     },
     rules: {
+      'vitest/require-mock-type-parameters': 'off',
       'no-console': 'warn',
       'no-await-in-loop': 'off',
       'unicorn/no-array-sort': 'off',
@@ -187,7 +193,7 @@ export default defineConfig({
             environment: 'nuxt',
             environmentOptions: {
               nuxt: {
-                rootDir: fileURLToPath(new URL('.', import.meta.url)),
+                rootDir,
                 overrides: {
                   vue: {
                     runtimeCompiler: true,

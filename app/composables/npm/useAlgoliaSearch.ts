@@ -50,6 +50,7 @@ interface AlgoliaHit {
   deprecated: boolean | string
   isDeprecated: boolean
   license: string | null
+  isSecurityHeld: boolean
 }
 
 const ATTRIBUTES_TO_RETRIEVE = [
@@ -67,6 +68,7 @@ const ATTRIBUTES_TO_RETRIEVE = [
   'deprecated',
   'isDeprecated',
   'license',
+  'isSecurityHeld',
 ]
 
 const EXISTENCE_CHECK_ATTRS = ['name']
@@ -90,14 +92,7 @@ function hitToSearchResult(hit: AlgoliaHit): NpmSearchResult {
             email: owner.email,
           }))
         : [],
-    },
-    score: {
-      final: 0,
-      detail: {
-        quality: hit.popular ? 1 : 0,
-        popularity: hit.downloadsRatio,
-        maintenance: 0,
-      },
+      isSecurityHeld: hit.isSecurityHeld,
     },
     searchScore: 0,
     downloads: {
@@ -169,8 +164,8 @@ export function useAlgoliaSearch() {
     }
   }
 
-  /** Fetch all packages for an owner using `owner.name` filter with pagination. */
-  async function searchByOwner(
+  /** Fetch all packages for a maintainer using `owners.name` filter with pagination. */
+  async function searchByMaintainer(
     ownerName: string,
     options: { maxResults?: number } = {},
   ): Promise<NpmSearchResponse> {
@@ -193,7 +188,7 @@ export function useAlgoliaSearch() {
             query: '',
             offset,
             length,
-            filters: `owner.name:${ownerName}`,
+            filters: `owners.name:${ownerName}`,
             analyticsTags: ['npmx.dev'],
             attributesToRetrieve: ATTRIBUTES_TO_RETRIEVE,
             attributesToHighlight: [],
@@ -222,11 +217,9 @@ export function useAlgoliaSearch() {
     }
   }
 
-  /** Fetch metadata for specific packages by exact name using Algolia's getObjects API. */
-  async function getPackagesByName(packageNames: string[]): Promise<NpmSearchResponse> {
-    if (packageNames.length === 0) {
-      return { isStale: false, objects: [], total: 0, time: new Date().toISOString() }
-    }
+  /** Fetch metadata for a single batch of packages (max 1000) by exact name. */
+  async function getPackagesByNameSlice(names: string[]): Promise<NpmSearchResult[]> {
+    if (names.length === 0) return []
 
     const response = await $fetch<{ results: (AlgoliaHit | null)[] }>(
       `https://${algolia.appId}-dsn.algolia.net/1/indexes/*/objects`,
@@ -237,7 +230,7 @@ export function useAlgoliaSearch() {
           'x-algolia-application-id': algolia.appId,
         },
         body: {
-          requests: packageNames.map(name => ({
+          requests: names.map(name => ({
             indexName,
             objectID: name,
             attributesToRetrieve: ATTRIBUTES_TO_RETRIEVE,
@@ -246,11 +239,41 @@ export function useAlgoliaSearch() {
       },
     )
 
-    const hits = response.results.filter((r): r is AlgoliaHit => r !== null && 'name' in r)
+    return response.results
+      .filter((r): r is AlgoliaHit => r !== null && 'name' in r)
+      .map(hitToSearchResult)
+  }
+
+  /** Fetch metadata for specific packages by exact name using Algolia's getObjects API. */
+  async function getPackagesByName(packageNames: string[]): Promise<NpmSearchResponse> {
+    if (packageNames.length === 0) {
+      return { isStale: false, objects: [], total: 0, time: new Date().toISOString() }
+    }
+
+    // Algolia getObjects has a limit of 1000 objects per request, so batch if needed
+    const BATCH_SIZE = 1000
+    const batches: string[][] = []
+    for (let i = 0; i < packageNames.length; i += BATCH_SIZE) {
+      batches.push(packageNames.slice(i, i + BATCH_SIZE))
+    }
+
+    // Fetch batches with concurrency limit to avoid overwhelming the API
+    const CONCURRENCY = 3
+    const allObjects: NpmSearchResult[] = []
+    for (let i = 0; i < batches.length; i += CONCURRENCY) {
+      const chunk = batches.slice(i, i + CONCURRENCY)
+      const results = await Promise.all(chunk.map(batch => getPackagesByNameSlice(batch)))
+      for (const result of results) {
+        for (const pkg of result) {
+          allObjects.push(pkg)
+        }
+      }
+    }
+
     return {
       isStale: false,
-      objects: hits.map(hitToSearchResult),
-      total: hits.length,
+      objects: allObjects,
+      total: allObjects.length,
       time: new Date().toISOString(),
     }
   }
@@ -294,7 +317,7 @@ export function useAlgoliaSearch() {
       requests.push({
         indexName,
         query: '',
-        filters: `owner.name:${checks.name}`,
+        filters: `owners.name:${checks.name}`,
         length: 1,
         analyticsTags: ['npmx.dev'],
         attributesToRetrieve: EXISTENCE_CHECK_ATTRS,
@@ -355,7 +378,7 @@ export function useAlgoliaSearch() {
   return {
     search,
     searchWithSuggestions,
-    searchByOwner,
+    searchByMaintainer,
     getPackagesByName,
   }
 }

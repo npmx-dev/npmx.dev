@@ -33,11 +33,16 @@ export interface AppSettings {
   instantSearch: boolean
   /** Enable/disable keyboard shortcuts */
   keyboardShortcuts: boolean
+  /** Enable/disable auto scrolling to requested version at package changelog */
+  changelogAutoScroll: boolean
   /** Connector preferences */
   connector: {
     /** Automatically open the web auth page in the browser */
     autoOpenURL: boolean
   }
+  codeContainerFull: boolean
+  /** Enable/disable ligatures in code */
+  codeLigatures: boolean
   sidebar: {
     collapsed: string[]
   }
@@ -46,6 +51,11 @@ export interface AppSettings {
     smoothingTau: number
     anomaliesFixed: boolean
     predictionPoints: number
+  }
+  timelineChart: {
+    isZeroBased: boolean
+    showZoom: boolean
+    isOrdered: boolean
   }
 }
 
@@ -60,17 +70,25 @@ const DEFAULT_SETTINGS: AppSettings = {
   searchProvider: import.meta.test ? 'npm' : 'algolia',
   instantSearch: true,
   keyboardShortcuts: true,
+  changelogAutoScroll: true,
   connector: {
     autoOpenURL: false,
   },
+  codeContainerFull: false,
+  codeLigatures: true,
   sidebar: {
     collapsed: [],
   },
   chartFilter: {
     averageWindow: 0,
-    smoothingTau: 1,
+    smoothingTau: 0,
     anomaliesFixed: true,
     predictionPoints: 4,
+  },
+  timelineChart: {
+    isZeroBased: false,
+    showZoom: false,
+    isOrdered: true,
   },
 }
 
@@ -236,3 +254,48 @@ export function useBackgroundTheme() {
     setBackgroundTheme,
   }
 }
+
+export function useCodeContainer() {
+  const { settings } = useSettings()
+
+  const codeContainerFull = computed(() => settings.value.codeContainerFull)
+
+  function toggleCodeContainer() {
+    settings.value.codeContainerFull = !settings.value.codeContainerFull
+  }
+
+  return {
+    codeContainerFull,
+    toggleCodeContainer,
+  }
+}
+
+export const useCodeLigatures = createSharedComposable(function useCodeLigatures() {
+  const { settings } = useSettings()
+
+  const codeLigatures = computed(() => settings.value.codeLigatures)
+
+  if (import.meta.client) {
+    // Sync the data attribute on root to the setting
+    watch(
+      codeLigatures,
+      value => {
+        if (value) {
+          delete document.documentElement.dataset.codeLigatures
+        } else {
+          document.documentElement.dataset.codeLigatures = 'false'
+        }
+      },
+      { immediate: true },
+    )
+  }
+
+  function toggleCodeLigatures() {
+    settings.value.codeLigatures = !settings.value.codeLigatures
+  }
+
+  return {
+    codeLigatures,
+    toggleCodeLigatures,
+  }
+})

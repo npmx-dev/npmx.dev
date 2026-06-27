@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { RouteLocationRaw } from 'vue-router'
+import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
 import { SCROLL_TO_TOP_THRESHOLD } from '~/composables/useScrollToTop'
-import { isEditableElement } from '~/utils/input'
+import { usePackageChangelog } from '~/composables/usePackageChangelog'
 
 const props = defineProps<{
   pkg?: Pick<SlimPackument, 'name' | 'versions' | 'dist-tags'> | null
@@ -10,7 +11,7 @@ const props = defineProps<{
   latestVersion?: SlimVersion | null
   provenanceData?: ProvenanceDetails | null
   provenanceStatus?: string | null
-  page: 'main' | 'docs' | 'code' | 'diff'
+  page: 'main' | 'docs' | 'code' | 'diff' | 'changelog' | 'timeline' | 'stats'
   versionUrlPattern: string
 }>()
 
@@ -61,6 +62,14 @@ const { y: scrollY } = useScroll(window)
 const showScrollToTop = computed(() => scrollY.value > SCROLL_TO_TOP_THRESHOLD)
 
 const packageName = computed(() => props.pkg?.name ?? '')
+const fundingUrl = computed(() => {
+  let funding = props.displayVersion?.funding
+  if (Array.isArray(funding)) funding = funding[0]
+
+  if (!funding) return null
+
+  return typeof funding === 'string' ? funding : funding.url
+})
 
 const { copied: copiedPkgName, copy: copyPkgName } = useClipboard({
   source: packageName,
@@ -72,7 +81,41 @@ function hasProvenance(version: PackumentVersion | null): boolean {
   return !!(version.dist as { attestations?: unknown }).attestations
 }
 
-const router = useRouter()
+const { announce } = useCommandPalette()
+
+useCommandPaletteContextCommands(
+  computed((): CommandPaletteContextCommandInput[] => {
+    if (!packageName.value) return []
+
+    const commands: CommandPaletteContextCommandInput[] = [
+      {
+        id: 'package-copy-name',
+        group: 'package',
+        label: $t('package.copy_name'),
+        keywords: [packageName.value],
+        iconClass: 'i-lucide:copy',
+        action: () => {
+          copyPkgName()
+          announce($t('command_palette.announcements.copied_to_clipboard'))
+        },
+      },
+    ]
+
+    if (fundingUrl.value) {
+      commands.push({
+        id: 'package-link-funding',
+        group: 'links',
+        label: $t('package.links.fund'),
+        keywords: [packageName.value, $t('package.links.fund')],
+        iconClass: 'i-lucide:heart',
+        href: fundingUrl.value,
+      })
+    }
+
+    return commands
+  }),
+)
+
 // Docs URL: use our generated API docs
 const docsLink = computed(() => {
   if (!props.resolvedVersion) return null
@@ -120,67 +163,39 @@ const diffLink = computed((): RouteLocationRaw | null => {
   return diffRoute(props.pkg.name, props.resolvedVersion, props.latestVersion.version)
 })
 
-const keyboardShortcuts = useKeyboardShortcuts()
+const { data: changelog } = usePackageChangelog(packageName, requestedVersion)
 
-onKeyStroke(
-  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, '.') && !isEditableElement(e.target),
-  e => {
-    if (codeLink.value === null) return
-    e.preventDefault()
+const changelogLink = computed((): RouteLocationRaw | null => {
+  if (
+    // either changelog.value is available or current page is the changelog
+    !(changelog.value || props.page == 'changelog') ||
+    props.pkg == null ||
+    props.resolvedVersion == null
+  ) {
+    return null
+  }
+  return changelogRoute(props.pkg.name, props.resolvedVersion)
+})
 
-    navigateTo(codeLink.value)
-  },
-  { dedupe: true },
-)
+const timelineLink = computed((): RouteLocationRaw | null => {
+  if (props.pkg == null || props.resolvedVersion == null) return null
+  return packageTimelineRoute(props.pkg.name, props.resolvedVersion)
+})
 
-onKeyStroke(
-  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, 'm') && !isEditableElement(e.target),
-  e => {
-    if (mainLink.value === null) return
-    e.preventDefault()
+const statsLink = computed((): RouteLocationRaw | null => {
+  if (props.pkg == null || props.resolvedVersion == null) return null
+  return packageStatsRoute(props.pkg.name, props.resolvedVersion)
+})
 
-    navigateTo(mainLink.value)
-  },
-  { dedupe: true },
-)
-
-onKeyStroke(
-  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, 'd') && !isEditableElement(e.target),
-  e => {
-    if (!docsLink.value) return
-    e.preventDefault()
-    navigateTo(docsLink.value)
-  },
-  { dedupe: true },
-)
-
-onKeyStroke(
-  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, 'c') && !isEditableElement(e.target),
-  e => {
-    if (!props.pkg) return
-    e.preventDefault()
-    router.push({ name: 'compare', query: { packages: props.pkg.name } })
-  },
-  { dedupe: true },
-)
-
-onKeyStroke(
-  e => keyboardShortcuts.value && isKeyWithoutModifiers(e, 'f') && !isEditableElement(e.target),
-  e => {
-    if (diffLink.value === null) return
-    e.preventDefault()
-    navigateTo(diffLink.value)
-  },
-  { dedupe: true },
-)
-
-const fundingUrl = computed(() => {
-  let funding = props.displayVersion?.funding
-  if (Array.isArray(funding)) funding = funding[0]
-
-  if (!funding) return null
-
-  return typeof funding === 'string' ? funding : funding.url
+useShortcuts({
+  '.': () => codeLink.value,
+  'm': () => mainLink.value,
+  'd': () => docsLink.value,
+  'c': () => props.pkg && { name: 'compare' as const, query: { packages: props.pkg.name } },
+  'f': () => diffLink.value,
+  '-': () => changelogLink.value,
+  't': () => timelineLink.value,
+  's': () => statsLink.value,
 })
 </script>
 
@@ -234,7 +249,7 @@ const fundingUrl = computed(() => {
   </header>
   <div
     ref="header"
-    class="w-full bg-bg sticky top-14 z-10 border-b border-border pt-2"
+    class="w-full bg-bg sticky top-14 z-40 border-b border-border pt-2"
     :class="[$style.packageHeader]"
     data-testid="package-subheader"
   >
@@ -342,6 +357,33 @@ const fundingUrl = computed(() => {
           :class="page === 'diff' ? 'border-accent text-accent!' : 'border-transparent'"
         >
           {{ $t('compare.compare_versions') }}
+        </LinkBase>
+        <LinkBase
+          v-if="changelogLink"
+          :to="changelogLink"
+          aria-keyshortcuts="-"
+          class="decoration-none border-b-2 p-1 hover:border-accent/50 focus-visible:[outline-offset:-2px]!"
+          :class="page === 'changelog' ? 'border-accent text-accent!' : 'border-transparent'"
+        >
+          {{ $t('package.links.changelog') }}
+        </LinkBase>
+        <LinkBase
+          v-if="timelineLink"
+          :to="timelineLink"
+          aria-keyshortcuts="t"
+          class="decoration-none border-b-2 p-1 hover:border-accent/50 focus-visible:[outline-offset:-2px]!"
+          :class="page === 'timeline' ? 'border-accent text-accent!' : 'border-transparent'"
+        >
+          {{ $t('package.links.timeline') }}
+        </LinkBase>
+        <LinkBase
+          v-if="statsLink"
+          :to="statsLink"
+          aria-keyshortcuts="s"
+          class="decoration-none border-b-2 p-1 hover:border-accent/50 focus-visible:[outline-offset:-2px]!"
+          :class="page === 'stats' ? 'border-accent text-accent!' : 'border-transparent'"
+        >
+          {{ $t('package.links.stats') }}
         </LinkBase>
       </nav>
     </div>

@@ -324,17 +324,8 @@ export function detectTypesStatus(
   typesPackageInfo?: TypesPackageInfo,
   files?: Set<string>,
 ): TypesStatus {
-  // Check for built-in types
-  if (pkg.types || pkg.typings) {
+  if (hasBuiltInTypes(pkg)) {
     return { kind: 'included' }
-  }
-
-  // Check exports field for types
-  if (pkg.exports) {
-    const exportInfo = analyzeExports(pkg.exports)
-    if (exportInfo.hasTypes) {
-      return { kind: 'included' }
-    }
   }
 
   // Check for implicit types by deriving expected declaration file paths from

@@ -238,6 +238,7 @@ watch(
 
     <!-- Show more/less toggle (only when not managing and there are hidden maintainers) -->
     <ButtonBase
+      class="mt-2"
       v-if="!canManageOwners && hiddenMaintainersCount > 0"
       @click="showAllMaintainers = !showAllMaintainers"
     >

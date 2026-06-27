@@ -10,11 +10,14 @@ useSeoMeta({
   twitterDescription: () => $t('pds.meta_description'),
 })
 
-defineOgImageComponent('Default', {
-  primaryColor: '#60a5fa',
-  title: 'npmx.social',
-  description: 'The official **PDS** for the npmx community.',
-})
+defineOgImage(
+  'Page.takumi',
+  {
+    title: 'npmx.social',
+    description: 'The official PDS for the npmx community.',
+  },
+  { alt: 'npmx.social — the official PDS for the npmx community' },
+)
 
 const brokenImages = ref(new Set<string>())
 
@@ -139,7 +142,7 @@ const totalAccounts = computed(() => pdsUsers.value.length)
             {{ $t('pds.community.empty') }}
           </div>
           <div v-else>
-            <ul class="grid grid-cols-[repeat(auto-fill,48px)] justify-center gap-2 list-none p-0">
+            <ul class="grid grid-cols-[repeat(auto-fill,48px)] justify-center gap-1 list-none p-0">
               <li
                 v-for="user in usersWithAvatars"
                 :key="user.handle"
@@ -159,7 +162,7 @@ const totalAccounts = computed(() => pdsUsers.value.length)
                       @error="handleImageError(user.handle)"
                       width="48"
                       height="48"
-                      class="w-12 h-12 rounded-lg ring-2 ring-transparent group-hover:ring-accent transition-all duration-200 ease-out group-hover:scale-125 will-change-transform"
+                      class="w-12 h-12 rounded-md ring-1 ring-transparent group-hover:ring-accent transition-all duration-200 ease-out"
                       loading="lazy"
                     />
                   </a>

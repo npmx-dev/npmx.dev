@@ -1,0 +1,41 @@
+name: Deploy canary
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-canary-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-canary:
+    if: github.repository == 'npmx-dev/npmx.dev'
+    name: 🚀 Deploy to canary (main.npmx.dev)
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+
+      - uses: voidzero-dev/setup-vp@2dec1e33f4ab2c6d5bce1b0c4607961bb1a3f7a1 # v1.12.0
+        with:
+          node-version: lts/*
+          run-install: false
+
+      - uses: SocketDev/action@ba6de6cc0565af1f42295590380973573297e31f # v1.3.2
+        with:
+          mode: firewall-free
+          # Version of the underlying sfw to use (no `v` prefix): https://github.com/SocketDev/sfw-free/releases
+          firewall-version: 1.12.0
+
+      - run: sfw vp i -g vercel@54.12.2
+      - run: vercel deploy --target=canary
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}

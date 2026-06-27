@@ -1,0 +1,120 @@
+{
+  "type": "npm",
+  "name": "empathic",
+  "version": "2.0.0",
+  "default": null,
+  "files": [
+    {
+      "type": "file",
+      "name": "access.d.ts",
+      "hash": "BrF3r4FaA0GzI59lpo+Fga4gUk3RW/S1KBsFsfqa0Uc=",
+      "size": 618
+    },
+    {
+      "type": "file",
+      "name": "access.js",
+      "hash": "fOI6MfpljmYsMFoKxlT3hlksRGV+CzTG4PV17Tzj9bw=",
+      "size": 811
+    },
+    {
+      "type": "file",
+      "name": "access.mjs",
+      "hash": "XwPL8Rwp7LRA2P4L7k83MiVgJm+9ijt79kY2vYP1xfc=",
+      "size": 726
+    },
+    {
+      "type": "file",
+      "name": "find.d.ts",
+      "hash": "pnvypI9UlFlmFC/HEOemsr9P0LpvNLOdDHcxgWjReuI=",
+      "size": 1381
+    },
+    {
+      "type": "file",
+      "name": "find.js",
+      "hash": "4gQt2eiJdVuSz8qXxpVa7fSZ4my86ppZE559Axg1ZBA=",
+      "size": 2091
+    },
+    {
+      "type": "file",
+      "name": "find.mjs",
+      "hash": "lvJ7HCj4b9ulEfJmIu0emj6pPI/n3YsIKU6s/O2x1Zk=",
+      "size": 2033
+    },
+    {
+      "type": "file",
+      "name": "license",
+      "hash": "mp7a17quUmIr3fPBWy74oz0sifLSVAitE+inSBxrDJc=",
+      "size": 1104
+    },
+    {
+      "type": "file",
+      "name": "package.d.ts",
+      "hash": "JsRlIyi79zNkf8ANVGzKc3gREEhag4EuUipOTxyTHUI=",
+      "size": 1004
+    },
+    {
+      "type": "file",
+      "name": "package.js",
+      "hash": "+w109RqMZ0fjqw4X/RHR+yJCD0tb5NB/QBFcMOHPX9s=",
+      "size": 1696
+    },
+    {
+      "type": "file",
+      "name": "package.json",
+      "hash": "7qOfQHA0O99rY/ZP/hrK6E9yYxMNXbODNS9Sqjb/oVY=",
+      "size": 997
+    },
+    {
+      "type": "file",
+      "name": "package.mjs",
+      "hash": "ZHkKNK56yB982/jqiLzBxBX5/9oHD5J0Nzg/3OpmXAk=",
+      "size": 1650
+    },
+    {
+      "type": "file",
+      "name": "readme.md",
+      "hash": "gDnGtevykzLCMhqswkdNy0dc07Qa92MY2qvCeJ1MwEE=",
+      "size": 2336
+    },
+    {
+      "type": "file",
+      "name": "resolve.d.ts",
+      "hash": "ektazhZ/Xm9pQygPANVhSsn0DJ7TjBBPrORhvsAFLVE=",
+      "size": 1198
+    },
+    {
+      "type": "file",
+      "name": "resolve.js",
+      "hash": "pvj0JULeAbxLjvdmYSR6H/TL4QR+xwbwXBc2kwd7gCs=",
+      "size": 1034
+    },
+    {
+      "type": "file",
+      "name": "resolve.mjs",
+      "hash": "qGhTjwjoVA0gs8GDGeu3vEN614gN3NfyUAGFTClz61g=",
+      "size": 971
+    },
+    {
+      "type": "file",
+      "name": "walk.d.ts",
+      "hash": "lQsJOYxJZxLobTYn5gRgJJpxoBx42ABi/hLS30rTCQQ=",
+      "size": 482
+    },
+    {
+      "type": "file",
+      "name": "walk.js",
+      "hash": "O3GSAQ7+J1ETKRIf2d1gB6/r8ef1Ap6z0pHB3s7dN7s=",
+      "size": 555
+    },
+    {
+      "type": "file",
+      "name": "walk.mjs",
+      "hash": "d4kE/ieohzkyhmxdH1nAT2O4sR/BA4EUCFFBXJTvx2w=",
+      "size": 535
+    }
+  ],
+  "links": {
+    "stats": "https://data.jsdelivr.com/v1/stats/packages/npm/empathic@2.0.0",
+    "entrypoints": "https://data.jsdelivr.com/v1/packages/npm/empathic@2.0.0/entrypoints"
+  }
+}

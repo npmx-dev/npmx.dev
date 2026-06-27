@@ -2,6 +2,7 @@ import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import type { DOMWrapper } from '@vue/test-utils'
 import PackageVersions from '~/components/Package/Versions.vue'
+import { packageVersionsRoute } from '~/utils/router'
 
 // Mock the fetchAllPackageVersions function
 const mockFetchAllPackageVersions = vi.fn()
@@ -23,7 +24,9 @@ function createVersion(
     version,
     deprecated: options.deprecated,
     tags: undefined,
-    ...(options.hasProvenance ? { hasProvenance: true } : {}),
+    ...(options.hasProvenance
+      ? { trustStatus: { provenance: true, trustedPublisher: false, stagedPublish: false } }
+      : {}),
   } as SlimVersion
 }
 
@@ -35,8 +38,15 @@ function isVersionLink(a: DOMWrapper<Element>): boolean {
   return (
     !a.attributes('href')?.startsWith('#') &&
     a.attributes('target') !== '_blank' &&
-    !a.attributes('data-testid')?.includes('view-all-versions')
+    !a.attributes('data-testid')?.includes('view-distribution-link') &&
+    !a.attributes('data-testid')?.includes('view-all-versions-link')
   )
+}
+
+function getRouter(
+  component: Awaited<ReturnType<typeof mountSuspended>>,
+): Pick<typeof component.vm.$router, 'resolve'> {
+  return component.vm.$router
 }
 
 describe('PackageVersions', () => {
@@ -107,6 +117,42 @@ describe('PackageVersions', () => {
       const versionLinks = component.findAll('a').filter(isVersionLink)
       expect(versionLinks.length).toBeGreaterThan(0)
       expect(versionLinks[0]?.text()).toBe('1.0.0')
+    })
+
+    it('view-all-versions link uses packageVersionsRoute for unscoped packages', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      const router = getRouter(component)
+      const expectedHref = router.resolve(packageVersionsRoute('test-package')).href
+      const viewAll = component.find('[data-testid="view-all-versions-link"]')
+      expect(viewAll.attributes('href')).toBe(expectedHref)
+    })
+
+    it('view-all-versions link uses packageVersionsRoute for scoped packages', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: '@scope/test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      const router = getRouter(component)
+      const expectedHref = router.resolve(packageVersionsRoute('@scope/test-package')).href
+      const viewAll = component.find('[data-testid="view-all-versions-link"]')
+      expect(viewAll.attributes('href')).toBe(expectedHref)
     })
 
     it('highlights the current version row when selectedVersion prop matches', async () => {
@@ -399,8 +445,16 @@ describe('PackageVersions', () => {
 
     it('loads versions and toggles expanded state on click', async () => {
       mockFetchAllPackageVersions.mockResolvedValue([
-        { version: '1.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
-        { version: '0.9.0', time: '2024-01-10T12:00:00.000Z', hasProvenance: false },
+        {
+          version: '1.0.0',
+          time: '2024-01-15T12:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '0.9.0',
+          time: '2024-01-10T12:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
       ])
 
       const component = await mountSuspended(PackageVersions, {
@@ -426,9 +480,21 @@ describe('PackageVersions', () => {
     it('collapses when clicking expanded row', async () => {
       // Return multiple versions so the expand button stays visible after loading
       mockFetchAllPackageVersions.mockResolvedValue([
-        { version: '1.2.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
-        { version: '1.1.0', time: '2024-01-12T12:00:00.000Z', hasProvenance: false },
-        { version: '1.0.0', time: '2024-01-10T12:00:00.000Z', hasProvenance: false },
+        {
+          version: '1.2.0',
+          time: '2024-01-15T12:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '1.1.0',
+          time: '2024-01-12T12:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '1.0.0',
+          time: '2024-01-10T12:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
       ])
 
       const component = await mountSuspended(PackageVersions, {
@@ -523,8 +589,16 @@ describe('PackageVersions', () => {
 
     it('expands other versions section on click', async () => {
       mockFetchAllPackageVersions.mockResolvedValue([
-        { version: '1.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
-        { version: '0.5.0', time: '2024-01-01T12:00:00.000Z', hasProvenance: false },
+        {
+          version: '1.0.0',
+          time: '2024-01-15T12:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '0.5.0',
+          time: '2024-01-01T12:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
       ])
 
       const component = await mountSuspended(PackageVersions, {
@@ -554,7 +628,11 @@ describe('PackageVersions', () => {
 
     it('collapses other versions section when clicking again', async () => {
       mockFetchAllPackageVersions.mockResolvedValue([
-        { version: '1.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
+        {
+          version: '1.0.0',
+          time: '2024-01-15T12:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
       ])
 
       const component = await mountSuspended(PackageVersions, {
@@ -619,10 +697,26 @@ describe('PackageVersions', () => {
   describe('major version groups', () => {
     it('groups unclaimed versions by major version in other versions', async () => {
       mockFetchAllPackageVersions.mockResolvedValue([
-        { version: '2.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
-        { version: '1.1.0', time: '2024-01-10T12:00:00.000Z', hasProvenance: false },
-        { version: '1.0.0', time: '2024-01-05T12:00:00.000Z', hasProvenance: false },
-        { version: '0.9.0', time: '2024-01-01T12:00:00.000Z', hasProvenance: false },
+        {
+          version: '2.0.0',
+          time: '2024-01-15T12:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '1.1.0',
+          time: '2024-01-10T12:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '1.0.0',
+          time: '2024-01-05T12:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '0.9.0',
+          time: '2024-01-01T12:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
       ])
 
       const component = await mountSuspended(PackageVersions, {
@@ -651,9 +745,21 @@ describe('PackageVersions', () => {
 
     it('allows expanding major version groups', async () => {
       mockFetchAllPackageVersions.mockResolvedValue([
-        { version: '2.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
-        { version: '1.1.0', time: '2024-01-10T12:00:00.000Z', hasProvenance: false },
-        { version: '1.0.0', time: '2024-01-05T12:00:00.000Z', hasProvenance: false },
+        {
+          version: '2.0.0',
+          time: '2024-01-15T12:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '1.1.0',
+          time: '2024-01-10T12:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '1.0.0',
+          time: '2024-01-05T12:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
       ])
 
       const component = await mountSuspended(PackageVersions, {
@@ -683,8 +789,16 @@ describe('PackageVersions', () => {
 
     it('shows DateTime for major group versions', async () => {
       mockFetchAllPackageVersions.mockResolvedValue([
-        { version: '2.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
-        { version: '1.1.0', time: '2024-01-10T12:00:00.000Z', hasProvenance: false },
+        {
+          version: '2.0.0',
+          time: '2024-01-15T12:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '1.1.0',
+          time: '2024-01-10T12:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
       ])
 
       const component = await mountSuspended(PackageVersions, {
@@ -714,8 +828,16 @@ describe('PackageVersions', () => {
 
     it('shows ProvenanceBadge for major group versions with provenance', async () => {
       mockFetchAllPackageVersions.mockResolvedValue([
-        { version: '2.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: true },
-        { version: '1.1.0', time: '2024-01-10T12:00:00.000Z', hasProvenance: true },
+        {
+          version: '2.0.0',
+          time: '2024-01-15T12:00:00.000Z',
+          trustStatus: { provenance: true, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '1.1.0',
+          time: '2024-01-10T12:00:00.000Z',
+          trustStatus: { provenance: true, trustedPublisher: false, stagedPublish: false },
+        },
       ])
 
       const component = await mountSuspended(PackageVersions, {
@@ -745,9 +867,21 @@ describe('PackageVersions', () => {
 
     it('renders major group header as clickable link', async () => {
       mockFetchAllPackageVersions.mockResolvedValue([
-        { version: '2.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
-        { version: '1.1.0', time: '2024-01-10T12:00:00.000Z', hasProvenance: false },
-        { version: '1.0.0', time: '2024-01-05T12:00:00.000Z', hasProvenance: false },
+        {
+          version: '2.0.0',
+          time: '2024-01-15T12:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '1.1.0',
+          time: '2024-01-10T12:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '1.0.0',
+          time: '2024-01-05T12:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
       ])
 
       const component = await mountSuspended(PackageVersions, {
@@ -778,8 +912,16 @@ describe('PackageVersions', () => {
 
     it('shows DateTime and ProvenanceBadge for single version in major group', async () => {
       mockFetchAllPackageVersions.mockResolvedValue([
-        { version: '2.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
-        { version: '1.0.0', time: '2024-01-05T12:00:00.000Z', hasProvenance: true },
+        {
+          version: '2.0.0',
+          time: '2024-01-15T12:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '1.0.0',
+          time: '2024-01-05T12:00:00.000Z',
+          trustStatus: { provenance: true, trustedPublisher: false, stagedPublish: false },
+        },
       ])
 
       const component = await mountSuspended(PackageVersions, {
@@ -815,11 +957,8 @@ describe('PackageVersions', () => {
   describe('loading states', () => {
     it('shows loading spinner when fetching versions', async () => {
       // Create a promise that won't resolve immediately
-      let resolvePromise: (value: unknown[]) => void
-      const loadingPromise = new Promise<unknown[]>(resolve => {
-        resolvePromise = resolve
-      })
-      mockFetchAllPackageVersions.mockReturnValue(loadingPromise)
+      const { promise, resolve } = Promise.withResolvers<unknown[]>()
+      mockFetchAllPackageVersions.mockReturnValue(promise)
 
       const component = await mountSuspended(PackageVersions, {
         props: {
@@ -842,14 +981,12 @@ describe('PackageVersions', () => {
       })
 
       // Resolve the promise to clean up
-      resolvePromise!([])
+      resolve([])
     })
 
     it('shows loading spinner for other versions when fetching', async () => {
-      let resolvePromise: (value: unknown[]) => void
-      const loadingPromise = new Promise<unknown[]>(resolve => {
-        resolvePromise = resolve
-      })
+      const { promise: loadingPromise, resolve: resolvePromise } =
+        Promise.withResolvers<unknown[]>()
       mockFetchAllPackageVersions.mockReturnValue(loadingPromise)
 
       const component = await mountSuspended(PackageVersions, {
@@ -876,7 +1013,7 @@ describe('PackageVersions', () => {
       })
 
       // Resolve the promise to clean up
-      resolvePromise!([])
+      resolvePromise([])
     })
   })
 
@@ -1090,10 +1227,26 @@ describe('PackageVersions', () => {
 
     it('filters expanded tag child versions', async () => {
       mockFetchAllPackageVersions.mockResolvedValue([
-        { version: '3.0.0', time: '2024-04-01T00:00:00.000Z', hasProvenance: false },
-        { version: '2.1.0', time: '2024-03-01T00:00:00.000Z', hasProvenance: false },
-        { version: '2.0.0', time: '2024-02-01T00:00:00.000Z', hasProvenance: false },
-        { version: '1.0.0', time: '2024-01-01T00:00:00.000Z', hasProvenance: false },
+        {
+          version: '3.0.0',
+          time: '2024-04-01T00:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '2.1.0',
+          time: '2024-03-01T00:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '2.0.0',
+          time: '2024-02-01T00:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '1.0.0',
+          time: '2024-01-01T00:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
       ])
 
       const component = await mountSuspended(PackageVersions, { props: multiVersionProps })
@@ -1123,11 +1276,31 @@ describe('PackageVersions', () => {
 
     it('loads all versions when a valid semver filter is entered', async () => {
       mockFetchAllPackageVersions.mockResolvedValue([
-        { version: '3.5.0', time: '2024-04-01T00:00:00.000Z', hasProvenance: false },
-        { version: '3.4.0', time: '2024-03-01T00:00:00.000Z', hasProvenance: false },
-        { version: '3.3.0', time: '2024-02-01T00:00:00.000Z', hasProvenance: false },
-        { version: '2.0.0', time: '2024-01-15T00:00:00.000Z', hasProvenance: false },
-        { version: '1.0.0', time: '2024-01-01T00:00:00.000Z', hasProvenance: false },
+        {
+          version: '3.5.0',
+          time: '2024-04-01T00:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '3.4.0',
+          time: '2024-03-01T00:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '3.3.0',
+          time: '2024-02-01T00:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '2.0.0',
+          time: '2024-01-15T00:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '1.0.0',
+          time: '2024-01-01T00:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
       ])
 
       // Only provide latest in props (simulating initial SSR payload)
@@ -1180,9 +1353,21 @@ describe('PackageVersions', () => {
 
     it('only fetches versions once across multiple filter changes', async () => {
       mockFetchAllPackageVersions.mockResolvedValue([
-        { version: '3.0.0', time: '2024-04-01T00:00:00.000Z', hasProvenance: false },
-        { version: '2.0.0', time: '2024-02-01T00:00:00.000Z', hasProvenance: false },
-        { version: '1.0.0', time: '2024-01-01T00:00:00.000Z', hasProvenance: false },
+        {
+          version: '3.0.0',
+          time: '2024-04-01T00:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '2.0.0',
+          time: '2024-02-01T00:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '1.0.0',
+          time: '2024-01-01T00:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
       ])
 
       const component = await mountSuspended(PackageVersions, {
@@ -1214,11 +1399,31 @@ describe('PackageVersions', () => {
 
     it('filters other major version groups', async () => {
       mockFetchAllPackageVersions.mockResolvedValue([
-        { version: '3.0.0', time: '2024-04-01T00:00:00.000Z', hasProvenance: false },
-        { version: '2.1.0', time: '2024-03-01T00:00:00.000Z', hasProvenance: false },
-        { version: '2.0.0', time: '2024-02-01T00:00:00.000Z', hasProvenance: false },
-        { version: '1.0.0', time: '2024-01-01T00:00:00.000Z', hasProvenance: false },
-        { version: '0.5.0', time: '2023-06-01T00:00:00.000Z', hasProvenance: false },
+        {
+          version: '3.0.0',
+          time: '2024-04-01T00:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '2.1.0',
+          time: '2024-03-01T00:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '2.0.0',
+          time: '2024-02-01T00:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '1.0.0',
+          time: '2024-01-01T00:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '0.5.0',
+          time: '2023-06-01T00:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
       ])
 
       const component = await mountSuspended(PackageVersions, { props: multiVersionProps })
@@ -1242,6 +1447,21 @@ describe('PackageVersions', () => {
         const text = component.text()
         expect(text).not.toContain('0.5.0')
       })
+    })
+
+    it('does not show latest tag when it does not match the filter', async () => {
+      const component = await mountSuspended(PackageVersions, { props: multiVersionProps })
+
+      const input = component.find('input[type="text"]')
+      await input.setValue('^1.0.0 <2.0.0')
+
+      const versionLinks = component.findAll('a').filter(isVersionLink)
+      const versions = versionLinks.map(l => l.text())
+
+      // 3.0.0 is latest but does NOT match the filter
+      expect(versions).not.toContain('3.0.0')
+      // 1.0.0 does match
+      expect(versions).toContain('1.0.0')
     })
   })
 
@@ -1278,8 +1498,16 @@ describe('PackageVersions', () => {
   describe('caching behavior', () => {
     it('only fetches versions once when expanding multiple tags', async () => {
       mockFetchAllPackageVersions.mockResolvedValue([
-        { version: '2.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
-        { version: '1.0.0', time: '2024-01-10T12:00:00.000Z', hasProvenance: false },
+        {
+          version: '2.0.0',
+          time: '2024-01-15T12:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '1.0.0',
+          time: '2024-01-10T12:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
       ])
 
       const component = await mountSuspended(PackageVersions, {

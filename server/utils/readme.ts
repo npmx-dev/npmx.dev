@@ -5,10 +5,9 @@ import { marked } from 'marked'
 import sanitizeHtml from 'sanitize-html'
 import { hasProtocol } from 'ufo'
 import { convertBlobOrFileToRawUrl, type RepositoryInfo } from '#shared/utils/git-providers'
-import { decodeHtmlEntities, stripHtmlTags } from '#shared/utils/html'
+import { decodeHtmlEntities, stripHtmlTags, slugify } from '#shared/utils/html'
 import { convertToEmoji } from '#shared/utils/emoji'
 import { toProxiedImageUrl } from '#server/utils/image-proxy'
-
 import { highlightCodeSync } from './shiki'
 import { escapeHtml } from './docs/text'
 
@@ -142,7 +141,7 @@ function matchPlaygroundProvider(url: string): PlaygroundProvider | null {
 
 // allow h1-h6, but replace h1-h2 later since we shift README headings down by 2 levels
 // (page h1 = package name, h2 = "Readme" section, so README h1 → h3)
-const ALLOWED_TAGS = [
+export const ALLOWED_TAGS = [
   'h1',
   'h2',
   'h3',
@@ -181,9 +180,12 @@ const ALLOWED_TAGS = [
   'kbd',
   'mark',
   'button',
+  'dl',
+  'dt',
+  'dd',
 ]
 
-const ALLOWED_ATTR: Record<string, string[]> = {
+export const ALLOWED_ATTR: Record<string, string[]> = {
   '*': ['id'], // Allow id on all tags
   'a': ['href', 'title', 'target', 'rel'],
   'img': ['src', 'alt', 'title', 'width', 'height', 'align'],
@@ -198,28 +200,10 @@ const ALLOWED_ATTR: Record<string, string[]> = {
   'blockquote': ['data-callout'],
   'details': ['open'],
   'code': ['class'],
-  'pre': ['class', 'style'],
+  'pre': ['class'],
   'span': ['class', 'style'],
-  'div': ['class', 'style', 'align'],
+  'div': ['class', 'align'],
   'p': ['align'],
-}
-
-/**
- * Generate a GitHub-style slug from heading text.
- * - Convert to lowercase
- * - Remove HTML tags
- * - Replace spaces with hyphens
- * - Remove special characters (keep alphanumeric, hyphens, underscores)
- * - Collapse multiple hyphens
- */
-function slugify(text: string): string {
-  return decodeHtmlEntities(stripHtmlTags(text))
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, '-') // Spaces to hyphens
-    .replace(/[^\w\u4e00-\u9fff\u3040-\u309f\u30a0-\u30ff-]/g, '') // Keep alphanumeric, CJK, hyphens
-    .replace(/-+/g, '-') // Collapse multiple hyphens
-    .replace(/^-|-$/g, '') // Trim leading/trailing hyphens
 }
 
 function getHeadingPlainText(text: string): string {
@@ -298,6 +282,14 @@ function toUserContentHash(value: string): string {
   return `#${withUserContentPrefix(value)}`
 }
 
+function decodeHashFragment(value: string): string {
+  try {
+    return decodeURIComponent(value)
+  } catch {
+    return value
+  }
+}
+
 function normalizePreservedAnchorAttrs(attrs: string): string {
   const cleanedAttrs = attrs
     .replace(/\s+href\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '')
@@ -308,7 +300,7 @@ function normalizePreservedAnchorAttrs(attrs: string): string {
   return cleanedAttrs ? ` ${cleanedAttrs}` : ''
 }
 
-const isNpmJsUrlThatCanBeRedirected = (url: URL) => {
+export const isNpmJsUrlThatCanBeRedirected = (url: URL) => {
   if (!npmJsHosts.has(url.host)) {
     return false
   }
@@ -333,8 +325,18 @@ function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo)
   if (!url) return url
   if (url.startsWith('#')) {
     // Prefix anchor links to match heading IDs (avoids collision with page IDs)
-    // Idempotent: don't double-prefix if already prefixed
-    return toUserContentHash(url.slice(1))
+    // Normalize markdown-style heading fragments to the same slug format used
+    // for generated README heading IDs, but leave already-prefixed values as-is.
+    const fragment = url.slice(1)
+    if (!fragment) {
+      return '#'
+    }
+    if (fragment.startsWith(USER_CONTENT_PREFIX)) {
+      return `#${fragment}`
+    }
+
+    const normalizedFragment = slugify(decodeHashFragment(fragment))
+    return toUserContentHash(normalizedFragment || fragment)
   }
   // Absolute paths (e.g. /package/foo from a previous npmjs redirect) are already resolved
   if (url.startsWith('/')) return url
@@ -425,7 +427,8 @@ function resolveImageUrl(url: string, packageName: string, repoInfo?: Repository
 }
 
 // Helper to prefix id attributes with 'user-content-'
-function prefixId(tagName: string, attribs: sanitizeHtml.Attributes) {
+
+export function prefixId(tagName: string, attribs: sanitizeHtml.Attributes) {
   if (attribs.id) {
     attribs.id = withUserContentPrefix(attribs.id)
   }
@@ -435,7 +438,7 @@ function prefixId(tagName: string, attribs: sanitizeHtml.Attributes) {
 // README h1 always becomes h3
 // For deeper levels, ensure sequential order
 // Don't allow jumping more than 1 level deeper than previous
-function calculateSemanticDepth(depth: number, lastSemanticLevel: number) {
+export function calculateSemanticDepth(depth: number, lastSemanticLevel: number) {
   if (depth === 1) return 3
   const maxAllowed = Math.min(lastSemanticLevel + 1, 6)
   return Math.min(depth + 2, maxAllowed)
@@ -456,6 +459,17 @@ function renderFrontmatterTable(data: Record<string, unknown>): string {
     })
     .join('\n')
   return `<table><thead><tr><th>Key</th><th>Value</th></tr></thead><tbody>\n${rows}\n</tbody></table>\n`
+}
+
+// Extract and preserve allowed attributes from HTML heading tags
+function extractHeadingAttrs(attrsString: string): string {
+  if (!attrsString) return ''
+  const preserved: string[] = []
+  const alignMatch = /\balign=(["']?)([^"'\s>]+)\1/i.exec(attrsString)
+  if (alignMatch?.[2]) {
+    preserved.push(`align="${alignMatch[2]}"`)
+  }
+  return preserved.length > 0 ? ` ${preserved.join(' ')}` : ''
 }
 
 export async function renderReadmeHtml(
@@ -520,25 +534,26 @@ export async function renderReadmeHtml(
       toc.push({ text: plainText, id, depth })
     }
 
+    // The browser doesn't support anchors within anchors and automatically extracts them from each other,
+    // causing a hydration error. To prevent this from happening in such cases, we use the anchor separately
+    if (htmlAnchorRe.test(displayHtml)) {
+      return `<h${semanticLevel} id="${id}" data-level="${depth}"${preservedAttrs}>${displayHtml}<a href="#${id}"></a></h${semanticLevel}>\n`
+    }
+
     return `<h${semanticLevel} id="${id}" data-level="${depth}"${preservedAttrs}><a href="#${id}">${displayHtml}</a></h${semanticLevel}>\n`
   }
 
+  const anchorTokenRegex = /^<a(?:\s.+)?\/?>$/
   renderer.heading = function ({ tokens, depth }: Tokens.Heading) {
-    const displayHtml = this.parser.parseInline(tokens)
+    const isAnchorHeading =
+      anchorTokenRegex.test(tokens[0]?.raw ?? '') && tokens[tokens.length - 1]?.raw === '</a>'
+
+    // for anchor headings, we will ignore user-added id and add our own
+    const tokensWithoutAnchor = isAnchorHeading ? tokens.slice(1, -1) : tokens
+    const displayHtml = this.parser.parseInline(tokensWithoutAnchor)
     const plainText = getHeadingPlainText(displayHtml)
     const slugSource = getHeadingSlugSource(displayHtml)
     return processHeading(depth, displayHtml, plainText, slugSource)
-  }
-
-  // Extract and preserve allowed attributes from HTML heading tags
-  function extractHeadingAttrs(attrsString: string): string {
-    if (!attrsString) return ''
-    const preserved: string[] = []
-    const alignMatch = /\balign=(["']?)([^"'\s>]+)\1/i.exec(attrsString)
-    if (alignMatch?.[2]) {
-      preserved.push(`align="${alignMatch[2]}"`)
-    }
-    return preserved.length > 0 ? ` ${preserved.join(' ')}` : ''
   }
 
   // Intercept HTML headings so they get id, TOC entry, and correct semantic level.
@@ -579,8 +594,8 @@ ${html}
   // Resolve image URLs (with GitHub blob → raw conversion)
   renderer.image = ({ href, title, text }: Tokens.Image) => {
     const resolvedHref = resolveImageUrl(href, packageName, repoInfo)
-    const titleAttr = title ? ` title="${title}"` : ''
-    const altAttr = text ? ` alt="${text}"` : ''
+    const titleAttr = title ? ` title="${escapeHtml(title)}"` : ''
+    const altAttr = text ? ` alt="${escapeHtml(text)}"` : ''
     return `<img src="${resolvedHref}"${altAttr}${titleAttr}>`
   }
 
@@ -625,6 +640,8 @@ ${html}
 
     const { resolvedHref, extraAttrs } = processLink(href, plainText || title || '')
 
+    if (!resolvedHref) return text
+
     return `<a href="${resolvedHref}"${titleAttr}${extraAttrs}>${text}</a>`
   }
 
@@ -655,6 +672,13 @@ ${html}
     allowedTags: ALLOWED_TAGS,
     allowedAttributes: ALLOWED_ATTR,
     allowedSchemes: ['http', 'https', 'mailto'],
+    // disallow styles other than the ones shiki emits
+    allowedStyles: {
+      span: {
+        'color': [/^#[0-9a-f]{3,8}$/i],
+        '--shiki-light': [/^#[0-9a-f]{3,8}$/i],
+      },
+    },
     // Transform img src URLs (GitHub blob → raw, relative → GitHub raw)
     transformTags: {
       // Headings are already processed to correct semantic levels by processHeading()

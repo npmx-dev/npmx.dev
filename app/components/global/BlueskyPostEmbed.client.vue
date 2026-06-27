@@ -26,11 +26,25 @@ interface EmbedImage {
   aspectRatio?: { width: number; height: number }
 }
 
+interface EmbedExternal {
+  description?: string
+  thumb?: string
+  title?: string
+  uri: string
+}
+
 interface BlueskyPost {
   uri: string
   author: PostAuthor
   record: { text: string; createdAt: string }
-  embed?: { $type: string; images?: EmbedImage[] }
+  embed?: {
+    $type: string
+    images?: EmbedImage[]
+    external?: EmbedExternal
+    thumbnail?: string
+    playlist?: string
+    aspectRatio?: { width: number; height: number }
+  }
   likeCount?: number
   replyCount?: number
   repostCount?: number
@@ -102,18 +116,20 @@ const postUrl = computed(() => {
     <span class="i-svg-spinners:90-ring-with-bg h-5 w-5 inline-block" />
   </div>
 
-  <a
-    v-else-if="post"
-    :href="postUrl ?? '#'"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="not-prose block rounded-lg border border-border bg-bg-subtle p-4 sm:p-5 no-underline hover:border-border-hover transition-colors duration-200 relative group"
-  >
-    <!-- Bluesky icon -->
-    <span
-      class="i-simple-icons:bluesky w-5 h-5 text-fg-subtle group-hover:text-blue-500 absolute top-4 end-4 sm:top-5 sm:end-5"
-      aria-hidden="true"
-    />
+  <div class="not-prose relative bg-bg-subtle p-4 sm:p-5 my-4 sm:my-5" v-else-if="post">
+    <a
+      :href="postUrl ?? '#'"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="before:(absolute content-[''] inset-0 hover:border-border-hover border border-border transition-colors duration-200 rounded-lg) block no-underline group"
+      :title="$t('blog.atproto.view_on_bluesky')"
+    >
+      <!-- Bluesky icon -->
+      <span
+        class="i-simple-icons:bluesky w-5 h-5 text-fg-subtle group-hover:text-blue-500 absolute top-4 end-4 sm:top-5 sm:end-5"
+        aria-hidden="true"
+      />
+    </a>
 
     <!-- Author row -->
     <div class="flex items-center gap-3 mb-3 pe-7">
@@ -154,6 +170,48 @@ const postUrl = computed(() => {
       />
     </template>
 
+    <!-- Embedded external embed -->
+    <template v-if="post.embed?.external && post.embed.external.uri">
+      <a
+        :href="post.embed.external.uri"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="relative block mb-3 p-0.5 bg-bg-muted hover:bg-bg-elevated rounded-lg z-10 duration-300 transition-colors"
+      >
+        <img
+          v-if="post.embed.external.thumb"
+          :src="post.embed.external.thumb"
+          alt=""
+          class="w-full rounded-lg object-cover"
+          loading="lazy"
+        />
+        <div class="text-fg-muted text-sm p-2">
+          <p class="font-medium truncate">
+            {{ post.embed.external.title || post.embed.external.uri }}
+          </p>
+          <p v-if="post.embed.external.description" class="text-sm line-clamp-2 mt-1">
+            {{ post.embed.external.description }}
+          </p>
+        </div>
+      </a>
+    </template>
+
+    <!-- Embedded video -->
+    <template v-if="post.embed?.playlist">
+      <div class="relative block mb-3 p-0.5 bg-bg-muted rounded-lg">
+        <VideoPlayer
+          :poster="post.embed.thumbnail"
+          playsInline
+          controls
+          preload="none"
+          :src="post.embed.playlist"
+          muted
+          loop
+          class="block max-h-150 object-contain w-full rounded-lg"
+        />
+      </div>
+    </template>
+
     <!-- Timestamp + engagement -->
     <div class="flex items-center gap-4 text-sm text-fg-subtle">
       <DateTime :datetime="post.record.createdAt" date-style="medium" />
@@ -170,5 +228,5 @@ const postUrl = computed(() => {
         {{ post.replyCount }}
       </span>
     </div>
-  </a>
+  </div>
 </template>

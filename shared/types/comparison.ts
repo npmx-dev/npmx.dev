@@ -17,6 +17,10 @@ export type ComparisonFacet =
   | 'totalDependencies'
   | 'deprecated'
   | 'totalLikes'
+  | 'githubStars'
+  | 'githubForks'
+  | 'githubIssues'
+  | 'createdAt'
 
 /** Facet metadata for UI display */
 export interface FacetInfo {
@@ -54,6 +58,18 @@ export const FACET_INFO: Record<ComparisonFacet, Omit<FacetInfo, 'id'>> = {
     category: 'health',
   },
   deprecated: {
+    category: 'health',
+  },
+  githubStars: {
+    category: 'health',
+  },
+  githubForks: {
+    category: 'health',
+  },
+  githubIssues: {
+    category: 'health',
+  },
+  createdAt: {
     category: 'health',
   },
   // Compatibility

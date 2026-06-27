@@ -5,10 +5,10 @@ export const BaseStyles = html`
     :root {
       /** Fonts */
       --ln-font-fallback:
-        -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji,
-        Segoe UI Emoji;
-      --ln-font-body: 'Geist', var(--ln-font-fallback);
-      --ln-font-mono: 'Geist Mono', monospace;
+        -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif,
+        Apple Color Emoji, Segoe UI Emoji;
+      --ln-font-body: 'Geist', 'IBM Plex Sans Arabic', var(--ln-font-fallback);
+      --ln-font-mono: 'Geist Mono', 'IBM Plex Sans Arabic', monospace;
 
       /* Light theme colors */
       --ln-color-white: #f9fafb;
@@ -39,24 +39,6 @@ export const BaseStyles = html`
       --ln-color-table-background: var(--ln-color-gray-1);
 
       --progress-bar-height: 16px;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        /* Dark theme colors */
-        --ln-color-white: #030712;
-        --ln-color-gray-1: #374151;
-        --ln-color-gray-2: #4b5563;
-        --ln-color-gray-3: #6b7280;
-        --ln-color-gray-4: #9ca3af;
-        --ln-color-gray-5: #d1d5db;
-        --ln-color-gray-6: #e5e7eb;
-        --ln-color-gray-7: #f3f4f6;
-        --ln-color-black: #f9fafb;
-        --ln-color-blue: #60a5fa;
-        --ln-color-orange: #fb923c;
-        --ln-color-purple: #c084fc;
-      }
     }
 
     * {
@@ -190,7 +172,7 @@ export const BaseStyles = html`
       margin-left: 1rem;
     }
 
-    /* Progress deatils per locale */
+    /* Progress details per locale */
     .progress-details {
       border: 1px solid var(--ln-color-gray-6);
       margin-bottom: 1.25rem;

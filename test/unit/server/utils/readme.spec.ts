@@ -293,6 +293,13 @@ describe('Markdown File URL Resolution', () => {
 
       expect(result.html).toContain('href="#user-content-installation"')
     })
+
+    it('normalizes mixed-case heading fragments to lowercase slugs', async () => {
+      const markdown = `[Associations section](#Associations)`
+      const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+      expect(result.html).toContain('href="#user-content-associations"')
+    })
   })
 
   describe('different git providers', () => {
@@ -582,6 +589,40 @@ describe('HTML output', () => {
     const result = await renderReadmeHtml(md, 'test-pkg')
     expect(result.html).toContain('id="user-content-api"')
     expect(result.html).toContain('id="user-content-api-1"')
+  })
+
+  describe('heading anchors (renderer.heading)', () => {
+    it('strips a full-line anchor wrapper and uses inner text for slug, toc, and permalink', async () => {
+      const markdown = '## <a href="https://example.com">My Section</a>'
+      const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+      expect(result.toc).toEqual([{ text: 'My Section', depth: 2, id: 'user-content-my-section' }])
+      expect(result.html).toBe(
+        `<h3 id="user-content-my-section" data-level="2"><a href="#user-content-my-section">My Section</a></h3>\n`,
+      )
+    })
+
+    it('uses a trailing empty permalink when heading content already includes a link (no nested anchors)', async () => {
+      const markdown = '### See <a href="https://example.com">docs</a> for more'
+      const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+      expect(result.toc).toEqual([
+        { text: 'See docs for more', depth: 3, id: 'user-content-see-docs-for-more' },
+      ])
+      expect(result.html).toBe(
+        `<h3 id="user-content-see-docs-for-more" data-level="3">See <a href="https://example.com" rel="nofollow noreferrer noopener" target="_blank">docs</a> for more<a href="#user-content-see-docs-for-more"></a></h3>\n`,
+      )
+    })
+
+    it('applies the same permalink pattern to raw HTML headings that contain links', async () => {
+      const md = '<h2>Guide: <a href="https://example.com/page">page</a></h2>'
+      const result = await renderReadmeHtml(md, 'test-pkg')
+
+      expect(result.toc).toEqual([{ text: 'Guide: page', depth: 2, id: 'user-content-guide-page' }])
+      expect(result.html).toBe(
+        '<h3 id="user-content-guide-page" data-level="2">Guide: <a href="https://example.com/page" rel="nofollow noreferrer noopener" target="_blank">page</a><a href="#user-content-guide-page"></a></h3>',
+      )
+    })
   })
 
   it('preserves supported attributes on raw HTML headings', async () => {

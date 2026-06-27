@@ -188,100 +188,39 @@ describe('useMarkdown', () => {
       expect(processed.value).toBe('A library')
     })
 
+    it('strips reference-style linked image badges (regression #2767)', () => {
+      const processed = useMarkdown({
+        text: '[![npm version][npm-v-src]][npm-v-href] [![npm downloads][npm-d-src]][npm-d-href] A library',
+      })
+      expect(processed.value).toBe('A library')
+    })
+
+    it('returns empty when description is only reference-style badges (regression #2767)', () => {
+      const processed = useMarkdown({
+        text: '[![npm version][npm-v-src]][npm-v-href] [![npm downloads][npm-d-src]][npm-d-href]',
+      })
+      expect(processed.value).toBe('')
+    })
+
+    it('strips standalone reference-style images', () => {
+      const processed = useMarkdown({
+        text: '![badge][badge-ref] A library',
+      })
+      expect(processed.value).toBe('A library')
+    })
+
+    it('strips reference link definitions', () => {
+      const processed = useMarkdown({
+        text: 'A library\n\n[npm-v-src]: https://img.shields.io/npm/v/foo.svg\n[npm-v-href]: https://npm.im/foo',
+      })
+      expect(processed.value).toBe('A library')
+    })
+
     it('preserves regular markdown links', () => {
       const processed = useMarkdown({ text: '[documentation](https://docs.example.com) is here' })
       expect(processed.value).toBe(
         '<a href="https://docs.example.com/" rel="nofollow noreferrer noopener" target="_blank">documentation</a> is here',
       )
-    })
-  })
-
-  describe('packageName prop', () => {
-    it('strips package name from the beginning of plain text', () => {
-      const processed = useMarkdown({
-        text: 'my-package - A great library',
-        packageName: 'my-package',
-      })
-      expect(processed.value).toBe('A great library')
-    })
-
-    it('strips package name with colon separator', () => {
-      const processed = useMarkdown({
-        text: 'my-package: A great library',
-        packageName: 'my-package',
-      })
-      expect(processed.value).toBe('A great library')
-    })
-
-    it('strips package name with em dash separator', () => {
-      const processed = useMarkdown({
-        text: 'my-package — A great library',
-        packageName: 'my-package',
-      })
-      expect(processed.value).toBe('A great library')
-    })
-
-    it('strips package name without separator', () => {
-      const processed = useMarkdown({
-        text: 'my-package A great library',
-        packageName: 'my-package',
-      })
-      expect(processed.value).toBe('A great library')
-    })
-
-    it('is case-insensitive', () => {
-      const processed = useMarkdown({
-        text: 'MY-PACKAGE - A great library',
-        packageName: 'my-package',
-      })
-      expect(processed.value).toBe('A great library')
-    })
-
-    it('does not strip package name from middle of text', () => {
-      const processed = useMarkdown({
-        text: 'A great my-package library',
-        packageName: 'my-package',
-      })
-      expect(processed.value).toBe('A great my-package library')
-    })
-
-    it('handles scoped package names', () => {
-      const processed = useMarkdown({
-        text: '@org/my-package - A great library',
-        packageName: '@org/my-package',
-      })
-      expect(processed.value).toBe('A great library')
-    })
-
-    it('handles package names with special regex characters', () => {
-      const processed = useMarkdown({
-        text: 'pkg.name+test - A great library',
-        packageName: 'pkg.name+test',
-      })
-      expect(processed.value).toBe('A great library')
-    })
-
-    it('strips package name from HTML-containing descriptions', () => {
-      const processed = useMarkdown({
-        text: '<b>my-package</b> - A great library',
-        packageName: 'my-package',
-      })
-      expect(processed.value).toBe('A great library')
-    })
-
-    it('strips package name from descriptions with markdown images', () => {
-      const processed = useMarkdown({
-        text: '![badge](https://badge.svg) my-package - A great library',
-        packageName: 'my-package',
-      })
-      expect(processed.value).toBe('A great library')
-    })
-
-    it('does nothing when packageName is not provided', () => {
-      const processed = useMarkdown({
-        text: 'my-package - A great library',
-      })
-      expect(processed.value).toBe('my-package - A great library')
     })
   })
 

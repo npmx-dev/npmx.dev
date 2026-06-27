@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { LinkBase } from '#components'
 import type { NavigationConfig, NavigationConfigWithGroups } from '~/types'
-import { isEditableElement } from '~/utils/input'
 import { NPMX_DOCS_SITE } from '#shared/utils/constants'
 
-const keyboardShortcuts = useKeyboardShortcuts()
 const discord = useDiscordLink()
+const { open: openCommandPalette } = useCommandPalette()
+const { commandPaletteShortcutLabel } = usePlatformModifierKey()
 
 withDefaults(
   defineProps<{
@@ -91,6 +91,22 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         type: 'link',
         external: false,
         iconClass: 'i-lucide:languages',
+      },
+      {
+        name: 'Brand',
+        label: $t('footer.brand'),
+        to: { name: 'brand' },
+        type: 'link',
+        external: false,
+        iconClass: 'i-lucide:palette',
+      },
+      {
+        name: 'Noodles',
+        label: $t('noodles.title'),
+        to: { name: 'noodles' },
+        type: 'link',
+        external: false,
+        iconClass: 'i-lucide:soup',
       },
     ],
   },
@@ -192,22 +208,10 @@ function handleSearchFocus() {
   showFullSearch.value = true
 }
 
-onKeyStroke(
-  e => {
-    if (!keyboardShortcuts.value || isEditableElement(e.target)) {
-      return
-    }
-
-    for (const link of desktopLinks.value) {
-      if (link.to && link.keyshortcut && isKeyWithoutModifiers(e, link.keyshortcut)) {
-        e.preventDefault()
-        navigateTo(link.to)
-        break
-      }
-    }
-  },
-  { dedupe: true },
-)
+useShortcuts({
+  'c': () => ({ name: 'compare' }),
+  ',': () => ({ name: 'settings' }),
+})
 </script>
 
 <template>
@@ -218,17 +222,18 @@ onKeyStroke(
       class="relative container min-h-14 flex items-center gap-2 z-1 justify-end"
     >
       <!-- Mobile: Logo (navigates home) -->
-      <NuxtLink
-        v-if="!isSearchExpanded && !isOnHomePage"
-        to="/"
-        :aria-label="$t('header.home')"
-        class="sm:hidden flex-shrink-0 font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring me-4"
-      >
-        <AppMark class="w-6 h-auto" />
-      </NuxtLink>
+      <LogoContextMenu v-if="!isSearchExpanded && !isOnHomePage" class="sm:hidden flex-shrink-0">
+        <NuxtLink
+          to="/"
+          :aria-label="$t('header.home')"
+          class="font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring me-4"
+        >
+          <AppMark class="w-6 h-auto" />
+        </NuxtLink>
+      </LogoContextMenu>
 
       <!-- Desktop: Logo (navigates home) -->
-      <div v-if="showLogo" class="hidden sm:flex flex-shrink-0 items-center">
+      <LogoContextMenu v-if="showLogo" class="hidden sm:flex flex-shrink-0 items-center">
         <NuxtLink
           :to="{ name: 'index' }"
           :aria-label="$t('header.home')"
@@ -243,7 +248,7 @@ onKeyStroke(
             {{ env === 'release' ? 'alpha' : env }}
           </span>
         </NuxtLink>
-      </div>
+      </LogoContextMenu>
 
       <NuxtLink
         v-if="showLogo && !isSearchExpanded && prNumber"
@@ -257,6 +262,24 @@ onKeyStroke(
 
       <!-- Spacer when logo is hidden on desktop -->
       <span v-else class="hidden sm:block w-1" />
+
+      <ButtonBase
+        type="button"
+        variant="secondary"
+        class="hidden lg:inline-flex shrink-0 gap-2 ps-2.5 pe-1.25 py-1.25! me-3"
+        :aria-label="$t('shortcuts.command_palette')"
+        :title="$t('shortcuts.command_palette_description', { ctrlKey: $t('shortcuts.ctrl_key') })"
+        @click="openCommandPalette"
+      >
+        <span>{{ $t('command_palette.quick_actions') }}</span>
+        <span class="inline-flex items-center gap-1 text-xs text-fg-subtle">
+          <kbd
+            class="inline-flex items-center justify-center rounded border border-border bg-bg-muted px-1.5 py-0.5 font-mono text-[0.7rem] text-fg-muted"
+          >
+            {{ commandPaletteShortcutLabel }}
+          </kbd>
+        </span>
+      </ButtonBase>
 
       <!-- Center: Search bar + nav items -->
       <div
@@ -293,7 +316,7 @@ onKeyStroke(
       </div>
 
       <!-- End: Desktop nav items + Mobile menu button -->
-      <div class="hidden sm:flex flex-shrink-0">
+      <div class="hidden sm:flex flex-shrink-0 items-center gap-2">
         <!-- Desktop: Explore link -->
         <LinkBase
           v-for="link in desktopLinks"
@@ -312,7 +335,7 @@ onKeyStroke(
       <!-- Mobile: Search button (expands search) -->
       <ButtonBase
         type="button"
-        class="sm:hidden ms-auto"
+        class="sm:hidden ms-auto py-2.5!"
         :aria-label="$t('nav.tap_to_search')"
         :aria-expanded="showMobileMenu"
         @click="expandMobileSearch"
@@ -323,7 +346,7 @@ onKeyStroke(
       <!-- Mobile: Menu button (always visible, click to open menu) -->
       <ButtonBase
         type="button"
-        class="sm:hidden"
+        class="sm:hidden py-2.5!"
         :aria-label="$t('nav.open_menu')"
         :aria-expanded="showMobileMenu"
         @click="showMobileMenu = !showMobileMenu"

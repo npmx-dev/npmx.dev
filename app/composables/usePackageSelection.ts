@@ -1,4 +1,4 @@
-export const MAX_PACKAGE_SELECTION = 4
+export const MAX_PACKAGE_SELECTION = 10
 
 export function usePackageSelection() {
   const selectedPackagesParam = useRouteQuery<string>('selection', '', { mode: 'replace' })
@@ -74,4 +74,22 @@ export function usePackageSelection() {
     closeSelectionView,
     openSelectionView,
   }
+}
+
+const PACKAGE_SELECTION_CONTEXT_KEY = Symbol('packageSelectionContext')
+
+export interface PackageSelectionContext {
+  selectable: Readonly<Ref<boolean>>
+}
+
+export function providePackageSelectionContext(selectable: boolean | Ref<boolean>) {
+  const value = computed(() => (isRef(selectable) ? selectable.value : selectable))
+  provide(PACKAGE_SELECTION_CONTEXT_KEY, { selectable: value })
+}
+
+export function usePackageSelectionContext(): PackageSelectionContext {
+  const context = inject<PackageSelectionContext>(PACKAGE_SELECTION_CONTEXT_KEY, {
+    selectable: computed(() => false),
+  })
+  return context
 }

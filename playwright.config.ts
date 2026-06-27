@@ -1,5 +1,5 @@
 import process from 'node:process'
-import { fileURLToPath } from 'node:url'
+import { join } from 'node:path'
 import { defineConfig, devices } from '@playwright/test'
 import type { ConfigOptions } from '@nuxt/test-utils/playwright'
 
@@ -10,23 +10,25 @@ export default defineConfig<ConfigOptions>({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  reporter: 'html',
+  reporter: process.env.CI
+    ? [['html'], ['junit', { outputFile: 'test-report.junit.xml' }]]
+    : 'html',
   timeout: 120_000,
   webServer: {
     command: 'pnpm start:playwright:webserver',
     url: baseURL,
-    reuseExistingServer: false,
+    reuseExistingServer: !process.env.CI,
     timeout: 60_000,
   },
   // Start/stop mock connector server before/after all tests (teardown via returned closure)
-  globalSetup: fileURLToPath(new URL('./test/e2e/global-setup.ts', import.meta.url)),
+  globalSetup: join(import.meta.dirname, 'test/e2e/global-setup.ts'),
   // We currently only test on one browser on one platform
   snapshotPathTemplate: '{snapshotDir}/{testFileDir}/{testFileName}-snapshots/{arg}{ext}',
   use: {
     baseURL,
     trace: 'on-first-retry',
     nuxt: {
-      rootDir: fileURLToPath(new URL('.', import.meta.url)),
+      rootDir: import.meta.dirname,
       host: baseURL,
     },
   },

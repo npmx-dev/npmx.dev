@@ -1,8 +1,12 @@
+import type { NpmSearchResponse, NpmSearchResult, PackageMetaResponse } from '#shared/types'
+import { emptySearchResponse, metaToSearchResult } from './search-utils'
+import { mapWithConcurrency } from '#shared/utils/async'
+
 /**
  * Fetch all packages for an npm organization.
  *
  * 1. Gets the authoritative package list from the npm registry (single request)
- * 2. Fetches metadata from Algolia by exact name (single request)
+ * 2. Fetches metadata from Algolia by exact name (batched, max 1000 per request)
  * 3. Falls back to lightweight server-side package-meta lookups
  */
 export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
@@ -32,7 +36,6 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
         )
         packageNames = packages
       } catch (err) {
-        // Check if this is a 404 (org not found)
         if (err && typeof err === 'object' && 'statusCode' in err && err.statusCode === 404) {
           const error = createError({
             statusCode: 404,
@@ -44,7 +47,6 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
           }
           throw error
         }
-        // For other errors (network, etc.), return empty array to be safe
         packageNames = []
       }
 
@@ -52,7 +54,7 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
         return emptySearchResponse()
       }
 
-      // Fetch metadata + downloads from Algolia (single request via getObjects)
+      // Fetch metadata from Algolia (batched in chunks of 1000, parallel)
       if (searchProviderValue.value === 'algolia') {
         try {
           const response = await getPackagesByName(packageNames)
@@ -63,6 +65,9 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
           // Fall through to npm registry path
         }
       }
+
+      // Staleness guard
+      if (toValue(orgName) !== org) return emptySearchResponse()
 
       // npm fallback: fetch lightweight metadata via server proxy
       const metaResults = await mapWithConcurrency(
