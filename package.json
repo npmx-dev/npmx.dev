@@ -148,6 +148,7 @@
     "storybook-i18n": "catalog:storybook",
     "typescript": "6.0.2",
     "unplugin-vue-markdown": "32.0.0",
+    "vitest": "4.1.9",
     "vue-i18n-extract": "2.0.7",
     "vue-tsc": "3.2.6"
   },
