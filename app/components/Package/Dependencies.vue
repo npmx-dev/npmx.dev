@@ -90,7 +90,7 @@ function getDepVersionClass(key: string, realName: string) {
 }
 
 // Resolve npm: aliases — returns the real package name for links
-function depName(key: string, value: string): string {
+function resolveDepName(key: string, value: string): string {
   return parseDepValue(value).name ?? key
 }
 
@@ -142,7 +142,11 @@ const numberFormatter = useNumberFormatter()
           :key="dep"
           class="flex items-center justify-between py-1 text-sm gap-2"
         >
-          <LinkBase :to="packageRoute(depName(dep, version))" class="block truncate" dir="ltr">
+          <LinkBase
+            :to="packageRoute(resolveDepName(dep, version))"
+            class="block truncate"
+            dir="ltr"
+          >
             {{ dep }}
           </LinkBase>
           <span class="flex items-center gap-1 max-w-[40%]" dir="ltr">
@@ -161,7 +165,7 @@ const numberFormatter = useNumberFormatter()
               </button>
             </TooltipApp>
             <TooltipApp
-              v-if="replacementDeps[depName(dep, version)]"
+              v-if="replacementDeps[resolveDepName(dep, version)]"
               class="shrink-0 text-amber-700 dark:text-amber-500"
               :text="$t('package.dependencies.has_replacement')"
             >
@@ -174,55 +178,55 @@ const numberFormatter = useNumberFormatter()
               </button>
             </TooltipApp>
             <LinkBase
-              v-if="getVulnerableDepInfo(depName(dep, version))"
+              v-if="getVulnerableDepInfo(resolveDepName(dep, version))"
               :to="
                 packageRoute(
-                  depName(dep, version),
-                  getVulnerableDepInfo(depName(dep, version))!.version,
+                  resolveDepName(dep, version),
+                  getVulnerableDepInfo(resolveDepName(dep, version))!.version,
                 )
               "
               class="shrink-0"
               :class="
                 SEVERITY_TEXT_COLORS[
-                  getHighestSeverity(getVulnerableDepInfo(depName(dep, version))!.counts)
+                  getHighestSeverity(getVulnerableDepInfo(resolveDepName(dep, version))!.counts)
                 ]
               "
               :aria-label="$t('package.dependencies.view_vulnerabilities')"
               :title="
                 $t('package.dependencies.vulnerabilities_count', {
-                  count: getVulnerableDepInfo(depName(dep, version))!.counts.total,
+                  count: getVulnerableDepInfo(resolveDepName(dep, version))!.counts.total,
                 })
               "
               classicon="i-lucide:shield-check"
             />
             <LinkBase
-              v-if="getDeprecatedDepInfo(depName(dep, version))"
+              v-if="getDeprecatedDepInfo(resolveDepName(dep, version))"
               :to="
                 packageRoute(
-                  depName(dep, version),
-                  getDeprecatedDepInfo(depName(dep, version))!.version,
+                  resolveDepName(dep, version),
+                  getDeprecatedDepInfo(resolveDepName(dep, version))!.version,
                 )
               "
               class="shrink-0 text-purple-700 dark:text-purple-500"
               :aria-label="$t('package.deprecated.label')"
-              :title="getDeprecatedDepInfo(depName(dep, version))!.message"
+              :title="getDeprecatedDepInfo(resolveDepName(dep, version))!.message"
               classicon="i-lucide:octagon-alert"
             />
             <LinkBase
-              :to="packageRoute(depName(dep, version), depRange(version))"
+              :to="packageRoute(resolveDepName(dep, version), depRange(version))"
               class="block truncate"
-              :class="getDepVersionClass(dep, depName(dep, version))"
-              :title="getDepVersionTooltip(dep, depName(dep, version), depRange(version))"
+              :class="getDepVersionClass(dep, resolveDepName(dep, version))"
+              :title="getDepVersionTooltip(dep, resolveDepName(dep, version), depRange(version))"
             >
               {{ depRange(version) }}
             </LinkBase>
             <span v-if="outdatedDeps[dep]" class="sr-only">
               ({{ getOutdatedTooltip(outdatedDeps[dep], $t) }})
             </span>
-            <span v-if="getVulnerableDepInfo(depName(dep, version))" class="sr-only">
+            <span v-if="getVulnerableDepInfo(resolveDepName(dep, version))" class="sr-only">
               ({{
                 $t('package.dependencies.vulnerabilities_count', {
-                  count: getVulnerableDepInfo(depName(dep, version))!.counts.total,
+                  count: getVulnerableDepInfo(resolveDepName(dep, version))!.counts.total,
                 })
               }})
             </span>
@@ -268,7 +272,7 @@ const numberFormatter = useNumberFormatter()
         >
           <div class="flex items-center gap-2 min-w-0 flex-1">
             <LinkBase
-              :to="packageRoute(depName(peer.name, peer.version))"
+              :to="packageRoute(resolveDepName(peer.name, peer.version))"
               class="block max-w-[70%] break-words"
               dir="ltr"
             >
@@ -279,7 +283,7 @@ const numberFormatter = useNumberFormatter()
             </TagStatic>
           </div>
           <LinkBase
-            :to="packageRoute(depName(peer.name, peer.version), depRange(peer.version))"
+            :to="packageRoute(resolveDepName(peer.name, peer.version), depRange(peer.version))"
             class="block truncate max-w-[30%]"
             :title="depRange(peer.version)"
             dir="ltr"
@@ -330,14 +334,14 @@ const numberFormatter = useNumberFormatter()
           class="flex items-baseline justify-between py-1 text-sm gap-2"
         >
           <LinkBase
-            :to="packageRoute(depName(dep, version))"
+            :to="packageRoute(resolveDepName(dep, version))"
             class="block max-w-[80%] break-words"
             dir="ltr"
           >
             {{ dep }}
           </LinkBase>
           <LinkBase
-            :to="packageRoute(depName(dep, version), depRange(version))"
+            :to="packageRoute(resolveDepName(dep, version), depRange(version))"
             class="block truncate"
             :title="depRange(version)"
             dir="ltr"
