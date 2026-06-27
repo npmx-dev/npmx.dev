@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 import type { Placement, Strategy } from '@floating-ui/vue'
+// oxlint-disable-next-line vue/no-dupe-keys todo
 import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/vue'
 
 const props = withDefaults(

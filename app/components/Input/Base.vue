@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// oxlint-disable-next-line vue/no-dupe-keys todo
 import { noCorrect, noPasswordManager } from '~/utils/input'
 
 const model = defineModel<string>({ default: '' })
