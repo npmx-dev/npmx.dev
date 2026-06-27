@@ -798,7 +798,7 @@ docker run --rm \
   -e NODE_OPTIONS="--max-old-space-size=4096" \
   -v $(pwd):/work \
   -w /work \
-  mcr.microsoft.com/playwright:v1.58.2-noble \
+  mcr.microsoft.com/playwright:v1.61.1-noble \
   sh -c "npm install -g pnpm && pnpm install && pnpm vp run build:test && pnpm vp run test:browser:prebuilt --update-snapshots"
 ```
 
@@ -1067,7 +1067,9 @@ It's recommended to add a tooltip with event information to each noodle. If the 
 <template>
   <TooltipApp interactive position="top">
     <template #content>
-      <p class="text-sm font-medium text-fg mb-1"><strong>World Tetris Day</strong></p>
+      <p class="text-sm font-medium text-fg mb-1">
+        <strong>World Tetris Day</strong>
+      </p>
     </template>
     <img
       width="400"
