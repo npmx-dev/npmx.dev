@@ -75,6 +75,9 @@
         },
         "other": {
           "type": "string"
+        },
+        "sponsored_by": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -3665,6 +3668,12 @@
           "type": "object",
           "properties": {
             "title": {
+              "type": "string"
+            },
+            "gold": {
+              "type": "string"
+            },
+            "silver": {
               "type": "string"
             }
           },

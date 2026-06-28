@@ -205,3 +205,9 @@ Published under [MIT License](./LICENSE).
    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=npmx-dev/npmx.dev&type=date&legend=top-left" />
  </picture>
 </a>
+
+## Sponsors
+
+<a href="https://opencollective.com/npmx" target="_blank" rel="noopener noreferrer">
+  <img src="./assets/media/sponsors.png" alt="Sponsors" width="100%">
+</a>
