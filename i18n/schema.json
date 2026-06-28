@@ -1977,6 +1977,9 @@
             },
             "vulnerabilities_count": {
               "type": "string"
+            },
+            "aliased_to": {
+              "type": "string"
             }
           },
           "additionalProperties": false

@@ -99,6 +99,12 @@ function depRange(value: string): string {
   return parseDepValue(value).range ?? value
 }
 
+// Whether a dependency uses an npm: alias (listed name differs from the real package)
+function isAliased(key: string, value: string): boolean {
+  const realName = parseDepValue(value).name
+  return realName != null && realName !== key
+}
+
 const {
   visibleItems: visibleDeps,
   hasMore: hasMoreDeps,
@@ -150,6 +156,21 @@ const numberFormatter = useNumberFormatter()
             {{ dep }}
           </LinkBase>
           <span class="flex items-center gap-1 max-w-[40%]" dir="ltr">
+            <TooltipApp
+              v-if="isAliased(dep, version)"
+              class="shrink-0 text-fg-muted"
+              :text="$t('package.dependencies.aliased_to', { name: resolveDepName(dep, version) })"
+            >
+              <button
+                type="button"
+                class="inline-flex items-center justify-center p-2 -m-2"
+                :aria-label="
+                  $t('package.dependencies.aliased_to', { name: resolveDepName(dep, version) })
+                "
+              >
+                <span class="i-lucide:arrow-right-left w-3 h-3" aria-hidden="true" />
+              </button>
+            </TooltipApp>
             <TooltipApp
               v-if="outdatedDeps[dep]"
               class="shrink-0"
@@ -340,14 +361,31 @@ const numberFormatter = useNumberFormatter()
           >
             {{ dep }}
           </LinkBase>
-          <LinkBase
-            :to="packageRoute(resolveDepName(dep, version), depRange(version))"
-            class="block truncate"
-            :title="depRange(version)"
-            dir="ltr"
-          >
-            {{ depRange(version) }}
-          </LinkBase>
+          <span class="flex items-center gap-1 min-w-0" dir="ltr">
+            <TooltipApp
+              v-if="isAliased(dep, version)"
+              class="shrink-0 text-fg-muted"
+              :text="$t('package.dependencies.aliased_to', { name: resolveDepName(dep, version) })"
+            >
+              <button
+                type="button"
+                class="inline-flex items-center justify-center p-2 -m-2"
+                :aria-label="
+                  $t('package.dependencies.aliased_to', { name: resolveDepName(dep, version) })
+                "
+              >
+                <span class="i-lucide:arrow-right-left w-3 h-3" aria-hidden="true" />
+              </button>
+            </TooltipApp>
+            <LinkBase
+              :to="packageRoute(resolveDepName(dep, version), depRange(version))"
+              class="block truncate"
+              :title="depRange(version)"
+              dir="ltr"
+            >
+              {{ depRange(version) }}
+            </LinkBase>
+          </span>
         </li>
       </ul>
       <button
