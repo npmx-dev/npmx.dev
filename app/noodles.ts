@@ -23,7 +23,7 @@ const entries: Noodle[] = [
     posterImage: '/extra/tetris.svg',
     references: [
       {
-        label: 'Tetris (1984)',
+        label: 'Tetris (1984) - Wikipedia',
         url: 'https://en.wikipedia.org/wiki/Tetris',
       },
     ],
