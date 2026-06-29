@@ -11,7 +11,7 @@ authors:
 title: 'npmx rainbow comet'
 tags: ['OpenSource', 'Release']
 excerpt: 'npmx 0.16 is out! This period was especially full of good news. And it’s particularly great that, amid the constant search for vulnerabilities and risks, we’ve started celebrating more and taking joy in what we do - and what our favorite maintainers and authors do.'
-date: '2026-06-29'
+date: '2026-06-30'
 slug: 'release/rainbow-comet'
 image: 'https://npmx.dev/blog/og/release-rainbow-comet.png'
 description: 'npmx 0.16 is out! This period was especially full of good news. And it’s particularly great that, amid the constant search for vulnerabilities and risks, we’ve started celebrating more and taking joy in what we do - and what our favorite maintainers and authors do.'
