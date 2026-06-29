@@ -39,6 +39,11 @@ interface EmbedExternal {
   uri: string
 }
 
+interface EmbedGallery {
+  $type: 'app.bsky.embed.gallery#view'
+  items: EmbedImage[]
+}
+
 interface BlueskyPost {
   uri: string
   author: PostAuthor
@@ -50,7 +55,7 @@ interface BlueskyPost {
     thumbnail?: string
     playlist?: string
     aspectRatio?: { width: number; height: number }
-  }
+  } & EmbedGallery
   likeCount?: number
   replyCount?: number
   repostCount?: number
@@ -214,6 +219,20 @@ const postUrl = computed(() => {
           muted
           loop
           class="block max-h-150 object-contain w-full rounded-lg"
+        />
+      </div>
+    </template>
+
+    <!-- Embedded gallery -->
+    <template v-if="post.embed?.$type === 'app.bsky.embed.gallery#view'">
+      <div class="relative overflow-x-auto flex gap-3 z-10">
+        <img
+          v-for="(img, i) in post.embed.items"
+          :key="i"
+          :src="img.fullsize"
+          :alt="img.alt"
+          class="h-40 md:h-60 lg:h-72 w-auto rounded-lg object-cover"
+          loading="lazy"
         />
       </div>
     </template>
