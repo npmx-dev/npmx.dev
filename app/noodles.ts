@@ -37,7 +37,7 @@ const entries: Noodle[] = [
     timezone: 'auto',
     occasion: 'We stand together. Always, everywhere, for all of us. Happy Pride Month! 🏳️‍🌈',
     prUrl: 'https://github.com/npmx-dev/npmx.dev/pull/2826',
-    authors: [ALEX],
+    authors: [ALEX, ALFON],
     posterImage: '/extra/pride-1.svg',
     variants: ['/extra/pride-2.svg', '/extra/pride-3.png'],
     references: [
