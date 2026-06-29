@@ -10,7 +10,13 @@ const props = defineProps<{
   uri?: string
   /** Bluesky URL of the post, e.g. https://bsky.app/profile/handle/post/rkey */
   url?: string
+  /** Optional preload hint. Rendering still depends on the fetched embed metadata. */
+  mediaHint?: 'video'
 }>()
+
+if (props.mediaHint === 'video') {
+  void import('~/components/VideoPlayer.vue')
+}
 
 interface PostAuthor {
   did: string
@@ -199,7 +205,7 @@ const postUrl = computed(() => {
     <!-- Embedded video -->
     <template v-if="post.embed?.playlist">
       <div class="relative block mb-3 p-0.5 bg-bg-muted rounded-lg">
-        <VideoPlayer
+        <LazyVideoPlayer
           :poster="post.embed.thumbnail"
           playsInline
           controls
