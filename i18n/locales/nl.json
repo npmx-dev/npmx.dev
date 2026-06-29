@@ -1228,7 +1228,7 @@
       "title": "Team",
       "core": "Kern",
       "maintainers": "Onderhouders",
-      "role_core": "core",
+      "role_core": "kernlid",
       "role_steward": "Coördinator",
       "role_maintainer": "Onderhouder",
       "sponsor": "sponsor",
