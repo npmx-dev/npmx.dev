@@ -458,9 +458,16 @@ export type FacetBarChartConfig = VueUiHorizontalBarConfig & {
   $t: TrendTranslateFunction
 }
 
+export type TimelineSizeDependencyBreakdown = {
+  name: string
+  size: number
+}
+
 export type TimelineSizeCacheValue = {
   totalSize: number
   dependencyCount: number
+  selfSize: number
+  dependencies: TimelineSizeDependencyBreakdown[]
 }
 
 export type ConvertedTimelineSizeCacheEntry = TimelineSizeCacheValue & {

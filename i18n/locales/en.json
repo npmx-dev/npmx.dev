@@ -637,6 +637,8 @@
       "provenance_removed": "Provenance removed",
       "chart": {
         "tab_aria_label": "Metric selection",
+        "dependency_size": "Dependency Size",
+        "other_dependencies": "Other",
         "base_scale": "start y-axis at zero",
         "zoom": "zoom",
         "reset_minimap": "reset minimap",

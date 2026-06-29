@@ -8,6 +8,12 @@ import {
   type VueUiXyDatasetLineItem,
   type VueUiXyDatasetPlotItem,
 } from 'vue-data-ui/vue-ui-xy'
+import {
+  VueUiStackbar,
+  type VueUiStackbarConfig,
+  type VueUiStackbarDatasetItem,
+  type VueUiStackbarTooltipDatapoint,
+} from 'vue-data-ui/vue-ui-stackbar'
 import { useTooltipPosition } from 'vue-data-ui/composables'
 import {
   sanitise,
@@ -70,6 +76,8 @@ const convertedData = computed(() => {
       name: key,
       totalSize: value.totalSize,
       dependencyCount: value.dependencyCount,
+      selfSize: value.selfSize,
+      dependencies: value.dependencies,
       version: timelineEntry.version,
       time: timelineEntry.time,
       license: timelineEntry.license,
@@ -163,7 +171,7 @@ const seriesDependencies = computed(() => {
   }
 })
 
-type ActiveTab = 'totalSize' | 'dependencyCount'
+type ActiveTab = 'totalSize' | 'dependencyCount' | 'dependencySize'
 const activeTab = shallowRef<ActiveTab>('totalSize')
 
 const e18eGradientColors = [
@@ -173,6 +181,99 @@ const e18eGradientColors = [
   'oklch(71.29% 0.132 136.26)',
 ]
 
+// After this number of segments, the rest go into an "Other" segment
+const DEP_SEGMENT_COUNT = 8
+
+// Segment colours
+const dependencyPalette = Array.from(
+  { length: DEP_SEGMENT_COUNT },
+  (_, i) => `oklch(72% 0.14 ${Math.round((i * 360) / DEP_SEGMENT_COUNT)})`,
+)
+
+interface DependencySegment {
+  key: string
+  name: string
+  color: string
+  series: number[]
+}
+
+// Creates the segments for the dependency size chart. Basically, each
+// significantly sized dependency is a segment, the package itself is a segment,
+// and the rest is a segment ("Other").
+const dependencySegments = computed<DependencySegment[]>(() => {
+  const data = orderedConvertedData.value
+  const reference = data.at(-1)
+  if (!reference) return []
+
+  const topNames = reference.dependencies.slice(0, DEP_SEGMENT_COUNT).map(dep => dep.name)
+  const topNameSet = new Set(topNames)
+
+  const selfSegment: DependencySegment = {
+    key: '__self__',
+    name: packageName.value,
+    color: colors.value.accent ?? OKLCH_NEUTRAL_FALLBACK,
+    series: data.map(d => d.selfSize ?? 0),
+  }
+
+  const depSegments: DependencySegment[] = topNames.map((name, i) => ({
+    key: name,
+    name,
+    color: dependencyPalette[i]!,
+    series: data.map(d => d.dependencies.find(dep => dep.name === name)?.size ?? 0),
+  }))
+
+  const otherSegment: DependencySegment = {
+    key: '__other__',
+    name: $t('package.timeline.chart.other_dependencies'),
+    color: colors.value.fgMuted ?? OKLCH_NEUTRAL_FALLBACK,
+    series: data.map(d => {
+      const named = d.dependencies.reduce(
+        (sum, dep) => (topNameSet.has(dep.name) ? sum + dep.size : sum),
+        0,
+      )
+      return Math.max(0, (d.totalSize ?? 0) - (d.selfSize ?? 0) - named)
+    }),
+  }
+
+  // bottom to top
+  return [otherSegment, ...depSegments.toReversed(), selfSegment]
+})
+
+interface StackbarTooltipPoint {
+  id: string
+  name: string
+  color: string
+  size: number
+  /** Signed size change vs the previous version's bar (0 when unchanged) */
+  delta: number
+  /** Present in the previous bar but gone in this one */
+  removed: boolean
+}
+
+function stackbarTooltipPoints(
+  datapoint: VueUiStackbarTooltipDatapoint[],
+  versionIndex: number,
+): StackbarTooltipPoint[] {
+  return datapoint
+    .map(point => {
+      const segment = dependencySegments.value.find(s => s.name === point.name)
+      const previous = versionIndex > 0 ? (segment?.series[versionIndex - 1] ?? 0) : 0
+      const value = point.value ?? 0
+      const removed = value === 0 && previous > 0
+
+      return {
+        id: point.id,
+        name: point.name,
+        color: point.color,
+        size: removed ? previous : value,
+        delta: versionIndex > 0 ? value - previous : 0,
+        removed,
+      }
+    })
+    .filter(point => point.size > 0)
+    .reverse()
+}
+
 function areAllValuesEqual(array: number[]): boolean {
   if (array.length <= 1) return true
   return array.every(value => value === array[0])
@@ -181,8 +282,14 @@ function areAllValuesEqual(array: number[]): boolean {
 const datasets = computed<{
   totalSize: VueUiXyDatasetItem[]
   dependencyCount: VueUiXyDatasetItem[]
+  dependencySize: VueUiStackbarDatasetItem[]
 }>(() => {
   return {
+    dependencySize: dependencySegments.value.map(segment => ({
+      name: segment.name,
+      series: segment.series,
+      color: segment.color,
+    })),
     totalSize: [
       {
         name: $t('package.stats.install_size'),
@@ -228,7 +335,7 @@ const intFormatter = useNumberFormatter({
 })
 
 const formatter = computed(() =>
-  activeTab.value === 'totalSize' ? bytesFormatter : intFormatter.value,
+  activeTab.value === 'dependencyCount' ? intFormatter.value : bytesFormatter,
 )
 
 onMounted(async () => {
@@ -264,9 +371,16 @@ const commonScaleSteps = computed(() => {
   return seriesDependencies.value.max - seriesDependencies.value.min > 5 ? 6 : 2
 })
 
-const metricLabel = computed(() =>
-  activeTab.value === 'totalSize' ? $t('package.stats.install_size') : $t('compare.dependencies'),
-)
+const metricLabel = computed(() => {
+  switch (activeTab.value) {
+    case 'dependencyCount':
+      return $t('compare.dependencies')
+    case 'dependencySize':
+      return $t('package.timeline.chart.dependency_size')
+    default:
+      return $t('package.stats.install_size')
+  }
+})
 
 function buildExportFilename(extension: 'png' | 'csv' | 'svg') {
   return `${sanitise(packageName.value)}_${$t('package.links.timeline')}_${metricLabel.value.toLocaleLowerCase().replaceAll(' ', '-')}.${extension}`
@@ -407,7 +521,7 @@ const config = computed<VueUiXyConfig>(() => {
               dataset: orderedConvertedData.value,
               config: {
                 packageName: packageName.value,
-                metric: activeTab.value,
+                metric: activeTab.value === 'dependencyCount' ? 'dependencyCount' : 'totalSize',
                 copy,
                 $t,
                 numberFormatter: formatter.value.format,
@@ -544,6 +658,96 @@ const indexSelection = computed(() => {
   if (props.selectedVersion == null) return null
   return orderedConvertedData.value.findIndex(v => v.version === props.selectedVersion)
 })
+
+const stackbarConfig = computed<VueUiStackbarConfig>(() => ({
+  theme: isDarkMode.value ? 'dark' : '',
+  responsive: true,
+  userOptions: {
+    buttons: {
+      pdf: false,
+      labels: false,
+      fullscreen: false,
+      table: false,
+      tooltip: false,
+      annotator: !isMobile.value,
+    },
+  },
+  style: {
+    chart: {
+      backgroundColor: colors.value.bg,
+      color: colors.value.fg,
+      height: 240,
+      padding: { top: 24, right: 12, bottom: 48, left: 64 },
+      zoom: { show: false },
+      title: {
+        text: applyEllipsis(packageName.value, 32),
+        fontSize: isMobile.value ? 14 : 18,
+        bold: false,
+        color: colors.value.fg,
+      },
+      legend: {
+        show: true,
+        position: 'bottom',
+        color: colors.value.fg,
+        backgroundColor: colors.value.bg,
+        fontSize: 12,
+      },
+      tooltip: {
+        backgroundColor: colors.value.bg,
+        color: colors.value.fg,
+        borderColor: colors.value.border,
+        borderRadius: 6,
+      },
+      highlighter: {
+        color: colors.value.accent,
+        opacity: 5,
+      },
+      bars: {
+        gapRatio: 0.3,
+        borderRadius: 2,
+        gradient: { show: false },
+        totalValues: { show: false },
+        dataLabels: { show: false },
+      },
+      grid: {
+        scale: { scaleMin: 0, ticks: 6 },
+        x: {
+          showAxis: true,
+          axisColor: colors.value.border,
+          showHorizontalLines: false,
+          timeLabels: {
+            show: true,
+            values: versions.value.map(v => applyEllipsis(v, 20)),
+            color: colors.value.fgSubtle,
+            fontSize: isMobile.value ? 12 : 10,
+            rotation: -30,
+            modulo: 24,
+            showOnlyAtModulo: versions.value.length > 24,
+            autoRotate: { enable: false },
+          },
+        },
+        y: {
+          showAxis: true,
+          axisColor: colors.value.border,
+          showVerticalLines: true,
+          linesColor: colors.value.border,
+          axisName: {
+            show: true,
+            text: metricLabel.value,
+            color: colors.value.fgSubtle,
+            fontSize: isMobile.value ? 24 : 14,
+          },
+          axisLabels: {
+            show: true,
+            color: colors.value.fgSubtle,
+            fontSize: isMobile.value ? 18 : 14,
+            formatter: ({ value }) => bytesFormatter.format(value ?? 0),
+          },
+        },
+      },
+    },
+  },
+}))
 </script>
 
 <template>
@@ -556,6 +760,13 @@ const indexSelection = computed(() => {
           </TabItem>
           <TabItem value="dependencyCount" icon="i-lucide:network" :controls-panel="false">
             {{ $t('compare.dependencies') }}
+          </TabItem>
+          <TabItem
+            value="dependencySize"
+            icon="i-lucide:chart-column-stacked"
+            :controls-panel="false"
+          >
+            {{ $t('package.timeline.chart.dependency_size') }}
           </TabItem>
         </TabList>
       </TabRoot>
@@ -577,6 +788,7 @@ const indexSelection = computed(() => {
     </div>
     <ClientOnly>
       <VueUiXy
+        v-if="activeTab === 'totalSize' || activeTab === 'dependencyCount'"
         ref="chartRef"
         :dataset="datasets[activeTab]"
         :config
@@ -878,6 +1090,61 @@ const indexSelection = computed(() => {
           </button>
         </template>
       </VueUiXy>
+
+      <VueUiStackbar v-else :dataset="datasets.dependencySize" :config="stackbarConfig">
+        <!-- Custom tooltip -->
+        <template #tooltip="{ datapoint, timeLabel, seriesIndex }">
+          <div class="font-mono text-xs flex flex-col">
+            <div class="border-border border-b pb-2 mb-2 text-fg">{{ timeLabel }}</div>
+            <ul class="flex flex-col gap-1">
+              <li
+                v-for="point in stackbarTooltipPoints(datapoint, seriesIndex)"
+                :key="point.id"
+                class="flex flex-row items-center gap-2"
+                :class="point.removed ? 'line-through' : ''"
+              >
+                <span
+                  class="w-2 h-2 rounded-sm shrink-0"
+                  :style="{ backgroundColor: point.color }"
+                  aria-hidden="true"
+                />
+                <span class="truncate max-w-[12rem] text-[var(--fg)]/70">
+                  {{ point.name }}
+                </span>
+                <span class="text-sm ms-auto ps-3">
+                  {{ bytesFormatter.format(point.size) }}
+                  <span
+                    v-if="point.delta !== 0"
+                    :class="
+                      point.delta > 0
+                        ? 'text-red-600 dark:text-red-400'
+                        : 'text-green-600 dark:text-green-400'
+                    "
+                  >
+                    ({{ point.delta > 0 ? '+' : '-'
+                    }}{{ bytesFormatter.format(Math.abs(point.delta)) }})
+                  </span>
+                </span>
+              </li>
+            </ul>
+          </div>
+        </template>
+
+        <template #menuIcon="{ isOpen }">
+          <span v-if="isOpen" class="i-lucide:x w-6 h-6" aria-hidden="true" />
+          <span v-else class="i-lucide:ellipsis-vertical w-6 h-6" aria-hidden="true" />
+        </template>
+        <template #optionCsv>
+          <span class="text-fg-subtle font-mono pointer-events-none">CSV</span>
+        </template>
+        <template #optionImg>
+          <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
+        </template>
+        <template #optionSvg>
+          <span class="text-fg-subtle font-mono pointer-events-none">SVG</span>
+        </template>
+      </VueUiStackbar>
+
       <template #fallback>
         <SkeletonBlock class="flex place-items-center justify-center aspect-[1152/254.59]">
           <span class="i-lucide:chart-line w-10 h-10 text-fg-muted" aria-hidden="true" />
