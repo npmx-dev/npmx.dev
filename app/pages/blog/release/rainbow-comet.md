@@ -38,13 +38,19 @@ We’d like to start with one of the nicest pieces of news - we’ve welcomed a 
 
 As you may already know, another place where we celebrate achievements is the package timeline. It’s where we show not only growth and issues, but also optimizations. And of course, we celebrate together with maintainers and users every time you share these results.
 
-<BlueskyPostEmbed url="https://bsky.app/profile/chenjiahan.bsky.social/post/3mmvj4gq4h22s" />
+<BlueskyPostEmbed
+  url="https://bsky.app/profile/chenjiahan.bsky.social/post/3mmvj4gq4h22s"
+  uri="at://did:plc:ymoeg4trisbzfowiaemnu7xz/app.bsky.feed.post/3mmvj4gq4h22s"
+/>
 
 ### Changelog
 
 Speaking of changes, it’s hard to miss change analysis in packages. And to view those changes, you no longer need third‑party services. Now we show the changelog directly on package pages.
 
-<BlueskyPostEmbed url="https://bsky.app/profile/wilco.npmx.social/post/3mmrihvusqk2b" />
+<BlueskyPostEmbed
+  url="https://bsky.app/profile/wilco.npmx.social/post/3mmrihvusqk2b"
+  uri="at://did:plc:nlenimoh4wmif7s22hiw5uzt/app.bsky.feed.post/3mmrihvusqk2b"
+/>
 
 ### Trusted publishing
 
@@ -52,7 +58,10 @@ But of course the biggest change for packages in this period is trusted publishi
 
 npmx also shows packages with trusted publishing and tracks changes to this setting.
 
-<BlueskyPostEmbed url="https://bsky.app/profile/nik.digital/post/3mmettwpgtc24" />
+<BlueskyPostEmbed
+  url="https://bsky.app/profile/nik.digital/post/3mmettwpgtc24"
+  uri="at://did:plc:6ctcux7hto6zyi3r7osornur/app.bsky.feed.post/3mmettwpgtc24"
+/>
 
 ### Stats tab
 
@@ -64,7 +73,10 @@ One of the key metrics when choosing a dependency is statistics. To make that pa
 
 And of course, wherever there are results, a bit of competition and play appears. That’s why we now have a leaderboard page for our likes. Yes, we love everyone, but it seems Svelte will remain the leader from the very first days of npmx (_or do you want to like someone else and change that?_).
 
-<BlueskyPostEmbed url="https://bsky.app/profile/philippeserhal.com/post/3mn6ayfjcbc2m" />
+<BlueskyPostEmbed
+  url="https://bsky.app/profile/philippeserhal.com/post/3mn6ayfjcbc2m"
+  uri="at://did:plc:5wdnwfs45bghuedlj3rdmani/app.bsky.feed.post/3mn6ayfjcbc2m"
+/>
 
 ### Noodles
 
@@ -84,17 +96,32 @@ But the most important thing behind all these changes is, of course, the people.
 
 And the biggest piece of news in this category is that we held our first meetup with talks. We not only got together and spent an evening in the best company, but we also shared our experience and ideas. Thank you - to you, to London, and to the wonderful AG Grid team for the venue. We hope to return again.
 
-<BlueskyPostEmbed url="https://bsky.app/profile/ag-grid.bsky.social/post/3moo34mkdy22g" />
+<BlueskyPostEmbed
+  url="https://bsky.app/profile/ag-grid.bsky.social/post/3moo34mkdy22g"
+  uri="at://did:plc:akon7og3z6ihjpoclxzjrglf/app.bsky.feed.post/3moo34mkdy22g"
+/>
 
 And at the same time, we and our wonderful community held many more warm meetings. Follow us and those who interest you, and we hope to see you again soon
 
-<BlueskyPostEmbed url="https://bsky.app/profile/antleth.fr/post/3mmwqaihg4c2i" />
+<BlueskyPostEmbed
+  url="https://bsky.app/profile/antleth.fr/post/3mmwqaihg4c2i"
+  uri="at://did:plc:szxeg72ivd7j2msgcjglvlav/app.bsky.feed.post/3mmwqaihg4c2i"
+/>
 
-<BlueskyPostEmbed url="https://bsky.app/profile/npmx.dev/post/3mp75vauw322e" />
+<BlueskyPostEmbed
+  url="https://bsky.app/profile/npmx.dev/post/3mp75vauw322e"
+  uri="at://did:plc:u5zp7npt5kpueado77kuihyz/app.bsky.feed.post/3mp75vauw322e"
+/>
 
-<BlueskyPostEmbed url="https://bsky.app/profile/danielroe.dev/post/3mn5sk7jrwk2v" />
+<BlueskyPostEmbed
+  url="https://bsky.app/profile/danielroe.dev/post/3mn5sk7jrwk2v"
+  uri="at://did:plc:jbeaa5kdaladzwq3r7f5xgwe/app.bsky.feed.post/3mn5sk7jrwk2v"
+/>
 
-<BlueskyPostEmbed url="https://bsky.app/profile/npmx.dev/post/3mlwz4gho5s2n" />
+<BlueskyPostEmbed
+  url="https://bsky.app/profile/npmx.dev/post/3mlwz4gho5s2n"
+  uri="at://did:plc:u5zp7npt5kpueado77kuihyz/app.bsky.feed.post/3mlwz4gho5s2n"
+/>
 
 ## There's still much to come
 
