@@ -343,11 +343,10 @@ const config = computed<VueUiSparklineConfig>(() => {
           variant="button-secondary"
           :to="trendsRoute"
           class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 focus-visible:outline-accent/70 rounded"
+          :aria-label="$t('package.trends.title')"
           :title="$t('package.trends.title')"
           classicon="i-lucide:chart-line"
-        >
-          <span class="sr-only">{{ $t('package.trends.title') }}</span>
-        </LinkBase>
+        />
         <span v-else-if="isLoadingWeeklyDownloads" class="min-w-6 min-h-6 -m-1 p-1" />
       </template>
 

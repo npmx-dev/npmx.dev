@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { VueUiXy, type VueUiXyConfig, type VueUiXySvgSlotProps } from 'vue-data-ui/vue-ui-xy'
+import { useTooltipPosition } from 'vue-data-ui/composables'
 import { useDebounceFn, useElementSize, useTimeoutFn } from '@vueuse/core'
 import { useColors } from '~/composables/useColors'
 import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch } from '~/utils/colors'
@@ -16,7 +17,6 @@ import { DATE_INPUT_MAX } from '~/utils/input'
 import { endDateOnlyToUtcMs } from '~/utils/chart-data-prediction'
 import { applyBlocklistCorrection, getAnomaliesForPackages } from '~/utils/download-anomalies'
 import { copyAltTextForTrendLineChart, sanitise, applyEllipsis } from '~/utils/charts'
-import { useChartTooltipPosition } from '~/composables/useChartTooltipPosition'
 import {
   buildNormalisedTrendsDataset,
   buildTrendsChartConfig,
@@ -1112,7 +1112,7 @@ watch(
   { immediate: true },
 )
 
-const tooltipPosition = useChartTooltipPosition(chartRef)
+const tooltipPosition = useTooltipPosition(chartRef)
 
 const keepZoomState = shallowRef(true)
 

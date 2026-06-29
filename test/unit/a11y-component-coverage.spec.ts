@@ -60,6 +60,7 @@ const SKIPPED_COMPONENTS: Record<string, string> = {
   'Changelog/Markdown.vue': 'Requires API call & only renders markdown html',
   'Translation/StatusByFile.unused.vue': 'Unused component, might be needed in the future',
   'ColorScheme/Img.vue': 'Image component, basic ui',
+  'VideoPlayer.vue': 'Atproto video component, basic ui',
 }
 
 function normalizeComponentPath(filePath: string): string {

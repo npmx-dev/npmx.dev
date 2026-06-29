@@ -44,7 +44,7 @@ export default defineConfig({
     // keep this preset last
     ...(process.env.CI ? [] : [presetRtl(), presetA11y()]),
   ].filter(Boolean),
-  transformers: [transformerDirectives(), transformerVariantGroup()],
+  transformers: [transformerDirectives({ enforce: 'pre' }), transformerVariantGroup()],
   theme,
   shortcuts: [
     // Layout
