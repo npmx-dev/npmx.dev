@@ -317,8 +317,8 @@ importers:
         specifier: 5.6.4
         version: 5.6.4
       eslint-plugin-regexp:
-        specifier: 3.1.0
-        version: 3.1.0(eslint@9.39.2)
+        specifier: 3.1.1
+        version: 3.1.1(eslint@9.39.2)
       fast-check:
         specifier: 4.6.0
         version: 4.6.0
@@ -7304,8 +7304,8 @@ packages:
     engines: {node: '>=6.0'}
     hasBin: true
 
-  eslint-plugin-regexp@3.1.0:
-    resolution: {integrity: sha512-qGXIC3DIKZHcK1H9A9+Byz9gmndY6TTSRkSMTZpNXdyCw2ObSehRgccJv35n9AdUakEjQp5VFNLas6BMXizCZg==}
+  eslint-plugin-regexp@3.1.1:
+    resolution: {integrity: sha512-MxR5nqoQCtVWmJwia0D2+NlXX1xzdpkslsVOZLEYQ4PQWEaL65PCZXURxaBc3lPnkNFpNxzMIRmYVxdl8giXRA==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
     peerDependencies:
       eslint: '>=9.38.0'
@@ -18737,7 +18737,7 @@ snapshots:
     optionalDependencies:
       source-map: 0.6.1
 
-  eslint-plugin-regexp@3.1.0(eslint@9.39.2):
+  eslint-plugin-regexp@3.1.1(eslint@9.39.2):
     dependencies:
       '@eslint-community/eslint-utils': 4.9.1(eslint@9.39.2)
       '@eslint-community/regexpp': 4.12.2
