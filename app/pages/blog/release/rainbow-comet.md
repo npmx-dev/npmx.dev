@@ -86,6 +86,8 @@ And at the same time, we and our wonderful community held many more warm meeting
 
 <BlueskyPostEmbed url="https://bsky.app/profile/antleth.fr/post/3mmwqaihg4c2i" />
 
+<BlueskyPostEmbed url="https://bsky.app/profile/npmx.dev/post/3mp75vauw322e" />
+
 <BlueskyPostEmbed url="https://bsky.app/profile/danielroe.dev/post/3mn5sk7jrwk2v" />
 
 <BlueskyPostEmbed url="https://bsky.app/profile/npmx.dev/post/3mlwz4gho5s2n" />
