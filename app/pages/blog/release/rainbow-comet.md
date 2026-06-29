@@ -1,9 +1,13 @@
 ---
 authors:
+  - name: Alec Lloyd Probert
+    blueskyHandle: graphieros.npmx.social
   - name: Alex Savelyev
     blueskyHandle: alexdln.com
-  - name: Matias Capeletto
-    blueskyHandle: patak.cat
+  - name: Willow (GHOST)
+    blueskyHandle: willow.sh
+  - name: Philippe Serhal
+    blueskyHandle: philippeserhal.com
 title: 'npmx rainbow comet'
 tags: ['OpenSource', 'Release']
 excerpt: 'npmx 0.16 is out! This period was especially full of good news. And it’s particularly great that, amid the constant search for vulnerabilities and risks, we’ve started celebrating more and taking joy in what we do - and what our favorite maintainers and authors do.'
