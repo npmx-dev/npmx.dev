@@ -100,7 +100,6 @@ const { data: post, status } = useAsyncData(
 )
 
 const postUrl = computed(() => {
-  console.log(post.value)
   // Prefer the explicit URL prop if provided
   if (props.url) return props.url
 
