@@ -23,7 +23,8 @@
     "brand": "merk",
     "resources": "Informatie",
     "features": "Functies",
-    "other": "Overig"
+    "other": "Overig",
+    "sponsored_by": "Gesponsord door {list}"
   },
   "shortcuts": {
     "section": {
@@ -1219,7 +1220,9 @@
       }
     },
     "sponsors": {
-      "title": "Sponsoren"
+      "title": "Sponsoren",
+      "gold": "Gouden sponsors",
+      "silver": "Zilveren sponsors"
     },
     "oss_partners": {
       "title": "Open Source Software Partners"
