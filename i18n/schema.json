@@ -1915,6 +1915,12 @@
                 "tab_aria_label": {
                   "type": "string"
                 },
+                "dependency_size": {
+                  "type": "string"
+                },
+                "other_dependencies": {
+                  "type": "string"
+                },
                 "base_scale": {
                   "type": "string"
                 },
@@ -1937,6 +1943,18 @@
                       "type": "string"
                     },
                     "general_description": {
+                      "type": "string"
+                    },
+                    "stackbar_segment_share": {
+                      "type": "string"
+                    },
+                    "stackbar_top_segments": {
+                      "type": "string"
+                    },
+                    "stackbar_largest_increase": {
+                      "type": "string"
+                    },
+                    "stackbar_largest_decrease": {
                       "type": "string"
                     }
                   },
@@ -2222,6 +2240,9 @@
                   "type": "string"
                 },
                 "watermark": {
+                  "type": "string"
+                },
+                "watermark_top": {
                   "type": "string"
                 },
                 "analysis": {
