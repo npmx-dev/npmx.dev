@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import {
   VueUiXy,
   type VueUiXyConfig,
@@ -12,6 +11,7 @@ import {
   VueUiStackbar,
   type VueUiStackbarConfig,
   type VueUiStackbarDatasetItem,
+  type VueUiStackbarFormattedDatasetItem,
   type VueUiStackbarTooltipDatapoint,
 } from 'vue-data-ui/vue-ui-stackbar'
 import { useTooltipPosition } from 'vue-data-ui/composables'
@@ -21,12 +21,17 @@ import {
   copyAltTextForTimelineChart,
   type EnrichedTimelineSizeCacheEntry,
   type TimelineSizeCacheValue,
+  CHART_ANNOTATOR_SLOTS,
+  getAnnotatorIcon,
+  getAnnotatorStyle,
+  type TimelineChartMetric,
 } from '~/utils/charts'
 import type { TimelineVersion, SubEvent } from '~~/server/api/registry/timeline/[...pkg].get'
 import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
 import { useColors } from '~/composables/useColors'
 import { parseStableVersion } from '~/utils/versions'
 import { downloadFileLink } from '~/utils/download'
+import { useElementSize, useTimeoutFn } from '@vueuse/core'
 
 import('vue-data-ui/style.css')
 
@@ -134,6 +139,7 @@ const orderedConvertedData = computed(() => {
 watch(
   orderedConvertedData,
   async () => {
+    if (chartRef.value && !('resetZoom' in chartRef.value)) return
     await nextTick()
     chartRef.value?.resetZoom()
   },
@@ -171,8 +177,28 @@ const seriesDependencies = computed(() => {
   }
 })
 
-type ActiveTab = 'totalSize' | 'dependencyCount' | 'dependencySize'
-const activeTab = shallowRef<ActiveTab>('totalSize')
+const activeTab = shallowRef<TimelineChartMetric>('totalSize')
+
+const shouldPauseChartAnimations = shallowRef(true)
+
+const { start: startChartAnimationPauseTimer } = useTimeoutFn(
+  () => {
+    shouldPauseChartAnimations.value = false
+  },
+  1000,
+  { immediate: false },
+)
+
+function pauseChartAnimations() {
+  shouldPauseChartAnimations.value = true
+  startChartAnimationPauseTimer()
+}
+
+watch(
+  () => activeTab.value,
+  () => pauseChartAnimations(),
+  { flush: 'sync' },
+)
 
 const e18eGradientColors = [
   'oklch(73.76% 0.130 47.72)',
@@ -225,7 +251,7 @@ const dependencySegments = computed<DependencySegment[]>(() => {
   const otherSegment: DependencySegment = {
     key: '__other__',
     name: $t('package.timeline.chart.other_dependencies'),
-    color: colors.value.fgMuted ?? OKLCH_NEUTRAL_FALLBACK,
+    color: colors.value.border ?? OKLCH_NEUTRAL_FALLBACK,
     series: data.map(d => {
       const named = d.dependencies.reduce(
         (sum, dep) => (topNameSet.has(dep.name) ? sum + dep.size : sum),
@@ -271,7 +297,7 @@ function stackbarTooltipPoints(
       }
     })
     .filter(point => point.size > 0)
-    .reverse()
+    .toReversed()
 }
 
 function areAllValuesEqual(array: number[]): boolean {
@@ -338,9 +364,10 @@ const formatter = computed(() =>
   activeTab.value === 'dependencyCount' ? intFormatter.value : bytesFormatter,
 )
 
-onMounted(async () => {
+onMounted(() => {
   rootEl.value = document.documentElement
   resolvedMode.value = colorMode.value === 'dark' ? 'dark' : 'light'
+  pauseChartAnimations()
 })
 
 const { colors } = useColors(rootEl)
@@ -388,6 +415,59 @@ function buildExportFilename(extension: 'png' | 'csv' | 'svg') {
 
 const tooltipPosition = useTooltipPosition(chartRef)
 
+type XyUserOptions = NonNullable<NonNullable<NonNullable<VueUiXyConfig['chart']>['userOptions']>>
+
+type StackbarUserOptions = NonNullable<
+  NonNullable<NonNullable<VueUiXyConfig['chart']>['userOptions']>
+>
+
+type CommonUserOptions = XyUserOptions & StackbarUserOptions
+
+const commonConfig = computed<CommonUserOptions>(() => ({
+  callbacks: {
+    img: args => {
+      const imageUri = args?.imageUri
+      if (!imageUri) return
+      downloadFileLink(imageUri, buildExportFilename('png'))
+    },
+    csv: csvStr => {
+      if (!csvStr) return
+      const PLACEHOLDER_CHAR = '\0'
+      const multilineDateTemplate = $t('package.trends.date_range_multiline', {
+        start: PLACEHOLDER_CHAR,
+        end: PLACEHOLDER_CHAR,
+      })
+        .replaceAll(PLACEHOLDER_CHAR, '')
+        .trim()
+      const blob = new Blob([
+        csvStr
+          .replace('data:text/csv;charset=utf-8,', '')
+          .replaceAll(`\n${multilineDateTemplate}`, ` ${multilineDateTemplate}`),
+      ])
+      const url = URL.createObjectURL(blob)
+      downloadFileLink(url, buildExportFilename('csv'))
+      URL.revokeObjectURL(url)
+    },
+    svg: args => {
+      const blob = args?.blob
+      if (!blob) return
+      const url = URL.createObjectURL(blob)
+      downloadFileLink(url, buildExportFilename('svg'))
+      URL.revokeObjectURL(url)
+    },
+  },
+  buttonTitles: {
+    csv: $t('package.trends.download_file', { fileType: 'CSV' }),
+    img: $t('package.trends.download_file', { fileType: 'PNG' }),
+    svg: $t('package.trends.download_file', { fileType: 'SVG' }),
+    annotator: $t('package.trends.toggle_annotator'),
+    stack: $t('package.trends.toggle_stack_mode'),
+    altCopy: $t('package.trends.copy_alt.button_label'),
+    open: $t('package.trends.open_options'),
+    close: $t('package.trends.close_options'),
+  },
+}))
+
 const config = computed<VueUiXyConfig>(() => {
   return {
     theme: isDarkMode.value ? 'dark' : '',
@@ -423,8 +503,8 @@ const config = computed<VueUiXyConfig>(() => {
           xAxisLabels: {
             color: colors.value.fgSubtle,
             fontSize: isMobile.value ? 12 : 10,
-            modulo: 24,
-            showOnlyAtModulo: versions.value.length > 24,
+            modulo: Math.min(32, Math.round(versions.value.length / 2)),
+            showOnlyAtModulo: versions.value.length > 32,
             values: versions.value.map(v => applyEllipsis(v, 20)),
             rotation: -30,
             autoRotate: {
@@ -475,53 +555,17 @@ const config = computed<VueUiXyConfig>(() => {
           altCopy: true,
           annotator: !isMobile.value,
         },
-        buttonTitles: {
-          csv: $t('package.trends.download_file', { fileType: 'CSV' }),
-          img: $t('package.trends.download_file', { fileType: 'PNG' }),
-          svg: $t('package.trends.download_file', { fileType: 'SVG' }),
-          annotator: $t('package.trends.toggle_annotator'),
-          stack: $t('package.trends.toggle_stack_mode'),
-          altCopy: $t('package.trends.copy_alt.button_label'),
-          open: $t('package.trends.open_options'),
-          close: $t('package.trends.close_options'),
-        },
+        buttonTitles: commonConfig.value.buttonTitles,
         callbacks: {
-          img: args => {
-            const imageUri = args?.imageUri
-            if (!imageUri) return
-            downloadFileLink(imageUri, buildExportFilename('png'))
-          },
-          csv: csvStr => {
-            if (!csvStr) return
-            const PLACEHOLDER_CHAR = '\0'
-            const multilineDateTemplate = $t('package.trends.date_range_multiline', {
-              start: PLACEHOLDER_CHAR,
-              end: PLACEHOLDER_CHAR,
-            })
-              .replaceAll(PLACEHOLDER_CHAR, '')
-              .trim()
-            const blob = new Blob([
-              csvStr
-                .replace('data:text/csv;charset=utf-8,', '')
-                .replaceAll(`\n${multilineDateTemplate}`, ` ${multilineDateTemplate}`),
-            ])
-            const url = URL.createObjectURL(blob)
-            downloadFileLink(url, buildExportFilename('csv'))
-            URL.revokeObjectURL(url)
-          },
-          svg: args => {
-            const blob = args?.blob
-            if (!blob) return
-            const url = URL.createObjectURL(blob)
-            downloadFileLink(url, buildExportFilename('svg'))
-            URL.revokeObjectURL(url)
-          },
+          img: commonConfig.value.callbacks!.img,
+          csv: commonConfig.value.callbacks!.csv,
+          svg: commonConfig.value.callbacks!.svg,
           altCopy: () =>
             copyAltTextForTimelineChart({
               dataset: orderedConvertedData.value,
               config: {
                 packageName: packageName.value,
-                metric: activeTab.value === 'dependencyCount' ? 'dependencyCount' : 'totalSize',
+                metric: activeTab.value,
                 copy,
                 $t,
                 numberFormatter: formatter.value.format,
@@ -630,6 +674,37 @@ function getActiveVersionDatapointPlot(
   return item?.plots?.[activeVersionIndex.value - zoomOffset] ?? null
 }
 
+function getActiveVersionDatapointBar(
+  items: VueUiStackbarFormattedDatasetItem[],
+  barWidth: number,
+): Partial<TimelinePlotItem> | null {
+  const activeIndex = activeVersionIndex.value
+
+  return items
+    .flatMap(entry => {
+      const y = entry.y?.[activeIndex]
+
+      if (y === undefined) {
+        return []
+      }
+
+      return [
+        {
+          entry,
+          index: activeIndex,
+          y: (y ?? 0) - 12,
+          x: (entry.x?.[activeIndex] ?? 0) + barWidth / 2,
+          rectKey: entry.rectKeys?.[activeIndex],
+          height: entry.height?.[activeIndex],
+        },
+      ]
+    })
+    .reduce<Partial<TimelinePlotItem> | null>(
+      (min, current) => (min === null || current.y! < min.y! ? current : min),
+      null,
+    )
+}
+
 function getPositiveDatapointPlots(
   item: TimelineDatasetItem,
   zoomOffset: number,
@@ -661,8 +736,9 @@ const indexSelection = computed(() => {
 
 const stackbarConfig = computed<VueUiStackbarConfig>(() => ({
   theme: isDarkMode.value ? 'dark' : '',
-  responsive: true,
+  useCssAnimation: false,
   userOptions: {
+    useCursorPointer: true,
     buttons: {
       pdf: false,
       labels: false,
@@ -670,14 +746,35 @@ const stackbarConfig = computed<VueUiStackbarConfig>(() => ({
       table: false,
       tooltip: false,
       annotator: !isMobile.value,
+      altCopy: true,
+    },
+    buttonTitles: commonConfig.value.buttonTitles,
+    callbacks: {
+      img: commonConfig.value.callbacks!.img,
+      csv: commonConfig.value.callbacks!.csv,
+      svg: commonConfig.value.callbacks!.svg,
+      altCopy: args =>
+        copyAltTextForTimelineStackbar({
+          dataset: args.dataset,
+          config: {
+            ...args.config,
+            packageName: packageName.value,
+            versions: versions.value,
+            copy,
+            $t,
+            numberFormatter: bytesFormatter.format,
+            maxSegments: DEP_SEGMENT_COUNT + 2, // Adding Other & __self__
+          },
+        }),
     },
   },
   style: {
     chart: {
       backgroundColor: colors.value.bg,
       color: colors.value.fg,
-      height: 240,
-      padding: { top: 24, right: 12, bottom: 48, left: 64 },
+      height: 300,
+      width: 1000,
+      padding: { top: 24, right: 0, bottom: 24, left: 12 },
       zoom: { show: false },
       title: {
         text: applyEllipsis(packageName.value, 32),
@@ -691,45 +788,51 @@ const stackbarConfig = computed<VueUiStackbarConfig>(() => ({
         color: colors.value.fg,
         backgroundColor: colors.value.bg,
         fontSize: 12,
+        selectAllToggle: {
+          show: true,
+        },
       },
       tooltip: {
         backgroundColor: colors.value.bg,
         color: colors.value.fg,
         borderColor: colors.value.border,
         borderRadius: 6,
+        position: tooltipPosition.value,
+        offsetX: 24,
       },
       highlighter: {
-        color: colors.value.accent,
-        opacity: 5,
+        color: colors.value.fg,
+        opacity: 10,
       },
       bars: {
-        gapRatio: 0.3,
+        gapRatio: 0,
         borderRadius: 2,
         gradient: { show: false },
         totalValues: { show: false },
         dataLabels: { show: false },
       },
       grid: {
-        scale: { scaleMin: 0, ticks: 6 },
+        scale: { ticks: 10 },
         x: {
           showAxis: true,
           axisColor: colors.value.border,
-          showHorizontalLines: false,
+          showHorizontalLines: true,
+          linesColor: colors.value.border,
           timeLabels: {
             show: true,
             values: versions.value.map(v => applyEllipsis(v, 20)),
             color: colors.value.fgSubtle,
             fontSize: isMobile.value ? 12 : 10,
             rotation: -30,
-            modulo: 24,
-            showOnlyAtModulo: versions.value.length > 24,
+            modulo: Math.min(32, Math.round(versions.value.length / 2)),
+            showOnlyAtModulo: versions.value.length > 32,
             autoRotate: { enable: false },
           },
         },
         y: {
           showAxis: true,
           axisColor: colors.value.border,
-          showVerticalLines: true,
+          showVerticalLines: false,
           linesColor: colors.value.border,
           axisName: {
             show: true,
@@ -748,42 +851,87 @@ const stackbarConfig = computed<VueUiStackbarConfig>(() => ({
     },
   },
 }))
+
+function stackbarTooltipTime(datapoint: VueUiStackbarTooltipDatapoint[]): string | undefined {
+  const absoluteIndex = datapoint[0]?.timeLabel?.absoluteIndex
+  if (absoluteIndex == null) return undefined
+  return orderedConvertedData.value[absoluteIndex]?.time
+}
+
+const timelineMetricTabs = computed(() => [
+  {
+    value: 'totalSize' as const,
+    icon: 'i-lucide:package-open' as const,
+    label: $t('package.stats.install_size'),
+  },
+  {
+    value: 'dependencyCount' as const,
+    icon: 'i-lucide:network' as const,
+    label: $t('compare.dependencies'),
+  },
+  {
+    value: 'dependencySize' as const,
+    icon: 'i-lucide:chart-column-stacked' as const,
+    label: $t('package.timeline.chart.dependency_size'),
+  },
+])
 </script>
 
 <template>
-  <div style="width: 100%" class="font-mono border-b border-border" id="timeline-chart">
+  <div
+    style="width: 100%"
+    class="font-mono border-b border-border"
+    :class="{ loaded: shouldPauseChartAnimations }"
+    id="timeline-chart"
+  >
     <div class="mt-4 flex flex-row flex-wrap items-center justify-between gap-4">
-      <TabRoot v-model="activeTab" default-value="totalSize">
-        <TabList :ariaLabel="$t('package.timeline.chart.tab_aria_label')">
-          <TabItem value="totalSize" icon="i-lucide:package-open" :controls-panel="false">
-            {{ $t('package.stats.install_size') }}
-          </TabItem>
-          <TabItem value="dependencyCount" icon="i-lucide:network" :controls-panel="false">
-            {{ $t('compare.dependencies') }}
-          </TabItem>
-          <TabItem
-            value="dependencySize"
-            icon="i-lucide:chart-column-stacked"
-            :controls-panel="false"
-          >
-            {{ $t('package.timeline.chart.dependency_size') }}
-          </TabItem>
-        </TabList>
-      </TabRoot>
+      <div class="w-full sm:w-auto">
+        <label for="timeline-chart-metric" class="sr-only">
+          {{ $t('package.timeline.chart.tab_aria_label') }}
+        </label>
+
+        <select
+          id="timeline-chart-metric"
+          v-model="activeTab"
+          class="block w-fit rounded-md border border-border bg-bg px-3 py-2 text-sm text-fg sm:hidden"
+        >
+          <option v-for="tab in timelineMetricTabs" :key="tab.value" :value="tab.value">
+            {{ tab.label }}
+          </option>
+        </select>
+
+        <div class="hidden sm:block">
+          <TabRoot v-model="activeTab" default-value="totalSize">
+            <TabList :ariaLabel="$t('package.timeline.chart.tab_aria_label')">
+              <TabItem
+                v-for="tab in timelineMetricTabs"
+                :key="tab.value"
+                :value="tab.value"
+                :icon="tab.icon"
+                :controls-panel="false"
+              >
+                {{ tab.label }}
+              </TabItem>
+            </TabList>
+          </TabRoot>
+        </div>
+      </div>
 
       <div class="flex flex-row flex-wrap gap-4">
         <SettingsToggle
           v-model="settings.timelineChart.isOrdered"
           :label="$t('package.timeline.chart.ordered_versions')"
         />
-        <SettingsToggle
-          v-model="settings.timelineChart.isZeroBased"
-          :label="$t('package.timeline.chart.base_scale')"
-        />
-        <SettingsToggle
-          v-model="settings.timelineChart.showZoom"
-          :label="$t('package.timeline.chart.zoom')"
-        />
+        <template v-if="activeTab === 'totalSize' || activeTab === 'dependencyCount'">
+          <SettingsToggle
+            v-model="settings.timelineChart.isZeroBased"
+            :label="$t('package.timeline.chart.base_scale')"
+          />
+          <SettingsToggle
+            v-model="settings.timelineChart.showZoom"
+            :label="$t('package.timeline.chart.zoom')"
+          />
+        </template>
       </div>
     </div>
     <ClientOnly>
@@ -999,73 +1147,19 @@ const stackbarConfig = computed<VueUiStackbarConfig>(() => ({
           />
         </template>
 
-        <template #annotator-action-close>
+        <template v-for="slotName in CHART_ANNOTATOR_SLOTS" #[slotName]="slotProps">
           <span
-            class="i-lucide:x w-6 h-6 text-fg-subtle"
-            style="pointer-events: none"
+            v-if="getAnnotatorIcon(slotName, slotProps)"
+            class="w-6 h-6"
+            :class="[
+              getAnnotatorIcon(slotName, slotProps),
+              slotName === 'annotator-action-color' ? null : 'text-fg-subtle',
+            ]"
+            :style="getAnnotatorStyle(slotName, slotProps)"
             aria-hidden="true"
           />
         </template>
-        <template #annotator-action-color="{ color }">
-          <span class="i-lucide:palette w-6 h-6" :style="{ color }" aria-hidden="true" />
-        </template>
-        <template #annotator-action-draw="{ mode }">
-          <span
-            v-if="mode === 'arrow'"
-            class="i-lucide:move-up-right text-fg-subtle w-6 h-6"
-            aria-hidden="true"
-          />
-          <span
-            v-if="mode === 'text'"
-            class="i-lucide:type text-fg-subtle w-6 h-6"
-            aria-hidden="true"
-          />
-          <span
-            v-if="mode === 'line'"
-            class="i-lucide:pen-line text-fg-subtle w-6 h-6"
-            aria-hidden="true"
-          />
-          <span
-            v-if="mode === 'draw'"
-            class="i-lucide:line-squiggle text-fg-subtle w-6 h-6"
-            aria-hidden="true"
-          />
-        </template>
-        <template #annotator-action-undo>
-          <span
-            class="i-lucide:undo-2 w-6 h-6 text-fg-subtle"
-            style="pointer-events: none"
-            aria-hidden="true"
-          />
-        </template>
-        <template #annotator-action-redo>
-          <span
-            class="i-lucide:redo-2 w-6 h-6 text-fg-subtle"
-            style="pointer-events: none"
-            aria-hidden="true"
-          />
-        </template>
-        <template #annotator-action-delete>
-          <span
-            class="i-lucide:trash w-6 h-6 text-fg-subtle"
-            style="pointer-events: none"
-            aria-hidden="true"
-          />
-        </template>
-        <template #optionAnnotator="{ isAnnotator }">
-          <span
-            v-if="isAnnotator"
-            class="i-lucide:pen-off w-6 h-6 text-fg-subtle"
-            style="pointer-events: none"
-            aria-hidden="true"
-          />
-          <span
-            v-else
-            class="i-lucide:pen w-6 h-6 text-fg-subtle"
-            style="pointer-events: none"
-            aria-hidden="true"
-          />
-        </template>
+
         <template #optionAltCopy>
           <span
             class="w-6 h-6"
@@ -1091,30 +1185,86 @@ const stackbarConfig = computed<VueUiStackbarConfig>(() => ({
         </template>
       </VueUiXy>
 
-      <VueUiStackbar v-else :dataset="datasets.dependencySize" :config="stackbarConfig">
+      <VueUiStackbar
+        v-else
+        :dataset="datasets.dependencySize"
+        :config="stackbarConfig"
+        :selected-x-index="indexSelection"
+        ref="chartRef"
+      >
+        <!-- Injecting custom svg elements -->
+        <template #svg="{ svg }">
+          <!-- Print watermark-->
+          <g
+            v-if="svg.isPrintingSvg || svg.isPrintingImg"
+            v-html="
+              drawSmallNpmxLogoAndTaglineWatermark({
+                svg: {
+                  ...svg,
+                  height: 12 /** mocking a small height to place the watermark at the top */,
+                },
+                colors: watermarkColors,
+                translateFn: $t,
+              })
+            "
+          />
+
+          <g class="pointer-events-none">
+            <!-- Marker for selected version -->
+            <circle
+              class="pointer-events-none svg-element-transition"
+              v-if="getActiveVersionDatapointBar(svg.data, svg.barWidth)"
+              :cx="getActiveVersionDatapointBar(svg.data, svg.barWidth)!.x"
+              :cy="getActiveVersionDatapointBar(svg.data, svg.barWidth)!.y"
+              r="8"
+              :fill="colors.accent"
+              :stroke="colors.bg"
+              stroke-width="2"
+            />
+          </g>
+        </template>
+
         <!-- Custom tooltip -->
         <template #tooltip="{ datapoint, timeLabel, seriesIndex }">
-          <div class="font-mono text-xs flex flex-col">
-            <div class="border-border border-b pb-2 mb-2 text-fg">{{ timeLabel }}</div>
-            <ul class="flex flex-col gap-1">
+          <div class="font-mono text-xs min-w-48 max-w-[28rem]">
+            <div class="border-border border-b pb-2 mb-2">
+              <div class="text-fg font-semibold truncate">{{ timeLabel }}</div>
+              <DateTime
+                :datetime="stackbarTooltipTime(datapoint)!"
+                class="text-xs text-fg-subtle"
+                year="numeric"
+                month="short"
+                day="numeric"
+              />
+            </div>
+
+            <ul class="flex flex-col gap-1.5 max-h-80 overflow-y-auto pe-1">
               <li
                 v-for="point in stackbarTooltipPoints(datapoint, seriesIndex)"
                 :key="point.id"
-                class="flex flex-row items-center gap-2"
-                :class="point.removed ? 'line-through' : ''"
+                class="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 rounded px-1"
+                :class="point.removed ? 'opacity-60' : ''"
               >
                 <span
-                  class="w-2 h-2 rounded-sm shrink-0"
+                  class="w-2.5 h-2.5 rounded-xs shrink-0"
                   :style="{ backgroundColor: point.color }"
                   aria-hidden="true"
                 />
-                <span class="truncate max-w-[12rem] text-[var(--fg)]/70">
+
+                <span
+                  class="min-w-0 truncate text-[var(--fg)]/70"
+                  :class="point.removed ? 'line-through' : ''"
+                  :title="point.name"
+                >
                   {{ point.name }}
                 </span>
-                <span class="text-sm ms-auto ps-3">
+
+                <span class="flex items-baseline gap-1.5 text-sm text-fg">
                   {{ bytesFormatter.format(point.size) }}
+
                   <span
                     v-if="point.delta !== 0"
+                    class="leading-none"
                     :class="
                       point.delta > 0
                         ? 'text-red-600 dark:text-red-400'
@@ -1142,6 +1292,30 @@ const stackbarConfig = computed<VueUiStackbarConfig>(() => ({
         </template>
         <template #optionSvg>
           <span class="text-fg-subtle font-mono pointer-events-none">SVG</span>
+        </template>
+
+        <template #optionAltCopy>
+          <span
+            class="w-6 h-6"
+            :class="
+              copied ? 'i-lucide:check text-accent' : 'i-lucide:person-standing text-fg-subtle'
+            "
+            style="pointer-events: none"
+            aria-hidden="true"
+          />
+        </template>
+
+        <template v-for="slotName in CHART_ANNOTATOR_SLOTS" #[slotName]="slotProps">
+          <span
+            v-if="getAnnotatorIcon(slotName, slotProps)"
+            class="w-6 h-6"
+            :class="[
+              getAnnotatorIcon(slotName, slotProps),
+              slotName === 'annotator-action-color' ? null : 'text-fg-subtle',
+            ]"
+            :style="getAnnotatorStyle(slotName, slotProps)"
+            aria-hidden="true"
+          />
         </template>
       </VueUiStackbar>
 
@@ -1185,10 +1359,16 @@ const stackbarConfig = computed<VueUiStackbarConfig>(() => ({
   transition: none !important;
 }
 
+:deep(.vue-ui-stackbar rect) {
+  animation: none !important;
+  transition: all 0.5s var(--super-ease-out) !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   :deep(.vue-data-ui-component .serie_line_0 path),
   .svg-element-transition,
-  :deep(.vdui-shape-circle) {
+  :deep(.vdui-shape-circle),
+  :deep(.vue-ui-stackbar rect) {
     transition: none !important;
   }
 }
@@ -1226,5 +1406,13 @@ const stackbarConfig = computed<VueUiStackbarConfig>(() => ({
 
 .animate-indeterminate {
   animation: indeterminate 1.5s ease-in-out infinite;
+}
+
+.loaded :deep(.vue-data-ui-component .serie_line_0 path),
+.loaded .svg-element-transition,
+.loaded :deep(.vdui-shape-circle),
+.loaded :deep(.vue-ui-stackbar rect) {
+  transition: none !important;
+  animation: none !important;
 }
 </style>
