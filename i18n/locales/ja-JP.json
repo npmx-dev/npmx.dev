@@ -24,7 +24,7 @@
     "resources": "リソース",
     "features": "機能",
     "other": "その他",
-    "sponsored_by": "Sponsored by {list}"
+    "sponsored_by": "スポンサー: {list}"
   },
   "shortcuts": {
     "section": {
@@ -101,9 +101,9 @@
     "here": "現在地",
     "connected": "接続済み",
     "keyboard_shortcuts": {
-      "navigate": "to navigate",
-      "select": "to select",
-      "close": "to close"
+      "navigate": "移動",
+      "select": "選択",
+      "close": "閉じる"
     },
     "state": {
       "on": "オン",
@@ -1221,8 +1221,8 @@
     },
     "sponsors": {
       "title": "スポンサー",
-      "gold": "Gold Sponsors",
-      "silver": "Silver Sponsors"
+      "gold": "ゴールドスポンサー",
+      "silver": "シルバースポンサー"
     },
     "oss_partners": {
       "title": "OSSパートナー"
