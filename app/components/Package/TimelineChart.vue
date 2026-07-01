@@ -139,10 +139,13 @@ const orderedConvertedData = computed(() => {
 watch(
   orderedConvertedData,
   async () => {
-    if (chartRef.value && !('resetZoom' in chartRef.value)) return
     await nextTick()
-    chartRef.value?.resetZoom()
+    const chart = chartRef.value
+    if (!chart || !('resetZoom' in chart) || typeof chart.resetZoom !== 'function') return
+    chart.resetZoom()
   },
+  { flush: 'post' },
+)
   { flush: 'post' },
 )
 
