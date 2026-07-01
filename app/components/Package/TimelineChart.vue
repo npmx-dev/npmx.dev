@@ -415,11 +415,9 @@ function buildExportFilename(extension: 'png' | 'csv' | 'svg') {
 
 const tooltipPosition = useTooltipPosition(chartRef)
 
-type XyUserOptions = NonNullable<NonNullable<NonNullable<VueUiXyConfig['chart']>['userOptions']>>
+type XyUserOptions = NonNullable<NonNullable<VueUiXyConfig['chart']>['userOptions']>
 
-type StackbarUserOptions = NonNullable<
-  NonNullable<NonNullable<VueUiXyConfig['chart']>['userOptions']>
->
+type StackbarUserOptions = NonNullable<NonNullable<VueUiXyConfig['chart']>['userOptions']>
 
 type CommonUserOptions = XyUserOptions & StackbarUserOptions
 
