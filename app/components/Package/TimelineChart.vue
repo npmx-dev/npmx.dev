@@ -1360,7 +1360,7 @@ const timelineMetricTabs = computed(() => [
 
 :deep(.vue-ui-stackbar rect) {
   animation: none !important;
-  transition: all 0.5s var(--super-ease-out) !important;
+  transition: all 0.3s var(--super-ease-out) !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
