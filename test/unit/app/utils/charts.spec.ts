@@ -1272,7 +1272,7 @@ describe('createAltTextForTimelineChart', () => {
     } as unknown as AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>)
 
     expect(result).toBe('t:package.timeline.chart.copy_alt.general_description')
-    expect(translateMock.calls).toHaveLength(5)
+    expect(translateMock.calls).toHaveLength(3)
   })
 })
 
