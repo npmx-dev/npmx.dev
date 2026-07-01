@@ -146,8 +146,6 @@ watch(
   },
   { flush: 'post' },
 )
-  { flush: 'post' },
-)
 
 const versions = computed(() => orderedConvertedData.value.map(d => d.version))
 
