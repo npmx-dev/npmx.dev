@@ -180,7 +180,7 @@ defineOgImage(
 
     <!-- Loading state (only on initial load, not when we already have data) -->
     <LoadingSpinner
-      v-if="status === 'pending' && packages.length === 0 && !error"
+      v-if="(status === 'idle' || status === 'pending') && packages.length === 0 && !error"
       :text="$t('common.loading_packages')"
     />
 

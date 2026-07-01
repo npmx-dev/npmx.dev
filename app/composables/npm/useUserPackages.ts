@@ -110,7 +110,7 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
 
       return { ...response, isStale }
     },
-    { default: emptySearchResponse },
+    { default: emptySearchResponse, server: false },
   )
   // --- Fetch more (npm path only) ---
   /**
