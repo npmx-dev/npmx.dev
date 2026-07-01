@@ -1,7 +1,6 @@
 import type { RemovableRef } from '@vueuse/core'
 import type { LocaleObject } from '@nuxtjs/i18n'
-import { useLocalStorage } from '@vueuse/core'
-import { onMounted, shallowRef } from 'vue'
+import { useLocalStorage, useMounted } from '@vueuse/core'
 import { ACCENT_COLORS, type AccentColorId } from '#shared/utils/constants'
 import { BACKGROUND_THEMES } from '#shared/utils/constants'
 
@@ -198,11 +197,7 @@ export function useAccentColor() {
  */
 export function useSearchProvider() {
   const { settings } = useSettings()
-  const isMounted = shallowRef(false)
-
-  onMounted(() => {
-    isMounted.value = true
-  })
+  const isMounted = useMounted()
 
   const searchProvider = computed({
     get: () => (isMounted.value ? settings.value.searchProvider : DEFAULT_SETTINGS.searchProvider),
