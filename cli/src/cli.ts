@@ -43,6 +43,11 @@ const main = defineCommand({
       description: 'Port to listen on',
       default: String(DEFAULT_PORT),
     },
+    y: {
+      type: 'boolean',
+      description: 'Skip warning message and accept prompt',
+      default: false
+    }
   },
   async run({ args }) {
     const port = Number.parseInt(args.port as string, 10) || DEFAULT_PORT
@@ -51,18 +56,20 @@ const main = defineCommand({
 
     initLogger()
 
-    // Warning message and accept prompt
-    logWarning(
-      `This allows ${styleText('underline', 'npmx.dev')} to access your npm cli and any authenticated contexts.`,
-    )
-    const accept = await p.confirm({
-      message: 'Do you accept?',
-      initialValue: true,
-    })
-
-    if (!accept || p.isCancel(accept)) {
-      logError('Connector setup cancelled.')
-      process.exit(0)
+    if(!args.y) {
+      // Warning message and accept prompt
+      logWarning(
+        `This allows ${styleText('underline', 'npmx.dev')} to access your npm cli and any authenticated contexts.`,
+      )
+      const accept = await p.confirm({
+        message: 'Do you accept?',
+        initialValue: true,
+      })
+  
+      if (!accept || p.isCancel(accept)) {
+        logError('Connector setup cancelled.')
+        process.exit(0)
+      }
     }
 
     // Check npm authentication before starting
