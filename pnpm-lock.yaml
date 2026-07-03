@@ -193,8 +193,8 @@ importers:
         specifier: 18.0.0
         version: 18.0.0
       module-replacements:
-        specifier: 3.0.0-beta.8
-        version: 3.0.0-beta.8
+        specifier: 3.0.0
+        version: 3.0.0
       nuxt:
         specifier: 4.4.8
         version: 4.4.8(@babel/plugin-syntax-jsx@7.28.6)(@babel/plugin-syntax-typescript@7.28.6)(@parcel/watcher@2.5.6)(@types/node@24.12.0)(@upstash/redis@1.37.0)(@vue/compiler-sfc@3.5.39)(better-sqlite3@12.8.0)(cac@6.7.14)(db0@0.3.4)(esbuild@0.27.3)(eslint@9.39.2)(ioredis@5.10.1)(magicast@0.5.3)(optionator@0.9.4)(rollup-plugin-visualizer@7.0.1)(rollup@4.60.3)(terser@5.46.0)(typescript@6.0.2)(vite@8.0.0)(vue-tsc@3.2.6)(yaml@2.9.0)
@@ -418,7 +418,7 @@ importers:
         version: 12.8.0
       docus:
         specifier: 5.9.0
-        version: 5.9.0(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@nuxt/schema@4.4.8)(@takumi-rs/wasm@1.0.9)(@tiptap/extensions@3.24.0)(@tiptap/y-tiptap@3.0.2)(@unhead/vue@2.1.15)(@upstash/redis@1.37.0)(@vue/compiler-dom@3.5.39)(better-sqlite3@12.8.0)(db0@0.3.4)(embla-carousel@8.6.0)(eslint@9.39.2)(focus-trap@8.0.0)(fontless@0.2.1)(h3@1.15.11)(ioredis@5.10.1)(magicast@0.5.3)(nitropack@2.13.4)(nuxt@4.4.8)(playwright-core@1.60.0)(react-dom@19.2.4)(react@19.2.4)(rollup@4.60.3)(sharp@0.34.5)(typescript@6.0.2)(unifont@0.7.4)(unstorage@1.17.5)(valibot@1.3.1)(vite@8.0.0)(vue-router@5.0.4)(vue@3.5.39)(yjs@13.6.29)
+        version: 5.9.0(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@nuxt/schema@4.4.8)(@takumi-rs/wasm@1.0.9)(@tiptap/extensions@3.24.0)(@tiptap/y-tiptap@3.0.2)(@unhead/vue@2.1.15)(@upstash/redis@1.37.0)(@vue/compiler-dom@3.5.39)(better-sqlite3@12.8.0)(db0@0.3.4)(embla-carousel@8.6.0)(eslint@9.39.2)(focus-trap@8.0.0)(fontless@0.2.1)(h3@2.0.1-rc.20)(ioredis@5.10.1)(magicast@0.5.3)(nitropack@2.13.4)(nuxt@4.4.8)(playwright-core@1.60.0)(react-dom@19.2.4)(react@19.2.4)(rollup@4.60.3)(sharp@0.34.5)(typescript@6.0.2)(unifont@0.7.4)(unstorage@1.17.5)(valibot@1.3.1)(vite@8.0.0)(vue-router@5.0.4)(vue@3.5.39)(yjs@13.6.29)
       nuxt:
         specifier: 4.4.8
         version: 4.4.8(@babel/plugin-syntax-jsx@7.28.6)(@babel/plugin-syntax-typescript@7.28.6)(@parcel/watcher@2.5.6)(@types/node@24.12.0)(@upstash/redis@1.37.0)(@vue/compiler-sfc@3.5.39)(better-sqlite3@12.8.0)(cac@6.7.14)(db0@0.3.4)(esbuild@0.27.3)(eslint@9.39.2)(ioredis@5.10.1)(magicast@0.5.3)(optionator@0.9.4)(oxlint@1.61.0)(rollup-plugin-visualizer@7.0.1)(rollup@4.60.3)(terser@5.46.0)(typescript@6.0.2)(vite@8.0.0)(vue-tsc@3.2.6)(yaml@2.9.0)
@@ -8866,6 +8866,9 @@ packages:
   mocked-exports@0.1.1:
     resolution: {integrity: sha512-aF7yRQr/Q0O2/4pIXm6PZ5G+jAd7QS4Yu8m+WEeEHGnbo+7mE36CbLSDQiXYV8bVL3NfmdeqPJct0tUlnjVSnA==}
 
+  module-replacements@3.0.0:
+    resolution: {integrity: sha512-tHIZqde+RlyNRobAIjfcH5UIgIrEbZbDGRL6J/x+HERX/g8O9mrm0p6knJbsTXmQtDvZ+eFP+xfOP3/9jHk6YA==}
+
   module-replacements@3.0.0-beta.8:
     resolution: {integrity: sha512-sc8TepP9elxoOBXEpxmhPzKKjTjbswHVcmsKGbgvm3k6jZlLu/WMV/Lfmga6IGMgHU/V3WtY2s6VEgM4nTElUQ==}
 
@@ -11256,6 +11259,9 @@ packages:
 
   vue-component-type-helpers@3.3.5:
     resolution: {integrity: sha512-Fe1jyPJoUGpJOYKOri44jduR7My4yYINOMJISuMAbmrs+L5LbIDUc8NTWZYY3EJLK0yPLuCmcd5zoCsE4k2/KA==}
+
+  vue-component-type-helpers@3.3.6:
+    resolution: {integrity: sha512-FkljacAwJ9BUoSUdpFe3VDy0sGigNlTH9+2zcXUWmZOjN8swiCkl3t48wOJun0OsUd2cEIda1l04tsxMiKIIrQ==}
 
   vue-data-ui@3.22.0:
     resolution: {integrity: sha512-FwEv+dtzrIny8jYR1qQ8Ye6IYMA7MDCy+86LQAldV5n/iWF1Ebfx6LI8LHfOBXL7mMZLZ0kggeukGo9y1Ssuyw==}
@@ -14598,11 +14604,11 @@ snapshots:
       - uploadthing
       - vue
 
-  '@nuxtjs/mcp-toolkit@0.13.4(h3@1.15.11)(magicast@0.5.3)(zod@4.3.6)':
+  '@nuxtjs/mcp-toolkit@0.13.4(h3@2.0.1-rc.20)(magicast@0.5.3)(zod@4.3.6)':
     dependencies:
       '@modelcontextprotocol/sdk': 1.29.0(zod@4.3.6)
       '@nuxt/kit': 4.4.8(magicast@0.5.3)
-      h3: 1.15.11
+      h3: 2.0.1-rc.20
       tinyglobby: 0.2.17
       zod: 4.3.6
     transitivePeerDependencies:
@@ -16184,7 +16190,7 @@ snapshots:
       storybook: 10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@19.2.4)(react@19.2.4)
       type-fest: 2.19.0
       vue: 3.5.39(typescript@6.0.2)
-      vue-component-type-helpers: 3.3.5
+      vue-component-type-helpers: 3.3.6
 
   '@surma/rollup-plugin-off-main-thread@2.2.3':
     dependencies:
@@ -18283,7 +18289,7 @@ snapshots:
 
   doctypes@1.1.0: {}
 
-  docus@5.9.0(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@nuxt/schema@4.4.8)(@takumi-rs/wasm@1.0.9)(@tiptap/extensions@3.24.0)(@tiptap/y-tiptap@3.0.2)(@unhead/vue@2.1.15)(@upstash/redis@1.37.0)(@vue/compiler-dom@3.5.39)(better-sqlite3@12.8.0)(db0@0.3.4)(embla-carousel@8.6.0)(eslint@9.39.2)(focus-trap@8.0.0)(fontless@0.2.1)(h3@1.15.11)(ioredis@5.10.1)(magicast@0.5.3)(nitropack@2.13.4)(nuxt@4.4.8)(playwright-core@1.60.0)(react-dom@19.2.4)(react@19.2.4)(rollup@4.60.3)(sharp@0.34.5)(typescript@6.0.2)(unifont@0.7.4)(unstorage@1.17.5)(valibot@1.3.1)(vite@8.0.0)(vue-router@5.0.4)(vue@3.5.39)(yjs@13.6.29):
+  docus@5.9.0(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@nuxt/schema@4.4.8)(@takumi-rs/wasm@1.0.9)(@tiptap/extensions@3.24.0)(@tiptap/y-tiptap@3.0.2)(@unhead/vue@2.1.15)(@upstash/redis@1.37.0)(@vue/compiler-dom@3.5.39)(better-sqlite3@12.8.0)(db0@0.3.4)(embla-carousel@8.6.0)(eslint@9.39.2)(focus-trap@8.0.0)(fontless@0.2.1)(h3@2.0.1-rc.20)(ioredis@5.10.1)(magicast@0.5.3)(nitropack@2.13.4)(nuxt@4.4.8)(playwright-core@1.60.0)(react-dom@19.2.4)(react@19.2.4)(rollup@4.60.3)(sharp@0.34.5)(typescript@6.0.2)(unifont@0.7.4)(unstorage@1.17.5)(valibot@1.3.1)(vite@8.0.0)(vue-router@5.0.4)(vue@3.5.39)(yjs@13.6.29):
     dependencies:
       '@ai-sdk/gateway': 3.0.101(zod@4.3.6)
       '@ai-sdk/mcp': 1.0.36(zod@4.3.6)
@@ -18296,7 +18302,7 @@ snapshots:
       '@nuxt/kit': 4.4.8(magicast@0.5.3)
       '@nuxt/ui': 4.6.1(@nuxt/content@3.12.0)(@tiptap/extensions@3.24.0)(@tiptap/y-tiptap@3.0.2)(@upstash/redis@1.37.0)(db0@0.3.4)(embla-carousel@8.6.0)(focus-trap@8.0.0)(ioredis@5.10.1)(magicast@0.5.3)(react-dom@19.2.4)(react@19.2.4)(tailwindcss@4.2.2)(typescript@6.0.2)(valibot@1.3.1)(vite@8.0.0)(vue-router@5.0.4)(vue@3.5.39)(yjs@13.6.29)(zod@4.3.6)
       '@nuxtjs/i18n': 10.2.4(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@upstash/redis@1.37.0)(@vue/compiler-dom@3.5.39)(db0@0.3.4)(eslint@9.39.2)(ioredis@5.10.1)(magicast@0.5.3)(rollup@4.60.3)(typescript@6.0.2)(vue@3.5.39)
-      '@nuxtjs/mcp-toolkit': 0.13.4(h3@1.15.11)(magicast@0.5.3)(zod@4.3.6)
+      '@nuxtjs/mcp-toolkit': 0.13.4(h3@2.0.1-rc.20)(magicast@0.5.3)(zod@4.3.6)
       '@nuxtjs/mdc': 0.21.1(magicast@0.5.3)
       '@nuxtjs/robots': 6.0.9(@nuxt/schema@4.4.8)(magicast@0.5.3)(nuxt@4.4.8)(vite@8.0.0)(vue@3.5.39)(zod@4.3.6)
       '@shikijs/core': 4.1.0
@@ -20630,6 +20636,8 @@ snapshots:
       ufo: 1.6.3
 
   mocked-exports@0.1.1: {}
+
+  module-replacements@3.0.0: {}
 
   module-replacements@3.0.0-beta.8: {}
 
@@ -24316,6 +24324,8 @@ snapshots:
   vue-component-type-helpers@2.2.12: {}
 
   vue-component-type-helpers@3.3.5: {}
+
+  vue-component-type-helpers@3.3.6: {}
 
   vue-data-ui@3.22.0(vue@3.5.39):
     dependencies:
