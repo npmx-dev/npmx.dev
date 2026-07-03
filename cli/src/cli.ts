@@ -46,8 +46,8 @@ const main = defineCommand({
     y: {
       type: 'boolean',
       description: 'Skip warning message and accept prompt',
-      default: false
-    }
+      default: false,
+    },
   },
   async run({ args }) {
     const port = Number.parseInt(args.port as string, 10) || DEFAULT_PORT
@@ -56,7 +56,7 @@ const main = defineCommand({
 
     initLogger()
 
-    if(!args.y) {
+    if (!args.y) {
       // Warning message and accept prompt
       logWarning(
         `This allows ${styleText('underline', 'npmx.dev')} to access your npm cli and any authenticated contexts.`,
@@ -65,7 +65,7 @@ const main = defineCommand({
         message: 'Do you accept?',
         initialValue: true,
       })
-  
+
       if (!accept || p.isCancel(accept)) {
         logError('Connector setup cancelled.')
         process.exit(0)
