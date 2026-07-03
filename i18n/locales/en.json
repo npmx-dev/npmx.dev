@@ -13,6 +13,7 @@
   "trademark_disclaimer": "npm is a registered trademark of npm, Inc. This site is not affiliated with npm, Inc.",
   "footer": {
     "about": "about",
+    "sponsors": "sponsors",
     "blog": "blog",
     "docs": "docs",
     "source": "source",
@@ -1265,6 +1266,64 @@
         "title": "Stay updated",
         "description": "Find out the latest on npmx.",
         "cta": "Follow on Bluesky"
+      }
+    }
+  },
+  "sponsors_page": {
+    "title": "Sponsors",
+    "heading": "sponsors",
+    "meta_description": "Support npmx and help us accelerate ecosystem work around security, trust, optimization, and research.",
+    "intro": "Support npmx and help us grow the ecosystem work we do for developers and maintainers.",
+    "what_we_do": {
+      "title": "What we do",
+      "description": "We're building an ecosystem that solves problems around security, trust, optimization, and research for the tools we use in everyday development - quickly, conveniently, and with high quality. This project is built by developers for developers. As authors of widely used libraries, we understand team needs and actively study what maintainers and projects need most."
+    },
+    "what_support_means": {
+      "title": "What support means",
+      "description": "Our plans and connections keep growing, along with our desire to share what we've built and learn from others. Your support helps fund the project, external talks, conferences, and the broader ecosystem, and, most importantly, enables us to keep growing our community."
+    },
+    "cta": "See sponsorship tiers",
+    "community_growth_footnote": "* According to {link} Q1 2026 research.",
+    "what_this_means_for_you": {
+      "title": "What this means for you",
+      "description": "npmx is not only about improving developer experience and closing critical everyday gaps. In our first six months, we have already become the default source for thousands of teams and a huge number of developers. You get not only a more stable tool for your teams, but also visibility in front of a constantly growing audience of top-tier engineers.",
+      "cards": {
+        "people": {
+          "contributors": "contributors",
+          "community_members": "community members"
+        },
+        "visitors": {
+          "description": "unique monthly visitors"
+        },
+        "stars": {
+          "title": "stars"
+        },
+        "community": {
+          "title": "fast-growing",
+          "description": "We are one of the fastest-growing communities in the ecosystem"
+        },
+        "adoption": {
+          "title": "adoption",
+          "description": "charts at conferences, talks, and articles rely on our data"
+        },
+        "default_source": {
+          "title": "default source",
+          "description": "pnpm made npmx the default source, many packages have been configured to link to npmx"
+        }
+      }
+    },
+    "tiers": {
+      "title": "Sponsorship tiers",
+      "per_month": "/month",
+      "custom": "Custom",
+      "silver": {
+        "name": "Silver"
+      },
+      "gold": {
+        "name": "Gold"
+      },
+      "platinum": {
+        "name": "Platinum"
       }
     }
   },

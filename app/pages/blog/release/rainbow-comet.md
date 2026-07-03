@@ -11,7 +11,7 @@ authors:
 title: 'npmx rainbow comet'
 tags: ['OpenSource', 'Release']
 excerpt: 'npmx 0.16 is out! This period was especially full of good news. And it’s particularly great that, amid the constant search for vulnerabilities and risks, we’ve started celebrating more and taking joy in what we do - and what our favorite maintainers and authors do.'
-date: '2026-06-30'
+date: '2026-07-03'
 slug: 'release/rainbow-comet'
 image: 'https://npmx.dev/blog/og/release-rainbow-comet.png'
 description: 'npmx 0.16 is out! This period was especially full of good news. And it’s particularly great that, amid the constant search for vulnerabilities and risks, we’ve started celebrating more and taking joy in what we do - and what our favorite maintainers and authors do.'
@@ -34,15 +34,6 @@ We’d like to start with one of the nicest pieces of news - we’ve welcomed a 
 
 ![CodeRabbit x npmx](/blog/coderabbit-x-npmx.png)
 
-### Timeline
-
-As you may already know, another place where we celebrate achievements is the package timeline. It’s where we show not only growth and issues, but also optimizations. And of course, we celebrate together with maintainers and users every time you share these results.
-
-<BlueskyPostEmbed
-  url="https://bsky.app/profile/chenjiahan.bsky.social/post/3mmvj4gq4h22s"
-  uri="at://did:plc:ymoeg4trisbzfowiaemnu7xz/app.bsky.feed.post/3mmvj4gq4h22s"
-/>
-
 ### Changelog
 
 Speaking of changes, it’s hard to miss change analysis in packages. And to view those changes, you no longer need third‑party services. Now we show the changelog directly on package pages.
@@ -52,22 +43,20 @@ Speaking of changes, it’s hard to miss change analysis in packages. And to vie
   uri="at://did:plc:nlenimoh4wmif7s22hiw5uzt/app.bsky.feed.post/3mmrihvusqk2b"
 />
 
-### Trusted publishing
-
-But of course the biggest change for packages in this period is trusted publishing. Together with `allowScripts` defaults to off, we suddenly found ourselves in a much safer environment. Incredible work by the npm team to improve the security of packages and our projects.
-
-npmx also shows packages with trusted publishing and tracks changes to this setting.
-
-<BlueskyPostEmbed
-  url="https://bsky.app/profile/nik.digital/post/3mmettwpgtc24"
-  uri="at://did:plc:6ctcux7hto6zyi3r7osornur/app.bsky.feed.post/3mmettwpgtc24"
-/>
-
 ### Stats tab
 
 One of the key metrics when choosing a dependency is statistics. To make that part of your experience more convenient, we added a stats page for every package. All information in one place - and there will be even more soon.
 
 ![The Stats tab for the nuxt package](/blog/stats-tab.png)
+
+### Timeline
+
+As you may already know, another place where we celebrate achievements is the package timeline. It’s where we show not only growth and issues, but also optimizations. And of course, we celebrate together with maintainers and users every time you share these results.
+
+<BlueskyPostEmbed
+  url="https://bsky.app/profile/chenjiahan.bsky.social/post/3mmvj4gq4h22s"
+  uri="at://did:plc:ymoeg4trisbzfowiaemnu7xz/app.bsky.feed.post/3mmvj4gq4h22s"
+/>
 
 ### Likes leaderboard
 

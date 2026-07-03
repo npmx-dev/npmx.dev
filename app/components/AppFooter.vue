@@ -55,6 +55,10 @@ const footerSections = computed<Array<{ label: string; links: FooterLink[] }>>((
         href: '/about',
       },
       {
+        name: t('footer.sponsors'),
+        href: '/sponsors',
+      },
+      {
         name: t('footer.brand'),
         href: '/brand',
       },

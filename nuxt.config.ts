@@ -220,6 +220,7 @@ export default defineNuxtConfig({
     '/pds': { isr: 86400 }, // revalidate daily
     '/blog/**': { prerender: true },
     '/noodles/**': { prerender: true },
+    '/sponsors': { prerender: true },
     // proxy for insights
     '/_v/script.js': {
       proxy: 'https://npmx.dev/_vercel/insights/script.js',
