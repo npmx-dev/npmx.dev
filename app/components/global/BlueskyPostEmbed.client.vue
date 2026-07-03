@@ -238,7 +238,7 @@ const postUrl = computed(() => {
     </template>
 
     <!-- Timestamp + engagement -->
-    <div class="flex items-center gap-4 text-sm text-fg-subtle">
+    <div class="flex items-center gap-4 text-sm text-fg-subtle mt-3">
       <DateTime :datetime="post.record.createdAt" date-style="medium" />
       <span v-if="post.likeCount" class="flex items-center gap-1">
         <span class="i-lucide:heart w-3.5 h-3.5" aria-hidden="true" />
