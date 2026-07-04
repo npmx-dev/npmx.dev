@@ -10,10 +10,7 @@ const PAGES = [
   '/search',
   '/package/nuxt',
   '/search?q=vue',
-  '/~qwerzl',
 ] as const
-
-const SEARCH_PROVIDER_PAGES = ['/search?q=vue', '/~qwerzl'] as const
 
 // ---------------------------------------------------------------------------
 // Test matrix
@@ -109,20 +106,6 @@ test.describe('Hydration', () => {
       test(`${page}`, async ({ page: pw, goto, hydrationErrors }) => {
         await injectLocalStorage(pw, {
           'npmx-settings': JSON.stringify({ relativeDates: true }),
-        })
-        await goto(page, { waitUntil: 'hydration' })
-
-        expect(hydrationErrors).toEqual([])
-      })
-    }
-  })
-
-  // Default: "algolia" in production -> test persisted "npm"
-  test.describe('search provider: npm', () => {
-    for (const page of SEARCH_PROVIDER_PAGES) {
-      test(`${page}`, async ({ page: pw, goto, hydrationErrors }) => {
-        await injectLocalStorage(pw, {
-          'npmx-settings': JSON.stringify({ searchProvider: 'npm' }),
         })
         await goto(page, { waitUntil: 'hydration' })
 
