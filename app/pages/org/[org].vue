@@ -6,7 +6,12 @@ import type {
   SecurityFilter,
   UpdatedWithin,
 } from '#shared/types/preferences'
-import { DEFAULT_COLUMNS } from '#shared/types/preferences'
+import {
+  DEFAULT_COLUMNS,
+  DOWNLOAD_RANGES,
+  SECURITY_FILTER_VALUES,
+  UPDATED_WITHIN_OPTIONS,
+} from '#shared/types/preferences'
 import { normalizeSearchParam } from '#shared/utils/url'
 import { debounce } from 'perfect-debounce'
 
@@ -78,9 +83,13 @@ const {
   packages,
   initialSort: (normalizeSearchParam(route.query.sort) as SortOption) ?? DEFAULT_SORT,
   initialFilters: {
-    downloadRange: (normalizeSearchParam(route.query.downloadRange) as DownloadRange) || undefined,
-    security: (normalizeSearchParam(route.query.security) as SecurityFilter) || undefined,
-    updatedWithin: (normalizeSearchParam(route.query.updatedWithin) as UpdatedWithin) || undefined,
+    downloadRange: DOWNLOAD_RANGES.find(
+      r => r.value === normalizeSearchParam(route.query.downloadRange),
+    )?.value,
+    security: SECURITY_FILTER_VALUES.find(v => v === normalizeSearchParam(route.query.security)),
+    updatedWithin: UPDATED_WITHIN_OPTIONS.find(
+      o => o.value === normalizeSearchParam(route.query.updatedWithin),
+    )?.value,
   },
 })
 
