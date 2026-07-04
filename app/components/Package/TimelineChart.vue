@@ -25,6 +25,7 @@ import {
   getAnnotatorIcon,
   getAnnotatorStyle,
   type TimelineChartMetric,
+  type StackbarTooltipPoint,
 } from '~/utils/charts'
 import type { TimelineVersion, SubEvent } from '~~/server/api/registry/timeline/[...pkg].get'
 import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
@@ -32,6 +33,8 @@ import { useColors } from '~/composables/useColors'
 import { parseStableVersion } from '~/utils/versions'
 import { downloadFileLink } from '~/utils/download'
 import { useElementSize, useTimeoutFn } from '@vueuse/core'
+import TimelineChartDepSizeTooltip from './TimelineChartDepSizeTooltip.vue'
+import TimelineChartXyTooltip from './TimelineChartXyTooltip.vue'
 
 import('vue-data-ui/style.css')
 
@@ -265,17 +268,6 @@ const dependencySegments = computed<DependencySegment[]>(() => {
   // bottom to top
   return [otherSegment, ...depSegments.toReversed(), selfSegment]
 })
-
-interface StackbarTooltipPoint {
-  id: string
-  name: string
-  color: string
-  size: number
-  /** Signed size change vs the previous version's bar (0 when unchanged) */
-  delta: number
-  /** Present in the previous bar but gone in this one */
-  removed: boolean
-}
 
 function stackbarTooltipPoints(
   datapoint: VueUiStackbarTooltipDatapoint[],
@@ -943,89 +935,22 @@ const timelineMetricTabs = computed(() => [
       >
         <!-- Custom tooltip -->
         <template #tooltip="{ timeLabel }">
-          <div class="font-mono text-xs flex flex-col">
-            <div class="border-border border-b pb-2 mb-2 flex flex-col">
-              <div class="flex flex-row gap-4">
-                <span class="text-fg">{{
-                  orderedConvertedData[timeLabel.absoluteIndex]?.version
-                }}</span>
-                <span
-                  v-for="tag in orderedConvertedData[timeLabel.absoluteIndex]?.tags"
-                  :key="tag"
-                  class="text-3xs font-semibold uppercase tracking-wide"
-                  :class="tag === 'latest' ? 'text-accent' : 'text-fg-subtle'"
-                >
-                  {{ tag }}
-                </span>
-              </div>
-              <DateTime
-                :datetime="orderedConvertedData[timeLabel.absoluteIndex]?.time!"
-                class="text-xs text-fg-subtle"
-                year="numeric"
-                month="short"
-                day="numeric"
-              />
-            </div>
-
-            <div :class="activeTab === 'totalSize' ? 'flex flex-col' : 'flex flex-col-reverse'">
-              <!-- Install size -->
-              <div class="flex flex-row gap-2 items-end">
-                <span class="text-[var(--fg)]/70">{{ $t('package.stats.install_size') }}</span>
-                <span class="text-sm">
-                  {{
-                    bytesFormatter.format(
-                      orderedConvertedData[timeLabel.absoluteIndex]?.totalSize ?? 0,
-                    )
-                  }}
-                </span>
-              </div>
-
-              <!-- Dependency count -->
-              <div class="flex flex-row gap-2 items-end">
-                <span class="text-[var(--fg)]/70">{{ $t('compare.dependencies') }}</span>
-                <span class="text-sm">
-                  {{
-                    compactNumberFormatter.format(
-                      orderedConvertedData[timeLabel.absoluteIndex]?.dependencyCount ?? 0,
-                    )
-                  }}
-                </span>
-              </div>
-            </div>
-
-            <!-- Positive & negative events -->
-            <ol
-              v-if="orderedConvertedData[timeLabel.absoluteIndex]?.events.length"
-              class="relative font-[Geist] mt-2"
-            >
-              <li
-                v-for="event in orderedConvertedData[timeLabel.absoluteIndex]?.events"
-                :key="event.key"
-                class="relative mb-1 ms-4 last:mb-0"
-              >
-                <span
-                  class="absolute -start-[1rem] top-0.5 flex items-center justify-center w-3 h-3 rounded-full border"
-                  :class="
-                    event.positive
-                      ? 'bg-green-500 border-green-600'
-                      : 'bg-amber-500 border-amber-600'
-                  "
-                >
-                  <span class="w-2 h-2 text-white" :class="event.icon" aria-hidden="true" />
-                </span>
-                <p
-                  class="text-xs"
-                  :class="
-                    event.positive
-                      ? 'text-green-700 dark:text-green-400'
-                      : 'text-amber-700 dark:text-amber-400'
-                  "
-                >
-                  {{ event.text }}
-                </p>
-              </li>
-            </ol>
-          </div>
+          <TimelineChartXyTooltip
+            :timeLabel
+            :version="orderedConvertedData[timeLabel.absoluteIndex]?.version"
+            :tags="orderedConvertedData[timeLabel.absoluteIndex]?.tags"
+            :datetime="orderedConvertedData[timeLabel.absoluteIndex]?.time!"
+            :activeTab
+            :totalSize="
+              bytesFormatter.format(orderedConvertedData[timeLabel.absoluteIndex]?.totalSize ?? 0)
+            "
+            :dependencyCount="
+              compactNumberFormatter.format(
+                orderedConvertedData[timeLabel.absoluteIndex]?.dependencyCount ?? 0,
+              )
+            "
+            :events="orderedConvertedData[timeLabel.absoluteIndex]?.events"
+          />
         </template>
 
         <!-- Keyboard navigation hint -->
@@ -1225,58 +1150,12 @@ const timelineMetricTabs = computed(() => [
 
         <!-- Custom tooltip -->
         <template #tooltip="{ datapoint, timeLabel, seriesIndex }">
-          <div class="font-mono text-xs min-w-48 max-w-[28rem]">
-            <div class="border-border border-b pb-2 mb-2">
-              <div class="text-fg font-semibold truncate">{{ timeLabel }}</div>
-              <DateTime
-                :datetime="stackbarTooltipTime(datapoint)!"
-                class="text-xs text-fg-subtle"
-                year="numeric"
-                month="short"
-                day="numeric"
-              />
-            </div>
-
-            <ul class="flex flex-col gap-1.5 max-h-80 overflow-y-auto pe-1">
-              <li
-                v-for="point in stackbarTooltipPoints(datapoint, seriesIndex)"
-                :key="point.id"
-                class="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 rounded px-1"
-                :class="point.removed ? 'opacity-60' : ''"
-              >
-                <span
-                  class="w-2.5 h-2.5 rounded-xs shrink-0"
-                  :style="{ backgroundColor: point.color }"
-                  aria-hidden="true"
-                />
-
-                <span
-                  class="min-w-0 truncate text-[var(--fg)]/70"
-                  :class="point.removed ? 'line-through' : ''"
-                  :title="point.name"
-                >
-                  {{ point.name }}
-                </span>
-
-                <span class="flex items-baseline gap-1.5 text-sm text-fg">
-                  {{ bytesFormatter.format(point.size) }}
-
-                  <span
-                    v-if="point.delta !== 0"
-                    class="leading-none"
-                    :class="
-                      point.delta > 0
-                        ? 'text-red-600 dark:text-red-400'
-                        : 'text-green-600 dark:text-green-400'
-                    "
-                  >
-                    ({{ point.delta > 0 ? '+' : '-'
-                    }}{{ bytesFormatter.format(Math.abs(point.delta)) }})
-                  </span>
-                </span>
-              </li>
-            </ul>
-          </div>
+          <TimelineChartDepSizeTooltip
+            :datapoint
+            :timeLabel
+            :datetime="stackbarTooltipTime(datapoint)!"
+            :datapoints="stackbarTooltipPoints(datapoint, seriesIndex)"
+          />
         </template>
 
         <template #menuIcon="{ isOpen }">

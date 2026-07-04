@@ -1122,3 +1122,15 @@ export function getAnnotatorStyle(slotName: AnnotatorSlotName, props?: unknown) 
         : ('none' as const),
   }
 }
+
+// Timeline types
+export interface StackbarTooltipPoint {
+  id: string
+  name: string
+  color: string
+  size: number
+  /** Signed size change vs the previous version's bar (0 when unchanged) */
+  delta: number
+  /** Present in the previous bar but gone in this one */
+  removed: boolean
+}

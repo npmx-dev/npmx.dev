@@ -228,6 +228,8 @@ import {
   PackageSkillsCard,
   PackageTable,
   PackageTableRow,
+  PackageTimelineChartDepSizeTooltip,
+  PackageTimelineChartXyTooltip,
   PackageVersions,
   PackageVulnerabilityTree,
   PaginationControls,
@@ -288,7 +290,7 @@ import SizeIncrease from '~/components/Package/SizeIncrease.vue'
 import SizeDecrease from '~/components/Package/SizeDecrease.vue'
 import Likes from '~/components/Package/Likes.vue'
 import LikesLeaderboardPage from '~/pages/leaderboard/likes.vue'
-import type { VueUiXyDatasetItem } from 'vue-data-ui'
+import type { VueUiXyDatasetItem } from 'vue-data-ui/vue-ui-xy'
 
 describe('component accessibility audits', () => {
   describe('DateTime', () => {
@@ -2277,6 +2279,55 @@ describe('component accessibility audits', () => {
           document.body.appendChild(table)
           return tbody
         })(),
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageTimelineChartDepSizeTooltip', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageTimelineChartDepSizeTooltip, {
+        props: {
+          datapoint: [
+            {
+              absoluteIndex: 0,
+              color: '#FF0000',
+              id: 'ABC',
+              name: 'Nuxt',
+              proportion: 1,
+              timeLabel: {
+                text: 'time',
+                absoluteIndex: 0,
+              },
+              value: 1,
+            },
+          ],
+          timeLabel: 'time',
+          datetime: '2027-01-01',
+          datapoints: [
+            { id: 'ABC', name: 'Nuxt', color: '#666666', size: 100, delta: 0, removed: false },
+          ],
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageTimelineChartXyTooltip', () => {
+    it('should have no accessibillity violations', async () => {
+      const component = await mountSuspended(PackageTimelineChartXyTooltip, {
+        props: {
+          timeLabel: { absoluteIndex: 0, text: 'time' },
+          version: '1.0.0',
+          tags: [],
+          datetime: '2027-01-01',
+          totalSize: '1 MB',
+          dependencyCount: '10',
+          events: [],
+          activeTab: 'totalSize',
+        },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
