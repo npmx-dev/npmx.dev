@@ -172,6 +172,7 @@ import {
   LinkBase,
   CallToAction,
   ChangelogCard,
+  ChangelogSkeleton,
   ChangelogErrorMsg,
   CodeDirectoryListing,
   CodeFileTree,
@@ -2738,10 +2739,17 @@ describe('component accessibility audits', () => {
             id: 'a11y',
             title: '1.0.0',
             publishedAt: '2026-02-11 10:00:00.000Z',
+            link: 'https://github.com/nuxt/nuxt/releases/tag/v4.4.5',
           },
           tocHeaderClass: 'toc',
         },
       })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('ChangelogSkeleton', async () => {
+      const component = await mountSuspended(ChangelogSkeleton)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })

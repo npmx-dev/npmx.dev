@@ -193,8 +193,8 @@ importers:
         specifier: 18.0.0
         version: 18.0.0
       module-replacements:
-        specifier: 3.0.0-beta.8
-        version: 3.0.0-beta.8
+        specifier: 3.0.0
+        version: 3.0.0
       nuxt:
         specifier: 4.4.8
         version: 4.4.8(@babel/plugin-syntax-jsx@7.28.6)(@babel/plugin-syntax-typescript@7.28.6)(@parcel/watcher@2.5.6)(@types/node@24.12.0)(@upstash/redis@1.37.0)(@vue/compiler-sfc@3.5.39)(better-sqlite3@12.8.0)(cac@6.7.14)(db0@0.3.4)(esbuild@0.27.3)(eslint@9.39.2)(ioredis@5.10.1)(magicast@0.5.3)(optionator@0.9.4)(rollup-plugin-visualizer@7.0.1)(rollup@4.60.3)(terser@5.46.0)(typescript@6.0.2)(vite@8.0.0)(vue-tsc@3.2.6)(yaml@2.9.0)
@@ -8866,6 +8866,9 @@ packages:
   mocked-exports@0.1.1:
     resolution: {integrity: sha512-aF7yRQr/Q0O2/4pIXm6PZ5G+jAd7QS4Yu8m+WEeEHGnbo+7mE36CbLSDQiXYV8bVL3NfmdeqPJct0tUlnjVSnA==}
 
+  module-replacements@3.0.0:
+    resolution: {integrity: sha512-tHIZqde+RlyNRobAIjfcH5UIgIrEbZbDGRL6J/x+HERX/g8O9mrm0p6knJbsTXmQtDvZ+eFP+xfOP3/9jHk6YA==}
+
   module-replacements@3.0.0-beta.8:
     resolution: {integrity: sha512-sc8TepP9elxoOBXEpxmhPzKKjTjbswHVcmsKGbgvm3k6jZlLu/WMV/Lfmga6IGMgHU/V3WtY2s6VEgM4nTElUQ==}
 
@@ -11256,6 +11259,9 @@ packages:
 
   vue-component-type-helpers@3.3.5:
     resolution: {integrity: sha512-Fe1jyPJoUGpJOYKOri44jduR7My4yYINOMJISuMAbmrs+L5LbIDUc8NTWZYY3EJLK0yPLuCmcd5zoCsE4k2/KA==}
+
+  vue-component-type-helpers@3.3.6:
+    resolution: {integrity: sha512-FkljacAwJ9BUoSUdpFe3VDy0sGigNlTH9+2zcXUWmZOjN8swiCkl3t48wOJun0OsUd2cEIda1l04tsxMiKIIrQ==}
 
   vue-data-ui@3.22.3:
     resolution: {integrity: sha512-CfH4X/fASIaeKJDUdLE19UstTbTXCB9mm6U2Ig95MGPekOLo4ZvC/9OfUcUEe7PwzGyu3a9861hL8EvM4IVqpA==}
@@ -16184,7 +16190,7 @@ snapshots:
       storybook: 10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@19.2.4)(react@19.2.4)
       type-fest: 2.19.0
       vue: 3.5.39(typescript@6.0.2)
-      vue-component-type-helpers: 3.3.5
+      vue-component-type-helpers: 3.3.6
 
   '@surma/rollup-plugin-off-main-thread@2.2.3':
     dependencies:
@@ -20631,6 +20637,8 @@ snapshots:
 
   mocked-exports@0.1.1: {}
 
+  module-replacements@3.0.0: {}
+
   module-replacements@3.0.0-beta.8: {}
 
   motion-dom@12.40.0:
@@ -24316,6 +24324,8 @@ snapshots:
   vue-component-type-helpers@2.2.12: {}
 
   vue-component-type-helpers@3.3.5: {}
+
+  vue-component-type-helpers@3.3.6: {}
 
   vue-data-ui@3.22.3(vue@3.5.39):
     dependencies:
