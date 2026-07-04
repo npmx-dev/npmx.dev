@@ -1142,7 +1142,6 @@ const timelineMetricTabs = computed(() => [
 }
 
 :deep(.vue-data-ui-component .serie_line_0 path),
-.svg-element-transition,
 :deep(.vdui-shape-circle) {
   transition: all 0.5s var(--super-ease-out) !important;
 }
@@ -1158,7 +1157,6 @@ const timelineMetricTabs = computed(() => [
 
 @media (prefers-reduced-motion: reduce) {
   :deep(.vue-data-ui-component .serie_line_0 path),
-  .svg-element-transition,
   :deep(.vdui-shape-circle),
   :deep(.vue-ui-stackbar rect) {
     transition: none !important;
@@ -1201,7 +1199,6 @@ const timelineMetricTabs = computed(() => [
 }
 
 .loaded :deep(.vue-data-ui-component .serie_line_0 path),
-.loaded .svg-element-transition,
 .loaded :deep(.vdui-shape-circle),
 .loaded :deep(.vue-ui-stackbar rect) {
   transition: none !important;
