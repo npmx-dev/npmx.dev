@@ -129,6 +129,13 @@ export function useFacetSelection(queryParam = 'facets') {
         chartable_scatter: true,
         formatter: v => compactNumberFormatter.value.format(v),
       },
+      githubForks: {
+        label: t(`compare.facets.items.githubForks.label`),
+        description: t(`compare.facets.items.githubForks.description`),
+        chartable: true,
+        chartable_scatter: true,
+        formatter: v => compactNumberFormatter.value.format(v),
+      },
       githubIssues: {
         label: t(`compare.facets.items.githubIssues.label`),
         description: t(`compare.facets.items.githubIssues.description`),

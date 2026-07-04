@@ -172,6 +172,7 @@ import {
   LinkBase,
   CallToAction,
   ChangelogCard,
+  ChangelogSkeleton,
   ChangelogErrorMsg,
   CodeDirectoryListing,
   CodeFileTree,
@@ -994,12 +995,12 @@ describe('component accessibility audits', () => {
               homepage: 'https://react.dev',
               repository: {
                 type: 'git',
-                url: 'https://github.com/facebook/react.git',
+                url: 'https://github.com/react/react.git',
               },
               bugs: {
-                url: 'https://github.com/facebook/react/issues',
+                url: 'https://github.com/react/react/issues',
               },
-              funding: 'https://github.com/sponsors/facebook',
+              funding: 'https://github.com/facebook',
               dist: {
                 shasum: 'abc123def456',
                 tarball: 'https://registry.npmjs.org/react/-/react-18.2.0.tgz',
@@ -2738,10 +2739,17 @@ describe('component accessibility audits', () => {
             id: 'a11y',
             title: '1.0.0',
             publishedAt: '2026-02-11 10:00:00.000Z',
+            link: 'https://github.com/nuxt/nuxt/releases/tag/v4.4.5',
           },
           tocHeaderClass: 'toc',
         },
       })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('ChangelogSkeleton', async () => {
+      const component = await mountSuspended(ChangelogSkeleton)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })

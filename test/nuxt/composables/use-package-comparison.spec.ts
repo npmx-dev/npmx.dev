@@ -194,7 +194,7 @@ describe('usePackageComparison', () => {
   })
 
   describe('github metadata', () => {
-    it('fetches github stars and issues when repository is on github', async () => {
+    it('fetches github stars, forks, and issues when repository is on github', async () => {
       const pkgName = 'github-pkg'
       vi.stubGlobal(
         '$fetch',
@@ -211,7 +211,7 @@ describe('usePackageComparison', () => {
             })
           }
           if (fullUrl.includes('ungh.cc/repos/owner/repo')) {
-            return Promise.resolve({ repo: { stars: 1500 } })
+            return Promise.resolve({ repo: { stars: 1500, forks: 100 } })
           }
           if (fullUrl.includes('/api/github/issues/owner/repo')) {
             return Promise.resolve({ issues: 50 })
@@ -226,9 +226,11 @@ describe('usePackageComparison', () => {
       })
 
       const stars = getFacetValues('githubStars')[0]
+      const forks = getFacetValues('githubForks')[0]
       const issues = getFacetValues('githubIssues')[0]
 
       expect(stars).toMatchObject({ raw: 1500, status: 'neutral' })
+      expect(forks).toMatchObject({ raw: 100, status: 'neutral' })
       expect(issues).toMatchObject({ raw: 50, status: 'neutral' })
     })
 
@@ -266,6 +268,7 @@ describe('usePackageComparison', () => {
       })
 
       expect(getFacetValues('githubStars')[0]).toBeNull()
+      expect(getFacetValues('githubForks')[0]).toBeNull()
       expect(getFacetValues('githubIssues')[0]).toBeNull()
     })
 
@@ -298,6 +301,7 @@ describe('usePackageComparison', () => {
       expect(fetchMock).not.toHaveBeenCalledWith(expect.stringContaining('/api/github/issues'))
 
       expect(getFacetValues('githubStars')[0]).toBeNull()
+      expect(getFacetValues('githubForks')[0]).toBeNull()
       expect(getFacetValues('githubIssues')[0]).toBeNull()
     })
   })

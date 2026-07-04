@@ -52,6 +52,7 @@ export interface PackageComparisonData {
     deprecated?: string
     github?: {
       stars?: number
+      forks?: number
       issues?: number
     }
   }
@@ -154,7 +155,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
             // Fetch fast additional data in parallel (optional - failures are ok)
             const repoInfo = parseRepositoryInfo(pkgData.repository)
             const isGitHub = repoInfo?.provider === 'github'
-            const [downloads, analysis, vulns, likes, ghStars, ghIssues] = await Promise.all([
+            const [downloads, analysis, vulns, likes, ghRepo, ghIssues] = await Promise.all([
               // Download counts are per-package, not per-version.
               $fetch<{ downloads: number }>(
                 `https://api.npmjs.org/downloads/point/last-week/${encodePackageName(name)}`,
@@ -169,11 +170,9 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
                 () => null,
               ),
               isGitHub
-                ? $fetch<{ repo: { stars: number } }>(
+                ? $fetch<{ repo: { stars?: number; forks?: number } }>(
                     `https://ungh.cc/repos/${repoInfo.owner}/${repoInfo.repo}`,
-                  )
-                    .then(res => (typeof res?.repo?.stars === 'number' ? res.repo.stars : null))
-                    .catch(() => null)
+                  ).catch(() => null)
                 : Promise.resolve(null),
               isGitHub
                 ? $fetch<{ issues: number | null }>(
@@ -229,7 +228,8 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
                 engines: analysis?.engines,
                 deprecated: versionData?.deprecated,
                 github: {
-                  stars: ghStars ?? undefined,
+                  stars: typeof ghRepo?.repo?.stars === 'number' ? ghRepo.repo.stars : undefined,
+                  forks: typeof ghRepo?.repo?.forks === 'number' ? ghRepo.repo.forks : undefined,
                   issues: ghIssues ?? undefined,
                 },
               },
@@ -602,6 +602,15 @@ function computeFacetValue(
       return {
         raw: stars,
         display: formatCompactNumber(stars),
+        status: 'neutral',
+      }
+    }
+    case 'githubForks': {
+      const forks = data.metadata?.github?.forks
+      if (forks == null) return null
+      return {
+        raw: forks,
+        display: formatCompactNumber(forks),
         status: 'neutral',
       }
     }
