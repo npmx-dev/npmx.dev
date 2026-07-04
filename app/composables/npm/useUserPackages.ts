@@ -9,9 +9,11 @@ const MAX_RESULTS = 250
 type RawNpmSearchResponse = Omit<NpmSearchResponse, 'isStale'> &
   Partial<Pick<NpmSearchResponse, 'isStale'>>
 
-type UserPackagesPrefetchWindow = Window & {
+interface UserPackagesPrefetchGlobal {
   __NPMX_USER_PACKAGES_PREFETCH__?: Record<string, Promise<RawNpmSearchResponse | null> | undefined>
 }
+
+type UserPackagesPrefetchWindow = Window & UserPackagesPrefetchGlobal
 
 function normalizeNpmSearchResponse(response: RawNpmSearchResponse): NpmSearchResponse {
   return {
@@ -74,9 +76,7 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
       decodeURIComponent(window.location.pathname.split('/')[1] || '').replace(/^~/, '')
     if (!prehydrateUsername) return
 
-    const prefetchWindow = window as typeof window & {
-      __NPMX_USER_PACKAGES_PREFETCH__?: Record<string, Promise<unknown> | undefined>
-    }
+    const prefetchWindow = window as typeof window & UserPackagesPrefetchGlobal
     const prefetches = (prefetchWindow.__NPMX_USER_PACKAGES_PREFETCH__ ||= {})
     if (prefetches[prehydrateUsername]) return
 
