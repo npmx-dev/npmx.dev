@@ -47,7 +47,7 @@ const main = defineCommand({
       type: 'boolean',
       description: 'Skip warning message and accept prompt',
       default: false,
-      alias: ["y"]
+      alias: ['y'],
     },
   },
   async run({ args }) {
