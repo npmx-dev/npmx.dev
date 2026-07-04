@@ -43,10 +43,11 @@ const main = defineCommand({
       description: 'Port to listen on',
       default: String(DEFAULT_PORT),
     },
-    y: {
+    yes: {
       type: 'boolean',
       description: 'Skip warning message and accept prompt',
       default: false,
+      alias: ["y"]
     },
   },
   async run({ args }) {
@@ -56,7 +57,7 @@ const main = defineCommand({
 
     initLogger()
 
-    if (!args.y) {
+    if (!args.yes) {
       // Warning message and accept prompt
       logWarning(
         `This allows ${styleText('underline', 'npmx.dev')} to access your npm cli and any authenticated contexts.`,
