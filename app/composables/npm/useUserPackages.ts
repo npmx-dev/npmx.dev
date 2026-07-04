@@ -1,8 +1,35 @@
+import type { NpmSearchResponse } from '#shared/types'
+
 /** Default page size for incremental loading (npm registry path) */
 const PAGE_SIZE = 50 as const
 
 /** npm search API practical limit for maintainer queries */
 const MAX_RESULTS = 250
+
+type RawNpmSearchResponse = Omit<NpmSearchResponse, 'isStale'> &
+  Partial<Pick<NpmSearchResponse, 'isStale'>>
+
+type UserPackagesPrefetchWindow = Window & {
+  __NPMX_USER_PACKAGES_PREFETCH__?: Record<string, Promise<RawNpmSearchResponse | null> | undefined>
+}
+
+function normalizeNpmSearchResponse(response: RawNpmSearchResponse): NpmSearchResponse {
+  return {
+    ...response,
+    isStale: response.isStale ?? false,
+  }
+}
+
+async function getPrehydratedNpmUserPackages(username: string): Promise<NpmSearchResponse | null> {
+  if (!import.meta.client) return null
+
+  const prefetches = (window as UserPackagesPrefetchWindow).__NPMX_USER_PACKAGES_PREFETCH__
+  const response = await prefetches?.[username.toLowerCase()]
+  if (!response) return null
+
+  delete prefetches?.[username.toLowerCase()]
+  return normalizeNpmSearchResponse(response)
+}
 
 /**
  * Fetch packages for a given npm user/maintainer.
@@ -29,6 +56,46 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
   // this is only used in npm path, but we need to extract it when the composable runs
   const { $npmRegistry } = useNuxtApp()
   const { searchByMaintainer } = useAlgoliaSearch()
+
+  onPrehydrate(el => {
+    let settings
+    try {
+      settings = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
+    } catch {
+      settings = {}
+    }
+    if (settings.searchProvider !== 'npm') return
+
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('p') === 'npm') return
+
+    const prehydrateUsername =
+      el?.getAttribute('data-user-packages-username') ||
+      decodeURIComponent(window.location.pathname.split('/')[1] || '').replace(/^~/, '')
+    if (!prehydrateUsername) return
+
+    const prefetchWindow = window as typeof window & {
+      __NPMX_USER_PACKAGES_PREFETCH__?: Record<string, Promise<unknown> | undefined>
+    }
+    const prefetches = (prefetchWindow.__NPMX_USER_PACKAGES_PREFETCH__ ||= {})
+    if (prefetches[prehydrateUsername]) return
+
+    const searchParams = new URLSearchParams()
+    searchParams.set('text', `maintainer:${prehydrateUsername}`)
+    searchParams.set('size', '50')
+
+    prefetches[prehydrateUsername] = fetch(
+      `https://registry.npmjs.org/-/v1/search?${searchParams}`,
+      {
+        cache: 'force-cache',
+      },
+    )
+      .then(response => {
+        if (!response.ok) return null
+        return response.json()
+      })
+      .catch(() => null)
+  })
 
   // --- Incremental loading state (npm path) ---
   const currentPage = shallowRef(1)
@@ -87,6 +154,20 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
       cache.value = null
       currentPage.value = 1
 
+      const prehydrated = await getPrehydratedNpmUserPackages(user)
+      if (prehydrated) {
+        if (user !== toValue(username) || provider !== searchProviderValue.value) {
+          return emptySearchResponse()
+        }
+
+        cache.value = {
+          username: user,
+          objects: prehydrated.objects,
+          total: prehydrated.total,
+        }
+        return prehydrated
+      }
+
       const params = new URLSearchParams()
       params.set('text', `maintainer:${user}`)
       params.set('size', String(PAGE_SIZE))
@@ -110,7 +191,7 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
 
       return { ...response, isStale }
     },
-    { default: emptySearchResponse, server: false },
+    { default: emptySearchResponse },
   )
   // --- Fetch more (npm path only) ---
   /**

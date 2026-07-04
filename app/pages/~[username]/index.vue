@@ -139,7 +139,10 @@ defineOgImage(
 </script>
 
 <template>
-  <main class="container flex-1 flex flex-col py-8 sm:py-12 w-full">
+  <main
+    class="container flex-1 flex flex-col py-8 sm:py-12 w-full"
+    :data-user-packages-username="username"
+  >
     <!-- Header -->
     <header class="mb-8 pb-8 border-b border-border">
       <div class="flex flex-wrap items-center gap-4">
