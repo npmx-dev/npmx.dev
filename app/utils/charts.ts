@@ -1123,7 +1123,7 @@ export function getAnnotatorStyle(slotName: AnnotatorSlotName, props?: unknown) 
   }
 }
 
-// Timeline types
+// Timeline
 export interface StackbarTooltipPoint {
   id: string
   name: string
@@ -1134,3 +1134,21 @@ export interface StackbarTooltipPoint {
   /** Present in the previous bar but gone in this one */
   removed: boolean
 }
+
+export type TimelinePlotItem = {
+  x: number
+  y: number
+  value?: number
+}
+
+export type TimelineMarkerItem = TimelinePlotItem & {
+  key: string
+  offsetY?: number
+}
+
+export const E18E_GRADIENT_COLORS = [
+  'oklch(73.76% 0.130 47.72)',
+  'oklch(85.35% 0.132 88.65)',
+  'oklch(81.56% 0.145 116.12)',
+  'oklch(71.29% 0.132 136.26)',
+]

@@ -229,7 +229,9 @@ import {
   PackageTable,
   PackageTableRow,
   PackageTimelineChartDepSizeTooltip,
+  PackageTimelineChartDepSizeSvgSlot,
   PackageTimelineChartXyTooltip,
+  PackageTimelineChartXySvgSlot,
   PackageVersions,
   PackageVulnerabilityTree,
   PaginationControls,
@@ -290,7 +292,8 @@ import SizeIncrease from '~/components/Package/SizeIncrease.vue'
 import SizeDecrease from '~/components/Package/SizeDecrease.vue'
 import Likes from '~/components/Package/Likes.vue'
 import LikesLeaderboardPage from '~/pages/leaderboard/likes.vue'
-import type { VueUiXyDatasetItem } from 'vue-data-ui/vue-ui-xy'
+import type { VueUiXyDatasetItem, VueUiXySvgSlotProps } from 'vue-data-ui/vue-ui-xy'
+import type { VueUiStackbarSvgSlotProps } from 'vue-data-ui/vue-ui-stackbar'
 
 describe('component accessibility audits', () => {
   describe('DateTime', () => {
@@ -2315,6 +2318,29 @@ describe('component accessibility audits', () => {
     })
   })
 
+  describe('PackageTimelineChartDepSizeSvgSlot', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageTimelineChartDepSizeSvgSlot, {
+        props: {
+          svg: {
+            isPrintingImg: false,
+            isPrintingSvg: false,
+          } as VueUiStackbarSvgSlotProps['svg'],
+          activeVersionPlot: {
+            x: 10,
+            y: 10,
+            value: 100,
+          },
+          watermark: '<g><text x="0" y="0" stroke="#000000" font-size="12">npmx</text></g>',
+          colors: { bg: '#FFFFFF', accent: '#FF0000' },
+          pauseAnimations: false,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
   describe('PackageTimelineChartXyTooltip', () => {
     it('should have no accessibillity violations', async () => {
       const component = await mountSuspended(PackageTimelineChartXyTooltip, {
@@ -2327,6 +2353,37 @@ describe('component accessibility audits', () => {
           dependencyCount: '10',
           events: [],
           activeTab: 'totalSize',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageTimelineChartXySvgSlot', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageTimelineChartXySvgSlot, {
+        props: {
+          svg: {
+            isPrintingImg: false,
+            isPrintingSvg: false,
+          } as VueUiXySvgSlotProps['svg'],
+          activeVersionPlot: {
+            x: 10,
+            y: 10,
+            value: 100,
+          },
+          watermark: '<g><text x="0" y="0" stroke="#000000" font-size="12">npmx</text></g>',
+          markersPositive: [],
+          markersNegative: [],
+          colors: { bg: '#FFFFFF', accent: '#FF0000' },
+          pauseAnimations: false,
+          gradientColors: [
+            'oklch(73.76% 0.130 47.72)',
+            'oklch(85.35% 0.132 88.65)',
+            'oklch(81.56% 0.145 116.12)',
+            'oklch(71.29% 0.132 136.26)',
+          ],
         },
       })
       const results = await runAxe(component)

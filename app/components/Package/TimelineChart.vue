@@ -22,10 +22,13 @@ import {
   type EnrichedTimelineSizeCacheEntry,
   type TimelineSizeCacheValue,
   CHART_ANNOTATOR_SLOTS,
+  E18E_GRADIENT_COLORS,
   getAnnotatorIcon,
   getAnnotatorStyle,
   type TimelineChartMetric,
   type StackbarTooltipPoint,
+  type TimelinePlotItem,
+  type TimelineMarkerItem,
 } from '~/utils/charts'
 import type { TimelineVersion, SubEvent } from '~~/server/api/registry/timeline/[...pkg].get'
 import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
@@ -35,6 +38,8 @@ import { downloadFileLink } from '~/utils/download'
 import { useElementSize, useTimeoutFn } from '@vueuse/core'
 import TimelineChartDepSizeTooltip from './TimelineChartDepSizeTooltip.vue'
 import TimelineChartXyTooltip from './TimelineChartXyTooltip.vue'
+import TimelineChartXySvgSlot from './TimelineChartXySvgSlot.vue'
+import TimelineChartDepSizeSvgSlot from './TimelineChartDepSizeSvgSlot.vue'
 
 import('vue-data-ui/style.css')
 
@@ -204,13 +209,6 @@ watch(
   { flush: 'sync' },
 )
 
-const e18eGradientColors = [
-  'oklch(73.76% 0.130 47.72)',
-  'oklch(85.35% 0.132 88.65)',
-  'oklch(81.56% 0.145 116.12)',
-  'oklch(71.29% 0.132 136.26)',
-]
-
 // After this number of segments, the rest go into an "Other" segment
 const DEP_SEGMENT_COUNT = 8
 
@@ -317,7 +315,7 @@ const datasets = computed<{
         series: seriesTotalSize.value.values,
         temperatureColors: areAllValuesEqual(seriesTotalSize.value.values)
           ? undefined
-          : e18eGradientColors,
+          : E18E_GRADIENT_COLORS,
         color: colors.value.fgSubtle,
         source: orderedConvertedData.value,
       },
@@ -330,7 +328,7 @@ const datasets = computed<{
         series: seriesDependencies.value.values,
         temperatureColors: areAllValuesEqual(seriesDependencies.value.values)
           ? undefined
-          : e18eGradientColors,
+          : E18E_GRADIENT_COLORS,
         color: colors.value.fgSubtle,
         source: orderedConvertedData.value,
       },
@@ -599,17 +597,6 @@ type TimelineSourceItem = {
   events?: SubEvent[]
   hasPositive?: boolean
   hasNegative?: boolean
-}
-
-type TimelinePlotItem = {
-  x: number
-  y: number
-  value?: number
-}
-
-type TimelineMarkerItem = TimelinePlotItem & {
-  key: string
-  offsetY?: number
 }
 
 type TimelineSvgDataItem = VueUiXyDatasetLineItem & {
@@ -966,83 +953,22 @@ const timelineMetricTabs = computed(() => [
 
         <!-- Injecting custom svg elements -->
         <template #svg="{ svg }">
-          <!-- Print watermark-->
-          <g
-            v-if="svg.isPrintingSvg || svg.isPrintingImg"
-            v-html="
+          <TimelineChartXySvgSlot
+            :svg
+            :activeVersionPlot="getActiveVersionDatapointPlot(svg.data[0], svg.slicer.start)"
+            :watermark="
               drawSmallNpmxLogoAndTaglineWatermark({
                 svg,
                 colors: watermarkColors,
                 translateFn: $t,
               })
             "
+            :markersPositive="getPositiveDatapointPlots(svg.data[0], svg.slicer.start)"
+            :markersNegative="getNegativeDatapointPlots(svg.data[0], svg.slicer.start)"
+            :colors
+            :gradientColors="E18E_GRADIENT_COLORS"
+            :pauseAnimations="shouldPauseChartAnimations"
           />
-
-          <g class="pointer-events-none">
-            <!-- Marker for selected version -->
-            <circle
-              class="pointer-events-none svg-element-transition"
-              v-if="getActiveVersionDatapointPlot(svg.data[0], svg.slicer.start)"
-              :cx="getActiveVersionDatapointPlot(svg.data[0], svg.slicer.start)!.x"
-              :cy="getActiveVersionDatapointPlot(svg.data[0], svg.slicer.start)!.y"
-              r="8"
-              :fill="colors.accent"
-              :stroke="colors.bg"
-              stroke-width="2"
-            />
-
-            <!-- Marker for positive events -->
-            <g
-              v-for="plot in getPositiveDatapointPlots(svg.data[0], svg.slicer.start)"
-              :key="plot.key"
-              class="pointer-events-none"
-            >
-              <path
-                :d="`M ${plot.x - 4} ${plot.y - 20} l 4 6 l 10 -12`"
-                fill="none"
-                :stroke="colors.bg"
-                stroke-width="6"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="svg-element-transition"
-              />
-              <path
-                :d="`M ${plot.x - 4} ${plot.y - 20} l 4 6 l 10 -12`"
-                fill="none"
-                :stroke="e18eGradientColors.at(-1)"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="svg-element-transition"
-              />
-            </g>
-
-            <!-- Marker for negative events -->
-            <g
-              v-for="plot in getNegativeDatapointPlots(svg.data[0], svg.slicer.start)"
-              :key="plot.key"
-              class="pointer-events-none"
-            >
-              <path
-                :d="`M ${plot.x} ${plot.y - 20 - (plot.offsetY ?? 0)} l -6 10 l 12 0 l -6 -10 m 0 5 l 0 2`"
-                fill="none"
-                :stroke="colors.bg"
-                stroke-width="6"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="svg-element-transition"
-              />
-              <path
-                :d="`M ${plot.x} ${plot.y - 20 - (plot.offsetY ?? 0)} l -6 10 l 12 0 l -6 -10 m 0 5 l 0 2`"
-                fill="none"
-                :stroke="e18eGradientColors[0]"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="svg-element-transition"
-              />
-            </g>
-          </g>
         </template>
 
         <template #menuIcon="{ isOpen }">
@@ -1118,10 +1044,9 @@ const timelineMetricTabs = computed(() => [
       >
         <!-- Injecting custom svg elements -->
         <template #svg="{ svg }">
-          <!-- Print watermark-->
-          <g
-            v-if="svg.isPrintingSvg || svg.isPrintingImg"
-            v-html="
+          <TimelineChartDepSizeSvgSlot
+            :svg
+            :watermark="
               drawSmallNpmxLogoAndTaglineWatermark({
                 svg: {
                   ...svg,
@@ -1131,21 +1056,10 @@ const timelineMetricTabs = computed(() => [
                 translateFn: $t,
               })
             "
+            :activeVersionPlot="getActiveVersionDatapointBar(svg.data, svg.barWidth)"
+            :colors
+            :pauseAnimations="shouldPauseChartAnimations"
           />
-
-          <g class="pointer-events-none">
-            <!-- Marker for selected version -->
-            <circle
-              class="pointer-events-none svg-element-transition"
-              v-if="getActiveVersionDatapointBar(svg.data, svg.barWidth)"
-              :cx="getActiveVersionDatapointBar(svg.data, svg.barWidth)!.x"
-              :cy="getActiveVersionDatapointBar(svg.data, svg.barWidth)!.y"
-              r="8"
-              :fill="colors.accent"
-              :stroke="colors.bg"
-              stroke-width="2"
-            />
-          </g>
         </template>
 
         <!-- Custom tooltip -->
