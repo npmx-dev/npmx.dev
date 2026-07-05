@@ -256,7 +256,7 @@ describe('timeline API', () => {
     })
 
     const result = await handler(fakeEvent)
-    expect(getPackageFileTreeMock).toHaveBeenCalledWith('my-pkg', '2.0.0')
+    expect(getPackageFileTreeMock).toHaveBeenCalledWith('my-pkg', '2.0.0', expect.any(AbortSignal))
     expect(result.versions[0]!.hasTypes).toBe(true)
   })
 
