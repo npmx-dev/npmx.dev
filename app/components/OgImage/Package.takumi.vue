@@ -18,19 +18,6 @@ import { joinURL } from 'ufo'
 import { useCharts } from '~/composables/useCharts'
 import { createSmoothPath } from 'vue-data-ui/utils'
 
-const REPO_PROVIDER_ICONS: Record<string, string> = {
-  github: 'i-simple-icons:github',
-  gitlab: 'i-simple-icons:gitlab',
-  bitbucket: 'i-simple-icons:bitbucket',
-  codeberg: 'i-simple-icons:codeberg',
-  gitea: 'i-simple-icons:gitea',
-  forgejo: 'i-simple-icons:forgejo',
-  gitee: 'i-simple-icons:gitee',
-  sourcehut: 'i-simple-icons:sourcehut',
-  tangled: 'i-custom:tangled',
-  radicle: 'i-lucide:network',
-}
-
 function sortJsDelivrNodes(nodes: JsDelivrFileNode[]) {
   return [...nodes].sort((a, b) => {
     if (a.type !== b.type) return a.type === 'directory' ? -1 : 1
@@ -76,10 +63,7 @@ const repositoryUrl = computed(() => {
 })
 
 const { repoRef, stars, refresh: refreshRepoMeta } = useRepoMeta(repositoryUrl)
-const repoProviderIcon = computed(() => {
-  const provider = repoRef.value?.provider
-  return provider ? (REPO_PROVIDER_ICONS[provider] ?? 'i-lucide:code') : 'i-lucide:code'
-})
+const repoProviderIcon = useProviderIcon(() => repoRef.value?.provider, 'i-lucide:code')
 
 const formattedStars = computed(() => (stars.value > 0 ? compactFormat.format(stars.value) : ''))
 

@@ -8,7 +8,7 @@ const { info, goToVersion, tpTarget, resolveVersionPending } = defineProps<{
 
 const route = useRoute()
 
-const { data, error } = await useLazyFetch(
+const { data, error, pending } = useLazyFetch(
   () => `/api/changelog/md/${info.provider}/${info.repo}/${info.path}`,
 )
 
@@ -34,8 +34,11 @@ if (import.meta.client) {
       }
       // lc = lower case
       const lcRequestedVersion = goToVersion.toLowerCase()
+      const isMatching = createHeadingVersionMatcher(lcRequestedVersion)
+
       for (const item of toc) {
-        if (item.text.toLowerCase().includes(lcRequestedVersion)) {
+        const text = item.text.toLowerCase()
+        if (text.toLowerCase().includes(lcRequestedVersion) && isMatching(text)) {
           navigateTo(`#${item.id}`)
           return
         }
@@ -49,9 +52,12 @@ if (import.meta.client) {
 }
 </script>
 <template>
-  <Teleport v-if="data?.toc && data.toc.length > 1 && !!tpTarget" :to="tpTarget">
-    <ReadmeTocDropdown :toc="data.toc" class="justify-self-end" />
-  </Teleport>
-  <Readme v-if="data?.html" :html="data.html" class="pt-4"></Readme>
+  <ChangelogSkeleton v-if="pending" />
+  <template v-else-if="data?.html">
+    <Teleport v-if="data?.toc && data.toc.length > 1 && !!tpTarget" :to="tpTarget">
+      <ReadmeTocDropdown :toc="data.toc" class="justify-self-end" />
+    </Teleport>
+    <Readme :html="data.html" class="pt-4"></Readme>
+  </template>
   <slot v-else-if="error" name="error"></slot>
 </template>

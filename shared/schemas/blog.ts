@@ -49,7 +49,7 @@ export const RawBlogPostSchema = object({
 })
 
 /** Schema for blog post frontmatter with resolved author data (avatars, profile URLs) */
-export const BlogPostSchema = object({
+const BlogPostSchema = object({
   authors: array(ResolvedAuthorSchema),
   title: string(),
   date: pipe(string(), isoTimestamp()),
