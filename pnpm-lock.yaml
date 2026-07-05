@@ -52,7 +52,7 @@ overrides:
   vue-router: 5.1.0
   markdown-exit: 1.1.0-beta.2
 
-packageExtensionsChecksum: sha256-YBtmV2wlHHTKm5hOqoxwkw6LifLft12a+kUIp1CTUjY=
+packageExtensionsChecksum: sha256-MLpDvxkp40Q0pRGkcNzUeHJyjDQFfGfxm/iGkXRnXJg=
 
 patchedDependencies:
   '@jsr/deno__doc@0.189.1': 24f326e123c822a07976329a5afe91a8713e82d53134b5586625b72431c87832
