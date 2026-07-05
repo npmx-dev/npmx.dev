@@ -51,6 +51,7 @@ overrides:
   vite: 'catalog:vite-plus'
   vitest: 'catalog:vite-plus'
   vue-router: 5.1.0
+  markdown-exit: 1.1.0-beta.2
 
 packageExtensions:
   '@nuxt/scripts':
