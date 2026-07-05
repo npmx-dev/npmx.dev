@@ -1,8 +1,10 @@
 import process from 'node:process'
 import { createHash } from 'node:crypto'
+import { glob } from 'node:fs/promises'
+import { join } from 'node:path'
 import { defineNuxtModule, useNuxt, createResolver } from 'nuxt/kit'
 import { safeParse } from 'valibot'
-import { BlogPostSchema, type BlogPostFrontmatter } from '#shared/schemas/blog'
+import { RawBlogPostSchema, type BlogPostFrontmatter } from '#shared/schemas/blog'
 import { NPMX_DEV_DID, NPMX_SITE } from '#shared/utils/constants'
 import { read } from 'gray-matter'
 import { PasswordSession } from '@atproto/lex-password-session'
@@ -16,6 +18,7 @@ import {
 import * as com from '../shared/types/lexicons/com'
 import * as site from '../shared/types/lexicons/site'
 import { generateBlogTID, npmxPublicationRkey } from '#shared/utils/atproto'
+import { setTimeout } from 'node:timers/promises'
 
 const syncedDocuments = new Map<string, string>()
 
@@ -51,8 +54,7 @@ export default defineNuxtModule({
     const possiblePublication = await checkPublication(handle, pdsPublicClient)
 
     nuxt.hook('build:before', async () => {
-      const { glob } = await import('tinyglobby')
-      const files: string[] = await glob(`${contentDir}/**/*.md`)
+      const files = await Array.fromAsync(glob(join(contentDir, '**/*.md')))
 
       // INFO: Arbitrarily chosen concurrency limit, can be changed if needed
       const concurrencyLimit = 5
@@ -88,7 +90,7 @@ export default defineNuxtModule({
               },
             )
             // Wait for the firehose and indexers to catch up if we create a publication
-            await new Promise(sleepResolve => setTimeout(sleepResolve, 2_000))
+            await setTimeout(2_000)
           }
           if (documentsToSync.length > 0) {
             await syncsiteStandardDocuments(authenticatedClient, documentsToSync)
@@ -168,7 +170,7 @@ function createContentHash(data: unknown): string {
     .digest('hex')
 }
 
-function buildATProtoDocument(siteUrl: string, data: BlogPostDocument) {
+function buildATProtoDocument(data: BlogPostDocument) {
   return site.standard.document.$build({
     site: `at://${NPMX_DEV_DID}/site.standard.publication/${npmxPublicationRkey()}`,
     path: data.path,
@@ -204,7 +206,7 @@ const syncFile = async (
     ).toISOString()
   }
 
-  const result = safeParse(BlogPostSchema, normalizedFrontmatter)
+  const result = safeParse(RawBlogPostSchema, normalizedFrontmatter)
   if (!result.success) {
     console.warn(`[standard-site-sync] Validation failed for ${filePath}`, result.issues)
     return
@@ -244,7 +246,7 @@ const syncFile = async (
   if (checkForBlogResult instanceof XrpcResponseError) {
     //Means it's not been uploaded and we can do that now
     if (checkForBlogResult.error === 'RecordNotFound') {
-      const document = buildATProtoDocument(siteUrl, data)
+      const document = buildATProtoDocument(data)
       return { tid, document }
     }
   }

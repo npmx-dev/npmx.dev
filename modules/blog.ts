@@ -13,10 +13,9 @@ import {
   type BlogPostFrontmatter,
   type ResolvedAuthor,
 } from '../shared/schemas/blog'
-import { globSync } from 'tinyglobby'
 import { isProduction } from '../config/env'
 import { BLUESKY_API } from '../shared/utils/constants'
-import { mkdir, writeFile } from 'node:fs/promises'
+import { glob, mkdir, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import crypto from 'node:crypto'
 
@@ -88,8 +87,15 @@ function resolveAuthors(authors: Author[], avatarMap: Map<string, string>): Reso
  * Returns all posts (including drafts) sorted by date descending.
  * Resolves Bluesky avatars at build time.
  */
-async function loadBlogPosts(blogDir: string, imagesDir: string): Promise<BlogPostFrontmatter[]> {
-  const files: string[] = globSync(join(blogDir, '*.md').replace(/\\/g, '/'))
+async function loadBlogPosts(
+  blogDir: string,
+  options: {
+    imagesDir: string
+    resolveAvatars: boolean
+  },
+): Promise<BlogPostFrontmatter[]> {
+  const { imagesDir, resolveAvatars } = options
+  const files = await Array.fromAsync(glob(join(blogDir, '**/*.md').replace(/\\/g, '/')))
 
   // First pass: extract raw frontmatter and collect all Bluesky handles
   const rawPosts: Array<{ frontmatter: Record<string, unknown> }> = []
@@ -121,8 +127,10 @@ async function loadBlogPosts(blogDir: string, imagesDir: string): Promise<BlogPo
     rawPosts.push({ frontmatter })
   }
 
-  // Batch-fetch all Bluesky avatars in a single request
-  const avatarMap = await fetchBlueskyAvatars(imagesDir, [...allHandles])
+  // Batch-fetch all Bluesky avatars in a single request when avatar resolution is enabled.
+  const avatarMap = resolveAvatars
+    ? await fetchBlueskyAvatars(imagesDir, [...allHandles])
+    : new Map<string, string>()
 
   // Second pass: validate with raw schema, then enrich authors with avatars
   const posts: BlogPostFrontmatter[] = []
@@ -151,13 +159,14 @@ export default defineNuxtModule({
     const resolver = createResolver(import.meta.url)
     const blogDir = resolver.resolve('../app/pages/blog')
     const blogImagesDir = resolver.resolve('../public/blog/avatar')
+    const resolveAvatars = !nuxt.options._prepare
 
     nuxt.options.extensions.push('.md')
     nuxt.options.vite.vue = defu(nuxt.options.vite.vue, {
       include: [/\.vue($|\?)/, /\.(md|markdown)($|\?)/],
     })
 
-    if (!existsSync(blogImagesDir)) {
+    if (resolveAvatars && !existsSync(blogImagesDir)) {
       await mkdir(blogImagesDir, { recursive: true })
     }
 
@@ -181,7 +190,10 @@ export default defineNuxtModule({
     )
 
     // Load posts once with resolved Bluesky avatars (shared across template + route rules)
-    const allPosts = await loadBlogPosts(blogDir, blogImagesDir)
+    const allPosts = await loadBlogPosts(blogDir, {
+      imagesDir: blogImagesDir,
+      resolveAvatars,
+    })
 
     // Expose frontmatter for the `/blog` listing page.
     const showDrafts = nuxt.options.dev || !isProduction

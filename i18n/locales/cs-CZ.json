@@ -19,7 +19,11 @@
     "social": "sociální sítě",
     "chat": "chat",
     "builders_chat": "stavitelé",
-    "keyboard_shortcuts": "klávesové zkratky"
+    "keyboard_shortcuts": "klávesové zkratky",
+    "brand": "značka",
+    "resources": "Zdroje",
+    "features": "Funkce",
+    "other": "Ostatní"
   },
   "shortcuts": {
     "section": {
@@ -27,6 +31,9 @@
       "search": "Hledání",
       "package": "Balíček"
     },
+    "ctrl_key": "Ctrl",
+    "command_palette": "Otevřít panel příkazů",
+    "command_palette_description": "Použijte panel příkazů k přechodu mezi stránkami, zobrazeními balíčků, nastaveními a externími odkazy, aniž byste opustili klávesnici. Na macOS stiskněte ⌘K. Na Windows a Linux stiskněte {ctrlKey}+K.",
     "focus_search": "Zaměřit hledání",
     "show_kbd_hints": "Zvýraznit klávesové zkratky",
     "settings": "Otevřít nastavení",
@@ -36,7 +43,11 @@
     "go_to_result": "Přejít na výsledek",
     "open_code_view": "Otevřít zobrazení kódu",
     "open_docs": "Otevřít dokumentaci",
-    "disable_shortcuts": "Klávesové zkratky můžete zakázat v {settings}."
+    "disable_shortcuts": "Klávesové zkratky můžete zakázat v {settings}.",
+    "open_main": "Otevřít hlavní informace",
+    "open_diff": "Otevřít rozdíly verzí",
+    "open_timeline": "Otevřít časovou osu",
+    "open_stats": "Otevřít statistiky"
   },
   "search": {
     "label": "Hledat npm balíčky",
@@ -73,6 +84,120 @@
     "instant_search_turn_off": "vypnout",
     "instant_search_advisory": "{label} {state} — {action}"
   },
+  "command_palette": {
+    "title": "panel příkazů",
+    "quick_actions": "skočit na...",
+    "subtitle": "rychle přepínejte npmx stránky a nastavení",
+    "subtitle_languages": "vyberte jazyk nebo pomozte zlepšit překlady",
+    "instructions": "Zadejte text pro filtrování příkazů. Použijte šipky pro pohyb mezi výsledky a Enter pro spuštění příkazu.",
+    "input_label": "Hledání v panelu příkazů",
+    "results_label": "Výsledky hledání",
+    "placeholder": "zadejte příkaz...",
+    "back": "Zpět",
+    "empty": "Žádné odpovídající příkazy",
+    "empty_search_hint": "Stiskněte Enter pro hledání \"{query}\".",
+    "current": "aktuální",
+    "here": "tady jste",
+    "connected": "připojeno",
+    "keyboard_shortcuts": {
+      "navigate": "navigovat",
+      "select": "vybrat",
+      "close": "zavřít"
+    },
+    "state": {
+      "on": "zapnuto",
+      "off": "vypnuto"
+    },
+    "groups": {
+      "actions": "Akce",
+      "help": "Nápověda",
+      "language": "Jazyk",
+      "connections": "Připojení",
+      "navigation": "Navigace",
+      "links": "Odkazy",
+      "npmx": "npmx",
+      "package": "Balíček",
+      "package_with_name": "Balíček ({name})",
+      "versions": "Verze",
+      "versions_with_name": "Verze {name}"
+    },
+    "actions": {
+      "search": "Hledat",
+      "search_for": "Hledání \"{query}\"",
+      "keyboard_shortcuts": "Klávesové zkratky",
+      "help_translate": "Pomozte s překladem"
+    },
+    "connections": {
+      "npm_connect": "Připojit k npm CLI",
+      "npm_connected": "npm CLI (~{username})",
+      "npm_disconnect": "Odpojit npm CLI",
+      "atmosphere_connect": "Připojit k Atmosphere",
+      "atmosphere_connected": "atmosphere ({'@'}{handle})",
+      "atmosphere_disconnect": "Odpojit Atmosphere"
+    },
+    "navigation": {
+      "home": "domů",
+      "packages": "balíčky (~{username})",
+      "orgs": "organizace (~{username})",
+      "profile": "profil ({'@'}{handle})"
+    },
+    "links": {
+      "external": "Externí odkaz"
+    },
+    "package_links": {
+      "stars": "Hvězdičky repozitáře",
+      "forks": "Forky repozitáře"
+    },
+    "theme": {
+      "system": "Použít systémové téma",
+      "light": "Použít světlé téma",
+      "dark": "Použít tmavé téma"
+    },
+    "package": {
+      "main": "Stránka balíčku",
+      "docs": "Dokumentace",
+      "code": "Kód",
+      "diff": "Rozdíl",
+      "compare": "Porovnat tento balíček",
+      "download": "Stáhnout tarball",
+      "changelog": "Seznam změn",
+      "stats": "Statistiky"
+    },
+    "package_actions": {
+      "copy_run": "Kopírovat příkaz spuštění"
+    },
+    "code": {
+      "copy_file": "Kopírovat obsah souboru"
+    },
+    "diff": {
+      "merge_modified_lines": "Sloučit upravené řádky",
+      "word_wrap": "Zalomit slova"
+    },
+    "version": {
+      "label": "{version}"
+    },
+    "status": {
+      "available_in_context": "{context}. {count} dostupný příkaz | {context}. {count} dostupné příkazy | {context}. {count} dostupných příkazů",
+      "matching_in_context": "{context}. {count} odpovídající příkaz | {context}. {count} odpovídající příkazy | {context}. {count} odpovídajících příkazů",
+      "no_matches_search_in_context": "{context}. Žádné odpovídající příkazy. Stiskněte Enter pro hledání \"{query}\"."
+    },
+    "announcements": {
+      "language_changed": "Jazyk nastaven na {language}.",
+      "relative_dates_on": "Relativní data zapnuta.",
+      "relative_dates_off": "Relativní data vypnuta.",
+      "theme_changed": "Téma nastaveno na {theme}.",
+      "accent_color_changed": "Akcentová barva nastavena na {color}.",
+      "background_theme_changed": "Odstín pozadí nastaven na {theme}.",
+      "download_started": "Stahování tarballu {package} zahájeno.",
+      "copied_to_clipboard": "Zkopírováno do schránky.",
+      "npm_disconnected": "Odpojeno od npm CLI.",
+      "atmosphere_disconnected": "Odpojeno od Atmosphere.",
+      "facets_all_selected": "Všechny vlastnosti vybrány.",
+      "facets_all_deselected": "Výběr vlastností zrušen.",
+      "view_switched": "Přepnuto na zobrazení {view}.",
+      "setting_toggled": "{setting} {state}."
+    }
+  },
   "nav": {
     "main_navigation": "Hlavní",
     "popular_packages": "Populární balíčky",
@@ -94,6 +219,7 @@
     },
     "draft_badge": "Návrh",
     "draft_banner": "Toto je nepublikovaný návrh. Může být neúplný nebo obsahovat nepřesnosti.",
+    "no_posts": "Nebyly nalezeny žádné příspěvky.",
     "atproto": {
       "view_on_bluesky": "Zobrazit na Bluesky",
       "reply_on_bluesky": "Odpovědět na Bluesky",
@@ -108,6 +234,31 @@
       "like_count": "{count} lajk | {count} lajky | {count} lajků",
       "repost_count": "{count} repost | {count} reposty | {count} repostů",
       "more_replies": "ještě {count} odpověď… | ještě {count} odpovědi… | ještě {count} odpovědí…"
+    }
+  },
+  "noodles": {
+    "title": "noodly",
+    "meta_description": "Každý noodle, který jsme kdy ukázali na npmx — sezónní loga, velikonoční vajíčka a příběhy za nimi.",
+    "latest": "Nejnovější noodly",
+    "what_is": "Co jsou noodly",
+    "what_is_body": "Noodly jsou hravé varianty loga npmx, které zobrazujeme na domovské stránce při nových vydáních, svátcích, událostech a dalších momentech, které stojí za oslavu. Představte si je jako Google Doodles, ale pro npm balíčky.",
+    "empty": "Ještě žádné noodly.",
+    "load_more": "Načíst dalších {count}",
+    "dates": "Aktivní mezi",
+    "shipped_in": "Přidáno v",
+    "credits": "Autoři",
+    "learn_more": "Více informací",
+    "carousel_prev": "Předchozí obrázek",
+    "carousel_next": "Další obrázek",
+    "carousel_dots": "Navigace mezi variantami obrázků",
+    "carousel_jump": "Přejít na obrázek č. {index}",
+    "lens_label": "{title} — obrazová smyčka",
+    "lens_slide": "obrázek {index}",
+    "lens_slide_position": "Obrázek {index} z(e) {total}",
+    "back_to_archive": "Zpět na všechny noodly",
+    "missing": {
+      "title": "Tento noodle ještě nebyl uvařen.",
+      "body": "Na menu noodle “{slug}” ještě nemáme. Buď se stále připravuje, nebo nám chybí receptura. Každopádně — zpět do archivu."
     }
   },
   "settings": {
@@ -136,22 +287,40 @@
     "include_types_description": "Přidat balíček {'@'}types do instalačních příkazů pro balíčky bez integrovaných typů",
     "hide_platform_packages": "Skrýt platformně specifické balíčky ve vyhledávání",
     "hide_platform_packages_description": "Skrýt nativní binární balíčky jako {'@'}esbuild/linux-x64 z výsledků",
+    "enable_graph_pulse_loop": "Povolit smyčku efektu pulzování na mini grafu",
+    "enable_graph_pulse_loop_description": "Aktivovat kontinuální animaci pulzu na grafu týdenních stažení. Tato animace může být pro některé uživatele rušivá.",
     "theme": "Téma",
     "theme_light": "Světlé",
     "theme_dark": "Tmavé",
     "theme_system": "Systémové",
     "language": "Jazyk",
     "help_translate": "Pomozte přeložit npmx",
+    "translation_status": "Zkontrolovat globální stav překladu",
     "accent_colors": {
-      "label": "Barvy akcentu"
+      "label": "Akcentová barva",
+      "neutral": "Neutrální",
+      "sky": "Obloha",
+      "coral": "Korál",
+      "amber": "Jantar",
+      "emerald": "Smaragd",
+      "violet": "Fialová",
+      "magenta": "Magenta"
     },
     "clear_accent": "Vymazat barvu akcentu",
     "translation_progress": "Pokrok překladu",
     "background_themes": {
-      "label": "Odstín pozadí"
+      "label": "Odstín pozadí",
+      "neutral": "Neutrální",
+      "stone": "Kámen",
+      "zinc": "Zinek",
+      "slate": "Břidlice",
+      "black": "Černá"
     },
     "keyboard_shortcuts_enabled": "Povolit klávesové zkratky",
-    "keyboard_shortcuts_enabled_description": "Klávesové zkratky lze zakázat, pokud se střetávají s jinými zkratkami prohlížeče nebo systému"
+    "keyboard_shortcuts_enabled_description": "Klávesové zkratky lze zakázat, pokud se střetávají s jinými zkratkami prohlížeče nebo systému",
+    "enable_code_ligatures": "Zapnout ligatury v kódu",
+    "enable_changelog_autoscroll": "Automaticky posouvat na požadovanou verzi",
+    "enable_changelog_autoscroll_description": "Automaticky posouvat na nebo blízko požadované verze v seznamu změn balíčku"
   },
   "i18n": {
     "missing_keys": "{count} chybějící překlad | {count} chybějící překlady | {count} chybějících překladů",
@@ -183,6 +352,7 @@
     "warnings": "Varování:",
     "go_back_home": "Zpět na začátek",
     "per_week": "/ týden",
+    "per_week_short": "/týd",
     "vanity_downloads_hint": "Pro zobrazený balíček | Součet pro {count} zobrazené balíčky | Součet pro {count} zobrazených balíčků",
     "sort": {
       "name": "jméno",
@@ -205,9 +375,14 @@
       "gitea": "Zobrazit na Gitea",
       "gitee": "Zobrazit na Gitee",
       "radicle": "Zobrazit na Radicle",
+      "socket_dev": "Zobrazit na socket.dev",
       "sourcehut": "Zobrazit na SourceHutu",
       "tangled": "Zobrazit na Tangled"
-    }
+    },
+    "collapse": "Sbalit",
+    "collapse_with_name": "Sbalit sekci {name}",
+    "expand": "Rozbalit",
+    "expand_with_name": "Rozbalit sekci {name}"
   },
   "profile": {
     "display_name": "Zobrazované jméno",
@@ -243,18 +418,25 @@
       "title_deps": "Významné zvýšení počtu závislostí od verze v{version}",
       "title_both": "Významné zvýšení velikosti a počtu závislostí od verze v{version}",
       "size": "Velikost instalace se zvýšila o {percent} (větší o {size})",
-      "deps": "{count} další závislostí"
+      "deps": "o závislost více | o {count} závislosti více | o {count} závislostí více"
+    },
+    "size_decrease": {
+      "title_size": "Balíček se od v{version} zmenšil!",
+      "title_deps": "Počet závislostí se od v{version} snížil!",
+      "title_both": "Velikost balíčku a počet závislostí se od v{version} snížily!",
+      "size": "Velikost instalace se snížila o {percent} ({size} menší)",
+      "deps": "o závislost méně | o {count} závislosti méně | o {count} závislostí méně"
     },
     "replacement": {
       "title": "Možná tuto závislost nepotřebujete.",
-      "native": "Tento balíček lze nahradit {replacement}, dostupné od Node {nodeVersion}.",
-      "simple": "{community} označila tento balíček jako zbytečný s doporučením: {replacement}.",
-      "documented": "{community} označila tento balíček jako mající výkonnější alternativy.",
+      "example": "Příklad:",
+      "native": "Tento balíček lze nahradit pomocí {replacement}, dostupné od Node {nodeVersion}.",
+      "native_no_version": "Tento balíček lze nahradit {replacement}.",
+      "simple": "Tento balíček byl označen jako nadbytečný, s doporučením: {replacement}",
+      "documented": "Tento balíček byl označen jako mající výkonnější alternativy.",
       "none": "Tento balíček byl označen jako již nepotřebný a jeho funkčnost je pravděpodobně dostupná nativně ve všech enginech.",
       "learn_more": "Zjistit více",
       "learn_more_above": "Zjistit více výše.",
-      "mdn": "MDN",
-      "community": "komunita",
       "consider_no_dep": "+ Zvážit žádnou závislost?"
     },
     "stats": {
@@ -269,7 +451,10 @@
       "size_tooltip": {
         "unpacked": "{size} velikost po rozbalení (tento balíček)",
         "total": "{size} celková velikost po rozbalení (včetně všech závislostí ({count}) pro linux-x64)"
-      }
+      },
+      "main_information": "Hlavní informace",
+      "trends": "Trendy",
+      "version_distribution": "Distribuce verzí"
     },
     "skills": {
       "title": "Dovednosti agentů",
@@ -286,9 +471,11 @@
         "refs": "{count} odkaz | {count} odkazy | {count} odkazů",
         "assets": "{count} zdroj | {count} zdroje | {count} zdrojů"
       },
-      "view_source": "Zobrazit zdroj"
+      "view_source": "Zobrazit zdroj",
+      "skills_cli": "CLI dovednosti"
     },
     "links": {
+      "main": "domů",
       "repo": "repozitář",
       "homepage": "domovská stránka",
       "issues": "úkoly",
@@ -296,15 +483,29 @@
       "code": "kód",
       "docs": "dokumentace",
       "fund": "financovat",
-      "compare": "porovnat"
+      "compare": "porovnat",
+      "timeline": "časová osa",
+      "stats": "statistiky",
+      "compare_this_package": "porovnat tento balíček",
+      "changelog": "seznam změn"
     },
     "likes": {
       "like": "Líbí se mi tento balíček",
-      "unlike": "Nelíbí se mi tento balíček"
+      "unlike": "Nelíbí se mi tento balíček",
+      "top_rank_tooltip": "Tento balíček je mezi 10 nejvíce olajkovanými balíčky na npmx! ({rank}.)",
+      "top_rank_label": "{rank}.",
+      "top_rank_link_label": "Zobrazit žebříček oblíbenosti. Tento balíček je na {rank}. místě."
     },
     "docs": {
+      "contents": "Obsah",
+      "default_not_available": "Dokumentace této verze není k dispozici.",
       "not_available": "Dokumentace není k dispozici",
-      "not_available_detail": "Nepodařilo se nám vygenerovat dokumentaci pro tuto verzi."
+      "not_available_detail": "Nepodařilo se nám vygenerovat dokumentaci pro tuto verzi.",
+      "page_title": "API dokumentace - npmx",
+      "page_title_name": "Dokumentace {name} - npmx",
+      "page_title_version": "Dokumentace {name} - npmx",
+      "og_title": "{name} - Dokumentace",
+      "view_package": "Zobrazit balíček"
     },
     "get_started": {
       "title": "Začínáme",
@@ -334,7 +535,8 @@
         "warning": "Varování",
         "caution": "Upozornění"
       },
-      "copy_as_markdown": "Zkopírovat ČTI MĚ jako Markdown"
+      "copy_as_markdown": "Zkopírovat ČTI MĚ jako Markdown",
+      "error_loading": "ČTI MĚ se nepodařilo načíst"
     },
     "provenance_section": {
       "title": "Původ",
@@ -364,7 +566,10 @@
       "published": "Publikováno",
       "weekly_downloads": "Týdenní stažení",
       "keywords": "Klíčová slova",
-      "license": "Licence"
+      "license": "Licence",
+      "version": "Verze",
+      "select": "Vybrat balíček",
+      "select_maximum": "Maximálně lze vybrat {count} balíčků"
     },
     "versions": {
       "title": "Verze",
@@ -379,17 +584,20 @@
       "all_covered": "Všechny verze jsou pokryty výše uvedenými tagy",
       "deprecated_title": "{version} (zastaralá)",
       "view_all": "Zobrazit {count} verzi | Zobrazit {count} verze | Zobrazit {count} verzí",
+      "view_all_versions": "Zobrazit všechny verze",
       "distribution_title": "Skupina Semver",
-      "distribution_modal_title": "Verze",
       "distribution_range_date_same_year": "od {from} do {to}, {endYear}",
       "distribution_range_date_multiple_years": "od {from}, {startYear} do {to}, {endYear}",
       "grouping_major": "Hlavní",
       "grouping_minor": "Vedlejší",
       "grouping_versions_title": "Verze",
+      "grouping_versions_about": "O seskupování verzí",
       "grouping_versions_all": "Všechny",
       "grouping_versions_only_recent": "Pouze nedávné",
       "grouping_usage_title": "Použití",
+      "grouping_usage_about": "O seskupování užití",
       "grouping_usage_all": "Všechno",
+      "grouping_usage_most_used": "Nejčastěji používané",
       "recent_versions_only_tooltip": "Zobrazit pouze verze zveřejněné v posledním roce.",
       "show_low_usage_tooltip": "Zahrnout skupiny verzí s méně než 1 % celkových stažení.",
       "y_axis_label": "Stažení",
@@ -398,10 +606,45 @@
       "filter_help": "Pomoc s filtrováním rozsahu semver",
       "filter_tooltip": "Filtrovat verze pomocí {link}. Například ^3.0.0 zobrazí všechny verze 3.x.",
       "filter_tooltip_link": "semver rozsahu",
+      "license_change_help": "Podrobnosti o změně licence",
+      "license_change_warning": "Licence se od předchozí verze změnila.",
+      "license_change_record": "Licence tohoto balíčku se změnila z \"{from}\" na \"{to}\".",
       "no_matches": "Žádné verze neodpovídají tomuto rozsahu",
       "copy_alt": {
         "per_version_analysis": "Verze {version} byla stažena {downloads} krát",
         "general_description": "Sloupcový graf zobrazující stažení podle verzí pro {versions_count} {semver_grouping_mode} verze balíčku {package_name}, {date_range_label} od verze {first_version} do verze {last_version}. Nejvíce stažená verze je {max_downloaded_version} s {max_version_downloads} staženími. {per_version_analysis}. {watermark}."
+      },
+      "page_title": "Historie verzí",
+      "current_tags": "Aktuální značky",
+      "no_match_filter": "Žádné verze neodpovídají {filter}"
+    },
+    "timeline": {
+      "load_more": "Načíst více",
+      "load_error": "Nepodařilo se načíst časovou osu. Zkuste to prosím později.",
+      "size_increase": "Velikost instalace se zvýšila o {percent} % ({size})",
+      "size_decrease": "Velikost instalace se snížila o {percent} % ({size})",
+      "dep_increase": "{count} závislost přidána | {count} závislosti přidány | {count} závislostí přidáno",
+      "dep_decrease": "{count} závislost odstraněna | {count} závislosti odstraněny | {count} závislostí odstraněno",
+      "license_change": "Licence se změnila z {from} na {to}",
+      "esm_added": "Typ modulu změněn na ESM",
+      "esm_removed": "Typ modulu změněn z ESM na CJS",
+      "types_added": "Přidány TypeScript typy",
+      "types_removed": "Odebrány TypeScript typy",
+      "trusted_publisher_added": "Důvěryhodné publikování bylo povoleno",
+      "trusted_publisher_removed": "Důvěryhodné publikování bylo vypnuto",
+      "provenance_added": "Provenience byla zapnuta",
+      "provenance_removed": "Provenience byla vypnuta",
+      "chart": {
+        "tab_aria_label": "Výběr metriky",
+        "base_scale": "začít osu y od nuly",
+        "zoom": "přiblížit",
+        "reset_minimap": "obnovit minimapu",
+        "ordered_versions": "pouze stabilní verze",
+        "copy_alt": {
+          "key_changes": "Klíčové změny: {version_events}.",
+          "version_events": "verze {version}: {events}",
+          "general_description": "Graf zobrazující {metric} balíčku {package}, od verze {first} do verze {last}. {metric} ve verzi {first} je {first_value}, ve verzi {last} je {last_value} ({overall_progress_percentage} % celkem). {key_changes} {watermark}."
+        }
       }
     },
     "dependencies": {
@@ -413,7 +656,8 @@
       "outdated_major": "o {count} hlavní verzi pozadu (nejnovější: {latest}) | o {count} hlavní verze pozadu (nejnovější: {latest}) | o {count} hlavních verzích pozadu (nejnovější: {latest})",
       "outdated_minor": "o {count} vedlejší verzi pozadu (nejnovější: {latest}) | o {count} vedlejší verze pozadu (nejnovější: {latest}) | o {count} vedlejších verzích pozadu (nejnovější: {latest})",
       "outdated_patch": "Aktualizace záplaty dostupná (nejnovější: {latest})",
-      "has_replacement": "Tato závislost má navrhované náhrady"
+      "has_replacement": "Tato závislost má navrhované náhrady",
+      "vulnerabilities_count": "{count} zranitelnost | {count} zranitelnosti | {count} zranitelností"
     },
     "peer_dependencies": {
       "title": "Vzájemné závislosti ({count})",
@@ -437,9 +681,19 @@
       "cancel_add": "Zrušit přidání vlastníka",
       "add_owner": "+ Přidat vlastníka",
       "show_more": "(zobrazit {count} dalšího) | (zobrazit {count} další) | (zobrazit {count} dalších)",
-      "show_less": "(zobrazit méně)"
+      "show_less": "(zobrazit méně)",
+      "maintainer_template": "{avatar} {char126}{name}"
     },
     "trends": {
+      "chart_assistive_text": {
+        "keyboard_navigation_horizontal": "Použijte klávesy se šipkami vlevo a vpravo pro procházení datovými body.",
+        "keyboard_navigation_vertical": "Použijte klávesy se šipkami nahoru a dolů pro procházení datovými body.",
+        "table_available": "Tabulka dat pro tento graf je k dispozici níže.",
+        "table_caption": "Tabulka dat grafu"
+      },
+      "chart_view_toggle": "Přepnout typ grafu",
+      "chart_view_combined": "Kombinovaný pohled",
+      "chart_view_split": "Rozdělený pohled",
       "granularity": "Rozlišení",
       "granularity_daily": "Denně",
       "granularity_weekly": "Týdně",
@@ -469,6 +723,7 @@
       "data_correction": "Oprava dat",
       "average_window": "Okno průměru",
       "smoothing": "Vyhlazování",
+      "prediction": "Predikce",
       "known_anomalies": "Známé anomálie",
       "known_anomalies_description": "Interpoluje přes známé špičky stažení způsobené boty nebo problémy s CI.",
       "known_anomalies_ranges": "Rozsahy anomálií",
@@ -492,12 +747,20 @@
         "general_description": "Osa Y představuje počet stažení. Osa X představuje časový rozsah od {start_date} do {end_date} s časovým obdobím {granularity}.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Horizontální sloupcový graf pro: {packages}, porovnávající {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} má hodnotu {value}."
+      },
+      "embedding": {
+        "chart": "Umístit tento graf",
+        "copy_url": "Zkopírujte tuto URL pro vložení grafu na váš web",
+        "preview": "Náhled",
+        "tip": "Pokud nejsou zadány startDate a endDate, graf zobrazí posledních 12 měsíců."
       }
     },
     "downloads": {
       "title": "Týdenní stažení",
+      "version_distribution_title": "týdenní stažení pro verzi {version}",
       "community_distribution": "Zobrazit rozložení adopce v komunitě",
-      "subtitle": "Napříč všemi verzemi"
+      "subtitle": "Napříč všemi verzemi",
+      "sparkline_nav_hint": "Použijte ← →"
     },
     "install_scripts": {
       "title": "Instalační skripty",
@@ -513,6 +776,7 @@
       "esm": "ES Moduly podporovány",
       "cjs": "CommonJS podporováno",
       "no_esm": "Bez podpory ES Modulů",
+      "wasm": "Obsahuje WebAssembly",
       "types_label": "Typy",
       "types_included": "Typy zahrnuty",
       "types_available": "Typy dostupné přes {package}",
@@ -587,7 +851,20 @@
       "kb": "{size} kB",
       "mb": "{size} MB"
     },
-    "download": {}
+    "download": {
+      "button": "Stáhnout",
+      "tarball": "Stáhnout Tarball jako .tar.gz"
+    }
+  },
+  "leaderboard": {
+    "likes": {
+      "title": "Žebříček lajků",
+      "description": "10 nejvíce olajkovaných balíčků na npmx právě teď.",
+      "rank": "Pořadí",
+      "likes": "Lajky",
+      "unavailable_title": "Žebříček lajků zatím není k dispozici",
+      "unavailable_description": "Momentálně nemáme žádný žebříček lajků k zobrazení."
+    }
   },
   "connector": {
     "modal": {
@@ -767,13 +1044,15 @@
   "code": {
     "files_label": "Soubory",
     "no_files": "Žádné soubory v této složce",
-    "root": "kořen",
     "lines": "{count} řádků",
     "toggle_tree": "Přepnout strom souborů",
     "close_tree": "Zavřít strom souborů",
+    "copy_content": "Zkopírovat obsah souboru",
     "copy_link": "Kopírovat odkaz",
-    "raw": "Raw",
     "view_raw": "Zobrazit raw soubor",
+    "toggle_container": "Přepnout šířku kontejneru kódu",
+    "open_raw_file": "Otevřít soubor jako kód",
+    "open_path_dropdown": "Otevřít rozbalovací seznam segmentů cesty",
     "file_too_large": "Soubor je příliš velký pro náhled",
     "file_size_warning": "{size} překračuje limit 500KB pro zvýraznění syntaxe",
     "failed_to_load": "Nepodařilo se načíst soubor",
@@ -791,7 +1070,9 @@
       "preview": "náhled",
       "code": "kód"
     },
-    "file_path": "Cesta k souboru"
+    "file_path": "Cesta k souboru",
+    "binary_file": "Binární soubor",
+    "binary_rendering_warning": "Náhled pro typy souborů \"{contentType}\" není k dispozici."
   },
   "badges": {
     "provenance": {
@@ -853,6 +1134,8 @@
       "secure": "Bez varování",
       "insecure": "S varováními"
     },
+    "view_selected": "Zobrazit vybrané",
+    "clear_selected_label": "Vyčistit vybrané",
     "sort": {
       "label": "Seřadit podle",
       "toggle_direction": "Přepnout směr řazení",
@@ -878,7 +1161,8 @@
       "published": "Naposledy publikováno",
       "maintainers": "Správci",
       "keywords": "Klíčová slova",
-      "security": "Bezpečnost"
+      "security": "Bezpečnost",
+      "selection": "Vybrat balíček"
     },
     "view_mode": {
       "label": "Režim zobrazení",
@@ -942,11 +1226,13 @@
     },
     "team": {
       "title": "Tým",
-      "governance": "Správa",
-      "role_steward": "Vedoucí",
-      "role_maintainer": "Správce",
-      "sponsor": "Sponzor",
-      "sponsor_aria": "Sponzor {name} na GitHubu"
+      "core": "Jádro",
+      "maintainers": "Správci",
+      "role_core": "jádro",
+      "role_steward": "vedoucí",
+      "role_maintainer": "správce",
+      "sponsor": "sponzor",
+      "sponsor_aria": "Sponzorovat {name} na GitHubu"
     },
     "contributors": {
       "title": "Přispěvatelé | {count} přispěvatelé | {count} přispěvatelů",
@@ -1025,7 +1311,8 @@
       "error": "Nepodařilo se načíst organizace",
       "empty": "Nebyly nalezeny žádné organizace",
       "view_all": "Zobrazit vše"
-    }
+    },
+    "pr": "Otevřít GitHub PR #{prNumber}"
   },
   "compare": {
     "packages": {
@@ -1044,7 +1331,10 @@
       "empty_title": "Vyberte balíčky k porovnání",
       "empty_description": "Vyhledejte a přidejte alespoň 2 balíčky výše, abyste viděli porovnání jejich metrik vedle sebe.",
       "table_view": "Tabulka",
-      "charts_view": "Grafy"
+      "charts_view": "Grafy",
+      "no_chartable_data": "Pro vybrané kategorie nejsou k dispozici žádná data pro graf.",
+      "bar_chart_nav_hint": "Použijte ↑ ↓",
+      "line_chart_nav_hint": "Použijte ← →"
     },
     "selector": {
       "search_label": "Vyhledat balíčky",
@@ -1054,6 +1344,17 @@
       "remove_package": "Odebrat {package}",
       "packages_selected": "Vybrané balíčky: {count}/{max}.",
       "add_hint": "Přidejte alespoň 2 balíčky ke srovnání."
+    },
+    "scatter_chart": {
+      "title": "Porovnat {x} a {y}",
+      "freshness_score": "Skóre čerstvosti",
+      "copy_alt": {
+        "analysis": "{package} : {x_name} ({x_value}) a {y_name} ({y_value})",
+        "description": "Bodový graf mapující {x_name} vůči {y_name} pro balíčky {packages}. {analysis}. {watermark}"
+      },
+      "filename": "{x}-vs-{y}-bodovy-graf",
+      "x_axis": "Osa X ↦",
+      "y_axis": "Osa Y ↥"
     },
     "no_dependency": {
       "label": "(Žádná závislost)",
@@ -1067,6 +1368,10 @@
     "facets": {
       "all": "Vše",
       "none": "Žádné",
+      "select_all_category_facets": "Vybrat všechny vlastnosti kategorie {category}",
+      "deselect_all_category_facets": "Zrušit výběr všech vlastností kategorie {category}",
+      "selected_all_category_facets": "Vybrané všechny vlastnosti kategorie {category}",
+      "deselected_all_category_facets": "Zrušen výběr všech vlastností kategorie {category}",
       "coming_soon": "Brzy k dispozici",
       "select_all": "Vybrat všechny vlastnosti",
       "deselect_all": "Zrušit výběr všech vlastností",
@@ -1129,6 +1434,22 @@
         "vulnerabilities": {
           "label": "Zranitelnosti",
           "description": "Známé bezpečnostní zranitelnosti"
+        },
+        "githubStars": {
+          "label": "GitHub Hvězdy",
+          "description": "Počet hvězdiček na GitHub repozitáři"
+        },
+        "githubForks": {
+          "label": "GitHub forky",
+          "description": "Počet forků na GitHub repozitáři"
+        },
+        "githubIssues": {
+          "label": "GitHub úkoly",
+          "description": "Počet úkolů na GitHub repozitáři"
+        },
+        "createdAt": {
+          "label": "Vytvořeno",
+          "description": "Kdy byl balíček vytvořen"
         }
       },
       "values": {
@@ -1149,11 +1470,17 @@
     "file_changes": "Změny souborů",
     "files_count": "{count} souborů",
     "lines_hidden": "{count} skrytých řádků",
-    "file_too_large": "Soubor je k porovnání příliš velký",
-    "file_size_warning": "{size} překračuje limit 250KB pro porovnání",
     "compare_versions": "porovnat",
     "compare_versions_title": "Porovnat s nejnovější verzí",
-    "version_invalid_url_format": {},
+    "comparing_versions_label": "Porovnání verzí...",
+    "version_back_to_package": "Zpět na balíček",
+    "version_error_message": "Nepodařilo se porovnat verze.",
+    "version_invalid_url_format": {
+      "hint": "Chybná URL pro porovnání. Použijte formát: {0}",
+      "from_version": "od",
+      "to_version": "do"
+    },
+    "version_selector_title": "Porovnat s verzí",
     "summary": "Souhrn",
     "deps_count": "{count} závislostí",
     "dependencies": "Závislosti",
@@ -1179,7 +1506,21 @@
     "files_button": "Soubory",
     "select_file_prompt": "Vyberte soubor z postranního panelu pro zobrazení jeho rozdílů",
     "close_files_panel": "Zavřít panel souborů",
-    "filter_files_label": "Filtrovat soubory podle typu změny"
+    "filter_files_label": "Filtrovat soubory podle typu změny",
+    "change_ratio": "Poměr změn",
+    "char_edits": "Změny znaků",
+    "diff_distance": "Vzdálenost rozdílů",
+    "diff_truncated": "Srovnání bylo zkráceno z důvodu výkonu. Zobrazují se pouze první změněné řádky.",
+    "large_diff_mode": "Velké srovnání souborů zobrazeno s vypnutým slučováním inline úprav z důvodu výkonu.",
+    "large_diff_options_disabled": "Velké srovnání souborů vypíná slučování inline úprav z důvodu výkonu.",
+    "loading_diff": "Načítání rozdílů...",
+    "loading_diff_error": "Nepodařilo se načíst rozdíly",
+    "merge_modified_lines": "Sloučit upravené řádky",
+    "no_content_changes": "Nebyly zjištěny žádné změny obsahu",
+    "options": "Možnosti",
+    "view_file": "Zobrazit soubor",
+    "view_in_code_browser": "Zobrazit v prohlížeči kódu",
+    "word_wrap": "Zalomení slov"
   },
   "pds": {
     "title": "npmx.social",
@@ -1320,7 +1661,128 @@
     }
   },
   "translation_status": {
-    "table": {}
+    "title": "stav překladu",
+    "generated_at": "Vygenerováno: {date}",
+    "welcome": "Pokud máte zájem pomoci nám přeložit {npmx} do jednoho z níže uvedených jazyků, jste na správném místě! Tato stránka se automaticky aktualizuje a vždy zobrazuje veškerý obsah, který právě potřebuje vaši pomoc.",
+    "p1": "Jako výchozí jazyk používáme {lang}, s celkovým počtem {count}. Pokud chcete pomoci s přidáváním překladů, najděte jazyk v {bylang} a rozbalte podrobnosti.",
+    "p1_lang": "americkou angličtinu (en-US)",
+    "p1_count": "1 text | {count} texty | {count} textů",
+    "p2": "Než začnete, přečtěte si prosím našeho {guide}, abyste se seznámili s naším procesem překladu a zjistili, jak se můžete zapojit.",
+    "guide": "průvodce lokalizací (i18n)",
+    "by_locale": "Pokrok překladu podle jazyka",
+    "by_file": "Pokrok překladu podle souboru",
+    "complete_text": "Tento překlad je dokončen, skvělá práce!",
+    "missing_text": "chybí",
+    "missing_keys": "{count} chybějící překlad | {count} chybějící překlady | {count} chybějících překladů",
+    "progress_label": "Pokrok překladu do jazyka {locale}",
+    "table": {
+      "file": "Soubor",
+      "status": "Stav",
+      "error": "Chyba při načítání seznamu souborů.",
+      "empty": "Žádné soubory nebyly nalezeny",
+      "file_link": "Upravit {file} ({lang}) na GitHubu"
+    }
   },
-  "action_bar": {}
+  "vacations": {
+    "title": "na dovolené",
+    "meta_description": "Tým npmx si odpočinul. Discord se po týdnu znovu otevřel.",
+    "heading": "dobíjíme se",
+    "subtitle": "Budovali jsme npmx tempem, které {some} stálo spánek. Nechtěli jsme, aby se to stalo normou! Tak jsme si vzali na týden volno. Společně.",
+    "illustration_alt": "řada hezkých ikonek",
+    "poke_log": "Šťouchnout do ohniště",
+    "what": {
+      "title": "co se stalo",
+      "p1": "discord byl uzavřen {dates}.",
+      "dates": "14. – 21. února",
+      "p2": "všechny pozvánky byly uzavřeny a kanály byly uzamčeny – kromě {garden}, který zůstal otevřený pro ty, kteří se chtěli dál bavit.",
+      "garden": "#garden"
+    },
+    "meantime": {
+      "title": "mezitím",
+      "p1": "{site} a {repo} zůstaly otevřené – lidé se stále zapojovali, výtvářeli další úkoly, otevírali několik PR, ale hlavně všichni trávili čas někde poblíž útulného krbu.",
+      "repo_link": "repozitář"
+    },
+    "return": {
+      "title": "jsme zpět!",
+      "p1": "vrátili jsme se odpočatí a připraveni na poslední přípravy před 3. březnem. {social}.",
+      "social_link": "sledujte nás na Bluesky"
+    },
+    "stats": {
+      "contributors": "Přispěvatelé",
+      "commits": "Commity",
+      "pr": "Mergnutá PR",
+      "subtitle": {
+        "some": "pár z nás",
+        "all": "nás všechny"
+      }
+    }
+  },
+  "action_bar": {
+    "title": "panel akcí",
+    "selection": "vybrán {count} | vybrány {count} | vybráno {count}",
+    "shortcut": "Stiskněte \"{key}\" pro zaměření akcí",
+    "button_close_aria_label": "Zavřít panel akcí"
+  },
+  "logo_menu": {
+    "copy_svg": "Zkopírovat logo jako SVG",
+    "copied": "Zkopírováno!",
+    "browse_brand": "Procházet sadu značky"
+  },
+  "brand": {
+    "title": "Značka",
+    "heading": "značka",
+    "meta_description": "Pokyny k značce npmx, loga, barvy a typografie pro použití v tisku a médiích.",
+    "intro": "Zdroje a pokyny pro používání značky npmx ve vašich projektech, článcích a médiích.",
+    "logos": {
+      "title": "loga",
+      "description": "Stáhněte si loga npmx ve formátech SVG a PNG. Použijte vhodnou variantu pro vaše pozadí.",
+      "wordmark": "PLNÉ LOGO",
+      "wordmark_alt": "Celé npmx logo s názvem, tečkou a lomítkem na tmavém pozadí",
+      "wordmark_light_alt": "Celé npmx logo s názvem, tečkou a lomítkem na světlém pozadí",
+      "mark": "KRÁTKÉ LOGO",
+      "mark_alt": "Logo npmx pouze s tečkou a lomítkem na tmavém pozadí",
+      "mark_light_alt": "Logo npmx pouze s tečkou a lomítkem na světlém pozadí",
+      "on_dark": "na tmavém pozadí",
+      "on_light": "na světlém pozadí",
+      "download_svg": "SVG",
+      "download_png": "PNG",
+      "download_svg_aria": "Stáhnout {name} jako SVG",
+      "download_png_aria": "Stáhnout {name} jako PNG"
+    },
+    "customize": {
+      "title": "přizpůsobte si své logo",
+      "description": "Náhled loga npmx s vámi vybranou akcentní barvou a pozadím. Náhled odráží vaše aktuální nastavení — vyberte barvu, pozadí a stáhněte.",
+      "accent_label": "akcent",
+      "bg_label": "pozadí",
+      "download_svg_aria": "Stáhnout přizpůsobené logo jako SVG",
+      "download_png_aria": "Stáhnout přizpůsobené logo jako PNG"
+    },
+    "typography": {
+      "title": "typografie",
+      "description": "npmx používá rodinu písem Geist od Vercelu pro texty rozhraní i kód.",
+      "sans": "Geist Sans",
+      "sans_desc": "Používá se pro texty těla a prvky uživatelského rozhraní.",
+      "mono": "Geist Mono",
+      "mono_desc": "Používá se pro kód, nadpisy a technický obsah.",
+      "pangram": "Příliš žluťoučký kůň úpěl ďábelské ódy",
+      "numbers": "0123456789"
+    },
+    "guidelines": {
+      "title": "jen maličkost",
+      "message": "Přístupnost je pro nás důležitá a rádi bychom, abyste se k nám připojili v této vizi. Při používání zmíněných médií zajistěte dostatečný kontrast vůči pozadí a nepoužívejte velikost menší než 24px. Pokud potřebujete další zdroje nebo další informace o projektu, neváhejte nás kontaktovat na {link}.",
+      "discord_link_text": "chat.npmx.dev"
+    }
+  },
+  "alt_logo_kawaii": "Roztomilá, zaoblená a barevná verze loga npmx.",
+  "changelog": {
+    "pre_release": "Pre-release",
+    "draft": "Návrh",
+    "no_logs": "Omlouváme se, tento balíček nezveřejňuje seznam změn nebo jeho formát není podporován.",
+    "error": {
+      "p1": "Omlouváme se, seznam změn pro {package} nelze načíst",
+      "p2": "Zkuste to prosím později nebo {viewon}"
+    },
+    "rate_limit_ungh": "Omlouváme se, byl dosažen limit GitHubu, zkuste to prosím za chvíli znovu",
+    "version_unavailable": "Omlouváme se, požadovaná verze není k dispozici."
+  }
 }

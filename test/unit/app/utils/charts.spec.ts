@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import {
   sum,
   chunkIntoWeeks,
@@ -11,19 +11,22 @@ import {
   copyAltTextForTrendLineChart,
   createAltTextForVersionsBarChart,
   copyAltTextForVersionsBarChart,
-  loadFile,
+  createAltTextForTimelineChart,
+  copyAltTextForTimelineChart,
+  createAltTextForTimelineStackbar,
+  copyAltTextForTimelineStackbar,
   sanitise,
   insertLineBreaks,
   applyEllipsis,
-  createSeedNumber,
-  createSeededSvgPattern,
-  createChartPatternSlotMarkup,
   type TrendLineConfig,
   type TrendLineDataset,
   type VersionsBarConfig,
   type VersionsBarDataset,
+  type TimelineChartConfig,
+  type TimelineStackbarConfig,
+  type EnrichedTimelineSizeCacheEntry,
 } from '~/utils/charts'
-import type { AltCopyArgs } from 'vue-data-ui'
+import type { AltCopyArgs, VueUiStackbarFormattedDatasetItem } from 'vue-data-ui'
 
 type TranslateCall = { key: string | number; named?: Record<string, unknown> }
 
@@ -36,6 +39,34 @@ function createTranslateMock() {
   }) as TrendLineConfig['$t']
 
   return { translate, calls }
+}
+
+function createTimelineConfig(overrides: Partial<TimelineChartConfig> = {}): TimelineChartConfig {
+  const { translate } = createTranslateMock()
+  const config: TimelineChartConfig = {
+    numberFormatter: (value: number) => `nf${value}`,
+    packageName: 'nuxt',
+    metric: 'totalSize',
+    copy: vi.fn(async () => undefined),
+    $t: translate,
+  } as unknown as TimelineChartConfig
+
+  return { ...config, ...overrides }
+}
+
+function createTimelineStackbarConfig(
+  overrides: Partial<TimelineStackbarConfig> = {},
+): TimelineStackbarConfig {
+  const { translate } = createTranslateMock()
+  const config: TimelineStackbarConfig = {
+    numberFormatter: (value: number) => `nf${value}`,
+    packageName: 'nuxt',
+    versions: ['4.0.0', '4.0.1', '4.1.0'],
+    copy: vi.fn(async () => undefined),
+    $t: translate,
+  } as unknown as TimelineStackbarConfig
+
+  return { ...config, ...overrides }
 }
 
 function createTrendLineConfig(overrides: Partial<TrendLineConfig> = {}): TrendLineConfig {
@@ -1190,54 +1221,299 @@ describe('copyAltTextForVersionsBarChart', () => {
   })
 })
 
-describe('loadFile', () => {
-  let createElementMock: ReturnType<typeof vi.fn>
-  let clickMock: ReturnType<typeof vi.fn>
-  let removeMock: ReturnType<typeof vi.fn>
-  let originalDocument: typeof globalThis.document | undefined
+const timelineDataset = [
+  {
+    dependencyCount: 100,
+    events: [],
+    version: '4.0.0',
+    totalSize: 120_000_000,
+  },
+  {
+    dependencyCount: 80,
+    events: [],
+    version: '4.0.1',
+    totalSize: 115_000_000,
+  },
+] as unknown as EnrichedTimelineSizeCacheEntry[]
 
-  beforeEach(() => {
-    clickMock = vi.fn()
-    removeMock = vi.fn()
+describe('createAltTextForTimelineChart', () => {
+  it('handles empty dataset without throwing', () => {
+    const { translate } = createTranslateMock()
+    const config = createTimelineConfig({ $t: translate })
 
-    createElementMock = vi.fn().mockReturnValue({
-      href: '',
-      download: '',
-      click: clickMock,
-      remove: removeMock,
+    expect(() =>
+      createAltTextForTimelineChart({
+        dataset: [],
+        config,
+      } as AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>),
+    ).not.toThrow()
+  })
+
+  it('returns empty string when dataset is null', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineConfig({ $t: translateMock.translate })
+
+    const result = createAltTextForTimelineChart({
+      dataset: null,
+      config,
+    } as unknown as AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>)
+
+    expect(result).toBe('')
+    expect(translateMock.calls).toHaveLength(0)
+  })
+
+  it('returns an alt text', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineConfig({ $t: translateMock.translate })
+
+    const result = createAltTextForTimelineChart({
+      dataset: timelineDataset,
+      config,
+    } as unknown as AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>)
+
+    expect(result).toBe('t:package.timeline.chart.copy_alt.general_description')
+    expect(translateMock.calls).toHaveLength(3)
+  })
+})
+
+describe('copyAltTextForTimelineChart', () => {
+  it('forwards createAltTextForTimelineChart result to config.copy', async () => {
+    const copyMock = vi.fn(async () => undefined)
+    const config = createTimelineConfig({ copy: copyMock })
+    const expected = createAltTextForTimelineChart({
+      dataset: timelineDataset,
+      config,
     })
 
-    originalDocument = globalThis.document
+    await copyAltTextForTimelineChart({
+      dataset: timelineDataset,
+      config,
+    } as AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>)
 
-    Object.defineProperty(globalThis, 'document', {
-      value: {
-        createElement: createElementMock,
-      },
-      configurable: true,
-      writable: true,
+    expect(copyMock).toHaveBeenCalledTimes(1)
+    expect(copyMock).toHaveBeenCalledWith(expected)
+  })
+})
+
+const timelineStackbarDataset = [
+  {
+    name: 'vue',
+    series: [100, 150, 200],
+  },
+  {
+    name: 'vite',
+    series: [50, 80, 40],
+  },
+  {
+    name: 'nitro',
+    series: [0, 20, 60],
+  },
+  {
+    name: 'empty-package',
+    series: [0, 0, 0],
+  },
+] as unknown as VueUiStackbarFormattedDatasetItem[]
+
+describe('createAltTextForTimelineStackbar', () => {
+  it('returns empty string when dataset is null', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineStackbarConfig({ $t: translateMock.translate })
+
+    const result = createAltTextForTimelineStackbar({
+      dataset: null,
+      config,
+    } as unknown as AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>)
+
+    expect(result).toBe('')
+    expect(translateMock.calls).toHaveLength(0)
+  })
+
+  it('returns empty string when dataset is empty', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineStackbarConfig({ $t: translateMock.translate })
+
+    const result = createAltTextForTimelineStackbar({
+      dataset: [],
+      config,
+    } as AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>)
+
+    expect(result).toBe('')
+    expect(translateMock.calls).toHaveLength(0)
+  })
+
+  it('calls general_description with expected stackbar totals and version bounds', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineStackbarConfig({
+      $t: translateMock.translate,
+      versions: ['4.0.0', '4.0.1', '4.1.0'],
+      numberFormatter: (value: number) => `nf:${value}`,
+    })
+
+    const result = createAltTextForTimelineStackbar({
+      dataset: timelineStackbarDataset,
+      config,
+    } as AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>)
+
+    expect(result).toBe('t:package.timeline.chart.copy_alt.general_description')
+
+    const generalDescriptionCall = translateMock.calls.find(
+      call => call.key === 'package.timeline.chart.copy_alt.general_description',
+    )
+    expect(generalDescriptionCall).toBeTruthy()
+
+    expect(generalDescriptionCall?.named).toMatchObject({
+      metric: 't:package.timeline.chart.dependency_size',
+      package: 'nuxt',
+      first: '4.0.0',
+      last: '4.1.0',
+      first_value: 'nf:150',
+      last_value: 'nf:300',
+      overall_progress_percentage: 100,
+      watermark: 't:package.trends.copy_alt.watermark_top',
+    })
+    expect(generalDescriptionCall?.named?.key_changes).toBe(
+      [
+        't:package.timeline.chart.copy_alt.stackbar_top_segments',
+        't:package.timeline.chart.copy_alt.stackbar_largest_increase',
+        't:package.timeline.chart.copy_alt.stackbar_largest_decrease',
+      ].join(' '),
+    )
+  })
+
+  it('describes top segments sorted by last value and limited by maxSegments', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineStackbarConfig({
+      $t: translateMock.translate,
+      maxSegments: 2,
+      numberFormatter: (value: number) => `nf:${value}`,
+    })
+
+    createAltTextForTimelineStackbar({
+      dataset: timelineStackbarDataset,
+      config,
+    } as AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>)
+
+    const segmentShareCalls = translateMock.calls.filter(
+      call => call.key === 'package.timeline.chart.copy_alt.stackbar_segment_share',
+    )
+    expect(segmentShareCalls).toHaveLength(2)
+    expect(segmentShareCalls[0]?.named).toMatchObject({
+      segment: 'vue',
+      value: 'nf:200',
+      percentage: '67%',
+    })
+    expect(segmentShareCalls[1]?.named).toMatchObject({
+      segment: 'nitro',
+      value: 'nf:60',
+      percentage: '20%',
+    })
+
+    const topSegmentsCall = translateMock.calls.find(
+      call => call.key === 'package.timeline.chart.copy_alt.stackbar_top_segments',
+    )
+    expect(topSegmentsCall?.named).toMatchObject({
+      version: '4.1.0',
+      segments: [
+        't:package.timeline.chart.copy_alt.stackbar_segment_share',
+        't:package.timeline.chart.copy_alt.stackbar_segment_share',
+      ].join(', '),
     })
   })
 
-  afterEach(() => {
-    vi.restoreAllMocks()
+  it('describes the largest increase and decrease between first and last versions', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineStackbarConfig({
+      $t: translateMock.translate,
+      numberFormatter: (value: number) => `nf:${value}`,
+    })
 
-    Object.defineProperty(globalThis, 'document', {
-      value: originalDocument,
-      configurable: true,
-      writable: true,
+    createAltTextForTimelineStackbar({
+      dataset: timelineStackbarDataset,
+      config,
+    } as AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>)
+
+    const largestIncreaseCall = translateMock.calls.find(
+      call => call.key === 'package.timeline.chart.copy_alt.stackbar_largest_increase',
+    )
+    expect(largestIncreaseCall?.named).toMatchObject({
+      segment: 'vue',
+      delta: 'nf:100',
+    })
+
+    const largestDecreaseCall = translateMock.calls.find(
+      call => call.key === 'package.timeline.chart.copy_alt.stackbar_largest_decrease',
+    )
+    expect(largestDecreaseCall?.named).toMatchObject({
+      segment: 'vite',
+      delta: 'nf:10',
     })
   })
 
-  it('creates an anchor element and triggers a download', () => {
-    const link = 'https://npmx.dev/file.png'
-    const filename = 'file.png'
-    loadFile(link, filename)
-    expect(createElementMock).toHaveBeenCalledWith('a')
-    const anchor = createElementMock.mock.results[0]?.value as HTMLAnchorElement
-    expect(anchor.href).toBe(link)
-    expect(anchor.download).toBe(filename)
-    expect(clickMock).toHaveBeenCalledTimes(1)
-    expect(removeMock).toHaveBeenCalledTimes(1)
+  it('uses percentageFormatter when provided', () => {
+    const translateMock = createTranslateMock()
+    const percentageFormatter = vi.fn((value: number) => `pf:${value}`)
+    const config = createTimelineStackbarConfig({
+      $t: translateMock.translate,
+      maxSegments: 1,
+      percentageFormatter,
+    })
+
+    createAltTextForTimelineStackbar({
+      dataset: timelineStackbarDataset,
+      config,
+    } as AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>)
+
+    const segmentShareCall = translateMock.calls.find(
+      call => call.key === 'package.timeline.chart.copy_alt.stackbar_segment_share',
+    )
+
+    expect(percentageFormatter).toHaveBeenCalledWith(67)
+    expect(segmentShareCall?.named).toHaveProperty('percentage', 'pf:67')
+  })
+
+  it('falls back to numeric positions when version labels are missing', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineStackbarConfig({
+      $t: translateMock.translate,
+      versions: [],
+    })
+
+    createAltTextForTimelineStackbar({
+      dataset: timelineStackbarDataset,
+      config,
+    } as AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>)
+
+    const generalDescriptionCall = translateMock.calls.find(
+      call => call.key === 'package.timeline.chart.copy_alt.general_description',
+    )
+    expect(generalDescriptionCall?.named).toMatchObject({
+      first: '1',
+      last: '3',
+    })
+
+    const topSegmentsCall = translateMock.calls.find(
+      call => call.key === 'package.timeline.chart.copy_alt.stackbar_top_segments',
+    )
+    expect(topSegmentsCall?.named).toHaveProperty('version', '3')
+  })
+})
+
+describe('copyAltTextForTimelineStackbar', () => {
+  it('forwards createAltTextForTimelineStackbar result to config.copy', async () => {
+    const copyMock = vi.fn(async () => undefined)
+    const config = createTimelineStackbarConfig({ copy: copyMock })
+    const expected = createAltTextForTimelineStackbar({
+      dataset: timelineStackbarDataset,
+      config,
+    })
+
+    await copyAltTextForTimelineStackbar({
+      dataset: timelineStackbarDataset,
+      config,
+    } as AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>)
+
+    expect(copyMock).toHaveBeenCalledTimes(1)
+    expect(copyMock).toHaveBeenCalledWith(expected)
   })
 })
 
@@ -1400,254 +1676,5 @@ describe('applyEllipsis', () => {
 
   it('preserves whitespace within the truncated portion', () => {
     expect(applyEllipsis('you need to touch grass', 13)).toBe('you need to t...')
-  })
-})
-
-describe('createSeedNumber', () => {
-  it('returns the same hash for the same input', () => {
-    expect(createSeedNumber('react')).toBe(createSeedNumber('react'))
-    expect(createSeedNumber('vue')).toBe(createSeedNumber('vue'))
-  })
-
-  it('returns different hashes for different inputs', () => {
-    expect(createSeedNumber('react')).not.toBe(createSeedNumber('vue'))
-    expect(createSeedNumber('svelte')).not.toBe(createSeedNumber('solid'))
-  })
-
-  it('returns a 32 bit unsigned integer', () => {
-    const result = createSeedNumber('react')
-    expect(Number.isInteger(result)).toBe(true)
-    expect(result).toBeGreaterThanOrEqual(0)
-    expect(result).toBeLessThanOrEqual(4294967295)
-  })
-
-  it('handles an empty string', () => {
-    const result = createSeedNumber('')
-    expect(Number.isInteger(result)).toBe(true)
-    expect(result).toBeGreaterThanOrEqual(0)
-    expect(result).toBeLessThanOrEqual(4294967295)
-  })
-
-  it('is case sensitive', () => {
-    expect(createSeedNumber('react')).not.toBe(createSeedNumber('React'))
-  })
-})
-
-describe('createSeededSvgPattern', () => {
-  it('returns deterministic output for the same seed', () => {
-    const first = createSeededSvgPattern('react')
-    const second = createSeededSvgPattern('react')
-    expect(first).toEqual(second)
-  })
-
-  it('returns different output for different seeds', () => {
-    const first = createSeededSvgPattern('react')
-    const second = createSeededSvgPattern('vue')
-    expect(second).not.toEqual(first)
-  })
-
-  it('returns a valid pattern object shape', () => {
-    const result = createSeededSvgPattern('react')
-    expect(typeof result.width).toBe('number')
-    expect(typeof result.height).toBe('number')
-    expect(typeof result.rotation).toBe('number')
-    expect(typeof result.patternType).toBe('string')
-    expect(typeof result.contentMarkup).toBe('string')
-  })
-
-  it('uses default options when none are provided', () => {
-    const result = createSeededSvgPattern('react')
-    expect(result.width).toBeGreaterThanOrEqual(8)
-    expect(result.width).toBeLessThanOrEqual(20)
-    expect(result.height).toBe(result.width)
-    expect(result.contentMarkup.length).toBeGreaterThan(0)
-  })
-
-  it('uses the provided foreground and background colors', () => {
-    const result = createSeededSvgPattern('react', {
-      foregroundColor: '#ff0000',
-      backgroundColor: '#00ff00',
-    })
-    expect(result.contentMarkup).toContain('#ff0000')
-    expect(result.contentMarkup).toContain('#00ff00')
-    expect(result.contentMarkup).toContain('<rect x="0" y="0"')
-  })
-
-  it('does not inject a background rect when backgroundColor is transparent', () => {
-    const result = createSeededSvgPattern('react', {
-      backgroundColor: 'transparent',
-    })
-    expect(result.contentMarkup).not.toContain('<rect x="0" y="0"')
-  })
-
-  it('respects the provided size range', () => {
-    const result = createSeededSvgPattern('react', {
-      minimumSize: 10,
-      maximumSize: 16,
-    })
-    expect(result.width).toBeGreaterThanOrEqual(10)
-    expect(result.width).toBeLessThanOrEqual(16)
-    expect(result.height).toBe(result.width)
-  })
-
-  it('always returns one of the supported pattern types', () => {
-    const allowedPatternTypes = [
-      'diagonalLines',
-      'verticalLines',
-      'horizontalLines',
-      'crosshatch',
-      'dots',
-      'grid',
-      'zigzag',
-    ]
-    const result = createSeededSvgPattern('react')
-    expect(allowedPatternTypes).toContain(result.patternType)
-  })
-
-  it('returns a supported rotation value', () => {
-    const allowedRotations = [0, 15, 30, 45, 60, 75, 90, 120, 135]
-    const result = createSeededSvgPattern('react')
-    expect(allowedRotations).toContain(result.rotation)
-  })
-
-  it('returns svg markup matching the selected pattern type', () => {
-    const seeds = [
-      'react',
-      'vue',
-      'svelte',
-      'solid',
-      'angular',
-      'ember',
-      'preact',
-      'lit',
-      'alpine',
-      'nuxt',
-      'next',
-      'astro',
-      'qwik',
-      'backbone',
-    ]
-
-    const expectedTagByPatternType: Record<
-      ReturnType<typeof createSeededSvgPattern>['patternType'],
-      string
-    > = {
-      diagonalLines: '<line',
-      verticalLines: '<line',
-      horizontalLines: '<line',
-      crosshatch: '<line',
-      dots: '<circle',
-      grid: '<line',
-      zigzag: '<path',
-    }
-
-    for (const seed of seeds) {
-      const result = createSeededSvgPattern(seed)
-      const expectedTag = expectedTagByPatternType[result.patternType]
-      expect(result.contentMarkup).toContain(expectedTag)
-    }
-  })
-
-  it('accepts numeric seeds', () => {
-    const result = createSeededSvgPattern(12345)
-    expect(typeof result.width).toBe('number')
-    expect(typeof result.contentMarkup).toBe('string')
-    expect(result.contentMarkup.length).toBeGreaterThan(0)
-  })
-
-  it('returns deterministic output for equivalent numeric and string seeds', () => {
-    const numericSeedResult = createSeededSvgPattern(12345)
-    const stringSeedResult = createSeededSvgPattern('12345')
-    expect(numericSeedResult).toEqual(stringSeedResult)
-  })
-})
-
-describe('createChartPatternSlotMarkup', () => {
-  it('returns a pattern element with the provided id', () => {
-    const result = createChartPatternSlotMarkup({
-      id: 'pattern-1',
-      seed: 7,
-      color: '#ff0000',
-      foregroundColor: '#ffffff',
-      fallbackColor: 'transparent',
-      maxSize: 24,
-      minSize: 16,
-    })
-
-    expect(result).toContain('<pattern')
-    expect(result).toContain('id="pattern-1"')
-    expect(result).toContain('patternUnits="userSpaceOnUse"')
-    expect(result).toContain('</pattern>')
-  })
-
-  it('includes width, height, rotation, and content markup from the generated pattern', () => {
-    const generatedPattern = createSeededSvgPattern(1, {
-      foregroundColor: '#000',
-      backgroundColor: 'transparent',
-      minimumSize: 16,
-      maximumSize: 24,
-    })
-
-    const result = createChartPatternSlotMarkup({
-      id: 'pattern-1',
-      seed: 1,
-      foregroundColor: '#000',
-      fallbackColor: 'transparent',
-      maxSize: 24,
-      minSize: 16,
-    })
-
-    expect(result).toContain(`width="${generatedPattern.width}"`)
-    expect(result).toContain(`height="${generatedPattern.height}"`)
-    expect(result).toContain(`patternTransform="rotate(${generatedPattern.rotation})"`)
-    expect(result).toContain(generatedPattern.contentMarkup)
-  })
-
-  it('is deterministic for the same inputs', () => {
-    const first = createChartPatternSlotMarkup({
-      id: 'pattern-stable',
-      seed: 'nuxt',
-      color: '#00ff00',
-      foregroundColor: '#000000',
-      fallbackColor: 'transparent',
-      maxSize: 40,
-      minSize: 10,
-    })
-
-    const second = createChartPatternSlotMarkup({
-      id: 'pattern-stable',
-      seed: 'nuxt',
-      color: '#00ff00',
-      foregroundColor: '#000000',
-      fallbackColor: 'transparent',
-      maxSize: 40,
-      minSize: 10,
-    })
-
-    expect(first).toBe(second)
-  })
-
-  it('changes when the id changes', () => {
-    const first = createChartPatternSlotMarkup({
-      id: 'pattern-a',
-      seed: 1,
-      color: '#00ff00',
-      foregroundColor: '#000000',
-      fallbackColor: 'transparent',
-      maxSize: 40,
-      minSize: 10,
-    })
-
-    const second = createChartPatternSlotMarkup({
-      id: 'pattern-b',
-      seed: 2,
-      color: '#00ff00',
-      foregroundColor: '#000000',
-      fallbackColor: 'transparent',
-      maxSize: 40,
-      minSize: 10,
-    })
-
-    expect(first).not.toBe(second)
   })
 })

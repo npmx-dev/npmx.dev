@@ -3,12 +3,11 @@ import type { LocaleObject } from '@nuxtjs/i18n'
 import * as process from 'node:process'
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { basename, join, resolve } from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { deepCopy } from '@intlify/shared'
 import { countryLocaleVariants, currentLocales } from '../config/i18n.ts'
 import { COLORS } from './utils.ts'
 
-const LOCALES_DIRECTORY = fileURLToPath(new URL('../i18n/locales', import.meta.url))
+const LOCALES_DIRECTORY = join(import.meta.dirname, '../i18n/locales')
 const REFERENCE_FILE_NAME = 'en.json'
 
 type NestedObject = { [key: string]: unknown }

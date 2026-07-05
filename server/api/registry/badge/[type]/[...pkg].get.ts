@@ -5,7 +5,7 @@ import { createError, getRouterParam, getQuery, setHeader } from 'h3'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import { CACHE_MAX_AGE_ONE_HOUR, ERROR_NPM_FETCH_FAILED } from '#shared/utils/constants'
 import { fetchNpmPackage } from '#server/utils/npm'
-import { assertValidPackageName } from '#shared/utils/npm'
+import { assertValidPackageName, normalizeLicense } from '#shared/utils/npm'
 import { fetchPackageWithTypesAndFiles } from '#server/utils/file-tree'
 import { handleApiError } from '#server/utils/error-handler'
 
@@ -45,81 +45,242 @@ const BADGE_PADDING_X = 8
 const MIN_BADGE_TEXT_WIDTH = 40
 const FALLBACK_VALUE_EXTRA_PADDING_X = 8
 const SHIELDS_LABEL_PADDING_X = 5
+const COMPACT_BADGE_PADDING_X = 5
 
 const BADGE_FONT_SHORTHAND = 'normal normal 400 11px Geist, system-ui, -apple-system, sans-serif'
 const SHIELDS_FONT_SHORTHAND = 'normal normal 400 11px Verdana, Geneva, DejaVu Sans, sans-serif'
 
 let cachedCanvasContext: SKRSContext2D | null | undefined
 
-const NARROW_CHARS = new Set([' ', '!', '"', "'", '(', ')', '*', ',', '-', '.', ':', ';', '|'])
-const MEDIUM_CHARS = new Set([
-  '#',
-  '$',
-  '+',
-  '/',
-  '<',
-  '=',
-  '>',
-  '?',
-  '@',
-  '[',
-  '\\',
-  ']',
-  '^',
-  '_',
-  '`',
-  '{',
-  '}',
-  '~',
-])
-
-const FALLBACK_WIDTHS = {
+const CHAR_WIDTHS: Record<'default' | 'shieldsio', Record<string, number>> = {
+  /**
+   * Manually measured widths for font locally via:
+   *
+   * ```ts
+   *  // Geist font widths
+   *  const ctx = createCanvas(1, 1).getContext('2d')
+   *  const chars = ' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+   *  ctx.font = BADGE_FONT_SHORTHAND
+   *  const entries = [...chars].map(ch => `'${ch === "'" ? "\\'" : ch === '\\' ? '\\\\' : ch}': ${Math.ceil(ctx.measureText(ch).width)}`)
+   *  console.log('default: {\n  ' + entries.join(', ') + '\n}')
+   *
+   *  // Verdana font widths
+   *  ctx.font = SHIELDS_FONT_SHORTHAND
+   *  const entries = [...chars].map(ch => `'${ch === "'" ? "\\'" : ch === '\\' ? '\\\\' : ch}': ${Math.ceil(ctx.measureText(ch).width)}`)
+   *  console.log('shieldsio: {\n  ' + entries.join(', ') + '\n}')
+   * ```
+   */
   default: {
-    narrow: 3,
-    medium: 5,
-    digit: 6,
-    uppercase: 7,
-    other: 6,
+    ' ': 3,
+    '!': 3,
+    '"': 4,
+    '#': 6,
+    '$': 6,
+    '%': 10,
+    '&': 7,
+    "'": 3,
+    '(': 4,
+    ')': 4,
+    '*': 5,
+    '+': 6,
+    ',': 3,
+    '-': 5,
+    '.': 3,
+    '/': 4,
+    ':': 4,
+    ';': 4,
+    '<': 7,
+    '=': 6,
+    '>': 7,
+    '?': 5,
+    '@': 10,
+    '[': 4,
+    '\\': 4,
+    ']': 4,
+    '^': 6,
+    '_': 4,
+    '`': 6,
+    '{': 4,
+    '|': 4,
+    '}': 4,
+    '~': 6,
+    '0': 7,
+    '1': 4,
+    '2': 6,
+    '3': 6,
+    '4': 7,
+    '5': 6,
+    '6': 7,
+    '7': 6,
+    '8': 7,
+    '9': 7,
+    'A': 7,
+    'B': 7,
+    'C': 7,
+    'D': 8,
+    'E': 7,
+    'F': 6,
+    'G': 7,
+    'H': 8,
+    'I': 3,
+    'J': 5,
+    'K': 7,
+    'L': 6,
+    'M': 9,
+    'N': 8,
+    'O': 8,
+    'P': 7,
+    'Q': 8,
+    'R': 7,
+    'S': 6,
+    'T': 6,
+    'U': 8,
+    'V': 7,
+    'W': 10,
+    'X': 7,
+    'Y': 7,
+    'Z': 6,
+    'a': 6,
+    'b': 6,
+    'c': 5,
+    'd': 6,
+    'e': 6,
+    'f': 4,
+    'g': 6,
+    'h': 6,
+    'i': 3,
+    'j': 3,
+    'k': 6,
+    'l': 3,
+    'm': 9,
+    'n': 6,
+    'o': 6,
+    'p': 6,
+    'q': 6,
+    'r': 4,
+    's': 5,
+    't': 4,
+    'u': 6,
+    'v': 6,
+    'w': 9,
+    'x': 6,
+    'y': 6,
+    'z': 5,
   },
   shieldsio: {
-    narrow: 3,
-    medium: 5,
-    digit: 6,
-    uppercase: 7,
-    other: 5.5,
+    ' ': 4,
+    '!': 5,
+    '"': 6,
+    '#': 9,
+    '$': 7,
+    '%': 12,
+    '&': 8,
+    "'": 3,
+    '(': 5,
+    ')': 5,
+    '*': 7,
+    '+': 9,
+    ',': 4,
+    '-': 5,
+    '.': 4,
+    '/': 5,
+    ':': 5,
+    ';': 5,
+    '<': 9,
+    '=': 9,
+    '>': 9,
+    '?': 6,
+    '@': 11,
+    '[': 5,
+    '\\': 5,
+    ']': 5,
+    '^': 9,
+    '_': 7,
+    '`': 7,
+    '{': 7,
+    '|': 5,
+    '}': 7,
+    '~': 9,
+    '0': 7,
+    '1': 7,
+    '2': 7,
+    '3': 7,
+    '4': 7,
+    '5': 7,
+    '6': 7,
+    '7': 7,
+    '8': 7,
+    '9': 7,
+    'A': 8,
+    'B': 8,
+    'C': 8,
+    'D': 9,
+    'E': 7,
+    'F': 7,
+    'G': 9,
+    'H': 9,
+    'I': 5,
+    'J': 5,
+    'K': 8,
+    'L': 7,
+    'M': 10,
+    'N': 9,
+    'O': 9,
+    'P': 7,
+    'Q': 9,
+    'R': 8,
+    'S': 8,
+    'T': 7,
+    'U': 9,
+    'V': 8,
+    'W': 11,
+    'X': 8,
+    'Y': 7,
+    'Z': 8,
+    'a': 7,
+    'b': 7,
+    'c': 6,
+    'd': 7,
+    'e': 7,
+    'f': 4,
+    'g': 7,
+    'h': 7,
+    'i': 4,
+    'j': 4,
+    'k': 7,
+    'l': 4,
+    'm': 11,
+    'n': 7,
+    'o': 7,
+    'p': 7,
+    'q': 7,
+    'r': 5,
+    's': 6,
+    't': 5,
+    'u': 7,
+    'v': 7,
+    'w': 9,
+    'x': 7,
+    'y': 7,
+    'z': 6,
   },
-} as const
+}
+// Fallback advance width for any character not in the lookup table above, e.g. emojis, CJK, etc.
+const CHAR_WIDTH_FALLBACK: Record<'default' | 'shieldsio', number> = {
+  default: 12,
+  shieldsio: 8,
+}
 
-function estimateTextWidth(text: string, fallbackFont: 'default' | 'shieldsio'): number {
-  // Heuristic coefficients tuned to keep fallback rendering close to canvas metrics.
-  const widths = FALLBACK_WIDTHS[fallbackFont]
-  let totalWidth = 0
+function estimateTextWidth(text: string, font: 'default' | 'shieldsio'): number {
+  const table = CHAR_WIDTHS[font]
+  const fallback = CHAR_WIDTH_FALLBACK[font]
+  let total = 0
 
-  for (const character of text) {
-    if (NARROW_CHARS.has(character)) {
-      totalWidth += widths.narrow
-      continue
-    }
-
-    if (MEDIUM_CHARS.has(character)) {
-      totalWidth += widths.medium
-      continue
-    }
-
-    if (/\d/.test(character)) {
-      totalWidth += widths.digit
-      continue
-    }
-
-    if (/[A-Z]/.test(character)) {
-      totalWidth += widths.uppercase
-      continue
-    }
-
-    totalWidth += widths.other
+  for (const ch of text) {
+    total += table[ch] ?? fallback
   }
 
-  return Math.max(1, Math.round(totalWidth))
+  return Math.max(1, Math.round(total))
 }
 
 function getCanvasContext(): SKRSContext2D | null {
@@ -165,6 +326,16 @@ function measureDefaultTextWidth(text: string, fallbackExtraPadding = 0): number
   )
 }
 
+function measureCompactTextWidth(text: string): number {
+  const measuredWidth = measureTextWidth(text, BADGE_FONT_SHORTHAND)
+
+  if (measuredWidth !== null) {
+    return measuredWidth + COMPACT_BADGE_PADDING_X * 2
+  }
+
+  return estimateTextWidth(text, 'default') + COMPACT_BADGE_PADDING_X * 2
+}
+
 function escapeXML(str: string): string {
   return str
     .replace(/&/g, '&amp;')
@@ -200,18 +371,28 @@ function measureShieldsTextLength(text: string): number {
   return estimateTextWidth(text, 'shieldsio')
 }
 
-function renderDefaultBadgeSvg(params: {
+interface BadgeRenderParams {
   finalColor: string
   finalLabel: string
   finalLabelColor: string
   finalValue: string
   labelTextColor: string
   valueTextColor: string
-}): string {
-  const { finalColor, finalLabel, finalLabelColor, finalValue, labelTextColor, valueTextColor } =
-    params
-  const leftWidth = finalLabel.trim().length === 0 ? 0 : measureDefaultTextWidth(finalLabel)
-  const rightWidth = measureDefaultTextWidth(finalValue, FALLBACK_VALUE_EXTRA_PADDING_X)
+}
+
+function renderGeistBadgeSvg(
+  params: BadgeRenderParams & { leftWidth: number; rightWidth: number },
+): string {
+  const {
+    finalColor,
+    finalLabel,
+    finalLabelColor,
+    finalValue,
+    labelTextColor,
+    valueTextColor,
+    leftWidth,
+    rightWidth,
+  } = params
   const totalWidth = leftWidth + rightWidth
   const height = 20
   const escapedLabel = escapeXML(finalLabel)
@@ -234,14 +415,21 @@ function renderDefaultBadgeSvg(params: {
   `.trim()
 }
 
-function renderShieldsBadgeSvg(params: {
-  finalColor: string
-  finalLabel: string
-  finalLabelColor: string
-  finalValue: string
-  labelTextColor: string
-  valueTextColor: string
-}): string {
+function renderDefaultBadgeSvg(params: BadgeRenderParams): string {
+  const leftWidth =
+    params.finalLabel.trim().length === 0 ? 0 : measureDefaultTextWidth(params.finalLabel)
+  const rightWidth = measureDefaultTextWidth(params.finalValue, FALLBACK_VALUE_EXTRA_PADDING_X)
+  return renderGeistBadgeSvg({ ...params, leftWidth, rightWidth })
+}
+
+function renderCompactBadgeSvg(params: BadgeRenderParams): string {
+  const leftWidth =
+    params.finalLabel.trim().length === 0 ? 0 : measureCompactTextWidth(params.finalLabel)
+  const rightWidth = measureCompactTextWidth(params.finalValue)
+  return renderGeistBadgeSvg({ ...params, leftWidth, rightWidth })
+}
+
+function renderShieldsBadgeSvg(params: BadgeRenderParams): string {
   const { finalColor, finalLabel, finalLabelColor, finalValue, labelTextColor, valueTextColor } =
     params
   const hasLabel = finalLabel.trim().length > 0
@@ -368,7 +556,7 @@ const badgeStrategies = {
   'license': async (pkgData: globalThis.Packument) => {
     const latest = getLatestVersion(pkgData)
     const versionData = latest ? pkgData.versions?.[latest] : undefined
-    const value = versionData?.license ?? 'unknown'
+    const value = normalizeLicense(versionData?.license) ?? 'unknown'
     return { label: 'license', value, color: COLORS.green }
   },
 
@@ -496,10 +684,33 @@ const badgeStrategies = {
       color: isDeprecated ? COLORS.red : COLORS.green,
     }
   },
+
+  'likes': async (pkgData: globalThis.Packument) => {
+    const likesUtil = new PackageLikesUtils()
+    const { totalLikes } = await likesUtil.getLikes(pkgData.name)
+
+    return { label: 'likes', value: String(totalLikes ?? 0), color: COLORS.red }
+  },
 }
 
 const BadgeTypeSchema = v.picklist(Object.keys(badgeStrategies) as [string, ...string[]])
-const BadgeStyleSchema = v.picklist(['default', 'shieldsio'])
+const BadgeStyleSchema = v.picklist(['default', 'shieldsio', 'compact'])
+
+const BADGE_RENDERERS = {
+  default: renderDefaultBadgeSvg,
+  shieldsio: renderShieldsBadgeSvg,
+  compact: renderCompactBadgeSvg,
+} as const
+
+const COMPACT_LABEL_MAP: Record<string, string> = {
+  'install size': 'size',
+  'downloads/day': 'dl/day',
+  'downloads/wk': 'dl/wk',
+  'downloads/mo': 'dl/mo',
+  'downloads/yr': 'dl/yr',
+  'dependencies': 'deps',
+  'maintainers': 'maint',
+}
 
 export default defineCachedEventHandler(
   async event => {
@@ -538,7 +749,11 @@ export default defineCachedEventHandler(
       const pkgData = await fetchNpmPackage(packageName)
       const strategyResult = await strategy(pkgData, requestedVersion)
 
-      const finalLabel = userLabel ? userLabel : showName ? packageName : strategyResult.label
+      const strategyLabel =
+        badgeStyle === 'compact'
+          ? (COMPACT_LABEL_MAP[strategyResult.label] ?? strategyResult.label)
+          : strategyResult.label
+      const finalLabel = userLabel ? userLabel : showName ? packageName : strategyLabel
       const finalValue = userValue ? userValue : strategyResult.value
 
       const rawColor = userColor ?? strategyResult.color
@@ -551,7 +766,7 @@ export default defineCachedEventHandler(
       const labelTextColor = getContrastTextColor(finalLabelColor)
       const valueTextColor = getContrastTextColor(finalColor)
 
-      const renderFn = badgeStyle === 'shieldsio' ? renderShieldsBadgeSvg : renderDefaultBadgeSvg
+      const renderFn = BADGE_RENDERERS[badgeStyle]
       const svg = renderFn({
         finalColor,
         finalLabel,

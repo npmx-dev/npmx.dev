@@ -5,6 +5,7 @@ const { accentColors, selectedAccentColor, setAccentColor } = useAccentColor()
 
 onPrehydrate(el => {
   const settings = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
+  // Hardcoded — onPrehydrate is serialized into a <script> tag and cannot reference imports
   const defaultId = 'sky'
   const id = settings.accentColorId
   if (id) {

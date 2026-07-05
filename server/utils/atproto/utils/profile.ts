@@ -43,7 +43,7 @@ export class ProfileUtils {
       })
       if (!response.success) {
         // Not always, but usually this will mean the profile cannot be found
-        // and can be assumed most of the time it does not exists
+        // and can be assumed most of the time it does not exist
         throw createError({
           status: 404,
           message: `Failed to resolve MiniDoc for ${handle}`,

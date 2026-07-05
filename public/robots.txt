@@ -1,5 +1,20 @@
+# Default Settings
 User-agent: *
-Allow: /
+
+# Pages that bots are allowed to visit
+Allow: /$
+Allow: /about$
+Allow: /accessibility$
+Allow: /blog
+Allow: /brand$
+Allow: /pds$
+Allow: /privacy$
+Allow: /translation-status$
+Allow: /recharging$
+Allow: /_og/d/*
+Allow: /opensearch.xml$
+
+Disallow: /
 
 # Search pages: infinite query-param combinations
 Disallow: /search
@@ -11,11 +26,13 @@ Disallow: /compare
 # Auth flows
 Disallow: /auth/
 
-# Code explorer & generated API docs
+# Code explorer, generated API docs & changelog
 Disallow: /package-code/
 Disallow: /code/
 Disallow: /package-docs/
 Disallow: /docs/
+Disallow: /package-changelog/
+Disallow: /changelog/
 
 # Internal API
 Disallow: /api/

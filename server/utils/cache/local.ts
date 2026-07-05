@@ -9,7 +9,7 @@ interface LocalCachedEntry<T = unknown> {
 
 /**
  * Checks to see if a cache entry is stale locally
- * @param entry - The entry from the locla cache
+ * @param entry - The entry from the local cache
  * @returns
  */
 function isCacheEntryStale(entry: LocalCachedEntry): boolean {
@@ -20,7 +20,7 @@ function isCacheEntryStale(entry: LocalCachedEntry): boolean {
 }
 
 /**
- * Local implmentation of a cache to be used during development
+ * Local implementation of a cache to be used during development
  */
 export class LocalCacheAdapter implements CacheAdapter {
   private readonly storage = useStorage('atproto:generic')

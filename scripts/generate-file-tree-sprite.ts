@@ -1,3 +1,4 @@
+import process from 'node:process'
 import type { IconifyJSON } from '@iconify-json/lucide'
 import { promises as fs } from 'node:fs'
 import { fileURLToPath } from 'node:url'
@@ -9,19 +10,22 @@ import {
   COMPOUND_EXTENSIONS,
   DEFAULT_ICON,
 } from '../app/utils/file-icons.ts'
+import customIcons from '../assets/media/custom-icons.json' with { type: 'json' }
 
 const rootDir = process.cwd()
-const outputDevPath = path.join(rootDir, 'public', 'file-tree-sprite.svg')
-const outputStagePath = path.join(rootDir, 'public-dev', 'file-tree-sprite.svg')
-const outputProdPath = path.join(rootDir, 'public-prod', 'file-tree-sprite.svg')
+const outputDevPath = path.join(rootDir, 'public-dev', 'file-tree-sprite.svg')
+const outputStagePath = path.join(rootDir, 'public-staging', 'file-tree-sprite.svg')
+const outputProdPath = path.join(rootDir, 'public', 'file-tree-sprite.svg')
 
-const COLLECTION_NAMES = ['lucide', 'simple-icons', 'svg-spinners', 'vscode-icons']
+const ICONIFY_COLLECTION_NAMES = ['lucide', 'simple-icons', 'svg-spinners', 'vscode-icons']
 
-const COLLECTION_REGEXP = new RegExp(`^(${COLLECTION_NAMES.join('|')})-(.+)$`)
+const COLLECTION_REGEXP = new RegExp(`^(${ICONIFY_COLLECTION_NAMES.join('|')}|custom)-(.+)$`)
 
 async function loadCollections() {
-  const collections: { [key: string]: IconifyJSON } = {}
-  for (const name of COLLECTION_NAMES) {
+  const collections: { [key: string]: IconifyJSON } = {
+    custom: { icons: customIcons, prefix: 'custom' },
+  }
+  for (const name of ICONIFY_COLLECTION_NAMES) {
     const filePathUrl = import.meta.resolve(`@iconify-json/${name}/icons.json`)
     const filePath = fileURLToPath(filePathUrl)
     const raw = await fs.readFile(filePath, 'utf8')
@@ -49,13 +53,12 @@ function buildSprite(
   let symbols = ''
   Object.entries(grouped).forEach(([prefix, iconNames]) => {
     const collection = collections[prefix]
-
     if (!collection?.icons) return
 
     const defaultWidth = collection.width ?? 16
     const defaultHeight = collection.height ?? 16
 
-    iconNames.forEach(name => {
+    new Set(iconNames).forEach(name => {
       const icon = collection.icons[name]
 
       if (!icon?.body) return
@@ -70,30 +73,23 @@ function buildSprite(
   return `<svg xmlns="http://www.w3.org/2000/svg" style="display:none">${symbols}</svg>\n`
 }
 
-async function main() {
-  const collections = await loadCollections()
-  const iconNames = [
-    ...Object.values(EXTENSION_ICONS),
-    ...Object.values(FILENAME_ICONS),
-    ...Object.values(COMPOUND_EXTENSIONS),
-    ...Object.values(ADDITIONAL_ICONS),
-    DEFAULT_ICON,
-  ]
-  const grouped = groupByCollection(iconNames)
-  const sprite = buildSprite(grouped, collections)
-  await Promise.all([
-    fs.mkdir(path.dirname(outputDevPath), { recursive: true }),
-    fs.mkdir(path.dirname(outputStagePath), { recursive: true }),
-    fs.mkdir(path.dirname(outputProdPath), { recursive: true }),
-  ])
-  await Promise.all([
-    fs.writeFile(outputDevPath, sprite, 'utf8'),
-    fs.writeFile(outputStagePath, sprite, 'utf8'),
-    fs.writeFile(outputProdPath, sprite, 'utf8'),
-  ])
-}
-
-main().catch(error => {
-  console.error(error)
-  process.exitCode = 1
-})
+const collections = await loadCollections()
+const iconNames = [
+  ...Object.values(EXTENSION_ICONS),
+  ...Object.values(FILENAME_ICONS),
+  ...Object.values(COMPOUND_EXTENSIONS),
+  ...Object.values(ADDITIONAL_ICONS),
+  DEFAULT_ICON,
+]
+const grouped = groupByCollection(iconNames)
+const sprite = buildSprite(grouped, collections)
+await Promise.all([
+  fs.mkdir(path.dirname(outputDevPath), { recursive: true }),
+  fs.mkdir(path.dirname(outputStagePath), { recursive: true }),
+  fs.mkdir(path.dirname(outputProdPath), { recursive: true }),
+])
+await Promise.all([
+  fs.writeFile(outputDevPath, sprite, 'utf8'),
+  fs.writeFile(outputStagePath, sprite, 'utf8'),
+  fs.writeFile(outputProdPath, sprite, 'utf8'),
+])

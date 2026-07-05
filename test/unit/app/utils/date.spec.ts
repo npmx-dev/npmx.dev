@@ -1,5 +1,15 @@
-import { describe, expect, it } from 'vitest'
-import { addDays, DAY_MS, daysInMonth, daysInYear, parseIsoDate, toIsoDate } from '~/utils/date'
+import { describe, expect, it, vi } from 'vitest'
+import {
+  addDays,
+  DAY_MS,
+  daysInMonth,
+  daysInYear,
+  parseIsoDate,
+  toIsoDate,
+  getEffectiveEndDateIso,
+  isLastDayOfMonth,
+  isLastDayOfYear,
+} from '~/utils/date'
 
 describe('DAY_MS', () => {
   it('equals 86 400 000', () => {
@@ -87,5 +97,78 @@ describe('daysInYear', () => {
 
   it('returns 366 for year 2000 (divisible by 400)', () => {
     expect(daysInYear(2000)).toBe(366)
+  })
+})
+
+describe('getEffectiveEndDateIso', () => {
+  it('returns the provided end date when present', () => {
+    expect(getEffectiveEndDateIso('2026-05-31')).toBe('2026-05-31')
+  })
+
+  it('returns yesterday in UTC when no end date is provided', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-06-01T12:00:00.000Z'))
+
+    expect(getEffectiveEndDateIso()).toBe('2026-05-31')
+
+    vi.useRealTimers()
+  })
+
+  it('handles UTC month boundaries', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-03-01T00:30:00.000Z'))
+
+    expect(getEffectiveEndDateIso()).toBe('2026-02-28')
+
+    vi.useRealTimers()
+  })
+
+  it('handles UTC year boundaries', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-01-01T00:30:00.000Z'))
+
+    expect(getEffectiveEndDateIso()).toBe('2025-12-31')
+
+    vi.useRealTimers()
+  })
+})
+
+describe('isLastDayOfMonth', () => {
+  it('returns true for the last day of a 31-day month', () => {
+    expect(isLastDayOfMonth('2026-01-31')).toBe(true)
+  })
+
+  it('returns true for the last day of a 30-day month', () => {
+    expect(isLastDayOfMonth('2026-04-30')).toBe(true)
+  })
+
+  it('returns true for February 29 in a leap year', () => {
+    expect(isLastDayOfMonth('2024-02-29')).toBe(true)
+  })
+
+  it('returns true for February 28 in a non-leap year', () => {
+    expect(isLastDayOfMonth('2023-02-28')).toBe(true)
+  })
+
+  it('returns false when the date is not the last day of the month', () => {
+    expect(isLastDayOfMonth('2026-05-30')).toBe(false)
+  })
+})
+
+describe('isLastDayOfYear', () => {
+  it('returns true for December 31', () => {
+    expect(isLastDayOfYear('2026-12-31')).toBe(true)
+  })
+
+  it('returns false for any other day in December', () => {
+    expect(isLastDayOfYear('2026-12-30')).toBe(false)
+  })
+
+  it('returns false for the last day of a month that is not December', () => {
+    expect(isLastDayOfYear('2026-11-30')).toBe(false)
+  })
+
+  it('returns true for leap years on December 31', () => {
+    expect(isLastDayOfYear('2024-12-31')).toBe(true)
   })
 })

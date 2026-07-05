@@ -1,9 +1,8 @@
-import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite-plus'
 import { defineVitestProject } from '@nuxt/test-utils/config'
 import { playwright } from 'vite-plus/test/browser-playwright'
 
-const rootDir = fileURLToPath(new URL('.', import.meta.url))
+const rootDir = import.meta.dirname
 
 export default defineConfig({
   run: {
@@ -22,6 +21,10 @@ export default defineConfig({
       },
       'i18n:check': {
         command: 'node scripts/compare-translations.ts',
+        // Off because the script rewrites locale files (never cacheable), and
+        // caching triggers a vp spawn failure on the CI arm runner.
+        // See https://github.com/voidzero-dev/vite-task/issues/506
+        cache: false,
       },
       'i18n:report': {
         command: 'node scripts/find-invalid-translations.ts',
@@ -31,6 +34,12 @@ export default defineConfig({
       },
       'lint:css': {
         command: 'node scripts/unocss-checker.ts',
+      },
+      'zizmor': {
+        command: 'zizmor --pedantic .',
+      },
+      'zizmor:fix': {
+        command: 'zizmor --pedantic --fix .',
       },
       'build:lunaria': {
         command: 'node ./lunaria/lunaria.ts',
@@ -46,6 +55,7 @@ export default defineConfig({
       perf: 'warn',
     },
     rules: {
+      'vitest/require-mock-type-parameters': 'off',
       'no-console': 'warn',
       'no-await-in-loop': 'off',
       'unicorn/no-array-sort': 'off',
@@ -187,7 +197,7 @@ export default defineConfig({
             environment: 'nuxt',
             environmentOptions: {
               nuxt: {
-                rootDir: fileURLToPath(new URL('.', import.meta.url)),
+                rootDir,
                 overrides: {
                   vue: {
                     runtimeCompiler: true,

@@ -342,6 +342,39 @@ export function insertSkipBlocks(hunks: DiffHunk[]): (DiffHunk | DiffSkipBlock)[
   return result
 }
 
+export function truncateDiffHunks(
+  hunks: (DiffHunk | DiffSkipBlock)[],
+  maxLines: number,
+): { hunks: (DiffHunk | DiffSkipBlock)[]; truncated: boolean } {
+  const result: (DiffHunk | DiffSkipBlock)[] = []
+  let remainingLines = maxLines
+
+  for (const hunk of hunks) {
+    if (remainingLines <= 0) {
+      return { hunks: result, truncated: true }
+    }
+
+    if (hunk.type === 'skip') {
+      result.push(hunk)
+      continue
+    }
+
+    if (hunk.lines.length <= remainingLines) {
+      result.push(hunk)
+      remainingLines -= hunk.lines.length
+      continue
+    }
+
+    result.push({
+      ...hunk,
+      lines: hunk.lines.slice(0, remainingLines),
+    })
+    return { hunks: result, truncated: true }
+  }
+
+  return { hunks: result, truncated: false }
+}
+
 export function createDiff(
   oldContent: string,
   newContent: string,

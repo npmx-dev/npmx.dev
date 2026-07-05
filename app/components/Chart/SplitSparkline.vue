@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { VueUiSparkline } from 'vue-data-ui/vue-ui-sparkline'
-import { useCssVariables } from '~/composables/useColors'
 import {
+  VueUiSparkline,
   type VueUiSparklineConfig,
   type VueUiSparklineDatasetItem,
-  type VueUiXyDatasetItem,
-} from 'vue-data-ui'
+} from 'vue-data-ui/vue-ui-sparkline'
+import { VueUiPatternSeed } from 'vue-data-ui/vue-ui-pattern-seed'
+import { useColors } from '~/composables/useColors'
+import type { VueUiXyDatasetItem } from 'vue-data-ui/vue-ui-xy'
 import { getPalette, lightenColor } from 'vue-data-ui/utils'
+import { CHART_PATTERN_CONFIG } from '~/utils/charts'
 
 import('vue-data-ui/style.css')
 
@@ -29,6 +31,7 @@ const props = defineProps<{
 
 const { locale } = useI18n()
 const colorMode = useColorMode()
+const numberFormatter = useNumberFormatter()
 const resolvedMode = shallowRef<'light' | 'dark'>('light')
 const rootEl = shallowRef<HTMLElement | null>(null)
 const palette = getPalette('')
@@ -47,23 +50,7 @@ watch(
   { flush: 'sync', immediate: true },
 )
 
-const { colors } = useCssVariables(
-  [
-    '--bg',
-    '--fg',
-    '--bg-subtle',
-    '--bg-elevated',
-    '--border-hover',
-    '--fg-subtle',
-    '--border',
-    '--border-subtle',
-  ],
-  {
-    element: rootEl,
-    watchHtmlAttributes: true,
-    watchResize: false, // set to true only if a var changes color on resize
-  },
-)
+const { colors } = useColors(rootEl)
 
 const isDarkMode = computed(() => resolvedMode.value === 'dark')
 
@@ -98,7 +85,7 @@ const configs = computed(() => {
       ? Array.from(new Set([...(unit.dashIndices ?? []), lastIndex]))
       : unit.dashIndices
 
-    // Ensure we loop through available palette colours when the series count is higher than the avalable palette
+    // Ensure we loop through available palette colours when the series count is higher than the available palette
     const fallbackColor = palette[i] ?? palette[i % palette.length] ?? palette[0]!
     const seriesColor = unit.color ?? fallbackColor
     const lightenedSeriesColor: string = unit.color
@@ -151,6 +138,9 @@ const configs = computed(() => {
           fontSize: 24,
           bold: false,
           color: colors.value.fg,
+          formatter: ({ value }) => {
+            return numberFormatter.value.format(value)
+          },
           datetimeFormatter: {
             enable: true,
             locale: locale.value,
@@ -194,24 +184,43 @@ const configs = computed(() => {
     <ClientOnly v-for="(config, i) in configs" :key="`config_${i}`">
       <div @mouseleave="resetHover" @keydown.esc="resetHover" class="w-full max-w-[400px] mx-auto">
         <div class="flex gap-2 place-items-center">
-          <div class="h-3 w-3">
-            <svg viewBox="0 0 2 2" class="w-full">
+          <div class="h-5 w-5">
+            <svg viewBox="0 0 30 30" class="w-full">
+              <defs>
+                <VueUiPatternSeed
+                  v-if="i != 0"
+                  :id="`marker_${i}`"
+                  :seed="i"
+                  :foreground-color="colors.bg!"
+                  :background-color="
+                    dataset?.[i]?.color ??
+                    palette[i] ??
+                    palette[i % palette.length] ??
+                    palette[0] ??
+                    'transparent'
+                  "
+                  :max-size="CHART_PATTERN_CONFIG.maxSize"
+                  :min-size="CHART_PATTERN_CONFIG.minSize"
+                  :disambiguator="CHART_PATTERN_CONFIG.disambiguator"
+                />
+              </defs>
               <rect
                 x="0"
                 y="0"
-                width="2"
-                height="2"
-                rx="0.3"
-                :fill="dataset?.[i]?.color ?? palette[i]"
+                width="30"
+                height="30"
+                rx="3"
+                :fill="i === 0 ? (dataset?.[0]?.color ?? palette[0]) : `url(#marker_${i})`"
               />
             </svg>
           </div>
-          {{ applyEllipsis(dataset?.[i]?.name ?? '', 28) }}
+          {{ applyEllipsis(dataset?.[i]?.name ?? '', 27) }}
         </div>
         <VueUiSparkline
+          v-if="datasets[i]"
           :key="`${i}_${step}`"
           :config
-          :dataset="datasets?.[i]"
+          :dataset="datasets[i]"
           :selectedIndex
           @hoverIndex="hoverIndex"
         >
@@ -224,7 +233,7 @@ const configs = computed(() => {
 
           <template #skeleton>
             <!-- This empty div overrides the default built-in scanning animation on load -->
-            <div />
+            <div></div>
           </template>
         </VueUiSparkline>
       </div>

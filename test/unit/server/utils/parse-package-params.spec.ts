@@ -49,5 +49,14 @@ describe('parsePackageParams', () => {
         rawVersion: '1.0.0',
       })
     })
+
+    it('parses scoped package names whose package segment is literally v', () => {
+      const segments = ['@scope', 'v', 'v', '1.2.3']
+      const result = parsePackageParams(segments)
+      expect(result).toEqual({
+        rawPackageName: '@scope/v',
+        rawVersion: '1.2.3',
+      })
+    })
   })
 })

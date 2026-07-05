@@ -2,6 +2,8 @@
 import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison'
 import { useRouteQuery } from '@vueuse/router'
 import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
+import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
+import FacetScatterChart from '~/components/Compare/FacetScatterChart.vue'
 
 definePageMeta({
   name: 'compare',
@@ -73,10 +75,16 @@ function addNoDep() {
 // Get loading state for each column
 const columnLoading = computed(() => packages.value.map((_, i) => isColumnLoading(i)))
 
-// Check if we have enough packages to compare
+// Makes sense to compare if there's 2 or more packages
 const canCompare = computed(() => packages.value.length >= 2)
 
+// Allow copying only after all data is loaded
+const canCopyTable = computed(
+  () => packagesData.value.length >= 1 && packagesData.value.every(data => data !== null),
+)
+
 const comparisonView = usePermalink<'table' | 'charts'>('view', 'table')
+const hasChartableFacets = computed(() => selectedFacets.value.some(facet => facet.chartable))
 
 // Extract headers from columns for facet rows
 const gridHeaders = computed(() =>
@@ -86,7 +94,7 @@ const gridHeaders = computed(() =>
 /*
  * Convert the comparison grid data to a Markdown table.
  */
-function exportComparisonDataAsMarkdown() {
+async function exportComparisonDataAsMarkdown() {
   const mdData: Array<Array<string>> = []
   const headers = [
     '',
@@ -131,8 +139,101 @@ function exportComparisonDataAsMarkdown() {
     return result
   }, '')
 
-  copy(markdown)
+  await copy(markdown)
 }
+
+defineOgImage(
+  'Compare.takumi',
+  {
+    packages: () => packages.value.toSorted((a, b) => a.localeCompare(b)),
+    emptyDescription: () => $t('compare.packages.meta_description_empty'),
+  },
+  { alt: () => $t('compare.packages.meta_description_empty') },
+)
+
+const { announce } = useCommandPalette()
+
+useCommandPaletteContextCommands(
+  computed((): CommandPaletteContextCommandInput[] => {
+    const commands: CommandPaletteContextCommandInput[] = [
+      {
+        id: 'compare-select-all',
+        group: 'actions',
+        label: $t('compare.facets.select_all'),
+        keywords: [$t('compare.packages.section_facets')],
+        iconClass: 'i-lucide:list-checks',
+        action: () => {
+          selectAll()
+          announce($t('command_palette.announcements.facets_all_selected'))
+        },
+      },
+      {
+        id: 'compare-deselect-all',
+        group: 'actions',
+        label: $t('compare.facets.deselect_all'),
+        keywords: [$t('compare.packages.section_facets')],
+        iconClass: 'i-lucide:list-x',
+        action: () => {
+          deselectAll()
+          announce($t('command_palette.announcements.facets_all_deselected'))
+        },
+      },
+    ]
+
+    if (canCompare.value && canCopyTable.value) {
+      commands.push({
+        id: 'compare-copy-markdown',
+        group: 'actions',
+        label: $t('compare.packages.copy_as_markdown'),
+        keywords: [$t('compare.packages.section_comparison')],
+        iconClass: 'i-lucide:copy',
+        action: async () => {
+          await exportComparisonDataAsMarkdown()
+          announce($t('command_palette.announcements.copied_to_clipboard'))
+        },
+      })
+    }
+
+    if (canCompare.value && hasChartableFacets.value) {
+      commands.push(
+        {
+          id: 'compare-view-table',
+          group: 'actions',
+          label: $t('compare.packages.table_view'),
+          keywords: [$t('compare.packages.section_comparison')],
+          iconClass: 'i-lucide:table',
+          active: comparisonView.value === 'table',
+          action: () => {
+            comparisonView.value = 'table'
+            announce(
+              $t('command_palette.announcements.view_switched', {
+                view: $t('compare.packages.table_view'),
+              }),
+            )
+          },
+        },
+        {
+          id: 'compare-view-charts',
+          group: 'actions',
+          label: $t('compare.packages.charts_view'),
+          keywords: [$t('compare.packages.section_comparison')],
+          iconClass: 'i-lucide:chart-bar-decreasing',
+          active: comparisonView.value === 'charts',
+          action: () => {
+            comparisonView.value = 'charts'
+            announce(
+              $t('command_palette.announcements.view_switched', {
+                view: $t('compare.packages.charts_view'),
+              }),
+            )
+          },
+        },
+      )
+    }
+
+    return commands
+  }),
+)
 
 useSeoMeta({
   title: () =>
@@ -241,7 +342,7 @@ useSeoMeta({
       <!-- Comparison grid -->
       <section v-if="canCompare" class="mt-10" aria-labelledby="comparison-heading">
         <CopyToClipboardButton
-          v-if="packagesData && packagesData.some(p => p !== null)"
+          v-if="canCopyTable"
           :copied="copied"
           :copy-text="$t('compare.packages.copy_as_markdown')"
           class="mb-4"
@@ -330,7 +431,7 @@ useSeoMeta({
               </div>
             </TabPanel>
 
-            <!-- bar charts -->
+            <!-- Charts: per-facet bars & scatter -->
             <TabPanel value="charts" panel-id="comparison-panel-charts">
               <div
                 v-if="selectedFacets.some(facet => facet.chartable)"
@@ -353,6 +454,13 @@ useSeoMeta({
               <p v-else class="py-12 text-center text-fg-subtle">
                 {{ $t('compare.packages.no_chartable_data') }}
               </p>
+              <div>
+                <FacetScatterChart
+                  v-if="packages.length"
+                  :packages-data="packagesData"
+                  :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)"
+                />
+              </div>
             </TabPanel>
           </TabRoot>
 

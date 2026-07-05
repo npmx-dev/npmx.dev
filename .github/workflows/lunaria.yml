@@ -10,33 +10,30 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event_name == 'pull_request_target' && github.head_ref || github.ref }}
   cancel-in-progress: true
 
-# Allow this job to clone the repository and comment on the pull request
-permissions:
-  contents: read
-  pull-requests: write
+permissions: {}
 
 jobs:
   lunaria-overview:
     name: 🌝 Generate Lunaria Overview
     runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+      pull-requests: write # post Lunaria overview comments on pull requests
 
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           # Necessary for Lunaria to work properly
           # Makes the action clone the entire git history
           fetch-depth: 0
+          persist-credentials: false
 
-      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+      - uses: voidzero-dev/setup-vp@2dec1e33f4ab2c6d5bce1b0c4607961bb1a3f7a1 # v1.12.0
         with:
           node-version: lts/*
-
-      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # 5e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: 🟧 Install pnpm
-
-      - name: 📦 Install dependencies
-        run: pnpm install
+          cache: true
+          sfw: true
 
       - name: Generate Lunaria Overview
-        uses: lunariajs/action@4911ad0736d1e3b20af4cb70f5079aea2327ed8e # v1-prerelease
+        uses: lunariajs/action@4911ad0736d1e3b20af4cb70f5079aea2327ed8e # astro-docs
