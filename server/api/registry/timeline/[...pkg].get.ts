@@ -103,7 +103,7 @@ export default defineCachedEventHandler(
         }
         fileTreeChecks++
         try {
-          const fileTree = await getPackageFileTree(packageName, current.version)
+          const fileTree = await getPackageFileTree(packageName, current.version, AbortSignal.timeout(5000))
           const files = flattenFileTree(fileTree.tree)
           const status = detectTypesStatus(packument.versions[current.version]!, undefined, files)
           if (status.kind === 'included') {
