@@ -44,12 +44,12 @@
     "chromatic": "chromatic"
   },
   "dependencies": {
-    "@atcute/bluesky-richtext-segmenter": "3.0.0",
-    "@atcute/tid": "1.1.2",
-    "@atproto/api": "^0.20.7",
-    "@atproto/lex": "0.1.3",
-    "@atproto/lex-password-session": "0.0.12",
-    "@atproto/oauth-client-node": "^0.3.15",
+    "@atcute/bluesky-richtext-segmenter": "3.0.1",
+    "@atcute/tid": "1.1.3",
+    "@atproto/api": "0.20.25",
+    "@atproto/lex": "0.1.7",
+    "@atproto/lex-password-session": "0.1.4",
+    "@atproto/oauth-client-node": "0.3.15",
     "@deno/doc": "jsr:^0.189.1",
     "@floating-ui/vue": "2.0.0",
     "@iconify-json/lucide": "1.2.101",
