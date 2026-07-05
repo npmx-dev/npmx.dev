@@ -1,7 +1,12 @@
 import { normalizeLicense } from '#shared/utils/npm'
-import { hasBuiltInTypes } from '~~/shared/utils/package-analysis'
+import { detectTypesStatus, hasBuiltInTypes } from '~~/shared/utils/package-analysis'
+import { flattenFileTree } from '~~/server/utils/import-resolver'
 
 const DEFAULT_LIMIT = 25
+
+// Upper bound on per-request file tree lookups when double-checking
+// versions that would otherwise produce a "types removed" event.
+const MAX_FILE_TREE_CHECKS = 5
 
 export interface TimelineVersion {
   version: string
@@ -82,6 +87,32 @@ export default defineCachedEventHandler(
           }
         })
         .sort((a, b) => Date.parse(b.time) - Date.parse(a.time))
+
+      // A missing `types` field doesn't always mean a version stopped
+      // shipping types: some packages only carry declaration files next
+      // to their entry points (#2791). Before a "types removed" event
+      // can show up, re-check those versions against their file tree
+      // with the same detection the package page uses. Oldest first so
+      // a corrected version is taken into account by the next pair.
+      let fileTreeChecks = 0
+      for (let i = allVersions.length - 2; i >= 0; i--) {
+        const current = allVersions[i]!
+        const previous = allVersions[i + 1]!
+        if (current.hasTypes || !previous.hasTypes || fileTreeChecks >= MAX_FILE_TREE_CHECKS) {
+          continue
+        }
+        fileTreeChecks++
+        try {
+          const fileTree = await getPackageFileTree(packageName, current.version)
+          const files = flattenFileTree(fileTree.tree)
+          const status = detectTypesStatus(packument.versions[current.version]!, undefined, files)
+          if (status.kind === 'included') {
+            current.hasTypes = true
+          }
+        } catch {
+          // file tree unavailable, keep the packument-based value
+        }
+      }
 
       return {
         versions: allVersions.slice(offset, offset + limit),

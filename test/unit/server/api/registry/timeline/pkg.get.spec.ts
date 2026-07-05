@@ -4,6 +4,9 @@ import type { Packument, PackumentVersion } from '#shared/types/npm-registry'
 
 const fetchNpmPackageMock = vi.fn()
 vi.stubGlobal('fetchNpmPackage', fetchNpmPackageMock)
+
+const getPackageFileTreeMock = vi.fn()
+vi.stubGlobal('getPackageFileTree', getPackageFileTreeMock)
 vi.stubGlobal('defineCachedEventHandler', (fn: Function) => fn)
 vi.stubGlobal('CACHE_MAX_AGE_FIVE_MINUTES', 300)
 
@@ -226,6 +229,81 @@ describe('timeline API', () => {
 
     const result = await handler(fakeEvent)
     expect(result.versions[0]!.hasTypes).toBe(true)
+  })
+
+  it('sets hasTypes for versions that ship declaration files without a types field', async () => {
+    routerParam = 'my-pkg'
+
+    fetchNpmPackageMock.mockResolvedValue(
+      makePackument({
+        versions: {
+          '1.0.0': { types: './index.d.ts' },
+          '2.0.0': { main: './dist/index.cjs', module: './dist/index.mjs' },
+        },
+        time: {
+          '1.0.0': '2024-01-01T00:00:00Z',
+          '2.0.0': '2024-02-01T00:00:00Z',
+        },
+      }),
+    )
+    getPackageFileTreeMock.mockResolvedValue({
+      package: 'my-pkg',
+      version: '2.0.0',
+      tree: [
+        { name: 'index.d.mts', path: 'dist/index.d.mts', type: 'file' },
+        { name: 'index.d.cts', path: 'dist/index.d.cts', type: 'file' },
+      ],
+    })
+
+    const result = await handler(fakeEvent)
+    expect(getPackageFileTreeMock).toHaveBeenCalledWith('my-pkg', '2.0.0')
+    expect(result.versions[0]!.hasTypes).toBe(true)
+  })
+
+  it('leaves hasTypes unset when the file tree has no declaration files', async () => {
+    routerParam = 'my-pkg'
+
+    fetchNpmPackageMock.mockResolvedValue(
+      makePackument({
+        versions: {
+          '1.0.0': { types: './index.d.ts' },
+          '2.0.0': { main: './dist/index.cjs', module: './dist/index.mjs' },
+        },
+        time: {
+          '1.0.0': '2024-01-01T00:00:00Z',
+          '2.0.0': '2024-02-01T00:00:00Z',
+        },
+      }),
+    )
+    getPackageFileTreeMock.mockResolvedValue({
+      package: 'my-pkg',
+      version: '2.0.0',
+      tree: [{ name: 'index.mjs', path: 'dist/index.mjs', type: 'file' }],
+    })
+
+    const result = await handler(fakeEvent)
+    expect(result.versions[0]!.hasTypes).toBeUndefined()
+  })
+
+  it('keeps the packument value when the file tree lookup fails', async () => {
+    routerParam = 'my-pkg'
+
+    fetchNpmPackageMock.mockResolvedValue(
+      makePackument({
+        versions: {
+          '1.0.0': { types: './index.d.ts' },
+          '2.0.0': { main: './dist/index.cjs' },
+        },
+        time: {
+          '1.0.0': '2024-01-01T00:00:00Z',
+          '2.0.0': '2024-02-01T00:00:00Z',
+        },
+      }),
+    )
+    getPackageFileTreeMock.mockRejectedValue(new Error('offline'))
+
+    const result = await handler(fakeEvent)
+    expect(result.versions[0]!.hasTypes).toBeUndefined()
   })
 
   it('sets hasTrustedPublisher when trustedPublisher is true', async () => {
