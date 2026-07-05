@@ -13,6 +13,8 @@ import {
   copyAltTextForVersionsBarChart,
   createAltTextForTimelineChart,
   copyAltTextForTimelineChart,
+  createAltTextForTimelineStackbar,
+  copyAltTextForTimelineStackbar,
   sanitise,
   insertLineBreaks,
   applyEllipsis,
@@ -21,9 +23,10 @@ import {
   type VersionsBarConfig,
   type VersionsBarDataset,
   type TimelineChartConfig,
+  type TimelineStackbarConfig,
   type EnrichedTimelineSizeCacheEntry,
 } from '~/utils/charts'
-import type { AltCopyArgs } from 'vue-data-ui'
+import type { AltCopyArgs, VueUiStackbarFormattedDatasetItem } from 'vue-data-ui'
 
 type TranslateCall = { key: string | number; named?: Record<string, unknown> }
 
@@ -47,6 +50,21 @@ function createTimelineConfig(overrides: Partial<TimelineChartConfig> = {}): Tim
     copy: vi.fn(async () => undefined),
     $t: translate,
   } as unknown as TimelineChartConfig
+
+  return { ...config, ...overrides }
+}
+
+function createTimelineStackbarConfig(
+  overrides: Partial<TimelineStackbarConfig> = {},
+): TimelineStackbarConfig {
+  const { translate } = createTranslateMock()
+  const config: TimelineStackbarConfig = {
+    numberFormatter: (value: number) => `nf${value}`,
+    packageName: 'nuxt',
+    versions: ['4.0.0', '4.0.1', '4.1.0'],
+    copy: vi.fn(async () => undefined),
+    $t: translate,
+  } as unknown as TimelineStackbarConfig
 
   return { ...config, ...overrides }
 }
@@ -1271,6 +1289,228 @@ describe('copyAltTextForTimelineChart', () => {
       dataset: timelineDataset,
       config,
     } as AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>)
+
+    expect(copyMock).toHaveBeenCalledTimes(1)
+    expect(copyMock).toHaveBeenCalledWith(expected)
+  })
+})
+
+const timelineStackbarDataset = [
+  {
+    name: 'vue',
+    series: [100, 150, 200],
+  },
+  {
+    name: 'vite',
+    series: [50, 80, 40],
+  },
+  {
+    name: 'nitro',
+    series: [0, 20, 60],
+  },
+  {
+    name: 'empty-package',
+    series: [0, 0, 0],
+  },
+] as unknown as VueUiStackbarFormattedDatasetItem[]
+
+describe('createAltTextForTimelineStackbar', () => {
+  it('returns empty string when dataset is null', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineStackbarConfig({ $t: translateMock.translate })
+
+    const result = createAltTextForTimelineStackbar({
+      dataset: null,
+      config,
+    } as unknown as AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>)
+
+    expect(result).toBe('')
+    expect(translateMock.calls).toHaveLength(0)
+  })
+
+  it('returns empty string when dataset is empty', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineStackbarConfig({ $t: translateMock.translate })
+
+    const result = createAltTextForTimelineStackbar({
+      dataset: [],
+      config,
+    } as AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>)
+
+    expect(result).toBe('')
+    expect(translateMock.calls).toHaveLength(0)
+  })
+
+  it('calls general_description with expected stackbar totals and version bounds', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineStackbarConfig({
+      $t: translateMock.translate,
+      versions: ['4.0.0', '4.0.1', '4.1.0'],
+      numberFormatter: (value: number) => `nf:${value}`,
+    })
+
+    const result = createAltTextForTimelineStackbar({
+      dataset: timelineStackbarDataset,
+      config,
+    } as AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>)
+
+    expect(result).toBe('t:package.timeline.chart.copy_alt.general_description')
+
+    const generalDescriptionCall = translateMock.calls.find(
+      call => call.key === 'package.timeline.chart.copy_alt.general_description',
+    )
+    expect(generalDescriptionCall).toBeTruthy()
+
+    expect(generalDescriptionCall?.named).toMatchObject({
+      metric: 't:package.timeline.chart.dependency_size',
+      package: 'nuxt',
+      first: '4.0.0',
+      last: '4.1.0',
+      first_value: 'nf:150',
+      last_value: 'nf:300',
+      overall_progress_percentage: 100,
+      watermark: 't:package.trends.copy_alt.watermark_top',
+    })
+    expect(generalDescriptionCall?.named?.key_changes).toBe(
+      [
+        't:package.timeline.chart.copy_alt.stackbar_top_segments',
+        't:package.timeline.chart.copy_alt.stackbar_largest_increase',
+        't:package.timeline.chart.copy_alt.stackbar_largest_decrease',
+      ].join(' '),
+    )
+  })
+
+  it('describes top segments sorted by last value and limited by maxSegments', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineStackbarConfig({
+      $t: translateMock.translate,
+      maxSegments: 2,
+      numberFormatter: (value: number) => `nf:${value}`,
+    })
+
+    createAltTextForTimelineStackbar({
+      dataset: timelineStackbarDataset,
+      config,
+    } as AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>)
+
+    const segmentShareCalls = translateMock.calls.filter(
+      call => call.key === 'package.timeline.chart.copy_alt.stackbar_segment_share',
+    )
+    expect(segmentShareCalls).toHaveLength(2)
+    expect(segmentShareCalls[0]?.named).toMatchObject({
+      segment: 'vue',
+      value: 'nf:200',
+      percentage: '67%',
+    })
+    expect(segmentShareCalls[1]?.named).toMatchObject({
+      segment: 'nitro',
+      value: 'nf:60',
+      percentage: '20%',
+    })
+
+    const topSegmentsCall = translateMock.calls.find(
+      call => call.key === 'package.timeline.chart.copy_alt.stackbar_top_segments',
+    )
+    expect(topSegmentsCall?.named).toMatchObject({
+      version: '4.1.0',
+      segments: [
+        't:package.timeline.chart.copy_alt.stackbar_segment_share',
+        't:package.timeline.chart.copy_alt.stackbar_segment_share',
+      ].join(', '),
+    })
+  })
+
+  it('describes the largest increase and decrease between first and last versions', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineStackbarConfig({
+      $t: translateMock.translate,
+      numberFormatter: (value: number) => `nf:${value}`,
+    })
+
+    createAltTextForTimelineStackbar({
+      dataset: timelineStackbarDataset,
+      config,
+    } as AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>)
+
+    const largestIncreaseCall = translateMock.calls.find(
+      call => call.key === 'package.timeline.chart.copy_alt.stackbar_largest_increase',
+    )
+    expect(largestIncreaseCall?.named).toMatchObject({
+      segment: 'vue',
+      delta: 'nf:100',
+    })
+
+    const largestDecreaseCall = translateMock.calls.find(
+      call => call.key === 'package.timeline.chart.copy_alt.stackbar_largest_decrease',
+    )
+    expect(largestDecreaseCall?.named).toMatchObject({
+      segment: 'vite',
+      delta: 'nf:10',
+    })
+  })
+
+  it('uses percentageFormatter when provided', () => {
+    const translateMock = createTranslateMock()
+    const percentageFormatter = vi.fn((value: number) => `pf:${value}`)
+    const config = createTimelineStackbarConfig({
+      $t: translateMock.translate,
+      maxSegments: 1,
+      percentageFormatter,
+    })
+
+    createAltTextForTimelineStackbar({
+      dataset: timelineStackbarDataset,
+      config,
+    } as AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>)
+
+    const segmentShareCall = translateMock.calls.find(
+      call => call.key === 'package.timeline.chart.copy_alt.stackbar_segment_share',
+    )
+
+    expect(percentageFormatter).toHaveBeenCalledWith(67)
+    expect(segmentShareCall?.named).toHaveProperty('percentage', 'pf:67')
+  })
+
+  it('falls back to numeric positions when version labels are missing', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineStackbarConfig({
+      $t: translateMock.translate,
+      versions: [],
+    })
+
+    createAltTextForTimelineStackbar({
+      dataset: timelineStackbarDataset,
+      config,
+    } as AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>)
+
+    const generalDescriptionCall = translateMock.calls.find(
+      call => call.key === 'package.timeline.chart.copy_alt.general_description',
+    )
+    expect(generalDescriptionCall?.named).toMatchObject({
+      first: '1',
+      last: '3',
+    })
+
+    const topSegmentsCall = translateMock.calls.find(
+      call => call.key === 'package.timeline.chart.copy_alt.stackbar_top_segments',
+    )
+    expect(topSegmentsCall?.named).toHaveProperty('version', '3')
+  })
+})
+
+describe('copyAltTextForTimelineStackbar', () => {
+  it('forwards createAltTextForTimelineStackbar result to config.copy', async () => {
+    const copyMock = vi.fn(async () => undefined)
+    const config = createTimelineStackbarConfig({ copy: copyMock })
+    const expected = createAltTextForTimelineStackbar({
+      dataset: timelineStackbarDataset,
+      config,
+    })
+
+    await copyAltTextForTimelineStackbar({
+      dataset: timelineStackbarDataset,
+      config,
+    } as AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>)
 
     expect(copyMock).toHaveBeenCalledTimes(1)
     expect(copyMock).toHaveBeenCalledWith(expected)

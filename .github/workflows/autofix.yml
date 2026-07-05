@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-24.04-arm
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
 
@@ -32,16 +32,17 @@ jobs:
           cache: true
           sfw: true
 
-      - name: 🎨 Check for non-RTL/non-a11y CSS classes
-        run: vp run lint:css
+      - parallel:
+          - name: 🎨 Check for non-RTL/non-a11y CSS classes
+            run: vp run lint:css
 
-      - name: 🌐 Compare translations
-        run: vp run i18n:check
+          - name: 🌐 Compare translations
+            run: vp run i18n:check
 
-      - name: 🌍 Update lunaria data
-        run: vp run build:lunaria
+          - name: 🌍 Update lunaria data
+            run: vp run build:lunaria
 
-      - name: 🔠 Fix lint errors
-        run: vp run lint:fix
+          - name: 🔠 Fix lint errors
+            run: vp run lint:fix
 
       - uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27 # v1.3.2

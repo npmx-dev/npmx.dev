@@ -34,7 +34,7 @@ export default defineCachedEventHandler(
       }
     } catch (error) {
       handleApiError(error, {
-        statusCode: 502,
+        statusCode: 500,
         message: ERROR_CHANGELOG_RELEASES_FAILED,
       })
     }
@@ -46,8 +46,9 @@ export default defineCachedEventHandler(
       const provider = getRouterParam(event, 'provider')
       const repo = getRouterParam(event, 'repo')
       const owner = getRouterParam(event, 'owner')
-      return `changelogRelease:v1:${provider}:${owner}:${repo}`
+      return `changelogRelease:v2:${provider}:${owner}:${repo}`
     },
+    shouldBypassCache: () => import.meta.dev,
   },
 )
 
@@ -77,6 +78,7 @@ async function getReleasesFromGithub(owner: string, repo: string) {
       prerelease: r.prerelease,
       toc,
       publishedAt: r.publishedAt,
+      link: `https://github.com/${owner}/${repo}/releases/tag/${r.tag}`,
     } satisfies ReleaseData
   })
 }

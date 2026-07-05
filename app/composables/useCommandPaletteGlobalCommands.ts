@@ -324,6 +324,16 @@ export function useCommandPaletteGlobalCommands() {
         to: { name: 'noodles' },
       },
       {
+        id: 'sponsors',
+        group: 'npmx',
+        label: t('sponsors_page.title'),
+        keywords: [t('sponsors_page.title')],
+        iconClass: 'i-lucide:heart',
+        active: route.name === 'sponsors',
+        activeLabel: activeLabel(route.name === 'sponsors', t('command_palette.here')),
+        to: { name: 'sponsors' },
+      },
+      {
         id: 'brand',
         group: 'npmx',
         label: t('footer.brand'),
