@@ -4,7 +4,7 @@ rules:
   stale-action-refs:
     ignore:
       # lunariajs/action has no tag refs; keep the branch commit hash-pinned.
-      - lunaria.yml:38
+      - lunaria.yml:39
   dangerous-triggers:
     ignore:
       - enforce-release-source.yml

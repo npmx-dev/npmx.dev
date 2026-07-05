@@ -33,6 +33,9 @@ const config: KnipConfig = {
         'vite-plugin-pwa',
         '@vueuse/shared',
 
+        /** Optional peer dependency of @nuxt/vite-builder for the rolldown-powered build */
+        'rolldown',
+
         /** Oxlint plugins don't get picked up yet */
         '@e18e/eslint-plugin',
         'eslint-plugin-regexp',

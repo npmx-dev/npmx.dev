@@ -36,7 +36,7 @@ To keep a high-quality and predictable user experience, we’ve switched to plan
 
 When it comes to growth, one of the most important metrics is change rather than absolute values. It shows how the project or package is evolving and in what direction. To make this analysis easier, we added a Timeline tab that shows not only versions, but also the key changes that happened in each of them.
 
-<BlueskyPostEmbed url="https://bsky.app/profile/graphieros.npmx.social/post/3mllmom2zfk2v" />
+<BlueskyPostEmbed url="https://bsky.app/profile/graphieros.npmx.social/post/3mllmom2zfk2v" media-hint="video" />
 
 ### Module replacements v3
 
@@ -66,7 +66,7 @@ And now, for example, when you follow links from pnpm, you’ll immediately get 
 
 The community has always been a key part of npmx. And we’re incredibly excited to work together to create the perfect experience. In the last release, we added a package comparison chart with the scoring system. This chart, given the specific nature of any comparison, received a lot of feedback from the community. To make the experience more comprehensive and convenient, we’ve made it so you can now choose what and how you want to compare.
 
-<BlueskyPostEmbed url="https://bsky.app/profile/graphieros.npmx.social/post/3mjzlmesrts2f" />
+<BlueskyPostEmbed url="https://bsky.app/profile/graphieros.npmx.social/post/3mjzlmesrts2f" media-hint="video" />
 
 ### And much more
 

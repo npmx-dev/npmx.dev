@@ -8,9 +8,11 @@ const { info, requestedDate, goToVersion, resolveVersionPending } = defineProps<
   resolveVersionPending?: boolean
 }>()
 
-const { data: releases, error } = await useLazyFetch<ReleaseData[]>(
-  () => `/api/changelog/releases/${info.provider}/${info.repo}`,
-)
+const {
+  data: releases,
+  error,
+  pending,
+} = useLazyFetch<ReleaseData[]>(() => `/api/changelog/releases/${info.provider}/${info.repo}`)
 
 const route = useRoute()
 
@@ -23,7 +25,7 @@ const matchingDateReleases = computed(() => {
     if (!release.publishedAt) {
       return
     }
-    return requestedDate === toIsoDate(new Date(release.publishedAt))
+    return requestedDate === release.publishedAt.slice(0, 10)
   })
 })
 
@@ -75,7 +77,8 @@ if (import.meta.client) {
 prefetchComponents('ChangelogCard')
 </script>
 <template>
-  <div class="flex flex-col gap-2 py-3" v-if="releases">
+  <ChangelogSkeleton v-if="pending" />
+  <div class="flex flex-col gap-2 py-3" v-else-if="releases">
     <ChangelogCard v-for="release of releases" :release :key="release.id" />
   </div>
   <slot v-else-if="error" name="error"></slot>

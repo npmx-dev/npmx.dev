@@ -5,7 +5,7 @@ defineProps<{
 </script>
 
 <template>
-  <section id="provenance" aria-labelledby="provenance-heading" class="scroll-mt-20">
+  <section aria-labelledby="provenance-heading" class="scroll-mt-20">
     <h2 id="provenance-heading" class="group text-xs text-fg-subtle uppercase tracking-wider mb-3">
       <LinkBase to="#provenance">
         {{ $t('package.provenance_section.title') }}
