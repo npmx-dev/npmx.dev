@@ -42,12 +42,12 @@ ignoreDepScripts: true
 ignoreWorkspaceRootCheck: true
 
 overrides:
-  '@types/node': 24.12.0
+  '@types/node': 24.13.2
   nuxt-og-image: ^6.6.0
-  sharp: 0.34.5
+  sharp: 0.35.3
   vite: 'catalog:vite-plus'
   vitest: 'catalog:vite-plus'
-  vue-router: 5.0.4
+  vue-router: 5.1.0
 
 packageExtensions:
   '@nuxt/scripts':

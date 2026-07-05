@@ -40,7 +40,7 @@
     "validate-npm-package-name": "^8.0.0"
   },
   "devDependencies": {
-    "@types/node": "24.12.2",
+    "@types/node": "24.13.2",
     "@types/validate-npm-package-name": "4.0.2",
     "typescript": "6.0.3"
   },
