@@ -41,22 +41,22 @@ ignoreDepScripts: true
 
 ignoreWorkspaceRootCheck: true
 
+minimumReleaseAgeExclude:
+  - vue-data-ui@3.22.6
+
 overrides:
-  '@types/node': 24.12.0
+  '@types/node': 24.13.2
   nuxt-og-image: ^6.6.0
-  sharp: 0.34.5
+  sharp: 0.35.3
   vite: 'catalog:vite-plus'
   vitest: 'catalog:vite-plus'
-  vue-router: 5.0.4
+  vue-router: 5.1.0
+  markdown-exit: 1.1.0-beta.2
 
 packageExtensions:
   '@nuxt/scripts':
     dependencies:
       estree-walker: ^3.0.3
-  'unplugin-vue-markdown':
-    peerDependencies:
-      'vite': '^2.0.0 || ^3.0.0-0 || ^4.0.0-0 || ^5.0.0-0 || ^6.0.0 || ^7.0.0 ||
-        ^8.0.0'
 
 patchedDependencies:
   '@jsr/deno__doc@0.189.1': patches/@jsr__deno__doc@0.189.1.patch
