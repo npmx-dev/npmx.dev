@@ -76,6 +76,23 @@
     "instant_search_turn_off": "isključite",
     "instant_search_advisory": "{label} {state} — {action}"
   },
+  "command_palette": {
+    "state": {},
+    "groups": {},
+    "actions": {},
+    "connections": {},
+    "navigation": {},
+    "links": {},
+    "package_links": {},
+    "theme": {},
+    "package": {},
+    "package_actions": {},
+    "code": {},
+    "diff": {},
+    "version": {},
+    "status": {},
+    "announcements": {}
+  },
   "nav": {
     "main_navigation": "Glavno",
     "popular_packages": "Popularni paketi",
@@ -265,15 +282,13 @@
       "size": "Veličina instalacije povećana za {percent} ({size} veća)",
       "deps": "{count} više zavisnosti"
     },
+    "size_decrease": {},
     "replacement": {
       "title": "Možda vam ova zavisnost ne treba.",
       "native": "Ovo se može zameniti sa {replacement}, dostupno od Node verzije {nodeVersion}.",
-      "simple": "{community} je označio ovaj paket kao suvišan, sa savetom: {replacement}.",
-      "documented": "{community} je označio ovaj paket kao onaj koji ima performantnije alternative.",
       "none": "Ovaj paket je označen kao nepotreban, a njegova funkcionalnost je verovatno dostupna izvorno u svim okruženjima.",
       "learn_more": "Saznajte više",
       "learn_more_above": "Saznajte više iznad.",
-      "community": "zajednica",
       "consider_no_dep": "+ Razmislite bez zavisnosti?"
     },
     "stats": {
@@ -412,7 +427,6 @@
       "view_all": "Pogledajte {count} verziju | Pogledajte {count} verzije | Pogledajte svih {count} verzija",
       "view_all_versions": "Pogledajte sve verzije",
       "distribution_title": "Semver grupa",
-      "distribution_modal_title": "Verzije",
       "distribution_range_date_same_year": "od {from} do {to}, {endYear}",
       "distribution_range_date_multiple_years": "od {from}, {startYear} do {to}, {endYear}",
       "grouping_major": "Glavni",
@@ -441,6 +455,11 @@
       "page_title": "Istorija verzija",
       "current_tags": "Trenutne oznake",
       "no_match_filter": "Nijedna verzija ne odgovara filteru {filter}"
+    },
+    "timeline": {
+      "chart": {
+        "copy_alt": {}
+      }
     },
     "dependencies": {
       "title": "Zavisnost ({count}) | Zavisnosti ({count})",
@@ -640,6 +659,9 @@
       "button": "Preuzmite",
       "tarball": "Preuzmite Tarball kao .tar.gz"
     }
+  },
+  "leaderboard": {
+    "likes": {}
   },
   "connector": {
     "modal": {
@@ -1112,6 +1134,9 @@
       "packages_selected": "{count}/{max} paketa izabrano.",
       "add_hint": "Dodajte najmanje 2 paketa za poređenje."
     },
+    "scatter_chart": {
+      "copy_alt": {}
+    },
     "no_dependency": {
       "label": "(Bez zavisnosti)",
       "typeahead_title": "Šta bi James uradio?",
@@ -1190,7 +1215,10 @@
         "vulnerabilities": {
           "label": "Ranjivosti",
           "description": "Poznate bezbednosne ranjivosti"
-        }
+        },
+        "githubStars": {},
+        "githubIssues": {},
+        "createdAt": {}
       },
       "values": {
         "any": "Bilo koje",
@@ -1210,8 +1238,6 @@
     "file_changes": "Izmene datoteka",
     "files_count": "{count} datoteka | {count} datoteke | {count} datoteka",
     "lines_hidden": "{count} linija sakrivena | {count} linije sakrivene | {count} linija sakriveno",
-    "file_too_large": "Datoteka je prevelika za poređenje",
-    "file_size_warning": "{size} premašuje ograničenje od 250KB za poređenje",
     "compare_versions": "razlika",
     "compare_versions_title": "Uporedite sa najnovijom verzijom",
     "comparing_versions_label": "Poređenje verzija...",
@@ -1511,5 +1537,8 @@
       "message": "Pristupačnost nam je važna, i voleli bismo da nas pratite u ovoj viziji. Kada koristite pomenute medije, osigurajte dovoljan kontrast u odnosu na pozadinu i nemojte ići manje od 24px. Ako su vam potrebni bilo kakvi drugi resursi ili dodatne informacije o projektu, slobodno nas kontaktirajte na {link}.",
       "discord_link_text": "chat.npmx.dev"
     }
+  },
+  "changelog": {
+    "error": {}
   }
 }

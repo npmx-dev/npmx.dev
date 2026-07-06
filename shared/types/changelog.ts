@@ -32,4 +32,5 @@ export interface ReleaseData {
   id: string | number
   publishedAt?: string
   toc?: TocItem[]
+  link: string
 }

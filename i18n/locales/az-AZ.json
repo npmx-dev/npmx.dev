@@ -73,6 +73,23 @@
     "instant_search_turn_off": "bağla",
     "instant_search_advisory": "{label} {state} — {action}"
   },
+  "command_palette": {
+    "state": {},
+    "groups": {},
+    "actions": {},
+    "connections": {},
+    "navigation": {},
+    "links": {},
+    "package_links": {},
+    "theme": {},
+    "package": {},
+    "package_actions": {},
+    "code": {},
+    "diff": {},
+    "version": {},
+    "status": {},
+    "announcements": {}
+  },
   "nav": {
     "main_navigation": "Əsas",
     "popular_packages": "Populyar paketlər",
@@ -235,15 +252,13 @@
       "size": "Quraşdırma həcmi {percent} artıb ({size} daha böyük)",
       "deps": "{count} daha çox asılılıq"
     },
+    "size_decrease": {},
     "replacement": {
       "title": "Bu asılılığa ehtiyacınız olmaya bilər.",
       "native": "Bu, Node {nodeVersion}-dən bəri mövcud olan {replacement} ilə əvəz edilə bilər.",
-      "simple": "{community} bu paketi artıq lazımsız olaraq qeyd edib, tövsiyəsi: {replacement}.",
-      "documented": "{community} bu paketin daha performanslı alternativlərinin olduğunu qeyd edib.",
       "none": "Bu paket artıq lazımsız olaraq qeyd edilib və funksionallığı bütün mühərriklərdə yerli olaraq mövcuddur.",
       "learn_more": "Ətraflı öyrən",
       "learn_more_above": "Yuxarıda ətraflı öyrənin.",
-      "community": "icma",
       "consider_no_dep": "+ Asılılıqsız düşünün?"
     },
     "stats": {
@@ -369,7 +384,6 @@
       "deprecated_title": "{version} (köhnəlmiş)",
       "view_all": "{count} versiyanı göstər | Bütün {count} versiyanı göstər",
       "distribution_title": "Semver Qrupu",
-      "distribution_modal_title": "Versiyalar",
       "distribution_range_date_same_year": "{from}-dən {to}-yə, {endYear}",
       "distribution_range_date_multiple_years": "{from}, {startYear}-dən {to}, {endYear}-ə",
       "grouping_major": "Major",
@@ -391,6 +405,11 @@
       "copy_alt": {
         "per_version_analysis": "{version} versiyası {downloads} dəfə endirilmişdir",
         "general_description": "{package_name} paketinin {versions_count} {semver_grouping_mode} versiyası üçün versiya başına endirmələri göstərən çubuq diaqramı, {date_range_label} {first_version} versiyasından {last_version} versiyasına qədər. Ən çox endirilən versiya {max_version_downloads} endirmə ilə {max_downloaded_version}-dir. {per_version_analysis}. {watermark}."
+      }
+    },
+    "timeline": {
+      "chart": {
+        "copy_alt": {}
       }
     },
     "dependencies": {
@@ -429,6 +448,7 @@
       "show_less": "(daha az göstər)"
     },
     "trends": {
+      "chart_assistive_text": {},
       "granularity": "Dərəcəlilik",
       "granularity_daily": "Günlük",
       "granularity_weekly": "Həftəlik",
@@ -575,6 +595,9 @@
       "mb": "{size} MB"
     },
     "download": {}
+  },
+  "leaderboard": {
+    "likes": {}
   },
   "connector": {
     "modal": {
@@ -1037,6 +1060,9 @@
       "packages_selected": "{count}/{max} paket seçilib.",
       "add_hint": "Müqayisə üçün ən azı 2 paket əlavə edin."
     },
+    "scatter_chart": {
+      "copy_alt": {}
+    },
     "no_dependency": {
       "label": "(Asılılıq yoxdur)",
       "typeahead_title": "James Nə Edərdi?",
@@ -1111,7 +1137,10 @@
         "vulnerabilities": {
           "label": "Zəifliklər",
           "description": "Məlum təhlükəsizlik zəiflikləri"
-        }
+        },
+        "githubStars": {},
+        "githubIssues": {},
+        "createdAt": {}
       },
       "values": {
         "any": "İstənilən",
@@ -1131,8 +1160,6 @@
     "file_changes": "Fayl Dəyişiklikləri",
     "files_count": "{count} fayl",
     "lines_hidden": "{count} sətir gizlədilib",
-    "file_too_large": "Fayl müqayisə üçün çox böyükdür",
-    "file_size_warning": "{size} müqayisə üçün 250KB limitini keçir",
     "compare_versions": "fərq",
     "compare_versions_title": "Versiyaları müqayisə et",
     "version_invalid_url_format": {},
@@ -1304,5 +1331,23 @@
   "translation_status": {
     "table": {}
   },
-  "action_bar": {}
+  "vacations": {
+    "what": {},
+    "meantime": {},
+    "return": {},
+    "stats": {
+      "subtitle": {}
+    }
+  },
+  "action_bar": {},
+  "logo_menu": {},
+  "brand": {
+    "logos": {},
+    "customize": {},
+    "typography": {},
+    "guidelines": {}
+  },
+  "changelog": {
+    "error": {}
+  }
 }

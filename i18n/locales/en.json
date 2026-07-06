@@ -13,6 +13,7 @@
   "trademark_disclaimer": "npm is a registered trademark of npm, Inc. This site is not affiliated with npm, Inc.",
   "footer": {
     "about": "about",
+    "sponsors": "sponsors",
     "blog": "blog",
     "docs": "docs",
     "source": "source",
@@ -23,7 +24,8 @@
     "brand": "brand",
     "resources": "Resources",
     "features": "Features",
-    "other": "Other"
+    "other": "Other",
+    "sponsored_by": "Sponsored by {list}"
   },
   "shortcuts": {
     "section": {
@@ -39,6 +41,7 @@
     "settings": "Open settings",
     "compare": "Open compare",
     "compare_from_package": "Open compare (prefilled with current package)",
+    "changelog": "Open changelog",
     "navigate_results": "Navigate results",
     "go_to_result": "Go to result",
     "open_code_view": "Open code view",
@@ -46,7 +49,8 @@
     "disable_shortcuts": "You can disable keyboard shortcuts in {settings}.",
     "open_main": "Open main information",
     "open_diff": "Open version differences",
-    "open_timeline": "Open timeline"
+    "open_timeline": "Open timeline",
+    "open_stats": "Open stats"
   },
   "search": {
     "label": "Search npm packages",
@@ -98,6 +102,11 @@
     "current": "current",
     "here": "you are here",
     "connected": "connected",
+    "keyboard_shortcuts": {
+      "navigate": "to navigate",
+      "select": "to select",
+      "close": "to close"
+    },
     "state": {
       "on": "on",
       "off": "off"
@@ -154,7 +163,8 @@
       "diff": "Diff",
       "compare": "Compare this package",
       "download": "Download tarball",
-      "changelog": "Changelog"
+      "changelog": "Changelog",
+      "stats": "Stats"
     },
     "package_actions": {
       "copy_run": "Copy run command"
@@ -228,6 +238,31 @@
       "like_count": "{count} like | {count} likes",
       "repost_count": "{count} repost | {count} reposts",
       "more_replies": "{count} more reply... | {count} more replies..."
+    }
+  },
+  "noodles": {
+    "title": "noodles",
+    "meta_description": "Every noodle we've ever shown on npmx — the seasonal logos, easter eggs, and the stories behind them.",
+    "latest": "Latest noodles",
+    "what_is": "What is noodles",
+    "what_is_body": "Noodles are the playful variants of the npmx logo we run on the homepage to mark releases, holidays, events, and other moments worth celebrating. Think of them like Google Doodles, but for npm packages.",
+    "empty": "No noodles yet.",
+    "load_more": "Load {count} more",
+    "dates": "Active dates",
+    "shipped_in": "Shipped in",
+    "credits": "Credits",
+    "learn_more": "Learn more",
+    "carousel_prev": "Previous image",
+    "carousel_next": "Next image",
+    "carousel_dots": "Variant image navigation",
+    "carousel_jump": "Go to image {index}",
+    "lens_label": "{title} — image reel",
+    "lens_slide": "image {index}",
+    "lens_slide_position": "Slide {index} of {total}",
+    "back_to_archive": "Back to all noodles",
+    "missing": {
+      "title": "This noodle never made it out of the bowl.",
+      "body": "We don't have a “{slug}” noodle on the menu. Either it's still being plated, or it was never written. Either way — back to the archive."
     }
   },
   "settings": {
@@ -407,12 +442,11 @@
       "example": "Example:",
       "native": "This package can be replaced with {replacement}, available since Node {nodeVersion}.",
       "native_no_version": "This package can be replaced with {replacement}.",
-      "simple": "The {community} has flagged this package as redundant, with the advice: {replacement}",
-      "documented": "The {community} has flagged this package as having more performant alternatives.",
+      "simple": "This package has been flagged as redundant, with the advice: {replacement}",
+      "documented": "This package has been flagged as having more performant alternatives.",
       "none": "This package has been flagged as no longer needed, and its functionality is likely available natively in all engines.",
       "learn_more": "Learn more",
       "learn_more_above": "Learn more above.",
-      "community": "community",
       "consider_no_dep": "+ Consider no dep?"
     },
     "stats": {
@@ -427,7 +461,10 @@
       "size_tooltip": {
         "unpacked": "{size} unpacked size (this package)",
         "total": "{size} total unpacked size (including {count} dependency for linux-x64) | {size} total unpacked size (including all {count} dependencies for linux-x64)"
-      }
+      },
+      "main_information": "Main Information",
+      "trends": "Trends",
+      "version_distribution": "Version Distribution"
     },
     "skills": {
       "title": "Agent Skills",
@@ -458,6 +495,7 @@
       "fund": "fund",
       "compare": "compare",
       "timeline": "timeline",
+      "stats": "stats",
       "compare_this_package": "compare this package",
       "changelog": "changelog"
     },
@@ -558,7 +596,6 @@
       "view_all": "View {count} version | View all {count} versions",
       "view_all_versions": "View all versions",
       "distribution_title": "Semver Group",
-      "distribution_modal_title": "Versions",
       "distribution_range_date_same_year": "from {from} to {to}, {endYear}",
       "distribution_range_date_multiple_years": "from {from}, {startYear} to {to}, {endYear}",
       "grouping_major": "Major",
@@ -609,6 +646,8 @@
       "provenance_removed": "Provenance removed",
       "chart": {
         "tab_aria_label": "Metric selection",
+        "dependency_size": "Dependency Size",
+        "other_dependencies": "Other",
         "base_scale": "start y-axis at zero",
         "zoom": "zoom",
         "reset_minimap": "reset minimap",
@@ -616,7 +655,11 @@
         "copy_alt": {
           "key_changes": "Key changes: {version_events}.",
           "version_events": "version {version}: {events}",
-          "general_description": "Line chart showing the {metric} of the {package} package, from version {first} to {last}. The {metric} in version {first} is {first_value}, in version {last} is {last_value} ({overall_progress_percentage}% overall). {key_changes} {watermark}."
+          "general_description": "Line chart showing the {metric} of the {package} package, from version {first} to {last}. The {metric} in version {first} is {first_value}, in version {last} is {last_value} ({overall_progress_percentage}% overall). {key_changes} {watermark}.",
+          "stackbar_segment_share": "{segment}: {value} ({percentage})",
+          "stackbar_top_segments": "In {version}, the largest segments are {segments}.",
+          "stackbar_largest_increase": "The largest increase is {segment}, up {delta}.",
+          "stackbar_largest_decrease": "The largest decrease is {segment}, down {delta}."
         }
       }
     },
@@ -712,6 +755,7 @@
         "trend_undefined": "undefined (insufficient data)",
         "button_label": "Copy alt text",
         "watermark": "At the bottom, a watermark reads \"./npmx a fast, modern browser for the npm registry\"",
+        "watermark_top": "At the top, a watermark reads \"./npmx a fast, modern browser for the npm registry\"",
         "analysis": "{package_name} starts at {start_value} and ends at {end_value}, showing a {trend} trend with a slope of {downloads_slope} downloads per time interval",
         "estimation": "The final value is an estimate based on partial data for the current period.",
         "estimations": "The final values are estimates based on partial data for the current period.",
@@ -720,6 +764,12 @@
         "general_description": "The Y axis represents the number of downloads. The X axis represents the date range, from {start_date} to {end_date}, with a {granularity} time period.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Horizontal bar chart for: {packages}, comparing {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} has a value of {value}."
+      },
+      "embedding": {
+        "chart": "Embed this chart",
+        "copy_url": "Copy this URL to embed the chart into your website",
+        "preview": "Preview",
+        "tip": "If startDate and endDate are not provided, the chart defaults to the last 12 months."
       }
     },
     "downloads": {
@@ -1186,7 +1236,9 @@
       }
     },
     "sponsors": {
-      "title": "Sponsors"
+      "title": "Sponsors",
+      "gold": "Gold Sponsors",
+      "silver": "Silver Sponsors"
     },
     "oss_partners": {
       "title": "OSS Partners"
@@ -1229,6 +1281,64 @@
         "title": "Stay updated",
         "description": "Find out the latest on npmx.",
         "cta": "Follow on Bluesky"
+      }
+    }
+  },
+  "sponsors_page": {
+    "title": "Sponsors",
+    "heading": "sponsors",
+    "meta_description": "Support npmx and help us accelerate ecosystem work around security, trust, optimization, and research.",
+    "intro": "Support npmx and help us grow the ecosystem work we do for developers and maintainers.",
+    "what_we_do": {
+      "title": "What we do",
+      "description": "We're building an ecosystem that solves problems around security, trust, optimization, and research for the tools we use in everyday development - quickly, conveniently, and with high quality. This project is built by developers for developers. As authors of widely used libraries, we understand team needs and actively study what maintainers and projects need most."
+    },
+    "what_support_means": {
+      "title": "What support means",
+      "description": "Our plans and connections keep growing, along with our desire to share what we've built and learn from others. Your support helps fund the project, external talks, conferences, and the broader ecosystem, and, most importantly, enables us to keep growing our community."
+    },
+    "cta": "See sponsorship tiers",
+    "community_growth_footnote": "* According to {link} Q1 2026 research.",
+    "what_this_means_for_you": {
+      "title": "What this means for you",
+      "description": "npmx is not only about improving developer experience and closing critical everyday gaps. In our first six months, we have already become the default source for thousands of teams and a huge number of developers. You get not only a more stable tool for your teams, but also visibility in front of a constantly growing audience of top-tier engineers.",
+      "cards": {
+        "people": {
+          "contributors": "contributors",
+          "community_members": "community members"
+        },
+        "visitors": {
+          "description": "unique monthly visitors"
+        },
+        "stars": {
+          "title": "stars"
+        },
+        "community": {
+          "title": "fast-growing",
+          "description": "We are one of the fastest-growing communities in the ecosystem"
+        },
+        "adoption": {
+          "title": "adoption",
+          "description": "charts at conferences, talks, and articles rely on our data"
+        },
+        "default_source": {
+          "title": "default source",
+          "description": "pnpm made npmx the default source, many packages have been configured to link to npmx"
+        }
+      }
+    },
+    "tiers": {
+      "title": "Sponsorship tiers",
+      "per_month": "/month",
+      "custom": "Custom",
+      "silver": {
+        "name": "Silver"
+      },
+      "gold": {
+        "name": "Gold"
+      },
+      "platinum": {
+        "name": "Platinum"
       }
     }
   },
@@ -1406,6 +1516,10 @@
           "label": "GitHub Stars",
           "description": "Number of stars on the GitHub repository"
         },
+        "githubForks": {
+          "label": "GitHub Forks",
+          "description": "Number of forks on the GitHub repository"
+        },
         "githubIssues": {
           "label": "GitHub Issues",
           "description": "Number of issues on the GitHub repository"
@@ -1433,8 +1547,6 @@
     "file_changes": "File Changes",
     "files_count": "{count} file | {count} files",
     "lines_hidden": "{count} line hidden | {count} lines hidden",
-    "file_too_large": "File too large to compare",
-    "file_size_warning": "{size} exceeds the 250KB limit for comparison",
     "compare_versions": "diff",
     "compare_versions_title": "Compare with latest version",
     "comparing_versions_label": "Comparing versions...",
@@ -1475,6 +1587,9 @@
     "change_ratio": "Change ratio",
     "char_edits": "Char edits",
     "diff_distance": "Diff distance",
+    "diff_truncated": "Diff truncated for performance. Showing the first changed lines only.",
+    "large_diff_mode": "Large file diff shown with inline edit merging disabled for performance.",
+    "large_diff_options_disabled": "Large file mode disables inline edit merging for performance.",
     "loading_diff": "Loading diff...",
     "loading_diff_error": "Failed to load diff",
     "merge_modified_lines": "Merge modified lines",

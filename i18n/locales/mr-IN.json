@@ -59,6 +59,23 @@
     "instant_search_turn_off": "बंद करा",
     "instant_search_advisory": "{label} {state} — {action}"
   },
+  "command_palette": {
+    "state": {},
+    "groups": {},
+    "actions": {},
+    "connections": {},
+    "navigation": {},
+    "links": {},
+    "package_links": {},
+    "theme": {},
+    "package": {},
+    "package_actions": {},
+    "code": {},
+    "diff": {},
+    "version": {},
+    "status": {},
+    "announcements": {}
+  },
   "nav": {
     "main_navigation": "मुख्य",
     "popular_packages": "लोकप्रिय पॅकेजेस",
@@ -234,15 +251,13 @@
       "size": "इंस्टॉल आकार {percent} ने वाढला ({size} ने मोठा)",
       "deps": "{count} अधिक निर्भरता"
     },
+    "size_decrease": {},
     "replacement": {
       "title": "कदाचित तुम्हाला या निर्भरतेची गरज नसेल.",
       "native": "हे {replacement} सह बदलले जाऊ शकते, Node {nodeVersion} पासून उपलब्ध आहे.",
-      "simple": "{community} ने या पॅकेजला अनावश्यक म्हणून चिन्हांकित केले आहे, सल्ल्यासह: {replacement}.",
-      "documented": "{community} ने या पॅकेजला अधिक कार्यक्षम पर्याय असल्याने चिन्हांकित केले आहे.",
       "none": "हे पॅकेज यापुढे आवश्यक नाही असे चिन्हांकित केले गेले आहे, आणि त्याची कार्यक्षमता सर्व इंजिनांमध्ये मूळतः उपलब्ध असू शकते.",
       "learn_more": "अधिक जाणून घ्या",
       "learn_more_above": "वर अधिक जाणून घ्या.",
-      "community": "समुदाय",
       "consider_no_dep": "+ निर्भरता नको का?"
     },
     "stats": {
@@ -381,7 +396,6 @@
       "view_all": "{count} आवृत्ती पहा | सर्व {count} आवृत्त्या पहा",
       "view_all_versions": "सर्व आवृत्त्या पहा",
       "distribution_title": "Semver गट",
-      "distribution_modal_title": "आवृत्त्या",
       "distribution_range_date_same_year": "{from} ते {to}, {endYear}",
       "distribution_range_date_multiple_years": "{from}, {startYear} ते {to}, {endYear}",
       "grouping_major": "प्रमुख",
@@ -410,6 +424,11 @@
       "page_title": "आवृत्ती इतिहास",
       "current_tags": "सध्याचे टॅग्स",
       "no_match_filter": "{filter} शी जुळणारी कोणतीही आवृत्ती नाही"
+    },
+    "timeline": {
+      "chart": {
+        "copy_alt": {}
+      }
     },
     "dependencies": {
       "title": "{count} निर्भरता | {count} निर्भरता",
@@ -603,6 +622,9 @@
       "button": "डाउनलोड",
       "tarball": ".tar.gz स्वरूपात टारबॉल डाउनलोड करा"
     }
+  },
+  "leaderboard": {
+    "likes": {}
   },
   "connector": {
     "modal": {
@@ -1073,6 +1095,9 @@
       "packages_selected": "{count}/{max} पॅकेजेस निवडली.",
       "add_hint": "तुलनेसाठी किमान 2 पॅकेजेस जोडा."
     },
+    "scatter_chart": {
+      "copy_alt": {}
+    },
     "no_dependency": {
       "label": "(निर्भरता नाही)",
       "typeahead_title": "James काय करेल?",
@@ -1147,7 +1172,10 @@
         "vulnerabilities": {
           "label": "असुरक्षितता",
           "description": "ज्ञात सुरक्षा असुरक्षितता"
-        }
+        },
+        "githubStars": {},
+        "githubIssues": {},
+        "createdAt": {}
       },
       "values": {
         "any": "कोणतेही",
@@ -1167,8 +1195,6 @@
     "file_changes": "फाइल बदल",
     "files_count": "{count} फाइल | {count} फाइल्स",
     "lines_hidden": "{count} ओळ लपवली | {count} ओळी लपवल्या",
-    "file_too_large": "फाइल तुलना करण्यासाठी खूप मोठी आहे",
-    "file_size_warning": "तुलनेसाठीची 250KB मर्यादा {size} ने ओलांडली आहे",
     "compare_versions": "फरक",
     "compare_versions_title": "नवीनतम आवृत्तीशी तुलना करा",
     "comparing_versions_label": "आवृत्त्यांची तुलना करत आहे...",
@@ -1392,5 +1418,15 @@
     "selection": "0 निवडले | 1 निवडले | {count} निवडले",
     "shortcut": "\"{key}\" दाबून क्रियांवर फोकस करा",
     "button_close_aria_label": "क्रिया पट्टी बंद करा"
+  },
+  "logo_menu": {},
+  "brand": {
+    "logos": {},
+    "customize": {},
+    "typography": {},
+    "guidelines": {}
+  },
+  "changelog": {
+    "error": {}
   }
 }

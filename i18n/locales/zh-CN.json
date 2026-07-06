@@ -397,12 +397,9 @@
       "example": "示例：",
       "native": "该功能自 Node.js {nodeVersion} 起已被内置，可直接使用 {replacement} 替代。",
       "native_no_version": "此包可直接使用 {replacement} 替代。",
-      "simple": "社区标记此包为冗余，建议替换为：{replacement}。",
-      "documented": "社区标记此包存在性能更优的替代方案",
       "none": "此包已被标记为不再需要，其功能很可能已由所有引擎原生提供。",
       "learn_more": "了解更多",
       "learn_more_above": "在上方了解更多。",
-      "community": "社区",
       "consider_no_dep": "+ 不使用依赖?"
     },
     "stats": {
@@ -546,7 +543,6 @@
       "view_all": "查看全部 {count} 个版本",
       "view_all_versions": "查看所有版本",
       "distribution_title": "语义化版本分组",
-      "distribution_modal_title": "版本",
       "distribution_range_date_same_year": "{endYear}年 {from} 至 {to}",
       "distribution_range_date_multiple_years": "{startYear}年 {from} 至 {endYear}年 {to}",
       "grouping_major": "主版本",
@@ -1417,8 +1413,6 @@
     "file_changes": "文件更改",
     "files_count": "{count} 个文件",
     "lines_hidden": "已隐藏 {count} 行",
-    "file_too_large": "文件过大，无法对比",
-    "file_size_warning": "{size} 超出了 250KB 的对比限制",
     "compare_versions": "差异",
     "compare_versions_title": "与最新版本对比",
     "comparing_versions_label": "比较版本...",
@@ -1719,5 +1713,8 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "一个圆润可爱、色彩活泼的 npmx logo 版本。"
+  "alt_logo_kawaii": "一个圆润可爱、色彩活泼的 npmx logo 版本。",
+  "changelog": {
+    "error": {}
+  }
 }

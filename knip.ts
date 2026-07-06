@@ -33,6 +33,9 @@ const config: KnipConfig = {
         'vite-plugin-pwa',
         '@vueuse/shared',
 
+        /** Optional peer dependency of @nuxt/vite-builder for the rolldown-powered build */
+        'rolldown',
+
         /** Oxlint plugins don't get picked up yet */
         '@e18e/eslint-plugin',
         'eslint-plugin-regexp',
@@ -44,8 +47,6 @@ const config: KnipConfig = {
       ignoreFiles: [
         'app/components/Tooltip/Announce.vue',
         'app/components/UserCombobox.vue',
-        'app/components/ColorScheme/Img.vue',
-        'app/components/Noodle/Nodejs/Logo.vue',
         '**/*.unused.*',
       ],
     },

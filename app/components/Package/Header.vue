@@ -2,7 +2,6 @@
 import type { RouteLocationRaw } from 'vue-router'
 import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
 import { SCROLL_TO_TOP_THRESHOLD } from '~/composables/useScrollToTop'
-import { usePackageChangelog } from '~/composables/usePackageChangelog'
 
 const props = defineProps<{
   pkg?: Pick<SlimPackument, 'name' | 'versions' | 'dist-tags'> | null
@@ -11,7 +10,7 @@ const props = defineProps<{
   latestVersion?: SlimVersion | null
   provenanceData?: ProvenanceDetails | null
   provenanceStatus?: string | null
-  page: 'main' | 'docs' | 'code' | 'diff' | 'changelog' | 'timeline'
+  page: 'main' | 'docs' | 'code' | 'diff' | 'changelog' | 'timeline' | 'stats'
   versionUrlPattern: string
 }>()
 
@@ -163,12 +162,15 @@ const diffLink = computed((): RouteLocationRaw | null => {
   return diffRoute(props.pkg.name, props.resolvedVersion, props.latestVersion.version)
 })
 
-const { data: changelog } = usePackageChangelog(packageName, requestedVersion)
-
+const hasChangelog = usePackageHasChangelog(
+  packageName,
+  () => requestedVersion.value || props.resolvedVersion,
+  true,
+)
 const changelogLink = computed((): RouteLocationRaw | null => {
   if (
     // either changelog.value is available or current page is the changelog
-    !(changelog.value || props.page == 'changelog') ||
+    !(hasChangelog.value || props.page == 'changelog') ||
     props.pkg == null ||
     props.resolvedVersion == null
   ) {
@@ -182,6 +184,11 @@ const timelineLink = computed((): RouteLocationRaw | null => {
   return packageTimelineRoute(props.pkg.name, props.resolvedVersion)
 })
 
+const statsLink = computed((): RouteLocationRaw | null => {
+  if (props.pkg == null || props.resolvedVersion == null) return null
+  return packageStatsRoute(props.pkg.name, props.resolvedVersion)
+})
+
 useShortcuts({
   '.': () => codeLink.value,
   'm': () => mainLink.value,
@@ -190,6 +197,7 @@ useShortcuts({
   'f': () => diffLink.value,
   '-': () => changelogLink.value,
   't': () => timelineLink.value,
+  's': () => statsLink.value,
 })
 </script>
 
@@ -369,6 +377,15 @@ useShortcuts({
           :class="page === 'timeline' ? 'border-accent text-accent!' : 'border-transparent'"
         >
           {{ $t('package.links.timeline') }}
+        </LinkBase>
+        <LinkBase
+          v-if="statsLink"
+          :to="statsLink"
+          aria-keyshortcuts="s"
+          class="decoration-none border-b-2 p-1 hover:border-accent/50 focus-visible:[outline-offset:-2px]!"
+          :class="page === 'stats' ? 'border-accent text-accent!' : 'border-transparent'"
+        >
+          {{ $t('package.links.stats') }}
         </LinkBase>
       </nav>
     </div>

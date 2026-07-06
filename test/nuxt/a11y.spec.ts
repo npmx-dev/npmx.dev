@@ -158,12 +158,21 @@ import {
   BuildEnvironment,
   ButtonBase,
   LandingIntroHeader,
+  NoodleArtemisLogo,
   NoodleKawaiiLogo,
+  NoodleTransgenderVisibilityLogo,
+  NoodleListCard,
   NoodleNodejsLogo,
+  NoodlePressLogo,
   NoodlePride1Logo,
+  NoodlePride2Logo,
+  NoodleLens,
+  NoodlePride3Logo,
+  NoodleTetrisLogo,
   LinkBase,
   CallToAction,
   ChangelogCard,
+  ChangelogSkeleton,
   ChangelogErrorMsg,
   CodeDirectoryListing,
   CodeFileTree,
@@ -198,7 +207,6 @@ import {
   OrgTeamsPanel,
   PackageAccessControls,
   PackageCard,
-  PackageChartModal,
   PackageClaimPackageModal,
   PackageCompatibility,
   PackageDependencies,
@@ -220,6 +228,10 @@ import {
   PackageSkillsCard,
   PackageTable,
   PackageTableRow,
+  PackageTimelineChartDepSizeTooltip,
+  PackageTimelineChartDepSizeSvgSlot,
+  PackageTimelineChartXyTooltip,
+  PackageTimelineChartXySvgSlot,
   PackageVersions,
   PackageVulnerabilityTree,
   PaginationControls,
@@ -281,7 +293,8 @@ import SizeIncrease from '~/components/Package/SizeIncrease.vue'
 import SizeDecrease from '~/components/Package/SizeDecrease.vue'
 import Likes from '~/components/Package/Likes.vue'
 import LikesLeaderboardPage from '~/pages/leaderboard/likes.vue'
-import type { VueUiXyDatasetItem } from 'vue-data-ui'
+import type { VueUiXyDatasetItem, VueUiXySvgSlotProps } from 'vue-data-ui/vue-ui-xy'
+import type { VueUiStackbarSvgSlotProps } from 'vue-data-ui/vue-ui-stackbar'
 
 describe('component accessibility audits', () => {
   describe('DateTime', () => {
@@ -377,13 +390,59 @@ describe('component accessibility audits', () => {
     })
 
     it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleTransgenderVisibilityLogo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodlePressLogo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
       const component = await mountSuspended(NoodleNodejsLogo)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
 
     it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleArtemisLogo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
       const component = await mountSuspended(NoodlePride1Logo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodlePride2Logo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodlePride3Logo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleTetrisLogo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleLens, {
+        props: {
+          logo: NoodleKawaiiLogo,
+        },
+      })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
@@ -942,12 +1001,12 @@ describe('component accessibility audits', () => {
               homepage: 'https://react.dev',
               repository: {
                 type: 'git',
-                url: 'https://github.com/facebook/react.git',
+                url: 'https://github.com/react/react.git',
               },
               bugs: {
-                url: 'https://github.com/facebook/react/issues',
+                url: 'https://github.com/react/react/issues',
               },
-              funding: 'https://github.com/sponsors/facebook',
+              funding: 'https://github.com/facebook',
               dist: {
                 shasum: 'abc123def456',
                 tarball: 'https://registry.npmjs.org/react/-/react-18.2.0.tgz',
@@ -1070,22 +1129,6 @@ describe('component accessibility audits', () => {
   // Note: PackageWeeklyDownloadStats tests are skipped because vue-data-ui VueUiSparkline
   // component has issues in the test environment (requires DOM measurements that aren't
   // available during SSR-like test mounting).
-
-  describe('PackageChartModal', () => {
-    it('should have no accessibility violations when closed', async () => {
-      const component = await mountSuspended(PackageChartModal, {
-        props: { open: false, title: 'Downloads' },
-        slots: { default: '<div>Chart content</div>' },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-
-    // Note: Testing the open state is challenging because native <dialog>.showModal()
-    // requires the element to be in the DOM and connected, which doesn't work well
-    // with the test environment's cloning approach. The dialog accessibility is
-    // inherently provided by the native <dialog> element with aria-labelledby.
-  })
 
   describe('PackageTrendsChart', () => {
     const mockWeeklyDownloads = [
@@ -1645,6 +1688,18 @@ describe('component accessibility audits', () => {
           html: '<pre><code><span class="line">const x = 1;</span><span class="line">const y = 2;</span></code></pre>',
           lines: 2,
           selectedLines: { start: 1, end: 1 },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with import-link markup', async () => {
+      const component = await mountSuspended(CodeViewer, {
+        props: {
+          html: '<pre><code><span class="line"><a href="/package-code/vite/v/1.0.0/index" class="import-link">vite</a></span></code></pre>',
+          lines: 1,
+          selectedLines: null,
         },
       })
       const results = await runAxe(component)
@@ -2234,6 +2289,109 @@ describe('component accessibility audits', () => {
     })
   })
 
+  describe('PackageTimelineChartDepSizeTooltip', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageTimelineChartDepSizeTooltip, {
+        props: {
+          datapoint: [
+            {
+              absoluteIndex: 0,
+              color: '#FF0000',
+              id: 'ABC',
+              name: 'Nuxt',
+              proportion: 1,
+              timeLabel: {
+                text: 'time',
+                absoluteIndex: 0,
+              },
+              value: 1,
+            },
+          ],
+          timeLabel: 'time',
+          datetime: '2027-01-01',
+          datapoints: [
+            { id: 'ABC', name: 'Nuxt', color: '#666666', size: 100, delta: 0, removed: false },
+          ],
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageTimelineChartDepSizeSvgSlot', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageTimelineChartDepSizeSvgSlot, {
+        props: {
+          svg: {
+            isPrintingImg: false,
+            isPrintingSvg: false,
+          } as VueUiStackbarSvgSlotProps['svg'],
+          activeVersionPlot: {
+            x: 10,
+            y: 10,
+            value: 100,
+          },
+          watermark: '<g><text x="0" y="0" stroke="#000000" font-size="12">npmx</text></g>',
+          colors: { bg: '#FFFFFF', accent: '#FF0000' },
+          pauseAnimations: false,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageTimelineChartXyTooltip', () => {
+    it('should have no accessibillity violations', async () => {
+      const component = await mountSuspended(PackageTimelineChartXyTooltip, {
+        props: {
+          timeLabel: { absoluteIndex: 0, text: 'time' },
+          version: '1.0.0',
+          tags: [],
+          datetime: '2027-01-01',
+          totalSize: '1 MB',
+          dependencyCount: '10',
+          events: [],
+          activeTab: 'totalSize',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageTimelineChartXySvgSlot', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageTimelineChartXySvgSlot, {
+        props: {
+          svg: {
+            isPrintingImg: false,
+            isPrintingSvg: false,
+          } as VueUiXySvgSlotProps['svg'],
+          activeVersionPlot: {
+            x: 10,
+            y: 10,
+            value: 100,
+          },
+          watermark: '<g><text x="0" y="0" stroke="#000000" font-size="12">npmx</text></g>',
+          markersPositive: [],
+          markersNegative: [],
+          colors: { bg: '#FFFFFF', accent: '#FF0000' },
+          pauseAnimations: false,
+          gradientColors: [
+            'oklch(73.76% 0.130 47.72)',
+            'oklch(85.35% 0.132 88.65)',
+            'oklch(81.56% 0.145 116.12)',
+            'oklch(71.29% 0.132 136.26)',
+          ],
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
   describe('PaginationControls', () => {
     it('should have no accessibility violations in infinite mode', async () => {
       const component = await mountSuspended(PaginationControls, {
@@ -2698,10 +2856,17 @@ describe('component accessibility audits', () => {
             id: 'a11y',
             title: '1.0.0',
             publishedAt: '2026-02-11 10:00:00.000Z',
+            link: 'https://github.com/nuxt/nuxt/releases/tag/v4.4.5',
           },
           tocHeaderClass: 'toc',
         },
       })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('ChangelogSkeleton', async () => {
+      const component = await mountSuspended(ChangelogSkeleton)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
@@ -2910,6 +3075,24 @@ describe('component accessibility audits', () => {
           },
         },
         slots: { default: '<p>Blog post content here.</p>' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('NoodleListCard', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleListCard, {
+        props: {
+          noodle: {
+            key: 'press',
+            slug: 'press',
+            title: 'Press',
+            date: '2026-05-01',
+            dateTo: '2026-05-04',
+          },
+        },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
