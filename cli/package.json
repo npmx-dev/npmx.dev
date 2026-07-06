@@ -23,27 +23,26 @@
     ".": "./dist/index.mjs"
   },
   "scripts": {
-    "build": "tsdown",
+    "build": "vp pack",
     "dev": "NPMX_CLI_DEV=true node src/cli.ts",
     "dev:debug": "DEBUG=npmx-connector NPMX_CLI_DEV=true node src/cli.ts",
     "dev:mock": "NPMX_CLI_DEV=true node src/mock-server.ts",
     "test:types": "tsc --noEmit"
   },
   "dependencies": {
-    "@clack/prompts": "^1.0.1",
+    "@clack/prompts": "^1.7.0",
     "@lydell/node-pty": "1.2.0-beta.12",
-    "citty": "^0.2.1",
-    "h3-next": "npm:h3@^2.0.1-rc.14",
-    "obug": "^2.1.1",
-    "srvx": "^0.11.7",
-    "valibot": "^1.2.0",
+    "citty": "^0.2.2",
+    "h3-next": "npm:h3@2.0.1-rc.22",
+    "obug": "^2.1.3",
+    "srvx": "^0.11.21",
+    "valibot": "^1.4.2",
     "validate-npm-package-name": "^8.0.0"
   },
   "devDependencies": {
-    "@types/node": "24.12.2",
+    "@types/node": "24.13.2",
     "@types/validate-npm-package-name": "4.0.2",
-    "tsdown": "0.21.7",
-    "typescript": "6.0.2"
+    "typescript": "6.0.3"
   },
   "engines": {
     "node": ">=24.4.0"

@@ -175,9 +175,9 @@ export default defineNuxtModule({
         include: [/\.(md|markdown)($|\?)/],
         wrapperComponent: 'BlogPostWrapper',
         wrapperClasses: 'text-fg-muted leading-relaxed',
-        async markdownSetup(md) {
+        markdownSetup(md) {
           md.use(
-            await shiki({
+            shiki({
               themes: {
                 dark: 'github-dark',
                 light: 'github-light',

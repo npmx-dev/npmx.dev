@@ -31,7 +31,7 @@ export default defineCachedEventHandler(
       }
     } catch (error) {
       handleApiError(error, {
-        statusCode: 502,
+        statusCode: 500,
         message: ERROR_CHANGELOG_FILE_FAILED,
       })
     }
@@ -44,13 +44,14 @@ export default defineCachedEventHandler(
       const repo = getRouterParam(event, 'repo') ?? ''
       const owner = getRouterParam(event, 'owner') ?? ''
       const path = getRouterParam(event, 'path') ?? ''
-      return `changelogMarkdown:v1:${provider}:${owner}:${repo}:${path.replaceAll('/', ':')}`
+      return `changelogMarkdown:v2:${provider}:${owner}:${repo}:${path.replaceAll('/', ':')}`
     },
+    shouldBypassCache: () => import.meta.dev,
   },
 )
 
 async function getGithubMarkDown(owner: string, repo: string, path: string) {
-  const data = await $fetch(`https://ungh.cc/repos/${owner}/${repo}/files/HEAD/${path}`)
+  const data = await $fetch(`https://raw.githubusercontent.com/${owner}/${repo}/HEAD/${path}`)
 
   const markdown = v.parse(v.string(), data)
 

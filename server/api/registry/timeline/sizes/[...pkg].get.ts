@@ -2,10 +2,26 @@ import { getVersions } from 'fast-npm-meta'
 
 const DEFAULT_LIMIT = 25
 
+/**
+ * Max number of individual dependencies returned per version for the size
+ * breakdown. Dependencies are sorted by size, so the largest are kept and the
+ * long tail is dropped (the client folds the remainder into an "Other" segment).
+ */
+const MAX_BREAKDOWN_DEPENDENCIES = 30
+
+export interface TimelineSizeDependency {
+  name: string
+  size: number
+}
+
 export interface TimelineSizeEntry {
   version: string
   totalSize: number
   dependencyCount: number
+  /** Unpacked size of the package itself (bytes) */
+  selfSize: number
+  /** Largest individual dependencies by unpacked self size (deep, deduped) */
+  dependencies: TimelineSizeDependency[]
 }
 
 export interface TimelineSizeResponse {
@@ -60,6 +76,10 @@ export default defineCachedEventHandler(
             version: result.value.version,
             totalSize: result.value.totalSize,
             dependencyCount: result.value.dependencyCount,
+            selfSize: result.value.selfSize,
+            dependencies: result.value.dependencies
+              .slice(0, MAX_BREAKDOWN_DEPENDENCIES)
+              .map(dep => ({ name: dep.name, size: dep.size })),
           })
         }
       }
@@ -79,7 +99,7 @@ export default defineCachedEventHandler(
       const query = getQuery(event)
       const offset = Math.max(0, Number(query.offset) || 0)
       const limit = Math.max(1, Math.min(100, Number(query.limit) || DEFAULT_LIMIT))
-      return `install-size-timeline:v1:${getRouterParam(event, 'pkg')}:${offset}:${limit}`
+      return `install-size-timeline:v2:${getRouterParam(event, 'pkg')}:${offset}:${limit}`
     },
   },
 )
