@@ -23,6 +23,9 @@ export function initPreferencesOnPrehydrate() {
     // Valid package manager IDs
     const validPMs = new Set(['npm', 'pnpm', 'yarn', 'bun', 'deno', 'vlt', 'vp'])
 
+    const validBackgroundThemes = new Set(['neutral', 'stone', 'zinc', 'slate', 'black'])
+    const validForegroundThemes = new Set(['muted', 'standard', 'contrast'])
+
     // Read settings from localStorage
     const settings = JSON.parse(
       localStorage.getItem('npmx-settings') || '{}',
@@ -35,13 +38,13 @@ export function initPreferencesOnPrehydrate() {
 
     // Apply background accent
     const preferredBackgroundTheme = settings.preferredBackgroundTheme
-    if (preferredBackgroundTheme) {
+    if (preferredBackgroundTheme && validBackgroundThemes.has(preferredBackgroundTheme)) {
       document.documentElement.dataset.bgTheme = preferredBackgroundTheme
     }
 
     // Apply foreground accent
     const preferredForegroundTheme = settings.preferredForegroundTheme
-    if (preferredForegroundTheme) {
+    if (preferredForegroundTheme && validForegroundThemes.has(preferredForegroundTheme)) {
       document.documentElement.dataset.fgTheme = preferredForegroundTheme
     }
 
