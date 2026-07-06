@@ -9,8 +9,8 @@
   "built_at": "gebouwd {0}",
   "alt_logo": "npmx logo",
   "tagline": "een snelle, moderne browser voor het npm-register",
-  "non_affiliation_disclaimer": "niet affiliëerd met npm, Inc.",
-  "trademark_disclaimer": "npm is een geregisteerd trademark van npm, Inc. Deze website is niet affiliëerd met npm, Inc.",
+  "non_affiliation_disclaimer": "niet geaffilieerd met npm, Inc.",
+  "trademark_disclaimer": "npm is een geregistreerd handelsmerk van npm, Inc. Deze website is niet geaffilieerd met npm, Inc.",
   "footer": {
     "about": "over ons",
     "blog": "blog",
@@ -23,7 +23,8 @@
     "brand": "merk",
     "resources": "Informatie",
     "features": "Functies",
-    "other": "Overig"
+    "other": "Overig",
+    "sponsored_by": "Gesponsord door {list}"
   },
   "shortcuts": {
     "section": {
@@ -39,6 +40,7 @@
     "settings": "Open instellingen",
     "compare": "Open vergelijken",
     "compare_from_package": "Vergelijking openen (vooraf ingevuld met het huidige pakket)",
+    "changelog": "Open wijzigingenoverzicht",
     "navigate_results": "Navigeer resultaten",
     "go_to_result": "Ga naar resultaten",
     "open_code_view": "Open code weergaven",
@@ -46,7 +48,8 @@
     "disable_shortcuts": "U kunt toetsenbordnavigatie uitschakelen in {instellingen}.",
     "open_main": "Open pakket overzicht",
     "open_diff": "Open versie verschillen",
-    "open_timeline": "Open tijdlijn"
+    "open_timeline": "Open tijdlijn",
+    "open_stats": "Open statistieken"
   },
   "search": {
     "label": "Zoek npm pakketten",
@@ -98,6 +101,11 @@
     "current": "huidige",
     "here": "u bent hier",
     "connected": "verbonden",
+    "keyboard_shortcuts": {
+      "navigate": "navigeren",
+      "select": "selecteren",
+      "close": "sluiten"
+    },
     "state": {
       "on": "aan",
       "off": "uit"
@@ -154,7 +162,8 @@
       "diff": "Verschillen",
       "compare": "Vergelijk dit pakket",
       "download": "Download tarball",
-      "changelog": "Wijzigingenoverzicht"
+      "changelog": "Wijzigingen",
+      "stats": "Statistieken"
     },
     "package_actions": {
       "copy_run": "Kopieer uitvoor command"
@@ -227,6 +236,31 @@
       "like_count": "{count} vind leuk | {count} vinden leuk",
       "repost_count": "{count} herplaatsing | {count} herplaatsing",
       "more_replies": "{count} meer reactie... | {count} meer reacties..."
+    }
+  },
+  "noodles": {
+    "title": "noodles",
+    "meta_description": "Elke noodle die ooit op npmx verscheen — de seizoenslogo's, easter eggs en de verhalen erachter.",
+    "latest": "Laatste noodles",
+    "what_is": "Wat zijn noodles",
+    "what_is_body": "Noodles zijn de speelse varianten van het npmx-logo die we op de homepage tonen bij releases, feestdagen, evenementen en andere momenten die de moeite waard zijn om te vieren. Zie ze als Google Doodles, maar dan voor npm-packages.",
+    "empty": "Nog geen noodles.",
+    "load_more": "Laad nog {count}",
+    "dates": "Actieve datums",
+    "shipped_in": "Uitgebracht in",
+    "credits": "Credits",
+    "learn_more": "Meer informatie",
+    "carousel_prev": "Vorige afbeelding",
+    "carousel_next": "Volgende afbeelding",
+    "carousel_dots": "Navigatie variantafbeeldingen",
+    "carousel_jump": "Ga naar afbeelding {index}",
+    "lens_label": "{title} — beeldreeks",
+    "lens_slide": "afbeelding {index}",
+    "lens_slide_position": "Slide {index} van {total}",
+    "back_to_archive": "Terug naar alle noodles",
+    "missing": {
+      "title": "Deze noodle heeft de kom nooit verlaten.",
+      "body": "We hebben geen \"{slug}\"-noodle op het menu. Hij is misschien nog in de maak, of hij heeft nooit bestaan. Hoe dan ook — terug naar het archief."
     }
   },
   "settings": {
@@ -386,14 +420,14 @@
       "title_deps": "Aanzienlijke toename van het aantal dependencies sinds versie {version}",
       "title_both": "Aanzienlijke toename in omvang en dependencies sinds v{version}",
       "size": "De installatiegrootte is toegenomen met {percent} ({size} groter)",
-      "deps": "{count} meer dependencies"
+      "deps": "{count} meer dependency | {count} meer dependencies"
     },
     "size_decrease": {
       "title_size": "Pakketgrootte is afgenomen sinds v{version}!",
       "title_deps": "Aantal dependencies is afgenomen sinds v{version}!",
       "title_both": "De pakketgrootte en het aantal dependencies zijn sindsdien afgenomen v{version}!",
       "size": "De installatiegrootte is met {percent} verminderd ({size} kleiner)",
-      "deps": "{count} minder dependencies"
+      "deps": "{count} minder dependency | {count} minder dependencies"
     },
     "replacement": {
       "title": "U heeft waarschijnlijk dit niet nodig",
@@ -419,7 +453,10 @@
       "size_tooltip": {
         "unpacked": "{size} uitgepakte grootte (dit pakket)",
         "total": "totale grootte na uitpakken (inclusief {count} dependencies voor linux-x64)"
-      }
+      },
+      "main_information": "Hoofdinformatie",
+      "trends": "Trends",
+      "version_distribution": "Versieverdeling"
     },
     "skills": {
       "title": "Agent Skills",
@@ -450,8 +487,9 @@
       "fund": "Steunen",
       "compare": "vergelijk",
       "timeline": "tijdlijn",
+      "stats": "stats",
       "compare_this_package": "Vergelijk dit pakket",
-      "changelog": "wijzigingenoverzicht"
+      "changelog": "Wijzigingen"
     },
     "likes": {
       "like": "Dit pakket leuk vinden",
@@ -506,7 +544,7 @@
       "title": "Herkomst verificatie gegevens",
       "built_and_signed_on": "Gebouwd en getekend op {provider}",
       "view_build_summary": "Bekijk bouw samenvatting",
-      "source_commit": "Bron Commit",
+      "source_commit": "Bron commit",
       "build_file": "Bouw bestand",
       "public_ledger": "Publiek logboek",
       "transparency_log_entry": "Vermelding in het transparantielogboek",
@@ -531,6 +569,7 @@
       "weekly_downloads": "Wekelijkse downloads",
       "keywords": "Trefwoorden",
       "license": "Licentie",
+      "version": "Versie",
       "select": "Selecteer pakket",
       "select_maximum": "Er kunnen maximaal {count} pakketten worden geselecteerd"
     },
@@ -586,8 +625,8 @@
       "load_error": "De tijdlijn kan niet worden geladen. Probeer het later nog eens.",
       "size_increase": "De installatiegrootte is toegenomen met {percent}% ({size})",
       "size_decrease": "De installatiegrootte is afgenomen met {percent}% ({size})",
-      "dep_increase": "{count} dependencies toegevoegd",
-      "dep_decrease": "{count} dependencies verwijderd",
+      "dep_increase": "{count} dependency toegevoegd | {count} dependencies toegevoegd",
+      "dep_decrease": "{count} dependency verwijderd | {count} dependencies verwijderd",
       "license_change": "Licentie gewijzigd van {from} naar {to}",
       "esm_added": "Moduletype is gewijzigd naar ESM",
       "esm_removed": "Moduletype is gewijzigd van ESM naar CJS",
@@ -710,10 +749,17 @@
         "general_description": "De Y-as toont het aantal downloads. De X-as toont de periode, van {start_date} tot {end_date}, met een {granularity} tijdsinterval. {estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": " Horizontaal staafdiagram voor: {packages}, ter vergelijking van {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} heeft een waarde van {value}."
+      },
+      "embedding": {
+        "chart": "Deze grafiek insluiten",
+        "copy_url": "Kopieer deze URL om de grafiek in uw website in te sluiten",
+        "preview": "Voorbeeld",
+        "tip": "Als startDate en endDate niet zijn opgegeven, toont de grafiek standaard de laatste 12 maanden."
       }
     },
     "downloads": {
       "title": "Wekelijkse Downloads",
+      "version_distribution_title": "wekelijkse downloads voor versie {version}",
       "community_distribution": "Bekijk adoptiegraad",
       "subtitle": "Over alle versies",
       "sparkline_nav_hint": "Gebruik ← →"
@@ -1056,7 +1102,7 @@
     "scope_keywords_description": "Alleen zoeken op trefwoorden",
     "scope_all": "Alle",
     "scope_all_description": "Zoek alle velden, ondersteund naam: beschrijving: tf: beheerders",
-    "weekly_downloads": "Weekelijkse downloads",
+    "weekly_downloads": "Wekelijkse downloads",
     "updated_within": "Bijgewerkt binnen",
     "security": "Beveiliging",
     "keywords": "Trefwoorden",
@@ -1175,15 +1221,20 @@
       }
     },
     "sponsors": {
-      "title": "Sponsoren"
+      "title": "Sponsoren",
+      "gold": "Gouden sponsors",
+      "silver": "Zilveren sponsors"
     },
     "oss_partners": {
       "title": "Open Source Software Partners"
     },
     "team": {
       "title": "Team",
+      "core": "Kern",
+      "maintainers": "Onderhouders",
+      "role_core": "kernlid",
       "role_steward": "Coördinator",
-      "role_maintainer": "Onderhouder",
+      "role_maintainer": "Beheerder",
       "sponsor": "sponsor",
       "sponsor_aria": "Sponsor {name} op GitHub"
     },
@@ -1390,11 +1441,15 @@
         },
         "githubStars": {
           "label": "GitHub Sterren",
-          "description": "Aantal sterren van een GitHub repository"
+          "description": "Aantal sterren van de GitHub-repository"
+        },
+        "githubForks": {
+          "label": "GitHub Forks",
+          "description": "Aantal forks van de GitHub-repository"
         },
         "githubIssues": {
           "label": "GitHub Issues",
-          "description": "Aantal issues van een GitHub repository"
+          "description": "Aantal issues van de GitHub-repository"
         },
         "createdAt": {
           "label": "Aangemaakt op",
@@ -1410,7 +1465,7 @@
         "types_included": "Inbegrepen",
         "types_none": "Geen",
         "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
-        "up_to_you": "Jij beslist!"
+        "up_to_you": "U beslist!"
       },
       "trends": {
         "title": "Trends vergelijken"
@@ -1459,6 +1514,9 @@
     "change_ratio": "Wijziging verhouding",
     "char_edits": "Tekenbewerkingen",
     "diff_distance": "Verschilafstand",
+    "diff_truncated": "Diff ingekort om prestaties te verbeteren. Alleen de eerste gewijzigde regels worden getoond.",
+    "large_diff_mode": "Grote bestandsdiff weergegeven met inline samenvoegen van bewerkingen uitgeschakeld om prestaties te verbeteren.",
+    "large_diff_options_disabled": "Bij grote bestanden is inline samenvoegen van bewerkingen uitgeschakeld om prestaties te verbeteren.",
     "loading_diff": "Verschillen laden...",
     "loading_diff_error": "Laden van het verschillen is mislukt",
     "merge_modified_lines": "Gewijzigde regels samenvoegen",
@@ -1513,9 +1571,9 @@
         "li2": "{li21}{separator} {li22}",
         "separator": ":",
         "cookie_vdpl": "__vdpl",
-        "cookie_vdpl_desc": "Dit cookie wordt door onze hostingprovider (Vercel) gebruikt voor 'skew protection' (versiebeveiliging). Het zorgt ervoor dat je de juiste bestanden van de website laadt als er een nieuwe update wordt uitgebracht terwijl je de site bezoekt. Het volgt je niet.",
+        "cookie_vdpl_desc": "Dit cookie wordt door onze hostingprovider (Vercel) gebruikt voor 'skew protection' (versiebeveiliging). Het zorgt ervoor dat u de juiste bestanden van de website laadt als er een nieuwe update wordt uitgebracht terwijl u de site bezoekt. Het volgt u niet.",
         "cookie_h3": "h3",
-        "cookie_h3_desc": "Dit is ons beveiligde sessiecookie. Het slaat het OAuth-toegangstoken op wanneer je verbinding maakt met je Atmosphere-account. Dit cookie is essentieel om je ingelogde sessie te behouden."
+        "cookie_h3_desc": "Dit is ons beveiligde sessiecookie. Het slaat het OAuth-toegangstoken op wanneer u verbinding maakt met uw Atmosphere-account. Dit cookie is essentieel om uw ingelogde sessie te behouden."
       },
       "local_storage": {
         "title": "Lokale opslag",

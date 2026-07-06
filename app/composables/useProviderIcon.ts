@@ -15,10 +15,13 @@ const PROVIDER_ICONS: Record<ProviderId, IconClass> = {
   radicle: 'i-lucide:network', // Radicle is a P2P network, using network icon
 }
 
-export function useProviderIcon(provider: MaybeRefOrGetter<ProviderId | null | undefined>) {
+export function useProviderIcon(
+  provider: MaybeRefOrGetter<ProviderId | null | undefined>,
+  fallbackIcon: IconClass = 'i-simple-icons:github',
+) {
   return computed((): IconClass => {
     const uProvider = toValue(provider)
-    if (!uProvider) return 'i-simple-icons:github'
+    if (!uProvider) return fallbackIcon
     return PROVIDER_ICONS[uProvider] ?? 'i-lucide:code'
   })
 }

@@ -39,6 +39,11 @@ interface EmbedExternal {
   uri: string
 }
 
+interface EmbedGallery {
+  $type: 'app.bsky.embed.gallery#view'
+  items: EmbedImage[]
+}
+
 interface BlueskyPost {
   uri: string
   author: PostAuthor
@@ -50,7 +55,7 @@ interface BlueskyPost {
     thumbnail?: string
     playlist?: string
     aspectRatio?: { width: number; height: number }
-  }
+  } & EmbedGallery
   likeCount?: number
   replyCount?: number
   repostCount?: number
@@ -218,8 +223,22 @@ const postUrl = computed(() => {
       </div>
     </template>
 
+    <!-- Embedded gallery -->
+    <template v-if="post.embed?.$type === 'app.bsky.embed.gallery#view'">
+      <div class="relative overflow-x-auto flex gap-3 z-10">
+        <img
+          v-for="(img, i) in post.embed.items"
+          :key="i"
+          :src="img.fullsize"
+          :alt="img.alt"
+          class="h-40 md:h-60 lg:h-72 w-auto rounded-lg object-cover"
+          loading="lazy"
+        />
+      </div>
+    </template>
+
     <!-- Timestamp + engagement -->
-    <div class="flex items-center gap-4 text-sm text-fg-subtle">
+    <div class="flex items-center gap-4 text-sm text-fg-subtle mt-3">
       <DateTime :datetime="post.record.createdAt" date-style="medium" />
       <span v-if="post.likeCount" class="flex items-center gap-1">
         <span class="i-lucide:heart w-3.5 h-3.5" aria-hidden="true" />
