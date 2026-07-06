@@ -50,6 +50,7 @@ if (
 
 const { data: pkg, refresh: refreshPkg } = usePackage(name, () => resolvedVersion.value ?? version)
 const displayVersion = computed(() => pkg.value?.requestedVersion ?? null)
+const versionLabel = computed(() => (version ? `v${version}` : ''))
 
 const repositoryUrl = computed(() => {
   const repo = displayVersion.value?.repository
@@ -63,8 +64,6 @@ const repositoryUrl = computed(() => {
 })
 
 const { repoRef, stars, refresh: refreshRepoMeta } = useRepoMeta(repositoryUrl)
-const repoProviderIcon = useProviderIcon(() => repoRef.value?.provider, 'i-lucide:code')
-
 const formattedStars = computed(() => (stars.value > 0 ? compactFormat.format(stars.value) : ''))
 
 const formattedDownloads = computed(() => {
@@ -270,14 +269,65 @@ const sparklineSrc = computed(() => {
           class="pt-3 lg:text-4xl text-3xl font-mono tracking-tight leading-none"
           style="opacity: 0.7; text-overflow: ellipsis; line-clamp: 1"
         >
-          v{{ version }}
+          {{ versionLabel }}
         </div>
       </div>
 
       <div class="flex flex-col gap-3 text-4xl text-fg-muted">
         <div v-if="repositoryUrl" class="flex items-center gap-2">
           <div
-            :class="[repoProviderIcon, 'shrink-0 text-fg-muted']"
+            v-if="repoRef?.provider === 'github'"
+            class="i-simple-icons:github shrink-0 text-fg-muted"
+            style="width: 24px; height: 24px"
+          />
+          <div
+            v-else-if="repoRef?.provider === 'gitlab'"
+            class="i-simple-icons:gitlab shrink-0 text-fg-muted"
+            style="width: 24px; height: 24px"
+          />
+          <div
+            v-else-if="repoRef?.provider === 'bitbucket'"
+            class="i-simple-icons:bitbucket shrink-0 text-fg-muted"
+            style="width: 24px; height: 24px"
+          />
+          <div
+            v-else-if="repoRef?.provider === 'codeberg'"
+            class="i-simple-icons:codeberg shrink-0 text-fg-muted"
+            style="width: 24px; height: 24px"
+          />
+          <div
+            v-else-if="repoRef?.provider === 'gitea'"
+            class="i-simple-icons:gitea shrink-0 text-fg-muted"
+            style="width: 24px; height: 24px"
+          />
+          <div
+            v-else-if="repoRef?.provider === 'forgejo'"
+            class="i-simple-icons:forgejo shrink-0 text-fg-muted"
+            style="width: 24px; height: 24px"
+          />
+          <div
+            v-else-if="repoRef?.provider === 'gitee'"
+            class="i-simple-icons:gitee shrink-0 text-fg-muted"
+            style="width: 24px; height: 24px"
+          />
+          <div
+            v-else-if="repoRef?.provider === 'sourcehut'"
+            class="i-simple-icons:sourcehut shrink-0 text-fg-muted"
+            style="width: 24px; height: 24px"
+          />
+          <div
+            v-else-if="repoRef?.provider === 'tangled'"
+            class="i-custom:tangled shrink-0 text-fg-muted"
+            style="width: 24px; height: 24px"
+          />
+          <div
+            v-else-if="repoRef?.provider === 'radicle'"
+            class="i-lucide:network shrink-0 text-fg-muted"
+            style="width: 24px; height: 24px"
+          />
+          <div
+            v-else
+            class="i-lucide:code shrink-0 text-fg-muted"
             style="width: 24px; height: 24px"
           />
           <span v-if="repoRef" class="max-w-[500px]" style="text-overflow: ellipsis">
@@ -330,13 +380,15 @@ const sparklineSrc = computed(() => {
     <img
       v-if="variant === 'download-chart' && sparklineSrc"
       :src="sparklineSrc"
-      class="absolute force-left-0 bottom-0 w-full h-[65%]"
+      class="absolute bottom-0 w-full h-[65%]"
+      style="left: 0"
     />
 
     <!-- Code tree variant -->
     <div
       v-else-if="variant === 'code-tree' && treeRows.length"
-      class="text-fg-muted absolute force-right-8 top-8 bottom-8 w-[340px] flex flex-col gap-0 opacity-30 overflow-hidden font-mono text-4.5 leading-8"
+      class="text-fg-muted absolute top-8 bottom-8 w-[340px] flex flex-col gap-0 opacity-30 overflow-hidden font-mono text-4.5 leading-8"
+      style="right: 2rem"
     >
       <div
         v-for="(row, i) in treeRows"
@@ -361,7 +413,8 @@ const sparklineSrc = computed(() => {
     <!-- Function tree variant (API symbols) -->
     <div
       v-else-if="variant === 'function-tree' && symbolRows.length"
-      class="absolute force-right-8 top-8 bottom-8 w-[340px] flex flex-col gap-0 opacity-30 overflow-hidden font-mono text-4.5 leading-8"
+      class="absolute top-8 bottom-8 w-[340px] flex flex-col gap-0 opacity-30 overflow-hidden font-mono text-4.5 leading-8"
+      style="right: 2rem"
     >
       <div
         v-for="(row, i) in symbolRows"
