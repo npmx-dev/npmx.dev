@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useInfiniteScroll } from '@vueuse/core'
 import { updateProfile as updateProfileUtil } from '~/utils/atproto/profile'
 import { fetchProfileLikes } from '~/utils/atproto/likes'
 import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
@@ -80,88 +81,38 @@ async function updateProfile() {
   }
 }
 
-const allLikesRecords = ref<Array<{ value: { subjectRef: string } }>>([])
-const likesCursor = shallowRef<string | null>(null)
-const likesLoadingMore = shallowRef(false)
+const allLikesRecords = ref<string[]>([])
+// undefined = not yet fetched, string = next page cursor, null = no more pages
+const likesCursor = shallowRef<string | null | undefined>(undefined)
 const likesError = shallowRef(false)
-const likesLoaded = shallowRef(false)
 
-async function loadInitialLikes() {
-  try {
-    const result = await fetchProfileLikes(identity.value, null, 20)
-    allLikesRecords.value = result.records
-    likesCursor.value = result.cursor
-    likesError.value = false
-    likesLoaded.value = true
-  } catch {
-    likesError.value = true
-    likesLoaded.value = true
-  }
-}
+const hasMoreLikes = computed(() => typeof likesCursor.value === 'string')
+const isLoadingInitialLikes = computed(() => likesCursor.value === undefined && !likesError.value)
 
-async function loadMoreLikes() {
-  if (likesLoadingMore.value || !likesCursor.value) return
-  likesLoadingMore.value = true
-  try {
-    const result = await fetchProfileLikes(identity.value, likesCursor.value, 20)
-    allLikesRecords.value = [...allLikesRecords.value, ...result.records]
-    likesCursor.value = result.cursor
-  } catch {
-    likesError.value = true
-  } finally {
-    likesLoadingMore.value = false
-  }
-}
-
-const hasMoreLikes = computed(() => likesCursor.value !== null)
-const isLoadingInitialLikes = computed(
-  () => allLikesRecords.value.length === 0 && !likesError.value && !likesLoaded.value,
-)
-
-onMounted(() => {
-  loadInitialLikes()
-})
-
-let observer: IntersectionObserver | null = null
-
-onUnmounted(() => {
-  if (observer) {
-    observer.disconnect()
-    observer = null
-  }
-})
-
-function setupInfiniteScroll() {
-  if (observer) {
-    observer.disconnect()
-  }
-  observer = new IntersectionObserver(
-    entries => {
-      const target = entries[0]
-      if (target?.isIntersecting && hasMoreLikes.value && !likesLoadingMore.value) {
-        loadMoreLikes()
-      }
-    },
-    { rootMargin: '200px' },
-  )
-
-  nextTick(() => {
-    const sentinel = document.getElementById('likes-scroll-sentinel')
-    if (sentinel && observer) {
-      observer.observe(sentinel)
+const { isLoading: likesLoadingMore } = useInfiniteScroll(
+  () => (import.meta.client ? window : null),
+  async () => {
+    try {
+      const result = await fetchProfileLikes(identity.value, likesCursor.value ?? null, 20)
+      allLikesRecords.value = [...allLikesRecords.value, ...(result.likes ?? [])]
+      likesCursor.value = result.cursor ?? null
+    } catch {
+      likesError.value = true
     }
-  })
-}
-
-watch(allLikesRecords, () => {
-  setupInfiniteScroll()
-})
+  },
+  {
+    distance: 200,
+    // undefined (initial) → allow load; null (exhausted) → stop
+    canLoadMore: () => likesCursor.value !== null,
+  },
+)
 
 const showInviteSection = computed(() => {
   return (
     profile.value.recordExists === false &&
     !likesError.value &&
     allLikesRecords.value.length === 0 &&
+    likesCursor.value !== undefined &&
     !userPending.value &&
     user.value?.handle !== profile.value.handle
   )
@@ -317,28 +268,33 @@ defineOgImage(
         {{ $t('profile.likes') }}
         <span>({{ allLikesRecords.length ?? 0 }})</span>
       </h2>
-      <div v-if="isLoadingInitialLikes" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div v-if="isLoadingInitialLikes" class="flex flex-col gap-4">
         <SkeletonBlock v-for="i in 4" :key="i" class="h-16 rounded-lg" />
       </div>
       <div v-else-if="likesError">
         <p>{{ $t('common.error') }}</p>
       </div>
-      <div v-else-if="allLikesRecords.length > 0" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <PackageLikeCard
-          v-for="like in allLikesRecords"
-          :key="like.value.subjectRef"
-          :packageUrl="like.value.subjectRef"
-        />
-      </div>
+      <template v-else-if="allLikesRecords.length > 0">
+        <ol class="list-none m-0 p-0 grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <li v-for="like in allLikesRecords" :key="like">
+            <PackageLikeCard :packageUrl="like" />
+          </li>
+        </ol>
+      </template>
 
-      <!-- Loading more indicator for infinite scroll -->
+      <!-- Loading more indicator -->
       <div v-if="likesLoadingMore" class="flex items-center justify-center py-4 gap-2">
         <span class="i-svg-spinners:ring-resize w-4 h-4" aria-hidden="true" />
-        <span class="text-fg-muted text-sm">{{ $t('common.loading') }}</span>
+        <span class="text-fg-muted text-sm">{{ $t('common.loading_more') }}</span>
       </div>
 
-      <!-- Scroll sentinel for intersection observer -->
-      <div id="likes-scroll-sentinel" class="h-1" />
+      <!-- End of results -->
+      <p
+        v-else-if="!hasMoreLikes && allLikesRecords.length > 0"
+        class="py-4 text-center text-fg-subtle font-mono text-sm"
+      >
+        {{ $t('common.end_of_results') }}
+      </p>
 
       <!-- Invite section: shown when user does not have npmx profile or any like lexicons -->
       <div

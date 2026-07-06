@@ -25,9 +25,8 @@ registerEndpoint('/api/social/profile/test-handle', () => ({
 registerEndpoint('/api/auth/session', () => authSessionHandler())
 
 registerEndpoint('/api/social/profile/test-handle/likes', () => ({
-  records: [],
   cursor: null,
-  hasNextPage: false,
+  likes: [],
 }))
 
 describe('Profile invite section', () => {

@@ -19,5 +19,12 @@ export default defineEventHandler(async event => {
   const minidoc = await utils.getMiniDoc(identifier)
   const likesUtil = new PackageLikesUtils()
 
-  return likesUtil.getUserLikes(minidoc, limit, cursor ?? undefined)
+  const likes = await likesUtil.getUserLikes(minidoc, limit, cursor ?? undefined)
+
+  return {
+    cursor: likes.cursor,
+    likes: likes.records
+      .map(record => record.value.subjectRef)
+      .filter(url => typeof url === 'string'),
+  }
 })

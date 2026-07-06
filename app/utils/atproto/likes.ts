@@ -2,16 +2,6 @@ import { FetchError } from 'ofetch'
 import { handleAuthError } from '~/utils/atproto/helpers'
 import type { PackageLikes } from '#shared/types/social'
 
-export type PaginatedProfileLikes = {
-  records: {
-    value: {
-      subjectRef: string
-    }
-  }[]
-  cursor: string | null
-  hasNextPage: boolean
-}
-
 type LikeResult = { success: true; data: PackageLikes } | { success: false; error: Error }
 
 /**
@@ -66,25 +56,14 @@ export async function togglePackageLike(
 /**
  * Fetches paginated profile likes for a given handle.
  */
-export async function fetchProfileLikes(
-  handle: string,
-  cursor?: string | null,
-  limit = 20,
-): Promise<PaginatedProfileLikes> {
-  const params = new URLSearchParams({ limit: String(limit) })
-  if (cursor) {
-    params.set('cursor', cursor)
-  }
-
+export async function fetchProfileLikes(handle: string, cursor?: string | null, limit = 20) {
   try {
-    const result = await $fetch<PaginatedProfileLikes>(
-      `/api/social/profile/${handle}/likes?${params.toString()}`,
-    )
-    return result
+    return await $fetch(`/api/social/profile/${handle}/likes`, {
+      query: { cursor, limit },
+    })
   } catch (e) {
-    if (e instanceof FetchError) {
-      await handleAuthError(e, undefined)
-    }
-    return { records: [], cursor: null, hasNextPage: false }
+    // oxlint-disable-next-line no-console -- error logging
+    console.error('failed to fetch profile likes', handle, cursor, limit, e)
+    return { cursor: null, likes: null }
   }
 }
