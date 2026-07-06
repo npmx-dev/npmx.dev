@@ -23,7 +23,8 @@
     "brand": "ブランド",
     "resources": "リソース",
     "features": "機能",
-    "other": "その他"
+    "other": "その他",
+    "sponsored_by": "スポンサー: {list}"
   },
   "shortcuts": {
     "section": {
@@ -99,6 +100,11 @@
     "current": "現在",
     "here": "現在地",
     "connected": "接続済み",
+    "keyboard_shortcuts": {
+      "navigate": "移動",
+      "select": "選択",
+      "close": "閉じる"
+    },
     "state": {
       "on": "オン",
       "off": "オフ"
@@ -488,7 +494,8 @@
       "like": "このパッケージをいいねする",
       "unlike": "このパッケージのいいねを解除する",
       "top_rank_tooltip": "このパッケージはnpmxで最も「いいね」されている上位10パッケージの一つです！ (#{rank})",
-      "top_rank_label": "#{rank}"
+      "top_rank_label": "#{rank}",
+      "top_rank_link_label": "いいねリーダーボードを表示。このパッケージは #{rank} 位です。"
     },
     "docs": {
       "contents": "目次",
@@ -742,7 +749,6 @@
         "facet_bar_general_description": "{packages} の横棒グラフ: {facet} の比較 ({description})。{facet_analysis} {watermark}。",
         "facet_bar_analysis": "{package_name} の値は {value} です。"
       },
-
       "embedding": {
         "chart": "このチャートを埋め込む",
         "copy_url": "ウェブサイトにチャートを埋め込むには、このURLをコピーしてください",
@@ -1214,7 +1220,9 @@
       }
     },
     "sponsors": {
-      "title": "スポンサー"
+      "title": "スポンサー",
+      "gold": "ゴールドスポンサー",
+      "silver": "シルバースポンサー"
     },
     "oss_partners": {
       "title": "OSSパートナー"
@@ -1434,12 +1442,10 @@
           "label": "GitHub Stars",
           "description": "GitHubリポジトリのスター数"
         },
-
         "githubForks": {
           "label": "GitHub Forks",
           "description": "GitHubリポジトリのフォーク数"
         },
-
         "githubIssues": {
           "label": "GitHub Issues",
           "description": "GitHubリポジトリのIssues数"

@@ -229,9 +229,6 @@
       "more_replies": "ещё {count} ответ... | ещё {count} ответа... | ещё {count} ответов..."
     }
   },
-  "noodles": {
-    "missing": {}
-  },
   "settings": {
     "title": "настройки",
     "tagline": "сделайте npmx удобным для себя",
@@ -458,7 +455,8 @@
       "like": "Поставить лайк этому пакету",
       "unlike": "Убрать лайк с этого пакета",
       "top_rank_tooltip": "Этот пакет входит в топ-10 самых любимых пакетов на npmx! (#{rank})",
-      "top_rank_label": "#{rank}"
+      "top_rank_label": "#{rank}",
+      "top_rank_link_label": "Посмотреть таблицу лидеров по лайкам. Этот пакет занимает #{rank} место."
     },
     "docs": {
       "contents": "Содержание",
@@ -709,8 +707,7 @@
         "general_description": "Ось Y представляет количество загрузок. Ось X представляет диапазон дат, от {start_date} до {end_date}, с временным интервалом {granularity}. {estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Горизонтальная гистограмма для: {packages}, сравнение {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "У {package_name} значение {value}."
-      },
-      "embedding": {}
+      }
     },
     "downloads": {
       "title": "Загрузки за неделю",
@@ -1392,7 +1389,6 @@
           "label": "Звёзды GitHub",
           "description": "Количество звёзд у GitHub-репозитория"
         },
-        "githubForks": {},
         "githubIssues": {
           "label": "Тикеты GitHub",
           "description": "Количество тикетов в GitHub-репозитории"

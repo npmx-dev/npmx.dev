@@ -228,9 +228,6 @@
       "more_replies": "还有 {count} 条回复..."
     }
   },
-  "noodles": {
-    "missing": {}
-  },
   "settings": {
     "title": "设置",
     "tagline": "定制你的 npmx 体验",
@@ -454,7 +451,8 @@
       "like": "点赞此包",
       "unlike": "取消点赞",
       "top_rank_tooltip": "该包位列 npmx 点赞数前 10！（第 #{rank} 名）",
-      "top_rank_label": "第 #{rank} 名"
+      "top_rank_label": "第 #{rank} 名",
+      "top_rank_link_label": "查看点赞排行榜。该包当前排名第 #{rank}。"
     },
     "docs": {
       "contents": "目录",
@@ -705,8 +703,7 @@
         "general_description": "Y 轴表示下载量，X 轴表示日期范围（{start_date} 至 {end_date}），统计周期为{granularity}。{estimation_notice} {packages_analysis}。{watermark}。",
         "facet_bar_general_description": "水平条形图：{packages} 的 {facet} 对比（{description}）。{facet_analysis} {watermark}",
         "facet_bar_analysis": "{package_name}：{value}"
-      },
-      "embedding": {}
+      }
     },
     "downloads": {
       "title": "每周下载量",
@@ -1389,7 +1386,6 @@
           "label": "GitHub 星标",
           "description": "GitHub 仓库的星标数量"
         },
-        "githubForks": {},
         "githubIssues": {
           "label": "GitHub 问题数",
           "description": "GitHub 仓库的问题数量"

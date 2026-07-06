@@ -229,9 +229,6 @@
       "more_replies": "{count} আরো উত্তর... | {count} আরো উত্তর..."
     }
   },
-  "noodles": {
-    "missing": {}
-  },
   "settings": {
     "title": "সেটিংস",
     "tagline": "আপনার npmx অভিজ্ঞতা কাস্টমাইজ করুন",
@@ -458,7 +455,8 @@
       "like": "এই প্যাকেজটি পছন্দ করুন",
       "unlike": "এই প্যাকেজটি আর পছন্দ নয়",
       "top_rank_tooltip": "এটি npmx-এ শীর্ষ 10টি সর্বাধিক পছন্দ করা প্যাকেজের মধ্যে রয়েছে! (#{rank})",
-      "top_rank_label": "#{rank}"
+      "top_rank_label": "#{rank}",
+      "top_rank_link_label": "পছন্দ লিডারবোর্ড দেখুন. এই প্যাকেজটি #{rank} র‌্যাঙ্ক করা হয়েছে."
     },
     "docs": {
       "contents": "বিষয়বস্তু",
@@ -710,8 +708,7 @@
         "general_description": "Y অক্ষ ডাউনলোডের সংখ্যা নির্দেশ করে। X অক্ষ {start_date} থেকে {end_date} পর্যন্ত তারিখের পরিসর নির্দেশ করে, যেখানে সময়কাল হলো {granularity}। {estimation_notice} {packages_analysis}। {watermark}।",
         "facet_bar_general_description": "{packages} এর জন্য অনুভূমিক বার চার্ট, যেখানে {facet} ({description}) তুলনা করা হয়েছে। {facet_analysis} {watermark}।",
         "facet_bar_analysis": "{package_name} এর মান {value}।"
-      },
-      "embedding": {}
+      }
     },
     "downloads": {
       "title": "সাপ্তাহিক ডাউনলোড",
@@ -1393,7 +1390,6 @@
           "label": "GitHub স্টার",
           "description": "GitHub রিপোজিটরিতে স্টারের সংখ্যা"
         },
-        "githubForks": {},
         "githubIssues": {
           "label": "GitHub ইস্যু",
           "description": "GitHub রিপোজিটরিতে ইস্যুর সংখ্যা"
