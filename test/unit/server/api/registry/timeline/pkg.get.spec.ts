@@ -5,8 +5,8 @@ import type { Packument, PackumentVersion } from '#shared/types/npm-registry'
 const fetchNpmPackageMock = vi.fn()
 vi.stubGlobal('fetchNpmPackage', fetchNpmPackageMock)
 
-const getPackageFileTreeMock = vi.fn()
-vi.stubGlobal('getPackageFileTree', getPackageFileTreeMock)
+const fetchPackageWithTypesAndFilesMock = vi.fn()
+vi.stubGlobal('fetchPackageWithTypesAndFiles', fetchPackageWithTypesAndFilesMock)
 vi.stubGlobal('defineCachedEventHandler', (fn: Function) => fn)
 vi.stubGlobal('CACHE_MAX_AGE_FIVE_MINUTES', 300)
 
@@ -246,17 +246,13 @@ describe('timeline API', () => {
         },
       }),
     )
-    getPackageFileTreeMock.mockResolvedValue({
-      package: 'my-pkg',
-      version: '2.0.0',
-      tree: [
-        { name: 'index.d.mts', path: 'dist/index.d.mts', type: 'file' },
-        { name: 'index.d.cts', path: 'dist/index.d.cts', type: 'file' },
-      ],
+    fetchPackageWithTypesAndFilesMock.mockResolvedValue({
+      pkg: { main: './dist/index.cjs', module: './dist/index.mjs' },
+      files: new Set(['dist/index.d.mts', 'dist/index.d.cts']),
     })
 
     const result = await handler(fakeEvent)
-    expect(getPackageFileTreeMock).toHaveBeenCalledWith('my-pkg', '2.0.0', expect.any(AbortSignal))
+    expect(fetchPackageWithTypesAndFilesMock).toHaveBeenCalledWith('my-pkg', '2.0.0')
     expect(result.versions[0]!.hasTypes).toBe(true)
   })
 
@@ -275,10 +271,9 @@ describe('timeline API', () => {
         },
       }),
     )
-    getPackageFileTreeMock.mockResolvedValue({
-      package: 'my-pkg',
-      version: '2.0.0',
-      tree: [{ name: 'index.mjs', path: 'dist/index.mjs', type: 'file' }],
+    fetchPackageWithTypesAndFilesMock.mockResolvedValue({
+      pkg: { main: './dist/index.cjs', module: './dist/index.mjs' },
+      files: new Set(['dist/index.mjs']),
     })
 
     const result = await handler(fakeEvent)
@@ -300,7 +295,7 @@ describe('timeline API', () => {
         },
       }),
     )
-    getPackageFileTreeMock.mockRejectedValue(new Error('offline'))
+    fetchPackageWithTypesAndFilesMock.mockRejectedValue(new Error('offline'))
 
     const result = await handler(fakeEvent)
     expect(result.versions[0]!.hasTypes).toBeUndefined()

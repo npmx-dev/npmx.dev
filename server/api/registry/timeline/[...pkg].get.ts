@@ -1,6 +1,5 @@
 import { normalizeLicense } from '#shared/utils/npm'
-import { detectTypesStatus, hasBuiltInTypes } from '~~/shared/utils/package-analysis'
-import { flattenFileTree } from '~~/server/utils/import-resolver'
+import { analyzePackage, hasBuiltInTypes } from '~~/shared/utils/package-analysis'
 
 const DEFAULT_LIMIT = 25
 
@@ -103,14 +102,9 @@ export default defineCachedEventHandler(
         }
         fileTreeChecks++
         try {
-          const fileTree = await getPackageFileTree(
-            packageName,
-            current.version,
-            AbortSignal.timeout(5000),
-          )
-          const files = flattenFileTree(fileTree.tree)
-          const status = detectTypesStatus(packument.versions[current.version]!, undefined, files)
-          if (status.kind === 'included') {
+          const { pkg, typesPackage, files } = await fetchPackageWithTypesAndFiles(packageName, current.version)
+          const { types } = analyzePackage(pkg, { typesPackage, files })
+          if (types.kind === 'included') {
             current.hasTypes = true
           }
         } catch {
