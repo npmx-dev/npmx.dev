@@ -37,7 +37,9 @@ defineProps<{
         </a>
       </div>
 
-      <dl class="m-0 mt-4 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:justify-between sm:items-start">
+      <dl
+        class="m-0 mt-4 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:justify-between sm:items-start"
+      >
         <div v-if="details.sourceCommitUrl" class="flex flex-col gap-0.5 sm:flex-initial">
           <dt class="font-mono text-xs text-fg-muted m-0">
             {{ $t('package.provenance_section.source_commit') }}
