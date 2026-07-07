@@ -6,33 +6,6 @@ const PAGE_SIZE = 50 as const
 /** npm search API practical limit for maintainer queries */
 const MAX_RESULTS = 250
 
-type RawNpmSearchResponse = Omit<NpmSearchResponse, 'isStale'> &
-  Partial<Pick<NpmSearchResponse, 'isStale'>>
-
-interface UserPackagesPrefetchGlobal {
-  __NPMX_USER_PACKAGES_PREFETCH__?: Record<string, Promise<RawNpmSearchResponse | null> | undefined>
-}
-
-type UserPackagesPrefetchWindow = Window & UserPackagesPrefetchGlobal
-
-function normalizeNpmSearchResponse(response: RawNpmSearchResponse): NpmSearchResponse {
-  return {
-    ...response,
-    isStale: response.isStale ?? false,
-  }
-}
-
-async function getPrehydratedNpmUserPackages(username: string): Promise<NpmSearchResponse | null> {
-  if (!import.meta.client) return null
-
-  const prefetches = (window as UserPackagesPrefetchWindow).__NPMX_USER_PACKAGES_PREFETCH__
-  const response = await prefetches?.[username.toLowerCase()]
-  if (!response) return null
-
-  delete prefetches?.[username.toLowerCase()]
-  return normalizeNpmSearchResponse(response)
-}
-
 /**
  * Fetch packages for a given npm user/maintainer.
  *
@@ -58,44 +31,6 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
   // this is only used in npm path, but we need to extract it when the composable runs
   const { $npmRegistry } = useNuxtApp()
   const { searchByMaintainer } = useAlgoliaSearch()
-
-  onPrehydrate(el => {
-    let settings
-    try {
-      settings = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
-    } catch {
-      settings = {}
-    }
-    if (settings.searchProvider !== 'npm') return
-
-    const params = new URLSearchParams(window.location.search)
-    if (params.get('p') === 'npm') return
-
-    const prehydrateUsername =
-      el?.getAttribute('data-user-packages-username') ||
-      decodeURIComponent(window.location.pathname.split('/')[1] || '').replace(/^~/, '')
-    if (!prehydrateUsername) return
-
-    const prefetchWindow = window as typeof window & UserPackagesPrefetchGlobal
-    const prefetches = (prefetchWindow.__NPMX_USER_PACKAGES_PREFETCH__ ||= {})
-    if (prefetches[prehydrateUsername]) return
-
-    const searchParams = new URLSearchParams()
-    searchParams.set('text', `maintainer:${prehydrateUsername}`)
-    searchParams.set('size', '50')
-
-    prefetches[prehydrateUsername] = fetch(
-      `https://registry.npmjs.org/-/v1/search?${searchParams}`,
-      {
-        cache: 'force-cache',
-      },
-    )
-      .then(response => {
-        if (!response.ok) return null
-        return response.json()
-      })
-      .catch(() => null)
-  })
 
   // --- Incremental loading state (npm path) ---
   const currentPage = shallowRef(1)
@@ -154,20 +89,6 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
       cache.value = null
       currentPage.value = 1
 
-      const prehydrated = await getPrehydratedNpmUserPackages(user)
-      if (prehydrated) {
-        if (user !== toValue(username) || provider !== searchProviderValue.value) {
-          return emptySearchResponse()
-        }
-
-        cache.value = {
-          username: user,
-          objects: prehydrated.objects,
-          total: prehydrated.total,
-        }
-        return prehydrated
-      }
-
       const params = new URLSearchParams()
       params.set('text', `maintainer:${user}`)
       params.set('size', String(PAGE_SIZE))
@@ -209,8 +130,9 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
       return
     }
 
-    const currentCount = cache.value?.objects.length ?? 0
-    const total = Math.min(cache.value?.total ?? Infinity, MAX_RESULTS)
+    const currentData = getCurrentUserPackages(user)
+    const currentCount = currentData?.objects.length ?? 0
+    const total = Math.min(currentData?.total ?? Infinity, MAX_RESULTS)
 
     if (currentCount >= total) return
 
@@ -234,20 +156,13 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
       // Guard against stale response
       if (user !== toValue(username) || activeProvider.value !== 'npm') return
 
-      if (cache.value && cache.value.username === user) {
-        const existingNames = new Set(cache.value.objects.map(obj => obj.package.name))
-        const newObjects = response.objects.filter(obj => !existingNames.has(obj.package.name))
-        cache.value = {
-          username: user,
-          objects: [...cache.value.objects, ...newObjects],
-          total: response.total,
-        }
-      } else {
-        cache.value = {
-          username: user,
-          objects: response.objects,
-          total: response.total,
-        }
+      const existingObjects = getCurrentUserPackages(user)?.objects ?? []
+      const existingNames = new Set(existingObjects.map(obj => obj.package.name))
+      const newObjects = response.objects.filter(obj => !existingNames.has(obj.package.name))
+      cache.value = {
+        username: user,
+        objects: [...existingObjects, ...newObjects],
+        total: response.total,
       }
     } finally {
       if (manageLoadingState) isLoadingMore.value = false
@@ -286,6 +201,21 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
     },
   )
 
+  function getCurrentUserPackages(user: string) {
+    if (cache.value && cache.value.username === user) {
+      return cache.value
+    }
+
+    const response = asyncData.data.value
+    if (!response) return null
+
+    return {
+      username: user,
+      objects: response.objects,
+      total: response.total,
+    }
+  }
+
   // Computed data that uses cache (only if it belongs to the current username)
   const data = computed<NpmSearchResponse | null>(() => {
     const user = toValue(username)
@@ -305,10 +235,11 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
     if (!toValue(username)) return false
     // Algolia fetches everything in one request; only npm needs pagination
     if (activeProvider.value !== 'npm') return false
-    if (!cache.value) return true
+    const currentData = getCurrentUserPackages(toValue(username))
+    if (!currentData) return false
     // npm path: more available if we haven't hit the server total or our cap
-    const fetched = cache.value.objects.length
-    const available = cache.value.total
+    const fetched = currentData.objects.length
+    const available = currentData.total
     return fetched < available && fetched < MAX_RESULTS
   })
 
