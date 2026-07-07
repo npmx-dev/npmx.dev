@@ -52,9 +52,7 @@ const main = /*#__PURE__*/ l.record<'tid', Main>(
   $nsid,
   /*#__PURE__*/ l.object({
     url: /*#__PURE__*/ l.string({ format: 'uri' }),
-    icon: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.blob({ accept: ['image/*'], maxSize: 1000000 }),
-    ),
+    icon: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.blob({ accept: ['image/*'], maxSize: 1000000 })),
     name: /*#__PURE__*/ l.string({ maxLength: 5000, maxGraphemes: 500 }),
     basicTheme: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.ref<ThemeBasic.Main>((() => ThemeBasic.main) as any),

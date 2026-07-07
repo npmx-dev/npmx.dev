@@ -10,10 +10,9 @@ const $nsid = 'app.bsky.actor.getProfiles'
 export { $nsid }
 
 export const $params = /*#__PURE__*/ l.params({
-  actors: /*#__PURE__*/ l.array(
-    /*#__PURE__*/ l.string({ format: 'at-identifier' }),
-    { maxLength: 25 },
-  ),
+  actors: /*#__PURE__*/ l.array(/*#__PURE__*/ l.string({ format: 'at-identifier' }), {
+    maxLength: 25,
+  }),
 })
 
 export type $Params = l.InferOutput<typeof $params>
@@ -27,10 +26,7 @@ export const $output = /*#__PURE__*/ l.jsonPayload({
 })
 
 export type $Output<B = l.BinaryData> = l.InferPayload<typeof $output, B>
-export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<
-  typeof $output,
-  B
->
+export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<typeof $output, B>
 
 /** Get detailed profile views of multiple actors. */
 const main = /*#__PURE__*/ l.query($nsid, $params, $output)

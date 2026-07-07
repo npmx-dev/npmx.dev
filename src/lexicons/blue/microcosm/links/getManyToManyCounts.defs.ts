@@ -12,17 +12,10 @@ export const $params = /*#__PURE__*/ l.params({
   subject: /*#__PURE__*/ l.string({ format: 'uri' }),
   source: /*#__PURE__*/ l.string(),
   pathToOther: /*#__PURE__*/ l.string(),
-  did: /*#__PURE__*/ l.optional(
-    /*#__PURE__*/ l.array(/*#__PURE__*/ l.string({ format: 'did' })),
-  ),
-  otherSubject: /*#__PURE__*/ l.optional(
-    /*#__PURE__*/ l.array(/*#__PURE__*/ l.string()),
-  ),
+  did: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.array(/*#__PURE__*/ l.string({ format: 'did' }))),
+  otherSubject: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.array(/*#__PURE__*/ l.string())),
   limit: /*#__PURE__*/ l.optional(
-    /*#__PURE__*/ l.withDefault(
-      /*#__PURE__*/ l.integer({ minimum: 1, maximum: 100 }),
-      16,
-    ),
+    /*#__PURE__*/ l.withDefault(/*#__PURE__*/ l.integer({ minimum: 1, maximum: 100 }), 16),
   ),
 })
 
@@ -36,10 +29,7 @@ export const $output = /*#__PURE__*/ l.jsonPayload({
 })
 
 export type $Output<B = l.BinaryData> = l.InferPayload<typeof $output, B>
-export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<
-  typeof $output,
-  B
->
+export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<typeof $output, B>
 
 /** Constellation: count many-to-many relationships with secondary link paths */
 const main = /*#__PURE__*/ l.query($nsid, $params, $output)

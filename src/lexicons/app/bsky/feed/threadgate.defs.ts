@@ -49,9 +49,7 @@ const main = /*#__PURE__*/ l.record<'tid', Main>(
           [
             /*#__PURE__*/ l.typedRef<MentionRule>((() => mentionRule) as any),
             /*#__PURE__*/ l.typedRef<FollowerRule>((() => followerRule) as any),
-            /*#__PURE__*/ l.typedRef<FollowingRule>(
-              (() => followingRule) as any,
-            ),
+            /*#__PURE__*/ l.typedRef<FollowingRule>((() => followingRule) as any),
             /*#__PURE__*/ l.typedRef<ListRule>((() => listRule) as any),
           ],
           false,

@@ -38,9 +38,7 @@ const main = /*#__PURE__*/ l.record<'literal:self', Main>(
         maxSize: 1000000,
       }),
     ),
-    website: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'uri' }),
-    ),
+    website: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
     description: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.string({ maxLength: 2560, maxGraphemes: 256 }),
     ),

@@ -83,16 +83,12 @@ const main = /*#__PURE__*/ l.record<'tid', Main>(
     ),
     title: /*#__PURE__*/ l.string({ maxLength: 5000, maxGraphemes: 500 }),
     content: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.typedUnion([], false)),
-    updatedAt: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'datetime' }),
-    ),
+    updatedAt: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'datetime' })),
     coverImage: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.blob({ accept: ['image/*'], maxSize: 1000000 }),
     ),
     bskyPostRef: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<RepoStrongRef.Main>(
-        (() => RepoStrongRef.main) as any,
-      ),
+      /*#__PURE__*/ l.ref<RepoStrongRef.Main>((() => RepoStrongRef.main) as any),
     ),
     description: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.string({ maxLength: 30000, maxGraphemes: 3000 }),

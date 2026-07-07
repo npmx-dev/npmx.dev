@@ -40,13 +40,9 @@ const nux = /*#__PURE__*/ l.typedObject<Nux>(
   'nux',
   /*#__PURE__*/ l.object({
     id: /*#__PURE__*/ l.string({ maxLength: 100 }),
-    data: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ maxLength: 3000, maxGraphemes: 300 }),
-    ),
+    data: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ maxLength: 3000, maxGraphemes: 300 })),
     completed: /*#__PURE__*/ l.withDefault(/*#__PURE__*/ l.boolean(), false),
-    expiresAt: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'datetime' }),
-    ),
+    expiresAt: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'datetime' })),
   }),
 )
 
@@ -90,9 +86,7 @@ const mutedWord = /*#__PURE__*/ l.typedObject<MutedWord>(
     targets: /*#__PURE__*/ l.array(
       /*#__PURE__*/ l.ref<MutedWordTarget>((() => mutedWordTarget) as any),
     ),
-    expiresAt: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'datetime' }),
-    ),
+    expiresAt: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'datetime' })),
     actorTarget: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.withDefault(
         /*#__PURE__*/ l.string<{ knownValues: ['all', 'exclude-following'] }>(),
@@ -171,11 +165,7 @@ const statusView = /*#__PURE__*/ l.typedObject<StatusView>(
     uri: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'at-uri' })),
     embed: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.typedUnion(
-        [
-          /*#__PURE__*/ l.typedRef<EmbedExternal.View>(
-            (() => EmbedExternal.view) as any,
-          ),
-        ],
+        [/*#__PURE__*/ l.typedRef<EmbedExternal.View>((() => EmbedExternal.view) as any)],
         false,
       ),
     ),
@@ -184,9 +174,7 @@ const statusView = /*#__PURE__*/ l.typedObject<StatusView>(
       knownValues: ['app.bsky.actor.status#live']
     }>(),
     isActive: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
-    expiresAt: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'datetime' }),
-    ),
+    expiresAt: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'datetime' })),
     isDisabled: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
   }),
 )
@@ -218,38 +206,24 @@ export type { Preferences }
 const preferences = /*#__PURE__*/ l.array<Preferences[number]>(
   /*#__PURE__*/ l.typedUnion(
     [
-      /*#__PURE__*/ l.typedRef<AdultContentPref>(
-        (() => adultContentPref) as any,
-      ),
-      /*#__PURE__*/ l.typedRef<ContentLabelPref>(
-        (() => contentLabelPref) as any,
-      ),
+      /*#__PURE__*/ l.typedRef<AdultContentPref>((() => adultContentPref) as any),
+      /*#__PURE__*/ l.typedRef<ContentLabelPref>((() => contentLabelPref) as any),
       /*#__PURE__*/ l.typedRef<SavedFeedsPref>((() => savedFeedsPref) as any),
-      /*#__PURE__*/ l.typedRef<SavedFeedsPrefV2>(
-        (() => savedFeedsPrefV2) as any,
-      ),
-      /*#__PURE__*/ l.typedRef<PersonalDetailsPref>(
-        (() => personalDetailsPref) as any,
-      ),
+      /*#__PURE__*/ l.typedRef<SavedFeedsPrefV2>((() => savedFeedsPrefV2) as any),
+      /*#__PURE__*/ l.typedRef<PersonalDetailsPref>((() => personalDetailsPref) as any),
       /*#__PURE__*/ l.typedRef<DeclaredAgePref>((() => declaredAgePref) as any),
       /*#__PURE__*/ l.typedRef<FeedViewPref>((() => feedViewPref) as any),
       /*#__PURE__*/ l.typedRef<ThreadViewPref>((() => threadViewPref) as any),
       /*#__PURE__*/ l.typedRef<InterestsPref>((() => interestsPref) as any),
       /*#__PURE__*/ l.typedRef<MutedWordsPref>((() => mutedWordsPref) as any),
       /*#__PURE__*/ l.typedRef<HiddenPostsPref>((() => hiddenPostsPref) as any),
-      /*#__PURE__*/ l.typedRef<BskyAppStatePref>(
-        (() => bskyAppStatePref) as any,
-      ),
+      /*#__PURE__*/ l.typedRef<BskyAppStatePref>((() => bskyAppStatePref) as any),
       /*#__PURE__*/ l.typedRef<LabelersPref>((() => labelersPref) as any),
       /*#__PURE__*/ l.typedRef<PostInteractionSettingsPref>(
         (() => postInteractionSettingsPref) as any,
       ),
-      /*#__PURE__*/ l.typedRef<VerificationPrefs>(
-        (() => verificationPrefs) as any,
-      ),
-      /*#__PURE__*/ l.typedRef<LiveEventPreferences>(
-        (() => liveEventPreferences) as any,
-      ),
+      /*#__PURE__*/ l.typedRef<VerificationPrefs>((() => verificationPrefs) as any),
+      /*#__PURE__*/ l.typedRef<LiveEventPreferences>((() => liveEventPreferences) as any),
     ],
     false,
   ),
@@ -290,23 +264,13 @@ const profileView = /*#__PURE__*/ l.typedObject<ProfileView>(
     avatar: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
     handle: /*#__PURE__*/ l.string({ format: 'handle' }),
     labels: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.array(
-        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
-      ),
+      /*#__PURE__*/ l.array(/*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
     ),
-    status: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<StatusView>((() => statusView) as any),
-    ),
-    viewer: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<ViewerState>((() => viewerState) as any),
-    ),
+    status: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.ref<StatusView>((() => statusView) as any)),
+    viewer: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.ref<ViewerState>((() => viewerState) as any)),
     pronouns: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
-    createdAt: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'datetime' }),
-    ),
-    indexedAt: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'datetime' }),
-    ),
+    createdAt: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'datetime' })),
+    indexedAt: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'datetime' })),
     associated: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.ref<ProfileAssociated>((() => profileAssociated) as any),
     ),
@@ -354,25 +318,15 @@ const viewerState = /*#__PURE__*/ l.typedObject<ViewerState>(
   'viewerState',
   /*#__PURE__*/ l.object({
     muted: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
-    blocking: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'at-uri' }),
-    ),
+    blocking: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'at-uri' })),
     blockedBy: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
-    following: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'at-uri' }),
-    ),
-    followedBy: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'at-uri' }),
-    ),
+    following: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'at-uri' })),
+    followedBy: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'at-uri' })),
     mutedByList: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<GraphDefs.ListViewBasic>(
-        (() => GraphDefs.listViewBasic) as any,
-      ),
+      /*#__PURE__*/ l.ref<GraphDefs.ListViewBasic>((() => GraphDefs.listViewBasic) as any),
     ),
     blockingByList: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<GraphDefs.ListViewBasic>(
-        (() => GraphDefs.listViewBasic) as any,
-      ),
+      /*#__PURE__*/ l.ref<GraphDefs.ListViewBasic>((() => GraphDefs.listViewBasic) as any),
     ),
     knownFollowers: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.ref<KnownFollowers>((() => knownFollowers) as any),
@@ -474,10 +428,9 @@ const interestsPref = /*#__PURE__*/ l.typedObject<InterestsPref>(
   $nsid,
   'interestsPref',
   /*#__PURE__*/ l.object({
-    tags: /*#__PURE__*/ l.array(
-      /*#__PURE__*/ l.string({ maxLength: 640, maxGraphemes: 64 }),
-      { maxLength: 100 },
-    ),
+    tags: /*#__PURE__*/ l.array(/*#__PURE__*/ l.string({ maxLength: 640, maxGraphemes: 64 }), {
+      maxLength: 100,
+    }),
   }),
 )
 
@@ -522,9 +475,7 @@ const mutedWordsPref = /*#__PURE__*/ l.typedObject<MutedWordsPref>(
   $nsid,
   'mutedWordsPref',
   /*#__PURE__*/ l.object({
-    items: /*#__PURE__*/ l.array(
-      /*#__PURE__*/ l.ref<MutedWord>((() => mutedWord) as any),
-    ),
+    items: /*#__PURE__*/ l.array(/*#__PURE__*/ l.ref<MutedWord>((() => mutedWord) as any)),
   }),
 )
 
@@ -557,13 +508,7 @@ type ThreadViewPref = {
   /**
    * Sorting mode for threads.
    */
-  sort?:
-    | 'oldest'
-    | 'newest'
-    | 'most-likes'
-    | 'random'
-    | 'hotness'
-    | l.UnknownString
+  sort?: 'oldest' | 'newest' | 'most-likes' | 'random' | 'hotness' | l.UnknownString
 }
 
 export type { ThreadViewPref }
@@ -716,9 +661,7 @@ const bskyAppStatePref = /*#__PURE__*/ l.typedObject<BskyAppStatePref>(
       }),
     ),
     activeProgressGuide: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<BskyAppProgressGuide>(
-        (() => bskyAppProgressGuide) as any,
-      ),
+      /*#__PURE__*/ l.ref<BskyAppProgressGuide>((() => bskyAppProgressGuide) as any),
     ),
   }),
 )
@@ -743,9 +686,7 @@ const contentLabelPref = /*#__PURE__*/ l.typedObject<ContentLabelPref>(
   'contentLabelPref',
   /*#__PURE__*/ l.object({
     label: /*#__PURE__*/ l.string(),
-    labelerDid: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'did' }),
-    ),
+    labelerDid: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'did' })),
     visibility: /*#__PURE__*/ l.string<{
       knownValues: ['ignore', 'show', 'warn', 'hide']
     }>(),
@@ -785,20 +726,12 @@ const profileViewBasic = /*#__PURE__*/ l.typedObject<ProfileViewBasic>(
     avatar: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
     handle: /*#__PURE__*/ l.string({ format: 'handle' }),
     labels: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.array(
-        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
-      ),
+      /*#__PURE__*/ l.array(/*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
     ),
-    status: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<StatusView>((() => statusView) as any),
-    ),
-    viewer: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<ViewerState>((() => viewerState) as any),
-    ),
+    status: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.ref<StatusView>((() => statusView) as any)),
+    viewer: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.ref<ViewerState>((() => viewerState) as any)),
     pronouns: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
-    createdAt: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'datetime' }),
-    ),
+    createdAt: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'datetime' })),
     associated: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.ref<ProfileAssociated>((() => profileAssociated) as any),
     ),
@@ -824,9 +757,7 @@ const savedFeedsPrefV2 = /*#__PURE__*/ l.typedObject<SavedFeedsPrefV2>(
   $nsid,
   'savedFeedsPrefV2',
   /*#__PURE__*/ l.object({
-    items: /*#__PURE__*/ l.array(
-      /*#__PURE__*/ l.ref<SavedFeed>((() => savedFeed) as any),
-    ),
+    items: /*#__PURE__*/ l.array(/*#__PURE__*/ l.ref<SavedFeed>((() => savedFeed) as any)),
   }),
 )
 
@@ -891,14 +822,10 @@ const profileAssociated = /*#__PURE__*/ l.typedObject<ProfileAssociated>(
   'profileAssociated',
   /*#__PURE__*/ l.object({
     chat: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<ProfileAssociatedChat>(
-        (() => profileAssociatedChat) as any,
-      ),
+      /*#__PURE__*/ l.ref<ProfileAssociatedChat>((() => profileAssociatedChat) as any),
     ),
     germ: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<ProfileAssociatedGerm>(
-        (() => profileAssociatedGerm) as any,
-      ),
+      /*#__PURE__*/ l.ref<ProfileAssociatedGerm>((() => profileAssociatedGerm) as any),
     ),
     lists: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
     labeler: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
@@ -995,9 +922,7 @@ const personalDetailsPref = /*#__PURE__*/ l.typedObject<PersonalDetailsPref>(
   $nsid,
   'personalDetailsPref',
   /*#__PURE__*/ l.object({
-    birthDate: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'datetime' }),
-    ),
+    birthDate: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'datetime' })),
   }),
 )
 
@@ -1044,33 +969,19 @@ const profileViewDetailed = /*#__PURE__*/ l.typedObject<ProfileViewDetailed>(
     banner: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
     handle: /*#__PURE__*/ l.string({ format: 'handle' }),
     labels: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.array(
-        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
-      ),
+      /*#__PURE__*/ l.array(/*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
     ),
-    status: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<StatusView>((() => statusView) as any),
-    ),
-    viewer: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<ViewerState>((() => viewerState) as any),
-    ),
-    website: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'uri' }),
-    ),
+    status: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.ref<StatusView>((() => statusView) as any)),
+    viewer: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.ref<ViewerState>((() => viewerState) as any)),
+    website: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
     pronouns: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
-    createdAt: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'datetime' }),
-    ),
-    indexedAt: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'datetime' }),
-    ),
+    createdAt: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'datetime' })),
+    indexedAt: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'datetime' })),
     associated: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.ref<ProfileAssociated>((() => profileAssociated) as any),
     ),
     pinnedPost: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<RepoStrongRef.Main>(
-        (() => RepoStrongRef.main) as any,
-      ),
+      /*#__PURE__*/ l.ref<RepoStrongRef.Main>((() => RepoStrongRef.main) as any),
     ),
     postsCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
     description: /*#__PURE__*/ l.optional(
@@ -1136,9 +1047,7 @@ const liveEventPreferences = /*#__PURE__*/ l.typedObject<LiveEventPreferences>(
     hideAllFeeds: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.withDefault(/*#__PURE__*/ l.boolean(), false),
     ),
-    hiddenFeedIds: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.array(/*#__PURE__*/ l.string()),
-    ),
+    hiddenFeedIds: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.array(/*#__PURE__*/ l.string())),
   }),
 )
 
@@ -1204,10 +1113,7 @@ type PostInteractionSettingsPref = {
   /**
    * Matches postgate record. List of rules defining who can embed this users posts. If value is an empty array or is undefined, no particular rules apply and anyone can embed.
    */
-  postgateEmbeddingRules?: (
-    | l.$Typed<FeedPostgate.DisableRule>
-    | l.Unknown$TypedObject
-  )[]
+  postgateEmbeddingRules?: (l.$Typed<FeedPostgate.DisableRule> | l.Unknown$TypedObject)[]
 }
 
 export type { PostInteractionSettingsPref }

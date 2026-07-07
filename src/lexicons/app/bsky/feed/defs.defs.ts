@@ -58,18 +58,10 @@ const postView = /*#__PURE__*/ l.typedObject<PostView>(
     embed: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.typedUnion(
         [
-          /*#__PURE__*/ l.typedRef<EmbedImages.View>(
-            (() => EmbedImages.view) as any,
-          ),
-          /*#__PURE__*/ l.typedRef<EmbedVideo.View>(
-            (() => EmbedVideo.view) as any,
-          ),
-          /*#__PURE__*/ l.typedRef<EmbedExternal.View>(
-            (() => EmbedExternal.view) as any,
-          ),
-          /*#__PURE__*/ l.typedRef<EmbedRecord.View>(
-            (() => EmbedRecord.view) as any,
-          ),
+          /*#__PURE__*/ l.typedRef<EmbedImages.View>((() => EmbedImages.view) as any),
+          /*#__PURE__*/ l.typedRef<EmbedVideo.View>((() => EmbedVideo.view) as any),
+          /*#__PURE__*/ l.typedRef<EmbedExternal.View>((() => EmbedExternal.view) as any),
+          /*#__PURE__*/ l.typedRef<EmbedRecord.View>((() => EmbedRecord.view) as any),
           /*#__PURE__*/ l.typedRef<EmbedRecordWithMedia.View>(
             (() => EmbedRecordWithMedia.view) as any,
           ),
@@ -81,14 +73,10 @@ const postView = /*#__PURE__*/ l.typedObject<PostView>(
       (() => ActorDefs.profileViewBasic) as any,
     ),
     labels: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.array(
-        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
-      ),
+      /*#__PURE__*/ l.array(/*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
     ),
     record: /*#__PURE__*/ l.lexMap(),
-    viewer: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<ViewerState>((() => viewerState) as any),
-    ),
+    viewer: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.ref<ViewerState>((() => viewerState) as any)),
     indexedAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
     likeCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
     quoteCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
@@ -105,11 +93,7 @@ export { postView }
 
 type ReplyRef = {
   $type?: 'app.bsky.feed.defs#replyRef'
-  root:
-    | l.$Typed<PostView>
-    | l.$Typed<NotFoundPost>
-    | l.$Typed<BlockedPost>
-    | l.Unknown$TypedObject
+  root: l.$Typed<PostView> | l.$Typed<NotFoundPost> | l.$Typed<BlockedPost> | l.Unknown$TypedObject
   parent:
     | l.$Typed<PostView>
     | l.$Typed<NotFoundPost>
@@ -145,9 +129,7 @@ const replyRef = /*#__PURE__*/ l.typedObject<ReplyRef>(
       false,
     ),
     grandparentAuthor: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<ActorDefs.ProfileViewBasic>(
-        (() => ActorDefs.profileViewBasic) as any,
-      ),
+      /*#__PURE__*/ l.ref<ActorDefs.ProfileViewBasic>((() => ActorDefs.profileViewBasic) as any),
     ),
   }),
 )
@@ -222,9 +204,7 @@ const interaction = /*#__PURE__*/ l.typedObject<Interaction>(
   $nsid,
   'interaction',
   /*#__PURE__*/ l.object({
-    item: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'at-uri' }),
-    ),
+    item: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'at-uri' })),
     event: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.string<{
         knownValues: [
@@ -244,9 +224,7 @@ const interaction = /*#__PURE__*/ l.typedObject<Interaction>(
       }>(),
     ),
     reqId: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ maxLength: 100 })),
-    feedContext: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ maxLength: 2000 }),
-    ),
+    feedContext: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ maxLength: 2000 })),
   }),
 )
 
@@ -291,13 +269,9 @@ const viewerState = /*#__PURE__*/ l.typedObject<ViewerState>(
   $nsid,
   'viewerState',
   /*#__PURE__*/ l.object({
-    like: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'at-uri' }),
-    ),
+    like: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'at-uri' })),
     pinned: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
-    repost: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'at-uri' }),
-    ),
+    repost: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'at-uri' })),
     bookmarked: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
     threadMuted: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
     replyDisabled: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
@@ -331,9 +305,7 @@ const feedViewPost = /*#__PURE__*/ l.typedObject<FeedViewPost>(
   'feedViewPost',
   /*#__PURE__*/ l.object({
     post: /*#__PURE__*/ l.ref<PostView>((() => postView) as any),
-    reply: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<ReplyRef>((() => replyRef) as any),
-    ),
+    reply: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.ref<ReplyRef>((() => replyRef) as any)),
     reqId: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ maxLength: 100 })),
     reason: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.typedUnion(
@@ -344,9 +316,7 @@ const feedViewPost = /*#__PURE__*/ l.typedObject<FeedViewPost>(
         false,
       ),
     ),
-    feedContext: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ maxLength: 2000 }),
-    ),
+    feedContext: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ maxLength: 2000 })),
   }),
 )
 
@@ -385,9 +355,7 @@ const reasonRepost = /*#__PURE__*/ l.typedObject<ReasonRepost>(
   $nsid,
   'reasonRepost',
   /*#__PURE__*/ l.object({
-    by: /*#__PURE__*/ l.ref<ActorDefs.ProfileViewBasic>(
-      (() => ActorDefs.profileViewBasic) as any,
-    ),
+    by: /*#__PURE__*/ l.ref<ActorDefs.ProfileViewBasic>((() => ActorDefs.profileViewBasic) as any),
     cid: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'cid' })),
     uri: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'at-uri' })),
     indexedAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
@@ -410,9 +378,7 @@ const blockedAuthor = /*#__PURE__*/ l.typedObject<BlockedAuthor>(
   /*#__PURE__*/ l.object({
     did: /*#__PURE__*/ l.string({ format: 'did' }),
     viewer: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<ActorDefs.ViewerState>(
-        (() => ActorDefs.viewerState) as any,
-      ),
+      /*#__PURE__*/ l.ref<ActorDefs.ViewerState>((() => ActorDefs.viewerState) as any),
     ),
   }),
 )
@@ -451,22 +417,14 @@ const generatorView = /*#__PURE__*/ l.typedObject<GeneratorView>(
     uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
     avatar: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
     labels: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.array(
-        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
-      ),
+      /*#__PURE__*/ l.array(/*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
     ),
     viewer: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<GeneratorViewerState>(
-        (() => generatorViewerState) as any,
-      ),
+      /*#__PURE__*/ l.ref<GeneratorViewerState>((() => generatorViewerState) as any),
     ),
-    creator: /*#__PURE__*/ l.ref<ActorDefs.ProfileView>(
-      (() => ActorDefs.profileView) as any,
-    ),
+    creator: /*#__PURE__*/ l.ref<ActorDefs.ProfileView>((() => ActorDefs.profileView) as any),
     indexedAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
-    likeCount: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.integer({ minimum: 0 }),
-    ),
+    likeCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer({ minimum: 0 })),
     contentMode: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.string<{
         knownValues: [
@@ -481,9 +439,7 @@ const generatorView = /*#__PURE__*/ l.typedObject<GeneratorView>(
     displayName: /*#__PURE__*/ l.string(),
     descriptionFacets: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.array(
-        /*#__PURE__*/ l.ref<RichtextFacet.Main>(
-          (() => RichtextFacet.main) as any,
-        ),
+        /*#__PURE__*/ l.ref<RichtextFacet.Main>((() => RichtextFacet.main) as any),
       ),
     ),
     acceptsInteractions: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
@@ -505,9 +461,7 @@ const threadContext = /*#__PURE__*/ l.typedObject<ThreadContext>(
   $nsid,
   'threadContext',
   /*#__PURE__*/ l.object({
-    rootAuthorLike: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'at-uri' }),
-    ),
+    rootAuthorLike: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'at-uri' })),
   }),
 )
 
@@ -540,9 +494,7 @@ const threadViewPost = /*#__PURE__*/ l.typedObject<ThreadViewPost>(
     parent: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.typedUnion(
         [
-          /*#__PURE__*/ l.typedRef<ThreadViewPost>(
-            (() => threadViewPost) as any,
-          ),
+          /*#__PURE__*/ l.typedRef<ThreadViewPost>((() => threadViewPost) as any),
           /*#__PURE__*/ l.typedRef<NotFoundPost>((() => notFoundPost) as any),
           /*#__PURE__*/ l.typedRef<BlockedPost>((() => blockedPost) as any),
         ],
@@ -553,9 +505,7 @@ const threadViewPost = /*#__PURE__*/ l.typedObject<ThreadViewPost>(
       /*#__PURE__*/ l.array(
         /*#__PURE__*/ l.typedUnion(
           [
-            /*#__PURE__*/ l.typedRef<ThreadViewPost>(
-              (() => threadViewPost) as any,
-            ),
+            /*#__PURE__*/ l.typedRef<ThreadViewPost>((() => threadViewPost) as any),
             /*#__PURE__*/ l.typedRef<NotFoundPost>((() => notFoundPost) as any),
             /*#__PURE__*/ l.typedRef<BlockedPost>((() => blockedPost) as any),
           ],
@@ -589,9 +539,7 @@ const threadgateView = /*#__PURE__*/ l.typedObject<ThreadgateView>(
     uri: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'at-uri' })),
     lists: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.array(
-        /*#__PURE__*/ l.ref<GraphDefs.ListViewBasic>(
-          (() => GraphDefs.listViewBasic) as any,
-        ),
+        /*#__PURE__*/ l.ref<GraphDefs.ListViewBasic>((() => GraphDefs.listViewBasic) as any),
       ),
     ),
     record: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.lexMap()),
@@ -673,10 +621,7 @@ export { interactionShare }
 type SkeletonFeedPost = {
   $type?: 'app.bsky.feed.defs#skeletonFeedPost'
   post: l.AtUriString
-  reason?:
-    | l.$Typed<SkeletonReasonRepost>
-    | l.$Typed<SkeletonReasonPin>
-    | l.Unknown$TypedObject
+  reason?: l.$Typed<SkeletonReasonRepost> | l.$Typed<SkeletonReasonPin> | l.Unknown$TypedObject
 
   /**
    * Context that will be passed through to client and may be passed to feed generator back alongside interactions.
@@ -694,19 +639,13 @@ const skeletonFeedPost = /*#__PURE__*/ l.typedObject<SkeletonFeedPost>(
     reason: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.typedUnion(
         [
-          /*#__PURE__*/ l.typedRef<SkeletonReasonRepost>(
-            (() => skeletonReasonRepost) as any,
-          ),
-          /*#__PURE__*/ l.typedRef<SkeletonReasonPin>(
-            (() => skeletonReasonPin) as any,
-          ),
+          /*#__PURE__*/ l.typedRef<SkeletonReasonRepost>((() => skeletonReasonRepost) as any),
+          /*#__PURE__*/ l.typedRef<SkeletonReasonPin>((() => skeletonReasonPin) as any),
         ],
         false,
       ),
     ),
-    feedContext: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ maxLength: 2000 }),
-    ),
+    feedContext: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ maxLength: 2000 })),
   }),
 )
 
@@ -760,10 +699,7 @@ type ClickthroughReposter = 'app.bsky.feed.defs#clickthroughReposter'
 export type { ClickthroughReposter }
 
 /** User clicked through to the reposter of the feed item */
-const clickthroughReposter = /*#__PURE__*/ l.token(
-  $nsid,
-  'clickthroughReposter',
-)
+const clickthroughReposter = /*#__PURE__*/ l.token($nsid, 'clickthroughReposter')
 
 export { clickthroughReposter }
 
@@ -778,9 +714,7 @@ const generatorViewerState = /*#__PURE__*/ l.typedObject<GeneratorViewerState>(
   $nsid,
   'generatorViewerState',
   /*#__PURE__*/ l.object({
-    like: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'at-uri' }),
-    ),
+    like: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'at-uri' })),
   }),
 )
 
@@ -809,9 +743,6 @@ type ContentModeUnspecified = 'app.bsky.feed.defs#contentModeUnspecified'
 export type { ContentModeUnspecified }
 
 /** Declares the feed generator returns any types of posts. */
-const contentModeUnspecified = /*#__PURE__*/ l.token(
-  $nsid,
-  'contentModeUnspecified',
-)
+const contentModeUnspecified = /*#__PURE__*/ l.token($nsid, 'contentModeUnspecified')
 
 export { contentModeUnspecified }

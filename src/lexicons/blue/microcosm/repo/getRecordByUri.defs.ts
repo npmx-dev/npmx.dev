@@ -22,10 +22,7 @@ export const $output = /*#__PURE__*/ l.jsonPayload({
 })
 
 export type $Output<B = l.BinaryData> = l.InferPayload<typeof $output, B>
-export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<
-  typeof $output,
-  B
->
+export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<typeof $output, B>
 
 /** Slingshot: ergonomic complement to com.atproto.repo.getRecord which accepts an at-uri instead of individual repo/collection/rkey params */
 const main = /*#__PURE__*/ l.query($nsid, $params, $output)

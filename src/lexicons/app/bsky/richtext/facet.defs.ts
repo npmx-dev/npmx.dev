@@ -42,12 +42,7 @@ export { link }
 type Main = {
   $type?: 'app.bsky.richtext.facet'
   index: ByteSlice
-  features: (
-    | l.$Typed<Mention>
-    | l.$Typed<Link>
-    | l.$Typed<Tag>
-    | l.Unknown$TypedObject
-  )[]
+  features: (l.$Typed<Mention> | l.$Typed<Link> | l.$Typed<Tag> | l.Unknown$TypedObject)[]
 }
 
 export type { Main }

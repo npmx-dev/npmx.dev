@@ -22,9 +22,7 @@ const like = /*#__PURE__*/ l.typedObject<Like>(
   $nsid,
   'like',
   /*#__PURE__*/ l.object({
-    actor: /*#__PURE__*/ l.ref<ActorDefs.ProfileView>(
-      (() => ActorDefs.profileView) as any,
-    ),
+    actor: /*#__PURE__*/ l.ref<ActorDefs.ProfileView>((() => ActorDefs.profileView) as any),
     createdAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
     indexedAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
   }),
@@ -36,10 +34,7 @@ export const $params = /*#__PURE__*/ l.params({
   cid: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'cid' })),
   uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
   limit: /*#__PURE__*/ l.optional(
-    /*#__PURE__*/ l.withDefault(
-      /*#__PURE__*/ l.integer({ maximum: 100, minimum: 1 }),
-      50,
-    ),
+    /*#__PURE__*/ l.withDefault(/*#__PURE__*/ l.integer({ maximum: 100, minimum: 1 }), 50),
   ),
   cursor: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
 })
@@ -54,10 +49,7 @@ export const $output = /*#__PURE__*/ l.jsonPayload({
 })
 
 export type $Output<B = l.BinaryData> = l.InferPayload<typeof $output, B>
-export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<
-  typeof $output,
-  B
->
+export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<typeof $output, B>
 
 /** Get like records which reference a subject (by AT-URI and CID). */
 const main = /*#__PURE__*/ l.query($nsid, $params, $output)

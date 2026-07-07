@@ -31,22 +31,14 @@ const labelerView = /*#__PURE__*/ l.typedObject<LabelerView>(
     cid: /*#__PURE__*/ l.string({ format: 'cid' }),
     uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
     labels: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.array(
-        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
-      ),
+      /*#__PURE__*/ l.array(/*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
     ),
     viewer: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<LabelerViewerState>(
-        (() => labelerViewerState) as any,
-      ),
+      /*#__PURE__*/ l.ref<LabelerViewerState>((() => labelerViewerState) as any),
     ),
-    creator: /*#__PURE__*/ l.ref<ActorDefs.ProfileView>(
-      (() => ActorDefs.profileView) as any,
-    ),
+    creator: /*#__PURE__*/ l.ref<ActorDefs.ProfileView>((() => ActorDefs.profileView) as any),
     indexedAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
-    likeCount: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.integer({ minimum: 0 }),
-    ),
+    likeCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer({ minimum: 0 })),
   }),
 )
 
@@ -73,9 +65,7 @@ const labelerPolicies = /*#__PURE__*/ l.typedObject<LabelerPolicies>(
   'labelerPolicies',
   /*#__PURE__*/ l.object({
     labelValues: /*#__PURE__*/ l.array(
-      /*#__PURE__*/ l.ref<LabelDefs.LabelValue>(
-        (() => LabelDefs.labelValue) as any,
-      ),
+      /*#__PURE__*/ l.ref<LabelDefs.LabelValue>((() => LabelDefs.labelValue) as any),
     ),
     labelValueDefinitions: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.array(
@@ -100,9 +90,7 @@ const labelerViewerState = /*#__PURE__*/ l.typedObject<LabelerViewerState>(
   $nsid,
   'labelerViewerState',
   /*#__PURE__*/ l.object({
-    like: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'at-uri' }),
-    ),
+    like: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'at-uri' })),
   }),
 )
 
@@ -144,37 +132,23 @@ const labelerViewDetailed = /*#__PURE__*/ l.typedObject<LabelerViewDetailed>(
     cid: /*#__PURE__*/ l.string({ format: 'cid' }),
     uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
     labels: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.array(
-        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
-      ),
+      /*#__PURE__*/ l.array(/*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
     ),
     viewer: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<LabelerViewerState>(
-        (() => labelerViewerState) as any,
-      ),
+      /*#__PURE__*/ l.ref<LabelerViewerState>((() => labelerViewerState) as any),
     ),
-    creator: /*#__PURE__*/ l.ref<ActorDefs.ProfileView>(
-      (() => ActorDefs.profileView) as any,
-    ),
-    policies: /*#__PURE__*/ l.ref<LabelerPolicies>(
-      (() => labelerPolicies) as any,
-    ),
+    creator: /*#__PURE__*/ l.ref<ActorDefs.ProfileView>((() => ActorDefs.profileView) as any),
+    policies: /*#__PURE__*/ l.ref<LabelerPolicies>((() => labelerPolicies) as any),
     indexedAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
-    likeCount: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.integer({ minimum: 0 }),
-    ),
+    likeCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer({ minimum: 0 })),
     reasonTypes: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.array(
-        /*#__PURE__*/ l.ref<ModerationDefs.ReasonType>(
-          (() => ModerationDefs.reasonType) as any,
-        ),
+        /*#__PURE__*/ l.ref<ModerationDefs.ReasonType>((() => ModerationDefs.reasonType) as any),
       ),
     ),
     subjectTypes: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.array(
-        /*#__PURE__*/ l.ref<ModerationDefs.SubjectType>(
-          (() => ModerationDefs.subjectType) as any,
-        ),
+        /*#__PURE__*/ l.ref<ModerationDefs.SubjectType>((() => ModerationDefs.subjectType) as any),
       ),
     ),
     subjectCollections: /*#__PURE__*/ l.optional(

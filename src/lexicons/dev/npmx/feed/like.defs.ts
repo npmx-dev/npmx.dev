@@ -34,9 +34,7 @@ const main = /*#__PURE__*/ l.record<'tid', Main>(
   /*#__PURE__*/ l.object({
     createdAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
     subject: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<RepoStrongRef.Main>(
-        (() => RepoStrongRef.main) as any,
-      ),
+      /*#__PURE__*/ l.ref<RepoStrongRef.Main>((() => RepoStrongRef.main) as any),
     ),
     subjectRef: /*#__PURE__*/ l.string({ format: 'uri' }),
   }),

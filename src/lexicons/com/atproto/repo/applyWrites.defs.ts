@@ -26,9 +26,7 @@ export const $input = /*#__PURE__*/ l.jsonPayload({
     ),
   ),
   validate: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
-  swapCommit: /*#__PURE__*/ l.optional(
-    /*#__PURE__*/ l.string({ format: 'cid' }),
-  ),
+  swapCommit: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'cid' })),
 })
 
 export type $Input<B = l.BinaryData> = l.InferPayload<typeof $input, B>
@@ -36,9 +34,7 @@ export type $InputBody<B = l.BinaryData> = l.InferPayloadBody<typeof $input, B>
 
 export const $output = /*#__PURE__*/ l.jsonPayload({
   commit: /*#__PURE__*/ l.optional(
-    /*#__PURE__*/ l.ref<RepoDefs.CommitMeta>(
-      (() => RepoDefs.commitMeta) as any,
-    ),
+    /*#__PURE__*/ l.ref<RepoDefs.CommitMeta>((() => RepoDefs.commitMeta) as any),
   ),
   results: /*#__PURE__*/ l.optional(
     /*#__PURE__*/ l.array(
@@ -55,15 +51,10 @@ export const $output = /*#__PURE__*/ l.jsonPayload({
 })
 
 export type $Output<B = l.BinaryData> = l.InferPayload<typeof $output, B>
-export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<
-  typeof $output,
-  B
->
+export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<typeof $output, B>
 
 /** Apply a batch transaction of repository creates, updates, and deletes. Requires auth, implemented by PDS. */
-const main = /*#__PURE__*/ l.procedure($nsid, $params, $input, $output, [
-  'InvalidSwap',
-])
+const main = /*#__PURE__*/ l.procedure($nsid, $params, $input, $output, ['InvalidSwap'])
 
 export { main }
 

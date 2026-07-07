@@ -67,9 +67,7 @@ const label = /*#__PURE__*/ l.typedObject<Label>(
   /*#__PURE__*/ l.object({
     cid: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'cid' })),
     cts: /*#__PURE__*/ l.string({ format: 'datetime' }),
-    exp: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'datetime' }),
-    ),
+    exp: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'datetime' })),
     neg: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
     sig: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.bytes()),
     src: /*#__PURE__*/ l.string({ format: 'did' }),
@@ -149,10 +147,9 @@ const selfLabels = /*#__PURE__*/ l.typedObject<SelfLabels>(
   $nsid,
   'selfLabels',
   /*#__PURE__*/ l.object({
-    values: /*#__PURE__*/ l.array(
-      /*#__PURE__*/ l.ref<SelfLabel>((() => selfLabel) as any),
-      { maxLength: 10 },
-    ),
+    values: /*#__PURE__*/ l.array(/*#__PURE__*/ l.ref<SelfLabel>((() => selfLabel) as any), {
+      maxLength: 10,
+    }),
   }),
 )
 
@@ -200,9 +197,7 @@ const labelValueDefinition = /*#__PURE__*/ l.typedObject<LabelValueDefinition>(
       knownValues: ['content', 'media', 'none']
     }>(),
     locales: /*#__PURE__*/ l.array(
-      /*#__PURE__*/ l.ref<LabelValueDefinitionStrings>(
-        (() => labelValueDefinitionStrings) as any,
-      ),
+      /*#__PURE__*/ l.ref<LabelValueDefinitionStrings>((() => labelValueDefinitionStrings) as any),
     ),
     severity: /*#__PURE__*/ l.string<{
       knownValues: ['inform', 'alert', 'none']

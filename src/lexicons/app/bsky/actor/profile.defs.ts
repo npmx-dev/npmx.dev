@@ -66,27 +66,17 @@ const main = /*#__PURE__*/ l.record<'literal:self', Main>(
     ),
     labels: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.typedUnion(
-        [
-          /*#__PURE__*/ l.typedRef<LabelDefs.SelfLabels>(
-            (() => LabelDefs.selfLabels) as any,
-          ),
-        ],
+        [/*#__PURE__*/ l.typedRef<LabelDefs.SelfLabels>((() => LabelDefs.selfLabels) as any)],
         false,
       ),
     ),
-    website: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'uri' }),
-    ),
+    website: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
     pronouns: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.string({ maxLength: 200, maxGraphemes: 20 }),
     ),
-    createdAt: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'datetime' }),
-    ),
+    createdAt: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'datetime' })),
     pinnedPost: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<RepoStrongRef.Main>(
-        (() => RepoStrongRef.main) as any,
-      ),
+      /*#__PURE__*/ l.ref<RepoStrongRef.Main>((() => RepoStrongRef.main) as any),
     ),
     description: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.string({ maxLength: 2560, maxGraphemes: 256 }),
@@ -95,9 +85,7 @@ const main = /*#__PURE__*/ l.record<'literal:self', Main>(
       /*#__PURE__*/ l.string({ maxLength: 640, maxGraphemes: 64 }),
     ),
     joinedViaStarterPack: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<RepoStrongRef.Main>(
-        (() => RepoStrongRef.main) as any,
-      ),
+      /*#__PURE__*/ l.ref<RepoStrongRef.Main>((() => RepoStrongRef.main) as any),
     ),
   }),
 )

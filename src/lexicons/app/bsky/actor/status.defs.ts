@@ -49,11 +49,7 @@ const main = /*#__PURE__*/ l.record<'literal:self', Main>(
   /*#__PURE__*/ l.object({
     embed: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.typedUnion(
-        [
-          /*#__PURE__*/ l.typedRef<EmbedExternal.Main>(
-            (() => EmbedExternal.main) as any,
-          ),
-        ],
+        [/*#__PURE__*/ l.typedRef<EmbedExternal.Main>((() => EmbedExternal.main) as any)],
         false,
       ),
     ),
@@ -61,9 +57,7 @@ const main = /*#__PURE__*/ l.record<'literal:self', Main>(
       knownValues: ['app.bsky.actor.status#live']
     }>(),
     createdAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
-    durationMinutes: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.integer({ minimum: 1 }),
-    ),
+    durationMinutes: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer({ minimum: 1 })),
   }),
 )
 

@@ -19,10 +19,7 @@ export const $output = /*#__PURE__*/ l.jsonPayload({
 })
 
 export type $Output<B = l.BinaryData> = l.InferPayload<typeof $output, B>
-export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<
-  typeof $output,
-  B
->
+export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<typeof $output, B>
 
 /** Resolves an atproto handle (hostname) to a DID. Does not necessarily bi-directionally verify against the DID document. */
 const main = /*#__PURE__*/ l.query($nsid, $params, $output, ['HandleNotFound'])

@@ -30,21 +30,13 @@ const main = /*#__PURE__*/ l.typedObject<Main>(
   /*#__PURE__*/ l.object({
     media: /*#__PURE__*/ l.typedUnion(
       [
-        /*#__PURE__*/ l.typedRef<EmbedImages.Main>(
-          (() => EmbedImages.main) as any,
-        ),
-        /*#__PURE__*/ l.typedRef<EmbedVideo.Main>(
-          (() => EmbedVideo.main) as any,
-        ),
-        /*#__PURE__*/ l.typedRef<EmbedExternal.Main>(
-          (() => EmbedExternal.main) as any,
-        ),
+        /*#__PURE__*/ l.typedRef<EmbedImages.Main>((() => EmbedImages.main) as any),
+        /*#__PURE__*/ l.typedRef<EmbedVideo.Main>((() => EmbedVideo.main) as any),
+        /*#__PURE__*/ l.typedRef<EmbedExternal.Main>((() => EmbedExternal.main) as any),
       ],
       false,
     ),
-    record: /*#__PURE__*/ l.ref<EmbedRecord.Main>(
-      (() => EmbedRecord.main) as any,
-    ),
+    record: /*#__PURE__*/ l.ref<EmbedRecord.Main>((() => EmbedRecord.main) as any),
   }),
 )
 
@@ -81,21 +73,13 @@ const view = /*#__PURE__*/ l.typedObject<View>(
   /*#__PURE__*/ l.object({
     media: /*#__PURE__*/ l.typedUnion(
       [
-        /*#__PURE__*/ l.typedRef<EmbedImages.View>(
-          (() => EmbedImages.view) as any,
-        ),
-        /*#__PURE__*/ l.typedRef<EmbedVideo.View>(
-          (() => EmbedVideo.view) as any,
-        ),
-        /*#__PURE__*/ l.typedRef<EmbedExternal.View>(
-          (() => EmbedExternal.view) as any,
-        ),
+        /*#__PURE__*/ l.typedRef<EmbedImages.View>((() => EmbedImages.view) as any),
+        /*#__PURE__*/ l.typedRef<EmbedVideo.View>((() => EmbedVideo.view) as any),
+        /*#__PURE__*/ l.typedRef<EmbedExternal.View>((() => EmbedExternal.view) as any),
       ],
       false,
     ),
-    record: /*#__PURE__*/ l.ref<EmbedRecord.View>(
-      (() => EmbedRecord.view) as any,
-    ),
+    record: /*#__PURE__*/ l.ref<EmbedRecord.View>((() => EmbedRecord.view) as any),
   }),
 )
 

@@ -12,16 +12,10 @@ export { $nsid }
 export const $params = /*#__PURE__*/ l.params({
   uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
   depth: /*#__PURE__*/ l.optional(
-    /*#__PURE__*/ l.withDefault(
-      /*#__PURE__*/ l.integer({ maximum: 1000, minimum: 0 }),
-      6,
-    ),
+    /*#__PURE__*/ l.withDefault(/*#__PURE__*/ l.integer({ maximum: 1000, minimum: 0 }), 6),
   ),
   parentHeight: /*#__PURE__*/ l.optional(
-    /*#__PURE__*/ l.withDefault(
-      /*#__PURE__*/ l.integer({ maximum: 1000, minimum: 0 }),
-      80,
-    ),
+    /*#__PURE__*/ l.withDefault(/*#__PURE__*/ l.integer({ maximum: 1000, minimum: 0 }), 80),
   ),
 })
 
@@ -30,30 +24,19 @@ export type $Params = l.InferOutput<typeof $params>
 export const $output = /*#__PURE__*/ l.jsonPayload({
   thread: /*#__PURE__*/ l.typedUnion(
     [
-      /*#__PURE__*/ l.typedRef<FeedDefs.ThreadViewPost>(
-        (() => FeedDefs.threadViewPost) as any,
-      ),
-      /*#__PURE__*/ l.typedRef<FeedDefs.NotFoundPost>(
-        (() => FeedDefs.notFoundPost) as any,
-      ),
-      /*#__PURE__*/ l.typedRef<FeedDefs.BlockedPost>(
-        (() => FeedDefs.blockedPost) as any,
-      ),
+      /*#__PURE__*/ l.typedRef<FeedDefs.ThreadViewPost>((() => FeedDefs.threadViewPost) as any),
+      /*#__PURE__*/ l.typedRef<FeedDefs.NotFoundPost>((() => FeedDefs.notFoundPost) as any),
+      /*#__PURE__*/ l.typedRef<FeedDefs.BlockedPost>((() => FeedDefs.blockedPost) as any),
     ],
     false,
   ),
   threadgate: /*#__PURE__*/ l.optional(
-    /*#__PURE__*/ l.ref<FeedDefs.ThreadgateView>(
-      (() => FeedDefs.threadgateView) as any,
-    ),
+    /*#__PURE__*/ l.ref<FeedDefs.ThreadgateView>((() => FeedDefs.threadgateView) as any),
   ),
 })
 
 export type $Output<B = l.BinaryData> = l.InferPayload<typeof $output, B>
-export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<
-  typeof $output,
-  B
->
+export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<typeof $output, B>
 
 /** Get posts in a thread. Does not require auth, but additional metadata and filtering will be applied for authed requests. */
 const main = /*#__PURE__*/ l.query($nsid, $params, $output, ['NotFound'])

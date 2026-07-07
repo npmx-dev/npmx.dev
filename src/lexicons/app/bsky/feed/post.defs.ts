@@ -72,27 +72,18 @@ const main = /*#__PURE__*/ l.record<'tid', Main>(
   $nsid,
   /*#__PURE__*/ l.object({
     tags: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.array(
-        /*#__PURE__*/ l.string({ maxLength: 640, maxGraphemes: 64 }),
-        { maxLength: 8 },
-      ),
+      /*#__PURE__*/ l.array(/*#__PURE__*/ l.string({ maxLength: 640, maxGraphemes: 64 }), {
+        maxLength: 8,
+      }),
     ),
     text: /*#__PURE__*/ l.string({ maxLength: 3000, maxGraphemes: 300 }),
     embed: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.typedUnion(
         [
-          /*#__PURE__*/ l.typedRef<EmbedImages.Main>(
-            (() => EmbedImages.main) as any,
-          ),
-          /*#__PURE__*/ l.typedRef<EmbedVideo.Main>(
-            (() => EmbedVideo.main) as any,
-          ),
-          /*#__PURE__*/ l.typedRef<EmbedExternal.Main>(
-            (() => EmbedExternal.main) as any,
-          ),
-          /*#__PURE__*/ l.typedRef<EmbedRecord.Main>(
-            (() => EmbedRecord.main) as any,
-          ),
+          /*#__PURE__*/ l.typedRef<EmbedImages.Main>((() => EmbedImages.main) as any),
+          /*#__PURE__*/ l.typedRef<EmbedVideo.Main>((() => EmbedVideo.main) as any),
+          /*#__PURE__*/ l.typedRef<EmbedExternal.Main>((() => EmbedExternal.main) as any),
+          /*#__PURE__*/ l.typedRef<EmbedRecord.Main>((() => EmbedRecord.main) as any),
           /*#__PURE__*/ l.typedRef<EmbedRecordWithMedia.Main>(
             (() => EmbedRecordWithMedia.main) as any,
           ),
@@ -105,23 +96,15 @@ const main = /*#__PURE__*/ l.record<'tid', Main>(
         maxLength: 3,
       }),
     ),
-    reply: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<ReplyRef>((() => replyRef) as any),
-    ),
+    reply: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.ref<ReplyRef>((() => replyRef) as any)),
     facets: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.array(
-        /*#__PURE__*/ l.ref<RichtextFacet.Main>(
-          (() => RichtextFacet.main) as any,
-        ),
+        /*#__PURE__*/ l.ref<RichtextFacet.Main>((() => RichtextFacet.main) as any),
       ),
     ),
     labels: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.typedUnion(
-        [
-          /*#__PURE__*/ l.typedRef<LabelDefs.SelfLabels>(
-            (() => LabelDefs.selfLabels) as any,
-          ),
-        ],
+        [/*#__PURE__*/ l.typedRef<LabelDefs.SelfLabels>((() => LabelDefs.selfLabels) as any)],
         false,
       ),
     ),
@@ -186,12 +169,8 @@ const replyRef = /*#__PURE__*/ l.typedObject<ReplyRef>(
   $nsid,
   'replyRef',
   /*#__PURE__*/ l.object({
-    root: /*#__PURE__*/ l.ref<RepoStrongRef.Main>(
-      (() => RepoStrongRef.main) as any,
-    ),
-    parent: /*#__PURE__*/ l.ref<RepoStrongRef.Main>(
-      (() => RepoStrongRef.main) as any,
-    ),
+    root: /*#__PURE__*/ l.ref<RepoStrongRef.Main>((() => RepoStrongRef.main) as any),
+    parent: /*#__PURE__*/ l.ref<RepoStrongRef.Main>((() => RepoStrongRef.main) as any),
   }),
 )
 

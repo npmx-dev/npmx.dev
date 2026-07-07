@@ -102,7 +102,10 @@ export default defineCachedEventHandler(
         }
         fileTreeChecks++
         try {
-          const { pkg, typesPackage, files } = await fetchPackageWithTypesAndFiles(packageName, current.version)
+          const { pkg, typesPackage, files } = await fetchPackageWithTypesAndFiles(
+            packageName,
+            current.version,
+          )
           const { types } = analyzePackage(pkg, { typesPackage, files })
           if (types.kind === 'included') {
             current.hasTypes = true

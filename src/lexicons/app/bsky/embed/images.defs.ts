@@ -17,10 +17,9 @@ const main = /*#__PURE__*/ l.typedObject<Main>(
   $nsid,
   'main',
   /*#__PURE__*/ l.object({
-    images: /*#__PURE__*/ l.array(
-      /*#__PURE__*/ l.ref<Image>((() => image) as any),
-      { maxLength: 4 },
-    ),
+    images: /*#__PURE__*/ l.array(/*#__PURE__*/ l.ref<Image>((() => image) as any), {
+      maxLength: 4,
+    }),
   }),
 )
 
@@ -47,10 +46,9 @@ const view = /*#__PURE__*/ l.typedObject<View>(
   $nsid,
   'view',
   /*#__PURE__*/ l.object({
-    images: /*#__PURE__*/ l.array(
-      /*#__PURE__*/ l.ref<ViewImage>((() => viewImage) as any),
-      { maxLength: 4 },
-    ),
+    images: /*#__PURE__*/ l.array(/*#__PURE__*/ l.ref<ViewImage>((() => viewImage) as any), {
+      maxLength: 4,
+    }),
   }),
 )
 
@@ -76,9 +74,7 @@ const image = /*#__PURE__*/ l.typedObject<Image>(
     alt: /*#__PURE__*/ l.string(),
     image: /*#__PURE__*/ l.blob({ accept: ['image/*'], maxSize: 1000000 }),
     aspectRatio: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<EmbedDefs.AspectRatio>(
-        (() => EmbedDefs.aspectRatio) as any,
-      ),
+      /*#__PURE__*/ l.ref<EmbedDefs.AspectRatio>((() => EmbedDefs.aspectRatio) as any),
     ),
   }),
 )
@@ -115,9 +111,7 @@ const viewImage = /*#__PURE__*/ l.typedObject<ViewImage>(
     thumb: /*#__PURE__*/ l.string({ format: 'uri' }),
     fullsize: /*#__PURE__*/ l.string({ format: 'uri' }),
     aspectRatio: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<EmbedDefs.AspectRatio>(
-        (() => EmbedDefs.aspectRatio) as any,
-      ),
+      /*#__PURE__*/ l.ref<EmbedDefs.AspectRatio>((() => EmbedDefs.aspectRatio) as any),
     ),
   }),
 )

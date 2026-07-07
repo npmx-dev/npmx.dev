@@ -11,14 +11,9 @@ export { $nsid }
 export const $params = /*#__PURE__*/ l.params({
   subject: /*#__PURE__*/ l.string({ format: 'uri' }),
   source: /*#__PURE__*/ l.string(),
-  did: /*#__PURE__*/ l.optional(
-    /*#__PURE__*/ l.array(/*#__PURE__*/ l.string({ format: 'did' })),
-  ),
+  did: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.array(/*#__PURE__*/ l.string({ format: 'did' }))),
   limit: /*#__PURE__*/ l.optional(
-    /*#__PURE__*/ l.withDefault(
-      /*#__PURE__*/ l.integer({ minimum: 1, maximum: 100 }),
-      16,
-    ),
+    /*#__PURE__*/ l.withDefault(/*#__PURE__*/ l.integer({ minimum: 1, maximum: 100 }), 16),
   ),
 })
 
@@ -26,17 +21,12 @@ export type $Params = l.InferOutput<typeof $params>
 
 export const $output = /*#__PURE__*/ l.jsonPayload({
   total: /*#__PURE__*/ l.integer(),
-  records: /*#__PURE__*/ l.array(
-    /*#__PURE__*/ l.ref<LinkRecord>((() => linkRecord) as any),
-  ),
+  records: /*#__PURE__*/ l.array(/*#__PURE__*/ l.ref<LinkRecord>((() => linkRecord) as any)),
   cursor: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
 })
 
 export type $Output<B = l.BinaryData> = l.InferPayload<typeof $output, B>
-export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<
-  typeof $output,
-  B
->
+export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<typeof $output, B>
 
 /** Constellation: list records linking to any record, identity, or uri */
 const main = /*#__PURE__*/ l.query($nsid, $params, $output)

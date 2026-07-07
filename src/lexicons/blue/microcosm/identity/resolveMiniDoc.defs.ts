@@ -22,10 +22,7 @@ export const $output = /*#__PURE__*/ l.jsonPayload({
 })
 
 export type $Output<B = l.BinaryData> = l.InferPayload<typeof $output, B>
-export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<
-  typeof $output,
-  B
->
+export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<typeof $output, B>
 
 /** Slingshot: like com.atproto.identity.resolveIdentity but instead of the full didDoc it returns an atproto-relevant subset */
 const main = /*#__PURE__*/ l.query($nsid, $params, $output)

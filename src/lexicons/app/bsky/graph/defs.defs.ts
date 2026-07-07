@@ -49,29 +49,21 @@ const listView = /*#__PURE__*/ l.typedObject<ListView>(
     name: /*#__PURE__*/ l.string({ maxLength: 64, minLength: 1 }),
     avatar: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
     labels: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.array(
-        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
-      ),
+      /*#__PURE__*/ l.array(/*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
     ),
     viewer: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.ref<ListViewerState>((() => listViewerState) as any),
     ),
-    creator: /*#__PURE__*/ l.ref<ActorDefs.ProfileView>(
-      (() => ActorDefs.profileView) as any,
-    ),
+    creator: /*#__PURE__*/ l.ref<ActorDefs.ProfileView>((() => ActorDefs.profileView) as any),
     purpose: /*#__PURE__*/ l.ref<ListPurpose>((() => listPurpose) as any),
     indexedAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
     description: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.string({ maxLength: 3000, maxGraphemes: 300 }),
     ),
-    listItemCount: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.integer({ minimum: 0 }),
-    ),
+    listItemCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer({ minimum: 0 })),
     descriptionFacets: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.array(
-        /*#__PURE__*/ l.ref<RichtextFacet.Main>(
-          (() => RichtextFacet.main) as any,
-        ),
+        /*#__PURE__*/ l.ref<RichtextFacet.Main>((() => RichtextFacet.main) as any),
       ),
     ),
   }),
@@ -120,9 +112,7 @@ const listItemView = /*#__PURE__*/ l.typedObject<ListItemView>(
   'listItemView',
   /*#__PURE__*/ l.object({
     uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
-    subject: /*#__PURE__*/ l.ref<ActorDefs.ProfileView>(
-      (() => ActorDefs.profileView) as any,
-    ),
+    subject: /*#__PURE__*/ l.ref<ActorDefs.ProfileView>((() => ActorDefs.profileView) as any),
   }),
 )
 
@@ -172,24 +162,12 @@ const relationship = /*#__PURE__*/ l.typedObject<Relationship>(
   'relationship',
   /*#__PURE__*/ l.object({
     did: /*#__PURE__*/ l.string({ format: 'did' }),
-    blocking: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'at-uri' }),
-    ),
-    blockedBy: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'at-uri' }),
-    ),
-    following: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'at-uri' }),
-    ),
-    followedBy: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'at-uri' }),
-    ),
-    blockedByList: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'at-uri' }),
-    ),
-    blockingByList: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'at-uri' }),
-    ),
+    blocking: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'at-uri' })),
+    blockedBy: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'at-uri' })),
+    following: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'at-uri' })),
+    followedBy: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'at-uri' })),
+    blockedByList: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'at-uri' })),
+    blockingByList: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'at-uri' })),
   }),
 )
 
@@ -219,20 +197,14 @@ const listViewBasic = /*#__PURE__*/ l.typedObject<ListViewBasic>(
     name: /*#__PURE__*/ l.string({ maxLength: 64, minLength: 1 }),
     avatar: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
     labels: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.array(
-        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
-      ),
+      /*#__PURE__*/ l.array(/*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
     ),
     viewer: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.ref<ListViewerState>((() => listViewerState) as any),
     ),
     purpose: /*#__PURE__*/ l.ref<ListPurpose>((() => listPurpose) as any),
-    indexedAt: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'datetime' }),
-    ),
-    listItemCount: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.integer({ minimum: 0 }),
-    ),
+    indexedAt: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'datetime' })),
+    listItemCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer({ minimum: 0 })),
   }),
 )
 
@@ -282,9 +254,7 @@ const listViewerState = /*#__PURE__*/ l.typedObject<ListViewerState>(
   'listViewerState',
   /*#__PURE__*/ l.object({
     muted: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
-    blocked: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'at-uri' }),
-    ),
+    blocked: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'at-uri' })),
   }),
 )
 
@@ -318,34 +288,25 @@ const starterPackView = /*#__PURE__*/ l.typedObject<StarterPackView>(
     ),
     feeds: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.array(
-        /*#__PURE__*/ l.ref<FeedDefs.GeneratorView>(
-          (() => FeedDefs.generatorView) as any,
-        ),
+        /*#__PURE__*/ l.ref<FeedDefs.GeneratorView>((() => FeedDefs.generatorView) as any),
         { maxLength: 3 },
       ),
     ),
     labels: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.array(
-        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
-      ),
+      /*#__PURE__*/ l.array(/*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
     ),
     record: /*#__PURE__*/ l.lexMap(),
     creator: /*#__PURE__*/ l.ref<ActorDefs.ProfileViewBasic>(
       (() => ActorDefs.profileViewBasic) as any,
     ),
     indexedAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
-    joinedWeekCount: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.integer({ minimum: 0 }),
-    ),
+    joinedWeekCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer({ minimum: 0 })),
     listItemsSample: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.array(
-        /*#__PURE__*/ l.ref<ListItemView>((() => listItemView) as any),
-        { maxLength: 12 },
-      ),
+      /*#__PURE__*/ l.array(/*#__PURE__*/ l.ref<ListItemView>((() => listItemView) as any), {
+        maxLength: 12,
+      }),
     ),
-    joinedAllTimeCount: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.integer({ minimum: 0 }),
-    ),
+    joinedAllTimeCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer({ minimum: 0 })),
   }),
 )
 
@@ -373,24 +334,16 @@ const starterPackViewBasic = /*#__PURE__*/ l.typedObject<StarterPackViewBasic>(
     cid: /*#__PURE__*/ l.string({ format: 'cid' }),
     uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
     labels: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.array(
-        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
-      ),
+      /*#__PURE__*/ l.array(/*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
     ),
     record: /*#__PURE__*/ l.lexMap(),
     creator: /*#__PURE__*/ l.ref<ActorDefs.ProfileViewBasic>(
       (() => ActorDefs.profileViewBasic) as any,
     ),
     indexedAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
-    listItemCount: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.integer({ minimum: 0 }),
-    ),
-    joinedWeekCount: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.integer({ minimum: 0 }),
-    ),
-    joinedAllTimeCount: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.integer({ minimum: 0 }),
-    ),
+    listItemCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer({ minimum: 0 })),
+    joinedWeekCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer({ minimum: 0 })),
+    joinedAllTimeCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer({ minimum: 0 })),
   }),
 )
 

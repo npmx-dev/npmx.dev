@@ -26,9 +26,7 @@ const main = /*#__PURE__*/ l.typedObject<Main>(
   $nsid,
   'main',
   /*#__PURE__*/ l.object({
-    record: /*#__PURE__*/ l.ref<RepoStrongRef.Main>(
-      (() => RepoStrongRef.main) as any,
-    ),
+    record: /*#__PURE__*/ l.ref<RepoStrongRef.Main>((() => RepoStrongRef.main) as any),
   }),
 )
 
@@ -73,15 +71,9 @@ const view = /*#__PURE__*/ l.typedObject<View>(
         /*#__PURE__*/ l.typedRef<ViewNotFound>((() => viewNotFound) as any),
         /*#__PURE__*/ l.typedRef<ViewBlocked>((() => viewBlocked) as any),
         /*#__PURE__*/ l.typedRef<ViewDetached>((() => viewDetached) as any),
-        /*#__PURE__*/ l.typedRef<FeedDefs.GeneratorView>(
-          (() => FeedDefs.generatorView) as any,
-        ),
-        /*#__PURE__*/ l.typedRef<GraphDefs.ListView>(
-          (() => GraphDefs.listView) as any,
-        ),
-        /*#__PURE__*/ l.typedRef<LabelerDefs.LabelerView>(
-          (() => LabelerDefs.labelerView) as any,
-        ),
+        /*#__PURE__*/ l.typedRef<FeedDefs.GeneratorView>((() => FeedDefs.generatorView) as any),
+        /*#__PURE__*/ l.typedRef<GraphDefs.ListView>((() => GraphDefs.listView) as any),
+        /*#__PURE__*/ l.typedRef<LabelerDefs.LabelerView>((() => LabelerDefs.labelerView) as any),
         /*#__PURE__*/ l.typedRef<GraphDefs.StarterPackViewBasic>(
           (() => GraphDefs.starterPackViewBasic) as any,
         ),
@@ -135,15 +127,9 @@ const viewRecord = /*#__PURE__*/ l.typedObject<ViewRecord>(
       /*#__PURE__*/ l.array(
         /*#__PURE__*/ l.typedUnion(
           [
-            /*#__PURE__*/ l.typedRef<EmbedImages.View>(
-              (() => EmbedImages.view) as any,
-            ),
-            /*#__PURE__*/ l.typedRef<EmbedVideo.View>(
-              (() => EmbedVideo.view) as any,
-            ),
-            /*#__PURE__*/ l.typedRef<EmbedExternal.View>(
-              (() => EmbedExternal.view) as any,
-            ),
+            /*#__PURE__*/ l.typedRef<EmbedImages.View>((() => EmbedImages.view) as any),
+            /*#__PURE__*/ l.typedRef<EmbedVideo.View>((() => EmbedVideo.view) as any),
+            /*#__PURE__*/ l.typedRef<EmbedExternal.View>((() => EmbedExternal.view) as any),
             /*#__PURE__*/ l.typedRef<View>((() => view) as any),
             /*#__PURE__*/ l.typedRef<EmbedRecordWithMedia.View>(
               (() => EmbedRecordWithMedia.view) as any,
@@ -154,9 +140,7 @@ const viewRecord = /*#__PURE__*/ l.typedObject<ViewRecord>(
       ),
     ),
     labels: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.array(
-        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
-      ),
+      /*#__PURE__*/ l.array(/*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
     ),
     indexedAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
     likeCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
@@ -182,9 +166,7 @@ const viewBlocked = /*#__PURE__*/ l.typedObject<ViewBlocked>(
   'viewBlocked',
   /*#__PURE__*/ l.object({
     uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
-    author: /*#__PURE__*/ l.ref<FeedDefs.BlockedAuthor>(
-      (() => FeedDefs.blockedAuthor) as any,
-    ),
+    author: /*#__PURE__*/ l.ref<FeedDefs.BlockedAuthor>((() => FeedDefs.blockedAuthor) as any),
     blocked: /*#__PURE__*/ l.literal(true),
   }),
 )

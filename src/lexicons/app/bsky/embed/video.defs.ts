@@ -36,20 +36,15 @@ const main = /*#__PURE__*/ l.typedObject<Main>(
   $nsid,
   'main',
   /*#__PURE__*/ l.object({
-    alt: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ maxLength: 10000, maxGraphemes: 1000 }),
-    ),
+    alt: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ maxLength: 10000, maxGraphemes: 1000 })),
     video: /*#__PURE__*/ l.blob({ accept: ['video/mp4'], maxSize: 100000000 }),
     captions: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.array(
-        /*#__PURE__*/ l.ref<Caption>((() => caption) as any),
-        { maxLength: 20 },
-      ),
+      /*#__PURE__*/ l.array(/*#__PURE__*/ l.ref<Caption>((() => caption) as any), {
+        maxLength: 20,
+      }),
     ),
     aspectRatio: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<EmbedDefs.AspectRatio>(
-        (() => EmbedDefs.aspectRatio) as any,
-      ),
+      /*#__PURE__*/ l.ref<EmbedDefs.AspectRatio>((() => EmbedDefs.aspectRatio) as any),
     ),
     presentation: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.string<{ knownValues: ['default', 'gif'] }>(),
@@ -92,18 +87,12 @@ const view = /*#__PURE__*/ l.typedObject<View>(
   $nsid,
   'view',
   /*#__PURE__*/ l.object({
-    alt: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ maxLength: 10000, maxGraphemes: 1000 }),
-    ),
+    alt: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ maxLength: 10000, maxGraphemes: 1000 })),
     cid: /*#__PURE__*/ l.string({ format: 'cid' }),
     playlist: /*#__PURE__*/ l.string({ format: 'uri' }),
-    thumbnail: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ format: 'uri' }),
-    ),
+    thumbnail: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
     aspectRatio: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<EmbedDefs.AspectRatio>(
-        (() => EmbedDefs.aspectRatio) as any,
-      ),
+      /*#__PURE__*/ l.ref<EmbedDefs.AspectRatio>((() => EmbedDefs.aspectRatio) as any),
     ),
     presentation: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.string<{ knownValues: ['default', 'gif'] }>(),

@@ -51,36 +51,18 @@ const preferences = /*#__PURE__*/ l.typedObject<Preferences>(
   'preferences',
   /*#__PURE__*/ l.object({
     chat: /*#__PURE__*/ l.ref<ChatPreference>((() => chatPreference) as any),
-    like: /*#__PURE__*/ l.ref<FilterablePreference>(
-      (() => filterablePreference) as any,
-    ),
-    quote: /*#__PURE__*/ l.ref<FilterablePreference>(
-      (() => filterablePreference) as any,
-    ),
-    reply: /*#__PURE__*/ l.ref<FilterablePreference>(
-      (() => filterablePreference) as any,
-    ),
-    follow: /*#__PURE__*/ l.ref<FilterablePreference>(
-      (() => filterablePreference) as any,
-    ),
-    repost: /*#__PURE__*/ l.ref<FilterablePreference>(
-      (() => filterablePreference) as any,
-    ),
-    mention: /*#__PURE__*/ l.ref<FilterablePreference>(
-      (() => filterablePreference) as any,
-    ),
+    like: /*#__PURE__*/ l.ref<FilterablePreference>((() => filterablePreference) as any),
+    quote: /*#__PURE__*/ l.ref<FilterablePreference>((() => filterablePreference) as any),
+    reply: /*#__PURE__*/ l.ref<FilterablePreference>((() => filterablePreference) as any),
+    follow: /*#__PURE__*/ l.ref<FilterablePreference>((() => filterablePreference) as any),
+    repost: /*#__PURE__*/ l.ref<FilterablePreference>((() => filterablePreference) as any),
+    mention: /*#__PURE__*/ l.ref<FilterablePreference>((() => filterablePreference) as any),
     verified: /*#__PURE__*/ l.ref<Preference>((() => preference) as any),
     unverified: /*#__PURE__*/ l.ref<Preference>((() => preference) as any),
-    likeViaRepost: /*#__PURE__*/ l.ref<FilterablePreference>(
-      (() => filterablePreference) as any,
-    ),
+    likeViaRepost: /*#__PURE__*/ l.ref<FilterablePreference>((() => filterablePreference) as any),
     subscribedPost: /*#__PURE__*/ l.ref<Preference>((() => preference) as any),
-    repostViaRepost: /*#__PURE__*/ l.ref<FilterablePreference>(
-      (() => filterablePreference) as any,
-    ),
-    starterpackJoined: /*#__PURE__*/ l.ref<Preference>(
-      (() => preference) as any,
-    ),
+    repostViaRepost: /*#__PURE__*/ l.ref<FilterablePreference>((() => filterablePreference) as any),
+    starterpackJoined: /*#__PURE__*/ l.ref<Preference>((() => preference) as any),
   }),
 )
 
