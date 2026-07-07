@@ -51,7 +51,8 @@ const copyExecuteCommand = () => copyExecute(getFullExecuteCommand())
         <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
         <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
       </div>
-      <div class="px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 space-y-1">
+      <!-- flex gap (not space-y) so hidden PM variants never affect spacing -->
+      <div class="px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 flex flex-col gap-1">
         <!-- Execute command - render all PM variants, CSS controls visibility -->
         <div
           v-for="pm in packageManagers"
