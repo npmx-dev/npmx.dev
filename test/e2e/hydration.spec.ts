@@ -113,6 +113,16 @@ test.describe('Hydration', () => {
       })
     }
   })
+
+  test('user packages page with npm search provider', async ({ page, goto, hydrationErrors }) => {
+    await injectLocalStorage(page, {
+      'npmx-settings': JSON.stringify({ searchProvider: 'npm' }),
+    })
+
+    await goto('/~qwerzl', { waitUntil: 'hydration' })
+
+    expect(hydrationErrors).toEqual([])
+  })
 })
 
 async function injectLocalStorage(page: Page, entries: Record<string, string>) {
