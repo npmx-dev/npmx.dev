@@ -1,0 +1,1859 @@
+{
+  "$schema": "../schema.json",
+  "seo": {
+    "home": {
+      "title": "npmx - npm 레지스트리 패키지 브라우저",
+      "description": "npm 레지스트리를 위한 빠르고 모던한 브라우저. 모던한 인터페이스로 패키지를 검색하고 둘러보세요."
+    }
+  },
+  "built_at": "빌드: {0}",
+  "alt_logo": "npmx 로고",
+  "tagline": "npm 레지스트리를 위한 빠르고 모던한 브라우저",
+  "non_affiliation_disclaimer": "npm, Inc.와 제휴하지 않음",
+  "trademark_disclaimer": "npm은 npm, Inc.의 등록 상표입니다. 이 사이트는 npm, Inc.와 관련이 없습니다.",
+  "footer": {
+    "about": "소개",
+    "sponsors": "스폰서",
+    "blog": "블로그",
+    "docs": "문서",
+    "source": "소스",
+    "social": "소셜",
+    "chat": "채팅",
+    "builders_chat": "빌더스",
+    "keyboard_shortcuts": "키보드 단축키",
+    "brand": "브랜드",
+    "resources": "자료",
+    "features": "기능",
+    "other": "기타",
+    "sponsored_by": "{list} 후원"
+  },
+  "shortcuts": {
+    "section": {
+      "global": "전역",
+      "search": "검색",
+      "package": "패키지"
+    },
+    "ctrl_key": "Ctrl",
+    "command_palette": "명령 팔레트 열기",
+    "command_palette_description": "명령 팔레트를 사용하면 키보드에서 손을 떼지 않고도 페이지, 패키지 화면, 설정, 외부 링크 사이를 이동할 수 있습니다. macOS에서는 ⌘K를, Windows와 Linux에서는 {ctrlKey}+K를 누르세요.",
+    "focus_search": "검색창에 포커스",
+    "show_kbd_hints": "키보드 힌트 강조 표시",
+    "settings": "설정 열기",
+    "compare": "비교 열기",
+    "compare_from_package": "비교 열기 (현재 패키지로 미리 채움)",
+    "changelog": "변경 이력 열기",
+    "navigate_results": "결과 탐색",
+    "go_to_result": "결과로 이동",
+    "open_code_view": "코드 보기 열기",
+    "open_docs": "문서 열기",
+    "disable_shortcuts": "{settings}에서 키보드 단축키를 비활성화할 수 있습니다.",
+    "open_main": "주요 정보 열기",
+    "open_diff": "버전 차이 열기",
+    "open_timeline": "타임라인 열기",
+    "open_stats": "통계 열기"
+  },
+  "search": {
+    "label": "npm 패키지 검색",
+    "placeholder": "패키지 검색...",
+    "button": "검색",
+    "searching": "검색 중...",
+    "found_packages": "패키지를 찾을 수 없습니다 | 패키지 1개를 찾았습니다 | 패키지 {count}개를 찾았습니다",
+    "found_packages_sorted": "검색 결과가 없습니다 | 상위 {count}개 결과 정렬 중 | 상위 {count}개 결과 정렬 중",
+    "updating": "(업데이트 중...)",
+    "no_results": "\"{query}\"에 대한 패키지를 찾을 수 없습니다",
+    "rate_limited": "npm 요청 한도에 도달했습니다. 잠시 후 다시 시도하세요",
+    "title": "검색",
+    "title_search": "검색: {search}",
+    "title_packages": "패키지 검색",
+    "meta_description": "'{search}'에 대한 검색 결과",
+    "meta_description_packages": "npm 패키지 검색",
+    "not_taken": "{name}은(는) 사용 가능합니다",
+    "claim_prompt": "npm에서 이 패키지 이름 등록하기",
+    "claim_button": "\"{name}\" 등록하기",
+    "want_to_claim": "이 패키지 이름을 등록하고 싶으신가요?",
+    "start_typing": "입력을 시작해 패키지를 검색하세요",
+    "algolia_disclaimer": "Algolia 제공",
+    "exact_match": "정확히 일치",
+    "suggestion": {
+      "user": "사용자",
+      "org": "조직",
+      "view_user_packages": "이 사용자의 패키지 보기",
+      "view_org_packages": "이 조직의 패키지 보기"
+    },
+    "instant_search": "즉시 검색",
+    "instant_search_on": "켜짐",
+    "instant_search_off": "꺼짐",
+    "instant_search_turn_on": "켜기",
+    "instant_search_turn_off": "끄기",
+    "instant_search_advisory": "{label} {state} — {action}"
+  },
+  "command_palette": {
+    "title": "명령 팔레트",
+    "quick_actions": "바로가기...",
+    "subtitle": "npmx 전체를 탐색하고 설정을 빠르게 전환하세요",
+    "subtitle_languages": "언어를 선택하거나 번역 개선에 참여하세요",
+    "instructions": "입력해서 명령을 필터링하세요. 화살표 키로 결과 사이를 이동하고 Enter로 명령을 실행합니다.",
+    "input_label": "명령 팔레트 검색",
+    "results_label": "명령 결과",
+    "placeholder": "명령 입력...",
+    "back": "뒤로",
+    "empty": "일치하는 명령이 없습니다",
+    "empty_search_hint": "Enter를 눌러 \"{query}\"를 검색하세요.",
+    "current": "현재",
+    "here": "현재 위치",
+    "connected": "연결됨",
+    "keyboard_shortcuts": {
+      "navigate": "이동",
+      "select": "선택",
+      "close": "닫기"
+    },
+    "state": {
+      "on": "켜짐",
+      "off": "꺼짐"
+    },
+    "groups": {
+      "actions": "작업",
+      "help": "도움말",
+      "language": "언어",
+      "connections": "연결",
+      "navigation": "탐색",
+      "links": "링크",
+      "npmx": "npmx",
+      "package": "패키지",
+      "package_with_name": "패키지 ({name})",
+      "versions": "버전",
+      "versions_with_name": "{name}의 버전"
+    },
+    "actions": {
+      "search": "검색",
+      "search_for": "\"{query}\" 검색",
+      "keyboard_shortcuts": "키보드 단축키",
+      "help_translate": "번역 참여하기"
+    },
+    "connections": {
+      "npm_connect": "npm CLI에 연결",
+      "npm_connected": "npm CLI (~{username})",
+      "npm_disconnect": "npm CLI 연결 해제",
+      "atmosphere_connect": "Atmosphere에 연결",
+      "atmosphere_connected": "atmosphere ({'@'}{handle})",
+      "atmosphere_disconnect": "Atmosphere 연결 해제"
+    },
+    "navigation": {
+      "home": "홈",
+      "packages": "패키지 (~{username})",
+      "orgs": "조직 (~{username})",
+      "profile": "프로필 ({'@'}{handle})"
+    },
+    "links": {
+      "external": "외부 링크"
+    },
+    "package_links": {
+      "stars": "저장소 스타",
+      "forks": "저장소 포크"
+    },
+    "theme": {
+      "system": "시스템 테마 사용",
+      "light": "라이트 테마 사용",
+      "dark": "다크 테마 사용"
+    },
+    "package": {
+      "main": "패키지 페이지",
+      "docs": "문서",
+      "code": "코드",
+      "diff": "차이",
+      "compare": "이 패키지 비교",
+      "download": "타볼 다운로드",
+      "changelog": "변경 이력",
+      "stats": "통계"
+    },
+    "package_actions": {
+      "copy_run": "실행 명령 복사"
+    },
+    "code": {
+      "copy_file": "파일 내용 복사"
+    },
+    "diff": {
+      "merge_modified_lines": "수정된 줄 병합",
+      "word_wrap": "자동 줄바꿈"
+    },
+    "version": {
+      "label": "{version}"
+    },
+    "status": {
+      "available_in_context": "{context}. 사용 가능한 명령이 없습니다 | {context}. 사용 가능한 명령 1개 | {context}. 사용 가능한 명령 {count}개",
+      "matching_in_context": "{context}. 일치하는 명령이 없습니다 | {context}. 일치하는 명령 1개 | {context}. 일치하는 명령 {count}개",
+      "no_matches_search_in_context": "{context}. 일치하는 명령이 없습니다. Enter를 눌러 \"{query}\"를 검색하세요."
+    },
+    "announcements": {
+      "language_changed": "언어가 {language}(으)로 설정되었습니다.",
+      "relative_dates_on": "상대 날짜 표시 켜짐.",
+      "relative_dates_off": "상대 날짜 표시 꺼짐.",
+      "theme_changed": "테마가 {theme}(으)로 설정되었습니다.",
+      "accent_color_changed": "강조 색상이 {color}(으)로 설정되었습니다.",
+      "background_theme_changed": "배경 톤이 {theme}(으)로 설정되었습니다.",
+      "download_started": "{package} 타볼을 다운로드하는 중입니다.",
+      "copied_to_clipboard": "클립보드에 복사되었습니다.",
+      "npm_disconnected": "npm CLI 연결이 해제되었습니다.",
+      "atmosphere_disconnected": "Atmosphere 연결이 해제되었습니다.",
+      "facets_all_selected": "모든 항목이 선택되었습니다.",
+      "facets_all_deselected": "모든 항목 선택이 해제되었습니다.",
+      "view_switched": "{view} 보기로 전환되었습니다.",
+      "setting_toggled": "{setting} {state}."
+    }
+  },
+  "nav": {
+    "main_navigation": "메인",
+    "popular_packages": "인기 패키지",
+    "settings": "설정",
+    "compare": "비교",
+    "back": "뒤로",
+    "menu": "메뉴",
+    "mobile_menu": "탐색 메뉴",
+    "open_menu": "메뉴 열기",
+    "links": "링크",
+    "tap_to_search": "탭하여 검색"
+  },
+  "blog": {
+    "title": "블로그",
+    "heading": "블로그",
+    "meta_description": "npmx 커뮤니티의 소식과 업데이트",
+    "author": {
+      "view_profile": "Bluesky에서 {name}의 프로필 보기"
+    },
+    "draft_badge": "초안",
+    "draft_banner": "아직 게시되지 않은 초안입니다. 내용이 불완전하거나 부정확할 수 있습니다.",
+    "no_posts": "게시글이 없습니다.",
+    "atproto": {
+      "view_on_bluesky": "Bluesky에서 보기",
+      "reply_on_bluesky": "Bluesky에서 답글 달기",
+      "likes_on_bluesky": "Bluesky의 좋아요",
+      "like_or_reply_on_bluesky": "Bluesky에서 이 게시글에 좋아요를 누르거나 댓글을 남기세요",
+      "no_comments_yet": "아직 댓글이 없습니다.",
+      "could_not_load_comments": "댓글을 불러올 수 없습니다.",
+      "comments": "댓글",
+      "loading_comments": "댓글을 불러오는 중...",
+      "updating": "업데이트 중...",
+      "reply_count": "답글 {count}개 | 답글 {count}개",
+      "like_count": "좋아요 {count}개 | 좋아요 {count}개",
+      "repost_count": "리포스트 {count}개 | 리포스트 {count}개",
+      "more_replies": "답글 {count}개 더 보기... | 답글 {count}개 더 보기..."
+    }
+  },
+  "noodles": {
+    "title": "누들",
+    "meta_description": "npmx에서 선보인 모든 누들 — 시즌별 로고, 이스터에그, 그리고 그 뒷이야기.",
+    "latest": "최신 누들",
+    "what_is": "누들이란",
+    "what_is_body": "누들은 출시, 휴일, 이벤트, 그리고 기념할 만한 순간을 기리기 위해 홈페이지에서 선보이는 npmx 로고의 재미있는 변형 버전입니다. npm 패키지를 위한 구글 두들이라고 생각하면 됩니다.",
+    "empty": "아직 누들이 없습니다.",
+    "load_more": "{count}개 더 불러오기",
+    "dates": "활성 기간",
+    "shipped_in": "출시 버전",
+    "credits": "크레딧",
+    "learn_more": "더 알아보기",
+    "carousel_prev": "이전 이미지",
+    "carousel_next": "다음 이미지",
+    "carousel_dots": "변형 이미지 탐색",
+    "carousel_jump": "이미지 {index}로 이동",
+    "lens_label": "{title} — 이미지 릴",
+    "lens_slide": "이미지 {index}",
+    "lens_slide_position": "{total}개 중 {index}번째 슬라이드",
+    "back_to_archive": "모든 누들로 돌아가기",
+    "missing": {
+      "title": "이 누들은 그릇 밖으로 나오지 못했습니다.",
+      "body": "메뉴에 “{slug}” 누들이 없습니다. 아직 준비 중이거나 애초에 만들어지지 않았을 수 있습니다. 어느 쪽이든 — 아카이브로 돌아가세요."
+    }
+  },
+  "settings": {
+    "title": "설정",
+    "tagline": "npmx 경험을 맞춤 설정하세요",
+    "meta_description": "테마, 언어, 표시 설정으로 npmx.dev 경험을 맞춤 설정하세요.",
+    "sections": {
+      "appearance": "모양",
+      "display": "표시",
+      "search": "검색 기능",
+      "language": "언어",
+      "keyboard_shortcuts": "키보드 단축키"
+    },
+    "data_source": {
+      "label": "데이터 소스",
+      "description": "npmx가 검색 데이터를 가져오는 위치를 선택하세요. 개별 패키지 페이지는 항상 npm 레지스트리를 직접 사용합니다.",
+      "npm": "npm 레지스트리",
+      "npm_description": "공식 npm 레지스트리에서 검색, 조직, 사용자 목록을 직접 가져옵니다. 신뢰할 수 있지만 다소 느릴 수 있습니다.",
+      "algolia": "Algolia",
+      "algolia_description": "Algolia를 사용해 더 빠르게 검색, 조직, 사용자 페이지를 제공합니다."
+    },
+    "instant_search": "즉시 검색",
+    "instant_search_description": "검색 페이지로 이동해 입력하는 동안 결과를 업데이트합니다.",
+    "relative_dates": "상대 날짜",
+    "include_types": "설치 시 {'@'}types 포함",
+    "include_types_description": "타입이 없는 패키지의 설치 명령에 {'@'}types 패키지를 추가합니다",
+    "hide_platform_packages": "검색에서 플랫폼별 패키지 숨기기",
+    "hide_platform_packages_description": "{'@'}esbuild/linux-x64와 같은 네이티브 바이너리 패키지를 결과에서 숨깁니다",
+    "enable_graph_pulse_loop": "미니 그래프의 펄스 효과 반복 사용",
+    "enable_graph_pulse_loop_description": "주간 다운로드 그래프에 지속적인 펄스 애니메이션을 활성화합니다. 이 애니메이션은 일부 사용자에게 방해가 될 수 있습니다.",
+    "theme": "테마",
+    "theme_light": "라이트",
+    "theme_dark": "다크",
+    "theme_system": "시스템",
+    "language": "언어",
+    "help_translate": "npmx 번역 돕기",
+    "translation_status": "전체 번역 현황 확인",
+    "accent_colors": {
+      "label": "강조 색상",
+      "neutral": "뉴트럴",
+      "sky": "스카이",
+      "coral": "코랄",
+      "amber": "앰버",
+      "emerald": "에메랄드",
+      "violet": "바이올렛",
+      "magenta": "마젠타"
+    },
+    "clear_accent": "강조 색상 지우기",
+    "translation_progress": "번역 진행률",
+    "background_themes": {
+      "label": "배경 톤",
+      "neutral": "뉴트럴",
+      "stone": "스톤",
+      "zinc": "징크",
+      "slate": "슬레이트",
+      "black": "블랙"
+    },
+    "keyboard_shortcuts_enabled": "키보드 단축키 사용",
+    "keyboard_shortcuts_enabled_description": "다른 브라우저나 시스템 단축키와 충돌하는 경우 키보드 단축키를 비활성화할 수 있습니다",
+    "enable_code_ligatures": "코드에서 리가처 사용",
+    "enable_changelog_autoscroll": "요청한 버전으로 자동 스크롤",
+    "enable_changelog_autoscroll_description": "패키지 변경 이력에서 요청한 버전 또는 그 근처로 자동 스크롤합니다"
+  },
+  "i18n": {
+    "missing_keys": "번역 누락 {count}개 | 번역 누락 {count}개",
+    "copy_keys": "키 복사",
+    "show_more_keys": "{count}개 더 보기...",
+    "contribute_hint": "누락된 키를 추가해 이 번역을 개선해 주세요.",
+    "edit_on_github": "GitHub에서 편집",
+    "view_guide": "번역 가이드"
+  },
+  "error": {
+    "401": "인증되지 않음",
+    "404": "페이지를 찾을 수 없음",
+    "500": "내부 서버 오류",
+    "503": "서비스를 사용할 수 없음",
+    "default": "문제가 발생했습니다"
+  },
+  "common": {
+    "loading": "불러오는 중...",
+    "loading_more": "더 불러오는 중...",
+    "loading_packages": "패키지를 불러오는 중...",
+    "end_of_results": "결과 끝",
+    "try_again": "다시 시도",
+    "close": "닫기",
+    "or": "또는",
+    "retry": "재시도",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "skip_link": "본문으로 건너뛰기",
+    "warnings": "경고:",
+    "go_back_home": "홈으로 돌아가기",
+    "per_week": "/ 주",
+    "per_week_short": "/주",
+    "vanity_downloads_hint": "바니티 수치: 표시된 패키지가 없습니다 | 바니티 수치: 표시된 패키지 기준 | 바니티 수치: 표시된 패키지 {count}개의 합계",
+    "sort": {
+      "name": "이름",
+      "role": "역할",
+      "members": "멤버"
+    },
+    "scroll_to_top": "맨 위로 스크롤",
+    "cancel": "취소",
+    "save": "저장",
+    "edit": "편집",
+    "error": "오류",
+    "view_on": {
+      "npm": "npm에서 보기",
+      "github": "GitHub에서 보기",
+      "gitlab": "GitLab에서 보기",
+      "bitbucket": "Bitbucket에서 보기",
+      "codeberg": "Codeberg에서 보기",
+      "git_repo": "Git 저장소에서 보기",
+      "forgejo": "Forgejo에서 보기",
+      "gitea": "Gitea에서 보기",
+      "gitee": "Gitee에서 보기",
+      "radicle": "Radicle에서 보기",
+      "socket_dev": "socket.dev에서 보기",
+      "sourcehut": "SourceHut에서 보기",
+      "tangled": "Tangled에서 보기"
+    },
+    "collapse": "접기",
+    "collapse_with_name": "{name} 접기",
+    "expand": "펼치기",
+    "expand_with_name": "{name} 펼치기"
+  },
+  "profile": {
+    "display_name": "표시 이름",
+    "description": "설명",
+    "no_description": "설명 없음",
+    "website": "웹사이트",
+    "website_placeholder": "https://example.com",
+    "likes": "좋아요",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "{handle}의 npmx 프로필",
+    "not_found": "프로필을 찾을 수 없음",
+    "not_found_message": "{handle}에 대한 프로필을 찾을 수 없습니다.",
+    "invite": {
+      "message": "아직 npmx를 사용하지 않는 것 같습니다. 알려주고 싶으신가요?",
+      "share_button": "Bluesky에 공유",
+      "compose_text": "{'@'}{handle}님, 안녕하세요! npmx.dev를 확인해 보셨나요? 빠르고 모던하며 오픈소스인 npm 레지스트리 브라우저예요.\nhttps://npmx.dev"
+    }
+  },
+  "package": {
+    "not_found": "패키지를 찾을 수 없음",
+    "not_found_message": "패키지를 찾을 수 없습니다.",
+    "no_description": "제공된 설명이 없습니다",
+    "verified_provenance": "검증된 provenance",
+    "navigation": "패키지",
+    "copy_name": "패키지 이름 복사",
+    "deprecation": {
+      "package": "이 패키지는 더 이상 사용되지 않습니다(deprecated).",
+      "version": "이 버전은 더 이상 사용되지 않습니다(deprecated).",
+      "no_reason": "사유가 제공되지 않았습니다"
+    },
+    "size_increase": {
+      "title_size": "v{version} 이후 설치 크기가 크게 증가했습니다",
+      "title_deps": "v{version} 이후 의존성 개수가 크게 증가했습니다",
+      "title_both": "v{version} 이후 설치 크기와 의존성이 크게 증가했습니다",
+      "size": "설치 크기가 {percent} 증가했습니다 ({size} 더 큼)",
+      "deps": "의존성 {count}개 증가 | 의존성 {count}개 증가"
+    },
+    "size_decrease": {
+      "title_size": "v{version} 이후 패키지 크기가 감소했습니다!",
+      "title_deps": "v{version} 이후 의존성 개수가 감소했습니다!",
+      "title_both": "v{version} 이후 패키지 크기와 의존성 개수가 감소했습니다!",
+      "size": "설치 크기가 {percent} 감소했습니다 ({size} 더 작음)",
+      "deps": "의존성 {count}개 감소 | 의존성 {count}개 감소"
+    },
+    "replacement": {
+      "title": "이 의존성이 필요하지 않을 수도 있습니다.",
+      "example": "예시:",
+      "native": "이 패키지는 Node {nodeVersion}부터 사용 가능한 {replacement}(으)로 대체할 수 있습니다.",
+      "native_no_version": "이 패키지는 {replacement}(으)로 대체할 수 있습니다.",
+      "simple": "이 패키지는 불필요한 것으로 표시되었으며, 권장 사항은 다음과 같습니다: {replacement}",
+      "documented": "이 패키지는 더 성능이 좋은 대안이 있는 것으로 표시되었습니다.",
+      "none": "이 패키지는 더 이상 필요하지 않은 것으로 표시되었으며, 해당 기능은 대부분의 엔진에서 네이티브로 제공됩니다.",
+      "learn_more": "더 알아보기",
+      "learn_more_above": "위에서 더 알아보세요.",
+      "consider_no_dep": "+ 의존성 없이 사용해볼까요?"
+    },
+    "stats": {
+      "license": "라이선스",
+      "deps": "의존성",
+      "install_size": "설치 크기",
+      "vulns": "취약점",
+      "published": "게시일",
+      "published_tooltip": "{package}{'@'}{version}이(가) 게시된 날짜",
+      "view_dependency_graph": "의존성 그래프 보기",
+      "inspect_dependency_tree": "의존성 트리 검사",
+      "size_tooltip": {
+        "unpacked": "{size} 압축 해제 크기(이 패키지)",
+        "total": "{size} 전체 압축 해제 크기 (linux-x64용 의존성 {count}개 포함) | {size} 전체 압축 해제 크기 (linux-x64용 전체 의존성 {count}개 포함)"
+      },
+      "main_information": "주요 정보",
+      "trends": "트렌드",
+      "version_distribution": "버전 분포"
+    },
+    "skills": {
+      "title": "에이전트 스킬",
+      "skills_available": "사용 가능한 스킬 {count}개 | 사용 가능한 스킬 {count}개",
+      "compatible_with": "{tool}와(과) 호환",
+      "install": "설치",
+      "installation_method": "설치 방법",
+      "learn_more": "더 알아보기",
+      "available_skills": "사용 가능한 스킬",
+      "click_to_expand": "클릭하여 펼치기",
+      "no_description": "설명 없음",
+      "file_counts": {
+        "scripts": "스크립트 {count}개 | 스크립트 {count}개",
+        "refs": "참조 {count}개 | 참조 {count}개",
+        "assets": "자산 {count}개 | 자산 {count}개"
+      },
+      "view_source": "소스 보기",
+      "skills_cli": "skills CLI"
+    },
+    "links": {
+      "main": "메인",
+      "repo": "저장소",
+      "homepage": "홈페이지",
+      "issues": "이슈",
+      "jsr": "jsr",
+      "code": "코드",
+      "docs": "문서",
+      "fund": "펀딩",
+      "compare": "비교",
+      "timeline": "타임라인",
+      "stats": "통계",
+      "compare_this_package": "이 패키지 비교",
+      "changelog": "변경 이력"
+    },
+    "likes": {
+      "like": "이 패키지 좋아요",
+      "unlike": "이 패키지 좋아요 취소",
+      "top_rank_tooltip": "npmx에서 가장 많은 좋아요를 받은 상위 10개 패키지 중 하나입니다! (#{rank})",
+      "top_rank_label": "#{rank}",
+      "top_rank_link_label": "좋아요 순위 보기. 이 패키지는 #{rank}위입니다."
+    },
+    "docs": {
+      "contents": "목차",
+      "default_not_available": "이 버전에는 문서를 사용할 수 없습니다.",
+      "not_available": "문서를 사용할 수 없음",
+      "not_available_detail": "이 버전의 문서를 생성할 수 없습니다.",
+      "page_title": "API 문서 - npmx",
+      "page_title_name": "{name} 문서 - npmx",
+      "page_title_version": "{name} 문서 - npmx",
+      "og_title": "{name} - 문서",
+      "view_package": "패키지 보기"
+    },
+    "get_started": {
+      "title": "시작하기",
+      "pm_label": "패키지 매니저",
+      "copy_command": "설치 명령 복사",
+      "copy_dev_command": "개발 설치 명령 복사",
+      "dev_dependency_hint": "보통 개발 의존성으로 설치됩니다",
+      "view_types": "{package} 보기"
+    },
+    "create": {
+      "title": "새 프로젝트 만들기",
+      "copy_command": "생성 명령 복사",
+      "view": "{packageName}은(는) 동일한 관리자가 유지 관리합니다. 자세히 보려면 클릭하세요."
+    },
+    "run": {
+      "title": "실행",
+      "locally": "로컬에서 실행"
+    },
+    "readme": {
+      "title": "Readme",
+      "no_readme": "사용 가능한 README가 없습니다.",
+      "toc_title": "개요",
+      "callout": {
+        "note": "참고",
+        "tip": "팁",
+        "important": "중요",
+        "warning": "경고",
+        "caution": "주의"
+      },
+      "copy_as_markdown": "README를 마크다운으로 복사",
+      "error_loading": "README 세부 정보를 불러오지 못했습니다"
+    },
+    "provenance_section": {
+      "title": "Provenance",
+      "built_and_signed_on": "{provider}에서 빌드 및 서명됨",
+      "view_build_summary": "빌드 요약 보기",
+      "source_commit": "소스 커밋",
+      "build_file": "빌드 파일",
+      "public_ledger": "공개 원장",
+      "transparency_log_entry": "투명성 로그 항목",
+      "view_more_details": "더 자세히 보기",
+      "error_loading": "provenance 세부 정보를 불러오지 못했습니다"
+    },
+    "security_downgrade": {
+      "title": "신뢰도 하향",
+      "description_to_none_provenance": "이 버전은 {provenance} 없이 게시되었습니다.",
+      "description_to_none_trustedPublisher": "이 버전은 {trustedPublishing} 없이 게시되었습니다.",
+      "description_to_provenance_trustedPublisher": "이 버전은 {provenance}을(를) 사용하지만 {trustedPublishing}은(는) 사용하지 않습니다.",
+      "fallback_install_provenance": "설치 명령은 provenance가 있는 마지막 버전인 {version}으로 고정되어 있습니다.",
+      "fallback_install_trustedPublisher": "설치 명령은 trusted publishing이 있는 마지막 버전인 {version}으로 고정되어 있습니다.",
+      "provenance_link_text": "provenance",
+      "trusted_publishing_link_text": "trusted publishing"
+    },
+    "keywords_title": "키워드",
+    "compatibility": "호환성",
+    "card": {
+      "publisher": "게시자",
+      "published": "게시일",
+      "weekly_downloads": "주간 다운로드",
+      "keywords": "키워드",
+      "license": "라이선스",
+      "version": "버전",
+      "select": "패키지 선택",
+      "select_maximum": "최대 {count}개의 패키지를 선택할 수 있습니다"
+    },
+    "versions": {
+      "title": "버전",
+      "collapse": "{tag} 접기",
+      "expand": "{tag} 펼치기",
+      "collapse_other": "다른 버전 접기",
+      "expand_other": "다른 버전 펼치기",
+      "collapse_major": "메이저 {major} 접기",
+      "expand_major": "메이저 {major} 펼치기",
+      "other_versions": "다른 버전",
+      "more_tagged": "태그 {count}개 더",
+      "all_covered": "모든 버전이 위 태그로 포함되어 있습니다",
+      "deprecated_title": "{version} (사용 중단됨)",
+      "view_all": "버전 {count}개 보기 | 전체 버전 {count}개 보기",
+      "view_all_versions": "모든 버전 보기",
+      "distribution_title": "Semver 그룹",
+      "distribution_range_date_same_year": "{endYear}년 {from}부터 {to}까지",
+      "distribution_range_date_multiple_years": "{startYear}년 {from}부터 {endYear}년 {to}까지",
+      "grouping_major": "메이저",
+      "grouping_minor": "마이너",
+      "grouping_versions_title": "버전",
+      "grouping_versions_about": "버전 그룹화에 대해",
+      "grouping_versions_all": "전체",
+      "grouping_versions_only_recent": "최근만",
+      "grouping_usage_title": "사용량",
+      "grouping_usage_about": "사용량 그룹화에 대해",
+      "grouping_usage_all": "전체",
+      "grouping_usage_most_used": "가장 많이 사용됨",
+      "recent_versions_only_tooltip": "지난 1년 이내에 게시된 버전만 표시합니다.",
+      "show_low_usage_tooltip": "전체 다운로드의 1% 미만인 버전 그룹을 포함합니다.",
+      "y_axis_label": "다운로드",
+      "filter_placeholder": "semver로 필터링 (예: ^3.0.0)",
+      "filter_invalid": "잘못된 semver 범위",
+      "filter_help": "Semver 범위 필터 도움말",
+      "filter_tooltip": "{link}을(를) 사용해 버전을 필터링합니다. 예를 들어 ^3.0.0은 모든 3.x 버전을 표시합니다.",
+      "filter_tooltip_link": "semver 범위",
+      "license_change_help": "라이선스 변경 세부 정보",
+      "license_change_warning": "이전 버전 이후 라이선스가 변경되었습니다.",
+      "license_change_record": "이 패키지의 라이선스가 \"{from}\"에서 \"{to}\"(으)로 변경되었습니다.",
+      "no_matches": "이 범위와 일치하는 버전이 없습니다",
+      "copy_alt": {
+        "per_version_analysis": "{version} 버전은 {downloads}회 다운로드되었습니다",
+        "general_description": "{package_name} 패키지의 {versions_count}개 {semver_grouping_mode} 버전에 대한 버전별 다운로드를 보여주는 막대 차트, {date_range_label} {first_version} 버전부터 {last_version} 버전까지. 가장 많이 다운로드된 버전은 {max_downloaded_version}이며 다운로드 수는 {max_version_downloads}입니다. {per_version_analysis}. {watermark}."
+      },
+      "page_title": "버전 히스토리",
+      "current_tags": "현재 태그",
+      "no_match_filter": "{filter}와(과) 일치하는 버전이 없습니다"
+    },
+    "timeline": {
+      "load_more": "더 불러오기",
+      "load_error": "타임라인을 불러오지 못했습니다. 나중에 다시 시도하세요.",
+      "size_increase": "설치 크기가 {percent}% 증가했습니다 ({size})",
+      "size_decrease": "설치 크기가 {percent}% 감소했습니다 ({size})",
+      "dep_increase": "의존성 {count}개 추가됨 | 의존성 {count}개 추가됨",
+      "dep_decrease": "의존성 {count}개 제거됨 | 의존성 {count}개 제거됨",
+      "license_change": "라이선스가 {from}에서 {to}(으)로 변경됨",
+      "esm_added": "모듈 타입이 ESM으로 변경됨",
+      "esm_removed": "모듈 타입이 ESM에서 CJS로 변경됨",
+      "types_added": "TypeScript 타입 추가됨",
+      "types_removed": "TypeScript 타입 제거됨",
+      "trusted_publisher_added": "trusted publishing 활성화됨",
+      "trusted_publisher_removed": "trusted publishing 제거됨",
+      "provenance_added": "provenance 활성화됨",
+      "provenance_removed": "provenance 제거됨",
+      "chart": {
+        "tab_aria_label": "지표 선택",
+        "dependency_size": "의존성 크기",
+        "other_dependencies": "기타",
+        "base_scale": "y축을 0부터 시작",
+        "zoom": "확대/축소",
+        "reset_minimap": "미니맵 초기화",
+        "ordered_versions": "안정 버전만",
+        "copy_alt": {
+          "key_changes": "주요 변경 사항: {version_events}.",
+          "version_events": "버전 {version}: {events}",
+          "general_description": "{package} 패키지의 {first} 버전부터 {last} 버전까지의 {metric}을(를) 보여주는 선 차트. {first} 버전의 {metric}은 {first_value}, {last} 버전은 {last_value}입니다 (전체 {overall_progress_percentage}%). {key_changes} {watermark}.",
+          "stackbar_segment_share": "{segment}: {value} ({percentage})",
+          "stackbar_top_segments": "{version}에서 가장 큰 세그먼트는 {segments}입니다.",
+          "stackbar_largest_increase": "가장 큰 증가는 {segment}이며, {delta} 증가했습니다.",
+          "stackbar_largest_decrease": "가장 큰 감소는 {segment}이며, {delta} 감소했습니다."
+        }
+      }
+    },
+    "dependencies": {
+      "title": "의존성 ({count}) | 의존성 ({count})",
+      "list_label": "패키지 의존성",
+      "show_all": "의존성 {count}개 표시 | 전체 의존성 {count}개 표시",
+      "optional": "선택적",
+      "view_vulnerabilities": "취약점 보기",
+      "outdated_major": "메이저 버전 {count}개 뒤처짐 (최신: {latest}) | 메이저 버전 {count}개 뒤처짐 (최신: {latest})",
+      "outdated_minor": "마이너 버전 {count}개 뒤처짐 (최신: {latest}) | 마이너 버전 {count}개 뒤처짐 (최신: {latest})",
+      "outdated_patch": "패치 업데이트 사용 가능 (최신: {latest})",
+      "has_replacement": "이 의존성에는 제안된 대체 항목이 있습니다",
+      "vulnerabilities_count": "취약점 {count}개 | 취약점 {count}개"
+    },
+    "peer_dependencies": {
+      "title": "피어 의존성 ({count}) | 피어 의존성 ({count})",
+      "list_label": "패키지 피어 의존성",
+      "show_all": "피어 의존성 {count}개 표시 | 전체 피어 의존성 {count}개 표시"
+    },
+    "optional_dependencies": {
+      "title": "선택적 의존성 ({count}) | 선택적 의존성 ({count})",
+      "list_label": "패키지 선택적 의존성",
+      "show_all": "선택적 의존성 {count}개 표시 | 전체 선택적 의존성 {count}개 표시"
+    },
+    "maintainers": {
+      "title": "관리자",
+      "list_label": "패키지 관리자",
+      "you": "(나)",
+      "via": "{teams}을(를) 통해",
+      "remove_owner": "{name}을(를) 소유자에서 제거",
+      "username_to_add": "소유자로 추가할 사용자 이름",
+      "username_placeholder": "사용자 이름...",
+      "add_button": "추가",
+      "cancel_add": "소유자 추가 취소",
+      "add_owner": "+ 소유자 추가",
+      "show_more": "({count}개 더 보기)",
+      "show_less": "(간략히 보기)",
+      "maintainer_template": "{avatar} {char126}{name}"
+    },
+    "trends": {
+      "chart_assistive_text": {
+        "keyboard_navigation_horizontal": "왼쪽 및 오른쪽 화살표 키를 사용해 데이터 포인트를 이동합니다.",
+        "keyboard_navigation_vertical": "위쪽 및 아래쪽 화살표 키를 사용해 데이터 포인트를 이동합니다.",
+        "table_available": "이 차트에 대한 데이터 표를 아래에서 확인할 수 있습니다.",
+        "table_caption": "차트 데이터 표"
+      },
+      "chart_view_toggle": "보기 전환",
+      "chart_view_combined": "통합 보기",
+      "chart_view_split": "분할 보기",
+      "granularity": "단위",
+      "granularity_daily": "일별",
+      "granularity_weekly": "주별",
+      "granularity_monthly": "월별",
+      "granularity_yearly": "연별",
+      "start_date": "시작",
+      "end_date": "종료",
+      "loading": "불러오는 중...",
+      "date_range": "{start} ~ {end}",
+      "date_range_multiline": "{start}\n~ {end}",
+      "download_file": "{fileType} 다운로드",
+      "toggle_annotator": "주석 도구 전환",
+      "toggle_stack_mode": "누적 모드 전환",
+      "open_options": "옵션 열기",
+      "close_options": "옵션 닫기",
+      "legend_estimation": "추정치",
+      "no_data": "사용 가능한 데이터 없음",
+      "y_axis_label": "{granularity} {facet}",
+      "facet": "항목",
+      "title": "트렌드",
+      "contributors_skip": "기여자에 표시되지 않음 (GitHub 저장소 없음):",
+      "items": {
+        "downloads": "다운로드",
+        "likes": "좋아요",
+        "contributors": "기여자"
+      },
+      "data_correction": "데이터 보정",
+      "average_window": "평균 구간",
+      "smoothing": "스무딩",
+      "prediction": "예측",
+      "known_anomalies": "알려진 이상치",
+      "known_anomalies_description": "봇이나 CI 문제로 인한 알려진 다운로드 급증 구간을 보간합니다.",
+      "known_anomalies_ranges": "이상치 구간",
+      "known_anomalies_range": "{start}부터 {end}까지",
+      "known_anomalies_range_named": "{packageName}: {start}부터 {end}까지",
+      "known_anomalies_none": "이 패키지에는 알려진 이상치가 없습니다. | 이 패키지들에는 알려진 이상치가 없습니다.",
+      "known_anomalies_contribute": "이상치 데이터 제공하기",
+      "apply_correction": "보정 적용",
+      "copy_alt": {
+        "trend_none": "거의 변화 없음",
+        "trend_strong": "강함",
+        "trend_weak": "약함",
+        "trend_undefined": "정의되지 않음 (데이터 부족)",
+        "button_label": "대체 텍스트 복사",
+        "watermark": "하단에 \"./npmx a fast, modern browser for the npm registry\"라는 워터마크가 있습니다",
+        "watermark_top": "상단에 \"./npmx a fast, modern browser for the npm registry\"라는 워터마크가 있습니다",
+        "analysis": "{package_name}은(는) {start_value}에서 시작해 {end_value}로 끝나며, 시간 구간당 다운로드 기울기 {downloads_slope}로 {trend} 추세를 보입니다",
+        "estimation": "최종 값은 현재 기간의 부분 데이터를 기반으로 한 추정치입니다.",
+        "estimations": "최종 값들은 현재 기간의 부분 데이터를 기반으로 한 추정치입니다.",
+        "compare": "다음 패키지에 대한 다운로드 비교 선 차트: {packages}.",
+        "single_package": "{package} 패키지의 다운로드 선 차트.",
+        "general_description": "Y축은 다운로드 수를 나타냅니다. X축은 {start_date}부터 {end_date}까지의 날짜 범위를 {granularity} 단위로 나타냅니다.{estimation_notice} {packages_analysis}. {watermark}.",
+        "facet_bar_general_description": "다음에 대한 가로 막대 차트: {packages}, {facet} 비교 ({description}). {facet_analysis} {watermark}.",
+        "facet_bar_analysis": "{package_name}의 값은 {value}입니다."
+      },
+      "embedding": {
+        "chart": "이 차트 삽입하기",
+        "copy_url": "이 URL을 복사해 차트를 웹사이트에 삽입하세요",
+        "preview": "미리보기",
+        "tip": "startDate와 endDate를 지정하지 않으면 차트는 기본적으로 최근 12개월을 표시합니다."
+      }
+    },
+    "downloads": {
+      "title": "주간 다운로드",
+      "version_distribution_title": "{version} 버전의 주간 다운로드",
+      "community_distribution": "커뮤니티 채택 분포 보기",
+      "subtitle": "모든 버전 합계",
+      "sparkline_nav_hint": "← → 사용"
+    },
+    "install_scripts": {
+      "title": "설치 스크립트",
+      "script_label": "(스크립트)",
+      "npx_packages": "npx 패키지 {count}개 | npx 패키지 {count}개",
+      "currently": "현재 {version}"
+    },
+    "playgrounds": {
+      "title": "사용해보기",
+      "choose": "플레이그라운드 선택"
+    },
+    "metrics": {
+      "esm": "ES Modules 지원",
+      "cjs": "CommonJS 지원",
+      "no_esm": "ES Modules 미지원",
+      "wasm": "WebAssembly 포함",
+      "types_label": "타입",
+      "types_included": "타입 포함됨",
+      "types_available": "{package}을(를) 통해 타입 사용 가능",
+      "no_types": "타입 없음"
+    },
+    "license": {
+      "view_spdx": "SPDX에서 라이선스 텍스트 보기",
+      "none": "없음"
+    },
+    "vulnerabilities": {
+      "tree_found": "{packages}/{total}개 패키지에서 취약점 {vulns}개 발견 | {packages}/{total}개 패키지에서 취약점 {vulns}개 발견",
+      "show_all_packages": "영향받는 패키지 {count}개 표시 | 영향받는 전체 패키지 {count}개 표시",
+      "path": "경로",
+      "more": "+{count}개 더",
+      "packages_failed": "패키지 {count}개를 확인할 수 없습니다 | 패키지 {count}개를 확인할 수 없습니다",
+      "scan_failed": "취약점을 검사할 수 없습니다",
+      "severity": {
+        "critical": "심각",
+        "high": "높음",
+        "moderate": "보통",
+        "low": "낮음"
+      },
+      "fixed_in_title": "{version} 버전에서 수정됨"
+    },
+    "deprecated": {
+      "label": "사용 중단됨",
+      "tree_found": "사용 중단된 의존성 {count}개 | 사용 중단된 의존성 {count}개",
+      "show_all": "사용 중단된 패키지 {count}개 표시 | 사용 중단된 전체 패키지 {count}개 표시"
+    },
+    "access": {
+      "title": "팀 접근 권한",
+      "refresh": "팀 접근 권한 새로고침",
+      "list_label": "팀 접근 권한 목록",
+      "owner": "소유자",
+      "rw": "읽기/쓰기(rw)",
+      "ro": "읽기 전용(ro)",
+      "revoke_access": "{name}의 접근 권한 취소",
+      "no_access": "설정된 팀 접근 권한이 없습니다",
+      "select_team_label": "팀 선택",
+      "loading_teams": "팀을 불러오는 중...",
+      "select_team": "팀 선택",
+      "permission_label": "권한 수준",
+      "permission": {
+        "read_only": "읽기 전용",
+        "read_write": "읽기/쓰기"
+      },
+      "grant_button": "부여",
+      "cancel_grant": "접근 권한 부여 취소",
+      "grant_access": "+ 팀 접근 권한 부여"
+    },
+    "list": {
+      "filter_label": "패키지 필터링",
+      "filter_placeholder": "패키지 필터링...",
+      "sort_label": "패키지 정렬",
+      "showing_count": "{total}개 중 {filtered}개 패키지 표시 중"
+    },
+    "skeleton": {
+      "loading": "패키지 세부 정보를 불러오는 중",
+      "maintainers": "관리자",
+      "keywords": "키워드",
+      "versions": "버전",
+      "dependencies": "의존성"
+    },
+    "sort": {
+      "downloads": "가장 많이 다운로드됨",
+      "published": "최근 게시됨",
+      "name_asc": "이름 (A-Z)",
+      "name_desc": "이름 (Z-A)"
+    },
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
+    },
+    "download": {
+      "button": "다운로드",
+      "tarball": ".tar.gz로 타볼 다운로드"
+    }
+  },
+  "leaderboard": {
+    "likes": {
+      "title": "좋아요 순위표",
+      "description": "현재 npmx에서 가장 많은 좋아요를 받은 상위 10개 패키지입니다.",
+      "rank": "순위",
+      "likes": "좋아요",
+      "unavailable_title": "아직 좋아요 순위표가 없습니다",
+      "unavailable_description": "지금 표시할 좋아요 순위표가 없습니다."
+    }
+  },
+  "connector": {
+    "modal": {
+      "title": "로컬 커넥터",
+      "connected": "연결됨",
+      "connected_as_user": "~{user}(으)로 연결됨",
+      "connected_hint": "이제 웹 UI에서 패키지와 조직을 관리할 수 있습니다.",
+      "disconnect": "연결 해제",
+      "run_hint": "관리 기능을 사용하려면 내 컴퓨터에서 커넥터를 실행하세요.",
+      "copy_command": "명령 복사",
+      "copied": "복사됨",
+      "paste_token": "아래에 토큰을 붙여넣어 연결하세요:",
+      "token_label": "토큰",
+      "token_placeholder": "여기에 토큰 붙여넣기...",
+      "advanced": "고급 옵션",
+      "port_label": "포트",
+      "warning": "경고",
+      "warning_text": "이렇게 하면 npmx가 내 npm CLI에 접근할 수 있습니다. 신뢰하는 사이트에만 연결하세요.",
+      "connect": "연결",
+      "connecting": "연결 중...",
+      "auto_open_url": "인증 페이지 자동으로 열기"
+    }
+  },
+  "operations": {
+    "queue": {
+      "title": "작업 대기열",
+      "clear_all": "모두 지우기",
+      "refresh": "작업 새로고침",
+      "empty": "대기 중인 작업이 없습니다",
+      "empty_hint": "패키지 또는 조직 페이지에서 작업을 추가하세요",
+      "active_label": "진행 중인 작업",
+      "otp_required": "OTP 필요",
+      "otp_prompt": "계속하려면 OTP를 입력하세요",
+      "otp_placeholder": "OTP 코드 입력...",
+      "otp_label": "일회용 비밀번호",
+      "retry_otp": "OTP로 재시도",
+      "retry_web_auth": "웹 인증으로 재시도",
+      "retrying": "재시도 중...",
+      "open_web_auth": "웹 인증 링크 열기",
+      "approve_operation": "작업 승인",
+      "remove_operation": "작업 제거",
+      "approve_all": "모두 승인",
+      "execute": "실행",
+      "executing": "실행 중...",
+      "log": "로그",
+      "log_label": "완료된 작업 로그",
+      "remove_from_log": "로그에서 제거"
+    }
+  },
+  "org": {
+    "teams": {
+      "title": "팀",
+      "refresh": "팀 새로고침",
+      "filter_label": "팀 필터링",
+      "filter_placeholder": "팀 필터링...",
+      "sort_by": "정렬 기준",
+      "loading": "팀을 불러오는 중...",
+      "no_teams": "팀을 찾을 수 없습니다",
+      "list_label": "조직 팀",
+      "delete_team": "{name} 팀 삭제",
+      "member_count": "멤버 {count}명 | 멤버 {count}명",
+      "members_of": "{team}의 멤버",
+      "no_members": "멤버가 없습니다",
+      "remove_user": "{user}을(를) 팀에서 제거",
+      "username_to_add": "{team}에 추가할 사용자 이름",
+      "username_placeholder": "사용자 이름...",
+      "add_button": "추가",
+      "cancel_add_user": "사용자 추가 취소",
+      "add_member": "+ 멤버 추가",
+      "team_name_label": "팀 이름",
+      "team_name_placeholder": "team-name...",
+      "create_button": "생성",
+      "no_match": "\"{query}\"와(과) 일치하는 팀이 없습니다",
+      "cancel_create": "팀 생성 취소",
+      "create_team": "+ 팀 생성"
+    },
+    "members": {
+      "title": "멤버",
+      "refresh": "멤버 새로고침",
+      "filter_label": "멤버 필터링",
+      "filter_placeholder": "멤버 필터링...",
+      "filter_by_role": "역할로 필터링",
+      "filter_by_team": "팀으로 필터링",
+      "all_teams": "모든 팀",
+      "sort_by": "정렬 기준",
+      "loading": "멤버를 불러오는 중...",
+      "no_members": "멤버를 찾을 수 없습니다",
+      "list_label": "조직 멤버",
+      "change_role_for": "{name}의 역할 변경",
+      "remove_from_org": "{name}을(를) 조직에서 제거",
+      "view_team": "{team} 팀 보기",
+      "no_match": "필터와 일치하는 멤버가 없습니다",
+      "username_label": "사용자 이름",
+      "username_placeholder": "사용자 이름...",
+      "role_label": "역할",
+      "role": {
+        "all": "전체",
+        "developer": "개발자",
+        "admin": "관리자",
+        "owner": "소유자"
+      },
+      "team_label": "팀",
+      "no_team": "팀 없음",
+      "add_button": "추가",
+      "cancel_add": "멤버 추가 취소",
+      "add_member": "+ 멤버 추가"
+    },
+    "public_packages": "공개 패키지 {count}개 | 공개 패키지 {count}개",
+    "page": {
+      "packages_title": "패키지",
+      "members_tab": "멤버",
+      "teams_tab": "팀",
+      "no_packages": "다음에 대한 공개 패키지를 찾을 수 없습니다",
+      "no_packages_hint": "이 조직이 존재하지 않거나 공개 패키지가 없을 수 있습니다.",
+      "failed_to_load": "조직 패키지를 불러오지 못했습니다",
+      "no_match": "\"{query}\"와(과) 일치하는 패키지가 없습니다",
+      "not_found": "조직을 찾을 수 없음",
+      "not_found_message": "조직 {'@'}{name}은(는) npm에 존재하지 않습니다"
+    }
+  },
+  "user": {
+    "combobox": {
+      "add_to_org_hint": "(조직에도 추가됩니다)",
+      "press_enter_to_add": "Enter를 눌러 {'@'}{username} 추가",
+      "default_placeholder": "사용자 이름...",
+      "suggestions_label": "사용자 제안"
+    },
+    "page": {
+      "packages_title": "패키지",
+      "no_packages": "다음에 대한 공개 패키지를 찾을 수 없습니다",
+      "no_packages_hint": "이 사용자가 존재하지 않거나 공개 패키지가 없을 수 있습니다.",
+      "failed_to_load": "사용자 패키지를 불러오지 못했습니다",
+      "no_match": "\"{query}\"와(과) 일치하는 패키지가 없습니다",
+      "filter_placeholder": "패키지 {count}개 필터링... | 패키지 {count}개 필터링..."
+    },
+    "orgs_page": {
+      "title": "조직",
+      "back_to_profile": "프로필로 돌아가기",
+      "connect_required": "조직을 보려면 로컬 CLI를 연결하세요.",
+      "connect_hint_prefix": "다음을 실행하세요",
+      "connect_hint_suffix": "시작하려면.",
+      "own_orgs_only": "자신의 조직만 볼 수 있습니다.",
+      "view_your_orgs": "내 조직 보기",
+      "loading": "조직을 불러오는 중...",
+      "empty": "조직을 찾을 수 없습니다.",
+      "empty_hint": "조직은 범위가 지정된(scoped) 패키지에서 감지됩니다.",
+      "count": "조직 {count}개 | 조직 {count}개",
+      "packages_count": "패키지 {count}개 | 패키지 {count}개"
+    }
+  },
+  "claim": {
+    "modal": {
+      "title": "패키지 이름 등록",
+      "success": "패키지가 등록되었습니다!",
+      "success_detail": "{name}{'@'}0.0.0이(가) npm에 게시되었습니다.",
+      "success_hint": "이제 npm publish를 사용해 이 패키지에 새 버전을 게시할 수 있습니다.",
+      "view_package": "패키지 보기",
+      "invalid_name": "잘못된 패키지 이름:",
+      "available": "이 이름은 사용할 수 있습니다!",
+      "taken": "이 이름은 이미 사용 중입니다.",
+      "missing_permission": "{'@'}{scope} 범위에 패키지를 추가할 권한이 없습니다.",
+      "similar_warning": "유사한 패키지가 존재합니다 - npm이 이 이름을 거부할 수 있습니다:",
+      "related": "관련 패키지:",
+      "scope_warning_title": "범위가 지정된 패키지 사용을 고려하세요",
+      "scope_warning_text": "범위가 없는 패키지 이름은 공유 자원입니다. 패키지를 게시하고 유지 관리할 계획이 있는 경우에만 이름을 등록하세요. 개인 또는 조직 프로젝트에는 {'@'}{username}/{name}와 같은 범위가 지정된 이름을 사용하세요.",
+      "connect_required": "이 패키지 이름을 등록하려면 로컬 커넥터에 연결하세요.",
+      "connect_button": "커넥터에 연결",
+      "publish_hint": "최소한의 플레이스홀더 패키지를 게시합니다.",
+      "preview_json": "package.json 미리보기",
+      "claim_button": "패키지 이름 등록",
+      "publishing": "게시 중...",
+      "checking": "사용 가능 여부 확인 중...",
+      "failed_to_check": "이름 사용 가능 여부를 확인하지 못했습니다",
+      "failed_to_claim": "패키지를 등록하지 못했습니다"
+    }
+  },
+  "code": {
+    "files_label": "파일",
+    "no_files": "이 디렉터리에 파일이 없습니다",
+    "lines": "{count}줄 | {count}줄",
+    "toggle_tree": "파일 트리 전환",
+    "close_tree": "파일 트리 닫기",
+    "copy_content": "파일 내용 복사",
+    "copy_link": "링크 복사",
+    "view_raw": "원본 파일 보기",
+    "toggle_container": "코드 컨테이너 너비 전환",
+    "open_raw_file": "원본 파일 열기",
+    "open_path_dropdown": "경로 세그먼트 드롭다운 열기",
+    "file_too_large": "파일이 너무 커서 미리 볼 수 없습니다",
+    "file_size_warning": "{size}은(는) 구문 강조 표시의 500KB 제한을 초과합니다",
+    "failed_to_load": "파일을 불러오지 못했습니다",
+    "unavailable_hint": "파일이 너무 크거나 사용할 수 없을 수 있습니다",
+    "version_required": "코드를 탐색하려면 버전이 필요합니다",
+    "go_to_package": "패키지로 이동",
+    "loading_tree": "파일 트리를 불러오는 중...",
+    "failed_to_load_tree": "이 패키지 버전의 파일을 불러오지 못했습니다",
+    "back_to_package": "패키지로 돌아가기",
+    "table": {
+      "name": "이름",
+      "size": "크기"
+    },
+    "markdown_view_mode": {
+      "preview": "미리보기",
+      "code": "코드"
+    },
+    "file_path": "파일 경로",
+    "binary_file": "바이너리 파일",
+    "binary_rendering_warning": "\"{contentType}\" 파일 형식은 미리보기를 지원하지 않습니다.",
+    "possibly_unnecessary": "게시된 패키지에서는 불필요할 수 있습니다"
+  },
+  "badges": {
+    "provenance": {
+      "verified": "검증됨",
+      "verified_title": "검증된 provenance",
+      "verified_via": "검증됨: {provider}를 통해 게시됨"
+    },
+    "jsr": {
+      "title": "JSR에서도 사용 가능"
+    }
+  },
+  "filters": {
+    "title": "필터",
+    "search": "검색",
+    "search_scope": "검색 범위",
+    "search_placeholder_name": "패키지 이름으로 필터링...",
+    "search_placeholder_description": "설명으로 필터링...",
+    "search_placeholder_keywords": "키워드로 필터링...",
+    "search_placeholder_all": "전체 검색 또는 name: desc: kw: 사용",
+    "scope_name": "이름",
+    "scope_name_description": "패키지 이름만 검색",
+    "scope_description": "설명",
+    "scope_description_description": "설명만 검색",
+    "scope_keywords": "키워드",
+    "scope_keywords_description": "키워드만 검색",
+    "scope_all": "전체",
+    "scope_all_description": "모든 필드 검색, name: desc: kw: 연산자 지원",
+    "weekly_downloads": "주간 다운로드",
+    "updated_within": "업데이트 기간",
+    "security": "보안",
+    "keywords": "키워드",
+    "more_keywords": "+{count}개 더",
+    "clear_all": "모두 지우기",
+    "remove_filter": "{label} 필터 제거",
+    "chips": {
+      "search": "검색",
+      "downloads": "다운로드",
+      "keyword": "키워드",
+      "security": "보안",
+      "updated": "업데이트"
+    },
+    "download_range": {
+      "any": "전체",
+      "lt100": "< 100",
+      "100_1k": "100 - 1천",
+      "1k_10k": "1천 - 1만",
+      "10k_100k": "1만 - 10만",
+      "gt100k": "> 10만"
+    },
+    "updated": {
+      "any": "전체 기간",
+      "week": "지난 1주",
+      "month": "지난 1개월",
+      "quarter": "지난 3개월",
+      "year": "지난 1년"
+    },
+    "security_options": {
+      "all": "모든 패키지",
+      "secure": "경고 없음",
+      "insecure": "경고 있음"
+    },
+    "view_selected": "선택 항목 보기",
+    "clear_selected_label": "선택 항목 지우기",
+    "sort": {
+      "label": "패키지 정렬",
+      "toggle_direction": "정렬 방향 전환",
+      "ascending": "오름차순",
+      "descending": "내림차순",
+      "relevance": "관련성",
+      "downloads_week": "다운로드/주",
+      "downloads_day": "다운로드/일",
+      "downloads_month": "다운로드/월",
+      "downloads_year": "다운로드/년",
+      "published": "최근 게시일",
+      "name": "이름"
+    },
+    "columns": {
+      "title": "열",
+      "show": "열 표시",
+      "reset": "기본값으로 재설정",
+      "coming_soon": "출시 예정",
+      "name": "이름",
+      "version": "버전",
+      "description": "설명",
+      "downloads": "다운로드/주",
+      "published": "최근 게시일",
+      "maintainers": "관리자",
+      "keywords": "키워드",
+      "security": "보안",
+      "selection": "패키지 선택"
+    },
+    "view_mode": {
+      "label": "보기 방식",
+      "cards": "카드 보기",
+      "table": "표 보기"
+    },
+    "pagination": {
+      "mode_label": "페이지 방식",
+      "infinite": "무한 스크롤",
+      "paginated": "페이지 나누기",
+      "items_per_page": "페이지당 항목 수",
+      "per_page": "페이지당 {count}개",
+      "showing": "{total} 중 {range}",
+      "previous": "이전 페이지",
+      "next": "다음 페이지",
+      "nav_label": "페이지 탐색"
+    },
+    "count": {
+      "showing_filtered": "{count}개 중 {filtered}개 | {count}개 중 {filtered}개",
+      "showing_all": "패키지 {count}개 | 패키지 {count}개",
+      "showing_paginated": "{count}개 중 {pageSize}개 | {count}개 중 {pageSize}개"
+    },
+    "table": {
+      "security_warning": "보안 경고",
+      "secure": "안전함",
+      "no_packages": "패키지를 찾을 수 없습니다"
+    }
+  },
+  "about": {
+    "title": "소개",
+    "heading": "소개",
+    "meta_description": "npmx는 npm 레지스트리를 위한 빠르고 모던한 브라우저입니다. npm 패키지를 탐색하기 위한 훌륭한 UX/DX를 제공합니다.",
+    "what_we_are": {
+      "title": "우리는 무엇인가",
+      "better_ux_dx": "훌륭한 UX/DX",
+      "admin_ui": "관리 UI",
+      "description": "npmx는 npm 패키지 레지스트리와 도구를 위한 {betterUxDx}입니다. 다크 모드, 키보드 탐색, 코드 탐색, {jsr}와 같은 대체 레지스트리 연동 등의 기능으로 패키지를 탐색할 수 있는 빠르고 모던한 인터페이스를 제공하기 위해 노력합니다.",
+      "admin_description": "또한 로컬 npm CLI를 기반으로 브라우저에서 패키지, 팀, 조직을 관리할 수 있는 훌륭한 {adminUi}를 제공하는 것을 목표로 합니다."
+    },
+    "what_we_are_not": {
+      "title": "우리는 무엇이 아닌가",
+      "not_package_manager": "패키지 매니저가 아닙니다.",
+      "not_registry": "레지스트리가 아닙니다.",
+      "registry_description": "우리는 패키지를 호스팅하지 않습니다. 그저 패키지를 둘러보는 빠르고 모던한 방법일 뿐입니다.",
+      "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}.",
+      "words": {
+        "already": "이미",
+        "people": "정말",
+        "building": "멋진",
+        "really": "패키지",
+        "cool": "매니저를",
+        "package": "만들고 있는",
+        "managers": "사람들이 있습니다"
+      }
+    },
+    "sponsors": {
+      "title": "스폰서",
+      "gold": "골드 스폰서",
+      "silver": "실버 스폰서"
+    },
+    "oss_partners": {
+      "title": "오픈소스 파트너"
+    },
+    "team": {
+      "title": "팀",
+      "core": "코어",
+      "maintainers": "관리자",
+      "role_core": "코어",
+      "role_steward": "스튜어드",
+      "role_maintainer": "관리자",
+      "sponsor": "스폰서",
+      "sponsor_aria": "GitHub에서 {name} 후원하기"
+    },
+    "contributors": {
+      "title": "...그리고 {count}명의 기여자 더 | ...그리고 {count}명의 기여자 더",
+      "description": "npmx는 완전한 오픈소스로, 놀라운 커뮤니티의 기여로 만들어졌습니다. 함께 참여해서 우리가 항상 원했던 npm 탐색 경험을 만들어 봐요.",
+      "loading": "기여자를 불러오는 중...",
+      "error": "기여자를 불러오지 못했습니다",
+      "view_profile": "{name}의 GitHub 프로필 보기"
+    },
+    "get_involved": {
+      "title": "참여하기",
+      "contribute": {
+        "title": "기여하기",
+        "description": "우리 모두가 원하는 npm 경험을 만드는 데 도움을 주세요.",
+        "cta": "GitHub에서 보기"
+      },
+      "community": {
+        "title": "커뮤니티 참여하기",
+        "description": "채팅하고, 질문하고, 아이디어를 나눠보세요.",
+        "cta": "Discord 참여하기"
+      },
+      "builders": {
+        "title": "npmx 빌드에 참여하기",
+        "description": "npmx의 미래를 만들어가는 빌더들과 함께하세요.",
+        "cta": "빌더스 Discord 참여하기"
+      },
+      "follow": {
+        "title": "최신 소식 받기",
+        "description": "npmx의 최신 소식을 확인하세요.",
+        "cta": "Bluesky 팔로우하기"
+      }
+    }
+  },
+  "sponsors_page": {
+    "title": "스폰서",
+    "heading": "스폰서",
+    "meta_description": "npmx를 후원하고 보안, 신뢰, 최적화, 연구 분야의 생태계 활동을 가속화하는 데 도움을 주세요.",
+    "intro": "npmx를 후원하고 개발자와 관리자를 위해 우리가 진행하는 생태계 활동을 성장시키는 데 도움을 주세요.",
+    "what_we_do": {
+      "title": "우리가 하는 일",
+      "description": "우리는 일상적인 개발에서 사용하는 도구들의 보안, 신뢰, 최적화, 연구와 관련된 문제를 빠르고 편리하며 높은 품질로 해결하는 생태계를 만들고 있습니다. 이 프로젝트는 개발자가 개발자를 위해 만듭니다. 널리 사용되는 라이브러리의 제작자로서, 우리는 팀의 요구 사항을 이해하고 관리자와 프로젝트가 가장 필요로 하는 것을 적극적으로 연구합니다."
+    },
+    "what_support_means": {
+      "title": "후원의 의미",
+      "description": "우리의 계획과 연결은 계속 성장하고 있으며, 우리가 만든 것을 공유하고 다른 사람들로부터 배우고자 하는 열망도 커지고 있습니다. 여러분의 후원은 프로젝트, 외부 강연, 콘퍼런스, 그리고 더 넓은 생태계에 자금을 지원하며, 무엇보다 우리 커뮤니티를 계속 성장시킬 수 있도록 도와줍니다."
+    },
+    "cta": "후원 등급 보기",
+    "community_growth_footnote": "* {link}의 2026년 1분기 연구에 따름.",
+    "what_this_means_for_you": {
+      "title": "여러분에게 의미하는 것",
+      "description": "npmx는 단순히 개발자 경험을 개선하고 중요한 일상적인 공백을 메우는 것 이상입니다. 출시 후 첫 6개월 동안 이미 수천 개의 팀과 수많은 개발자에게 기본 도구가 되었습니다. 여러분의 팀을 위한 더 안정적인 도구뿐만 아니라, 지속적으로 성장하는 최상위 엔지니어들 앞에서 노출도 얻을 수 있습니다.",
+      "cards": {
+        "people": {
+          "contributors": "기여자",
+          "community_members": "커뮤니티 멤버"
+        },
+        "visitors": {
+          "description": "월간 순 방문자"
+        },
+        "stars": {
+          "title": "스타"
+        },
+        "community": {
+          "title": "빠르게 성장 중",
+          "description": "우리는 이 생태계에서 가장 빠르게 성장하는 커뮤니티 중 하나입니다"
+        },
+        "adoption": {
+          "title": "채택",
+          "description": "콘퍼런스, 강연, 기사에 사용되는 차트가 우리 데이터를 기반으로 합니다"
+        },
+        "default_source": {
+          "title": "기본 소스",
+          "description": "pnpm이 npmx를 기본 소스로 설정했으며, 많은 패키지가 npmx로 연결되도록 구성되었습니다"
+        }
+      }
+    },
+    "tiers": {
+      "title": "후원 등급",
+      "per_month": "/월",
+      "custom": "맞춤",
+      "silver": {
+        "name": "실버"
+      },
+      "gold": {
+        "name": "골드"
+      },
+      "platinum": {
+        "name": "플래티넘"
+      }
+    }
+  },
+  "account_menu": {
+    "connect": "연결",
+    "account": "계정",
+    "npm_cli": "npm CLI",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "패키지 및 조직 관리",
+    "atmosphere_desc": "소셜 기능 및 신원",
+    "connect_npm_cli": "npm CLI에 연결",
+    "connect_atmosphere": "Atmosphere에 연결",
+    "connecting": "연결 중...",
+    "ops": "작업 {count}개 | 작업 {count}개"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosphere",
+      "connected_as": "{'@'}{handle}(으)로 연결됨",
+      "disconnect": "연결 해제",
+      "connect_prompt": "Atmosphere 계정으로 연결하세요",
+      "handle_label": "핸들",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "연결",
+      "create_account": "새 계정 만들기",
+      "connect_bluesky": "Bluesky로 연결",
+      "what_is_atmosphere": "Atmosphere 계정이란?",
+      "atmosphere_explanation": "{npmx}는 {atproto}를 사용해 다양한 소셜 기능을 지원하며, 사용자가 자신의 데이터를 소유하고 호환되는 모든 애플리케이션에서 하나의 계정을 사용할 수 있게 합니다. 계정을 만들면 동일한 계정으로 {bluesky}, {tangled} 같은 다른 앱도 사용할 수 있습니다.",
+      "default_input_error": "유효한 핸들, DID 또는 전체 PDS URL을 입력하세요",
+      "profile": "프로필"
+    }
+  },
+  "header": {
+    "home": "npmx 홈",
+    "packages": "패키지",
+    "packages_dropdown": {
+      "title": "내 패키지",
+      "loading": "불러오는 중...",
+      "error": "패키지를 불러오지 못했습니다",
+      "empty": "패키지를 찾을 수 없습니다",
+      "view_all": "모두 보기"
+    },
+    "orgs": "조직",
+    "orgs_dropdown": {
+      "title": "내 조직",
+      "loading": "불러오는 중...",
+      "error": "조직을 불러오지 못했습니다",
+      "empty": "조직을 찾을 수 없습니다",
+      "view_all": "모두 보기"
+    },
+    "pr": "GitHub 풀 리퀘스트 #{prNumber} 열기"
+  },
+  "compare": {
+    "packages": {
+      "title": "패키지 비교",
+      "tagline": "npm 패키지를 나란히 비교해 적합한 패키지를 선택하세요.",
+      "meta_title": "{packages} 비교 - npmx",
+      "meta_title_empty": "패키지 비교 - npmx",
+      "meta_description": "{packages} 나란히 비교",
+      "meta_description_empty": "npm 패키지를 나란히 비교",
+      "section_packages": "패키지",
+      "section_facets": "항목",
+      "section_comparison": "비교",
+      "copy_as_markdown": "표 복사",
+      "loading": "패키지 데이터를 불러오는 중...",
+      "error": "패키지 데이터를 불러오지 못했습니다. 다시 시도하세요.",
+      "empty_title": "비교할 패키지를 선택하세요",
+      "empty_description": "위에서 패키지를 2개 이상 검색해 추가하면 지표를 나란히 비교할 수 있습니다.",
+      "table_view": "표",
+      "charts_view": "차트",
+      "no_chartable_data": "선택한 항목에 대해 차트로 표시할 데이터가 없습니다.",
+      "bar_chart_nav_hint": "↑ ↓ 사용",
+      "line_chart_nav_hint": "← → 사용"
+    },
+    "selector": {
+      "search_label": "패키지 검색",
+      "search_first": "패키지 검색...",
+      "search_add": "다른 패키지 추가...",
+      "searching": "검색 중...",
+      "remove_package": "{package} 제거",
+      "packages_selected": "{count}/{max}개 패키지 선택됨.",
+      "add_hint": "비교하려면 패키지를 2개 이상 추가하세요."
+    },
+    "scatter_chart": {
+      "title": "{x} 대 {y} 비교",
+      "freshness_score": "신선도 점수",
+      "copy_alt": {
+        "analysis": "{package} : {x_name} ({x_value}) 및 {y_name} ({y_value})",
+        "description": "{packages} 패키지에 대한 {x_name}과(와) {y_name}을(를) 매핑한 산점도 차트. {analysis}. {watermark}"
+      },
+      "filename": "{x}-vs-{y}-scatter-chart",
+      "x_axis": "X축 ↦",
+      "y_axis": "Y축 ↥"
+    },
+    "no_dependency": {
+      "label": "(의존성 없음)",
+      "typeahead_title": "제임스라면 어떻게 했을까?",
+      "typeahead_description": "의존성을 사용하지 않는 것과 비교해보세요! e18e가 인정했습니다.",
+      "tooltip_title": "의존성이 필요하지 않을 수도 있습니다",
+      "tooltip_description": "의존성을 사용하지 않는 것과 비교해보세요! {link}에서는 네이티브 API나 더 간단한 대안으로 대체할 수 있는 패키지 목록을 관리합니다.",
+      "e18e_community": "e18e 커뮤니티",
+      "add_column": "비교에 의존성 없음 열 추가"
+    },
+    "facets": {
+      "all": "전체",
+      "none": "없음",
+      "select_all_category_facets": "{category}의 모든 항목 선택",
+      "deselect_all_category_facets": "{category}의 모든 항목 선택 해제",
+      "selected_all_category_facets": "{category}의 모든 항목이 선택됨",
+      "deselected_all_category_facets": "{category}의 모든 항목 선택이 해제됨",
+      "coming_soon": "출시 예정",
+      "select_all": "모든 항목 선택",
+      "deselect_all": "모든 항목 선택 해제",
+      "binary_only_tooltip": "이 패키지는 바이너리만 노출하고 export가 없습니다",
+      "categories": {
+        "performance": "성능",
+        "health": "상태",
+        "compatibility": "호환성",
+        "security": "보안 및 컴플라이언스"
+      },
+      "items": {
+        "packageSize": {
+          "label": "패키지 크기",
+          "description": "패키지 자체의 크기(압축 해제)"
+        },
+        "installSize": {
+          "label": "설치 크기",
+          "description": "모든 의존성을 포함한 전체 설치 크기"
+        },
+        "dependencies": {
+          "label": "직접 의존성",
+          "description": "직접 의존성 개수"
+        },
+        "totalDependencies": {
+          "label": "전체 의존성",
+          "description": "전이 의존성을 포함한 전체 의존성 개수"
+        },
+        "downloads": {
+          "label": "다운로드/주",
+          "description": "주간 다운로드 수"
+        },
+        "totalLikes": {
+          "label": "좋아요",
+          "description": "좋아요 수"
+        },
+        "lastUpdated": {
+          "label": "게시일",
+          "description": "이 버전이 게시된 시점"
+        },
+        "deprecated": {
+          "label": "사용 중단됨?",
+          "description": "패키지가 사용 중단되었는지 여부"
+        },
+        "engines": {
+          "label": "엔진",
+          "description": "Node.js 버전 요구 사항"
+        },
+        "types": {
+          "label": "타입",
+          "description": "TypeScript 타입 정의"
+        },
+        "moduleFormat": {
+          "label": "모듈 형식",
+          "description": "ESM/CJS 지원"
+        },
+        "license": {
+          "label": "라이선스",
+          "description": "패키지 라이선스"
+        },
+        "vulnerabilities": {
+          "label": "취약점",
+          "description": "알려진 보안 취약점"
+        },
+        "githubStars": {
+          "label": "GitHub 스타",
+          "description": "GitHub 저장소의 스타 수"
+        },
+        "githubForks": {
+          "label": "GitHub 포크",
+          "description": "GitHub 저장소의 포크 수"
+        },
+        "githubIssues": {
+          "label": "GitHub 이슈",
+          "description": "GitHub 저장소의 이슈 수"
+        },
+        "createdAt": {
+          "label": "생성일",
+          "description": "패키지가 생성된 시점"
+        }
+      },
+      "values": {
+        "any": "전체",
+        "none": "없음",
+        "unknown": "알 수 없음",
+        "deprecated": "사용 중단됨",
+        "not_deprecated": "아니요",
+        "types_included": "포함됨",
+        "types_none": "없음",
+        "vulnerabilities_summary": "{count}개 ({critical}심각/{high}높음)",
+        "up_to_you": "선택은 자유!"
+      },
+      "trends": {
+        "title": "트렌드 비교"
+      }
+    },
+    "file_changes": "파일 변경 사항",
+    "files_count": "파일 {count}개 | 파일 {count}개",
+    "lines_hidden": "숨겨진 줄 {count}개 | 숨겨진 줄 {count}개",
+    "compare_versions": "차이",
+    "compare_versions_title": "최신 버전과 비교",
+    "comparing_versions_label": "버전 비교 중...",
+    "version_back_to_package": "패키지로 돌아가기",
+    "version_error_message": "버전을 비교하지 못했습니다.",
+    "version_invalid_url_format": {
+      "hint": "잘못된 비교 URL입니다. 다음 형식을 사용하세요: {0}",
+      "from_version": "시작",
+      "to_version": "끝"
+    },
+    "version_selector_title": "다른 버전과 비교",
+    "summary": "요약",
+    "deps_count": "의존성 {count}개 | 의존성 {count}개",
+    "dependencies": "의존성",
+    "dev_dependencies": "개발 의존성",
+    "peer_dependencies": "피어 의존성",
+    "optional_dependencies": "선택적 의존성",
+    "no_dependency_changes": "의존성 변경 사항 없음",
+    "file_filter_option": {
+      "all": "전체 ({count})",
+      "added": "추가됨 ({count})",
+      "removed": "제거됨 ({count})",
+      "modified": "수정됨 ({count})"
+    },
+    "search_files_placeholder": "파일 검색...",
+    "no_files_all": "파일 없음",
+    "no_files_search": "\"{query}\"와(과) 일치하는 파일이 없습니다",
+    "no_files_filtered": "{filter} 파일 없음",
+    "filter": {
+      "added": "추가됨",
+      "removed": "제거됨",
+      "modified": "수정됨"
+    },
+    "files_button": "파일",
+    "select_file_prompt": "사이드바에서 파일을 선택해 차이를 확인하세요",
+    "close_files_panel": "파일 패널 닫기",
+    "filter_files_label": "변경 유형별로 파일 필터링",
+    "change_ratio": "변경 비율",
+    "char_edits": "문자 편집",
+    "diff_distance": "차이 거리",
+    "diff_truncated": "성능을 위해 차이가 잘렸습니다. 처음 변경된 줄만 표시합니다.",
+    "large_diff_mode": "대용량 파일 차이는 성능을 위해 인라인 편집 병합이 비활성화된 상태로 표시됩니다.",
+    "large_diff_options_disabled": "대용량 파일 모드에서는 성능을 위해 인라인 편집 병합이 비활성화됩니다.",
+    "loading_diff": "차이를 불러오는 중...",
+    "loading_diff_error": "차이를 불러오지 못했습니다",
+    "merge_modified_lines": "수정된 줄 병합",
+    "no_content_changes": "내용 변경 사항이 감지되지 않았습니다",
+    "options": "옵션",
+    "view_file": "파일 보기",
+    "view_in_code_browser": "코드 브라우저에서 보기",
+    "word_wrap": "자동 줄바꿈"
+  },
+  "pds": {
+    "title": "npmx.social",
+    "meta_description": "npmx 커뮤니티를 위한 공식 AT Protocol 개인 데이터 서버(PDS)입니다.",
+    "join": {
+      "title": "커뮤니티 참여하기",
+      "description": "atmosphere에서 처음 계정을 만들든, 기존 계정을 이전하든 여러분을 환영합니다. 핸들, 게시물, 팔로워를 잃지 않고 현재 계정을 이전할 수 있습니다.",
+      "migrate": "PDS MOOver로 이전하기"
+    },
+    "server": {
+      "title": "서버 세부 정보",
+      "location_label": "위치:",
+      "location_value": "독일 뉘른베르크",
+      "infrastructure_label": "인프라:",
+      "infrastructure_value": "Hetzner에서 호스팅",
+      "privacy_label": "개인정보:",
+      "privacy_value": "엄격한 EU 개인정보 보호법 적용",
+      "learn_more": "npmx가 Atmosphere를 사용하는 방법 알아보기"
+    },
+    "community": {
+      "title": "여기 계신 분들",
+      "description": "이미 npmx.social을 홈으로 삼고 있는 {count}개 계정 중 일부:",
+      "loading": "PDS 커뮤니티를 불러오는 중...",
+      "error": "PDS 커뮤니티를 불러오지 못했습니다.",
+      "empty": "표시할 커뮤니티 멤버가 없습니다.",
+      "view_profile": "{handle}의 프로필 보기",
+      "new_accounts": "...그리고 atmosphere에 새로 합류한 {count}명 더"
+    }
+  },
+  "privacy_policy": {
+    "title": "개인정보 처리방침",
+    "last_updated": "최종 업데이트: {date}",
+    "welcome": "{app}에 오신 것을 환영합니다. 우리는 여러분의 개인정보를 보호하기 위해 최선을 다하고 있습니다. 이 정책은 우리가 수집하는 데이터, 사용 방법, 그리고 여러분의 정보에 관한 권리를 설명합니다.",
+    "cookies": {
+      "what_are": {
+        "title": "쿠키란 무엇인가요?",
+        "p1": "쿠키는 웹사이트를 방문할 때 기기에 저장되는 작은 텍스트 파일입니다. 특정 설정과 기본 설정을 기억해 탐색 경험을 향상시키는 목적으로 사용됩니다."
+      },
+      "types": {
+        "title": "어떤 쿠키를 사용하나요?",
+        "p1": "우리는 사이트 기능에 반드시 필요한 목적으로만 {bold}를 사용합니다. 타사 쿠키나 광고 쿠키는 사용하지 않습니다.",
+        "bold": "필수 기술 쿠키",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": ":",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "이 쿠키는 호스팅 제공업체(Vercel)가 스큐 방지(skew protection)를 위해 사용합니다. 탐색 중 새 업데이트가 배포되더라도 올바른 배포 버전에서 자산을 가져오도록 보장합니다. 사용자를 추적하지 않습니다.",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "이것은 우리의 보안 세션 쿠키입니다. Atmosphere 계정을 연결할 때 OAuth 액세스 토큰을 저장합니다. 인증된 세션을 유지하는 데 필수적입니다."
+      },
+      "local_storage": {
+        "title": "로컬 스토리지",
+        "p1": "세션 쿠키 외에도, 브라우저의 {bold}를 사용해 표시 설정을 저장합니다. 이를 통해 테마(라이트/다크)와 선택한 일부 {settings}을(를) 기억해 매번 다시 설정할 필요가 없도록 합니다.",
+        "bold": "로컬 스토리지",
+        "p2": "이 정보는 순수하게 기능적인 목적으로만 기기에 저장되며, {bold2}. 우리는 웹사이트에서의 경험을 개선하기 위한 용도로만 이를 사용합니다.",
+        "bold2": "개인 데이터를 포함하지 않으며 사용자를 추적하는 데 사용되지 않습니다",
+        "settings": "설정"
+      },
+      "management": {
+        "title": "쿠키 관리",
+        "p1": "브라우저를 설정해 쿠키를 허용, 거부 또는 삭제할 수 있습니다. 다만 {bold} 점을 참고하세요.",
+        "bold": "필수 쿠키를 거부하면 애플리케이션에 완전히 접근하지 못할 수 있습니다",
+        "p2": "가장 많이 사용되는 브라우저의 쿠키 관리 방법에 대한 링크는 다음과 같습니다:",
+        "chrome": "Google Chrome (새 창에서 열림)",
+        "firefox": "Mozilla Firefox (새 창에서 열림)",
+        "edge": "Microsoft Edge (새 창에서 열림)"
+      }
+    },
+    "analytics": {
+      "title": "분석",
+      "p1": "방문자가 우리 웹사이트를 어떻게 사용하는지 파악하기 위해 {bold}를 사용합니다. 이는 사용자 경험을 개선하고 문제를 파악하는 데 도움이 됩니다.",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analytics는 개인정보 보호를 염두에 두고 설계되었습니다:",
+      "li1": "쿠키를 사용하지 않습니다",
+      "li2": "개인 식별자를 수집하지 않습니다",
+      "li3": "웹사이트 간 사용자를 추적하지 않습니다",
+      "li4": "모든 데이터는 집계되고 익명화됩니다",
+      "p3": "수집되는 정보는 페이지 URL, 리퍼러, 국가/지역, 기기 유형, 브라우저, 운영체제뿐입니다. 이 데이터로는 개별 사용자를 식별할 수 없습니다."
+    },
+    "authenticated": {
+      "title": "인증된 사용자",
+      "p1": "{bold} 계정을 npmx에 연결하면, OAuth 액세스 토큰을 안전한 HTTP 전용 세션 쿠키에 저장합니다. 이 토큰은 오직 사용자를 대신해 요청을 인증하는 데에만 사용됩니다.",
+      "bold": "Atmosphere",
+      "p2": "우리는 자격 증명을 저장하지 않으며, 사용 중인 기능을 제공하는 데 필요한 범위 이상의 데이터에 접근하지 않습니다. {settings} 페이지에서 언제든지 계정 연결을 해제할 수 있습니다.",
+      "settings": "설정"
+    },
+    "data_retention": {
+      "title": "데이터 보관",
+      "p1": "세션 쿠키는 브라우저를 닫거나 일정 기간 활동이 없으면 자동으로 삭제됩니다. 로컬 스토리지 설정은 브라우저 데이터를 지울 때까지 기기에 남아 있습니다. 분석 데이터는 집계된 형태로 보관되며 개별 사용자와 연결될 수 없습니다."
+    },
+    "your_rights": {
+      "title": "여러분의 권리",
+      "p1": "여러분에게는 다음과 같은 권리가 있습니다:",
+      "li1": "우리가 수집하는 데이터에 대한 정보에 접근할 권리",
+      "li2": "언제든지 로컬 스토리지와 쿠키를 지울 권리",
+      "li3": "인증된 세션 연결을 해제할 권리",
+      "li4": "우리의 데이터 처리 방식에 대한 정보를 요청할 권리",
+      "p2": "우리는 개인 데이터를 수집하지 않으므로, 일반적으로 삭제하거나 내보낼 개인 정보가 없습니다."
+    },
+    "contact": {
+      "title": "문의하기",
+      "p1": "이 개인정보 처리방침에 대해 궁금한 점이나 우려 사항이 있다면 {link}에 이슈를 등록해 문의해 주세요.",
+      "link": "GitHub 저장소"
+    },
+    "changes": {
+      "title": "정책 변경",
+      "p1": "이 개인정보 처리방침은 수시로 업데이트될 수 있습니다. 변경 사항은 업데이트된 개정일과 함께 이 페이지에 게시됩니다."
+    }
+  },
+  "a11y": {
+    "title": "접근성",
+    "footer_title": "접근성",
+    "welcome": "우리는 {app}가 최대한 많은 사람이 사용할 수 있기를 바랍니다.",
+    "approach": {
+      "title": "우리의 접근 방식",
+      "p1": "우리는 웹 콘텐츠 접근성 지침(WCAG) 2.2를 따르려고 노력하며, 기능을 구축할 때 이를 참고 기준으로 삼습니다. 우리는 어떤 수준의 WCAG 준수도 완전히 보장한다고 주장하지 않습니다 — 접근성은 지속적인 과정이며 항상 더 개선할 부분이 있습니다.",
+      "p2": "이 사이트는 {about}입니다. 접근성 개선은 정기적인 개발의 일환으로 점진적으로 이루어집니다.",
+      "about_link": "오픈소스, 커뮤니티 중심 프로젝트"
+    },
+    "measures": {
+      "title": "우리가 하는 일",
+      "p1": "사이트 전반에서 우리가 지향하는 몇 가지 사항입니다:",
+      "li1": "적절한 곳에 시맨틱 HTML과 ARIA 속성을 사용합니다.",
+      "li2": "상대적 텍스트 크기를 사용해 브라우저에서 크기를 조정할 수 있도록 합니다.",
+      "li3": "인터페이스 전반에서 키보드 탐색을 지원합니다.",
+      "li4": "prefers-reduced-motion 및 prefers-color-scheme 미디어 쿼리를 존중합니다.",
+      "li5": "충분한 색상 대비를 고려해 디자인합니다.",
+      "li6": "일부 인터랙티브 기능은 JavaScript가 필요하지만, 필수 콘텐츠는 JavaScript 없이도 사용할 수 있도록 합니다."
+    },
+    "limitations": {
+      "title": "알려진 제한 사항",
+      "p1": "특히 패키지 README와 같은 타사 콘텐츠 등, 사이트 일부는 접근성 기준을 충족하지 못할 수 있습니다. 우리는 이러한 부분을 지속적으로 개선하기 위해 노력하고 있습니다."
+    },
+    "contact": {
+      "title": "피드백",
+      "p1": "{app}에서 접근성 장벽을 발견하시면 {link}에 이슈를 등록해 알려주세요. 우리는 이러한 제보를 진지하게 받아들이고 최선을 다해 해결하겠습니다.",
+      "link": "GitHub 저장소"
+    }
+  },
+  "translation_status": {
+    "title": "번역 현황",
+    "generated_at": "생성일: {date}",
+    "welcome": "아래 목록에 있는 언어 중 하나로 {npmx} 번역을 돕고 싶으시다면, 제대로 찾아오셨습니다! 이 자동 업데이트 페이지에는 지금 여러분의 도움이 필요한 모든 콘텐츠가 표시됩니다.",
+    "p1": "우리는 {lang}를 기본 언어로 사용하며, 총 {count}가 있습니다. 번역 추가를 돕고 싶다면 {bylang}에서 언어를 찾아 세부 정보를 펼쳐보세요.",
+    "p1_lang": "미국 영어 (en-US)",
+    "p1_count": "메시지 없음 | 메시지 1개 | 메시지 {count}개",
+    "p2": "시작하기 전에 번역 과정과 참여 방법을 알아보려면 {guide}를 읽어주세요.",
+    "guide": "현지화(i18n) 가이드",
+    "by_locale": "언어별 번역 진행률",
+    "by_file": "파일별 번역 진행률",
+    "complete_text": "이 번역은 완료되었습니다. 훌륭해요!",
+    "missing_text": "누락",
+    "missing_keys": "누락된 번역이 없습니다 | 누락된 번역 | 누락된 번역",
+    "progress_label": "{locale}의 진행 상태",
+    "table": {
+      "file": "파일",
+      "status": "상태",
+      "error": "파일 목록을 불러오는 중 오류가 발생했습니다.",
+      "empty": "파일을 찾을 수 없습니다",
+      "file_link": "GitHub에서 {file} ({lang}) 편집"
+    }
+  },
+  "vacations": {
+    "title": "휴가 중",
+    "meta_description": "npmx 팀이 재충전 중이었습니다. Discord는 일주일 후 다시 열렸습니다.",
+    "heading": "재충전",
+    "subtitle": "우리는 팀원 {some}의 수면 시간을 갉아먹을 정도의 속도로 npmx를 만들고 있었습니다. 그게 당연한 일이 되길 원하지 않았어요! 그래서 함께 일주일간 휴식을 가졌습니다.",
+    "illustration_alt": "한 줄로 늘어선 아늑한 아이콘들",
+    "poke_log": "모닥불 뒤적이기",
+    "what": {
+      "title": "무슨 일이 있었나요",
+      "p1": "Discord는 {dates} 동안 닫혀 있었습니다.",
+      "dates": "2월 14일 – 21일",
+      "p2": "모든 초대 링크가 사라지고 채널이 잠겼습니다 — 계속 어울리고 싶은 분들을 위해 열어둔 {garden}은 예외였습니다.",
+      "garden": "#garden"
+    },
+    "meantime": {
+      "title": "그동안",
+      "p1": "{site}와(과) {repo}는 계속 열려 있었습니다 – 사람들은 여전히 몰두해서 이슈를 등록하고 몇 개의 PR을 올렸지만, 대부분은 아늑한 벽난로 근처에서 시간을 보냈습니다.",
+      "repo_link": "저장소"
+    },
+    "return": {
+      "title": "우리가 돌아왔습니다!",
+      "p1": "재충전을 마치고 3월 3일까지 마지막 스퍼트를 낼 준비가 되어 돌아왔습니다. 업데이트 소식은 {social}에서 확인하세요.",
+      "social_link": "Bluesky에서 팔로우하기"
+    },
+    "stats": {
+      "contributors": "기여자",
+      "commits": "커밋",
+      "pr": "병합된 PR",
+      "subtitle": {
+        "some": "일부",
+        "all": "전체"
+      }
+    }
+  },
+  "action_bar": {
+    "title": "작업 바",
+    "selection": "0개 선택됨 | 1개 선택됨 | {count}개 선택됨",
+    "shortcut": "\"{key}\"를 눌러 작업에 포커스",
+    "button_close_aria_label": "작업 바 닫기"
+  },
+  "logo_menu": {
+    "copy_svg": "로고를 SVG로 복사",
+    "copied": "복사됨!",
+    "browse_brand": "브랜드 키트 둘러보기"
+  },
+  "brand": {
+    "title": "브랜드",
+    "heading": "브랜드",
+    "meta_description": "언론 및 미디어에서 사용할 npmx 브랜드 가이드라인, 로고, 색상, 타이포그래피.",
+    "intro": "프로젝트, 기사, 미디어에서 npmx 브랜드를 사용하기 위한 자료와 가이드라인입니다.",
+    "logos": {
+      "title": "로고",
+      "description": "SVG와 PNG 형식으로 npmx 로고를 다운로드하세요. 배경에 맞는 버전을 사용하세요.",
+      "wordmark": "전체 워드마크",
+      "wordmark_alt": "어두운 배경에 파란색 슬래시가 있는 npmx 전체 워드마크 로고",
+      "wordmark_light_alt": "밝은 배경에 강조 슬래시가 있는 npmx 전체 워드마크 로고",
+      "mark": "로고 마크",
+      "mark_alt": "어두운 배경에 점과 슬래시가 있는 npmx 로고 마크",
+      "mark_light_alt": "밝은 배경에 점과 슬래시가 있는 npmx 로고 마크",
+      "on_dark": "다크 배경용",
+      "on_light": "라이트 배경용",
+      "download_svg": "SVG",
+      "download_png": "PNG",
+      "download_svg_aria": "{name}을(를) SVG로 다운로드",
+      "download_png_aria": "{name}을(를) PNG로 다운로드"
+    },
+    "customize": {
+      "title": "로고 커스터마이즈",
+      "description": "강조 색상과 배경으로 npmx 로고를 미리 보세요. 미리보기는 현재 설정을 반영합니다 — 색상을 선택하고 배경을 전환한 후 다운로드하세요.",
+      "accent_label": "강조",
+      "bg_label": "배경",
+      "download_svg_aria": "커스터마이즈된 로고를 SVG로 다운로드",
+      "download_png_aria": "커스터마이즈된 로고를 PNG로 다운로드"
+    },
+    "typography": {
+      "title": "타이포그래피",
+      "description": "npmx는 인터페이스 텍스트와 코드 모두에 Vercel의 Geist 글꼴 패밀리를 사용합니다.",
+      "sans": "Geist Sans",
+      "sans_desc": "본문 텍스트와 UI 요소에 사용됩니다.",
+      "mono": "Geist Mono",
+      "mono_desc": "코드, 제목, 기술 콘텐츠에 사용됩니다.",
+      "pangram": "The quick brown fox jumps over the lazy dog",
+      "numbers": "0123456789"
+    },
+    "guidelines": {
+      "title": "잠깐 안내드립니다",
+      "message": "접근성은 우리에게 중요하며, 여러분도 이 비전에 함께해 주시길 바랍니다. 언급된 미디어를 사용할 때는 배경과 충분한 대비를 확보하고, 24px보다 작게 사용하지 마세요. 프로젝트에 대한 다른 자료나 추가 정보가 필요하면 {link}로 편하게 연락해 주세요.",
+      "discord_link_text": "chat.npmx.dev"
+    }
+  },
+  "alt_logo_kawaii": "귀엽고 둥글며 컬러풀한 npmx 로고 버전입니다.",
+  "changelog": {
+    "pre_release": "사전 릴리스",
+    "draft": "초안",
+    "no_logs": "죄송합니다. 이 패키지는 변경 이력을 게시하지 않거나 변경 이력 형식이 지원되지 않습니다.",
+    "error": {
+      "p1": "죄송합니다. {package}의 변경 이력을 불러올 수 없습니다",
+      "p2": "나중에 다시 시도하거나 {viewon}"
+    },
+    "rate_limit_ungh": "죄송합니다. GitHub의 요청 한도에 도달했습니다. 잠시 후 다시 시도하세요",
+    "version_unavailable": "요청한 버전을 사용할 수 없습니다."
+  }
+}
