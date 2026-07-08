@@ -1,0 +1,22 @@
+{
+  "_id": "svelte",
+  "name": "svelte",
+  "description": "Cybernetically enhanced web apps.",
+  "dist-tags": {
+    "latest": "5.55.3"
+  },
+  "versions": {
+    "5.55.3": {
+      "name": "svelte",
+      "version": "5.55.3",
+      "description": "Cybernetically enhanced web apps.",
+      "dependencies": {}
+    }
+  },
+  "time": {
+    "created": "2026-01-27T00:00:00.000Z",
+    "modified": "2026-02-02T00:00:00.000Z",
+    "5.55.3": "2026-02-02T00:00:00.000Z"
+  },
+  "maintainers": []
+}

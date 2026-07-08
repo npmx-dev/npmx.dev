@@ -7,6 +7,7 @@ import type {
   SubEvent,
 } from '~~/server/api/registry/timeline/[...pkg].get'
 import type { TimelineSizeResponse } from '~~/server/api/registry/timeline/sizes/[...pkg].get'
+import type { TimelineSizeCacheValue } from '~/utils/charts'
 
 definePageMeta({
   name: 'timeline',
@@ -126,7 +127,7 @@ const SIZE_INCREASE_THRESHOLD = 0.25
 const DEP_INCREASE_THRESHOLD = 5
 const NO_LICENSE_VALUES = new Set(['', 'UNLICENSED'])
 
-const sizeCache = shallowReactive(new Map<string, { totalSize: number; dependencyCount: number }>())
+const sizeCache = shallowReactive(new Map<string, TimelineSizeCacheValue>())
 const sizeFetchesInFlight = ref(0)
 const sizesLoading = computed(() => sizeFetchesInFlight.value > 0)
 
@@ -148,6 +149,8 @@ async function fetchSizes(offset: number) {
       sizeCache.set(`${requestedPackage}@${entry.version}`, {
         totalSize: entry.totalSize,
         dependencyCount: entry.dependencyCount,
+        selfSize: entry.selfSize,
+        dependencies: entry.dependencies,
       })
     }
   } catch {
