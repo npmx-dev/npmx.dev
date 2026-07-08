@@ -4798,6 +4798,9 @@
             "description": {
               "type": "string"
             },
+            "create_account": {
+              "type": "string"
+            },
             "migrate": {
               "type": "string"
             }
