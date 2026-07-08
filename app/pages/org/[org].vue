@@ -56,7 +56,8 @@ const { viewMode, paginationMode, pageSize, columns, toggleColumn, resetColumns 
 
 const routeColumns = normalizeSearchParam(route.query.columns)
 if (routeColumns) {
-  const visibleIds = routeColumns.split(',')
+  const allowedColumnIds = new Set(DEFAULT_COLUMNS.map(c => c.id))
+  const visibleIds = routeColumns.split(',').filter(id => allowedColumnIds.has(id as any))
   columns.value = DEFAULT_COLUMNS.map(col => ({
     ...col,
     visible: visibleIds.includes(col.id),
