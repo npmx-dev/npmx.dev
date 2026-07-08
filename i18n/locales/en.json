@@ -1598,6 +1598,7 @@
     "join": {
       "title": "Join the Community",
       "description": "Whether you are creating your first account on the atmosphere or migrating an existing one, you belong here. You can migrate your current account without losing your handle, your posts, or your followers.",
+      "create_account": "Create a new account",
       "migrate": "Migrate with PDS MOOver"
     },
     "server": {
