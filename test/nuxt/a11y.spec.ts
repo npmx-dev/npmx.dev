@@ -159,6 +159,7 @@ import {
   ButtonBase,
   LandingIntroHeader,
   NoodleArtemisLogo,
+  NoodleEmojiLogo,
   NoodleKawaiiLogo,
   NoodleTransgenderVisibilityLogo,
   NoodleListCard,
@@ -408,6 +409,12 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(NoodleArtemisLogo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleEmojiLogo)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
