@@ -6,6 +6,7 @@ import type { Noodle } from '#shared/schemas/noodle'
 const ALEX = { name: 'Alex Savelyev', blueskyHandle: 'alexdln.com' }
 const ALFON = { name: 'Alfon', blueskyHandle: 'alfon.dev' }
 const GRAPHIEROS = { name: 'Graphieros', blueskyHandle: 'graphieros.npmx.social' }
+const FELIX = { name: 'Felix Schneider', blueskyHandle: 'felixs.dev' }
 
 const entries: Noodle[] = [
   {
@@ -131,6 +132,23 @@ const entries: Noodle[] = [
         label: 'Node.js v0.0.1 release',
         url: 'https://github.com/nodejs/node-v0.x-archive/releases/tag/v0.0.1',
       },
+    ],
+  },
+  {
+    key: 'emoji',
+    title: 'World Emoji Day',
+    slug: 'emoji',
+    date: '2026-07-17',
+    dateTo: '2026-07-17',
+    timezone: 'auto',
+    tagline: false,
+    occasion: 'Celebrating the digital icons that transformed how we communicate online. 📅',
+    prUrl: 'https://github.com/npmx-dev/npmx.dev/pull/3029',
+    authors: [FELIX],
+    posterImage: '/extra/emoji.png',
+    references: [
+      { label: 'World Emoji Day Website', url: 'https://worldemojiday.com/' },
+      { label: 'Wikipedia', url: 'https://en.wikipedia.org/wiki/World_Emoji_Day' },
     ],
   },
 ]
