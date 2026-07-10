@@ -142,7 +142,7 @@ const entries: Noodle[] = [
     dateTo: '2026-07-17',
     timezone: 'auto',
     tagline: false,
-    occasion: 'Celebrating the digital icons that transformed how we communicate online. 📅',
+    occasion: '📅🌍🚀💬🥳✨',
     prUrl: 'https://github.com/npmx-dev/npmx.dev/pull/3029',
     authors: [FELIX],
     posterImage: '/extra/emoji.png',
