@@ -79,8 +79,8 @@ function getDepVersionTooltip(dep: string, version: string) {
 function getDepVersionClass(dep: string) {
   const outdated = outdatedDeps.value[dep]
   if (outdated) return getVersionClass(outdated)
-  if (getVulnerableDepInfo(dep) || getDeprecatedDepInfo(dep)) return getVersionClass(undefined)
   if (replacementDeps.value[dep]) return 'text-amber-700 dark:text-amber-500'
+  if (getVulnerableDepInfo(dep) || getDeprecatedDepInfo(dep)) return getVersionClass(undefined)
   return getVersionClass(undefined)
 }
 
@@ -163,24 +163,22 @@ const numberFormatter = useNumberFormatter()
               :to="packageRoute(dep, getVulnerableDepInfo(dep)!.version)"
               class="shrink-0"
               :class="SEVERITY_TEXT_COLORS[getHighestSeverity(getVulnerableDepInfo(dep)!.counts)]"
+              :aria-label="$t('package.dependencies.view_vulnerabilities')"
               :title="
                 $t('package.dependencies.vulnerabilities_count', {
                   count: getVulnerableDepInfo(dep)!.counts.total,
                 })
               "
               classicon="i-lucide:shield-check"
-            >
-              <span class="sr-only">{{ $t('package.dependencies.view_vulnerabilities') }}</span>
-            </LinkBase>
+            />
             <LinkBase
               v-if="getDeprecatedDepInfo(dep)"
               :to="packageRoute(dep, getDeprecatedDepInfo(dep)!.version)"
               class="shrink-0 text-purple-700 dark:text-purple-500"
+              :aria-label="$t('package.deprecated.label')"
               :title="getDeprecatedDepInfo(dep)!.message"
               classicon="i-lucide:octagon-alert"
-            >
-              <span class="sr-only">{{ $t('package.deprecated.label') }}</span>
-            </LinkBase>
+            />
             <LinkBase
               :to="packageRoute(dep, version)"
               class="block truncate"

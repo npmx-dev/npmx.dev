@@ -74,7 +74,6 @@ const copyExecuteCommand = () => {
           >
           <ButtonBase
             type="button"
-            size="icon"
             class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover/executecmd:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
             :aria-label="$t('package.get_started.copy_command')"
             :classicon="executeCopied ? 'i-lucide:check' : 'i-lucide:copy'"
@@ -99,7 +98,8 @@ const copyExecuteCommand = () => {
 :root[data-pm='bun'] [data-pm-cmd='bun'],
 :root[data-pm='deno'] [data-pm-cmd='deno'],
 :root[data-pm='vlt'] [data-pm-cmd='vlt'],
-:root[data-pm='vp'] [data-pm-cmd='vp'] {
+:root[data-pm='vp'] [data-pm-cmd='vp'],
+:root[data-pm='nub'] [data-pm-cmd='nub'] {
   display: flex;
 }
 

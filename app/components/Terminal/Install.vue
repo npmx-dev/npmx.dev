@@ -49,7 +49,7 @@ function getDevInstallPartsForPM(pmId: PackageManagerId) {
   return getInstallCommandParts({
     packageName: props.packageName,
     packageManager: pmId,
-    version: props.requestedVersion,
+    version: props.installVersionOverride ?? props.requestedVersion,
     jsrInfo: props.jsrInfo,
     dev: true,
   })
@@ -130,7 +130,7 @@ const copyDevInstallCommand = () => {
     getInstallCommand({
       packageName: props.packageName,
       packageManager: selectedPM.value,
-      version: props.requestedVersion,
+      version: props.installVersionOverride ?? props.requestedVersion,
       jsrInfo: props.jsrInfo,
       dev: true,
     }),
@@ -251,7 +251,6 @@ useCommandPaletteContextCommands(
           >
           <ButtonBase
             type="button"
-            size="icon"
             class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover/installcmd:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
             :aria-label="$t('package.get_started.copy_command')"
             :classicon="copied ? 'i-lucide:check' : 'i-lucide:copy'"
@@ -283,7 +282,6 @@ useCommandPaletteContextCommands(
             >
             <ButtonBase
               type="button"
-              size="icon"
               class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover/devinstallcmd:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
               :aria-label="$t('package.get_started.copy_dev_command')"
               :classicon="devInstallCopied ? 'i-lucide:check' : 'i-lucide:copy'"
@@ -346,7 +344,6 @@ useCommandPaletteContextCommands(
             >
             <ButtonBase
               type="button"
-              size="icon"
               class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover/runcmd:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
               :aria-label="$t('package.run.copy_command')"
               :classicon="runCopied ? 'i-lucide:check' : 'i-lucide:copy'"
@@ -392,7 +389,6 @@ useCommandPaletteContextCommands(
             >
             <ButtonBase
               type="button"
-              size="icon"
               class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover/createcmd:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
               :aria-label="$t('package.create.copy_command')"
               :classicon="createCopied ? 'i-lucide:check' : 'i-lucide:copy'"
@@ -423,7 +419,8 @@ useCommandPaletteContextCommands(
 :root[data-pm='bun'] [data-pm-cmd='bun'],
 :root[data-pm='deno'] [data-pm-cmd='deno'],
 :root[data-pm='vlt'] [data-pm-cmd='vlt'],
-:root[data-pm='vp'] [data-pm-cmd='vp'] {
+:root[data-pm='vp'] [data-pm-cmd='vp'],
+:root[data-pm='nub'] [data-pm-cmd='nub'] {
   display: flex;
 }
 

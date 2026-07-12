@@ -95,11 +95,11 @@
   --border-subtle: oklch(0.922 0 0);
   --border-hover: oklch(0.715 0 0);
 
-  --accent: var(--accent-color, oklch(0.53 0.16 247.27));
+  --accent: var(--accent-color, oklch(0.5 0.16 247.27));
   --accent-muted: var(--accent-color, oklch(0.205 0 0));
 
   /* accent colors */
-  --swatch-sky: oklch(0.53 0.16 247.27);
+  --swatch-sky: oklch(0.5 0.16 247.27);
   --swatch-coral: oklch(0.56 0.17 10.75);
   --swatch-amber: oklch(0.58 0.18 46.34);
   --swatch-emerald: oklch(0.51 0.13 162.4);

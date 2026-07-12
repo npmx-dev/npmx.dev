@@ -1,3 +1,7 @@
+# Default Settings
+User-agent: *
+
+# Pages that bots are allowed to visit
 Allow: /$
 Allow: /about$
 Allow: /accessibility$
@@ -12,9 +16,6 @@ Allow: /opensearch.xml$
 
 Disallow: /
 
-# User-agent: *
-# Allow: /
-
 # Search pages: infinite query-param combinations
 Disallow: /search
 
@@ -25,11 +26,13 @@ Disallow: /compare
 # Auth flows
 Disallow: /auth/
 
-# Code explorer & generated API docs
+# Code explorer, generated API docs & changelog
 Disallow: /package-code/
 Disallow: /code/
 Disallow: /package-docs/
 Disallow: /docs/
+Disallow: /package-changelog/
+Disallow: /changelog/
 
 # Internal API
 Disallow: /api/

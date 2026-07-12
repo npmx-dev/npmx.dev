@@ -84,14 +84,14 @@ const renderedSegments = computed(() =>
     <td :class="borderClasses" />
 
     <!-- Line number -->
-    <td class="tabular-nums text-center opacity-50 px-2 text-xs select-none w-12 shrink-0">
+    <td class="tabular-nums text-center text-fg-subtle px-2 text-xs select-none w-12 shrink-0">
       {{ line.type === 'delete' ? '–' : lineNumberNew }}
     </td>
 
     <!-- Line content -->
     <td :class="contentClasses">
       <component :is="line.type === 'insert' ? 'ins' : line.type === 'delete' ? 'del' : 'span'">
-        <span
+        <code
           v-for="(seg, i) in renderedSegments"
           :key="i"
           :class="{

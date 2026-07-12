@@ -91,6 +91,90 @@ test.describe('Compare Page', () => {
   })
 })
 
+test.describe('Package Page', () => {
+  test('CopyToClipboardButton is fully unoccluded', async ({ page, goto }) => {
+    await goto('/package/vue', { waitUntil: 'hydration' })
+
+    const packageHeading = page.locator('h1').first()
+    await expect(packageHeading).toBeVisible({ timeout: 10000 })
+
+    // Hover the parent of the heading to trigger the button's visibility
+    await packageHeading.locator('..').hover()
+
+    const copyButton = page
+      .locator('button[aria-label="copy"]')
+      .filter({ hasText: /copy/i })
+      .first()
+
+    await expect(copyButton).toBeVisible({ timeout: 10000 })
+    await copyButton.hover()
+
+    const box = await copyButton.boundingBox()
+    if (!box) throw new Error('Copy button has no bounding box')
+
+    const OFFSET = 3
+
+    // Define 5-point check (4 corners + center) for maximum coverage
+    const points: { x: number; y: number }[] = [
+      { x: box.x + OFFSET, y: box.y + OFFSET }, // top-left
+      { x: box.x + box.width - OFFSET, y: box.y + OFFSET }, // top-right
+      { x: box.x + box.width / 2, y: box.y + box.height / 2 }, // center
+      { x: box.x + OFFSET, y: box.y + box.height - OFFSET }, // bottom-left
+      { x: box.x + box.width - OFFSET, y: box.y + box.height - OFFSET }, // bottom-right
+    ]
+
+    for (const { x, y } of points) {
+      const result = await page.evaluate(
+        ({ pointX, pointY }) => {
+          const el = document.elementFromPoint(pointX, pointY)
+          // Ensure the element at this point is the button or contained within it
+          const isOnTop = el?.closest('button[aria-label="copy"]') !== null
+          return { isOnTop, tagName: el?.tagName, className: el?.className }
+        },
+        { pointX: x, pointY: y },
+      )
+      expect(
+        result.isOnTop,
+        `Button is occluded at point (${x.toFixed(0)}, ${y.toFixed(0)}) by <${result.tagName} "${result.className}">`,
+      ).toBe(true)
+    }
+  })
+
+  test('AccountMenu dropdown items are clickable on package pages', async ({ page, goto }) => {
+    await goto('/package/vue', { waitUntil: 'hydration' })
+
+    await page.getByRole('button', { name: /^connect$/i }).click()
+    const items = page.getByRole('menuitem')
+    await expect(items.first()).toBeVisible()
+
+    // Verify each menu item is the topmost element at its own center.
+    for (const item of await items.all()) {
+      const box = await item.boundingBox()
+      if (!box) throw new Error('Menu item has no bounding box')
+      const cx = box.x + box.width / 2
+      const cy = box.y + box.height / 2
+
+      const hit = await page.evaluate(
+        ({ x, y }) => {
+          const el = document.elementFromPoint(x, y)
+          return {
+            insideMenuitem: el?.closest('[role="menuitem"]') !== null,
+            occluderTag: el?.tagName,
+            occluderClass: typeof el?.className === 'string' ? el.className.slice(0, 100) : '',
+            occluderText: el?.textContent?.trim().slice(0, 60),
+          }
+        },
+        { x: cx, y: cy },
+      )
+
+      expect(
+        hit.insideMenuitem,
+        `Menu item center (${cx.toFixed(0)}, ${cy.toFixed(0)}) is occluded by <${hit.occluderTag} class="${hit.occluderClass}">${hit.occluderText ? ` "${hit.occluderText}"` : ''}`,
+      ).toBe(true)
+    }
+  })
+})
+
 test.describe('Search Pages', () => {
   test('/search?q=vue → keyboard navigation (arrow keys + enter)', async ({ page, goto }) => {
     await goto('/search?q=vue', { waitUntil: 'hydration' })

@@ -27,3 +27,20 @@ export function stripHtmlTags(text: string): string {
   } while (result !== previous)
   return result
 }
+/**
+ * Generate a GitHub-style slug from heading text.
+ * - Convert to lowercase
+ * - Remove HTML tags
+ * - Replace spaces with hyphens
+ * - Remove special characters (keep alphanumeric, hyphens, underscores)
+ * - Collapse multiple hyphens
+ */
+export function slugify(text: string): string {
+  return decodeHtmlEntities(stripHtmlTags(text))
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-') // Spaces to hyphens
+    .replace(/[^\w\u4e00-\u9fff\u3040-\u309f\u30a0-\u30ff-]/g, '') // Keep alphanumeric, CJK, hyphens
+    .replace(/-+/g, '-') // Collapse multiple hyphens
+    .replace(/^-|-$/g, '') // Trim leading/trailing hyphens
+}

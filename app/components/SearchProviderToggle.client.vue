@@ -53,7 +53,7 @@ useEventListener('keydown', event => {
           <button
             type="button"
             role="menuitem"
-            class="w-full flex items-start gap-3 px-3 py-2.5 rounded-md text-start transition-colors hover:bg-bg-muted"
+            class="cursor-pointer w-full flex items-start gap-3 px-3 py-2.5 rounded-md text-start transition-colors hover:bg-bg-muted"
             :class="[searchProviderValue !== 'algolia' ? 'bg-bg-muted' : '']"
             @click="
               () => {
@@ -85,7 +85,7 @@ useEventListener('keydown', event => {
           <button
             type="button"
             role="menuitem"
-            class="w-full flex items-start gap-3 px-3 py-2.5 rounded-md text-start transition-colors hover:bg-bg-muted mt-1"
+            class="cursor-pointer w-full flex items-start gap-3 px-3 py-2.5 rounded-md text-start transition-colors hover:bg-bg-muted mt-1"
             :class="[searchProviderValue === 'algolia' ? 'bg-bg-muted' : '']"
             @click="
               () => {

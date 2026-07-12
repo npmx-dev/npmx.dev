@@ -68,6 +68,7 @@ This focus helps guide our project decisions as a community and what we choose t
   - [Configuration](#configuration)
   - [Global app settings](#global-app-settings)
   - [Known limitations](#known-limitations)
+- [Adding a noodle](#adding-a-noodle)
 - [Submitting changes](#submitting-changes)
   - [Before submitting](#before-submitting)
   - [Pull request process](#pull-request-process)
@@ -123,6 +124,7 @@ pnpm mock-connector   # Start the mock connector (no npm login needed)
 pnpm vp run lint      # Run linter (oxlint + oxfmt)
 pnpm lint:fix         # Auto-fix lint issues
 pnpm test:types       # TypeScript type checking
+pnpm vp run zizmor    # GitHub Actions security analysis
 
 # Testing
 pnpm test             # Run all Vitest tests
@@ -131,6 +133,28 @@ pnpm test:nuxt        # Nuxt component tests
 pnpm test:browser     # Playwright E2E tests
 pnpm test:a11y        # Lighthouse accessibility audits
 pnpm test:perf        # Lighthouse performance audits (CLS)
+```
+
+### GitHub Actions security analysis
+
+CI runs [zizmor](https://docs.zizmor.sh/) against the repository's GitHub Actions workflows. The shared policy lives in `.github/zizmor.yml`, and the `zizmor` task uses the same pedantic persona as CI.
+
+You may run it locally by [installing `zizmor`](https://docs.zizmor.sh/installation/) and running:
+
+```bash
+pnpm vp run zizmor
+```
+
+Some audits resolve action refs and vulnerability metadata through GitHub. To run those online checks locally, authenticate with the GitHub CLI and pass its token:
+
+```bash
+GH_TOKEN="$(gh auth token)" pnpm vp run zizmor
+```
+
+To fix audit findings automatically, run:
+
+```bash
+GH_TOKEN="$(gh auth token)" pnpm vp run zizmor:fix
 ```
 
 ### Clearing caches during development
@@ -209,7 +233,7 @@ If you're working on admin features (org management, package access controls, op
 pnpm mock-connector
 ```
 
-This starts a mock connector server pre-populated with sample data (orgs, teams, members, packages). No npm login is required &mdash; operations succeed immediately without making real npm CLI calls.
+This starts a mock connector server prepopulated with sample data (orgs, teams, members, packages). No npm login is required &mdash; operations succeed immediately without making real npm CLI calls.
 
 The mock connector prints a connection URL to the terminal, just like the real connector. Click it (or paste the token manually) to connect the UI.
 
@@ -219,7 +243,7 @@ The mock connector prints a connection URL to the terminal, just like the real c
 pnpm mock-connector                # default: port 31415, user "mock-user", sample data
 pnpm mock-connector --port 9999    # custom port
 pnpm mock-connector --user alice   # custom username
-pnpm mock-connector --empty        # start with no pre-populated data
+pnpm mock-connector --empty        # start with no prepopulated data
 ```
 
 **Default sample data:**
@@ -411,25 +435,28 @@ The command palette is a first-class navigation surface. When you add a new user
 
 #### Available route names
 
-| Route name        | URL pattern                       | Parameters                |
-| ----------------- | --------------------------------- | ------------------------- |
-| `index`           | `/`                               | &mdash;                   |
-| `about`           | `/about`                          | &mdash;                   |
-| `compare`         | `/compare`                        | &mdash;                   |
-| `privacy`         | `/privacy`                        | &mdash;                   |
-| `search`          | `/search`                         | &mdash;                   |
-| `settings`        | `/settings`                       | &mdash;                   |
-| `package`         | `/package/:org?/:name`            | `org?`, `name`            |
-| `package-version` | `/package/:org?/:name/v/:version` | `org?`, `name`, `version` |
-| `code`            | `/package-code/:path+`            | `path` (array)            |
-| `docs`            | `/package-docs/:path+`            | `path` (array)            |
-| `org`             | `/org/:org`                       | `org`                     |
-| `~username`       | `/~:username`                     | `username`                |
-| `~username-orgs`  | `/~:username/orgs`                | `username`                |
+| Route name          | URL pattern                                       | Parameters                       |
+| ------------------- | ------------------------------------------------- | -------------------------------- |
+| `index`             | `/`                                               | &mdash;                          |
+| `about`             | `/about`                                          | &mdash;                          |
+| `compare`           | `/compare`                                        | &mdash;                          |
+| `privacy`           | `/privacy`                                        | &mdash;                          |
+| `search`            | `/search`                                         | &mdash;                          |
+| `settings`          | `/settings`                                       | &mdash;                          |
+| `package`           | `/package/:org?/:name`                            | `org?`, `name`                   |
+| `package-version`   | `/package/:org?/:name/v/:version`                 | `org?`, `name`, `version`        |
+| `code`              | `/package-code/:path+`                            | `path` (array)                   |
+| `docs`              | `/package-docs/:path+`                            | `path` (array)                   |
+| `changelog`         | `/package-changelog/:org?/:name`                  | `org?`, `name`                   |
+| `changelog-version` | `/package-changelog/:org?/:name/v/:version`       | `org?`, `name`, `version`        |
+| `timeline`          | `/package-timeline/:org?/:packageName/v/:version` | `org?`, `packageName`, `version` |
+| `org`               | `/org/:org`                                       | `org`                            |
+| `~username`         | `/~:username`                                     | `username`                       |
+| `~username-orgs`    | `/~:username/orgs`                                | `username`                       |
 
 ### Cursor and navigation
 
-**npmx** uses `cursor: pointer` only for links to match users’ everyday experience. For all other interactive elements, including buttons, use the default cursor (_or another appropriate cursor to indicate state_).
+**npmx** uses `cursor: pointer` for links and buttons to match users’ everyday experience. For all other interactive elements, use the default cursor (_or another appropriate cursor to indicate state_).
 
 > [!NOTE]
 > A link is any element that leads to another content (_go to another page, authorize_)
@@ -1021,6 +1048,116 @@ Global application settings are added to the Storybook toolbar for easy testing 
 - `autodocs` currently is non-functional due bugs, its usage is discouraged at this time.
 - `pnpm storybook` may log warnings or non-breaking errors for Nuxt modules due to the lack of mocks. If the UI renders correctly, these can be safely ignored.
 - Do not `import type` from `.vue` files. The `vue-docgen-api` parser used by `@storybook/addon-docs` cannot follow type imports across SFCs and will crash. Extract shared types into a separate `.ts` file instead.
+
+## Adding a noodle
+
+"Noodles" are the occasional themed npmx logos that celebrate a day or event (Pride Month, World Tetris Day, the Node.js birthday, …). A noodle has two homes:
+
+- the **homepage**, where it temporarily replaces the logo while it is active, and
+- the **`/noodles` archive**, where every past noodle lives on permanently with its own detail page.
+
+The two are wired up independently, so shipping a noodle to the homepage **and** the archive in the same PR keeps things in sync. Do both at once.
+
+### 1. Add the logo component
+
+Create `app/components/Noodle/<Name>/Logo.vue`.
+It's recommended to add a tooltip with event information to each noodle. If the poster is an image, add it to the `public/extra` directory. If the image differs between light and dark modes - prefer `ColorSchemeImg` component for poster
+
+```vue
+<template>
+  <TooltipApp interactive position="top">
+    <template #content>
+      <p class="text-sm font-medium text-fg mb-1"><strong>World Tetris Day</strong></p>
+    </template>
+    <img
+      width="400"
+      class="w-80 sm:w-140 max-w-full mx-auto"
+      src="/extra/tetris.svg"
+      :alt="$t('alt_logo')"
+    />
+  </TooltipApp>
+</template>
+```
+
+### 2. Register the logo and show it on the homepage
+
+In `app/components/Noodle/index.ts`:
+
+- import the component, and
+- add it to the homepage rotation — `ACTIVE_NOODLES` for a date-bound noodle, or `PERMANENT_NOODLES` for one shown only behind a query param (e.g. `?kawaii`), and
+- register it in the `NOODLE_LOGOS` map so the archive can resolve it by `key`.
+
+```ts
+import NoodleTetrisLogo from './Tetris/Logo.vue'
+
+export const ACTIVE_NOODLES: Noodle[] = [
+  {
+    key: 'tetris',
+    logo: NoodleTetrisLogo,
+    date: '2026-06-06',
+    dateTo: '2026-06-08',
+    timezone: 'auto', // visitor's local time; or an IANA name like 'America/Los_Angeles'
+    tagline: false, // hide the npmx tagline while active
+  },
+]
+
+const NOODLE_LOGOS: Record<string, Component> = {
+  // …
+  tetris: NoodleTetrisLogo,
+}
+```
+
+> [!IMPORTANT]
+> The `date` and `dateTo` keys are inclusive, meaning they specify the start (at 00:00) and end (at 23:59) dates. If the dates overlap, a noodle will be randomly selected on each visit.
+
+> [!IMPORTANT]
+> The `key` here must exactly match the `key` of the archive entry you add in the next step — that is how the archive looks up the logo.
+
+### 3. Add the archive entry
+
+Append an entry to `app/noodles.ts`. Only `key`, `title`, `slug`, and `date` are required; every other field is optional, and the detail page renders a section only for the fields you fill in. The list is sorted by date automatically.
+
+```ts
+{
+  key: 'tetris',
+  title: 'World Tetris Day',
+  slug: 'tetris', // becomes /noodles/tetris — must be unique
+  date: '2026-06-06',
+  dateTo: '2026-06-08',
+  timezone: 'auto',
+  tagline: false,
+  occasion: 'The legendary console turns 42. …',
+  prUrl: 'https://github.com/npmx-dev/npmx.dev/pull/2855',
+  authors: [ALEX], // reuse the author consts at the top of the file
+  posterImage: '/extra/tetris.svg', // OG-image hero
+  references: [{ label: 'Tetris (1984)', url: 'https://en.wikipedia.org/wiki/Tetris' }],
+},
+```
+
+Authors link out to Bluesky via their `blueskyHandle`. Reuse an existing author const (`ALEX`, `ALFON`, …) or add a new one at the top of the file.
+
+#### Grouping a series with `variants`
+
+When a single occasion ships as several rotating designs (Pride Month, for example, cycles through three logos), add **one** archive entry rather than one per design. Point `posterImage` at the lead artwork and list the others in `variants` — the detail page's lens carousel shows the registered logo first, then each variant image:
+
+```ts
+{
+  key: 'pride-1', // matches the registered NOODLE_LOGOS key (renders first in the lens)
+  title: 'Pride Month',
+  slug: 'pride',
+  // …
+  posterImage: '/extra/pride-1.svg',
+  variants: ['/extra/pride-2.svg', '/extra/pride-3.png'],
+},
+```
+
+### 4. Verify
+
+```bash
+pnpm test:types
+```
+
+Then run `pnpm dev` and confirm the card appears at `/noodles` and its detail page renders at `/noodles/<slug>`. Archive routes are prerendered by crawling links from the index page, so no route list needs editing.
 
 ## Submitting changes
 

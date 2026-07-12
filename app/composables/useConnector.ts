@@ -55,6 +55,7 @@ interface StateResponse {
 
 const STORAGE_KEY = 'npmx-connector'
 const DEFAULT_PORT = 31415
+const CONNECT_TIMEOUT_MS = 30000
 
 export const useConnector = createSharedComposable(function useConnector() {
   const { settings } = useSettings()
@@ -115,7 +116,7 @@ export const useConnector = createSharedComposable(function useConnector() {
       const response = await $fetch<ConnectResponse>(`http://127.0.0.1:${port}/connect`, {
         method: 'POST',
         body: { token },
-        timeout: 5000,
+        timeout: CONNECT_TIMEOUT_MS,
       })
 
       if (response.success && response.data) {
@@ -180,7 +181,7 @@ export const useConnector = createSharedComposable(function useConnector() {
         headers: {
           Authorization: `Bearer ${config.value.token}`,
         },
-        timeout: 5000,
+        timeout: CONNECT_TIMEOUT_MS,
       })
 
       if (response.success && response.data) {

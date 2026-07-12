@@ -7,7 +7,10 @@ import type {
   YearlyDataPoint,
 } from '~/types/chart'
 import { mapWithConcurrency } from '#shared/utils/async'
+import { splitIsoRangeIntoChunksInclusive, mergeDailyPoints } from '#shared/utils/download-ranges'
 import { fetchNpmDownloadsRange } from '~/utils/npm/api'
+import { toValue } from 'vue'
+import { addDays, toIsoDate, parseIsoDate } from '~/utils/date'
 
 export type PackumentLikeForTime = {
   time?: Record<string, string>
@@ -19,91 +22,6 @@ function startOfUtcMonth(date: Date): Date {
 
 function startOfUtcYear(date: Date): Date {
   return new Date(Date.UTC(date.getUTCFullYear(), 0, 1))
-}
-
-function differenceInUtcDaysInclusive(startIso: string, endIso: string): number {
-  const start = parseIsoDate(startIso)
-  const end = parseIsoDate(endIso)
-  return Math.floor((end.getTime() - start.getTime()) / 86400000) + 1
-}
-
-function splitIsoRangeIntoChunksInclusive(
-  startIso: string,
-  endIso: string,
-  maximumDaysPerRequest: number,
-): Array<{ startIso: string; endIso: string }> {
-  const totalDays = differenceInUtcDaysInclusive(startIso, endIso)
-  if (totalDays <= maximumDaysPerRequest) return [{ startIso, endIso }]
-
-  const chunks: Array<{ startIso: string; endIso: string }> = []
-  let cursorStart = parseIsoDate(startIso)
-  const finalEnd = parseIsoDate(endIso)
-
-  while (cursorStart.getTime() <= finalEnd.getTime()) {
-    const cursorEnd = addDays(cursorStart, maximumDaysPerRequest - 1)
-    const actualEnd = cursorEnd.getTime() < finalEnd.getTime() ? cursorEnd : finalEnd
-
-    chunks.push({
-      startIso: toIsoDate(cursorStart),
-      endIso: toIsoDate(actualEnd),
-    })
-
-    cursorStart = addDays(actualEnd, 1)
-  }
-
-  return chunks
-}
-
-function mergeDailyPoints(points: DailyRawPoint[]): DailyRawPoint[] {
-  const valuesByDay = new Map<string, number>()
-
-  for (const point of points) {
-    valuesByDay.set(point.day, (valuesByDay.get(point.day) ?? 0) + point.value)
-  }
-
-  return Array.from(valuesByDay.entries())
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([day, value]) => ({ day, value }))
-}
-
-function roundToHundredths(value: number): number {
-  return Math.round(value * 100) / 100
-}
-
-/** Catmull-Rom monotone cubic spline — same algorithm as vue-data-ui's smoothPath for OG Images */
-export function smoothPath(pts: { x: number; y: number }[]): string {
-  if (pts.length < 2) return '0,0'
-  const n = pts.length - 1
-  const out = [`${roundToHundredths(pts[0]!.x)},${roundToHundredths(pts[0]!.y)}`]
-  const dx: number[] = []
-  const dy: number[] = []
-  const m: number[] = []
-  const t: number[] = []
-
-  for (let i = 0; i < n; i++) {
-    dx[i] = pts[i + 1]!.x - pts[i]!.x
-    dy[i] = pts[i + 1]!.y - pts[i]!.y
-    m[i] = dx[i] === 0 ? 0 : dy[i]! / dx[i]!
-  }
-
-  t[0] = m[0]!
-  t[n] = m[n - 1]!
-  for (let i = 1; i < n; i++) {
-    t[i] = m[i - 1]! * m[i]! <= 0 ? 0 : (2 * m[i - 1]! * m[i]!) / (m[i - 1]! + m[i]!)
-  }
-
-  for (let i = 0; i < n; i++) {
-    const x0 = pts[i]!.x,
-      y0 = pts[i]!.y
-    const x1 = pts[i + 1]!.x,
-      y1 = pts[i + 1]!.y
-    const seg = x1 - x0
-    out.push(
-      `C ${roundToHundredths(x0 + seg / 3)},${roundToHundredths(y0 + (t[i]! * seg) / 3)} ${roundToHundredths(x1 - seg / 3)},${roundToHundredths(y1 - (t[i + 1]! * seg) / 3)} ${roundToHundredths(x1)},${roundToHundredths(y1)}`,
-    )
-  }
-
-  return out.join(' ')
 }
 
 const npmDailyRangeCache = import.meta.client ? new Map<string, Promise<DailyRawPoint[]>>() : null

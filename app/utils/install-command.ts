@@ -68,6 +68,15 @@ export const packageManagers = [
     create: 'vp create',
     icon: 'i-simple-icons:vite',
   },
+  {
+    id: 'nub',
+    label: 'nub',
+    action: 'add',
+    executeLocal: 'nubx',
+    executeRemote: 'nubx',
+    create: 'nub create',
+    icon: 'i-custom-nub',
+  },
 ] as const
 
 export type PackageManagerId = (typeof packageManagers)[number]['id']

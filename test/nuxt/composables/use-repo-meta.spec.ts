@@ -191,26 +191,15 @@ describe('useRepoMeta - URL parsing via repoRef', () => {
     })
   })
 
-  describe('Generic Gitea URLs', () => {
-    it('should parse git.* subdomain as Gitea', () => {
-      const result = parseRepoUrl('https://git.example.com/user/repo')
-
-      expect(result).toEqual({
-        provider: 'gitea',
-        owner: 'user',
-        repo: 'repo',
-        host: 'git.example.com',
-      })
-    })
-
-    it('should parse gitea.* subdomain', () => {
-      const result = parseRepoUrl('https://gitea.example.org/org/project')
+  describe('Gitea URLs', () => {
+    it('should parse exact allowlisted Gitea hosts', () => {
+      const result = parseRepoUrl('https://gitea.com/org/project')
 
       expect(result).toEqual({
         provider: 'gitea',
         owner: 'org',
         repo: 'project',
-        host: 'gitea.example.org',
+        host: 'gitea.com',
       })
     })
   })

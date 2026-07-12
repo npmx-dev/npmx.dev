@@ -165,7 +165,8 @@ function handleClick(event: MouseEvent) {
   font-size: 0.75em;
 }
 
-.readme :deep(:is(h1, h2, h3, h4, h5, h6) a[href^='#']:hover::after) {
+.readme
+  :deep(:is(h1, h2, h3, h4, h5, h6):is(:hover, :focus-visible, :focus-within) a[href^='#']::after) {
   @apply opacity-100;
 }
 
@@ -280,6 +281,14 @@ function handleClick(event: MouseEvent) {
   margin: 1.5rem 0;
   color: var(--fg-subtle);
   font-style: italic;
+}
+
+.readme :deep(dt) {
+  margin-block-start: 0.5rem;
+}
+
+.readme :deep(dd) {
+  padding-inline-start: 1.5rem;
 }
 
 /* GitHub-style callouts/alerts */
@@ -442,6 +451,11 @@ function handleClick(event: MouseEvent) {
   margin: 1rem 0;
   position: relative;
   z-index: 1;
+}
+
+/* With defined width, height will be automatically calculated using the aspect ratio */
+.readme :deep(img[width]) {
+  height: auto;
 }
 
 .readme :deep(video) {

@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { defineNuxtModule, useNuxt } from 'nuxt/kit'
 import { BLUESKY_API } from '#shared/utils/constants'
 import { ALL_KNOWN_GIT_API_ORIGINS } from '#shared/utils/git-providers'
@@ -30,7 +31,12 @@ export default defineNuxtModule({
       !process.env.TEST
 
     // These assets are embedded directly on blog pages and should not affect image-proxy trust.
-    const cspOnlyImgOrigins = ['https://api.star-history.com', 'https://cdn.bsky.app']
+    const cspOnlyImgOrigins = [
+      'https://api.star-history.com',
+      'https://cdn.bsky.app',
+      'https://video.bsky.app',
+      'https://video.cdn.bsky.app',
+    ]
     const imgSrc = [
       "'self'",
       'data:',
@@ -44,6 +50,8 @@ export default defineNuxtModule({
       'https://registry.npmjs.org',
       'https://api.npmjs.org',
       'https://npm.antfu.dev',
+      'https://video.bsky.app',
+      'https://video.cdn.bsky.app',
       BLUESKY_API,
       ...ALL_KNOWN_GIT_API_ORIGINS,
       // Local CLI connector (npmx CLI communicates via localhost)
@@ -70,7 +78,7 @@ export default defineNuxtModule({
       `script-src 'self' 'unsafe-inline'`,
       `style-src 'self' 'unsafe-inline'`,
       `img-src ${imgSrc}`,
-      `media-src 'self'`,
+      `media-src 'self' blob:`,
       `font-src 'self'`,
       `connect-src ${connectSrc}`,
       `frame-src ${frameSrc}`,

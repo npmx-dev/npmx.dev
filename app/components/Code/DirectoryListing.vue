@@ -2,6 +2,7 @@
 import type { RouteLocationRaw } from 'vue-router'
 import type { RouteNamedMap } from 'vue-router/auto-routes'
 import { ADDITIONAL_ICONS, getFileIcon } from '~/utils/file-icons'
+import { isPossiblyUnnecessaryContent } from '~/utils/package-content-hints'
 
 const props = defineProps<{
   tree: PackageFileTree[]
@@ -9,6 +10,8 @@ const props = defineProps<{
   baseUrl: string
   baseRoute: Pick<RouteNamedMap['code'], 'params'>
 }>()
+
+const { t } = useI18n()
 
 // Get the current directory's contents
 const currentContents = computed(() => {
@@ -74,7 +77,7 @@ const bytesFormatter = useBytesFormatter()
         <!-- Parent directory link -->
         <tr
           v-if="parentPath !== null"
-          class="border-b border-border hover:bg-bg-subtle transition-colors"
+          class="border-b border-border hover:bg-bg-subtle transition-[color,background-color] duration-100"
         >
           <td colspan="2">
             <LinkBase
@@ -98,11 +101,16 @@ const bytesFormatter = useBytesFormatter()
         <tr
           v-for="node in currentContents"
           :key="node.path"
-          class="border-b border-border hover:bg-bg-subtle transition-colors"
+          class="border-b border-border hover:bg-bg-subtle transition-[color,background-color] duration-100"
         >
           <td colspan="2">
             <LinkBase
               :to="getCodeRoute(node.path)"
+              :aria-label="
+                isPossiblyUnnecessaryContent(node.name, node.type)
+                  ? `${node.name} - ${t('code.possibly_unnecessary')}`
+                  : undefined
+              "
               class="py-2 px-4 font-mono text-sm w-full"
               no-underline
             >
@@ -117,7 +125,21 @@ const bytesFormatter = useBytesFormatter()
                 />
               </svg>
               <span class="w-full flex justify-self-stretch items-center gap-2">
-                <span class="flex-1">{{ node.name }}</span>
+                <span
+                  class="flex-1"
+                  :class="
+                    isPossiblyUnnecessaryContent(node.name, node.type)
+                      ? 'text-yellow-600 dark:text-yellow-400'
+                      : undefined
+                  "
+                  >{{ node.name }}</span
+                >
+                <span
+                  v-if="isPossiblyUnnecessaryContent(node.name, node.type)"
+                  class="i-lucide:info size-[0.85em] shrink-0 text-amber-600 dark:text-amber-400"
+                  aria-hidden="true"
+                  :title="t('code.possibly_unnecessary')"
+                />
                 <span v-if="typeof node.size === 'number'" class="text-end text-xs text-fg-subtle">
                   {{ bytesFormatter.format(node.size) }}
                 </span>

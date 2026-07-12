@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { VueUiHorizontalBar } from 'vue-data-ui/vue-ui-horizontal-bar'
+import {
+  VueUiHorizontalBar,
+  type VueUiHorizontalBarConfig,
+  type VueUiHorizontalBarDatasetItem,
+} from 'vue-data-ui/vue-ui-horizontal-bar'
 import { VueUiPatternSeed } from 'vue-data-ui/vue-ui-pattern-seed'
-import type { VueUiHorizontalBarConfig, VueUiHorizontalBarDatasetItem } from 'vue-data-ui'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
 import { createPatternDef } from 'vue-data-ui/utils'
 import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
+import { useColors } from '~/composables/useColors'
+import { downloadFileLink } from '~/utils/download'
 
 import {
-  loadFile,
   insertLineBreaks,
   sanitise,
   applyEllipsis,
@@ -37,23 +41,7 @@ const isMobile = computed(() => width.value > 0 && width.value < mobileBreakpoin
 
 const chartKey = ref(0)
 
-const { colors } = useCssVariables(
-  [
-    '--bg',
-    '--fg',
-    '--bg-subtle',
-    '--bg-elevated',
-    '--fg-subtle',
-    '--fg-muted',
-    '--border',
-    '--border-subtle',
-  ],
-  {
-    element: rootEl,
-    watchHtmlAttributes: true,
-    watchResize: false,
-  },
-)
+const { colors } = useColors(rootEl)
 
 const watermarkColors = computed(() => ({
   fg: colors.value.fg ?? OKLCH_NEUTRAL_FALLBACK,
@@ -142,13 +130,13 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
         img: args => {
           const imageUri = args?.imageUri
           if (!imageUri) return
-          loadFile(imageUri, buildExportFilename('png'))
+          downloadFileLink(imageUri, buildExportFilename('png'))
         },
         svg: args => {
           const blob = args?.blob
           if (!blob) return
           const url = URL.createObjectURL(blob)
-          loadFile(url, buildExportFilename('svg'))
+          downloadFileLink(url, buildExportFilename('svg'))
           URL.revokeObjectURL(url)
         },
         altCopy: ({ dataset: dst, config: cfg }) => {
@@ -164,6 +152,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
           })
         },
       },
+      useCursorPointer: true,
     },
     skeletonDataset: skeletonDataset.value,
     skeletonConfig: {

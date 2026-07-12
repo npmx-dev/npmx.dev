@@ -1,11 +1,16 @@
-import { all, type ModuleReplacement } from 'module-replacements'
+import { all, type ModuleReplacement, type ModuleReplacementMapping } from 'module-replacements'
 
-const replacementMap = new Map<string, ModuleReplacement>(
-  all.moduleReplacements.map(r => [r.moduleName, r]),
+export default defineEventHandler(
+  (event): { mapping: ModuleReplacementMapping; replacement: ModuleReplacement } | null => {
+    const pkg = getRouterParam(event, 'pkg')
+    if (!pkg) return null
+    if (!Object.hasOwn(all.mappings, pkg)) return null
+    const mapping = all.mappings[pkg]
+    if (!mapping) return null
+    const replacementId = mapping.replacements[0]
+    if (!replacementId) return null
+    const replacement = all.replacements[replacementId]
+    if (!replacement) return null
+    return { mapping, replacement }
+  },
 )
-
-export default defineEventHandler((event): ModuleReplacement | null => {
-  const pkg = getRouterParam(event, 'pkg')
-  if (!pkg) return null
-  return replacementMap.get(pkg) ?? null
-})

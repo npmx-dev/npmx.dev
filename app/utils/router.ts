@@ -32,7 +32,7 @@ export function packageRoute(
 
 /** Full version history page (`/package/.../versions`) */
 export function packageVersionsRoute(packageName: string): RouteLocationRaw {
-  const [org, name = ''] = packageName.startsWith('@') ? packageName.split('/') : ['', packageName]
+  const { org, name } = splitPackageName(packageName)
   return { name: 'package-versions', params: { org, name } }
 }
 
@@ -49,6 +49,66 @@ export function diffRoute(
       org: org || undefined,
       packageName: name,
       versionRange: `${fromVersion}...${toVersion}`,
+    },
+  }
+}
+
+export function changelogRoute(
+  packageName: string,
+  version?: string | null,
+  hash?: string,
+): RouteLocationRaw {
+  const { org, name } = splitPackageName(packageName)
+
+  if (version) {
+    return {
+      name: 'changelog-version',
+      params: {
+        org,
+        name,
+        // remove spaces to be correctly resolved by router
+        version: version.replace(/\s+/g, ''),
+      },
+      hash,
+    }
+  }
+
+  return {
+    name: 'changelog',
+    params: {
+      org,
+      name,
+    },
+  }
+}
+
+export function packageTimelineRoute(packageName: string, version: string): RouteLocationRaw {
+  const { org, name } = splitPackageName(packageName)
+
+  return {
+    name: 'timeline',
+    params: {
+      org: org || undefined,
+      packageName: name,
+      version: version.replace(/\s+/g, ''),
+    },
+  }
+}
+
+export function packageStatsRoute(
+  packageName: string,
+  version: string,
+  hash?: '#distribution' | '#trends',
+): RouteLocationRaw {
+  const { org, name } = splitPackageName(packageName)
+
+  return {
+    name: 'stats',
+    hash,
+    params: {
+      org: org || undefined,
+      packageName: name,
+      version: version.replace(/\s+/g, ''),
     },
   }
 }

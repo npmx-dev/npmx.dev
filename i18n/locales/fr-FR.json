@@ -20,7 +20,10 @@
     "chat": "espace de discussion",
     "builders_chat": "builders",
     "keyboard_shortcuts": "raccourcis clavier",
-    "brand": "Marque"
+    "brand": "Marque",
+    "resources": "Ressources",
+    "features": "Fonctionnalités",
+    "other": "Autres"
   },
   "shortcuts": {
     "section": {
@@ -150,7 +153,8 @@
       "code": "Code",
       "diff": "Diff",
       "compare": "Comparer ce paquet",
-      "download": "Télécharger le tarball"
+      "download": "Télécharger le tarball",
+      "changelog": "Changements"
     },
     "package_actions": {
       "copy_run": "Copier la commande d'exécution"
@@ -253,7 +257,6 @@
     "hide_platform_packages_description": "Masquer les paquets binaires natifs comme {'@'}esbuild/linux-x64 des résultats",
     "enable_graph_pulse_loop": "Activer la boucle de l'effet de pulsation sur le mini-graphe",
     "enable_graph_pulse_loop_description": "Activer une animation de pulsation continue sur le graphique des téléchargements hebdomadaires. Cette animation peut être gênante pour certaines personnes.",
-    "enable_code_ligatures": "Activer les ligatures de code",
     "theme": "Thème",
     "theme_light": "Clair",
     "theme_dark": "Sombre",
@@ -282,7 +285,10 @@
       "black": "Noir"
     },
     "keyboard_shortcuts_enabled": "Activer les raccourcis clavier",
-    "keyboard_shortcuts_enabled_description": "Les raccourcis clavier peuvent être désactivés s'ils entrent en conflit avec d'autres raccourcis du navigateur ou du système"
+    "keyboard_shortcuts_enabled_description": "Les raccourcis clavier peuvent être désactivés s'ils entrent en conflit avec d'autres raccourcis du navigateur ou du système",
+    "enable_code_ligatures": "Activer les ligatures de code",
+    "enable_changelog_autoscroll": "Scroller automatiquement à la version voulue",
+    "enable_changelog_autoscroll_description": "Scroller automatiquement à — ou près — de la version voulue dans la page des changements"
   },
   "i18n": {
     "missing_keys": "{count} traduction manquante | {count} traductions manquantes",
@@ -314,6 +320,7 @@
     "warnings": "Avertissements :",
     "go_back_home": "Retour à l'accueil",
     "per_week": "/ semaine",
+    "per_week_short": "/sem",
     "vanity_downloads_hint": "Métrique de vanité : aucun paquet affiché | Métrique de vanité : pour le paquet affiché | Métrique de vanité : somme des {count} paquets affichés",
     "sort": {
       "name": "nom",
@@ -341,8 +348,8 @@
       "tangled": "Voir sur Tangled"
     },
     "collapse": "Réduire",
-    "expand": "Développer",
     "collapse_with_name": "Réduire {name}",
+    "expand": "Développer",
     "expand_with_name": "Développer {name}"
   },
   "profile": {
@@ -381,16 +388,21 @@
       "size": "La taille d'installation a augmenté de {percent} ({size} de plus)",
       "deps": "{count} dépendances supplémentaires"
     },
+    "size_decrease": {
+      "title_size": "La taille du paquet a diminué depuis la v{version} !",
+      "title_deps": "Le nombre de dépendances a diminué depuis la v{version} !",
+      "title_both": "La taille du paquet et le nombre de dépendances ont diminué depuis la v{version} !",
+      "size": "Taille d'installation réduite de {percent} ({size} de moins)",
+      "deps": "{count} dépendance en moins | {count} dépendances en moins"
+    },
     "replacement": {
       "title": "Vous n'avez peut-être pas besoin de cette dépendance.",
+      "example": "Exemple :",
       "native": "Ceci peut être remplacé par {replacement}, disponible depuis Node {nodeVersion}.",
-      "simple": "La {community} a signalé ce paquet comme redondant, avec ce conseil : {replacement}.",
-      "documented": "La {community} a signalé que ce paquet a des alternatives plus performantes.",
+      "native_no_version": "Ce paquet peut être remplacé par {replacement}.",
       "none": "Ce paquet a été signalé comme n'étant plus nécessaire, et sa fonctionnalité est probablement disponible nativement dans tous les moteurs.",
       "learn_more": "En savoir plus",
       "learn_more_above": "En savoir plus ci-dessus.",
-      "mdn": "MDN",
-      "community": "communauté",
       "consider_no_dep": "+ Envisager sans dépendance ?"
     },
     "stats": {
@@ -436,11 +448,15 @@
       "fund": "donner",
       "compare": "comparer",
       "timeline": "historique",
-      "compare_this_package": "comparer ce paquet"
+      "compare_this_package": "comparer ce paquet",
+      "changelog": "changements"
     },
     "likes": {
       "like": "Liker ce paquet",
-      "unlike": "Retirer le like"
+      "unlike": "Retirer le like",
+      "top_rank_tooltip": "Ce paquet figure parmi les 10 ayant le plus de likes sur npmx (n°{rank})",
+      "top_rank_label": "n°{rank}",
+      "top_rank_link_label": "Voir le classement des likes. Ce paquet est classé n°{rank}."
     },
     "docs": {
       "contents": "Sommaire",
@@ -513,6 +529,7 @@
       "weekly_downloads": "Téléchargements hebdomadaires",
       "keywords": "Mots-clés",
       "license": "Licence",
+      "version": "Version",
       "select": "Sélectionner le paquet",
       "select_maximum": "Vous pouvez sélectionner jusqu'à {count} paquets"
     },
@@ -531,7 +548,6 @@
       "view_all": "Voir la version | Voir les {count} versions",
       "view_all_versions": "Voir toutes les versions",
       "distribution_title": "Groupe Semver",
-      "distribution_modal_title": "Versions",
       "distribution_range_date_same_year": "de {from} à {to} {endYear}",
       "distribution_range_date_multiple_years": "de {from} {startYear} à {to} {endYear}",
       "grouping_major": "Majeure",
@@ -552,6 +568,9 @@
       "filter_help": "Infos sur le filtre de plage semver",
       "filter_tooltip": "Filtrer les versions avec une {link}. Par exemple, ^3.0.0 affiche toutes les versions 3.x.",
       "filter_tooltip_link": "plage semver",
+      "license_change_help": "Détails sur le changement de licence",
+      "license_change_warning": "La licence a changé depuis la version précédente.",
+      "license_change_record": "La licence de ce paquet est passée de \"{from}\" à \"{to}\".",
       "no_matches": "Aucune version ne correspond à cette plage",
       "copy_alt": {
         "per_version_analysis": "La version {version} a été téléchargée {downloads} fois",
@@ -576,7 +595,19 @@
       "trusted_publisher_added": "Vérification ajoutée",
       "trusted_publisher_removed": "Vérification enlevée",
       "provenance_added": "Preuve de provenance ajoutée",
-      "provenance_removed": "Preuve de provenance enlevée"
+      "provenance_removed": "Preuve de provenance enlevée",
+      "chart": {
+        "tab_aria_label": "Sélection de métrique",
+        "base_scale": "positionner les ordonnées à zéro",
+        "zoom": "zoom",
+        "reset_minimap": "Réinitialiser la mini-carte",
+        "ordered_versions": "stable uniquement",
+        "copy_alt": {
+          "key_changes": "Principaux changements: {version_events}",
+          "version_events": "version {version}: {events}",
+          "general_description": "Graphique en ligne montrant la métrique {metric} pour le paquet {package}, depuis la version {first} à {last}. La valeur de la métrique {metric} pour la version {first} est {first_value}, et {last_value} pour la version {last} ({overall_progress_percentage}% dans l'ensemble). {key_changes} {watermark}."
+        }
+      }
     },
     "dependencies": {
       "title": "Dépendances ({count})",
@@ -678,10 +709,17 @@
         "general_description": "L’axe Y représente le nombre de téléchargements. L’axe X représente la plage de dates, de {start_date} à {end_date}, avec une période de temps {granularity}.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Graphique en barres horizontales pour : {packages}, comparant {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} a une valeur de {value}."
+      },
+      "embedding": {
+        "chart": "Intégrer ce graphique",
+        "copy_url": "Copiez cette URL pour intégrer le graphique à votre site web",
+        "preview": "Aperçu",
+        "tip": "Par défaut, si startDate et endDate ne sont pas renseignés, la période couvre les 12 derniers mois."
       }
     },
     "downloads": {
       "title": "Téléchargements hebdo.",
+      "version_distribution_title": "téléchargements hebdomadaires pour la version {version}",
       "community_distribution": "Voir la distribution des versions téléchargées par la communauté",
       "subtitle": "Toutes versions confondues",
       "sparkline_nav_hint": "Utilisez ← →"
@@ -778,6 +816,16 @@
     "download": {
       "button": "Télécharger",
       "tarball": "Télécharger le tarball au format .tar.gz"
+    }
+  },
+  "leaderboard": {
+    "likes": {
+      "title": "Classement des likes",
+      "description": "Les 10 paquets les plus likés sur npmx en ce moment.",
+      "rank": "Rang",
+      "likes": "Likes",
+      "unavailable_title": "Pas encore de classement des likes",
+      "unavailable_description": "Nous n'avons pas encore de classement des likes à afficher."
     }
   },
   "connector": {
@@ -966,6 +1014,7 @@
     "view_raw": "Voir le fichier brut",
     "toggle_container": "Changer la largeur du conteneur",
     "open_raw_file": "Ouvrir le fichier brut",
+    "open_path_dropdown": "Ouvrir le menu du chemin",
     "file_too_large": "Fichier trop volumineux pour l'aperçu",
     "file_size_warning": "{size} dépasse la limite de 500 Ko pour la coloration syntaxique",
     "failed_to_load": "Échec du chargement du fichier",
@@ -983,7 +1032,6 @@
       "preview": "aperçu",
       "code": "code"
     },
-    "open_path_dropdown": "Ouvrir le menu du chemin",
     "file_path": "Chemin du fichier",
     "binary_file": "Fichier binaire",
     "binary_rendering_warning": "Le type de fichier \"{contentType}\" n'est pas pris en charge pour l'aperçu."
@@ -1140,7 +1188,9 @@
     },
     "team": {
       "title": "Équipe",
-      "governance": "Gouvernance",
+      "core": "Noyau",
+      "maintainers": "Mainteneurs",
+      "role_core": "noyau",
       "role_steward": "pilote",
       "role_maintainer": "mainteneur",
       "sponsor": "sponsor",
@@ -1378,8 +1428,6 @@
     "file_changes": "Modifications de fichiers",
     "files_count": "{count} fichiers",
     "lines_hidden": "{count} lignes masquées",
-    "file_too_large": "Fichier trop volumineux pour être comparé",
-    "file_size_warning": "{size} dépasse la limite de 250 Ko pour la comparaison",
     "compare_versions": "diff",
     "compare_versions_title": "Comparer avec la dernière version",
     "comparing_versions_label": "Comparaison des versions...",
@@ -1680,5 +1728,16 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "Une version mignonne, arrondie et colorée du logo npmx."
+  "alt_logo_kawaii": "Une version mignonne, arrondie et colorée du logo npmx.",
+  "changelog": {
+    "pre_release": "Pré-version",
+    "draft": "Brouillon",
+    "no_logs": "Désolé, ce paquet ne publie pas de changements ou le format de ses changements n'est pas pris en charge.",
+    "error": {
+      "p1": "Désolé, les changements de {package} n'ont pas pu être chargés",
+      "p2": "Veuillez réessayer plus tard ou {viewon}"
+    },
+    "rate_limit_ungh": "Désolé, la limite de requêtes à l'API GitHub a été atteinte, réessayez plus tard",
+    "version_unavailable": "La version demandée n'est pas disponible."
+  }
 }

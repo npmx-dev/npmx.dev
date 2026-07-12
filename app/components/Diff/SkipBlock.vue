@@ -12,11 +12,11 @@ defineProps<{
   <!-- Skip block row -->
   <tr class="h-10 font-mono bg-bg-muted text-fg-muted">
     <td />
-    <td class="opacity-50 select-none text-center">
+    <td class="select-none text-center">
       <span class="i-lucide:chevrons-up-down w-4 h-4" />
     </td>
     <td>
-      <span class="px-0 sticky inset-is-2 italic opacity-50">
+      <span class="px-0 sticky inset-is-2 italic">
         {{ content || $t('compare.lines_hidden', { count }, count) }}
       </span>
     </td>

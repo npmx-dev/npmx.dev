@@ -26,7 +26,6 @@ vi.mock('~/composables/useCharts', () => ({
   useCharts: vi.fn().mockReturnValue({
     fetchPackageDownloadEvolution: mockFetchPackageDownloadEvolution,
   }),
-  smoothPath: vi.fn().mockReturnValue(''),
 }))
 
 import OgImagePackage from '~/components/OgImage/Package.takumi.vue'

@@ -10,6 +10,7 @@ const emit = defineEmits<{
 }>()
 
 const codeRef = useTemplateRef('codeRef')
+const router = useRouter()
 
 // Generate line numbers array
 const lineNumbers = computed(() => {
@@ -36,7 +37,6 @@ function onLineClick(lineNum: number, event: MouseEvent) {
 function updateLineHighlighting() {
   if (!codeRef.value) return
 
-  // Lines are inside pre > code > .line
   const lines = codeRef.value.querySelectorAll('code > .line')
   lines.forEach((line, index) => {
     const lineNum = index + 1
@@ -58,7 +58,8 @@ watch(
   { immediate: true },
 )
 
-// Use Nuxt's `navigateTo` for the rendered import links
+// Route rendered import links through vue-router so native event listeners
+// still trigger in-app navigation for v-html content.
 function handleImportLinkNavigate() {
   if (!codeRef.value) return
 
@@ -70,7 +71,7 @@ function handleImportLinkNavigate() {
       const href = anchor.getAttribute('href')
       if (href) {
         event.preventDefault()
-        navigateTo(href)
+        void router.push(href)
       }
     })
   })

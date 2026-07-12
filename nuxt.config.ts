@@ -6,6 +6,7 @@ const isStorybook = process.env.STORYBOOK === 'true' || process.env.VITEST_STORY
 
 export default defineNuxtConfig({
   modules: [
+    '@vercel/speed-insights',
     '@unocss/nuxt',
     'nuxt-og-image',
     '@nuxtjs/html-validator',
@@ -140,6 +141,27 @@ export default defineNuxtConfig({
     '/oauth-client-metadata.json': { prerender: true },
     '/.well-known/jwks.json': { prerender: true },
     '/.well-known/site.standard.publication': { prerender: true },
+    '/api/leaderboard/likes': { isr: 900 },
+    '/api/embed/downloads.svg': {
+      isr: {
+        expiration: 60 * 60 /* one hour */,
+        passQuery: true,
+        allowQuery: [
+          'packages',
+          'package',
+          'metric',
+          'startDate',
+          'start',
+          'endDate',
+          'end',
+          'mode',
+          'granularity',
+          'locale',
+          'accent',
+          'yLabel',
+        ],
+      },
+    },
     // never cache
     '/api/auth/**': { isr: false, cache: false },
     '/api/social/**': { isr: false, cache: false },
@@ -167,7 +189,12 @@ export default defineNuxtConfig({
       },
     },
     // pages
-    '/package/**': getISRConfig(300, { fallback: 'html' }),
+    '/leaderboard/likes': getISRConfig(900),
+    '/package/**': getISRConfig(300, {
+      fallback: 'html',
+      passQuery: true,
+      allowQuery: ['activeTab'],
+    }),
     '/package/:name/_payload.json': getISRConfig(300, { fallback: 'json' }),
     '/package/:name/v/:version/_payload.json': getISRConfig(300, { fallback: 'json' }),
     '/package/:org/:name/_payload.json': getISRConfig(300, { fallback: 'json' }),
@@ -192,6 +219,8 @@ export default defineNuxtConfig({
     '/recharging': { prerender: true },
     '/pds': { isr: 86400 }, // revalidate daily
     '/blog/**': { prerender: true },
+    '/noodles/**': { prerender: true },
+    '/sponsors': { prerender: true },
     // proxy for insights
     '/_v/script.js': {
       proxy: 'https://npmx.dev/_vercel/insights/script.js',
@@ -270,17 +299,20 @@ export default defineNuxtConfig({
     providers: {
       fontshare: false,
     },
+    experimental: {
+      disableLocalFallbacks: true,
+    },
     families: [
       {
         name: 'Geist',
-        weights: ['400', '500', '600'],
-        preload: true,
+        provider: 'local',
+        weights: [400, 500, 600],
         global: true,
       },
       {
         name: 'Geist Mono',
-        weights: ['400', '500'],
-        preload: true,
+        provider: 'local',
+        weights: [400, 500],
         global: true,
       },
       {
@@ -382,6 +414,9 @@ export default defineNuxtConfig({
   },
 
   vite: {
+    css: {
+      transformer: 'lightningcss',
+    },
     optimizeDeps: {
       include: [
         '@vueuse/core',
@@ -391,6 +426,7 @@ export default defineNuxtConfig({
         'vue-data-ui/vue-ui-xy',
         'vue-data-ui/vue-ui-scatter',
         'vue-data-ui/vue-ui-horizontal-bar',
+        'vue-data-ui/vue-ui-stackbar',
         'virtua/vue',
         'semver',
         'validate-npm-package-name',
@@ -419,8 +455,14 @@ export default defineNuxtConfig({
 
 interface ISRConfigOptions {
   fallback?: 'html' | 'json'
+  allowQuery?: string[]
+  passQuery?: boolean
 }
 function getISRConfig(expirationSeconds: number, options: ISRConfigOptions = {}) {
+  const extraISR = {
+    ...(options.passQuery ? { passQuery: true } : {}),
+    ...(options.allowQuery ? { allowQuery: options.allowQuery } : {}),
+  }
   if (options.fallback) {
     return {
       isr: {
@@ -428,12 +470,14 @@ function getISRConfig(expirationSeconds: number, options: ISRConfigOptions = {})
         fallback:
           options.fallback === 'html' ? 'spa.prerender-fallback.html' : 'payload-fallback.json',
         initialHeaders: options.fallback === 'json' ? { 'content-type': 'application/json' } : {},
+        ...extraISR,
       } as { expiration: number },
     }
   }
   return {
     isr: {
       expiration: expirationSeconds,
+      ...extraISR,
     },
   }
 }

@@ -5,6 +5,10 @@ on:
     branches:
       - release
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions: {}
 
 jobs:
@@ -13,17 +17,18 @@ jobs:
     runs-on: ubuntu-slim
     if: github.repository == 'npmx-dev/npmx.dev'
     permissions:
-      contents: write
+      contents: write # create release tags and GitHub releases
     outputs:
       version: ${{ steps.version.outputs.next }}
       skipped: ${{ steps.check.outputs.skip }}
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           fetch-depth: 0
+          persist-credentials: true
 
-      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1
+      - uses: voidzero-dev/setup-vp@250f29ce396baf5e8f24498e17c0dfdebabc26eb # v1.15.0
         with:
           node-version: lts/*
           run-install: false
@@ -61,7 +66,11 @@ jobs:
 
       - name: 📦 Install dependencies
         if: steps.check.outputs.skip == 'false'
-        run: vp install --filter . --ignore-scripts
+        uses: voidzero-dev/setup-vp@250f29ce396baf5e8f24498e17c0dfdebabc26eb # v1.15.0
+        with:
+          sfw: true
+          run-install: |
+            - args: ['--filter', '.', '--ignore-scripts']
 
       - name: 📝 Generate release notes
         if: steps.check.outputs.skip == 'false'
@@ -87,22 +96,27 @@ jobs:
     if: needs.tag.outputs.skipped == 'false'
     permissions:
       contents: read
-      id-token: write
+      id-token: write # authenticate npm trusted publishing via OIDC
     environment: npm-publish
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           ref: release
+          persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1
+      - uses: voidzero-dev/setup-vp@250f29ce396baf5e8f24498e17c0dfdebabc26eb # v1.15.0
         with:
           node-version: lts/*
           registry-url: https://registry.npmjs.org
           run-install: false
 
       - name: 📦 Install dependencies
-        run: vp install --filter npmx-connector...
+        uses: voidzero-dev/setup-vp@250f29ce396baf5e8f24498e17c0dfdebabc26eb # v1.15.0
+        with:
+          sfw: true
+          run-install: |
+            - args: ['--filter', 'npmx-connector...']
 
       - name: 🔢 Set connector version
         env:
