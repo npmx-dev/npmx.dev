@@ -984,6 +984,27 @@
         },
         "enable_changelog_autoscroll_description": {
           "type": "string"
+        },
+        "data_correction_average_window_tooltip": {
+          "type": "string"
+        },
+        "data_correction_smoothing_tooltip": {
+          "type": "string"
+        },
+        "data_correction_prediction_tooltip": {
+          "type": "string"
+        },
+        "data_correction_anomalies_tooltip": {
+          "type": "string"
+        },
+        "data_correction_enabled": {
+          "type": "string"
+        },
+        "data_correction_disabled": {
+          "type": "string"
+        },
+        "data_correction_points": {
+          "type": "string"
         }
       },
       "additionalProperties": false

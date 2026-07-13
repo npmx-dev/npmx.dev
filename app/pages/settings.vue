@@ -338,26 +338,80 @@ useSeoMeta({
             </p>
 
             <div class="space-y-2 text-sm">
-              <div class="flex justify-between">
-                <span class="text-fg-muted">{{ $t('package.trends.average_window') }}</span>
-                <span class="font-mono text-fg">{{ settings.chartFilter.averageWindow }}</span>
+              <div class="flex justify-between items-center">
+                <span class="text-fg-muted flex items-center gap-1">
+                  {{ $t('package.trends.average_window') }}
+                  <TooltipApp
+                    :text="$t('settings.data_correction_average_window_tooltip')"
+                    position="top"
+                  >
+                    <span
+                      class="i-lucide:info w-3 h-3 text-fg-subtle cursor-help"
+                      aria-hidden="true"
+                    />
+                  </TooltipApp>
+                </span>
+                <span class="font-mono text-fg"
+                  >{{ settings.chartFilter.averageWindow }}
+                  {{ $t('settings.data_correction_points') }}</span
+                >
               </div>
-              <div class="flex justify-between">
-                <span class="text-fg-muted">{{ $t('package.trends.smoothing') }}</span>
+              <div class="flex justify-between items-center">
+                <span class="text-fg-muted flex items-center gap-1">
+                  {{ $t('package.trends.smoothing') }}
+                  <TooltipApp
+                    :text="$t('settings.data_correction_smoothing_tooltip')"
+                    position="top"
+                  >
+                    <span
+                      class="i-lucide:info w-3 h-3 text-fg-subtle cursor-help"
+                      aria-hidden="true"
+                    />
+                  </TooltipApp>
+                </span>
                 <span class="font-mono text-fg">{{ settings.chartFilter.smoothingTau }}</span>
               </div>
-              <div class="flex justify-between">
-                <span class="text-fg-muted">{{ $t('package.trends.prediction') }}</span>
-                <span class="font-mono text-fg">{{ settings.chartFilter.predictionPoints }}</span>
+              <div class="flex justify-between items-center">
+                <span class="text-fg-muted flex items-center gap-1">
+                  {{ $t('package.trends.prediction') }}
+                  <TooltipApp
+                    :text="$t('settings.data_correction_prediction_tooltip')"
+                    position="top"
+                  >
+                    <span
+                      class="i-lucide:info w-3 h-3 text-fg-subtle cursor-help"
+                      aria-hidden="true"
+                    />
+                  </TooltipApp>
+                </span>
+                <span class="font-mono text-fg"
+                  >{{ settings.chartFilter.predictionPoints }}
+                  {{ $t('settings.data_correction_points') }}</span
+                >
               </div>
-              <div class="flex justify-between">
-                <span class="text-fg-muted">{{ $t('package.trends.known_anomalies') }}</span>
-                <span class="font-mono text-fg">{{ settings.chartFilter.anomaliesFixed }}</span>
+              <div class="flex justify-between items-center">
+                <span class="text-fg-muted flex items-center gap-1">
+                  {{ $t('package.trends.known_anomalies') }}
+                  <TooltipApp
+                    :text="$t('settings.data_correction_anomalies_tooltip')"
+                    position="top"
+                  >
+                    <span
+                      class="i-lucide:info w-3 h-3 text-fg-subtle cursor-help"
+                      aria-hidden="true"
+                    />
+                  </TooltipApp>
+                </span>
+                <span class="font-mono text-fg">{{
+                  settings.chartFilter.anomaliesFixed
+                    ? $t('settings.data_correction_enabled')
+                    : $t('settings.data_correction_disabled')
+                }}</span>
               </div>
             </div>
 
             <div class="border-t border-border mt-4 pt-3">
-              <ButtonBase :disabled="isDefaultChartFilter" @click="resetChartFilter">
+              <ButtonBase size="sm" :disabled="isDefaultChartFilter" @click="resetChartFilter">
                 {{ $t('settings.data_correction_reset') }}
               </ButtonBase>
             </div>

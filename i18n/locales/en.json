@@ -277,7 +277,7 @@
       "data_correction": "Data correction"
     },
     "data_correction_reset": "Reset to defaults",
-    "data_correction_description": "Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed.",
+    "data_correction_description": "Download chart correction parameters are configured on the stats and compare pages. Reset them here if needed.",
     "data_source": {
       "label": "Data source",
       "description": "Choose where npmx gets search data. Individual package pages always use the npm registry directly.",
@@ -326,7 +326,14 @@
     "keyboard_shortcuts_enabled_description": "Keyboard shortcuts can be disabled if they conflict with other browser or system shortcuts",
     "enable_code_ligatures": "Enable ligatures in code",
     "enable_changelog_autoscroll": "Auto scroll to requested version",
-    "enable_changelog_autoscroll_description": "Auto scroll to or close to the requested version at package changelog"
+    "enable_changelog_autoscroll_description": "Auto scroll to or close to the requested version at package changelog",
+    "data_correction_average_window_tooltip": "Number of data points on each side used for bidirectional moving average smoothing.",
+    "data_correction_smoothing_tooltip": "Time constant for forward-backward exponential smoothing. Higher values produce smoother curves.",
+    "data_correction_prediction_tooltip": "Number of recent data points used to estimate the current incomplete period.",
+    "data_correction_anomalies_tooltip": "Interpolates over known download spikes caused by bots or CI issues.",
+    "data_correction_enabled": "Enabled",
+    "data_correction_disabled": "Disabled",
+    "data_correction_points": "points"
   },
   "i18n": {
     "missing_keys": "{count} missing translation | {count} missing translations",
