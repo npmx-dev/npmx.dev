@@ -91,7 +91,7 @@ const renderedSegments = computed(() =>
     <!-- Line content -->
     <td :class="contentClasses">
       <component :is="line.type === 'insert' ? 'ins' : line.type === 'delete' ? 'del' : 'span'">
-        <span
+        <code
           v-for="(seg, i) in renderedSegments"
           :key="i"
           :class="{
