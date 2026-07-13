@@ -48,6 +48,16 @@ describe('Emoji rendering', () => {
     expect(result.html).toContain('id="user-content-rocket-install"')
     expect(result.html).toContain('🚀 Install')
   })
+
+  it('builds heading anchors from Markdown tokens before rendering emoji', async () => {
+    const markdown =
+      '# :rocket: [Install](https://example.com) `pkg&cli` <span>now</span> ![badge](badge.svg)'
+    const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+    expect(result.html).toContain('id="user-content-rocket-install-pkgcli-now"')
+    expect(result.html).toContain('🚀')
+    expect(result.html).not.toContain('user-content-rocket-install-pkgcli-now-badge')
+  })
 })
 
 describe('Playground Link Extraction', () => {
