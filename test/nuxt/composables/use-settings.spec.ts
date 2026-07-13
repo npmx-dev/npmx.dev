@@ -47,6 +47,54 @@ describe('useSettings - keyboardShortcuts', () => {
   })
 })
 
+describe('useSettings - chartFilter', () => {
+  beforeEach(() => {
+    vi.resetModules()
+  })
+
+  it('should have correct default values', async () => {
+    const { DEFAULT_CHART_FILTER } = await import('~/composables/useSettings')
+    expect(DEFAULT_CHART_FILTER).toEqual({
+      averageWindow: 0,
+      smoothingTau: 0,
+      anomaliesFixed: true,
+      predictionPoints: 4,
+    })
+  })
+
+  it('should report isDefault as true when all values match defaults', async () => {
+    const { useChartFilter } = await import('~/composables/useSettings')
+    const { isDefault } = useChartFilter()
+    expect(isDefault.value).toBe(true)
+  })
+
+  it('should report isDefault as false when any value differs', async () => {
+    const { useSettings, useChartFilter } = await import('~/composables/useSettings')
+    const { settings } = useSettings()
+    const { isDefault } = useChartFilter()
+
+    settings.value.chartFilter.averageWindow = 5
+    expect(isDefault.value).toBe(false)
+  })
+
+  it('should reset all values to defaults', async () => {
+    const { useSettings, useChartFilter, DEFAULT_CHART_FILTER } =
+      await import('~/composables/useSettings')
+    const { settings } = useSettings()
+    const { isDefault, reset } = useChartFilter()
+
+    settings.value.chartFilter.averageWindow = 5
+    settings.value.chartFilter.smoothingTau = 3
+    settings.value.chartFilter.anomaliesFixed = false
+    settings.value.chartFilter.predictionPoints = 10
+    expect(isDefault.value).toBe(false)
+
+    reset()
+    expect(isDefault.value).toBe(true)
+    expect(settings.value.chartFilter).toEqual(DEFAULT_CHART_FILTER)
+  })
+})
+
 describe('useSettings - codeLigatures', () => {
   beforeEach(() => {
     vi.resetModules()

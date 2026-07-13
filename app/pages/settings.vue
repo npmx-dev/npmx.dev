@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { LocaleObject } from '@nuxtjs/i18n'
-import { DEFAULT_CHART_FILTER } from '~/composables/useSettings'
 
 const router = useRouter()
 const { settings } = useSettings()
@@ -9,6 +8,7 @@ const colorMode = useColorMode()
 const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
 const keyboardShortcutsEnabled = useKeyboardShortcuts()
 const { toggleCodeLigatures } = useCodeLigatures()
+const { isDefault: isDefaultChartFilter, reset: resetChartFilter } = useChartFilter()
 
 // Create a computed property to handle locale binding properly
 const localeCodes = computed<LocaleObject['code'][]>(() =>
@@ -42,18 +42,6 @@ onKeyStroke(
   },
   { dedupe: true },
 )
-
-const isDefaultChartFilter = computed(
-  () =>
-    settings.value.chartFilter.averageWindow === DEFAULT_CHART_FILTER.averageWindow &&
-    settings.value.chartFilter.smoothingTau === DEFAULT_CHART_FILTER.smoothingTau &&
-    settings.value.chartFilter.anomaliesFixed === DEFAULT_CHART_FILTER.anomaliesFixed &&
-    settings.value.chartFilter.predictionPoints === DEFAULT_CHART_FILTER.predictionPoints,
-)
-
-function resetChartFilter() {
-  settings.value.chartFilter = { ...DEFAULT_CHART_FILTER }
-}
 
 useSeoMeta({
   title: () => `${$t('settings.title')} - npmx`,

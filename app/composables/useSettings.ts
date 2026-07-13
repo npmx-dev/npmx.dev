@@ -257,6 +257,27 @@ export function useBackgroundTheme() {
   }
 }
 
+export function useChartFilter() {
+  const { settings } = useSettings()
+
+  const isDefault = computed(
+    () =>
+      settings.value.chartFilter.averageWindow === DEFAULT_CHART_FILTER.averageWindow &&
+      settings.value.chartFilter.smoothingTau === DEFAULT_CHART_FILTER.smoothingTau &&
+      settings.value.chartFilter.anomaliesFixed === DEFAULT_CHART_FILTER.anomaliesFixed &&
+      settings.value.chartFilter.predictionPoints === DEFAULT_CHART_FILTER.predictionPoints,
+  )
+
+  function reset() {
+    settings.value.chartFilter = { ...DEFAULT_CHART_FILTER }
+  }
+
+  return {
+    isDefault,
+    reset,
+  }
+}
+
 export function useCodeContainer() {
   const { settings } = useSettings()
 
