@@ -1,5 +1,5 @@
 <template>
-  <div class="relative flex">
+  <div class="relative flex w-full">
     <ThemedLogo v-if="colorMode.value === 'dark'" :emojiSets="darkTheme" />
     <ThemedLogo v-else :emojiSets="lightTheme" />
   </div>
