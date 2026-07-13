@@ -272,7 +272,8 @@
       "display": "Weergaven",
       "search": "Zoekfuncties",
       "language": "Taal",
-      "keyboard_shortcuts": "toetsenbordnavigatie"
+      "keyboard_shortcuts": "toetsenbordnavigatie",
+      "data_correction": "EN TEXT TO REPLACE: Data correction"
     },
     "data_source": {
       "label": "Gegevensbron",
@@ -322,7 +323,9 @@
     "keyboard_shortcuts_enabled_description": "toetsenbordnavigatie kan worden uitgeschakeld als ze conflicteren met andere sneltoetsen van de browser of het systeem.",
     "enable_code_ligatures": "Verbonden tekens (ligaturen) in code inschakelen",
     "enable_changelog_autoscroll": "Automatisch scrollen naar gevraagde versie",
-    "enable_changelog_autoscroll_description": "Automatisch scrollen naar of in de buurt van de gevraagde versie in de Wijzigingenoverzicht van een pakket"
+    "enable_changelog_autoscroll_description": "Automatisch scrollen naar of in de buurt van de gevraagde versie in de Wijzigingenoverzicht van een pakket",
+    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
+    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
   },
   "i18n": {
     "missing_keys": "{count} ontbrekende vertaling | {count} ontbrekende vertalingen",

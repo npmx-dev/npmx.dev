@@ -237,7 +237,8 @@
       "display": "显示",
       "search": "数据来源",
       "language": "语言",
-      "keyboard_shortcuts": "快捷键"
+      "keyboard_shortcuts": "快捷键",
+      "data_correction": "EN TEXT TO REPLACE: Data correction"
     },
     "data_source": {
       "label": "数据来源",
@@ -285,7 +286,9 @@
     },
     "keyboard_shortcuts_enabled": "启用快捷键",
     "keyboard_shortcuts_enabled_description": "如果某些快捷键与其他浏览器或系统快捷键冲突，可以选择将其禁用。",
-    "enable_code_ligatures": "在代码中启用连字"
+    "enable_code_ligatures": "在代码中启用连字",
+    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
+    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
   },
   "i18n": {
     "missing_keys": "{count} 项缺少翻译",

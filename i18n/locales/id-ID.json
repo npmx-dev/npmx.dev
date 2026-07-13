@@ -140,7 +140,8 @@
       "display": "Layar",
       "search": "Sumber data",
       "language": "Bahasa",
-      "keyboard_shortcuts": "Pintasan papan ketik"
+      "keyboard_shortcuts": "Pintasan papan ketik",
+      "data_correction": "EN TEXT TO REPLACE: Data correction"
     },
     "data_source": {
       "label": "Sumber data",
@@ -186,7 +187,9 @@
       "black": "Hitam"
     },
     "keyboard_shortcuts_enabled": "Aktifkan pintasan papan ketik",
-    "keyboard_shortcuts_enabled_description": "Pintasan papan ketik dapat dinonaktifkan jika bertentangan dengan pintasan peramban atau sistem lainnya."
+    "keyboard_shortcuts_enabled_description": "Pintasan papan ketik dapat dinonaktifkan jika bertentangan dengan pintasan peramban atau sistem lainnya.",
+    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
+    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
   },
   "i18n": {
     "missing_keys": "{count} belum diterjemahkan | {count} belum diterjemahkan",

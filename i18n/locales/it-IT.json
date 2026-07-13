@@ -265,7 +265,8 @@
       "display": "Visualizzazione",
       "search": "Fonte dati",
       "language": "Lingua",
-      "keyboard_shortcuts": "Scorciatoie tastiera"
+      "keyboard_shortcuts": "Scorciatoie tastiera",
+      "data_correction": "EN TEXT TO REPLACE: Data correction"
     },
     "data_source": {
       "label": "Fonte dati",
@@ -315,7 +316,9 @@
     "keyboard_shortcuts_enabled_description": "Le scorciatoie da tastiera possono essere disabilitate se entrano in conflitto con altre scorciatoie del browser o del sistema",
     "enable_code_ligatures": "Abilita legature nel codice",
     "enable_changelog_autoscroll": "Scorri automaticamente alla versione richiesta",
-    "enable_changelog_autoscroll_description": "Scorri automaticamente fino alla versione richiesta nel changelog del pacchetto"
+    "enable_changelog_autoscroll_description": "Scorri automaticamente fino alla versione richiesta nel changelog del pacchetto",
+    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
+    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
   },
   "i18n": {
     "missing_keys": "{count} chiave mancante | {count} chiavi mancanti",

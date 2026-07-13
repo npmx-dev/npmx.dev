@@ -59,6 +59,13 @@ export interface AppSettings {
   }
 }
 
+export const DEFAULT_CHART_FILTER: AppSettings['chartFilter'] = {
+  averageWindow: 0,
+  smoothingTau: 0,
+  anomaliesFixed: true,
+  predictionPoints: 4,
+}
+
 const DEFAULT_SETTINGS: AppSettings = {
   relativeDates: false,
   includeTypesInInstall: true,
@@ -79,12 +86,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   sidebar: {
     collapsed: [],
   },
-  chartFilter: {
-    averageWindow: 0,
-    smoothingTau: 0,
-    anomaliesFixed: true,
-    predictionPoints: 4,
-  },
+  chartFilter: { ...DEFAULT_CHART_FILTER },
   timelineChart: {
     isZeroBased: false,
     showZoom: false,

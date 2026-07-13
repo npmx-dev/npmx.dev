@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { LocaleObject } from '@nuxtjs/i18n'
+import { DEFAULT_CHART_FILTER } from '~/composables/useSettings'
 
 const router = useRouter()
 const { settings } = useSettings()
@@ -41,6 +42,18 @@ onKeyStroke(
   },
   { dedupe: true },
 )
+
+const isDefaultChartFilter = computed(
+  () =>
+    settings.value.chartFilter.averageWindow === DEFAULT_CHART_FILTER.averageWindow &&
+    settings.value.chartFilter.smoothingTau === DEFAULT_CHART_FILTER.smoothingTau &&
+    settings.value.chartFilter.anomaliesFixed === DEFAULT_CHART_FILTER.anomaliesFixed &&
+    settings.value.chartFilter.predictionPoints === DEFAULT_CHART_FILTER.predictionPoints,
+)
+
+function resetChartFilter() {
+  settings.value.chartFilter = { ...DEFAULT_CHART_FILTER }
+}
 
 useSeoMeta({
   title: () => `${$t('settings.title')} - npmx`,
@@ -323,6 +336,43 @@ useSeoMeta({
               :description="$t('settings.keyboard_shortcuts_enabled_description')"
               v-model="settings.keyboardShortcuts"
             />
+          </div>
+        </section>
+
+        <!-- DATA CORRECTION Section -->
+        <section>
+          <h2 class="text-xs text-fg-muted uppercase tracking-wider mb-4">
+            {{ $t('settings.sections.data_correction') }}
+          </h2>
+          <div class="bg-bg-subtle border border-border rounded-lg p-4 sm:p-6">
+            <p class="text-xs text-fg-muted mb-4">
+              {{ $t('settings.data_correction_description') }}
+            </p>
+
+            <div class="space-y-2 text-sm">
+              <div class="flex justify-between">
+                <span class="text-fg-muted">{{ $t('package.trends.average_window') }}</span>
+                <span class="font-mono text-fg">{{ settings.chartFilter.averageWindow }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-fg-muted">{{ $t('package.trends.smoothing') }}</span>
+                <span class="font-mono text-fg">{{ settings.chartFilter.smoothingTau }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-fg-muted">{{ $t('package.trends.prediction') }}</span>
+                <span class="font-mono text-fg">{{ settings.chartFilter.predictionPoints }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-fg-muted">{{ $t('package.trends.known_anomalies') }}</span>
+                <span class="font-mono text-fg">{{ settings.chartFilter.anomaliesFixed }}</span>
+              </div>
+            </div>
+
+            <div class="border-t border-border mt-4 pt-3">
+              <ButtonBase :disabled="isDefaultChartFilter" @click="resetChartFilter">
+                {{ $t('settings.data_correction_reset') }}
+              </ButtonBase>
+            </div>
           </div>
         </section>
       </div>

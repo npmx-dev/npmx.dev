@@ -65,7 +65,8 @@
     "sections": {
       "appearance": "दिखावट",
       "display": "डिस्प्ले",
-      "language": "भाषा"
+      "language": "भाषा",
+      "data_correction": "EN TEXT TO REPLACE: Data correction"
     },
     "data_source": {},
     "relative_dates": "सापेक्ष मितिहरू",
@@ -84,7 +85,9 @@
     },
     "clear_accent": "एक्सेन्ट रङ हटाउनुहोस्",
     "translation_progress": "अनुवाद प्रगति",
-    "background_themes": {}
+    "background_themes": {},
+    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
+    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
   },
   "i18n": {
     "missing_keys": "{count} अनुवाद छुटेको छ | {count} अनुवादहरू छुटेका छन्",

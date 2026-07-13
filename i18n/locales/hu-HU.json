@@ -107,7 +107,8 @@
       "display": "Kijelző",
       "search": "Adatforrás",
       "language": "Nyelv",
-      "keyboard_shortcuts": "Billentyűzet parancsikonok"
+      "keyboard_shortcuts": "Billentyűzet parancsikonok",
+      "data_correction": "EN TEXT TO REPLACE: Data correction"
     },
     "data_source": {
       "label": "Adatforrás",
@@ -137,7 +138,9 @@
       "label": "Háttér árnyalata"
     },
     "keyboard_shortcuts_enabled": "Billentyűzet parancsikonok engedélyezése",
-    "keyboard_shortcuts_enabled_description": "A billentyűzet parancsikonok letilthatók, ha ütköznek más böngésző vagy rendszer parancsikonokkal"
+    "keyboard_shortcuts_enabled_description": "A billentyűzet parancsikonok letilthatók, ha ütköznek más böngésző vagy rendszer parancsikonokkal",
+    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
+    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
   },
   "i18n": {
     "missing_keys": "{count} hiányzó fordítás | {count} hiányzó fordítás",

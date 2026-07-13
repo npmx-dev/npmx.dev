@@ -65,7 +65,8 @@
     "sections": {
       "appearance": "ರೂಪ",
       "display": "ಪ್ರದರ್ಶನ",
-      "language": "ಭಾಷೆ"
+      "language": "ಭಾಷೆ",
+      "data_correction": "EN TEXT TO REPLACE: Data correction"
     },
     "data_source": {},
     "relative_dates": "ಸಾಪೇಕ್ಷ ದಿನಾಂಕಗಳು",
@@ -84,7 +85,9 @@
     },
     "clear_accent": "ಅಕ್ಸೆಂಟ್ ಬಣ್ಣ ತೆರವುಗೊಳಿಸಿ",
     "translation_progress": "ಅನುವಾದ ಪ್ರಗತಿ",
-    "background_themes": {}
+    "background_themes": {},
+    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
+    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
   },
   "i18n": {
     "missing_keys": "{count} ಅನುವಾದ ಇಲ್ಲ | {count} ಅನುವಾದಗಳು ಇಲ್ಲ",

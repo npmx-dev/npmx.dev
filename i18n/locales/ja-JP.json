@@ -273,7 +273,8 @@
       "display": "表示",
       "search": "データソース",
       "language": "言語",
-      "keyboard_shortcuts": "キーボードショートカット"
+      "keyboard_shortcuts": "キーボードショートカット",
+      "data_correction": "EN TEXT TO REPLACE: Data correction"
     },
     "data_source": {
       "label": "データソース",
@@ -323,7 +324,9 @@
     "keyboard_shortcuts_enabled_description": "ブラウザやシステムのショートカットと競合する場合、キーボードショートカットを無効化できます",
     "enable_code_ligatures": "コードのリガチャを有効化",
     "enable_changelog_autoscroll": "要求されたバージョンへ自動スクロール",
-    "enable_changelog_autoscroll_description": "パッケージのchangelogで要求されたバージョン（またはその付近）まで自動スクロール"
+    "enable_changelog_autoscroll_description": "パッケージのchangelogで要求されたバージョン（またはその付近）まで自動スクロール",
+    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
+    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
   },
   "i18n": {
     "missing_keys": "{count} 件の未翻訳項目",

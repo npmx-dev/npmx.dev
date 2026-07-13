@@ -136,7 +136,8 @@
       "display": "Ekran",
       "search": "Məlumat mənbəyi",
       "language": "Dil",
-      "keyboard_shortcuts": "Klaviatura qısayolları"
+      "keyboard_shortcuts": "Klaviatura qısayolları",
+      "data_correction": "EN TEXT TO REPLACE: Data correction"
     },
     "data_source": {
       "label": "Məlumat mənbəyi",
@@ -168,7 +169,9 @@
       "label": "Fon tonu"
     },
     "keyboard_shortcuts_enabled": "Klaviatura qısayollarını aktivləşdir",
-    "keyboard_shortcuts_enabled_description": "Klaviatura qısayolları digər brauzer və ya sistem qısayolları ilə toqquşarsa deaktiv edilə bilər"
+    "keyboard_shortcuts_enabled_description": "Klaviatura qısayolları digər brauzer və ya sistem qısayolları ilə toqquşarsa deaktiv edilə bilər",
+    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
+    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
   },
   "i18n": {
     "missing_keys": "{count} çatışmayan tərcümə | {count} çatışmayan tərcümə",

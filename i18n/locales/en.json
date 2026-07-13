@@ -273,8 +273,11 @@
       "display": "Display",
       "search": "Search features",
       "language": "Language",
-      "keyboard_shortcuts": "Keyboard shortcuts"
+      "keyboard_shortcuts": "Keyboard shortcuts",
+      "data_correction": "Data correction"
     },
+    "data_correction_reset": "Reset to defaults",
+    "data_correction_description": "Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed.",
     "data_source": {
       "label": "Data source",
       "description": "Choose where npmx gets search data. Individual package pages always use the npm registry directly.",

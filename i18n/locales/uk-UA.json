@@ -237,7 +237,8 @@
       "display": "Відображення",
       "search": "Пошук",
       "language": "Мова",
-      "keyboard_shortcuts": "Гарячі клавіші"
+      "keyboard_shortcuts": "Гарячі клавіші",
+      "data_correction": "EN TEXT TO REPLACE: Data correction"
     },
     "data_source": {
       "label": "Джерело даних",
@@ -285,7 +286,9 @@
     },
     "keyboard_shortcuts_enabled": "Увімкнути гарячі клавіші",
     "keyboard_shortcuts_enabled_description": "Гарячі клавіші можна вимкнути, якщо вони конфліктують з налаштуваннями браузера або системи",
-    "enable_code_ligatures": "Увімкнути лігатури в коді"
+    "enable_code_ligatures": "Увімкнути лігатури в коді",
+    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
+    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
   },
   "i18n": {
     "missing_keys": "Відсутній {count} переклад | Відсутні {count} переклади | Відсутні {count} перекладів",

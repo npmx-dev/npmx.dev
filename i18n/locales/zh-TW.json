@@ -233,7 +233,8 @@
       "display": "顯示",
       "search": "搜尋套件庫",
       "language": "語言",
-      "keyboard_shortcuts": "鍵盤快速鍵"
+      "keyboard_shortcuts": "鍵盤快速鍵",
+      "data_correction": "EN TEXT TO REPLACE: Data correction"
     },
     "data_source": {
       "label": "搜尋套件庫",
@@ -280,7 +281,9 @@
       "black": "黑色"
     },
     "keyboard_shortcuts_enabled": "啟用鍵盤快速鍵",
-    "keyboard_shortcuts_enabled_description": "若與其他瀏覽器或系統快捷鍵衝突，可停用鍵盤快速鍵"
+    "keyboard_shortcuts_enabled_description": "若與其他瀏覽器或系統快捷鍵衝突，可停用鍵盤快速鍵",
+    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
+    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
   },
   "i18n": {
     "missing_keys": "{count} 項缺少翻譯",

@@ -237,7 +237,8 @@
       "display": "Afișare",
       "search": "Funcții de căutare",
       "language": "Limbă",
-      "keyboard_shortcuts": "Comenzi rapide de la tastatură"
+      "keyboard_shortcuts": "Comenzi rapide de la tastatură",
+      "data_correction": "EN TEXT TO REPLACE: Data correction"
     },
     "data_source": {
       "label": "Sursa datelor",
@@ -285,7 +286,9 @@
     },
     "keyboard_shortcuts_enabled": "Activează comenzile rapide de la tastatură",
     "keyboard_shortcuts_enabled_description": "Comenzile rapide de la tastatură pot fi dezactivate dacă intră în conflict cu alte comenzi rapide ale browserului sau ale sistemului",
-    "enable_code_ligatures": "Activează litere ligaturate în cod"
+    "enable_code_ligatures": "Activează litere ligaturate în cod",
+    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
+    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
   },
   "i18n": {
     "missing_keys": "{count} traducere lipsește | {count} traduceri lipsesc",

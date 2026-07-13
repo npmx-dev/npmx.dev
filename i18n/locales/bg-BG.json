@@ -107,7 +107,8 @@
       "display": "Дисплей",
       "search": "Източник на данни",
       "language": "Език",
-      "keyboard_shortcuts": "Клавишни комбинации"
+      "keyboard_shortcuts": "Клавишни комбинации",
+      "data_correction": "EN TEXT TO REPLACE: Data correction"
     },
     "data_source": {
       "label": "Източник на данни",
@@ -137,7 +138,9 @@
       "label": "Фонов нюанс"
     },
     "keyboard_shortcuts_enabled": "Активиране на клавишни комбинации",
-    "keyboard_shortcuts_enabled_description": "Клавишните комбинации могат да бъдат деактивирани, ако влизат в конфликт с други браузърни или системни преки пътища"
+    "keyboard_shortcuts_enabled_description": "Клавишните комбинации могат да бъдат деактивирани, ако влизат в конфликт с други браузърни или системни преки пътища",
+    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
+    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
   },
   "i18n": {
     "missing_keys": "{count} липсващ превод | {count} липсващи преводи",

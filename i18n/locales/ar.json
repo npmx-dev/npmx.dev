@@ -89,7 +89,8 @@
       "appearance": "المظهر",
       "display": "العرض",
       "search": "مصدر البيانات",
-      "language": "اللغة"
+      "language": "اللغة",
+      "data_correction": "EN TEXT TO REPLACE: Data correction"
     },
     "data_source": {
       "label": "مصدر البيانات",
@@ -117,7 +118,9 @@
     "translation_progress": "تقدم الترجمة",
     "background_themes": {
       "label": "درجة خلفية الصفحة"
-    }
+    },
+    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
+    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
   },
   "i18n": {
     "missing_keys": "{count} ترجمات مفقودة | ترجمة واحدة مفقودة | ترجمتان مفقودتان | {count} ترجمات مفقودة | {count} ترجمة مفقودة | {count} ترجمة مفقودة",

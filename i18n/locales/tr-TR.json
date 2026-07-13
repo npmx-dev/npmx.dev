@@ -238,7 +238,8 @@
       "display": "Ekran",
       "search": "Veri kaynağı",
       "language": "Dil",
-      "keyboard_shortcuts": "Klavye kısayolları"
+      "keyboard_shortcuts": "Klavye kısayolları",
+      "data_correction": "EN TEXT TO REPLACE: Data correction"
     },
     "data_source": {
       "label": "Veri kaynağı",
@@ -288,7 +289,9 @@
     "keyboard_shortcuts_enabled_description": "Hızlı navigasyon için klavye kısayollarını etkinleştir",
     "enable_code_ligatures": "Kodda ligature'ları etkinleştir",
     "enable_changelog_autoscroll": "İstenen sürüme otomatik kaydır",
-    "enable_changelog_autoscroll_description": "Paket değişiklik günlüğünde istenen sürüme veya yakınına otomatik kaydır"
+    "enable_changelog_autoscroll_description": "Paket değişiklik günlüğünde istenen sürüme veya yakınına otomatik kaydır",
+    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
+    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
   },
   "i18n": {
     "missing_keys": "{count} eksik çeviri | {count} eksik çeviri",

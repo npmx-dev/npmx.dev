@@ -11,7 +11,9 @@
     }
   },
   "settings": {
-    "keyboard_shortcuts_enabled": "Habilitar atajos de teclado"
+    "keyboard_shortcuts_enabled": "Habilitar atajos de teclado",
+    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
+    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
   },
   "error": {
     "default": "Algo salió mal"

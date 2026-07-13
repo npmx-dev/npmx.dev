@@ -237,7 +237,8 @@
       "display": "Apresentação",
       "search": "Pesquisa",
       "language": "Idioma",
-      "keyboard_shortcuts": "Atalhos de teclado"
+      "keyboard_shortcuts": "Atalhos de teclado",
+      "data_correction": "EN TEXT TO REPLACE: Data correction"
     },
     "data_source": {
       "label": "Fonte de dados",
@@ -285,7 +286,9 @@
     },
     "keyboard_shortcuts_enabled": "Ativar atalhos de teclado",
     "keyboard_shortcuts_enabled_description": "Os atalhos de teclado podem ser desativados se entrarem em conflito com outros atalhos do navegador ou do sistema",
-    "enable_code_ligatures": "Ativar ligaturas no código"
+    "enable_code_ligatures": "Ativar ligaturas no código",
+    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
+    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
   },
   "i18n": {
     "missing_keys": "{count} tradução em falta | {count} traduções em falta",
