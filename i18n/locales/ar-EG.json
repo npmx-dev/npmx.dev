@@ -46,8 +46,7 @@
   },
   "settings": {
     "sections": {
-      "keyboard_shortcuts": "اختصارات لوحة المفاتيح",
-      "data_correction": "EN TEXT TO REPLACE: Data correction"
+      "keyboard_shortcuts": "اختصارات لوحة المفاتيح"
     },
     "instant_search": "البحث الفوري",
     "instant_search_description": "ينتقل إلى صفحة البحث ويحدّث النتائج تلقائيًا أثناء الكتابة.",
@@ -70,9 +69,7 @@
       "black": "أسود"
     },
     "keyboard_shortcuts_enabled": "تفعيل اختصارات لوحة المفاتيح",
-    "keyboard_shortcuts_enabled_description": "يمكن تعطيل الاختصارات إذا تعارضت مع اختصارات المتصفح أو النظام",
-    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
-    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
+    "keyboard_shortcuts_enabled_description": "يمكن تعطيل الاختصارات إذا تعارضت مع اختصارات المتصفح أو النظام"
   },
   "error": {
     "401": "غير مصرح",

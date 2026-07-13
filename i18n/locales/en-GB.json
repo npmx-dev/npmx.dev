@@ -2,9 +2,7 @@
   "$schema": "../schema.json",
   "settings": {
     "tagline": "customise your npmx experience",
-    "clear_accent": "Clear accent colour",
-    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
-    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
+    "clear_accent": "Clear accent colour"
   },
   "search": {
     "suggestion": {

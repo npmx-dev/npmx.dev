@@ -238,8 +238,7 @@
       "display": "Affichage",
       "search": "Source de données",
       "language": "Langue",
-      "keyboard_shortcuts": "Raccourcis clavier",
-      "data_correction": "EN TEXT TO REPLACE: Data correction"
+      "keyboard_shortcuts": "Raccourcis clavier"
     },
     "data_source": {
       "label": "Source de données",
@@ -289,9 +288,7 @@
     "keyboard_shortcuts_enabled_description": "Les raccourcis clavier peuvent être désactivés s'ils entrent en conflit avec d'autres raccourcis du navigateur ou du système",
     "enable_code_ligatures": "Activer les ligatures de code",
     "enable_changelog_autoscroll": "Scroller automatiquement à la version voulue",
-    "enable_changelog_autoscroll_description": "Scroller automatiquement à — ou près — de la version voulue dans la page des changements",
-    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
-    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
+    "enable_changelog_autoscroll_description": "Scroller automatiquement à — ou près — de la version voulue dans la page des changements"
   },
   "i18n": {
     "missing_keys": "{count} traduction manquante | {count} traductions manquantes",

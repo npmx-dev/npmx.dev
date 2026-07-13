@@ -140,8 +140,7 @@
       "display": "प्रदर्शन",
       "search": "खोज सुविधाएँ",
       "language": "भाषा",
-      "keyboard_shortcuts": "कीबोर्ड शॉर्टकट",
-      "data_correction": "EN TEXT TO REPLACE: Data correction"
+      "keyboard_shortcuts": "कीबोर्ड शॉर्टकट"
     },
     "data_source": {
       "label": "डेटा स्रोत",
@@ -187,9 +186,7 @@
       "black": "काला"
     },
     "keyboard_shortcuts_enabled": "कीबोर्ड शॉर्टकट सक्षम करें",
-    "keyboard_shortcuts_enabled_description": "यदि कीबोर्ड शॉर्टकट अन्य ब्राउज़र या सिस्टम शॉर्टकट से टकराते हैं, तो उन्हें बंद किया जा सकता है",
-    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
-    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
+    "keyboard_shortcuts_enabled_description": "यदि कीबोर्ड शॉर्टकट अन्य ब्राउज़र या सिस्टम शॉर्टकट से टकराते हैं, तो उन्हें बंद किया जा सकता है"
   },
   "i18n": {
     "missing_keys": "{count} अनुवाद गायब है | {count} अनुवाद गायब हैं",

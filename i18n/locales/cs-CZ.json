@@ -270,8 +270,7 @@
       "display": "Zobrazení",
       "search": "Zdroj dat",
       "language": "Jazyk",
-      "keyboard_shortcuts": "Klávesové zkratky",
-      "data_correction": "EN TEXT TO REPLACE: Data correction"
+      "keyboard_shortcuts": "Klávesové zkratky"
     },
     "data_source": {
       "label": "Zdroj dat",
@@ -321,9 +320,7 @@
     "keyboard_shortcuts_enabled_description": "Klávesové zkratky lze zakázat, pokud se střetávají s jinými zkratkami prohlížeče nebo systému",
     "enable_code_ligatures": "Zapnout ligatury v kódu",
     "enable_changelog_autoscroll": "Automaticky posouvat na požadovanou verzi",
-    "enable_changelog_autoscroll_description": "Automaticky posouvat na nebo blízko požadované verze v seznamu změn balíčku",
-    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
-    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
+    "enable_changelog_autoscroll_description": "Automaticky posouvat na nebo blízko požadované verze v seznamu změn balíčku"
   },
   "i18n": {
     "missing_keys": "{count} chybějící překlad | {count} chybějící překlady | {count} chybějících překladů",

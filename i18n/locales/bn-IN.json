@@ -273,8 +273,7 @@
       "display": "প্রদর্শন",
       "search": "অনুসন্ধান বৈশিষ্ট্য",
       "language": "ভাষা",
-      "keyboard_shortcuts": "কীবোর্ড শর্টকাট",
-      "data_correction": "EN TEXT TO REPLACE: Data correction"
+      "keyboard_shortcuts": "কীবোর্ড শর্টকাট"
     },
     "data_source": {
       "label": "তথ্য উৎস",
@@ -324,9 +323,7 @@
     "keyboard_shortcuts_enabled_description": "কীবোর্ড শর্টকাট নিষ্ক্রিয় করা যেতে পারে যদি তারা অন্যান্য ব্রাউজার বা সিস্টেম শর্টকাটের সঙ্গে দুইপাশের সমস্যা তৈরি করে",
     "enable_code_ligatures": "কোডে লিগচারস সক্রিয় করুন",
     "enable_changelog_autoscroll": "অনুসন্ধানযোগ্য ভার্সনে সহজেই स्क्रोल",
-    "enable_changelog_autoscroll_description": "প্যাকেজ changelog-এ requested version-এ s scroll to or close to the requested version",
-    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
-    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
+    "enable_changelog_autoscroll_description": "প্যাকেজ changelog-এ requested version-এ s scroll to or close to the requested version"
   },
   "i18n": {
     "missing_keys": "{count} অনুবাদ নেই | {count} অনুবাদ নেই",

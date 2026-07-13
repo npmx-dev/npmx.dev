@@ -136,8 +136,7 @@
       "display": "Widok",
       "search": "Źródło danych",
       "language": "Język",
-      "keyboard_shortcuts": "Skróty klawiaturowe",
-      "data_correction": "EN TEXT TO REPLACE: Data correction"
+      "keyboard_shortcuts": "Skróty klawiaturowe"
     },
     "data_source": {
       "label": "Źródło danych",
@@ -169,9 +168,7 @@
       "label": "Odcień tła"
     },
     "keyboard_shortcuts_enabled": "Włącz skróty klawiaturowe",
-    "keyboard_shortcuts_enabled_description": "Skróty klawiaturowe mogą zostać wyłączone jeśli kolidują z innymi skrótami przeglądarki lub systemu",
-    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
-    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
+    "keyboard_shortcuts_enabled_description": "Skróty klawiaturowe mogą zostać wyłączone jeśli kolidują z innymi skrótami przeglądarki lub systemu"
   },
   "i18n": {
     "missing_keys": "{count} brakujących tłumaczeń | {count} brakujące tłumaczenie | {count} brakujące tłumaczenia | {count} brakujących tłumaczeń | {count} brakujących tłumaczeń",

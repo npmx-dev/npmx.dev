@@ -140,8 +140,7 @@
       "display": "Prikaz",
       "search": "Mogućnosti pretrage",
       "language": "Jezik",
-      "keyboard_shortcuts": "Prečice na tastaturi",
-      "data_correction": "EN TEXT TO REPLACE: Data correction"
+      "keyboard_shortcuts": "Prečice na tastaturi"
     },
     "data_source": {
       "label": "Izvor podataka",
@@ -187,9 +186,7 @@
       "black": "Crna"
     },
     "keyboard_shortcuts_enabled": "Omogućite prečice na tastaturi",
-    "keyboard_shortcuts_enabled_description": "Prečice na tastaturi mogu biti isključene ako su u sukobu sa drugim prečicama pregledača ili sistema",
-    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
-    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
+    "keyboard_shortcuts_enabled_description": "Prečice na tastaturi mogu biti isključene ako su u sukobu sa drugim prečicama pregledača ili sistema"
   },
   "i18n": {
     "missing_keys": "{count} nedostajući prevod | {count} nedostajuća prevoda | {count} nedostajućih prevoda",

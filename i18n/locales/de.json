@@ -238,8 +238,7 @@
       "display": "Anzeige",
       "search": "Suchfunktionen",
       "language": "Sprache",
-      "keyboard_shortcuts": "Tastenkombinationen",
-      "data_correction": "EN TEXT TO REPLACE: Data correction"
+      "keyboard_shortcuts": "Tastenkombinationen"
     },
     "data_source": {
       "label": "Datenquelle",
@@ -289,9 +288,7 @@
     "keyboard_shortcuts_enabled_description": "Tastenkombinationen können deaktiviert werden, wenn sie mit anderen Browser- oder Systemkürzeln in Konflikt stehen",
     "enable_code_ligatures": "Ligaturen im Code aktivieren",
     "enable_changelog_autoscroll": "Automatisch zur gewünschten Version scrollen",
-    "enable_changelog_autoscroll_description": "Automatischer Sprung zur gewünschten Version oder in deren Nähe im Änderungsprotokoll des Pakets",
-    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
-    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
+    "enable_changelog_autoscroll_description": "Automatischer Sprung zur gewünschten Version oder in deren Nähe im Änderungsprotokoll des Pakets"
   },
   "i18n": {
     "missing_keys": "{count} fehlende Übersetzung | {count} fehlende Übersetzungen",

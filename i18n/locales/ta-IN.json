@@ -88,8 +88,7 @@
       "appearance": "தோற்றம்",
       "display": "காட்சி",
       "search": "தரவு மூலம்",
-      "language": "மொழி",
-      "data_correction": "EN TEXT TO REPLACE: Data correction"
+      "language": "மொழி"
     },
     "data_source": {
       "label": "தரவு மூலம்",
@@ -117,9 +116,7 @@
     "translation_progress": "மொழிபெயர்ப்பு முன்னேற்றம்",
     "background_themes": {
       "label": "பின்புல நிழல்"
-    },
-    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
-    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
+    }
   },
   "i18n": {
     "missing_keys": "{count} விடுபட்ட மொழிபெயர்ப்பு | {count} விடுபட்ட மொழிபெயர்ப்புகள்",

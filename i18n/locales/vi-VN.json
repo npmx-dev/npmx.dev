@@ -140,8 +140,7 @@
       "display": "Hiển thị",
       "search": "Tìm kiếm",
       "language": "Ngôn ngữ",
-      "keyboard_shortcuts": "Phím tắt",
-      "data_correction": "EN TEXT TO REPLACE: Data correction"
+      "keyboard_shortcuts": "Phím tắt"
     },
     "data_source": {
       "label": "Nguồn dữ liệu",
@@ -187,9 +186,7 @@
       "black": "Black"
     },
     "keyboard_shortcuts_enabled": "Phím tắt",
-    "keyboard_shortcuts_enabled_description": "Bạn có thể vô hiệu hóa phím tắt nếu gặp xung đột với trình duyệt hoặc các phím tắt hệ thống khác.",
-    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
-    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
+    "keyboard_shortcuts_enabled_description": "Bạn có thể vô hiệu hóa phím tắt nếu gặp xung đột với trình duyệt hoặc các phím tắt hệ thống khác."
   },
   "i18n": {
     "missing_keys": "thiếu {count} bản dịch | thiếu {count} bản dịch",

@@ -238,8 +238,7 @@
       "display": "Visualización",
       "search": "Fuente de datos",
       "language": "Idioma",
-      "keyboard_shortcuts": "Atajos de teclado",
-      "data_correction": "EN TEXT TO REPLACE: Data correction"
+      "keyboard_shortcuts": "Atajos de teclado"
     },
     "data_source": {
       "label": "Fuente de datos",
@@ -289,9 +288,7 @@
     "keyboard_shortcuts_enabled_description": "Los atajos de teclado pueden desactivarse si entran en conflicto con otros atajos del navegador o del sistema",
     "enable_code_ligatures": "Activar ligaduras en código",
     "enable_changelog_autoscroll": "Desplazar automáticamente a la versión solicitada",
-    "enable_changelog_autoscroll_description": "Desplazar automáticamente a la versión solicitada o cerca de ella en el registro de cambios del paquete",
-    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
-    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
+    "enable_changelog_autoscroll_description": "Desplazar automáticamente a la versión solicitada o cerca de ella en el registro de cambios del paquete"
   },
   "i18n": {
     "missing_keys": "{count} traducción faltante | {count} traducciones faltantes",

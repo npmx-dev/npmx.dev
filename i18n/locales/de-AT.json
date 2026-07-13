@@ -9,13 +9,10 @@
   },
   "settings": {
     "sections": {
-      "keyboard_shortcuts": "Tastaturkürzel",
-      "data_correction": "EN TEXT TO REPLACE: Data correction"
+      "keyboard_shortcuts": "Tastaturkürzel"
     },
     "keyboard_shortcuts_enabled": "Tastaturkürzel aktivieren",
-    "keyboard_shortcuts_enabled_description": "Tastaturkürzel können deaktiviert werden, wenn sie mit anderen Browser- oder Systemkürzeln in Konflikt stehen",
-    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
-    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
+    "keyboard_shortcuts_enabled_description": "Tastaturkürzel können deaktiviert werden, wenn sie mit anderen Browser- oder Systemkürzeln in Konflikt stehen"
   },
   "search": {
     "instant_search": "Schnellsuche",

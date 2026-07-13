@@ -65,8 +65,7 @@
     "sections": {
       "appearance": "రూపం",
       "display": "ప్రదర్శన",
-      "language": "భాష",
-      "data_correction": "EN TEXT TO REPLACE: Data correction"
+      "language": "భాష"
     },
     "data_source": {},
     "relative_dates": "సాపేక్ష తేదీలు",
@@ -85,9 +84,7 @@
     },
     "clear_accent": "యాక్సెంట్ రంగును క్లియర్ చేయండి",
     "translation_progress": "అనువాద పురోగతి",
-    "background_themes": {},
-    "data_correction_reset": "EN TEXT TO REPLACE: Reset to defaults",
-    "data_correction_description": "EN TEXT TO REPLACE: Download chart correction parameters are configured in the chart modal on package pages. Reset them here if needed."
+    "background_themes": {}
   },
   "i18n": {
     "missing_keys": "{count} అనువాదం లేదు | {count} అనువాదాలు లేవు",
