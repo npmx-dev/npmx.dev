@@ -339,8 +339,8 @@ useSeoMeta({
 
             <div class="space-y-2 text-sm">
               <div class="flex justify-between items-center">
-                <span class="text-fg-muted flex items-center gap-1">
-                  {{ $t('package.trends.average_window') }}
+                <div class="text-fg-muted flex items-center gap-1">
+                  <span>{{ $t('package.trends.average_window') }}</span>
                   <TooltipApp
                     :text="$t('settings.data_correction_average_window_tooltip')"
                     position="top"
@@ -350,15 +350,15 @@ useSeoMeta({
                       aria-hidden="true"
                     />
                   </TooltipApp>
-                </span>
+                </div>
                 <span class="font-mono text-fg"
                   >{{ settings.chartFilter.averageWindow }}
                   {{ $t('settings.data_correction_points') }}</span
                 >
               </div>
               <div class="flex justify-between items-center">
-                <span class="text-fg-muted flex items-center gap-1">
-                  {{ $t('package.trends.smoothing') }}
+                <div class="text-fg-muted flex items-center gap-1">
+                  <span>{{ $t('package.trends.smoothing') }}</span>
                   <TooltipApp
                     :text="$t('settings.data_correction_smoothing_tooltip')"
                     position="top"
@@ -368,12 +368,12 @@ useSeoMeta({
                       aria-hidden="true"
                     />
                   </TooltipApp>
-                </span>
+                </div>
                 <span class="font-mono text-fg">{{ settings.chartFilter.smoothingTau }}</span>
               </div>
               <div class="flex justify-between items-center">
-                <span class="text-fg-muted flex items-center gap-1">
-                  {{ $t('package.trends.prediction') }}
+                <div class="text-fg-muted flex items-center gap-1">
+                  <span>{{ $t('package.trends.prediction') }}</span>
                   <TooltipApp
                     :text="$t('settings.data_correction_prediction_tooltip')"
                     position="top"
@@ -383,15 +383,15 @@ useSeoMeta({
                       aria-hidden="true"
                     />
                   </TooltipApp>
-                </span>
+                </div>
                 <span class="font-mono text-fg"
                   >{{ settings.chartFilter.predictionPoints }}
                   {{ $t('settings.data_correction_points') }}</span
                 >
               </div>
               <div class="flex justify-between items-center">
-                <span class="text-fg-muted flex items-center gap-1">
-                  {{ $t('package.trends.known_anomalies') }}
+                <div class="text-fg-muted flex items-center gap-1">
+                  <span>{{ $t('package.trends.known_anomalies') }}</span>
                   <TooltipApp
                     :text="$t('settings.data_correction_anomalies_tooltip')"
                     position="top"
@@ -401,7 +401,7 @@ useSeoMeta({
                       aria-hidden="true"
                     />
                   </TooltipApp>
-                </span>
+                </div>
                 <span class="font-mono text-fg">{{
                   settings.chartFilter.anomaliesFixed
                     ? $t('settings.data_correction_enabled')
