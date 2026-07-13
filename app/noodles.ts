@@ -144,7 +144,7 @@ const entries: Noodle[] = [
     timezone: 'auto',
     tagline: false,
     occasion: '📅🌍🚀💬🥳✨',
-    prUrl: 'https://github.com/npmx-dev/npmx.dev/pull/3029',
+    prUrl: 'https://github.com/npmx-dev/npmx.dev/pull/3038',
     authors: [FELIX, JVIIDE],
     references: [
       { label: 'World Emoji Day Website', url: 'https://worldemojiday.com/' },
