@@ -80,7 +80,7 @@ const GLYPH_CONFIG = [
         path: polyline(569, 130, 592, 123, 613, 136, 628, 168, 628, 257),
       },
       {
-        emojiSet: 'cloud',
+        emojiSet: 'themed',
         emojiCount: 24,
         path: polyline(628, 155, 649, 129, 673, 123, 695, 136, 710, 168, 710, 257),
       },
