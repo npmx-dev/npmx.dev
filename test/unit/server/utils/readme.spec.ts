@@ -33,6 +33,23 @@ function createRepoInfo(overrides?: Partial<RepositoryInfo>): RepositoryInfo {
   }
 }
 
+describe('Emoji rendering', () => {
+  it('converts shortcodes in text but not in code', async () => {
+    const markdown = ':1234: `:1234:` \\:1234:\n\n```text\n:1234:\n```'
+    const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+    expect(result.html).toContain('<p>🔢 <code>:1234:</code> :1234:</p>')
+    expect(result.html).toContain('<code class="language-text">:1234:</code>')
+  })
+
+  it('preserves shortcode-based heading anchors', async () => {
+    const result = await renderReadmeHtml('# :rocket: Install', 'test-pkg')
+
+    expect(result.html).toContain('id="user-content-rocket-install"')
+    expect(result.html).toContain('🚀 Install')
+  })
+})
+
 describe('Playground Link Extraction', () => {
   describe('StackBlitz', () => {
     it('extracts stackblitz.com links', async () => {

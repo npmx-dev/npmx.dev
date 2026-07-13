@@ -1905,16 +1905,6 @@ const emojis: Record<string, string> = {
   'wales': '🏴󠁧󠁢󠁷󠁬󠁳󠁿',
 }
 
-export function convertToEmoji(html: string): string {
-  return html.replace(
-    /(<code[\s>][\s\S]*?<\/code>|<pre[\s>][\s\S]*?<\/pre>)|(:[\w+-]+:)/gi,
-    (match, codeBlock: string | undefined, shortcode: string | undefined) => {
-      if (codeBlock) return codeBlock
-      if (shortcode) {
-        const key = shortcode.slice(1, -1)
-        return emojis[key] ?? shortcode
-      }
-      return match
-    },
-  )
+export function convertToEmoji(text: string): string {
+  return text.replace(/:([\w+-]+):/g, (shortcode, key: string) => emojis[key] ?? shortcode)
 }

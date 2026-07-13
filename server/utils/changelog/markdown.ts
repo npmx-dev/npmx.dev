@@ -14,11 +14,11 @@ import {
   createMarkedHeadingExtension,
   renderToRawHtml,
   sanitizeRawHTML,
+  emojiText,
 } from '../mdKit'
 import { slugify } from '#shared/utils/html'
 import { Marked } from 'marked'
 import { hasProtocol, joinRelativeURL, parseFilename } from 'ufo'
-import { convertToEmoji } from '#shared/utils/emoji'
 
 // cl = ChangeLog
 const clMarked = new Marked()
@@ -33,6 +33,7 @@ export async function changelogRenderer(mdRepoInfo: MarkdownRepoInfo) {
   const renderer = new clMarked.Renderer({
     gfm: true,
   })
+  renderer.text = emojiText
 
   // GitHub-style callouts: > [!NOTE], > [!TIP], etc.
   renderer.blockquote = blockquote
@@ -89,7 +90,7 @@ export async function changelogRenderer(mdRepoInfo: MarkdownRepoInfo) {
     const rawHtml = renderToRawHtml({ renderer, markdownBody, markedInstance: clMarked })
 
     return {
-      html: sanitizeRawHTML(convertToEmoji(rawHtml), {
+      html: sanitizeRawHTML(rawHtml, {
         processImageUrl,
         processLink,
         toUserContentId,

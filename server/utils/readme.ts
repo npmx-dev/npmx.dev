@@ -13,13 +13,13 @@ import {
   createImage,
   sanitizeRawHTML,
   decodeHashFragment,
+  emojiText,
 } from './mdKit'
 import matter from 'gray-matter'
 import { marked } from 'marked'
 import { hasProtocol } from 'ufo'
 import { convertBlobOrFileToRawUrl, type RepositoryInfo } from '#shared/utils/git-providers'
 import { decodeHtmlEntities, slugify } from '#shared/utils/html'
-import { convertToEmoji } from '#shared/utils/emoji'
 import { toProxiedImageUrl } from '#server/utils/image-proxy'
 import { escapeHtml } from './docs/text'
 
@@ -318,6 +318,7 @@ export async function renderReadmeHtml(
   }
 
   const renderer = new marked.Renderer()
+  renderer.text = emojiText
 
   // Collect playground links during parsing
   const collectedLinks: PlaygroundLink[] = []
@@ -378,7 +379,7 @@ export async function renderReadmeHtml(
   })
 
   return {
-    html: convertToEmoji(sanitized),
+    html: sanitized,
     mdExists: Boolean(content),
     playgroundLinks: collectedLinks,
     toc,

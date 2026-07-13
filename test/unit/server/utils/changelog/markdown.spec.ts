@@ -36,6 +36,15 @@ function changelogMdInfoWithPath() {
   }
 }
 
+describe('Emoji rendering', () => {
+  it('converts shortcodes in text but not in inline code', async () => {
+    const renderer = await changelogRenderer(changelogMdinfo())
+    const result = renderer(':1234: `:1234:`')
+
+    expect(result.html).toContain('<p>🔢 <code>:1234:</code></p>')
+  })
+})
+
 describe('URL Resolution', () => {
   describe('resolves from /markdown.md & releases', () => {
     it('resolves relative .md links to blob URL for rendered viewing', async () => {

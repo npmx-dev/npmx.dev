@@ -1,5 +1,6 @@
 import {
   type Tokens,
+  type Token,
   type RendererApi,
   type Renderer,
   type TokenizerObject,
@@ -8,6 +9,7 @@ import {
 } from 'marked'
 import { highlightCodeSync } from './shiki'
 import { decodeHtmlEntities, stripHtmlTags, slugify } from '#shared/utils/html'
+import { convertToEmoji } from '#shared/utils/emoji'
 import { escapeHtml } from './docs/text'
 import sanitizeHtml from 'sanitize-html'
 import { hasProtocol } from 'ufo'
@@ -49,6 +51,12 @@ export const blockquote: RendererApi['blockquote'] = function (
   }
 
   return `<blockquote>${body}</blockquote>\n`
+}
+
+/** Convert emoji shortcodes only in Markdown text tokens. */
+export const emojiText: RendererApi['text'] = function (this: Renderer<string, string>, token) {
+  if (token.type === 'escape') return token.text
+  return token.tokens ? this.parser.parseInline(token.tokens) : convertToEmoji(token.text)
 }
 
 /**
@@ -214,6 +222,20 @@ export function getHeadingSlugSource(text: string): string {
   return stripHtmlTags(text).trim()
 }
 
+function getHeadingSlugSourceFromTokens(tokens: Token[]): string {
+  return tokens
+    .map(token => {
+      if (token.type === 'image' || token.type === 'br') return ''
+      if (token.type === 'codespan') return escapeHtml(token.text)
+      if ('tokens' in token && token.tokens) return getHeadingSlugSourceFromTokens(token.tokens)
+      if (token.type === 'html') return stripHtmlTags(token.text)
+      if ('text' in token && typeof token.text === 'string') return token.text
+      return ''
+    })
+    .join('')
+    .trim()
+}
+
 const htmlAnchorRe = /<a(\s[^>]*?)href=(["'])([^"']*)\2([^>]*)>([\s\S]*?)<\/a>/gi
 
 export type ToUserContentIdFn = (id: string) => string
@@ -241,7 +263,7 @@ export function createHeading(options: {
   ) {
     const displayHtml = this.parser.parseInline(tokens)
     const plainText = getHeadingPlainText(displayHtml)
-    const slugSource = getHeadingSlugSource(displayHtml)
+    const slugSource = getHeadingSlugSourceFromTokens(tokens)
     return processHeading(depth, displayHtml, plainText, slugSource)
   }
 
