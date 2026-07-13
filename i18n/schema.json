@@ -825,9 +825,18 @@
             },
             "keyboard_shortcuts": {
               "type": "string"
+            },
+            "data_correction": {
+              "type": "string"
             }
           },
           "additionalProperties": false
+        },
+        "data_correction_reset": {
+          "type": "string"
+        },
+        "data_correction_description": {
+          "type": "string"
         },
         "data_source": {
           "type": "object",
