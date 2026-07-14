@@ -3,7 +3,11 @@ const VIEW_HEIGHT = 360
 const POINTER_REPULSION_DISTANCE = 100
 const POINTER_REPULSION_FACTOR = 1.0
 const VELOCITY_DAMPENING_FACTOR = 0.92
-const COLLISION_MARGIN = 1 // Increase to push emojis further away from each other.
+// Increase to push emojis further away from each other.
+const COLLISION_MARGIN = 1
+// The minimum x- or y-distance we bother to translate a sprite, scaled to
+// the current view. Allows skipping sprite.style.translation = "..." assignments.
+const MIN_SPRITE_MOVEMENT = 0.25
 
 // Each glyph is built from 1-n parts.
 // Each part has an associated set of 1-m possible emojis and a polyline path.
@@ -166,7 +170,6 @@ export function init(sizer, emojiSetImages) {
               top: `-${size / 2}px`,
               width: `${size}px`,
               height: `${size}px`,
-              transform: 'translate3d(0, 0, 0)',
             })
 
             const ctx = sprite.getContext('2d')
@@ -184,15 +187,23 @@ export function init(sizer, emojiSetImages) {
     parts: config.parts.map(part => {
       const emoji = []
       for (let i = 0; i < part.emojiCount; i++) {
+        const x = VIEW_WIDTH / 2
+        const y = VIEW_HEIGHT / 2
+
         const sprite = emojiSets.get(part.emojiSet).createSprite(config.emojiSize)
+        sprite.style.transform = `translate3d(${x}px, ${y}px, 0)`
         area.appendChild(sprite)
 
         emoji.push({
           sprite,
 
           // Emoji's current position.
-          x: VIEW_WIDTH / 2,
-          y: VIEW_HEIGHT / 2,
+          x,
+          y,
+
+          // Emoji sprite's current translation.
+          sx: x,
+          sy: y,
 
           // Emoji's current velocity.
           // Dampened by VELOCITY_DAMPENING_FACTOR * dampFactor on each frame.
@@ -324,10 +335,18 @@ export function init(sizer, emojiSetImages) {
       }
     }
 
+    const { width, height } = area.getBoundingClientRect()
+    const minX = (MIN_SPRITE_MOVEMENT * VIEW_WIDTH) / width / window.devicePixelRatio
+    const minY = (MIN_SPRITE_MOVEMENT * VIEW_HEIGHT) / height / window.devicePixelRatio
     for (const glyph of glyphs) {
       for (const part of glyph.parts) {
-        for (const { x, y, sprite } of part.emoji) {
-          sprite.style.transform = `translate3d(${x}px, ${y}px, 0)`
+        for (const emoji of part.emoji) {
+          const { x, y, sx, sy, sprite } = emoji
+          if (Math.abs(sx - x) >= minX || Math.abs(sy - y) >= minY) {
+            emoji.sx = x
+            emoji.sy = y
+            sprite.style.transform = `translate3d(${x}px, ${y}px, 0)`
+          }
         }
       }
     }
