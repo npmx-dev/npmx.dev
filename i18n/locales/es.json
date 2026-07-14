@@ -255,7 +255,7 @@
     "carousel_next": "Siguiente imagen",
     "carousel_dots": "Navegación entre variantes de imagen",
     "carousel_jump": "Ir a la imagen {index}",
-    "lens_label": "{title} — carrete de imágenes",
+    "lens_label": "{title} — carrusel de imágenes",
     "lens_slide": "imagen {index}",
     "lens_slide_position": "Diapositiva {index} de {total}",
     "back_to_archive": "Volver a todos los noodles",
@@ -488,7 +488,7 @@
       "fund": "financiar",
       "compare": "comparar",
       "timeline": "línea temporal",
-      "stats": "Estadísticas",
+      "stats": "estadísticas",
       "compare_this_package": "comparar este paquete",
       "changelog": "registro de cambios"
     },
