@@ -141,7 +141,7 @@
     "navigation": {
       "home": "inicio",
       "packages": "paquetes (~{username})",
-      "orgs": "orgs (~{username})",
+      "orgs": "organizaciones (~{username})",
       "profile": "perfil ({'@'}{handle})"
     },
     "links": {
