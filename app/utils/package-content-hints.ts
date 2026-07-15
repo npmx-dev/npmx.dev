@@ -16,6 +16,7 @@ const POSSIBLY_UNNECESSARY_FILES: ReadonlySet<string> = new Set([
   '.gitignore',
   '.gitattributes',
   '.travis.yml',
+  '.verb.md',
   'Makefile',
   'tsconfig.json',
   '.node-version',
@@ -31,6 +32,7 @@ const POSSIBLY_UNNECESSARY_FILES: ReadonlySet<string> = new Set([
   '.env.production.local',
   '.nycrc',
   'nyc.json',
+  '.DS_Store',
   'AUTHORS',
   'test.js',
   'test.ts',
@@ -48,6 +50,7 @@ const POSSIBLY_UNNECESSARY_DIRECTORIES: ReadonlySet<string> = new Set([
   'specs',
   'example',
   'examples',
+  'benchmark',
 ])
 
 const POSSIBLY_UNNECESSARY_DIRECTORY_PATTERNS: readonly RegExp[] = [/^__.+__$/]
@@ -61,6 +64,7 @@ const POSSIBLY_UNNECESSARY_PATTERNS: readonly RegExp[] = [
   /^\.oxlintrc(?:\.(?:json|js|cjs|yml|yaml))?$/,
   /^oxfmt\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
   /^\.oxfmtrc(?:\.(?:json|js|cjs|yml|yaml))?$/,
+  /^example\.(?:js|cjs|mjs|ts|mts|cts)$/,
   // Match common dot-prefixed config files without flagging all dotfiles;
   // files like .npmrc, .npmignore, and .gitkeep can be intentional artifacts.
   /^\.(?!npmrc$)[a-z][a-z0-9_-]*rc$/,

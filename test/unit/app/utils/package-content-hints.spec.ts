@@ -34,15 +34,15 @@ describe('isPossiblyUnnecessaryContent', () => {
 
   it('flags editor and CI files', () => {
     expect(isPossiblyUnnecessaryContent('.travis.yml', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('.verb.md', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('Makefile', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('.DS_Store', 'file')).toBe(true)
   })
 
-  it('flags test files', () => {
-    expect(isPossiblyUnnecessaryContent('test.js', 'file')).toBe(true)
-    expect(isPossiblyUnnecessaryContent('index.test.js', 'file')).toBe(true)
-    expect(isPossiblyUnnecessaryContent('index.spec.js', 'file')).toBe(true)
-    expect(isPossiblyUnnecessaryContent('index.test.ts', 'file')).toBe(true)
-    expect(isPossiblyUnnecessaryContent('index.spec.ts', 'file')).toBe(true)
+  it('flags example and development files', () => {
+    expect(isPossiblyUnnecessaryContent('bench.js', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('example.js', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('example.mjs', 'file')).toBe(true)
   })
 
   it('flags unnecessay metadata and documentation files', () => {
@@ -57,7 +57,7 @@ describe('isPossiblyUnnecessaryContent', () => {
       'CHANGELOG.markdown',
       'changelog.markdown',
       'RELEASENOTES.md',
-      'release-notest.md',
+      'release-notes.md',
       'CONTRIBUTING.md',
       'HISTORY.md',
       'History.md',
@@ -143,6 +143,10 @@ describe('isPossiblyUnnecessaryContent', () => {
     expect(isPossiblyUnnecessaryContent('specs', 'directory')).toBe(true)
   })
 
+  it('flags development directories', () => {
+    expect(isPossiblyUnnecessaryContent('benchmark', 'directory')).toBe(true)
+  })
+
   it('flags example directories', () => {
     expect(isPossiblyUnnecessaryContent('example', 'directory')).toBe(true)
     expect(isPossiblyUnnecessaryContent('examples', 'directory')).toBe(true)
@@ -165,6 +169,9 @@ describe('isPossiblyUnnecessaryContent', () => {
     expect(isPossiblyUnnecessaryContent('LICENCE', 'file')).toBe(false)
     expect(isPossiblyUnnecessaryContent('license', 'file')).toBe(false)
     expect(isPossiblyUnnecessaryContent('licence', 'file')).toBe(false)
+    expect(isPossiblyUnnecessaryContent('LICENSE.md', 'file')).toBe(false)
+    expect(isPossiblyUnnecessaryContent('LICENCE.md', 'file')).toBe(false)
+    expect(isPossiblyUnnecessaryContent('LICENSE-MIT', 'file')).toBe(false)
     expect(isPossiblyUnnecessaryContent('LICENSE-MIT.txt', 'file')).toBe(false)
     expect(isPossiblyUnnecessaryContent('NOTICE', 'file')).toBe(false)
     expect(isPossiblyUnnecessaryContent('UNLICENSE', 'file')).toBe(false)
