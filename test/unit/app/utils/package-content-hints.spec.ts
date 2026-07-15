@@ -42,6 +42,7 @@ describe('isPossiblyUnnecessaryContent', () => {
   it('flags example and development files', () => {
     expect(isPossiblyUnnecessaryContent('bench.js', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('example.js', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('examples.js', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('example.mjs', 'file')).toBe(true)
   })
 

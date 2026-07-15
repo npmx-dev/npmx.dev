@@ -64,7 +64,6 @@ const POSSIBLY_UNNECESSARY_PATTERNS: readonly RegExp[] = [
   /^\.oxlintrc(?:\.(?:json|js|cjs|yml|yaml))?$/,
   /^oxfmt\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
   /^\.oxfmtrc(?:\.(?:json|js|cjs|yml|yaml))?$/,
-  /^example\.(?:js|cjs|mjs|ts|mts|cts)$/,
   // Match common dot-prefixed config files without flagging all dotfiles;
   // files like .npmrc, .npmignore, and .gitkeep can be intentional artifacts.
   /^\.(?!npmrc$)[a-z][a-z0-9_-]*rc$/,
@@ -74,6 +73,8 @@ const POSSIBLY_UNNECESSARY_PATTERNS: readonly RegExp[] = [
   /\.(?:test|spec)\.(?:j|t)s$/,
   // Match CHANGELOG.md, etc
   /^(?:changelog|releasenotes|release-notes|history|contributing|contribute)\.(?:md|markdown|txt)$/i,
+  // Match examples.js, stc
+  /^example(?:s)\.(js|cjs|mjs|ts|mts|cts)$/,
 ]
 
 export function isPossiblyUnnecessaryContent(name: string, type: 'file' | 'directory'): boolean {
