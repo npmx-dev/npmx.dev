@@ -762,7 +762,7 @@
         "chart": "Embed this chart",
         "copy_url": "Copy this URL to embed the chart into your website",
         "preview": "Preview",
-        "tip": "If startDate and endDate are not provided, the chart defaults to the last 12 months."
+        "tip": "If startDate and endDate are not provided in the URL, the graph will display the last 12 months by default."
       }
     },
     "downloads": {
