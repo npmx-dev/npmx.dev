@@ -74,7 +74,7 @@ const POSSIBLY_UNNECESSARY_PATTERNS: readonly RegExp[] = [
   // Match CHANGELOG.md, etc
   /^(?:changelog|releasenotes|release-notes|history|contributing|contribute)\.(?:md|markdown|txt)$/i,
   // Match examples.js, stc
-  /^example(?:s)\.(js|cjs|mjs|ts|mts|cts)$/,
+  /^examples\.(js|cjs|mjs|ts|mts|cts)$/,
 ]
 
 export function isPossiblyUnnecessaryContent(name: string, type: 'file' | 'directory'): boolean {
