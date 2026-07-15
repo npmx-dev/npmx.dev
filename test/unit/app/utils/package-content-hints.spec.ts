@@ -45,14 +45,25 @@ describe('isPossiblyUnnecessaryContent', () => {
     expect(isPossiblyUnnecessaryContent('index.spec.ts', 'file')).toBe(true)
   })
 
-  it('flags changelog and non-readme description files', () => {
-    expect(isPossiblyUnnecessaryContent('CHANGELOG.md', 'file')).toBe(true)
-    expect(isPossiblyUnnecessaryContent('changelog.md', 'file')).toBe(true)
-    expect(isPossiblyUnnecessaryContent('CHANGELOG.markdown', 'file')).toBe(true)
-    expect(isPossiblyUnnecessaryContent('changelog.markdown', 'file')).toBe(true)
-    expect(isPossiblyUnnecessaryContent('RELEASENOTES.md', 'file')).toBe(true)
-    expect(isPossiblyUnnecessaryContent('CONTRIBUTING.md', 'file')).toBe(true)
+  it('flags unnecessay metadata and documentation files', () => {
     expect(isPossiblyUnnecessaryContent('AUTHORS', 'file')).toBe(true)
+  })
+
+  it('flags changelog, release notes, and contributing files', () => {
+    const files = [
+      'CHANGELOG.md',
+      'changelog.md',
+      'CHANGELOG.markdown',
+      'changelog.markdown',
+      'RELEASENOTES.md',
+      'release-notest.md',
+      'CONTRIBUTING.md',
+      'HISTORY.md',
+      'history.txt',
+    ]
+    for (const name of files) {
+      expect(isPossiblyUnnecessaryContent(name, 'file')).toBe(true)
+    }
   })
 
   it('matches ESLint configuration patterns', () => {

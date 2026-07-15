@@ -31,12 +31,6 @@ const POSSIBLY_UNNECESSARY_FILES: ReadonlySet<string> = new Set([
   '.env.production.local',
   '.nycrc',
   'nyc.json',
-  'CHANGELOG.md',
-  'changelog.md',
-  'CHANGELOG.markdown',
-  'changelog.markdown',
-  'RELEASENOTES.md',
-  'CONTRIBUTING.md',
   'AUTHORS',
 ])
 
@@ -72,6 +66,8 @@ const POSSIBLY_UNNECESSARY_PATTERNS: readonly RegExp[] = [
   /^\.[a-z][a-z0-9_-]*\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
   // Match files ending in .test.js, .test.ts, .spec.js, .spec.ts, etc.
   /(?:test|spec)\.(?:j|t)s$/,
+  // Match CHANGELOG.md, etc
+  /^(?:changelog|releasenotes|release-notes|history|contributing|contribute)\.(?:md|markdown|txt)$/i,
 ]
 
 export function isPossiblyUnnecessaryContent(name: string, type: 'file' | 'directory'): boolean {
