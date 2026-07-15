@@ -11,8 +11,10 @@ const POSSIBLY_UNNECESSARY_FILES: ReadonlySet<string> = new Set([
   '.editorconfig',
   '.prettierignore',
   '.eslintignore',
+  '.jshintignore',
   '.gitignore',
   '.gitattributes',
+  '.travis.yml',
   'tsconfig.json',
   '.node-version',
   '.nvmrc',
@@ -27,6 +29,7 @@ const POSSIBLY_UNNECESSARY_FILES: ReadonlySet<string> = new Set([
   '.env.production.local',
   '.nycrc',
   'nyc.json',
+  'CHANGELOG.md'
 ])
 
 const POSSIBLY_UNNECESSARY_DIRECTORIES: ReadonlySet<string> = new Set([
@@ -40,6 +43,7 @@ const POSSIBLY_UNNECESSARY_DIRECTORIES: ReadonlySet<string> = new Set([
   '__tests__',
   'spec',
   'specs',
+  'examples',
 ])
 
 const POSSIBLY_UNNECESSARY_DIRECTORY_PATTERNS: readonly RegExp[] = [/^__.+__$/]

@@ -8,6 +8,7 @@ describe('isPossiblyUnnecessaryContent', () => {
     expect(isPossiblyUnnecessaryContent('.gitattributes', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('.prettierignore', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('.eslintignore', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('.jshintignore', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('tsconfig.json', 'file')).toBe(true)
   })
 
@@ -28,6 +29,14 @@ describe('isPossiblyUnnecessaryContent', () => {
     expect(isPossiblyUnnecessaryContent('.tool-versions', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('.nycrc', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('nyc.json', 'file')).toBe(true)
+  })
+
+  it('flags editor and CI files', () => {
+    expect(isPossiblyUnnecessaryContent('.travis.yml', 'file')).toBe(true)
+  })
+
+  it('flags changelog files', () => {
+    expect(isPossiblyUnnecessaryContent('CHANGELOG.md', 'file')).toBe(true)
   })
 
   it('matches ESLint configuration patterns', () => {
@@ -103,6 +112,10 @@ describe('isPossiblyUnnecessaryContent', () => {
     expect(isPossiblyUnnecessaryContent('__snapshots__', 'directory')).toBe(true)
     expect(isPossiblyUnnecessaryContent('spec', 'directory')).toBe(true)
     expect(isPossiblyUnnecessaryContent('specs', 'directory')).toBe(true)
+  })
+
+  it('flags example directories', () => {
+    expect(isPossiblyUnnecessaryContent('examples', 'directory')).toBe(true)
   })
 
   it('does not flag ordinary source files or directories', () => {
