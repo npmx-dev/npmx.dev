@@ -261,7 +261,7 @@
     "back_to_archive": "Volver a todos los noodles",
     "missing": {
       "title": "Este noodle nunca salió del tazón.",
-      "body": "No tenemos un noodle “{slug}” en el menú. O todavía se está sirviendo, o nunca se escribió. De cualquier manera — de vuelta al archivo."
+      "body": "No tenemos ningún noodle con el nombre “{slug}” en el menú. O lo están preparando, o nunca lo escribieron. En cualquier caso, volver al archivo."
     }
   },
   "settings": {
