@@ -36,6 +36,7 @@ const POSSIBLY_UNNECESSARY_FILES: ReadonlySet<string> = new Set([
   'AUTHORS',
   'test.js',
   'test.ts',
+  'bench.js',
 ])
 
 const POSSIBLY_UNNECESSARY_DIRECTORIES: ReadonlySet<string> = new Set([
@@ -73,8 +74,8 @@ const POSSIBLY_UNNECESSARY_PATTERNS: readonly RegExp[] = [
   /\.(?:test|spec)\.(?:j|t)s$/,
   // Match CHANGELOG.md, etc
   /^(?:changelog|releasenotes|release-notes|history|contributing|contribute)\.(?:md|markdown|txt)$/i,
-  // Match examples.js, stc
-  /^examples\.(js|cjs|mjs|ts|mts|cts)$/,
+  // Match example.mjs, examples.js, stc
+  /^examples?\.(?:js|cjs|mjs|ts|mts|cts)$/,
 ]
 
 export function isPossiblyUnnecessaryContent(name: string, type: 'file' | 'directory'): boolean {
