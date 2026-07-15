@@ -50,7 +50,7 @@ describe('isPossiblyUnnecessaryContent', () => {
     expect(isPossiblyUnnecessaryContent('AUTHORS', 'file')).toBe(true)
   })
 
-  it('flags changelog, release notes, and contributing files', () => {
+  describe('changelog, release notes, and contributing files', () => {
     const files = [
       'CHANGELOG.md',
       'Changelog.md',
@@ -65,7 +65,9 @@ describe('isPossiblyUnnecessaryContent', () => {
       'history.txt',
     ]
     for (const name of files) {
-      expect(isPossiblyUnnecessaryContent(name, 'file')).toBe(true)
+      it(`flags ${name}`, () => {
+        expect(isPossiblyUnnecessaryContent(name, 'file')).toBe(true)
+      })
     }
   })
 

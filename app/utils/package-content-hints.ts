@@ -65,7 +65,7 @@ const POSSIBLY_UNNECESSARY_PATTERNS: readonly RegExp[] = [
   /^oxfmt\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
   /^\.oxfmtrc(?:\.(?:json|js|cjs|yml|yaml))?$/,
   // Match common dot-prefixed config files without flagging all dotfiles;
-  // files like .npmrc, .npmignore, and .gitkeep can be intentional artifacts.
+  // files like .npmrc can be intentional artifacts.
   /^\.(?!npmrc$)[a-z][a-z0-9_-]*rc$/,
   /^\.(?!npmrc\.)[a-z][a-z0-9_-]*rc\.(?:json|js|cjs|mjs|yml|yaml|toml)$/,
   /^\.[a-z][a-z0-9_-]*\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
