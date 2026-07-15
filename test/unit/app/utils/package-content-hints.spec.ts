@@ -148,6 +148,7 @@ describe('isPossiblyUnnecessaryContent', () => {
 
   it('does not flag ordinary source files or directories', () => {
     expect(isPossiblyUnnecessaryContent('index.js', 'file')).toBe(false)
+    expect(isPossiblyUnnecessaryContent('latest.js', 'file')).toBe(false)
     expect(isPossiblyUnnecessaryContent('package.json', 'file')).toBe(false)
     expect(isPossiblyUnnecessaryContent('README.md', 'file')).toBe(false)
     expect(isPossiblyUnnecessaryContent('readme.md', 'file')).toBe(false)
