@@ -29,7 +29,7 @@ const POSSIBLY_UNNECESSARY_FILES: ReadonlySet<string> = new Set([
   '.env.production.local',
   '.nycrc',
   'nyc.json',
-  'CHANGELOG.md'
+  'CHANGELOG.md',
 ])
 
 const POSSIBLY_UNNECESSARY_DIRECTORIES: ReadonlySet<string> = new Set([
