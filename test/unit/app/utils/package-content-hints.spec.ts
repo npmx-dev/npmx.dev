@@ -9,6 +9,7 @@ describe('isPossiblyUnnecessaryContent', () => {
     expect(isPossiblyUnnecessaryContent('.prettierignore', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('.eslintignore', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('.jshintignore', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('.npmignore', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('tsconfig.json', 'file')).toBe(true)
   })
 
@@ -33,6 +34,7 @@ describe('isPossiblyUnnecessaryContent', () => {
 
   it('flags editor and CI files', () => {
     expect(isPossiblyUnnecessaryContent('.travis.yml', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('Makefile', 'file')).toBe(true)
   })
 
   it('flags test files', () => {
@@ -43,11 +45,14 @@ describe('isPossiblyUnnecessaryContent', () => {
     expect(isPossiblyUnnecessaryContent('index.spec.ts', 'file')).toBe(true)
   })
 
-  it('flags changelog files', () => {
+  it('flags changelog and non-readme description files', () => {
     expect(isPossiblyUnnecessaryContent('CHANGELOG.md', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('changelog.md', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('CHANGELOG.markdown', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('changelog.markdown', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('RELEASENOTES.md', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('CONTRIBUTING.md', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('AUTHORS', 'file')).toBe(true)
   })
 
   it('matches ESLint configuration patterns', () => {
@@ -134,11 +139,19 @@ describe('isPossiblyUnnecessaryContent', () => {
     expect(isPossiblyUnnecessaryContent('index.js', 'file')).toBe(false)
     expect(isPossiblyUnnecessaryContent('package.json', 'file')).toBe(false)
     expect(isPossiblyUnnecessaryContent('README.md', 'file')).toBe(false)
-    expect(isPossiblyUnnecessaryContent('LICENSE', 'file')).toBe(false)
+    expect(isPossiblyUnnecessaryContent('readme.md', 'file')).toBe(false)
     expect(isPossiblyUnnecessaryContent('main.ts', 'file')).toBe(false)
     expect(isPossiblyUnnecessaryContent('src', 'directory')).toBe(false)
     expect(isPossiblyUnnecessaryContent('lib', 'directory')).toBe(false)
     expect(isPossiblyUnnecessaryContent('dist', 'directory')).toBe(false)
+  })
+
+  it('does not flag legal related files', () => {
+    expect(isPossiblyUnnecessaryContent('license', 'file')).toBe(false)
+    expect(isPossiblyUnnecessaryContent('LICENSE', 'file')).toBe(false)
+    expect(isPossiblyUnnecessaryContent('LICENSE-MIT.txt', 'file')).toBe(false)
+    expect(isPossiblyUnnecessaryContent('NOTICE', 'file')).toBe(false)
+    expect(isPossiblyUnnecessaryContent('UNLICENSE', 'file')).toBe(false)
   })
 
   it('does not confuse a directory name passed as a file with the directory match', () => {

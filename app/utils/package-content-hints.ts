@@ -12,9 +12,11 @@ const POSSIBLY_UNNECESSARY_FILES: ReadonlySet<string> = new Set([
   '.prettierignore',
   '.eslintignore',
   '.jshintignore',
+  '.npmignore',
   '.gitignore',
   '.gitattributes',
   '.travis.yml',
+  'Makefile',
   'tsconfig.json',
   '.node-version',
   '.nvmrc',
@@ -33,6 +35,9 @@ const POSSIBLY_UNNECESSARY_FILES: ReadonlySet<string> = new Set([
   'changelog.md',
   'CHANGELOG.markdown',
   'changelog.markdown',
+  'RELEASENOTES.md',
+  'CONTRIBUTING.md',
+  'AUTHORS',
 ])
 
 const POSSIBLY_UNNECESSARY_DIRECTORIES: ReadonlySet<string> = new Set([
