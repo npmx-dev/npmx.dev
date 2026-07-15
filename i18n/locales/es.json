@@ -762,7 +762,7 @@
         "chart": "Incrustar este gráfico",
         "copy_url": "Copia esta URL para incrustar el gráfico en tu sitio web",
         "preview": "Vista previa",
-        "tip": "Si no se proporcionan startDate y endDate, el gráfico muestra los últimos 12 meses por defecto."
+        "tip": "Si no se proporcionan startDate y endDate en la URL, el gráfico mostrará los últimos 12 meses por defecto."
       }
     },
     "downloads": {
