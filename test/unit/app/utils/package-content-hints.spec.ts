@@ -161,8 +161,10 @@ describe('isPossiblyUnnecessaryContent', () => {
   })
 
   it('does not flag legal related files', () => {
-    expect(isPossiblyUnnecessaryContent('license', 'file')).toBe(false)
     expect(isPossiblyUnnecessaryContent('LICENSE', 'file')).toBe(false)
+    expect(isPossiblyUnnecessaryContent('LICENCE', 'file')).toBe(false)
+    expect(isPossiblyUnnecessaryContent('license', 'file')).toBe(false)
+    expect(isPossiblyUnnecessaryContent('licence', 'file')).toBe(false)
     expect(isPossiblyUnnecessaryContent('LICENSE-MIT.txt', 'file')).toBe(false)
     expect(isPossiblyUnnecessaryContent('NOTICE', 'file')).toBe(false)
     expect(isPossiblyUnnecessaryContent('UNLICENSE', 'file')).toBe(false)
