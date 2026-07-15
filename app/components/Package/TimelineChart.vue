@@ -49,7 +49,6 @@ const props = defineProps<{
   timelineEntries: TimelineVersion[]
   selectedVersion: string | null
   loading: boolean
-  permalink?: boolean
 }>()
 
 const { settings } = useSettings()
@@ -187,7 +186,26 @@ const seriesDependencies = computed(() => {
   }
 })
 
-const activeTab = usePermalink<TimelineChartMetric>('metric', 'totalSize')
+const timelineChartMetrics = new Set<TimelineChartMetric>([
+  'totalSize',
+  'dependencyCount',
+  'dependencySize',
+])
+
+const activeTab = usePermalink<TimelineChartMetric>('metric', 'totalSize', {
+  permanent: true,
+})
+
+watch(
+  activeTab,
+  value => {
+    if (!timelineChartMetrics.has(value)) {
+      activeTab.value = 'totalSize'
+    }
+  },
+  { immediate: true },
+)
+
 const shouldPauseChartAnimations = shallowRef(true)
 
 const { start: startChartAnimationPauseTimer } = useTimeoutFn(
@@ -859,7 +877,7 @@ const timelineMetricTabs = computed(() => [
   <div
     style="width: 100%"
     class="font-mono border-b border-border"
-    :class="{ loading: shouldPauseChartAnimations }"
+    :class="{ loading: shouldPauseChartAnimations || loading }"
     id="timeline-chart"
   >
     <div class="mt-4 flex flex-row flex-wrap items-center justify-between gap-4">
@@ -967,7 +985,7 @@ const timelineMetricTabs = computed(() => [
             :markersNegative="getNegativeDatapointPlots(svg.data[0], svg.slicer.start)"
             :colors
             :gradientColors="E18E_GRADIENT_COLORS"
-            :pauseAnimations="shouldPauseChartAnimations"
+            :pauseAnimations="shouldPauseChartAnimations || loading"
           />
         </template>
 
@@ -1040,7 +1058,10 @@ const timelineMetricTabs = computed(() => [
         :dataset="datasets.dependencySize"
         :config="stackbarConfig"
         :selected-x-index="indexSelection"
-        :style="{ opacity: shouldPauseChartAnimations ? 0 : 1, transition: 'opacity 0.15s' }"
+        :style="{
+          opacity: shouldPauseChartAnimations || loading ? 0 : 1,
+          transition: 'opacity 0.15s',
+        }"
         ref="chartRef"
       >
         <!-- Injecting custom svg elements -->
@@ -1059,7 +1080,7 @@ const timelineMetricTabs = computed(() => [
             "
             :activeVersionPlot="getActiveVersionDatapointBar(svg.data, svg.barWidth)"
             :colors
-            :pauseAnimations="shouldPauseChartAnimations"
+            :pauseAnimations="shouldPauseChartAnimations || loading"
           />
         </template>
 

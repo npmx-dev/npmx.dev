@@ -360,7 +360,6 @@ useSeoMeta({
             :timelineEntries
             :selectedVersion
             :loading="sizesLoading"
-            permalink
           />
         </div>
       </div>
