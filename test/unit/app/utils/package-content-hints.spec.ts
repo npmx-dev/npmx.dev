@@ -52,6 +52,7 @@ describe('isPossiblyUnnecessaryContent', () => {
   it('flags changelog, release notes, and contributing files', () => {
     const files = [
       'CHANGELOG.md',
+      'Changelog.md',
       'changelog.md',
       'CHANGELOG.markdown',
       'changelog.markdown',
@@ -59,6 +60,7 @@ describe('isPossiblyUnnecessaryContent', () => {
       'release-notest.md',
       'CONTRIBUTING.md',
       'HISTORY.md',
+      'History.md',
       'history.txt',
     ]
     for (const name of files) {
