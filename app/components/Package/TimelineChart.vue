@@ -49,6 +49,7 @@ const props = defineProps<{
   timelineEntries: TimelineVersion[]
   selectedVersion: string | null
   loading: boolean
+  permalink?: boolean
 }>()
 
 const { settings } = useSettings()
@@ -186,16 +187,15 @@ const seriesDependencies = computed(() => {
   }
 })
 
-const activeTab = shallowRef<TimelineChartMetric>('totalSize')
-
+const activeTab = usePermalink<TimelineChartMetric>('metric', 'totalSize')
 const shouldPauseChartAnimations = shallowRef(true)
 
 const { start: startChartAnimationPauseTimer } = useTimeoutFn(
   () => {
     shouldPauseChartAnimations.value = false
   },
-  1000,
-  { immediate: false },
+  300,
+  { immediate: true },
 )
 
 function pauseChartAnimations() {
@@ -859,7 +859,7 @@ const timelineMetricTabs = computed(() => [
   <div
     style="width: 100%"
     class="font-mono border-b border-border"
-    :class="{ loaded: shouldPauseChartAnimations }"
+    :class="{ loading: shouldPauseChartAnimations }"
     id="timeline-chart"
   >
     <div class="mt-4 flex flex-row flex-wrap items-center justify-between gap-4">
@@ -1040,6 +1040,7 @@ const timelineMetricTabs = computed(() => [
         :dataset="datasets.dependencySize"
         :config="stackbarConfig"
         :selected-x-index="indexSelection"
+        :style="{ opacity: shouldPauseChartAnimations ? 0 : 1, transition: 'opacity 0.15s' }"
         ref="chartRef"
       >
         <!-- Injecting custom svg elements -->
@@ -1112,7 +1113,10 @@ const timelineMetricTabs = computed(() => [
       </VueUiStackbar>
 
       <template #fallback>
-        <SkeletonBlock class="flex place-items-center justify-center aspect-[1152/254.59]">
+        <SkeletonBlock
+          class="flex place-items-center justify-center"
+          :class="[activeTab === 'dependencySize' ? 'aspect-[1152/466.4]' : 'aspect-[1152/254.59]']"
+        >
           <span class="i-lucide:chart-line w-10 h-10 text-fg-muted" aria-hidden="true" />
         </SkeletonBlock>
       </template>
@@ -1198,9 +1202,9 @@ const timelineMetricTabs = computed(() => [
   animation: indeterminate 1.5s ease-in-out infinite;
 }
 
-.loaded :deep(.vue-data-ui-component .serie_line_0 path),
-.loaded :deep(.vdui-shape-circle),
-.loaded :deep(.vue-ui-stackbar rect) {
+.loading :deep(.vue-data-ui-component .serie_line_0 path),
+.loading :deep(.vdui-shape-circle),
+.loading :deep(.vue-ui-stackbar rect) {
   transition: none !important;
   animation: none !important;
 }

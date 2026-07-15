@@ -12,6 +12,7 @@ import type { TimelineSizeCacheValue } from '~/utils/charts'
 definePageMeta({
   name: 'timeline',
   path: '/package-timeline/:org?/:packageName/v/:version',
+  preserveScrollOnQuery: true,
 })
 
 const { t } = useI18n()
@@ -359,6 +360,7 @@ useSeoMeta({
             :timelineEntries
             :selectedVersion
             :loading="sizesLoading"
+            permalink
           />
         </div>
       </div>
