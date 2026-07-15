@@ -35,6 +35,14 @@ describe('isPossiblyUnnecessaryContent', () => {
     expect(isPossiblyUnnecessaryContent('.travis.yml', 'file')).toBe(true)
   })
 
+  it('flags test files', () => {
+    expect(isPossiblyUnnecessaryContent('test.js', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('index.test.js', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('index.spec.js', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('index.test.ts', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('index.spec.ts', 'file')).toBe(true)
+  })
+
   it('flags changelog files', () => {
     expect(isPossiblyUnnecessaryContent('CHANGELOG.md', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('changelog.md', 'file')).toBe(true)

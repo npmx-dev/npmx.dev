@@ -65,6 +65,8 @@ const POSSIBLY_UNNECESSARY_PATTERNS: readonly RegExp[] = [
   /^\.(?!npmrc$)[a-z][a-z0-9_-]*rc$/,
   /^\.(?!npmrc\.)[a-z][a-z0-9_-]*rc\.(?:json|js|cjs|mjs|yml|yaml|toml)$/,
   /^\.[a-z][a-z0-9_-]*\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+  // Match files ending in .test.js, .test.ts, .spec.js, .spec.ts, etc.
+  /(?:test|spec)\.(?:j|t)s$/,
 ]
 
 export function isPossiblyUnnecessaryContent(name: string, type: 'file' | 'directory'): boolean {
