@@ -198,11 +198,11 @@ Published under [MIT License](./LICENSE).
 
 ## Star History
 
-<a href="https://www.star-history.com/#npmx-dev/npmx.dev&type=date&legend=top-left">
+<a href="https://www.star-history.com/?repos=npmx-dev%2Fnpmx.dev&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=npmx-dev/npmx.dev&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=npmx-dev/npmx.dev&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=npmx-dev/npmx.dev&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=npmx-dev/npmx.dev&type=date&theme=dark&legend=top-left&sealed_token=1RI8ZdgQL3NncQeMm3sTwgYPL_7_ELdIGe5yiswir2iZipZwBtsYd4Y6zkO2fZLUP3wRcDN38GLKA4B1b3JE3pxEg7x_w8uOivwT3rL8Jcr-866HKSRMpjqmEwPavKp57ZdTyo04KHRbKthXVe360AJhcjmbXWxKVO9EDFh995ssNIH32hNArVB4MwAm" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=npmx-dev/npmx.dev&type=date&legend=top-left&sealed_token=1RI8ZdgQL3NncQeMm3sTwgYPL_7_ELdIGe5yiswir2iZipZwBtsYd4Y6zkO2fZLUP3wRcDN38GLKA4B1b3JE3pxEg7x_w8uOivwT3rL8Jcr-866HKSRMpjqmEwPavKp57ZdTyo04KHRbKthXVe360AJhcjmbXWxKVO9EDFh995ssNIH32hNArVB4MwAm" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=npmx-dev/npmx.dev&type=date&legend=top-left&sealed_token=1RI8ZdgQL3NncQeMm3sTwgYPL_7_ELdIGe5yiswir2iZipZwBtsYd4Y6zkO2fZLUP3wRcDN38GLKA4B1b3JE3pxEg7x_w8uOivwT3rL8Jcr-866HKSRMpjqmEwPavKp57ZdTyo04KHRbKthXVe360AJhcjmbXWxKVO9EDFh995ssNIH32hNArVB4MwAm" />
  </picture>
 </a>
 
