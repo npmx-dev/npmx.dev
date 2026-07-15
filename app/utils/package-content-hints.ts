@@ -30,6 +30,9 @@ const POSSIBLY_UNNECESSARY_FILES: ReadonlySet<string> = new Set([
   '.nycrc',
   'nyc.json',
   'CHANGELOG.md',
+  'changelog.md',
+  'CHANGELOG.markdown',
+  'changelog.markdown',
 ])
 
 const POSSIBLY_UNNECESSARY_DIRECTORIES: ReadonlySet<string> = new Set([
@@ -40,9 +43,9 @@ const POSSIBLY_UNNECESSARY_DIRECTORIES: ReadonlySet<string> = new Set([
   '.zed',
   'test',
   'tests',
-  '__tests__',
   'spec',
   'specs',
+  'example',
   'examples',
 ])
 

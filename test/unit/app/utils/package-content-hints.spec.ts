@@ -37,6 +37,9 @@ describe('isPossiblyUnnecessaryContent', () => {
 
   it('flags changelog files', () => {
     expect(isPossiblyUnnecessaryContent('CHANGELOG.md', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('changelog.md', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('CHANGELOG.markdown', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('changelog.markdown', 'file')).toBe(true)
   })
 
   it('matches ESLint configuration patterns', () => {
@@ -115,6 +118,7 @@ describe('isPossiblyUnnecessaryContent', () => {
   })
 
   it('flags example directories', () => {
+    expect(isPossiblyUnnecessaryContent('example', 'directory')).toBe(true)
     expect(isPossiblyUnnecessaryContent('examples', 'directory')).toBe(true)
   })
 
