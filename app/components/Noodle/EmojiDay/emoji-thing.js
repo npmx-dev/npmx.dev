@@ -117,6 +117,7 @@ export function init(sizer, emojiSetImages) {
     'width': `${VIEW_WIDTH}px`,
     'height': `${VIEW_HEIGHT}px`,
     'transform-origin': '0 0',
+    'touch-action': 'pinch-zoom',
   })
   sizer.appendChild(area)
 
