@@ -40,6 +40,13 @@ describe('isPossiblyUnnecessaryContent', () => {
   })
 
   it('flags example and development files', () => {
+    expect(isPossiblyUnnecessaryContent('test.js', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('tests.js', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('test.ts', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('index.test.js', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('index.test.ts', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('index.spec.js', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('index.spec.ts', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('bench.js', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('example.js', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('examples.js', 'file')).toBe(true)

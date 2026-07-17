@@ -36,6 +36,8 @@ const POSSIBLY_UNNECESSARY_FILES: ReadonlySet<string> = new Set([
   'AUTHORS',
   'test.js',
   'test.ts',
+  'tests.js',
+  'tests.ts',
   'bench.js',
 ])
 
