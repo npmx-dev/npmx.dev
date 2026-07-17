@@ -11,6 +11,7 @@ describe('isPossiblyUnnecessaryContent', () => {
     expect(isPossiblyUnnecessaryContent('.jshintignore', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('.npmignore', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('tsconfig.json', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('jsconfig.json', 'file')).toBe(true)
   })
 
   it('flags local environment files', () => {
@@ -55,6 +56,7 @@ describe('isPossiblyUnnecessaryContent', () => {
     expect(isPossiblyUnnecessaryContent('index.spec.js', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('index.spec.ts', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('bench.js', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('benchmark.js', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('example.js', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('examples.js', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('example.mjs', 'file')).toBe(true)
@@ -159,7 +161,7 @@ describe('isPossiblyUnnecessaryContent', () => {
     expect(isPossiblyUnnecessaryContent('.idea', 'directory')).toBe(true)
     expect(isPossiblyUnnecessaryContent('.zed', 'directory')).toBe(true)
     expect(isPossiblyUnnecessaryContent('.yarn', 'directory')).toBe(true)
-    expect(isPossiblyUnnecessaryContent('.hasky', 'directory')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('.husky', 'directory')).toBe(true)
   })
 
   it('flags test directories', () => {
