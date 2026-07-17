@@ -139,11 +139,15 @@ export function init(sizer, emojiSetImages) {
       y: ((event.clientY - rect.top) / rect.height) * VIEW_HEIGHT,
     }
   }
-  area.addEventListener('pointerenter', onPointerMove)
-  area.addEventListener('pointermove', onPointerMove)
-  area.addEventListener('pointerout', () => {
-    pointer = undefined
-  })
+  area.addEventListener('pointerenter', onPointerMove, { passive: true })
+  area.addEventListener('pointermove', onPointerMove, { passive: true })
+  area.addEventListener(
+    'pointerout',
+    () => {
+      pointer = undefined
+    },
+    { passive: true },
+  )
 
   const emojiSets = new Map(
     Object.entries(emojiSetImages).map(([name, image]) => {
@@ -170,6 +174,8 @@ export function init(sizer, emojiSetImages) {
               top: `-${size / 2}px`,
               width: `${size}px`,
               height: `${size}px`,
+              pointerEvents: 'none',
+              userSelect: 'none',
             })
 
             const ctx = sprite.getContext('2d')
