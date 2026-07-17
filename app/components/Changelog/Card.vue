@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { IconClass } from '~/types'
 import type { ReleaseData } from '~~/shared/types/changelog'
 import { slugify } from '~~/shared/utils/html'
 
@@ -19,6 +20,14 @@ const navId = computed(() => `release-${slugify(release.title)}`)
 function navigateToTitle() {
   navigateTo(`#${navId.value}`)
 }
+
+const { providerIcon, viewOnProvider } = inject<{
+  providerIcon: MaybeRef<IconClass>
+  viewOnProvider: MaybeRef<string>
+}>('changelog-provider-linkattr', {
+  providerIcon: 'i-lucide:code',
+  viewOnProvider: computed(() => $t('common.view_on.git_repo')),
+})
 </script>
 <template>
   <section
@@ -48,6 +57,12 @@ function navigateToTitle() {
         {{ $t('changelog.draft') }}
       </TagStatic>
       <div class="flex-1" aria-hidden="true"></div>
+      <LinkBase
+        :classicon="providerIcon"
+        :title="viewOnProvider"
+        :to="release.link"
+        class="size-[0.9em]"
+      />
       <ReadmeTocDropdown
         v-if="release?.toc && release.toc.length > 1"
         :toc="release.toc"

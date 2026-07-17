@@ -25,14 +25,14 @@ jobs:
     runs-on: ubuntu-slim
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           fetch-depth: 0
           persist-credentials: false
 
       - name: 🔎 Compare dependencies
         id: analyze
-        uses: e18e/action-dependency-diff@f825d5b5c5ce0a42dc46c47ec20de24460affcd8 # v1.5.0
+        uses: e18e/action-dependency-diff@8e9b8c1957ab066d36235a43f4c1ff1522e1bdbc # v1.6.1
         with:
           mode: artifact
           detect-replacements: 'true'

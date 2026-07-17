@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 import type { Placement, Strategy } from '@floating-ui/vue'
-import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/vue'
+import { autoUpdate, flip, offset as offsetMiddleware, shift, useFloating } from '@floating-ui/vue'
 
 const props = withDefaults(
   defineProps<{
@@ -40,7 +40,7 @@ const { floatingStyles } = useFloating(triggerRef, tooltipRef, {
   placement,
   whileElementsMounted: autoUpdate,
   strategy: props.strategy,
-  middleware: [offset(props.offset), flip(), shift({ padding: 8 })],
+  middleware: [offsetMiddleware(props.offset), flip(), shift({ padding: 8 })],
 })
 </script>
 

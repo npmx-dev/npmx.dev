@@ -14,6 +14,16 @@ definePageMeta({
     // '/code/@:org?/:packageName/v/:version/:filePath(.*)?',
   ],
   scrollMargin: 160,
+  // needed to keep the file-tree in-place when navigating files (otherwise the filetree scroll position snaps to the top)
+  // changing the version (or org/packageName for that matter) causes a re-render
+  key: route => {
+    const { org, packageName, version } = route.params as {
+      org?: string
+      packageName: string
+      version: string
+    }
+    return `/package-code/${org ?? ''}/${packageName}/v/${version}`
+  },
 })
 
 const route = useRoute('code')

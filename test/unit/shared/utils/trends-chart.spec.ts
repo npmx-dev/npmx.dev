@@ -526,7 +526,6 @@ describe('buildNormalisedTrendsDataset', () => {
         granularity: 'daily',
         selectedMetric: 'downloads',
         chartFilter: { averageWindow: 1, smoothingTau: 0 },
-        nowMs: 100,
       }),
     ).toEqual([])
   })
@@ -547,7 +546,6 @@ describe('buildNormalisedTrendsDataset', () => {
       selectedMetric: 'downloads',
       chartFilter: { averageWindow: 2, smoothingTau: 3 },
       endDateMs: 500,
-      nowMs: 100,
     })
 
     expect(applyDataPipelineMock).toHaveBeenCalledWith(
@@ -573,27 +571,7 @@ describe('buildNormalisedTrendsDataset', () => {
     ])
   })
 
-  it('uses nowMs when endDateMs is null', () => {
-    buildNormalisedTrendsDataset({
-      dataset: [{ name: 'vue', type: 'line', series: [1] }],
-      dates: [10],
-      granularity: 'daily',
-      selectedMetric: 'downloads',
-      chartFilter: { averageWindow: 1, smoothingTau: 0 },
-      endDateMs: null,
-      nowMs: 123,
-    })
-
-    expect(applyDataPipelineMock).toHaveBeenCalledWith(
-      [1],
-      expect.any(Object),
-      expect.objectContaining({
-        referenceMs: 123,
-      }),
-    )
-  })
-
-  it('uses Date.now when endDateMs and nowMs are missing', () => {
+  it('uses Date.now when endDateMs is missing', () => {
     const dateNowSpy = vi.spyOn(Date, 'now').mockReturnValue(999)
 
     buildNormalisedTrendsDataset({
@@ -624,19 +602,23 @@ describe('buildNormalisedTrendsDataset', () => {
       dates: [10],
       granularity: 'weekly',
       selectedMetric: 'contributors',
-      chartFilter: { averageWindow: 1, smoothingTau: 0, predictionPoints: 5 },
-      nowMs: 100,
+      chartFilter: { averageWindow: 0, smoothingTau: 0, predictionPoints: 5 },
+      endDateMs: 100,
     })
 
     expect(applyDataPipelineMock).toHaveBeenCalledWith(
       [1],
-      expect.objectContaining({
+      {
+        averageWindow: 0,
+        smoothingTau: 0,
         predictionPoints: 0,
-      }),
-      expect.objectContaining({
-        isAbsoluteMetric: true,
+      },
+      {
+        granularity: 'weekly',
+        lastDateMs: 10,
         referenceMs: 100,
-      }),
+        isAbsoluteMetric: true,
+      },
     )
   })
 })

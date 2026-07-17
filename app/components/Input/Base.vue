@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { noCorrect, noPasswordManager } from '~/utils/input'
+import {
+  noCorrect as noCorrectAttrs,
+  noPasswordManager as noPasswordManagerAttrs,
+} from '~/utils/input'
 
 const model = defineModel<string>({ default: '' })
 
@@ -44,8 +47,8 @@ defineExpose({
 })
 
 const inputAttrs = computed(() => ({
-  ...(props.noCorrect ? noCorrect : {}),
-  ...(props.noPasswordManager ? noPasswordManager : {}),
+  ...(props.noCorrect ? noCorrectAttrs : {}),
+  ...(props.noPasswordManager ? noPasswordManagerAttrs : {}),
 }))
 </script>
 

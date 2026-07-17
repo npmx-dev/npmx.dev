@@ -296,9 +296,8 @@ export function buildNormalisedTrendsDataset(options: {
     predictionPoints?: number
   }
   endDateMs?: number | null
-  nowMs?: number
 }): TrendsNormalisedDatasetItem[] {
-  const referenceMs = options.endDateMs ?? options.nowMs ?? Date.now()
+  const referenceMs = options.endDateMs ?? Date.now()
   const lastDateMs = options.dates.at(-1) ?? 0
   const isAbsoluteMetric = options.selectedMetric === 'contributors'
 
