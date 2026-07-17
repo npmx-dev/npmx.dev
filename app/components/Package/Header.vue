@@ -61,6 +61,7 @@ const { y: scrollY } = useScroll(window)
 const showScrollToTop = computed(() => scrollY.value > SCROLL_TO_TOP_THRESHOLD)
 
 const packageName = computed(() => props.pkg?.name ?? '')
+const resolvedVersionText = computed(() => props.resolvedVersion ?? '')
 const fundingUrl = computed(() => {
   let funding = props.displayVersion?.funding
   if (Array.isArray(funding)) funding = funding[0]
@@ -72,6 +73,11 @@ const fundingUrl = computed(() => {
 
 const { copied: copiedPkgName, copy: copyPkgName } = useClipboard({
   source: packageName,
+  copiedDuring: 2000,
+})
+
+const { copied: copiedVersion, copy: copyVersion } = useClipboard({
+  source: resolvedVersionText,
   copiedDuring: 2000,
 })
 
@@ -99,6 +105,20 @@ useCommandPaletteContextCommands(
         },
       },
     ]
+
+    if (resolvedVersionText.value) {
+      commands.push({
+        id: 'package-copy-version',
+        group: 'package',
+        label: $t('package.copy_version'),
+        keywords: [resolvedVersionText.value],
+        iconClass: 'i-lucide:copy',
+        action: () => {
+          copyVersion()
+          announce($t('command_palette.announcements.copied_to_clipboard'))
+        },
+      })
+    }
 
     if (fundingUrl.value) {
       commands.push({
@@ -312,6 +332,16 @@ useShortcuts({
             :dist-tags="pkg['dist-tags']"
             :url-pattern="versionUrlPattern"
             position-class="max-md:inset-is-0 md:inset-ie-0"
+          />
+          <!-- Quick copy version -->
+          <ButtonBase
+            v-if="resolvedVersion"
+            size="sm"
+            variant="secondary"
+            :aria-label="copiedVersion ? $t('common.copied') : $t('package.copy_version')"
+            :classicon="copiedVersion ? 'i-lucide:check' : 'i-lucide:copy'"
+            :class="copiedVersion ? 'text-accent' : ''"
+            @click="copyVersion()"
           />
         </div>
       </div>
