@@ -39,6 +39,10 @@ const POSSIBLY_UNNECESSARY_FILES: ReadonlySet<string> = new Set([
   'tests.js',
   'tests.ts',
   'bench.js',
+  'yarn.lock',
+  'bun.lock',
+  'bun.lockb',
+  'package-lock.json',
 ])
 
 const POSSIBLY_UNNECESSARY_DIRECTORIES: ReadonlySet<string> = new Set([
@@ -47,6 +51,8 @@ const POSSIBLY_UNNECESSARY_DIRECTORIES: ReadonlySet<string> = new Set([
   '.github',
   '.idea',
   '.zed',
+  '.yarn',
+  '.husky',
   'test',
   'tests',
   'spec',
@@ -67,6 +73,7 @@ const POSSIBLY_UNNECESSARY_PATTERNS: readonly RegExp[] = [
   /^\.oxlintrc(?:\.(?:json|js|cjs|yml|yaml))?$/,
   /^oxfmt\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
   /^\.oxfmtrc(?:\.(?:json|js|cjs|yml|yaml))?$/,
+  /^jest\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
   // Match common dot-prefixed config files without flagging all dotfiles;
   // files like .npmrc can be intentional artifacts.
   /^\.(?!npmrc$)[a-z][a-z0-9_-]*rc$/,
@@ -75,7 +82,7 @@ const POSSIBLY_UNNECESSARY_PATTERNS: readonly RegExp[] = [
   // Match files ending in .test.js, .test.ts, .spec.js, .spec.ts, etc.
   /\.(?:test|spec)\.(?:j|t)s$/,
   // Match CHANGELOG.md, etc
-  /^(?:changelog|releasenotes|release-notes|history|contributing|contribute)\.(?:md|markdown|txt)$/i,
+  /^(?:changelog|releasenotes|release-notes|history|contributing|contribute|news|collaborators)\.(?:md|markdown|txt)$/i,
   // Match example.mjs, examples.js, stc
   /^examples?\.(?:js|cjs|mjs|ts|mts|cts)$/,
 ]

@@ -39,6 +39,13 @@ describe('isPossiblyUnnecessaryContent', () => {
     expect(isPossiblyUnnecessaryContent('.DS_Store', 'file')).toBe(true)
   })
 
+  it('flags package manager lockfiles', () => {
+    expect(isPossiblyUnnecessaryContent('yarn.lock', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('bun.lock', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('bun.lockb', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('package-lock.json', 'file')).toBe(true)
+  })
+
   it('flags example and development files', () => {
     expect(isPossiblyUnnecessaryContent('test.js', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('tests.js', 'file')).toBe(true)
@@ -55,6 +62,7 @@ describe('isPossiblyUnnecessaryContent', () => {
 
   it('flags unnecessay metadata and documentation files', () => {
     expect(isPossiblyUnnecessaryContent('AUTHORS', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('collaborators.md', 'file')).toBe(true)
   })
 
   describe('changelog, release notes, and contributing files', () => {
@@ -70,6 +78,7 @@ describe('isPossiblyUnnecessaryContent', () => {
       'HISTORY.md',
       'History.md',
       'history.txt',
+      'NEWS.md',
     ]
     for (const name of files) {
       it(`flags ${name}`, () => {
@@ -78,61 +87,69 @@ describe('isPossiblyUnnecessaryContent', () => {
     }
   })
 
-  it('matches ESLint configuration patterns', () => {
-    for (const extension of ['js', 'cjs', 'mjs', 'ts', 'mts', 'cts']) {
-      expect(isPossiblyUnnecessaryContent(`eslint.config.${extension}`, 'file')).toBe(true)
-    }
-    expect(isPossiblyUnnecessaryContent('.eslintrc', 'file')).toBe(true)
-    for (const extension of ['json', 'js', 'cjs', 'yml', 'yaml']) {
-      expect(isPossiblyUnnecessaryContent(`.eslintrc.${extension}`, 'file')).toBe(true)
-    }
-    expect(isPossiblyUnnecessaryContent('eslint.config.json', 'file')).toBe(false)
-    expect(isPossiblyUnnecessaryContent('.eslintrc.txt', 'file')).toBe(false)
-  })
+  describe('configuration patterns', () => {
+    it('matches ESLint configuration patterns', () => {
+      for (const extension of ['js', 'cjs', 'mjs', 'ts', 'mts', 'cts']) {
+        expect(isPossiblyUnnecessaryContent(`eslint.config.${extension}`, 'file')).toBe(true)
+      }
+      expect(isPossiblyUnnecessaryContent('.eslintrc', 'file')).toBe(true)
+      for (const extension of ['json', 'js', 'cjs', 'yml', 'yaml']) {
+        expect(isPossiblyUnnecessaryContent(`.eslintrc.${extension}`, 'file')).toBe(true)
+      }
+      expect(isPossiblyUnnecessaryContent('eslint.config.json', 'file')).toBe(false)
+      expect(isPossiblyUnnecessaryContent('.eslintrc.txt', 'file')).toBe(false)
+    })
 
-  it('matches Prettier configuration patterns', () => {
-    expect(isPossiblyUnnecessaryContent('.prettierrc', 'file')).toBe(true)
-    for (const extension of ['json', 'js', 'cjs', 'yml', 'yaml', 'toml']) {
-      expect(isPossiblyUnnecessaryContent(`.prettierrc.${extension}`, 'file')).toBe(true)
-    }
-    for (const extension of ['js', 'cjs', 'mjs', 'ts', 'mts', 'cts']) {
-      expect(isPossiblyUnnecessaryContent(`prettier.config.${extension}`, 'file')).toBe(true)
-    }
-    expect(isPossiblyUnnecessaryContent('.prettierrc.txt', 'file')).toBe(false)
-    expect(isPossiblyUnnecessaryContent('prettier.config.json', 'file')).toBe(false)
-  })
+    it('matches Prettier configuration patterns', () => {
+      expect(isPossiblyUnnecessaryContent('.prettierrc', 'file')).toBe(true)
+      for (const extension of ['json', 'js', 'cjs', 'yml', 'yaml', 'toml']) {
+        expect(isPossiblyUnnecessaryContent(`.prettierrc.${extension}`, 'file')).toBe(true)
+      }
+      for (const extension of ['js', 'cjs', 'mjs', 'ts', 'mts', 'cts']) {
+        expect(isPossiblyUnnecessaryContent(`prettier.config.${extension}`, 'file')).toBe(true)
+      }
+      expect(isPossiblyUnnecessaryContent('.prettierrc.txt', 'file')).toBe(false)
+      expect(isPossiblyUnnecessaryContent('prettier.config.json', 'file')).toBe(false)
+    })
 
-  it('matches oxlint and oxfmt configuration patterns', () => {
-    for (const extension of ['js', 'cjs', 'mjs', 'ts', 'mts', 'cts']) {
-      expect(isPossiblyUnnecessaryContent(`oxlint.config.${extension}`, 'file')).toBe(true)
-      expect(isPossiblyUnnecessaryContent(`oxfmt.config.${extension}`, 'file')).toBe(true)
-    }
-    expect(isPossiblyUnnecessaryContent('.oxlintrc', 'file')).toBe(true)
-    expect(isPossiblyUnnecessaryContent('.oxfmtrc', 'file')).toBe(true)
-    for (const extension of ['json', 'js', 'cjs', 'yml', 'yaml']) {
-      expect(isPossiblyUnnecessaryContent(`.oxlintrc.${extension}`, 'file')).toBe(true)
-      expect(isPossiblyUnnecessaryContent(`.oxfmtrc.${extension}`, 'file')).toBe(true)
-    }
-    expect(isPossiblyUnnecessaryContent('oxlint.config.json', 'file')).toBe(false)
-    expect(isPossiblyUnnecessaryContent('oxfmt.config.json', 'file')).toBe(false)
-    expect(isPossiblyUnnecessaryContent('.oxlintrc.txt', 'file')).toBe(false)
-    expect(isPossiblyUnnecessaryContent('.oxfmtrc.txt', 'file')).toBe(false)
-  })
+    it('matches oxlint and oxfmt configuration patterns', () => {
+      for (const extension of ['js', 'cjs', 'mjs', 'ts', 'mts', 'cts']) {
+        expect(isPossiblyUnnecessaryContent(`oxlint.config.${extension}`, 'file')).toBe(true)
+        expect(isPossiblyUnnecessaryContent(`oxfmt.config.${extension}`, 'file')).toBe(true)
+      }
+      expect(isPossiblyUnnecessaryContent('.oxlintrc', 'file')).toBe(true)
+      expect(isPossiblyUnnecessaryContent('.oxfmtrc', 'file')).toBe(true)
+      for (const extension of ['json', 'js', 'cjs', 'yml', 'yaml']) {
+        expect(isPossiblyUnnecessaryContent(`.oxlintrc.${extension}`, 'file')).toBe(true)
+        expect(isPossiblyUnnecessaryContent(`.oxfmtrc.${extension}`, 'file')).toBe(true)
+      }
+      expect(isPossiblyUnnecessaryContent('oxlint.config.json', 'file')).toBe(false)
+      expect(isPossiblyUnnecessaryContent('oxfmt.config.json', 'file')).toBe(false)
+      expect(isPossiblyUnnecessaryContent('.oxlintrc.txt', 'file')).toBe(false)
+      expect(isPossiblyUnnecessaryContent('.oxfmtrc.txt', 'file')).toBe(false)
+    })
 
-  it('matches common dot-prefixed configuration patterns without over-flagging', () => {
-    expect(isPossiblyUnnecessaryContent('.babelrc', 'file')).toBe(true)
-    for (const extension of ['json', 'js', 'cjs', 'mjs', 'yml', 'yaml', 'toml']) {
-      expect(isPossiblyUnnecessaryContent(`.stylelintrc.${extension}`, 'file')).toBe(true)
-    }
-    expect(isPossiblyUnnecessaryContent('.browserslistrc', 'file')).toBe(true)
-    for (const extension of ['js', 'cjs', 'mjs', 'ts', 'mts', 'cts']) {
-      expect(isPossiblyUnnecessaryContent(`.tailwind.config.${extension}`, 'file')).toBe(true)
-    }
-    // .npmrc is sometimes an intentional shipped artifact; do not flag it.
-    expect(isPossiblyUnnecessaryContent('.npmrc', 'file')).toBe(false)
-    expect(isPossiblyUnnecessaryContent('.npmrc.json', 'file')).toBe(false)
-    expect(isPossiblyUnnecessaryContent('.stylelintrc.ts', 'file')).toBe(false)
-    expect(isPossiblyUnnecessaryContent('.tailwind.config.json', 'file')).toBe(false)
+    it('matches jest configuration patterns', () => {
+      for (const extension of ['js', 'cjs', 'mjs', 'ts', 'mts', 'cts']) {
+        expect(isPossiblyUnnecessaryContent(`jest.config.${extension}`, 'file')).toBe(true)
+      }
+    })
+
+    it('matches common dot-prefixed configuration patterns without over-flagging', () => {
+      expect(isPossiblyUnnecessaryContent('.babelrc', 'file')).toBe(true)
+      for (const extension of ['json', 'js', 'cjs', 'mjs', 'yml', 'yaml', 'toml']) {
+        expect(isPossiblyUnnecessaryContent(`.stylelintrc.${extension}`, 'file')).toBe(true)
+      }
+      expect(isPossiblyUnnecessaryContent('.browserslistrc', 'file')).toBe(true)
+      for (const extension of ['js', 'cjs', 'mjs', 'ts', 'mts', 'cts']) {
+        expect(isPossiblyUnnecessaryContent(`.tailwind.config.${extension}`, 'file')).toBe(true)
+      }
+      // .npmrc is sometimes an intentional shipped artifact; do not flag it.
+      expect(isPossiblyUnnecessaryContent('.npmrc', 'file')).toBe(false)
+      expect(isPossiblyUnnecessaryContent('.npmrc.json', 'file')).toBe(false)
+      expect(isPossiblyUnnecessaryContent('.stylelintrc.ts', 'file')).toBe(false)
+      expect(isPossiblyUnnecessaryContent('.tailwind.config.json', 'file')).toBe(false)
+    })
   })
 
   it('flags editor and CI directories', () => {
@@ -141,6 +158,8 @@ describe('isPossiblyUnnecessaryContent', () => {
     expect(isPossiblyUnnecessaryContent('.github', 'directory')).toBe(true)
     expect(isPossiblyUnnecessaryContent('.idea', 'directory')).toBe(true)
     expect(isPossiblyUnnecessaryContent('.zed', 'directory')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('.yarn', 'directory')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('.hasky', 'directory')).toBe(true)
   })
 
   it('flags test directories', () => {
@@ -184,6 +203,7 @@ describe('isPossiblyUnnecessaryContent', () => {
     expect(isPossiblyUnnecessaryContent('LICENSE-MIT', 'file')).toBe(false)
     expect(isPossiblyUnnecessaryContent('LICENSE-MIT.txt', 'file')).toBe(false)
     expect(isPossiblyUnnecessaryContent('NOTICE', 'file')).toBe(false)
+    expect(isPossiblyUnnecessaryContent('NOTICE.md', 'file')).toBe(false)
     expect(isPossiblyUnnecessaryContent('UNLICENSE', 'file')).toBe(false)
   })
 
