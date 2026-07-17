@@ -42,7 +42,7 @@ ignoreDepScripts: true
 ignoreWorkspaceRootCheck: true
 
 minimumReleaseAgeExclude:
-  - vue-data-ui@3.22.6
+  - vue-data-ui@3.22.6 || 3.22.12
 
 overrides:
   '@types/node': 24.13.2
