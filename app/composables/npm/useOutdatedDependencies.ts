@@ -1,6 +1,6 @@
 import type { PackageVersionsInfo } from 'fast-npm-meta'
 import { getVersionsBatch } from 'fast-npm-meta'
-import { maxSatisfying, prerelease, major, minor, diff, gt } from 'semver'
+import { difference, findMaxSatisfying, getMajor, getMinor, getPrerelease, isGreater } from 'verkit'
 import {
   type OutdatedDependencyInfo,
   isNonSemverConstraint,
@@ -26,22 +26,22 @@ function resolveOutdated(
 
   let filteredVersions = versions
   if (!constraintIncludesPrerelease(constraint)) {
-    filteredVersions = versions.filter(v => !prerelease(v))
+    filteredVersions = versions.filter(v => !getPrerelease(v))
   }
 
-  const resolved = maxSatisfying(filteredVersions, constraint)
+  const resolved = findMaxSatisfying(filteredVersions, constraint)
   if (!resolved) return null
 
   if (resolved === latestTag) return null
 
   // Resolved is newer than latest (e.g. ^2.0.0-rc when latest is 1.x)
-  if (gt(resolved, latestTag)) {
+  if (isGreater(resolved, latestTag)) {
     return null
   }
 
-  const diffType = diff(resolved, latestTag)
-  const majorsBehind = major(latestTag) - major(resolved)
-  const minorsBehind = majorsBehind === 0 ? minor(latestTag) - minor(resolved) : 0
+  const diffType = difference(resolved, latestTag)
+  const majorsBehind = getMajor(latestTag) - getMajor(resolved)
+  const minorsBehind = majorsBehind === 0 ? getMinor(latestTag) - getMinor(resolved) : 0
 
   return {
     resolved,

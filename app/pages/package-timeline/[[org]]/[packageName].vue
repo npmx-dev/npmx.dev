@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { RouteLocationRaw } from 'vue-router'
-import { compare } from 'semver'
+import { compare } from 'verkit'
 import type {
   TimelineResponse,
   TimelineVersion,

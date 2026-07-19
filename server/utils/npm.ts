@@ -1,4 +1,4 @@
-import { maxSatisfying, prerelease } from 'semver'
+import { findMaxSatisfying, getPrerelease } from 'verkit'
 
 export const fetchNpmPackage = defineCachedFunction(
   async (name: string): Promise<Packument> => {
@@ -62,10 +62,10 @@ export async function resolveVersionConstraint(
 
     // Filter out prerelease versions unless constraint explicitly includes one
     if (!constraintIncludesPrerelease(constraint)) {
-      versions = versions.filter(v => !prerelease(v))
+      versions = versions.filter(v => !getPrerelease(v))
     }
 
-    return maxSatisfying(versions, constraint)
+    return findMaxSatisfying(versions, constraint)
   } catch {
     return null
   }
