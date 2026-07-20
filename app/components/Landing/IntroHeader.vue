@@ -95,7 +95,10 @@ onPrehydrate(el => {
     <h1 class="sr-only">
       {{ $t('alt_logo') }}
     </h1>
-    <div
+
+    <NoodleGifDayLogo />
+
+    <!-- <div
       id="intro-header-noodle-default"
       class="relative mb-6 w-fit mx-auto motion-safe:animate-fade-in motion-safe:animate-fill-both"
       aria-hidden="true"
@@ -123,7 +126,7 @@ onPrehydrate(el => {
       class="hidden"
       aria-hidden="true"
       :is="noodle.logo"
-    />
+    /> -->
     <p
       id="intro-header-tagline"
       class="text-fg-muted text-lg ms-auto me-auto sm:text-xl max-w-xl mb-12 lg:mb-14 motion-safe:animate-slide-up motion-safe:animate-fill-both delay-100"
