@@ -1,49 +1,25 @@
 <script setup lang="ts">
-import n from '~/assets/n.gif'
-import p from '~/assets/p.gif'
-import m from '~/assets/m.gif'
-import x from '~/assets/x.gif'
+import { NoodleGifDayGifLetter } from '#components'
 
-const letters = ['n', 'p', 'm', 'x']
-const nUrl = `url(${n})`
-const pUrl = `url(${p})`
-const mUrl = `url(${m})`
-const xUrl = `url(${x})`
+type GifLetter = {
+  value: string
+  url: string
+}
+const letters: GifLetter[] = [
+  { value: 'n', url: 'https://c.tenor.com/VFDevE2qwdcAAAAC/tenor.gif' },
+  { value: 'p', url: 'https://c.tenor.com/k4UX72S-xEwAAAAC/tenor.gif' },
+  { value: 'm', url: 'https://c.tenor.com/aN_HGmP-ZgAAAAAC/tenor.gif' },
+  { value: 'x', url: 'https://c.tenor.com/tslbzvMV878AAAAd/tenor.gif' },
+]
 </script>
 
 <template>
-  <div class="flex justify-center" role="img" :aria-label="letters.join('')">
-    <span
+  <div class="flex justify-center" aria-hidden="true">
+    <NoodleGifDayGifLetter
       v-for="letter in letters"
-      :key="letter"
-      :class="['gif-letter', 'font-noodle text-[14rem] font-extrabold', letter]"
-      aria-hidden="true"
-    >
-      {{ letter }}
-    </span>
+      :key="letter.value"
+      :letter="letter.value"
+      :background-url="letter.url"
+    />
   </div>
 </template>
-
-<style scoped>
-.gif-letter {
-  background-size: cover;
-  background-position: center;
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  line-height: 1;
-}
-
-.n {
-  background-image: v-bind(nUrl);
-}
-.p {
-  background-image: v-bind(pUrl);
-}
-.m {
-  background-image: v-bind(mUrl);
-}
-.x {
-  background-image: v-bind(xUrl);
-}
-</style>

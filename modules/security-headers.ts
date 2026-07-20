@@ -36,6 +36,7 @@ export default defineNuxtModule({
       'https://cdn.bsky.app',
       'https://video.bsky.app',
       'https://video.cdn.bsky.app',
+      'https://c.tenor.com',
     ]
     const imgSrc = [
       "'self'",
