@@ -172,7 +172,7 @@ import {
   NoodlePride3Logo,
   NoodleTetrisLogo,
   NoodleGifDayLogo,
-  NoodleGifDayGifLetter,
+  NoodleGifDayGifText,
   LinkBase,
   CallToAction,
   ChangelogCard,
@@ -467,9 +467,9 @@ describe('component accessibility audits', () => {
     })
 
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(NoodleGifDayGifLetter, {
+      const component = await mountSuspended(NoodleGifDayGifText, {
         props: {
-          letter: 'N',
+          text: 'N',
           backgroundUrl: 'some_image_here.gif',
         },
       })
