@@ -8,8 +8,9 @@ type GifText = {
 const textArray: GifText[] = [
   {
     text: './',
-    url: 'https://media1.tenor.com/m/vOfmcVd-haMAAAAC/code-purpose-of-life.gif',
-    backgroundSize: '170%',
+    url: 'https://media1.tenor.com/m/_ETKRybU9WEAAAAd/orange-cat-stare.gif',
+    backgroundSize: '130%',
+    backgroundPosition: '50% 64%',
   },
   {
     text: 'n',
