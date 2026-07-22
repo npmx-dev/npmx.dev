@@ -262,7 +262,8 @@
     "back_to_archive": "Back to all noodles",
     "missing": {
       "title": "This noodle never made it out of the bowl.",
-      "body": "We don't have a “{slug}” noodle on the menu. Either it's still being plated, or it was never written. Either way — back to the archive."
+      "body": "We don't have a “{slug}” noodle on the menu. Either it's still being plated, or it was never written. Either way — back to the archive.",
+      "empty_bowl": "empty bowl"
     }
   },
   "settings": {
@@ -769,7 +770,7 @@
         "chart": "Embed this chart",
         "copy_url": "Copy this URL to embed the chart into your website",
         "preview": "Preview",
-        "tip": "If startDate and endDate are not provided, the chart defaults to the last 12 months."
+        "tip": "If startDate and endDate are not provided in the URL, the graph will display the last 12 months by default."
       }
     },
     "downloads": {
@@ -1089,7 +1090,8 @@
     },
     "file_path": "File path",
     "binary_file": "Binary file",
-    "binary_rendering_warning": "File type \"{contentType}\" is not supported for preview."
+    "binary_rendering_warning": "File type \"{contentType}\" is not supported for preview.",
+    "possibly_unnecessary": "May be unnecessary in a published package"
   },
   "badges": {
     "provenance": {

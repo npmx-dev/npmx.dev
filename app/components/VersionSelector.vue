@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core'
-import { compare } from 'semver'
+import { compare } from 'verkit'
 import {
   buildVersionToTagsMap,
   getPrereleaseChannel,

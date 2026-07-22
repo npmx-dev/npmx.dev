@@ -37,17 +37,19 @@ defineProps<{
         </a>
       </div>
 
-      <dl class="m-0 mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <div v-if="details.sourceCommitUrl" class="min-w-0 flex flex-col gap-0.5">
+      <dl
+        class="m-0 mt-4 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:justify-between sm:items-start"
+      >
+        <div v-if="details.sourceCommitUrl" class="flex flex-col gap-0.5 sm:flex-initial">
           <dt class="font-mono text-xs text-fg-muted m-0">
             {{ $t('package.provenance_section.source_commit') }}
           </dt>
-          <dd class="m-0 min-w-0">
+          <dd class="m-0">
             <a
               :href="details.sourceCommitUrl"
               target="_blank"
               rel="noopener noreferrer"
-              class="link font-mono text-sm block min-w-0 truncate"
+              class="link font-mono text-sm block whitespace-nowrap"
               :title="details.sourceCommitSha ?? details.sourceCommitUrl"
             >
               {{
@@ -59,16 +61,16 @@ defineProps<{
           </dd>
         </div>
 
-        <div v-if="details.buildFileUrl" class="min-w-0 flex flex-col gap-0.5">
+        <div v-if="details.buildFileUrl" class="flex flex-col gap-0.5 sm:flex-initial">
           <dt class="font-mono text-xs text-fg-muted m-0">
             {{ $t('package.provenance_section.build_file') }}
           </dt>
-          <dd class="m-0 min-w-0">
+          <dd class="m-0">
             <a
               :href="details.buildFileUrl"
               target="_blank"
               rel="noopener noreferrer"
-              class="link font-mono text-sm block min-w-0 break-words"
+              class="link font-mono text-sm block whitespace-nowrap"
               :title="details.buildFilePath ?? details.buildFileUrl"
             >
               {{ details.buildFilePath ?? details.buildFileUrl }}
@@ -76,16 +78,16 @@ defineProps<{
           </dd>
         </div>
 
-        <div v-if="details.publicLedgerUrl" class="min-w-0 flex flex-col gap-0.5">
+        <div v-if="details.publicLedgerUrl" class="flex flex-col gap-0.5 sm:flex-initial">
           <dt class="font-mono text-xs text-fg-muted m-0">
             {{ $t('package.provenance_section.public_ledger') }}
           </dt>
-          <dd class="m-0 min-w-0">
+          <dd class="m-0">
             <a
               :href="details.publicLedgerUrl"
               target="_blank"
               rel="noopener noreferrer"
-              class="link text-sm inline-flex"
+              class="link text-sm inline-flex whitespace-nowrap"
             >
               {{ $t('package.provenance_section.transparency_log_entry') }}
             </a>

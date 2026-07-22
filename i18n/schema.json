@@ -792,6 +792,9 @@
             },
             "body": {
               "type": "string"
+            },
+            "empty_bowl": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -3272,6 +3275,9 @@
           "type": "string"
         },
         "binary_rendering_warning": {
+          "type": "string"
+        },
+        "possibly_unnecessary": {
           "type": "string"
         }
       },

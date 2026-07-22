@@ -126,7 +126,7 @@ onPrehydrate(el => {
     />
     <p
       id="intro-header-tagline"
-      class="text-fg-muted text-lg sm:text-xl max-w-xl mb-12 lg:mb-14 motion-safe:animate-slide-up motion-safe:animate-fill-both delay-100"
+      class="text-fg-muted text-lg ms-auto me-auto sm:text-xl max-w-xl mb-12 lg:mb-14 motion-safe:animate-slide-up motion-safe:animate-fill-both delay-100"
     >
       {{ $t('tagline') }}
     </p>

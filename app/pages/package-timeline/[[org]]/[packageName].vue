@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { RouteLocationRaw } from 'vue-router'
-import { compare } from 'semver'
+import { compare } from 'verkit'
 import type {
   TimelineResponse,
   TimelineVersion,
@@ -12,6 +12,7 @@ import type { TimelineSizeCacheValue } from '~/utils/charts'
 definePageMeta({
   name: 'timeline',
   path: '/package-timeline/:org?/:packageName/v/:version',
+  preserveScrollOnQuery: true,
 })
 
 const { t } = useI18n()
