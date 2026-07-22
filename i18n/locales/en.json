@@ -419,6 +419,7 @@
     "verified_provenance": "Verified provenance",
     "navigation": "Package",
     "copy_name": "Copy package name",
+    "copy_version": "Copy package version",
     "deprecation": {
       "package": "This package has been deprecated.",
       "version": "This version has been deprecated.",

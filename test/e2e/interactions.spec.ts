@@ -98,13 +98,13 @@ test.describe('Package Page', () => {
     const packageHeading = page.locator('h1').first()
     await expect(packageHeading).toBeVisible({ timeout: 10000 })
 
-    // Hover the parent of the heading to trigger the button's visibility
-    await packageHeading.locator('..').hover()
-
     const copyButton = page
       .locator('button[aria-label="copy"]')
       .filter({ hasText: /copy/i })
       .first()
+
+    // Hover the button's group container (its parent) to trigger its visibility
+    await copyButton.locator('..').hover()
 
     await expect(copyButton).toBeVisible({ timeout: 10000 })
     await copyButton.hover()
