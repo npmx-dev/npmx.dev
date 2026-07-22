@@ -238,16 +238,20 @@ const numberFormatter = useNumberFormatter()
           class="flex items-center justify-between py-1 text-sm gap-1 min-w-0"
         >
           <div class="flex items-center gap-2 min-w-0 flex-1">
-            <LinkBase :to="packageRoute(peer.name)" class="block max-w-[70%] break-words" dir="ltr">
+            <LinkBase :to="packageRoute(peer.name)" class="block min-w-0 break-all" dir="ltr">
               {{ peer.name }}
             </LinkBase>
-            <TagStatic v-if="peer.optional" :title="$t('package.dependencies.optional')">
+            <TagStatic
+              v-if="peer.optional"
+              :title="$t('package.dependencies.optional')"
+              class="shrink-0"
+            >
               {{ $t('package.dependencies.optional') }}
             </TagStatic>
           </div>
           <LinkBase
             :to="packageRoute(peer.name, peer.version)"
-            class="block truncate max-w-[30%]"
+            class="block truncate shrink-0 max-w-20"
             :title="peer.version"
             dir="ltr"
           >

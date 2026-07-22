@@ -8,6 +8,7 @@ import NoodleTransgenderVisibilityLogo from './TransgenderVisibility/Logo.vue'
 import NoodlePride2Logo from './Pride2/Logo.vue'
 import NoodlePride3Logo from './Pride3/Logo.vue'
 import NoodleTetrisLogo from './Tetris/Logo.vue'
+import NoodleEmojiDayLogo from './EmojiDay/Logo.vue'
 
 export type Noodle = {
   // Unique identifier for the noodle
@@ -64,6 +65,13 @@ export const ACTIVE_NOODLES: Noodle[] = [
     dateTo: '2026-07-01',
     timezone: 'auto',
   },
+  {
+    key: 'emoji-day',
+    logo: NoodleEmojiDayLogo,
+    date: '2026-07-17',
+    dateTo: '2026-07-19',
+    timezone: 'auto',
+  },
 ]
 
 // Logo registry for the /noodles archive, keyed by the entry's `key` in
@@ -77,6 +85,7 @@ const NOODLE_LOGOS: Record<string, Component> = {
   'nodejs': NoodleNodejsLogo,
   'pride-1': NoodlePride1Logo,
   'tetris': NoodleTetrisLogo,
+  'emoji-day': NoodleEmojiDayLogo,
 }
 
 export function resolveNoodleLogo(key: string): Component | undefined {
