@@ -44,7 +44,7 @@ const textArray: GifText[] = [
 </script>
 
 <template>
-  <div class="flex @container justify-center w-full md:h-[240px] md:w-[720px]" aria-hidden="true">
+  <div class="flex @container justify-center w-full md:w-[720px]" aria-hidden="true">
     <NoodleGifDayGifText
       v-for="item in textArray"
       :key="item.text"
