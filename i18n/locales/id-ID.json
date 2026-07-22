@@ -286,12 +286,9 @@
     "replacement": {
       "title": "Mungkin Anda tidak butuh dependensi ini.",
       "native": "Paket ini dapat diganti dengan {replacement}, tersedia sejak Node {nodeVersion}.",
-      "simple": "{community} menganggap paket ini redundan, dengan saran: {replacement}.",
-      "documented": "{community} menganggap paket ini memiliki alternatif yang lebih berperforma.",
       "none": "Paket ini ditandai sudah tidak diperlukan, fungsinya kemungkinan sudah tersedia secara bawaan (native).",
       "learn_more": "Pelajari lebih lanjut",
       "learn_more_above": "Pelajari selengkapnya di atas.",
-      "community": "komunitas",
       "consider_no_dep": "+ Pertimbangkan tanpa dependensi?"
     },
     "stats": {

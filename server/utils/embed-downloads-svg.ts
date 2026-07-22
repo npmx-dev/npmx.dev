@@ -120,6 +120,10 @@ export function parseMetric(value: unknown): Metric {
   return 'downloads'
 }
 
+function dateIsoToUtcMs(dateIso: string): number {
+  return new Date(`${dateIso}T00:00:00.000Z`).getTime()
+}
+
 export async function createDownloadsSvgResponse(query: QueryParameters): Promise<string> {
   const packageNames = parsePackageNames(query.packages ?? query.package)
 
@@ -172,7 +176,7 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
   })
 
   const chartFilter = {
-    averageWindow: 1,
+    averageWindow: 0,
     smoothingTau: 0,
     predictionPoints: 0,
   }
@@ -195,13 +199,16 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
     accent,
   })
 
+  const effectiveEndDateIso = getEffectiveEndDateIso(evolutionOptions.endDate)
+  const effectiveEndDateMs = dateIsoToUtcMs(effectiveEndDateIso)
+
   const dataset = buildNormalisedTrendsDataset({
     dataset: chartData.dataset,
     dates: chartData.dates,
     granularity: chartGranularity,
     selectedMetric: metric,
     chartFilter,
-    nowMs: Date.now(),
+    endDateMs: effectiveEndDateMs,
   })
 
   if (!chartData.dataset?.length) {
@@ -284,8 +291,6 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
       },
     },
   })
-
-  const effectiveEndDateIso = getEffectiveEndDateIso(evolutionOptions.endDate)
 
   const shouldDashLastPoint =
     (chartGranularity === 'monthly' && !isLastDayOfMonth(effectiveEndDateIso)) ||

@@ -286,12 +286,9 @@
     "replacement": {
       "title": "Bạn có thể không cần dependency này.",
       "native": "Có thể thay thế bằng {replacement}, có sẵn từ Node {nodeVersion}.",
-      "simple": "{community} đã đánh dấu gói này là dư thừa, với gợi ý: {replacement}.",
-      "documented": "{community} đã đánh dấu gói này có các lựa chọn thay thế hiệu năng tốt hơn.",
       "none": "Gói này đã được đánh dấu là không còn cần thiết, chức năng của nó có thể đã có sẵn sẵn trong các engine.",
       "learn_more": "Tìm hiểu thêm",
       "learn_more_above": "Tìm hiểu thêm ở trên.",
-      "community": "cộng đồng",
       "consider_no_dep": "+ Cân nhắc không dùng dep?"
     },
     "stats": {

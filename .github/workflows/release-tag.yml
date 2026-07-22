@@ -23,12 +23,12 @@ jobs:
       skipped: ${{ steps.check.outputs.skip }}
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           fetch-depth: 0
           persist-credentials: true
 
-      - uses: voidzero-dev/setup-vp@ca1c46663915d6c1042ae23bd39ab85718bfb0fa # v1.10.0
+      - uses: voidzero-dev/setup-vp@250f29ce396baf5e8f24498e17c0dfdebabc26eb # v1.15.0
         with:
           node-version: lts/*
           run-install: false
@@ -66,7 +66,11 @@ jobs:
 
       - name: 📦 Install dependencies
         if: steps.check.outputs.skip == 'false'
-        run: vp install --filter . --ignore-scripts
+        uses: voidzero-dev/setup-vp@250f29ce396baf5e8f24498e17c0dfdebabc26eb # v1.15.0
+        with:
+          sfw: true
+          run-install: |
+            - args: ['--filter', '.', '--ignore-scripts']
 
       - name: 📝 Generate release notes
         if: steps.check.outputs.skip == 'false'
@@ -96,19 +100,23 @@ jobs:
     environment: npm-publish
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           ref: release
           persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@ca1c46663915d6c1042ae23bd39ab85718bfb0fa # v1.10.0
+      - uses: voidzero-dev/setup-vp@250f29ce396baf5e8f24498e17c0dfdebabc26eb # v1.15.0
         with:
           node-version: lts/*
           registry-url: https://registry.npmjs.org
           run-install: false
 
       - name: 📦 Install dependencies
-        run: vp install --filter npmx-connector...
+        uses: voidzero-dev/setup-vp@250f29ce396baf5e8f24498e17c0dfdebabc26eb # v1.15.0
+        with:
+          sfw: true
+          run-install: |
+            - args: ['--filter', 'npmx-connector...']
 
       - name: 🔢 Set connector version
         env:

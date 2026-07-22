@@ -10,7 +10,13 @@ const props = defineProps<{
   uri?: string
   /** Bluesky URL of the post, e.g. https://bsky.app/profile/handle/post/rkey */
   url?: string
+  /** Optional preload hint. Rendering still depends on the fetched embed metadata. */
+  mediaHint?: 'video'
 }>()
+
+if (props.mediaHint === 'video') {
+  void import('~/components/VideoPlayer.vue')
+}
 
 interface PostAuthor {
   did: string
@@ -33,6 +39,11 @@ interface EmbedExternal {
   uri: string
 }
 
+interface EmbedGallery {
+  $type: 'app.bsky.embed.gallery#view'
+  items: EmbedImage[]
+}
+
 interface BlueskyPost {
   uri: string
   author: PostAuthor
@@ -42,8 +53,9 @@ interface BlueskyPost {
     images?: EmbedImage[]
     external?: EmbedExternal
     thumbnail?: string
+    playlist?: string
     aspectRatio?: { width: number; height: number }
-  }
+  } & EmbedGallery
   likeCount?: number
   replyCount?: number
   repostCount?: number
@@ -115,18 +127,20 @@ const postUrl = computed(() => {
     <span class="i-svg-spinners:90-ring-with-bg h-5 w-5 inline-block" />
   </div>
 
-  <a
-    v-else-if="post"
-    :href="postUrl ?? '#'"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="not-prose block my-4 rounded-lg border border-border bg-bg-subtle p-4 sm:p-5 no-underline hover:border-border-hover transition-colors duration-200 relative group"
-  >
-    <!-- Bluesky icon -->
-    <span
-      class="i-simple-icons:bluesky w-5 h-5 text-fg-subtle group-hover:text-blue-500 absolute top-4 end-4 sm:top-5 sm:end-5"
-      aria-hidden="true"
-    />
+  <div class="not-prose relative bg-bg-subtle p-4 sm:p-5 my-4 sm:my-5" v-else-if="post">
+    <a
+      :href="postUrl ?? '#'"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="before:(absolute content-[''] inset-0 hover:border-border-hover border border-border transition-colors duration-200 rounded-lg) block no-underline group"
+      :title="$t('blog.atproto.view_on_bluesky')"
+    >
+      <!-- Bluesky icon -->
+      <span
+        class="i-simple-icons:bluesky w-5 h-5 text-fg-subtle group-hover:text-blue-500 absolute top-4 end-4 sm:top-5 sm:end-5"
+        aria-hidden="true"
+      />
+    </a>
 
     <!-- Author row -->
     <div class="flex items-center gap-3 mb-3 pe-7">
@@ -169,7 +183,12 @@ const postUrl = computed(() => {
 
     <!-- Embedded external embed -->
     <template v-if="post.embed?.external && post.embed.external.uri">
-      <div class="block mb-3 p-0.5 bg-bg-muted rounded-lg">
+      <a
+        :href="post.embed.external.uri"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="relative block mb-3 p-0.5 bg-bg-muted hover:bg-bg-elevated rounded-lg z-10 duration-300 transition-colors"
+      >
         <img
           v-if="post.embed.external.thumb"
           :src="post.embed.external.thumb"
@@ -185,30 +204,41 @@ const postUrl = computed(() => {
             {{ post.embed.external.description }}
           </p>
         </div>
-      </div>
+      </a>
     </template>
 
     <!-- Embedded video -->
-    <template v-if="post.embed?.thumbnail">
+    <template v-if="post.embed?.playlist">
       <div class="relative block mb-3 p-0.5 bg-bg-muted rounded-lg">
+        <LazyVideoPlayer
+          :poster="post.embed.thumbnail"
+          playsInline
+          controls
+          preload="none"
+          :src="post.embed.playlist"
+          muted
+          loop
+          class="block max-h-150 object-contain w-full rounded-lg"
+        />
+      </div>
+    </template>
+
+    <!-- Embedded gallery -->
+    <template v-if="post.embed?.$type === 'app.bsky.embed.gallery#view'">
+      <div class="relative overflow-x-auto flex gap-3 z-10">
         <img
-          :src="post.embed.thumbnail"
-          alt=""
-          class="w-full rounded-lg object-cover"
-          :height="post.embed.aspectRatio?.height"
-          :width="post.embed.aspectRatio?.width"
+          v-for="(img, i) in post.embed.items"
+          :key="i"
+          :src="img.fullsize"
+          :alt="img.alt"
+          class="h-40 md:h-60 lg:h-72 w-auto rounded-lg object-cover"
           loading="lazy"
         />
-        <div
-          class="absolute inset-0 bg-bg/60 light:bg-bg/80 flex items-center justify-center text-fg font-medium"
-        >
-          Click to watch video on Bluesky
-        </div>
       </div>
     </template>
 
     <!-- Timestamp + engagement -->
-    <div class="flex items-center gap-4 text-sm text-fg-subtle">
+    <div class="flex items-center gap-4 text-sm text-fg-subtle mt-3">
       <DateTime :datetime="post.record.createdAt" date-style="medium" />
       <span v-if="post.likeCount" class="flex items-center gap-1">
         <span class="i-lucide:heart w-3.5 h-3.5" aria-hidden="true" />
@@ -223,5 +253,5 @@ const postUrl = computed(() => {
         {{ post.replyCount }}
       </span>
     </div>
-  </a>
+  </div>
 </template>

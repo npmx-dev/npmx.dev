@@ -286,12 +286,9 @@
     "replacement": {
       "title": "Možda vam ova zavisnost ne treba.",
       "native": "Ovo se može zameniti sa {replacement}, dostupno od Node verzije {nodeVersion}.",
-      "simple": "{community} je označio ovaj paket kao suvišan, sa savetom: {replacement}.",
-      "documented": "{community} je označio ovaj paket kao onaj koji ima performantnije alternative.",
       "none": "Ovaj paket je označen kao nepotreban, a njegova funkcionalnost je verovatno dostupna izvorno u svim okruženjima.",
       "learn_more": "Saznajte više",
       "learn_more_above": "Saznajte više iznad.",
-      "community": "zajednica",
       "consider_no_dep": "+ Razmislite bez zavisnosti?"
     },
     "stats": {

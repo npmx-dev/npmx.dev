@@ -382,12 +382,9 @@
     "replacement": {
       "title": "你可能不需要這個相依套件。",
       "native": "此功能自 Node.js {nodeVersion} 起已內建，可直接使用 {replacement} 取代。",
-      "simple": "社群標記此套件為冗餘，建議改用：{replacement}。",
-      "documented": "社群標記此套件有更高效能的替代方案",
       "none": "此套件已被標記為不再需要，其功能很可能已由所有引擎原生提供。",
       "learn_more": "了解更多",
       "learn_more_above": "參閱上方說明",
-      "community": "社群",
       "consider_no_dep": "+ 考慮不使用相依套件？"
     },
     "stats": {

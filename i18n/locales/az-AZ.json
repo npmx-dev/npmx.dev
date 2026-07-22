@@ -256,12 +256,9 @@
     "replacement": {
       "title": "Bu asılılığa ehtiyacınız olmaya bilər.",
       "native": "Bu, Node {nodeVersion}-dən bəri mövcud olan {replacement} ilə əvəz edilə bilər.",
-      "simple": "{community} bu paketi artıq lazımsız olaraq qeyd edib, tövsiyəsi: {replacement}.",
-      "documented": "{community} bu paketin daha performanslı alternativlərinin olduğunu qeyd edib.",
       "none": "Bu paket artıq lazımsız olaraq qeyd edilib və funksionallığı bütün mühərriklərdə yerli olaraq mövcuddur.",
       "learn_more": "Ətraflı öyrən",
       "learn_more_above": "Yuxarıda ətraflı öyrənin.",
-      "community": "icma",
       "consider_no_dep": "+ Asılılıqsız düşünün?"
     },
     "stats": {

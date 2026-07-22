@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { compare, validRange } from 'semver'
+import { compare, normalizeRange } from 'verkit'
 import type { RouteLocationRaw } from 'vue-router'
 import type { TrustStatus } from 'packumeta'
 import { fetchAllPackageVersions } from '~/utils/npm/api'
@@ -55,7 +55,7 @@ const semverFilter = ref('')
 watch(semverFilter, async newFilter => {
   const trimmed = newFilter.trim()
   if (trimmed === '' || hasLoadedAll.value) return
-  if (!validRange(trimmed)) return
+  if (!normalizeRange(trimmed)) return
 
   try {
     const allVersions = await loadAllVersions()
@@ -86,7 +86,7 @@ const filteredVersionSet = computed(() =>
 )
 const isFilterActive = computed(() => semverFilter.value.trim() !== '')
 const isInvalidRange = computed(
-  () => isFilterActive.value && validRange(semverFilter.value.trim()) === null,
+  () => isFilterActive.value && normalizeRange(semverFilter.value.trim()) === null,
 )
 
 // All tag rows derived from props (SSR-safe)
@@ -476,23 +476,21 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
           :to="versionsPageRoute"
           variant="button-secondary"
           class="text-fg-subtle hover:text-fg transition-colors min-w-6 min-h-6 p-1 rounded"
+          :aria-label="$t('package.versions.view_all_versions')"
           :title="$t('package.versions.view_all_versions')"
           classicon="i-lucide:history"
           data-testid="view-all-versions-link"
-        >
-          <span class="sr-only">{{ $t('package.versions.view_all_versions') }}</span>
-        </LinkBase>
+        />
         <LinkBase
           v-if="distributionRoute"
           :to="distributionRoute"
           variant="button-secondary"
           class="text-fg-subtle hover:text-fg transition-colors min-w-6 min-h-6 p-1 rounded"
+          :aria-label="$t('package.downloads.community_distribution')"
           :title="$t('package.downloads.community_distribution')"
           classicon="i-lucide:file-stack"
           data-testid="view-distribution-link"
-        >
-          <span class="sr-only">{{ $t('package.downloads.community_distribution') }}</span>
-        </LinkBase>
+        />
       </div>
     </template>
     <div class="space-y-0.5 min-w-0">

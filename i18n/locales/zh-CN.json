@@ -397,12 +397,9 @@
       "example": "示例：",
       "native": "该功能自 Node.js {nodeVersion} 起已被内置，可直接使用 {replacement} 替代。",
       "native_no_version": "此包可直接使用 {replacement} 替代。",
-      "simple": "社区标记此包为冗余，建议替换为：{replacement}。",
-      "documented": "社区标记此包存在性能更优的替代方案",
       "none": "此包已被标记为不再需要，其功能很可能已由所有引擎原生提供。",
       "learn_more": "了解更多",
       "learn_more_above": "在上方了解更多。",
-      "community": "社区",
       "consider_no_dep": "+ 不使用依赖?"
     },
     "stats": {

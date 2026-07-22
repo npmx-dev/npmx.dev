@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { useInfiniteScroll } from '@vueuse/core'
 import { updateProfile as updateProfileUtil } from '~/utils/atproto/profile'
+import { fetchProfileLikes } from '~/utils/atproto/likes'
 import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
 import { getSafeHttpUrl } from '#shared/utils/url'
 
@@ -79,13 +81,38 @@ async function updateProfile() {
   }
 }
 
-const { data: likes, status } = useProfileLikes(identity)
+const allLikesRecords = ref<string[]>([])
+// undefined = not yet fetched, string = next page cursor, null = no more pages
+const likesCursor = shallowRef<string | null | undefined>(undefined)
+const likesError = shallowRef(false)
+
+const hasMoreLikes = computed(() => typeof likesCursor.value === 'string')
+const isLoadingInitialLikes = computed(() => likesCursor.value === undefined && !likesError.value)
+
+const { isLoading: likesLoadingMore } = useInfiniteScroll(
+  () => (import.meta.client ? window : null),
+  async () => {
+    try {
+      const result = await fetchProfileLikes(identity.value, likesCursor.value ?? null, 20)
+      allLikesRecords.value = [...allLikesRecords.value, ...(result.likes ?? [])]
+      likesCursor.value = result.cursor ?? null
+    } catch {
+      likesError.value = true
+    }
+  },
+  {
+    distance: 200,
+    // undefined (initial) → allow load; null (exhausted) → stop
+    canLoadMore: () => likesCursor.value !== null,
+  },
+)
 
 const showInviteSection = computed(() => {
   return (
     profile.value.recordExists === false &&
-    status.value === 'success' &&
-    !likes.value?.records?.length &&
+    !likesError.value &&
+    allLikesRecords.value.length === 0 &&
+    likesCursor.value !== undefined &&
     !userPending.value &&
     user.value?.handle !== profile.value.handle
   )
@@ -239,17 +266,35 @@ defineOgImage(
         dir="ltr"
       >
         {{ $t('profile.likes') }}
-        <span v-if="likes">({{ likes.records?.length ?? 0 }})</span>
+        <span>({{ allLikesRecords.length ?? 0 }})</span>
       </h2>
-      <div v-if="status === 'pending'" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div v-if="isLoadingInitialLikes" class="flex flex-col gap-4">
         <SkeletonBlock v-for="i in 4" :key="i" class="h-16 rounded-lg" />
       </div>
-      <div v-else-if="status === 'error'">
+      <div v-else-if="likesError">
         <p>{{ $t('common.error') }}</p>
       </div>
-      <div v-else-if="likes?.records" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <PackageLikeCard v-for="like in likes.records" :packageUrl="like.value.subjectRef" />
+      <template v-else-if="allLikesRecords.length > 0">
+        <ol class="list-none m-0 p-0 grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <li v-for="like in allLikesRecords" :key="like">
+            <PackageLikeCard :packageUrl="like" />
+          </li>
+        </ol>
+      </template>
+
+      <!-- Loading more indicator -->
+      <div v-if="likesLoadingMore" class="flex items-center justify-center py-4 gap-2">
+        <span class="i-svg-spinners:ring-resize w-4 h-4" aria-hidden="true" />
+        <span class="text-fg-muted text-sm">{{ $t('common.loading_more') }}</span>
       </div>
+
+      <!-- End of results -->
+      <p
+        v-else-if="!hasMoreLikes && allLikesRecords.length > 0"
+        class="py-4 text-center text-fg-subtle font-mono text-sm"
+      >
+        {{ $t('common.end_of_results') }}
+      </p>
 
       <!-- Invite section: shown when user does not have npmx profile or any like lexicons -->
       <div

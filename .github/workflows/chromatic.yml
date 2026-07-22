@@ -20,23 +20,24 @@ jobs:
 
     steps:
       - name: ☑️ Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           fetch-depth: 0
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@ca1c46663915d6c1042ae23bd39ab85718bfb0fa # v1.10.0
+      - uses: voidzero-dev/setup-vp@250f29ce396baf5e8f24498e17c0dfdebabc26eb # v1.15.0
         with:
           node-version: lts/*
           cache: true
-
-      - name: 🟧 Install pnpm globally
-        run: vp install -g pnpm
+          sfw: true
 
       - name: 🧪 Run Chromatic Visual and Accessibility Tests
-        uses: chromaui/action@8a2b82547aef5a3efc8ec3c7905f4ab09a76ed0b # v16.1.0
+        uses: chromaui/action@94713c544284a14195de3b50ef24301579f1877e # v18.0.1
+        with:
+          buildCommand: vp run build-storybook
+          outputDir: storybook-static
         env:
           CHROMATIC_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
           CHROMATIC_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
