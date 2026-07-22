@@ -89,6 +89,9 @@ describe('normalizeGitUrl', () => {
     expect.soft(normalizeGitUrl('gitee:user/repo')).toBe('https://gitee.com/user/repo')
     expect.soft(normalizeGitUrl('sourcehut:~user/repo')).toBe('https://git.sr.ht/~user/repo')
     expect.soft(normalizeGitUrl('sourcehut:org/repo')).toBe('https://git.sr.ht/org/repo')
+    expect.soft(normalizeGitUrl('gitea:user/repo')).toBe('https://gitea.com/user/repo')
+    expect.soft(normalizeGitUrl('tangled:user/repo')).toBe('https://tangled.org/user/repo')
+    expect.soft(normalizeGitUrl('forgejo:user/repo')).toBe('https://code.forgejo.org/user/repo')
     expect
       .soft(normalizeGitUrl('github:user/repo.git#readme'))
       .toBe('https://github.com/user/repo#readme')

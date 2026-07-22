@@ -278,6 +278,9 @@ const SHORTHAND_PROVIDERS = {
   codeberg: 'codeberg.org',
   gitee: 'gitee.com',
   sourcehut: 'git.sr.ht',
+  gitea: 'gitea.com',
+  tangled: 'tangled.org',
+  forgejo: 'code.forgejo.org',
 } satisfies Partial<Record<ProviderId, string>>
 
 /**
