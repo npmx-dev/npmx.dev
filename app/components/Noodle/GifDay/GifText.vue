@@ -15,7 +15,7 @@ const cssUrl = computed<string>(() => `url(${props.backgroundUrl})`)
     :title
     :class="[
       'gif-text-image',
-      'font-noodle leading-none bg-cover bg-center motion-safe:text-transparent bg-clip-text text-[4rem] md:text-[14rem] 2xl:text-[20rem] font-extrabold',
+      'font-noodle leading-none bg-cover bg-center motion-safe:text-transparent bg-clip-text text-[4rem] md:text-[14rem] font-extrabold',
     ]"
     :style="{ backgroundPosition, backgroundSize }"
   >
