@@ -85,7 +85,7 @@ const totalAccounts = computed(() => pdsUsers.value.length)
               classicon="i-lucide:user-plus"
               @click="handleCreateAccount"
             >
-              {{ $t('pds.join.create_account') }}
+              {{ $t('auth.modal.create_account') }}
             </ButtonBase>
             <LinkBase
               to="https://pdsmoover.com/moover/npmx.social"
