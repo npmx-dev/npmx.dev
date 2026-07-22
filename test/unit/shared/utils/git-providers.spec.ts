@@ -82,27 +82,13 @@ describe('normalizeGitUrl', () => {
   })
 
   it('should support shorthand git provider URLs', () => {
-    expect
-      .soft(normalizeGitUrl('github:user/repo'))
-      .toBe('https://github.com/user/repo')
-    expect
-      .soft(normalizeGitUrl('gitlab:user/repo'))
-      .toBe('https://gitlab.com/user/repo')
-    expect
-      .soft(normalizeGitUrl('bitbucket:user/repo'))
-      .toBe('https://bitbucket.org/user/repo')
-    expect
-      .soft(normalizeGitUrl('codeberg:user/repo'))
-      .toBe('https://codeberg.org/user/repo')
-    expect
-      .soft(normalizeGitUrl('gitee:user/repo'))
-      .toBe('https://gitee.com/user/repo')
-    expect
-      .soft(normalizeGitUrl('sourcehut:~user/repo'))
-      .toBe('https://git.sr.ht/~user/repo')
-    expect
-      .soft(normalizeGitUrl('sourcehut:org/repo'))
-      .toBe('https://git.sr.ht/org/repo')
+    expect.soft(normalizeGitUrl('github:user/repo')).toBe('https://github.com/user/repo')
+    expect.soft(normalizeGitUrl('gitlab:user/repo')).toBe('https://gitlab.com/user/repo')
+    expect.soft(normalizeGitUrl('bitbucket:user/repo')).toBe('https://bitbucket.org/user/repo')
+    expect.soft(normalizeGitUrl('codeberg:user/repo')).toBe('https://codeberg.org/user/repo')
+    expect.soft(normalizeGitUrl('gitee:user/repo')).toBe('https://gitee.com/user/repo')
+    expect.soft(normalizeGitUrl('sourcehut:~user/repo')).toBe('https://git.sr.ht/~user/repo')
+    expect.soft(normalizeGitUrl('sourcehut:org/repo')).toBe('https://git.sr.ht/org/repo')
     expect
       .soft(normalizeGitUrl('github:user/repo.git#readme'))
       .toBe('https://github.com/user/repo#readme')
