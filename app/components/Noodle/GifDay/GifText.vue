@@ -29,7 +29,7 @@ const style = computed(() => ({
 <template>
   <span
     :class="[
-      'inline-block transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] motion-reduce:transition-none',
+      'inline-block motion-safe:transition-all motion-safe:duration-300 motion-safe:ease-[cubic-bezier(0.34,1.56,0.64,1)] motion-reduce:transition-none',
       loaded
         ? 'opacity-100 scale-100 translate-y-0 rotate-0'
         : `opacity-0 scale-85 translate-y-[20%] ${rotateFrom}`,
