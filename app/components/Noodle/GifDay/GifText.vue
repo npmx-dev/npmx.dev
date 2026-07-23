@@ -8,6 +8,8 @@ const props = defineProps<{
 }>()
 
 const loaded = ref(false)
+const random = useState(`gif-text-rotate-${useId()}`, () => Math.random())
+const rotateFrom = computed(() => (random.value < 0.5 ? '-rotate-20' : 'rotate-20'))
 
 onMounted(() => {
   const image = new Image()
@@ -26,13 +28,21 @@ const style = computed(() => ({
 
 <template>
   <span
-    :title
-    :style
     :class="[
-      'font-noodle select-none leading-none bg-cover bg-center motion-safe:text-transparent bg-clip-text text-[4rem] @xl:text-[14rem] font-extrabold transition-[background-image] duration-300',
-      !loaded && 'bg-fg-muted/20 animate-pulse',
+      'inline-block transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] motion-reduce:transition-none',
+      loaded
+        ? 'opacity-100 scale-100 translate-y-0 rotate-0'
+        : `opacity-0 scale-85 translate-y-[20%] ${rotateFrom}`,
     ]"
   >
-    {{ text }}
+    <span
+      :title
+      :style
+      :class="[
+        'font-noodle select-none leading-none bg-cover bg-center motion-safe:text-transparent bg-clip-text text-[4rem] @xl:text-[14rem] font-extrabold transition-all duration-300',
+      ]"
+    >
+      {{ text }}
+    </span>
   </span>
 </template>
