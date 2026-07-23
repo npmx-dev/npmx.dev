@@ -44,6 +44,7 @@ ignoreWorkspaceRootCheck: true
 minimumReleaseAgeExclude:
   - vue-data-ui@3.22.13
   - verkit@0.1.2
+  - module-replacements@3.1.0
 
 overrides:
   '@types/node': 24.13.2

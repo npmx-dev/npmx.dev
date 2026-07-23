@@ -91,7 +91,7 @@
     "hls.js": "1.6.16",
     "ipaddr.js": "2.4.0",
     "marked": "18.0.5",
-    "module-replacements": "3.0.0",
+    "module-replacements": "3.1.0",
     "nuxt": "4.4.8",
     "nuxt-og-image": "6.7.2",
     "ofetch": "1.5.1",
