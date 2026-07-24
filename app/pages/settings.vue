@@ -8,6 +8,7 @@ const colorMode = useColorMode()
 const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
 const keyboardShortcutsEnabled = useKeyboardShortcuts()
 const { toggleCodeLigatures } = useCodeLigatures()
+const { anySourceEnabled } = useSecuritySources()
 
 // Create a computed property to handle locale binding properly
 const localeCodes = computed<LocaleObject['code'][]>(() =>
@@ -251,6 +252,36 @@ useSeoMeta({
               :label="$t('settings.instant_search')"
               :description="$t('settings.instant_search_description')"
               v-model="settings.instantSearch"
+            />
+          </div>
+        </section>
+
+        <!-- SECURITY Section -->
+        <section>
+          <h2 class="text-xs text-fg-muted uppercase tracking-wider mb-4">
+            {{ $t('settings.sections.security') }}
+          </h2>
+          <div class="bg-bg-subtle border border-border rounded-lg p-4 sm:p-6">
+            <div class="space-y-2">
+              <span class="block text-sm text-fg font-medium">
+                {{ $t('settings.security_sources.label') }}
+              </span>
+              <p class="text-xs text-fg-muted mb-3">
+                {{ $t('settings.security_sources.description') }}
+              </p>
+            </div>
+
+            <SettingsToggle
+              :label="$t('settings.security_sources.osv')"
+              :description="$t('settings.security_sources.osv_description')"
+              v-model="settings.securitySources.osv"
+            />
+
+            <!-- Warning when every source is disabled -->
+            <SecuritySourcesWarning
+              v-if="!anySourceEnabled"
+              :show-settings-link="false"
+              class="mt-4"
             />
           </div>
         </section>

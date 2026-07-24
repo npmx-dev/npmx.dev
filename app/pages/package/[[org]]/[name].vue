@@ -382,13 +382,21 @@ const hasDependencies = computed(() => {
   )
 })
 
-// Vulnerability count for the stats banner
-const vulnCount = computed(() => vulnTree.value?.totalCounts.total ?? 0)
+// Vulnerability count for the stats banner, filtered to enabled security sources
+const { anySourceEnabled: anySecuritySourceEnabled, effectiveSources: effectiveSecuritySources } =
+  useSecuritySources()
+const vulnCount = computed(() => {
+  if (!vulnTree.value) return 0
+  return filterVulnerabilityTreeBySources(vulnTree.value, effectiveSecuritySources.value)
+    .totalCounts.total
+})
 const hasVulnerabilities = computed(() => vulnCount.value > 0)
-// A scan where every security source failed carries no information - show "-"
-// instead of a reassuring zero
+// A scan where no ENABLED security source produced data carries no
+// information for this user - show "-" instead of a reassuring zero
 const vulnScanFailed = computed(
-  () => !!vulnTree.value && allSecuritySourcesFailed(vulnTree.value.sourceStatus),
+  () =>
+    !!vulnTree.value &&
+    noEnabledSecuritySourceHasData(vulnTree.value.sourceStatus, effectiveSecuritySources.value),
 )
 
 // Total transitive dependencies count (from either vuln tree or install size)
@@ -699,12 +707,22 @@ const showSkeleton = shallowRef(false)
 
             <!-- Vulnerabilities count -->
             <div class="space-y-1 sm:col-span-2">
-              <dt class="text-xs text-fg-subtle uppercase tracking-wider">
+              <dt class="text-xs text-fg-subtle uppercase tracking-wider flex items-center gap-1">
                 {{ $t('package.stats.vulns') }}
+                <SecuritySourceToggle compact class="-my-1" />
               </dt>
               <dd class="font-mono text-sm text-fg">
                 <span
-                  v-if="vulnTreeStatus === 'pending' || vulnTreeStatus === 'idle'"
+                  v-if="!anySecuritySourceEnabled"
+                  class="inline-flex items-center gap-1 text-red-700 dark:text-red-400"
+                  :title="$t('security_sources.none_enabled')"
+                >
+                  <span class="i-lucide:triangle-alert w-3 h-3" aria-hidden="true" />
+                  <span aria-hidden="true">&mdash;</span>
+                  <span class="sr-only">{{ $t('security_sources.none_enabled') }}</span>
+                </span>
+                <span
+                  v-else-if="vulnTreeStatus === 'pending' || vulnTreeStatus === 'idle'"
                   class="inline-flex items-center gap-1 text-fg-subtle"
                 >
                   <span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />
