@@ -77,7 +77,7 @@ export const ACTIVE_NOODLES: Noodle[] = [
     key: 'gif-day',
     logo: NoodleGifDayLogo,
     date: '2026-09-05',
-    dateTo: '2026-09-05',
+    dateTo: '2026-09-08',
     timezone: 'auto',
   },
 ]
