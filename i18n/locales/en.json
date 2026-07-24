@@ -274,6 +274,7 @@
       "appearance": "Appearance",
       "display": "Display",
       "search": "Search features",
+      "security": "Security",
       "language": "Language",
       "keyboard_shortcuts": "Keyboard shortcuts"
     },
@@ -284,6 +285,12 @@
       "npm_description": "Fetches search, org and user listings directly from the official npm registry. Authoritative, but can be slower.",
       "algolia": "Algolia",
       "algolia_description": "Uses Algolia for faster search, org and user pages."
+    },
+    "security_sources": {
+      "label": "Security data sources",
+      "description": "Choose which sources npmx uses to show security and vulnerability information.",
+      "osv": "OSV",
+      "osv_description": "Open Source Vulnerabilities database (osv.dev). Aggregates advisories from GitHub Security Advisories, npm audit and other databases."
     },
     "instant_search": "Instant search",
     "instant_search_description": "Navigates to the search page and updates the results as you type.",
@@ -332,6 +339,11 @@
     "enable_code_ligatures": "Enable ligatures in code",
     "enable_changelog_autoscroll": "Auto scroll to requested version",
     "enable_changelog_autoscroll_description": "Auto scroll to or close to the requested version at package changelog"
+  },
+  "security_sources": {
+    "none_enabled": "Warning: no security data source is enabled",
+    "none_enabled_detail": "Security and vulnerability information is hidden and will not be shown.",
+    "manage_in_settings": "Manage security data sources in settings"
   },
   "i18n": {
     "missing_keys": "{count} missing translation | {count} missing translations",

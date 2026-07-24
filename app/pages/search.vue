@@ -704,7 +704,10 @@ onBeforeUnmount(() => {
           <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
           <span class="hidden sm:inline">{{ $t('nav.back') }}</span>
         </button>
-        <SearchProviderToggle v-else />
+        <div v-else class="flex items-center gap-1">
+          <SecuritySourceToggle />
+          <SearchProviderToggle />
+        </div>
       </div>
 
       <PackageSelectionView

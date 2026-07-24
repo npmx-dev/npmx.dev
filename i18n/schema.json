@@ -826,6 +826,9 @@
             "search": {
               "type": "string"
             },
+            "security": {
+              "type": "string"
+            },
             "language": {
               "type": "string"
             },
@@ -854,6 +857,24 @@
               "type": "string"
             },
             "algolia_description": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "security_sources": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "osv": {
+              "type": "string"
+            },
+            "osv_description": {
               "type": "string"
             }
           },
@@ -998,6 +1019,21 @@
           "type": "string"
         },
         "enable_changelog_autoscroll_description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "security_sources": {
+      "type": "object",
+      "properties": {
+        "none_enabled": {
+          "type": "string"
+        },
+        "none_enabled_detail": {
+          "type": "string"
+        },
+        "manage_in_settings": {
           "type": "string"
         }
       },

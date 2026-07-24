@@ -35,6 +35,30 @@ export const NpmRegistryDataSource: Story = {
   },
 }
 
+/** Disabling every security data source surfaces the "no security data source is enabled" warning. */
+export const NoSecuritySourcesWarning: Story = {
+  play: async ({ canvas, step }) => {
+    await step('Disable the OSV security data source', async () => {
+      const toggle = await canvas.findByRole('switch', { name: /osv/i })
+      await expect(toggle).toBeChecked()
+      await userEvent.click(toggle)
+      await expect(toggle).not.toBeChecked()
+    })
+
+    await step('The no-sources warning appears', async () => {
+      const warning = await canvas.findByRole('alert')
+      await expect(warning).toHaveTextContent(/no security data source is enabled/i)
+    })
+
+    await step('Re-enabling a source dismisses the warning', async () => {
+      const toggle = await canvas.findByRole('switch', { name: /osv/i })
+      await userEvent.click(toggle)
+      await expect(toggle).toBeChecked()
+      await expect(canvas.queryByRole('alert')).not.toBeInTheDocument()
+    })
+  },
+}
+
 /** Non-English locale with incomplete translations. The Language section shows `SettingsTranslationHelper` with a progress bar and list of missing translation keys. `/lunaria/status.json` is intercepted by MSW to provide mock translation status data. */
 export const NonEnglishTranslationHelper: Story = {
   globals: {

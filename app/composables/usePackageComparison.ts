@@ -63,6 +63,16 @@ export interface PackageComparisonData {
 }
 
 /**
+ * Internal cache entry: the raw dependency-analysis result is kept alongside
+ * the public data so vulnerability counts can be re-derived at render time,
+ * filtered by the user's enabled security sources. It is stripped from the
+ * exposed `packagesData`.
+ */
+interface CachedPackageData extends PackageComparisonData {
+  vulnerabilityTree?: VulnerabilityTreeResult
+}
+
+/**
  * Resolve a requested version (exact version or dist-tag) against a packument.
  *
  * @returns The concrete version string, or `undefined` if it cannot be resolved.
@@ -88,13 +98,41 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
   const numberFormatter = useNumberFormatter()
   const compactNumberFormatter = useCompactNumberFormatter()
   const bytesFormatter = useBytesFormatter()
+  const { anySourceEnabled: anySecuritySourceEnabled, effectiveSources: effectiveSecuritySources } =
+    useSecuritySources()
   const packages = computed(() => toValue(packageNames))
 
   // Cache of fetched data by package name (source of truth)
-  const cache = shallowRef(new Map<string, PackageComparisonData>())
+  const cache = shallowRef(new Map<string, CachedPackageData>())
 
-  // Derived array in current package order
-  const packagesData = computed(() => packages.value.map(name => cache.value.get(name) ?? null))
+  // Derive display counts from the raw tree, filtered by the user's enabled
+  // security sources. Undefined ("unknown") when the fetch failed, no source
+  // is enabled, or no enabled source produced data - never a misleading zero.
+  function deriveVulnerabilities(
+    tree: VulnerabilityTreeResult | undefined,
+  ): PackageComparisonData['vulnerabilities'] {
+    if (!tree || !anySecuritySourceEnabled.value) return undefined
+    if (noEnabledSecuritySourceHasData(tree.sourceStatus, effectiveSecuritySources.value)) {
+      return undefined
+    }
+    const { total, ...severity } = filterVulnerabilityTreeBySources(
+      tree,
+      effectiveSecuritySources.value,
+    ).totalCounts
+    return { count: total, severity }
+  }
+
+  // Derived array in current package order. The raw tree stays internal to
+  // the cache; consumers only see the derived (source-filtered) counts.
+  const packagesData = computed<(PackageComparisonData | null)[]>(() =>
+    packages.value.map(name => {
+      const data = cache.value.get(name)
+      if (!data) return null
+      const { vulnerabilityTree, ...rest } = data
+      if (data.isNoDependency) return rest
+      return { ...rest, vulnerabilities: deriveVulnerabilities(vulnerabilityTree) }
+    }),
+  )
 
   const status = shallowRef<'idle' | 'pending' | 'success' | 'error'>('idle')
   const error = shallowRef<Error | null>(null)
@@ -136,7 +174,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
     try {
       // First pass: fetch fast data (package info, downloads, analysis, vulns)
       const results = await Promise.all(
-        namesToFetch.map(async (spec): Promise<PackageComparisonData | null> => {
+        namesToFetch.map(async (spec): Promise<CachedPackageData | null> => {
           try {
             // A spec may include a version (vue@3.6.0)
             const { name, version: requestedVersion } = parsePackageSpec(spec)
@@ -194,14 +232,6 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               exports: versionData?.exports,
             })
 
-            // Vulnerabilities - a failed fetch or fully-failed scan must stay
-            // "unknown" (undefined) rather than masquerading as a clean 0
-            let vulnerabilities: PackageComparisonData['vulnerabilities']
-            if (vulns && !allSecuritySourcesFailed(vulns.sourceStatus)) {
-              const { total, ...severity } = vulns.totalCounts
-              vulnerabilities = { count: total, severity }
-            }
-
             return {
               package: {
                 name: pkgData.name,
@@ -213,7 +243,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               directDeps: versionData ? getDependencyCount(versionData) : null,
               installSize: undefined, // Will be filled in second pass
               analysis: analysis ?? undefined,
-              vulnerabilities,
+              vulnerabilityTree: vulns ?? undefined,
               metadata: {
                 license: normalizeLicense(pkgData.license),
                 // Use version-specific publish time, NOT time.modified (which can be
@@ -304,6 +334,17 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
 
     return packagesData.value.map(pkg => {
       if (!pkg) return null
+
+      // Vulnerability data has no meaning when no security source is enabled -
+      // show an explicit "unavailable" cell instead of real (or zero) counts
+      if (facet === 'vulnerabilities' && !anySecuritySourceEnabled.value && !pkg.isNoDependency) {
+        return {
+          raw: null,
+          display: '—',
+          status: 'muted',
+          tooltip: t('security_sources.none_enabled'),
+        }
+      }
 
       return computeFacetValue(
         facet,

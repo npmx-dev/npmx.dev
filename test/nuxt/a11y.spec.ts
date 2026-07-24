@@ -244,6 +244,8 @@ import {
   Readme,
   ReadmeTocDropdown,
   SearchProviderToggle,
+  SecuritySourceToggle,
+  SecuritySourcesWarning,
   SearchSuggestionCard,
   SelectBase,
   SelectField,
@@ -290,6 +292,7 @@ import CommandPaletteComponent from '~/components/CommandPalette.client.vue'
 import HeaderAccountMenuServer from '~/components/Header/AccountMenu.server.vue'
 import ToggleServer from '~/components/Settings/Toggle.server.vue'
 import SearchProviderToggleServer from '~/components/SearchProviderToggle.server.vue'
+import SecuritySourceToggleServer from '~/components/SecuritySourceToggle.server.vue'
 import PackageTrendsChart from '~/components/Package/TrendsChart.vue'
 import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
 import FacetScatterChart from '~/components/Compare/FacetScatterChart.vue'
@@ -3642,6 +3645,30 @@ describe('component accessibility audits', () => {
   describe('SearchProviderToggle.server', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(SearchProviderToggleServer)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('SecuritySourceToggle', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(SecuritySourceToggle)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('SecuritySourceToggle.server', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(SecuritySourceToggleServer)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('SecuritySourcesWarning', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(SecuritySourcesWarning)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })

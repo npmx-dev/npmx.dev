@@ -55,6 +55,7 @@ watch(
 const isDarkMode = computed(() => resolvedMode.value === 'dark')
 
 const { facetLabels } = useFacetSelection()
+const { anySourceEnabled: anySecuritySourceEnabled } = useSecuritySources()
 
 const chartableFacets = computed(() =>
   (
@@ -69,11 +70,21 @@ const chartableFacets = computed(() =>
       description: facet.description,
       chartable: facet.chartable_scatter,
     }))
-    .filter(facet => facet.chartable),
+    .filter(facet => facet.chartable)
+    // Vulnerability counts are meaningless without an enabled security source
+    .filter(facet => facet.name !== 'vulnerabilities' || anySecuritySourceEnabled.value),
 )
 
 const selectedFacetX = ref<ComparisonFacet>('downloads')
 const selectedFacetY = ref<ComparisonFacet>('installSize')
+
+// If the selected axis facet becomes unavailable (e.g. all security sources
+// were disabled), fall back to the defaults
+watchEffect(() => {
+  const available = new Set(chartableFacets.value.map(facet => facet.name))
+  if (!available.has(selectedFacetX.value)) selectedFacetX.value = 'downloads'
+  if (!available.has(selectedFacetY.value)) selectedFacetY.value = 'installSize'
+})
 
 const dataset = computed<VueUiScatterDatasetItem[]>(() =>
   buildCompareScatterChartDataset(
