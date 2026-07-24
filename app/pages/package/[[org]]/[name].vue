@@ -385,12 +385,28 @@ const hasDependencies = computed(() => {
 // Vulnerability count for the stats banner, filtered to enabled security sources
 const { anySourceEnabled: anySecuritySourceEnabled, effectiveSources: effectiveSecuritySources } =
   useSecuritySources()
-const vulnCount = computed(() => {
-  if (!vulnTree.value) return 0
-  return filterVulnerabilityTreeBySources(vulnTree.value, effectiveSecuritySources.value)
-    .totalCounts.total
-})
+const displaySecurityTree = computed(() =>
+  vulnTree.value
+    ? filterVulnerabilityTreeBySources(vulnTree.value, effectiveSecuritySources.value)
+    : null,
+)
+const vulnCount = computed(() => displaySecurityTree.value?.totalCounts.total ?? 0)
 const hasVulnerabilities = computed(() => vulnCount.value > 0)
+// Supply-chain alerts are a distinct signal (Socket only) shown alongside vulns
+const supplyChainCount = computed(() =>
+  (displaySecurityTree.value?.supplyChainPackages ?? []).reduce(
+    (sum, entry) => sum + entry.alerts.length,
+    0,
+  ),
+)
+// A "0" is only meaningful when Socket actually scanned; otherwise the count
+// is structurally always 0 and must not read as a clean result
+const supplyChainScanned = computed(
+  () =>
+    !!vulnTree.value &&
+    effectiveSecuritySources.value.socket &&
+    securitySourceHasData(vulnTree.value.sourceStatus, 'socket'),
+)
 // A scan where no ENABLED security source produced data carries no
 // information for this user - show "-" instead of a reassuring zero
 const vulnScanFailed = computed(
@@ -595,7 +611,7 @@ const showSkeleton = shallowRef(false)
 
           <!-- Stats grid -->
           <dl
-            class="grid grid-cols-2 sm:grid-cols-7 md:grid-cols-11 gap-3 sm:gap-4 py-4 sm:py-6 mt-4 sm:mt-6 border-t border-b border-border"
+            class="grid grid-cols-2 sm:grid-cols-7 md:grid-cols-13 gap-3 sm:gap-4 py-4 sm:py-6 mt-4 sm:mt-6 border-t border-b border-border"
           >
             <div class="space-y-1 sm:col-span-2">
               <dt class="text-xs text-fg-subtle uppercase tracking-wider">
@@ -737,6 +753,42 @@ const showSkeleton = shallowRef(false)
                   </span>
                 </span>
                 <span v-else class="text-fg-subtle">-</span>
+              </dd>
+            </div>
+
+            <!-- Supply chain alerts count (Socket) -->
+            <div class="space-y-1 sm:col-span-2">
+              <dt class="text-xs text-fg-subtle uppercase tracking-wider">
+                {{ $t('package.stats.supply_chain') }}
+              </dt>
+              <dd class="font-mono text-sm text-fg">
+                <span
+                  v-if="!anySecuritySourceEnabled"
+                  class="inline-flex items-center gap-1 text-red-700 dark:text-red-400"
+                  :title="$t('security_sources.none_enabled')"
+                >
+                  <span class="i-lucide:triangle-alert w-3 h-3" aria-hidden="true" />
+                  <span aria-hidden="true">&mdash;</span>
+                  <span class="sr-only">{{ $t('security_sources.none_enabled') }}</span>
+                </span>
+                <span
+                  v-else-if="vulnTreeStatus === 'pending' || vulnTreeStatus === 'idle'"
+                  class="inline-flex items-center gap-1 text-fg-subtle"
+                >
+                  <span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />
+                </span>
+                <span v-else-if="vulnTreeStatus === 'success' && supplyChainScanned">
+                  <span v-if="supplyChainCount > 0" class="text-amber-700 dark:text-amber-500">
+                    {{ numberFormatter.format(supplyChainCount) }}
+                  </span>
+                  <span v-else class="inline-flex items-center gap-1 text-fg-muted">
+                    <span class="i-lucide:check w-3 h-3" aria-hidden="true" />
+                    {{ numberFormatter.format(0) }}
+                  </span>
+                </span>
+                <span v-else class="text-fg-subtle" :title="$t('package.supply_chain.not_scanned')">
+                  -
+                </span>
               </dd>
             </div>
 
@@ -931,6 +983,12 @@ const showSkeleton = shallowRef(false)
               v-if="resolvedVersion"
               :package-name="pkg.name"
               :version="resolvedVersion"
+            />
+            <PackageSupplyChainAlerts
+              v-if="resolvedVersion"
+              :package-name="pkg.name"
+              :version="resolvedVersion"
+              class="mt-3"
             />
             <PackageDeprecatedTree
               v-if="resolvedVersion"

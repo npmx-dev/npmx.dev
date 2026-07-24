@@ -41,6 +41,13 @@ export default defineNuxtConfig({
     github: {
       orgToken: '',
     },
+    // Socket (socket.dev) security data source; set NUXT_SOCKET_API_KEY and
+    // NUXT_SOCKET_ORG_SLUG. Without a key, the Socket source reports itself
+    // as unconfigured and is shown as unavailable in the UI.
+    socket: {
+      apiKey: '',
+      orgSlug: '',
+    },
     oauthJwkOne: process.env.OAUTH_JWK_ONE || undefined,
     // Upstash Redis for distributed OAuth token refresh locking in production
     upstash: {
@@ -54,6 +61,12 @@ export default defineNuxtConfig({
         apiKey: 'f54e21fa3a2a0160595bb058179bfb1e',
         indexName: 'npm-search',
       },
+      // Whether the Socket security data source is configured on this
+      // deployment. Derived from the private credentials at build/dev time;
+      // deployments that only set the key at runtime must also set
+      // NUXT_PUBLIC_SOCKET_CONFIGURED=true. Only the boolean is public - the
+      // key itself stays in private runtimeConfig.
+      socketConfigured: !!(process.env.NUXT_SOCKET_API_KEY && process.env.NUXT_SOCKET_ORG_SLUG),
     },
   },
 

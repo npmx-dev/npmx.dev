@@ -35,6 +35,17 @@ export const NpmRegistryDataSource: Story = {
   },
 }
 
+/** Without a server-side API key, the Socket source renders disabled with an "unavailable on this deployment" note. */
+export const SocketSourceUnavailable: Story = {
+  play: async ({ canvas, step }) => {
+    await step('The Socket toggle is disabled without a configured key', async () => {
+      const toggle = await canvas.findByRole('switch', { name: /socket/i })
+      await expect(toggle).toBeDisabled()
+      await expect(await canvas.findByText(/unavailable on this deployment/i)).toBeVisible()
+    })
+  },
+}
+
 /** Disabling every security data source surfaces the "no security data source is enabled" warning. */
 export const NoSecuritySourcesWarning: Story = {
   play: async ({ canvas, step }) => {
