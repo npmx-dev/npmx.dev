@@ -71,8 +71,12 @@ const chartableFacets = computed(() =>
       chartable: facet.chartable_scatter,
     }))
     .filter(facet => facet.chartable)
-    // Vulnerability counts are meaningless without an enabled security source
-    .filter(facet => facet.name !== 'vulnerabilities' || anySecuritySourceEnabled.value),
+    // Security counts are meaningless without an enabled security source
+    .filter(
+      facet =>
+        (facet.name !== 'vulnerabilities' && facet.name !== 'supplyChainAlerts') ||
+        anySecuritySourceEnabled.value,
+    ),
 )
 
 const selectedFacetX = ref<ComparisonFacet>('downloads')

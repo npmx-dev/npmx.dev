@@ -77,6 +77,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   searchProvider: import.meta.test ? 'npm' : 'algolia',
   securitySources: {
     osv: true,
+    socket: true,
   },
   instantSearch: true,
   keyboardShortcuts: true,
@@ -112,6 +113,7 @@ const STORAGE_KEY = 'npmx-settings'
  */
 const DEFAULT_SECURITY_SOURCES: Readonly<Record<SecuritySourceId, boolean>> = Object.freeze({
   osv: true,
+  socket: true,
 })
 
 // Shared settings instance (singleton per app)
@@ -261,14 +263,30 @@ export function useSearchProvider() {
 export function useSecuritySources() {
   const { settings } = useSettings()
   const isMounted = useMounted()
+  const runtimeConfig = useRuntimeConfig()
 
   const enabledSources = computed<Record<SecuritySourceId, boolean>>(() =>
     isMounted.value ? settings.value.securitySources : DEFAULT_SECURITY_SOURCES,
   )
 
-  // All currently-known sources are always available; deployment-dependent
-  // sources (requiring server-side configuration) hook in here.
-  const effectiveSources = computed<Record<SecuritySourceId, boolean>>(() => enabledSources.value)
+  // Whether each source can deliver data on this deployment. Socket requires
+  // a server-side API key; without one the checkbox renders as unavailable.
+  const sourceAvailability = computed<Record<SecuritySourceId, boolean>>(() => ({
+    osv: true,
+    socket: !!runtimeConfig.public.socketConfigured,
+  }))
+
+  const effectiveSources = computed<Record<SecuritySourceId, boolean>>(() => {
+    const result = {} as Record<SecuritySourceId, boolean>
+    for (const source of SECURITY_SOURCE_IDS) {
+      // a source newly added to SECURITY_SOURCE_IDS is absent from an existing
+      // visitor's persisted (shallow-merged) settings, so fall back to its default
+      result[source] =
+        (enabledSources.value[source] ?? DEFAULT_SECURITY_SOURCES[source]) &&
+        sourceAvailability.value[source]
+    }
+    return result
+  })
 
   const anySourceEnabled = computed(() =>
     Object.values(effectiveSources.value).some(enabled => enabled),
@@ -280,6 +298,7 @@ export function useSecuritySources() {
 
   return {
     enabledSources,
+    sourceAvailability,
     effectiveSources,
     anySourceEnabled,
     setSourceEnabled,

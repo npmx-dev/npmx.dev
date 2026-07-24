@@ -876,6 +876,15 @@
             },
             "osv_description": {
               "type": "string"
+            },
+            "socket": {
+              "type": "string"
+            },
+            "socket_description": {
+              "type": "string"
+            },
+            "unavailable_on_deployment": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1409,6 +1418,9 @@
               "type": "string"
             },
             "vulns": {
+              "type": "string"
+            },
+            "supply_chain": {
               "type": "string"
             },
             "published": {
@@ -2526,12 +2538,90 @@
                 },
                 "low": {
                   "type": "string"
+                },
+                "unknown": {
+                  "type": "string"
                 }
               },
               "additionalProperties": false
             },
             "fixed_in_title": {
               "type": "string"
+            },
+            "alias_dispute": {
+              "type": "string"
+            },
+            "reachability": {
+              "type": "object",
+              "properties": {
+                "reachable": {
+                  "type": "string"
+                },
+                "maybe_reachable": {
+                  "type": "string"
+                },
+                "unreachable": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "supply_chain": {
+          "type": "object",
+          "properties": {
+            "alerts_found": {
+              "type": "string"
+            },
+            "in_packages": {
+              "type": "string"
+            },
+            "scan_failed": {
+              "type": "string"
+            },
+            "not_scanned": {
+              "type": "string"
+            },
+            "show_all_packages": {
+              "type": "string"
+            },
+            "types": {
+              "type": "object",
+              "properties": {
+                "malware": {
+                  "type": "string"
+                },
+                "gptMalware": {
+                  "type": "string"
+                },
+                "didYouMean": {
+                  "type": "string"
+                },
+                "gptDidYouMean": {
+                  "type": "string"
+                },
+                "troll": {
+                  "type": "string"
+                },
+                "obfuscatedFile": {
+                  "type": "string"
+                },
+                "manifestConfusion": {
+                  "type": "string"
+                },
+                "installScripts": {
+                  "type": "string"
+                },
+                "telemetry": {
+                  "type": "string"
+                },
+                "unstableOwnership": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
             }
           },
           "additionalProperties": false
@@ -4610,6 +4700,18 @@
                   "additionalProperties": false
                 },
                 "vulnerabilities": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "supplyChainAlerts": {
                   "type": "object",
                   "properties": {
                     "label": {

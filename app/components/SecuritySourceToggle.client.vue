@@ -12,7 +12,8 @@ const props = withDefaults(
 )
 
 const { t } = useI18n()
-const { enabledSources, anySourceEnabled, setSourceEnabled } = useSecuritySources()
+const { enabledSources, sourceAvailability, anySourceEnabled, setSourceEnabled } =
+  useSecuritySources()
 
 const isOpen = shallowRef(false)
 const toggleRef = useTemplateRef('toggleRef')
@@ -33,14 +34,20 @@ const sourceLabels = computed<Record<SecuritySourceId, { label: string; descript
       label: t('settings.security_sources.osv'),
       description: t('settings.security_sources.osv_description'),
     },
+    socket: {
+      label: t('settings.security_sources.socket'),
+      description: t('settings.security_sources.socket_description'),
+    },
   }),
 )
 
 const sources = computed(() =>
   SECURITY_SOURCE_IDS.map(id => ({
     id,
-    ...sourceLabels.value[id],
+    label: sourceLabels.value[id].label,
+    description: sourceLabels.value[id].description,
     enabled: enabledSources.value[id],
+    available: sourceAvailability.value[id],
   })),
 )
 </script>
@@ -78,15 +85,21 @@ const sources = computed(() =>
             :key="source.id"
             type="button"
             role="menuitemcheckbox"
-            :aria-checked="source.enabled"
-            class="cursor-pointer w-full flex items-start gap-3 px-3 py-2.5 rounded-md text-start transition-colors hover:bg-bg-muted"
-            :class="[source.enabled ? 'bg-bg-muted' : '']"
+            :aria-checked="source.enabled && source.available"
+            :disabled="!source.available"
+            class="w-full flex items-start gap-3 px-3 py-2.5 rounded-md text-start transition-colors"
+            :class="[
+              source.available
+                ? 'cursor-pointer hover:bg-bg-muted'
+                : 'cursor-not-allowed opacity-60',
+              source.enabled && source.available ? 'bg-bg-muted' : '',
+            ]"
             @click="setSourceEnabled(source.id, !source.enabled)"
           >
             <span
               class="w-4 h-4 mt-0.5 shrink-0"
               :class="[
-                source.enabled
+                source.enabled && source.available
                   ? 'i-lucide:square-check text-accent'
                   : 'i-lucide:square text-fg-muted',
               ]"
@@ -95,12 +108,15 @@ const sources = computed(() =>
             <div class="min-w-0 flex-1">
               <div
                 class="text-sm font-medium"
-                :class="source.enabled ? 'text-fg' : 'text-fg-muted'"
+                :class="source.enabled && source.available ? 'text-fg' : 'text-fg-muted'"
               >
                 {{ source.label }}
               </div>
               <p class="text-xs text-fg-subtle mt-0.5">
                 {{ source.description }}
+              </p>
+              <p v-if="!source.available" class="text-xs text-fg-subtle mt-0.5 italic">
+                {{ $t('settings.security_sources.unavailable_on_deployment') }}
               </p>
             </div>
           </button>

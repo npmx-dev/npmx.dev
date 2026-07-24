@@ -7,6 +7,8 @@ import {
   filterVulnerabilityTreeBySources,
   hasTransientSourceFailure,
   noEnabledSecuritySourceHasData,
+  securitySourceHasData,
+  selectPreviewVulnerabilities,
 } from '#shared/utils/security-sources'
 
 function makeVuln(
@@ -37,40 +39,87 @@ function makeTree(vulnerablePackages: PackageVulnerabilityInfo[]): Vulnerability
     package: 'root-pkg',
     version: '1.0.0',
     vulnerablePackages,
+    supplyChainPackages: [],
     deprecatedPackages: [],
     totalPackages: 10,
     failedQueries: 0,
     totalCounts,
-    sourceStatus: { osv: 'ok' },
+    sourceStatus: { osv: 'ok', socket: 'unconfigured' },
   }
 }
 
 describe('noEnabledSecuritySourceHasData', () => {
+  const allEnabled = { osv: true, socket: true }
+
   it('is false when an enabled source succeeded', () => {
-    expect(noEnabledSecuritySourceHasData({ osv: 'ok' }, { osv: true })).toBe(false)
-    expect(noEnabledSecuritySourceHasData({ osv: 'partial' }, { osv: true })).toBe(false)
+    expect(noEnabledSecuritySourceHasData({ osv: 'ok', socket: 'unconfigured' }, allEnabled)).toBe(
+      false,
+    )
+    expect(noEnabledSecuritySourceHasData({ osv: 'partial', socket: 'failed' }, allEnabled)).toBe(
+      false,
+    )
   })
 
   it('is true when no enabled source produced data', () => {
-    expect(noEnabledSecuritySourceHasData({ osv: 'failed' }, { osv: true })).toBe(true)
+    expect(noEnabledSecuritySourceHasData({ osv: 'failed', socket: 'failed' }, allEnabled)).toBe(
+      true,
+    )
+    // unconfigured/unavailable sources carry no data either
+    expect(
+      noEnabledSecuritySourceHasData({ osv: 'failed', socket: 'unconfigured' }, allEnabled),
+    ).toBe(true)
+    expect(
+      noEnabledSecuritySourceHasData({ osv: 'failed', socket: 'unavailable' }, allEnabled),
+    ).toBe(true)
+  })
+
+  it("ignores an 'ok' status from a disabled source", () => {
+    // the user's only enabled source failed; the disabled source's success
+    // must not mask the failure
+    expect(
+      noEnabledSecuritySourceHasData({ osv: 'failed', socket: 'ok' }, { osv: true, socket: false }),
+    ).toBe(true)
+    expect(
+      noEnabledSecuritySourceHasData(
+        { osv: 'ok', socket: 'unavailable' },
+        { osv: false, socket: true },
+      ),
+    ).toBe(true)
   })
 
   it('is false for an empty status record or no enabled sources', () => {
-    expect(noEnabledSecuritySourceHasData({}, { osv: true })).toBe(false)
-    // disabled sources are not consulted; the no-sources-enabled state is
-    // handled separately by the warning banner
-    expect(noEnabledSecuritySourceHasData({ osv: 'failed' }, { osv: false })).toBe(false)
+    expect(noEnabledSecuritySourceHasData({}, allEnabled)).toBe(false)
+    expect(noEnabledSecuritySourceHasData({ osv: 'failed' }, { osv: false, socket: false })).toBe(
+      false,
+    )
   })
 })
 
 describe('hasTransientSourceFailure', () => {
-  it('is true when a source failed', () => {
-    expect(hasTransientSourceFailure({ osv: 'failed' })).toBe(true)
+  it('is true for failed, unavailable, or partial (degraded) sources', () => {
+    expect(hasTransientSourceFailure({ osv: 'ok', socket: 'unavailable' })).toBe(true)
+    expect(hasTransientSourceFailure({ osv: 'failed', socket: 'ok' })).toBe(true)
+    // a partial scan is degraded, so it must not be cached for the full hour
+    expect(hasTransientSourceFailure({ osv: 'partial', socket: 'unconfigured' })).toBe(true)
   })
 
-  it('is false for complete results', () => {
-    expect(hasTransientSourceFailure({ osv: 'ok' })).toBe(false)
-    expect(hasTransientSourceFailure({ osv: 'partial' })).toBe(false)
+  it('is false for complete or stably-unconfigured results', () => {
+    expect(hasTransientSourceFailure({ osv: 'ok', socket: 'ok' })).toBe(false)
+    expect(hasTransientSourceFailure({ osv: 'ok', socket: 'unconfigured' })).toBe(false)
+  })
+})
+
+describe('securitySourceHasData', () => {
+  it('is true only when the source succeeded fully or partially', () => {
+    expect(securitySourceHasData({ socket: 'ok' }, 'socket')).toBe(true)
+    expect(securitySourceHasData({ socket: 'partial' }, 'socket')).toBe(true)
+  })
+
+  it('is false when the source is unconfigured, unavailable, failed, or absent', () => {
+    expect(securitySourceHasData({ socket: 'unconfigured' }, 'socket')).toBe(false)
+    expect(securitySourceHasData({ socket: 'unavailable' }, 'socket')).toBe(false)
+    expect(securitySourceHasData({ socket: 'failed' }, 'socket')).toBe(false)
+    expect(securitySourceHasData({ osv: 'ok' }, 'socket')).toBe(false)
   })
 })
 
@@ -132,5 +181,96 @@ describe('filterVulnerabilityTreeBySources', () => {
     expect(filtered.deprecatedPackages).toEqual(tree.deprecatedPackages)
     expect(filtered.totalPackages).toBe(tree.totalPackages)
     expect(filtered.sourceStatus).toEqual(tree.sourceStatus)
+  })
+
+  it('keeps multi-source findings when any of their sources is enabled', () => {
+    const mergedPkg: PackageVulnerabilityInfo = {
+      ...pkg,
+      vulnerabilities: [
+        makeVuln('GHSA-both-0001', 'high', ['osv', 'socket']),
+        makeVuln('GHSA-osv-0002', 'low', ['osv']),
+      ],
+      counts: { total: 2, critical: 0, high: 1, moderate: 0, low: 1 },
+    }
+    const tree = makeTree([mergedPkg])
+
+    const socketOnly = filterVulnerabilityTreeBySources(tree, { osv: false, socket: true })
+    expect(socketOnly.vulnerablePackages).toHaveLength(1)
+    expect(socketOnly.vulnerablePackages[0]!.vulnerabilities.map(v => v.id)).toEqual([
+      'GHSA-both-0001',
+    ])
+    expect(socketOnly.totalCounts).toEqual({ total: 1, critical: 0, high: 1, moderate: 0, low: 0 })
+  })
+
+  it('filters supply-chain alerts by source', () => {
+    const tree = makeTree([])
+    tree.supplyChainPackages = [
+      {
+        name: 'sketchy-pkg',
+        version: '1.0.0',
+        depth: 'direct',
+        path: [],
+        alerts: [
+          {
+            type: 'malware',
+            severity: 'critical',
+            url: 'https://socket.dev/npm/package/sketchy-pkg',
+            sources: ['socket'],
+          },
+        ],
+      },
+    ]
+
+    const enabled = filterVulnerabilityTreeBySources(tree, { osv: true, socket: true })
+    expect(enabled.supplyChainPackages).toHaveLength(1)
+
+    const disabled = filterVulnerabilityTreeBySources(tree, { osv: true, socket: false })
+    expect(disabled.supplyChainPackages).toHaveLength(0)
+  })
+})
+
+describe('selectPreviewVulnerabilities', () => {
+  it('returns the list unchanged when it fits the limit', () => {
+    const vulns = [makeVuln('GHSA-a', 'high', ['osv']), makeVuln('GHSA-b', 'low', ['socket'])]
+    expect(selectPreviewVulnerabilities(vulns, 2)).toEqual(vulns)
+  })
+
+  it('guarantees a representative for a source below the fold', () => {
+    const vulns = [
+      makeVuln('GHSA-a', 'critical', ['osv']),
+      makeVuln('GHSA-b', 'high', ['osv']),
+      makeVuln('GHSA-c', 'low', ['socket']),
+    ]
+    // a plain slice would show two OSV rows and hide Socket entirely
+    expect(selectPreviewVulnerabilities(vulns, 2).map(vuln => vuln.id)).toEqual([
+      'GHSA-a',
+      'GHSA-c',
+    ])
+  })
+
+  it('lets a merged finding represent all of its sources', () => {
+    const vulns = [
+      makeVuln('GHSA-a', 'critical', ['osv', 'socket']),
+      makeVuln('GHSA-b', 'high', ['osv']),
+      makeVuln('GHSA-c', 'low', ['socket']),
+    ]
+    // GHSA-a already covers both sources, so the remaining slot goes to
+    // the next finding by severity
+    expect(selectPreviewVulnerabilities(vulns, 2).map(vuln => vuln.id)).toEqual([
+      'GHSA-a',
+      'GHSA-b',
+    ])
+  })
+
+  it('preserves severity order in the preview', () => {
+    const vulns = [
+      makeVuln('GHSA-a', 'critical', ['socket']),
+      makeVuln('GHSA-b', 'high', ['osv']),
+      makeVuln('GHSA-c', 'low', ['osv']),
+    ]
+    expect(selectPreviewVulnerabilities(vulns, 2).map(vuln => vuln.id)).toEqual([
+      'GHSA-a',
+      'GHSA-b',
+    ])
   })
 })

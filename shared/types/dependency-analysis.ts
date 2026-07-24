@@ -8,15 +8,25 @@
 /**
  * Identifier for a security data source that can report vulnerabilities
  */
-export type SecuritySourceId = 'osv'
+export type SecuritySourceId = 'osv' | 'socket'
 
 /**
  * Fetch status for a single security data source:
  * - `ok`: all queries succeeded
  * - `partial`: some queries failed; results may be incomplete
  * - `failed`: the source could not be queried at all
+ * - `unconfigured`: the source needs server-side configuration (e.g. an API
+ *   key) that this deployment does not have
+ * - `unavailable`: the source is configured but temporarily out of service
+ *   (e.g. quota exhausted)
  */
-export type SecuritySourceStatus = 'ok' | 'partial' | 'failed'
+export type SecuritySourceStatus = 'ok' | 'partial' | 'failed' | 'unconfigured' | 'unavailable'
+
+/**
+ * Socket reachability analysis verdict for a vulnerability: whether the
+ * vulnerable code is actually reachable from the package's entry points
+ */
+export type VulnerabilityReachability = 'reachable' | 'maybe_reachable' | 'unreachable'
 
 /**
  * Severity levels in priority order (highest first)
@@ -141,11 +151,68 @@ export interface VulnerabilitySummary {
   summary: string
   severity: OsvSeverityLevel
   aliases: string[]
+  /**
+   * CVE id paired one-to-one with this advisory by a source's own record.
+   * Alias lists can span multiple distinct advisories (e.g. OSV expands
+   * aliases to the whole alias group), so this is the only trustworthy
+   * GHSA-to-CVE pairing when `aliases` contains several CVEs.
+   */
+  cveId?: string
+  /**
+   * Ids the source listed as aliases of this advisory but that provably
+   * belong to a sibling advisory (upstream alias-group pollution). Removed
+   * from `aliases`; kept here so the UI can attribute the bad data to the
+   * source that supplied it.
+   */
+  disputedAliases?: string[]
   url: string
   /** Version that fixes this vulnerability (if known) */
   fixedIn?: string
   /** Security data sources that reported this vulnerability */
   sources: SecuritySourceId[]
+  /** Socket reachability analysis verdict, when available */
+  reachability?: VulnerabilityReachability
+}
+
+/**
+ * Socket supply-chain alert types surfaced by npmx (curated subset)
+ */
+export type SupplyChainAlertType =
+  | 'malware'
+  | 'gptMalware'
+  | 'didYouMean'
+  | 'gptDidYouMean'
+  | 'troll'
+  | 'obfuscatedFile'
+  | 'manifestConfusion'
+  | 'installScripts'
+  | 'telemetry'
+  | 'unstableOwnership'
+
+/**
+ * A single supply-chain risk alert for a package
+ */
+export interface SupplyChainAlert {
+  /** Alert type key (curated subset of Socket alert types) */
+  type: SupplyChainAlertType
+  severity: OsvSeverityLevel
+  /** URL with more detail (socket.dev package page) */
+  url: string
+  /** Security data sources that reported this alert */
+  sources: SecuritySourceId[]
+}
+
+/**
+ * Supply-chain alerts for a single package in the tree
+ */
+export interface PackageSupplyChainInfo {
+  name: string
+  version: string
+  /** Depth in dependency tree: root (0), direct (1), transitive (2+) */
+  depth: DependencyDepth
+  /** Dependency path from root package */
+  path: string[]
+  alerts: SupplyChainAlert[]
 }
 
 /**
@@ -205,6 +272,8 @@ export interface VulnerabilityTreeResult {
   version: string
   /** All packages with vulnerabilities in the tree */
   vulnerablePackages: PackageVulnerabilityInfo[]
+  /** All packages with supply-chain alerts in the tree */
+  supplyChainPackages: PackageSupplyChainInfo[]
   /** All deprecated packages in the tree */
   deprecatedPackages: DeprecatedPackageInfo[]
   /** Total packages analyzed */

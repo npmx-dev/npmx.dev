@@ -290,7 +290,10 @@
       "label": "Security data sources",
       "description": "Choose which sources npmx uses to show security and vulnerability information.",
       "osv": "OSV",
-      "osv_description": "Open Source Vulnerabilities database (osv.dev). Aggregates advisories from GitHub Security Advisories, npm audit and other databases."
+      "osv_description": "Open Source Vulnerabilities database (osv.dev). Aggregates advisories from GitHub Security Advisories, npm audit and other databases.",
+      "socket": "Socket",
+      "socket_description": "Socket (socket.dev) supply chain security analysis: known vulnerabilities with reachability, plus malware, typosquats and other supply-chain risks.",
+      "unavailable_on_deployment": "Unavailable on this deployment: no Socket API key is configured."
     },
     "instant_search": "Instant search",
     "instant_search_description": "Navigates to the search page and updates the results as you type.",
@@ -469,6 +472,7 @@
       "deps": "Deps",
       "install_size": "Install Size",
       "vulns": "Vulns",
+      "supply_chain": "Supply chain",
       "published": "Published",
       "published_tooltip": "Date {package}{'@'}{version} was published",
       "view_dependency_graph": "View dependency graph",
@@ -840,9 +844,35 @@
         "critical": "critical",
         "high": "high",
         "moderate": "moderate",
-        "low": "low"
+        "low": "low",
+        "unknown": "unknown"
       },
-      "fixed_in_title": "Fixed in version {version}"
+      "fixed_in_title": "Fixed in version {version}",
+      "alias_dispute": "{source} also lists {ids} for this advisory, which belong to a different advisory",
+      "reachability": {
+        "reachable": "reachable",
+        "maybe_reachable": "possibly reachable",
+        "unreachable": "not reachable"
+      }
+    },
+    "supply_chain": {
+      "alerts_found": "{alerts} supply chain alert | {alerts} supply chain alerts",
+      "in_packages": "in {packages} package | in {packages} packages",
+      "scan_failed": "Could not scan for supply chain alerts",
+      "not_scanned": "Socket is not enabled, so supply chain alerts were not scanned",
+      "show_all_packages": "show {count} affected package | show all {count} affected packages",
+      "types": {
+        "malware": "Known malware",
+        "gptMalware": "AI-detected potential malware",
+        "didYouMean": "Possible typosquat",
+        "gptDidYouMean": "AI-detected possible typosquat",
+        "troll": "Protestware or unwanted behavior",
+        "obfuscatedFile": "Obfuscated code",
+        "manifestConfusion": "Manifest confusion",
+        "installScripts": "Install scripts",
+        "telemetry": "Telemetry",
+        "unstableOwnership": "Unstable ownership"
+      }
     },
     "deprecated": {
       "label": "Deprecated",
@@ -1538,6 +1568,10 @@
         "vulnerabilities": {
           "label": "Vulnerabilities",
           "description": "Known security vulnerabilities"
+        },
+        "supplyChainAlerts": {
+          "label": "Supply chain alerts",
+          "description": "Socket supply chain risk alerts (malware, typosquats, install scripts, ...)"
         },
         "githubStars": {
           "label": "GitHub Stars",

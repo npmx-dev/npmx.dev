@@ -66,20 +66,134 @@ function getFixturePath(type: FixtureType, name: string): string {
   return `${dir}:${filename.replace(/\//g, ':')}`
 }
 
-function getMockForUrl(url: string): MockResult | null {
+/**
+ * Package with fabricated security findings in fixture mode, so e2e tests can
+ * exercise non-empty vulnerability/supply-chain states (OSV+Socket merging,
+ * reachability, source tags). Keyed by name only to be robust to version
+ * drift. No other fixture package depends on it.
+ */
+const SECURITY_FIXTURE_PACKAGE = 'is-odd'
+
+/** GHSA reported by both OSV and Socket (exercises merge/dedup) */
+const SECURITY_FIXTURE_SHARED_GHSA = 'GHSA-npmx-test-0001'
+/** GHSA reported only by Socket (exercises socket-only findings) */
+const SECURITY_FIXTURE_SOCKET_GHSA = 'GHSA-npmx-test-0002'
+
+function parseJsonBody(body: unknown): unknown {
+  if (typeof body !== 'string') return body ?? null
+  try {
+    return JSON.parse(body)
+  } catch {
+    return null
+  }
+}
+
+function mockOsvBatchResults(body: unknown): { results: Array<{ vulns?: unknown[] }> } {
+  const parsed = parseJsonBody(body) as {
+    queries?: Array<{ package?: { name?: string } }>
+  } | null
+  const queries = parsed?.queries ?? []
+  return {
+    results: queries.map(query =>
+      query?.package?.name === SECURITY_FIXTURE_PACKAGE
+        ? { vulns: [{ id: SECURITY_FIXTURE_SHARED_GHSA, modified: '2024-01-01T00:00:00Z' }] }
+        : {},
+    ),
+  }
+}
+
+function mockOsvQueryResult(body: unknown): { vulns: unknown[] } {
+  const parsed = parseJsonBody(body) as { package?: { name?: string } } | null
+  if (parsed?.package?.name !== SECURITY_FIXTURE_PACKAGE) return { vulns: [] }
+  return {
+    vulns: [
+      {
+        id: SECURITY_FIXTURE_SHARED_GHSA,
+        summary: 'Test fixture vulnerability (shared between OSV and Socket)',
+        modified: '2024-01-01T00:00:00Z',
+        aliases: ['CVE-2024-00001'],
+        database_specific: { severity: 'HIGH' },
+        affected: [
+          {
+            package: { ecosystem: 'npm', name: SECURITY_FIXTURE_PACKAGE },
+            ranges: [{ type: 'SEMVER', events: [{ introduced: '0' }, { fixed: '99.0.0' }] }],
+          },
+        ],
+      },
+    ],
+  }
+}
+
+function mockSocketPurlArtifacts(body: unknown): unknown[] {
+  const parsed = parseJsonBody(body) as { components?: Array<{ purl?: string }> } | null
+  const components = parsed?.components ?? []
+  const fixturePurl = components.find(component =>
+    component?.purl?.startsWith(`pkg:npm/${SECURITY_FIXTURE_PACKAGE}@`),
+  )?.purl
+  if (!fixturePurl) return []
+
+  const version = fixturePurl.split('@').pop() ?? '0.0.0'
+
+  return [
+    {
+      type: 'npm',
+      name: SECURITY_FIXTURE_PACKAGE,
+      version,
+      alerts: [
+        {
+          key: 'fixture-alert-shared',
+          type: 'cve',
+          severity: 'high',
+          category: 'vulnerability',
+          props: {
+            ghsaId: SECURITY_FIXTURE_SHARED_GHSA,
+            cveId: 'CVE-2024-00001',
+            title: 'Test fixture vulnerability (shared between OSV and Socket)',
+            reachability: 'reachable',
+          },
+        },
+        {
+          key: 'fixture-alert-socket-only',
+          type: 'mediumCVE',
+          severity: 'medium',
+          category: 'vulnerability',
+          props: {
+            ghsaId: SECURITY_FIXTURE_SOCKET_GHSA,
+            title: 'Test fixture vulnerability (Socket only)',
+            reachability: 'unreachable',
+          },
+        },
+        {
+          key: 'fixture-alert-troll',
+          type: 'troll',
+          severity: 'medium',
+          category: 'supplyChainRisk',
+          props: {},
+        },
+      ],
+    },
+  ]
+}
+
+function getMockForUrl(url: string, requestBody?: unknown): MockResult | null {
   const urlObj = URL.parse(url)
   if (!urlObj) return null
 
   const { host, pathname, searchParams } = urlObj
 
-  // OSV API - return empty vulnerability results
+  // OSV API - empty results except for the designated security fixture package
   if (host === 'api.osv.dev') {
     if (pathname === '/v1/querybatch') {
-      return { data: { results: [] } }
+      return { data: mockOsvBatchResults(requestBody) }
     }
     if (pathname.startsWith('/v1/query')) {
-      return { data: { vulns: [] } }
+      return { data: mockOsvQueryResult(requestBody) }
     }
+  }
+
+  // Socket batch purl API - artifacts only for the security fixture package
+  if (host === 'api.socket.dev' && /^\/v0\/orgs\/[^/]+\/purl$/.test(pathname)) {
+    return { data: mockSocketPurlArtifacts(requestBody) }
   }
 
   // JSR registry - return null (npm packages aren't on JSR)
@@ -559,9 +673,10 @@ async function handleJsdelivrDataApi(
 async function fetchFromFixtures<T>(
   url: string,
   storage: ReturnType<typeof useStorage>,
+  requestBody?: unknown,
 ): Promise<CachedFetchResult<T>> {
-  // Check for mock responses (OSV, JSR)
-  const mockResult = getMockForUrl(url)
+  // Check for mock responses (OSV, Socket, JSR)
+  const mockResult = getMockForUrl(url, requestBody)
   if (mockResult) {
     if (VERBOSE) process.stdout.write(`[test-fixtures] Mock: ${url}\n`)
     return { data: mockResult.data as T, isStale: false, cachedAt: Date.now() }
@@ -846,7 +961,7 @@ export default defineNitroPlugin(nitroApp => {
     }
 
     try {
-      const res = await fetchFromFixtures(urlStr, storage)
+      const res = await fetchFromFixtures(urlStr, storage, init?.body)
       if (res.data) {
         return new Response(JSON.stringify(res.data), {
           status: 200,

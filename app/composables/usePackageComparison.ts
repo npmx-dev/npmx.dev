@@ -37,6 +37,8 @@ export interface PackageComparisonData {
     count: number
     severity: { critical: number; high: number; moderate: number; low: number }
   }
+  /** Total Socket supply-chain alerts across the tree (undefined = unknown) */
+  supplyChainAlerts?: number
   metadata?: {
     license?: string
     /**
@@ -122,6 +124,17 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
     return { count: total, severity }
   }
 
+  function deriveSupplyChainAlerts(tree: VulnerabilityTreeResult | undefined): number | undefined {
+    // supply-chain alerts come only from Socket, so a 0 is only meaningful
+    // when Socket actually scanned - otherwise it's "unknown", never a zero
+    if (!tree || !effectiveSecuritySources.value.socket) return undefined
+    if (!securitySourceHasData(tree.sourceStatus, 'socket')) return undefined
+    return filterVulnerabilityTreeBySources(
+      tree,
+      effectiveSecuritySources.value,
+    ).supplyChainPackages.reduce((sum, pkg) => sum + pkg.alerts.length, 0)
+  }
+
   // Derived array in current package order. The raw tree stays internal to
   // the cache; consumers only see the derived (source-filtered) counts.
   const packagesData = computed<(PackageComparisonData | null)[]>(() =>
@@ -130,7 +143,11 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
       if (!data) return null
       const { vulnerabilityTree, ...rest } = data
       if (data.isNoDependency) return rest
-      return { ...rest, vulnerabilities: deriveVulnerabilities(vulnerabilityTree) }
+      return {
+        ...rest,
+        vulnerabilities: deriveVulnerabilities(vulnerabilityTree),
+        supplyChainAlerts: deriveSupplyChainAlerts(vulnerabilityTree),
+      }
     }),
   )
 
@@ -335,9 +352,13 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
     return packagesData.value.map(pkg => {
       if (!pkg) return null
 
-      // Vulnerability data has no meaning when no security source is enabled -
-      // show an explicit "unavailable" cell instead of real (or zero) counts
-      if (facet === 'vulnerabilities' && !anySecuritySourceEnabled.value && !pkg.isNoDependency) {
+      // Security data has no meaning when no source is enabled - show an
+      // explicit "unavailable" cell instead of real (or zero) counts
+      if (
+        (facet === 'vulnerabilities' || facet === 'supplyChainAlerts') &&
+        !anySecuritySourceEnabled.value &&
+        !pkg.isNoDependency
+      ) {
         return {
           raw: null,
           display: '—',
@@ -571,6 +592,23 @@ function computeFacetValue(
                 high: sev.high,
               }),
         status: count === 0 ? 'good' : sev.critical > 0 || sev.high > 0 ? 'bad' : 'warning',
+      }
+    }
+    case 'supplyChainAlerts': {
+      if (data.supplyChainAlerts === undefined) {
+        if (isNoDependency)
+          return {
+            raw: 'up-to-you',
+            display: t('compare.facets.values.up_to_you'),
+            status: 'good',
+          }
+        return null
+      }
+      const count = data.supplyChainAlerts
+      return {
+        raw: count,
+        display: count === 0 ? t('compare.facets.values.none') : formatNumber(count),
+        status: count === 0 ? 'good' : 'warning',
       }
     }
     case 'lastUpdated': {

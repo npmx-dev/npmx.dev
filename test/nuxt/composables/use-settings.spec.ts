@@ -86,7 +86,17 @@ describe('useSettings - securitySources', () => {
   it('defaults every security source to enabled', async () => {
     const { useSettings } = await import('~/composables/useSettings')
     const { settings } = useSettings()
-    expect(settings.value.securitySources).toEqual({ osv: true })
+    expect(settings.value.securitySources).toEqual({ osv: true, socket: true })
+  })
+
+  it('treats Socket as unavailable when the deployment has no key', async () => {
+    const { useSecuritySources } = await import('~/composables/useSettings')
+    const { sourceAvailability, effectiveSources } = useSecuritySources()
+
+    // test runtime config has no socketConfigured flag set
+    expect(sourceAvailability.value.socket).toBe(false)
+    expect(effectiveSources.value.socket).toBe(false)
+    expect(sourceAvailability.value.osv).toBe(true)
   })
 
   describe('useSecuritySources composable', () => {

@@ -13,7 +13,26 @@ vi.mock('#server/utils/dependency-resolver', () => ({
   resolveDependencyTree: vi.fn(),
 }))
 
+// Mock the Socket client's HTTP layer (covered by socket.spec.ts) while
+// keeping pure helpers like strongerReachability real
+vi.mock('#server/utils/socket', async importOriginal => ({
+  ...(await importOriginal<Record<string, unknown>>()),
+  querySocketForTree: vi.fn(),
+}))
+
 const { resolveDependencyTree } = await import('#server/utils/dependency-resolver')
+const { querySocketForTree } = await import('#server/utils/socket')
+
+type SocketScan = Awaited<ReturnType<typeof querySocketForTree>>
+
+function mockSocketScan(scan: Partial<SocketScan> = {}) {
+  vi.mocked(querySocketForTree).mockResolvedValue({
+    status: 'unconfigured',
+    vulnerabilities: new Map(),
+    supplyChainAlerts: new Map(),
+    ...scan,
+  })
+}
 
 /**
  * Helper to create mock $fetch that handles the two-step OSV API pattern:
@@ -43,6 +62,8 @@ function mockOsvApi(
 describe('dependency-analysis', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    // Default: Socket is not configured (no key), contributing no findings
+    mockSocketScan()
   })
 
   describe('analyzeDependencyTree', () => {
@@ -74,7 +95,7 @@ describe('dependency-analysis', () => {
       expect(result.totalPackages).toBe(1)
       expect(result.failedQueries).toBe(0)
       expect(result.totalCounts).toEqual({ total: 0, critical: 0, high: 0, moderate: 0, low: 0 })
-      expect(result.sourceStatus).toEqual({ osv: 'ok' })
+      expect(result.sourceStatus).toEqual({ osv: 'ok', socket: 'unconfigured' })
     })
 
     it('tracks failed queries when OSV batch API fails', async () => {
@@ -118,7 +139,7 @@ describe('dependency-analysis', () => {
       // When batch fails, all packages are counted as failed
       expect(result.failedQueries).toBe(2)
       expect(result.totalPackages).toBe(2)
-      expect(result.sourceStatus).toEqual({ osv: 'failed' })
+      expect(result.sourceStatus).toEqual({ osv: 'failed', socket: 'unconfigured' })
     })
 
     it('reports partial source status when some detail queries fail', async () => {
@@ -153,7 +174,7 @@ describe('dependency-analysis', () => {
 
       expect(result.vulnerablePackages).toHaveLength(0)
       expect(result.failedQueries).toBe(1)
-      expect(result.sourceStatus).toEqual({ osv: 'partial' })
+      expect(result.sourceStatus).toEqual({ osv: 'partial', socket: 'unconfigured' })
     })
 
     it('correctly counts vulnerabilities by severity', async () => {
@@ -203,7 +224,7 @@ describe('dependency-analysis', () => {
 
       expect(result.vulnerablePackages).toHaveLength(1)
       expect(result.totalCounts).toEqual({ total: 4, critical: 1, high: 1, moderate: 1, low: 1 })
-      expect(result.sourceStatus).toEqual({ osv: 'ok' })
+      expect(result.sourceStatus).toEqual({ osv: 'ok', socket: 'unconfigured' })
       // Every vulnerability found via OSV is tagged with its source
       for (const vuln of result.vulnerablePackages[0]!.vulnerabilities) {
         expect(vuln.sources).toEqual(['osv'])
@@ -1090,6 +1111,388 @@ describe('dependency-analysis', () => {
       expect(result.deprecatedPackages).toHaveLength(1)
       expect(result.deprecatedPackages[0]?.name).toBe('deprecated-pkg')
       expect(result.totalPackages).toBe(3)
+    })
+  })
+
+  describe('Socket merging', () => {
+    const mockResolved = new Map([
+      [
+        'root@1.0.0',
+        {
+          name: 'root',
+          version: '1.0.0',
+          size: 1000,
+          optional: false,
+          depth: 'root' as const,
+          path: ['root@1.0.0'],
+          tarballUrl: 'https://example.com/root-1.0.0.tgz',
+        },
+      ],
+      [
+        'dep-a@2.0.0',
+        {
+          name: 'dep-a',
+          version: '2.0.0',
+          size: 500,
+          optional: false,
+          depth: 'direct' as const,
+          path: ['root@1.0.0', 'dep-a@2.0.0'],
+          tarballUrl: 'https://example.com/dep-a-2.0.0.tgz',
+        },
+      ],
+    ])
+
+    beforeEach(() => {
+      vi.mocked(resolveDependencyTree).mockResolvedValue(mockResolved)
+    })
+
+    it('merges findings for the same GHSA into one entry tagged with both sources', async () => {
+      mockOsvApi(
+        [{ vulns: [{ id: 'GHSA-shared-0001', modified: '2024-01-01' }] }, { vulns: [] }],
+        new Map([
+          [
+            'root@1.0.0',
+            {
+              vulns: [
+                {
+                  id: 'GHSA-shared-0001',
+                  summary: 'Shared vuln',
+                  aliases: ['CVE-2024-1111'],
+                  database_specific: { severity: 'HIGH' },
+                },
+              ],
+            },
+          ],
+        ]),
+      )
+
+      mockSocketScan({
+        status: 'ok',
+        vulnerabilities: new Map([
+          [
+            'root@1.0.0',
+            [
+              {
+                id: 'GHSA-shared-0001',
+                ghsaId: 'GHSA-shared-0001',
+                summary: 'Shared vuln (socket)',
+                severity: 'high' as const,
+                reachability: 'reachable' as const,
+                url: 'https://github.com/advisories/GHSA-shared-0001',
+              },
+            ],
+          ],
+        ]),
+      })
+
+      const result = await analyzeDependencyTree('root', '1.0.0')
+
+      expect(result.sourceStatus).toEqual({ osv: 'ok', socket: 'ok' })
+      expect(result.vulnerablePackages).toHaveLength(1)
+      const vulns = result.vulnerablePackages[0]!.vulnerabilities
+      expect(vulns).toHaveLength(1)
+      expect(vulns[0]).toMatchObject({
+        id: 'GHSA-shared-0001',
+        sources: ['osv', 'socket'],
+        reachability: 'reachable',
+      })
+      // deduplicated: counted once
+      expect(result.totalCounts).toEqual({ total: 1, critical: 0, high: 1, moderate: 0, low: 0 })
+    })
+
+    it('merges by CVE alias when Socket only has a CVE id', async () => {
+      mockOsvApi(
+        [{ vulns: [{ id: 'GHSA-alias-0001', modified: '2024-01-01' }] }, { vulns: [] }],
+        new Map([
+          [
+            'root@1.0.0',
+            {
+              vulns: [
+                {
+                  id: 'GHSA-alias-0001',
+                  summary: 'Aliased vuln',
+                  aliases: ['CVE-2024-2222'],
+                  database_specific: { severity: 'MODERATE' },
+                },
+              ],
+            },
+          ],
+        ]),
+      )
+
+      mockSocketScan({
+        status: 'ok',
+        vulnerabilities: new Map([
+          [
+            'root@1.0.0',
+            [
+              {
+                id: 'CVE-2024-2222',
+                cveId: 'CVE-2024-2222',
+                summary: 'Aliased vuln (socket)',
+                severity: 'moderate' as const,
+                url: 'https://nvd.nist.gov/vuln/detail/CVE-2024-2222',
+              },
+            ],
+          ],
+        ]),
+      })
+
+      const result = await analyzeDependencyTree('root', '1.0.0')
+      const vulns = result.vulnerablePackages[0]!.vulnerabilities
+      expect(vulns).toHaveLength(1)
+      expect(vulns[0]!.sources).toEqual(['osv', 'socket'])
+    })
+
+    it('adds Socket-only findings as new entries and packages', async () => {
+      mockOsvApi([{ vulns: [] }, { vulns: [] }])
+
+      mockSocketScan({
+        status: 'ok',
+        vulnerabilities: new Map([
+          [
+            'dep-a@2.0.0',
+            [
+              {
+                id: 'GHSA-sock-0001',
+                ghsaId: 'GHSA-sock-0001',
+                summary: 'Socket-only vuln',
+                severity: 'critical' as const,
+                fixedIn: '2.1.0',
+                url: 'https://github.com/advisories/GHSA-sock-0001',
+              },
+            ],
+          ],
+        ]),
+      })
+
+      const result = await analyzeDependencyTree('root', '1.0.0')
+
+      expect(result.vulnerablePackages).toHaveLength(1)
+      const pkg = result.vulnerablePackages[0]!
+      // depth/path filled in from the resolved tree
+      expect(pkg).toMatchObject({ name: 'dep-a', version: '2.0.0', depth: 'direct' })
+      expect(pkg.path).toEqual(['root@1.0.0', 'dep-a@2.0.0'])
+      expect(pkg.vulnerabilities[0]).toMatchObject({
+        id: 'GHSA-sock-0001',
+        sources: ['socket'],
+        fixedIn: '2.1.0',
+      })
+      expect(pkg.counts).toEqual({ total: 1, critical: 1, high: 0, moderate: 0, low: 0 })
+      expect(result.totalCounts.total).toBe(1)
+    })
+
+    it('merges by exact GHSA even when alias groups join distinct advisories', async () => {
+      // OSV expands aliases to the whole alias group, so two distinct
+      // advisories can cross-list each other's GHSA and CVE ids
+      mockOsvApi(
+        [{ vulns: [{ id: 'GHSA-aaaa-0001', modified: '2024-01-01' }] }, { vulns: [] }],
+        new Map([
+          [
+            'root@1.0.0',
+            {
+              vulns: [
+                {
+                  id: 'GHSA-aaaa-0001',
+                  summary: 'Original advisory',
+                  aliases: ['CVE-2021-0001', 'CVE-2026-0002', 'GHSA-bbbb-0002'],
+                  database_specific: { severity: 'HIGH' },
+                },
+                {
+                  id: 'GHSA-bbbb-0002',
+                  summary: 'Fix-bypass advisory',
+                  aliases: ['CVE-2021-0001', 'CVE-2026-0002', 'GHSA-aaaa-0001'],
+                  database_specific: { severity: 'HIGH' },
+                },
+              ],
+            },
+          ],
+        ]),
+      )
+
+      mockSocketScan({
+        status: 'ok',
+        vulnerabilities: new Map([
+          [
+            'root@1.0.0',
+            [
+              {
+                id: 'GHSA-bbbb-0002',
+                ghsaId: 'GHSA-bbbb-0002',
+                cveId: 'CVE-2026-0002',
+                summary: 'Fix-bypass advisory (socket)',
+                severity: 'high' as const,
+                url: 'https://github.com/advisories/GHSA-bbbb-0002',
+              },
+            ],
+          ],
+        ]),
+      })
+
+      const result = await analyzeDependencyTree('root', '1.0.0')
+      const vulns = result.vulnerablePackages[0]!.vulnerabilities
+      expect(vulns).toHaveLength(2)
+
+      const original = vulns.find(vuln => vuln.id === 'GHSA-aaaa-0001')!
+      const bypass = vulns.find(vuln => vuln.id === 'GHSA-bbbb-0002')!
+      // the Socket finding must land on the advisory it actually names,
+      // not on the sibling whose polluted aliases also match its CVE
+      expect(bypass.sources).toEqual(['osv', 'socket'])
+      expect(bypass.cveId).toBe('CVE-2026-0002')
+      expect(original.sources).toEqual(['osv'])
+      expect(original.cveId).toBeUndefined()
+
+      // reconciliation strips provably-misattributed aliases (the sibling's
+      // primary id, and the CVE the sibling's source paired to itself) and
+      // records them so the UI can attribute the bad data
+      expect(original.aliases).toEqual(['CVE-2021-0001'])
+      expect(original.disputedAliases).toEqual(['CVE-2026-0002', 'GHSA-bbbb-0002'])
+      expect(bypass.aliases).toEqual(['CVE-2021-0001', 'CVE-2026-0002'])
+      expect(bypass.disputedAliases).toEqual(['GHSA-aaaa-0001'])
+    })
+
+    it('never CVE-merges a finding into an entry with a different GHSA id', async () => {
+      mockOsvApi(
+        [{ vulns: [{ id: 'GHSA-aaaa-0001', modified: '2024-01-01' }] }, { vulns: [] }],
+        new Map([
+          [
+            'root@1.0.0',
+            {
+              vulns: [
+                {
+                  id: 'GHSA-aaaa-0001',
+                  summary: 'Existing advisory',
+                  aliases: ['CVE-2024-0001'],
+                  database_specific: { severity: 'HIGH' },
+                },
+              ],
+            },
+          ],
+        ]),
+      )
+
+      mockSocketScan({
+        status: 'ok',
+        vulnerabilities: new Map([
+          [
+            'root@1.0.0',
+            [
+              {
+                id: 'GHSA-zzzz-0009',
+                ghsaId: 'GHSA-zzzz-0009',
+                cveId: 'CVE-2024-0001',
+                summary: 'Different advisory sharing a CVE',
+                severity: 'moderate' as const,
+                url: 'https://github.com/advisories/GHSA-zzzz-0009',
+              },
+            ],
+          ],
+        ]),
+      })
+
+      const result = await analyzeDependencyTree('root', '1.0.0')
+      const vulns = result.vulnerablePackages[0]!.vulnerabilities
+      // a finding that names its own GHSA becomes its own entry rather than
+      // being folded into a different advisory via a shared CVE
+      expect(vulns).toHaveLength(2)
+      expect(vulns.find(vuln => vuln.id === 'GHSA-zzzz-0009')!.sources).toEqual(['socket'])
+      expect(vulns.find(vuln => vuln.id === 'GHSA-aaaa-0001')!.sources).toEqual(['osv'])
+    })
+
+    it('keeps the strongest reachability verdict when duplicate Socket findings merge', async () => {
+      mockOsvApi([{ vulns: [] }, { vulns: [] }])
+
+      mockSocketScan({
+        status: 'ok',
+        vulnerabilities: new Map([
+          [
+            'root@1.0.0',
+            [
+              {
+                id: 'GHSA-dupe-0001',
+                ghsaId: 'GHSA-dupe-0001',
+                summary: 'Duplicated advisory',
+                severity: 'high' as const,
+                reachability: 'reachable' as const,
+                url: 'https://github.com/advisories/GHSA-dupe-0001',
+              },
+              {
+                id: 'GHSA-dupe-0001',
+                ghsaId: 'GHSA-dupe-0001',
+                summary: 'Duplicated advisory (second alert)',
+                severity: 'high' as const,
+                reachability: 'unreachable' as const,
+                url: 'https://github.com/advisories/GHSA-dupe-0001',
+              },
+            ],
+          ],
+        ]),
+      })
+
+      const result = await analyzeDependencyTree('root', '1.0.0')
+      const vulns = result.vulnerablePackages[0]!.vulnerabilities
+      expect(vulns).toHaveLength(1)
+      // 'reachable' must not be downgraded by the later 'unreachable' verdict
+      expect(vulns[0]!.reachability).toBe('reachable')
+    })
+
+    it('ignores Socket findings for packages outside the resolved tree', async () => {
+      mockOsvApi([{ vulns: [] }, { vulns: [] }])
+
+      mockSocketScan({
+        status: 'ok',
+        vulnerabilities: new Map([
+          [
+            'unknown-pkg@9.9.9',
+            [
+              {
+                id: 'GHSA-unknown-0001',
+                summary: 'Not in tree',
+                severity: 'high' as const,
+                url: 'https://example.com',
+              },
+            ],
+          ],
+        ]),
+      })
+
+      const result = await analyzeDependencyTree('root', '1.0.0')
+      expect(result.vulnerablePackages).toHaveLength(0)
+    })
+
+    it('builds supply-chain packages with depth and path from the tree', async () => {
+      mockOsvApi([{ vulns: [] }, { vulns: [] }])
+
+      mockSocketScan({
+        status: 'ok',
+        supplyChainAlerts: new Map([
+          [
+            'dep-a@2.0.0',
+            [
+              {
+                type: 'installScripts' as const,
+                severity: 'low' as const,
+                url: 'https://socket.dev/npm/package/dep-a',
+                sources: ['socket' as const],
+              },
+              {
+                type: 'malware' as const,
+                severity: 'critical' as const,
+                url: 'https://socket.dev/npm/package/dep-a',
+                sources: ['socket' as const],
+              },
+            ],
+          ],
+        ]),
+      })
+
+      const result = await analyzeDependencyTree('root', '1.0.0')
+
+      expect(result.supplyChainPackages).toHaveLength(1)
+      const pkg = result.supplyChainPackages[0]!
+      expect(pkg).toMatchObject({ name: 'dep-a', version: '2.0.0', depth: 'direct' })
+      // alerts sorted by severity (critical first)
+      expect(pkg.alerts.map(alert => alert.type)).toEqual(['malware', 'installScripts'])
     })
   })
 })

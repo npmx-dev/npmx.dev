@@ -48,7 +48,7 @@ export default defineCachedEventHandler(
     swr: true,
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
-      return `vulnerabilities:v2:${pkg.replace(/\/+$/, '').trim()}`
+      return `vulnerabilities:v3:${pkg.replace(/\/+$/, '').trim()}`
     },
   },
 )
