@@ -236,17 +236,18 @@ useShortcuts({
             @{{ orgName }}
           </LinkBase>
           <span v-if="orgName">/</span>
-          <span :class="{ 'text-fg-muted': orgName }">
+          <span :class="{ 'text-fg-muted': !requestedVersion }">
             {{ orgName ? pkg?.name.replace(`@${orgName}/`, '') : pkg?.name }}
           </span>
         </CopyToClipboardButton>
         <template v-if="requestedVersion && resolvedVersion">
-          <span class="text-fg-muted">@</span>
+          <span class="text-fg-subtle">@</span>
           <CopyToClipboardButton
             :copied="copiedPkgVersion"
             :copy-text="$t('package.copy_version')"
             :title="resolvedVersion"
             @click="copyPkgVersion()"
+            class="text-fg-subtle"
           >
             {{ resolvedVersion }}
           </CopyToClipboardButton>
