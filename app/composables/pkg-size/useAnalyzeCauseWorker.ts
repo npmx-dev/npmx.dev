@@ -82,11 +82,7 @@ export function useAnalyzeCauseWorker(
 
       analyzing.value = true
       currentId =
-        import.meta.test || import.meta.dev
-          ? (currentId as number)++
-          : import.meta.client
-            ? crypto.randomUUID()
-            : await import('node:crypto').then(({ randomUUID }) => randomUUID())
+        import.meta.test || import.meta.dev ? (currentId as number)++ : crypto.randomUUID()
       cancelling.value = false
       error.value = undefined
       summary.value = undefined
@@ -139,8 +135,6 @@ export function useAnalyzeCauseWorker(
       case 'unchanged':
         return bytesFormatter.t('package.size_increase.analyze.status.unchanged')
     }
-
-    return diffResult.status
   }
 
   async function handleWorkerMessage(event: MessageEvent<AnalyzeWorkerResponse>) {
