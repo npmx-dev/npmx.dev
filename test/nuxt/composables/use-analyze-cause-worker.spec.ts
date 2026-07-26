@@ -15,11 +15,11 @@ vi.mock('~/composables/useNumberFormatter', () => ({
     })),
 }))
 
-const mockWorker = {
+const mockWorker = vi.hoisted(() => ({
   addEventListener: vi.fn(),
   removeEventListener: vi.fn(),
   postMessage: vi.fn(),
-}
+}))
 
 vi.mock('../../../app/utils/pkg-size/analyze-cause-client-worker', () => ({
   worker: mockWorker,
@@ -44,6 +44,22 @@ function mountComposable(pkg = 'test-pkg', vTo = '2.0.0', vFrom = '1.0.0') {
 }
 
 describe('useAnalyzeCauseWorker', () => {
+  function getWorkerMessageHandler() {
+    const call = mockWorker.addEventListener.mock.calls.find(c => c[0] === 'message')
+    if (!call || typeof call[1] !== 'function') {
+      throw new Error('Worker message handler not registered')
+    }
+    return call[1] as (event: any) => Promise<void>
+  }
+
+  function getWorkerPostMessageId() {
+    const call = mockWorker.postMessage.mock.calls[0]
+    if (!call || !call[0] || typeof call[0] !== 'object' || !('id' in call[0])) {
+      throw new Error('Worker postMessage not called with expected payload')
+    }
+    return (call[0] as { id: string | number }).id
+  }
+
   beforeEach(() => {
     vi.clearAllMocks()
   })
@@ -109,15 +125,13 @@ describe('useAnalyzeCauseWorker', () => {
 
     vi.useFakeTimers()
 
-    const messageHandler = mockWorker.addEventListener.mock.calls.find(
-      call => call[0] === 'message',
-    )![1]
+    const messageHandler = getWorkerMessageHandler()
 
     const startPromise = result.startAnalyzeCause()
     await vi.runAllTimersAsync()
     await startPromise
 
-    const currentId = mockWorker.postMessage.mock.calls[0]![0].id
+    const currentId = getWorkerPostMessageId()
 
     const mockMsg = {
       data: {
@@ -134,7 +148,7 @@ describe('useAnalyzeCauseWorker', () => {
       },
     }
 
-    const handlerPromise = messageHandler(mockMsg as any)
+    const handlerPromise = messageHandler(mockMsg)
     await vi.runAllTimersAsync()
     await handlerPromise
 
@@ -149,19 +163,17 @@ describe('useAnalyzeCauseWorker', () => {
 
     vi.useFakeTimers()
 
-    const messageHandler = mockWorker.addEventListener.mock.calls.find(
-      call => call[0] === 'message',
-    )![1]
+    const messageHandler = getWorkerMessageHandler()
 
     const startPromise = result.startAnalyzeCause()
     await vi.runAllTimersAsync()
     await startPromise
 
-    const currentId = mockWorker.postMessage.mock.calls[0]![0].id
+    const currentId = getWorkerPostMessageId()
 
     await messageHandler({
       data: { id: currentId, type: 'error', message: 'Something exploded' },
-    } as any)
+    })
 
     expect(result.error.value).toBe('Something exploded')
     expect(result.analyzing.value).toBe(false)
