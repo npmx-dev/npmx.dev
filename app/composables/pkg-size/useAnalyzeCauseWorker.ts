@@ -33,7 +33,7 @@ export function useAnalyzeCauseWorker(
   const summary = shallowRef<UISummary | undefined>()
   const error = shallowRef<string | undefined>()
 
-  if (import.meta.server) {
+  if (!import.meta.dev && import.meta.server) {
     return {
       available,
       analyzing,
@@ -44,8 +44,8 @@ export function useAnalyzeCauseWorker(
       allDependencies,
       summary,
       error,
-      startAnalyzeCause: () => {},
-      cancelAnalyzeCause: () => {},
+      startAnalyzeCause: async () => {},
+      cancelAnalyzeCause: async () => {},
     }
   }
 
