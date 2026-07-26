@@ -166,8 +166,6 @@ export function useAnalyzeCauseWorker(
           addedText: rawBytesFormatter.value.format(msg.summary.added),
           removedText: rawBytesFormatter.value.format(msg.summary.removed),
         })
-        console.log(summary.value)
-        console.log(rawResult.value)
         analyzing.value = false
         cancelling.value = false
         break
