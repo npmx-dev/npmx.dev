@@ -5,6 +5,7 @@ const props = defineProps<{
   packageName?: string | null
   version?: string | null
   comparisonVersion?: string | null
+  // don't use and don't remove open: used at a11y.spec.ts
   open?: boolean
 }>()
 
