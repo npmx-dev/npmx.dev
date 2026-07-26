@@ -49,7 +49,7 @@ describe('useAnalyzeCauseWorker', () => {
     if (!call || typeof call[1] !== 'function') {
       throw new Error('Worker message handler not registered')
     }
-    return call[1] as (event: any) => Promise<void>
+    return call[1] as (event: unknown) => Promise<void>
   }
 
   function getWorkerPostMessageId() {
@@ -133,11 +133,13 @@ describe('useAnalyzeCauseWorker', () => {
 
     const currentId = getWorkerPostMessageId()
 
-    const mockMsg = {
+    const handlerPromise = messageHandler({
       data: {
         id: currentId,
         type: 'result',
-        result: [{ name: 'dep-a', status: 'added', sizeDelta: 100, isOptional: false }],
+        result: [
+          { name: 'dep-a', status: 'added', sizeDelta: 100, isOptional: false, v1: null, v2: null },
+        ],
         summary: {
           sizeDelta: 100,
           mandatorySizeDelta: 100,
@@ -146,9 +148,7 @@ describe('useAnalyzeCauseWorker', () => {
           removed: 0,
         },
       },
-    }
-
-    const handlerPromise = messageHandler(mockMsg)
+    })
     await vi.runAllTimersAsync()
     await handlerPromise
 
