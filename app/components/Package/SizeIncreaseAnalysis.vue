@@ -5,6 +5,7 @@ const props = defineProps<{
   packageName?: string | null
   version?: string | null
   comparisonVersion?: string | null
+  open?: boolean
 }>()
 
 const usePackage = computed(() => props.packageName)
@@ -32,6 +33,7 @@ const {
       <button
         type="button"
         :disabled="!available || cancelling"
+        :aria-busy="loading || analyzing || cancelling"
         class="border border-amber-600/40 bg-amber-500/10 hover:bg-amber-500/20 rounded-md inline-flex items-center gap-1.5 text-xs font-medium text-amber-900 dark:text-amber-300 px-3 py-1.5 transition-all duration-200 ease-out disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
         @click="analyzing ? cancelAnalyzeCause() : startAnalyzeCause()"
       >
@@ -65,6 +67,7 @@ const {
       <div v-if="summary || error" class="mt-3 border-t border-amber-600/20 pt-3 flex flex-col">
         <div
           v-if="error"
+          role="alert"
           class="border border-rose-500/20 bg-rose-500/10 rounded-md px-3 py-2.5 flex items-start gap-2"
         >
           <span
@@ -84,7 +87,7 @@ const {
         </div>
         <template v-else-if="summary">
           <!-- SUMMARY -->
-          <div class="flex flex-col gap-1">
+          <div class="flex flex-col gap-1" aria-live="polite">
             <p class="text-xs text-amber-700 dark:text-amber-500 m-0">
               <span aria-hidden="true">📦</span>
               <i18n-t keypath="package.size_increase.analyze.summary.total_size" scope="global">
@@ -133,7 +136,7 @@ const {
             </p>
           </div>
           <!-- DIFF BALANCE -->
-          <details class="group border-t border-amber-600/20 mt-3 pt-3 pb-1">
+          <details class="group border-t border-amber-600/20 mt-3 pt-3 pb-1" :open>
             <summary
               class="flex items-center gap-2 cursor-pointer text-sm font-medium text-amber-900 dark:text-amber-400 select-none hover:text-amber-700 dark:hover:text-amber-200 rounded transition-colors duration-150"
             >
@@ -147,9 +150,12 @@ const {
             <div class="mt-3">
               <div
                 class="flex items-center justify-start gap-1.5 mb-2 pb-2 border-b border-amber-600/10"
+                role="toolbar"
+                aria-label="Dependency view controls"
               >
                 <button
                   type="button"
+                  :aria-pressed="allDependencies"
                   @click="allDependencies = !allDependencies"
                   class="inline-flex items-center gap-1 text-xs uppercase font-bold tracking-wider text-amber-900 dark:text-amber-300 bg-amber-500/5 hover:bg-amber-500/15 border border-amber-600/20 px-2 py-1 rounded transition-colors"
                 >
@@ -167,6 +173,7 @@ const {
 
                 <button
                   type="button"
+                  :aria-pressed="noResultScroll"
                   @click="noResultScroll = !noResultScroll"
                   class="inline-flex items-center gap-1 text-xs uppercase font-bold tracking-wider text-amber-900 dark:text-amber-300 bg-amber-500/5 hover:bg-amber-500/15 border border-amber-600/20 px-2 py-1 rounded transition-colors"
                 >
@@ -186,6 +193,8 @@ const {
               <div
                 class="custom-scrollbar pe-1 transition-all duration-300"
                 :class="{ 'overflow-y-auto max-h-[216px]': !noResultScroll }"
+                role="region"
+                aria-label="Dependencies difference list"
               >
                 <ul
                   v-if="result && result.length > 0"
@@ -242,6 +251,7 @@ const {
                         </span>
                         <span
                           class="i-lucide:arrow-right w-3.5 h-3.5 shrink-0 text-amber-700/60 rtl:rotate-180"
+                          aria-hidden="true"
                         />
                         <span
                           class="font-mono text-2xs font-bold text-amber-900 dark:text-amber-300"
@@ -257,7 +267,7 @@ const {
                         </span>
                       </template>
 
-                      <span class="text-amber-600/40 mx-1 shrink-0">|</span>
+                      <span class="text-amber-600/40 mx-1 shrink-0" aria-hidden="true">|</span>
 
                       <span
                         class="font-mono text-2xs font-bold min-w-14 text-end shrink-0"

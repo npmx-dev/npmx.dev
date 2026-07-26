@@ -33,9 +33,6 @@ export function useAnalyzeCauseWorker(
   const summary = shallowRef<UISummary | undefined>()
   const error = shallowRef<string | undefined>()
 
-  let startAnalyzeCause: () => void = () => {}
-  let cancelAnalyzeCause: () => void = () => {}
-
   if (import.meta.server) {
     return {
       available,
@@ -47,8 +44,8 @@ export function useAnalyzeCauseWorker(
       allDependencies,
       summary,
       error,
-      startAnalyzeCause,
-      cancelAnalyzeCause,
+      startAnalyzeCause: () => {},
+      cancelAnalyzeCause: () => {},
     }
   }
 
@@ -74,7 +71,7 @@ export function useAnalyzeCauseWorker(
     console.error('Worker failure:', event)
   }
 
-  startAnalyzeCause = useThrottleFn(
+  const startAnalyzeCause = useThrottleFn(
     async () => {
       if (!worker || !available.value || analyzing.value) {
         return
@@ -104,7 +101,7 @@ export function useAnalyzeCauseWorker(
     true,
   )
 
-  cancelAnalyzeCause = useThrottleFn(
+  const cancelAnalyzeCause = useThrottleFn(
     async () => {
       if (!worker || !analyzing.value || cancelling.value) {
         return
@@ -169,6 +166,8 @@ export function useAnalyzeCauseWorker(
           addedText: rawBytesFormatter.value.format(msg.summary.added),
           removedText: rawBytesFormatter.value.format(msg.summary.removed),
         })
+        console.log(summary.value)
+        console.log(rawResult.value)
         analyzing.value = false
         cancelling.value = false
         break

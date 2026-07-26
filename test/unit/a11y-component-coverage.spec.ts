@@ -61,8 +61,6 @@ const SKIPPED_COMPONENTS: Record<string, string> = {
   'Translation/StatusByFile.unused.vue': 'Unused component, might be needed in the future',
   'ColorScheme/Img.vue': 'Image component, basic ui',
   'VideoPlayer.vue': 'Atproto video component, basic ui',
-  // TODO: add a test for this component, but it requires mocking the composable and maybe the worker
-  'Package/SizeIncreaseAnalysis.vue': 'we need to mock the composable and maybe the worker',
 }
 
 function normalizeComponentPath(filePath: string): string {
