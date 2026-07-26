@@ -19,17 +19,15 @@ vi.mock('~/utils/pkg-size/db', () => ({
     packages: {
       where: vi.fn().mockReturnThis(),
       anyOf: vi.fn().mockReturnThis(),
-      toArray: vi
-        .fn()
-        .mockResolvedValue([
-          {
-            id: 'dep-a@1.0.0',
-            name: 'dep-a',
-            version: '1.0.0',
-            unpackedSize: 1024,
-            isOptional: false,
-          },
-        ]),
+      toArray: vi.fn().mockResolvedValue([
+        {
+          id: 'dep-a@1.0.0',
+          name: 'dep-a',
+          version: '1.0.0',
+          unpackedSize: 1024,
+          isOptional: false,
+        },
+      ]),
     },
   },
 }))
@@ -91,7 +89,7 @@ describe('analyze-cause-worker', () => {
   })
 
   it('should handle abort with mismatched id (Lines 25-26)', async () => {
-    messageHandler({
+    const pending = messageHandler({
       data: {
         type: 'analyze-cause',
         id: 'active-id',
@@ -104,6 +102,8 @@ describe('analyze-cause-worker', () => {
     await messageHandler({ data: { type: 'analyze-cause-abort', id: 'wrong-id' } })
 
     expect(postMessageMock).toHaveBeenCalledWith({ type: 'aborted', id: 'wrong-id' })
+
+    await pending
   })
 
   it('should handle generic errors in catch block (Lines 169-172)', async () => {

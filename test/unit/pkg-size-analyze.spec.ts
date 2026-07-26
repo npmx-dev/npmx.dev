@@ -75,9 +75,9 @@ const server = setupServer(
 )
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }))
-afterEach(() => {
+afterEach(async () => {
   server.resetHandlers()
-  db.dropDatabase()
+  await db.dropDatabase()
 })
 afterAll(() => server.close())
 
@@ -94,7 +94,16 @@ describe('resolveAndPersistGraph', () => {
     expect(session?.totalSize).toBeGreaterThan(0)
 
     const pkgCount = await db.packages.count()
-    expect(pkgCount).toBeGreaterThan(0)
+    expect(pkgCount).toBe(3)
+
+    const depChild = await db.packages.get('dep-child@1.0.0')
+    expect(depChild).toBeDefined()
+
+    const optChild = await db.packages.get('opt-child@2.0.0')
+    expect(optChild).toBeDefined()
+
+    const edgesCount = await db.edges.count()
+    expect(edgesCount).toBe(2)
   })
 
   it('should handle aborted requests gracefully', async () => {
