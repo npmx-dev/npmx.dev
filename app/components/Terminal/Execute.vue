@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import type { JsrPackageInfo } from '#shared/types/jsr'
 import type { PackageManagerId } from '~/utils/install-command'
+import { getPackageManagerConfig } from '~/utils/install-command'
 
 /**
  * A terminal-style execute command display for binary-only packages.
- * Renders all package manager variants with CSS-based visibility.
+ * Renders the currently selected package manager command.
  */
 
 const props = defineProps<{
@@ -14,6 +15,7 @@ const props = defineProps<{
 }>()
 
 const selectedPM = useSelectedPackageManager()
+const selectedPackageManagerConfig = computed(() => getPackageManagerConfig(selectedPM.value))
 
 // Generate execute command parts for a specific package manager
 function getExecutePartsForPM(pmId: PackageManagerId) {
@@ -52,17 +54,14 @@ const copyExecuteCommand = () => copyExecute(getFullExecuteCommand())
         <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
       </div>
       <div class="px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 space-y-1">
-        <!-- Execute command - render all PM variants, CSS controls visibility -->
         <div
-          v-for="pm in packageManagers"
-          :key="`execute-${pm.id}`"
-          :data-pm-cmd="pm.id"
+          :data-pm-cmd="selectedPackageManagerConfig.id"
           class="flex items-center gap-2 group/executecmd"
         >
           <span class="text-fg-subtle font-mono text-sm select-none">$</span>
           <code class="font-mono text-sm"
             ><span
-              v-for="(part, i) in getExecutePartsForPM(pm.id)"
+              v-for="(part, i) in getExecutePartsForPM(selectedPackageManagerConfig.id)"
               :key="i"
               :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
               >{{ i > 0 ? ' ' : '' }}{{ part }}</span
@@ -81,27 +80,3 @@ const copyExecuteCommand = () => copyExecute(getFullExecuteCommand())
     </div>
   </div>
 </template>
-
-<style>
-/* Hide all variants by default when preference is set */
-:root[data-pm] [data-pm-cmd] {
-  display: none;
-}
-
-/* Show only the matching package manager command */
-:root[data-pm='npm'] [data-pm-cmd='npm'],
-:root[data-pm='pnpm'] [data-pm-cmd='pnpm'],
-:root[data-pm='yarn'] [data-pm-cmd='yarn'],
-:root[data-pm='bun'] [data-pm-cmd='bun'],
-:root[data-pm='deno'] [data-pm-cmd='deno'],
-:root[data-pm='vlt'] [data-pm-cmd='vlt'],
-:root[data-pm='vp'] [data-pm-cmd='vp'],
-:root[data-pm='nub'] [data-pm-cmd='nub'] {
-  display: flex;
-}
-
-/* Fallback: when no data-pm is set (SSR initial), show npm as default */
-:root:not([data-pm]) [data-pm-cmd]:not([data-pm-cmd='npm']) {
-  display: none;
-}
-</style>

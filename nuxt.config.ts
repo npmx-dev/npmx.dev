@@ -321,6 +321,11 @@ export default defineNuxtConfig({
         global: true,
         subsets: ['arabic'],
       },
+      {
+        name: 'Baloo 2',
+        weights: [800],
+        global: true,
+      },
     ],
   },
 
@@ -428,7 +433,7 @@ export default defineNuxtConfig({
         'vue-data-ui/vue-ui-horizontal-bar',
         'vue-data-ui/vue-ui-stackbar',
         'virtua/vue',
-        'semver',
+        'verkit',
         'validate-npm-package-name',
         '@atproto/lex',
         'fast-npm-meta',

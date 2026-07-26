@@ -1,5 +1,5 @@
 <template>
-  <div ref="sizer" class="sizer w-full sm:w-[540px] md:w-[640px] lg:w-[900px]"></div>
+  <div ref="sizer" class="sizer w-full sm:w-[540px] md:w-[640px] lg:w-[900px]" aria-hidden="true" />
 </template>
 
 <style>

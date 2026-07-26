@@ -75,6 +75,11 @@ const { copied: copiedPkgName, copy: copyPkgName } = useClipboard({
   copiedDuring: 2000,
 })
 
+const { copied: copiedPkgVersion, copy: copyPkgVersion } = useClipboard({
+  source: () => props.resolvedVersion ?? '',
+  copiedDuring: 2000,
+})
+
 function hasProvenance(version: PackumentVersion | null): boolean {
   if (!version?.dist) return false
   return !!(version.dist as { attestations?: unknown }).attestations
@@ -95,6 +100,17 @@ useCommandPaletteContextCommands(
         iconClass: 'i-lucide:copy',
         action: () => {
           copyPkgName()
+          announce($t('command_palette.announcements.copied_to_clipboard'))
+        },
+      },
+      {
+        id: 'package-copy-version',
+        group: 'package',
+        label: $t('package.copy_version'),
+        keywords: [packageName.value],
+        iconClass: 'i-lucide:copy',
+        action: () => {
+          copyPkgVersion()
           announce($t('command_palette.announcements.copied_to_clipboard'))
         },
       },
@@ -206,26 +222,37 @@ useShortcuts({
   <header class="bg-bg pt-5 pb-1 w-full container">
     <!-- Package name and version -->
     <div class="flex items-baseline justify-between gap-x-2 gap-y-1 flex-wrap min-w-0">
-      <CopyToClipboardButton
-        :copied="copiedPkgName"
-        :copy-text="$t('package.copy_name')"
-        class="flex flex-col items-start min-w-0"
-        @click="copyPkgName()"
+      <h1
+        class="flex flex-row items-start min-w-0 font-mono text-lg sm:text-3xl font-medium break-words"
+        :title="pkg?.name"
+        dir="ltr"
       >
-        <h1
-          class="font-mono text-lg sm:text-3xl font-medium min-w-0 break-words"
-          :title="pkg?.name"
-          dir="ltr"
+        <CopyToClipboardButton
+          :copied="copiedPkgName"
+          :copy-text="$t('package.copy_name')"
+          @click="copyPkgName()"
         >
           <LinkBase v-if="orgName" :to="{ name: 'org', params: { org: orgName } }">
             @{{ orgName }}
           </LinkBase>
           <span v-if="orgName">/</span>
-          <span :class="{ 'text-fg-muted': orgName }">
+          <span :class="{ 'text-fg-muted': !requestedVersion }">
             {{ orgName ? pkg?.name.replace(`@${orgName}/`, '') : pkg?.name }}
           </span>
-        </h1>
-      </CopyToClipboardButton>
+        </CopyToClipboardButton>
+        <template v-if="requestedVersion && resolvedVersion">
+          <span class="text-fg-subtle">@</span>
+          <CopyToClipboardButton
+            :copied="copiedPkgVersion"
+            :copy-text="$t('package.copy_version')"
+            :title="resolvedVersion"
+            @click="copyPkgVersion()"
+            class="text-fg-subtle"
+          >
+            {{ resolvedVersion }}
+          </CopyToClipboardButton>
+        </template>
+      </h1>
       <!-- Package metrics -->
       <div class="flex gap-2 flex-wrap items-stretch">
         <LinkBase

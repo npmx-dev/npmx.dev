@@ -1,4 +1,4 @@
-import { compare, satisfies, validRange, valid, parse } from 'semver'
+import { compare, isValid, normalizeRange, satisfies, tryParse } from 'verkit'
 
 /**
  * Utilities for handling npm package versions and dist-tags
@@ -12,7 +12,7 @@ import { compare, satisfies, validRange, valid, parse } from 'semver'
  * @returns true if the version is an exact semver version
  */
 export function isExactVersion(version: string): boolean {
-  return valid(version) !== null
+  return isValid(version)
 }
 
 /** Parsed semver version components */
@@ -30,7 +30,7 @@ export interface ParsedVersion {
  *   invalid versions and for prerelease versions (e.g., "1.0.0-beta.1")
  */
 export function parseVersion(version: string): ParsedVersion {
-  const parsedVersion = parse(version)
+  const parsedVersion = tryParse(version)
 
   if (!parsedVersion) {
     return { major: 0, minor: 0, patch: 0, prerelease: '' }
@@ -50,7 +50,7 @@ export function parseVersion(version: string): ParsedVersion {
  * @returns Parsed version object with major, minor, patch or null
  */
 export function parseStableVersion(version: string): Omit<ParsedVersion, 'prerelease'> | null {
-  const parsedVersion = parse(version)
+  const parsedVersion = tryParse(version)
 
   if (!parsedVersion || parsedVersion.prerelease.length > 0) {
     return null
@@ -286,7 +286,7 @@ export function filterVersions(versions: string[], range: string): Set<string> {
     return new Set(versions)
   }
 
-  if (!validRange(trimmed)) {
+  if (!normalizeRange(trimmed)) {
     return new Set()
   }
 

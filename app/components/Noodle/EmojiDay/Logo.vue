@@ -1,5 +1,5 @@
 <template>
-  <div class="relative flex w-full">
+  <div class="relative flex w-full" role="img" :aria-label="$t('alt_logo')">
     <ThemedLogo v-if="colorMode.value === 'dark'" :emojiSets="darkTheme" />
     <ThemedLogo v-else :emojiSets="lightTheme" />
   </div>
