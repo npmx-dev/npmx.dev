@@ -19,17 +19,15 @@ vi.mock('~/utils/pkg-size/db', () => ({
     packages: {
       where: vi.fn().mockReturnThis(),
       anyOf: vi.fn().mockReturnThis(),
-      toArray: vi
-        .fn()
-        .mockResolvedValue([
-          {
-            id: 'dep-a@1.0.0',
-            name: 'dep-a',
-            version: '1.0.0',
-            unpackedSize: 1024,
-            isOptional: false,
-          },
-        ]),
+      toArray: vi.fn().mockResolvedValue([
+        {
+          id: 'dep-a@1.0.0',
+          name: 'dep-a',
+          version: '1.0.0',
+          unpackedSize: 1024,
+          isOptional: false,
+        },
+      ]),
     },
   },
 }))
