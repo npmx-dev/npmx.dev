@@ -79,7 +79,7 @@ export function useAnalyzeCauseWorker(
 
       analyzing.value = true
       currentId =
-        import.meta.test || import.meta.dev ? (currentId as number)++ : crypto.randomUUID()
+        import.meta.test || import.meta.dev ? (currentId as number) + 1 : crypto.randomUUID()
       cancelling.value = false
       error.value = undefined
       summary.value = undefined
