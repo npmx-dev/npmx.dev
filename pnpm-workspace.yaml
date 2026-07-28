@@ -50,6 +50,7 @@ overrides:
   '@types/node': 24.13.2
   nuxt-og-image: ^6.6.0
   sharp: 0.35.3
+  typescript: npm:typescript-native-bridge@6.0.3-bridge.7.tsgo.7.0.2
   vite: 'catalog:vite-plus'
   vitest: 'catalog:vite-plus'
   vue-router: 5.1.0
