@@ -49,7 +49,7 @@ export function parseStableVersion(version: string): Omit<ParsedVersion, 'prerel
  */
 export function getPrereleaseChannel(version: string): string {
   const tag = tryParse(version)?.prerelease?.[0]
-  if (!tag) return '';
+  if (!tag) return ''
   const match = String(tag).match(/^([a-z]+)/i)
   return match ? match[1]!.toLowerCase() : ''
 }
