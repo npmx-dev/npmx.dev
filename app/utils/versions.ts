@@ -40,7 +40,7 @@ export function parseVersion(version: string): ParsedVersion {
     major: parsedVersion.major,
     minor: parsedVersion.minor,
     patch: parsedVersion.patch,
-    prerelease: parsedVersion.prerelease.join('.'),
+    prerelease: parsedVersion.prerelease?.join('.') ?? '',
   }
 }
 
@@ -52,7 +52,7 @@ export function parseVersion(version: string): ParsedVersion {
 export function parseStableVersion(version: string): Omit<ParsedVersion, 'prerelease'> | null {
   const parsedVersion = tryParse(version)
 
-  if (!parsedVersion || parsedVersion.prerelease.length > 0) {
+  if (!parsedVersion || parsedVersion.prerelease) {
     return null
   }
 
