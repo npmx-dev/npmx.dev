@@ -72,6 +72,11 @@ describe('getPrereleaseChannel', () => {
   it('handles versions with just channel name (TypeScript style)', () => {
     expect(getPrereleaseChannel('5.8.0-beta')).toBe('beta')
   })
+
+  it('handles versions with numerical prerelease channel name', () => {
+    expect(getPrereleaseChannel('3.0.0-0')).toBe('')
+    expect(getPrereleaseChannel('3.0.0-1')).toBe('')
+  })
 })
 
 describe('sortTags', () => {
