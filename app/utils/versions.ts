@@ -38,7 +38,7 @@ export function parseStableVersion(version: string): Omit<ParsedVersion, 'prerel
   return {
     major: parsedVersion.major,
     minor: parsedVersion.minor,
-    patch: parsedVersion.patch,
+    patch: parsedVersion.patch,match
   }
 }
 
@@ -48,7 +48,9 @@ export function parseStableVersion(version: string): Omit<ParsedVersion, 'prerel
  * @returns The channel name (e.g., "beta") or empty string for stable versions
  */
 export function getPrereleaseChannel(version: string): string {
-  const match = tryParse(version)?.prerelease?.[0]?.match(/^([a-z]+)/i)
+  const tag = tryParse(version)?.prerelease?.[0]
+  if (!tag) return '';
+  const match = String(tag).match(/^([a-z]+)/i)
   return match ? match[1]!.toLowerCase() : ''
 }
 
