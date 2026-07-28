@@ -38,7 +38,7 @@ export function parseStableVersion(version: string): Omit<ParsedVersion, 'prerel
   return {
     major: parsedVersion.major,
     minor: parsedVersion.minor,
-    patch: parsedVersion.patch,match
+    patch: parsedVersion.patch,
   }
 }
 
