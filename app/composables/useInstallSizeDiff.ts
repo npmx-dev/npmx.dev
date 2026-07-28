@@ -23,7 +23,7 @@ function getComparisonVersion(pkg: SlimPackument, resolvedVersion: string): stri
   const isCurrentPrerelease = getPrerelease(resolvedVersion)?.length
 
   const stableVersions = Object.keys(pkg.time)
-    .filter(v => v !== 'modified' && v !== 'created' && isValid(v) && getPrerelease(v) === null)
+    .filter(v => v !== 'modified' && v !== 'created' && isValid(v) && !getPrerelease(v)?.length)
     .sort((a, b) => compare(a, b))
 
   if (isCurrentPrerelease) {
