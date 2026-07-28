@@ -253,8 +253,8 @@ importers:
         specifier: 8.0.0
         version: 8.0.0
       verkit:
-        specifier: 0.1.2
-        version: 0.1.2
+        specifier: 0.3.1
+        version: 0.3.1
       virtua:
         specifier: 0.49.2
         version: 0.49.2(react-dom@19.2.7)(react@19.2.7)(vue@3.5.39)
@@ -10452,8 +10452,8 @@ packages:
       reka-ui: ^2.0.0
       vue: ^3.3.0
 
-  verkit@0.1.2:
-    resolution: {integrity: sha512-WqkT8n3hqizuCu71W3bUzf5fjBmkbXcudsehe/NbxA8PgqoKnSOY5K0Ba2ckg1qaRaSpSz7as/n9K1R9JXjQKg==}
+  verkit@0.3.1:
+    resolution: {integrity: sha512-w2Eo8LSIIoW7qxNBzT7/17k+bh8plXo7G3dHjEIDqPlnluhzaxr9JX8F28VSYEtDvc1/a3WBDih6xNUZseebXg==}
     engines: {node: '>=18.12.0'}
 
   vfile-location@5.0.3:
@@ -22605,7 +22605,7 @@ snapshots:
     transitivePeerDependencies:
       - '@vue/composition-api'
 
-  verkit@0.1.2: {}
+  verkit@0.3.1: {}
 
   vfile-location@5.0.3:
     dependencies:

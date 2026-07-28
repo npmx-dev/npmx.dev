@@ -43,7 +43,7 @@ ignoreWorkspaceRootCheck: true
 
 minimumReleaseAgeExclude:
   - vue-data-ui@3.22.13
-  - verkit@0.1.2
+  - verkit@0.3.1
   - module-replacements@3.1.0
 
 overrides:
