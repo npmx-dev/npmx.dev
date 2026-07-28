@@ -25,27 +25,6 @@ export interface ParsedVersion {
 
 /**
  * Parse a semver stable version string into its components
- * `@param` version - The version string (e.g., "1.2.3")
- * `@returns` Parsed version object with major, minor, patch, or null for
- *   invalid versions and for prerelease versions (e.g., "1.0.0-beta.1")
- */
-export function parseVersion(version: string): ParsedVersion {
-  const parsedVersion = tryParse(version)
-
-  if (!parsedVersion) {
-    return { major: 0, minor: 0, patch: 0, prerelease: '' }
-  }
-
-  return {
-    major: parsedVersion.major,
-    minor: parsedVersion.minor,
-    patch: parsedVersion.patch,
-    prerelease: parsedVersion.prerelease?.join('.') ?? '',
-  }
-}
-
-/**
- * Parse a semver stable version string into its components
  * @param version - The version string (e.g., "1.2.3" or "1.0.0-beta.1")
  * @returns Parsed version object with major, minor, patch or null
  */
@@ -69,9 +48,7 @@ export function parseStableVersion(version: string): Omit<ParsedVersion, 'prerel
  * @returns The channel name (e.g., "beta") or empty string for stable versions
  */
 export function getPrereleaseChannel(version: string): string {
-  const parsed = parseVersion(version)
-  if (!parsed.prerelease) return ''
-  const match = parsed.prerelease.match(/^([a-z]+)/i)
+  const match = tryParse(version)?.prerelease?.[0]?.match(/^([a-z]+)/i)
   return match ? match[1]!.toLowerCase() : ''
 }
 
@@ -238,7 +215,8 @@ export function filterExcludedTags(tags: string[], excludeTags: string[]): strin
  * @returns A grouping key string (e.g., "0.9", "1")
  */
 export function getVersionGroupKey(version: string): string {
-  const parsed = parseVersion(version)
+  const parsed = tryParse(version)
+  if (!parsed) return '0.0'
   if (parsed.major === 0) {
     // For 0.x versions, group by major.minor
     return `0.${parsed.minor}`

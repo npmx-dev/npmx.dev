@@ -11,7 +11,6 @@ import {
   getVersionGroupLabel,
   isExactVersion,
   isSameVersionGroup,
-  parseVersion,
   parseStableVersion,
   sortTags,
 } from '~/utils/versions'
@@ -46,55 +45,6 @@ describe('isExactVersion', () => {
   it('returns false for invalid strings', () => {
     expect(isExactVersion('')).toBe(false)
     expect(isExactVersion('not-a-version')).toBe(false)
-  })
-})
-
-describe('parseVersion', () => {
-  it('parses stable versions', () => {
-    expect(parseVersion('1.2.3')).toEqual({
-      major: 1,
-      minor: 2,
-      patch: 3,
-      prerelease: '',
-    })
-  })
-
-  it('parses prerelease versions', () => {
-    expect(parseVersion('1.0.0-beta.1')).toEqual({
-      major: 1,
-      minor: 0,
-      patch: 0,
-      prerelease: 'beta.1',
-    })
-  })
-
-  it('handles invalid versions gracefully', () => {
-    expect(parseVersion('invalid')).toEqual({
-      major: 0,
-      minor: 0,
-      patch: 0,
-      prerelease: '',
-    })
-  })
-
-  it('parses TypeScript-style versions', () => {
-    // TypeScript uses versions like 5.8.0-beta, 5.8.0-rc
-    expect(parseVersion('5.8.0-beta')).toEqual({
-      major: 5,
-      minor: 8,
-      patch: 0,
-      prerelease: 'beta',
-    })
-  })
-
-  it('parses Next.js canary versions', () => {
-    // Next.js uses versions like 15.3.0-canary.1
-    expect(parseVersion('15.3.0-canary.1')).toEqual({
-      major: 15,
-      minor: 3,
-      patch: 0,
-      prerelease: 'canary.1',
-    })
   })
 })
 
