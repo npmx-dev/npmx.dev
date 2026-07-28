@@ -8,7 +8,7 @@
 
 import type { DenoDocNode, JsDocTag } from '#shared/types/deno-doc'
 import { highlightCodeBlock } from '../shiki'
-import { formatParam, formatType, getNodeSignature } from './format'
+import { formatParams, formatType, getNodeSignature } from './format'
 import { groupMergedByKind } from './processing'
 import { escapeHtml, createSymbolId, parseJsDocLinks, renderMarkdown } from './text'
 import type { MergedSymbol, SymbolLookup } from './types'
@@ -306,7 +306,7 @@ function renderClassMembers(def: NonNullable<DenoDocNode['classDef']>): string {
     lines.push(`<div class="docs-members">`)
     lines.push(`<h4>Constructor</h4>`)
     for (const ctor of constructors) {
-      const params = ctor.params?.map(p => formatParam(p)).join(', ') || ''
+      const params = formatParams(ctor.params)
       lines.push(`<pre><code>constructor(${escapeHtml(params)})</code></pre>`)
     }
     lines.push(`</div>`)
@@ -350,7 +350,7 @@ function renderClassMembers(def: NonNullable<DenoDocNode['classDef']>): string {
 
   if (regularMethods.length > 0) {
     const methodItems: DefinitionListItem[] = regularMethods.map(method => {
-      const params = method.functionDef?.params?.map(p => formatParam(p)).join(', ') || ''
+      const params = formatParams(method.functionDef?.params)
       const ret = formatType(method.functionDef?.returnType) || 'void'
       const staticStr = method.isStatic ? 'static ' : ''
 
@@ -397,7 +397,7 @@ function renderInterfaceMembers(def: NonNullable<DenoDocNode['interfaceDef']>): 
     lines.push(`<h4>Methods</h4>`)
     lines.push(`<dl>`)
     for (const method of methods) {
-      const params = method.params?.map(p => formatParam(p)).join(', ') || ''
+      const params = formatParams(method.params)
       const ret = formatType(method.returnType) || 'void'
       lines.push(
         `<dt><code>${escapeHtml(method.name)}(${escapeHtml(params)}): ${escapeHtml(ret)}</code></dt>`,
