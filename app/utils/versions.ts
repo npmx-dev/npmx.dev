@@ -31,7 +31,7 @@ export interface ParsedVersion {
 export function parseStableVersion(version: string): Omit<ParsedVersion, 'prerelease'> | null {
   const parsedVersion = tryParse(version)
 
-  if (!parsedVersion || parsedVersion.prerelease) {
+  if (!parsedVersion || parsedVersion.prerelease?.length) {
     return null
   }
 
