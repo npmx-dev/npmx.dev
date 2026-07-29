@@ -52,3 +52,18 @@ export async function togglePackageLike(
     ? unlikePackage(packageName, userHandle)
     : likePackage(packageName, userHandle)
 }
+
+/**
+ * Fetches paginated profile likes for a given handle.
+ */
+export async function fetchProfileLikes(handle: string, cursor?: string | null, limit = 20) {
+  try {
+    return await $fetch(`/api/social/profile/${handle}/likes`, {
+      query: { cursor, limit },
+    })
+  } catch (e) {
+    // oxlint-disable-next-line no-console -- error logging
+    console.error('failed to fetch profile likes', handle, cursor, limit, e)
+    return { cursor: null, likes: null }
+  }
+}

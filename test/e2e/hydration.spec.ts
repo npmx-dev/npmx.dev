@@ -72,6 +72,20 @@ test.describe('Hydration', () => {
     }
   })
 
+  // Default: null → test "contrast"
+  test.describe('foreground theme: contrast', () => {
+    for (const page of PAGES) {
+      test(`${page}`, async ({ page: pw, goto, hydrationErrors }) => {
+        await injectLocalStorage(pw, {
+          'npmx-settings': JSON.stringify({ preferredForegroundTheme: 'contrast' }),
+        })
+        await goto(page, { waitUntil: 'hydration' })
+
+        expect(hydrationErrors).toEqual([])
+      })
+    }
+  })
+
   // Default: "npm" → test "pnpm"
   test.describe('package manager: pnpm', () => {
     for (const page of PAGES) {
@@ -112,6 +126,16 @@ test.describe('Hydration', () => {
         expect(hydrationErrors).toEqual([])
       })
     }
+  })
+
+  test('user packages page with npm search provider', async ({ page, goto, hydrationErrors }) => {
+    await injectLocalStorage(page, {
+      'npmx-settings': JSON.stringify({ searchProvider: 'npm' }),
+    })
+
+    await goto('/~qwerzl', { waitUntil: 'hydration' })
+
+    expect(hydrationErrors).toEqual([])
   })
 })
 

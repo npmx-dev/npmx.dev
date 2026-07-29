@@ -119,6 +119,7 @@ const mockSettings = ref({
   hidePlatformPackages: true,
   selectedLocale: null,
   preferredBackgroundTheme: null,
+  preferredForegroundTheme: null,
   searchProvider: 'npm',
   connector: {
     autoOpenURL: false,

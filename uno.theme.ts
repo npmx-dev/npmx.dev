@@ -5,6 +5,7 @@ export const theme = {
   font: {
     mono: "'Geist Mono', 'IBM Plex Sans Arabic', monospace",
     sans: "'Geist', 'IBM Plex Sans Arabic', system-ui, -apple-system, sans-serif",
+    noodle: "'Baloo 2', sans-serif",
   },
   text: {
     '2xs': { fontSize: '0.6875rem' }, // 11px
@@ -29,6 +30,7 @@ export const theme = {
       DEFAULT: 'var(--border)',
       subtle: 'var(--border-subtle)',
       hover: 'var(--border-hover)',
+      elevated: 'var(--border-elevated)',
     },
     accent: {
       DEFAULT: 'var(--accent)',
