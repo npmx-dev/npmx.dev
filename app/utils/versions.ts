@@ -1,19 +1,8 @@
-import { compare, isValid, normalizeRange, satisfies, tryParse } from 'verkit'
+import { compare, normalizeRange, satisfies, tryParse } from 'verkit'
 
 /**
  * Utilities for handling npm package versions and dist-tags
  */
-
-/**
- * Check if a version string is an exact semver version.
- * Returns true for "1.2.3", "1.0.0-beta.1", etc.
- * Returns false for ranges like "^1.2.3", ">=1.0.0", tags like "latest", etc.
- * @param version - The version string to check
- * @returns true if the version is an exact semver version
- */
-export function isExactVersion(version: string): boolean {
-  return isValid(version)
-}
 
 /** Parsed semver version components */
 export interface ParsedVersion {
@@ -119,19 +108,6 @@ export function compareVersionGroupKeys(a: string, b: string): number {
   const [majorB, minorB] = b.split('.').map(Number)
   if (majorA !== majorB) return (majorB ?? 0) - (majorA ?? 0)
   return (minorB ?? -1) - (minorA ?? -1)
-}
-
-/**
- * Sort tags with 'latest' first, then alphabetically
- * @param tags - Array of tag names
- * @returns New sorted array
- */
-export function sortTags(tags: string[]): string[] {
-  return [...tags].sort((a, b) => {
-    if (a === 'latest') return -1
-    if (b === 'latest') return 1
-    return a.localeCompare(b)
-  })
 }
 
 /**

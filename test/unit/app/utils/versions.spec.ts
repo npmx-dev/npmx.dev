@@ -9,44 +9,9 @@ import {
   getPrereleaseChannel,
   getVersionGroupKey,
   getVersionGroupLabel,
-  isExactVersion,
   isSameVersionGroup,
   parseStableVersion,
-  sortTags,
 } from '~/utils/versions'
-
-describe('isExactVersion', () => {
-  it('returns true for stable versions', () => {
-    expect(isExactVersion('1.0.0')).toBe(true)
-    expect(isExactVersion('0.1.0')).toBe(true)
-    expect(isExactVersion('10.20.30')).toBe(true)
-  })
-
-  it('returns true for prerelease versions', () => {
-    expect(isExactVersion('1.0.0-beta.1')).toBe(true)
-    expect(isExactVersion('1.0.0-alpha.0')).toBe(true)
-    expect(isExactVersion('5.8.0-rc')).toBe(true)
-  })
-
-  it('returns false for ranges', () => {
-    expect(isExactVersion('^1.0.0')).toBe(false)
-    expect(isExactVersion('~1.0.0')).toBe(false)
-    expect(isExactVersion('>=1.0.0')).toBe(false)
-    expect(isExactVersion('1.0.x')).toBe(false)
-    expect(isExactVersion('*')).toBe(false)
-  })
-
-  it('returns false for dist-tags', () => {
-    expect(isExactVersion('latest')).toBe(false)
-    expect(isExactVersion('next')).toBe(false)
-    expect(isExactVersion('beta')).toBe(false)
-  })
-
-  it('returns false for invalid strings', () => {
-    expect(isExactVersion('')).toBe(false)
-    expect(isExactVersion('not-a-version')).toBe(false)
-  })
-})
 
 describe('getPrereleaseChannel', () => {
   it('returns empty string for stable versions', () => {
@@ -76,30 +41,6 @@ describe('getPrereleaseChannel', () => {
   it('handles versions with numerical prerelease channel name', () => {
     expect(getPrereleaseChannel('3.0.0-0')).toBe('')
     expect(getPrereleaseChannel('3.0.0-1')).toBe('')
-  })
-})
-
-describe('sortTags', () => {
-  it('puts latest first', () => {
-    expect(sortTags(['beta', 'latest', 'alpha'])).toEqual(['latest', 'alpha', 'beta'])
-  })
-
-  it('sorts alphabetically when no latest', () => {
-    expect(sortTags(['beta', 'canary', 'alpha'])).toEqual(['alpha', 'beta', 'canary'])
-  })
-
-  it('handles single tag', () => {
-    expect(sortTags(['latest'])).toEqual(['latest'])
-  })
-
-  it('handles empty array', () => {
-    expect(sortTags([])).toEqual([])
-  })
-
-  it('does not mutate original array', () => {
-    const original = ['beta', 'latest']
-    sortTags(original)
-    expect(original).toEqual(['beta', 'latest'])
   })
 })
 
