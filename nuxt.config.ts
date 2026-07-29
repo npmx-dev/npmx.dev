@@ -219,6 +219,18 @@ export default defineNuxtConfig({
     '/recharging': { prerender: true },
     '/pds': { isr: 86400 }, // revalidate daily
     '/blog/**': { prerender: true },
+    '/rss.xml': {
+      prerender: true,
+      headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/rss+xml' },
+    },
+    '/atom.xml': {
+      prerender: true,
+      headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/atom+xml' },
+    },
+    '/feed.json': {
+      prerender: true,
+      headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/feed+json' },
+    },
     '/noodles/**': { prerender: true },
     '/sponsors': { prerender: true },
     // proxy for insights
@@ -260,6 +272,10 @@ export default defineNuxtConfig({
     esbuild: {
       options: {
         target: 'es2024',
+        // HACK: Excluding node_modules is the default. Here, we exempt
+        // .cache/nuxt/.nuxt/blog/posts.ts from that so that #blog/posts can be
+        // imported, parsed and executed as TS in server/utils/feeds.ts by esbuild
+        exclude: /node_modules\/(?!\.cache\/nuxt\/\.nuxt\/blog\/posts\.ts)/,
       },
     },
     rollupConfig: {
