@@ -94,6 +94,7 @@
     "current": "joriy",
     "here": "siz shu yerdasiz",
     "connected": "ulangan",
+    "keyboard_shortcuts": {},
     "state": {
       "on": "yoqilgan",
       "off": "oʻchirilgan"
@@ -224,6 +225,9 @@
       "more_replies": "yana {count} ta javob... | yana {count} ta javob..."
     }
   },
+  "noodles": {
+    "missing": {}
+  },
   "settings": {
     "title": "sozlamalar",
     "tagline": "npmx tajribangizni moslashtiring",
@@ -279,6 +283,7 @@
       "slate": "Slate",
       "black": "Black"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Klaviatura yorliqlarini yoqish",
     "keyboard_shortcuts_enabled_description": "Agar klaviatura yorliqlari boshqa brauzer yoki tizim yorliqlari bilan zid kelsa, ularni oʻchirib qoʻyish mumkin"
   },
@@ -379,6 +384,7 @@
       "size": "Oʻrnatish hajmi {percent} ga oshdi ({size} kattaroq)",
       "deps": "{count} ta qoʻshimcha bogʻliqlik"
     },
+    "size_decrease": {},
     "replacement": {
       "title": "Ushbu bogʻliqlik sizga kerak boʻlmasligi mumkin.",
       "native": "Buni Node {nodeVersion} dan beri mavjud boʻlgan {replacement} bilan almashtirish mumkin.",
@@ -387,8 +393,6 @@
       "none": "Ushbu paket endi kerak emas deb belgilangan va uning funksiyasi barcha engine’larda native tarzda mavjud boʻlishi mumkin.",
       "learn_more": "Batafsil",
       "learn_more_above": "Yuqorida batafsil.",
-      "mdn": "MDN",
-      "community": "hamjamiyat",
       "consider_no_dep": "+ Bogʻliqliksiz variantni koʻrib chiqing?"
     },
     "stats": {
@@ -527,7 +531,6 @@
       "view_all": "{count} ta versiyani koʻrish | Barcha {count} ta versiyani koʻrish",
       "view_all_versions": "Barcha versiyalarni koʻrish",
       "distribution_title": "Semver guruhi",
-      "distribution_modal_title": "Versiyalar",
       "distribution_range_date_same_year": "{from} dan {to} gacha, {endYear}",
       "distribution_range_date_multiple_years": "{from}, {startYear} dan {to}, {endYear} gacha",
       "grouping_major": "Major",
@@ -556,6 +559,11 @@
       "page_title": "Versiyalar tarixi",
       "current_tags": "Joriy teglar",
       "no_match_filter": "{filter} ga mos versiya yoʻq"
+    },
+    "timeline": {
+      "chart": {
+        "copy_alt": {}
+      }
     },
     "dependencies": {
       "title": "Bogʻliqlik ({count}) | Bogʻliqliklar ({count})",
@@ -657,7 +665,8 @@
         "general_description": "Y oʻqi yuklab olishlar sonini ifodalaydi. X oʻqi {start_date} dan {end_date} gacha boʻlgan sana oraligʻini, {granularity} vaqt davri bilan ifodalaydi.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "{packages} uchun gorizontal bar grafik, {facet} ({description}) ni taqqoslaydi. {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} qiymati {value}."
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "Haftalik yuklab olishlar",
@@ -758,6 +767,9 @@
       "button": "Yuklab olish",
       "tarball": "Tarball’ni .tar.gz sifatida yuklab olish"
     }
+  },
+  "leaderboard": {
+    "likes": {}
   },
   "connector": {
     "modal": {
@@ -1119,7 +1131,6 @@
     },
     "team": {
       "title": "Jamoa",
-      "governance": "Boshqaruv",
       "role_steward": "steward",
       "role_maintainer": "maintainer",
       "sponsor": "homiylik",
@@ -1154,6 +1165,25 @@
         "description": "npmx haqidagi eng soʻnggi yangiliklarni bilib oling.",
         "cta": "Bluesky’da kuzating"
       }
+    }
+  },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
     }
   },
   "account_menu": {
@@ -1325,7 +1355,11 @@
         "vulnerabilities": {
           "label": "Zaifliklar",
           "description": "Maʼlum xavfsizlik zaifliklari"
-        }
+        },
+        "githubStars": {},
+        "githubForks": {},
+        "githubIssues": {},
+        "createdAt": {}
       },
       "values": {
         "any": "Har qanday",
@@ -1345,8 +1379,6 @@
     "file_changes": "Fayl oʻzgarishlari",
     "files_count": "{count} ta fayl | {count} ta fayl",
     "lines_hidden": "{count} ta qator yashirilgan | {count} ta qator yashirilgan",
-    "file_too_large": "Fayl taqqoslash uchun juda katta",
-    "file_size_warning": "{size} taqqoslash uchun 250KB limitdan oshadi",
     "compare_versions": "diff",
     "compare_versions_title": "Oxirgi versiya bilan taqqoslash",
     "comparing_versions_label": "Versiyalar taqqoslanmoqda...",
@@ -1647,5 +1679,8 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "npmx logotipining yoqimli, yumaloq va rang-barang versiyasi."
+  "alt_logo_kawaii": "npmx logotipining yoqimli, yumaloq va rang-barang versiyasi.",
+  "changelog": {
+    "error": {}
+  }
 }
