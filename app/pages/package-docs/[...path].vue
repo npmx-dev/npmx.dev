@@ -9,29 +9,10 @@ definePageMeta({
   scrollMargin: 180,
 })
 
-const route = useRoute('docs')
 const router = useRouter()
 const { t } = useI18n()
 
-const parsedRoute = computed(() => {
-  const segments = route.params.path?.filter(Boolean)
-  const vIndex = segments.indexOf('v')
-
-  if (vIndex === -1 || vIndex >= segments.length - 1) {
-    return {
-      packageName: segments.join('/'),
-      version: null as string | null,
-    }
-  }
-
-  return {
-    packageName: segments.slice(0, vIndex).join('/'),
-    version: segments.slice(vIndex + 1).join('/'),
-  }
-})
-
-const packageName = computed(() => parsedRoute.value.packageName)
-const requestedVersion = computed(() => parsedRoute.value.version)
+const { packageName, requestedVersion } = usePackageRoute()
 
 // Validate package name on server-side for early error detection
 if (import.meta.server && packageName.value) {

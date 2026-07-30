@@ -131,6 +131,22 @@ describe('usePackageRoute', () => {
       expect(packageName.value).toBe('nuxt')
       expect(requestedVersion.value).toBe('4.2.0')
     })
+
+    it('round-trips a package literally named "v" via docsRoute', async () => {
+      await useRouter().push(docsRoute('v', '1.0.0'))
+      const { packageName, requestedVersion, orgName } = usePackageRoute()
+      expect(packageName.value).toBe('v')
+      expect(requestedVersion.value).toBe('1.0.0')
+      expect(orgName.value).toBeNull()
+    })
+
+    it('round-trips a scoped package whose name is "v" via docsRoute', async () => {
+      await useRouter().push(docsRoute('@org/v', '1.0.0'))
+      const { packageName, requestedVersion, orgName } = usePackageRoute()
+      expect(packageName.value).toBe('@org/v')
+      expect(requestedVersion.value).toBe('1.0.0')
+      expect(orgName.value).toBe('org')
+    })
   })
 
   describe('diff route (`versionRange` param)', () => {

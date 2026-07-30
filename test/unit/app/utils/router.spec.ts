@@ -31,4 +31,18 @@ describe('docsRoute', () => {
       params: { path: ['nuxt', 'v', '4.2.0'] },
     })
   })
+
+  it('keeps a package literally named "v" separate from the version marker', () => {
+    expect(docsRoute('v', '1.0.0')).toEqual({
+      name: 'docs',
+      params: { path: ['v', 'v', '1.0.0'] },
+    })
+  })
+
+  it('handles a scoped package whose name is "v"', () => {
+    expect(docsRoute('@org/v', '1.0.0')).toEqual({
+      name: 'docs',
+      params: { path: ['@org', 'v', 'v', '1.0.0'] },
+    })
+  })
 })
