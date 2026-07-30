@@ -49,12 +49,8 @@ if (import.meta.server && !requestedVersion.value && packageName.value) {
   const version = await fetchLatestVersion(packageName.value)
   if (version) {
     setResponseHeader(useRequestEvent()!, 'Cache-Control', 'no-cache')
-    const pathSegments = [...packageName.value.split('/'), 'v', version]
     app.runWithContext(() =>
-      navigateTo(
-        { name: 'docs', params: { path: pathSegments as [string, ...string[]] } },
-        { redirectCode: 302 },
-      ),
+      navigateTo(docsRoute(packageName.value, version), { redirectCode: 302 }),
     )
   }
 }
@@ -63,8 +59,7 @@ watch(
   [requestedVersion, latestVersion, packageName],
   ([version, latest, name]) => {
     if (!version && latest && name) {
-      const pathSegments = [...name.split('/'), 'v', latest]
-      router.replace({ name: 'docs', params: { path: pathSegments as [string, ...string[]] } })
+      router.replace(docsRoute(name, latest))
     }
   },
   { immediate: true },
@@ -125,15 +120,7 @@ const versionUrlPattern = computed(
 )
 
 function docsVersionRoute(version: string): RouteLocationRaw {
-  const name = pkg.value?.name || packageName.value
-  const [firstSegment = name, ...remainingSegments] = name.split('/')
-
-  return {
-    name: 'docs',
-    params: {
-      path: [firstSegment, ...remainingSegments, 'v', version],
-    },
-  }
+  return docsRoute(pkg.value?.name || packageName.value, version)
 }
 
 useCommandPaletteVersionCommands(commandPalettePackageContext, docsVersionRoute)
