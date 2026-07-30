@@ -80,6 +80,25 @@ describe('usePackageRoute', () => {
       expect(orgName.value).toBeNull()
     })
 
+    it('parses a scoped package whose full name is a single %2F-encoded segment', async () => {
+      await useRouter().push({
+        name: 'docs',
+        params: { path: ['@vitest/pretty-format', 'v', '4.1.10'] },
+      })
+      const { packageName, requestedVersion, orgName } = usePackageRoute()
+      expect(packageName.value).toBe('@vitest/pretty-format')
+      expect(requestedVersion.value).toBe('4.1.10')
+      expect(orgName.value).toBe('vitest')
+    })
+
+    it('parses a scoped single-segment name with no version', async () => {
+      await useRouter().push({ name: 'docs', params: { path: ['@vitest/pretty-format'] } })
+      const { packageName, requestedVersion, orgName } = usePackageRoute()
+      expect(packageName.value).toBe('@vitest/pretty-format')
+      expect(requestedVersion.value).toBeNull()
+      expect(orgName.value).toBe('vitest')
+    })
+
     it('parses an unscoped package with no version', async () => {
       const { packageName, requestedVersion, orgName } = await at('/package-docs/nuxt')
       expect(packageName.value).toBe('nuxt')
