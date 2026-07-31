@@ -5,7 +5,9 @@ import {
   type SearchResponse,
 } from 'algoliasearch/lite'
 
+// oxlint-disable-next-line eslint/no-underscore-dangle
 let _searchClient: LiteClient | null = null
+// oxlint-disable-next-line eslint/no-underscore-dangle
 let _configuredAppId: string | null = null
 
 function getOrCreateClient(appId: string, apiKey: string): LiteClient {
