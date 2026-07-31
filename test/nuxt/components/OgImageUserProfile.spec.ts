@@ -1,38 +1,40 @@
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { shallowRef } from 'vue'
 
-const { mockUseAlgoliaSearch, mockSearch } = vi.hoisted(() => {
-  const search = vi.fn()
-  return {
-    mockSearch: search,
-    mockUseAlgoliaSearch: vi.fn(() => ({ search })),
-  }
-})
+const { mockUseUserPackages, mockRefresh } = vi.hoisted(() => ({
+  mockRefresh: vi.fn(),
+  mockUseUserPackages: vi.fn(),
+}))
 
-mockNuxtImport('useAlgoliaSearch', () => mockUseAlgoliaSearch)
+mockNuxtImport('useUserPackages', () => mockUseUserPackages)
 
 import OgImageUserProfile from '~/components/OgImage/UserProfile.takumi.vue'
 
-/** Build the minimal NpmSearchResponse shape the component reads (`total`). */
-function searchResponse(total: number) {
-  return { isStale: false, objects: [], total, time: '' }
-}
-
-/** Spy on the global `$fetch` used for the npm-registry fallback. */
-function mockNpmFallback(total: number | null) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  vi.spyOn(globalThis, '$fetch').mockImplementation((() =>
-    total === null ? Promise.reject(new Error('network')) : Promise.resolve({ total })) as any)
+/**
+ * Wire up the `useUserPackages` mock so the total only becomes available after
+ * `refresh()` is awaited — mirroring the real `useLazyAsyncData` behaviour where
+ * the fetcher does not resolve during the island's synchronous setup. This makes
+ * the tests a regression guard: a component that reads `data` without awaiting
+ * `refresh()` sees `null` and renders "0 packages".
+ */
+function mockPackages(total: number | null) {
+  const data = shallowRef<{ total: number } | null>(null)
+  mockRefresh.mockImplementation(async () => {
+    data.value = total === null ? null : { total }
+  })
+  mockUseUserPackages.mockReturnValue({ data, refresh: mockRefresh })
 }
 
 describe('OgImageUserProfile', () => {
   beforeEach(() => {
     vi.restoreAllMocks()
-    mockSearch.mockReset()
+    mockUseUserPackages.mockReset()
+    mockRefresh.mockReset()
   })
 
   it('renders the username with a tilde prefix', async () => {
-    mockSearch.mockResolvedValue(searchResponse(9))
+    mockPackages(9)
 
     const component = await mountSuspended(OgImageUserProfile, {
       props: { username: 'houtan-rocky' },
@@ -41,31 +43,22 @@ describe('OgImageUserProfile', () => {
     expect(component.text()).toContain('~houtan-rocky')
   })
 
-  it('shows the Algolia package count', async () => {
-    mockSearch.mockResolvedValue(searchResponse(9))
+  it('shows the package count from useUserPackages', async () => {
+    mockPackages(9)
 
     const component = await mountSuspended(OgImageUserProfile, {
       props: { username: 'houtan-rocky' },
     })
 
     expect(component.text()).toContain('9 packages')
-    // Algolia had results, so the npm fallback must not run.
-    expect(mockSearch).toHaveBeenCalledWith('', { filters: 'owners.name:houtan-rocky', size: 1 })
-  })
-
-  it('queries Algolia by the maintainer, not the raw username field', async () => {
-    mockSearch.mockResolvedValue(searchResponse(3))
-
-    await mountSuspended(OgImageUserProfile, { props: { username: 'sindresorhus' } })
-
-    expect(mockSearch).toHaveBeenCalledWith('', {
-      filters: 'owners.name:sindresorhus',
-      size: 1,
-    })
+    expect(mockUseUserPackages).toHaveBeenCalledWith('houtan-rocky')
+    // The fetch must be forced — `useLazyAsyncData` does not resolve on its own
+    // during the island's synchronous setup.
+    expect(mockRefresh).toHaveBeenCalled()
   })
 
   it('uses the singular noun for a single package', async () => {
-    mockSearch.mockResolvedValue(searchResponse(1))
+    mockPackages(1)
 
     const component = await mountSuspended(OgImageUserProfile, {
       props: { username: 'solo' },
@@ -75,24 +68,8 @@ describe('OgImageUserProfile', () => {
     expect(component.text()).not.toContain('1 packages')
   })
 
-  it('falls back to the npm registry when Algolia returns zero', async () => {
-    mockSearch.mockResolvedValue(searchResponse(0))
-    mockNpmFallback(11)
-
-    const component = await mountSuspended(OgImageUserProfile, {
-      props: { username: 'npm-only' },
-    })
-
-    expect($fetch).toHaveBeenCalledWith(
-      'https://registry.npmjs.org/-/v1/search',
-      expect.objectContaining({ params: { text: 'maintainer:npm-only', size: 1 } }),
-    )
-    expect(component.text()).toContain('11 packages')
-  })
-
-  it('shows zero packages when both providers are empty', async () => {
-    mockSearch.mockResolvedValue(searchResponse(0))
-    mockNpmFallback(0)
+  it('shows zero packages when the user has none', async () => {
+    mockPackages(0)
 
     const component = await mountSuspended(OgImageUserProfile, {
       props: { username: 'nobody' },
@@ -101,9 +78,8 @@ describe('OgImageUserProfile', () => {
     expect(component.text()).toContain('0 packages')
   })
 
-  it('degrades to zero packages when the npm fallback rejects', async () => {
-    mockSearch.mockResolvedValue(searchResponse(0))
-    mockNpmFallback(null)
+  it('degrades to zero packages when no data resolves', async () => {
+    mockPackages(null)
 
     const component = await mountSuspended(OgImageUserProfile, {
       props: { username: 'flaky' },
@@ -112,54 +88,19 @@ describe('OgImageUserProfile', () => {
     expect(component.text()).toContain('0 packages')
   })
 
-  it('falls back to the npm registry when Algolia throws', async () => {
-    mockSearch.mockRejectedValue(new Error('algolia down'))
-    mockNpmFallback(11)
-
-    const component = await mountSuspended(OgImageUserProfile, {
-      props: { username: 'houtan-rocky' },
-    })
-
-    expect(component.text()).toContain('~houtan-rocky')
-    expect($fetch).toHaveBeenCalledWith(
-      'https://registry.npmjs.org/-/v1/search',
-      expect.objectContaining({ params: { text: 'maintainer:houtan-rocky', size: 1 } }),
-    )
-    expect(component.text()).toContain('11 packages')
-  })
-
-  it('degrades to zero packages when both providers fail', async () => {
-    mockSearch.mockRejectedValue(new Error('algolia down'))
-    mockNpmFallback(null)
-
-    const component = await mountSuspended(OgImageUserProfile, {
-      props: { username: 'houtan-rocky' },
-    })
-
-    expect(component.text()).toContain('0 packages')
-  })
-
-  it('skips the lookups for an invalid username', async () => {
-    // Rejecting mock guards against a real network call if the skip path regresses.
-    mockNpmFallback(null)
-
+  it('skips the lookup for an invalid username', async () => {
     const component = await mountSuspended(OgImageUserProfile, {
       props: { username: 'not a valid name!' },
     })
 
-    expect(mockSearch).not.toHaveBeenCalled()
-    expect($fetch).not.toHaveBeenCalled()
+    expect(mockUseUserPackages).not.toHaveBeenCalled()
     expect(component.text()).toContain('0 packages')
   })
 
   it('renders a generic description and skips fetching when no username is given', async () => {
-    // Rejecting mock guards against a real network call if the skip path regresses.
-    mockNpmFallback(null)
-
     const component = await mountSuspended(OgImageUserProfile, { props: {} })
 
     expect(component.text()).toContain('npm user profile')
-    expect(mockSearch).not.toHaveBeenCalled()
-    expect($fetch).not.toHaveBeenCalled()
+    expect(mockUseUserPackages).not.toHaveBeenCalled()
   })
 })

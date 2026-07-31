@@ -6,26 +6,9 @@ const { username } = defineProps<{
 const total = shallowRef(0)
 
 if (username && isValidNpmName(username)) {
-  let algoliaTotal = 0
-  try {
-    const { search } = useAlgoliaSearch()
-    const algolia = await search('', { filters: `owners.name:${username}`, size: 1 })
-    algoliaTotal = algolia.total
-  } catch {
-    // Algolia unavailable — fall through to the npm-registry lookup below.
-  }
-
-  if (algoliaTotal > 0) {
-    total.value = algoliaTotal
-  } else {
-    // Fall back to the npm registry's `maintainer:` search (matching the page's
-    // provider order) when Algolia is empty or failed.
-    const npm = await $fetch<{ total?: number }>('https://registry.npmjs.org/-/v1/search', {
-      params: { text: `maintainer:${username}`, size: 1 },
-      timeout: 2500,
-    }).catch(() => null)
-    total.value = npm?.total ?? 0
-  }
+  const { data, refresh } = useUserPackages(username)
+  await refresh()
+  total.value = data.value?.total ?? 0
 }
 
 const description = computed(() =>
