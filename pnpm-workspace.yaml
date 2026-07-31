@@ -44,6 +44,7 @@ ignoreWorkspaceRootCheck: true
 minimumReleaseAgeExclude:
   - vue-data-ui@3.22.13
   - module-replacements@3.1.0
+  - knip@6.31.0
 
 overrides:
   '@types/node': 24.13.2
