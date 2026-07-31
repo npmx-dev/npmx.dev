@@ -369,10 +369,12 @@ export function useAlgoliaSearch() {
     let packageExists: boolean | null = null
     if (packageQueryIndex >= 0) {
       const pkgResponse = results[packageQueryIndex] as SearchResponse<AlgoliaHit> | undefined
-      const exactHit = pkgResponse?.hits[0]
-      packageExists = exactHit ? exactHit.name === checks?.checkPackage : false
+      const [exactHit] = pkgResponse?.hits ?? []
+      const isExactHit = exactHit?.name === checks?.checkPackage
 
-      if (exactHit) {
+      packageExists = isExactHit
+
+      if (exactHit && isExactHit) {
         searchResult.objects = [
           hitToSearchResult(exactHit),
           ...searchResult.objects.filter(result => result.package.name !== exactHit.name),
