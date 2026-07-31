@@ -116,7 +116,7 @@
     "vue-router": "5.1.0"
   },
   "devDependencies": {
-    "@e18e/eslint-plugin": "0.5.1",
+    "@e18e/eslint-plugin": "0.6.0",
     "@intlify/core-base": "11.4.6",
     "@npm/types": "2.1.0",
     "@playwright/test": "1.61.1",
@@ -138,7 +138,7 @@
     "fast-check": "4.8.0",
     "h3": "1.15.11",
     "h3-next": "npm:h3@2.0.1-rc.22",
-    "knip": "6.24.0",
+    "knip": "6.31.0",
     "markdown-it-anchor": "9.2.0",
     "msw": "catalog:msw",
     "msw-storybook-addon": "catalog:storybook",
