@@ -1309,6 +1309,12 @@
                 "error": {
                   "type": "string"
                 },
+                "title_list": {
+                  "type": "string"
+                },
+                "title_controls": {
+                  "type": "string"
+                },
                 "summary": {
                   "type": "object",
                   "properties": {

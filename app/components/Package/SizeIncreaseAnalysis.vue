@@ -152,7 +152,7 @@ const {
               <div
                 class="flex items-center justify-start gap-1.5 mb-2 pb-2 border-b border-amber-600/10"
                 role="toolbar"
-                aria-label="Dependency view controls"
+                :aria-label="$t('package.size_increase.analyze.title_controls')"
               >
                 <button
                   type="button"
@@ -195,7 +195,7 @@ const {
                 class="custom-scrollbar pe-1 transition-all duration-300"
                 :class="{ 'overflow-y-auto max-h-[216px]': !noResultScroll }"
                 role="region"
-                aria-label="Dependencies difference list"
+                :aria-label="$t('package.size_increase.analyze.title_list')"
               >
                 <ul
                   v-if="result && result.length > 0"

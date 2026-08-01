@@ -427,6 +427,8 @@
         "cancel": "Cancelar",
         "cancelling": "Cancelando...",
         "error": "El análisis falló, revisa la consola para más detalles.",
+        "title_list": "Lista de diferencias de dependencias",
+        "title_controls": "Controles de vista de dependencias",
         "summary": {
           "total_size": "Variación de tamaño (total): {size} {bytes}",
           "js_core_size": "Variación de tamaño (solo dependencias): {size} {bytes}",

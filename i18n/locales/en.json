@@ -435,6 +435,8 @@
         "cancel": "Cancel",
         "cancelling": "Cancelling...",
         "error": "Analysis failed, check the console for details.",
+        "title_list": "Dependencies difference list",
+        "title_controls": "Dependency view controls",
         "summary": {
           "total_size": "Size variation (total): {size} {bytes}",
           "js_core_size": "Size variation (only dependencies): {size} {bytes}",
