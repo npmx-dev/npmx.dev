@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import type { InstallSizeDiff } from '~/composables/useInstallSizeDiff'
+import { computed } from 'vue'
 
 const props = defineProps<{
   diff: InstallSizeDiff
+  packageName?: string | null
+  version?: string | null
 }>()
 
 const bytesFormatter = useBytesFormatter()
@@ -14,10 +17,10 @@ const sizePercent = computed(() => percentFormatter.value.format(Math.abs(props.
 
 <template>
   <div
-    class="border border-amber-600/40 bg-amber-500/10 rounded-lg px-3 py-2 text-base text-amber-800 dark:text-amber-400"
+    class="border border-amber-600/40 bg-amber-500/10 rounded-lg px-3 py-2 text-base text-amber-800 dark:text-amber-400 of-hidden"
   >
     <h2 class="font-medium mb-1 flex items-center gap-2">
-      <span class="i-lucide:trending-up w-4 h-4" aria-hidden="true" />
+      <span class="i-lucide:trending-up w-4 h-4 shrink-0" aria-hidden="true" />
       {{
         diff.sizeThresholdExceeded && diff.depThresholdExceeded
           ? $t('package.size_increase.title_both', { version: diff.comparisonVersion })
@@ -26,6 +29,7 @@ const sizePercent = computed(() => percentFormatter.value.format(Math.abs(props.
             : $t('package.size_increase.title_deps', { version: diff.comparisonVersion })
       }}
     </h2>
+
     <p class="text-sm m-0 mt-1">
       <i18n-t v-if="diff.sizeThresholdExceeded" keypath="package.size_increase.size" scope="global">
         <template #percent
@@ -47,5 +51,11 @@ const sizePercent = computed(() => percentFormatter.value.format(Math.abs(props.
         >
       </i18n-t>
     </p>
+
+    <PackageSizeIncreaseAnalysis
+      :package-name="packageName"
+      :version="version"
+      :comparison-version="diff.comparisonVersion"
+    />
   </div>
 </template>

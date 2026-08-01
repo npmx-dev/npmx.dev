@@ -134,6 +134,51 @@ vi.mock('~/composables/useCanGoBack', () => {
   }
 })
 
+vi.mock('~/composables/pkg-size/useAnalyzeCauseWorker', () => ({
+  useAnalyzeCauseWorker: () => ({
+    available: ref(true),
+    analyzing: ref(false),
+    cancelling: ref(false),
+    loading: ref(false),
+    result: ref([
+      {
+        isOptional: false,
+        name: 'valibot',
+        sizeDelta: 1843461,
+        sizeDeltaText: '1.8 MB',
+        status: 'added',
+        statusText: 'Added',
+        v1: null,
+        v2: {
+          isOptional: false,
+          size: 1843461,
+          sizeText: '1.8 MB',
+          version: '1.4.2',
+        },
+      },
+    ]),
+    error: ref(null),
+    summary: ref({
+      added: 20,
+      addedText: '20',
+      mandatorySizeDelta: 13357056,
+      mandatorySizeDeltaBytesText: '13,357,056',
+      mandatorySizeDeltaText: '13.4 MB',
+      netDependencies: 14,
+      netDependenciesText: '+14',
+      removed: 6,
+      removedText: '6',
+      sizeDelta: 94035365,
+      sizeDeltaBytesText: '94,035,365',
+      sizeDeltaText: '94 MB',
+    }),
+    noResultScroll: ref(false),
+    allDependencies: ref(true),
+    startAnalyzeCause: vi.fn(),
+    cancelAnalyzeCause: vi.fn(),
+  }),
+}))
+
 // Import components from #components where possible
 // For server/client variants, we need to import directly to test the specific variant
 import {
@@ -279,6 +324,7 @@ import {
   TabList,
   TabItem,
   TabPanel,
+  PackageSizeIncreaseAnalysis,
 } from '#components'
 
 // Server variant components must be imported directly to test the server-side render
@@ -4590,6 +4636,23 @@ describe('component accessibility audits', () => {
         props: { val: 99, label: 'Progress status for en' },
       })
       const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('SizeIncreaseAnalysis', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageSizeIncreaseAnalysis, {
+        props: {
+          packageName: 'nuxt',
+          version: '4.5.0',
+          comparisonVersion: '4.4.8',
+          open: true,
+        },
+      })
+
+      const results = await runAxe(component)
+
       expect(results.violations).toEqual([])
     })
   })

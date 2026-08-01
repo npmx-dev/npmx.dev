@@ -430,7 +430,34 @@
       "title_deps": "Significant dependency count increase since v{version}",
       "title_both": "Significant size and dependency increase since v{version}",
       "size": "Install size increased by {percent} ({size} larger)",
-      "deps": "{count} more dependency | {count} more dependencies"
+      "deps": "{count} more dependency | {count} more dependencies",
+      "analyze": {
+        "analyze": "Analyze",
+        "cancel": "Cancel",
+        "cancelling": "Cancelling...",
+        "error": "Analysis failed, check the console for details.",
+        "title_list": "Dependencies difference list",
+        "title_controls": "Dependency view controls",
+        "summary": {
+          "total_size": "Size variation (total): {size} {bytes}",
+          "js_core_size": "Size variation (only dependencies): {size} {bytes}",
+          "bytes": "({bytes} bytes)",
+          "deps_variation": "Dependency variation: {net} ({details})",
+          "deps_details": "Added: {added}, Removed: {removed}",
+          "no_deps": "No dependencies found"
+        },
+        "diff": "Diff balance",
+        "only_deps": "Only dependencies",
+        "all_deps": "All dependencies",
+        "expand": "Expand",
+        "collapse": "Collapse",
+        "status": {
+          "added": "Added",
+          "changed": "Changed",
+          "unchanged": "Unchanged",
+          "removed": "Removed"
+        }
+      }
     },
     "size_decrease": {
       "title_size": "Package size decreased since v{version}!",
