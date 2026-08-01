@@ -29,7 +29,7 @@ catalogs:
     'storybook-i18n': '^10.1.1'
 
   vite-plus:
-    'vite': 'npm:@voidzero-dev/vite-plus-core@0.2.2'
+    'vite': 'npm:@voidzero-dev/vite-plus-core@0.2.7'
     'vite-plus': '0.2.2'
     'vitest': '4.1.9'
     '@vitest/browser-playwright': '4.1.9'
@@ -47,15 +47,15 @@ minimumReleaseAgeExclude:
   - knip@6.31.0
 
 overrides:
-  '@types/node': 24.13.2
+  '@types/node': 24.13.3
   nuxt-og-image: ^6.6.0
   sharp: 0.35.3
   typescript: npm:typescript-native-bridge@6.0.3-bridge.7.tsgo.7.0.2
   vite: 'catalog:vite-plus'
   vitest: 'catalog:vite-plus'
-  vue-router: 5.1.0
+  vue-router: 5.2.0
   markdown-exit: 1.1.0-beta.2
-  oxc-parser: 0.138.0
+  oxc-parser: 0.142.0
 
 packageExtensions:
   '@nuxt/scripts':
