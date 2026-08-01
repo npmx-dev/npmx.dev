@@ -10558,8 +10558,8 @@ packages:
   vue-component-type-helpers@3.3.8:
     resolution: {integrity: sha512-troqCMmQodQDqUqn63NQaFi+CDSclSe7sc8VEBFqf5GFLqmGR2Ph3P2WEC7qwpRVyEWsTi/aAr4vyOe/B1hU3g==}
 
-  vue-component-type-helpers@3.3.8:
-    resolution: {integrity: sha512-troqCMmQodQDqUqn63NQaFi+CDSclSe7sc8VEBFqf5GFLqmGR2Ph3P2WEC7qwpRVyEWsTi/aAr4vyOe/B1hU3g==}
+  vue-component-type-helpers@3.3.9:
+    resolution: {integrity: sha512-3c/UfMe0SqyEfcGTyH7mfshHagJ9QTCbppCb0/uGpHZpFug7+If3GeGZN7I0YheKEExemx3xldQPoO7PQSOLQg==}
 
   vue-data-ui@3.22.13:
     resolution: {integrity: sha512-NQeLKNUZQWw9DGQUEQPQo2kIcKV+Uap685DTUzydK6b+N4E6CByy/VepaNIScRbyUV1wFWe5aG3pnyyg32aN7g==}
@@ -14958,7 +14958,7 @@ snapshots:
       storybook: 10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.7)(vite-plus@0.2.2)
       type-fest: 2.19.0
       vue: 3.5.39(typescript@6.0.3)
-      vue-component-type-helpers: 3.3.8
+      vue-component-type-helpers: 3.3.9
 
   '@swc/helpers@0.5.23':
     dependencies:
@@ -22689,7 +22689,7 @@ snapshots:
 
   vue-component-type-helpers@3.3.8: {}
 
-  vue-component-type-helpers@3.3.8: {}
+  vue-component-type-helpers@3.3.9: {}
 
   vue-data-ui@3.22.13(vue@3.5.39):
     dependencies:
