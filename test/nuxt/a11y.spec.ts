@@ -216,6 +216,8 @@ import {
   NoodleLens,
   NoodlePride3Logo,
   NoodleTetrisLogo,
+  NoodleGifDayLogo,
+  NoodleGifDayGifText,
   LinkBase,
   CallToAction,
   ChangelogCard,
@@ -507,6 +509,23 @@ describe('component accessibility audits', () => {
           logo: NoodleKawaiiLogo,
         },
       })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleGifDayGifText, {
+        props: {
+          text: 'N',
+          backgroundUrl: 'some_image_here.gif',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleGifDayLogo)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
@@ -1453,6 +1472,7 @@ describe('component accessibility audits', () => {
   })
 
   describe('TabRoot + TabList + TabItem + TabPanel', () => {
+    // oxlint-disable-next-line unicorn/consistent-function-scoping
     function createTabsFixture(modelValue: string, idPrefix: string) {
       return defineComponent({
         setup() {

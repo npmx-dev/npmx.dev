@@ -43,7 +43,7 @@ export const GITLAB_HOSTS = [
  * is effectively user-controlled input that can point at a malicious user-controlled server, this
  * would put us at risk of Server-Side Request Forgery (SSRF). Thus we only support allowlisted hosts.
  */
-export const FORGEJO_HOSTS = ['next.forgejo.org', 'try.next.forgejo.org']
+export const FORGEJO_HOSTS = ['next.forgejo.org', 'try.next.forgejo.org', 'code.haverbeke.berlin']
 
 /**
  * No open-ended Gitea host detection for the same reason as Forgejo above.

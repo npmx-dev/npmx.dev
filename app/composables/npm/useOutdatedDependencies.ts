@@ -26,7 +26,7 @@ function resolveOutdated(
 
   let filteredVersions = versions
   if (!constraintIncludesPrerelease(constraint)) {
-    filteredVersions = versions.filter(v => !getPrerelease(v))
+    filteredVersions = versions.filter(v => !getPrerelease(v)?.length)
   }
 
   const resolved = findMaxSatisfying(filteredVersions, constraint)

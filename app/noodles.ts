@@ -8,6 +8,7 @@ const ALFON = { name: 'Alfon', blueskyHandle: 'alfon.dev' }
 const GRAPHIEROS = { name: 'Graphieros', blueskyHandle: 'graphieros.npmx.social' }
 const FELIX = { name: 'Felix Schneider', blueskyHandle: 'felixs.dev' }
 const JVIIDE = { name: 'Joachim Viide', blueskyHandle: 'jviide.iki.fi' }
+const MATTEO = { name: 'Matteo Gabriele', blueskyHandle: 'matteogabriele.bsky.social' }
 
 const entries: Noodle[] = [
   {
@@ -149,6 +150,24 @@ const entries: Noodle[] = [
     references: [
       { label: 'World Emoji Day Website', url: 'https://worldemojiday.com/' },
       { label: 'Wikipedia', url: 'https://en.wikipedia.org/wiki/World_Emoji_Day' },
+    ],
+  },
+
+  {
+    key: 'gif-day',
+    title: 'National GIF Day',
+    slug: 'gif-day',
+    date: '2026-09-5',
+    timezone: 'auto',
+    tagline: false,
+    occasion: 'National GIF day',
+    prUrl: 'https://github.com/npmx-dev/npmx.dev/pull/2778',
+    authors: [MATTEO],
+    references: [
+      {
+        label: 'National GIF day',
+        url: 'https://www.whatnationaldayisit.com/day/Gif/',
+      },
     ],
   },
 ]
