@@ -29,6 +29,7 @@ export async function fetchGitHubWithRetries<T>(
       })
 
       if (response.status === 200) {
+        // oxlint-disable-next-line eslint/no-underscore-dangle
         return (response._data as T) ?? null
       }
 

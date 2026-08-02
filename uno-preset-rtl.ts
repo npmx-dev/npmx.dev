@@ -78,6 +78,7 @@ function handlerRounded(
 
   if (s === 'full') return corners.map(i => [`border${i}-radius`, 'calc(infinity * 1px)'])
 
+  // oxlint-disable-next-line eslint/no-underscore-dangle
   const _v = theme.radius?.[s] ?? h.bracket?.cssvar?.global?.fraction?.rem?.(s)
   if (_v != null) {
     return corners.map(i => [`border${i}-radius`, _v])

@@ -62,7 +62,7 @@ export async function resolveVersionConstraint(
 
     // Filter out prerelease versions unless constraint explicitly includes one
     if (!constraintIncludesPrerelease(constraint)) {
-      versions = versions.filter(v => !getPrerelease(v))
+      versions = versions.filter(v => !getPrerelease(v)?.length)
     }
 
     return findMaxSatisfying(versions, constraint)

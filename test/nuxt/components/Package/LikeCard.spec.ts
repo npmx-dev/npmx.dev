@@ -10,6 +10,7 @@ describe('PackageLikeCard', () => {
     wrapper?.unmount()
   })
 
+  // oxlint-disable-next-line unicorn/consistent-function-scoping
   function mountLikeCard(packageUrl: string) {
     return mountSuspended(LikeCard, {
       props: { packageUrl },

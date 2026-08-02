@@ -76,6 +76,7 @@ export default defineCachedEventHandler(
             license: normalizeLicense(version.license),
             type: typeof version.type === 'string' ? version.type : undefined,
             hasTypes: hasBuiltInTypes(version) || undefined,
+            // oxlint-disable-next-line eslint/no-underscore-dangle
             hasTrustedPublisher: version._npmUser?.trustedPublisher ? true : undefined,
             hasProvenance: version.dist?.attestations ? true : undefined,
             tags: tagsByVersion.get(v) ?? [],
