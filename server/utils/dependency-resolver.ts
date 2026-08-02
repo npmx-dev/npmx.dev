@@ -161,12 +161,11 @@ export async function resolveDependencyTree(
         const tarballUrl = versionData.dist?.tarball ?? ''
         const key = `${name}@${version}`
 
+        const libc = (versionData as { libc?: unknown }).libc
         const selfIsNative = !!(
           (versionData.os && Array.isArray(versionData.os) && versionData.os.length > 0) ||
           (versionData.cpu && Array.isArray(versionData.cpu) && versionData.cpu.length > 0) ||
-          ((versionData as any).libc &&
-            Array.isArray((versionData as any).libc) &&
-            (versionData as any).libc.length > 0) ||
+          (Array.isArray(libc) && libc.length > 0) ||
           name.includes('-wasm32-') ||
           name.endsWith('-wasm32') ||
           name.includes('wasm32-wasi')
