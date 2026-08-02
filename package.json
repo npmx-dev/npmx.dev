@@ -49,7 +49,7 @@
     "@atproto/api": "0.20.36",
     "@atproto/lex": "0.3.2",
     "@atproto/lex-password-session": "0.1.9",
-    "@atproto/oauth-client-node": "0.5.1",
+    "@atproto/oauth-client-node": "0.3.15",
     "@deno/doc": "jsr:^0.189.1",
     "@floating-ui/vue": "2.0.1",
     "@iconify-json/lucide": "1.2.121",
