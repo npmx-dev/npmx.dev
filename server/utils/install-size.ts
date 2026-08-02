@@ -29,9 +29,13 @@ export const calculateInstallSize = defineCachedFunction(
         size: dep.size,
         tarballUrl: dep.tarballUrl,
         optional: dep.optional || undefined,
+        isNative: dep.isNative || undefined,
       })
-      totalSize += dep.size
-      dependencyCount++
+      // Do not count optional native packages as actual dependencies
+      if (!(dep.optional && dep.isNative)) {
+        totalSize += dep.size
+        dependencyCount++
+      }
     }
 
     // Sort by size descending

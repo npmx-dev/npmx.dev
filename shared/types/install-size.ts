@@ -5,6 +5,8 @@ export interface DependencySize {
   tarballUrl: string
   /** True if this is an optional dependency */
   optional?: boolean
+  /** True if this is a native package (os/cpu specific) */
+  isNative?: boolean
 }
 
 export interface InstallSizeResult {

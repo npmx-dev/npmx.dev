@@ -100,6 +100,7 @@ export interface ResolvedPackage {
   size: number
   tarballUrl: string
   optional: boolean
+  isNative?: boolean
   /** Depth level (only when trackDepth is enabled) */
   depth?: DependencyDepth
   /** Dependency path from root (only when trackDepth is enabled) */
@@ -122,13 +123,17 @@ export async function resolveDependencyTree(
 
   // Process level by level for correct depth tracking
   // Each entry includes the path of package names leading to this dependency
-  let currentLevel = new Map<string, { range: string; optional: boolean; path: string[] }>([
-    [rootName, { range: rootVersion, optional: false, path: [] }],
-  ])
+  let currentLevel = new Map<
+    string,
+    { range: string; optional: boolean; isNativeParent?: boolean; path: string[] }
+  >([[rootName, { range: rootVersion, optional: false, isNativeParent: false, path: [] }]])
   let level = 0
 
   while (currentLevel.size > 0) {
-    const nextLevel = new Map<string, { range: string; optional: boolean; path: string[] }>()
+    const nextLevel = new Map<
+      string,
+      { range: string; optional: boolean; isNativeParent?: boolean; path: string[] }
+    >()
 
     // Mark all packages in current level as seen before processing
     for (const name of currentLevel.keys()) {
@@ -139,7 +144,7 @@ export async function resolveDependencyTree(
     const entries = [...currentLevel.entries()]
     await mapWithConcurrency(
       entries,
-      async ([name, { range, optional, path }]) => {
+      async ([name, { range, optional: parentOptional, isNativeParent, path }]) => {
         const packument = await fetchPackument(name)
         if (!packument) return
 
@@ -156,11 +161,31 @@ export async function resolveDependencyTree(
         const tarballUrl = versionData.dist?.tarball ?? ''
         const key = `${name}@${version}`
 
+        const selfIsNative = !!(
+          (versionData.os && Array.isArray(versionData.os) && versionData.os.length > 0) ||
+          (versionData.cpu && Array.isArray(versionData.cpu) && versionData.cpu.length > 0) ||
+          ((versionData as any).libc &&
+            Array.isArray((versionData as any).libc) &&
+            (versionData as any).libc.length > 0) ||
+          name.includes('-wasm32-') ||
+          name.endsWith('-wasm32') ||
+          name.includes('wasm32-wasi')
+        )
+        const isNative = selfIsNative || isNativeParent
+        const optional = parentOptional
+
         // Build path for this package (path to parent + this package with version)
         const currentPath = [...path, `${name}@${version}`]
 
         if (!resolved.has(key)) {
-          const pkg: ResolvedPackage = { name, version, size, tarballUrl, optional }
+          const pkg: ResolvedPackage = {
+            name,
+            version,
+            size,
+            tarballUrl,
+            optional,
+            isNative: isNative || undefined,
+          }
           if (options.trackDepth) {
             pkg.depth = level === 0 ? 'root' : level === 1 ? 'direct' : 'transitive'
             pkg.path = currentPath
@@ -175,7 +200,13 @@ export async function resolveDependencyTree(
         if (versionData.dependencies) {
           for (const [depName, depRange] of Object.entries(versionData.dependencies)) {
             if (!seen.has(depName) && !nextLevel.has(depName)) {
-              nextLevel.set(depName, { range: depRange, optional: false, path: currentPath })
+              // Inherit optional and isNative flags from parent if they are truthy
+              nextLevel.set(depName, {
+                range: depRange,
+                optional: optional,
+                isNativeParent: isNative,
+                path: currentPath,
+              })
             }
           }
         }
@@ -184,7 +215,12 @@ export async function resolveDependencyTree(
         if (versionData.optionalDependencies) {
           for (const [depName, depRange] of Object.entries(versionData.optionalDependencies)) {
             if (!seen.has(depName) && !nextLevel.has(depName)) {
-              nextLevel.set(depName, { range: depRange, optional: true, path: currentPath })
+              nextLevel.set(depName, {
+                range: depRange,
+                optional: true,
+                isNativeParent: isNative,
+                path: currentPath,
+              })
             }
           }
         }

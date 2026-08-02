@@ -325,13 +325,28 @@ export const analyzeDependencyTree = defineCachedFunction(
     })
 
     // Aggregate total counts
-    const totalCounts = { total: 0, critical: 0, high: 0, moderate: 0, low: 0 }
-    for (const pkg of vulnerablePackages) {
-      totalCounts.total += pkg.counts.total
-      totalCounts.critical += pkg.counts.critical
-      totalCounts.high += pkg.counts.high
-      totalCounts.moderate += pkg.counts.moderate
-      totalCounts.low += pkg.counts.low
+    // Count how many native optional packages were included, to exclude them from the total
+    let nativeOptionalCount = 0
+    for (const pkg of resolved.values()) {
+      if (pkg.optional && pkg.isNative) {
+        nativeOptionalCount++
+      }
+    }
+
+    const result: VulnerabilityTreeResult = {
+      package: name,
+      version,
+      vulnerablePackages,
+      deprecatedPackages,
+      totalCounts: {
+        total: vulnerablePackages.reduce((sum, pkg) => sum + pkg.counts.total, 0),
+        critical: vulnerablePackages.reduce((sum, pkg) => sum + pkg.counts.critical, 0),
+        high: vulnerablePackages.reduce((sum, pkg) => sum + pkg.counts.high, 0),
+        moderate: vulnerablePackages.reduce((sum, pkg) => sum + pkg.counts.moderate, 0),
+        low: vulnerablePackages.reduce((sum, pkg) => sum + pkg.counts.low, 0),
+      },
+      totalPackages: resolved.size - nativeOptionalCount,
+      failedQueries,
     }
 
     // Log if batch query failed entirely
@@ -342,15 +357,7 @@ export const analyzeDependencyTree = defineCachedFunction(
       )
     }
 
-    return {
-      package: name,
-      version,
-      vulnerablePackages,
-      deprecatedPackages,
-      totalPackages: packages.length,
-      failedQueries,
-      totalCounts,
-    }
+    return result
   },
   {
     maxAge: 60 * 60,
