@@ -146,7 +146,7 @@
     "schema-dts": "2.0.0",
     "storybook": "catalog:storybook",
     "storybook-i18n": "catalog:storybook",
-    "typescript": "6.0.3",
+    "typescript": "7.0.2",
     "unplugin-vue-markdown": "32.0.0",
     "vite": "catalog:vite-plus",
     "vitest": "catalog:vite-plus",
