@@ -1,6 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
 
-vi.stubGlobal('defineCachedFunction', (fn: Function) => fn)
+vi.stubGlobal(
+  'defineCachedFunction',
+  <TArgs extends unknown[], TResult>(fn: (...args: TArgs) => TResult) => fn,
+)
 
 const mockResolveDependencyTree = vi.fn()
 vi.stubGlobal('resolveDependencyTree', mockResolveDependencyTree)
@@ -41,5 +44,11 @@ describe('install-size', () => {
 
     // All dependencies should still be returned in the list
     expect(result.dependencies).toHaveLength(3)
+    expect(result.dependencies).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ name: 'native-dep', optional: true, isNative: true }),
+        expect.objectContaining({ name: 'native-child-dep', optional: true, isNative: true }),
+      ]),
+    )
   })
 })
