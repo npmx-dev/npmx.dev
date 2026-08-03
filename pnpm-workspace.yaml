@@ -30,7 +30,7 @@ catalogs:
 
   vite-plus:
     'vite': 'npm:@voidzero-dev/vite-plus-core@0.2.7'
-    'vite-plus': '0.2.2'
+    'vite-plus': '0.2.7'
     'vitest': '4.1.9'
     '@vitest/browser-playwright': '4.1.9'
     '@vitest/coverage-v8': '4.1.9'
