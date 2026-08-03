@@ -1,101 +1,33 @@
 <script setup lang="ts">
-import { ACTIVE_NOODLES, PERMANENT_NOODLES, type Noodle } from '../Noodle'
+import { onMounted, ref, shallowRef } from 'vue'
+import type { Component } from 'vue'
+import { loadNoodleLogo } from '~/noodles/logos'
 
 const { env } = useAppConfig().buildInfo
 
-const activeNoodlesData = ACTIVE_NOODLES.map(noodle => ({
-  key: noodle.key,
-  date: noodle.date,
-  dateTo: noodle.dateTo,
-  timezone: noodle.timezone,
-  tagline: noodle.tagline,
-}))
+// Decided on the server and embedded in the SSR payload; the client only loads
+// the single logo it needs.
+const active = useActiveNoodle()
+const activeLogo = shallowRef<Component | null>(null)
+const hideTagline = ref(false)
 
-const permanentNoodlesData = PERMANENT_NOODLES.map(noodle => ({
-  key: noodle.key,
-  tagline: noodle.tagline,
-}))
+onMounted(async () => {
+  const noodle = active.value
+  if (!noodle) return
 
-onPrehydrate(el => {
-  const tagline = el.querySelector<HTMLElement>('#intro-header-tagline')
-  const defaultLogo = el.querySelector<HTMLElement>('#intro-header-noodle-default')
-
-  if (!tagline || !defaultLogo) return
-
-  let permanentNoodles
-  try {
-    permanentNoodles = JSON.parse(el.dataset.permanentNoodles as string) as Noodle[]
-  } catch {
-    return
-  }
-  const activePermanentNoodle = permanentNoodles?.find(noodle =>
-    new URLSearchParams(window.location.search).has(noodle.key),
-  )
-
-  if (activePermanentNoodle) {
-    const permanentNoodleLogo = el.querySelector<HTMLElement>(
-      `#intro-header-noodle-${activePermanentNoodle.key}`,
-    )
-
-    if (!permanentNoodleLogo) return
-
-    permanentNoodleLogo.style.display = 'block'
-    defaultLogo.style.display = 'none'
-    if (activePermanentNoodle.tagline === false) {
-      tagline.style.display = 'none'
-    }
-    return
-  }
-
-  let activeNoodles
-  try {
-    activeNoodles = JSON.parse(el.dataset.activeNoodles as string) as Noodle[]
-  } catch {
-    return
-  }
-
-  const currentActiveNoodles = activeNoodles.filter(noodle => {
-    if (!noodle.date) return false
-
-    const today = new Intl.DateTimeFormat('en-CA', {
-      timeZone: noodle.timezone !== 'auto' ? noodle.timezone : undefined,
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    }).format(new Date())
-
-    if (!noodle.dateTo) return today === noodle.date
-    return today >= noodle.date && today <= noodle.dateTo
-  })
-
-  if (!currentActiveNoodles.length) return
-
-  const roll = Math.floor(Math.random() * currentActiveNoodles.length)
-  const selectedNoodle = currentActiveNoodles[roll]
-
-  if (!selectedNoodle) return
-
-  const noodleLogo = el.querySelector<HTMLElement>(`#intro-header-noodle-${selectedNoodle.key}`)
-
-  if (!defaultLogo || !noodleLogo || !tagline) return
-
-  defaultLogo.style.display = 'none'
-  noodleLogo.style.display = 'block'
-  if (selectedNoodle.tagline === false) {
-    tagline.style.display = 'none'
-  }
+  hideTagline.value = noodle.tagline === false
+  const logoComponent = await loadNoodleLogo(noodle.key)
+  if (logoComponent) activeLogo.value = logoComponent
 })
 </script>
 
 <template>
-  <div
-    :data-active-noodles="JSON.stringify(activeNoodlesData)"
-    :data-permanent-noodles="JSON.stringify(permanentNoodlesData)"
-  >
+  <div>
     <h1 class="sr-only">
       {{ $t('alt_logo') }}
     </h1>
     <div
+      v-show="!activeLogo"
       id="intro-header-noodle-default"
       class="relative mb-6 w-fit mx-auto motion-safe:animate-fade-in motion-safe:animate-fill-both"
       aria-hidden="true"
@@ -109,23 +41,15 @@ onPrehydrate(el => {
       </span>
     </div>
     <component
-      v-for="noodle in PERMANENT_NOODLES"
-      :key="noodle.key"
-      :id="`intro-header-noodle-${noodle.key}`"
-      class="hidden"
+      :is="activeLogo"
+      v-if="activeLogo"
+      id="intro-header-noodle-active"
+      class="mb-6 w-fit mx-auto motion-safe:animate-fade-in motion-safe:animate-fill-both"
       aria-hidden="true"
-      :is="noodle.logo"
-    />
-    <component
-      v-for="noodle in ACTIVE_NOODLES"
-      :key="noodle.key"
-      :id="`intro-header-noodle-${noodle.key}`"
-      class="hidden"
-      aria-hidden="true"
-      :is="noodle.logo"
     />
     <p
       id="intro-header-tagline"
+      v-show="!hideTagline"
       class="text-fg-muted text-lg sm:text-xl mb-12 lg:mb-14 motion-safe:animate-slide-up motion-safe:animate-fill-both delay-100"
     >
       {{ $t('tagline') }}

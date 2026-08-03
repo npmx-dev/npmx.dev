@@ -1054,7 +1054,7 @@ Global application settings are added to the Storybook toolbar for easy testing 
 - the **homepage**, where it temporarily replaces the logo while it is active, and
 - the **`/noodles` archive**, where every past noodle lives on permanently with its own detail page.
 
-The two are wired up independently, so shipping a noodle to the homepage **and** the archive in the same PR keeps things in sync. Do both at once.
+The two are wired up by `key` but live in separate files, so shipping a noodle to the homepage **and** the archive in the same PR keeps things in sync. Do both at once.
 
 ### 1. Add the logo component
 
@@ -1077,79 +1077,82 @@ It's recommended to add a tooltip with event information to each noodle. If the 
 </template>
 ```
 
-### 2. Register the logo and show it on the homepage
+### 2. Register the logo and add the archive entry
 
-In `app/components/Noodle/index.ts`:
+Noodles live in two files, split by what reaches the browser. The homepage's active-noodle decision runs server-side and is delivered via the SSR payload, so the client only ever loads the one logo it needs:
 
-- import the component, and
-- add it to the homepage rotation — `ACTIVE_NOODLES` for a date-bound noodle, or `PERMANENT_NOODLES` for one shown only behind a query param (e.g. `?kawaii`), and
-- register it in the `NOODLE_LOGOS` map so the archive can resolve it by `key`.
+1. **`app/noodles/logos.ts`** — register a lazy loader for your `Logo.vue`. Logos are code-split and fetched only when a page actually renders them. This is the only noodle file the homepage client imports.
+2. **`app/noodles.ts`** — everything else: the archive entry (title, slug, dates, occasion, authors, poster, references) plus its homepage rotation fields (`homepage`, `permanent`, `phases`).
 
 ```ts
-import NoodleTetrisLogo from './Tetris/Logo.vue'
-
-export const ACTIVE_NOODLES: Noodle[] = [
-  {
-    key: 'tetris',
-    logo: NoodleTetrisLogo,
-    date: '2026-06-06',
-    dateTo: '2026-06-08',
-    timezone: 'auto', // visitor's local time; or an IANA name like 'America/Los_Angeles'
-    tagline: false, // hide the npmx tagline while active
-  },
-]
-
-const NOODLE_LOGOS: Record<string, Component> = {
-  // …
-  tetris: NoodleTetrisLogo,
-}
+// app/noodles/logos.ts
+const tetris: NoodleLogoLoader = () => import('../components/Noodle/Tetris/Logo.vue')
 ```
 
-> [!IMPORTANT]
-> The `date` and `dateTo` keys are inclusive, meaning they specify the start (at 00:00) and end (at 23:59) dates. If the dates overlap, a noodle will be randomly selected on each visit.
-
-> [!IMPORTANT]
-> The `key` here must exactly match the `key` of the archive entry you add in the next step — that is how the archive looks up the logo.
-
-### 3. Add the archive entry
-
-Append an entry to `app/noodles.ts`. Only `key`, `title`, `slug`, and `date` are required; every other field is optional, and the detail page renders a section only for the fields you fill in. The list is sorted by date automatically.
-
 ```ts
+// app/noodles.ts
 {
   key: 'tetris',
   title: 'World Tetris Day',
   slug: 'tetris', // becomes /noodles/tetris — must be unique
   date: '2026-06-06',
   dateTo: '2026-06-08',
-  timezone: 'auto',
-  tagline: false,
+  timezone: 'UTC', // IANA name, defaults to UTC
+  tagline: false, // hide the npmx tagline while active
   occasion: 'The legendary console turns 42. …',
   prUrl: 'https://github.com/npmx-dev/npmx.dev/pull/2855',
   authors: [ALEX], // reuse the author consts at the top of the file
   posterImage: '/extra/tetris.svg', // OG-image hero
   references: [{ label: 'Tetris (1984)', url: 'https://en.wikipedia.org/wiki/Tetris' }],
+  logo: logo('tetris'),
+  homepage: true, // rotate on the homepage during this noodle's date window
 },
 ```
 
-Authors link out to Bluesky via their `blueskyHandle`. Reuse an existing author const (`ALEX`, `ALFON`, …) or add a new one at the top of the file.
+Only `key`, `title`, `slug`, `date`, and `logo` are required; every other field is optional, and the detail page renders a section only for the fields you fill in.
 
-#### Grouping a series with `variants`
+> [!IMPORTANT]
+> The `date` and `dateTo` keys are inclusive, meaning they specify the start (at 00:00) and end (at 23:59) dates. If the dates overlap, a noodle will be randomly selected on each visit.
 
-When a single occasion ships as several rotating designs (Pride Month, for example, cycles through three logos), add **one** archive entry rather than one per design. Point `posterImage` at the lead artwork and list the others in `variants` — the detail page's lens carousel shows the registered logo first, then each variant image:
+**Homepage rotation** is opt-in, from the entry's own fields:
+
+- `homepage: true` — rotate during the entry's `date`/`dateTo` window (e.g. `tetris`, `emoji-day`).
+- `permanent: true` — always available behind its query param (e.g. `?kawaii`), never date-gated.
+- `phases` — see below.
+
+A noodle with none of these stays in the archive but never rotates on the homepage (e.g. `press`, `nodejs`). The `key` must match the loader key in `logos.ts`.
+
+Authors link out to Bluesky via their `blueskyHandle`. Reuse an existing author const (`ALEX`, `ALFON`, …) or add a new one at the top of `app/noodles.ts`.
+
+#### Grouping a series (Pride Month example)
+
+When a single occasion ships as several rotating designs on the homepage timeline, add **one** archive entry and describe each spin as a `phase`. Each phase has its own `key`, dates, and lazy logo. Point `posterImage` at the lead artwork and list the other designs in `variants` — the detail page's lens carousel shows the registered logo first, then each variant image:
 
 ```ts
+// app/noodles.ts — one archive entry, three homepage phases
 {
-  key: 'pride-1', // matches the registered NOODLE_LOGOS key (renders first in the lens)
+  key: 'pride-1',
   title: 'Pride Month',
   slug: 'pride',
+  date: '2026-06-01',
+  dateTo: '2026-07-01', // the archive shows the whole celebration…
   // …
   posterImage: '/extra/pride-1.svg',
   variants: ['/extra/pride-2.svg', '/extra/pride-3.png'],
+  logo: logo('pride-1'),
+  phases: [ // …while the homepage rotates the individual designs
+    { key: 'pride-1', date: '2026-06-01', dateTo: '2026-06-06', timezone: 'UTC' },
+    { key: 'pride-2', date: '2026-06-08', dateTo: '2026-06-20', timezone: 'UTC' },
+    { key: 'pride-3', date: '2026-06-20', dateTo: '2026-07-01', timezone: 'UTC' },
+  ],
 },
 ```
 
-### 4. Verify
+The homepage `phases` only affect the front page rotation; the archive card, detail page, and slug (`/noodles/pride`) all keep using the entry itself.
+
+The homepage slots only affect the front page rotation; the archive card, detail page, and slug (`/noodles/pride`) all keep using the entry itself.
+
+### 3. Verify
 
 ```bash
 pnpm test:types
