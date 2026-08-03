@@ -20344,7 +20344,7 @@ snapshots:
   msw-storybook-addon@3.0.0(msw@2.15.0)(storybook@10.5.5):
     dependencies:
       msw: 2.15.0(@types/node@24.13.3)(typescript-native-bridge@6.0.3-bridge.9.tsgo.7.0.2)
-      storybook: 10.5.5(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.8)(vite-plus@0.2.2)
+      storybook: 10.5.5(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.8)(vite-plus@0.2.7)
 
   msw@2.15.0(@types/node@24.13.3)(typescript-native-bridge@6.0.3-bridge.9.tsgo.7.0.2):
     dependencies:
