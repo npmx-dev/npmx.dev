@@ -706,9 +706,7 @@ import { MyComponent } from '#components'
 describe('MyComponent', () => {
   it('should have no accessibility violations', async () => {
     const component = await mountSuspended(MyComponent, {
-      props: {
-        /* required props */
-      },
+      props: {/* required props */},
     })
     const results = await runAxe(component)
     expect(results.violations).toEqual([])
