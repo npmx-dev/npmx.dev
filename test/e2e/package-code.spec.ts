@@ -8,6 +8,14 @@ test.describe('Package Code Viewer', () => {
     await expect(page.locator('h1')).toContainText('empathic')
 
     // Verify the specific version is rendered
-    await expect(page.locator('text=2.0.0').first()).toBeVisible()
+    await expect(page.locator('[data-testid="version-selector-button"]').locator('text=2.0.0')).toBeVisible()
+
+    const codePage = page.locator('`#code-page-container`')
+
+    await expect(codePage.locator('aside').getByRole('link', { name: 'package.json', exact: true })).toBeVisible()
+
+    const directoryListing = codePage.getByRole('table')
+    await expect(directoryListing).toBeVisible()
+    await expect(directoryListing.getByRole('link', { name: 'package.json', exact: true })).toBeVisible()
   })
 })
