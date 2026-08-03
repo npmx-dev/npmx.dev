@@ -12,7 +12,7 @@ test.describe('Package Code Viewer', () => {
       page.locator('[data-testid="version-selector-button"]').locator('text=2.0.0'),
     ).toBeVisible()
 
-    const codePage = page.locator('`#code-page-container`')
+    const codePage = page.locator('#code-page-container')
 
     await expect(
       codePage.locator('aside').getByRole('link', { name: 'package.json', exact: true }),
