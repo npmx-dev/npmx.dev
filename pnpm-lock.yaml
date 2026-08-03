@@ -103,6 +103,9 @@ importers:
       '@intlify/shared':
         specifier: 11.4.6
         version: 11.4.6
+      '@keytrace/claims':
+        specifier: 1.4.0
+        version: 1.4.0
       '@lunariajs/core':
         specifier: https://pkg.pr.new/lunariajs/lunaria/@lunariajs/core@904b935
         version: https://pkg.pr.new/lunariajs/lunaria/@lunariajs/core@904b935(supports-color@10.2.2)
@@ -2301,6 +2304,10 @@ packages:
 
   '@jsr/std__path@1.1.6':
     resolution: {integrity: sha512-H1Cmg6z8jFyIsQbVV+vZB4eOx4k6Qg8lyUM6l7nZysj5MZumg89kb0M1bsPBTGQis3fw6mJFkJELo5+AK6oCFA==, tarball: https://npm.jsr.io/~/11/@jsr/std__path/1.1.6.tgz}
+
+  '@keytrace/claims@1.4.0':
+    resolution: {integrity: sha512-XeojwXFFnvhPsDI7f99e2KCvk8gDC5ztKxRBplB+Zx5OmfcaBovX+DZJODZsxz3b1r4ZITBDOjZD8gftgpAZyw==}
+    engines: {node: '>=18'}
 
   '@kwsites/file-exists@1.1.1':
     resolution: {integrity: sha512-m9/5YGR18lIwxSFDwfE3oA7bWuq9kdau6ugN4H2rJeyhFQZcG9AgSHkQtSD15a8WvTgfz9aikZMrKPHvbpqFiw==}
@@ -12836,6 +12843,8 @@ snapshots:
   '@jsr/std__path@1.1.6':
     dependencies:
       '@jsr/std__internal': 1.0.14
+
+  '@keytrace/claims@1.4.0': {}
 
   '@kwsites/file-exists@1.1.1(supports-color@10.2.2)':
     dependencies:

@@ -374,7 +374,6 @@
     "cancel": "Cancel",
     "save": "Save",
     "edit": "Edit",
-    "error": "Error",
     "view_on": {
       "npm": "View on npm",
       "github": "View on GitHub",
@@ -402,6 +401,8 @@
     "website": "Website",
     "website_placeholder": "https://example.com",
     "likes": "Likes",
+    "likes_error": "Could not load liked packages.",
+    "likes_empty": "No liked packages yet.",
     "seo_title": "{handle} - npmx",
     "seo_description": "npmx profile by {handle}",
     "not_found": "Profile Not Found",
@@ -410,6 +411,23 @@
       "message": "It doesn't look like they're using npmx yet. Want to tell them about it?",
       "share_button": "Share on Bluesky",
       "compose_text": "Hey {'@'}{handle}! Have you checked out npmx.dev yet? It's a browser for the npm registry that's fast, modern, and open-source.\nhttps://npmx.dev"
+    },
+    "linked_accounts": {
+      "status": {
+        "verified": "Verified",
+        "unverified": "Unverified",
+        "stale": "Stale",
+        "failed": "Failed"
+      },
+      "title": "Linked Accounts",
+      "verified_summary": "{verified}/{total} verified",
+      "legend_aria_label": "Account verification status legend",
+      "legend_info_title": "What the badges mean",
+      "legend_verified": "The claim has been checked and the account is confirmed.",
+      "legend_unverified": "We couldn't confirm the claim - try re-verifying the account.",
+      "legend_stale": "The last verification is outdated; re-verify to refresh the status.",
+      "legend_failed": "Verification failed (see details). You can click \"Re-verify\" on the account to attempt a fresh check.",
+      "empty": "No linked accounts"
     }
   },
   "package": {

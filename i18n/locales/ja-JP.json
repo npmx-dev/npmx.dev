@@ -366,7 +366,6 @@
     "cancel": "キャンセル",
     "save": "保存",
     "edit": "編集",
-    "error": "エラー",
     "view_on": {
       "npm": "npmで表示",
       "github": "GitHubで表示",

@@ -1126,9 +1126,6 @@
         "edit": {
           "type": "string"
         },
-        "error": {
-          "type": "string"
-        },
         "view_on": {
           "type": "object",
           "properties": {
@@ -1210,6 +1207,12 @@
         "likes": {
           "type": "string"
         },
+        "likes_error": {
+          "type": "string"
+        },
+        "likes_empty": {
+          "type": "string"
+        },
         "seo_title": {
           "type": "string"
         },
@@ -1232,6 +1235,57 @@
               "type": "string"
             },
             "compose_text": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "linked_accounts": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "object",
+              "properties": {
+                "verified": {
+                  "type": "string"
+                },
+                "unverified": {
+                  "type": "string"
+                },
+                "stale": {
+                  "type": "string"
+                },
+                "failed": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "title": {
+              "type": "string"
+            },
+            "verified_summary": {
+              "type": "string"
+            },
+            "legend_aria_label": {
+              "type": "string"
+            },
+            "legend_info_title": {
+              "type": "string"
+            },
+            "legend_verified": {
+              "type": "string"
+            },
+            "legend_unverified": {
+              "type": "string"
+            },
+            "legend_stale": {
+              "type": "string"
+            },
+            "legend_failed": {
+              "type": "string"
+            },
+            "empty": {
               "type": "string"
             }
           },

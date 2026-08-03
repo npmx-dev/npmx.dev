@@ -319,6 +319,7 @@
       "slate": "स्लेट",
       "black": "कालो"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "किबोर्ड सर्टकटहरू सक्षम गर्नुहोस्",
     "keyboard_shortcuts_enabled_description": "अन्य ब्राउजर वा सिस्टम सर्टकटहरूसँग बाझिएमा किबोर्ड सर्टकटहरू निष्क्रिय गर्न सकिन्छ",
     "enable_code_ligatures": "कोडमा लिगेचरहरू सक्षम गर्नुहोस्",
@@ -366,7 +367,6 @@
     "cancel": "रद्द गर्नुहोस्",
     "save": "सेभ गर्नुहोस्",
     "edit": "सम्पादन गर्नुहोस्",
-    "error": "त्रुटि",
     "view_on": {
       "npm": "npm मा हेर्नुहोस्",
       "github": "GitHub मा हेर्नुहोस्",
@@ -402,6 +402,9 @@
       "message": "उहाँले npmx प्रयोग गरिरहनुभएको जस्तो देखिँदैन। उहाँलाई यसबारे बताउन चाहनुहुन्छ?",
       "share_button": "Bluesky मा सेयर गर्नुहोस्",
       "compose_text": "नमस्ते {'@'}{handle}! तपाईंले npmx.dev हेर्नुभयो? यो npm रजिस्ट्रीका लागि छिटो, आधुनिक र ओपन सोर्स ब्राउजर हो।\nhttps://npmx.dev"
+    },
+    "linked_accounts": {
+      "status": {}
     }
   },
   "package": {

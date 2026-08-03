@@ -94,6 +94,7 @@ const { isLoading: likesLoadingMore } = useInfiniteScroll(
   async () => {
     try {
       const result = await fetchProfileLikes(identity.value, likesCursor.value ?? null, 20)
+      likesError.value = false
       allLikesRecords.value = [...allLikesRecords.value, ...(result.likes ?? [])]
       likesCursor.value = result.cursor ?? null
     } catch {
@@ -123,6 +124,8 @@ const inviteUrl = computed(() => {
   return `https://bsky.app/intent/compose?text=${encodeURIComponent(text)}`
 })
 const safeProfileWebsiteUrl = computed(() => getSafeHttpUrl(profile.value.website))
+
+const { accounts: keytraceAccounts, loading: keytraceLoading } = useKeytraceProfile(identity)
 
 useCommandPaletteContextCommands(
   computed((): CommandPaletteContextCommandInput[] => {
@@ -259,20 +262,39 @@ defineOgImage(
       </div>
     </header>
 
+    <section class="mb-8">
+      <LinkedAccounts
+        :identity="identity"
+        :accounts="keytraceAccounts"
+        :loading="keytraceLoading"
+      />
+    </section>
+
     <section class="flex flex-col gap-8">
-      <h2
-        class="font-mono text-2xl sm:text-3xl font-medium min-w-0 break-words"
-        :title="$t('profile.likes')"
-        dir="ltr"
-      >
-        {{ $t('profile.likes') }}
-        <span>({{ allLikesRecords.length ?? 0 }})</span>
-      </h2>
-      <div v-if="isLoadingInitialLikes" class="flex flex-col gap-4">
+      <div class="flex flex-col gap-2">
+        <h2
+          class="font-mono text-2xl sm:text-3xl font-medium min-w-0 break-words"
+          :title="$t('profile.likes')"
+          dir="ltr"
+        >
+          {{ $t('profile.likes') }}
+          <span>({{ allLikesRecords.length }})</span>
+        </h2>
+      </div>
+      <div v-if="isLoadingInitialLikes" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <SkeletonBlock v-for="i in 4" :key="i" class="h-16 rounded-lg" />
       </div>
-      <div v-else-if="likesError">
-        <p>{{ $t('common.error') }}</p>
+      <div
+        v-else-if="likesError && allLikesRecords.length === 0"
+        class="p-4 bg-bg-subtle border border-border rounded-lg"
+      >
+        <p class="font-mono text-sm">{{ $t('profile.likes_error') }}</p>
+      </div>
+      <div
+        v-else-if="allLikesRecords.length === 0"
+        class="p-4 bg-bg-subtle border border-border rounded-lg"
+      >
+        <p class="font-mono text-sm text-fg-muted">{{ $t('profile.likes_empty') }}</p>
       </div>
       <template v-else-if="allLikesRecords.length > 0">
         <ol class="list-none m-0 p-0 grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -280,6 +302,9 @@ defineOgImage(
             <PackageLikeCard :packageUrl="like" />
           </li>
         </ol>
+        <p v-if="likesError" class="font-mono text-sm">
+          {{ $t('profile.likes_error') }}
+        </p>
       </template>
 
       <!-- Loading more indicator -->

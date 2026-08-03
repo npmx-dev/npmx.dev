@@ -82,7 +82,6 @@
     "cancel": "إلغاء",
     "save": "حفظ",
     "edit": "تعديل",
-    "error": "خطأ",
     "view_on": {
       "gitlab": "عرض على GitLab",
       "bitbucket": "عرض على Bitbucket",

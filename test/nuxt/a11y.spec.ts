@@ -296,6 +296,8 @@ import PackageLikeCard from '~/components/Package/LikeCard.vue'
 import SizeIncrease from '~/components/Package/SizeIncrease.vue'
 import SizeDecrease from '~/components/Package/SizeDecrease.vue'
 import Likes from '~/components/Package/Likes.vue'
+import AccountItem from '~/components/AccountItem.vue'
+import LinkedAccounts from '~/components/LinkedAccounts.vue'
 import LikesLeaderboardPage from '~/pages/leaderboard/likes.vue'
 import type { VueUiXyDatasetItem, VueUiXySvgSlotProps } from 'vue-data-ui/vue-ui-xy'
 import type { VueUiStackbarSvgSlotProps } from 'vue-data-ui/vue-ui-stackbar'
@@ -801,7 +803,11 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations as secondary button', async () => {
       const component = await mountSuspended(LinkBase, {
-        props: { to: 'http://example.com', disabled: true, variant: 'button-secondary' },
+        props: {
+          to: 'http://example.com',
+          disabled: true,
+          variant: 'button-secondary',
+        },
         slots: { default: 'Button link content' },
       })
       const results = await runAxe(component)
@@ -810,7 +816,11 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations as primary button', async () => {
       const component = await mountSuspended(LinkBase, {
-        props: { to: 'http://example.com', disabled: true, variant: 'button-primary' },
+        props: {
+          to: 'http://example.com',
+          disabled: true,
+          variant: 'button-primary',
+        },
         slots: { default: 'Button link content' },
       })
       const results = await runAxe(component)
@@ -1124,6 +1134,52 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(PackageLikeCard, {
         props: { packageUrl: 'https://npmx.dev/package/vue' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('LinkedAccounts', () => {
+    it('should have no accessibility violations with account list', async () => {
+      const component = await mountSuspended(LinkedAccounts, {
+        props: {
+          identity: 'npmx.dev',
+          accounts: [
+            {
+              platform: 'github',
+              username: 'npmx-dev',
+              displayName: 'npmx-dev',
+              status: 'verified',
+              proofMethod: 'github',
+              addedAt: '2026-04-01T10:00:00.000Z',
+              lastCheckedAt: '2026-04-21T10:00:00.000Z',
+              url: 'https://github.com/npmx-dev',
+            },
+          ],
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('AccountItem', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(AccountItem, {
+        props: {
+          identity: 'npmx.dev',
+          account: {
+            platform: 'github',
+            username: 'npmx-dev',
+            displayName: 'npmx-dev',
+            status: 'verified',
+            proofMethod: 'github',
+            addedAt: '2026-04-01T10:00:00.000Z',
+            lastCheckedAt: '2026-04-21T10:00:00.000Z',
+            url: 'https://github.com/npmx-dev',
+          },
+        },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
@@ -4130,7 +4186,14 @@ describe('component accessibility audits', () => {
       files: {
         added: [{ path: 'new.ts', type: 'added' as const, newSize: 100 }],
         removed: [{ path: 'old.ts', type: 'removed' as const, oldSize: 50 }],
-        modified: [{ path: 'changed.ts', type: 'modified' as const, oldSize: 200, newSize: 250 }],
+        modified: [
+          {
+            path: 'changed.ts',
+            type: 'modified' as const,
+            oldSize: 200,
+            newSize: 250,
+          },
+        ],
       },
       dependencyChanges: [
         {
@@ -4155,7 +4218,12 @@ describe('component accessibility audits', () => {
     const mockAllChanges = [
       { path: 'new.ts', type: 'added' as const, newSize: 100 },
       { path: 'old.ts', type: 'removed' as const, oldSize: 50 },
-      { path: 'changed.ts', type: 'modified' as const, oldSize: 200, newSize: 250 },
+      {
+        path: 'changed.ts',
+        type: 'modified' as const,
+        oldSize: 200,
+        newSize: 250,
+      },
     ]
 
     const mockGroupedDeps = new Map([
@@ -4254,7 +4322,14 @@ describe('component accessibility audits', () => {
       files: {
         added: [{ path: 'new.ts', type: 'added' as const, newSize: 100 }],
         removed: [],
-        modified: [{ path: 'changed.ts', type: 'modified' as const, oldSize: 200, newSize: 250 }],
+        modified: [
+          {
+            path: 'changed.ts',
+            type: 'modified' as const,
+            oldSize: 200,
+            newSize: 250,
+          },
+        ],
       },
       dependencyChanges: [],
       stats: {
@@ -4269,7 +4344,12 @@ describe('component accessibility audits', () => {
 
     const mockAllChanges = [
       { path: 'new.ts', type: 'added' as const, newSize: 100 },
-      { path: 'changed.ts', type: 'modified' as const, oldSize: 200, newSize: 250 },
+      {
+        path: 'changed.ts',
+        type: 'modified' as const,
+        oldSize: 200,
+        newSize: 250,
+      },
     ]
 
     it('should have no accessibility violations when closed', async () => {
