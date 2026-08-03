@@ -20,7 +20,7 @@ test.describe('Package Code Viewer', () => {
 
     const directoryListing = codePage.getByRole('table')
     await expect(directoryListing).toBeVisible()
-    
+
     await expect(
       directoryListing.locator('a[href="/package-code/empathic/v/2.0.0/package.json"]'),
     ).toBeVisible()
