@@ -11,7 +11,7 @@ allowBuilds:
   'core-js': false
   'esbuild': false
   msw: true
-  'sharp@0.34.5': true
+  sharp: true
   'unrs-resolver': false
   'vue-demi': false
 
@@ -42,9 +42,7 @@ ignoreDepScripts: true
 ignoreWorkspaceRootCheck: true
 
 minimumReleaseAgeExclude:
-  - vue-data-ui@3.22.13
-  - module-replacements@3.1.0
-  - knip@6.31.0
+  - '@iconify-json/simple-icons@1.2.93'
 
 overrides:
   '@types/node': 24.13.3
@@ -55,7 +53,7 @@ overrides:
   vitest: 'catalog:vite-plus'
   vue-router: 5.2.0
   markdown-exit: 1.1.0-beta.2
-  oxc-parser: 0.143.0
+  oxc-parser: 0.142.0
 
 packageExtensions:
   '@nuxt/scripts':
