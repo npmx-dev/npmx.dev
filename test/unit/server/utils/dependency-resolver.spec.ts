@@ -415,5 +415,32 @@ describe('dependency-resolver', () => {
       expect(result.size).toBe(4)
       expect(result.has('shared@1.0.0')).toBe(true)
     })
+
+    it('correctly propagates isNative flag for native packages and their transitive children', async () => {
+      mockFetchNpmPackage.mockImplementation(async (name: string) => {
+        if (name === 'root')
+          return makePackument('root', [
+            { version: '1.0.0', optionalDeps: { 'native-wasm32-wasi': '^1.0.0' } },
+          ])
+        if (name === 'native-wasm32-wasi')
+          return makePackument('native-wasm32-wasi', [
+            { version: '1.0.0', deps: { 'child-pkg': '^1.0.0' } },
+          ])
+        if (name === 'child-pkg') return makePackument('child-pkg', [{ version: '1.0.0' }])
+        return null
+      })
+
+      const result = await resolveDependencyTree('root', '1.0.0')
+
+      expect(result.get('root@1.0.0')!.isNative).toBeUndefined()
+
+      const nativePkg = result.get('native-wasm32-wasi@1.0.0')!
+      expect(nativePkg.optional).toBe(true)
+      expect(nativePkg.isNative).toBe(true)
+
+      const childPkg = result.get('child-pkg@1.0.0')!
+      expect(childPkg.optional).toBe(true)
+      expect(childPkg.isNative).toBe(true) // Should inherit isNative from parent
+    })
   })
 })
