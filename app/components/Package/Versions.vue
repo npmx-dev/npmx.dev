@@ -271,7 +271,7 @@ function processLoadedVersions(allVersions: PackageVersionInfo[]) {
         version: v.version,
         time: v.time,
         tags: versionToTags.value.get(v.version),
-        trustStatus: v.trustStatus,
+        trustStatus: props.versions[v.version]?.trustStatus ?? v.trustStatus,
         deprecated: v.deprecated,
       }))
 
@@ -298,7 +298,7 @@ function processLoadedVersions(allVersions: PackageVersionInfo[]) {
       version: v.version,
       time: v.time,
       tags: versionToTags.value.get(v.version),
-      trustStatus: v.trustStatus,
+      trustStatus: props.versions[v.version]?.trustStatus ?? v.trustStatus,
       deprecated: v.deprecated,
     })
   }
@@ -641,6 +641,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                 day="numeric"
                 class="text-xs text-fg-subtle"
               />
+              <StagedPublishBadge v-if="row.primaryVersion.trustStatus?.stagedPublish" compact />
               <ProvenanceBadge
                 v-if="row.primaryVersion.trustStatus?.provenance"
                 :package-name="packageName"
@@ -695,6 +696,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                   month="short"
                   day="numeric"
                 />
+                <StagedPublishBadge v-if="v.trustStatus?.stagedPublish" compact />
                 <ProvenanceBadge
                   v-if="v.trustStatus?.provenance"
                   :package-name="packageName"
@@ -899,6 +901,10 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                       month="short"
                       day="numeric"
                     />
+                    <StagedPublishBadge
+                      v-if="group.versions[0]?.trustStatus?.stagedPublish"
+                      compact
+                    />
                     <ProvenanceBadge
                       v-if="group.versions[0]?.trustStatus?.provenance"
                       :package-name="packageName"
@@ -965,6 +971,10 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                       year="numeric"
                       month="short"
                       day="numeric"
+                    />
+                    <StagedPublishBadge
+                      v-if="group.versions[0]?.trustStatus?.stagedPublish"
+                      compact
                     />
                     <ProvenanceBadge
                       v-if="group.versions[0]?.trustStatus?.provenance"
@@ -1033,6 +1043,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                         month="short"
                         day="numeric"
                       />
+                      <StagedPublishBadge v-if="v.trustStatus?.stagedPublish" compact />
                       <ProvenanceBadge
                         v-if="v.trustStatus?.provenance"
                         :package-name="packageName"
