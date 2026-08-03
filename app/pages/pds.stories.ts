@@ -5,12 +5,15 @@ import { pdsUsersHandler } from '../storybook/mocks/handlers'
 
 const meta = {
   component: Pds,
+
+  beforeEach({ msw }) {
+    msw.use(pdsUsersHandler)
+  },
+
   parameters: {
     layout: 'fullscreen',
-    msw: {
-      handlers: [pdsUsersHandler],
-    },
   },
+
   decorators: [pageDecorator],
 } satisfies Meta<typeof Pds>
 
@@ -21,10 +24,4 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {}
 
 /** Community section shows an empty/loading state with no API response. */
-export const WithoutUsers: Story = {
-  parameters: {
-    msw: {
-      handlers: [],
-    },
-  },
-}
+export const WithoutUsers: Story = {}
