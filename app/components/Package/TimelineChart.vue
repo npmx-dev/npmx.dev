@@ -35,6 +35,7 @@ import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWate
 import { useColors } from '~/composables/useColors'
 import { parseStableVersion } from '~/utils/versions'
 import { downloadFileLink } from '~/utils/download'
+import { useCopyChartPng } from '~/composables/useCopyChartPng'
 import { useElementSize, useTimeoutFn } from '@vueuse/core'
 import TimelineChartDepSizeTooltip from './TimelineChartDepSizeTooltip.vue'
 import TimelineChartXyTooltip from './TimelineChartXyTooltip.vue'
@@ -355,6 +356,7 @@ const datasets = computed<{
 })
 
 const { copy, copied } = useClipboard()
+const { copiedPng, isCopyingPng, copyChartPng } = useCopyChartPng(chartRef)
 
 const colorMode = useColorMode()
 const resolvedMode = shallowRef<'light' | 'dark'>('light')
@@ -986,6 +988,7 @@ const timelineMetricTabs = computed(() => [
             :colors
             :gradientColors="E18E_GRADIENT_COLORS"
             :pauseAnimations="shouldPauseChartAnimations || loading"
+            :isCopyingPng
           />
         </template>
 
@@ -995,6 +998,9 @@ const timelineMetricTabs = computed(() => [
         </template>
         <template #optionCsv>
           <span class="text-fg-subtle font-mono pointer-events-none">CSV</span>
+        </template>
+        <template #custom-menu-before>
+          <ChartCopyPngButton :copied="copiedPng" @click="copyChartPng" />
         </template>
         <template #optionImg>
           <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
@@ -1081,6 +1087,7 @@ const timelineMetricTabs = computed(() => [
             :activeVersionPlot="getActiveVersionDatapointBar(svg.data, svg.barWidth)"
             :colors
             :pauseAnimations="shouldPauseChartAnimations || loading"
+            :isCopyingPng
           />
         </template>
 
@@ -1100,6 +1107,9 @@ const timelineMetricTabs = computed(() => [
         </template>
         <template #optionCsv>
           <span class="text-fg-subtle font-mono pointer-events-none">CSV</span>
+        </template>
+        <template #custom-menu-before>
+          <ChartCopyPngButton :copied="copiedPng" @click="copyChartPng" />
         </template>
         <template #optionImg>
           <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
