@@ -31,22 +31,23 @@ export function useCopyChartPng(
     // Everything up to `copy()` stays synchronous, and the item is handed a
     // pending blob: awaiting the export first would spend the user activation
     // that Safari requires for navigator.clipboard.write.
-    const png = nextTick()
-      .then(() => chart.getImage())
-      .then(({ imageUri }) => {
-        // Decode the data URI manually: fetch() on data: URIs is blocked by the CSP
-        const binary = atob(imageUri.slice(imageUri.indexOf(',') + 1))
-        const bytes = new Uint8Array(binary.length)
-        for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i)
-        return new Blob([bytes], { type: 'image/png' })
-      })
-      .finally(() => {
-        isCopyingPng.value = false
-      })
+    try {
+      const png = nextTick()
+        .then(() => chart.getImage())
+        .then(({ imageUri }) => {
+          // Decode the data URI manually: fetch() on data: URIs is blocked by the CSP
+          const binary = atob(imageUri.slice(imageUri.indexOf(',') + 1))
+          const bytes = new Uint8Array(binary.length)
+          for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i)
+          return new Blob([bytes], { type: 'image/png' })
+        })
 
-    await copy([new ClipboardItem({ 'image/png': png })])
-    // The button only swaps its icon, which says nothing to a screen reader
-    announce(t('command_palette.announcements.copied_to_clipboard'))
+      await copy([new ClipboardItem({ 'image/png': png })])
+      // The button only swaps its icon, which says nothing to a screen reader
+      announce(t('command_palette.announcements.copied_to_clipboard'))
+    } finally {
+      isCopyingPng.value = false
+    }
   }
 
   return { copiedPng, isCopyingPng, copyChartPng }
