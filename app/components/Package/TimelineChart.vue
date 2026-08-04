@@ -480,6 +480,9 @@ const commonConfig = computed<CommonUserOptions>(() => ({
 const config = computed<VueUiXyConfig>(() => {
   return {
     theme: isDarkMode.value ? 'dark' : '',
+    transitions: {
+      pauseOnDatasetChange: true, // prevents transitions on axis labels when switching from install size to dependencies
+    },
     downsample: {
       threshold: 5000,
     },
