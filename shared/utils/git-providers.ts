@@ -43,7 +43,7 @@ export const GITLAB_HOSTS = [
  * is effectively user-controlled input that can point at a malicious user-controlled server, this
  * would put us at risk of Server-Side Request Forgery (SSRF). Thus we only support allowlisted hosts.
  */
-export const FORGEJO_HOSTS = ['next.forgejo.org', 'try.next.forgejo.org']
+export const FORGEJO_HOSTS = ['next.forgejo.org', 'try.next.forgejo.org', 'code.haverbeke.berlin']
 
 /**
  * No open-ended Gitea host detection for the same reason as Forgejo above.
@@ -271,13 +271,37 @@ const providers: ProviderConfig[] = [
   },
 ]
 
+const SHORTHAND_PROVIDERS = {
+  github: 'github.com',
+  gitlab: 'gitlab.com',
+  bitbucket: 'bitbucket.org',
+  codeberg: 'codeberg.org',
+  gitee: 'gitee.com',
+  sourcehut: 'git.sr.ht',
+  gitea: 'gitea.com',
+  tangled: 'tangled.org',
+  forgejo: 'code.forgejo.org',
+} satisfies Partial<Record<ProviderId, string>>
+
 /**
  * Normalize various git URL formats to a standard HTTPS URL.
- * Handles: git+https://, git://, git@host:path, ssh://git@host/path
+ * Handles: git+https://, git://, git@host:path, ssh://git@host/path, github:owner/repo
  */
 export function normalizeGitUrl(input: string): string | null {
-  const url = input
-    .trim()
+  let url = input.trim()
+  if (!url) return null
+
+  // Expand shorthand provider prefixes (e.g. "github:owner/repo" -> "https://github.com/owner/repo")
+  for (const [provider, host] of Object.entries(SHORTHAND_PROVIDERS)) {
+    const prefix = `${provider}:`
+    if (url.startsWith(prefix)) {
+      const replacement = `https://${host}/`
+      url = url.replace(prefix, replacement)
+      break
+    }
+  }
+
+  url = url
     .replace(/^git\+/, '')
     .replace(/\.git(?=[/#?]|$)/i, '')
     .replace(/(^|\/)[^/]+?@/, '$1') // remove "user@" from "ssh://user@host.com:..."

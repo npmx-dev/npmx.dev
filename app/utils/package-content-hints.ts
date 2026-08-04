@@ -11,9 +11,15 @@ const POSSIBLY_UNNECESSARY_FILES: ReadonlySet<string> = new Set([
   '.editorconfig',
   '.prettierignore',
   '.eslintignore',
+  '.jshintignore',
+  '.npmignore',
   '.gitignore',
   '.gitattributes',
+  '.travis.yml',
+  '.verb.md',
+  'Makefile',
   'tsconfig.json',
+  'jsconfig.json',
   '.node-version',
   '.nvmrc',
   'mise.toml',
@@ -27,6 +33,18 @@ const POSSIBLY_UNNECESSARY_FILES: ReadonlySet<string> = new Set([
   '.env.production.local',
   '.nycrc',
   'nyc.json',
+  '.DS_Store',
+  'AUTHORS',
+  'test.js',
+  'test.ts',
+  'tests.js',
+  'tests.ts',
+  'bench.js',
+  'benchmark.js',
+  'yarn.lock',
+  'bun.lock',
+  'bun.lockb',
+  'package-lock.json',
 ])
 
 const POSSIBLY_UNNECESSARY_DIRECTORIES: ReadonlySet<string> = new Set([
@@ -35,11 +53,16 @@ const POSSIBLY_UNNECESSARY_DIRECTORIES: ReadonlySet<string> = new Set([
   '.github',
   '.idea',
   '.zed',
+  '.yarn',
+  '.husky',
+  '.changeset',
   'test',
   'tests',
-  '__tests__',
   'spec',
   'specs',
+  'example',
+  'examples',
+  'benchmark',
 ])
 
 const POSSIBLY_UNNECESSARY_DIRECTORY_PATTERNS: readonly RegExp[] = [/^__.+__$/]
@@ -53,11 +76,18 @@ const POSSIBLY_UNNECESSARY_PATTERNS: readonly RegExp[] = [
   /^\.oxlintrc(?:\.(?:json|js|cjs|yml|yaml))?$/,
   /^oxfmt\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
   /^\.oxfmtrc(?:\.(?:json|js|cjs|yml|yaml))?$/,
+  /^jest\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
   // Match common dot-prefixed config files without flagging all dotfiles;
-  // files like .npmrc, .npmignore, and .gitkeep can be intentional artifacts.
+  // files like .npmrc can be intentional artifacts.
   /^\.(?!npmrc$)[a-z][a-z0-9_-]*rc$/,
   /^\.(?!npmrc\.)[a-z][a-z0-9_-]*rc\.(?:json|js|cjs|mjs|yml|yaml|toml)$/,
   /^\.[a-z][a-z0-9_-]*\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+  // Match files ending in .test.js, .test.ts, .spec.js, .spec.ts, etc.
+  /\.(?:test|spec)\.(?:j|t)s$/,
+  // Match CHANGELOG.md, etc
+  /^(?:changelog|releasenotes|release-notes|history|contributing|contribute|news|collaborators)\.(?:md|markdown|txt)$/i,
+  // Match example.mjs, examples.js, stc
+  /^examples?\.(?:js|cjs|mjs|ts|mts|cts)$/,
 ]
 
 export function isPossiblyUnnecessaryContent(name: string, type: 'file' | 'directory'): boolean {

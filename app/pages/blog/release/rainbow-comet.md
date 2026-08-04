@@ -30,7 +30,7 @@ This period was especially full of good news. And it’s particularly great that
 
 ### New Sponsor
 
-We’d like to start with one of the nicest pieces of news - we’ve welcomed a new sponsor. It’s doubly exciting because it’s a tool we genuinely love and use ourselves. Thank you to **[CodeRabbit](https://www.coderabbit.ai/)** for supporting us with **$1,000 per month** and for the collaboration.
+We’d like to start with one of the nicest pieces of news - we’ve welcomed a new sponsor. It’s doubly exciting because it’s a tool we genuinely love and use ourselves. Thank you to **[CodeRabbit](https://coderabbit.link/npmx)** for supporting us with **$1,000 per month** and for the collaboration.
 
 ![CodeRabbit x npmx](/blog/coderabbit-x-npmx.png)
 

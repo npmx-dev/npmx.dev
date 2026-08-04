@@ -1,3 +1,5 @@
+import type { NpmSearchResponse } from '#shared/types'
+
 /** Default page size for incremental loading (npm registry path) */
 const PAGE_SIZE = 50 as const
 
@@ -128,8 +130,9 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
       return
     }
 
-    const currentCount = cache.value?.objects.length ?? 0
-    const total = Math.min(cache.value?.total ?? Infinity, MAX_RESULTS)
+    const currentData = getCurrentUserPackages(user)
+    const currentCount = currentData?.objects.length ?? 0
+    const total = Math.min(currentData?.total ?? Infinity, MAX_RESULTS)
 
     if (currentCount >= total) return
 
@@ -153,20 +156,13 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
       // Guard against stale response
       if (user !== toValue(username) || activeProvider.value !== 'npm') return
 
-      if (cache.value && cache.value.username === user) {
-        const existingNames = new Set(cache.value.objects.map(obj => obj.package.name))
-        const newObjects = response.objects.filter(obj => !existingNames.has(obj.package.name))
-        cache.value = {
-          username: user,
-          objects: [...cache.value.objects, ...newObjects],
-          total: response.total,
-        }
-      } else {
-        cache.value = {
-          username: user,
-          objects: response.objects,
-          total: response.total,
-        }
+      const existingObjects = getCurrentUserPackages(user)?.objects ?? []
+      const existingNames = new Set(existingObjects.map(obj => obj.package.name))
+      const newObjects = response.objects.filter(obj => !existingNames.has(obj.package.name))
+      cache.value = {
+        username: user,
+        objects: [...existingObjects, ...newObjects],
+        total: response.total,
       }
     } finally {
       if (manageLoadingState) isLoadingMore.value = false
@@ -205,6 +201,21 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
     },
   )
 
+  function getCurrentUserPackages(user: string) {
+    if (cache.value && cache.value.username === user) {
+      return cache.value
+    }
+
+    const response = asyncData.data.value
+    if (!response) return null
+
+    return {
+      username: user,
+      objects: response.objects,
+      total: response.total,
+    }
+  }
+
   // Computed data that uses cache (only if it belongs to the current username)
   const data = computed<NpmSearchResponse | null>(() => {
     const user = toValue(username)
@@ -224,10 +235,11 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
     if (!toValue(username)) return false
     // Algolia fetches everything in one request; only npm needs pagination
     if (activeProvider.value !== 'npm') return false
-    if (!cache.value) return true
+    const currentData = getCurrentUserPackages(toValue(username))
+    if (!currentData) return false
     // npm path: more available if we haven't hit the server total or our cap
-    const fetched = cache.value.objects.length
-    const available = cache.value.total
+    const fetched = currentData.objects.length
+    const available = currentData.total
     return fetched < available && fetched < MAX_RESULTS
   })
 

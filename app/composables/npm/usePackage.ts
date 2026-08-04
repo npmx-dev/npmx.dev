@@ -104,7 +104,9 @@ export function transformPackument(
       : undefined
 
   return {
+    // oxlint-disable-next-line eslint/no-underscore-dangle
     '_id': pkg._id,
+    // oxlint-disable-next-line eslint/no-underscore-dangle
     '_rev': pkg._rev,
     'name': pkg.name,
     'description': pkg.description,
