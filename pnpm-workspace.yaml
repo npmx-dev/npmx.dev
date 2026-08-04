@@ -43,6 +43,7 @@ ignoreWorkspaceRootCheck: true
 
 minimumReleaseAgeExclude:
   - '@iconify-json/simple-icons@1.2.93'
+  - vue-data-ui@3.23.0
 
 overrides:
   '@types/node': 24.13.3
