@@ -11,6 +11,7 @@ const props = defineProps<{
   colors: Record<string, string>
   gradientColors: string[]
   pauseAnimations: boolean
+  isCopyingPng?: boolean
 }>()
 
 const svgElementTransitionClass = computed(() => [
@@ -23,7 +24,7 @@ const svgElementTransitionClass = computed(() => [
 
 <template>
   <!-- Print watermark-->
-  <g v-if="svg.isPrintingSvg || svg.isPrintingImg" v-html="watermark" />
+  <g v-if="svg.isPrintingSvg || svg.isPrintingImg || isCopyingPng" v-html="watermark" />
 
   <g class="pointer-events-none">
     <!-- Marker for selected version -->

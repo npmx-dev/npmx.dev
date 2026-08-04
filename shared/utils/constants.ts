@@ -114,6 +114,12 @@ export const BACKGROUND_THEMES = {
   black: 'oklch(0.4 0 0)',
 } as const
 
+export const FOREGROUND_THEMES = {
+  muted: 'color-mix(in oklch, var(--fg) 50%, transparent)',
+  standard: 'color-mix(in oklch, var(--fg) 75%, transparent)',
+  contrast: 'var(--fg)',
+} as const
+
 // INFO: Regex for capture groups
 export const BLUESKY_URL_EXTRACT_REGEX = /profile\/([^/]+)\/post\/([^/]+)/
 export const BSKY_POST_AT_URI_REGEX =

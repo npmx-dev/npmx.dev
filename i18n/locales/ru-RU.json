@@ -191,6 +191,7 @@
       "theme_changed": "Тема изменена на {theme}.",
       "accent_color_changed": "Акцентный цвет изменён на {color}.",
       "background_theme_changed": "Оттенок фона изменён на {theme}.",
+      "foreground_theme_changed": "Основной цвет изменён на {theme}.",
       "download_started": "Скачивание архива {package}.",
       "copied_to_clipboard": "Скопировано в буфер обмена.",
       "npm_disconnected": "npm CLI отключён.",
@@ -261,7 +262,8 @@
     "back_to_archive": "Назад ко всем нудлам",
     "missing": {
       "title": "Этот нудл так и не выбрался из тарелки.",
-      "body": "У нас нет нудла «{slug}» в меню. Возможно, он ещё готовится, или его никогда не было. В любом случае — назад в архив."
+      "body": "У нас нет нудла «{slug}» в меню. Возможно, он ещё готовится, или его никогда не было. В любом случае — назад в архив.",
+      "empty_bowl": "Тарелка пуста"
     }
   },
   "settings": {
@@ -318,6 +320,12 @@
       "zinc": "Цинк",
       "slate": "Сланцевый",
       "black": "Чёрный"
+    },
+    "foreground_themes": {
+      "label": "Основной цвет",
+      "contrast": "Контрастный",
+      "standard": "Стандартный",
+      "muted": "Приглушённый"
     },
     "keyboard_shortcuts_enabled": "Использовать горячие клавиши",
     "keyboard_shortcuts_enabled_description": "Горячие клавиши можно выключить, если возникают конфликты с сочетаниями клавиш браузера или операционной системы",
@@ -411,6 +419,7 @@
     "verified_provenance": "Подтвержденное происхождение",
     "navigation": "Навигация по пакету",
     "copy_name": "Скопировать имя пакета",
+    "copy_version": "Скопировать версию пакета",
     "deprecation": {
       "package": "Этот пакет устарел.",
       "version": "Эта версия устарела.",
@@ -1082,7 +1091,8 @@
     },
     "file_path": "Путь к файлу",
     "binary_file": "Бинарный файл",
-    "binary_rendering_warning": "Предпросмотр для типа «{contentType}» не поддерживается."
+    "binary_rendering_warning": "Предпросмотр для типа «{contentType}» не поддерживается.",
+    "possibly_unnecessary": "Публикация этих файлов возможно ошибочна или бессмысленна"
   },
   "badges": {
     "provenance": {

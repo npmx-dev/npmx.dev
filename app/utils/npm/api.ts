@@ -1,5 +1,5 @@
 import { getVersions } from 'fast-npm-meta'
-import { compare } from 'semver'
+import { compare } from 'verkit'
 
 type NpmDownloadsRangeResponse = {
   start: string

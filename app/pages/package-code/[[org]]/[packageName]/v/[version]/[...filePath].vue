@@ -184,6 +184,8 @@ const isLoading = computed<boolean>(() => {
     return treeStatus.value !== 'success' && treeStatus.value !== 'error'
   }
 
+  if (isFileTooLarge.value) return false
+
   return !fileStatus.value || fileStatus.value === 'pending' || fileStatus.value === 'idle'
 })
 
