@@ -275,6 +275,7 @@ import {
   PackageExternalLinks,
   LicenseChangeWarning,
   ChartSplitSparkline,
+  ChartCopyPngButton,
   TabRoot,
   TabList,
   TabItem,
@@ -1422,6 +1423,35 @@ describe('component accessibility audits', () => {
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('ChartCopyPngButton', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(ChartCopyPngButton, {
+        props: { copied: false },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations in the copied state', async () => {
+      const component = await mountSuspended(ChartCopyPngButton, {
+        props: { copied: true },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should expose an accessible name, since the button is icon-only', async () => {
+      const component = await mountSuspended(ChartCopyPngButton, {
+        props: { copied: false },
+      })
+      const button = component.get('button')
+      expect(button.attributes('aria-label')).toBeTruthy()
+      expect(button.attributes('type')).toBe('button')
+      // The icon carries no text, so it must not be announced
+      expect(component.get('span').attributes('aria-hidden')).toBe('true')
     })
   })
 
