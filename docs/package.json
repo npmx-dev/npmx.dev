@@ -15,7 +15,6 @@
     "dev": "nuxt dev",
     "build": "nuxt build",
     "generate": "nuxt generate",
-    "postinstall": "pnpm rebuild better-sqlite3",
     "preview": "nuxt preview"
   },
   "dependencies": {
