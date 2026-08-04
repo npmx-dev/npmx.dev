@@ -20,10 +20,10 @@ const SIZE_DECREASE_THRESHOLD = 0.2
 const DEP_DECREASE_THRESHOLD = 3
 
 function getComparisonVersion(pkg: SlimPackument, resolvedVersion: string): string | null {
-  const isCurrentPrerelease = getPrerelease(resolvedVersion) !== null
+  const isCurrentPrerelease = getPrerelease(resolvedVersion)?.length
 
   const stableVersions = Object.keys(pkg.time)
-    .filter(v => v !== 'modified' && v !== 'created' && isValid(v) && getPrerelease(v) === null)
+    .filter(v => v !== 'modified' && v !== 'created' && isValid(v) && !getPrerelease(v)?.length)
     .sort((a, b) => compare(a, b))
 
   if (isCurrentPrerelease) {

@@ -723,6 +723,7 @@
       "date_range": "{start} to {end}",
       "date_range_multiline": "{start}\nto {end}",
       "download_file": "Download {fileType}",
+      "copy_file": "Copy {fileType}",
       "toggle_annotator": "Toggle annotator",
       "toggle_stack_mode": "Toggle stack mode",
       "open_options": "Open options",
