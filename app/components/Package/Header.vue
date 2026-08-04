@@ -90,7 +90,7 @@ function sharePackage() {
       url: window.location.href,
     })
     .catch(() => {})
-}  
+}
 
 function hasProvenance(version: PackumentVersion | null): boolean {
   if (!version?.dist) return false
