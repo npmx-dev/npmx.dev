@@ -17,25 +17,36 @@ type ChartWithImageExport = {
 export function useCopyChartPng(
   chartRef: MaybeRefOrGetter<ChartWithImageExport | null | undefined>,
 ) {
-  const { copy, copied: copiedPng } = useClipboardItems()
+  const { copy, copied: copiedPng, isSupported } = useClipboardItems()
+  const { announce } = useCommandPalette()
+  const { t } = useI18n()
   const isCopyingPng = shallowRef(false)
 
   async function copyChartPng() {
     const chart = toValue(chartRef)
-    if (!chart) return
+    if (!chart || !isSupported.value || isCopyingPng.value) return
 
     isCopyingPng.value = true
-    await nextTick()
 
-    const { imageUri } = await chart.getImage().finally(() => {
-      isCopyingPng.value = false
-    })
+    // Everything up to `copy()` stays synchronous, and the item is handed a
+    // pending blob: awaiting the export first would spend the user activation
+    // that Safari requires for navigator.clipboard.write.
+    const png = nextTick()
+      .then(() => chart.getImage())
+      .then(({ imageUri }) => {
+        // Decode the data URI manually: fetch() on data: URIs is blocked by the CSP
+        const binary = atob(imageUri.slice(imageUri.indexOf(',') + 1))
+        const bytes = new Uint8Array(binary.length)
+        for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i)
+        return new Blob([bytes], { type: 'image/png' })
+      })
+      .finally(() => {
+        isCopyingPng.value = false
+      })
 
-    // Decode the data URI manually: fetch() on data: URIs is blocked by the CSP
-    const binary = atob(imageUri.slice(imageUri.indexOf(',') + 1))
-    const bytes = new Uint8Array(binary.length)
-    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i)
-    await copy([new ClipboardItem({ 'image/png': new Blob([bytes], { type: 'image/png' }) })])
+    await copy([new ClipboardItem({ 'image/png': png })])
+    // The button only swaps its icon, which says nothing to a screen reader
+    announce(t('command_palette.announcements.copied_to_clipboard'))
   }
 
   return { copiedPng, isCopyingPng, copyChartPng }

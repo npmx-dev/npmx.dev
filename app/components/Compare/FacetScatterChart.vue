@@ -459,7 +459,11 @@ onMounted(async () => {
               <span v-else class="i-lucide:ellipsis-vertical w-6 h-6" aria-hidden="true" />
             </template>
             <template #custom-menu-before>
-              <ChartCopyPngButton :copied="copiedPng" @click="copyChartPng" />
+              <ChartCopyPngButton
+                :copied="copiedPng"
+                :copying="isCopyingPng"
+                @click="copyChartPng"
+              />
             </template>
             <template #optionImg>
               <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>

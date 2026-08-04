@@ -317,7 +317,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
         </template>
 
         <template #custom-menu-before>
-          <ChartCopyPngButton :copied="copiedPng" @click="copyChartPng" />
+          <ChartCopyPngButton :copied="copiedPng" :copying="isCopyingPng" @click="copyChartPng" />
         </template>
 
         <template #optionImg>

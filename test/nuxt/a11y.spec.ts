@@ -1429,7 +1429,7 @@ describe('component accessibility audits', () => {
   describe('ChartCopyPngButton', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(ChartCopyPngButton, {
-        props: { copied: false },
+        props: { copied: false, copying: false },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
@@ -1437,7 +1437,15 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations in the copied state', async () => {
       const component = await mountSuspended(ChartCopyPngButton, {
-        props: { copied: true },
+        props: { copied: true, copying: false },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations while copying', async () => {
+      const component = await mountSuspended(ChartCopyPngButton, {
+        props: { copied: false, copying: true },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
@@ -1445,13 +1453,23 @@ describe('component accessibility audits', () => {
 
     it('should expose an accessible name, since the button is icon-only', async () => {
       const component = await mountSuspended(ChartCopyPngButton, {
-        props: { copied: false },
+        props: { copied: false, copying: false },
       })
       const button = component.get('button')
       expect(button.attributes('aria-label')).toBeTruthy()
       expect(button.attributes('type')).toBe('button')
       // The icon carries no text, so it must not be announced
       expect(component.get('span').attributes('aria-hidden')).toBe('true')
+    })
+
+    it('should mark the button busy while the export runs', async () => {
+      const component = await mountSuspended(ChartCopyPngButton, {
+        props: { copied: false, copying: true },
+      })
+      const button = component.get('button')
+      // The spinner is decorative, so aria-busy is what conveys the pending state
+      expect(button.attributes('aria-busy')).toBe('true')
+      expect(button.attributes('aria-label')).toBeTruthy()
     })
   })
 

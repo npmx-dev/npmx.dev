@@ -1840,7 +1840,11 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
               <span class="text-fg-subtle font-mono pointer-events-none">CSV</span>
             </template>
             <template #custom-menu-before>
-              <ChartCopyPngButton :copied="copiedPng" @click="copyChartPng" />
+              <ChartCopyPngButton
+                :copied="copiedPng"
+                :copying="isCopyingPng"
+                @click="copyChartPng"
+              />
             </template>
             <template #optionImg>
               <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
