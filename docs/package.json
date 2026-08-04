@@ -21,7 +21,7 @@
   "dependencies": {
     "@nuxt/ui": "4.10.0",
     "@nuxtjs/mdc": "0.22.2",
-    "better-sqlite3": "12.11.1",
+    "better-sqlite3": "13.0.2",
     "docus": "5.12.3",
     "nuxt": "4.4.8",
     "tailwindcss": "4.3.3"
