@@ -77,26 +77,27 @@ jobs:
       - name: 🧪 Unit tests
         run: vp test --project unit --coverage --reporter=default --reporter=junit --outputFile=test-report.junit.xml
 
-      - name: ⬆︎ Upload test results to Codecov
-        if: ${{ !cancelled() }}
-        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
-        with:
-          disable_search: true
-          files: test-report.junit.xml
-          flags: unit
-          report_type: test_results
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      - parallel:
+          - name: ⬆︎ Upload test results to Codecov
+            if: ${{ !cancelled() }}
+            uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+            with:
+              disable_search: true
+              files: test-report.junit.xml
+              flags: unit
+              report_type: test_results
+            env:
+              CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: ⬆︎ Upload coverage reports to Codecov
-        if: ${{ !cancelled() }}
-        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
-        with:
-          disable_search: true
-          files: coverage/clover.xml
-          flags: unit
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          - name: ⬆︎ Upload coverage reports to Codecov
+            if: ${{ !cancelled() }}
+            uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+            with:
+              disable_search: true
+              files: coverage/clover.xml
+              flags: unit
+            env:
+              CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   test:
     name: 🧪 Component tests
@@ -119,26 +120,27 @@ jobs:
       - name: 🧪 Component tests
         run: vp test --project nuxt --coverage --reporter=default --reporter=junit --outputFile=test-report.junit.xml
 
-      - name: ⬆︎ Upload test results to Codecov
-        if: ${{ !cancelled() }}
-        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
-        with:
-          disable_search: true
-          files: test-report.junit.xml
-          flags: component
-          report_type: test_results
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      - parallel:
+          - name: ⬆︎ Upload test results to Codecov
+            if: ${{ !cancelled() }}
+            uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+            with:
+              disable_search: true
+              files: test-report.junit.xml
+              flags: component
+              report_type: test_results
+            env:
+              CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: ⬆︎ Upload coverage reports to Codecov
-        if: ${{ !cancelled() }}
-        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
-        with:
-          disable_search: true
-          files: coverage/clover.xml
-          flags: component
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          - name: ⬆︎ Upload coverage reports to Codecov
+            if: ${{ !cancelled() }}
+            uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+            with:
+              disable_search: true
+              files: coverage/clover.xml
+              flags: component
+            env:
+              CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   browser:
     name: 🖥️ Browser tests
