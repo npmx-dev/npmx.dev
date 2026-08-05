@@ -1,4 +1,4 @@
-import { findMaxSatisfying, isStable } from 'verkit'
+import { findMaxSatisfying } from 'verkit'
 
 export const fetchNpmPackage = defineCachedFunction(
   async (name: string): Promise<Packument> => {
