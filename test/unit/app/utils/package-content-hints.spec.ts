@@ -13,6 +13,7 @@ describe('isPossiblyUnnecessaryContent', () => {
     expect(isPossiblyUnnecessaryContent('tsconfig.json', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('jsconfig.json', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('commitlint.config.js', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('renovate.json', 'file')).toBe(true)
   })
 
   it('flags local environment files', () => {

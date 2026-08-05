@@ -22,6 +22,7 @@ const POSSIBLY_UNNECESSARY_FILES: ReadonlySet<string> = new Set([
   'tsconfig.json',
   'jsconfig.json',
   'commitlint.config.js',
+  'renovate.json',
   '.node-version',
   '.nvmrc',
   'mise.toml',
