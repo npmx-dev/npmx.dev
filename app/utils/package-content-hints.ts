@@ -17,6 +17,7 @@ const POSSIBLY_UNNECESSARY_FILES: ReadonlySet<string> = new Set([
   '.gitattributes',
   '.travis.yml',
   '.verb.md',
+  '.borp.yaml',
   'Makefile',
   'tsconfig.json',
   'jsconfig.json',

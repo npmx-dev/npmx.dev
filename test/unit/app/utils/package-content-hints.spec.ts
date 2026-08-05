@@ -36,6 +36,7 @@ describe('isPossiblyUnnecessaryContent', () => {
   it('flags editor and CI files', () => {
     expect(isPossiblyUnnecessaryContent('.travis.yml', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('.verb.md', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('.borp.yaml', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('Makefile', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('.DS_Store', 'file')).toBe(true)
   })
