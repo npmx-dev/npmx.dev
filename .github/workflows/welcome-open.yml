@@ -15,7 +15,7 @@ jobs:
   greeting:
     name: Greet First-Time Contributors
     if: github.repository == 'npmx-dev/npmx.dev'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     permissions:
       pull-requests: write # post first-time contributor greeting comments
     steps:
