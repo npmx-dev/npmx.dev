@@ -176,6 +176,7 @@ describe('isPossiblyUnnecessaryContent', () => {
 
   it('flags development directories', () => {
     expect(isPossiblyUnnecessaryContent('benchmark', 'directory')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('benchmarks', 'directory')).toBe(true)
   })
 
   it('flags example directories', () => {
