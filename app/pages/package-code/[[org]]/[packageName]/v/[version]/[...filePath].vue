@@ -177,7 +177,10 @@ const {
   status: fileStatus,
   execute: fetchFileContent,
   clear: clearFileContent,
-} = useFetch<PackageFileContentResponse>(() => fileContentUrl.value!, { immediate: false })
+} = useFetch<PackageFileContentResponse>(() => fileContentUrl.value!, {
+  immediate: false,
+  watch: false,
+})
 
 // Loading skeleton state
 const isLoading = computed<boolean>(() => {
