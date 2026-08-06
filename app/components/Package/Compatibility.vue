@@ -5,6 +5,7 @@ const props = defineProps<{
 
 const engineNames: Record<string, string> = {
   bun: 'Bun',
+  deno: 'Deno',
   node: 'Node.js',
   npm: 'npm',
 }
@@ -12,6 +13,7 @@ const engineNames: Record<string, string> = {
 // Map engine name to icon class
 const engineIcons: Record<string, string> = {
   bun: 'i-simple-icons:bun',
+  deno: 'i-simple-icons:deno',
   node: 'i-simple-icons:nodedotjs',
   npm: 'i-simple-icons:npm',
   pnpm: 'i-simple-icons:pnpm',

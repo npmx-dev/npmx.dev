@@ -15,7 +15,7 @@ import type {
 import type { MockConnectorStateManager } from './mock-state.ts'
 
 // Endpoint completeness check — errors if this list diverges from ConnectorEndpoints.
-// oxlint-disable-next-line no-unused-vars
+// oxlint-disable-next-line no-unused-vars, eslint/no-underscore-dangle
 const _endpointCheck: AssertEndpointsImplemented<
   | 'POST /connect'
   | 'GET /state'

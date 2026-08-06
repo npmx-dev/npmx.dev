@@ -8,7 +8,9 @@ import {
   drawNpmxLogoAndTaglineWatermark,
 } from '~/composables/useChartWatermark'
 import TooltipApp from '~/components/Tooltip/App.vue'
-import { copyAltTextForVersionsBarChart, sanitise, loadFile, applyEllipsis } from '~/utils/charts'
+import { copyAltTextForVersionsBarChart, sanitise, applyEllipsis } from '~/utils/charts'
+import { downloadFileLink } from '~/utils/download'
+import { useCopyChartPng } from '~/composables/useCopyChartPng'
 
 import('vue-data-ui/style.css')
 
@@ -19,6 +21,8 @@ const props = defineProps<{
 
 const { accentColors, selectedAccentColor } = useAccentColor()
 const { copy, copied } = useClipboard()
+const chartRef = useTemplateRef('chartRef')
+const { copiedPng, isCopyingPng, copyChartPng } = useCopyChartPng(chartRef)
 
 const colorMode = useColorMode()
 const resolvedMode = shallowRef<'light' | 'dark'>('light')
@@ -172,7 +176,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
       backgroundColor: colors.value.bg,
       padding: {
         top: 24,
-        right: 24,
+        right: 145,
         bottom: 60,
       },
       userOptions: {
@@ -197,7 +201,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
           img: args => {
             const imageUri = args?.imageUri
             if (!imageUri) return
-            loadFile(imageUri, buildExportFilename('png'))
+            downloadFileLink(imageUri, buildExportFilename('png'))
           },
           csv: csvStr => {
             if (!csvStr) return
@@ -214,14 +218,14 @@ const chartConfig = computed<VueUiXyConfig>(() => {
                 .replaceAll(`\n${multilineDateTemplate}`, ` ${multilineDateTemplate}`),
             ])
             const url = URL.createObjectURL(blob)
-            loadFile(url, buildExportFilename('csv'))
+            downloadFileLink(url, buildExportFilename('csv'))
             URL.revokeObjectURL(url)
           },
           svg: args => {
             const blob = args?.blob
             if (!blob) return
             const url = URL.createObjectURL(blob)
-            loadFile(url, buildExportFilename('svg'))
+            downloadFileLink(url, buildExportFilename('svg'))
             URL.revokeObjectURL(url)
           },
           altCopy: ({ dataset: dst, config: cfg }) =>
@@ -448,7 +452,12 @@ const chartConfig = computed<VueUiXyConfig>(() => {
       <!-- Chart content -->
       <ClientOnly v-if="xyDataset.length > 0 && !error">
         <div class="chart-container w-full" :key="groupingMode">
-          <VueUiXy :dataset="xyDataset" :config="chartConfig" class="[direction:ltr]">
+          <VueUiXy
+            ref="chartRef"
+            :dataset="xyDataset"
+            :config="chartConfig"
+            class="[direction:ltr]"
+          >
             <!-- Keyboard navigation hint -->
             <template #hint="{ isVisible }">
               <p v-if="isVisible" class="text-accent text-xs -mt-6 text-center" aria-hidden="true">
@@ -463,7 +472,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
 
               <!-- Inject npmx logo & tagline during SVG and PNG print -->
               <g
-                v-if="svg.isPrintingSvg || svg.isPrintingImg"
+                v-if="svg.isPrintingSvg || svg.isPrintingImg || isCopyingPng"
                 v-html="
                   drawNpmxLogoAndTaglineWatermark({
                     svg,
@@ -534,6 +543,13 @@ const chartConfig = computed<VueUiXyConfig>(() => {
             <!-- Export options -->
             <template #optionCsv>
               <span class="text-fg-subtle font-mono pointer-events-none">CSV</span>
+            </template>
+            <template #custom-menu-before>
+              <ChartCopyPngButton
+                :copied="copiedPng"
+                :copying="isCopyingPng"
+                @click="copyChartPng"
+              />
             </template>
             <template #optionImg>
               <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>

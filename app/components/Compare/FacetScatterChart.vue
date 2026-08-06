@@ -8,8 +8,10 @@ import {
   type VueUiScatterSeries,
 } from 'vue-data-ui/vue-ui-scatter'
 import { buildCompareScatterChartDataset } from '~/utils/compare-scatter-chart'
-import { loadFile, copyAltTextForCompareScatterChart } from '~/utils/charts'
+import { copyAltTextForCompareScatterChart } from '~/utils/charts'
 import { useColors } from '~/composables/useColors'
+import { downloadFileLink } from '~/utils/download'
+import { useCopyChartPng } from '~/composables/useCopyChartPng'
 
 import('vue-data-ui/style.css')
 
@@ -23,6 +25,8 @@ const resolvedMode = shallowRef<'light' | 'dark'>('light')
 const rootEl = shallowRef<HTMLElement | null>(null)
 const { width } = useElementSize(rootEl)
 const { copy, copied } = useClipboard()
+const chartRef = useTemplateRef('chartRef')
+const { copiedPng, isCopyingPng, copyChartPng } = useCopyChartPng(chartRef)
 
 const mobileBreakpointWidth = 640
 const isMobile = computed(() => width.value > 0 && width.value < mobileBreakpointWidth)
@@ -138,13 +142,13 @@ const config = computed<VueUiScatterConfig>(() => {
         img: args => {
           const imageUri = args?.imageUri
           if (!imageUri) return
-          loadFile(imageUri, buildExportFilename('png'))
+          downloadFileLink(imageUri, buildExportFilename('png'))
         },
         svg: args => {
           const blob = args?.blob
           if (!blob) return
           const url = URL.createObjectURL(blob)
-          loadFile(url, buildExportFilename('svg'))
+          downloadFileLink(url, buildExportFilename('svg'))
           URL.revokeObjectURL(url)
         },
         altCopy: ({ dataset: dst, config: cfg }) => {
@@ -349,7 +353,7 @@ onMounted(async () => {
 
       <ClientOnly>
         <div class="w-full sm:max-w-[450px] order-2 sm:order-1">
-          <VueUiScatter :dataset :config :key="step">
+          <VueUiScatter ref="chartRef" :dataset :config :key="step">
             <!-- Keyboard navigation hint -->
             <template #hint="{ isVisible }">
               <p
@@ -410,7 +414,7 @@ onMounted(async () => {
             <template #svg="{ svg }">
               <!-- Watermark -->
               <g
-                v-if="svg.isPrintingSvg || svg.isPrintingImg"
+                v-if="svg.isPrintingSvg || svg.isPrintingImg || isCopyingPng"
                 v-html="
                   drawSmallNpmxLogoAndTaglineWatermark({
                     svg,
@@ -453,6 +457,13 @@ onMounted(async () => {
             <template #menuIcon="{ isOpen }">
               <span v-if="isOpen" class="i-lucide:x w-6 h-6" aria-hidden="true" />
               <span v-else class="i-lucide:ellipsis-vertical w-6 h-6" aria-hidden="true" />
+            </template>
+            <template #custom-menu-before>
+              <ChartCopyPngButton
+                :copied="copiedPng"
+                :copying="isCopyingPng"
+                @click="copyChartPng"
+              />
             </template>
             <template #optionImg>
               <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>

@@ -11,6 +11,11 @@ async function fetchBadge(page: { request: { get: (url: string) => Promise<any> 
   return { response, body }
 }
 
+function getSvgWidth(body: string): number {
+  const match = body.match(/<svg[^>]*\swidth="(\d+)"/)
+  return match ? Number(match[1]) : 0
+}
+
 test.describe('badge API', () => {
   const badgeMap: Record<string, string> = {
     'version': 'version',
@@ -195,6 +200,74 @@ test.describe('badge API', () => {
     const { body } = await fetchBadge(page, url)
 
     expect(body).toContain('font-family="Verdana, Geneva, DejaVu Sans, sans-serif"')
+  })
+
+  test.describe('style=compact', () => {
+    test('uses the modern Geist renderer at the same 20px height as default', async ({
+      page,
+      baseURL,
+    }) => {
+      const url = toLocalUrl(baseURL, '/api/registry/badge/version/nuxt?style=compact')
+      const { body } = await fetchBadge(page, url)
+
+      expect(body).toContain('font-family="Geist, system-ui, -apple-system, sans-serif"')
+      expect(body).toMatch(/<svg[^>]*\sheight="20"/)
+    })
+
+    test('shortens long built-in labels', async ({ page, baseURL }) => {
+      const cases: Array<[string, string, string]> = [
+        ['size', 'install size', 'size'],
+        ['downloads', 'downloads/mo', 'dl/mo'],
+        ['downloads-year', 'downloads/yr', 'dl/yr'],
+        ['dependencies', 'dependencies', 'deps'],
+        ['maintainers', 'maintainers', 'maint'],
+      ]
+      for (const [type, fullLabel, shortLabel] of cases) {
+        const url = toLocalUrl(baseURL, `/api/registry/badge/${type}/nuxt?style=compact`)
+        const { body } = await fetchBadge(page, url)
+        expect(body, `${type} should show ${shortLabel}`).toContain(`>${shortLabel}<`)
+        expect(body, `${type} should not show ${fullLabel}`).not.toContain(`>${fullLabel}<`)
+      }
+    })
+
+    test('produces a narrower badge than the default style for shortened labels', async ({
+      page,
+      baseURL,
+    }) => {
+      const defaultUrl = toLocalUrl(baseURL, '/api/registry/badge/dependencies/nuxt?style=default')
+      const compactUrl = toLocalUrl(baseURL, '/api/registry/badge/dependencies/nuxt?style=compact')
+      const { body: defaultBody } = await fetchBadge(page, defaultUrl)
+      const { body: compactBody } = await fetchBadge(page, compactUrl)
+
+      expect(getSvgWidth(compactBody)).toBeGreaterThan(0)
+      expect(getSvgWidth(compactBody)).toBeLessThan(getSvgWidth(defaultBody))
+    })
+
+    test('does not trim a user-supplied label', async ({ page, baseURL }) => {
+      const url = toLocalUrl(
+        baseURL,
+        '/api/registry/badge/dependencies/nuxt?style=compact&label=my-deps',
+      )
+      const { body } = await fetchBadge(page, url)
+
+      expect(body).toContain('>my-deps<')
+      expect(body).not.toContain('>deps<')
+    })
+
+    test('uses the package name when name=true instead of the trimmed label', async ({
+      page,
+      baseURL,
+    }) => {
+      const url = toLocalUrl(
+        baseURL,
+        '/api/registry/badge/dependencies/nuxt?style=compact&name=true',
+      )
+      const { body } = await fetchBadge(page, url)
+
+      expect(body).toContain('>nuxt<')
+      expect(body).not.toContain('>deps<')
+      expect(body).not.toContain('>dependencies<')
+    })
   })
 
   test('invalid badge type defaults to version strategy', async ({ page, baseURL }) => {

@@ -318,6 +318,7 @@ export const CustomStyles = html`
       --border: oklch(26.9% 0 0);
       --border-subtle: oklch(23.9% 0 0);
       --border-hover: oklch(37.1% 0 0);
+      --border-elevated: oklch(31.9% 0 0);
 
       --ln-color-table-background: var(--bg-subtle);
       --ln-color-table-border: var(--border);

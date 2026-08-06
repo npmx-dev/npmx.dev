@@ -43,6 +43,9 @@
         "about": {
           "type": "string"
         },
+        "sponsors": {
+          "type": "string"
+        },
         "blog": {
           "type": "string"
         },
@@ -74,6 +77,9 @@
           "type": "string"
         },
         "other": {
+          "type": "string"
+        },
+        "sponsored_by": {
           "type": "string"
         }
       },
@@ -121,6 +127,9 @@
         "compare_from_package": {
           "type": "string"
         },
+        "changelog": {
+          "type": "string"
+        },
         "navigate_results": {
           "type": "string"
         },
@@ -143,6 +152,9 @@
           "type": "string"
         },
         "open_timeline": {
+          "type": "string"
+        },
+        "open_stats": {
           "type": "string"
         }
       },
@@ -297,6 +309,21 @@
         },
         "connected": {
           "type": "string"
+        },
+        "keyboard_shortcuts": {
+          "type": "object",
+          "properties": {
+            "navigate": {
+              "type": "string"
+            },
+            "select": {
+              "type": "string"
+            },
+            "close": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
         },
         "state": {
           "type": "object",
@@ -468,6 +495,9 @@
             },
             "changelog": {
               "type": "string"
+            },
+            "stats": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -545,6 +575,9 @@
               "type": "string"
             },
             "background_theme_changed": {
+              "type": "string"
+            },
+            "foreground_theme_changed": {
               "type": "string"
             },
             "download_started": {
@@ -683,6 +716,84 @@
               "type": "string"
             },
             "more_replies": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "noodles": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "meta_description": {
+          "type": "string"
+        },
+        "latest": {
+          "type": "string"
+        },
+        "what_is": {
+          "type": "string"
+        },
+        "what_is_body": {
+          "type": "string"
+        },
+        "empty": {
+          "type": "string"
+        },
+        "load_more": {
+          "type": "string"
+        },
+        "dates": {
+          "type": "string"
+        },
+        "shipped_in": {
+          "type": "string"
+        },
+        "credits": {
+          "type": "string"
+        },
+        "learn_more": {
+          "type": "string"
+        },
+        "carousel_prev": {
+          "type": "string"
+        },
+        "carousel_next": {
+          "type": "string"
+        },
+        "carousel_dots": {
+          "type": "string"
+        },
+        "carousel_jump": {
+          "type": "string"
+        },
+        "lens_label": {
+          "type": "string"
+        },
+        "lens_slide": {
+          "type": "string"
+        },
+        "lens_slide_position": {
+          "type": "string"
+        },
+        "back_to_archive": {
+          "type": "string"
+        },
+        "missing": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "body": {
+              "type": "string"
+            },
+            "empty_bowl": {
               "type": "string"
             }
           },
@@ -851,6 +962,24 @@
               "type": "string"
             },
             "black": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "foreground_themes": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "contrast": {
+              "type": "string"
+            },
+            "standard": {
+              "type": "string"
+            },
+            "muted": {
               "type": "string"
             }
           },
@@ -1132,6 +1261,9 @@
         "copy_name": {
           "type": "string"
         },
+        "copy_version": {
+          "type": "string"
+        },
         "deprecation": {
           "type": "object",
           "properties": {
@@ -1261,9 +1393,6 @@
             "learn_more_above": {
               "type": "string"
             },
-            "community": {
-              "type": "string"
-            },
             "consider_no_dep": {
               "type": "string"
             }
@@ -1308,6 +1437,15 @@
                 }
               },
               "additionalProperties": false
+            },
+            "main_information": {
+              "type": "string"
+            },
+            "trends": {
+              "type": "string"
+            },
+            "version_distribution": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1397,6 +1535,9 @@
               "type": "string"
             },
             "timeline": {
+              "type": "string"
+            },
+            "stats": {
               "type": "string"
             },
             "compare_this_package": {
@@ -1642,6 +1783,9 @@
             "license": {
               "type": "string"
             },
+            "version": {
+              "type": "string"
+            },
             "select": {
               "type": "string"
             },
@@ -1694,9 +1838,6 @@
               "type": "string"
             },
             "distribution_title": {
-              "type": "string"
-            },
-            "distribution_modal_title": {
               "type": "string"
             },
             "distribution_range_date_same_year": {
@@ -1849,6 +1990,12 @@
                 "tab_aria_label": {
                   "type": "string"
                 },
+                "dependency_size": {
+                  "type": "string"
+                },
+                "other_dependencies": {
+                  "type": "string"
+                },
                 "base_scale": {
                   "type": "string"
                 },
@@ -1871,6 +2018,18 @@
                       "type": "string"
                     },
                     "general_description": {
+                      "type": "string"
+                    },
+                    "stackbar_segment_share": {
+                      "type": "string"
+                    },
+                    "stackbar_top_segments": {
+                      "type": "string"
+                    },
+                    "stackbar_largest_increase": {
+                      "type": "string"
+                    },
+                    "stackbar_largest_decrease": {
                       "type": "string"
                     }
                   },
@@ -2056,6 +2215,9 @@
             "download_file": {
               "type": "string"
             },
+            "copy_file": {
+              "type": "string"
+            },
             "toggle_annotator": {
               "type": "string"
             },
@@ -2158,6 +2320,9 @@
                 "watermark": {
                   "type": "string"
                 },
+                "watermark_top": {
+                  "type": "string"
+                },
                 "analysis": {
                   "type": "string"
                 },
@@ -2184,6 +2349,24 @@
                 }
               },
               "additionalProperties": false
+            },
+            "embedding": {
+              "type": "object",
+              "properties": {
+                "chart": {
+                  "type": "string"
+                },
+                "copy_url": {
+                  "type": "string"
+                },
+                "preview": {
+                  "type": "string"
+                },
+                "tip": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
             }
           },
           "additionalProperties": false
@@ -2192,6 +2375,9 @@
           "type": "object",
           "properties": {
             "title": {
+              "type": "string"
+            },
+            "version_distribution_title": {
               "type": "string"
             },
             "community_distribution": {
@@ -3138,6 +3324,9 @@
         },
         "binary_rendering_warning": {
           "type": "string"
+        },
+        "possibly_unnecessary": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -3579,6 +3768,12 @@
           "properties": {
             "title": {
               "type": "string"
+            },
+            "gold": {
+              "type": "string"
+            },
+            "silver": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -3598,7 +3793,13 @@
             "title": {
               "type": "string"
             },
-            "governance": {
+            "core": {
+              "type": "string"
+            },
+            "maintainers": {
+              "type": "string"
+            },
+            "role_core": {
               "type": "string"
             },
             "role_steward": {
@@ -3698,6 +3899,180 @@
                   "type": "string"
                 },
                 "cta": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "sponsors_page": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "heading": {
+          "type": "string"
+        },
+        "meta_description": {
+          "type": "string"
+        },
+        "intro": {
+          "type": "string"
+        },
+        "what_we_do": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "what_support_means": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "cta": {
+          "type": "string"
+        },
+        "community_growth_footnote": {
+          "type": "string"
+        },
+        "what_this_means_for_you": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "cards": {
+              "type": "object",
+              "properties": {
+                "people": {
+                  "type": "object",
+                  "properties": {
+                    "contributors": {
+                      "type": "string"
+                    },
+                    "community_members": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "visitors": {
+                  "type": "object",
+                  "properties": {
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "stars": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "community": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "adoption": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "default_source": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "tiers": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "per_month": {
+              "type": "string"
+            },
+            "custom": {
+              "type": "string"
+            },
+            "silver": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "gold": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "platinum": {
+              "type": "object",
+              "properties": {
+                "name": {
                   "type": "string"
                 }
               },
@@ -4231,6 +4606,18 @@
                   },
                   "additionalProperties": false
                 },
+                "githubForks": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
                 "githubIssues": {
                   "type": "object",
                   "properties": {
@@ -4310,12 +4697,6 @@
           "type": "string"
         },
         "lines_hidden": {
-          "type": "string"
-        },
-        "file_too_large": {
-          "type": "string"
-        },
-        "file_size_warning": {
           "type": "string"
         },
         "compare_versions": {
@@ -4436,6 +4817,15 @@
           "type": "string"
         },
         "diff_distance": {
+          "type": "string"
+        },
+        "diff_truncated": {
+          "type": "string"
+        },
+        "large_diff_mode": {
+          "type": "string"
+        },
+        "large_diff_options_disabled": {
           "type": "string"
         },
         "loading_diff": {

@@ -52,6 +52,16 @@ const {
 } = useGlobalSearch()
 const query = computed(() => searchQuery.value)
 
+const {
+  scope: packageScope,
+  name: queryPackageName,
+  trailing: queryTrailing,
+} = useParsedSearchQuery(committedQuery)
+
+const versionStrippedQuery = computed(() =>
+  `${queryPackageName.value}${queryTrailing.value ?? ''}`.trim(),
+)
+
 // Track if page just loaded (for hiding "Searching..." during view transition)
 const hasInteracted = shallowRef(false)
 onMounted(() => {
@@ -102,7 +112,7 @@ const visibleResults = computed(() => {
     objects = objects.filter(r => !isPlatformSpecificPackage(r.package.name))
   }
 
-  const q = query.value.trim().toLowerCase()
+  const q = versionStrippedQuery.value.trim().toLowerCase()
   if (!q) {
     return objects === raw.objects ? raw : { ...raw, objects }
   }
@@ -207,7 +217,7 @@ const {
   suggestions: validatedSuggestions,
   packageAvailability,
 } = useSearch(
-  committedQuery,
+  versionStrippedQuery,
   searchProvider,
   () => ({
     size: requestedSize.value,
@@ -306,14 +316,6 @@ const isValidPackageName = computed(() => isValidNewPackageName(query.value.trim
 // Get connector state
 const { isConnected, npmUser, listOrgUsers } = useConnector()
 
-// Check if this is a scoped package and extract scope
-const packageScope = computed(() => {
-  const q = query.value.trim()
-  if (!q.startsWith('@')) return null
-  const match = q.match(/^@([^/]+)\//)
-  return match ? match[1] : null
-})
-
 // Track org membership for scoped packages
 const orgMembership = ref<Record<string, boolean>>({})
 
@@ -372,7 +374,7 @@ const claimPackageModalRef = useTemplateRef('claimPackageModalRef')
 
 /** Check if there's an exact package match in results */
 const hasExactPackageMatch = computed(() => {
-  const q = query.value.trim().toLowerCase()
+  const q = versionStrippedQuery.value.trim().toLowerCase()
   if (!q || !visibleResults.value) return false
   return visibleResults.value.objects.some(r => r.package.name.toLowerCase() === q)
 })
@@ -502,13 +504,13 @@ function handleResultsKeydown(e: KeyboardEvent) {
 
     // Check if first result matches the input value exactly
     const firstResult = displayResults.value[0]
-    if (firstResult?.package.name === inputValue) {
+    if (firstResult?.package.name === committedQuery.value) {
       pendingEnterQuery.value = null
       return navigateToPackage(firstResult.package.name)
     }
 
     // No match yet - store input value, watcher will handle navigation when results arrive
-    pendingEnterQuery.value = inputValue
+    pendingEnterQuery.value = committedQuery.value
     return
   }
 
@@ -638,8 +640,8 @@ const rawLiveRegionMessage = computed(() => {
   }
 
   if (status.value === 'success' || status.value === 'error') {
-    if (displayResults.value.length === 0 && query.value) {
-      return $t('search.no_results', { query: query.value })
+    if (displayResults.value.length === 0 && versionStrippedQuery.value) {
+      return $t('search.no_results', { query: versionStrippedQuery.value })
     }
   }
 
@@ -838,7 +840,7 @@ onBeforeUnmount(() => {
 
           <div v-else-if="status === 'success' || status === 'error'" class="py-12">
             <p class="text-fg-muted font-mono mb-6 text-center">
-              {{ $t('search.no_results', { query }) }}
+              {{ $t('search.no_results', { query: versionStrippedQuery }) }}
             </p>
 
             <Transition
@@ -878,7 +880,7 @@ onBeforeUnmount(() => {
           <PackageList
             v-show="displayResults.length > 0 && !isRateLimited"
             :results="displayResults"
-            :search-query="query"
+            :search-query="versionStrippedQuery"
             :filters="filters"
             search-context
             heading-level="h2"

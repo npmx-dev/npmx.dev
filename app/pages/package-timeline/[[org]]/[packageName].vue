@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import type { RouteLocationRaw } from 'vue-router'
-import { compare } from 'semver'
+import { compare } from 'verkit'
 import type {
   TimelineResponse,
   TimelineVersion,
   SubEvent,
 } from '~~/server/api/registry/timeline/[...pkg].get'
 import type { TimelineSizeResponse } from '~~/server/api/registry/timeline/sizes/[...pkg].get'
+import type { TimelineSizeCacheValue } from '~/utils/charts'
 
 definePageMeta({
   name: 'timeline',
   path: '/package-timeline/:org?/:packageName/v/:version',
+  preserveScrollOnQuery: true,
 })
 
 const { t } = useI18n()
@@ -126,7 +128,7 @@ const SIZE_INCREASE_THRESHOLD = 0.25
 const DEP_INCREASE_THRESHOLD = 5
 const NO_LICENSE_VALUES = new Set(['', 'UNLICENSED'])
 
-const sizeCache = shallowReactive(new Map<string, { totalSize: number; dependencyCount: number }>())
+const sizeCache = shallowReactive(new Map<string, TimelineSizeCacheValue>())
 const sizeFetchesInFlight = ref(0)
 const sizesLoading = computed(() => sizeFetchesInFlight.value > 0)
 
@@ -148,6 +150,8 @@ async function fetchSizes(offset: number) {
       sizeCache.set(`${requestedPackage}@${entry.version}`, {
         totalSize: entry.totalSize,
         dependencyCount: entry.dependencyCount,
+        selfSize: entry.selfSize,
+        dependencies: entry.dependencies,
       })
     }
   } catch {
@@ -347,7 +351,7 @@ useSeoMeta({
       page="timeline"
     />
 
-    <div class="sticky top-24 z-1 bg-bg mt-8">
+    <div class="[@media(min-height:1024px)]:sticky top-24 z-1 bg-bg mt-8">
       <div class="container w-full">
         <div class="mx-auto">
           <PackageTimelineChart

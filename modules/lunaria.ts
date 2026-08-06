@@ -21,6 +21,7 @@ export default defineNuxtModule({
       maxAge: 60 * 60 * 24, // 1 day
     })
 
+    // oxlint-disable-next-line eslint/no-underscore-dangle
     if (nuxt.options.dev || nuxt.options._prepare || nuxt.options.test || isTest) {
       return
     }
@@ -31,6 +32,7 @@ export default defineNuxtModule({
         try {
           execSync('node --experimental-transform-types ./lunaria/lunaria.ts', {
             cwd: nuxt.options.rootDir,
+            stdio: 'inherit',
           })
         } catch (e) {
           // Always throw in local dev.
@@ -38,6 +40,8 @@ export default defineNuxtModule({
           const { env } = await getEnv(!isCI)
           if (env === 'dev' || env === 'release') {
             throw e
+          } else {
+            console.error(e)
           }
         }
       })

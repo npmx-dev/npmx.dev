@@ -1,5 +1,6 @@
 import process from 'node:process'
 import type { CachedFetchResult } from '#shared/utils/fetch-cache-config'
+import { parsePackageSpec } from '#shared/utils/parse-package-param'
 import { createFetch } from 'ofetch'
 
 /**
@@ -63,42 +64,6 @@ function getFixturePath(type: FixtureType, name: string): string {
   }
 
   return `${dir}:${filename.replace(/\//g, ':')}`
-}
-
-/**
- * Parse a scoped package name with optional version.
- * Handles formats like: @scope/name, @scope/name@version, name, name@version
- */
-function parseScopedPackageWithVersion(input: string): { name: string; version?: string } {
-  if (input.startsWith('@')) {
-    // Scoped package: @scope/name or @scope/name@version
-    const slashIndex = input.indexOf('/')
-    if (slashIndex === -1) {
-      // Invalid format like just "@scope"
-      return { name: input }
-    }
-    const afterSlash = input.slice(slashIndex + 1)
-    const atIndex = afterSlash.indexOf('@')
-    if (atIndex === -1) {
-      // @scope/name (no version)
-      return { name: input }
-    }
-    // @scope/name@version
-    return {
-      name: input.slice(0, slashIndex + 1 + atIndex),
-      version: afterSlash.slice(atIndex + 1),
-    }
-  }
-
-  // Unscoped package: name or name@version
-  const atIndex = input.indexOf('@')
-  if (atIndex === -1) {
-    return { name: input }
-  }
-  return {
-    name: input.slice(0, atIndex),
-    version: input.slice(atIndex + 1),
-  }
 }
 
 function getMockForUrl(url: string): MockResult | null {
@@ -563,7 +528,7 @@ async function handleJsdelivrDataApi(
   const packageMatch = decodeURIComponent(urlObj.pathname).match(/^\/v1\/packages\/npm\/(.+)$/)
   if (!packageMatch?.[1]) return null
 
-  const parsed = parseScopedPackageWithVersion(packageMatch[1])
+  const parsed = parsePackageSpec(packageMatch[1])
 
   // Try per-package fixture first
   const fixturePath = getFixturePath('jsdelivr', parsed.name)
@@ -863,9 +828,6 @@ export default defineNitroPlugin(nitroApp => {
   const original$fetch = globalThis.$fetch
 
   // Override native fetch for esm.sh requests and to inject test fixture responses
-  // @ts-expect-error @atcute/tid depends on @atcute/time-ms@1.2.2 which depends on @types/bun causing this type conflict.
-  // they fixed this in @atcute/time-ms@^1.3.0 but the tid package needs an update. Doing a ts-expect-error rather than an override
-  // so we remember to remove this when the tid package updates
   globalThis.fetch = async (input: URL | RequestInfo, init?: RequestInit): Promise<Response> => {
     const urlStr =
       typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url
@@ -935,7 +897,7 @@ export default defineNitroPlugin(nitroApp => {
   nitroApp.hooks.hook('request', event => {
     event.context.cachedFetch = async (url: string, options?: any) => {
       return {
-        data: await globalThis.$fetch(url, options),
+        data: await fetchWrapper(url, options),
         isStale: false,
         cachedAt: null,
       }

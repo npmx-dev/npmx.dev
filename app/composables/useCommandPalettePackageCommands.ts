@@ -27,10 +27,7 @@ export function useCommandPalettePackageCommands(
       .includes(packageName)
   }
 
-  const { data: changelog } = usePackageChangelog(
-    () => toValue(context)?.packageName,
-    () => toValue(context)?.resolvedVersion,
-  )
+  const hasChangelog = usePackageHasChangelogFromState()
 
   useCommandPaletteContextCommands(
     computed((): CommandPaletteContextCommandInput[] => {
@@ -40,15 +37,7 @@ export function useCommandPalettePackageCommands(
       const { org, name } = splitPackageName(resolvedContext.packageName)
       if (!name) return []
 
-      const docsPath: [string, ...string[]] = org
-        ? [org, name, 'v', resolvedContext.resolvedVersion]
-        : [name, 'v', resolvedContext.resolvedVersion]
-      const docsLink = {
-        name: 'docs' as const,
-        params: {
-          path: docsPath,
-        },
-      }
+      const docsLink = docsRoute(resolvedContext.packageName, resolvedContext.resolvedVersion)
       const codeLink = {
         name: 'code' as const,
         params: {
@@ -107,10 +96,19 @@ export function useCommandPalettePackageCommands(
           activeLabel: activeLabel(route.name === 'timeline', t('command_palette.here')),
           to: packageTimelineRoute(resolvedContext.packageName, resolvedContext.resolvedVersion),
         },
+        {
+          id: 'package-stats',
+          group: 'package',
+          label: t('command_palette.package.stats'),
+          keywords: [resolvedContext.packageName, t('shortcuts.open_stats')],
+          iconClass: 'i-lucide:chart-bar',
+          active: route.name === 'stats',
+          activeLabel: activeLabel(route.name === 'stats', t('command_palette.here')),
+          to: packageStatsRoute(resolvedContext.packageName, resolvedContext.resolvedVersion),
+        },
       ]
 
-      const uChangelog = changelog.value
-      if (uChangelog?.type === 'md' || uChangelog?.type === 'release') {
+      if (hasChangelog.value) {
         commands.push({
           id: 'package-changelog',
           group: 'package',

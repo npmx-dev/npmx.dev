@@ -2,7 +2,6 @@
 import type { RouteLocationRaw } from 'vue-router'
 import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
 import { SCROLL_TO_TOP_THRESHOLD } from '~/composables/useScrollToTop'
-import { usePackageChangelog } from '~/composables/usePackageChangelog'
 
 const props = defineProps<{
   pkg?: Pick<SlimPackument, 'name' | 'versions' | 'dist-tags'> | null
@@ -11,7 +10,7 @@ const props = defineProps<{
   latestVersion?: SlimVersion | null
   provenanceData?: ProvenanceDetails | null
   provenanceStatus?: string | null
-  page: 'main' | 'docs' | 'code' | 'diff' | 'changelog' | 'timeline'
+  page: 'main' | 'docs' | 'code' | 'diff' | 'changelog' | 'timeline' | 'stats'
   versionUrlPattern: string
 }>()
 
@@ -76,6 +75,11 @@ const { copied: copiedPkgName, copy: copyPkgName } = useClipboard({
   copiedDuring: 2000,
 })
 
+const { copied: copiedPkgVersion, copy: copyPkgVersion } = useClipboard({
+  source: () => props.resolvedVersion ?? '',
+  copiedDuring: 2000,
+})
+
 function hasProvenance(version: PackumentVersion | null): boolean {
   if (!version?.dist) return false
   return !!(version.dist as { attestations?: unknown }).attestations
@@ -99,6 +103,17 @@ useCommandPaletteContextCommands(
           announce($t('command_palette.announcements.copied_to_clipboard'))
         },
       },
+      {
+        id: 'package-copy-version',
+        group: 'package',
+        label: $t('package.copy_version'),
+        keywords: [packageName.value],
+        iconClass: 'i-lucide:copy',
+        action: () => {
+          copyPkgVersion()
+          announce($t('command_palette.announcements.copied_to_clipboard'))
+        },
+      },
     ]
 
     if (fundingUrl.value) {
@@ -117,15 +132,10 @@ useCommandPaletteContextCommands(
 )
 
 // Docs URL: use our generated API docs
-const docsLink = computed(() => {
-  if (!props.resolvedVersion) return null
+const docsLink = computed((): RouteLocationRaw | null => {
+  if (!props.pkg?.name || !props.resolvedVersion) return null
 
-  return {
-    name: 'docs' as const,
-    params: {
-      path: [props.pkg?.name ?? '', 'v', props.resolvedVersion] satisfies [string, string, string],
-    },
-  }
+  return docsRoute(props.pkg.name, props.resolvedVersion)
 })
 
 const codeLink = computed((): RouteLocationRaw | null => {
@@ -163,12 +173,15 @@ const diffLink = computed((): RouteLocationRaw | null => {
   return diffRoute(props.pkg.name, props.resolvedVersion, props.latestVersion.version)
 })
 
-const { data: changelog } = usePackageChangelog(packageName, requestedVersion)
-
+const hasChangelog = usePackageHasChangelog(
+  packageName,
+  () => requestedVersion.value || props.resolvedVersion,
+  true,
+)
 const changelogLink = computed((): RouteLocationRaw | null => {
   if (
     // either changelog.value is available or current page is the changelog
-    !(changelog.value || props.page == 'changelog') ||
+    !(hasChangelog.value || props.page == 'changelog') ||
     props.pkg == null ||
     props.resolvedVersion == null
   ) {
@@ -182,6 +195,11 @@ const timelineLink = computed((): RouteLocationRaw | null => {
   return packageTimelineRoute(props.pkg.name, props.resolvedVersion)
 })
 
+const statsLink = computed((): RouteLocationRaw | null => {
+  if (props.pkg == null || props.resolvedVersion == null) return null
+  return packageStatsRoute(props.pkg.name, props.resolvedVersion)
+})
+
 useShortcuts({
   '.': () => codeLink.value,
   'm': () => mainLink.value,
@@ -190,6 +208,7 @@ useShortcuts({
   'f': () => diffLink.value,
   '-': () => changelogLink.value,
   't': () => timelineLink.value,
+  's': () => statsLink.value,
 })
 </script>
 
@@ -198,26 +217,37 @@ useShortcuts({
   <header class="bg-bg pt-5 pb-1 w-full container">
     <!-- Package name and version -->
     <div class="flex items-baseline justify-between gap-x-2 gap-y-1 flex-wrap min-w-0">
-      <CopyToClipboardButton
-        :copied="copiedPkgName"
-        :copy-text="$t('package.copy_name')"
-        class="flex flex-col items-start min-w-0"
-        @click="copyPkgName()"
+      <h1
+        class="flex flex-row items-start min-w-0 font-mono text-lg sm:text-3xl font-medium break-words"
+        :title="pkg?.name"
+        dir="ltr"
       >
-        <h1
-          class="font-mono text-lg sm:text-3xl font-medium min-w-0 break-words"
-          :title="pkg?.name"
-          dir="ltr"
+        <CopyToClipboardButton
+          :copied="copiedPkgName"
+          :copy-text="$t('package.copy_name')"
+          @click="copyPkgName()"
         >
           <LinkBase v-if="orgName" :to="{ name: 'org', params: { org: orgName } }">
             @{{ orgName }}
           </LinkBase>
           <span v-if="orgName">/</span>
-          <span :class="{ 'text-fg-muted': orgName }">
+          <span :class="{ 'text-fg-muted': !requestedVersion }">
             {{ orgName ? pkg?.name.replace(`@${orgName}/`, '') : pkg?.name }}
           </span>
-        </h1>
-      </CopyToClipboardButton>
+        </CopyToClipboardButton>
+        <template v-if="requestedVersion && resolvedVersion">
+          <span class="text-fg-subtle">@</span>
+          <CopyToClipboardButton
+            :copied="copiedPkgVersion"
+            :copy-text="$t('package.copy_version')"
+            :title="resolvedVersion"
+            @click="copyPkgVersion()"
+            class="text-fg-subtle"
+          >
+            {{ resolvedVersion }}
+          </CopyToClipboardButton>
+        </template>
+      </h1>
       <!-- Package metrics -->
       <div class="flex gap-2 flex-wrap items-stretch">
         <LinkBase
@@ -243,7 +273,7 @@ useShortcuts({
   </header>
   <div
     ref="header"
-    class="w-full bg-bg sticky top-14 z-50 border-b border-border pt-2"
+    class="w-full bg-bg sticky top-14 z-40 border-b border-border pt-2"
     :class="[$style.packageHeader]"
     data-testid="package-subheader"
   >
@@ -369,6 +399,15 @@ useShortcuts({
           :class="page === 'timeline' ? 'border-accent text-accent!' : 'border-transparent'"
         >
           {{ $t('package.links.timeline') }}
+        </LinkBase>
+        <LinkBase
+          v-if="statsLink"
+          :to="statsLink"
+          aria-keyshortcuts="s"
+          class="decoration-none border-b-2 p-1 hover:border-accent/50 focus-visible:[outline-offset:-2px]!"
+          :class="page === 'stats' ? 'border-accent text-accent!' : 'border-transparent'"
+        >
+          {{ $t('package.links.stats') }}
         </LinkBase>
       </nav>
     </div>

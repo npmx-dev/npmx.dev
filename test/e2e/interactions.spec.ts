@@ -98,13 +98,13 @@ test.describe('Package Page', () => {
     const packageHeading = page.locator('h1').first()
     await expect(packageHeading).toBeVisible({ timeout: 10000 })
 
-    // Hover the parent of the heading to trigger the button's visibility
-    await packageHeading.locator('..').hover()
-
     const copyButton = page
       .locator('button[aria-label="copy"]')
       .filter({ hasText: /copy/i })
       .first()
+
+    // Hover the button's group container (its parent) to trigger its visibility
+    await copyButton.locator('..').hover()
 
     await expect(copyButton).toBeVisible({ timeout: 10000 })
     await copyButton.hover()
@@ -136,6 +136,40 @@ test.describe('Package Page', () => {
       expect(
         result.isOnTop,
         `Button is occluded at point (${x.toFixed(0)}, ${y.toFixed(0)}) by <${result.tagName} "${result.className}">`,
+      ).toBe(true)
+    }
+  })
+
+  test('AccountMenu dropdown items are clickable on package pages', async ({ page, goto }) => {
+    await goto('/package/vue', { waitUntil: 'hydration' })
+
+    await page.getByRole('button', { name: /^connect$/i }).click()
+    const items = page.getByRole('menuitem')
+    await expect(items.first()).toBeVisible()
+
+    // Verify each menu item is the topmost element at its own center.
+    for (const item of await items.all()) {
+      const box = await item.boundingBox()
+      if (!box) throw new Error('Menu item has no bounding box')
+      const cx = box.x + box.width / 2
+      const cy = box.y + box.height / 2
+
+      const hit = await page.evaluate(
+        ({ x, y }) => {
+          const el = document.elementFromPoint(x, y)
+          return {
+            insideMenuitem: el?.closest('[role="menuitem"]') !== null,
+            occluderTag: el?.tagName,
+            occluderClass: typeof el?.className === 'string' ? el.className.slice(0, 100) : '',
+            occluderText: el?.textContent?.trim().slice(0, 60),
+          }
+        },
+        { x: cx, y: cy },
+      )
+
+      expect(
+        hit.insideMenuitem,
+        `Menu item center (${cx.toFixed(0)}, ${cy.toFixed(0)}) is occluded by <${hit.occluderTag} class="${hit.occluderClass}">${hit.occluderText ? ` "${hit.occluderText}"` : ''}`,
       ).toBe(true)
     }
   })

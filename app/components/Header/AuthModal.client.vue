@@ -42,6 +42,12 @@ async function handleLogin() {
   }
 }
 
+/** Reset the login form so a stale handle/error isn't shown when reopening. */
+function handleModalClose() {
+  handleInput.value = ''
+  errorMessage.value = ''
+}
+
 watch(handleInput, newHandleInput => {
   errorMessage.value = ''
   if (!newHandleInput) return
@@ -64,7 +70,12 @@ watch(user, async newUser => {
 
 <template>
   <!-- Modal -->
-  <Modal :modalTitle="$t('auth.modal.title')" class="max-w-lg" id="auth-modal">
+  <Modal
+    :modalTitle="$t('auth.modal.title')"
+    class="max-w-lg"
+    id="auth-modal"
+    @close="handleModalClose"
+  >
     <div v-if="user?.handle" class="space-y-4">
       <div class="flex items-center gap-3 p-4 bg-bg-subtle border border-border rounded-lg">
         <span class="w-3 h-3 rounded-full bg-green-500" aria-hidden="true" />

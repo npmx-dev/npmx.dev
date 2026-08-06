@@ -36,6 +36,7 @@ export default defineNuxtModule({
       'https://cdn.bsky.app',
       'https://video.bsky.app',
       'https://video.cdn.bsky.app',
+      'https://media1.tenor.com',
     ]
     const imgSrc = [
       "'self'",
@@ -50,6 +51,8 @@ export default defineNuxtModule({
       'https://registry.npmjs.org',
       'https://api.npmjs.org',
       'https://npm.antfu.dev',
+      'https://video.bsky.app',
+      'https://video.cdn.bsky.app',
       BLUESKY_API,
       ...ALL_KNOWN_GIT_API_ORIGINS,
       // Local CLI connector (npmx CLI communicates via localhost)
@@ -76,7 +79,7 @@ export default defineNuxtModule({
       `script-src 'self' 'unsafe-inline'`,
       `style-src 'self' 'unsafe-inline'`,
       `img-src ${imgSrc}`,
-      `media-src 'self'`,
+      `media-src 'self' blob:`,
       `font-src 'self'`,
       `connect-src ${connectSrc}`,
       `frame-src ${frameSrc}`,

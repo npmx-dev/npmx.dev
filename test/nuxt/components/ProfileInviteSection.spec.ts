@@ -1,15 +1,18 @@
-import { mockNuxtImport, mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
-import { describe, expect, it, vi, beforeEach } from 'vitest'
-
-const { mockUseAtproto, mockUseProfileLikes } = vi.hoisted(() => ({
-  mockUseAtproto: vi.fn(),
-  mockUseProfileLikes: vi.fn(),
-}))
-
-mockNuxtImport('useAtproto', () => mockUseAtproto)
-mockNuxtImport('useProfileLikes', () => mockUseProfileLikes)
+import type { VueWrapper } from '@vue/test-utils'
+import { mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import ProfilePage from '~/pages/profile/[identity]/index.vue'
+
+function createAtprotoUser(handle: string) {
+  return {
+    did: `did:plc:${handle}`,
+    handle,
+    pds: 'https://bsky.social',
+  }
+}
+
+let authSessionHandler: () => unknown | Promise<unknown> = () => null
 
 registerEndpoint('/api/social/profile/test-handle', () => ({
   displayName: 'Test User',
@@ -19,66 +22,70 @@ registerEndpoint('/api/social/profile/test-handle', () => ({
   recordExists: false,
 }))
 
+registerEndpoint('/api/auth/session', () => authSessionHandler())
+
+registerEndpoint('/api/social/profile/test-handle/likes', () => ({
+  cursor: null,
+  likes: [],
+}))
+
 describe('Profile invite section', () => {
+  let wrapper: VueWrapper | undefined
+
   beforeEach(() => {
-    mockUseAtproto.mockReset()
-    mockUseProfileLikes.mockReset()
+    clearNuxtData()
+    authSessionHandler = () => null
+  })
+
+  afterEach(() => {
+    wrapper?.unmount()
+    wrapper = undefined
   })
 
   it('does not show invite section while auth is still loading', async () => {
-    mockUseAtproto.mockReturnValue({
-      user: ref(null),
-      pending: ref(true),
-      logout: vi.fn(),
-    })
+    let resolveAuthSession!: () => void
+    authSessionHandler = () =>
+      new Promise(resolve => {
+        resolveAuthSession = () => resolve(null)
+      })
 
-    mockUseProfileLikes.mockReturnValue({
-      data: ref({ records: [] }),
-      status: ref('success'),
-    })
-
-    const wrapper = await mountSuspended(ProfilePage, {
+    const component = await mountSuspended(ProfilePage, {
       route: '/profile/test-handle',
     })
+    wrapper = component
 
-    expect(wrapper.text()).not.toContain("It doesn't look like they're using npmx yet")
+    expect(component.text()).not.toContain("It doesn't look like they're using npmx yet")
+    resolveAuthSession()
   })
 
   it('shows invite section after auth resolves for non-owner', async () => {
-    mockUseAtproto.mockReturnValue({
-      user: ref({ handle: 'other-user' }),
-      pending: ref(false),
-      logout: vi.fn(),
-    })
+    authSessionHandler = () => createAtprotoUser('other-user')
 
-    mockUseProfileLikes.mockReturnValue({
-      data: ref({ records: [] }),
-      status: ref('success'),
-    })
-
-    const wrapper = await mountSuspended(ProfilePage, {
+    const component = await mountSuspended(ProfilePage, {
       route: '/profile/test-handle',
     })
+    wrapper = component
 
-    expect(wrapper.text()).toContain("It doesn't look like they're using npmx yet")
+    await vi.waitFor(() => {
+      expect(component.text()).toContain("It doesn't look like they're using npmx yet")
+    })
   })
 
   it('does not show invite section for profile owner', async () => {
-    mockUseAtproto.mockReturnValue({
-      user: ref({ handle: 'test-handle' }),
-      pending: ref(false),
-      logout: vi.fn(),
-    })
+    let authSessionRequests = 0
+    authSessionHandler = () => {
+      authSessionRequests++
+      return createAtprotoUser('test-handle')
+    }
 
-    mockUseProfileLikes.mockReturnValue({
-      data: ref({ records: [] }),
-      status: ref('success'),
-    })
-
-    const wrapper = await mountSuspended(ProfilePage, {
+    const component = await mountSuspended(ProfilePage, {
       route: '/profile/test-handle',
     })
+    wrapper = component
 
-    expect(wrapper.text()).not.toContain("It doesn't look like they're using npmx yet")
+    await vi.waitFor(() => {
+      expect(authSessionRequests).toBeGreaterThan(0)
+    })
+    expect(component.text()).not.toContain("It doesn't look like they're using npmx yet")
   })
 })

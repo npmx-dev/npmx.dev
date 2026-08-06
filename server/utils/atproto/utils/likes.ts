@@ -289,11 +289,13 @@ export class PackageLikesUtils {
    * Gets a list of likes for a user. Newest first
    * @param miniDoc
    * @param limit
+   * @param cursor
    * @returns
    */
   async getUserLikes(
     miniDoc: blue.microcosm.identity.resolveMiniDoc.$OutputBody,
     limit: number = 10,
+    cursor?: string,
   ) {
     const client = new Client(miniDoc.pds, {
       headers: { 'User-Agent': 'npmx' },
@@ -301,6 +303,7 @@ export class PackageLikesUtils {
     const result = await client.list(dev.npmx.feed.like, {
       limit,
       repo: miniDoc.did,
+      cursor,
     })
     return result
   }

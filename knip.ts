@@ -1,21 +1,22 @@
 import type { KnipConfig } from 'knip'
 
 const config: KnipConfig = {
+  treatConfigHintsAsErrors: true,
+  treatTagHintsAsErrors: true,
   workspaces: {
     '.': {
       entry: [
         'i18n/**/*.ts',
         'lunaria.config.ts',
-        'lunaria/lunaria.ts',
-        'pwa-assets.config.ts',
         'modules/*.ts',
         '.lighthouserc.cjs',
         'lighthouse-setup.cjs',
         'uno-preset-*.ts!',
         'scripts/**/*.ts',
+        '{*,.github/*,app/pages/blog/**}.md',
       ],
       project: [
-        '**/*.{ts,vue,cjs,mjs}',
+        '**/*.{ts,vue,cjs,mjs,md,mdx}',
         '!test/fixtures/**',
         '!test/test-utils/**',
         '!test/e2e/helpers/**',
@@ -31,12 +32,8 @@ const config: KnipConfig = {
         'vite-plugin-pwa',
         '@vueuse/shared',
 
-        /** Some components import types from here, but installing it directly could lead to a version mismatch */
-        'vue-router',
-
-        /** Oxlint plugins don't get picked up yet */
-        '@e18e/eslint-plugin',
-        'eslint-plugin-regexp',
+        /** Optional peer dependency of @nuxt/vite-builder for the rolldown-powered build */
+        'rolldown',
 
         /** Used in test/e2e/helpers/ which is excluded from knip project scope */
         'h3-next',
@@ -53,7 +50,7 @@ const config: KnipConfig = {
     },
     'docs': {
       entry: ['app/**/*.{ts,vue,css}', 'shared/**/*.{ts,vue,css}'],
-      project: ['**/*.{ts,vue,cjs,mjs}'],
+      project: ['**/*.{ts,vue,cjs,mjs,css}'],
       ignoreDependencies: ['@nuxtjs/mdc'],
     },
   },

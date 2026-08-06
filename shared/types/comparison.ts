@@ -18,6 +18,7 @@ export type ComparisonFacet =
   | 'deprecated'
   | 'totalLikes'
   | 'githubStars'
+  | 'githubForks'
   | 'githubIssues'
   | 'createdAt'
 
@@ -60,6 +61,9 @@ export const FACET_INFO: Record<ComparisonFacet, Omit<FacetInfo, 'id'>> = {
     category: 'health',
   },
   githubStars: {
+    category: 'health',
+  },
+  githubForks: {
     category: 'health',
   },
   githubIssues: {

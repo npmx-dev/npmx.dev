@@ -9,29 +9,10 @@ definePageMeta({
   scrollMargin: 180,
 })
 
-const route = useRoute('docs')
 const router = useRouter()
 const { t } = useI18n()
 
-const parsedRoute = computed(() => {
-  const segments = route.params.path?.filter(Boolean)
-  const vIndex = segments.indexOf('v')
-
-  if (vIndex === -1 || vIndex >= segments.length - 1) {
-    return {
-      packageName: segments.join('/'),
-      version: null as string | null,
-    }
-  }
-
-  return {
-    packageName: segments.slice(0, vIndex).join('/'),
-    version: segments.slice(vIndex + 1).join('/'),
-  }
-})
-
-const packageName = computed(() => parsedRoute.value.packageName)
-const requestedVersion = computed(() => parsedRoute.value.version)
+const { packageName, requestedVersion } = usePackageRoute()
 
 // Validate package name on server-side for early error detection
 if (import.meta.server && packageName.value) {
@@ -49,12 +30,8 @@ if (import.meta.server && !requestedVersion.value && packageName.value) {
   const version = await fetchLatestVersion(packageName.value)
   if (version) {
     setResponseHeader(useRequestEvent()!, 'Cache-Control', 'no-cache')
-    const pathSegments = [...packageName.value.split('/'), 'v', version]
     app.runWithContext(() =>
-      navigateTo(
-        { name: 'docs', params: { path: pathSegments as [string, ...string[]] } },
-        { redirectCode: 302 },
-      ),
+      navigateTo(docsRoute(packageName.value, version), { redirectCode: 302 }),
     )
   }
 }
@@ -63,8 +40,7 @@ watch(
   [requestedVersion, latestVersion, packageName],
   ([version, latest, name]) => {
     if (!version && latest && name) {
-      const pathSegments = [...name.split('/'), 'v', latest]
-      router.replace({ name: 'docs', params: { path: pathSegments as [string, ...string[]] } })
+      router.replace(docsRoute(name, latest))
     }
   },
   { immediate: true },
@@ -125,15 +101,7 @@ const versionUrlPattern = computed(
 )
 
 function docsVersionRoute(version: string): RouteLocationRaw {
-  const name = pkg.value?.name || packageName.value
-  const [firstSegment = name, ...remainingSegments] = name.split('/')
-
-  return {
-    name: 'docs',
-    params: {
-      path: [firstSegment, ...remainingSegments, 'v', version],
-    },
-  }
+  return docsRoute(pkg.value?.name || packageName.value, version)
 }
 
 useCommandPaletteVersionCommands(commandPalettePackageContext, docsVersionRoute)
@@ -206,14 +174,14 @@ const stickyStyle = computed(() => {
 
       <!-- Main content -->
       <main class="flex-1 min-w-0">
-        <div v-if="showLoading" class="p-6 sm:p-8 lg:p-12 space-y-4">
+        <div v-if="showLoading" class="container mx-auto py-6 sm:py-8 lg:py-12 space-y-4">
           <SkeletonBlock class="h-8 w-64 rounded" />
           <SkeletonBlock class="h-4 w-full max-w-2xl rounded" />
           <SkeletonBlock class="h-4 w-5/6 max-w-2xl rounded" />
           <SkeletonBlock class="h-4 w-3/4 max-w-2xl rounded" />
         </div>
 
-        <div v-else-if="showEmptyState" class="p-6 sm:p-8 lg:p-12">
+        <div v-else-if="showEmptyState" class="container mx-auto py-6 sm:py-8 lg:py-12">
           <div class="max-w-xl rounded-lg border border-border bg-bg-muted p-6">
             <h2 class="font-mono text-lg mb-2">{{ $t('package.docs.not_available') }}</h2>
             <p class="text-fg-subtle text-sm">
@@ -231,8 +199,10 @@ const stickyStyle = computed(() => {
           </div>
         </div>
 
-        <!-- eslint-disable vue/no-v-html -->
-        <div v-else class="docs-content p-6 sm:p-8 lg:p-12" v-html="docsData?.html" />
+        <div v-else class="container mx-auto py-6 sm:py-8 lg:py-12">
+          <!-- eslint-disable vue/no-v-html -->
+          <div class="docs-content" v-html="docsData?.html" />
+        </div>
       </main>
     </div>
   </div>
