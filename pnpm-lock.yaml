@@ -254,8 +254,8 @@ importers:
         specifier: 8.0.0
         version: 8.0.0
       verkit:
-        specifier: 0.3.1
-        version: 0.3.1
+        specifier: 0.3.2
+        version: 0.3.2
       virtua:
         specifier: 0.50.0
         version: 0.50.0(react-dom@19.2.8)(react@19.2.8)(vue@3.5.39)
@@ -10627,8 +10627,8 @@ packages:
     resolution: {integrity: sha512-6M8R2xSKplkQ+0mAm07IMh548GLLPUnRQZJCCe/W4rfk/SXW2bs8ZJSWa5kjdIdsx3hLG5oLWROJ4+N5hpX08g==}
     engines: {node: '>=18.12.0'}
 
-  verkit@0.3.1:
-    resolution: {integrity: sha512-w2Eo8LSIIoW7qxNBzT7/17k+bh8plXo7G3dHjEIDqPlnluhzaxr9JX8F28VSYEtDvc1/a3WBDih6xNUZseebXg==}
+  verkit@0.3.2:
+    resolution: {integrity: sha512-zj/ob3UsvJGN0whEAKFp53REA5X66hvffVqoCtVQAakJKnKlH+/PcOfMoFwIG/o4rElqLv/ycAFlx8ZlXUorCg==}
     engines: {node: '>=18.12.0'}
 
   vfile-location@5.0.3:
@@ -23184,7 +23184,7 @@ snapshots:
 
   verkit@0.2.0: {}
 
-  verkit@0.3.1: {}
+  verkit@0.3.2: {}
 
   vfile-location@5.0.3:
     dependencies:
