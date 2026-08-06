@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core'
-import { compare } from 'semver'
+import { compare } from 'verkit'
 import {
   buildVersionToTagsMap,
   getPrereleaseChannel,
@@ -531,7 +531,7 @@ watch(
       type="button"
       aria-haspopup="listbox"
       :aria-expanded="isOpen"
-      class="break-all text-start text-fg-subtle font-mono text-sm hover:text-fg transition-[color] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg rounded"
+      class="break-all text-start font-mono text-sm hover:text-accent transition-[color] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg rounded"
       @click="isOpen = !isOpen"
       @keydown="handleButtonKeydown"
       data-testid="version-selector-button"

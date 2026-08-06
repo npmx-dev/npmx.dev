@@ -1,0 +1,54 @@
+{
+  "_id": "takumi-js",
+  "name": "takumi-js",
+  "description": "All-in-one Takumi package for Node.js and WebAssembly runtimes.",
+  "dist-tags": {
+    "latest": "1.8.7",
+    "beta": "2.0.0-beta.14",
+    "rc": "2.0.0-rc.5"
+  },
+  "versions": {
+    "1.8.7": {
+      "name": "takumi-js",
+      "version": "1.8.7",
+      "description": "All-in-one Takumi package for Node.js and WebAssembly runtimes.",
+      "license": "(MIT OR Apache-2.0)",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kane50613/takumi.git",
+        "directory": "takumi-js"
+      },
+      "bugs": {
+        "url": "https://github.com/kane50613/takumi/issues"
+      },
+      "homepage": "https://takumi.kane.tw/docs/",
+      "keywords": ["css", "image", "jsx", "next-og", "og-image", "react", "rendering", "wasm"],
+      "main": "./dist/index.cjs",
+      "module": "./dist/index.mjs",
+      "types": "./dist/index.d.mts",
+      "dist": {
+        "shasum": "e586fb157f0a8c6fb087f9a671470bebfaa9a756",
+        "tarball": "https://registry.npmjs.org/takumi-js/-/takumi-js-1.8.7.tgz",
+        "fileCount": 38,
+        "integrity": "sha512-vJ4znkQvSecOkiAwge2P7lkwF6GFEbQIPD1C1EebyQq3x2xcE2+Wu9HkUVlMOuh3Un9p/GBHePr0jNpUCwHQOQ==",
+        "unpackedSize": 43835
+      }
+    }
+  },
+  "time": {
+    "created": "2023-01-21T10:16:00.000Z",
+    "modified": "2026-07-02T15:45:00.000Z",
+    "1.8.7": "2026-06-20T16:21:08.178Z"
+  },
+  "license": "(MIT OR Apache-2.0)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kane50613/takumi.git",
+    "directory": "takumi-js"
+  },
+  "bugs": {
+    "url": "https://github.com/kane50613/takumi/issues"
+  },
+  "homepage": "https://takumi.kane.tw/docs/",
+  "keywords": ["css", "image", "jsx", "next-og", "og-image", "react", "rendering", "wasm"]
+}

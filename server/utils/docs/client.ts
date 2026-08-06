@@ -104,6 +104,7 @@ function createLoader(): (
         return undefined
       }
 
+      // oxlint-disable-next-line eslint/no-underscore-dangle
       const content = (await response._data?.text()) ?? ''
       const headers: Record<string, string> = {}
       for (const [key, value] of response.headers) {

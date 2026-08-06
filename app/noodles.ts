@@ -6,6 +6,9 @@ import type { Noodle } from '#shared/schemas/noodle'
 const ALEX = { name: 'Alex Savelyev', blueskyHandle: 'alexdln.com' }
 const ALFON = { name: 'Alfon', blueskyHandle: 'alfon.dev' }
 const GRAPHIEROS = { name: 'Graphieros', blueskyHandle: 'graphieros.npmx.social' }
+const FELIX = { name: 'Felix Schneider', blueskyHandle: 'felixs.dev' }
+const JVIIDE = { name: 'Joachim Viide', blueskyHandle: 'jviide.iki.fi' }
+const MATTEO = { name: 'Matteo Gabriele', blueskyHandle: 'matteogabriele.bsky.social' }
 
 const entries: Noodle[] = [
   {
@@ -23,7 +26,7 @@ const entries: Noodle[] = [
     posterImage: '/extra/tetris.svg',
     references: [
       {
-        label: 'Tetris (1984)',
+        label: 'Tetris (1984) - Wikipedia',
         url: 'https://en.wikipedia.org/wiki/Tetris',
       },
     ],
@@ -37,9 +40,15 @@ const entries: Noodle[] = [
     timezone: 'auto',
     occasion: 'We stand together. Always, everywhere, for all of us. Happy Pride Month! 🏳️‍🌈',
     prUrl: 'https://github.com/npmx-dev/npmx.dev/pull/2826',
-    authors: [ALEX],
+    authors: [ALEX, ALFON],
     posterImage: '/extra/pride-1.svg',
     variants: ['/extra/pride-2.svg', '/extra/pride-3.png'],
+    references: [
+      {
+        label: 'Pride Month - Wikipedia',
+        url: 'https://en.wikipedia.org/wiki/Pride_Month',
+      },
+    ],
   },
   {
     key: 'press',
@@ -56,7 +65,7 @@ const entries: Noodle[] = [
     posterImage: '/extra/npmx-dark-press.png',
     references: [
       {
-        label: 'World Press Freedom Day',
+        label: 'World Press Freedom Day - Wikipedia',
         url: 'https://en.wikipedia.org/wiki/World_Press_Freedom_Day',
       },
     ],
@@ -84,6 +93,12 @@ const entries: Noodle[] = [
     prUrl: 'https://github.com/npmx-dev/npmx.dev/pull/2349',
     authors: [ALFON],
     posterImage: '/extra/npmx-cute-transgender.svg',
+    references: [
+      {
+        label: 'International Transgender Day of Visibility - Wikipedia',
+        url: 'https://en.wikipedia.org/wiki/International_Transgender_Day_of_Visibility',
+      },
+    ],
   },
   {
     key: 'artemis',
@@ -98,6 +113,12 @@ const entries: Noodle[] = [
     prUrl: 'https://github.com/npmx-dev/npmx.dev/pull/2421',
     authors: [ALEX, ALFON],
     posterImage: '/extra/npmx-dark-artemis.svg',
+    references: [
+      {
+        label: 'Artemis II - Wikipedia',
+        url: 'https://en.wikipedia.org/wiki/Artemis_II',
+      },
+    ],
   },
   {
     key: 'nodejs',
@@ -112,6 +133,40 @@ const entries: Noodle[] = [
       {
         label: 'Node.js v0.0.1 release',
         url: 'https://github.com/nodejs/node-v0.x-archive/releases/tag/v0.0.1',
+      },
+    ],
+  },
+  {
+    key: 'emoji-day',
+    title: 'World Emoji Day',
+    slug: 'emoji-day',
+    date: '2026-07-17',
+    dateTo: '2026-07-19',
+    timezone: 'auto',
+    tagline: false,
+    occasion: '📅🌍🚀💬🥳✨',
+    prUrl: 'https://github.com/npmx-dev/npmx.dev/pull/3038',
+    authors: [FELIX, JVIIDE],
+    references: [
+      { label: 'World Emoji Day Website', url: 'https://worldemojiday.com/' },
+      { label: 'Wikipedia', url: 'https://en.wikipedia.org/wiki/World_Emoji_Day' },
+    ],
+  },
+
+  {
+    key: 'gif-day',
+    title: 'National GIF Day',
+    slug: 'gif-day',
+    date: '2026-09-5',
+    timezone: 'auto',
+    tagline: false,
+    occasion: 'National GIF day',
+    prUrl: 'https://github.com/npmx-dev/npmx.dev/pull/2778',
+    authors: [MATTEO],
+    references: [
+      {
+        label: 'National GIF day',
+        url: 'https://www.whatnationaldayisit.com/day/Gif/',
       },
     ],
   },

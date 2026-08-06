@@ -13,7 +13,7 @@ import type {
 } from '#shared/types/dependency-analysis'
 import { mapWithConcurrency } from '#shared/utils/async'
 import { resolveDependencyTree } from './dependency-resolver'
-import * as semver from 'semver'
+import { compare, isGreaterOrEqual, isLess } from 'verkit'
 
 /** Maximum concurrent requests for fetching vulnerability details */
 const OSV_DETAIL_CONCURRENCY = 25
@@ -212,8 +212,8 @@ function getFixedVersion(
       for (const interval of intervals) {
         const introVersion = interval.introduced === '0' ? '0.0.0' : interval.introduced
         try {
-          const afterIntro = semver.gte(currentVersion, introVersion)
-          const beforeFixed = !interval.fixed || semver.lt(currentVersion, interval.fixed)
+          const afterIntro = isGreaterOrEqual(currentVersion, introVersion)
+          const beforeFixed = !interval.fixed || isLess(currentVersion, interval.fixed)
           if (afterIntro && beforeFixed && interval.fixed) {
             matchingFixedVersions.push(interval.fixed)
           }
@@ -228,7 +228,7 @@ function getFixedVersion(
   if (matchingFixedVersions.length === 1) return matchingFixedVersions[0]
 
   // Return the lowest (closest) fixed version — the smallest bump from the current version
-  return matchingFixedVersions.sort(semver.compare)[0]
+  return matchingFixedVersions.sort(compare)[0]
 }
 
 function getSeverityLevel(vuln: OsvVulnerability): OsvSeverityLevel {

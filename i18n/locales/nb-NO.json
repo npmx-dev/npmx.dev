@@ -46,7 +46,8 @@
     "disable_shortcuts": "Du kan deaktivere tastatursnarveier i {settings}.",
     "open_main": "Åpne hovedinformasjon",
     "open_diff": "Åpne versjonsforskjeller",
-    "open_timeline": "Åpne tidslinje"
+    "open_timeline": "Åpne tidslinje",
+    "open_stats": "Åpne statistikk"
   },
   "search": {
     "label": "Søk etter npm-pakker",
@@ -98,6 +99,11 @@
     "current": "gjeldende",
     "here": "du er her",
     "connected": "tilkoblet",
+    "keyboard_shortcuts": {
+      "navigate": "å navigere",
+      "select": "velge",
+      "close": "lukke"
+    },
     "state": {
       "on": "på",
       "off": "av"
@@ -153,7 +159,9 @@
       "code": "Kode",
       "diff": "Diff",
       "compare": "Sammenlign denne pakken",
-      "download": "Last ned tarball"
+      "download": "Last ned tarball",
+      "changelog": "Endringslogg",
+      "stats": "Statistikk"
     },
     "package_actions": {
       "copy_run": "Kopier kjørekommando"
@@ -228,6 +236,31 @@
       "more_replies": "{count} svar til... | {count} svar til..."
     }
   },
+  "noodles": {
+    "title": "nudler",
+    "meta_description": "Alle nudler vi noensinne har vist på npmx — sesonglogoer, påskeegg og historiene bak dem.",
+    "latest": "Siste nudler",
+    "what_is": "Hva er nudler",
+    "what_is_body": "Nudler er de lekne variantene av npmx-logoen vi viser på forsiden for å markere utgivelser, helligdager, arrangementer og andre øyeblikk verdt å feire. Tenk på dem som Google Doodles, men for npm-pakker.",
+    "empty": "Ingen nudler ennå.",
+    "load_more": "Last {count} til",
+    "dates": "Aktive datoer",
+    "shipped_in": "Lansert i",
+    "credits": "Krediteringer",
+    "learn_more": "Lær mer",
+    "carousel_prev": "Forrige bilde",
+    "carousel_next": "Neste bilde",
+    "carousel_dots": "Navigering av variantbilder",
+    "carousel_jump": "Gå til bilde {index}",
+    "lens_label": "{title} — bildeopptak",
+    "lens_slide": "bilde {index}",
+    "lens_slide_position": "Bilde {index} av {total}",
+    "back_to_archive": "Tilbake til alle nudler",
+    "missing": {
+      "title": "Denne nudelen kom aldri ut av bollen.",
+      "body": "Vi har ikke en {slug}-nudel på menyen. Enten blir den fortsatt lagt opp, eller den ble aldri laget. Uansett — tilbake til arkivet."
+    }
+  },
   "settings": {
     "title": "innstillinger",
     "tagline": "tilpass din npmx-opplevelse",
@@ -285,7 +318,9 @@
     },
     "keyboard_shortcuts_enabled": "Aktiver tastatursnarveier",
     "keyboard_shortcuts_enabled_description": "Tastatursnarveier kan deaktiveres hvis de er i konflikt med andre nettleser- eller systemsnarveier",
-    "enable_code_ligatures": "Aktiver ligaturer i kode"
+    "enable_code_ligatures": "Aktiver ligaturer i kode",
+    "enable_changelog_autoscroll": "Automatisk skrolling til forespurt versjon",
+    "enable_changelog_autoscroll_description": "Automatisk skrolling til eller nær den forespurte versjonen i pakkens endringslogg"
   },
   "i18n": {
     "missing_keys": "{count} manglende oversettelse | {count} manglende oversettelser",
@@ -397,6 +432,8 @@
       "example": "Eksempel:",
       "native": "Denne kan erstattes med {replacement}, tilgjengelig siden Node {nodeVersion}.",
       "native_no_version": "Denne pakken kan erstattes med {replacement}.",
+      "simple": "Denne pakken er flagget som overflødig, med råd: {replacement}",
+      "documented": "Denne pakken er flagget som å ha mer ytelseseffektive alternativer.",
       "none": "Denne pakken er flagget som ikke lenger nødvendig, og funksjonaliteten er sannsynligvis tilgjengelig innebygd i alle motorer.",
       "learn_more": "Lær mer",
       "learn_more_above": "Lær mer ovenfor.",
@@ -414,7 +451,10 @@
       "size_tooltip": {
         "unpacked": "{size} utpakket størrelse (denne pakken)",
         "total": "{size} total utpakket størrelse (inkludert {count} avhengighet for linux-x64) | {size} total utpakket størrelse (inkludert alle {count} avhengigheter for linux-x64)"
-      }
+      },
+      "main_information": "Hovedinformasjon",
+      "trends": "Trender",
+      "version_distribution": "Versjonsfordeling"
     },
     "skills": {
       "title": "Agentferdigheter",
@@ -445,7 +485,9 @@
       "fund": "støtt",
       "compare": "sammenlign",
       "timeline": "tidslinje",
-      "compare_this_package": "sammenlign denne pakken"
+      "stats": "statistikk",
+      "compare_this_package": "sammenlign denne pakken",
+      "changelog": "endringslogg"
     },
     "likes": {
       "like": "Lik denne pakken",
@@ -525,6 +567,7 @@
       "weekly_downloads": "Ukentlige nedlastinger",
       "keywords": "Nøkkelord",
       "license": "Lisens",
+      "version": "Versjon",
       "select": "Velg pakke",
       "select_maximum": "Maksimalt {count} pakker kan velges"
     },
@@ -596,6 +639,7 @@
         "base_scale": "start y-aksen på null",
         "zoom": "zoom",
         "reset_minimap": "tilbakestill minikart",
+        "ordered_versions": "kun stabile versjoner",
         "copy_alt": {
           "key_changes": "Viktige endringer: {version_events}.",
           "version_events": "versjon {version}: {events}",
@@ -703,10 +747,17 @@
         "general_description": "Y-aksen representerer antall nedlastinger. X-aksen representerer datoområdet, fra {start_date} til {end_date}, med en {granularity} tidsperiode.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Horisontalt stolpediagram for: {packages}, sammenligner {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} har en verdi på {value}."
+      },
+      "embedding": {
+        "chart": "Bygg inn dette diagrammet",
+        "copy_url": "Kopier denne URL-en for å bygge inn diagrammet på nettsiden din",
+        "preview": "Forhåndsvisning",
+        "tip": "Hvis startDato og sluttDato ikke er oppgitt, bruker diagrammet standard de siste 12 månedene."
       }
     },
     "downloads": {
       "title": "Ukentlige nedlastinger",
+      "version_distribution_title": "ukentlige nedlastinger for versjon {version}",
       "community_distribution": "Vis distribusjon av bruk i fellesskapet",
       "subtitle": "På tvers av alle versjoner",
       "sparkline_nav_hint": "Bruk ← →"
@@ -1175,6 +1226,9 @@
     },
     "team": {
       "title": "Team",
+      "core": "Kjerne",
+      "maintainers": "Vedlikeholdere",
+      "role_core": "kjerne",
       "role_steward": "forvalter",
       "role_maintainer": "vedlikeholder",
       "sponsor": "sponsor",
@@ -1385,6 +1439,10 @@
           "label": "GitHub-stjerner",
           "description": "Antall stjerner på GitHub-repositoriet"
         },
+        "githubForks": {
+          "label": "GitHub-forks",
+          "description": "Antall forks på GitHub-repositoriet"
+        },
         "githubIssues": {
           "label": "GitHub-saker",
           "description": "Antall saker på GitHub-repositoriet"
@@ -1452,6 +1510,9 @@
     "change_ratio": "Endringsforhold",
     "char_edits": "Tegnredigeringer",
     "diff_distance": "Diff-avstand",
+    "diff_truncated": "Diff trunkert for ytelse. Viser kun de første endrede linjene.",
+    "large_diff_mode": "Stor fildiff vist med deaktivert sammenslåing av redigeringer for ytelse.",
+    "large_diff_options_disabled": "Stor filmodus deaktiverer sammenslåing av redigeringer for ytelse.",
     "loading_diff": "Laster diff...",
     "loading_diff_error": "Kunne ikke laste diff",
     "merge_modified_lines": "Slå sammen endrede linjer",
@@ -1714,6 +1775,14 @@
   },
   "alt_logo_kawaii": "En søt, avrundet og fargerik versjon av npmx-logoen.",
   "changelog": {
-    "error": {}
+    "pre_release": "Forhåndsutgivelse",
+    "draft": "Utkast",
+    "no_logs": "Beklager, denne pakken publiserer ikke endringslogger eller formatet støttes ikke.",
+    "error": {
+      "p1": "Beklager, endringsloggen for {package} kunne ikke lastes",
+      "p2": "Prøv igjen senere eller {viewon}"
+    },
+    "rate_limit_ungh": "Beklager, GitHubs rate limit er nådd, prøv igjen om et øyeblikk",
+    "version_unavailable": "Den forespurte versjonen er ikke tilgjengelig."
   }
 }

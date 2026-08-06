@@ -303,7 +303,7 @@ useEventListener(document, 'keydown', handleGlobalKeydown)
           {{ statusMessage }}
         </p>
 
-        <div class="border-b border-border/70 bg-bg-subtle/60 px-4 py-4 sm:px-5">
+        <div class="bg-bg-subtle/60 px-4 py-4 sm:px-5">
           <button
             v-if="viewMeta.canGoBack"
             type="button"
@@ -330,6 +330,41 @@ useEventListener(document, 'keydown', handleGlobalKeydown)
             :aria-describedby="inputDescribedBy"
             :aria-controls="RESULTS_ID"
           />
+        </div>
+
+        <div
+          class="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-border/70 bg-bg-subtle/60 px-4 py-3 text-xs text-fg-subtle sm:px-5"
+          data-command-palette-keyboard-shortcuts="true"
+        >
+          <span class="inline-flex items-center gap-1.5">
+            <kbd
+              class="inline-flex min-w-6 items-center justify-center rounded border border-border bg-bg px-1.5 py-0.5 font-mono text-[0.7rem] text-fg-muted"
+            >
+              ↑
+            </kbd>
+            <kbd
+              class="inline-flex min-w-6 items-center justify-center rounded border border-border bg-bg px-1.5 py-0.5 font-mono text-[0.7rem] text-fg-muted"
+            >
+              ↓
+            </kbd>
+            <span class="lowercase">{{ $t('command_palette.keyboard_shortcuts.navigate') }}</span>
+          </span>
+          <span class="inline-flex items-center gap-1.5">
+            <kbd
+              class="inline-flex min-w-6 items-center justify-center rounded border border-border bg-bg px-1.5 py-0.5 font-mono text-[0.7rem] text-fg-muted"
+            >
+              ↵
+            </kbd>
+            <span class="lowercase">{{ $t('command_palette.keyboard_shortcuts.select') }}</span>
+          </span>
+          <span class="inline-flex items-center gap-1.5">
+            <kbd
+              class="inline-flex min-w-6 items-center justify-center rounded border border-border bg-bg px-1.5 py-0.5 font-mono text-[0.7rem] text-fg-muted"
+            >
+              Esc
+            </kbd>
+            <span class="lowercase">{{ $t('command_palette.keyboard_shortcuts.close') }}</span>
+          </span>
         </div>
 
         <div

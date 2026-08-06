@@ -38,7 +38,7 @@ export default defineCachedEventHandler(async event => {
     return await detectChangelog(pkg)
   } catch (error) {
     handleApiError(error, {
-      statusCode: 502,
+      statusCode: 500,
       message: ERROR_PACKAGE_DETECT_CHANGELOG,
     })
   }
