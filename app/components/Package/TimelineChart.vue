@@ -542,6 +542,7 @@ const config = computed<VueUiXyConfig>(() => {
       legend: { show: false },
       padding: {
         top: 32,
+        right: 56,
       },
       title: {
         text: applyEllipsis(packageName.value, 32),
@@ -588,7 +589,7 @@ const config = computed<VueUiXyConfig>(() => {
       },
       zoom: {
         show: settings.value.timelineChart.showZoom,
-        maxWidth: isMobile.value ? 350 : 500,
+        autoFit: true,
         highlightColor: colors.value.bgElevated,
         useResetSlot: true,
         keepState: true,
@@ -1053,7 +1054,7 @@ const timelineMetricTabs = computed(() => [
           <button
             type="button"
             :aria-label="$t('package.timeline.chart.reset_minimap')"
-            class="absolute inset-is-1/2 -translate-x-1/2 -bottom-18 sm:inset-is-unset sm:translate-x-0 sm:bottom-auto sm:-inset-ie-20 sm:-top-3 flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
+            class="absolute inset-is-1/2 -translate-x-1/2 -bottom-18 sm:inset-is-unset sm:translate-x-0 sm:bottom-auto sm:-inset-ie-16 sm:-top-3 flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
             style="pointer-events: all !important"
             @click="resetMinimap"
           >
