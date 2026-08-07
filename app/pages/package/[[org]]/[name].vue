@@ -426,19 +426,19 @@ const { repoRef } = useRepoMeta(repositoryUrl)
 const viewOnGitProvider = useViewOnGitProvider(() => repoRef.value?.provider)
 const rawPreviewReleasesUrl = computed(() => {
   const ref = repoRef.value
-  if (!ref?.owner || !ref?.repo) return null
+  if (ref?.provider !== 'github' || !ref.owner || !ref.repo) return null
 
   return `https://pkg.pr.new/~/${encodeURIComponent(ref.owner)}/${encodeURIComponent(ref.repo)}`
 })
 const { data: previewReleasesAvailability } = await useAsyncData(
   () => {
     const ref = repoRef.value
-    if (!ref?.owner || !ref?.repo) return 'pkg-pr-new:none'
+    if (ref?.provider !== 'github' || !ref.owner || !ref.repo) return 'pkg-pr-new:none'
     return `pkg-pr-new:${ref.owner}/${ref.repo}`
   },
   async () => {
     const ref = repoRef.value
-    if (!ref?.owner || !ref?.repo) {
+    if (ref?.provider !== 'github' || !ref.owner || !ref.repo) {
       return {
         hasReleases: false,
         url: null as string | null,

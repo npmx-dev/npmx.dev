@@ -4,6 +4,7 @@ interface PkgPrNewAvailabilityResponse {
 }
 
 const PKG_PR_NEW_TTL_SECONDS = 60
+const PKG_PR_NEW_TIMEOUT_MS = 3000
 
 function toSegment(value: unknown): string {
   return typeof value === 'string' ? value.trim() : ''
@@ -25,7 +26,11 @@ export default defineCachedEventHandler(
     const url = `https://pkg.pr.new/~/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}`
 
     try {
-      const response = await $fetch.raw(url, { method: 'HEAD' })
+      const response = await $fetch.raw(url, {
+        method: 'HEAD',
+        timeout: PKG_PR_NEW_TIMEOUT_MS,
+        retry: 0,
+      })
       return {
         hasReleases: response.headers.get('x-has-releases') === '1',
         url,

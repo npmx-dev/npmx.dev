@@ -41,6 +41,8 @@ describe('pkg-pr-new availability API', () => {
 
     expect(fetchRawMock).toHaveBeenCalledWith('https://pkg.pr.new/~/vitejs/vite', {
       method: 'HEAD',
+      timeout: 3000,
+      retry: 0,
     })
     expect(result).toEqual({
       hasReleases: true,
