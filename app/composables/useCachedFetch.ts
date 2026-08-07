@@ -38,7 +38,7 @@ export function useCachedFetch(): CachedFetchFunction {
       _ttl: number = FETCH_CACHE_DEFAULT_TTL,
     ): Promise<CachedFetchResult<T>> => {
       const defaultFetchOptions: Parameters<typeof $fetch>[1] = {
-        cache: 'force-cache',
+        cache: 'default',
       }
       const data = (await $fetch<T>(url, defu(options, defaultFetchOptions))) as T
       return { data, isStale: false, cachedAt: null }
@@ -62,7 +62,7 @@ export function useCachedFetch(): CachedFetchFunction {
     _ttl: number = FETCH_CACHE_DEFAULT_TTL,
   ): Promise<CachedFetchResult<T>> => {
     const defaultFetchOptions: Parameters<typeof $fetch>[1] = {
-      cache: 'force-cache',
+      cache: 'default',
     }
     const data = (await $fetch<T>(url, defu(options, defaultFetchOptions))) as T
     return { data, isStale: false, cachedAt: null }
