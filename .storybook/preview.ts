@@ -4,11 +4,9 @@ import { addons } from 'storybook/preview-api'
 import { currentLocales } from '../config/i18n'
 import { fn } from 'storybook/test'
 import { ACCENT_COLORS } from '../shared/utils/constants'
-import { initialize, mswLoader } from 'msw-storybook-addon'
+import { mswLoader } from 'msw-storybook-addon/csf3'
 
 import npmxDark from './theme'
-
-initialize()
 
 // @ts-expect-error - dynamic global name
 globalThis.defineOgImage = fn()
@@ -95,7 +93,7 @@ const preview: Preview = {
       }
     },
   ],
-  loaders: [mswLoader],
+  loaders: [mswLoader()],
 }
 
 export default preview

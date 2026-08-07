@@ -35,6 +35,7 @@ import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWate
 import { useColors } from '~/composables/useColors'
 import { parseStableVersion } from '~/utils/versions'
 import { downloadFileLink } from '~/utils/download'
+import { useCopyChartPng } from '~/composables/useCopyChartPng'
 import { useElementSize, useTimeoutFn } from '@vueuse/core'
 import TimelineChartDepSizeTooltip from './TimelineChartDepSizeTooltip.vue'
 import TimelineChartXyTooltip from './TimelineChartXyTooltip.vue'
@@ -355,6 +356,7 @@ const datasets = computed<{
 })
 
 const { copy, copied } = useClipboard()
+const { copiedPng, isCopyingPng, copyChartPng } = useCopyChartPng(chartRef)
 
 const colorMode = useColorMode()
 const resolvedMode = shallowRef<'light' | 'dark'>('light')
@@ -478,6 +480,9 @@ const commonConfig = computed<CommonUserOptions>(() => ({
 const config = computed<VueUiXyConfig>(() => {
   return {
     theme: isDarkMode.value ? 'dark' : '',
+    transitions: {
+      pauseOnDatasetChange: true, // prevents transitions on axis labels when switching from install size to dependencies
+    },
     downsample: {
       threshold: 5000,
     },
@@ -537,6 +542,7 @@ const config = computed<VueUiXyConfig>(() => {
       legend: { show: false },
       padding: {
         top: 32,
+        right: 56,
       },
       title: {
         text: applyEllipsis(packageName.value, 32),
@@ -583,7 +589,7 @@ const config = computed<VueUiXyConfig>(() => {
       },
       zoom: {
         show: settings.value.timelineChart.showZoom,
-        maxWidth: isMobile.value ? 350 : 500,
+        autoFit: true,
         highlightColor: colors.value.bgElevated,
         useResetSlot: true,
         keepState: true,
@@ -986,6 +992,7 @@ const timelineMetricTabs = computed(() => [
             :colors
             :gradientColors="E18E_GRADIENT_COLORS"
             :pauseAnimations="shouldPauseChartAnimations || loading"
+            :isCopyingPng
           />
         </template>
 
@@ -995,6 +1002,9 @@ const timelineMetricTabs = computed(() => [
         </template>
         <template #optionCsv>
           <span class="text-fg-subtle font-mono pointer-events-none">CSV</span>
+        </template>
+        <template #custom-menu-before>
+          <ChartCopyPngButton :copied="copiedPng" :copying="isCopyingPng" @click="copyChartPng" />
         </template>
         <template #optionImg>
           <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
@@ -1044,7 +1054,7 @@ const timelineMetricTabs = computed(() => [
           <button
             type="button"
             :aria-label="$t('package.timeline.chart.reset_minimap')"
-            class="absolute inset-is-1/2 -translate-x-1/2 -bottom-18 sm:inset-is-unset sm:translate-x-0 sm:bottom-auto sm:-inset-ie-20 sm:-top-3 flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
+            class="absolute inset-is-1/2 -translate-x-1/2 -bottom-18 sm:inset-is-unset sm:translate-x-0 sm:bottom-auto sm:-inset-ie-16 sm:-top-3 flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
             style="pointer-events: all !important"
             @click="resetMinimap"
           >
@@ -1081,6 +1091,7 @@ const timelineMetricTabs = computed(() => [
             :activeVersionPlot="getActiveVersionDatapointBar(svg.data, svg.barWidth)"
             :colors
             :pauseAnimations="shouldPauseChartAnimations || loading"
+            :isCopyingPng
           />
         </template>
 
@@ -1100,6 +1111,9 @@ const timelineMetricTabs = computed(() => [
         </template>
         <template #optionCsv>
           <span class="text-fg-subtle font-mono pointer-events-none">CSV</span>
+        </template>
+        <template #custom-menu-before>
+          <ChartCopyPngButton :copied="copiedPng" :copying="isCopyingPng" @click="copyChartPng" />
         </template>
         <template #optionImg>
           <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
