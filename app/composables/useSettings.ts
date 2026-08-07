@@ -200,6 +200,7 @@ export function useAccentColor() {
  * Composable for managing the search provider setting.
  */
 export function useSearchProvider() {
+  const route = useRoute()
   const { settings } = useSettings()
   const isMounted = useMounted()
 
@@ -210,7 +211,13 @@ export function useSearchProvider() {
     },
   })
 
-  const isAlgolia = computed(() => searchProvider.value === 'algolia')
+  const searchProviderValue = computed(() => {
+    const p = normalizeSearchParam(route.query.p)
+    if (p === 'npm' || searchProvider.value === 'npm') return 'npm'
+    return 'algolia'
+  })
+
+  const isAlgolia = computed(() => searchProviderValue.value === 'algolia')
 
   function toggle() {
     searchProvider.value = searchProvider.value === 'npm' ? 'algolia' : 'npm'
@@ -218,6 +225,7 @@ export function useSearchProvider() {
 
   return {
     searchProvider,
+    searchProviderValue,
     isAlgolia,
     toggle,
   }

@@ -13,6 +13,7 @@ const config = {
     '@storybook/addon-docs',
     '@storybook/addon-themes',
     'storybook-i18n',
+    'msw-storybook-addon',
   ],
   framework: '@storybook-vue/nuxt',
   staticDirs: ['./.public', { from: '../public', to: '/' }],

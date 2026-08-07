@@ -25,6 +25,7 @@ import {
   getTrendsDatetimeFormatterOptions,
 } from '#shared/utils/trends-chart'
 import { downloadFileLink } from '~/utils/download'
+import { useCopyChartPng } from '~/composables/useCopyChartPng'
 import { createLastDatapointLabelsSvg } from '#shared/utils/download-chart-last-label'
 
 import('vue-data-ui/style.css')
@@ -71,6 +72,7 @@ const rootEl = shallowRef<HTMLElement | null>(null)
 const isZoomed = shallowRef(false)
 
 const chartRef = useTemplateRef('chartRef')
+const { copiedPng, isCopyingPng, copyChartPng } = useCopyChartPng(chartRef)
 
 function setIsZoom({ isZoom }: { isZoom: boolean }) {
   isZoomed.value = isZoom
@@ -1237,7 +1239,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
         },
       },
       zoom: {
-        maxWidth: isMobile.value ? 350 : 500,
+        autoFit: true,
         highlightColor: colors.value.bgElevated,
         useResetSlot: true,
         keepState: keepZoomState.value,
@@ -1724,7 +1726,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
 
               <!-- Inject npmx logo & tagline during SVG and PNG print -->
               <g
-                v-if="svg.isPrintingSvg || svg.isPrintingImg"
+                v-if="svg.isPrintingSvg || svg.isPrintingImg || isCopyingPng"
                 v-html="
                   drawNpmxLogoAndTaglineWatermark({
                     svg,
@@ -1822,7 +1824,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
               <button
                 type="button"
                 aria-label="reset minimap"
-                class="absolute inset-is-1/2 -translate-x-1/2 -bottom-18 sm:inset-is-unset sm:translate-x-0 sm:bottom-auto sm:-inset-ie-20 sm:-top-3 flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
+                class="absolute inset-is-1/2 -translate-x-1/2 -bottom-18 sm:inset-is-unset sm:translate-x-0 sm:bottom-auto sm:-inset-ie-16 sm:-top-3 flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
                 style="pointer-events: all !important"
                 @click="resetMinimap"
               >
@@ -1836,6 +1838,13 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
             </template>
             <template #optionCsv>
               <span class="text-fg-subtle font-mono pointer-events-none">CSV</span>
+            </template>
+            <template #custom-menu-before>
+              <ChartCopyPngButton
+                :copied="copiedPng"
+                :copying="isCopyingPng"
+                @click="copyChartPng"
+              />
             </template>
             <template #optionImg>
               <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>

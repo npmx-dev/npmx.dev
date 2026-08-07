@@ -17,9 +17,12 @@ const POSSIBLY_UNNECESSARY_FILES: ReadonlySet<string> = new Set([
   '.gitattributes',
   '.travis.yml',
   '.verb.md',
+  '.borp.yaml',
   'Makefile',
   'tsconfig.json',
   'jsconfig.json',
+  'commitlint.config.js',
+  'renovate.json',
   '.node-version',
   '.nvmrc',
   'mise.toml',
@@ -63,6 +66,7 @@ const POSSIBLY_UNNECESSARY_DIRECTORIES: ReadonlySet<string> = new Set([
   'example',
   'examples',
   'benchmark',
+  'benchmarks',
 ])
 
 const POSSIBLY_UNNECESSARY_DIRECTORY_PATTERNS: readonly RegExp[] = [/^__.+__$/]
