@@ -94,8 +94,6 @@ export default defineNuxtModule({
     ].join('; ')
 
     // CSP via <meta> tag — only present in HTML pages, not API responses.
-    // Component tests mount into a live document, so the meta tag would apply the policy to the
-    // test page itself and block the Vue runtime compiler (which needs `unsafe-eval`).
     if (!nuxt.options.test) {
       nuxt.options.app.head ??= {}
       const head = nuxt.options.app.head as { meta?: Array<Record<string, string>> }
