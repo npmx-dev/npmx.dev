@@ -424,6 +424,54 @@ const { repositoryUrl } = useRepositoryUrl(displayVersion)
 const { repoRef } = useRepoMeta(repositoryUrl)
 
 const viewOnGitProvider = useViewOnGitProvider(() => repoRef.value?.provider)
+const rawPreviewReleasesUrl = computed(() => {
+  const ref = repoRef.value
+  if (!ref?.owner || !ref?.repo) return null
+
+  return `https://pkg.pr.new/~/${encodeURIComponent(ref.owner)}/${encodeURIComponent(ref.repo)}`
+})
+const { data: previewReleasesAvailability } = await useAsyncData(
+  () => {
+    const ref = repoRef.value
+    if (!ref?.owner || !ref?.repo) return 'pkg-pr-new:none'
+    return `pkg-pr-new:${ref.owner}/${ref.repo}`
+  },
+  async () => {
+    const ref = repoRef.value
+    if (!ref?.owner || !ref?.repo) {
+      return {
+        hasReleases: false,
+        url: null as string | null,
+      }
+    }
+
+    const availability = await $fetch<{ hasReleases: boolean; url: string }>(
+      '/api/registry/pkg-pr-new',
+      {
+        query: {
+          owner: ref.owner,
+          repo: ref.repo,
+        },
+      },
+    )
+
+    return {
+      hasReleases: availability.hasReleases,
+      url: availability.url,
+    }
+  },
+  {
+    watch: [repoRef],
+    default: () => ({
+      hasReleases: false,
+      url: null as string | null,
+    }),
+  },
+)
+const previewReleasesUrl = computed(() => {
+  if (!previewReleasesAvailability.value?.hasReleases) return null
+  return previewReleasesAvailability.value.url ?? rawPreviewReleasesUrl.value
+})
 
 // Check if a version has provenance/attestations
 // The dist object may have attestations that aren't in the base type
@@ -983,6 +1031,7 @@ const showSkeleton = shallowRef(false)
               :dist-tags="pkg['dist-tags'] ?? {}"
               :time="pkg.time"
               :selected-version="resolvedVersion ?? pkg['dist-tags']?.['latest']"
+              :preview-releases-url="previewReleasesUrl"
             />
 
             <!-- Install Scripts Warning -->
