@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { truncateDiffHunks } from '#shared/utils/diff'
+import { createUnifiedDiff, truncateDiffHunks } from '#shared/utils/diff'
 import type { DiffHunk, DiffSkipBlock } from '#shared/types/compare'
 
 function createHunk(lineCount: number): DiffHunk {
@@ -18,6 +18,27 @@ function createHunk(lineCount: number): DiffHunk {
     })),
   }
 }
+
+describe('createUnifiedDiff', () => {
+  it('creates a unified patch for a modified file', () => {
+    const result = createUnifiedDiff('old\n', 'new\n', 'src/index.ts')
+
+    expect(result).toContain('--- a/src/index.ts')
+    expect(result).toContain('+++ b/src/index.ts')
+    expect(result).toContain('-old')
+    expect(result).toContain('+new')
+  })
+
+  it('uses /dev/null for added and deleted files', () => {
+    const added = createUnifiedDiff('', 'new\n', 'added.ts', 'add')
+    const deleted = createUnifiedDiff('old\n', '', 'deleted.ts', 'delete')
+
+    expect(added).toContain('--- /dev/null')
+    expect(added).toContain('+++ b/added.ts')
+    expect(deleted).toContain('--- a/deleted.ts')
+    expect(deleted).toContain('+++ /dev/null')
+  })
+})
 
 describe('truncateDiffHunks', () => {
   it('leaves hunks untouched when they fit within the line budget', () => {

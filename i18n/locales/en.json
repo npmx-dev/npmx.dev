@@ -1553,6 +1553,7 @@
     "lines_hidden": "{count} line hidden | {count} lines hidden",
     "compare_versions": "diff",
     "compare_versions_title": "Compare with latest version",
+    "copy_diff": "Copy .diff",
     "comparing_versions_label": "Comparing versions...",
     "version_back_to_package": "Back to package",
     "version_error_message": "Failed to compare versions.",
@@ -1599,7 +1600,7 @@
     "merge_modified_lines": "Merge modified lines",
     "no_content_changes": "No content changes detected",
     "options": "Options",
-    "view_file": "View file",
+    "view_diff": "View .diff",
     "view_in_code_browser": "View in code browser",
     "word_wrap": "Word wrap"
   },

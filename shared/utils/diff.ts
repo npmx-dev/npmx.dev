@@ -381,18 +381,27 @@ export function createDiff(
   filePath: string,
   options: Partial<ParseOptions> = {},
 ): FileDiff | null {
-  const diffText = createTwoFilesPatch(
-    `a/${filePath}`,
-    `b/${filePath}`,
+  const diffText = createUnifiedDiff(oldContent, newContent, filePath)
+
+  const files = parseUnifiedDiff(diffText, options)
+  return files[0] ?? null
+}
+
+export function createUnifiedDiff(
+  oldContent: string,
+  newContent: string,
+  filePath: string,
+  type: 'add' | 'delete' | 'modify' = 'modify',
+): string {
+  return createTwoFilesPatch(
+    type === 'add' ? '/dev/null' : `a/${filePath}`,
+    type === 'delete' ? '/dev/null' : `b/${filePath}`,
     oldContent,
     newContent,
     '',
     '',
     { context: 3 },
   )
-
-  const files = parseUnifiedDiff(diffText, options)
-  return files[0] ?? null
 }
 
 export function countDiffStats(hunks: (DiffHunk | DiffSkipBlock)[]): {

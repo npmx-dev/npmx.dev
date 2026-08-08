@@ -4663,6 +4663,9 @@
         "compare_versions_title": {
           "type": "string"
         },
+        "copy_diff": {
+          "type": "string"
+        },
         "comparing_versions_label": {
           "type": "string"
         },
@@ -4801,7 +4804,7 @@
         "options": {
           "type": "string"
         },
-        "view_file": {
+        "view_diff": {
           "type": "string"
         },
         "view_in_code_browser": {
