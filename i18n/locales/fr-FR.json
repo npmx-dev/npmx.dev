@@ -98,6 +98,7 @@
     "current": "actuel",
     "here": "vous êtes ici",
     "connected": "connecté",
+    "keyboard_shortcuts": {},
     "state": {
       "on": "activé",
       "off": "désactivé"
@@ -229,6 +230,9 @@
       "more_replies": "{count} réponse supplémentaire... | {count} réponses supplémentaires..."
     }
   },
+  "noodles": {
+    "missing": {}
+  },
   "settings": {
     "title": "paramètres",
     "tagline": "personnalisez votre expérience npmx",
@@ -284,6 +288,7 @@
       "slate": "Ardoise",
       "black": "Noir"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Activer les raccourcis clavier",
     "keyboard_shortcuts_enabled_description": "Les raccourcis clavier peuvent être désactivés s'ils entrent en conflit avec d'autres raccourcis du navigateur ou du système",
     "enable_code_ligatures": "Activer les ligatures de code",
@@ -1227,6 +1232,25 @@
       }
     }
   },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
+    }
+  },
   "account_menu": {
     "connect": "connexion",
     "account": "Compte",
@@ -1401,6 +1425,7 @@
           "label": "Étoiles GitHub",
           "description": "Nombre d’étoiles du dépôt GitHub"
         },
+        "githubForks": {},
         "githubIssues": {
           "label": "Issues GitHub",
           "description": "Nombre d’issues ouvertes sur GitHub"
@@ -1473,7 +1498,6 @@
     "merge_modified_lines": "Fusionner les lignes modifiées",
     "no_content_changes": "Aucun changement de contenu détecté",
     "options": "Options",
-    "view_file": "Voir le fichier",
     "view_in_code_browser": "Voir dans le navigateur de code",
     "word_wrap": "Retour à la ligne"
   },

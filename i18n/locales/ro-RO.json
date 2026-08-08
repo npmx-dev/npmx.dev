@@ -98,6 +98,7 @@
     "current": "actual",
     "here": "ești aici",
     "connected": "conectat",
+    "keyboard_shortcuts": {},
     "state": {
       "on": "activată",
       "off": "dezactivată"
@@ -228,6 +229,9 @@
       "more_replies": "{count} repostare în plus... | {count} repostări în plus..."
     }
   },
+  "noodles": {
+    "missing": {}
+  },
   "settings": {
     "title": "setări",
     "tagline": "personalizează-ți experiența cu npmx",
@@ -283,6 +287,7 @@
       "slate": "Ardezie",
       "black": "Negru"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Activează comenzile rapide de la tastatură",
     "keyboard_shortcuts_enabled_description": "Comenzile rapide de la tastatură pot fi dezactivate dacă intră în conflict cu alte comenzi rapide ale browserului sau ale sistemului",
     "enable_code_ligatures": "Activează litere ligaturate în cod"
@@ -700,7 +705,8 @@
         "general_description": "Axa Y reprezintă numărul de descărcări. Axa X reprezintă intervalul de date, de la {start_date} până la {end_date}, cu o perioadă de timp de {granularity}.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Diagramă cu bare orizontale pentru: {packages}, comparând {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} are valoarea {value}."
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "Descărcări Săptămânale",
@@ -1208,6 +1214,25 @@
       }
     }
   },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
+    }
+  },
   "account_menu": {
     "connect": "conectează",
     "account": "Cont",
@@ -1382,6 +1407,7 @@
           "label": "Stele GitHub",
           "description": "Numărul de stele din repository-ul GitHub"
         },
+        "githubForks": {},
         "githubIssues": {
           "label": "Probleme GitHub",
           "description": "Numărul de probleme din repository-ul GitHub"
@@ -1454,7 +1480,6 @@
     "merge_modified_lines": "Îmbină linii modificate",
     "no_content_changes": "Nu există modificări de conținut detectate",
     "options": "Opțiuni",
-    "view_file": "Vezi fișier",
     "view_in_code_browser": "Vezi în browser de cod",
     "word_wrap": "Aliniere automată"
   },

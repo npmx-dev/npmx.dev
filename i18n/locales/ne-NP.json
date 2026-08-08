@@ -319,6 +319,7 @@
       "slate": "स्लेट",
       "black": "कालो"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "किबोर्ड सर्टकटहरू सक्षम गर्नुहोस्",
     "keyboard_shortcuts_enabled_description": "अन्य ब्राउजर वा सिस्टम सर्टकटहरूसँग बाझिएमा किबोर्ड सर्टकटहरू निष्क्रिय गर्न सकिन्छ",
     "enable_code_ligatures": "कोडमा लिगेचरहरू सक्षम गर्नुहोस्",
@@ -1589,7 +1590,6 @@
     "merge_modified_lines": "परिवर्तित लाइनहरू मर्ज गर्नुहोस्",
     "no_content_changes": "सामग्रीमा कुनै परिवर्तन भेटिएन",
     "options": "विकल्पहरू",
-    "view_file": "फाइल हेर्नुहोस्",
     "view_in_code_browser": "कोड ब्राउजरमा हेर्नुहोस्",
     "word_wrap": "वर्ड र्‍याप"
   },

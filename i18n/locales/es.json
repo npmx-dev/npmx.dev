@@ -319,6 +319,7 @@
       "slate": "Pizarra",
       "black": "Negro"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Activar atajos de teclado",
     "keyboard_shortcuts_enabled_description": "Los atajos de teclado pueden desactivarse si entran en conflicto con otros atajos del navegador o del sistema",
     "enable_code_ligatures": "Activar ligaduras en código",
@@ -1589,7 +1590,6 @@
     "merge_modified_lines": "Combinar líneas modificadas",
     "no_content_changes": "No se detectaron cambios en el contenido",
     "options": "Opciones",
-    "view_file": "Ver archivo",
     "view_in_code_browser": "Ver en el navegador de código",
     "word_wrap": "Ajuste de línea"
   },

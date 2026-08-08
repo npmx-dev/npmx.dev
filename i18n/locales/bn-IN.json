@@ -319,6 +319,7 @@
       "slate": "স্লেট",
       "black": "কালো"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "কীবোর্ড শর্টকাট সক্রিয় করুন",
     "keyboard_shortcuts_enabled_description": "কীবোর্ড শর্টকাট নিষ্ক্রিয় করা যেতে পারে যদি তারা অন্যান্য ব্রাউজার বা সিস্টেম শর্টকাটের সঙ্গে দুইপাশের সমস্যা তৈরি করে",
     "enable_code_ligatures": "কোডে লিগচারস সক্রিয় করুন",
@@ -1588,7 +1589,6 @@
     "merge_modified_lines": "পরিবর্তিত লাইন একত্রিত করুন",
     "no_content_changes": "কোনো বিষয়বস্তুর পরিবর্তন পাওয়া যায়নি",
     "options": "বিকল্পসমূহ",
-    "view_file": "ফাইল দেখুন",
     "view_in_code_browser": "কোড ব্রাউজারে দেখুন",
     "word_wrap": "লাইন মোড়ানো"
   },
