@@ -21,7 +21,8 @@ async function fetchPackageJson(
       string,
       unknown
     >
-  } catch {
+  } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') throw error
     return null
   }
 }

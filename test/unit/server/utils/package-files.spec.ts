@@ -144,4 +144,16 @@ describe('readPackageResponseText', () => {
     } satisfies Partial<PackageResponseTooLargeError>)
     expect(response.bodyUsed).toBe(true)
   })
+
+  it('enforces the byte limit when a response has no readable stream', async () => {
+    const response = {
+      body: null,
+      headers: new Headers(),
+      text: vi.fn().mockResolvedValue('ééé'),
+    } as unknown as Response
+
+    await expect(readPackageResponseText(response, 5)).rejects.toMatchObject({
+      sizeBytes: 6,
+    } satisfies Partial<PackageResponseTooLargeError>)
+  })
 })

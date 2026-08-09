@@ -80,7 +80,7 @@ async function fetchFileContent(
     if (error instanceof PackageResponseTooLargeError) {
       throw createError({
         statusCode: 413,
-        message: `File too large (${(error.sizeBytes / 1024 / 1024).toFixed(1)}MB). Maximum size is ${MAX_FILE_SIZE / 1024}KB.`,
+        message: `File exceeds the ${MAX_FILE_SIZE / 1024}KB maximum size.`,
       })
     }
     throw error

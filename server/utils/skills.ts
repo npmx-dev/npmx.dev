@@ -119,7 +119,7 @@ export function countSkillFiles(children: PackageFileTree[]): SkillFileCounts | 
 }
 
 /**
- * Fetch package file content with a size limit.
+ * Fetch package file content through the shared CDN fallback with a fixed size limit.
  */
 export async function fetchSkillFile(
   packageName: string,
@@ -142,7 +142,7 @@ export async function fetchSkillFile(
     if (error instanceof PackageResponseTooLargeError) {
       throw createError({
         statusCode: 413,
-        message: `File too large (${(error.sizeBytes / 1024 / 1024).toFixed(1)}MB). Maximum size is ${MAX_SKILL_FILE_SIZE / 1024}KB.`,
+        message: `File exceeds the ${MAX_SKILL_FILE_SIZE / 1024}KB maximum size.`,
       })
     }
     throw error
