@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { PackageFileContentResponse } from '#shared/types/npm-registry'
+import { getPackageFileViewerUrl } from '#shared/utils/package-files'
 
 interface BreadcrumbItem {
   name: string
@@ -25,6 +26,10 @@ const emit = defineEmits<{
 }>()
 
 const { toggleCodeContainer } = useCodeContainer()
+
+const rawFileUrl = computed(() =>
+  props.filePath ? getPackageFileViewerUrl(props.packageName, props.version, props.filePath) : '',
+)
 
 const markdownViewModes = [
   {
@@ -244,7 +249,7 @@ useEventListener('keydown', (event: KeyboardEvent) => {
           <TooltipApp :text="$t('code.open_raw_file')" position="top">
             <LinkBase
               variant="button-secondary"
-              :to="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
+              :to="rawFileUrl"
               class="px-3"
               :aria-label="$t('code.open_raw_file')"
             />

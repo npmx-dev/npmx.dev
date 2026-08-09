@@ -1,11 +1,13 @@
 import * as v from 'valibot'
+import { fetchPackageFile, readPackageResponseText } from '#server/utils/package-files'
 import { PackageCompareQuerySchema } from '#shared/schemas/package'
 
 const CACHE_VERSION = 1
 const COMPARE_TIMEOUT = 8000 // 8 seconds
+const MAX_PACKAGE_JSON_SIZE = 2 * 1024 * 1024
 
 /**
- * Fetch package.json from jsDelivr
+ * Fetch package.json from a package CDN.
  */
 async function fetchPackageJson(
   packageName: string,
@@ -13,10 +15,12 @@ async function fetchPackageJson(
   signal?: AbortSignal,
 ): Promise<Record<string, unknown> | null> {
   try {
-    const url = `https://cdn.jsdelivr.net/npm/${packageName}@${version}/package.json`
-    const response = await fetch(url, { signal })
+    const { response } = await fetchPackageFile(packageName, version, 'package.json', signal)
     if (!response.ok) return null
-    return (await response.json()) as Record<string, unknown>
+    return JSON.parse(await readPackageResponseText(response, MAX_PACKAGE_JSON_SIZE)) as Record<
+      string,
+      unknown
+    >
   } catch {
     return null
   }
