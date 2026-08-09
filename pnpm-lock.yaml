@@ -254,8 +254,8 @@ importers:
         specifier: 8.0.0
         version: 8.0.0
       verkit:
-        specifier: 0.3.1
-        version: 0.3.1
+        specifier: 0.3.2
+        version: 0.3.2
       virtua:
         specifier: 0.50.0
         version: 0.50.0(react-dom@19.2.8)(react@19.2.8)(vue@3.5.39)
@@ -269,8 +269,8 @@ importers:
         specifier: 3.5.39
         version: 3.5.39(typescript-native-bridge@6.0.3-bridge.9.tsgo.7.0.2)
       vue-data-ui:
-        specifier: 3.23.0
-        version: 3.23.0(vue@3.5.39)
+        specifier: 3.23.1
+        version: 3.23.1(vue@3.5.39)
       vue-router:
         specifier: 5.2.0
         version: 5.2.0(@voidzero-dev/vite-plus-core@0.2.7)(@vue/compiler-sfc@3.5.40)(esbuild@0.28.1)(rolldown@1.2.1)(rollup@4.62.2)(vue@3.5.39)(webpack@5.108.4)
@@ -10627,8 +10627,8 @@ packages:
     resolution: {integrity: sha512-6M8R2xSKplkQ+0mAm07IMh548GLLPUnRQZJCCe/W4rfk/SXW2bs8ZJSWa5kjdIdsx3hLG5oLWROJ4+N5hpX08g==}
     engines: {node: '>=18.12.0'}
 
-  verkit@0.3.1:
-    resolution: {integrity: sha512-w2Eo8LSIIoW7qxNBzT7/17k+bh8plXo7G3dHjEIDqPlnluhzaxr9JX8F28VSYEtDvc1/a3WBDih6xNUZseebXg==}
+  verkit@0.3.2:
+    resolution: {integrity: sha512-zj/ob3UsvJGN0whEAKFp53REA5X66hvffVqoCtVQAakJKnKlH+/PcOfMoFwIG/o4rElqLv/ycAFlx8ZlXUorCg==}
     engines: {node: '>=18.12.0'}
 
   vfile-location@5.0.3:
@@ -10839,8 +10839,8 @@ packages:
   vue-component-type-helpers@3.3.9:
     resolution: {integrity: sha512-3c/UfMe0SqyEfcGTyH7mfshHagJ9QTCbppCb0/uGpHZpFug7+If3GeGZN7I0YheKEExemx3xldQPoO7PQSOLQg==}
 
-  vue-data-ui@3.23.0:
-    resolution: {integrity: sha512-Drgg76fb+eOn5yLFsUX7Kvfs3Fcyfpv0QKXL8EVfprklTeyWseeqeiP2yJWWSFD79JfB/4Ap6Dwtp2/w1RiwMw==}
+  vue-data-ui@3.23.1:
+    resolution: {integrity: sha512-zLf9V8Dz7fInz5OAIBJwfxk80rK71gDkI9K/aXdOO/nJcWdvmF9D8L2FPKfic3HtUrBM6HbO9t1WHpC2hdZCzQ==}
     peerDependencies:
       jspdf: '>=3.0.1'
       vue: '>=3.3.0'
@@ -23184,7 +23184,7 @@ snapshots:
 
   verkit@0.2.0: {}
 
-  verkit@0.3.1: {}
+  verkit@0.3.2: {}
 
   vfile-location@5.0.3:
     dependencies:
@@ -23451,7 +23451,7 @@ snapshots:
 
   vue-component-type-helpers@3.3.9: {}
 
-  vue-data-ui@3.23.0(vue@3.5.39):
+  vue-data-ui@3.23.1(vue@3.5.39):
     dependencies:
       vue: 3.5.39(typescript-native-bridge@6.0.3-bridge.9.tsgo.7.0.2)
 

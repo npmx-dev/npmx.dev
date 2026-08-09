@@ -1,6 +1,6 @@
 import type { PackageVersionsInfo } from 'fast-npm-meta'
 import { getVersionsBatch } from 'fast-npm-meta'
-import { difference, findMaxSatisfying, getMajor, getMinor, getPrerelease, isGreater } from 'verkit'
+import { difference, findMaxSatisfying, getMajor, getMinor, isGreater, isStable } from 'verkit'
 import {
   type OutdatedDependencyInfo,
   isNonSemverConstraint,
@@ -26,7 +26,7 @@ function resolveOutdated(
 
   let filteredVersions = versions
   if (!constraintIncludesPrerelease(constraint)) {
-    filteredVersions = versions.filter(v => !getPrerelease(v)?.length)
+    filteredVersions = versions.filter(v => isStable(v))
   }
 
   const resolved = findMaxSatisfying(filteredVersions, constraint)
