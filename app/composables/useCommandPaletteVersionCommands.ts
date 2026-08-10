@@ -6,7 +6,7 @@ import type {
   CommandPaletteContextCommandInput,
   CommandPalettePackageContext,
 } from '~/types/command-palette'
-import { compare, satisfies, validRange } from 'semver'
+import { compare, normalizeRange, satisfies } from 'verkit'
 
 type CommandPaletteVersionRoute = (version: string) => RouteLocationRaw
 
@@ -54,7 +54,7 @@ export function useCommandPaletteVersionCommands(
     const resolvedContext = toValue(context)
     if (!resolvedContext?.resolvedVersion || !query) return null
 
-    const semverRange = validRange(query)
+    const semverRange = normalizeRange(query)
     if (!semverRange) return null
 
     const matchingVersions = getSortedVersions(resolvedContext).filter(version =>

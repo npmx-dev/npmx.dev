@@ -205,6 +205,7 @@ const TitleParagraph = html`
 
 // Components from here are not used at the moment
 // Do not delete as we might use it if we split translations in multiple files for locale
+// oxlint-disable-next-line eslint/no-underscore-dangle
 const _StatusByFile = (
   config: LunariaConfig,
   status: LunariaStatus,
@@ -302,6 +303,7 @@ const EmojiFileLink = (
       </span>`
 }
 
+// oxlint-disable-next-line eslint/no-underscore-dangle
 const _CreateFileLink = (href: string, text: string): string => {
   return html`<a class="create-button" href="${href}">${text}</a>`
 }
@@ -309,6 +311,7 @@ const _CreateFileLink = (href: string, text: string): string => {
 /**
  * Build an SVG file showing a summary of each language's translation progress.
  */
+// oxlint-disable-next-line eslint/no-underscore-dangle
 const _SvgSummary = (config: LunariaConfig, status: LunariaStatus): string => {
   const localeHeight = 56 // Each locale’s summary is 56px high.
   const svgHeight = localeHeight * Math.ceil(config.locales.length / 2)

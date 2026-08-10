@@ -191,6 +191,7 @@
       "theme_changed": "Theme set to {theme}.",
       "accent_color_changed": "Accent color set to {color}.",
       "background_theme_changed": "Background shade set to {theme}.",
+      "foreground_theme_changed": "Foreground shade set to {theme}.",
       "download_started": "Downloading {package} tarball.",
       "copied_to_clipboard": "Copied to clipboard.",
       "npm_disconnected": "npm CLI disconnected.",
@@ -261,7 +262,8 @@
     "back_to_archive": "Back to all noodles",
     "missing": {
       "title": "This noodle never made it out of the bowl.",
-      "body": "We don't have a “{slug}” noodle on the menu. Either it's still being plated, or it was never written. Either way — back to the archive."
+      "body": "We don't have a “{slug}” noodle on the menu. Either it's still being plated, or it was never written. Either way — back to the archive.",
+      "empty_bowl": "empty bowl"
     }
   },
   "settings": {
@@ -318,6 +320,12 @@
       "zinc": "Zinc",
       "slate": "Slate",
       "black": "Black"
+    },
+    "foreground_themes": {
+      "label": "Foreground shade",
+      "contrast": "Contrast",
+      "standard": "Standard",
+      "muted": "Muted"
     },
     "keyboard_shortcuts_enabled": "Enable keyboard shortcuts",
     "keyboard_shortcuts_enabled_description": "Keyboard shortcuts can be disabled if they conflict with other browser or system shortcuts",
@@ -411,6 +419,7 @@
     "verified_provenance": "Verified provenance",
     "navigation": "Package",
     "copy_name": "Copy package name",
+    "copy_version": "Copy package version",
     "deprecation": {
       "package": "This package has been deprecated.",
       "version": "This version has been deprecated.",
@@ -714,6 +723,7 @@
       "date_range": "{start} to {end}",
       "date_range_multiline": "{start}\nto {end}",
       "download_file": "Download {fileType}",
+      "copy_file": "Copy {fileType}",
       "toggle_annotator": "Toggle annotator",
       "toggle_stack_mode": "Toggle stack mode",
       "open_options": "Open options",
@@ -762,7 +772,7 @@
         "chart": "Embed this chart",
         "copy_url": "Copy this URL to embed the chart into your website",
         "preview": "Preview",
-        "tip": "If startDate and endDate are not provided, the chart defaults to the last 12 months."
+        "tip": "If startDate and endDate are not provided in the URL, the graph will display the last 12 months by default."
       }
     },
     "downloads": {

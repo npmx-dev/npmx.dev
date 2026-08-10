@@ -37,15 +37,7 @@ export function useCommandPalettePackageCommands(
       const { org, name } = splitPackageName(resolvedContext.packageName)
       if (!name) return []
 
-      const docsPath: [string, ...string[]] = org
-        ? [org, name, 'v', resolvedContext.resolvedVersion]
-        : [name, 'v', resolvedContext.resolvedVersion]
-      const docsLink = {
-        name: 'docs' as const,
-        params: {
-          path: docsPath,
-        },
-      }
+      const docsLink = docsRoute(resolvedContext.packageName, resolvedContext.resolvedVersion)
       const codeLink = {
         name: 'code' as const,
         params: {
