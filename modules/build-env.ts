@@ -1,3 +1,4 @@
+import process from 'node:process'
 import type { BuildInfo, EnvType } from '../shared/types'
 import { createResolver, defineNuxtModule } from 'nuxt/kit'
 import { isCI } from 'std-env'
@@ -62,7 +63,7 @@ export default defineNuxtModule({
 })
 
 declare module '@nuxt/schema' {
-  interface AppConfig {
+  interface CustomAppConfig {
     env: BuildInfo['env']
     buildInfo: BuildInfo
   }

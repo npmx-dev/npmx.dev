@@ -3,46 +3,68 @@ packages:
   - cli
   - docs
 
+allowBuilds:
+  '@atcute/time-ms': true
+  '@parcel/watcher': false
+  '@resvg/resvg-js': true
+  'better-sqlite3': true
+  'core-js': false
+  'esbuild': false
+  msw: true
+  sharp: true
+  'unrs-resolver': false
+  'vue-demi': false
+
+catalogs:
+  msw:
+    'msw': '^2.13.2'
+
+  storybook:
+    '@storybook-vue/nuxt': 'https://pkg.pr.new/@storybook-vue/nuxt@1021'
+    '@storybook/addon-a11y': '^10.3.5'
+    '@storybook/addon-docs': '^10.3.5'
+    '@storybook/addon-themes': '^10.3.5'
+    'msw-storybook-addon': '^3.0.0'
+    'storybook': '^10.3.1'
+    'storybook-i18n': '^10.1.1'
+
+  vite-plus:
+    'vite': 'npm:@voidzero-dev/vite-plus-core@0.2.7'
+    'vite-plus': '0.2.7'
+    'vitest': '4.1.10'
+    '@vitest/browser-playwright': '4.1.10'
+    '@vitest/coverage-v8': '4.1.10'
+
+dedupePeers: true
+
 ignoreDepScripts: true
 
 ignoreWorkspaceRootCheck: true
 
-allowBuilds:
-  '@resvg/resvg-js': true
-  'better-sqlite3': true
-  'sharp@0.34.5': true
-  '@parcel/watcher': false
-  'core-js': false
-  'esbuild': false
-  'unrs-resolver': false
-  'vue-demi': false
+minimumReleaseAgeExclude:
+  - '@iconify-json/simple-icons@1.2.93'
+  - vue-data-ui@3.23.0 || 3.23.1 || 3.23.2
 
 overrides:
-  sharp: 0.34.5
-  vite: npm:@voidzero-dev/vite-plus-core@0.1.12
-  vitest: npm:@voidzero-dev/vite-plus-test@0.1.12
-  storybook: ^10.3.1
+  '@types/node': 24.13.3
+  nuxt-og-image: ^6.6.0
+  sharp: 0.35.3
+  typescript: npm:typescript-native-bridge@6.0.3-bridge.9.tsgo.7.0.2
+  vite: 'catalog:vite-plus'
+  vitest: 'catalog:vite-plus'
+  vue-router: 5.2.0
+  markdown-exit: 1.1.0-beta.2
+  oxc-parser: 0.142.0
 
 packageExtensions:
   '@nuxt/scripts':
     dependencies:
       estree-walker: ^3.0.3
-  'unplugin-vue-markdown':
-    peerDependencies:
-      'vite': '^2.0.0 || ^3.0.0-0 || ^4.0.0-0 || ^5.0.0-0 || ^6.0.0 || ^7.0.0 || ^8.0.0'
 
 patchedDependencies:
   '@jsr/deno__doc@0.189.1': patches/@jsr__deno__doc@0.189.1.patch
+  '@nuxt/test-utils': patches/@nuxt__test-utils.patch
 
 savePrefix: ''
 
 shellEmulator: true
-
-catalogs:
-  storybook:
-    '@storybook-vue/nuxt': '9.0.1'
-    '@storybook/addon-a11y': '^10.3.1'
-    '@storybook/addon-docs': '^10.3.1'
-    '@storybook/addon-themes': '^10.3.1'
-    'storybook': '^10.3.1'
-    'storybook-i18n': '^10.1.1'

@@ -147,8 +147,12 @@ export interface FileDiffResponse {
   }
   /** Metadata */
   meta: {
+    /** Whether diff was rendered in large-file degraded mode */
+    large?: boolean
     /** Whether diff was truncated */
     truncated?: boolean
+    /** Why the diff was truncated */
+    truncationReason?: 'too_many_lines'
     /** Time taken to compute (ms) */
     computeTime?: number
   }

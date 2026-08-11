@@ -22,7 +22,7 @@ export const AuthorSchema = object({
   ),
 })
 
-export const ResolvedAuthorSchema = object({
+const ResolvedAuthorSchema = object({
   name: string(),
   blueskyHandle: optional(
     pipe(
@@ -45,10 +45,11 @@ export const RawBlogPostSchema = object({
   excerpt: optional(string()),
   tags: optional(array(string())),
   draft: optional(boolean()),
+  image: optional(string()),
 })
 
 /** Schema for blog post frontmatter with resolved author data (avatars, profile URLs) */
-export const BlogPostSchema = object({
+const BlogPostSchema = object({
   authors: array(ResolvedAuthorSchema),
   title: string(),
   date: pipe(string(), isoTimestamp()),
@@ -58,6 +59,7 @@ export const BlogPostSchema = object({
   excerpt: optional(string()),
   tags: optional(array(string())),
   draft: optional(boolean()),
+  image: optional(string()),
 })
 
 export type Author = InferOutput<typeof AuthorSchema>

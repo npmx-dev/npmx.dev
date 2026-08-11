@@ -6,7 +6,7 @@ import { SLINGSHOT_HOST } from '#shared/utils/constants'
 import { useServerSession } from '#server/utils/server-session'
 import { handleApiError } from '#server/utils/error-handler'
 import type { DidString } from '@atproto/lex'
-import { Client, isAtUriString } from '@atproto/lex'
+import { Client, isAtUriString, isTypedBlobRef } from '@atproto/lex'
 import * as app from '#shared/types/lexicons/app'
 import * as blue from '#shared/types/lexicons/blue'
 import { isAtIdentifierString } from '@atproto/lex'
@@ -59,8 +59,8 @@ export default defineEventHandler(async event => {
       const redirectUrl = await event.context.oauthClient.authorize(query.handle, {
         scope,
         prompt: query.create ? 'create' : undefined,
-        // TODO: I do not beleive this is working as expected on
-        // a unsupported locale on the PDS. Gives Invalid at body.ui_locales
+        // TODO: I do not believe this is working as expected on
+        // an unsupported locale on the PDS. Gives Invalid at body.ui_locales
         // Commenting out for now
         // ui_locales: query.locale?.toString(),
         state: encodeOAuthState(event, { redirectPath }),
@@ -271,11 +271,11 @@ async function getAvatar(did: DidString, pds: string) {
       })
 
       const validatedResponse = app.bsky.actor.profile.main.validate(profileResponse.value)
-      const cid = validatedResponse.avatar?.ref
+      const cid = validatedResponse.avatar
 
-      if (cid) {
+      if (cid && isTypedBlobRef(cid) && cid.ref) {
         // Use Bluesky CDN for faster image loading
-        avatar = `https://cdn.bsky.app/img/feed_thumbnail/plain/${did}/${cid}@jpeg`
+        avatar = `https://cdn.bsky.app/img/feed_thumbnail/plain/${did}/${cid.ref}@jpeg`
       }
     }
   } catch {

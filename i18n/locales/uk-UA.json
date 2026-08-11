@@ -12,7 +12,7 @@
   "non_affiliation_disclaimer": "не пов'язаний з npm, Inc.",
   "trademark_disclaimer": "npm є зареєстрованою торговою маркою npm, Inc. Цей сайт не пов'язаний з npm, Inc.",
   "footer": {
-    "about": "про проект",
+    "about": "про проєкт",
     "blog": "блог",
     "docs": "документація",
     "source": "код",
@@ -20,7 +20,10 @@
     "chat": "чат",
     "builders_chat": "розробники",
     "keyboard_shortcuts": "гарячі клавіші",
-    "brand": "бренд"
+    "brand": "бренд",
+    "resources": "Ресурси",
+    "features": "Функції",
+    "other": "Інше"
   },
   "shortcuts": {
     "section": {
@@ -28,6 +31,9 @@
       "search": "Пошук",
       "package": "Пакет"
     },
+    "ctrl_key": "Ctrl",
+    "command_palette": "Відкрити палітру команд",
+    "command_palette_description": "Використовуйте палітру команд для переходу між сторінками, пакетами, налаштуваннями та зовнішніми посиланнями, не відриваючи рук від клавіатури. На macOS натисніть ⌘K. На Windows і Linux натисніть {ctrlKey}+K.",
     "focus_search": "Фокус на пошуку",
     "show_kbd_hints": "Підсвітити підказки клавіатури",
     "settings": "Відкрити налаштування",
@@ -39,15 +45,16 @@
     "open_docs": "Відкрити документацію",
     "disable_shortcuts": "Ви можете вимкнути гарячі клавіші в {settings}.",
     "open_main": "Відкрити основну інформацію",
-    "open_diff": "Відкрити порівняння версій"
+    "open_diff": "Відкрити порівняння версій",
+    "open_timeline": "Відкрити хронологію"
   },
   "search": {
     "label": "Пошук пакетів npm",
     "placeholder": "пошук пакетів...",
     "button": "пошук",
     "searching": "Пошук...",
-    "found_packages": "Пакети не знайдено | Знайдено 1 пакет | Знайдено {count} пакетів",
-    "found_packages_sorted": "Результатів не знайдено | Сортування топ {count} результату | Сортування топ {count} результатів",
+    "found_packages": "Знайдено {count} пакет | Знайдено {count} пакети | Знайдено {count} пакетів",
+    "found_packages_sorted": "Сортування {count} найкращого результату | Сортування {count} найкращих результатів | Сортування {count} найкращих результатів",
     "updating": "(оновлення...)",
     "no_results": "Пакетів не знайдено для \"{query}\"",
     "rate_limited": "Досягнуто ліміт запитів npm, спробуйте пізніше",
@@ -75,6 +82,113 @@
     "instant_search_turn_on": "увімкнути",
     "instant_search_turn_off": "вимкнути",
     "instant_search_advisory": "{label} {state} — {action}"
+  },
+  "command_palette": {
+    "title": "палітра команд",
+    "quick_actions": "перейти до...",
+    "subtitle": "швидко переходьте між розділами npmx та перемикайте налаштування",
+    "subtitle_languages": "виберіть мову або допоможіть поліпшити переклади",
+    "instructions": "Вводьте текст, щоб фільтрувати команди. Використовуйте клавіші зі стрілками для навігації результатами та Enter для запуску команди.",
+    "input_label": "Пошук у палітрі команд",
+    "results_label": "Результати команд",
+    "placeholder": "введіть команду...",
+    "back": "Назад",
+    "empty": "Немає відповідних команд",
+    "empty_search_hint": "Натисніть Enter, щоб шукати \"{query}\".",
+    "current": "поточна",
+    "here": "ви тут",
+    "connected": "підключено",
+    "state": {
+      "on": "увімкнено",
+      "off": "вимкнено"
+    },
+    "groups": {
+      "actions": "Дії",
+      "help": "Довідка",
+      "language": "Мова",
+      "connections": "Підключення",
+      "navigation": "Навігація",
+      "links": "Посилання",
+      "npmx": "npmx",
+      "package": "Пакет",
+      "package_with_name": "Пакет ({name})",
+      "versions": "Версії",
+      "versions_with_name": "Версії {name}"
+    },
+    "actions": {
+      "search": "Пошук",
+      "search_for": "Шукати \"{query}\"",
+      "keyboard_shortcuts": "Гарячі клавіші",
+      "help_translate": "Допомогти з перекладом"
+    },
+    "connections": {
+      "npm_connect": "Підключитися до npm CLI",
+      "npm_connected": "npm CLI (~{username})",
+      "npm_disconnect": "Відключити npm CLI",
+      "atmosphere_connect": "Підключитися до Atmosphere",
+      "atmosphere_connected": "atmosphere ({'@'}{handle})",
+      "atmosphere_disconnect": "Відключити Atmosphere"
+    },
+    "navigation": {
+      "home": "головна",
+      "packages": "пакети (~{username})",
+      "orgs": "організації (~{username})",
+      "profile": "профіль ({'@'}{handle})"
+    },
+    "links": {
+      "external": "Зовнішнє посилання"
+    },
+    "package_links": {
+      "stars": "Зірки репозиторію",
+      "forks": "Форки репозиторію"
+    },
+    "theme": {
+      "system": "Використовувати системну тему",
+      "light": "Використовувати світлу тему",
+      "dark": "Використовувати темну тему"
+    },
+    "package": {
+      "main": "Сторінка пакета",
+      "docs": "Документація",
+      "code": "Код",
+      "diff": "Різниця",
+      "compare": "Порівняти цей пакет",
+      "download": "Завантажити tarball"
+    },
+    "package_actions": {
+      "copy_run": "Копіювати команду запуску"
+    },
+    "code": {
+      "copy_file": "Копіювати вміст файлу"
+    },
+    "diff": {
+      "merge_modified_lines": "Об'єднати змінені рядки",
+      "word_wrap": "Перенесення рядків"
+    },
+    "version": {
+      "label": "{version}"
+    },
+    "status": {
+      "available_in_context": "{context}. Доступна {count} команда | {context}. Доступні {count} команди | {context}. Доступно {count} команд",
+      "matching_in_context": "{context}. {count} відповідна команда | {context}. {count} відповідні команди | {context}. {count} відповідних команд",
+      "no_matches_search_in_context": "{context}. Немає відповідних команд. Натисніть Enter, щоб шукати \"{query}\"."
+    },
+    "announcements": {
+      "language_changed": "Мову змінено на {language}.",
+      "relative_dates_on": "Відносні дати увімкнено.",
+      "relative_dates_off": "Відносні дати вимкнено.",
+      "theme_changed": "Тему змінено на {theme}.",
+      "accent_color_changed": "Акцентний колір змінено на {color}.",
+      "background_theme_changed": "Відтінок фону змінено на {theme}.",
+      "download_started": "Завантаження tarball пакета {package}.",
+      "copied_to_clipboard": "Скопійовано до буфера обміну.",
+      "npm_disconnected": "npm CLI відключено.",
+      "atmosphere_disconnected": "Atmosphere відключено.",
+      "facets_all_selected": "Всі аспекти вибрано.",
+      "facets_all_deselected": "Скасовано вибір всіх аспектів.",
+      "view_switched": "Перемкнено на перегляд {view}.",
+      "setting_toggled": "{setting} {state}."
+    }
   },
   "nav": {
     "main_navigation": "Головна",
@@ -150,18 +264,19 @@
     "help_translate": "Допоможіть перекласти npmx",
     "translation_status": "Переглянути глобальний статус перекладу",
     "accent_colors": {
-      "label": "Колірні акценти",
+      "label": "Акцентні кольори",
+      "neutral": "Нейтральний",
       "sky": "Небесний",
-      "coral": "Коралевий",
+      "coral": "Кораловий",
       "amber": "Бурштиновий",
       "emerald": "Смарагдовий",
       "violet": "Фіолетовий",
       "magenta": "Маджента"
     },
-    "clear_accent": "Очистити колір акценту",
+    "clear_accent": "Очистити акцентний колір",
     "translation_progress": "Статус перекладу",
     "background_themes": {
-      "label": "Колір фону",
+      "label": "Відтінки фону",
       "neutral": "Нейтральний",
       "stone": "Кам'яний",
       "zinc": "Цинковий",
@@ -169,10 +284,11 @@
       "black": "Чорний"
     },
     "keyboard_shortcuts_enabled": "Увімкнути гарячі клавіші",
-    "keyboard_shortcuts_enabled_description": "Гарячі клавіші можна вимкнути, якщо вони конфліктують з налаштуваннями браузера або системи"
+    "keyboard_shortcuts_enabled_description": "Гарячі клавіші можна вимкнути, якщо вони конфліктують з налаштуваннями браузера або системи",
+    "enable_code_ligatures": "Увімкнути лігатури в коді"
   },
   "i18n": {
-    "missing_keys": "Відсутній 1 переклад | Відсутні {count} переклади",
+    "missing_keys": "Відсутній {count} переклад | Відсутні {count} переклади | Відсутні {count} перекладів",
     "copy_keys": "Копіювати ключі",
     "show_more_keys": "Показати ще {count}...",
     "contribute_hint": "Допоможіть поліпшити цей переклад, додавши відсутні фрази.",
@@ -180,7 +296,7 @@
     "view_guide": "Керівництво з перекладу"
   },
   "error": {
-    "401": "Не авторизовано",
+    "401": "Необхідна авторизація",
     "404": "Сторінку не знайдено",
     "500": "Внутрішня помилка сервера",
     "503": "Сервіс недоступний",
@@ -188,7 +304,7 @@
   },
   "common": {
     "loading": "Завантаження...",
-    "loading_more": "Завантаження ще...",
+    "loading_more": "Завантажуємо ще...",
     "loading_packages": "Завантаження пакетів...",
     "end_of_results": "Кінець результатів",
     "try_again": "Спробувати ще раз",
@@ -201,7 +317,8 @@
     "warnings": "Попередження:",
     "go_back_home": "Повернутися на головну",
     "per_week": "/ тиждень",
-    "vanity_downloads_hint": "Номер пакету: пакети не відображаються | Номер пакету: для пакету, що відображається | Номер пакету: Сума {count} пакетів, що відображаються",
+    "per_week_short": "/тиж",
+    "vanity_downloads_hint": "Сумарний показник завантажень: для {count} відображеного пакета | Сумарний показник завантажень: сума {count} відображених пакетів | Сумарний показник завантажень: сума {count} відображених пакетів",
     "sort": {
       "name": "ім'я",
       "role": "роль",
@@ -213,7 +330,7 @@
     "edit": "Редагувати",
     "error": "Помилка",
     "view_on": {
-      "npm": "переглянути на npm",
+      "npm": "Переглянути на npm",
       "github": "Переглянути на GitHub",
       "gitlab": "Переглянути на GitLab",
       "bitbucket": "Переглянути на Bitbucket",
@@ -223,11 +340,14 @@
       "gitea": "Переглянути на Gitea",
       "gitee": "Переглянути на Gitee",
       "radicle": "Переглянути на Radicle",
+      "socket_dev": "Переглянути на socket.dev",
       "sourcehut": "Переглянути на SourceHut",
       "tangled": "Переглянути на Tangled"
     },
     "collapse": "Згорнути",
-    "expand": "Розгорнути"
+    "collapse_with_name": "Згорнути {name}",
+    "expand": "Розгорнути",
+    "expand_with_name": "Розгорнути {name}"
   },
   "profile": {
     "display_name": "Відображуване ім'я",
@@ -259,23 +379,28 @@
       "no_reason": "Причину не вказано"
     },
     "size_increase": {
-      "title_size": "Значне збільшення розміру починаючи з v{version}",
-      "title_deps": "Значне збільшення кількості залежностей починаючи з v{version}",
-      "title_both": "Значне збільшення розміру і залежностей починаючи з v{version}",
+      "title_size": "Значне збільшення розміру порівняно з v{version}",
+      "title_deps": "Значне збільшення кількості залежностей порівняно з v{version}",
+      "title_both": "Значне збільшення розміру і залежностей порівняно з v{version}",
       "size": "Розмір встановлення збільшився на {percent} ({size} більше)",
-      "deps": "{count} додаткових залежностей"
+      "deps": "{count} додаткова залежність | {count} додаткові залежності | {count} додаткових залежностей"
+    },
+    "size_decrease": {
+      "title_size": "Розмір пакета зменшився порівняно з v{version}!",
+      "title_deps": "Кількість залежностей зменшилася порівняно з v{version}!",
+      "title_both": "Розмір пакета й кількість залежностей зменшилися порівняно з v{version}!",
+      "size": "Розмір встановлення зменшився на {percent} ({size} менше)",
+      "deps": "{count} залежність | {count} залежності | {count} залежностей"
     },
     "replacement": {
       "title": "Можливо вам не потрібна ця залежність.",
+      "example": "Приклад:",
       "native": "Це можна замінити на {replacement}, доступне з Node {nodeVersion}.",
-      "simple": "Спільнота позначила цей пакет як надлишковий із рекомендацією: {replacement}.",
-      "documented": "Спільнота позначила цей пакет як такий, що має більш ефективні альтернативи.",
+      "native_no_version": "Цей пакет можна замінити на {replacement}.",
       "none": "Цей пакет було позначено як більше не необхідний, і його функціональність, ймовірно, доступна в усіх системах.",
       "learn_more": "Дізнатися більше",
       "learn_more_above": "Дізнатися більше вище.",
-      "mdn": "MDN",
-      "community": "спільнота",
-      "consider_no_dep": "+ Думаєте позбавитися пакету?"
+      "consider_no_dep": "+ Розглянути варіант без залежності?"
     },
     "stats": {
       "license": "Ліцензія",
@@ -287,13 +412,13 @@
       "view_dependency_graph": "Переглянути граф залежностей",
       "inspect_dependency_tree": "Дослідити дерево залежностей",
       "size_tooltip": {
-        "unpacked": "{size} розпаковано розмір (цей пакет)",
-        "total": "{size} загальний розпаковано розмір (включаючи всі {count} залежностей для linux-x64)"
+        "unpacked": "{size} у розпакованому вигляді (цей пакет)",
+        "total": "{size} загальний розмір у розпакованому вигляді (включно з {count} залежністю для linux-x64) | {size} загальний розмір у розпакованому вигляді (включно з {count} залежностями для linux-x64) | {size} загальний розмір у розпакованому вигляді (включно з {count} залежностями для linux-x64)"
       }
     },
     "skills": {
       "title": "Навички агента",
-      "skills_available": "{count} навичка доступна | {count} навичок доступно",
+      "skills_available": "{count} навичка доступна | {count} навички доступні | {count} навичок доступно",
       "compatible_with": "Сумісний з {tool}",
       "install": "Встановити",
       "installation_method": "Метод встановлення",
@@ -302,9 +427,9 @@
       "click_to_expand": "Клікніть, щоб розгорнути",
       "no_description": "Немає опису",
       "file_counts": {
-        "scripts": "{count} скрипт | {count} скриптів",
-        "refs": "{count} посилання | {count} посилань",
-        "assets": "{count} ресурс | {count} ресурсів"
+        "scripts": "{count} скрипт | {count} скрипти | {count} скриптів",
+        "refs": "{count} посилання | {count} посилання | {count} посилань",
+        "assets": "{count} ресурс | {count} ресурси | {count} ресурсів"
       },
       "view_source": "Переглянути код",
       "skills_cli": "CLI навичок"
@@ -313,17 +438,21 @@
       "main": "огляд",
       "repo": "репозиторій",
       "homepage": "вебсайт",
-      "issues": "задачі",
+      "issues": "issues",
       "jsr": "jsr",
       "code": "код",
       "docs": "документація",
       "fund": "спонсорство",
       "compare": "порівняти",
+      "timeline": "хронологія",
       "compare_this_package": "порівняти цей пакет"
     },
     "likes": {
       "like": "Подобається цей пакет",
-      "unlike": "Прибрати вподобання"
+      "unlike": "Прибрати вподобання",
+      "top_rank_tooltip": "Цей пакет входить до 10 найбільш вподобаних на npmx! (#{rank})",
+      "top_rank_label": "#{rank}",
+      "top_rank_link_label": "Переглянути рейтинг вподобань. Цей пакет має місце #{rank}."
     },
     "docs": {
       "contents": "Зміст",
@@ -345,7 +474,7 @@
       "view_types": "Переглянути {package}"
     },
     "create": {
-      "title": "Створити новий проект",
+      "title": "Створити новий проєкт",
       "copy_command": "Копіювати команду створення",
       "view": "{packageName} має того ж супроводжувача. Натисніть для деталей."
     },
@@ -355,7 +484,7 @@
     },
     "readme": {
       "title": "Readme",
-      "no_readme": "README недоступна.",
+      "no_readme": "README недоступний.",
       "toc_title": "Зміст",
       "callout": {
         "note": "Примітка",
@@ -364,7 +493,8 @@
         "warning": "Попередження",
         "caution": "Увага"
       },
-      "copy_as_markdown": "Скопіювати файл README як Markdown"
+      "copy_as_markdown": "Скопіювати файл README як Markdown",
+      "error_loading": "Не вдалося завантажити деталі README"
     },
     "provenance_section": {
       "title": "Походження",
@@ -409,11 +539,10 @@
       "other_versions": "Інші версії",
       "more_tagged": "Ще {count} позначено",
       "all_covered": "Усі версії охоплені тегами вище",
-      "deprecated_title": "{version} (припинено)",
-      "view_all": "Переглянути {count} версію | Переглянути всі {count} версій",
+      "deprecated_title": "{version} (застаріла)",
+      "view_all": "Переглянути {count} версію | Переглянути {count} версії | Переглянути {count} версій",
       "view_all_versions": "Переглянути всі версії",
       "distribution_title": "Група Semver",
-      "distribution_modal_title": "Версії",
       "distribution_range_date_same_year": "від {from} до {to}, {endYear}",
       "distribution_range_date_multiple_years": "від {from}, {startYear} до {to}, {endYear}",
       "grouping_major": "Основна",
@@ -434,36 +563,67 @@
       "filter_help": "Довідка з фільтра діапазону semver",
       "filter_tooltip": "Фільтрувати версії за {link}. Наприклад, ^3.0.0 показує всі версії 3.x.",
       "filter_tooltip_link": "діапазоном semver",
+      "license_change_help": "Деталі зміни ліцензії",
+      "license_change_warning": "Ліцензія змінилася з попередньої версії.",
+      "license_change_record": "Ліцензію цього пакета змінено з \"{from}\" на \"{to}\".",
       "no_matches": "Жодна версія не відповідає цьому діапазону",
       "copy_alt": {
         "per_version_analysis": "Версія {version} була завантажена {downloads} разів",
-        "general_description": "Стовпчаста діаграма, що показує завантаження за версіями для {versions_count} {semver_grouping_mode} версій пакету {package_name}, {date_range_label} від версії {first_version} до версії {last_version}. Найбільш завантажувана версія — {max_downloaded_version} з {max_version_downloads} завантаженнями. {per_version_analysis}. {watermark}."
+        "general_description": "Стовпчаста діаграма, що показує завантаження за версіями для {versions_count} {semver_grouping_mode} версій пакета {package_name}, {date_range_label} від версії {first_version} до версії {last_version}. Найбільш завантажувана версія — {max_downloaded_version} з {max_version_downloads} завантаженнями. {per_version_analysis}. {watermark}."
       },
       "page_title": "Історія версій",
       "current_tags": "Поточні теги",
       "no_match_filter": "Версій за фільтром \"{filter}\" не знайдено"
     },
+    "timeline": {
+      "load_more": "Завантажити ще",
+      "load_error": "Не вдалося завантажити хронологію. Спробуйте пізніше.",
+      "size_increase": "Розмір встановлення збільшився на {percent}% ({size})",
+      "size_decrease": "Розмір встановлення зменшився на {percent}% ({size})",
+      "dep_increase": "Додано {count} залежність | Додано {count} залежності | Додано {count} залежностей",
+      "dep_decrease": "Видалено {count} залежність | Видалено {count} залежності | Видалено {count} залежностей",
+      "license_change": "Ліцензію змінено з {from} на {to}",
+      "esm_added": "Тип модуля змінено на ESM",
+      "esm_removed": "Тип модуля змінено з ESM на CJS",
+      "types_added": "Додано типи TypeScript",
+      "types_removed": "Видалено типи TypeScript",
+      "trusted_publisher_added": "Увімкнено довірену публікацію",
+      "trusted_publisher_removed": "Довірену публікацію видалено",
+      "provenance_added": "Походження увімкнено",
+      "provenance_removed": "Походження видалено",
+      "chart": {
+        "tab_aria_label": "Вибір метрики",
+        "base_scale": "починати вісь Y з нуля",
+        "zoom": "масштаб",
+        "reset_minimap": "скинути мінімапу",
+        "copy_alt": {
+          "key_changes": "Ключові зміни: {version_events}.",
+          "version_events": "версія {version}: {events}",
+          "general_description": "Лінійна діаграма показує {metric} пакета {package} від версії {first} до {last}. {metric} у версії {first} становить {first_value}, у версії {last} — {last_value} ({overall_progress_percentage}% загалом). {key_changes} {watermark}."
+        }
+      }
+    },
     "dependencies": {
       "title": "Залежності ({count})",
       "list_label": "Залежності пакета",
-      "show_all": "показати всі {count} залежностей",
+      "show_all": "показати {count} залежність | показати {count} залежності | показати {count} залежностей",
       "optional": "опціонально",
       "view_vulnerabilities": "Переглянути вразливості",
-      "outdated_major": "{count} мажорна версія відставання (остання: {latest}) | {count} мажорних версій відставання (остання: {latest})",
-      "outdated_minor": "{count} мінорна версія відставання (остання: {latest}) | {count} мінорних версій відставання (остання: {latest})",
+      "outdated_major": "{count} мажорна версія позаду (остання: {latest}) | {count} мажорні версії позаду (остання: {latest}) | {count} мажорних версій позаду (остання: {latest})",
+      "outdated_minor": "{count} мінорна версія позаду (остання: {latest}) | {count} мінорні версії позаду (остання: {latest}) | {count} мінорних версій позаду (остання: {latest})",
       "outdated_patch": "Доступне оновлення (остання версія: {latest})",
       "has_replacement": "Ця залежність має рекомендовані заміни",
       "vulnerabilities_count": "{count} вразливість | {count} вразливості | {count} вразливостей"
     },
     "peer_dependencies": {
-      "title": "Залежності однорівневих об'єктів ({count})",
-      "list_label": "Залежності однорівневих об'єктів пакета",
-      "show_all": "показати всі {count} залежностей однорівневих об'єктів"
+      "title": "Peer-залежності ({count})",
+      "list_label": "Peer-залежності пакета",
+      "show_all": "показати {count} peer-залежність | показати {count} peer-залежності | показати {count} peer-залежностей"
     },
     "optional_dependencies": {
       "title": "Опціональні залежності ({count})",
       "list_label": "Опціональні залежності пакета",
-      "show_all": "показати всі {count} опціональних залежностей"
+      "show_all": "показати {count} опціональну залежність | показати {count} опціональні залежності | показати {count} опціональних залежностей"
     },
     "maintainers": {
       "title": "Супроводжувачі",
@@ -487,6 +647,9 @@
         "table_available": "Таблиця даних для цього графіка доступна нижче.",
         "table_caption": "Таблиця даних графіка"
       },
+      "chart_view_toggle": "Перемкнути перегляд",
+      "chart_view_combined": "Об'єднаний перегляд",
+      "chart_view_split": "Розділений перегляд",
       "granularity": "Деталізація",
       "granularity_daily": "Щоденні",
       "granularity_weekly": "Щотижневі",
@@ -522,7 +685,7 @@
       "known_anomalies_ranges": "Діапазони аномалій",
       "known_anomalies_range": "Від {start} до {end}",
       "known_anomalies_range_named": "{packageName}: від {start} до {end}",
-      "known_anomalies_none": "Для цього пакету немає відомих аномалій. | Для цих пакетів немає відомих аномалій.",
+      "known_anomalies_none": "Для цього пакета немає відомих аномалій. | Для цих пакетів немає відомих аномалій. | Для цих пакетів немає відомих аномалій.",
       "known_anomalies_contribute": "Додати дані про аномалію",
       "apply_correction": "Застосувати корекцію",
       "copy_alt": {
@@ -536,7 +699,7 @@
         "estimation": "Кінцеве значення є оцінкою, заснованою на часткових даних за поточний період.",
         "estimations": "Кінцеві значення є оцінками, заснованими на часткових даних за поточний період.",
         "compare": "Лінійна діаграма порівняння завантажень пакетів для: {packages}.",
-        "single_package": "Лінійна діаграма завантажень пакету {package}.",
+        "single_package": "Лінійна діаграма завантажень пакета {package}.",
         "general_description": "Вісь Y відображає кількість завантажень. Вісь X відображає діапазон дат, від {start_date} до {end_date}, з часовим інтервалом {granularity}.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Горизонтальна стовпчаста діаграма для {packages}, порівнюється {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} має значення {value}."
@@ -551,7 +714,7 @@
     "install_scripts": {
       "title": "Скрипти встановлення",
       "script_label": "(скрипт)",
-      "npx_packages": "{count} пакет npx | {count} пакети npx",
+      "npx_packages": "{count} пакет npx | {count} пакети npx | {count} пакетів npx",
       "currently": "зараз {version}"
     },
     "playgrounds": {
@@ -573,12 +736,12 @@
       "none": "Відсутня"
     },
     "vulnerabilities": {
-      "tree_found": "{vulns} вразливість в {packages}/{total} пакетах | {vulns} вразливостей в {packages}/{total} пакетах",
-      "show_all_packages": "показати всі {count} постраждалих пакетів",
+      "tree_found": "{vulns} вразливість в {packages}/{total} пакетах | {vulns} вразливості в {packages}/{total} пакетах | {vulns} вразливостей в {packages}/{total} пакетах",
+      "show_all_packages": "показати {count} уражений пакет | показати {count} уражені пакети | показати {count} уражених пакетів",
       "path": "шлях",
       "more": "+{count} більше",
-      "packages_failed": "1 пакет не вдалося перевірити | {count} пакетів не вдалося перевірити",
-      "scan_failed": "Не вдалося сканувати на вразливості",
+      "packages_failed": "{count} пакет не вдалося перевірити | {count} пакети не вдалося перевірити | {count} пакетів не вдалося перевірити",
+      "scan_failed": "Не вдалося перевірити на вразливості",
       "severity": {
         "critical": "критична",
         "high": "висока",
@@ -588,9 +751,9 @@
       "fixed_in_title": "Виправлено у версії {version}"
     },
     "deprecated": {
-      "label": "Припинено",
-      "tree_found": "1 припинена залежність | {count} припинених залежностей",
-      "show_all": "показати всі {count} припинених пакетів"
+      "label": "Застаріло",
+      "tree_found": "{count} застаріла залежність | {count} застарілі залежності | {count} застарілих залежностей",
+      "show_all": "показати {count} застарілий пакет | показати всі {count} застарілі пакети | показати всі {count} застарілих пакетів"
     },
     "access": {
       "title": "Доступ команди",
@@ -627,7 +790,7 @@
       "dependencies": "Залежності"
     },
     "sort": {
-      "downloads": "Найбільше завантажено",
+      "downloads": "Найбільше завантажень",
       "published": "Нещодавно опубліковані",
       "name_asc": "Ім'я (A-Z)",
       "name_desc": "Ім'я (Z-A)"
@@ -642,14 +805,24 @@
       "tarball": "Завантажити Tarball як .tar.gz"
     }
   },
+  "leaderboard": {
+    "likes": {
+      "title": "Рейтинг вподобань",
+      "description": "10 пакетів із найбільшою кількістю вподобань на npmx.",
+      "rank": "Місце",
+      "likes": "Вподобання",
+      "unavailable_title": "Рейтингу вподобань поки немає",
+      "unavailable_description": "Наразі немає даних для відображення рейтингу вподобань."
+    }
+  },
   "connector": {
     "modal": {
-      "title": "Локальний сполучник",
+      "title": "Локальний конектор",
       "connected": "Підключено",
       "connected_as_user": "Підключено як ~{user}",
       "connected_hint": "Тепер ви можете керувати пакетами та організаціями з веб-інтерфейсу.",
       "disconnect": "Відключити",
-      "run_hint": "Запустіть сполучник на своєму комп'ютері, щоб увімкнути функції адміністратора.",
+      "run_hint": "Запустіть конектор на своєму комп'ютері, щоб увімкнути функції адміністратора.",
       "copy_command": "Копіювати команду",
       "copied": "Скопійовано",
       "paste_token": "Потім вставте токен нижче для підключення:",
@@ -701,7 +874,7 @@
       "no_teams": "Команди не знайдені",
       "list_label": "Команди організації",
       "delete_team": "Видалити команду {name}",
-      "member_count": "{count} учасник | {count} учасники",
+      "member_count": "{count} учасник | {count} учасники | {count} учасників",
       "members_of": "Учасники {team}",
       "no_members": "Немає учасників",
       "remove_user": "Видалити {user} з команди",
@@ -724,7 +897,7 @@
       "filter_placeholder": "Фільтрувати учасників...",
       "filter_by_role": "Фільтрувати за роллю",
       "filter_by_team": "Фільтрувати за командою",
-      "all_teams": "всі команди",
+      "all_teams": "усі команди",
       "sort_by": "Сортувати за",
       "loading": "Завантаження учасників...",
       "no_members": "Учасники не знайдені",
@@ -748,7 +921,7 @@
       "cancel_add": "Скасувати додавання учасника",
       "add_member": "+ Додати учасника"
     },
-    "public_packages": "{count} публічний пакет | {count} публічні пакети",
+    "public_packages": "{count} публічний пакет | {count} публічні пакети | {count} публічних пакетів",
     "page": {
       "packages_title": "Пакети",
       "members_tab": "Учасники",
@@ -774,7 +947,7 @@
       "no_packages_hint": "Цього користувача може не існувати або у нього немає публічних пакетів.",
       "failed_to_load": "Не вдалося завантажити пакети користувача",
       "no_match": "Пакети не збігаються з \"{query}\"",
-      "filter_placeholder": "Фільтрувати {count} пакетів..."
+      "filter_placeholder": "Фільтрувати {count} пакет... | Фільтрувати {count} пакети... | Фільтрувати {count} пакетів..."
     },
     "orgs_page": {
       "title": "Організації",
@@ -786,9 +959,9 @@
       "view_your_orgs": "Переглянути свої організації",
       "loading": "Завантаження організацій...",
       "empty": "Організації не знайдені.",
-      "empty_hint": "Організації виявляються з ваших пакетів з обсягом.",
-      "count": "{count} організація | {count} організації",
-      "packages_count": "{count} пакет | {count} пакети"
+      "empty_hint": "Організації визначаються за вашими scoped-пакетами.",
+      "count": "{count} організація | {count} організації | {count} організацій",
+      "packages_count": "{count} пакет | {count} пакети | {count} пакетів"
     }
   },
   "claim": {
@@ -798,20 +971,20 @@
       "success_detail": "{name}{'@'}0.0.0 було опубліковано на npm.",
       "success_hint": "Тепер ви можете опублікувати нові версії цього пакета за допомогою npm publish.",
       "view_package": "Переглянути пакет",
-      "invalid_name": "Невірна назва пакета:",
+      "invalid_name": "Некоректна назва пакета:",
       "available": "Ця назва доступна!",
       "taken": "Ця назва вже зайнята.",
-      "missing_permission": "Ви не маєте дозволу на додавання пакету до scope {'@'}{scope}.",
+      "missing_permission": "Ви не маєте дозволу на додавання пакета до scope {'@'}{scope}.",
       "similar_warning": "Існують подібні пакети - npm може відхилити цю назву:",
       "related": "Пов'язані пакети:",
-      "scope_warning_title": "Розглянути використання пакета з обсягом",
-      "scope_warning_text": "Назви пакетів без обсягу є спільним ресурсом. Зарезервуйте назву лише якщо ви маєте намір опублікувати та підтримувати пакет. Для особистих або організаційних проектів використовуйте назву з обсягом, як-от {'@'}{username}/{name}.",
-      "connect_required": "Підключіться до локального сполучника, щоб зарезервувати цю назву пакета.",
-      "connect_button": "Підключитися до сполучника",
-      "publish_hint": "Це опублікує мінімальний пакет-заповнювач.",
+      "scope_warning_title": "Розгляньте використання scoped-пакета",
+      "scope_warning_text": "Назви пакетів без scope є спільним ресурсом. Зарезервуйте назву лише якщо ви маєте намір опублікувати та підтримувати пакет. Для особистих або організаційних проєктів використовуйте назву зі scope, як-от {'@'}{username}/{name}.",
+      "connect_required": "Підключіться до локального конектора, щоб зарезервувати цю назву пакета.",
+      "connect_button": "Підключитися до конектора",
+      "publish_hint": "Це опублікує мінімальний пакет-заглушку.",
       "preview_json": "Переглянути package.json",
       "claim_button": "Зарезервувати назву пакета",
-      "publishing": "Опублікування...",
+      "publishing": "Публікація...",
       "checking": "Перевірка доступності...",
       "failed_to_check": "Не вдалося перевірити доступність назви",
       "failed_to_claim": "Не вдалося зарезервувати пакет"
@@ -820,18 +993,22 @@
   "code": {
     "files_label": "Файли",
     "no_files": "Немає файлів у цій папці",
-    "lines": "{count} рядків",
-    "toggle_tree": "Переключити дерево файлів",
+    "lines": "{count} рядок | {count} рядки | {count} рядків",
+    "toggle_tree": "Перемкнути дерево файлів",
     "close_tree": "Закрити дерево файлів",
+    "copy_content": "Копіювати вміст файлу",
     "copy_link": "Копіювати посилання",
-    "view_raw": "Переглянути необроблений файл",
-    "file_too_large": "Файл занадто великий для попереду",
+    "view_raw": "Переглянути raw-файл",
+    "toggle_container": "Перемкнути ширину контейнера коду",
+    "open_raw_file": "Відкрити raw-файл",
+    "open_path_dropdown": "Відкрити меню сегментів шляху",
+    "file_too_large": "Файл завеликий для попереднього перегляду",
     "file_size_warning": "{size} перевищує ліміт 500KB для виділення синтаксису",
     "failed_to_load": "Не вдалося завантажити файл",
     "unavailable_hint": "Файл може бути занадто великим або недоступним",
     "version_required": "Для перегляду коду потрібна версія",
     "go_to_package": "Перейти до пакета",
-    "loading_tree": "Завантаження дерева файлів...",
+    "loading_tree": "Завантаження файлового дерева...",
     "failed_to_load_tree": "Не вдалося завантажити файли для цієї версії пакета",
     "back_to_package": "Назад до пакета",
     "table": {
@@ -844,7 +1021,7 @@
     },
     "file_path": "Шлях до файлу",
     "binary_file": "Бінарний файл",
-    "binary_rendering_warning": "Перегляд для даного типу файлів не підтримується"
+    "binary_rendering_warning": "Попередній перегляд файлів типу \"{contentType}\" не підтримується"
   },
   "badges": {
     "provenance": {
@@ -859,11 +1036,11 @@
   "filters": {
     "title": "Фільтри",
     "search": "Пошук",
-    "search_scope": "Обсяг пошуку",
+    "search_scope": "Зона пошуку",
     "search_placeholder_name": "Фільтрувати за назвою пакета...",
     "search_placeholder_description": "Фільтрувати за описом...",
     "search_placeholder_keywords": "Фільтрувати за ключовими словами...",
-    "search_placeholder_all": "Пошук усіх або використовуйте \"name: desc: kw:\"",
+    "search_placeholder_all": "Шукати всюди або через name: desc: kw:",
     "scope_name": "Ім'я",
     "scope_name_description": "Пошук тільки в назвах пакетів",
     "scope_description": "Опис",
@@ -910,7 +1087,7 @@
     "clear_selected_label": "Очистити вибране",
     "sort": {
       "label": "Сортувати пакети",
-      "toggle_direction": "Переключити напрямок сортування",
+      "toggle_direction": "Перемкнути напрямок сортування",
       "ascending": "За зростанням",
       "descending": "За спаданням",
       "relevance": "Релевантність",
@@ -918,7 +1095,7 @@
       "downloads_day": "Завантажень/день",
       "downloads_month": "Завантажень/міс",
       "downloads_year": "Завантажень/рік",
-      "published": "Останнє опублікування",
+      "published": "Остання публікація",
       "name": "Ім'я"
     },
     "columns": {
@@ -930,7 +1107,7 @@
       "version": "Версія",
       "description": "Опис",
       "downloads": "Завантажень/тиж",
-      "published": "Останнє опублікування",
+      "published": "Остання публікація",
       "maintainers": "Супроводжувачі",
       "keywords": "Ключові слова",
       "security": "Безпечність",
@@ -953,9 +1130,9 @@
       "nav_label": "Посторінково"
     },
     "count": {
-      "showing_filtered": "{filtered} з {count} пакетів",
-      "showing_all": "{count} пакетів",
-      "showing_paginated": "{pageSize} з {count} пакетів"
+      "showing_filtered": "{filtered} з {count} пакета | {filtered} з {count} пакетів | {filtered} з {count} пакетів",
+      "showing_all": "{count} пакет | {count} пакети | {count} пакетів",
+      "showing_paginated": "{pageSize} з {count} пакета | {pageSize} з {count} пакетів | {pageSize} з {count} пакетів"
     },
     "table": {
       "security_warning": "Попередження безпеки",
@@ -964,8 +1141,8 @@
     }
   },
   "about": {
-    "title": "Про проект",
-    "heading": "про проект",
+    "title": "Про проєкт",
+    "heading": "про проєкт",
     "meta_description": "npmx - це швидкий, сучасний браузер для реєстру npm. Кращий UX/DX для дослідження пакетів npm.",
     "what_we_are": {
       "title": "Чим ми є",
@@ -998,14 +1175,13 @@
     },
     "team": {
       "title": "Команда",
-      "governance": "Управління",
       "role_steward": "стюард",
       "role_maintainer": "супроводжувач",
       "sponsor": "спонсор",
       "sponsor_aria": "Спонсорувати {name} на GitHub"
     },
     "contributors": {
-      "title": "... та ще {count} учасник | ... та ще {count} учасників",
+      "title": "... та ще {count} учасник | ... та ще {count} учасники | ... та ще {count} учасників",
       "description": "npmx має повністю відкритий код, створений дивовижною спільнотою учасників. Приєднуйтеся до нас і давайте разом створювати досвід перегляду npm, який ми завжди хотіли мати.",
       "loading": "Завантаження учасників...",
       "error": "Не вдалося завантажити учасників",
@@ -1045,7 +1221,7 @@
     "connect_npm_cli": "Підключитися до npm CLI",
     "connect_atmosphere": "Підключитися до Atmosphere",
     "connecting": "Підключення...",
-    "ops": "{count} операція | {count} операцій"
+    "ops": "{count} операція | {count} операції | {count} операцій"
   },
   "auth": {
     "modal": {
@@ -1102,6 +1278,7 @@
       "empty_description": "Знайдіть та додайте щонайменше 2 пакети вище, щоб побачити порівняння їх метрик.",
       "table_view": "Таблиця",
       "charts_view": "Діаграми",
+      "no_chartable_data": "Немає даних для побудови діаграми за вибраними аспектами.",
       "bar_chart_nav_hint": "Використовуйте ↑ ↓",
       "line_chart_nav_hint": "Використовуйте ← →"
     },
@@ -1113,6 +1290,17 @@
       "remove_package": "Видалити {package}",
       "packages_selected": "Вибрано {count}/{max} пакетів.",
       "add_hint": "Додайте щонайменше 2 пакети для порівняння."
+    },
+    "scatter_chart": {
+      "title": "Порівняти {x} і {y}",
+      "freshness_score": "Оцінка свіжості",
+      "copy_alt": {
+        "analysis": "{package} : {x_name} ({x_value}) і {y_name} ({y_value})",
+        "description": "Точкова діаграма, що зіставляє {x_name} і {y_name} для пакетів {packages}. {analysis}. {watermark}"
+      },
+      "filename": "{x}-vs-{y}-scatter-chart",
+      "x_axis": "ВІСЬ X ↦",
+      "y_axis": "ВІСЬ Y ↥"
     },
     "no_dependency": {
       "label": "(Без залежності)",
@@ -1192,13 +1380,25 @@
         "vulnerabilities": {
           "label": "Вразливості",
           "description": "Відомі вразливості безпеки"
+        },
+        "githubStars": {
+          "label": "Зірки GitHub",
+          "description": "Кількість зірок у репозиторії GitHub"
+        },
+        "githubIssues": {
+          "label": "Issues GitHub",
+          "description": "Кількість issues у репозиторії GitHub"
+        },
+        "createdAt": {
+          "label": "Створено",
+          "description": "Коли пакет було створено"
         }
       },
       "values": {
         "any": "Будь-яке",
         "none": "Відсутні",
         "unknown": "Невідомо",
-        "deprecated": "Припинено",
+        "deprecated": "Застаріло",
         "not_deprecated": "Ні",
         "types_included": "Включені",
         "types_none": "Відсутні",
@@ -1210,17 +1410,15 @@
       }
     },
     "file_changes": "Зміни файлів",
-    "files_count": "{count} файлів",
-    "lines_hidden": "{count} рядків приховано",
-    "file_too_large": "Файл завеликий для порівняння",
-    "file_size_warning": "{size} перевищує ліміт 250 КБ для порівняння",
+    "files_count": "{count} файл | {count} файли | {count} файлів",
+    "lines_hidden": "{count} рядок приховано | {count} рядки приховано | {count} рядків приховано",
     "compare_versions": "зміни",
     "compare_versions_title": "Порівняти з останньою версією",
     "comparing_versions_label": "Порівняння версій...",
-    "version_back_to_package": "Повернутися до пакету",
+    "version_back_to_package": "Повернутися до пакета",
     "version_error_message": "Не вдалося порівняти версії.",
     "version_invalid_url_format": {
-      "hint": "Невірна URL-адреса для порівняння. Використовуйте формат: {0}",
+      "hint": "Некоректна URL-адреса для порівняння. Використовуйте формат: {0}",
       "from_version": "від",
       "to_version": "до"
     },
@@ -1338,7 +1536,7 @@
       "li1": "Не використовує файли cookie",
       "li2": "Не збирає персональні ідентифікатори",
       "li3": "Не відстежує користувачів між веб-сайтами",
-      "li4": "Всі дані агреговані та анонімізовані",
+      "li4": "Усі дані агреговані та анонімізовані",
       "p3": "Єдина інформація, яка збирається, включає: URL-адреси сторінок, реферер, країну/регіон, тип пристрою, браузер та операційну систему. Ці дані не можуть бути використані для ідентифікації окремих користувачів."
     },
     "authenticated": {
@@ -1357,13 +1555,13 @@
       "p1": "Ви маєте право:",
       "li1": "Отримувати інформацію про те, які дані ми збираємо",
       "li2": "Очищати локальне сховище та файли cookie у будь-який момент",
-      "li3": "Відключати свою сесію авторизації",
+      "li3": "Виходити з облікового запису",
       "li4": "Запитувати інформацію про наші практики роботи з даними",
       "p2": "Оскільки ми не збираємо персональні дані, зазвичай немає персональної інформації для видалення або експортування."
     },
     "contact": {
       "title": "Зворотний зв'язок",
-      "p1": "Якщо у вас є запитання або занепокоєння щодо цієї політики конфіденційності, ви можете зв'язатися з нами, відкривши задачу в нашому {link}.",
+      "p1": "Якщо у вас є запитання або занепокоєння щодо цієї політики конфіденційності, ви можете зв'язатися з нами, відкривши issue в нашому {link}.",
       "link": "репозиторії GitHub"
     },
     "changes": {
@@ -1379,7 +1577,7 @@
       "title": "Наш підхід",
       "p1": "Ми намагаємося дотримуватися Рекомендацій щодо доступності веб-контенту (WCAG) 2.2 і використовуємо їх як орієнтир при створенні функціоналу. Ми не претендуємо на повну відповідність будь-якому рівню WCAG — доступність є неперервним процесом, і завжди є що покращувати.",
       "p2": "Цей сайт є {about}. Покращення доступності відбувається поступово як частина нашої щоденної розробки.",
-      "about_link": "проектом з відкритим кодом, керованим спільнотою"
+      "about_link": "проєктом з відкритим кодом, керованим спільнотою"
     },
     "measures": {
       "title": "Що ми робимо",
@@ -1388,16 +1586,16 @@
       "li2": "Використовуємо відносні розміри тексту, щоб ви могли налаштувати їх у своєму браузері.",
       "li3": "Підтримуємо навігацію за допомогою клавіатури у всьому інтерфейсі.",
       "li4": "Поважаємо медіа-запити \"prefers-reduced-motion\" та \"prefers-color-scheme\".",
-      "li5": "Проектуємо з урахуванням достатнього кольорового контрасту.",
+      "li5": "Проєктуємо з урахуванням достатнього кольорового контрасту.",
       "li6": "Забезпечуємо доступність основного контенту без JavaScript, хоча деякі інтерактивні функції його потребують."
     },
     "limitations": {
       "title": "Відомі обмеження",
-      "p1": "Деякі частини сайту — особливо сторонній контент, як-от файли README пакетів — можуть не відповідати стандартам доступності. Ми працюємо над поступовим покращенням цих областей."
+      "p1": "Деякі частини сайту — особливо сторонній контент, як-от файли README пакетів — можуть не відповідати стандартам доступності. Ми поступово працюємо над їх покращенням."
     },
     "contact": {
       "title": "Зворотний зв'язок",
-      "p1": "Якщо ви зіткнулися з бар'єром доступності на {app}, будь ласка, повідомте нам, відкривши задачу в нашому {link}. Ми серйозно ставимося до цих повідомлень і зробимо все можливе для їх вирішення.",
+      "p1": "Якщо ви зіткнулися з бар'єром доступності на {app}, будь ласка, повідомте нам, відкривши issue в нашому {link}. Ми серйозно ставимося до цих повідомлень і зробимо все можливе для їх вирішення.",
       "link": "репозиторії GitHub"
     }
   },
@@ -1406,15 +1604,15 @@
     "generated_at": "Згенеровано: {date}",
     "welcome": "Якщо вас зацікавила можливість допомогти у перекладі {npmx} однією з мов перелічених нижче, то ви потрапили куди потрібно! Ця сторінка, що автоматично оновлюється, завжди містить список усіх текстів, з яким ви можете допомогти прямо зараз.",
     "p1": "Ми використовуємо {lang} як мову за замовчуванням, із загальною кількістю {count} фраз. Якщо ви хочете допомогти з перекладами, знайдіть мову в {bylang} та розгорніть деталі.",
-    "p1_lang": "Американська англійська (en-US)",
-    "p1_count": "0 повідомлень | 1 повідомлення | {count} повідомлення | {count} повідомлень",
+    "p1_lang": "Американську англійську (en-US)",
+    "p1_count": "{count} повідомлення | {count} повідомлення | {count} повідомлень",
     "p2": "Перед початком, будь ласка, прочитайте наш {guide}, щоб дізнатися про наш процес перекладу та як ви можете долучитися.",
     "guide": "посібник з локалізації (i18n)",
     "by_locale": "Прогрес перекладу за мовою",
     "by_file": "Прогрес перекладу за файлом",
     "complete_text": "Цей переклад завершено, чудова робота!",
     "missing_text": "відсутні",
-    "missing_keys": "Відсутніх перекладів немає | Відсутній переклад | Відсутні переклади",
+    "missing_keys": "Відсутні переклади",
     "progress_label": "Статус прогресу для {locale}",
     "table": {
       "file": "Файл",
@@ -1435,7 +1633,7 @@
       "title": "що відбулося",
       "p1": "discord був закритий {dates}.",
       "dates": "14 – 21 лютого",
-      "p2": "Всі посилання для запрошень зникли і канали були заблоковані – окрім {garden}, який залишився відкритим для тих, хто хотів продовжувати спілкування.",
+      "p2": "Усі посилання для запрошень зникли і канали були заблоковані – окрім {garden}, який залишився відкритим для тих, хто хотів продовжувати спілкування.",
       "garden": "#garden"
     },
     "meantime": {
@@ -1460,7 +1658,7 @@
   },
   "action_bar": {
     "title": "панель дій",
-    "selection": "0 вибрано | 1 вибрано | {count} вибрано",
+    "selection": "{count} вибрано | {count} вибрано | {count} вибрано",
     "shortcut": "Натисніть \"{key}\" для фокусу на діях",
     "button_close_aria_label": "Закрити панель дій"
   },
@@ -1513,5 +1711,9 @@
       "message": "Доступність важлива для нас і ми хотіли б, щоб ви поділяли цю позицію. Використовуючи зазначені матеріали, переконайтеся, що є достатній контраст із фоном, і не зменшуйте розмір менше 24px. Якщо вам потрібні інші ресурси або додаткова інформація про проєкт, зв'яжіться з нами за посиланням {link}.",
       "discord_link_text": "chat.npmx.dev"
     }
+  },
+  "alt_logo_kawaii": "Мила, округла й барвиста версія логотипу npmx.",
+  "changelog": {
+    "error": {}
   }
 }

@@ -2,13 +2,22 @@ import type {
   AltCopyArgs,
   VueUiHorizontalBarConfig,
   VueUiHorizontalBarDatapoint,
-  VueUiQuadrantConfig,
-  VueUiQuadrantDatapoint,
+  VueUiScatterConfig,
+  VueUiScatterSeries,
   VueUiXyConfig,
   VueUiXyDatasetBarItem,
   VueUiXyDatasetLineItem,
+  VueUiStackbarConfig,
+  VueUiStackbarFormattedDatasetItem,
 } from 'vue-data-ui'
 import type { ChartTimeGranularity } from '~/types/chart'
+
+interface SubEvent {
+  key: string
+  positive: boolean
+  icon: string
+  text: string
+}
 
 export function sum(numbers: number[]): number {
   return numbers.reduce((a, b) => a + b, 0)
@@ -212,6 +221,7 @@ export function computeLineChartAnalysis(values: Array<number | null>): LineChar
     }
   }
 
+  // oxlint-disable-next-line eslint/no-underscore-dangle
   let _sum = 0
   for (const entry of indexedValues) {
     _sum += entry.value
@@ -340,8 +350,8 @@ export function computeLineChartAnalysis(values: Array<number | null>): LineChar
 
     /**
      * Coefficient of variation : relative volatility
-     * - expressed in %
-     * - calculation: standard devialtion / mean
+     * - expressed as a decimal from 0 to 1
+     * - calculation: standard deviation / mean
      * |---------------|----------------------------------------------------------|
      * | VALUE         | INTERPRETATION                                           |
      * |---------------|----------------------------------------------------------|
@@ -449,6 +459,78 @@ export type FacetBarChartConfig = VueUiHorizontalBarConfig & {
   description: string // translated
   copy: (text: string) => Promise<void>
   $t: TrendTranslateFunction
+}
+
+export type TimelineSizeDependencyBreakdown = {
+  name: string
+  size: number
+}
+
+export type TimelineSizeCacheValue = {
+  totalSize: number
+  dependencyCount: number
+  selfSize: number
+  dependencies: TimelineSizeDependencyBreakdown[]
+}
+
+export type ConvertedTimelineSizeCacheEntry = TimelineSizeCacheValue & {
+  name: string
+}
+
+export type EnrichedTimelineSizeCacheEntry = ConvertedTimelineSizeCacheEntry & {
+  version: string
+  time?: string
+  license?: string
+  type?: string
+  hasTypes?: boolean
+  hasTrustedPublisher?: boolean
+  hasProvenance?: boolean
+  tags: string[]
+  events: SubEvent[]
+  hasPositive: boolean
+  hasNegative: boolean
+}
+
+export type TimelineChartMetric = 'totalSize' | 'dependencyCount' | 'dependencySize'
+
+export type TimelineChartConfig = VueUiXyConfig & {
+  metric: TimelineChartMetric
+  packageName: string
+  copy: (text: string) => Promise<void>
+  $t: TrendTranslateFunction
+  numberFormatter: (value: number) => string
+}
+
+export type TimelineStackbarConfig = VueUiStackbarConfig & {
+  packageName: string
+  versions: string[]
+  copy: (text: string) => Promise<void>
+  $t: TrendTranslateFunction
+  numberFormatter: (value: number) => string
+  percentageFormatter?: (value: number) => string
+  maxSegments?: number
+}
+
+type TimelineStackbarSegmentAnalysis = {
+  name: string
+  firstValue: number
+  lastValue: number
+  delta: number
+  lastShare: number
+  maxValue: number
+  maxVersion: string
+}
+
+function getTimelineStackbarTotalAt(
+  dataset: VueUiStackbarFormattedDatasetItem[],
+  index: number,
+): number {
+  return sum(dataset.map(item => item.series[index] ?? 0))
+}
+
+function formatTimelineStackbarPercentage(config: TimelineStackbarConfig, ratio: number): string {
+  const percentage = Math.round(ratio * 100)
+  return config.percentageFormatter?.(percentage) ?? `${percentage}%`
 }
 
 // Used for TrendsChart.vue
@@ -638,66 +720,58 @@ export async function copyAltTextForCompareFacetBarChart({
   await config.copy(altText)
 }
 
-type CompareQuadrantChartConfig = VueUiQuadrantConfig & {
+type CompareScatterChartConfig = VueUiScatterConfig & {
   copy: (text: string) => Promise<void>
   $t: TrendTranslateFunction
+  x: {
+    label: string
+    formatter: (v: number) => string
+  }
+  y: {
+    label: string
+    formatter: (v: number) => string
+  }
 }
 
-// Used for FacetQuadrantChart.vue
-export function createAltTextForCompareQuadrantChart({
+// Used for FacetScatterChart.vue
+export function createAltTextForCompareScatterChart({
   dataset,
   config,
-}: AltCopyArgs<VueUiQuadrantDatapoint[], CompareQuadrantChartConfig>) {
+}: AltCopyArgs<VueUiScatterSeries[], CompareScatterChartConfig>) {
   if (!dataset) return ''
 
-  const packages = {
-    topRight: dataset.filter(d => d.quadrant === 'TOP_RIGHT'),
-    topLeft: dataset.filter(d => d.quadrant === 'TOP_LEFT'),
-    bottomRight: dataset.filter(d => d.quadrant === 'BOTTOM_RIGHT'),
-    bottomLeft: dataset.filter(d => d.quadrant === 'BOTTOM_LEFT'),
-  }
+  const { x, y } = config
+  const { label: labelX, formatter: formatterX } = x
+  const { label: labelY, formatter: formatterY } = y
 
-  const descriptions = {
-    topRight: '',
-    topLeft: '',
-    bottomRight: '',
-    bottomLeft: '',
-  }
+  const datapoints = dataset.map(d => {
+    const rawX = d.values?.[0]?.x ?? 0
+    const rawY = d.values?.[0]?.y ?? 0
+    const name = d.fullName ?? ''
 
-  if (packages.topRight.length) {
-    descriptions.topRight = config.$t('compare.quadrant_chart.copy_alt.side_analysis_top_right', {
-      packages: packages.topRight.map(p => p.fullname).join(', '),
-    })
-  }
+    return {
+      x: formatterX(rawX),
+      y: formatterY(rawY),
+      name,
+    }
+  })
 
-  if (packages.topLeft.length) {
-    descriptions.topLeft = config.$t('compare.quadrant_chart.copy_alt.side_analysis_top_left', {
-      packages: packages.topLeft.map(p => p.fullname).join(', '),
-    })
-  }
-
-  if (packages.bottomRight.length) {
-    descriptions.bottomRight = config.$t(
-      'compare.quadrant_chart.copy_alt.side_analysis_bottom_right',
-      {
-        packages: packages.bottomRight.map(p => p.fullname).join(', '),
-      },
+  const analysis = datapoints
+    .map(d =>
+      config.$t('compare.scatter_chart.copy_alt.analysis', {
+        package: d.name,
+        x_name: labelX,
+        y_name: labelY,
+        x_value: d.x,
+        y_value: d.y,
+      }),
     )
-  }
+    .join(', ')
 
-  if (packages.bottomLeft.length) {
-    descriptions.bottomLeft = config.$t(
-      'compare.quadrant_chart.copy_alt.side_analysis_bottom_left',
-      {
-        packages: packages.bottomLeft.map(p => p.fullname).join(', '),
-      },
-    )
-  }
-
-  const analysis = Object.values(descriptions).filter(Boolean).join('. ')
-
-  const altText = config.$t('compare.quadrant_chart.copy_alt.description', {
-    packages: dataset.map(p => p.fullname).join(', '),
+  const altText = config.$t('compare.scatter_chart.copy_alt.description', {
+    x_name: labelX,
+    y_name: labelY,
+    packages: datapoints.map(d => d.name).join(', '),
     analysis,
     watermark: config.$t('package.trends.copy_alt.watermark'),
   })
@@ -705,22 +779,195 @@ export function createAltTextForCompareQuadrantChart({
   return altText
 }
 
-export async function copyAltTextForCompareQuadrantChart({
+export async function copyAltTextForCompareScatterChart({
   dataset,
   config,
-}: AltCopyArgs<VueUiQuadrantDatapoint[], any>) {
-  const altText = createAltTextForCompareQuadrantChart({ dataset, config })
+}: AltCopyArgs<VueUiScatterSeries[], CompareScatterChartConfig>) {
+  const altText = createAltTextForCompareScatterChart({ dataset, config })
   await config.copy(altText)
 }
 
-// Used in chart context menu callbacks
-// @todo replace with downloadFileLink
-export function loadFile(link: string, filename: string) {
-  const a = document.createElement('a')
-  a.href = link
-  a.download = filename
-  a.click()
-  a.remove()
+// Used for TimelineChart.vue (total size and dependency count line charts)
+export function createAltTextForTimelineChart({
+  dataset,
+  config,
+}: AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>) {
+  if (!dataset) return ''
+  const metric =
+    config.metric === 'totalSize'
+      ? config.$t('package.stats.install_size')
+      : config.$t('compare.dependencies')
+  const withEvents = dataset.filter(d => d.events.length)
+  const first = dataset[0]
+  const last = dataset.at(-1)
+
+  if (!first || !last) return ''
+
+  const firstValue = config.metric === 'totalSize' ? first?.totalSize : first?.dependencyCount
+  const lastValue = config.metric === 'totalSize' ? last?.totalSize : last?.dependencyCount
+  const baseline = firstValue ?? 0
+  const current = lastValue ?? baseline
+  const overall_progress_percentage =
+    baseline > 0 ? Math.round(((current - baseline) / baseline) * 100) : 0
+
+  const version_events = withEvents
+    .map(item =>
+      config.$t('package.timeline.chart.copy_alt.version_events', {
+        version: item.version,
+        // eslint-disable-next-line @intlify/vue-i18n/no-dynamic-keys
+        events: item.events.map(e => config.$t(e.text).toLocaleLowerCase()).join(', '),
+      }),
+    )
+    .join('; ')
+
+  const key_changes = !withEvents.length
+    ? ''
+    : config.$t('package.timeline.chart.copy_alt.key_changes', {
+        version_events,
+      })
+
+  const altText = config.$t('package.timeline.chart.copy_alt.general_description', {
+    metric: metric.toLocaleLowerCase(),
+    package: config.packageName,
+    first: first?.version ?? '',
+    last: last?.version ?? '',
+    first_value: config.numberFormatter(firstValue ?? 0),
+    last_value: config.numberFormatter(lastValue ?? 0),
+    overall_progress_percentage,
+    key_changes,
+    watermark: config.$t('package.trends.copy_alt.watermark'),
+  })
+
+  return altText
+}
+
+export async function copyAltTextForTimelineChart({
+  dataset,
+  config,
+}: AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>) {
+  const altText = createAltTextForTimelineChart({ dataset, config })
+  await config.copy(altText)
+}
+
+// Used for TimelineChart.vue (dependency size stackbar chart)
+export function createAltTextForTimelineStackbar({
+  dataset,
+  config,
+}: AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>) {
+  if (!dataset?.length) return ''
+
+  const seriesLength = Math.max(config.versions.length, ...dataset.map(item => item.series.length))
+
+  if (seriesLength === 0) return ''
+
+  const firstIndex = 0
+  const lastIndex = seriesLength - 1
+  const firstVersion = config.versions[firstIndex] ?? String(firstIndex + 1)
+  const lastVersion = config.versions[lastIndex] ?? String(lastIndex + 1)
+
+  const firstTotal = getTimelineStackbarTotalAt(dataset, firstIndex)
+  const lastTotal = getTimelineStackbarTotalAt(dataset, lastIndex)
+  const baseline = firstTotal
+  const current = lastTotal
+  const overall_progress_percentage =
+    baseline > 0 ? Math.round(((current - baseline) / baseline) * 100) : 0
+
+  const segments: TimelineStackbarSegmentAnalysis[] = dataset
+    .map(item => {
+      const firstValue = item.series[firstIndex] ?? 0
+      const lastValue = item.series[lastIndex] ?? 0
+      const max = item.series.reduce(
+        (currentMax, value, index) => {
+          if (value > currentMax.value) {
+            return { value, index }
+          }
+
+          return currentMax
+        },
+        { value: 0, index: 0 },
+      )
+
+      return {
+        name: item.name,
+        firstValue,
+        lastValue,
+        delta: lastValue - firstValue,
+        lastShare: lastTotal > 0 ? lastValue / lastTotal : 0,
+        maxValue: max.value,
+        maxVersion: config.versions[max.index] ?? String(max.index + 1),
+      }
+    })
+    .filter(segment => segment.firstValue > 0 || segment.lastValue > 0 || segment.maxValue > 0)
+
+  const maxSegments = config.maxSegments ?? 5
+
+  const topSegments = segments
+    .filter(segment => segment.lastValue > 0)
+    .toSorted((a, b) => b.lastValue - a.lastValue)
+    .slice(0, maxSegments)
+
+  const largestIncrease = segments
+    .filter(segment => segment.delta > 0)
+    .toSorted((a, b) => b.delta - a.delta)[0]
+
+  const largestDecrease = segments
+    .filter(segment => segment.delta < 0)
+    .toSorted((a, b) => a.delta - b.delta)[0]
+
+  const top_segments = topSegments
+    .map(segment =>
+      config.$t('package.timeline.chart.copy_alt.stackbar_segment_share', {
+        segment: segment.name,
+        value: config.numberFormatter(segment.lastValue),
+        percentage: formatTimelineStackbarPercentage(config, segment.lastShare),
+      }),
+    )
+    .join(', ')
+
+  const key_changes = [
+    topSegments.length
+      ? config.$t('package.timeline.chart.copy_alt.stackbar_top_segments', {
+          version: lastVersion,
+          segments: top_segments,
+        })
+      : '',
+    largestIncrease
+      ? config.$t('package.timeline.chart.copy_alt.stackbar_largest_increase', {
+          segment: largestIncrease.name,
+          delta: config.numberFormatter(largestIncrease.delta),
+        })
+      : '',
+    largestDecrease
+      ? config.$t('package.timeline.chart.copy_alt.stackbar_largest_decrease', {
+          segment: largestDecrease.name,
+          delta: config.numberFormatter(Math.abs(largestDecrease.delta)),
+        })
+      : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
+
+  const altText = config.$t('package.timeline.chart.copy_alt.general_description', {
+    metric: config.$t('package.timeline.chart.dependency_size').toLocaleLowerCase(),
+    package: config.packageName,
+    first: firstVersion,
+    last: lastVersion,
+    first_value: config.numberFormatter(firstTotal),
+    last_value: config.numberFormatter(lastTotal),
+    overall_progress_percentage,
+    key_changes,
+    watermark: config.$t('package.trends.copy_alt.watermark_top'),
+  })
+
+  return altText
+}
+
+export async function copyAltTextForTimelineStackbar({
+  dataset,
+  config,
+}: AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>) {
+  const altText = createAltTextForTimelineStackbar({ dataset, config })
+  await config.copy(altText)
 }
 
 export function sanitise(value: string) {
@@ -809,3 +1056,100 @@ export const CHART_PATTERN_CONFIG = {
   minSize: 16,
   maxSize: 24,
 }
+
+/**
+ * Chart annotator slots
+ */
+
+type AnnotatorSlotName =
+  | 'annotator-action-close'
+  | 'annotator-action-color'
+  | 'annotator-action-draw'
+  | 'annotator-action-undo'
+  | 'annotator-action-redo'
+  | 'annotator-action-delete'
+  | 'optionAnnotator'
+
+export const CHART_ANNOTATOR_SLOTS = [
+  'annotator-action-close',
+  'annotator-action-color',
+  'annotator-action-draw',
+  'annotator-action-undo',
+  'annotator-action-redo',
+  'annotator-action-delete',
+  'optionAnnotator',
+] as const satisfies readonly AnnotatorSlotName[]
+
+const annotatorDrawIcons = {
+  arrow: 'i-lucide:move-up-right',
+  text: 'i-lucide:type',
+  line: 'i-lucide:pen-line',
+  draw: 'i-lucide:line-squiggle',
+} as const
+
+function getSlotProp<T extends string | boolean>(props: unknown, key: string): T | undefined {
+  if (!props || typeof props !== 'object' || !(key in props)) return undefined
+
+  return (props as Record<string, T>)[key]
+}
+
+export function getAnnotatorIcon(slotName: AnnotatorSlotName, props?: unknown) {
+  switch (slotName) {
+    case 'annotator-action-close':
+      return 'i-lucide:x'
+    case 'annotator-action-color':
+      return 'i-lucide:palette'
+    case 'annotator-action-draw': {
+      const mode = getSlotProp<keyof typeof annotatorDrawIcons>(props, 'mode')
+      return mode ? annotatorDrawIcons[mode] : null
+    }
+    case 'annotator-action-undo':
+      return 'i-lucide:undo-2'
+    case 'annotator-action-redo':
+      return 'i-lucide:redo-2'
+    case 'annotator-action-delete':
+      return 'i-lucide:trash'
+    case 'optionAnnotator':
+      return getSlotProp<boolean>(props, 'isAnnotator') ? 'i-lucide:pen-off' : 'i-lucide:pen'
+  }
+}
+
+export function getAnnotatorStyle(slotName: AnnotatorSlotName, props?: unknown) {
+  return {
+    color: slotName === 'annotator-action-color' ? getSlotProp<string>(props, 'color') : undefined,
+    pointerEvents:
+      slotName === 'annotator-action-color' || slotName === 'annotator-action-draw'
+        ? undefined
+        : ('none' as const),
+  }
+}
+
+// Timeline
+export interface StackbarTooltipPoint {
+  id: string
+  name: string
+  color: string
+  size: number
+  /** Signed size change vs the previous version's bar (0 when unchanged) */
+  delta: number
+  /** Present in the previous bar but gone in this one */
+  removed: boolean
+}
+
+export type TimelinePlotItem = {
+  x: number
+  y: number
+  value?: number
+}
+
+export type TimelineMarkerItem = TimelinePlotItem & {
+  key: string
+  offsetY?: number
+}
+
+export const E18E_GRADIENT_COLORS = [
+  'oklch(73.76% 0.130 47.72)',
+  'oklch(85.35% 0.132 88.65)',
+  'oklch(81.56% 0.145 116.12)',
+  'oklch(71.29% 0.132 136.26)',
+]

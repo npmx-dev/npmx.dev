@@ -39,6 +39,7 @@ const REQUIRED_PACKAGES = [
   'next', // create-command test
   '@nuxt/kit', // scoped package tests, version test (3.20.0)
   '@types/node', // scoped package tests
+  '@tanstack/react-query', // OG image test (scoped with long name)
   // Docs page tests
   'ufo', // docs test with version 1.6.3
   'is-odd', // docs test (3.0.1), install copy test, "no create" test, hyphen-in-name test
@@ -211,7 +212,9 @@ function slimPackument(pkg: Record<string, unknown>): Record<string, unknown> {
 
   // Return slimmed packument
   return {
+    // oxlint-disable-next-line eslint/no-underscore-dangle
     '_id': pkg._id,
+    // oxlint-disable-next-line eslint/no-underscore-dangle
     '_rev': pkg._rev,
     'name': pkg.name,
     'description': pkg.description,

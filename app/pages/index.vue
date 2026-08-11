@@ -17,20 +17,16 @@ useSeoMeta({
   twitterDescription: () => $t('seo.home.description'),
 })
 
-defineOgImageComponent('Default', {
-  primaryColor: '#60a5fa',
-  title: 'npmx',
-  description: 'a fast, modern browser for the **npm registry**',
-})
+defineOgImage('Splash.takumi', {}, { alt: () => $t('seo.home.description') })
 </script>
 
 <template>
   <main>
-    <section class="container min-h-screen flex flex-col">
+    <section class="relative container min-h-[calc(100dvh-3.5rem)] flex flex-col overflow-hidden">
       <header
         class="flex-1 flex flex-col items-center justify-center text-center pt-20 pb-4 md:pb-8 lg:pb-20"
       >
-        <LandingLogo class="w-42 h-auto sm:w-58 md:w-70" />
+        <LandingIntroHeader />
         <search
           class="w-full max-w-2xl motion-safe:animate-slide-up motion-safe:animate-fill-both"
           style="animation-delay: 0.2s"
@@ -77,7 +73,7 @@ defineOgImageComponent('Default', {
                 <ButtonBase
                   type="submit"
                   variant="primary"
-                  class="absolute inset-ie-2 border-transparent"
+                  class="absolute inset-ie-2 border-transparent max-sm:p-2"
                   classicon="i-lucide:search"
                 >
                   <span class="sr-only sm:not-sr-only">

@@ -228,6 +228,10 @@ export function useSearch(
       return
     }
 
+    if (asyncData.status.value === 'pending') {
+      await asyncData.refresh({ dedupe: 'defer' })
+    }
+
     if (cache.value && (cache.value.query !== q || cache.value.provider !== provider)) {
       cache.value = null
       await asyncData.refresh()
@@ -261,6 +265,8 @@ export function useSearch(
       const doSearch = provider === 'algolia' ? searchAlgolia : searchNpm
       const response = await doSearch(q, { size, from })
 
+      const beforeCount = cache.value?.objects.length ?? 0
+
       if (cache.value && cache.value.query === q && cache.value.provider === provider) {
         const existingNames = new Set(cache.value.objects.map(obj => obj.package.name))
         const newObjects = response.objects.filter(obj => !existingNames.has(obj.package.name))
@@ -277,6 +283,12 @@ export function useSearch(
           objects: response.objects,
           total: response.total,
         }
+      }
+
+      // Bail if the provider gave us no new unique items
+      // Without something like this the recursion below never terminates.
+      if ((cache.value?.objects.length ?? 0) === beforeCount) {
+        return
       }
 
       if (

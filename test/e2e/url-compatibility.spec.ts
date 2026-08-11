@@ -53,6 +53,23 @@ test.describe('npmjs.com URL Compatibility', () => {
     })
   })
 
+  test.describe('Root Package Short-URLs (Redirects)', () => {
+    test('/vue redirects to /package/vue', async ({ page, goto }) => {
+      await goto('/vue', { waitUntil: 'domcontentloaded' })
+
+      // Verifies the browser ended up on the canonical route
+      await expect(page).toHaveURL(/\/package\/vue$/)
+      await expect(page.locator('h1')).toContainText('vue')
+    })
+
+    test('/@nuxt/kit redirects to /package/@nuxt/kit', async ({ page, goto }) => {
+      await goto('/@nuxt/kit', { waitUntil: 'domcontentloaded' })
+
+      await expect(page).toHaveURL(/\/package\/@nuxt\/kit$/)
+      await expect(page.locator('h1')).toContainText('@nuxt/kit')
+    })
+  })
+
   test.describe('Search Pages', () => {
     test('/search?q=vue → search results', async ({ page, goto }) => {
       await goto('/search?q=vue', { waitUntil: 'domcontentloaded' })
@@ -117,6 +134,25 @@ test.describe('npmjs.com URL Compatibility', () => {
 
       // Should show 404 error page
       await expect(page.locator('h1')).toContainText('Organization not found')
+    })
+  })
+
+  test.describe('npmjs.com activeTab=versions Compatibility', () => {
+    test('/package/vue?activeTab=versions → /package/vue/versions', async ({ page, goto }) => {
+      await goto('/package/vue?activeTab=versions', { waitUntil: 'domcontentloaded' })
+
+      await expect(page).toHaveURL(/\/package\/vue\/versions$/)
+      await expect(page.locator('h1')).toContainText('Version History')
+    })
+
+    test('/package/@nuxt/kit?activeTab=versions → /package/@nuxt/kit/versions', async ({
+      page,
+      goto,
+    }) => {
+      await goto('/package/@nuxt/kit?activeTab=versions', { waitUntil: 'domcontentloaded' })
+
+      await expect(page).toHaveURL(/\/package\/@nuxt\/kit\/versions$/)
+      await expect(page.locator('h1')).toContainText('Version History')
     })
   })
 

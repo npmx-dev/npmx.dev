@@ -91,6 +91,18 @@ describe('Playground Link Extraction', () => {
       expect(result.playgroundLinks[0]!.provider).toBe('codepen')
     })
 
+    it('extracts Effect.ts playground links', async () => {
+      const markdown1 = `[Try it!](https://effect.website/play#3efe9f827b7d)`
+      const result1 = await renderReadmeHtml(markdown1, 'test-pkg')
+
+      expect(result1.playgroundLinks[0]!.provider).toBe('effect-ts-playground')
+
+      const markdown2 = `[Try it!](https://effect.website/play?code=Y29uc29sZS5sb2coKQ==)`
+      const result2 = await renderReadmeHtml(markdown2, 'test-pkg')
+
+      expect(result2.playgroundLinks[0]!.provider).toBe('effect-ts-playground')
+    })
+
     it('extracts Replit links', async () => {
       const markdown = `[Repl](https://replit.com/@user/project)`
       const result = await renderReadmeHtml(markdown, 'test-pkg')
@@ -589,6 +601,40 @@ describe('HTML output', () => {
     const result = await renderReadmeHtml(md, 'test-pkg')
     expect(result.html).toContain('id="user-content-api"')
     expect(result.html).toContain('id="user-content-api-1"')
+  })
+
+  describe('heading anchors (renderer.heading)', () => {
+    it('keeps the full-line anchor wrapper and places the link to the heading at the end', async () => {
+      const markdown = '## <a href="https://example.com">My Section</a>'
+      const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+      expect(result.toc).toEqual([{ text: 'My Section', depth: 2, id: 'user-content-my-section' }])
+      expect(result.html).toBe(
+        `<h3 id="user-content-my-section" data-level="2"><a href="https://example.com" rel="nofollow noreferrer noopener" target="_blank">My Section</a><a href="#user-content-my-section" aria-hidden="true" tabindex="-1"></a></h3>\n`,
+      )
+    })
+
+    it('uses a trailing empty permalink when heading content already includes a link (no nested anchors)', async () => {
+      const markdown = '### See <a href="https://example.com">docs</a> for more'
+      const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+      expect(result.toc).toEqual([
+        { text: 'See docs for more', depth: 3, id: 'user-content-see-docs-for-more' },
+      ])
+      expect(result.html).toBe(
+        `<h3 id="user-content-see-docs-for-more" data-level="3">See <a href="https://example.com" rel="nofollow noreferrer noopener" target="_blank">docs</a> for more<a href="#user-content-see-docs-for-more" aria-hidden="true" tabindex="-1"></a></h3>\n`,
+      )
+    })
+
+    it('applies the same permalink pattern to raw HTML headings that contain links', async () => {
+      const md = '<h2>Guide: <a href="https://example.com/page">page</a></h2>'
+      const result = await renderReadmeHtml(md, 'test-pkg')
+
+      expect(result.toc).toEqual([{ text: 'Guide: page', depth: 2, id: 'user-content-guide-page' }])
+      expect(result.html).toBe(
+        '<h3 id="user-content-guide-page" data-level="2">Guide: <a href="https://example.com/page" rel="nofollow noreferrer noopener" target="_blank">page</a><a aria-hidden="true" tabindex="-1" href="#user-content-guide-page"></a></h3>',
+      )
+    })
   })
 
   it('preserves supported attributes on raw HTML headings', async () => {

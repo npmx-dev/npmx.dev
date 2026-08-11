@@ -1,5 +1,17 @@
 <script setup lang="ts">
 import type { AtprotoProfile } from '#shared/types/atproto'
+import { authRedirect } from '~/utils/atproto/helpers'
+
+const route = useRoute()
+const { locale } = useI18n()
+
+async function handleCreateAccount() {
+  await authRedirect('https://npmx.social', {
+    create: true,
+    redirectTo: route.fullPath,
+    locale: locale.value,
+  })
+}
 
 useSeoMeta({
   title: () => `${$t('pds.title')} - npmx`,
@@ -10,11 +22,14 @@ useSeoMeta({
   twitterDescription: () => $t('pds.meta_description'),
 })
 
-defineOgImageComponent('Default', {
-  primaryColor: '#60a5fa',
-  title: 'npmx.social',
-  description: 'The official **PDS** for the npmx community.',
-})
+defineOgImage(
+  'Page.takumi',
+  {
+    title: 'npmx.social',
+    description: 'The official PDS for the npmx community.',
+  },
+  { alt: 'npmx.social — the official PDS for the npmx community' },
+)
 
 const brokenImages = ref(new Set<string>())
 
@@ -63,7 +78,15 @@ const totalAccounts = computed(() => pdsUsers.value.length)
           <p class="text-fg-muted leading-relaxed mb-4">
             {{ $t('pds.join.description') }}
           </p>
-          <div class="mt-6">
+          <div class="mt-6 flex flex-wrap items-center gap-3">
+            <ButtonBase
+              type="button"
+              variant="primary"
+              classicon="i-lucide:user-plus"
+              @click="handleCreateAccount"
+            >
+              {{ $t('auth.modal.create_account') }}
+            </ButtonBase>
             <LinkBase
               to="https://pdsmoover.com/moover/npmx.social"
               class="gap-2 px-4 py-2 text-sm font-medium rounded-md border border-border hover:border-border-hover bg-bg-muted hover:bg-bg"
@@ -139,7 +162,7 @@ const totalAccounts = computed(() => pdsUsers.value.length)
             {{ $t('pds.community.empty') }}
           </div>
           <div v-else>
-            <ul class="grid grid-cols-[repeat(auto-fill,48px)] justify-center gap-2 list-none p-0">
+            <ul class="grid grid-cols-[repeat(auto-fill,48px)] justify-center gap-1 list-none p-0">
               <li
                 v-for="user in usersWithAvatars"
                 :key="user.handle"
@@ -159,7 +182,7 @@ const totalAccounts = computed(() => pdsUsers.value.length)
                       @error="handleImageError(user.handle)"
                       width="48"
                       height="48"
-                      class="w-12 h-12 rounded-lg ring-2 ring-transparent group-hover:ring-accent transition-all duration-200 ease-out group-hover:scale-125 will-change-transform"
+                      class="w-12 h-12 rounded-md ring-1 ring-transparent group-hover:ring-accent transition-all duration-200 ease-out"
                       loading="lazy"
                     />
                   </a>

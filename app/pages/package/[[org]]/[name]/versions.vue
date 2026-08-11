@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { WindowVirtualizer } from 'virtua/vue'
 import { getVersions } from 'fast-npm-meta'
-import { compare, validRange } from 'semver'
+import { compare, normalizeRange } from 'verkit'
 import {
   buildVersionToTagsMap,
   buildTaggedVersionRows,
@@ -17,6 +17,18 @@ definePageMeta({
   name: 'package-versions',
 })
 
+interface NpmWebsiteVersionDownload {
+  version: string
+  downloads: number
+}
+
+interface NpmWebsiteVersionsResponse {
+  packages: Array<{
+    packageName: string
+    versions: NpmWebsiteVersionDownload[]
+  }>
+}
+
 /** Number of flat items (headers + version rows) to render statically during SSR */
 const SSR_COUNT = 20
 
@@ -25,6 +37,9 @@ const route = useRoute('package-versions')
 const packageName = computed(() => {
   const { org, name } = route.params
   return org ? `${org}/${name}` : name
+})
+const packageNameQueryParam = computed(() => {
+  return packageName.value ? { packages: packageName.value } : {}
 })
 const orgName = computed(() => route.params.org?.replace('@', '') ?? null)
 
@@ -49,13 +64,69 @@ const distTags = computed(() => versionSummary.value?.distTags ?? {})
 const versionStrings = computed(() => versionSummary.value?.versions ?? [])
 const versionTimes = computed(() => versionSummary.value?.time ?? {})
 
+const { data: npmWebsiteVersions } = useLazyFetch<NpmWebsiteVersionsResponse>(
+  () => '/api/registry/downloads/versions',
+  {
+    key: () => `downloads-versions:${packageName.value}`,
+    query: packageNameQueryParam,
+    deep: false,
+    default: () => ({ packages: [] }),
+    getCachedData(key, nuxtApp) {
+      return nuxtApp.static.data[key] ?? nuxtApp.payload.data[key]
+    },
+  },
+)
+
+const packageVersions = computed(() => {
+  return (
+    npmWebsiteVersions.value?.packages.find(pkg => pkg.packageName === packageName.value)
+      ?.versions ?? []
+  )
+})
+
+const numberFormatter = useNumberFormatter()
+const { t } = useI18n()
+const versionDownloadsMap = computed(
+  () => new Map(packageVersions.value.map(({ version, downloads }) => [version, downloads])),
+)
+
+function getVersionDownloads(version: string): number | undefined {
+  return versionDownloadsMap.value.get(version)
+}
+
+function getGroupDownloads(versions: string[]): number | undefined {
+  let total = 0
+  let hasValue = false
+
+  for (const version of versions) {
+    const downloads = getVersionDownloads(version)
+    if (downloads === undefined) continue
+    total += downloads
+    hasValue = true
+  }
+
+  return hasValue ? total : undefined
+}
+
+const groupDownloadsMap = computed(() => {
+  const map = new Map<string, number>()
+  for (const group of versionGroups.value) {
+    const downloads = getGroupDownloads(group.versions)
+    if (downloads !== undefined) {
+      map.set(group.groupKey, downloads)
+    }
+  }
+  return map
+})
+
+function getDownloadsAriaLabel(downloads: number, version: string): string {
+  return `${numberFormatter.value.format(downloads)} ${t('package.downloads.version_distribution_title', { version })}`
+}
+
 // ─── Phase 2: full metadata (fired automatically after phase 1 completes) ────
 // Fetches deprecated status, provenance, and exact times needed for version rows.
 
-const fullVersionMap = shallowRef<Map<
-  string,
-  { time?: string; deprecated?: string; hasProvenance: boolean }
-> | null>(null)
+const fullVersionMap = shallowRef<Map<string, PackageVersionInfo> | null>(null)
 
 async function ensureFullDataLoaded() {
   if (fullVersionMap.value) return
@@ -134,14 +205,14 @@ const versionFilterInput = ref('')
 const versionFilter = refDebounced(versionFilterInput, 100)
 const isFilterActive = computed(() => versionFilter.value.trim() !== '')
 const isInvalidRange = computed(
-  () => isFilterActive.value && validRange(versionFilter.value.trim()) === null,
+  () => isFilterActive.value && normalizeRange(versionFilter.value.trim()) === null,
 )
 
 const filteredVersionSet = computed(() => {
   const trimmed = versionFilter.value.trim()
   if (!trimmed) return null
   // Try semver range first (e.g. "^2.0.0", ">=1 <3")
-  if (validRange(trimmed)) {
+  if (normalizeRange(trimmed)) {
     return filterVersions(versionStrings.value, trimmed)
   }
   // Fallback: substring match (e.g. "2.4", "beta")
@@ -198,7 +269,7 @@ const flatItems = computed<FlatItem[]>(() => {
   <main class="flex-1 flex flex-col">
     <!-- Header -->
     <header class="border-b border-border bg-bg sticky top-14 z-20">
-      <div class="container py-3 flex items-center justify-between gap-4">
+      <div class="container py-3 flex items-center justify-between gap-2 sm:gap-4">
         <div class="flex items-center gap-2 min-w-0">
           <NuxtLink
             :to="packageRoute(packageName)"
@@ -212,40 +283,6 @@ const flatItems = computed<FlatItem[]>(() => {
           <span class="text-fg-subtle shrink-0">/</span>
           <h1 class="text-sm text-fg-muted shrink-0">{{ $t('package.versions.page_title') }}</h1>
         </div>
-        <div class="relative">
-          <InputBase
-            v-model="versionFilterInput"
-            type="text"
-            :placeholder="$t('package.versions.filter_placeholder')"
-            :aria-label="$t('package.versions.filter_placeholder')"
-            :aria-invalid="isInvalidRange ? 'true' : undefined"
-            :aria-describedby="isInvalidRange ? 'version-filter-error' : undefined"
-            autocomplete="off"
-            size="sm"
-            class="w-36 sm:w-64"
-            :class="isInvalidRange ? 'pe-7 !border-red-500' : ''"
-          />
-          <Transition
-            enter-active-class="transition-all duration-150"
-            enter-from-class="opacity-0 scale-60"
-            leave-active-class="transition-all duration-150"
-            leave-to-class="opacity-0 scale-60"
-          >
-            <TooltipApp
-              v-if="isInvalidRange"
-              :text="$t('package.versions.filter_invalid')"
-              position="bottom"
-              class="absolute end-0 inset-y-0 flex items-center pe-2"
-            >
-              <span
-                id="version-filter-error"
-                class="i-lucide:circle-alert w-3.5 h-3.5 text-red-500 block"
-                role="img"
-                :aria-label="$t('package.versions.filter_invalid')"
-              />
-            </TooltipApp>
-          </Transition>
-        </div>
       </div>
     </header>
 
@@ -253,54 +290,81 @@ const flatItems = computed<FlatItem[]>(() => {
     <div class="container w-full py-8 space-y-8">
       <!-- ── Current Tags ───────────────────────────────────────────────────── -->
       <section class="space-y-3">
-        <h2 class="text-xs text-fg-subtle uppercase tracking-wider px-4 sm:px-6 ps-1">
+        <h2 class="text-sm text-fg-subtle uppercase">
           {{ $t('package.versions.current_tags') }}
         </h2>
 
         <!-- Latest — featured card -->
         <div
           v-if="latestTagRow"
-          class="border-y sm:rounded-lg sm:border border-accent/40 bg-accent/5 px-5 py-4 relative flex items-center justify-between gap-4 hover:bg-accent/8 transition-colors"
+          class="border-y sm:rounded-lg sm:border border-accent/40 bg-accent/5 px-4 py-4 relative flex max-sm:flex-col sm:items-center justify-between gap-2 sm:gap-4 hover:bg-accent/8 transition-colors"
         >
-          <!-- Left: tags + version -->
+          <!-- Left: tags + version + deprecated -->
           <div>
             <div class="flex items-center gap-2 mb-1.5 flex-wrap">
-              <span class="text-3xs font-bold uppercase tracking-widest text-accent">latest</span>
+              <span class="text-xs font-bold uppercase tracking-wider text-accent">latest</span>
               <span
                 v-for="tag in latestTagRow!.tags.filter(t => t !== 'latest')"
                 :key="tag"
-                class="text-3xs font-semibold uppercase tracking-wide text-fg-subtle"
+                class="text-xs font-semibold uppercase tracking-wider text-fg-subtle"
                 :title="tag"
                 >{{ tag }}</span
               >
+              <span
+                v-if="fullVersionMap?.get(latestTagRow!.version)?.deprecated"
+                class="text-xs font-medium text-red-700 dark:text-red-400 relative z-10"
+                :title="fullVersionMap!.get(latestTagRow!.version)!.deprecated"
+              >
+                <span class="sm:hidden i-lucide:octagon-alert" aria-hidden="true"></span>
+                <span class="max-sm:sr-only bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded"
+                  >deprecated</span
+                >
+              </span>
             </div>
-            <LinkBase
-              :to="packageRoute(packageName, latestTagRow!.version)"
-              class="text-2xl font-semibold tracking-tight after:absolute after:inset-0 after:content-['']"
-              :title="latestTagRow!.version"
-              dir="ltr"
-              >{{ latestTagRow!.version }}</LinkBase
-            >
+            <div class="flex items-center gap-2">
+              <LinkBase
+                :to="packageRoute(packageName, latestTagRow!.version)"
+                class="text-2xl font-semibold tracking-tight after:absolute after:inset-0 after:content-['']"
+                :title="latestTagRow!.version"
+                dir="ltr"
+                >v{{ latestTagRow!.version }}</LinkBase
+              >
+              <ProvenanceBadge
+                v-if="fullVersionMap?.get(latestTagRow!.version)?.trustStatus?.provenance"
+                :package-name="packageName"
+                :version="latestTagRow!.version"
+                compact
+                :linked="false"
+                class="relative z-10"
+              />
+            </div>
           </div>
-          <!-- Right: deprecated + date + provenance -->
-          <div class="flex flex-col items-end gap-1.5 shrink-0 relative z-10">
+          <!-- Right: downloads + date -->
+          <div class="flex sm:items-center gap-2 sm:gap-4 shrink-0 relative z-10">
             <span
-              v-if="fullVersionMap?.get(latestTagRow!.version)?.deprecated"
-              class="text-3xs font-medium text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded"
-              :title="fullVersionMap!.get(latestTagRow!.version)!.deprecated"
-              >deprecated</span
+              v-if="getVersionDownloads(latestTagRow!.version)"
+              class="max-w-32 md:w-32 grid grid-flow-col auto-cols-max items-center gap-1 text-xs text-fg-muted tabular-nums sm:justify-end"
+              :aria-label="
+                getDownloadsAriaLabel(
+                  getVersionDownloads(latestTagRow!.version)!,
+                  latestTagRow!.version,
+                )
+              "
+              dir="ltr"
+              :title="
+                getDownloadsAriaLabel(
+                  getVersionDownloads(latestTagRow!.version)!,
+                  latestTagRow!.version,
+                )
+              "
             >
-            <ProvenanceBadge
-              v-if="fullVersionMap?.get(latestTagRow!.version)?.hasProvenance"
-              :package-name="packageName"
-              :version="latestTagRow!.version"
-              compact
-              :linked="false"
-            />
+              <span>{{ numberFormatter.format(getVersionDownloads(latestTagRow!.version)!) }}</span>
+              <span class="i-lucide:chart-line" aria-hidden="true"></span>
+            </span>
             <DateTime
               v-if="getVersionTime(latestTagRow!.version)"
               :datetime="getVersionTime(latestTagRow!.version)!"
-              class="text-xs text-fg-subtle"
+              class="text-xs text-fg-subtle whitespace-nowrap w-24 sm:text-end"
               year="numeric"
               month="short"
               day="numeric"
@@ -316,51 +380,71 @@ const flatItems = computed<FlatItem[]>(() => {
           <div
             v-for="row in otherTagRows"
             :key="row.id"
-            class="flex items-center gap-4 px-4 py-2.5 border-b border-border last:border-0 hover:bg-bg-subtle transition-colors relative"
+            class="flex items-center gap-2 sm:gap-4 px-4 py-2.5 border-b border-border last:border-0 hover:bg-bg-subtle transition-colors relative"
           >
             <!-- Tag labels -->
-            <div class="w-28 shrink-0 flex flex-wrap gap-x-1.5 gap-y-0.5">
+            <div class="max-w-[max(32px,32vw)] md:w-32 shrink-0 flex flex-wrap gap-x-1.5 gap-y-0.5">
               <span
                 v-for="tag in row.tags"
                 :key="tag"
-                class="text-3xs font-semibold uppercase tracking-wide text-fg-subtle"
+                class="text-xs font-semibold uppercase tracking-wider text-fg-subtle"
                 :title="tag"
                 >{{ tag }}</span
               >
             </div>
 
-            <!-- Version -->
-            <LinkBase
-              :to="packageRoute(packageName, row.version)"
-              class="text-sm flex-1 min-w-0 after:absolute after:inset-0 after:content-['']"
-              :title="row.version"
-              dir="ltr"
-            >
-              {{ row.version }}
-            </LinkBase>
-
-            <!-- Deprecated + Date + Provenance -->
-            <div class="flex items-center gap-2 shrink-0 relative z-10">
-              <span
-                v-if="fullVersionMap?.get(row.version)?.deprecated"
-                class="text-3xs font-medium text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded"
-                :title="fullVersionMap!.get(row.version)!.deprecated"
-                >deprecated</span
+            <!-- Version + Provenance + Deprecated -->
+            <div class="flex-1 flex items-center gap-2">
+              <LinkBase
+                :to="packageRoute(packageName, row.version)"
+                class="block! min-w-16 max-sm:max-w-40 text-sm after:absolute after:inset-0 after:content-[''] truncate"
+                :title="row.version"
+                dir="ltr"
               >
-              <DateTime
-                v-if="getVersionTime(row.version)"
-                :datetime="getVersionTime(row.version)!"
-                class="text-xs text-fg-subtle hidden sm:block"
-                year="numeric"
-                month="short"
-                day="numeric"
-              />
+                v{{ row.version }}
+              </LinkBase>
               <ProvenanceBadge
-                v-if="fullVersionMap?.get(row.version)?.hasProvenance"
+                v-if="fullVersionMap?.get(row.version)?.trustStatus?.provenance"
                 :package-name="packageName"
                 :version="row.version"
                 compact
                 :linked="false"
+                class="relative z-10"
+              />
+              <span
+                v-if="fullVersionMap?.get(row.version)?.deprecated"
+                class="text-xs font-medium text-red-700 dark:text-red-400 relative z-10"
+                :title="fullVersionMap!.get(row.version)!.deprecated"
+              >
+                <span class="sm:hidden i-lucide:octagon-alert" aria-hidden="true"></span>
+                <span class="max-sm:sr-only bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded"
+                  >deprecated</span
+                >
+              </span>
+            </div>
+
+            <!-- Downloads -->
+            <span
+              v-if="getVersionDownloads(row.version)"
+              class="max-w-32 md:w-32 grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums shrink-0 relative z-10"
+              :aria-label="getDownloadsAriaLabel(getVersionDownloads(row.version)!, row.version)"
+              dir="ltr"
+              :title="getDownloadsAriaLabel(getVersionDownloads(row.version)!, row.version)"
+            >
+              <span>{{ numberFormatter.format(getVersionDownloads(row.version)!) }}</span>
+              <span class="i-lucide:chart-line" aria-hidden="true"></span>
+            </span>
+            <span v-else class="max-w-32 md:w-32 shrink-0" />
+
+            <!-- Date -->
+            <div class="flex items-center gap-2 shrink-0 relative z-10">
+              <DateTime
+                v-if="getVersionTime(row.version)"
+                :datetime="getVersionTime(row.version)!"
+                class="text-xs text-fg-subtle hidden sm:block w-24 text-end"
+                year="numeric"
+                month="short"
+                day="numeric"
               />
             </div>
           </div>
@@ -369,12 +453,47 @@ const flatItems = computed<FlatItem[]>(() => {
 
       <!-- ── Version History ───────────────────────────────────────────────── -->
       <section v-if="versionGroups.length > 0">
-        <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-3 px-4 sm:px-6 ps-1">
-          {{ $t('package.versions.page_title') }}
-          <span class="ms-1 normal-case font-normal tracking-normal">
-            ({{ versionStrings.length }})
-          </span>
-        </h2>
+        <div class="flex max-sm:flex-col sm:items-center justify-between gap-2 mb-3">
+          <h2 class="text-sm text-fg-subtle uppercase">
+            {{ $t('package.versions.page_title') }}
+            <span class="ms-1 normal-case font-normal"> ({{ versionStrings.length }}) </span>
+          </h2>
+
+          <div class="relative">
+            <InputBase
+              v-model="versionFilterInput"
+              type="text"
+              :placeholder="$t('package.versions.filter_placeholder')"
+              :aria-label="$t('package.versions.filter_placeholder')"
+              :aria-invalid="isInvalidRange ? 'true' : undefined"
+              :aria-describedby="isInvalidRange ? 'version-filter-error' : undefined"
+              autocomplete="off"
+              size="sm"
+              class="w-36 sm:w-64 max-sm:w-full"
+              :class="isInvalidRange ? 'pe-7 !border-red-500' : ''"
+            />
+            <Transition
+              enter-active-class="transition-all duration-150"
+              enter-from-class="opacity-0 scale-60"
+              leave-active-class="transition-all duration-150"
+              leave-to-class="opacity-0 scale-60"
+            >
+              <TooltipApp
+                v-if="isInvalidRange"
+                :text="$t('package.versions.filter_invalid')"
+                position="bottom"
+                class="absolute end-0 inset-y-0 flex items-center pe-2"
+              >
+                <span
+                  id="version-filter-error"
+                  class="i-lucide:circle-alert w-3.5 h-3.5 text-red-500 block"
+                  role="img"
+                  :aria-label="$t('package.versions.filter_invalid')"
+                />
+              </TooltipApp>
+            </Transition>
+          </div>
+        </div>
 
         <!-- No filter matches -->
         <div
@@ -423,18 +542,40 @@ const flatItems = computed<FlatItem[]>(() => {
                     <span class="text-sm font-medium">{{ item.label }}</span>
                     <span
                       v-if="deprecatedGroupKeys.has(item.groupKey)"
-                      class="text-3xs font-medium text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded"
-                      >deprecated</span
+                      class="text-xs font-medium text-red-700 dark:text-red-400 relative z-10"
                     >
+                      <span class="sm:hidden i-lucide:octagon-alert" aria-hidden="true"></span>
+                      <span
+                        class="max-sm:sr-only bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded"
+                        >deprecated</span
+                      >
+                    </span>
                     <span class="text-xs text-fg-subtle">({{ item.versions.length }})</span>
-                    <span class="ms-auto flex items-center gap-3 shrink-0">
-                      <span class="text-xs text-fg-muted" :title="item.versions[0]" dir="ltr">{{
-                        item.versions[0]
+                    <span class="text-xs text-fg-muted truncate" :title="item.versions[0]" dir="ltr"
+                      >v{{ item.versions[0] }}</span
+                    >
+                    <span
+                      v-if="groupDownloadsMap.has(item.groupKey)"
+                      class="ms-auto max-w-32 md:w-32 grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums shrink-0"
+                      :aria-label="
+                        getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!, item.label)
+                      "
+                      dir="ltr"
+                      :title="
+                        getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!, item.label)
+                      "
+                    >
+                      <span>{{
+                        numberFormatter.format(groupDownloadsMap.get(item.groupKey)!)
                       }}</span>
+                      <span class="i-lucide:chart-line" aria-hidden="true"></span>
+                    </span>
+                    <span v-else class="ms-auto max-w-32 md:w-32 shrink-0" />
+                    <span class="flex items-center gap-3 shrink-0">
                       <DateTime
-                        v-if="getVersionTime(item.versions[0])"
-                        :datetime="getVersionTime(item.versions[0])!"
-                        class="text-xs text-fg-subtle hidden sm:block"
+                        v-if="getVersionTime(item.versions[0]!)"
+                        :datetime="getVersionTime(item.versions[0]!)!"
+                        class="text-xs text-fg-subtle hidden sm:block whitespace-nowrap w-24 text-end"
                         year="numeric"
                         month="short"
                         day="numeric"
@@ -474,8 +615,16 @@ const flatItems = computed<FlatItem[]>(() => {
                           "
                           dir="ltr"
                         >
-                          {{ item.version }}
+                          v{{ item.version }}
                         </LinkBase>
+                        <ProvenanceBadge
+                          v-if="fullVersionMap?.get(item.version)?.trustStatus?.provenance"
+                          :package-name="packageName"
+                          :version="item.version"
+                          compact
+                          :linked="false"
+                          class="relative z-10"
+                        />
                         <div
                           v-if="versionToTagsMap.get(item.version)?.length"
                           class="flex items-center gap-1 flex-wrap relative z-10"
@@ -483,7 +632,7 @@ const flatItems = computed<FlatItem[]>(() => {
                           <span
                             v-for="tag in versionToTagsMap.get(item.version)"
                             :key="tag"
-                            class="text-4xs font-semibold uppercase tracking-wide"
+                            class="text-2xs font-semibold uppercase tracking-wide"
                             :class="tag === 'latest' ? 'text-accent' : 'text-fg-subtle'"
                             :title="tag"
                           >
@@ -492,30 +641,45 @@ const flatItems = computed<FlatItem[]>(() => {
                         </div>
                         <span
                           v-if="fullVersionMap?.get(item.version)?.deprecated"
-                          class="text-3xs font-medium text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded relative z-10"
+                          class="text-xs font-medium text-red-700 dark:text-red-400 relative z-10"
                           :title="fullVersionMap.get(item.version)!.deprecated"
                         >
-                          deprecated
+                          <span class="sm:hidden i-lucide:octagon-alert" aria-hidden="true"></span>
+                          <span
+                            class="max-sm:sr-only bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded"
+                            >deprecated</span
+                          >
                         </span>
                       </div>
 
-                      <!-- Right side -->
+                      <!-- Downloads -->
+                      <span
+                        v-if="getVersionDownloads(item.version)"
+                        class="max-w-32 md:w-32 grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums shrink-0 relative z-10"
+                        :aria-label="
+                          getDownloadsAriaLabel(getVersionDownloads(item.version)!, item.version)
+                        "
+                        :title="
+                          getDownloadsAriaLabel(getVersionDownloads(item.version)!, item.version)
+                        "
+                        dir="ltr"
+                      >
+                        <span>{{
+                          numberFormatter.format(getVersionDownloads(item.version)!)
+                        }}</span>
+                        <span class="i-lucide:chart-line" aria-hidden="true"></span>
+                      </span>
+                      <span v-else class="max-w-32 md:w-32 shrink-0" />
+
+                      <!-- Date -->
                       <div class="flex items-center gap-2 shrink-0 relative z-10">
-                        <!-- Metadata: date + provenance -->
                         <DateTime
                           v-if="getVersionTime(item.version)"
                           :datetime="getVersionTime(item.version)!"
-                          class="text-xs text-fg-subtle hidden sm:block"
+                          class="text-xs text-fg-subtle hidden sm:block whitespace-nowrap w-24 text-end"
                           year="numeric"
                           month="short"
                           day="numeric"
-                        />
-                        <ProvenanceBadge
-                          v-if="fullVersionMap?.get(item.version)?.hasProvenance"
-                          :package-name="packageName"
-                          :version="item.version"
-                          compact
-                          :linked="false"
                         />
                       </div>
                     </div>
@@ -539,12 +703,29 @@ const flatItems = computed<FlatItem[]>(() => {
                   </span>
                   <span class="text-sm font-medium">{{ item.label }}</span>
                   <span class="text-xs text-fg-subtle">({{ item.versions.length }})</span>
-                  <span class="ms-auto flex items-center gap-3 shrink-0">
-                    <span class="text-xs text-fg-muted" dir="ltr">{{ item.versions[0] }}</span>
+                  <span v-if="item.versions[0]" class="text-xs text-fg-muted" dir="ltr"
+                    >v{{ item.versions[0] }}</span
+                  >
+                  <span
+                    v-if="groupDownloadsMap.has(item.groupKey)"
+                    class="ms-auto max-w-32 md:w-32 grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums shrink-0"
+                    :aria-label="
+                      getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!, item.label)
+                    "
+                    dir="ltr"
+                    :title="
+                      getDownloadsAriaLabel(groupDownloadsMap.get(item.groupKey)!, item.label)
+                    "
+                  >
+                    <span>{{ numberFormatter.format(groupDownloadsMap.get(item.groupKey)!) }}</span>
+                    <span class="i-lucide:chart-line" aria-hidden="true"></span>
+                  </span>
+                  <span v-else class="ms-auto max-w-32 md:w-32 shrink-0" />
+                  <span class="flex items-center gap-3 shrink-0">
                     <DateTime
                       v-if="getVersionTime(item.versions[0] ?? '')"
                       :datetime="getVersionTime(item.versions[0] ?? '')!"
-                      class="text-xs text-fg-subtle hidden sm:block"
+                      class="text-xs text-fg-subtle hidden sm:block whitespace-nowrap w-24 text-end"
                       year="numeric"
                       month="short"
                       day="numeric"

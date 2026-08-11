@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const { useNuxt } = vi.hoisted(() => ({
@@ -77,13 +78,16 @@ describe('security headers module', () => {
     const csp = getCsp(nuxt)
 
     expect(csp).toContain('ws://localhost:*')
-    expect(csp).toContain("frame-src https://bsky.app https://pdsmoover.com 'self'")
+    expect(csp).toContain(
+      "frame-src https://bsky.app https://pdsmoover.com https://www.youtube-nocookie.com/ 'self'",
+    )
     expect(nuxt.options.routeRules['/**']?.headers).toEqual(
       expect.objectContaining({
         'Permissions-Policy': 'camera=()',
         'Referrer-Policy': 'strict-origin-when-cross-origin',
         'X-Content-Type-Options': 'nosniff',
         'X-Frame-Options': 'DENY',
+        'Content-Security-Policy': "frame-ancestors 'none'",
       }),
     )
     expect(nuxt.options.routeRules['/__nuxt_devtools__/**']).toEqual({
@@ -93,6 +97,7 @@ describe('security headers module', () => {
         'Referrer-Policy': 'strict-origin-when-cross-origin',
         'X-Content-Type-Options': 'nosniff',
         'X-Frame-Options': 'SAMEORIGIN',
+        'Content-Security-Policy': "frame-ancestors 'self'",
       },
       redirect: '/devtools',
     })
@@ -110,7 +115,9 @@ describe('security headers module', () => {
     const csp = getCsp(nuxt)
 
     expect(csp).not.toContain('ws://localhost:*')
-    expect(csp).not.toContain("frame-src https://bsky.app https://pdsmoover.com 'self'")
+    expect(csp).not.toContain(
+      "frame-src https://bsky.app https://pdsmoover.com https://www.youtube-nocookie.com/ 'self'",
+    )
     expect(nuxt.options.routeRules['/__nuxt_devtools__/**']).toBeUndefined()
   })
 })

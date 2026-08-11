@@ -22,38 +22,43 @@ onClickOutside(optionsDropdownRef, () => {
   showOptions.value = false
 })
 
-// Maximum file size we'll try to load (250KB) - must match server
-const MAX_FILE_SIZE = 250 * 1024
-const isFilesTooLarge = computed(() => {
+// Files above this size use the server's cheaper large-diff mode.
+const LARGE_DIFF_MODE_SIZE = 250 * 1024
+const isLargeFile = computed(() => {
   const newSize = props.file?.newSize
   const oldSize = props.file?.oldSize
   return (
-    (newSize !== undefined && newSize > MAX_FILE_SIZE) ||
-    (oldSize !== undefined && oldSize > MAX_FILE_SIZE)
+    (newSize !== undefined && newSize > LARGE_DIFF_MODE_SIZE) ||
+    (oldSize !== undefined && oldSize > LARGE_DIFF_MODE_SIZE)
   )
 })
 
-const apiUrl = computed(() =>
-  isFilesTooLarge.value
-    ? null
-    : `/api/registry/compare-file/${props.packageName}/v/${props.fromVersion}...${props.toVersion}/${props.file.path}`,
+const apiUrl = computed(
+  () =>
+    `/api/registry/compare-file/${props.packageName}/v/${props.fromVersion}...${props.toVersion}/${props.file.path}`,
 )
 
-const apiQuery = computed(() => ({
-  mergeModifiedLines: String(mergeModifiedLines.value),
-  maxChangeRatio: String(maxChangeRatio.value),
-  maxDiffDistance: String(maxDiffDistance.value),
-  inlineMaxCharEdits: String(inlineMaxCharEdits.value),
-}))
+const apiQuery = computed(() => {
+  if (isLargeFile.value) return {}
+
+  return {
+    mergeModifiedLines: String(mergeModifiedLines.value),
+    maxChangeRatio: String(maxChangeRatio.value),
+    maxDiffDistance: String(maxDiffDistance.value),
+    inlineMaxCharEdits: String(inlineMaxCharEdits.value),
+  }
+})
 
 const {
   data: diff,
   status,
   error: loadError,
-} = useFetch<FileDiffResponse>(() => apiUrl.value!, {
+} = useFetch<FileDiffResponse>(() => apiUrl.value, {
   query: apiQuery,
   timeout: 15000,
 })
+
+const largeDiffMode = computed(() => diff.value?.meta.large ?? isLargeFile.value)
 
 function calcPercent(value: number, min: number, max: number): number {
   if (max === min) return 0
@@ -91,29 +96,34 @@ function getCodeUrl(version: string): string {
 const { announce } = useCommandPalette()
 
 useCommandPaletteContextCommands(
-  computed((): CommandPaletteContextCommandInput[] => [
-    {
-      id: 'diff-toggle-merge-modified-lines',
-      group: 'actions',
-      label: $t('command_palette.diff.merge_modified_lines'),
-      keywords: [props.packageName, props.file.path],
-      iconClass: 'i-lucide:git-compare',
-      badge: mergeModifiedLines.value
-        ? $t('command_palette.state.on')
-        : $t('command_palette.state.off'),
-      action: () => {
-        mergeModifiedLines.value = !mergeModifiedLines.value
-        announce(
-          $t('command_palette.announcements.setting_toggled', {
-            setting: $t('command_palette.diff.merge_modified_lines'),
-            state: $t(
-              mergeModifiedLines.value ? 'command_palette.state.on' : 'command_palette.state.off',
-            ),
-          }),
-        )
-      },
-    },
-    {
+  computed((): CommandPaletteContextCommandInput[] => {
+    const commands: CommandPaletteContextCommandInput[] = []
+
+    if (!largeDiffMode.value) {
+      commands.push({
+        id: 'diff-toggle-merge-modified-lines',
+        group: 'actions',
+        label: $t('command_palette.diff.merge_modified_lines'),
+        keywords: [props.packageName, props.file.path],
+        iconClass: 'i-lucide:git-compare',
+        badge: mergeModifiedLines.value
+          ? $t('command_palette.state.on')
+          : $t('command_palette.state.off'),
+        action: () => {
+          mergeModifiedLines.value = !mergeModifiedLines.value
+          announce(
+            $t('command_palette.announcements.setting_toggled', {
+              setting: $t('command_palette.diff.merge_modified_lines'),
+              state: $t(
+                mergeModifiedLines.value ? 'command_palette.state.on' : 'command_palette.state.off',
+              ),
+            }),
+          )
+        },
+      })
+    }
+
+    commands.push({
       id: 'diff-toggle-word-wrap',
       group: 'actions',
       label: $t('command_palette.diff.word_wrap'),
@@ -129,8 +139,10 @@ useCommandPaletteContextCommands(
           }),
         )
       },
-    },
-  ]),
+    })
+
+    return commands
+  }),
 )
 </script>
 
@@ -219,119 +231,127 @@ useCommandPaletteContextCommands(
               }"
             >
               <div class="flex flex-col gap-2">
-                <!-- Merge modified lines toggle -->
-                <SettingsToggle
-                  :label="$t('compare.merge_modified_lines')"
-                  v-model="mergeModifiedLines"
-                />
-
                 <!-- Word wrap toggle -->
                 <SettingsToggle :label="$t('compare.word_wrap')" v-model="wordWrap" />
 
-                <!-- Sliders -->
-                <div
-                  class="flex flex-col gap-2 transition-opacity duration-150"
-                  :class="mergeModifiedLines ? 'opacity-100' : 'opacity-0'"
-                >
-                  <!-- Change ratio slider -->
-                  <div class="sr-only">
-                    <label for="change-ratio">{{ $t('compare.change_ratio') }}</label>
-                  </div>
-                  <div
-                    class="slider-shell w-full min-w-0"
-                    :class="{ 'is-disabled': !mergeModifiedLines }"
-                  >
-                    <div class="slider-labels">
-                      <span class="slider-label">{{ $t('compare.change_ratio') }}</span>
-                      <span class="slider-value tabular-nums">{{ maxChangeRatio.toFixed(2) }}</span>
-                    </div>
-                    <div class="slider-track">
-                      <div
-                        v-for="mark in changeRatioMarks"
-                        :key="`cr-${mark}`"
-                        class="slider-mark"
-                        :style="{ left: `calc(${mark}% - 11px)` }"
-                      />
-                      <div class="slider-range" :style="{ width: `${changeRatioPercent}%` }" />
-                    </div>
-                    <input
-                      id="change-ratio"
-                      v-model.number="maxChangeRatio"
-                      type="range"
-                      min="0"
-                      max="1"
-                      step="0.01"
-                      :disabled="!mergeModifiedLines"
-                      class="slider-input"
-                    />
-                  </div>
+                <p v-if="largeDiffMode" class="text-xs text-fg-muted leading-relaxed">
+                  {{ $t('compare.large_diff_options_disabled') }}
+                </p>
 
-                  <!-- Diff distance slider -->
-                  <div class="sr-only">
-                    <label for="diff-distance">{{ $t('compare.diff_distance') }}</label>
-                  </div>
-                  <div
-                    class="slider-shell w-full min-w-0"
-                    :class="{ 'is-disabled': !mergeModifiedLines }"
-                  >
-                    <div class="slider-labels">
-                      <span class="slider-label">{{ $t('compare.diff_distance') }}</span>
-                      <span class="slider-value tabular-nums">{{ maxDiffDistance }}</span>
-                    </div>
-                    <div class="slider-track">
-                      <div
-                        v-for="mark in diffDistanceMarks"
-                        :key="`dd-${mark}`"
-                        class="slider-mark"
-                        :style="{ left: `calc(${mark}% - 11px)` }"
-                      />
-                      <div class="slider-range" :style="{ width: `${diffDistancePercent}%` }" />
-                    </div>
-                    <input
-                      id="diff-distance"
-                      v-model.number="maxDiffDistance"
-                      type="range"
-                      min="1"
-                      max="60"
-                      step="1"
-                      :disabled="!mergeModifiedLines"
-                      class="slider-input"
-                    />
-                  </div>
+                <template v-else>
+                  <!-- Merge modified lines toggle -->
+                  <SettingsToggle
+                    :label="$t('compare.merge_modified_lines')"
+                    v-model="mergeModifiedLines"
+                  />
 
-                  <!-- Char edits slider -->
-                  <div class="sr-only">
-                    <label for="char-edits">{{ $t('compare.char_edits') }}</label>
-                  </div>
+                  <!-- Sliders -->
                   <div
-                    class="slider-shell w-full min-w-0"
-                    :class="{ 'is-disabled': !mergeModifiedLines }"
+                    class="flex flex-col gap-2 transition-opacity duration-150"
+                    :class="mergeModifiedLines ? 'opacity-100' : 'opacity-0'"
                   >
-                    <div class="slider-labels">
-                      <span class="slider-label">{{ $t('compare.char_edits') }}</span>
-                      <span class="slider-value tabular-nums">{{ inlineMaxCharEdits }}</span>
+                    <!-- Change ratio slider -->
+                    <div class="sr-only">
+                      <label for="change-ratio">{{ $t('compare.change_ratio') }}</label>
                     </div>
-                    <div class="slider-track">
-                      <div
-                        v-for="mark in charEditMarks"
-                        :key="`ce-${mark}`"
-                        class="slider-mark"
-                        :style="{ left: `calc(${mark}% - 11px)` }"
+                    <div
+                      class="slider-shell w-full min-w-0"
+                      :class="{ 'is-disabled': !mergeModifiedLines }"
+                    >
+                      <div class="slider-labels">
+                        <span class="slider-label">{{ $t('compare.change_ratio') }}</span>
+                        <span class="slider-value tabular-nums">{{
+                          maxChangeRatio.toFixed(2)
+                        }}</span>
+                      </div>
+                      <div class="slider-track">
+                        <div
+                          v-for="mark in changeRatioMarks"
+                          :key="`cr-${mark}`"
+                          class="slider-mark"
+                          :style="{ left: `calc(${mark}% - 11px)` }"
+                        />
+                        <div class="slider-range" :style="{ width: `${changeRatioPercent}%` }" />
+                      </div>
+                      <input
+                        id="change-ratio"
+                        v-model.number="maxChangeRatio"
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.01"
+                        :disabled="!mergeModifiedLines"
+                        class="slider-input"
                       />
-                      <div class="slider-range" :style="{ width: `${charEditPercent}%` }" />
                     </div>
-                    <input
-                      id="char-edits"
-                      v-model.number="inlineMaxCharEdits"
-                      type="range"
-                      min="0"
-                      max="10"
-                      step="1"
-                      :disabled="!mergeModifiedLines"
-                      class="slider-input"
-                    />
+
+                    <!-- Diff distance slider -->
+                    <div class="sr-only">
+                      <label for="diff-distance">{{ $t('compare.diff_distance') }}</label>
+                    </div>
+                    <div
+                      class="slider-shell w-full min-w-0"
+                      :class="{ 'is-disabled': !mergeModifiedLines }"
+                    >
+                      <div class="slider-labels">
+                        <span class="slider-label">{{ $t('compare.diff_distance') }}</span>
+                        <span class="slider-value tabular-nums">{{ maxDiffDistance }}</span>
+                      </div>
+                      <div class="slider-track">
+                        <div
+                          v-for="mark in diffDistanceMarks"
+                          :key="`dd-${mark}`"
+                          class="slider-mark"
+                          :style="{ left: `calc(${mark}% - 11px)` }"
+                        />
+                        <div class="slider-range" :style="{ width: `${diffDistancePercent}%` }" />
+                      </div>
+                      <input
+                        id="diff-distance"
+                        v-model.number="maxDiffDistance"
+                        type="range"
+                        min="1"
+                        max="60"
+                        step="1"
+                        :disabled="!mergeModifiedLines"
+                        class="slider-input"
+                      />
+                    </div>
+
+                    <!-- Char edits slider -->
+                    <div class="sr-only">
+                      <label for="char-edits">{{ $t('compare.char_edits') }}</label>
+                    </div>
+                    <div
+                      class="slider-shell w-full min-w-0"
+                      :class="{ 'is-disabled': !mergeModifiedLines }"
+                    >
+                      <div class="slider-labels">
+                        <span class="slider-label">{{ $t('compare.char_edits') }}</span>
+                        <span class="slider-value tabular-nums">{{ inlineMaxCharEdits }}</span>
+                      </div>
+                      <div class="slider-track">
+                        <div
+                          v-for="mark in charEditMarks"
+                          :key="`ce-${mark}`"
+                          class="slider-mark"
+                          :style="{ left: `calc(${mark}% - 11px)` }"
+                        />
+                        <div class="slider-range" :style="{ width: `${charEditPercent}%` }" />
+                      </div>
+                      <input
+                        id="char-edits"
+                        v-model.number="inlineMaxCharEdits"
+                        type="range"
+                        min="0"
+                        max="10"
+                        step="1"
+                        :disabled="!mergeModifiedLines"
+                        class="slider-input"
+                      />
+                    </div>
                   </div>
-                </div>
+                </template>
               </div>
             </div>
           </Transition>
@@ -351,20 +371,21 @@ useCommandPaletteContextCommands(
 
     <!-- Content -->
     <div class="flex-1 overflow-auto relative">
-      <!-- File too large warning -->
-      <div v-if="isFilesTooLarge" class="py-20 text-center">
-        <div class="i-lucide:file-text w-12 h-12 mx-auto text-fg-subtle mb-4" />
-        <p class="text-fg-muted mb-2">{{ $t('compare.file_too_large') }}</p>
-        <p class="text-fg-subtle text-sm mb-4">
-          {{
-            $t('compare.file_size_warning', {
-              size: bytesFormatter.format(Math.max(file.newSize ?? 0, file.oldSize ?? 0)),
-            })
-          }}
+      <div
+        v-if="largeDiffMode || diff?.meta.truncated"
+        class="m-3 rounded-lg border border-border bg-bg-muted px-3 py-2 text-sm text-fg-muted"
+      >
+        <p v-if="largeDiffMode" class="flex gap-2">
+          <span class="i-lucide:gauge w-4 h-4 shrink-0 mt-0.5" />
+          <span>{{ $t('compare.large_diff_mode') }}</span>
+        </p>
+        <p v-if="diff?.meta.truncated" class="flex gap-2">
+          <span class="i-lucide:scissors w-4 h-4 shrink-0 mt-0.5" />
+          <span>{{ $t('compare.diff_truncated') }}</span>
         </p>
       </div>
       <!-- Loading state -->
-      <div v-else-if="status === 'pending'" class="py-12 text-center">
+      <div v-if="status === 'pending'" class="py-12 text-center">
         <div class="i-svg-spinners-ring-resize w-6 h-6 mx-auto text-fg-muted" />
         <p class="mt-2 text-sm text-fg-muted">{{ $t('compare.loading_diff') }}</p>
       </div>

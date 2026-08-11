@@ -2,8 +2,8 @@
 import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison'
 import { useRouteQuery } from '@vueuse/router'
 import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
-import FacetQuadrantChart from '~/components/Compare/FacetQuadrantChart.vue'
 import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
+import FacetScatterChart from '~/components/Compare/FacetScatterChart.vue'
 
 definePageMeta({
   name: 'compare',
@@ -75,10 +75,13 @@ function addNoDep() {
 // Get loading state for each column
 const columnLoading = computed(() => packages.value.map((_, i) => isColumnLoading(i)))
 
-// FIXME(serhalp): canCompare only checks package count, not whether data has loaded.
-// Copy-markdown and view-switching commands appear as soon as one package loads, even if
-// other packages are still loading. The UI copy button has the same issue.
+// Makes sense to compare if there's 2 or more packages
 const canCompare = computed(() => packages.value.length >= 2)
+
+// Allow copying only after all data is loaded
+const canCopyTable = computed(
+  () => packagesData.value.length >= 1 && packagesData.value.every(data => data !== null),
+)
 
 const comparisonView = usePermalink<'table' | 'charts'>('view', 'table')
 const hasChartableFacets = computed(() => selectedFacets.value.some(facet => facet.chartable))
@@ -139,10 +142,14 @@ async function exportComparisonDataAsMarkdown() {
   await copy(markdown)
 }
 
-defineOgImageComponent('Compare', {
-  packages: () => packages.value,
-  emptyDescription: () => $t('compare.packages.meta_description_empty'),
-})
+defineOgImage(
+  'Compare.takumi',
+  {
+    packages: () => packages.value.toSorted((a, b) => a.localeCompare(b)),
+    emptyDescription: () => $t('compare.packages.meta_description_empty'),
+  },
+  { alt: () => $t('compare.packages.meta_description_empty') },
+)
 
 const { announce } = useCommandPalette()
 
@@ -173,7 +180,7 @@ useCommandPaletteContextCommands(
       },
     ]
 
-    if (canCompare.value && packagesData.value && packagesData.value.some(p => p !== null)) {
+    if (canCompare.value && canCopyTable.value) {
       commands.push({
         id: 'compare-copy-markdown',
         group: 'actions',
@@ -335,7 +342,7 @@ useSeoMeta({
       <!-- Comparison grid -->
       <section v-if="canCompare" class="mt-10" aria-labelledby="comparison-heading">
         <CopyToClipboardButton
-          v-if="packagesData && packagesData.some(p => p !== null)"
+          v-if="canCopyTable"
           :copied="copied"
           :copy-text="$t('compare.packages.copy_as_markdown')"
           class="mb-4"
@@ -424,7 +431,7 @@ useSeoMeta({
               </div>
             </TabPanel>
 
-            <!-- Charts: per-facet bars & quadrant -->
+            <!-- Charts: per-facet bars & scatter -->
             <TabPanel value="charts" panel-id="comparison-panel-charts">
               <div
                 v-if="selectedFacets.some(facet => facet.chartable)"
@@ -447,8 +454,8 @@ useSeoMeta({
               <p v-else class="py-12 text-center text-fg-subtle">
                 {{ $t('compare.packages.no_chartable_data') }}
               </p>
-              <div class="max-w-[450px] mx-auto">
-                <FacetQuadrantChart
+              <div>
+                <FacetScatterChart
                   v-if="packages.length"
                   :packages-data="packagesData"
                   :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)"

@@ -13,6 +13,7 @@
   "trademark_disclaimer": "npm es una marca registrada de npm, Inc. Este sitio no está afiliado con npm, Inc.",
   "footer": {
     "about": "acerca de",
+    "sponsors": "patrocinadores",
     "blog": "blog",
     "docs": "documentación",
     "source": "código fuente",
@@ -20,7 +21,11 @@
     "chat": "chat",
     "builders_chat": "builders",
     "keyboard_shortcuts": "atajos de teclado",
-    "brand": "marca"
+    "brand": "marca",
+    "resources": "Recursos",
+    "features": "Funcionalidades",
+    "other": "Otros",
+    "sponsored_by": "Patrocinado por {list}"
   },
   "shortcuts": {
     "section": {
@@ -28,18 +33,24 @@
       "search": "Búsqueda",
       "package": "Paquete"
     },
+    "ctrl_key": "Ctrl",
+    "command_palette": "Abrir paleta de comandos",
+    "command_palette_description": "Usa la paleta de comandos para saltar entre páginas, vistas de paquetes, ajustes y enlaces externos sin dejar el teclado. En macOS, pulsa ⌘K. En Windows y Linux, pulsa {ctrlKey}+K.",
     "focus_search": "Enfocar búsqueda",
     "show_kbd_hints": "Resaltar atajos de teclado",
     "settings": "Abrir ajustes",
     "compare": "Abrir comparador",
     "compare_from_package": "Abrir comparador (con el paquete actual)",
+    "changelog": "Abrir registro de cambios",
     "navigate_results": "Navegar resultados",
     "go_to_result": "Ir al resultado",
     "open_code_view": "Abrir vista de código",
     "open_docs": "Abrir documentación",
     "disable_shortcuts": "Puedes desactivar los atajos de teclado en {settings}.",
     "open_main": "Abrir información principal",
-    "open_diff": "Abrir diferencias de versión"
+    "open_diff": "Abrir diferencias de versión",
+    "open_timeline": "Abrir línea temporal",
+    "open_stats": "Abrir estadísticas"
   },
   "search": {
     "label": "Buscar paquetes npm",
@@ -75,6 +86,120 @@
     "instant_search_turn_on": "activar",
     "instant_search_turn_off": "desactivar",
     "instant_search_advisory": "{label} {state} — {action}"
+  },
+  "command_palette": {
+    "title": "paleta de comandos",
+    "quick_actions": "ir a...",
+    "subtitle": "navega por npmx y cambia ajustes rápidamente",
+    "subtitle_languages": "elige un idioma o ayuda a mejorar las traducciones",
+    "instructions": "Escribe para filtrar comandos. Usa las teclas de flecha para moverte por los resultados y Enter para ejecutar un comando.",
+    "input_label": "Búsqueda en la paleta de comandos",
+    "results_label": "Resultados de comandos",
+    "placeholder": "escribe un comando...",
+    "back": "Atrás",
+    "empty": "No hay comandos que coincidan",
+    "empty_search_hint": "Presiona Enter para buscar \"{query}\".",
+    "current": "actual",
+    "here": "estás aquí",
+    "connected": "conectado",
+    "keyboard_shortcuts": {
+      "navigate": "para navegar",
+      "select": "para seleccionar",
+      "close": "para cerrar"
+    },
+    "state": {
+      "on": "activado",
+      "off": "desactivado"
+    },
+    "groups": {
+      "actions": "Acciones",
+      "help": "Ayuda",
+      "language": "Idioma",
+      "connections": "Conexiones",
+      "navigation": "Navegación",
+      "links": "Enlaces",
+      "npmx": "npmx",
+      "package": "Paquete",
+      "package_with_name": "Paquete ({name})",
+      "versions": "Versiones",
+      "versions_with_name": "Versiones de {name}"
+    },
+    "actions": {
+      "search": "Buscar",
+      "search_for": "Buscar \"{query}\"",
+      "keyboard_shortcuts": "Atajos de teclado",
+      "help_translate": "Ayuda a traducir"
+    },
+    "connections": {
+      "npm_connect": "Conectar a la CLI de npm",
+      "npm_connected": "CLI de npm (~{username})",
+      "npm_disconnect": "Desconectar CLI de npm",
+      "atmosphere_connect": "Conectar a Atmosphere",
+      "atmosphere_connected": "atmosphere ({'@'}{handle})",
+      "atmosphere_disconnect": "Desconectar Atmosphere"
+    },
+    "navigation": {
+      "home": "inicio",
+      "packages": "paquetes (~{username})",
+      "orgs": "organizaciones (~{username})",
+      "profile": "perfil ({'@'}{handle})"
+    },
+    "links": {
+      "external": "Enlace externo"
+    },
+    "package_links": {
+      "stars": "Estrellas del repositorio",
+      "forks": "Bifurcaciones del repositorio"
+    },
+    "theme": {
+      "system": "Usar tema del sistema",
+      "light": "Usar tema claro",
+      "dark": "Usar tema oscuro"
+    },
+    "package": {
+      "main": "Página del paquete",
+      "docs": "Documentación",
+      "code": "Código",
+      "diff": "Diferencias",
+      "compare": "Comparar este paquete",
+      "download": "Descargar tarball",
+      "changelog": "Registro de cambios",
+      "stats": "Estadísticas"
+    },
+    "package_actions": {
+      "copy_run": "Copiar comando de ejecución"
+    },
+    "code": {
+      "copy_file": "Copiar contenido del archivo"
+    },
+    "diff": {
+      "merge_modified_lines": "Combinar líneas modificadas",
+      "word_wrap": "Ajuste de línea"
+    },
+    "version": {
+      "label": "{version}"
+    },
+    "status": {
+      "available_in_context": "{context}. No hay comandos disponibles | {context}. 1 comando disponible | {context}. {count} comandos disponibles",
+      "matching_in_context": "{context}. No hay comandos que coincidan | {context}. 1 comando coincide | {context}. {count} comandos coinciden",
+      "no_matches_search_in_context": "{context}. No hay comandos que coincidan. Presiona Enter para buscar \"{query}\"."
+    },
+    "announcements": {
+      "language_changed": "Idioma cambiado a {language}.",
+      "relative_dates_on": "Fechas relativas activadas.",
+      "relative_dates_off": "Fechas relativas desactivadas.",
+      "theme_changed": "Tema cambiado a {theme}.",
+      "accent_color_changed": "Color de acento cambiado a {color}.",
+      "background_theme_changed": "Tono de fondo cambiado a {theme}.",
+      "download_started": "Descargando tarball de {package}.",
+      "copied_to_clipboard": "Copiado al portapapeles.",
+      "npm_disconnected": "CLI de npm desconectada.",
+      "atmosphere_disconnected": "Atmosphere desconectada.",
+      "facets_all_selected": "Todas las facetas seleccionadas.",
+      "facets_all_deselected": "Todas las facetas deseleccionadas.",
+      "view_switched": "Vista cambiada a {view}.",
+      "setting_toggled": "{setting} {state}."
+    }
   },
   "nav": {
     "main_navigation": "Principal",
@@ -114,6 +239,31 @@
       "more_replies": "{count} respuesta más... | {count} respuestas más..."
     }
   },
+  "noodles": {
+    "title": "noodles",
+    "meta_description": "Cada noodle que hemos mostrado en npmx: los logos estacionales, los huevos de pascua y las historias detrás de ellos.",
+    "latest": "Últimos noodles",
+    "what_is": "¿Qué son los noodles?",
+    "what_is_body": "Los noodles son las variantes divertidas del logo de npmx que mostramos en la página de inicio para conmemorar lanzamientos, días festivos, eventos y otros momentos que vale la pena celebrar. Piensa en ellos como los Google Doodles, pero para paquetes de npm.",
+    "empty": "No hay noodles todavía.",
+    "load_more": "Cargar {count} más",
+    "dates": "Fechas activas",
+    "shipped_in": "Lanzado en",
+    "credits": "Créditos",
+    "learn_more": "Más información",
+    "carousel_prev": "Imagen anterior",
+    "carousel_next": "Siguiente imagen",
+    "carousel_dots": "Navegación entre variantes de imagen",
+    "carousel_jump": "Ir a la imagen {index}",
+    "lens_label": "{title} — carrusel de imágenes",
+    "lens_slide": "imagen {index}",
+    "lens_slide_position": "Diapositiva {index} de {total}",
+    "back_to_archive": "Volver a todos los noodles",
+    "missing": {
+      "title": "Este noodle nunca salió del tazón.",
+      "body": "No tenemos ningún noodle con el nombre “{slug}” en el menú. O lo están preparando, o nunca lo escribieron. En cualquier caso, volver al archivo."
+    }
+  },
   "settings": {
     "title": "configuración",
     "tagline": "personaliza tu experiencia en npmx",
@@ -121,7 +271,7 @@
     "sections": {
       "appearance": "Apariencia",
       "display": "Visualización",
-      "search": "Fuente de datos",
+      "search": "Funciones de búsqueda",
       "language": "Idioma",
       "keyboard_shortcuts": "Atajos de teclado"
     },
@@ -151,6 +301,7 @@
     "translation_status": "Comprueba el estado global de las traducciones",
     "accent_colors": {
       "label": "Colores de acento",
+      "neutral": "Neutral",
       "sky": "Cielo",
       "coral": "Coral",
       "amber": "Ámbar",
@@ -169,7 +320,10 @@
       "black": "Negro"
     },
     "keyboard_shortcuts_enabled": "Activar atajos de teclado",
-    "keyboard_shortcuts_enabled_description": "Los atajos de teclado pueden desactivarse si entran en conflicto con otros atajos del navegador o del sistema"
+    "keyboard_shortcuts_enabled_description": "Los atajos de teclado pueden desactivarse si entran en conflicto con otros atajos del navegador o del sistema",
+    "enable_code_ligatures": "Activar ligaduras en código",
+    "enable_changelog_autoscroll": "Desplazar automáticamente a la versión solicitada",
+    "enable_changelog_autoscroll_description": "Desplazar automáticamente a la versión solicitada o cerca de ella en el registro de cambios del paquete"
   },
   "i18n": {
     "missing_keys": "{count} traducción faltante | {count} traducciones faltantes",
@@ -201,6 +355,7 @@
     "warnings": "Advertencias:",
     "go_back_home": "Volver al inicio",
     "per_week": "/ semana",
+    "per_week_short": "/sem",
     "vanity_downloads_hint": "Número de vanidad: no se muestran paquetes | Número de vanidad: para el paquete mostrado | Número de vanidad: Suma de {count} paquetes mostrados",
     "sort": {
       "name": "nombre",
@@ -213,7 +368,7 @@
     "edit": "Editar",
     "error": "Error",
     "view_on": {
-      "npm": "ver en npm",
+      "npm": "Ver en npm",
       "github": "Ver en GitHub",
       "gitlab": "Ver en GitLab",
       "bitbucket": "Ver en Bitbucket",
@@ -223,11 +378,14 @@
       "gitea": "Ver en Gitea",
       "gitee": "Ver en Gitee",
       "radicle": "Ver en Radicle",
+      "socket_dev": "Ver en socket.dev",
       "sourcehut": "Ver en SourceHut",
       "tangled": "Ver en Tangled"
     },
     "collapse": "Contraer",
-    "expand": "Expandir"
+    "collapse_with_name": "Contraer {name}",
+    "expand": "Expandir",
+    "expand_with_name": "Expandir {name}"
   },
   "profile": {
     "display_name": "Nombre visible",
@@ -265,17 +423,24 @@
       "size": "El tamaño de instalación aumentó un {percent} ({size} más grande)",
       "deps": "{count} dependencias más"
     },
+    "size_decrease": {
+      "title_size": "¡El tamaño del paquete ha disminuido desde v{version}!",
+      "title_deps": "¡El número de dependencias ha disminuido desde v{version}!",
+      "title_both": "¡El tamaño del paquete y el número de dependencias han disminuido desde v{version}!",
+      "size": "Tamaño de instalación reducido un {percent} ({size} más pequeño)",
+      "deps": "{count} dependencias menos"
+    },
     "replacement": {
       "title": "Es posible que no necesite esta dependencia.",
+      "example": "Ejemplo:",
       "native": "Esto se puede reemplazar con {replacement}, disponible desde Node {nodeVersion}.",
-      "simple": "La {community} ha marcado este paquete como redundante, con el siguiente consejo: {replacement}.",
-      "documented": "La {community} ha señalado que este paquete tiene alternativas con mejor rendimiento.",
+      "native_no_version": "Este paquete se puede reemplazar con {replacement}.",
+      "simple": "Este paquete ha sido marcado como redundante, con la sugerencia: {replacement}",
+      "documented": "Este paquete ha sido marcado por tener alternativas más eficientes.",
       "none": "Este paquete se ha marcado como ya no necesario y es probable que su funcionalidad esté disponible de forma nativa en todos los motores.",
       "learn_more": "Más información",
       "learn_more_above": "Más información arriba.",
-      "mdn": "MDN",
-      "community": "comunidad",
-      "consider_no_dep": "+ ¿Considerar sin dependencia?"
+      "consider_no_dep": "+ ¿Considerar sin dependencias?"
     },
     "stats": {
       "license": "Licencia",
@@ -289,7 +454,10 @@
       "size_tooltip": {
         "unpacked": "{size} tamaño desempaquetado (este paquete)",
         "total": "{size} tamaño total desempaquetado (incluidas las {count} dependencias para Linux-x64)"
-      }
+      },
+      "main_information": "Información principal",
+      "trends": "Tendencias",
+      "version_distribution": "Distribución de versiones"
     },
     "skills": {
       "title": "Habilidades del Agente",
@@ -319,11 +487,17 @@
       "docs": "documentación",
       "fund": "financiar",
       "compare": "comparar",
-      "compare_this_package": "comparar este paquete"
+      "timeline": "línea temporal",
+      "stats": "estadísticas",
+      "compare_this_package": "comparar este paquete",
+      "changelog": "registro de cambios"
     },
     "likes": {
       "like": "Me gusta este paquete",
-      "unlike": "Ya no me gusta este paquete"
+      "unlike": "Ya no me gusta este paquete",
+      "top_rank_tooltip": "¡Este está entre los 10 paquetes con más me gusta en npmx! (#{rank})",
+      "top_rank_label": "#{rank}",
+      "top_rank_link_label": "Ver clasificación de 'me gusta'. Este paquete está en el puesto #{rank}."
     },
     "docs": {
       "contents": "Contenido",
@@ -364,7 +538,8 @@
         "warning": "Advertencia",
         "caution": "Precaución"
       },
-      "copy_as_markdown": "Copiar README como Markdown"
+      "copy_as_markdown": "Copiar README como Markdown",
+      "error_loading": "Error al cargar los detalles del README"
     },
     "provenance_section": {
       "title": "Procedencia",
@@ -395,6 +570,7 @@
       "weekly_downloads": "Descargas semanales",
       "keywords": "Palabras clave",
       "license": "Licencia",
+      "version": "Versión",
       "select": "Seleccionar paquete",
       "select_maximum": "Se pueden seleccionar como máximo {count} paquetes"
     },
@@ -413,7 +589,6 @@
       "view_all": "Ver {count} versión | Ver las {count} versiones",
       "view_all_versions": "Ver todas las versiones",
       "distribution_title": "Grupo Semver",
-      "distribution_modal_title": "Versiones",
       "distribution_range_date_same_year": "de {from} a {to}, {endYear}",
       "distribution_range_date_multiple_years": "de {from}, {startYear} a {to}, {endYear}",
       "grouping_major": "Mayor",
@@ -434,6 +609,9 @@
       "filter_help": "Usa sintaxis semver estándar",
       "filter_tooltip": "Filtra versiones usando rangos semver. Ejemplos:",
       "filter_tooltip_link": "Calculadora Semver",
+      "license_change_help": "Detalles del cambio de licencia",
+      "license_change_warning": "La licencia ha cambiado desde la versión anterior.",
+      "license_change_record": "La licencia de este paquete cambió de \"{from}\" a \"{to}\".",
       "no_matches": "Ninguna versión coincide con el filtro",
       "copy_alt": {
         "per_version_analysis": "La versión {version} se descargó {downloads} veces",
@@ -442,6 +620,41 @@
       "page_title": "Historial de versiones",
       "current_tags": "Etiquetas actuales",
       "no_match_filter": "Ninguna versión coincide con {filter}"
+    },
+    "timeline": {
+      "load_more": "Cargar más",
+      "load_error": "Error al cargar la línea temporal. Inténtalo de nuevo más tarde.",
+      "size_increase": "Tamaño de instalación aumentado un {percent}% ({size})",
+      "size_decrease": "Tamaño de instalación reducido un {percent}% ({size})",
+      "dep_increase": "{count} dependencias añadidas",
+      "dep_decrease": "{count} dependencias eliminadas",
+      "license_change": "Licencia cambiada de {from} a {to}",
+      "esm_added": "Tipo de módulo cambiado a ESM",
+      "esm_removed": "Tipo de módulo cambiado de ESM a CJS",
+      "types_added": "Tipos de TypeScript añadidos",
+      "types_removed": "Tipos de TypeScript eliminados",
+      "trusted_publisher_added": "Publicación verificada activada",
+      "trusted_publisher_removed": "Publicación verificada eliminada",
+      "provenance_added": "Procedencia activada",
+      "provenance_removed": "Procedencia eliminada",
+      "chart": {
+        "tab_aria_label": "Selección de métrica",
+        "dependency_size": "Tamaño de dependencias",
+        "other_dependencies": "Otras",
+        "base_scale": "iniciar eje Y en cero",
+        "zoom": "zoom",
+        "reset_minimap": "restablecer minimapa",
+        "ordered_versions": "solo estables",
+        "copy_alt": {
+          "key_changes": "Cambios clave: {version_events}.",
+          "version_events": "versión {version}: {events}",
+          "general_description": "Gráfico de líneas que muestra {metric} del paquete {package}, desde la versión {first} hasta {last}. {metric} en la versión {first} es {first_value}, en la versión {last} es {last_value} ({overall_progress_percentage}% total). {key_changes} {watermark}.",
+          "stackbar_segment_share": "{segment}: {value} ({percentage})",
+          "stackbar_top_segments": "En {version}, los segmentos más grandes son {segments}.",
+          "stackbar_largest_increase": "El mayor aumento es {segment}, con una subida de {delta}.",
+          "stackbar_largest_decrease": "La mayor disminución es {segment}, con una bajada de {delta}."
+        }
+      }
     },
     "dependencies": {
       "title": "Dependencias ({count})",
@@ -535,6 +748,7 @@
         "trend_undefined": "indefinido (datos insuficientes)",
         "button_label": "Copiar texto alternativo",
         "watermark": "En la parte inferior, una marca de agua dice \"./npmx un navegador rápido y moderno para el registro de npm\"",
+        "watermark_top": "En la parte superior, una marca de agua dice \"./npmx un navegador rápido y moderno para el registro npm\"",
         "analysis": "{package_name} comienza en {start_value} y termina en {end_value}, mostrando una tendencia {trend} con una pendiente de {downloads_slope} descargas por intervalo de tiempo",
         "estimation": "El valor final es una estimación basada en datos parciales para el período actual.",
         "estimations": "Los valores finales son estimaciones basadas en datos parciales para el período actual.",
@@ -543,10 +757,17 @@
         "general_description": "El eje Y representa el número de descargas. El eje X representa el rango de fechas, desde {start_date} hasta {end_date}, con un período de tiempo {granularity}.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Gráfico de barras horizontal para: {packages}, comparando {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} tiene un valor de {value}."
+      },
+      "embedding": {
+        "chart": "Incrustar este gráfico",
+        "copy_url": "Copia esta URL para incrustar el gráfico en tu sitio web",
+        "preview": "Vista previa",
+        "tip": "Si no se proporcionan startDate y endDate en la URL, el gráfico mostrará los últimos 12 meses por defecto."
       }
     },
     "downloads": {
       "title": "Descargas Semanales",
+      "version_distribution_title": "descargas semanales para la versión {version}",
       "community_distribution": "Ver distribución de adopción comunitaria",
       "subtitle": "En todas las versiones",
       "sparkline_nav_hint": "Usa ← →"
@@ -643,6 +864,16 @@
     "download": {
       "button": "Descargar",
       "tarball": "Descargar Tarball como .tar.gz"
+    }
+  },
+  "leaderboard": {
+    "likes": {
+      "title": "Clasificación de 'me gusta'",
+      "description": "Los 10 paquetes con más me gusta en npmx ahora mismo.",
+      "rank": "Puesto",
+      "likes": "Me gusta",
+      "unavailable_title": "No hay clasificación de 'me gusta' todavía",
+      "unavailable_description": "No tenemos una clasificación de 'me gusta' que mostrar ahora mismo."
     }
   },
   "connector": {
@@ -826,8 +1057,12 @@
     "lines": "{count} líneas",
     "toggle_tree": "Alternar árbol de archivos",
     "close_tree": "Cerrar árbol de archivos",
+    "copy_content": "Copiar contenido del archivo",
     "copy_link": "Copiar enlace",
     "view_raw": "Ver archivo crudo",
+    "toggle_container": "Alternar ancho del contenedor de código",
+    "open_raw_file": "Abrir archivo crudo",
+    "open_path_dropdown": "Abrir menú de segmentos de ruta",
     "file_too_large": "Archivo demasiado grande para previsualizar",
     "file_size_warning": "{size} excede el límite de 500KB para resaltado de sintaxis",
     "failed_to_load": "Error al cargar archivo",
@@ -847,7 +1082,8 @@
     },
     "file_path": "Ruta del archivo",
     "binary_file": "Archivo binario",
-    "binary_rendering_warning": "Tipo de archivo no compatible para vista previa."
+    "binary_rendering_warning": "Tipo de archivo no compatible para vista previa.",
+    "possibly_unnecessary": "Puede ser innecesario en un paquete publicado"
   },
   "badges": {
     "provenance": {
@@ -994,14 +1230,18 @@
       }
     },
     "sponsors": {
-      "title": "Patrocinadores"
+      "title": "Patrocinadores",
+      "gold": "Patrocinadores de oro",
+      "silver": "Patrocinadores de plata"
     },
     "oss_partners": {
       "title": "Socios de OSS"
     },
     "team": {
       "title": "Equipo",
-      "governance": "Gobernanza",
+      "core": "Equipo principal",
+      "maintainers": "Mantenedores",
+      "role_core": "principal",
       "role_steward": "Administrador",
       "role_maintainer": "Mantenedor",
       "sponsor": "Patrocinar",
@@ -1035,6 +1275,64 @@
         "title": "Mantente actualizado",
         "description": "Entérate de lo último en npmx.",
         "cta": "Síguenos en Bluesky"
+      }
+    }
+  },
+  "sponsors_page": {
+    "title": "Patrocinadores",
+    "heading": "patrocinadores",
+    "meta_description": "Apoya a npmx y ayúdanos a acelerar el trabajo del ecosistema en materia de seguridad, confianza, optimización e investigación.",
+    "intro": "Apoya a npmx y ayúdanos a hacer crecer el trabajo que hacemos en el ecosistema para desarrolladores y mantenedores.",
+    "what_we_do": {
+      "title": "Lo que hacemos",
+      "description": "Estamos construyendo un ecosistema que resuelve problemas de seguridad, confianza, optimización e investigación para las herramientas que usamos en el desarrollo diario: de manera rápida, práctica y con alta calidad. Este proyecto está hecho por desarrolladores para desarrolladores. Como autores de bibliotecas ampliamente utilizadas, entendemos las necesidades de los equipos y estudiamos activamente lo que los proyectos y sus mantenedores más necesitan."
+    },
+    "what_support_means": {
+      "title": "Qué significa el apoyo",
+      "description": "Nuestros planes y conexiones siguen creciendo, junto con nuestro deseo de compartir lo que hemos construido y aprender de los demás. Tu apoyo ayuda a financiar el proyecto, charlas externas, conferencias y el ecosistema en general, y lo más importante, nos permite seguir haciendo crecer nuestra comunidad."
+    },
+    "cta": "Ver niveles de patrocinio",
+    "community_growth_footnote": "* Según la investigación del primer trimestre de 2026 de {link}.",
+    "what_this_means_for_you": {
+      "title": "Qué significa esto para ti",
+      "description": "npmx no solo trata de mejorar la experiencia del desarrollador y cubrir vacíos críticos del día a día. En nuestros primeros seis meses, ya nos hemos convertido en la fuente por defecto para miles de equipos y un gran número de desarrolladores. No solo obtienes una herramienta más estable para tus equipos, sino también visibilidad ante una audiencia en constante crecimiento de ingenieros de primer nivel.",
+      "cards": {
+        "people": {
+          "contributors": "colaboradores",
+          "community_members": "miembros de la comunidad"
+        },
+        "visitors": {
+          "description": "visitantes únicos mensuales"
+        },
+        "stars": {
+          "title": "estrellas"
+        },
+        "community": {
+          "title": "de rápido crecimiento",
+          "description": "Somos una de las comunidades de más rápido crecimiento en el ecosistema"
+        },
+        "adoption": {
+          "title": "adopción",
+          "description": "gráficos en conferencias, charlas y artículos se basan en nuestros datos"
+        },
+        "default_source": {
+          "title": "fuente por defecto",
+          "description": "pnpm convirtió a npmx en la fuente por defecto; muchos paquetes han sido configurados para enlazar a npmx"
+        }
+      }
+    },
+    "tiers": {
+      "title": "Niveles de patrocinio",
+      "per_month": "/mes",
+      "custom": "Personalizado",
+      "silver": {
+        "name": "Plata"
+      },
+      "gold": {
+        "name": "Oro"
+      },
+      "platinum": {
+        "name": "Platino"
       }
     }
   },
@@ -1077,7 +1375,7 @@
       "empty": "No se encontraron paquetes",
       "view_all": "Ver todo"
     },
-    "orgs": "orgs",
+    "orgs": "organizaciones",
     "orgs_dropdown": {
       "title": "Tus Organizaciones",
       "loading": "Cargando...",
@@ -1117,6 +1415,17 @@
       "remove_package": "Eliminar {package}",
       "packages_selected": "{count}/{max} paquetes seleccionados.",
       "add_hint": "Añade al menos 2 paquetes para comparar."
+    },
+    "scatter_chart": {
+      "title": "Comparar {x} vs {y}",
+      "freshness_score": "Índice de frescura",
+      "copy_alt": {
+        "analysis": "{package} : {x_name} ({x_value}) y {y_name} ({y_value})",
+        "description": "Gráfico de dispersión que mapea {x_name} versus {y_name} para los paquetes {packages}. {analysis}. {watermark}"
+      },
+      "filename": "{x}-vs-{y}-scatter-chart",
+      "x_axis": "EJE-X ↦",
+      "y_axis": "EJE-Y ↥"
     },
     "no_dependency": {
       "label": "(Sin dependencia)",
@@ -1167,7 +1476,7 @@
         },
         "totalLikes": {
           "label": "Me gusta",
-          "description": "Número de me gusta"
+          "description": "Número de 'me gusta'"
         },
         "lastUpdated": {
           "label": "Publicado",
@@ -1196,6 +1505,22 @@
         "vulnerabilities": {
           "label": "Vulnerabilidades",
           "description": "Vulnerabilidades de seguridad conocidas"
+        },
+        "githubStars": {
+          "label": "Estrellas de GitHub",
+          "description": "Número de estrellas en el repositorio de GitHub"
+        },
+        "githubForks": {
+          "label": "Bifurcaciones de GitHub",
+          "description": "Número de bifurcaciones (forks) en el repositorio de GitHub"
+        },
+        "githubIssues": {
+          "label": "Incidencias de GitHub",
+          "description": "Número de incidencias en el repositorio de GitHub"
+        },
+        "createdAt": {
+          "label": "Fecha de creación",
+          "description": "Cuándo se creó el paquete"
         }
       },
       "values": {
@@ -1216,8 +1541,6 @@
     "file_changes": "Cambios en archivos",
     "files_count": "{count} archivos",
     "lines_hidden": "{count} líneas ocultas",
-    "file_too_large": "Archivo demasiado grande para comparar",
-    "file_size_warning": "{size} excede el límite de 250KB para la comparación",
     "compare_versions": "diferencia",
     "compare_versions_title": "Comparar con la última versión",
     "comparing_versions_label": "Comparando versiones...",
@@ -1258,6 +1581,9 @@
     "change_ratio": "Proporción de cambios",
     "char_edits": "Modificaciones de caracteres",
     "diff_distance": "Distancia de diferencias",
+    "diff_truncated": "Diferencias truncadas por rendimiento. Se muestran solo las primeras líneas cambiadas.",
+    "large_diff_mode": "Diferencias de archivo grande mostradas con la combinación de ediciones en línea desactivada por rendimiento.",
+    "large_diff_options_disabled": "El modo de archivo grande desactiva la combinación de ediciones en línea por rendimiento.",
     "loading_diff": "Cargando diferencias...",
     "loading_diff_error": "Error al cargar diferencias",
     "merge_modified_lines": "Combinar líneas modificadas",
@@ -1517,5 +1843,17 @@
       "message": "La accesibilidad es importante para nosotros, y nos encantaría que nos acompañaras en esta visión. Cuando uses los medios mencionados, asegúrate de que haya suficiente contraste con el fondo, y no uses un tamaño más pequeño que 24px. Si necesitas algún otro recurso o información adicional sobre el proyecto, no dudes en contactarnos a través de {link}.",
       "discord_link_text": "chat.npmx.dev"
     }
+  },
+  "alt_logo_kawaii": "Una versión cuqui, redondeada y colorida del logotipo de npmx.",
+  "changelog": {
+    "pre_release": "Pre-lanzamiento",
+    "draft": "Borrador",
+    "no_logs": "Lo sentimos, este paquete no publica registros de cambios o su formato no es compatible.",
+    "error": {
+      "p1": "Lo sentimos, no se pudo cargar el registro de cambios de {package}",
+      "p2": "Inténtalo de nuevo más tarde o {viewon}"
+    },
+    "rate_limit_ungh": "Lo sentimos, se alcanzó el límite de tasa de GitHub, inténtalo de nuevo en un momento",
+    "version_unavailable": "La versión solicitada no está disponible."
   }
 }

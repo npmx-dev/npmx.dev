@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Mock connector CLI — starts a pre-populated mock server for developing
+ * Mock connector CLI — starts a prepopulated mock server for developing
  * authenticated features without a real npm account.
  */
 
@@ -25,7 +25,7 @@ function generateToken(): string {
 }
 
 /**
- * Pre-populate with sample data using real npm orgs so the registry
+ * Prepopulate with sample data using real npm orgs so the registry
  * API calls don't 404. Members/teams are fictional.
  */
 function populateDefaultData(stateManager: MockConnectorStateManager): void {
@@ -107,7 +107,7 @@ const main = defineCommand({
     },
     empty: {
       type: 'boolean',
-      description: 'Start with empty state (no pre-populated data)',
+      description: 'Start with empty state (no prepopulated data)',
       default: false,
     },
   },
@@ -130,7 +130,7 @@ const main = defineCommand({
 
     if (!empty) {
       populateDefaultData(stateManager)
-      p.log.info(`Pre-populated with sample data for ${styleText('cyan', npmUser)}`)
+      p.log.info(`Prepopulated with sample data for ${styleText('cyan', npmUser)}`)
       p.log.info(styleText('dim', `  Orgs: @nuxt (4 members, 3 teams), @unjs (2 members, 1 team)`))
       p.log.info(styleText('dim', `  Packages: @nuxt/kit, @nuxt/schema, @unjs/nitro`))
     } else {

@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { noCorrect } from '~/utils/input'
+import {
+  noCorrect as noCorrectAttrs,
+  noPasswordManager as noPasswordManagerAttrs,
+} from '~/utils/input'
 
 const model = defineModel<string>({ default: '' })
 
@@ -16,6 +19,12 @@ const props = withDefaults(
     noCorrect?: boolean
     /** Keyboard shortcut hint */
     ariaKeyshortcuts?: string
+    /**
+     * Prevents most common password managers from recognizing the input as a password field.
+     * Note: This is not a standard HTML attribute but vendor-specific data-* attributes.
+     * @default false
+     */
+    noPasswordManager?: boolean
   }>(),
   {
     size: 'md',
@@ -36,16 +45,21 @@ defineExpose({
   focus: () => el.value?.focus(),
   blur: () => el.value?.blur(),
 })
+
+const inputAttrs = computed(() => ({
+  ...(props.noCorrect ? noCorrectAttrs : {}),
+  ...(props.noPasswordManager ? noPasswordManagerAttrs : {}),
+}))
 </script>
 
 <template>
   <input
     ref="el"
     v-model="model"
-    v-bind="props.noCorrect ? noCorrect : undefined"
+    v-bind="inputAttrs"
     @focus="emit('focus', $event)"
     @blur="emit('blur', $event)"
-    class="appearance-none bg-bg-subtle border border-border font-mono text-fg placeholder:text-fg-subtle transition-[border-color,outline-color] duration-300 hover:border-fg-subtle outline-2 outline-transparent outline-offset-2 focus:border-accent focus-visible:outline-accent/70 disabled:(opacity-50 cursor-not-allowed)"
+    class="appearance-none bg-bg-subtle border border-border-elevated font-mono text-fg placeholder:text-fg-subtle transition-[border-color,outline-color] duration-300 hover:border-fg-subtle outline-2 outline-transparent outline-offset-2 focus:border-accent focus-visible:outline-accent/70 disabled:(opacity-50 cursor-not-allowed)"
     :class="{
       'text-xs leading-[1.2] px-2 py-2 rounded-md': size === 'sm',
       'text-sm leading-none px-3 py-2.5 rounded-lg': size === 'md',

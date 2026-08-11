@@ -35,6 +35,8 @@ describe('install command generation', () => {
         ['bun', 'lodash'],
         ['deno', 'npm:lodash'],
         ['vlt', 'lodash'],
+        ['vp', 'lodash'],
+        ['nub', 'lodash'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getPackageSpecifier({
@@ -54,6 +56,8 @@ describe('install command generation', () => {
         ['bun', '@trpc/server'],
         ['deno', 'jsr:@trpc/server'], // Native JSR specifier preferred
         ['vlt', '@trpc/server'],
+        ['vp', '@trpc/server'],
+        ['nub', '@trpc/server'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getPackageSpecifier({
@@ -73,6 +77,8 @@ describe('install command generation', () => {
         ['bun', '@vue/shared'],
         ['deno', 'npm:@vue/shared'], // Falls back to npm: compat
         ['vlt', '@vue/shared'],
+        ['vp', '@vue/shared'],
+        ['nub', '@vue/shared'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getPackageSpecifier({
@@ -94,6 +100,8 @@ describe('install command generation', () => {
         ['bun', 'bun add lodash'],
         ['deno', 'deno add npm:lodash'],
         ['vlt', 'vlt install lodash'],
+        ['vp', 'vp add lodash'],
+        ['nub', 'nub add lodash'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getInstallCommand({
@@ -113,6 +121,8 @@ describe('install command generation', () => {
         ['bun', 'bun add lodash@4.17.21'],
         ['deno', 'deno add npm:lodash@4.17.21'],
         ['vlt', 'vlt install lodash@4.17.21'],
+        ['vp', 'vp add lodash@4.17.21'],
+        ['nub', 'nub add lodash@4.17.21'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getInstallCommand({
@@ -133,6 +143,8 @@ describe('install command generation', () => {
         ['bun', 'bun add -d eslint'],
         ['deno', 'deno add -D npm:eslint'],
         ['vlt', 'vlt install -D eslint'],
+        ['vp', 'vp add -D eslint'],
+        ['nub', 'nub add -D eslint'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getInstallCommand({
@@ -153,6 +165,8 @@ describe('install command generation', () => {
         ['bun', 'bun add @trpc/server'],
         ['deno', 'deno add jsr:@trpc/server'], // Native JSR preferred
         ['vlt', 'vlt install @trpc/server'],
+        ['vp', 'vp add @trpc/server'],
+        ['nub', 'nub add @trpc/server'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getInstallCommand({
@@ -172,6 +186,8 @@ describe('install command generation', () => {
         ['bun', 'bun add @trpc/server@10.0.0'],
         ['deno', 'deno add jsr:@trpc/server@10.0.0'], // Native JSR with version
         ['vlt', 'vlt install @trpc/server@10.0.0'],
+        ['vp', 'vp add @trpc/server@10.0.0'],
+        ['nub', 'nub add @trpc/server@10.0.0'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getInstallCommand({
@@ -192,6 +208,8 @@ describe('install command generation', () => {
         ['bun', 'bun add @vue/shared'],
         ['deno', 'deno add npm:@vue/shared'], // Falls back to npm: compat
         ['vlt', 'vlt install @vue/shared'],
+        ['vp', 'vp add @vue/shared'],
+        ['nub', 'nub add @vue/shared'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getInstallCommand({
@@ -345,6 +363,8 @@ describe('install command generation', () => {
         ['bun', ['bunx', 'eslint']],
         ['deno', ['deno', 'run', 'npm:eslint']],
         ['vlt', ['vlx', 'eslint']],
+        ['vp', ['vp', 'exec', 'eslint']],
+        ['nub', ['nubx', 'eslint']],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getExecuteCommandParts({
@@ -364,6 +384,8 @@ describe('install command generation', () => {
         ['bun', ['bunx', 'degit']],
         ['deno', ['deno', 'run', 'npm:degit']],
         ['vlt', ['vlx', 'degit']],
+        ['vp', ['vp', 'dlx', 'degit']],
+        ['nub', ['nubx', 'degit']],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getExecuteCommandParts({
@@ -383,6 +405,8 @@ describe('install command generation', () => {
         ['bun', ['bun', 'create', 'vite']],
         ['deno', ['deno', 'create', 'npm:vite']],
         ['vlt', ['vlx', 'vite']],
+        ['vp', ['vp', 'create', 'vite']],
+        ['nub', ['nub', 'create', 'vite']],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getExecuteCommandParts({

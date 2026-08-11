@@ -27,6 +27,8 @@ export function useCommandPalettePackageCommands(
       .includes(packageName)
   }
 
+  const hasChangelog = usePackageHasChangelogFromState()
+
   useCommandPaletteContextCommands(
     computed((): CommandPaletteContextCommandInput[] => {
       const resolvedContext = toValue(context)
@@ -35,15 +37,7 @@ export function useCommandPalettePackageCommands(
       const { org, name } = splitPackageName(resolvedContext.packageName)
       if (!name) return []
 
-      const docsPath: [string, ...string[]] = org
-        ? [org, name, 'v', resolvedContext.resolvedVersion]
-        : [name, 'v', resolvedContext.resolvedVersion]
-      const docsLink = {
-        name: 'docs' as const,
-        params: {
-          path: docsPath,
-        },
-      }
+      const docsLink = docsRoute(resolvedContext.packageName, resolvedContext.resolvedVersion)
       const codeLink = {
         name: 'code' as const,
         params: {
@@ -89,24 +83,65 @@ export function useCommandPalettePackageCommands(
           to: codeLink,
         },
         {
-          id: 'package-compare',
+          id: 'package-timeline',
           group: 'package',
-          label: t('command_palette.package.compare'),
-          keywords: [resolvedContext.packageName, t('shortcuts.compare_from_package')],
-          iconClass: 'i-lucide:git-compare',
-          active: route.name === 'compare' && isCurrentPackageCompare(resolvedContext.packageName),
-          activeLabel: activeLabel(
-            route.name === 'compare' && isCurrentPackageCompare(resolvedContext.packageName),
-            t('command_palette.here'),
-          ),
-          to: {
-            name: 'compare',
-            query: {
-              packages: resolvedContext.packageName,
-            },
-          },
+          label: t('package.links.timeline'),
+          keywords: [
+            resolvedContext.packageName,
+            t('shortcuts.open_timeline'),
+            t('package.links.timeline'),
+          ],
+          iconClass: 'i-lucide:history',
+          active: route.name === 'timeline',
+          activeLabel: activeLabel(route.name === 'timeline', t('command_palette.here')),
+          to: packageTimelineRoute(resolvedContext.packageName, resolvedContext.resolvedVersion),
+        },
+        {
+          id: 'package-stats',
+          group: 'package',
+          label: t('command_palette.package.stats'),
+          keywords: [resolvedContext.packageName, t('shortcuts.open_stats')],
+          iconClass: 'i-lucide:chart-bar',
+          active: route.name === 'stats',
+          activeLabel: activeLabel(route.name === 'stats', t('command_palette.here')),
+          to: packageStatsRoute(resolvedContext.packageName, resolvedContext.resolvedVersion),
         },
       ]
+
+      if (hasChangelog.value) {
+        commands.push({
+          id: 'package-changelog',
+          group: 'package',
+          label: t('command_palette.package.changelog'),
+          keywords: [resolvedContext.packageName, t('command_palette.package.changelog')],
+          iconClass: 'i-lucide:notebook-text',
+          to: changelogRoute(resolvedContext.packageName, resolvedContext.resolvedVersion),
+          active: route.name === 'changelog' || route.name === 'changelog-version',
+          activeLabel: activeLabel(
+            route.name === 'changelog' || route.name === 'changelog-version',
+            t('command_palette.here'),
+          ),
+        })
+      }
+
+      commands.push({
+        id: 'package-compare',
+        group: 'package',
+        label: t('command_palette.package.compare'),
+        keywords: [resolvedContext.packageName, t('shortcuts.compare_from_package')],
+        iconClass: 'i-lucide:git-compare',
+        active: route.name === 'compare' && isCurrentPackageCompare(resolvedContext.packageName),
+        activeLabel: activeLabel(
+          route.name === 'compare' && isCurrentPackageCompare(resolvedContext.packageName),
+          t('command_palette.here'),
+        ),
+        to: {
+          name: 'compare',
+          query: {
+            packages: resolvedContext.packageName,
+          },
+        },
+      })
 
       if (resolvedContext.tarballUrl) {
         commands.push({

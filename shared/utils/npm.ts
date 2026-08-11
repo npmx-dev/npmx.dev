@@ -1,6 +1,7 @@
 import { getLatestVersion } from 'fast-npm-meta'
 import { createError } from 'h3'
 import validatePackageName from 'validate-npm-package-name'
+import type { PackumentLicense } from '#shared/types/npm-registry'
 
 const NPM_USERNAME_RE = /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i
 const NPM_USERNAME_MAX_LENGTH = 50
@@ -61,4 +62,18 @@ export function assertValidUsername(username: string): void {
       message: `Invalid username: ${username}`,
     })
   }
+}
+
+/**
+ * Normalize a packument `license` field to a plain string.
+ * The field can be a string or an object with a `type` property.
+ *
+ * @param license Raw license value from a packument
+ * @returns License string, or `undefined` if not present or unrecognized
+ */
+export function normalizeLicense(license?: PackumentLicense): string | undefined {
+  if (!license) return undefined
+  if (typeof license === 'string') return license
+  if (typeof license.type === 'string') return license.type
+  return undefined
 }

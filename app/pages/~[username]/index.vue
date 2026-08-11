@@ -128,11 +128,13 @@ useSeoMeta({
   twitterDescription: () => `npm packages maintained by ${username.value}`,
 })
 
-defineOgImageComponent('Default', {
-  title: () => `~${username.value}`,
-  description: () => (results.value ? `${results.value.total} packages` : 'npm user profile'),
-  primaryColor: '#60a5fa',
-})
+defineOgImage(
+  'UserProfile.takumi',
+  {
+    username: () => username.value,
+  },
+  { alt: () => `~${username.value} npm user profile on npmx` },
+)
 </script>
 
 <template>
@@ -177,7 +179,7 @@ defineOgImageComponent('Default', {
 
     <!-- Loading state (only on initial load, not when we already have data) -->
     <LoadingSpinner
-      v-if="status === 'pending' && packages.length === 0 && !error"
+      v-if="(status === 'idle' || status === 'pending') && packages.length === 0 && !error"
       :text="$t('common.loading_packages')"
     />
 

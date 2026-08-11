@@ -33,6 +33,16 @@ function readFixture(relativePath) {
 }
 
 /**
+ * @param {string} homepageUrl
+ * @returns {string}
+ */
+function microlinkFixturePath(homepageUrl) {
+  const url = new URL(homepageUrl)
+  const pathname = url.pathname === '/' ? '' : url.pathname.replaceAll('/', '_')
+  return `microlink/${url.hostname}${pathname}.json`
+}
+
+/**
  * Parse a scoped package name into its components.
  * Handles formats like: @scope/name, @scope/name@version, name, name@version
  *
@@ -181,10 +191,33 @@ function matchNpmApi(urlString) {
   }
 
   // Downloads range
-  const rangeMatch = pathname.match(/^\/downloads\/range\/[^/]+\/(.+)$/)
-  if (rangeMatch && rangeMatch[1]) {
-    const packageName = rangeMatch[1]
-    return json({ downloads: [], start: '2025-01-01', end: '2025-01-31', package: packageName })
+  const rangeMatch = pathname.match(/^\/downloads\/range\/([^/]+)\/(.+)$/)
+  if (rangeMatch && rangeMatch[1] && rangeMatch[2]) {
+    const dateRange = rangeMatch[1]
+    const packageName = rangeMatch[2]
+    const [start, end] = dateRange.split(':')
+    if (!start || !end) return null
+
+    // Generate deterministic daily download data from the package name
+    const seed = packageName.split('').reduce((s, c) => s + c.charCodeAt(0), 0)
+    const base = (seed % 9000) + 1000
+    const downloads = []
+    const startDate = new Date(start)
+    const endDate = new Date(end)
+    if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) return null
+
+    const cursor = new Date(startDate)
+    while (cursor.getTime() <= endDate.getTime()) {
+      const day = cursor.toISOString().slice(0, 10)
+      // Sine wave + noise for a realistic-looking sparkline
+      const dayIndex = downloads.length
+      const wave = Math.sin(dayIndex / 30) * base * 0.3
+      const noise = Math.sin(dayIndex * 7 + seed) * base * 0.1
+      downloads.push({ day, downloads: Math.max(0, Math.round(base + wave + noise)) })
+      cursor.setUTCDate(cursor.getUTCDate() + 1)
+    }
+
+    return json({ downloads, start, end, package: packageName })
   }
 
   return null
@@ -602,6 +635,19 @@ function matchGitHubApi(urlString) {
 }
 
 /**
+ * @param {string} urlString
+ * @returns {MockResponse | null}
+ */
+function matchMicrolinkApi(urlString) {
+  const url = new URL(urlString)
+  const homepageUrl = url.searchParams.get('url')
+  if (!homepageUrl) return null
+
+  const fixture = readFixture(microlinkFixturePath(homepageUrl))
+  return fixture ? json(fixture) : null
+}
+
+/**
  * Route definitions mapping URL patterns to their matchers.
  * Each entry has a pattern (for Playwright's page.route) and a match function
  * that returns a MockResponse or null.
@@ -623,6 +669,7 @@ const routes = [
   },
   { name: 'Gravatar API', pattern: 'https://www.gravatar.com/**', match: matchGravatarApi },
   { name: 'GitHub API', pattern: 'https://api.github.com/**', match: matchGitHubApi },
+  { name: 'Microlink API', pattern: 'https://api.microlink.io/**', match: matchMicrolinkApi },
   { name: 'UNGH API', pattern: 'https://ungh.cc/**', match: matchUnghApi },
   {
     name: 'Constellation API',

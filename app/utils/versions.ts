@@ -1,19 +1,8 @@
-import { compare, satisfies, validRange, valid } from 'semver'
+import { compare, normalizeRange, satisfies, tryParse } from 'verkit'
 
 /**
  * Utilities for handling npm package versions and dist-tags
  */
-
-/**
- * Check if a version string is an exact semver version.
- * Returns true for "1.2.3", "1.0.0-beta.1", etc.
- * Returns false for ranges like "^1.2.3", ">=1.0.0", tags like "latest", etc.
- * @param version - The version string to check
- * @returns true if the version is an exact semver version
- */
-export function isExactVersion(version: string): boolean {
-  return valid(version) !== null
-}
 
 /** Parsed semver version components */
 export interface ParsedVersion {
@@ -24,18 +13,21 @@ export interface ParsedVersion {
 }
 
 /**
- * Parse a semver version string into its components
+ * Parse a semver stable version string into its components
  * @param version - The version string (e.g., "1.2.3" or "1.0.0-beta.1")
- * @returns Parsed version object with major, minor, patch, and prerelease
+ * @returns Parsed version object with major, minor, patch or null
  */
-export function parseVersion(version: string): ParsedVersion {
-  const match = version.match(/^(\d+)\.(\d+)\.(\d+)(?:-(.+))?/)
-  if (!match) return { major: 0, minor: 0, patch: 0, prerelease: '' }
+export function parseStableVersion(version: string): Omit<ParsedVersion, 'prerelease'> | null {
+  const parsedVersion = tryParse(version)
+
+  if (!parsedVersion || parsedVersion.prerelease?.length) {
+    return null
+  }
+
   return {
-    major: Number(match[1]),
-    minor: Number(match[2]),
-    patch: Number(match[3]),
-    prerelease: match[4] ?? '',
+    major: parsedVersion.major,
+    minor: parsedVersion.minor,
+    patch: parsedVersion.patch,
   }
 }
 
@@ -45,9 +37,9 @@ export function parseVersion(version: string): ParsedVersion {
  * @returns The channel name (e.g., "beta") or empty string for stable versions
  */
 export function getPrereleaseChannel(version: string): string {
-  const parsed = parseVersion(version)
-  if (!parsed.prerelease) return ''
-  const match = parsed.prerelease.match(/^([a-z]+)/i)
+  const tag = tryParse(version)?.prerelease?.[0]
+  if (!tag) return ''
+  const match = String(tag).match(/^([a-z]+)/i)
   return match ? match[1]!.toLowerCase() : ''
 }
 
@@ -116,19 +108,6 @@ export function compareVersionGroupKeys(a: string, b: string): number {
   const [majorB, minorB] = b.split('.').map(Number)
   if (majorA !== majorB) return (majorB ?? 0) - (majorA ?? 0)
   return (minorB ?? -1) - (minorA ?? -1)
-}
-
-/**
- * Sort tags with 'latest' first, then alphabetically
- * @param tags - Array of tag names
- * @returns New sorted array
- */
-export function sortTags(tags: string[]): string[] {
-  return [...tags].sort((a, b) => {
-    if (a === 'latest') return -1
-    if (b === 'latest') return 1
-    return a.localeCompare(b)
-  })
 }
 
 /**
@@ -214,7 +193,8 @@ export function filterExcludedTags(tags: string[], excludeTags: string[]): strin
  * @returns A grouping key string (e.g., "0.9", "1")
  */
 export function getVersionGroupKey(version: string): string {
-  const parsed = parseVersion(version)
+  const parsed = tryParse(version)
+  if (!parsed) return '0.0'
   if (parsed.major === 0) {
     // For 0.x versions, group by major.minor
     return `0.${parsed.minor}`
@@ -262,7 +242,7 @@ export function filterVersions(versions: string[], range: string): Set<string> {
     return new Set(versions)
   }
 
-  if (!validRange(trimmed)) {
+  if (!normalizeRange(trimmed)) {
     return new Set()
   }
 

@@ -5,8 +5,8 @@ export const BaseStyles = html`
     :root {
       /** Fonts */
       --ln-font-fallback:
-        -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji,
-        Segoe UI Emoji;
+        -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif,
+        Apple Color Emoji, Segoe UI Emoji;
       --ln-font-body: 'Geist', 'IBM Plex Sans Arabic', var(--ln-font-fallback);
       --ln-font-mono: 'Geist Mono', 'IBM Plex Sans Arabic', monospace;
 
@@ -172,7 +172,7 @@ export const BaseStyles = html`
       margin-left: 1rem;
     }
 
-    /* Progress deatils per locale */
+    /* Progress details per locale */
     .progress-details {
       border: 1px solid var(--ln-color-gray-6);
       margin-bottom: 1.25rem;
@@ -318,6 +318,7 @@ export const CustomStyles = html`
       --border: oklch(26.9% 0 0);
       --border-subtle: oklch(23.9% 0 0);
       --border-hover: oklch(37.1% 0 0);
+      --border-elevated: oklch(31.9% 0 0);
 
       --ln-color-table-background: var(--bg-subtle);
       --ln-color-table-border: var(--border);

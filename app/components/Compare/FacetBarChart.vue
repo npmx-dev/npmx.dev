@@ -1,14 +1,19 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { VueUiHorizontalBar } from 'vue-data-ui/vue-ui-horizontal-bar'
+import {
+  VueUiHorizontalBar,
+  type VueUiHorizontalBarConfig,
+  type VueUiHorizontalBarDatasetItem,
+} from 'vue-data-ui/vue-ui-horizontal-bar'
 import { VueUiPatternSeed } from 'vue-data-ui/vue-ui-pattern-seed'
-import type { VueUiHorizontalBarConfig, VueUiHorizontalBarDatasetItem } from 'vue-data-ui'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
 import { createPatternDef } from 'vue-data-ui/utils'
 import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
+import { useColors } from '~/composables/useColors'
+import { downloadFileLink } from '~/utils/download'
+import { useCopyChartPng } from '~/composables/useCopyChartPng'
 
 import {
-  loadFile,
   insertLineBreaks,
   sanitise,
   applyEllipsis,
@@ -31,29 +36,15 @@ const resolvedMode = shallowRef<'light' | 'dark'>('light')
 const rootEl = shallowRef<HTMLElement | null>(null)
 const { width } = useElementSize(rootEl)
 const { copy, copied } = useClipboard()
+const chartRef = useTemplateRef('chartRef')
+const { copiedPng, isCopyingPng, copyChartPng } = useCopyChartPng(chartRef)
 
 const mobileBreakpointWidth = 640
 const isMobile = computed(() => width.value > 0 && width.value < mobileBreakpointWidth)
 
 const chartKey = ref(0)
 
-const { colors } = useCssVariables(
-  [
-    '--bg',
-    '--fg',
-    '--bg-subtle',
-    '--bg-elevated',
-    '--fg-subtle',
-    '--fg-muted',
-    '--border',
-    '--border-subtle',
-  ],
-  {
-    element: rootEl,
-    watchHtmlAttributes: true,
-    watchResize: false,
-  },
-)
+const { colors } = useColors(rootEl)
 
 const watermarkColors = computed(() => ({
   fg: colors.value.fg ?? OKLCH_NEUTRAL_FALLBACK,
@@ -142,13 +133,13 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
         img: args => {
           const imageUri = args?.imageUri
           if (!imageUri) return
-          loadFile(imageUri, buildExportFilename('png'))
+          downloadFileLink(imageUri, buildExportFilename('png'))
         },
         svg: args => {
           const blob = args?.blob
           if (!blob) return
           const url = URL.createObjectURL(blob)
-          loadFile(url, buildExportFilename('svg'))
+          downloadFileLink(url, buildExportFilename('svg'))
           URL.revokeObjectURL(url)
         },
         altCopy: ({ dataset: dst, config: cfg }) => {
@@ -164,12 +155,16 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
           })
         },
       },
+      useCursorPointer: true,
     },
     skeletonDataset: skeletonDataset.value,
     skeletonConfig: {
       style: {
         chart: {
           backgroundColor: colors.value.bg,
+          legend: {
+            show: false,
+          },
         },
       },
     },
@@ -278,8 +273,8 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
 
 <template>
   <div class="font-mono facet-bar">
-    <ClientOnly v-if="dataset.length">
-      <VueUiHorizontalBar :key="chartKey" :dataset :config class="[direction:ltr]">
+    <ClientOnly v-if="packages.length">
+      <VueUiHorizontalBar ref="chartRef" :key="chartKey" :dataset :config class="[direction:ltr]">
         <template #hint="{ isVisible }">
           <p v-if="isVisible" class="text-accent text-xs pt-2" aria-hidden="true">
             {{ $t('compare.packages.bar_chart_nav_hint') }}
@@ -301,7 +296,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
 
         <template #svg="{ svg }">
           <g
-            v-if="svg.isPrintingSvg || svg.isPrintingImg"
+            v-if="svg.isPrintingSvg || svg.isPrintingImg || isCopyingPng"
             v-html="
               drawSmallNpmxLogoAndTaglineWatermark({
                 svg,
@@ -319,6 +314,10 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
 
         <template #optionCsv>
           <span class="text-fg-subtle font-mono pointer-events-none">CSV</span>
+        </template>
+
+        <template #custom-menu-before>
+          <ChartCopyPngButton :copied="copiedPng" :copying="isCopyingPng" @click="copyChartPng" />
         </template>
 
         <template #optionImg>
@@ -339,40 +338,25 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
             aria-hidden="true"
           />
         </template>
+
+        <template #skeleton>
+          <!-- This empty div overrides the default built-in scanning animation on load -->
+          <div></div>
+        </template>
       </VueUiHorizontalBar>
-
-      <template #fallback>
-        <div class="flex flex-col gap-2 justify-center items-center mb-2">
-          <SkeletonInline class="h-4 w-16" />
-          <SkeletonInline class="h-4 w-28" />
-        </div>
-        <div class="flex flex-col gap-1">
-          <SkeletonInline class="h-7 w-full" v-for="pkg in packages" :key="pkg" />
-        </div>
-      </template>
     </ClientOnly>
-
-    <template v-else>
-      <div class="flex flex-col gap-2 justify-center items-center mb-2">
-        <SkeletonInline class="h-4 w-16" />
-        <SkeletonInline class="h-4 w-28" />
-      </div>
-      <div class="flex flex-col gap-1">
-        <SkeletonInline class="h-7 w-full" v-for="pkg in packages" :key="pkg" />
-      </div>
-    </template>
   </div>
 </template>
 
 <style scoped>
 :deep(.vue-data-ui-component svg:focus-visible) {
-  outline: 1px solid var(--accent-color) !important;
+  outline: 1px solid var(--accent) !important;
   border-radius: 0.1rem;
   outline-offset: 3px !important;
 }
 :deep(.vue-ui-user-options-button:focus-visible),
 :deep(.vue-ui-user-options :first-child:focus-visible) {
-  outline: 0.1rem solid var(--accent-color) !important;
+  outline: 0.1rem solid var(--accent) !important;
   border-radius: 0.25rem;
 }
 </style>

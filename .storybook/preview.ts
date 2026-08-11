@@ -4,21 +4,12 @@ import { addons } from 'storybook/preview-api'
 import { currentLocales } from '../config/i18n'
 import { fn } from 'storybook/test'
 import { ACCENT_COLORS } from '../shared/utils/constants'
+import { mswLoader } from 'msw-storybook-addon/csf3'
 
 import npmxDark from './theme'
 
-// related: https://github.com/npmx-dev/npmx.dev/blob/1431d24be555bca5e1ae6264434d49ca15173c43/test/nuxt/setup.ts#L12-L26
-// Stub Nuxt specific globals
 // @ts-expect-error - dynamic global name
-globalThis['__NUXT_COLOR_MODE__'] ??= {
-  preference: 'system',
-  value: 'dark',
-  getColorScheme: fn(() => 'dark'),
-  addColorScheme: fn(),
-  removeColorScheme: fn(),
-}
-// @ts-expect-error - dynamic global name
-globalThis.defineOgImageComponent = fn()
+globalThis.defineOgImage = fn()
 
 // Subscribe to locale changes from storybook-i18n addon (once, outside decorator)
 let currentI18nInstance: any = null
@@ -76,10 +67,15 @@ const preview: Preview = {
       attributeName: 'data-theme',
     }),
     (story, context) => {
-      const { accentColor, locale } = context.globals as {
+      const { accentColor, locale, theme } = context.globals as {
         accentColor?: string
         locale?: string
+        theme?: string
       }
+
+      const themeClass = theme === 'Light' ? 'light' : 'dark'
+      document.documentElement.classList.remove('light', 'dark')
+      document.documentElement.classList.add(themeClass)
 
       // Set accent color from globals
       if (accentColor) {
@@ -102,6 +98,7 @@ const preview: Preview = {
       }
     },
   ],
+  loaders: [mswLoader()],
 }
 
 export default preview

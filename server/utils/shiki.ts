@@ -3,6 +3,7 @@ import { createHighlighterCore, type HighlighterCore } from 'shiki/core'
 import { createJavaScriptRegexEngine } from 'shiki/engine/javascript'
 
 let highlighter: HighlighterCore | null = null
+let highlighterPromise: Promise<HighlighterCore> | null = null
 
 function replaceThemeColors(
   theme: ThemeRegistration,
@@ -18,65 +19,76 @@ function replaceThemeColors(
 }
 
 export async function getShikiHighlighter(): Promise<HighlighterCore> {
-  if (!highlighter) {
-    highlighter = await createHighlighterCore({
-      themes: [
-        import('@shikijs/themes/github-dark'),
-        import('@shikijs/themes/github-light').then(t =>
-          replaceThemeColors(t.default ?? t, {
-            '#22863A': '#227436', // green
-            '#E36209': '#BA4D02', // orange
-            '#D73A49': '#CD3443', // red
-            '#B31D28': '#AC222F', // red
-          }),
-        ),
-      ],
-      langs: [
-        // Core web languages
-        import('@shikijs/langs/javascript'),
-        import('@shikijs/langs/typescript'),
-        import('@shikijs/langs/json'),
-        import('@shikijs/langs/jsonc'),
-        import('@shikijs/langs/html'),
-        import('@shikijs/langs/css'),
-        import('@shikijs/langs/scss'),
-        import('@shikijs/langs/less'),
-
-        // Frameworks
-        import('@shikijs/langs/vue'),
-        import('@shikijs/langs/jsx'),
-        import('@shikijs/langs/tsx'),
-        import('@shikijs/langs/svelte'),
-        import('@shikijs/langs/astro'),
-        import('@shikijs/langs/glimmer-js'),
-        import('@shikijs/langs/glimmer-ts'),
-
-        // Shell/CLI
-        import('@shikijs/langs/bash'),
-        import('@shikijs/langs/shell'),
-
-        // Config/Data formats
-        import('@shikijs/langs/yaml'),
-        import('@shikijs/langs/toml'),
-        import('@shikijs/langs/xml'),
-        import('@shikijs/langs/markdown'),
-
-        // Other languages
-        import('@shikijs/langs/diff'),
-        import('@shikijs/langs/sql'),
-        import('@shikijs/langs/graphql'),
-        import('@shikijs/langs/python'),
-        import('@shikijs/langs/rust'),
-        import('@shikijs/langs/go'),
-      ],
-      langAlias: {
-        gjs: 'glimmer-js',
-        gts: 'glimmer-ts',
-      },
-      engine: createJavaScriptRegexEngine(),
-    })
+  if (highlighter) {
+    return highlighter
   }
-  return highlighter
+
+  highlighterPromise ??= createHighlighterCore({
+    themes: [
+      import('@shikijs/themes/github-dark'),
+      import('@shikijs/themes/github-light').then(t =>
+        replaceThemeColors(t.default ?? t, {
+          '#22863A': '#227436', // green
+          '#E36209': '#BA4D02', // orange
+          '#D73A49': '#CD3443', // red
+          '#B31D28': '#AC222F', // red
+        }),
+      ),
+    ],
+    langs: [
+      // Core web languages
+      import('@shikijs/langs/javascript'),
+      import('@shikijs/langs/typescript'),
+      import('@shikijs/langs/json'),
+      import('@shikijs/langs/jsonc'),
+      import('@shikijs/langs/html'),
+      import('@shikijs/langs/css'),
+      import('@shikijs/langs/scss'),
+      import('@shikijs/langs/less'),
+
+      // Frameworks
+      import('@shikijs/langs/vue'),
+      import('@shikijs/langs/jsx'),
+      import('@shikijs/langs/tsx'),
+      import('@shikijs/langs/svelte'),
+      import('@shikijs/langs/astro'),
+      import('@shikijs/langs/glimmer-js'),
+      import('@shikijs/langs/glimmer-ts'),
+
+      // Shell/CLI
+      import('@shikijs/langs/bash'),
+      import('@shikijs/langs/shell'),
+
+      // Config/Data formats
+      import('@shikijs/langs/yaml'),
+      import('@shikijs/langs/toml'),
+      import('@shikijs/langs/xml'),
+      import('@shikijs/langs/markdown'),
+
+      // Other languages
+      import('@shikijs/langs/diff'),
+      import('@shikijs/langs/sql'),
+      import('@shikijs/langs/graphql'),
+      import('@shikijs/langs/python'),
+      import('@shikijs/langs/rust'),
+      import('@shikijs/langs/go'),
+    ],
+    langAlias: {
+      gjs: 'glimmer-js',
+      gts: 'glimmer-ts',
+    },
+    engine: createJavaScriptRegexEngine(),
+  })
+    .then(createdHighlighter => {
+      highlighter = createdHighlighter
+      return createdHighlighter
+    })
+    .catch(error => {
+      highlighterPromise = null
+      throw error
+    })
+
+  return highlighterPromise
 }
 
 /**

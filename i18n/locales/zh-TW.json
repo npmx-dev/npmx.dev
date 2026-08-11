@@ -312,8 +312,6 @@
     "warnings": "警告：",
     "go_back_home": "回到首頁",
     "per_week": "/ 週",
-    "yes": "是",
-    "no": "否",
     "vanity_downloads_hint": "顯示下載量：未顯示套件 | 顯示下載量：顯示的套件 | 顯示下載量：顯示的 {count} 個套件總和",
     "sort": {
       "name": "名稱",
@@ -340,7 +338,9 @@
       "tangled": "在 Tangled 上檢視"
     },
     "collapse": "收合",
-    "expand": "展開"
+    "collapse_with_name": "收合 {name}",
+    "expand": "展開",
+    "expand_with_name": "展開 {name}"
   },
   "profile": {
     "display_name": "顯示名稱",
@@ -378,16 +378,13 @@
       "size": "安裝大小增加了 {percent}（多出 {size}）",
       "deps": "增加了 {count} 個相依套件"
     },
+    "size_decrease": {},
     "replacement": {
       "title": "你可能不需要這個相依套件。",
       "native": "此功能自 Node.js {nodeVersion} 起已內建，可直接使用 {replacement} 取代。",
-      "simple": "社群標記此套件為冗餘，建議改用：{replacement}。",
-      "documented": "社群標記此套件有更高效能的替代方案",
       "none": "此套件已被標記為不再需要，其功能很可能已由所有引擎原生提供。",
       "learn_more": "了解更多",
       "learn_more_above": "參閱上方說明",
-      "mdn": "MDN",
-      "community": "社群",
       "consider_no_dep": "+ 考慮不使用相依套件？"
     },
     "stats": {
@@ -526,7 +523,6 @@
       "view_all": "檢視全部 {count} 個版本",
       "view_all_versions": "檢視全部版本",
       "distribution_title": "語義化版本群組",
-      "distribution_modal_title": "版本",
       "distribution_range_date_same_year": "從 {from} 至 {to}, {endYear}",
       "distribution_range_date_multiple_years": "從 {from}, {startYear} 至 {to}, {endYear}",
       "grouping_major": "主",
@@ -555,6 +551,11 @@
       "page_title": "版本歷史記錄",
       "current_tags": "當前標籤",
       "no_match_filter": "沒有版本符合 {filter}"
+    },
+    "timeline": {
+      "chart": {
+        "copy_alt": {}
+      }
     },
     "dependencies": {
       "title": "相依（{count} 個）",
@@ -660,6 +661,7 @@
     },
     "downloads": {
       "title": "每週下載量",
+      "version_distribution_title": "{version} 每週下載量",
       "community_distribution": "檢視社群採用分布",
       "subtitle": "所有版本",
       "sparkline_nav_hint": "使用 ← →"
@@ -757,6 +759,9 @@
       "button": "下載",
       "tarball": "下載 Tarball（.tar.gz）"
     }
+  },
+  "leaderboard": {
+    "likes": {}
   },
   "connector": {
     "modal": {
@@ -1118,7 +1123,6 @@
     },
     "team": {
       "title": "團隊",
-      "governance": "治理",
       "role_steward": "管理者",
       "role_maintainer": "維護者",
       "sponsor": "贊助",
@@ -1235,30 +1239,16 @@
       "packages_selected": "已選擇 {count}/{max} 個套件。",
       "add_hint": "至少新增 2 個套件以進行比較。"
     },
-    "quadrant_chart": {
-      "label_x_axis": "採用度",
-      "label_y_axis": "效率",
-      "label_top_right": "高價值",
-      "label_bottom_right": "熱門但偏重",
-      "label_bottom_left": "低價值",
-      "label_top_left": "有潛力",
-      "title": "套件採用度 vs 效率",
-      "filename": "套件-採用度-vs-效率-矩陣",
-      "label_freshness_score": "新鮮度",
+    "scatter_chart": {
+      "title": "比較 {x} 與 {y}",
+      "freshness_score": "新鮮度分數",
       "copy_alt": {
-        "description": "{packages} 套件的採用度與效率四象限圖。{analysis}。{watermark}。",
-        "side_analysis_top_right": "位於右上象限（高價值）的套件：{packages}",
-        "side_analysis_top_left": "位於左上象限（有潛力）的套件：{packages}",
-        "side_analysis_bottom_right": "位於右下象限（熱門但偏重）的套件：{packages}",
-        "side_analysis_bottom_left": "位於左下象限（低價值）的套件：{packages}"
+        "analysis": "{package} : {x_name} ({x_value}) 與 {y_name} ({y_value})",
+        "description": "散佈圖：顯示 {x_name} 與 {y_name} 的比較結果。 {analysis}。 {watermark}"
       },
-      "explanation": {
-        "tooltip_help": "查看評分說明",
-        "introduction": "分數由多種訊號組合成兩個維度計算得出：",
-        "adoption": "採用度：反映使用和活躍情況（下載量、更新頻率、點讚數）",
-        "efficiency": "效率：反映體積和品質（安裝大小、依賴項數量、漏洞情況、型別支援）",
-        "impact_details": "各指標權重不同。下載量和安裝大小等強訊號影響最大，其他訊號用於微調。部分訊號（如漏洞或棄用）會扣減分數。"
-      }
+      "filename": "{x}-vs-{y}-散佈圖",
+      "x_axis": "X 軸 ↦",
+      "y_axis": "Y 軸 ↥"
     },
     "no_dependency": {
       "label": "(無相依套件)",
@@ -1338,7 +1328,10 @@
         "vulnerabilities": {
           "label": "漏洞",
           "description": "已知安全漏洞"
-        }
+        },
+        "githubStars": {},
+        "githubIssues": {},
+        "createdAt": {}
       },
       "values": {
         "any": "不限",
@@ -1358,8 +1351,6 @@
     "file_changes": "檔案變更",
     "files_count": "{count} 個檔案",
     "lines_hidden": "已隱藏 {count} 行",
-    "file_too_large": "檔案大小過大，無法比較",
-    "file_size_warning": "檔案大小 {size} 超過 250KB，無法比較",
     "compare_versions": "差異",
     "compare_versions_title": "比較最新版本",
     "comparing_versions_label": "正在比較版本…",
@@ -1660,5 +1651,8 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "一個可愛、圓潤且色彩繽紛的 npmx 標誌版本。"
+  "alt_logo_kawaii": "一個可愛、圓潤且色彩繽紛的 npmx 標誌版本。",
+  "changelog": {
+    "error": {}
+  }
 }

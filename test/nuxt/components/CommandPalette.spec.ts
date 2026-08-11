@@ -98,6 +98,17 @@ describe('CommandPalette', () => {
     expect(input?.getAttribute('aria-controls')).toBe('command-palette-modal-results')
   })
 
+  it('shows keyboard shortcut hints in the command palette', async () => {
+    await mountPalette()
+
+    const shortcuts = document.querySelector('[data-command-palette-keyboard-shortcuts="true"]')
+
+    expect(shortcuts).not.toBeNull()
+    expect(shortcuts?.textContent).toContain('to navigate')
+    expect(shortcuts?.textContent).toContain('to select')
+    expect(shortcuts?.textContent).toContain('to close')
+  })
+
   it('updates the live region when the query changes', async () => {
     await mountPalette()
 
@@ -143,6 +154,10 @@ describe('CommandPalette', () => {
     commandPalette!.setView('background-themes')
     await nextTick()
     expect(input?.getAttribute('placeholder')).toBe('Background shade')
+
+    commandPalette!.setView('foreground-themes')
+    await nextTick()
+    expect(input?.getAttribute('placeholder')).toBe('Foreground shade')
   })
 
   it('renders navigation and external commands as links', async () => {
@@ -167,10 +182,14 @@ describe('CommandPalette', () => {
     const backgroundPreview = document.querySelector(
       '[data-command-id="background-themes"] [data-command-preview="true"]',
     )
+    const foregroundPreview = document.querySelector(
+      '[data-command-id="foreground-themes"] [data-command-preview="true"]',
+    )
 
     // No accent color or background theme set by default, so no preview swatches
     expect(accentPreview).toBeNull()
     expect(backgroundPreview).toBeNull()
+    expect(foregroundPreview).toBeNull()
   })
 
   it('announces setting changes after the palette closes', async () => {
@@ -291,6 +310,7 @@ describe('CommandPalette', () => {
     expect(commandIds).toContain('relative-dates')
     expect(commandIds).toContain('accent-colors')
     expect(commandIds).toContain('background-themes')
+    expect(commandIds).toContain('foreground-themes')
   })
 
   it('closes on route changes and restores focus to the previous element', async () => {

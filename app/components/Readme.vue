@@ -89,6 +89,7 @@ function handleClick(event: MouseEvent) {
   min-width: 0;
   /* Contain all children z-index values inside this container */
   isolation: isolate;
+  contain: layout paint;
 }
 
 /* README headings - styled by visual level (data-level), not semantic level */
@@ -164,7 +165,8 @@ function handleClick(event: MouseEvent) {
   font-size: 0.75em;
 }
 
-.readme :deep(:is(h1, h2, h3, h4, h5, h6) a[href^='#']:hover::after) {
+.readme
+  :deep(:is(h1, h2, h3, h4, h5, h6):is(:hover, :focus-visible, :focus-within) a[href^='#']::after) {
   @apply opacity-100;
 }
 
@@ -279,6 +281,14 @@ function handleClick(event: MouseEvent) {
   margin: 1.5rem 0;
   color: var(--fg-subtle);
   font-style: italic;
+}
+
+.readme :deep(dt) {
+  margin-block-start: 0.5rem;
+}
+
+.readme :deep(dd) {
+  padding-inline-start: 1.5rem;
 }
 
 /* GitHub-style callouts/alerts */
@@ -443,6 +453,11 @@ function handleClick(event: MouseEvent) {
   z-index: 1;
 }
 
+/* With defined width, height will be automatically calculated using the aspect ratio */
+.readme :deep(img[width]) {
+  height: auto;
+}
+
 .readme :deep(video) {
   height: revert-layer;
   display: revert-layer;
@@ -486,6 +501,20 @@ function handleClick(event: MouseEvent) {
   summary {
     font-size: 1rem;
     color: var(--fg-muted);
+
+    /* Markdown often wraps headings/paragraphs inside <summary>, which
+       forces them onto new lines. Inline them so the disclosure marker
+       sits next to the label while preserving heading styles. */
+    > h1,
+    > h2,
+    > h3,
+    > h4,
+    > h5,
+    > h6,
+    > p {
+      display: inline;
+      margin: 0;
+    }
   }
 }
 </style>

@@ -21,7 +21,7 @@ const resolvedTabId = computed(() => getTabId(props.value))
 
 <template>
   <div
-    v-show="isSelected"
+    v-if="isSelected"
     :id="resolvedPanelId"
     role="tabpanel"
     :aria-labelledby="resolvedTabId"

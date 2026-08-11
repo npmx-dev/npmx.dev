@@ -12,6 +12,7 @@ import type {
 } from './types.ts'
 
 // Endpoint completeness check — errors if this list diverges from ConnectorEndpoints.
+// oxlint-disable-next-line eslint/no-underscore-dangle
 const _endpointCheck: AssertEndpointsImplemented<
   | 'POST /connect'
   | 'GET /state'
@@ -809,9 +810,7 @@ async function executeOperation(
       result = await ownerRemove(params.user, params.pkg, execOptions)
       break
     case 'package:init':
-      // package:init has its own special execution path (temp dir + publish)
-      // and does not support interactive mode
-      result = await packageInit(params.name, params.author, options.otp)
+      result = await packageInit(params.name, params.author, execOptions)
       break
     default:
       return {

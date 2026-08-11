@@ -79,8 +79,8 @@ function getDepVersionTooltip(dep: string, version: string) {
 function getDepVersionClass(dep: string) {
   const outdated = outdatedDeps.value[dep]
   if (outdated) return getVersionClass(outdated)
-  if (getVulnerableDepInfo(dep) || getDeprecatedDepInfo(dep)) return getVersionClass(undefined)
   if (replacementDeps.value[dep]) return 'text-amber-700 dark:text-amber-500'
+  if (getVulnerableDepInfo(dep) || getDeprecatedDepInfo(dep)) return getVersionClass(undefined)
   return getVersionClass(undefined)
 }
 
@@ -142,7 +142,7 @@ const numberFormatter = useNumberFormatter()
                 class="inline-flex items-center justify-center p-2 -m-2"
                 :aria-label="getOutdatedTooltip(outdatedDeps[dep], $t)"
               >
-                <span class="i-lucide:circle-alert w-3 h-3" aria-hidden="true" />
+                <span class="i-lucide:arrow-up w-3 h-3" aria-hidden="true" />
               </button>
             </TooltipApp>
             <TooltipApp
@@ -163,24 +163,22 @@ const numberFormatter = useNumberFormatter()
               :to="packageRoute(dep, getVulnerableDepInfo(dep)!.version)"
               class="shrink-0"
               :class="SEVERITY_TEXT_COLORS[getHighestSeverity(getVulnerableDepInfo(dep)!.counts)]"
+              :aria-label="$t('package.dependencies.view_vulnerabilities')"
               :title="
                 $t('package.dependencies.vulnerabilities_count', {
                   count: getVulnerableDepInfo(dep)!.counts.total,
                 })
               "
               classicon="i-lucide:shield-check"
-            >
-              <span class="sr-only">{{ $t('package.dependencies.view_vulnerabilities') }}</span>
-            </LinkBase>
+            />
             <LinkBase
               v-if="getDeprecatedDepInfo(dep)"
               :to="packageRoute(dep, getDeprecatedDepInfo(dep)!.version)"
               class="shrink-0 text-purple-700 dark:text-purple-500"
+              :aria-label="$t('package.deprecated.label')"
               :title="getDeprecatedDepInfo(dep)!.message"
               classicon="i-lucide:octagon-alert"
-            >
-              <span class="sr-only">{{ $t('package.deprecated.label') }}</span>
-            </LinkBase>
+            />
             <LinkBase
               :to="packageRoute(dep, version)"
               class="block truncate"
@@ -240,16 +238,20 @@ const numberFormatter = useNumberFormatter()
           class="flex items-center justify-between py-1 text-sm gap-1 min-w-0"
         >
           <div class="flex items-center gap-2 min-w-0 flex-1">
-            <LinkBase :to="packageRoute(peer.name)" class="block max-w-[70%] break-words" dir="ltr">
+            <LinkBase :to="packageRoute(peer.name)" class="block min-w-0 break-all" dir="ltr">
               {{ peer.name }}
             </LinkBase>
-            <TagStatic v-if="peer.optional" :title="$t('package.dependencies.optional')">
+            <TagStatic
+              v-if="peer.optional"
+              :title="$t('package.dependencies.optional')"
+              class="shrink-0"
+            >
               {{ $t('package.dependencies.optional') }}
             </TagStatic>
           </div>
           <LinkBase
             :to="packageRoute(peer.name, peer.version)"
-            class="block truncate max-w-[30%]"
+            class="block truncate shrink-0 max-w-20"
             :title="peer.version"
             dir="ltr"
           >
