@@ -5,7 +5,7 @@ import { onKeyDown } from '@vueuse/core'
 import { debounce } from 'perfect-debounce'
 import { isValidNewPackageName } from '~/utils/package-name'
 import { isPlatformSpecificPackage } from '~/utils/platform-packages'
-import { parsePackageSpecifier } from '#shared/utils/parse-package-param'
+import { parsePackageSpec } from '#shared/utils/parse-package-param'
 import { normalizeSearchParam } from '#shared/utils/url'
 
 definePageMeta({
@@ -501,7 +501,7 @@ function handleResultsKeydown(e: KeyboardEvent) {
     if (!inputValue) return
 
     // Handle "pkg@version" format (e.g. "esbuild@0.25.12", "@angular/core@^18")
-    const { name, version } = parsePackageSpecifier(inputValue)
+    const { name, version } = parsePackageSpec(inputValue)
     if (version) {
       return navigateTo(packageRoute(name, version))
     }
