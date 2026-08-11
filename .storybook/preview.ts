@@ -67,10 +67,15 @@ const preview: Preview = {
       attributeName: 'data-theme',
     }),
     (story, context) => {
-      const { accentColor, locale } = context.globals as {
+      const { accentColor, locale, theme } = context.globals as {
         accentColor?: string
         locale?: string
+        theme?: string
       }
+
+      const themeClass = theme === 'Light' ? 'light' : 'dark'
+      document.documentElement.classList.remove('light', 'dark')
+      document.documentElement.classList.add(themeClass)
 
       // Set accent color from globals
       if (accentColor) {

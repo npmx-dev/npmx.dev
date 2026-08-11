@@ -12,6 +12,8 @@ describe('isPossiblyUnnecessaryContent', () => {
     expect(isPossiblyUnnecessaryContent('.npmignore', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('tsconfig.json', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('jsconfig.json', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('commitlint.config.js', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('renovate.json', 'file')).toBe(true)
   })
 
   it('flags local environment files', () => {
@@ -36,6 +38,7 @@ describe('isPossiblyUnnecessaryContent', () => {
   it('flags editor and CI files', () => {
     expect(isPossiblyUnnecessaryContent('.travis.yml', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('.verb.md', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('.borp.yaml', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('Makefile', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('.DS_Store', 'file')).toBe(true)
   })
@@ -176,6 +179,7 @@ describe('isPossiblyUnnecessaryContent', () => {
 
   it('flags development directories', () => {
     expect(isPossiblyUnnecessaryContent('benchmark', 'directory')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('benchmarks', 'directory')).toBe(true)
   })
 
   it('flags example directories', () => {
