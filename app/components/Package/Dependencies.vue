@@ -142,7 +142,7 @@ const numberFormatter = useNumberFormatter()
                 class="inline-flex items-center justify-center p-2 -m-2"
                 :aria-label="getOutdatedTooltip(outdatedDeps[dep], $t)"
               >
-                <span class="i-lucide:circle-alert w-3 h-3" aria-hidden="true" />
+                <span class="i-lucide:arrow-up w-3 h-3" aria-hidden="true" />
               </button>
             </TooltipApp>
             <TooltipApp

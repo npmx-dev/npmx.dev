@@ -1,5 +1,5 @@
 import { mapWithConcurrency } from '#shared/utils/async'
-import { maxSatisfying } from 'semver'
+import { findMaxSatisfying } from 'verkit'
 
 /** Concurrency limit for fetching packuments during dependency resolution */
 const PACKUMENT_FETCH_CONCURRENCY = 20
@@ -90,7 +90,7 @@ export function resolveVersion(range: string, versions: string[]): string | null
     return null
   }
 
-  return maxSatisfying(versions, range)
+  return findMaxSatisfying(versions, range)
 }
 
 /** Resolved package info */

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { compare, validRange } from 'semver'
+import { compare, normalizeRange } from 'verkit'
 import type { RouteLocationRaw } from 'vue-router'
 import type { TrustStatus } from 'packumeta'
 import { fetchAllPackageVersions } from '~/utils/npm/api'
@@ -55,7 +55,7 @@ const semverFilter = ref('')
 watch(semverFilter, async newFilter => {
   const trimmed = newFilter.trim()
   if (trimmed === '' || hasLoadedAll.value) return
-  if (!validRange(trimmed)) return
+  if (!normalizeRange(trimmed)) return
 
   try {
     const allVersions = await loadAllVersions()
@@ -86,7 +86,7 @@ const filteredVersionSet = computed(() =>
 )
 const isFilterActive = computed(() => semverFilter.value.trim() !== '')
 const isInvalidRange = computed(
-  () => isFilterActive.value && validRange(semverFilter.value.trim()) === null,
+  () => isFilterActive.value && normalizeRange(semverFilter.value.trim()) === null,
 )
 
 // All tag rows derived from props (SSR-safe)

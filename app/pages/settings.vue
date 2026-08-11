@@ -110,6 +110,14 @@ useSeoMeta({
               </span>
               <SettingsBgThemePicker />
             </div>
+
+            <!-- Foreground themes -->
+            <div class="space-y-3">
+              <span class="block text-sm text-fg font-medium">
+                {{ $t('settings.foreground_themes.label') }}
+              </span>
+              <SettingsFgThemePicker />
+            </div>
           </div>
         </section>
 
