@@ -396,13 +396,6 @@ useSeoMeta({
             >
               {{ tag }}
             </span>
-            <span
-              v-if="entry.deprecated"
-              class="inline-flex items-center gap-1 text-3xs font-semibold uppercase tracking-wide text-red-600 dark:text-red-400"
-            >
-              <span class="i-lucide:octagon-alert w-3 h-3 shrink-0" aria-hidden="true" />
-              {{ $t('package.timeline.deprecated') }}
-            </span>
             <DateTime
               :datetime="entry.time"
               class="text-xs text-fg-subtle"
@@ -454,7 +447,7 @@ useSeoMeta({
                 <span class="w-2 h-2 text-white i-lucide:octagon-alert" aria-hidden="true" />
               </span>
               <p class="text-xs text-red-700 dark:text-red-400">
-                {{ entry.deprecated }}
+                {{ $t('package.timeline.deprecated') }}: "{{ entry.deprecated }}"
               </p>
             </li>
           </ol>
