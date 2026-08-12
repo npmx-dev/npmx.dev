@@ -424,47 +424,31 @@ const { repositoryUrl } = useRepositoryUrl(displayVersion)
 const { repoRef } = useRepoMeta(repositoryUrl)
 
 const viewOnGitProvider = useViewOnGitProvider(() => repoRef.value?.provider)
-const rawPreviewReleasesUrl = computed(() => {
+const githubRepoRef = computed(() => {
   const ref = repoRef.value
   if (ref?.provider !== 'github' || !ref.owner || !ref.repo) return null
+  return ref
+})
+const rawPreviewReleasesUrl = computed(() => {
+  const ref = githubRepoRef.value
+  if (!ref) return null
 
   return `https://pkg.pr.new/~/${encodeURIComponent(ref.owner)}/${encodeURIComponent(ref.repo)}`
 })
-const { data: previewReleasesAvailability } = await useAsyncData(
+const { data: previewReleasesAvailability } = useLazyFetch<{
+  hasReleases: boolean
+  url: string | null
+}>(
   () => {
-    const ref = repoRef.value
-    if (ref?.provider !== 'github' || !ref.owner || !ref.repo) return 'pkg-pr-new:none'
-    return `pkg-pr-new:${ref.owner}/${ref.repo}`
-  },
-  async () => {
-    const ref = repoRef.value
-    if (ref?.provider !== 'github' || !ref.owner || !ref.repo) {
-      return {
-        hasReleases: false,
-        url: null as string | null,
-      }
-    }
-
-    const availability = await $fetch<{ hasReleases: boolean; url: string }>(
-      '/api/registry/pkg-pr-new',
-      {
-        query: {
-          owner: ref.owner,
-          repo: ref.repo,
-        },
-      },
-    )
-
-    return {
-      hasReleases: availability.hasReleases,
-      url: availability.url,
-    }
+    const ref = githubRepoRef.value
+    if (!ref) return ''
+    return `/api/registry/pkg-pr-new?owner=${encodeURIComponent(ref.owner)}&repo=${encodeURIComponent(ref.repo)}`
   },
   {
-    watch: [repoRef],
+    watch: [githubRepoRef],
     default: () => ({
       hasReleases: false,
-      url: null as string | null,
+      url: null,
     }),
   },
 )
