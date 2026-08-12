@@ -375,7 +375,7 @@ useSeoMeta({
             :class="entry.version === version ? 'bg-accent border-accent' : 'bg-bg-subtle'"
           />
           <!-- Content -->
-          <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+          <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <LinkBase
               :to="packageRoute(entry.version)"
               class="text-sm font-medium"
