@@ -174,6 +174,19 @@ if (import.meta.client) {
 
 const bytesFormatter = useBytesFormatter()
 
+// Format a duration (in days) into a localized human-readable string
+function formatDuration(days: number): string {
+  if (days < 30) return $t('package.timeline.time_gap_days', { count: days }, days)
+  if (days < 365)
+    return $t(
+      'package.timeline.time_gap_months',
+      { count: Math.floor(days / 30) },
+      Math.floor(days / 30),
+    )
+  const years = Math.floor(days / 365)
+  return $t('package.timeline.time_gap_years', { count: years }, years)
+}
+
 // Detect notable changes between consecutive versions (size, license, ESM, types)
 // Versions are compared against their semver predecessor, not chronological neighbor,
 // so interleaved legacy releases don't produce misleading cross-line diffs.
@@ -189,10 +202,31 @@ const versionSubEvents = computed(() => {
   }
 
   for (const current of entries) {
-    const previous = prevBySemver.get(current.version)
-    if (!previous) continue
-
     const events: SubEvent[] = []
+
+    // Time gap from the previous chronological release
+    // entries are sorted newest-first by publish time, so index+1 is the predecessor
+    const chronologicalIndex = entries.indexOf(current)
+    const prevRelease = entries[chronologicalIndex + 1]
+    if (prevRelease) {
+      const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000
+      const gapMs = Date.parse(current.time) - Date.parse(prevRelease.time)
+      if (gapMs > SEVEN_DAYS_MS) {
+        const gapDays = Math.floor(gapMs / (1000 * 60 * 60 * 24))
+        events.push({
+          key: 'timeGap',
+          positive: false,
+          icon: 'i-lucide:clock',
+          text: $t('package.timeline.time_gap', { duration: formatDuration(gapDays) }),
+        })
+      }
+    }
+
+    const previous = prevBySemver.get(current.version)
+    if (!previous) {
+      if (events.length) result.set(current.version, events)
+      continue
+    }
 
     // Size changes
     const currentSize = sizeCache.get(sizeKey(current.version))

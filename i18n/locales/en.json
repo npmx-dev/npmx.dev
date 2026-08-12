@@ -647,6 +647,10 @@
       "trusted_publisher_removed": "Trusted publishing removed",
       "provenance_added": "Provenance enabled",
       "provenance_removed": "Provenance removed",
+      "time_gap": "{duration} after previous release",
+      "time_gap_days": "{count} day | {count} days",
+      "time_gap_months": "{count} month | {count} months",
+      "time_gap_years": "{count} year | {count} years",
       "chart": {
         "tab_aria_label": "Metric selection",
         "dependency_size": "Dependency Size",

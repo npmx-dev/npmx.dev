@@ -555,7 +555,11 @@
     "timeline": {
       "chart": {
         "copy_alt": {}
-      }
+      },
+      "time_gap": "距上一版本 {duration}",
+      "time_gap_days": "{count} 天",
+      "time_gap_months": "{count} 個月",
+      "time_gap_years": "{count} 年"
     },
     "dependencies": {
       "title": "相依（{count} 個）",
