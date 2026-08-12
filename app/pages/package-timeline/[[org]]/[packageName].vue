@@ -199,13 +199,11 @@ const versionSubEvents = computed(() => {
         icon: 'i-lucide:octagon-alert',
         text: `${t('package.timeline.deprecated')}: "${current.deprecated}"`,
       })
+      result.set(current.version, events)
     }
 
     const previous = prevBySemver.get(current.version)
-    if (!previous) {
-      if (events.length) result.set(current.version, events)
-      continue
-    }
+    if (!previous) continue
 
     // Size changes
     const currentSize = sizeCache.get(sizeKey(current.version))
