@@ -22,7 +22,7 @@ export interface TimelineResponse {
 
 export interface SubEvent {
   key: string
-  positive: boolean
+  state: 'success' | 'error' | 'warn'
   icon: string
   text: string
 }

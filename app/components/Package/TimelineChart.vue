@@ -70,8 +70,8 @@ function addEvaluationFlags(
     return {
       ...entry,
       events,
-      hasPositive: events.some(event => event.positive),
-      hasNegative: events.some(event => !event.positive),
+      hasPositive: events.some(event => event.state === 'success'),
+      hasNegative: events.some(event => event.state === 'warn' || event.state === 'error'),
     }
   })
 }
