@@ -53,6 +53,7 @@ overrides:
   vue-router: 5.2.0
   markdown-exit: 1.1.0-beta.2
   oxc-parser: 0.144.0
+  '@nuxtjs/i18n>@nuxt/kit': 4.5.2
 
 packageExtensionsChecksum: sha256-MLpDvxkp40Q0pRGkcNzUeHJyjDQFfGfxm/iGkXRnXJg=
 
@@ -111,10 +112,10 @@ importers:
         version: 1.0.5
       '@nuxt/a11y':
         specifier: 1.0.0-alpha.1
-        version: 1.0.0-alpha.1(@voidzero-dev/vite-plus-core@0.2.8)(magic-string@1.1.0)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)
+        version: 1.0.0-alpha.1(@voidzero-dev/vite-plus-core@0.2.8)(magic-string@0.30.21)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)
       '@nuxt/fonts':
         specifier: 0.14.0
-        version: 0.14.0(@upstash/redis@1.38.2)(@voidzero-dev/vite-plus-core@0.2.8)(db0@0.3.4)(esbuild@0.28.1)(ioredis@5.11.1)(magic-string@1.1.0)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(rollup@4.62.2)(webpack@5.108.4)
+        version: 0.14.0(@upstash/redis@1.38.2)(@voidzero-dev/vite-plus-core@0.2.8)(db0@0.3.4)(esbuild@0.28.1)(ioredis@5.11.1)(magic-string@0.30.21)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(rollup@4.62.2)(webpack@5.108.4)
       '@nuxt/scripts':
         specifier: 1.3.3
         version: 1.3.3(@unhead/vue@2.1.15)(@upstash/redis@1.38.2)(@voidzero-dev/vite-plus-core@0.2.8)(db0@0.3.4)(esbuild@0.28.1)(ioredis@5.11.1)(magicast@0.5.3)(rolldown@1.2.3)(rollup@4.62.2)(typescript-native-bridge@6.0.3-bridge.12.tsgo.7.0.2)(vue@3.5.39)(webpack@5.108.4)
@@ -123,7 +124,7 @@ importers:
         version: 4.0.3(patch_hash=8438d6588e19230d3392ce53e45dd8e9bff54eaa3ce18092602fefd40c2eefe9)(@playwright/test@1.62.1)(@voidzero-dev/vite-plus-core@0.2.8)(@vue/test-utils@2.4.11)(crossws@0.4.9)(esbuild@0.28.1)(magicast@0.5.3)(playwright-core@1.62.1)(rolldown@1.2.3)(rollup@4.62.2)(typescript-native-bridge@6.0.3-bridge.12.tsgo.7.0.2)(vitest@4.1.10)(webpack@5.108.4)
       '@nuxtjs/color-mode':
         specifier: 4.0.1
-        version: 4.0.1(magic-string@1.1.0)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)
+        version: 4.0.1(magic-string@0.30.21)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)
       '@nuxtjs/html-validator':
         specifier: 2.1.0
         version: 2.1.0(magicast@0.5.3)(vitest@4.1.10)
@@ -147,7 +148,7 @@ importers:
         version: 2.7.1(csstype@3.2.3)(react@19.2.8)
       '@unocss/nuxt':
         specifier: 66.7.5
-        version: 66.7.5(@voidzero-dev/vite-plus-core@0.2.8)(esbuild@0.28.1)(magic-string@1.1.0)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(rollup@4.62.2)(unplugin@3.3.0)(webpack@5.108.4)
+        version: 66.7.5(@voidzero-dev/vite-plus-core@0.2.8)(esbuild@0.28.1)(magic-string@0.30.21)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(rollup@4.62.2)(unplugin@3.3.0)(webpack@5.108.4)
       '@unocss/preset-wind4':
         specifier: 66.7.5
         version: 66.7.5
@@ -171,7 +172,7 @@ importers:
         version: 14.4.0(focus-trap@8.2.2)(fuse.js@7.5.0)(vue@3.5.39)
       '@vueuse/nuxt':
         specifier: 14.4.0
-        version: 14.4.0(magic-string@1.1.0)(magicast@0.5.3)(nuxt@4.4.8)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)(vue@3.5.39)
+        version: 14.4.0(magic-string@0.30.21)(magicast@0.5.3)(nuxt@4.4.8)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)(vue@3.5.39)
       '@vueuse/router':
         specifier: ^14.2.1
         version: 14.4.0(vue-router@5.2.0)(vue@3.5.39)
@@ -289,7 +290,7 @@ importers:
         version: 1.62.1
       '@storybook-vue/nuxt':
         specifier: catalog:storybook
-        version: https://pkg.pr.new/@storybook-vue/nuxt@1021(@babel/plugin-syntax-jsx@7.29.7)(@types/node@24.13.3)(@voidzero-dev/vite-plus-core@0.2.8)(@vue/compiler-sfc@3.5.40)(esbuild@0.28.1)(eslint@10.6.0)(magic-string@1.1.0)(magicast@0.5.3)(nuxt@4.4.8)(optionator@0.9.4)(oxc-parser@0.144.0)(oxlint@1.76.0)(rolldown@1.2.3)(rollup-plugin-visualizer@7.0.1)(rollup@4.62.2)(storybook@10.5.5)(supports-color@10.2.2)(terser@5.48.0)(typescript-native-bridge@6.0.3-bridge.12.tsgo.7.0.2)(unplugin@3.3.0)(vue-tsc@3.3.9)(vue@3.5.39)(webpack@5.108.4)(yaml@2.9.0)
+        version: https://pkg.pr.new/@storybook-vue/nuxt@1021(@babel/plugin-syntax-jsx@7.29.7)(@types/node@24.13.3)(@voidzero-dev/vite-plus-core@0.2.8)(@vue/compiler-sfc@3.5.40)(esbuild@0.28.1)(eslint@10.6.0)(magic-string@0.30.21)(magicast@0.5.3)(nuxt@4.4.8)(optionator@0.9.4)(oxc-parser@0.144.0)(oxlint@1.76.0)(rolldown@1.2.3)(rollup-plugin-visualizer@7.0.1)(rollup@4.62.2)(storybook@10.5.5)(supports-color@10.2.2)(terser@5.48.0)(typescript-native-bridge@6.0.3-bridge.12.tsgo.7.0.2)(unplugin@3.3.0)(vue-tsc@3.3.9)(vue@3.5.39)(webpack@5.108.4)(yaml@2.9.0)
       '@storybook/addon-a11y':
         specifier: catalog:storybook
         version: 10.5.5(storybook@10.5.5)
@@ -2577,6 +2578,10 @@ packages:
 
   '@nuxt/kit@4.5.1':
     resolution: {integrity: sha512-xDXQspE2blxaZwxwGknL/BqaIbkLizl85Ov+pbSlPPd/rw2KjJGx88RHU5SwoQNwCiSC5hWZBnVAznIsq1xNHQ==}
+    engines: {node: '>=18.12.0'}
+
+  '@nuxt/kit@4.5.2':
+    resolution: {integrity: sha512-l66LU9DcJYjmNwqwAj2I5UGRrUbnG2DOKGChnN70zIGtn0eq/z87gi/FRgha6eMb9/FmB1PFHgtx6PWVml1C2Q==}
     engines: {node: '>=18.12.0'}
 
   '@nuxt/nitro-server@4.4.8':
@@ -6798,6 +6803,9 @@ packages:
   errx@0.1.0:
     resolution: {integrity: sha512-fZmsRiDNv07K6s2KkKFTiD2aIvECa7++PKyD5NC32tpRw46qZA3sOz+aM+/V9V0GDHxVTKLziveV4JhzBHDp9Q==}
 
+  errx@0.1.2:
+    resolution: {integrity: sha512-chfpPHmCerdo/rXr/nNvPZRkV4WwDRwzwnsJ0Uzz3tVi8Z41tDctRjduYy1138ii77AFlts1qvWtX3g/Acg91Q==}
+
   es-abstract-get@1.0.0:
     resolution: {integrity: sha512-6PMWXpdhshVvFp+FoWYs1EvG1Nj0tvk0dZM+XcK0xMEM1czRVcP6ohqPWHy6qPagSpC8j4+p89WXlT+xXJs/fg==}
     engines: {node: '>= 0.4'}
@@ -6985,6 +6993,9 @@ packages:
 
   exsolve@1.1.0:
     resolution: {integrity: sha512-D+42+T12DdIlJM3uepa55qGiL3sYdLBOxIl2ifQCzCHz4c7eiolaHsi3BIqEr7JxBzxv2pYZQX9kw16ziMcEmw==}
+
+  exsolve@1.1.1:
+    resolution: {integrity: sha512-9U/jZUgjnSGyntRr6y5Muu1MJcwFl6kPu7k8qLF0IMNfLqvw0NZ4nnVDq0RVoZ0RvCyumib4Ez3KYrVfilrw+g==}
 
   extend-shallow@2.0.1:
     resolution: {integrity: sha512-zCnTtlxNoAiDc3gqY2aYAWFx7XWWiasuF2K8Me5WbN8otHKTUKBwjPtNpRs/rbUZm7KxWAaNj7P1a/p52GbVug==}
@@ -13293,10 +13304,10 @@ snapshots:
 
   '@npm/types@2.1.0': {}
 
-  '@nuxt/a11y@1.0.0-alpha.1(@voidzero-dev/vite-plus-core@0.2.8)(magic-string@1.1.0)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)':
+  '@nuxt/a11y@1.0.0-alpha.1(@voidzero-dev/vite-plus-core@0.2.8)(magic-string@0.30.21)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)':
     dependencies:
-      '@nuxt/devtools-kit': 3.2.4(@voidzero-dev/vite-plus-core@0.2.8)(magic-string@1.1.0)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)
-      '@nuxt/kit': 4.5.1(magic-string@1.1.0)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)
+      '@nuxt/devtools-kit': 3.2.4(@voidzero-dev/vite-plus-core@0.2.8)(magic-string@0.30.21)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)
+      '@nuxt/kit': 4.5.1(magic-string@0.30.21)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)
       axe-core: 4.13.0
       sirv: 3.0.2
     transitivePeerDependencies:
@@ -13581,56 +13592,6 @@ snapshots:
       - vite
       - webpack
 
-  '@nuxt/fonts@0.14.0(@upstash/redis@1.38.2)(@voidzero-dev/vite-plus-core@0.2.8)(db0@0.3.4)(esbuild@0.28.1)(ioredis@5.11.1)(magic-string@1.1.0)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(rollup@4.62.2)(webpack@5.108.4)':
-    dependencies:
-      '@nuxt/devtools-kit': 3.2.4(@voidzero-dev/vite-plus-core@0.2.8)(magic-string@1.1.0)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)
-      '@nuxt/kit': 4.5.1(magic-string@1.1.0)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)
-      consola: 3.4.2
-      defu: 6.1.7
-      fontless: 0.2.1(@upstash/redis@1.38.2)(@voidzero-dev/vite-plus-core@0.2.8)(db0@0.3.4)(ioredis@5.11.1)
-      h3: 1.15.11
-      magic-regexp: 0.10.0
-      ofetch: 1.5.1
-      pathe: 2.0.3
-      sirv: 3.0.2
-      tinyglobby: 0.2.17
-      ufo: 1.6.4
-      unifont: 0.7.4
-      unplugin: 3.3.0(@voidzero-dev/vite-plus-core@0.2.8)(esbuild@0.28.1)(rolldown@1.2.3)(rollup@4.62.2)(webpack@5.108.4)
-      unstorage: 1.17.5(@upstash/redis@1.38.2)(db0@0.3.4)(ioredis@5.11.1)
-    transitivePeerDependencies:
-      - '@azure/app-configuration'
-      - '@azure/cosmos'
-      - '@azure/data-tables'
-      - '@azure/identity'
-      - '@azure/keyvault-secrets'
-      - '@azure/storage-blob'
-      - '@capacitor/preferences'
-      - '@deno/kv'
-      - '@farmfe/core'
-      - '@netlify/blobs'
-      - '@planetscale/database'
-      - '@rspack/core'
-      - '@upstash/redis'
-      - '@vercel/blob'
-      - '@vercel/functions'
-      - '@vercel/kv'
-      - aws4fetch
-      - bun-types-no-globals
-      - db0
-      - esbuild
-      - idb-keyval
-      - ioredis
-      - magic-string
-      - magicast
-      - oxc-parser
-      - rolldown
-      - rollup
-      - unloader
-      - uploadthing
-      - vite
-      - webpack
-
   '@nuxt/icon@2.3.1(@voidzero-dev/vite-plus-core@0.2.8)(magic-string@0.30.21)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)(vue@3.5.39)':
     dependencies:
       '@iconify/collections': 1.0.705
@@ -13802,6 +13763,36 @@ snapshots:
       unctx: 3.0.0(magic-string@1.1.0)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)
       untyped: 2.0.0
       verkit: 0.2.0
+    transitivePeerDependencies:
+      - magic-string
+      - magicast
+      - oxc-parser
+      - rolldown
+      - unplugin
+
+  '@nuxt/kit@4.5.2(magic-string@0.30.21)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)':
+    dependencies:
+      c12: 3.3.4(magicast@0.5.3)
+      consola: 3.4.2
+      defu: 6.1.7
+      destr: 2.0.5
+      errx: 0.1.2
+      exsolve: 1.1.1
+      ignore: 7.0.6
+      jiti: 2.7.0
+      klona: 2.0.6
+      mlly: 1.8.2
+      nostics: 1.2.0
+      ohash: 2.0.11
+      pathe: 2.0.3
+      pkg-types: 2.3.1
+      rc9: 3.0.1
+      scule: 1.3.0
+      tinyglobby: 0.2.17
+      ufo: 1.6.4
+      unctx: 3.0.0(magic-string@0.30.21)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)
+      untyped: 2.0.0
+      verkit: 0.3.2
     transitivePeerDependencies:
       - magic-string
       - magicast
@@ -14214,20 +14205,6 @@ snapshots:
       - rolldown
       - unplugin
 
-  '@nuxtjs/color-mode@4.0.1(magic-string@1.1.0)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)':
-    dependencies:
-      '@nuxt/kit': 4.5.1(magic-string@1.1.0)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)
-      exsolve: 1.1.0
-      pathe: 2.0.3
-      pkg-types: 2.3.1
-      semver: 7.8.5
-    transitivePeerDependencies:
-      - magic-string
-      - magicast
-      - oxc-parser
-      - rolldown
-      - unplugin
-
   '@nuxtjs/html-validator@2.1.0(magicast@0.5.3)(vitest@4.1.10)':
     dependencies:
       '@nuxt/kit': 3.21.8(magicast@0.5.3)
@@ -14253,7 +14230,7 @@ snapshots:
       '@intlify/unplugin-vue-i18n': 11.2.4(@voidzero-dev/vite-plus-core@0.2.8)(@vue/compiler-dom@3.5.40)(eslint@10.6.0)(rollup@4.62.2)(supports-color@10.2.2)(typescript-native-bridge@6.0.3-bridge.12.tsgo.7.0.2)(vue-i18n@11.4.8)(vue@3.5.39)
       '@intlify/utils': 0.14.1
       '@miyaneee/rollup-plugin-json5': 1.2.0(rollup@4.62.2)
-      '@nuxt/kit': 4.5.1(magic-string@0.30.21)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)
+      '@nuxt/kit': 4.5.2(magic-string@0.30.21)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)
       '@rollup/plugin-yaml': 4.1.2(rollup@4.62.2)
       '@vue/compiler-sfc': 3.5.40
       confbox: 0.2.4
@@ -15330,9 +15307,9 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
-  '@storybook-vue/nuxt@https://pkg.pr.new/@storybook-vue/nuxt@1021(@babel/plugin-syntax-jsx@7.29.7)(@types/node@24.13.3)(@voidzero-dev/vite-plus-core@0.2.8)(@vue/compiler-sfc@3.5.40)(esbuild@0.28.1)(eslint@10.6.0)(magic-string@1.1.0)(magicast@0.5.3)(nuxt@4.4.8)(optionator@0.9.4)(oxc-parser@0.144.0)(oxlint@1.76.0)(rolldown@1.2.3)(rollup-plugin-visualizer@7.0.1)(rollup@4.62.2)(storybook@10.5.5)(supports-color@10.2.2)(terser@5.48.0)(typescript-native-bridge@6.0.3-bridge.12.tsgo.7.0.2)(unplugin@3.3.0)(vue-tsc@3.3.9)(vue@3.5.39)(webpack@5.108.4)(yaml@2.9.0)':
+  '@storybook-vue/nuxt@https://pkg.pr.new/@storybook-vue/nuxt@1021(@babel/plugin-syntax-jsx@7.29.7)(@types/node@24.13.3)(@voidzero-dev/vite-plus-core@0.2.8)(@vue/compiler-sfc@3.5.40)(esbuild@0.28.1)(eslint@10.6.0)(magic-string@0.30.21)(magicast@0.5.3)(nuxt@4.4.8)(optionator@0.9.4)(oxc-parser@0.144.0)(oxlint@1.76.0)(rolldown@1.2.3)(rollup-plugin-visualizer@7.0.1)(rollup@4.62.2)(storybook@10.5.5)(supports-color@10.2.2)(terser@5.48.0)(typescript-native-bridge@6.0.3-bridge.12.tsgo.7.0.2)(unplugin@3.3.0)(vue-tsc@3.3.9)(vue@3.5.39)(webpack@5.108.4)(yaml@2.9.0)':
     dependencies:
-      '@nuxt/kit': 4.5.1(magic-string@1.1.0)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)
+      '@nuxt/kit': 4.5.1(magic-string@0.30.21)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)
       '@nuxt/schema': 4.4.8
       '@nuxt/vite-builder': 4.4.8(@babel/plugin-syntax-jsx@7.29.7)(@types/node@24.13.3)(esbuild@0.28.1)(eslint@10.6.0)(magicast@0.5.3)(nuxt@4.4.8)(optionator@0.9.4)(oxlint@1.76.0)(rolldown@1.2.3)(rollup-plugin-visualizer@7.0.1)(rollup@4.62.2)(supports-color@10.2.2)(terser@5.48.0)(typescript-native-bridge@6.0.3-bridge.12.tsgo.7.0.2)(vue-tsc@3.3.9)(vue@3.5.39)(yaml@2.9.0)
       '@rollup/plugin-replace': 6.0.3(rollup@4.62.2)
@@ -16138,9 +16115,9 @@ snapshots:
       gzip-size: 6.0.0
       sirv: 3.0.2
 
-  '@unocss/nuxt@66.7.5(@voidzero-dev/vite-plus-core@0.2.8)(esbuild@0.28.1)(magic-string@1.1.0)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(rollup@4.62.2)(unplugin@3.3.0)(webpack@5.108.4)':
+  '@unocss/nuxt@66.7.5(@voidzero-dev/vite-plus-core@0.2.8)(esbuild@0.28.1)(magic-string@0.30.21)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(rollup@4.62.2)(unplugin@3.3.0)(webpack@5.108.4)':
     dependencies:
-      '@nuxt/kit': 4.5.1(magic-string@1.1.0)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)
+      '@nuxt/kit': 4.5.1(magic-string@0.30.21)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)
       '@unocss/config': 66.7.5
       '@unocss/core': 66.7.5
       '@unocss/preset-attributify': 66.7.5
@@ -16794,9 +16771,9 @@ snapshots:
 
   '@vueuse/metadata@14.4.0': {}
 
-  '@vueuse/nuxt@14.4.0(magic-string@1.1.0)(magicast@0.5.3)(nuxt@4.4.8)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)(vue@3.5.39)':
+  '@vueuse/nuxt@14.4.0(magic-string@0.30.21)(magicast@0.5.3)(nuxt@4.4.8)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)(vue@3.5.39)':
     dependencies:
-      '@nuxt/kit': 4.5.1(magic-string@1.1.0)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)
+      '@nuxt/kit': 4.5.1(magic-string@0.30.21)(magicast@0.5.3)(oxc-parser@0.144.0)(rolldown@1.2.3)(unplugin@3.3.0)
       '@vueuse/core': 14.4.0(vue@3.5.39)
       '@vueuse/metadata': 14.4.0
       local-pkg: 1.2.1
@@ -18099,6 +18076,8 @@ snapshots:
 
   errx@0.1.0: {}
 
+  errx@0.1.2: {}
+
   es-abstract-get@1.0.0:
     dependencies:
       es-errors: 1.3.0
@@ -18465,6 +18444,8 @@ snapshots:
       - supports-color
 
   exsolve@1.1.0: {}
+
+  exsolve@1.1.1: {}
 
   extend-shallow@2.0.1:
     dependencies:

@@ -51,6 +51,7 @@ overrides:
   vue-router: 5.2.0
   markdown-exit: 1.1.0-beta.2
   oxc-parser: 0.144.0
+  '@nuxtjs/i18n>@nuxt/kit': '4.5.2'
 
 packageExtensions:
   '@nuxt/scripts':
