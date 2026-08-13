@@ -29,7 +29,7 @@ catalogs:
     'storybook-i18n': '^10.1.1'
 
   vite-plus:
-    'vite': 'npm:@voidzero-dev/vite-plus-core@0.2.7'
+    'vite': 'npm:@voidzero-dev/vite-plus-core@0.2.8'
     'vite-plus': '0.2.8'
     'vitest': '4.1.10'
     '@vitest/browser-playwright': '4.1.10'
