@@ -1185,6 +1185,9 @@
         },
         "expand_with_name": {
           "type": "string"
+        },
+        "copyMdError": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -5624,6 +5627,9 @@
           "type": "string"
         },
         "version_unavailable": {
+          "type": "string"
+        },
+        "copy_as_markdown": {
           "type": "string"
         }
       },

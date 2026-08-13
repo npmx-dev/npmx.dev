@@ -45,14 +45,15 @@ export const ERROR_GRAVATAR_FETCH_FAILED = 'Failed to fetch Gravatar profile.'
 export const ERROR_GRAVATAR_EMAIL_UNAVAILABLE = "User's email not accessible."
 export const ERROR_NEED_REAUTH = 'User needs to reauthenticate'
 
-export const ERROR_CHANGELOG_NOT_FOUND =
-  'No releases or changelogs have been found for this package'
+export const ERROR_CHANGELOG_NOT_FOUND = 'No release or changelog had been found for this package'
 export const ERROR_CHANGELOG_RELEASES_FAILED = 'Failed to get releases'
 export const ERROR_CHANGELOG_FILE_FAILED = 'Failed to get changelog markdown'
 export const ERROR_THROW_INCOMPLETE_PARAM = "Couldn't do request due to incomplete parameters"
 // for ungh.cc when api keys are exhausted, name is broad in case more proxies are going to be used
 export const ERROR_UNGH_API_KEY_EXHAUSTED =
   "Couldn't fetch resources due to ungh api keys being exhausted"
+export const ERROR_UNKNOWN_GIT_HOST =
+  'No host given or given host is not a known host for the given provider'
 
 // microcosm services
 export const CONSTELLATION_HOST = 'constellation.microcosm.blue'

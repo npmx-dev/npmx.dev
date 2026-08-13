@@ -176,7 +176,11 @@ const {
   data: fileContent,
   status: fileStatus,
   execute: fetchFileContent,
-} = useFetch<PackageFileContentResponse>(() => fileContentUrl.value!, { immediate: false })
+  clear: clearFileContent,
+} = useFetch<PackageFileContentResponse>(() => fileContentUrl.value!, {
+  immediate: false,
+  watch: false,
+})
 
 // Loading skeleton state
 const isLoading = computed<boolean>(() => {
@@ -196,6 +200,7 @@ function toggleMobileTreeDrawer(): void {
 watch(
   fileContentUrl,
   url => {
+    clearFileContent()
     if (url) fetchFileContent()
   },
   { immediate: true },

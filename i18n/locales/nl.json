@@ -13,6 +13,7 @@
   "trademark_disclaimer": "npm is een geregistreerd handelsmerk van npm, Inc. Deze website is niet geaffilieerd met npm, Inc.",
   "footer": {
     "about": "over ons",
+    "sponsors": "sponsoren",
     "blog": "blog",
     "docs": "documentatie",
     "source": "bron code",
@@ -40,7 +41,7 @@
     "settings": "Open instellingen",
     "compare": "Open vergelijken",
     "compare_from_package": "Vergelijking openen (vooraf ingevuld met het huidige pakket)",
-    "changelog": "Open wijzigingenoverzicht",
+    "changelog": "Open wijzigingen",
     "navigate_results": "Navigeer resultaten",
     "go_to_result": "Ga naar resultaten",
     "open_code_view": "Open code weergaven",
@@ -190,6 +191,7 @@
       "theme_changed": "Thema ingesteld op {theme}.",
       "accent_color_changed": "Accentkleur ingesteld op {color}.",
       "background_theme_changed": "Achtergrondkleur ingesteld op {theme}.",
+      "foreground_theme_changed": "Voorgrondkleur ingesteld op {theme}.",
       "download_started": "Downloaden {package} tarball.",
       "copied_to_clipboard": "Gekopieerd naar klembord.",
       "npm_disconnected": "npm CLI ontkoppeld.",
@@ -260,7 +262,8 @@
     "back_to_archive": "Terug naar alle noodles",
     "missing": {
       "title": "Deze noodle heeft de kom nooit verlaten.",
-      "body": "We hebben geen \"{slug}\"-noodle op het menu. Hij is misschien nog in de maak, of hij heeft nooit bestaan. Hoe dan ook — terug naar het archief."
+      "body": "We hebben geen \"{slug}\"-noodle op het menu. Hij is misschien nog in de maak, of hij heeft nooit bestaan. Hoe dan ook — terug naar het archief.",
+      "empty_bowl": "lege kom"
     }
   },
   "settings": {
@@ -317,6 +320,12 @@
       "zinc": "Zink",
       "slate": "Leisteen",
       "black": "Zwart"
+    },
+    "foreground_themes": {
+      "label": "Voorgrondkleur",
+      "contrast": "Contrast",
+      "standard": "Standaard",
+      "muted": "Zacht"
     },
     "keyboard_shortcuts_enabled": "toetsenbordnavigatie inschakelen",
     "keyboard_shortcuts_enabled_description": "toetsenbordnavigatie kan worden uitgeschakeld als ze conflicteren met andere sneltoetsen van de browser of het systeem.",
@@ -384,7 +393,8 @@
     "collapse": "inklappen",
     "collapse_with_name": "inklappen {name}",
     "expand": "uitklappen",
-    "expand_with_name": "uitklappen {name}"
+    "expand_with_name": "uitklappen {name}",
+    "copyMdError": "Markdown kon niet worden opgehaald. Probeer het later opnieuw"
   },
   "profile": {
     "display_name": "Profiel naam",
@@ -410,6 +420,7 @@
     "verified_provenance": "Geverifieerde herkomst",
     "navigation": "Pakket",
     "copy_name": "Kopieer pakket naam",
+    "copy_version": "Kopieer pakket versie",
     "deprecation": {
       "package": "Dit pakket wordt afgeraden.",
       "version": "Deze versie wordt afgeraden.",
@@ -489,7 +500,7 @@
       "timeline": "tijdlijn",
       "stats": "stats",
       "compare_this_package": "Vergelijk dit pakket",
-      "changelog": "Wijzigingen"
+      "changelog": "wijzigingen"
     },
     "likes": {
       "like": "Dit pakket leuk vinden",
@@ -638,6 +649,8 @@
       "provenance_removed": "Herkomst verificatie gedeactiveerd",
       "chart": {
         "tab_aria_label": "Selecteer statistiek",
+        "dependency_size": "Dependencygrootte",
+        "other_dependencies": "Overig",
         "base_scale": "y-as op nul beginnen",
         "zoom": "zoom",
         "reset_minimap": "minimap resetten",
@@ -645,7 +658,11 @@
         "copy_alt": {
           "key_changes": "Belangrijkste wijzigingen: {version_events}.",
           "version_events": "versie {version}: {events}",
-          "general_description": "Lijngrafiek die de {metric} toont van het pakket {package}, van versie {first} tot {last}. De {metric} in versie {first} is {first_value}, in versie {last} is dat {last_value} (in totaal {overall_progress_percentage}%). {key_changes} {watermark}."
+          "general_description": "Lijngrafiek die de {metric} toont van het pakket {package}, van versie {first} tot {last}. De {metric} in versie {first} is {first_value}, in versie {last} is dat {last_value} (in totaal {overall_progress_percentage}%). {key_changes} {watermark}.",
+          "stackbar_segment_share": "{segment}: {value} ({percentage})",
+          "stackbar_top_segments": "In {version}, de grootste segmenten zijn {segments}.",
+          "stackbar_largest_increase": "De grootste toename is {segment}, met {delta}",
+          "stackbar_largest_decrease": "De grootste afname is {segment}, met {delta}."
         }
       }
     },
@@ -707,6 +724,7 @@
       "date_range": "{start} t/m {end}",
       "date_range_multiline": "{start}\nt/m {end}",
       "download_file": "Download {fileType}",
+      "copy_file": "Kopieer {fileType}",
       "toggle_annotator": "Schakel annotator aan/uit",
       "toggle_stack_mode": "Schakel stapelen aan/uit",
       "open_options": "Open opties",
@@ -740,7 +758,8 @@
         "trend_weak": "zwak",
         "trend_undefined": "niet gedefinieerd (onvoldoende gegevens)",
         "button_label": "Alternatieve tekst kopiëren",
-        "watermark": "Onderaan staat in een watermerk: \"./npmx @:tagline\"",
+        "watermark": "Onderaan staat in een watermerk met de tekst: \"./npmx @:tagline{'\"'}",
+        "watermark_top": "Bovenaan staat in een watermerk met de tekst: \"./npmx @:tagline{'\"'}",
         "analysis": "{package_name} begint op {start_value} en eindigt op {end_value}, wat een {trend} trend laat zien met een helling van {downloads_slope} downloads per tijdsinterval.",
         "estimation": "De laatste waarde is een schatting, gebaseerd op onvolledige gegevens voor de huidige periode.",
         "estimations": "De laatste waardes zijn een schatting, gebaseerd op onvolledige gegevens voor de huidige periode.",
@@ -754,7 +773,7 @@
         "chart": "Deze grafiek insluiten",
         "copy_url": "Kopieer deze URL om de grafiek in uw website in te sluiten",
         "preview": "Voorbeeld",
-        "tip": "Als startDate en endDate niet zijn opgegeven, toont de grafiek standaard de laatste 12 maanden."
+        "tip": "Als startDate en endDate niet zijn opgegeven in de URL, toont de grafiek de laatste 12 maanden."
       }
     },
     "downloads": {
@@ -1074,7 +1093,8 @@
     },
     "file_path": "Bestand pad",
     "binary_file": "Binair bestand",
-    "binary_rendering_warning": "Bestand type \"{contentType}\" wordt niet ondersteund om te weergeven."
+    "binary_rendering_warning": "Bestandstype \"{contentType}\" wordt niet ondersteund om te weergeven.",
+    "possibly_unnecessary": "Is mogelijk overbodig in een gepubliceerd pakket"
   },
   "badges": {
     "provenance": {
@@ -1266,6 +1286,64 @@
         "title": "Blijf op te hoogte",
         "description": "Ontdek het laatste nieuws van npmx.",
         "cta": "Volg op Bluesky"
+      }
+    }
+  },
+  "sponsors_page": {
+    "title": "Sponsoren",
+    "heading": "sponsoren",
+    "meta_description": "Steun npmx en help ons het ecosysteem verder te ontwikkelen op het gebied van beveiliging, vertrouwen, optimalisatie en onderzoek.",
+    "intro": "Steun npmx en help ons het ecosysteem voor ontwikkelaars en beheerders verder uit te bouwen.",
+    "what_we_do": {
+      "title": "Wat we doen",
+      "description": "We bouwen aan een ecosysteem dat problemen oplost op het gebied van beveiliging, vertrouwen, optimalisatie en onderzoek voor de tools die we dagelijks gebruiken bij softwareontwikkeling — snel, gebruiksvriendelijk en van hoge kwaliteit. Dit project is gebouwd door ontwikkelaars, voor ontwikkelaars. Als makers van veelgebruikte libraries begrijpen wij de behoeften van teams en onderzoeken we actief waar beheerders en projecten het meeste behoefte aan hebben."
+    },
+    "what_support_means": {
+      "title": "Wat uw steun betekent",
+      "description": "Onze plannen en connecties blijven groeien, net zoals onze drive om onze kennis te delen en van anderen te leren. Met uw steun financiert u het project, lezingen, conferenties en het bredere ecosysteem, en helpt u ons vooral om onze community verder uit te bouwen."
+    },
+    "cta": "Sponsorpakketten",
+    "community_growth_footnote": "* volgens onderzoek van {link} (Q1 2026).",
+    "what_this_means_for_you": {
+      "title": "Wat dit voor u betekent",
+      "description": "npmx draait niet alleen om een betere ontwikkelaarservaring en het oplossen van dagelijkse knelpunten. In de eerste zes maanden is npmx al uitgegroeid tot de standaardbron voor duizenden teams en een groot aantal ontwikkelaars. U krijgt niet alleen een stabielere tool voor uw teams, maar vergroot ook uw zichtbaarheid binnen een snelgroeiende community van ervaren ontwikkelaars.",
+      "cards": {
+        "people": {
+          "contributors": "bijdragers",
+          "community_members": "communityleden"
+        },
+        "visitors": {
+          "description": "unieke maandelijkse bezoekers"
+        },
+        "stars": {
+          "title": "sterren"
+        },
+        "community": {
+          "title": "snel groeiend",
+          "description": "We zijn een van de snelst groeiende communities in het ecosysteem"
+        },
+        "adoption": {
+          "title": "adoptie",
+          "description": "Grafieken op conferenties, in presentaties en in artikelen maken gebruik van onze data"
+        },
+        "default_source": {
+          "title": "standaardbron",
+          "description": "pnpm heeft van npmx de standaardbron gemaakt, veel packages zijn geconfigureerd om naar npmx te linken."
+        }
+      }
+    },
+    "tiers": {
+      "title": "Sponsorpakketten",
+      "per_month": "/maand",
+      "custom": "In overleg",
+      "silver": {
+        "name": "Zilver"
+      },
+      "gold": {
+        "name": "Goud"
+      },
+      "platinum": {
+        "name": "Platina"
       }
     }
   },
@@ -1787,6 +1865,7 @@
       "p2": "Probeer later opnieuw of {viewon}"
     },
     "rate_limit_ungh": "Sorry, de opvraaglimiet (rate limit) van GitHub is bereikt. Probeer het over een ogenblik opnieuw.",
-    "version_unavailable": "De gevraagde is niet beschikbaar."
+    "version_unavailable": "De gevraagde is niet beschikbaar.",
+    "copy_as_markdown": "Kopieer wijzigingen als Markdown"
   }
 }
