@@ -156,7 +156,7 @@ if (!isBlogPostRoute.value) {
 
     <NuxtAnnouncer />
 
-    <div id="main-content" class="flex-1 flex flex-col" tabindex="-1">
+    <div id="main-content" class="flex-1 flex flex-col">
       <NuxtPage />
     </div>
 
