@@ -489,6 +489,7 @@ export type EnrichedTimelineSizeCacheEntry = ConvertedTimelineSizeCacheEntry & {
   events: SubEvent[]
   hasPositive: boolean
   hasNegative: boolean
+  hasError: boolean
 }
 
 export type TimelineChartMetric = 'totalSize' | 'dependencyCount' | 'dependencySize'

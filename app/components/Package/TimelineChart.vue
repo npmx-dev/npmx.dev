@@ -72,7 +72,8 @@ function addEvaluationFlags(
       ...entry,
       events,
       hasPositive: events.some(event => event.state === 'success'),
-      hasNegative: events.some(event => event.state === 'warn' || event.state === 'error'),
+      hasNegative: events.some(event => event.state === 'warn'),
+      hasError: events.some(event => event.state === 'error'),
     }
   })
 }
@@ -103,6 +104,7 @@ const convertedData = computed(() => {
       events: [],
       hasPositive: false,
       hasNegative: false,
+      hasError: false,
     }
   })
 
@@ -621,6 +623,7 @@ type TimelineSourceItem = {
   events?: SubEvent[]
   hasPositive?: boolean
   hasNegative?: boolean
+  hasError?: boolean
 }
 
 type TimelineSvgDataItem = VueUiXyDatasetLineItem & {
@@ -656,6 +659,7 @@ function getDatapointPlots(
 
     const hasPositive = datapoint.hasPositive === true
     const hasNegative = datapoint.hasNegative === true
+    const hasError = datapoint.hasError === true
 
     return [
       {
@@ -663,7 +667,7 @@ function getDatapointPlots(
         index,
         x: plot.x,
         y: plot.y,
-        offsetY: markerKey === 'negative' && hasPositive && hasNegative ? 20 : 0,
+        offsetY: hasError ? 0 : markerKey === 'negative' && hasPositive && hasNegative ? 20 : 0,
       },
     ]
   })
@@ -707,28 +711,38 @@ function getActiveVersionDatapointBar(
     )
 }
 
+// If a data point also has an error, the positive icon will not be shown
 function getPositiveDatapointPlots(
   item: TimelineDatasetItem,
   zoomOffset: number,
 ): TimelineMarkerItem[] {
   return getDatapointPlots(
     item,
-    datapoint => datapoint.hasPositive === true,
+    datapoint => datapoint.hasPositive === true && datapoint.hasError !== true,
     'positive',
     zoomOffset,
   )
 }
 
+// If a data point also has an error, the negative icon will not be shown
 function getNegativeDatapointPlots(
   item: TimelineDatasetItem,
   zoomOffset: number,
 ): TimelineMarkerItem[] {
   return getDatapointPlots(
     item,
-    datapoint => datapoint.hasNegative === true,
+    datapoint => datapoint.hasNegative === true && datapoint.hasError !== true,
     'negative',
     zoomOffset,
   )
+}
+
+// If a data point has an error, only this icon will be shown
+function getErrorDatapointPlots(
+  item: TimelineDatasetItem,
+  zoomOffset: number,
+): TimelineMarkerItem[] {
+  return getDatapointPlots(item, datapoint => datapoint.hasError === true, 'error', zoomOffset)
 }
 
 const indexSelection = computed(() => {
@@ -989,6 +1003,7 @@ const timelineMetricTabs = computed(() => [
             "
             :markersPositive="getPositiveDatapointPlots(svg.data[0], svg.slicer.start)"
             :markersNegative="getNegativeDatapointPlots(svg.data[0], svg.slicer.start)"
+            :markersError="getErrorDatapointPlots(svg.data[0], svg.slicer.start)"
             :colors
             :gradientColors="E18E_GRADIENT_COLORS"
             :pauseAnimations="shouldPauseChartAnimations || loading"
