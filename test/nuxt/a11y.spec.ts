@@ -2464,6 +2464,7 @@ describe('component accessibility audits', () => {
           watermark: '<g><text x="0" y="0" stroke="#000000" font-size="12">npmx</text></g>',
           markersPositive: [],
           markersNegative: [],
+          markersError: [],
           colors: { bg: '#FFFFFF', accent: '#FF0000' },
           pauseAnimations: false,
           gradientColors: [
