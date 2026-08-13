@@ -135,9 +135,11 @@ const LocaleDetails = (status: I18nStatus, locale: Locale): string => {
       )}
       <br />
       <br />
-      ${missingKeys.length > 0
-        ? html`${MissingKeysList(missingKeys)}`
-        : html` <p>This translation is complete, amazing job! 🎉</p> `}
+      ${
+        missingKeys.length > 0
+          ? html`${MissingKeysList(missingKeys)}`
+          : html` <p>This translation is complete, amazing job! 🎉</p> `
+      }
     </details>
   `
 }
@@ -367,10 +369,12 @@ function SvgLocaleSummary(
         >${label} (${lang})</text
       >
       <text x="0" y="26" font-size="9" fill="#999">
-        ${missingFiles.length == 0 && outdatedFiles.length == 0
-          ? '100% complete, amazing job! 🎉'
-          : html`${doneLength} done, ${outdatedFiles.length} outdated, ${missingFiles.length}
-            missing`}
+        ${
+          missingFiles.length == 0 && outdatedFiles.length == 0
+            ? '100% complete, amazing job! 🎉'
+            : html`${doneLength} done, ${outdatedFiles.length} outdated, ${missingFiles.length}
+              missing`
+        }
       </text>
       <rect x="0" y="34" width="${barWidth}" height="8" fill="#999" opacity="0.25"></rect>
       <rect x="0" y="34" width="${outdatedWidth}" height="8" fill="#fb923c"></rect>
