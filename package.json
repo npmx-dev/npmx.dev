@@ -65,7 +65,7 @@
     "@nuxt/test-utils": "4.0.3",
     "@nuxtjs/color-mode": "4.0.1",
     "@nuxtjs/html-validator": "2.1.0",
-    "@nuxtjs/i18n": "10.6.0",
+    "@nuxtjs/i18n": "10.5.0",
     "@shikijs/langs": "4.4.3",
     "@shikijs/markdown-exit": "4.4.3",
     "@shikijs/themes": "4.4.3",
