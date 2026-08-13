@@ -11,7 +11,7 @@ allowBuilds:
   'core-js': false
   'esbuild': false
   msw: true
-  'sharp@0.34.5': true
+  sharp: true
   'unrs-resolver': false
   'vue-demi': false
 
@@ -24,16 +24,16 @@ catalogs:
     '@storybook/addon-a11y': '^10.3.5'
     '@storybook/addon-docs': '^10.3.5'
     '@storybook/addon-themes': '^10.3.5'
-    'msw-storybook-addon': '^2.0.7'
+    'msw-storybook-addon': '^3.0.0'
     'storybook': '^10.3.1'
     'storybook-i18n': '^10.1.1'
 
   vite-plus:
-    'vite': 'npm:@voidzero-dev/vite-plus-core@0.2.2'
-    'vite-plus': '0.2.2'
-    'vitest': '4.1.9'
-    '@vitest/browser-playwright': '4.1.9'
-    '@vitest/coverage-v8': '4.1.9'
+    'vite': 'npm:@voidzero-dev/vite-plus-core@0.2.8'
+    'vite-plus': '0.2.8'
+    'vitest': '4.1.10'
+    '@vitest/browser-playwright': '4.1.10'
+    '@vitest/coverage-v8': '4.1.10'
 
 dedupePeers: true
 
@@ -41,18 +41,16 @@ ignoreDepScripts: true
 
 ignoreWorkspaceRootCheck: true
 
-minimumReleaseAgeExclude:
-  - vue-data-ui@3.22.6
-
 overrides:
-  '@types/node': 24.13.2
+  '@types/node': 24.13.3
   nuxt-og-image: ^6.6.0
   sharp: 0.35.3
+  typescript: npm:typescript-native-bridge@6.0.3-bridge.12.tsgo.7.0.2
   vite: 'catalog:vite-plus'
   vitest: 'catalog:vite-plus'
-  vue-router: 5.1.0
+  vue-router: 5.2.0
   markdown-exit: 1.1.0-beta.2
-  oxc-parser: 0.138.0
+  oxc-parser: 0.144.0
 
 packageExtensions:
   '@nuxt/scripts':

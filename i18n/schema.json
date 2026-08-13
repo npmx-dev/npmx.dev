@@ -577,6 +577,9 @@
             "background_theme_changed": {
               "type": "string"
             },
+            "foreground_theme_changed": {
+              "type": "string"
+            },
             "download_started": {
               "type": "string"
             },
@@ -789,6 +792,9 @@
             },
             "body": {
               "type": "string"
+            },
+            "empty_bowl": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -956,6 +962,24 @@
               "type": "string"
             },
             "black": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "foreground_themes": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "contrast": {
+              "type": "string"
+            },
+            "standard": {
+              "type": "string"
+            },
+            "muted": {
               "type": "string"
             }
           },
@@ -1161,6 +1185,9 @@
         },
         "expand_with_name": {
           "type": "string"
+        },
+        "copyMdError": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -1235,6 +1262,9 @@
           "type": "string"
         },
         "copy_name": {
+          "type": "string"
+        },
+        "copy_version": {
           "type": "string"
         },
         "deprecation": {
@@ -1580,6 +1610,33 @@
               "type": "string"
             },
             "locally": {
+              "type": "string"
+            },
+            "copy_command": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "command": {
+          "type": "object",
+          "properties": {
+            "copied_install": {
+              "type": "string"
+            },
+            "copied_dev_install": {
+              "type": "string"
+            },
+            "copied_run": {
+              "type": "string"
+            },
+            "copied_create": {
+              "type": "string"
+            },
+            "copied_execute": {
+              "type": "string"
+            },
+            "copied_skills": {
               "type": "string"
             }
           },
@@ -2144,6 +2201,9 @@
               "type": "string"
             },
             "download_file": {
+              "type": "string"
+            },
+            "copy_file": {
               "type": "string"
             },
             "toggle_annotator": {
@@ -3251,6 +3311,9 @@
           "type": "string"
         },
         "binary_rendering_warning": {
+          "type": "string"
+        },
+        "possibly_unnecessary": {
           "type": "string"
         }
       },
@@ -5564,6 +5627,9 @@
           "type": "string"
         },
         "version_unavailable": {
+          "type": "string"
+        },
+        "copy_as_markdown": {
           "type": "string"
         }
       },

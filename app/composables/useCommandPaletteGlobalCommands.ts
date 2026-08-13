@@ -75,6 +75,7 @@ export function useCommandPaletteGlobalCommands() {
   const colorMode = useColorMode()
   const { accentColors, selectedAccentColor, setAccentColor } = useAccentColor()
   const { backgroundThemes, selectedBackgroundTheme, setBackgroundTheme } = useBackgroundTheme()
+  const { foregroundThemes, selectedForegroundTheme, setForegroundTheme } = useForegroundTheme()
   const connectorModal = useModal('connector-modal')
   const authModal = useModal('auth-modal')
   const keyboardShortcutsModal = useModal('keyboard-shortcuts-modal')
@@ -126,6 +127,16 @@ export function useCommandPaletteGlobalCommands() {
     const id = selectedBackgroundTheme.value
     if (!id) return null
     return backgroundThemes.value.find(theme => theme.id === id)?.value ?? null
+  })
+  const currentForegroundThemeLabel = computed(() => {
+    const id = selectedForegroundTheme.value
+    if (!id) return t('settings.foreground_themes.standard')
+    return foregroundThemes.value.find(theme => theme.id === id)?.label ?? id
+  })
+  const currentForegroundThemePreview = computed(() => {
+    const id = selectedForegroundTheme.value
+    if (!id) return null
+    return foregroundThemes.value.find(theme => theme.id === id)?.value ?? null
   })
   const localeCommands = computed<CommandPaletteCommand[]>(() =>
     locales.value.map(entry => {
@@ -199,6 +210,32 @@ export function useCommandPaletteGlobalCommands() {
         },
         () =>
           t('command_palette.announcements.background_theme_changed', {
+            theme: theme.label,
+          }),
+      ),
+    }))
+  })
+
+  const foregroundThemeCommands = computed<CommandPaletteCommand[]>(() => {
+    const activeId = selectedForegroundTheme.value
+
+    return foregroundThemes.value.map(theme => ({
+      id: `foreground-theme:${theme.id}`,
+      group: 'settings' as const,
+      label: theme.label,
+      keywords: [theme.label, theme.id, t('settings.foreground_themes.label'), t('settings.theme')],
+      iconClass: 'i-lucide:swatch-book',
+      previewColor: theme.value,
+      active: theme.id === 'standard' ? !activeId : theme.id === activeId,
+      activeLabel: (theme.id === 'standard' ? !activeId : theme.id === activeId)
+        ? t('command_palette.current')
+        : null,
+      action: runThenAnnounce(
+        () => {
+          setForegroundTheme(theme.id)
+        },
+        () =>
+          t('command_palette.announcements.foreground_theme_changed', {
             theme: theme.label,
           }),
       ),
@@ -531,6 +568,22 @@ export function useCommandPaletteGlobalCommands() {
           setView('background-themes')
         },
       },
+      {
+        id: 'foreground-themes',
+        group: 'settings',
+        label: t('settings.foreground_themes.label'),
+        keywords: [
+          t('settings.foreground_themes.label'),
+          currentForegroundThemeLabel.value,
+          t('settings.theme'),
+        ],
+        iconClass: 'i-lucide:swatch-book',
+        badge: currentForegroundThemeLabel.value,
+        previewColor: currentForegroundThemePreview.value,
+        action: async () => {
+          setView('foreground-themes')
+        },
+      },
     ]
 
     const npmUsername = npmUser.value
@@ -669,6 +722,11 @@ export function useCommandPaletteGlobalCommands() {
         commands: backgroundThemeCommands.value,
         placeholder: t('settings.background_themes.label'),
         subtitle: t('settings.background_themes.label'),
+      },
+      'foreground-themes': {
+        commands: foregroundThemeCommands.value,
+        placeholder: t('settings.foreground_themes.label'),
+        subtitle: t('settings.foreground_themes.label'),
       },
     }),
   )

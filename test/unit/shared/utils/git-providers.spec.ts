@@ -80,6 +80,22 @@ describe('normalizeGitUrl', () => {
       .soft(normalizeGitUrl('git+ssh://git@gitlab.com/user/repo.git'))
       .toBe('https://gitlab.com/user/repo')
   })
+
+  it('should support shorthand git provider URLs', () => {
+    expect.soft(normalizeGitUrl('github:user/repo')).toBe('https://github.com/user/repo')
+    expect.soft(normalizeGitUrl('gitlab:user/repo')).toBe('https://gitlab.com/user/repo')
+    expect.soft(normalizeGitUrl('bitbucket:user/repo')).toBe('https://bitbucket.org/user/repo')
+    expect.soft(normalizeGitUrl('codeberg:user/repo')).toBe('https://codeberg.org/user/repo')
+    expect.soft(normalizeGitUrl('gitee:user/repo')).toBe('https://gitee.com/user/repo')
+    expect.soft(normalizeGitUrl('sourcehut:~user/repo')).toBe('https://git.sr.ht/~user/repo')
+    expect.soft(normalizeGitUrl('sourcehut:org/repo')).toBe('https://git.sr.ht/org/repo')
+    expect.soft(normalizeGitUrl('gitea:user/repo')).toBe('https://gitea.com/user/repo')
+    expect.soft(normalizeGitUrl('tangled:user/repo')).toBe('https://tangled.org/user/repo')
+    expect.soft(normalizeGitUrl('forgejo:user/repo')).toBe('https://code.forgejo.org/user/repo')
+    expect
+      .soft(normalizeGitUrl('github:user/repo.git#readme'))
+      .toBe('https://github.com/user/repo#readme')
+  })
 })
 
 describe('parseRepositoryInfo', () => {
@@ -118,8 +134,27 @@ describe('parseRepositoryInfo', () => {
 
   it('parses shorthand GitHub string', () => {
     const result = parseRepositoryInfo('github:nuxt/nuxt')
-    // This shorthand format is not supported
-    expect(result).toBeUndefined()
+    expect(result).toMatchObject({
+      provider: 'github',
+      owner: 'nuxt',
+      repo: 'nuxt',
+      rawBaseUrl: 'https://raw.githubusercontent.com/nuxt/nuxt/HEAD',
+      blobBaseUrl: 'https://github.com/nuxt/nuxt/blob/HEAD',
+    })
+  })
+
+  it('parses GitHub URL from object with shorthand prefix', () => {
+    const result = parseRepositoryInfo({
+      type: 'git',
+      url: 'github:org/repo',
+    })
+    expect(result).toMatchObject({
+      provider: 'github',
+      owner: 'org',
+      repo: 'repo',
+      rawBaseUrl: 'https://raw.githubusercontent.com/org/repo/HEAD',
+      blobBaseUrl: 'https://github.com/org/repo/blob/HEAD',
+    })
   })
 
   it('parses HTTPS GitHub URL without .git suffix', () => {

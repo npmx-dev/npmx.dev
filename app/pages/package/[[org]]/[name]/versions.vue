@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { WindowVirtualizer } from 'virtua/vue'
 import { getVersions } from 'fast-npm-meta'
-import { compare, validRange } from 'semver'
+import { compare, normalizeRange } from 'verkit'
 import {
   buildVersionToTagsMap,
   buildTaggedVersionRows,
@@ -205,14 +205,14 @@ const versionFilterInput = ref('')
 const versionFilter = refDebounced(versionFilterInput, 100)
 const isFilterActive = computed(() => versionFilter.value.trim() !== '')
 const isInvalidRange = computed(
-  () => isFilterActive.value && validRange(versionFilter.value.trim()) === null,
+  () => isFilterActive.value && normalizeRange(versionFilter.value.trim()) === null,
 )
 
 const filteredVersionSet = computed(() => {
   const trimmed = versionFilter.value.trim()
   if (!trimmed) return null
   // Try semver range first (e.g. "^2.0.0", ">=1 <3")
-  if (validRange(trimmed)) {
+  if (normalizeRange(trimmed)) {
     return filterVersions(versionStrings.value, trimmed)
   }
   // Fallback: substring match (e.g. "2.4", "beta")

@@ -149,7 +149,6 @@ function matchesSecurity(pkg: NpmSearchResult, security: SecurityFilter): boolea
 
 /**
  * Composable for structured filtering and sorting of package lists
- *
  */
 export function useStructuredFilters(options: UseStructuredFiltersOptions) {
   const route = useRoute()
@@ -277,6 +276,7 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
     }
   }
 
+  // oxlint-disable-next-line unicorn/consistent-function-scoping
   function matchesDownloadRange(pkg: NpmSearchResult, range: DownloadRange): boolean {
     if (range === 'any') return true
     const downloads = pkg.downloads?.weekly ?? 0
@@ -287,6 +287,7 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
     return true
   }
 
+  // oxlint-disable-next-line unicorn/consistent-function-scoping
   function matchesUpdatedWithin(pkg: NpmSearchResult, within: UpdatedWithin): boolean {
     if (within === 'any') return true
     const config = UPDATED_WITHIN_OPTIONS.find(o => o.value === within)
@@ -311,6 +312,7 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
   })
 
   // Sort comparators
+  // oxlint-disable-next-line unicorn/consistent-function-scoping
   function comparePackages(a: NpmSearchResult, b: NpmSearchResult, option: SortOption): number {
     const { key, direction } = parseSortOption(option)
     const multiplier = direction === 'asc' ? 1 : -1

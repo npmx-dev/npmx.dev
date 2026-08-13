@@ -12,7 +12,7 @@ const viewMode = defineModel<ViewMode>({ default: 'cards' })
   >
     <button
       type="button"
-      class="flex items-center px-2.5 py-2 text-sm font-medium rounded-sm border transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
+      class="flex cursor-pointer items-center px-2.5 py-2 text-sm font-medium rounded-sm border transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
       :class="
         viewMode === 'cards'
           ? 'bg-bg-subtle text-fg border-fg-subtle'
@@ -27,7 +27,7 @@ const viewMode = defineModel<ViewMode>({ default: 'cards' })
     </button>
     <button
       type="button"
-      class="flex items-center px-2.5 py-2 text-sm font-medium rounded-sm border transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
+      class="flex cursor-pointer items-center px-2.5 py-2 text-sm font-medium rounded-sm border transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
       :class="
         viewMode === 'table'
           ? 'bg-bg-subtle  text-fg border-fg-subtle'
