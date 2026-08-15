@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import type { IconClass } from '~/types'
 import type { ReleaseData } from '~~/shared/types/changelog'
 import { slugify } from '~~/shared/utils/html'
 
-const { release } = defineProps<{
+const { release, baseUrl, host } = defineProps<{
   release: ReleaseData
+  baseUrl: string
+  host?: string
 }>()
 const formattedDate = computed(() => {
   if (!release.publishedAt) {
@@ -19,7 +22,29 @@ const navId = computed(() => `release-${slugify(release.title)}`)
 function navigateToTitle() {
   navigateTo(`#${navId.value}`)
 }
+
+const { providerIcon, viewOnProvider } = inject<{
+  providerIcon: MaybeRef<IconClass>
+  viewOnProvider: MaybeRef<string>
+}>('changelog-provider-linkattr', {
+  providerIcon: 'i-lucide:code',
+  viewOnProvider: computed(() => $t('common.view_on.git_repo')),
+})
+
+// fetch markdown to copy
+const {
+  data: markdown,
+  execute: fetchMarkdown,
+  status: mdStatus,
+} = useLazyFetch<string>(() => `${baseUrl}/raw/${encodeURIComponent(release.tag)}`, {
+  immediate: false,
+  server: false,
+  query: {
+    host: computed(() => host),
+  },
+})
 </script>
+
 <template>
   <section
     class="border border-border rounded-lg p-4 pt-2 sm:p-6 sm:pt-4 scroll-mt-18"
@@ -48,12 +73,24 @@ function navigateToTitle() {
         {{ $t('changelog.draft') }}
       </TagStatic>
       <div class="flex-1" aria-hidden="true"></div>
+      <ButtonCopyMd
+        :fetchMarkdown
+        :markdown
+        :text="$t('changelog.copy_as_markdown')"
+        :status="mdStatus"
+        class="h-9"
+      />
       <ReadmeTocDropdown
         v-if="release?.toc && release.toc.length > 1"
         :toc="release.toc"
-        class="ms-auto"
+        class="h-9"
       />
-      <!-- :active-id="activeTocId" -->
+      <LinkBase
+        :classicon="providerIcon"
+        :title="viewOnProvider"
+        :to="release.link"
+        class="size-[1em]"
+      />
     </div>
     <DateTime
       v-if="release.publishedAt"

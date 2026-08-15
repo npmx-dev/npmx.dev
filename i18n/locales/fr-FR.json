@@ -20,7 +20,10 @@
     "chat": "espace de discussion",
     "builders_chat": "builders",
     "keyboard_shortcuts": "raccourcis clavier",
-    "brand": "Marque"
+    "brand": "Marque",
+    "resources": "Ressources",
+    "features": "Fonctionnalités",
+    "other": "Autres"
   },
   "shortcuts": {
     "section": {
@@ -385,10 +388,18 @@
       "size": "La taille d'installation a augmenté de {percent} ({size} de plus)",
       "deps": "{count} dépendances supplémentaires"
     },
-    "size_decrease": {},
+    "size_decrease": {
+      "title_size": "La taille du paquet a diminué depuis la v{version} !",
+      "title_deps": "Le nombre de dépendances a diminué depuis la v{version} !",
+      "title_both": "La taille du paquet et le nombre de dépendances ont diminué depuis la v{version} !",
+      "size": "Taille d'installation réduite de {percent} ({size} de moins)",
+      "deps": "{count} dépendance en moins | {count} dépendances en moins"
+    },
     "replacement": {
       "title": "Vous n'avez peut-être pas besoin de cette dépendance.",
+      "example": "Exemple :",
       "native": "Ceci peut être remplacé par {replacement}, disponible depuis Node {nodeVersion}.",
+      "native_no_version": "Ce paquet peut être remplacé par {replacement}.",
       "none": "Ce paquet a été signalé comme n'étant plus nécessaire, et sa fonctionnalité est probablement disponible nativement dans tous les moteurs.",
       "learn_more": "En savoir plus",
       "learn_more_above": "En savoir plus ci-dessus.",
@@ -518,6 +529,7 @@
       "weekly_downloads": "Téléchargements hebdomadaires",
       "keywords": "Mots-clés",
       "license": "Licence",
+      "version": "Version",
       "select": "Sélectionner le paquet",
       "select_maximum": "Vous pouvez sélectionner jusqu'à {count} paquets"
     },
@@ -556,6 +568,9 @@
       "filter_help": "Infos sur le filtre de plage semver",
       "filter_tooltip": "Filtrer les versions avec une {link}. Par exemple, ^3.0.0 affiche toutes les versions 3.x.",
       "filter_tooltip_link": "plage semver",
+      "license_change_help": "Détails sur le changement de licence",
+      "license_change_warning": "La licence a changé depuis la version précédente.",
+      "license_change_record": "La licence de ce paquet est passée de \"{from}\" à \"{to}\".",
       "no_matches": "Aucune version ne correspond à cette plage",
       "copy_alt": {
         "per_version_analysis": "La version {version} a été téléchargée {downloads} fois",
@@ -704,6 +719,7 @@
     },
     "downloads": {
       "title": "Téléchargements hebdo.",
+      "version_distribution_title": "téléchargements hebdomadaires pour la version {version}",
       "community_distribution": "Voir la distribution des versions téléchargées par la communauté",
       "subtitle": "Toutes versions confondues",
       "sparkline_nav_hint": "Utilisez ← →"
@@ -1172,6 +1188,9 @@
     },
     "team": {
       "title": "Équipe",
+      "core": "Noyau",
+      "maintainers": "Mainteneurs",
+      "role_core": "noyau",
       "role_steward": "pilote",
       "role_maintainer": "mainteneur",
       "sponsor": "sponsor",

@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import type { RouteLocationRaw } from 'vue-router'
-import { compare } from 'semver'
+import { compare } from 'verkit'
 import type {
   TimelineResponse,
   TimelineVersion,
   SubEvent,
 } from '~~/server/api/registry/timeline/[...pkg].get'
 import type { TimelineSizeResponse } from '~~/server/api/registry/timeline/sizes/[...pkg].get'
+import type { TimelineSizeCacheValue } from '~/utils/charts'
 
 definePageMeta({
   name: 'timeline',
   path: '/package-timeline/:org?/:packageName/v/:version',
+  preserveScrollOnQuery: true,
 })
 
 const { t } = useI18n()
@@ -126,7 +128,7 @@ const SIZE_INCREASE_THRESHOLD = 0.25
 const DEP_INCREASE_THRESHOLD = 5
 const NO_LICENSE_VALUES = new Set(['', 'UNLICENSED'])
 
-const sizeCache = shallowReactive(new Map<string, { totalSize: number; dependencyCount: number }>())
+const sizeCache = shallowReactive(new Map<string, TimelineSizeCacheValue>())
 const sizeFetchesInFlight = ref(0)
 const sizesLoading = computed(() => sizeFetchesInFlight.value > 0)
 
@@ -148,6 +150,8 @@ async function fetchSizes(offset: number) {
       sizeCache.set(`${requestedPackage}@${entry.version}`, {
         totalSize: entry.totalSize,
         dependencyCount: entry.dependencyCount,
+        selfSize: entry.selfSize,
+        dependencies: entry.dependencies,
       })
     }
   } catch {
@@ -185,10 +189,21 @@ const versionSubEvents = computed(() => {
   }
 
   for (const current of entries) {
+    const events: SubEvent[] = []
+
+    // Deprecation (on every deprecated version, matching the versions page)
+    if (current.deprecated) {
+      events.push({
+        key: 'deprecated',
+        state: 'error',
+        icon: 'i-lucide:octagon-alert',
+        text: `${t('package.timeline.deprecated')}: "${current.deprecated}"`,
+      })
+      result.set(current.version, events)
+    }
+
     const previous = prevBySemver.get(current.version)
     if (!previous) continue
-
-    const events: SubEvent[] = []
 
     // Size changes
     const currentSize = sizeCache.get(sizeKey(current.version))
@@ -209,7 +224,7 @@ const versionSubEvents = computed(() => {
         const sizeDelta = currentSize.totalSize - previousSize.totalSize
         events.push({
           key: 'size',
-          positive: sizeDecreased,
+          state: sizeDecreased ? 'success' : 'warn',
           icon: sizeDecreased ? 'i-lucide:trending-down' : 'i-lucide:trending-up',
           text: sizeDecreased
             ? t('package.timeline.size_decrease', {
@@ -226,7 +241,7 @@ const versionSubEvents = computed(() => {
       if (depsIncreased || depsDecreased) {
         events.push({
           key: 'deps',
-          positive: depsDecreased,
+          state: depsDecreased ? 'success' : 'warn',
           icon: depsDecreased ? 'i-lucide:trending-down' : 'i-lucide:trending-up',
           text:
             depDiff > 0
@@ -244,7 +259,7 @@ const versionSubEvents = computed(() => {
       const hasNoLicense = NO_LICENSE_VALUES.has(currentLicense)
       events.push({
         key: 'license',
-        positive: hadNoLicense && !hasNoLicense,
+        state: hadNoLicense && !hasNoLicense ? 'success' : 'warn',
         icon: 'i-lucide:scale',
         text: t('package.timeline.license_change', { from: previousLicense, to: currentLicense }),
       })
@@ -256,14 +271,14 @@ const versionSubEvents = computed(() => {
     if (currentIsEsm && !previousIsEsm) {
       events.push({
         key: 'esm',
-        positive: true,
+        state: 'success',
         icon: 'i-lucide:package',
         text: t('package.timeline.esm_added'),
       })
     } else if (!currentIsEsm && previousIsEsm) {
       events.push({
         key: 'esm',
-        positive: false,
+        state: 'warn',
         icon: 'i-lucide:package',
         text: t('package.timeline.esm_removed'),
       })
@@ -273,14 +288,14 @@ const versionSubEvents = computed(() => {
     if (current.hasTypes && !previous.hasTypes) {
       events.push({
         key: 'types',
-        positive: true,
+        state: 'success',
         icon: 'i-lucide:braces',
         text: t('package.timeline.types_added'),
       })
     } else if (!current.hasTypes && previous.hasTypes) {
       events.push({
         key: 'types',
-        positive: false,
+        state: 'warn',
         icon: 'i-lucide:braces',
         text: t('package.timeline.types_removed'),
       })
@@ -290,14 +305,14 @@ const versionSubEvents = computed(() => {
     if (current.hasTrustedPublisher && !previous.hasTrustedPublisher) {
       events.push({
         key: 'trustedPublisher',
-        positive: true,
+        state: 'success',
         icon: 'i-lucide:shield-check',
         text: t('package.timeline.trusted_publisher_added'),
       })
     } else if (!current.hasTrustedPublisher && previous.hasTrustedPublisher) {
       events.push({
         key: 'trustedPublisher',
-        positive: false,
+        state: 'warn',
         icon: 'i-lucide:shield-off',
         text: t('package.timeline.trusted_publisher_removed'),
       })
@@ -307,14 +322,14 @@ const versionSubEvents = computed(() => {
     if (current.hasProvenance && !previous.hasProvenance) {
       events.push({
         key: 'provenance',
-        positive: true,
+        state: 'success',
         icon: 'i-lucide:fingerprint',
         text: t('package.timeline.provenance_added'),
       })
     } else if (!current.hasProvenance && previous.hasProvenance) {
       events.push({
         key: 'provenance',
-        positive: false,
+        state: 'warn',
         icon: 'i-lucide:fingerprint',
         text: t('package.timeline.provenance_removed'),
       })
@@ -413,7 +428,11 @@ useSeoMeta({
               <span
                 class="absolute -start-[1.375rem] top-0.5 flex items-center justify-center w-3 h-3 rounded-full border"
                 :class="
-                  ev.positive ? 'bg-green-500 border-green-600' : 'bg-amber-500 border-amber-600'
+                  ev.state === 'success'
+                    ? 'bg-green-500 border-green-600'
+                    : ev.state === 'error'
+                      ? 'bg-red-500 border-red-600'
+                      : 'bg-amber-500 border-amber-600'
                 "
               >
                 <span class="w-2 h-2 text-white" :class="ev.icon" aria-hidden="true" />
@@ -421,9 +440,11 @@ useSeoMeta({
               <p
                 class="text-xs"
                 :class="
-                  ev.positive
+                  ev.state === 'success'
                     ? 'text-green-700 dark:text-green-400'
-                    : 'text-amber-700 dark:text-amber-400'
+                    : ev.state === 'error'
+                      ? 'text-red-700 dark:text-red-400'
+                      : 'text-amber-700 dark:text-amber-400'
                 "
               >
                 {{ ev.text }}

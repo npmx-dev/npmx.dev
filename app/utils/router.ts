@@ -30,9 +30,27 @@ export function packageRoute(
   }
 }
 
+/**
+ * Docs tab route (`/package-docs/...`).
+ *
+ * The docs route uses a single catch-all `path` param. Emit the scoped name as
+ * two segments (`["@org", "name", ...]`) rather than one (`["@org/name", ...]`),
+ * so the URL keeps a literal slash instead of a `%2F`-encoded one.
+ */
+export function docsRoute(packageName: string, version?: string | null): RouteLocationRaw {
+  const { org, name } = splitPackageName(packageName)
+  const nameSegments = org ? [org, name] : [name]
+  const path = version ? [...nameSegments, 'v', version.replace(/\s+/g, '')] : nameSegments
+
+  return {
+    name: 'docs',
+    params: { path: path as [string, ...string[]] },
+  }
+}
+
 /** Full version history page (`/package/.../versions`) */
 export function packageVersionsRoute(packageName: string): RouteLocationRaw {
-  const [org, name = ''] = packageName.startsWith('@') ? packageName.split('/') : ['', packageName]
+  const { org, name } = splitPackageName(packageName)
   return { name: 'package-versions', params: { org, name } }
 }
 
@@ -58,7 +76,7 @@ export function changelogRoute(
   version?: string | null,
   hash?: string,
 ): RouteLocationRaw {
-  const [org, name = ''] = packageName.startsWith('@') ? packageName.split('/') : ['', packageName]
+  const { org, name } = splitPackageName(packageName)
 
   if (version) {
     return {

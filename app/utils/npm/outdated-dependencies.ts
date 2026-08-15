@@ -1,4 +1,4 @@
-import type { ReleaseType } from 'semver'
+import type { VersionDifference } from 'verkit'
 
 /** Information about an outdated dependency */
 export interface OutdatedDependencyInfo {
@@ -11,7 +11,7 @@ export interface OutdatedDependencyInfo {
   /** How many minor versions behind (when same major) */
   minorsBehind: number
   /** The type of version difference */
-  diffType: ReleaseType | null
+  diffType: VersionDifference | null
 }
 
 /**

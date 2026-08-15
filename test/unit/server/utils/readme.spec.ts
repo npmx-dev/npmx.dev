@@ -91,6 +91,18 @@ describe('Playground Link Extraction', () => {
       expect(result.playgroundLinks[0]!.provider).toBe('codepen')
     })
 
+    it('extracts Effect.ts playground links', async () => {
+      const markdown1 = `[Try it!](https://effect.website/play#3efe9f827b7d)`
+      const result1 = await renderReadmeHtml(markdown1, 'test-pkg')
+
+      expect(result1.playgroundLinks[0]!.provider).toBe('effect-ts-playground')
+
+      const markdown2 = `[Try it!](https://effect.website/play?code=Y29uc29sZS5sb2coKQ==)`
+      const result2 = await renderReadmeHtml(markdown2, 'test-pkg')
+
+      expect(result2.playgroundLinks[0]!.provider).toBe('effect-ts-playground')
+    })
+
     it('extracts Replit links', async () => {
       const markdown = `[Repl](https://replit.com/@user/project)`
       const result = await renderReadmeHtml(markdown, 'test-pkg')
@@ -592,13 +604,13 @@ describe('HTML output', () => {
   })
 
   describe('heading anchors (renderer.heading)', () => {
-    it('strips a full-line anchor wrapper and uses inner text for slug, toc, and permalink', async () => {
+    it('keeps the full-line anchor wrapper and places the link to the heading at the end', async () => {
       const markdown = '## <a href="https://example.com">My Section</a>'
       const result = await renderReadmeHtml(markdown, 'test-pkg')
 
       expect(result.toc).toEqual([{ text: 'My Section', depth: 2, id: 'user-content-my-section' }])
       expect(result.html).toBe(
-        `<h3 id="user-content-my-section" data-level="2"><a href="#user-content-my-section">My Section</a></h3>\n`,
+        `<h3 id="user-content-my-section" data-level="2"><a href="https://example.com" rel="nofollow noreferrer noopener" target="_blank">My Section</a><a href="#user-content-my-section" aria-hidden="true" tabindex="-1"></a></h3>\n`,
       )
     })
 
@@ -610,7 +622,7 @@ describe('HTML output', () => {
         { text: 'See docs for more', depth: 3, id: 'user-content-see-docs-for-more' },
       ])
       expect(result.html).toBe(
-        `<h3 id="user-content-see-docs-for-more" data-level="3">See <a href="https://example.com" rel="nofollow noreferrer noopener" target="_blank">docs</a> for more<a href="#user-content-see-docs-for-more"></a></h3>\n`,
+        `<h3 id="user-content-see-docs-for-more" data-level="3">See <a href="https://example.com" rel="nofollow noreferrer noopener" target="_blank">docs</a> for more<a href="#user-content-see-docs-for-more" aria-hidden="true" tabindex="-1"></a></h3>\n`,
       )
     })
 
@@ -620,7 +632,7 @@ describe('HTML output', () => {
 
       expect(result.toc).toEqual([{ text: 'Guide: page', depth: 2, id: 'user-content-guide-page' }])
       expect(result.html).toBe(
-        '<h3 id="user-content-guide-page" data-level="2">Guide: <a href="https://example.com/page" rel="nofollow noreferrer noopener" target="_blank">page</a><a href="#user-content-guide-page"></a></h3>',
+        '<h3 id="user-content-guide-page" data-level="2">Guide: <a href="https://example.com/page" rel="nofollow noreferrer noopener" target="_blank">page</a><a aria-hidden="true" tabindex="-1" href="#user-content-guide-page"></a></h3>',
       )
     })
   })

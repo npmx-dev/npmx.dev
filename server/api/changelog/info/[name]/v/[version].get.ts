@@ -19,7 +19,7 @@ export const defaultChangelogCacheOptions: Parameters<typeof defineCachedEventHa
   swr: true,
   getKey: event => {
     const { rawPackageName = '', rawVersion = 'latest' } = getChangelogRouteParams(event)
-    return `changelogInfo:v1:${rawPackageName.trim().replaceAll('/', ':')}:${rawVersion.trim()}`
+    return `changelogInfo:v2:${rawPackageName.trim().replaceAll('/', ':')}:${rawVersion.trim()}`
   },
   shouldBypassCache: () => import.meta.dev,
 }
@@ -38,7 +38,7 @@ export default defineCachedEventHandler(async event => {
     return await detectChangelog(pkg)
   } catch (error) {
     handleApiError(error, {
-      statusCode: 502,
+      statusCode: 500,
       message: ERROR_PACKAGE_DETECT_CHANGELOG,
     })
   }

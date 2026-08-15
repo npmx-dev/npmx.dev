@@ -149,6 +149,11 @@ const communityContributors = computed(
           <h2 class="text-lg text-fg uppercase tracking-wider mb-4">
             {{ $t('about.sponsors.title') }}
           </h2>
+          <p class="text-fg-muted text-sm leading-relaxed mb-4">
+            <LinkBase to="/sponsors" no-new-tab-icon>
+              {{ $t('sponsors_page.cta') }}
+            </LinkBase>
+          </p>
           <h3 class="block text-sm text-fg uppercase tracking-wider mb-3">
             {{ $t('about.sponsors.gold') }}
           </h3>

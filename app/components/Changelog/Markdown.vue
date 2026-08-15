@@ -8,9 +8,14 @@ const { info, goToVersion, tpTarget, resolveVersionPending } = defineProps<{
 
 const route = useRoute()
 
-const { data, error } = await useLazyFetch(
-  () => `/api/changelog/md/${info.provider}/${info.repo}/${info.path}`,
-)
+const url = computed(() => `/api/changelog/md/${info.provider}/${info.repo}/${info.path}` as const)
+const host = computed(() => info.host)
+
+const { data, error, pending } = useLazyFetch(url, {
+  query: {
+    host,
+  },
+})
 
 if (import.meta.client) {
   const { settings } = useSettings()
@@ -18,7 +23,7 @@ if (import.meta.client) {
   // doing this server side can make it that we go to the homepage
   const stopWatching = watchEffect(
     () => {
-      if (resolveVersionPending) {
+      if (resolveVersionPending || typeof data.value == 'string') {
         return // need to wait till resolving is finished
       }
       const toc = data.value?.toc
@@ -34,8 +39,11 @@ if (import.meta.client) {
       }
       // lc = lower case
       const lcRequestedVersion = goToVersion.toLowerCase()
+      const isMatching = createHeadingVersionMatcher(lcRequestedVersion)
+
       for (const item of toc) {
-        if (item.text.toLowerCase().includes(lcRequestedVersion)) {
+        const text = item.text.toLowerCase()
+        if (text.toLowerCase().includes(lcRequestedVersion) && isMatching(text)) {
           navigateTo(`#${item.id}`)
           return
         }
@@ -47,11 +55,36 @@ if (import.meta.client) {
   // stops watchEffect from trigger just before navigating
   onBeforeRouteLeave(stopWatching)
 }
+
+// fetch raw markdown to copy
+const {
+  data: rawMarkdown,
+  execute: fetchMarkdown,
+  status: mdStatus,
+} = useLazyFetch<string>(url, {
+  query: {
+    host,
+    raw: true,
+  },
+  immediate: false,
+  server: false,
+})
 </script>
+
 <template>
-  <Teleport v-if="data?.toc && data.toc.length > 1 && !!tpTarget" :to="tpTarget">
-    <ReadmeTocDropdown :toc="data.toc" class="justify-self-end" />
-  </Teleport>
-  <Readme v-if="data?.html" :html="data.html" class="pt-4"></Readme>
+  <ChangelogSkeleton v-if="pending" />
+  <template v-else-if="typeof data == 'object' && data?.html">
+    <Teleport v-if="data.html && !!tpTarget" :to="tpTarget">
+      <ButtonCopyMd
+        v-if="data?.toc && data.toc.length > 1"
+        :fetchMarkdown
+        :markdown="rawMarkdown"
+        :status="mdStatus"
+        :text="$t('changelog.copy_as_markdown')"
+      />
+      <ReadmeTocDropdown :toc="data.toc" class="justify-self-end" />
+    </Teleport>
+    <Readme :html="data.html" class="pt-4"></Readme>
+  </template>
   <slot v-else-if="error" name="error"></slot>
 </template>

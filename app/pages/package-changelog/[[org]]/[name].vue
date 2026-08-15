@@ -45,9 +45,20 @@ const latestVersion = computed(() => {
 })
 
 // getting info
-const { data: changelog, error: changelogError } = usePackageChangelog(packageName, version)
+const {
+  data: changelog,
+  error: changelogError,
+  pending: changelogPending,
+} = usePackageChangelog(packageName, version)
 
-const repoProviderIcon = useProviderIcon(() => changelog.value?.provider)
+const providerIcon = useProviderIcon(() => changelog.value?.provider)
+const viewOnProvider = useViewOnGitProvider(() => changelog.value?.provider)
+
+provide('changelog-provider-linkattr', {
+  providerIcon,
+  viewOnProvider,
+})
+
 const tptoc = useTemplateRef('tptoc')
 
 const versionDate = computed(() => {
@@ -59,8 +70,6 @@ const versionDate = computed(() => {
     return new Date(time).toISOString().split('T')[0]
   }
 })
-
-const viewOnGit = useViewOnGitProvider(() => changelog.value?.provider)
 
 const packageHeaderHeight = usePackageHeaderHeight()
 const stickyStyle = computed(() => {
@@ -120,82 +129,63 @@ defineOgImage(
         <LinkBase
           v-if="changelog?.link"
           :to="changelog?.link"
-          :classicon="repoProviderIcon"
-          :title="viewOnGit"
+          :classicon="providerIcon"
+          :title="viewOnProvider"
         >
           {{ changelog.provider }}
         </LinkBase>
-        <div v-if="changelog?.type === 'md'" ref="tptoc" class="w-14 h-8">
-          <!-- prevents layout shift while loading -->
+        <div v-if="changelog?.type === 'md'" ref="tptoc" class="min-w-[150px] h-8 flex gap-2">
+          <!-- Placeholder for toc & copy md -->
         </div>
       </div>
-      <section v-if="!changelog && !changelogError" class="flex flex-col gap-2 py-3">
-        <SkeletonBlock class="h-8 w-40 rounded" />
-        <ul class="ms-3 list-disc my-4 ps-6 marker:color-[--border-hover]">
-          <li class="mb-1" v-for="_n in 5">
-            <SkeletonBlock class="h-7 w-full max-w-2xl rounded" />
-          </li>
-        </ul>
-
-        <SkeletonBlock class="h-5 w-5/6 max-w-2xl rounded" />
-        <SkeletonBlock class="h-5 w-3/4 max-w-2xl rounded" />
+      <section
+        v-if="changelogPending && !changelog && !changelogError"
+        class="flex flex-col gap-2 py-3"
+      >
+        <ChangelogSkeleton />
       </section>
 
-      <Suspense v-else-if="changelog">
-        <template #default>
-          <LazyChangelogReleases
-            v-if="changelog?.type === 'release'"
-            :info="changelog"
-            :requested-date="versionDate"
-            :goToVersion="requestedVersion && version"
-            :resolveVersionPending="resolvingPending"
-            #error
-          >
-            <LazyChangelogErrorMsg
-              :pkgName="pkg?.name"
-              :changelog-link="changelog.link"
-              :viewOnGit
-            />
-          </LazyChangelogReleases>
-          <LazyChangelogMarkdown
-            v-else-if="changelog?.type === 'md'"
-            :info="changelog"
-            :tpTarget="tptoc"
-            :goToVersion="requestedVersion && version"
-            :resolveVersionPending="resolvingPending"
-            #error
-          >
-            <LazyChangelogErrorMsg
-              :pkgName="pkg?.name"
-              :changelog-link="changelog.link"
-              :viewOnGit
-            />
-          </LazyChangelogMarkdown>
-        </template>
-        <template #fallback>
-          <section class="flex flex-col gap-2 py-3">
-            <SkeletonBlock class="h-8 w-40 rounded" />
-            <ul class="ms-3 list-disc my-[1rem] ps-[1.5rem] marker:color-border-hover">
-              <li class="mb-1" v-for="_n in 5">
-                <SkeletonBlock class="h-7 w-full max-w-2xl rounded" />
-              </li>
-            </ul>
+      <LazyChangelogReleases
+        v-if="changelog?.type === 'release'"
+        :info="changelog"
+        :requested-date="versionDate"
+        :goToVersion="requestedVersion && version"
+        :resolveVersionPending="resolvingPending"
+        #error
+      >
+        <LazyChangelogErrorMsg
+          :pkgName="pkg?.name"
+          :changelog-link="changelog.link"
+          :viewOnGit="viewOnProvider"
+        />
+      </LazyChangelogReleases>
+      <LazyChangelogMarkdown
+        v-else-if="changelog?.type === 'md'"
+        :info="changelog"
+        :tpTarget="tptoc"
+        :goToVersion="requestedVersion && version"
+        :resolveVersionPending="resolvingPending"
+        #error
+      >
+        <LazyChangelogErrorMsg
+          :pkgName="pkg?.name"
+          :changelog-link="changelog.link"
+          :viewOnGit="viewOnProvider"
+        />
+      </LazyChangelogMarkdown>
 
-            <SkeletonBlock class="h-5 w-5/6 max-w-2xl rounded" />
-            <SkeletonBlock class="h-5 w-3/4 max-w-2xl rounded" />
-          </section>
-        </template>
-      </Suspense>
       <!-- error handling -->
-      <p class="mt-5" v-else-if="changelogError?.statusMessage == ERROR_UNGH_API_KEY_EXHAUSTED">
-        {{ $t('changelog.rate_limit_ungh') }}
-      </p>
-      <p class="mt-5" v-else-if="!version || !pkg?.versions[version]">
-        {{ $t('changelog.version_unavailable') }}
-      </p>
-      <p class="mt-5" v-else>
-        {{ $t('changelog.no_logs') }}
-      </p>
+      <template v-else-if="!changelogPending">
+        <p class="mt-5" v-if="changelogError?.statusMessage == ERROR_UNGH_API_KEY_EXHAUSTED">
+          {{ $t('changelog.rate_limit_ungh') }}
+        </p>
+        <p class="mt-5" v-else-if="!version || !pkg?.versions[version]">
+          {{ $t('changelog.version_unavailable') }}
+        </p>
+        <p class="mt-5" v-else>
+          {{ $t('changelog.no_logs') }}
+        </p>
+      </template>
     </section>
   </main>
   <!-- resolving the version didn't succeed, assunming that the package doesn't exist -->
