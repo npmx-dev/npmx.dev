@@ -48,4 +48,20 @@ describe('stripHtmlTags', () => {
     const raw = '&lt;a href=&quot;url&quot;&gt;link&lt;/a&gt; and text'
     expect(stripHtmlTags(decodeHtmlEntities(raw))).toBe('link and text')
   })
+
+  it('removes unclosed HTML tags at the end of truncated text', () => {
+    expect(stripHtmlTags('A library <img src="https://img.s')).toBe('A library')
+  })
+
+  it('returns empty string when truncated text is only HTML tags', () => {
+    expect(
+      stripHtmlTags(
+        '<p>   <a href="https://www.npmjs.com/package/vue-tsc"><img src="https://img.shields.io/npm/v/vue-tsc.svg"></a>   <img src="https://img.s',
+      ),
+    ).toBe('')
+  })
+
+  it('leaves comparison text that is not a tag', () => {
+    expect(stripHtmlTags('a < b')).toBe('a < b')
+  })
 })

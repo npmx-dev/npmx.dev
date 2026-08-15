@@ -256,6 +256,18 @@ describe('useMarkdown', () => {
       const processed = useMarkdown({ text: '<b>bold</b> and **also bold**' })
       expect(processed.value).toBe('bold and <strong>also bold</strong>')
     })
+
+    it('strips unclosed HTML tags (truncated)', () => {
+      const processed = useMarkdown({
+        text: '<p>   <a href="https://www.npmjs.com/package/vue-tsc"><img src="https://img.shields.io/npm/v/vue-tsc.svg?labelColor=18181B&color=1584FC" alt="NPM version"></a>   <a href="https://github.com/vuejs/language-tools/blob/master/LICENSE"><img src="https://img.s',
+      })
+      expect(processed.value).toBe('')
+    })
+
+    it('strips a trailing unclosed tag but keeps preceding text', () => {
+      const processed = useMarkdown({ text: 'A library <img src="https://img.s' })
+      expect(processed.value).toBe('A library')
+    })
   })
 
   describe('HTML comment stripping', () => {
@@ -286,7 +298,7 @@ describe('useMarkdown', () => {
 
     it('strips unclosed HTML comments (truncated)', () => {
       const processed = useMarkdown({ text: 'A library <!-- automd:badges color=yel' })
-      expect(processed.value).toBe('A library ')
+      expect(processed.value).toBe('A library')
     })
   })
 
