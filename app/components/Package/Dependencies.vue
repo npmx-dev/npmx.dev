@@ -1,10 +1,7 @@
 <script setup lang="ts">
+import { parseDependencyVersion } from '#shared/utils/npm'
 import { SEVERITY_TEXT_COLORS, getHighestSeverity } from '#shared/utils/severity'
-import {
-  getOutdatedTooltip,
-  getVersionClass,
-  parseDepValue,
-} from '~/utils/npm/outdated-dependencies'
+import { getOutdatedTooltip, getVersionClass } from '~/utils/npm/outdated-dependencies'
 
 const { t } = useI18n()
 
@@ -91,17 +88,17 @@ function getDepVersionClass(key: string, realName: string) {
 
 // Resolve npm: aliases — returns the real package name for links
 function resolveDepName(key: string, value: string): string {
-  return parseDepValue(value).name ?? key
+  return parseDependencyVersion(value).name ?? key
 }
 
 // Resolve npm: aliases — returns the version range for display
 function depRange(value: string): string {
-  return parseDepValue(value).range ?? value
+  return parseDependencyVersion(value).range ?? value
 }
 
 // Whether a dependency uses an npm: alias (listed name differs from the real package)
 function isAliased(key: string, value: string): boolean {
-  const realName = parseDepValue(value).name
+  const realName = parseDependencyVersion(value).name
   return realName != null && realName !== key
 }
 

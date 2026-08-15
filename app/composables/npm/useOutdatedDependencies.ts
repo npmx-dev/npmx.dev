@@ -1,10 +1,10 @@
 import type { PackageVersionsInfo } from 'fast-npm-meta'
 import { getVersionsBatch } from 'fast-npm-meta'
 import { difference, findMaxSatisfying, getMajor, getMinor, isGreater, isStable } from 'verkit'
+import { parseDependencyVersion } from '#shared/utils/npm'
 import {
   type OutdatedDependencyInfo,
   constraintIncludesPrerelease,
-  parseDepValue,
 } from '~/utils/npm/outdated-dependencies'
 
 const BATCH_SIZE = 50
@@ -70,7 +70,7 @@ export function useOutdatedDependencies(
     // Resolve npm: aliases and filter out non-semver constraints
     const resolvedEntries = Object.entries(deps)
       .map(([key, value]) => {
-        const parsed = parseDepValue(value)
+        const parsed = parseDependencyVersion(value)
         return { key, realName: parsed.name ?? key, range: parsed.range }
       })
       .filter((e): e is typeof e & { range: string } => e.range !== null)

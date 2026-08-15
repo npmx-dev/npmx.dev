@@ -1,11 +1,13 @@
 import type { ModuleReplacement, ModuleReplacementMapping } from 'module-replacements'
-import { parseDepValue } from '~/utils/npm/outdated-dependencies'
+import { parseDependencyVersion } from '#shared/utils/npm'
 
 async function fetchReplacements(
   deps: Record<string, string>,
 ): Promise<Record<string, ModuleReplacement>> {
   const names = [
-    ...new Set(Object.entries(deps).map(([key, value]) => parseDepValue(value).name ?? key)),
+    ...new Set(
+      Object.entries(deps).map(([key, value]) => parseDependencyVersion(value).name ?? key),
+    ),
   ]
 
   const results = await Promise.all(
