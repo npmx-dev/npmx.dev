@@ -57,11 +57,21 @@ describe('parseDependencyVersion', () => {
       'file:../foo',
       'link:../foo',
       'workspace:*',
+      'git://github.com/user/repo.git',
+      'git+ssh://git@github.com/user/repo.git',
       'git+https://github.com/user/repo.git',
+      'github:user/repo',
+      'http://example.com/pkg.tgz',
       'https://example.com/pkg.tgz',
       'user/repo',
     ]) {
       expect(parseDependencyVersion(value)).toEqual({ name: null, range: null })
+    }
+  })
+
+  it('treats dist-tags that look like protocols as resolvable', () => {
+    for (const tag of ['git', 'github', 'gitlab', 'http', 'https', 'file', 'next']) {
+      expect(parseDependencyVersion(tag)).toEqual({ name: null, range: tag })
     }
   })
 })
