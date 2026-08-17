@@ -1,6 +1,6 @@
 import * as v from 'valibot'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
-import { CACHE_MAX_AGE_ONE_HOUR } from '#shared/utils/constants'
+import { CACHE_MAX_AGE_FIVE_MINUTES } from '#shared/utils/constants'
 
 /**
  * GET /api/registry/vulnerabilities/:name or /api/registry/vulnerabilities/:name/v/:version
@@ -41,11 +41,14 @@ export default defineCachedEventHandler(
     }
   },
   {
-    maxAge: CACHE_MAX_AGE_ONE_HOUR,
+    // Short response cache (matching the /api/** ISR rule) so freshness is
+    // governed by the analyzeDependencyTree function cache, which keeps
+    // complete results for an hour but revalidates degraded ones quickly
+    maxAge: CACHE_MAX_AGE_FIVE_MINUTES,
     swr: true,
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
-      return `vulnerabilities:v1:${pkg.replace(/\/+$/, '').trim()}`
+      return `vulnerabilities:v2:${pkg.replace(/\/+$/, '').trim()}`
     },
   },
 )

@@ -6,6 +6,19 @@
  */
 
 /**
+ * Identifier for a security data source that can report vulnerabilities
+ */
+export type SecuritySourceId = 'osv'
+
+/**
+ * Fetch status for a single security data source:
+ * - `ok`: all queries succeeded
+ * - `partial`: some queries failed; results may be incomplete
+ * - `failed`: the source could not be queried at all
+ */
+export type SecuritySourceStatus = 'ok' | 'partial' | 'failed'
+
+/**
  * Severity levels in priority order (highest first)
  */
 export const SEVERITY_LEVELS = ['critical', 'high', 'moderate', 'low'] as const
@@ -131,6 +144,8 @@ export interface VulnerabilitySummary {
   url: string
   /** Version that fixes this vulnerability (if known) */
   fixedIn?: string
+  /** Security data sources that reported this vulnerability */
+  sources: SecuritySourceId[]
 }
 
 /**
@@ -196,6 +211,8 @@ export interface VulnerabilityTreeResult {
   totalPackages: number
   /** Number of packages that could not be checked (OSV query failed) */
   failedQueries: number
+  /** Per-source fetch status for the security data sources that were queried */
+  sourceStatus: Record<SecuritySourceId, SecuritySourceStatus>
   /** Aggregated counts across all packages */
   totalCounts: {
     total: number
