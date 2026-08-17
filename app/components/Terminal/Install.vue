@@ -81,13 +81,12 @@ function getCreatePartsForPM(pmId: PackageManagerId) {
 // Generate @types install command parts for a specific package manager
 function getTypesInstallPartsForPM(pmId: PackageManagerId) {
   if (!props.typesPackageName) return []
-  const pm = packageManagers.find(p => p.id === pmId)
-  if (!pm) return []
-
-  const devFlag = getDevDependencyFlag(pmId)
-  const pkgSpec = pmId === 'deno' ? `npm:${props.typesPackageName}` : props.typesPackageName
-
-  return [pm.label, pm.action, devFlag, pkgSpec]
+  return getInstallCommandParts({
+    packageName: props.typesPackageName,
+    packageManager: pmId,
+    jsrInfo: null,
+    dev: true,
+  })
 }
 
 // Full run command for copying (uses current selected PM)

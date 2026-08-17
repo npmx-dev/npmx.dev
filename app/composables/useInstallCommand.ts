@@ -1,5 +1,4 @@
 import type { JsrPackageInfo } from '#shared/types/jsr'
-import { getPackageManagerConfig } from '~/utils/install-command'
 
 /**
  * Composable for generating install commands with support for
@@ -44,21 +43,16 @@ export function useInstallCommand(
     })
   })
 
-  // Get the dev dependency flag for the selected package manager
-  const devFlag = computed(() => {
-    // bun uses lowercase -d, all others use -D
-    return selectedPM.value === 'bun' ? '-d' : '-D'
-  })
-
   // @types install command parts (for display)
   const typesInstallCommandParts = computed(() => {
     const types = toValue(typesPackageName)
     if (!types) return []
-    const packageManagerConfig = getPackageManagerConfig(selectedPM.value)
-
-    const pkgSpec = selectedPM.value === 'deno' ? `npm:${types}` : types
-
-    return [packageManagerConfig.label, packageManagerConfig.action, devFlag.value, pkgSpec]
+    return getInstallCommandParts({
+      packageName: types,
+      packageManager: selectedPM.value,
+      jsrInfo: null,
+      dev: true,
+    })
   })
 
   // Full install command including @types (for copying)
@@ -69,12 +63,13 @@ export function useInstallCommand(
       return installCommand.value
     }
 
-    const packageManagerConfig = getPackageManagerConfig(selectedPM.value)
-
-    const pkgSpec = selectedPM.value === 'deno' ? `npm:${types}` : types
-
     // Use semicolon to separate commands
-    return `${installCommand.value}; ${packageManagerConfig.label} ${packageManagerConfig.action} ${devFlag.value} ${pkgSpec}`
+    return `${installCommand.value}; ${getInstallCommand({
+      packageName: types,
+      packageManager: selectedPM.value,
+      jsrInfo: null,
+      dev: true,
+    })}`
   })
 
   // Copy state
