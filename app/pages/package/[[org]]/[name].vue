@@ -385,6 +385,11 @@ const hasDependencies = computed(() => {
 // Vulnerability count for the stats banner
 const vulnCount = computed(() => vulnTree.value?.totalCounts.total ?? 0)
 const hasVulnerabilities = computed(() => vulnCount.value > 0)
+// A scan where every security source failed carries no information - show "-"
+// instead of a reassuring zero
+const vulnScanFailed = computed(
+  () => !!vulnTree.value && allSecuritySourcesFailed(vulnTree.value.sourceStatus),
+)
 
 // Total transitive dependencies count (from either vuln tree or install size)
 // Subtract 1 to exclude the root package itself
@@ -704,7 +709,7 @@ const showSkeleton = shallowRef(false)
                 >
                   <span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />
                 </span>
-                <span v-else-if="vulnTreeStatus === 'success'">
+                <span v-else-if="vulnTreeStatus === 'success' && !vulnScanFailed">
                   <span v-if="hasVulnerabilities" class="text-amber-700 dark:text-amber-500">
                     {{ numberFormatter.format(vulnCount) }}
                   </span>

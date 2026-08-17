@@ -142,6 +142,32 @@ export async function queryOsvDetails(
   }
 }
 
+/**
+ * Fetch the number of known vulnerabilities for a single package version.
+ * Returns `null` (not 0) when the OSV query fails, so callers can distinguish
+ * "no known vulnerabilities" from "could not check".
+ */
+export async function fetchOsvVulnerabilityCount(
+  name: string,
+  version: string,
+): Promise<number | null> {
+  try {
+    const response = await $fetch<OsvQueryResponse>(OSV_QUERY_API, {
+      method: 'POST',
+      timeout: OSV_FETCH_TIMEOUT_MS,
+      body: {
+        package: { name, ecosystem: 'npm' },
+        version,
+      },
+    })
+    return response.vulns?.length ?? 0
+  } catch (error) {
+    // oxlint-disable-next-line no-console -- log OSV API failures for debugging
+    console.warn(`[osv] vulnerability count query failed for ${name}@${version}:`, error)
+    return null
+  }
+}
+
 function getVulnerabilityUrl(vuln: OsvVulnerability): string {
   if (vuln.id.startsWith('GHSA-')) {
     return `https://github.com/advisories/${vuln.id}`
