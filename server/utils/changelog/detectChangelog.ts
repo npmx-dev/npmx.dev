@@ -1,6 +1,6 @@
 import type { ChangelogMarkdownInfo, ChangelogInfo } from '~~/shared/types/changelog'
 import type { ExtendedPackageJson } from '~~/shared/utils/package-analysis'
-import { type RepoRef, parseRepoUrl } from '~~/shared/utils/git-providers'
+import { type RepoRef, parseRepositoryInfo } from '~~/shared/utils/git-providers'
 import { type RepoFileUrl, getBaseFileUrl } from './baseFileUrl'
 import { FetchError } from 'ofetch'
 import { ERROR_CHANGELOG_NOT_FOUND, ERROR_UNGH_API_KEY_EXHAUSTED } from '~~/shared/utils/constants'
@@ -20,21 +20,19 @@ type SafeResult<R, E = Error> = [R, null] | [null, E]
  * first checks if releases are available and then changelog.md
  */
 export async function detectChangelog(pkg: ExtendedPackageJson) {
-  if (!pkg.repository?.url) {
-    return false
-  }
-
-  const repoRef = parseRepoUrl(pkg.repository.url)
+  const repoRef = parseRepositoryInfo(pkg.repository)
   if (!repoRef) {
     return false
   }
 
-  const [releases, releasesError] = await checkReleases(repoRef, pkg.repository.directory)
+  const directory = typeof pkg.repository === 'object' ? pkg.repository.directory : undefined
+
+  const [releases, releasesError] = await checkReleases(repoRef, directory)
   if (releases) {
     return releases
   }
 
-  const changelog = await checkChangelogFile(repoRef, pkg.repository.directory)
+  const changelog = await checkChangelogFile(repoRef, directory)
   if (changelog) {
     return changelog
   }

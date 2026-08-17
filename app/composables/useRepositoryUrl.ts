@@ -1,6 +1,9 @@
+import type { Repository } from '@npm/types'
 import { joinURL } from 'ufo'
 
-type RequestedVersion = SlimPackument['requestedVersion'] | null
+export type RequestedVersion =
+  | SlimPackument['requestedVersion']
+  | { repository?: string | Repository }
 
 type UseRepositoryUrlReturn = {
   repositoryUrl: ComputedRef<string | null>
@@ -12,10 +15,14 @@ export function useRepositoryUrl(
   const repositoryUrl = computed<string | null>(() => {
     const repo = toValue(requestedVersion)?.repository
 
+    if (typeof repo === 'string') {
+      // sometimes repo can be a string due to not being normalized during publishing
+      return normalizeGitUrl(repo)
+    }
+
     if (!repo?.url) {
       return null
     }
-
     let url = normalizeGitUrl(repo.url)
     if (!url) {
       return null
