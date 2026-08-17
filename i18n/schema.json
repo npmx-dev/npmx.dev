@@ -3340,6 +3340,18 @@
           },
           "additionalProperties": false
         },
+        "staged_publish": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
         "jsr": {
           "type": "object",
           "properties": {

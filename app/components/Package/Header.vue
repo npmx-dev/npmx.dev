@@ -80,10 +80,10 @@ const { copied: copiedPkgVersion, copy: copyPkgVersion } = useClipboard({
   copiedDuring: 2000,
 })
 
-function hasProvenance(version: PackumentVersion | null): boolean {
-  if (!version?.dist) return false
-  return !!(version.dist as { attestations?: unknown }).attestations
-}
+const publishTrustStatus = computed(
+  () =>
+    (props.resolvedVersion && props.pkg?.versions[props.resolvedVersion]?.trustStatus) || undefined,
+)
 
 const { announce } = useCommandPalette()
 
@@ -293,7 +293,23 @@ useShortcuts({
           :tabindex="showScrollToTop ? 0 : -1"
         />
         <div class="flex-inline items-center flex-nowrap gap-1 font-mono text-fg-muted">
-          <template v-if="displayVersion && hasProvenance(displayVersion)">
+          <template v-if="publishTrustStatus?.stagedPublish">
+            <TooltipApp
+              :text="$t('badges.staged_publish.title')"
+              position="bottom"
+              strategy="fixed"
+            >
+              <LinkBase
+                variant="button-secondary"
+                to="https://docs.npmjs.com/staged-publishing/"
+                :aria-label="$t('badges.staged_publish.title')"
+                class="py-1.25 px-2 me-2"
+              >
+                <span class="i-lucide:shield-user" aria-hidden="true" />
+              </LinkBase>
+            </TooltipApp>
+          </template>
+          <template v-if="publishTrustStatus?.provenance">
             <TooltipApp
               :text="
                 provenanceData && provenanceStatus !== 'pending'

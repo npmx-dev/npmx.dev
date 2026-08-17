@@ -1112,6 +1112,10 @@
       "verified_title": "Verified provenance",
       "verified_via": "Verified: published via {provider}"
     },
+    "staged_publish": {
+      "label": "staged publish",
+      "title": "Published through staged publishing with 2FA approval"
+    },
     "jsr": {
       "title": "also available on JSR"
     }

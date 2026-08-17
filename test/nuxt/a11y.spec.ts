@@ -241,6 +241,7 @@ import {
   PaginationControls,
   ProgressBar,
   ProvenanceBadge,
+  StagedPublishBadge,
   Readme,
   ReadmeTocDropdown,
   SearchProviderToggle,
@@ -1002,6 +1003,22 @@ describe('component accessibility audits', () => {
           version: '3.0.0',
           compact: true,
         },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('StagedPublishBadge', () => {
+    it('should have no accessibility violations with link', async () => {
+      const component = await mountSuspended(StagedPublishBadge)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations without link', async () => {
+      const component = await mountSuspended(StagedPublishBadge, {
+        props: { linked: false },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])

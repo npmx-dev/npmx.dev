@@ -329,6 +329,11 @@ const flatItems = computed<FlatItem[]>(() => {
                 dir="ltr"
                 >v{{ latestTagRow!.version }}</LinkBase
               >
+              <StagedPublishBadge
+                v-if="fullVersionMap?.get(latestTagRow!.version)?.trustStatus?.stagedPublish"
+                compact
+                class="relative z-10"
+              />
               <ProvenanceBadge
                 v-if="fullVersionMap?.get(latestTagRow!.version)?.trustStatus?.provenance"
                 :package-name="packageName"
@@ -403,6 +408,11 @@ const flatItems = computed<FlatItem[]>(() => {
               >
                 v{{ row.version }}
               </LinkBase>
+              <StagedPublishBadge
+                v-if="fullVersionMap?.get(row.version)?.trustStatus?.stagedPublish"
+                compact
+                class="relative z-10"
+              />
               <ProvenanceBadge
                 v-if="fullVersionMap?.get(row.version)?.trustStatus?.provenance"
                 :package-name="packageName"
@@ -617,6 +627,11 @@ const flatItems = computed<FlatItem[]>(() => {
                         >
                           v{{ item.version }}
                         </LinkBase>
+                        <StagedPublishBadge
+                          v-if="fullVersionMap?.get(item.version)?.trustStatus?.stagedPublish"
+                          compact
+                          class="relative z-10"
+                        />
                         <ProvenanceBadge
                           v-if="fullVersionMap?.get(item.version)?.trustStatus?.provenance"
                           :package-name="packageName"
