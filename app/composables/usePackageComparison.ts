@@ -194,14 +194,12 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               exports: versionData?.exports,
             })
 
-            // Vulnerabilities
-            let vulnsTotal: number = 0
-            let vulnsSeverity = { critical: 0, high: 0, moderate: 0, low: 0 }
-
-            if (vulns) {
+            // Vulnerabilities - a failed fetch or fully-failed scan must stay
+            // "unknown" (undefined) rather than masquerading as a clean 0
+            let vulnerabilities: PackageComparisonData['vulnerabilities']
+            if (vulns && !allSecuritySourcesFailed(vulns.sourceStatus)) {
               const { total, ...severity } = vulns.totalCounts
-              vulnsTotal = total
-              vulnsSeverity = severity
+              vulnerabilities = { count: total, severity }
             }
 
             return {
@@ -215,10 +213,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               directDeps: versionData ? getDependencyCount(versionData) : null,
               installSize: undefined, // Will be filled in second pass
               analysis: analysis ?? undefined,
-              vulnerabilities: {
-                count: vulnsTotal,
-                severity: vulnsSeverity,
-              },
+              vulnerabilities,
               metadata: {
                 license: normalizeLicense(pkgData.license),
                 // Use version-specific publish time, NOT time.modified (which can be
