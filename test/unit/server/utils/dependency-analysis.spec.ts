@@ -74,6 +74,7 @@ describe('dependency-analysis', () => {
       expect(result.totalPackages).toBe(1)
       expect(result.failedQueries).toBe(0)
       expect(result.totalCounts).toEqual({ total: 0, critical: 0, high: 0, moderate: 0, low: 0 })
+      expect(result.sourceStatus).toEqual({ osv: 'ok' })
     })
 
     it('tracks failed queries when OSV batch API fails', async () => {
@@ -117,6 +118,42 @@ describe('dependency-analysis', () => {
       // When batch fails, all packages are counted as failed
       expect(result.failedQueries).toBe(2)
       expect(result.totalPackages).toBe(2)
+      expect(result.sourceStatus).toEqual({ osv: 'failed' })
+    })
+
+    it('reports partial source status when some detail queries fail', async () => {
+      // Suppress expected console output from error path
+      vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+      const mockResolved = new Map([
+        [
+          'test-pkg@1.0.0',
+          {
+            name: 'test-pkg',
+            version: '1.0.0',
+            size: 1000,
+            optional: false,
+            depth: 'root' as const,
+            path: ['test-pkg@1.0.0'],
+            tarballUrl: 'https://example.com/test-pkg-1.0.0.tgz',
+          },
+        ],
+      ])
+      vi.mocked(resolveDependencyTree).mockResolvedValue(mockResolved)
+
+      // Batch succeeds and reports a vulnerable package, but the detail query fails
+      $fetchMock.mockImplementation(async (url: string) => {
+        if (url === 'https://api.osv.dev/v1/querybatch') {
+          return { results: [{ vulns: [{ id: 'GHSA-test', modified: '2024-01-01' }] }] }
+        }
+        throw new Error('OSV detail query failed')
+      })
+
+      const result = await analyzeDependencyTree('test-pkg', '1.0.0')
+
+      expect(result.vulnerablePackages).toHaveLength(0)
+      expect(result.failedQueries).toBe(1)
+      expect(result.sourceStatus).toEqual({ osv: 'partial' })
     })
 
     it('correctly counts vulnerabilities by severity', async () => {
@@ -166,6 +203,11 @@ describe('dependency-analysis', () => {
 
       expect(result.vulnerablePackages).toHaveLength(1)
       expect(result.totalCounts).toEqual({ total: 4, critical: 1, high: 1, moderate: 1, low: 1 })
+      expect(result.sourceStatus).toEqual({ osv: 'ok' })
+      // Every vulnerability found via OSV is tagged with its source
+      for (const vuln of result.vulnerablePackages[0]!.vulnerabilities) {
+        expect(vuln.sources).toEqual(['osv'])
+      }
 
       const pkg = result.vulnerablePackages[0]
       expect(pkg?.counts.critical).toBe(1)
@@ -676,6 +718,69 @@ describe('dependency-analysis', () => {
 
       expect(result.vulnerablePackages).toHaveLength(1)
       expect(result.vulnerablePackages[0]?.vulnerabilities[0]?.fixedIn).toBe('1.2.3')
+    })
+
+    it('handles shorthand semver in range events (e.g. introduced "13.0")', async () => {
+      const mockResolved = new Map([
+        [
+          'next@14.2.5',
+          {
+            name: 'next',
+            version: '14.2.5',
+            size: 1000,
+            optional: false,
+            depth: 'root' as const,
+            path: ['next@14.2.5'],
+            tarballUrl: 'https://example.com/next-14.2.5.tgz',
+          },
+        ],
+      ])
+      vi.mocked(resolveDependencyTree).mockResolvedValue(mockResolved)
+
+      // Mirrors GHSA-3h52-269p-cp9r: OSV publishes the backport range with a
+      // shorthand introduced version ("13.0"), which strict semver rejects
+      mockOsvApi(
+        [{ vulns: [{ id: 'GHSA-3h52-269p-cp9r', modified: '2025-01-01' }] }],
+        new Map([
+          [
+            'next@14.2.5',
+            {
+              vulns: [
+                {
+                  id: 'GHSA-3h52-269p-cp9r',
+                  summary: 'Information exposure in Next.js dev server',
+                  database_specific: { severity: 'LOW' },
+                  affected: [
+                    {
+                      package: { ecosystem: 'npm', name: 'next' },
+                      ranges: [
+                        {
+                          type: 'SEMVER',
+                          events: [{ introduced: '15.0.0' }, { fixed: '15.2.2' }],
+                        },
+                      ],
+                    },
+                    {
+                      package: { ecosystem: 'npm', name: 'next' },
+                      ranges: [
+                        {
+                          type: 'SEMVER',
+                          events: [{ introduced: '13.0' }, { fixed: '14.2.30' }],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        ]),
+      )
+
+      const result = await analyzeDependencyTree('next', '14.2.5')
+
+      expect(result.vulnerablePackages).toHaveLength(1)
+      expect(result.vulnerablePackages[0]?.vulnerabilities[0]?.fixedIn).toBe('14.2.30')
     })
 
     it('extracts correct fixedIn for prerelease versions (e.g., 16.0.0-beta.0)', async () => {

@@ -24,6 +24,7 @@ test.describe('vulnerabilities API', () => {
     expect(body).toHaveProperty('package', 'vue')
     expect(body).toHaveProperty('version')
     expect(body).toHaveProperty('totalCounts')
+    expect(body).toHaveProperty('sourceStatus.osv')
   })
 
   test('scoped package vulnerabilities with URL encoding', async ({ page, baseURL }) => {
