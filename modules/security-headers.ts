@@ -11,8 +11,10 @@ import { TRUSTED_IMAGE_DOMAINS } from '#server/utils/image-proxy'
  * only applies to HTML pages (not API routes). The remaining security
  * headers are set via a catch-all route rule.
  *
- * Note: frame-ancestors is not supported in meta-tag CSP, but
- * X-Frame-Options: DENY (set via route rule) provides equivalent protection.
+ * Note: frame-ancestors is not supported in meta-tag CSP, so anti-clickjacking
+ * is delivered via response headers instead: X-Frame-Options: DENY for legacy
+ * browsers, plus a header-only CSP carrying frame-ancestors 'none' (the modern,
+ * non-deprecated mechanism) for everything else.
  *
  * Current policy uses 'unsafe-inline' for scripts and styles because:
  * - Nuxt injects inline scripts for hydration and payload transfer
@@ -71,6 +73,7 @@ export default defineNuxtModule({
     const securityHeaders = {
       'X-Content-Type-Options': 'nosniff',
       'X-Frame-Options': 'DENY',
+      'Content-Security-Policy': `frame-ancestors 'none'`,
       'Referrer-Policy': 'strict-origin-when-cross-origin',
     }
 
@@ -120,6 +123,7 @@ export default defineNuxtModule({
         ...securityHeaders,
         ...devtoolsRule?.headers,
         'X-Frame-Options': 'SAMEORIGIN',
+        'Content-Security-Policy': `frame-ancestors 'self'`,
       },
     }
   },

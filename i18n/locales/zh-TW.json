@@ -555,7 +555,8 @@
     "timeline": {
       "chart": {
         "copy_alt": {}
-      }
+      },
+      "deprecated": "已棄用"
     },
     "dependencies": {
       "title": "相依（{count} 個）",

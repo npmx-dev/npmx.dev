@@ -71,8 +71,9 @@ function addEvaluationFlags(
     return {
       ...entry,
       events,
-      hasPositive: events.some(event => event.positive),
-      hasNegative: events.some(event => !event.positive),
+      hasPositive: events.some(event => event.state === 'success'),
+      hasNegative: events.some(event => event.state === 'warn'),
+      hasError: events.some(event => event.state === 'error'),
     }
   })
 }
@@ -103,6 +104,7 @@ const convertedData = computed(() => {
       events: [],
       hasPositive: false,
       hasNegative: false,
+      hasError: false,
     }
   })
 
@@ -542,6 +544,7 @@ const config = computed<VueUiXyConfig>(() => {
       legend: { show: false },
       padding: {
         top: 32,
+        right: 56,
       },
       title: {
         text: applyEllipsis(packageName.value, 32),
@@ -588,7 +591,7 @@ const config = computed<VueUiXyConfig>(() => {
       },
       zoom: {
         show: settings.value.timelineChart.showZoom,
-        maxWidth: isMobile.value ? 350 : 500,
+        autoFit: true,
         highlightColor: colors.value.bgElevated,
         useResetSlot: true,
         keepState: true,
@@ -620,6 +623,7 @@ type TimelineSourceItem = {
   events?: SubEvent[]
   hasPositive?: boolean
   hasNegative?: boolean
+  hasError?: boolean
 }
 
 type TimelineSvgDataItem = VueUiXyDatasetLineItem & {
@@ -655,6 +659,7 @@ function getDatapointPlots(
 
     const hasPositive = datapoint.hasPositive === true
     const hasNegative = datapoint.hasNegative === true
+    const hasError = datapoint.hasError === true
 
     return [
       {
@@ -662,7 +667,7 @@ function getDatapointPlots(
         index,
         x: plot.x,
         y: plot.y,
-        offsetY: markerKey === 'negative' && hasPositive && hasNegative ? 20 : 0,
+        offsetY: hasError ? 0 : markerKey === 'negative' && hasPositive && hasNegative ? 20 : 0,
       },
     ]
   })
@@ -706,28 +711,38 @@ function getActiveVersionDatapointBar(
     )
 }
 
+// If a data point also has an error, the positive icon will not be shown
 function getPositiveDatapointPlots(
   item: TimelineDatasetItem,
   zoomOffset: number,
 ): TimelineMarkerItem[] {
   return getDatapointPlots(
     item,
-    datapoint => datapoint.hasPositive === true,
+    datapoint => datapoint.hasPositive === true && datapoint.hasError !== true,
     'positive',
     zoomOffset,
   )
 }
 
+// If a data point also has an error, the negative icon will not be shown
 function getNegativeDatapointPlots(
   item: TimelineDatasetItem,
   zoomOffset: number,
 ): TimelineMarkerItem[] {
   return getDatapointPlots(
     item,
-    datapoint => datapoint.hasNegative === true,
+    datapoint => datapoint.hasNegative === true && datapoint.hasError !== true,
     'negative',
     zoomOffset,
   )
+}
+
+// If a data point has an error, only this icon will be shown
+function getErrorDatapointPlots(
+  item: TimelineDatasetItem,
+  zoomOffset: number,
+): TimelineMarkerItem[] {
+  return getDatapointPlots(item, datapoint => datapoint.hasError === true, 'error', zoomOffset)
 }
 
 const indexSelection = computed(() => {
@@ -988,6 +1003,7 @@ const timelineMetricTabs = computed(() => [
             "
             :markersPositive="getPositiveDatapointPlots(svg.data[0], svg.slicer.start)"
             :markersNegative="getNegativeDatapointPlots(svg.data[0], svg.slicer.start)"
+            :markersError="getErrorDatapointPlots(svg.data[0], svg.slicer.start)"
             :colors
             :gradientColors="E18E_GRADIENT_COLORS"
             :pauseAnimations="shouldPauseChartAnimations || loading"
@@ -1053,7 +1069,7 @@ const timelineMetricTabs = computed(() => [
           <button
             type="button"
             :aria-label="$t('package.timeline.chart.reset_minimap')"
-            class="absolute inset-is-1/2 -translate-x-1/2 -bottom-18 sm:inset-is-unset sm:translate-x-0 sm:bottom-auto sm:-inset-ie-20 sm:-top-3 flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
+            class="absolute inset-is-1/2 -translate-x-1/2 -bottom-18 sm:inset-is-unset sm:translate-x-0 sm:bottom-auto sm:-inset-ie-16 sm:-top-3 flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
             style="pointer-events: all !important"
             @click="resetMinimap"
           >

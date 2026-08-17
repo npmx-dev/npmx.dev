@@ -81,8 +81,9 @@ export function useInstallCommand(
   const { copied, copy } = useClipboard({ copiedDuring: 2000 })
 
   async function copyInstallCommand() {
-    if (!fullInstallCommand.value) return
+    if (!fullInstallCommand.value) return false
     await copy(fullInstallCommand.value)
+    return true
   }
 
   return {

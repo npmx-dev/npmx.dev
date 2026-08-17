@@ -45,7 +45,11 @@ const latestVersion = computed(() => {
 })
 
 // getting info
-const { data: changelog, error: changelogError } = usePackageChangelog(packageName, version)
+const {
+  data: changelog,
+  error: changelogError,
+  pending: changelogPending,
+} = usePackageChangelog(packageName, version)
 
 const providerIcon = useProviderIcon(() => changelog.value?.provider)
 const viewOnProvider = useViewOnGitProvider(() => changelog.value?.provider)
@@ -130,11 +134,14 @@ defineOgImage(
         >
           {{ changelog.provider }}
         </LinkBase>
-        <div v-if="changelog?.type === 'md'" ref="tptoc" class="w-14 h-8">
-          <!-- prevents layout shift while loading -->
+        <div v-if="changelog?.type === 'md'" ref="tptoc" class="min-w-[150px] h-8 flex gap-2">
+          <!-- Placeholder for toc & copy md -->
         </div>
       </div>
-      <section v-if="!changelog && !changelogError" class="flex flex-col gap-2 py-3">
+      <section
+        v-if="changelogPending && !changelog && !changelogError"
+        class="flex flex-col gap-2 py-3"
+      >
         <ChangelogSkeleton />
       </section>
 
@@ -168,15 +175,17 @@ defineOgImage(
       </LazyChangelogMarkdown>
 
       <!-- error handling -->
-      <p class="mt-5" v-else-if="changelogError?.statusMessage == ERROR_UNGH_API_KEY_EXHAUSTED">
-        {{ $t('changelog.rate_limit_ungh') }}
-      </p>
-      <p class="mt-5" v-else-if="!version || !pkg?.versions[version]">
-        {{ $t('changelog.version_unavailable') }}
-      </p>
-      <p class="mt-5" v-else>
-        {{ $t('changelog.no_logs') }}
-      </p>
+      <template v-else-if="!changelogPending">
+        <p class="mt-5" v-if="changelogError?.statusMessage == ERROR_UNGH_API_KEY_EXHAUSTED">
+          {{ $t('changelog.rate_limit_ungh') }}
+        </p>
+        <p class="mt-5" v-else-if="!version || !pkg?.versions[version]">
+          {{ $t('changelog.version_unavailable') }}
+        </p>
+        <p class="mt-5" v-else>
+          {{ $t('changelog.no_logs') }}
+        </p>
+      </template>
     </section>
   </main>
   <!-- resolving the version didn't succeed, assunming that the package doesn't exist -->
