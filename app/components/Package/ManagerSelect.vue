@@ -196,6 +196,9 @@ function handleKeydown(event: KeyboardEvent) {
 :root[data-pm='nub'] [data-pm-select='nub'] {
   display: inline-block;
 }
+:root[data-pm='ni'] [data-pm-select='ni'] {
+  display: inline-block;
+}
 
 /* Fallback: when no data-pm is set, npm is selected by default */
 :root:not([data-pm]) .pm-select-content:not([data-pm-select='npm']) {
