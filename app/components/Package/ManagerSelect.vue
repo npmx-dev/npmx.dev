@@ -152,7 +152,7 @@ function handleKeydown(event: KeyboardEvent) {
         "
         :aria-label="$t('package.get_started.pm_label')"
         :style="getDropdownStyle()"
-        class="fixed bg-bg-subtle border border-border rounded-md shadow-lg z-50"
+        class="fixed overflow-hidden bg-bg-subtle border border-border rounded-md shadow-lg z-50"
       >
         <li
           v-for="(pm, index) in packageManagers"
