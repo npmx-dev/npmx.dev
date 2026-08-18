@@ -82,9 +82,9 @@ async function downloadCustomPng() {
 
     const img = new Image()
     const loaded = new Promise<void>((resolve, reject) => {
-      // oxlint-disable-next-line eslint-plugin-unicorn(prefer-add-event-listener)
+      // oxlint-disable-next-line unicorn/prefer-add-event-listener
       img.onload = () => resolve()
-      // oxlint-disable-next-line eslint-plugin-unicorn(prefer-add-event-listener)
+      // oxlint-disable-next-line unicorn/prefer-add-event-listener
       img.onerror = () => reject(new Error('Failed to load custom SVG'))
     })
     img.src = url

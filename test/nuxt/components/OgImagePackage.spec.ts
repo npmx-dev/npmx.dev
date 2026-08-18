@@ -84,7 +84,6 @@ describe('OgImagePackage', () => {
     mockUseRepoMeta.mockReturnValue({
       meta: computed(() => null),
       repoRef: computed(() => ({ owner: 'test', repo: 'repo' })),
-      starsLink: computed(() => ''),
       forks: computed(() => 0),
       forksLink: computed(() => ''),
       stars: computed(() => stars),

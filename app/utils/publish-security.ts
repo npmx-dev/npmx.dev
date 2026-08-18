@@ -1,5 +1,5 @@
 import { getTrustLevel, getTrustLevelName, type TrustLevelName } from 'packumeta'
-import { compare, major } from 'semver'
+import { compare, getMajor } from 'verkit'
 
 export interface PublishSecurityDowngrade {
   downgradedVersion: string
@@ -72,7 +72,7 @@ export function detectPublishSecurityDowngradeForVersion(
   const current = sorted[currentIndex]
   if (!current) return null
 
-  const currentMajor = major(current.version)
+  const currentMajor = getMajor(current.version)
 
   // Find the strongest older version across all majors (for detection)
   // and the strongest within the same major (for recommendation)
@@ -84,7 +84,7 @@ export function detectPublishSecurityDowngradeForVersion(
     if (!strongestOlderAny || version.trustRank > strongestOlderAny.trustRank) {
       strongestOlderAny = version
     }
-    if (major(version.version) === currentMajor) {
+    if (getMajor(version.version) === currentMajor) {
       if (!strongestOlderSameMajor || version.trustRank > strongestOlderSameMajor.trustRank) {
         strongestOlderSameMajor = version
       }

@@ -171,6 +171,8 @@ import {
   NoodleLens,
   NoodlePride3Logo,
   NoodleTetrisLogo,
+  NoodleGifDayLogo,
+  NoodleGifDayGifText,
   LinkBase,
   CallToAction,
   ChangelogCard,
@@ -247,6 +249,7 @@ import {
   SelectField,
   SettingsAccentColorPicker,
   SettingsBgThemePicker,
+  SettingsFgThemePicker,
   SettingsToggle,
   TagStatic,
   TagRadioButton,
@@ -272,10 +275,12 @@ import {
   PackageExternalLinks,
   LicenseChangeWarning,
   ChartSplitSparkline,
+  ChartCopyPngButton,
   TabRoot,
   TabList,
   TabItem,
   TabPanel,
+  ButtonCopyMd,
 } from '#components'
 
 // Server variant components must be imported directly to test the server-side render
@@ -460,6 +465,23 @@ describe('component accessibility audits', () => {
           logo: NoodleKawaiiLogo,
         },
       })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleGifDayGifText, {
+        props: {
+          text: 'N',
+          backgroundUrl: 'some_image_here.gif',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleGifDayLogo)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
@@ -1405,7 +1427,55 @@ describe('component accessibility audits', () => {
     })
   })
 
+  describe('ChartCopyPngButton', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(ChartCopyPngButton, {
+        props: { copied: false, copying: false },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations in the copied state', async () => {
+      const component = await mountSuspended(ChartCopyPngButton, {
+        props: { copied: true, copying: false },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations while copying', async () => {
+      const component = await mountSuspended(ChartCopyPngButton, {
+        props: { copied: false, copying: true },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should expose an accessible name, since the button is icon-only', async () => {
+      const component = await mountSuspended(ChartCopyPngButton, {
+        props: { copied: false, copying: false },
+      })
+      const button = component.get('button')
+      expect(button.attributes('aria-label')).toBeTruthy()
+      expect(button.attributes('type')).toBe('button')
+      // The icon carries no text, so it must not be announced
+      expect(component.get('span').attributes('aria-hidden')).toBe('true')
+    })
+
+    it('should mark the button busy while the export runs', async () => {
+      const component = await mountSuspended(ChartCopyPngButton, {
+        props: { copied: false, copying: true },
+      })
+      const button = component.get('button')
+      // The spinner is decorative, so aria-busy is what conveys the pending state
+      expect(button.attributes('aria-busy')).toBe('true')
+      expect(button.attributes('aria-label')).toBeTruthy()
+    })
+  })
+
   describe('TabRoot + TabList + TabItem + TabPanel', () => {
+    // oxlint-disable-next-line unicorn/consistent-function-scoping
     function createTabsFixture(modelValue: string, idPrefix: string) {
       return defineComponent({
         setup() {
@@ -2394,6 +2464,7 @@ describe('component accessibility audits', () => {
           watermark: '<g><text x="0" y="0" stroke="#000000" font-size="12">npmx</text></g>',
           markersPositive: [],
           markersNegative: [],
+          markersError: [],
           colors: { bg: '#FFFFFF', accent: '#FF0000' },
           pauseAnimations: false,
           gradientColors: [
@@ -2792,6 +2863,14 @@ describe('component accessibility audits', () => {
     })
   })
 
+  describe('SettingsFgThemePicker', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(SettingsFgThemePicker)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
   describe('TooltipBase', () => {
     it('should have no accessibility violations when hidden', async () => {
       const component = await mountSuspended(TooltipBase, {
@@ -2822,6 +2901,21 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations in footer mode', async () => {
       const component = await mountSuspended(BuildEnvironment, {
         props: { footer: true },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('ButtonCopyMd', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(ButtonCopyMd, {
+        props: {
+          fetchMarkdown: () => Promise.resolve(),
+          markdown: '# hallo',
+          status: 'success',
+          text: 'copy test',
+        },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
@@ -2866,7 +2960,9 @@ describe('component accessibility audits', () => {
             title: '1.0.0',
             publishedAt: '2026-02-11 10:00:00.000Z',
             link: 'https://github.com/nuxt/nuxt/releases/tag/v4.4.5',
+            tag: 'test',
           },
+          baseUrl: '/api/changelog/releases/test/test',
           tocHeaderClass: 'toc',
         },
       })
@@ -4639,6 +4735,10 @@ describe('background theme accessibility', () => {
     {
       name: 'SettingsBgThemePicker',
       mount: () => mountSuspended(SettingsBgThemePicker),
+    },
+    {
+      name: 'SettingsFgThemePicker',
+      mount: () => mountSuspended(SettingsFgThemePicker),
     },
     {
       name: 'ProvenanceBadge',

@@ -11,6 +11,7 @@ export interface TimelineVersion {
   hasTypes?: boolean
   hasTrustedPublisher?: boolean
   hasProvenance?: boolean
+  deprecated?: string
   tags: string[]
 }
 
@@ -21,7 +22,7 @@ export interface TimelineResponse {
 
 export interface SubEvent {
   key: string
-  positive: boolean
+  state: 'success' | 'error' | 'warn'
   icon: string
   text: string
 }
@@ -76,8 +77,10 @@ export default defineCachedEventHandler(
             license: normalizeLicense(version.license),
             type: typeof version.type === 'string' ? version.type : undefined,
             hasTypes: hasBuiltInTypes(version) || undefined,
+            // oxlint-disable-next-line eslint/no-underscore-dangle
             hasTrustedPublisher: version._npmUser?.trustedPublisher ? true : undefined,
             hasProvenance: version.dist?.attestations ? true : undefined,
+            deprecated: version.deprecated || undefined,
             tags: tagsByVersion.get(v) ?? [],
           }
         })

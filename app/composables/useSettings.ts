@@ -1,10 +1,11 @@
 import type { RemovableRef } from '@vueuse/core'
-import { useLocalStorage } from '@vueuse/core'
-import { ACCENT_COLORS, type AccentColorId } from '#shared/utils/constants'
 import type { LocaleObject } from '@nuxtjs/i18n'
-import { BACKGROUND_THEMES } from '#shared/utils/constants'
+import { useLocalStorage, useMounted } from '@vueuse/core'
+import { ACCENT_COLORS, type AccentColorId } from '#shared/utils/constants'
+import { BACKGROUND_THEMES, FOREGROUND_THEMES } from '#shared/utils/constants'
 
 type BackgroundThemeId = keyof typeof BACKGROUND_THEMES
+type ForegroundThemeId = keyof typeof FOREGROUND_THEMES
 
 /** Available search providers */
 export type SearchProvider = 'npm' | 'algolia'
@@ -21,6 +22,8 @@ export interface AppSettings {
   accentColorId: AccentColorId | null
   /** Preferred background shade */
   preferredBackgroundTheme: BackgroundThemeId | null
+  /** Preferred foreground shade */
+  preferredForegroundTheme: ForegroundThemeId | null
   /** Hide platform-specific packages (e.g., @scope/pkg-linux-x64) from search results */
   hidePlatformPackages: boolean
   /** Enable weekly download graph pulse looping animation */
@@ -67,6 +70,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   enableGraphPulseLooping: false,
   selectedLocale: null,
   preferredBackgroundTheme: null,
+  preferredForegroundTheme: null,
   searchProvider: import.meta.test ? 'npm' : 'algolia',
   instantSearch: true,
   keyboardShortcuts: true,
@@ -196,16 +200,24 @@ export function useAccentColor() {
  * Composable for managing the search provider setting.
  */
 export function useSearchProvider() {
+  const route = useRoute()
   const { settings } = useSettings()
+  const isMounted = useMounted()
 
   const searchProvider = computed({
-    get: () => settings.value.searchProvider,
+    get: () => (isMounted.value ? settings.value.searchProvider : DEFAULT_SETTINGS.searchProvider),
     set: (value: SearchProvider) => {
       settings.value.searchProvider = value
     },
   })
 
-  const isAlgolia = computed(() => searchProvider.value === 'algolia')
+  const searchProviderValue = computed(() => {
+    const p = normalizeSearchParam(route.query.p)
+    if (p === 'npm' || searchProvider.value === 'npm') return 'npm'
+    return 'algolia'
+  })
+
+  const isAlgolia = computed(() => searchProviderValue.value === 'algolia')
 
   function toggle() {
     searchProvider.value = searchProvider.value === 'npm' ? 'algolia' : 'npm'
@@ -213,6 +225,7 @@ export function useSearchProvider() {
 
   return {
     searchProvider,
+    searchProviderValue,
     isAlgolia,
     toggle,
   }
@@ -252,6 +265,41 @@ export function useBackgroundTheme() {
     backgroundThemes,
     selectedBackgroundTheme: computed(() => settings.value.preferredBackgroundTheme),
     setBackgroundTheme,
+  }
+}
+
+export function useForegroundTheme() {
+  const { t } = useI18n()
+
+  const fgThemeLabels = computed<Record<ForegroundThemeId, string>>(() => ({
+    muted: t('settings.foreground_themes.muted'),
+    standard: t('settings.foreground_themes.standard'),
+    contrast: t('settings.foreground_themes.contrast'),
+  }))
+
+  const foregroundThemes = computed(() =>
+    Object.entries(FOREGROUND_THEMES).map(([id, value]) => ({
+      id: id as ForegroundThemeId,
+      label: fgThemeLabels.value[id as ForegroundThemeId],
+      value,
+    })),
+  )
+
+  const { settings } = useSettings()
+
+  function setForegroundTheme(id: ForegroundThemeId | null) {
+    if (id) {
+      document.documentElement.dataset.fgTheme = id
+    } else {
+      document.documentElement.removeAttribute('data-fg-theme')
+    }
+    settings.value.preferredForegroundTheme = id
+  }
+
+  return {
+    foregroundThemes,
+    selectedForegroundTheme: computed(() => settings.value.preferredForegroundTheme),
+    setForegroundTheme,
   }
 }
 

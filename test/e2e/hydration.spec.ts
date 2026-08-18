@@ -9,6 +9,7 @@ const PAGES = [
   '/compare',
   '/search',
   '/package/nuxt',
+  '/package-code/empathic/v/2.0.0',
   '/search?q=vue',
 ] as const
 
@@ -72,6 +73,20 @@ test.describe('Hydration', () => {
     }
   })
 
+  // Default: null → test "contrast"
+  test.describe('foreground theme: contrast', () => {
+    for (const page of PAGES) {
+      test(`${page}`, async ({ page: pw, goto, hydrationErrors }) => {
+        await injectLocalStorage(pw, {
+          'npmx-settings': JSON.stringify({ preferredForegroundTheme: 'contrast' }),
+        })
+        await goto(page, { waitUntil: 'hydration' })
+
+        expect(hydrationErrors).toEqual([])
+      })
+    }
+  })
+
   // Default: "npm" → test "pnpm"
   test.describe('package manager: pnpm', () => {
     for (const page of PAGES) {
@@ -84,6 +99,24 @@ test.describe('Hydration', () => {
         expect(hydrationErrors).toEqual([])
       })
     }
+  })
+
+  test('package manager: persisted ni', async ({ page, goto, hydrationErrors }) => {
+    await injectLocalStorage(page, {
+      'npmx-pm': 'ni',
+    })
+
+    await goto('/about', { waitUntil: 'hydration' })
+
+    expect(hydrationErrors).toEqual([])
+    await expect(page.locator('html')).toHaveAttribute('data-pm', 'ni')
+  })
+
+  test('package manager: ni query parameter', async ({ page, goto, hydrationErrors }) => {
+    await goto('/about?pm=ni', { waitUntil: 'hydration' })
+
+    expect(hydrationErrors).toEqual([])
+    await expect(page.locator('html')).toHaveAttribute('data-pm', 'ni')
   })
 
   // Default: "en-US" (LTR) → test "ar-EG" (RTL)
@@ -112,6 +145,16 @@ test.describe('Hydration', () => {
         expect(hydrationErrors).toEqual([])
       })
     }
+  })
+
+  test('user packages page with npm search provider', async ({ page, goto, hydrationErrors }) => {
+    await injectLocalStorage(page, {
+      'npmx-settings': JSON.stringify({ searchProvider: 'npm' }),
+    })
+
+    await goto('/~qwerzl', { waitUntil: 'hydration' })
+
+    expect(hydrationErrors).toEqual([])
   })
 })
 

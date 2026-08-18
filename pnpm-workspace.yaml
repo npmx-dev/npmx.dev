@@ -11,7 +11,7 @@ allowBuilds:
   'core-js': false
   'esbuild': false
   msw: true
-  'sharp@0.34.5': true
+  sharp: true
   'unrs-resolver': false
   'vue-demi': false
 
@@ -24,16 +24,16 @@ catalogs:
     '@storybook/addon-a11y': '^10.3.5'
     '@storybook/addon-docs': '^10.3.5'
     '@storybook/addon-themes': '^10.3.5'
-    'msw-storybook-addon': '^2.0.7'
+    'msw-storybook-addon': '^3.0.0'
     'storybook': '^10.3.1'
     'storybook-i18n': '^10.1.1'
 
   vite-plus:
-    'vite': 'npm:@voidzero-dev/vite-plus-core@0.2.2'
-    'vite-plus': '0.2.2'
-    'vitest': '4.1.9'
-    '@vitest/browser-playwright': '4.1.9'
-    '@vitest/coverage-v8': '4.1.9'
+    'vite': 'npm:@voidzero-dev/vite-plus-core@0.2.9'
+    'vite-plus': '0.2.9'
+    'vitest': '4.1.10'
+    '@vitest/browser-playwright': '4.1.10'
+    '@vitest/coverage-v8': '4.1.10'
 
 dedupePeers: true
 
@@ -42,17 +42,26 @@ ignoreDepScripts: true
 ignoreWorkspaceRootCheck: true
 
 minimumReleaseAgeExclude:
-  - vue-data-ui@3.22.6
+  - '@iconify-json/simple-icons@1.2.93'
+  - vue-data-ui@3.23.0 || 3.23.1
+  - 'nuxt@4.5.2'
+  - '@nuxt/kit@4.5.2'
+  - '@nuxt/nitro-server@4.5.2'
+  - '@nuxt/schema@4.5.2'
+  - '@nuxt/vite-builder@4.5.2'
 
 overrides:
-  '@types/node': 24.13.2
-  nuxt-og-image: ^6.6.0
+  '@types/node': 24.13.3
+  nuxt-og-image: ^6.7.5
   sharp: 0.35.3
+  vue: 3.5.41
+  typescript: npm:typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2
   vite: 'catalog:vite-plus'
   vitest: 'catalog:vite-plus'
-  vue-router: 5.1.0
+  vue-router: 5.2.0
   markdown-exit: 1.1.0-beta.2
-  oxc-parser: 0.138.0
+  oxc-parser: 0.144.0
+  '@nuxtjs/i18n>@nuxt/kit': '4.5.2'
 
 packageExtensions:
   '@nuxt/scripts':
@@ -61,7 +70,7 @@ packageExtensions:
 
 patchedDependencies:
   '@jsr/deno__doc@0.189.1': patches/@jsr__deno__doc@0.189.1.patch
-  '@nuxt/test-utils': patches/@nuxt__test-utils.patch
+  '@nuxt/test-utils@4.1.0': patches/@nuxt__test-utils@4.1.0.patch
 
 savePrefix: ''
 
