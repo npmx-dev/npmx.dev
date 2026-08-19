@@ -539,12 +539,12 @@
       "copy_command": "Kopiér kommandoen for at køre lokalt"
     },
     "command": {
-      "copied_install": "Installationskommandoen er kopieret",
-      "copied_dev_install": "EN TEXT TO REPLACE: Dev install command copied",
-      "copied_run": "EN TEXT TO REPLACE: Run command copied",
-      "copied_create": "EN TEXT TO REPLACE: Create command copied",
-      "copied_execute": "EN TEXT TO REPLACE: Execute command copied",
-      "copied_skills": "EN TEXT TO REPLACE: Skills command copied"
+      "copied_install": "Kommandoen til installation er kopieret",
+      "copied_dev_install": "Kommandoen til installation som udviklingsafhængighed er kopieret",
+      "copied_run": "Kommandoen til at køre pakken er kopieret",
+      "copied_create": "Kommandoen til at oprette et projekt er kopieret",
+      "copied_execute": "Kommandoen til at køre værktøjet er kopieret",
+      "copied_skills": "Kommandoen til at tilføje skills er kopieret"
     },
     "readme": {
       "title": "Readme",
@@ -558,7 +558,7 @@
         "caution": "Forsigtighed"
       },
       "copy_as_markdown": "Kopiér README som Markdown",
-      "error_loading": "EN TEXT TO REPLACE: Failed to load README details"
+      "error_loading": "Kunne ikke indlæse README-oplysninger"
     },
     "provenance_section": {
       "title": "Provenance",
@@ -589,7 +589,7 @@
       "weekly_downloads": "Ugentlige downloads",
       "keywords": "Nøgleord",
       "license": "Licens",
-      "version": "EN TEXT TO REPLACE: Version",
+      "version": "Version",
       "select": "Vælg pakke",
       "select_maximum": "Maksimum {count} pakker kan vælges"
     },
@@ -628,9 +628,9 @@
       "filter_help": "Hjælp til semver rækkevidde filter",
       "filter_tooltip": "Filtrer versioner ved hjælp af en {link}. For eksempel viser ^3.0.0 alle 3.x versioner.",
       "filter_tooltip_link": "semver range",
-      "license_change_help": "EN TEXT TO REPLACE: License Change Details",
-      "license_change_warning": "EN TEXT TO REPLACE: License changed since previous version.",
-      "license_change_record": "EN TEXT TO REPLACE: The license of this package changed from \"{from}\" to \"{to}\".",
+      "license_change_help": "Detaljer om licensændring",
+      "license_change_warning": "Licensen er ændret siden den forrige version.",
+      "license_change_record": "Pakkens licens er ændret fra \"{from}\" til \"{to}\".",
       "no_matches": "Ingen versioner matcher denne rækkevidde",
       "copy_alt": {
         "per_version_analysis": "{version} version blev downloadet {downloads} gange",
@@ -641,38 +641,38 @@
       "no_match_filter": "Ingen versioner matcher {filter}"
     },
     "timeline": {
-      "load_more": "EN TEXT TO REPLACE: Load more",
-      "load_error": "EN TEXT TO REPLACE: Failed to load timeline. Please try again later.",
-      "size_increase": "EN TEXT TO REPLACE: Install size increased by {percent}% ({size})",
-      "size_decrease": "EN TEXT TO REPLACE: Install size decreased by {percent}% ({size})",
-      "dep_increase": "EN TEXT TO REPLACE: {count} dependency added | {count} dependencies added",
-      "dep_decrease": "EN TEXT TO REPLACE: {count} dependency removed | {count} dependencies removed",
-      "license_change": "EN TEXT TO REPLACE: License changed from {from} to {to}",
-      "esm_added": "EN TEXT TO REPLACE: Module type changed to ESM",
-      "esm_removed": "EN TEXT TO REPLACE: Module type changed from ESM to CJS",
-      "types_added": "EN TEXT TO REPLACE: TypeScript types added",
-      "types_removed": "EN TEXT TO REPLACE: TypeScript types removed",
-      "trusted_publisher_added": "EN TEXT TO REPLACE: Trusted publishing enabled",
-      "trusted_publisher_removed": "EN TEXT TO REPLACE: Trusted publishing removed",
-      "provenance_added": "EN TEXT TO REPLACE: Provenance enabled",
-      "provenance_removed": "EN TEXT TO REPLACE: Provenance removed",
-      "deprecated": "EN TEXT TO REPLACE: Deprecated",
+      "load_more": "Indlæs mere",
+      "load_error": "Kunne ikke indlæse tidslinjen. Prøv igen senere.",
+      "size_increase": "Installationsstørrelsen steg med {percent}% ({size})",
+      "size_decrease": "Installationsstørrelsen faldt med {percent}% ({size})",
+      "dep_increase": "{count} afhængighed tilføjet | {count} afhængigheder tilføjet",
+      "dep_decrease": "{count} afhængighed fjernet | {count} afhængigheder fjernet",
+      "license_change": "Licensen blev ændret fra {from} til {to}",
+      "esm_added": "Modultype ændret til ESM",
+      "esm_removed": "Modultype ændret fra ESM til CJS",
+      "types_added": "TypeScript-typer tilføjet",
+      "types_removed": "TypeScript-typer fjernet",
+      "trusted_publisher_added": "Trusted publishing aktiveret",
+      "trusted_publisher_removed": "Trusted publishing fjernet",
+      "provenance_added": "Provenance aktiveret",
+      "provenance_removed": "Provenance fjernet",
+      "deprecated": "Forældet",
       "chart": {
-        "tab_aria_label": "EN TEXT TO REPLACE: Metric selection",
-        "dependency_size": "EN TEXT TO REPLACE: Dependency Size",
-        "other_dependencies": "EN TEXT TO REPLACE: Other",
-        "base_scale": "EN TEXT TO REPLACE: start y-axis at zero",
-        "zoom": "EN TEXT TO REPLACE: zoom",
-        "reset_minimap": "EN TEXT TO REPLACE: reset minimap",
-        "ordered_versions": "EN TEXT TO REPLACE: stable only",
+        "tab_aria_label": "Valg af måling",
+        "dependency_size": "Afhængighedsstørrelse",
+        "other_dependencies": "Andre",
+        "base_scale": "start y-aksen ved nul",
+        "zoom": "zoom",
+        "reset_minimap": "nulstil minikort",
+        "ordered_versions": "kun stabile versioner",
         "copy_alt": {
-          "key_changes": "EN TEXT TO REPLACE: Key changes: {version_events}.",
-          "version_events": "EN TEXT TO REPLACE: version {version}: {events}",
-          "general_description": "EN TEXT TO REPLACE: Line chart showing the {metric} of the {package} package, from version {first} to {last}. The {metric} in version {first} is {first_value}, in version {last} is {last_value} ({overall_progress_percentage}% overall). {key_changes} {watermark}.",
-          "stackbar_segment_share": "EN TEXT TO REPLACE: {segment}: {value} ({percentage})",
-          "stackbar_top_segments": "EN TEXT TO REPLACE: In {version}, the largest segments are {segments}.",
-          "stackbar_largest_increase": "EN TEXT TO REPLACE: The largest increase is {segment}, up {delta}.",
-          "stackbar_largest_decrease": "EN TEXT TO REPLACE: The largest decrease is {segment}, down {delta}."
+          "key_changes": "Vigtige ændringer: {version_events}.",
+          "version_events": "version {version}: {events}",
+          "general_description": "Linjediagram, der viser {metric} for pakken {package} fra version {first} til {last}. {metric} i version {first} er {first_value}, og i version {last} er den {last_value} ({overall_progress_percentage}% samlet set). {key_changes} {watermark}.",
+          "stackbar_segment_share": "{segment}: {value} ({percentage})",
+          "stackbar_top_segments": "I {version} er de største segmenter {segments}.",
+          "stackbar_largest_increase": "Den største stigning er i {segment}, som er steget med {delta}.",
+          "stackbar_largest_decrease": "Det største fald er i {segment}, som er faldet med {delta}."
         }
       }
     },
@@ -734,7 +734,7 @@
       "date_range": "{start} til {end}",
       "date_range_multiline": "{start}\ntil {end}",
       "download_file": "Hent {fileType}",
-      "copy_file": "EN TEXT TO REPLACE: Copy {fileType}",
+      "copy_file": "Kopiér {fileType}",
       "toggle_annotator": "Skift annotator",
       "toggle_stack_mode": "Skift staktilstand",
       "open_options": "Åbn indstillinger",
@@ -769,7 +769,7 @@
         "trend_undefined": "undefined (utilstrækkelige data)",
         "button_label": "Kopiér alternativ tekst",
         "watermark": "Nederst står der et vandmærke \"./npmx en hurtig, moderne browser til npm-registret\"",
-        "watermark_top": "EN TEXT TO REPLACE: At the top, a watermark reads \"./npmx a fast, modern browser for the npm registry\"",
+        "watermark_top": "Øverst står der et vandmærke \"./npmx en hurtig, moderne browser til npm-registret\"",
         "analysis": "{package_name} starter ved {start_value} og slutter ved {end_value}, hvilket viser en {trend} trend med en hældning på {downloads_slope} downloads pr. tidsinterval.",
         "estimation": "Den endelige værdi er et skøn baseret på delvise data for den aktuelle periode.",
         "estimations": "De endelige værdier er skøn baseret på delvise data for den aktuelle periode.",
@@ -780,15 +780,15 @@
         "facet_bar_analysis": "{package_name} har en værdi på {value}."
       },
       "embedding": {
-        "chart": "EN TEXT TO REPLACE: Embed this chart",
-        "copy_url": "EN TEXT TO REPLACE: Copy this URL to embed the chart into your website",
-        "preview": "EN TEXT TO REPLACE: Preview",
-        "tip": "EN TEXT TO REPLACE: If startDate and endDate are not provided in the URL, the graph will display the last 12 months by default."
+        "chart": "Indlejr dette diagram",
+        "copy_url": "Kopiér denne URL for at indlejre diagrammet på dit websted",
+        "preview": "Forhåndsvisning",
+        "tip": "Hvis startDate og endDate ikke er angivet i URL'en, viser grafen som standard de seneste 12 måneder."
       }
     },
     "downloads": {
       "title": "Ugentlige downloads",
-      "version_distribution_title": "EN TEXT TO REPLACE: weekly downloads for version {version}",
+      "version_distribution_title": "ugentlige downloads for version {version}",
       "community_distribution": "Se distributionen af fællesskabsadoption",
       "subtitle": "På tværs af alle versioner",
       "sparkline_nav_hint": "Brug ← →"
@@ -889,12 +889,12 @@
   },
   "leaderboard": {
     "likes": {
-      "title": "EN TEXT TO REPLACE: Likes Leaderboard",
-      "description": "EN TEXT TO REPLACE: The 10 most liked packages on npmx right now.",
-      "rank": "EN TEXT TO REPLACE: Rank",
-      "likes": "EN TEXT TO REPLACE: Likes",
-      "unavailable_title": "EN TEXT TO REPLACE: No likes leaderboard yet",
-      "unavailable_description": "EN TEXT TO REPLACE: We don't have a likes leaderboard to show right now."
+      "title": "Rangliste over likes",
+      "description": "De 10 pakker med flest likes på npmx lige nu.",
+      "rank": "Placering",
+      "likes": "Likes",
+      "unavailable_title": "Ingen rangliste over likes endnu",
+      "unavailable_description": "Vi har ingen rangliste over likes at vise lige nu."
     }
   },
   "connector": {
@@ -1104,7 +1104,7 @@
     "file_path": "Filsti",
     "binary_file": "Binær fil",
     "binary_rendering_warning": "Filtypen \"{contentType}\" understøttes ikke til forhåndsvisning.",
-    "possibly_unnecessary": "EN TEXT TO REPLACE: May be unnecessary in a published package"
+    "possibly_unnecessary": "Kan være unødvendig i en udgivet pakke"
   },
   "badges": {
     "provenance": {
@@ -1252,17 +1252,17 @@
     },
     "sponsors": {
       "title": "Sponsorer",
-      "gold": "EN TEXT TO REPLACE: Gold Sponsors",
-      "silver": "EN TEXT TO REPLACE: Silver Sponsors"
+      "gold": "Guldsponsorer",
+      "silver": "Sølvsponsorer"
     },
     "oss_partners": {
       "title": "OSS Partnere"
     },
     "team": {
       "title": "Team",
-      "core": "EN TEXT TO REPLACE: Core",
-      "maintainers": "EN TEXT TO REPLACE: Maintainers",
-      "role_core": "EN TEXT TO REPLACE: core",
+      "core": "Kerneteam",
+      "maintainers": "Vedligeholdere",
+      "role_core": "kernemedlem",
       "role_steward": "forvalter",
       "role_maintainer": "vedligeholder",
       "sponsor": "sponsor",
@@ -1300,60 +1300,60 @@
     }
   },
   "sponsors_page": {
-    "title": "EN TEXT TO REPLACE: Sponsors",
-    "heading": "EN TEXT TO REPLACE: sponsors",
-    "meta_description": "EN TEXT TO REPLACE: Support npmx and help us accelerate ecosystem work around security, trust, optimization, and research.",
-    "intro": "EN TEXT TO REPLACE: Support npmx and help us grow the ecosystem work we do for developers and maintainers.",
+    "title": "Sponsorer",
+    "heading": "sponsorer",
+    "meta_description": "Støt npmx, og hjælp os med at sætte fart på arbejdet i økosystemet inden for sikkerhed, tillid, optimering og forskning.",
+    "intro": "Støt npmx, og hjælp os med at udvide vores arbejde i økosystemet for udviklere og vedligeholdere.",
     "what_we_do": {
-      "title": "EN TEXT TO REPLACE: What we do",
-      "description": "EN TEXT TO REPLACE: We're building an ecosystem that solves problems around security, trust, optimization, and research for the tools we use in everyday development - quickly, conveniently, and with high quality. This project is built by developers for developers. As authors of widely used libraries, we understand team needs and actively study what maintainers and projects need most."
+      "title": "Det laver vi",
+      "description": "Vi bygger et økosystem, der løser problemer inden for sikkerhed, tillid, optimering og forskning for de værktøjer, vi bruger i den daglige udvikling — hurtigt, nemt og i høj kvalitet. Dette projekt er bygget af udviklere til udviklere. Som skabere af udbredte biblioteker forstår vi teams behov og undersøger aktivt, hvad vedligeholdere og projekter har mest brug for."
     },
     "what_support_means": {
-      "title": "EN TEXT TO REPLACE: What support means",
-      "description": "EN TEXT TO REPLACE: Our plans and connections keep growing, along with our desire to share what we've built and learn from others. Your support helps fund the project, external talks, conferences, and the broader ecosystem, and, most importantly, enables us to keep growing our community."
+      "title": "Hvad støtten betyder",
+      "description": "Vores planer og forbindelser bliver ved med at vokse sammen med vores ønske om at dele det, vi har bygget, og lære af andre. Din støtte er med til at finansiere projektet, eksterne oplæg, konferencer og det bredere økosystem og gør det vigtigst af alt muligt for os fortsat at udvikle vores fællesskab."
     },
-    "cta": "EN TEXT TO REPLACE: See sponsorship tiers",
-    "community_growth_footnote": "EN TEXT TO REPLACE: * According to {link} Q1 2026 research.",
+    "cta": "Se sponsorniveauer",
+    "community_growth_footnote": "* Ifølge {link}s forskning fra 1. kvartal 2026.",
     "what_this_means_for_you": {
-      "title": "EN TEXT TO REPLACE: What this means for you",
-      "description": "EN TEXT TO REPLACE: npmx is not only about improving developer experience and closing critical everyday gaps. In our first six months, we have already become the default source for thousands of teams and a huge number of developers. You get not only a more stable tool for your teams, but also visibility in front of a constantly growing audience of top-tier engineers.",
+      "title": "Hvad det betyder for dig",
+      "description": "npmx handler ikke kun om at forbedre udvikleroplevelsen og lukke kritiske huller i hverdagen. I løbet af vores første seks måneder er vi allerede blevet standardkilden for tusindvis af teams og et enormt antal udviklere. Du får ikke blot et mere stabilt værktøj til dine teams, men også synlighed over for en konstant voksende målgruppe af dygtige softwareudviklere.",
       "cards": {
         "people": {
-          "contributors": "EN TEXT TO REPLACE: contributors",
-          "community_members": "EN TEXT TO REPLACE: community members"
+          "contributors": "bidragydere",
+          "community_members": "fællesskabsmedlemmer"
         },
         "visitors": {
-          "description": "EN TEXT TO REPLACE: unique monthly visitors"
+          "description": "unikke månedlige besøgende"
         },
         "stars": {
-          "title": "EN TEXT TO REPLACE: stars"
+          "title": "stjerner"
         },
         "community": {
-          "title": "EN TEXT TO REPLACE: fast-growing",
-          "description": "EN TEXT TO REPLACE: We are one of the fastest-growing communities in the ecosystem"
+          "title": "hastigt voksende",
+          "description": "Vi er et af de hurtigst voksende fællesskaber i økosystemet"
         },
         "adoption": {
-          "title": "EN TEXT TO REPLACE: adoption",
-          "description": "EN TEXT TO REPLACE: charts at conferences, talks, and articles rely on our data"
+          "title": "udbredelse",
+          "description": "diagrammer på konferencer, i oplæg og i artikler bygger på vores data"
         },
         "default_source": {
-          "title": "EN TEXT TO REPLACE: default source",
-          "description": "EN TEXT TO REPLACE: pnpm made npmx the default source, many packages have been configured to link to npmx"
+          "title": "standardkilde",
+          "description": "pnpm har gjort npmx til standardkilden, og mange pakker er blevet konfigureret til at linke til npmx"
         }
       }
     },
     "tiers": {
-      "title": "EN TEXT TO REPLACE: Sponsorship tiers",
-      "per_month": "EN TEXT TO REPLACE: /month",
-      "custom": "EN TEXT TO REPLACE: Custom",
+      "title": "Sponsorniveauer",
+      "per_month": "/måned",
+      "custom": "Tilpasset",
       "silver": {
-        "name": "EN TEXT TO REPLACE: Silver"
+        "name": "Sølv"
       },
       "gold": {
-        "name": "EN TEXT TO REPLACE: Gold"
+        "name": "Guld"
       },
       "platinum": {
-        "name": "EN TEXT TO REPLACE: Platinum"
+        "name": "Platin"
       }
     }
   },
@@ -1438,15 +1438,15 @@
       "add_hint": "Tilføj mindst 2 pakker for at sammenligne."
     },
     "scatter_chart": {
-      "title": "EN TEXT TO REPLACE: Compare {x} vs {y}",
-      "freshness_score": "EN TEXT TO REPLACE: Freshness score",
+      "title": "Sammenlign {x} med {y}",
+      "freshness_score": "Aktualitetsscore",
       "copy_alt": {
-        "analysis": "EN TEXT TO REPLACE: {package} : {x_name} ({x_value}) and {y_name} ({y_value})",
-        "description": "EN TEXT TO REPLACE: Scatter plot chart mapping {x_name} versus {y_name} for the {packages} packages. {analysis}. {watermark}"
+        "analysis": "{package}: {x_name} ({x_value}) og {y_name} ({y_value})",
+        "description": "Punktdiagram, der viser {x_name} i forhold til {y_name} for pakkerne {packages}. {analysis}. {watermark}"
       },
-      "filename": "EN TEXT TO REPLACE: {x}-vs-{y}-scatter-chart",
-      "x_axis": "EN TEXT TO REPLACE: X-AXIS ↦",
-      "y_axis": "EN TEXT TO REPLACE: Y-AXIS ↥"
+      "filename": "{x}-mod-{y}-punktdiagram",
+      "x_axis": "X-AKSE ↦",
+      "y_axis": "Y-AKSE ↥"
     },
     "no_dependency": {
       "label": "(Ingen afhængighed)",
@@ -1528,16 +1528,16 @@
           "description": "Kendte sikkerhedssårbarheder"
         },
         "githubStars": {
-          "label": "EN TEXT TO REPLACE: GitHub Stars",
-          "description": "EN TEXT TO REPLACE: Number of stars on the GitHub repository"
+          "label": "GitHub-stjerner",
+          "description": "Antal stjerner på GitHub-repositoriet"
         },
         "githubForks": {
-          "label": "EN TEXT TO REPLACE: GitHub Forks",
-          "description": "EN TEXT TO REPLACE: Number of forks on the GitHub repository"
+          "label": "GitHub-forks",
+          "description": "Antal forks på GitHub-repositoriet"
         },
         "githubIssues": {
-          "label": "EN TEXT TO REPLACE: GitHub Issues",
-          "description": "EN TEXT TO REPLACE: Number of issues on the GitHub repository"
+          "label": "GitHub-issues",
+          "description": "Antal issues på GitHub-repositoriet"
         },
         "createdAt": {
           "label": "EN TEXT TO REPLACE: Created At",
