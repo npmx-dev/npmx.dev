@@ -13,7 +13,7 @@
   "trademark_disclaimer": "npm er et registreret varemærke for npm, Inc. Dette websted er ikke tilknyttet npm, Inc.",
   "footer": {
     "about": "om",
-    "sponsors": "EN TEXT TO REPLACE: sponsors",
+    "sponsors": "sponsorer",
     "blog": "blog",
     "docs": "dokumentation",
     "source": "kilde",
@@ -22,10 +22,10 @@
     "builders_chat": "byggere",
     "keyboard_shortcuts": "tastaturgenveje",
     "brand": "mærke",
-    "resources": "EN TEXT TO REPLACE: Resources",
-    "features": "EN TEXT TO REPLACE: Features",
-    "other": "EN TEXT TO REPLACE: Other",
-    "sponsored_by": "EN TEXT TO REPLACE: Sponsored by {list}"
+    "resources": "Ressourcer",
+    "features": "Funktioner",
+    "other": "Andet",
+    "sponsored_by": "Sponsoreret af {list}"
   },
   "shortcuts": {
     "section": {
@@ -41,7 +41,7 @@
     "settings": "Åbn indstillinger",
     "compare": "Sammenlign",
     "compare_from_package": "Sammenlign (forudfyldt med nuværende pakke)",
-    "changelog": "EN TEXT TO REPLACE: Open changelog",
+    "changelog": "Åbn ændringslog",
     "navigate_results": "Naviger resultater",
     "go_to_result": "Gå til resultat",
     "open_code_view": "Åbn kodevisning",
@@ -49,8 +49,8 @@
     "disable_shortcuts": "Du kan deaktivere tastaturgenveje i {settings}.",
     "open_main": "Åbn hovedinformation",
     "open_diff": "Åbn versionsforskelle",
-    "open_timeline": "EN TEXT TO REPLACE: Open timeline",
-    "open_stats": "EN TEXT TO REPLACE: Open stats"
+    "open_timeline": "Åbn tidslinje",
+    "open_stats": "Åbn statistik"
   },
   "search": {
     "label": "Søg npm-pakker",
@@ -103,9 +103,9 @@
     "here": "du er her",
     "connected": "forbundet",
     "keyboard_shortcuts": {
-      "navigate": "EN TEXT TO REPLACE: to navigate",
-      "select": "EN TEXT TO REPLACE: to select",
-      "close": "EN TEXT TO REPLACE: to close"
+      "navigate": "for at navigere",
+      "select": "for at vælge",
+      "close": "for at lukke"
     },
     "state": {
       "on": "til",
@@ -163,8 +163,8 @@
       "diff": "Diff",
       "compare": "Sammenlign denne pakke",
       "download": "Hent tarball",
-      "changelog": "EN TEXT TO REPLACE: Changelog",
-      "stats": "EN TEXT TO REPLACE: Stats"
+      "changelog": "Ændringslog",
+      "stats": "Statistik"
     },
     "package_actions": {
       "copy_run": "Kopiér kør-kommando"
@@ -191,7 +191,7 @@
       "theme_changed": "Tema sat til {theme}.",
       "accent_color_changed": "Accentfarve sat til {color}.",
       "background_theme_changed": "Baggrundsnuance sat til {theme}.",
-      "foreground_theme_changed": "EN TEXT TO REPLACE: Foreground shade set to {theme}.",
+      "foreground_theme_changed": "Forgrundsnuance sat til {theme}.",
       "download_started": "Downloader {package}-tarball.",
       "copied_to_clipboard": "Kopieret til udklipsholderen.",
       "npm_disconnected": "npm CLI blev afbrudt.",
