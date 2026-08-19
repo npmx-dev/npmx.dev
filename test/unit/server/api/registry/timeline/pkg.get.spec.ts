@@ -93,6 +93,32 @@ describe('timeline API', () => {
     expect(result.versions[2]!.version).toBe('1.0.0')
   })
 
+  it('sorts by semver (highest first, including pre-releases) when sort=semver', async () => {
+    routerParam = 'my-pkg'
+    queryParams = { offset: 0, limit: 10, sort: 'semver' }
+
+    // Publish-time order deliberately differs from semver order: 1.9.0 was
+    // published most recently (a back-port), and a pre-release sits between
+    // 2.0.0 and 1.9.0 semantically.
+    fetchNpmPackageMock.mockResolvedValue(
+      makePackument({
+        versions: {
+          '1.9.0': {},
+          '2.0.0-beta.1': {},
+          '2.0.0': {},
+        },
+        time: {
+          '2.0.0-beta.1': '2024-01-01T00:00:00Z',
+          '2.0.0': '2024-06-01T00:00:00Z',
+          '1.9.0': '2025-01-01T00:00:00Z',
+        },
+      }),
+    )
+
+    const result = await handler(fakeEvent)
+    expect(result.versions.map(v => v.version)).toEqual(['2.0.0', '2.0.0-beta.1', '1.9.0'])
+  })
+
   it('applies offset and limit correctly', async () => {
     routerParam = 'my-pkg'
     queryParams = { offset: 1, limit: 1 }

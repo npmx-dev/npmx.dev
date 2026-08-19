@@ -111,40 +111,15 @@ const convertedData = computed(() => {
   return addEvaluationFlags(entries, props.versionSubEvents).toReversed()
 })
 
-type StableVersion = {
-  major: number
-  minor: number
-  patch: number
-}
-
 const orderedConvertedData = computed(() => {
+  // Ordering (publish time vs semver) is owned by the `sort` query param and
+  // applied server-side; the "stable only" toggle is now purely a pre-release
+  // filter that preserves whatever order the server returned.
   if (!settings.value.timelineChart.isOrdered) {
     return convertedData.value
   }
 
-  // Hide pre-releases and reorder stable versions semantically
-  return convertedData.value
-    .map(entry => ({
-      entry,
-      parsedVersion: parseStableVersion(entry.version),
-    }))
-    .filter(
-      (
-        item,
-      ): item is { entry: (typeof convertedData.value)[number]; parsedVersion: StableVersion } => {
-        return item.parsedVersion !== null
-      },
-    )
-    .toSorted((a, b) => {
-      if (a.parsedVersion.major !== b.parsedVersion.major) {
-        return a.parsedVersion.major - b.parsedVersion.major
-      }
-      if (a.parsedVersion.minor !== b.parsedVersion.minor) {
-        return a.parsedVersion.minor - b.parsedVersion.minor
-      }
-      return a.parsedVersion.patch - b.parsedVersion.patch
-    })
-    .map(item => item.entry)
+  return convertedData.value.filter(entry => parseStableVersion(entry.version) !== null)
 })
 
 watch(
@@ -874,6 +849,14 @@ function stackbarTooltipTime(datapoint: VueUiStackbarTooltipDatapoint[]): string
   return orderedConvertedData.value[absoluteIndex]?.time
 }
 
+// Sort order shared with the page + list via the query string (default: publish time)
+const sort = usePermalink<'time' | 'semver'>('sort', 'time')
+
+const timelineSortOptions = computed(() => [
+  { value: 'time' as const, label: $t('package.timeline.chart.sort_time') },
+  { value: 'semver' as const, label: $t('package.timeline.chart.sort_semver') },
+])
+
 const timelineMetricTabs = computed(() => [
   {
     value: 'totalSize' as const,
@@ -933,7 +916,21 @@ const timelineMetricTabs = computed(() => [
         </div>
       </div>
 
-      <div class="flex flex-row flex-wrap gap-4">
+      <div class="flex flex-row flex-wrap items-center gap-4">
+        <div class="flex items-center gap-2">
+          <label for="timeline-chart-sort" class="text-sm text-fg-subtle">
+            {{ $t('package.timeline.chart.sort_label') }}
+          </label>
+          <select
+            id="timeline-chart-sort"
+            v-model="sort"
+            class="block w-fit rounded-md border border-border bg-bg px-3 py-2 text-sm text-fg"
+          >
+            <option v-for="option in timelineSortOptions" :key="option.value" :value="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
         <SettingsToggle
           v-model="settings.timelineChart.isOrdered"
           :label="$t('package.timeline.chart.ordered_versions')"

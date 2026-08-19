@@ -1999,6 +1999,15 @@
                 "ordered_versions": {
                   "type": "string"
                 },
+                "sort_label": {
+                  "type": "string"
+                },
+                "sort_time": {
+                  "type": "string"
+                },
+                "sort_semver": {
+                  "type": "string"
+                },
                 "copy_alt": {
                   "type": "object",
                   "properties": {

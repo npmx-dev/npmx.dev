@@ -665,6 +665,9 @@
         "zoom": "zoom",
         "reset_minimap": "reset minimap",
         "ordered_versions": "stable only",
+        "sort_label": "Sort by",
+        "sort_time": "Publish time",
+        "sort_semver": "Semver",
         "copy_alt": {
           "key_changes": "Key changes: {version_events}.",
           "version_events": "version {version}: {events}",

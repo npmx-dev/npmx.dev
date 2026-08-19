@@ -5,6 +5,7 @@ import type {
   TimelineResponse,
   TimelineVersion,
   SubEvent,
+  TimelineSort,
 } from '~~/server/api/registry/timeline/[...pkg].get'
 import type { TimelineSizeResponse } from '~~/server/api/registry/timeline/sizes/[...pkg].get'
 import type { TimelineSizeCacheValue } from '~/utils/charts'
@@ -68,6 +69,9 @@ function packageRoute(ver: string): RouteLocationRaw {
   }
 }
 
+// Sort order, persisted in the query string (default publish time, omitted from URL)
+const sort = usePermalink<TimelineSort>('sort', 'time')
+
 // Paginated timeline data from server
 const PAGE_SIZE = 25
 
@@ -80,17 +84,18 @@ const hasMore = computed(() => timelineEntries.value.length < totalVersions.valu
 
 async function fetchTimeline(offset: number): Promise<TimelineResponse> {
   return $fetch<TimelineResponse>(`/api/registry/timeline/${packageName.value}`, {
-    query: { offset, limit: PAGE_SIZE },
+    query: { offset, limit: PAGE_SIZE, sort: sort.value },
   })
 }
 
-// Initial load - useAsyncData serializes the full response across SSR to client
+// Initial load - useAsyncData serializes the full response across SSR to client.
+// Re-runs when the package OR the sort order changes, resetting pagination.
 const initialLoadError = ref(false)
 
 const { data: initialTimeline } = await useAsyncData(
-  `timeline:${packageName.value}`,
+  () => `timeline:${packageName.value}:${sort.value}`,
   () => fetchTimeline(0),
-  { watch: [packageName] },
+  { watch: [packageName, sort] },
 )
 
 watch(
