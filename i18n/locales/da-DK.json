@@ -36,7 +36,7 @@
     "ctrl_key": "Ctrl",
     "command_palette": "Åbn kommandopaletten",
     "command_palette_description": "Brug kommandopaletten til at hoppe mellem sider, pakkevisninger, indstillinger og eksterne links uden at forlade tastaturet. På macOS skal du trykke på ⌘K. På Windows og Linux skal du trykke på {ctrlKey}+K.",
-    "focus_search": "Fokusér søgning",
+    "focus_search": "Fokuser søgning",
     "show_kbd_hints": "Fremhæv tastaturgenveje",
     "settings": "Åbn indstillinger",
     "compare": "Sammenlign",
@@ -167,10 +167,10 @@
       "stats": "Statistik"
     },
     "package_actions": {
-      "copy_run": "Kopiér kør-kommando"
+      "copy_run": "Kopier kør-kommando"
     },
     "code": {
-      "copy_file": "Kopiér filindhold"
+      "copy_file": "Kopier filindhold"
     },
     "diff": {
       "merge_modified_lines": "Flet ændrede linjer",
@@ -292,8 +292,8 @@
     "include_types_description": "Tilføj {'@'}types-pakken til installationskommandoer for utypede pakker",
     "hide_platform_packages": "Skjul platform-specifikke pakker i søgningen",
     "hide_platform_packages_description": "Skjul native binære pakker som {'@'}esbuild/linux-x64 fra resultaterne",
-    "enable_graph_pulse_loop": "Aktivér looping af pulseffekt på mini-graf",
-    "enable_graph_pulse_loop_description": "Aktivér en kontinuerlig pulserende animation på den ugentlige download-graf. Denne animation kan være distraherende for nogle brugere.",
+    "enable_graph_pulse_loop": "Aktiver looping af pulseffekt på mini-graf",
+    "enable_graph_pulse_loop_description": "Aktiver en kontinuerlig pulserende animation på den ugentlige download-graf. Denne animation kan være distraherende for nogle brugere.",
     "theme": "Tema",
     "theme_light": "Lys",
     "theme_dark": "Mørk",
@@ -327,15 +327,15 @@
       "standard": "Standard",
       "muted": "Dæmpet"
     },
-    "keyboard_shortcuts_enabled": "Aktivér tastaturgenveje",
+    "keyboard_shortcuts_enabled": "Aktiver tastaturgenveje",
     "keyboard_shortcuts_enabled_description": "Tastaturgenveje kan deaktiveres, hvis de konflikter med andre browser- eller systemgenveje",
-    "enable_code_ligatures": "Aktivér ligaturer i kode",
+    "enable_code_ligatures": "Aktiver ligaturer i kode",
     "enable_changelog_autoscroll": "Rul automatisk til den ønskede version",
     "enable_changelog_autoscroll_description": "Rul automatisk til eller tæt på den ønskede version i pakkens ændringslog"
   },
   "i18n": {
     "missing_keys": "{count} manglende oversættelse | {count} manglende oversættelser",
-    "copy_keys": "Kopiér nøgler",
+    "copy_keys": "Kopier nøgler",
     "show_more_keys": "Vis {count} flere...",
     "contribute_hint": "Hjælp med at forbedre denne oversættelse ved at tilføje de manglende nøgler.",
     "edit_on_github": "Rediger på GitHub",
@@ -357,7 +357,7 @@
     "close": "Luk",
     "or": "eller",
     "retry": "Prøv igen",
-    "copy": "Kopiér",
+    "copy": "Kopier",
     "copied": "Kopieret!",
     "skip_link": "Spring til hovedindhold",
     "warnings": "Advarsler:",
@@ -419,8 +419,8 @@
     "no_description": "Ingen beskrivelse",
     "verified_provenance": "Verificeret oprindelse",
     "navigation": "Pakke",
-    "copy_name": "Kopiér pakkenavn",
-    "copy_version": "Kopiér pakkeversion",
+    "copy_name": "Kopier pakkenavn",
+    "copy_version": "Kopier pakkeversion",
     "deprecation": {
       "package": "Denne pakke er blevet forældet.",
       "version": "Denne version er blevet forældet.",
@@ -431,7 +431,7 @@
       "title_deps": "Betydelig stigning i afhængigheder siden v{version}",
       "title_both": "Betydelig stigning i både størrelse og afhængigheder siden v{version}",
       "size": "Installationsstørrelse øget med {percent} ({size} større)",
-      "deps": "{count} flere afhængigheder"
+      "deps": "{count} yderligere afhængighed | {count} yderligere afhængigheder"
     },
     "size_decrease": {
       "title_size": "Pakkestørrelsen er faldet siden v{version}!",
@@ -445,8 +445,8 @@
       "example": "Eksempel:",
       "native": "Dette kan erstattes med {replacement}, tilgængelig siden Node {nodeVersion}.",
       "native_no_version": "Denne pakke kan erstattes med {replacement}.",
-      "simple": "{community} har markeret denne pakke som overflødig, med rådet: {replacement}.",
-      "documented": "{community} har markeret denne pakke som havende mere effektive alternativer.",
+      "simple": "Denne pakke er markeret som overflødig med anbefalingen: {replacement}.",
+      "documented": "Denne pakke er markeret, fordi der findes mere effektive alternativer.",
       "none": "Denne pakke er blevet markeret som ikke længere nødvendig, og dens funktionalitet er sandsynligvis tilgængelig nativt i alle motorer.",
       "learn_more": "Lær mere",
       "learn_more_above": "Lær mere ovenfor.",
@@ -523,20 +523,20 @@
     "get_started": {
       "title": "Kom godt i gang",
       "pm_label": "Pakkehåndtering",
-      "copy_command": "Kopiér installationskommando",
-      "copy_dev_command": "Kopiér udviklingsinstallationskommando",
+      "copy_command": "Kopier installationskommando",
+      "copy_dev_command": "Kopier udviklingsinstallationskommando",
       "dev_dependency_hint": "Normalt installeret som en udviklingsafhængighed",
       "view_types": "Se {package}"
     },
     "create": {
       "title": "Opret nyt projekt",
-      "copy_command": "Kopiér oprettelseskommando",
+      "copy_command": "Kopier oprettelseskommando",
       "view": "{packageName} har samme vedligeholder. Klik for flere detaljer."
     },
     "run": {
       "title": "Kør",
       "locally": "Kør lokalt",
-      "copy_command": "Kopiér kommandoen for at køre lokalt"
+      "copy_command": "Kopier kommandoen for at køre lokalt"
     },
     "command": {
       "copied_install": "Kommandoen til installation er kopieret",
@@ -557,7 +557,7 @@
         "warning": "Advarsel",
         "caution": "Forsigtighed"
       },
-      "copy_as_markdown": "Kopiér README som Markdown",
+      "copy_as_markdown": "Kopier README som Markdown",
       "error_loading": "Kunne ikke indlæse README-oplysninger"
     },
     "provenance_section": {
@@ -734,7 +734,7 @@
       "date_range": "{start} til {end}",
       "date_range_multiline": "{start}\ntil {end}",
       "download_file": "Hent {fileType}",
-      "copy_file": "Kopiér {fileType}",
+      "copy_file": "Kopier {fileType}",
       "toggle_annotator": "Skift annotator",
       "toggle_stack_mode": "Skift staktilstand",
       "open_options": "Åbn indstillinger",
@@ -767,7 +767,7 @@
         "trend_strong": "stærk",
         "trend_weak": "svag",
         "trend_undefined": "undefined (utilstrækkelige data)",
-        "button_label": "Kopiér alternativ tekst",
+        "button_label": "Kopier alternativ tekst",
         "watermark": "Nederst står der et vandmærke \"./npmx en hurtig, moderne browser til npm-registret\"",
         "watermark_top": "Øverst står der et vandmærke \"./npmx en hurtig, moderne browser til npm-registret\"",
         "analysis": "{package_name} starter ved {start_value} og slutter ved {end_value}, hvilket viser en {trend} trend med en hældning på {downloads_slope} downloads pr. tidsinterval.",
@@ -781,7 +781,7 @@
       },
       "embedding": {
         "chart": "Indlejr dette diagram",
-        "copy_url": "Kopiér denne URL for at indlejre diagrammet på dit websted",
+        "copy_url": "Kopier denne URL for at indlejre diagrammet på dit websted",
         "preview": "Forhåndsvisning",
         "tip": "Hvis startDate og endDate ikke er angivet i URL'en, viser grafen som standard de seneste 12 måneder."
       }
@@ -905,7 +905,7 @@
       "connected_hint": "Du kan nu administrere pakker og organisationer fra web UI.",
       "disconnect": "Afbryd forbindelse",
       "run_hint": "Kør connectoren på din maskine for at aktivere admin-funktioner.",
-      "copy_command": "Kopiér kommando",
+      "copy_command": "Kopier kommando",
       "copied": "Kopieret",
       "paste_token": "Indsæt derefter tokenet nedenfor for at oprette forbindelse:",
       "token_label": "Token",
@@ -1078,8 +1078,8 @@
     "lines": "{count} linje | {count} linjer",
     "toggle_tree": "Skift filtræ",
     "close_tree": "Luk filtræ",
-    "copy_content": "Kopiér filindhold",
-    "copy_link": "Kopiér link",
+    "copy_content": "Kopier filindhold",
+    "copy_link": "Kopier link",
     "view_raw": "Se rå fil",
     "toggle_container": "Skift bredden på kodevisningen",
     "open_raw_file": "Åbn rå fil",
@@ -1169,7 +1169,7 @@
     "view_selected": "Vis valgte",
     "clear_selected_label": "Ryd valgte",
     "sort": {
-      "label": "Sortér pakker",
+      "label": "Sorter pakker",
       "toggle_direction": "Skift sorteringsretning",
       "ascending": "Stigende",
       "descending": "Faldende",
@@ -1284,7 +1284,7 @@
       },
       "community": {
         "title": "Deltag i fællesskabet",
-        "description": "Chat, stil spørgsmål, og del idéer.",
+        "description": "Chat, stil spørgsmål, og del ideer.",
         "cta": "Deltag i Discord"
       },
       "builders": {
@@ -1381,7 +1381,7 @@
       "create_account": "Opret en ny konto",
       "connect_bluesky": "Forbind med Bluesky",
       "what_is_atmosphere": "Hvad er en Atmosphere-konto?",
-      "atmosphere_explanation": "{npmx} bruger {atproto} til at drive mange af sine sociale funktioner, hvilket giver brugerne mulighed for at eje deres data og bruge én konto til alle kompatible applikationer. Når du opretter en konto, kan du bruge andre apps som {bluesky} og {tangled} med den samme konto.",
+      "atmosphere_explanation": "{npmx} bruger {atproto} til at drive mange af sine sociale funktioner, hvilket giver brugerne mulighed for at eje deres data og bruge en konto til alle kompatible applikationer. Når du opretter en konto, kan du bruge andre apps som {bluesky} og {tangled} med den samme konto.",
       "default_input_error": "Indtast venligst et gyldigt brugernavn, DID eller en fuld PDS-URL",
       "profile": "Profil"
     }
@@ -1417,7 +1417,7 @@
       "section_packages": "Pakker",
       "section_facets": "Facetter",
       "section_comparison": "Sammenligning",
-      "copy_as_markdown": "Kopiér tabel",
+      "copy_as_markdown": "Kopier tabel",
       "loading": "Indlæser pakkeoplysninger...",
       "error": "Kunne ikke indlæse pakkeoplysninger. Prøv igen.",
       "empty_title": "Vælg pakker at sammenligne",
@@ -1816,7 +1816,7 @@
     "button_close_aria_label": "Luk handlingslinje"
   },
   "logo_menu": {
-    "copy_svg": "Kopiér logo som SVG",
+    "copy_svg": "Kopier logo som SVG",
     "copied": "Kopieret!",
     "browse_brand": "Gennemse brandkit"
   },
@@ -1876,6 +1876,6 @@
     },
     "rate_limit_ungh": "Beklager, GitHubs grænse for forespørgsler er nået. Prøv igen om et øjeblik.",
     "version_unavailable": "Den ønskede version er ikke tilgængelig.",
-    "copy_as_markdown": "Kopiér ændringslog som Markdown"
+    "copy_as_markdown": "Kopier ændringslog som Markdown"
   }
 }
