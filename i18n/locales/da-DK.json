@@ -21,7 +21,7 @@
     "chat": "chat",
     "builders_chat": "byggere",
     "keyboard_shortcuts": "tastaturgenveje",
-    "brand": "mærke",
+    "brand": "brand",
     "resources": "Ressourcer",
     "features": "Funktioner",
     "other": "Andet",
@@ -69,8 +69,8 @@
     "meta_description_packages": "Søg npm-pakker",
     "not_taken": "{name} er ikke taget",
     "claim_prompt": "Gør krav på dette pakkenavn på npm",
-    "claim_button": "Gør krav på \"{name}\"",
-    "want_to_claim": "Vil du kræve dette pakkenavn?",
+    "claim_button": "Reserver \"{name}\"",
+    "want_to_claim": "Vil du reservere dette pakkenavn?",
     "start_typing": "Begynd at skrive for at søge efter pakker",
     "algolia_disclaimer": "Drevet af Algolia",
     "exact_match": "præcis",
@@ -174,7 +174,7 @@
     },
     "diff": {
       "merge_modified_lines": "Flet ændrede linjer",
-      "word_wrap": "Linjebrud"
+      "word_wrap": "Tekstombrydning"
     },
     "version": {
       "label": "{version}"
@@ -279,7 +279,7 @@
     },
     "data_source": {
       "label": "Datakilde",
-      "description": "Vælg, hvor npmx henter søgedata fra. Individuelle pakkesider bruger altid npm-registeret direkte.",
+      "description": "Vælg, hvor npmx henter søgedata fra. Individuelle pakkesider bruger altid npm-registret direkte.",
       "npm": "npm Registry",
       "npm_description": "Henter søgning, organisation og brugeroplysninger direkte fra det officielle npm-register. Altid korrekt, men kan være langsommere.",
       "algolia": "Algolia",
@@ -410,7 +410,7 @@
     "invite": {
       "message": "Det ser ikke ud til, at de bruger npmx endnu. Vil du fortælle dem om det?",
       "share_button": "Del på Bluesky",
-      "compose_text": "Hej {'@'}{handle}! Har du tjekket npmx.dev endnu? Det er en browser til npm-registret, der er hurtig, moderne og open-source.\nhttps://npmx.dev"
+      "compose_text": "Hej {'@'}{handle}! Har du tjekket npmx.dev endnu? Det er en browser til npm-registret, der er hurtig, moderne og open source.\nhttps://npmx.dev"
     }
   },
   "package": {
@@ -448,8 +448,8 @@
       "simple": "Denne pakke er markeret som overflødig med anbefalingen: {replacement}.",
       "documented": "Denne pakke er markeret, fordi der findes mere effektive alternativer.",
       "none": "Denne pakke er blevet markeret som ikke længere nødvendig, og dens funktionalitet er sandsynligvis tilgængelig nativt i alle motorer.",
-      "learn_more": "Lær mere",
-      "learn_more_above": "Lær mere ovenfor.",
+      "learn_more": "Læs mere",
+      "learn_more_above": "Læs mere ovenfor.",
       "consider_no_dep": "+ Overvej ingen afhængighed?"
     },
     "stats": {
@@ -463,19 +463,19 @@
       "inspect_dependency_tree": "Undersøg afhængighedstræ",
       "size_tooltip": {
         "unpacked": "{size} udpakket størrelse (denne pakke)",
-        "total": "{size} total udpakket størrelse (inklusive {count} afhængighed for linux-x64) | {size} total udpakket størrelse (inklusive alle {count} afhængigheder for linux-x64)"
+        "total": "{size} samlet udpakket størrelse (inklusive {count} afhængighed for linux-x64) | {size} samlet udpakket størrelse (inklusive alle {count} afhængigheder for linux-x64)"
       },
       "main_information": "Hovedinformation",
-      "trends": "Tendenser",
+      "trends": "Trends",
       "version_distribution": "Versionsfordeling"
     },
     "skills": {
-      "title": "Agent Færdigheder",
+      "title": "Agentfærdigheder",
       "skills_available": "{count} færdighed tilgængelig | {count} færdigheder tilgængelige",
       "compatible_with": "Kompatibel med {tool}",
       "install": "Installer",
       "installation_method": "Installationsmetode",
-      "learn_more": "Lær mere",
+      "learn_more": "Læs mere",
       "available_skills": "Tilgængelige færdigheder",
       "click_to_expand": "Klik for at udvide",
       "no_description": "Ingen beskrivelse",
@@ -485,7 +485,7 @@
         "assets": "{count} asset | {count} assets"
       },
       "view_source": "Se kilde",
-      "skills_cli": "færdigheder CLI"
+      "skills_cli": "færdigheds-CLI"
     },
     "links": {
       "main": "vigtigste",
@@ -514,7 +514,7 @@
       "default_not_available": "Dokumentation er ikke tilgængelig for denne version.",
       "not_available": "Dokumentation ikke tilgængelig",
       "not_available_detail": "Vi kunne ikke generere dokumentation for denne version.",
-      "page_title": "API Dokumentation - npmx",
+      "page_title": "API-dokumentation - npmx",
       "page_title_name": "{name} dokumentation - npmx",
       "page_title_version": "{name} dokumentation - npmx",
       "og_title": "{name} - Dokumentation",
@@ -607,13 +607,13 @@
       "deprecated_title": "{version} (udgået)",
       "view_all": "Se {count} version | Se alle {count} versioner",
       "view_all_versions": "Se alle versioner",
-      "distribution_title": "Semver Gruppe",
+      "distribution_title": "Semvergruppe",
       "distribution_range_date_same_year": "fra {from} til {to}, {endYear}",
       "distribution_range_date_multiple_years": "fra {from}, {startYear} til {to}, {endYear}",
       "grouping_major": "Major",
       "grouping_minor": "Minor",
       "grouping_versions_title": "Versioner",
-      "grouping_versions_about": "Om version gruppering",
+      "grouping_versions_about": "Om versionsgruppering",
       "grouping_versions_all": "Alle",
       "grouping_versions_only_recent": "Kun nyere",
       "grouping_usage_title": "Brug",
@@ -621,11 +621,11 @@
       "grouping_usage_all": "Alle",
       "grouping_usage_most_used": "Mest brugt",
       "recent_versions_only_tooltip": "Vis kun versioner udgivet inden for det sidste år.",
-      "show_low_usage_tooltip": "Inkluder version grupper med mindre end 1% af de samlede downloads.",
+      "show_low_usage_tooltip": "Inkluder versionsgrupper med mindre end 1% af de samlede downloads.",
       "y_axis_label": "Downloads",
       "filter_placeholder": "Filtrer efter semver (f.eks. ^3.0.0)",
-      "filter_invalid": "Ugyldig semver rækkevidde",
-      "filter_help": "Hjælp til semver rækkevidde filter",
+      "filter_invalid": "Ugyldig semverrækkevidde",
+      "filter_help": "Hjælp til filter for semverrækkevidde",
       "filter_tooltip": "Filtrer versioner ved hjælp af en {link}. For eksempel viser ^3.0.0 alle 3.x versioner.",
       "filter_tooltip_link": "semver range",
       "license_change_help": "Detaljer om licensændring",
@@ -633,7 +633,7 @@
       "license_change_record": "Pakkens licens er ændret fra \"{from}\" til \"{to}\".",
       "no_matches": "Ingen versioner matcher denne rækkevidde",
       "copy_alt": {
-        "per_version_analysis": "{version} version blev downloadet {downloads} gange",
+        "per_version_analysis": "Version {version} blev downloadet {downloads} gange",
         "general_description": "Søjlediagram, der viser downloads pr. version for {versions_count} {semver_grouping_mode} versioner af {package_name}-pakken, {date_range_label} fra {first_version}-versionen til {last_version}-versionen. Den mest downloadede version er {max_downloaded_version} med {max_version_downloads} downloads. {per_version_analysis}. {watermark}."
       },
       "page_title": "Versionshistorik",
@@ -682,8 +682,8 @@
       "show_all": "vis {count} afh | vis alle {count} afh",
       "optional": "valgfri",
       "view_vulnerabilities": "Se sårbarheder",
-      "outdated_major": "{count} major version bagud (seneste: {latest}) | {count} major versioner bagud (seneste: {latest})",
-      "outdated_minor": "{count} minor version bagud (seneste: {latest}) | {count} minor versioner bagud (seneste: {latest})",
+      "outdated_major": "{count} majorversion bagud (seneste: {latest}) | {count} majorversioner bagud (seneste: {latest})",
+      "outdated_minor": "{count} minorversion bagud (seneste: {latest}) | {count} minorversioner bagud (seneste: {latest})",
       "outdated_patch": "Patch opdatering tilgængelig (seneste: {latest})",
       "has_replacement": "Denne afhængighed har foreslåede erstatninger",
       "vulnerabilities_count": "{count} sårbarhed | {count} sårbarheder"
@@ -773,8 +773,8 @@
         "analysis": "{package_name} starter ved {start_value} og slutter ved {end_value}, hvilket viser en {trend} trend med en hældning på {downloads_slope} downloads pr. tidsinterval.",
         "estimation": "Den endelige værdi er et skøn baseret på delvise data for den aktuelle periode.",
         "estimations": "De endelige værdier er skøn baseret på delvise data for den aktuelle periode.",
-        "compare": "Sammenligning af pakkedownloads linjediagram for: {packages}.",
-        "single_package": "Downloads linjediagram for {package} pakken.",
+        "compare": "Sammenlignende linjediagram over pakkedownloads for: {packages}.",
+        "single_package": "Linjediagram over downloads for pakken {package}.",
         "general_description": "Y-aksen repræsenterer antallet af downloads. X-aksen repræsenterer datointervallet, fra {start_date} til {end_date}, med en {granularity} tidsperiode.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Horisontalt søjlediagram for: {packages}, der sammenligner {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} har en værdi på {value}."
@@ -796,7 +796,7 @@
     "install_scripts": {
       "title": "Installationsscripts",
       "script_label": "(script)",
-      "npx_packages": "{count} npx pakke | {count} npx pakker",
+      "npx_packages": "{count} npx-pakke | {count} npx-pakker",
       "currently": "aktuelt {version}"
     },
     "playgrounds": {
@@ -804,9 +804,9 @@
       "choose": "vælg legeplads"
     },
     "metrics": {
-      "esm": "ES Modules understøttet",
+      "esm": "ES-moduler understøttet",
       "cjs": "CommonJS understøttet",
-      "no_esm": "ES Modules ikke understøttet",
+      "no_esm": "ES-moduler understøttes ikke",
       "wasm": "Har WebAssembly",
       "types_label": "Typer",
       "types_included": "Typer inkluderet",
@@ -819,7 +819,7 @@
     },
     "vulnerabilities": {
       "tree_found": "{vulns} sårbarhed i {packages}/{total} pakker | {vulns} sårbarheder i {packages}/{total} pakker",
-      "show_all_packages": "vis {count} berørte pakke | vis alle {count} berørte pakker",
+      "show_all_packages": "vis {count} berørt pakke | vis alle {count} berørte pakker",
       "path": "sti",
       "more": "+{count} mere",
       "packages_failed": "{count} pakke kunne ikke kontrolleres | {count} pakker kunne ikke kontrolleres",
@@ -884,7 +884,7 @@
     },
     "download": {
       "button": "Download",
-      "tarball": "Download Tarball som .tar.gz"
+      "tarball": "Download tarball som .tar.gz"
     }
   },
   "leaderboard": {
@@ -900,9 +900,9 @@
   "connector": {
     "modal": {
       "title": "Lokal Connector",
-      "connected": "Tilsluttet",
-      "connected_as_user": "Tilsluttet som ~{user}",
-      "connected_hint": "Du kan nu administrere pakker og organisationer fra web UI.",
+      "connected": "Forbundet",
+      "connected_as_user": "Forbundet som ~{user}",
+      "connected_hint": "Du kan nu administrere pakker og organisationer fra web-UI.",
       "disconnect": "Afbryd forbindelse",
       "run_hint": "Kør connectoren på din maskine for at aktivere admin-funktioner.",
       "copy_command": "Kopier kommando",
@@ -914,8 +914,8 @@
       "port_label": "Port",
       "warning": "ADVARSEL",
       "warning_text": "Dette giver npmx adgang til din npm CLI. Opret kun forbindelse til sider, du stoler på.",
-      "connect": "Opret forbindelse",
-      "connecting": "Opretter forbindelse...",
+      "connect": "Forbind",
+      "connecting": "Forbinder...",
       "auto_open_url": "Åbn godkendelsesside automatisk"
     }
   },
@@ -965,7 +965,7 @@
       "add_button": "tilføj",
       "cancel_add_user": "Annuller tilføjelse af bruger",
       "add_member": "+ Tilføj medlem",
-      "team_name_label": "Team navn",
+      "team_name_label": "Teamnavn",
       "team_name_placeholder": "team-navn...",
       "create_button": "opret",
       "no_match": "Ingen teams matcher \"{query}\"",
@@ -1027,7 +1027,7 @@
       "packages_title": "Pakker",
       "no_packages": "Ingen offentlige pakker fundet for",
       "no_packages_hint": "Denne bruger findes muligvis ikke eller har ingen offentlige pakker.",
-      "failed_to_load": "Kunne ikke indlæse bruger pakker",
+      "failed_to_load": "Kunne ikke indlæse brugerpakker",
       "no_match": "Ingen pakker matcher \"{query}\"",
       "filter_placeholder": "Filtrer {count} pakke... | Filtrer {count} pakker..."
     },
@@ -1048,8 +1048,8 @@
   },
   "claim": {
     "modal": {
-      "title": "Reserver Pakke Navn",
-      "success": "Pakke reserveret!",
+      "title": "Reserver pakkenavn",
+      "success": "Pakken er reserveret!",
       "success_detail": "{name}{'@'}0.0.0 er blevet publiceret på npm.",
       "success_hint": "Du kan nu publicere nye versioner af denne pakke ved hjælp af npm publish.",
       "view_package": "Se pakke",
@@ -1060,10 +1060,10 @@
       "similar_warning": "Lignende pakker findes - npm kan afvise dette navn:",
       "related": "Relaterede pakker:",
       "scope_warning_title": "Overvej at bruge en scoped pakke i stedet",
-      "scope_warning_text": "Unscoped pakkenavne er en delt ressource. Kræv kun et navn, hvis du har til hensigt at publicere og vedligeholde en pakke. For personlige eller organisatoriske projekter, brug et scoped navn som {'@'}{username}/{name}.",
-      "connect_required": "Forbind til den lokale connector for at kræve dette pakkenavn.",
+      "scope_warning_text": "Unscoped pakkenavne er en delt ressource. Reserver kun et navn, hvis du har til hensigt at publicere og vedligeholde en pakke. For personlige eller organisatoriske projekter, brug et scoped navn som {'@'}{username}/{name}.",
+      "connect_required": "Forbind til den lokale connector for at reservere dette pakkenavn.",
       "connect_button": "Forbind til Connector",
-      "publish_hint": "Dette vil publicere en minimal placeholder-pakke.",
+      "publish_hint": "Dette vil publicere en minimal pladsholderpakke.",
       "preview_json": "Forhåndsvis package.json",
       "claim_button": "Reserver pakkenavn",
       "publishing": "Publicerer...",
@@ -1092,7 +1092,7 @@
     "go_to_package": "Gå til pakke",
     "loading_tree": "Indlæser filtræ...",
     "failed_to_load_tree": "Kunne ikke indlæse filer for denne pakkeversion",
-    "back_to_package": "Tilbage til pakke",
+    "back_to_package": "Tilbage til pakken",
     "table": {
       "name": "Navn",
       "size": "Størrelse"
@@ -1280,7 +1280,7 @@
       "contribute": {
         "title": "Bidrag",
         "description": "Hjælp os med at bygge den npm-oplevelse, vi alle ønsker.",
-        "cta": "Se på GitHub"
+        "cta": "Vis på GitHub"
       },
       "community": {
         "title": "Deltag i fællesskabet",
@@ -1305,7 +1305,7 @@
     "meta_description": "Støt npmx, og hjælp os med at sætte fart på arbejdet i økosystemet inden for sikkerhed, tillid, optimering og forskning.",
     "intro": "Støt npmx, og hjælp os med at udvide vores arbejde i økosystemet for udviklere og vedligeholdere.",
     "what_we_do": {
-      "title": "Det laver vi",
+      "title": "Hvad vi gør",
       "description": "Vi bygger et økosystem, der løser problemer inden for sikkerhed, tillid, optimering og forskning for de værktøjer, vi bruger i den daglige udvikling — hurtigt, nemt og i høj kvalitet. Dette projekt er bygget af udviklere til udviklere. Som skabere af udbredte biblioteker forstår vi teams behov og undersøger aktivt, hvad vedligeholdere og projekter har mest brug for."
     },
     "what_support_means": {
@@ -1404,7 +1404,7 @@
       "empty": "Ingen organisationer fundet",
       "view_all": "Se alle"
     },
-    "pr": "Åbn GitHub pull request #{prNumber}"
+    "pr": "Åbn pull request #{prNumber} på GitHub"
   },
   "compare": {
     "packages": {
@@ -1412,7 +1412,7 @@
       "tagline": "Sammenlign npm-pakker side om side for at hjælpe dig med at vælge den rigtige.",
       "meta_title": "Sammenlign {packages} - npmx",
       "meta_title_empty": "Sammenlign pakker - npmx",
-      "meta_description": "Side-by-side sammenligning af {packages}",
+      "meta_description": "Sammenligning side om side af {packages}",
       "meta_description_empty": "Sammenlign npm-pakker side om side",
       "section_packages": "Pakker",
       "section_facets": "Facetter",
@@ -1421,7 +1421,7 @@
       "loading": "Indlæser pakkeoplysninger...",
       "error": "Kunne ikke indlæse pakkeoplysninger. Prøv igen.",
       "empty_title": "Vælg pakker at sammenligne",
-      "empty_description": "Søg og tilføj mindst 2 pakker ovenfor for at se en side-by-side sammenligning af deres målinger.",
+      "empty_description": "Søg og tilføj mindst 2 pakker ovenfor for at se en sammenligning side om side af deres målinger.",
       "table_view": "Tabel",
       "charts_view": "Diagrammer",
       "no_chartable_data": "Ingen data tilgængelige for de valgte facetter.",
@@ -1472,24 +1472,24 @@
         "performance": "Ydeevne",
         "health": "Sundhed",
         "compatibility": "Kompatibilitet",
-        "security": "Sikkerhed & Overholdelse"
+        "security": "Sikkerhed og overholdelse"
       },
       "items": {
         "packageSize": {
-          "label": "Pakke størrelse",
+          "label": "Pakkestørrelse",
           "description": "Størrelsen af selve pakken (udpakket)"
         },
         "installSize": {
           "label": "Installationsstørrelse",
-          "description": "Total installationsstørrelse inklusive alle afhængigheder"
+          "description": "Samlet installationsstørrelse inklusive alle afhængigheder"
         },
         "dependencies": {
           "label": "Direkte afhængigheder",
           "description": "Antal direkte afhængigheder"
         },
         "totalDependencies": {
-          "label": "Totale afhængigheder",
-          "description": "Totalt antal afhængigheder inklusive transitive"
+          "label": "Samlede afhængigheder",
+          "description": "Samlet antal afhængigheder inklusive transitive"
         },
         "downloads": {
           "label": "Downloads/uge",
@@ -1509,19 +1509,19 @@
         },
         "engines": {
           "label": "Engines",
-          "description": "Node.js version krav"
+          "description": "Node.js-versionskrav"
         },
         "types": {
           "label": "Typer",
-          "description": "TypeScript type definitioner"
+          "description": "TypeScript-typedefinitioner"
         },
         "moduleFormat": {
-          "label": "Module Format",
+          "label": "Modulformat",
           "description": "ESM/CJS-understøttelse"
         },
         "license": {
           "label": "Licens",
-          "description": "Pakke licens"
+          "description": "Pakkelicens"
         },
         "vulnerabilities": {
           "label": "Sårbarheder",
@@ -1556,7 +1556,7 @@
         "up_to_you": "Op til dig!"
       },
       "trends": {
-        "title": "Sammenlign tendenser"
+        "title": "Sammenlign trends"
       }
     },
     "file_changes": "Filændringer",
@@ -1601,7 +1601,7 @@
     "filter_files_label": "Filtrer filer efter ændringstype",
     "change_ratio": "Ændringsforhold",
     "char_edits": "Tegnedits",
-    "diff_distance": "Diff afstand",
+    "diff_distance": "Diffafstand",
     "diff_truncated": "Diffen er afkortet af hensyn til ydeevnen. Kun de første ændrede linjer vises.",
     "large_diff_mode": "Diffen for den store fil vises med fletning af ændrede linjer deaktiveret af hensyn til ydeevnen.",
     "large_diff_options_disabled": "Tilstanden for store filer deaktiverer fletning af ændrede linjer af hensyn til ydeevnen.",
@@ -1612,7 +1612,7 @@
     "options": "Indstillinger",
     "view_file": "Se fil",
     "view_in_code_browser": "Se i kodebrowser",
-    "word_wrap": "Ordombrydning"
+    "word_wrap": "Tekstombrydning"
   },
   "pds": {
     "title": "npmx.social",
@@ -1715,7 +1715,7 @@
     "contact": {
       "title": "Kontakt os",
       "p1": "For spørgsmål eller bekymringer om denne privatlivspolitik, kan du kontakte os ved at åbne en sag på vores {link}.",
-      "link": "GitHub repository"
+      "link": "GitHub-repository"
     },
     "changes": {
       "title": "Ændringer i denne politik",
@@ -1730,7 +1730,7 @@
       "title": "Vores tilgang",
       "p1": "Vi forsøger at følge Web Content Accessibility Guidelines (WCAG) 2.2 og bruger dem som reference, når vi bygger funktioner. Vi hævder ikke fuld overensstemmelse med nogen WCAG-niveau — tilgængelighed er en kontinuerlig proces, og der er altid mere arbejde at gøre.",
       "p2": "Dette websted er et {about}. Tilgængelighedsforbedringer foretages gradvist som en del af vores regelmæssige udvikling.",
-      "about_link": "open-source, community-drevet projekt"
+      "about_link": "open source-projekt drevet af fællesskabet"
     },
     "measures": {
       "title": "Hvad vi gør",
@@ -1749,7 +1749,7 @@
     "contact": {
       "title": "Feedback",
       "p1": "Hvis du støder på en tilgængelighedsbarriere på {app}, bedes du give os besked ved at åbne en sag på vores {link}. Vi tager disse rapporter alvorligt og vil gøre vores bedste for at løse dem.",
-      "link": "GitHub repository"
+      "link": "GitHub-repository"
     }
   },
   "translation_status": {
@@ -1758,7 +1758,7 @@
     "welcome": "Hvis du er interesseret i at hjælpe os med at oversætte {npmx} til et af de sprog, der er angivet nedenfor, er du kommet til det rigtige sted! Denne automatisk opdaterende side viser altid alt indhold, der kunne bruge din hjælp lige nu.",
     "p1": "Vi bruger {lang} som standardsprog, med i alt {count}. Hvis du gerne vil hjælpe med at tilføje oversættelser, skal du finde sproget i {bylang} og udvide detaljerne.",
     "p1_lang": "Amerikansk engelsk (en-US)",
-    "p1_count": "0 beskeder | 1 besked |{count} beskeder",
+    "p1_count": "0 beskeder | 1 besked | {count} beskeder",
     "p2": "Før du går i gang, bedes du læse vores {guide} for at lære om vores oversættelsesproces og hvordan du kan deltage.",
     "guide": "lokaliseringsguide (i18n)",
     "by_locale": "Oversættelsesfremskridt efter lokalitet",
@@ -1823,7 +1823,7 @@
   "brand": {
     "title": "Brand",
     "heading": "brand",
-    "meta_description": "npmx brand retningslinjer, logoer, farver og typografi til brug i presse og medier.",
+    "meta_description": "npmx-brandretningslinjer, logoer, farver og typografi til brug i presse og medier.",
     "intro": "Ressourcer og retningslinjer til brug af npmx-brandet i dine projekter, artikler og medier.",
     "logos": {
       "title": "logoer",
