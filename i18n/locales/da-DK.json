@@ -167,7 +167,7 @@
       "stats": "Statistik"
     },
     "package_actions": {
-      "copy_run": "Kopier kør-kommando"
+      "copy_run": "Kopier kommandoen til at køre pakken"
     },
     "code": {
       "copy_file": "Kopier filindhold"
@@ -364,7 +364,7 @@
     "go_back_home": "Gå tilbage til forsiden",
     "per_week": "/ uge",
     "per_week_short": "/u.",
-    "vanity_downloads_hint": "Vanity-nummer: ingen pakker vist | Vanity-nummer: for den viste pakke | Vanity-nummer: Summen af {count} viste pakker",
+    "vanity_downloads_hint": "Vanity-nummer: ingen pakker vist | Vanity-nummer: for den viste pakke | Vanity-nummer: summen af {count} viste pakker",
     "sort": {
       "name": "navn",
       "role": "rolle",
@@ -715,8 +715,8 @@
     },
     "trends": {
       "chart_assistive_text": {
-        "keyboard_navigation_horizontal": "Brug venstre og højre piletaster til at cykle gennem datapunkter.",
-        "keyboard_navigation_vertical": "Brug op og ned piletaster til at cykle gennem datapunkter.",
+        "keyboard_navigation_horizontal": "Brug venstre og højre piletaster til at navigere mellem datapunkterne.",
+        "keyboard_navigation_vertical": "Brug op og ned piletaster til at navigere mellem datapunkterne.",
         "table_available": "En datatabel for dette diagram er tilgængelig nedenfor.",
         "table_caption": "Diagramdatatabel"
       },
@@ -740,7 +740,7 @@
       "open_options": "Åbn indstillinger",
       "close_options": "Luk indstillinger",
       "legend_estimation": "Estimation",
-      "no_data": "Ingen data tilgængelig",
+      "no_data": "Ingen tilgængelige data",
       "y_axis_label": "{granularity} {facet}",
       "facet": "Facet",
       "title": "Trends",
@@ -756,7 +756,7 @@
       "prediction": "Forudsigelse",
       "known_anomalies": "Kendte anomalier",
       "known_anomalies_description": "Interpolerer over kendte downloadspidser forårsaget af bots eller CI-problemer.",
-      "known_anomalies_ranges": "Anomalierækker",
+      "known_anomalies_ranges": "Intervaller med anomalier",
       "known_anomalies_range": "Fra {start} til {end}",
       "known_anomalies_range_named": "{packageName}: fra {start} til {end}",
       "known_anomalies_none": "Ingen kendte anomalier for denne pakke. | Ingen kendte anomalier for disse pakker.",
@@ -814,7 +814,7 @@
       "no_types": "Ingen typer"
     },
     "license": {
-      "view_spdx": "Se licens tekst på SPDX",
+      "view_spdx": "Se licenstekst på SPDX",
       "none": "Ingen"
     },
     "vulnerabilities": {
@@ -986,7 +986,7 @@
       "list_label": "Organisationens medlemmer",
       "change_role_for": "Skift rolle for {name}",
       "remove_from_org": "Fjern {name} fra organisationen",
-      "view_team": "Se {team} team",
+      "view_team": "Se teamet {team}",
       "no_match": "Ingen medlemmer matcher dine filtre",
       "username_label": "Brugernavn",
       "username_placeholder": "brugernavn...",
@@ -1019,7 +1019,7 @@
   "user": {
     "combobox": {
       "add_to_org_hint": "(vil også blive tilføjet til organisationen)",
-      "press_enter_to_add": "Tryk Enter for at tilføje {'@'}{username}",
+      "press_enter_to_add": "Tryk på Enter for at tilføje {'@'}{username}",
       "default_placeholder": "brugernavn...",
       "suggestions_label": "Brugerforslag"
     },
@@ -1576,9 +1576,9 @@
     "summary": "Oversigt",
     "deps_count": "{count} afhængighed | {count} afhængigheder",
     "dependencies": "Afhængigheder",
-    "dev_dependencies": "Dev Afhængigheder",
+    "dev_dependencies": "Udviklingsafhængigheder",
     "peer_dependencies": "Peer-afhængigheder",
-    "optional_dependencies": "Valgfrie Afhængigheder",
+    "optional_dependencies": "Valgfrie afhængigheder",
     "no_dependency_changes": "Ingen ændringer i afhængigheder",
     "file_filter_option": {
       "all": "Alle ({count})",
@@ -1600,7 +1600,7 @@
     "close_files_panel": "Luk filpanelet",
     "filter_files_label": "Filtrer filer efter ændringstype",
     "change_ratio": "Ændringsforhold",
-    "char_edits": "Tegnedits",
+    "char_edits": "Redigerede tegn",
     "diff_distance": "Diffafstand",
     "diff_truncated": "Diffen er afkortet af hensyn til ydeevnen. Kun de første ændrede linjer vises.",
     "large_diff_mode": "Diffen for den store fil vises med fletning af ændrede linjer deaktiveret af hensyn til ydeevnen.",
@@ -1630,7 +1630,7 @@
       "infrastructure_value": "Hostet på Hetzner",
       "privacy_label": "Privatliv:",
       "privacy_value": "Underlagt strenge EU-databeskyttelseslove",
-      "learn_more": "Lær hvordan npmx bruger Atmosphere"
+      "learn_more": "Læs om, hvordan npmx bruger Atmosphere"
     },
     "community": {
       "title": "Hvem er her",
@@ -1659,7 +1659,7 @@
         "li2": "{li21}{separator} {li22}",
         "separator": ":",
         "cookie_vdpl": "__vdpl",
-        "cookie_vdpl_desc": "Denne cookie bruges af vores hostingudbyder (Vercel) til skævbeskyttelse. Den sikrer, at du henter ressourcer fra den korrekte deploymentsversion, hvis en ny opdatering frigives, mens du browser. Den sporer dig ikke.",
+        "cookie_vdpl_desc": "Denne cookie bruges af vores hostingudbyder (Vercel) til beskyttelse mod versionsforskydning. Den sikrer, at du henter ressourcer fra den korrekte udrulningsversion, hvis en ny opdatering frigives, mens du browser. Den sporer dig ikke.",
         "cookie_h3": "h3",
         "cookie_h3_desc": "Dette er vores sikre sessionscookie. Den gemmer OAuth-adgangstokenet, når du forbinder din Atmosphere-konto. Den er afgørende for at opretholde din autentificerede session."
       },
