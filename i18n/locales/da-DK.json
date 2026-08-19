@@ -241,29 +241,29 @@
     }
   },
   "noodles": {
-    "title": "EN TEXT TO REPLACE: noodles",
-    "meta_description": "EN TEXT TO REPLACE: Every noodle we've ever shown on npmx — the seasonal logos, easter eggs, and the stories behind them.",
-    "latest": "EN TEXT TO REPLACE: Latest noodles",
-    "what_is": "EN TEXT TO REPLACE: What is noodles",
-    "what_is_body": "EN TEXT TO REPLACE: Noodles are the playful variants of the npmx logo we run on the homepage to mark releases, holidays, events, and other moments worth celebrating. Think of them like Google Doodles, but for npm packages.",
-    "empty": "EN TEXT TO REPLACE: No noodles yet.",
-    "load_more": "EN TEXT TO REPLACE: Load {count} more",
-    "dates": "EN TEXT TO REPLACE: Active dates",
-    "shipped_in": "EN TEXT TO REPLACE: Shipped in",
-    "credits": "EN TEXT TO REPLACE: Credits",
-    "learn_more": "EN TEXT TO REPLACE: Learn more",
-    "carousel_prev": "EN TEXT TO REPLACE: Previous image",
-    "carousel_next": "EN TEXT TO REPLACE: Next image",
-    "carousel_dots": "EN TEXT TO REPLACE: Variant image navigation",
-    "carousel_jump": "EN TEXT TO REPLACE: Go to image {index}",
-    "lens_label": "EN TEXT TO REPLACE: {title} — image reel",
-    "lens_slide": "EN TEXT TO REPLACE: image {index}",
-    "lens_slide_position": "EN TEXT TO REPLACE: Slide {index} of {total}",
-    "back_to_archive": "EN TEXT TO REPLACE: Back to all noodles",
+    "title": "noodles",
+    "meta_description": "Alle de noodles, vi nogensinde har vist på npmx — sæsonlogoerne, påskeæggene og historierne bag dem.",
+    "latest": "Seneste noodles",
+    "what_is": "Hvad er noodles",
+    "what_is_body": "Noodles er de legesyge varianter af npmx-logoet, som vi viser på forsiden for at markere udgivelser, højtider, begivenheder og andre øjeblikke, der er værd at fejre. Tænk på dem som Google Doodles, bare for npm-pakker.",
+    "empty": "Ingen noodles endnu.",
+    "load_more": "Indlæs {count} flere",
+    "dates": "Aktive datoer",
+    "shipped_in": "Lanceret i",
+    "credits": "Bidragydere",
+    "learn_more": "Læs mere",
+    "carousel_prev": "Forrige billede",
+    "carousel_next": "Næste billede",
+    "carousel_dots": "Navigation mellem variantbilleder",
+    "carousel_jump": "Gå til billede {index}",
+    "lens_label": "{title} — billedserie",
+    "lens_slide": "billede {index}",
+    "lens_slide_position": "Billede {index} af {total}",
+    "back_to_archive": "Tilbage til alle noodles",
     "missing": {
-      "title": "EN TEXT TO REPLACE: This noodle never made it out of the bowl.",
-      "body": "EN TEXT TO REPLACE: We don't have a “{slug}” noodle on the menu. Either it's still being plated, or it was never written. Either way — back to the archive.",
-      "empty_bowl": "EN TEXT TO REPLACE: empty bowl"
+      "title": "Denne noodle kom aldrig ud af skålen.",
+      "body": "Vi har ikke en “{slug}”-noodle på menuen. Enten er den stadig ved at blive anrettet, eller også blev den aldrig skrevet. Uanset hvad — tilbage til arkivet.",
+      "empty_bowl": "tom skål"
     }
   },
   "settings": {
@@ -322,16 +322,16 @@
       "black": "Sort"
     },
     "foreground_themes": {
-      "label": "EN TEXT TO REPLACE: Foreground shade",
-      "contrast": "EN TEXT TO REPLACE: Contrast",
-      "standard": "EN TEXT TO REPLACE: Standard",
-      "muted": "EN TEXT TO REPLACE: Muted"
+      "label": "Forgrundsfarve",
+      "contrast": "Kontrast",
+      "standard": "Standard",
+      "muted": "Dæmpet"
     },
     "keyboard_shortcuts_enabled": "Aktivér tastaturgenveje",
     "keyboard_shortcuts_enabled_description": "Tastaturgenveje kan deaktiveres, hvis de konflikter med andre browser- eller systemgenveje",
-    "enable_code_ligatures": "EN TEXT TO REPLACE: Enable ligatures in code",
-    "enable_changelog_autoscroll": "EN TEXT TO REPLACE: Auto scroll to requested version",
-    "enable_changelog_autoscroll_description": "EN TEXT TO REPLACE: Auto scroll to or close to the requested version at package changelog"
+    "enable_code_ligatures": "Aktivér ligaturer i kode",
+    "enable_changelog_autoscroll": "Rul automatisk til den ønskede version",
+    "enable_changelog_autoscroll_description": "Rul automatisk til eller tæt på den ønskede version i pakkens ændringslog"
   },
   "i18n": {
     "missing_keys": "{count} manglende oversættelse | {count} manglende oversættelser",
@@ -363,7 +363,7 @@
     "warnings": "Advarsler:",
     "go_back_home": "Gå tilbage til forsiden",
     "per_week": "/ uge",
-    "per_week_short": "EN TEXT TO REPLACE: /wk",
+    "per_week_short": "/u.",
     "vanity_downloads_hint": "Vanity-nummer: ingen pakker vist | Vanity-nummer: for den viste pakke | Vanity-nummer: Summen af {count} viste pakker",
     "sort": {
       "name": "navn",
@@ -394,7 +394,7 @@
     "collapse_with_name": "Skjul {name}",
     "expand": "Udvid",
     "expand_with_name": "Udvid {name}",
-    "copyMdError": "EN TEXT TO REPLACE: Failed to load markdown, try again later"
+    "copyMdError": "Kunne ikke indlæse Markdown. Prøv igen senere"
   },
   "profile": {
     "display_name": "Visningsnavn",
@@ -420,7 +420,7 @@
     "verified_provenance": "Verificeret oprindelse",
     "navigation": "Pakke",
     "copy_name": "Kopiér pakkenavn",
-    "copy_version": "EN TEXT TO REPLACE: Copy package version",
+    "copy_version": "Kopiér pakkeversion",
     "deprecation": {
       "package": "Denne pakke er blevet forældet.",
       "version": "Denne version er blevet forældet.",
@@ -434,17 +434,17 @@
       "deps": "{count} flere afhængigheder"
     },
     "size_decrease": {
-      "title_size": "EN TEXT TO REPLACE: Package size decreased since v{version}!",
-      "title_deps": "EN TEXT TO REPLACE: Dependency count decreased since v{version}!",
-      "title_both": "EN TEXT TO REPLACE: Package size and dependency count decreased since v{version}!",
-      "size": "EN TEXT TO REPLACE: Install size reduced by {percent} ({size} smaller)",
-      "deps": "EN TEXT TO REPLACE: {count} fewer dependency | {count} fewer dependencies"
+      "title_size": "Pakkestørrelsen er faldet siden v{version}!",
+      "title_deps": "Antallet af afhængigheder er faldet siden v{version}!",
+      "title_both": "Pakkestørrelsen og antallet af afhængigheder er faldet siden v{version}!",
+      "size": "Installationsstørrelse reduceret med {percent} ({size} mindre)",
+      "deps": "{count} færre afhængighed | {count} færre afhængigheder"
     },
     "replacement": {
       "title": "Du har muligvis ikke brug for denne afhængighed.",
-      "example": "EN TEXT TO REPLACE: Example:",
+      "example": "Eksempel:",
       "native": "Dette kan erstattes med {replacement}, tilgængelig siden Node {nodeVersion}.",
-      "native_no_version": "EN TEXT TO REPLACE: This package can be replaced with {replacement}.",
+      "native_no_version": "Denne pakke kan erstattes med {replacement}.",
       "simple": "{community} har markeret denne pakke som overflødig, med rådet: {replacement}.",
       "documented": "{community} har markeret denne pakke som havende mere effektive alternativer.",
       "none": "Denne pakke er blevet markeret som ikke længere nødvendig, og dens funktionalitet er sandsynligvis tilgængelig nativt i alle motorer.",
@@ -465,9 +465,9 @@
         "unpacked": "{size} udpakket størrelse (denne pakke)",
         "total": "{size} total udpakket størrelse (inklusive {count} afhængighed for linux-x64) | {size} total udpakket størrelse (inklusive alle {count} afhængigheder for linux-x64)"
       },
-      "main_information": "EN TEXT TO REPLACE: Main Information",
-      "trends": "EN TEXT TO REPLACE: Trends",
-      "version_distribution": "EN TEXT TO REPLACE: Version Distribution"
+      "main_information": "Hovedinformation",
+      "trends": "Tendenser",
+      "version_distribution": "Versionsfordeling"
     },
     "skills": {
       "title": "Agent Færdigheder",
@@ -497,17 +497,17 @@
       "docs": "dokumentation",
       "fund": "fund",
       "compare": "sammenlign",
-      "timeline": "EN TEXT TO REPLACE: timeline",
-      "stats": "EN TEXT TO REPLACE: stats",
+      "timeline": "tidslinje",
+      "stats": "statistik",
       "compare_this_package": "sammenlign denne pakke",
-      "changelog": "EN TEXT TO REPLACE: changelog"
+      "changelog": "ændringslog"
     },
     "likes": {
       "like": "Synes godt om denne pakke",
       "unlike": "Synes ikke godt om denne pakke",
-      "top_rank_tooltip": "EN TEXT TO REPLACE: This is among the top 10 most liked packages on npmx! (#{rank})",
-      "top_rank_label": "EN TEXT TO REPLACE: #{rank}",
-      "top_rank_link_label": "EN TEXT TO REPLACE: View likes leaderboard. This package is ranked #{rank}."
+      "top_rank_tooltip": "Denne pakke er blandt de 10 mest populære pakker på npmx! (#{rank})",
+      "top_rank_label": "#{rank}",
+      "top_rank_link_label": "Se ranglisten over likes. Denne pakke ligger nummer #{rank}."
     },
     "docs": {
       "contents": "Indhold",
@@ -536,10 +536,10 @@
     "run": {
       "title": "Kør",
       "locally": "Kør lokalt",
-      "copy_command": "EN TEXT TO REPLACE: Copy command to run locally"
+      "copy_command": "Kopiér kommandoen for at køre lokalt"
     },
     "command": {
-      "copied_install": "EN TEXT TO REPLACE: Install command copied",
+      "copied_install": "Installationskommandoen er kopieret",
       "copied_dev_install": "EN TEXT TO REPLACE: Dev install command copied",
       "copied_run": "EN TEXT TO REPLACE: Run command copied",
       "copied_create": "EN TEXT TO REPLACE: Create command copied",
