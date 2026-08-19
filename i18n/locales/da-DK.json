@@ -1540,8 +1540,8 @@
           "description": "Antal issues på GitHub-repositoriet"
         },
         "createdAt": {
-          "label": "EN TEXT TO REPLACE: Created At",
-          "description": "EN TEXT TO REPLACE: When the package was created"
+          "label": "Oprettet",
+          "description": "Hvornår pakken blev oprettet"
         }
       },
       "values": {
@@ -1602,9 +1602,9 @@
     "change_ratio": "Ændringsforhold",
     "char_edits": "Tegnedits",
     "diff_distance": "Diff afstand",
-    "diff_truncated": "EN TEXT TO REPLACE: Diff truncated for performance. Showing the first changed lines only.",
-    "large_diff_mode": "EN TEXT TO REPLACE: Large file diff shown with inline edit merging disabled for performance.",
-    "large_diff_options_disabled": "EN TEXT TO REPLACE: Large file mode disables inline edit merging for performance.",
+    "diff_truncated": "Diffen er afkortet af hensyn til ydeevnen. Kun de første ændrede linjer vises.",
+    "large_diff_mode": "Diffen for den store fil vises med fletning af ændrede linjer deaktiveret af hensyn til ydeevnen.",
+    "large_diff_options_disabled": "Tilstanden for store filer deaktiverer fletning af ændrede linjer af hensyn til ydeevnen.",
     "loading_diff": "Indlæser diff...",
     "loading_diff_error": "Kunne ikke indlæse diff",
     "merge_modified_lines": "Flet ændrede linjer",
@@ -1867,15 +1867,15 @@
   },
   "alt_logo_kawaii": "En sød, rund og farverig version af npmx-logoet.",
   "changelog": {
-    "pre_release": "EN TEXT TO REPLACE: Pre-release",
-    "draft": "EN TEXT TO REPLACE: Draft",
-    "no_logs": "EN TEXT TO REPLACE: Sorry, this package does not publish changelogs or its changelog format is not supported.",
+    "pre_release": "Forhåndsudgivelse",
+    "draft": "Udkast",
+    "no_logs": "Beklager, denne pakke udgiver ikke en ændringslog, eller også understøttes formatet ikke.",
     "error": {
-      "p1": "EN TEXT TO REPLACE: Sorry, the changelog for {package} couldn't be loaded",
-      "p2": "EN TEXT TO REPLACE: Please try again later or {viewon}"
+      "p1": "Beklager, ændringsloggen for {package} kunne ikke indlæses",
+      "p2": "Prøv igen senere, eller {viewon}"
     },
-    "rate_limit_ungh": "EN TEXT TO REPLACE: Sorry, Github's rate limit has been hit, try again in a moment",
-    "version_unavailable": "EN TEXT TO REPLACE: The requested version is not available.",
-    "copy_as_markdown": "EN TEXT TO REPLACE: Copy changelog as Markdown"
+    "rate_limit_ungh": "Beklager, GitHubs grænse for forespørgsler er nået. Prøv igen om et øjeblik.",
+    "version_unavailable": "Den ønskede version er ikke tilgængelig.",
+    "copy_as_markdown": "Kopiér ændringslog som Markdown"
   }
 }
