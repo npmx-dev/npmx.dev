@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { RouteLocationRaw } from 'vue-router'
-import { compare } from 'verkit'
 import type {
   TimelineResponse,
   TimelineVersion,
@@ -9,6 +8,7 @@ import type {
 } from '~~/server/api/registry/timeline/[...pkg].get'
 import type { TimelineSizeResponse } from '~~/server/api/registry/timeline/sizes/[...pkg].get'
 import type { TimelineSizeCacheValue } from '~/utils/charts'
+import { parseStableVersion } from '~/utils/versions'
 
 definePageMeta({
   name: 'timeline',
@@ -179,21 +179,28 @@ if (import.meta.client) {
 
 const bytesFormatter = useBytesFormatter()
 
-// Detect notable changes between consecutive versions (size, license, ESM, types)
-// Versions are compared against their semver predecessor, not chronological neighbor,
-// so interleaved legacy releases don't produce misleading cross-line diffs.
+// "Stable only" filter, shared with the chart via the query string.
+const stableOnly = useTimelineStableOnly()
+
+// The versions actually shown (filtered by the stable-only toggle), in the order
+// returned by the server for the active sort. The chart, the list and the
+// sub-event diffs all derive from this single source of truth.
+const displayedEntries = computed(() =>
+  stableOnly.value
+    ? timelineEntries.value.filter(entry => parseStableVersion(entry.version) !== null)
+    : timelineEntries.value,
+)
+
+// Detect notable changes between consecutive versions (size, license, ESM, types).
+// Each version is compared against the item immediately after it in the
+// filtered/sorted list (its neighbour in the current view), so the notes reflect
+// whatever ordering and filtering the user has chosen.
 const versionSubEvents = computed(() => {
   const result = new Map<string, SubEvent[]>()
-  const entries = timelineEntries.value
+  const entries = displayedEntries.value
 
-  // Sort by semver to find each version's true predecessor
-  const semverSorted = [...entries].sort((a, b) => compare(b.version, a.version))
-  const prevBySemver = new Map<string, TimelineVersion>()
-  for (let i = 0; i < semverSorted.length - 1; i++) {
-    prevBySemver.set(semverSorted[i]!.version, semverSorted[i + 1]!)
-  }
-
-  for (const current of entries) {
+  for (let i = 0; i < entries.length; i++) {
+    const current = entries[i]!
     const events: SubEvent[] = []
 
     // Deprecation (on every deprecated version, matching the versions page)
@@ -204,11 +211,15 @@ const versionSubEvents = computed(() => {
         icon: 'i-lucide:octagon-alert',
         text: `${t('package.timeline.deprecated')}: "${current.deprecated}"`,
       })
-      result.set(current.version, events)
     }
 
-    const previous = prevBySemver.get(current.version)
-    if (!previous) continue
+    // The list is descending (newest / highest first), so the previous release
+    // is the next item down the list.
+    const previous = entries[i + 1]
+    if (!previous) {
+      if (events.length) result.set(current.version, events)
+      continue
+    }
 
     // Size changes
     const currentSize = sizeCache.get(sizeKey(current.version))
@@ -373,7 +384,7 @@ useSeoMeta({
           <PackageTimelineChart
             :sizeCache
             :versionSubEvents
-            :timelineEntries
+            :timelineEntries="displayedEntries"
             :selectedVersion
             :loading="sizesLoading"
           />
@@ -383,8 +394,8 @@ useSeoMeta({
 
     <div class="container w-full py-8">
       <!-- Timeline -->
-      <ol v-if="timelineEntries.length" class="relative border-s border-border ms-4">
-        <li v-for="entry in timelineEntries" :key="entry.version" class="mb-6 ms-6">
+      <ol v-if="displayedEntries.length" class="relative border-s border-border ms-4">
+        <li v-for="entry in displayedEntries" :key="entry.version" class="mb-6 ms-6">
           <!-- Dot -->
           <span
             class="absolute -start-2 flex items-center justify-center w-4 h-4 rounded-full border border-border"

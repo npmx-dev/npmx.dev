@@ -33,7 +33,6 @@ import {
 import type { TimelineVersion, SubEvent } from '~~/server/api/registry/timeline/[...pkg].get'
 import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
 import { useColors } from '~/composables/useColors'
-import { parseStableVersion } from '~/utils/versions'
 import { downloadFileLink } from '~/utils/download'
 import { useCopyChartPng } from '~/composables/useCopyChartPng'
 import { useElementSize, useTimeoutFn } from '@vueuse/core'
@@ -111,16 +110,10 @@ const convertedData = computed(() => {
   return addEvaluationFlags(entries, props.versionSubEvents).toReversed()
 })
 
-const orderedConvertedData = computed(() => {
-  // Ordering (publish time vs semver) is owned by the `sort` query param and
-  // applied server-side; the "stable only" toggle is now purely a pre-release
-  // filter that preserves whatever order the server returned.
-  if (!settings.value.timelineChart.isOrdered) {
-    return convertedData.value
-  }
-
-  return convertedData.value.filter(entry => parseStableVersion(entry.version) !== null)
-})
+// Ordering (publish time vs semver, server-side) and the "stable only" filter
+// are both applied upstream on the page, which passes the already filtered +
+// sorted entries in via `timelineEntries`.
+const orderedConvertedData = convertedData
 
 watch(
   orderedConvertedData,
@@ -852,6 +845,9 @@ function stackbarTooltipTime(datapoint: VueUiStackbarTooltipDatapoint[]): string
 // Sort order shared with the page + list via the query string (default: publish time)
 const sort = usePermalink<'time' | 'semver'>('sort', 'time')
 
+// "Stable only" filter shared with the page + list via the query string.
+const stableOnly = useTimelineStableOnly()
+
 const timelineSortOptions = computed(() => [
   { value: 'time' as const, label: $t('package.timeline.chart.sort_time') },
   { value: 'semver' as const, label: $t('package.timeline.chart.sort_semver') },
@@ -931,10 +927,7 @@ const timelineMetricTabs = computed(() => [
             </option>
           </select>
         </div>
-        <SettingsToggle
-          v-model="settings.timelineChart.isOrdered"
-          :label="$t('package.timeline.chart.ordered_versions')"
-        />
+        <SettingsToggle v-model="stableOnly" :label="$t('package.timeline.chart.ordered_versions')" />
         <template v-if="activeTab === 'totalSize' || activeTab === 'dependencyCount'">
           <SettingsToggle
             v-model="settings.timelineChart.isZeroBased"
