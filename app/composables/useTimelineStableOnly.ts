@@ -3,7 +3,7 @@ import { parseStableVersion } from '~/utils/versions'
 
 /**
  * "Stable only" filter for the package timeline, persisted in the query string
- * (`?stable=1` / `?stable=0`).
+ * (`?stable-only=true` / `?stable-only=false`).
  *
  * The default is version-derived: off when the currently selected version is a
  * pre-release (so the version you navigated to stays visible), on otherwise.
@@ -14,7 +14,7 @@ import { parseStableVersion } from '~/utils/versions'
  */
 export function useTimelineStableOnly(): WritableComputedRef<boolean> {
   const route = useRoute('timeline')
-  const stableParam = useRouteQuery<string | undefined>('stable', undefined)
+  const stableParam = useRouteQuery<string | undefined>('stable-only', undefined)
 
   const selectedIsUnstable = computed(() => {
     const selected = route.params.version as string | undefined
@@ -23,13 +23,13 @@ export function useTimelineStableOnly(): WritableComputedRef<boolean> {
 
   return computed<boolean>({
     get() {
-      if (stableParam.value === '1') return true
-      if (stableParam.value === '0') return false
+      if (stableParam.value === 'true') return true
+      if (stableParam.value === 'false') return false
       return !selectedIsUnstable.value
     },
     set(value) {
       const isDefault = value === !selectedIsUnstable.value
-      stableParam.value = isDefault ? undefined : value ? '1' : '0'
+      stableParam.value = isDefault ? undefined : value ? 'true' : 'false'
     },
   })
 }
