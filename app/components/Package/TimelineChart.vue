@@ -879,7 +879,7 @@ const timelineMetricTabs = computed(() => [
     :class="{ loading: shouldPauseChartAnimations || loading }"
     id="timeline-chart"
   >
-    <div class="mt-4 flex flex-row flex-wrap items-center justify-between gap-4">
+    <div class="my-2 flex flex-row flex-wrap items-center justify-between gap-4">
       <div class="w-full sm:w-auto">
         <label for="timeline-chart-metric" class="sr-only">
           {{ $t('package.timeline.chart.tab_aria_label') }}
@@ -927,7 +927,10 @@ const timelineMetricTabs = computed(() => [
             </option>
           </select>
         </div>
-        <SettingsToggle v-model="stableOnly" :label="$t('package.timeline.chart.ordered_versions')" />
+        <SettingsToggle
+          v-model="stableOnly"
+          :label="$t('package.timeline.chart.ordered_versions')"
+        />
         <template v-if="activeTab === 'totalSize' || activeTab === 'dependencyCount'">
           <SettingsToggle
             v-model="settings.timelineChart.isZeroBased"
