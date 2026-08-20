@@ -147,7 +147,7 @@ async function fetchSizes(offset: number) {
   try {
     const data = await $fetch<TimelineSizeResponse>(
       `/api/registry/timeline/sizes/${requestedPackage}`,
-      { query: { offset, limit: PAGE_SIZE } },
+      { query: { offset, limit: PAGE_SIZE, sort: sort.value } },
     )
     if (requestedPackage !== packageName.value) return
 

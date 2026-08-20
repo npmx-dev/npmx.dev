@@ -1,6 +1,12 @@
 import { getVersions } from 'fast-npm-meta'
+import { compare } from 'verkit'
+import type { TimelineSort } from '~~/server/api/registry/timeline/[...pkg].get'
 
 const DEFAULT_LIMIT = 25
+
+function parseSort(value: unknown): TimelineSort {
+  return value === 'semver' ? 'semver' : 'time'
+}
 
 /**
  * Max number of individual dependencies returned per version for the size
@@ -55,13 +61,16 @@ export default defineCachedEventHandler(
     const query = getQuery(event)
     const offset = Math.max(0, Number(query.offset) || 0)
     const limit = Math.max(1, Math.min(100, Number(query.limit) || DEFAULT_LIMIT))
+    const sort = parseSort(query.sort)
 
     try {
       const { versions, time } = await getVersions(packageName)
 
+      // Must mirror the timeline endpoint's ordering so a given offset/limit page
+      // covers the same versions the client is displaying.
       const allVersions = versions
         .filter(v => time[v])
-        .sort((a, b) => Date.parse(time[b]!) - Date.parse(time[a]!))
+        .sort((a, b) => (sort === 'semver' ? compare(b, a) : Date.parse(time[b]!) - Date.parse(time[a]!)))
 
       const pageVersions = allVersions.slice(offset, offset + limit)
 
@@ -99,7 +108,8 @@ export default defineCachedEventHandler(
       const query = getQuery(event)
       const offset = Math.max(0, Number(query.offset) || 0)
       const limit = Math.max(1, Math.min(100, Number(query.limit) || DEFAULT_LIMIT))
-      return `install-size-timeline:v2:${getRouterParam(event, 'pkg')}:${offset}:${limit}`
+      const sort = parseSort(query.sort)
+      return `install-size-timeline:v2:${getRouterParam(event, 'pkg')}:${sort}:${offset}:${limit}`
     },
   },
 )

@@ -949,6 +949,7 @@ const timelineMetricTabs = computed(() => [
         <!-- Custom tooltip -->
         <template #tooltip="{ timeLabel }">
           <TimelineChartXyTooltip
+            v-if="convertedData[timeLabel.absoluteIndex]"
             :timeLabel
             :version="convertedData[timeLabel.absoluteIndex]?.version"
             :tags="convertedData[timeLabel.absoluteIndex]?.tags"
