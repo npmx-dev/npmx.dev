@@ -70,7 +70,9 @@ export default defineCachedEventHandler(
       // covers the same versions the client is displaying.
       const allVersions = versions
         .filter(v => time[v])
-        .sort((a, b) => (sort === 'semver' ? compare(b, a) : Date.parse(time[b]!) - Date.parse(time[a]!)))
+        .sort((a, b) =>
+          sort === 'semver' ? compare(b, a) : Date.parse(time[b]!) - Date.parse(time[a]!),
+        )
 
       const pageVersions = allVersions.slice(offset, offset + limit)
 
