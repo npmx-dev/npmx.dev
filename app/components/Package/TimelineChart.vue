@@ -110,13 +110,8 @@ const convertedData = computed(() => {
   return addEvaluationFlags(entries, props.versionSubEvents).toReversed()
 })
 
-// Ordering (publish time vs semver, server-side) and the "stable only" filter
-// are both applied upstream on the page, which passes the already filtered +
-// sorted entries in via `timelineEntries`.
-const orderedConvertedData = convertedData
-
 watch(
-  orderedConvertedData,
+  convertedData,
   async () => {
     await nextTick()
     const chart = chartRef.value
@@ -126,7 +121,7 @@ watch(
   { flush: 'post' },
 )
 
-const versions = computed(() => orderedConvertedData.value.map(d => d.version))
+const versions = computed(() => convertedData.value.map(d => d.version))
 
 const activeVersionIndex = computed(() => {
   if (!activeVersion.value) return -1
@@ -134,7 +129,7 @@ const activeVersionIndex = computed(() => {
 })
 
 const seriesTotalSize = computed(() => {
-  const values = orderedConvertedData.value.map(d => d.totalSize)
+  const values = convertedData.value.map(d => d.totalSize)
   if (!values.length) {
     return { values, min: 0, max: 0 }
   }
@@ -146,7 +141,7 @@ const seriesTotalSize = computed(() => {
 })
 
 const seriesDependencies = computed(() => {
-  const values = orderedConvertedData.value.map(d => d.dependencyCount)
+  const values = convertedData.value.map(d => d.dependencyCount)
   if (!values.length) {
     return { values, min: 0, max: 0 }
   }
@@ -218,7 +213,7 @@ interface DependencySegment {
 // significantly sized dependency is a segment, the package itself is a segment,
 // and the rest is a segment ("Other").
 const dependencySegments = computed<DependencySegment[]>(() => {
-  const data = orderedConvertedData.value
+  const data = convertedData.value
   const reference = data.at(-1)
   if (!reference) return []
 
@@ -306,7 +301,7 @@ const datasets = computed<{
           ? undefined
           : E18E_GRADIENT_COLORS,
         color: colors.value.fgSubtle,
-        source: orderedConvertedData.value,
+        source: convertedData.value,
       },
     ],
     dependencyCount: [
@@ -319,7 +314,7 @@ const datasets = computed<{
           ? undefined
           : E18E_GRADIENT_COLORS,
         color: colors.value.fgSubtle,
-        source: orderedConvertedData.value,
+        source: convertedData.value,
       },
     ],
   }
@@ -545,7 +540,7 @@ const config = computed<VueUiXyConfig>(() => {
           svg: commonConfig.value.callbacks!.svg,
           altCopy: () =>
             copyAltTextForTimelineChart({
-              dataset: orderedConvertedData.value,
+              dataset: convertedData.value,
               config: {
                 packageName: packageName.value,
                 metric: activeTab.value,
@@ -715,7 +710,7 @@ function getErrorDatapointPlots(
 
 const indexSelection = computed(() => {
   if (props.selectedVersion == null) return null
-  return orderedConvertedData.value.findIndex(v => v.version === props.selectedVersion)
+  return convertedData.value.findIndex(v => v.version === props.selectedVersion)
 })
 
 const stackbarConfig = computed<VueUiStackbarConfig>(() => ({
@@ -839,7 +834,7 @@ const stackbarConfig = computed<VueUiStackbarConfig>(() => ({
 function stackbarTooltipTime(datapoint: VueUiStackbarTooltipDatapoint[]): string | undefined {
   const absoluteIndex = datapoint[0]?.timeLabel?.absoluteIndex
   if (absoluteIndex == null) return undefined
-  return orderedConvertedData.value[absoluteIndex]?.time
+  return convertedData.value[absoluteIndex]?.time
 }
 
 // Sort order shared with the page + list via the query string (default: publish time)
