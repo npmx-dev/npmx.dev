@@ -950,19 +950,19 @@ const timelineMetricTabs = computed(() => [
         <template #tooltip="{ timeLabel }">
           <TimelineChartXyTooltip
             :timeLabel
-            :version="orderedConvertedData[timeLabel.absoluteIndex]?.version"
-            :tags="orderedConvertedData[timeLabel.absoluteIndex]?.tags"
-            :datetime="orderedConvertedData[timeLabel.absoluteIndex]?.time!"
+            :version="convertedData[timeLabel.absoluteIndex]?.version"
+            :tags="convertedData[timeLabel.absoluteIndex]?.tags"
+            :datetime="convertedData[timeLabel.absoluteIndex]?.time!"
             :activeTab
             :totalSize="
-              bytesFormatter.format(orderedConvertedData[timeLabel.absoluteIndex]?.totalSize ?? 0)
+              bytesFormatter.format(convertedData[timeLabel.absoluteIndex]?.totalSize ?? 0)
             "
             :dependencyCount="
               compactNumberFormatter.format(
-                orderedConvertedData[timeLabel.absoluteIndex]?.dependencyCount ?? 0,
+                convertedData[timeLabel.absoluteIndex]?.dependencyCount ?? 0,
               )
             "
-            :events="orderedConvertedData[timeLabel.absoluteIndex]?.events"
+            :events="convertedData[timeLabel.absoluteIndex]?.events"
           />
         </template>
 
