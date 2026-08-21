@@ -90,10 +90,14 @@ async function fetchTimeline(offset: number): Promise<TimelineResponse> {
 
 // Initial load - useAsyncData serializes the full response across SSR to client.
 // Re-runs when the package OR the sort order changes, resetting pagination.
+// The key is a stable string (not a function): a reactive key would let Nuxt
+// swap to a cached entry without re-running the handler when switching back to a
+// previously-seen sort, leaving the UI stale. Instead we keep a single data ref
+// and let `watch` refetch it on every change.
 const initialLoadError = ref(false)
 
 const { data: initialTimeline } = await useAsyncData(
-  () => `timeline:${packageName.value}:${sort.value}`,
+  `timeline:${packageName.value}`,
   () => fetchTimeline(0),
   { watch: [packageName, sort] },
 )
