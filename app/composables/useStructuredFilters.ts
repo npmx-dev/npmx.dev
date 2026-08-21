@@ -127,7 +127,6 @@ export function removeKeywordFromQuery(query: string, keyword: string): string {
 interface UseStructuredFiltersOptions {
   packages: Ref<NpmSearchResult[]>
   searchQueryModel?: Ref<string>
-  initialFilters?: Partial<StructuredFilters>
   initialSort?: SortOption
 }
 
@@ -153,7 +152,7 @@ function matchesSecurity(pkg: NpmSearchResult, security: SecurityFilter): boolea
 export function useStructuredFilters(options: UseStructuredFiltersOptions) {
   const route = useRoute()
   const router = useRouter()
-  const { packages, initialFilters, initialSort, searchQueryModel } = options
+  const { packages, initialSort, searchQueryModel } = options
   const { t } = useI18n()
 
   const searchQuery = shallowRef(normalizeSearchParam(route.query.q))
@@ -161,7 +160,6 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
   // Filter state - must be declared before the watcher that uses it
   const filters = ref<StructuredFilters>({
     ...DEFAULT_FILTERS,
-    ...initialFilters,
   })
 
   // Watch route query changes and sync filter state
