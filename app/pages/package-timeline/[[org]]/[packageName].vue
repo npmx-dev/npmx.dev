@@ -82,9 +82,13 @@ const loadError = ref(false)
 
 const hasMore = computed(() => timelineEntries.value.length < totalVersions.value)
 
-async function fetchTimeline(offset: number): Promise<TimelineResponse> {
-  return $fetch<TimelineResponse>(`/api/registry/timeline/${packageName.value}`, {
-    query: { offset, limit: PAGE_SIZE, sort: sort.value },
+async function fetchTimeline(
+  offset: number,
+  pkgName: string = packageName.value,
+  sortOrder: TimelineSort = sort.value,
+): Promise<TimelineResponse> {
+  return $fetch<TimelineResponse>(`/api/registry/timeline/${pkgName}`, {
+    query: { offset, limit: PAGE_SIZE, sort: sortOrder },
   })
 }
 
@@ -120,14 +124,20 @@ async function loadMore() {
   if (loadingMore.value) return
   loadingMore.value = true
   loadError.value = false
+  // Capture the request context; the package or sort can change while the
+  // request is in flight, after which the initial-load watcher resets the list.
+  const pkgName = packageName.value
+  const sortOrder = sort.value
+  const isStale = () => pkgName !== packageName.value || sortOrder !== sort.value
   try {
     const offset = timelineEntries.value.length
-    const data = await fetchTimeline(offset)
+    const data = await fetchTimeline(offset, pkgName, sortOrder)
+    if (isStale()) return
     timelineEntries.value = [...timelineEntries.value, ...data.versions]
     totalVersions.value = data.total
-    fetchSizes(offset)
+    fetchSizes(offset, pkgName, sortOrder)
   } catch {
-    loadError.value = true
+    if (!isStale()) loadError.value = true
   } finally {
     loadingMore.value = false
   }
@@ -145,18 +155,20 @@ function sizeKey(ver: string) {
   return `${packageName.value}@${ver}`
 }
 
-async function fetchSizes(offset: number) {
-  const requestedPackage = packageName.value
+async function fetchSizes(
+  offset: number,
+  pkgName: string = packageName.value,
+  sortOrder: TimelineSort = sort.value,
+) {
   sizeFetchesInFlight.value++
   try {
-    const data = await $fetch<TimelineSizeResponse>(
-      `/api/registry/timeline/sizes/${requestedPackage}`,
-      { query: { offset, limit: PAGE_SIZE, sort: sort.value } },
-    )
-    if (requestedPackage !== packageName.value) return
+    const data = await $fetch<TimelineSizeResponse>(`/api/registry/timeline/sizes/${pkgName}`, {
+      query: { offset, limit: PAGE_SIZE, sort: sortOrder },
+    })
+    if (pkgName !== packageName.value || sortOrder !== sort.value) return
 
     for (const entry of data.sizes) {
-      sizeCache.set(`${requestedPackage}@${entry.version}`, {
+      sizeCache.set(`${pkgName}@${entry.version}`, {
         totalSize: entry.totalSize,
         dependencyCount: entry.dependencyCount,
         selfSize: entry.selfSize,
@@ -499,6 +511,13 @@ useSeoMeta({
       <!-- Loading state -->
       <div v-else-if="!timelineEntries.length" class="py-20 text-center">
         <span class="i-svg-spinners:ring-resize w-5 h-5 text-fg-subtle" />
+      </div>
+
+      <!-- Filtered-empty state: versions loaded, but the stable-only filter hid them all -->
+      <div v-else-if="!displayedEntries.length" class="py-20 text-center">
+        <p class="text-sm text-fg-subtle">
+          {{ $t('package.timeline.no_stable_versions') }}
+        </p>
       </div>
     </div>
   </main>
