@@ -80,6 +80,12 @@ const totalVersions = ref(0)
 const loadingMore = ref(false)
 const loadError = ref(false)
 
+watch([sort, packageName], () => {
+  timelineEntries.value = []
+  totalVersions.value = 0
+  loadError.value = false
+})
+
 const hasMore = computed(() => timelineEntries.value.length < totalVersions.value)
 
 async function fetchTimeline(
