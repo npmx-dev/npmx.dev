@@ -92,16 +92,11 @@ async function fetchTimeline(
   })
 }
 
-// Initial load - useAsyncData serializes the full response across SSR to client.
-// Re-runs when the package OR the sort order changes, resetting pagination.
-// The key is a stable string (not a function): a reactive key would let Nuxt
-// swap to a cached entry without re-running the handler when switching back to a
-// previously-seen sort, leaving the UI stale. Instead we keep a single data ref
-// and let `watch` refetch it on every change.
+// Initial load - useAsyncData serializes the full response across SSR to client
 const initialLoadError = ref(false)
 
 const { data: initialTimeline } = await useAsyncData(
-  `timeline:${packageName.value}`,
+  `timeline:${packageName.value}:${sort.value}`,
   () => fetchTimeline(0),
   { watch: [packageName, sort] },
 )
@@ -128,16 +123,14 @@ async function loadMore() {
   // request is in flight, after which the initial-load watcher resets the list.
   const pkgName = packageName.value
   const sortOrder = sort.value
-  const isStale = () => pkgName !== packageName.value || sortOrder !== sort.value
   try {
     const offset = timelineEntries.value.length
     const data = await fetchTimeline(offset, pkgName, sortOrder)
-    if (isStale()) return
     timelineEntries.value = [...timelineEntries.value, ...data.versions]
     totalVersions.value = data.total
     fetchSizes(offset, pkgName, sortOrder)
   } catch {
-    if (!isStale()) loadError.value = true
+    loadError.value = true
   } finally {
     loadingMore.value = false
   }
