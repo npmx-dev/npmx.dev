@@ -1,3 +1,4 @@
+import { enrichTimelineVersionTypes } from '#server/utils/package-timeline'
 import { normalizeLicense } from '#shared/utils/npm'
 import { hasBuiltInTypes } from '~~/shared/utils/package-analysis'
 
@@ -85,9 +86,11 @@ export default defineCachedEventHandler(
           }
         })
         .sort((a, b) => Date.parse(b.time) - Date.parse(a.time))
+      const visibleVersions = allVersions.slice(offset, offset + limit)
 
+      await enrichTimelineVersionTypes(packageName, allVersions, visibleVersions)
       return {
-        versions: allVersions.slice(offset, offset + limit),
+        versions: visibleVersions,
         total: allVersions.length,
       } satisfies TimelineResponse
     } catch (error: unknown) {
