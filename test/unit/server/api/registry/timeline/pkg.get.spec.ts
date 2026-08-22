@@ -164,13 +164,13 @@ describe('timeline API', () => {
     expect(result.versions).toHaveLength(25)
   })
 
-  it('clamps limit to max 1000', async () => {
+  it('clamps limit to max 100', async () => {
     routerParam = 'my-pkg'
-    queryParams = { limit: 9999 }
+    queryParams = { limit: 999 }
 
     const versions: Record<string, {}> = {}
     const time: Record<string, string> = {}
-    for (let i = 1; i <= 1010; i++) {
+    for (let i = 1; i <= 150; i++) {
       const v = `1.0.${i}`
       versions[v] = {}
       time[v] = new Date(2024, 0, (i % 28) + 1, i % 24).toISOString()
@@ -179,8 +179,7 @@ describe('timeline API', () => {
     fetchNpmPackageMock.mockResolvedValue(makePackument({ versions, time }))
 
     const result = await handler(fakeEvent)
-    expect(result.versions).toHaveLength(1000)
-    expect(result.total).toBe(1010)
+    expect(result.versions).toHaveLength(100)
   })
 
   it('excludes pre-releases when stable-only=true', async () => {

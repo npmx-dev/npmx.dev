@@ -3,9 +3,6 @@ import { normalizeLicense } from '#shared/utils/npm'
 import { hasBuiltInTypes } from '~~/shared/utils/package-analysis'
 
 const DEFAULT_LIMIT = 25
-// High enough that the client can re-request the full amount it had already
-// paginated in one go when the sort/filter changes.
-const MAX_LIMIT = 1000
 
 export type TimelineSort = 'time' | 'semver'
 
@@ -74,7 +71,7 @@ export default defineCachedEventHandler(
 
     const query = getQuery(event)
     const offset = Math.max(0, Number(query.offset) || 0)
-    const limit = Math.max(1, Math.min(MAX_LIMIT, Number(query.limit) || DEFAULT_LIMIT))
+    const limit = Math.max(1, Math.min(100, Number(query.limit) || DEFAULT_LIMIT))
     const sort = parseTimelineSort(query.sort)
     const stableOnly = parseStableOnly(query['stable-only'])
 
@@ -143,7 +140,7 @@ export default defineCachedEventHandler(
     getKey: event => {
       const query = getQuery(event)
       const offset = Math.max(0, Number(query.offset) || 0)
-      const limit = Math.max(1, Math.min(MAX_LIMIT, Number(query.limit) || DEFAULT_LIMIT))
+      const limit = Math.max(1, Math.min(100, Number(query.limit) || DEFAULT_LIMIT))
       const sort = parseTimelineSort(query.sort)
       const stableOnly = parseStableOnly(query['stable-only'])
       return `timeline:v1:${getRouterParam(event, 'pkg')}:${sort}:${stableOnly}:${offset}:${limit}`

@@ -87,13 +87,12 @@ const hasMore = computed(() => timelineEntries.value.length < totalVersions.valu
 
 async function fetchTimeline(
   offset: number,
-  limit: number = PAGE_SIZE,
   pkgName: string = packageName.value,
   sortOrder: TimelineSort = sort.value,
   stable: boolean = stableOnly.value,
 ): Promise<TimelineResponse> {
   return $fetch<TimelineResponse>(`/api/registry/timeline/${pkgName}`, {
-    query: { offset, limit, 'sort': sortOrder, 'stable-only': String(stable) },
+    query: { offset, 'limit': PAGE_SIZE, 'sort': sortOrder, 'stable-only': String(stable) },
   })
 }
 
@@ -134,11 +133,11 @@ async function loadMore() {
     pkgName !== packageName.value || sortOrder !== sort.value || stable !== stableOnly.value
   try {
     const offset = timelineEntries.value.length
-    const data = await fetchTimeline(offset, PAGE_SIZE, pkgName, sortOrder, stable)
+    const data = await fetchTimeline(offset, pkgName, sortOrder, stable)
     if (isStale()) return
     timelineEntries.value = [...timelineEntries.value, ...data.versions]
     totalVersions.value = data.total
-    fetchSizes(offset, PAGE_SIZE, pkgName, sortOrder, stable)
+    fetchSizes(offset, pkgName, sortOrder, stable)
   } catch {
     if (!isStale()) loadError.value = true
   } finally {
@@ -160,7 +159,6 @@ function sizeKey(ver: string) {
 
 async function fetchSizes(
   offset: number,
-  limit: number = PAGE_SIZE,
   pkgName: string = packageName.value,
   sortOrder: TimelineSort = sort.value,
   stable: boolean = stableOnly.value,
@@ -168,7 +166,7 @@ async function fetchSizes(
   sizeFetchesInFlight.value++
   try {
     const data = await $fetch<TimelineSizeResponse>(`/api/registry/timeline/sizes/${pkgName}`, {
-      query: { offset, limit, 'sort': sortOrder, 'stable-only': String(stable) },
+      query: { offset, 'limit': PAGE_SIZE, 'sort': sortOrder, 'stable-only': String(stable) },
     })
     if (pkgName !== packageName.value || sortOrder !== sort.value || stable !== stableOnly.value) {
       return
@@ -189,16 +187,15 @@ async function fetchSizes(
   }
 }
 
-// Sizes are fetched a page at a time (the endpoint caps each request), so cover
-// a re-queried range in PAGE_SIZE chunks.
-function fetchSizesRange(
-  count: number,
+// Fetch sizes for the first `pageCount` pages (one request per page).
+function fetchSizesPages(
+  pageCount: number,
   pkgName: string = packageName.value,
   sortOrder: TimelineSort = sort.value,
   stable: boolean = stableOnly.value,
 ) {
-  for (let chunkOffset = 0; chunkOffset < count; chunkOffset += PAGE_SIZE) {
-    fetchSizes(chunkOffset, PAGE_SIZE, pkgName, sortOrder, stable)
+  for (let page = 0; page < pageCount; page++) {
+    fetchSizes(page * PAGE_SIZE, pkgName, sortOrder, stable)
   }
 }
 
@@ -212,21 +209,26 @@ if (import.meta.client) {
     { immediate: true },
   )
 
-  // When the package, sort or stable-only filter changes, re-query the same
-  // amount of data the user had already paginated (not just page one) so their
-  // position is preserved. A package change starts fresh from the first page.
+  // When the package, sort or stable-only filter changes, re-fetch as many
+  // PAGE_SIZE pages as the user had already paginated (a package change starts
+  // fresh from page one) so their position is preserved. Fetching per page reuses
+  // each page's cache instead of issuing one oversized request.
   watch([packageName, sort, stableOnly], async ([pkgName, sortOrder, stable], [previousPkg]) => {
     loadError.value = false
-    const amount =
-      pkgName === previousPkg ? Math.max(PAGE_SIZE, timelineEntries.value.length) : PAGE_SIZE
+    const pageCount =
+      pkgName === previousPkg ? Math.max(1, Math.ceil(timelineEntries.value.length / PAGE_SIZE)) : 1
     const isStale = () =>
       pkgName !== packageName.value || sortOrder !== sort.value || stable !== stableOnly.value
     try {
-      const data = await fetchTimeline(0, amount, pkgName, sortOrder, stable)
+      const pages = await Promise.all(
+        Array.from({ length: pageCount }, (_, page) =>
+          fetchTimeline(page * PAGE_SIZE, pkgName, sortOrder, stable),
+        ),
+      )
       if (isStale()) return
-      timelineEntries.value = data.versions
-      totalVersions.value = data.total
-      fetchSizesRange(amount, pkgName, sortOrder, stable)
+      timelineEntries.value = pages.flatMap(page => page.versions)
+      totalVersions.value = pages[0]?.total ?? 0
+      fetchSizesPages(pageCount, pkgName, sortOrder, stable)
     } catch {
       if (!isStale()) initialLoadError.value = true
     }
