@@ -67,13 +67,16 @@ export default defineCachedEventHandler(
     try {
       const { versions, time } = await getVersions(packageName)
 
-      // Must mirror the timeline endpoint's ordering and filtering so a given
-      // offset/limit page covers the same versions the client is displaying.
+      // Must mirror the timeline endpoint's ordering so a given offset/limit page
+      // covers the same versions the client is displaying.
       const allVersions = versions
         .filter(v => time[v] && (!stableOnly || isStableVersion(v)))
-        .sort((a, b) =>
-          sort === 'semver' ? compare(b, a) : Date.parse(time[b]!) - Date.parse(time[a]!),
-        )
+
+      if (sort === 'semver') {
+        allVersions.sort((a, b) => compare(b, a))
+      } else {
+        allVersions.sort((a, b) => Date.parse(time[b]!) - Date.parse(time[a]!))
+      }
 
       const pageVersions = allVersions.slice(offset, offset + limit)
 

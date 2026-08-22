@@ -91,6 +91,16 @@ export default defineCachedEventHandler(
       // Build full sorted list
       const allVersions = Object.keys(packument.versions)
         .filter(v => packument.time[v] && (!stableOnly || isStableVersion(v)))
+
+      if (sort === 'semver') {
+        allVersions.sort((a, b) => compare(b, a))
+      } else {
+        allVersions.sort((a, b) => Date.parse(packument.time[b]!) - Date.parse(packument.time[a]!))
+      }
+
+      const versions = allVersions.slice(offset, offset + limit)
+
+      const versionsData = versions
         .map(v => {
           const version = packument.versions[v]!
 
@@ -116,7 +126,7 @@ export default defineCachedEventHandler(
         )
 
       return {
-        versions: allVersions.slice(offset, offset + limit),
+        versions: versionsData,
         total: allVersions.length,
       } satisfies TimelineResponse
     } catch (error: unknown) {
