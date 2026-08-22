@@ -8,7 +8,6 @@ import type {
 } from '~~/server/api/registry/timeline/[...pkg].get'
 import type { TimelineSizeResponse } from '~~/server/api/registry/timeline/sizes/[...pkg].get'
 import type { TimelineSizeCacheValue } from '~/utils/charts'
-import { parseStableVersion } from '~/utils/versions'
 
 definePageMeta({
   name: 'timeline',
@@ -72,6 +71,10 @@ function packageRoute(ver: string): RouteLocationRaw {
 // Sort order, persisted in the query string (default publish time, omitted from URL)
 const sort = usePermalink<TimelineSort>('sort', 'time')
 
+// "Stable only" filter, shared with the chart via the query string. Applied
+// server-side so pagination totals and pages already exclude pre-releases.
+const stableOnly = useTimelineStableOnly()
+
 // Paginated timeline data from server
 const PAGE_SIZE = 25
 
@@ -84,28 +87,25 @@ const hasMore = computed(() => timelineEntries.value.length < totalVersions.valu
 
 async function fetchTimeline(
   offset: number,
+  limit: number = PAGE_SIZE,
   pkgName: string = packageName.value,
   sortOrder: TimelineSort = sort.value,
+  stable: boolean = stableOnly.value,
 ): Promise<TimelineResponse> {
   return $fetch<TimelineResponse>(`/api/registry/timeline/${pkgName}`, {
-    query: { offset, limit: PAGE_SIZE, sort: sortOrder },
+    query: { offset, limit, sort: sortOrder, 'stable-only': String(stable) },
   })
 }
 
-// Initial load - useAsyncData serializes the full response across SSR to client
+// Initial load - useAsyncData serializes the full response across SSR to client.
+// The key is a stable string (evaluated once); subsequent package/sort/filter
+// changes are handled by the reload watcher below so we control the page size.
 const initialLoadError = ref(false)
 
-const { data: initialTimeline } = await useAsyncData(
-  `timeline:${packageName.value}:${sort.value}`,
+const { data: initialTimeline, status: initialStatus } = await useAsyncData(
+  `timeline:${packageName.value}:${sort.value}:${stableOnly.value}`,
   () => fetchTimeline(0),
-  { watch: [packageName, sort] },
 )
-
-watch([packageName, sort], () => {
-  timelineEntries.value = []
-  totalVersions.value = 0
-  loadError.value = false
-})
 
 watch(
   initialTimeline,
@@ -125,18 +125,22 @@ async function loadMore() {
   if (loadingMore.value) return
   loadingMore.value = true
   loadError.value = false
-  // Capture the request context; the package or sort can change while the
-  // request is in flight, after which the initial-load watcher resets the list.
+  // Capture the request context; the package, sort or filter can change while
+  // the request is in flight, after which the reload watcher replaces the list.
   const pkgName = packageName.value
   const sortOrder = sort.value
+  const stable = stableOnly.value
+  const isStale = () =>
+    pkgName !== packageName.value || sortOrder !== sort.value || stable !== stableOnly.value
   try {
     const offset = timelineEntries.value.length
-    const data = await fetchTimeline(offset, pkgName, sortOrder)
+    const data = await fetchTimeline(offset, PAGE_SIZE, pkgName, sortOrder, stable)
+    if (isStale()) return
     timelineEntries.value = [...timelineEntries.value, ...data.versions]
     totalVersions.value = data.total
-    fetchSizes(offset, pkgName, sortOrder)
+    fetchSizes(offset, PAGE_SIZE, pkgName, sortOrder, stable)
   } catch {
-    loadError.value = true
+    if (!isStale()) loadError.value = true
   } finally {
     loadingMore.value = false
   }
@@ -156,15 +160,19 @@ function sizeKey(ver: string) {
 
 async function fetchSizes(
   offset: number,
+  limit: number = PAGE_SIZE,
   pkgName: string = packageName.value,
   sortOrder: TimelineSort = sort.value,
+  stable: boolean = stableOnly.value,
 ) {
   sizeFetchesInFlight.value++
   try {
     const data = await $fetch<TimelineSizeResponse>(`/api/registry/timeline/sizes/${pkgName}`, {
-      query: { offset, limit: PAGE_SIZE, sort: sortOrder },
+      query: { offset, limit, sort: sortOrder, 'stable-only': String(stable) },
     })
-    if (pkgName !== packageName.value || sortOrder !== sort.value) return
+    if (pkgName !== packageName.value || sortOrder !== sort.value || stable !== stableOnly.value) {
+      return
+    }
 
     for (const entry of data.sizes) {
       sizeCache.set(`${pkgName}@${entry.version}`, {
@@ -181,6 +189,19 @@ async function fetchSizes(
   }
 }
 
+// Sizes are fetched a page at a time (the endpoint caps each request), so cover
+// a re-queried range in PAGE_SIZE chunks.
+function fetchSizesRange(
+  count: number,
+  pkgName: string = packageName.value,
+  sortOrder: TimelineSort = sort.value,
+  stable: boolean = stableOnly.value,
+) {
+  for (let chunkOffset = 0; chunkOffset < count; chunkOffset += PAGE_SIZE) {
+    fetchSizes(chunkOffset, PAGE_SIZE, pkgName, sortOrder, stable)
+  }
+}
+
 // Fetch sizes for the initial page
 if (import.meta.client) {
   watch(
@@ -190,21 +211,29 @@ if (import.meta.client) {
     },
     { immediate: true },
   )
+
+  // When the package, sort or stable-only filter changes, re-query the same
+  // amount of data the user had already paginated (not just page one) so their
+  // position is preserved. A package change starts fresh from the first page.
+  watch([packageName, sort, stableOnly], async ([pkgName, sortOrder, stable], [previousPkg]) => {
+    loadError.value = false
+    const amount =
+      pkgName === previousPkg ? Math.max(PAGE_SIZE, timelineEntries.value.length) : PAGE_SIZE
+    const isStale = () =>
+      pkgName !== packageName.value || sortOrder !== sort.value || stable !== stableOnly.value
+    try {
+      const data = await fetchTimeline(0, amount, pkgName, sortOrder, stable)
+      if (isStale()) return
+      timelineEntries.value = data.versions
+      totalVersions.value = data.total
+      fetchSizesRange(amount, pkgName, sortOrder, stable)
+    } catch {
+      if (!isStale()) initialLoadError.value = true
+    }
+  })
 }
 
 const bytesFormatter = useBytesFormatter()
-
-// "Stable only" filter, shared with the chart via the query string.
-const stableOnly = useTimelineStableOnly()
-
-// The versions actually shown (filtered by the stable-only toggle), in the order
-// returned by the server for the active sort. The chart, the list and the
-// sub-event diffs all derive from this single source of truth.
-const displayedEntries = computed(() =>
-  stableOnly.value
-    ? timelineEntries.value.filter(entry => parseStableVersion(entry.version) !== null)
-    : timelineEntries.value,
-)
 
 // Detect notable changes between consecutive versions (size, license, ESM, types).
 // Each version is compared against the item immediately after it in the
@@ -212,7 +241,7 @@ const displayedEntries = computed(() =>
 // whatever ordering and filtering the user has chosen.
 const versionSubEvents = computed(() => {
   const result = new Map<string, SubEvent[]>()
-  const entries = displayedEntries.value
+  const entries = timelineEntries.value
 
   for (let i = 0; i < entries.length; i++) {
     const current = entries[i]!
@@ -399,7 +428,7 @@ useSeoMeta({
           <PackageTimelineChart
             :sizeCache
             :versionSubEvents
-            :timelineEntries="displayedEntries"
+            :timelineEntries
             :selectedVersion
             :loading="sizesLoading"
           />
@@ -409,8 +438,8 @@ useSeoMeta({
 
     <div class="container w-full py-8">
       <!-- Timeline -->
-      <ol v-if="displayedEntries.length" class="relative border-s border-border ms-4">
-        <li v-for="entry in displayedEntries" :key="entry.version" class="mb-6 ms-6">
+      <ol v-if="timelineEntries.length" class="relative border-s border-border ms-4">
+        <li v-for="entry in timelineEntries" :key="entry.version" class="mb-6 ms-6">
           <!-- Dot -->
           <span
             class="absolute -start-2 flex items-center justify-center w-4 h-4 rounded-full border border-border"
@@ -508,12 +537,15 @@ useSeoMeta({
       </div>
 
       <!-- Loading state -->
-      <div v-else-if="!timelineEntries.length" class="py-20 text-center">
+      <div
+        v-else-if="!timelineEntries.length && initialStatus === 'pending'"
+        class="py-20 text-center"
+      >
         <span class="i-svg-spinners:ring-resize w-5 h-5 text-fg-subtle" />
       </div>
 
-      <!-- Filtered-empty state: versions loaded, but the stable-only filter hid them all -->
-      <div v-else-if="!displayedEntries.length" class="py-20 text-center">
+      <!-- Empty state: nothing to show (e.g. the stable-only filter hid every version) -->
+      <div v-else-if="!timelineEntries.length" class="py-20 text-center">
         <p class="text-sm text-fg-subtle">
           {{ $t('package.timeline.no_stable_versions') }}
         </p>

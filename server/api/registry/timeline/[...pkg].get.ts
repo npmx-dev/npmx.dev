@@ -1,13 +1,25 @@
-import { compare } from 'verkit'
+import { compare, tryParse } from 'verkit'
 import { normalizeLicense } from '#shared/utils/npm'
 import { hasBuiltInTypes } from '~~/shared/utils/package-analysis'
 
 const DEFAULT_LIMIT = 25
+// High enough that the client can re-request the full amount it had already
+// paginated in one go when the sort/filter changes.
+const MAX_LIMIT = 1000
 
 export type TimelineSort = 'time' | 'semver'
 
-function parseSort(value: unknown): TimelineSort {
+export function parseTimelineSort(value: unknown): TimelineSort {
   return value === 'semver' ? 'semver' : 'time'
+}
+
+export function parseStableOnly(value: unknown): boolean {
+  return value === 'true'
+}
+
+export function isStableVersion(version: string): boolean {
+  const parsed = tryParse(version)
+  return !!parsed && (parsed.prerelease?.length ?? 0) === 0
 }
 
 export interface TimelineVersion {
@@ -38,12 +50,13 @@ export interface SubEvent {
  * Returns paginated version timeline data for a package.
  *
  * Fetches the full packument server-side, extracts only the fields needed
- * for the timeline view, sorted (descending) by publish time (default) or by
- * semver via the `sort` query param, before pagination.
+ * for the timeline view, optionally drops pre-releases (`stable-only=true`),
+ * sorts (descending) by publish time (default) or by semver (`sort=semver`),
+ * then paginates.
  *
  * Examples:
  * - /api/registry/timeline/packageName?offset=0&limit=25
- * - /api/registry/timeline/@scope/packageName?offset=0&limit=25&sort=semver
+ * - /api/registry/timeline/@scope/packageName?offset=0&limit=25&sort=semver&stable-only=true
  */
 export default defineCachedEventHandler(
   async event => {
@@ -61,8 +74,9 @@ export default defineCachedEventHandler(
 
     const query = getQuery(event)
     const offset = Math.max(0, Number(query.offset) || 0)
-    const limit = Math.max(1, Math.min(100, Number(query.limit) || DEFAULT_LIMIT))
-    const sort = parseSort(query.sort)
+    const limit = Math.max(1, Math.min(MAX_LIMIT, Number(query.limit) || DEFAULT_LIMIT))
+    const sort = parseTimelineSort(query.sort)
+    const stableOnly = parseStableOnly(query['stable-only'])
 
     try {
       const packument = await fetchNpmPackage(packageName)
@@ -76,7 +90,7 @@ export default defineCachedEventHandler(
 
       // Build full sorted list
       const allVersions = Object.keys(packument.versions)
-        .filter(v => packument.time[v])
+        .filter(v => packument.time[v] && (!stableOnly || isStableVersion(v)))
         .map(v => {
           const version = packument.versions[v]!
 
@@ -118,9 +132,10 @@ export default defineCachedEventHandler(
     getKey: event => {
       const query = getQuery(event)
       const offset = Math.max(0, Number(query.offset) || 0)
-      const limit = Math.max(1, Math.min(100, Number(query.limit) || DEFAULT_LIMIT))
-      const sort = parseSort(query.sort)
-      return `timeline:v1:${getRouterParam(event, 'pkg')}:${sort}:${offset}:${limit}`
+      const limit = Math.max(1, Math.min(MAX_LIMIT, Number(query.limit) || DEFAULT_LIMIT))
+      const sort = parseTimelineSort(query.sort)
+      const stableOnly = parseStableOnly(query['stable-only'])
+      return `timeline:v2:${getRouterParam(event, 'pkg')}:${sort}:${stableOnly}:${offset}:${limit}`
     },
   },
 )

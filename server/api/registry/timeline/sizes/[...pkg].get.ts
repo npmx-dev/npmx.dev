@@ -1,12 +1,12 @@
 import { getVersions } from 'fast-npm-meta'
 import { compare } from 'verkit'
-import type { TimelineSort } from '~~/server/api/registry/timeline/[...pkg].get'
+import {
+  parseTimelineSort,
+  parseStableOnly,
+  isStableVersion,
+} from '~~/server/api/registry/timeline/[...pkg].get'
 
 const DEFAULT_LIMIT = 25
-
-function parseSort(value: unknown): TimelineSort {
-  return value === 'semver' ? 'semver' : 'time'
-}
 
 /**
  * Max number of individual dependencies returned per version for the size
@@ -61,15 +61,16 @@ export default defineCachedEventHandler(
     const query = getQuery(event)
     const offset = Math.max(0, Number(query.offset) || 0)
     const limit = Math.max(1, Math.min(100, Number(query.limit) || DEFAULT_LIMIT))
-    const sort = parseSort(query.sort)
+    const sort = parseTimelineSort(query.sort)
+    const stableOnly = parseStableOnly(query['stable-only'])
 
     try {
       const { versions, time } = await getVersions(packageName)
 
-      // Must mirror the timeline endpoint's ordering so a given offset/limit page
-      // covers the same versions the client is displaying.
+      // Must mirror the timeline endpoint's ordering and filtering so a given
+      // offset/limit page covers the same versions the client is displaying.
       const allVersions = versions
-        .filter(v => time[v])
+        .filter(v => time[v] && (!stableOnly || isStableVersion(v)))
         .sort((a, b) =>
           sort === 'semver' ? compare(b, a) : Date.parse(time[b]!) - Date.parse(time[a]!),
         )
@@ -110,8 +111,9 @@ export default defineCachedEventHandler(
       const query = getQuery(event)
       const offset = Math.max(0, Number(query.offset) || 0)
       const limit = Math.max(1, Math.min(100, Number(query.limit) || DEFAULT_LIMIT))
-      const sort = parseSort(query.sort)
-      return `install-size-timeline:v2:${getRouterParam(event, 'pkg')}:${sort}:${offset}:${limit}`
+      const sort = parseTimelineSort(query.sort)
+      const stableOnly = parseStableOnly(query['stable-only'])
+      return `install-size-timeline:v3:${getRouterParam(event, 'pkg')}:${sort}:${stableOnly}:${offset}:${limit}`
     },
   },
 )

@@ -164,22 +164,49 @@ describe('timeline API', () => {
     expect(result.versions).toHaveLength(25)
   })
 
-  it('clamps limit to max 100', async () => {
+  it('clamps limit to max 1000', async () => {
     routerParam = 'my-pkg'
-    queryParams = { limit: 999 }
+    queryParams = { limit: 9999 }
 
     const versions: Record<string, {}> = {}
     const time: Record<string, string> = {}
-    for (let i = 1; i <= 150; i++) {
+    for (let i = 1; i <= 1010; i++) {
       const v = `1.0.${i}`
       versions[v] = {}
-      time[v] = new Date(2024, 0, (i % 28) + 1, i).toISOString()
+      time[v] = new Date(2024, 0, (i % 28) + 1, i % 24).toISOString()
     }
 
     fetchNpmPackageMock.mockResolvedValue(makePackument({ versions, time }))
 
     const result = await handler(fakeEvent)
-    expect(result.versions).toHaveLength(100)
+    expect(result.versions).toHaveLength(1000)
+    expect(result.total).toBe(1010)
+  })
+
+  it('excludes pre-releases when stable-only=true', async () => {
+    routerParam = 'my-pkg'
+    queryParams = { 'stable-only': 'true', sort: 'semver' }
+
+    fetchNpmPackageMock.mockResolvedValue(
+      makePackument({
+        versions: {
+          '1.0.0': {},
+          '2.0.0-beta.1': {},
+          '2.0.0': {},
+          '2.1.0-rc.0': {},
+        },
+        time: {
+          '1.0.0': '2024-01-01T00:00:00Z',
+          '2.0.0-beta.1': '2024-02-01T00:00:00Z',
+          '2.0.0': '2024-03-01T00:00:00Z',
+          '2.1.0-rc.0': '2024-04-01T00:00:00Z',
+        },
+      }),
+    )
+
+    const result = await handler(fakeEvent)
+    expect(result.versions.map(v => v.version)).toEqual(['2.0.0', '1.0.0'])
+    expect(result.total).toBe(2)
   })
 
   it('extracts license string from object format', async () => {
