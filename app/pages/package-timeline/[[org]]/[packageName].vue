@@ -75,24 +75,34 @@ const timelineEntries = ref<TimelineVersion[]>([])
 const totalVersions = ref(0)
 const loadingMore = ref(false)
 const loadError = ref(false)
+const { settings } = useSettings()
+const stableOnly = computed(() => settings.value.timelineChart.isOrdered)
 
 const hasMore = computed(() => timelineEntries.value.length < totalVersions.value)
 
 async function fetchTimeline(offset: number): Promise<TimelineResponse> {
   return $fetch<TimelineResponse>(`/api/registry/timeline/${packageName.value}`, {
-    query: { offset, limit: PAGE_SIZE },
+    query: { offset, limit: PAGE_SIZE, stable: stableOnly.value },
   })
 }
 
 // Initial load - useAsyncData serializes the full response across SSR to client
 const initialLoadError = ref(false)
 
-const { data: initialTimeline } = await useAsyncData(
-  `timeline:${packageName.value}`,
-  () => fetchTimeline(0),
-  { watch: [packageName] },
+watch([packageName, stableOnly], () => {
+  timelineEntries.value = []
+  totalVersions.value = 0
+  initialLoadError.value = false
+  loadError.value = false
+})
+
+const timelineDataKey = computed(
+  () => `timeline:${packageName.value}:${stableOnly.value ? 'stable' : 'all'}`,
 )
 
+const { data: initialTimeline } = await useAsyncData(timelineDataKey, () => fetchTimeline(0), {
+  watch: [packageName, stableOnly],
+})
 watch(
   initialTimeline,
   data => {
@@ -111,9 +121,18 @@ async function loadMore() {
   if (loadingMore.value) return
   loadingMore.value = true
   loadError.value = false
+
+  const requestedPackage = packageName.value
+  const requestedStableOnly = stableOnly.value
+
   try {
     const offset = timelineEntries.value.length
     const data = await fetchTimeline(offset)
+
+    if (requestedPackage !== packageName.value || requestedStableOnly !== stableOnly.value) {
+      return
+    }
+
     timelineEntries.value = [...timelineEntries.value, ...data.versions]
     totalVersions.value = data.total
     fetchSizes(offset)
@@ -142,7 +161,7 @@ async function fetchSizes(offset: number) {
   try {
     const data = await $fetch<TimelineSizeResponse>(
       `/api/registry/timeline/sizes/${requestedPackage}`,
-      { query: { offset, limit: PAGE_SIZE } },
+      { query: { offset, limit: PAGE_SIZE, stable: stableOnly.value } },
     )
     if (requestedPackage !== packageName.value) return
 

@@ -15,7 +15,7 @@ const handleApiErrorMock = vi.fn(
 vi.stubGlobal('handleApiError', handleApiErrorMock)
 
 let routerParam: string | undefined
-let queryParams: Record<string, string | number> = {}
+let queryParams: Record<string, string | number | string[]> = {}
 
 vi.stubGlobal('getRouterParam', (_event: unknown, _name: string) => routerParam)
 vi.stubGlobal('getQuery', () => queryParams)
@@ -117,6 +117,38 @@ describe('timeline API', () => {
     expect(result.versions).toHaveLength(1)
     // sorted newest first: 3.0.0, 2.0.0, 1.0.0 → offset 1 = 2.0.0
     expect(result.versions[0]!.version).toBe('2.0.0')
+  })
+
+  it('paginates stable versions independently from prereleases', async () => {
+    routerParam = 'my-pkg'
+    queryParams = { offset: 1, limit: 2, stable: ['true'] }
+
+    fetchNpmPackageMock.mockResolvedValue(
+      makePackument({
+        versions: {
+          '1.0.0': {},
+          '2.0.0': {},
+          '3.0.0': {},
+          '4.0.0-beta.1': {},
+          '4.0.0-beta.2': {},
+          '4.0.0-beta.3': {},
+          'nightly': {},
+        },
+        time: {
+          '1.0.0': '2024-01-01T00:00:00Z',
+          '2.0.0': '2024-02-01T00:00:00Z',
+          '3.0.0': '2024-03-01T00:00:00Z',
+          '4.0.0-beta.1': '2024-04-01T00:00:00Z',
+          '4.0.0-beta.2': '2024-05-01T00:00:00Z',
+          '4.0.0-beta.3': '2024-06-01T00:00:00Z',
+          'nightly': '2024-07-01T00:00:00Z',
+        },
+      }),
+    )
+
+    const result = await handler(fakeEvent)
+    expect(result.total).toBe(3)
+    expect(result.versions.map(version => version.version)).toEqual(['2.0.0', '1.0.0'])
   })
 
   it('defaults offset to 0 and limit to 25', async () => {

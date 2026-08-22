@@ -1,7 +1,13 @@
 import { normalizeLicense } from '#shared/utils/npm'
 import { hasBuiltInTypes } from '~~/shared/utils/package-analysis'
+import { tryParse } from 'verkit'
 
 const DEFAULT_LIMIT = 25
+
+function isStableVersion(version: string): boolean {
+  const parsedVersion = tryParse(version)
+  return Boolean(parsedVersion && !parsedVersion.prerelease?.length)
+}
 
 export interface TimelineVersion {
   version: string
@@ -54,6 +60,7 @@ export default defineCachedEventHandler(
     const query = getQuery(event)
     const offset = Math.max(0, Number(query.offset) || 0)
     const limit = Math.max(1, Math.min(100, Number(query.limit) || DEFAULT_LIMIT))
+    const stableOnly = String(query.stable) === 'true'
 
     try {
       const packument = await fetchNpmPackage(packageName)
@@ -68,6 +75,7 @@ export default defineCachedEventHandler(
       // Build full sorted list
       const allVersions = Object.keys(packument.versions)
         .filter(v => packument.time[v])
+        .filter(v => !stableOnly || isStableVersion(v))
         .map(v => {
           const version = packument.versions[v]!
 
@@ -104,7 +112,8 @@ export default defineCachedEventHandler(
       const query = getQuery(event)
       const offset = Math.max(0, Number(query.offset) || 0)
       const limit = Math.max(1, Math.min(100, Number(query.limit) || DEFAULT_LIMIT))
-      return `timeline:v1:${getRouterParam(event, 'pkg')}:${offset}:${limit}`
+      const stableOnly = String(query.stable) === 'true'
+      return `timeline:v2:${getRouterParam(event, 'pkg')}:${offset}:${limit}:${stableOnly}`
     },
   },
 )

@@ -1,6 +1,12 @@
 import { getVersions } from 'fast-npm-meta'
+import { tryParse } from 'verkit'
 
 const DEFAULT_LIMIT = 25
+
+function isStableVersion(version: string): boolean {
+  const parsedVersion = tryParse(version)
+  return Boolean(parsedVersion && !parsedVersion.prerelease?.length)
+}
 
 /**
  * Max number of individual dependencies returned per version for the size
@@ -55,12 +61,14 @@ export default defineCachedEventHandler(
     const query = getQuery(event)
     const offset = Math.max(0, Number(query.offset) || 0)
     const limit = Math.max(1, Math.min(100, Number(query.limit) || DEFAULT_LIMIT))
+    const stableOnly = String(query.stable) === 'true'
 
     try {
       const { versions, time } = await getVersions(packageName)
 
       const allVersions = versions
         .filter(v => time[v])
+        .filter(v => !stableOnly || isStableVersion(v))
         .sort((a, b) => Date.parse(time[b]!) - Date.parse(time[a]!))
 
       const pageVersions = allVersions.slice(offset, offset + limit)
@@ -99,7 +107,8 @@ export default defineCachedEventHandler(
       const query = getQuery(event)
       const offset = Math.max(0, Number(query.offset) || 0)
       const limit = Math.max(1, Math.min(100, Number(query.limit) || DEFAULT_LIMIT))
-      return `install-size-timeline:v2:${getRouterParam(event, 'pkg')}:${offset}:${limit}`
+      const stableOnly = String(query.stable) === 'true'
+      return `install-size-timeline:v3:${getRouterParam(event, 'pkg')}:${offset}:${limit}:${stableOnly}`
     },
   },
 )
