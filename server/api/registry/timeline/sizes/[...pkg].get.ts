@@ -4,7 +4,7 @@ import {
   parseTimelineSort,
   parseStableOnly,
   isStableVersion,
-} from '~~/server/api/registry/timeline/[...pkg].get'
+} from '~~/server/utils/timeline-sort'
 
 const DEFAULT_LIMIT = 25
 
@@ -115,7 +115,7 @@ export default defineCachedEventHandler(
       const limit = Math.max(1, Math.min(100, Number(query.limit) || DEFAULT_LIMIT))
       const sort = parseTimelineSort(query.sort)
       const stableOnly = parseStableOnly(query['stable-only'])
-      return `install-size-timeline:v3:${getRouterParam(event, 'pkg')}:${sort}:${stableOnly}:${offset}:${limit}`
+      return `install-size-timeline:v4:${getRouterParam(event, 'pkg')}:${sort}:${stableOnly}:${offset}:${limit}`
     },
   },
 )
