@@ -93,7 +93,7 @@ async function fetchTimeline(
   stable: boolean = stableOnly.value,
 ): Promise<TimelineResponse> {
   return $fetch<TimelineResponse>(`/api/registry/timeline/${pkgName}`, {
-    query: { offset, limit, sort: sortOrder, 'stable-only': String(stable) },
+    query: { offset, limit, 'sort': sortOrder, 'stable-only': String(stable) },
   })
 }
 
@@ -168,7 +168,7 @@ async function fetchSizes(
   sizeFetchesInFlight.value++
   try {
     const data = await $fetch<TimelineSizeResponse>(`/api/registry/timeline/sizes/${pkgName}`, {
-      query: { offset, limit, sort: sortOrder, 'stable-only': String(stable) },
+      query: { offset, limit, 'sort': sortOrder, 'stable-only': String(stable) },
     })
     if (pkgName !== packageName.value || sortOrder !== sort.value || stable !== stableOnly.value) {
       return

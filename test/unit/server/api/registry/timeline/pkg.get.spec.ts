@@ -185,7 +185,7 @@ describe('timeline API', () => {
 
   it('excludes pre-releases when stable-only=true', async () => {
     routerParam = 'my-pkg'
-    queryParams = { 'stable-only': 'true', sort: 'semver' }
+    queryParams = { 'stable-only': 'true', 'sort': 'semver' }
 
     fetchNpmPackageMock.mockResolvedValue(
       makePackument({
