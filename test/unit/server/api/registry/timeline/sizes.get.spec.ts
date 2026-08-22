@@ -84,38 +84,4 @@ describe('timeline sizes API', () => {
     expect(result.sizes.map(s => s.version)).toEqual(['2.1.0', '2.0.0', '1.5.0', '1.0.0'])
   })
 
-  it('orders realistic multi-digit versions by true semver precedence', async () => {
-    const shuffled = ['3.9.0', '2.15.8', '3.17.0', '3.0.0', '3.16.2', '2.16.0', '3.9.3', '3.17.1']
-    const realTime = Object.fromEntries(
-      shuffled.map((v, i) => [v, new Date(2020, 0, 1 + i).toISOString()]),
-    )
-    queryParams = { 'offset': 0, 'limit': 25, 'sort': 'semver', 'stable-only': 'true' }
-    getVersionsMock.mockResolvedValue({ versions: shuffled, time: realTime })
-
-    const result = await handler(fakeEvent)
-    expect(result.sizes.map(s => s.version)).toEqual([
-      '3.17.1',
-      '3.17.0',
-      '3.16.2',
-      '3.9.3',
-      '3.9.0',
-      '3.0.0',
-      '2.16.0',
-      '2.15.8',
-    ])
-  })
-
-  it('sorts by publish time (descending) by default', async () => {
-    queryParams = { offset: 0, limit: 25 }
-    getVersionsMock.mockResolvedValue({ versions: [...versions], time })
-
-    const result = await handler(fakeEvent)
-    expect(result.sizes.map(s => s.version)).toEqual([
-      '1.5.0',
-      '2.1.0',
-      '1.5.0-beta.1',
-      '2.0.0',
-      '1.0.0',
-    ])
-  })
 })

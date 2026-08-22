@@ -1,15 +1,26 @@
-import { compare } from 'verkit'
+import { compare, tryParse } from 'verkit'
 import { normalizeLicense } from '#shared/utils/npm'
 import { hasBuiltInTypes } from '~~/shared/utils/package-analysis'
-import { parseTimelineSort, parseStableOnly, isStableVersion } from '~~/server/utils/timeline-sort'
-
-// Re-export the type so the client can keep importing it from this endpoint.
-export type { TimelineSort } from '~~/server/utils/timeline-sort'
 
 const DEFAULT_LIMIT = 25
 // High enough that the client can re-request the full amount it had already
 // paginated in one go when the sort/filter changes.
 const MAX_LIMIT = 1000
+
+export type TimelineSort = 'time' | 'semver'
+
+export function parseTimelineSort(value: unknown): TimelineSort {
+  return value === 'semver' ? 'semver' : 'time'
+}
+
+export function parseStableOnly(value: unknown): boolean {
+  return value === 'true'
+}
+
+export function isStableVersion(version: string): boolean {
+  const parsed = tryParse(version)
+  return !!parsed && (parsed.prerelease?.length ?? 0) === 0
+}
 
 export interface TimelineVersion {
   version: string
@@ -135,7 +146,7 @@ export default defineCachedEventHandler(
       const limit = Math.max(1, Math.min(MAX_LIMIT, Number(query.limit) || DEFAULT_LIMIT))
       const sort = parseTimelineSort(query.sort)
       const stableOnly = parseStableOnly(query['stable-only'])
-      return `timeline:v3:${getRouterParam(event, 'pkg')}:${sort}:${stableOnly}:${offset}:${limit}`
+      return `timeline:v1:${getRouterParam(event, 'pkg')}:${sort}:${stableOnly}:${offset}:${limit}`
     },
   },
 )
