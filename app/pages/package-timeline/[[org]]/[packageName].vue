@@ -444,16 +444,15 @@ useSeoMeta({
         <li v-for="entry in timelineEntries" :key="entry.version" class="mb-6 ms-6">
           <!-- Dot -->
           <span
-            class="absolute -start-2 flex items-center justify-center w-4 h-4 rounded-full border border-border bg-bg-subtle"
-            :class="
-              entry.version === version ? 'ring-2 ring-accent ring-offset-2 ring-offset-bg' : ''
-            "
+            class="absolute -start-2 flex items-center justify-center w-4 h-4 rounded-full border border-border"
+            :class="entry.version === version ? 'bg-accent border-accent' : 'bg-bg-subtle'"
           />
           <!-- Content -->
           <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <LinkBase
               :to="packageRoute(entry.version)"
               class="text-sm font-medium"
+              :class="entry.version === version ? 'text-accent' : ''"
               dir="ltr"
               @mouseenter="selectedVersion = entry.version"
               @mouseleave="selectedVersion = null"
