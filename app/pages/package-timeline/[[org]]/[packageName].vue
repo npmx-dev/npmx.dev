@@ -97,14 +97,15 @@ const initialLoadError = ref(false)
 
 const { data: initialTimeline } = await useAsyncData(
   `timeline:${packageName.value}:${sort.value}`,
-  () => {
-    timelineEntries.value = []
-    totalVersions.value = 0
-    loadError.value = false
-    return fetchTimeline(0)
-  },
+  () => fetchTimeline(0),
   { watch: [packageName, sort] },
 )
+
+watch([packageName, sort], () => {
+  timelineEntries.value = []
+  totalVersions.value = 0
+  loadError.value = false
+})
 
 watch(
   initialTimeline,
