@@ -1,10 +1,6 @@
 import { getVersions } from 'fast-npm-meta'
 import { compare } from 'verkit'
-import {
-  parseTimelineSort,
-  parseStableOnly,
-  isStableVersion,
-} from '~~/server/utils/timeline-sort'
+import { parseTimelineSort, parseStableOnly, isStableVersion } from '~~/server/utils/timeline-sort'
 
 const DEFAULT_LIMIT = 25
 

@@ -1,11 +1,7 @@
 import { compare } from 'verkit'
 import { normalizeLicense } from '#shared/utils/npm'
 import { hasBuiltInTypes } from '~~/shared/utils/package-analysis'
-import {
-  parseTimelineSort,
-  parseStableOnly,
-  isStableVersion,
-} from '~~/server/utils/timeline-sort'
+import { parseTimelineSort, parseStableOnly, isStableVersion } from '~~/server/utils/timeline-sort'
 
 // Re-export the type so the client can keep importing it from this endpoint.
 export type { TimelineSort } from '~~/server/utils/timeline-sort'

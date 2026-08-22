@@ -77,7 +77,7 @@ describe('timeline sizes API', () => {
   })
 
   it('drops pre-releases when stable-only=true', async () => {
-    queryParams = { offset: 0, limit: 25, sort: 'semver', 'stable-only': 'true' }
+    queryParams = { 'offset': 0, 'limit': 25, 'sort': 'semver', 'stable-only': 'true' }
     getVersionsMock.mockResolvedValue({ versions: [...versions], time })
 
     const result = await handler(fakeEvent)
@@ -89,7 +89,7 @@ describe('timeline sizes API', () => {
     const realTime = Object.fromEntries(
       shuffled.map((v, i) => [v, new Date(2020, 0, 1 + i).toISOString()]),
     )
-    queryParams = { offset: 0, limit: 25, sort: 'semver', 'stable-only': 'true' }
+    queryParams = { 'offset': 0, 'limit': 25, 'sort': 'semver', 'stable-only': 'true' }
     getVersionsMock.mockResolvedValue({ versions: shuffled, time: realTime })
 
     const result = await handler(fakeEvent)
