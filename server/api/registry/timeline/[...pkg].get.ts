@@ -89,8 +89,9 @@ export default defineCachedEventHandler(
       }
 
       // Build full sorted list
-      const allVersions = Object.keys(packument.versions)
-        .filter(v => packument.time[v] && (!stableOnly || isStableVersion(v)))
+      const allVersions = Object.keys(packument.versions).filter(
+        v => packument.time[v] && (!stableOnly || isStableVersion(v)),
+      )
 
       if (sort === 'semver') {
         allVersions.sort((a, b) => compare(b, a))
