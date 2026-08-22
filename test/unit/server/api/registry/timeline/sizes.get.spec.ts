@@ -83,5 +83,4 @@ describe('timeline sizes API', () => {
     const result = await handler(fakeEvent)
     expect(result.sizes.map(s => s.version)).toEqual(['2.1.0', '2.0.0', '1.5.0', '1.0.0'])
   })
-
 })
