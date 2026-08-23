@@ -29,11 +29,18 @@ export interface TsType {
   }
   array?: TsType
   union?: TsType[]
+  intersection?: TsType[]
+  tuple?: TsType[]
+  parenthesized?: TsType
+  rest?: TsType
+  optional?: TsType
+  typeQuery?: string
   literal?: {
     kind: string
     string?: string
     number?: number
     boolean?: boolean
+    tsTypes?: TsType[]
   }
   fnOrConstructor?: {
     constructor: boolean
@@ -44,6 +51,32 @@ export interface TsType {
   indexedAccess?: {
     objType: TsType
     indexType: TsType
+  }
+  conditionalType?: {
+    checkType: TsType
+    extendsType: TsType
+    trueType: TsType
+    falseType: TsType
+  }
+  mappedType?: {
+    readonly?: boolean | '+' | '-'
+    typeParam: { name: string; constraint?: TsType; default?: TsType }
+    nameType?: TsType
+    optional?: boolean | '+' | '-'
+    tsType?: TsType
+  }
+  importType?: {
+    specifier: string
+    qualifier?: string
+    typeParams?: TsType[]
+  }
+  infer?: {
+    typeParam: { name: string; constraint?: TsType; default?: TsType }
+  }
+  typePredicate?: {
+    asserts: boolean
+    param: { type: 'this' | 'identifier'; name?: string }
+    type?: TsType
   }
   typeOperator?: {
     operator: string
