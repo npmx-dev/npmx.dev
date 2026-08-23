@@ -68,8 +68,8 @@ function packageRoute(ver: string): RouteLocationRaw {
   }
 }
 
-// Sort order, persisted in the query string (default publish time, omitted from URL)
-const sort = usePermalink<TimelineSort>('sort', 'time')
+// Sort order, persisted in the query string (default semver, omitted from URL)
+const sort = usePermalink<TimelineSort>('sort', 'semver')
 
 // "Stable only" filter, shared with the chart via the query string. Applied
 // server-side so pagination totals and pages already exclude pre-releases.

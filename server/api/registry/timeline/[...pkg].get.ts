@@ -7,7 +7,7 @@ const DEFAULT_LIMIT = 25
 export type TimelineSort = 'time' | 'semver'
 
 export function parseTimelineSort(value: unknown): TimelineSort {
-  return value === 'semver' ? 'semver' : 'time'
+  return value === 'time' ? 'time' : 'semver'
 }
 
 export function parseStableOnly(value: unknown): boolean {

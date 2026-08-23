@@ -838,7 +838,7 @@ function stackbarTooltipTime(datapoint: VueUiStackbarTooltipDatapoint[]): string
 }
 
 // Sort order shared with the page + list via the query string (default: publish time)
-const sort = usePermalink<'time' | 'semver'>('sort', 'time')
+const sort = usePermalink<'time' | 'semver'>('sort', 'semver')
 
 // "Stable only" filter shared with the page + list via the query string.
 const stableOnly = useTimelineStableOnly()
