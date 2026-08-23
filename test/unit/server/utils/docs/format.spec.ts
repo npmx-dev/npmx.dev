@@ -153,7 +153,14 @@ describe('issue #3154 - unhandled tsType kinds render as unknown', () => {
       conditionalType: {
         checkType: { repr: 'T', kind: 'typeRef', typeRef: { typeName: 'T' } },
         extendsType: { repr: 'object', kind: 'keyword', keyword: 'object' },
-        trueType: { repr: 'SKey<T>', kind: 'typeRef', typeRef: { typeName: 'SKey', typeParams: [{ repr: 'T', kind: 'typeRef', typeRef: { typeName: 'T' } }] } },
+        trueType: {
+          repr: 'SKey<T>',
+          kind: 'typeRef',
+          typeRef: {
+            typeName: 'SKey',
+            typeParams: [{ repr: 'T', kind: 'typeRef', typeRef: { typeName: 'T' } }],
+          },
+        },
         falseType: { repr: 'never', kind: 'keyword', keyword: 'never' },
       },
     })
@@ -173,7 +180,10 @@ describe('issue #3154 - unhandled tsType kinds render as unknown', () => {
           constraint: {
             repr: 'keyof T',
             kind: 'typeOperator',
-            typeOperator: { operator: 'keyof', tsType: { repr: 'T', kind: 'typeRef', typeRef: { typeName: 'T' } } },
+            typeOperator: {
+              operator: 'keyof',
+              tsType: { repr: 'T', kind: 'typeRef', typeRef: { typeName: 'T' } },
+            },
           },
         },
         tsType: { repr: 'string', kind: 'keyword', keyword: 'string' },
@@ -197,17 +207,28 @@ describe('issue #3154 - unhandled tsType kinds render as unknown', () => {
               name: 'K',
               constraint: { repr: 'T', kind: 'typeRef', typeRef: { typeName: 'T' } },
             },
-            tsType: { repr: '', kind: 'tuple', tuple: [
-              { repr: 'string', kind: 'keyword', keyword: 'string' },
-              { repr: 'number', kind: 'keyword', keyword: 'number' },
-            ] },
+            tsType: {
+              repr: '',
+              kind: 'tuple',
+              tuple: [
+                { repr: 'string', kind: 'keyword', keyword: 'string' },
+                { repr: 'number', kind: 'keyword', keyword: 'number' },
+              ],
+            },
           },
         },
         indexType: {
           repr: '',
           kind: 'intersection',
           intersection: [
-            { repr: 'keyof T', kind: 'typeOperator', typeOperator: { operator: 'keyof', tsType: { repr: 'T', kind: 'typeRef', typeRef: { typeName: 'T' } } } },
+            {
+              repr: 'keyof T',
+              kind: 'typeOperator',
+              typeOperator: {
+                operator: 'keyof',
+                tsType: { repr: 'T', kind: 'typeRef', typeRef: { typeName: 'T' } },
+              },
+            },
             { repr: 'string', kind: 'keyword', keyword: 'string' },
           ],
         },
@@ -219,55 +240,87 @@ describe('issue #3154 - unhandled tsType kinds render as unknown', () => {
   })
 
   it('formats tuples, typeof queries, import types, infer and predicates', () => {
-    expect(formatType({ repr: '', kind: 'tuple', tuple: [
-      { repr: 'string', kind: 'keyword', keyword: 'string' },
-      { repr: '', kind: 'rest', rest: { repr: 'number[]', kind: 'keyword', keyword: 'number[]' } },
-    ] })).toBe('[string, ...number[]]')
+    expect(
+      formatType({
+        repr: '',
+        kind: 'tuple',
+        tuple: [
+          { repr: 'string', kind: 'keyword', keyword: 'string' },
+          {
+            repr: '',
+            kind: 'rest',
+            rest: { repr: 'number[]', kind: 'keyword', keyword: 'number[]' },
+          },
+        ],
+      }),
+    ).toBe('[string, ...number[]]')
 
-    expect(formatType({ repr: 'typeof Button', kind: 'typeQuery', typeQuery: 'Button' })).toBe('typeof Button')
+    expect(formatType({ repr: 'typeof Button', kind: 'typeQuery', typeQuery: 'Button' })).toBe(
+      'typeof Button',
+    )
 
-    expect(formatType({
-      repr: '',
-      kind: 'importType',
-      importType: { specifier: './types.js', qualifier: 'Config', typeParams: [{ repr: 'T', kind: 'typeRef', typeRef: { typeName: 'T' } }] },
-    })).toBe('import("./types.js").Config<T>')
+    expect(
+      formatType({
+        repr: '',
+        kind: 'importType',
+        importType: {
+          specifier: './types.js',
+          qualifier: 'Config',
+          typeParams: [{ repr: 'T', kind: 'typeRef', typeRef: { typeName: 'T' } }],
+        },
+      }),
+    ).toBe('import("./types.js").Config<T>')
 
-    expect(formatType({
-      repr: '',
-      kind: 'infer',
-      infer: { typeParam: { name: 'U' } },
-    })).toBe('infer U')
+    expect(
+      formatType({
+        repr: '',
+        kind: 'infer',
+        infer: { typeParam: { name: 'U' } },
+      }),
+    ).toBe('infer U')
 
-    expect(formatType({
-      repr: '',
-      kind: 'typePredicate',
-      typePredicate: {
-        asserts: false,
-        param: { type: 'identifier', name: 'value' },
-        type: { repr: 'Parsed', kind: 'typeRef', typeRef: { typeName: 'Parsed' } },
-      },
-    })).toBe('value is Parsed')
+    expect(
+      formatType({
+        repr: '',
+        kind: 'typePredicate',
+        typePredicate: {
+          asserts: false,
+          param: { type: 'identifier', name: 'value' },
+          type: { repr: 'Parsed', kind: 'typeRef', typeRef: { typeName: 'Parsed' } },
+        },
+      }),
+    ).toBe('value is Parsed')
 
-    expect(formatType({
-      repr: '',
-      kind: 'typePredicate',
-      typePredicate: { asserts: true, param: { type: 'this' } },
-    })).toBe('asserts this')
+    expect(
+      formatType({
+        repr: '',
+        kind: 'typePredicate',
+        typePredicate: { asserts: true, param: { type: 'this' } },
+      }),
+    ).toBe('asserts this')
 
-    expect(formatType({
-      repr: '1n',
-      kind: 'literal',
-      literal: { kind: 'bigInt', string: '1' },
-    })).toBe('1n')
+    expect(
+      formatType({
+        repr: '1n',
+        kind: 'literal',
+        literal: { kind: 'bigInt', string: '1' },
+      }),
+    ).toBe('1n')
 
-    expect(formatType({
-      repr: '',
-      kind: 'parenthesized',
-      parenthesized: { repr: '', kind: 'union', union: [
-        { repr: '"a"', kind: 'literal', literal: { kind: 'string', string: 'a' } },
-        { repr: '"b"', kind: 'literal', literal: { kind: 'string', string: 'b' } },
-      ] },
-    })).toBe('("a" | "b")')
+    expect(
+      formatType({
+        repr: '',
+        kind: 'parenthesized',
+        parenthesized: {
+          repr: '',
+          kind: 'union',
+          union: [
+            { repr: '"a"', kind: 'literal', literal: { kind: 'string', string: 'a' } },
+            { repr: '"b"', kind: 'literal', literal: { kind: 'string', string: 'b' } },
+          ],
+        },
+      }),
+    ).toBe('("a" | "b")')
   })
 
   it('keeps a function signature free of unknown when a parameter is an intersection', () => {
@@ -276,7 +329,11 @@ describe('issue #3154 - unhandled tsType kinds render as unknown', () => {
       kind: 'function',
       functionDef: {
         params: [
-          { kind: 'identifier', name: 'schema', tsType: { repr: 'T', kind: 'typeRef', typeRef: { typeName: 'T' } } },
+          {
+            kind: 'identifier',
+            name: 'schema',
+            tsType: { repr: 'T', kind: 'typeRef', typeRef: { typeName: 'T' } },
+          },
           {
             kind: 'identifier',
             name: 'args',
@@ -290,14 +347,25 @@ describe('issue #3154 - unhandled tsType kinds render as unknown', () => {
                   kind: 'indexedAccess',
                   indexedAccess: {
                     objType: { repr: 'T', kind: 'typeRef', typeRef: { typeName: 'T' } },
-                    indexType: { repr: "'length'", kind: 'literal', literal: { kind: 'string', string: 'length' } },
+                    indexType: {
+                      repr: "'length'",
+                      kind: 'literal',
+                      literal: { kind: 'string', string: 'length' },
+                    },
                   },
                 },
               ],
             },
           },
         ],
-        returnType: { repr: 'Translation<T>', kind: 'typeRef', typeRef: { typeName: 'Translation', typeParams: [{ repr: 'T', kind: 'typeRef', typeRef: { typeName: 'T' } }] } },
+        returnType: {
+          repr: 'Translation<T>',
+          kind: 'typeRef',
+          typeRef: {
+            typeName: 'Translation',
+            typeParams: [{ repr: 'T', kind: 'typeRef', typeRef: { typeName: 'T' } }],
+          },
+        },
       },
     } as unknown as DenoDocNode
 
