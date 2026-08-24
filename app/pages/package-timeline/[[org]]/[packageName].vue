@@ -243,6 +243,9 @@ if (import.meta.client) {
       ) {
         return
       }
+      // Invalidate any in-flight load-more from the previous window before the
+      // request goes out, so a stale response can't commit while we re-anchor.
+      listEpoch++
       loadError.value = false
       const isStale = () =>
         pkgName !== packageName.value ||
@@ -252,7 +255,6 @@ if (import.meta.client) {
       try {
         const data = await fetchTimeline({ around: ver }, pkgName, sortOrder, stable)
         if (isStale()) return
-        listEpoch++
         timelineEntries.value = data.versions
         timelineOffset.value = data.offset
         totalVersions.value = data.total
