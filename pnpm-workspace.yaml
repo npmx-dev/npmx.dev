@@ -29,11 +29,11 @@ catalogs:
     'storybook-i18n': '^10.1.1'
 
   vite-plus:
-    'vite': 'npm:@voidzero-dev/vite-plus-core@0.2.9'
-    'vite-plus': '0.2.9'
-    'vitest': '4.1.10'
-    '@vitest/browser-playwright': '4.1.10'
-    '@vitest/coverage-v8': '4.1.10'
+    'vite': 'npm:@voidzero-dev/vite-plus-core@0.3.0'
+    'vite-plus': '0.3.0'
+    'vitest': '4.1.11'
+    '@vitest/browser-playwright': '4.1.11'
+    '@vitest/coverage-v8': '4.1.11'
 
 dedupePeers: true
 
@@ -41,10 +41,22 @@ ignoreDepScripts: true
 
 ignoreWorkspaceRootCheck: true
 
+minimumReleaseAgeExclude:
+  - '@iconify-json/simple-icons@1.2.93'
+  - 'nuxt@4.5.2'
+  - '@nuxt/kit@4.5.2'
+  - '@nuxt/nitro-server@4.5.2'
+  - '@nuxt/schema@4.5.2'
+  - '@nuxt/vite-builder@4.5.2'
+  - vue-data-ui@3.23.14
+
+minimumReleaseAgeExcludePrune: true
+
 overrides:
   '@types/node': 24.13.3
-  nuxt-og-image: ^6.6.0
+  nuxt-og-image: ^6.7.5
   sharp: 0.35.3
+  vue: 3.5.41
   typescript: npm:typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2
   vite: 'catalog:vite-plus'
   vitest: 'catalog:vite-plus'
@@ -60,7 +72,7 @@ packageExtensions:
 
 patchedDependencies:
   '@jsr/deno__doc@0.189.1': patches/@jsr__deno__doc@0.189.1.patch
-  '@nuxt/test-utils': patches/@nuxt__test-utils.patch
+  '@nuxt/test-utils@4.1.0': patches/@nuxt__test-utils@4.1.0.patch
 
 savePrefix: ''
 

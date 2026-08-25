@@ -33,7 +33,6 @@ import {
 import type { TimelineVersion, SubEvent } from '~~/server/api/registry/timeline/[...pkg].get'
 import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
 import { useColors } from '~/composables/useColors'
-import { parseStableVersion } from '~/utils/versions'
 import { downloadFileLink } from '~/utils/download'
 import { useCopyChartPng } from '~/composables/useCopyChartPng'
 import { useElementSize, useTimeoutFn } from '@vueuse/core'
@@ -111,44 +110,8 @@ const convertedData = computed(() => {
   return addEvaluationFlags(entries, props.versionSubEvents).toReversed()
 })
 
-type StableVersion = {
-  major: number
-  minor: number
-  patch: number
-}
-
-const orderedConvertedData = computed(() => {
-  if (!settings.value.timelineChart.isOrdered) {
-    return convertedData.value
-  }
-
-  // Hide pre-releases and reorder stable versions semantically
-  return convertedData.value
-    .map(entry => ({
-      entry,
-      parsedVersion: parseStableVersion(entry.version),
-    }))
-    .filter(
-      (
-        item,
-      ): item is { entry: (typeof convertedData.value)[number]; parsedVersion: StableVersion } => {
-        return item.parsedVersion !== null
-      },
-    )
-    .toSorted((a, b) => {
-      if (a.parsedVersion.major !== b.parsedVersion.major) {
-        return a.parsedVersion.major - b.parsedVersion.major
-      }
-      if (a.parsedVersion.minor !== b.parsedVersion.minor) {
-        return a.parsedVersion.minor - b.parsedVersion.minor
-      }
-      return a.parsedVersion.patch - b.parsedVersion.patch
-    })
-    .map(item => item.entry)
-})
-
 watch(
-  orderedConvertedData,
+  convertedData,
   async () => {
     await nextTick()
     const chart = chartRef.value
@@ -158,7 +121,7 @@ watch(
   { flush: 'post' },
 )
 
-const versions = computed(() => orderedConvertedData.value.map(d => d.version))
+const versions = computed(() => convertedData.value.map(d => d.version))
 
 const activeVersionIndex = computed(() => {
   if (!activeVersion.value) return -1
@@ -166,7 +129,7 @@ const activeVersionIndex = computed(() => {
 })
 
 const seriesTotalSize = computed(() => {
-  const values = orderedConvertedData.value.map(d => d.totalSize)
+  const values = convertedData.value.map(d => d.totalSize)
   if (!values.length) {
     return { values, min: 0, max: 0 }
   }
@@ -178,7 +141,7 @@ const seriesTotalSize = computed(() => {
 })
 
 const seriesDependencies = computed(() => {
-  const values = orderedConvertedData.value.map(d => d.dependencyCount)
+  const values = convertedData.value.map(d => d.dependencyCount)
   if (!values.length) {
     return { values, min: 0, max: 0 }
   }
@@ -250,7 +213,7 @@ interface DependencySegment {
 // significantly sized dependency is a segment, the package itself is a segment,
 // and the rest is a segment ("Other").
 const dependencySegments = computed<DependencySegment[]>(() => {
-  const data = orderedConvertedData.value
+  const data = convertedData.value
   const reference = data.at(-1)
   if (!reference) return []
 
@@ -338,7 +301,7 @@ const datasets = computed<{
           ? undefined
           : E18E_GRADIENT_COLORS,
         color: colors.value.fgSubtle,
-        source: orderedConvertedData.value,
+        source: convertedData.value,
       },
     ],
     dependencyCount: [
@@ -351,7 +314,7 @@ const datasets = computed<{
           ? undefined
           : E18E_GRADIENT_COLORS,
         color: colors.value.fgSubtle,
-        source: orderedConvertedData.value,
+        source: convertedData.value,
       },
     ],
   }
@@ -577,7 +540,7 @@ const config = computed<VueUiXyConfig>(() => {
           svg: commonConfig.value.callbacks!.svg,
           altCopy: () =>
             copyAltTextForTimelineChart({
-              dataset: orderedConvertedData.value,
+              dataset: convertedData.value,
               config: {
                 packageName: packageName.value,
                 metric: activeTab.value,
@@ -747,7 +710,7 @@ function getErrorDatapointPlots(
 
 const indexSelection = computed(() => {
   if (props.selectedVersion == null) return null
-  return orderedConvertedData.value.findIndex(v => v.version === props.selectedVersion)
+  return convertedData.value.findIndex(v => v.version === props.selectedVersion)
 })
 
 const stackbarConfig = computed<VueUiStackbarConfig>(() => ({
@@ -871,8 +834,19 @@ const stackbarConfig = computed<VueUiStackbarConfig>(() => ({
 function stackbarTooltipTime(datapoint: VueUiStackbarTooltipDatapoint[]): string | undefined {
   const absoluteIndex = datapoint[0]?.timeLabel?.absoluteIndex
   if (absoluteIndex == null) return undefined
-  return orderedConvertedData.value[absoluteIndex]?.time
+  return convertedData.value[absoluteIndex]?.time
 }
+
+// Sort order shared with the page + list via the query string (default: publish time)
+const sort = usePermalink<'time' | 'semver'>('sort', 'semver')
+
+// "Stable only" filter shared with the page + list via the query string.
+const stableOnly = useTimelineStableOnly()
+
+const timelineSortOptions = computed(() => [
+  { value: 'time' as const, label: $t('package.timeline.chart.sort_time') },
+  { value: 'semver' as const, label: $t('package.timeline.chart.sort_semver') },
+])
 
 const timelineMetricTabs = computed(() => [
   {
@@ -900,7 +874,7 @@ const timelineMetricTabs = computed(() => [
     :class="{ loading: shouldPauseChartAnimations || loading }"
     id="timeline-chart"
   >
-    <div class="mt-4 flex flex-row flex-wrap items-center justify-between gap-4">
+    <div class="my-2 flex flex-row flex-wrap items-center justify-between gap-4">
       <div class="w-full sm:w-auto">
         <label for="timeline-chart-metric" class="sr-only">
           {{ $t('package.timeline.chart.tab_aria_label') }}
@@ -933,9 +907,23 @@ const timelineMetricTabs = computed(() => [
         </div>
       </div>
 
-      <div class="flex flex-row flex-wrap gap-4">
+      <div class="flex flex-row flex-wrap items-center gap-4">
+        <div class="flex items-center gap-2">
+          <label for="timeline-chart-sort" class="text-sm text-fg-subtle">
+            {{ $t('package.timeline.chart.sort_label') }}
+          </label>
+          <select
+            id="timeline-chart-sort"
+            v-model="sort"
+            class="block w-fit rounded-md border border-border bg-bg px-3 py-2 text-sm text-fg"
+          >
+            <option v-for="option in timelineSortOptions" :key="option.value" :value="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
         <SettingsToggle
-          v-model="settings.timelineChart.isOrdered"
+          v-model="stableOnly"
           :label="$t('package.timeline.chart.ordered_versions')"
         />
         <template v-if="activeTab === 'totalSize' || activeTab === 'dependencyCount'">
@@ -961,20 +949,21 @@ const timelineMetricTabs = computed(() => [
         <!-- Custom tooltip -->
         <template #tooltip="{ timeLabel }">
           <TimelineChartXyTooltip
+            v-if="convertedData[timeLabel.absoluteIndex]"
             :timeLabel
-            :version="orderedConvertedData[timeLabel.absoluteIndex]?.version"
-            :tags="orderedConvertedData[timeLabel.absoluteIndex]?.tags"
-            :datetime="orderedConvertedData[timeLabel.absoluteIndex]?.time!"
+            :version="convertedData[timeLabel.absoluteIndex]?.version"
+            :tags="convertedData[timeLabel.absoluteIndex]?.tags"
+            :datetime="convertedData[timeLabel.absoluteIndex]?.time!"
             :activeTab
             :totalSize="
-              bytesFormatter.format(orderedConvertedData[timeLabel.absoluteIndex]?.totalSize ?? 0)
+              bytesFormatter.format(convertedData[timeLabel.absoluteIndex]?.totalSize ?? 0)
             "
             :dependencyCount="
               compactNumberFormatter.format(
-                orderedConvertedData[timeLabel.absoluteIndex]?.dependencyCount ?? 0,
+                convertedData[timeLabel.absoluteIndex]?.dependencyCount ?? 0,
               )
             "
-            :events="orderedConvertedData[timeLabel.absoluteIndex]?.events"
+            :events="convertedData[timeLabel.absoluteIndex]?.events"
           />
         </template>
 
