@@ -268,6 +268,11 @@ describe('useMarkdown', () => {
       const processed = useMarkdown({ text: 'A library <img src="https://img.s' })
       expect(processed.value).toBe('A library')
     })
+
+    it('preserves a backtick code span after an unclosed tag', () => {
+      const processed = useMarkdown({ text: 'compare a <b and run `npm i`' })
+      expect(processed.value).toContain('<code>npm i</code>')
+    })
   })
 
   describe('HTML comment stripping', () => {

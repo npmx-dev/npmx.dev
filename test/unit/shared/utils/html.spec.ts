@@ -64,4 +64,8 @@ describe('stripHtmlTags', () => {
   it('leaves comparison text that is not a tag', () => {
     expect(stripHtmlTags('a < b')).toBe('a < b')
   })
+
+  it('keeps a backtick code span after an unclosed tag', () => {
+    expect(stripHtmlTags('run <img src="x `npm i`')).toBe('run <img src="x `npm i`')
+  })
 })
