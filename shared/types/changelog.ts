@@ -6,6 +6,7 @@ export interface ChangelogReleaseInfo {
   provider: ProviderId
   repo: `${string}/${string}`
   link: string
+  host?: string
 }
 
 export interface ChangelogMarkdownInfo {
@@ -20,6 +21,7 @@ export interface ChangelogMarkdownInfo {
    * link to a rendered changelog markdown file
    */
   link: string
+  host?: string
 }
 
 export type ChangelogInfo = ChangelogReleaseInfo | ChangelogMarkdownInfo
@@ -33,4 +35,5 @@ export interface ReleaseData {
   publishedAt?: string
   toc?: TocItem[]
   link: string
+  tag: string
 }

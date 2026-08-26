@@ -393,7 +393,8 @@
     "collapse": "Collapse",
     "collapse_with_name": "Collapse {name}",
     "expand": "Expand",
-    "expand_with_name": "Expand {name}"
+    "expand_with_name": "Expand {name}",
+    "copyMdError": "Failed to load markdown, try again later"
   },
   "profile": {
     "display_name": "Display Name",
@@ -536,7 +537,16 @@
     },
     "run": {
       "title": "Run",
-      "locally": "Run locally"
+      "locally": "Run locally",
+      "copy_command": "Copy command to run locally"
+    },
+    "command": {
+      "copied_install": "Install command copied",
+      "copied_dev_install": "Dev install command copied",
+      "copied_run": "Run command copied",
+      "copied_create": "Create command copied",
+      "copied_execute": "Execute command copied",
+      "copied_skills": "Skills command copied"
     },
     "readme": {
       "title": "Readme",
@@ -635,6 +645,7 @@
     "timeline": {
       "load_more": "Load more",
       "load_error": "Failed to load timeline. Please try again later.",
+      "no_stable_versions": "No stable versions to show. Turn off \u201cstable only\u201d to include pre-releases.",
       "size_increase": "Install size increased by {percent}% ({size})",
       "size_decrease": "Install size decreased by {percent}% ({size})",
       "dep_increase": "{count} dependency added | {count} dependencies added",
@@ -648,6 +659,7 @@
       "trusted_publisher_removed": "Trusted publishing removed",
       "provenance_added": "Provenance enabled",
       "provenance_removed": "Provenance removed",
+      "deprecated": "Deprecated",
       "chart": {
         "tab_aria_label": "Metric selection",
         "dependency_size": "Dependency Size",
@@ -656,6 +668,9 @@
         "zoom": "zoom",
         "reset_minimap": "reset minimap",
         "ordered_versions": "stable only",
+        "sort_label": "Sort by",
+        "sort_time": "Publish time",
+        "sort_semver": "Semver",
         "copy_alt": {
           "key_changes": "Key changes: {version_events}.",
           "version_events": "version {version}: {events}",
@@ -1866,6 +1881,7 @@
       "p2": "Please try again later or {viewon}"
     },
     "rate_limit_ungh": "Sorry, Github's rate limit has been hit, try again in a moment",
-    "version_unavailable": "The requested version is not available."
+    "version_unavailable": "The requested version is not available.",
+    "copy_as_markdown": "Copy changelog as Markdown"
   }
 }

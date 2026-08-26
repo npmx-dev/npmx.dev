@@ -26,24 +26,9 @@ const config: KnipConfig = {
       msw: {
         entry: ['.storybook/.public/mockServiceWorker.js'],
       },
-      ignoreDependencies: [
-        '@iconify-json/*',
-        'puppeteer',
-        'vite-plugin-pwa',
-        '@vueuse/shared',
-
-        /** Optional peer dependency of @nuxt/vite-builder for the rolldown-powered build */
-        'rolldown',
-
-        /** Used in test/e2e/helpers/ which is excluded from knip project scope */
-        'h3-next',
-      ],
+      ignoreDependencies: ['@iconify-json/*', 'puppeteer', 'vite-plugin-pwa', '@vueuse/shared'],
       ignoreUnresolved: ['#oauth/config'],
-      ignoreFiles: [
-        'app/components/Tooltip/Announce.vue',
-        'app/components/UserCombobox.vue',
-        '**/*.unused.*',
-      ],
+      ignoreFiles: ['app/components/UserCombobox.vue', '**/*.unused.*'],
     },
     'cli': {
       project: ['src/**/*.ts!', '!src/mock-*.ts'],

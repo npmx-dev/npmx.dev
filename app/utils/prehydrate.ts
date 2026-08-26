@@ -21,7 +21,7 @@ export function initPreferencesOnPrehydrate() {
     ] satisfies typeof ACCENT_COLOR_IDS)
 
     // Valid package manager IDs
-    const validPMs = new Set(['npm', 'pnpm', 'yarn', 'bun', 'deno', 'vlt', 'vp', 'nub'])
+    const validPMs = new Set(['npm', 'pnpm', 'yarn', 'bun', 'deno', 'vlt', 'vp', 'nub', 'ni'])
 
     const validBackgroundThemes = new Set(['neutral', 'stone', 'zinc', 'slate', 'black'])
     const validForegroundThemes = new Set(['muted', 'standard', 'contrast'])
