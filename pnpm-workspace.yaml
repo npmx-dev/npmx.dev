@@ -60,7 +60,6 @@ overrides:
   typescript: npm:typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2
   vite: 'catalog:vite-plus'
   vitest: 'catalog:vite-plus'
-  vue: 3.5.39
   vue-router: 5.2.0
   markdown-exit: 1.1.0-beta.2
   oxc-parser: 0.144.0
