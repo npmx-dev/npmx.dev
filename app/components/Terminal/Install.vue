@@ -24,6 +24,14 @@ const { selectedPM, showTypesInInstall, copied, copyInstallCommand } = useInstal
   () => props.installVersionOverride ?? null,
 )
 
+const { announce } = useCommandPalette()
+const { polite } = useAnnouncer()
+
+async function copyInstallCommandWithAnnounce() {
+  const success = await copyInstallCommand()
+  if (success) polite($t('package.command.copied_install'))
+}
+
 // Generate install command parts for a specific package manager
 function getInstallPartsForPM(pmId: PackageManagerId) {
   return getInstallCommandParts({
@@ -73,13 +81,12 @@ function getCreatePartsForPM(pmId: PackageManagerId) {
 // Generate @types install command parts for a specific package manager
 function getTypesInstallPartsForPM(pmId: PackageManagerId) {
   if (!props.typesPackageName) return []
-  const pm = packageManagers.find(p => p.id === pmId)
-  if (!pm) return []
-
-  const devFlag = getDevDependencyFlag(pmId)
-  const pkgSpec = pmId === 'deno' ? `npm:${props.typesPackageName}` : props.typesPackageName
-
-  return [pm.label, pm.action, devFlag, pkgSpec]
+  return getInstallCommandParts({
+    packageName: props.typesPackageName,
+    packageManager: pmId,
+    jsrInfo: null,
+    dev: true,
+  })
 }
 
 // Full run command for copying (uses current selected PM)
@@ -106,14 +113,20 @@ function getFullCreateCommand() {
 
 // Copy handlers
 const { copied: runCopied, copy: copyRun } = useClipboard({ copiedDuring: 2000 })
-const copyRunCommand = (command?: string) => copyRun(getFullRunCommand(command))
+const copyRunCommand = (command?: string) => {
+  copyRun(getFullRunCommand(command))
+  polite($t('package.command.copied_run'))
+}
 
 const { copied: createCopied, copy: copyCreate } = useClipboard({ copiedDuring: 2000 })
-const copyCreateCommand = () => copyCreate(getFullCreateCommand())
+const copyCreateCommand = () => {
+  copyCreate(getFullCreateCommand())
+  polite($t('package.command.copied_create'))
+}
 
 const { copied: devInstallCopied, copy: copyDevInstall } = useClipboard({ copiedDuring: 2000 })
 const selectedPackageManagerConfig = computed(() => getPackageManagerConfig(selectedPM.value))
-const copyDevInstallCommand = () =>
+const copyDevInstallCommand = () => {
   copyDevInstall(
     getInstallCommand({
       packageName: props.packageName,
@@ -123,8 +136,8 @@ const copyDevInstallCommand = () =>
       dev: true,
     }),
   )
-
-const { announce } = useCommandPalette()
+  polite($t('package.command.copied_dev_install'))
+}
 
 useCommandPaletteContextCommands(
   computed((): CommandPaletteContextCommandInput[] => {
@@ -225,7 +238,7 @@ useCommandPaletteContextCommands(
           :data-pm-cmd="selectedPackageManagerConfig.id"
           class="flex items-center gap-2 group/installcmd min-w-0"
         >
-          <span class="self-start text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
+          <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
           <code class="font-mono text-sm min-w-0"
             ><span
               v-for="(part, i) in getInstallPartsForPM(selectedPackageManagerConfig.id)"
@@ -234,14 +247,13 @@ useCommandPaletteContextCommands(
               >{{ i > 0 ? ' ' : '' }}{{ part }}</span
             ></code
           >
-          <button
+          <ButtonBase
             type="button"
-            class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/installcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-accent/70 select-none"
+            class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover/installcmd:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
             :aria-label="$t('package.get_started.copy_command')"
-            @click.stop="copyInstallCommand"
-          >
-            <span aria-live="polite">{{ copied ? $t('common.copied') : $t('common.copy') }}</span>
-          </button>
+            :classicon="copied ? 'i-lucide:check' : 'i-lucide:copy'"
+            @click.stop="copyInstallCommandWithAnnounce"
+          />
         </div>
 
         <!-- Suggested dev dependency install command -->
@@ -266,15 +278,11 @@ useCommandPaletteContextCommands(
             >
             <ButtonBase
               type="button"
-              size="sm"
-              class="text-fg-muted bg-bg-subtle/80 border-border opacity-0 group-hover/devinstallcmd:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
+              class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover/devinstallcmd:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
               :aria-label="$t('package.get_started.copy_dev_command')"
+              :classicon="devInstallCopied ? 'i-lucide:check' : 'i-lucide:copy'"
               @click.stop="copyDevInstallCommand"
-            >
-              <span aria-live="polite">{{
-                devInstallCopied ? $t('common.copied') : $t('common.copy')
-              }}</span>
-            </ButtonBase>
+            />
           </div>
         </template>
 
@@ -284,7 +292,7 @@ useCommandPaletteContextCommands(
             :data-pm-cmd="selectedPackageManagerConfig.id"
             class="flex items-center gap-2 min-w-0"
           >
-            <span class="self-start text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
+            <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
             <code class="font-mono text-sm min-w-0"
               ><span
                 v-for="(part, i) in getTypesInstallPartsForPM(selectedPackageManagerConfig.id)"
@@ -317,7 +325,7 @@ useCommandPaletteContextCommands(
             :data-pm-cmd="selectedPackageManagerConfig.id"
             class="flex items-center gap-2 group/runcmd"
           >
-            <span class="self-start text-fg-subtle font-mono text-sm select-none">$</span>
+            <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
             <code class="font-mono text-sm"
               ><span
                 v-for="(part, i) in getRunPartsForPM(
@@ -329,13 +337,13 @@ useCommandPaletteContextCommands(
                 >{{ i > 0 ? ' ' : '' }}{{ part }}</span
               ></code
             >
-            <button
+            <ButtonBase
               type="button"
-              class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/runcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-accent/70 select-none"
+              class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover/runcmd:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
+              :aria-label="$t('package.run.copy_command')"
+              :classicon="runCopied ? 'i-lucide:check' : 'i-lucide:copy'"
               @click.stop="copyRunCommand(executableInfo?.primaryCommand)"
-            >
-              {{ runCopied ? $t('common.copied') : $t('common.copy') }}
-            </button>
+            />
           </div>
         </template>
 
@@ -363,7 +371,7 @@ useCommandPaletteContextCommands(
             :data-pm-cmd="selectedPackageManagerConfig.id"
             class="flex items-center gap-2 group/createcmd"
           >
-            <span class="self-start text-fg-subtle font-mono text-sm select-none">$</span>
+            <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
             <code class="font-mono text-sm"
               ><span
                 v-for="(part, i) in getCreatePartsForPM(selectedPackageManagerConfig.id)"
@@ -372,16 +380,13 @@ useCommandPaletteContextCommands(
                 >{{ i > 0 ? ' ' : '' }}{{ part }}</span
               ></code
             >
-            <button
+            <ButtonBase
               type="button"
-              class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/createcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-accent/70 select-none"
+              class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover/createcmd:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
               :aria-label="$t('package.create.copy_command')"
+              :classicon="createCopied ? 'i-lucide:check' : 'i-lucide:copy'"
               @click.stop="copyCreateCommand"
-            >
-              <span aria-live="polite">{{
-                createCopied ? $t('common.copied') : $t('common.copy')
-              }}</span>
-            </button>
+            />
           </div>
         </template>
       </div>

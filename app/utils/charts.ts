@@ -14,7 +14,7 @@ import type { ChartTimeGranularity } from '~/types/chart'
 
 interface SubEvent {
   key: string
-  positive: boolean
+  state: 'success' | 'error' | 'warn'
   icon: string
   text: string
 }
@@ -489,6 +489,7 @@ export type EnrichedTimelineSizeCacheEntry = ConvertedTimelineSizeCacheEntry & {
   events: SubEvent[]
   hasPositive: boolean
   hasNegative: boolean
+  hasError: boolean
 }
 
 export type TimelineChartMetric = 'totalSize' | 'dependencyCount' | 'dependencySize'

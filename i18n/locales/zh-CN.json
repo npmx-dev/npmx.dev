@@ -601,7 +601,8 @@
           "version_events": "版本 {version}：{events}",
           "general_description": "折线图展示了 {package} 包从版本 {first} 到 {last} 的 {metric} 变化情况。版本 {first} 的 {metric} 为 {first_value}，版本 {last} 为 {last_value}（整体变化 {overall_progress_percentage}%）。{key_changes} {watermark}。"
         }
-      }
+      },
+      "deprecated": "已弃用"
     },
     "dependencies": {
       "title": "依赖（{count} 个）",
