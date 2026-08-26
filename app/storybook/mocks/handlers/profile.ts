@@ -11,12 +11,9 @@ export const mockProfile: NPMXProfile = {
   recordExists: true,
 }
 
-export const mockLikedPackages = [
-  'https://npmx.dev/package/nuxt',
-  'https://npmx.dev/package/vitest',
-]
+const mockLikedPackages = ['https://npmx.dev/package/nuxt', 'https://npmx.dev/package/vitest']
 
-export function createMockAuthSession(handle: string) {
+function createMockAuthSession(handle: string) {
   return {
     did: `did:plc:${handle}`,
     handle,
