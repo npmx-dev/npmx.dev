@@ -44,12 +44,12 @@ export function mockProfileLikesHandler(likes = mockLikedPackages) {
 
 export const mockPackageLikesHandler = http.get('/api/social/likes/:pkg', ({ params }) => {
   const pkg = String(params.pkg)
+  const packageLikesByName: Record<string, number | undefined> = {
+    nuxt: 128,
+    vitest: 96,
+  }
   const response: PackageLikes = {
-    totalLikes:
-      {
-        nuxt: 128,
-        vitest: 96,
-      }[pkg] ?? 12,
+    totalLikes: packageLikesByName[pkg] ?? 12,
     userHasLiked: false,
     topLikedRank: null,
   }
