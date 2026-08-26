@@ -1209,6 +1209,9 @@
         },
         "expand_with_name": {
           "type": "string"
+        },
+        "copyMdError": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -1632,6 +1635,33 @@
             },
             "locally": {
               "type": "string"
+            },
+            "copy_command": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "command": {
+          "type": "object",
+          "properties": {
+            "copied_install": {
+              "type": "string"
+            },
+            "copied_dev_install": {
+              "type": "string"
+            },
+            "copied_run": {
+              "type": "string"
+            },
+            "copied_create": {
+              "type": "string"
+            },
+            "copied_execute": {
+              "type": "string"
+            },
+            "copied_skills": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1927,6 +1957,9 @@
             "load_error": {
               "type": "string"
             },
+            "no_stable_versions": {
+              "type": "string"
+            },
             "size_increase": {
               "type": "string"
             },
@@ -1966,6 +1999,9 @@
             "provenance_removed": {
               "type": "string"
             },
+            "deprecated": {
+              "type": "string"
+            },
             "chart": {
               "type": "object",
               "properties": {
@@ -1988,6 +2024,15 @@
                   "type": "string"
                 },
                 "ordered_versions": {
+                  "type": "string"
+                },
+                "sort_label": {
+                  "type": "string"
+                },
+                "sort_time": {
+                  "type": "string"
+                },
+                "sort_semver": {
                   "type": "string"
                 },
                 "copy_alt": {
@@ -5627,6 +5672,9 @@
           "type": "string"
         },
         "version_unavailable": {
+          "type": "string"
+        },
+        "copy_as_markdown": {
           "type": "string"
         }
       },
