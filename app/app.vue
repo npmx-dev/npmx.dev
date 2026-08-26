@@ -205,7 +205,7 @@ if (!isBlogPostRoute.value) {
          below the header, so the scrollbar never intrudes into the title bar. -->
     <div id="app-scroll" class="flex-1 flex flex-col min-h-0">
       <NuxtAnnouncer />
-      
+
       <div id="main-content" class="flex-1 flex flex-col" tabindex="-1">
         <NuxtPage />
       </div>
