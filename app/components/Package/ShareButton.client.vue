@@ -6,10 +6,14 @@ const props = defineProps<{
 
 const canShare = 'share' in navigator
 const buttonRef = useTemplateRef<{ click: () => void }>('buttonRef')
+const keyboardShortcutsEnabled = useKeyboardShortcuts()
 
 if (canShare) {
   onKeyStroke(
-    e => isKeyWithoutModifiers(e, 'v') && !isEditableElement(e.target),
+    e =>
+      keyboardShortcutsEnabled.value &&
+      isKeyWithoutModifiers(e, 'v') &&
+      !isEditableElement(e.target),
     e => {
       e.preventDefault()
       // Click the button element so the browser anchors the share sheet at
@@ -76,7 +80,7 @@ defineExpose({ sharePackage: share })
     variant="secondary"
     :classicon="sharing ? 'i-svg-spinners:ring-resize' : 'i-lucide:share-2'"
     :aria-label="$t('package.share_aria_label', { package: packageName })"
-    :aria-keyshortcuts="'v'"
+    :ariaKeyshortcuts="keyboardShortcutsEnabled ? 'v' : undefined"
     @click="share"
   >
     <span class="max-sm:sr-only">{{ $t('package.links.share') }}</span>
