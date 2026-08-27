@@ -500,8 +500,10 @@
       "timeline": "timeline",
       "stats": "stats",
       "compare_this_package": "compare this package",
-      "changelog": "changelog"
+      "changelog": "changelog",
+      "share": "share"
     },
+    "share_aria_label": "Share {package}",
     "likes": {
       "like": "Like this package",
       "unlike": "Unlike this package",

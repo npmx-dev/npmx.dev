@@ -1506,9 +1506,15 @@
             },
             "changelog": {
               "type": "string"
+            },
+            "share": {
+              "type": "string"
             }
           },
           "additionalProperties": false
+        },
+        "share_aria_label": {
+          "type": "string"
         },
         "likes": {
           "type": "object",
