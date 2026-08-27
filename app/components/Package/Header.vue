@@ -19,6 +19,7 @@ const { scrollToTop } = useScrollToTop()
 const packageHeaderHeight = usePackageHeaderHeight()
 
 const header = useTemplateRef('header')
+const shareRef = useTemplateRef('shareRef')
 const isHeaderPinned = shallowRef(false)
 const { height: headerHeight } = useElementBounding(header)
 
@@ -80,17 +81,7 @@ const { copied: copiedPkgVersion, copy: copyPkgVersion } = useClipboard({
   copiedDuring: 2000,
 })
 
-const canShare = import.meta.client && 'share' in navigator
-
-function sharePackage() {
-  navigator
-    .share({
-      title: packageName.value,
-      text: props.displayVersion?.description ?? packageName.value,
-      url: window.location.href,
-    })
-    .catch(() => {})
-}
+const canShare = import.meta.client ? 'share' in navigator : false
 
 function hasProvenance(version: PackumentVersion | null): boolean {
   if (!version?.dist) return false
@@ -135,7 +126,7 @@ useCommandPaletteContextCommands(
         label: $t('package.links.share'),
         keywords: [packageName.value, 'share'],
         iconClass: 'i-lucide:share-2',
-        action: sharePackage,
+        action: () => shareRef.value?.sharePackage(),
       })
     }
 
@@ -284,6 +275,7 @@ useShortcuts({
         <PackageLikes :packageName />
 
         <PackageShareButton
+          ref="shareRef"
           :package-name="packageName"
           :description="displayVersion?.description"
         />

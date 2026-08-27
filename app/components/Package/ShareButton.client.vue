@@ -35,7 +35,13 @@ async function getOgImageFile(): Promise<File | null> {
   }
 }
 
+const sharing = shallowRef(false)
+
 async function share() {
+  if (sharing.value) {
+    return
+  }
+  sharing.value = true
   const shareData: ShareData = {
     title: props.packageName,
     text: props.description ?? props.packageName,
@@ -54,8 +60,13 @@ async function share() {
     }
   }
 
-  await navigator.share(shareData).catch(() => {})
+  await navigator
+    .share(shareData)
+    .catch(() => {})
+    .finally(() => (sharing.value = false))
 }
+
+defineExpose({ sharePackage: share })
 </script>
 
 <template>
@@ -63,9 +74,9 @@ async function share() {
     v-if="canShare"
     ref="buttonRef"
     variant="secondary"
-    classicon="i-lucide:share-2"
+    :classicon="sharing ? 'i-svg-spinners:ring-resize' : 'i-lucide:share-2'"
     :aria-label="$t('package.share_aria_label', { package: packageName })"
-    :ariaKeyshortcuts="'v'"
+    :aria-keyshortcuts="'v'"
     @click="share"
   >
     <span class="max-sm:sr-only">{{ $t('package.links.share') }}</span>
