@@ -499,7 +499,6 @@
       "compare": "vergelijk",
       "timeline": "tijdlijn",
       "stats": "stats",
-      "compare_this_package": "Vergelijk dit pakket",
       "changelog": "wijzigingen"
     },
     "likes": {
@@ -537,6 +536,7 @@
       "title": "Uitvoeren",
       "locally": "Lokaal uitvoeren"
     },
+    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "Geen README beschikbaar.",
