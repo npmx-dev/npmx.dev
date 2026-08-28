@@ -13,6 +13,7 @@ const config: KnipConfig = {
         'lighthouse-setup.cjs',
         'uno-preset-*.ts!',
         'scripts/**/*.ts',
+        'service-worker/*.ts!',
         '{*,.github/*,app/pages/blog/**}.md',
       ],
       project: [
@@ -37,7 +38,7 @@ const config: KnipConfig = {
       ignoreFiles: ['app/components/UserCombobox.vue', '**/*.unused.*'],
     },
     'cli': {
-      project: ['src/**/*.ts!', '!src/mock-*.ts', 'service-worker/npmx-sw.ts!'],
+      project: ['src/**/*.ts!', '!src/mock-*.ts'],
     },
     'docs': {
       entry: ['app/**/*.{ts,vue,css}', 'shared/**/*.{ts,vue,css}'],
