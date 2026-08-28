@@ -33,12 +33,20 @@ const pages = [
   '/settings',
   '/translation-status',
   '/recharging',
+  '/manifest.webmanifest',
+  '/npmx-sw-classic.js',
+  '/npmx-sw-module.js',
+  // import.meta.dev ? '/dev-sw.js' : '/sw.js',
 ]
 
 const cacheControl = 's-maxage=3600, stale-while-revalidate=36000'
 
 export default defineEventHandler(async event => {
   const [path = '/', query] = event.path.split('?')
+
+  if (path.startsWith('/workbox-classic-') || path.startsWith('/workbox-module-')) {
+    return
+  }
 
   if (query) {
     const params = new URLSearchParams(query)

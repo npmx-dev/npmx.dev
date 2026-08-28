@@ -1,7 +1,3 @@
-<script setup lang="ts">
-const { $pwa } = useNuxtApp()
-</script>
-
 <template>
   <Transition name="pwa-toast" appear>
     <div

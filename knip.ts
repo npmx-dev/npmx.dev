@@ -26,12 +26,18 @@ const config: KnipConfig = {
       msw: {
         entry: ['.storybook/.public/mockServiceWorker.js'],
       },
-      ignoreDependencies: ['@iconify-json/*', 'puppeteer', 'vite-plugin-pwa', '@vueuse/shared'],
+      ignoreDependencies: [
+        '@iconify-json/*',
+        'puppeteer',
+        '@composable-vite-pwa/workbox-build',
+        '@composable-vite-pwa/unplugin-pwa',
+        '@vueuse/shared',
+      ],
       ignoreUnresolved: ['#oauth/config'],
       ignoreFiles: ['app/components/UserCombobox.vue', '**/*.unused.*'],
     },
     'cli': {
-      project: ['src/**/*.ts!', '!src/mock-*.ts'],
+      project: ['src/**/*.ts!', '!src/mock-*.ts', 'service-worker/npmx-sw.ts!'],
     },
     'docs': {
       entry: ['app/**/*.{ts,vue,css}', 'shared/**/*.{ts,vue,css}'],
