@@ -60,7 +60,7 @@ test.describe('API Documentation Pages', () => {
     await symbolLink.click()
 
     // URL should have the hash
-    await expect(page).toHaveURL(new RegExp(href!.replace('#', '#')))
+    await expect(page).toHaveURL(new RegExp(href!.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')))
   })
 
   test('docs page without version redirects to latest', async ({ page, goto }) => {

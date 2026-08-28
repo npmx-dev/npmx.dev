@@ -132,15 +132,10 @@ useCommandPaletteContextCommands(
 )
 
 // Docs URL: use our generated API docs
-const docsLink = computed(() => {
-  if (!props.resolvedVersion) return null
+const docsLink = computed((): RouteLocationRaw | null => {
+  if (!props.pkg?.name || !props.resolvedVersion) return null
 
-  return {
-    name: 'docs' as const,
-    params: {
-      path: [props.pkg?.name ?? '', 'v', props.resolvedVersion] satisfies [string, string, string],
-    },
-  }
+  return docsRoute(props.pkg.name, props.resolvedVersion)
 })
 
 const codeLink = computed((): RouteLocationRaw | null => {

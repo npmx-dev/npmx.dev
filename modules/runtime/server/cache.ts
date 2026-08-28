@@ -897,7 +897,7 @@ export default defineNitroPlugin(nitroApp => {
   nitroApp.hooks.hook('request', event => {
     event.context.cachedFetch = async (url: string, options?: any) => {
       return {
-        data: await globalThis.$fetch(url, options),
+        data: await fetchWrapper(url, options),
         isStale: false,
         cachedAt: null,
       }
