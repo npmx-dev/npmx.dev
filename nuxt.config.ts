@@ -126,7 +126,7 @@ export default defineNuxtConfig({
       isr: {
         expiration: 300,
         passQuery: true,
-        allowQuery: ['offset', 'limit'],
+        allowQuery: ['offset', 'limit', 'sort', 'stable-only'],
       },
     },
     '/api/changelog/md/**': {

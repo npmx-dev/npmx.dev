@@ -1933,6 +1933,9 @@
             "load_error": {
               "type": "string"
             },
+            "no_stable_versions": {
+              "type": "string"
+            },
             "size_increase": {
               "type": "string"
             },
@@ -1997,6 +2000,15 @@
                   "type": "string"
                 },
                 "ordered_versions": {
+                  "type": "string"
+                },
+                "sort_label": {
+                  "type": "string"
+                },
+                "sort_time": {
+                  "type": "string"
+                },
+                "sort_semver": {
                   "type": "string"
                 },
                 "copy_alt": {

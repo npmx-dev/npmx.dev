@@ -643,6 +643,7 @@
     "timeline": {
       "load_more": "Load more",
       "load_error": "Failed to load timeline. Please try again later.",
+      "no_stable_versions": "No stable versions to show. Turn off \u201cstable only\u201d to include pre-releases.",
       "size_increase": "Install size increased by {percent}% ({size})",
       "size_decrease": "Install size decreased by {percent}% ({size})",
       "dep_increase": "{count} dependency added | {count} dependencies added",
@@ -665,6 +666,9 @@
         "zoom": "zoom",
         "reset_minimap": "reset minimap",
         "ordered_versions": "stable only",
+        "sort_label": "Sort by",
+        "sort_time": "Publish time",
+        "sort_semver": "Semver",
         "copy_alt": {
           "key_changes": "Key changes: {version_events}.",
           "version_events": "version {version}: {events}",
