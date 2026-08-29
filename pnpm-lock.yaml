@@ -936,7 +936,7 @@ packages:
         optional: true
 
   '@composable-vite-pwa/nuxt@file:pwa-deps/composable-vite-pwa-nuxt-1.1.1.tgz':
-    resolution: {integrity: sha512-Lf3vCX+8kWmR4BeaVo7lOD5ISEfPhDoiZvped1nsJ2oYYQBFOxn2pr64nedOe46wAKEykb3i/gAxnS2VeRREDg==, tarball: file:pwa-deps/composable-vite-pwa-nuxt-1.1.1.tgz}
+    resolution: {integrity: sha512-Nx/Xn1P1qP5ywzChzUkAtXLgDmKZBMxBsnt9VSDn06UIT30VIFcV1wfnudQSrUNPRSJ2CCePth6HfZW+sFsjLA==, tarball: file:pwa-deps/composable-vite-pwa-nuxt-1.1.1.tgz}
     version: 1.1.1
     peerDependencies:
       '@nuxt/kit': ^3.9.0 || ^4.0.0 || ^5.0.0-0
@@ -971,7 +971,7 @@ packages:
         optional: true
 
   '@composable-vite-pwa/workbox-build@file:pwa-deps/composable-vite-pwa-workbox-build-0.0.0.tgz':
-    resolution: {integrity: sha512-ClPuz+/+2JG/VO9/iZ7v+NILYxqdjcGq9Pjp/Khz06gfHpZqcygY8BGJZE2wPtkpnIImIX0pGJdXWHyXtC1Rkg==, tarball: file:pwa-deps/composable-vite-pwa-workbox-build-0.0.0.tgz}
+    resolution: {integrity: sha512-DL3aORmD76xD4bQpghFezA/WDcZhUgcUH2zOIdQw9Mqa7soIihw6CcPqLZ0iHg6GWK8hE4+Nc8z44G6/msioAw==, tarball: file:pwa-deps/composable-vite-pwa-workbox-build-0.0.0.tgz}
     version: 0.0.0
     engines: {node: '>=22.14.0'}
     peerDependencies:

@@ -3,30 +3,30 @@
 /// <reference types="vite/client" />
 import {
   cleanupOutdatedCaches,
-  createHandlerBoundToURL,
-  precacheAndRoute,
+  // createHandlerBoundToURL,
+  // precacheAndRoute,
 } from '@composable-vite-pwa/workbox-swkit/precaching'
-import { NavigationRoute, registerRoute } from '@composable-vite-pwa/workbox-swkit/routing'
-import { NetworkFirst, StaleWhileRevalidate } from '@composable-vite-pwa/workbox-swkit/strategies'
-import { CacheableResponsePlugin } from '@composable-vite-pwa/workbox-swkit/cacheable-response'
-import { ExpirationPlugin } from '@composable-vite-pwa/workbox-swkit/expiration'
+// import { NavigationRoute, registerRoute } from '@composable-vite-pwa/workbox-swkit/routing'
+// import { NetworkFirst, StaleWhileRevalidate } from '@composable-vite-pwa/workbox-swkit/strategies'
+// import { CacheableResponsePlugin } from '@composable-vite-pwa/workbox-swkit/cacheable-response'
+// import { ExpirationPlugin } from '@composable-vite-pwa/workbox-swkit/expiration'
 
 declare const self: ServiceWorkerGlobalScope
 
-const cacheNames = ['npmx-packages', 'npmx-packages-code-and-docs', 'npmx-vercel-proxies'] as const
+// const cacheNames = ['npmx-packages', 'npmx-packages-code-and-docs', 'npmx-vercel-proxies'] as const
 
-async function createRuntimeCaches() {
-  await Promise.all(cacheNames.map(c => caches.open(c)))
-}
+// async function createRuntimeCaches() {
+//   await Promise.all(cacheNames.map(c => caches.open(c)))
+// }
 
-self.addEventListener('install', event => {
-  event.waitUntil(createRuntimeCaches())
-})
+// self.addEventListener('install', event => {
+//   event.waitUntil(createRuntimeCaches())
+// })
 
 self.addEventListener('message', event => {
   if (event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting()
 })
-
+/*
 // oxlint-disable-next-line no-underscore-dangle
 precacheAndRoute(self.__WB_MANIFEST, {
   parallel: { enabled: true, concurrency: 5 },
@@ -39,13 +39,13 @@ precacheAndRoute(self.__WB_MANIFEST, {
     }
     return urls
   },
-})
+})*/
 
 // clean old assets
 cleanupOutdatedCaches()
 
 // allow only fallback in dev: we don't want to cache anything
-let allowlist: undefined | RegExp[]
+/*let allowlist: undefined | RegExp[]
 if (import.meta.env.DEV) {
   allowlist = [/^\/$/]
 }
@@ -106,7 +106,7 @@ if (import.meta.env.PROD) {
       ],
     }),
   )
-}
+}*/
 
 // to allow work offline
-registerRoute(new NavigationRoute(createHandlerBoundToURL('/'), { allowlist, denylist }))
+// registerRoute(new NavigationRoute(createHandlerBoundToURL('/'), { allowlist, denylist }))

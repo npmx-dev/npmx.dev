@@ -2,7 +2,9 @@ import type { SWType } from '@composable-vite-pwa/workbox-build/types'
 import type { VitePWAStrategy } from '@composable-vite-pwa/unplugin-pwa/node/types'
 import type { PwaModuleOptions } from '@composable-vite-pwa/nuxt'
 import process from 'node:process'
-import { isDevelopment } from 'std-env'
+import { isCI } from 'std-env'
+
+const isStorybook = process.env.STORYBOOK === 'true' || process.env.VITEST_STORYBOOK === 'true'
 
 function defineConfig<
   UserStrategy extends VitePWAStrategy = 'generate-sw',
@@ -12,12 +14,12 @@ function defineConfig<
 }
 
 export default defineConfig({
-  disable: isDevelopment && process.env.VITE_DEV_PWA !== 'true',
+  disable: isStorybook,
   swType: 'classic-and-module',
   strategies: 'build-sw',
   base: '/',
   scope: '/',
-  minify: !(isDevelopment && process.env.VITE_DEV_PWA === 'true'),
+  minify: isCI,
   registerType: 'prompt',
   client: {
     // Check for updates every hour
@@ -32,15 +34,20 @@ export default defineConfig({
     enabled: process.env.VITE_DEV_PWA === 'true',
     type: 'module',
     inspector: 'standalone',
-    suppressWarnings: true,
-    navigateFallback: '/',
+    suppressWarnings: false,
+    navigateFallback: undefined,
+  },
+  // requires magicst + @babel/core
+  generateSW: {
+    cleanupOutdatedCaches: true,
+    clientsClaim: true,
+    navigateFallback: undefined,
+    globPatterns: ['**/*.{js,css,txt,svg,png,ico,webp,woff,woff2,ttf,eot,otf,wasm,webmanifest}'],
   },
   buildSW: {
+    injectionPoint: undefined,
     swSrc: '~~/service-worker/npmx-sw.ts',
-    sourcemap: isDevelopment && process.env.VITE_DEV_PWA === 'true',
-    globPatterns: [
-      '**/*.{js,css,html,txt,svg,png,ico,webp,woff,woff2,ttf,eot,otf,wasm,webmanifest}',
-    ],
+    globPatterns: ['**/*.{js,css,txt,svg,png,ico,webp,woff,woff2,ttf,eot,otf,wasm,webmanifest}'],
   },
   manifest: {
     name: 'npmx',
