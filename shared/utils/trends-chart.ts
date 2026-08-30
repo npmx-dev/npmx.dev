@@ -357,6 +357,7 @@ export const LOCALES_WITH_EXTRA_SPACE = [
   'id-ID',
   'it-IT',
   'ja-JP',
+  'ko-KR',
   'nb-NO',
   'nl-NL',
   'pl-PL',
