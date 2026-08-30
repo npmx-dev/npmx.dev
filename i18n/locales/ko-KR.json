@@ -1444,7 +1444,7 @@
       "title": "{x}와 {y} 비교",
       "freshness_score": "최신성 점수",
       "copy_alt": {
-        "analysis": "{package}: {x_name}({x_value}) 및 {y_name}({y_value})",
+        "analysis": "{package} : {x_name} ({x_value}) 및 {y_name} ({y_value})",
         "description": "{packages} 패키지의 {x_name}와 {y_name}을 매핑한 산점도 차트입니다. {analysis}. {watermark}"
       },
       "filename": "{x}-vs-{y}-scatter-chart",
