@@ -138,7 +138,7 @@
     "fast-check": "4.9.0",
     "h3": "1.15.11",
     "h3-next": "npm:h3@2.0.1-rc.26",
-    "knip": "6.32.2",
+    "knip": "6.33.0",
     "markdown-it-anchor": "9.2.1",
     "msw": "catalog:msw",
     "msw-storybook-addon": "catalog:storybook",
