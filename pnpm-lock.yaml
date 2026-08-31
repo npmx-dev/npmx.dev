@@ -971,7 +971,7 @@ packages:
         optional: true
 
   '@composable-vite-pwa/workbox-build@file:pwa-deps/composable-vite-pwa-workbox-build-0.0.0.tgz':
-    resolution: {integrity: sha512-DL3aORmD76xD4bQpghFezA/WDcZhUgcUH2zOIdQw9Mqa7soIihw6CcPqLZ0iHg6GWK8hE4+Nc8z44G6/msioAw==, tarball: file:pwa-deps/composable-vite-pwa-workbox-build-0.0.0.tgz}
+    resolution: {integrity: sha512-08vaTm+aIL5Q7jjy3FL2Nrb7jJEy1YxLnr6E1c7xZiEQrD3gH42SxK660UsVf2qt8ceZFkDydcSLFrN/ahMAWg==, tarball: file:pwa-deps/composable-vite-pwa-workbox-build-0.0.0.tgz}
     version: 0.0.0
     engines: {node: '>=22.14.0'}
     peerDependencies:

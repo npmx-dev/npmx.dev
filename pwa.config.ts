@@ -27,9 +27,9 @@ export default defineConfig({
     installPrompt: true,
   },
   registerWebManifestInRouteRules: true,
-  experimental: {
-    enableWorkboxPayloadQueryParams: true,
-  },
+  // experimental: {
+  //   enableWorkboxPayloadQueryParams: true,
+  // },
   devOptions: {
     enabled: process.env.VITE_DEV_PWA === 'true',
     type: 'module',
@@ -37,15 +37,13 @@ export default defineConfig({
     suppressWarnings: false,
     navigateFallback: undefined,
   },
-  // requires magicst + @babel/core
+  // requires magicast + @babel/core
   generateSW: {
     cleanupOutdatedCaches: true,
-    clientsClaim: true,
-    navigateFallback: undefined,
     globPatterns: ['**/*.{js,css,txt,svg,png,ico,webp,woff,woff2,ttf,eot,otf,wasm,webmanifest}'],
   },
   buildSW: {
-    injectionPoint: undefined,
+    injectionPoint: false,
     swSrc: '~~/service-worker/npmx-sw.ts',
     globPatterns: ['**/*.{js,css,txt,svg,png,ico,webp,woff,woff2,ttf,eot,otf,wasm,webmanifest}'],
   },

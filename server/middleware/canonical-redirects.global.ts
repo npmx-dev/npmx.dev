@@ -36,7 +36,6 @@ const pages = [
   '/manifest.webmanifest',
   '/npmx-sw-classic.js',
   '/npmx-sw-module.js',
-  // import.meta.dev ? '/dev-sw.js' : '/sw.js',
 ]
 
 const cacheControl = 's-maxage=3600, stale-while-revalidate=36000'
