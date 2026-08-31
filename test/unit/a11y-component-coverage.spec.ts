@@ -63,6 +63,8 @@ const SKIPPED_COMPONENTS: Record<string, string> = {
   'Translation/StatusByFile.unused.vue': 'Unused component, might be needed in the future',
   'ColorScheme/Img.vue': 'Image component, basic ui',
   'VideoPlayer.vue': 'Atproto video component, basic ui',
+  'PwaPrompt.client.vue':
+    'Requires active service worker - only renders when a PWA update is pending',
 }
 
 function normalizeComponentPath(filePath: string): string {

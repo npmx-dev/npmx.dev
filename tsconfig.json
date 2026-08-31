@@ -13,6 +13,9 @@
     },
     {
       "path": "./.nuxt/tsconfig.node.json"
+    },
+    {
+      "path": "./service-worker/tsconfig.json"
     }
   ]
 }

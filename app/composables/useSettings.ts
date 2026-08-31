@@ -42,6 +42,8 @@ export interface AppSettings {
   connector: {
     /** Automatically open the web auth page in the browser */
     autoOpenURL: boolean
+    /** Show a badge on the installed app icon for new likes on your packages */
+    showLikesBadge: boolean
   }
   codeContainerFull: boolean
   /** Enable/disable ligatures in code */
@@ -76,6 +78,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   changelogAutoScroll: true,
   connector: {
     autoOpenURL: false,
+    showLikesBadge: true,
   },
   codeContainerFull: false,
   codeLigatures: true,

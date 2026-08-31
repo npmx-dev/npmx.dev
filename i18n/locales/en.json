@@ -266,6 +266,13 @@
       "empty_bowl": "empty bowl"
     }
   },
+  "pwa": {
+    "update_available": "A new version is available.",
+    "refresh": "Refresh",
+    "install": "Install",
+    "install_app": "Install app",
+    "install_app_description": "Add npmx to your home screen for a faster, app-like experience."
+  },
   "settings": {
     "title": "settings",
     "tagline": "customize your npmx experience",
@@ -275,7 +282,8 @@
       "display": "Display",
       "search": "Search features",
       "language": "Language",
-      "keyboard_shortcuts": "Keyboard shortcuts"
+      "keyboard_shortcuts": "Keyboard shortcuts",
+      "app": "App"
     },
     "data_source": {
       "label": "Data source",
@@ -919,7 +927,9 @@
       "warning_text": "This allows npmx to access your npm CLI. Only connect to sites you trust.",
       "connect": "Connect",
       "connecting": "Connecting...",
-      "auto_open_url": "Automatically open auth page"
+      "auto_open_url": "Automatically open auth page",
+      "show_likes_badge": "Show likes badge on app icon",
+      "show_likes_badge_description": "Badge the installed app icon with the number of new likes on your packages."
     }
   },
   "operations": {
