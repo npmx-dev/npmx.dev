@@ -2,6 +2,7 @@ import { resolveURL } from 'ufo'
 import * as v from 'valibot'
 import { getBaseFileUrl } from '~~/server/utils/changelog/baseFileUrl'
 import {
+  createBitbucketRepoInfo,
   createForgejoRepoInfo,
   createGiteaRepoInfo,
   createGithubRepoInfo,
@@ -117,5 +118,7 @@ function getRepoInfo(
       return createTangledInfo(owner, repo, path)
     case 'gitea':
       return createGiteaRepoInfo(host ?? 'gitea.com', owner, repo, path)
+    case 'bitbucket':
+      return createBitbucketRepoInfo(owner, repo, path)
   }
 }

@@ -100,3 +100,21 @@ export function createGiteaRepoInfo(
     compareBaseUrl: `${hostBaseUrl}/${owner}/${repo}/compare`,
   }
 }
+
+export function createBitbucketRepoInfo(
+  owner: string,
+  repo: string,
+  path?: string,
+): MarkdownRepoInfo {
+  const hostBaseUrl = 'https://bitbucket.org'
+  return {
+    hostBaseUrl,
+    blobBaseUrl: `${hostBaseUrl}/${owner}/${repo}/src/HEAD`,
+    rawBaseUrl: `${hostBaseUrl}/${owner}/${repo}/raw/HEAD`,
+    path,
+    commitBaseUrl: `${hostBaseUrl}/${owner}/${repo}/commits`,
+    prChar: '#',
+    prBaseUrl: `${hostBaseUrl}/${owner}/${repo}/pull-requests`,
+    // bitbucket uses jira instead of normal issues which can't be resolved, further the compare page also seems to be different
+  }
+}
