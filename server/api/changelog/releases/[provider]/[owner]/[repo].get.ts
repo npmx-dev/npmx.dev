@@ -9,9 +9,14 @@ import {
   GithubReleaseCollectionSchama,
   ForgejoReleaseCollectionSchema,
   GitlabReleaseCollectionSchema,
+  GiteaReleaseCollectionSchema,
 } from '~~/shared/schemas/changelog/release'
 import { changelogRenderer } from '~~/server/utils/changelog/markdown'
-import { createForgejoRepoInfo, createGithubRepoInfo } from '~~/server/utils/changelog/mdRepoInfo'
+import {
+  createForgejoRepoInfo,
+  createGiteaRepoInfo,
+  createGithubRepoInfo,
+} from '~~/server/utils/changelog/mdRepoInfo'
 import { validateHostWithValibot } from '~~/server/utils/changelog/validateHost'
 
 export default defineCachedEventHandler(
@@ -39,6 +44,8 @@ export default defineCachedEventHandler(
           return await getReleasesFromForgejo(owner, repo, host)
         case 'gitlab':
           return await getReleasesFromGitlab(owner, repo, host)
+        case 'gitea':
+          return await getReleasesFromGitea(owner, repo, host)
 
         default:
           throw createError({
@@ -154,6 +161,32 @@ async function getReleasesFromGitlab(owner: string, repo: string, host: string) 
       publishedAt: r.released_at,
       // oxlint-disable-next-line no-underscore-dangle
       link: r._links.self,
+      tag: r.tag_name,
+    } satisfies ReleaseData
+  })
+}
+
+async function getReleasesFromGitea(owner: string, repo: string, host: string) {
+  const data = await $fetch(`https://${host}/api/v1/repos/${owner}/${repo}/releases?draft=false`, {
+    headers: {
+      'User-Agent': 'npmx.dev',
+    },
+  })
+  const releases = v.parse(GiteaReleaseCollectionSchema, data)
+
+  const render = await changelogRenderer(createGiteaRepoInfo(host, owner, repo))
+
+  return releases.map(r => {
+    const { html, toc } = render(r.body, r.id)
+    return {
+      id: r.id,
+      html: html?.replace(/(?<!>)\n/g, '<br>') ?? null,
+      title: r.name || r.tag_name,
+      prerelease: r.prerelease,
+      toc,
+      link: r.html_url,
+      publishedAt: r.published_at,
+      draft: r.draft,
       tag: r.tag_name,
     } satisfies ReleaseData
   })

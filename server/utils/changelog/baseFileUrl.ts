@@ -16,10 +16,16 @@ export function getBaseFileUrl(ref: RepoRef): RepoFileUrl | null {
         raw: `https://codeberg.org/${ref.owner}/${ref.repo}/raw/branch/HEAD`,
       }
     case 'forgejo': {
-      const host = ref.host
       return {
-        blob: `https://${host}/${ref.owner}/${ref.repo}/src/branch/HEAD`,
-        raw: `https://${host}/${ref.owner}/${ref.repo}/raw/branch/HEAD`,
+        blob: `https://${ref.host}/${ref.owner}/${ref.repo}/src/branch/HEAD`,
+        raw: `https://${ref.host}/${ref.owner}/${ref.repo}/raw/branch/HEAD`,
+      }
+    }
+    case 'gitea': {
+      // although similar to forgejo, we keep these seperate because they're seperate maintained projects
+      return {
+        blob: `https://${ref.host}/${ref.owner}/${ref.repo}/src/branch/HEAD`,
+        raw: `https://${ref.host}/${ref.owner}/${ref.repo}/raw/branch/HEAD`,
       }
     }
     case 'gitlab': {

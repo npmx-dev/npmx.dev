@@ -3,6 +3,7 @@ import * as v from 'valibot'
 import { getBaseFileUrl } from '~~/server/utils/changelog/baseFileUrl'
 import {
   createForgejoRepoInfo,
+  createGiteaRepoInfo,
   createGithubRepoInfo,
   createGitLabRepoInfo,
   createTangledInfo,
@@ -114,5 +115,7 @@ function getRepoInfo(
       return createGitLabRepoInfo(host ?? 'gitlab.com', owner, repo, path)
     case 'tangled':
       return createTangledInfo(owner, repo, path)
+    case 'gitea':
+      return createGiteaRepoInfo(host ?? 'gitea.com', owner, repo, path)
   }
 }

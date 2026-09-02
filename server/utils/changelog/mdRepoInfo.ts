@@ -78,3 +78,25 @@ export function createTangledInfo(owner: string, repo: string, path?: string): M
     compareBaseUrl: `${hostBaseUrl}/${owner}/${repo}/compare`,
   }
 }
+
+// similar to forgejo, but they're seperate projects so keeping this also seperate
+export function createGiteaRepoInfo(
+  host: string,
+  owner: string,
+  repo: string,
+  path?: string,
+): MarkdownRepoInfo {
+  const hostBaseUrl = `https://${host}`
+  return {
+    hostBaseUrl,
+    blobBaseUrl: `${hostBaseUrl}/${owner}/${repo}/src/branch/HEAD`,
+    rawBaseUrl: `${hostBaseUrl}/${owner}/${repo}/raw/branch/HEAD`,
+    path,
+    commitBaseUrl: `${hostBaseUrl}/${owner}/${repo}/commit`,
+    issueChar: '#',
+    issueBaseUrl: `${hostBaseUrl}/${owner}/${repo}/issues`,
+    prChar: '#',
+    prBaseUrl: `${hostBaseUrl}/${owner}/${repo}/pulls`,
+    compareBaseUrl: `${hostBaseUrl}/${owner}/${repo}/compare`,
+  }
+}
