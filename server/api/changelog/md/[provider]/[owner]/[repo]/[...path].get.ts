@@ -58,6 +58,7 @@ export default defineCachedEventHandler(
         headers: {
           'User-Agent': 'npmx.dev',
         },
+        timeout: 15_000,
       })
       const markdown = v.parse(v.string(), data)
       if (raw != undefined) {

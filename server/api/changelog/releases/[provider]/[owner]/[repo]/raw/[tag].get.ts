@@ -84,6 +84,7 @@ async function getMarkdownFromGithub(owner: string, repo: string, tag: string, e
         'User-Agent': 'npmx.dev',
       },
       ignoreResponseError: true,
+      timeout: 15_000,
     },
   )
 

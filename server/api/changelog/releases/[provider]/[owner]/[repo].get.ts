@@ -19,6 +19,8 @@ import {
 } from '~~/server/utils/changelog/mdRepoInfo'
 import { validateHostWithValibot } from '~~/server/utils/changelog/validateHost'
 
+const TIMEOUT_TIME = 15_000
+
 export default defineCachedEventHandler(
   async event => {
     const provider = getRouterParam(event, 'provider') as ProviderId
@@ -86,6 +88,7 @@ async function getReleasesFromGithub(owner: string, repo: string) {
       'Accept': '*/*',
       'User-Agent': 'npmx.dev',
     },
+    timeout: TIMEOUT_TIME,
   })
 
   const { releases } = v.parse(GithubReleaseCollectionSchama, data)
@@ -114,6 +117,7 @@ async function getReleasesFromForgejo(owner: string, repo: string, host: string)
     headers: {
       'User-Agent': 'npmx.dev',
     },
+    timeout: TIMEOUT_TIME,
   })
   const releases = v.parse(ForgejoReleaseCollectionSchema, data)
 
@@ -144,6 +148,7 @@ async function getReleasesFromGitlab(owner: string, repo: string, host: string) 
     headers: {
       'User-Agent': 'npmx.dev',
     },
+    timeout: TIMEOUT_TIME,
   })
 
   const releases = v.parse(GitlabReleaseCollectionSchema, data)
@@ -171,6 +176,7 @@ async function getReleasesFromGitea(owner: string, repo: string, host: string) {
     headers: {
       'User-Agent': 'npmx.dev',
     },
+    timeout: TIMEOUT_TIME,
   })
   const releases = v.parse(GiteaReleaseCollectionSchema, data)
 

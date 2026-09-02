@@ -23,9 +23,10 @@ export function getBaseFileUrl(ref: RepoRef): RepoFileUrl | null {
     }
     case 'gitea': {
       // although similar to forgejo, we keep these seperate because they're seperately maintained projects
+      const host = ref.host ?? 'gitea.com'
       return {
-        blob: `https://${ref.host}/${ref.owner}/${ref.repo}/src/branch/HEAD`,
-        raw: `https://${ref.host}/${ref.owner}/${ref.repo}/raw/branch/HEAD`,
+        blob: `https://${host}/${ref.owner}/${ref.repo}/src/branch/HEAD`,
+        raw: `https://${host}/${ref.owner}/${ref.repo}/raw/branch/HEAD`,
       }
     }
     case 'gitlab': {
