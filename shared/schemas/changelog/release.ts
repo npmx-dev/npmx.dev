@@ -47,7 +47,15 @@ export const GitlabReleaseSchame = v.object({
 
 export const GitlabReleaseCollectionSchema = v.array(GitlabReleaseSchame)
 
-// these are currently the same with forgejo, but exporting this one seperetely in case either change their schema
-export const GiteaReleaseSchema = ForgejoReleaseSchama
+export const GiteaReleaseSchema = v.object({
+  id: v.number(),
+  tag_name: v.string(),
+  name: v.string(),
+  body: v.string(),
+  html_url: v.pipe(v.string(), v.url()),
+  draft: v.boolean(),
+  prerelease: v.boolean(),
+  published_at: v.pipe(v.string(), v.isoTimestamp()),
+})
 
 export const GiteaReleaseCollectionSchema = v.array(GiteaReleaseSchema)
