@@ -88,7 +88,7 @@ async function getMarkdownFromGithub(owner: string, repo: string, tag: string, e
       ignoreResponseError: true,
       timeout: TIMEOUT_TIME,
     },
-  )
+  ).catch(() => null)
 
   const parsed = v.safeParse(v.object({ body: v.string() }), responseGithub)
 
