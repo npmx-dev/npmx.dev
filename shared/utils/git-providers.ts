@@ -308,23 +308,29 @@ export function normalizeGitUrl(input: string): string | null {
     .replace(/(\.[^./]+?):/, '$1/') // change ".com:" to ".com/" from "ssh://user@host.com:..."
     .replace(/^git:\/\//, 'https://')
     .replace(/^ssh:\/\//, 'https://')
-  // Bare GitHub shorthand (e.g. "repository": "owner/repo"), following npm's convention
-  const hostAndPath = url.split('/')
-  const scpMatch = /^(?:[^@/]+@)?([^/:]+):(.+)$/.exec(url)
-  if (!url.includes('://') && scpMatch) {
-    const [, host, path] = scpMatch
-    if (host && path) url = `https://${host}/${path}`
-  }
-
-  const shorthandMatch = /^([^./:?#]+)\/([^/?#:]+)([?#].*)?$/.exec(url)
-  if (shorthandMatch) {
-    const [, owner, repo, suffix] = shorthandMatch
-    if (owner && repo) {
-      return `https://github.com/${owner}/${repo}${suffix ?? ''}`
+  // SCP-style shorthand with a dotless host (e.g. "git@localhost:owner/repo"); hosts with a
+  // dot (e.g. "git@github.com:user/repo") are already handled by the replacements above
+  if (!url.includes('://')) {
+    const scpMatch = /^(?:[^@/]+@)?([^/:]+):(.+)$/.exec(url)
+    const host = scpMatch?.[1]
+    const path = scpMatch?.[2]
+    if (host && path) {
+      url = `https://${host}/${path}`
     }
   }
-    return `https://github.com/${url}`
+
+  // Bare GitHub shorthand (e.g. "repository": "owner/repo"), following npm's convention;
+  // host-prefixed paths (e.g. "git.sr.ht/~user/repo") are preserved as-is
+  if (!url.includes('://')) {
+    const shorthandMatch = /^([^./?#]+)\/([^?#]*)([?#].*)?$/.exec(url)
+    const owner = shorthandMatch?.[1]
+    const repo = shorthandMatch?.[2]
+    const suffix = shorthandMatch?.[3] ?? ''
+    if (owner && repo) {
+      return `https://github.com/${owner}/${repo}${suffix}`
+    }
   }
+
   if (!url) return null
   return url.includes('://') ? url : `https://${url}`
 }

@@ -1,4 +1,3 @@
-import { describe, expect, it } from 'vitest'
 import {
   normalizeGitUrl,
   parseRepositoryInfo,
@@ -101,6 +100,17 @@ describe('normalizeGitUrl', () => {
     expect.soft(normalizeGitUrl('wevm/ox')).toBe('https://github.com/wevm/ox')
     expect.soft(normalizeGitUrl('user/repo.git')).toBe('https://github.com/user/repo')
     expect.soft(normalizeGitUrl(' user/repo ')).toBe('https://github.com/user/repo')
+    expect.soft(normalizeGitUrl('user/repo#readme')).toBe('https://github.com/user/repo#readme')
+    expect
+      .soft(normalizeGitUrl('user/repo?path=packages/core'))
+      .toBe('https://github.com/user/repo?path=packages/core')
+    expect
+      .soft(normalizeGitUrl('user/repo/tree/main'))
+      .toBe('https://github.com/user/repo/tree/main')
+  })
+
+  it('should convert scp-style shorthand with a dotless host', () => {
+    expect.soft(normalizeGitUrl('git@localhost:owner/repo')).toBe('https://localhost/owner/repo')
   })
 
   it('should not treat host-prefixed paths as owner/repo shorthand', () => {
