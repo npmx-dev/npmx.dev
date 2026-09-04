@@ -56,7 +56,7 @@ overrides:
   '@types/node': 24.13.3
   nuxt-og-image: ^6.7.5
   sharp: 0.35.3
-  vue: 3.5.41
+  vue: 3.5.42
   typescript: npm:typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2
   vite: 'catalog:vite-plus'
   vitest: 'catalog:vite-plus'

@@ -1501,9 +1501,6 @@
             "stats": {
               "type": "string"
             },
-            "compare_this_package": {
-              "type": "string"
-            },
             "changelog": {
               "type": "string"
             }

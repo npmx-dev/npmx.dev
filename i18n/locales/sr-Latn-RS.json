@@ -332,8 +332,7 @@
       "code": "kod",
       "docs": "dokumentacija",
       "fund": "podržite",
-      "compare": "uporedite",
-      "compare_this_package": "uporedite ovaj paket"
+      "compare": "uporedite"
     },
     "likes": {
       "like": "Sviđa mi se ovaj paket",
