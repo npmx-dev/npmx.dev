@@ -308,6 +308,11 @@ export function normalizeGitUrl(input: string): string | null {
     .replace(/(\.[^./]+?):/, '$1/') // change ".com:" to ".com/" from "ssh://user@host.com:..."
     .replace(/^git:\/\//, 'https://')
     .replace(/^ssh:\/\//, 'https://')
+  // Bare GitHub shorthand (e.g. "repository": "owner/repo"), following npm's convention
+  const hostAndPath = url.split('/')
+  if (!url.includes('://') && hostAndPath.length === 2 && !hostAndPath[0]!.includes('.')) {
+    return `https://github.com/${url}`
+  }
   if (!url) return null
   return url.includes('://') ? url : `https://${url}`
 }
