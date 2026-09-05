@@ -31,7 +31,10 @@ describe('canonical-redirects middleware (/org/<name> → /~<name>)', () => {
 
     await handler(makeEvent('/org/nuxt'))
 
-    expect(fetchMock).toHaveBeenCalledWith('https://registry.npmjs.org/-/org/nuxt/user')
+    expect(fetchMock).toHaveBeenCalledWith('https://registry.npmjs.org/-/org/nuxt/user', {
+      timeout: 5000,
+      retry: 0,
+    })
     expect(sendRedirectMock).not.toHaveBeenCalled()
   })
 
@@ -40,7 +43,10 @@ describe('canonical-redirects middleware (/org/<name> → /~<name>)', () => {
 
     await handler(makeEvent('/org/qwerzl'))
 
-    expect(fetchMock).toHaveBeenCalledWith('https://registry.npmjs.org/-/org/qwerzl/user')
+    expect(fetchMock).toHaveBeenCalledWith('https://registry.npmjs.org/-/org/qwerzl/user', {
+      timeout: 5000,
+      retry: 0,
+    })
     expect(setHeaderMock).toHaveBeenCalledWith(
       expect.anything(),
       'cache-control',
@@ -65,6 +71,7 @@ describe('canonical-redirects middleware (/org/<name> → /~<name>)', () => {
 
     expect(fetchMock).toHaveBeenCalledWith(
       'https://registry.npmjs.org/-/org/nonexistent-org-12345/user',
+      { timeout: 5000, retry: 0 },
     )
     expect(sendRedirectMock).not.toHaveBeenCalled()
   })
@@ -74,6 +81,20 @@ describe('canonical-redirects middleware (/org/<name> → /~<name>)', () => {
 
     await expect(handler(makeEvent('/org/nuxt'))).resolves.toBeUndefined()
 
+    expect(sendRedirectMock).not.toHaveBeenCalled()
+  })
+
+  it('fails open on registry timeout (bounded lookup, no retries)', async () => {
+    const timeoutError = new Error('Request aborted due to timeout')
+    timeoutError.name = 'TimeoutError'
+    fetchMock.mockRejectedValue(timeoutError)
+
+    await expect(handler(makeEvent('/org/nuxt'))).resolves.toBeUndefined()
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      'https://registry.npmjs.org/-/org/nuxt/user',
+      expect.objectContaining({ timeout: 5000, retry: 0 }),
+    )
     expect(sendRedirectMock).not.toHaveBeenCalled()
   })
 

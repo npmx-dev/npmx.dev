@@ -92,6 +92,10 @@ export default defineEventHandler(async event => {
     try {
       const data = await $fetch<Record<string, string>>(
         `${NPM_REGISTRY}/-/org/${encodeURIComponent(name)}/user`,
+        // Bounded lookup: a stalled registry connection must reject (and hit
+        // the fail-open catch below) instead of hanging the page render.
+        // retry: 0 keeps the deadline covering the complete lookup.
+        { timeout: 5000, retry: 0 },
       )
       if (Object.keys(data).length > 0) {
         setHeader(event, 'cache-control', cacheControl)
