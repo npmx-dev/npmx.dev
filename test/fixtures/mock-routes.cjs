@@ -134,6 +134,16 @@ function matchNpmRegistry(urlString) {
     return json({ error: 'Not found' }, 404)
   }
 
+  // Org users (distinguishes real orgs from user accounts for /org/<name> redirects)
+  const orgUserMatch = pathname.match(/^\/-\/org\/([^/]+)\/user$/)
+  if (orgUserMatch && orgUserMatch[1]) {
+    const fixture = readFixture(`npm-registry/org-users/${orgUserMatch[1]}.json`)
+    if (fixture) {
+      return json(fixture)
+    }
+    return json({ error: 'Not found' }, 404)
+  }
+
   // Attestations endpoint - return empty attestations
   if (pathname.startsWith('/-/npm/v1/attestations/')) {
     return json({ attestations: [] })

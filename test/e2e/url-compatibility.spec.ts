@@ -135,6 +135,11 @@ test.describe('npmjs.com URL Compatibility', () => {
       // Should show 404 error page
       await expect(page.locator('h1')).toContainText('Organization not found')
     })
+
+    test('/org/<user> redirects to /~<user>', async ({ page, goto }) => {
+      await goto('/org/qwerzl', { waitUntil: 'domcontentloaded' })
+      await expect(page).toHaveURL(/\/~qwerzl$/)
+    })
   })
 
   test.describe('npmjs.com activeTab=versions Compatibility', () => {
