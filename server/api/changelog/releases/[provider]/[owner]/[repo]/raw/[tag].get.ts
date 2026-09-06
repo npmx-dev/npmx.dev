@@ -8,6 +8,8 @@ import {
 } from '~~/shared/schemas/changelog/release'
 import { validateHostWithValibot } from '~~/server/utils/changelog/validateHost'
 
+const TIMEOUT_TIME = 15_000
+
 export default defineCachedEventHandler(
   async event => {
     const provider = getRouterParam(event, 'provider') as ProviderId
@@ -84,8 +86,9 @@ async function getMarkdownFromGithub(owner: string, repo: string, tag: string, e
         'User-Agent': 'npmx.dev',
       },
       ignoreResponseError: true,
+      timeout: TIMEOUT_TIME,
     },
-  )
+  ).catch(() => null)
 
   const parsed = v.safeParse(v.object({ body: v.string() }), responseGithub)
 
@@ -101,6 +104,7 @@ async function getMarkdownFromGithub(owner: string, repo: string, tag: string, e
       'Accept': '*/*',
       'User-Agent': 'npmx.dev',
     },
+    timeout: TIMEOUT_TIME,
   })
 
   const { releases } = v.parse(GithubReleaseCollectionSchama, responseUngh)
@@ -129,6 +133,7 @@ async function getMarkdownFromForgejo(
     headers: {
       'User-Agent': 'npmx.dev',
     },
+    timeout: TIMEOUT_TIME,
   })
 
   const release = v.parse(ForgejoReleaseSchama, data)
@@ -150,6 +155,7 @@ async function getMarkdownFromGitlab(
     headers: {
       'User-Agent': 'npmx.dev',
     },
+    timeout: TIMEOUT_TIME,
   })
 
   const release = v.parse(GitlabReleaseSchame, data)

@@ -2,7 +2,9 @@ import { resolveURL } from 'ufo'
 import * as v from 'valibot'
 import { getBaseFileUrl } from '~~/server/utils/changelog/baseFileUrl'
 import {
+  createBitbucketRepoInfo,
   createForgejoRepoInfo,
+  createGiteaRepoInfo,
   createGithubRepoInfo,
   createGitLabRepoInfo,
   createTangledInfo,
@@ -56,6 +58,7 @@ export default defineCachedEventHandler(
         headers: {
           'User-Agent': 'npmx.dev',
         },
+        timeout: 15_000,
       })
       const markdown = v.parse(v.string(), data)
       if (raw != undefined) {
@@ -114,5 +117,9 @@ function getRepoInfo(
       return createGitLabRepoInfo(host ?? 'gitlab.com', owner, repo, path)
     case 'tangled':
       return createTangledInfo(owner, repo, path)
+    case 'gitea':
+      return createGiteaRepoInfo(host ?? 'gitea.com', owner, repo, path)
+    case 'bitbucket':
+      return createBitbucketRepoInfo(owner, repo, path)
   }
 }

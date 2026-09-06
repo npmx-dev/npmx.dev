@@ -118,9 +118,9 @@ export interface MarkdownRepoInfo {
   /** the base url of repository commit */
   commitBaseUrl: string
   /** base url for a repository issue */
-  issueBaseUrl: string
+  issueBaseUrl?: string
   /** the text char that indicates an issue */
-  issueChar: keyof typeof issuePrRegexes
+  issueChar?: keyof typeof issuePrRegexes
   /** base url for a repository pull/merge request */
   prBaseUrl: string
   /**
@@ -130,7 +130,7 @@ export interface MarkdownRepoInfo {
    x*/
   prChar: keyof typeof issuePrRegexes
   /** base url for a repository compare */
-  compareBaseUrl: string
+  compareBaseUrl?: string
 }
 
 function resolveUrl(url: string, repoInfo: MarkdownRepoInfo, toUserContentId: ToUserContentIdFn) {
@@ -220,13 +220,13 @@ function resolveGitLinkText(href: string, label: string, repoInfo: MarkdownRepoI
     case href.startsWith(repoInfo.commitBaseUrl): {
       return lastSegment.slice(0, 7) // only show the first 6 letters/numbers of a commit
     }
-    case href.startsWith(repoInfo.issueBaseUrl): {
+    case !!repoInfo.issueBaseUrl && href.startsWith(repoInfo.issueBaseUrl): {
       return `${repoInfo.issueChar}${lastSegment}`
     }
     case href.startsWith(repoInfo.prBaseUrl): {
       return `${repoInfo.prChar}${lastSegment}`
     }
-    case href.startsWith(repoInfo.compareBaseUrl): {
+    case !!repoInfo.compareBaseUrl && href.startsWith(repoInfo.compareBaseUrl): {
       return lastSegment
     }
     // for account we don't resolve, this is something the git providers also don't do
@@ -256,15 +256,18 @@ function createResolveGitTextToLinks(mdInfo: MarkdownRepoInfo): IOptions['textFi
 
         return `<a href="${joinURL(mdInfo.commitBaseUrl, match)}" rel="nofollow noreferrer noopener" target="_blank">${match.slice(0, 7)}</a>`
       })
-      .replace(issuePrRegexes[mdInfo.issueChar], match => {
-        const id = match.replace(mdInfo.issueChar, '')
-        return `<a href="${joinURL(mdInfo.issueBaseUrl, id)}" rel="nofollow noreferrer noopener" target="_blank">${match}</a>`
-      })
       // account
       .replace(accountRegex, match => {
         const acc = match.replace('@', '')
         return `<a href="${joinURL(mdInfo.hostBaseUrl, acc)}" rel="nofollow noreferrer noopener" target="_blank">${match}</a>`
       })
+
+    if (mdInfo.issueChar && mdInfo.issueBaseUrl) {
+      text = text.replace(issuePrRegexes[mdInfo.issueChar], match => {
+        const id = match.replace(mdInfo.issueChar!, '')
+        return `<a href="${joinURL(mdInfo.issueBaseUrl!, id)}" rel="nofollow noreferrer noopener" target="_blank">${match}</a>`
+      })
+    }
 
     // pr/mr
     if (mdInfo.issueChar != mdInfo.prChar) {

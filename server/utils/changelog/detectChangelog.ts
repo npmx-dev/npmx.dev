@@ -8,6 +8,7 @@ import {
   GithubReleaseSchama,
   ForgejoReleaseSchama,
   GitlabReleaseSchame,
+  GiteaReleaseSchema,
 } from '~~/shared/schemas/changelog/release'
 import { resolveURL } from 'ufo'
 import * as v from 'valibot'
@@ -65,6 +66,9 @@ async function checkReleases(
     }
     case 'gitlab': {
       return checkLatestGitlabRelease(ref, directory)
+    }
+    case 'gitea': {
+      return checkLatestGiteaRelease(ref, directory)
     }
   }
   return [false, null]
@@ -328,6 +332,71 @@ async function checkLatestGitlabRelease(
         type: 'md',
         path,
         repo: `${encodeURIComponent(ref.owner)}/${ref.repo}`,
+        link: matchedChangelog,
+        host: ref.host,
+      },
+      null,
+    ]
+  } catch (e) {
+    if (e instanceof Error) {
+      return [null, e]
+    }
+  }
+  return [false, null]
+}
+
+// gitea
+async function checkLatestGiteaRelease(
+  ref: RepoRef,
+  directory?: string,
+): Promise<SafeResult<ChangelogInfo | false>> {
+  try {
+    const host = ref.host ?? 'gitea.com'
+
+    const response = await $fetch(
+      `https://${host}/api/v1/repos/${ref.owner}/${ref.repo}/releases/latest`,
+      {
+        headers: {
+          'User-Agent': 'npmx.dev',
+          'accept': 'application/json',
+        },
+      },
+    )
+
+    const release = v.parse(GiteaReleaseSchema, response)
+
+    const matchedChangelog = release.body?.match(MD_REGEX)?.at(0)
+
+    // /src/branch/ can be similar to /blob/
+    if (!matchedChangelog || !matchedChangelog.includes('/src/branch/')) {
+      return [
+        {
+          type: 'release',
+          link: `https://${host}/${ref.owner}/${ref.repo}/releases`,
+          provider: ref.provider,
+          repo: `${ref.owner}/${ref.repo}`,
+          host: ref.host,
+        },
+        null,
+      ]
+    }
+
+    const path = matchedChangelog.replace(/^.*\/src\/branch\/[^/]+\//i, '')
+    if (
+      directory &&
+      !(
+        path.startsWith(directory.endsWith('/') ? directory : `${directory}/`) ||
+        ROOT_ONLY_REGEX.test(path)
+      )
+    ) {
+      return [false, null] as const
+    }
+    return [
+      {
+        provider: ref.provider,
+        type: 'md',
+        path,
+        repo: `${ref.owner}/${ref.repo}`,
         link: matchedChangelog,
         host: ref.host,
       },

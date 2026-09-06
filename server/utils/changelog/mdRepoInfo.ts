@@ -78,3 +78,43 @@ export function createTangledInfo(owner: string, repo: string, path?: string): M
     compareBaseUrl: `${hostBaseUrl}/${owner}/${repo}/compare`,
   }
 }
+
+// similar to forgejo, but they're seperate projects so keeping this also seperate
+export function createGiteaRepoInfo(
+  host: string,
+  owner: string,
+  repo: string,
+  path?: string,
+): MarkdownRepoInfo {
+  const hostBaseUrl = `https://${host}`
+  return {
+    hostBaseUrl,
+    blobBaseUrl: `${hostBaseUrl}/${owner}/${repo}/src/branch/HEAD`,
+    rawBaseUrl: `${hostBaseUrl}/${owner}/${repo}/raw/branch/HEAD`,
+    path,
+    commitBaseUrl: `${hostBaseUrl}/${owner}/${repo}/commit`,
+    issueChar: '#',
+    issueBaseUrl: `${hostBaseUrl}/${owner}/${repo}/issues`,
+    prChar: '#',
+    prBaseUrl: `${hostBaseUrl}/${owner}/${repo}/pulls`,
+    compareBaseUrl: `${hostBaseUrl}/${owner}/${repo}/compare`,
+  }
+}
+
+export function createBitbucketRepoInfo(
+  owner: string,
+  repo: string,
+  path?: string,
+): MarkdownRepoInfo {
+  const hostBaseUrl = 'https://bitbucket.org'
+  return {
+    hostBaseUrl,
+    blobBaseUrl: `${hostBaseUrl}/${owner}/${repo}/src/HEAD`,
+    rawBaseUrl: `${hostBaseUrl}/${owner}/${repo}/raw/HEAD`,
+    path,
+    commitBaseUrl: `${hostBaseUrl}/${owner}/${repo}/commits`,
+    prChar: '#',
+    prBaseUrl: `${hostBaseUrl}/${owner}/${repo}/pull-requests`,
+    // bitbucket uses jira instead of normal issues which can't be resolved, further the compare page also seems to be different
+  }
+}
