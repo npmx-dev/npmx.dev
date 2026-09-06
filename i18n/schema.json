@@ -1786,6 +1786,12 @@
             "title": {
               "type": "string"
             },
+            "selector_label": {
+              "type": "string"
+            },
+            "nav_label": {
+              "type": "string"
+            },
             "collapse": {
               "type": "string"
             },

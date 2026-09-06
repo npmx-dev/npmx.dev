@@ -10,6 +10,10 @@ const props = defineProps<{
 
 const maxPackages = computed(() => props.max ?? MAX_PACKAGE_SELECTION)
 
+// Generate unique IDs for accessibility (prevents collisions when multiple instances mount)
+const inputId = useId()
+const listboxId = `${inputId}-listbox`
+
 // Input state
 const inputValue = shallowRef('')
 const isInputFocused = shallowRef(false)
@@ -175,6 +179,14 @@ function handleKeydown(e: KeyboardEvent) {
   }
 }
 
+const activeDescendantId = computed(() =>
+  highlightedIndex.value >= 0 ? `${listboxId}-option-${highlightedIndex.value}` : undefined,
+)
+
+const showDropdown = computed(
+  () => isInputFocused.value && (navigableItems.value.length > 0 || isSearching.value),
+)
+
 // Reset highlight when user types
 watch(inputValue, () => {
   highlightedIndex.value = -1
@@ -200,8 +212,8 @@ onClickOutside(containerRef, () => {
 <template>
   <div class="space-y-3">
     <!-- Selected packages -->
-    <div v-if="packages.length > 0" class="flex flex-wrap gap-2">
-      <TagStatic v-for="pkg in packages" :key="pkg">
+    <ul v-if="packages.length > 0" class="flex flex-wrap gap-2">
+      <TagStatic as="li" v-for="pkg in packages" :key="pkg">
         <!-- No dependency display -->
         <template v-if="pkg === NO_DEPENDENCY_ID">
           <span class="text-sm text-accent italic flex items-center gap-1.5">
@@ -223,12 +235,12 @@ onClickOutside(containerRef, () => {
           classicon="i-lucide:x"
         />
       </TagStatic>
-    </div>
+    </ul>
 
     <!-- Add package input -->
     <div v-if="packages.length < maxPackages" ref="containerRef" class="relative">
       <div class="relative group flex items-center">
-        <label for="package-search" class="sr-only">
+        <label :for="inputId" class="sr-only">
           {{ $t('compare.selector.search_label') }}
         </label>
         <span
@@ -237,7 +249,7 @@ onClickOutside(containerRef, () => {
           /
         </span>
         <InputBase
-          id="package-search"
+          :id="inputId"
           v-model="inputValue"
           type="text"
           :placeholder="
@@ -247,7 +259,12 @@ onClickOutside(containerRef, () => {
           "
           no-correct
           class="w-full min-w-25 ps-7"
+          role="combobox"
           aria-autocomplete="list"
+          aria-haspopup="listbox"
+          :aria-controls="listboxId"
+          :aria-expanded="showDropdown"
+          :aria-activedescendant="activeDescendantId"
           ref="inputRef"
           @focus="isInputFocused = true"
           @keydown="handleKeydown"
@@ -263,14 +280,19 @@ onClickOutside(containerRef, () => {
         leave-to-class="opacity-0"
       >
         <div
-          v-if="isInputFocused && (navigableItems.length > 0 || isSearching)"
+          v-if="showDropdown"
+          :id="listboxId"
           ref="listRef"
+          role="listbox"
           class="absolute top-full inset-x-0 mt-1 px-0.5 bg-bg-elevated border border-border rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
         >
           <!-- No dependency option (easter egg with James) -->
           <ButtonBase
             v-if="showNoDependencyOption"
             data-navigable
+            role="option"
+            :id="`${listboxId}-option-0`"
+            :aria-selected="highlightedIndex === 0"
             class="block w-full text-start !border-transparent"
             :class="highlightedIndex === 0 ? '!bg-accent/15' : ''"
             :aria-label="$t('compare.no_dependency.add_column')"
@@ -296,6 +318,9 @@ onClickOutside(containerRef, () => {
             v-for="(result, index) in filteredResults"
             :key="result.name"
             data-navigable
+            role="option"
+            :id="`${listboxId}-option-${index + resultIndexOffset}`"
+            :aria-selected="highlightedIndex === index + resultIndexOffset"
             class="block w-full text-start my-0.5 !border-transparent"
             :class="highlightedIndex === index + resultIndexOffset ? '!bg-accent/15' : ''"
             @mouseenter="highlightedIndex = index + resultIndexOffset"

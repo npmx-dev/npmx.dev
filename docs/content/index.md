@@ -42,7 +42,7 @@ links:
 :::u-page-feature{icon="i-lucide:link" to="/guide/url-structure" title="Use familiar URLs" description="Replace npmjs.com with npmx.dev in any URL and share exact package, code, diff, docs, changelog, timeline, stats, search, and compare views."}
 :::
 
-:::u-page-feature{icon="i-lucide:keyboard" to="/guide/keyboard-shortcuts" title="Navigate with keyboard" description="Open the command palette with ⌘K on macOS or Ctrl+K on Windows and Linux. Press / to search. Use arrow keys to browse results."}
+:::u-page-feature{icon="i-lucide:keyboard" to="/guide/keyboard-shortcuts" title="Navigate with keyboard" description="Open the command palette with ⌘K on macOS or Ctrl+K on Windows and Linux. Press / to search. Use j/k to browse results."}
 :::
 
 :::u-page-feature{icon="i-lucide:shield-check" to="/guide/features" title="Check security" description="Vulnerability warnings from OSV database and provenance indicators for verified builds."}
