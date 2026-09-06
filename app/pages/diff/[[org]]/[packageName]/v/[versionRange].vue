@@ -27,6 +27,7 @@ const fromVersion = computed(() => versionRange.value?.from ?? '')
 const toVersion = computed(() => versionRange.value?.to ?? '')
 
 const router = useRouter()
+const { codeContainerFull } = useCodeContainer()
 const { data: pkg } = usePackage(packageName)
 const { versions: commandPaletteVersions, ensureLoaded: ensureCommandPaletteVersionsLoaded } =
   useCommandPalettePackageVersions(packageName)
@@ -140,6 +141,20 @@ useSeoMeta({
   description: () =>
     `Compare changes between ${packageName.value} versions ${fromVersion.value} and ${toVersion.value}`,
 })
+
+onPrehydrate(el => {
+  let settingsSaved: { codeContainerFull?: boolean } = {}
+  try {
+    settingsSaved = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
+  } catch {
+    // Ignore invalid persisted settings.
+  }
+  const container = el.querySelector('#diff-page-container')
+
+  if (settingsSaved?.codeContainerFull === true && container) {
+    container.classList.add('container-full')
+  }
+})
 </script>
 
 <template>
@@ -182,13 +197,22 @@ useSeoMeta({
     </div>
 
     <!-- Comparison content -->
-    <div v-else-if="compare" class="flex-1 flex flex-col md:flex-row min-h-0 overflow-hidden">
+    <div
+      v-else-if="compare"
+      id="diff-page-container"
+      class="w-full container flex-1 min-h-0 grid grid-cols-[18rem_1fr] max-lg:grid-cols-[16rem_1fr] max-md:grid-cols-[1fr] border-border border-x px-0 mx-auto transition-[max-width] duration-300"
+      :class="codeContainerFull ? 'container-full' : ''"
+      dir="ltr"
+    >
       <!-- Desktop sidebar -->
       <aside
-        class="hidden md:flex w-80 border-ie border-border bg-bg-subtle flex-col shrink-0 min-h-0"
+        class="sticky top-25 hidden md:flex shrink-0 self-start border-ie border-border bg-bg-subtle flex-col min-h-0"
       >
-        <div v-if="pkg?.versions && pkg?.['dist-tags']" class="px-3 py-2 border-b border-border">
-          <p class="text-xs font-medium text-fg mb-1 flex items-center gap-1.5">
+        <div
+          v-if="pkg?.versions && pkg?.['dist-tags']"
+          class="px-3 py-3 border-b border-border shrink-0"
+        >
+          <p class="text-xs font-medium text-fg mb-2 flex items-center gap-1.5">
             <span class="block i-lucide-git-compare-arrows w-3.5 h-3.5" />
             {{ $t('compare.version_selector_title') }}
           </p>
@@ -201,6 +225,7 @@ useSeoMeta({
           />
         </div>
         <DiffSidebarPanel
+          class="flex-1 min-h-0"
           :compare="compare"
           :grouped-deps="groupedDeps"
           :all-changes="allChanges"
@@ -211,7 +236,7 @@ useSeoMeta({
       </aside>
 
       <!-- Right side -->
-      <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <div class="flex flex-col min-w-0 min-h-0 self-stretch">
         <!-- Mobile summary bar -->
         <div
           class="md:hidden border-b border-border bg-bg-subtle px-4 py-3 flex items-center justify-between gap-3"
@@ -240,7 +265,7 @@ useSeoMeta({
         </div>
 
         <!-- Diff viewer -->
-        <div class="flex-1 overflow-hidden bg-bg-subtle">
+        <div class="flex-1 min-h-0 bg-bg-subtle">
           <DiffViewerPanel
             v-if="selectedFile"
             :package-name="packageName"
@@ -248,7 +273,7 @@ useSeoMeta({
             :to-version="toVersion"
             :file="selectedFile"
           />
-          <div v-else class="h-full flex items-center justify-center text-center p-8">
+          <div v-else class="min-h-[60vh] flex items-center justify-center text-center p-8">
             <div>
               <span class="i-lucide:file-text w-16 h-16 mx-auto text-fg-subtle/50 block mb-4" />
               <p class="text-fg-muted">{{ $t('compare.select_file_prompt') }}</p>
@@ -278,3 +303,9 @@ useSeoMeta({
     </ClientOnly>
   </main>
 </template>
+
+<style>
+.container-full.container-full {
+  @apply max-w-full border-0;
+}
+</style>
