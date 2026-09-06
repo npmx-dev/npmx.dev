@@ -130,8 +130,14 @@ function createLoader(): (
  *
  * Handles resolving relative imports and esm.sh redirects.
  */
-function createResolver(): (specifier: string, referrer: string) => string {
+export function createResolver(): (specifier: string, referrer: string) => string {
   return (specifier: string, referrer: string) => {
+    // Source map references are not modules. Resolving bare source map
+    // filenames can incorrectly treat them as package specifiers
+    if (specifier.endsWith('.map')) {
+      return specifier
+    }
+
     // Handle relative imports
     if (specifier.startsWith('.') || specifier.startsWith('/')) {
       return new URL(specifier, referrer).toString()
