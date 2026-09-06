@@ -63,6 +63,10 @@ const SKIPPED_COMPONENTS: Record<string, string> = {
   'Translation/StatusByFile.unused.vue': 'Unused component, might be needed in the future',
   'ColorScheme/Img.vue': 'Image component, basic ui',
   'VideoPlayer.vue': 'Atproto video component, basic ui',
+  'Events/Card.vue': 'Presentational event card - a NuxtLink wrapper, no interactive state',
+  'Events/TalkRow.vue': 'Presentational talk row - external links only, no interactive state',
+  'Events/Gallery.vue':
+    'Masonry gallery with a Teleport lightbox, keyboard nav and scroll lock - requires full app context',
 }
 
 function normalizeComponentPath(filePath: string): string {

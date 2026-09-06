@@ -1,0 +1,102 @@
+{
+  "lexicon": 1,
+  "id": "dev.npmx.calendar.talk",
+  "defs": {
+    "main": {
+      "type": "record",
+      "key": "tid",
+      "description": "A talk given at an npmx community event.",
+      "record": {
+        "type": "object",
+        "required": ["title", "createdAt"],
+        "properties": {
+          "event": {
+            "type": "ref",
+            "ref": "com.atproto.repo.strongRef",
+            "description": "A strong reference to the community.lexicon.calendar.event this talk was given at."
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 3000,
+            "maxGraphemes": 300
+          },
+          "abstract": {
+            "type": "string",
+            "maxLength": 30000,
+            "maxGraphemes": 3000,
+            "description": "A short summary of the talk."
+          },
+          "speakers": {
+            "type": "array",
+            "description": "The people who gave the talk.",
+            "items": {
+              "type": "ref",
+              "ref": "#speaker"
+            }
+          },
+          "startsAt": {
+            "type": "string",
+            "format": "datetime"
+          },
+          "slides": {
+            "type": "ref",
+            "ref": "#asset",
+            "description": "The presentation slides, hosted as a blob or linked externally."
+          },
+          "recording": {
+            "type": "ref",
+            "ref": "#asset",
+            "description": "A recording of the talk, hosted as a blob or linked externally."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+    "speaker": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 640,
+          "maxGraphemes": 64
+        },
+        "did": {
+          "type": "string",
+          "format": "did",
+          "description": "The speaker's atproto account, if they have one."
+        },
+        "handle": {
+          "type": "string",
+          "format": "handle"
+        },
+        "avatar": {
+          "type": "blob",
+          "accept": ["image/png", "image/jpeg"],
+          "maxSize": 1000000
+        }
+      }
+    },
+    "asset": {
+      "type": "object",
+      "description": "A media asset, either hosted as a blob or linked externally.",
+      "properties": {
+        "uri": {
+          "type": "string",
+          "format": "uri",
+          "description": "External link to the asset (e.g. YouTube, SpeakerDeck, Google Slides)."
+        },
+        "blob": {
+          "type": "blob",
+          "description": "The hosted file."
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

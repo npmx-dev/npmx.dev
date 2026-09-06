@@ -212,7 +212,49 @@
     "mobile_menu": "Navigation menu",
     "open_menu": "Open menu",
     "links": "Links",
-    "tap_to_search": "Tap to search"
+    "tap_to_search": "Tap to search",
+    "events": "events"
+  },
+  "events": {
+    "title": "events",
+    "meta_description": "npmx community events, meetups, talks and recordings.",
+    "intro": "All the magic of npmx is achieved through its community — strong, active, and warm. And behind the development itself are real people and their encounters.",
+    "upcoming": "Upcoming",
+    "past": "Past",
+    "empty": "No events yet.",
+    "filter_all": "all",
+    "kind": {
+      "meetup": "meetup",
+      "theatre": "theatre",
+      "meeting": "meeting",
+      "conference": "conference",
+      "talk": "talk"
+    },
+    "mode": {
+      "online": "online",
+      "in_person": "in person",
+      "hybrid": "hybrid"
+    },
+    "about": "About",
+    "location": "Location",
+    "talks": "Talks",
+    "watch": "Watch",
+    "slides": "Slides",
+    "pdf": "PDF",
+    "gallery": "Gallery",
+    "gallery_prev": "Previous image",
+    "gallery_next": "Next image",
+    "social": "Social",
+    "related": "Related events",
+    "attending": "Attending",
+    "hosted_by": "Hosted by",
+    "register": "Register",
+    "back": "All events",
+    "missing": {
+      "label": "no such event",
+      "title": "This event isn't on the calendar.",
+      "body": "We couldn't find an event at \"{slug}\". It may have been moved, or it never happened. Head back to all events to see what's on."
+    }
   },
   "blog": {
     "title": "Blog",

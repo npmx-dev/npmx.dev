@@ -1,0 +1,42 @@
+{
+  "lexicon": 1,
+  "id": "community.lexicon.calendar.rsvp",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "An RSVP for an event.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["subject", "status"],
+        "properties": {
+          "subject": {
+            "type": "ref",
+            "ref": "com.atproto.repo.strongRef"
+          },
+          "status": {
+            "type": "string",
+            "default": "community.lexicon.calendar.rsvp#going",
+            "knownValues": [
+              "community.lexicon.calendar.rsvp#interested",
+              "community.lexicon.calendar.rsvp#going",
+              "community.lexicon.calendar.rsvp#notgoing"
+            ]
+          }
+        }
+      }
+    },
+    "interested": {
+      "type": "token",
+      "description": "Interested in the event"
+    },
+    "going": {
+      "type": "token",
+      "description": "Going to the event"
+    },
+    "notgoing": {
+      "type": "token",
+      "description": "Not going to the event"
+    }
+  }
+}
