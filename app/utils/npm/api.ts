@@ -1,4 +1,5 @@
 import { getVersions } from 'fast-npm-meta'
+import type { TrustStatus } from 'packumeta'
 import { compare } from 'verkit'
 
 type NpmDownloadsRangeResponse = {
@@ -31,6 +32,16 @@ export async function fetchNpmDownloadsRange(
 // Cache for full version lists (client-side only, for non-composable usage)
 const allVersionsCache = new Map<string, Promise<PackageVersionInfo[]>>()
 
+function getFastNpmMetaTrustStatus(
+  provenance: 'trustedPublisher' | boolean | undefined,
+): TrustStatus {
+  return {
+    provenance: !!provenance,
+    trustedPublisher: provenance === 'trustedPublisher',
+    stagedPublish: false,
+  }
+}
+
 /**
  * Fetch all versions of a package using fast-npm-meta API.
  * Returns version info sorted by version (newest first).
@@ -52,8 +63,7 @@ export async function fetchAllPackageVersions(packageName: string): Promise<Pack
       .map(([version, meta]) => ({
         version,
         time: meta.time,
-        hasProvenance: meta.provenance,
-        hasTrustedPublisher: meta.trustedPublisher,
+        trustStatus: getFastNpmMetaTrustStatus(meta.provenance),
         deprecated: meta.deprecated,
       }))
       .sort((a, b) => compare(b.version, a.version))
