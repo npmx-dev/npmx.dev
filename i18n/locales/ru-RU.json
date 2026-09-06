@@ -1597,7 +1597,6 @@
     "merge_modified_lines": "Объединить изменённые строки",
     "no_content_changes": "Изменений содержимого не обнаружено",
     "options": "Параметры",
-    "view_file": "Открыть файл",
     "view_in_code_browser": "В браузере кода",
     "word_wrap": "Перенос строк"
   },
