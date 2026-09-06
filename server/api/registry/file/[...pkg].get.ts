@@ -1,5 +1,10 @@
 import * as v from 'valibot'
 import type { InternalImportsMap, PackageExportsMap } from '#server/utils/import-resolver'
+import {
+  fetchPackageFile,
+  PackageResponseTooLargeError,
+  readPackageResponseText,
+} from '#server/utils/package-files'
 import { PackageFileQuerySchema } from '#shared/schemas/package'
 import type { ReadmeResponse } from '#shared/types/readme'
 import {
@@ -11,6 +16,7 @@ const CACHE_VERSION = 3
 
 // Maximum file size to fetch and highlight (500KB)
 const MAX_FILE_SIZE = 500 * 1024
+const MAX_PACKAGE_JSON_SIZE = 2 * 1024 * 1024
 
 // Languages that benefit from import linking
 const IMPORT_LANGUAGES = new Set([
@@ -33,29 +39,27 @@ interface PackageJson {
 }
 
 /**
- * Fetch package.json from jsDelivr to get dependency info
+ * Fetch package.json to get dependency info.
  */
 async function fetchPackageJson(packageName: string, version: string): Promise<PackageJson | null> {
   try {
-    const url = `https://cdn.jsdelivr.net/npm/${packageName}@${version}/package.json`
-    const response = await fetch(url)
+    const { response } = await fetchPackageFile(packageName, version, 'package.json')
     if (!response.ok) return null
-    return (await response.json()) as PackageJson
+    return JSON.parse(await readPackageResponseText(response, MAX_PACKAGE_JSON_SIZE)) as PackageJson
   } catch {
     return null
   }
 }
 
 /**
- * Fetch file content from jsDelivr CDN.
+ * Fetch file content from a package CDN.
  */
 async function fetchFileContent(
   packageName: string,
   version: string,
   filePath: string,
 ): Promise<{ content: string; contentType: string | null }> {
-  const url = `https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`
-  const response = await fetch(url)
+  const { response } = await fetchPackageFile(packageName, version, filePath)
 
   if (!response.ok) {
     if (response.status === 404) {
@@ -63,29 +67,23 @@ async function fetchFileContent(
     }
     throw createError({
       statusCode: 502,
-      message: 'Failed to fetch file from jsDelivr',
+      message: 'Failed to fetch package file',
     })
   }
 
   const contentType = response.headers.get('content-type')
 
-  // Check content-length header if available
-  const contentLength = response.headers.get('content-length')
-  if (contentLength && parseInt(contentLength, 10) > MAX_FILE_SIZE) {
-    throw createError({
-      statusCode: 413,
-      message: `File too large (${(parseInt(contentLength, 10) / 1024 / 1024).toFixed(1)}MB). Maximum size is ${MAX_FILE_SIZE / 1024}KB.`,
-    })
-  }
-
-  const content = await response.text()
-
-  // Double-check size after fetching (in case content-length wasn't set)
-  if (content.length > MAX_FILE_SIZE) {
-    throw createError({
-      statusCode: 413,
-      message: `File too large (${(content.length / 1024 / 1024).toFixed(1)}MB). Maximum size is ${MAX_FILE_SIZE / 1024}KB.`,
-    })
+  let content: string
+  try {
+    content = await readPackageResponseText(response, MAX_FILE_SIZE)
+  } catch (error) {
+    if (error instanceof PackageResponseTooLargeError) {
+      throw createError({
+        statusCode: 413,
+        message: `File exceeds the ${MAX_FILE_SIZE / 1024}KB maximum size.`,
+      })
+    }
+    throw error
   }
 
   return { content, contentType }

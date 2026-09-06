@@ -1,4 +1,9 @@
 import * as v from 'valibot'
+import {
+  fetchPackageFile,
+  PackageResponseTooLargeError,
+  readPackageResponseText,
+} from '#server/utils/package-files'
 import { PackageFileDiffQuerySchema } from '#shared/schemas/package'
 import { countDiffStats, createDiff, insertSkipBlocks, truncateDiffHunks } from '#shared/utils/diff'
 import type { DiffHunk, DiffSkipBlock } from '#shared/types/compare'
@@ -50,7 +55,7 @@ function countRenderableDiffBytes(hunks: (DiffHunk | DiffSkipBlock)[]): number {
 }
 
 /**
- * Fetch file content from jsDelivr with size check
+ * Fetch package file content with a size check.
  */
 async function fetchFileContentForDiff(
   packageName: string,
@@ -59,7 +64,6 @@ async function fetchFileContentForDiff(
   maxBytes: number,
   signal?: AbortSignal,
 ): Promise<string | null> {
-  const url = `https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`
   const controller = new AbortController()
   const timeoutId = setTimeout(() => controller.abort(), DIFF_TIMEOUT)
   if (signal) {
@@ -67,34 +71,32 @@ async function fetchFileContentForDiff(
   }
 
   try {
-    const response = await fetch(url, { signal: controller.signal })
+    const { provider, response } = await fetchPackageFile(
+      packageName,
+      version,
+      filePath,
+      controller.signal,
+    )
 
     if (!response.ok) {
       if (response.status === 404) return null
       throw createError({
-        statusCode: response.status >= 500 ? 502 : response.status,
+        statusCode: provider === 'unpkg' || response.status >= 500 ? 502 : response.status,
         message: `Failed to fetch file (${response.status})`,
       })
     }
 
-    const contentLength = response.headers.get('content-length')
-    if (contentLength && parseInt(contentLength, 10) > maxBytes) {
-      throw createError({
-        statusCode: 413,
-        message: `File too large to diff (${(parseInt(contentLength, 10) / 1024).toFixed(0)}KB). Maximum is ${maxBytes / 1024}KB.`,
-      })
+    try {
+      return await readPackageResponseText(response, maxBytes)
+    } catch (error) {
+      if (error instanceof PackageResponseTooLargeError) {
+        throw createError({
+          statusCode: 413,
+          message: `File too large to diff (${(error.sizeBytes / 1024).toFixed(0)}KB). Maximum is ${maxBytes / 1024}KB.`,
+        })
+      }
+      throw error
     }
-
-    const content = await response.text()
-
-    if (byteLength(content) > maxBytes) {
-      throw createError({
-        statusCode: 413,
-        message: `File too large to diff (${(byteLength(content) / 1024).toFixed(0)}KB). Maximum is ${maxBytes / 1024}KB.`,
-      })
-    }
-
-    return content
   } catch (error) {
     if (error && typeof error === 'object' && 'statusCode' in error) {
       throw error

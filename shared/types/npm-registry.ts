@@ -320,7 +320,7 @@ export interface JsDelivrPackageResponse {
   name: string
   version: string
   /** Default entry point file */
-  default: string | null
+  default?: string | null
   /** Nested file tree */
   files: JsDelivrFileNode[]
 }
@@ -337,6 +337,22 @@ export interface JsDelivrFileNode {
   size?: number
   /** Child nodes (only for directories) */
   files?: JsDelivrFileNode[]
+}
+
+/** A file from the UNPKG metadata API. */
+export interface UnpkgFileMetadata {
+  path: string
+  size: number
+  type: string
+  integrity: string
+}
+
+/** Response from the UNPKG package metadata API. */
+export interface UnpkgMetadataResponse {
+  package: string
+  version: string
+  prefix: '/'
+  files: UnpkgFileMetadata[]
 }
 
 /**

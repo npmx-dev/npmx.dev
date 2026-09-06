@@ -1,6 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
-import type { JsDelivrFileNode, PackageFileTree } from '#shared/types'
-import { convertToFileTree, fetchFileTree, getPackageFileTree } from '#server/utils/file-tree'
+import type { JsDelivrFileNode, PackageFileTree, UnpkgFileMetadata } from '#shared/types'
+import {
+  convertToFileTree,
+  convertUnpkgToFileTree,
+  getPackageFileTree,
+} from '#server/utils/file-tree'
 
 const getChildren = (node?: PackageFileTree): PackageFileTree[] => node?.children ?? []
 
@@ -115,50 +119,45 @@ describe('convertToFileTree', () => {
   })
 })
 
-describe('fetchFileTree', () => {
-  it('returns parsed json when response is ok', async () => {
-    const body = {
-      type: 'npm',
-      name: 'pkg',
-      version: '1.0.0',
-      default: 'index.js',
-      files: [],
-    }
+describe('convertUnpkgToFileTree', () => {
+  it('rejects metadata whose cumulative path complexity exceeds the tree budget', () => {
+    const directoryPrefix = Array.from({ length: 99 }, (_, index) => `d${index}`).join('/')
+    const files: UnpkgFileMetadata[] = Array.from({ length: 2501 }, (_, index) => ({
+      path: `/${directoryPrefix}/file-${index}.js`,
+      size: 1,
+      type: 'text/javascript',
+      integrity: `sha256-${index}`,
+    }))
 
-    mockFetchOk(body)
-
-    try {
-      const result = await fetchFileTree('pkg', '1.0.0')
-      expect(result).toEqual(body)
-    } finally {
-      vi.unstubAllGlobals()
-    }
-  })
-
-  it('throws a 404 error when package is not found', async () => {
-    mockFetchError(404)
-    mockCreateError()
-
-    try {
-      await expect(fetchFileTree('pkg', '1.0.0')).rejects.toMatchObject({ statusCode: 404 })
-    } finally {
-      vi.unstubAllGlobals()
-    }
-  })
-
-  it('throws a 502 error for non-404 failures', async () => {
-    mockFetchError(500)
-    mockCreateError()
-
-    try {
-      await expect(fetchFileTree('pkg', '1.0.0')).rejects.toMatchObject({ statusCode: 502 })
-    } finally {
-      vi.unstubAllGlobals()
-    }
+    expect(() => convertUnpkgToFileTree(files)).toThrow('complexity limit')
   })
 })
 
 describe('getPackageFileTree', () => {
+  it('throws a 404 error when package is not found', async () => {
+    const fetchMock = mockFetchError(404)
+    mockCreateError()
+
+    try {
+      await expect(getPackageFileTree('pkg', '1.0.0')).rejects.toMatchObject({ statusCode: 404 })
+      expect(fetchMock).toHaveBeenCalledOnce()
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  })
+
+  it('throws a 502 error for a primary non-403 failure', async () => {
+    const fetchMock = mockFetchError(500)
+    mockCreateError()
+
+    try {
+      await expect(getPackageFileTree('pkg', '1.0.0')).rejects.toMatchObject({ statusCode: 502 })
+      expect(fetchMock).toHaveBeenCalledOnce()
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  })
+
   it('returns metadata and a converted tree', async () => {
     const body = {
       type: 'npm',
@@ -201,6 +200,175 @@ describe('getPackageFileTree', () => {
     try {
       const result = await getPackageFileTree('pkg', '1.0.0')
       expect(result.default).toBeUndefined()
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  })
+
+  it('converts UNPKG metadata after a jsDelivr 403', async () => {
+    const cancel = vi.fn().mockResolvedValue(undefined)
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce({ ok: false, status: 403, body: { cancel } })
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            package: 'pkg',
+            version: '1.0.0',
+            prefix: '/',
+            files: [
+              {
+                path: '/zeta.txt',
+                size: 10,
+                type: 'text/plain',
+                integrity: 'sha256-zeta',
+              },
+              {
+                path: '/src/nested/index.js',
+                size: 25,
+                type: 'text/javascript',
+                integrity: 'sha256-index',
+              },
+              {
+                path: '/src/main.js',
+                size: 15,
+                type: 'text/javascript',
+                integrity: 'sha256-main',
+              },
+            ],
+          }),
+          { status: 200 },
+        ),
+      )
+    vi.stubGlobal('fetch', fetchMock)
+
+    try {
+      const result = await getPackageFileTree('pkg', '1.0.0')
+
+      expect(result.default).toBeUndefined()
+      expect(result.tree.map(node => node.name)).toEqual(['src', 'zeta.txt'])
+      expect(result.tree[0]?.size).toBe(40)
+      expect(result.tree[0]?.children?.map(node => node.name)).toEqual(['nested', 'main.js'])
+      expect(result.tree[0]?.children?.[1]).toMatchObject({
+        hash: 'main',
+        path: 'src/main.js',
+      })
+      expect(cancel).toHaveBeenCalledOnce()
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  })
+
+  it('throws a provider-neutral 502 when the fallback fails', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce({
+        ok: false,
+        status: 403,
+        body: { cancel: vi.fn().mockResolvedValue(undefined) },
+      })
+      .mockResolvedValueOnce({ ok: false, status: 500 })
+    vi.stubGlobal('fetch', fetchMock)
+    mockCreateError()
+
+    try {
+      await expect(getPackageFileTree('pkg', '1.0.0')).rejects.toMatchObject({
+        statusCode: 502,
+        message: 'Failed to fetch file list.',
+      })
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  })
+
+  it('throws a 502 for invalid fallback metadata', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce({
+        ok: false,
+        status: 403,
+        body: { cancel: vi.fn().mockResolvedValue(undefined) },
+      })
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            package: 'pkg',
+            version: '1.0.0',
+            prefix: '/',
+            files: [
+              {
+                path: '/../index.js',
+                size: 1,
+                type: 'text/javascript',
+                integrity: 'sha256-index',
+              },
+            ],
+          }),
+          { status: 200 },
+        ),
+      )
+    vi.stubGlobal('fetch', fetchMock)
+    mockCreateError()
+
+    try {
+      await expect(getPackageFileTree('pkg', '1.0.0')).rejects.toMatchObject({
+        statusCode: 502,
+      })
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  })
+
+  it('preserves an abort while reading the metadata response body', async () => {
+    const abortError = new DOMException('Aborted', 'AbortError')
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: vi.fn().mockRejectedValue(abortError),
+    })
+    vi.stubGlobal('fetch', fetchMock)
+
+    try {
+      await expect(getPackageFileTree('pkg', '1.0.0')).rejects.toBe(abortError)
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  })
+
+  it('maps malformed metadata JSON to a provider-neutral 502', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: vi.fn().mockRejectedValue(new SyntaxError('Unexpected token')),
+    })
+    vi.stubGlobal('fetch', fetchMock)
+    mockCreateError()
+
+    try {
+      await expect(getPackageFileTree('pkg', '1.0.0')).rejects.toMatchObject({
+        statusCode: 502,
+      })
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  })
+
+  it('rejects oversized fallback metadata before parsing it', async () => {
+    const fallback = new Response('{}', {
+      headers: { 'content-length': `${10 * 1024 * 1024 + 1}` },
+    })
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(new Response(null, { status: 403 }))
+      .mockResolvedValueOnce(fallback)
+    vi.stubGlobal('fetch', fetchMock)
+    mockCreateError()
+
+    try {
+      await expect(getPackageFileTree('pkg', '1.0.0')).rejects.toMatchObject({
+        statusCode: 502,
+      })
+      expect(fallback.bodyUsed).toBe(true)
     } finally {
       vi.unstubAllGlobals()
     }

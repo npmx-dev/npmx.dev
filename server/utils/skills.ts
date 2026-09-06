@@ -1,4 +1,18 @@
+import {
+  fetchPackageFile,
+  PackageResponseTooLargeError,
+  readPackageResponseText,
+} from '#server/utils/package-files'
+import { mapWithConcurrency } from '#shared/utils/async'
+
 const MAX_SKILL_FILE_SIZE = 500 * 1024
+const MAX_DISCOVERED_SKILLS = 100
+
+function assertSkillCount(count: number): void {
+  if (count > MAX_DISCOVERED_SKILLS) {
+    throw createError({ statusCode: 502, message: 'Package contains too many skills' })
+  }
+}
 
 /**
  * Parse YAML frontmatter from SKILL.md content.
@@ -70,13 +84,16 @@ export function findSkillDirs(tree: PackageFileTree[]): SkillDirInfo[] {
   const skillsDir = tree.find(node => node.type === 'directory' && node.name === 'skills')
   if (!skillsDir?.children) return []
 
-  return skillsDir.children
+  const skillDirs = skillsDir.children
     .filter(
       child =>
         child.type === 'directory' &&
         child.children?.some(f => f.type === 'file' && f.name === 'SKILL.md'),
     )
     .map(child => ({ name: child.name, children: child.children || [] }))
+
+  assertSkillCount(skillDirs.length)
+  return skillDirs
 }
 
 const countFilesRecursive = (nodes: PackageFileTree[]): number =>
@@ -102,38 +119,33 @@ export function countSkillFiles(children: PackageFileTree[]): SkillFileCounts | 
 }
 
 /**
- * Fetch file content from jsDelivr CDN with size limit.
+ * Fetch package file content through the shared CDN fallback with a fixed size limit.
  */
 export async function fetchSkillFile(
   packageName: string,
   version: string,
   filePath: string,
 ): Promise<string> {
-  const url = `https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`
-  const response = await fetch(url)
+  const { response } = await fetchPackageFile(packageName, version, filePath)
 
   if (!response.ok) {
     if (response.status === 404) {
       throw createError({ statusCode: 404, message: 'File not found' })
     }
-    throw createError({ statusCode: 502, message: 'Failed to fetch file from jsDelivr' })
+    throw createError({ statusCode: 502, message: 'Failed to fetch package file' })
   }
 
-  const contentLength = response.headers.get('content-length')
-  if (contentLength && parseInt(contentLength, 10) > MAX_SKILL_FILE_SIZE) {
-    throw createError({
-      statusCode: 413,
-      message: `File too large (${(parseInt(contentLength, 10) / 1024 / 1024).toFixed(1)}MB). Maximum size is ${MAX_SKILL_FILE_SIZE / 1024}KB.`,
-    })
-  }
-
-  const content = await response.text()
-
-  if (content.length > MAX_SKILL_FILE_SIZE) {
-    throw createError({
-      statusCode: 413,
-      message: `File too large (${(content.length / 1024 / 1024).toFixed(1)}MB). Maximum size is ${MAX_SKILL_FILE_SIZE / 1024}KB.`,
-    })
+  let content: string
+  try {
+    content = await readPackageResponseText(response, MAX_SKILL_FILE_SIZE)
+  } catch (error) {
+    if (error instanceof PackageResponseTooLargeError) {
+      throw createError({
+        statusCode: 413,
+        message: `File exceeds the ${MAX_SKILL_FILE_SIZE / 1024}KB maximum size.`,
+      })
+    }
+    throw error
   }
 
   return content
@@ -173,27 +185,26 @@ export async function fetchSkillsList(
   version: string,
   skillDirs: SkillDirInfo[],
 ): Promise<SkillListItem[]> {
-  const skills = await Promise.all(
-    skillDirs.map(async ({ name: dirName, children }) => {
-      try {
-        const { frontmatter } = await fetchSkillContent(packageName, version, dirName)
-        const warnings = validateSkill(frontmatter)
-        const fileCounts = countSkillFiles(children)
-        const item: SkillListItem = {
-          name: frontmatter.name,
-          description: frontmatter.description,
-          dirName,
-          license: frontmatter.license,
-          compatibility: frontmatter.compatibility,
-          warnings: warnings.length > 0 ? warnings : undefined,
-          fileCounts,
-        }
-        return item
-      } catch {
-        return null
+  assertSkillCount(skillDirs.length)
+  const skills = await mapWithConcurrency(skillDirs, async ({ name: dirName, children }) => {
+    try {
+      const { frontmatter } = await fetchSkillContent(packageName, version, dirName)
+      const warnings = validateSkill(frontmatter)
+      const fileCounts = countSkillFiles(children)
+      const item: SkillListItem = {
+        name: frontmatter.name,
+        description: frontmatter.description,
+        dirName,
+        license: frontmatter.license,
+        compatibility: frontmatter.compatibility,
+        warnings: warnings.length > 0 ? warnings : undefined,
+        fileCounts,
       }
-    }),
-  )
+      return item
+    } catch {
+      return null
+    }
+  })
   return skills.filter((s): s is SkillListItem => s !== null)
 }
 
@@ -211,15 +222,14 @@ export async function fetchSkillsListForWellKnown(
   version: string,
   skillNames: string[],
 ): Promise<WellKnownSkillItem[]> {
-  const skills = await Promise.all(
-    skillNames.map(async dirName => {
-      try {
-        const { frontmatter } = await fetchSkillContent(packageName, version, dirName)
-        return { name: dirName, description: frontmatter.description, files: ['SKILL.md'] }
-      } catch {
-        return null
-      }
-    }),
-  )
+  assertSkillCount(skillNames.length)
+  const skills = await mapWithConcurrency(skillNames, async dirName => {
+    try {
+      const { frontmatter } = await fetchSkillContent(packageName, version, dirName)
+      return { name: dirName, description: frontmatter.description, files: ['SKILL.md'] }
+    } catch {
+      return null
+    }
+  })
   return skills.filter((s): s is WellKnownSkillItem => s !== null)
 }
