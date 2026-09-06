@@ -2065,7 +2065,8 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
   background: var(--bg-elevated) !important;
 }
 
-.vue-ui-pen-and-paper-action {
+.vue-ui-pen-and-paper-action,
+.vue-ui-pen-and-paper-drag-handle {
   background: var(--bg-elevated) !important;
   border: none !important;
 }

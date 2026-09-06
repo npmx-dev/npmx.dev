@@ -332,8 +332,7 @@
       "code": "code",
       "docs": "docs",
       "fund": "fund",
-      "compare": "so sánh",
-      "compare_this_package": "so sánh gói này"
+      "compare": "so sánh"
     },
     "likes": {
       "like": "Thích gói này",
