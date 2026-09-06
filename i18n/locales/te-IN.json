@@ -42,6 +42,24 @@
       "view_org_packages": "ఈ సంస్థ ప్యాకేజ్‌లను వీక్షించండి"
     }
   },
+  "command_palette": {
+    "keyboard_shortcuts": {},
+    "state": {},
+    "groups": {},
+    "actions": {},
+    "connections": {},
+    "navigation": {},
+    "links": {},
+    "package_links": {},
+    "theme": {},
+    "package": {},
+    "package_actions": {},
+    "code": {},
+    "diff": {},
+    "version": {},
+    "status": {},
+    "announcements": {}
+  },
   "nav": {
     "main_navigation": "ప్రధాన",
     "popular_packages": "జనాదరణ ప్యాకేజ్‌లు",
@@ -57,6 +75,9 @@
   "blog": {
     "author": {},
     "atproto": {}
+  },
+  "noodles": {
+    "missing": {}
   },
   "settings": {
     "title": "సెట్టింగ్‌లు",
@@ -84,7 +105,8 @@
     },
     "clear_accent": "యాక్సెంట్ రంగును క్లియర్ చేయండి",
     "translation_progress": "అనువాద పురోగతి",
-    "background_themes": {}
+    "background_themes": {},
+    "foreground_themes": {}
   },
   "i18n": {
     "missing_keys": "{count} అనువాదం లేదు | {count} అనువాదాలు లేవు",
@@ -137,6 +159,7 @@
       "no_reason": "కారణం అందించబడలేదు"
     },
     "size_increase": {},
+    "size_decrease": {},
     "replacement": {
       "title": "మీకు ఈ డిపెండెన్సీ అవసరం లేకపోవచ్చు.",
       "native": "దీనిని {replacement} తో భర్తీ చేయవచ్చు, ఇది Node {nodeVersion} నుండి అందుబాటులో ఉంది.",
@@ -201,6 +224,7 @@
       "title": "అమలు చేయండి",
       "locally": "స్థానికంగా అమలు చేయండి"
     },
+    "command": {},
     "readme": {
       "title": "రీడ్మీ",
       "no_readme": "README అందుబాటులో లేదు.",
@@ -231,25 +255,19 @@
       "view_all": "{count} వెర్షన్‌లను వీక్షించండి | అన్ని {count} వెర్షన్‌లను వీక్షించండి",
       "copy_alt": {}
     },
+    "timeline": {
+      "chart": {
+        "copy_alt": {}
+      }
+    },
     "dependencies": {
       "title": "డిపెండెన్సీలు ({count})",
-      "list_label": "ప్యాకేజ్ డిపెండెన్సీలు",
-      "show_all": "{count} డిపెండెన్సీని చూపించండి | అన్ని {count} డిపెండెన్సీలను చూపించండి",
+      "insights": {},
       "optional": "ఐచ్ఛికం",
       "view_vulnerabilities": "అసురక్షితత్వాలను వీక్షించండి",
       "outdated_major": "{count} మేజర్ వెర్షన్ వెనుకబడి ఉంది (తాజాది: {latest}) | {count} మేజర్ వెర్షన్‌లు వెనుకబడి ఉన్నాయి (తాజాది: {latest})",
       "outdated_minor": "{count} మైనర్ వెర్షన్ వెనుకబడి ఉంది (తాజాది: {latest}) | {count} మైనర్ వెర్షన్‌లు వెనుకబడి ఉన్నాయి (తాజాది: {latest})",
       "outdated_patch": "ప్యాచ్ నవీకరణ అందుబాటులో ఉంది (తాజాది: {latest})"
-    },
-    "peer_dependencies": {
-      "title": "పీర్ డిపెండెన్సీలు ({count})",
-      "list_label": "ప్యాకేజ్ పీర్ డిపెండెన్సీలు",
-      "show_all": "{count} పీర్ డిపెండెన్సీని చూపించండి | అన్ని {count} పీర్ డిపెండెన్సీలను చూపించండి"
-    },
-    "optional_dependencies": {
-      "title": "ఐచ్ఛిక డిపెండెన్సీలు ({count})",
-      "list_label": "ప్యాకేజ్ ఐచ్ఛిక డిపెండెన్సీ",
-      "show_all": "{count} ఐచ్ఛిక డిపెండెన్సీని చూపించండి | అన్ని {count} ఐచ్ఛిక డిపెండెన్సీలను చూపించండి"
     },
     "maintainers": {
       "title": "నిర్వహకులు",
@@ -266,6 +284,7 @@
       "show_less": "(తక్కువ చూపించండి)"
     },
     "trends": {
+      "chart_assistive_text": {},
       "granularity": "గ్రాన్యులారిటీ",
       "granularity_daily": "రోజువారీ",
       "granularity_weekly": "వారపు",
@@ -279,7 +298,8 @@
       "download_file": "{fileType} డౌన్‌లోడ్ చేయండి",
       "toggle_annotator": "అనోటేటర్‌ను టాగుల్ చేయండి",
       "items": {},
-      "copy_alt": {}
+      "copy_alt": {},
+      "embedding": {}
     },
     "downloads": {
       "title": "వారపు డౌన్‌లోడ్‌లు"
@@ -367,6 +387,9 @@
     },
     "size": {},
     "download": {}
+  },
+  "leaderboard": {
+    "likes": {}
   },
   "connector": {
     "modal": {
@@ -729,6 +752,25 @@
       }
     }
   },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
+    }
+  },
   "account_menu": {
     "connect": "కనెక్ట్ చేయండి",
     "account": "ఖాతా",
@@ -800,6 +842,9 @@
       "packages_selected": "{count}/{max} ప్యాకేజ్‌లు ఎంచుకోబడ్డాయి.",
       "add_hint": "పోల్చడానికి కనీసం 2 ప్యాకేజ్‌లను జోడించండి."
     },
+    "scatter_chart": {
+      "copy_alt": {}
+    },
     "no_dependency": {},
     "facets": {
       "all": "అన్నీ",
@@ -826,7 +871,11 @@
         "types": {},
         "moduleFormat": {},
         "license": {},
-        "vulnerabilities": {}
+        "vulnerabilities": {},
+        "githubStars": {},
+        "githubForks": {},
+        "githubIssues": {},
+        "createdAt": {}
       },
       "values": {},
       "trends": {}
@@ -863,5 +912,23 @@
   "translation_status": {
     "table": {}
   },
-  "action_bar": {}
+  "vacations": {
+    "what": {},
+    "meantime": {},
+    "return": {},
+    "stats": {
+      "subtitle": {}
+    }
+  },
+  "action_bar": {},
+  "logo_menu": {},
+  "brand": {
+    "logos": {},
+    "customize": {},
+    "typography": {},
+    "guidelines": {}
+  },
+  "changelog": {
+    "error": {}
+  }
 }

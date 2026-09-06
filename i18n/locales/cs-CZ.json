@@ -316,6 +316,7 @@
       "slate": "Břidlice",
       "black": "Černá"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Povolit klávesové zkratky",
     "keyboard_shortcuts_enabled_description": "Klávesové zkratky lze zakázat, pokud se střetávají s jinými zkratkami prohlížeče nebo systému",
     "enable_code_ligatures": "Zapnout ligatury v kódu",
@@ -523,6 +524,7 @@
       "title": "Spustit",
       "locally": "Spustit lokálně"
     },
+    "command": {},
     "readme": {
       "title": "ČTI MĚ",
       "no_readme": "Žádné ČTI MĚ NENÍ k dispozici.",
@@ -648,25 +650,13 @@
     },
     "dependencies": {
       "title": "Závislosti ({count})",
-      "list_label": "Závislosti balíčku",
-      "show_all": "zobrazit všechny závislosti ({count})",
+      "insights": {},
       "optional": "volitelné",
       "view_vulnerabilities": "Zobrazit zranitelnosti",
       "outdated_major": "o {count} hlavní verzi pozadu (nejnovější: {latest}) | o {count} hlavní verze pozadu (nejnovější: {latest}) | o {count} hlavních verzích pozadu (nejnovější: {latest})",
       "outdated_minor": "o {count} vedlejší verzi pozadu (nejnovější: {latest}) | o {count} vedlejší verze pozadu (nejnovější: {latest}) | o {count} vedlejších verzích pozadu (nejnovější: {latest})",
       "outdated_patch": "Aktualizace záplaty dostupná (nejnovější: {latest})",
-      "has_replacement": "Tato závislost má navrhované náhrady",
-      "vulnerabilities_count": "{count} zranitelnost | {count} zranitelnosti | {count} zranitelností"
-    },
-    "peer_dependencies": {
-      "title": "Vzájemné závislosti ({count})",
-      "list_label": "Vzájemné závislosti balíčku",
-      "show_all": "zobrazit všechny vzájemné závislosti ({count})"
-    },
-    "optional_dependencies": {
-      "title": "Volitelné závislosti ({count})",
-      "list_label": "Volitelné závislosti balíčku",
-      "show_all": "zobrazit všechny volitelné závislosti ({count})"
+      "has_replacement": "Tato závislost má navrhované náhrady"
     },
     "maintainers": {
       "title": "Správci",
@@ -1262,6 +1252,25 @@
         "description": "Zjistěte nejnovější informace o npmx.",
         "cta": "Sledovat na Bluesky"
       }
+    }
+  },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
     }
   },
   "account_menu": {

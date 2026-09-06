@@ -1486,6 +1486,9 @@
             "code": {
               "type": "string"
             },
+            "dependencies": {
+              "type": "string"
+            },
             "docs": {
               "type": "string"
             },
@@ -2047,13 +2050,73 @@
             "title": {
               "type": "string"
             },
-            "list_label": {
-              "type": "string"
-            },
-            "show_all": {
-              "type": "string"
+            "insights": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "subtitle": {
+                  "type": "string"
+                },
+                "tooltip_urgent": {
+                  "type": "string"
+                },
+                "tooltip_other": {
+                  "type": "string"
+                },
+                "major_behind": {
+                  "type": "string"
+                },
+                "minor_behind": {
+                  "type": "string"
+                },
+                "patch_behind": {
+                  "type": "string"
+                },
+                "vulnerable": {
+                  "type": "string"
+                },
+                "deprecated": {
+                  "type": "string"
+                },
+                "replacements_available": {
+                  "type": "string"
+                },
+                "clear_filter": {
+                  "type": "string"
+                },
+                "filter_by": {
+                  "type": "string"
+                },
+                "unselected_sections_warning": {
+                  "type": "string"
+                },
+                "enable_sections": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
             },
             "optional": {
+              "type": "string"
+            },
+            "bundled": {
+              "type": "string"
+            },
+            "all": {
+              "type": "string"
+            },
+            "none": {
+              "type": "string"
+            },
+            "no_matches": {
+              "type": "string"
+            },
+            "filter_placeholder": {
+              "type": "string"
+            },
+            "vulnerable": {
               "type": "string"
             },
             "view_vulnerabilities": {
@@ -2069,39 +2132,6 @@
               "type": "string"
             },
             "has_replacement": {
-              "type": "string"
-            },
-            "vulnerabilities_count": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false
-        },
-        "peer_dependencies": {
-          "type": "object",
-          "properties": {
-            "title": {
-              "type": "string"
-            },
-            "list_label": {
-              "type": "string"
-            },
-            "show_all": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false
-        },
-        "optional_dependencies": {
-          "type": "object",
-          "properties": {
-            "title": {
-              "type": "string"
-            },
-            "list_label": {
-              "type": "string"
-            },
-            "show_all": {
               "type": "string"
             }
           },
@@ -3427,6 +3457,9 @@
         "clear_all": {
           "type": "string"
         },
+        "select_all": {
+          "type": "string"
+        },
         "remove_filter": {
           "type": "string"
         },
@@ -4748,6 +4781,9 @@
           "type": "string"
         },
         "optional_dependencies": {
+          "type": "string"
+        },
+        "bundled_dependencies": {
           "type": "string"
         },
         "no_dependency_changes": {

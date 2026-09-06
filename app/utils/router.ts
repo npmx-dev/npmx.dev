@@ -1,4 +1,5 @@
 import type { RouteLocationRaw } from 'vue-router'
+import type { DepSectionId } from '#shared/types/package-dependencies'
 import { splitPackageName } from '~/utils/package-name'
 
 export function packageRoute(
@@ -128,5 +129,28 @@ export function packageStatsRoute(
       packageName: name,
       version: version.replace(/\s+/g, ''),
     },
+  }
+}
+
+export function dependenciesRoute(
+  packageName: string,
+  version?: string | null,
+  sections?: DepSectionId | DepSectionId[],
+): RouteLocationRaw {
+  const { org, name } = splitPackageName(packageName)
+  const nameSegments = org ? [org, name] : [name]
+  const path = version ? [...nameSegments, 'v', version.replace(/\s+/g, '')] : nameSegments
+
+  let sectionsQuery: string | undefined
+  if (Array.isArray(sections)) {
+    sectionsQuery = sections.length > 0 ? sections.join(',') : undefined
+  } else if (sections) {
+    sectionsQuery = sections
+  }
+
+  return {
+    name: 'dependencies',
+    params: { path: path as [string, ...string[]] },
+    query: sectionsQuery ? { sections: sectionsQuery } : undefined,
   }
 }

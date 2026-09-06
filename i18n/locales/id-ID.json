@@ -77,6 +77,7 @@
     "instant_search_advisory": "{label} {state} — {action}"
   },
   "command_palette": {
+    "keyboard_shortcuts": {},
     "state": {},
     "groups": {},
     "actions": {},
@@ -130,6 +131,9 @@
       "repost_count": "{count} repost | {count} repost",
       "more_replies": "{count} balasan lagi... | {count} balasan lagi..."
     }
+  },
+  "noodles": {
+    "missing": {}
   },
   "settings": {
     "title": "pengaturan",
@@ -185,6 +189,7 @@
       "slate": "Slate",
       "black": "Hitam"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Aktifkan pintasan papan ketik",
     "keyboard_shortcuts_enabled_description": "Pintasan papan ketik dapat dinonaktifkan jika bertentangan dengan pintasan peramban atau sistem lainnya."
   },
@@ -366,6 +371,7 @@
       "title": "Jalankan",
       "locally": "Jalankan secara lokal"
     },
+    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "README tidak tersedia.",
@@ -462,25 +468,13 @@
     },
     "dependencies": {
       "title": "Dependensi ({count})",
-      "list_label": "Dependensi paket",
-      "show_all": "tampilkan {count} dep | tampilkan semua {count} dep",
+      "insights": {},
       "optional": "opsional",
       "view_vulnerabilities": "Lihat kerentanan",
       "outdated_major": "Tertinggal {count} versi major (terbaru: {latest}) | Tertinggal {count} versi major (terbaru: {latest})",
       "outdated_minor": "Tertinggal {count} versi minor (terbaru: {latest}) | Tertinggal {count} versi minor (terbaru: {latest})",
       "outdated_patch": "Pembaruan patch tersedia (terbaru: {latest})",
-      "has_replacement": "Ketergantungan ini telah menyarankan beberapa alternatif",
-      "vulnerabilities_count": "{count} kerentanan | {count} kerentanan"
-    },
-    "peer_dependencies": {
-      "title": "Peer Dependencies ({count})",
-      "list_label": "Peer dependencies paket",
-      "show_all": "tampilkan {count} peer dep | tampilkan semua {count} peer dep"
-    },
-    "optional_dependencies": {
-      "title": "Optional Dependencies ({count})",
-      "list_label": "Optional dependencies paket",
-      "show_all": "tampilkan {count} optional dep | tampilkan semua {count} optional dep"
+      "has_replacement": "Ketergantungan ini telah menyarankan beberapa alternatif"
     },
     "maintainers": {
       "title": "Pemelihara",
@@ -560,7 +554,8 @@
         "general_description": "Sumbu Y melambangkan jumlah unduhan. Sumbu X melambangkan jangka waktu, mulai dari {start_date} hingga {end_date}, dalam kurun waktu {granularity}. {estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Grafik batang horizontal untuk: {packages}, membandingkan {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} memiliki nilai {value}."
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "Unduhan Mingguan",
@@ -1057,6 +1052,25 @@
       }
     }
   },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
+    }
+  },
   "account_menu": {
     "connect": "hubungkan",
     "account": "Akun",
@@ -1220,6 +1234,7 @@
           "description": "Kerentanan keamanan yang diketahui"
         },
         "githubStars": {},
+        "githubForks": {},
         "githubIssues": {},
         "createdAt": {}
       },

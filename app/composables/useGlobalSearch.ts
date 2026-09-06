@@ -2,7 +2,7 @@ import { normalizeSearchParam } from '#shared/utils/url'
 import { debounce } from 'perfect-debounce'
 
 // Pages that have their own local filter using ?q
-const pagesWithLocalFilter = new Set(['~username', 'org'])
+const pagesWithLocalFilter = new Set(['~username', 'org', 'dependencies'])
 
 const SEARCH_DEBOUNCE_MS = 100
 

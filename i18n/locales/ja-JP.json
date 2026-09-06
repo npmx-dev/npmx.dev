@@ -319,6 +319,7 @@
       "slate": "スレート",
       "black": "ブラック"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "キーボードショートカットを有効化",
     "keyboard_shortcuts_enabled_description": "ブラウザやシステムのショートカットと競合する場合、キーボードショートカットを無効化できます",
     "enable_code_ligatures": "コードのリガチャを有効化",
@@ -526,6 +527,7 @@
       "title": "実行",
       "locally": "ローカルで実行"
     },
+    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "READMEはありません。",
@@ -651,25 +653,13 @@
     },
     "dependencies": {
       "title": "依存関係（{count}）",
-      "list_label": "パッケージの依存関係",
-      "show_all": "全 {count} 個の依存関係を表示",
+      "insights": {},
       "optional": "オプション",
       "view_vulnerabilities": "脆弱性情報を表示",
       "outdated_major": "最新から {count} 個のメジャーバージョン遅れています (最新: {latest})",
       "outdated_minor": "最新から {count} 個のマイナーバージョン遅れています (最新: {latest})",
       "outdated_patch": "パッチアップデートがあります (最新: {latest})",
-      "has_replacement": "この依存関係には代替の候補があります",
-      "vulnerabilities_count": "{count} 件の脆弱性"
-    },
-    "peer_dependencies": {
-      "title": "ピア依存関係（{count}）",
-      "list_label": "パッケージのピア依存関係",
-      "show_all": "全 {count} 個のピア依存関係を表示"
-    },
-    "optional_dependencies": {
-      "title": "オプションの依存関係（{count}）",
-      "list_label": "パッケージのオプションの依存関係",
-      "show_all": "全 {count} 個のオプションの依存関係を表示"
+      "has_replacement": "この依存関係には代替の候補があります"
     },
     "maintainers": {
       "title": "メンテナ",

@@ -668,25 +668,13 @@
     },
     "dependencies": {
       "title": "Dependency ({count}) | Dependencies ({count})",
-      "list_label": "Pakket dependencies",
-      "show_all": "toon {count} dep | toon alle {count} deps",
+      "insights": {},
       "optional": "optioneel",
       "view_vulnerabilities": "Bekijk kwetsbaarheden",
       "outdated_major": "{count} hoofdversie achter (nieuwste: {latest}) | {count} hoofdversies achter (nieuwste: {latest})",
       "outdated_minor": "{count} subversie achter (nieuwste: {latest}) | {count} subversies achter (nieuwste: {latest})",
       "outdated_patch": "Patch update beschikbaar (nieuwste: {latest})",
-      "has_replacement": "Deze dedependency heeft voorgesteld alternatieven",
-      "vulnerabilities_count": "{count} kwetsbaarheid | {count} kwetsbaarheden"
-    },
-    "peer_dependencies": {
-      "title": "Peer Dependency ({count}) | Peer Dependencies ({count})",
-      "list_label": "Pakket peer dependencies",
-      "show_all": "toon {count} peer dep | toon alle {count} peer deps"
-    },
-    "optional_dependencies": {
-      "title": "Optionele Dependency ({count}) | Optionele Dependencies ({count})",
-      "list_label": "Optionele pakket dependencies",
-      "show_all": "toon {count} Optionele dep | toon alle {count} Optionele deps"
+      "has_replacement": "Deze dependency heeft voorgesteld alternatieven"
     },
     "maintainers": {
       "title": "Beheerders",

@@ -494,6 +494,7 @@
       "issues": "issues",
       "jsr": "jsr",
       "code": "code",
+      "dependencies": "dependencies",
       "docs": "docs",
       "fund": "fund",
       "compare": "compare",
@@ -681,25 +682,34 @@
     },
     "dependencies": {
       "title": "Dependency ({count}) | Dependencies ({count})",
-      "list_label": "Package dependencies",
-      "show_all": "show {count} dep | show all {count} deps",
+      "insights": {
+        "title": "Dependency Health",
+        "subtitle": "Across all direct dependencies",
+        "tooltip_urgent": "Urgent (prod & bundled)",
+        "tooltip_other": "Total (all sections)",
+        "major_behind": "Major behind",
+        "minor_behind": "Minor behind",
+        "patch_behind": "Patch behind",
+        "vulnerable": "Vulnerable",
+        "deprecated": "Deprecated",
+        "replacements_available": "Replacements available",
+        "clear_filter": "Clear filter ({filter})",
+        "filter_by": "Filter dependencies by {filter}",
+        "unselected_sections_warning": "Matching dependencies exist in unselected sections ({sections}).",
+        "enable_sections": "Show these sections"
+      },
       "optional": "optional",
+      "bundled": "bundled",
+      "all": "All dependencies",
+      "none": "This version has no dependencies.",
+      "no_matches": "No dependencies match your filter.",
+      "filter_placeholder": "Filter dependencies...",
+      "vulnerable": "Vulnerable",
       "view_vulnerabilities": "View vulnerabilities",
       "outdated_major": "{count} major version behind (latest: {latest}) | {count} major versions behind (latest: {latest})",
       "outdated_minor": "{count} minor version behind (latest: {latest}) | {count} minor versions behind (latest: {latest})",
       "outdated_patch": "Patch update available (latest: {latest})",
-      "has_replacement": "This dependency has suggested replacements",
-      "vulnerabilities_count": "{count} vulnerability | {count} vulnerabilities"
-    },
-    "peer_dependencies": {
-      "title": "Peer Dependency ({count}) | Peer Dependencies ({count})",
-      "list_label": "Package peer dependencies",
-      "show_all": "show {count} peer dep | show all {count} peer deps"
-    },
-    "optional_dependencies": {
-      "title": "Optional Dependency ({count}) | Optional Dependencies ({count})",
-      "list_label": "Package optional dependencies",
-      "show_all": "show {count} optional dep | show all {count} optional deps"
+      "has_replacement": "This dependency has suggested replacements"
     },
     "maintainers": {
       "title": "Maintainers",
@@ -1141,6 +1151,7 @@
     "keywords": "Keywords",
     "more_keywords": "+{count} more",
     "clear_all": "Clear all",
+    "select_all": "Select all",
     "remove_filter": "Remove {label} filter",
     "chips": {
       "search": "Search",
@@ -1582,6 +1593,7 @@
     "dev_dependencies": "Dev Dependencies",
     "peer_dependencies": "Peer Dependencies",
     "optional_dependencies": "Optional Dependencies",
+    "bundled_dependencies": "Bundled Dependencies",
     "no_dependency_changes": "No dependency changes",
     "file_filter_option": {
       "all": "All ({count})",

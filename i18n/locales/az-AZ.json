@@ -74,6 +74,7 @@
     "instant_search_advisory": "{label} {state} — {action}"
   },
   "command_palette": {
+    "keyboard_shortcuts": {},
     "state": {},
     "groups": {},
     "actions": {},
@@ -127,6 +128,9 @@
       "more_replies": "daha {count} cavab... | daha {count} cavab..."
     }
   },
+  "noodles": {
+    "missing": {}
+  },
   "settings": {
     "title": "tənzimləmələr",
     "tagline": "npmx təcrübənizi fərdiləşdirin",
@@ -167,6 +171,7 @@
     "background_themes": {
       "label": "Fon tonu"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Klaviatura qısayollarını aktivləşdir",
     "keyboard_shortcuts_enabled_description": "Klaviatura qısayolları digər brauzer və ya sistem qısayolları ilə toqquşarsa deaktiv edilə bilər"
   },
@@ -327,6 +332,7 @@
       "title": "İşə sal",
       "locally": "Lokal işə sal"
     },
+    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "README mövcud deyil.",
@@ -414,24 +420,13 @@
     },
     "dependencies": {
       "title": "Asılılıq ({count}) | Asılılıqlar ({count})",
-      "list_label": "Paket asılılıqları",
-      "show_all": "{count} asılılığı göstər | bütün {count} asılılığı göstər",
+      "insights": {},
       "optional": "əlavə",
       "view_vulnerabilities": "Zəiflikləri göstər",
       "outdated_major": "{count} major versiya geridə (son: {latest}) | {count} major versiya geridə (son: {latest})",
       "outdated_minor": "{count} minor versiya geridə (son: {latest}) | {count} minor versiya geridə (son: {latest})",
       "outdated_patch": "Patch yeniləməsi mövcuddur (son: {latest})",
       "has_replacement": "Bu asılılığın tövsiyə olunan əvəzləyiciləri var"
-    },
-    "peer_dependencies": {
-      "title": "Peer Asılılıq ({count}) | Peer Asılılıqlar ({count})",
-      "list_label": "Paket peer asılılıqları",
-      "show_all": "{count} peer asılılığı göstər | bütün {count} peer asılılığı göstər"
-    },
-    "optional_dependencies": {
-      "title": "Əlavə Asılılıq ({count}) | Əlavə Asılılıqlar ({count})",
-      "list_label": "Paket əlavə asılılıqları",
-      "show_all": "{count} əlavə asılılığı göstər | bütün {count} əlavə asılılığı göstər"
     },
     "maintainers": {
       "title": "Dəstəkçilər",
@@ -499,7 +494,8 @@
         "compare": "Paket endirmə müqayisəsi xətt diaqramı: {packages}.",
         "single_package": "{package} paketi üçün endirmə xətt diaqramı.",
         "general_description": "Y oxu endirmələrin sayını təmsil edir. X oxu tarix aralığını təmsil edir, {start_date}-dən {end_date}-ə, {granularity} zaman dövrü ilə.{estimation_notice} {packages_analysis}. {watermark}."
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "Həftəlik Endirmələr",
@@ -986,6 +982,25 @@
       }
     }
   },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
+    }
+  },
   "account_menu": {
     "connect": "qoşul",
     "account": "Hesab",
@@ -1139,6 +1154,7 @@
           "description": "Məlum təhlükəsizlik zəiflikləri"
         },
         "githubStars": {},
+        "githubForks": {},
         "githubIssues": {},
         "createdAt": {}
       },

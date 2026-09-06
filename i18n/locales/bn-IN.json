@@ -319,6 +319,7 @@
       "slate": "স্লেট",
       "black": "কালো"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "কীবোর্ড শর্টকাট সক্রিয় করুন",
     "keyboard_shortcuts_enabled_description": "কীবোর্ড শর্টকাট নিষ্ক্রিয় করা যেতে পারে যদি তারা অন্যান্য ব্রাউজার বা সিস্টেম শর্টকাটের সঙ্গে দুইপাশের সমস্যা তৈরি করে",
     "enable_code_ligatures": "কোডে লিগচারস সক্রিয় করুন",
@@ -526,6 +527,7 @@
       "title": "চালান",
       "locally": "স্থানীয়ভাবে চালান"
     },
+    "command": {},
     "readme": {
       "title": "রিডমি",
       "no_readme": "README উপলব্ধ নেই।",
@@ -657,25 +659,13 @@
     },
     "dependencies": {
       "title": "নির্ভরতা ({count})",
-      "list_label": "প্যাকেজ নির্ভরতা",
-      "show_all": "{count}টি নির্ভরতা দেখান | সব {count}টি নির্ভরতা দেখান",
+      "insights": {},
       "optional": "ঐচ্ছিক",
       "view_vulnerabilities": "দুর্বলতা দেখুন",
       "outdated_major": "{count}টি মেজর ভার্সন পিছিয়ে (সর্বশেষ: {latest}) | {count}টি মেজর ভার্সন পিছিয়ে (সর্বশেষ: {latest})",
       "outdated_minor": "{count}টি মাইনর ভার্সন পিছিয়ে (সর্বশেষ: {latest}) | {count}টি মাইনর ভার্সন পিছিয়ে (সর্বশেষ: {latest})",
       "outdated_patch": "প্যাচ আপডেট উপলব্ধ (সর্বশেষ: {latest})",
-      "has_replacement": "এই নির্ভরতা প্রতিস্থাপনের পরামর্শ দিয়েছে",
-      "vulnerabilities_count": "{count} দুর্বলতা | {count} দুর্বলতা"
-    },
-    "peer_dependencies": {
-      "title": "পিয়ার নির্ভরতা ({count})",
-      "list_label": "প্যাকেজ পিয়ার নির্ভরতা",
-      "show_all": "{count}টি পিয়ার নির্ভরতা দেখান | সব {count}টি পিয়ার নির্ভরতা দেখান"
-    },
-    "optional_dependencies": {
-      "title": "ঐচ্ছিক নির্ভরতা ({count})",
-      "list_label": "প্যাকেজ ঐচ্ছিক নির্ভরতা",
-      "show_all": "{count}টি ঐচ্ছিক নির্ভরতা দেখান | সব {count}টি ঐচ্ছিক নির্ভরতা দেখান"
+      "has_replacement": "এই নির্ভরতা প্রতিস্থাপনের পরামর্শ দিয়েছে"
     },
     "maintainers": {
       "title": "রক্ষণাবেক্ষণকারী",

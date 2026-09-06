@@ -319,6 +319,7 @@
       "slate": "Pizarra",
       "black": "Negro"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Activar atajos de teclado",
     "keyboard_shortcuts_enabled_description": "Los atajos de teclado pueden desactivarse si entran en conflicto con otros atajos del navegador o del sistema",
     "enable_code_ligatures": "Activar ligaduras en código",
@@ -526,6 +527,7 @@
       "title": "Ejecutar",
       "locally": "Ejecutar localmente"
     },
+    "command": {},
     "readme": {
       "title": "Léeme",
       "no_readme": "No hay README disponible.",
@@ -657,25 +659,13 @@
     },
     "dependencies": {
       "title": "Dependencias ({count})",
-      "list_label": "Dependencias del paquete",
-      "show_all": "mostrar {count} dependencia | mostrar todas las {count} dependencias",
+      "insights": {},
       "optional": "opcional",
       "view_vulnerabilities": "Ver vulnerabilidades",
       "outdated_major": "{count} versión mayor por detrás (última: {latest}) | {count} versiones mayores por detrás (última: {latest})",
       "outdated_minor": "{count} versión menor por detrás (última: {latest}) | {count} versiones menores por detrás (última: {latest})",
       "outdated_patch": "Actualización de parche disponible (última: {latest})",
-      "has_replacement": "Existen sugerencias para reemplazar esta dependencia",
-      "vulnerabilities_count": "{count} vulnerabilidad | {count} vulnerabilidades"
-    },
-    "peer_dependencies": {
-      "title": "Dependencias Peer ({count})",
-      "list_label": "Dependencias peer del paquete",
-      "show_all": "mostrar {count} dependencia peer | mostrar todas las {count} dependencias peer"
-    },
-    "optional_dependencies": {
-      "title": "Dependencias Opcionales ({count})",
-      "list_label": "Dependencias opcionales del paquete",
-      "show_all": "mostrar {count} dependencia opcional | mostrar todas las {count} dependencias opcionales"
+      "has_replacement": "Existen sugerencias para reemplazar esta dependencia"
     },
     "maintainers": {
       "title": "Mantenedores",

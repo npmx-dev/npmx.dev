@@ -98,6 +98,7 @@
     "current": "当前",
     "here": "你在这里",
     "connected": "已连接",
+    "keyboard_shortcuts": {},
     "state": {
       "on": "开启",
       "off": "关闭"
@@ -228,6 +229,9 @@
       "more_replies": "还有 {count} 条回复..."
     }
   },
+  "noodles": {
+    "missing": {}
+  },
   "settings": {
     "title": "设置",
     "tagline": "定制你的 npmx 体验",
@@ -283,6 +287,7 @@
       "slate": "板岩灰",
       "black": "黑色"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "启用快捷键",
     "keyboard_shortcuts_enabled_description": "如果某些快捷键与其他浏览器或系统快捷键冲突，可以选择将其禁用。",
     "enable_code_ligatures": "在代码中启用连字"
@@ -481,6 +486,7 @@
       "title": "运行",
       "locally": "本地运行"
     },
+    "command": {},
     "readme": {
       "title": "自述文件",
       "no_readme": "无可用自述文件。",
@@ -590,6 +596,7 @@
       "trusted_publisher_removed": "已移除可信发布",
       "provenance_added": "已启用 Provenance",
       "provenance_removed": "已移除 Provenance",
+      "deprecated": "已弃用",
       "chart": {
         "tab_aria_label": "指标选择",
         "base_scale": "Y 轴从 0 开始",
@@ -600,30 +607,17 @@
           "version_events": "版本 {version}：{events}",
           "general_description": "折线图展示了 {package} 包从版本 {first} 到 {last} 的 {metric} 变化情况。版本 {first} 的 {metric} 为 {first_value}，版本 {last} 为 {last_value}（整体变化 {overall_progress_percentage}%）。{key_changes} {watermark}。"
         }
-      },
-      "deprecated": "已弃用"
+      }
     },
     "dependencies": {
       "title": "依赖（{count} 个）",
-      "list_label": "包依赖",
-      "show_all": "显示全部 {count} 个依赖",
+      "insights": {},
       "optional": "可选",
       "view_vulnerabilities": "查看漏洞",
       "outdated_major": "落后 {count} 个主要版本（最新：{latest}）",
       "outdated_minor": "落后 {count} 个次要版本（最新：{latest}）",
       "outdated_patch": "有可用的补丁更新（最新：{latest}）",
-      "has_replacement": "该依赖有推荐的替代包。",
-      "vulnerabilities_count": "{count} 个漏洞"
-    },
-    "peer_dependencies": {
-      "title": "对等依赖（{count} 个）",
-      "list_label": "包对等依赖",
-      "show_all": "显示全部 {count} 个对等依赖"
-    },
-    "optional_dependencies": {
-      "title": "可选依赖（{count} 个）",
-      "list_label": "包可选依赖",
-      "show_all": "显示全部 {count} 个可选依赖"
+      "has_replacement": "该依赖有推荐的替代包。"
     },
     "maintainers": {
       "title": "维护者",
@@ -703,7 +697,8 @@
         "general_description": "Y 轴表示下载量，X 轴表示日期范围（{start_date} 至 {end_date}），统计周期为{granularity}。{estimation_notice} {packages_analysis}。{watermark}。",
         "facet_bar_general_description": "水平条形图：{packages} 的 {facet} 对比（{description}）。{facet_analysis} {watermark}",
         "facet_bar_analysis": "{package_name}：{value}"
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "每周下载量",
@@ -1212,6 +1207,25 @@
       }
     }
   },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
+    }
+  },
   "account_menu": {
     "connect": "连接",
     "account": "账户",
@@ -1386,6 +1400,7 @@
           "label": "GitHub 星标",
           "description": "GitHub 仓库的星标数量"
         },
+        "githubForks": {},
         "githubIssues": {
           "label": "GitHub 问题数",
           "description": "GitHub 仓库的问题数量"

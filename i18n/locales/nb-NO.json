@@ -316,6 +316,7 @@
       "slate": "Skifer",
       "black": "Svart"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Aktiver tastatursnarveier",
     "keyboard_shortcuts_enabled_description": "Tastatursnarveier kan deaktiveres hvis de er i konflikt med andre nettleser- eller systemsnarveier",
     "enable_code_ligatures": "Aktiver ligaturer i kode",
@@ -523,6 +524,7 @@
       "title": "Kjør",
       "locally": "Kjør lokalt"
     },
+    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "Ingen README tilgjengelig.",
@@ -648,25 +650,13 @@
     },
     "dependencies": {
       "title": "Avhengighet ({count}) | Avhengigheter ({count})",
-      "list_label": "Pakkeavhengigheter",
-      "show_all": "vis {count} avh. | vis alle {count} avh.",
+      "insights": {},
       "optional": "valgfri",
       "view_vulnerabilities": "Vis sårbarheter",
       "outdated_major": "{count} major-versjon bak (nyeste: {latest}) | {count} major-versjoner bak (nyeste: {latest})",
       "outdated_minor": "{count} minor-versjon bak (nyeste: {latest}) | {count} minor-versjoner bak (nyeste: {latest})",
       "outdated_patch": "Patch-oppdatering tilgjengelig (nyeste: {latest})",
-      "has_replacement": "Denne avhengigheten har foreslåtte erstatninger",
-      "vulnerabilities_count": "{count} sårbarhet | {count} sårbarheter"
-    },
-    "peer_dependencies": {
-      "title": "Peer-avhengighet ({count}) | Peer-avhengigheter ({count})",
-      "list_label": "Pakkens peer-avhengigheter",
-      "show_all": "vis {count} peer-avh. | vis alle {count} peer-avh."
-    },
-    "optional_dependencies": {
-      "title": "Valgfri avhengighet ({count}) | Valgfrie avhengigheter ({count})",
-      "list_label": "Pakkens valgfrie avhengigheter",
-      "show_all": "vis {count} valgfri avh. | vis alle {count} valgfrie avh."
+      "has_replacement": "Denne avhengigheten har foreslåtte erstatninger"
     },
     "maintainers": {
       "title": "Vedlikeholdere",
@@ -1262,6 +1252,25 @@
         "description": "Få med deg det siste om npmx.",
         "cta": "Følg på Bluesky"
       }
+    }
+  },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
     }
   },
   "account_menu": {

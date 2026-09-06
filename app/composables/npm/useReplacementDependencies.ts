@@ -1,67 +1,57 @@
-import type { ModuleReplacement, ModuleReplacementMapping } from 'module-replacements'
+import type { ModuleReplacement } from 'module-replacements'
+import type { DependencySpec } from '~/utils/npm/package-dependency-sections'
 
 async function fetchReplacements(
-  deps: Record<string, string>,
+  deps: Record<string, DependencySpec>,
 ): Promise<Record<string, ModuleReplacement>> {
-  const names = Object.keys(deps)
+  const entries = Object.entries(deps)
+  if (entries.length === 0) return {}
 
-  const results = await Promise.all(
-    names.map(async name => {
-      try {
-        const response = await $fetch<{
-          mapping: ModuleReplacementMapping
-          replacement: ModuleReplacement
-        } | null>(`/api/replacements/${name}`)
-        const replacement = response?.replacement ?? null
-        return { name, replacement }
-      } catch {
-        return { name, replacement: null }
-      }
-    }),
-  )
+  const names = Array.from(new Set(entries.map(([, spec]) => spec.name)))
+  try {
+    const isSingle = names.length === 1
+    const res = await $fetch<any>(`/api/replacements/${names.map(encodeURIComponent).join(',')}`)
+    if (!res) return {}
 
-  const map: Record<string, ModuleReplacement> = {}
-  for (const { name, replacement } of results) {
-    if (replacement) {
-      map[name] = replacement
+    const map: Record<string, ModuleReplacement> = {}
+    for (const [key, spec] of entries) {
+      const match = isSingle ? res : res[spec.name]
+      if (match?.replacement) map[key] = match.replacement
     }
+    return map
+  } catch {
+    return {}
   }
-  return map
 }
 
 /**
  * Fetch module replacement suggestions for a set of dependencies.
- * Returns a reactive map of dependency name to ModuleReplacement.
+ * Returns an AsyncData result.
  */
 export function useReplacementDependencies(
-  dependencies: MaybeRefOrGetter<Record<string, string> | undefined>,
+  dependencies: MaybeRefOrGetter<Record<string, DependencySpec> | undefined>,
 ) {
-  const replacements = shallowRef<Record<string, ModuleReplacement>>({})
-  let generation = 0
+  const depsRef = computed(() => toValue(dependencies))
 
-  if (import.meta.client) {
-    watch(
-      () => toValue(dependencies),
-      async deps => {
-        const currentGeneration = ++generation
+  const key = computed(() => {
+    const deps = depsRef.value
+    if (!deps) return 'replacements:none'
+    const sorted = Object.keys(deps).sort()
+    return sorted.length === 0
+      ? 'replacements:none'
+      : `replacements:${sorted.map(k => `${k}@${deps[k]!.version}`).join(',')}`
+  })
 
-        if (!deps || Object.keys(deps).length === 0) {
-          replacements.value = {}
-          return
-        }
-
-        try {
-          const result = await fetchReplacements(deps)
-          if (currentGeneration === generation) {
-            replacements.value = result
-          }
-        } catch {
-          // catastrophic failure, just keep whatever we have
-        }
-      },
-      { immediate: true },
-    )
-  }
-
-  return replacements
+  return useAsyncData<Record<string, ModuleReplacement>>(
+    key.value,
+    async () => {
+      const deps = depsRef.value
+      if (!deps || Object.keys(deps).length === 0) return {}
+      return await fetchReplacements(deps)
+    },
+    {
+      watch: [depsRef],
+      default: () => ({}),
+    },
+  )
 }

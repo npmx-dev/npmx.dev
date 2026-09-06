@@ -98,6 +98,7 @@
     "current": "mevcut",
     "here": "buradasınız",
     "connected": "bağlı",
+    "keyboard_shortcuts": {},
     "state": {
       "on": "açık",
       "off": "kapalı"
@@ -229,6 +230,9 @@
       "more_replies": "{count} yanıt daha... | {count} yanıt daha..."
     }
   },
+  "noodles": {
+    "missing": {}
+  },
   "settings": {
     "title": "ayarlar",
     "tagline": "npmx deneyiminizi kişiselleştirin",
@@ -284,6 +288,7 @@
       "slate": "Arduvaz",
       "black": "Siyah"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Klavye kısayolları etkin",
     "keyboard_shortcuts_enabled_description": "Hızlı navigasyon için klavye kısayollarını etkinleştir",
     "enable_code_ligatures": "Kodda ligature'ları etkinleştir",
@@ -485,6 +490,7 @@
       "title": "Çalıştır",
       "locally": "Yerel olarak çalıştır"
     },
+    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "README mevcut değil.",
@@ -609,25 +615,13 @@
     },
     "dependencies": {
       "title": "Bağımlılık ({count}) | Bağımlılıklar ({count})",
-      "list_label": "Paket bağımlılıkları",
-      "show_all": "{count} bağımlılığı göster | tüm {count} bağımlılığı göster",
+      "insights": {},
       "optional": "isteğe bağlı",
       "view_vulnerabilities": "Güvenlik açıklarını göster",
       "outdated_major": "{count} major sürüm geride (son: {latest}) | {count} major sürüm geride (son: {latest})",
       "outdated_minor": "{count} minor sürüm geride (son: {latest}) | {count} minor sürüm geride (son: {latest})",
       "outdated_patch": "Patch güncellemesi mevcut (son: {latest})",
-      "has_replacement": "Bu bağımlılığın önerilen alternatifleri var",
-      "vulnerabilities_count": "{count} güvenlik açığı | {count} güvenlik açığı"
-    },
-    "peer_dependencies": {
-      "title": "Peer Bağımlılık ({count}) | Peer Bağımlılıklar ({count})",
-      "list_label": "Paket peer bağımlılıkları",
-      "show_all": "{count} peer bağımlılığı göster | tüm {count} peer bağımlılığı göster"
-    },
-    "optional_dependencies": {
-      "title": "İsteğe Bağlı Bağımlılık ({count}) | İsteğe Bağlı Bağımlılıklar ({count})",
-      "list_label": "Paket isteğe bağlı bağımlılıkları",
-      "show_all": "{count} isteğe bağlı bağımlılığı göster | tüm {count} isteğe bağlı bağımlılığı göster"
+      "has_replacement": "Bu bağımlılığın önerilen alternatifleri var"
     },
     "maintainers": {
       "title": "Geliştiriciler",
@@ -707,7 +701,8 @@
         "general_description": "Y ekseni indirme sayısını temsil eder. X ekseni tarih aralığını temsil eder, {start_date}'den {end_date}'e, {granularity} zaman dönemi ile.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "{packages} paketleri için yatay çubuk grafiği, {facet} karşılaştırması ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} paketi {value} değerine sahip."
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "Haftalık İndirmeler",
@@ -1215,6 +1210,25 @@
       }
     }
   },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
+    }
+  },
   "account_menu": {
     "connect": "Bağlan",
     "account": "Hesap",
@@ -1389,6 +1403,7 @@
           "label": "GitHub Yıldızları",
           "description": "GitHub deposundaki yıldız sayısı"
         },
+        "githubForks": {},
         "githubIssues": {
           "label": "GitHub Sorunları",
           "description": "GitHub deposundaki sorun sayısı"

@@ -74,6 +74,7 @@
     "instant_search_advisory": "{label} {state} — {action}"
   },
   "command_palette": {
+    "keyboard_shortcuts": {},
     "state": {},
     "groups": {},
     "actions": {},
@@ -127,6 +128,9 @@
       "more_replies": "jeszcze {count} odpowiedź… | jeszcze {count} odpowiedzi… | jeszcze {count} odpowiedzi…"
     }
   },
+  "noodles": {
+    "missing": {}
+  },
   "settings": {
     "title": "ustawienia",
     "tagline": "dostosuj npmx do siebie",
@@ -167,6 +171,7 @@
     "background_themes": {
       "label": "Odcień tła"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Włącz skróty klawiaturowe",
     "keyboard_shortcuts_enabled_description": "Skróty klawiaturowe mogą zostać wyłączone jeśli kolidują z innymi skrótami przeglądarki lub systemu"
   },
@@ -337,6 +342,7 @@
       "title": "Uruchom",
       "locally": "Uruchom lokalnie"
     },
+    "command": {},
     "readme": {
       "title": "README",
       "no_readme": "Brak README.",
@@ -425,24 +431,13 @@
     },
     "dependencies": {
       "title": "Zależności ({count})",
-      "list_label": "Zależności pakietu",
-      "show_all": "pokaż wszystkie ({count})",
+      "insights": {},
       "optional": "opcjonalne",
       "view_vulnerabilities": "Zobacz luki",
       "outdated_major": "{count} wersji głównych w tyle (najnowsza: {latest}) | {count} wersja główna w tyle (najnowsza: {latest}) | {count} wersje główne w tyle (najnowsza: {latest}) | {count} wersji głównych w tyle (najnowsza: {latest}) | {count} wersji głównych w tyle (najnowsza: {latest})",
       "outdated_minor": "{count} wersji minor w tyle (najnowsza: {latest}) | {count} wersja minor w tyle (najnowsza: {latest}) | {count} wersje minor w tyle (najnowsza: {latest}) | {count} wersji minor w tyle (najnowsza: {latest}) | {count} wersji minor w tyle (najnowsza: {latest})",
       "outdated_patch": "Dostępna poprawka (najnowsza: {latest})",
       "has_replacement": "Ta zależność ma sugerowane zamienniki"
-    },
-    "peer_dependencies": {
-      "title": "Zależności peer ({count})",
-      "list_label": "Zależności peer pakietu",
-      "show_all": "pokaż wszystkie ({count})"
-    },
-    "optional_dependencies": {
-      "title": "Zależności opcjonalne ({count})",
-      "list_label": "Opcjonalne zależności pakietu",
-      "show_all": "pokaż wszystkie ({count})"
     },
     "maintainers": {
       "title": "Opiekunowie",
@@ -513,7 +508,8 @@
         "general_description": "Oś Y przedstawia ilość pobrań. Oś X przedstawia zakres dat, od {start_date} do {end_date}, z jednostką czasu {granularity}. {estimation_notice} {package_analysis}. {watermark}",
         "facet_bar_general_description": "Poziomy wykres słupkowy dla: {packages}, porównuje {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} ma wartość {value}."
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "Pobrania tygodniowe",
@@ -1000,6 +996,25 @@
       }
     }
   },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
+    }
+  },
   "account_menu": {
     "connect": "połącz",
     "account": "Konto",
@@ -1155,6 +1170,7 @@
           "description": "Znane luki bezpieczeństwa"
         },
         "githubStars": {},
+        "githubForks": {},
         "githubIssues": {},
         "createdAt": {}
       },

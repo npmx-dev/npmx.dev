@@ -1,12 +1,17 @@
 <script setup lang="ts">
+import type { RouteLocationRaw } from 'vue-router'
 import type { NpmSearchResult } from '#shared/types/npm-registry'
 import type { ColumnConfig, StructuredFilters } from '#shared/types/preferences'
+import { getVulnerableDepInfo, getDeprecatedDepInfo } from '~/utils/npm/problematic-dependencies'
+import type { PackageDependencyInsights } from '~/composables/usePackageDependencyInsights'
 
 const props = defineProps<{
   result: NpmSearchResult
   columns: ColumnConfig[]
   index?: number
   filters?: StructuredFilters
+  insights?: PackageDependencyInsights
+  to?: RouteLocationRaw | string
 }>()
 
 const emit = defineEmits<{
@@ -14,6 +19,7 @@ const emit = defineEmits<{
 }>()
 
 const pkg = computed(() => props.result.package)
+const insights = computed(() => props.insights)
 
 const updatedDate = computed(() => props.result.package.date)
 const { isPackageSelected, togglePackageSelection, canSelectMore } = usePackageSelection()
@@ -25,11 +31,43 @@ function isColumnVisible(id: string): boolean {
   return props.columns.find(c => c.id === id)?.visible ?? false
 }
 
-const packageUrl = computed(() => packageRoute(pkg.value.name))
+const packageUrl = computed(() => props.to ?? packageRoute(pkg.value.name))
 
 const allMaintainersText = computed(() => {
   if (!pkg.value.maintainers?.length) return ''
   return pkg.value.maintainers.map(m => m.name || m.email).join(', ')
+})
+
+const standaloneReplacementRes = useModuleReplacement(() => props.result.package.name)
+const standaloneDepAnalysisRes = useDependencyAnalysis(
+  () => props.result.package.name,
+  () => props.result.package.version,
+)
+
+const hasReplacement = computed(() => {
+  if (insights.value) {
+    return !!unref(insights.value.replacementDeps)?.[props.result.package.name]
+  }
+  return !!standaloneReplacementRes.data.value?.replacement
+})
+
+const effectiveVulnTree = computed(() => {
+  if (insights.value) {
+    return unref(insights.value.vulnTree)
+  }
+  return standaloneDepAnalysisRes.data.value ?? undefined
+})
+
+const packageTextColorClass = computed(() => {
+  const dependencyName = pkg.value.name
+  if (getVulnerableDepInfo(dependencyName, effectiveVulnTree.value)) return 'text-red-600'
+  if (
+    getDeprecatedDepInfo(dependencyName, effectiveVulnTree.value, props.result.package.deprecated)
+  )
+    return 'text-purple-700 dark:text-purple-500'
+  if (hasReplacement.value) return 'text-amber-700 dark:text-amber-500'
+
+  return 'text-fg hover:text-accent-fallback'
 })
 
 const compactNumberFormatter = useCompactNumberFormatter()
@@ -39,9 +77,7 @@ const { selectable } = usePackageSelectionContext()
 
 <template>
   <tr
-    class="group relative scale-100 [clip-path:inset(0)] border-b border-border hover:bg-bg-muted transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset focus-visible:outline-none focus:bg-bg-muted"
-    tabindex="0"
-    :data-result-index="index"
+    class="group relative scale-100 [clip-path:inset(0)] border-b border-border hover:bg-bg-muted transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset focus-visible:outline-none focus:bg-bg-muted focus-within:bg-bg-muted"
   >
     <td class="ps-3" v-if="selectable">
       <PackageSelectionCheckbox
@@ -49,22 +85,40 @@ const { selectable } = usePackageSelectionContext()
         :disabled="!canSelectMore && !isSelected"
         :checked="isSelected"
         @change="togglePackageSelection"
+        class="relative z-10"
       />
     </td>
     <!-- Name (always visible) -->
-    <td class="py-2 px-3">
+    <td class="py-2 px-3 inline-flex items-center gap-2">
       <NuxtLink
         :to="packageUrl"
-        class="row-link font-mono text-sm text-fg hover:text-accent-fallback transition-colors duration-200"
-        dir="ltr"
+        class="row-link font-mono text-sm transition-colors duration-200 inline-flex items-center gap-2 min-w-0 after:content-[''] after:absolute after:inset-0"
+        :class="packageTextColorClass"
+        :data-result-index="index"
       >
-        {{ pkg.name }}
+        <span class="i-simple-icons:npm w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+        <span class="truncate" dir="ltr">{{ pkg.name }}</span>
       </NuxtLink>
+      <slot name="status-indicators" :insights="insights">
+        <DependenciesStatusIndicators
+          :name="pkg.name"
+          :deprecated="result.package.deprecated"
+          :has-replacement="hasReplacement"
+          :vuln-tree="effectiveVulnTree"
+          :insights="insights"
+          class="relative z-10"
+        />
+      </slot>
     </td>
 
     <!-- Version -->
-    <td v-if="isColumnVisible('version')" class="py-2 px-3 font-mono text-xs text-fg-subtle">
-      <span dir="ltr">{{ pkg.version }}</span>
+    <td
+      v-if="isColumnVisible('version')"
+      class="py-2 px-3 font-mono text-xs text-fg-subtle relative z-10"
+    >
+      <slot name="version" :version="pkg.version">
+        <span dir="ltr">{{ pkg.version }}</span>
+      </slot>
     </td>
 
     <!-- Description -->
@@ -141,10 +195,9 @@ const { selectable } = usePackageSelectionContext()
           v-for="keyword in pkg.keywords.slice(0, 3)"
           :key="keyword"
           size="sm"
-          :aria-pressed="props.filters?.keywords.includes(keyword)"
+          :aria-pressed="props.filters?.keywords?.includes(keyword)"
           :title="`Filter by ${keyword}`"
           @click.stop="emit('clickKeyword', keyword)"
-          :class="{ 'group-hover:bg-bg-elevated': !props.filters?.keywords.includes(keyword) }"
         >
           {{ keyword }}
         </ButtonBase>
@@ -176,14 +229,7 @@ const { selectable } = usePackageSelectionContext()
 
 <style scoped>
 .row-link {
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    cursor: pointer;
-  }
-
-  &:focus-visible::after {
+  &:focus-visible {
     outline: 2px solid var(--color-fg);
     outline-offset: -2px;
   }

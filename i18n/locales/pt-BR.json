@@ -98,6 +98,7 @@
     "current": "atual",
     "here": "você está aqui",
     "connected": "conectado",
+    "keyboard_shortcuts": {},
     "state": {
       "on": "ativado",
       "off": "desativado"
@@ -228,6 +229,9 @@
       "more_replies": "{count} mais resposta... | {count} mais respostas..."
     }
   },
+  "noodles": {
+    "missing": {}
+  },
   "settings": {
     "title": "configurações",
     "tagline": "personalize sua experiência npmx",
@@ -283,6 +287,7 @@
       "slate": "Ardósia",
       "black": "Preto"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Habilitar atalhos de teclado",
     "keyboard_shortcuts_enabled_description": "Os atalhos de teclado podem ser desativados se entrarem em conflito com outros atalhos do navegador ou do sistema",
     "enable_code_ligatures": "Habilitar ligaturas no código"
@@ -477,6 +482,7 @@
       "title": "Executar",
       "locally": "Executar localmente"
     },
+    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "README não disponível.",
@@ -589,25 +595,13 @@
     },
     "dependencies": {
       "title": "Dependências ({count})",
-      "list_label": "Dependências do pacote",
-      "show_all": "mostrar {count} dep | mostrar todas as {count} deps",
+      "insights": {},
       "optional": "opcional",
       "view_vulnerabilities": "Ver vulnerabilidades",
       "outdated_major": "{count} versão principal desatualizada (mais recente: {latest}) | {count} versões principais desatualizadas (mais recente: {latest})",
       "outdated_minor": "{count} versão secundária desatualizada (mais recente: {latest}) | {count} versões secundárias desatualizadas (mais recente: {latest})",
       "outdated_patch": "Atualização de patch disponível (mais recente: {latest})",
-      "has_replacement": "Esta dependência tem substituições sugeridas",
-      "vulnerabilities_count": "{count} vulnerabilidade | {count} vulnerabilidades"
-    },
-    "peer_dependencies": {
-      "title": "Dependências Pares ({count})",
-      "list_label": "Dependências pares do pacote",
-      "show_all": "mostrar {count} dep par | mostrar todas as {count} deps pares"
-    },
-    "optional_dependencies": {
-      "title": "Dependências Opcionais ({count})",
-      "list_label": "Dependências opcionais do pacote",
-      "show_all": "mostrar {count} dep opcional | mostrar todas as {count} deps opcionais"
+      "has_replacement": "Esta dependência tem substituições sugeridas"
     },
     "maintainers": {
       "title": "Mantenedores",
@@ -687,7 +681,8 @@
         "general_description": "O eixo Y representa o número de downloads. O eixo X representa o intervalo de datas, de {start_date} a {end_date}, com um período de {granularity}.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Gráfico de barras horizontais para: {packages}, comparando {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} tem um valor de {value}."
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "Downloads Semanais",
@@ -1188,6 +1183,25 @@
       }
     }
   },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
+    }
+  },
   "account_menu": {
     "connect": "conectar",
     "account": "Conta",
@@ -1362,6 +1376,7 @@
           "label": "Estrelas no Github",
           "description": "Número de estrelas no repositório GitHub"
         },
+        "githubForks": {},
         "githubIssues": {
           "label": "Issues no Github",
           "description": "Número de issues no repositório GitHub"

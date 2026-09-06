@@ -95,6 +95,7 @@ function hitToSearchResult(hit: AlgoliaHit): NpmSearchResult {
           }))
         : [],
       isSecurityHeld: hit.isSecurityHeld,
+      deprecated: hit.deprecated || (hit.isDeprecated ? true : undefined),
     },
     searchScore: 0,
     downloads: {

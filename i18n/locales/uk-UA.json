@@ -98,6 +98,7 @@
     "current": "поточна",
     "here": "ви тут",
     "connected": "підключено",
+    "keyboard_shortcuts": {},
     "state": {
       "on": "увімкнено",
       "off": "вимкнено"
@@ -228,6 +229,9 @@
       "more_replies": "ще {count} відповідь... | ще {count} відповіді... | ще {count} відповідей..."
     }
   },
+  "noodles": {
+    "missing": {}
+  },
   "settings": {
     "title": "налаштування",
     "tagline": "налаштуйте ваше середовище npmx",
@@ -283,6 +287,7 @@
       "slate": "Сланцевий",
       "black": "Чорний"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Увімкнути гарячі клавіші",
     "keyboard_shortcuts_enabled_description": "Гарячі клавіші можна вимкнути, якщо вони конфліктують з налаштуваннями браузера або системи",
     "enable_code_ligatures": "Увімкнути лігатури в коді"
@@ -481,6 +486,7 @@
       "title": "Запустити",
       "locally": "Запустити локально"
     },
+    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "README недоступний.",
@@ -604,25 +610,13 @@
     },
     "dependencies": {
       "title": "Залежності ({count})",
-      "list_label": "Залежності пакета",
-      "show_all": "показати {count} залежність | показати {count} залежності | показати {count} залежностей",
+      "insights": {},
       "optional": "опціонально",
       "view_vulnerabilities": "Переглянути вразливості",
       "outdated_major": "{count} мажорна версія позаду (остання: {latest}) | {count} мажорні версії позаду (остання: {latest}) | {count} мажорних версій позаду (остання: {latest})",
       "outdated_minor": "{count} мінорна версія позаду (остання: {latest}) | {count} мінорні версії позаду (остання: {latest}) | {count} мінорних версій позаду (остання: {latest})",
       "outdated_patch": "Доступне оновлення (остання версія: {latest})",
-      "has_replacement": "Ця залежність має рекомендовані заміни",
-      "vulnerabilities_count": "{count} вразливість | {count} вразливості | {count} вразливостей"
-    },
-    "peer_dependencies": {
-      "title": "Peer-залежності ({count})",
-      "list_label": "Peer-залежності пакета",
-      "show_all": "показати {count} peer-залежність | показати {count} peer-залежності | показати {count} peer-залежностей"
-    },
-    "optional_dependencies": {
-      "title": "Опціональні залежності ({count})",
-      "list_label": "Опціональні залежності пакета",
-      "show_all": "показати {count} опціональну залежність | показати {count} опціональні залежності | показати {count} опціональних залежностей"
+      "has_replacement": "Ця залежність має рекомендовані заміни"
     },
     "maintainers": {
       "title": "Супроводжувачі",
@@ -702,7 +696,8 @@
         "general_description": "Вісь Y відображає кількість завантажень. Вісь X відображає діапазон дат, від {start_date} до {end_date}, з часовим інтервалом {granularity}.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Горизонтальна стовпчаста діаграма для {packages}, порівнюється {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} має значення {value}."
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "Завантажень на тиждень",
@@ -1210,6 +1205,25 @@
       }
     }
   },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
+    }
+  },
   "account_menu": {
     "connect": "підключити",
     "account": "Обліковий запис",
@@ -1384,6 +1398,7 @@
           "label": "Зірки GitHub",
           "description": "Кількість зірок у репозиторії GitHub"
         },
+        "githubForks": {},
         "githubIssues": {
           "label": "Issues GitHub",
           "description": "Кількість issues у репозиторії GitHub"

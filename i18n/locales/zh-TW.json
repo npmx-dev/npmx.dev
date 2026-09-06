@@ -94,6 +94,7 @@
     "current": "目前",
     "here": "你所在的位置",
     "connected": "已連線",
+    "keyboard_shortcuts": {},
     "state": {
       "on": "開",
       "off": "關"
@@ -224,6 +225,9 @@
       "more_replies": "還有 {count} 則回覆⋯⋯ | 還有 {count} 則回覆⋯⋯"
     }
   },
+  "noodles": {
+    "missing": {}
+  },
   "settings": {
     "title": "設定",
     "tagline": "自訂你的 npmx 體驗",
@@ -279,6 +283,7 @@
       "slate": "板岩灰",
       "black": "黑色"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "啟用鍵盤快速鍵",
     "keyboard_shortcuts_enabled_description": "若與其他瀏覽器或系統快捷鍵衝突，可停用鍵盤快速鍵"
   },
@@ -462,6 +467,7 @@
       "title": "執行",
       "locally": "在本機執行"
     },
+    "command": {},
     "readme": {
       "title": "README",
       "no_readme": "沒有可用的 README。",
@@ -552,32 +558,20 @@
       "no_match_filter": "沒有版本符合 {filter}"
     },
     "timeline": {
+      "deprecated": "已棄用",
       "chart": {
         "copy_alt": {}
-      },
-      "deprecated": "已棄用"
+      }
     },
     "dependencies": {
       "title": "相依（{count} 個）",
-      "list_label": "套件相依",
-      "show_all": "顯示全部 {count} 個相依套件",
+      "insights": {},
       "optional": "選用",
       "view_vulnerabilities": "檢視漏洞",
       "outdated_major": "落後 {count} 個主要版本（最新：{latest}）",
       "outdated_minor": "落後 {count} 個次要版本（最新：{latest}）",
       "outdated_patch": "有可用的修補更新（最新：{latest}）",
-      "has_replacement": "此相依套件有建議的替代方案",
-      "vulnerabilities_count": "{count} 個漏洞"
-    },
-    "peer_dependencies": {
-      "title": "peer 相依（{count} 個）",
-      "list_label": "套件 peer 相依",
-      "show_all": "顯示全部 {count} 個 peer 相依"
-    },
-    "optional_dependencies": {
-      "title": "選用相依（{count} 個）",
-      "list_label": "套件選用相依",
-      "show_all": "顯示全部 {count} 個選用相依"
+      "has_replacement": "此相依套件有建議的替代方案"
     },
     "maintainers": {
       "title": "維護者",
@@ -657,7 +651,8 @@
         "general_description": "Y 軸代表下載次數。X 軸代表日期範圍，從 {start_date} 至 {end_date}，以 {granularity} 為時間單位。 {estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "水平長條圖: {package} 的 {facet} 對比({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} 值為 {value}."
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "每週下載量",
@@ -1159,6 +1154,25 @@
       }
     }
   },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
+    }
+  },
   "account_menu": {
     "connect": "連線",
     "account": "帳戶",
@@ -1330,6 +1344,7 @@
           "description": "已知安全漏洞"
         },
         "githubStars": {},
+        "githubForks": {},
         "githubIssues": {},
         "createdAt": {}
       },

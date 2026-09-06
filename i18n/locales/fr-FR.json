@@ -98,6 +98,7 @@
     "current": "actuel",
     "here": "vous êtes ici",
     "connected": "connecté",
+    "keyboard_shortcuts": {},
     "state": {
       "on": "activé",
       "off": "désactivé"
@@ -229,6 +230,9 @@
       "more_replies": "{count} réponse supplémentaire... | {count} réponses supplémentaires..."
     }
   },
+  "noodles": {
+    "missing": {}
+  },
   "settings": {
     "title": "paramètres",
     "tagline": "personnalisez votre expérience npmx",
@@ -284,6 +288,7 @@
       "slate": "Ardoise",
       "black": "Noir"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Activer les raccourcis clavier",
     "keyboard_shortcuts_enabled_description": "Les raccourcis clavier peuvent être désactivés s'ils entrent en conflit avec d'autres raccourcis du navigateur ou du système",
     "enable_code_ligatures": "Activer les ligatures de code",
@@ -485,6 +490,7 @@
       "title": "Exécuter",
       "locally": "Exécuter localement"
     },
+    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "Aucun README disponible.",
@@ -610,25 +616,13 @@
     },
     "dependencies": {
       "title": "Dépendances ({count})",
-      "list_label": "Dépendances du paquet",
-      "show_all": "afficher les {count} dépendances",
+      "insights": {},
       "optional": "optionnelle",
       "view_vulnerabilities": "Voir les vulnérabilités",
       "outdated_major": "{count} version majeure en retard (dernière : {latest}) | {count} versions majeures en retard (dernière : {latest})",
       "outdated_minor": "{count} version mineure en retard (dernière : {latest}) | {count} versions mineures en retard (dernière : {latest})",
       "outdated_patch": "Mise à jour patch disponible (dernière : {latest})",
-      "has_replacement": "Cette dépendance a des remplacements suggérés",
-      "vulnerabilities_count": "{count} vulnérabilité | {count} vulnérabilités"
-    },
-    "peer_dependencies": {
-      "title": "Dépendances peer ({count})",
-      "list_label": "Dépendances peer du paquet",
-      "show_all": "afficher les {count} dépendances peer"
-    },
-    "optional_dependencies": {
-      "title": "Dépendances optionnelles ({count})",
-      "list_label": "Dépendances optionnelles du paquet",
-      "show_all": "afficher les {count} dépendances optionnelles"
+      "has_replacement": "Cette dépendance a des remplacements suggérés"
     },
     "maintainers": {
       "title": "Mainteneurs",
@@ -1226,6 +1220,25 @@
       }
     }
   },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
+    }
+  },
   "account_menu": {
     "connect": "connexion",
     "account": "Compte",
@@ -1400,6 +1413,7 @@
           "label": "Étoiles GitHub",
           "description": "Nombre d’étoiles du dépôt GitHub"
         },
+        "githubForks": {},
         "githubIssues": {
           "label": "Issues GitHub",
           "description": "Nombre d’issues ouvertes sur GitHub"

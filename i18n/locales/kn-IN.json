@@ -42,6 +42,24 @@
       "view_org_packages": "ಈ ಸಂಸ್ಥೆಯ ಪ್ಯಾಕೇಜ್‌ಗಳನ್ನು ನೋಡಿ"
     }
   },
+  "command_palette": {
+    "keyboard_shortcuts": {},
+    "state": {},
+    "groups": {},
+    "actions": {},
+    "connections": {},
+    "navigation": {},
+    "links": {},
+    "package_links": {},
+    "theme": {},
+    "package": {},
+    "package_actions": {},
+    "code": {},
+    "diff": {},
+    "version": {},
+    "status": {},
+    "announcements": {}
+  },
   "nav": {
     "main_navigation": "ಮುಖ್ಯ ನಾವಿಗೇಶನ್",
     "popular_packages": "ಜನಪ್ರಿಯ ಪ್ಯಾಕೇಜ್‌ಗಳು",
@@ -57,6 +75,9 @@
   "blog": {
     "author": {},
     "atproto": {}
+  },
+  "noodles": {
+    "missing": {}
   },
   "settings": {
     "title": "ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
@@ -84,7 +105,8 @@
     },
     "clear_accent": "ಅಕ್ಸೆಂಟ್ ಬಣ್ಣ ತೆರವುಗೊಳಿಸಿ",
     "translation_progress": "ಅನುವಾದ ಪ್ರಗತಿ",
-    "background_themes": {}
+    "background_themes": {},
+    "foreground_themes": {}
   },
   "i18n": {
     "missing_keys": "{count} ಅನುವಾದ ಇಲ್ಲ | {count} ಅನುವಾದಗಳು ಇಲ್ಲ",
@@ -137,6 +159,7 @@
       "no_reason": "ಕಾರಣ ನೀಡಲಾಗಿಲ್ಲ"
     },
     "size_increase": {},
+    "size_decrease": {},
     "replacement": {
       "title": "ನಿಮಗೆ ಈ ಅವಲಂಬನೆ ಅಗತ್ಯವಿಲ್ಲದಿರಬಹುದು.",
       "native": "ಇದನ್ನು {replacement} ಮೂಲಕ ಬದಲಾಯಿಸಬಹುದು, ಇದು Node {nodeVersion} ರಿಂದ ಲಭ್ಯವಿದೆ.",
@@ -201,6 +224,7 @@
       "title": "ಚಲಾಯಿಸಿ",
       "locally": "ಸ್ಥಳೀಯವಾಗಿ ಚಲಾಯಿಸಿ"
     },
+    "command": {},
     "readme": {
       "title": "ರೀಡ್‌ಮಿ",
       "no_readme": "README ಲಭ್ಯವಿಲ್ಲ.",
@@ -231,25 +255,19 @@
       "view_all": "{count} ಆವೃತ್ತಿ ನೋಡಿ | ಎಲ್ಲಾ {count} ಆವೃತ್ತಿಗಳನ್ನು ನೋಡಿ",
       "copy_alt": {}
     },
+    "timeline": {
+      "chart": {
+        "copy_alt": {}
+      }
+    },
     "dependencies": {
       "title": "ಅವಲಂಬನೆಗಳು ({count})",
-      "list_label": "ಪ್ಯಾಕೇಜ್ ಅವಲಂಬನೆಗಳು",
-      "show_all": "{count} ಅವಲಂಬನೆ ತೋರಿಸಿ | ಎಲ್ಲಾ {count} ಅವಲಂಬನೆಗಳನ್ನು ತೋರಿಸಿ",
+      "insights": {},
       "optional": "ಐಚ್ಛಿಕ",
       "view_vulnerabilities": "ಭದ್ರತಾ ದುರ್ಬಲತೆಗಳನ್ನು ನೋಡಿ",
       "outdated_major": "{count} ಮೇಜರ್ ಆವೃತ್ತಿ ಹಿಂದುಳಿದಿದೆ (ಇತ್ತೀಚಿನದು: {latest}) | {count} ಮೇಜರ್ ಆವೃತ್ತಿಗಳು ಹಿಂದುಳಿದಿವೆ (ಇತ್ತೀಚಿನದು: {latest})",
       "outdated_minor": "{count} ಮೈನರ್ ಆವೃತ್ತಿ ಹಿಂದುಳಿದಿದೆ (ಇತ್ತೀಚಿನದು: {latest}) | {count} ಮೈನರ್ ಆವೃತ್ತಿಗಳು ಹಿಂದುಳಿದಿವೆ (ಇತ್ತೀಚಿನದು: {latest})",
       "outdated_patch": "ಪ್ಯಾಚ್ ನವೀಕರಣ ಲಭ್ಯವಿದೆ (ಇತ್ತೀಚಿನದು: {latest})"
-    },
-    "peer_dependencies": {
-      "title": "ಪೀರ್ ಅವಲಂಬನೆಗಳು ({count})",
-      "list_label": "ಪ್ಯಾಕೇಜ್ ಪೀರ್ ಅವಲಂಬನೆಗಳು",
-      "show_all": "{count} ಪೀರ್ ಅವಲಂಬನೆ ತೋರಿಸಿ | ಎಲ್ಲಾ {count} ಪೀರ್ ಅವಲಂಬನೆಗಳನ್ನು ತೋರಿಸಿ"
-    },
-    "optional_dependencies": {
-      "title": "ಐಚ್ಛಿಕ ಅವಲಂಬನೆಗಳು ({count})",
-      "list_label": "ಪ್ಯಾಕೇಜ್ ಐಚ್ಛಿಕ ಅವಲಂಬನೆ",
-      "show_all": "{count} ಐಚ್ಛಿಕ ಅವಲಂಬನೆ ತೋರಿಸಿ | ಎಲ್ಲಾ {count} ಐಚ್ಛಿಕ ಅವಲಂಬನೆಗಳನ್ನು ತೋರಿಸಿ"
     },
     "maintainers": {
       "title": "ನಿರ್ವಹಕರು",
@@ -266,6 +284,7 @@
       "show_less": "(ಕಡಿಮೆ ತೋರಿಸಿ)"
     },
     "trends": {
+      "chart_assistive_text": {},
       "granularity": "ಗ್ರಾನ್ಯುಲಾರಿಟಿ",
       "granularity_daily": "ದೈನಂದಿನ",
       "granularity_weekly": "ವಾರದ",
@@ -279,7 +298,8 @@
       "download_file": "{fileType} ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ",
       "toggle_annotator": "ಅನೋಟೇಟರ್ ಟಾಗಲ್ ಮಾಡಿ",
       "items": {},
-      "copy_alt": {}
+      "copy_alt": {},
+      "embedding": {}
     },
     "downloads": {
       "title": "ವಾರದ ಡೌನ್‌ಲೋಡ್‌ಗಳು"
@@ -367,6 +387,9 @@
     },
     "size": {},
     "download": {}
+  },
+  "leaderboard": {
+    "likes": {}
   },
   "connector": {
     "modal": {
@@ -729,6 +752,25 @@
       }
     }
   },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
+    }
+  },
   "account_menu": {
     "connect": "ಸಂಪರ್ಕಿಸಿ",
     "account": "ಖಾತೆ",
@@ -800,6 +842,9 @@
       "packages_selected": "{count}/{max} ಪ್ಯಾಕೇಜ್‌ಗಳು ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ.",
       "add_hint": "ಹೋಲಿಸಲು ಕನಿಷ್ಠ 2 ಪ್ಯಾಕೇಜ್‌ಗಳನ್ನು ಸೇರಿಸಿ."
     },
+    "scatter_chart": {
+      "copy_alt": {}
+    },
     "no_dependency": {},
     "facets": {
       "all": "ಎಲ್ಲ",
@@ -826,7 +871,11 @@
         "types": {},
         "moduleFormat": {},
         "license": {},
-        "vulnerabilities": {}
+        "vulnerabilities": {},
+        "githubStars": {},
+        "githubForks": {},
+        "githubIssues": {},
+        "createdAt": {}
       },
       "values": {},
       "trends": {}
@@ -860,9 +909,26 @@
     "limitations": {},
     "contact": {}
   },
-  "changelog": {},
   "translation_status": {
     "table": {}
   },
-  "action_bar": {}
+  "vacations": {
+    "what": {},
+    "meantime": {},
+    "return": {},
+    "stats": {
+      "subtitle": {}
+    }
+  },
+  "action_bar": {},
+  "logo_menu": {},
+  "brand": {
+    "logos": {},
+    "customize": {},
+    "typography": {},
+    "guidelines": {}
+  },
+  "changelog": {
+    "error": {}
+  }
 }

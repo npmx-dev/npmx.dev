@@ -77,6 +77,7 @@
     "instant_search_advisory": "{label} {state} — {action}"
   },
   "command_palette": {
+    "keyboard_shortcuts": {},
     "state": {},
     "groups": {},
     "actions": {},
@@ -130,6 +131,9 @@
       "repost_count": "{count} prosleđivanje | {count} prosleđivanja | {count} prosleđivanja",
       "more_replies": "{count} još odgovor... | {count} još odgovora... | {count} još odgovora..."
     }
+  },
+  "noodles": {
+    "missing": {}
   },
   "settings": {
     "title": "podešavanja",
@@ -185,6 +189,7 @@
       "slate": "Škriljac",
       "black": "Crna"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Omogućite prečice na tastaturi",
     "keyboard_shortcuts_enabled_description": "Prečice na tastaturi mogu biti isključene ako su u sukobu sa drugim prečicama pregledača ili sistema"
   },
@@ -366,6 +371,7 @@
       "title": "Pokrenite",
       "locally": "Pokrenite lokalno"
     },
+    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "Nema README datoteke.",
@@ -462,25 +468,13 @@
     },
     "dependencies": {
       "title": "Zavisnost ({count}) | Zavisnosti ({count})",
-      "list_label": "Zavisnosti paketa",
-      "show_all": "prikažite {count} zavisnost | prikažite {count} zavisnosti | prikažite svih {count} zavisnosti",
+      "insights": {},
       "optional": "opciono",
       "view_vulnerabilities": "Pogledajte ranljivosti",
       "outdated_major": "{count} glavna verzija kasni (najnovija: {latest}) | {count} glavne verzije kasne (najnovija: {latest}) | {count} glavnih verzija kasni (najnovija: {latest})",
       "outdated_minor": "{count} sporedna verzija kasni (najnovija: {latest}) | {count} sporedne verzije kasne (najnovija: {latest}) | {count} sporednih verzija kasni (najnovija: {latest})",
       "outdated_patch": "Dostupno je ažuriranje zakrpe (najnovija: {latest})",
-      "has_replacement": "Ova zavisnost ima predložene zamene",
-      "vulnerabilities_count": "{count} ranjivost | {count} ranjivosti | {count} ranjivosti"
-    },
-    "peer_dependencies": {
-      "title": "Peer zavisnost ({count}) | Peer zavisnosti ({count})",
-      "list_label": "Peer zavisnosti",
-      "show_all": "prikažite {count} peer zavisnost | prikažite {count} peer zavisnosti | prikažite svih {count} peer zavisnosti"
-    },
-    "optional_dependencies": {
-      "title": "Opciona zavisnost ({count}) | Opcione zavisnosti ({count})",
-      "list_label": "Opcione zavisnosti paketa",
-      "show_all": "prikažite {count} opcionu zavisnost | prikažite {count} opcione zavisnosti | prikažite svih {count} opcionih zavisnosti"
+      "has_replacement": "Ova zavisnost ima predložene zamene"
     },
     "maintainers": {
       "title": "Održavaoci",
@@ -557,7 +551,8 @@
         "general_description": "Y osa predstavlja broj preuzimanja. X osa predstavlja opseg datuma, od {start_date} do {end_date}, sa vremenskim periodom {granularity}.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Horizontalni stubičasti grafikon za: {packages}, poređenje {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} ima vrednost {value}."
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "Nedeljna preuzimanja",
@@ -1054,6 +1049,25 @@
       }
     }
   },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
+    }
+  },
   "account_menu": {
     "connect": "povežite se",
     "account": "Nalog",
@@ -1216,6 +1230,7 @@
           "description": "Poznate bezbednosne ranjivosti"
         },
         "githubStars": {},
+        "githubForks": {},
         "githubIssues": {},
         "createdAt": {}
       },

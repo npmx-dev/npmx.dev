@@ -1,5 +1,47 @@
 import { describe, expect, it } from 'vitest'
-import { parsePackageParam } from '#shared/utils/parse-package-param'
+import { parsePackageParam, parsePackageSpec } from '#shared/utils/parse-package-param'
+
+describe('parsePackageSpec', () => {
+  it('parses standard package specs', () => {
+    expect(parsePackageSpec('react')).toEqual({ name: 'react', version: undefined })
+    expect(parsePackageSpec('react@18.2.0')).toEqual({ name: 'react', version: '18.2.0' })
+    expect(parsePackageSpec('@vue/reactivity')).toEqual({
+      name: '@vue/reactivity',
+      version: undefined,
+    })
+    expect(parsePackageSpec('@vue/reactivity@3.4.0')).toEqual({
+      name: '@vue/reactivity',
+      version: '3.4.0',
+    })
+  })
+
+  it('parses npm: protocol aliased specs', () => {
+    expect(parsePackageSpec('npm:typescript@^7.0.2')).toEqual({
+      name: 'typescript',
+      version: '^7.0.2',
+    })
+    expect(parsePackageSpec('npm:typescript@~5.7.3')).toEqual({
+      name: 'typescript',
+      version: '~5.7.3',
+    })
+    expect(parsePackageSpec('npm:@types/node@^20.0.0')).toEqual({
+      name: '@types/node',
+      version: '^20.0.0',
+    })
+    expect(parsePackageSpec('npm:@jsr/luca__cases@1')).toEqual({
+      name: '@jsr/luca__cases',
+      version: '1',
+    })
+    expect(parsePackageSpec('npm:typescript')).toEqual({ name: 'typescript', version: undefined })
+  })
+
+  it('parses jsr: protocol aliased specs', () => {
+    expect(parsePackageSpec('jsr:@std/path@^1.0.0')).toEqual({
+      name: '@std/path',
+      version: '^1.0.0',
+    })
+  })
+})
 
 describe('parsePackageParam', () => {
   describe('unscoped packages', () => {

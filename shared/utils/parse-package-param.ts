@@ -75,33 +75,40 @@ export function parsePackageParam(pkgParam: string): ParsedPackageParams {
  * ```
  */
 export function parsePackageSpec(input: string): { name: string; version?: string } {
-  if (input.startsWith('@')) {
+  let spec = input
+  if (spec.startsWith('npm:')) {
+    spec = spec.slice(4)
+  } else if (spec.startsWith('jsr:')) {
+    spec = spec.slice(4)
+  }
+
+  if (spec.startsWith('@')) {
     // Scoped package: @scope/name or @scope/name@version
-    const slashIndex = input.indexOf('/')
+    const slashIndex = spec.indexOf('/')
     if (slashIndex === -1) {
       // Invalid format like just "@scope"
-      return { name: input }
+      return { name: spec }
     }
-    const afterSlash = input.slice(slashIndex + 1)
+    const afterSlash = spec.slice(slashIndex + 1)
     const atIndex = afterSlash.indexOf('@')
     if (atIndex === -1) {
       // @scope/name (no version)
-      return { name: input }
+      return { name: spec }
     }
     // @scope/name@version
     return {
-      name: input.slice(0, slashIndex + 1 + atIndex),
+      name: spec.slice(0, slashIndex + 1 + atIndex),
       version: afterSlash.slice(atIndex + 1),
     }
   }
 
   // Unscoped package: name or name@version
-  const atIndex = input.indexOf('@')
+  const atIndex = spec.indexOf('@')
   if (atIndex === -1) {
-    return { name: input }
+    return { name: spec }
   }
   return {
-    name: input.slice(0, atIndex),
-    version: input.slice(atIndex + 1),
+    name: spec.slice(0, atIndex),
+    version: spec.slice(atIndex + 1),
   }
 }

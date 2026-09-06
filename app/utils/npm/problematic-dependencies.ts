@@ -1,4 +1,5 @@
 import type { VersionDifference } from 'verkit'
+import type { PackageDependencyInsights } from '../../composables/usePackageDependencyInsights'
 
 /** Information about an outdated dependency */
 export interface OutdatedDependencyInfo {
@@ -67,17 +68,57 @@ export function getOutdatedTooltip(
 /**
  * Get CSS class for a dependency version based on outdated status
  */
-export function getVersionClass(info: OutdatedDependencyInfo | undefined): string {
-  if (!info) return 'text-fg-subtle'
-  // Green for up-to-date (e.g. "latest" constraint)
-  if (info.majorsBehind === 0 && info.minorsBehind === 0 && info.resolved === info.latest) {
-    return 'text-green-700 dark:text-green-500 cursor-help'
+export function getVersionClass(
+  dep: string,
+  insights: Pick<PackageDependencyInsights, 'outdatedDeps' | 'replacementDeps'> | undefined,
+): string {
+  const outdated = insights?.outdatedDeps.value?.[dep]
+  if (!outdated) {
+    // Amber for replacements (not outdated)
+    if (insights?.replacementDeps.value?.[dep]) {
+      return 'text-amber-700 dark:text-amber-500'
+    }
+    // Normal
+    return 'text-fg-subtle'
   }
   // Red for major versions behind
-  if (info.majorsBehind > 0) return 'text-red-700 dark:text-red-500 cursor-help'
-  // if (info.majorsBehind > 0) return 'text-#db0000 dark:text-red-500 cursor-help'
+  if (outdated.majorsBehind > 0) return 'text-red-700 dark:text-red-500'
+  // if (info.majorsBehind > 0) return 'text-#db0000 dark:text-red-500'
   // Orange for minor versions behind
-  if (info.minorsBehind > 0) return 'text-orange-700 dark:text-orange-500 cursor-help'
+  if (outdated.minorsBehind > 0) return 'text-orange-700 dark:text-orange-500'
   // Yellow for patch versions behind
-  return 'text-yellow-700 dark:text-yellow-500 cursor-help'
+  return 'text-yellow-700 dark:text-yellow-500'
+}
+
+export function getVulnerableDepInfo(
+  depName: string,
+  vulnTree: VulnerabilityTreeResult | undefined,
+) {
+  if (!vulnTree?.vulnerablePackages) return null
+  return vulnTree.vulnerablePackages.find(
+    p => p.name === depName && (p.depth === 'root' || p.depth === 'direct'),
+  )
+}
+
+export function getDeprecatedDepInfo(
+  depName: string,
+  vulnTree: VulnerabilityTreeResult | undefined,
+  fallbackDeprecated?: string | boolean,
+) {
+  if (vulnTree?.deprecatedPackages) {
+    const found = vulnTree.deprecatedPackages.find(
+      p => p.name === depName && (p.depth === 'root' || p.depth === 'direct'),
+    )
+    if (found) return found
+  }
+  if (fallbackDeprecated) {
+    return {
+      name: depName,
+      version: '',
+      depth: 'root' as const,
+      path: [depName],
+      message: typeof fallbackDeprecated === 'string' ? fallbackDeprecated : '',
+    }
+  }
+  return null
 }

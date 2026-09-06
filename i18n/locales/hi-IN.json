@@ -77,6 +77,7 @@
     "instant_search_advisory": "{label} {state} — {action}"
   },
   "command_palette": {
+    "keyboard_shortcuts": {},
     "state": {},
     "groups": {},
     "actions": {},
@@ -130,6 +131,9 @@
       "repost_count": "{count} रिपोस्ट | {count} रिपोस्ट",
       "more_replies": "{count} और जवाब... | {count} और जवाब..."
     }
+  },
+  "noodles": {
+    "missing": {}
   },
   "settings": {
     "title": "सेटिंग्स",
@@ -185,6 +189,7 @@
       "slate": "स्लेट",
       "black": "काला"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "कीबोर्ड शॉर्टकट सक्षम करें",
     "keyboard_shortcuts_enabled_description": "यदि कीबोर्ड शॉर्टकट अन्य ब्राउज़र या सिस्टम शॉर्टकट से टकराते हैं, तो उन्हें बंद किया जा सकता है"
   },
@@ -352,6 +357,7 @@
       "title": "चलाएं",
       "locally": "स्थानीय रूप से चलाएं"
     },
+    "command": {},
     "readme": {
       "title": "रीडमी",
       "no_readme": "कोई README उपलब्ध नहीं है।",
@@ -448,25 +454,13 @@
     },
     "dependencies": {
       "title": "निर्भरताएँ ({count})",
-      "list_label": "पैकेज निर्भरताएँ",
-      "show_all": "{count} निर्भरता दिखाएं | सभी {count} निर्भरताएँ दिखाएं",
+      "insights": {},
       "optional": "वैकल्पिक",
       "view_vulnerabilities": "कमजोरियाँ देखें",
       "outdated_major": "{count} मेजर संस्करण पीछे (नवीनतम: {latest}) | {count} मेजर संस्करण पीछे (नवीनतम: {latest})",
       "outdated_minor": "{count} माइनर संस्करण पीछे (नवीनतम: {latest}) | {count} माइनर संस्करण पीछे (नवीनतम: {latest})",
       "outdated_patch": "पैच अद्यतन उपलब्ध (नवीनतम: {latest})",
-      "has_replacement": "इस निर्भरता के सुझाए गए विकल्प हैं",
-      "vulnerabilities_count": "{count} कमजोरी | {count} कमजोरियाँ"
-    },
-    "peer_dependencies": {
-      "title": "पीयर निर्भरताएँ ({count})",
-      "list_label": "पैकेज पीयर निर्भरताएँ",
-      "show_all": "{count} पीयर निर्भरता दिखाएं | सभी {count} पीयर निर्भरताएँ दिखाएं"
-    },
-    "optional_dependencies": {
-      "title": "वैकल्पिक निर्भरताएँ ({count})",
-      "list_label": "पैकेज वैकल्पिक निर्भरता",
-      "show_all": "{count} वैकल्पिक निर्भरता दिखाएं | सभी {count} वैकल्पिक निर्भरताएँ दिखाएं"
+      "has_replacement": "इस निर्भरता के सुझाए गए विकल्प हैं"
     },
     "maintainers": {
       "title": "अनुरक्षक",
@@ -543,7 +537,8 @@
         "general_description": "Y अक्ष डाउनलोड की संख्या दर्शाता है। X अक्ष {start_date} से {end_date} तक की तारीख सीमा दर्शाता है, जिसमें {granularity} समय अवधि है।{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "इनके लिए क्षैतिज बार चार्ट: {packages}, {facet} की तुलना करते हुए ({description})। {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} का मान {value} है।"
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "साप्ताहिक डाउनलोड्स",
@@ -1040,6 +1035,25 @@
       }
     }
   },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
+    }
+  },
   "account_menu": {
     "connect": "कनेक्ट करें",
     "account": "खाता",
@@ -1198,6 +1212,7 @@
           "description": "ज्ञात सुरक्षा कमजोरियाँ"
         },
         "githubStars": {},
+        "githubForks": {},
         "githubIssues": {},
         "createdAt": {}
       },

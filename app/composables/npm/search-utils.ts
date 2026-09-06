@@ -10,6 +10,7 @@ export function metaToSearchResult(meta: PackageMetaResponse): NpmSearchResult {
       links: meta.links,
       author: meta.author,
       maintainers: meta.maintainers,
+      deprecated: meta.deprecated,
     },
     searchScore: 0,
     downloads: meta.weeklyDownloads !== undefined ? { weekly: meta.weeklyDownloads } : undefined,

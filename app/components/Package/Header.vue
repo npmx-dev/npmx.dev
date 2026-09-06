@@ -10,7 +10,7 @@ const props = defineProps<{
   latestVersion?: SlimVersion | null
   provenanceData?: ProvenanceDetails | null
   provenanceStatus?: string | null
-  page: 'main' | 'docs' | 'code' | 'diff' | 'changelog' | 'timeline' | 'stats'
+  page: 'main' | 'docs' | 'code' | 'dependencies' | 'diff' | 'changelog' | 'timeline' | 'stats'
   versionUrlPattern: string
 }>()
 
@@ -154,6 +154,13 @@ const codeLink = computed((): RouteLocationRaw | null => {
   }
 })
 
+const dependenciesLink = computed((): RouteLocationRaw | null => {
+  if (props.pkg == null || props.resolvedVersion == null) {
+    return null
+  }
+  return dependenciesRoute(props.pkg.name, props.resolvedVersion)
+})
+
 const mainLink = computed((): RouteLocationRaw | null => {
   if (props.pkg == null || props.resolvedVersion == null) {
     return null
@@ -208,6 +215,7 @@ useShortcuts({
   '-': () => changelogLink.value,
   't': () => timelineLink.value,
   's': () => statsLink.value,
+  'y': () => dependenciesLink.value,
 })
 </script>
 
@@ -362,6 +370,15 @@ useShortcuts({
           :class="page === 'code' ? 'border-accent text-accent!' : 'border-transparent'"
         >
           {{ $t('package.links.code') }}
+        </LinkBase>
+        <LinkBase
+          v-if="dependenciesLink"
+          :to="dependenciesLink"
+          aria-keyshortcuts="y"
+          class="decoration-none border-b-2 p-1 hover:border-accent/50 focus-visible:[outline-offset:-2px]!"
+          :class="page === 'dependencies' ? 'border-accent text-accent!' : 'border-transparent'"
+        >
+          {{ $t('package.links.dependencies') }}
         </LinkBase>
         <LinkBase
           v-if="diffLink"

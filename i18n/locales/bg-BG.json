@@ -66,6 +66,7 @@
     }
   },
   "command_palette": {
+    "keyboard_shortcuts": {},
     "state": {},
     "groups": {},
     "actions": {},
@@ -97,6 +98,9 @@
   "blog": {
     "author": {},
     "atproto": {}
+  },
+  "noodles": {
+    "missing": {}
   },
   "settings": {
     "title": "настройки",
@@ -136,6 +140,7 @@
     "background_themes": {
       "label": "Фонов нюанс"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Активиране на клавишни комбинации",
     "keyboard_shortcuts_enabled_description": "Клавишните комбинации могат да бъдат деактивирани, ако влизат в конфликт с други браузърни или системни преки пътища"
   },
@@ -290,6 +295,7 @@
       "title": "Изпълнение",
       "locally": "Изпълнение локално"
     },
+    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "Няма наличен README.",
@@ -377,24 +383,13 @@
     },
     "dependencies": {
       "title": "Зависимост ({count}) | Зависимости ({count})",
-      "list_label": "Зависимости на пакета",
-      "show_all": "показване на {count} зависимост | показване на всички {count} зависимости",
+      "insights": {},
       "optional": "опционална",
       "view_vulnerabilities": "Преглед на уязвимости",
       "outdated_major": "{count} major версия назад (последна: {latest}) | {count} major версии назад (последна: {latest})",
       "outdated_minor": "{count} minor версия назад (последна: {latest}) | {count} minor версии назад (последна: {latest})",
       "outdated_patch": "Налична patch актуализация (последна: {latest})",
       "has_replacement": "Тази зависимост има предложени замени"
-    },
-    "peer_dependencies": {
-      "title": "Peer зависимост ({count}) | Peer зависимости ({count})",
-      "list_label": "Peer зависимости на пакета",
-      "show_all": "показване на {count} peer зависимост | показване на всички {count} peer зависимости"
-    },
-    "optional_dependencies": {
-      "title": "Опционална зависимост ({count}) | Опционални зависимости ({count})",
-      "list_label": "Опционални зависимости на пакета",
-      "show_all": "показване на {count} опционална зависимост | показване на всички {count} опционални зависимости"
     },
     "maintainers": {
       "title": "Поддържащи",
@@ -460,7 +455,8 @@
         "compare": "Линейна диаграма за сравнение на изтегляния на пакети за: {packages}.",
         "single_package": "Линейна диаграма на изтегляния за пакета {package}.",
         "general_description": "Оста Y представлява броя на изтеглянията. Оста X представлява диапазона от дати, от {start_date} до {end_date}, с {granularity} времеви период.{estimation_notice} {packages_analysis}. {watermark}."
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "Седмични изтегляния",
@@ -943,6 +939,25 @@
       }
     }
   },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
+    }
+  },
   "account_menu": {
     "connect": "свързване",
     "account": "Акаунт",
@@ -1096,6 +1111,7 @@
           "description": "Известни уязвимости в сигурността"
         },
         "githubStars": {},
+        "githubForks": {},
         "githubIssues": {},
         "createdAt": {}
       },

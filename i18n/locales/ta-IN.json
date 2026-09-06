@@ -64,6 +64,24 @@
       "view_org_packages": "இந்த நிறுவனத்தின் தொகுப்புகளைக் காண்க"
     }
   },
+  "command_palette": {
+    "keyboard_shortcuts": {},
+    "state": {},
+    "groups": {},
+    "actions": {},
+    "connections": {},
+    "navigation": {},
+    "links": {},
+    "package_links": {},
+    "theme": {},
+    "package": {},
+    "package_actions": {},
+    "code": {},
+    "diff": {},
+    "version": {},
+    "status": {},
+    "announcements": {}
+  },
   "nav": {
     "main_navigation": "முதன்மை",
     "popular_packages": "பிரபலமான தொகுப்புகள்",
@@ -79,6 +97,9 @@
   "blog": {
     "author": {},
     "atproto": {}
+  },
+  "noodles": {
+    "missing": {}
   },
   "settings": {
     "title": "அமைப்புகள்",
@@ -116,7 +137,8 @@
     "translation_progress": "மொழிபெயர்ப்பு முன்னேற்றம்",
     "background_themes": {
       "label": "பின்புல நிழல்"
-    }
+    },
+    "foreground_themes": {}
   },
   "i18n": {
     "missing_keys": "{count} விடுபட்ட மொழிபெயர்ப்பு | {count} விடுபட்ட மொழிபெயர்ப்புகள்",
@@ -169,6 +191,7 @@
       "no_reason": "காரணம் வழங்கப்படவில்லை"
     },
     "size_increase": {},
+    "size_decrease": {},
     "replacement": {
       "title": "இந்த சார்பு உங்களுக்குத் தேவைப்படாமல் இருக்கலாம்.",
       "native": "இதை {replacement} மூலம் மாற்றலாம், Node {nodeVersion} முதல் கிடைக்கிறது.",
@@ -241,6 +264,7 @@
       "title": "இயக்கு",
       "locally": "உள்ளூரில் இயக்கு"
     },
+    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "README கிடைக்கவில்லை.",
@@ -299,25 +323,19 @@
       "view_all": "{count} பதிப்பைக் காண்க | அனைத்து {count} பதிப்புகளையும் காண்க",
       "copy_alt": {}
     },
+    "timeline": {
+      "chart": {
+        "copy_alt": {}
+      }
+    },
     "dependencies": {
       "title": "சார்பு ({count}) | சார்புகள் ({count})",
-      "list_label": "தொகுப்பு சார்புகள்",
-      "show_all": "{count} சார்பைக் காண்பி | அனைத்து {count} சார்புகளையும் காண்பி",
+      "insights": {},
       "optional": "விருப்பமான",
       "view_vulnerabilities": "பாதிப்புகளைக் காண்க",
       "outdated_major": "{count} முதன்மை பதிப்பு பின்தங்கியுள்ளது (சமீபத்தியது: {latest}) | {count} முதன்மை பதிப்புகள் பின்தங்கியுள்ளன (சமீபத்தியது: {latest})",
       "outdated_minor": "{count} சிறு பதிப்பு பின்தங்கியுள்ளது (சமீபத்தியது: {latest}) | {count} சிறு பதிப்புகள் பின்தங்கியுள்ளன (சமீபத்தியது: {latest})",
       "outdated_patch": "திருத்தப்பட்ட புதுப்பிப்பு கிடைக்கிறது (சமீபத்தியது: {latest})"
-    },
-    "peer_dependencies": {
-      "title": "சக சார்பு ({count}) | சக சார்புகள் ({count})",
-      "list_label": "தொகுப்பு சக சார்புகள்",
-      "show_all": "{count} சக சார்பைக் காண்பி | அனைத்து {count} சக சார்புகளையும் காண்பி"
-    },
-    "optional_dependencies": {
-      "title": "விருப்ப சார்பு ({count}) | விருப்ப சார்புகள் ({count})",
-      "list_label": "தொகுப்பு விருப்ப சார்புகள்",
-      "show_all": "{count} விருப்ப சார்பைக் காண்பி | அனைத்து {count} விருப்ப சார்புகளையும் காண்பி"
     },
     "maintainers": {
       "title": "பராமரிப்பாளர்கள்",
@@ -334,6 +352,7 @@
       "show_less": "(குறைவாகக் காண்பி)"
     },
     "trends": {
+      "chart_assistive_text": {},
       "granularity": "நுண்ணிலை",
       "granularity_daily": "தினசரி",
       "granularity_weekly": "வாராந்திர",
@@ -352,7 +371,8 @@
       "items": {
         "downloads": "பதிவிறக்கங்கள்"
       },
-      "copy_alt": {}
+      "copy_alt": {},
+      "embedding": {}
     },
     "downloads": {
       "title": "வாராந்திர பதிவிறக்கங்கள்",
@@ -447,6 +467,9 @@
       "mb": "{size} MB"
     },
     "download": {}
+  },
+  "leaderboard": {
+    "likes": {}
   },
   "connector": {
     "modal": {
@@ -817,6 +840,25 @@
       }
     }
   },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
+    }
+  },
   "account_menu": {
     "connect": "இணை",
     "account": "கணக்கு",
@@ -888,6 +930,9 @@
       "remove_package": "{package} ஐ நீக்கு",
       "packages_selected": "{count}/{max} தொகுப்புகள் தேர்ந்தெடுக்கப்பட்டன.",
       "add_hint": "ஒப்பிட குறைந்தது 2 தொகுப்புகளைச் சேர்க்கவும்."
+    },
+    "scatter_chart": {
+      "copy_alt": {}
     },
     "no_dependency": {
       "label": "(சார்பு இல்லை)",
@@ -963,7 +1008,11 @@
         "vulnerabilities": {
           "label": "பாதிப்புகள்",
           "description": "அறியப்பட்ட பாதுகாப்பு பாதிப்புகள்"
-        }
+        },
+        "githubStars": {},
+        "githubForks": {},
+        "githubIssues": {},
+        "createdAt": {}
       },
       "values": {
         "any": "எதுவும்",
@@ -1078,5 +1127,23 @@
   "translation_status": {
     "table": {}
   },
-  "action_bar": {}
+  "vacations": {
+    "what": {},
+    "meantime": {},
+    "return": {},
+    "stats": {
+      "subtitle": {}
+    }
+  },
+  "action_bar": {},
+  "logo_menu": {},
+  "brand": {
+    "logos": {},
+    "customize": {},
+    "typography": {},
+    "guidelines": {}
+  },
+  "changelog": {
+    "error": {}
+  }
 }

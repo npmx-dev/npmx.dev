@@ -77,6 +77,7 @@
     "instant_search_advisory": "{label} {state} — {action}"
   },
   "command_palette": {
+    "keyboard_shortcuts": {},
     "state": {},
     "groups": {},
     "actions": {},
@@ -130,6 +131,9 @@
       "repost_count": "{count} lượt đăng lại | {count} lượt đăng lại",
       "more_replies": "Thêm {count} phản hồi... | Thêm {count} phản hồi..."
     }
+  },
+  "noodles": {
+    "missing": {}
   },
   "settings": {
     "title": "cài đặt",
@@ -185,6 +189,7 @@
       "slate": "Slate",
       "black": "Black"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Phím tắt",
     "keyboard_shortcuts_enabled_description": "Bạn có thể vô hiệu hóa phím tắt nếu gặp xung đột với trình duyệt hoặc các phím tắt hệ thống khác."
   },
@@ -366,6 +371,7 @@
       "title": "Chạy",
       "locally": "Chạy cục bộ"
     },
+    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "Không có README.",
@@ -462,25 +468,13 @@
     },
     "dependencies": {
       "title": "Dependency ({count}) | Dependency ({count})",
-      "list_label": "Dependency của gói",
-      "show_all": "hiện {count} dep | hiện tất cả {count} dep",
+      "insights": {},
       "optional": "tùy chọn",
       "view_vulnerabilities": "Xem lỗ hổng",
       "outdated_major": "Chậm {count} major (mới nhất: {latest}) | Chậm {count} major (mới nhất: {latest})",
       "outdated_minor": "Chậm {count} minor (mới nhất: {latest}) | Chậm {count} minor (mới nhất: {latest})",
       "outdated_patch": "Có bản cập nhật patch (mới nhất: {latest})",
-      "has_replacement": "Dependency này có gợi ý thay thế",
-      "vulnerabilities_count": "{count} lỗ hổng | {count} lỗ hổng"
-    },
-    "peer_dependencies": {
-      "title": "Peer Dependency ({count}) | Peer Dependencies ({count})",
-      "list_label": "Peer dependency của gói",
-      "show_all": "hiện {count} peer dep | hiện tất cả {count} peer dep"
-    },
-    "optional_dependencies": {
-      "title": "Optional Dependency ({count}) | Optional Dependencies ({count})",
-      "list_label": "Optional dependency của gói",
-      "show_all": "hiện {count} optional dep | hiện tất cả {count} optional dep"
+      "has_replacement": "Dependency này có gợi ý thay thế"
     },
     "maintainers": {
       "title": "Người duy trì",
@@ -557,7 +551,8 @@
         "general_description": "Trục Y biểu thị số lượt tải. Trục X biểu thị khoảng ngày, từ {start_date} đến {end_date}, với độ chi tiết {granularity}.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Biểu đồ cột ngang cho: {packages}, so sánh {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} có giá trị {value}."
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "Lượt tải hàng tuần",
@@ -1054,6 +1049,25 @@
       }
     }
   },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
+    }
+  },
   "account_menu": {
     "connect": "kết nối",
     "account": "Tài khoản",
@@ -1216,6 +1230,7 @@
           "description": "Các lỗ hổng bảo mật phổ biến"
         },
         "githubStars": {},
+        "githubForks": {},
         "githubIssues": {},
         "createdAt": {}
       },

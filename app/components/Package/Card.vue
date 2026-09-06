@@ -1,5 +1,13 @@
 <script setup lang="ts">
+import type { RouteLocationRaw } from 'vue-router'
 import type { StructuredFilters } from '#shared/types/preferences'
+import {
+  getOutdatedTooltip,
+  getVersionClass,
+  getVulnerableDepInfo,
+  getDeprecatedDepInfo,
+} from '~/utils/npm/problematic-dependencies'
+import type { PackageDependencyInsights } from '~/composables/usePackageDependencyInsights'
 
 const props = defineProps<{
   /** The search result object containing package data */
@@ -14,6 +22,11 @@ const props = defineProps<{
   filters?: StructuredFilters
   /** Search query for highlighting exact matches */
   searchQuery?: string
+  /** Optional pre-computed insights to avoid duplicate fetching/processing */
+  insights?: PackageDependencyInsights
+  /** Version by default, adds "v" prefix. */
+  versionIsRange?: boolean
+  to?: RouteLocationRaw | string
 }>()
 
 const { selectable } = usePackageSelectionContext()
@@ -27,6 +40,8 @@ const emit = defineEmits<{
 }>()
 
 /** Check if this package is an exact match for the search query */
+const packageUrl = computed(() => props.to ?? packageRoute(props.result.package.name))
+
 const isExactMatch = computed(() => {
   if (!props.searchQuery) return false
   const query = props.searchQuery.trim().toLowerCase()
@@ -40,6 +55,52 @@ const pkgDescription = useMarkdown(() => ({
   plain: true,
 }))
 
+const insights = computed(() => props.insights)
+
+const standaloneReplacementRes = useModuleReplacement(() => props.result.package.name)
+const standaloneDepAnalysisRes = useDependencyAnalysis(
+  () => props.result.package.name,
+  () => props.result.package.version,
+)
+
+const hasReplacement = computed(() => {
+  if (insights.value) {
+    return !!unref(insights.value.replacementDeps)?.[props.result.package.name]
+  }
+  return !!standaloneReplacementRes.data.value?.replacement
+})
+
+const effectiveVulnTree = computed(() => {
+  if (insights.value) {
+    return unref(insights.value.vulnTree)
+  }
+  return standaloneDepAnalysisRes.data.value ?? undefined
+})
+
+const vulnDepInfo = computed(() =>
+  props.result.package.name
+    ? getVulnerableDepInfo(props.result.package.name, effectiveVulnTree.value)
+    : undefined,
+)
+const deprDepInfo = computed(() =>
+  props.result.package.name
+    ? getDeprecatedDepInfo(
+        props.result.package.name,
+        effectiveVulnTree.value,
+        props.result.package.deprecated,
+      )
+    : undefined,
+)
+
+// Any insights such as vulnerabilities and replacements
+const hasExtra = computed(
+  () =>
+    !!unref(insights.value?.outdatedDeps)?.[props.result.package.name] ||
+    hasReplacement.value ||
+    !!vulnDepInfo.value ||
+    !!deprDepInfo.value,
+)
+
 const numberFormatter = useNumberFormatter()
 </script>
 
@@ -48,19 +109,30 @@ const numberFormatter = useNumberFormatter()
     <header class="mb-4 flex items-baseline justify-between gap-2">
       <component
         :is="headingLevel ?? 'h3'"
-        class="font-mono text-sm sm:text-base font-medium text-fg group-hover:text-fg transition-colors duration-200 min-w-0 break-all"
+        class="font-mono text-sm sm:text-base font-medium text-fg group-hover:text-fg transition-colors duration-200 min-w-0 break-all inline-flex items-center gap-2"
       >
         <NuxtLink
-          :to="packageRoute(result.package.name)"
+          :to="packageUrl"
           :prefetch-on="prefetch ? 'visibility' : 'interaction'"
-          class="decoration-none after:content-[''] after:absolute after:inset-0"
+          class="decoration-none hover:text-accent-fallback after:content-[''] after:absolute after:inset-0 inline-flex items-center gap-2 min-w-0"
           :data-result-index="index"
-          dir="ltr"
-          >{{ result.package.name }}</NuxtLink
         >
+          <span class="i-simple-icons:npm w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+          <span class="truncate" dir="ltr">{{ result.package.name }}</span>
+        </NuxtLink>
+        <slot name="status-indicators" :insights="insights">
+          <DependenciesStatusIndicators
+            :name="result.package.name"
+            :deprecated="result.package.deprecated"
+            :has-replacement="hasReplacement"
+            :vuln-tree="effectiveVulnTree"
+            :insights="insights"
+            class="relative z-10"
+          />
+        </slot>
         <span
           v-if="isExactMatch"
-          class="text-xs px-1.5 py-0.5 ms-2 rounded bg-bg-elevated border border-border-hover text-fg"
+          class="text-xs px-1.5 py-0.5 ms-2 rounded bg-bg-elevated border border-border-hover text-fg relative z-10"
           >{{ $t('search.exact_match') }}</span
         >
       </component>
@@ -71,6 +143,7 @@ const numberFormatter = useNumberFormatter()
         :disabled="!canSelectMore && !isSelected"
         :checked="isSelected"
         @change="togglePackageSelection"
+        class="relative z-10"
       />
     </header>
 
@@ -87,10 +160,23 @@ const numberFormatter = useNumberFormatter()
         compact
       />
       <dl class="contents m-0">
-        <div v-if="result.package.version" class="flex items-center gap-1.5 min-w-0">
+        <div v-if="result.package.version" class="flex items-center gap-1.5 min-w-0 relative z-10">
           <dt class="sr-only">{{ $t('package.card.version') }}</dt>
           <dd class="font-mono truncate max-w-32" :title="result.package.version">
-            v{{ result.package.version }}
+            <TooltipApp
+              v-if="insights?.outdatedDeps.value?.[result.package.name]"
+              :text="getOutdatedTooltip(insights.outdatedDeps.value[result.package.name]!, $t)"
+              position="top"
+            >
+              <span
+                :class="getVersionClass(result.package.name, insights)"
+                class="flex items-center gap-1 cursor-help"
+              >
+                <span class="i-lucide:arrow-up w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                <span>{{ versionIsRange ? '' : 'v' }}{{ result.package.version }}</span>
+              </span>
+            </TooltipApp>
+            <span v-else> {{ versionIsRange ? '' : 'v' }}{{ result.package.version }} </span>
           </dd>
         </div>
         <div v-if="result.package.date" class="flex items-center gap-1.5">
@@ -132,7 +218,7 @@ const numberFormatter = useNumberFormatter()
         <ButtonBase
           class="pointer-events-auto"
           size="sm"
-          :aria-pressed="props.filters?.keywords.includes(keyword)"
+          :aria-pressed="props.filters?.keywords?.includes(keyword)"
           :title="`Filter by ${keyword}`"
           @click.stop="emit('clickKeyword', keyword)"
         >
@@ -149,5 +235,48 @@ const numberFormatter = useNumberFormatter()
         </span>
       </li>
     </ul>
+
+    <div
+      v-if="hasExtra"
+      class="flex items-center justify-between gap-2 mt-3 pt-3 border-t border-border"
+    >
+      <div class="flex flex-wrap items-center gap-x-5 gap-y-1 text-xs shrink-0">
+        <span
+          v-if="unref(insights?.outdatedDeps)?.[result.package.name]"
+          class="flex items-center gap-1"
+          :class="getVersionClass(result.package.name, insights)"
+        >
+          <span class="i-lucide:arrow-up w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+          {{ getOutdatedTooltip(unref(insights!.outdatedDeps)![result.package.name]!, $t) }}
+        </span>
+        <span
+          v-if="hasReplacement"
+          class="flex items-center gap-1 text-amber-700 dark:text-amber-500"
+        >
+          <span class="i-lucide:lightbulb w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+          {{ $t('package.dependencies.has_replacement') }}
+        </span>
+        <LinkBase
+          v-if="vulnDepInfo"
+          :to="packageRoute(result.package.name, vulnDepInfo!.version)"
+          class="flex items-center gap-1 shrink-0"
+          :class="SEVERITY_TEXT_COLORS[getHighestSeverity(vulnDepInfo!.counts)]"
+        >
+          <span class="i-lucide:shield-alert w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+          {{ $t('package.dependencies.view_vulnerabilities') }}
+        </LinkBase>
+        <LinkBase
+          v-if="deprDepInfo"
+          :to="packageRoute(result.package.name, deprDepInfo!.version || result.package.version)"
+          class="flex items-center gap-1 shrink-0 text-purple-700 dark:text-purple-500"
+          :title="deprDepInfo!.message || undefined"
+        >
+          <span class="i-lucide:octagon-alert w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+          {{ $t('package.deprecated.label') }}
+        </LinkBase>
+      </div>
+    </div>
+
+    <slot name="extra" />
   </BaseCard>
 </template>
