@@ -48,7 +48,7 @@ minimumReleaseAgeExclude:
   - '@nuxt/nitro-server@4.5.2'
   - '@nuxt/schema@4.5.2'
   - '@nuxt/vite-builder@4.5.2'
-  - vue-data-ui@3.23.14
+  - vue-data-ui@3.25.0
 
 minimumReleaseAgeExcludePrune: true
 
