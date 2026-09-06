@@ -273,6 +273,22 @@ const footerSections = computed<Array<{ label: string; links: FooterLink[] }>>((
           <span>{{ $t('shortcuts.compare_from_package') }}</span>
         </li>
         <li class="flex gap-2 items-center">
+          <kbd class="kbd">g</kbd>
+          <span>{{ $t('shortcuts.open_repo') }}</span>
+        </li>
+        <li class="flex gap-2 items-center">
+          <kbd class="kbd">h</kbd>
+          <span>{{ $t('shortcuts.open_homepage') }}</span>
+        </li>
+        <li class="flex gap-2 items-center">
+          <kbd class="kbd">i</kbd>
+          <span>{{ $t('shortcuts.open_issues') }}</span>
+        </li>
+        <li class="flex gap-2 items-center">
+          <kbd class="kbd">n</kbd>
+          <span>{{ $t('shortcuts.open_npm') }}</span>
+        </li>
+        <li class="flex gap-2 items-center">
           <kbd class="kbd">-</kbd>
           <span>{{ $t('shortcuts.changelog') }}</span>
         </li>
