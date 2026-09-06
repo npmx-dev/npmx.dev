@@ -18,10 +18,8 @@ function getFacetsInCategory(category: string): ComparisonFacet[] {
 
 /**
  * Composable for managing comparison facet selection with URL sync.
- *
- * @param queryParam - The URL query parameter name to use (default: 'facets')
  */
-export function useFacetSelection(queryParam = 'facets') {
+export function useFacetSelection() {
   const { t } = useI18n()
   const compactNumberFormatter = useCompactNumberFormatter()
   const bytesFormatter = useBytesFormatter()
@@ -166,7 +164,7 @@ export function useFacetSelection(queryParam = 'facets') {
   }
 
   // Sync with URL query param (stable ref - doesn't change on other query changes)
-  const facetsParam = useRouteQuery<string>(queryParam, '', { mode: 'replace' })
+  const facetsParam = useRouteQuery<string>('facets', '', { mode: 'replace' })
 
   // Parse facet IDs from URL or use defaults
   const selectedFacetIds = computed<ComparisonFacet[]>({

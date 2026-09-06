@@ -107,7 +107,6 @@ function hitToSearchResult(hit: AlgoliaHit): NpmSearchResult {
 interface AlgoliaSearchOptions {
   size?: number
   from?: number
-  filters?: string
 }
 
 /** Extra checks bundled into a single multi-search request. */
@@ -145,7 +144,7 @@ export function useAlgoliaSearch() {
           query,
           offset: options.from,
           length: options.size,
-          filters: options.filters || '',
+          filters: '',
           analyticsTags: ['npmx.dev'],
           attributesToRetrieve: ATTRIBUTES_TO_RETRIEVE,
           attributesToHighlight: [],
@@ -167,11 +166,8 @@ export function useAlgoliaSearch() {
   }
 
   /** Fetch all packages for a maintainer using `owners.name` filter with pagination. */
-  async function searchByMaintainer(
-    ownerName: string,
-    options: { maxResults?: number } = {},
-  ): Promise<NpmSearchResponse> {
-    const max = options.maxResults ?? 1000
+  async function searchByMaintainer(ownerName: string): Promise<NpmSearchResponse> {
+    const max = 1000
 
     const allHits: AlgoliaHit[] = []
     let offset = 0
@@ -295,7 +291,7 @@ export function useAlgoliaSearch() {
         query,
         offset: options.from,
         length: options.size,
-        filters: options.filters || '',
+        filters: '',
         analyticsTags: ['npmx.dev'],
         attributesToRetrieve: ATTRIBUTES_TO_RETRIEVE,
         attributesToHighlight: [],

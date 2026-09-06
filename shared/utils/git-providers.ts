@@ -57,9 +57,9 @@ interface ProviderConfig {
   /** Parse URL path into owner/repo, returns null if invalid */
   parsePath(parts: string[]): { owner: string; repo: string } | null
   /** Get raw file URL base for resolving relative paths */
-  getRawBaseUrl(ref: RepoRef, branch?: string): string
+  getRawBaseUrl(ref: RepoRef): string
   /** Get blob/rendered URL base for markdown files */
-  getBlobBaseUrl(ref: RepoRef, branch?: string): string
+  getBlobBaseUrl(ref: RepoRef): string
   /** Convert file URLs to blob URLs (for images) */
   fileToRaw?(url: string): string
   /** Convert blob URLs to raw URLs (for images) */
@@ -79,10 +79,8 @@ const providers: ProviderConfig[] = [
       if (!owner || !repo) return null
       return { owner, repo }
     },
-    getRawBaseUrl: (ref, branch = 'HEAD') =>
-      `https://raw.githubusercontent.com/${ref.owner}/${ref.repo}/${branch}`,
-    getBlobBaseUrl: (ref, branch = 'HEAD') =>
-      `https://github.com/${ref.owner}/${ref.repo}/blob/${branch}`,
+    getRawBaseUrl: ref => `https://raw.githubusercontent.com/${ref.owner}/${ref.repo}/HEAD`,
+    getBlobBaseUrl: ref => `https://github.com/${ref.owner}/${ref.repo}/blob/HEAD`,
     fileToRaw: url => url.replace('/tree/', '/raw/'),
     blobToRaw: url => url.replace('/blob/', '/raw/'),
   },
@@ -102,13 +100,13 @@ const providers: ProviderConfig[] = [
       if (!owner || !repo) return null
       return { owner, repo }
     },
-    getRawBaseUrl: (ref, branch = 'HEAD') => {
+    getRawBaseUrl: ref => {
       const host = ref.host ?? 'gitlab.com'
-      return `https://${host}/${ref.owner}/${ref.repo}/-/raw/${branch}`
+      return `https://${host}/${ref.owner}/${ref.repo}/-/raw/HEAD`
     },
-    getBlobBaseUrl: (ref, branch = 'HEAD') => {
+    getBlobBaseUrl: ref => {
       const host = ref.host ?? 'gitlab.com'
-      return `https://${host}/${ref.owner}/${ref.repo}/-/blob/${branch}`
+      return `https://${host}/${ref.owner}/${ref.repo}/-/blob/HEAD`
     },
     blobToRaw: url => url.replace('/-/blob/', '/-/raw/'),
   },
@@ -124,10 +122,8 @@ const providers: ProviderConfig[] = [
       if (!owner || !repo) return null
       return { owner, repo }
     },
-    getRawBaseUrl: (ref, branch = 'HEAD') =>
-      `https://bitbucket.org/${ref.owner}/${ref.repo}/raw/${branch}`,
-    getBlobBaseUrl: (ref, branch = 'HEAD') =>
-      `https://bitbucket.org/${ref.owner}/${ref.repo}/src/${branch}`,
+    getRawBaseUrl: ref => `https://bitbucket.org/${ref.owner}/${ref.repo}/raw/HEAD`,
+    getBlobBaseUrl: ref => `https://bitbucket.org/${ref.owner}/${ref.repo}/src/HEAD`,
     blobToRaw: url => url.replace('/src/', '/raw/'),
   },
   {
@@ -142,10 +138,8 @@ const providers: ProviderConfig[] = [
       if (!owner || !repo) return null
       return { owner, repo }
     },
-    getRawBaseUrl: (ref, branch = 'HEAD') =>
-      `https://codeberg.org/${ref.owner}/${ref.repo}/raw/branch/${branch === 'HEAD' ? 'main' : branch}`,
-    getBlobBaseUrl: (ref, branch = 'HEAD') =>
-      `https://codeberg.org/${ref.owner}/${ref.repo}/src/branch/${branch === 'HEAD' ? 'main' : branch}`,
+    getRawBaseUrl: ref => `https://codeberg.org/${ref.owner}/${ref.repo}/raw/branch/main`,
+    getBlobBaseUrl: ref => `https://codeberg.org/${ref.owner}/${ref.repo}/src/branch/main`,
     blobToRaw: url => url.replace('/src/', '/raw/'),
   },
   {
@@ -160,10 +154,8 @@ const providers: ProviderConfig[] = [
       if (!owner || !repo) return null
       return { owner, repo }
     },
-    getRawBaseUrl: (ref, branch = 'master') =>
-      `https://gitee.com/${ref.owner}/${ref.repo}/raw/${branch}`,
-    getBlobBaseUrl: (ref, branch = 'master') =>
-      `https://gitee.com/${ref.owner}/${ref.repo}/blob/${branch}`,
+    getRawBaseUrl: ref => `https://gitee.com/${ref.owner}/${ref.repo}/raw/master`,
+    getBlobBaseUrl: ref => `https://gitee.com/${ref.owner}/${ref.repo}/blob/master`,
     blobToRaw: url => url.replace('/blob/', '/raw/'),
   },
   {
@@ -179,10 +171,8 @@ const providers: ProviderConfig[] = [
       if (!owner || !repo) return null
       return { owner, repo }
     },
-    getRawBaseUrl: (ref, branch = 'HEAD') =>
-      `https://git.sr.ht/${ref.owner}/${ref.repo}/blob/${branch}`,
-    getBlobBaseUrl: (ref, branch = 'HEAD') =>
-      `https://git.sr.ht/${ref.owner}/${ref.repo}/tree/${branch}/item`,
+    getRawBaseUrl: ref => `https://git.sr.ht/${ref.owner}/${ref.repo}/blob/HEAD`,
+    getBlobBaseUrl: ref => `https://git.sr.ht/${ref.owner}/${ref.repo}/tree/HEAD/item`,
   },
   {
     id: 'tangled',
@@ -201,10 +191,8 @@ const providers: ProviderConfig[] = [
       if (!owner || !repo) return null
       return { owner, repo }
     },
-    getRawBaseUrl: (ref, branch = 'main') =>
-      `https://tangled.sh/${ref.owner}/${ref.repo}/raw/branch/${branch}`,
-    getBlobBaseUrl: (ref, branch = 'main') =>
-      `https://tangled.sh/${ref.owner}/${ref.repo}/src/branch/${branch}`,
+    getRawBaseUrl: ref => `https://tangled.sh/${ref.owner}/${ref.repo}/raw/branch/main`,
+    getBlobBaseUrl: ref => `https://tangled.sh/${ref.owner}/${ref.repo}/src/branch/main`,
     blobToRaw: url => url.replace('/blob/', '/raw/branch/'),
   },
   {
@@ -220,10 +208,8 @@ const providers: ProviderConfig[] = [
       // Use empty owner, store full rad: ID as repo
       return { owner: '', repo: radMatch[0] }
     },
-    getRawBaseUrl: (ref, branch = 'HEAD') =>
-      `https://seed.radicle.at/api/v1/projects/${ref.repo}/blob/${branch}`,
-    getBlobBaseUrl: (ref, branch = 'HEAD') =>
-      `https://app.radicle.at/nodes/seed.radicle.at/${ref.repo}/tree/${branch}`,
+    getRawBaseUrl: ref => `https://seed.radicle.at/api/v1/projects/${ref.repo}/blob/HEAD`,
+    getBlobBaseUrl: ref => `https://app.radicle.at/nodes/seed.radicle.at/${ref.repo}/tree/HEAD`,
   },
   {
     id: 'forgejo',
@@ -237,13 +223,13 @@ const providers: ProviderConfig[] = [
       if (!owner || !repo) return null
       return { owner, repo }
     },
-    getRawBaseUrl: (ref, branch = 'HEAD') => {
+    getRawBaseUrl: ref => {
       const host = ref.host ?? 'codeberg.org'
-      return `https://${host}/${ref.owner}/${ref.repo}/raw/branch/${branch === 'HEAD' ? 'main' : branch}`
+      return `https://${host}/${ref.owner}/${ref.repo}/raw/branch/main`
     },
-    getBlobBaseUrl: (ref, branch = 'HEAD') => {
+    getBlobBaseUrl: ref => {
       const host = ref.host ?? 'codeberg.org'
-      return `https://${host}/${ref.owner}/${ref.repo}/src/branch/${branch === 'HEAD' ? 'main' : branch}`
+      return `https://${host}/${ref.owner}/${ref.repo}/src/branch/main`
     },
     blobToRaw: url => url.replace('/src/', '/raw/'),
   },
@@ -259,13 +245,13 @@ const providers: ProviderConfig[] = [
       if (!owner || !repo) return null
       return { owner, repo }
     },
-    getRawBaseUrl: (ref, branch = 'HEAD') => {
+    getRawBaseUrl: ref => {
       const host = ref.host ?? 'gitea.io'
-      return `https://${host}/${ref.owner}/${ref.repo}/raw/branch/${branch === 'HEAD' ? 'main' : branch}`
+      return `https://${host}/${ref.owner}/${ref.repo}/raw/branch/main`
     },
-    getBlobBaseUrl: (ref, branch = 'HEAD') => {
+    getBlobBaseUrl: ref => {
       const host = ref.host ?? 'gitea.io'
-      return `https://${host}/${ref.owner}/${ref.repo}/src/branch/${branch === 'HEAD' ? 'main' : branch}`
+      return `https://${host}/${ref.owner}/${ref.repo}/src/branch/main`
     },
     blobToRaw: url => url.replace('/src/', '/raw/'),
   },

@@ -8,7 +8,7 @@ function isFiniteNumber(value: unknown): value is number {
   return typeof value === 'number' && Number.isFinite(value)
 }
 
-function toFreshnessScore(value: unknown, maximumAgeInDays = 365): number | null {
+function toFreshnessScore(value: unknown): number | null {
   if (!value) {
     return null
   }
@@ -21,7 +21,7 @@ function toFreshnessScore(value: unknown, maximumAgeInDays = 365): number | null
 
   const ageInMilliseconds = Date.now() - date.getTime()
   const ageInDays = ageInMilliseconds / MILLISECONDS_IN_A_DAY
-  const normalizedFreshness = 1 - ageInDays / maximumAgeInDays
+  const normalizedFreshness = 1 - ageInDays / 365
 
   if (normalizedFreshness < 0) {
     return 0
