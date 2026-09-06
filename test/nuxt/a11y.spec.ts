@@ -288,6 +288,7 @@ import {
 import LogoNuxt from '~/assets/logos/oss-partners/nuxt.svg'
 import CommandPaletteComponent from '~/components/CommandPalette.client.vue'
 import HeaderAccountMenuServer from '~/components/Header/AccountMenu.server.vue'
+import LandingRecentlyLiked from '~/components/Landing/RecentlyLiked.vue'
 import ToggleServer from '~/components/Settings/Toggle.server.vue'
 import SearchProviderToggleServer from '~/components/SearchProviderToggle.server.vue'
 import PackageTrendsChart from '~/components/Package/TrendsChart.vue'
@@ -383,6 +384,40 @@ describe('component accessibility audits', () => {
   describe('LandingIntroHeader', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(LandingIntroHeader)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('LandingRecentlyLiked', () => {
+    it('should have no accessibility violations', async () => {
+      registerEndpoint('/api/social/likes/vue', () => ({
+        totalLikes: 42,
+        userHasLiked: false,
+        topLikedRank: null,
+      }))
+
+      const component = await mountSuspended(LandingRecentlyLiked, {
+        props: {
+          likes: [
+            {
+              id: 'at://did:plc:test/dev.npmx.feed.like/3mtest',
+              packageName: 'vue',
+              origin: 'live',
+              subjectRef: 'https://npmx.dev/package/vue',
+              likedAt: Date.parse('2026-05-09T12:28:11.127Z'),
+              packageDescription: 'The progressive JavaScript framework',
+              weeklyDownloads: 5_000_000,
+              repositoryStars: 55_555,
+            },
+          ],
+        },
+        global: {
+          stubs: {
+            TransitionGroup: false,
+          },
+        },
+      })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })

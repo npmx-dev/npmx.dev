@@ -500,6 +500,34 @@ function matchConstellationApi(urlString) {
   return json(null)
 }
 
+/**
+ * @param {string} urlString
+ * @returns {MockResponse | null}
+ */
+function matchUfosApi(urlString) {
+  const url = new URL(urlString)
+
+  if (url.pathname === '/records' && url.searchParams.get('collection') === 'dev.npmx.feed.like') {
+    return json(readFixture('ufos/package-like-records.json') || [])
+  }
+
+  return null
+}
+
+/**
+ * @param {string} urlString
+ * @returns {MockResponse | null}
+ */
+function matchLikesLeaderboardApi(urlString) {
+  const url = new URL(urlString)
+
+  if (url.pathname === '/api/leaderboard/likes') {
+    return json([])
+  }
+
+  return null
+}
+
 const BLUESKY_EMBED_DID = 'did:plc:2gkh62xvzokhlf6li4ol3b3d'
 
 /**
@@ -675,6 +703,12 @@ const routes = [
     name: 'Constellation API',
     pattern: 'https://constellation.microcosm.blue/**',
     match: matchConstellationApi,
+  },
+  { name: 'UFOs API', pattern: 'https://ufos-api.microcosm.blue/**', match: matchUfosApi },
+  {
+    name: 'Likes Leaderboard API',
+    pattern: 'https://npmx-likes-leaderboard-api-production.up.railway.app/**',
+    match: matchLikesLeaderboardApi,
   },
   { name: 'Bluesky API', pattern: 'https://public.api.bsky.app/**', match: matchBlueskyApi },
   { name: 'Bluesky CDN', pattern: 'https://cdn.bsky.app/**', match: matchBlueskyCdn },

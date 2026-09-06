@@ -1,6 +1,6 @@
 import process from 'node:process'
 import { defineNuxtModule, useNuxt } from 'nuxt/kit'
-import { BLUESKY_API } from '#shared/utils/constants'
+import { BLUESKY_API, SPACEDUST_HOST, UFOS_API_HOST } from '#shared/utils/constants'
 import { ALL_KNOWN_GIT_API_ORIGINS } from '#shared/utils/git-providers'
 import { TRUSTED_IMAGE_DOMAINS } from '#server/utils/image-proxy'
 
@@ -56,6 +56,8 @@ export default defineNuxtModule({
       'https://video.bsky.app',
       'https://video.cdn.bsky.app',
       BLUESKY_API,
+      `https://${UFOS_API_HOST}`,
+      `wss://${SPACEDUST_HOST}`,
       ...ALL_KNOWN_GIT_API_ORIGINS,
       // Local CLI connector (npmx CLI communicates via localhost)
       'http://127.0.0.1:*',

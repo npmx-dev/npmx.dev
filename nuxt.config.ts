@@ -147,7 +147,13 @@ export default defineNuxtConfig({
     '/api/registry/file/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/provenance/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/files/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
-    '/api/registry/package-meta/**': { isr: 300 },
+    '/api/registry/package-meta/**': {
+      isr: {
+        expiration: 300,
+        passQuery: true,
+        allowQuery: ['includeRepositoryStars'],
+      },
+    },
     '/:pkg/.well-known/skills/**': { isr: 3600 },
     '/:scope/:pkg/.well-known/skills/**': { isr: 3600 },
     '/_avatar/**': { isr: 3600, proxy: 'https://www.gravatar.com/avatar/**' },
