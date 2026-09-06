@@ -367,6 +367,8 @@ export const LOCALES_WITH_EXTRA_SPACE = [
   'uk-UA',
 ]
 
+const XAXIS_LABELS_MOD_THRESHOLD = 12
+
 export function buildTrendsChartConfig(
   options: TrendChartConfigOptions & {
     dates: number[]
@@ -435,8 +437,8 @@ export function buildTrendsChartConfig(
           },
           xAxisLabels: {
             show: true,
-            showOnlyAtModulo: true,
-            modulo: 12,
+            showOnlyAtModulo: options.dates.length > XAXIS_LABELS_MOD_THRESHOLD,
+            modulo: Math.max(1, Math.round(options.dates.length / XAXIS_LABELS_MOD_THRESHOLD)),
             values: options.dates,
             datetimeFormatter: {
               enable: true,

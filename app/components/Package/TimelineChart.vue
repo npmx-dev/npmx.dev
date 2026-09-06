@@ -442,6 +442,15 @@ const commonConfig = computed<CommonUserOptions>(() => ({
   },
 }))
 
+const XAXIS_LABELS_MOD_THRESHOLD = 32
+
+const xAxisLabelsModulo = computed(() => {
+  const count = versions.value.length
+  if (count <= XAXIS_LABELS_MOD_THRESHOLD) return 1
+  const targetLabelCount = Math.min(XAXIS_LABELS_MOD_THRESHOLD, Math.round(count / 2))
+  return Math.max(1, Math.round(count / targetLabelCount))
+})
+
 const config = computed<VueUiXyConfig>(() => {
   return {
     theme: isDarkMode.value ? 'dark' : '',
@@ -480,8 +489,8 @@ const config = computed<VueUiXyConfig>(() => {
           xAxisLabels: {
             color: colors.value.fgSubtle,
             fontSize: isMobile.value ? 12 : 10,
-            modulo: Math.min(32, Math.round(versions.value.length / 2)),
-            showOnlyAtModulo: versions.value.length > 32,
+            modulo: xAxisLabelsModulo.value,
+            showOnlyAtModulo: versions.value.length > XAXIS_LABELS_MOD_THRESHOLD,
             values: versions.value.map(v => applyEllipsis(v, 20)),
             rotation: -30,
             autoRotate: {
@@ -803,8 +812,8 @@ const stackbarConfig = computed<VueUiStackbarConfig>(() => ({
             color: colors.value.fgSubtle,
             fontSize: isMobile.value ? 12 : 10,
             rotation: -30,
-            modulo: Math.min(32, Math.round(versions.value.length / 2)),
-            showOnlyAtModulo: versions.value.length > 32,
+            modulo: xAxisLabelsModulo.value,
+            showOnlyAtModulo: versions.value.length > XAXIS_LABELS_MOD_THRESHOLD,
             autoRotate: { enable: false },
           },
         },
