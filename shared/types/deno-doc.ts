@@ -148,9 +148,14 @@ export interface DenoDocNode {
 }
 
 /** Raw output from deno doc --json */
+export interface DocEntry {
+  entryPoint: string
+  nodes: DenoDocNode[]
+}
+
 export interface DenoDocResult {
   version: number
-  nodes: DenoDocNode[]
+  entries: DocEntry[]
 }
 
 /** Result of documentation generation */

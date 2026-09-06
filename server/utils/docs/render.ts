@@ -11,7 +11,7 @@ import { highlightCodeBlock } from '../shiki'
 import { formatParams, formatType, getNodeSignature } from './format'
 import { groupMergedByKind } from './processing'
 import { escapeHtml, createSymbolId, parseJsDocLinks, renderMarkdown } from './text'
-import type { MergedSymbol, SymbolLookup } from './types'
+import type { MergedSymbol, ProcessedEntry, SymbolLookup } from './types'
 
 // =============================================================================
 // Configuration
@@ -55,16 +55,54 @@ const KIND_TITLES: Record<string, string> = {
 export async function renderDocNodes(
   symbols: MergedSymbol[],
   symbolLookup: SymbolLookup,
+  prefix = '',
 ): Promise<string> {
   const grouped = groupMergedByKind(symbols)
   const sectionPromises = KIND_DISPLAY_ORDER.map(async kind => {
     const kindSymbols = grouped[kind]
     if (!kindSymbols || kindSymbols.length === 0) return ''
-    return renderKindSection(kind, kindSymbols, symbolLookup)
+    return renderKindSection(kind, kindSymbols, symbolLookup, prefix)
   })
 
   const sections = await Promise.all(sectionPromises)
   return sections.filter(Boolean).join('\n')
+}
+
+/**
+ * Render multiple package entry points as grouped sections.
+ */
+export async function renderGroupedDocNodes(entries: ProcessedEntry[]): Promise<string> {
+  const groups = await Promise.all(
+    entries.map(async entry => {
+      const isRoot = entry.entryPoint === '.'
+      const slug = entry.prefix
+      const body = await renderDocNodes(entry.symbols, entry.lookup, slug)
+      // Render nothing at all for an entry that produced no content, rather
+      // than an empty group wrapper + heading.
+      if (!body) return ''
+
+      // The root entry renders flat
+      if (isRoot) return body
+
+      const lines: string[] = []
+      lines.push(`<section class="docs-group" id="group-${slug}">`)
+      lines.push(
+        `<h2 class="docs-section-title docs-group-title">${escapeHtml(formatEntryPoint(entry.entryPoint))}</h2>`,
+      )
+      lines.push(body)
+      lines.push(`</section>`)
+      return lines.join('\n')
+    }),
+  )
+
+  return groups.filter(Boolean).join('\n')
+}
+
+/**
+ * Format an entry point for display.
+ */
+function formatEntryPoint(entryPoint: string): string {
+  return entryPoint.replace(/^\.\//, '')
 }
 
 /**
@@ -74,14 +112,16 @@ async function renderKindSection(
   kind: string,
   symbols: MergedSymbol[],
   symbolLookup: SymbolLookup,
+  prefix = '',
 ): Promise<string> {
   const title = KIND_TITLES[kind] || kind
   const lines: string[] = []
   const renderedSymbols = await Promise.all(
-    symbols.map(symbol => renderMergedSymbol(symbol, symbolLookup)),
+    symbols.map(symbol => renderMergedSymbol(symbol, symbolLookup, prefix)),
   )
 
-  lines.push(`<section class="docs-section" id="section-${kind}">`)
+  const sectionId = prefix ? `section-${prefix}-${kind}` : `section-${kind}`
+  lines.push(`<section class="docs-section" id="${sectionId}">`)
   lines.push(`<h2 class="docs-section-title">${title}</h2>`)
   lines.push(...renderedSymbols)
 
@@ -96,12 +136,13 @@ async function renderKindSection(
 async function renderMergedSymbol(
   symbol: MergedSymbol,
   symbolLookup: SymbolLookup,
+  prefix = '',
 ): Promise<string> {
   const primaryNode = symbol.nodes[0]
   if (!primaryNode) return '' // Safety check - should never happen
 
   const lines: string[] = []
-  const id = createSymbolId(symbol.kind, symbol.name)
+  const id = createSymbolId(symbol.kind, symbol.name, prefix)
   const hasOverloads = symbol.nodes.length > 1
 
   lines.push(`<article class="docs-symbol" id="${id}">`)
@@ -441,27 +482,43 @@ function renderEnumMembers(def: NonNullable<DenoDocNode['enumDef']>): string {
 /**
  * Render table of contents.
  */
-export function renderToc(symbols: MergedSymbol[]): string {
+export function renderToc(symbols: MergedSymbol[], prefix = ''): string {
+  return [
+    `<nav class="toc text-sm" aria-label="Table of contents">`,
+    renderTocList(symbols, prefix),
+    `</nav>`,
+  ].join('\n')
+}
+
+/**
+ * Render the inner TOC list (no `<nav>` wrapper).
+ */
+function renderTocList(symbols: MergedSymbol[], prefix = ''): string {
+  return [`<ul class="space-y-3">`, ...renderTocKindItems(symbols, prefix), `</ul>`].join('\n')
+}
+
+/**
+ * Render the per-kind `<li>` items for a set of symbols, without a wrapping `<ul>`.
+ */
+function renderTocKindItems(symbols: MergedSymbol[], prefix = ''): string[] {
   const grouped = groupMergedByKind(symbols)
   const lines: string[] = []
-
-  lines.push(`<nav class="toc text-sm" aria-label="Table of contents">`)
-  lines.push(`<ul class="space-y-3">`)
 
   for (const kind of KIND_DISPLAY_ORDER) {
     const kindSymbols = grouped[kind]
     if (!kindSymbols || kindSymbols.length === 0) continue
 
     const title = KIND_TITLES[kind] || kind
+    const sectionId = prefix ? `section-${prefix}-${kind}` : `section-${kind}`
     lines.push(`<li>`)
     lines.push(
-      `<a href="#section-${kind}" class="font-semibold text-fg-muted hover:text-fg block mb-1">${title} <span class="text-fg-subtle font-normal">(${kindSymbols.length})</span></a>`,
+      `<a href="#${sectionId}" class="font-semibold text-fg-muted hover:text-fg block mb-1">${title} <span class="text-fg-subtle font-normal">(${kindSymbols.length})</span></a>`,
     )
 
     const showSymbols = kindSymbols.slice(0, MAX_TOC_ITEMS_PER_KIND)
     lines.push(`<ul class="ps-3 space-y-0.5 border-is border-border/50">`)
     for (const symbol of showSymbols) {
-      const id = createSymbolId(symbol.kind, symbol.name)
+      const id = createSymbolId(symbol.kind, symbol.name, prefix)
       lines.push(
         `<li><a href="#${id}" class="text-fg-subtle hover:text-fg font-mono text-xs block py-0.5 truncate">${escapeHtml(symbol.name)}</a></li>`,
       )
@@ -473,6 +530,41 @@ export function renderToc(symbols: MergedSymbol[]): string {
     lines.push(`</ul>`)
 
     lines.push(`</li>`)
+  }
+
+  return lines
+}
+
+/**
+ * Render a table of contents grouped by package entry point.
+ */
+export function renderGroupedToc(entries: ProcessedEntry[]): string {
+  const lines: string[] = []
+
+  // A single top-level `<ul>` keeps the grouped TOC structurally identical to
+  // the flat one (`.toc-content > ul > li`), so the page's scoped styles apply
+  // to both without duplicating them inline. Each entry contributes a group
+  // label `<li>` followed by that entry's kind `<li>`s as siblings, so nesting
+  // depth matches the flat shape and the symbol-link rules still target the
+  // right level.
+  lines.push(`<nav class="toc text-sm" aria-label="Table of contents">`)
+  lines.push(`<ul class="space-y-3">`)
+
+  for (const entry of entries) {
+    if (entry.symbols.length === 0) continue
+    const isRoot = entry.entryPoint === '.'
+    const slug = entry.prefix
+
+    // The root entry's kinds sit flat at the top with no group label.
+    if (!isRoot) {
+      lines.push(`<li class="docs-toc-group">`)
+      lines.push(
+        `<a href="#group-${slug}" class="font-mono font-semibold text-fg-muted hover:text-fg block mb-1 truncate"><bdi>${escapeHtml(entry.entryPoint)}</bdi></a>`,
+      )
+      lines.push(`</li>`)
+    }
+
+    lines.push(...renderTocKindItems(entry.symbols, slug))
   }
 
   lines.push(`</ul>`)
