@@ -15,7 +15,7 @@ permissions: {}
 jobs:
   stale-bugs:
     name: 🧹 Mark stale bug issues
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     permissions:
       issues: write # mark and close stale bug issues
     steps:
@@ -33,7 +33,7 @@ jobs:
 
   stale-prs:
     name: 🧹 Mark stale pull requests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     permissions:
       pull-requests: write # mark and close stale pull requests
     steps:
