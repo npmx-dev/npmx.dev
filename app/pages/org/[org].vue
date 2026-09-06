@@ -1,5 +1,17 @@
 <script setup lang="ts">
-import type { FilterChip, SortOption } from '#shared/types/preferences'
+import type {
+  FilterChip,
+  SortOption,
+  DownloadRange,
+  SecurityFilter,
+  UpdatedWithin,
+} from '#shared/types/preferences'
+import {
+  DEFAULT_COLUMNS,
+  DOWNLOAD_RANGES,
+  SECURITY_FILTER_VALUES,
+  UPDATED_WITHIN_OPTIONS,
+} from '#shared/types/preferences'
 import { normalizeSearchParam } from '#shared/utils/url'
 import { debounce } from 'perfect-debounce'
 
@@ -42,6 +54,16 @@ const packageCount = computed(() => packages.value.length)
 const { viewMode, paginationMode, pageSize, columns, toggleColumn, resetColumns } =
   usePackageListPreferences()
 
+const routeColumns = normalizeSearchParam(route.query.columns)
+if (routeColumns) {
+  const allowedColumnIds = new Set(DEFAULT_COLUMNS.map(c => c.id))
+  const visibleIds = new Set(routeColumns.split(',').filter(id => allowedColumnIds.has(id as any)))
+  columns.value = DEFAULT_COLUMNS.map(col => ({
+    ...col,
+    visible: visibleIds.has(col.id),
+  }))
+}
+
 // Structured filters and sorting
 const {
   filters,
@@ -61,6 +83,15 @@ const {
 } = useStructuredFilters({
   packages,
   initialSort: (normalizeSearchParam(route.query.sort) as SortOption) ?? DEFAULT_SORT,
+  initialFilters: {
+    downloadRange: DOWNLOAD_RANGES.find(
+      r => r.value === normalizeSearchParam(route.query.downloadRange),
+    )?.value,
+    security: SECURITY_FILTER_VALUES.find(v => v === normalizeSearchParam(route.query.security)),
+    updatedWithin: UPDATED_WITHIN_OPTIONS.find(
+      o => o.value === normalizeSearchParam(route.query.updatedWithin),
+    )?.value,
+  },
 })
 
 // Pagination state
@@ -84,24 +115,63 @@ watch(totalPages, newTotal => {
 })
 
 // Debounced URL update for filter/sort
-const updateUrl = debounce((updates: { filter?: string; sort?: string }) => {
-  router.replace({
-    query: {
-      ...route.query,
-      q: updates.filter || undefined,
-      sort: updates.sort && updates.sort !== DEFAULT_SORT ? updates.sort : undefined,
-    },
-  })
-}, 300)
+const updateUrl = debounce(
+  (updates: {
+    filter?: string
+    sort?: string
+    downloadRange?: string
+    security?: string
+    updatedWithin?: string
+    columns?: string
+  }) => {
+    router.replace({
+      query: {
+        ...route.query,
+        q: updates.filter || undefined,
+        sort: updates.sort && updates.sort !== DEFAULT_SORT ? updates.sort : undefined,
+        downloadRange: updates.downloadRange !== 'any' ? updates.downloadRange : undefined,
+        security: updates.security !== 'all' ? updates.security : undefined,
+        updatedWithin: updates.updatedWithin !== 'any' ? updates.updatedWithin : undefined,
+        columns: updates.columns || undefined,
+      },
+    })
+  },
+  300,
+)
 
 // Update URL when filter/sort changes (debounced)
 watch(
-  [() => filters.value.text, () => filters.value.keywords, () => sortOption.value] as const,
-  ([text, keywords, sort]) => {
+  [
+    () => filters.value.text,
+    () => filters.value.keywords,
+    () => sortOption.value,
+    () => filters.value.downloadRange,
+    () => filters.value.security,
+    () => filters.value.updatedWithin,
+    () =>
+      columns.value
+        .filter(c => c.visible)
+        .map(c => c.id)
+        .join(','),
+  ] as const,
+  ([text, keywords, sort, downloadRange, security, updatedWithin, visibleColumns]) => {
     const filter = [text, ...keywords.map(keyword => `keyword:${keyword}`)]
       .filter(Boolean)
       .join(' ')
-    updateUrl({ filter, sort })
+
+    const defaultVisible = DEFAULT_COLUMNS.filter(c => c.visible)
+      .map(c => c.id)
+      .join(',')
+    const cols = visibleColumns === defaultVisible ? undefined : visibleColumns
+
+    updateUrl({
+      filter,
+      sort,
+      downloadRange,
+      security,
+      updatedWithin,
+      columns: cols,
+    })
   },
 )
 
