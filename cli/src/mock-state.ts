@@ -489,6 +489,11 @@ export class MockConnectorStateManager {
         }
         break
       }
+      case 'package:deprecate': {
+        // Params: { pkg, message, version? } — PackageDeprecateParamsSchema
+        // Deprecation is a registry-side mutation; no local mock state to update.
+        break
+      }
     }
   }
 

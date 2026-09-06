@@ -1,5 +1,6 @@
 import * as v from 'valibot'
 import validateNpmPackageName from 'validate-npm-package-name'
+import { PackageDeprecateParamsSchema } from '../../shared/schemas/package.ts'
 
 // Validation pattern for npm usernames/org names
 // These follow similar rules: lowercase alphanumeric with hyphens, can't start/end with hyphen
@@ -109,6 +110,7 @@ export const OperationTypeSchema = v.picklist([
   'owner:add',
   'owner:rm',
   'package:init',
+  'package:deprecate',
 ])
 
 /**
@@ -292,6 +294,9 @@ export function validateOperationParams(
       break
     case 'package:init':
       v.parse(PackageInitParamsSchema, params)
+      break
+    case 'package:deprecate':
+      v.parse(PackageDeprecateParamsSchema, params)
       break
   }
 }

@@ -213,6 +213,7 @@ import {
   PackageCard,
   PackageClaimPackageModal,
   PackageCompatibility,
+  PackageDeprecatePackageModal,
   PackageDependencies,
   PackageDeprecatedTree,
   PackageHeader,
@@ -1934,6 +1935,29 @@ describe('component accessibility audits', () => {
           packageScope: undefined,
           canPublishToScope: true,
           open: true,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageDeprecatePackageModal', () => {
+    it('should have no accessibility violations when closed', async () => {
+      const component = await mountSuspended(PackageDeprecatePackageModal, {
+        props: {
+          packageName: 'test-package',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations when closed with version', async () => {
+      const component = await mountSuspended(PackageDeprecatePackageModal, {
+        props: {
+          packageName: 'test-package',
+          version: '1.0.0',
         },
       })
       const results = await runAxe(component)

@@ -92,3 +92,18 @@ export const PackageFileDiffQuerySchema = v.object({
 export type PackageCompareQuery = v.InferOutput<typeof PackageCompareQuerySchema>
 /** @public */
 export type PackageFileDiffQuery = v.InferOutput<typeof PackageFileDiffQuerySchema>
+
+/**
+ * Schema for connector package:deprecate operation params.
+ */
+export const PackageDeprecateParamsSchema = v.object({
+  pkg: PackageNameSchema,
+  message: v.pipe(
+    v.string(),
+    v.nonEmpty('Deprecation message is required'),
+    v.maxLength(500, 'Message is too long'),
+  ),
+  version: v.optional(v.pipe(v.string(), v.nonEmpty())),
+  dryRun: v.optional(v.picklist(['true', 'false'], 'dryRun must be "true" or "false"')),
+  registry: v.optional(v.pipe(v.string(), v.minLength(1, 'Registry URL cannot be empty'))),
+})
