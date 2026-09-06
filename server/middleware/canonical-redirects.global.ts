@@ -1,3 +1,5 @@
+import { NPM_REGISTRY } from '#shared/utils/constants'
+
 /**
  * Redirect legacy/shorthand URLs to canonical paths.
  *
@@ -5,6 +7,7 @@
  * - /@org/pkg or /pkg           → /package/@org/pkg or /package/pkg
  * - /@org/pkg/v/ver or /pkg@ver → /package/@org/pkg/v/ver or /package/pkg/v/ver
  * - /@org                       → /org/org
+ * - /org/<name>                 → /~<name> (when <name> is a user account, not an org)
  *
  * Handled via route aliases (not here):
  * - /package/code/* → /package-code/*
@@ -72,6 +75,39 @@ export default defineEventHandler(async event => {
   // username
   if (path.startsWith('/~') || path.startsWith('/_')) {
     return
+  }
+
+  // /org/<name> → /~<name> if <name> is a user, not an org (matches npmjs.com).
+  // NOTE: this must run before the `pages` allowlist check below, since '/org'
+  // is allowlisted (to protect bare `/org` from the generic /pkg redirect).
+  // Only exact single-segment /org/<name> paths are checked here; bare `/org`
+  // and deeper paths still fall through to the allowlist.
+  // Detection uses /-/org/<name>/user ({} = real org, non-empty = user,
+  // 404 = neither) — /-/org/<name>/package returns 200 for users too, so it
+  // cannot be used for detection.
+  const orgPageMatch = path.match(/^\/org\/(?<name>[^/]+)$/)
+  const orgPageName = orgPageMatch?.groups?.name
+  if (orgPageName) {
+    const name = orgPageName.toLowerCase()
+    try {
+      const data = await $fetch<Record<string, string>>(
+        `${NPM_REGISTRY}/-/org/${encodeURIComponent(name)}/user`,
+        // Bounded lookup: a stalled registry connection must reject (and hit
+        // the fail-open catch below) instead of hanging the page render.
+        // retry: 0 keeps the deadline covering the complete lookup.
+        { timeout: 5000, retry: 0 },
+      )
+      if (Object.keys(data).length > 0) {
+        setHeader(event, 'cache-control', cacheControl)
+        return sendRedirect(event, `/~${name}` + (query ? '?' + query : ''), 301)
+      }
+      // {} means real org — fall through, let the org page render as normal
+    } catch {
+      // 404 (name doesn't exist) or any other error — fall through,
+      // let the org page's own 404 handling take over. Do not throw
+      // here; a failure in this check must never block rendering the
+      // org page itself.
+    }
   }
 
   if (pages.some(page => path === page || path.startsWith(page + '/'))) {
