@@ -23,6 +23,10 @@ const facetLabels: Record<ComparisonFacet, { label: string; description: string 
   types: { label: 'Types', description: 'TypeScript type definitions' },
   engines: { label: 'Engines', description: 'Node.js version requirements' },
   vulnerabilities: { label: 'Vulnerabilities', description: 'Known security vulnerabilities' },
+  supplyChainAlerts: {
+    label: 'Supply chain alerts',
+    description: 'Socket supply chain risk alerts',
+  },
   lastUpdated: { label: 'Published', description: 'When this version was published' },
   license: { label: 'License', description: 'Package license' },
   dependencies: { label: 'Direct Deps', description: 'Number of direct dependencies' },

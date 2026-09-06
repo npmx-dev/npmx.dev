@@ -25,13 +25,24 @@ const { data: vulnTree } = useDependencyAnalysis(
   () => props.version,
 )
 
+// Only show findings from enabled security data sources
+const { effectiveSources } = useSecuritySources()
+const displayVulnTree = computed(() => {
+  if (!vulnTree.value) return null
+  return filterVulnerabilityTreeBySources(vulnTree.value, effectiveSources.value)
+})
+
 // Check if a dependency has vulnerabilities (only direct deps)
 function getVulnerableDepInfo(depName: string) {
-  if (!vulnTree.value) return null
-  return vulnTree.value.vulnerablePackages.find(p => p.name === depName && p.depth === 'direct')
+  if (!displayVulnTree.value) return null
+  return displayVulnTree.value.vulnerablePackages.find(
+    p => p.name === depName && p.depth === 'direct',
+  )
 }
 
 // Check if a dependency is deprecated (only direct deps)
+// Note: deprecation comes from npm packument data, not from security sources,
+// so it is intentionally not gated by the security-source preference
 function getDeprecatedDepInfo(depName: string) {
   if (!vulnTree.value) return null
   return vulnTree.value.deprecatedPackages.find(p => p.name === depName && p.depth === 'direct')

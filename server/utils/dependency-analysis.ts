@@ -1,264 +1,248 @@
 import type {
-  OsvQueryResponse,
-  OsvBatchResponse,
-  OsvVulnerability,
-  OsvSeverityLevel,
-  VulnerabilitySummary,
   DependencyDepth,
+  OsvSeverityLevel,
+  PackageSupplyChainInfo,
   PackageVulnerabilityInfo,
+  SecuritySourceStatus,
+  VulnerabilitySummary,
   VulnerabilityTreeResult,
   DeprecatedPackageInfo,
-  OsvAffected,
-  OsvRange,
 } from '#shared/types/dependency-analysis'
 import { mapWithConcurrency } from '#shared/utils/async'
 import { resolveDependencyTree } from './dependency-resolver'
-import { compare, isGreaterOrEqual, isLess } from 'verkit'
+import { queryOsvBatch, queryOsvDetails, type PackageQueryInfo } from './osv'
+import {
+  querySocketForTree,
+  strongerReachability,
+  type SocketTreeScan,
+  type SocketVulnerabilityFinding,
+} from './socket'
+import { countBySeverity, hasTransientSourceFailure } from '#shared/utils/security-sources'
+import { CACHE_MAX_AGE_FIVE_MINUTES } from '#shared/utils/constants'
 
 /** Maximum concurrent requests for fetching vulnerability details */
 const OSV_DETAIL_CONCURRENCY = 25
 
-/** Package info needed for OSV queries */
-interface PackageQueryInfo {
-  name: string
-  version: string
-  depth: DependencyDepth
-  path: string[]
+const DEPTH_ORDER: Record<DependencyDepth, number> = { root: 0, direct: 1, transitive: 2 }
+
+const SEVERITY_ORDER: Record<OsvSeverityLevel, number> = {
+  critical: 0,
+  high: 1,
+  moderate: 2,
+  low: 3,
+  unknown: 4,
 }
 
 /**
- * Query OSV batch API to find which packages have vulnerabilities.
- * Returns indices of packages that have vulnerabilities (for follow-up detailed queries).
- * @see https://google.github.io/osv.dev/post-v1-querybatch/
+ * Scan the tree via OSV: batch discovery, then detail queries for packages
+ * with known vulnerabilities.
  */
-async function queryOsvBatch(
-  packages: PackageQueryInfo[],
-): Promise<{ vulnerableIndices: number[]; failed: boolean }> {
-  if (packages.length === 0) return { vulnerableIndices: [], failed: false }
+async function runOsvScan(packages: PackageQueryInfo[]): Promise<{
+  vulnerablePackages: PackageVulnerabilityInfo[]
+  failedQueries: number
+  status: SecuritySourceStatus
+}> {
+  // Step 1: Use batch API to find which packages have vulnerabilities
+  // This is much faster than individual queries - one request for all packages
+  const { vulnerableIndices, failed: batchFailed } = await queryOsvBatch(packages)
 
-  try {
-    const response = await $fetch<OsvBatchResponse>('https://api.osv.dev/v1/querybatch', {
-      method: 'POST',
-      body: {
-        queries: packages.map(pkg => ({
-          package: { name: pkg.name, ecosystem: 'npm' },
-          version: pkg.version,
-        })),
-      },
-    })
+  const vulnerablePackages: PackageVulnerabilityInfo[] = []
+  let failedQueries = batchFailed ? packages.length : 0
 
-    // Find indices of packages that have vulnerabilities
-    const vulnerableIndices: number[] = []
-    for (let i = 0; i < response.results.length; i++) {
-      const result = response.results[i]
-      if (result?.vulns && result.vulns.length > 0) {
-        vulnerableIndices.push(i)
-      }
-      // Warn if pagination token present (>1000 vulns for single query or >3000 total)
-      // This is extremely unlikely for npm packages but log for visibility
-      if (result?.next_page_token) {
-        // oxlint-disable-next-line no-console -- warn about paginated results
-        console.warn(
-          `[dep-analysis] OSV batch result has pagination token for package index ${i} ` +
-            `(${packages[i]?.name}@${packages[i]?.version}) - some vulnerabilities may be missing`,
-        )
-      }
-    }
-
-    return { vulnerableIndices, failed: false }
-  } catch (error) {
-    // oxlint-disable-next-line no-console -- log OSV API failures for debugging
-    console.warn(`[dep-analysis] OSV batch query failed:`, error)
-    return { vulnerableIndices: [], failed: true }
-  }
-}
-
-/**
- * Query OSV for full vulnerability details for a single package.
- * Only called for packages known to have vulnerabilities.
- */
-async function queryOsvDetails(pkg: PackageQueryInfo): Promise<PackageVulnerabilityInfo | null> {
-  try {
-    const response = await $fetch<OsvQueryResponse>('https://api.osv.dev/v1/query', {
-      method: 'POST',
-      body: {
-        package: { name: pkg.name, ecosystem: 'npm' },
-        version: pkg.version,
-      },
-    })
-
-    const vulns = response.vulns || []
-    if (vulns.length === 0) return null
-
-    const counts = { total: vulns.length, critical: 0, high: 0, moderate: 0, low: 0 }
-    const vulnerabilities: VulnerabilitySummary[] = []
-
-    const severityOrder: Record<OsvSeverityLevel, number> = {
-      critical: 0,
-      high: 1,
-      moderate: 2,
-      low: 3,
-      unknown: 4,
-    }
-
-    const sortedVulns = [...vulns].sort(
-      (a, b) => severityOrder[getSeverityLevel(a)] - severityOrder[getSeverityLevel(b)],
+  if (!batchFailed && vulnerableIndices.length > 0) {
+    // Step 2: Fetch full vulnerability details only for packages with vulns
+    // This is typically a small fraction of total packages
+    const detailResults = await mapWithConcurrency(
+      vulnerableIndices,
+      i => queryOsvDetails(packages[i]!),
+      OSV_DETAIL_CONCURRENCY,
     )
 
-    for (const vuln of sortedVulns) {
-      const severity = getSeverityLevel(vuln)
-      if (severity === 'critical') counts.critical++
-      else if (severity === 'high') counts.high++
-      else if (severity === 'moderate') counts.moderate++
-      else if (severity === 'low') counts.low++
-
-      vulnerabilities.push({
-        id: vuln.id,
-        summary: vuln.summary || 'No description available',
-        severity,
-        aliases: vuln.aliases || [],
-        url: getVulnerabilityUrl(vuln),
-        fixedIn: getFixedVersion(vuln.affected, pkg.name, pkg.version),
-      })
-    }
-
-    return {
-      name: pkg.name,
-      version: pkg.version,
-      depth: pkg.depth,
-      path: pkg.path,
-      vulnerabilities,
-      counts,
-    }
-  } catch (error) {
-    // oxlint-disable-next-line no-console -- log OSV API failures for debugging
-    console.warn(`[dep-analysis] OSV detail query failed for ${pkg.name}@${pkg.version}:`, error)
-    return null
-  }
-}
-
-function getVulnerabilityUrl(vuln: OsvVulnerability): string {
-  if (vuln.id.startsWith('GHSA-')) {
-    return `https://github.com/advisories/${vuln.id}`
-  }
-  const cveAlias = vuln.aliases?.find(a => a.startsWith('CVE-'))
-  if (cveAlias) {
-    return `https://nvd.nist.gov/vuln/detail/${cveAlias}`
-  }
-  return `https://osv.dev/vulnerability/${vuln.id}`
-}
-
-/**
- * Parse OSV range events into introduced/fixed pairs.
- * OSV events form a timeline: [introduced, fixed, introduced, fixed, ...]
- * A single range can have multiple introduced/fixed pairs representing
- * periods where the vulnerability was active, was fixed, and was reintroduced.
- * @see https://ossf.github.io/osv-schema/#affectedrangesevents-fields
- */
-function parseRangeIntervals(range: OsvRange): Array<{ introduced: string; fixed?: string }> {
-  const intervals: Array<{ introduced: string; fixed?: string }> = []
-  let currentIntroduced: string | undefined
-
-  for (const event of range.events) {
-    if (event.introduced !== undefined) {
-      // Start a new interval (close previous open one if any)
-      if (currentIntroduced !== undefined) {
-        intervals.push({ introduced: currentIntroduced })
+    for (const result of detailResults) {
+      if (result) {
+        vulnerablePackages.push(result)
+      } else {
+        failedQueries++
       }
-      currentIntroduced = event.introduced
-    } else if (event.fixed !== undefined && currentIntroduced !== undefined) {
-      intervals.push({ introduced: currentIntroduced, fixed: event.fixed })
-      currentIntroduced = undefined
     }
   }
 
-  // Handle trailing introduced with no fixed (still vulnerable)
-  if (currentIntroduced !== undefined) {
-    intervals.push({ introduced: currentIntroduced })
-  }
+  const status: SecuritySourceStatus = batchFailed ? 'failed' : failedQueries > 0 ? 'partial' : 'ok'
 
-  return intervals
+  return { vulnerablePackages, failedQueries, status }
 }
 
 /**
- * Extract the fixed version for a specific package version from vulnerability data.
- * Finds all intervals that contain the current version and returns the closest fix,
- * preferring a nearby backport over a distant major-version bump.
- * @see https://ossf.github.io/osv-schema/#affectedrangesevents-fields
+ * Locate the existing entry a Socket finding refers to. Match strength is
+ * evaluated across ALL entries before weakening: alias groups (e.g. OSV
+ * expands aliases to the whole group) can join distinct advisories, even
+ * cross-listing each other's GHSA and CVE ids - so an exact primary-id match
+ * anywhere must beat any alias match, and a finding that names one GHSA must
+ * never CVE-merge into an entry whose primary id is a different GHSA.
  */
-function getFixedVersion(
-  affected: OsvAffected[] | undefined,
-  packageName: string,
-  currentVersion: string,
-): string | undefined {
-  if (!affected) return undefined
+function findMatchingVulnerability(
+  vulnerabilities: VulnerabilitySummary[],
+  finding: SocketVulnerabilityFinding,
+): VulnerabilitySummary | undefined {
+  // identical ids (including synthetic SOCKET-* ids) refer to the same entry
+  const exact = vulnerabilities.find(vuln => vuln.id === finding.id)
+  if (exact) return exact
 
-  // Find all affected entries for this specific package
-  const packageAffectedEntries = affected.filter(
-    a => a.package.ecosystem === 'npm' && a.package.name === packageName,
+  if (finding.ghsaId) {
+    const ghsaId = finding.ghsaId
+    const byGhsaId = vulnerabilities.find(vuln => vuln.id === ghsaId)
+    if (byGhsaId) return byGhsaId
+    const byGhsaAlias = vulnerabilities.find(vuln => vuln.aliases.includes(ghsaId))
+    if (byGhsaAlias) return byGhsaAlias
+  }
+
+  if (!finding.cveId) return undefined
+  const cveId = finding.cveId
+  return vulnerabilities.find(
+    vuln =>
+      (vuln.id === cveId || vuln.aliases.includes(cveId)) &&
+      !(finding.ghsaId && vuln.id.startsWith('GHSA-') && vuln.id !== finding.ghsaId),
   )
-
-  // Collect all matching fixed versions across all ranges
-  const matchingFixedVersions: string[] = []
-
-  for (const entry of packageAffectedEntries) {
-    if (!entry.ranges) continue
-
-    for (const range of entry.ranges) {
-      // Only handle SEMVER ranges (most common for npm)
-      if (range.type !== 'SEMVER') continue
-
-      const intervals = parseRangeIntervals(range)
-      for (const interval of intervals) {
-        const introVersion = interval.introduced === '0' ? '0.0.0' : interval.introduced
-        try {
-          const afterIntro = isGreaterOrEqual(currentVersion, introVersion)
-          const beforeFixed = !interval.fixed || isLess(currentVersion, interval.fixed)
-          if (afterIntro && beforeFixed && interval.fixed) {
-            matchingFixedVersions.push(interval.fixed)
-          }
-        } catch {
-          continue
-        }
-      }
-    }
-  }
-
-  if (matchingFixedVersions.length === 0) return undefined
-  if (matchingFixedVersions.length === 1) return matchingFixedVersions[0]
-
-  // Return the lowest (closest) fixed version — the smallest bump from the current version
-  return matchingFixedVersions.sort(compare)[0]
-}
-
-function getSeverityLevel(vuln: OsvVulnerability): OsvSeverityLevel {
-  const dbSeverity = vuln.database_specific?.severity?.toLowerCase()
-  if (dbSeverity) {
-    if (dbSeverity === 'critical') return 'critical'
-    if (dbSeverity === 'high') return 'high'
-    if (dbSeverity === 'moderate' || dbSeverity === 'medium') return 'moderate'
-    if (dbSeverity === 'low') return 'low'
-  }
-
-  const severityEntry = vuln.severity?.[0]
-  if (severityEntry?.score) {
-    const match = severityEntry.score.match(/(?:^|[/:])(\d+(?:\.\d+)?)$/)
-    if (match?.[1]) {
-      const score = parseFloat(match[1])
-      if (score >= 9.0) return 'critical'
-      if (score >= 7.0) return 'high'
-      if (score >= 4.0) return 'moderate'
-      if (score > 0) return 'low'
-    }
-  }
-
-  return 'unknown'
 }
 
 /**
- * Analyze entire dependency tree for vulnerabilities and deprecated packages.
- * Uses OSV batch API for efficient vulnerability discovery, then fetches
- * full details only for packages with known vulnerabilities.
+ * Merge Socket vulnerability findings into the OSV results. Findings for the
+ * same advisory (matched by GHSA/CVE id or alias) are merged into a single
+ * entry tagged with both sources; Socket-only findings become new entries.
+ */
+function mergeSocketFindings(
+  vulnerablePackages: PackageVulnerabilityInfo[],
+  packagesByKey: Map<string, PackageQueryInfo>,
+  socketVulnerabilities: Map<string, SocketVulnerabilityFinding[]>,
+): PackageVulnerabilityInfo[] {
+  const byKey = new Map(vulnerablePackages.map(pkg => [`${pkg.name}@${pkg.version}`, pkg]))
+
+  for (const [key, findings] of socketVulnerabilities) {
+    const treePackage = packagesByKey.get(key)
+    // Socket may return artifacts we did not ask about (e.g. resolution
+    // differences); ignore anything outside the resolved tree
+    if (!treePackage) continue
+
+    let entry = byKey.get(key)
+    if (!entry) {
+      entry = {
+        name: treePackage.name,
+        version: treePackage.version,
+        depth: treePackage.depth,
+        path: treePackage.path,
+        vulnerabilities: [],
+        counts: { total: 0, critical: 0, high: 0, moderate: 0, low: 0 },
+      }
+      byKey.set(key, entry)
+    }
+
+    for (const finding of findings) {
+      const existing = findMatchingVulnerability(entry.vulnerabilities, finding)
+      if (existing) {
+        if (!existing.sources.includes('socket')) existing.sources.push('socket')
+        if (finding.reachability) {
+          // multiple Socket alerts can reference the same advisory - keep
+          // the strongest (most alarming) reachability verdict
+          existing.reachability = strongerReachability(existing.reachability, finding.reachability)
+        }
+        existing.fixedIn ??= finding.fixedIn
+        existing.cveId ??= finding.cveId
+      } else {
+        const aliases = [finding.ghsaId, finding.cveId].filter(
+          (alias): alias is string => !!alias && alias !== finding.id,
+        )
+        entry.vulnerabilities.push({
+          id: finding.id,
+          summary: finding.summary,
+          severity: finding.severity,
+          aliases,
+          cveId: finding.cveId,
+          url: finding.url,
+          fixedIn: finding.fixedIn,
+          sources: ['socket'],
+          reachability: finding.reachability,
+        })
+      }
+    }
+
+    entry.vulnerabilities.sort((a, b) => SEVERITY_ORDER[a.severity] - SEVERITY_ORDER[b.severity])
+    entry.counts = countBySeverity(entry.vulnerabilities)
+  }
+
+  return [...byKey.values()]
+}
+
+/**
+ * Repair alias-group pollution among a package's findings. OSV expands each
+ * record's aliases to the whole transitive alias group, so two distinct
+ * advisories (e.g. an original and its fix-bypass) can cross-list each
+ * other's GHSA and CVE ids. Two facts let us correct this: entries here are
+ * distinct advisories by their publisher's own account, so none may claim a
+ * sibling's primary id as an alias; and a CVE that a source explicitly
+ * paired with one advisory (cveId) cannot also alias a sibling.
+ */
+function reconcileAliases(vulnerabilities: VulnerabilitySummary[]): void {
+  if (vulnerabilities.length < 2) return
+
+  const primaryIds = new Set(vulnerabilities.map(vuln => vuln.id))
+  // A CVE can legitimately be shared by two distinct advisories (two GHSAs,
+  // one CVE), so track the full set of source-declared owners per CVE; an
+  // alias is only disputed when its owner set excludes this entry entirely.
+  const cveOwners = new Map<string, Set<string>>()
+  for (const vuln of vulnerabilities) {
+    if (vuln.cveId) {
+      const owners = cveOwners.get(vuln.cveId) ?? new Set<string>()
+      owners.add(vuln.id)
+      cveOwners.set(vuln.cveId, owners)
+    }
+  }
+
+  for (const vuln of vulnerabilities) {
+    const removed: string[] = []
+    vuln.aliases = vuln.aliases.filter(alias => {
+      const owners = cveOwners.get(alias)
+      const belongsToSibling =
+        (primaryIds.has(alias) && alias !== vuln.id) ||
+        (owners !== undefined && !owners.has(vuln.id))
+      if (belongsToSibling) removed.push(alias)
+      return !belongsToSibling
+    })
+    if (removed.length > 0) vuln.disputedAliases = removed
+  }
+}
+
+function buildSupplyChainPackages(
+  packagesByKey: Map<string, PackageQueryInfo>,
+  socketAlerts: SocketTreeScan['supplyChainAlerts'],
+): PackageSupplyChainInfo[] {
+  const result: PackageSupplyChainInfo[] = []
+  for (const [key, alerts] of socketAlerts) {
+    const treePackage = packagesByKey.get(key)
+    if (!treePackage || alerts.length === 0) continue
+    result.push({
+      name: treePackage.name,
+      version: treePackage.version,
+      depth: treePackage.depth,
+      path: treePackage.path,
+      alerts: [...alerts].sort((a, b) => SEVERITY_ORDER[a.severity] - SEVERITY_ORDER[b.severity]),
+    })
+  }
+
+  result.sort((a, b) => {
+    if (a.depth !== b.depth) return DEPTH_ORDER[a.depth] - DEPTH_ORDER[b.depth]
+    const aWorst = a.alerts[0] ? SEVERITY_ORDER[a.alerts[0].severity] : Number.MAX_SAFE_INTEGER
+    const bWorst = b.alerts[0] ? SEVERITY_ORDER[b.alerts[0].severity] : Number.MAX_SAFE_INTEGER
+    return aWorst - bWorst
+  })
+
+  return result
+}
+
+/**
+ * Analyze entire dependency tree for vulnerabilities, supply-chain alerts and
+ * deprecated packages. Queries all configured security data sources (OSV
+ * always; Socket when an API key is configured) and merges the findings,
+ * reporting per-source status.
  */
 export const analyzeDependencyTree = defineCachedFunction(
   async (name: string, version: string): Promise<VulnerabilityTreeResult> => {
@@ -273,6 +257,8 @@ export const analyzeDependencyTree = defineCachedFunction(
       path: pkg.path || [],
     }))
 
+    const packagesByKey = new Map(packages.map(pkg => [`${pkg.name}@${pkg.version}`, pkg]))
+
     // Collect deprecated packages (no API call needed - already in packument data)
     const deprecatedPackages: DeprecatedPackageInfo[] = [...resolved.values()]
       .filter(pkg => pkg.deprecated)
@@ -283,41 +269,27 @@ export const analyzeDependencyTree = defineCachedFunction(
         path: pkg.path || [],
         message: pkg.deprecated!,
       }))
-      .sort((a, b) => {
-        // Sort by depth (root → direct → transitive)
-        const depthOrder: Record<DependencyDepth, number> = { root: 0, direct: 1, transitive: 2 }
-        return depthOrder[a.depth] - depthOrder[b.depth]
-      })
+      .sort((a, b) => DEPTH_ORDER[a.depth] - DEPTH_ORDER[b.depth])
 
-    // Step 1: Use batch API to find which packages have vulnerabilities
-    // This is much faster than individual queries - one request for all packages
-    const { vulnerableIndices, failed: batchFailed } = await queryOsvBatch(packages)
+    // Query all configured security data sources concurrently
+    const [osvScan, socketScan] = await Promise.all([
+      runOsvScan(packages),
+      querySocketForTree(packages),
+    ])
 
-    let vulnerablePackages: PackageVulnerabilityInfo[] = []
-    let failedQueries = batchFailed ? packages.length : 0
+    const vulnerablePackages = mergeSocketFindings(
+      osvScan.vulnerablePackages,
+      packagesByKey,
+      socketScan.vulnerabilities,
+    )
 
-    if (!batchFailed && vulnerableIndices.length > 0) {
-      // Step 2: Fetch full vulnerability details only for packages with vulns
-      // This is typically a small fraction of total packages
-      const detailResults = await mapWithConcurrency(
-        vulnerableIndices,
-        i => queryOsvDetails(packages[i]!),
-        OSV_DETAIL_CONCURRENCY,
-      )
-
-      for (const result of detailResults) {
-        if (result) {
-          vulnerablePackages.push(result)
-        } else {
-          failedQueries++
-        }
-      }
+    for (const pkg of vulnerablePackages) {
+      reconcileAliases(pkg.vulnerabilities)
     }
 
     // Sort by depth (root → direct → transitive), then by severity
-    const depthOrder: Record<DependencyDepth, number> = { root: 0, direct: 1, transitive: 2 }
     vulnerablePackages.sort((a, b) => {
-      if (a.depth !== b.depth) return depthOrder[a.depth] - depthOrder[b.depth]
+      if (a.depth !== b.depth) return DEPTH_ORDER[a.depth] - DEPTH_ORDER[b.depth]
       if (a.counts.critical !== b.counts.critical) return b.counts.critical - a.counts.critical
       if (a.counts.high !== b.counts.high) return b.counts.high - a.counts.high
       if (a.counts.moderate !== b.counts.moderate) return b.counts.moderate - a.counts.moderate
@@ -334,8 +306,13 @@ export const analyzeDependencyTree = defineCachedFunction(
       totalCounts.low += pkg.counts.low
     }
 
-    // Log if batch query failed entirely
-    if (batchFailed) {
+    const supplyChainPackages = buildSupplyChainPackages(
+      packagesByKey,
+      socketScan.supplyChainAlerts,
+    )
+
+    // Log if the OSV batch query failed entirely
+    if (osvScan.status === 'failed') {
       // oxlint-disable-next-line no-console -- critical error logging
       console.error(
         `[dep-analysis] Critical: OSV batch query failed for ${name}@${version} (${packages.length} packages)`,
@@ -346,16 +323,28 @@ export const analyzeDependencyTree = defineCachedFunction(
       package: name,
       version,
       vulnerablePackages,
+      supplyChainPackages,
       deprecatedPackages,
       totalPackages: packages.length,
-      failedQueries,
+      failedQueries: osvScan.failedQueries,
       totalCounts,
+      sourceStatus: { osv: osvScan.status, socket: socketScan.status },
     }
   },
   {
     maxAge: 60 * 60,
     swr: true,
     name: 'dependency-analysis',
-    getKey: (name: string, version: string) => `v2:${name}@${version}`,
+    getKey: (name: string, version: string) => `v4:${name}@${version}`,
+    // Results degraded by a transient source failure (outage, quota
+    // exhaustion) are only served from cache briefly, so a blip doesn't
+    // strip findings from the cache for a whole hour after recovery
+    validate: entry => {
+      // a custom validate replaces nitro's default entry.value !== undefined guard
+      const result = entry.value
+      if (!result) return false
+      if (!hasTransientSourceFailure(result.sourceStatus)) return true
+      return Date.now() - (entry.mtime ?? 0) < CACHE_MAX_AGE_FIVE_MINUTES * 1000
+    },
   },
 )

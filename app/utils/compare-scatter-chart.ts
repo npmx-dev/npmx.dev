@@ -66,6 +66,9 @@ function getNumericFacetValue(
         ? packageData.vulnerabilities.count
         : null
 
+    case 'supplyChainAlerts':
+      return isFiniteNumber(packageData.supplyChainAlerts) ? packageData.supplyChainAlerts : null
+
     case 'types':
       return packageData.analysis?.types?.kind ? 1 : 0
 
