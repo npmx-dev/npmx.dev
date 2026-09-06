@@ -5,6 +5,8 @@ import { onKeyDown } from '@vueuse/core'
 import { debounce } from 'perfect-debounce'
 import { isValidNewPackageName } from '~/utils/package-name'
 import { isPlatformSpecificPackage } from '~/utils/platform-packages'
+import { isEditableElement } from '~/utils/input'
+import { getSearchResultNavigationDirection } from '~/utils/search-navigation'
 import { normalizeSearchParam } from '#shared/utils/url'
 
 definePageMeta({
@@ -490,9 +492,10 @@ function focusSearchInput() {
 const keyboardShortcuts = useKeyboardShortcuts()
 
 function handleResultsKeydown(e: KeyboardEvent) {
-  if (!keyboardShortcuts.value) {
+  if (!keyboardShortcuts.value || isEditableElement(e.target)) {
     return
   }
+
   // If the active element is an input, navigate to exact match or wait for results
   if (e.key === 'Enter' && document.activeElement?.tagName === 'INPUT') {
     // Get value directly from input (not from route query, which may be debounced)
@@ -516,37 +519,41 @@ function handleResultsKeydown(e: KeyboardEvent) {
 
   if (totalSelectableCount.value <= 0) return
 
-  const elements = getFocusableElements()
-  if (elements.length === 0) return
-
-  const currentIndex = elements.findIndex(el => el === document.activeElement)
-
-  if (e.key === 'ArrowDown') {
+  const direction = getSearchResultNavigationDirection(e.key)
+  if (direction) {
     e.preventDefault()
-    const nextIndex = currentIndex < 0 ? 0 : Math.min(currentIndex + 1, elements.length - 1)
-    const el = elements[nextIndex]
-    if (el) focusElement(el)
-    return
-  }
+    const elements = getFocusableElements()
+    if (elements.length === 0) return
 
-  if (e.key === 'ArrowUp') {
-    e.preventDefault()
-    // At first result or no result focused: return focus to search input
-    if (currentIndex <= 0) {
-      focusSearchInput()
+    const currentIndex = elements.findIndex(el => el === document.activeElement)
+
+    if (direction === 'next') {
+      const nextIndex = currentIndex < 0 ? 0 : Math.min(currentIndex + 1, elements.length - 1)
+      const el = elements[nextIndex]
+      if (el) focusElement(el)
       return
     }
-    const nextIndex = currentIndex - 1
-    const el = elements[nextIndex]
-    if (el) focusElement(el)
-    return
+
+    if (direction === 'previous') {
+      // At first result or no result focused: return focus to search input
+      if (currentIndex <= 0) {
+        focusSearchInput()
+        return
+      }
+      const nextIndex = currentIndex - 1
+      const el = elements[nextIndex]
+      if (el) focusElement(el)
+      return
+    }
   }
 
   if (e.key === 'Enter') {
     // Browser handles Enter on focused links naturally, but handle for non-link elements
-    if (document.activeElement && elements.includes(document.activeElement as HTMLElement)) {
+    if (
+      document.activeElement &&
+      getFocusableElements().includes(document.activeElement as HTMLElement)
+    ) {
       const el = document.activeElement as HTMLElement
-      // Only prevent default and click if it's not already a link (links handle Enter natively)
       if (el.tagName !== 'A') {
         e.preventDefault()
         el.click()
@@ -555,7 +562,7 @@ function handleResultsKeydown(e: KeyboardEvent) {
   }
 }
 
-onKeyDown(['ArrowDown', 'ArrowUp', 'Enter'], handleResultsKeydown)
+onKeyDown(['j', 'k', 'Enter'], handleResultsKeydown)
 
 useSeoMeta({
   title: () =>
