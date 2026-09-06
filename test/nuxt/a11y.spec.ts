@@ -196,6 +196,10 @@ import {
   CompareReplacementSuggestion,
   DateTime,
   DependencyPathPopup,
+  DepsStatsDependencyList,
+  DepsStatsDependencyStats,
+  DepsStatsDependencyStatsPanel,
+  DepsStatsPackageJsonUpload,
   FilterChips,
   FilterPanel,
   HeaderAccountMenu,
@@ -2580,6 +2584,132 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(DependencyPathPopup, {
         props: {
           path: ['root@1.0.0', 'dep-a@1.0.0', 'dep-b@2.0.0', 'dep-c@3.0.0', 'vulnerable-pkg@4.0.0'],
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('DepsStatsPackageJsonUpload', () => {
+    it('should have no accessibility violations in empty state', async () => {
+      const component = await mountSuspended(DepsStatsPackageJsonUpload)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with an error', async () => {
+      const component = await mountSuspended(DepsStatsPackageJsonUpload, {
+        props: { error: 'Invalid package.json' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with a selected file', async () => {
+      const component = await mountSuspended(DepsStatsPackageJsonUpload, {
+        props: { fileName: 'package.json' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('DepsStatsDependencyList', () => {
+    it('should have no accessibility violations when empty', async () => {
+      const component = await mountSuspended(DepsStatsDependencyList, {
+        props: {
+          dependencies: [],
+          selectedName: null,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with dependencies', async () => {
+      const component = await mountSuspended(DepsStatsDependencyList, {
+        props: {
+          dependencies: [
+            {
+              name: 'vue',
+              range: '^3.5.0',
+              packageName: 'vue',
+              category: 'dependencies',
+              nonRegistry: false,
+            },
+            {
+              name: 'vitest',
+              range: '^3.0.0',
+              packageName: 'vitest',
+              category: 'devDependencies',
+              nonRegistry: false,
+            },
+            {
+              name: 'local-pkg',
+              range: 'workspace:*',
+              packageName: 'local-pkg',
+              category: 'dependencies',
+              nonRegistry: true,
+            },
+            {
+              name: 'alias-pkg',
+              range: '^1.0.0',
+              packageName: 'real-pkg',
+              category: 'dependencies',
+              nonRegistry: false,
+            },
+          ],
+          selectedName: 'vue',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('DepsStatsDependencyStats', () => {
+    it('should have no accessibility violations when empty', async () => {
+      const component = await mountSuspended(DepsStatsDependencyStats, {
+        props: { dependency: null },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations for a non-registry dependency', async () => {
+      const component = await mountSuspended(DepsStatsDependencyStats, {
+        props: {
+          dependency: {
+            name: 'local-pkg',
+            range: 'workspace:*',
+            packageName: 'local-pkg',
+            category: 'dependencies',
+            nonRegistry: true,
+          },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('DepsStatsDependencyStatsPanel', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(DepsStatsDependencyStatsPanel, {
+        props: {
+          packageName: 'vue',
+          declaredRange: '^3.5.0',
+        },
+        global: {
+          stubs: {
+            PackageTrendsChart: {
+              template: '<div data-test-id="package-trends-chart-stub"></div>',
+            },
+            PackageVersionDistribution: {
+              template: '<div data-test-id="package-version-distribution-stub"></div>',
+            },
+          },
         },
       })
       const results = await runAxe(component)
