@@ -18,7 +18,7 @@ const NoodleSchema = v.object({
   slug: v.string(),
   date: v.string(),
   dateTo: v.optional(v.string()),
-  // IANA timezone name, or "auto" for the visitor's local time.
+  // IANA timezone name, defaults to UTC when omitted.
   timezone: v.optional(v.string()),
   // When true, the npmx tagline is hidden while this noodle is active.
   tagline: v.optional(v.boolean()),

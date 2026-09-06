@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import type { AtIdentifierString } from '@atproto/lex'
 import { findNoodle } from '~/noodles'
-import { resolveNoodleLogo } from '~/components/Noodle'
 
 const route = useRoute()
 const slug = computed(() => String(route.params.slug ?? ''))
 
 const noodle = computed(() => findNoodle(slug.value))
-const logo = computed(() => (noodle.value ? resolveNoodleLogo(noodle.value.key) : undefined))
+const logo = computed(() => noodle.value?.logo)
 
 const enrichedAuthors = computed(() =>
   (noodle.value?.authors ?? []).map(a => ({

@@ -287,6 +287,7 @@ import {
 // The #components import automatically provides the client variant
 import LogoNuxt from '~/assets/logos/oss-partners/nuxt.svg'
 import CommandPaletteComponent from '~/components/CommandPalette.client.vue'
+import { noodles } from '~/noodles'
 import HeaderAccountMenuServer from '~/components/Header/AccountMenu.server.vue'
 import ToggleServer from '~/components/Settings/Toggle.server.vue'
 import SearchProviderToggleServer from '~/components/SearchProviderToggle.server.vue'
@@ -3190,13 +3191,7 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(NoodleListCard, {
         props: {
-          noodle: {
-            key: 'press',
-            slug: 'press',
-            title: 'Press',
-            date: '2026-05-01',
-            dateTo: '2026-05-04',
-          },
+          noodle: noodles.find(noodle => noodle.key === 'press')!,
         },
       })
       const results = await runAxe(component)

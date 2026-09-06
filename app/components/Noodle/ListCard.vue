@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import type { Noodle } from '#shared/schemas/noodle'
-import { resolveNoodleLogo } from '../Noodle'
+import type { ArchiveNoodle } from '~/noodles'
 
 const props = defineProps<{
-  noodle: Noodle
+  noodle: ArchiveNoodle
 }>()
 
-const logo = computed(() => resolveNoodleLogo(props.noodle.key))
+const logo = computed(() => props.noodle.logo)
 </script>
 
 <template>
