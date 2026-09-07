@@ -404,8 +404,8 @@ importers:
         specifier: ^2.1.3
         version: 2.1.4
       srvx:
-        specifier: ^0.12.0
-        version: 0.12.5
+        specifier: ^1.0.0
+        version: 1.0.3
       valibot:
         specifier: ^1.4.2
         version: 1.4.2(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)
@@ -9643,6 +9643,11 @@ packages:
 
   srvx@0.12.5:
     resolution: {integrity: sha512-IuvtDNQg5EIwv3c6dleyau7u8hCyGQ7D6+V/QM799Aud07z0wCUcurKLTRfyG33C8oUY+UWcVBFkfHMcbtmRLA==}
+    engines: {node: '>=20.16.0'}
+    hasBin: true
+
+  srvx@1.0.3:
+    resolution: {integrity: sha512-aOuk+yNJA61yA6eJJvQJxpJLIxz090hKMqDGzd35tGsvwaodi1RPuYSFUp5EINaJp7snjVwLkO2RXVMPZBYnnA==}
     engines: {node: '>=20.16.0'}
     hasBin: true
 
@@ -21972,6 +21977,8 @@ snapshots:
   srvx@0.11.22: {}
 
   srvx@0.12.5: {}
+
+  srvx@1.0.3: {}
 
   stackback@0.0.2: {}
 
