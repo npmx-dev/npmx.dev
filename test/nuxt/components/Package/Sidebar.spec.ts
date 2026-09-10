@@ -40,6 +40,13 @@ describe('PackageSidebar', () => {
     expect(wrapper.attributes('data-active')).toBe('true')
   })
 
+  it('sets active=true when sticky headers leave less space than the content needs', async () => {
+    wrapper = await mountSidebar(VIEWPORT_HEIGHT - 40)
+    await nextTick()
+
+    expect(wrapper.attributes('data-active')).toBe('true')
+  })
+
   it('renders with direction=up by default', async () => {
     wrapper = await mountSidebar()
 

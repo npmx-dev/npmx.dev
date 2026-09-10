@@ -1,12 +1,16 @@
 <script setup lang="ts">
+const APP_HEADER_HEIGHT = 56
+
 const viewport = useWindowSize()
 const scroll = useWindowScroll()
 const container = useTemplateRef<HTMLDivElement>('container')
 const content = useTemplateRef<HTMLDivElement>('content')
 const bounds = useElementBounding(content)
+const packageHeaderHeight = usePackageHeaderHeight()
+const stickyTop = computed(() => APP_HEADER_HEIGHT + packageHeaderHeight.value)
 
 const active = computed(() => {
-  return bounds.height.value > viewport.height.value
+  return bounds.height.value > viewport.height.value - stickyTop.value
 })
 
 const direction = computed((previous = 'up'): string => {
@@ -23,9 +27,8 @@ const offset = computed(() => {
     ? content.value.offsetTop
     : container.value.offsetHeight - content.value.offsetTop - content.value.offsetHeight
 })
-const packageHeaderHeight = usePackageHeaderHeight()
 const stickyStyle = computed(() =>
-  direction.value === 'up' ? { top: `${56 + packageHeaderHeight.value}px` } : { bottom: `32px` },
+  direction.value === 'up' ? { top: `${stickyTop.value}px` } : { bottom: `32px` },
 )
 
 const style = computed(() => {
