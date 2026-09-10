@@ -10,6 +10,7 @@ import type {
   VueUiStackbarConfig,
   VueUiStackbarFormattedDatasetItem,
 } from 'vue-data-ui'
+import type { VueUiStackbarTooltipDatapoint } from 'vue-data-ui/vue-ui-stackbar'
 import type { ChartTimeGranularity } from '~/types/chart'
 
 interface SubEvent {
@@ -1135,6 +1136,31 @@ export interface StackbarTooltipPoint {
   delta: number
   /** Present in the previous bar but gone in this one */
   removed: boolean
+}
+
+export function createStackbarTooltipPoints(
+  datapoints: VueUiStackbarTooltipDatapoint[],
+  segments: Array<{ name: string; series: number[] }>,
+  versionIndex: number,
+): StackbarTooltipPoint[] {
+  // vue-data-ui already supplies datapoints in the stack's visual top-to-bottom order.
+  return datapoints
+    .map(point => {
+      const segment = segments.find(item => item.name === point.name)
+      const previous = versionIndex > 0 ? (segment?.series[versionIndex - 1] ?? 0) : 0
+      const value = point.value ?? 0
+      const removed = value === 0 && previous > 0
+
+      return {
+        id: point.id,
+        name: point.name,
+        color: point.color,
+        size: removed ? previous : value,
+        delta: versionIndex > 0 ? value - previous : 0,
+        removed,
+      }
+    })
+    .filter(point => point.size > 0)
 }
 
 export type TimelinePlotItem = {

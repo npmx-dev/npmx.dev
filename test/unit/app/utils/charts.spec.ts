@@ -15,6 +15,7 @@ import {
   copyAltTextForTimelineChart,
   createAltTextForTimelineStackbar,
   copyAltTextForTimelineStackbar,
+  createStackbarTooltipPoints,
   sanitise,
   insertLineBreaks,
   applyEllipsis,
@@ -27,6 +28,7 @@ import {
   type EnrichedTimelineSizeCacheEntry,
 } from '~/utils/charts'
 import type { AltCopyArgs, VueUiStackbarFormattedDatasetItem } from 'vue-data-ui'
+import type { VueUiStackbarTooltipDatapoint } from 'vue-data-ui/vue-ui-stackbar'
 
 type TranslateCall = { key: string | number; named?: Record<string, unknown> }
 
@@ -1292,6 +1294,48 @@ describe('copyAltTextForTimelineChart', () => {
 
     expect(copyMock).toHaveBeenCalledTimes(1)
     expect(copyMock).toHaveBeenCalledWith(expected)
+  })
+})
+
+describe('createStackbarTooltipPoints', () => {
+  it('preserves visual stack order while calculating deltas and removed segments', () => {
+    const datapoints = [
+      { id: 'self', name: 'package', color: '#0000ff', value: 15 },
+      { id: 'dependency', name: 'dependency', color: '#00ff00', value: 0 },
+      { id: 'other', name: 'Other', color: '#cccccc', value: 5 },
+    ] as unknown as VueUiStackbarTooltipDatapoint[]
+    const segments = [
+      { name: 'package', series: [10, 15] },
+      { name: 'dependency', series: [4, 0] },
+      { name: 'Other', series: [7, 5] },
+    ]
+
+    expect(createStackbarTooltipPoints(datapoints, segments, 1)).toEqual([
+      {
+        id: 'self',
+        name: 'package',
+        color: '#0000ff',
+        size: 15,
+        delta: 5,
+        removed: false,
+      },
+      {
+        id: 'dependency',
+        name: 'dependency',
+        color: '#00ff00',
+        size: 4,
+        delta: -4,
+        removed: true,
+      },
+      {
+        id: 'other',
+        name: 'Other',
+        color: '#cccccc',
+        size: 5,
+        delta: -2,
+        removed: false,
+      },
+    ])
   })
 })
 

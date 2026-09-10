@@ -26,7 +26,7 @@ import {
   getAnnotatorIcon,
   getAnnotatorStyle,
   type TimelineChartMetric,
-  type StackbarTooltipPoint,
+  createStackbarTooltipPoints,
   type TimelinePlotItem,
   type TimelineMarkerItem,
 } from '~/utils/charts'
@@ -251,28 +251,8 @@ const dependencySegments = computed<DependencySegment[]>(() => {
   return [otherSegment, ...depSegments.toReversed(), selfSegment]
 })
 
-function stackbarTooltipPoints(
-  datapoint: VueUiStackbarTooltipDatapoint[],
-  versionIndex: number,
-): StackbarTooltipPoint[] {
-  return datapoint
-    .map(point => {
-      const segment = dependencySegments.value.find(s => s.name === point.name)
-      const previous = versionIndex > 0 ? (segment?.series[versionIndex - 1] ?? 0) : 0
-      const value = point.value ?? 0
-      const removed = value === 0 && previous > 0
-
-      return {
-        id: point.id,
-        name: point.name,
-        color: point.color,
-        size: removed ? previous : value,
-        delta: versionIndex > 0 ? value - previous : 0,
-        removed,
-      }
-    })
-    .filter(point => point.size > 0)
-    .toReversed()
+function stackbarTooltipPoints(datapoint: VueUiStackbarTooltipDatapoint[], versionIndex: number) {
+  return createStackbarTooltipPoints(datapoint, dependencySegments.value, versionIndex)
 }
 
 function areAllValuesEqual(array: number[]): boolean {
