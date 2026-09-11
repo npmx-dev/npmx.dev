@@ -319,6 +319,7 @@
       "slate": "स्लेट",
       "black": "कालो"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "किबोर्ड सर्टकटहरू सक्षम गर्नुहोस्",
     "keyboard_shortcuts_enabled_description": "अन्य ब्राउजर वा सिस्टम सर्टकटहरूसँग बाझिएमा किबोर्ड सर्टकटहरू निष्क्रिय गर्न सकिन्छ",
     "enable_code_ligatures": "कोडमा लिगेचरहरू सक्षम गर्नुहोस्",
@@ -489,7 +490,6 @@
       "compare": "तुलना",
       "timeline": "टाइमलाइन",
       "stats": "तथ्याङ्क",
-      "compare_this_package": "यो प्याकेज तुलना गर्नुहोस्",
       "changelog": "चेन्जलग"
     },
     "likes": {

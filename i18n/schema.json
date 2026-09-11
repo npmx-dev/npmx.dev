@@ -1501,9 +1501,6 @@
             "stats": {
               "type": "string"
             },
-            "compare_this_package": {
-              "type": "string"
-            },
             "changelog": {
               "type": "string"
             }
@@ -1933,6 +1930,9 @@
             "load_error": {
               "type": "string"
             },
+            "no_stable_versions": {
+              "type": "string"
+            },
             "size_increase": {
               "type": "string"
             },
@@ -1999,6 +1999,15 @@
                 "ordered_versions": {
                   "type": "string"
                 },
+                "sort_label": {
+                  "type": "string"
+                },
+                "sort_time": {
+                  "type": "string"
+                },
+                "sort_semver": {
+                  "type": "string"
+                },
                 "copy_alt": {
                   "type": "object",
                   "properties": {
@@ -2063,6 +2072,9 @@
               "type": "string"
             },
             "vulnerabilities_count": {
+              "type": "string"
+            },
+            "aliased_to": {
               "type": "string"
             }
           },

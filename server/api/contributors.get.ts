@@ -187,11 +187,16 @@ export default defineCachedEventHandler(
         const sponsors_url = sponsorable.has(c.login)
           ? `https://github.com/sponsors/${c.login}`
           : null
-        Object.assign(c, { role, order, sponsors_url })
-        return c as GitHubContributor & { order: number; sponsors_url: string | null; role: Role }
+        const contributor = Object.assign(c, { role, sponsors_url }) as GitHubContributor & {
+          sponsors_url: string | null
+          role: Role
+        }
+        return { contributor, order }
       })
-      .sort((a, b) => a.order - b.order || b.contributions - a.contributions)
-      .map(({ order: _, ...rest }) => rest)
+      .sort(
+        (a, b) => a.order - b.order || b.contributor.contributions - a.contributor.contributions,
+      )
+      .map(({ contributor }) => contributor)
   },
   {
     maxAge: 3600, // Cache for 1 hour
