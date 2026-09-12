@@ -18,6 +18,8 @@ import { isBuiltin } from 'node:module'
 /** Timeout for fetching modules in milliseconds */
 const FETCH_TIMEOUT_MS = 30 * 1000
 
+const IS_SOURCE_MAP = /\.(?:js|mjs|cjs|d\.[mc]?ts)\.map$/
+
 // =============================================================================
 // Main Export
 // =============================================================================
@@ -70,7 +72,7 @@ interface LoadResponse {
  *
  * Fetches modules from URLs using fetch(), with proper timeout handling.
  */
-function createLoader(): (
+export function createLoader(): (
   specifier: string,
   isDynamic?: boolean,
   cacheSetting?: string,
@@ -82,6 +84,10 @@ function createLoader(): (
     _cacheSetting?: string,
     _checksum?: string,
   ) => {
+    if (IS_SOURCE_MAP.test(specifier)) {
+      return undefined
+    }
+
     const url = URL.parse(specifier)
 
     if (url === null) {
@@ -134,7 +140,7 @@ export function createResolver(): (specifier: string, referrer: string) => strin
   return (specifier: string, referrer: string) => {
     // Source map references are not modules. Resolving bare source map
     // filenames can incorrectly treat them as package specifiers
-    if (specifier.endsWith('.map')) {
+    if (IS_SOURCE_MAP.test(specifier)) {
       return specifier
     }
 
