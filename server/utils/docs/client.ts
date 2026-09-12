@@ -18,7 +18,7 @@ import { isBuiltin } from 'node:module'
 /** Timeout for fetching modules in milliseconds */
 const FETCH_TIMEOUT_MS = 30 * 1000
 
-const IS_SOURCE_MAP = /\.(?:js|mjs|cjs|d\.[mc]?ts)\.map$/
+const IS_SOURCE_MAP = /\.(?:js|mjs|cjs|d\.[mc]?ts)\.map(?:[?#].*)?$/
 
 // =============================================================================
 // Main Export

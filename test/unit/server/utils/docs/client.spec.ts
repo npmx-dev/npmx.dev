@@ -50,6 +50,8 @@ describe('createLoader', () => {
   it('returns undefined for source map files', async () => {
     expect(await load('index.d.ts.map')).toBeUndefined()
     expect(await load('https://esm.sh/foo.js.map')).toBeUndefined()
+    expect(await load('index.d.ts.map?v=123')).toBeUndefined()
+    expect(await load('https://esm.sh/foo.js.map#hash')).toBeUndefined()
   })
 
   it('returns undefined for invalid or non-HTTP URLs', async () => {
