@@ -69,6 +69,7 @@ const FILENAME_MAP: Record<string, string> = {
   'package-lock.json': 'json',
   'pnpm-lock.yaml': 'yaml',
   'yarn.lock': 'yaml',
+  'bun.lock': 'jsonc',
   'Makefile': 'bash',
   'Dockerfile': 'bash',
   'LICENSE': 'text',

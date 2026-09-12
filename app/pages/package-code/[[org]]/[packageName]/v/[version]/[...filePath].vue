@@ -147,13 +147,13 @@ const currentNode = computed(() => {
 
 const isViewingFile = computed<boolean>(() => currentNode.value?.type === 'file')
 
-// Estimate binary file based on mime type
+// Estimate binary file based on MIME type and the detected source language
 const isBinaryFile = computed<boolean>(() => {
   if (!isViewingFile.value) return false
 
   const contentType = fileContent.value?.contentType
   if (!contentType) return false
-  return isBinaryContentType(contentType)
+  return isBinaryContentType(contentType, fileContent.value?.language)
 })
 
 const isFileTooLarge = computed<boolean>(() => {
