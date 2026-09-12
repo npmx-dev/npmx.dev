@@ -127,7 +127,7 @@ export interface ConnectorFixtures {
 }
 
 export const test = base.extend<ConnectorFixtures>({
-  mockConnector: async ({ page: _ }, use) => {
+  mockConnector: async ({ page: _page }, use) => {
     const client = new MockConnectorClient(TEST_TOKEN, TEST_PORT)
     await client.reset()
     await use(client)

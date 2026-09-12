@@ -94,13 +94,15 @@ export default defineNuxtModule({
     ].join('; ')
 
     // CSP via <meta> tag — only present in HTML pages, not API responses.
-    nuxt.options.app.head ??= {}
-    const head = nuxt.options.app.head as { meta?: Array<Record<string, string>> }
-    head.meta ??= []
-    head.meta.push({
-      'http-equiv': 'Content-Security-Policy',
-      'content': csp,
-    })
+    if (!nuxt.options.test) {
+      nuxt.options.app.head ??= {}
+      const head = nuxt.options.app.head as { meta?: Array<Record<string, string>> }
+      head.meta ??= []
+      head.meta.push({
+        'http-equiv': 'Content-Security-Policy',
+        'content': csp,
+      })
+    }
 
     // Other security headers via route rules (fine on all responses).
     nuxt.options.routeRules ??= {}

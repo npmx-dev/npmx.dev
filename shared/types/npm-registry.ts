@@ -84,7 +84,7 @@ export interface SlimPackument {
   'license'?: string
   'homepage'?: string
   'keywords'?: string[]
-  'repository'?: { type?: string; url?: string; directory?: string }
+  'repository'?: { type?: string; url?: string; directory?: string } | string
   'bugs'?: { url?: string; email?: string }
   'storybook'?: { url: string }
   /** current version */

@@ -101,6 +101,24 @@ test.describe('Hydration', () => {
     }
   })
 
+  test('package manager: persisted ni', async ({ page, goto, hydrationErrors }) => {
+    await injectLocalStorage(page, {
+      'npmx-pm': 'ni',
+    })
+
+    await goto('/about', { waitUntil: 'hydration' })
+
+    expect(hydrationErrors).toEqual([])
+    await expect(page.locator('html')).toHaveAttribute('data-pm', 'ni')
+  })
+
+  test('package manager: ni query parameter', async ({ page, goto, hydrationErrors }) => {
+    await goto('/about?pm=ni', { waitUntil: 'hydration' })
+
+    expect(hydrationErrors).toEqual([])
+    await expect(page.locator('html')).toHaveAttribute('data-pm', 'ni')
+  })
+
   // Default: "en-US" (LTR) → test "ar-EG" (RTL)
   test.describe('locale: ar-EG (RTL)', () => {
     for (const page of PAGES) {

@@ -140,6 +140,22 @@ describe('isPossiblyUnnecessaryContent', () => {
       }
     })
 
+    it('matches Playwright configuration patterns', () => {
+      for (const extension of ['js', 'cjs', 'mjs', 'ts', 'mts', 'cts']) {
+        expect(isPossiblyUnnecessaryContent(`playwright.config.${extension}`, 'file')).toBe(true)
+      }
+      expect(isPossiblyUnnecessaryContent('playwright.config.json', 'file')).toBe(false)
+      expect(isPossiblyUnnecessaryContent('playwright.config.txt', 'file')).toBe(false)
+    })
+
+    it('matches Vitest configuration patterns', () => {
+      for (const extension of ['js', 'cjs', 'mjs', 'ts', 'mts', 'cts']) {
+        expect(isPossiblyUnnecessaryContent(`vitest.config.${extension}`, 'file')).toBe(true)
+      }
+      expect(isPossiblyUnnecessaryContent('vitest.config.json', 'file')).toBe(false)
+      expect(isPossiblyUnnecessaryContent('vitest.config.txt', 'file')).toBe(false)
+    })
+
     it('matches common dot-prefixed configuration patterns without over-flagging', () => {
       expect(isPossiblyUnnecessaryContent('.babelrc', 'file')).toBe(true)
       for (const extension of ['json', 'js', 'cjs', 'mjs', 'yml', 'yaml', 'toml']) {
