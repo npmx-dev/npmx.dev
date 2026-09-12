@@ -129,6 +129,103 @@ test.describe('npmjs.com URL Compatibility', () => {
       await expect(page.getByRole('heading', { name: 'Packages' })).toBeVisible()
     })
 
+    test('restores shareable filters and columns from the URL', async ({ page, goto }) => {
+      await goto(
+        '/org/nuxt?q=framework&search=description&downloadRange=10k-100k&security=warnings&updatedWithin=quarter&columns=name,version,maintainers',
+        { waitUntil: 'hydration' },
+      )
+
+      await page.getByRole('button', { name: 'Filters' }).click()
+      await expect(page.getByRole('button', { name: 'Description' })).toHaveAttribute(
+        'aria-pressed',
+        'true',
+      )
+      await expect(page.getByRole('textbox', { name: 'Search' })).toHaveValue('framework')
+      await expect(page.getByRole('radio', { name: '10K - 100K' })).toBeChecked()
+      await expect(page.getByRole('radio', { name: 'With warnings' })).toBeChecked()
+      await expect(page.getByRole('radio', { name: 'Past 3 months' })).toBeChecked()
+
+      await page.getByRole('button', { name: 'Table view' }).click()
+      await page.getByRole('button', { name: 'Columns' }).click()
+      await expect(page.getByRole('checkbox', { name: 'Version' })).toBeChecked()
+      await expect(page.getByRole('checkbox', { name: 'Description' })).not.toBeChecked()
+      await expect(page.getByRole('checkbox', { name: 'Maintainers' })).toBeChecked()
+    })
+
+    test('writes organization filters and columns to the URL', async ({ page, goto }) => {
+      await goto('/org/nuxt', { waitUntil: 'hydration' })
+
+      await page.getByRole('button', { name: 'Filters' }).click()
+      await page.getByRole('button', { name: 'Description' }).click()
+      await page.getByRole('textbox', { name: 'Search' }).fill('grammar')
+      await page.getByText('10K - 100K', { exact: true }).click()
+      await page.getByText('Past 3 months', { exact: true }).click()
+
+      await expect
+        .poll(() => {
+          const query = new URL(page.url()).searchParams
+          return {
+            q: query.get('q'),
+            search: query.get('search'),
+            downloadRange: query.get('downloadRange'),
+            updatedWithin: query.get('updatedWithin'),
+          }
+        })
+        .toEqual({
+          q: 'grammar',
+          search: 'description',
+          downloadRange: '10k-100k',
+          updatedWithin: 'quarter',
+        })
+
+      await page.getByRole('button', { name: 'Table view' }).click()
+      await page.getByRole('button', { name: 'Columns' }).click()
+      await page.getByRole('checkbox', { name: 'Maintainers' }).check()
+      await page.getByRole('checkbox', { name: 'Description' }).uncheck()
+
+      const expectedColumns = 'name,version,downloads,updated,maintainers'
+      await expect.poll(() => new URL(page.url()).searchParams.get('columns')).toBe(expectedColumns)
+
+      await goto('/org/nuxt', { waitUntil: 'hydration' })
+      await expect.poll(() => new URL(page.url()).searchParams.get('columns')).toBe(expectedColumns)
+      await page.getByRole('button', { name: 'Columns' }).click()
+      await expect(page.getByRole('checkbox', { name: 'Maintainers' })).toBeChecked()
+      await expect(page.getByRole('checkbox', { name: 'Description' })).not.toBeChecked()
+
+      const defaultColumns = 'name,version,description,downloads,updated'
+      await goto(`/org/nuxt?columns=${defaultColumns}`, { waitUntil: 'hydration' })
+      await expect.poll(() => new URL(page.url()).searchParams.get('columns')).toBe(defaultColumns)
+      await page.getByRole('button', { name: 'Columns' }).click()
+      await expect(page.getByRole('checkbox', { name: 'Description' })).toBeChecked()
+      await expect(page.getByRole('checkbox', { name: 'Maintainers' })).not.toBeChecked()
+    })
+
+    test('falls back from invalid organization view parameters', async ({ page, goto }) => {
+      await goto(
+        '/org/nuxt?search=invalid&downloadRange=invalid&security=invalid&updatedWithin=invalid&columns=invalid',
+        { waitUntil: 'hydration' },
+      )
+
+      await expect
+        .poll(() => {
+          const query = new URL(page.url()).searchParams
+          return {
+            search: query.get('search'),
+            downloadRange: query.get('downloadRange'),
+            security: query.get('security'),
+            updatedWithin: query.get('updatedWithin'),
+            columns: query.get('columns'),
+          }
+        })
+        .toEqual({
+          search: null,
+          downloadRange: null,
+          security: null,
+          updatedWithin: null,
+          columns: null,
+        })
+    })
+
     test('/org/nonexistent-org-12345 → 404 handling', async ({ page, goto }) => {
       await goto('/org/nonexistent-org-12345', { waitUntil: 'domcontentloaded' })
 

@@ -1,7 +1,76 @@
 <script setup lang="ts">
-import type { FilterChip, SortOption } from '#shared/types/preferences'
+import type {
+  ColumnConfig,
+  ColumnId,
+  DownloadRange,
+  FilterChip,
+  SearchScope,
+  SecurityFilter,
+  SortOption,
+  UpdatedWithin,
+} from '#shared/types/preferences'
+import {
+  DEFAULT_COLUMNS,
+  DOWNLOAD_RANGES,
+  SEARCH_SCOPE_VALUES,
+  SECURITY_FILTER_VALUES,
+  UPDATED_WITHIN_OPTIONS,
+} from '#shared/types/preferences'
 import { normalizeSearchParam } from '#shared/utils/url'
 import { debounce } from 'perfect-debounce'
+
+function useValidatedPermalink<T extends string>(
+  queryKey: string,
+  defaultValue: T,
+  allowedValues: readonly T[],
+) {
+  const permalink = usePermalink<T>(queryKey, defaultValue)
+  const value = computed(
+    () => allowedValues.find(allowedValue => allowedValue === permalink.value) ?? defaultValue,
+  )
+
+  watch(
+    permalink,
+    rawValue => {
+      if (rawValue !== value.value) {
+        permalink.value = value.value
+      }
+    },
+    { immediate: true },
+  )
+
+  return { permalink, value }
+}
+
+function parseColumns(value: unknown): ColumnConfig[] | undefined {
+  if (typeof value !== 'string' || !value) return undefined
+
+  const visibleIds = new Set(value.split(','))
+  const hasKnownColumn = DEFAULT_COLUMNS.some(
+    column => !column.disabled && visibleIds.has(column.id),
+  )
+  if (!hasKnownColumn) return undefined
+
+  return DEFAULT_COLUMNS.map(column => ({
+    ...column,
+    visible: column.id === 'name' || (!column.disabled && visibleIds.has(column.id)),
+  }))
+}
+
+function cloneColumns(columns: readonly ColumnConfig[]): ColumnConfig[] {
+  return columns.map(column => ({ ...column }))
+}
+
+function serializeColumns(columns: readonly ColumnConfig[]): string {
+  const visibleIds = new Set(
+    columns.filter(column => column.visible && !column.disabled).map(column => column.id),
+  )
+  visibleIds.add('name')
+
+  return DEFAULT_COLUMNS.filter(column => visibleIds.has(column.id))
+    .map(column => column.id)
+    .join(',')
+}
 
 definePageMeta({
   name: 'org',
@@ -39,8 +108,85 @@ const packages = computed(() => results.value?.objects ?? [])
 const packageCount = computed(() => packages.value.length)
 
 // Preferences (persisted to localStorage)
-const { viewMode, paginationMode, pageSize, columns, toggleColumn, resetColumns } =
-  usePackageListPreferences()
+const {
+  viewMode,
+  paginationMode,
+  pageSize,
+  columns: savedColumns,
+  resetColumns: resetSavedColumns,
+} = usePackageListPreferences()
+
+const defaultColumnsParam = serializeColumns(DEFAULT_COLUMNS)
+const columnsPermalink = usePermalink<string>('columns', '')
+const urlColumns = computed(() => parseColumns(columnsPermalink.value))
+const columns = computed(() => urlColumns.value ?? savedColumns.value)
+
+function columnsParamValue(value: readonly ColumnConfig[]): string {
+  const serialized = serializeColumns(value)
+  return serialized === defaultColumnsParam ? '' : serialized
+}
+
+watch(
+  columnsPermalink,
+  rawValue => {
+    const parsedColumns = parseColumns(rawValue)
+    const normalizedValue = parsedColumns ? serializeColumns(parsedColumns) : ''
+    if (rawValue !== normalizedValue) {
+      columnsPermalink.value = normalizedValue
+    }
+  },
+  { immediate: true },
+)
+
+watch(
+  savedColumns,
+  value => {
+    if (!urlColumns.value) {
+      columnsPermalink.value = columnsParamValue(value)
+    }
+  },
+  { deep: true },
+)
+
+function updateColumns(nextColumns: ColumnConfig[]) {
+  savedColumns.value = cloneColumns(nextColumns)
+  columnsPermalink.value = columnsParamValue(nextColumns)
+}
+
+function toggleVisibleColumn(columnId: ColumnId) {
+  const nextColumns = cloneColumns(columns.value)
+  const targetColumn = nextColumns.find(column => column.id === columnId)
+  if (targetColumn && !targetColumn.disabled && targetColumn.id !== 'name') {
+    targetColumn.visible = !targetColumn.visible
+  }
+  updateColumns(nextColumns)
+}
+
+function resetVisibleColumns() {
+  resetSavedColumns()
+  columnsPermalink.value = ''
+}
+
+const { permalink: searchScopePermalink, value: searchScope } = useValidatedPermalink(
+  'search',
+  'name' satisfies SearchScope,
+  SEARCH_SCOPE_VALUES,
+)
+const { permalink: downloadRangePermalink, value: downloadRange } = useValidatedPermalink(
+  'downloadRange',
+  'any' satisfies DownloadRange,
+  DOWNLOAD_RANGES.map(range => range.value),
+)
+const { permalink: securityPermalink, value: security } = useValidatedPermalink(
+  'security',
+  'all' satisfies SecurityFilter,
+  SECURITY_FILTER_VALUES,
+)
+const { permalink: updatedWithinPermalink, value: updatedWithin } = useValidatedPermalink(
+  'updatedWithin',
+  'any' satisfies UpdatedWithin,
+  UPDATED_WITHIN_OPTIONS.map(option => option.value),
+)
 
 // Structured filters and sorting
 const {
@@ -61,7 +207,39 @@ const {
 } = useStructuredFilters({
   packages,
   initialSort: (normalizeSearchParam(route.query.sort) as SortOption) ?? DEFAULT_SORT,
+  initialFilters: {
+    searchScope: searchScope.value,
+    downloadRange: downloadRange.value,
+    security: security.value,
+    updatedWithin: updatedWithin.value,
+  },
 })
+
+watch(
+  [searchScope, downloadRange, security, updatedWithin] as const,
+  ([newSearchScope, newDownloadRange, newSecurity, newUpdatedWithin]) => {
+    if (filters.value.searchScope !== newSearchScope) setSearchScope(newSearchScope)
+    if (filters.value.downloadRange !== newDownloadRange) setDownloadRange(newDownloadRange)
+    if (filters.value.security !== newSecurity) setSecurity(newSecurity)
+    if (filters.value.updatedWithin !== newUpdatedWithin) setUpdatedWithin(newUpdatedWithin)
+  },
+  { immediate: true },
+)
+
+watch(
+  [
+    () => filters.value.searchScope,
+    () => filters.value.downloadRange,
+    () => filters.value.security,
+    () => filters.value.updatedWithin,
+  ] as const,
+  ([newSearchScope, newDownloadRange, newSecurity, newUpdatedWithin]) => {
+    searchScopePermalink.value = newSearchScope
+    downloadRangePermalink.value = newDownloadRange
+    securityPermalink.value = newSecurity
+    updatedWithinPermalink.value = newUpdatedWithin
+  },
+)
 
 // Pagination state
 const currentPage = shallowRef(1)
@@ -70,6 +248,26 @@ const currentPage = shallowRef(1)
 const totalPages = computed(() => {
   return Math.ceil(sortedPackages.value.length / pageSize.value)
 })
+
+function updateSearchScope(value: SearchScope) {
+  searchScopePermalink.value = value
+  setSearchScope(value)
+}
+
+function updateDownloadRange(value: DownloadRange) {
+  downloadRangePermalink.value = value
+  setDownloadRange(value)
+}
+
+function updateSecurity(value: SecurityFilter) {
+  securityPermalink.value = value
+  setSecurity(value)
+}
+
+function updateUpdatedWithin(value: UpdatedWithin) {
+  updatedWithinPermalink.value = value
+  setUpdatedWithin(value)
+}
 
 // Reset to page 1 when filters change
 watch([filters, sortOption], () => {
@@ -305,16 +503,16 @@ defineOgImage(
         :filtered-count="filteredCount"
         :available-keywords="availableKeywords"
         :active-filters="activeFilters"
-        @toggle-column="toggleColumn"
-        @reset-columns="resetColumns"
+        @toggle-column="toggleVisibleColumn"
+        @reset-columns="resetVisibleColumns"
         @clear-filter="handleClearFilter"
         @clear-all-filters="clearAllFilters"
         @update:text="setTextFilter"
         @toggle-selection="openSelectionView"
-        @update:search-scope="setSearchScope"
-        @update:download-range="setDownloadRange"
-        @update:security="setSecurity"
-        @update:updated-within="setUpdatedWithin"
+        @update:search-scope="updateSearchScope"
+        @update:download-range="updateDownloadRange"
+        @update:security="updateSecurity"
+        @update:updated-within="updateUpdatedWithin"
         @toggle-keyword="toggleKeyword"
       />
 
