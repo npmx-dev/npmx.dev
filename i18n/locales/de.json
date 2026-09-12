@@ -618,7 +618,8 @@
       "outdated_minor": "{count} Nebenversion zurück (neueste: {latest}) | {count} Nebenversionen zurück (neueste: {latest})",
       "outdated_patch": "Patch-Update verfügbar (aktuellste: {latest})",
       "has_replacement": "Für diese Abhängigkeit gibt es empfohlene Alternativen",
-      "vulnerabilities_count": "{count} Sicherheitslücke | {count} Sicherheitslücken"
+      "vulnerabilities_count": "{count} Sicherheitslücke | {count} Sicherheitslücken",
+      "aliased_to": "Alias für {name}"
     },
     "peer_dependencies": {
       "title": "Peer-Abhängigkeit ({count}) | Peer-Abhängigkeiten ({count})",

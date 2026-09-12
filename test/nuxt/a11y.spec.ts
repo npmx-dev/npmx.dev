@@ -173,6 +173,7 @@ import {
   NoodleTetrisLogo,
   NoodleGifDayLogo,
   NoodleGifDayGifText,
+  NoodleIojsNodejsLogo,
   LinkBase,
   CallToAction,
   ChangelogCard,
@@ -482,6 +483,12 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(NoodleGifDayLogo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleIojsNodejsLogo)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
