@@ -77,7 +77,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FROM_REF: ${{ steps.version.outputs.from }}
-        run: node scripts/release-notes.ts "$FROM_REF" > /tmp/release-notes.md
+          TO_REF: ${{ steps.version.outputs.next }}
+        run: node scripts/release-notes.ts "$FROM_REF" "$TO_REF" > /tmp/release-notes.md
 
       - name: 🚀 Create GitHub Release
         if: steps.check.outputs.skip == 'false'
