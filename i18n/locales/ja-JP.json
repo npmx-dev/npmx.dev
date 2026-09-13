@@ -319,6 +319,7 @@
       "slate": "スレート",
       "black": "ブラック"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "キーボードショートカットを有効化",
     "keyboard_shortcuts_enabled_description": "ブラウザやシステムのショートカットと競合する場合、キーボードショートカットを無効化できます",
     "enable_code_ligatures": "コードのリガチャを有効化",
@@ -1580,7 +1581,6 @@
     "merge_modified_lines": "変更行をマージ",
     "no_content_changes": "コンテンツの変更は検出されませんでした",
     "options": "オプション",
-    "view_file": "ファイルを表示",
     "view_in_code_browser": "コードブラウザで表示",
     "word_wrap": "右端で折り返す"
   },

@@ -326,7 +326,7 @@
     "merge_modified_lines": "دمج الأسطر المعدّلة",
     "no_content_changes": "لا توجد تغييرات في المحتوى",
     "options": "الخيارات",
-    "view_file": "عرض الملف",
+    "view_diff": "عرض الاختلافات",
     "view_in_code_browser": "عرض في متصفح الكود",
     "word_wrap": "التفاف الكلمات"
   },

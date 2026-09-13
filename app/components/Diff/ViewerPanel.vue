@@ -33,10 +33,17 @@ const isLargeFile = computed(() => {
   )
 })
 
-const apiUrl = computed(
-  () =>
-    `/api/registry/compare-file/${props.packageName}/v/${props.fromVersion}...${props.toVersion}/${props.file.path}`,
-)
+function encodePathSegments(value: string): string {
+  return value.split('/').map(encodeURIComponent).join('/')
+}
+
+const apiUrl = computed(() => {
+  const packagePath = encodePathSegments(props.packageName)
+  const versionRange = `${encodeURIComponent(props.fromVersion)}...${encodeURIComponent(props.toVersion)}`
+  const filePath = encodePathSegments(props.file.path)
+  return `/api/registry/compare-file/${packagePath}/v/${versionRange}/${filePath}`
+})
+const rawDiffUrl = computed(() => `${apiUrl.value}?format=diff`)
 
 const apiQuery = computed(() => {
   if (isLargeFile.value) return {}
@@ -94,6 +101,32 @@ function getCodeUrl(version: string): string {
 }
 
 const { announce } = useCommandPalette()
+const {
+  copy: copyRawDiffToClipboard,
+  copied: rawDiffCopied,
+  isSupported: rawDiffCopySupported,
+} = useClipboardItems({ copiedDuring: 2000 })
+const mounted = useMounted()
+const copyingRawDiff = ref(false)
+
+async function copyRawDiff() {
+  if (copyingRawDiff.value || !rawDiffCopySupported.value) return
+
+  copyingRawDiff.value = true
+  try {
+    // Hand the browser a pending blob before awaiting the network request.
+    // Safari requires clipboard.write() to begin during the click activation.
+    const rawDiff = $fetch<string>(rawDiffUrl.value, { responseType: 'text' }).then(
+      value => new Blob([value], { type: 'text/plain' }),
+    )
+    await copyRawDiffToClipboard([new ClipboardItem({ 'text/plain': rawDiff })])
+    announce($t('command_palette.announcements.copied_to_clipboard'))
+  } catch {
+    // useClipboardItems keeps the copied state false when the write fails.
+  } finally {
+    copyingRawDiff.value = false
+  }
+}
 
 useCommandPaletteContextCommands(
   computed((): CommandPaletteContextCommandInput[] => {
@@ -193,7 +226,30 @@ useCommandPaletteContextCommands(
         </span>
       </div>
 
-      <div class="flex items-center gap-2 shrink-0">
+      <div class="flex flex-wrap items-center justify-end gap-2">
+        <button
+          type="button"
+          class="px-2 py-1 text-xs text-fg-muted hover:text-fg bg-bg-muted border border-border rounded transition-colors flex items-center gap-1.5 disabled:opacity-50"
+          :disabled="copyingRawDiff || !mounted || !rawDiffCopySupported"
+          @click="copyRawDiff"
+        >
+          <span
+            :class="rawDiffCopied ? 'i-lucide:check' : 'i-lucide:copy'"
+            class="w-3.5 h-3.5"
+            aria-hidden="true"
+          />
+          {{ rawDiffCopied ? $t('common.copied') : $t('compare.copy_diff') }}
+        </button>
+
+        <a
+          :href="rawDiffUrl"
+          target="_blank"
+          rel="noopener"
+          class="px-2 py-1 text-xs text-fg-muted hover:text-fg bg-bg-muted border border-border rounded transition-colors"
+        >
+          {{ $t('compare.view_diff') }}
+        </a>
+
         <!-- Options dropdown -->
         <div ref="optionsDropdownRef" class="relative">
           <button
@@ -364,7 +420,7 @@ useCommandPaletteContextCommands(
           class="px-2 py-1 text-xs text-fg-muted hover:text-fg bg-bg-muted border border-border rounded transition-colors"
           target="_blank"
         >
-          {{ $t('compare.view_file') }}
+          {{ $t('compare.view_in_code_browser') }}
         </NuxtLink>
       </div>
     </div>
