@@ -348,6 +348,19 @@ export function useCommandPaletteGlobalCommands() {
         to: { name: 'blog' },
       },
       {
+        id: 'events',
+        group: 'npmx',
+        label: t('events.title'),
+        keywords: [t('events.title'), t('events.talks')],
+        iconClass: 'i-lucide:calendar',
+        active: route.name === 'events' || `${route.name ?? ''}`.startsWith('events-'),
+        activeLabel: activeLabel(
+          route.name === 'events' || `${route.name ?? ''}`.startsWith('events-'),
+          t('command_palette.here'),
+        ),
+        to: { name: 'events' },
+      },
+      {
         id: 'noodles',
         group: 'npmx',
         label: t('noodles.title'),

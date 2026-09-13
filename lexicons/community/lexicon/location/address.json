@@ -1,0 +1,39 @@
+{
+  "lexicon": 1,
+  "id": "community.lexicon.location.address",
+  "defs": {
+    "main": {
+      "type": "object",
+      "description": "A physical location in the form of a street address.",
+      "required": ["country"],
+      "properties": {
+        "country": {
+          "type": "string",
+          "description": "The ISO 3166 country code. Preferably the 2-letter code.",
+          "minLength": 2,
+          "maxLength": 10
+        },
+        "postalCode": {
+          "type": "string",
+          "description": "The postal code of the location."
+        },
+        "region": {
+          "type": "string",
+          "description": "The administrative region of the country. For example, a state in the USA."
+        },
+        "locality": {
+          "type": "string",
+          "description": "The locality of the region. For example, a city in the USA."
+        },
+        "street": {
+          "type": "string",
+          "description": "The street address."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the location."
+        }
+      }
+    }
+  }
+}

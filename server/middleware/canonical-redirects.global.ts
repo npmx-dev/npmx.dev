@@ -21,6 +21,7 @@ const pages = [
   '/blog',
   '/brand',
   '/compare',
+  '/events',
   '/noodles',
   '/sponsors',
   '/org',

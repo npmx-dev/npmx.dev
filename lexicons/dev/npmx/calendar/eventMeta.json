@@ -1,0 +1,77 @@
+{
+  "lexicon": 1,
+  "id": "dev.npmx.calendar.eventMeta",
+  "defs": {
+    "main": {
+      "type": "record",
+      "key": "tid",
+      "description": "npmx-specific presentation metadata that decorates a community.lexicon.calendar.event. Kept separate so the underlying event record stays portable and standard.",
+      "record": {
+        "type": "object",
+        "required": ["event", "createdAt"],
+        "properties": {
+          "event": {
+            "type": "ref",
+            "ref": "com.atproto.repo.strongRef",
+            "description": "A strong reference to the community.lexicon.calendar.event this metadata decorates."
+          },
+          "slug": {
+            "type": "string",
+            "description": "URL-friendly identifier used for the event page path.",
+            "maxLength": 512
+          },
+          "kind": {
+            "type": "string",
+            "description": "The npmx event category, used for filtering.",
+            "knownValues": ["meetup", "theatre", "meeting", "conference", "talk"]
+          },
+          "cover": {
+            "type": "blob",
+            "accept": ["image/png", "image/jpeg", "image/webp"],
+            "maxSize": 2000000,
+            "description": "A cover image shown on event cards and the event header."
+          },
+          "tags": {
+            "type": "array",
+            "maxLength": 12,
+            "items": {
+              "type": "string",
+              "maxLength": 640,
+              "maxGraphemes": 64
+            }
+          },
+          "hosts": {
+            "type": "array",
+            "description": "Organisations or people hosting the event.",
+            "items": {
+              "type": "ref",
+              "ref": "#host"
+            }
+          },
+          "bskyPostRef": {
+            "type": "ref",
+            "ref": "com.atproto.repo.strongRef",
+            "description": "A Bluesky post to feature as the event's social embed."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+    "host": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    }
+  }
+}
