@@ -13,10 +13,9 @@ import { resolveNpmProcessCommand } from './npm-process.ts'
 const execFileAsync = promisify(execFile)
 export const NPM_REGISTRY_URL = 'https://registry.npmjs.org/'
 
-function createNpmEnv(overrides: Record<string, string> = {}): Record<string, string> {
+function createNpmEnv(): Record<string, string> {
   return {
     ...process.env,
-    ...overrides,
     FORCE_COLOR: '0',
     npm_config_registry: NPM_REGISTRY_URL,
   }
