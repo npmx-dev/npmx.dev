@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { renderDocNodes, renderGroupedDocNodes, renderGroupedToc } from '#server/utils/docs/render'
+import { renderDocNodes, renderEntries, renderEntriesToc } from '#server/utils/docs/render'
 import { buildSymbolLookup, mergeOverloads } from '#server/utils/docs/processing'
 import { entrySlug } from '#server/utils/docs/text'
 import type { DenoDocNode } from '#shared/types/deno-doc'
@@ -236,23 +236,20 @@ function createEntry(entryPoint: string, fnNames: string[]): ProcessedEntry {
   return {
     entryPoint,
     prefix,
-    nodes,
     symbols: mergeOverloads(nodes),
     lookup: buildSymbolLookup(nodes, prefix),
   }
 }
 
-describe('renderGroupedDocNodes - multi-entry packages', () => {
+describe('renderEntries - multi-entry packages', () => {
   it('keeps same-named symbols from different entries separate', async () => {
     const entries = [
       createEntry('./traceparent', ['make', 'parse']),
       createEntry('./tracestate', ['make', 'parse']),
     ]
 
-    const html = await renderGroupedDocNodes(entries)
+    const html = await renderEntries(entries)
 
-    // Both entries get their own group with a heading showing the subpath
-    // (with the leading `./` pruned).
     expect(html).toContain('id="group-traceparent"')
     expect(html).toContain('id="group-tracestate"')
     expect(html).toContain('>traceparent</h2>')
@@ -260,19 +257,16 @@ describe('renderGroupedDocNodes - multi-entry packages', () => {
     expect(html).not.toContain('./traceparent')
     expect(html).not.toContain('./tracestate')
 
-    // Same-named exports must produce distinct, namespaced anchor IDs.
     expect(html).toContain('id="traceparent-function-make"')
     expect(html).toContain('id="tracestate-function-make"')
     expect(html).not.toContain('id="function-make"')
-
-    // Each "make" appears once per entry (not merged into one "2 overloads").
     expect(html).not.toContain('2 overloads')
   })
 
   it('namespaces section IDs per entry', async () => {
     const entries = [createEntry('./traceparent', ['make']), createEntry('./tracestate', ['make'])]
 
-    const html = await renderGroupedDocNodes(entries)
+    const html = await renderEntries(entries)
 
     expect(html).toContain('id="section-traceparent-function"')
     expect(html).toContain('id="section-tracestate-function"')
@@ -281,15 +275,12 @@ describe('renderGroupedDocNodes - multi-entry packages', () => {
   it('renders the root entry flat while grouping subpaths', async () => {
     const entries = [createEntry('.', ['create']), createEntry('./feature', ['make'])]
 
-    const html = await renderGroupedDocNodes(entries)
+    const html = await renderEntries(entries)
 
-    // Root content is flat: no group wrapper or heading for `.`.
     expect(html).not.toContain('id="group-"')
     expect(html).not.toContain('>.</h2>')
-    // Root symbols keep clean, unprefixed IDs.
     expect(html).toContain('id="function-create"')
     expect(html).not.toContain('id="root-function-create"')
-    // Subpaths still render as their own prefixed group.
     expect(html).toContain('id="group-feature"')
     expect(html).toContain('>feature</h2>')
     expect(html).toContain('id="feature-function-make"')
@@ -298,28 +289,27 @@ describe('renderGroupedDocNodes - multi-entry packages', () => {
   it('does not collide root and subpath IDs when names match', async () => {
     const entries = [createEntry('.', ['make']), createEntry('./feature', ['make'])]
 
-    const html = await renderGroupedDocNodes(entries)
+    const html = await renderEntries(entries)
 
     expect(html).toContain('id="function-make"')
     expect(html).toContain('id="feature-function-make"')
   })
 })
 
-describe('renderGroupedToc - multi-entry packages', () => {
+describe('renderEntriesToc - multi-entry packages', () => {
   it('renders one TOC block per entry with matching anchors', () => {
     const entries = [
       createEntry('./traceparent', ['make', 'parse']),
       createEntry('./tracestate', ['make']),
     ]
 
-    const toc = renderGroupedToc(entries)
+    const toc = renderEntriesToc(entries)
 
     expect(toc).toContain('href="#group-traceparent"')
     expect(toc).toContain('href="#group-tracestate"')
     expect(toc).toContain('href="#section-traceparent-function"')
     expect(toc).toContain('href="#traceparent-function-make"')
     expect(toc).toContain('href="#tracestate-function-make"')
-    // Entry labels keep the leading `./`, bdi for truncation.
     expect(toc).toContain('<bdi>./traceparent</bdi>')
     expect(toc).toContain('href="#group-traceparent" class="font-mono')
   })
@@ -327,13 +317,11 @@ describe('renderGroupedToc - multi-entry packages', () => {
   it('renders the root entry flat with no group label', () => {
     const entries = [createEntry('.', ['create']), createEntry('./feature', ['make'])]
 
-    const toc = renderGroupedToc(entries)
+    const toc = renderEntriesToc(entries)
 
-    // Root has no group label and keeps clean anchors.
     expect(toc).not.toContain('href="#group-"')
     expect(toc).toContain('href="#section-function"')
     expect(toc).toContain('href="#function-create"')
-    // Subpath keeps its group label + namespaced anchors.
     expect(toc).toContain('href="#group-feature"')
     expect(toc).toContain('href="#feature-function-make"')
   })
@@ -341,10 +329,8 @@ describe('renderGroupedToc - multi-entry packages', () => {
   it('exposes a single table-of-contents navigation landmark', () => {
     const entries = [createEntry('./traceparent', ['make']), createEntry('./tracestate', ['make'])]
 
-    const toc = renderGroupedToc(entries)
+    const toc = renderEntriesToc(entries)
 
-    // Nested <nav> landmarks with the same label are noisy for assistive tech;
-    // the grouped TOC must wrap everything in exactly one landmark.
     expect(toc.match(/<nav\b/g)).toHaveLength(1)
     expect(toc.match(/aria-label="Table of contents"/g)).toHaveLength(1)
   })
@@ -352,14 +338,10 @@ describe('renderGroupedToc - multi-entry packages', () => {
   it('nests entries under a single top-level list so the flat TOC styles apply', () => {
     const entries = [createEntry('./traceparent', ['make']), createEntry('./tracestate', ['make'])]
 
-    const toc = renderGroupedToc(entries)
+    const toc = renderEntriesToc(entries)
 
-    // The page styles the TOC positionally via `.toc-content > ul > li`, so the
-    // grouped output must keep exactly one top-level <ul> rather than wrapping
-    // each entry in its own list or a <div>.
     expect(toc.match(/<nav[^>]*>\s*<ul/)).not.toBeNull()
     expect(toc).not.toContain('<div')
-    // Group labels are top-level list items, not an extra nesting level.
     expect(toc).toContain('<li class="docs-toc-group">')
   })
 })

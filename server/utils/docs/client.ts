@@ -10,6 +10,7 @@
 import { doc, type DocNode } from '@deno/doc'
 import type { DenoDocNode, DenoDocResult, DocEntry } from '#shared/types/deno-doc'
 import { mapWithConcurrency } from '#shared/utils/async'
+import { encodePackageName } from '#shared/utils/npm'
 import { isBuiltin } from 'node:module'
 
 // =============================================================================
@@ -128,24 +129,20 @@ export async function getModules(packageName: string, version: string): Promise<
     return ['.']
   }
 
-  // A submodule map keys entries by `.`/`./*`; a bare conditions map (e.g. only
-  // `import`/`require`) describes the root entry, so treat it as root-only.
+  // A bare conditions map (only `import`/`require`/...) describes the root entry.
   const subpathKeys = Object.keys(exportsField).filter(key => key === '.' || key.startsWith('./'))
   if (subpathKeys.length === 0) {
     return ['.']
   }
 
-  return (
-    subpathKeys
-      .filter(key => key !== './package.json' && !key.includes('*'))
-      // Order module specifiers with the root `.` first, then alphabetically.
-      .sort((a, b) => {
-        if (a === b) return 0
-        if (a === '.') return -1
-        if (b === '.') return 1
-        return a.localeCompare(b)
-      })
-  )
+  return subpathKeys
+    .filter(key => key !== './package.json' && !key.includes('*'))
+    .sort((a, b) => {
+      if (a === b) return 0
+      if (a === '.') return -1
+      if (b === '.') return 1
+      return a.localeCompare(b)
+    })
 }
 
 // =============================================================================

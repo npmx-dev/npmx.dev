@@ -11,7 +11,7 @@
 import type { DocsGenerationResult } from '#shared/types/deno-doc'
 import { getDocNodes } from './client'
 import { buildSymbolLookup, flattenNamespaces, mergeOverloads } from './processing'
-import { renderDocNodes, renderGroupedDocNodes, renderGroupedToc, renderToc } from './render'
+import { renderEntries, renderEntriesToc } from './render'
 import { computeEntryPrefixes } from './text'
 import type { ProcessedEntry } from './types'
 
@@ -37,7 +37,6 @@ export async function generateDocsWithDeno(
   packageName: string,
   version: string,
 ): Promise<DocsGenerationResult | null> {
-  // Get doc nodes (grouped by entry point) using @deno/doc WASM
   const result = await getDocNodes(packageName, version)
 
   if (result.entries.length === 0) {
@@ -59,39 +58,23 @@ export async function generateDocsWithDeno(
     return null
   }
 
-  const isMultiEntry = entries.length > 1
-
-  // Anchor IDs are only prefixed when multiple entry points share a page. Prefixes
-  // are computed as a set so lossy slugs can't collide (see computeEntryPrefixes);
-  // the root entry is never prefixed, so a package that also ships a root export
-  // keeps clean root IDs while namespacing submodules.
-  const prefixes = isMultiEntry
-    ? computeEntryPrefixes(entries.map(entry => entry.entryPoint))
-    : null
+  // An empty prefix means "render flat": a lone entry, or the root export of a
+  // multi-entry package, keeps unprefixed anchor IDs.
+  const prefixes =
+    entries.length > 1 ? computeEntryPrefixes(entries.map(entry => entry.entryPoint)) : null
 
   const processed: ProcessedEntry[] = entries.map(entry => {
     const prefix = prefixes?.get(entry.entryPoint) ?? ''
     return {
       entryPoint: entry.entryPoint,
       prefix,
-      nodes: entry.nodes,
       symbols: entry.symbols,
       lookup: buildSymbolLookup(entry.nodes, prefix),
     }
   })
 
-  const allNodes = processed.flatMap(entry => entry.nodes)
-
-  if (!isMultiEntry) {
-    const entry = processed[0]!
-    const html = await renderDocNodes(entry.symbols, entry.lookup)
-    const toc = renderToc(entry.symbols)
-    return { html, toc, nodes: allNodes }
+  return {
+    html: await renderEntries(processed),
+    toc: renderEntriesToc(processed),
   }
-
-  // Render HTML and TOC from pre-computed merged symbols
-  const html = await renderGroupedDocNodes(processed)
-  const toc = renderGroupedToc(processed)
-
-  return { html, toc, nodes: allNodes }
 }

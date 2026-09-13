@@ -162,5 +162,4 @@ export interface DenoDocResult {
 export interface DocsGenerationResult {
   html: string
   toc: string | null
-  nodes: DenoDocNode[]
 }

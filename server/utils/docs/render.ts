@@ -69,40 +69,24 @@ export async function renderDocNodes(
 }
 
 /**
- * Render multiple package entry points as grouped sections.
+ * Render a package's entry points, grouping each prefixed entry under its own section.
  */
-export async function renderGroupedDocNodes(entries: ProcessedEntry[]): Promise<string> {
+export async function renderEntries(entries: ProcessedEntry[]): Promise<string> {
   const groups = await Promise.all(
     entries.map(async entry => {
-      const isRoot = entry.entryPoint === '.'
-      const slug = entry.prefix
-      const body = await renderDocNodes(entry.symbols, entry.lookup, slug)
-      // Render nothing at all for an entry that produced no content, rather
-      // than an empty group wrapper + heading.
-      if (!body) return ''
+      const body = await renderDocNodes(entry.symbols, entry.lookup, entry.prefix)
+      if (!body || !entry.prefix) return body
 
-      // The root entry renders flat
-      if (isRoot) return body
-
-      const lines: string[] = []
-      lines.push(`<section class="docs-group" id="group-${slug}">`)
-      lines.push(
-        `<h2 class="docs-section-title docs-group-title">${escapeHtml(formatEntryPoint(entry.entryPoint))}</h2>`,
-      )
-      lines.push(body)
-      lines.push(`</section>`)
-      return lines.join('\n')
+      return [
+        `<section class="docs-group" id="group-${entry.prefix}">`,
+        `<h2 class="docs-section-title docs-group-title">${escapeHtml(entry.entryPoint.replace(/^\.\//, ''))}</h2>`,
+        body,
+        `</section>`,
+      ].join('\n')
     }),
   )
 
   return groups.filter(Boolean).join('\n')
-}
-
-/**
- * Format an entry point for display.
- */
-function formatEntryPoint(entryPoint: string): string {
-  return entryPoint.replace(/^\.\//, '')
 }
 
 /**
@@ -480,24 +464,6 @@ function renderEnumMembers(def: NonNullable<DenoDocNode['enumDef']>): string {
 // =============================================================================
 
 /**
- * Render table of contents.
- */
-export function renderToc(symbols: MergedSymbol[], prefix = ''): string {
-  return [
-    `<nav class="toc text-sm" aria-label="Table of contents">`,
-    renderTocList(symbols, prefix),
-    `</nav>`,
-  ].join('\n')
-}
-
-/**
- * Render the inner TOC list (no `<nav>` wrapper).
- */
-function renderTocList(symbols: MergedSymbol[], prefix = ''): string {
-  return [`<ul class="space-y-3">`, ...renderTocKindItems(symbols, prefix), `</ul>`].join('\n')
-}
-
-/**
  * Render the per-kind `<li>` items for a set of symbols, without a wrapping `<ul>`.
  */
 function renderTocKindItems(symbols: MergedSymbol[], prefix = ''): string[] {
@@ -536,35 +502,26 @@ function renderTocKindItems(symbols: MergedSymbol[], prefix = ''): string[] {
 }
 
 /**
- * Render a table of contents grouped by package entry point.
+ * Render a table of contents covering every entry point.
  */
-export function renderGroupedToc(entries: ProcessedEntry[]): string {
+export function renderEntriesToc(entries: ProcessedEntry[]): string {
   const lines: string[] = []
 
-  // A single top-level `<ul>` keeps the grouped TOC structurally identical to
-  // the flat one (`.toc-content > ul > li`), so the page's scoped styles apply
-  // to both without duplicating them inline. Each entry contributes a group
-  // label `<li>` followed by that entry's kind `<li>`s as siblings, so nesting
-  // depth matches the flat shape and the symbol-link rules still target the
-  // right level.
+  // Group labels and kind items are siblings under one top-level `<ul>`, so the
+  // page's positional `.toc-content > ul > li` styles apply unchanged.
   lines.push(`<nav class="toc text-sm" aria-label="Table of contents">`)
   lines.push(`<ul class="space-y-3">`)
 
   for (const entry of entries) {
-    if (entry.symbols.length === 0) continue
-    const isRoot = entry.entryPoint === '.'
-    const slug = entry.prefix
-
-    // The root entry's kinds sit flat at the top with no group label.
-    if (!isRoot) {
+    if (entry.prefix) {
       lines.push(`<li class="docs-toc-group">`)
       lines.push(
-        `<a href="#group-${slug}" class="font-mono font-semibold text-fg-muted hover:text-fg block mb-1 truncate"><bdi>${escapeHtml(entry.entryPoint)}</bdi></a>`,
+        `<a href="#group-${entry.prefix}" class="font-mono font-semibold text-fg-muted hover:text-fg block mb-1 truncate"><bdi>${escapeHtml(entry.entryPoint)}</bdi></a>`,
       )
       lines.push(`</li>`)
     }
 
-    lines.push(...renderTocKindItems(entry.symbols, slug))
+    lines.push(...renderTocKindItems(entry.symbols, entry.prefix))
   }
 
   lines.push(`</ul>`)

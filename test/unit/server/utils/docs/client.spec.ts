@@ -1,8 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createLoader, createResolver, getModules } from '#server/utils/docs/client'
-import { encodePackageName } from '#shared/utils/npm'
-
-vi.stubGlobal('encodePackageName', encodePackageName)
 
 describe('createResolver', () => {
   const resolve = createResolver()

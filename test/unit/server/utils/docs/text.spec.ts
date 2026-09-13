@@ -392,14 +392,12 @@ describe('computeEntryPrefixes', () => {
   })
 
   it('disambiguates entries whose slugs would otherwise collide', () => {
-    // `./foo-bar` and `./foo/bar` both slugify to `foo-bar`.
     const prefixes = computeEntryPrefixes(['./foo-bar', './foo/bar'])
     expect(prefixes.get('./foo-bar')).toBe('foo-bar')
     expect(prefixes.get('./foo/bar')).toBe('foo-bar-2')
   })
 
   it('keeps wildcard entries from colliding with a concrete subpath', () => {
-    // `./foo/*` and `./foo` both slugify to `foo`; they must stay distinct.
     const prefixes = computeEntryPrefixes(['./foo', './foo/*'])
     expect(prefixes.get('./foo')).toBe('foo')
     expect(prefixes.get('./foo/*')).toBe('foo-2')

@@ -243,6 +243,8 @@ const stickyStyle = computed(() => {
   @apply mt-6;
 }
 
+/* Ellipsise long entry points from the start so the subpath tail stays readable.
+   The label is wrapped in <bdi> so its own text keeps its natural direction. */
 .toc-content .docs-toc-group > a {
   direction: rtl;
   text-align: left;
