@@ -113,6 +113,15 @@ Please use the version pinned in the `engines.node` and `packageManager` field o
    pnpm npmx-connector
    ```
 
+5. (optional) to work on the Socket security data source, copy `.env.example` to `.env` and set your own Socket credentials:
+
+   - `NUXT_SOCKET_API_KEY` — create an organization API token at [socket.dev](https://socket.dev) under **Settings → API Tokens → "+ Create API token"**, granting it the `packages:list` scope (see [Socket's token docs](https://docs.socket.dev/reference/creating-and-managing-api-tokens)). That single scope is what the batch-purl endpoint npmx uses requires; the `alerts:list`/`alerts:trend` scopes are for a different (org alerts feed) endpoint and do **not** grant access here.
+   - `NUXT_SOCKET_ORG_SLUG` — your organization's slug (the `orgs/<slug>` segment in the dashboard URL).
+
+   The key stays server-side (it is never sent to the browser). Without these, the Socket source simply reports itself as unavailable — everything else, including OSV-based vulnerability scanning, works normally.
+
+   > **Quota:** the batch-purl endpoint costs a flat 100 units per request (up to 1024 packages), so a default 500-units/hour token only covers ~5 fresh scans an hour. npmx caches Socket findings per `package@version` for a day (a published version is immutable), so overlapping and revisited trees are served from cache and only never-before-seen versions cost a request; a quota/auth rejection also trips a short cooldown, so an exhausted token degrades to OSV-only rather than erroring repeatedly.
+
 ## Development workflow
 
 ### Available commands

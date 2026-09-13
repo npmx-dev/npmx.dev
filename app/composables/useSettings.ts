@@ -1,5 +1,6 @@
 import type { RemovableRef } from '@vueuse/core'
 import type { LocaleObject } from '@nuxtjs/i18n'
+import type { SecuritySourceId } from '#shared/types/dependency-analysis'
 import { useLocalStorage, useMounted } from '@vueuse/core'
 import { ACCENT_COLORS, type AccentColorId } from '#shared/utils/constants'
 import { BACKGROUND_THEMES, FOREGROUND_THEMES } from '#shared/utils/constants'
@@ -32,6 +33,8 @@ export interface AppSettings {
   selectedLocale: LocaleObject['code'] | null
   /** Search provider for package search */
   searchProvider: SearchProvider
+  /** Enabled security data sources for vulnerability/security display */
+  securitySources: Record<SecuritySourceId, boolean>
   /** Show search results as you type */
   instantSearch: boolean
   /** Enable/disable keyboard shortcuts */
@@ -71,6 +74,10 @@ const DEFAULT_SETTINGS: AppSettings = {
   preferredBackgroundTheme: null,
   preferredForegroundTheme: null,
   searchProvider: import.meta.test ? 'npm' : 'algolia',
+  securitySources: {
+    osv: true,
+    socket: true,
+  },
   instantSearch: true,
   keyboardShortcuts: true,
   changelogAutoScroll: true,
@@ -96,6 +103,17 @@ const DEFAULT_SETTINGS: AppSettings = {
 
 const STORAGE_KEY = 'npmx-settings'
 
+/**
+ * Stable pre-mount value for useSecuritySources(): before hydration the
+ * useMounted() guard returns this instead of the stored settings, so the
+ * first client render matches the server render. Frozen so this shared
+ * fallback can't be mutated by a consumer.
+ */
+const DEFAULT_SECURITY_SOURCES: Readonly<Record<SecuritySourceId, boolean>> = Object.freeze({
+  osv: true,
+  socket: true,
+})
+
 // Shared settings instance (singleton per app)
 let settingsRef: RemovableRef<AppSettings> | null = null
 
@@ -105,7 +123,10 @@ let settingsRef: RemovableRef<AppSettings> | null = null
  */
 export function useSettings() {
   if (!settingsRef) {
-    settingsRef = useLocalStorage<AppSettings>(STORAGE_KEY, DEFAULT_SETTINGS, {
+    // clone so a fresh visitor's settings (and, via mergeDefaults' shallow
+    // merge, any nested default it aliases) can be mutated without corrupting
+    // the module-level DEFAULT_SETTINGS
+    settingsRef = useLocalStorage<AppSettings>(STORAGE_KEY, structuredClone(DEFAULT_SETTINGS), {
       mergeDefaults: true,
     })
   }
@@ -226,6 +247,59 @@ export function useSearchProvider() {
     searchProviderValue,
     isAlgolia,
     toggle,
+  }
+}
+
+/**
+ * Composable for managing enabled security data sources (OSV, ...).
+ *
+ * `enabledSources` reflects the user's stored preference. `effectiveSources`
+ * additionally accounts for sources that are unavailable on this deployment
+ * (a checked-but-unavailable source is treated as off without mutating the
+ * stored preference). All security UI should key off the effective values.
+ */
+export function useSecuritySources() {
+  const { settings } = useSettings()
+  const isMounted = useMounted()
+  const runtimeConfig = useRuntimeConfig()
+
+  const enabledSources = computed<Record<SecuritySourceId, boolean>>(() =>
+    isMounted.value ? settings.value.securitySources : DEFAULT_SECURITY_SOURCES,
+  )
+
+  // Whether each source can deliver data on this deployment. Socket requires
+  // a server-side API key; without one the checkbox renders as unavailable.
+  const sourceAvailability = computed<Record<SecuritySourceId, boolean>>(() => ({
+    osv: true,
+    socket: !!runtimeConfig.public.socketConfigured,
+  }))
+
+  const effectiveSources = computed<Record<SecuritySourceId, boolean>>(() => {
+    const result = {} as Record<SecuritySourceId, boolean>
+    for (const source of SECURITY_SOURCE_IDS) {
+      // a source newly added to SECURITY_SOURCE_IDS is absent from an existing
+      // visitor's persisted (shallow-merged) settings, so fall back to its default
+      result[source] =
+        (enabledSources.value[source] ?? DEFAULT_SECURITY_SOURCES[source]) &&
+        sourceAvailability.value[source]
+    }
+    return result
+  })
+
+  const anySourceEnabled = computed(() =>
+    Object.values(effectiveSources.value).some(enabled => enabled),
+  )
+
+  function setSourceEnabled(source: SecuritySourceId, enabled: boolean) {
+    settings.value.securitySources[source] = enabled
+  }
+
+  return {
+    enabledSources,
+    sourceAvailability,
+    effectiveSources,
+    anySourceEnabled,
+    setSourceEnabled,
   }
 }
 

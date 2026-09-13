@@ -238,6 +238,7 @@ import {
   PackageTimelineChartXyTooltip,
   PackageTimelineChartXySvgSlot,
   PackageVersions,
+  PackageSupplyChainAlerts,
   PackageVulnerabilityTree,
   PaginationControls,
   ProgressBar,
@@ -245,12 +246,16 @@ import {
   Readme,
   ReadmeTocDropdown,
   SearchProviderToggle,
+  SecuritySourceToggle,
+  SecuritySourcesWarning,
+  SecuritySourceLogo,
   SearchSuggestionCard,
   SelectBase,
   SelectField,
   SettingsAccentColorPicker,
   SettingsBgThemePicker,
   SettingsFgThemePicker,
+  SettingsSwitch,
   SettingsToggle,
   TagStatic,
   TagRadioButton,
@@ -291,6 +296,7 @@ import CommandPaletteComponent from '~/components/CommandPalette.client.vue'
 import HeaderAccountMenuServer from '~/components/Header/AccountMenu.server.vue'
 import ToggleServer from '~/components/Settings/Toggle.server.vue'
 import SearchProviderToggleServer from '~/components/SearchProviderToggle.server.vue'
+import SecuritySourceToggleServer from '~/components/SecuritySourceToggle.server.vue'
 import PackageTrendsChart from '~/components/Package/TrendsChart.vue'
 import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
 import FacetScatterChart from '~/components/Compare/FacetScatterChart.vue'
@@ -2572,6 +2578,19 @@ describe('component accessibility audits', () => {
     })
   })
 
+  describe('PackageSupplyChainAlerts', () => {
+    it('should have no accessibility violations in idle state', async () => {
+      const component = await mountSuspended(PackageSupplyChainAlerts, {
+        props: {
+          packageName: 'vue',
+          version: '3.5.0',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
   describe('DependencyPathPopup', () => {
     it('should have no accessibility violations with short path', async () => {
       const component = await mountSuspended(DependencyPathPopup, {
@@ -3654,6 +3673,38 @@ describe('component accessibility audits', () => {
     })
   })
 
+  describe('SecuritySourceToggle', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(SecuritySourceToggle)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('SecuritySourceToggle.server', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(SecuritySourceToggleServer)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('SecuritySourcesWarning', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(SecuritySourcesWarning)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('SecuritySourceLogo', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(SecuritySourceLogo, { props: { source: 'socket' } })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
   describe('Toggle.server', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(ToggleServer, {
@@ -3699,6 +3750,16 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations when checked', async () => {
       const component = await mountSuspended(SettingsToggle, {
         props: { label: 'Enable feature', modelValue: true },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('Switch', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(SettingsSwitch, {
+        props: { ariaLabel: 'Enable feature', modelValue: false },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
