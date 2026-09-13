@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { PackageJsonDependency } from '~/utils/parse-package-json-deps'
-import { parsePackageJsonText } from '~/utils/parse-package-json-deps'
 import { useRouteQuery } from '@vueuse/router'
 
 definePageMeta({
@@ -9,9 +8,8 @@ definePageMeta({
 
 const { t } = useI18n()
 
-const fileName = shallowRef<string | null>(null)
-const parseError = shallowRef<string | null>(null)
-const dependencies = shallowRef<PackageJsonDependency[]>([])
+const { fileName, parseError, dependencies, hasParsedFile, parse, clear, defaultDependency } =
+  useDepsStatsPackage()
 
 const selectedName = useRouteQuery<string>('pkg', '', { mode: 'replace' })
 
@@ -19,38 +17,25 @@ const selectedDependency = computed(
   () => dependencies.value.find(dep => dep.name === selectedName.value) ?? null,
 )
 
-function handleParsed(file: File, text: string) {
-  try {
-    const parsed = parsePackageJsonText(text)
-    fileName.value = file.name
-    parseError.value = null
-    dependencies.value = parsed.dependencies
+if (!selectedDependency.value) {
+  selectedName.value = defaultDependency.value?.name ?? ''
+}
 
-    const stillSelected = parsed.dependencies.some(dep => dep.name === selectedName.value)
-    if (!stillSelected) {
-      const firstRegistry = parsed.dependencies.find(dep => !dep.nonRegistry)
-      selectedName.value = (firstRegistry ?? parsed.dependencies[0])?.name ?? ''
-    }
-  } catch (error) {
-    handleClear()
-    fileName.value = file.name
-    parseError.value =
-      error instanceof Error ? error.message : t('deps_stats.upload.invalid_package_json')
+function handleParsed(file: File, text: string) {
+  const fallback = parse(file, text)
+  if (!selectedDependency.value) {
+    selectedName.value = fallback?.name ?? ''
   }
 }
 
 function handleClear() {
-  fileName.value = null
-  dependencies.value = []
-  parseError.value = null
+  clear()
   selectedName.value = ''
 }
 
 function selectDependency(dep: PackageJsonDependency) {
   selectedName.value = dep.name
 }
-
-const hasParsedFile = computed(() => fileName.value !== null && !parseError.value)
 
 useSeoMeta({
   title: () => t('deps_stats.meta_title'),
