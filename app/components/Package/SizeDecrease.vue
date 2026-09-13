@@ -41,9 +41,14 @@ const depDecreaseAbs = computed(() => Math.abs(props.diff.depDiff))
         >
       </i18n-t>
       <template v-if="diff.sizeThresholdExceeded && diff.depThresholdExceeded"> · </template>
-      <i18n-t v-if="diff.depThresholdExceeded" keypath="package.size_decrease.deps" scope="global">
+      <i18n-t
+        v-if="diff.depThresholdExceeded"
+        keypath="package.size_decrease.deps"
+        scope="global"
+        :plural="depDecreaseAbs"
+      >
         <template #count
-          ><strong>−{{ numberFormatter.format(depDecreaseAbs) }}</strong></template
+          ><strong>{{ numberFormatter.format(depDecreaseAbs) }}</strong></template
         >
       </i18n-t>
     </p>

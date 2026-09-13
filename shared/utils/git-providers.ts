@@ -43,7 +43,7 @@ export const GITLAB_HOSTS = [
  * is effectively user-controlled input that can point at a malicious user-controlled server, this
  * would put us at risk of Server-Side Request Forgery (SSRF). Thus we only support allowlisted hosts.
  */
-export const FORGEJO_HOSTS = ['next.forgejo.org', 'try.next.forgejo.org']
+export const FORGEJO_HOSTS = ['next.forgejo.org', 'try.next.forgejo.org', 'code.haverbeke.berlin']
 
 /**
  * No open-ended Gitea host detection for the same reason as Forgejo above.
@@ -312,6 +312,8 @@ export function normalizeGitUrl(input: string): string | null {
   return url.includes('://') ? url : `https://${url}`
 }
 
+export const NEED_HOST: ProviderId[] = ['gitlab', 'gitea', 'forgejo', 'radicle']
+
 export function parseRepoUrl(input: string): RepoRef | null {
   const normalized = normalizeGitUrl(input)
   if (!normalized) return null
@@ -325,7 +327,7 @@ export function parseRepoUrl(input: string): RepoRef | null {
       if (!provider.matchHost(host)) continue
       const parsed = provider.parsePath(parts)
       if (parsed) {
-        const needsHost = ['gitlab', 'gitea', 'forgejo', 'radicle'].includes(provider.id)
+        const needsHost = NEED_HOST.includes(provider.id)
         return {
           provider: provider.id,
           owner: parsed.owner,
@@ -417,3 +419,11 @@ export const ALL_KNOWN_GIT_API_ORIGINS: readonly string[] = [
   ...FORGEJO_HOSTS.map(host => `https://${host}`),
   ...GITEA_HOSTS.map(host => `https://${host}`),
 ]
+
+/**
+ * validates whether the given host is part of the known hosts of a provider
+ */
+export function validateHost(provider: ProviderId, host: string) {
+  const providerConfig = providers.find(config => config.id == provider)
+  return !!providerConfig?.matchHost(host)
+}

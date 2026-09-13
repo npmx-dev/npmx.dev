@@ -17,6 +17,7 @@
   --fg: oklch(0.982 0 0);
   --fg-muted: oklch(0.849 0 0);
   --fg-subtle: oklch(0.773 0 0);
+  --fg-error: oklch(70.4% 0.191 22.216);
 
   /* border, separator colors */
   --border: oklch(0.269 0 0);
@@ -109,6 +110,7 @@
   --fg: oklch(0.046 0 0);
   --fg-muted: oklch(0.198 0 0);
   --fg-subtle: oklch(0.28 0 0);
+  --fg-error: oklch(50.5% 0.213 27.518);
 
   --border: oklch(0.8514 0 0);
   --border-subtle: oklch(0.922 0 0);

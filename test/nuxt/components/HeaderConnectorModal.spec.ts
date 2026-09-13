@@ -73,6 +73,9 @@ function createMockUseConnector() {
     connect: vi.fn().mockResolvedValue(true),
     reconnect: vi.fn().mockResolvedValue(true),
     disconnect: vi.fn(),
+    clearError: vi.fn(() => {
+      mockState.value.error = null
+    }),
     refreshState: vi.fn().mockResolvedValue(undefined),
     addOperation: vi.fn().mockResolvedValue(null),
     addOperations: vi.fn().mockResolvedValue([]),

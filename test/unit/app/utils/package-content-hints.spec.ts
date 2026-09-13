@@ -12,6 +12,8 @@ describe('isPossiblyUnnecessaryContent', () => {
     expect(isPossiblyUnnecessaryContent('.npmignore', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('tsconfig.json', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('jsconfig.json', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('commitlint.config.js', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('renovate.json', 'file')).toBe(true)
   })
 
   it('flags local environment files', () => {
@@ -36,6 +38,7 @@ describe('isPossiblyUnnecessaryContent', () => {
   it('flags editor and CI files', () => {
     expect(isPossiblyUnnecessaryContent('.travis.yml', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('.verb.md', 'file')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('.borp.yaml', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('Makefile', 'file')).toBe(true)
     expect(isPossiblyUnnecessaryContent('.DS_Store', 'file')).toBe(true)
   })
@@ -137,6 +140,22 @@ describe('isPossiblyUnnecessaryContent', () => {
       }
     })
 
+    it('matches Playwright configuration patterns', () => {
+      for (const extension of ['js', 'cjs', 'mjs', 'ts', 'mts', 'cts']) {
+        expect(isPossiblyUnnecessaryContent(`playwright.config.${extension}`, 'file')).toBe(true)
+      }
+      expect(isPossiblyUnnecessaryContent('playwright.config.json', 'file')).toBe(false)
+      expect(isPossiblyUnnecessaryContent('playwright.config.txt', 'file')).toBe(false)
+    })
+
+    it('matches Vitest configuration patterns', () => {
+      for (const extension of ['js', 'cjs', 'mjs', 'ts', 'mts', 'cts']) {
+        expect(isPossiblyUnnecessaryContent(`vitest.config.${extension}`, 'file')).toBe(true)
+      }
+      expect(isPossiblyUnnecessaryContent('vitest.config.json', 'file')).toBe(false)
+      expect(isPossiblyUnnecessaryContent('vitest.config.txt', 'file')).toBe(false)
+    })
+
     it('matches common dot-prefixed configuration patterns without over-flagging', () => {
       expect(isPossiblyUnnecessaryContent('.babelrc', 'file')).toBe(true)
       for (const extension of ['json', 'js', 'cjs', 'mjs', 'yml', 'yaml', 'toml']) {
@@ -176,6 +195,7 @@ describe('isPossiblyUnnecessaryContent', () => {
 
   it('flags development directories', () => {
     expect(isPossiblyUnnecessaryContent('benchmark', 'directory')).toBe(true)
+    expect(isPossiblyUnnecessaryContent('benchmarks', 'directory')).toBe(true)
   })
 
   it('flags example directories', () => {

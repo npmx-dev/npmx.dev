@@ -12,6 +12,7 @@ import type {
 } from './types.ts'
 
 // Endpoint completeness check — errors if this list diverges from ConnectorEndpoints.
+// oxlint-disable-next-line eslint/no-underscore-dangle
 const _endpointCheck: AssertEndpointsImplemented<
   | 'POST /connect'
   | 'GET /state'

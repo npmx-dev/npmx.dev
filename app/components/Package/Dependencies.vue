@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { parseDependencyVersion } from '#shared/utils/npm'
 import { SEVERITY_TEXT_COLORS, getHighestSeverity } from '#shared/utils/severity'
 import { getOutdatedTooltip, getVersionClass } from '~/utils/npm/outdated-dependencies'
 
@@ -66,22 +67,39 @@ const sortedOptionalDependencies = computed(() => {
   return Object.entries(props.optionalDependencies).sort(([a], [b]) => a.localeCompare(b))
 })
 
-// Get version tooltip
-function getDepVersionTooltip(dep: string, version: string) {
-  const outdated = outdatedDeps.value[dep]
+// Get version tooltip (key for outdated lookup, realName for vuln/replacement lookup)
+function getDepVersionTooltip(key: string, realName: string, version: string) {
+  const outdated = outdatedDeps.value[key]
   if (outdated) return getOutdatedTooltip(outdated, t)
-  if (getVulnerableDepInfo(dep) || getDeprecatedDepInfo(dep)) return version
-  if (replacementDeps.value[dep]) return t('package.dependencies.has_replacement')
+  if (getVulnerableDepInfo(realName) || getDeprecatedDepInfo(realName)) return version
+  if (replacementDeps.value[realName]) return t('package.dependencies.has_replacement')
   return version
 }
 
-// Get version class
-function getDepVersionClass(dep: string) {
-  const outdated = outdatedDeps.value[dep]
+// Get version class (key for outdated lookup, realName for vuln/replacement lookup)
+function getDepVersionClass(key: string, realName: string) {
+  const outdated = outdatedDeps.value[key]
   if (outdated) return getVersionClass(outdated)
-  if (replacementDeps.value[dep]) return 'text-amber-700 dark:text-amber-500'
-  if (getVulnerableDepInfo(dep) || getDeprecatedDepInfo(dep)) return getVersionClass(undefined)
+  if (getVulnerableDepInfo(realName) || getDeprecatedDepInfo(realName))
+    return getVersionClass(undefined)
+  if (replacementDeps.value[realName]) return 'text-amber-700 dark:text-amber-500'
   return getVersionClass(undefined)
+}
+
+// Resolve npm: aliases — returns the real package name for links
+function resolveDepName(key: string, value: string): string {
+  return parseDependencyVersion(value).name ?? key
+}
+
+// Resolve npm: aliases — returns the version range for display
+function depRange(value: string): string {
+  return parseDependencyVersion(value).range ?? value
+}
+
+// Whether a dependency uses an npm: alias (listed name differs from the real package)
+function isAliased(key: string, value: string): boolean {
+  const realName = parseDependencyVersion(value).name
+  return realName != null && realName !== key
 }
 
 const {
@@ -127,10 +145,29 @@ const numberFormatter = useNumberFormatter()
           :key="dep"
           class="flex items-center justify-between py-1 text-sm gap-2"
         >
-          <LinkBase :to="packageRoute(dep)" class="block truncate" dir="ltr">
+          <LinkBase
+            :to="packageRoute(resolveDepName(dep, version))"
+            class="block truncate"
+            dir="ltr"
+          >
             {{ dep }}
           </LinkBase>
           <span class="flex items-center gap-1 max-w-[40%]" dir="ltr">
+            <TooltipApp
+              v-if="isAliased(dep, version)"
+              class="shrink-0 text-fg-muted"
+              :text="$t('package.dependencies.aliased_to', { name: resolveDepName(dep, version) })"
+            >
+              <button
+                type="button"
+                class="inline-flex items-center justify-center p-2 -m-2"
+                :aria-label="
+                  $t('package.dependencies.aliased_to', { name: resolveDepName(dep, version) })
+                "
+              >
+                <span class="i-lucide:arrow-right-left w-3 h-3" aria-hidden="true" />
+              </button>
+            </TooltipApp>
             <TooltipApp
               v-if="outdatedDeps[dep]"
               class="shrink-0"
@@ -146,7 +183,7 @@ const numberFormatter = useNumberFormatter()
               </button>
             </TooltipApp>
             <TooltipApp
-              v-if="replacementDeps[dep]"
+              v-if="replacementDeps[resolveDepName(dep, version)]"
               class="shrink-0 text-amber-700 dark:text-amber-500"
               :text="$t('package.dependencies.has_replacement')"
             >
@@ -159,41 +196,55 @@ const numberFormatter = useNumberFormatter()
               </button>
             </TooltipApp>
             <LinkBase
-              v-if="getVulnerableDepInfo(dep)"
-              :to="packageRoute(dep, getVulnerableDepInfo(dep)!.version)"
+              v-if="getVulnerableDepInfo(resolveDepName(dep, version))"
+              :to="
+                packageRoute(
+                  resolveDepName(dep, version),
+                  getVulnerableDepInfo(resolveDepName(dep, version))!.version,
+                )
+              "
               class="shrink-0"
-              :class="SEVERITY_TEXT_COLORS[getHighestSeverity(getVulnerableDepInfo(dep)!.counts)]"
+              :class="
+                SEVERITY_TEXT_COLORS[
+                  getHighestSeverity(getVulnerableDepInfo(resolveDepName(dep, version))!.counts)
+                ]
+              "
               :aria-label="$t('package.dependencies.view_vulnerabilities')"
               :title="
                 $t('package.dependencies.vulnerabilities_count', {
-                  count: getVulnerableDepInfo(dep)!.counts.total,
+                  count: getVulnerableDepInfo(resolveDepName(dep, version))!.counts.total,
                 })
               "
               classicon="i-lucide:shield-check"
             />
             <LinkBase
-              v-if="getDeprecatedDepInfo(dep)"
-              :to="packageRoute(dep, getDeprecatedDepInfo(dep)!.version)"
+              v-if="getDeprecatedDepInfo(resolveDepName(dep, version))"
+              :to="
+                packageRoute(
+                  resolveDepName(dep, version),
+                  getDeprecatedDepInfo(resolveDepName(dep, version))!.version,
+                )
+              "
               class="shrink-0 text-purple-700 dark:text-purple-500"
               :aria-label="$t('package.deprecated.label')"
-              :title="getDeprecatedDepInfo(dep)!.message"
+              :title="getDeprecatedDepInfo(resolveDepName(dep, version))!.message"
               classicon="i-lucide:octagon-alert"
             />
             <LinkBase
-              :to="packageRoute(dep, version)"
+              :to="packageRoute(resolveDepName(dep, version), depRange(version))"
               class="block truncate"
-              :class="getDepVersionClass(dep)"
-              :title="getDepVersionTooltip(dep, version)"
+              :class="getDepVersionClass(dep, resolveDepName(dep, version))"
+              :title="getDepVersionTooltip(dep, resolveDepName(dep, version), depRange(version))"
             >
-              {{ version }}
+              {{ depRange(version) }}
             </LinkBase>
             <span v-if="outdatedDeps[dep]" class="sr-only">
               ({{ getOutdatedTooltip(outdatedDeps[dep], $t) }})
             </span>
-            <span v-if="getVulnerableDepInfo(dep)" class="sr-only">
+            <span v-if="getVulnerableDepInfo(resolveDepName(dep, version))" class="sr-only">
               ({{
                 $t('package.dependencies.vulnerabilities_count', {
-                  count: getVulnerableDepInfo(dep)!.counts.total,
+                  count: getVulnerableDepInfo(resolveDepName(dep, version))!.counts.total,
                 })
               }})
             </span>
@@ -238,7 +289,11 @@ const numberFormatter = useNumberFormatter()
           class="flex items-center justify-between py-1 text-sm gap-1 min-w-0"
         >
           <div class="flex items-center gap-2 min-w-0 flex-1">
-            <LinkBase :to="packageRoute(peer.name)" class="block min-w-0 break-all" dir="ltr">
+            <LinkBase
+              :to="packageRoute(resolveDepName(peer.name, peer.version))"
+              class="block min-w-0 break-all"
+              dir="ltr"
+            >
               {{ peer.name }}
             </LinkBase>
             <TagStatic
@@ -250,12 +305,12 @@ const numberFormatter = useNumberFormatter()
             </TagStatic>
           </div>
           <LinkBase
-            :to="packageRoute(peer.name, peer.version)"
+            :to="packageRoute(resolveDepName(peer.name, peer.version), depRange(peer.version))"
             class="block truncate shrink-0 max-w-20"
-            :title="peer.version"
+            :title="depRange(peer.version)"
             dir="ltr"
           >
-            {{ peer.version }}
+            {{ depRange(peer.version) }}
           </LinkBase>
         </li>
       </ul>
@@ -300,17 +355,38 @@ const numberFormatter = useNumberFormatter()
           :key="dep"
           class="flex items-baseline justify-between py-1 text-sm gap-2"
         >
-          <LinkBase :to="packageRoute(dep)" class="block max-w-[80%] break-words" dir="ltr">
-            {{ dep }}
-          </LinkBase>
           <LinkBase
-            :to="packageRoute(dep, version)"
-            class="block truncate"
-            :title="version"
+            :to="packageRoute(resolveDepName(dep, version))"
+            class="block max-w-[80%] break-words"
             dir="ltr"
           >
-            {{ version }}
+            {{ dep }}
           </LinkBase>
+          <span class="flex items-center gap-1 min-w-0" dir="ltr">
+            <TooltipApp
+              v-if="isAliased(dep, version)"
+              class="shrink-0 text-fg-muted"
+              :text="$t('package.dependencies.aliased_to', { name: resolveDepName(dep, version) })"
+            >
+              <button
+                type="button"
+                class="inline-flex items-center justify-center p-2 -m-2"
+                :aria-label="
+                  $t('package.dependencies.aliased_to', { name: resolveDepName(dep, version) })
+                "
+              >
+                <span class="i-lucide:arrow-right-left w-3 h-3" aria-hidden="true" />
+              </button>
+            </TooltipApp>
+            <LinkBase
+              :to="packageRoute(resolveDepName(dep, version), depRange(version))"
+              class="block truncate"
+              :title="depRange(version)"
+              dir="ltr"
+            >
+              {{ depRange(version) }}
+            </LinkBase>
+          </span>
         </li>
       </ul>
       <button

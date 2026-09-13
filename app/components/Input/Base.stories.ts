@@ -4,6 +4,7 @@ import Component from './Base.vue'
 
 const meta = {
   component: Component,
+  tags: ['autodocs'],
   argTypes: {
     disabled: { control: 'boolean' },
     size: {

@@ -126,7 +126,21 @@ export default defineNuxtConfig({
       isr: {
         expiration: 300,
         passQuery: true,
-        allowQuery: ['offset', 'limit'],
+        allowQuery: ['offset', 'limit', 'sort', 'stable-only'],
+      },
+    },
+    '/api/changelog/md/**': {
+      isr: {
+        expiration: 60 * 60 * 2 /* 2 hours */,
+        passQuery: true,
+        allowQuery: ['host', 'raw'],
+      },
+    },
+    '/api/changelog/releases/**': {
+      isr: {
+        expiration: 60 * 60 * 2 /* 2 hours */,
+        passQuery: true,
+        allowQuery: ['host'],
       },
     },
     '/api/registry/docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },

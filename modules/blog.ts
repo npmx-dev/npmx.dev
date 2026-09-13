@@ -159,6 +159,7 @@ export default defineNuxtModule({
     const resolver = createResolver(import.meta.url)
     const blogDir = resolver.resolve('../app/pages/blog')
     const blogImagesDir = resolver.resolve('../public/blog/avatar')
+    // oxlint-disable-next-line eslint/no-underscore-dangle
     const resolveAvatars = !nuxt.options._prepare
 
     nuxt.options.extensions.push('.md')

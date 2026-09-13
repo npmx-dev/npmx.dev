@@ -47,6 +47,7 @@ export default defineNuxtModule({
     const { pdsUrl, handle, password } = config
 
     // Skip auth during prepare phase (nuxt prepare, nuxt generate --prepare, etc)
+    // oxlint-disable-next-line eslint/no-underscore-dangle
     if (nuxt.options._prepare) return
 
     const pdsPublicClient = new Client({ service: pdsUrl })

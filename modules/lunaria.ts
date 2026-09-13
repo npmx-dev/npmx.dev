@@ -21,6 +21,7 @@ export default defineNuxtModule({
       maxAge: 60 * 60 * 24, // 1 day
     })
 
+    // oxlint-disable-next-line eslint/no-underscore-dangle
     if (nuxt.options.dev || nuxt.options._prepare || nuxt.options.test || isTest) {
       return
     }

@@ -4,6 +4,30 @@ import { playwright } from 'vite-plus/test/browser-playwright'
 
 const rootDir = import.meta.dirname
 
+/**
+ * Nuxt >= 4.5 auto-imports `$fetch` from a generated `fetch.mjs`, which copies
+ * `globalThis.$fetch` into a module-scoped binding at import time. Component tests replace the
+ * global with `vi.stubGlobal('$fetch', ...)` after the Nuxt app has been imported, so the binding
+ * has to resolve the global on every call for those stubs to be visible to application code.
+ */
+function liveDollarFetch() {
+  const SNAPSHOT_RE = /export const \$fetch = globalThis\.\$fetch/
+  return {
+    name: 'npmx:test:live-dollar-fetch',
+    transform(code: string, id: string) {
+      if (!id.startsWith('virtual:nuxt:') || !SNAPSHOT_RE.test(code)) return
+      return code.replace(
+        SNAPSHOT_RE,
+        `export const $fetch = new Proxy(function () {}, {
+  apply: (_target, _thisArg, args) => globalThis.$fetch(...args),
+  get: (_target, property) => Reflect.get(globalThis.$fetch, property),
+  has: (_target, property) => Reflect.has(globalThis.$fetch, property),
+})`,
+      )
+    },
+  }
+}
+
 export default defineConfig({
   run: {
     tasks: {
@@ -191,6 +215,7 @@ export default defineConfig({
       },
       () =>
         defineVitestProject({
+          plugins: [liveDollarFetch()],
           test: {
             name: 'nuxt',
             include: ['test/nuxt/**/*.{test,spec}.ts'],

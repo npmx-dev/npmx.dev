@@ -17,3 +17,32 @@ export const GithubReleaseCollectionSchama = v.object({
 // keeping this here in case it's needed
 // export type GithubRelease = v.InferOutput<typeof GithubReleaseSchama>
 // export type GithubReleaseCollection = v.InferOutput<typeof GithubReleaseCollectionSchama>
+
+export const ForgejoReleaseSchama = v.object({
+  id: v.number(),
+  tag_name: v.string(),
+  name: v.string(),
+  body: v.string(),
+  html_url: v.pipe(v.string(), v.url()),
+  draft: v.boolean(),
+  prerelease: v.boolean(),
+  published_at: v.pipe(v.string(), v.isoTimestamp()),
+})
+
+export const ForgejoReleaseCollectionSchema = v.array(ForgejoReleaseSchama)
+
+export const GitlabReleaseSchame = v.object({
+  tag_name: v.string(),
+  name: v.string(),
+  description: v.string(),
+  released_at: v.pipe(v.string(), v.isoTimestamp()),
+  upcoming_release: v.boolean(),
+  commit: v.object({
+    short_id: v.string(),
+  }),
+  _links: v.object({
+    self: v.pipe(v.string(), v.url()),
+  }),
+})
+
+export const GitlabReleaseCollectionSchema = v.array(GitlabReleaseSchame)

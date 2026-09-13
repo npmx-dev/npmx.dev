@@ -77,6 +77,15 @@ export const packageManagers = [
     create: 'nub create',
     icon: 'i-custom-nub',
   },
+  {
+    id: 'ni',
+    label: 'ni',
+    action: '',
+    executeLocal: 'nlx --local',
+    executeRemote: 'nlx',
+    create: 'na create',
+    icon: 'i-custom-ni',
+  },
 ] as const
 
 export type PackageManagerId = (typeof packageManagers)[number]['id']
@@ -147,6 +156,7 @@ export function getInstallCommandParts(options: InstallCommandOptions): string[]
   const version = options.version ? `@${options.version}` : ''
   const devFlag = options.dev ? [getDevDependencyFlag(options.packageManager)] : []
 
+  if (pm.action.length === 0) return [pm.label, ...devFlag, `${spec}${version}`]
   return [pm.label, pm.action, ...devFlag, `${spec}${version}`]
 }
 

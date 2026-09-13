@@ -13,6 +13,7 @@ const config = {
     '@storybook/addon-docs',
     '@storybook/addon-themes',
     'storybook-i18n',
+    'msw-storybook-addon',
   ],
   framework: '@storybook-vue/nuxt',
   staticDirs: ['./.public', { from: '../public', to: '/' }],
@@ -21,6 +22,22 @@ const config = {
   },
   async viteFinal(newConfig) {
     newConfig.plugins ??= []
+
+    // Fix: Nuxt's generated #internal/nuxt/paths (<buildDir>/paths.mjs) calls
+    // getAppConfig() during module evaluation (#build/fetch.mjs → baseURL()). Without an
+    // SSR payload, Nuxt's client useRuntimeConfig shim returns undefined and `.app`
+    // throws, so fall back to an empty config.
+    newConfig.plugins.unshift({
+      name: 'storybook-nuxt-paths-app-config',
+      enforce: 'pre',
+      transform(code, id) {
+        if (!/paths\.mjs(?:$|\?)/.test(id)) return
+        return code.replace(
+          'const getAppConfig = () => useRuntimeConfig().app',
+          'const getAppConfig = () => useRuntimeConfig()?.app ?? {}',
+        )
+      },
+    })
 
     // Fix: nuxt:components:imports-alias relies on internal Nuxt state that is
     // cleaned up after nuxt.close() in @storybook-vue/nuxt's loadNuxtViteConfig.

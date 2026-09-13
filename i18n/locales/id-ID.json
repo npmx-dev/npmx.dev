@@ -332,8 +332,7 @@
       "code": "kode",
       "docs": "dokumentasi",
       "fund": "donasi",
-      "compare": "bandingkan",
-      "compare_this_package": "Bandingkan paket ini"
+      "compare": "bandingkan"
     },
     "likes": {
       "like": "Sukai paket ini",
