@@ -173,6 +173,10 @@ export const useConnector = createSharedComposable(function useConnector() {
     }
   }
 
+  function clearError() {
+    state.value.error = null
+  }
+
   async function refreshState(): Promise<void> {
     if (!config.value) return
 
@@ -433,6 +437,7 @@ export const useConnector = createSharedComposable(function useConnector() {
     connect,
     reconnect,
     disconnect,
+    clearError,
     refreshState,
     connectorFetch,
 

@@ -31,6 +31,8 @@ const SKIPPED_COMPONENTS: Record<string, string> = {
   'OgImage/Page.takumi.vue': 'OG Image component - server-rendered image, not interactive UI',
   'OgImage/Profile.takumi.vue': 'OG Image component - server-rendered image, not interactive UI',
   'OgImage/Splash.takumi.vue': 'OG Image component - server-rendered image, not interactive UI',
+  'OgImage/UserProfile.takumi.vue':
+    'OG Image component - server-rendered image, not interactive UI',
 
   // Client-only components with complex dependencies
   'Header/AuthModal.client.vue': 'Complex auth modal with navigation - requires full app context',

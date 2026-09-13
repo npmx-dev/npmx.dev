@@ -100,6 +100,13 @@ const PLAYGROUND_PROVIDERS: PlaygroundProvider[] = [
     icon: 'typescript',
   },
   {
+    id: 'effect-ts-playground',
+    name: 'Effect.ts Playground',
+    domains: ['effect.website'],
+    paths: ['/play'],
+    icon: 'effect',
+  },
+  {
     id: 'solid-playground',
     name: 'Solid Playground',
     domains: ['playground.solidjs.com'],

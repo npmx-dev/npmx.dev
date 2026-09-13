@@ -1,0 +1,73 @@
+{
+  "name": "createHighlighter",
+  "isDefault": false,
+  "kind": "function",
+  "functionDef": {
+    "params": [
+      {
+        "kind": "object",
+        "props": [
+          {
+            "kind": "assign",
+            "key": "fallbackLanguage"
+          },
+          {
+            "kind": "assign",
+            "key": "languages"
+          }
+        ],
+        "optional": false,
+        "tsType": {
+          "repr": "",
+          "kind": "typeLiteral",
+          "typeLiteral": {
+            "properties": [
+              {
+                "name": "fallbackLanguage",
+                "optional": true,
+                "tsType": {
+                  "repr": "string",
+                  "kind": "keyword",
+                  "keyword": "string"
+                }
+              },
+              {
+                "name": "languages",
+                "optional": false,
+                "tsType": {
+                  "repr": "ReadonlyArray",
+                  "kind": "typeRef",
+                  "typeRef": {
+                    "typeParams": [
+                      {
+                        "repr": "LanguageDefinition",
+                        "kind": "typeRef",
+                        "typeRef": {
+                          "typeName": "LanguageDefinition"
+                        }
+                      }
+                    ],
+                    "typeName": "ReadonlyArray"
+                  }
+                }
+              }
+            ],
+            "methods": [],
+            "callSignatures": [],
+            "indexSignatures": []
+          }
+        }
+      }
+    ],
+    "returnType": {
+      "repr": "Highlighter",
+      "kind": "typeRef",
+      "typeRef": {
+        "typeName": "Highlighter"
+      }
+    },
+    "isAsync": false,
+    "isGenerator": false,
+    "typeParams": []
+  }
+}

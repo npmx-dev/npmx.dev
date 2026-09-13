@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { formatType, getNodeSignature } from '#server/utils/docs/format'
+import { formatParams, formatType, getNodeSignature } from '#server/utils/docs/format'
 import type { DenoDocNode } from '#shared/types/deno-doc'
 
 function loadFixture(name: string): DenoDocNode {
@@ -82,5 +82,31 @@ describe('issue #1411 - linkdave@0.0.2 unknown types', () => {
     const pickSig = getNodeSignature(pickType as DenoDocNode)
     expect(pickSig).toContain('type RawVoiceServerUpdate =')
     expect(pickSig).not.toContain('= unknown')
+  })
+})
+
+describe('anonymous function parameters', () => {
+  it('uses a positional fallback for a destructured parameter', () => {
+    const node = loadFixture('tanstack-highlight@0.0.9-create-highlighter.json')
+
+    expect(getNodeSignature(node)).toBe(
+      'function createHighlighter(arg_0: { fallbackLanguage?: string; languages: ReadonlyArray<LanguageDefinition> }): Highlighter',
+    )
+  })
+
+  it('uses the zero-based parameter index in fallback names', () => {
+    expect(
+      formatParams([
+        {
+          kind: 'identifier',
+          name: 'value',
+          tsType: { repr: 'string', kind: 'keyword', keyword: 'string' },
+        },
+        {
+          kind: 'object',
+          tsType: { repr: 'object', kind: 'keyword', keyword: 'object' },
+        },
+      ]),
+    ).toBe('value: string, arg_1: object')
   })
 })

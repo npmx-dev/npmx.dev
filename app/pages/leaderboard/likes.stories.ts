@@ -9,12 +9,15 @@ import {
 
 const meta = {
   component: LikesLeaderboard,
+
+  beforeEach({ msw }) {
+    msw.use(likesLeaderboardHandler)
+  },
+
   parameters: {
     layout: 'fullscreen',
-    msw: {
-      handlers: [likesLeaderboardHandler],
-    },
   },
+
   decorators: [pageDecorator],
 } satisfies Meta<typeof LikesLeaderboard>
 
@@ -26,22 +29,14 @@ export const Default: Story = {}
 
 /** Exactly three entries returned — only the podium section is rendered, no remaining list below. */
 export const PodiumOnly: Story = {
-  parameters: {
-    msw: {
-      handlers: [
-        http.get('/api/leaderboard/likes', () =>
-          HttpResponse.json(likesLeaderboardEntries.slice(0, 3)),
-        ),
-      ],
-    },
+  beforeEach({ msw }) {
+    msw.use(
+      http.get('/api/leaderboard/likes', () =>
+        HttpResponse.json(likesLeaderboardEntries.slice(0, 3)),
+      ),
+    )
   },
 }
 
 /** Unavailable card is shown with no API response; `useFetch` falls back to its `default: () => []`. */
-export const WithoutEntries: Story = {
-  parameters: {
-    msw: {
-      handlers: [],
-    },
-  },
-}
+export const WithoutEntries: Story = {}

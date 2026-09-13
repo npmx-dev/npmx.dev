@@ -61,7 +61,7 @@ export interface TsType {
 /** Function parameter from deno doc */
 export interface FunctionParam {
   kind: string
-  name: string
+  name?: string
   optional?: boolean
   tsType?: TsType
 }

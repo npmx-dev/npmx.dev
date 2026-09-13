@@ -27,11 +27,11 @@ export function usePackageRoute() {
     if (Array.isArray(params.path)) {
       const segments = params.path.filter(Boolean)
       const scoped = segments[0]?.startsWith('@') ?? false
-      const prefixLength = scoped ? 2 : 1
-      const org = scoped ? segments[0] : undefined
-      const name = segments.slice(scoped ? 1 : 0, prefixLength).join('/')
-      const version = segments[prefixLength] === 'v' ? (segments[prefixLength + 1] ?? null) : null
-      return { org, name, version }
+      const nameLength = scoped && !segments[0]?.includes('/') ? 2 : 1
+      const fullName = segments.slice(0, nameLength).join('/')
+      const version = segments[nameLength] === 'v' ? (segments[nameLength + 1] ?? null) : null
+      const { org, name } = splitPackageName(fullName)
+      return { org: org || undefined, name, version }
     }
 
     const org = typeof params.org === 'string' ? params.org : undefined

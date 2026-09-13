@@ -8,16 +8,15 @@ const config: KnipConfig = {
       entry: [
         'i18n/**/*.ts',
         'lunaria.config.ts',
-        'lunaria/lunaria.ts',
-        'pwa-assets.config.ts',
         'modules/*.ts',
         '.lighthouserc.cjs',
         'lighthouse-setup.cjs',
         'uno-preset-*.ts!',
         'scripts/**/*.ts',
+        '{*,.github/*,app/pages/blog/**}.md',
       ],
       project: [
-        '**/*.{ts,vue,cjs,mjs}',
+        '**/*.{ts,vue,cjs,mjs,md,mdx}',
         '!test/fixtures/**',
         '!test/test-utils/**',
         '!test/e2e/helpers/**',
@@ -27,35 +26,16 @@ const config: KnipConfig = {
       msw: {
         entry: ['.storybook/.public/mockServiceWorker.js'],
       },
-      ignoreDependencies: [
-        '@iconify-json/*',
-        'puppeteer',
-        'vite-plugin-pwa',
-        '@vueuse/shared',
-
-        /** Optional peer dependency of @nuxt/vite-builder for the rolldown-powered build */
-        'rolldown',
-
-        /** Oxlint plugins don't get picked up yet */
-        '@e18e/eslint-plugin',
-        'eslint-plugin-regexp',
-
-        /** Used in test/e2e/helpers/ which is excluded from knip project scope */
-        'h3-next',
-      ],
+      ignoreDependencies: ['@iconify-json/*', 'puppeteer', 'vite-plugin-pwa', '@vueuse/shared'],
       ignoreUnresolved: ['#oauth/config'],
-      ignoreFiles: [
-        'app/components/Tooltip/Announce.vue',
-        'app/components/UserCombobox.vue',
-        '**/*.unused.*',
-      ],
+      ignoreFiles: ['app/components/UserCombobox.vue', '**/*.unused.*'],
     },
     'cli': {
       project: ['src/**/*.ts!', '!src/mock-*.ts'],
     },
     'docs': {
       entry: ['app/**/*.{ts,vue,css}', 'shared/**/*.{ts,vue,css}'],
-      project: ['**/*.{ts,vue,cjs,mjs}'],
+      project: ['**/*.{ts,vue,cjs,mjs,css}'],
       ignoreDependencies: ['@nuxtjs/mdc'],
     },
   },

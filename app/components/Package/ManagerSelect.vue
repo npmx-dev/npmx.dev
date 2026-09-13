@@ -152,7 +152,7 @@ function handleKeydown(event: KeyboardEvent) {
         "
         :aria-label="$t('package.get_started.pm_label')"
         :style="getDropdownStyle()"
-        class="fixed bg-bg-subtle border border-border rounded-md shadow-lg z-50"
+        class="fixed overflow-hidden bg-bg-subtle border border-border rounded-md shadow-lg z-50"
       >
         <li
           v-for="(pm, index) in packageManagers"
@@ -193,6 +193,7 @@ function handleKeydown(event: KeyboardEvent) {
 :root[data-pm='deno'] [data-pm-select='deno'],
 :root[data-pm='vlt'] [data-pm-select='vlt'],
 :root[data-pm='vp'] [data-pm-select='vp'],
+:root[data-pm='ni'] [data-pm-select='ni'],
 :root[data-pm='nub'] [data-pm-select='nub'] {
   display: inline-block;
 }

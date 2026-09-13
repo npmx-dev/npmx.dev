@@ -10,6 +10,7 @@ import {
 import TooltipApp from '~/components/Tooltip/App.vue'
 import { copyAltTextForVersionsBarChart, sanitise, applyEllipsis } from '~/utils/charts'
 import { downloadFileLink } from '~/utils/download'
+import { useCopyChartPng } from '~/composables/useCopyChartPng'
 
 import('vue-data-ui/style.css')
 
@@ -20,6 +21,8 @@ const props = defineProps<{
 
 const { accentColors, selectedAccentColor } = useAccentColor()
 const { copy, copied } = useClipboard()
+const chartRef = useTemplateRef('chartRef')
+const { copiedPng, isCopyingPng, copyChartPng } = useCopyChartPng(chartRef)
 
 const colorMode = useColorMode()
 const resolvedMode = shallowRef<'light' | 'dark'>('light')
@@ -308,9 +311,8 @@ const chartConfig = computed<VueUiXyConfig>(() => {
         },
       },
       zoom: {
-        maxWidth: isMobile.value ? 350 : 500,
+        autoFit: true,
         highlightColor: colors.value.bgElevated,
-        useResetSlot: true,
         minimap: {
           show: true,
           lineColor: '#FAFAFA',
@@ -449,7 +451,12 @@ const chartConfig = computed<VueUiXyConfig>(() => {
       <!-- Chart content -->
       <ClientOnly v-if="xyDataset.length > 0 && !error">
         <div class="chart-container w-full" :key="groupingMode">
-          <VueUiXy :dataset="xyDataset" :config="chartConfig" class="[direction:ltr]">
+          <VueUiXy
+            ref="chartRef"
+            :dataset="xyDataset"
+            :config="chartConfig"
+            class="[direction:ltr]"
+          >
             <!-- Keyboard navigation hint -->
             <template #hint="{ isVisible }">
               <p v-if="isVisible" class="text-accent text-xs -mt-6 text-center" aria-hidden="true">
@@ -464,7 +471,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
 
               <!-- Inject npmx logo & tagline during SVG and PNG print -->
               <g
-                v-if="svg.isPrintingSvg || svg.isPrintingImg"
+                v-if="svg.isPrintingSvg || svg.isPrintingImg || isCopyingPng"
                 v-html="
                   drawNpmxLogoAndTaglineWatermark({
                     svg,
@@ -518,7 +525,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
               <button
                 type="button"
                 aria-label="reset minimap"
-                class="absolute inset-is-1/2 -translate-x-1/2 -bottom-18 sm:inset-is-unset sm:translate-x-0 sm:bottom-auto sm:-inset-ie-20 sm:-top-3 flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
+                class="absolute inset-is-1/2 -translate-x-1/2 -bottom-18 sm:inset-is-unset sm:translate-x-0 sm:bottom-auto sm:-inset-ie-16 sm:-top-3 flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
                 style="pointer-events: all !important"
                 @click="resetMinimap"
               >
@@ -535,6 +542,13 @@ const chartConfig = computed<VueUiXyConfig>(() => {
             <!-- Export options -->
             <template #optionCsv>
               <span class="text-fg-subtle font-mono pointer-events-none">CSV</span>
+            </template>
+            <template #custom-menu-before>
+              <ChartCopyPngButton
+                :copied="copiedPng"
+                :copying="isCopyingPng"
+                @click="copyChartPng"
+              />
             </template>
             <template #optionImg>
               <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>

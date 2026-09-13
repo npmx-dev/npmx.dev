@@ -63,7 +63,7 @@ export default defineNuxtModule({
 })
 
 declare module '@nuxt/schema' {
-  interface AppConfig {
+  interface CustomAppConfig {
     env: BuildInfo['env']
     buildInfo: BuildInfo
   }

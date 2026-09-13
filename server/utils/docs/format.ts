@@ -19,7 +19,7 @@ export function getNodeSignature(node: DenoDocNode): string | null {
     case 'function': {
       const typeParams = node.functionDef?.typeParams?.map(t => t.name).join(', ')
       const typeParamsStr = typeParams ? `<${typeParams}>` : ''
-      const params = node.functionDef?.params?.map(p => formatParam(p)).join(', ') || ''
+      const params = formatParams(node.functionDef?.params)
       const ret = formatType(node.functionDef?.returnType) || 'void'
       const asyncStr = node.functionDef?.isAsync ? 'async ' : ''
       return `${asyncStr}function ${name}${typeParamsStr}(${params}): ${ret}`
@@ -60,10 +60,18 @@ export function getNodeSignature(node: DenoDocNode): string | null {
 /**
  * Format a function parameter.
  */
-export function formatParam(param: FunctionParam): string {
+export function formatParam(param: FunctionParam, index = 0): string {
+  const name = param.name || `arg_${index}`
   const optional = param.optional ? '?' : ''
   const type = formatType(param.tsType)
-  return type ? `${param.name}${optional}: ${type}` : `${param.name}${optional}`
+  return type ? `${name}${optional}: ${type}` : `${name}${optional}`
+}
+
+/**
+ * Format a function parameter list.
+ */
+export function formatParams(params?: FunctionParam[]): string {
+  return params?.map((param, index) => formatParam(param, index)).join(', ') || ''
 }
 
 /**
@@ -116,7 +124,7 @@ const TYPE_FORMATTERS: Partial<Record<TsType['kind'], (type: TsType) => string>>
 function formatFnOrConstructorType(fn: NonNullable<TsType['fnOrConstructor']>): string {
   const typeParams = fn.typeParams?.map(t => t.name).join(', ')
   const typeParamsStr = typeParams ? `<${typeParams}>` : ''
-  const params = fn.params.map(p => formatParam(p)).join(', ')
+  const params = formatParams(fn.params)
   const ret = formatType(fn.tsType) || 'void'
   return `${typeParamsStr}(${params}) => ${ret}`
 }
@@ -129,7 +137,7 @@ function formatTypeLiteralType(lit: NonNullable<TsType['typeLiteral']>): string 
     parts.push(`${ro}${prop.name}${opt}: ${formatType(prop.tsType) || 'unknown'}`)
   }
   for (const method of lit.methods) {
-    const params = method.params?.map(p => formatParam(p)).join(', ') || ''
+    const params = formatParams(method.params)
     const ret = formatType(method.returnType) || 'void'
     parts.push(`${method.name}(${params}): ${ret}`)
   }

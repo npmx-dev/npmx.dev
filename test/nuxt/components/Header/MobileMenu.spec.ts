@@ -24,6 +24,7 @@ vi.mock('@vueuse/integrations/useFocusTrap', () => ({
 }))
 
 describe('MobileMenu', () => {
+  // oxlint-disable-next-line unicorn/consistent-function-scoping
   async function mountMenu(open = false) {
     return mountSuspended(HeaderMobileMenu, {
       props: {

@@ -91,6 +91,18 @@ describe('Playground Link Extraction', () => {
       expect(result.playgroundLinks[0]!.provider).toBe('codepen')
     })
 
+    it('extracts Effect.ts playground links', async () => {
+      const markdown1 = `[Try it!](https://effect.website/play#3efe9f827b7d)`
+      const result1 = await renderReadmeHtml(markdown1, 'test-pkg')
+
+      expect(result1.playgroundLinks[0]!.provider).toBe('effect-ts-playground')
+
+      const markdown2 = `[Try it!](https://effect.website/play?code=Y29uc29sZS5sb2coKQ==)`
+      const result2 = await renderReadmeHtml(markdown2, 'test-pkg')
+
+      expect(result2.playgroundLinks[0]!.provider).toBe('effect-ts-playground')
+    })
+
     it('extracts Replit links', async () => {
       const markdown = `[Repl](https://replit.com/@user/project)`
       const result = await renderReadmeHtml(markdown, 'test-pkg')

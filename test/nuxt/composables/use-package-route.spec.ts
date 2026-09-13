@@ -80,6 +80,25 @@ describe('usePackageRoute', () => {
       expect(orgName.value).toBeNull()
     })
 
+    it('parses a scoped package whose full name is a single %2F-encoded segment', async () => {
+      await useRouter().push({
+        name: 'docs',
+        params: { path: ['@vitest/pretty-format', 'v', '4.1.10'] },
+      })
+      const { packageName, requestedVersion, orgName } = usePackageRoute()
+      expect(packageName.value).toBe('@vitest/pretty-format')
+      expect(requestedVersion.value).toBe('4.1.10')
+      expect(orgName.value).toBe('vitest')
+    })
+
+    it('parses a scoped single-segment name with no version', async () => {
+      await useRouter().push({ name: 'docs', params: { path: ['@vitest/pretty-format'] } })
+      const { packageName, requestedVersion, orgName } = usePackageRoute()
+      expect(packageName.value).toBe('@vitest/pretty-format')
+      expect(requestedVersion.value).toBeNull()
+      expect(orgName.value).toBe('vitest')
+    })
+
     it('parses an unscoped package with no version', async () => {
       const { packageName, requestedVersion, orgName } = await at('/package-docs/nuxt')
       expect(packageName.value).toBe('nuxt')
@@ -111,6 +130,22 @@ describe('usePackageRoute', () => {
       const { packageName, requestedVersion } = await at('/package-docs/nuxt/v/4.2.0/api')
       expect(packageName.value).toBe('nuxt')
       expect(requestedVersion.value).toBe('4.2.0')
+    })
+
+    it('round-trips a package literally named "v" via docsRoute', async () => {
+      await useRouter().push(docsRoute('v', '1.0.0'))
+      const { packageName, requestedVersion, orgName } = usePackageRoute()
+      expect(packageName.value).toBe('v')
+      expect(requestedVersion.value).toBe('1.0.0')
+      expect(orgName.value).toBeNull()
+    })
+
+    it('round-trips a scoped package whose name is "v" via docsRoute', async () => {
+      await useRouter().push(docsRoute('@org/v', '1.0.0'))
+      const { packageName, requestedVersion, orgName } = usePackageRoute()
+      expect(packageName.value).toBe('@org/v')
+      expect(requestedVersion.value).toBe('1.0.0')
+      expect(orgName.value).toBe('org')
     })
   })
 

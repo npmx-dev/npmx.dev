@@ -61,23 +61,76 @@ test.describe('Create Command', () => {
     })
   })
 
+  test.describe('Copy Functionality', () => {
+    test('copy button is accessible and keyboard discoverable', async ({ page, goto }) => {
+      await goto('/package/vite', { waitUntil: 'hydration' })
+
+      await expect(page.locator('h1')).toContainText('vite', { timeout: 15000 })
+
+      const createCommandContainer = page.locator('.group\\/createcmd').first()
+      await expect(createCommandContainer).toBeVisible({ timeout: 20000 })
+
+      // Copy button should be in the DOM and accessible to screen readers
+      const copyButton = createCommandContainer.locator('button')
+      await expect(copyButton).toBeAttached()
+
+      // Focus the button to verify it's keyboard accessible
+      await copyButton.focus()
+      await expect(copyButton).toBeFocused()
+    })
+
+    test('clicking copy button copies create command and shows confirmation', async ({
+      page,
+      goto,
+      context,
+    }) => {
+      // Grant clipboard permissions
+      await context.grantPermissions(['clipboard-read', 'clipboard-write'])
+
+      await goto('/package/vite', { waitUntil: 'hydration' })
+      await expect(page.locator('h1')).toContainText('vite', { timeout: 15000 })
+
+      const createCommandContainer = page.locator('.group\\/createcmd').first()
+      await expect(createCommandContainer).toBeVisible({ timeout: 20000 })
+
+      const copyButton = createCommandContainer.locator('button')
+
+      await copyButton.focus()
+      await expect(copyButton).toBeFocused()
+
+      await copyButton.click()
+
+      await expect(copyButton.locator('span[aria-hidden="true"]')).toHaveClass(/i-lucide:check/)
+
+      const clipboardContent = await page.evaluate(() => navigator.clipboard.readText())
+      expect(clipboardContent).toMatch(/create vite/i)
+
+      await expect(page.locator('.nuxt-announcer [aria-live="polite"]')).toContainText(
+        'Create command copied',
+      )
+
+      await expect(copyButton.locator('span[aria-hidden="true"]')).toHaveClass(/i-lucide:copy/, {
+        timeout: 5000,
+      })
+      await expect(copyButton.locator('span[aria-hidden="true"]')).not.toHaveClass(/i-lucide:check/)
+    })
+  })
+
   test.describe('Install Command Copy', () => {
-    test('hovering install command shows copy button', async ({ page, goto }) => {
+    test('copy button is accessible and keyboard discoverable', async ({ page, goto }) => {
       await goto('/package/is-odd', { waitUntil: 'hydration' })
 
       // Find the install command container
       const installCommandContainer = page.locator('.group\\/installcmd').first()
       await expect(installCommandContainer).toBeVisible()
 
-      // Copy button should initially be hidden
+      // Copy button should be in the DOM and accessible to screen readers
       const copyButton = installCommandContainer.locator('button')
-      await expect(copyButton).toHaveCSS('opacity', '0')
+      await expect(copyButton).toBeAttached()
 
-      // Hover over the container
-      await installCommandContainer.hover()
-
-      // Copy button should become visible
-      await expect(copyButton).toHaveCSS('opacity', '1')
+      // Focus the button to verify it's keyboard accessible
+      await copyButton.focus()
+      await expect(copyButton).toBeFocused()
     })
 
     test('clicking copy button copies install command and shows confirmation', async ({
@@ -90,23 +143,84 @@ test.describe('Create Command', () => {
 
       await goto('/package/is-odd', { waitUntil: 'hydration' })
 
-      // Find and hover over the install command container
       const installCommandContainer = page.locator('.group\\/installcmd').first()
-      await installCommandContainer.hover()
-
-      // Click the copy button
       const copyButton = installCommandContainer.locator('button')
+
+      await copyButton.focus()
+      await expect(copyButton).toBeFocused()
+
       await copyButton.click()
 
-      // Button text should change to "copied!"
-      await expect(copyButton).toContainText(/copied/i)
+      await expect(copyButton.locator('span[aria-hidden="true"]')).toHaveClass(/i-lucide:check/)
 
       // Verify clipboard content contains the install command
       const clipboardContent = await page.evaluate(() => navigator.clipboard.readText())
       expect(clipboardContent).toMatch(/install is-odd|add is-odd/i)
 
-      await expect(copyButton).toContainText(/copy/i, { timeout: 5000 })
-      await expect(copyButton).not.toContainText(/copied/i)
+      await expect(page.locator('.nuxt-announcer [aria-live="polite"]')).toContainText(
+        'Install command copied',
+      )
+
+      await expect(copyButton.locator('span[aria-hidden="true"]')).toHaveClass(/i-lucide:copy/, {
+        timeout: 5000,
+      })
+      await expect(copyButton.locator('span[aria-hidden="true"]')).not.toHaveClass(/i-lucide:check/)
+    })
+  })
+
+  test.describe('Run Command Copy', () => {
+    test('copy button is accessible and keyboard discoverable', async ({ page, goto }) => {
+      await goto('/package/vite', { waitUntil: 'hydration' })
+
+      await expect(page.locator('h1')).toContainText('vite', { timeout: 15000 })
+
+      const runCommandContainer = page.locator('.group\\/runcmd').first()
+      await expect(runCommandContainer).toBeVisible({ timeout: 20000 })
+
+      // Copy button should be in the DOM and accessible to screen readers
+      const copyButton = runCommandContainer.locator('button')
+      await expect(copyButton).toBeAttached()
+
+      // Focus the button to verify it's keyboard accessible
+      await copyButton.focus()
+      await expect(copyButton).toBeFocused()
+    })
+
+    test('clicking copy button copies run command and shows confirmation', async ({
+      page,
+      goto,
+      context,
+    }) => {
+      // Grant clipboard permissions
+      await context.grantPermissions(['clipboard-read', 'clipboard-write'])
+
+      await goto('/package/vite', { waitUntil: 'hydration' })
+      await expect(page.locator('h1')).toContainText('vite', { timeout: 15000 })
+
+      const runCommandContainer = page.locator('.group\\/runcmd').first()
+      await expect(runCommandContainer).toBeVisible({ timeout: 20000 })
+
+      const copyButton = runCommandContainer.locator('button')
+
+      await copyButton.focus()
+      await expect(copyButton).toBeFocused()
+
+      await copyButton.click()
+
+      await expect(copyButton.locator('span[aria-hidden="true"]')).toHaveClass(/i-lucide:check/)
+
+      // Verify clipboard content contains the run command
+      const clipboardContent = await page.evaluate(() => navigator.clipboard.readText())
+      expect(clipboardContent).toMatch(/npx vite/i)
+
+      await expect(page.locator('.nuxt-announcer [aria-live="polite"]')).toContainText(
+        'Run command copied',
+      )
+
+      await expect(copyButton.locator('span[aria-hidden="true"]')).toHaveClass(/i-lucide:copy/, {
+        timeout: 5000,
+      })
+      await expect(copyButton.locator('span[aria-hidden="true"]')).not.toHaveClass(/i-lucide:check/)
     })
   })
 })

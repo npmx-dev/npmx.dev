@@ -26,21 +26,6 @@ export function constraintIncludesPrerelease(constraint: string): boolean {
 }
 
 /**
- * Check if a constraint is a non-semver value (git URL, file path, etc.)
- */
-export function isNonSemverConstraint(constraint: string): boolean {
-  return (
-    constraint.startsWith('git') ||
-    constraint.startsWith('http') ||
-    constraint.startsWith('file:') ||
-    constraint.startsWith('npm:') ||
-    constraint.startsWith('link:') ||
-    constraint.startsWith('workspace:') ||
-    constraint.includes('/')
-  )
-}
-
-/**
  * Get tooltip text for an outdated dependency
  */
 export function getOutdatedTooltip(

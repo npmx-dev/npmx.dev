@@ -15,7 +15,7 @@ import {
   CACHE_MAX_AGE_ONE_DAY,
   ERROR_PACKAGE_ANALYSIS_FAILED,
 } from '#shared/utils/constants'
-import { parseRepoUrl } from '#shared/utils/git-providers'
+import { parseRepositoryInfo } from '#shared/utils/git-providers'
 import { encodePackageName } from '#shared/utils/npm'
 import { fetchPackageWithTypesAndFiles } from '#server/utils/file-tree'
 import { getLatestVersionBatch } from 'fast-npm-meta'
@@ -68,7 +68,7 @@ export default defineCachedEventHandler(
 /** Package metadata needed for association validation */
 interface PackageWithMeta {
   maintainers?: Array<{ name: string }>
-  repository?: { url?: string }
+  repository?: { url?: string } | string
   deprecated?: string
 }
 
@@ -147,30 +147,27 @@ async function fetchCreatePackageForValidation(
  * Check if two packages are associated (share maintainers or same repo owner).
  */
 function isAssociatedPackage(
-  basePkg: { maintainers?: Array<{ name: string }>; repository?: { url?: string } },
-  createPkg: { maintainers?: Array<{ name: string }>; repository?: { url?: string } },
+  basePkg: { maintainers?: Array<{ name: string }>; repository?: { url?: string } | string },
+  createPkg: { maintainers?: Array<{ name: string }>; repository?: { url?: string } | string },
 ): boolean {
   const baseMaintainers = new Set(basePkg.maintainers?.map(m => m.name.toLowerCase()) ?? [])
   const createMaintainers = createPkg.maintainers?.map(m => m.name.toLowerCase()) ?? []
   const hasSharedMaintainer = createMaintainers.some(name => baseMaintainers.has(name))
 
-  return (
-    hasSharedMaintainer ||
-    hasSameRepositoryOwner(basePkg.repository?.url, createPkg.repository?.url)
-  )
+  return hasSharedMaintainer || hasSameRepositoryOwner(basePkg.repository, createPkg.repository)
 }
 
 /**
  * Check if two repository URLs have the same owner (works with any git provider).
  */
 function hasSameRepositoryOwner(
-  baseRepoUrl: string | undefined,
-  createRepoUrl: string | undefined,
+  baseRepo: string | { url?: string } | undefined,
+  createRepo: string | { url?: string } | undefined,
 ): boolean {
-  if (!baseRepoUrl || !createRepoUrl) return false
+  if (!baseRepo || !createRepo) return false
 
-  const baseRef = parseRepoUrl(baseRepoUrl)
-  const createRef = parseRepoUrl(createRepoUrl)
+  const baseRef = parseRepositoryInfo(baseRepo)
+  const createRef = parseRepositoryInfo(createRepo)
 
   if (!baseRef || !createRef) return false
   if (baseRef.provider !== createRef.provider) return false

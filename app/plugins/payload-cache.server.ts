@@ -42,6 +42,7 @@ export default defineNuxtPlugin({
         // The Nitro payload-cache plugin will pick this up in render:response
         const event = ssrContext.event
         if (event) {
+          // oxlint-disable-next-line eslint/no-underscore-dangle
           event.context._cachedPayloadResponse = {
             body,
             statusCode: 200,

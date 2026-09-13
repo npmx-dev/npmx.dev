@@ -36,9 +36,14 @@ const sizePercent = computed(() => percentFormatter.value.format(Math.abs(props.
         >
       </i18n-t>
       <template v-if="diff.sizeThresholdExceeded && diff.depThresholdExceeded"> · </template>
-      <i18n-t v-if="diff.depThresholdExceeded" keypath="package.size_increase.deps" scope="global">
+      <i18n-t
+        v-if="diff.depThresholdExceeded"
+        keypath="package.size_increase.deps"
+        scope="global"
+        :plural="diff.depDiff"
+      >
         <template #count
-          ><strong>+{{ numberFormatter.format(diff.depDiff) }}</strong></template
+          ><strong>{{ numberFormatter.format(diff.depDiff) }}</strong></template
         >
       </i18n-t>
     </p>

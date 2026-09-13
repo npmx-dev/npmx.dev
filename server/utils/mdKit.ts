@@ -9,7 +9,7 @@ import {
 import { highlightCodeSync } from './shiki'
 import { decodeHtmlEntities, stripHtmlTags, slugify } from '#shared/utils/html'
 import { escapeHtml } from './docs/text'
-import sanitizeHtml from 'sanitize-html'
+import sanitizeHtml, { type IOptions } from 'sanitize-html'
 import { hasProtocol } from 'ufo'
 
 /// for marked
@@ -76,7 +76,7 @@ export type ProcessLinkFn = (
   href: string,
   label: string,
   // readme.ts also needs the extraAttrs for more things, so can't be a boolean
-) => { resolvedHref: string; extraAttrs: string }
+) => { resolvedHref: string; extraAttrs: string; resolvedText?: string }
 
 export function decodeHashFragment(value: string): string {
   try {
@@ -105,16 +105,20 @@ export function createLink(processLink: ProcessLinkFn): RendererApi['link'] {
       plainText = tokens[0].text
     }
 
-    const { resolvedHref, extraAttrs } = processLink(href, plainText || eTitle || '')
+    const {
+      resolvedHref,
+      extraAttrs,
+      resolvedText = text,
+    } = processLink(href, plainText || eTitle || '')
 
-    if (!resolvedHref) return text
+    if (!resolvedHref) return resolvedText
 
     // prevents package@1.0.0 being made into an email
     if (href.startsWith('mailto:') && !EMAIL_REGEX.test(plainText)) {
-      return text
+      return resolvedText
     }
 
-    return `<a href="${resolvedHref}"${titleAttr}${extraAttrs}>${text}</a>`
+    return `<a href="${resolvedHref}"${titleAttr}${extraAttrs}>${resolvedText}</a>`
   }
 }
 
@@ -166,9 +170,7 @@ export function createMarkedHeadingExtension(exemptIssuePr?: boolean): Tokenizer
     // Normal headings (with space) return false to fall through to marked's default tokenizer.
     const match = /^ {0,3}(#{1,6})([^\s#][^\n]*)(?:\n+|$)/.exec(src)
     if (!match) return false
-    if (exemptIssuePr && /^#\d+\b/.test(match[0])) return false
-
-    console.log({ match, test: /^#\d+\b/.test(match[0]), exemptIssuePr })
+    if (exemptIssuePr && /^#\d+\b/.test(match[0].trim())) return false
 
     let text = match[2]!.trim()
 
@@ -438,11 +440,13 @@ export function sanitizeRawHTML(
     processLink,
     toUserContentId,
     lastSemanticLevel = 2,
+    textFilter,
   }: {
     processImageUrl: ProcessImageUrlFn
     processLink: ProcessLinkFn
     toUserContentId: ToUserContentIdFn
     lastSemanticLevel?: number
+    textFilter?: IOptions['textFilter']
   },
 ) {
   // Helper to prefix id attributes with 'user-content-'
@@ -471,6 +475,8 @@ export function sanitizeRawHTML(
         '--shiki-light': [/^#[0-9a-f]{3,8}$/i],
       },
     },
+
+    textFilter,
     transformTags: {
       // Headings are already processed to correct semantic levels by processHeading()
       // during the marked rendering pass. The sanitizer just needs to preserve them.
@@ -506,6 +512,7 @@ export function sanitizeRawHTML(
         }
         return { tagName, attribs }
       },
+
       source: (tagName, attribs) => {
         if (attribs.src) {
           attribs.src = processImageUrl(attribs.src)
