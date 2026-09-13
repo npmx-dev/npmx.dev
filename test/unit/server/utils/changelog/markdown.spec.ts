@@ -1,6 +1,10 @@
 import type { MarkdownRepoInfo } from '~~/server/utils/changelog/markdown'
 import { describe, expect, it, vi, beforeAll } from 'vitest'
-import { createGithubRepoInfo, createGitLabRepoInfo } from '~~/server/utils/changelog/mdRepoInfo'
+import {
+  createGithubRepoInfo,
+  createGitLabRepoInfo,
+  createGiteeRepoInfo,
+} from '~~/server/utils/changelog/mdRepoInfo'
 
 // testing changelog specific needs, others things are tested at ../readme.spec.ts
 
@@ -728,6 +732,43 @@ describe('Turn plaintext #isssue/#pr, !pr, @account & commmit into links', () =>
       `<p>email to <a href="mailto:test@package.test" rel="nofollow noreferrer noopener" target="_blank">test@package.test</a> to get in contact</p>
 `,
     )
+  })
+
+  // gitee
+  describe('gitee issue formatting', () => {
+    it('should turn issue into formatted links', async () => {
+      const info = createGiteeRepoInfo('test-owner', 'test-repo')
+      const renderer = await changelogRenderer(info)
+      // text from date-fns v4.3.0
+      const markdown = `- Fixed pt locale first day of week to be Sunday. See #IKF9K6
+- Fixed zh-CN, zh-HK, and zh-TW locale month parsing for October, November, and December. See #I9T5LW
+`
+      const result = renderer(markdown)
+
+      expect(result.html).toBe(`<ul>
+<li>Fixed pt locale first day of week to be Sunday. See <a href="https://gitee.com/test-owner/test-repo/issues/IKF9K6" rel="nofollow noreferrer noopener" target="_blank">#IKF9K6</a></li>
+<li>Fixed zh-CN, zh-HK, and zh-TW locale month parsing for October, November, and December. See <a href="https://gitee.com/test-owner/test-repo/issues/I9T5LW" rel="nofollow noreferrer noopener" target="_blank">#I9T5LW</a></li>
+</ul>
+`)
+    })
+
+    it('should turn issue into links between ()', async () => {
+      const info = createGiteeRepoInfo('test-owner', 'test-repo')
+      const renderer = await changelogRenderer(info)
+      // text comes from npmx release 0.15.0
+      const markdown = `- Minor ui improvements (#IKF9K6)
+- deps: Update module-replacements (#I9T5LW)
+- Release v0.15.0 (#IKEIK1)`
+
+      const result = renderer(markdown)
+
+      expect(result.html).toBe(`<ul>
+<li>Minor ui improvements (<a href="https://gitee.com/test-owner/test-repo/issues/IKF9K6" rel="nofollow noreferrer noopener" target="_blank">#IKF9K6</a>)</li>
+<li>deps: Update module-replacements (<a href="https://gitee.com/test-owner/test-repo/issues/I9T5LW" rel="nofollow noreferrer noopener" target="_blank">#I9T5LW</a>)</li>
+<li>Release v0.15.0 (<a href="https://gitee.com/test-owner/test-repo/issues/IKEIK1" rel="nofollow noreferrer noopener" target="_blank">#IKEIK1</a>)</li>
+</ul>
+`)
+    })
   })
 })
 

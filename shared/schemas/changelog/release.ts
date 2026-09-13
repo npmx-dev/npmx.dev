@@ -46,3 +46,27 @@ export const GitlabReleaseSchame = v.object({
 })
 
 export const GitlabReleaseCollectionSchema = v.array(GitlabReleaseSchame)
+
+export const GiteaReleaseSchema = v.object({
+  id: v.number(),
+  tag_name: v.string(),
+  name: v.string(),
+  body: v.string(),
+  html_url: v.pipe(v.string(), v.url()),
+  draft: v.boolean(),
+  prerelease: v.boolean(),
+  published_at: v.pipe(v.string(), v.isoTimestamp()),
+})
+
+export const GiteaReleaseCollectionSchema = v.array(GiteaReleaseSchema)
+
+export const GiteeReleaseSchema = v.object({
+  id: v.number(),
+  tag_name: v.string(),
+  name: v.string(),
+  body: v.string(),
+  prerelease: v.boolean(),
+  created_at: v.pipe(v.string(), v.isoTimestamp()),
+})
+
+export const GiteeReleaseCollectionSchema = v.array(GiteeReleaseSchema)
