@@ -70,7 +70,7 @@ defineExpose({ focus, blur })
             name="q"
             :placeholder="$t('search.placeholder')"
             no-correct
-            class="w-full min-w-25 ps-7 pe-8"
+            class="w-full min-w-25 ps-7 pe-8 py-2.5!"
             @focus="handleFocus"
             @blur="handleBlur"
             size="sm"
