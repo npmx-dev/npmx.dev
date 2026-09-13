@@ -34,6 +34,13 @@ const repositoryCommandLabel = computed(() => {
   return `${$t('package.links.repo')}${provider}: ${repoRef.value.owner}/${repoRef.value.repo}`
 })
 
+useShortcuts({
+  g: () => repositoryUrl.value,
+  h: () => homepageUrl.value,
+  i: () => displayVersion.value?.bugs?.url,
+  n: () => `https://www.npmjs.com/package/${props.pkg.name}`,
+})
+
 useCommandPaletteContextCommands(
   computed(() => {
     const commands: CommandPaletteContextCommandInput[] = []
@@ -136,7 +143,7 @@ useCommandPaletteContextCommands(
 <template>
   <ul class="flex flex-wrap items-center gap-x-3 gap-y-1.5 sm:gap-4 list-none m-0 p-0 mt-3 text-sm">
     <li v-if="repositoryUrl">
-      <LinkBase :to="repositoryUrl" :classicon="repoProviderIcon">
+      <LinkBase :to="repositoryUrl" :classicon="repoProviderIcon" aria-keyshortcuts="g">
         <span v-if="repoRef">
           {{ repoRef.owner }}<span class="opacity-50">/</span>{{ repoRef.repo }}
         </span>
@@ -155,12 +162,16 @@ useCommandPaletteContextCommands(
     </li>
     <li class="basis-full sm:hidden" />
     <li v-if="homepageUrl">
-      <LinkBase :to="homepageUrl" classicon="i-lucide:link">
+      <LinkBase :to="homepageUrl" classicon="i-lucide:link" aria-keyshortcuts="h">
         {{ $t('package.links.homepage') }}
       </LinkBase>
     </li>
     <li v-if="displayVersion?.bugs?.url">
-      <LinkBase :to="displayVersion.bugs.url" classicon="i-lucide:circle-alert">
+      <LinkBase
+        :to="displayVersion.bugs.url"
+        classicon="i-lucide:circle-alert"
+        aria-keyshortcuts="i"
+      >
         {{ $t('package.links.issues') }}
       </LinkBase>
     </li>
@@ -178,6 +189,7 @@ useCommandPaletteContextCommands(
         :to="`https://www.npmjs.com/package/${pkg.name}`"
         :title="$t('common.view_on.npm')"
         classicon="i-simple-icons:npm"
+        aria-keyshortcuts="n"
       >
         npm
       </LinkBase>

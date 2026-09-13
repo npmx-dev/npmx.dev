@@ -6,6 +6,12 @@ type ShortcutTargetFactory = () => ShortcutTarget
 
 const registry = new Map<string, ShortcutTargetFactory[]>()
 
+const IS_EXTERNAL_URL_RE = /^https?:\/\//
+
+function isExternalUrl(target: ShortcutTarget): target is string {
+  return typeof target === 'string' && IS_EXTERNAL_URL_RE.test(target)
+}
+
 export function initKeyShortcuts() {
   const keyboardShortcuts = useKeyboardShortcuts()
 
@@ -19,7 +25,14 @@ export function initKeyShortcuts() {
         const target = getTarget()
         if (!target) return
         e.preventDefault()
-        navigateTo(target)
+        if (isExternalUrl(target)) {
+          navigateTo(target, {
+            external: true,
+            open: { target: '_blank', windowFeatures: { noopener: true, noreferrer: true } },
+          })
+        } else {
+          navigateTo(target)
+        }
         return
       }
     },

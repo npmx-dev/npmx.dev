@@ -50,7 +50,11 @@
     "open_main": "Open main information",
     "open_diff": "Open version differences",
     "open_timeline": "Open timeline",
-    "open_stats": "Open stats"
+    "open_stats": "Open stats",
+    "open_repo": "Open repository",
+    "open_homepage": "Open homepage",
+    "open_issues": "Open issues",
+    "open_npm": "Open npm page"
   },
   "search": {
     "label": "Search npm packages",
