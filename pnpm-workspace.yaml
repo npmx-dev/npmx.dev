@@ -2,6 +2,7 @@ packages:
   - .
   - cli
   - docs
+  - tui
 
 allowBuilds:
   '@atcute/time-ms': true

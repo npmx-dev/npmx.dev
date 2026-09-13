@@ -1,0 +1,37 @@
+{
+  "name": "npmx-tui",
+  "version": "0.0.1",
+  "description": "Terminal UI for npmx.dev",
+  "homepage": "https://npmx.dev",
+  "bugs": {
+    "url": "https://github.com/npmx-dev/npmx.dev/issues"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/npmx-dev/npmx.dev.git",
+    "directory": "tui"
+  },
+  "bin": {
+    "npmx-tui": "./dist/cli.mjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs"
+  },
+  "scripts": {
+    "build": "vp pack",
+    "dev": "node src/cli.ts",
+    "dev:watch": "node --watch src/cli.ts",
+    "test:types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@opentui/core": "0.5.4"
+  },
+  "engines": {
+    "node": ">=26.4.0"
+  }
+}
