@@ -244,10 +244,17 @@ const stickyStyle = computed(() => {
 }
 
 /* Ellipsise long entry points from the start so the subpath tail stays readable.
+   Flipping `direction` moves the overflow, and its ellipsis, to the page's
+   inline-start edge; `text-align` pulls labels that fit back to that same edge.
    The label is wrapped in <bdi> so its own text keeps its natural direction. */
 .toc-content .docs-toc-group > a {
   direction: rtl;
   text-align: left;
+}
+
+html[dir='rtl'] .toc-content .docs-toc-group > a {
+  direction: ltr;
+  text-align: right;
 }
 
 /* Main docs content container - no max-width to use full space */
