@@ -4,11 +4,9 @@ import { addons } from 'storybook/preview-api'
 import { currentLocales } from '../config/i18n'
 import { fn } from 'storybook/test'
 import { ACCENT_COLORS } from '../shared/utils/constants'
-import { initialize, mswLoader } from 'msw-storybook-addon'
+import { mswLoader } from 'msw-storybook-addon/csf3'
 
 import npmxDark from './theme'
-
-initialize()
 
 // @ts-expect-error - dynamic global name
 globalThis.defineOgImage = fn()
@@ -69,10 +67,15 @@ const preview: Preview = {
       attributeName: 'data-theme',
     }),
     (story, context) => {
-      const { accentColor, locale } = context.globals as {
+      const { accentColor, locale, theme } = context.globals as {
         accentColor?: string
         locale?: string
+        theme?: string
       }
+
+      const themeClass = theme === 'Light' ? 'light' : 'dark'
+      document.documentElement.classList.remove('light', 'dark')
+      document.documentElement.classList.add(themeClass)
 
       // Set accent color from globals
       if (accentColor) {
@@ -95,7 +98,7 @@ const preview: Preview = {
       }
     },
   ],
-  loaders: [mswLoader],
+  loaders: [mswLoader()],
 }
 
 export default preview

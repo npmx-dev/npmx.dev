@@ -1185,6 +1185,9 @@
         },
         "expand_with_name": {
           "type": "string"
+        },
+        "copyMdError": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -1498,9 +1501,6 @@
             "stats": {
               "type": "string"
             },
-            "compare_this_package": {
-              "type": "string"
-            },
             "changelog": {
               "type": "string"
             }
@@ -1607,6 +1607,33 @@
               "type": "string"
             },
             "locally": {
+              "type": "string"
+            },
+            "copy_command": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "command": {
+          "type": "object",
+          "properties": {
+            "copied_install": {
+              "type": "string"
+            },
+            "copied_dev_install": {
+              "type": "string"
+            },
+            "copied_run": {
+              "type": "string"
+            },
+            "copied_create": {
+              "type": "string"
+            },
+            "copied_execute": {
+              "type": "string"
+            },
+            "copied_skills": {
               "type": "string"
             }
           },
@@ -1903,6 +1930,9 @@
             "load_error": {
               "type": "string"
             },
+            "no_stable_versions": {
+              "type": "string"
+            },
             "size_increase": {
               "type": "string"
             },
@@ -1952,6 +1982,7 @@
               "type": "string"
             },
             "time_gap_years": {
+            "deprecated": {
               "type": "string"
             },
             "chart": {
@@ -1976,6 +2007,15 @@
                   "type": "string"
                 },
                 "ordered_versions": {
+                  "type": "string"
+                },
+                "sort_label": {
+                  "type": "string"
+                },
+                "sort_time": {
+                  "type": "string"
+                },
+                "sort_semver": {
                   "type": "string"
                 },
                 "copy_alt": {
@@ -2042,6 +2082,9 @@
               "type": "string"
             },
             "vulnerabilities_count": {
+              "type": "string"
+            },
+            "aliased_to": {
               "type": "string"
             }
           },
@@ -2183,6 +2226,9 @@
               "type": "string"
             },
             "download_file": {
+              "type": "string"
+            },
+            "copy_file": {
               "type": "string"
             },
             "toggle_annotator": {
@@ -5606,6 +5652,9 @@
           "type": "string"
         },
         "version_unavailable": {
+          "type": "string"
+        },
+        "copy_as_markdown": {
           "type": "string"
         }
       },

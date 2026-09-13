@@ -5,12 +5,15 @@ import { i18nStatusHandler } from '../storybook/mocks/handlers/lunaria-status'
 
 const meta = {
   component: TranslationStatus,
+
+  beforeEach({ msw }) {
+    msw.use(i18nStatusHandler)
+  },
+
   parameters: {
     layout: 'fullscreen',
-    msw: {
-      handlers: [i18nStatusHandler],
-    },
   },
+
   decorators: [pageDecorator],
 } satisfies Meta<typeof TranslationStatus>
 
@@ -21,10 +24,4 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {}
 
 /** No API response — the fetch never succeeds so `fetchStatus` stays as `'pending'`. Shows skeleton blocks in the locale list and skeleton inlines in body text. */
-export const WithoutTranslationData: Story = {
-  parameters: {
-    msw: {
-      handlers: [],
-    },
-  },
-}
+export const WithoutTranslationData: Story = {}

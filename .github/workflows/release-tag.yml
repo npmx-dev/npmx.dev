@@ -23,12 +23,12 @@ jobs:
       skipped: ${{ steps.check.outputs.skip }}
 
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: true
 
-      - uses: voidzero-dev/setup-vp@250f29ce396baf5e8f24498e17c0dfdebabc26eb # v1.15.0
+      - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
           node-version: lts/*
           run-install: false
@@ -66,7 +66,7 @@ jobs:
 
       - name: 📦 Install dependencies
         if: steps.check.outputs.skip == 'false'
-        uses: voidzero-dev/setup-vp@250f29ce396baf5e8f24498e17c0dfdebabc26eb # v1.15.0
+        uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
           sfw: true
           run-install: |
@@ -77,7 +77,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FROM_REF: ${{ steps.version.outputs.from }}
-        run: node scripts/release-notes.ts "$FROM_REF" > /tmp/release-notes.md
+          TO_REF: ${{ steps.version.outputs.next }}
+        run: node scripts/release-notes.ts "$FROM_REF" "$TO_REF" > /tmp/release-notes.md
 
       - name: 🚀 Create GitHub Release
         if: steps.check.outputs.skip == 'false'
@@ -100,19 +101,19 @@ jobs:
     environment: npm-publish
 
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: release
           persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@250f29ce396baf5e8f24498e17c0dfdebabc26eb # v1.15.0
+      - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
           node-version: lts/*
           registry-url: https://registry.npmjs.org
           run-install: false
 
       - name: 📦 Install dependencies
-        uses: voidzero-dev/setup-vp@250f29ce396baf5e8f24498e17c0dfdebabc26eb # v1.15.0
+        uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
           sfw: true
           run-install: |

@@ -444,8 +444,7 @@
       "docs": "文档",
       "fund": "资助",
       "compare": "比较",
-      "timeline": "时间线",
-      "compare_this_package": "比较此包"
+      "timeline": "时间线"
     },
     "likes": {
       "like": "点赞此包",
@@ -606,6 +605,7 @@
       "time_gap_days": "{count} 天",
       "time_gap_months": "{count} 个月",
       "time_gap_years": "{count} 年"
+      "deprecated": "已弃用"
     },
     "dependencies": {
       "title": "依赖（{count} 个）",

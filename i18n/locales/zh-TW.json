@@ -428,8 +428,7 @@
       "code": "程式碼",
       "docs": "文件",
       "fund": "贊助",
-      "compare": "比較",
-      "compare_this_package": "比較這個套件"
+      "compare": "比較"
     },
     "likes": {
       "like": "喜歡這個套件",
@@ -560,6 +559,7 @@
       "time_gap_days": "{count} 天",
       "time_gap_months": "{count} 個月",
       "time_gap_years": "{count} 年"
+      "deprecated": "已棄用"
     },
     "dependencies": {
       "title": "相依（{count} 個）",

@@ -11,6 +11,7 @@ import { createPatternDef } from 'vue-data-ui/utils'
 import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
 import { useColors } from '~/composables/useColors'
 import { downloadFileLink } from '~/utils/download'
+import { useCopyChartPng } from '~/composables/useCopyChartPng'
 
 import {
   insertLineBreaks,
@@ -35,6 +36,8 @@ const resolvedMode = shallowRef<'light' | 'dark'>('light')
 const rootEl = shallowRef<HTMLElement | null>(null)
 const { width } = useElementSize(rootEl)
 const { copy, copied } = useClipboard()
+const chartRef = useTemplateRef('chartRef')
+const { copiedPng, isCopyingPng, copyChartPng } = useCopyChartPng(chartRef)
 
 const mobileBreakpointWidth = 640
 const isMobile = computed(() => width.value > 0 && width.value < mobileBreakpointWidth)
@@ -271,7 +274,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
 <template>
   <div class="font-mono facet-bar">
     <ClientOnly v-if="packages.length">
-      <VueUiHorizontalBar :key="chartKey" :dataset :config class="[direction:ltr]">
+      <VueUiHorizontalBar ref="chartRef" :key="chartKey" :dataset :config class="[direction:ltr]">
         <template #hint="{ isVisible }">
           <p v-if="isVisible" class="text-accent text-xs pt-2" aria-hidden="true">
             {{ $t('compare.packages.bar_chart_nav_hint') }}
@@ -293,7 +296,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
 
         <template #svg="{ svg }">
           <g
-            v-if="svg.isPrintingSvg || svg.isPrintingImg"
+            v-if="svg.isPrintingSvg || svg.isPrintingImg || isCopyingPng"
             v-html="
               drawSmallNpmxLogoAndTaglineWatermark({
                 svg,
@@ -311,6 +314,10 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
 
         <template #optionCsv>
           <span class="text-fg-subtle font-mono pointer-events-none">CSV</span>
+        </template>
+
+        <template #custom-menu-before>
+          <ChartCopyPngButton :copied="copiedPng" :copying="isCopyingPng" @click="copyChartPng" />
         </template>
 
         <template #optionImg>
