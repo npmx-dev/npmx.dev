@@ -237,7 +237,7 @@ async function checkLatestForgejoRelease(
 
     const release = v.parse(ForgejoReleaseSchama, response)
 
-    const matchedChangelog = release.body?.match(MD_REGEX)?.at(0)
+    const matchedChangelog = release.body.match(MD_REGEX)?.at(0)
 
     // /src/branch/ can be similar to /blob/
     if (!matchedChangelog || !matchedChangelog.includes('/src/branch/')) {
@@ -369,7 +369,7 @@ async function checkLatestGiteaRelease(
 
     const release = v.parse(GiteaReleaseSchema, response)
 
-    const matchedChangelog = release.body?.match(MD_REGEX)?.at(0)
+    const matchedChangelog = release.body.match(MD_REGEX)?.at(0)
 
     // /src/branch/ can be similar to /blob/
     if (!matchedChangelog || !matchedChangelog.includes('/src/branch/')) {
@@ -431,7 +431,7 @@ async function checkLatestGiteeRelease(
 
     const release = v.parse(GiteeReleaseSchema, response)
 
-    const matchedChangelog = release.body?.match(MD_REGEX)?.at(0)
+    const matchedChangelog = release.body.match(MD_REGEX)?.at(0)
 
     // if no changelog.md or the url doesn't contain /blob/
     if (!matchedChangelog || !matchedChangelog.includes('/blob/')) {

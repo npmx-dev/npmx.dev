@@ -268,7 +268,7 @@ function createResolveGitTextToLinks(mdInfo: MarkdownRepoInfo): IOptions['textFi
 
     if (mdInfo.issueChar && mdInfo.issueBaseUrl) {
       text = text.replace(mdInfo.issueRegex ?? issuePrRegexes[mdInfo.issueChar], match => {
-        const id = match.replace(mdInfo.issueChar!, '')
+        const id = match.replace(mdInfo.issueChar!, '').toUpperCase()
         return `<a href="${joinURL(mdInfo.issueBaseUrl!, id)}" rel="nofollow noreferrer noopener" target="_blank">${match}</a>`
       })
     }

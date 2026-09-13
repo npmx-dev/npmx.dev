@@ -139,13 +139,13 @@ export function createGiteeRepoInfo(owner: string, repo: string, path?: string):
   const hostBaseUrl = `https://gitee.com`
   return {
     hostBaseUrl,
-    blobBaseUrl: `${hostBaseUrl}/${owner}/${repo}/blob/HREAD`,
+    blobBaseUrl: `${hostBaseUrl}/${owner}/${repo}/blob/HEAD`,
     rawBaseUrl: `${hostBaseUrl}/${owner}/${repo}/raw/HEAD`,
     path,
     commitBaseUrl: `${hostBaseUrl}/${owner}/${repo}/commit`,
     issueChar: '#',
     issueBaseUrl: `${hostBaseUrl}/${owner}/${repo}/issues`,
-    issueRegex: /\B#[\dA-Z]+\b/g,
+    issueRegex: /\B#[\dA-Z]+\b/gi,
     prChar: '!',
     prBaseUrl: `${hostBaseUrl}/${owner}/${repo}/pulls`,
     compareBaseUrl: `${hostBaseUrl}/${owner}/${repo}/compare`,

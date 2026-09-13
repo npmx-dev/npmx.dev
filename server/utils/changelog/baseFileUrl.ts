@@ -56,8 +56,8 @@ export function getBaseFileUrl(ref: RepoRef): RepoFileUrl | null {
     }
     case 'gitee': {
       return {
-        blob: `https://gitee.com/${ref.owner}/${ref.repo}/blob/main`,
-        raw: `https://gitee.com/${ref.owner}/${ref.repo}/raw/main`,
+        blob: `https://gitee.com/${ref.owner}/${ref.repo}/blob/HEAD`,
+        raw: `https://gitee.com/${ref.owner}/${ref.repo}/raw/HEAD`,
       }
     }
   }
