@@ -86,14 +86,14 @@ defineOgImage(
         class="flex-1 min-h-[28rem] lg:min-h-[36rem] grid grid-cols-1 lg:grid-cols-[minmax(16rem,20rem)_minmax(0,1fr)] gap-4"
       >
         <DepsStatsDependencyList
-          class="max-lg:max-h-80 [@media(min-height:800px)_and_(min-width:1023px)]:h-[calc(100vh-15rem)]"
+          class="max-lg:max-h-80 [@media(min-height:600px)_and_(min-width:1023px)]:h-[calc(100vh-15rem)]"
           :dependencies="dependencies"
           :selected-name="selectedName"
           @select="selectDependency"
         />
         <DepsStatsDependencyStats
           :dependency="selectedDependency"
-          class="[@media(min-height:800px)]:h-[calc(100vh-15rem)]"
+          class="[@media(min-height:600px)]:h-[calc(100vh-15rem)]"
         />
       </div>
     </section>
