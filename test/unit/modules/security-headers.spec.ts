@@ -78,6 +78,8 @@ describe('security headers module', () => {
     const csp = getCsp(nuxt)
 
     expect(csp).toContain('ws://localhost:*')
+    expect(csp).toContain('https://ufos-api.microcosm.blue')
+    expect(csp).toContain('wss://spacedust.microcosm.blue')
     expect(csp).toContain(
       "frame-src https://bsky.app https://pdsmoover.com https://www.youtube-nocookie.com/ 'self'",
     )

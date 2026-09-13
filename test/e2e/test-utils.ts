@@ -49,6 +49,28 @@ async function setupRouteMocking(page: Page): Promise<void> {
   }
 }
 
+async function setupSpacedustMocking(
+  page: Page,
+  messages: readonly unknown[],
+  routedUrls: string[],
+): Promise<void> {
+  await page.routeWebSocket(
+    url => url.hostname === 'spacedust.microcosm.blue' && url.pathname === '/subscribe',
+    ws => {
+      routedUrls.push(ws.url())
+
+      messages.forEach((message, index) => {
+        setTimeout(
+          () => {
+            ws.send(JSON.stringify(message))
+          },
+          200 + index * 500,
+        )
+      })
+    },
+  )
+}
+
 /**
  * Patterns that indicate a Vue hydration mismatch in console output.
  *
@@ -98,6 +120,8 @@ function isCspViolation(message: ConsoleMessage): boolean {
  */
 export const test = base.extend<{
   mockExternalApis: void
+  spacedustPackageLikeEvents: readonly unknown[]
+  spacedustWebSocketUrls: string[]
   hydrationErrors: string[]
   cspViolations: string[]
 }>({
@@ -105,6 +129,17 @@ export const test = base.extend<{
     async ({ page }, use) => {
       await setupRouteMocking(page)
       await use()
+    },
+    { auto: true },
+  ],
+
+  spacedustPackageLikeEvents: [[], { option: true }],
+
+  spacedustWebSocketUrls: [
+    async ({ page, spacedustPackageLikeEvents }, use) => {
+      const routedUrls: string[] = []
+      await setupSpacedustMocking(page, spacedustPackageLikeEvents, routedUrls)
+      await use(routedUrls)
     },
     { auto: true },
   ],
