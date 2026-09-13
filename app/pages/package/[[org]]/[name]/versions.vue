@@ -10,7 +10,9 @@ import {
   filterVersions,
   getVersionGroupKey,
   getVersionGroupLabel,
+  isPrereleaseVersion,
 } from '~/utils/versions'
+import type { TaggedVersionRow } from '~/utils/versions'
 import { fetchAllPackageVersions } from '~/utils/npm/api'
 
 definePageMeta({
@@ -140,10 +142,37 @@ const versionToTagsMap = computed(() => buildVersionToTagsMap(distTags.value))
 
 const tagRows = computed(() => buildTaggedVersionRows(distTags.value))
 const latestTagRow = computed(() => tagRows.value.find(r => r.tags.includes('latest')) ?? null)
+
+const otherTagRowsAll = computed(() => tagRows.value.filter(r => !r.tags.includes('latest')))
+const stableOtherTagRows = computed(() =>
+  otherTagRowsAll.value.filter(r => !isPrereleaseVersion(r.version)),
+)
+const hiddenPrereleaseTagCount = computed(
+  () => otherTagRowsAll.value.length - stableOtherTagRows.value.length,
+)
+
+function sortTagRows(rows: TaggedVersionRow[]): TaggedVersionRow[] {
+  if (tagsSortMode.value === 'date') {
+    const dir = tagsSortOrder.value === 'desc' ? 1 : -1
+    return [...rows].sort((rowA, rowB) => {
+      const timeA = versionTimes.value[rowA.version] ?? ''
+      const timeB = versionTimes.value[rowB.version] ?? ''
+      return dir * (timeB < timeA ? -1 : timeB > timeA ? 1 : 0)
+    })
+  }
+  return [...rows].sort((rowA, rowB) => compareTagRows(rowA, rowB, versionTimes.value))
+}
+
+function selectTagsSort(mode: 'priority' | 'date') {
+  if (tagsSortMode.value === mode && mode === 'date') {
+    tagsSortOrder.value = tagsSortOrder.value === 'desc' ? 'asc' : 'desc'
+    return
+  }
+  tagsSortMode.value = mode
+}
+
 const otherTagRows = computed(() =>
-  tagRows.value
-    .filter(r => !r.tags.includes('latest'))
-    .sort((rowA, rowB) => compareTagRows(rowA, rowB, versionTimes.value)),
+  sortTagRows(showHiddenTags.value ? otherTagRowsAll.value : stableOtherTagRows.value),
 )
 
 function getVersionTime(version: string): string | undefined {
@@ -199,6 +228,49 @@ watch(
   { immediate: true },
 )
 
+// ─── View toggles ─────────────────────────────────────────────────────────────
+
+const showPrereleases = ref(false)
+const showDeprecated = ref(false)
+const filterOptionsOpen = shallowRef(false)
+const filterOptionsRef = useTemplateRef('filterOptionsRef')
+const filterOptionsId = useId()
+const hasHoverPointer = useMediaQuery('(hover: hover) and (pointer: fine)')
+const tagsSortMode = ref<'priority' | 'date'>('priority')
+const tagsSortOrder = ref<'asc' | 'desc'>('desc')
+const showHiddenTags = ref(false)
+
+const activeFilterOptionsCount = computed(
+  () => Number(showPrereleases.value) + Number(showDeprecated.value),
+)
+const showFilterOptionsTooltip = computed(() => hasHoverPointer.value && !filterOptionsOpen.value)
+
+onClickOutside(filterOptionsRef, () => {
+  filterOptionsOpen.value = false
+})
+
+useEventListener('keydown', event => {
+  if (event.key === 'Escape' && filterOptionsOpen.value) {
+    filterOptionsOpen.value = false
+  }
+})
+
+const visibleVersionGroups = computed(() => {
+  if (showPrereleases.value && showDeprecated.value) return versionGroups.value
+  return versionGroups.value
+    .map(group => {
+      const versions = group.versions.filter(v => {
+        if (!showPrereleases.value && isPrereleaseVersion(v)) return false
+        if (!showDeprecated.value && fullVersionMap.value?.get(v)?.deprecated) return false
+        return true
+      })
+      return versions.length === group.versions.length
+        ? group
+        : Object.assign({}, group, { versions })
+    })
+    .filter(group => group.versions.length > 0)
+})
+
 // ─── Version filter ───────────────────────────────────────────────────────────
 
 const versionFilterInput = ref('')
@@ -221,8 +293,8 @@ const filteredVersionSet = computed(() => {
 })
 
 const filteredGroups = computed(() => {
-  if (!isFilterActive.value || !filteredVersionSet.value) return versionGroups.value
-  return versionGroups.value
+  if (!isFilterActive.value || !filteredVersionSet.value) return visibleVersionGroups.value
+  return visibleVersionGroups.value
     .map(group =>
       Object.assign({}, group, {
         versions: group.versions.filter(v => filteredVersionSet.value!.has(v)),
@@ -290,9 +362,45 @@ const flatItems = computed<FlatItem[]>(() => {
     <div class="container w-full py-8 space-y-8">
       <!-- ── Current Tags ───────────────────────────────────────────────────── -->
       <section class="space-y-3">
-        <h2 class="text-sm text-fg-subtle uppercase">
-          {{ $t('package.versions.current_tags') }}
-        </h2>
+        <div class="flex items-center justify-between gap-2">
+          <h2 class="text-sm text-fg-subtle uppercase">
+            {{ $t('package.versions.current_tags') }}
+          </h2>
+          <div
+            v-if="otherTagRowsAll.length > 1"
+            class="flex items-center gap-0.5"
+            role="group"
+            :aria-label="$t('package.versions.sort_tags_label')"
+          >
+            <button
+              type="button"
+              class="text-3xs font-semibold uppercase tracking-wide px-2 py-0.5 rounded transition-colors cursor-pointer text-fg-muted hover:text-fg aria-pressed:(bg-bg-muted text-fg)"
+              :aria-pressed="tagsSortMode === 'priority'"
+              @click="selectTagsSort('priority')"
+            >
+              {{ $t('package.versions.sort_tags_by_priority') }}
+            </button>
+            <button
+              type="button"
+              class="inline-flex items-center gap-1 text-3xs font-semibold uppercase tracking-wide px-2 py-0.5 rounded transition-colors cursor-pointer text-fg-muted hover:text-fg aria-pressed:(bg-bg-muted text-fg)"
+              :aria-pressed="tagsSortMode === 'date'"
+              :aria-label="
+                tagsSortMode === 'date' && tagsSortOrder === 'asc'
+                  ? $t('package.versions.sort_tags_by_date_asc')
+                  : $t('package.versions.sort_tags_by_date_desc')
+              "
+              @click="selectTagsSort('date')"
+            >
+              {{ $t('package.versions.sort_tags_by_date') }}
+              <span
+                v-if="tagsSortMode === 'date'"
+                :class="tagsSortOrder === 'desc' ? 'i-lucide:arrow-down' : 'i-lucide:arrow-up'"
+                class="w-3 h-3"
+                aria-hidden="true"
+              />
+            </button>
+          </div>
+        </div>
 
         <!-- Latest — featured card -->
         <div
@@ -449,6 +557,26 @@ const flatItems = computed<FlatItem[]>(() => {
             </div>
           </div>
         </div>
+
+        <!-- Hidden pre-release tags notice -->
+        <button
+          v-if="hiddenPrereleaseTagCount > 0"
+          type="button"
+          class="text-xs text-fg-muted hover:text-fg transition-colors cursor-pointer inline-flex items-center gap-1.5 px-4 sm:px-6 ps-1"
+          :aria-expanded="showHiddenTags"
+          @click="showHiddenTags = !showHiddenTags"
+        >
+          <span
+            :class="showHiddenTags ? 'i-lucide:eye-off' : 'i-lucide:eye'"
+            class="w-3 h-3"
+            aria-hidden="true"
+          />
+          <span v-if="!showHiddenTags">
+            {{ $t('package.versions.tags_hidden', hiddenPrereleaseTagCount) }} —
+            <span class="underline">{{ $t('package.versions.show_all_tags') }}</span>
+          </span>
+          <span v-else>{{ $t('package.versions.hide_prerelease_tags') }}</span>
+        </button>
       </section>
 
       <!-- ── Version History ───────────────────────────────────────────────── -->
@@ -459,39 +587,116 @@ const flatItems = computed<FlatItem[]>(() => {
             <span class="ms-1 normal-case font-normal"> ({{ versionStrings.length }}) </span>
           </h2>
 
-          <div class="relative">
-            <InputBase
-              v-model="versionFilterInput"
-              type="text"
-              :placeholder="$t('package.versions.filter_placeholder')"
-              :aria-label="$t('package.versions.filter_placeholder')"
-              :aria-invalid="isInvalidRange ? 'true' : undefined"
-              :aria-describedby="isInvalidRange ? 'version-filter-error' : undefined"
-              autocomplete="off"
-              size="sm"
-              class="w-36 sm:w-64 max-sm:w-full"
-              :class="isInvalidRange ? 'pe-7 !border-red-500' : ''"
-            />
-            <Transition
-              enter-active-class="transition-all duration-150"
-              enter-from-class="opacity-0 scale-60"
-              leave-active-class="transition-all duration-150"
-              leave-to-class="opacity-0 scale-60"
-            >
+          <div class="flex items-center gap-2 max-sm:w-full">
+            <div ref="filterOptionsRef" class="relative shrink-0">
               <TooltipApp
-                v-if="isInvalidRange"
-                :text="$t('package.versions.filter_invalid')"
-                position="bottom"
-                class="absolute end-0 inset-y-0 flex items-center pe-2"
+                :text="$t('package.versions.filter_controls')"
+                position="top"
+                :disabled="!showFilterOptionsTooltip"
+                :show-on-focus="false"
               >
-                <span
-                  id="version-filter-error"
-                  class="i-lucide:circle-alert w-3.5 h-3.5 text-red-500 block"
-                  role="img"
-                  :aria-label="$t('package.versions.filter_invalid')"
-                />
+                <button
+                  type="button"
+                  class="relative inline-flex items-center justify-center size-8 rounded-md border transition-colors cursor-pointer"
+                  :class="
+                    activeFilterOptionsCount
+                      ? 'bg-fg/10 border-fg/20 text-fg'
+                      : 'border-border text-fg-muted hover:bg-bg-subtle hover:text-fg'
+                  "
+                  :aria-label="$t('package.versions.filter_controls')"
+                  :aria-expanded="filterOptionsOpen"
+                  :aria-controls="filterOptionsId"
+                  aria-haspopup="dialog"
+                  @click="filterOptionsOpen = !filterOptionsOpen"
+                >
+                  <span class="i-lucide:list-filter size-3.5" aria-hidden="true" />
+                  <span
+                    v-if="activeFilterOptionsCount"
+                    class="absolute -top-1 -end-1 min-w-4 h-4 px-1 rounded-full bg-accent text-bg text-3xs leading-4 font-mono"
+                    aria-hidden="true"
+                  >
+                    {{ activeFilterOptionsCount }}
+                  </span>
+                </button>
               </TooltipApp>
-            </Transition>
+
+              <Transition
+                enter-active-class="transition-all duration-150"
+                leave-active-class="transition-all duration-100"
+                enter-from-class="opacity-0 translate-y-1"
+                leave-to-class="opacity-0 translate-y-1"
+              >
+                <div
+                  v-if="filterOptionsOpen"
+                  :id="filterOptionsId"
+                  class="absolute start-0 sm:start-auto sm:end-0 top-full mt-2 z-30 w-52 bg-bg-subtle/80 backdrop-blur-sm border border-border-subtle rounded-lg shadow-lg shadow-bg-elevated/50 overflow-hidden px-1"
+                  role="dialog"
+                  :aria-label="$t('package.versions.filter_controls')"
+                >
+                  <div class="py-1">
+                    <label
+                      class="flex gap-2 items-center px-3 py-2 rounded-md hover:bg-fg/10 transition-colors cursor-pointer"
+                    >
+                      <input
+                        v-model="showPrereleases"
+                        type="checkbox"
+                        class="w-4 h-4 accent-fg bg-bg-muted border-border rounded"
+                      />
+                      <span class="text-sm text-fg font-mono flex-1">
+                        {{ $t('package.versions.show_prereleases') }}
+                      </span>
+                    </label>
+                    <label
+                      class="flex gap-2 items-center px-3 py-2 rounded-md hover:bg-fg/10 transition-colors cursor-pointer"
+                    >
+                      <input
+                        v-model="showDeprecated"
+                        type="checkbox"
+                        class="w-4 h-4 accent-fg bg-bg-muted border-border rounded"
+                      />
+                      <span class="text-sm text-fg font-mono flex-1">
+                        {{ $t('package.versions.show_deprecated') }}
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              </Transition>
+            </div>
+
+            <div class="relative flex-1">
+              <InputBase
+                v-model="versionFilterInput"
+                type="text"
+                :placeholder="$t('package.versions.filter_placeholder')"
+                :aria-label="$t('package.versions.filter_placeholder')"
+                :aria-invalid="isInvalidRange ? 'true' : undefined"
+                :aria-describedby="isInvalidRange ? 'version-filter-error' : undefined"
+                autocomplete="off"
+                size="sm"
+                class="w-36 sm:w-64 max-sm:w-full"
+                :class="isInvalidRange ? 'pe-7 !border-red-500' : ''"
+              />
+              <Transition
+                enter-active-class="transition-all duration-150"
+                enter-from-class="opacity-0 scale-60"
+                leave-active-class="transition-all duration-150"
+                leave-to-class="opacity-0 scale-60"
+              >
+                <TooltipApp
+                  v-if="isInvalidRange"
+                  :text="$t('package.versions.filter_invalid')"
+                  position="bottom"
+                  class="absolute end-0 inset-y-0 flex items-center pe-2"
+                >
+                  <span
+                    id="version-filter-error"
+                    class="i-lucide:circle-alert w-3.5 h-3.5 text-red-500 block"
+                    role="img"
+                    :aria-label="$t('package.versions.filter_invalid')"
+                  />
+                </TooltipApp>
+              </Transition>
+            </div>
           </div>
         </div>
 

@@ -637,7 +637,18 @@
       },
       "page_title": "Version History",
       "current_tags": "Current Tags",
-      "no_match_filter": "No versions match {filter}"
+      "no_match_filter": "No versions match {filter}",
+      "filter_controls": "Version filter controls",
+      "show_prereleases": "Show pre-releases",
+      "show_deprecated": "Show deprecated",
+      "sort_tags_label": "Sort tags",
+      "sort_tags_by_priority": "Sort by tag",
+      "sort_tags_by_date": "Sort by date",
+      "sort_tags_by_date_asc": "Sort by date, oldest first",
+      "sort_tags_by_date_desc": "Sort by date, newest first",
+      "tags_hidden": "{count} pre-release tag hidden | {count} pre-release tags hidden",
+      "show_all_tags": "Show all",
+      "hide_prerelease_tags": "Hide pre-release tags"
     },
     "timeline": {
       "load_more": "Load more",

@@ -14,6 +14,10 @@ const props = defineProps<{
   offset?: number
   /** Additional attributes to be applied to the tooltip element */
   tooltipAttr?: Record<string, unknown>
+  /** Prevent the tooltip from opening */
+  disabled?: boolean
+  /** Whether keyboard focus should show the tooltip */
+  showOnFocus?: boolean
 }>()
 
 const isVisible = shallowRef(false)
@@ -21,11 +25,17 @@ const tooltipId = useId()
 const hideTimeout = shallowRef<ReturnType<typeof setTimeout> | null>(null)
 
 function show() {
+  if (props.disabled) return
   if (hideTimeout.value) {
     clearTimeout(hideTimeout.value)
     hideTimeout.value = null
   }
   isVisible.value = true
+}
+
+function showFromFocus() {
+  if (props.showOnFocus === false) return
+  show()
 }
 
 function hide() {
@@ -47,6 +57,13 @@ const tooltipAttrs = computed(() => {
   }
   return attrs
 })
+
+watch(
+  () => props.disabled,
+  disabled => {
+    if (disabled) hide()
+  },
+)
 </script>
 
 <template>
@@ -61,7 +78,7 @@ const tooltipAttrs = computed(() => {
     :tooltip-attr="tooltipAttrs"
     @mouseenter="show"
     @mouseleave="hide"
-    @focusin="show"
+    @focusin="showFromFocus"
     @focusout="hide"
     :aria-describedby="isVisible ? tooltipId : undefined"
   >

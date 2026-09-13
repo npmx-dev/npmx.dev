@@ -32,6 +32,15 @@ export function parseStableVersion(version: string): Omit<ParsedVersion, 'prerel
 }
 
 /**
+ * Check if a version is a pre-release (has a `-` suffix per semver).
+ * @param version - The version string (e.g., "1.0.0-beta.1", "2.0.0")
+ * @returns true if the version has a prerelease component
+ */
+export function isPrereleaseVersion(version: string): boolean {
+  return (tryParse(version)?.prerelease?.length ?? 0) > 0
+}
+
+/**
  * Extract the prerelease channel from a version string
  * @param version - The version string (e.g., "1.0.0-beta.1")
  * @returns The channel name (e.g., "beta") or empty string for stable versions

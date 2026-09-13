@@ -104,10 +104,17 @@ describe('package versions page', () => {
         beta: '1.0.0-beta.1',
       })
       const component = await mountPage()
-      await vi.waitFor(() => {
-        expect(component.text()).toContain('stable')
-        expect(component.text()).toContain('beta')
-      })
+
+      // stable is a non-prerelease tag — visible by default
+      await vi.waitFor(() => expect(component.text()).toContain('stable'))
+
+      // beta points to a prerelease version — hidden by default, revealed via "Show all"
+      expect(component.text()).not.toContain('beta')
+      const showAllButton = component.findAll('button').find(b => b.text().includes('Show all'))
+      expect(showAllButton).toBeDefined()
+      await showAllButton!.trigger('click')
+
+      await vi.waitFor(() => expect(component.text()).toContain('beta'))
     })
   })
 
@@ -164,7 +171,6 @@ describe('package versions page', () => {
 
   describe('version filter', () => {
     it('filters groups by substring match', async () => {
-      // Use versions where the filter string "1.0" is unique to the 1.x group
       nextFetchResponse = makeVersionData(['3.0.0', '2.0.0', '1.0.0'], { latest: '3.0.0' })
       const component = await mountPage()
       await vi.waitFor(() => {
@@ -181,6 +187,301 @@ describe('package versions page', () => {
         expect(component.text()).not.toContain('2.x')
         expect(component.text()).not.toContain('3.x')
       })
+    })
+
+    it('filters groups by semver range', async () => {
+      nextFetchResponse = makeVersionData(['3.0.0', '2.1.0', '2.0.0', '1.0.0'], {
+        latest: '3.0.0',
+      })
+      const component = await mountPage()
+      await vi.waitFor(() => expect(component.text()).toContain('3.x'))
+
+      const input = component.find('input[autocomplete="off"]')
+      await input.setValue('>=2.0.0 <3.0.0')
+
+      await vi.waitFor(() => {
+        expect(component.text()).toContain('2.x')
+        expect(component.text()).not.toContain('1.x')
+        expect(component.text()).not.toContain('3.x')
+      })
+    })
+
+    it('shows no-match message when filter matches nothing', async () => {
+      nextFetchResponse = makeVersionData(['2.0.0', '1.0.0'], { latest: '2.0.0' })
+      const component = await mountPage()
+      await vi.waitFor(() => expect(component.text()).toContain('2.x'))
+
+      const input = component.find('input[autocomplete="off"]')
+      await input.setValue('9.9.9')
+
+      await vi.waitFor(() => {
+        expect(component.text()).not.toContain('1.x')
+        expect(component.text()).not.toContain('2.x')
+        // no-match status message rendered
+        expect(component.find('[role="status"]').exists()).toBe(true)
+      })
+    })
+
+    it('shows error indicator for an invalid semver range', async () => {
+      nextFetchResponse = makeVersionData(['1.0.0'], { latest: '1.0.0' })
+      const component = await mountPage()
+      await vi.waitFor(() => expect(component.text()).toContain('1.x'))
+
+      const input = component.find('input[autocomplete="off"]')
+      await input.setValue('not-a-range!!!')
+
+      await vi.waitFor(() => {
+        expect(input.attributes('aria-invalid')).toBe('true')
+      })
+    })
+
+    it('clearing the filter restores all groups', async () => {
+      nextFetchResponse = makeVersionData(['2.0.0', '1.0.0'], { latest: '2.0.0' })
+      const component = await mountPage()
+      await vi.waitFor(() => {
+        expect(component.text()).toContain('1.x')
+        expect(component.text()).toContain('2.x')
+      })
+
+      const input = component.find('input[autocomplete="off"]')
+      await input.setValue('1.0')
+      await vi.waitFor(() => expect(component.text()).not.toContain('2.x'))
+
+      await input.setValue('')
+      await vi.waitFor(() => {
+        expect(component.text()).toContain('1.x')
+        expect(component.text()).toContain('2.x')
+      })
+    })
+  })
+
+  describe('filter popover', () => {
+    it('opens and closes on toggle button click', async () => {
+      nextFetchResponse = makeVersionData(['1.0.0'], { latest: '1.0.0' })
+      const component = await mountPage()
+      await vi.waitFor(() =>
+        expect(component.find('button[aria-haspopup="dialog"]').exists()).toBe(true),
+      )
+
+      const toggleBtn = component.find('button[aria-haspopup="dialog"]')
+      expect(toggleBtn.attributes('aria-expanded')).toBe('false')
+
+      await toggleBtn.trigger('click')
+      expect(toggleBtn.attributes('aria-expanded')).toBe('true')
+      expect(component.find('[role="dialog"]').exists()).toBe(true)
+
+      await toggleBtn.trigger('click')
+      expect(toggleBtn.attributes('aria-expanded')).toBe('false')
+      expect(component.find('[role="dialog"]').exists()).toBe(false)
+    })
+
+    it('closes when Escape is pressed', async () => {
+      nextFetchResponse = makeVersionData(['1.0.0'], { latest: '1.0.0' })
+      const component = await mountPage()
+      await vi.waitFor(() =>
+        expect(component.find('button[aria-haspopup="dialog"]').exists()).toBe(true),
+      )
+
+      const toggleBtn = component.find('button[aria-haspopup="dialog"]')
+      await toggleBtn.trigger('click')
+      expect(toggleBtn.attributes('aria-expanded')).toBe('true')
+
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+      await vi.waitFor(() => expect(toggleBtn.attributes('aria-expanded')).toBe('false'))
+    })
+
+    it('shows a badge counting active filters', async () => {
+      nextFetchResponse = makeVersionData(['1.0.0'], { latest: '1.0.0' })
+      const component = await mountPage()
+      await vi.waitFor(() =>
+        expect(component.find('button[aria-haspopup="dialog"]').exists()).toBe(true),
+      )
+
+      const toggleBtn = component.find('button[aria-haspopup="dialog"]')
+      expect(toggleBtn.text()).toBe('') // no badge when no filters active
+
+      await toggleBtn.trigger('click')
+      const checkboxes = component.find('[role="dialog"]').findAll('input[type="checkbox"]')
+
+      await checkboxes[0]!.setValue(true) // enable show prereleases
+      await vi.waitFor(() => expect(toggleBtn.text()).toBe('1'))
+
+      await checkboxes[1]!.setValue(true) // enable show deprecated
+      await vi.waitFor(() => expect(toggleBtn.text()).toBe('2'))
+
+      await checkboxes[0]!.setValue(false) // disable show prereleases
+      await vi.waitFor(() => expect(toggleBtn.text()).toBe('1'))
+    })
+  })
+
+  describe('show prereleases toggle', () => {
+    it('hides prerelease-only version groups by default', async () => {
+      // 1.0.0-alpha.1 is the only version in 1.x — group is invisible until toggled
+      nextFetchResponse = makeVersionData(['2.0.0', '1.0.0-alpha.1'], { latest: '2.0.0' })
+      const component = await mountPage()
+      await vi.waitFor(() => {
+        expect(component.text()).toContain('2.x')
+        expect(component.text()).not.toContain('1.x')
+      })
+    })
+
+    it('reveals prerelease version groups when the toggle is enabled', async () => {
+      nextFetchResponse = makeVersionData(['2.0.0', '1.0.0-alpha.1'], { latest: '2.0.0' })
+      const component = await mountPage()
+      await vi.waitFor(() => expect(component.text()).toContain('2.x'))
+
+      const toggleBtn = component.find('button[aria-haspopup="dialog"]')
+      await toggleBtn.trigger('click')
+      const checkboxes = component.find('[role="dialog"]').findAll('input[type="checkbox"]')
+      await checkboxes[0]!.setValue(true) // showPrereleases
+
+      await vi.waitFor(() => {
+        expect(component.text()).toContain('2.x')
+        expect(component.text()).toContain('1.x')
+      })
+    })
+  })
+
+  describe('show deprecated toggle', () => {
+    it('hides deprecated-only version groups by default once metadata loads', async () => {
+      nextFetchResponse = makeVersionData(['2.0.0', '1.0.0'], { latest: '2.0.0' })
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '2.0.0', hasProvenance: false },
+        { version: '1.0.0', deprecated: 'Use 2.x instead', hasProvenance: false },
+      ])
+      const component = await mountPage()
+      // fullVersionMap populates async; wait for the 1.x group to disappear
+      await vi.waitFor(() => {
+        expect(component.text()).toContain('2.x')
+        expect(component.text()).not.toContain('1.x')
+      })
+    })
+
+    it('reveals deprecated version groups when the toggle is enabled', async () => {
+      nextFetchResponse = makeVersionData(['2.0.0', '1.0.0'], { latest: '2.0.0' })
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '2.0.0', hasProvenance: false },
+        { version: '1.0.0', deprecated: 'Use 2.x instead', hasProvenance: false },
+      ])
+      const component = await mountPage()
+      await vi.waitFor(() => {
+        expect(component.text()).toContain('2.x')
+        expect(component.text()).not.toContain('1.x')
+      })
+
+      const toggleBtn = component.find('button[aria-haspopup="dialog"]')
+      await toggleBtn.trigger('click')
+      const checkboxes = component.find('[role="dialog"]').findAll('input[type="checkbox"]')
+      await checkboxes[1]!.setValue(true) // showDeprecated
+
+      await vi.waitFor(() => expect(component.text()).toContain('1.x'))
+    })
+
+    it('marks a group header with a deprecated badge when all its versions are deprecated', async () => {
+      nextFetchResponse = makeVersionData(['2.0.0', '1.1.0', '1.0.0'], { latest: '2.0.0' })
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '2.0.0', hasProvenance: false },
+        { version: '1.1.0', deprecated: 'Use 2.x instead', hasProvenance: false },
+        { version: '1.0.0', deprecated: 'Use 2.x instead', hasProvenance: false },
+      ])
+      const component = await mountPage()
+      await vi.waitFor(() => {
+        expect(component.text()).toContain('2.x')
+        expect(component.text()).not.toContain('1.x')
+      })
+
+      // Enable show deprecated to reveal the all-deprecated 1.x group
+      const toggleBtn = component.find('button[aria-haspopup="dialog"]')
+      await toggleBtn.trigger('click')
+      const checkboxes = component.find('[role="dialog"]').findAll('input[type="checkbox"]')
+      await checkboxes[1]!.setValue(true)
+
+      await vi.waitFor(() => {
+        expect(component.text()).toContain('1.x')
+        const groupHeader = component.findAll('button').find(b => b.text().includes('1.x'))
+        expect(groupHeader?.text()).toContain('deprecated')
+      })
+    })
+  })
+
+  describe('sort tags buttons', () => {
+    it('does not render sort controls with only one non-latest tag', async () => {
+      nextFetchResponse = makeVersionData(['2.0.0', '1.0.0'], {
+        latest: '2.0.0',
+        stable: '1.0.0',
+      })
+      const component = await mountPage()
+      await vi.waitFor(() => expect(component.text()).toContain('stable'))
+
+      expect(component.findAll('button[aria-pressed]')).toHaveLength(0)
+    })
+
+    it('renders sort controls when there are two or more non-latest tags', async () => {
+      nextFetchResponse = makeVersionData(['3.0.0', '2.0.0', '1.0.0'], {
+        latest: '3.0.0',
+        next: '2.0.0',
+        legacy: '1.0.0',
+      })
+      const component = await mountPage()
+      await vi.waitFor(() => expect(component.text()).toContain('next'))
+
+      expect(component.findAll('button[aria-pressed]')).toHaveLength(2)
+    })
+
+    it('"Sort by tag" is active (aria-pressed) by default', async () => {
+      nextFetchResponse = makeVersionData(['3.0.0', '2.0.0', '1.0.0'], {
+        latest: '3.0.0',
+        next: '2.0.0',
+        legacy: '1.0.0',
+      })
+      const component = await mountPage()
+      await vi.waitFor(() => expect(component.text()).toContain('next'))
+
+      const [sortByTagBtn, sortByDateBtn] = component.findAll('button[aria-pressed]')
+      expect(sortByTagBtn!.attributes('aria-pressed')).toBe('true')
+      expect(sortByDateBtn!.attributes('aria-pressed')).toBe('false')
+    })
+
+    it('clicking "Sort by date" activates date sort mode', async () => {
+      nextFetchResponse = makeVersionData(['3.0.0', '2.0.0', '1.0.0'], {
+        latest: '3.0.0',
+        next: '2.0.0',
+        legacy: '1.0.0',
+      })
+      const component = await mountPage()
+      await vi.waitFor(() => expect(component.text()).toContain('next'))
+
+      const [sortByTagBtn, sortByDateBtn] = component.findAll('button[aria-pressed]')
+      await sortByDateBtn!.trigger('click')
+
+      await vi.waitFor(() => {
+        expect(sortByDateBtn!.attributes('aria-pressed')).toBe('true')
+        expect(sortByTagBtn!.attributes('aria-pressed')).toBe('false')
+      })
+    })
+
+    it('clicking "Sort by date" twice toggles the sort direction', async () => {
+      nextFetchResponse = makeVersionData(['3.0.0', '2.0.0', '1.0.0'], {
+        latest: '3.0.0',
+        next: '2.0.0',
+        legacy: '1.0.0',
+      })
+      const component = await mountPage()
+      await vi.waitFor(() => expect(component.text()).toContain('next'))
+
+      const [, sortByDateBtn] = component.findAll('button[aria-pressed]')
+
+      // First click: date sort, defaults to newest-first
+      await sortByDateBtn!.trigger('click')
+      await vi.waitFor(() =>
+        expect(sortByDateBtn!.attributes('aria-label')).toContain('newest first'),
+      )
+
+      // Second click on the same active button: flips to oldest-first
+      await sortByDateBtn!.trigger('click')
+      await vi.waitFor(() =>
+        expect(sortByDateBtn!.attributes('aria-label')).toContain('oldest first'),
+      )
     })
   })
 })
