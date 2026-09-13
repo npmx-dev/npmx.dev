@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { LinkBase } from '#components'
-import type { NavigationConfig, NavigationConfigWithGroups } from '~/types'
+import type { MenuDropdownItem, NavigationConfig, NavigationConfigWithGroups } from '~/types'
 import { NPMX_DOCS_SITE } from '#shared/utils/constants'
 
 const discord = useDiscordLink()
@@ -44,6 +43,25 @@ const desktopLinks = computed<NavigationConfig>(() => [
     type: 'link',
     external: false,
     iconClass: 'i-lucide:settings',
+  },
+])
+
+const featureItems = computed<MenuDropdownItem[]>(() => [
+  {
+    type: 'link',
+    icon: 'i-lucide:git-compare',
+    title: $t('nav.compare'),
+    description: $t('nav.compare_desc'),
+    shortcut: 'c',
+    href: compareTarget.value,
+  },
+  {
+    type: 'link',
+    icon: 'i-lucide:settings',
+    title: $t('nav.settings'),
+    description: $t('nav.settings_desc'),
+    shortcut: ',',
+    href: { name: 'settings' },
   },
 ])
 
@@ -229,69 +247,54 @@ useShortcuts({
       :aria-label="$t('nav.main_navigation')"
       class="relative container min-h-14 flex items-center gap-2 z-1 justify-end"
     >
-      <!-- Mobile: Logo (navigates home) -->
-      <LogoContextMenu v-if="!isSearchExpanded && !isOnHomePage" class="sm:hidden flex-shrink-0">
-        <NuxtLink
-          to="/"
-          :aria-label="$t('header.home')"
-          class="font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring me-4"
-        >
-          <AppMark class="w-6 h-auto" />
-        </NuxtLink>
-      </LogoContextMenu>
-
-      <!-- Desktop: Logo (navigates home) -->
-      <LogoContextMenu v-if="showLogo" class="hidden sm:flex flex-shrink-0 items-center">
-        <NuxtLink
-          :to="{ name: 'index' }"
-          :aria-label="$t('header.home')"
-          dir="ltr"
-          class="relative inline-flex items-center gap-1 py-2 header-logo font-mono text-lg font-medium text-fg hover:text-fg/90 transition-colors duration-200 me-4"
-        >
-          <AppLogo class="h-4.5 w-auto" />
-          <span
-            aria-hidden="true"
-            class="scale-35 transform-origin-br font-mono tracking-wide text-accent absolute bottom-0.75 -inset-ie-1"
+      <!-- Group 1: Logo -->
+      <div class="flex items-center flex-shrink-0">
+        <!-- Mobile: Logo (navigates home) -->
+        <LogoContextMenu v-if="!isSearchExpanded && !isOnHomePage" class="sm:hidden flex-shrink-0">
+          <NuxtLink
+            to="/"
+            :aria-label="$t('header.home')"
+            class="font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring me-4"
           >
-            {{ env === 'release' ? 'alpha' : env }}
+            <AppMark class="w-6 h-auto" />
+          </NuxtLink>
+        </LogoContextMenu>
+
+        <!-- Desktop: Logo (navigates home) -->
+        <LogoContextMenu v-if="showLogo" class="hidden sm:flex flex-shrink-0 items-center">
+          <NuxtLink
+            :to="{ name: 'index' }"
+            :aria-label="$t('header.home')"
+            dir="ltr"
+            class="relative inline-flex items-center gap-1 py-2 header-logo font-mono text-lg font-medium text-fg hover:text-fg/90 transition-colors duration-200 me-4"
+          >
+            <AppLogo class="h-4.5 w-auto" />
+            <span
+              aria-hidden="true"
+              class="scale-35 transform-origin-br font-mono tracking-wide text-accent absolute bottom-0.75 -inset-ie-1"
+            >
+              {{ env === 'release' ? 'alpha' : env }}
+            </span>
+          </NuxtLink>
+        </LogoContextMenu>
+
+        <NuxtLink
+          v-if="showLogo && !isSearchExpanded && prNumber"
+          :to="`https://github.com/npmx-dev/npmx.dev/pull/${prNumber}`"
+          :aria-label="$t('header.pr', { prNumber })"
+        >
+          <span class="text-xs px-1.5 py-0.5 rounded badge-green font-sans font-medium">
+            PR #{{ prNumber }}
           </span>
         </NuxtLink>
-      </LogoContextMenu>
 
-      <NuxtLink
-        v-if="showLogo && !isSearchExpanded && prNumber"
-        :to="`https://github.com/npmx-dev/npmx.dev/pull/${prNumber}`"
-        :aria-label="$t('header.pr', { prNumber })"
-      >
-        <span class="text-xs px-1.5 py-0.5 rounded badge-green font-sans font-medium">
-          PR #{{ prNumber }}
-        </span>
-      </NuxtLink>
+        <!-- Spacer when logo is hidden on desktop -->
+        <span v-else class="hidden sm:block w-1" />
+      </div>
 
-      <!-- Spacer when logo is hidden on desktop -->
-      <span v-else class="hidden sm:block w-1" />
-
-      <ButtonBase
-        type="button"
-        variant="secondary"
-        class="hidden lg:inline-flex shrink-0 gap-2 ps-2.5 pe-1.25 py-1.25! me-3"
-        :aria-label="$t('shortcuts.command_palette')"
-        :title="$t('shortcuts.command_palette_description', { ctrlKey: $t('shortcuts.ctrl_key') })"
-        @click="openCommandPalette"
-      >
-        <span>{{ $t('command_palette.quick_actions') }}</span>
-        <span class="inline-flex items-center gap-1 text-xs text-fg-subtle">
-          <kbd
-            class="inline-flex items-center justify-center rounded border border-border bg-bg-muted px-1.5 py-0.5 font-mono text-[0.7rem] text-fg-muted"
-          >
-            {{ commandPaletteShortcutLabel }}
-          </kbd>
-        </span>
-      </ButtonBase>
-
-      <!-- Center: Search bar + nav items -->
+      <!-- Group 2: Search + jump to -->
       <div
-        class="flex-1 flex items-center md:gap-6"
+        class="flex-1 flex items-center gap-2"
         :class="{
           'hidden sm:flex': !isSearchExpanded,
           'justify-end': isOnHomePage,
@@ -321,21 +324,48 @@ useShortcuts({
             <HeaderOrgsDropdown :username="npmUser" />
           </li>
         </ul>
+
+        <ButtonBase
+          type="button"
+          variant="secondary"
+          class="hidden lg:inline-flex shrink-0 gap-2 ps-2.5 pe-1.25 py-1.5!"
+          :aria-label="$t('shortcuts.command_palette')"
+          :title="
+            $t('shortcuts.command_palette_description', { ctrlKey: $t('shortcuts.ctrl_key') })
+          "
+          @click="openCommandPalette"
+        >
+          <span>{{ $t('command_palette.quick_actions') }}</span>
+          <span class="inline-flex items-center gap-1 text-xs text-fg-subtle">
+            <kbd
+              class="inline-flex items-center justify-center rounded border border-border bg-bg-muted px-1.5 py-0.5 font-mono text-[0.7rem] text-fg-muted"
+            >
+              {{ commandPaletteShortcutLabel }}
+            </kbd>
+          </span>
+        </ButtonBase>
       </div>
 
-      <!-- End: Desktop nav items + Mobile menu button -->
-      <div class="hidden sm:flex flex-shrink-0 items-center gap-2">
-        <!-- Desktop: Explore link -->
-        <LinkBase
-          v-for="link in desktopLinks"
-          :key="link.name"
-          class="border-none"
-          variant="button-secondary"
-          :to="link.to"
-          :aria-keyshortcuts="link.keyshortcut"
-        >
-          {{ link.label }}
-        </LinkBase>
+      <!-- Group 3: Features + connect -->
+      <div class="hidden sm:flex flex-shrink-0 items-center gap-1">
+        <MenuDropdown :items="featureItems">
+          <template #trigger="{ open, toggle }">
+            <ButtonBase
+              type="button"
+              class="border-none"
+              :aria-expanded="open"
+              aria-haspopup="true"
+              @click="toggle"
+            >
+              {{ $t('nav.features') }}
+              <span
+                class="i-lucide:chevron-down w-3 h-3 transition-transform duration-200"
+                :class="{ 'rotate-180': open }"
+                aria-hidden="true"
+              />
+            </ButtonBase>
+          </template>
+        </MenuDropdown>
 
         <HeaderAccountMenu />
       </div>
