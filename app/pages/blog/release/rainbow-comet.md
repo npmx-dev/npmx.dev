@@ -2,7 +2,7 @@
 authors:
   - name: Alec Lloyd Probert
     blueskyHandle: graphieros.npmx.social
-  - name: Alex Savelyev
+  - name: Alex Savelyeva
     blueskyHandle: alexdln.com
   - name: Willow (GHOST)
     blueskyHandle: willow.sh
