@@ -40,7 +40,7 @@ function clearSelection() {
 
 <template>
   <div
-    class="relative rounded-lg border border-dashed px-4 py-2 transition-colors h-20 flex items-center justify-center"
+    class="relative rounded-lg border border-dashed px-4 py-2 transition-colors min-h-20 flex items-center justify-center"
     :class="
       isDragging
         ? 'border-accent bg-accent/5'
@@ -65,24 +65,28 @@ function clearSelection() {
       <span class="sr-only">{{ $t('deps_stats.upload.label') }}</span>
     </label>
     <div
-      v-if="fileName"
-      class="relative z-10 flex-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2 pointer-events-none"
+      class="relative z-10 flex-1 flex flex-col justify-center gap-1 pointer-events-none min-w-0"
     >
-      <p class="text-sm font-mono text-fg-muted">{{ fileName }}</p>
-      <ButtonBase
-        size="md"
-        class="pointer-events-auto"
-        :aria-label="$t('deps_stats.upload.clear')"
-        @click="clearSelection"
-      >
-        {{ $t('deps_stats.upload.clear') }}
-      </ButtonBase>
-    </div>
-    <div v-else class="relative z-10 pointer-events-none text-center">
-      <p class="text-sm text-fg-subtle">
+      <div v-if="fileName" class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <p class="text-sm font-mono text-fg-muted truncate">{{ fileName }}</p>
+        <ButtonBase
+          size="md"
+          class="pointer-events-auto shrink-0"
+          :aria-label="$t('deps_stats.upload.clear')"
+          @click="clearSelection"
+        >
+          {{ $t('deps_stats.upload.clear') }}
+        </ButtonBase>
+      </div>
+      <p v-else class="text-sm text-fg-subtle text-center">
         {{ $t('deps_stats.upload.hint') }}
       </p>
-      <p v-if="error" class="mt-2 text-sm text-red-700 dark:text-red-400" role="alert">
+      <p
+        v-if="error"
+        class="text-sm text-red-700 dark:text-red-400"
+        :class="fileName ? '' : 'text-center'"
+        role="alert"
+      >
         {{ error }}
       </p>
     </div>
