@@ -34,6 +34,8 @@ export interface TimelineVersion {
 export interface TimelineResponse {
   versions: TimelineVersion[]
   total: number
+  /** Effective offset of the returned page (page-aligned when `around` is used) */
+  offset: number
 }
 
 export interface SubEvent {
@@ -51,8 +53,15 @@ export interface SubEvent {
  * sorts (descending) by publish time (default) or by semver (`sort=semver`),
  * then paginates.
  *
+ * Instead of an explicit `offset`, `around=<version>` returns the page-aligned
+ * slice containing that version (`offset = floor(index / limit) * limit`), so
+ * anchored requests still map onto the same shared page boundaries. The
+ * response reports the effective `offset` so clients can paginate from there
+ * in both directions.
+ *
  * Examples:
  * - /api/registry/timeline/packageName?offset=0&limit=25
+ * - /api/registry/timeline/packageName?around=3.0.0&limit=25
  * - /api/registry/timeline/@scope/packageName?offset=0&limit=25&sort=semver&stable-only=true
  */
 export default defineCachedEventHandler(
@@ -70,10 +79,11 @@ export default defineCachedEventHandler(
     }
 
     const query = getQuery(event)
-    const offset = Math.max(0, Number(query.offset) || 0)
+    let offset = Math.max(0, Number(query.offset) || 0)
     const limit = Math.max(1, Math.min(100, Number(query.limit) || DEFAULT_LIMIT))
     const sort = parseTimelineSort(query.sort)
     const stableOnly = parseStableOnly(query['stable-only'])
+    const around = typeof query.around === 'string' ? query.around : undefined
 
     try {
       const packument = await fetchNpmPackage(packageName)
@@ -94,6 +104,13 @@ export default defineCachedEventHandler(
         allVersions.sort((a, b) => compare(b, a))
       } else {
         allVersions.sort((a, b) => Date.parse(packument.time[b]!) - Date.parse(packument.time[a]!))
+      }
+
+      if (around) {
+        // Snap to the page boundary containing the anchor version so anchored
+        // requests reuse the same page slices as plain offset pagination.
+        const index = allVersions.indexOf(around)
+        offset = index === -1 ? 0 : Math.floor(index / limit) * limit
       }
 
       const versions = allVersions.slice(offset, offset + limit)
@@ -126,6 +143,7 @@ export default defineCachedEventHandler(
       return {
         versions: versionsData,
         total: allVersions.length,
+        offset,
       } satisfies TimelineResponse
     } catch (error: unknown) {
       handleApiError(error, {
@@ -143,7 +161,11 @@ export default defineCachedEventHandler(
       const limit = Math.max(1, Math.min(100, Number(query.limit) || DEFAULT_LIMIT))
       const sort = parseTimelineSort(query.sort)
       const stableOnly = parseStableOnly(query['stable-only'])
-      return `timeline:v1:${getRouterParam(event, 'pkg')}:${sort}:${stableOnly}:${offset}:${limit}`
+      const around = typeof query.around === 'string' ? query.around : undefined
+      // `around` supersedes `offset`, so anchored requests get their own key
+      // (one per anchor version - same cardinality as the per-version pages).
+      const page = around ? `around=${around}` : offset
+      return `timeline:v2:${getRouterParam(event, 'pkg')}:${sort}:${stableOnly}:${page}:${limit}`
     },
   },
 )
