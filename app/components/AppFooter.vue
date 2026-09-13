@@ -232,7 +232,7 @@ const footerSections = computed<Array<{ label: string; links: FooterLink[] }>>((
       </p>
       <ul class="mb-6 flex flex-col gap-2">
         <li class="flex gap-2 items-center">
-          <kbd class="kbd">↑</kbd>/<kbd class="kbd">↓</kbd>
+          <kbd class="kbd">j</kbd>/<kbd class="kbd">k</kbd>
           <span>{{ $t('shortcuts.navigate_results') }}</span>
         </li>
         <li class="flex gap-2 items-center">

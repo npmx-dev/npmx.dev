@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onClickOutside } from '@vueuse/core'
+import { useEventListener } from '@vueuse/core'
 import { compare } from 'verkit'
 import {
   buildVersionToTagsMap,
@@ -26,14 +26,17 @@ const props = withDefaults(
   },
 )
 
-const isOpen = shallowRef(false)
-const dropdownRef = useTemplateRef('dropdownRef')
-const listboxRef = useTemplateRef('listboxRef')
-const focusedIndex = shallowRef(-1)
+const popoverRef = useTemplateRef<HTMLElement>('popoverRef')
+const triggerRef = useTemplateRef<HTMLElement>('triggerRef')
 
-onClickOutside(dropdownRef, () => {
-  isOpen.value = false
-})
+// isOpen is kept only to animate the trigger chevron
+const isOpen = shallowRef(false)
+
+const uid = useId()
+const popoverId = `${uid}-versions`
+
+// Close popover on scroll so it doesn't float away from its anchor
+useEventListener('scroll', () => popoverRef.value?.hidePopover(), true)
 
 // ============================================================================
 // Version Display Types
@@ -363,119 +366,8 @@ async function toggleGroup(groupId: string) {
 }
 
 // ============================================================================
-// Keyboard Navigation
+// Helpers (unchanged)
 // ============================================================================
-
-/** Flat list of navigable items for keyboard navigation */
-const flatItems = computed(() => {
-  const items: Array<{ type: 'group' | 'version'; groupId: string; version?: VersionDisplay }> = []
-
-  for (const group of visibleVersionGroups.value) {
-    items.push({ type: 'group', groupId: group.id, version: group.primaryVersion })
-
-    if (group.isExpanded && group.versions.length > 1) {
-      // Skip first version (it's the primary)
-      for (const v of group.versions.slice(1)) {
-        items.push({ type: 'version', groupId: group.id, version: v })
-      }
-    }
-  }
-
-  return items
-})
-
-function handleButtonKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape') {
-    isOpen.value = false
-  } else if (event.key === 'ArrowDown' && !isOpen.value) {
-    event.preventDefault()
-    isOpen.value = true
-    focusedIndex.value = 0
-  }
-}
-
-function handleListboxKeydown(event: KeyboardEvent) {
-  const items = flatItems.value
-
-  switch (event.key) {
-    case 'Escape':
-      isOpen.value = false
-      break
-    case 'ArrowDown':
-      event.preventDefault()
-      focusedIndex.value = Math.min(focusedIndex.value + 1, items.length - 1)
-      scrollToFocused()
-      break
-    case 'ArrowUp':
-      event.preventDefault()
-      focusedIndex.value = Math.max(focusedIndex.value - 1, 0)
-      scrollToFocused()
-      break
-    case 'Home':
-      event.preventDefault()
-      focusedIndex.value = 0
-      scrollToFocused()
-      break
-    case 'End':
-      event.preventDefault()
-      focusedIndex.value = items.length - 1
-      scrollToFocused()
-      break
-    case 'ArrowRight': {
-      event.preventDefault()
-      const item = items[focusedIndex.value]
-      if (item?.type === 'group') {
-        const group = versionGroups.value.find(g => g.id === item.groupId)
-        if (group && !isGroupOpen(group) && canToggleGroup(group)) {
-          toggleGroup(item.groupId)
-        }
-      }
-      break
-    }
-    case 'ArrowLeft': {
-      event.preventDefault()
-      const item = items[focusedIndex.value]
-      if (item?.type === 'group') {
-        const group = versionGroups.value.find(g => g.id === item.groupId)
-        if (group?.isExpanded) {
-          group.isExpanded = false
-        } else if (group && controlsAdditionalGroups(group) && showAllGroups.value) {
-          showAllGroups.value = false
-        }
-      } else if (item?.type === 'version') {
-        // Jump to parent group
-        const groupIndex = items.findIndex(i => i.type === 'group' && i.groupId === item.groupId)
-        if (groupIndex >= 0) {
-          focusedIndex.value = groupIndex
-          scrollToFocused()
-        }
-      }
-      break
-    }
-    case 'Enter':
-    case ' ':
-      event.preventDefault()
-      if (focusedIndex.value >= 0 && focusedIndex.value < items.length) {
-        const item = items[focusedIndex.value]
-        if (item?.version) {
-          navigateToVersion(item.version.version)
-        }
-      }
-      break
-  }
-}
-
-function scrollToFocused() {
-  nextTick(() => {
-    const focused = listboxRef.value?.querySelector('[data-focused="true"]')
-    focused?.scrollIntoView({ block: 'nearest' })
-  })
-}
-
-function navigateToVersion(version: string) {
-  isOpen.value = false
-  navigateTo(getVersionUrl(version))
-}
 
 function hasNestedVersions(group: VersionGroup): boolean {
   return group.versions.length > 1
@@ -502,14 +394,97 @@ function canToggleGroup(group: VersionGroup): boolean {
   )
 }
 
-// Reset focused index when dropdown opens
-watch(isOpen, open => {
-  if (open) {
-    // Find current version in flat list
-    const currentIdx = flatItems.value.findIndex(item => item.version?.isCurrent)
-    focusedIndex.value = currentIdx >= 0 ? currentIdx : 0
+// ============================================================================
+// Popover & Focus Management
+// ============================================================================
+
+// min-w-[220px] from the template — used as the overflow threshold when the
+// element is still display:none (offsetWidth would be 0 in beforetoggle).
+const MIN_POPOVER_WIDTH = 220
+
+/**
+ * Position the popover below its trigger.
+ *
+ * `width` should be the popover's rendered width when known (resize handler),
+ * or MIN_POPOVER_WIDTH when the element is still hidden (beforetoggle).
+ * Left-aligns unless that width would overflow the right viewport edge.
+ */
+function positionPopover(width = MIN_POPOVER_WIDTH) {
+  if (!triggerRef.value || !popoverRef.value) return
+  const rect = triggerRef.value.getBoundingClientRect()
+  const el = popoverRef.value
+
+  el.style.top = `${rect.bottom + 8}px`
+
+  if (rect.left + width > window.innerWidth) {
+    el.style.left = 'auto'
+    el.style.right = `${window.innerWidth - rect.right}px`
+  } else {
+    el.style.left = `${rect.left}px`
+    el.style.right = 'auto'
   }
+}
+
+/**
+ * Runs before the popover is shown — sets position before first paint and
+ * before the CSS entry transition starts (no forced-reflow interference).
+ */
+function handlePopoverBeforeToggle(event: ToggleEvent) {
+  if (event.newState === 'open') positionPopover()
+}
+
+// Reposition while the popover is open. The element is visible here so
+// offsetWidth is accurate and reading it doesn't interfere with animation.
+useEventListener('resize', () => {
+  if (isOpen.value) positionPopover(popoverRef.value?.offsetWidth)
 })
+
+function handlePopoverToggle(event: ToggleEvent) {
+  isOpen.value = event.newState === 'open'
+
+  if (event.newState !== 'open') return
+
+  // Move focus to the current version link, or the first interactive element
+  nextTick(() => {
+    const current = popoverRef.value?.querySelector<HTMLElement>('[aria-current="page"]')
+    const first = popoverRef.value?.querySelector<HTMLElement>('a[href], button:not([disabled])')
+    ;(current ?? first)?.focus()
+  })
+}
+
+/** ArrowDown/Up navigate between visible interactive elements in the popover. */
+function handlePopoverKeydown(event: KeyboardEvent) {
+  if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return
+
+  event.preventDefault()
+
+  const focusable = Array.from(
+    popoverRef.value?.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]):not([tabindex="-1"])',
+    ) ?? [],
+  )
+
+  const current = document.activeElement as HTMLElement
+  const idx = focusable.indexOf(current)
+
+  let next: HTMLElement | undefined
+  if (event.key === 'ArrowDown') next = focusable[idx + 1] ?? focusable[0]
+  else if (event.key === 'ArrowUp') next = focusable[idx - 1] ?? focusable[focusable.length - 1]
+  else if (event.key === 'Home') next = focusable[0]
+  else next = focusable[focusable.length - 1]
+
+  next?.focus()
+  next?.scrollIntoView({ block: 'nearest' })
+}
+
+/** Open the popover with ArrowDown when focus is on the trigger. */
+function handleTriggerKeydown(event: KeyboardEvent) {
+  if (event.key === 'ArrowDown') {
+    event.preventDefault()
+    popoverRef.value?.showPopover()
+    // focus is managed by handlePopoverToggle via the toggle event
+  }
+}
 
 // Rebuild groups when props change
 watch(
@@ -526,15 +501,21 @@ watch(
 </script>
 
 <template>
-  <div ref="dropdownRef" class="relative">
+  <!--
+    Uses the native Popover API:
+    - popovertarget wires the button to the popover declaratively
+    - The browser provides aria-expanded, light-dismiss (click outside + Esc),
+      and automatic focus-return to the trigger on close
+    - We add focus-on-open and ArrowDown/Up navigation on top
+  -->
+  <nav :aria-label="$t('package.versions.nav_label')">
     <button
+      ref="triggerRef"
       type="button"
-      aria-haspopup="listbox"
-      :aria-expanded="isOpen"
+      :popovertarget="popoverId"
       class="break-all text-start font-mono text-sm hover:text-accent transition-[color] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg rounded"
-      @click="isOpen = !isOpen"
-      @keydown="handleButtonKeydown"
       data-testid="version-selector-button"
+      @keydown="handleTriggerKeydown"
     >
       <span dir="ltr" class="me-1.5">{{ currentVersion }}</span>
       <span
@@ -550,149 +531,157 @@ watch(
       />
     </button>
 
-    <Transition
-      enter-active-class="transition-[opacity,transform] duration-150 ease-out motion-reduce:transition-none"
-      enter-from-class="opacity-0 scale-95"
-      enter-to-class="opacity-100 scale-100"
-      leave-active-class="transition-[opacity,transform] duration-100 ease-in motion-reduce:transition-none"
-      leave-from-class="opacity-100 scale-100"
-      leave-to-class="opacity-0 scale-95"
+    <ul
+      :id="popoverId"
+      ref="popoverRef"
+      popover="auto"
+      :aria-label="$t('package.versions.selector_label')"
+      class="version-selector-popover min-w-[220px] max-w-[calc(100vw-40px)] bg-bg-subtle/80 backdrop-blur-sm border border-border-subtle rounded-lg shadow-lg shadow-fg-subtle/10 py-1 max-h-[400px] overflow-y-auto overscroll-contain"
+      @beforetoggle="handlePopoverBeforeToggle"
+      @toggle="handlePopoverToggle"
+      @keydown="handlePopoverKeydown"
     >
-      <div
-        v-if="isOpen"
-        ref="listboxRef"
-        role="listbox"
-        tabindex="0"
-        :aria-activedescendant="
-          focusedIndex >= 0 ? `version-${flatItems[focusedIndex]?.version?.version}` : undefined
-        "
-        class="absolute top-full mt-2 min-w-[220px] max-w-[calc(100vw-40px)] bg-bg-subtle/80 backdrop-blur-sm border border-border-subtle rounded-lg shadow-lg shadow-fg-subtle/10 z-50 py-1 max-h-[400px] overflow-y-auto overscroll-contain focus-visible:outline-none"
-        :class="positionClass"
-        @keydown="handleListboxKeydown"
-      >
-        <!-- Version groups -->
-        <div v-for="group in visibleVersionGroups" :key="group.id">
-          <!-- Group header (primary version) -->
-          <div
-            :id="`version-${group.primaryVersion.version}`"
-            role="option"
-            :aria-selected="group.primaryVersion.isCurrent"
-            :data-focused="
-              flatItems[focusedIndex]?.groupId === group.id &&
-              flatItems[focusedIndex]?.type === 'group'
+      <!-- Version groups -->
+      <li v-for="group in visibleVersionGroups" :key="group.id">
+        <div
+          class="flex items-center gap-2 px-3 py-2 text-sm font-mono transition-[color,background-color]"
+          :class="group.primaryVersion.isCurrent ? 'text-fg bg-bg-muted' : 'text-fg-muted'"
+        >
+          <!-- Expand toggle: proper button with label, controls the sub-version list -->
+          <button
+            v-if="canToggleGroup(group)"
+            type="button"
+            class="w-4 h-4 flex items-center justify-center text-fg-subtle hover:text-fg transition-colors shrink-0"
+            :aria-expanded="isGroupOpen(group)"
+            :aria-controls="`${popoverId}-sub-${group.id}`"
+            :aria-label="
+              isGroupOpen(group)
+                ? $t('package.versions.collapse', { tag: group.label })
+                : $t('package.versions.expand', { tag: group.label })
             "
-            class="flex items-center gap-2 px-3 py-2 text-sm font-mono hover:bg-bg-muted transition-[color,background-color] focus-visible:outline-none"
-            :class="[
-              group.primaryVersion.isCurrent ? 'text-fg bg-bg-muted' : 'text-fg-muted',
-              flatItems[focusedIndex]?.groupId === group.id &&
-              flatItems[focusedIndex]?.type === 'group'
-                ? 'bg-bg-muted'
-                : '',
-            ]"
+            @click="toggleGroup(group.id)"
           >
-            <!-- Expand button -->
-            <button
-              v-if="canToggleGroup(group)"
-              type="button"
-              class="w-4 h-4 flex items-center justify-center text-fg-subtle hover:text-fg transition-colors shrink-0"
-              :aria-expanded="isGroupOpen(group)"
-              :aria-label="isGroupOpen(group) ? $t('common.collapse') : $t('common.expand')"
-              @click.stop="toggleGroup(group.id)"
-            >
-              <span
-                v-if="group.isLoading"
-                class="i-svg-spinners:ring-resize w-3 h-3"
-                aria-hidden="true"
-              />
-              <span
-                v-else
-                class="w-3 h-3 transition-transform duration-200 rtl-flip"
-                :class="isGroupOpen(group) ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'"
-                aria-hidden="true"
-              />
-            </button>
-            <span v-else class="w-4 h-4 shrink-0" />
+            <span
+              v-if="group.isLoading"
+              class="i-svg-spinners:ring-resize w-3 h-3"
+              aria-hidden="true"
+            />
+            <span
+              v-else
+              class="w-3 h-3 transition-transform duration-200 rtl-flip"
+              :class="isGroupOpen(group) ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'"
+              aria-hidden="true"
+            />
+          </button>
+          <span v-else class="w-4 h-4 shrink-0" />
 
-            <!-- Version link -->
-            <NuxtLink
-              :to="getVersionUrl(group.primaryVersion.version)"
-              class="flex-1 truncate hover:text-fg transition-colors"
-              @click="isOpen = false"
+          <!-- Version link -->
+          <NuxtLink
+            :id="`${popoverId}-${group.primaryVersion.version}`"
+            :to="getVersionUrl(group.primaryVersion.version)"
+            :aria-current="group.primaryVersion.isCurrent ? 'page' : undefined"
+            class="flex-1 truncate hover:text-fg transition-colors"
+            @click="popoverRef?.hidePopover()"
+          >
+            <span dir="ltr">{{ group.primaryVersion.version }}</span>
+          </NuxtLink>
+
+          <!-- Tags -->
+          <span v-if="group.primaryVersion.tags?.length" class="flex items-center gap-1 shrink-0">
+            <span
+              v-for="tag in group.primaryVersion.tags"
+              :key="tag"
+              class="text-xs px-1.5 py-0.5 rounded font-sans font-medium"
+              :class="tag === 'latest' ? 'badge-accent' : 'badge-subtle'"
             >
-              <span dir="ltr">
-                {{ group.primaryVersion.version }}
+              {{ tag }}
+            </span>
+          </span>
+        </div>
+
+        <!-- Sub-versions, controlled by the expand button above -->
+        <ol
+          v-if="group.isExpanded && group.versions.length > 1"
+          :id="`${popoverId}-sub-${group.id}`"
+          reversed
+          class="ms-6 border-is border-border"
+        >
+          <li v-for="v in group.versions.slice(1)" :key="v.version">
+            <NuxtLink
+              :id="`${popoverId}-${v.version}`"
+              :to="getVersionUrl(v.version)"
+              :aria-current="v.isCurrent ? 'page' : undefined"
+              class="flex items-center justify-between gap-2 ps-4 pe-3 py-1.5 text-xs font-mono hover:bg-bg-muted transition-[color,background-color] focus-visible:outline-none"
+              :class="v.isCurrent ? 'text-fg bg-bg-muted' : 'text-fg-subtle'"
+              @click="popoverRef?.hidePopover()"
+            >
+              <span class="truncate" dir="ltr">{{ v.version }}</span>
+              <span v-if="v.tags?.length" class="flex items-center gap-1 shrink-0">
+                <span
+                  v-for="tag in v.tags"
+                  :key="tag"
+                  class="text-4xs px-1 py-0.5 rounded font-sans font-medium"
+                  :class="tag === 'latest' ? 'badge-accent' : 'badge-subtle'"
+                >
+                  {{ tag }}
+                </span>
               </span>
             </NuxtLink>
+          </li>
+        </ol>
+      </li>
 
-            <!-- Tags -->
-            <span v-if="group.primaryVersion.tags?.length" class="flex items-center gap-1 shrink-0">
-              <span
-                v-for="tag in group.primaryVersion.tags"
-                :key="tag"
-                class="text-xs px-1.5 py-0.5 rounded font-sans font-medium"
-                :class="tag === 'latest' ? 'badge-accent' : 'badge-subtle'"
-              >
-                {{ tag }}
-              </span>
-            </span>
-          </div>
-
-          <!-- Expanded versions -->
-          <div
-            v-if="group.isExpanded && group.versions.length > 1"
-            class="ms-6 border-is border-border"
-          >
-            <template v-for="v in group.versions.slice(1)" :key="v.version">
-              <NuxtLink
-                :id="`version-${v.version}`"
-                :to="getVersionUrl(v.version)"
-                role="option"
-                :aria-selected="v.isCurrent"
-                :data-focused="
-                  flatItems[focusedIndex]?.groupId === group.id &&
-                  flatItems[focusedIndex]?.type === 'version' &&
-                  flatItems[focusedIndex]?.version?.version === v.version
-                "
-                class="flex items-center justify-between gap-2 ps-4 pe-3 py-1.5 text-xs font-mono hover:bg-bg-muted transition-[color,background-color] focus-visible:outline-none"
-                :class="[
-                  v.isCurrent ? 'text-fg bg-bg-muted' : 'text-fg-subtle',
-                  flatItems[focusedIndex]?.version?.version === v.version ? 'bg-bg-muted' : '',
-                ]"
-                @click="isOpen = false"
-              >
-                <span class="truncate" dir="ltr">{{ v.version }}</span>
-                <span v-if="v.tags?.length" class="flex items-center gap-1 shrink-0">
-                  <span
-                    v-for="tag in v.tags"
-                    :key="tag"
-                    class="text-4xs px-1 py-0.5 rounded font-sans font-medium"
-                    :class="tag === 'latest' ? 'badge-accent' : 'badge-subtle'"
-                  >
-                    {{ tag }}
-                  </span>
-                </span>
-              </NuxtLink>
-            </template>
-          </div>
-        </div>
-
-        <!-- Link to package page for full version list -->
-        <div class="border-t border-border mt-1 pt-1 px-3 py-2">
-          <NuxtLink
-            :to="packageVersionsRoute(packageName)"
-            class="text-xs text-fg-subtle hover:text-fg transition-[color] focus-visible:outline-none focus-visible:text-fg"
-            @click="isOpen = false"
-          >
-            {{
-              $t(
-                'package.versions.view_all',
-                { count: Object.keys(versions).length },
-                Object.keys(versions).length,
-              )
-            }}
-          </NuxtLink>
-        </div>
-      </div>
-    </Transition>
-  </div>
+      <!-- Link to package page for full version list -->
+      <li class="border-t border-border mt-1 pt-1 px-3 py-2">
+        <NuxtLink
+          :to="packageVersionsRoute(packageName)"
+          class="text-xs text-fg-subtle hover:text-fg transition-[color] focus-visible:outline-none focus-visible:text-fg"
+          @click="popoverRef?.hidePopover()"
+        >
+          {{
+            $t(
+              'package.versions.view_all',
+              { count: Object.keys(versions).length },
+              Object.keys(versions).length,
+            )
+          }}
+        </NuxtLink>
+      </li>
+    </ul>
+  </nav>
 </template>
+
+<style scoped>
+/*
+  Popover positioning: reset the UA default (centered in viewport) and animate.
+  The JS positionPopover() sets top/left at open-time.
+  @starting-style provides the "from" frame for the entry transition.
+*/
+.version-selector-popover {
+  position: fixed;
+  margin: 0;
+  inset: auto;
+
+  opacity: 0;
+  transform: scale(0.95);
+  transform-origin: top left;
+
+  transition:
+    opacity 0.15s ease-out,
+    transform 0.15s ease-out,
+    display 0.15s allow-discrete,
+    overlay 0.15s allow-discrete;
+}
+
+.version-selector-popover:popover-open {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@starting-style {
+  .version-selector-popover:popover-open {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+</style>

@@ -439,6 +439,18 @@ function getFocusableElements(): HTMLElement[] {
 }
 
 /**
+ * Returns true when focus is inside a text-entry context where j/k should
+ * not be intercepted (input, textarea, or contenteditable).
+ */
+function isTypingContext(): boolean {
+  const el = document.activeElement
+  if (!el) return false
+  const tag = el.tagName
+  if (tag === 'INPUT' || tag === 'TEXTAREA') return true
+  return (el as HTMLElement).isContentEditable
+}
+
+/**
  * Focus an element and scroll it into view
  */
 function focusElement(el: HTMLElement) {
@@ -477,22 +489,18 @@ watch(displayResults, newResults => {
   }
 })
 
-/**
- * Focus the header search input
- */
-function focusSearchInput() {
-  const searchInput = document.querySelector<HTMLInputElement>(
-    'input[type="search"], input[name="q"]',
-  )
-  searchInput?.focus()
-}
-
 const keyboardShortcuts = useKeyboardShortcuts()
 
 function handleResultsKeydown(e: KeyboardEvent) {
   if (!keyboardShortcuts.value) {
     return
   }
+
+  // Don't intercept j/k when the user is typing in an input, textarea, or contenteditable
+  if ((e.key === 'j' || e.key === 'k') && isTypingContext()) {
+    return
+  }
+
   // If the active element is an input, navigate to exact match or wait for results
   if (e.key === 'Enter' && document.activeElement?.tagName === 'INPUT') {
     // Get value directly from input (not from route query, which may be debounced)
@@ -521,7 +529,7 @@ function handleResultsKeydown(e: KeyboardEvent) {
 
   const currentIndex = elements.findIndex(el => el === document.activeElement)
 
-  if (e.key === 'ArrowDown') {
+  if (e.key === 'j') {
     e.preventDefault()
     const nextIndex = currentIndex < 0 ? 0 : Math.min(currentIndex + 1, elements.length - 1)
     const el = elements[nextIndex]
@@ -529,13 +537,9 @@ function handleResultsKeydown(e: KeyboardEvent) {
     return
   }
 
-  if (e.key === 'ArrowUp') {
+  if (e.key === 'k') {
+    if (currentIndex <= 0) return
     e.preventDefault()
-    // At first result or no result focused: return focus to search input
-    if (currentIndex <= 0) {
-      focusSearchInput()
-      return
-    }
     const nextIndex = currentIndex - 1
     const el = elements[nextIndex]
     if (el) focusElement(el)
@@ -555,7 +559,7 @@ function handleResultsKeydown(e: KeyboardEvent) {
   }
 }
 
-onKeyDown(['ArrowDown', 'ArrowUp', 'Enter'], handleResultsKeydown)
+onKeyDown(['j', 'k', 'Enter'], handleResultsKeydown)
 
 useSeoMeta({
   title: () =>

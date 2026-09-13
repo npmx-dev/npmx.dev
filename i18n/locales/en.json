@@ -594,6 +594,8 @@
     },
     "versions": {
       "title": "Versions",
+      "selector_label": "Select version",
+      "nav_label": "Package versions",
       "collapse": "Collapse {tag}",
       "expand": "Expand {tag}",
       "collapse_other": "Collapse other versions",
