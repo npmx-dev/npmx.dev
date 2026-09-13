@@ -24,6 +24,7 @@
     "brand": "brand",
     "resources": "Resources",
     "features": "Features",
+    "tools": "tools",
     "other": "Other",
     "sponsored_by": "Sponsored by {list}"
   },
@@ -40,6 +41,7 @@
     "show_kbd_hints": "Highlight keyboard hints",
     "settings": "Open settings",
     "compare": "Open compare",
+    "deps_stats": "Open dependency stats tool",
     "compare_from_package": "Open compare (prefilled with current package)",
     "changelog": "Open changelog",
     "navigate_results": "Navigate results",
@@ -207,12 +209,53 @@
     "popular_packages": "Popular packages",
     "settings": "settings",
     "compare": "compare",
+    "tools": "tools",
     "back": "back",
     "menu": "Menu",
     "mobile_menu": "Navigation menu",
     "open_menu": "Open menu",
     "links": "Links",
     "tap_to_search": "Tap to search"
+  },
+  "tools": {
+    "title": "tools",
+    "tagline": "utilities for exploring packages and project dependencies",
+    "meta_title": "Tools - npmx",
+    "meta_description": "Browse npmx tools for exploring packages and project dependencies",
+    "deps_stats": {
+      "name": "deps stats",
+      "description": "Upload a package.json and inspect stats for each dependency"
+    }
+  },
+  "deps_stats": {
+    "title": "deps stats",
+    "meta_title": "Deps stats - npmx",
+    "meta_description": "Upload a package.json and explore stats for each dependency",
+    "upload": {
+      "section": "Package.json",
+      "label": "Upload package.json",
+      "hint": "Drop a package.json here, or choose a file. Only the dependency fields are read — nothing is uploaded to a server",
+      "clear": "Clear",
+      "invalid_package_json": "Invalid package.json"
+    },
+    "dependencies": {
+      "title": "Dependencies",
+      "count": "No deps | 1 dep | {count} deps",
+      "filter_label": "Filter dependencies",
+      "filter_placeholder": "Filter dependencies...",
+      "empty": "No dependencies found in this package.json",
+      "no_matches": "No dependencies match your filter",
+      "non_registry": "Not an npm registry package"
+    },
+    "stats": {
+      "empty_title": "Select a dependency",
+      "empty_description": "Pick a package from the list to see downloads, size, vulnerabilities, trends, and more",
+      "non_registry_title": "Local or remote dependency",
+      "non_registry_description": "This entry points to a file, workspace, git, or URL dependency, so registry stats are unavailable",
+      "declared_range": "Declared",
+      "resolved_version": "Latest",
+      "open_full_stats": "Open full stats"
+    }
   },
   "blog": {
     "title": "Blog",

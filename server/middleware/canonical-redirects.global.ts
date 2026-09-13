@@ -31,6 +31,7 @@ const pages = [
   '/privacy',
   '/search',
   '/settings',
+  '/tools',
   '/translation-status',
   '/recharging',
 ]
