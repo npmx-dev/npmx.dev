@@ -294,9 +294,9 @@ useShortcuts({
                 variant="button-secondary"
                 to="https://docs.npmjs.com/staged-publishing/"
                 :aria-label="$t('badges.staged_publish.title')"
-                class="py-1.25 px-2 me-2"
+                class="!py-1.25 !px-2 me-2"
               >
-                <span class="i-lucide:shield-user" aria-hidden="true" />
+                <span class="i-lucide:shield-user size-[1em]" aria-hidden="true" />
               </LinkBase>
             </TooltipApp>
           </template>
