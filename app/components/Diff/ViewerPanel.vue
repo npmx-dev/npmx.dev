@@ -93,6 +93,8 @@ function getCodeUrl(version: string): string {
   return `/package-code/${props.packageName}/v/${version}/${props.file.path}`
 }
 
+const { codeContainerFull, toggleCodeContainer } = useCodeContainer()
+
 const { announce } = useCommandPalette()
 
 useCommandPaletteContextCommands(
@@ -356,6 +358,17 @@ useCommandPaletteContextCommands(
             </div>
           </Transition>
         </div>
+
+        <!-- Toggle container width -->
+        <TooltipApp :text="$t('code.toggle_container')" position="top">
+          <ButtonBase
+            class="px-3 max-xl:hidden"
+            classicon="i-lucide:unfold-horizontal [.container-full_&]:i-lucide:fold-horizontal"
+            :aria-label="$t('code.toggle_container')"
+            :aria-pressed="codeContainerFull"
+            @click="toggleCodeContainer()"
+          />
+        </TooltipApp>
 
         <!-- View in code browser -->
         <NuxtLink
