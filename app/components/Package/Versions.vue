@@ -10,6 +10,7 @@ const props = defineProps<{
   distTags: Record<string, string>
   time: Record<string, string>
   selectedVersion?: string
+  previewReleasesUrl?: string | null
 }>()
 
 const route = useRoute()
@@ -1063,6 +1064,20 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
             {{ $t('package.versions.all_covered') }}
           </div>
         </div>
+      </div>
+
+      <div
+        v-if="previewReleasesUrl"
+        class="mt-2 border-t border-border/70 pt-2 px-1 text-xs text-fg-muted"
+      >
+        <LinkBase
+          :to="previewReleasesUrl"
+          class="inline-flex items-center gap-1 hover:text-fg transition-colors"
+          classicon="i-lucide:external-link"
+          data-testid="preview-releases-link"
+        >
+          Preview releases
+        </LinkBase>
       </div>
     </div>
   </CollapsibleSection>

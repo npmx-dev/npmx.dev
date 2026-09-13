@@ -119,6 +119,42 @@ describe('PackageVersions', () => {
       expect(versionLinks[0]?.text()).toBe('1.0.0')
     })
 
+    it('renders preview releases link when URL is provided', async () => {
+      const previewReleasesUrl = 'https://pkg.pr.new/~/vitejs/vite'
+
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'vite',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+          previewReleasesUrl,
+        },
+      })
+
+      const link = component.find('[data-testid="preview-releases-link"]')
+      expect(link.exists()).toBe(true)
+      expect(link.attributes('href')).toBe(previewReleasesUrl)
+      expect(link.text()).toContain('Preview releases')
+    })
+
+    it('does not render preview releases link when URL is missing', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'vite',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      expect(component.find('[data-testid="preview-releases-link"]').exists()).toBe(false)
+    })
+
     it('view-all-versions link uses packageVersionsRoute for unscoped packages', async () => {
       const component = await mountSuspended(PackageVersions, {
         props: {
