@@ -68,7 +68,7 @@ describe('package code page', () => {
 
     const rawFileLink = component.findComponent({ name: 'LinkBase' })
     expect(rawFileLink.props('to')).toBe(
-      'https://cdn.jsdelivr.net/npm/@types/vscode@1.118.0/index.d.ts',
+      'https://app.unpkg.com/@types/vscode@1.118.0/files/index.d.ts',
     )
   })
 })

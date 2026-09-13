@@ -22,15 +22,7 @@ export default defineCachedEventHandler(
         version: rawVersion,
       })
 
-      const jsDelivrData = await fetchFileTree(packageName, version)
-      const tree = convertToFileTree(jsDelivrData.files)
-
-      return {
-        package: packageName,
-        version,
-        default: jsDelivrData.default ?? undefined,
-        tree,
-      } satisfies PackageFileTreeResponse
+      return await getPackageFileTree(packageName, version)
     } catch (error: unknown) {
       handleApiError(error, {
         statusCode: 502,

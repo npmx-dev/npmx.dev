@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { RouteLocationRaw } from 'vue-router'
 import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
+import { getPackageFileViewerUrl } from '#shared/utils/package-files'
 
 // Maximum file size we'll try to load (500KB) - must match server
 const MAX_FILE_SIZE = 500 * 1024
@@ -51,6 +52,9 @@ const packageName = computed(() => parsedRoute.value.packageName)
 const version = computed(() => parsedRoute.value.version)
 const filePathOrig = computed(() => parsedRoute.value.filePath)
 const filePath = computed(() => parsedRoute.value.filePath?.replace(/\/$/, ''))
+const rawFileUrl = computed(() =>
+  filePath.value ? getPackageFileViewerUrl(packageName.value, version.value, filePath.value) : '',
+)
 
 // Navigation helper - build URL for a path
 function getCodeUrl(args: {
@@ -367,7 +371,7 @@ useCommandPaletteContextCommands(
         label: $t('code.view_raw'),
         keywords: [packageName.value, filePath.value],
         iconClass: 'i-lucide:file-output',
-        href: `https://cdn.jsdelivr.net/npm/${packageName.value}@${version.value}/${filePath.value}`,
+        href: rawFileUrl.value,
       })
     }
 
@@ -552,10 +556,7 @@ onPrehydrate(el => {
               })
             }}
           </p>
-          <LinkBase
-            variant="button-secondary"
-            :to="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
-          >
+          <LinkBase variant="button-secondary" :to="rawFileUrl">
             {{ $t('code.view_raw') }}
           </LinkBase>
         </div>
@@ -569,10 +570,7 @@ onPrehydrate(el => {
               $t('code.file_size_warning', { size: bytesFormatter.format(currentNode?.size ?? 0) })
             }}
           </p>
-          <LinkBase
-            variant="button-secondary"
-            :to="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
-          >
+          <LinkBase variant="button-secondary" :to="rawFileUrl">
             {{ $t('code.view_raw') }}
           </LinkBase>
         </div>
@@ -582,10 +580,7 @@ onPrehydrate(el => {
           <div class="i-lucide:circle-alert w-8 h-8 mx-auto text-fg-subtle mb-4" />
           <p class="text-fg-muted mb-2">{{ $t('code.failed_to_load') }}</p>
           <p class="text-fg-subtle text-sm mb-4">{{ $t('code.unavailable_hint') }}</p>
-          <LinkBase
-            variant="button-secondary"
-            :to="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
-          >
+          <LinkBase variant="button-secondary" :to="rawFileUrl">
             {{ $t('code.view_raw') }}
           </LinkBase>
         </div>
