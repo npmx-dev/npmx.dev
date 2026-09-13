@@ -681,25 +681,12 @@
     },
     "dependencies": {
       "title": "의존성({count}) | 의존성({count})",
-      "list_label": "패키지 의존성",
-      "show_all": "의존성 {count}개 보기 | 전체 의존성 {count}개 보기",
+      "insights": {},
       "optional": "선택 사항",
-      "view_vulnerabilities": "취약점 보기",
       "outdated_major": "메이저 버전 {count}개 뒤처짐(최신: {latest}) | 메이저 버전 {count}개 뒤처짐(최신: {latest})",
       "outdated_minor": "마이너 버전 {count}개 뒤처짐(최신: {latest}) | 마이너 버전 {count}개 뒤처짐(최신: {latest})",
       "outdated_patch": "패치 업데이트 사용 가능(최신: {latest})",
-      "has_replacement": "이 의존성에는 권장 대체 항목이 있습니다",
-      "vulnerabilities_count": "취약점 {count}개 | 취약점 {count}개"
-    },
-    "peer_dependencies": {
-      "title": "피어 의존성({count}) | 피어 의존성({count})",
-      "list_label": "패키지 피어 의존성",
-      "show_all": "피어 의존성 {count}개 보기 | 전체 피어 의존성 {count}개 보기"
-    },
-    "optional_dependencies": {
-      "title": "선택 의존성({count}) | 선택 의존성({count})",
-      "list_label": "패키지 선택 의존성",
-      "show_all": "선택 의존성 {count}개 보기 | 전체 선택 의존성 {count}개 보기"
+      "has_replacement": "이 의존성에는 권장 대체 항목이 있습니다"
     },
     "maintainers": {
       "title": "메인테이너",

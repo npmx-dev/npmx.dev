@@ -69,6 +69,7 @@ export default defineCachedEventHandler(
       }
 
       const license = normalizeLicense(packument.license)
+      const deprecated = packument.versions?.[latestVersion]?.deprecated
 
       return {
         name: packument.name,
@@ -86,6 +87,7 @@ export default defineCachedEventHandler(
         author,
         maintainers: packument.maintainers,
         weeklyDownloads: downloads?.downloads,
+        deprecated,
       }
     } catch (error: unknown) {
       handleApiError(error, {

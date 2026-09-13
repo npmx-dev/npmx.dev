@@ -1,8 +1,27 @@
-import { compare, normalizeRange, satisfies, tryParse } from 'verkit'
+import {
+  compare,
+  findMinimumForRange,
+  isValidRange,
+  normalize,
+  normalizeRange,
+  satisfies,
+  tryParse,
+} from 'verkit'
 
 /**
  * Utilities for handling npm package versions and dist-tags
  */
+
+/**
+ * Resolves a semver range string to its minimum normalized version string.
+ * Fallbacks to original range if minimum version cannot be resolved.
+ */
+export function resolveMinVersion(range: string | null | undefined): string | null {
+  if (!range) return null
+  if (!isValidRange(range)) return range
+  const min = findMinimumForRange(range)
+  return (min && normalize(min)) || range
+}
 
 /** Parsed semver version components */
 export interface ParsedVersion {

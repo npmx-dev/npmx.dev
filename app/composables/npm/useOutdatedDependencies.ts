@@ -1,28 +1,27 @@
 import type { PackageVersionsInfo } from 'fast-npm-meta'
 import { getVersionsBatch } from 'fast-npm-meta'
-import { difference, findMaxSatisfying, getMajor, getMinor, isGreater, isStable } from 'verkit'
+import {
+  difference,
+  findMaxSatisfying,
+  getMajor,
+  getMinor,
+  isGreater,
+  isStable,
+  isValidRange,
+} from 'verkit'
 import { parseDependencyVersion } from '#shared/utils/npm'
 import {
   type OutdatedDependencyInfo,
   constraintIncludesPrerelease,
-} from '~/utils/npm/outdated-dependencies'
+} from '~/utils/npm/problematic-dependencies'
+import type { DependencySpec } from '~/utils/npm/package-dependency-sections'
 
-const BATCH_SIZE = 50
-
-function resolveOutdated(
+export function resolveOutdated(
   versions: string[],
   latestTag: string,
   constraint: string,
 ): OutdatedDependencyInfo | null {
-  if (constraint === 'latest') {
-    return {
-      resolved: latestTag,
-      latest: latestTag,
-      majorsBehind: 0,
-      minorsBehind: 0,
-      diffType: null,
-    }
-  }
+  if (constraint === 'latest' || !isValidRange(constraint)) return null
 
   let filteredVersions = versions
   if (!constraintIncludesPrerelease(constraint)) {
@@ -30,14 +29,7 @@ function resolveOutdated(
   }
 
   const resolved = findMaxSatisfying(filteredVersions, constraint)
-  if (!resolved) return null
-
-  if (resolved === latestTag) return null
-
-  // Resolved is newer than latest (e.g. ^2.0.0-rc when latest is 1.x)
-  if (isGreater(resolved, latestTag)) {
-    return null
-  }
+  if (!resolved || resolved === latestTag || isGreater(resolved, latestTag)) return null
 
   const diffType = difference(resolved, latestTag)
   const majorsBehind = getMajor(latestTag) - getMajor(resolved)
@@ -52,78 +44,62 @@ function resolveOutdated(
   }
 }
 
-/**
- * Check for outdated dependencies via fast-npm-meta batch version lookups.
- * Returns a reactive map of dependency name to outdated info.
- */
-export function useOutdatedDependencies(
-  dependencies: MaybeRefOrGetter<Record<string, string> | undefined>,
-) {
-  const outdated = shallowRef<Record<string, OutdatedDependencyInfo>>({})
+async function fetchOutdatedMap(
+  deps: Record<string, DependencySpec>,
+): Promise<Record<string, OutdatedDependencyInfo>> {
+  const semverEntries = Object.entries(deps).filter(([, spec]) => {
+    const parsed = parseDependencyVersion(spec.version)
+    return parsed.range !== null
+  })
+  if (semverEntries.length === 0) return {}
 
-  async function fetchOutdatedInfo(deps: Record<string, string> | undefined) {
-    if (!deps || Object.keys(deps).length === 0) {
-      outdated.value = {}
-      return
-    }
+  const names = Array.from(new Set(semverEntries.map(([, spec]) => spec.name)))
+  const dataList = await getVersionsBatch(names, { throw: false })
 
-    // Resolve npm: aliases and filter out non-semver constraints
-    const resolvedEntries = Object.entries(deps)
-      .map(([key, value]) => {
-        const parsed = parseDependencyVersion(value)
-        return { key, realName: parsed.name ?? key, range: parsed.range }
-      })
-      .filter((e): e is typeof e & { range: string } => e.range !== null)
-
-    if (resolvedEntries.length === 0) {
-      outdated.value = {}
-      return
-    }
-
-    const packageNames = [...new Set(resolvedEntries.map(e => e.realName))]
-
-    const chunks: string[][] = []
-    for (let i = 0; i < packageNames.length; i += BATCH_SIZE) {
-      chunks.push(packageNames.slice(i, i + BATCH_SIZE))
-    }
-    const batchResults = await Promise.all(
-      chunks.map(chunk => getVersionsBatch(chunk, { throw: false })),
-    )
-    const allVersionData = batchResults.flat()
-
-    // Build a lookup map from package name to version data
-    const versionMap = new Map<string, PackageVersionsInfo>()
-    for (const data of allVersionData) {
-      if ('error' in data) continue
-      versionMap.set(data.name, data)
-    }
-
-    const results: Record<string, OutdatedDependencyInfo> = {}
-    for (const { key, realName, range } of resolvedEntries) {
-      const data = versionMap.get(realName)
-      if (!data) continue
-
-      const latestTag = data.distTags.latest
-      if (!latestTag) continue
-
-      const info = resolveOutdated(data.versions, latestTag, range)
-      if (info) {
-        results[key] = info
-      }
-    }
-
-    outdated.value = results
+  const versionMap = new Map<string, PackageVersionsInfo>()
+  for (const data of dataList) {
+    if (data && !('error' in data)) versionMap.set(data.name, data)
   }
 
-  watch(
-    () => toValue(dependencies),
-    deps => {
-      fetchOutdatedInfo(deps).catch(() => {
-        // Network failure or fast-npm-meta outage — leave stale results in place
-      })
-    },
-    { immediate: true },
-  )
+  const results: Record<string, OutdatedDependencyInfo> = {}
+  for (const [key, spec] of semverEntries) {
+    const data = versionMap.get(spec.name)
+    if (!data?.distTags?.latest) continue
+    const parsed = parseDependencyVersion(spec.version)
+    const constraint = parsed.range ?? spec.version
+    const info = resolveOutdated(data.versions, data.distTags.latest, constraint)
+    if (info) results[key] = info
+  }
 
-  return outdated
+  return results
+}
+
+/**
+ * Check for outdated dependencies via fast-npm-meta batch version lookups.
+ * Returns an AsyncData result.
+ */
+export function useOutdatedDependencies(
+  dependencies: MaybeRefOrGetter<Record<string, DependencySpec> | undefined>,
+) {
+  const key = computed(() => {
+    const deps = toValue(dependencies)
+    if (!deps) return 'outdated:none'
+    const sorted = Object.keys(deps).sort()
+    return sorted.length === 0
+      ? 'outdated:none'
+      : `outdated:${sorted.map(k => `${k}@${deps[k]!.version}`).join(',')}`
+  })
+
+  return useAsyncData<Record<string, OutdatedDependencyInfo>>(
+    key,
+    async () => {
+      const deps = toValue(dependencies)
+      if (!deps || Object.keys(deps).length === 0) return {}
+      return await fetchOutdatedMap(deps)
+    },
+    {
+      watch: [key],
+      default: () => ({}),
+    },
+  )
 }

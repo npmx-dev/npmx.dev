@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { PackageDependencyInsights } from '~/composables/usePackageDependencyInsights'
 import { WindowVirtualizer } from 'virtua/vue'
 
 /** Number of items to render statically during SSR */
@@ -7,6 +8,8 @@ const SSR_COUNT = 20
 const props = defineProps<{
   /** List of search results to display */
   results: NpmSearchResult[]
+  /** Optional pre-computed insights to avoid duplicate fetching/processing */
+  insights?: PackageDependencyInsights
   /** Filters to apply to the results */
   filters?: StructuredFilters
   /** Heading level for package names */
@@ -138,6 +141,13 @@ watch(
   },
 )
 
+/**
+ * Preserves the optional pre-computed `props.insights` override.
+ * Child components (`PackageCard` and `PackageTableRow`) render security and dependency insights
+ * when `props.insights` is passed from parent components (e.g. dependency tree views).
+ */
+const insights = computed(() => props.insights)
+
 function scrollToIndex(index: number, smooth = true) {
   listRef.value?.scrollToIndex(index, { align: 'center', smooth })
 }
@@ -157,6 +167,7 @@ defineExpose({
         :columns="columns"
         v-model:sort-option="sortOption"
         :is-loading="isLoading"
+        :insights="insights"
         @click-keyword="emit('clickKeyword', $event)"
       />
     </template>
@@ -193,6 +204,7 @@ defineExpose({
                     : {}
                 "
                 :filters="filters"
+                :insights="insights"
                 @click-keyword="emit('clickKeyword', $event)"
               />
             </div>
@@ -211,6 +223,7 @@ defineExpose({
                   :index="index"
                   :search-query="searchQuery"
                   :filters="filters"
+                  :insights="insights"
                   @click-keyword="emit('clickKeyword', $event)"
                 />
               </div>
@@ -252,6 +265,7 @@ defineExpose({
                 : {}
             "
             :filters="filters"
+            :insights="insights"
             @click-keyword="emit('clickKeyword', $event)"
           />
         </li>

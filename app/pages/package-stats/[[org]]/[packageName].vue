@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import {
+  getPackageDependencySections,
+  getNormalizedDependenciesFromPackageVersion,
+} from '~/utils/npm/package-dependency-sections'
+
 definePageMeta({
   name: 'stats',
   path: '/package-stats/:org?/:packageName/v/:version',
@@ -14,7 +19,22 @@ const packageName = computed(() =>
 )
 const version = computed(() => route.params.version)
 
-const { data: pkg } = usePackage(packageName, version)
+const { data: resolvedVersion } = await useResolvedVersion(packageName, version)
+
+const { data: pkg, status: pkgStatus } = await usePackage(
+  packageName,
+  () => resolvedVersion.value ?? version.value,
+)
+
+const displayVersion = computed(() => pkg.value?.requestedVersion ?? null)
+const sections = computed(() => getPackageDependencySections(displayVersion.value))
+
+const allDependencies = computed(() => {
+  return getNormalizedDependenciesFromPackageVersion(pkg.value?.requestedVersion)
+})
+
+const insights = usePackageDependencyInsights(packageName, resolvedVersion, allDependencies)
+
 const { versions: commandPaletteVersions, ensureLoaded: ensureCommandPaletteVersionsLoaded } =
   useCommandPalettePackageVersions(packageName)
 
@@ -99,8 +119,10 @@ useSeoMeta({
       page="stats"
     />
 
-    <section class="container w-full py-8">
-      <h2 class="text-fg-muted mb-2 uppercase">{{ $t('package.stats.main_information') }}</h2>
+    <section class="container w-full py-4">
+      <h2 class="text-fg-muted mb-2 uppercase text-xs font-semibold tracking-wider">
+        {{ $t('package.stats.main_information') }}
+      </h2>
       <dl
         class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-y-2 gap-x-4 border-y-border border-y py-2"
       >
@@ -121,7 +143,16 @@ useSeoMeta({
           </dd>
         </div>
       </dl>
+
+      <DependenciesInsightsSummary
+        :insights="insights"
+        :sections="sections"
+        :show-skeleton="pkgStatus === 'pending' || pkgStatus === 'idle'"
+        :package-name="packageName"
+        :interactive="false"
+      />
     </section>
+
     <div class="container w-full flex max-lg:flex-col gap-8 pb-16">
       <div class="flex-1">
         <section id="trends">

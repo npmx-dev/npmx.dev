@@ -9,11 +9,14 @@ import type {
 } from '#shared/types/preferences'
 import { buildSortOption, parseSortOption, toggleDirection } from '#shared/types/preferences'
 
+import type { PackageDependencyInsights } from '~/composables/usePackageDependencyInsights'
+
 const props = defineProps<{
   results: NpmSearchResult[]
   columns: ColumnConfig[]
   filters?: StructuredFilters
   isLoading?: boolean
+  insights?: PackageDependencyInsights
 }>()
 
 const { t } = useI18n()
@@ -101,7 +104,7 @@ const { selectable } = usePackageSelectionContext()
 </script>
 
 <template>
-  <div class="overflow-x-auto">
+  <div class="overflow-x-auto" tabindex="0">
     <table class="w-full text-start">
       <thead class="border-b border-border">
         <tr>
@@ -303,6 +306,7 @@ const { selectable } = usePackageSelectionContext()
             :columns="columns"
             :index="index"
             :filters="filters"
+            :insights="insights"
             @click-keyword="emit('clickKeyword', $event)"
           />
         </template>

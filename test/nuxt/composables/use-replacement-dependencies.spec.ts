@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
 import { mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
+import { defineEventHandler } from 'h3'
 import type { ModuleReplacement } from 'module-replacements'
+import { normalizeDependencies } from '~/utils/npm/package-dependency-sections'
 
 const SIMPLE_REPLACEMENT: ModuleReplacement = {
   id: 'snippet::is-even',
@@ -45,10 +47,10 @@ async function mountWithDeps(deps: Record<string, string> | undefined) {
 
   const WrapperComponent = defineComponent({
     setup() {
-      const replacements = useReplacementDependencies(() => deps)
+      const replacements = useReplacementDependencies(() => normalizeDependencies(deps))
 
       watchEffect(() => {
-        captured.value = { ...replacements.value }
+        captured.value = { ...replacements.data.value }
       })
 
       return () => h('div')
@@ -62,8 +64,15 @@ async function mountWithDeps(deps: Record<string, string> | undefined) {
 
 describe('useReplacementDependencies', () => {
   it('returns replacements for dependencies that have them', async () => {
-    registerEndpoint('/api/replacements/is-even', () => ({ replacement: SIMPLE_REPLACEMENT }))
-    registerEndpoint('/api/replacements/picoquery', () => null)
+    const handler = defineEventHandler(event => {
+      const url = event.node.req.url ?? ''
+      if (url.includes('is-even')) {
+        return { 'is-even': { replacement: SIMPLE_REPLACEMENT } }
+      }
+      return {}
+    })
+    registerEndpoint('/api/replacements/is-even,picoquery', handler)
+    registerEndpoint('/api/replacements/is-even%2Cpicoquery', handler)
 
     const replacements = await mountWithDeps({
       'is-even': '^1.0.0',
@@ -95,11 +104,12 @@ describe('useReplacementDependencies', () => {
   })
 
   it('handles multiple dependencies with replacements', async () => {
-    registerEndpoint('/api/replacements/is-even', () => ({ replacement: SIMPLE_REPLACEMENT }))
-    registerEndpoint('/api/replacements/array-includes', () => ({
-      replacement: NATIVE_REPLACEMENT,
+    const handler = defineEventHandler(() => ({
+      'is-even': { replacement: SIMPLE_REPLACEMENT },
+      'array-includes': { replacement: NATIVE_REPLACEMENT },
     }))
-    registerEndpoint('/api/replacements/picoquery', () => null)
+    registerEndpoint('/api/replacements/is-even,array-includes,picoquery', handler)
+    registerEndpoint('/api/replacements/is-even%2Carray-includes%2Cpicoquery', handler)
 
     const replacements = await mountWithDeps({
       'is-even': '^1.0.0',
@@ -121,10 +131,11 @@ describe('useReplacementDependencies', () => {
   })
 
   it('handles fetch errors gracefully', async () => {
-    registerEndpoint('/api/replacements/failing-package', () => {
+    const errorHandler = defineEventHandler(() => {
       throw new Error('Network error')
     })
-    registerEndpoint('/api/replacements/is-even', () => ({ replacement: SIMPLE_REPLACEMENT }))
+    registerEndpoint('/api/replacements/failing-package,is-even', errorHandler)
+    registerEndpoint('/api/replacements/failing-package%2Cis-even', errorHandler)
 
     const replacements = await mountWithDeps({
       'failing-package': '^1.0.0',
@@ -132,10 +143,9 @@ describe('useReplacementDependencies', () => {
     })
 
     await vi.waitFor(() => {
-      expect(replacements.value['is-even']).toBeDefined()
+      expect(replacements.value).toEqual({})
     })
 
     expect(replacements.value['failing-package']).toBeUndefined()
-    expect(replacements.value['is-even']?.type).toBe('simple')
   })
 })

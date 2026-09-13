@@ -370,16 +370,9 @@ const sizeTooltip = computed(() => {
   return chunks.filter(Boolean).join('\n')
 })
 
-const hasDependencies = computed(() => {
-  if (!displayVersion.value) return false
-  const deps = displayVersion.value.dependencies
-  const peerDeps = displayVersion.value.peerDependencies
-  const optionalDeps = displayVersion.value.optionalDependencies
-  return (
-    (deps && Object.keys(deps).length > 0) ||
-    (peerDeps && Object.keys(peerDeps).length > 0) ||
-    (optionalDeps && Object.keys(optionalDeps).length > 0)
-  )
+const dependenciesTabLink = computed(() => {
+  if (!pkg.value || !resolvedVersion.value) return null
+  return dependenciesRoute(pkg.value.name, resolvedVersion.value)
 })
 
 // Vulnerability count for the stats banner
@@ -601,7 +594,16 @@ const showSkeleton = shallowRef(false)
               <dd class="font-mono text-sm text-fg flex items-center justify-start gap-2">
                 <span class="flex items-center gap-1">
                   <!-- Direct deps (muted) -->
-                  <span class="text-fg-muted">{{ numberFormatter.format(dependencyCount) }}</span>
+                  <NuxtLink
+                    v-if="dependenciesTabLink"
+                    :to="dependenciesTabLink"
+                    class="text-fg-muted hover:text-fg transition-colors decoration-none"
+                  >
+                    {{ numberFormatter.format(dependencyCount) }}
+                  </NuxtLink>
+                  <span v-else class="text-fg-muted">{{
+                    numberFormatter.format(dependencyCount)
+                  }}</span>
 
                   <!-- Total transitive deps in parens -->
                   <template v-if="dependencyCount > 0 && dependencyCount !== totalDepsCount">
@@ -970,17 +972,6 @@ const showSkeleton = shallowRef(false)
               :package-name="pkg.name"
               :version="displayVersion.version"
               :install-scripts="displayVersion.installScripts"
-            />
-
-            <!-- Dependencies -->
-            <PackageDependencies
-              v-if="hasDependencies && resolvedVersion && displayVersion"
-              :package-name="pkg.name"
-              :version="resolvedVersion"
-              :dependencies="displayVersion.dependencies"
-              :peer-dependencies="displayVersion.peerDependencies"
-              :peer-dependencies-meta="displayVersion.peerDependenciesMeta"
-              :optional-dependencies="displayVersion.optionalDependencies"
             />
 
             <!-- Keywords -->

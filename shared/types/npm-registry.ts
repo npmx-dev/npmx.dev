@@ -190,6 +190,7 @@ export interface NpmSearchPackage {
   license?: string
   /** Algolia-only: package is an npm-owned security-holder takedown */
   isSecurityHeld?: boolean
+  deprecated?: boolean | string
 }
 
 /**
@@ -417,4 +418,5 @@ export interface PackageMetaResponse {
   maintainers?: NpmPerson[]
   weeklyDownloads?: number
   repositoryStars?: number | null
+  deprecated?: boolean | string
 }
