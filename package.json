@@ -75,7 +75,7 @@
     "@unocss/preset-wind4": "66.7.5",
     "@upstash/redis": "1.38.2",
     "@vercel/speed-insights": "2.0.0",
-    "@vite-pwa/assets-generator": "1.0.2",
+    "@vite-pwa/assets-generator": "2.0.0",
     "@vite-pwa/nuxt": "1.1.1",
     "@vueuse/core": "14.4.0",
     "@vueuse/integrations": "14.4.0",
