@@ -127,7 +127,12 @@ describe('package versions page', () => {
       const component = await mountPage()
 
       await vi.waitFor(() => {
-        expect(component.findAllComponents({ name: 'ProvenanceBadge' })).not.toHaveLength(0)
+        const groupHeader = component
+          .findAll('button[aria-expanded]')
+          .find(button => button.text().includes('2.x'))
+
+        expect(groupHeader).toBeDefined()
+        expect(groupHeader!.findComponent({ name: 'ProvenanceBadge' }).exists()).toBe(true)
       })
     })
   })
