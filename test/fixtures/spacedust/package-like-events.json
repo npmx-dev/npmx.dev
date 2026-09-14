@@ -1,0 +1,22 @@
+[
+  {
+    "kind": "link",
+    "origin": "live",
+    "link": {
+      "operation": "create",
+      "source": "dev.npmx.feed.like:subjectRef",
+      "source_record": "at://did:plc:e2e-live/dev.npmx.feed.like/live-ufo",
+      "subject": "https://npmx.dev/package/ufo"
+    }
+  },
+  {
+    "kind": "link",
+    "origin": "live",
+    "link": {
+      "operation": "create",
+      "source": "dev.npmx.feed.like:subjectRef",
+      "source_record": "at://did:plc:e2e-live/dev.npmx.feed.like/live-is-odd",
+      "subject": "https://npmx.dev/package/is-odd"
+    }
+  }
+]

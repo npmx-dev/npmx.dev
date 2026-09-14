@@ -3,6 +3,8 @@ import { SHOWCASED_FRAMEWORKS } from '~/utils/frameworks'
 
 const { model: searchQuery, startSearch } = useGlobalSearch()
 const isSearchFocused = shallowRef(false)
+const { isLoadingInitialLikes: isLoadingRecentPackageLikes, likes: recentPackageLikes } =
+  useRecentPackageLikes()
 
 async function search() {
   startSearch()
@@ -88,6 +90,11 @@ defineOgImage('Splash.takumi', {}, { alt: () => $t('seo.home.description') })
         </search>
 
         <BuildEnvironment class="mt-4" />
+        <LandingRecentlyLiked
+          :is-loading="isLoadingRecentPackageLikes"
+          :likes="recentPackageLikes"
+          class="mt-8"
+        />
       </header>
 
       <nav

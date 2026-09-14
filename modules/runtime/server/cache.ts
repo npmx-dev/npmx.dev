@@ -152,6 +152,13 @@ function getMockForUrl(url: string): MockResult | null {
     return null
   }
 
+  if (
+    host === 'npmx-likes-leaderboard-api-production.up.railway.app' &&
+    pathname === '/api/leaderboard/likes'
+  ) {
+    return { data: [] }
+  }
+
   // npm API: downloads range → synthetic daily data for sparklines
   if (host === 'api.npmjs.org') {
     const rangeMatch = decodeURIComponent(pathname).match(/^\/downloads\/range\/([^/]+)\/(.+)$/)

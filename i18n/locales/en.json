@@ -9,6 +9,14 @@
   "built_at": "built {0}",
   "alt_logo": "npmx logo",
   "tagline": "a fast, modern browser for the npm registry",
+  "home": {
+    "recently_liked": {
+      "title": "Recently liked packages",
+      "liked_prefix": "liked",
+      "announcement": "{packageName} was liked",
+      "empty": "listening for package likes..."
+    }
+  },
   "non_affiliation_disclaimer": "not affiliated with npm, Inc.",
   "trademark_disclaimer": "npm is a registered trademark of npm, Inc. This site is not affiliated with npm, Inc.",
   "footer": {

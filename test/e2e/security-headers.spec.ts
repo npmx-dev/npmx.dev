@@ -14,6 +14,8 @@ test.describe('security headers', () => {
     expect(cspContent).toContain('https://api.star-history.com')
     expect(cspContent).toContain('https://cdn.bsky.app')
     expect(cspContent).toContain('https://public.api.bsky.app')
+    expect(cspContent).toContain('https://ufos-api.microcosm.blue')
+    expect(cspContent).toContain('wss://spacedust.microcosm.blue')
 
     // Other security headers via route rules
     expect(headers['x-content-type-options']).toBe('nosniff')

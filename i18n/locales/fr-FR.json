@@ -9,6 +9,14 @@
   "built_at": "compilé le {0}",
   "alt_logo": "Logo npmx",
   "tagline": "un explorateur rapide et moderne du registre npm",
+  "home": {
+    "recently_liked": {
+      "title": "Paquets récemment aimés",
+      "liked_prefix": "aimé",
+      "announcement": "{packageName} a été aimé",
+      "empty": "en attente des mentions J'aime de paquets..."
+    }
+  },
   "non_affiliation_disclaimer": "non affilié à npm, Inc.",
   "trademark_disclaimer": "npm est une marque déposée de npm, Inc. Ce site n'est pas affilié à npm, Inc.",
   "footer": {

@@ -15,6 +15,8 @@ const props = withDefaults(
     title?: string
     /** Date style for absolute display */
     dateStyle?: 'full' | 'long' | 'medium' | 'short'
+    /** Time style for absolute display */
+    timeStyle?: 'full' | 'long' | 'medium' | 'short'
     /** Individual date parts for absolute display (alternative to dateStyle) */
     year?: 'numeric' | '2-digit'
     month?: 'numeric' | '2-digit' | 'long' | 'short' | 'narrow'
@@ -23,6 +25,7 @@ const props = withDefaults(
   {
     title: undefined,
     dateStyle: undefined,
+    timeStyle: undefined,
     year: undefined,
     month: undefined,
     day: undefined,
@@ -65,6 +68,7 @@ const titleValue = computed(() => {
         :datetime="datetime"
         :title="titleValue"
         :date-style="dateStyle"
+        :time-style="timeStyle"
         :year="year"
         :month="month"
         :day="day"
@@ -75,6 +79,7 @@ const titleValue = computed(() => {
           :datetime="datetime"
           :title="titleValue"
           :date-style="dateStyle"
+          :time-style="timeStyle"
           :year="year"
           :month="month"
           :day="day"

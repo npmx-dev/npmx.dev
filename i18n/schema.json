@@ -31,6 +31,30 @@
     "tagline": {
       "type": "string"
     },
+    "home": {
+      "type": "object",
+      "properties": {
+        "recently_liked": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "liked_prefix": {
+              "type": "string"
+            },
+            "announcement": {
+              "type": "string"
+            },
+            "empty": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
     "non_affiliation_disclaimer": {
       "type": "string"
     },
