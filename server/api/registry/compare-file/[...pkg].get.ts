@@ -1,6 +1,12 @@
 import * as v from 'valibot'
 import { PackageFileDiffQuerySchema } from '#shared/schemas/package'
-import { countDiffStats, createDiff, insertSkipBlocks, truncateDiffHunks } from '#shared/utils/diff'
+import {
+  countDiffStats,
+  createDiff,
+  createUnifiedDiff,
+  insertSkipBlocks,
+  truncateDiffHunks,
+} from '#shared/utils/diff'
 import type { DiffHunk, DiffSkipBlock } from '#shared/types/compare'
 
 const CACHE_VERSION = 3
@@ -172,6 +178,7 @@ export default defineCachedEventHandler(
       try {
         // Get diff options from query params
         const query = getQuery(event)
+        const rawDiffRequested = query.format === 'diff'
         const diffOptions = {
           mergeModifiedLines: query.mergeModifiedLines !== 'false',
           maxChangeRatio: parseFloat(query.maxChangeRatio as string) || 0.45,
@@ -232,6 +239,12 @@ export default defineCachedEventHandler(
               mergeModifiedLines: false,
             }
           : diffOptions
+
+        if (rawDiffRequested) {
+          setResponseHeader(event, 'content-type', 'text/x-diff; charset=utf-8')
+          setResponseHeader(event, 'x-content-type-options', 'nosniff')
+          return createUnifiedDiff(fromContent ?? '', toContent ?? '', filePath, type)
+        }
 
         // Create diff with options
         const diff = createDiff(fromContent ?? '', toContent ?? '', filePath, effectiveDiffOptions)
@@ -329,6 +342,11 @@ export default defineCachedEventHandler(
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
       const query = getQuery(event)
+      const format = query.format === 'diff' ? 'diff' : 'json'
+      const normalizedPkg = pkg.replace(/\/+$/, '').trim()
+      if (format === 'diff') {
+        return `compare-file:v${CACHE_VERSION}:${normalizedPkg}:diff`
+      }
       // Normalize option values to prevent cache pollution from arbitrary floats.
       // These match the parsing logic used in the handler body.
       const merge = query.mergeModifiedLines !== 'false'
@@ -336,7 +354,7 @@ export default defineCachedEventHandler(
       const distance = parseInt(query.maxDiffDistance as string, 10) || 30
       const charEdits = parseInt(query.inlineMaxCharEdits as string, 10) || 2
       const optionsKey = `${merge}:${ratio}:${distance}:${charEdits}`
-      return `compare-file:v${CACHE_VERSION}:${pkg.replace(/\/+$/, '').trim()}:${optionsKey}`
+      return `compare-file:v${CACHE_VERSION}:${normalizedPkg}:${format}:${optionsKey}`
     },
   },
 )

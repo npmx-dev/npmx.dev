@@ -316,6 +316,7 @@
       "slate": "Skifer",
       "black": "Svart"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Aktiver tastatursnarveier",
     "keyboard_shortcuts_enabled_description": "Tastatursnarveier kan deaktiveres hvis de er i konflikt med andre nettleser- eller systemsnarveier",
     "enable_code_ligatures": "Aktiver ligaturer i kode",
@@ -1264,6 +1265,25 @@
       }
     }
   },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
+    }
+  },
   "account_menu": {
     "connect": "koble til",
     "account": "Konto",
@@ -1517,7 +1537,6 @@
     "merge_modified_lines": "Slå sammen endrede linjer",
     "no_content_changes": "Ingen innholdsendringer oppdaget",
     "options": "Alternativer",
-    "view_file": "Vis fil",
     "view_in_code_browser": "Vis i kodenettleser",
     "word_wrap": "Tekstbryting"
   },
