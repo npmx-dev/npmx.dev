@@ -63,6 +63,7 @@ type TrendChartConfigOptions = TrendChartBaseOptions & {
   chartHeight: number
   inModal?: boolean
   tooltipPosition?: string
+  compactXAxisLabels?: boolean
 }
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null
@@ -437,8 +438,6 @@ export function buildTrendsChartConfig(
           },
           xAxisLabels: {
             show: true,
-            showOnlyAtModulo: options.dates.length > XAXIS_LABELS_MOD_THRESHOLD,
-            modulo: Math.max(1, Math.round(options.dates.length / XAXIS_LABELS_MOD_THRESHOLD)),
             values: options.dates,
             datetimeFormatter: {
               enable: true,
@@ -446,6 +445,9 @@ export function buildTrendsChartConfig(
               useUTC: true,
               options: getTrendsDatetimeFormatterOptions(options.selectedGranularity),
             },
+            showOnlyFirstAndLast: options.compactXAxisLabels,
+            showOnlyAtModulo: options.dates.length > XAXIS_LABELS_MOD_THRESHOLD,
+            modulo: Math.max(1, Math.round(options.dates.length / XAXIS_LABELS_MOD_THRESHOLD)),
           },
           yAxis: {
             formatter: ({ value }: { value: number }) => {
