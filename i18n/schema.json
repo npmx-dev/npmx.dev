@@ -1924,6 +1924,9 @@
         "timeline": {
           "type": "object",
           "properties": {
+            "load_newer": {
+              "type": "string"
+            },
             "load_more": {
               "type": "string"
             },
