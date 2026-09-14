@@ -123,6 +123,84 @@ describe('detectModuleFormat', () => {
     ).toBe('esm')
   })
 
+  it('detects ESM when a type: module package uses default conditions', () => {
+    expect(
+      detectModuleFormat({
+        type: 'module',
+        exports: {
+          '.': {
+            types: './dist/index.d.ts',
+            default: './dist/index.js',
+          },
+        },
+      }),
+    ).toBe('esm')
+  })
+
+  it('preserves type: module through export fallback arrays', () => {
+    // The .js sits behind a fallback array, so this only resolves to ESM if the
+    // package type survives the recursion into the array
+    expect(
+      detectModuleFormat({
+        type: 'module',
+        exports: {
+          '.': ['./dist/index.js'],
+          './init': './dist/init.cjs',
+        },
+      }),
+    ).toBe('dual')
+  })
+
+  it('detects dual when a type: module package also exports a .cjs subpath', () => {
+    // A .js entry in a type: module package is ESM, so a CJS subpath elsewhere
+    // makes the package dual rather than reclassifying the whole thing as CJS
+    expect(
+      detectModuleFormat({
+        type: 'module',
+        exports: {
+          '.': {
+            types: './dist/index.d.ts',
+            default: './dist/index.js',
+          },
+          './init': {
+            types: './dist/init.d.cts',
+            default: './dist/init.cjs',
+          },
+        },
+      }),
+    ).toBe('dual')
+  })
+
+  it('detects CJS when a commonjs package uses default conditions', () => {
+    expect(
+      detectModuleFormat({
+        type: 'commonjs',
+        exports: {
+          '.': {
+            types: './dist/index.d.ts',
+            default: './dist/index.js',
+          },
+        },
+      }),
+    ).toBe('cjs')
+  })
+
+  it('ignores a re-exported package.json when inferring format', () => {
+    // "./package.json": "./package.json" is boilerplate, not an ESM entry point
+    expect(
+      detectModuleFormat({
+        type: 'commonjs',
+        exports: {
+          '.': {
+            types: './dist/index.d.ts',
+            default: './dist/index.js',
+          },
+          './package.json': './package.json',
+        },
+      }),
+    ).toBe('cjs')
+  })
+
   it('detects WASM from main field', () => {
     expect(detectModuleFormat({ main: 'main.wasm' })).toBe('wasm')
   })
