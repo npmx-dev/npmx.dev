@@ -156,6 +156,18 @@
         },
         "open_stats": {
           "type": "string"
+        },
+        "open_repo": {
+          "type": "string"
+        },
+        "open_homepage": {
+          "type": "string"
+        },
+        "open_issues": {
+          "type": "string"
+        },
+        "open_npm": {
+          "type": "string"
         }
       },
       "additionalProperties": false
