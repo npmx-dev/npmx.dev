@@ -506,13 +506,13 @@ const chartConfig = computed<VueUiXyConfig>(() => {
             <template #legend="{ legend }">
               <div class="flex gap-4 flex-wrap justify-center pt-8">
                 <template v-if="legend.length > 0">
-                  <div class="flex gap-1 place-items-center">
-                    <div class="h-3 w-3">
+                  <div class="flex gap-1 shrink-0 items-center whitespace-nowrap">
+                    <div class="h-3 w-3 shrink-0">
                       <svg viewBox="0 0 2 2" class="w-full">
                         <rect x="0" y="0" width="2" height="2" rx="0.3" :fill="legend[0]?.color" />
                       </svg>
                     </div>
-                    <span>
+                    <span class="shrink-0 whitespace-nowrap">
                       {{ legend[0]?.name }}
                     </span>
                   </div>
