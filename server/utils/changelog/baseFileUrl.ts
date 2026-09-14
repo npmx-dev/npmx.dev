@@ -16,7 +16,14 @@ export function getBaseFileUrl(ref: RepoRef): RepoFileUrl | null {
         raw: `https://codeberg.org/${ref.owner}/${ref.repo}/raw/branch/HEAD`,
       }
     case 'forgejo': {
-      const host = ref.host
+      return {
+        blob: `https://${ref.host}/${ref.owner}/${ref.repo}/src/branch/HEAD`,
+        raw: `https://${ref.host}/${ref.owner}/${ref.repo}/raw/branch/HEAD`,
+      }
+    }
+    case 'gitea': {
+      // although similar to forgejo, we keep these seperate because they're seperately maintained projects
+      const host = ref.host ?? 'gitea.com'
       return {
         blob: `https://${host}/${ref.owner}/${ref.repo}/src/branch/HEAD`,
         raw: `https://${host}/${ref.owner}/${ref.repo}/raw/branch/HEAD`,
@@ -33,6 +40,24 @@ export function getBaseFileUrl(ref: RepoRef): RepoFileUrl | null {
       return {
         blob: `https://tangled.org/${ref.owner}/${ref.repo}/blob/HEAD`,
         raw: `https://tangled.org/${ref.owner}/${ref.repo}/raw/HEAD`,
+      }
+    }
+    case 'bitbucket': {
+      return {
+        blob: `https://bitbucket.org/${ref.owner}/${ref.repo}/src/HEAD`,
+        raw: `https://bitbucket.org/${ref.owner}/${ref.repo}/raw/HEAD`,
+      }
+    }
+    case 'sourcehut': {
+      return {
+        blob: `https://git.sr.ht/${ref.owner}/${ref.repo}/tree/HEAD/item`,
+        raw: `https://git.sr.ht/${ref.owner}/${ref.repo}/blob/HEAD`,
+      }
+    }
+    case 'gitee': {
+      return {
+        blob: `https://gitee.com/${ref.owner}/${ref.repo}/blob/HEAD`,
+        raw: `https://gitee.com/${ref.owner}/${ref.repo}/raw/HEAD`,
       }
     }
   }
