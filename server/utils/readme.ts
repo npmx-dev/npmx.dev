@@ -132,6 +132,12 @@ const PLAYGROUND_PROVIDERS: PlaygroundProvider[] = [
     paths: ['/playground'],
     icon: 'marko',
   },
+  {
+    id: 'element-plus-playground',
+    name: 'Element Plus Playground',
+    domains: ['element-plus.run'],
+    icon: 'element-plus',
+  },
 ]
 
 /**
