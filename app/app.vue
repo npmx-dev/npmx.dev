@@ -48,6 +48,7 @@ if (import.meta.server) {
 }
 
 const keyboardShortcuts = useKeyboardShortcuts()
+const focusSearchInput = provideSearchInputFocus().focus
 const { settings } = useSettings()
 
 initKeyShortcuts()
@@ -64,14 +65,7 @@ onKeyDown(
     if (!keyboardShortcuts.value || isEditableElement(e.target)) return
     e.preventDefault()
 
-    const searchInput = document.querySelector<HTMLInputElement>(
-      'input[type="search"], input[name="q"]',
-    )
-
-    if (searchInput) {
-      searchInput.focus()
-      return
-    }
+    if (focusSearchInput()) return
 
     router.push({ name: 'search' })
   },

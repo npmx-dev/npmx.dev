@@ -3,6 +3,14 @@ import { SHOWCASED_FRAMEWORKS } from '~/utils/frameworks'
 
 const { model: searchQuery, startSearch } = useGlobalSearch()
 const isSearchFocused = shallowRef(false)
+const searchInputRef = useTemplateRef('searchInputRef')
+
+useSearchInputFocusTarget(() => {
+  const input = searchInputRef.value
+  if (!input) return false
+  input.focus()
+  return true
+})
 
 async function search() {
   startSearch()
@@ -56,6 +64,7 @@ defineOgImage('Splash.takumi', {}, { alt: () => $t('seo.home.description') })
 
                 <InputBase
                   id="home-search"
+                  ref="searchInputRef"
                   v-model="searchQuery"
                   type="search"
                   name="q"

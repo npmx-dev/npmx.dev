@@ -39,11 +39,15 @@ function handleBlur() {
   emit('blur')
 }
 function focus() {
-  inputRef.value?.focus()
+  const input = inputRef.value
+  if (!input) return false
+  input.focus()
+  return true
 }
 function blur() {
   inputRef.value?.blur()
 }
+useSearchInputFocusTarget(focus)
 defineExpose({ focus, blur })
 </script>
 <template>
