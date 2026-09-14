@@ -109,6 +109,27 @@ describe('package versions page', () => {
         expect(component.text()).toContain('beta')
       })
     })
+
+    it('renders provenance badges for versions with provenance metadata', async () => {
+      nextFetchResponse = makeVersionData(['2.0.0', '1.0.0'], { latest: '2.0.0' })
+      mockFetchAllPackageVersions.mockResolvedValue([
+        {
+          version: '2.0.0',
+          time: '2024-01-15T00:00:00.000Z',
+          trustStatus: { provenance: true, trustedPublisher: true, stagedPublish: false },
+        },
+        {
+          version: '1.0.0',
+          time: '2024-01-10T00:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+      ])
+      const component = await mountPage()
+
+      await vi.waitFor(() => {
+        expect(component.findAllComponents({ name: 'ProvenanceBadge' })).not.toHaveLength(0)
+      })
+    })
   })
 
   describe('version history groups', () => {
@@ -135,8 +156,16 @@ describe('package versions page', () => {
     it('expands a group and shows version rows on click', async () => {
       nextFetchResponse = makeVersionData(['1.1.0', '1.0.0'], { latest: '1.1.0' })
       mockFetchAllPackageVersions.mockResolvedValue([
-        { version: '1.1.0', time: '2024-01-15T00:00:00.000Z', hasProvenance: false },
-        { version: '1.0.0', time: '2024-01-10T00:00:00.000Z', hasProvenance: false },
+        {
+          version: '1.1.0',
+          time: '2024-01-15T00:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '1.0.0',
+          time: '2024-01-10T00:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
       ])
       const component = await mountPage()
       await vi.waitFor(() => expect(component.text()).toContain('1.x'))
@@ -152,8 +181,16 @@ describe('package versions page', () => {
     it('fetches full metadata automatically after phase 1 completes, exactly once', async () => {
       nextFetchResponse = makeVersionData(['2.0.0', '1.0.0'], { latest: '2.0.0' })
       mockFetchAllPackageVersions.mockResolvedValue([
-        { version: '2.0.0', time: '2024-01-15T00:00:00.000Z', hasProvenance: false },
-        { version: '1.0.0', time: '2024-01-10T00:00:00.000Z', hasProvenance: false },
+        {
+          version: '2.0.0',
+          time: '2024-01-15T00:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+        {
+          version: '1.0.0',
+          time: '2024-01-10T00:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
       ])
 
       await mountPage()
