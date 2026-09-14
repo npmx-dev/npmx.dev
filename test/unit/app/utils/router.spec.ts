@@ -1,5 +1,31 @@
 import { describe, expect, it } from 'vitest'
-import { docsRoute } from '~/utils/router'
+import { dependenciesRoute, docsRoute } from '~/utils/router'
+
+describe('dependenciesRoute', () => {
+  it('generates dependencies route for unscoped package without sections', () => {
+    expect(dependenciesRoute('vue', '3.4.0')).toEqual({
+      name: 'dependencies',
+      params: { path: ['vue', 'v', '3.4.0'] },
+      query: undefined,
+    })
+  })
+
+  it('generates dependencies route with single section as query', () => {
+    expect(dependenciesRoute('vue', '3.4.0', 'devDependencies')).toEqual({
+      name: 'dependencies',
+      params: { path: ['vue', 'v', '3.4.0'] },
+      query: { sections: 'devDependencies' },
+    })
+  })
+
+  it('generates dependencies route with multiple sections as comma-separated query', () => {
+    expect(dependenciesRoute('@nuxt/kit', '3.10.0', ['dependencies', 'peerDependencies'])).toEqual({
+      name: 'dependencies',
+      params: { path: ['@nuxt', 'kit', 'v', '3.10.0'] },
+      query: { sections: 'dependencies,peerDependencies' },
+    })
+  })
+})
 
 describe('docsRoute', () => {
   it('emits a scoped name as two path segments (literal slash, not %2F)', () => {

@@ -1,5 +1,5 @@
 import { mapWithConcurrency } from '#shared/utils/async'
-import { findMaxSatisfying } from 'verkit'
+import { findMaxSatisfying, isValidRange } from 'verkit'
 
 /** Concurrency limit for fetching packuments during dependency resolution */
 const PACKUMENT_FETCH_CONCURRENCY = 20
@@ -64,18 +64,27 @@ export function matchesPlatform(version: PackumentVersion): boolean {
 }
 
 /**
- * Resolve a semver range to a specific version from available versions.
+ * Resolve a semver range or dist-tag to a specific version from available versions.
  */
-export function resolveVersion(range: string, versions: string[]): string | null {
+export function resolveVersion(
+  range: string,
+  versions: string[],
+  distTags?: Record<string, string>,
+): string | null {
   if (versions.includes(range)) return range
 
   // Handle npm: protocol (aliases)
   if (range.startsWith('npm:')) {
     const atIndex = range.lastIndexOf('@')
     if (atIndex > 4) {
-      return resolveVersion(range.slice(atIndex + 1), versions)
+      return resolveVersion(range.slice(atIndex + 1), versions, distTags)
     }
     return null
+  }
+
+  // Handle dist-tags (e.g. "latest", "next", "canary", etc.)
+  if (distTags && distTags[range]) {
+    return distTags[range]
   }
 
   // Handle URLs, git refs, etc. - we can't resolve these
@@ -89,6 +98,8 @@ export function resolveVersion(range: string, versions: string[]): string | null
   ) {
     return null
   }
+
+  if (!isValidRange(range)) return null
 
   return findMaxSatisfying(versions, range)
 }
@@ -144,7 +155,7 @@ export async function resolveDependencyTree(
         if (!packument) return
 
         const versions = Object.keys(packument.versions)
-        const version = resolveVersion(range, versions)
+        const version = resolveVersion(range, versions, packument['dist-tags'])
         if (!version) return
 
         const versionData = packument.versions[version]
