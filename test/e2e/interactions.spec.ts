@@ -254,6 +254,20 @@ test.describe('Search Pages', () => {
     await expect(page.locator('input[type="search"]')).toBeFocused()
   })
 
+  test('/ (homepage) → "/" focuses the homepage search input', async ({ page, goto }) => {
+    await goto('/', { waitUntil: 'hydration' })
+
+    const homeSearchInput = page.locator('#home-search')
+    await expect(homeSearchInput).toBeVisible()
+
+    // Move focus away from the autofocused input, then press the shortcut
+    await page.locator('body').click({ position: { x: 5, y: 5 } })
+    await expect(homeSearchInput).not.toBeFocused()
+
+    await page.keyboard.press('/')
+    await expect(homeSearchInput).toBeFocused()
+  })
+
   test('/ (homepage) → search, keeps focus on search input', async ({ page, goto }) => {
     await goto('/', { waitUntil: 'hydration' })
 
