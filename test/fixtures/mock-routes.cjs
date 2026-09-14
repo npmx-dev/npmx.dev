@@ -436,9 +436,9 @@ function matchJsdelivrDataApi(urlString) {
       name: parsed.name,
       version: parsed.version || 'latest',
       files: [
-        { name: 'package.json', hash: 'abc123', size: 1000 },
-        { name: 'index.js', hash: 'def456', size: 500 },
-        { name: 'README.md', hash: 'ghi789', size: 2000 },
+        { type: 'file', name: 'package.json', hash: 'abc123', size: 1000 },
+        { type: 'file', name: 'index.js', hash: 'def456', size: 500 },
+        { type: 'file', name: 'README.md', hash: 'ghi789', size: 2000 },
       ],
     })
   }
