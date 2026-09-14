@@ -90,6 +90,13 @@ export function useFacetSelection(queryParam = 'facets') {
         chartable_scatter: true,
         formatter: v => compactNumberFormatter.value.format(v),
       },
+      supplyChainAlerts: {
+        label: t(`compare.facets.items.supplyChainAlerts.label`),
+        description: t(`compare.facets.items.supplyChainAlerts.description`),
+        chartable: false,
+        chartable_scatter: true,
+        formatter: v => compactNumberFormatter.value.format(v),
+      },
       lastUpdated: {
         label: t(`compare.facets.items.lastUpdated.label`),
         description: t(`compare.facets.items.lastUpdated.description`),

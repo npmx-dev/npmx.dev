@@ -19,6 +19,16 @@ export default defineConfig<ConfigOptions>({
     url: baseURL,
     reuseExistingServer: !process.env.CI,
     timeout: 60_000,
+    env: {
+      ...process.env,
+      // Dummy Socket credentials so the Socket security source is active in
+      // e2e; actual API calls are intercepted by the fixture plugin
+      // (modules/runtime/server/cache.ts). The public flag must be set
+      // explicitly because the build runs without the credentials.
+      NUXT_SOCKET_API_KEY: 'npmx-test-fixture-key',
+      NUXT_SOCKET_ORG_SLUG: 'npmx-test-fixtures',
+      NUXT_PUBLIC_SOCKET_CONFIGURED: 'true',
+    },
   },
   // Start/stop mock connector server before/after all tests (teardown via returned closure)
   globalSetup: join(import.meta.dirname, 'test/e2e/global-setup.ts'),

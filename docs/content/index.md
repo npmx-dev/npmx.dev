@@ -45,7 +45,7 @@ links:
 :::u-page-feature{icon="i-lucide:keyboard" to="/guide/keyboard-shortcuts" title="Navigate with keyboard" description="Open the command palette with ⌘K on macOS or Ctrl+K on Windows and Linux. Press / to search. Use arrow keys to browse results."}
 :::
 
-:::u-page-feature{icon="i-lucide:shield-check" to="/guide/features" title="Check security" description="Vulnerability warnings from OSV database and provenance indicators for verified builds."}
+:::u-page-feature{icon="i-lucide:shield-check" to="/guide/features" title="Check security" description="Vulnerability warnings from OSV and Socket, supply chain alerts, and provenance indicators for verified builds."}
 :::
 
 :::u-page-feature{icon="i-lucide:users" to="/guide/features" title="Manage packages and orgs" description="Manage package access, owners, organization members, and teams from the browser."}
