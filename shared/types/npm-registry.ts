@@ -20,7 +20,11 @@ export type { Manifest, ManifestVersion, PackageJSON } from '@npm/types'
 type NpmTrustedPublisherEvidence = NpmSearchTrustedPublisher | NpmTrustedPublisher | true
 
 export interface PackumentVersion extends PackumentVersionWithoutAttestations {
-  _npmUser?: Contact & { trustedPublisher?: NpmTrustedPublisherEvidence }
+  _npmUser?: Contact & {
+    trustedPublisher?: NpmTrustedPublisherEvidence
+    /** Present when the version was released through staged publishing. */
+    approver?: Contact
+  }
   dist: PackumentVersionWithoutAttestations['dist'] & { attestations?: NpmVersionAttestations }
 }
 
