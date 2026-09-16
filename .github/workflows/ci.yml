@@ -30,7 +30,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
+      - uses: voidzero-dev/setup-vp@9fd26ff49f9b5e6276c2b493da4454ad4527f7f4 # v1.20.0
         with:
           node-version: lts/*
           sfw: true
@@ -50,7 +50,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
+      - uses: voidzero-dev/setup-vp@9fd26ff49f9b5e6276c2b493da4454ad4527f7f4 # v1.20.0
         with:
           node-version: lts/*
           cache: true
@@ -68,7 +68,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
+      - uses: voidzero-dev/setup-vp@9fd26ff49f9b5e6276c2b493da4454ad4527f7f4 # v1.20.0
         with:
           node-version: lts/*
           cache: true
@@ -79,7 +79,7 @@ jobs:
 
       - name: ⬆︎ Upload test results to Codecov
         if: ${{ !cancelled() }}
-        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+        uses: codecov/codecov-action@0b35c9ecc4f0529d0eb674914510c22f85b196b4 # v7.1.0
         with:
           disable_search: true
           files: test-report.junit.xml
@@ -90,7 +90,7 @@ jobs:
 
       - name: ⬆︎ Upload coverage reports to Codecov
         if: ${{ !cancelled() }}
-        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+        uses: codecov/codecov-action@0b35c9ecc4f0529d0eb674914510c22f85b196b4 # v7.1.0
         with:
           disable_search: true
           files: coverage/clover.xml
@@ -107,7 +107,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
+      - uses: voidzero-dev/setup-vp@9fd26ff49f9b5e6276c2b493da4454ad4527f7f4 # v1.20.0
         with:
           node-version: lts/*
           cache: true
@@ -121,7 +121,7 @@ jobs:
 
       - name: ⬆︎ Upload test results to Codecov
         if: ${{ !cancelled() }}
-        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+        uses: codecov/codecov-action@0b35c9ecc4f0529d0eb674914510c22f85b196b4 # v7.1.0
         with:
           disable_search: true
           files: test-report.junit.xml
@@ -132,7 +132,7 @@ jobs:
 
       - name: ⬆︎ Upload coverage reports to Codecov
         if: ${{ !cancelled() }}
-        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+        uses: codecov/codecov-action@0b35c9ecc4f0529d0eb674914510c22f85b196b4 # v7.1.0
         with:
           disable_search: true
           files: coverage/clover.xml
@@ -161,7 +161,7 @@ jobs:
         run: apt-get update && apt-get install --yes build-essential
         shell: bash
 
-      - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
+      - uses: voidzero-dev/setup-vp@9fd26ff49f9b5e6276c2b493da4454ad4527f7f4 # v1.20.0
         with:
           node-version: lts/*
           cache: true
@@ -177,7 +177,7 @@ jobs:
 
       - name: ⬆︎ Upload test results to Codecov
         if: ${{ !cancelled() }}
-        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+        uses: codecov/codecov-action@0b35c9ecc4f0529d0eb674914510c22f85b196b4 # v7.1.0
         with:
           disable_search: true
           files: test-report.junit.xml
@@ -199,7 +199,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
+      - uses: voidzero-dev/setup-vp@9fd26ff49f9b5e6276c2b493da4454ad4527f7f4 # v1.20.0
         with:
           node-version: lts/*
           cache: true
@@ -223,7 +223,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
+      - uses: voidzero-dev/setup-vp@9fd26ff49f9b5e6276c2b493da4454ad4527f7f4 # v1.20.0
         with:
           node-version: lts/*
           cache: true
@@ -241,7 +241,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
+      - uses: voidzero-dev/setup-vp@9fd26ff49f9b5e6276c2b493da4454ad4527f7f4 # v1.20.0
         with:
           node-version: lts/*
           sfw: true

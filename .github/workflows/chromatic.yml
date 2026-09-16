@@ -27,14 +27,14 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
+      - uses: voidzero-dev/setup-vp@9fd26ff49f9b5e6276c2b493da4454ad4527f7f4 # v1.20.0
         with:
           node-version: lts/*
           cache: true
           sfw: true
 
       - name: 🧪 Run Chromatic Visual and Accessibility Tests
-        uses: chromaui/action@14cfaef73576e69f95f47f60058063f46ca38719 # v18.1.0
+        uses: chromaui/action@259eda5f0e44c0c1eab38b672f1c4c967cc969b7 # v18.8.1
         with:
           buildCommand: vp run build-storybook
           outputDir: storybook-static
