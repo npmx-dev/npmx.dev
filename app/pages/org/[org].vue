@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import {
+  type ColumnConfig,
   type FilterChip,
   type SortOption,
   type StructuredFilters,
+  DEFAULT_COLUMNS,
   DEFAULT_FILTERS,
   parseDownloadRange,
   parseSearchScope,
@@ -64,18 +66,44 @@ if (downloadRange) initialFilters.downloadRange = downloadRange
 if (security) initialFilters.security = security
 if (updatedWithin) initialFilters.updatedWithin = updatedWithin
 
+const columnOverride = shallowRef<ColumnConfig[] | null>(null)
+
 watch(
   isHydrated,
   hydrated => {
     if (!hydrated) return
     const ids = parseColumns(normalizeSearchParam(route.query.columns))
-    if (!ids) return
-    for (const col of columns.value) {
-      col.visible = col.id === 'name' || ids.includes(col.id)
+    if (!ids) {
+      columnOverride.value = null
+      return
     }
+    columnOverride.value = columns.value.map(col => ({
+      ...col,
+      visible: col.id === 'name' || ids.includes(col.id),
+    }))
   },
   { immediate: true },
 )
+
+const viewColumns = computed(() => columnOverride.value ?? columns.value)
+
+function handleToggleColumn(columnId: ColumnConfig['id']) {
+  if (!columnOverride.value) {
+    toggleColumn(columnId)
+    return
+  }
+  columnOverride.value = columnOverride.value.map(col =>
+    col.id === columnId ? { ...col, visible: !col.visible } : col,
+  )
+}
+
+function handleResetColumns() {
+  if (!columnOverride.value) {
+    resetColumns()
+    return
+  }
+  columnOverride.value = DEFAULT_COLUMNS.map(col => ({ ...col }))
+}
 
 // Structured filters and sorting
 const {
@@ -134,8 +162,7 @@ const updateUrl = debounce(
         ...route.query,
         q: updates.filter || undefined,
         sort: updates.sort && updates.sort !== DEFAULT_SORT ? updates.sort : undefined,
-        columns: serializeVisibleColumns(columns.value),
-        // Filter parameters
+        columns: serializeVisibleColumns(viewColumns.value),
         scope:
           updates.scope && updates.scope !== DEFAULT_FILTERS.searchScope
             ? updates.scope
@@ -158,7 +185,7 @@ const updateUrl = debounce(
   300,
 )
 
-// Update URL when filter/sort changes (debounced)
+// Update URL when filter/sort/columns change (debounced)
 watch(
   [
     () => filters.value.text,
@@ -169,7 +196,7 @@ watch(
     () => filters.value.security,
     () => filters.value.updatedWithin,
     // serialize so visibility toggles (same array ref) still trigger
-    () => serializeVisibleColumns(columns.value),
+    () => serializeVisibleColumns(viewColumns.value),
   ] as const,
   ([text, keywords, sort, scope, downloads, security, updated]) => {
     const filter = [text, ...keywords.map(keyword => `keyword:${keyword}`)]
@@ -372,15 +399,15 @@ defineOgImage(
         :filters="filters"
         v-model:sort-option="sortOption"
         v-model:view-mode="viewMode"
-        :columns="columns"
+        :columns="viewColumns"
         v-model:pagination-mode="paginationMode"
         v-model:page-size="pageSize"
         :total-count="packageCount"
         :filtered-count="filteredCount"
         :available-keywords="availableKeywords"
         :active-filters="activeFilters"
-        @toggle-column="toggleColumn"
-        @reset-columns="resetColumns"
+        @toggle-column="handleToggleColumn"
+        @reset-columns="handleResetColumns"
         @clear-filter="handleClearFilter"
         @clear-all-filters="clearAllFilters"
         @update:text="setTextFilter"
@@ -402,7 +429,7 @@ defineOgImage(
         <PackageList
           :results="sortedPackages"
           :view-mode="viewMode"
-          :columns="columns"
+          :columns="viewColumns"
           :filters="filters"
           v-model:sort-option="sortOption"
           :pagination-mode="paginationMode"
