@@ -203,6 +203,22 @@ export type SearchScope = 'name' | 'description' | 'keywords' | 'all'
 /** Search scope values - labels are in i18n under filters.scope_* */
 export const SEARCH_SCOPE_VALUES: SearchScope[] = ['name', 'description', 'keywords', 'all']
 
+export function parseSearchScope(value: string): SearchScope | undefined {
+  return SEARCH_SCOPE_VALUES.find(scope => scope === value)
+}
+
+export function parseDownloadRange(value: string): DownloadRange | undefined {
+  return DOWNLOAD_RANGES.find(range => range.value === value)?.value
+}
+
+export function parseSecurityFilter(value: string): SecurityFilter | undefined {
+  return SECURITY_FILTER_VALUES.find(filter => filter === value)
+}
+
+export function parseUpdatedWithin(value: string): UpdatedWithin | undefined {
+  return UPDATED_WITHIN_OPTIONS.find(option => option.value === value)?.value
+}
+
 // Structured filters state
 export interface StructuredFilters {
   text: string

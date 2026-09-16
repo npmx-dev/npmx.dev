@@ -1,5 +1,14 @@
 <script setup lang="ts">
-import type { FilterChip, SortOption } from '#shared/types/preferences'
+import {
+  type FilterChip,
+  type SortOption,
+  type StructuredFilters,
+  DEFAULT_FILTERS,
+  parseDownloadRange,
+  parseSearchScope,
+  parseSecurityFilter,
+  parseUpdatedWithin,
+} from '#shared/types/preferences'
 import { normalizeSearchParam } from '#shared/utils/url'
 import { debounce } from 'perfect-debounce'
 
@@ -42,6 +51,16 @@ const packageCount = computed(() => packages.value.length)
 const { viewMode, paginationMode, pageSize, columns, toggleColumn, resetColumns } =
   usePackageListPreferences()
 
+const initialFilters: Partial<StructuredFilters> = {}
+const searchScope = parseSearchScope(normalizeSearchParam(route.query.scope))
+const downloadRange = parseDownloadRange(normalizeSearchParam(route.query.downloads))
+const security = parseSecurityFilter(normalizeSearchParam(route.query.security))
+const updatedWithin = parseUpdatedWithin(normalizeSearchParam(route.query.updated))
+if (searchScope) initialFilters.searchScope = searchScope
+if (downloadRange) initialFilters.downloadRange = downloadRange
+if (security) initialFilters.security = security
+if (updatedWithin) initialFilters.updatedWithin = updatedWithin
+
 // Structured filters and sorting
 const {
   filters,
@@ -61,6 +80,7 @@ const {
 } = useStructuredFilters({
   packages,
   initialSort: (normalizeSearchParam(route.query.sort) as SortOption) ?? DEFAULT_SORT,
+  initialFilters,
 })
 
 // Pagination state
@@ -84,24 +104,59 @@ watch(totalPages, newTotal => {
 })
 
 // Debounced URL update for filter/sort
-const updateUrl = debounce((updates: { filter?: string; sort?: string }) => {
-  router.replace({
-    query: {
-      ...route.query,
-      q: updates.filter || undefined,
-      sort: updates.sort && updates.sort !== DEFAULT_SORT ? updates.sort : undefined,
-    },
-  })
-}, 300)
+const updateUrl = debounce(
+  (updates: {
+    filter?: string
+    sort?: string
+    scope?: string
+    downloads?: string
+    security?: string
+    updated?: string
+  }) => {
+    router.replace({
+      query: {
+        ...route.query,
+        q: updates.filter || undefined,
+        sort: updates.sort && updates.sort !== DEFAULT_SORT ? updates.sort : undefined,
+        // Filter parameters
+        scope:
+          updates.scope && updates.scope !== DEFAULT_FILTERS.searchScope
+            ? updates.scope
+            : undefined,
+        downloads:
+          updates.downloads && updates.downloads !== DEFAULT_FILTERS.downloadRange
+            ? updates.downloads
+            : undefined,
+        security:
+          updates.security && updates.security !== DEFAULT_FILTERS.security
+            ? updates.security
+            : undefined,
+        updated:
+          updates.updated && updates.updated !== DEFAULT_FILTERS.updatedWithin
+            ? updates.updated
+            : undefined,
+      },
+    })
+  },
+  300,
+)
 
 // Update URL when filter/sort changes (debounced)
 watch(
-  [() => filters.value.text, () => filters.value.keywords, () => sortOption.value] as const,
-  ([text, keywords, sort]) => {
+  [
+    () => filters.value.text,
+    () => filters.value.keywords,
+    () => sortOption.value,
+    () => filters.value.searchScope,
+    () => filters.value.downloadRange,
+    () => filters.value.security,
+    () => filters.value.updatedWithin,
+  ] as const,
+  ([text, keywords, sort, scope, downloads, security, updated]) => {
     const filter = [text, ...keywords.map(keyword => `keyword:${keyword}`)]
       .filter(Boolean)
       .join(' ')
-    updateUrl({ filter, sort })
+    updateUrl({ filter, sort, scope, downloads, security, updated })
   },
 )
 

@@ -1,7 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import {
   buildSortOption,
+  parseDownloadRange,
+  parseSearchScope,
+  parseSecurityFilter,
   parseSortOption,
+  parseUpdatedWithin,
   toggleDirection,
   type SortDirection,
   type SortKey,
@@ -56,6 +60,49 @@ describe('toggleDirection', () => {
 
   it('toggles desc to asc', () => {
     expect(toggleDirection('desc')).toBe('asc')
+  })
+})
+
+describe('parseSearchScope', () => {
+  it.each(['name', 'description', 'keywords', 'all'] as const)('accepts "%s"', value => {
+    expect(parseSearchScope(value)).toBe(value)
+  })
+
+  it.each(['', 'banana', 'NAME'])('rejects "%s"', value => {
+    expect(parseSearchScope(value)).toBeUndefined()
+  })
+})
+
+describe('parseDownloadRange', () => {
+  it.each(['any', 'lt100', '100-1k', '1k-10k', '10k-100k', 'gt100k'] as const)(
+    'accepts "%s"',
+    value => {
+      expect(parseDownloadRange(value)).toBe(value)
+    },
+  )
+
+  it.each(['', 'banana', 'gt1000'])('rejects "%s"', value => {
+    expect(parseDownloadRange(value)).toBeUndefined()
+  })
+})
+
+describe('parseSecurityFilter', () => {
+  it.each(['all', 'secure', 'warnings'] as const)('accepts "%s"', value => {
+    expect(parseSecurityFilter(value)).toBe(value)
+  })
+
+  it.each(['', 'banana', 'insecure'])('rejects "%s"', value => {
+    expect(parseSecurityFilter(value)).toBeUndefined()
+  })
+})
+
+describe('parseUpdatedWithin', () => {
+  it.each(['any', 'week', 'month', 'quarter', 'year'] as const)('accepts "%s"', value => {
+    expect(parseUpdatedWithin(value)).toBe(value)
+  })
+
+  it.each(['', 'banana', 'day'])('rejects "%s"', value => {
+    expect(parseUpdatedWithin(value)).toBeUndefined()
   })
 })
 
