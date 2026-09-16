@@ -1,16 +1,29 @@
 import { describe, expect, it } from 'vitest'
 import {
   buildSortOption,
+  DEFAULT_COLUMNS,
+  parseColumns,
   parseDownloadRange,
   parseSearchScope,
   parseSecurityFilter,
   parseSortOption,
   parseUpdatedWithin,
+  serializeVisibleColumns,
   toggleDirection,
+  type ColumnConfig,
   type SortDirection,
   type SortKey,
   type SortOption,
 } from '#shared/types/preferences'
+
+function columnsWithVisibility(
+  overrides: Partial<Record<ColumnConfig['id'], boolean>>,
+): ColumnConfig[] {
+  return DEFAULT_COLUMNS.map(col => ({
+    ...col,
+    visible: overrides[col.id] ?? col.visible,
+  }))
+}
 
 describe('parseSortOption', () => {
   it.each<[SortOption, SortKey, SortDirection]>([
@@ -103,6 +116,43 @@ describe('parseUpdatedWithin', () => {
 
   it.each(['', 'banana', 'day'])('rejects "%s"', value => {
     expect(parseUpdatedWithin(value)).toBeUndefined()
+  })
+})
+
+describe('parseColumns', () => {
+  it('parses comma-separated ids', () => {
+    expect(parseColumns('version,downloads')).toEqual(['version', 'downloads'])
+  })
+
+  it('trims whitespace and drops unknown ids', () => {
+    expect(parseColumns(' version , nope, downloads ')).toEqual(['version', 'downloads'])
+  })
+
+  it('keeps name if present', () => {
+    expect(parseColumns('name,version')).toEqual(['name', 'version'])
+  })
+
+  it.each(['', 'banana', ' , , '])('returns undefined for "%s"', value => {
+    expect(parseColumns(value)).toBeUndefined()
+  })
+})
+
+describe('serializeVisibleColumns', () => {
+  it('omits the param for default visibilities', () => {
+    expect(serializeVisibleColumns(DEFAULT_COLUMNS)).toBeUndefined()
+  })
+
+  it('omits name and selection', () => {
+    const columns = columnsWithVisibility({ maintainers: true })
+    expect(serializeVisibleColumns(columns)).toBe(
+      'version,description,downloads,updated,maintainers',
+    )
+  })
+
+  it('includes the param when a default-on column is hidden', () => {
+    expect(serializeVisibleColumns(columnsWithVisibility({ version: false }))).toBe(
+      'description,downloads,updated',
+    )
   })
 })
 

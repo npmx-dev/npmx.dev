@@ -8,6 +8,8 @@ import {
   parseSearchScope,
   parseSecurityFilter,
   parseUpdatedWithin,
+  parseColumns,
+  serializeVisibleColumns,
 } from '#shared/types/preferences'
 import { normalizeSearchParam } from '#shared/utils/url'
 import { debounce } from 'perfect-debounce'
@@ -48,7 +50,7 @@ const packages = computed(() => results.value?.objects ?? [])
 const packageCount = computed(() => packages.value.length)
 
 // Preferences (persisted to localStorage)
-const { viewMode, paginationMode, pageSize, columns, toggleColumn, resetColumns } =
+const { viewMode, paginationMode, pageSize, columns, toggleColumn, resetColumns, isHydrated } =
   usePackageListPreferences()
 
 const initialFilters: Partial<StructuredFilters> = {}
@@ -56,10 +58,24 @@ const searchScope = parseSearchScope(normalizeSearchParam(route.query.scope))
 const downloadRange = parseDownloadRange(normalizeSearchParam(route.query.downloads))
 const security = parseSecurityFilter(normalizeSearchParam(route.query.security))
 const updatedWithin = parseUpdatedWithin(normalizeSearchParam(route.query.updated))
+
 if (searchScope) initialFilters.searchScope = searchScope
 if (downloadRange) initialFilters.downloadRange = downloadRange
 if (security) initialFilters.security = security
 if (updatedWithin) initialFilters.updatedWithin = updatedWithin
+
+watch(
+  isHydrated,
+  hydrated => {
+    if (!hydrated) return
+    const ids = parseColumns(normalizeSearchParam(route.query.columns))
+    if (!ids) return
+    for (const col of columns.value) {
+      col.visible = col.id === 'name' || ids.includes(col.id)
+    }
+  },
+  { immediate: true },
+)
 
 // Structured filters and sorting
 const {
@@ -118,6 +134,7 @@ const updateUrl = debounce(
         ...route.query,
         q: updates.filter || undefined,
         sort: updates.sort && updates.sort !== DEFAULT_SORT ? updates.sort : undefined,
+        columns: serializeVisibleColumns(columns.value),
         // Filter parameters
         scope:
           updates.scope && updates.scope !== DEFAULT_FILTERS.searchScope
@@ -151,6 +168,8 @@ watch(
     () => filters.value.downloadRange,
     () => filters.value.security,
     () => filters.value.updatedWithin,
+    // serialize so visibility toggles (same array ref) still trigger
+    () => serializeVisibleColumns(columns.value),
   ] as const,
   ([text, keywords, sort, scope, downloads, security, updated]) => {
     const filter = [text, ...keywords.map(keyword => `keyword:${keyword}`)]

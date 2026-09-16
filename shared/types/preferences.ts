@@ -50,6 +50,35 @@ export const DEFAULT_COLUMNS: ColumnConfig[] = [
   },
 ]
 
+function visibleColumnIdsParam(columns: ColumnConfig[]): string {
+  const visible = new Set(
+    columns
+      .filter(col => col.visible && col.id !== 'selection' && col.id !== 'name')
+      .map(col => col.id),
+  )
+  return DEFAULT_COLUMNS.filter(col => visible.has(col.id))
+    .map(col => col.id)
+    .join(',')
+}
+
+/** Comma-separated visible column ids, or undefined when they match the default set. `name` is omitted (always visible). */
+export function serializeVisibleColumns(columns: ColumnConfig[]): string | undefined {
+  const visibleColumnIds = visibleColumnIdsParam(columns)
+  return visibleColumnIds === visibleColumnIdsParam(DEFAULT_COLUMNS) ? undefined : visibleColumnIds
+}
+
+function isColumnId(id: string): id is ColumnId {
+  return DEFAULT_COLUMNS.some(col => col.id === id)
+}
+
+export function parseColumns(value: string): ColumnId[] | undefined {
+  const ids = value
+    .split(',')
+    .map(id => id.trim())
+    .filter(isColumnId)
+  return ids.length > 0 ? ids : undefined
+}
+
 // Sort keys (without direction)
 export type SortKey =
   | 'downloads-week'
@@ -227,6 +256,7 @@ export interface StructuredFilters {
   keywords: string[]
   security: SecurityFilter
   updatedWithin: UpdatedWithin
+  visibleColumns: ColumnId[]
 }
 
 export const DEFAULT_FILTERS: StructuredFilters = {
@@ -236,6 +266,7 @@ export const DEFAULT_FILTERS: StructuredFilters = {
   keywords: [],
   security: 'all',
   updatedWithin: 'any',
+  visibleColumns: DEFAULT_COLUMNS.map(c => c.id),
 }
 
 // Pagination modes
