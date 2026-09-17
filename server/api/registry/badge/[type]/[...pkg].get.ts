@@ -8,9 +8,9 @@ import { fetchNpmPackage } from '#server/utils/npm'
 import { assertValidPackageName, normalizeLicense } from '#shared/utils/npm'
 import { fetchPackageWithTypesAndFiles } from '#server/utils/file-tree'
 import { handleApiError } from '#server/utils/error-handler'
+import { fetchOsvVulnerabilityCount } from '#server/utils/osv'
 
 const NPM_DOWNLOADS_API = 'https://api.npmjs.org/downloads/point'
-const OSV_QUERY_API = 'https://api.osv.dev/v1/query'
 const BUNDLEPHOBIA_API = 'https://bundlephobia.com/api/size'
 
 const SafeStringSchema = v.pipe(v.string(), v.regex(/^[^<>"&]*$/, 'Invalid characters'))
@@ -513,22 +513,6 @@ async function fetchDownloads(
   }
 }
 
-async function fetchVulnerabilities(packageName: string, version: string): Promise<number> {
-  try {
-    const response = await fetch(OSV_QUERY_API, {
-      method: 'POST',
-      body: JSON.stringify({
-        version,
-        package: { name: packageName, ecosystem: 'npm' },
-      }),
-    })
-    const data = await response.json()
-    return data.vulns?.length ?? 0
-  } catch {
-    return 0
-  }
-}
-
 async function fetchInstallSize(packageName: string, version: string): Promise<number | null> {
   try {
     const response = await fetch(`${BUNDLEPHOBIA_API}?package=${packageName}@${version}`)
@@ -598,7 +582,12 @@ const badgeStrategies = {
 
   'vulnerabilities': async (pkgData: globalThis.Packument) => {
     const latest = getLatestVersion(pkgData)
-    const count = latest ? await fetchVulnerabilities(pkgData.name, latest) : 0
+    const count = latest ? await fetchOsvVulnerabilityCount(pkgData.name, latest) : null
+    // Distinguish "could not check" from "no known vulnerabilities" - a failed
+    // scan must not render the reassuring green zero badge
+    if (count === null) {
+      return { label: 'vulns', value: 'unknown', color: COLORS.slate }
+    }
     const isSafe = count === 0
     const color = isSafe ? COLORS.green : COLORS.red
     return { label: 'vulns', value: String(count), color }
