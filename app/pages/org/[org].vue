@@ -69,10 +69,12 @@ if (updatedWithin) initialFilters.updatedWithin = updatedWithin
 const columnOverride = shallowRef<ColumnConfig[] | null>(null)
 
 watch(
-  isHydrated,
-  hydrated => {
+  [isHydrated, () => route.query.columns],
+  ([hydrated]) => {
     if (!hydrated) return
-    const ids = parseColumns(normalizeSearchParam(route.query.columns))
+    const ids = parseColumns(
+      route.query.columns === undefined ? undefined : normalizeSearchParam(route.query.columns),
+    )
     if (!ids) {
       columnOverride.value = null
       return

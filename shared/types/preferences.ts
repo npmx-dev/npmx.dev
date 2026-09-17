@@ -71,7 +71,10 @@ function isColumnId(id: string): id is ColumnId {
   return DEFAULT_COLUMNS.some(col => col.id === id)
 }
 
-export function parseColumns(value: string): ColumnId[] | undefined {
+export function parseColumns(value: string | undefined): ColumnId[] | undefined {
+  if (value === undefined) return undefined
+  if (value === '') return []
+
   const ids = value
     .split(',')
     .map(id => id.trim())

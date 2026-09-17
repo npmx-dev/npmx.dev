@@ -132,7 +132,12 @@ describe('parseColumns', () => {
     expect(parseColumns('name,version')).toEqual(['name', 'version'])
   })
 
-  it.each(['', 'banana', ' , , '])('returns undefined for "%s"', value => {
+  it('distinguishes an empty parameter from an absent parameter', () => {
+    expect(parseColumns('')).toEqual([])
+    expect(parseColumns(undefined)).toBeUndefined()
+  })
+
+  it.each(['banana', ' , , '])('returns undefined for invalid value "%s"', value => {
     expect(parseColumns(value)).toBeUndefined()
   })
 })
@@ -153,6 +158,19 @@ describe('serializeVisibleColumns', () => {
     expect(serializeVisibleColumns(columnsWithVisibility({ version: false }))).toBe(
       'description,downloads,updated',
     )
+  })
+
+  it('roundtrips a name-only selection as an empty parameter', () => {
+    const nameOnlyColumns = columnsWithVisibility({
+      version: false,
+      description: false,
+      downloads: false,
+      updated: false,
+    })
+    const serialized = serializeVisibleColumns(nameOnlyColumns)
+
+    expect(serialized).toBe('')
+    expect(parseColumns(serialized)).toEqual([])
   })
 })
 
