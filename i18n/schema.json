@@ -1524,6 +1524,9 @@
                 },
                 "total": {
                   "type": "string"
+                },
+                "frozen": {
+                  "type": "string"
                 }
               },
               "additionalProperties": false
@@ -2126,6 +2129,9 @@
                   "type": "string"
                 },
                 "ordered_versions": {
+                  "type": "string"
+                },
+                "frozen_history": {
                   "type": "string"
                 },
                 "sort_label": {

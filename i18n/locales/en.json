@@ -506,7 +506,8 @@
       "inspect_dependency_tree": "Inspect dependency tree",
       "size_tooltip": {
         "unpacked": "{size} unpacked size (this package)",
-        "total": "{size} total unpacked size (including {count} dependency for linux-x64) | {size} total unpacked size (including all {count} dependencies for linux-x64)"
+        "total": "{size} total unpacked size (including {count} dependency for linux-x64) | {size} total unpacked size (including all {count} dependencies for linux-x64)",
+        "frozen": "{size} total unpacked size before the next version was released"
       },
       "main_information": "Main Information",
       "trends": "Trends",
@@ -708,6 +709,7 @@
         "zoom": "zoom",
         "reset_minimap": "reset minimap",
         "ordered_versions": "stable only",
+        "frozen_history": "frozen history",
         "sort_label": "Sort by",
         "sort_time": "Publish time",
         "sort_semver": "Semver",
