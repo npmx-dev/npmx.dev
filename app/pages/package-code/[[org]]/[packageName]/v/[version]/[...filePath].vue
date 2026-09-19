@@ -66,7 +66,7 @@ function getCodeUrl(args: {
 }
 
 // Fetch package data for version list
-const { data: pkg } = usePackage(packageName)
+const { data: pkg } = usePackage(packageName, version)
 const { versions: commandPaletteVersions, ensureLoaded: ensureCommandPaletteVersionsLoaded } =
   useCommandPalettePackageVersions(packageName)
 

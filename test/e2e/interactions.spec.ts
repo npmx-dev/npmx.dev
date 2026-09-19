@@ -441,3 +441,32 @@ test.describe('Keyboard Shortcuts disabled', () => {
     await expect(page).toHaveURL(/\/package\/vue$/)
   })
 })
+
+test.describe('Package Dependencies Page', () => {
+  test('loads dependencies for a package without premature "no dependencies" state', async ({
+    page,
+    goto,
+  }) => {
+    await goto('/package-deps/vue', { waitUntil: 'hydration' })
+
+    await expect(page.locator('h1').first()).toContainText('vue')
+
+    const dependenciesArticle = page.locator('#package-article')
+    await expect(dependenciesArticle).toBeVisible({ timeout: 15_000 })
+
+    await expect(page.locator('text=This version has no dependencies')).toHaveCount(0)
+  })
+
+  test('correctly shows no dependencies for a leaf package with zero dependencies', async ({
+    page,
+    goto,
+  }) => {
+    await goto('/package-deps/react/v/19.2.5', { waitUntil: 'hydration' })
+
+    await expect(page.locator('h1').first()).toContainText('react')
+
+    await expect(page.locator('text=This version has no dependencies')).toBeVisible({
+      timeout: 15_000,
+    })
+  })
+})
