@@ -25,7 +25,9 @@ export function stripHtmlTags(text: string): string {
     previous = result
     result = result.replace(tagPattern, '')
   } while (result !== previous)
-  return result
+  // Strip unclosed HTML tags left by registry truncation (no closing '>').
+  // The match must not cross a backtick, or it would swallow a later code span
+  return result.replace(/<\/?[a-z][^>`]*$/gi, '').trim()
 }
 /**
  * Generate a GitHub-style slug from heading text.
