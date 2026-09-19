@@ -521,8 +521,7 @@ export async function getRepoMeta(
 export async function getRepositoryStars(
   cachedFetch: CachedFetchFunction,
   ref: RepoRef,
-  options: Parameters<typeof $fetch>[1] = {},
 ): Promise<number | null> {
-  const meta = await getRepoMeta(cachedFetch, ref, options)
+  const meta = await getRepoMeta(cachedFetch, ref)
   return meta?.stars ?? null
 }

@@ -105,13 +105,11 @@ export class Constellation {
   /**
    * Gets all links from constellation and their counts
    * @param target - A uri encoded link. did, url, or at-uri
-   * @param ttl - The ttl to use for the cache
    */
-  async getAllLinks(target: string, ttl: number | undefined = undefined) {
+  async getAllLinks(target: string) {
     return await this.cachedFetch<AllLinksResponse>(
       `https://${CONSTELLATION_HOST}/links/all?target=${target}`,
       { headers: HEADERS },
-      ttl,
     )
   }
 }
