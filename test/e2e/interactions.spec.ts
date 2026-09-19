@@ -2,7 +2,9 @@ import { expect, test } from './test-utils'
 
 test.describe('Compare Page', () => {
   test('no-dep column renders separately from package columns', async ({ page, goto }) => {
-    await goto('/compare?packages=vue,__no_dependency__', { waitUntil: 'hydration' })
+    await goto('/compare?packages=vue,__no_dependency__', {
+      waitUntil: 'hydration',
+    })
 
     const grid = page.locator('.comparison-grid')
     await expect(grid).toBeVisible({ timeout: 15000 })
@@ -20,13 +22,15 @@ test.describe('Compare Page', () => {
     goto,
   }) => {
     // Start with vue and no-dep
-    await goto('/compare?packages=vue,__no_dependency__', { waitUntil: 'hydration' })
+    await goto('/compare?packages=vue,__no_dependency__', {
+      waitUntil: 'hydration',
+    })
 
     const grid = page.locator('.comparison-grid')
     await expect(grid).toBeVisible({ timeout: 15000 })
 
     // Add another package via the input
-    const input = page.locator('#package-search')
+    const input = page.getByRole('combobox', { name: 'Search for packages' })
     await input.fill('nuxt')
 
     // Wait for search results and click on nuxt
@@ -176,7 +180,7 @@ test.describe('Package Page', () => {
 })
 
 test.describe('Search Pages', () => {
-  test('/search?q=vue → keyboard navigation (arrow keys + enter)', async ({ page, goto }) => {
+  test('/search?q=vue → keyboard navigation (j/k + enter)', async ({ page, goto }) => {
     await goto('/search?q=vue', { waitUntil: 'hydration' })
 
     await expect(page.locator('text=/found \\d+|showing \\d+/i').first()).toBeVisible({
@@ -187,11 +191,11 @@ test.describe('Search Pages', () => {
     await expect(firstResult).toBeVisible()
 
     // Global keyboard navigation works regardless of focus
-    // ArrowDown selects the next result
-    await page.keyboard.press('ArrowDown')
+    // j moves focus to the next result
+    await page.keyboard.press('j')
 
-    // ArrowUp selects the previous result
-    await page.keyboard.press('ArrowUp')
+    // k moves focus to the previous result (does nothing at the first item)
+    await page.keyboard.press('k')
 
     // Enter navigates to the selected result
     // URL is /package/vue or /org/vue or /user/vue. Not /vue
@@ -199,7 +203,7 @@ test.describe('Search Pages', () => {
     await expect(page).toHaveURL(/\/(package|org|user)\/vue/)
   })
 
-  test('/search?q=vue → ArrowDown navigates only between results, not keyword buttons', async ({
+  test('/search?q=vue → j navigates only between results, not keyword buttons', async ({
     page,
     goto,
   }) => {
@@ -214,16 +218,16 @@ test.describe('Search Pages', () => {
     await expect(firstResult).toBeVisible()
     await expect(secondResult).toBeVisible()
 
-    // ArrowDown from input focuses the first result
-    await page.keyboard.press('ArrowDown')
+    // j from input focuses the first result
+    await page.keyboard.press('j')
     await expect(firstResult).toBeFocused()
 
-    // Second ArrowDown focuses the second result (not a keyword button within the first)
-    await page.keyboard.press('ArrowDown')
+    // Second j focuses the second result (not a keyword button within the first)
+    await page.keyboard.press('j')
     await expect(secondResult).toBeFocused()
   })
 
-  test('/search?q=vue → ArrowUp from first result returns focus to search input', async ({
+  test('/search?q=vue → k at first result does nothing (focus stays on first result)', async ({
     page,
     goto,
   }) => {
@@ -234,12 +238,13 @@ test.describe('Search Pages', () => {
     })
 
     // Navigate to first result
-    await page.keyboard.press('ArrowDown')
-    await expect(page.locator('[data-result-index="0"]').first()).toBeFocused()
+    await page.keyboard.press('j')
+    const firstResult = page.locator('[data-result-index="0"]').first()
+    await expect(firstResult).toBeFocused()
 
-    // ArrowUp returns to the search input
-    await page.keyboard.press('ArrowUp')
-    await expect(page.locator('input[type="search"]')).toBeFocused()
+    // k at the first result does nothing — focus stays on the first result
+    await page.keyboard.press('k')
+    await expect(firstResult).toBeFocused()
   })
 
   test('/search?q=vue → "/" focuses the search input from results', async ({ page, goto }) => {
