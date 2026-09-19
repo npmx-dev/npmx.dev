@@ -1,4 +1,4 @@
-import type { ColumnConfig, FilterChip } from '#shared/types/preferences'
+import { DEFAULT_FILTERS, type ColumnConfig, type FilterChip } from '#shared/types/preferences'
 import { mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
 import type { VueWrapper } from '@vue/test-utils'
 import 'axe-core'
@@ -2184,6 +2184,7 @@ describe('component accessibility audits', () => {
       updatedWithin: 'any' as const,
       security: 'all' as const,
       keywords: [],
+      visibleColumns: DEFAULT_FILTERS.visibleColumns,
     }
 
     it('should have no accessibility violations (collapsed)', async () => {
@@ -2217,6 +2218,7 @@ describe('component accessibility audits', () => {
       updatedWithin: 'any' as const,
       security: 'all' as const,
       keywords: [],
+      visibleColumns: DEFAULT_FILTERS.visibleColumns,
     }
 
     const mockColumns: ColumnConfig[] = [
