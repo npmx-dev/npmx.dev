@@ -45,7 +45,7 @@ export const SPONSORS = {
   ],
   silver: [
     {
-      name: 'Void Zero',
+      name: 'VoidZero',
       logo: {
         dark: LogoVoidZero,
         light: LogoVoidZeroLight,
