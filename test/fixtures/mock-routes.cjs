@@ -12,7 +12,7 @@
 'use strict'
 
 const { existsSync, readFileSync } = require('node:fs')
-const { join } = require('node:path')
+const { join, resolve, sep } = require('node:path')
 
 const FIXTURES_DIR = join(__dirname)
 
@@ -21,7 +21,13 @@ const FIXTURES_DIR = join(__dirname)
  * @returns {unknown | null}
  */
 function readFixture(relativePath) {
-  const fullPath = join(FIXTURES_DIR, relativePath)
+  // Containment check: never serve files outside FIXTURES_DIR, even if a
+  // URL-derived segment contains `..` or (on Windows, after URL decoding)
+  // a backslash path separator.
+  const fullPath = resolve(FIXTURES_DIR, relativePath)
+  if (fullPath !== FIXTURES_DIR && !fullPath.startsWith(FIXTURES_DIR + sep)) {
+    return null
+  }
   if (!existsSync(fullPath)) {
     return null
   }
@@ -128,6 +134,16 @@ function matchNpmRegistry(urlString) {
   const orgMatch = pathname.match(/^\/-\/org\/([^/]+)\/package$/)
   if (orgMatch && orgMatch[1]) {
     const fixture = readFixture(`npm-registry/orgs/${orgMatch[1]}.json`)
+    if (fixture) {
+      return json(fixture)
+    }
+    return json({ error: 'Not found' }, 404)
+  }
+
+  // Org users (distinguishes real orgs from user accounts for /org/<name> redirects)
+  const orgUserMatch = pathname.match(/^\/-\/org\/([^/]+)\/user$/)
+  if (orgUserMatch && orgUserMatch[1]) {
+    const fixture = readFixture(`npm-registry/org-users/${orgUserMatch[1]}.json`)
     if (fixture) {
       return json(fixture)
     }

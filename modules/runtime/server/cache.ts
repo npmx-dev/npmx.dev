@@ -23,6 +23,7 @@ const FIXTURE_PATHS = {
   packument: 'npm-registry:packuments',
   search: 'npm-registry:search',
   org: 'npm-registry:orgs',
+  orgUsers: 'npm-registry:org-users',
   downloads: 'npm-api:downloads',
   user: 'users',
   esmHeaders: 'esm-sh:headers',
@@ -56,6 +57,7 @@ function getFixturePath(type: FixtureType, name: string): string {
       filename = `${name.replace(/:/g, '-')}.json`
       break
     case 'org':
+    case 'orgUsers':
     case 'user':
       filename = `${name}.json`
       break
@@ -461,6 +463,12 @@ function matchUrlToFixture(url: string): FixtureMatchWithVersion | null {
       return { type: 'org', name: orgMatch[1] }
     }
 
+    // Org users (distinguishes real orgs from user accounts for /org/<name> redirects)
+    const orgUsersMatch = pathname.match(/^\/-\/org\/([^/]+)\/user$/)
+    if (orgUsersMatch?.[1]) {
+      return { type: 'orgUsers', name: orgUsersMatch[1] }
+    }
+
     // Packument - handle both full packument and version manifest requests
     let packagePath = decodeURIComponent(pathname.slice(1))
     if (packagePath && !packagePath.startsWith('-/')) {
@@ -618,6 +626,15 @@ async function fetchFromFixtures<T>(
         statusCode: 404,
         statusMessage: 'Org not found',
         message: `No fixture for org: ${match.name}`,
+      })
+    }
+
+    // For org users without fixtures, return 404 (name is neither an org nor a user)
+    if (match.type === 'orgUsers') {
+      throw createError({
+        statusCode: 404,
+        statusMessage: 'Not found',
+        message: `No fixture for org user: ${match.name}`,
       })
     }
 
