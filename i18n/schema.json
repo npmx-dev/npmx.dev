@@ -1710,6 +1710,15 @@
             },
             "view_types": {
               "type": "string"
+            },
+            "types_label": {
+              "type": "string"
+            },
+            "collapse_commands": {
+              "type": "string"
+            },
+            "expand_commands": {
+              "type": "string"
             }
           },
           "additionalProperties": false

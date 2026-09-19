@@ -390,6 +390,11 @@ input[type='search']::-webkit-search-results-decoration {
   display: none;
 }
 
+/* Expand the install commands panel before hydration when previously left open */
+:root[data-install-expanded='true'] [data-install-panel] {
+  grid-template-rows: 1fr;
+}
+
 /* Locking the scroll whenever any of the modals are open */
 html:has(dialog:modal) {
   overflow: hidden;

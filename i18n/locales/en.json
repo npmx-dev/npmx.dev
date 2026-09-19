@@ -568,7 +568,10 @@
       "copy_command": "Copy install command",
       "copy_dev_command": "Copy dev install command",
       "dev_dependency_hint": "Usually installed as a dev dependency",
-      "view_types": "View {package}"
+      "view_types": "View {package}",
+      "types_label": "Types",
+      "collapse_commands": "Collapse additional commands",
+      "expand_commands": "Show additional commands"
     },
     "create": {
       "title": "Create new project",
