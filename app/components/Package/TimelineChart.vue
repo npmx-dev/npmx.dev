@@ -272,7 +272,6 @@ function stackbarTooltipPoints(
       }
     })
     .filter(point => point.size > 0)
-    .toReversed()
 }
 
 function areAllValuesEqual(array: number[]): boolean {
