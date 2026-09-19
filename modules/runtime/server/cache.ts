@@ -102,6 +102,56 @@ function getMockForUrl(url: string): MockResult | null {
     }
   }
 
+  // npms.io API - return mock package score data
+  if (host === 'api.npms.io') {
+    const packageMatch = decodeURIComponent(pathname).match(/^\/v2\/package\/(.+)$/)
+    if (packageMatch?.[1]) {
+      return {
+        data: {
+          analyzedAt: new Date().toISOString(),
+          collected: {
+            metadata: { name: packageMatch[1] },
+          },
+          score: {
+            final: 0.75,
+            detail: {
+              quality: 0.8,
+              popularity: 0.7,
+              maintenance: 0.75,
+            },
+          },
+        },
+      }
+    }
+  }
+
+  // jsdelivr CDN - return 404 for README files, etc.
+  if (host === 'cdn.jsdelivr.net') {
+    // Return null data which will cause a 404 - README files are optional
+    return { data: null }
+  }
+
+  // jsdelivr data API - return mock file listing
+  if (host === 'data.jsdelivr.com') {
+    const packageMatch = decodeURIComponent(pathname).match(/^\/v1\/packages\/npm\/(.+)$/)
+    if (packageMatch?.[1]) {
+      const pkgWithVersion = packageMatch[1]
+      const parsed = parsePackageSpec(pkgWithVersion)
+      return {
+        data: {
+          type: 'npm',
+          name: parsed.name,
+          version: parsed.version || 'latest',
+          files: [
+            { name: 'package.json', hash: 'abc123', size: 1000 },
+            { name: 'index.js', hash: 'def456', size: 500 },
+            { name: 'README.md', hash: 'ghi789', size: 2000 },
+          ],
+        },
+      }
+    }
+  }
+
   // Gravatar API - return 404 (avatars not needed in tests)
   if (host === 'www.gravatar.com') {
     return { data: null }
