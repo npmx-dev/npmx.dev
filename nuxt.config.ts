@@ -233,17 +233,11 @@ export default defineNuxtConfig({
     '/recharging': { prerender: true },
     '/pds': { isr: 86400 }, // revalidate daily
     '/blog/**': { prerender: true },
-    '/rss.xml': {
-      prerender: true,
+    '/blog/rss.xml': {
       headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/rss+xml' },
     },
-    '/atom.xml': {
-      prerender: true,
+    '/blog/atom.xml': {
       headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/atom+xml' },
-    },
-    '/feed.json': {
-      prerender: true,
-      headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/feed+json' },
     },
     '/noodles/**': { prerender: true },
     '/sponsors': { prerender: true },

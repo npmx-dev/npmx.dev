@@ -4,19 +4,18 @@ import { posts } from '#blog/posts'
 const makeUrlAbsolute = (url: string) => new URL(url, 'https://npmx.dev').toString()
 
 export function getFeed() {
-  // Generate content for RSS, Atom and JSON feeds
+  // Generate content for RSS and Atom
   const feed = new Feed({
     title: 'Blog - npmx',
     description: 'A fast, modern browser for the npm registry',
-    id: 'https://npmx.dev/',
-    link: 'https://npmx.dev/',
+    id: 'https://npmx.dev/blog',
+    link: 'https://npmx.dev/blog',
     language: 'en',
     image: 'https://npmx.dev/logo.svg',
     favicon: 'https://npmx.dev/favicon.ico',
     feedLinks: {
-      rss: 'https://npmx.dev/rss.xml',
-      atom: 'https://npmx.dev/atom.xml',
-      json: 'https://npmx.dev/feed.json',
+      rss: 'https://npmx.dev/blog/rss.xml',
+      atom: 'https://npmx.dev/blog/atom.xml',
     },
   })
 

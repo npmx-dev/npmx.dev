@@ -22,19 +22,13 @@ useHead({
       rel: 'alternate',
       title: 'Blog - npmx',
       type: 'application/rss+xml',
-      href: 'https://npmx.dev/rss.xml',
+      href: 'https://npmx.dev/blog/rss.xml',
     },
     {
       rel: 'alternate',
       title: 'Blog - npmx',
       type: 'application/atom+xml',
-      href: 'https://npmx.dev/atom.xml',
-    },
-    {
-      rel: 'alternate',
-      title: 'Blog - npmx',
-      type: 'application/feed+json',
-      href: 'https://npmx.dev/feed.json',
+      href: 'https://npmx.dev/blog/atom.xml',
     },
   ],
 })

@@ -11,10 +11,6 @@ test.describe('Blog feeds', () => {
         name: 'Atom',
         contentType: 'application/atom+xml',
       },
-      {
-        name: 'JSON Feed',
-        contentType: 'application/feed+json',
-      },
     ]
 
     for (const feed of feeds) {

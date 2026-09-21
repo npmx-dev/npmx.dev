@@ -1,4 +1,4 @@
-import { getFeed } from '../utils/feeds'
+import { getFeed } from '../../utils/feeds'
 
 export default defineEventHandler(() => {
   return getFeed().rss2()
