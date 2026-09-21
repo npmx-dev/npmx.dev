@@ -134,7 +134,7 @@
     "changelogen": "0.6.2",
     "chromatic": "18.2.0",
     "devalue": "5.9.0",
-    "eslint-plugin-regexp": "3.3.0",
+    "eslint-plugin-regexp": "3.3.1",
     "fast-check": "4.9.0",
     "h3": "1.15.11",
     "h3-next": "npm:h3@2.0.1-rc.26",
