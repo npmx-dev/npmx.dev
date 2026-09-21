@@ -24,6 +24,7 @@
     "brand": "brand",
     "resources": "Resources",
     "features": "Features",
+    "tools": "tools",
     "other": "Other",
     "sponsored_by": "Sponsored by {list}"
   },
@@ -40,6 +41,7 @@
     "show_kbd_hints": "Highlight keyboard hints",
     "settings": "Open settings",
     "compare": "Open compare",
+    "deps_stats": "Open dependency stats tool",
     "compare_from_package": "Open compare (prefilled with current package)",
     "changelog": "Open changelog",
     "navigate_results": "Navigate results",
@@ -191,6 +193,7 @@
       "theme_changed": "Theme set to {theme}.",
       "accent_color_changed": "Accent color set to {color}.",
       "background_theme_changed": "Background shade set to {theme}.",
+      "foreground_theme_changed": "Foreground shade set to {theme}.",
       "download_started": "Downloading {package} tarball.",
       "copied_to_clipboard": "Copied to clipboard.",
       "npm_disconnected": "npm CLI disconnected.",
@@ -206,12 +209,53 @@
     "popular_packages": "Popular packages",
     "settings": "settings",
     "compare": "compare",
+    "tools": "tools",
     "back": "back",
     "menu": "Menu",
     "mobile_menu": "Navigation menu",
     "open_menu": "Open menu",
     "links": "Links",
     "tap_to_search": "Tap to search"
+  },
+  "tools": {
+    "title": "tools",
+    "tagline": "utilities for exploring packages and project dependencies",
+    "meta_title": "Tools - npmx",
+    "meta_description": "Browse npmx tools for exploring packages and project dependencies",
+    "deps_stats": {
+      "name": "deps stats",
+      "description": "Upload a package.json and inspect stats for each dependency"
+    }
+  },
+  "deps_stats": {
+    "title": "deps stats",
+    "meta_title": "Deps stats - npmx",
+    "meta_description": "Upload a package.json and explore stats for each dependency",
+    "upload": {
+      "section": "Package.json",
+      "label": "Upload package.json",
+      "hint": "Drop a package.json here, or choose a file. Only the dependency fields are read — nothing is uploaded to a server",
+      "clear": "Clear",
+      "invalid_package_json": "Invalid package.json"
+    },
+    "dependencies": {
+      "title": "Dependencies",
+      "count": "No deps | 1 dep | {count} deps",
+      "filter_label": "Filter dependencies",
+      "filter_placeholder": "Filter dependencies...",
+      "empty": "No dependencies found in this package.json",
+      "no_matches": "No dependencies match your filter",
+      "non_registry": "Not an npm registry package"
+    },
+    "stats": {
+      "empty_title": "Select a dependency",
+      "empty_description": "Pick a package from the list to see downloads, size, vulnerabilities, trends, and more",
+      "non_registry_title": "Local or remote dependency",
+      "non_registry_description": "This entry points to a file, workspace, git, or URL dependency, so registry stats are unavailable",
+      "declared_range": "Declared",
+      "resolved_version": "Latest",
+      "open_full_stats": "Open full stats"
+    }
   },
   "blog": {
     "title": "Blog",
@@ -261,7 +305,8 @@
     "back_to_archive": "Back to all noodles",
     "missing": {
       "title": "This noodle never made it out of the bowl.",
-      "body": "We don't have a “{slug}” noodle on the menu. Either it's still being plated, or it was never written. Either way — back to the archive."
+      "body": "We don't have a “{slug}” noodle on the menu. Either it's still being plated, or it was never written. Either way — back to the archive.",
+      "empty_bowl": "empty bowl"
     }
   },
   "settings": {
@@ -318,6 +363,12 @@
       "zinc": "Zinc",
       "slate": "Slate",
       "black": "Black"
+    },
+    "foreground_themes": {
+      "label": "Foreground shade",
+      "contrast": "Contrast",
+      "standard": "Standard",
+      "muted": "Muted"
     },
     "keyboard_shortcuts_enabled": "Enable keyboard shortcuts",
     "keyboard_shortcuts_enabled_description": "Keyboard shortcuts can be disabled if they conflict with other browser or system shortcuts",
@@ -385,7 +436,8 @@
     "collapse": "Collapse",
     "collapse_with_name": "Collapse {name}",
     "expand": "Expand",
-    "expand_with_name": "Expand {name}"
+    "expand_with_name": "Expand {name}",
+    "copyMdError": "Failed to load markdown, try again later"
   },
   "profile": {
     "display_name": "Display Name",
@@ -411,6 +463,7 @@
     "verified_provenance": "Verified provenance",
     "navigation": "Package",
     "copy_name": "Copy package name",
+    "copy_version": "Copy package version",
     "deprecation": {
       "package": "This package has been deprecated.",
       "version": "This version has been deprecated.",
@@ -489,7 +542,6 @@
       "compare": "compare",
       "timeline": "timeline",
       "stats": "stats",
-      "compare_this_package": "compare this package",
       "changelog": "changelog"
     },
     "likes": {
@@ -525,7 +577,16 @@
     },
     "run": {
       "title": "Run",
-      "locally": "Run locally"
+      "locally": "Run locally",
+      "copy_command": "Copy command to run locally"
+    },
+    "command": {
+      "copied_install": "Install command copied",
+      "copied_dev_install": "Dev install command copied",
+      "copied_run": "Run command copied",
+      "copied_create": "Create command copied",
+      "copied_execute": "Execute command copied",
+      "copied_skills": "Skills command copied"
     },
     "readme": {
       "title": "Readme",
@@ -624,6 +685,7 @@
     "timeline": {
       "load_more": "Load more",
       "load_error": "Failed to load timeline. Please try again later.",
+      "no_stable_versions": "No stable versions to show. Turn off \u201cstable only\u201d to include pre-releases.",
       "size_increase": "Install size increased by {percent}% ({size})",
       "size_decrease": "Install size decreased by {percent}% ({size})",
       "dep_increase": "{count} dependency added | {count} dependencies added",
@@ -637,6 +699,7 @@
       "trusted_publisher_removed": "Trusted publishing removed",
       "provenance_added": "Provenance enabled",
       "provenance_removed": "Provenance removed",
+      "deprecated": "Deprecated",
       "chart": {
         "tab_aria_label": "Metric selection",
         "dependency_size": "Dependency Size",
@@ -645,6 +708,9 @@
         "zoom": "zoom",
         "reset_minimap": "reset minimap",
         "ordered_versions": "stable only",
+        "sort_label": "Sort by",
+        "sort_time": "Publish time",
+        "sort_semver": "Semver",
         "copy_alt": {
           "key_changes": "Key changes: {version_events}.",
           "version_events": "version {version}: {events}",
@@ -666,7 +732,8 @@
       "outdated_minor": "{count} minor version behind (latest: {latest}) | {count} minor versions behind (latest: {latest})",
       "outdated_patch": "Patch update available (latest: {latest})",
       "has_replacement": "This dependency has suggested replacements",
-      "vulnerabilities_count": "{count} vulnerability | {count} vulnerabilities"
+      "vulnerabilities_count": "{count} vulnerability | {count} vulnerabilities",
+      "aliased_to": "Aliased to {name}"
     },
     "peer_dependencies": {
       "title": "Peer Dependency ({count}) | Peer Dependencies ({count})",
@@ -714,6 +781,7 @@
       "date_range": "{start} to {end}",
       "date_range_multiline": "{start}\nto {end}",
       "download_file": "Download {fileType}",
+      "copy_file": "Copy {fileType}",
       "toggle_annotator": "Toggle annotator",
       "toggle_stack_mode": "Toggle stack mode",
       "open_options": "Open options",
@@ -762,7 +830,7 @@
         "chart": "Embed this chart",
         "copy_url": "Copy this URL to embed the chart into your website",
         "preview": "Preview",
-        "tip": "If startDate and endDate are not provided, the chart defaults to the last 12 months."
+        "tip": "If startDate and endDate are not provided in the URL, the graph will display the last 12 months by default."
       }
     },
     "downloads": {
@@ -1854,6 +1922,7 @@
       "p2": "Please try again later or {viewon}"
     },
     "rate_limit_ungh": "Sorry, Github's rate limit has been hit, try again in a moment",
-    "version_unavailable": "The requested version is not available."
+    "version_unavailable": "The requested version is not available.",
+    "copy_as_markdown": "Copy changelog as Markdown"
   }
 }

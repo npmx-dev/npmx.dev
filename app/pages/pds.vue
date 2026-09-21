@@ -1,5 +1,17 @@
 <script setup lang="ts">
 import type { AtprotoProfile } from '#shared/types/atproto'
+import { authRedirect } from '~/utils/atproto/helpers'
+
+const route = useRoute()
+const { locale } = useI18n()
+
+async function handleCreateAccount() {
+  await authRedirect('https://npmx.social', {
+    create: true,
+    redirectTo: route.fullPath,
+    locale: locale.value,
+  })
+}
 
 useSeoMeta({
   title: () => `${$t('pds.title')} - npmx`,
@@ -66,7 +78,15 @@ const totalAccounts = computed(() => pdsUsers.value.length)
           <p class="text-fg-muted leading-relaxed mb-4">
             {{ $t('pds.join.description') }}
           </p>
-          <div class="mt-6">
+          <div class="mt-6 flex flex-wrap items-center gap-3">
+            <ButtonBase
+              type="button"
+              variant="primary"
+              classicon="i-lucide:user-plus"
+              @click="handleCreateAccount"
+            >
+              {{ $t('auth.modal.create_account') }}
+            </ButtonBase>
             <LinkBase
               to="https://pdsmoover.com/moover/npmx.social"
               class="gap-2 px-4 py-2 text-sm font-medium rounded-md border border-border hover:border-border-hover bg-bg-muted hover:bg-bg"

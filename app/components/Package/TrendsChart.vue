@@ -25,6 +25,7 @@ import {
   getTrendsDatetimeFormatterOptions,
 } from '#shared/utils/trends-chart'
 import { downloadFileLink } from '~/utils/download'
+import { useCopyChartPng } from '~/composables/useCopyChartPng'
 import { createLastDatapointLabelsSvg } from '#shared/utils/download-chart-last-label'
 
 import('vue-data-ui/style.css')
@@ -53,10 +54,11 @@ const props = withDefaults(
     showFacetSelector?: boolean
     permalink?: boolean
     defaultRange?: 'auto' | '52-weeks'
+    hideControls?: boolean
+    compactXAxisLabels?: boolean
   }>(),
   {
     defaultRange: 'auto',
-    permalink: false,
   },
 )
 
@@ -71,6 +73,7 @@ const rootEl = shallowRef<HTMLElement | null>(null)
 const isZoomed = shallowRef(false)
 
 const chartRef = useTemplateRef('chartRef')
+const { copiedPng, isCopyingPng, copyChartPng } = useCopyChartPng(chartRef)
 
 function setIsZoom({ isZoom }: { isZoom: boolean }) {
   isZoomed.value = isZoom
@@ -1085,6 +1088,9 @@ const chartHeight = computed(() => {
   if (isMobile.value) {
     return 950
   }
+  if (props.hideControls) {
+    return 460
+  }
   return showCorrectionControls.value && props.inModal ? 494 : 600
 })
 
@@ -1141,6 +1147,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
     t: $t,
     compactNumberFormatter: compactNumberFormatter.value,
     tooltipPosition: tooltipPosition.value,
+    compactXAxisLabels: props.compactXAxisLabels,
   })
 
   return {
@@ -1237,7 +1244,8 @@ const chartConfig = computed<VueUiXyConfig>(() => {
         },
       },
       zoom: {
-        maxWidth: isMobile.value ? 350 : 500,
+        show: !props.hideControls,
+        autoFit: true,
         highlightColor: colors.value.bgElevated,
         useResetSlot: true,
         keepState: keepZoomState.value,
@@ -1420,7 +1428,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
       </TabList>
     </TabRoot>
 
-    <div class="w-full mb-4 flex flex-col gap-3">
+    <div class="w-full mb-4 flex flex-col gap-3" v-if="!hideControls">
       <div class="grid grid-cols-2 sm:flex sm:flex-row gap-3 sm:gap-2 sm:items-end">
         <SelectField
           v-if="showFacetSelector"
@@ -1724,7 +1732,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
 
               <!-- Inject npmx logo & tagline during SVG and PNG print -->
               <g
-                v-if="svg.isPrintingSvg || svg.isPrintingImg"
+                v-if="svg.isPrintingSvg || svg.isPrintingImg || isCopyingPng"
                 v-html="
                   drawNpmxLogoAndTaglineWatermark({
                     svg,
@@ -1756,7 +1764,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
 
             <!-- Custom legend for multiple series -->
             <template #legend="{ legend }">
-              <div class="flex gap-x-6 gap-y-2 flex-wrap justify-center text-sm">
+              <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
                 <template v-if="isMultiPackageMode">
                   <button
                     v-for="datapoint in legend"
@@ -1764,15 +1772,17 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
                     :aria-pressed="datapoint.isSegregated"
                     :aria-label="datapoint.name"
                     type="button"
-                    class="flex gap-1 place-items-center"
+                    class="flex shrink-0 items-center gap-1 whitespace-nowrap"
                     @click="datapoint.segregate()"
                   >
-                    <div class="h-3 w-3">
+                    <div class="h-3 w-3 shrink-0">
                       <svg viewBox="0 0 2 2" class="w-full">
                         <rect x="0" y="0" width="2" height="2" rx="0.3" :fill="datapoint.color" />
                       </svg>
                     </div>
+
                     <span
+                      class="shrink-0 whitespace-nowrap"
                       :style="{
                         textDecoration: datapoint.isSegregated ? 'line-through' : undefined,
                       }"
@@ -1784,13 +1794,13 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
 
                 <!-- Single series legend (no user interaction) -->
                 <template v-else-if="legend.length > 0">
-                  <div class="flex gap-1 place-items-center">
-                    <div class="h-3 w-3">
+                  <div class="flex shrink-0 items-center gap-1 whitespace-nowrap">
+                    <div class="h-3 w-3 shrink-0">
                       <svg viewBox="0 0 2 2" class="w-full">
                         <rect x="0" y="0" width="2" height="2" rx="0.3" :fill="legend[0]?.color" />
                       </svg>
                     </div>
-                    <span>
+                    <span class="shrink-0 whitespace-nowrap">
                       {{ legend[0]?.name }}
                     </span>
                   </div>
@@ -1798,10 +1808,10 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
 
                 <!-- Estimation extra legend item -->
                 <div
-                  class="flex gap-1 place-items-center"
+                  class="flex shrink-0 items-center gap-1 whitespace-nowrap"
                   v-if="supportsEstimation || hasDownloadAnomalies"
                 >
-                  <svg viewBox="0 0 20 2" width="20">
+                  <svg viewBox="0 0 20 2" width="20" class="shrink-0">
                     <line
                       x1="0"
                       y1="1"
@@ -1812,7 +1822,9 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
                       stroke-linecap="round"
                     />
                   </svg>
-                  <span class="text-fg-subtle">{{ $t('package.trends.legend_estimation') }}</span>
+                  <span class="shrink-0 whitespace-nowrap text-fg-subtle">
+                    {{ $t('package.trends.legend_estimation') }}
+                  </span>
                 </div>
               </div>
             </template>
@@ -1822,7 +1834,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
               <button
                 type="button"
                 aria-label="reset minimap"
-                class="absolute inset-is-1/2 -translate-x-1/2 -bottom-18 sm:inset-is-unset sm:translate-x-0 sm:bottom-auto sm:-inset-ie-20 sm:-top-3 flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
+                class="absolute inset-is-1/2 -translate-x-1/2 -bottom-18 sm:inset-is-unset sm:translate-x-0 sm:bottom-auto sm:-inset-ie-16 sm:-top-3 flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
                 style="pointer-events: all !important"
                 @click="resetMinimap"
               >
@@ -1836,6 +1848,13 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
             </template>
             <template #optionCsv>
               <span class="text-fg-subtle font-mono pointer-events-none">CSV</span>
+            </template>
+            <template #custom-menu-before>
+              <ChartCopyPngButton
+                :copied="copiedPng"
+                :copying="isCopyingPng"
+                @click="copyChartPng"
+              />
             </template>
             <template #optionImg>
               <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
@@ -1959,7 +1978,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
     </div>
 
     <!-- Chart embedding -->
-    <div v-if="isDownloadsMetric && !!chartData.dataset">
+    <div v-if="isDownloadsMetric && !!chartData.dataset && !hideControls">
       <div class="flex flex-col gap-2">
         <button
           type="button"
@@ -2056,7 +2075,8 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
   background: var(--bg-elevated) !important;
 }
 
-.vue-ui-pen-and-paper-action {
+.vue-ui-pen-and-paper-action,
+.vue-ui-pen-and-paper-drag-handle {
   background: var(--bg-elevated) !important;
   border: none !important;
 }

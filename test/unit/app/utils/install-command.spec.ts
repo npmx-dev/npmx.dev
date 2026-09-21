@@ -289,6 +289,25 @@ describe('install command generation', () => {
       expect(parts).toEqual(['vlt', 'install', 'lodash'])
     })
 
+    it('omits an empty action for ni', () => {
+      expect(
+        getInstallCommandParts({
+          packageName: 'lodash',
+          packageManager: 'ni',
+          jsrInfo: jsrNotAvailable,
+        }),
+      ).toEqual(['ni', 'lodash'])
+
+      expect(
+        getInstallCommandParts({
+          packageName: 'eslint',
+          packageManager: 'ni',
+          jsrInfo: jsrNotAvailable,
+          dev: true,
+        }),
+      ).toEqual(['ni', '-D', 'eslint'])
+    })
+
     it('joined parts match getInstallCommand output', () => {
       const options = {
         packageName: '@trpc/server',

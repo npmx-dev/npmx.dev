@@ -76,6 +76,9 @@
         "features": {
           "type": "string"
         },
+        "tools": {
+          "type": "string"
+        },
         "other": {
           "type": "string"
         },
@@ -122,6 +125,9 @@
           "type": "string"
         },
         "compare": {
+          "type": "string"
+        },
+        "deps_stats": {
           "type": "string"
         },
         "compare_from_package": {
@@ -577,6 +583,9 @@
             "background_theme_changed": {
               "type": "string"
             },
+            "foreground_theme_changed": {
+              "type": "string"
+            },
             "download_started": {
               "type": "string"
             },
@@ -622,6 +631,9 @@
         "compare": {
           "type": "string"
         },
+        "tools": {
+          "type": "string"
+        },
         "back": {
           "type": "string"
         },
@@ -639,6 +651,126 @@
         },
         "tap_to_search": {
           "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "tools": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "tagline": {
+          "type": "string"
+        },
+        "meta_title": {
+          "type": "string"
+        },
+        "meta_description": {
+          "type": "string"
+        },
+        "deps_stats": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "deps_stats": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "meta_title": {
+          "type": "string"
+        },
+        "meta_description": {
+          "type": "string"
+        },
+        "upload": {
+          "type": "object",
+          "properties": {
+            "section": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            },
+            "hint": {
+              "type": "string"
+            },
+            "clear": {
+              "type": "string"
+            },
+            "invalid_package_json": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "dependencies": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "count": {
+              "type": "string"
+            },
+            "filter_label": {
+              "type": "string"
+            },
+            "filter_placeholder": {
+              "type": "string"
+            },
+            "empty": {
+              "type": "string"
+            },
+            "no_matches": {
+              "type": "string"
+            },
+            "non_registry": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "stats": {
+          "type": "object",
+          "properties": {
+            "empty_title": {
+              "type": "string"
+            },
+            "empty_description": {
+              "type": "string"
+            },
+            "non_registry_title": {
+              "type": "string"
+            },
+            "non_registry_description": {
+              "type": "string"
+            },
+            "declared_range": {
+              "type": "string"
+            },
+            "resolved_version": {
+              "type": "string"
+            },
+            "open_full_stats": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false
@@ -788,6 +920,9 @@
               "type": "string"
             },
             "body": {
+              "type": "string"
+            },
+            "empty_bowl": {
               "type": "string"
             }
           },
@@ -956,6 +1091,24 @@
               "type": "string"
             },
             "black": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "foreground_themes": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "contrast": {
+              "type": "string"
+            },
+            "standard": {
+              "type": "string"
+            },
+            "muted": {
               "type": "string"
             }
           },
@@ -1161,6 +1314,9 @@
         },
         "expand_with_name": {
           "type": "string"
+        },
+        "copyMdError": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -1235,6 +1391,9 @@
           "type": "string"
         },
         "copy_name": {
+          "type": "string"
+        },
+        "copy_version": {
           "type": "string"
         },
         "deprecation": {
@@ -1471,9 +1630,6 @@
             "stats": {
               "type": "string"
             },
-            "compare_this_package": {
-              "type": "string"
-            },
             "changelog": {
               "type": "string"
             }
@@ -1580,6 +1736,33 @@
               "type": "string"
             },
             "locally": {
+              "type": "string"
+            },
+            "copy_command": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "command": {
+          "type": "object",
+          "properties": {
+            "copied_install": {
+              "type": "string"
+            },
+            "copied_dev_install": {
+              "type": "string"
+            },
+            "copied_run": {
+              "type": "string"
+            },
+            "copied_create": {
+              "type": "string"
+            },
+            "copied_execute": {
+              "type": "string"
+            },
+            "copied_skills": {
               "type": "string"
             }
           },
@@ -1876,6 +2059,9 @@
             "load_error": {
               "type": "string"
             },
+            "no_stable_versions": {
+              "type": "string"
+            },
             "size_increase": {
               "type": "string"
             },
@@ -1915,6 +2101,9 @@
             "provenance_removed": {
               "type": "string"
             },
+            "deprecated": {
+              "type": "string"
+            },
             "chart": {
               "type": "object",
               "properties": {
@@ -1937,6 +2126,15 @@
                   "type": "string"
                 },
                 "ordered_versions": {
+                  "type": "string"
+                },
+                "sort_label": {
+                  "type": "string"
+                },
+                "sort_time": {
+                  "type": "string"
+                },
+                "sort_semver": {
                   "type": "string"
                 },
                 "copy_alt": {
@@ -2003,6 +2201,9 @@
               "type": "string"
             },
             "vulnerabilities_count": {
+              "type": "string"
+            },
+            "aliased_to": {
               "type": "string"
             }
           },
@@ -2144,6 +2345,9 @@
               "type": "string"
             },
             "download_file": {
+              "type": "string"
+            },
+            "copy_file": {
               "type": "string"
             },
             "toggle_annotator": {
@@ -5567,6 +5771,9 @@
           "type": "string"
         },
         "version_unavailable": {
+          "type": "string"
+        },
+        "copy_as_markdown": {
           "type": "string"
         }
       },

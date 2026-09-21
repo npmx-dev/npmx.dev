@@ -8,10 +8,10 @@
 
 import type { DenoDocNode, JsDocTag } from '#shared/types/deno-doc'
 import { highlightCodeBlock } from '../shiki'
-import { formatParam, formatType, getNodeSignature } from './format'
+import { formatParams, formatType, getNodeSignature } from './format'
 import { groupMergedByKind } from './processing'
 import { escapeHtml, createSymbolId, parseJsDocLinks, renderMarkdown } from './text'
-import type { MergedSymbol, SymbolLookup } from './types'
+import type { MergedSymbol, ProcessedEntry, SymbolLookup } from './types'
 
 // =============================================================================
 // Configuration
@@ -55,16 +55,38 @@ const KIND_TITLES: Record<string, string> = {
 export async function renderDocNodes(
   symbols: MergedSymbol[],
   symbolLookup: SymbolLookup,
+  prefix = '',
 ): Promise<string> {
   const grouped = groupMergedByKind(symbols)
   const sectionPromises = KIND_DISPLAY_ORDER.map(async kind => {
     const kindSymbols = grouped[kind]
     if (!kindSymbols || kindSymbols.length === 0) return ''
-    return renderKindSection(kind, kindSymbols, symbolLookup)
+    return renderKindSection(kind, kindSymbols, symbolLookup, prefix)
   })
 
   const sections = await Promise.all(sectionPromises)
   return sections.filter(Boolean).join('\n')
+}
+
+/**
+ * Render a package's entry points, grouping each prefixed entry under its own section.
+ */
+export async function renderEntries(entries: ProcessedEntry[]): Promise<string> {
+  const groups = await Promise.all(
+    entries.map(async entry => {
+      const body = await renderDocNodes(entry.symbols, entry.lookup, entry.prefix)
+      if (!body || !entry.prefix) return body
+
+      return [
+        `<section class="docs-group" id="group-${entry.prefix}">`,
+        `<h2 class="docs-section-title docs-group-title">${escapeHtml(entry.entryPoint.replace(/^\.\//, ''))}</h2>`,
+        body,
+        `</section>`,
+      ].join('\n')
+    }),
+  )
+
+  return groups.filter(Boolean).join('\n')
 }
 
 /**
@@ -74,14 +96,16 @@ async function renderKindSection(
   kind: string,
   symbols: MergedSymbol[],
   symbolLookup: SymbolLookup,
+  prefix = '',
 ): Promise<string> {
   const title = KIND_TITLES[kind] || kind
   const lines: string[] = []
   const renderedSymbols = await Promise.all(
-    symbols.map(symbol => renderMergedSymbol(symbol, symbolLookup)),
+    symbols.map(symbol => renderMergedSymbol(symbol, symbolLookup, prefix)),
   )
 
-  lines.push(`<section class="docs-section" id="section-${kind}">`)
+  const sectionId = prefix ? `section-${prefix}-${kind}` : `section-${kind}`
+  lines.push(`<section class="docs-section" id="${sectionId}">`)
   lines.push(`<h2 class="docs-section-title">${title}</h2>`)
   lines.push(...renderedSymbols)
 
@@ -96,12 +120,13 @@ async function renderKindSection(
 async function renderMergedSymbol(
   symbol: MergedSymbol,
   symbolLookup: SymbolLookup,
+  prefix = '',
 ): Promise<string> {
   const primaryNode = symbol.nodes[0]
   if (!primaryNode) return '' // Safety check - should never happen
 
   const lines: string[] = []
-  const id = createSymbolId(symbol.kind, symbol.name)
+  const id = createSymbolId(symbol.kind, symbol.name, prefix)
   const hasOverloads = symbol.nodes.length > 1
 
   lines.push(`<article class="docs-symbol" id="${id}">`)
@@ -306,7 +331,7 @@ function renderClassMembers(def: NonNullable<DenoDocNode['classDef']>): string {
     lines.push(`<div class="docs-members">`)
     lines.push(`<h4>Constructor</h4>`)
     for (const ctor of constructors) {
-      const params = ctor.params?.map(p => formatParam(p)).join(', ') || ''
+      const params = formatParams(ctor.params)
       lines.push(`<pre><code>constructor(${escapeHtml(params)})</code></pre>`)
     }
     lines.push(`</div>`)
@@ -350,7 +375,7 @@ function renderClassMembers(def: NonNullable<DenoDocNode['classDef']>): string {
 
   if (regularMethods.length > 0) {
     const methodItems: DefinitionListItem[] = regularMethods.map(method => {
-      const params = method.functionDef?.params?.map(p => formatParam(p)).join(', ') || ''
+      const params = formatParams(method.functionDef?.params)
       const ret = formatType(method.functionDef?.returnType) || 'void'
       const staticStr = method.isStatic ? 'static ' : ''
 
@@ -397,7 +422,7 @@ function renderInterfaceMembers(def: NonNullable<DenoDocNode['interfaceDef']>): 
     lines.push(`<h4>Methods</h4>`)
     lines.push(`<dl>`)
     for (const method of methods) {
-      const params = method.params?.map(p => formatParam(p)).join(', ') || ''
+      const params = formatParams(method.params)
       const ret = formatType(method.returnType) || 'void'
       lines.push(
         `<dt><code>${escapeHtml(method.name)}(${escapeHtml(params)}): ${escapeHtml(ret)}</code></dt>`,
@@ -439,29 +464,27 @@ function renderEnumMembers(def: NonNullable<DenoDocNode['enumDef']>): string {
 // =============================================================================
 
 /**
- * Render table of contents.
+ * Render the per-kind `<li>` items for a set of symbols, without a wrapping `<ul>`.
  */
-export function renderToc(symbols: MergedSymbol[]): string {
+function renderTocKindItems(symbols: MergedSymbol[], prefix = ''): string[] {
   const grouped = groupMergedByKind(symbols)
   const lines: string[] = []
-
-  lines.push(`<nav class="toc text-sm" aria-label="Table of contents">`)
-  lines.push(`<ul class="space-y-3">`)
 
   for (const kind of KIND_DISPLAY_ORDER) {
     const kindSymbols = grouped[kind]
     if (!kindSymbols || kindSymbols.length === 0) continue
 
     const title = KIND_TITLES[kind] || kind
+    const sectionId = prefix ? `section-${prefix}-${kind}` : `section-${kind}`
     lines.push(`<li>`)
     lines.push(
-      `<a href="#section-${kind}" class="font-semibold text-fg-muted hover:text-fg block mb-1">${title} <span class="text-fg-subtle font-normal">(${kindSymbols.length})</span></a>`,
+      `<a href="#${sectionId}" class="font-semibold text-fg-muted hover:text-fg block mb-1">${title} <span class="text-fg-subtle font-normal">(${kindSymbols.length})</span></a>`,
     )
 
     const showSymbols = kindSymbols.slice(0, MAX_TOC_ITEMS_PER_KIND)
     lines.push(`<ul class="ps-3 space-y-0.5 border-is border-border/50">`)
     for (const symbol of showSymbols) {
-      const id = createSymbolId(symbol.kind, symbol.name)
+      const id = createSymbolId(symbol.kind, symbol.name, prefix)
       lines.push(
         `<li><a href="#${id}" class="text-fg-subtle hover:text-fg font-mono text-xs block py-0.5 truncate">${escapeHtml(symbol.name)}</a></li>`,
       )
@@ -473,6 +496,32 @@ export function renderToc(symbols: MergedSymbol[]): string {
     lines.push(`</ul>`)
 
     lines.push(`</li>`)
+  }
+
+  return lines
+}
+
+/**
+ * Render a table of contents covering every entry point.
+ */
+export function renderEntriesToc(entries: ProcessedEntry[]): string {
+  const lines: string[] = []
+
+  // Group labels and kind items are siblings under one top-level `<ul>`, so the
+  // page's positional `.toc-content > ul > li` styles apply unchanged.
+  lines.push(`<nav class="toc text-sm" aria-label="Table of contents">`)
+  lines.push(`<ul class="space-y-3">`)
+
+  for (const entry of entries) {
+    if (entry.prefix) {
+      lines.push(`<li class="docs-toc-group">`)
+      lines.push(
+        `<a href="#group-${entry.prefix}" class="font-mono font-semibold text-fg-muted hover:text-fg block mb-1 truncate"><bdi>${escapeHtml(entry.entryPoint)}</bdi></a>`,
+      )
+      lines.push(`</li>`)
+    }
+
+    lines.push(...renderTocKindItems(entry.symbols, entry.prefix))
   }
 
   lines.push(`</ul>`)

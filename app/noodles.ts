@@ -3,9 +3,12 @@ import type { Noodle } from '#shared/schemas/noodle'
 // To add a noodle: drop a Logo.vue under app/components/Noodle/<Name>/,
 // register the key in app/components/Noodle/index.ts, then append an entry below.
 
-const ALEX = { name: 'Alex Savelyev', blueskyHandle: 'alexdln.com' }
+const ALEX = { name: 'Alex Savelyeva', blueskyHandle: 'alexdln.com' }
 const ALFON = { name: 'Alfon', blueskyHandle: 'alfon.dev' }
 const GRAPHIEROS = { name: 'Graphieros', blueskyHandle: 'graphieros.npmx.social' }
+const FELIX = { name: 'Felix Schneider', blueskyHandle: 'felixs.dev' }
+const JVIIDE = { name: 'Joachim Viide', blueskyHandle: 'jviide.iki.fi' }
+const MATTEO = { name: 'Matteo Gabriele', blueskyHandle: 'matteogabriele.bsky.social' }
 
 const entries: Noodle[] = [
   {
@@ -130,6 +133,57 @@ const entries: Noodle[] = [
       {
         label: 'Node.js v0.0.1 release',
         url: 'https://github.com/nodejs/node-v0.x-archive/releases/tag/v0.0.1',
+      },
+    ],
+  },
+  {
+    key: 'emoji-day',
+    title: 'World Emoji Day',
+    slug: 'emoji-day',
+    date: '2026-07-17',
+    dateTo: '2026-07-19',
+    timezone: 'auto',
+    tagline: false,
+    occasion: '📅🌍🚀💬🥳✨',
+    prUrl: 'https://github.com/npmx-dev/npmx.dev/pull/3038',
+    authors: [FELIX, JVIIDE],
+    references: [
+      { label: 'World Emoji Day Website', url: 'https://worldemojiday.com/' },
+      { label: 'Wikipedia', url: 'https://en.wikipedia.org/wiki/World_Emoji_Day' },
+    ],
+  },
+  {
+    key: 'gif-day',
+    title: 'National GIF Day',
+    slug: 'gif-day',
+    date: '2026-09-05',
+    dateTo: '2026-09-08',
+    timezone: 'auto',
+    tagline: false,
+    occasion: 'National GIF day',
+    prUrl: 'https://github.com/npmx-dev/npmx.dev/pull/3067',
+    authors: [MATTEO],
+    references: [
+      {
+        label: 'National GIF day',
+        url: 'https://www.whatnationaldayisit.com/day/Gif/',
+      },
+    ],
+  },
+  {
+    key: 'iojs-nodejs-merge',
+    title: 'IO.js and Node.js merge',
+    slug: 'iojs-nodejs-merge',
+    date: '2026-09-14',
+    timezone: 'auto',
+    tagline: false,
+    occasion: 'IO.js and Node.js merge',
+    prUrl: 'https://github.com/npmx-dev/npmx.dev/pull/3238',
+    authors: [ALEX],
+    references: [
+      {
+        label: 'Node.js Foundation Combines Node.js and io.js Into Single Codebase',
+        url: 'https://nodejs.org/en/blog/announcements/foundation-v4-announce',
       },
     ],
   },

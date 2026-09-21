@@ -11,7 +11,9 @@
 import type { DocsGenerationResult } from '#shared/types/deno-doc'
 import { getDocNodes } from './client'
 import { buildSymbolLookup, flattenNamespaces, mergeOverloads } from './processing'
-import { renderDocNodes, renderToc } from './render'
+import { renderEntries, renderEntriesToc } from './render'
+import { computeEntryPrefixes } from './text'
+import type { ProcessedEntry } from './types'
 
 /**
  * Generate API documentation for an npm package.
@@ -35,21 +37,44 @@ export async function generateDocsWithDeno(
   packageName: string,
   version: string,
 ): Promise<DocsGenerationResult | null> {
-  // Get doc nodes using @deno/doc WASM
   const result = await getDocNodes(packageName, version)
 
-  if (!result.nodes || result.nodes.length === 0) {
+  if (result.entries.length === 0) {
     return null
   }
 
-  // Process nodes: flatten namespaces, merge overloads, and build lookup
-  const flattenedNodes = flattenNamespaces(result.nodes)
-  const mergedSymbols = mergeOverloads(flattenedNodes)
-  const symbolLookup = buildSymbolLookup(flattenedNodes)
+  const entries = result.entries
+    .map(entry => {
+      const flattenedNodes = flattenNamespaces(entry.nodes)
+      return {
+        entryPoint: entry.entryPoint,
+        nodes: flattenedNodes,
+        symbols: mergeOverloads(flattenedNodes),
+      }
+    })
+    .filter(entry => entry.symbols.length > 0)
 
-  // Render HTML and TOC from pre-computed merged symbols
-  const html = await renderDocNodes(mergedSymbols, symbolLookup)
-  const toc = renderToc(mergedSymbols)
+  if (entries.length === 0) {
+    return null
+  }
 
-  return { html, toc, nodes: flattenedNodes }
+  // An empty prefix means "render flat": a lone entry, or the root export of a
+  // multi-entry package, keeps unprefixed anchor IDs.
+  const prefixes =
+    entries.length > 1 ? computeEntryPrefixes(entries.map(entry => entry.entryPoint)) : null
+
+  const processed: ProcessedEntry[] = entries.map(entry => {
+    const prefix = prefixes?.get(entry.entryPoint) ?? ''
+    return {
+      entryPoint: entry.entryPoint,
+      prefix,
+      symbols: entry.symbols,
+      lookup: buildSymbolLookup(entry.nodes, prefix),
+    }
+  })
+
+  return {
+    html: await renderEntries(processed),
+    toc: renderEntriesToc(processed),
+  }
 }

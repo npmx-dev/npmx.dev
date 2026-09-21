@@ -93,6 +93,32 @@ describe('timeline API', () => {
     expect(result.versions[2]!.version).toBe('1.0.0')
   })
 
+  it('sorts by semver (highest first, including pre-releases) when sort=semver', async () => {
+    routerParam = 'my-pkg'
+    queryParams = { offset: 0, limit: 10, sort: 'semver' }
+
+    // Publish-time order deliberately differs from semver order: 1.9.0 was
+    // published most recently (a back-port), and a pre-release sits between
+    // 2.0.0 and 1.9.0 semantically.
+    fetchNpmPackageMock.mockResolvedValue(
+      makePackument({
+        versions: {
+          '1.9.0': {},
+          '2.0.0-beta.1': {},
+          '2.0.0': {},
+        },
+        time: {
+          '2.0.0-beta.1': '2024-01-01T00:00:00Z',
+          '2.0.0': '2024-06-01T00:00:00Z',
+          '1.9.0': '2025-01-01T00:00:00Z',
+        },
+      }),
+    )
+
+    const result = await handler(fakeEvent)
+    expect(result.versions.map(v => v.version)).toEqual(['2.0.0', '2.0.0-beta.1', '1.9.0'])
+  })
+
   it('applies offset and limit correctly', async () => {
     routerParam = 'my-pkg'
     queryParams = { offset: 1, limit: 1 }
@@ -147,13 +173,39 @@ describe('timeline API', () => {
     for (let i = 1; i <= 150; i++) {
       const v = `1.0.${i}`
       versions[v] = {}
-      time[v] = new Date(2024, 0, (i % 28) + 1, i).toISOString()
+      time[v] = new Date(2024, 0, (i % 28) + 1, i % 24).toISOString()
     }
 
     fetchNpmPackageMock.mockResolvedValue(makePackument({ versions, time }))
 
     const result = await handler(fakeEvent)
     expect(result.versions).toHaveLength(100)
+  })
+
+  it('excludes pre-releases when stable-only=true', async () => {
+    routerParam = 'my-pkg'
+    queryParams = { 'stable-only': 'true', 'sort': 'semver' }
+
+    fetchNpmPackageMock.mockResolvedValue(
+      makePackument({
+        versions: {
+          '1.0.0': {},
+          '2.0.0-beta.1': {},
+          '2.0.0': {},
+          '2.1.0-rc.0': {},
+        },
+        time: {
+          '1.0.0': '2024-01-01T00:00:00Z',
+          '2.0.0-beta.1': '2024-02-01T00:00:00Z',
+          '2.0.0': '2024-03-01T00:00:00Z',
+          '2.1.0-rc.0': '2024-04-01T00:00:00Z',
+        },
+      }),
+    )
+
+    const result = await handler(fakeEvent)
+    expect(result.versions.map(v => v.version)).toEqual(['2.0.0', '1.0.0'])
+    expect(result.total).toBe(2)
   })
 
   it('extracts license string from object format', async () => {

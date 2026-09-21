@@ -59,8 +59,8 @@ defineExpose({
       @transitionend="onDialogTransitionEnd"
     >
       <!-- Modal top header section -->
-      <div class="flex items-center justify-between mb-6">
-        <div>
+      <div class="flex items-center justify-between gap-4 mb-6">
+        <div class="min-w-0">
           <h2 :id="modalTitleId" class="font-mono text-lg font-medium">
             {{ modalTitle }}
           </h2>
@@ -70,6 +70,7 @@ defineExpose({
         </div>
         <ButtonBase
           type="button"
+          class="shrink-0"
           :aria-label="$t('common.close')"
           @click="handleModalClose"
           classicon="i-lucide:x"

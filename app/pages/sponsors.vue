@@ -6,6 +6,13 @@ const SPONSORSHIP_TIER_PRICES = {
   gold: 1000,
 } as const
 
+const SPONSORSHIP_TIER_LINKS = {
+  silver:
+    'https://opencollective.com/npmx/contribute/patron-98135/checkout?interval=month&amount=500&contributeAs=me',
+  gold: 'https://opencollective.com/npmx/contribute/patron-98135/checkout?interval=month&amount=1000&contributeAs=me',
+  platinum: 'https://opencollective.com/npmx/donate?interval=month&amount=1250&contributeAs=me',
+} as const
+
 const { t } = useI18n()
 const currencyFormatter = useNumberFormatter({
   style: 'currency',
@@ -159,45 +166,65 @@ defineOgImage(
             {{ $t('sponsors_page.tiers.title') }}
           </h2>
 
-          <div class="border border-fg/80 rounded-xl p-5 bg-bg-muted">
+          <LinkBase
+            :to="SPONSORSHIP_TIER_LINKS.silver"
+            no-new-tab-icon
+            no-underline
+            class="block border border-fg/80 rounded-xl p-5 bg-bg-muted hover:bg-bg-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg"
+          >
             <div class="flex items-center justify-between gap-3 mb-2">
               <h3 class="font-mono text-base text-fg uppercase tracking-wider">
                 {{ $t('sponsors_page.tiers.silver.name') }}
               </h3>
-              <span class="i-lucide:coins size-4 text-fg-subtle" aria-hidden="true" />
+              <span class="flex items-center gap-2 text-fg-subtle" aria-hidden="true">
+                <span class="i-lucide:coins size-4" />
+                <span class="i-lucide:external-link size-3.5" />
+              </span>
             </div>
             <p class="text-sm text-fg-subtle font-mono">
               {{ formatTierPrice(SPONSORSHIP_TIER_PRICES.silver) }}
             </p>
-          </div>
+          </LinkBase>
 
-          <div
-            class="border border-badge-yellow/80 rounded-xl p-5 bg-linear-to-br from-badge-yellow/8 to-bg-subtle/40 relative overflow-hidden mt-4"
+          <LinkBase
+            :to="SPONSORSHIP_TIER_LINKS.gold"
+            no-new-tab-icon
+            no-underline
+            class="block border border-badge-yellow/80 rounded-xl p-5 bg-linear-to-br from-badge-yellow/8 to-bg-subtle/40 relative overflow-hidden mt-4 hover:from-badge-yellow/12 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-badge-yellow"
           >
             <div class="flex items-center justify-between gap-3 mb-2 relative">
               <h3 class="font-mono text-base text-fg uppercase tracking-wider">
                 {{ $t('sponsors_page.tiers.gold.name') }}
               </h3>
-              <span class="i-lucide:medal size-4 text-badge-yellow" aria-hidden="true" />
+              <span class="flex items-center gap-2" aria-hidden="true">
+                <span class="i-lucide:medal size-4 text-badge-yellow" />
+                <span class="i-lucide:external-link size-3.5 text-fg-subtle" />
+              </span>
             </div>
             <p class="text-sm text-fg-subtle font-mono">
               {{ formatTierPrice(SPONSORSHIP_TIER_PRICES.gold) }}
             </p>
-          </div>
+          </LinkBase>
 
-          <div
-            class="border border-badge-blue/80 rounded-xl p-5 bg-linear-to-br from-badge-blue/8 to-bg-subtle/40 relative overflow-hidden mt-4"
+          <LinkBase
+            :to="SPONSORSHIP_TIER_LINKS.platinum"
+            no-new-tab-icon
+            no-underline
+            class="block border border-badge-blue/80 rounded-xl p-5 bg-linear-to-br from-badge-blue/8 to-bg-subtle/40 relative overflow-hidden mt-4 hover:from-badge-blue/12 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-badge-blue"
           >
             <div class="flex items-center justify-between gap-3 mb-2">
               <h3 class="font-mono text-base text-fg uppercase tracking-wider">
                 {{ $t('sponsors_page.tiers.platinum.name') }}
               </h3>
-              <span class="i-lucide:crown size-4 text-badge-blue" aria-hidden="true" />
+              <span class="flex items-center gap-2" aria-hidden="true">
+                <span class="i-lucide:crown size-4 text-badge-blue" />
+                <span class="i-lucide:external-link size-3.5 text-fg-subtle" />
+              </span>
             </div>
             <p class="text-sm text-fg-subtle font-mono">
               {{ $t('sponsors_page.tiers.custom') }}
             </p>
-          </div>
+          </LinkBase>
         </div>
       </section>
     </div>

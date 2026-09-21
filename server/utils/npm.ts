@@ -1,4 +1,4 @@
-import { maxSatisfying, prerelease } from 'semver'
+import { findMaxSatisfying } from 'verkit'
 
 export const fetchNpmPackage = defineCachedFunction(
   async (name: string): Promise<Packument> => {
@@ -34,18 +34,6 @@ export async function fetchLatestVersionWithFallback(name: string): Promise<stri
 }
 
 /**
- * Check if a version constraint explicitly includes a prerelease tag.
- * e.g., "^1.0.0-alpha" or ">=2.0.0-beta.1" include prereleases
- */
-function constraintIncludesPrerelease(constraint: string): boolean {
-  // Look for prerelease identifiers in the constraint
-  return (
-    /-(?:alpha|beta|rc|next|canary|dev|preview|pre|experimental)/i.test(constraint) ||
-    /-\d/.test(constraint)
-  ) // e.g., -0, -1
-}
-
-/**
  * Resolve a semver version constraint to the best matching version.
  * Returns the highest version that satisfies the constraint, or null if none match.
  *
@@ -58,14 +46,8 @@ export async function resolveVersionConstraint(
 ): Promise<string | null> {
   try {
     const packument = await fetchNpmPackage(packageName)
-    let versions = Object.keys(packument.versions)
-
-    // Filter out prerelease versions unless constraint explicitly includes one
-    if (!constraintIncludesPrerelease(constraint)) {
-      versions = versions.filter(v => !prerelease(v))
-    }
-
-    return maxSatisfying(versions, constraint)
+    const versions = Object.keys(packument.versions)
+    return findMaxSatisfying(versions, constraint)
   } catch {
     return null
   }

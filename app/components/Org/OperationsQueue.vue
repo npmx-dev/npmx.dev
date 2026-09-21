@@ -422,8 +422,7 @@ watch(isExecuting, executing => {
             <pre
               v-if="op.status === 'failed' && op.result?.stderr"
               class="mt-1 text-red-400/70 whitespace-pre-wrap text-2xs"
-              >{{ op.result.stderr }}</pre
-            >
+              >{{ op.result.stderr }}</pre>
           </div>
           <button
             type="button"

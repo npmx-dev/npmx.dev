@@ -40,12 +40,12 @@ export const SPONSORS = {
         light: LogoCodeRabbitLight,
       },
       normalisingIndent: '0.875rem',
-      url: 'https://www.coderabbit.ai',
+      url: 'https://coderabbit.link/npmx',
     },
   ],
   silver: [
     {
-      name: 'Void Zero',
+      name: 'VoidZero',
       logo: {
         dark: LogoVoidZero,
         light: LogoVoidZeroLight,

@@ -21,6 +21,7 @@ export default defineNuxtModule({
       getContents: () => `export const clientUri = ${JSON.stringify(clientUri)};`,
     })
 
+    // oxlint-disable-next-line eslint/no-underscore-dangle
     if (nuxt.options._prepare || process.env.NUXT_SESSION_PASSWORD) {
       return
     }

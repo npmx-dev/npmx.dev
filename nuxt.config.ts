@@ -126,7 +126,21 @@ export default defineNuxtConfig({
       isr: {
         expiration: 300,
         passQuery: true,
-        allowQuery: ['offset', 'limit'],
+        allowQuery: ['offset', 'limit', 'sort', 'stable-only'],
+      },
+    },
+    '/api/changelog/md/**': {
+      isr: {
+        expiration: 60 * 60 * 2 /* 2 hours */,
+        passQuery: true,
+        allowQuery: ['host', 'raw'],
+      },
+    },
+    '/api/changelog/releases/**': {
+      isr: {
+        expiration: 60 * 60 * 2 /* 2 hours */,
+        passQuery: true,
+        allowQuery: ['host'],
       },
     },
     '/api/registry/docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
@@ -233,6 +247,8 @@ export default defineNuxtConfig({
     },
     '/noodles/**': { prerender: true },
     '/sponsors': { prerender: true },
+    '/tools': { prerender: true },
+    '/tools/deps-stats': { prerender: true },
     // proxy for insights
     '/_v/script.js': {
       proxy: 'https://npmx.dev/_vercel/insights/script.js',
@@ -336,6 +352,11 @@ export default defineNuxtConfig({
         weights: ['400', '500', '600'],
         global: true,
         subsets: ['arabic'],
+      },
+      {
+        name: 'Baloo 2',
+        weights: [800],
+        global: true,
       },
     ],
   },
@@ -444,7 +465,7 @@ export default defineNuxtConfig({
         'vue-data-ui/vue-ui-horizontal-bar',
         'vue-data-ui/vue-ui-stackbar',
         'virtua/vue',
-        'semver',
+        'verkit',
         'validate-npm-package-name',
         '@atproto/lex',
         'fast-npm-meta',

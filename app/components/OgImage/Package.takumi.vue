@@ -54,10 +54,11 @@ const versionLabel = computed(() => (version ? `v${version}` : ''))
 
 const repositoryUrl = computed(() => {
   const repo = displayVersion.value?.repository
-  if (!repo?.url) return null
-  let url = normalizeGitUrl(repo.url)
+  const repoUrl = typeof repo === 'object' ? repo.url : repo
+  if (!repoUrl) return null
+  let url = normalizeGitUrl(repoUrl)
   // append `repository.directory` for monorepo packages
-  if (repo.directory) {
+  if (typeof repo === 'object' && repo.directory) {
     url = joinURL(`${url}/tree/HEAD`, repo.directory)
   }
   return url

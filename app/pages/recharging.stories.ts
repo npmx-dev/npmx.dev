@@ -5,12 +5,15 @@ import { repoStatsHandler } from '../storybook/mocks/handlers'
 
 const meta = {
   component: Recharging,
+
+  beforeEach({ msw }) {
+    msw.use(repoStatsHandler)
+  },
+
   parameters: {
     layout: 'fullscreen',
-    msw: {
-      handlers: [repoStatsHandler],
-    },
   },
+
   decorators: [pageDecorator],
 } satisfies Meta<typeof Recharging>
 
@@ -21,10 +24,4 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {}
 
 /** Stats grid is hidden with no API response; the rest of the page renders normally. */
-export const WithoutStats: Story = {
-  parameters: {
-    msw: {
-      handlers: [],
-    },
-  },
-}
+export const WithoutStats: Story = {}

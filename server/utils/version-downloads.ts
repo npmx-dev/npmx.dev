@@ -1,4 +1,4 @@
-import semver from 'semver'
+import { compareReversed, tryParse, type SemVer } from 'verkit'
 
 /**
  * Intermediate data structure for version processing
@@ -8,7 +8,7 @@ interface ProcessedVersion {
   downloads: number
   major: number
   minor: number
-  parsed: semver.SemVer
+  parsed: SemVer
 }
 
 /**
@@ -33,7 +33,7 @@ function parseVersions(rawDownloads: Record<string, number>): ProcessedVersion[]
   const processed: ProcessedVersion[] = []
 
   for (const [version, downloads] of Object.entries(rawDownloads)) {
-    const parsed = semver.parse(version)
+    const parsed = tryParse(version)
     if (!parsed) continue
 
     processed.push({
@@ -45,7 +45,7 @@ function parseVersions(rawDownloads: Record<string, number>): ProcessedVersion[]
     })
   }
 
-  processed.sort((a, b) => semver.rcompare(a.version, b.version))
+  processed.sort((a, b) => compareReversed(a.version, b.version))
 
   return processed
 }

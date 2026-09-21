@@ -1,4 +1,4 @@
-import type { ColumnConfig, FilterChip } from '#shared/types/preferences'
+import { DEFAULT_FILTERS, type ColumnConfig, type FilterChip } from '#shared/types/preferences'
 import { mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
 import type { VueWrapper } from '@vue/test-utils'
 import 'axe-core'
@@ -159,6 +159,8 @@ import {
   ButtonBase,
   LandingIntroHeader,
   NoodleArtemisLogo,
+  NoodleEmojiDayLogo,
+  NoodleEmojiDayThemedLogo,
   NoodleKawaiiLogo,
   NoodleTransgenderVisibilityLogo,
   NoodleListCard,
@@ -169,6 +171,9 @@ import {
   NoodleLens,
   NoodlePride3Logo,
   NoodleTetrisLogo,
+  NoodleGifDayLogo,
+  NoodleGifDayGifText,
+  NoodleIojsNodejsLogo,
   LinkBase,
   CallToAction,
   ChangelogCard,
@@ -192,6 +197,10 @@ import {
   CompareReplacementSuggestion,
   DateTime,
   DependencyPathPopup,
+  DepsStatsDependencyList,
+  DepsStatsDependencyStats,
+  DepsStatsDependencyStatsPanel,
+  DepsStatsPackageJsonUpload,
   FilterChips,
   FilterPanel,
   HeaderAccountMenu,
@@ -245,6 +254,7 @@ import {
   SelectField,
   SettingsAccentColorPicker,
   SettingsBgThemePicker,
+  SettingsFgThemePicker,
   SettingsToggle,
   TagStatic,
   TagRadioButton,
@@ -270,10 +280,12 @@ import {
   PackageExternalLinks,
   LicenseChangeWarning,
   ChartSplitSparkline,
+  ChartCopyPngButton,
   TabRoot,
   TabList,
   TabItem,
   TabPanel,
+  ButtonCopyMd,
 } from '#components'
 
 // Server variant components must be imported directly to test the server-side render
@@ -413,6 +425,22 @@ describe('component accessibility audits', () => {
     })
 
     it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleEmojiDayLogo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleEmojiDayThemedLogo, {
+        props: {
+          emojiSets: {},
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
       const component = await mountSuspended(NoodlePride1Logo)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
@@ -442,6 +470,29 @@ describe('component accessibility audits', () => {
           logo: NoodleKawaiiLogo,
         },
       })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleGifDayGifText, {
+        props: {
+          text: 'N',
+          backgroundUrl: 'some_image_here.gif',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleGifDayLogo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleIojsNodejsLogo)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
@@ -1387,7 +1438,55 @@ describe('component accessibility audits', () => {
     })
   })
 
+  describe('ChartCopyPngButton', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(ChartCopyPngButton, {
+        props: { copied: false, copying: false },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations in the copied state', async () => {
+      const component = await mountSuspended(ChartCopyPngButton, {
+        props: { copied: true, copying: false },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations while copying', async () => {
+      const component = await mountSuspended(ChartCopyPngButton, {
+        props: { copied: false, copying: true },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should expose an accessible name, since the button is icon-only', async () => {
+      const component = await mountSuspended(ChartCopyPngButton, {
+        props: { copied: false, copying: false },
+      })
+      const button = component.get('button')
+      expect(button.attributes('aria-label')).toBeTruthy()
+      expect(button.attributes('type')).toBe('button')
+      // The icon carries no text, so it must not be announced
+      expect(component.get('span').attributes('aria-hidden')).toBe('true')
+    })
+
+    it('should mark the button busy while the export runs', async () => {
+      const component = await mountSuspended(ChartCopyPngButton, {
+        props: { copied: false, copying: true },
+      })
+      const button = component.get('button')
+      // The spinner is decorative, so aria-busy is what conveys the pending state
+      expect(button.attributes('aria-busy')).toBe('true')
+      expect(button.attributes('aria-label')).toBeTruthy()
+    })
+  })
+
   describe('TabRoot + TabList + TabItem + TabPanel', () => {
+    // oxlint-disable-next-line unicorn/consistent-function-scoping
     function createTabsFixture(modelValue: string, idPrefix: string) {
       return defineComponent({
         setup() {
@@ -2085,6 +2184,7 @@ describe('component accessibility audits', () => {
       updatedWithin: 'any' as const,
       security: 'all' as const,
       keywords: [],
+      visibleColumns: DEFAULT_FILTERS.visibleColumns,
     }
 
     it('should have no accessibility violations (collapsed)', async () => {
@@ -2118,6 +2218,7 @@ describe('component accessibility audits', () => {
       updatedWithin: 'any' as const,
       security: 'all' as const,
       keywords: [],
+      visibleColumns: DEFAULT_FILTERS.visibleColumns,
     }
 
     const mockColumns: ColumnConfig[] = [
@@ -2376,6 +2477,7 @@ describe('component accessibility audits', () => {
           watermark: '<g><text x="0" y="0" stroke="#000000" font-size="12">npmx</text></g>',
           markersPositive: [],
           markersNegative: [],
+          markersError: [],
           colors: { bg: '#FFFFFF', accent: '#FF0000' },
           pauseAnimations: false,
           gradientColors: [
@@ -2491,6 +2593,132 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(DependencyPathPopup, {
         props: {
           path: ['root@1.0.0', 'dep-a@1.0.0', 'dep-b@2.0.0', 'dep-c@3.0.0', 'vulnerable-pkg@4.0.0'],
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('DepsStatsPackageJsonUpload', () => {
+    it('should have no accessibility violations in empty state', async () => {
+      const component = await mountSuspended(DepsStatsPackageJsonUpload)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with an error', async () => {
+      const component = await mountSuspended(DepsStatsPackageJsonUpload, {
+        props: { error: 'Invalid package.json' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with a selected file', async () => {
+      const component = await mountSuspended(DepsStatsPackageJsonUpload, {
+        props: { fileName: 'package.json' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('DepsStatsDependencyList', () => {
+    it('should have no accessibility violations when empty', async () => {
+      const component = await mountSuspended(DepsStatsDependencyList, {
+        props: {
+          dependencies: [],
+          selectedName: null,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with dependencies', async () => {
+      const component = await mountSuspended(DepsStatsDependencyList, {
+        props: {
+          dependencies: [
+            {
+              name: 'vue',
+              range: '^3.5.0',
+              packageName: 'vue',
+              category: 'dependencies',
+              nonRegistry: false,
+            },
+            {
+              name: 'vitest',
+              range: '^3.0.0',
+              packageName: 'vitest',
+              category: 'devDependencies',
+              nonRegistry: false,
+            },
+            {
+              name: 'local-pkg',
+              range: 'workspace:*',
+              packageName: 'local-pkg',
+              category: 'dependencies',
+              nonRegistry: true,
+            },
+            {
+              name: 'alias-pkg',
+              range: '^1.0.0',
+              packageName: 'real-pkg',
+              category: 'dependencies',
+              nonRegistry: false,
+            },
+          ],
+          selectedName: 'vue',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('DepsStatsDependencyStats', () => {
+    it('should have no accessibility violations when empty', async () => {
+      const component = await mountSuspended(DepsStatsDependencyStats, {
+        props: { dependency: null },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations for a non-registry dependency', async () => {
+      const component = await mountSuspended(DepsStatsDependencyStats, {
+        props: {
+          dependency: {
+            name: 'local-pkg',
+            range: 'workspace:*',
+            packageName: 'local-pkg',
+            category: 'dependencies',
+            nonRegistry: true,
+          },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('DepsStatsDependencyStatsPanel', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(DepsStatsDependencyStatsPanel, {
+        props: {
+          packageName: 'vue',
+          declaredRange: '^3.5.0',
+        },
+        global: {
+          stubs: {
+            PackageTrendsChart: {
+              template: '<div data-test-id="package-trends-chart-stub"></div>',
+            },
+            PackageVersionDistribution: {
+              template: '<div data-test-id="package-version-distribution-stub"></div>',
+            },
+          },
         },
       })
       const results = await runAxe(component)
@@ -2774,6 +3002,14 @@ describe('component accessibility audits', () => {
     })
   })
 
+  describe('SettingsFgThemePicker', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(SettingsFgThemePicker)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
   describe('TooltipBase', () => {
     it('should have no accessibility violations when hidden', async () => {
       const component = await mountSuspended(TooltipBase, {
@@ -2804,6 +3040,21 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations in footer mode', async () => {
       const component = await mountSuspended(BuildEnvironment, {
         props: { footer: true },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('ButtonCopyMd', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(ButtonCopyMd, {
+        props: {
+          fetchMarkdown: () => Promise.resolve(),
+          markdown: '# hallo',
+          status: 'success',
+          text: 'copy test',
+        },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
@@ -2848,7 +3099,9 @@ describe('component accessibility audits', () => {
             title: '1.0.0',
             publishedAt: '2026-02-11 10:00:00.000Z',
             link: 'https://github.com/nuxt/nuxt/releases/tag/v4.4.5',
+            tag: 'test',
           },
+          baseUrl: '/api/changelog/releases/test/test',
           tocHeaderClass: 'toc',
         },
       })
@@ -4621,6 +4874,10 @@ describe('background theme accessibility', () => {
     {
       name: 'SettingsBgThemePicker',
       mount: () => mountSuspended(SettingsBgThemePicker),
+    },
+    {
+      name: 'SettingsFgThemePicker',
+      mount: () => mountSuspended(SettingsFgThemePicker),
     },
     {
       name: 'ProvenanceBadge',

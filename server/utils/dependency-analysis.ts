@@ -8,12 +8,13 @@ import type {
   PackageVulnerabilityInfo,
   VulnerabilityTreeResult,
   DeprecatedPackageInfo,
+  DirectDependencyHealthResult,
   OsvAffected,
   OsvRange,
 } from '#shared/types/dependency-analysis'
 import { mapWithConcurrency } from '#shared/utils/async'
-import { resolveDependencyTree } from './dependency-resolver'
-import * as semver from 'semver'
+import { resolveDependencyTree, resolveVersion } from './dependency-resolver'
+import { compare, isGreaterOrEqual, isLess } from 'verkit'
 
 /** Maximum concurrent requests for fetching vulnerability details */
 const OSV_DETAIL_CONCURRENCY = 25
@@ -212,8 +213,8 @@ function getFixedVersion(
       for (const interval of intervals) {
         const introVersion = interval.introduced === '0' ? '0.0.0' : interval.introduced
         try {
-          const afterIntro = semver.gte(currentVersion, introVersion)
-          const beforeFixed = !interval.fixed || semver.lt(currentVersion, interval.fixed)
+          const afterIntro = isGreaterOrEqual(currentVersion, introVersion)
+          const beforeFixed = !interval.fixed || isLess(currentVersion, interval.fixed)
           if (afterIntro && beforeFixed && interval.fixed) {
             matchingFixedVersions.push(interval.fixed)
           }
@@ -228,7 +229,7 @@ function getFixedVersion(
   if (matchingFixedVersions.length === 1) return matchingFixedVersions[0]
 
   // Return the lowest (closest) fixed version — the smallest bump from the current version
-  return matchingFixedVersions.sort(semver.compare)[0]
+  return matchingFixedVersions.sort(compare)[0]
 }
 
 function getSeverityLevel(vuln: OsvVulnerability): OsvSeverityLevel {
@@ -359,3 +360,82 @@ export const analyzeDependencyTree = defineCachedFunction(
     getKey: (name: string, version: string) => `v2:${name}@${version}`,
   },
 )
+
+const DIRECT_DEPS_RESOLVE_CONCURRENCY = 20
+
+export async function analyzeDirectDependencyHealth(
+  dependencies: Record<string, string>,
+): Promise<DirectDependencyHealthResult> {
+  const entries = Object.entries(dependencies)
+  const resolved = await mapWithConcurrency(
+    entries,
+    async ([name, range]) => {
+      try {
+        const packument = await fetchNpmPackage(name)
+        const versions = Object.keys(packument.versions)
+        const version = packument['dist-tags']?.[range] ?? resolveVersion(range, versions)
+        if (!version) return null
+
+        const versionData = packument.versions[version]
+        if (!versionData) return null
+
+        return {
+          name,
+          version,
+          deprecated: versionData?.deprecated,
+        }
+      } catch {
+        return null
+      }
+    },
+    DIRECT_DEPS_RESOLVE_CONCURRENCY,
+  )
+
+  const packages: PackageQueryInfo[] = []
+  const deprecated: DirectDependencyHealthResult['deprecated'] = {}
+
+  for (const pkg of resolved) {
+    if (!pkg) continue
+    packages.push({
+      name: pkg.name,
+      version: pkg.version,
+      depth: 'direct',
+      path: [],
+    })
+    if (pkg.deprecated) {
+      deprecated[pkg.name] = {
+        name: pkg.name,
+        version: pkg.version,
+        message: pkg.deprecated,
+      }
+    }
+  }
+
+  const vulnerable: DirectDependencyHealthResult['vulnerable'] = {}
+
+  if (packages.length === 0) {
+    return { vulnerable, deprecated }
+  }
+
+  const { vulnerableIndices, failed: batchFailed } = await queryOsvBatch(packages)
+  if (batchFailed || vulnerableIndices.length === 0) {
+    return { vulnerable, deprecated }
+  }
+
+  const detailResults = await mapWithConcurrency(
+    vulnerableIndices,
+    i => queryOsvDetails(packages[i]!),
+    OSV_DETAIL_CONCURRENCY,
+  )
+
+  for (const result of detailResults) {
+    if (!result) continue
+    vulnerable[result.name] = {
+      name: result.name,
+      version: result.version,
+      counts: result.counts,
+    }
+  }
+
+  return { vulnerable, deprecated }
+}

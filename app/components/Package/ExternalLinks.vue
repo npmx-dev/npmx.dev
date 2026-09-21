@@ -8,7 +8,7 @@ const props = defineProps<{
 
 const displayVersion = computed(() => props.pkg?.requestedVersion ?? null)
 const { repositoryUrl } = useRepositoryUrl(displayVersion)
-const { meta: repoMeta, repoRef, stars, starsLink, forks, forksLink } = useRepoMeta(repositoryUrl)
+const { meta: repoMeta, repoRef, stars, forks, forksLink, repoLink } = useRepoMeta(repositoryUrl)
 const compactNumberFormatter = useCompactNumberFormatter()
 
 const homepageUrl = computed(() => {
@@ -55,14 +55,14 @@ useCommandPaletteContextCommands(
       })
     }
 
-    if (repositoryUrl.value && starsLink.value) {
+    if (repositoryUrl.value && repoLink.value) {
       commands.push({
         id: 'package-link-stars',
         group: 'links',
         label: $t('command_palette.package_links.stars'),
         keywords: [...packageKeywords, $t('command_palette.package_links.stars')],
         iconClass: 'i-lucide:star',
-        href: starsLink.value,
+        href: repoLink.value,
       })
     }
 
@@ -143,8 +143,8 @@ useCommandPaletteContextCommands(
         <span v-else>{{ $t('package.links.repo') }}</span>
       </LinkBase>
     </li>
-    <li v-if="repositoryUrl && repoMeta && starsLink">
-      <LinkBase :to="starsLink" classicon="i-lucide:star">
+    <li v-if="repositoryUrl && repoMeta && repoLink">
+      <LinkBase :to="repoLink" classicon="i-lucide:star">
         {{ compactNumberFormatter.format(stars) }}
       </LinkBase>
     </li>

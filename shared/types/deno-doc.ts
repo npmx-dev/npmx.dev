@@ -61,7 +61,7 @@ export interface TsType {
 /** Function parameter from deno doc */
 export interface FunctionParam {
   kind: string
-  name: string
+  name?: string
   optional?: boolean
   tsType?: TsType
 }
@@ -148,14 +148,18 @@ export interface DenoDocNode {
 }
 
 /** Raw output from deno doc --json */
+export interface DocEntry {
+  entryPoint: string
+  nodes: DenoDocNode[]
+}
+
 export interface DenoDocResult {
   version: number
-  nodes: DenoDocNode[]
+  entries: DocEntry[]
 }
 
 /** Result of documentation generation */
 export interface DocsGenerationResult {
   html: string
   toc: string | null
-  nodes: DenoDocNode[]
 }

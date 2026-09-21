@@ -168,7 +168,7 @@ if (import.meta.server && !noodle.value) {
 
           <template v-else>
             <p class="font-mono text-xs tracking-widest uppercase text-fg-subtle mb-3">
-              404 — empty bowl
+              404 — {{ $t('noodles.missing.empty_bowl') }}
             </p>
             <h1 class="font-mono text-3xl sm:text-4xl font-medium tracking-tight mb-4">
               {{ $t('noodles.missing.title') }}

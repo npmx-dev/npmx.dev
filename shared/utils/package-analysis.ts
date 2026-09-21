@@ -37,7 +37,7 @@ export interface ExtendedPackageJson {
   /** npm maintainers (returned by registry API) */
   maintainers?: Array<{ name: string; email?: string }>
   /** Repository info (returned by registry API) */
-  repository?: { url?: string; type?: string; directory?: string }
+  repository?: { url?: string; type?: string; directory?: string } | string
 }
 
 export type PackageExports = string | null | { [key: string]: PackageExports } | PackageExports[]

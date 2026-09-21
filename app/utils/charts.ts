@@ -14,7 +14,7 @@ import type { ChartTimeGranularity } from '~/types/chart'
 
 interface SubEvent {
   key: string
-  positive: boolean
+  state: 'success' | 'error' | 'warn'
   icon: string
   text: string
 }
@@ -221,6 +221,7 @@ export function computeLineChartAnalysis(values: Array<number | null>): LineChar
     }
   }
 
+  // oxlint-disable-next-line eslint/no-underscore-dangle
   let _sum = 0
   for (const entry of indexedValues) {
     _sum += entry.value
@@ -488,6 +489,7 @@ export type EnrichedTimelineSizeCacheEntry = ConvertedTimelineSizeCacheEntry & {
   events: SubEvent[]
   hasPositive: boolean
   hasNegative: boolean
+  hasError: boolean
 }
 
 export type TimelineChartMetric = 'totalSize' | 'dependencyCount' | 'dependencySize'

@@ -212,7 +212,9 @@ function slimPackument(pkg: Record<string, unknown>): Record<string, unknown> {
 
   // Return slimmed packument
   return {
+    // oxlint-disable-next-line eslint/no-underscore-dangle
     '_id': pkg._id,
+    // oxlint-disable-next-line eslint/no-underscore-dangle
     '_rev': pkg._rev,
     'name': pkg.name,
     'description': pkg.description,

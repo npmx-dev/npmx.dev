@@ -63,6 +63,7 @@ type TrendChartConfigOptions = TrendChartBaseOptions & {
   chartHeight: number
   inModal?: boolean
   tooltipPosition?: string
+  compactXAxisLabels?: boolean
 }
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null
@@ -357,6 +358,7 @@ export const LOCALES_WITH_EXTRA_SPACE = [
   'id-ID',
   'it-IT',
   'ja-JP',
+  'ko-KR',
   'nb-NO',
   'nl-NL',
   'pl-PL',
@@ -365,6 +367,8 @@ export const LOCALES_WITH_EXTRA_SPACE = [
   'sr-Latn-RS',
   'uk-UA',
 ]
+
+const XAXIS_LABELS_MOD_THRESHOLD = 12
 
 export function buildTrendsChartConfig(
   options: TrendChartConfigOptions & {
@@ -434,8 +438,6 @@ export function buildTrendsChartConfig(
           },
           xAxisLabels: {
             show: true,
-            showOnlyAtModulo: true,
-            modulo: 12,
             values: options.dates,
             datetimeFormatter: {
               enable: true,
@@ -443,6 +445,9 @@ export function buildTrendsChartConfig(
               useUTC: true,
               options: getTrendsDatetimeFormatterOptions(options.selectedGranularity),
             },
+            showOnlyFirstAndLast: options.compactXAxisLabels,
+            showOnlyAtModulo: options.dates.length > XAXIS_LABELS_MOD_THRESHOLD,
+            modulo: Math.max(1, Math.round(options.dates.length / XAXIS_LABELS_MOD_THRESHOLD)),
           },
           yAxis: {
             formatter: ({ value }: { value: number }) => {

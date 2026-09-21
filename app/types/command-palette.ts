@@ -12,7 +12,12 @@ export type CommandPaletteGroup =
   | 'npmx'
   | 'versions'
 
-export type CommandPaletteView = 'root' | 'languages' | 'accent-colors' | 'background-themes'
+export type CommandPaletteView =
+  | 'root'
+  | 'languages'
+  | 'accent-colors'
+  | 'background-themes'
+  | 'foreground-themes'
 
 interface CommandPaletteCommandBase {
   id: string

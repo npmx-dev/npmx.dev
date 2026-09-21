@@ -129,10 +129,9 @@ useSeoMeta({
 })
 
 defineOgImage(
-  'Page.takumi',
+  'UserProfile.takumi',
   {
-    title: () => `~${username.value}`,
-    description: () => (results.value ? `${results.value.total} packages` : 'npm user profile'),
+    username: () => username.value,
   },
   { alt: () => `~${username.value} npm user profile on npmx` },
 )
@@ -180,7 +179,7 @@ defineOgImage(
 
     <!-- Loading state (only on initial load, not when we already have data) -->
     <LoadingSpinner
-      v-if="status === 'pending' && packages.length === 0 && !error"
+      v-if="(status === 'idle' || status === 'pending') && packages.length === 0 && !error"
       :text="$t('common.loading_packages')"
     />
 

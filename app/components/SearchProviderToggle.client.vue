@@ -1,12 +1,7 @@
 <script setup lang="ts">
 const route = useRoute()
 const router = useRouter()
-const { searchProvider } = useSearchProvider()
-const searchProviderValue = computed(() => {
-  const p = normalizeSearchParam(route.query.p)
-  if (p === 'npm' || searchProvider.value === 'npm') return 'npm'
-  return 'algolia'
-})
+const { searchProvider, searchProviderValue } = useSearchProvider()
 
 const isOpen = shallowRef(false)
 const toggleRef = useTemplateRef('toggleRef')
@@ -53,7 +48,7 @@ useEventListener('keydown', event => {
           <button
             type="button"
             role="menuitem"
-            class="w-full flex items-start gap-3 px-3 py-2.5 rounded-md text-start transition-colors hover:bg-bg-muted"
+            class="cursor-pointer w-full flex items-start gap-3 px-3 py-2.5 rounded-md text-start transition-colors hover:bg-bg-muted"
             :class="[searchProviderValue !== 'algolia' ? 'bg-bg-muted' : '']"
             @click="
               () => {
@@ -85,7 +80,7 @@ useEventListener('keydown', event => {
           <button
             type="button"
             role="menuitem"
-            class="w-full flex items-start gap-3 px-3 py-2.5 rounded-md text-start transition-colors hover:bg-bg-muted mt-1"
+            class="cursor-pointer w-full flex items-start gap-3 px-3 py-2.5 rounded-md text-start transition-colors hover:bg-bg-muted mt-1"
             :class="[searchProviderValue === 'algolia' ? 'bg-bg-muted' : '']"
             @click="
               () => {

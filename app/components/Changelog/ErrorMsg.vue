@@ -5,6 +5,7 @@ const { pkgName, changelogLink, viewOnGit } = defineProps<{
   viewOnGit: string
 }>()
 </script>
+
 <template>
   <div class="w-full flex items-center flex-col gap-2 mt-4">
     <p>{{ $t('changelog.error.p1', { package: pkgName }) }}</p>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { WindowVirtualizer } from 'virtua/vue'
 import { getVersions } from 'fast-npm-meta'
-import { compare, validRange } from 'semver'
+import { compare, normalizeRange } from 'verkit'
 import {
   buildVersionToTagsMap,
   buildTaggedVersionRows,
@@ -205,14 +205,14 @@ const versionFilterInput = ref('')
 const versionFilter = refDebounced(versionFilterInput, 100)
 const isFilterActive = computed(() => versionFilter.value.trim() !== '')
 const isInvalidRange = computed(
-  () => isFilterActive.value && validRange(versionFilter.value.trim()) === null,
+  () => isFilterActive.value && normalizeRange(versionFilter.value.trim()) === null,
 )
 
 const filteredVersionSet = computed(() => {
   const trimmed = versionFilter.value.trim()
   if (!trimmed) return null
   // Try semver range first (e.g. "^2.0.0", ">=1 <3")
-  if (validRange(trimmed)) {
+  if (normalizeRange(trimmed)) {
     return filterVersions(versionStrings.value, trimmed)
   }
   // Fallback: substring match (e.g. "2.4", "beta")
@@ -554,6 +554,14 @@ const flatItems = computed<FlatItem[]>(() => {
                     <span class="text-xs text-fg-muted truncate" :title="item.versions[0]" dir="ltr"
                       >v{{ item.versions[0] }}</span
                     >
+                    <ProvenanceBadge
+                      v-if="fullVersionMap?.get(item.versions[0]!)?.trustStatus?.provenance"
+                      :package-name="packageName"
+                      :version="item.versions[0]!"
+                      compact
+                      :linked="false"
+                      class="relative z-10"
+                    />
                     <span
                       v-if="groupDownloadsMap.has(item.groupKey)"
                       class="ms-auto max-w-32 md:w-32 grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums shrink-0"

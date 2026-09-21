@@ -211,7 +211,7 @@ useEventListener('keydown', (event: KeyboardEvent) => {
               v-for="mode in markdownViewModes"
               :key="mode.key"
               role="tab"
-              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 inline-flex items-center gap-1.5"
+              class="cursor-pointer px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 inline-flex items-center gap-1.5"
               :class="
                 markdownViewMode === mode.key
                   ? 'bg-bg-muted shadow text-fg'

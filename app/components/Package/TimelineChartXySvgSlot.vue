@@ -8,9 +8,11 @@ const props = defineProps<{
   watermark?: string
   markersPositive: TimelineMarkerItem[]
   markersNegative: TimelineMarkerItem[]
+  markersError: TimelineMarkerItem[]
   colors: Record<string, string>
   gradientColors: string[]
   pauseAnimations: boolean
+  isCopyingPng?: boolean
 }>()
 
 const svgElementTransitionClass = computed(() => [
@@ -23,7 +25,7 @@ const svgElementTransitionClass = computed(() => [
 
 <template>
   <!-- Print watermark-->
-  <g v-if="svg.isPrintingSvg || svg.isPrintingImg" v-html="watermark" />
+  <g v-if="svg.isPrintingSvg || svg.isPrintingImg || isCopyingPng" v-html="watermark" />
 
   <g class="pointer-events-none">
     <!-- Marker for selected version -->
@@ -76,6 +78,28 @@ const svgElementTransitionClass = computed(() => [
         fill="none"
         :stroke="gradientColors[0]"
         stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        :class="svgElementTransitionClass"
+      />
+    </g>
+
+    <!-- Marker for error events -->
+    <g v-for="plot in markersError" :key="plot.key" class="pointer-events-none">
+      <path
+        :d="`m ${plot.x} ${plot.y - 20 - (plot.offsetY ?? 0)} l 0 4 m -3 -9 l -4 4 l 0 6 l 4 4 l 6 0 l 4 -4 l 0 -6 l -4 -4 l -6 0`"
+        fill="none"
+        :stroke="colors.bg"
+        stroke-width="6"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        :class="svgElementTransitionClass"
+      />
+      <path
+        :d="`m ${plot.x} ${plot.y - 20 - (plot.offsetY ?? 0)} l 0 4 m -3 -9 l -4 4 l 0 6 l 4 4 l 6 0 l 4 -4 l 0 -6 l -4 -4 l -6 0`"
+        fill="none"
+        :stroke="colors.fgError"
+        stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
         :class="svgElementTransitionClass"

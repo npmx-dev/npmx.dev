@@ -53,6 +53,23 @@ test.describe('npmjs.com URL Compatibility', () => {
     })
   })
 
+  test.describe('Root Package Short-URLs (Redirects)', () => {
+    test('/vue redirects to /package/vue', async ({ page, goto }) => {
+      await goto('/vue', { waitUntil: 'domcontentloaded' })
+
+      // Verifies the browser ended up on the canonical route
+      await expect(page).toHaveURL(/\/package\/vue$/)
+      await expect(page.locator('h1')).toContainText('vue')
+    })
+
+    test('/@nuxt/kit redirects to /package/@nuxt/kit', async ({ page, goto }) => {
+      await goto('/@nuxt/kit', { waitUntil: 'domcontentloaded' })
+
+      await expect(page).toHaveURL(/\/package\/@nuxt\/kit$/)
+      await expect(page.locator('h1')).toContainText('@nuxt/kit')
+    })
+  })
+
   test.describe('Search Pages', () => {
     test('/search?q=vue → search results', async ({ page, goto }) => {
       await goto('/search?q=vue', { waitUntil: 'domcontentloaded' })

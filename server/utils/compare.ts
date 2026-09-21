@@ -1,4 +1,4 @@
-import { diff as semverDiff } from 'semver'
+import { difference as semverDifference } from 'verkit'
 
 /**
  * Parse a version range from a URL segment.
@@ -172,7 +172,7 @@ export function compareDependencies(
           // Strip ^ ~ >= etc for comparison
           const cleanFrom = fromVersion.replace(/^[\^~>=<]+/, '')
           const cleanTo = toVersion.replace(/^[\^~>=<]+/, '')
-          const diffResult = semverDiff(cleanFrom, cleanTo)
+          const diffResult = semverDifference(cleanFrom, cleanTo)
           if (diffResult) {
             if (
               diffResult === 'premajor' ||

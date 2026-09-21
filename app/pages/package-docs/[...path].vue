@@ -9,29 +9,10 @@ definePageMeta({
   scrollMargin: 180,
 })
 
-const route = useRoute('docs')
 const router = useRouter()
 const { t } = useI18n()
 
-const parsedRoute = computed(() => {
-  const segments = route.params.path?.filter(Boolean)
-  const vIndex = segments.indexOf('v')
-
-  if (vIndex === -1 || vIndex >= segments.length - 1) {
-    return {
-      packageName: segments.join('/'),
-      version: null as string | null,
-    }
-  }
-
-  return {
-    packageName: segments.slice(0, vIndex).join('/'),
-    version: segments.slice(vIndex + 1).join('/'),
-  }
-})
-
-const packageName = computed(() => parsedRoute.value.packageName)
-const requestedVersion = computed(() => parsedRoute.value.version)
+const { packageName, requestedVersion } = usePackageRoute()
 
 // Validate package name on server-side for early error detection
 if (import.meta.server && packageName.value) {
@@ -49,12 +30,8 @@ if (import.meta.server && !requestedVersion.value && packageName.value) {
   const version = await fetchLatestVersion(packageName.value)
   if (version) {
     setResponseHeader(useRequestEvent()!, 'Cache-Control', 'no-cache')
-    const pathSegments = [...packageName.value.split('/'), 'v', version]
     app.runWithContext(() =>
-      navigateTo(
-        { name: 'docs', params: { path: pathSegments as [string, ...string[]] } },
-        { redirectCode: 302 },
-      ),
+      navigateTo(docsRoute(packageName.value, version), { redirectCode: 302 }),
     )
   }
 }
@@ -63,8 +40,7 @@ watch(
   [requestedVersion, latestVersion, packageName],
   ([version, latest, name]) => {
     if (!version && latest && name) {
-      const pathSegments = [...name.split('/'), 'v', latest]
-      router.replace({ name: 'docs', params: { path: pathSegments as [string, ...string[]] } })
+      router.replace(docsRoute(name, latest))
     }
   },
   { immediate: true },
@@ -125,15 +101,7 @@ const versionUrlPattern = computed(
 )
 
 function docsVersionRoute(version: string): RouteLocationRaw {
-  const name = pkg.value?.name || packageName.value
-  const [firstSegment = name, ...remainingSegments] = name.split('/')
-
-  return {
-    name: 'docs',
-    params: {
-      path: [firstSegment, ...remainingSegments, 'v', version],
-    },
-  }
+  return docsRoute(pkg.value?.name || packageName.value, version)
 }
 
 useCommandPaletteVersionCommands(commandPalettePackageContext, docsVersionRoute)
@@ -271,6 +239,24 @@ const stickyStyle = computed(() => {
   @apply text-xs text-fg-subtle hover:text-fg block py-0.5 truncate;
 }
 
+.toc-content li.docs-toc-group:not(:first-child) {
+  @apply mt-6;
+}
+
+/* Ellipsise long entry points from the start so the subpath tail stays readable.
+   Flipping `direction` moves the overflow, and its ellipsis, to the page's
+   inline-start edge; `text-align` pulls labels that fit back to that same edge.
+   The label is wrapped in <bdi> so its own text keeps its natural direction. */
+.toc-content .docs-toc-group > a {
+  direction: rtl;
+  text-align: left;
+}
+
+html[dir='rtl'] .toc-content .docs-toc-group > a {
+  direction: ltr;
+  text-align: right;
+}
+
 /* Main docs content container - no max-width to use full space */
 .docs-content {
   @apply max-w-none;
@@ -284,6 +270,18 @@ const stickyStyle = computed(() => {
 .docs-content .docs-section-title {
   @apply text-lg font-semibold text-fg mb-8 pb-3 pt-4 border-b border-border sticky bg-bg z-[2];
   top: var(--combined-header-height);
+}
+
+.docs-content .docs-group {
+  scroll-margin-top: var(--combined-header-height);
+}
+
+.docs-content .docs-group-title {
+  @apply static mt-20;
+}
+
+.docs-content .docs-group:first-child .docs-group-title {
+  @apply mt-0;
 }
 
 /* Individual symbol articles */
