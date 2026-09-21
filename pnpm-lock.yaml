@@ -329,8 +329,8 @@ importers:
         specifier: 18.2.0
         version: 18.2.0
       devalue:
-        specifier: 5.9.0
-        version: 5.9.0
+        specifier: 6.0.0
+        version: 6.0.0
       eslint-plugin-regexp:
         specifier: 3.3.1
         version: 3.3.1(eslint@10.6.0)
@@ -6375,6 +6375,10 @@ packages:
 
   devalue@5.9.0:
     resolution: {integrity: sha512-RWrqdArjvPbsATEhOPUo6Wndc/iWnkWKlhIrdlF3zMMYo/c3CVtoaVAyLtWxz5h8nSlkHzxnzV2uLydPXmtF+A==}
+
+  devalue@6.0.0:
+    resolution: {integrity: sha512-jITRGmc7d+UInNVsQxcz3zsbDwP1MvvVzlNto94FAeieVO5oAk3lupptFvTVBcB+rM2BAagsKtTjgVKFsddCkA==}
+    engines: {node: '>=22.17'}
 
   devframe@0.7.16:
     resolution: {integrity: sha512-U4vqEPgjYfovFEyOAmUlNG5DVGnb6Sx0Tgy9QiQAbtGieC5zTraOBL7GUyXGqdc53SCx/DhFfwjJcebt85T/Bw==}
@@ -17477,6 +17481,8 @@ snapshots:
   detect-libc@2.1.2: {}
 
   devalue@5.9.0: {}
+
+  devalue@6.0.0: {}
 
   devframe@0.7.16(@modelcontextprotocol/sdk@1.29.0)(cac@6.7.14)(srvx@0.11.22)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2):
     dependencies:
