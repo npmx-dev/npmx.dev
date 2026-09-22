@@ -271,8 +271,8 @@ importers:
         specifier: 3.5.42
         version: 3.5.42(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)
       vue-data-ui:
-        specifier: 3.25.6
-        version: 3.25.6(vue@3.5.42)
+        specifier: 3.25.9
+        version: 3.25.9(vue@3.5.42)
       vue-router:
         specifier: 5.2.0
         version: 5.2.0(@voidzero-dev/vite-plus-core@0.3.3)(@vue/compiler-sfc@3.5.42)(esbuild@0.28.1)(rolldown@1.2.4)(rollup@4.62.2)(vue@3.5.42)(webpack@5.108.4)
@@ -329,8 +329,8 @@ importers:
         specifier: 18.2.0
         version: 18.2.0
       devalue:
-        specifier: 5.9.0
-        version: 5.9.0
+        specifier: 6.0.0
+        version: 6.0.0
       eslint-plugin-regexp:
         specifier: 3.3.1
         version: 3.3.1(eslint@10.6.0)
@@ -6379,6 +6379,10 @@ packages:
   devalue@5.9.0:
     resolution: {integrity: sha512-RWrqdArjvPbsATEhOPUo6Wndc/iWnkWKlhIrdlF3zMMYo/c3CVtoaVAyLtWxz5h8nSlkHzxnzV2uLydPXmtF+A==}
 
+  devalue@6.0.0:
+    resolution: {integrity: sha512-jITRGmc7d+UInNVsQxcz3zsbDwP1MvvVzlNto94FAeieVO5oAk3lupptFvTVBcB+rM2BAagsKtTjgVKFsddCkA==}
+    engines: {node: '>=22.17'}
+
   devframe@0.7.16:
     resolution: {integrity: sha512-U4vqEPgjYfovFEyOAmUlNG5DVGnb6Sx0Tgy9QiQAbtGieC5zTraOBL7GUyXGqdc53SCx/DhFfwjJcebt85T/Bw==}
     peerDependencies:
@@ -10644,8 +10648,8 @@ packages:
   vue-component-type-helpers@3.3.11:
     resolution: {integrity: sha512-LwcxzeliO9fkQcpJG0PoX8X5kmAhKmH9wkpDLxNabwzkQ9Zeib2YVHwFV4pcWmMLfXVfjr/dSV+DaJ3cIPgSNA==}
 
-  vue-data-ui@3.25.6:
-    resolution: {integrity: sha512-TY1NURL0f1LZKIZ2xOIVFK+SJEj8MGIjCkv/kUQZJHOADzIPLDY7QdWztn27mjysoYuImMJHLZ5AXnYBa5/6rg==}
+  vue-data-ui@3.25.9:
+    resolution: {integrity: sha512-ImevawiWp4TVERQnwKXm1jYFrhxq3mlQPeBS6yNXpxRolN2JNm+bwCZ1xj3EXjvMviG+ZsYNXY6oUrm8vadH/g==}
     peerDependencies:
       jspdf: '>=3.0.1'
       vue: 3.5.42
@@ -17489,6 +17493,8 @@ snapshots:
 
   devalue@5.9.0: {}
 
+  devalue@6.0.0: {}
+
   devframe@0.7.16(@modelcontextprotocol/sdk@1.29.0)(cac@6.7.14)(srvx@0.11.22)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2):
     dependencies:
       '@valibot/to-json-schema': 1.7.1(valibot@1.4.2)
@@ -23123,7 +23129,7 @@ snapshots:
 
   vue-component-type-helpers@3.3.11: {}
 
-  vue-data-ui@3.25.6(vue@3.5.42):
+  vue-data-ui@3.25.9(vue@3.5.42):
     dependencies:
       vue: 3.5.42(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)
 
