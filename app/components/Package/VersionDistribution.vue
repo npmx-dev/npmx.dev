@@ -141,7 +141,9 @@ const barDataset = computed<VueUiHorizontalBarDatasetItem[]>(() => {
 })
 
 const barChartHeight = computed(() => {
-  const baseHeight = barDataset.value.length * 26 + 24
+  const imposedPadding = 24 // compensate the library component internal padding
+  const unitHeight = 26
+  const baseHeight = barDataset.value.length * unitHeight + imposedPadding
   return Math.max(36, baseHeight)
 })
 
