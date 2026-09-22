@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { VueUiXy, type VueUiXyDatasetItem, type VueUiXyConfig } from 'vue-data-ui/vue-ui-xy'
 import { useElementSize } from '@vueuse/core'
 import { useColors } from '~/composables/useColors'
-import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch, lightenHex } from '~/utils/colors'
-import {
-  drawSvgPrintLegend,
-  drawNpmxLogoAndTaglineWatermark,
-} from '~/composables/useChartWatermark'
+import { OKLCH_NEUTRAL_FALLBACK } from '~/utils/colors'
+import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
 import TooltipApp from '~/components/Tooltip/App.vue'
 import { copyAltTextForVersionsBarChart, sanitise, applyEllipsis } from '~/utils/charts'
 import { downloadFileLink } from '~/utils/download'
 import { useCopyChartPng } from '~/composables/useCopyChartPng'
+import VueUiHorizontalBar, {
+  type VueUiHorizontalBarConfig,
+  type VueUiHorizontalBarDatasetItem,
+} from 'vue-data-ui/vue-ui-horizontal-bar'
 
 import('vue-data-ui/style.css')
 
@@ -20,6 +20,7 @@ const props = defineProps<{
   hideControls?: boolean
 }>()
 
+const { settings } = useSettings()
 const { accentColors, selectedAccentColor } = useAccentColor()
 const { copy, copied } = useClipboard()
 const chartRef = useTemplateRef('chartRef')
@@ -125,226 +126,160 @@ const dateRangeLabel = computed(() => {
   return t('package.versions.distribution_range_date_same_year', { from, to, endYear })
 })
 
+const ellipsedPackageName = computed(() => applyEllipsis(props.packageName, 32))
+
 function buildExportFilename(extension: string): string {
   const range = dateRangeLabel.value.replaceAll(' ', '_').replaceAll(',', '')
 
-  const label = applyEllipsis(props.packageName, 32)
+  const label = ellipsedPackageName.value
   return `${sanitise(label ?? '')}_${range}.${extension}`
 }
 
-// VueUiXy expects one series with multiple values for bar charts
-const xyDataset = computed<VueUiXyDatasetItem[]>(() => {
-  if (!chartDataset.value.length) return []
-
-  return [
-    {
-      name: applyEllipsis(props.packageName, 32),
-      series: chartDataset.value.map(item => item.downloads),
-      type: 'bar' as const,
-      color: accent.value,
-    },
-  ]
-})
-
-const xAxisLabels = computed(() => {
+const versionNames = computed(() => {
   return chartDataset.value.map(item => item.name)
 })
 
-const hasMinimap = computed<boolean>(() => {
-  const series = xyDataset.value[0]?.series ?? []
-  return series.length > 6
+const barDataset = computed<VueUiHorizontalBarDatasetItem[]>(() => {
+  return chartDataset.value
+    .map(datapoint => {
+      return {
+        name: datapoint.name,
+        value: datapoint.downloads,
+        color: accent.value,
+      }
+    })
+    .toReversed()
 })
 
-const chartHeight = computed(() => {
-  if (isMobile.value) {
-    return 950
-  }
-  if (props.hideControls) {
-    return 420
-  }
-  return hasMinimap.value ? 500 : 611
+const barChartHeight = computed(() => {
+  const baseHeight = barDataset.value.length * 26 + 24
+  return Math.max(36, baseHeight)
 })
 
-const chartConfig = computed<VueUiXyConfig>(() => {
-  return {
-    theme: isDarkMode.value ? 'dark' : '',
-    a11y: {
-      translations: {
-        keyboardNavigation: $t(
-          'package.trends.chart_assistive_text.keyboard_navigation_horizontal',
-        ),
-        tableAvailable: $t('package.trends.chart_assistive_text.table_available'),
-        tableCaption: $t('package.trends.chart_assistive_text.table_caption'),
+const isOrderedByDownloads = computed(
+  () => settings.value.versionDistributionChart.isOrderedByDownloads,
+)
+
+const barConfig = computed<VueUiHorizontalBarConfig>(() => ({
+  userOptions: {
+    buttons: {
+      pdf: false,
+      labels: false,
+      fullscreen: false,
+      table: false,
+      tooltip: false,
+      altCopy: true,
+      sort: false,
+    },
+    buttonTitles: {
+      csv: $t('package.trends.download_file', { fileType: 'CSV' }),
+      img: $t('package.trends.download_file', { fileType: 'PNG' }),
+      svg: $t('package.trends.download_file', { fileType: 'SVG' }),
+      annotator: $t('package.trends.toggle_annotator'),
+      altCopy: $t('package.trends.copy_alt.button_label'), // Do not make this text dependent on the `copied` variable, since this would re-render the component, which is undesirable if the minimap was used to select a time frame.
+      open: $t('package.trends.open_options'),
+      close: $t('package.trends.close_options'),
+    },
+    callbacks: {
+      img: args => {
+        const imageUri = args?.imageUri
+        if (!imageUri) return
+        downloadFileLink(imageUri, buildExportFilename('png'))
+      },
+      csv: csvStr => {
+        if (!csvStr) return
+        const PLACEHOLDER_CHAR = '\0'
+        const multilineDateTemplate = $t('package.trends.date_range_multiline', {
+          start: PLACEHOLDER_CHAR,
+          end: PLACEHOLDER_CHAR,
+        })
+          .replaceAll(PLACEHOLDER_CHAR, '')
+          .trim()
+        const blob = new Blob([
+          csvStr
+            .replace('data:text/csv;charset=utf-8,', '')
+            .replaceAll(`\n${multilineDateTemplate}`, ` ${multilineDateTemplate}`),
+        ])
+        const url = URL.createObjectURL(blob)
+        downloadFileLink(url, buildExportFilename('csv'))
+        URL.revokeObjectURL(url)
+      },
+      svg: args => {
+        const blob = args?.blob
+        if (!blob) return
+        const url = URL.createObjectURL(blob)
+        downloadFileLink(url, buildExportFilename('svg'))
+        URL.revokeObjectURL(url)
+      },
+      altCopy: ({ dataset: dst, config: cfg }) => {
+        return copyAltTextForVersionsBarChart({
+          dataset: dst,
+          config: {
+            ...cfg,
+            packageName: props.packageName,
+            dateRangeLabel: dateRangeLabel.value,
+            semverGroupingMode: groupingMode.value,
+            copy,
+            $t,
+            numberFormatter: compactNumberFormatter.value.format,
+          },
+        })
       },
     },
+    useCursorPointer: true,
+  },
+  style: {
     chart: {
+      backgroundColor: colors.value.bg,
+      color: colors.value.fg,
+      height: barChartHeight.value,
+      width: 800,
+      layout: {
+        bars: {
+          sort: isOrderedByDownloads.value ? 'desc' : 'none',
+          gap: 6,
+          borderRadius: 2,
+          underlayerColor: colors.value.bg,
+          dataLabels: {
+            bold: false,
+            color: colors.value.fgSubtle,
+            fontSize: 14,
+            offsetX: 4,
+            value: {
+              formatter: ({ value }: { value: number }) => {
+                return compactNumberFormatter.value.format(Number.isFinite(value) ? value : 0)
+              },
+            },
+          },
+          nameLabels: {
+            color: colors.value.fgSubtle,
+            fontSize: 14,
+            offsetX: -2,
+          },
+        },
+        highlighter: {
+          color: colors.value.fg,
+        },
+      },
+      legend: {
+        position: 'top',
+      },
       title: {
         text: dateRangeLabel.value,
         fontSize: 16,
         bold: false,
-      },
-      height: chartHeight.value,
-      backgroundColor: colors.value.bg,
-      padding: {
-        top: 24,
-        right: 145,
-        bottom: 60,
-      },
-      userOptions: {
-        buttons: {
-          pdf: false,
-          labels: false,
-          fullscreen: false,
-          table: false,
-          tooltip: false,
-          altCopy: true,
-        },
-        buttonTitles: {
-          csv: $t('package.trends.download_file', { fileType: 'CSV' }),
-          img: $t('package.trends.download_file', { fileType: 'PNG' }),
-          svg: $t('package.trends.download_file', { fileType: 'SVG' }),
-          annotator: $t('package.trends.toggle_annotator'),
-          altCopy: $t('package.trends.copy_alt.button_label'), // Do not make this text dependent on the `copied` variable, since this would re-render the component, which is undesirable if the minimap was used to select a time frame.
-          open: $t('package.trends.open_options'),
-          close: $t('package.trends.close_options'),
-        },
-        callbacks: {
-          img: args => {
-            const imageUri = args?.imageUri
-            if (!imageUri) return
-            downloadFileLink(imageUri, buildExportFilename('png'))
-          },
-          csv: csvStr => {
-            if (!csvStr) return
-            const PLACEHOLDER_CHAR = '\0'
-            const multilineDateTemplate = $t('package.trends.date_range_multiline', {
-              start: PLACEHOLDER_CHAR,
-              end: PLACEHOLDER_CHAR,
-            })
-              .replaceAll(PLACEHOLDER_CHAR, '')
-              .trim()
-            const blob = new Blob([
-              csvStr
-                .replace('data:text/csv;charset=utf-8,', '')
-                .replaceAll(`\n${multilineDateTemplate}`, ` ${multilineDateTemplate}`),
-            ])
-            const url = URL.createObjectURL(blob)
-            downloadFileLink(url, buildExportFilename('csv'))
-            URL.revokeObjectURL(url)
-          },
-          svg: args => {
-            const blob = args?.blob
-            if (!blob) return
-            const url = URL.createObjectURL(blob)
-            downloadFileLink(url, buildExportFilename('svg'))
-            URL.revokeObjectURL(url)
-          },
-          altCopy: ({ dataset: dst, config: cfg }) =>
-            copyAltTextForVersionsBarChart({
-              dataset: dst,
-              config: {
-                ...cfg,
-                datapointLabels: xAxisLabels.value,
-                dateRangeLabel: dateRangeLabel.value,
-                semverGroupingMode: groupingMode.value,
-                copy,
-                $t,
-                numberFormatter: compactNumberFormatter.value.format,
-              },
-            }),
-        },
-        useCursorPointer: true,
-      },
-      grid: {
-        stroke: colors.value.border,
-        showHorizontalLines: true,
-        labels: {
-          fontSize: isMobile.value ? 24 : 16,
-          color: pending.value ? colors.value.border : colors.value.fgSubtle,
-          axis: {
-            yLabel: $t('package.versions.y_axis_label'),
-            yLabelOffsetX: 12,
-            fontSize: isMobile.value ? 32 : 24,
-          },
-          yAxis: {
-            formatter: ({ value }: { value: number }) => {
-              return compactNumberFormatter.value.format(Number.isFinite(value) ? value : 0)
-            },
-            useNiceScale: true,
-          },
-          xAxisLabels: {
-            show: xAxisLabels.value.length <= 25,
-            values: xAxisLabels.value,
-            fontSize: 16,
-            color: colors.value.fgSubtle,
-          },
-        },
-      },
-      highlighter: { useLine: false },
-      legend: { show: false, position: 'top' },
-      bar: {
-        periodGap: 16,
-        innerGap: 8,
-        borderRadius: 4,
+        color: colors.value.fgSubtle,
       },
       tooltip: {
-        teleportTo: props.inModal ? '#chart-modal' : undefined,
-        borderColor: 'transparent',
-        backdropFilter: false,
-        backgroundColor: 'transparent',
-        customFormat: ({ datapoint, absoluteIndex, bars }) => {
-          if (!datapoint || pending.value) return ''
-
-          // Use absoluteIndex to get the correct version from chartDataset
-          const index = Number(absoluteIndex)
-          if (!Number.isInteger(index) || index < 0 || index >= chartDataset.value.length) return ''
-          const chartItem = chartDataset.value[index]
-
-          if (!chartItem) return ''
-
-          const barSeries = Array.isArray(bars?.[0]?.series) ? bars[0].series : []
-          const barValue = index < barSeries.length ? barSeries[index] : undefined
-          const raw = Number(barValue ?? chartItem.downloads ?? 0)
-          const v = compactNumberFormatter.value.format(Number.isFinite(raw) ? raw : 0)
-
-          return `<div class="font-mono text-xs p-3 border border-border rounded-md bg-[var(--bg)]/10 backdrop-blur-md">
-            <div class="flex flex-col gap-2">
-              <div class="flex items-center justify-between gap-4">
-                <span class="text-3xs tracking-wide text-[var(--fg)]/70">
-                  ${chartItem.name}
-                </span>
-                <span class="text-base text-[var(--fg)] font-mono tabular-nums">
-                  ${v}
-                </span>
-              </div>
-            </div>
-          </div>`
-        },
-      },
-      zoom: {
-        show: !props.hideControls,
-        autoFit: true,
-        highlightColor: colors.value.bgElevated,
-        minimap: {
-          show: true,
-          lineColor: '#FAFAFA',
-          selectedColor: accent.value,
-          selectedColorOpacity: 0.06,
-          frameColor: colors.value.border,
-          handleWidth: isMobile.value ? 40 : 20, // does not affect the size of the touch area
-          handleBorderColor: colors.value.fgSubtle,
-          handleType: 'grab', // 'empty' | 'chevron' | 'arrow' | 'grab'
-        },
-        preview: {
-          fill: transparentizeOklch(accent.value, isDarkMode.value ? 0.95 : 0.92),
-          stroke: transparentizeOklch(accent.value, 0.5),
-          strokeWidth: 1,
-          strokeDasharray: 3,
-        },
+        backgroundColor: colors.value.bg,
+        backgroundOpacity: 10,
+        color: colors.value.fg,
+        borderColor: colors.value.border,
+        borderRadius: 6,
       },
     },
-  }
-})
+  },
+}))
 </script>
 
 <template>
@@ -450,23 +385,25 @@ const chartConfig = computed<VueUiXyConfig>(() => {
       </div>
     </div>
 
+    <div class="flex flex-row">
+      <SettingsToggle
+        v-model="settings.versionDistributionChart.isOrderedByDownloads"
+        :label="$t('package.versions.order_by_downloads')"
+      />
+    </div>
+
     <h2 id="version-distribution-title" class="sr-only">
       {{ $t('package.versions.distribution_title') }}
     </h2>
 
-    <div
-      role="region"
-      aria-labelledby="version-distribution-title"
-      class="relative"
-      :style="{ minHeight: chartHeight }"
-    >
-      <!-- Chart content -->
-      <ClientOnly v-if="xyDataset.length > 0 && !error">
+    <div role="region" aria-labelledby="version-distribution-title" class="relative">
+      <!-- CHART -->
+      <ClientOnly v-if="barDataset.length > 0 && !error">
         <div class="chart-container w-full" :key="groupingMode">
-          <VueUiXy
+          <VueUiHorizontalBar
+            :dataset="barDataset"
+            :config="barConfig"
             ref="chartRef"
-            :dataset="xyDataset"
-            :config="chartConfig"
             class="[direction:ltr]"
           >
             <!-- Keyboard navigation hint -->
@@ -476,73 +413,32 @@ const chartConfig = computed<VueUiXyConfig>(() => {
               </p>
             </template>
 
-            <!-- Injecting custom svg elements -->
-            <template #svg="{ svg }">
-              <!-- Inject legend during SVG print only -->
-              <g v-if="svg.isPrintingSvg" v-html="drawSvgPrintLegend(svg, watermarkColors)" />
-
-              <!-- Inject npmx logo & tagline during SVG and PNG print -->
-              <g
-                v-if="svg.isPrintingSvg || svg.isPrintingImg || isCopyingPng"
-                v-html="
-                  drawNpmxLogoAndTaglineWatermark({
-                    svg,
-                    colors: watermarkColors,
-                    translateFn: $t,
-                    positioning: 'bottom',
-                  })
-                "
-              />
-
-              <!-- Overlay covering the chart area to hide line resizing when switching granularities recalculates VueUiXy scaleMax when estimation lines are necessary -->
-              <rect
-                v-if="pending"
-                :x="svg.drawingArea.left"
-                :y="svg.drawingArea.top - 12"
-                :width="svg.drawingArea.width + 12"
-                :height="svg.drawingArea.height + 48"
-                :fill="colors.bg"
-              />
-            </template>
-
-            <!-- Custom bar gradient based on the series color -->
-            <template #bar-gradient="{ series, positiveId }">
-              <linearGradient :id="positiveId" x1="0" x2="0" y1="0" y2="1">
-                <!-- vue-data-ui exposes hex-normalized colors -->
-                <stop offset="0%" :stop-color="lightenHex(series.color, 0.618)" />
-                <stop offset="100%" :stop-color="series.color" stop-opacity="0.618" />
-              </linearGradient>
-            </template>
-
-            <!-- Custom legend for single series (non-interactive) -->
-            <template #legend="{ legend }">
-              <div class="flex gap-4 flex-wrap justify-center pt-8">
-                <template v-if="legend.length > 0">
-                  <div class="flex gap-1 shrink-0 items-center whitespace-nowrap">
-                    <div class="h-3 w-3 shrink-0">
-                      <svg viewBox="0 0 2 2" class="w-full">
-                        <rect x="0" y="0" width="2" height="2" rx="0.3" :fill="legend[0]?.color" />
-                      </svg>
-                    </div>
-                    <span class="shrink-0 whitespace-nowrap">
-                      {{ legend[0]?.name }}
-                    </span>
-                  </div>
-                </template>
+            <!-- Custom tooltip -->
+            <template #tooltip="{ datapoint }">
+              <div class="font-mono text-xs flex flex-col">
+                <div class="flex flex-row gap-2 items-center justify-center">
+                  <span class="text-fg-subtle text-xs">
+                    {{ datapoint.name }}
+                  </span>
+                  <span class="text-fg text-lg">
+                    {{ compactNumberFormatter.format(datapoint.value) }}
+                  </span>
+                </div>
               </div>
             </template>
 
-            <!-- Custom minimap reset button -->
-            <template #reset-action="{ reset: resetMinimap }">
-              <button
-                type="button"
-                aria-label="reset minimap"
-                class="absolute inset-is-1/2 -translate-x-1/2 -bottom-18 sm:inset-is-unset sm:translate-x-0 sm:bottom-auto sm:-inset-ie-16 sm:-top-3 flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
-                style="pointer-events: all !important"
-                @click="resetMinimap"
-              >
-                <span class="i-lucide:undo-2 w-5 h-5" aria-hidden="true" />
-              </button>
+            <!-- Custom legend -->
+            <template #legend>
+              <div class="flex gap-1 shrink-0 items-center justify-center whitespace-nowrap pb-3">
+                <div class="h-3 w-3 shrink-0">
+                  <svg viewBox="0 0 2 2" class="w-full">
+                    <rect x="0" y="0" width="2" height="2" rx="0.3" :fill="accent" />
+                  </svg>
+                </div>
+                <span class="shrink-0 whitespace-nowrap text-fg-subtle text-sm">
+                  {{ ellipsedPackageName }}
+                </span>
+              </div>
             </template>
 
             <!-- Contextual menu icon -->
@@ -653,7 +549,21 @@ const chartConfig = computed<VueUiXyConfig>(() => {
                 aria-hidden="true"
               />
             </template>
-          </VueUiXy>
+
+            <!-- Watermark -->
+            <template #svg="{ svg }">
+              <g
+                v-if="svg.isPrintingSvg || svg.isPrintingImg || isCopyingPng"
+                v-html="
+                  drawSmallNpmxLogoAndTaglineWatermark({
+                    svg,
+                    colors: watermarkColors,
+                    translateFn: $t,
+                  })
+                "
+              />
+            </template>
+          </VueUiHorizontalBar>
         </div>
 
         <template #fallback>
@@ -696,11 +606,6 @@ const chartConfig = computed<VueUiXyConfig>(() => {
 </template>
 
 <style scoped>
-/* Disable all transitions on SVG elements to prevent repositioning animation */
-:deep(.vue-ui-xy) svg rect {
-  transition: none !important;
-}
-
 :deep(.vue-data-ui-component svg:focus-visible) {
   outline: 1px solid var(--accent) !important;
   border-radius: 0.1rem;
@@ -715,14 +620,6 @@ const chartConfig = computed<VueUiXyConfig>(() => {
 </style>
 
 <style>
-/* Override default placement of the refresh button to have it to the minimap's side */
-@media screen and (min-width: 767px) {
-  #version-distribution .vue-data-ui-refresh-button {
-    top: -0.6rem !important;
-    left: calc(100% + 4rem) !important;
-  }
-}
-
 /* Adds padding to graph title in absence of a configurable css property */
 #version-distribution .atom-title {
   padding-top: 20px;
