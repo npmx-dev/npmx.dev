@@ -30,17 +30,19 @@ test.describe('Blog feeds', () => {
         // href is an absolute link
         expect(href.slice(0, 16)).toBe('https://npmx.dev')
 
-        const { contentType, corsHeader } = await page.evaluate(async feedHref => {
+        const { contentType, corsHeader, body } = await page.evaluate(async feedHref => {
           // Fetch the same path as in the alternate link
           const url = feedHref.slice(16)
           const response = await fetch(url)
           return {
             contentType: response.headers.get('Content-Type'),
             corsHeader: response.headers.get('Access-Control-Allow-Origin'),
+            body: await response.text(),
           }
         }, href)
 
         expect(contentType).toBe(feed.contentType)
+        expect(body.length).toBeGreaterThan(0)
         // Make sure feeds are available to browser-based readers, see
         // https://www.blogsareback.com/guides/enable-cors
         expect(corsHeader).toBe('*')
