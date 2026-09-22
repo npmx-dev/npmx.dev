@@ -662,6 +662,7 @@
       "grouping_usage_about": "About usage grouping",
       "grouping_usage_all": "All",
       "grouping_usage_most_used": "Most used",
+      "order_by_downloads": "Order by downloads",
       "recent_versions_only_tooltip": "Show only versions published within the last year.",
       "show_low_usage_tooltip": "Include version groups with less than 1% of total downloads.",
       "y_axis_label": "Downloads",
