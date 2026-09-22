@@ -21,12 +21,15 @@ import {
   type TrendLineConfig,
   type TrendLineDataset,
   type VersionsBarConfig,
-  type VersionsBarDataset,
   type TimelineChartConfig,
   type TimelineStackbarConfig,
   type EnrichedTimelineSizeCacheEntry,
 } from '~/utils/charts'
-import type { AltCopyArgs, VueUiStackbarFormattedDatasetItem } from 'vue-data-ui'
+import type {
+  AltCopyArgs,
+  VueUiHorizontalBarDatapoint,
+  VueUiStackbarFormattedDatasetItem,
+} from 'vue-data-ui'
 
 type TranslateCall = { key: string | number; named?: Record<string, unknown> }
 
@@ -139,14 +142,12 @@ function createVersionsBarConfigForTests(
   const { translate } = createTranslateMock()
 
   const base: VersionsBarConfig = {
-    theme: 'dark',
-    chart: {},
     copy: vi.fn(async () => undefined),
     $t: translate as any,
     numberFormatter: (value: number) => `nf:${value}`,
-    datapointLabels: [],
     dateRangeLabel: 'RANGE',
     semverGroupingMode: 'major',
+    packageName: 'nuxt',
   } as unknown as VersionsBarConfig
 
   return { ...base, ...overrides }
@@ -154,16 +155,16 @@ function createVersionsBarConfigForTests(
 
 function createVersionsBarDatasetForTests(
   values: Array<number | null | undefined>,
-  packageName?: string,
-): VersionsBarDataset {
-  return {
-    bars: [
-      {
-        name: packageName,
-        series: values,
-      } as any,
-    ],
-  }
+  names: string[] = values.map((_, index) => `v${index + 1}`),
+): VueUiHorizontalBarDatapoint[] {
+  return values.map(
+    (value, index) =>
+      ({
+        index,
+        name: names[index] ?? `v${index + 1}`,
+        value,
+      }) as unknown as VueUiHorizontalBarDatapoint,
+  )
 }
 
 describe('sum', () => {
@@ -1048,15 +1049,15 @@ describe('copyAltTextForTrendLineChart', () => {
 })
 
 describe('createAltTextForVersionsBarChart', () => {
-  it('handles dataset with empty bars without throwing', () => {
+  it('handles an empty dataset without throwing', () => {
     const { translate } = createTranslateMock()
     const config = createVersionsBarConfigForTests({ $t: translate as any })
 
     expect(() =>
       createAltTextForVersionsBarChart({
-        dataset: { bars: [] },
+        dataset: [],
         config,
-      } as AltCopyArgs<VersionsBarDataset, VersionsBarConfig>),
+      } as AltCopyArgs<VueUiHorizontalBarDatapoint[], VersionsBarConfig>),
     ).not.toThrow()
   })
 
@@ -1067,7 +1068,7 @@ describe('createAltTextForVersionsBarChart', () => {
     const result = createAltTextForVersionsBarChart({
       dataset: null,
       config,
-    } as AltCopyArgs<VersionsBarDataset, VersionsBarConfig>)
+    } as unknown as AltCopyArgs<VueUiHorizontalBarDatapoint[], VersionsBarConfig>)
 
     expect(result).toBe('')
     expect(calls).toHaveLength(0)
@@ -1080,16 +1081,16 @@ describe('createAltTextForVersionsBarChart', () => {
       $t: translate as any,
       semverGroupingMode: 'major',
       dateRangeLabel: 'from 19 Feb to 25 Feb, 2026',
-      datapointLabels: ['2.0.x', '3.0.x', '4.0.x'],
+      packageName: 'nuxt',
       numberFormatter: (value: number) => `${value}M`,
     })
 
-    const dataset = createVersionsBarDatasetForTests([10, 20, 30], 'nuxt')
+    const dataset = createVersionsBarDatasetForTests([10, 20, 30], ['2.0.x', '3.0.x', '4.0.x'])
 
     const result = createAltTextForVersionsBarChart({
       dataset,
       config,
-    } as AltCopyArgs<VersionsBarDataset, VersionsBarConfig>)
+    } as AltCopyArgs<VueUiHorizontalBarDatapoint[], VersionsBarConfig>)
 
     expect(result).toBe('t:package.versions.copy_alt.general_description')
 
@@ -1127,9 +1128,9 @@ describe('createAltTextForVersionsBarChart', () => {
     })
 
     createAltTextForVersionsBarChart({
-      dataset: createVersionsBarDatasetForTests([1, 2], 'pkg'),
+      dataset: createVersionsBarDatasetForTests([1, 2], ['v1', 'v2']),
       config,
-    } as AltCopyArgs<VersionsBarDataset, VersionsBarConfig>)
+    } as AltCopyArgs<VueUiHorizontalBarDatapoint[], VersionsBarConfig>)
 
     const keys = calls.map(c => c.key)
     expect(keys).toContain('package.versions.grouping_minor')
@@ -1140,14 +1141,13 @@ describe('createAltTextForVersionsBarChart', () => {
 
     const config = createVersionsBarConfigForTests({
       $t: translate as any,
-      datapointLabels: ['v1', 'v2', 'v3', 'v4'],
       numberFormatter: (value: number) => `${value}M`,
     })
 
     createAltTextForVersionsBarChart({
-      dataset: createVersionsBarDatasetForTests([10, 20, 999, 40], 'pkg'),
+      dataset: createVersionsBarDatasetForTests([10, 20, 999, 40], ['v1', 'v2', 'v3', 'v4']),
       config,
-    } as AltCopyArgs<VersionsBarDataset, VersionsBarConfig>)
+    } as AltCopyArgs<VueUiHorizontalBarDatapoint[], VersionsBarConfig>)
 
     const perVersionCalls = calls.filter(
       c => c.key === 'package.versions.copy_alt.per_version_analysis',
@@ -1169,19 +1169,18 @@ describe('createAltTextForVersionsBarChart', () => {
     )
   })
 
-  it('treats null/undefined series values as 0 for max selection and formatting', () => {
+  it('treats null/undefined datapoint values as 0 for max selection and formatting', () => {
     const { translate, calls } = createTranslateMock()
 
     const config = createVersionsBarConfigForTests({
       $t: translate as any,
-      datapointLabels: ['v1', 'v2', 'v3'],
       numberFormatter: (value: number) => `${value}M`,
     })
 
     createAltTextForVersionsBarChart({
-      dataset: createVersionsBarDatasetForTests([null, 5, undefined], 'pkg'),
+      dataset: createVersionsBarDatasetForTests([null, 5, undefined], ['v1', 'v2', 'v3']),
       config,
-    } as AltCopyArgs<VersionsBarDataset, VersionsBarConfig>)
+    } as AltCopyArgs<VueUiHorizontalBarDatapoint[], VersionsBarConfig>)
 
     const generalCall = calls.find(c => c.key === 'package.versions.copy_alt.general_description')
     expect(generalCall?.named).toMatchObject({
@@ -1199,22 +1198,22 @@ describe('copyAltTextForVersionsBarChart', () => {
       copy: copyMock,
       $t: ((key: string | number) => `t:${String(key)}`) as any,
       numberFormatter: (value: number) => `${value}M`,
-      datapointLabels: ['v1', 'v2', 'v3'],
       dateRangeLabel: 'RANGE',
       semverGroupingMode: 'major',
+      packageName: 'pkg',
     })
 
-    const dataset = createVersionsBarDatasetForTests([1, 2, 3], 'pkg')
+    const dataset = createVersionsBarDatasetForTests([1, 2, 3], ['v1', 'v2', 'v3'])
 
     const expected = createAltTextForVersionsBarChart({
       dataset,
       config,
-    } as AltCopyArgs<VersionsBarDataset, VersionsBarConfig>)
+    } as AltCopyArgs<VueUiHorizontalBarDatapoint[], VersionsBarConfig>)
 
     await copyAltTextForVersionsBarChart({
       dataset,
       config,
-    } as AltCopyArgs<VersionsBarDataset, VersionsBarConfig>)
+    } as AltCopyArgs<VueUiHorizontalBarDatapoint[], VersionsBarConfig>)
 
     expect(copyMock).toHaveBeenCalledTimes(1)
     expect(copyMock).toHaveBeenCalledWith(expected)
