@@ -45,8 +45,6 @@ watch(
   { flush: 'sync' },
 )
 
-const isDarkMode = computed(() => resolvedMode.value === 'dark')
-
 const accentColorValueById = computed<Record<string, string>>(() => {
   const map: Record<string, string> = {}
   for (const item of accentColors.value) {
@@ -67,10 +65,6 @@ const watermarkColors = computed(() => ({
   bg: colors.value.bg ?? OKLCH_NEUTRAL_FALLBACK,
   fgSubtle: colors.value.fgSubtle ?? OKLCH_NEUTRAL_FALLBACK,
 }))
-
-const { width } = useElementSize(rootEl)
-const mobileBreakpointWidth = 640
-const isMobile = computed(() => width.value > 0 && width.value < mobileBreakpointWidth)
 
 const {
   groupingMode,
@@ -134,10 +128,6 @@ function buildExportFilename(extension: string): string {
   const label = ellipsedPackageName.value
   return `${sanitise(label ?? '')}_${range}.${extension}`
 }
-
-const versionNames = computed(() => {
-  return chartDataset.value.map(item => item.name)
-})
 
 const barDataset = computed<VueUiHorizontalBarDatasetItem[]>(() => {
   return chartDataset.value
@@ -269,6 +259,9 @@ const barConfig = computed<VueUiHorizontalBarConfig>(() => ({
         fontSize: 16,
         bold: false,
         color: colors.value.fgSubtle,
+        subtitle: {
+          text: $t('package.versions.y_axis_label'),
+        },
       },
       tooltip: {
         backgroundColor: colors.value.bg,
