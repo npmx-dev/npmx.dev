@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useElementSize } from '@vueuse/core'
 import { useColors } from '~/composables/useColors'
 import { OKLCH_NEUTRAL_FALLBACK } from '~/utils/colors'
 import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
