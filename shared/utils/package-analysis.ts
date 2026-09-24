@@ -54,7 +54,7 @@ export function detectModuleFormat(pkg: ExtendedPackageJson): ModuleFormat {
 
   // Check exports field for dual format indicators
   if (hasExports && pkg.exports) {
-    const exportInfo = analyzeExports(pkg.exports)
+    const exportInfo = analyzeExports(pkg.exports, isTypeModule)
 
     if (exportInfo.hasImport && exportInfo.hasRequire) {
       return 'dual'
@@ -114,7 +114,11 @@ interface ExportsAnalysis {
 /**
  * Recursively analyze exports field for module format indicators
  */
-function analyzeExports(exports: PackageExports, depth = 0): ExportsAnalysis {
+function analyzeExports(
+  exports: PackageExports,
+  isTypeModule: boolean,
+  depth = 0,
+): ExportsAnalysis {
   const result: ExportsAnalysis = {
     hasImport: false,
     hasRequire: false,
@@ -130,11 +134,28 @@ function analyzeExports(exports: PackageExports, depth = 0): ExportsAnalysis {
   }
 
   if (typeof exports === 'string') {
+    // Re-exposing the manifest (`"./package.json": "./package.json"`) is
+    // boilerplate that packages ship regardless of format. Counting it as an
+    // ESM signal makes plain CJS packages look like they expose an ESM entry.
+    if (exports === './package.json') {
+      return result
+    }
+
     // Check file extension for format hints
     if (exports.endsWith('.mjs') || exports.endsWith('.mts') || exports.endsWith('.json')) {
       result.hasImport = true
     } else if (exports.endsWith('.cjs') || exports.endsWith('.cts')) {
       result.hasRequire = true
+    } else if (exports.endsWith('.js')) {
+      // A bare .js file has no format of its own. Node resolves it against the
+      // package's "type" field. Without this, an ESM package that points its
+      // conditions at .js files gives off no ESM signal at all, and a single
+      // .cjs subpath elsewhere in the tree is enough to classify it as CJS.
+      if (isTypeModule) {
+        result.hasImport = true
+      } else {
+        result.hasRequire = true
+      }
     }
     if (exports.endsWith('.d.ts') || exports.endsWith('.d.mts') || exports.endsWith('.d.cts')) {
       result.hasTypes = true
@@ -144,7 +165,7 @@ function analyzeExports(exports: PackageExports, depth = 0): ExportsAnalysis {
 
   if (Array.isArray(exports)) {
     for (const item of exports) {
-      const subResult = analyzeExports(item, depth + 1)
+      const subResult = analyzeExports(item, isTypeModule, depth + 1)
       mergeExportsAnalysis(result, subResult)
     }
     return result
@@ -164,7 +185,7 @@ function analyzeExports(exports: PackageExports, depth = 0): ExportsAnalysis {
       }
 
       // Recurse into nested exports
-      const subResult = analyzeExports(value, depth + 1)
+      const subResult = analyzeExports(value, isTypeModule, depth + 1)
       mergeExportsAnalysis(result, subResult)
     }
   }
@@ -358,7 +379,7 @@ export function hasBuiltInTypes(pkg: ExtendedPackageJson): boolean {
 
   // Check exports field for types
   if (pkg.exports) {
-    const exportInfo = analyzeExports(pkg.exports)
+    const exportInfo = analyzeExports(pkg.exports, pkg.type === 'module')
     if (exportInfo.hasTypes) {
       return true
     }
