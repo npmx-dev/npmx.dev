@@ -618,6 +618,7 @@
       "description_to_none_provenance": "This version was published without {provenance}.",
       "description_to_none_trustedPublisher": "This version was published without {trustedPublishing}.",
       "description_to_provenance_trustedPublisher": "This version uses {provenance} but not {trustedPublishing}.",
+      "description_to_trustedPublisher_without_provenance": "This version uses {trustedPublishing} but was published without {provenance}.",
       "fallback_install_provenance": "Install commands are pinned to {version}, the last version with provenance.",
       "fallback_install_trustedPublisher": "Install commands are pinned to {version}, the last version with trusted publishing.",
       "provenance_link_text": "provenance",
