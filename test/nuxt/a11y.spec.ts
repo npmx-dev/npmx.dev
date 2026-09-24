@@ -227,7 +227,10 @@ import {
   PackageListControls,
   PackageListToolbar,
   PackageMaintainers,
-  PackageDownloadButton,
+  PackageInstallDownloadTarball,
+  PackageInstallDropdown,
+  PackageInstallAdditionalCommands,
+  PackageSecurityDowngradeAlert,
   PackageManagerSelect,
   PackageMetricsBadges,
   PackagePlaygrounds,
@@ -259,7 +262,6 @@ import {
   TagStatic,
   TagRadioButton,
   TerminalExecute,
-  TerminalInstall,
   TooltipAnnounce,
   TooltipApp,
   TooltipBase,
@@ -3179,43 +3181,6 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe('TerminalInstall', () => {
-    it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(TerminalInstall, {
-        props: { packageName: 'vue' },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-
-    it('should have no accessibility violations with version', async () => {
-      const component = await mountSuspended(TerminalInstall, {
-        props: { packageName: 'vue', requestedVersion: '3.5.0' },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-
-    it('should have no accessibility violations with types package', async () => {
-      const component = await mountSuspended(TerminalInstall, {
-        props: { packageName: 'lodash', typesPackageName: '@types/lodash' },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-
-    it('should have no accessibility violations with executable info', async () => {
-      const component = await mountSuspended(TerminalInstall, {
-        props: {
-          packageName: 'eslint',
-          executableInfo: { hasExecutable: true, primaryCommand: 'eslint' },
-        },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-  })
-
   describe('LicenseDisplay', () => {
     it('should have no accessibility violations with simple license', async () => {
       const component = await mountSuspended(LicenseDisplay, {
@@ -3926,9 +3891,9 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe('PackageDownloadButton', () => {
+  describe('PackageInstallDownloadTarball', () => {
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(PackageDownloadButton, {
+      const component = await mountSuspended(PackageInstallDownloadTarball, {
         props: {
           packageName: 'vue',
           version: {
@@ -3936,6 +3901,63 @@ describe('component accessibility audits', () => {
             dist: { tarball: 'https://registry.npmjs.org/vue/-/vue-3.5.0.tgz' },
           } as any,
           dependencies: null,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageInstallDropdown', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageInstallDropdown, {
+        props: {
+          packageName: 'vue',
+          headingId: 'get-started-test',
+          displayVersion: {
+            version: '3.5.0',
+            dist: { tarball: 'https://registry.npmjs.org/vue/-/vue-3.5.0.tgz' },
+          } as any,
+          typesPackageName: '@types/vue',
+          devDependencySuggestion: { recommended: true },
+          executableInfo: { hasExecutable: true, primaryCommand: 'vue' },
+          createPackageInfo: { packageName: 'create-vue' },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageInstallAdditionalCommands', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageInstallAdditionalCommands, {
+        props: {
+          packageName: 'vue',
+          selectedPm: 'npm',
+          typesPackageName: '@types/vue',
+          showTypes: true,
+          devDependencySuggestion: { recommended: true },
+          executableInfo: { hasExecutable: true, primaryCommand: 'vue' },
+          createPackageInfo: { packageName: 'create-vue' },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageSecurityDowngradeAlert', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageSecurityDowngradeAlert, {
+        props: {
+          downgrade: {
+            downgradedVersion: '2.0.0',
+            downgradedTrustLevel: 'none',
+            trustedVersion: '1.9.0',
+            trustedTrustLevel: 'provenance',
+          },
+          fallbackInstallText: 'Consider installing 1.9.0 instead.',
         },
       })
       const results = await runAxe(component)
@@ -4885,10 +4907,6 @@ describe('background theme accessibility', () => {
         mountSuspended(ProvenanceBadge, {
           props: { provider: 'github', packageName: 'vue', version: '3.0.0' },
         }),
-    },
-    {
-      name: 'TerminalInstall',
-      mount: () => mountSuspended(TerminalInstall, { props: { packageName: 'vue' } }),
     },
     {
       name: 'LicenseDisplay',

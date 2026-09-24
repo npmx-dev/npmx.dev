@@ -126,48 +126,22 @@
       </dl>
     </section>
 
-    <!-- Install section — matches area-install in [...name].vue -->
+    <!-- Install section — matches area-install in [...name].vue / Package/Install/Dropdown.vue -->
     <section class="area-install scroll-mt-20">
-      <div class="flex flex-wrap items-center justify-between mb-3">
-        <h2 class="text-xs font-mono text-fg-subtle uppercase tracking-wider">
-          {{ $t('package.get_started.title') }}
-        </h2>
-        <!-- Download button + Package manager select placeholder -->
-        <div class="flex items-center gap-2">
-          <SkeletonInline class="h-7 w-24 rounded" />
-          <SkeletonInline class="h-7 w-24 rounded" />
-        </div>
-      </div>
-      <!-- Terminal-style install command — matches TerminalInstall.vue -->
+      <h2 class="sr-only">{{ $t('package.get_started.title') }}</h2>
       <div class="bg-bg-subtle border border-border rounded-lg overflow-hidden">
-        <div class="flex gap-1.5 px-3 pt-2 sm:px-4 sm:pt-3">
-          <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
-          <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
-          <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
-        </div>
-        <div class="px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 space-y-1">
-          <!-- $ install command -->
-          <div class="flex items-center gap-2">
+        <div class="flex items-stretch">
+          <!-- copy button + $ install command -->
+          <div class="flex flex-1 items-center gap-3 min-w-0 px-2.5 py-2.5">
+            <SkeletonInline class="h-7 w-7 rounded-md shrink-0" />
             <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
             <SkeletonInline class="h-5 w-40" />
           </div>
-          <!-- # Run locally -->
-          <div class="flex items-center gap-2 pt-1">
-            <SkeletonInline class="h-4 w-24" />
-          </div>
-          <!-- $ run command -->
-          <div class="flex items-center gap-2">
-            <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
-            <SkeletonInline class="h-5 w-28" />
-          </div>
-          <!-- # Create new project -->
-          <div class="flex items-center gap-2 pt-1">
-            <SkeletonInline class="h-4 w-36" />
-          </div>
-          <!-- $ create command -->
-          <div class="flex items-center gap-2">
-            <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
-            <SkeletonInline class="h-5 w-32" />
+          <!-- Package manager select + download + chevron placeholder -->
+          <div class="flex items-center gap-1 px-3 border-s border-border-subtle">
+            <SkeletonInline class="h-7 w-20 rounded" />
+            <SkeletonInline class="h-7 w-7 rounded" />
+            <SkeletonInline class="h-7 w-7 rounded" />
           </div>
         </div>
       </div>

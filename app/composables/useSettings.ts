@@ -38,6 +38,8 @@ export interface AppSettings {
   keyboardShortcuts: boolean
   /** Enable/disable auto scrolling to requested version at package changelog */
   changelogAutoScroll: boolean
+  /** Keep the additional install commands panel expanded */
+  installCommandsExpanded: boolean
   /** Connector preferences */
   connector: {
     /** Automatically open the web auth page in the browser */
@@ -77,6 +79,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   instantSearch: true,
   keyboardShortcuts: true,
   changelogAutoScroll: true,
+  installCommandsExpanded: false,
   connector: {
     autoOpenURL: false,
   },
@@ -351,3 +354,17 @@ export const useCodeLigatures = createSharedComposable(function useCodeLigatures
     toggleCodeLigatures,
   }
 })
+
+export function useInstallCommandsExpanded() {
+  const { settings } = useSettings()
+  const installCommandsExpanded = computed(() => settings.value.installCommandsExpanded)
+
+  function toggleInstallCommandsExpanded() {
+    settings.value.installCommandsExpanded = !settings.value.installCommandsExpanded
+  }
+
+  return {
+    installCommandsExpanded,
+    toggleInstallCommandsExpanded,
+  }
+}
