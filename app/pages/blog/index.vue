@@ -15,6 +15,23 @@ useSeoMeta({
   ogDescription: () => $t('blog.meta_description'),
   twitterDescription: () => $t('blog.meta_description'),
 })
+
+useHead({
+  link: [
+    {
+      rel: 'alternate',
+      title: 'Blog - npmx',
+      type: 'application/rss+xml',
+      href: 'https://npmx.dev/blog/rss.xml',
+    },
+    {
+      rel: 'alternate',
+      title: 'Blog - npmx',
+      type: 'application/atom+xml',
+      href: 'https://npmx.dev/blog/atom.xml',
+    },
+  ],
+})
 </script>
 
 <template>

@@ -136,6 +136,7 @@
     "devalue": "6.0.0",
     "eslint-plugin-regexp": "3.3.1",
     "fast-check": "4.9.0",
+    "feed": "6.0.0",
     "h3": "1.15.11",
     "h3-next": "npm:h3@2.0.1-rc.26",
     "knip": "6.37.0",
