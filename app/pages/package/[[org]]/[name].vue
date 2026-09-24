@@ -799,30 +799,7 @@ const showSkeleton = shallowRef(false)
               </h3>
               <p class="mt-2 mb-0 text-sm">
                 <i18n-t
-                  v-if="
-                    publishSecurityDowngrade.downgradedTrustLevel === 'none' &&
-                    publishSecurityDowngrade.trustedTrustLevel === 'provenance'
-                  "
-                  keypath="package.security_downgrade.description_to_none_provenance"
-                  tag="span"
-                  scope="global"
-                >
-                  <template #provenance>
-                    <a
-                      href="https://docs.npmjs.com/generating-provenance-statements"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
-                      >{{ $t('package.security_downgrade.provenance_link_text')
-                      }}<span class="i-lucide:external-link w-3 h-3" aria-hidden="true"
-                    /></a>
-                  </template>
-                </i18n-t>
-                <i18n-t
-                  v-else-if="
-                    publishSecurityDowngrade.downgradedTrustedPublisher &&
-                    publishSecurityDowngrade.trustedTrustLevel === 'trustedPublisher'
-                  "
+                  v-if="publishSecurityDowngrade.downgradedTrustedPublisher"
                   keypath="package.security_downgrade.description_to_trustedPublisher_without_provenance"
                   tag="span"
                   scope="global"
@@ -837,6 +814,26 @@ const showSkeleton = shallowRef(false)
                       }}<span class="i-lucide:external-link w-3 h-3" aria-hidden="true"
                     /></a>
                   </template>
+                  <template #provenance>
+                    <a
+                      href="https://docs.npmjs.com/generating-provenance-statements"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
+                      >{{ $t('package.security_downgrade.provenance_link_text')
+                      }}<span class="i-lucide:external-link w-3 h-3" aria-hidden="true"
+                    /></a>
+                  </template>
+                </i18n-t>
+                <i18n-t
+                  v-else-if="
+                    publishSecurityDowngrade.downgradedTrustLevel === 'none' &&
+                    publishSecurityDowngrade.trustedTrustLevel === 'provenance'
+                  "
+                  keypath="package.security_downgrade.description_to_none_provenance"
+                  tag="span"
+                  scope="global"
+                >
                   <template #provenance>
                     <a
                       href="https://docs.npmjs.com/generating-provenance-statements"
