@@ -1,14 +1,22 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { compare, isStable } from 'verkit'
 
 function createPackage(
   name: string,
   time: Record<string, string>,
   distTags: Record<string, string> = {},
 ): SlimPackument {
+  // `latest` defaults to the latest stable version available
+  const latest =
+    Object.keys(time)
+      .filter(version => isStable(version))
+      .sort((a, b) => compare(a, b))
+      .at(-1) ?? '1.0.0'
+
   return {
     '_id': name,
     'name': name,
-    'dist-tags': { latest: '1.0.0', ...distTags },
+    'dist-tags': { latest, ...distTags },
     'time': { created: '2020-01-01', ...time },
     'versions': {},
     'requestedVersion': null,
@@ -419,7 +427,7 @@ describe('useInstallSizeDiff', () => {
   })
 
   describe('fetch behavior', () => {
-    it('calls the correct API endpoint for the comparison version', async () => {
+    it('reads the comparison version with frozen history', async () => {
       const pkg = createPackage('my-pkg', {
         '0.9.0': '2019-01-01',
         '1.0.0': '2020-01-01',
@@ -431,7 +439,59 @@ describe('useInstallSizeDiff', () => {
       useInstallSizeDiff('my-pkg', '1.1.0', pkg, current)
 
       await vi.waitFor(() => expect(fetchSpy).toHaveBeenCalled())
-      expect(fetchSpy.mock.calls[0]?.[0]).toBe('/api/registry/install-size/my-pkg/v/1.0.0')
+      // Resolved against today's registry, 1.0.0 would be handed whatever
+      // dependency releases shipped alongside 1.1.0, hiding the difference.
+      expect(fetchSpy.mock.calls[0]?.[0]).toBe(
+        '/api/registry/install-size/my-pkg/v/1.0.0?frozen-history=true',
+      )
+    })
+
+    it('reuses the current size for latest instead of re-reading it', async () => {
+      const pkg = createPackage('my-pkg', {
+        '0.9.0': '2019-01-01',
+        '1.0.0': '2020-01-01',
+        '1.1.0': '2021-01-01',
+      })
+      const current = createInstallSize('my-pkg', { version: '1.1.0', totalSize: 7000 })
+      fetchSpy.mockResolvedValue(createInstallSize('my-pkg', { version: '1.0.0', totalSize: 5000 }))
+
+      useInstallSizeDiff('my-pkg', '1.1.0', pkg, current)
+
+      // `latest` resolves the same either way, so only the comparison is read.
+      await vi.waitFor(() => expect(fetchSpy).toHaveBeenCalled())
+      expect(fetchSpy).toHaveBeenCalledTimes(1)
+    })
+
+    it('re-reads an older version so both sides share a resolution mode', async () => {
+      const pkg = createPackage('my-pkg', {
+        '0.9.0': '2019-01-01',
+        '1.0.0': '2020-01-01',
+        '1.1.0': '2021-01-01',
+        '1.2.0': '2022-01-01',
+      })
+      const current = createInstallSize('my-pkg', { version: '1.1.0', totalSize: 5000 })
+      fetchSpy.mockImplementation((url: string) =>
+        Promise.resolve(
+          url.includes('/v/1.1.0')
+            ? createInstallSize('my-pkg', { version: '1.1.0', totalSize: 14000 })
+            : createInstallSize('my-pkg', { version: '1.0.0', totalSize: 10000 }),
+        ),
+      )
+
+      const { diff } = useInstallSizeDiff('my-pkg', '1.1.0', pkg, current)
+
+      await vi.waitFor(() => expect(diff.value).not.toBeNull())
+      expect(fetchSpy.mock.calls.map(call => call[0])).toEqual(
+        expect.arrayContaining([
+          '/api/registry/install-size/my-pkg/v/1.0.0?frozen-history=true',
+          '/api/registry/install-size/my-pkg/v/1.1.0?frozen-history=true',
+        ]),
+      )
+      // 14000 against 10000 is the growth that actually happened. Pairing the
+      // page's 5000 with a frozen 10000 would have announced a 50% saving.
+      expect(diff.value?.direction).toBe('increase')
+      expect(diff.value?.currentSize).toBe(14000)
+      expect(diff.value?.sizeRatio).toBeCloseTo(0.4)
     })
 
     it('does not fetch when there is no comparison version', () => {

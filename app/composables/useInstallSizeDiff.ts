@@ -50,35 +50,52 @@ export function useInstallSizeDiff(
     return getComparisonVersion(pkgVal, version)
   })
 
+  function frozenSizeUrl(version: string): string {
+    return `/api/registry/install-size/${toValue(packageName)}/v/${version}?frozen-history=true`
+  }
+
+  // `latest` resolves the same either way, so its size can be reused as-is
+  // rather than fetched a second time.
+  const currentIsLatest = computed(() => {
+    const version = toValue(resolvedVersion)
+    return !!version && toValue(pkg)?.['dist-tags']?.latest === version
+  })
+
   const {
     data: comparisonInstallSize,
     status: comparisonStatus,
     execute: fetchComparisonSize,
-  } = useLazyFetch<InstallSizeResult | null>(
-    () => {
-      const v = comparisonVersion.value
-      if (!v) return ''
-      return `/api/registry/install-size/${toValue(packageName)}/v/${v}`
-    },
-    {
+  } = useLazyFetch<InstallSizeResult | null>(() => frozenSizeUrl(comparisonVersion.value ?? ''), {
+    server: false,
+    immediate: false,
+    watch: false,
+    default: () => null,
+  })
+
+  const { data: frozenCurrentInstallSize, execute: fetchFrozenCurrentSize } =
+    useLazyFetch<InstallSizeResult | null>(() => frozenSizeUrl(toValue(resolvedVersion) ?? ''), {
       server: false,
       immediate: false,
+      watch: false,
       default: () => null,
-    },
-  )
+    })
 
   if (import.meta.client) {
     watch(
-      [comparisonVersion, () => toValue(packageName)],
-      ([v]) => {
-        if (v) fetchComparisonSize()
+      [comparisonVersion, () => toValue(packageName), currentIsLatest],
+      ([v, , isLatest]) => {
+        if (!v) return
+        fetchComparisonSize()
+        if (!isLatest) fetchFrozenCurrentSize()
       },
       { immediate: true },
     )
   }
 
   const diff = computed<InstallSizeDiff | null>(() => {
-    const current = toValue(currentInstallSize)
+    const current = currentIsLatest.value
+      ? toValue(currentInstallSize)
+      : frozenCurrentInstallSize.value
     const previous = comparisonInstallSize.value
     const cv = comparisonVersion.value
 

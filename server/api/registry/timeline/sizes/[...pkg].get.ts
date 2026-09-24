@@ -63,9 +63,10 @@ export default defineCachedEventHandler(
     const limit = Math.max(1, Math.min(100, Number(query.limit) || DEFAULT_LIMIT))
     const sort = parseTimelineSort(query.sort)
     const stableOnly = parseStableOnly(query['stable-only'])
+    const frozenHistory = parseFrozenHistory(query['frozen-history'])
 
     try {
-      const { versions, time } = await getVersions(packageName)
+      const { versions, time, distTags } = await getVersions(packageName)
 
       // Must mirror the timeline endpoint's ordering so a given offset/limit page
       // covers the same versions the client is displaying.
@@ -79,8 +80,19 @@ export default defineCachedEventHandler(
 
       const pageVersions = allVersions.slice(offset, offset + limit)
 
+      // With frozen history, each version is sized against the registry as it
+      // was while that version was current.
       const results = await Promise.allSettled(
-        pageVersions.map(v => calculateInstallSize(packageName, v)),
+        pageVersions.map(
+          async v =>
+            await calculateInstallSize(
+              packageName,
+              v,
+              frozenHistory
+                ? getDependenciesResolutionLimitPure(v, versions, time, distTags.latest)
+                : undefined,
+            ),
+        ),
       )
 
       const sizes: TimelineSizeEntry[] = []
@@ -115,7 +127,8 @@ export default defineCachedEventHandler(
       const limit = Math.max(1, Math.min(100, Number(query.limit) || DEFAULT_LIMIT))
       const sort = parseTimelineSort(query.sort)
       const stableOnly = parseStableOnly(query['stable-only'])
-      return `install-size-timeline:v2:${getRouterParam(event, 'pkg')}:${sort}:${stableOnly}:${offset}:${limit}`
+      const frozenHistory = parseFrozenHistory(query['frozen-history'])
+      return `install-size-timeline:v3:${getRouterParam(event, 'pkg')}:${sort}:${stableOnly}:${frozenHistory}:${offset}:${limit}`
     },
   },
 )
