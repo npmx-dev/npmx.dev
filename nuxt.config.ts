@@ -1,6 +1,6 @@
 import process from 'node:process'
 import { currentLocales } from './config/i18n'
-import { isCI, isTest, provider } from 'std-env'
+import { isCI, isTest, provider, isDevelopment } from 'std-env'
 
 const isStorybook = process.env.STORYBOOK === 'true' || process.env.VITEST_STORYBOOK === 'true'
 
@@ -58,6 +58,8 @@ export default defineNuxtConfig({
   },
 
   devtools: { enabled: true },
+
+  sourcemap: isDevelopment,
 
   devServer: {
     // Used with atproto oauth
