@@ -143,6 +143,68 @@ describe('timeline API', () => {
     expect(result.versions).toHaveLength(1)
     // sorted newest first: 3.0.0, 2.0.0, 1.0.0 → offset 1 = 2.0.0
     expect(result.versions[0]!.version).toBe('2.0.0')
+    expect(result.offset).toBe(1)
+  })
+
+  it('returns the page-aligned slice containing the anchor version for around=', async () => {
+    routerParam = 'my-pkg'
+    queryParams = { around: '1.0.3', limit: 10, sort: 'semver' }
+
+    const versions: Record<string, {}> = {}
+    const time: Record<string, string> = {}
+    for (let i = 1; i <= 30; i++) {
+      const v = `1.0.${i}`
+      versions[v] = {}
+      time[v] = new Date(2024, 0, i).toISOString()
+    }
+
+    fetchNpmPackageMock.mockResolvedValue(makePackument({ versions, time }))
+
+    const result = await handler(fakeEvent)
+    // semver descending: 1.0.30 … 1.0.1 → 1.0.3 is at index 27 → page 2 (offset 20)
+    expect(result.offset).toBe(20)
+    expect(result.versions.map(v => v.version)).toContain('1.0.3')
+    expect(result.versions).toHaveLength(10)
+    expect(result.versions[0]!.version).toBe('1.0.10')
+    expect(result.total).toBe(30)
+  })
+
+  it('around= takes precedence over offset', async () => {
+    routerParam = 'my-pkg'
+    queryParams = { around: '1.0.0', offset: 2, limit: 1 }
+
+    fetchNpmPackageMock.mockResolvedValue(
+      makePackument({
+        versions: { '1.0.0': {}, '2.0.0': {} },
+        time: {
+          '1.0.0': '2024-01-01T00:00:00Z',
+          '2.0.0': '2024-06-01T00:00:00Z',
+        },
+      }),
+    )
+
+    const result = await handler(fakeEvent)
+    expect(result.offset).toBe(1)
+    expect(result.versions.map(v => v.version)).toEqual(['1.0.0'])
+  })
+
+  it('falls back to the first page when the around version is unknown', async () => {
+    routerParam = 'my-pkg'
+    queryParams = { around: '9.9.9', limit: 1 }
+
+    fetchNpmPackageMock.mockResolvedValue(
+      makePackument({
+        versions: { '1.0.0': {}, '2.0.0': {} },
+        time: {
+          '1.0.0': '2024-01-01T00:00:00Z',
+          '2.0.0': '2024-06-01T00:00:00Z',
+        },
+      }),
+    )
+
+    const result = await handler(fakeEvent)
+    expect(result.offset).toBe(0)
+    expect(result.versions.map(v => v.version)).toEqual(['2.0.0'])
   })
 
   it('defaults offset to 0 and limit to 25', async () => {
