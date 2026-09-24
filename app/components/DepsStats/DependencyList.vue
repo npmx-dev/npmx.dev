@@ -5,7 +5,7 @@ import type {
   DirectVulnerableDependency,
 } from '#shared/types/dependency-analysis'
 import type { DependencyCategory, PackageJsonDependency } from '~/utils/parse-package-json-deps'
-import { getOutdatedTooltip, getVersionClass } from '~/utils/npm/outdated-dependencies'
+import { getOutdatedTooltip, getVersionClass } from '~/utils/npm/problematic-dependencies'
 import { packageRoute } from '~/utils/router'
 
 const props = defineProps<{
@@ -38,10 +38,10 @@ const categoryLabels = computed<Record<DependencyCategory, string>>(() => ({
 }))
 
 const registryDeps = computed(() => {
-  const map: Record<string, string> = {}
+  const map: Record<string, { name: string; version: string }> = {}
   for (const dep of props.dependencies) {
     if (dep.nonRegistry) continue
-    map[dep.packageName] = dep.range
+    map[dep.packageName] = { name: dep.packageName, version: dep.range }
   }
   return map
 })
@@ -57,9 +57,14 @@ const orderedRegistryNames = computed(() => {
   return names
 })
 
-const outdatedDeps = useOutdatedDependencies(registryDeps)
-const replacementDeps = useReplacementDependencies(registryDeps)
+const { data: outdatedDeps } = useOutdatedDependencies(registryDeps)
+const { data: replacementDeps } = useReplacementDependencies(registryDeps)
 const { health, requestHealth } = useDirectDependencyHealth(registryDeps, orderedRegistryNames)
+
+const insights = computed(() => ({
+  outdatedDeps,
+  replacementDeps,
+}))
 
 const grouped = computed(() => {
   const query = filter.value.trim().toLowerCase()
@@ -99,10 +104,7 @@ function getDepVersionTooltip(dep: PackageJsonDependency) {
 }
 
 function getDepVersionClass(dep: PackageJsonDependency) {
-  const outdated = outdatedDeps.value[dep.packageName]
-  if (outdated) return getVersionClass(outdated)
-  if (replacementDeps.value[dep.packageName]) return 'text-amber-700 dark:text-amber-500'
-  return getVersionClass(undefined)
+  return getVersionClass(dep.packageName, insights.value)
 }
 
 useIntersectionObserver(
@@ -206,7 +208,7 @@ useIntersectionObserver(
                 <TooltipApp
                   v-if="outdatedDeps[dep.packageName]"
                   class="shrink-0"
-                  :class="getVersionClass(outdatedDeps[dep.packageName]!)"
+                  :class="getVersionClass(dep.packageName, insights)"
                   :text="getOutdatedTooltip(outdatedDeps[dep.packageName]!, $t)"
                 >
                   <button

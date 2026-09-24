@@ -1,5 +1,6 @@
 import type { DirectDependencyHealthResult } from '#shared/types/dependency-analysis'
 import { DIRECT_DEPS_HEALTH_MAX } from '#shared/utils/constants'
+import type { DependencySpec } from '~/utils/npm/package-dependency-sections'
 
 const EMPTY_HEALTH: DirectDependencyHealthResult = {
   vulnerable: {},
@@ -8,7 +9,7 @@ const EMPTY_HEALTH: DirectDependencyHealthResult = {
 
 /** Lazily fetch direct dependency health in display-order batches. */
 export function useDirectDependencyHealth(
-  dependencies: MaybeRefOrGetter<Record<string, string> | undefined>,
+  dependencies: MaybeRefOrGetter<Record<string, DependencySpec> | undefined>,
   orderedNames: MaybeRefOrGetter<readonly string[]>,
 ) {
   const health = shallowRef<DirectDependencyHealthResult>(EMPTY_HEALTH)

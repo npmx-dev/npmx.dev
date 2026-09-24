@@ -23,11 +23,7 @@ export default defineConfig({
         // Exclude OG image templates from the pipeline
         '**/OgImage/*.takumi.vue',
       ],
-      include: [
-        /\.(vue|mdx|html)($|\?)/,
-        // git provider icons composable
-        '**/composables/useProviderIcon.ts',
-      ],
+      include: [/\.(vue|mdx|html)($|\?)/, '**/utils/**/*.ts', '**/composables/**/*.ts'],
     },
   },
   presets: [

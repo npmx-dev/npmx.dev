@@ -26,7 +26,7 @@ describe('useDirectDependencyHealth', () => {
 
   it('loads dependencies in display-order batches', async () => {
     const names = Array.from({ length: DIRECT_DEPS_HEALTH_MAX + 10 }, (_, index) => `pkg-${index}`)
-    const dependencies = Object.fromEntries(names.map(name => [name, '^1.0.0']))
+    const dependencies = Object.fromEntries(names.map(name => [name, { name, version: '^1.0.0' }]))
     const result = scope.run(() => useDirectDependencyHealth(dependencies, names))!
 
     await result.requestHealth(names[0]!)
@@ -53,11 +53,11 @@ describe('useDirectDependencyHealth', () => {
       )
       .mockResolvedValueOnce(EMPTY_HEALTH)
 
-    const dependencies = ref({ pkg: '^1.0.0' })
+    const dependencies = ref({ pkg: { name: 'pkg', version: '^1.0.0' } })
     const result = scope.run(() => useDirectDependencyHealth(dependencies, ['pkg']))!
     const staleRequest = result.requestHealth('pkg')
 
-    dependencies.value = { pkg: '^2.0.0' }
+    dependencies.value = { pkg: { name: 'pkg', version: '^2.0.0' } }
     await nextTick()
     await result.requestHealth('pkg')
 

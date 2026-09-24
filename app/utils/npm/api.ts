@@ -47,6 +47,9 @@ export async function fetchAllPackageVersions(packageName: string): Promise<Pack
 
   const promise = (async () => {
     const data = await getVersions(packageName, { metadata: true })
+    if (!data || 'error' in data || !data.versionsMeta) {
+      return []
+    }
 
     return Object.entries(data.versionsMeta)
       .map(([version, meta]) => ({
