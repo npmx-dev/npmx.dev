@@ -7,6 +7,9 @@ export const CACHE_MAX_AGE_ONE_HOUR = 60 * 60
 export const CACHE_MAX_AGE_ONE_DAY = 60 * 60 * 24
 export const CACHE_MAX_AGE_ONE_YEAR = 60 * 60 * 24 * 365
 
+/** Max packages per direct-deps-health API request (client batches to this size) */
+export const DIRECT_DEPS_HEALTH_MAX = 50
+
 // API Strings
 export const NPMX_SITE = 'https://npmx.dev'
 export const NPMX_DOCS_SITE = 'https://docs.npmx.dev'

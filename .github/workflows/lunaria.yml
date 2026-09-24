@@ -15,6 +15,7 @@ permissions: {}
 jobs:
   lunaria-overview:
     name: 🌝 Generate Lunaria Overview
+    if: github.repository == 'npmx-dev/npmx.dev'
     runs-on: ubuntu-24.04-arm
     permissions:
       contents: read
@@ -36,4 +37,4 @@ jobs:
           sfw: true
 
       - name: Generate Lunaria Overview
-        uses: lunariajs/action@4911ad0736d1e3b20af4cb70f5079aea2327ed8e # astro-docs
+        uses: lunariajs/action@e5ab09c3c8353fa80786d8c2149873ba3978a3a7 # v0.2.0

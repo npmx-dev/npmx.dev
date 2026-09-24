@@ -5,7 +5,6 @@ import type {
   VueUiScatterConfig,
   VueUiScatterSeries,
   VueUiXyConfig,
-  VueUiXyDatasetBarItem,
   VueUiXyDatasetLineItem,
   VueUiStackbarConfig,
   VueUiStackbarFormattedDatasetItem,
@@ -426,11 +425,6 @@ export type TrendLineDataset = {
   [key: string]: unknown
 } | null
 
-export type VersionsBarDataset = {
-  bars: VueUiXyDatasetBarItem[]
-  [key: string]: unknown
-} | null
-
 export type TrendTranslateKey = number | 'package.trends.y_axis_label' | (string & {})
 
 export type TrendTranslateFunction = {
@@ -449,10 +443,14 @@ export type TrendLineConfig = VueUiXyConfig & {
   numberFormatter: (value: number) => string
 }
 
-export type VersionsBarConfig = Omit<
-  TrendLineConfig,
-  'formattedDates' | 'hasEstimation' | 'formattedDatasetValues' | 'granularity'
-> & { datapointLabels: string[]; dateRangeLabel: string; semverGroupingMode: string }
+export type VersionsBarConfig = VueUiHorizontalBarConfig & {
+  copy: (text: string) => Promise<void>
+  $t: TrendTranslateFunction
+  numberFormatter: (value: number) => string
+  dateRangeLabel: string
+  semverGroupingMode: string
+  packageName: string
+}
 
 export type FacetBarChartConfig = VueUiHorizontalBarConfig & {
   facet: string // translated
@@ -628,13 +626,12 @@ export async function copyAltTextForTrendLineChart({
 export function createAltTextForVersionsBarChart({
   dataset,
   config,
-}: AltCopyArgs<VersionsBarDataset, VersionsBarConfig>) {
+}: AltCopyArgs<VueUiHorizontalBarDatapoint[], VersionsBarConfig>) {
   if (!dataset) return ''
 
-  const series = dataset.bars[0]?.series ?? []
-  const versions = series.map((value, index) => ({
+  const versions = dataset.map(({ name, value, index }) => ({
     index,
-    name: config.datapointLabels[index] ?? '-',
+    name,
     rawDownloads: value ?? 0,
     downloads: config.numberFormatter(value ?? 0),
   }))
@@ -661,7 +658,7 @@ export function createAltTextForVersionsBarChart({
       : config.$t('package.versions.grouping_minor')
 
   const altText = `${config.$t('package.versions.copy_alt.general_description', {
-    package_name: dataset?.bars[0]?.name ?? '-',
+    package_name: config.packageName,
     versions_count: versions?.length,
     semver_grouping_mode: semver_grouping_mode.toLocaleLowerCase(),
     first_version: versions[0]?.name ?? '-',
@@ -679,7 +676,7 @@ export function createAltTextForVersionsBarChart({
 export async function copyAltTextForVersionsBarChart({
   dataset,
   config,
-}: AltCopyArgs<VersionsBarDataset, VersionsBarConfig>) {
+}: AltCopyArgs<VueUiHorizontalBarDatapoint[], VersionsBarConfig>) {
   const altText = createAltTextForVersionsBarChart({ dataset, config })
   await config.copy(altText)
 }

@@ -54,10 +54,11 @@ const props = withDefaults(
     showFacetSelector?: boolean
     permalink?: boolean
     defaultRange?: 'auto' | '52-weeks'
+    hideControls?: boolean
+    compactXAxisLabels?: boolean
   }>(),
   {
     defaultRange: 'auto',
-    permalink: false,
   },
 )
 
@@ -1087,6 +1088,9 @@ const chartHeight = computed(() => {
   if (isMobile.value) {
     return 950
   }
+  if (props.hideControls) {
+    return 460
+  }
   return showCorrectionControls.value && props.inModal ? 494 : 600
 })
 
@@ -1143,6 +1147,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
     t: $t,
     compactNumberFormatter: compactNumberFormatter.value,
     tooltipPosition: tooltipPosition.value,
+    compactXAxisLabels: props.compactXAxisLabels,
   })
 
   return {
@@ -1239,6 +1244,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
         },
       },
       zoom: {
+        show: !props.hideControls,
         autoFit: true,
         highlightColor: colors.value.bgElevated,
         useResetSlot: true,
@@ -1422,7 +1428,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
       </TabList>
     </TabRoot>
 
-    <div class="w-full mb-4 flex flex-col gap-3">
+    <div class="w-full mb-4 flex flex-col gap-3" v-if="!hideControls">
       <div class="grid grid-cols-2 sm:flex sm:flex-row gap-3 sm:gap-2 sm:items-end">
         <SelectField
           v-if="showFacetSelector"
@@ -1758,7 +1764,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
 
             <!-- Custom legend for multiple series -->
             <template #legend="{ legend }">
-              <div class="flex gap-x-6 gap-y-2 flex-wrap justify-center text-sm">
+              <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
                 <template v-if="isMultiPackageMode">
                   <button
                     v-for="datapoint in legend"
@@ -1766,15 +1772,17 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
                     :aria-pressed="datapoint.isSegregated"
                     :aria-label="datapoint.name"
                     type="button"
-                    class="flex gap-1 place-items-center"
+                    class="flex shrink-0 items-center gap-1 whitespace-nowrap"
                     @click="datapoint.segregate()"
                   >
-                    <div class="h-3 w-3">
+                    <div class="h-3 w-3 shrink-0">
                       <svg viewBox="0 0 2 2" class="w-full">
                         <rect x="0" y="0" width="2" height="2" rx="0.3" :fill="datapoint.color" />
                       </svg>
                     </div>
+
                     <span
+                      class="shrink-0 whitespace-nowrap"
                       :style="{
                         textDecoration: datapoint.isSegregated ? 'line-through' : undefined,
                       }"
@@ -1786,13 +1794,13 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
 
                 <!-- Single series legend (no user interaction) -->
                 <template v-else-if="legend.length > 0">
-                  <div class="flex gap-1 place-items-center">
-                    <div class="h-3 w-3">
+                  <div class="flex shrink-0 items-center gap-1 whitespace-nowrap">
+                    <div class="h-3 w-3 shrink-0">
                       <svg viewBox="0 0 2 2" class="w-full">
                         <rect x="0" y="0" width="2" height="2" rx="0.3" :fill="legend[0]?.color" />
                       </svg>
                     </div>
-                    <span>
+                    <span class="shrink-0 whitespace-nowrap">
                       {{ legend[0]?.name }}
                     </span>
                   </div>
@@ -1800,10 +1808,10 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
 
                 <!-- Estimation extra legend item -->
                 <div
-                  class="flex gap-1 place-items-center"
+                  class="flex shrink-0 items-center gap-1 whitespace-nowrap"
                   v-if="supportsEstimation || hasDownloadAnomalies"
                 >
-                  <svg viewBox="0 0 20 2" width="20">
+                  <svg viewBox="0 0 20 2" width="20" class="shrink-0">
                     <line
                       x1="0"
                       y1="1"
@@ -1814,7 +1822,9 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
                       stroke-linecap="round"
                     />
                   </svg>
-                  <span class="text-fg-subtle">{{ $t('package.trends.legend_estimation') }}</span>
+                  <span class="shrink-0 whitespace-nowrap text-fg-subtle">
+                    {{ $t('package.trends.legend_estimation') }}
+                  </span>
                 </div>
               </div>
             </template>
@@ -1968,7 +1978,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
     </div>
 
     <!-- Chart embedding -->
-    <div v-if="isDownloadsMetric && !!chartData.dataset">
+    <div v-if="isDownloadsMetric && !!chartData.dataset && !hideControls">
       <div class="flex flex-col gap-2">
         <button
           type="button"
