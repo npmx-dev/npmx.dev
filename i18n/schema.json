@@ -5604,6 +5604,9 @@
         },
         "browse_brand": {
           "type": "string"
+        },
+        "open_new_tab": {
+          "type": "string"
         }
       },
       "additionalProperties": false

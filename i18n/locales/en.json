@@ -1866,7 +1866,8 @@
   "logo_menu": {
     "copy_svg": "Copy logo as SVG",
     "copied": "Copied!",
-    "browse_brand": "Browse brand kit"
+    "browse_brand": "Browse brand kit",
+    "open_new_tab": "Open npmx in new tab"
   },
   "brand": {
     "title": "Brand",

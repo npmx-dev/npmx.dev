@@ -1808,7 +1808,8 @@
   "logo_menu": {
     "copy_svg": "Kopieer logo als SVG",
     "copied": "Gekopieerd!",
-    "browse_brand": "Bekijk brand kit"
+    "browse_brand": "Bekijk brand kit",
+    "open_new_tab": "Open npmx in nieuw tabblad"
   },
   "brand": {
     "title": "Merk",
