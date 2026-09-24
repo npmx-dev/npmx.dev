@@ -779,6 +779,7 @@ const showSkeleton = shallowRef(false)
           :downgrade-fallback-install-text="downgradeFallbackInstallText"
         />
 
+
         <div class="space-y-6" :class="$style.areaVulns">
           <!-- license change warning -->
           <LicenseChangeWarning :change="licenseChangeData?.change ?? null" />
