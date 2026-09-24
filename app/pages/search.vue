@@ -477,15 +477,7 @@ watch(displayResults, newResults => {
   }
 })
 
-/**
- * Focus the header search input
- */
-function focusSearchInput() {
-  const searchInput = document.querySelector<HTMLInputElement>(
-    'input[type="search"], input[name="q"]',
-  )
-  searchInput?.focus()
-}
+const focusSearchInput = useSearchInputFocus()
 
 const keyboardShortcuts = useKeyboardShortcuts()
 
