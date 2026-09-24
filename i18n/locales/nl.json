@@ -24,6 +24,7 @@
     "brand": "merk",
     "resources": "Informatie",
     "features": "Functies",
+    "tools": "hulpmiddelen",
     "other": "Overig",
     "sponsored_by": "Gesponsord door {list}"
   },
@@ -40,13 +41,14 @@
     "show_kbd_hints": "Toetsenbordtips uitlichten",
     "settings": "Open instellingen",
     "compare": "Open vergelijken",
+    "deps_stats": "Open dependency statistieken hulpmiddel",
     "compare_from_package": "Vergelijking openen (vooraf ingevuld met het huidige pakket)",
     "changelog": "Open wijzigingen",
     "navigate_results": "Navigeer resultaten",
     "go_to_result": "Ga naar resultaten",
     "open_code_view": "Open code weergaven",
     "open_docs": "Open documentatie",
-    "disable_shortcuts": "U kunt toetsenbordnavigatie uitschakelen in {instellingen}.",
+    "disable_shortcuts": "U kunt toetsenbordnavigatie uitschakelen in {settings}.",
     "open_main": "Open pakket overzicht",
     "open_diff": "Open versie verschillen",
     "open_timeline": "Open tijdlijn",
@@ -207,12 +209,53 @@
     "popular_packages": "Populaire pakketten",
     "settings": "instellingen",
     "compare": "vergelijken",
+    "tools": "hulpmiddelen",
     "back": "terug",
     "menu": "Menu",
     "mobile_menu": "Navigatie menu",
     "open_menu": "Open menu",
     "links": "Links",
     "tap_to_search": "Tik om te zoeken"
+  },
+  "tools": {
+    "title": "hulpmiddelen",
+    "tagline": "hulpprogramma's voor het verkennen van pakketten en project-dependencies",
+    "meta_title": "Hulpmiddelen - npmx",
+    "meta_description": "Bekijk de npmx-tools om pakketten en project-dependencies te verkennen",
+    "deps_stats": {
+      "name": "dependency statistieken",
+      "description": "Upload een package.json en inspecteer de statistieken voor elke dependency"
+    }
+  },
+  "deps_stats": {
+    "title": "dependencies statistieken",
+    "meta_title": "Dependencies statistieken - npmx",
+    "meta_description": "Bekijk de npmx-tools om pakketten en project-dependencies te verkennen",
+    "upload": {
+      "section": "Package.json",
+      "label": "Upload package.json",
+      "hint": "Plaats hier een package.json bestand, of kies een bestand. Alleen de velden met dependencies worden gelezen — er wordt niets naar een server geüpload",
+      "clear": "leegmaken",
+      "invalid_package_json": "Ongeldige package.json"
+    },
+    "dependencies": {
+      "title": "Dependencies",
+      "count": "Geen deps | 1 dep | {count} deps",
+      "filter_label": "Filter dependencies",
+      "filter_placeholder": "Filter dependencies...",
+      "empty": "Geen dependencies gevonden in deze package.json",
+      "no_matches": "Geen dependencies voldoet aan je filter",
+      "non_registry": "Niet een npm register package"
+    },
+    "stats": {
+      "empty_title": "Selecteer een dependency",
+      "empty_description": "Kies een pakket uit de lijst om informatie te bekijken over downloads, bestandsgrootte, kwetsbaarheden, trends en meer",
+      "non_registry_title": "Lokale of externe dependency",
+      "non_registry_description": "Dit onderdeel verwijst naar een bestand, werkruimte, Git-repository of URL-afhankelijkheid, waardoor er geen registratiestatistieken beschikbaar zijn",
+      "declared_range": "Verklaard",
+      "resolved_version": "Laatste",
+      "open_full_stats": "Volledige statistieken openen"
+    }
   },
   "blog": {
     "title": "Blog",
@@ -534,9 +577,17 @@
     },
     "run": {
       "title": "Uitvoeren",
-      "locally": "Lokaal uitvoeren"
+      "locally": "Lokaal uitvoeren",
+      "copy_command": "Kopieer command om lokaal uit te voeren"
     },
-    "command": {},
+    "command": {
+      "copied_install": "Installatie command gekopieerd",
+      "copied_dev_install": "Dev Installatie command gekopieerd",
+      "copied_run": "Start command gekopieerd",
+      "copied_create": "Aanmaak command gekopieerd",
+      "copied_execute": "Uitvoer command gekopieerd",
+      "copied_skills": "Skills command gekopieerd"
+    },
     "readme": {
       "title": "Readme",
       "no_readme": "Geen README beschikbaar.",
@@ -611,6 +662,7 @@
       "grouping_usage_about": "Over gebruiksgroepering",
       "grouping_usage_all": "Alle",
       "grouping_usage_most_used": "Meest gebruikt",
+      "order_by_downloads": "Sorteren op aantal downloads",
       "recent_versions_only_tooltip": "Toon alleen versies die in het afgelopen jaar zijn gepubliceerd.",
       "show_low_usage_tooltip": "Inclusief versiegroepen met minder dan 1% van het totale aantal downloads.",
       "y_axis_label": "Downloads",
@@ -634,6 +686,7 @@
     "timeline": {
       "load_more": "Laad meer",
       "load_error": "De tijdlijn kan niet worden geladen. Probeer het later nog eens.",
+      "no_stable_versions": "Er zijn geen stabiele versies om weer te geven. Schakel ‘alleen stabiele versies’ uit om Ontwikkelversies mee te nemen.",
       "size_increase": "De installatiegrootte is toegenomen met {percent}% ({size})",
       "size_decrease": "De installatiegrootte is afgenomen met {percent}% ({size})",
       "dep_increase": "{count} dependency toegevoegd | {count} dependencies toegevoegd",
@@ -647,6 +700,7 @@
       "trusted_publisher_removed": "Vertrouwd publiceren gedeactiveerd",
       "provenance_added": "Herkomst verificatie geactiveerd",
       "provenance_removed": "Herkomst verificatie gedeactiveerd",
+      "deprecated": "Afgeraden",
       "chart": {
         "tab_aria_label": "Selecteer statistiek",
         "dependency_size": "Dependencygrootte",
@@ -655,6 +709,9 @@
         "zoom": "zoom",
         "reset_minimap": "minimap resetten",
         "ordered_versions": "Alleen stabiele versies",
+        "sort_label": "Sorteer bij",
+        "sort_time": "Publicatietijdstip",
+        "sort_semver": "Semver",
         "copy_alt": {
           "key_changes": "Belangrijkste wijzigingen: {version_events}.",
           "version_events": "versie {version}: {events}",
@@ -676,7 +733,8 @@
       "outdated_minor": "{count} subversie achter (nieuwste: {latest}) | {count} subversies achter (nieuwste: {latest})",
       "outdated_patch": "Patch update beschikbaar (nieuwste: {latest})",
       "has_replacement": "Deze dedependency heeft voorgesteld alternatieven",
-      "vulnerabilities_count": "{count} kwetsbaarheid | {count} kwetsbaarheden"
+      "vulnerabilities_count": "{count} kwetsbaarheid | {count} kwetsbaarheden",
+      "aliased_to": "Alias naar {name}"
     },
     "peer_dependencies": {
       "title": "Peer Dependency ({count}) | Peer Dependencies ({count})",
