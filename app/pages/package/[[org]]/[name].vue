@@ -342,7 +342,7 @@ const installVersionOverride = computed(
 const downgradeFallbackInstallText = computed(() => {
   const d = publishSecurityDowngrade.value
   if (!d?.trustedVersion) return null
-  if (d.trustedTrustLevel === 'provenance')
+  if (d.trustedTrustLevel === 'provenance' || d.downgradedTrustedPublisher)
     return $t('package.security_downgrade.fallback_install_provenance', {
       version: d.trustedVersion,
     })
@@ -807,6 +807,36 @@ const showSkeleton = shallowRef(false)
                   tag="span"
                   scope="global"
                 >
+                  <template #provenance>
+                    <a
+                      href="https://docs.npmjs.com/generating-provenance-statements"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
+                      >{{ $t('package.security_downgrade.provenance_link_text')
+                      }}<span class="i-lucide:external-link w-3 h-3" aria-hidden="true"
+                    /></a>
+                  </template>
+                </i18n-t>
+                <i18n-t
+                  v-else-if="
+                    publishSecurityDowngrade.downgradedTrustedPublisher &&
+                    publishSecurityDowngrade.trustedTrustLevel === 'trustedPublisher'
+                  "
+                  keypath="package.security_downgrade.description_to_trustedPublisher_without_provenance"
+                  tag="span"
+                  scope="global"
+                >
+                  <template #trustedPublishing>
+                    <a
+                      href="https://docs.npmjs.com/trusted-publishers"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
+                      >{{ $t('package.security_downgrade.trusted_publishing_link_text')
+                      }}<span class="i-lucide:external-link w-3 h-3" aria-hidden="true"
+                    /></a>
+                  </template>
                   <template #provenance>
                     <a
                       href="https://docs.npmjs.com/generating-provenance-statements"
