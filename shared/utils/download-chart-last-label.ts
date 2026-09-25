@@ -34,7 +34,9 @@ export function createLastDatapointLabelsSvg({
 
   const labels = series
     .map(serie => {
-      const lastPlot = Array.isArray(serie.plots) ? serie.plots.at(-1) : null
+      if (!serie.plots) return null
+      const nonNullPlots = serie.plots.filter(p => p.value != null)
+      const lastPlot = Array.isArray(serie.plots) ? nonNullPlots.at(-1) : null
       if (!lastPlot) return null
 
       const value = Number(lastPlot.value ?? 0)

@@ -59,7 +59,7 @@ const datasets = computed<VueUiSparklineDatasetItem[][]>(() => {
     return props.dates.map((period, i) => {
       return {
         period,
-        value: unit.series[i] ?? 0,
+        value: unit.series[i] || null,
       }
     })
   })
@@ -81,9 +81,22 @@ function resetHover() {
 const configs = computed(() => {
   return (props.dataset || []).map<VueUiSparklineConfig>((unit, i) => {
     const lastIndex = unit.series.length - 1
-    const dashIndices = props.showLastDatapointEstimation
-      ? Array.from(new Set([...(unit.dashIndices ?? []), lastIndex]))
-      : unit.dashIndices
+
+    const nullValueIndices = unit.series.reduce<number[]>((indices, value, index) => {
+      if (value == null) {
+        indices.push(index)
+      }
+
+      return indices
+    }, [])
+
+    const dashIndices = Array.from(
+      new Set([
+        ...(unit.dashIndices ?? []),
+        ...nullValueIndices,
+        ...(props.showLastDatapointEstimation && lastIndex >= 0 ? [lastIndex] : []),
+      ]),
+    )
 
     // Ensure we loop through available palette colours when the series count is higher than the available palette
     const fallbackColor = palette[i] ?? palette[i % palette.length] ?? palette[0]!
@@ -152,6 +165,7 @@ const configs = computed(() => {
           color: seriesColor,
           dashIndices,
           dashArray: 3,
+          cutNullValues: false,
         },
         plot: {
           radius: 6,
@@ -162,7 +176,6 @@ const configs = computed(() => {
           color: colors.value.fgSubtle,
           bold: false,
         },
-
         verticalIndicator: {
           strokeDasharray: 0,
           color: colors.value.fgSubtle,

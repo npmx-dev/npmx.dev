@@ -10,6 +10,7 @@ const mocks = vi.hoisted(() => ({
   mergeConfigs: vi.fn(),
   createStaticVueUiXy: vi.fn(),
   generateWatermarkLogo: vi.fn(),
+  nullifyZeroValues: vi.fn(),
   isLastDayOfMonth: vi.fn(),
   getEffectiveEndDateIso: vi.fn(),
   isLastDayOfYear: vi.fn(),
@@ -25,6 +26,7 @@ vi.mock('#shared/utils/trends-chart', () => ({
   buildNormalisedTrendsDataset: mocks.buildNormalisedTrendsDataset,
   buildTrendsChartConfig: mocks.buildTrendsChartConfig,
   generateWatermarkLogo: mocks.generateWatermarkLogo,
+  nullifyZeroValues: mocks.nullifyZeroValues,
 }))
 
 vi.mock('#shared/utils/embed-chart-colors', () => ({
@@ -102,6 +104,7 @@ beforeEach(() => {
   }))
 
   mocks.generateWatermarkLogo.mockReturnValue('<g data-logo="true" />')
+  mocks.nullifyZeroValues.mockImplementation(({ values }: { values: unknown[] }) => values)
   mocks.getEffectiveEndDateIso.mockReturnValue('2026-05-31')
   mocks.isLastDayOfMonth.mockReturnValue(true)
   mocks.isLastDayOfYear.mockReturnValue(true)
@@ -474,6 +477,36 @@ describe('downloads SVG embed response', () => {
     })
   })
 
+  it('nullifies zero values in the normalized dataset before rendering', async () => {
+    mocks.buildNormalisedTrendsDataset.mockReturnValue([
+      {
+        name: 'vue',
+        series: [10, 0, 20],
+        dashIndices: undefined,
+      },
+    ])
+    mocks.nullifyZeroValues.mockReturnValue([10, null, 20])
+
+    await createDownloadsSvgResponse({
+      package: 'vue',
+    })
+
+    expect(mocks.nullifyZeroValues).toHaveBeenCalledWith({
+      enabled: true,
+      keepLastZero: true,
+      values: [10, 0, 20],
+    })
+    expect(mocks.createStaticVueUiXy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        dataset: [
+          expect.objectContaining({
+            series: [10, null, 20],
+          }),
+        ],
+      }),
+    )
+  })
+
   it('adds a dash index to the last monthly point when the effective end date is not the last day of month', async () => {
     mocks.isLastDayOfMonth.mockReturnValue(false)
     mocks.getEffectiveEndDateIso.mockReturnValue('2026-05-12')
@@ -652,7 +685,7 @@ describe('downloads SVG embed response', () => {
     expect(content).toContain('1.2K')
   })
 
-  it('falls back to 0 when the last plot value is missing', async () => {
+  it('does not render a last datapoint label when the plot value is missing', async () => {
     await createDownloadsSvgResponse({
       package: 'vue',
     })
@@ -676,7 +709,8 @@ describe('downloads SVG embed response', () => {
       ],
     })
 
-    expect(content).toContain('0')
+    expect(content).toContain('<g data-logo="true" />')
+    expect(content).not.toContain('<text')
   })
 
   it('falls back to en when canonical locales returns an empty array', async () => {

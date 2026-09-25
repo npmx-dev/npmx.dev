@@ -1,7 +1,11 @@
 import { createError } from 'h3'
 import { createStaticVueUiXy } from 'vue-data-ui/ssr/vue-ui-xy'
 import { mergeConfigs } from 'vue-data-ui/utils'
-import { generateWatermarkLogo, LOCALES_WITH_EXTRA_SPACE } from '#shared/utils/trends-chart'
+import {
+  generateWatermarkLogo,
+  LOCALES_WITH_EXTRA_SPACE,
+  nullifyZeroValues,
+} from '#shared/utils/trends-chart'
 import {
   buildNormalisedTrendsDataset,
   buildTrendsChartConfig,
@@ -209,6 +213,14 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
     selectedMetric: metric,
     chartFilter,
     endDateMs: effectiveEndDateMs,
+  })
+
+  dataset.forEach(item => {
+    item.series = nullifyZeroValues({
+      enabled: true,
+      keepLastZero: true,
+      values: item.series,
+    }) as number[]
   })
 
   if (!chartData.dataset?.length) {

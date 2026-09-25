@@ -23,6 +23,7 @@ import {
   buildTrendsChartData,
   isWeeklyDataset,
   getTrendsDatetimeFormatterOptions,
+  nullifyZeroValues,
 } from '#shared/utils/trends-chart'
 import { downloadFileLink } from '~/utils/download'
 import { useCopyChartPng } from '~/composables/useCopyChartPng'
@@ -157,16 +158,26 @@ const chartData = computed(() =>
   }),
 )
 
-const normalisedDataset = computed(() =>
-  buildNormalisedTrendsDataset({
+const normalisedDataset = computed(() => {
+  const data = buildNormalisedTrendsDataset({
     dataset: chartData.value.dataset,
     dates: chartData.value.dates,
     granularity: displayedGranularity.value,
     selectedMetric: selectedMetric.value,
     chartFilter: settings.value.chartFilter,
     endDateMs: endDate.value ? endDateOnlyToUtcMs(endDate.value) : null,
-  }),
-)
+  })
+
+  data.forEach(item => {
+    item.series = nullifyZeroValues({
+      enabled: true,
+      keepLastZero: true,
+      values: item.series,
+    }) as number[]
+  })
+
+  return data
+})
 
 const datetimeFormatterOptions = computed(() =>
   getTrendsDatetimeFormatterOptions(selectedGranularity.value),
@@ -274,7 +285,9 @@ const supportsEstimation = computed(
 )
 
 const hasDownloadAnomalies = computed(() =>
-  normalisedDataset.value?.some(datapoint => !!datapoint?.dashIndices?.length),
+  normalisedDataset.value?.some(
+    datapoint => !!datapoint?.dashIndices?.length || datapoint?.series?.some(d => d == null),
+  ),
 )
 
 const shouldRenderEstimationOverlay = computed(() => !pending.value && supportsEstimation.value)
