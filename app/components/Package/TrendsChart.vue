@@ -25,7 +25,6 @@ import {
   getTrendsDatetimeFormatterOptions,
   nullifyZeroValues,
   isMissingDownloadValue,
-  getMedianDailyDownloads,
   isLargeDownloadSeries,
 } from '#shared/utils/trends-chart'
 import { downloadFileLink } from '~/utils/download'
