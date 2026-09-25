@@ -59,7 +59,7 @@ const datasets = computed<VueUiSparklineDatasetItem[][]>(() => {
     return props.dates.map((period, i) => {
       return {
         period,
-        value: unit.series[i] || null,
+        value: unit.series[i] || (i === props.dates.length - 1 ? 0 : null),
       }
     })
   })
