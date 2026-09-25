@@ -7,11 +7,15 @@ import {
   drawTrendsLastDatapointLabel,
   drawTrendsSvgPrintLegend,
   generateWatermarkLogo,
+  getMedianDailyDownloads,
   getTrendsDatetimeFormatterOptions,
   isDailyDataset,
+  isLargeDownloadSeries,
+  isMissingDownloadValue,
   isMonthlyDataset,
   isWeeklyDataset,
   isYearlyDataset,
+  median,
   nullifyZeroValues,
 } from '#shared/utils/trends-chart'
 
@@ -977,5 +981,83 @@ describe('nullifyZeroValues', () => {
     const values = [0, 1, 2, 4, 0]
     const expected = [null, 1, 2, 4, 0]
     expect(nullifyZeroValues({ values })).toStrictEqual(expected)
+  })
+})
+
+describe('isMissingDownloadValue', () => {
+  it('returns true when the value is 0', () => {
+    expect(isMissingDownloadValue(0)).toBe(true)
+  })
+  it('returns true when the value is undefined or null', () => {
+    expect(isMissingDownloadValue(undefined)).toBe(true)
+    expect(isMissingDownloadValue(null)).toBe(true)
+  })
+  it('returns false when the value is valid', () => {
+    expect(isMissingDownloadValue(1)).toBe(false)
+  })
+})
+
+describe('median', () => {
+  it('returns 0 for an empty array', () => {
+    expect(median([])).toBe(0)
+  })
+
+  it('returns the middle value for an odd number of values', () => {
+    expect(median([9, 1, 5])).toBe(5)
+  })
+
+  it('returns the average of the two middle values for an even number of values', () => {
+    expect(median([10, 2, 8, 4])).toBe(6)
+  })
+
+  it('returns the middle value for an odd number of values', () => {
+    expect(median([3, 1, 2])).toBe(2)
+  })
+})
+
+describe('getMedianDailyDownloads', () => {
+  it('returns the median directly for daily data', () => {
+    expect(getMedianDailyDownloads([100, 300, 200], 'daily')).toBe(200)
+  })
+
+  it('converts weekly totals to daily values before calculating the median', () => {
+    expect(getMedianDailyDownloads([700, 1400, 2100], 'weekly')).toBe(200)
+  })
+
+  it('converts monthly and yearly totals to daily values', () => {
+    expect(getMedianDailyDownloads([(365.25 / 12) * 100], 'monthly')).toBeCloseTo(100)
+    expect(getMedianDailyDownloads([365.25 * 100], 'yearly')).toBeCloseTo(100)
+  })
+
+  it('ignores missing, non-finite, zero, and negative values', () => {
+    expect(
+      getMedianDailyDownloads(
+        [null, undefined, Number.NaN, Number.POSITIVE_INFINITY, 0, -10, 100, 300],
+        'daily',
+      ),
+    ).toBe(200)
+  })
+
+  it('returns 0 when there are no positive finite values', () => {
+    expect(getMedianDailyDownloads([null, undefined, 0, -1, Number.NaN], 'daily')).toBe(0)
+  })
+})
+
+describe('isLargeDownloadSeries', () => {
+  it('returns false when the median daily downloads equal the threshold', () => {
+    expect(isLargeDownloadSeries([500], 'daily')).toBe(false)
+  })
+
+  it('returns true when the median daily downloads exceed the threshold', () => {
+    expect(isLargeDownloadSeries([501], 'daily')).toBe(true)
+  })
+
+  it('applies the threshold after normalizing weekly totals to daily downloads', () => {
+    expect(isLargeDownloadSeries([3500], 'weekly')).toBe(false)
+    expect(isLargeDownloadSeries([3507], 'weekly')).toBe(true)
+  })
+
+  it('returns false when the series contains no valid positive downloads', () => {
+    expect(isLargeDownloadSeries([null, undefined, 0], 'daily')).toBe(false)
   })
 })
