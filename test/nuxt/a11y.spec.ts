@@ -1418,6 +1418,7 @@ describe('component accessibility audits', () => {
           dates,
           datetimeFormatterOptions,
           showLastDatapointEstimation: false,
+          granularity: 'weekly',
         },
       })
       const results = await runAxe(component)
