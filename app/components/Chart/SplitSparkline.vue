@@ -88,21 +88,51 @@ function resetHover() {
 
 const configs = computed(() => {
   return (props.dataset || []).map<VueUiSparklineConfig>((unit, i) => {
-    const lastIndex = unit.series.length - 1
+    const chartDataset = datasets.value[i] ?? []
+    const lastIndex = chartDataset.length - 1
 
-    const nullValueIndices = unit.series.reduce<number[]>((indices, value, index) => {
-      if (value == null) {
-        indices.push(index)
+    const plottedIndexBySourceIndex = new Map<number, number>()
+    const nullGapSegmentIndices: number[] = []
+
+    let prevSourceIndex: number | null = null
+    let prevPlottedIndex: number | null = null
+    let plottedIndex = 0
+
+    chartDataset.forEach((datapoint, sourceIndex) => {
+      if (datapoint.value == null) {
+        return
       }
 
-      return indices
-    }, [])
+      plottedIndexBySourceIndex.set(sourceIndex, plottedIndex)
+
+      if (
+        prevSourceIndex !== null &&
+        prevPlottedIndex !== null &&
+        sourceIndex - prevSourceIndex > 1
+      ) {
+        nullGapSegmentIndices.push(prevPlottedIndex)
+      }
+
+      prevSourceIndex = sourceIndex
+      prevPlottedIndex = plottedIndex
+      plottedIndex += 1
+    })
+
+    const remappedDashIndices = (unit.dashIndices ?? []).flatMap(sourceIndex => {
+      const index = plottedIndexBySourceIndex.get(sourceIndex)
+
+      return index === undefined ? [] : [index]
+    })
+
+    const lastPlottedIndex = plottedIndexBySourceIndex.get(lastIndex)
 
     const dashIndices = Array.from(
       new Set([
-        ...(unit.dashIndices ?? []),
-        ...nullValueIndices,
-        ...(props.showLastDatapointEstimation && lastIndex >= 0 ? [lastIndex] : []),
+        ...remappedDashIndices,
+        ...nullGapSegmentIndices,
+        ...(props.showLastDatapointEstimation && lastPlottedIndex !== undefined
+          ? [lastPlottedIndex]
+          : []),
       ]),
     )
 
