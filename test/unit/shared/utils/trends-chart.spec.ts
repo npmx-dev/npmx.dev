@@ -958,24 +958,24 @@ describe('generateWatermarkLogo', () => {
 describe('nullifyZeroValues', () => {
   it('does not mutate the dataset when disabled', () => {
     const values = [0, 1, 2, 0, 4]
-    expect(nullifyZeroValues({ values })).toStrictEqual(values)
+    expect(nullifyZeroValues({ values, enabled: false })).toStrictEqual(values)
   })
 
   it('maps all zero values to null', () => {
     const values = [0, 1, 0, 2, 0]
     const expected = [null, 1, null, 2, null]
-    expect(nullifyZeroValues({ values, enabled: true })).toStrictEqual(expected)
+    expect(nullifyZeroValues({ values, keepLastZero: false })).toStrictEqual(expected)
   })
 
   it('maps all zero values to null when all values are zero', () => {
     const values = [0, 0, 0]
     const expected = [null, null, null]
-    expect(nullifyZeroValues({ values, enabled: true })).toStrictEqual(expected)
+    expect(nullifyZeroValues({ values, keepLastZero: false })).toStrictEqual(expected)
   })
 
   it('keeps the last zero value and maps others to null', () => {
     const values = [0, 1, 2, 4, 0]
     const expected = [null, 1, 2, 4, 0]
-    expect(nullifyZeroValues({ values, keepLastZero: true, enabled: true })).toStrictEqual(expected)
+    expect(nullifyZeroValues({ values })).toStrictEqual(expected)
   })
 })

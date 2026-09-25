@@ -717,8 +717,8 @@ export function generateWatermarkLogo({
 }
 
 export function nullifyZeroValues({
-  enabled = false,
-  keepLastZero = false,
+  enabled = true,
+  keepLastZero = true,
   values,
 }: {
   // Convert zero values to null: the chart component will connect valid edges

@@ -492,8 +492,6 @@ describe('downloads SVG embed response', () => {
     })
 
     expect(mocks.nullifyZeroValues).toHaveBeenCalledWith({
-      enabled: true,
-      keepLastZero: true,
       values: [10, 0, 20],
     })
     expect(mocks.createStaticVueUiXy).toHaveBeenCalledWith(

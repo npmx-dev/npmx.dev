@@ -170,8 +170,6 @@ const normalisedDataset = computed(() => {
 
   data.forEach(item => {
     item.series = nullifyZeroValues({
-      enabled: true,
-      keepLastZero: true,
       values: item.series,
     }) as number[]
   })

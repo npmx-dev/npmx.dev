@@ -217,8 +217,6 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
 
   dataset.forEach(item => {
     item.series = nullifyZeroValues({
-      enabled: true,
-      keepLastZero: true,
       values: item.series,
     }) as number[]
   })
