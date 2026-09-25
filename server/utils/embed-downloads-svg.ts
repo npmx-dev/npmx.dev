@@ -5,11 +5,11 @@ import {
   generateWatermarkLogo,
   LOCALES_WITH_EXTRA_SPACE,
   nullifyZeroValues,
-} from '#shared/utils/trends-chart'
-import {
   buildNormalisedTrendsDataset,
   buildTrendsChartConfig,
   buildTrendsChartData,
+  isMissingDownloadValue,
+  isLargeDownloadSeries,
 } from '#shared/utils/trends-chart'
 import { resolveEmbedChartColors } from '#shared/utils/embed-chart-colors'
 import { OKLCH_NEUTRAL_FALLBACK } from '~/utils/colors'
@@ -128,6 +128,116 @@ function dateIsoToUtcMs(dateIso: string): number {
   return new Date(`${dateIso}T00:00:00.000Z`).getTime()
 }
 
+type RenderedPlot = {
+  x?: number
+  y?: number
+  value?: number | null
+}
+
+type RenderedSeries = {
+  color?: string
+  name?: string
+  plots?: RenderedPlot[]
+  [key: string]: unknown
+}
+
+type NoDataTailGeometry = {
+  seriesIndex: number
+  x1: number
+  x2: number
+  y: number
+  value: number
+  color: string
+}
+
+function getNoDataTailGeometries({
+  series,
+  isLargePackageByIndex,
+  fallbackColor,
+}: {
+  series: RenderedSeries[]
+  isLargePackageByIndex: boolean[]
+  fallbackColor: string
+}): NoDataTailGeometry[] {
+  return series.flatMap((serie, seriesIndex) => {
+    if (!isLargePackageByIndex[seriesIndex]) return []
+
+    const plots = Array.isArray(serie.plots) ? serie.plots : []
+    if (plots.length < 2) return []
+
+    const endpointPlot = plots.at(-1)
+    if (!endpointPlot || !isMissingDownloadValue(endpointPlot.value)) return []
+
+    const x2 = Number(endpointPlot.x)
+    if (!Number.isFinite(x2)) return []
+
+    let lastValidPlot: RenderedPlot | undefined
+    for (let index = plots.length - 2; index >= 0; index -= 1) {
+      const plot = plots[index]
+      if (!plot || isMissingDownloadValue(plot.value)) continue
+
+      const value = Number(plot.value)
+      const x = Number(plot.x)
+      const y = Number(plot.y)
+      if (!Number.isFinite(value) || !Number.isFinite(x) || !Number.isFinite(y)) continue
+
+      lastValidPlot = plot
+      break
+    }
+
+    if (!lastValidPlot) return []
+
+    const x1 = Number(lastValidPlot.x)
+    const y = Number(lastValidPlot.y)
+    const value = Number(lastValidPlot.value)
+    if (!Number.isFinite(x1) || !Number.isFinite(y) || !Number.isFinite(value)) return []
+
+    return [
+      {
+        seriesIndex,
+        x1,
+        x2,
+        y,
+        value,
+        color: String(serie.color ?? fallbackColor),
+      },
+    ]
+  })
+}
+
+function createNoDataTailSvg({
+  geometries,
+  backgroundColor,
+}: {
+  geometries: NoDataTailGeometry[]
+  backgroundColor: string
+}): string {
+  return geometries
+    .map(
+      geometry => `
+        <line
+          x1="${geometry.x1}"
+          y1="${geometry.y}"
+          x2="${geometry.x2}"
+          y2="${geometry.y}"
+          stroke="${geometry.color}"
+          stroke-width="3"
+          stroke-dasharray="4 8"
+          stroke-linecap="round"
+        />
+        <circle
+          cx="${geometry.x2}"
+          cy="${geometry.y}"
+          r="4"
+          fill="${geometry.color}"
+          stroke="${backgroundColor}"
+          stroke-width="2"
+        />
+      `,
+    )
+    .join('\n')
+}
+
 export async function createDownloadsSvgResponse(query: QueryParameters): Promise<string> {
   const packageNames = parsePackageNames(query.packages ?? query.package)
 
@@ -215,10 +325,27 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
     endDateMs: effectiveEndDateMs,
   })
 
-  dataset.forEach(item => {
+  const isLargePackageByIndex = (chartData.dataset ?? []).map(datapoint =>
+    isLargeDownloadSeries(
+      (datapoint.series ?? []) as Array<number | null | undefined>,
+      chartGranularity,
+    ),
+  )
+
+  dataset.forEach((item, index) => {
     item.series = nullifyZeroValues({
+      enabled: isLargePackageByIndex[index] === true,
       values: item.series,
+      keepLastZero: false,
     }) as number[]
+
+    const rawLastValue = chartData.dataset?.[index]?.series?.at(-1)
+    if (!item.series.length || !isMissingDownloadValue(rawLastValue)) return
+
+    if (!isLargePackageByIndex[index]) {
+      const series = item.series as Array<number | null>
+      series[series.length - 1] = 0
+    }
   })
 
   if (!chartData.dataset?.length) {
@@ -307,28 +434,93 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
     (chartGranularity === 'yearly' && !isLastDayOfYear(effectiveEndDateIso))
 
   return await createStaticVueUiXy({
-    dataset: dataset.map(datapoint => {
-      const dashIndices = shouldDashLastPoint
-        ? [...new Set([...(datapoint.dashIndices ?? []), datapoint.series.length - 1])].filter(
-            index => index >= 0,
-          )
-        : datapoint.dashIndices
+    dataset: dataset.map((datapoint, index) => {
+      const rawLastValue = chartData.dataset?.[index]?.series?.at(-1)
+      const hasNoDataTail =
+        isLargePackageByIndex[index] === true && isMissingDownloadValue(rawLastValue)
+
+      const dashIndices =
+        shouldDashLastPoint && !hasNoDataTail
+          ? [...new Set([...(datapoint.dashIndices ?? []), datapoint.series.length - 1])].filter(
+              dashIndex => dashIndex >= 0,
+            )
+          : datapoint.dashIndices
 
       return Object.assign({}, datapoint, { dashIndices })
     }),
     config,
     additionalSvgContent: ({ series, drawingArea }) => {
+      const renderedSeries = series as RenderedSeries[]
+      const noDataGeometries = getNoDataTailGeometries({
+        series: renderedSeries,
+        isLargePackageByIndex,
+        fallbackColor: colors.fg,
+      })
+
+      const noDataTail = createNoDataTailSvg({
+        geometries: noDataGeometries,
+        backgroundColor: colors.bg,
+      })
+
+      // Keep all end labels in one helper call so they share the same collision
+      // resolution and connector/elbow layout. Missing endpoints display the
+      // previous valid recorded value with an asterisk.
+      const labelSeries = renderedSeries.slice()
+      const missingEndpointLabels = new Map<number, string>()
+
+      for (const geometry of noDataGeometries) {
+        const serie = renderedSeries[geometry.seriesIndex]
+        if (!serie || !Array.isArray(serie.plots) || !serie.plots.length) continue
+
+        const plots = serie.plots.slice()
+        const endpointIndex = plots.length - 1
+        const endpointPlot = plots[endpointIndex]
+        if (!endpointPlot) continue
+
+        const labelValueSentinel = Number.MIN_SAFE_INTEGER + geometry.seriesIndex
+        missingEndpointLabels.set(
+          labelValueSentinel,
+          `${compactNumberFormatter.format(geometry.value)}*`,
+        )
+
+        const labelEndpointPlot = Object.assign({}, endpointPlot)
+        labelEndpointPlot.x = geometry.x2
+        labelEndpointPlot.y = geometry.y
+        labelEndpointPlot.value = labelValueSentinel
+        plots[endpointIndex] = labelEndpointPlot
+
+        const labelSerie = Object.assign({}, serie)
+        labelSerie.plots = plots
+        labelSeries[geometry.seriesIndex] = labelSerie
+      }
+
       const lastPlotValues = createLastDatapointLabelsSvg({
-        series,
+        series: labelSeries,
         drawingArea,
         colors: {
           foreground: colors.fg,
           background: colors.bg,
           fallbackSerieColor: colors.fg,
         },
-        formatValue: value => compactNumberFormatter.format(value),
+        formatValue: value =>
+          missingEndpointLabels.get(value) ?? compactNumberFormatter.format(value),
         isDarkMode,
       })
+
+      const lastRecordedValueLegend =
+        chartGranularity === 'daily'
+          ? `
+            <text
+              x="${drawingArea.right + 130}"
+              y="${drawingArea.bottom + 82}"
+              fill="${colors.fgSubtle}"
+              font-size="16"
+              text-anchor="end"
+            >
+              * Last recorded value
+            </text>
+          `
+          : ''
 
       const logo = generateWatermarkLogo({
         x: 12,
@@ -340,6 +532,8 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
 
       return `
           <style>text {font-family:monospace;}</style>
+          ${noDataTail}
+          ${lastRecordedValueLegend}
           ${lastPlotValues}
           ${logo}
         `

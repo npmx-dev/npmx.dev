@@ -732,3 +732,46 @@ export function nullifyZeroValues({
   if (!enabled) return values
   return values.map((n, i) => (keepLastZero && i === values.length - 1 ? n : n || null))
 }
+
+export function isMissingDownloadValue(value: unknown): boolean {
+  if (value === null || value === undefined) return true
+  return Number(value) === 0
+}
+
+// This is somehow arbitrary: fixes the threshold above which a package is considered "large", which means any day with 0 downloads must imply a npm recording anomaly. If a package has a median daily downloads above this threshold, the last label on the charts will be the last valid one (see implementations in TrendsChart.vue, SplitSparkline.vue, embed-downloads-svg.ts)
+export const LARGE_PACKAGE_DAILY_DOWNLOADS_THRESHOLD = 500
+
+export const DAYS_PER_GRANULARITY: Record<ChartTimeGranularity, number> = {
+  daily: 1,
+  weekly: 7,
+  monthly: 365.25 / 12,
+  yearly: 365.25,
+}
+
+export function median(values: number[]): number {
+  if (!values.length) return 0
+  const sorted = values.slice().sort((a, b) => a - b)
+  const middle = Math.floor(sorted.length / 2)
+  if (sorted.length % 2 === 1) return sorted[middle]!
+  return (sorted[middle - 1]! + sorted[middle]!) / 2
+}
+
+export function getMedianDailyDownloads(
+  series: Array<number | null | undefined>,
+  granularity: ChartTimeGranularity,
+): number {
+  const divisor = DAYS_PER_GRANULARITY[granularity]
+  const dailyValues = series
+    .map(value => Number(value))
+    .filter(value => Number.isFinite(value) && value > 0)
+    .map(value => value / divisor)
+
+  return median(dailyValues)
+}
+
+export function isLargeDownloadSeries(
+  series: Array<number | null | undefined>,
+  granularity: ChartTimeGranularity,
+): boolean {
+  return getMedianDailyDownloads(series, granularity) > LARGE_PACKAGE_DAILY_DOWNLOADS_THRESHOLD
+}
