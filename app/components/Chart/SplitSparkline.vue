@@ -90,18 +90,9 @@ const configs = computed(() => {
   return (props.dataset || []).map<VueUiSparklineConfig>((unit, i) => {
     const lastIndex = unit.series.length - 1
 
-    const nullValueIndices = unit.series.reduce<number[]>((indices, value, index) => {
-      if (value == null) {
-        indices.push(index)
-      }
-
-      return indices
-    }, [])
-
     const dashIndices = Array.from(
       new Set([
         ...(unit.dashIndices ?? []),
-        ...nullValueIndices,
         ...(props.showLastDatapointEstimation && lastIndex >= 0 ? [lastIndex] : []),
       ]),
     )
@@ -174,6 +165,9 @@ const configs = computed(() => {
           dashIndices,
           dashArray: 3,
           cutNullValues: false,
+          nullDashes: {
+            show: true,
+          },
         },
         plot: {
           radius: 6,
