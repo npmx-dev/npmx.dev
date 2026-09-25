@@ -1699,6 +1699,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
             :dates="chartData.dates"
             :datetimeFormatterOptions
             :showLastDatapointEstimation="shouldRenderEstimationOverlay && !isEndDateOnPeriodEnd"
+            :nullify-zero-values="true"
           />
         </div>
 

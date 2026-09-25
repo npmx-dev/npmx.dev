@@ -27,6 +27,7 @@ const props = defineProps<{
     day: string
   }
   showLastDatapointEstimation: boolean
+  nullifyZeroValues?: boolean
 }>()
 
 const { locale } = useI18n()
@@ -59,7 +60,14 @@ const datasets = computed<VueUiSparklineDatasetItem[][]>(() => {
     return props.dates.map((period, i) => {
       return {
         period,
-        value: unit.series[i] || (i === props.dates.length - 1 ? 0 : null),
+        value:
+          unit.series[i] === 0
+            ? props.nullifyZeroValues
+              ? i === props.dates.length - 1
+                ? 0
+                : null
+              : 0
+            : unit.series[i] || (i === props.dates.length - 1 ? 0 : null),
       }
     })
   })
