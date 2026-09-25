@@ -170,6 +170,7 @@ const normalisedDataset = computed(() => {
 
   data.forEach(item => {
     item.series = nullifyZeroValues({
+      enabled: selectedMetric.value === DEFAULT_METRIC_ID,
       values: item.series,
     }) as number[]
   })
