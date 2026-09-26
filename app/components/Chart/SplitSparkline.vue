@@ -9,6 +9,8 @@ import { useColors } from '~/composables/useColors'
 import type { VueUiXyDatasetItem } from 'vue-data-ui/vue-ui-xy'
 import { getPalette, lightenColor } from 'vue-data-ui/utils'
 import { CHART_PATTERN_CONFIG } from '~/utils/charts'
+import { isMissingDownloadValue } from '#shared/utils/trends-chart'
+import type { ChartTimeGranularity } from '~/types/chart'
 
 import('vue-data-ui/style.css')
 
@@ -27,6 +29,9 @@ const props = defineProps<{
     day: string
   }
   showLastDatapointEstimation: boolean
+  nullifyZeroValues?: boolean
+  largePackageSeries?: boolean[]
+  granularity: ChartTimeGranularity
 }>()
 
 const { locale } = useI18n()
@@ -54,18 +59,83 @@ const { colors } = useColors(rootEl)
 
 const isDarkMode = computed(() => resolvedMode.value === 'dark')
 
+const selectedIndex = ref<number | undefined | null>(null)
+const isInteracting = ref(false)
+
+function isLargeSeries(seriesIndex: number): boolean {
+  return props.largePackageSeries?.[seriesIndex] === true
+}
+
+function getLastValidValue(
+  series: Array<number | null | undefined>,
+  beforeIndex: number,
+): number | null {
+  for (let index = beforeIndex - 1; index >= 0; index -= 1) {
+    const value = series[index]
+    if (isMissingDownloadValue(value)) continue
+    const numericValue = Number(value)
+    if (Number.isFinite(numericValue)) return numericValue
+  }
+  return null
+}
+
+function formatDataLabel(seriesIndex: number, value: number): string {
+  const series = props.dataset?.[seriesIndex]?.series ?? []
+  const lastIndex = Math.min(series.length, props.dates.length) - 1
+
+  // Idle state: the sparkline label shows the final datapoint: if the value is null, for a large package, show the last recorded valid value
+  if (!isInteracting.value || typeof selectedIndex.value !== 'number') {
+    const rawLastValue = series[lastIndex]
+
+    if (isLargeSeries(seriesIndex) && isMissingDownloadValue(rawLastValue)) {
+      const lastValidValue = getLastValidValue(series, lastIndex)
+      if (lastValidValue !== null) {
+        return `${numberFormatter.value.format(lastValidValue)}*`
+      }
+    }
+
+    return numberFormatter.value.format(value)
+  }
+
+  // Hover | kbd interaction: show the actual value at the hovered index
+  const rawValue = series[selectedIndex.value]
+  if (isLargeSeries(seriesIndex) && isMissingDownloadValue(rawValue)) {
+    return $t('package.trends.no_data_short')
+  }
+
+  return numberFormatter.value.format(value)
+}
+
 const datasets = computed<VueUiSparklineDatasetItem[][]>(() => {
-  return (props.dataset ?? []).map(unit => {
-    return props.dates.map((period, i) => {
+  return (props.dataset ?? []).map((unit, seriesIndex) => {
+    const lastIndex = Math.min(unit.series.length, props.dates.length) - 1
+    const rawLastValue = unit.series[lastIndex]
+    const hasNoDataTail =
+      isLargeSeries(seriesIndex) && lastIndex >= 0 && isMissingDownloadValue(rawLastValue)
+    const lastValidValue = hasNoDataTail ? getLastValidValue(unit.series, lastIndex) : null
+
+    return props.dates.map((period, index) => {
+      const rawValue = unit.series[index]
+
+      // Large package with a 0 or null last value : keep the final x index, but render it at the same y value as the previous valid datapoint
+      if (hasNoDataTail && index === lastIndex && lastValidValue !== null) {
+        return { period, value: lastValidValue }
+      }
+
       return {
         period,
-        value: unit.series[i] ?? 0,
+        value:
+          rawValue === 0
+            ? props.nullifyZeroValues && hasNoDataTail
+              ? index === props.dates.length - 1
+                ? 0
+                : null
+              : 0
+            : rawValue || (index === props.dates.length - 1 ? 0 : null),
       }
     })
   })
 })
-
-const selectedIndex = ref<number | undefined | null>(null)
 
 function hoverIndex({ index }: { index: number | undefined | null }) {
   if (typeof index === 'number') {
@@ -73,17 +143,29 @@ function hoverIndex({ index }: { index: number | undefined | null }) {
   }
 }
 
+function startInteraction() {
+  isInteracting.value = true
+}
+
 function resetHover() {
+  isInteracting.value = false
   selectedIndex.value = null
   step.value += 1 // required to reset all chart instances
 }
 
 const configs = computed(() => {
   return (props.dataset || []).map<VueUiSparklineConfig>((unit, i) => {
-    const lastIndex = unit.series.length - 1
-    const dashIndices = props.showLastDatapointEstimation
-      ? Array.from(new Set([...(unit.dashIndices ?? []), lastIndex]))
-      : unit.dashIndices
+    const lastIndex = Math.min(unit.series.length, props.dates.length) - 1
+    const hasNoDataTail =
+      isLargeSeries(i) && lastIndex >= 0 && isMissingDownloadValue(unit.series[lastIndex])
+
+    const dashIndices = Array.from(
+      new Set([
+        ...(unit.dashIndices ?? []),
+        ...(props.showLastDatapointEstimation && lastIndex >= 0 ? [lastIndex] : []),
+        ...(hasNoDataTail ? [lastIndex] : []),
+      ]),
+    )
 
     // Ensure we loop through available palette colours when the series count is higher than the available palette
     const fallbackColor = palette[i] ?? palette[i % palette.length] ?? palette[0]!
@@ -138,9 +220,7 @@ const configs = computed(() => {
           fontSize: 24,
           bold: false,
           color: colors.value.fg,
-          formatter: ({ value }) => {
-            return numberFormatter.value.format(value)
-          },
+          formatter: ({ value }) => formatDataLabel(i, value),
           datetimeFormatter: {
             enable: true,
             locale: locale.value,
@@ -152,6 +232,10 @@ const configs = computed(() => {
           color: seriesColor,
           dashIndices,
           dashArray: 3,
+          cutNullValues: false,
+          nullDashes: {
+            show: true,
+          },
         },
         plot: {
           radius: 6,
@@ -162,7 +246,6 @@ const configs = computed(() => {
           color: colors.value.fgSubtle,
           bold: false,
         },
-
         verticalIndicator: {
           strokeDasharray: 0,
           color: colors.value.fgSubtle,
@@ -180,9 +263,16 @@ const configs = computed(() => {
 </script>
 
 <template>
-  <div class="grid gap-8 sm:grid-cols-2">
+  <div class="grid gap-8 sm:grid-cols-2 mb-4">
     <ClientOnly v-for="(config, i) in configs" :key="`config_${i}`">
-      <div @mouseleave="resetHover" @keydown.esc="resetHover" class="w-full max-w-[400px] mx-auto">
+      <div
+        @mouseenter="startInteraction"
+        @focusin="startInteraction"
+        @mouseleave="resetHover"
+        @focusout="resetHover"
+        @keydown.esc="resetHover"
+        class="w-full max-w-[400px] mx-auto"
+      >
         <div class="flex gap-2 place-items-center">
           <div class="h-5 w-5">
             <svg viewBox="0 0 30 30" class="w-full">
@@ -260,4 +350,11 @@ const configs = computed(() => {
       </template>
     </ClientOnly>
   </div>
+  <p
+    v-if="granularity === 'daily'"
+    id="last-recorded-value-note"
+    class="mb-6 text-xs text-fg-subtle"
+  >
+    {{ $t('package.trends.last_recorded_value') }}
+  </p>
 </template>
