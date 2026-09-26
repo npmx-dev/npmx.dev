@@ -210,6 +210,14 @@
     "links": "Odkazy",
     "tap_to_search": "Klepněte pro hledání"
   },
+  "tools": {
+    "deps_stats": {}
+  },
+  "deps_stats": {
+    "upload": {},
+    "dependencies": {},
+    "stats": {}
+  },
   "blog": {
     "title": "Blog",
     "heading": "blog",
@@ -316,6 +324,7 @@
       "slate": "Břidlice",
       "black": "Černá"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Povolit klávesové zkratky",
     "keyboard_shortcuts_enabled_description": "Klávesové zkratky lze zakázat, pokud se střetávají s jinými zkratkami prohlížeče nebo systému",
     "enable_code_ligatures": "Zapnout ligatury v kódu",
@@ -380,9 +389,7 @@
       "tangled": "Zobrazit na Tangled"
     },
     "collapse": "Sbalit",
-    "collapse_with_name": "Sbalit sekci {name}",
-    "expand": "Rozbalit",
-    "expand_with_name": "Rozbalit sekci {name}"
+    "expand": "Rozbalit"
   },
   "profile": {
     "display_name": "Zobrazované jméno",
@@ -523,6 +530,7 @@
       "title": "Spustit",
       "locally": "Spustit lokálně"
     },
+    "command": {},
     "readme": {
       "title": "ČTI MĚ",
       "no_readme": "Žádné ČTI MĚ NENÍ k dispozici.",
@@ -1262,6 +1270,25 @@
         "description": "Zjistěte nejnovější informace o npmx.",
         "cta": "Sledovat na Bluesky"
       }
+    }
+  },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
     }
   },
   "account_menu": {

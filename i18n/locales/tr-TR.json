@@ -98,6 +98,7 @@
     "current": "mevcut",
     "here": "buradasınız",
     "connected": "bağlı",
+    "keyboard_shortcuts": {},
     "state": {
       "on": "açık",
       "off": "kapalı"
@@ -203,6 +204,14 @@
     "links": "Bağlantılar",
     "tap_to_search": "Aramak için dokunun"
   },
+  "tools": {
+    "deps_stats": {}
+  },
+  "deps_stats": {
+    "upload": {},
+    "dependencies": {},
+    "stats": {}
+  },
   "blog": {
     "title": "Blog",
     "heading": "blog",
@@ -228,6 +237,9 @@
       "repost_count": "{count} yeniden paylaşım",
       "more_replies": "{count} yanıt daha... | {count} yanıt daha..."
     }
+  },
+  "noodles": {
+    "missing": {}
   },
   "settings": {
     "title": "ayarlar",
@@ -284,6 +296,7 @@
       "slate": "Arduvaz",
       "black": "Siyah"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Klavye kısayolları etkin",
     "keyboard_shortcuts_enabled_description": "Hızlı navigasyon için klavye kısayollarını etkinleştir",
     "enable_code_ligatures": "Kodda ligature'ları etkinleştir",
@@ -348,9 +361,7 @@
       "tangled": "Tangled'da görüntüle"
     },
     "collapse": "Daralt",
-    "collapse_with_name": "{name} daralt",
-    "expand": "Genişlet",
-    "expand_with_name": "{name} genişlet"
+    "expand": "Genişlet"
   },
   "profile": {
     "display_name": "Görünen ad",
@@ -485,6 +496,7 @@
       "title": "Çalıştır",
       "locally": "Yerel olarak çalıştır"
     },
+    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "README mevcut değil.",
@@ -707,7 +719,8 @@
         "general_description": "Y ekseni indirme sayısını temsil eder. X ekseni tarih aralığını temsil eder, {start_date}'den {end_date}'e, {granularity} zaman dönemi ile.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "{packages} paketleri için yatay çubuk grafiği, {facet} karşılaştırması ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} paketi {value} değerine sahip."
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "Haftalık İndirmeler",
@@ -1215,6 +1228,25 @@
       }
     }
   },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
+    }
+  },
   "account_menu": {
     "connect": "Bağlan",
     "account": "Hesap",
@@ -1389,6 +1421,7 @@
           "label": "GitHub Yıldızları",
           "description": "GitHub deposundaki yıldız sayısı"
         },
+        "githubForks": {},
         "githubIssues": {
           "label": "GitHub Sorunları",
           "description": "GitHub deposundaki sorun sayısı"

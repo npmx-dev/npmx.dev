@@ -210,6 +210,14 @@
     "links": "Lenker",
     "tap_to_search": "Trykk for å søke"
   },
+  "tools": {
+    "deps_stats": {}
+  },
+  "deps_stats": {
+    "upload": {},
+    "dependencies": {},
+    "stats": {}
+  },
   "blog": {
     "title": "Blogg",
     "heading": "blogg",
@@ -316,6 +324,7 @@
       "slate": "Skifer",
       "black": "Svart"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Aktiver tastatursnarveier",
     "keyboard_shortcuts_enabled_description": "Tastatursnarveier kan deaktiveres hvis de er i konflikt med andre nettleser- eller systemsnarveier",
     "enable_code_ligatures": "Aktiver ligaturer i kode",
@@ -380,9 +389,7 @@
       "tangled": "Vis på Tangled"
     },
     "collapse": "Skjul",
-    "collapse_with_name": "Skjul {name}",
-    "expand": "Utvid",
-    "expand_with_name": "Utvid {name}"
+    "expand": "Utvid"
   },
   "profile": {
     "display_name": "Visningsnavn",
@@ -523,6 +530,7 @@
       "title": "Kjør",
       "locally": "Kjør lokalt"
     },
+    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "Ingen README tilgjengelig.",
@@ -1262,6 +1270,25 @@
         "description": "Få med deg det siste om npmx.",
         "cta": "Følg på Bluesky"
       }
+    }
+  },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
     }
   },
   "account_menu": {

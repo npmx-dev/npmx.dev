@@ -98,6 +98,7 @@
     "current": "atual",
     "here": "estás aqui",
     "connected": "ligado",
+    "keyboard_shortcuts": {},
     "state": {
       "on": "ativado",
       "off": "desativado"
@@ -202,6 +203,14 @@
     "links": "Ligações",
     "tap_to_search": "Toca para pesquisar"
   },
+  "tools": {
+    "deps_stats": {}
+  },
+  "deps_stats": {
+    "upload": {},
+    "dependencies": {},
+    "stats": {}
+  },
   "blog": {
     "title": "Blog",
     "heading": "blog",
@@ -227,6 +236,9 @@
       "repost_count": "{count} partilha | {count} partilhas",
       "more_replies": "mais {count} resposta... | mais {count} respostas..."
     }
+  },
+  "noodles": {
+    "missing": {}
   },
   "settings": {
     "title": "definições",
@@ -283,6 +295,7 @@
       "slate": "Ardósia",
       "black": "Preto"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Ativar atalhos de teclado",
     "keyboard_shortcuts_enabled_description": "Os atalhos de teclado podem ser desativados se entrarem em conflito com outros atalhos do navegador ou do sistema",
     "enable_code_ligatures": "Ativar ligaturas no código"
@@ -345,9 +358,7 @@
       "tangled": "Ver no Tangled"
     },
     "collapse": "Recolher",
-    "collapse_with_name": "Recolher {name}",
-    "expand": "Expandir",
-    "expand_with_name": "Expandir {name}"
+    "expand": "Expandir"
   },
   "profile": {
     "display_name": "Nome a apresentar",
@@ -481,6 +492,7 @@
       "title": "Executar",
       "locally": "Executar localmente"
     },
+    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "README indisponível.",
@@ -691,7 +703,8 @@
         "general_description": "O eixo Y representa o número de transferências. O eixo X representa o intervalo de datas, de {start_date} a {end_date}, com periodicidade {granularity}.{estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "Gráfico de barras horizontais para: {packages}, comparando {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} tem um valor de {value}."
-      }
+      },
+      "embedding": {}
     },
     "downloads": {
       "title": "Transferências Semanais",
@@ -1199,6 +1212,25 @@
       }
     }
   },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
+    }
+  },
   "account_menu": {
     "connect": "ligar",
     "account": "Conta",
@@ -1373,6 +1405,7 @@
           "label": "Estrelas no GitHub",
           "description": "Número de estrelas no repositório GitHub"
         },
+        "githubForks": {},
         "githubIssues": {
           "label": "Issues no GitHub",
           "description": "Número de issues no repositório GitHub"

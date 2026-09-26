@@ -213,6 +213,14 @@
     "links": "Enlaces",
     "tap_to_search": "Toca para buscar"
   },
+  "tools": {
+    "deps_stats": {}
+  },
+  "deps_stats": {
+    "upload": {},
+    "dependencies": {},
+    "stats": {}
+  },
   "blog": {
     "title": "Blog",
     "heading": "blog",
@@ -319,6 +327,7 @@
       "slate": "Pizarra",
       "black": "Negro"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Activar atajos de teclado",
     "keyboard_shortcuts_enabled_description": "Los atajos de teclado pueden desactivarse si entran en conflicto con otros atajos del navegador o del sistema",
     "enable_code_ligatures": "Activar ligaduras en código",
@@ -383,9 +392,7 @@
       "tangled": "Ver en Tangled"
     },
     "collapse": "Contraer",
-    "collapse_with_name": "Contraer {name}",
-    "expand": "Expandir",
-    "expand_with_name": "Expandir {name}"
+    "expand": "Expandir"
   },
   "profile": {
     "display_name": "Nombre visible",
@@ -526,6 +533,7 @@
       "title": "Ejecutar",
       "locally": "Ejecutar localmente"
     },
+    "command": {},
     "readme": {
       "title": "Léeme",
       "no_readme": "No hay README disponible.",

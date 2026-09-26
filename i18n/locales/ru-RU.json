@@ -214,6 +214,14 @@
     "links": "Ссылки",
     "tap_to_search": "Нажмите для поиска"
   },
+  "tools": {
+    "deps_stats": {}
+  },
+  "deps_stats": {
+    "upload": {},
+    "dependencies": {},
+    "stats": {}
+  },
   "blog": {
     "title": "Блог",
     "heading": "Блог",
@@ -391,9 +399,7 @@
       "tangled": "Открыть на Tangled"
     },
     "collapse": "Свернуть",
-    "collapse_with_name": "Свернуть {name}",
-    "expand": "Развернуть",
-    "expand_with_name": "Развернуть {name}"
+    "expand": "Развернуть"
   },
   "profile": {
     "display_name": "Отображаемое имя",
@@ -535,6 +541,7 @@
       "title": "Запуск",
       "locally": "Запустить локально"
     },
+    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "README недоступен.",
