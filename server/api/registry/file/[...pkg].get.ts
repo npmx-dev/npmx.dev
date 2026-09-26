@@ -7,7 +7,7 @@ import {
   ERROR_PACKAGE_VERSION_AND_FILE_FAILED,
 } from '#shared/utils/constants'
 
-const CACHE_VERSION = 3
+const CACHE_VERSION = 4
 
 // Maximum file size to fetch and highlight (500KB)
 const MAX_FILE_SIZE = 500 * 1024
