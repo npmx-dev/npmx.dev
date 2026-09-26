@@ -61,7 +61,6 @@ type TrendChartConfigOptions = TrendChartBaseOptions & {
   pending: boolean
   locale: string
   chartHeight: number
-  inModal?: boolean
   tooltipPosition?: string
   compactXAxisLabels?: boolean
 }
@@ -478,7 +477,6 @@ export function buildTrendsChartConfig(
         position: 'top',
       },
       tooltip: {
-        teleportTo: options.inModal ? '#chart-modal' : undefined,
         position: (options.tooltipPosition ?? 'center') as TextAlign,
         offsetX: 24,
         offsetY: options.isMultiPackageMode ? undefined : -24,

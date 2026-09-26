@@ -37,7 +37,6 @@ const props = withDefaults(
   defineProps<{
     // For single package downloads history
     weeklyDownloads?: WeeklyDataPoint[]
-    inModal?: boolean
 
     /**
      * Backward compatible single package mode.
@@ -1303,7 +1302,7 @@ const chartHeight = computed(() => {
   if (props.hideControls) {
     return 460
   }
-  return showCorrectionControls.value && props.inModal ? 494 : 600
+  return 600
 })
 
 const { start } = useTimeoutFn(
@@ -1354,7 +1353,6 @@ const chartConfig = computed<VueUiXyConfig>(() => {
     pending: pending.value,
     locale: locale.value,
     chartHeight: chartHeight.value,
-    inModal: props.inModal,
     chartFilter: settings.value.chartFilter,
     t: $t,
     compactNumberFormatter: compactNumberFormatter.value,
@@ -1802,11 +1800,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
                   class="text-2xs font-mono text-fg-subtle tracking-wide uppercase flex items-center justify-between"
                 >
                   {{ $t('package.trends.known_anomalies') }}
-                  <TooltipApp
-                    interactive
-                    :to="inModal ? '#chart-modal' : undefined"
-                    v-if="showCorrectionControls"
-                  >
+                  <TooltipApp interactive v-if="showCorrectionControls">
                     <button
                       type="button"
                       class="i-lucide:info w-3.5 h-3.5 text-fg-muted cursor-help"
@@ -1889,19 +1883,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
     </h2>
 
     <!-- Chart panel (active metric) -->
-    <div
-      role="region"
-      aria-labelledby="trends-chart-title"
-      :class="
-        isSparklineLayout || !inModal
-          ? undefined
-          : isMobile === false && width > 0
-            ? showCorrectionControls
-              ? 'h-[491px]'
-              : 'h-[567px]'
-            : 'min-h-[260px]'
-      "
-    >
+    <div role="region" aria-labelledby="trends-chart-title">
       <ClientOnly v-if="chartData.dataset">
         <div
           v-if="isSparklineLayout"
@@ -2260,7 +2242,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
             <TooltipApp
               :text="$t('package.trends.embedding.tip')"
               interactive
-              :to="inModal ? '#chart-modal' : undefined"
+              :to="undefined"
               position="top"
             >
               <span

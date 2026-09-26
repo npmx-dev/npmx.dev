@@ -695,7 +695,6 @@ describe('buildTrendsChartConfig', () => {
       pending: true,
       locale: 'fr-FR',
       chartHeight: 500,
-      inModal: true,
       tooltipPosition: 'left',
     })
 
@@ -704,7 +703,6 @@ describe('buildTrendsChartConfig', () => {
     expect(config.chart?.grid?.labels?.fontSize).toBe(24)
     expect(config.chart?.grid?.labels?.color).toBe(colors.border)
     expect(config.chart?.grid?.labels?.axis?.fontSize).toBe(32)
-    expect(config.chart?.tooltip?.teleportTo).toBe('#chart-modal')
     expect(config.chart?.tooltip?.position).toBe('left')
     expect(config.chart?.tooltip?.offsetY).toBeUndefined()
   })
