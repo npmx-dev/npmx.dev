@@ -2338,6 +2338,9 @@
             "end_date": {
               "type": "string"
             },
+            "last_recorded_value": {
+              "type": "string"
+            },
             "loading": {
               "type": "string"
             },
@@ -2369,6 +2372,9 @@
               "type": "string"
             },
             "no_data": {
+              "type": "string"
+            },
+            "no_data_short": {
               "type": "string"
             },
             "y_axis_label": {

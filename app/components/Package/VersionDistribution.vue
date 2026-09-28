@@ -15,7 +15,6 @@ import('vue-data-ui/style.css')
 
 const props = defineProps<{
   packageName: string
-  inModal?: boolean
   hideControls?: boolean
 }>()
 
@@ -314,7 +313,6 @@ const barConfig = computed<VueUiHorizontalBarConfig>(() => ({
             :text="$t('package.versions.recent_versions_only_tooltip')"
             interactive
             position="top"
-            :to="inModal ? '#chart-modal' : undefined"
             :offset="8"
           >
             <span
@@ -351,7 +349,6 @@ const barConfig = computed<VueUiHorizontalBarConfig>(() => ({
             :text="$t('package.versions.show_low_usage_tooltip')"
             interactive
             position="top"
-            :to="inModal ? '#chart-modal' : undefined"
             :offset="8"
           >
             <span
