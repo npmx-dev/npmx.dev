@@ -56,6 +56,13 @@ function stripAndEscapeHtml(text: string): string {
     (match, codeSpan: string | undefined) => codeSpan ?? '',
   )
 
+  // Strip unclosed HTML tags left by registry truncation (no closing '>').
+  // The tag branch must not cross a backtick, or it would swallow a later code span
+  stripped = stripped.replace(
+    /(`[^`]*`)|<\/?[a-z][^>`]*$/gi,
+    (match, codeSpan: string | undefined) => codeSpan ?? '',
+  )
+
   // Strip HTML comments: <!-- ... --> (including unclosed comments from truncation)
   stripped = stripped.replace(
     /(`[^`]*`)|<!--[\s\S]*?(-->|$)/g,
@@ -69,6 +76,7 @@ function stripAndEscapeHtml(text: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;')
+    .trim()
 }
 
 // Parse simple inline markdown to HTML
