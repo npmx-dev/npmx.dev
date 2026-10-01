@@ -166,20 +166,20 @@ importers:
         specifier: 1.1.1
         version: 1.1.1(@vite-pwa/assets-generator@2.0.0)(@voidzero-dev/vite-plus-core@0.3.3)(magicast@0.5.4)(supports-color@10.2.2)(workbox-build@7.4.1)(workbox-window@7.4.1)
       '@vueuse/core':
-        specifier: 14.4.0
-        version: 14.4.0(vue@3.5.42)
+        specifier: 15.0.0
+        version: 15.0.0(vue@3.5.42)
       '@vueuse/integrations':
-        specifier: 14.4.0
-        version: 14.4.0(focus-trap@8.2.2)(fuse.js@7.5.0)(vue@3.5.42)
+        specifier: 15.0.0
+        version: 15.0.0(focus-trap@8.2.2)(fuse.js@7.5.0)(vue@3.5.42)
       '@vueuse/nuxt':
-        specifier: 14.4.0
-        version: 14.4.0(magic-string@1.1.0)(magicast@0.5.4)(nuxt@4.5.2)(oxc-parser@0.144.0)(rolldown@1.2.4)(unplugin@3.3.0)(vue@3.5.42)
+        specifier: 15.0.0
+        version: 15.0.0(magic-string@1.1.0)(magicast@0.5.4)(nuxt@4.5.2)(oxc-parser@0.144.0)(rolldown@1.2.4)(unplugin@3.3.0)(vue@3.5.42)
       '@vueuse/router':
-        specifier: ^14.4.0
-        version: 14.4.0(vue-router@5.2.0)(vue@3.5.42)
+        specifier: ^15.0.0
+        version: 15.0.0(vue-router@5.2.0)(vue@3.5.42)
       '@vueuse/shared':
-        specifier: 14.4.0
-        version: 14.4.0(vue@3.5.42)
+        specifier: 15.0.0
+        version: 15.0.0(vue@3.5.42)
       algoliasearch:
         specifier: 5.56.0
         version: 5.56.0
@@ -5284,6 +5284,12 @@ packages:
     peerDependencies:
       vue: 3.5.42
 
+  '@vueuse/core@15.0.0':
+    resolution: {integrity: sha512-Zv67h5mrk7YHDJsRObx+DXaCBz6RKBUpxqLesJ+3xZNPG6yuQs7ja7kg3veFrrouYLWAqydQ7CwGEbLVxB43Ng==}
+    engines: {node: '>=22'}
+    peerDependencies:
+      vue: 3.5.42
+
   '@vueuse/integrations@14.4.0':
     resolution: {integrity: sha512-oJz9qTgczvA7L1nXQFRU7h8tQbOCoiceqvMMhT9XYMyOGTqLJ2rEa09PON+nD2t48sZUfeOmg4eaWJXV4sZb/w==}
     peerDependencies:
@@ -5326,20 +5332,69 @@ packages:
       universal-cookie:
         optional: true
 
+  '@vueuse/integrations@15.0.0':
+    resolution: {integrity: sha512-uWC1608pEocJPeRk1IqrEA3uYHhAGTJNibcMAdxgdK2Sy2Hypc6b+VdNO9KekCxyPc4VXK8SKDp8vsXefR/ZFg==}
+    engines: {node: '>=22'}
+    peerDependencies:
+      async-validator: ^4
+      axios: ^1
+      change-case: ^5
+      drauu: ^1 || ^0.4
+      focus-trap: ^7 || ^8
+      fuse.js: ^7
+      idb-keyval: ^6
+      jwt-decode: ^4
+      nprogress: ^0.2
+      qrcode: ^1.5
+      sortablejs: ^1
+      universal-cookie: ^7 || ^8
+      vue: 3.5.42
+    peerDependenciesMeta:
+      async-validator:
+        optional: true
+      axios:
+        optional: true
+      change-case:
+        optional: true
+      drauu:
+        optional: true
+      focus-trap:
+        optional: true
+      fuse.js:
+        optional: true
+      idb-keyval:
+        optional: true
+      jwt-decode:
+        optional: true
+      nprogress:
+        optional: true
+      qrcode:
+        optional: true
+      sortablejs:
+        optional: true
+      universal-cookie:
+        optional: true
+
   '@vueuse/metadata@10.11.1':
     resolution: {integrity: sha512-IGa5FXd003Ug1qAZmyE8wF3sJ81xGLSqTqtQ6jaVfkeZ4i5kS2mwQF61yhVqojRnenVew5PldLyRgvdl4YYuSw==}
 
   '@vueuse/metadata@14.4.0':
     resolution: {integrity: sha512-swx/255R6JyHZFJhx845iz5CRWDZdCfvkZOpACWc5+c5WHcG24mv8gUT1WIdFQaHt6dq79rvILd9QnCWiyVm9g==}
 
-  '@vueuse/nuxt@14.4.0':
-    resolution: {integrity: sha512-97At9ad6UvEB73vH1/h2yYTRZM7uPchzo7s2jRLwKWWHRZXGdzTn8AtpSwZVIAaXJTDcpiqzo9Inhd8v50mkMg==}
+  '@vueuse/metadata@15.0.0':
+    resolution: {integrity: sha512-sfWE5LADAKJ0KnjtGliMdSN8Ij/L7uP6rXIZlgPloAI4zvvefbw6H5Lt7KJA6RqQOYgVqWF5Guj50HHMIzygBg==}
+    engines: {node: '>=22'}
+
+  '@vueuse/nuxt@15.0.0':
+    resolution: {integrity: sha512-qiFrJ9WX6wI/LkUL7R2nsepjMLRfugR39WIsEHis1EkPOCA+qVRIwNEBui+yJ/BD1xblBIPXgD77wBX/SkcnJw==}
+    engines: {node: '>=22'}
     peerDependencies:
       nuxt: ^3.0.0 || ^4.0.0-0 || ^5.0.0-0
       vue: 3.5.42
 
-  '@vueuse/router@14.4.0':
-    resolution: {integrity: sha512-q+dRUKI6xYGT4vNPq2t3fujrXPw2KBFV5Jxhw38liTFzwzGXBYcf8Qdjk7AiQpjEH2xLSin6WVTvj85EEIpo9w==}
+  '@vueuse/router@15.0.0':
+    resolution: {integrity: sha512-+JqXjJs9+3Nu6GjaybYup0dFK7JbNJu1kvNlLmgXp1GTm5bYZZAUWOayCN69ld4gfPy/J4EA+/DImyEsW3QepQ==}
+    engines: {node: '>=22'}
     peerDependencies:
       vue: 3.5.42
       vue-router: 5.2.0
@@ -5349,6 +5404,12 @@ packages:
 
   '@vueuse/shared@14.4.0':
     resolution: {integrity: sha512-JRgY90Sz8DDtPMsaDflvPMp9xYk69JZAmbuDvAquUVXKr2gEjqtzGNTTthLfckH0BzBqvnu31gb4a8TGLRe79g==}
+    peerDependencies:
+      vue: 3.5.42
+
+  '@vueuse/shared@15.0.0':
+    resolution: {integrity: sha512-vbNXhGrbV53xPOMSyOzMHQRvhMgZf7oNDw2RChUetVxwTIEkInQ1joZ9JbT0G3z2n2AJNjvmCWeM9ySYrnvogA==}
+    engines: {node: '>=22'}
     peerDependencies:
       vue: 3.5.42
 
@@ -16490,6 +16551,13 @@ snapshots:
       '@vueuse/shared': 14.4.0(vue@3.5.42)
       vue: 3.5.42(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)
 
+  '@vueuse/core@15.0.0(vue@3.5.42)':
+    dependencies:
+      '@types/web-bluetooth': 0.0.21
+      '@vueuse/metadata': 15.0.0
+      '@vueuse/shared': 15.0.0(vue@3.5.42)
+      vue: 3.5.42(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)
+
   '@vueuse/integrations@14.4.0(focus-trap@8.2.2)(fuse.js@7.5.0)(vue@3.5.42)':
     dependencies:
       '@vueuse/core': 14.4.0(vue@3.5.42)
@@ -16499,15 +16567,26 @@ snapshots:
       focus-trap: 8.2.2
       fuse.js: 7.5.0
 
+  '@vueuse/integrations@15.0.0(focus-trap@8.2.2)(fuse.js@7.5.0)(vue@3.5.42)':
+    dependencies:
+      '@vueuse/core': 15.0.0(vue@3.5.42)
+      '@vueuse/shared': 15.0.0(vue@3.5.42)
+      vue: 3.5.42(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)
+    optionalDependencies:
+      focus-trap: 8.2.2
+      fuse.js: 7.5.0
+
   '@vueuse/metadata@10.11.1': {}
 
   '@vueuse/metadata@14.4.0': {}
 
-  '@vueuse/nuxt@14.4.0(magic-string@1.1.0)(magicast@0.5.4)(nuxt@4.5.2)(oxc-parser@0.144.0)(rolldown@1.2.4)(unplugin@3.3.0)(vue@3.5.42)':
+  '@vueuse/metadata@15.0.0': {}
+
+  '@vueuse/nuxt@15.0.0(magic-string@1.1.0)(magicast@0.5.4)(nuxt@4.5.2)(oxc-parser@0.144.0)(rolldown@1.2.4)(unplugin@3.3.0)(vue@3.5.42)':
     dependencies:
       '@nuxt/kit': 4.5.2(magic-string@1.1.0)(magicast@0.5.4)(oxc-parser@0.144.0)(rolldown@1.2.4)(unplugin@3.3.0)
-      '@vueuse/core': 14.4.0(vue@3.5.42)
-      '@vueuse/metadata': 14.4.0
+      '@vueuse/core': 15.0.0(vue@3.5.42)
+      '@vueuse/metadata': 15.0.0
       local-pkg: 1.2.1
       nuxt: 4.5.2(@babel/plugin-syntax-jsx@7.29.7)(@babel/plugin-syntax-typescript@7.29.7)(@oxc-project/types@0.150.0)(@parcel/watcher@2.5.6)(@rollup/plugin-babel@6.1.0)(@types/node@24.13.3)(@upstash/redis@1.38.2)(@vitejs/devtools-kit@0.4.10)(@voidzero-dev/vite-plus-core@0.3.3)(@vue/compiler-sfc@3.5.42)(better-sqlite3@13.0.3)(cac@6.7.14)(db0@0.3.4)(encoding@0.1.13)(esbuild@0.28.1)(eslint@10.6.0)(ioredis@5.11.1)(lightningcss@1.33.0)(magicast@0.5.4)(optionator@0.9.4)(oxc-parser@0.144.0)(oxlint@1.83.0)(rolldown@1.2.4)(rollup-plugin-visualizer@7.0.1)(rollup@4.62.2)(srvx@0.11.22)(supports-color@10.2.2)(terser@5.48.0)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(vue-tsc@3.3.10)(webpack@5.108.4)(yaml@2.9.1)
       vue: 3.5.42(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)
@@ -16518,9 +16597,9 @@ snapshots:
       - rolldown
       - unplugin
 
-  '@vueuse/router@14.4.0(vue-router@5.2.0)(vue@3.5.42)':
+  '@vueuse/router@15.0.0(vue-router@5.2.0)(vue@3.5.42)':
     dependencies:
-      '@vueuse/shared': 14.4.0(vue@3.5.42)
+      '@vueuse/shared': 15.0.0(vue@3.5.42)
       vue: 3.5.42(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)
       vue-router: 5.2.0(@voidzero-dev/vite-plus-core@0.3.3)(@vue/compiler-sfc@3.5.42)(esbuild@0.28.1)(rolldown@1.2.4)(rollup@4.62.2)(vue@3.5.42)(webpack@5.108.4)
 
@@ -16532,6 +16611,10 @@ snapshots:
       - vue
 
   '@vueuse/shared@14.4.0(vue@3.5.42)':
+    dependencies:
+      vue: 3.5.42(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)
+
+  '@vueuse/shared@15.0.0(vue@3.5.42)':
     dependencies:
       vue: 3.5.42(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)
 
