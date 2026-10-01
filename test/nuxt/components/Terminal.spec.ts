@@ -10,9 +10,12 @@ describe('Terminal components', () => {
     selectedPackageManager.value = 'npm'
   })
 
-  it('renders only the selected package manager in TerminalExecute', async () => {
+  it.each([
+    ['nub', 'nubx create-vite'],
+    ['upm', 'upx create-vite'],
+  ] as const)('renders only %s in TerminalExecute', async (packageManager, command) => {
     const selectedPackageManager = useSelectedPackageManager()
-    selectedPackageManager.value = 'nub'
+    selectedPackageManager.value = packageManager
 
     const component = await mountSuspended(TerminalExecute, {
       props: { packageName: 'create-vite' },
@@ -21,33 +24,39 @@ describe('Terminal components', () => {
     const renderedCommands = component.findAll('[data-pm-cmd]')
 
     expect(renderedCommands).toHaveLength(1)
-    expect(renderedCommands[0]?.attributes('data-pm-cmd')).toBe('nub')
-    expect(component.text()).toContain('nubx create-vite')
+    expect(renderedCommands[0]?.attributes('data-pm-cmd')).toBe(packageManager)
+    expect(component.text()).toContain(command)
   })
 
-  it('renders only the selected package manager across all TerminalInstall sections', async () => {
-    const selectedPackageManager = useSelectedPackageManager()
-    selectedPackageManager.value = 'nub'
+  it.each([
+    ['nub', 'nubx'],
+    ['upm', 'upx'],
+  ] as const)(
+    'renders only %s across all TerminalInstall sections',
+    async (packageManager, executeCommand) => {
+      const selectedPackageManager = useSelectedPackageManager()
+      selectedPackageManager.value = packageManager
 
-    const component = await mountSuspended(TerminalInstall, {
-      props: {
-        packageName: 'vue',
-        typesPackageName: '@types/vue',
-        devDependencySuggestion: { recommended: true },
-        executableInfo: { hasExecutable: true, primaryCommand: 'vue' },
-        createPackageInfo: { packageName: 'create-vue' },
-      },
-    })
+      const component = await mountSuspended(TerminalInstall, {
+        props: {
+          packageName: 'vue',
+          typesPackageName: '@types/vue',
+          devDependencySuggestion: { recommended: true },
+          executableInfo: { hasExecutable: true, primaryCommand: 'vue' },
+          createPackageInfo: { packageName: 'create-vue' },
+        },
+      })
 
-    const renderedCommands = component.findAll('[data-pm-cmd]')
+      const renderedCommands = component.findAll('[data-pm-cmd]')
 
-    expect(renderedCommands).toHaveLength(5)
-    expect(renderedCommands.every(command => command.attributes('data-pm-cmd') === 'nub')).toBe(
-      true,
-    )
-    expect(component.text()).toContain('nub add vue')
-    expect(component.text()).toContain('nub add -D @types/vue')
-    expect(component.text()).toContain('nubx vue')
-    expect(component.text()).toContain('nub create vue')
-  })
+      expect(renderedCommands).toHaveLength(5)
+      expect(
+        renderedCommands.every(command => command.attributes('data-pm-cmd') === packageManager),
+      ).toBe(true)
+      expect(component.text()).toContain(`${packageManager} add vue`)
+      expect(component.text()).toContain(`${packageManager} add -D @types/vue`)
+      expect(component.text()).toContain(`${executeCommand} vue`)
+      expect(component.text()).toContain(`${packageManager} create vue`)
+    },
+  )
 })
