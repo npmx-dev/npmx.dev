@@ -327,6 +327,7 @@ const deprecationNotice = computed(() => {
 
 const deprecationNoticeMessage = useMarkdown(() => ({
   text: deprecationNotice.value?.message ?? '',
+  linkifyPackages: true,
 }))
 
 const publishSecurityDowngrade = computed(() => {
@@ -573,7 +574,10 @@ const showSkeleton = shallowRef(false)
               }}
             </h2>
             <p v-if="deprecationNoticeMessage" class="text-base m-0">
-              <span v-html="deprecationNoticeMessage" />
+              <span
+                class="[&_a]:underline [&_a]:underline-offset-4 [&_a]:decoration-red-700/60 dark:[&_a]:decoration-red-400/50 [&_a:hover]:decoration-fg"
+                v-html="deprecationNoticeMessage"
+              />
             </p>
             <p v-else class="text-base m-0 italic">
               {{ $t('package.deprecation.no_reason') }}
