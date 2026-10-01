@@ -31,6 +31,7 @@ describe('detectPublishSecurityDowngradeForVersion', () => {
       downgradedVersion: '1.0.1',
       downgradedPublishedAt: '2026-01-02T00:00:00.000Z',
       downgradedTrustLevel: 'none',
+      downgradedTrustedPublisher: false,
       trustedVersion: '1.0.0',
       trustedPublishedAt: '2026-01-01T00:00:00.000Z',
       trustedTrustLevel: 'provenance',
@@ -58,6 +59,35 @@ describe('detectPublishSecurityDowngradeForVersion', () => {
       downgradedVersion: '1.0.1',
       downgradedPublishedAt: '2026-01-02T00:00:00.000Z',
       downgradedTrustLevel: 'provenance',
+      downgradedTrustedPublisher: false,
+      trustedVersion: '1.0.0',
+      trustedPublishedAt: '2026-01-01T00:00:00.000Z',
+      trustedTrustLevel: 'trustedPublisher',
+    })
+  })
+
+  it('flags trustedPublisher without provenance and reports trusted publishing on the downgraded version', () => {
+    const result = detectPublishSecurityDowngradeForVersion(
+      [
+        {
+          version: '1.0.0',
+          time: '2026-01-01T00:00:00.000Z',
+          trustStatus: { provenance: true, trustedPublisher: true, stagedPublish: false },
+        },
+        {
+          version: '1.0.1',
+          time: '2026-01-02T00:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: true, stagedPublish: false },
+        },
+      ],
+      '1.0.1',
+    )
+
+    expect(result).toEqual({
+      downgradedVersion: '1.0.1',
+      downgradedPublishedAt: '2026-01-02T00:00:00.000Z',
+      downgradedTrustLevel: 'none',
+      downgradedTrustedPublisher: true,
       trustedVersion: '1.0.0',
       trustedPublishedAt: '2026-01-01T00:00:00.000Z',
       trustedTrustLevel: 'trustedPublisher',
