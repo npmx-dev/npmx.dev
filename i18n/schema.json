@@ -931,6 +931,27 @@
       },
       "additionalProperties": false
     },
+    "pwa": {
+      "type": "object",
+      "properties": {
+        "update_available": {
+          "type": "string"
+        },
+        "refresh": {
+          "type": "string"
+        },
+        "install": {
+          "type": "string"
+        },
+        "install_app": {
+          "type": "string"
+        },
+        "install_app_description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
     "settings": {
       "type": "object",
       "properties": {
@@ -959,6 +980,9 @@
               "type": "string"
             },
             "keyboard_shortcuts": {
+              "type": "string"
+            },
+            "app": {
               "type": "string"
             }
           },
@@ -2903,6 +2927,12 @@
               "type": "string"
             },
             "auto_open_url": {
+              "type": "string"
+            },
+            "show_likes_badge": {
+              "type": "string"
+            },
+            "show_likes_badge_description": {
               "type": "string"
             }
           },
