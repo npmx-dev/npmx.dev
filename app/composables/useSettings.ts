@@ -61,6 +61,9 @@ export interface AppSettings {
     isZeroBased: boolean
     showZoom: boolean
   }
+  versionDistributionChart: {
+    isOrderedByDownloads: boolean
+  }
 }
 
 const DEFAULT_SETTINGS: AppSettings = {
@@ -94,6 +97,9 @@ const DEFAULT_SETTINGS: AppSettings = {
   timelineChart: {
     isZeroBased: false,
     showZoom: false,
+  },
+  versionDistributionChart: {
+    isOrderedByDownloads: false,
   },
 }
 

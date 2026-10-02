@@ -554,6 +554,14 @@ const flatItems = computed<FlatItem[]>(() => {
                     <span class="text-xs text-fg-muted truncate" :title="item.versions[0]" dir="ltr"
                       >v{{ item.versions[0] }}</span
                     >
+                    <ProvenanceBadge
+                      v-if="fullVersionMap?.get(item.versions[0]!)?.trustStatus?.provenance"
+                      :package-name="packageName"
+                      :version="item.versions[0]!"
+                      compact
+                      :linked="false"
+                      class="relative z-10"
+                    />
                     <span
                       v-if="groupDownloadsMap.has(item.groupKey)"
                       class="ms-auto max-w-32 md:w-32 grid grid-flow-col auto-cols-max items-center justify-end gap-1 text-xs text-fg-muted tabular-nums shrink-0"
