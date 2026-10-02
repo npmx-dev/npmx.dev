@@ -1,7 +1,6 @@
 import process from 'node:process'
 import { createLunaria } from '@lunariajs/core'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { Page } from './components.ts'
 import { countryLocaleVariants, currentLocales } from '../config/i18n.ts'
 import type { I18nStatus } from '../shared/types/i18n-status.ts'
 
@@ -108,12 +107,8 @@ const jsonStatus: I18nStatus = {
   }),
 }
 
-// Generate HTML dashboard using processed jsonStatus
-const html = Page(lunaria.config, jsonStatus, lunaria)
-
 mkdirSync('dist/lunaria', { recursive: true })
-writeFileSync('dist/lunaria/index.html', html)
 writeFileSync('dist/lunaria/status.json', JSON.stringify(jsonStatus, null, 2))
 
 // eslint-disable-next-line no-console
-console.log('Generated dist/lunaria/index.html and dist/lunaria/status.json')
+console.log('Generated dist/lunaria/status.json')

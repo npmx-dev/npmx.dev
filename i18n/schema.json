@@ -76,6 +76,9 @@
         "features": {
           "type": "string"
         },
+        "tools": {
+          "type": "string"
+        },
         "other": {
           "type": "string"
         },
@@ -122,6 +125,9 @@
           "type": "string"
         },
         "compare": {
+          "type": "string"
+        },
+        "deps_stats": {
           "type": "string"
         },
         "compare_from_package": {
@@ -625,6 +631,9 @@
         "compare": {
           "type": "string"
         },
+        "tools": {
+          "type": "string"
+        },
         "back": {
           "type": "string"
         },
@@ -642,6 +651,126 @@
         },
         "tap_to_search": {
           "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "tools": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "tagline": {
+          "type": "string"
+        },
+        "meta_title": {
+          "type": "string"
+        },
+        "meta_description": {
+          "type": "string"
+        },
+        "deps_stats": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "deps_stats": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "meta_title": {
+          "type": "string"
+        },
+        "meta_description": {
+          "type": "string"
+        },
+        "upload": {
+          "type": "object",
+          "properties": {
+            "section": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            },
+            "hint": {
+              "type": "string"
+            },
+            "clear": {
+              "type": "string"
+            },
+            "invalid_package_json": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "dependencies": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "count": {
+              "type": "string"
+            },
+            "filter_label": {
+              "type": "string"
+            },
+            "filter_placeholder": {
+              "type": "string"
+            },
+            "empty": {
+              "type": "string"
+            },
+            "no_matches": {
+              "type": "string"
+            },
+            "non_registry": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "stats": {
+          "type": "object",
+          "properties": {
+            "empty_title": {
+              "type": "string"
+            },
+            "empty_description": {
+              "type": "string"
+            },
+            "non_registry_title": {
+              "type": "string"
+            },
+            "non_registry_description": {
+              "type": "string"
+            },
+            "declared_range": {
+              "type": "string"
+            },
+            "resolved_version": {
+              "type": "string"
+            },
+            "open_full_stats": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false
@@ -1501,9 +1630,6 @@
             "stats": {
               "type": "string"
             },
-            "compare_this_package": {
-              "type": "string"
-            },
             "changelog": {
               "type": "string"
             }
@@ -1864,6 +1990,9 @@
             "grouping_usage_most_used": {
               "type": "string"
             },
+            "order_by_downloads": {
+              "type": "string"
+            },
             "recent_versions_only_tooltip": {
               "type": "string"
             },
@@ -2076,6 +2205,9 @@
             },
             "vulnerabilities_count": {
               "type": "string"
+            },
+            "aliased_to": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -2206,6 +2338,9 @@
             "end_date": {
               "type": "string"
             },
+            "last_recorded_value": {
+              "type": "string"
+            },
             "loading": {
               "type": "string"
             },
@@ -2237,6 +2372,9 @@
               "type": "string"
             },
             "no_data": {
+              "type": "string"
+            },
+            "no_data_short": {
               "type": "string"
             },
             "y_axis_label": {

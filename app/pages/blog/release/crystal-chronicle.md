@@ -1,6 +1,6 @@
 ---
 authors:
-  - name: Alex Savelyev
+  - name: Alex Savelyeva
     blueskyHandle: alexdln.com
   - name: Willow (GHOST)
     blueskyHandle: willow.sh

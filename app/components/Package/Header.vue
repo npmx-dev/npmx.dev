@@ -204,7 +204,6 @@ useShortcuts({
   '.': () => codeLink.value,
   'm': () => mainLink.value,
   'd': () => docsLink.value,
-  'c': () => props.pkg && { name: 'compare' as const, query: { packages: props.pkg.name } },
   'f': () => diffLink.value,
   '-': () => changelogLink.value,
   't': () => timelineLink.value,
@@ -250,14 +249,6 @@ useShortcuts({
       </h1>
       <!-- Package metrics -->
       <div class="flex gap-2 flex-wrap items-stretch">
-        <LinkBase
-          variant="button-secondary"
-          :to="{ name: 'compare', query: { packages: packageName } }"
-          aria-keyshortcuts="c"
-          classicon="i-lucide:git-compare"
-        >
-          <span class="max-sm:sr-only">{{ $t('package.links.compare_this_package') }}</span>
-        </LinkBase>
         <PackageLikes :packageName />
 
         <LinkBase

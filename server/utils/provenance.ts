@@ -9,11 +9,21 @@ const PROVIDER_IDS: Record<string, { provider: string; providerLabel: string }> 
   'https://github.com/actions/runner': { provider: 'github', providerLabel: 'GitHub Actions' },
 }
 
+/** Match a host exactly, or as a subdomain of it, from an unparsed URL. */
+function isHost(url: string, host: string): boolean {
+  try {
+    const { hostname } = new URL(url)
+    return hostname === host || hostname.endsWith(`.${host}`)
+  } catch {
+    return false
+  }
+}
+
 /** GitLab uses project-specific builder IDs: https://gitlab.com/<path>/-/runners/<id> */
 function getProviderInfo(builderId: string): { provider: string; providerLabel: string } {
   const exact = PROVIDER_IDS[builderId]
   if (exact) return exact
-  if (builderId.includes('gitlab.com') && builderId.includes('/runners/'))
+  if (isHost(builderId, 'gitlab.com') && builderId.includes('/runners/'))
     return { provider: 'gitlab', providerLabel: 'GitLab CI' }
   return { provider: 'unknown', providerLabel: builderId ? 'CI' : 'Unknown' }
 }
@@ -73,15 +83,15 @@ function decodePayload(
 
 function repoUrlToCommitUrl(repository: string, sha: string): string {
   const normalized = repository.replace(/\/$/, '').replace(/\.git$/, '')
-  if (normalized.includes('github.com')) return `${normalized}/commit/${sha}`
-  if (normalized.includes('gitlab.com')) return `${normalized}/-/commit/${sha}`
+  if (isHost(normalized, 'github.com')) return `${normalized}/commit/${sha}`
+  if (isHost(normalized, 'gitlab.com')) return `${normalized}/-/commit/${sha}`
   return `${normalized}/commit/${sha}`
 }
 
 function repoUrlToBlobUrl(repository: string, path: string, ref = 'main'): string {
   const normalized = repository.replace(/\/$/, '').replace(/\.git$/, '')
-  if (normalized.includes('github.com')) return `${normalized}/blob/${ref}/${path}`
-  if (normalized.includes('gitlab.com')) return `${normalized}/-/blob/${ref}/${path}`
+  if (isHost(normalized, 'github.com')) return `${normalized}/blob/${ref}/${path}`
+  if (isHost(normalized, 'gitlab.com')) return `${normalized}/-/blob/${ref}/${path}`
   return `${normalized}/blob/${ref}/${path}`
 }
 

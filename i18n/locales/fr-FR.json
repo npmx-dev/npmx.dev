@@ -448,7 +448,6 @@
       "fund": "donner",
       "compare": "comparer",
       "timeline": "historique",
-      "compare_this_package": "comparer ce paquet",
       "changelog": "changements"
     },
     "likes": {
@@ -560,6 +559,7 @@
       "grouping_usage_about": "À propos du regroupement par utilisation",
       "grouping_usage_all": "Toutes",
       "grouping_usage_most_used": "Les plus utilisées",
+      "order_by_downloads": "Trier par nombre de téléchargements",
       "recent_versions_only_tooltip": "Ne montrer que les versions publiées durant l'année écoulée.",
       "show_low_usage_tooltip": "Inclure les groupes de versions avec moins d'1% des téléchargements totaux.",
       "y_axis_label": "Téléchargements",
@@ -663,6 +663,7 @@
       "granularity_yearly": "Par an",
       "start_date": "Début",
       "end_date": "Fin",
+      "last_recorded_value": "* Dernière valeur enregistrée",
       "loading": "Chargement...",
       "date_range": "{start} au {end}",
       "date_range_multiline": "{start}\nau {end}",
@@ -673,6 +674,7 @@
       "close_options": "Fermer les options",
       "legend_estimation": "Estimation",
       "no_data": "Données non disponibles",
+      "no_data_short": "Pas de données",
       "y_axis_label": "{facet} {granularity}",
       "facet": "Mesure",
       "title": "Tendances",
