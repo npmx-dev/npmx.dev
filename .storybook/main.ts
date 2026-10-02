@@ -1,6 +1,4 @@
 import type { StorybookConfig } from '@storybook-vue/nuxt'
-import { readFileSync } from 'node:fs'
-import { resolve } from 'node:path'
 
 const config = {
   stories: [
