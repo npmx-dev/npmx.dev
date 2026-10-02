@@ -63,7 +63,7 @@
     "@iconify-json/simple-icons": "1.2.93",
     "@iconify-json/svg-spinners": "1.2.4",
     "@iconify-json/vscode-icons": "1.2.73",
-    "@intlify/shared": "11.4.8",
+    "@intlify/shared": "11.4.12",
     "@lunariajs/core": "0.2.0",
     "@napi-rs/canvas": "1.0.6",
     "@nuxt/a11y": "1.0.0-alpha.1",
@@ -123,7 +123,7 @@
   },
   "devDependencies": {
     "@e18e/eslint-plugin": "0.8.1",
-    "@intlify/core-base": "11.4.8",
+    "@intlify/core-base": "11.4.12",
     "@npm/types": "2.1.0",
     "@playwright/test": "1.62.1",
     "@storybook-vue/nuxt": "catalog:storybook",
