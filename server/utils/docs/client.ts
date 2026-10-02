@@ -8,7 +8,9 @@
  */
 
 import { doc, type DocNode } from '@deno/doc'
-import type { DenoDocNode, DenoDocResult } from '#shared/types/deno-doc'
+import type { DenoDocNode, DenoDocResult, DocEntry } from '#shared/types/deno-doc'
+import { mapWithConcurrency } from '#shared/utils/async'
+import { encodePackageName } from '#shared/utils/npm'
 import { isBuiltin } from 'node:module'
 
 // =============================================================================
@@ -18,6 +20,8 @@ import { isBuiltin } from 'node:module'
 /** Timeout for fetching modules in milliseconds */
 const FETCH_TIMEOUT_MS = 30 * 1000
 
+const IS_SOURCE_MAP = /\.(?:js|mjs|cjs|d\.[mc]?ts)\.map(?:[?#].*)?$/
+
 // =============================================================================
 // Main Export
 // =============================================================================
@@ -26,31 +30,119 @@ const FETCH_TIMEOUT_MS = 30 * 1000
  * Get documentation nodes for a package using @deno/doc WASM.
  */
 export async function getDocNodes(packageName: string, version: string): Promise<DenoDocResult> {
-  // Get types URL from esm.sh header
-  const typesUrl = await getTypesUrl(packageName, version)
+  const entryPoints = await resolveEntryPoints(packageName, version)
 
-  if (!typesUrl) {
-    return { version: 1, nodes: [] }
+  if (entryPoints.length === 0) {
+    return { version: 1, entries: [] }
   }
 
-  // Generate docs using @deno/doc WASM
-  let result: Record<string, DocNode[]>
+  const entries: (DocEntry | null)[] = await mapWithConcurrency(
+    entryPoints,
+    async ({ entryPoint, typesUrl }): Promise<DocEntry | null> => {
+      let result: Record<string, DocNode[]>
+      try {
+        result = await doc([typesUrl], {
+          load: createLoader(),
+          resolve: createResolver(),
+        })
+      } catch {
+        return null
+      }
+
+      const nodes: DenoDocNode[] = []
+      for (const docNodes of Object.values(result)) {
+        nodes.push(...(docNodes as DenoDocNode[]))
+      }
+
+      if (nodes.length === 0) {
+        return null
+      }
+
+      return { entryPoint, nodes }
+    },
+    10,
+  )
+
+  return {
+    version: 1,
+    entries: entries.filter((entry): entry is DocEntry => entry !== null),
+  }
+}
+
+// =============================================================================
+// Entry Point Resolution
+// =============================================================================
+
+interface ResolvedEntryPoint {
+  entryPoint: string
+  typesUrl: string
+}
+
+/**
+ * Resolve the documentable entry points for a package.
+ */
+async function resolveEntryPoints(
+  packageName: string,
+  version: string,
+): Promise<ResolvedEntryPoint[]> {
+  const modules = await getModules(packageName, version)
+
+  const resolved = await mapWithConcurrency(
+    modules,
+    async (entryPoint): Promise<ResolvedEntryPoint | null> => {
+      const submodule = entryPoint === '.' ? '' : entryPoint.replace(/^\./, '')
+      const typesUrl = await getTypesUrl(packageName, version, submodule)
+      return typesUrl ? { entryPoint, typesUrl } : null
+    },
+    10,
+  )
+
+  return resolved.filter((entry): entry is ResolvedEntryPoint => entry !== null)
+}
+
+/** Minimal package manifest shape needed to resolve entry points. */
+interface PackageManifest {
+  name: string
+  exports?: unknown
+}
+
+/**
+ * Resolve importable module specifiers for a package.
+ *
+ * @internal
+ */
+export async function getModules(packageName: string, version: string): Promise<string[]> {
+  let pkg: PackageManifest | undefined
   try {
-    result = await doc([typesUrl], {
-      load: createLoader(),
-      resolve: createResolver(),
+    pkg = await $fetch<PackageManifest>(
+      `https://esm.sh/${encodePackageName(packageName)}@${version}/package.json`,
+      { timeout: FETCH_TIMEOUT_MS },
+    )
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(e)
+    return ['.']
+  }
+
+  const exportsField = pkg?.exports
+  if (!exportsField || typeof exportsField !== 'object' || Array.isArray(exportsField)) {
+    return ['.']
+  }
+
+  // A bare conditions map (only `import`/`require`/...) describes the root entry.
+  const subpathKeys = Object.keys(exportsField).filter(key => key === '.' || key.startsWith('./'))
+  if (subpathKeys.length === 0) {
+    return ['.']
+  }
+
+  return subpathKeys
+    .filter(key => key !== './package.json' && !key.includes('*'))
+    .sort((a, b) => {
+      if (a === b) return 0
+      if (a === '.') return -1
+      if (b === '.') return 1
+      return a.localeCompare(b)
     })
-  } catch {
-    return { version: 1, nodes: [] }
-  }
-
-  // Collect all nodes from all specifiers
-  const allNodes: DenoDocNode[] = []
-  for (const nodes of Object.values(result)) {
-    allNodes.push(...(nodes as DenoDocNode[]))
-  }
-
-  return { version: 1, nodes: allNodes }
 }
 
 // =============================================================================
@@ -70,7 +162,7 @@ interface LoadResponse {
  *
  * Fetches modules from URLs using fetch(), with proper timeout handling.
  */
-function createLoader(): (
+export function createLoader(): (
   specifier: string,
   isDynamic?: boolean,
   cacheSetting?: string,
@@ -82,6 +174,10 @@ function createLoader(): (
     _cacheSetting?: string,
     _checksum?: string,
   ) => {
+    if (IS_SOURCE_MAP.test(specifier)) {
+      return undefined
+    }
+
     const url = URL.parse(specifier)
 
     if (url === null) {
@@ -130,8 +226,14 @@ function createLoader(): (
  *
  * Handles resolving relative imports and esm.sh redirects.
  */
-function createResolver(): (specifier: string, referrer: string) => string {
+export function createResolver(): (specifier: string, referrer: string) => string {
   return (specifier: string, referrer: string) => {
+    // Source map references are not modules. Resolving bare source map
+    // filenames can incorrectly treat them as package specifiers
+    if (IS_SOURCE_MAP.test(specifier)) {
+      return specifier
+    }
+
     // Handle relative imports
     if (specifier.startsWith('.') || specifier.startsWith('/')) {
       return new URL(specifier, referrer).toString()
@@ -161,8 +263,12 @@ function createResolver(): (specifier: string, referrer: string) => string {
  * Example: curl -sI 'https://esm.sh/ufo@1.5.0' returns header:
  *   x-typescript-types: https://esm.sh/ufo@1.5.0/dist/index.d.ts
  */
-async function getTypesUrl(packageName: string, version: string): Promise<string | null> {
-  const url = `https://esm.sh/${packageName}@${version}`
+async function getTypesUrl(
+  packageName: string,
+  version: string,
+  submodule = '',
+): Promise<string | null> {
+  const url = `https://esm.sh/${encodePackageName(packageName)}@${version}${submodule}`
 
   try {
     const response = await $fetch.raw(url, {

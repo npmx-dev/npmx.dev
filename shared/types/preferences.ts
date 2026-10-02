@@ -50,6 +50,38 @@ export const DEFAULT_COLUMNS: ColumnConfig[] = [
   },
 ]
 
+function visibleColumnIdsParam(columns: ColumnConfig[]): string {
+  const visible = new Set(
+    columns
+      .filter(col => col.visible && col.id !== 'selection' && col.id !== 'name')
+      .map(col => col.id),
+  )
+  return DEFAULT_COLUMNS.filter(col => visible.has(col.id))
+    .map(col => col.id)
+    .join(',')
+}
+
+/** Comma-separated visible column ids, or undefined when they match the default set. `name` is omitted (always visible). */
+export function serializeVisibleColumns(columns: ColumnConfig[]): string | undefined {
+  const visibleColumnIds = visibleColumnIdsParam(columns)
+  return visibleColumnIds === visibleColumnIdsParam(DEFAULT_COLUMNS) ? undefined : visibleColumnIds
+}
+
+function isColumnId(id: string): id is ColumnId {
+  return DEFAULT_COLUMNS.some(col => col.id === id)
+}
+
+export function parseColumns(value: string | undefined): ColumnId[] | undefined {
+  if (value === undefined) return undefined
+  if (value === '') return []
+
+  const ids = value
+    .split(',')
+    .map(id => id.trim())
+    .filter(isColumnId)
+  return ids.length > 0 ? ids : undefined
+}
+
 // Sort keys (without direction)
 export type SortKey =
   | 'downloads-week'
@@ -203,6 +235,22 @@ export type SearchScope = 'name' | 'description' | 'keywords' | 'all'
 /** Search scope values - labels are in i18n under filters.scope_* */
 export const SEARCH_SCOPE_VALUES: SearchScope[] = ['name', 'description', 'keywords', 'all']
 
+export function parseSearchScope(value: string): SearchScope | undefined {
+  return SEARCH_SCOPE_VALUES.find(scope => scope === value)
+}
+
+export function parseDownloadRange(value: string): DownloadRange | undefined {
+  return DOWNLOAD_RANGES.find(range => range.value === value)?.value
+}
+
+export function parseSecurityFilter(value: string): SecurityFilter | undefined {
+  return SECURITY_FILTER_VALUES.find(filter => filter === value)
+}
+
+export function parseUpdatedWithin(value: string): UpdatedWithin | undefined {
+  return UPDATED_WITHIN_OPTIONS.find(option => option.value === value)?.value
+}
+
 // Structured filters state
 export interface StructuredFilters {
   text: string
@@ -211,6 +259,7 @@ export interface StructuredFilters {
   keywords: string[]
   security: SecurityFilter
   updatedWithin: UpdatedWithin
+  visibleColumns: ColumnId[]
 }
 
 export const DEFAULT_FILTERS: StructuredFilters = {
@@ -220,6 +269,7 @@ export const DEFAULT_FILTERS: StructuredFilters = {
   keywords: [],
   security: 'all',
   updatedWithin: 'any',
+  visibleColumns: DEFAULT_COLUMNS.map(c => c.id),
 }
 
 // Pagination modes
