@@ -20,12 +20,12 @@ catalogs:
     'msw': '^2.13.2'
 
   storybook:
-    '@storybook-vue/nuxt': 'https://pkg.pr.new/@storybook-vue/nuxt@1021'
-    '@storybook/addon-a11y': '^10.3.5'
-    '@storybook/addon-docs': '^10.3.5'
-    '@storybook/addon-themes': '^10.3.5'
+    '@storybook-vue/nuxt': '^10.0.0'
+    '@storybook/addon-a11y': '^10.6.0'
+    '@storybook/addon-docs': '^10.6.0'
+    '@storybook/addon-themes': '^10.6.0'
     'msw-storybook-addon': '^3.0.0'
-    'storybook': '^10.3.1'
+    'storybook': '^10.6.0'
     'storybook-i18n': '^10.1.1'
 
   vite-plus:
@@ -49,6 +49,7 @@ minimumReleaseAgeExclude:
   - '@nuxt/schema@4.5.2'
   - '@nuxt/vite-builder@4.5.2'
   - vue-data-ui@3.25.13
+  - '@storybook-vue/nuxt@10.0.0'
 
 minimumReleaseAgeExcludePrune: true
 
