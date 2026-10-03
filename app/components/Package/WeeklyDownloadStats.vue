@@ -325,6 +325,10 @@ const config = computed<VueUiSparklineConfig>(() => {
         top: 0,
         bottom: 0,
       },
+      // Drag to zoom
+      zoom: {
+        show: true,
+      },
     },
   }
 })

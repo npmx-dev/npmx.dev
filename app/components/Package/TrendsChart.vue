@@ -30,6 +30,7 @@ import {
 import { downloadFileLink } from '~/utils/download'
 import { useCopyChartPng } from '~/composables/useCopyChartPng'
 import { createLastDatapointLabelsSvg } from '#shared/utils/download-chart-last-label'
+import { MULTI_PACKAGE_MODE_TOP_PADDING } from '../../../shared/utils/trends-chart'
 
 import('vue-data-ui/style.css')
 
@@ -1299,10 +1300,13 @@ const chartHeight = computed(() => {
   if (isMobile.value) {
     return 950
   }
+
+  const additionalHeight = isMultiPackageMode.value ? MULTI_PACKAGE_MODE_TOP_PADDING : 0
+
   if (props.hideControls) {
-    return 460
+    return 460 + additionalHeight
   }
-  return 600
+  return 600 + additionalHeight
 })
 
 const { start } = useTimeoutFn(
@@ -1489,6 +1493,15 @@ const chartConfig = computed<VueUiXyConfig>(() => {
           stroke: transparentizeOklch(accent.value, 0.5),
           strokeWidth: 1,
           strokeDasharray: 3,
+        },
+        dragToZoom: {
+          show: true,
+          selection: {
+            fill: accent.value,
+            fillOpacity: isDarkMode.value ? 0.05 : 0.08,
+            stroke: accent.value,
+            strokeDasharray: 3,
+          },
         },
       },
     },
