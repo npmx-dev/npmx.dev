@@ -2508,6 +2508,18 @@
                 }
               },
               "additionalProperties": false
+            },
+            "sparkline_zoom_reset": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "aria_label": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
             }
           },
           "additionalProperties": false

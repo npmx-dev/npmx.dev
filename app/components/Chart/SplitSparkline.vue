@@ -59,7 +59,7 @@ const { colors } = useColors(rootEl)
 
 const isDarkMode = computed(() => resolvedMode.value === 'dark')
 
-const selectedIndex = ref<number | undefined | null>(null)
+const selectedIndex = ref<number | undefined>()
 const isInteracting = ref(false)
 
 function isLargeSeries(seriesIndex: number): boolean {
@@ -149,7 +149,7 @@ function startInteraction() {
 
 function resetHover() {
   isInteracting.value = false
-  selectedIndex.value = null
+  selectedIndex.value = undefined
   step.value += 1 // required to reset all chart instances
 }
 
@@ -175,6 +175,7 @@ const configs = computed(() => {
       : (lightenColor(seriesColor, 0.5) ?? seriesColor) // palette uses hex colours
 
     return {
+      useCursorPointer: true,
       a11y: {
         translations: {
           keyboardNavigation: $t(
@@ -230,6 +231,7 @@ const configs = computed(() => {
         },
         line: {
           color: seriesColor,
+          strokeWidth: 1,
           dashIndices,
           dashArray: 3,
           cutNullValues: false,
@@ -252,14 +254,24 @@ const configs = computed(() => {
         },
         padding: {
           left: 0,
-          right: 0,
+          right: 24,
           top: 0,
           bottom: 0,
+        },
+        // Drag to zoom
+        zoom: {
+          show: true,
+          resetButton: {
+            title: $t('package.trends.sparkline_zoom_reset.title'),
+            ariaLabel: $t('package.trends.sparkline_zoom_reset.aria_label'),
+          },
         },
       },
     }
   })
 })
+
+const zoomState = ref<any>(null)
 </script>
 
 <template>
@@ -308,6 +320,7 @@ const configs = computed(() => {
         </div>
         <VueUiSparkline
           v-if="datasets[i]"
+          v-model:zoom-state="zoomState"
           :key="`${i}_${step}`"
           :config
           :dataset="datasets[i]"
