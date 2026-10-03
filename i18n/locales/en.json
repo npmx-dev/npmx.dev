@@ -834,6 +834,10 @@
         "copy_url": "Copy this URL to embed the chart into your website",
         "preview": "Preview",
         "tip": "If startDate and endDate are not provided in the URL, the graph will display the last 12 months by default."
+      },
+      "sparkline_zoom_reset": {
+        "title": "Reset zoom · double-click chart or press Esc",
+        "aria_label": "Reset zoom"
       }
     },
     "downloads": {
