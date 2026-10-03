@@ -28,7 +28,7 @@ function sortJsDelivrNodes(nodes: JsDelivrFileNode[]) {
 const { name, version, variant } = defineProps<{
   name: string
   version: string | null
-  variant: 'download-chart' | 'code-tree' | 'function-tree'
+  variant: 'download-chart' | 'code-tree' | 'function-tree' | 'dependency-tree'
 }>()
 
 const {
@@ -188,9 +188,46 @@ const fetchLikes = import.meta.test
       totalLikes.value = d?.totalLikes ?? 0
     })
 
+interface DepRow {
+  name: string
+  spec: string
+  isDev?: boolean
+}
+const depRows = shallowRef<DepRow[]>([])
+
+function populateDependencyTree() {
+  const verData = displayVersion.value as ExtendedPackageJson | null | undefined
+  if (!verData) return
+
+  const deps = verData.dependencies ?? {}
+  const devDeps = verData.devDependencies ?? {}
+
+  const rows: DepRow[] = []
+  const MAX_ROWS = 25
+
+  for (const [depName, depSpec] of Object.entries(deps)) {
+    if (rows.length >= MAX_ROWS) break
+    rows.push({ name: depName, spec: String(depSpec) })
+  }
+
+  if (rows.length < MAX_ROWS && Object.keys(devDeps).length > 0) {
+    for (const [depName, depSpec] of Object.entries(devDeps)) {
+      if (rows.length >= MAX_ROWS) break
+      rows.push({ name: depName, spec: String(depSpec), isDev: true })
+    }
+  }
+
+  depRows.value = rows
+}
+
 try {
   await Promise.all([
-    refreshPkg().then(() => refreshRepoMeta()),
+    refreshPkg().then(() => {
+      refreshRepoMeta()
+      if (variant === 'dependency-tree') {
+        populateDependencyTree()
+      }
+    }),
     variant === 'code-tree'
       ? fetchCodeTree()
       : variant === 'function-tree'
@@ -466,6 +503,32 @@ const sparklineSrc = computed(() => {
         <span class="text-fg-muted" :class="row.kind === 'section' ? 'text-4 mt-1' : ''">{{
           row.name
         }}</span>
+      </div>
+    </div>
+
+    <!-- Dependency tree variant -->
+    <div
+      v-else-if="variant === 'dependency-tree' && depRows.length"
+      class="absolute top-12 force-right-10 h-[330px] w-[480px] flex flex-col justify-center gap-2 opacity-35 overflow-hidden font-mono"
+      style="
+        -webkit-mask-image: linear-gradient(
+          to bottom,
+          transparent,
+          black 20%,
+          black 80%,
+          transparent
+        );
+        mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+      "
+    >
+      <div
+        v-for="(row, i) in depRows"
+        :key="i"
+        class="relative flex items-center gap-2.5 whitespace-nowrap text-fg text-3xl font-mono leading-normal"
+      >
+        <span class="i-lucide:network size-7 shrink-0 text-fg-muted" />
+        <span class="text-fg-muted">{{ row.name }}</span>
+        <span class="opacity-60 shrink-0">@{{ row.spec }}</span>
       </div>
     </div>
   </OgLayout>

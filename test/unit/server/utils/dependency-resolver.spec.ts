@@ -183,6 +183,22 @@ describe('dependency-resolver', () => {
       // Range with prerelease - semver correctly prefers stable 2.0.0 over 2.0.0-beta.1
       expect(resolveVersion('^2.0.0-beta.0', versions)).toBe('2.0.0')
     })
+
+    it('resolves dist-tags when provided in distTags map', () => {
+      const distTags = { latest: '3.0.0', next: '2.0.0-beta.1' }
+      expect(resolveVersion('latest', versions, distTags)).toBe('3.0.0')
+      expect(resolveVersion('next', versions, distTags)).toBe('2.0.0-beta.1')
+    })
+
+    it('returns null without throwing error for invalid comparator or unknown dist-tag', () => {
+      expect(resolveVersion('latest', versions)).toBe(null)
+      expect(resolveVersion('invalid-comparator-123', versions)).toBe(null)
+    })
+
+    it('resolves npm: protocol aliases with dist-tags', () => {
+      const distTags = { latest: '3.0.0' }
+      expect(resolveVersion('npm:some-pkg@latest', versions, distTags)).toBe('3.0.0')
+    })
   })
 
   describe('resolveDependencyTree', () => {

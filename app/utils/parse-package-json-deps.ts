@@ -16,6 +16,10 @@ export interface PackageJsonDependency {
   nonRegistry: boolean
 }
 
+export function getDependencyKey(dep: { category: DependencyCategory; name: string }): string {
+  return `${dep.category}:${dep.name}`
+}
+
 export interface ParsedPackageJson {
   name?: string
   version?: string

@@ -1,4 +1,4 @@
-import { findMaxSatisfying } from 'verkit'
+import { findMaxSatisfying, isValidRange } from 'verkit'
 
 export const fetchNpmPackage = defineCachedFunction(
   async (name: string): Promise<Packument> => {
@@ -46,6 +46,12 @@ export async function resolveVersionConstraint(
 ): Promise<string | null> {
   try {
     const packument = await fetchNpmPackage(packageName)
+    if (packument['dist-tags']?.[constraint]) {
+      return packument['dist-tags'][constraint]
+    }
+    if (!isValidRange(constraint)) {
+      return null
+    }
     const versions = Object.keys(packument.versions)
     return findMaxSatisfying(versions, constraint)
   } catch {

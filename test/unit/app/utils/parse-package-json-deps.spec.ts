@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  getDependencyKey,
   isNonRegistryRange,
   parsePackageJsonDependencies,
   parsePackageJsonText,
@@ -16,6 +17,15 @@ describe('parse-package-json-deps', () => {
       expect(isNonRegistryRange('https://example.com/pkg.tgz')).toBe(true)
       expect(isNonRegistryRange('^1.2.3')).toBe(false)
       expect(isNonRegistryRange('*')).toBe(false)
+    })
+  })
+
+  describe('getDependencyKey', () => {
+    it('creates category-prefixed dependency key', () => {
+      expect(getDependencyKey({ category: 'dependencies', name: 'vue' })).toBe('dependencies:vue')
+      expect(getDependencyKey({ category: 'devDependencies', name: 'vue' })).toBe(
+        'devDependencies:vue',
+      )
     })
   })
 

@@ -625,25 +625,14 @@
     },
     "dependencies": {
       "title": "Dépendances ({count})",
-      "list_label": "Dépendances du paquet",
-      "show_all": "afficher les {count} dépendances",
+      "insights": {},
       "optional": "optionnelle",
-      "view_vulnerabilities": "Voir les vulnérabilités",
       "outdated_major": "{count} version majeure en retard (dernière : {latest}) | {count} versions majeures en retard (dernière : {latest})",
       "outdated_minor": "{count} version mineure en retard (dernière : {latest}) | {count} versions mineures en retard (dernière : {latest})",
       "outdated_patch": "Mise à jour patch disponible (dernière : {latest})",
       "has_replacement": "Cette dépendance a des remplacements suggérés",
+      "view_vulnerabilities": "Voir les vulnérabilités",
       "vulnerabilities_count": "{count} vulnérabilité | {count} vulnérabilités"
-    },
-    "peer_dependencies": {
-      "title": "Dépendances peer ({count})",
-      "list_label": "Dépendances peer du paquet",
-      "show_all": "afficher les {count} dépendances peer"
-    },
-    "optional_dependencies": {
-      "title": "Dépendances optionnelles ({count})",
-      "list_label": "Dépendances optionnelles du paquet",
-      "show_all": "afficher les {count} dépendances optionnelles"
     },
     "maintainers": {
       "title": "Mainteneurs",

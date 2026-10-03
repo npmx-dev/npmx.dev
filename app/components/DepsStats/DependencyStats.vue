@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PackageJsonDependency } from '~/utils/parse-package-json-deps'
+import { type PackageJsonDependency, getDependencyKey } from '~/utils/parse-package-json-deps'
 
 defineProps<{
   dependency: PackageJsonDependency | null
@@ -36,7 +36,7 @@ defineProps<{
 
     <DepsStatsDependencyStatsPanel
       v-else
-      :key="dependency.packageName"
+      :key="getDependencyKey(dependency)"
       :package-name="dependency.packageName"
       :declared-range="dependency.range"
     />

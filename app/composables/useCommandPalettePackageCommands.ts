@@ -47,6 +47,10 @@ export function useCommandPalettePackageCommands(
           filePath: '',
         },
       }
+      const dependenciesLink = dependenciesRoute(
+        resolvedContext.packageName,
+        resolvedContext.resolvedVersion,
+      )
 
       const commands: CommandPaletteContextCommandInput[] = [
         {
@@ -81,6 +85,16 @@ export function useCommandPalettePackageCommands(
           active: route.name === 'code',
           activeLabel: activeLabel(route.name === 'code', t('command_palette.here')),
           to: codeLink,
+        },
+        {
+          id: 'package-dependencies',
+          group: 'package',
+          label: t('package.links.dependencies'),
+          keywords: [resolvedContext.packageName, t('package.links.dependencies')],
+          iconClass: 'i-lucide:network',
+          active: route.name === 'dependencies',
+          activeLabel: activeLabel(route.name === 'dependencies', t('command_palette.here')),
+          to: dependenciesLink,
         },
         {
           id: 'package-timeline',

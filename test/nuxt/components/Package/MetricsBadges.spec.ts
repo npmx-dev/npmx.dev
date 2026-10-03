@@ -1,14 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
+import { mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
 import type { VueWrapper } from '@vue/test-utils'
-import { ref } from 'vue'
 import PackageMetricsBadges from '~/components/Package/MetricsBadges.vue'
-
-const { mockUsePackageAnalysis } = vi.hoisted(() => ({
-  mockUsePackageAnalysis: vi.fn(),
-}))
-
-mockNuxtImport('usePackageAnalysis', () => mockUsePackageAnalysis)
 
 describe('PackageMetricsBadges', () => {
   let wrapper: VueWrapper
@@ -16,13 +9,17 @@ describe('PackageMetricsBadges', () => {
   afterEach(() => wrapper?.unmount())
 
   it('renders the badges', async () => {
-    mockUsePackageAnalysis.mockReturnValue({
-      data: ref({ moduleFormat: 'dual', types: { kind: 'included' } }),
-      status: ref('success'),
-    })
+    registerEndpoint('/api/registry/analysis/ufo', () => ({
+      moduleFormat: 'dual',
+      types: { kind: 'included' },
+    }))
 
     wrapper = await mountSuspended(PackageMetricsBadges, {
       props: { packageName: 'ufo' },
+    })
+
+    await vi.waitFor(() => {
+      expect(wrapper.text()).toContain('CJS')
     })
 
     const text = wrapper.text()
@@ -33,13 +30,16 @@ describe('PackageMetricsBadges', () => {
   })
 
   it('renders the wasm label', async () => {
-    mockUsePackageAnalysis.mockReturnValue({
-      data: ref({ moduleFormat: 'wasm' }),
-      status: ref('success'),
-    })
+    registerEndpoint('/api/registry/analysis/swc-plugin-transform-webpack-context', () => ({
+      moduleFormat: 'wasm',
+    }))
 
     wrapper = await mountSuspended(PackageMetricsBadges, {
       props: { packageName: 'swc-plugin-transform-webpack-context' },
+    })
+
+    await vi.waitFor(() => {
+      expect(wrapper.text()).toContain('WASM')
     })
 
     const text = wrapper.text()
@@ -48,13 +48,17 @@ describe('PackageMetricsBadges', () => {
   })
 
   it('does not render the CJS label when no CJS', async () => {
-    mockUsePackageAnalysis.mockReturnValue({
-      data: ref({ moduleFormat: 'esm', types: { kind: 'included' } }),
-      status: ref('success'),
-    })
+    registerEndpoint('/api/registry/analysis/@nuxt/kit', () => ({
+      moduleFormat: 'esm',
+      types: { kind: 'included' },
+    }))
 
     wrapper = await mountSuspended(PackageMetricsBadges, {
       props: { packageName: '@nuxt/kit' },
+    })
+
+    await vi.waitFor(() => {
+      expect(wrapper.text()).not.toContain('CJS')
     })
 
     const text = wrapper.text()

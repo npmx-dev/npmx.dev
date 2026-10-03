@@ -39,6 +39,9 @@ const TEST_CASES = [
 
   // Package function-tree variant (API symbols decoration)
   { path: '/package-docs/ufo/v/1.6.3', label: 'function-tree variant' },
+
+  // Package dependencies OG image
+  { path: '/package-deps/vue/v/3.5.27', label: 'package dependencies' },
 ] as const
 
 for (const { path, label } of TEST_CASES) {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * DateTime component that wraps NuxtTime with settings-aware relative date support.
- * Uses the global settings to determine whether to show relative or absolute dates.
+ * Uses global settings to determine whether to show relative or absolute dates.
  *
  * Note: When relativeDates setting is enabled, the component switches between
  * relative and absolute display based on user preference. The title attribute
@@ -33,19 +33,26 @@ const { locale } = useI18n()
 
 const relativeDates = useRelativeDates()
 
-const dateFormatter = new Intl.DateTimeFormat(locale.value, {
-  month: 'short',
-  day: 'numeric',
-  year: 'numeric',
-  hour: 'numeric',
-  minute: '2-digit',
-  timeZoneName: 'short',
-})
+const isMounted = useMounted()
 
-// Compute the title - always show full date for accessibility
 const titleValue = computed(() => {
   if (props.title) return props.title
+
   const date = typeof props.datetime === 'string' ? new Date(props.datetime) : props.datetime
+
+  if (!isMounted.value) {
+    return date.toISOString()
+  }
+
+  const dateFormatter = new Intl.DateTimeFormat(locale.value, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    timeZoneName: 'short',
+  })
+
   return dateFormatter.format(date)
 })
 </script>

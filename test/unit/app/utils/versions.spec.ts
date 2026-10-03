@@ -11,7 +11,28 @@ import {
   getVersionGroupLabel,
   isSameVersionGroup,
   parseStableVersion,
+  resolveMinVersion,
 } from '~/utils/versions'
+
+describe('resolveMinVersion', () => {
+  it('returns null for null, undefined, or empty string', () => {
+    expect(resolveMinVersion(null)).toBeNull()
+    expect(resolveMinVersion(undefined)).toBeNull()
+    expect(resolveMinVersion('')).toBeNull()
+  })
+
+  it('resolves standard semver ranges to minimum normalized version', () => {
+    expect(resolveMinVersion('^1.2.3')).toBe('1.2.3')
+    expect(resolveMinVersion('~2.0.0')).toBe('2.0.0')
+    expect(resolveMinVersion('>=3.1.0')).toBe('3.1.0')
+  })
+
+  it('returns original input without throwing for non-semver or dist-tags like "latest"', () => {
+    expect(resolveMinVersion('latest')).toBe('latest')
+    expect(resolveMinVersion('next')).toBe('next')
+    expect(resolveMinVersion('invalid-range-!@#')).toBe('invalid-range-!@#')
+  })
+})
 
 describe('getPrereleaseChannel', () => {
   it('returns empty string for stable versions', () => {

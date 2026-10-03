@@ -2,7 +2,7 @@ import { normalizeSearchParam } from '#shared/utils/url'
 import { debounce } from 'perfect-debounce'
 
 // Pages that have their own local filter using ?q
-const pagesWithLocalFilter = new Set(['~username', 'org'])
+const pagesWithLocalFilter = new Set(['~username', 'org', 'dependencies'])
 
 const SEARCH_DEBOUNCE_MS = 100
 
@@ -14,7 +14,7 @@ export function useGlobalSearch(place: 'header' | 'content' = 'content') {
   const route = useRoute()
   // Internally used searchQuery state
   const searchQuery = useState<string>('search-query', () => {
-    if (pagesWithLocalFilter.has(route.name as string)) {
+    if (typeof route.name === 'string' && pagesWithLocalFilter.has(route.name)) {
       return ''
     }
     return normalizeSearchParam(route.query.q)
@@ -39,6 +39,9 @@ export function useGlobalSearch(place: 'header' | 'content' = 'content') {
   watch(
     () => route.query.q,
     urlQuery => {
+      if (typeof route.name === 'string' && pagesWithLocalFilter.has(route.name)) {
+        return
+      }
       const value = normalizeSearchParam(urlQuery)
       if (!value) searchQuery.value = ''
       if (!searchQuery.value) searchQuery.value = value
@@ -49,7 +52,12 @@ export function useGlobalSearch(place: 'header' | 'content' = 'content') {
   const updateUrlQueryImpl = (value: string, provider: 'npm' | 'algolia') => {
     const isSameQuery = route.query.q === value && route.query.p === provider
     // Don't navigate away from pages that use ?q for local filtering
-    if ((pagesWithLocalFilter.has(route.name as string) && place === 'content') || isSameQuery) {
+    if (
+      isSameQuery ||
+      (typeof route.name === 'string' &&
+        pagesWithLocalFilter.has(route.name) &&
+        place === 'content')
+    ) {
       return
     }
 

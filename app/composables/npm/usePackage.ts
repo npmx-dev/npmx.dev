@@ -15,6 +15,13 @@ export function transformPackument(
   pkg: Packument,
   requestedVersion?: string | null,
 ): SlimPackument {
+  // Resolve dist-tags or missing version to exact semver version
+  if (requestedVersion && pkg['dist-tags']?.[requestedVersion]) {
+    requestedVersion = pkg['dist-tags'][requestedVersion]
+  } else if (!requestedVersion) {
+    requestedVersion = pkg['dist-tags']?.latest ?? Object.values(pkg['dist-tags'] ?? {})[0]
+  }
+
   // Get versions pointed to by dist-tags
   const distTagVersions = new Set(Object.values(pkg['dist-tags'] ?? {}))
 
@@ -128,7 +135,7 @@ export function transformPackument(
 
 export function usePackage(
   name: MaybeRefOrGetter<string>,
-  requestedVersion?: MaybeRefOrGetter<string | null>,
+  requestedVersion?: MaybeRefOrGetter<string | null | undefined>,
 ) {
   const asyncData = useLazyAsyncData(
     () => `package:${toValue(name)}:${toValue(requestedVersion) ?? ''}`,

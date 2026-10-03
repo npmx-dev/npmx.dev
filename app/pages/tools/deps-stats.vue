@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PackageJsonDependency } from '~/utils/parse-package-json-deps'
+import { type PackageJsonDependency, getDependencyKey } from '~/utils/parse-package-json-deps'
 import { useRouteQuery } from '@vueuse/router'
 
 definePageMeta({
@@ -11,30 +11,36 @@ const { t } = useI18n()
 const { fileName, parseError, dependencies, hasParsedFile, parse, clear, defaultDependency } =
   useDepsStatsPackage()
 
-const selectedName = useRouteQuery<string>('pkg', '', { mode: 'replace' })
+const selectedQuery = useRouteQuery<string>('pkg', '', { mode: 'replace' })
 
-const selectedDependency = computed(
-  () => dependencies.value.find(dep => dep.name === selectedName.value) ?? null,
-)
+const selectedDependency = computed(() => {
+  const query = selectedQuery.value
+  if (!query) return null
+  return (
+    dependencies.value.find(
+      dep => getDependencyKey(dep) === query || (!query.includes(':') && dep.name === query),
+    ) ?? null
+  )
+})
 
-if (!selectedDependency.value) {
-  selectedName.value = defaultDependency.value?.name ?? ''
+if (!selectedDependency.value && defaultDependency.value) {
+  selectedQuery.value = getDependencyKey(defaultDependency.value)
 }
 
 function handleParsed(file: File, text: string) {
   const fallback = parse(file, text)
-  if (!selectedDependency.value) {
-    selectedName.value = fallback?.name ?? ''
+  if (!selectedDependency.value && fallback) {
+    selectedQuery.value = getDependencyKey(fallback)
   }
 }
 
 function handleClear() {
   clear()
-  selectedName.value = ''
+  selectedQuery.value = ''
 }
 
 function selectDependency(dep: PackageJsonDependency) {
-  selectedName.value = dep.name
+  selectedQuery.value = getDependencyKey(dep)
 }
 
 useSeoMeta({
@@ -88,7 +94,7 @@ defineOgImage(
         <DepsStatsDependencyList
           class="max-lg:max-h-80 [@media(min-height:600px)_and_(min-width:1023px)]:h-[calc(100vh-15rem)]"
           :dependencies="dependencies"
-          :selected-name="selectedName"
+          :selected-key="selectedDependency ? getDependencyKey(selectedDependency) : selectedQuery"
           @select="selectDependency"
         />
         <DepsStatsDependencyStats

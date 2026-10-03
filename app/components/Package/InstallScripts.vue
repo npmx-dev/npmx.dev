@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { getOutdatedTooltip, getVersionClass } from '~/utils/npm/outdated-dependencies'
+import { getOutdatedTooltip, getVersionClass } from '~/utils/npm/problematic-dependencies'
+import { normalizeDependencies } from '~/utils/npm/package-dependency-sections'
 import type { RouteLocationRaw } from 'vue-router'
 
 const props = defineProps<{
@@ -48,11 +49,24 @@ const scriptParts = computed(() => {
   return parts
 })
 
-const outdatedNpxDeps = useOutdatedDependencies(() => props.installScripts.npxDependencies)
+const { data: outdatedNpxDeps } = useOutdatedDependencies(() =>
+  normalizeDependencies(props.installScripts.npxDependencies),
+)
+// const { data: replacementNpxDeps } = useReplacementDependencies(
+//   () => props.installScripts.npxDependencies,
+// )
+const replacementNpxDeps = Object.create(null)
+
 const hasNpxDeps = computed(() => Object.keys(props.installScripts.npxDependencies).length > 0)
 const sortedNpxDeps = computed(() => {
   return Object.entries(props.installScripts.npxDependencies).sort(([a], [b]) => a.localeCompare(b))
 })
+
+const versionClass = (dep: string) =>
+  getVersionClass(dep, {
+    outdatedDeps: ref(outdatedNpxDeps),
+    replacementDeps: ref(replacementNpxDeps),
+  })
 
 const isExpanded = shallowRef(false)
 </script>
@@ -135,7 +149,7 @@ const isExpanded = shallowRef(false)
                 outdatedNpxDeps[dep].resolved !== outdatedNpxDeps[dep].latest
               "
               class="shrink-0 p-2 -m-2"
-              :class="getVersionClass(outdatedNpxDeps[dep])"
+              :class="versionClass(dep)"
               aria-hidden="true"
               :text="getOutdatedTooltip(outdatedNpxDeps[dep], $t)"
             >
@@ -143,7 +157,7 @@ const isExpanded = shallowRef(false)
             </TooltipApp>
             <span
               class="font-mono text-xs text-end truncate"
-              :class="getVersionClass(outdatedNpxDeps[dep])"
+              :class="versionClass(dep)"
               :title="
                 outdatedNpxDeps[dep]
                   ? outdatedNpxDeps[dep].resolved === outdatedNpxDeps[dep].latest
