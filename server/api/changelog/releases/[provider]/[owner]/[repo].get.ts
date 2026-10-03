@@ -9,10 +9,18 @@ import {
   GithubReleaseCollectionSchama,
   ForgejoReleaseCollectionSchema,
   GitlabReleaseCollectionSchema,
+  GiteaReleaseCollectionSchema,
+  GiteeReleaseCollectionSchema,
 } from '~~/shared/schemas/changelog/release'
 import { changelogRenderer } from '~~/server/utils/changelog/markdown'
-import { createForgejoRepoInfo, createGithubRepoInfo } from '~~/server/utils/changelog/mdRepoInfo'
+import {
+  createForgejoRepoInfo,
+  createGiteaRepoInfo,
+  createGithubRepoInfo,
+} from '~~/server/utils/changelog/mdRepoInfo'
 import { validateHostWithValibot } from '~~/server/utils/changelog/validateHost'
+
+const TIMEOUT_TIME = 15_000
 
 export default defineCachedEventHandler(
   async event => {
@@ -39,6 +47,10 @@ export default defineCachedEventHandler(
           return await getReleasesFromForgejo(owner, repo, host)
         case 'gitlab':
           return await getReleasesFromGitlab(owner, repo, host)
+        case 'gitea':
+          return await getReleasesFromGitea(owner, repo, host)
+        case 'gitee':
+          return await getReleasesFromGitee(owner, repo)
 
         default:
           throw createError({
@@ -79,6 +91,7 @@ async function getReleasesFromGithub(owner: string, repo: string) {
       'Accept': '*/*',
       'User-Agent': 'npmx.dev',
     },
+    timeout: TIMEOUT_TIME,
   })
 
   const { releases } = v.parse(GithubReleaseCollectionSchama, data)
@@ -107,6 +120,7 @@ async function getReleasesFromForgejo(owner: string, repo: string, host: string)
     headers: {
       'User-Agent': 'npmx.dev',
     },
+    timeout: TIMEOUT_TIME,
   })
   const releases = v.parse(ForgejoReleaseCollectionSchema, data)
 
@@ -137,6 +151,7 @@ async function getReleasesFromGitlab(owner: string, repo: string, host: string) 
     headers: {
       'User-Agent': 'npmx.dev',
     },
+    timeout: TIMEOUT_TIME,
   })
 
   const releases = v.parse(GitlabReleaseCollectionSchema, data)
@@ -154,6 +169,63 @@ async function getReleasesFromGitlab(owner: string, repo: string, host: string) 
       publishedAt: r.released_at,
       // oxlint-disable-next-line no-underscore-dangle
       link: r._links.self,
+      tag: r.tag_name,
+    } satisfies ReleaseData
+  })
+}
+
+async function getReleasesFromGitea(owner: string, repo: string, host: string) {
+  const data = await $fetch(`https://${host}/api/v1/repos/${owner}/${repo}/releases?draft=false`, {
+    headers: {
+      'User-Agent': 'npmx.dev',
+    },
+    timeout: TIMEOUT_TIME,
+  })
+  const releases = v.parse(GiteaReleaseCollectionSchema, data)
+
+  const render = await changelogRenderer(createGiteaRepoInfo(host, owner, repo))
+
+  return releases.map(r => {
+    const { html, toc } = render(r.body, r.id)
+    return {
+      id: r.id,
+      html: html?.replace(/(?<!>)\n/g, '<br>') ?? null,
+      title: r.name || r.tag_name,
+      prerelease: r.prerelease,
+      toc,
+      link: r.html_url,
+      publishedAt: r.published_at,
+      draft: r.draft,
+      tag: r.tag_name,
+    } satisfies ReleaseData
+  })
+}
+
+async function getReleasesFromGitee(owner: string, repo: string) {
+  const data = await $fetch(
+    `https://gitee.com/api/v5/repos/${owner}/${repo}/releases?per_page=30`,
+    {
+      headers: {
+        'User-Agent': 'npmx.dev',
+      },
+      timeout: TIMEOUT_TIME,
+    },
+  )
+
+  const releases = v.parse(GiteeReleaseCollectionSchema, data)
+
+  const render = await changelogRenderer(createGiteeRepoInfo(owner, repo))
+
+  return releases.map(r => {
+    const { html, toc } = render(r.body, r.id)
+    return {
+      id: r.id,
+      html: html?.replace(/(?<!>)\n/g, '<br>') ?? null,
+      title: r.name || r.tag_name,
+      prerelease: r.prerelease,
+      toc,
+      link: `https://gitee.com/${owner}/${repo}/releases/tag/${r.tag_name}`,
+      publishedAt: r.created_at,
       tag: r.tag_name,
     } satisfies ReleaseData
   })

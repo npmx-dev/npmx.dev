@@ -44,12 +44,12 @@ export function flattenNamespaces(nodes: DenoDocNode[]): DenoDocNode[] {
  * Build a lookup table mapping symbol names to their HTML anchor IDs.
  * Used for {@link} cross-references.
  */
-export function buildSymbolLookup(nodes: DenoDocNode[]): SymbolLookup {
+export function buildSymbolLookup(nodes: DenoDocNode[], prefix = ''): SymbolLookup {
   const lookup = new Map<string, string>()
 
   for (const node of nodes) {
     const cleanName = cleanSymbolName(node.name)
-    const id = createSymbolId(node.kind, cleanName)
+    const id = createSymbolId(node.kind, cleanName, prefix)
     lookup.set(cleanName, id)
   }
 

@@ -325,6 +325,14 @@ const config = computed<VueUiSparklineConfig>(() => {
         top: 0,
         bottom: 0,
       },
+      // Drag to zoom
+      zoom: {
+        show: true,
+        resetButton: {
+          title: $t('package.trends.sparkline_zoom_reset.title'),
+          ariaLabel: $t('package.trends.sparkline_zoom_reset.aria_label'),
+        },
+      },
     },
   }
 })
