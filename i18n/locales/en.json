@@ -542,8 +542,10 @@
       "compare": "compare",
       "timeline": "timeline",
       "stats": "stats",
-      "changelog": "changelog"
+      "changelog": "changelog",
+      "share": "share"
     },
+    "share_aria_label": "Share {package}",
     "likes": {
       "like": "Like this package",
       "unlike": "Unlike this package",
