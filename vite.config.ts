@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite-plus'
 import { defineVitestProject } from '@nuxt/test-utils/config'
 import { playwright } from 'vite-plus/test/browser-playwright'
+import { createRequire } from 'node:module'
 
 const rootDir = import.meta.dirname
 
@@ -216,6 +217,14 @@ export default defineConfig({
       () =>
         defineVitestProject({
           plugins: [liveDollarFetch()],
+          resolve: {
+            alias: {
+              // Keep Vue Test Utils' template compiler on the browser build.
+              '@vue/compiler-dom': createRequire(import.meta.resolve('@vue/test-utils')).resolve(
+                '@vue/compiler-dom/dist/compiler-dom.esm-browser.js',
+              ),
+            },
+          },
           test: {
             name: 'nuxt',
             include: ['test/nuxt/**/*.{test,spec}.ts'],
