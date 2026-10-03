@@ -731,6 +731,10 @@
         "copy_url": "Copiez cette URL pour intégrer le graphique à votre site web",
         "preview": "Aperçu",
         "tip": "Par défaut, si startDate et endDate ne sont pas renseignés, la période couvre les 12 derniers mois."
+      },
+      "sparkline_zoom_reset": {
+        "title": "Réinitialiser le zoom · double-cliquez sur le graphique ou appuyez sur Esc",
+        "aria_label": "Réinitialiser le zoom"
       }
     },
     "downloads": {
