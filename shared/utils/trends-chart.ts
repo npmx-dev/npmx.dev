@@ -369,6 +369,7 @@ export const LOCALES_WITH_EXTRA_SPACE = [
 
 const XAXIS_LABELS_MOD_THRESHOLD = 12
 
+// extra top padding to avoid last label overflow, when labels are shifted to avoid overlaps
 export const MULTI_PACKAGE_MODE_TOP_PADDING = 64
 
 export function buildTrendsChartConfig(
@@ -395,7 +396,6 @@ export function buildTrendsChartConfig(
       backgroundColor: options.colors.bg,
       padding: {
         bottom: options.displayedGranularity === 'yearly' ? 84 : 64,
-        // extra top padding to avoid last label overflow, when labels are shifted to avoid overlaps
         top: options.isMultiPackageMode ? MULTI_PACKAGE_MODE_TOP_PADDING : undefined,
         right: options.isMultiPackageMode
           ? LOCALES_WITH_EXTRA_SPACE.includes(options.locale)
