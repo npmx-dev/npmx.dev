@@ -26,11 +26,11 @@ import {
   nullifyZeroValues,
   isMissingDownloadValue,
   isLargeDownloadSeries,
+  MULTI_PACKAGE_MODE_TOP_PADDING,
 } from '#shared/utils/trends-chart'
 import { downloadFileLink } from '~/utils/download'
 import { useCopyChartPng } from '~/composables/useCopyChartPng'
 import { createLastDatapointLabelsSvg } from '#shared/utils/download-chart-last-label'
-import { MULTI_PACKAGE_MODE_TOP_PADDING } from '../../../shared/utils/trends-chart'
 
 import('vue-data-ui/style.css')
 
