@@ -219,7 +219,10 @@ export default defineConfig({
           plugins: [liveDollarFetch()],
           resolve: {
             alias: {
-              // Keep Vue Test Utils' template compiler on the browser build.
+              // Work around Vitest mixing browser and CommonJS Vue compiler builds.
+              // https://github.com/vitest-dev/vitest/issues/11177
+              // Remove this alias and the createRequire import once an upstream fix lets
+              // the Nuxt browser suite, including accessibility tests, pass without them.
               '@vue/compiler-dom': createRequire(import.meta.resolve('@vue/test-utils')).resolve(
                 '@vue/compiler-dom/dist/compiler-dom.esm-browser.js',
               ),
