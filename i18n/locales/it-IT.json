@@ -99,6 +99,7 @@
     "current": "corrente",
     "here": "sei qui",
     "connected": "connesso",
+    "keyboard_shortcuts": {},
     "state": {
       "on": "attivo",
       "off": "disattivo"
@@ -204,6 +205,14 @@
     "open_menu": "Apri menu",
     "links": "Link",
     "tap_to_search": "Tocca per cercare"
+  },
+  "tools": {
+    "deps_stats": {}
+  },
+  "deps_stats": {
+    "upload": {},
+    "dependencies": {},
+    "stats": {}
   },
   "blog": {
     "title": "Blog",
@@ -311,6 +320,7 @@
       "slate": "Ardesia",
       "black": "Nero"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Abilita scorciatoie da tastiera",
     "keyboard_shortcuts_enabled_description": "Le scorciatoie da tastiera possono essere disabilitate se entrano in conflitto con altre scorciatoie del browser o del sistema",
     "enable_code_ligatures": "Abilita legature nel codice",
@@ -375,9 +385,7 @@
       "tangled": "Vedi su Tangled"
     },
     "collapse": "Comprimi",
-    "collapse_with_name": "Comprimi {name}",
-    "expand": "Espandi",
-    "expand_with_name": "Espandi {name}"
+    "expand": "Espandi"
   },
   "profile": {
     "display_name": "Nome visualizzato",
@@ -518,6 +526,7 @@
       "title": "Esegui",
       "locally": "Esegui localmente"
     },
+    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "Nessuno README disponibile.",
@@ -1259,6 +1268,25 @@
       }
     }
   },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
+    }
+  },
   "account_menu": {
     "connect": "connetti",
     "account": "Account",
@@ -1543,6 +1571,20 @@
       "view_profile": "Visualizza il profilo di {handle}",
       "new_accounts": "...più altri {count} che sono nuovi sull'atmosphere"
     }
+  },
+  "privacy_policy": {
+    "cookies": {
+      "what_are": {},
+      "types": {},
+      "local_storage": {},
+      "management": {}
+    },
+    "analytics": {},
+    "authenticated": {},
+    "data_retention": {},
+    "your_rights": {},
+    "contact": {},
+    "changes": {}
   },
   "a11y": {
     "title": "accessibilità",

@@ -1049,7 +1049,7 @@ describe('PackageVersions', () => {
         },
       })
 
-      const expandButton = component.find('button[aria-label]')
+      const expandButton = component.find('[data-testid="tag-expand-button"]')
       expect(expandButton.exists()).toBe(true)
       expect(expandButton.attributes('aria-label')).toMatch(/Expand|Collapse/)
     })

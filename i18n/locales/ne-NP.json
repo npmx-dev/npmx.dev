@@ -213,6 +213,14 @@
     "links": "लिङ्कहरू",
     "tap_to_search": "खोज्न ट्याप गर्नुहोस्"
   },
+  "tools": {
+    "deps_stats": {}
+  },
+  "deps_stats": {
+    "upload": {},
+    "dependencies": {},
+    "stats": {}
+  },
   "blog": {
     "title": "ब्लग",
     "heading": "ब्लग",
@@ -384,9 +392,7 @@
       "tangled": "Tangled मा हेर्नुहोस्"
     },
     "collapse": "समेट्नुहोस्",
-    "collapse_with_name": "{name} समेट्नुहोस्",
-    "expand": "विस्तार गर्नुहोस्",
-    "expand_with_name": "{name} विस्तार गर्नुहोस्"
+    "expand": "विस्तार गर्नुहोस्"
   },
   "profile": {
     "display_name": "डिस्प्ले नाम",
@@ -527,6 +533,7 @@
       "title": "चलाउनुहोस्",
       "locally": "लोकलमा चलाउनुहोस्"
     },
+    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "README उपलब्ध छैन।",

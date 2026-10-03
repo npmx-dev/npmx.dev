@@ -213,6 +213,14 @@
     "links": "লিংকগুলি",
     "tap_to_search": "অনুসন্ধানের জন্য ট্যাপ করুন"
   },
+  "tools": {
+    "deps_stats": {}
+  },
+  "deps_stats": {
+    "upload": {},
+    "dependencies": {},
+    "stats": {}
+  },
   "blog": {
     "title": "ব্লগ",
     "heading": "ব্লগ",
@@ -319,6 +327,7 @@
       "slate": "স্লেট",
       "black": "কালো"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "কীবোর্ড শর্টকাট সক্রিয় করুন",
     "keyboard_shortcuts_enabled_description": "কীবোর্ড শর্টকাট নিষ্ক্রিয় করা যেতে পারে যদি তারা অন্যান্য ব্রাউজার বা সিস্টেম শর্টকাটের সঙ্গে দুইপাশের সমস্যা তৈরি করে",
     "enable_code_ligatures": "কোডে লিগচারস সক্রিয় করুন",
@@ -383,9 +392,7 @@
       "tangled": "Tangled এ দেখুন"
     },
     "collapse": "সংকুচিত করুন",
-    "collapse_with_name": "{name} সঙ্কুচিত করুন",
-    "expand": "বিস্তৃত করুন",
-    "expand_with_name": "{name} বিস্তৃত করুন"
+    "expand": "বিস্তৃত করুন"
   },
   "profile": {
     "display_name": "প্রদর্শনের নাম",
@@ -526,6 +533,7 @@
       "title": "চালান",
       "locally": "স্থানীয়ভাবে চালান"
     },
+    "command": {},
     "readme": {
       "title": "রিডমি",
       "no_readme": "README উপলব্ধ নেই।",

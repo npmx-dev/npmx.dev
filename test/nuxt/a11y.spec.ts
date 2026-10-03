@@ -3159,6 +3159,107 @@ describe('component accessibility audits', () => {
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
+
+    it('should have no accessibility violations with a subtitle', async () => {
+      const component = await mountSuspended(CollapsibleSection, {
+        props: {
+          title: 'Section Title',
+          subtitle: 'Describes the section',
+          id: 'test-section',
+        },
+        slots: { default: '<p>Section content</p>' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('exposes the title as a button inside the heading', async () => {
+      const component = await mountSuspended(CollapsibleSection, {
+        props: { title: 'Dependencies', id: 'test-section', headingLevel: 'h3' },
+        slots: { default: '<p>Section content</p>' },
+      })
+
+      const toggle = component.get('h3 button')
+      expect(toggle.text()).toContain('Dependencies')
+    })
+
+    it('toggles aria-expanded when the title button is activated', async () => {
+      const component = await mountSuspended(CollapsibleSection, {
+        props: { title: 'Dependencies', id: 'test-section' },
+        slots: { default: '<p>Section content</p>' },
+      })
+
+      const toggle = component.get('#test-section-collapsible-button')
+      expect(toggle.attributes('aria-expanded')).toBe('true')
+
+      await toggle.trigger('click')
+      expect(toggle.attributes('aria-expanded')).toBe('false')
+
+      await toggle.trigger('click')
+      expect(toggle.attributes('aria-expanded')).toBe('true')
+    })
+
+    it('points aria-controls at the content it expands', async () => {
+      const component = await mountSuspended(CollapsibleSection, {
+        props: { title: 'Dependencies', id: 'test-section' },
+        slots: { default: '<p>Section content</p>' },
+      })
+
+      const controls = component.get('#test-section-collapsible-button').attributes('aria-controls')
+      expect(controls).toBe('test-section-collapsible-content')
+      expect(component.find(`#${controls}`).exists()).toBe(true)
+    })
+
+    it('gives the section link button an accessible name', async () => {
+      const component = await mountSuspended(CollapsibleSection, {
+        props: { title: 'Dependencies', id: 'test-section' },
+        slots: { default: '<p>Section content</p>' },
+      })
+
+      const linkButton = component
+        .findAll('button')
+        .find(b => b.attributes('aria-label')?.includes('Dependencies'))
+      expect(linkButton).toBeDefined()
+    })
+
+    it('copies the current url with the section hash', async () => {
+      let copiedText: string | undefined
+
+      const writeSpy = vi.spyOn(navigator.clipboard, 'write').mockImplementation(async items => {
+        copiedText = await (await items[0]!.getType('text/plain')).text()
+      })
+      const execSpy = vi.spyOn(document, 'execCommand').mockImplementation(command => {
+        if (command === 'copy') {
+          copiedText = (document.activeElement as HTMLTextAreaElement | null)?.value
+        }
+        return true
+      })
+
+      try {
+        const component = await mountSuspended(CollapsibleSection, {
+          props: { title: 'Dependencies', id: 'test-section' },
+          slots: { default: '<p>Section content</p>' },
+        })
+
+        const linkButton = component
+          .findAll('button')
+          .find(b => b.attributes('aria-label')?.includes('Dependencies'))
+        expect(linkButton).toBeDefined()
+
+        await linkButton!.trigger('click')
+        await vi.waitFor(() => {
+          expect(copiedText).toBeDefined()
+        })
+
+        const copied = new URL(copiedText!)
+        expect(copied.hash).toBe('#test-section')
+        expect(copied.origin).toBe(window.location.origin)
+        expect(copied.pathname).toBe(window.location.pathname)
+      } finally {
+        writeSpy.mockRestore()
+        execSpy.mockRestore()
+      }
+    })
   })
 
   describe('TerminalExecute', () => {

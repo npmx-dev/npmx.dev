@@ -213,6 +213,14 @@
     "links": "リンク",
     "tap_to_search": "タップして検索"
   },
+  "tools": {
+    "deps_stats": {}
+  },
+  "deps_stats": {
+    "upload": {},
+    "dependencies": {},
+    "stats": {}
+  },
   "blog": {
     "title": "ブログ",
     "heading": "ブログ",
@@ -319,6 +327,7 @@
       "slate": "スレート",
       "black": "ブラック"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "キーボードショートカットを有効化",
     "keyboard_shortcuts_enabled_description": "ブラウザやシステムのショートカットと競合する場合、キーボードショートカットを無効化できます",
     "enable_code_ligatures": "コードのリガチャを有効化",
@@ -383,9 +392,7 @@
       "tangled": "Tangledで表示"
     },
     "collapse": "折りたたむ",
-    "collapse_with_name": "{name} を折りたたむ",
-    "expand": "展開",
-    "expand_with_name": "{name} を展開"
+    "expand": "展開"
   },
   "profile": {
     "display_name": "表示名",
@@ -526,6 +533,7 @@
       "title": "実行",
       "locally": "ローカルで実行"
     },
+    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "READMEはありません。",

@@ -214,6 +214,14 @@
     "links": "링크",
     "tap_to_search": "탭해서 검색"
   },
+  "tools": {
+    "deps_stats": {}
+  },
+  "deps_stats": {
+    "upload": {},
+    "dependencies": {},
+    "stats": {}
+  },
   "blog": {
     "title": "블로그",
     "heading": "블로그",
@@ -391,9 +399,7 @@
       "tangled": "Tangled에서 보기"
     },
     "collapse": "접기",
-    "collapse_with_name": "{name} 접기",
     "expand": "펼치기",
-    "expand_with_name": "{name} 펼치기",
     "copyMdError": "Markdown을 불러오지 못했습니다. 나중에 다시 시도하세요"
   },
   "profile": {

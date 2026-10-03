@@ -434,9 +434,9 @@
       "tangled": "View on Tangled"
     },
     "collapse": "Collapse",
-    "collapse_with_name": "Collapse {name}",
     "expand": "Expand",
-    "expand_with_name": "Expand {name}",
+    "copy_section_link": "Copy link to {name}",
+    "section_link_copied": "Link copied",
     "copyMdError": "Failed to load markdown, try again later"
   },
   "profile": {

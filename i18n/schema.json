@@ -1306,13 +1306,13 @@
         "collapse": {
           "type": "string"
         },
-        "collapse_with_name": {
-          "type": "string"
-        },
         "expand": {
           "type": "string"
         },
-        "expand_with_name": {
+        "copy_section_link": {
+          "type": "string"
+        },
+        "section_link_copied": {
           "type": "string"
         },
         "copyMdError": {

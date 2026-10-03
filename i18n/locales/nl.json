@@ -214,6 +214,14 @@
     "links": "Links",
     "tap_to_search": "Tik om te zoeken"
   },
+  "tools": {
+    "deps_stats": {}
+  },
+  "deps_stats": {
+    "upload": {},
+    "dependencies": {},
+    "stats": {}
+  },
   "blog": {
     "title": "Blog",
     "heading": "blog",
@@ -391,9 +399,7 @@
       "tangled": "Bekijk op Tangled"
     },
     "collapse": "inklappen",
-    "collapse_with_name": "inklappen {name}",
     "expand": "uitklappen",
-    "expand_with_name": "uitklappen {name}",
     "copyMdError": "Markdown kon niet worden opgehaald. Probeer het later opnieuw"
   },
   "profile": {
