@@ -75,6 +75,10 @@ const sort = usePermalink<TimelineSort>('sort', 'semver')
 // server-side so pagination totals and pages already exclude pre-releases.
 const stableOnly = useTimelineStableOnly()
 
+// "Frozen history" toggle, shared with the chart via the query string. Only the
+// size metrics depend on it, not the versions list.
+const frozenHistory = useTimelineFrozenHistory()
+
 // Paginated timeline data from server
 const PAGE_SIZE = 25
 
@@ -149,7 +153,9 @@ const SIZE_INCREASE_THRESHOLD = 0.25
 const DEP_INCREASE_THRESHOLD = 5
 const NO_LICENSE_VALUES = new Set(['', 'UNLICENSED'])
 
-const sizeCache = shallowReactive(new Map<string, TimelineSizeCacheValue>())
+const frozenSizeCache = shallowReactive(new Map<string, TimelineSizeCacheValue>())
+const liveSizeCache = shallowReactive(new Map<string, TimelineSizeCacheValue>())
+const sizeCache = computed(() => (frozenHistory.value ? frozenSizeCache : liveSizeCache))
 const sizeFetchesInFlight = ref(0)
 const sizesLoading = computed(() => sizeFetchesInFlight.value > 0)
 
@@ -162,18 +168,26 @@ async function fetchSizes(
   pkgName: string = packageName.value,
   sortOrder: TimelineSort = sort.value,
   stable: boolean = stableOnly.value,
+  frozen: boolean = frozenHistory.value,
 ) {
   sizeFetchesInFlight.value++
   try {
     const data = await $fetch<TimelineSizeResponse>(`/api/registry/timeline/sizes/${pkgName}`, {
-      query: { offset, 'limit': PAGE_SIZE, 'sort': sortOrder, 'stable-only': String(stable) },
+      query: {
+        offset,
+        'limit': PAGE_SIZE,
+        'sort': sortOrder,
+        'stable-only': String(stable),
+        'frozen-history': String(frozen),
+      },
     })
     if (pkgName !== packageName.value || sortOrder !== sort.value || stable !== stableOnly.value) {
       return
     }
 
+    const cache = frozen ? frozenSizeCache : liveSizeCache
     for (const entry of data.sizes) {
-      sizeCache.set(`${pkgName}@${entry.version}`, {
+      cache.set(`${pkgName}@${entry.version}`, {
         totalSize: entry.totalSize,
         dependencyCount: entry.dependencyCount,
         selfSize: entry.selfSize,
@@ -193,9 +207,10 @@ function fetchSizesPages(
   pkgName: string = packageName.value,
   sortOrder: TimelineSort = sort.value,
   stable: boolean = stableOnly.value,
+  frozen: boolean = frozenHistory.value,
 ) {
   for (let page = 0; page < pageCount; page++) {
-    fetchSizes(page * PAGE_SIZE, pkgName, sortOrder, stable)
+    fetchSizes(page * PAGE_SIZE, pkgName, sortOrder, stable, frozen)
   }
 }
 
@@ -233,6 +248,16 @@ if (import.meta.client) {
       if (!isStale()) initialLoadError.value = true
     }
   })
+
+  // Toggling frozen history does not affect the list of versions, only their sizes
+  watch(frozenHistory, () => {
+    // only re-fetch if this cache is missing some values for the currently visible timeline
+    const cache = sizeCache.value
+    const covered = timelineEntries.value.every(entry => cache.has(sizeKey(entry.version)))
+    if (covered) return
+
+    fetchSizesPages(Math.max(1, Math.ceil(timelineEntries.value.length / PAGE_SIZE)))
+  })
 }
 
 const bytesFormatter = useBytesFormatter()
@@ -268,8 +293,8 @@ const versionSubEvents = computed(() => {
     }
 
     // Size changes
-    const currentSize = sizeCache.get(sizeKey(current.version))
-    const previousSize = sizeCache.get(sizeKey(previous.version))
+    const currentSize = sizeCache.value.get(sizeKey(current.version))
+    const previousSize = sizeCache.value.get(sizeKey(previous.version))
     if (currentSize && previousSize) {
       const sizeRatio =
         previousSize.totalSize > 0
