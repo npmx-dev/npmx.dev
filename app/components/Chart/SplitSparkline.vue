@@ -258,10 +258,13 @@ const configs = computed(() => {
           top: 0,
           bottom: 0,
         },
+        // Drag to zoom
         zoom: {
           show: true,
-          title: '', // TODO: translation
-          ariaLabel: '', // TODO: translation
+          resetButton: {
+            title: $t('package.trends.sparkline_zoom_reset.title'),
+            ariaLabel: $t('package.trends.sparkline_zoom_reset.aria_label'),
+          },
         },
       },
     }
