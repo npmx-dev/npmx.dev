@@ -415,7 +415,7 @@
       "no_matches": "Żadna wersja nie pasuje do tego zakresu",
       "copy_alt": {
         "per_version_analysis": "Wersję {version} pobrano {downloads} razy",
-        "general_description": "Wykres słupkowy pokazujący liczbę pobrań dla każdej z {version_count} {semver_grouping_mode} wersji pakietu {package_name}, {date_range_label} od wersji {first_version} do wersji {last_version}. Najczęściej pobieraną wersją jest {max_downloaded_version}, pobrana została {max_version_downloads} razy. {per_version_analysis}. {watermark}."
+        "general_description": "Wykres słupkowy pokazujący liczbę pobrań dla każdej z {versions_count} {semver_grouping_mode} wersji pakietu {package_name}, {date_range_label} od wersji {first_version} do wersji {last_version}. Najczęściej pobieraną wersją jest {max_downloaded_version}, pobrana została {max_version_downloads} razy. {per_version_analysis}. {watermark}."
       }
     },
     "timeline": {
@@ -510,7 +510,7 @@
         "estimations": "Końcowe wartości są szacowane na podstawie danych częściowych dla bieżącego okresu.",
         "compare": "Wykres liniowy porównujący ilość pobrań dla: {packages}.",
         "single_package": "Wykres liniowy ilości pobrań dla pakietu {package}.",
-        "general_description": "Oś Y przedstawia ilość pobrań. Oś X przedstawia zakres dat, od {start_date} do {end_date}, z jednostką czasu {granularity}. {estimation_notice} {package_analysis}. {watermark}",
+        "general_description": "Oś Y przedstawia ilość pobrań. Oś X przedstawia zakres dat, od {start_date} do {end_date}, z jednostką czasu {granularity}. {estimation_notice} {packages_analysis}. {watermark}",
         "facet_bar_general_description": "Poziomy wykres słupkowy dla: {packages}, porównuje {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} ma wartość {value}."
       }

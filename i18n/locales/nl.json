@@ -46,7 +46,7 @@
     "go_to_result": "Ga naar resultaten",
     "open_code_view": "Open code weergaven",
     "open_docs": "Open documentatie",
-    "disable_shortcuts": "U kunt toetsenbordnavigatie uitschakelen in {instellingen}.",
+    "disable_shortcuts": "U kunt toetsenbordnavigatie uitschakelen in {settings}.",
     "open_main": "Open pakket overzicht",
     "open_diff": "Open versie verschillen",
     "open_timeline": "Open tijdlijn",
@@ -1197,7 +1197,7 @@
       "paginated": "Genummerde pagina's",
       "items_per_page": "Aantal resultaten per pagina",
       "per_page": "{count} / pagina",
-      "showing": "{start}-{end} van {total}",
+      "showing": "{range} van {total}",
       "previous": "Voriga pagina",
       "next": "Volgende pagina",
       "nav_label": "Paginering"
