@@ -24,6 +24,7 @@
     "brand": "ब्रान्ड",
     "resources": "स्रोतहरू",
     "features": "सुविधाहरू",
+    "tools": "टुलहरू",
     "other": "अन्य",
     "sponsored_by": "{list} द्वारा प्रायोजित"
   },
@@ -40,6 +41,7 @@
     "show_kbd_hints": "किबोर्ड संकेतहरू हाइलाइट गर्नुहोस्",
     "settings": "सेटिङ्स खोल्नुहोस्",
     "compare": "तुलना खोल्नुहोस्",
+    "deps_stats": "डिपेन्डेन्सी तथ्याङ्क टुल खोल्नुहोस्",
     "compare_from_package": "तुलना खोल्नुहोस् (हालको प्याकेजसहित)",
     "changelog": "चेन्जलग खोल्नुहोस्",
     "navigate_results": "नतिजाहरूमा नेभिगेट गर्नुहोस्",
@@ -191,6 +193,7 @@
       "theme_changed": "थिम {theme} मा सेट गरियो।",
       "accent_color_changed": "एक्सेन्ट रङ {color} मा सेट गरियो।",
       "background_theme_changed": "ब्याकग्राउन्ड सेड {theme} मा सेट गरियो।",
+      "foreground_theme_changed": "फोरग्राउन्ड सेड {theme} मा सेट गरियो।",
       "download_started": "{package} टारबल डाउनलोड हुँदैछ।",
       "copied_to_clipboard": "क्लिपबोर्डमा कपी भयो।",
       "npm_disconnected": "npm CLI डिस्कनेक्ट भयो।",
@@ -206,12 +209,53 @@
     "popular_packages": "लोकप्रिय प्याकेजहरू",
     "settings": "सेटिङ्स",
     "compare": "तुलना",
+    "tools": "टुलहरू",
     "back": "पछाडि",
     "menu": "मेनु",
     "mobile_menu": "नेभिगेसन मेनु",
     "open_menu": "मेनु खोल्नुहोस्",
     "links": "लिङ्कहरू",
     "tap_to_search": "खोज्न ट्याप गर्नुहोस्"
+  },
+  "tools": {
+    "title": "टुलहरू",
+    "tagline": "प्याकेज र प्रोजेक्टका डिपेन्डेन्सीहरू अन्वेषण गर्ने उपयोगी टुलहरू",
+    "meta_title": "टुलहरू - npmx",
+    "meta_description": "प्याकेज र प्रोजेक्टका डिपेन्डेन्सीहरू अन्वेषण गर्न npmx का टुलहरू हेर्नुहोस्",
+    "deps_stats": {
+      "name": "डिपेन्डेन्सी तथ्याङ्क",
+      "description": "package.json अपलोड गरेर प्रत्येक डिपेन्डेन्सीको तथ्याङ्क हेर्नुहोस्"
+    }
+  },
+  "deps_stats": {
+    "title": "डिपेन्डेन्सी तथ्याङ्क",
+    "meta_title": "डिपेन्डेन्सी तथ्याङ्क - npmx",
+    "meta_description": "package.json अपलोड गरेर प्रत्येक डिपेन्डेन्सीको तथ्याङ्क अन्वेषण गर्नुहोस्",
+    "upload": {
+      "section": "Package.json",
+      "label": "package.json अपलोड गर्नुहोस्",
+      "hint": "यहाँ package.json ड्रप गर्नुहोस्, वा फाइल छान्नुहोस्। डिपेन्डेन्सीसम्बन्धी फिल्डहरू मात्र पढिन्छन् — सर्भरमा केही पनि अपलोड हुँदैन",
+      "clear": "हटाउनुहोस्",
+      "invalid_package_json": "अमान्य package.json"
+    },
+    "dependencies": {
+      "title": "डिपेन्डेन्सीहरू",
+      "count": "कुनै डिपेन्डेन्सी छैन | 1 डिपेन्डेन्सी | {count} डिपेन्डेन्सीहरू",
+      "filter_label": "डिपेन्डेन्सी फिल्टर गर्नुहोस्",
+      "filter_placeholder": "डिपेन्डेन्सी फिल्टर गर्नुहोस्...",
+      "empty": "यो package.json मा कुनै डिपेन्डेन्सी भेटिएन",
+      "no_matches": "तपाईंका फिल्टरसँग मिल्ने डिपेन्डेन्सी छैन",
+      "non_registry": "npm रजिस्ट्रीको प्याकेज होइन"
+    },
+    "stats": {
+      "empty_title": "डिपेन्डेन्सी छान्नुहोस्",
+      "empty_description": "डाउनलोड, साइज, कमजोरी, ट्रेन्ड र अरू विवरण हेर्न सूचीबाट प्याकेज छान्नुहोस्",
+      "non_registry_title": "स्थानीय वा रिमोट डिपेन्डेन्सी",
+      "non_registry_description": "यो प्रविष्टिले फाइल, वर्कस्पेस, git वा URL डिपेन्डेन्सीलाई जनाउँछ, त्यसैले रजिस्ट्रीको तथ्याङ्क उपलब्ध छैन",
+      "declared_range": "घोषित",
+      "resolved_version": "पछिल्लो",
+      "open_full_stats": "पूर्ण तथ्याङ्क खोल्नुहोस्"
+    }
   },
   "blog": {
     "title": "ब्लग",
@@ -261,7 +305,8 @@
     "back_to_archive": "सबै नुडलहरूमा फर्कनुहोस्",
     "missing": {
       "title": "यो नुडल भाँडोबाट बाहिर आउनै पाएन।",
-      "body": "हाम्रो मेनुमा “{slug}” नामको नुडल छैन। कि त यो अझै पाक्दैछ, कि त कहिल्यै लेखिएकै थिएन। जे होस् — अर्काइभतिर फर्कनुहोस्।"
+      "body": "हाम्रो मेनुमा “{slug}” नामको नुडल छैन। कि त यो अझै पाक्दैछ, कि त कहिल्यै लेखिएकै थिएन। जे होस् — अर्काइभतिर फर्कनुहोस्।",
+      "empty_bowl": "खाली कचौरा"
     }
   },
   "settings": {
@@ -319,7 +364,12 @@
       "slate": "स्लेट",
       "black": "कालो"
     },
-    "foreground_themes": {},
+    "foreground_themes": {
+      "label": "फोरग्राउन्ड सेड",
+      "contrast": "कन्ट्रास्ट",
+      "standard": "स्टान्डर्ड",
+      "muted": "मधुरो"
+    },
     "keyboard_shortcuts_enabled": "किबोर्ड सर्टकटहरू सक्षम गर्नुहोस्",
     "keyboard_shortcuts_enabled_description": "अन्य ब्राउजर वा सिस्टम सर्टकटहरूसँग बाझिएमा किबोर्ड सर्टकटहरू निष्क्रिय गर्न सकिन्छ",
     "enable_code_ligatures": "कोडमा लिगेचरहरू सक्षम गर्नुहोस्",
@@ -386,7 +436,8 @@
     "collapse": "समेट्नुहोस्",
     "collapse_with_name": "{name} समेट्नुहोस्",
     "expand": "विस्तार गर्नुहोस्",
-    "expand_with_name": "{name} विस्तार गर्नुहोस्"
+    "expand_with_name": "{name} विस्तार गर्नुहोस्",
+    "copyMdError": "Markdown लोड गर्न सकिएन, पछि फेरि प्रयास गर्नुहोस्"
   },
   "profile": {
     "display_name": "डिस्प्ले नाम",
@@ -412,6 +463,7 @@
     "verified_provenance": "प्रमाणित प्रोभेनेन्स",
     "navigation": "प्याकेज",
     "copy_name": "प्याकेज नाम कपी गर्नुहोस्",
+    "copy_version": "प्याकेज संस्करण कपी गर्नुहोस्",
     "deprecation": {
       "package": "यो प्याकेज अप्रचलित (deprecated) गरिएको छ।",
       "version": "यो संस्करण अप्रचलित (deprecated) गरिएको छ।",
@@ -525,7 +577,16 @@
     },
     "run": {
       "title": "चलाउनुहोस्",
-      "locally": "लोकलमा चलाउनुहोस्"
+      "locally": "लोकलमा चलाउनुहोस्",
+      "copy_command": "लोकलमा चलाउने कमाण्ड कपी गर्नुहोस्"
+    },
+    "command": {
+      "copied_install": "इन्स्टल कमाण्ड कपी भयो",
+      "copied_dev_install": "डेभ इन्स्टल कमाण्ड कपी भयो",
+      "copied_run": "रन कमाण्ड कपी भयो",
+      "copied_create": "create कमाण्ड कपी भयो",
+      "copied_execute": "एक्जिक्युट कमाण्ड कपी भयो",
+      "copied_skills": "स्किल कमाण्ड कपी भयो"
     },
     "readme": {
       "title": "Readme",
@@ -601,6 +662,7 @@
       "grouping_usage_about": "प्रयोग समूहबारे",
       "grouping_usage_all": "सबै",
       "grouping_usage_most_used": "धेरै प्रयोग भएका",
+      "order_by_downloads": "डाउनलोडअनुसार क्रमबद्ध गर्नुहोस्",
       "recent_versions_only_tooltip": "पछिल्लो एक वर्षभित्र प्रकाशित संस्करणहरू मात्र देखाउनुहोस्।",
       "show_low_usage_tooltip": "कुल डाउनलोडको 1% भन्दा कम भएका संस्करण समूहहरू पनि समावेश गर्नुहोस्।",
       "y_axis_label": "डाउनलोड",
@@ -624,6 +686,7 @@
     "timeline": {
       "load_more": "थप लोड गर्नुहोस्",
       "load_error": "टाइमलाइन लोड गर्न असफल। कृपया पछि फेरि प्रयास गर्नुहोस्।",
+      "no_stable_versions": "देखाउन कुनै स्टेबल संस्करण छैन। प्रि-रिलिज समावेश गर्न “स्टेबल मात्र” बन्द गर्नुहोस्।",
       "size_increase": "इन्स्टल साइज {percent}% ले बढ्यो ({size})",
       "size_decrease": "इन्स्टल साइज {percent}% ले घट्यो ({size})",
       "dep_increase": "{count} डिपेन्डेन्सी थपियो | {count} डिपेन्डेन्सीहरू थपिए",
@@ -637,6 +700,7 @@
       "trusted_publisher_removed": "विश्वसनीय प्रकाशन हटाइयो",
       "provenance_added": "प्रोभेनेन्स सक्षम गरियो",
       "provenance_removed": "प्रोभेनेन्स हटाइयो",
+      "deprecated": "अप्रचलित",
       "chart": {
         "tab_aria_label": "मेट्रिक चयन",
         "dependency_size": "डिपेन्डेन्सी साइज",
@@ -645,6 +709,9 @@
         "zoom": "जुम",
         "reset_minimap": "मिनीम्याप रिसेट गर्नुहोस्",
         "ordered_versions": "स्टेबल मात्र",
+        "sort_label": "क्रमबद्ध",
+        "sort_time": "प्रकाशित समय",
+        "sort_semver": "Semver",
         "copy_alt": {
           "key_changes": "मुख्य परिवर्तनहरू: {version_events}।",
           "version_events": "संस्करण {version}: {events}",
@@ -666,7 +733,8 @@
       "outdated_minor": "{count} माइनर संस्करण पछाडि (नवीनतम: {latest}) | {count} माइनर संस्करणहरू पछाडि (नवीनतम: {latest})",
       "outdated_patch": "प्याच अपडेट उपलब्ध (नवीनतम: {latest})",
       "has_replacement": "यस डिपेन्डेन्सीका लागि विकल्पहरू सुझाइएका छन्",
-      "vulnerabilities_count": "{count} कमजोरी | {count} कमजोरीहरू"
+      "vulnerabilities_count": "{count} कमजोरी | {count} कमजोरीहरू",
+      "aliased_to": "{name} मा एलियास गरिएको"
     },
     "peer_dependencies": {
       "title": "पियर डिपेन्डेन्सी ({count}) | पियर डिपेन्डेन्सीहरू ({count})",
@@ -710,16 +778,19 @@
       "granularity_yearly": "वार्षिक",
       "start_date": "सुरु",
       "end_date": "अन्त्य",
+      "last_recorded_value": "* पछिल्लो रेकर्ड गरिएको मान",
       "loading": "लोड हुँदैछ...",
       "date_range": "{start} देखि {end}",
       "date_range_multiline": "{start}\nदेखि {end}",
       "download_file": "{fileType} डाउनलोड गर्नुहोस्",
+      "copy_file": "{fileType} कपी गर्नुहोस्",
       "toggle_annotator": "एनोटेटर टगल गर्नुहोस्",
       "toggle_stack_mode": "स्ट्याक मोड टगल गर्नुहोस्",
       "open_options": "विकल्पहरू खोल्नुहोस्",
       "close_options": "विकल्पहरू बन्द गर्नुहोस्",
       "legend_estimation": "अनुमान",
       "no_data": "डेटा उपलब्ध छैन",
+      "no_data_short": "डेटा छैन",
       "y_axis_label": "{granularity} {facet}",
       "facet": "पक्ष",
       "title": "ट्रेन्डहरू",
@@ -763,6 +834,10 @@
         "copy_url": "चार्ट आफ्नो वेबसाइटमा इम्बेड गर्न यो URL कपी गर्नुहोस्",
         "preview": "प्रिभ्यू",
         "tip": "URL मा startDate र endDate नदिइएमा ग्राफले डिफल्ट रूपमा पछिल्ला 12 महिना देखाउँछ।"
+      },
+      "sparkline_zoom_reset": {
+        "title": "जुम रिसेट गर्नुहोस् · चार्टमा डबल-क्लिक गर्नुहोस् वा Esc थिच्नुहोस्",
+        "aria_label": "जुम रिसेट गर्नुहोस्"
       }
     },
     "downloads": {
@@ -1854,6 +1929,7 @@
       "p2": "कृपया पछि फेरि प्रयास गर्नुहोस् वा {viewon}"
     },
     "rate_limit_ungh": "माफ गर्नुहोस्, GitHub को रेट लिमिटमा पुगियो, एकैछिनमा फेरि प्रयास गर्नुहोस्",
-    "version_unavailable": "अनुरोध गरिएको संस्करण उपलब्ध छैन।"
+    "version_unavailable": "अनुरोध गरिएको संस्करण उपलब्ध छैन।",
+    "copy_as_markdown": "चेन्जलग Markdown रूपमा कपी गर्नुहोस्"
   }
 }
