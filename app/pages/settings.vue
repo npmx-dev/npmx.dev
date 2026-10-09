@@ -333,6 +333,31 @@ useSeoMeta({
             />
           </div>
         </section>
+
+        <!-- APP Section (install prompt — shown only when browser supports PWA install) -->
+        <ClientOnly>
+          <section v-if="$pwa?.showInstallPrompt && !$pwa?.isPWAInstalled">
+            <h2 class="text-xs text-fg-muted uppercase tracking-wider mb-4">
+              {{ $t('settings.sections.app') }}
+            </h2>
+            <div class="bg-bg-subtle border border-border rounded-lg p-4 sm:p-6">
+              <div class="flex items-start justify-between gap-4">
+                <div class="space-y-1">
+                  <p class="text-sm text-fg font-medium">{{ $t('pwa.install_app') }}</p>
+                  <p class="text-sm text-fg-muted">{{ $t('pwa.install_app_description') }}</p>
+                </div>
+                <ButtonBase
+                  size="sm"
+                  variant="primary"
+                  classicon="i-lucide:download"
+                  @click="$pwa?.install()"
+                >
+                  {{ $t('pwa.install') }}
+                </ButtonBase>
+              </div>
+            </div>
+          </section>
+        </ClientOnly>
       </div>
     </article>
   </main>

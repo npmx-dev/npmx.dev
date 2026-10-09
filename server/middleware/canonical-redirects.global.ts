@@ -34,12 +34,19 @@ const pages = [
   '/tools',
   '/translation-status',
   '/recharging',
+  '/manifest.webmanifest',
+  '/npmx-sw-classic.js',
+  '/npmx-sw-module.js',
 ]
 
 const cacheControl = 's-maxage=3600, stale-while-revalidate=36000'
 
 export default defineEventHandler(async event => {
   const [path = '/', query] = event.path.split('?')
+
+  if (path.startsWith('/workbox-classic-') || path.startsWith('/workbox-module-')) {
+    return
+  }
 
   if (query) {
     const params = new URLSearchParams(query)

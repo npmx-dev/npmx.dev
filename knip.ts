@@ -13,6 +13,8 @@ const config: KnipConfig = {
         'lighthouse-setup.cjs',
         'uno-preset-*.ts!',
         'scripts/**/*.ts',
+        'pwa.config.ts',
+        'service-worker/*.ts!',
         '{*,.github/*,app/pages/blog/**}.md',
       ],
       project: [
@@ -26,7 +28,12 @@ const config: KnipConfig = {
       msw: {
         entry: ['.storybook/.public/mockServiceWorker.js'],
       },
-      ignoreDependencies: ['@iconify-json/*', 'puppeteer', 'vite-plugin-pwa', '@vueuse/shared'],
+      ignoreDependencies: [
+        '@iconify-json/*',
+        'puppeteer',
+        '@composable-vite-pwa/workbox-window',
+        '@vueuse/shared',
+      ],
       ignoreUnresolved: ['#oauth/config'],
       ignoreFiles: ['app/components/UserCombobox.vue', '**/*.unused.*'],
     },
