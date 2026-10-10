@@ -166,9 +166,6 @@
       "changelog": "Changelog",
       "stats": "統計"
     },
-    "package_actions": {
-      "copy_run": "実行コマンドをコピー"
-    },
     "code": {
       "copy_file": "ファイル内容をコピー"
     },

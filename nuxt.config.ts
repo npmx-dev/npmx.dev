@@ -235,6 +235,8 @@ export default defineNuxtConfig({
     '/blog/**': { prerender: true },
     '/noodles/**': { prerender: true },
     '/sponsors': { prerender: true },
+    '/tools': { prerender: true },
+    '/tools/deps-stats': { prerender: true },
     // proxy for insights
     '/_v/script.js': {
       proxy: 'https://npmx.dev/_vercel/insights/script.js',

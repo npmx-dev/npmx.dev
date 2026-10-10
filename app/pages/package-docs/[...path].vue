@@ -239,6 +239,24 @@ const stickyStyle = computed(() => {
   @apply text-xs text-fg-subtle hover:text-fg block py-0.5 truncate;
 }
 
+.toc-content li.docs-toc-group:not(:first-child) {
+  @apply mt-6;
+}
+
+/* Ellipsise long entry points from the start so the subpath tail stays readable.
+   Flipping `direction` moves the overflow, and its ellipsis, to the page's
+   inline-start edge; `text-align` pulls labels that fit back to that same edge.
+   The label is wrapped in <bdi> so its own text keeps its natural direction. */
+.toc-content .docs-toc-group > a {
+  direction: rtl;
+  text-align: left;
+}
+
+html[dir='rtl'] .toc-content .docs-toc-group > a {
+  direction: ltr;
+  text-align: right;
+}
+
 /* Main docs content container - no max-width to use full space */
 .docs-content {
   @apply max-w-none;
@@ -252,6 +270,18 @@ const stickyStyle = computed(() => {
 .docs-content .docs-section-title {
   @apply text-lg font-semibold text-fg mb-8 pb-3 pt-4 border-b border-border sticky bg-bg z-[2];
   top: var(--combined-header-height);
+}
+
+.docs-content .docs-group {
+  scroll-margin-top: var(--combined-header-height);
+}
+
+.docs-content .docs-group-title {
+  @apply static mt-20;
+}
+
+.docs-content .docs-group:first-child .docs-group-title {
+  @apply mt-0;
 }
 
 /* Individual symbol articles */

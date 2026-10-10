@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite-plus'
 import { defineVitestProject } from '@nuxt/test-utils/config'
 import { playwright } from 'vite-plus/test/browser-playwright'
+import { createRequire } from 'node:module'
 
 const rootDir = import.meta.dirname
 
@@ -216,6 +217,17 @@ export default defineConfig({
       () =>
         defineVitestProject({
           plugins: [liveDollarFetch()],
+          resolve: {
+            alias: {
+              // Work around Vitest mixing browser and CommonJS Vue compiler builds.
+              // https://github.com/vitest-dev/vitest/issues/11177
+              // Remove this alias and the createRequire import once an upstream fix lets
+              // the Nuxt browser suite, including accessibility tests, pass without them.
+              '@vue/compiler-dom': createRequire(import.meta.resolve('@vue/test-utils')).resolve(
+                '@vue/compiler-dom/dist/compiler-dom.esm-browser.js',
+              ),
+            },
+          },
           test: {
             name: 'nuxt',
             include: ['test/nuxt/**/*.{test,spec}.ts'],

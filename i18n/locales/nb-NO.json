@@ -163,9 +163,6 @@
       "changelog": "Endringslogg",
       "stats": "Statistikk"
     },
-    "package_actions": {
-      "copy_run": "Kopier kjørekommando"
-    },
     "code": {
       "copy_file": "Kopier filinnhold"
     },

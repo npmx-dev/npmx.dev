@@ -15,7 +15,7 @@ const disabledText = t('package.card.select_maximum', MAX_PACKAGE_SELECTION)
 
 <template>
   <div class="relative z-1">
-    <label>
+    <label class="flex items-center">
       <span class="sr-only" v-if="disabled">{{ disabledText }}</span>
       <span class="sr-only" v-else> {{ $t('package.card.select') }}: {{ packageName }} </span>
 

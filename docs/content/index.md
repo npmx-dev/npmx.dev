@@ -30,6 +30,7 @@ links:
 
 ::u-page-section{title="What you can do"}
 #features
+
 :::u-page-feature{icon="i-lucide:search" to="/guide/features" title="Search packages" description="Fast package search with instant results, infinite scroll, and keyboard navigation."}
 :::
 
@@ -59,4 +60,5 @@ links:
 
 :::u-page-feature{icon="i-lucide:accessibility" to="/guide/features" title="Use assistive technology" description="Keyboard-friendly, screen-reader-aware, responsive UI backed by automated accessibility checks."}
 :::
+
 ::

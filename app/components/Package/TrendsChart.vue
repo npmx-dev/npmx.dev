@@ -23,6 +23,10 @@ import {
   buildTrendsChartData,
   isWeeklyDataset,
   getTrendsDatetimeFormatterOptions,
+  nullifyZeroValues,
+  isMissingDownloadValue,
+  isLargeDownloadSeries,
+  MULTI_PACKAGE_MODE_TOP_PADDING,
 } from '#shared/utils/trends-chart'
 import { downloadFileLink } from '~/utils/download'
 import { useCopyChartPng } from '~/composables/useCopyChartPng'
@@ -34,7 +38,6 @@ const props = withDefaults(
   defineProps<{
     // For single package downloads history
     weeklyDownloads?: WeeklyDataPoint[]
-    inModal?: boolean
 
     /**
      * Backward compatible single package mode.
@@ -54,10 +57,11 @@ const props = withDefaults(
     showFacetSelector?: boolean
     permalink?: boolean
     defaultRange?: 'auto' | '52-weeks'
+    hideControls?: boolean
+    compactXAxisLabels?: boolean
   }>(),
   {
     defaultRange: 'auto',
-    permalink: false,
   },
 )
 
@@ -70,12 +74,39 @@ const colorMode = useColorMode()
 const resolvedMode = shallowRef<'light' | 'dark'>('light')
 const rootEl = shallowRef<HTMLElement | null>(null)
 const isZoomed = shallowRef(false)
+const zoomStartIndex = shallowRef(0)
+const zoomEndIndex = shallowRef<number | null>(null)
 
 const chartRef = useTemplateRef('chartRef')
 const { copiedPng, isCopyingPng, copyChartPng } = useCopyChartPng(chartRef)
 
-function setIsZoom({ isZoom }: { isZoom: boolean }) {
-  isZoomed.value = isZoom
+type ZoomRangeEvent = {
+  index: number
+  isZoom: boolean
+}
+
+function updateZoomState() {
+  const endIndex = zoomEndIndex.value ?? maxDatapoints.value
+  isZoomed.value =
+    zoomStartIndex.value > 0 || (maxDatapoints.value > 0 && endIndex < maxDatapoints.value)
+}
+
+function setZoomStart({ index }: ZoomRangeEvent) {
+  if (!Number.isFinite(index)) return
+  zoomStartIndex.value = index
+  updateZoomState()
+}
+
+function setZoomEnd({ index }: ZoomRangeEvent) {
+  if (!Number.isFinite(index)) return
+  zoomEndIndex.value = index
+  updateZoomState()
+}
+
+function resetZoomTracking() {
+  zoomStartIndex.value = 0
+  zoomEndIndex.value = null
+  isZoomed.value = false
 }
 
 const { width } = useElementSize(rootEl)
@@ -156,15 +187,66 @@ const chartData = computed(() =>
   }),
 )
 
-const normalisedDataset = computed(() =>
-  buildNormalisedTrendsDataset({
+const normalisedDataset = computed(() => {
+  const data = buildNormalisedTrendsDataset({
     dataset: chartData.value.dataset,
     dates: chartData.value.dates,
     granularity: displayedGranularity.value,
     selectedMetric: selectedMetric.value,
     chartFilter: settings.value.chartFilter,
     endDateMs: endDate.value ? endDateOnlyToUtcMs(endDate.value) : null,
-  }),
+  })
+
+  data.forEach((item, index) => {
+    const packageName = getPackageNameForSeriesIndex(index)
+
+    item.series = nullifyZeroValues({
+      enabled: selectedMetric.value === DEFAULT_METRIC_ID && isLargePackage.value[packageName],
+      values: item.series,
+      keepLastZero: false,
+    }) as number[]
+
+    if (selectedMetric.value !== DEFAULT_METRIC_ID || !item.series.length) return
+
+    const rawLastValue = chartData.value.dataset?.[index]?.series?.at(-1)
+
+    if (!isLargePackage.value[packageName] && isMissingDownloadValue(rawLastValue)) {
+      const series = item.series as Array<number | null>
+      series[series.length - 1] = 0
+    }
+  })
+
+  return data
+})
+
+function getPackageNameForSeriesIndex(index: number): string {
+  return (
+    effectivePackageNamesForMetric.value[index] ??
+    effectivePackageNames.value[index] ??
+    `series-${index}`
+  )
+}
+
+// Package size is evaluated independently for each package.
+const isLargePackage = computed<Record<string, boolean>>(() => {
+  if (selectedMetric.value !== DEFAULT_METRIC_ID) return {}
+
+  const largePackages: Record<string, boolean> = {}
+
+  for (const [index, dataset] of (chartData.value.dataset ?? []).entries()) {
+    largePackages[getPackageNameForSeriesIndex(index)] = isLargeDownloadSeries(
+      (dataset.series ?? []) as number[],
+      displayedGranularity.value,
+    )
+  }
+
+  return largePackages
+})
+
+const largePackageSeries = computed<boolean[]>(() =>
+  (chartData.value.dataset ?? []).map(
+    (_, index) => isLargePackage.value[getPackageNameForSeriesIndex(index)] === true,
+  ),
 )
 
 const datetimeFormatterOptions = computed(() =>
@@ -273,7 +355,9 @@ const supportsEstimation = computed(
 )
 
 const hasDownloadAnomalies = computed(() =>
-  normalisedDataset.value?.some(datapoint => !!datapoint?.dashIndices?.length),
+  normalisedDataset.value?.some(
+    datapoint => !!datapoint?.dashIndices?.length || datapoint?.series?.some(d => d == null),
+  ),
 )
 
 const shouldRenderEstimationOverlay = computed(() => !pending.value && supportsEstimation.value)
@@ -908,6 +992,89 @@ const granularityItems = computed(() =>
  * @returns A string containing SVG elements to be injected, or an empty string
  * when no estimation overlay should be rendered.
  */
+function getNoDataTailGeometries(svg: Record<string, any>) {
+  if (selectedMetric.value !== DEFAULT_METRIC_ID) return []
+
+  const data = Array.isArray(svg?.data) ? svg.data : []
+  if (!data.length) return []
+
+  return data.flatMap((serie: Record<string, any>, seriesIndex: number) => {
+    const renderedName = String(serie?.name ?? '').trim()
+    const packageName =
+      renderedName && isLargePackage.value[renderedName] !== undefined
+        ? renderedName
+        : getPackageNameForSeriesIndex(seriesIndex)
+
+    if (!isLargePackage.value[packageName]) return []
+
+    const plots = Array.isArray(serie?.plots) ? serie.plots : []
+    if (plots.length < 2) return []
+
+    const endpointPlot = plots.at(-1)
+    if (!endpointPlot || !isMissingDownloadValue(endpointPlot.value)) return []
+
+    const x2 = Number(endpointPlot.x)
+    if (!Number.isFinite(x2)) return []
+
+    // Ignore null plots when locating the previous validpoint. Its rendered y is used for the horizontal no-data tail
+    const lastValidPlot = [...plots]
+      .slice(0, -1)
+      .toReversed()
+      .find(plot => {
+        if (isMissingDownloadValue(plot?.value)) return false
+
+        const value = Number(plot?.value)
+        const x = Number(plot?.x)
+        const y = Number(plot?.y)
+        return Number.isFinite(value) && Number.isFinite(x) && Number.isFinite(y)
+      })
+
+    if (!lastValidPlot) return []
+
+    const x1 = Number(lastValidPlot.x)
+    const y = Number(lastValidPlot.y)
+    if (!Number.isFinite(x1) || !Number.isFinite(y)) return []
+
+    return [
+      {
+        seriesIndex,
+        x1,
+        x2,
+        y,
+        value: Number(lastValidPlot.value),
+        color: String(serie?.color ?? colors.value.fg),
+      },
+    ]
+  })
+}
+
+function drawNoDataTail(svg: Record<string, any>) {
+  return getNoDataTailGeometries(svg)
+    .map(
+      geometry => `
+        <line
+          x1="${geometry.x1}"
+          y1="${geometry.y}"
+          x2="${geometry.x2}"
+          y2="${geometry.y}"
+          stroke="${geometry.color}"
+          stroke-width="3"
+          stroke-dasharray="4 8"
+          stroke-linecap="round"
+        />
+        <circle
+          cx="${geometry.x2}"
+          cy="${geometry.y}"
+          r="4"
+          fill="${geometry.color}"
+          stroke="${colors.value.bg}"
+          stroke-width="2"
+        />
+      `,
+    )
+    .join('\n')
+}
+
 function drawEstimationLine(svg: Record<string, any>) {
   if (!shouldRenderEstimationOverlay.value) return ''
 
@@ -916,8 +1083,13 @@ function drawEstimationLine(svg: Record<string, any>) {
 
   // Collect per-series estimates and a global max candidate for the y-axis
   const lines: string[] = []
+  const visibleNoDataSeriesIndices = new Set(
+    getNoDataTailGeometries(svg).map(({ seriesIndex }) => seriesIndex),
+  )
 
-  for (const serie of data) {
+  for (const [seriesIndex, serie] of data.entries()) {
+    if (visibleNoDataSeriesIndices.has(seriesIndex)) continue
+
     const plots = serie?.plots
     if (!Array.isArray(plots) || plots.length < 2) continue
 
@@ -993,21 +1165,62 @@ function drawEstimationLine(svg: Record<string, any>) {
  * no labels should be rendered.
  */
 function drawLastDatapointLabel(svg: VueUiXySvgSlotProps['svg']) {
+  const data = Array.isArray(svg?.data) ? svg.data : []
+  if (!data.length) return ''
+
+  // Keep all end labels in one call so `createLastDatapointLabelsSvg` can resolve
+  // collisions across regular values and missing-endpoint labels together.
+  const noDataGeometries = getNoDataTailGeometries(svg)
+  const labelSeries = data.slice()
+  const missingEndpointLabels = new Map<number, string>()
+
+  for (const geometry of noDataGeometries) {
+    const serie = data[geometry.seriesIndex]
+    if (!serie || !Array.isArray(serie.plots) || !serie.plots.length) continue
+
+    const plots = serie.plots.slice()
+    const endpointIndex = plots.length - 1
+    const endpointPlot = plots[endpointIndex]
+    if (!endpointPlot) continue
+
+    // Use a unique synthetic value only for the label formatter. The endpoint
+    // remains positioned at the final x index and at the previous valid y.
+    const labelValueSentinel = Number.MIN_SAFE_INTEGER + geometry.seriesIndex
+    missingEndpointLabels.set(
+      labelValueSentinel,
+      `${compactNumberFormatter.value.format(geometry.value)}*`,
+    )
+
+    const labelEndpointPlot = Object.assign({}, endpointPlot)
+    labelEndpointPlot.x = geometry.x2
+    labelEndpointPlot.y = geometry.y
+    labelEndpointPlot.value = labelValueSentinel
+
+    plots[endpointIndex] = labelEndpointPlot
+
+    const labelSerie = Object.assign({}, serie)
+    labelSerie.plots = plots
+
+    labelSeries[geometry.seriesIndex] = labelSerie
+  }
+
   return createLastDatapointLabelsSvg({
-    series: Array.isArray(svg?.data) ? svg.data : [],
+    series: labelSeries,
     drawingArea: svg.drawingArea,
     svgWidth: svg.width,
-    fontSize: isMultiPackageMode.value ? 20 : 24,
+    fontSize: 20,
     labelOffset: isMultiPackageMode.value ? 24 : 16,
     colors: {
       foreground: colors.value.fg!,
       background: colors.value.bg!,
       fallbackSerieColor: colors.value.fg!,
     },
-    formatValue: value => compactNumberFormatter.value.format(value),
+    formatValue: value =>
+      missingEndpointLabels.get(value) ?? compactNumberFormatter.value.format(value),
     isDarkMode: isDarkMode.value,
   })
 }
+
 /**
  * Build and return a legend to be injected during the SVG export only, since the custom legend is
  * displayed as an independent div, content has to be injected within the chart's viewBox.
@@ -1087,7 +1300,13 @@ const chartHeight = computed(() => {
   if (isMobile.value) {
     return 950
   }
-  return showCorrectionControls.value && props.inModal ? 494 : 600
+
+  const additionalHeight = isMultiPackageMode.value ? MULTI_PACKAGE_MODE_TOP_PADDING : 0
+
+  if (props.hideControls) {
+    return 460 + additionalHeight
+  }
+  return 600 + additionalHeight
 })
 
 const { start } = useTimeoutFn(
@@ -1138,11 +1357,11 @@ const chartConfig = computed<VueUiXyConfig>(() => {
     pending: pending.value,
     locale: locale.value,
     chartHeight: chartHeight.value,
-    inModal: props.inModal,
     chartFilter: settings.value.chartFilter,
     t: $t,
     compactNumberFormatter: compactNumberFormatter.value,
     tooltipPosition: tooltipPosition.value,
+    compactXAxisLabels: props.compactXAxisLabels,
   })
 
   return {
@@ -1207,12 +1426,27 @@ const chartConfig = computed<VueUiXyConfig>(() => {
           }
 
           const rows = items
-            .map((datapoint: Record<string, any>) => {
+            .map((datapoint: Record<string, any>, itemIndex: number) => {
               const label = String(datapoint?.name ?? '').trim()
-              const rawValue = Number(datapoint?.value ?? 0)
-              const value = compactNumberFormatter.value.format(
-                Number.isFinite(rawValue) ? rawValue : 0,
+              const matchingSeriesIndex = normalisedDataset.value.findIndex(
+                serie => String((serie as Record<string, any>)?.name ?? '').trim() === label,
               )
+              const seriesIndex = matchingSeriesIndex >= 0 ? matchingSeriesIndex : itemIndex
+              const packageName = getPackageNameForSeriesIndex(seriesIndex)
+              const rawSeries = chartData.value.dataset?.[seriesIndex]?.series ?? []
+              const absoluteDataIndex =
+                absoluteIndex !== undefined ? Number(absoluteIndex) : Number.NaN
+              const rawDataValue = Number.isInteger(absoluteDataIndex)
+                ? rawSeries[absoluteDataIndex]
+                : datapoint?.value
+              const isNoDataValue =
+                selectedMetric.value === DEFAULT_METRIC_ID &&
+                isLargePackage.value[packageName] === true &&
+                isMissingDownloadValue(rawDataValue)
+              const rawValue = Number(datapoint?.value ?? 0)
+              const value = isNoDataValue
+                ? $t('package.trends.no_data_short')
+                : compactNumberFormatter.value.format(Number.isFinite(rawValue) ? rawValue : 0)
 
               if (!hasMultipleItems) {
                 return `<div>
@@ -1239,6 +1473,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
         },
       },
       zoom: {
+        show: !props.hideControls,
         autoFit: true,
         highlightColor: colors.value.bgElevated,
         useResetSlot: true,
@@ -1258,6 +1493,15 @@ const chartConfig = computed<VueUiXyConfig>(() => {
           stroke: transparentizeOklch(accent.value, 0.5),
           strokeWidth: 1,
           strokeDasharray: 3,
+        },
+        dragToZoom: {
+          show: true,
+          selection: {
+            fill: accent.value,
+            fillOpacity: isDarkMode.value ? 0.05 : 0.08,
+            stroke: accent.value,
+            strokeDasharray: 3,
+          },
         },
       },
     },
@@ -1305,6 +1549,7 @@ const { start: resetZoomState } = useTimeoutFn(
 
 async function resetZoom() {
   keepZoomState.value = false
+  resetZoomTracking()
   await nextTick()
   chartRef.value?.resetZoom?.()
   resetZoomState()
@@ -1422,7 +1667,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
       </TabList>
     </TabRoot>
 
-    <div class="w-full mb-4 flex flex-col gap-3">
+    <div class="w-full mb-4 flex flex-col gap-3" v-if="!hideControls">
       <div class="grid grid-cols-2 sm:flex sm:flex-row gap-3 sm:gap-2 sm:items-end">
         <SelectField
           v-if="showFacetSelector"
@@ -1568,11 +1813,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
                   class="text-2xs font-mono text-fg-subtle tracking-wide uppercase flex items-center justify-between"
                 >
                   {{ $t('package.trends.known_anomalies') }}
-                  <TooltipApp
-                    interactive
-                    :to="inModal ? '#chart-modal' : undefined"
-                    v-if="showCorrectionControls"
-                  >
+                  <TooltipApp interactive v-if="showCorrectionControls">
                     <button
                       type="button"
                       class="i-lucide:info w-3.5 h-3.5 text-fg-muted cursor-help"
@@ -1655,19 +1896,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
     </h2>
 
     <!-- Chart panel (active metric) -->
-    <div
-      role="region"
-      aria-labelledby="trends-chart-title"
-      :class="
-        isSparklineLayout || !inModal
-          ? undefined
-          : isMobile === false && width > 0
-            ? showCorrectionControls
-              ? 'h-[491px]'
-              : 'h-[567px]'
-            : 'min-h-[260px]'
-      "
-    >
+    <div role="region" aria-labelledby="trends-chart-title">
       <ClientOnly v-if="chartData.dataset">
         <div
           v-if="isSparklineLayout"
@@ -1680,6 +1909,9 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
             :dates="chartData.dates"
             :datetimeFormatterOptions
             :showLastDatapointEstimation="shouldRenderEstimationOverlay && !isEndDateOnPeriodEnd"
+            :nullify-zero-values="selectedMetric === DEFAULT_METRIC_ID"
+            :granularity="selectedGranularity"
+            :large-package-series="largePackageSeries"
           />
         </div>
 
@@ -1699,9 +1931,9 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
               '[direction:ltr]': true,
               'no-transition': isResizing,
             }"
-            @zoomStart="setIsZoom"
-            @zoomEnd="setIsZoom"
-            @zoomReset="isZoomed = false"
+            @zoomStart="setZoomStart"
+            @zoomEnd="setZoomEnd"
+            @zoomReset="resetZoomTracking"
           >
             <!-- Keyboard navigation hint -->
             <template #hint="{ isVisible }">
@@ -1717,6 +1949,22 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
                 v-if="shouldRenderEstimationOverlay && !isEndDateOnPeriodEnd && !isZoomed"
                 v-html="drawEstimationLine(svg)"
               />
+
+              <!-- Flat dashed tail for large packages when the final downloads bucket has no data -->
+              <g v-if="!pending && isDownloadsMetric" v-html="drawNoDataTail(svg)" />
+
+              <!-- Asterisk explaination for the last label value when the last value is null -->
+              <g v-if="!pending && isDownloadsMetric && selectedGranularity === 'daily'">
+                <text
+                  :x="svg.drawingArea.left"
+                  :y="svg.height - 12"
+                  :fill="colors.fgSubtle"
+                  :font-size="16"
+                  text-anchor="start"
+                >
+                  {{ $t('package.trends.last_recorded_value') }}
+                </text>
+              </g>
 
               <!-- Last value label for all other cases -->
               <g v-if="!pending" v-html="drawLastDatapointLabel(svg)" />
@@ -1758,7 +2006,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
 
             <!-- Custom legend for multiple series -->
             <template #legend="{ legend }">
-              <div class="flex gap-x-6 gap-y-2 flex-wrap justify-center text-sm">
+              <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
                 <template v-if="isMultiPackageMode">
                   <button
                     v-for="datapoint in legend"
@@ -1766,15 +2014,17 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
                     :aria-pressed="datapoint.isSegregated"
                     :aria-label="datapoint.name"
                     type="button"
-                    class="flex gap-1 place-items-center"
+                    class="flex shrink-0 items-center gap-1 whitespace-nowrap"
                     @click="datapoint.segregate()"
                   >
-                    <div class="h-3 w-3">
+                    <div class="h-3 w-3 shrink-0">
                       <svg viewBox="0 0 2 2" class="w-full">
                         <rect x="0" y="0" width="2" height="2" rx="0.3" :fill="datapoint.color" />
                       </svg>
                     </div>
+
                     <span
+                      class="shrink-0 whitespace-nowrap"
                       :style="{
                         textDecoration: datapoint.isSegregated ? 'line-through' : undefined,
                       }"
@@ -1786,13 +2036,13 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
 
                 <!-- Single series legend (no user interaction) -->
                 <template v-else-if="legend.length > 0">
-                  <div class="flex gap-1 place-items-center">
-                    <div class="h-3 w-3">
+                  <div class="flex shrink-0 items-center gap-1 whitespace-nowrap">
+                    <div class="h-3 w-3 shrink-0">
                       <svg viewBox="0 0 2 2" class="w-full">
                         <rect x="0" y="0" width="2" height="2" rx="0.3" :fill="legend[0]?.color" />
                       </svg>
                     </div>
-                    <span>
+                    <span class="shrink-0 whitespace-nowrap">
                       {{ legend[0]?.name }}
                     </span>
                   </div>
@@ -1800,10 +2050,10 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
 
                 <!-- Estimation extra legend item -->
                 <div
-                  class="flex gap-1 place-items-center"
+                  class="flex shrink-0 items-center gap-1 whitespace-nowrap"
                   v-if="supportsEstimation || hasDownloadAnomalies"
                 >
-                  <svg viewBox="0 0 20 2" width="20">
+                  <svg viewBox="0 0 20 2" width="20" class="shrink-0">
                     <line
                       x1="0"
                       y1="1"
@@ -1814,7 +2064,9 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
                       stroke-linecap="round"
                     />
                   </svg>
-                  <span class="text-fg-subtle">{{ $t('package.trends.legend_estimation') }}</span>
+                  <span class="shrink-0 whitespace-nowrap text-fg-subtle">
+                    {{ $t('package.trends.legend_estimation') }}
+                  </span>
                 </div>
               </div>
             </template>
@@ -1968,7 +2220,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
     </div>
 
     <!-- Chart embedding -->
-    <div v-if="isDownloadsMetric && !!chartData.dataset">
+    <div v-if="isDownloadsMetric && !!chartData.dataset && !hideControls">
       <div class="flex flex-col gap-2">
         <button
           type="button"
@@ -2003,7 +2255,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
             <TooltipApp
               :text="$t('package.trends.embedding.tip')"
               interactive
-              :to="inModal ? '#chart-modal' : undefined"
+              :to="undefined"
               position="top"
             >
               <span

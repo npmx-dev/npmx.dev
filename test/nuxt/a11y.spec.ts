@@ -1,4 +1,4 @@
-import type { ColumnConfig, FilterChip } from '#shared/types/preferences'
+import { DEFAULT_FILTERS, type ColumnConfig, type FilterChip } from '#shared/types/preferences'
 import { mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
 import type { VueWrapper } from '@vue/test-utils'
 import 'axe-core'
@@ -174,6 +174,8 @@ import {
   NoodleGifDayLogo,
   NoodleGifDayGifText,
   NoodleIojsNodejsLogo,
+  NoodleBlenderLogo,
+  NoodleBlenderArt,
   LinkBase,
   CallToAction,
   ChangelogCard,
@@ -197,6 +199,10 @@ import {
   CompareReplacementSuggestion,
   DateTime,
   DependencyPathPopup,
+  DepsStatsDependencyList,
+  DepsStatsDependencyStats,
+  DepsStatsDependencyStatsPanel,
+  DepsStatsPackageJsonUpload,
   FilterChips,
   FilterPanel,
   HeaderAccountMenu,
@@ -223,7 +229,10 @@ import {
   PackageListControls,
   PackageListToolbar,
   PackageMaintainers,
-  PackageDownloadButton,
+  PackageInstallDownloadTarball,
+  PackageInstallDropdown,
+  PackageInstallAdditionalCommands,
+  PackageSecurityDowngradeAlert,
   PackageManagerSelect,
   PackageMetricsBadges,
   PackagePlaygrounds,
@@ -255,7 +264,6 @@ import {
   TagStatic,
   TagRadioButton,
   TerminalExecute,
-  TerminalInstall,
   TooltipAnnounce,
   TooltipApp,
   TooltipBase,
@@ -489,6 +497,18 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(NoodleIojsNodejsLogo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleBlenderLogo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleBlenderArt)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
@@ -1210,7 +1230,6 @@ describe('component accessibility audits', () => {
           weeklyDownloads: mockWeeklyDownloads,
           packageName: 'vue',
           createdIso: '2020-01-01T00:00:00.000Z',
-          inModal: false,
         },
       })
 
@@ -1368,7 +1387,6 @@ describe('component accessibility audits', () => {
           weeklyDownloads: [],
           packageName: 'vue',
           createdIso: null,
-          inModal: false,
         },
       })
 
@@ -1414,6 +1432,7 @@ describe('component accessibility audits', () => {
           dates,
           datetimeFormatterOptions,
           showLastDatapointEstimation: false,
+          granularity: 'weekly',
         },
       })
       const results = await runAxe(component)
@@ -1427,6 +1446,7 @@ describe('component accessibility audits', () => {
           dates: [],
           datetimeFormatterOptions,
           showLastDatapointEstimation: false,
+          granularity: 'weekly',
         },
       })
       const results = await runAxe(component)
@@ -2180,6 +2200,7 @@ describe('component accessibility audits', () => {
       updatedWithin: 'any' as const,
       security: 'all' as const,
       keywords: [],
+      visibleColumns: DEFAULT_FILTERS.visibleColumns,
     }
 
     it('should have no accessibility violations (collapsed)', async () => {
@@ -2213,6 +2234,7 @@ describe('component accessibility audits', () => {
       updatedWithin: 'any' as const,
       security: 'all' as const,
       keywords: [],
+      visibleColumns: DEFAULT_FILTERS.visibleColumns,
     }
 
     const mockColumns: ColumnConfig[] = [
@@ -2587,6 +2609,132 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(DependencyPathPopup, {
         props: {
           path: ['root@1.0.0', 'dep-a@1.0.0', 'dep-b@2.0.0', 'dep-c@3.0.0', 'vulnerable-pkg@4.0.0'],
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('DepsStatsPackageJsonUpload', () => {
+    it('should have no accessibility violations in empty state', async () => {
+      const component = await mountSuspended(DepsStatsPackageJsonUpload)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with an error', async () => {
+      const component = await mountSuspended(DepsStatsPackageJsonUpload, {
+        props: { error: 'Invalid package.json' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with a selected file', async () => {
+      const component = await mountSuspended(DepsStatsPackageJsonUpload, {
+        props: { fileName: 'package.json' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('DepsStatsDependencyList', () => {
+    it('should have no accessibility violations when empty', async () => {
+      const component = await mountSuspended(DepsStatsDependencyList, {
+        props: {
+          dependencies: [],
+          selectedName: null,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with dependencies', async () => {
+      const component = await mountSuspended(DepsStatsDependencyList, {
+        props: {
+          dependencies: [
+            {
+              name: 'vue',
+              range: '^3.5.0',
+              packageName: 'vue',
+              category: 'dependencies',
+              nonRegistry: false,
+            },
+            {
+              name: 'vitest',
+              range: '^3.0.0',
+              packageName: 'vitest',
+              category: 'devDependencies',
+              nonRegistry: false,
+            },
+            {
+              name: 'local-pkg',
+              range: 'workspace:*',
+              packageName: 'local-pkg',
+              category: 'dependencies',
+              nonRegistry: true,
+            },
+            {
+              name: 'alias-pkg',
+              range: '^1.0.0',
+              packageName: 'real-pkg',
+              category: 'dependencies',
+              nonRegistry: false,
+            },
+          ],
+          selectedName: 'vue',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('DepsStatsDependencyStats', () => {
+    it('should have no accessibility violations when empty', async () => {
+      const component = await mountSuspended(DepsStatsDependencyStats, {
+        props: { dependency: null },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations for a non-registry dependency', async () => {
+      const component = await mountSuspended(DepsStatsDependencyStats, {
+        props: {
+          dependency: {
+            name: 'local-pkg',
+            range: 'workspace:*',
+            packageName: 'local-pkg',
+            category: 'dependencies',
+            nonRegistry: true,
+          },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('DepsStatsDependencyStatsPanel', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(DepsStatsDependencyStatsPanel, {
+        props: {
+          packageName: 'vue',
+          declaredRange: '^3.5.0',
+        },
+        global: {
+          stubs: {
+            PackageTrendsChart: {
+              template: '<div data-test-id="package-trends-chart-stub"></div>',
+            },
+            PackageVersionDistribution: {
+              template: '<div data-test-id="package-version-distribution-stub"></div>',
+            },
+          },
         },
       })
       const results = await runAxe(component)
@@ -3041,43 +3189,6 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations for create package', async () => {
       const component = await mountSuspended(TerminalExecute, {
         props: { packageName: 'create-vite', isCreatePackage: true },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-  })
-
-  describe('TerminalInstall', () => {
-    it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(TerminalInstall, {
-        props: { packageName: 'vue' },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-
-    it('should have no accessibility violations with version', async () => {
-      const component = await mountSuspended(TerminalInstall, {
-        props: { packageName: 'vue', requestedVersion: '3.5.0' },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-
-    it('should have no accessibility violations with types package', async () => {
-      const component = await mountSuspended(TerminalInstall, {
-        props: { packageName: 'lodash', typesPackageName: '@types/lodash' },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-
-    it('should have no accessibility violations with executable info', async () => {
-      const component = await mountSuspended(TerminalInstall, {
-        props: {
-          packageName: 'eslint',
-          executableInfo: { hasExecutable: true, primaryCommand: 'eslint' },
-        },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
@@ -3794,9 +3905,9 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe('PackageDownloadButton', () => {
+  describe('PackageInstallDownloadTarball', () => {
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(PackageDownloadButton, {
+      const component = await mountSuspended(PackageInstallDownloadTarball, {
         props: {
           packageName: 'vue',
           version: {
@@ -3804,6 +3915,63 @@ describe('component accessibility audits', () => {
             dist: { tarball: 'https://registry.npmjs.org/vue/-/vue-3.5.0.tgz' },
           } as any,
           dependencies: null,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageInstallDropdown', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageInstallDropdown, {
+        props: {
+          packageName: 'vue',
+          headingId: 'get-started-test',
+          displayVersion: {
+            version: '3.5.0',
+            dist: { tarball: 'https://registry.npmjs.org/vue/-/vue-3.5.0.tgz' },
+          } as any,
+          typesPackageName: '@types/vue',
+          devDependencySuggestion: { recommended: true },
+          executableInfo: { hasExecutable: true, primaryCommand: 'vue' },
+          createPackageInfo: { packageName: 'create-vue' },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageInstallAdditionalCommands', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageInstallAdditionalCommands, {
+        props: {
+          packageName: 'vue',
+          selectedPm: 'npm',
+          typesPackageName: '@types/vue',
+          showTypes: true,
+          devDependencySuggestion: { recommended: true },
+          executableInfo: { hasExecutable: true, primaryCommand: 'vue' },
+          createPackageInfo: { packageName: 'create-vue' },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageSecurityDowngradeAlert', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageSecurityDowngradeAlert, {
+        props: {
+          downgrade: {
+            downgradedVersion: '2.0.0',
+            downgradedTrustLevel: 'none',
+            trustedVersion: '1.9.0',
+            trustedTrustLevel: 'provenance',
+          },
+          fallbackInstallText: 'Consider installing 1.9.0 instead.',
         },
       })
       const results = await runAxe(component)
@@ -4753,10 +4921,6 @@ describe('background theme accessibility', () => {
         mountSuspended(ProvenanceBadge, {
           props: { provider: 'github', packageName: 'vue', version: '3.0.0' },
         }),
-    },
-    {
-      name: 'TerminalInstall',
-      mount: () => mountSuspended(TerminalInstall, { props: { packageName: 'vue' } }),
     },
     {
       name: 'LicenseDisplay',
