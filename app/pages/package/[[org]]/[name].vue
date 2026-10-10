@@ -403,6 +403,38 @@ const { repositoryUrl } = useRepositoryUrl(displayVersion)
 const { repoRef } = useRepoMeta(repositoryUrl)
 
 const viewOnGitProvider = useViewOnGitProvider(() => repoRef.value?.provider)
+const githubRepoRef = computed(() => {
+  const ref = repoRef.value
+  if (ref?.provider !== 'github' || !ref.owner || !ref.repo) return null
+  return ref
+})
+const rawPreviewReleasesUrl = computed(() => {
+  const ref = githubRepoRef.value
+  if (!ref) return null
+
+  return `https://pkg.pr.new/~/${encodeURIComponent(ref.owner)}/${encodeURIComponent(ref.repo)}`
+})
+const { data: previewReleasesAvailability } = useLazyFetch<{
+  hasReleases: boolean
+  url: string | null
+}>(
+  () => {
+    const ref = githubRepoRef.value
+    if (!ref) return ''
+    return `/api/registry/pkg-pr-new?owner=${encodeURIComponent(ref.owner)}&repo=${encodeURIComponent(ref.repo)}`
+  },
+  {
+    watch: [githubRepoRef],
+    default: () => ({
+      hasReleases: false,
+      url: null,
+    }),
+  },
+)
+const previewReleasesUrl = computed(() => {
+  if (!previewReleasesAvailability.value?.hasReleases) return null
+  return previewReleasesAvailability.value.url ?? rawPreviewReleasesUrl.value
+})
 
 // Check if a version has provenance/attestations
 // The dist object may have attestations that aren't in the base type
@@ -962,6 +994,7 @@ const showSkeleton = shallowRef(false)
               :dist-tags="pkg['dist-tags'] ?? {}"
               :time="pkg.time"
               :selected-version="resolvedVersion ?? pkg['dist-tags']?.['latest']"
+              :preview-releases-url="previewReleasesUrl"
             />
 
             <!-- Install Scripts Warning -->
