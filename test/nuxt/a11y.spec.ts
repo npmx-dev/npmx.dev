@@ -174,6 +174,8 @@ import {
   NoodleGifDayLogo,
   NoodleGifDayGifText,
   NoodleIojsNodejsLogo,
+  NoodleBlenderLogo,
+  NoodleBlenderArt,
   LinkBase,
   CallToAction,
   ChangelogCard,
@@ -495,6 +497,18 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(NoodleIojsNodejsLogo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleBlenderLogo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleBlenderArt)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
@@ -1216,7 +1230,6 @@ describe('component accessibility audits', () => {
           weeklyDownloads: mockWeeklyDownloads,
           packageName: 'vue',
           createdIso: '2020-01-01T00:00:00.000Z',
-          inModal: false,
         },
       })
 
@@ -1374,7 +1387,6 @@ describe('component accessibility audits', () => {
           weeklyDownloads: [],
           packageName: 'vue',
           createdIso: null,
-          inModal: false,
         },
       })
 
@@ -1420,6 +1432,7 @@ describe('component accessibility audits', () => {
           dates,
           datetimeFormatterOptions,
           showLastDatapointEstimation: false,
+          granularity: 'weekly',
         },
       })
       const results = await runAxe(component)
@@ -1433,6 +1446,7 @@ describe('component accessibility audits', () => {
           dates: [],
           datetimeFormatterOptions,
           showLastDatapointEstimation: false,
+          granularity: 'weekly',
         },
       })
       const results = await runAxe(component)

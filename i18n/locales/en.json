@@ -665,6 +665,7 @@
       "grouping_usage_about": "About usage grouping",
       "grouping_usage_all": "All",
       "grouping_usage_most_used": "Most used",
+      "order_by_downloads": "Order by downloads",
       "recent_versions_only_tooltip": "Show only versions published within the last year.",
       "show_low_usage_tooltip": "Include version groups with less than 1% of total downloads.",
       "y_axis_label": "Downloads",
@@ -780,6 +781,7 @@
       "granularity_yearly": "Yearly",
       "start_date": "Start",
       "end_date": "End",
+      "last_recorded_value": "* Last recorded value",
       "loading": "Loading...",
       "date_range": "{start} to {end}",
       "date_range_multiline": "{start}\nto {end}",
@@ -791,6 +793,7 @@
       "close_options": "Close options",
       "legend_estimation": "Estimation",
       "no_data": "No data available",
+      "no_data_short": "No data",
       "y_axis_label": "{granularity} {facet}",
       "facet": "Facet",
       "title": "Trends",
@@ -834,6 +837,10 @@
         "copy_url": "Copy this URL to embed the chart into your website",
         "preview": "Preview",
         "tip": "If startDate and endDate are not provided in the URL, the graph will display the last 12 months by default."
+      },
+      "sparkline_zoom_reset": {
+        "title": "Reset zoom · double-click chart or press Esc",
+        "aria_label": "Reset zoom"
       }
     },
     "downloads": {
@@ -1868,7 +1875,8 @@
   "logo_menu": {
     "copy_svg": "Copy logo as SVG",
     "copied": "Copied!",
-    "browse_brand": "Browse brand kit"
+    "browse_brand": "Browse brand kit",
+    "open_new_tab": "Open npmx in new tab"
   },
   "brand": {
     "title": "Brand",

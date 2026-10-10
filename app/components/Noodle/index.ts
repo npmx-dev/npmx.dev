@@ -11,6 +11,7 @@ import NoodleTetrisLogo from './Tetris/Logo.vue'
 import NoodleEmojiDayLogo from './EmojiDay/Logo.vue'
 import NoodleGifDayLogo from './GifDay/Logo.vue'
 import NoodleIojsNodejsLogo from './IojsNodejs/Logo.vue'
+import NoodleBlenderLogo from './Blender/Logo.vue'
 
 export type Noodle = {
   // Unique identifier for the noodle
@@ -39,10 +40,11 @@ export const PERMANENT_NOODLES: Noodle[] = [
 // Active noodles - shown based on date and timezone
 export const ACTIVE_NOODLES: Noodle[] = [
   {
-    key: 'iojs-nodejs-merge',
-    logo: NoodleIojsNodejsLogo,
-    date: '2026-09-14',
+    key: 'blender',
+    logo: NoodleBlenderLogo,
+    date: '2026-10-13',
     timezone: 'auto',
+    tagline: false,
   },
 ]
 
@@ -62,6 +64,7 @@ const NOODLE_LOGOS: Record<string, Component> = {
   'emoji-day': NoodleEmojiDayLogo,
   'gif-day': NoodleGifDayLogo,
   'iojs-nodejs-merge': NoodleIojsNodejsLogo,
+  'blender': NoodleBlenderLogo,
 }
 
 export function resolveNoodleLogo(key: string): Component | undefined {

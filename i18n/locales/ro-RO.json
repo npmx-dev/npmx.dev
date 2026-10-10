@@ -408,7 +408,7 @@
       "install_size": "Dimensiunea pachetului",
       "vulns": "Vulnerabilități",
       "published": "Publicat",
-      "published_tooltip": "Data la care a fost publicat {pachet}{'@'}{versiune}",
+      "published_tooltip": "Data la care a fost publicat {package}{'@'}{version}",
       "view_dependency_graph": "Vizualizează graficul dependențelor",
       "inspect_dependency_tree": "Verifică arborele de dependențe",
       "size_tooltip": {

@@ -17,7 +17,7 @@ allowBuilds:
 
 catalogs:
   msw:
-    'msw': '^2.13.2'
+    'msw': '^3.0.0'
 
   storybook:
     '@storybook-vue/nuxt': 'https://pkg.pr.new/@storybook-vue/nuxt@1021'
@@ -29,8 +29,8 @@ catalogs:
     'storybook-i18n': '^10.1.1'
 
   vite-plus:
-    'vite': 'npm:@voidzero-dev/vite-plus-core@0.3.1'
-    'vite-plus': '0.3.1'
+    'vite': 'npm:@voidzero-dev/vite-plus-core@0.3.3'
+    'vite-plus': '0.3.3'
     'vitest': '4.1.11'
     '@vitest/browser-playwright': '4.1.11'
     '@vitest/coverage-v8': '4.1.11'
@@ -48,7 +48,7 @@ minimumReleaseAgeExclude:
   - '@nuxt/nitro-server@4.5.2'
   - '@nuxt/schema@4.5.2'
   - '@nuxt/vite-builder@4.5.2'
-  - vue-data-ui@3.25.6
+  - vue-data-ui@3.26.1
 
 minimumReleaseAgeExcludePrune: true
 

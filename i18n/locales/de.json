@@ -1586,7 +1586,7 @@
     "approach": {
       "title": "Unser Ansatz",
       "p1": "Wir versuchen, den Richtlinien für barrierefreie Webinhalte (WCAG) 2.2 zu folgen und nutzen diese als Referenz beim Erstellen neuer Funktionen. Wir beanspruchen keine vollständige Konformität mit einer bestimmten WCAG-Stufe — Barrierefreiheit ist ein kontinuierlicher Prozess und es gibt immer etwas zu tun.",
-      "p2": "Diese Seite ist ein {about_link}. Verbesserungen der Barrierefreiheit werden schrittweise im Rahmen unserer regulären Entwicklung vorgenommen.",
+      "p2": "Diese Seite ist ein {about}. Verbesserungen der Barrierefreiheit werden schrittweise im Rahmen unserer regulären Entwicklung vorgenommen.",
       "about_link": "Open-Source-Projekt, das von der Community getragen wird"
     },
     "measures": {

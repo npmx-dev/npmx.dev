@@ -1999,6 +1999,9 @@
             "grouping_usage_most_used": {
               "type": "string"
             },
+            "order_by_downloads": {
+              "type": "string"
+            },
             "recent_versions_only_tooltip": {
               "type": "string"
             },
@@ -2344,6 +2347,9 @@
             "end_date": {
               "type": "string"
             },
+            "last_recorded_value": {
+              "type": "string"
+            },
             "loading": {
               "type": "string"
             },
@@ -2375,6 +2381,9 @@
               "type": "string"
             },
             "no_data": {
+              "type": "string"
+            },
+            "no_data_short": {
               "type": "string"
             },
             "y_axis_label": {
@@ -2504,6 +2513,18 @@
                   "type": "string"
                 },
                 "tip": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "sparkline_zoom_reset": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "aria_label": {
                   "type": "string"
                 }
               },
@@ -5609,6 +5630,9 @@
           "type": "string"
         },
         "browse_brand": {
+          "type": "string"
+        },
+        "open_new_tab": {
           "type": "string"
         }
       },
