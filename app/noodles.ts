@@ -195,7 +195,7 @@ const entries: Noodle[] = [
     timezone: 'auto',
     tagline: false,
     occasion:
-      'In 2002 the community raised €100,000 in seven weeks to buy Blender back from its creditors. On 13 October its source code was released under the GNU GPL — free for everyone, forever.',
+      "On 13 October 2002, Blender's source code was released under the GNU GPL - free for everyone, forever",
     authors: [ALEX],
     references: [
       {

@@ -42,7 +42,7 @@ export const ACTIVE_NOODLES: Noodle[] = [
   {
     key: 'blender',
     logo: NoodleBlenderLogo,
-    date: '2026-10-10',
+    date: '2026-10-13',
     timezone: 'auto',
     tagline: false,
   },
