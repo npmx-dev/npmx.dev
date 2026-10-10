@@ -156,9 +156,6 @@
       "download": "Tarball herunterladen",
       "changelog": "Änderungsprotokoll"
     },
-    "package_actions": {
-      "copy_run": "Befehl zum Ausführen kopieren"
-    },
     "code": {
       "copy_file": "Dateiinhalt kopieren"
     },

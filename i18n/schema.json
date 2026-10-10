@@ -508,15 +508,6 @@
           },
           "additionalProperties": false
         },
-        "package_actions": {
-          "type": "object",
-          "properties": {
-            "copy_run": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false
-        },
         "code": {
           "type": "object",
           "properties": {

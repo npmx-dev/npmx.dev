@@ -155,9 +155,6 @@
       "compare": "Comparar este pacote",
       "download": "Baixar tarball"
     },
-    "package_actions": {
-      "copy_run": "Copiar comando de execução"
-    },
     "code": {
       "copy_file": "Copiar conteúdo do arquivo"
     },

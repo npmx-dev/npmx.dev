@@ -166,9 +166,6 @@
       "changelog": "변경 기록",
       "stats": "통계"
     },
-    "package_actions": {
-      "copy_run": "실행 명령 복사"
-    },
     "code": {
       "copy_file": "파일 내용 복사"
     },

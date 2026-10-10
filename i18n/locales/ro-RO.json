@@ -155,9 +155,6 @@
       "compare": "Compară acest pachet",
       "download": "Descarcă arhiva tar"
     },
-    "package_actions": {
-      "copy_run": "Copiază comandă de execuție"
-    },
     "code": {
       "copy_file": "Copiază conținutul fișierului"
     },

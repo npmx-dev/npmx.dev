@@ -168,9 +168,6 @@
       "changelog": "Changelog",
       "stats": "Stats"
     },
-    "package_actions": {
-      "copy_run": "Copy run command"
-    },
     "code": {
       "copy_file": "Copy file contents"
     },

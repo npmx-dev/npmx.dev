@@ -156,9 +156,6 @@
       "download": "Tarball indir",
       "changelog": "Değişiklik günlüğü"
     },
-    "package_actions": {
-      "copy_run": "Çalıştırma komutunu kopyala"
-    },
     "code": {
       "copy_file": "Dosya içeriğini kopyala"
     },

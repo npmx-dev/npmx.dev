@@ -155,9 +155,6 @@
       "compare": "Порівняти цей пакет",
       "download": "Завантажити tarball"
     },
-    "package_actions": {
-      "copy_run": "Копіювати команду запуску"
-    },
     "code": {
       "copy_file": "Копіювати вміст файлу"
     },
