@@ -359,14 +359,14 @@
     "website": "Web sitesi",
     "website_placeholder": "https://ornek.com",
     "likes": "Beğeniler",
-    "seo_title": "{name} - npmx",
-    "seo_description": "{name} kullanıcısının npm paketleri ve profili",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "{handle} kullanıcısının npm paketleri ve profili",
     "not_found": "Kullanıcı bulunamadı",
     "not_found_message": "Bu kullanıcı mevcut değil",
     "invite": {
       "message": "npmx'i deneyin - npm için daha iyi bir paket tarayıcısı",
       "share_button": "Paylaş",
-      "compose_text": "npmx'i deneyin - npm için daha iyi bir paket tarayıcısı: {url}"
+      "compose_text": "Merhaba {'@'}{handle}! npmx'i deneyin - npm için daha iyi bir paket tarayıcısı: https://npmx.dev"
     }
   },
   "package": {
@@ -688,7 +688,7 @@
       "known_anomalies_description": "npm kayıt defterinde bilinen veri anomalileri",
       "known_anomalies_ranges": "Etkilenen tarih aralıkları",
       "known_anomalies_range": "{start} - {end}",
-      "known_anomalies_range_named": "{name}: {start} - {end}",
+      "known_anomalies_range_named": "{packageName}: {start} - {end}",
       "known_anomalies_none": "Bu paket için bilinen anomali yok",
       "known_anomalies_contribute": "Anomali bildirin",
       "apply_correction": "Düzeltme uygula",
@@ -1134,9 +1134,9 @@
       "nav_label": "Sayfalama navigasyonu"
     },
     "count": {
-      "showing_filtered": "{filtered} / {total} paket gösteriliyor",
-      "showing_all": "{total} paket gösteriliyor",
-      "showing_paginated": "{start}-{end} / {total} gösteriliyor"
+      "showing_filtered": "{filtered} / {count} paket gösteriliyor",
+      "showing_all": "{count} paket gösteriliyor",
+      "showing_paginated": "{pageSize} / {count} gösteriliyor"
     },
     "table": {
       "security_warning": "Güvenlik uyarısı",
@@ -1291,7 +1291,7 @@
       "search_first": "İlk paketi ara...",
       "search_add": "Paket ekle...",
       "searching": "Aranıyor...",
-      "remove_package": "{name} paketini kaldır",
+      "remove_package": "{package} paketini kaldır",
       "packages_selected": "{count} paket seçildi",
       "add_hint": "Karşılaştırmak için paket ekleyin"
     },
@@ -1406,7 +1406,7 @@
         "not_deprecated": "Aktif",
         "types_included": "Dahil",
         "types_none": "Yok",
-        "vulnerabilities_summary": "{critical} kritik, {high} yüksek, {moderate} orta, {low} düşük",
+        "vulnerabilities_summary": "{count} ({critical} kritik/{high} yüksek)",
         "up_to_you": "Size kalmış"
       },
       "trends": {

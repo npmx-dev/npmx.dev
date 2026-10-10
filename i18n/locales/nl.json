@@ -1257,7 +1257,7 @@
       "paginated": "Genummerde pagina's",
       "items_per_page": "Aantal resultaten per pagina",
       "per_page": "{count} / pagina",
-      "showing": "{start}-{end} van {total}",
+      "showing": "{range} van {total}",
       "previous": "Voriga pagina",
       "next": "Volgende pagina",
       "nav_label": "Paginering"

@@ -652,10 +652,10 @@
         "analysis": "{package_name} 的起始數值為 {start_value}，到 {end_value} 為止， 呈現 {trend} 趨勢，平均每個時間間隔的增減率為 {downloads_slope} 次下載",
         "estimation": "最終數值是根據當前週期的部分數據所做的預估值。",
         "estimations": "最終數值是根據當前週期的部分數據所做的預估值。",
-        "compare": "套件下載量比較折線圖：{package_name}。",
+        "compare": "套件下載量比較折線圖：{packages}。",
         "single_package": "下載 {package} 套件下載量的折線圖。",
         "general_description": "Y 軸代表下載次數。X 軸代表日期範圍，從 {start_date} 至 {end_date}，以 {granularity} 為時間單位。 {estimation_notice} {packages_analysis}. {watermark}.",
-        "facet_bar_general_description": "水平長條圖: {package} 的 {facet} 對比({description}). {facet_analysis} {watermark}.",
+        "facet_bar_general_description": "水平長條圖: {packages} 的 {facet} 對比({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} 值為 {value}."
       }
     },
