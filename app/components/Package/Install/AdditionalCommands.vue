@@ -68,8 +68,8 @@ const { announce } = useCommandPalette()
 const { polite } = useAnnouncer()
 
 const { copied: devInstallCopied, copy: copyDevInstall } = useClipboard({ copiedDuring: 2000 })
-function copyDevInstallCommand() {
-  copyDevInstall(
+async function copyDevInstallCommand() {
+  await copyDevInstall(
     getInstallCommand({
       packageName: props.packageName,
       packageManager: props.selectedPm,
@@ -175,7 +175,7 @@ function copyCreateCommand() {
     <ButtonBase
       type="button"
       :class="['shrink-0', copyButtonClass]"
-      :aria-label="$t('command_palette.package_actions.copy_run')"
+      :aria-label="$t('package.get_started.copy_types_command')"
       :classicon="typesInstallCopied ? 'i-lucide:check' : 'i-lucide:copy'"
       @click.stop="copyTypesInstallCommand"
     />

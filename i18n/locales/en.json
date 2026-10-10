@@ -567,6 +567,7 @@
       "pm_label": "Package manager",
       "copy_command": "Copy install command",
       "copy_dev_command": "Copy dev install command",
+      "copy_types_command": "Copy types install command",
       "dev_dependency_hint": "Usually installed as a dev dependency",
       "view_types": "View {package}",
       "types_label": "Types",
