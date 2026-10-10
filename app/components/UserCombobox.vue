@@ -45,6 +45,8 @@ const showNewUserHint = computed(() => {
   return value.length > 0 && !isExactMatch.value && filteredSuggestions.value.length === 0
 })
 
+const showDropdown = computed(() => isOpen.value && filteredSuggestions.value.length > 0)
+
 function handleInput() {
   isOpen.value = true
   highlightedIndex.value = -1
@@ -97,15 +99,14 @@ function handleKeydown(event: KeyboardEvent) {
   switch (event.key) {
     case 'ArrowDown':
       event.preventDefault()
-      if (highlightedIndex.value < filteredSuggestions.value.length - 1) {
-        highlightedIndex.value++
-      }
+      highlightedIndex.value = (highlightedIndex.value + 1) % filteredSuggestions.value.length
       break
     case 'ArrowUp':
       event.preventDefault()
-      if (highlightedIndex.value > 0) {
-        highlightedIndex.value--
-      }
+      highlightedIndex.value =
+        highlightedIndex.value <= 0
+          ? filteredSuggestions.value.length - 1
+          : highlightedIndex.value - 1
       break
     case 'Enter': {
       event.preventDefault()
@@ -148,7 +149,7 @@ const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
       v-bind="noCorrect"
       role="combobox"
       aria-autocomplete="list"
-      :aria-expanded="isOpen && (filteredSuggestions.length > 0 || showNewUserHint)"
+      :aria-expanded="showDropdown"
       aria-haspopup="listbox"
       :aria-controls="listboxId"
       :aria-activedescendant="
@@ -171,7 +172,7 @@ const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
       :leave-to-class="prefersReducedMotion ? '' : 'opacity-0'"
     >
       <ul
-        v-if="isOpen && (filteredSuggestions.length > 0 || showNewUserHint)"
+        v-if="showDropdown"
         :id="listboxId"
         ref="listRef"
         role="listbox"
@@ -196,23 +197,23 @@ const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
         >
           @{{ username }}
         </li>
-
-        <!-- Hint for new user -->
-        <li
-          v-if="showNewUserHint"
-          class="px-2 py-1 font-mono text-xs text-fg-subtle border-t border-border mt-1 pt-2"
-          role="status"
-          aria-live="polite"
-        >
-          <span class="i-lucide:info w-3 h-3 me-1 align-middle" aria-hidden="true" />
-          {{
-            $t('user.combobox.press_enter_to_add', {
-              username: inputValue.trim().replace(/^@/, ''),
-            })
-          }}
-          <span class="text-amber-400">{{ $t('user.combobox.add_to_org_hint') }}</span>
-        </li>
       </ul>
     </Transition>
+
+    <!-- Hint for new user -->
+    <div role="status" aria-live="polite" aria-atomic="true">
+      <div
+        v-if="isOpen && showNewUserHint"
+        class="mt-1 px-2 py-1 font-mono text-xs text-fg-subtle border border-border rounded bg-bg-elevated"
+      >
+        <span class="i-lucide:info w-3 h-3 me-1 align-middle" aria-hidden="true" />
+        {{
+          $t('user.combobox.press_enter_to_add', {
+            username: inputValue.trim().replace(/^@/, ''),
+          })
+        }}
+        <span class="text-amber-400">{{ $t('user.combobox.add_to_org_hint') }}</span>
+      </div>
+    </div>
   </div>
 </template>
