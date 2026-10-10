@@ -191,7 +191,8 @@ const entries: Noodle[] = [
     key: 'blender',
     title: 'Blender Goes Open Source',
     slug: 'blender',
-    date: '2026-10-13',
+    date: '2026-10-10',
+    dateTo: '2026-10-30',
     timezone: 'auto',
     tagline: false,
     occasion:
