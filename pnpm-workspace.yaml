@@ -17,7 +17,7 @@ allowBuilds:
 
 catalogs:
   msw:
-    'msw': '^2.13.2'
+    'msw': '^3.0.0'
 
   storybook:
     '@storybook-vue/nuxt': 'https://pkg.pr.new/@storybook-vue/nuxt@1021'
