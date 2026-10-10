@@ -1722,7 +1722,9 @@
       "p1": "Üzgünüz, {package} için değişiklik günlüğü yüklenemedi",
       "p2": "Lütfen daha sonra tekrar deneyin veya {viewon}"
     },
-    "rate_limit_ungh": "Üzgünüz, GitHub'ın istek limiti aşıldı, bir süre sonra tekrar deneyin",
-    "version_unavailable": "İstenen sürüm mevcut değil."
+    "version_unavailable": "İstenen sürüm mevcut değil.",
+    "ungh": {
+      "rate_limit": "Üzgünüz, GitHub'ın istek limiti aşıldı, bir süre sonra tekrar deneyin"
+    }
   }
 }

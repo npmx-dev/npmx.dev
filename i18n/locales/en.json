@@ -687,7 +687,7 @@
     "timeline": {
       "load_more": "Load more",
       "load_error": "Failed to load timeline. Please try again later.",
-      "no_stable_versions": "No stable versions to show. Turn off \u201cstable only\u201d to include pre-releases.",
+      "no_stable_versions": "No stable versions to show. Turn off “stable only” to include pre-releases.",
       "size_increase": "Install size increased by {percent}% ({size})",
       "size_decrease": "Install size decreased by {percent}% ({size})",
       "dep_increase": "{count} dependency added | {count} dependencies added",
@@ -1930,8 +1930,12 @@
       "p1": "Sorry, the changelog for {package} couldn't be loaded",
       "p2": "Please try again later or {viewon}"
     },
-    "rate_limit_ungh": "Sorry, Github's rate limit has been hit, try again in a moment",
     "version_unavailable": "The requested version is not available.",
-    "copy_as_markdown": "Copy changelog as Markdown"
+    "copy_as_markdown": "Copy changelog as Markdown",
+    "ungh": {
+      "rate_limit": "Sorry, Github's rate limit has been hit, try again in a moment",
+      "hint": "You can help increase the rate limit quota by installing the UNGH GitHub app",
+      "install": "Install UNGH GitHub app"
+    }
   }
 }

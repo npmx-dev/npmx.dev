@@ -5794,14 +5794,26 @@
           },
           "additionalProperties": false
         },
-        "rate_limit_ungh": {
-          "type": "string"
-        },
         "version_unavailable": {
           "type": "string"
         },
         "copy_as_markdown": {
           "type": "string"
+        },
+        "ungh": {
+          "type": "object",
+          "properties": {
+            "rate_limit": {
+              "type": "string"
+            },
+            "hint": {
+              "type": "string"
+            },
+            "install": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false
