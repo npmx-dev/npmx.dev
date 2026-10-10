@@ -50,6 +50,16 @@ function createTrustedPublisherWithAttestationsVersion(version: string) {
   }
 }
 
+function createStagedPublishVersion(version: string) {
+  return {
+    ...createVersion(version, true),
+    _npmUser: {
+      name: 'publisher',
+      approver: { name: 'approver' },
+    },
+  }
+}
+
 function createPackument(
   versions: Packument['versions'],
   time: Packument['time'],
@@ -80,6 +90,24 @@ function toVersionInfos(packument: ReturnType<typeof transformPackument>): Packa
 }
 
 describe('transformPackument', () => {
+  it('detects versions released through staged publishing', () => {
+    const packument = createPackument(
+      { '1.0.0': createStagedPublishVersion('1.0.0') },
+      {
+        'created': '2026-08-03T00:00:00.000Z',
+        'modified': '2026-08-03T00:00:00.000Z',
+        '1.0.0': '2026-08-03T00:00:00.000Z',
+      },
+      '1.0.0',
+    )
+
+    expect(transformPackument(packument, '1.0.0').versions['1.0.0']?.trustStatus).toEqual({
+      provenance: true,
+      trustedPublisher: false,
+      stagedPublish: true,
+    })
+  })
+
   it('includes requested old version and preserves provenance on it', () => {
     const packument = createPackument(
       {
