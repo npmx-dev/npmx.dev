@@ -95,7 +95,7 @@ const emit = defineEmits<{
           :class="versionClass"
           class="relative z-10 inline-flex items-baseline gap-1.5 cursor-help"
         >
-          <span class="i-lucide:arrow-up w-3.5 h-3.5 shrink-0 self-center" aria-hidden="true" />
+          <span class="i-lucide:arrow-up shrink-0 self-end" aria-hidden="true" />
           <span>{{ version }}</span>
         </div>
       </TooltipApp>
@@ -111,7 +111,6 @@ const emit = defineEmits<{
         :deprecated="searchResult?.package.deprecated"
         v-bind="{ insights }"
         :is-loading="isLoadingData"
-        class="z-10"
       />
     </template>
   </PackageTableRow>
@@ -136,7 +135,6 @@ const emit = defineEmits<{
           :deprecated="searchResult?.package.deprecated"
           v-bind="{ insights }"
           :is-loading="isLoadingData"
-          class="z-10"
         />
       </div>
     </td>
