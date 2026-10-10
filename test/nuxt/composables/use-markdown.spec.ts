@@ -154,6 +154,50 @@ describe('useMarkdown', () => {
     })
   })
 
+  describe('linkifyPackages', () => {
+    it('links inline code that matches a package name', () => {
+      const processed = useMarkdown({
+        text: '`mdast` was renamed to `remark`',
+        linkifyPackages: true,
+      })
+      expect(processed.value).toBe(
+        '<a href="/package/mdast"><code>mdast</code></a> was renamed to <a href="/package/remark"><code>remark</code></a>',
+      )
+    })
+
+    it('links scoped package names', () => {
+      const processed = useMarkdown({
+        text: 'Use `@scope/pkg` instead',
+        linkifyPackages: true,
+      })
+      expect(processed.value).toBe(
+        'Use <a href="/package/@scope/pkg"><code>@scope/pkg</code></a> instead',
+      )
+    })
+
+    it('does not link inline code that is not a package name', () => {
+      const processed = useMarkdown({
+        text: 'Run `npm install` to start',
+        linkifyPackages: true,
+      })
+      expect(processed.value).toBe('Run <code>npm install</code> to start')
+    })
+
+    it('does not link package names when disabled', () => {
+      const processed = useMarkdown({ text: '`mdast` was renamed to `remark`' })
+      expect(processed.value).toBe('<code>mdast</code> was renamed to <code>remark</code>')
+    })
+
+    it('does not link package names in plain mode', () => {
+      const processed = useMarkdown({
+        text: '`mdast` was renamed to `remark`',
+        plain: true,
+        linkifyPackages: true,
+      })
+      expect(processed.value).toBe('<code>mdast</code> was renamed to <code>remark</code>')
+    })
+  })
+
   describe('markdown image stripping', () => {
     it('strips standalone markdown images', () => {
       const processed = useMarkdown({

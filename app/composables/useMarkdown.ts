@@ -4,6 +4,8 @@ interface UseMarkdownOptions {
   text: string
   /** When true, renders link text without the anchor tag (useful when inside another link) */
   plain?: boolean
+  /** When true, inline code matching an npm package name links to its package page */
+  linkifyPackages?: boolean
 }
 
 export function useMarkdown(options: MaybeRefOrGetter<UseMarkdownOptions>) {
@@ -71,8 +73,13 @@ function stripAndEscapeHtml(text: string): string {
     .replace(/'/g, '&#039;')
 }
 
+// npm package name: optional @scope/ prefix, letters/digits/hyphen/dot/underscore.
+// Content reaching this check is already HTML-escaped, and the pattern excludes `&`,
+// so escaped entities can never match.
+const PACKAGE_NAME_PATTERN = /^(?:@\w[\w.-]*\/)?\w[\w.-]*$/
+
 // Parse simple inline markdown to HTML
-function parseMarkdown({ text, plain }: UseMarkdownOptions): string {
+function parseMarkdown({ text, plain, linkifyPackages }: UseMarkdownOptions): string {
   if (!text) return ''
 
   // First strip HTML tags and escape remaining HTML
@@ -86,8 +93,13 @@ function parseMarkdown({ text, plain }: UseMarkdownOptions): string {
   html = html.replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>')
   html = html.replace(/\b_(.+?)_\b/g, '<em>$1</em>')
 
-  // Inline code: `code`
-  html = html.replace(/`([^`]+)`/g, '<code>$1</code>')
+  // Inline code: `code` — optionally link package names to their package page
+  html = html.replace(/`([^`]+)`/g, (_match, code: string) => {
+    if (linkifyPackages && !plain && PACKAGE_NAME_PATTERN.test(code)) {
+      return `<a href="/package/${code}"><code>${code}</code></a>`
+    }
+    return `<code>${code}</code>`
+  })
 
   // Strikethrough: ~~text~~
   html = html.replace(/~~(.+?)~~/g, '<del>$1</del>')
