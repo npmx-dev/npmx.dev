@@ -151,9 +151,6 @@
       "compare": "比較這個套件",
       "download": "下載 tarball"
     },
-    "package_actions": {
-      "copy_run": "複製執行指令"
-    },
     "code": {
       "copy_file": "複製檔案內容"
     },

@@ -508,15 +508,6 @@
           },
           "additionalProperties": false
         },
-        "package_actions": {
-          "type": "object",
-          "properties": {
-            "copy_run": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false
-        },
         "code": {
           "type": "object",
           "properties": {
@@ -1705,10 +1696,22 @@
             "copy_dev_command": {
               "type": "string"
             },
+            "copy_types_command": {
+              "type": "string"
+            },
             "dev_dependency_hint": {
               "type": "string"
             },
             "view_types": {
+              "type": "string"
+            },
+            "types_label": {
+              "type": "string"
+            },
+            "collapse_commands": {
+              "type": "string"
+            },
+            "expand_commands": {
               "type": "string"
             }
           },

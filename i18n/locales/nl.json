@@ -168,9 +168,6 @@
       "changelog": "Wijzigingen",
       "stats": "Statistieken"
     },
-    "package_actions": {
-      "copy_run": "Kopieer uitvoor command"
-    },
     "code": {
       "copy_file": "Kopieer bestand inhoud"
     },

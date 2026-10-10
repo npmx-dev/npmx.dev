@@ -157,9 +157,6 @@
       "download": "Télécharger le tarball",
       "changelog": "Changements"
     },
-    "package_actions": {
-      "copy_run": "Copier la commande d'exécution"
-    },
     "code": {
       "copy_file": "Copier le contenu du fichier"
     },
