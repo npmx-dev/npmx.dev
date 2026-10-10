@@ -63,6 +63,8 @@ const SKIPPED_COMPONENTS: Record<string, string> = {
   'Translation/StatusByFile.unused.vue': 'Unused component, might be needed in the future',
   'ColorScheme/Img.vue': 'Image component, basic ui',
   'VideoPlayer.vue': 'Atproto video component, basic ui',
+  'Package/ShareButton.client.vue':
+    'Renders nothing when Web Share API is unavailable (test env); button itself has no a11y violations',
 }
 
 function normalizeComponentPath(filePath: string): string {
