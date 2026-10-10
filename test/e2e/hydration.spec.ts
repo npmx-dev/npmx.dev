@@ -156,6 +156,20 @@ test.describe('Hydration', () => {
 
     expect(hydrationErrors).toEqual([])
   })
+
+  test('package page with all security sources disabled', async ({
+    page,
+    goto,
+    hydrationErrors,
+  }) => {
+    await injectLocalStorage(page, {
+      'npmx-settings': JSON.stringify({ securitySources: { osv: false } }),
+    })
+
+    await goto('/package/nuxt', { waitUntil: 'hydration' })
+
+    expect(hydrationErrors).toEqual([])
+  })
 })
 
 async function injectLocalStorage(page: Page, entries: Record<string, string>) {

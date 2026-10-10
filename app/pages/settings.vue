@@ -8,6 +8,19 @@ const colorMode = useColorMode()
 const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
 const keyboardShortcutsEnabled = useKeyboardShortcuts()
 const { toggleCodeLigatures } = useCodeLigatures()
+const { anySourceEnabled, sourceAvailability, effectiveSources } = useSecuritySources()
+const osvSwitchId = useId()
+const socketSwitchId = useId()
+
+// When Socket is unavailable on this deployment the toggle is disabled and
+// reads as off (matching the header popover), without ever mutating the
+// stored preference; when available it round-trips the stored value.
+const socketEnabled = computed({
+  get: () => effectiveSources.value.socket,
+  set: value => {
+    settings.value.securitySources.socket = value
+  },
+})
 
 // Create a computed property to handle locale binding properly
 const localeCodes = computed<LocaleObject['code'][]>(() =>
@@ -251,6 +264,103 @@ useSeoMeta({
               :label="$t('settings.instant_search')"
               :description="$t('settings.instant_search_description')"
               v-model="settings.instantSearch"
+            />
+          </div>
+        </section>
+
+        <!-- SECURITY Section -->
+        <section>
+          <h2 class="text-xs text-fg-muted uppercase tracking-wider mb-4">
+            {{ $t('settings.sections.security') }}
+          </h2>
+          <div class="bg-bg-subtle border border-border rounded-lg p-4 sm:p-6">
+            <div class="space-y-2">
+              <span class="block text-sm text-fg font-medium">
+                {{ $t('settings.security_sources.label') }}
+              </span>
+              <p class="text-xs text-fg-muted mb-3">
+                {{ $t('settings.security_sources.description') }}
+              </p>
+            </div>
+
+            <!-- One shared grid so logo / label / switch / description line up
+                 across every source. ClientOnly keeps the switch state (from
+                 localStorage) from causing a hydration mismatch -->
+            <ClientOnly>
+              <div class="grid grid-cols-[auto_auto_auto_1fr] items-start gap-x-3 gap-y-4">
+                <!-- OSV -->
+                <span class="flex w-5 justify-center pt-0.5">
+                  <SecuritySourceLogo source="osv" class="h-4" />
+                </span>
+                <label :for="osvSwitchId" class="text-sm text-fg font-medium cursor-pointer pt-px">
+                  {{ $t('settings.security_sources.osv') }}
+                </label>
+                <SettingsSwitch
+                  :id="osvSwitchId"
+                  :aria-label="$t('settings.security_sources.osv')"
+                  v-model="settings.securitySources.osv"
+                />
+                <p class="text-sm text-fg-muted min-w-0 mt-px">
+                  {{ $t('settings.security_sources.osv_description') }}
+                </p>
+
+                <div class="col-span-4 border-t border-border" />
+
+                <!-- Socket -->
+                <span class="flex w-5 justify-center pt-0.5">
+                  <SecuritySourceLogo source="socket" class="h-4" />
+                </span>
+                <label
+                  :for="socketSwitchId"
+                  class="text-sm font-medium pt-px"
+                  :class="
+                    sourceAvailability.socket
+                      ? 'text-fg cursor-pointer'
+                      : 'text-fg-muted cursor-not-allowed'
+                  "
+                >
+                  {{ $t('settings.security_sources.socket') }}
+                </label>
+                <SettingsSwitch
+                  :id="socketSwitchId"
+                  :aria-label="$t('settings.security_sources.socket')"
+                  :disabled="!sourceAvailability.socket"
+                  v-model="socketEnabled"
+                />
+                <div class="min-w-0 mt-px">
+                  <p class="text-sm text-fg-muted">
+                    {{ $t('settings.security_sources.socket_description') }}
+                  </p>
+                  <p
+                    v-if="!sourceAvailability.socket"
+                    class="text-xs text-fg-subtle mt-1 flex items-center gap-1"
+                  >
+                    <span class="i-lucide:info w-3 h-3 shrink-0" aria-hidden="true" />
+                    {{ $t('settings.security_sources.unavailable_on_deployment') }}
+                  </p>
+                </div>
+              </div>
+
+              <template #fallback>
+                <div
+                  class="grid grid-cols-[auto_auto_auto_1fr] items-center gap-x-3 gap-y-4"
+                  aria-hidden="true"
+                >
+                  <template v-for="i in 2" :key="i">
+                    <SkeletonBlock class="h-4 w-5" />
+                    <SkeletonBlock class="h-4 w-14" />
+                    <SkeletonBlock class="h-6 w-11 rounded-full" />
+                    <SkeletonBlock class="h-4 w-full max-w-md" />
+                  </template>
+                </div>
+              </template>
+            </ClientOnly>
+
+            <!-- Warning when every source is disabled -->
+            <SecuritySourcesWarning
+              v-if="!anySourceEnabled"
+              :show-settings-link="false"
+              class="mt-4"
             />
           </div>
         </section>
