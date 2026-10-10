@@ -62,6 +62,44 @@ export default defineEventHandler(async event => {
         }
         break
       }
+      case 'code': {
+        // /package/name/v/version?activeTab=code → /package-code/name/v/version
+        // /package/@scope/name/v/version?activeTab=code → /package-code/@scope/name/v/version
+
+        const pkgVersionPathMatch = path.match(/^\/package\/((?:@[^/]+\/)?[^/]+)\/v\/([^/]+)$/)
+        if (pkgVersionPathMatch) {
+          const [, packageName, version] = pkgVersionPathMatch
+          params.delete('activeTab')
+          const remaining = params.toString()
+          setHeader(event, 'cache-control', cacheControl)
+          return sendRedirect(
+            event,
+            `/package-code/${packageName}/v/${version}` + (remaining ? '?' + remaining : ''),
+            308,
+          )
+        }
+
+        // /package/name?activeTab=code → /package-code/name/v/<latest-version>
+        // /package/@scope/name?activeTab=code → /package-code/@scope/name/v/<latest-version>
+
+        const pkgPathMatch = path.match(/^\/package\/((?:@[^/]+\/)?[^/]+)$/)
+        const packageName = pkgPathMatch?.[1]
+        if (packageName) {
+          const latestVersion = await fetchLatestVersion(packageName)
+          if (latestVersion) {
+            params.delete('activeTab')
+            const remaining = params.toString()
+            setHeader(event, 'cache-control', cacheControl)
+            return sendRedirect(
+              event,
+              `/package-code/${packageName}/v/${latestVersion}` +
+                (remaining ? '?' + remaining : ''),
+              302, // 302 as the latest version may change over time causing the redirect to change
+            )
+          }
+        }
+        break
+      }
     }
   }
 
