@@ -5,6 +5,8 @@ export interface PublishSecurityDowngrade {
   downgradedVersion: string
   downgradedPublishedAt?: string
   downgradedTrustLevel: TrustLevelName
+  /** Whether the downgraded version was still published via trusted publishing (OIDC) */
+  downgradedTrustedPublisher: boolean
   /** Recommended trusted version within the same major, if one exists */
   trustedVersion?: string
   trustedPublishedAt?: string
@@ -102,6 +104,7 @@ export function detectPublishSecurityDowngradeForVersion(
     downgradedVersion: current.version,
     downgradedPublishedAt: current.time,
     downgradedTrustLevel: current.trustLevelName,
+    downgradedTrustedPublisher: current.trustStatus?.trustedPublisher ?? false,
     trustedVersion: recommendation?.version,
     trustedPublishedAt: recommendation?.time,
     trustedTrustLevel: strongestOlder.trustLevelName,
