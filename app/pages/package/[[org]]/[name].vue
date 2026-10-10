@@ -216,6 +216,12 @@ useCommandPalettePackageCommands(commandPalettePackageContext)
 //    → Preserve the server-rendered DOM, don't flash to skeleton.
 const nuxtApp = useNuxtApp()
 const route = useRoute()
+
+// Redirect npmjs.com-style `?activeTab=dependencies` links to our dedicated dependencies page.
+if (import.meta.client && route.query.activeTab === 'dependencies') {
+  navigateTo(dependenciesRoute(packageName.value, requestedVersion.value), { replace: true })
+}
+
 // Gates template rendering only — data fetches intentionally still run.
 // immediate is set once at mount — skipped requests won't re-fire on navigation, leaving data permanently missing.
 const isVersionsRoute = computed(() => route.name === 'package-versions')
