@@ -111,23 +111,26 @@ export function computeEntryPrefixes(entryPoints: string[]): Map<string, string>
 export function parseJsDocLinks(text: string, symbolLookup: SymbolLookup): string {
   let result = escapeHtml(text)
 
-  result = result.replace(/\{@link\s+([^\s}]+)(?:\s+([^}]+))?\}/g, (_, target, label) => {
-    const displayText = label || target
+  result = result.replace(
+    /\{@link\s+([^\s|}]+)(?:\s+(?:\|\s*)?([^}]+))?\}/g,
+    (_, target, label) => {
+      const displayText = label || target
 
-    // External URL
-    if (target.startsWith('http://') || target.startsWith('https://')) {
-      return `<a href="${target}" target="_blank" rel="noreferrer" class="docs-link">${displayText}</a>`
-    }
+      // External URL
+      if (target.startsWith('http://') || target.startsWith('https://')) {
+        return `<a href="${target}" target="_blank" rel="noreferrer" class="docs-link">${displayText}</a>`
+      }
 
-    // Internal symbol reference
-    const symbolId = symbolLookup.get(target)
-    if (symbolId) {
-      return `<a href="#${symbolId}" class="docs-symbol-link">${displayText}</a>`
-    }
+      // Internal symbol reference
+      const symbolId = symbolLookup.get(target)
+      if (symbolId) {
+        return `<a href="#${symbolId}" class="docs-symbol-link">${displayText}</a>`
+      }
 
-    // Unknown symbol
-    return `<code class="docs-symbol-ref">${displayText}</code>`
-  })
+      // Unknown symbol
+      return `<code class="docs-symbol-ref">${displayText}</code>`
+    },
+  )
 
   return result
 }
