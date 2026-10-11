@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { detectPublishSecurityDowngradeForVersion } from '~/utils/publish-security'
+import { detectSecurityDowngradeForVersion } from '~/utils/publish-security'
 
-describe('detectPublishSecurityDowngradeForVersion', () => {
+describe('detectSecurityDowngradeForVersion', () => {
   const versions = [
     {
       version: '1.0.0',
@@ -21,12 +21,12 @@ describe('detectPublishSecurityDowngradeForVersion', () => {
   ]
 
   it('does not flag trusted viewed version (1.0.2)', () => {
-    const result = detectPublishSecurityDowngradeForVersion(versions, '1.0.2')
+    const result = detectSecurityDowngradeForVersion(versions, '1.0.2')
     expect(result).toBeNull()
   })
 
   it('flags downgraded viewed version (1.0.1)', () => {
-    const result = detectPublishSecurityDowngradeForVersion(versions, '1.0.1')
+    const result = detectSecurityDowngradeForVersion(versions, '1.0.1')
     expect(result).toEqual({
       downgradedVersion: '1.0.1',
       downgradedPublishedAt: '2026-01-02T00:00:00.000Z',
@@ -38,7 +38,7 @@ describe('detectPublishSecurityDowngradeForVersion', () => {
   })
 
   it('flags trust downgrade from trustedPublisher to provenance', () => {
-    const result = detectPublishSecurityDowngradeForVersion(
+    const result = detectSecurityDowngradeForVersion(
       [
         {
           version: '1.0.0',
@@ -65,7 +65,7 @@ describe('detectPublishSecurityDowngradeForVersion', () => {
   })
 
   it('does not flag upgrade from provenance to trustedPublisher', () => {
-    const result = detectPublishSecurityDowngradeForVersion(
+    const result = detectSecurityDowngradeForVersion(
       [
         {
           version: '1.0.0',
@@ -113,20 +113,20 @@ describe('detectPublishSecurityDowngradeForVersion', () => {
       },
     ]
 
-    expect(
-      detectPublishSecurityDowngradeForVersion(downgradedVersions, '2.1.1')?.trustedVersion,
-    ).toBe('2.1.0')
-    expect(
-      detectPublishSecurityDowngradeForVersion(downgradedVersions, '2.2.0')?.trustedVersion,
-    ).toBe('2.1.0')
-    expect(
-      detectPublishSecurityDowngradeForVersion(downgradedVersions, '2.3.0')?.trustedVersion,
-    ).toBe('2.1.0')
-    expect(detectPublishSecurityDowngradeForVersion(downgradedVersions, '2.4.0')).toBeNull()
+    expect(detectSecurityDowngradeForVersion(downgradedVersions, '2.1.1')?.trustedVersion).toBe(
+      '2.1.0',
+    )
+    expect(detectSecurityDowngradeForVersion(downgradedVersions, '2.2.0')?.trustedVersion).toBe(
+      '2.1.0',
+    )
+    expect(detectSecurityDowngradeForVersion(downgradedVersions, '2.3.0')?.trustedVersion).toBe(
+      '2.1.0',
+    )
+    expect(detectSecurityDowngradeForVersion(downgradedVersions, '2.4.0')).toBeNull()
   })
 
   it('skips deprecated versions when selecting trustedVersion', () => {
-    const result = detectPublishSecurityDowngradeForVersion(
+    const result = detectSecurityDowngradeForVersion(
       [
         {
           version: '1.0.0',
@@ -153,7 +153,7 @@ describe('detectPublishSecurityDowngradeForVersion', () => {
   })
 
   it('returns null when all older trusted versions are deprecated', () => {
-    const result = detectPublishSecurityDowngradeForVersion(
+    const result = detectSecurityDowngradeForVersion(
       [
         {
           version: '1.0.0',
@@ -174,7 +174,7 @@ describe('detectPublishSecurityDowngradeForVersion', () => {
   })
 
   it('detects cross-major downgrade but does not recommend a version', () => {
-    const result = detectPublishSecurityDowngradeForVersion(
+    const result = detectSecurityDowngradeForVersion(
       [
         {
           version: '1.0.0',
@@ -198,7 +198,7 @@ describe('detectPublishSecurityDowngradeForVersion', () => {
   })
 
   it('recommends same-major trusted version when cross-major exists', () => {
-    const result = detectPublishSecurityDowngradeForVersion(
+    const result = detectSecurityDowngradeForVersion(
       [
         {
           version: '1.0.0',

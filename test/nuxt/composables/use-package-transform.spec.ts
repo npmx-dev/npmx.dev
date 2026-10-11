@@ -67,18 +67,6 @@ function createPackument(
   }
 }
 
-function toVersionInfos(packument: ReturnType<typeof transformPackument>): PackageVersionInfo[] {
-  return (
-    packument.securityVersions ??
-    Object.entries(packument.versions).map(([version, metadata]) => ({
-      version,
-      time: packument.time[version],
-      trustStatus: metadata.trustStatus,
-      deprecated: metadata.deprecated,
-    }))
-  )
-}
-
 describe('transformPackument', () => {
   it('includes requested old version and preserves provenance on it', () => {
     const packument = createPackument(
@@ -116,10 +104,11 @@ describe('transformPackument', () => {
     })
     expect(transformed.versions['1.0.1']).toBeUndefined()
     expect(transformed.versions['1.0.2']).toBeUndefined()
-    expect(transformed.securityVersions).toHaveLength(8)
+    // 1.0.0 is the oldest and trusted, so the viewed version is not a downgrade
+    expect(transformed.publishSecurityDowngrade).toBeNull()
   })
 
-  it('omits securityVersions when all versions have the same trust level', () => {
+  it('computes no downgrade when all versions have the same trust level', () => {
     const packument = createPackument(
       {
         '1.0.0': createVersion('1.0.0'),
@@ -138,11 +127,11 @@ describe('transformPackument', () => {
 
     const transformed = transformPackument(packument, '1.0.2')
 
-    // All versions have trustLevel 'none', so no mixed trust — omit the array
-    expect(transformed.securityVersions).toBeUndefined()
+    // All versions have trustLevel 'none', so nothing to detect
+    expect(transformed.publishSecurityDowngrade).toBeNull()
   })
 
-  it('includes securityVersions when package has mixed trust levels', () => {
+  it('detects a downgrade when the package has mixed trust levels', () => {
     const packument = createPackument(
       {
         '1.0.0': createVersion('1.0.0', true),
@@ -159,10 +148,17 @@ describe('transformPackument', () => {
 
     const transformed = transformPackument(packument, '1.0.1')
 
-    expect(transformed.securityVersions).toHaveLength(2)
+    expect(transformed.publishSecurityDowngrade).toEqual({
+      downgradedVersion: '1.0.1',
+      downgradedPublishedAt: '2026-01-02T00:00:00.000Z',
+      downgradedTrustLevel: 'none',
+      trustedVersion: '1.0.0',
+      trustedPublishedAt: '2026-01-01T00:00:00.000Z',
+      trustedTrustLevel: 'provenance',
+    })
   })
 
-  it('works with downgrade detection for viewed version', () => {
+  it('computes the downgrade for the requested version only', () => {
     const packument = createPackument(
       {
         '1.0.0': createVersion('1.0.0', true),
@@ -179,11 +175,8 @@ describe('transformPackument', () => {
       '1.0.2',
     )
 
-    const transformed = transformPackument(packument, '1.0.1')
-    const infos = toVersionInfos(transformed)
-
-    expect(detectPublishSecurityDowngradeForVersion(infos, '1.0.2')).toBeNull()
-    expect(detectPublishSecurityDowngradeForVersion(infos, '1.0.1')).toEqual({
+    expect(transformPackument(packument, '1.0.2').publishSecurityDowngrade).toBeNull()
+    expect(transformPackument(packument, '1.0.1').publishSecurityDowngrade).toEqual({
       downgradedVersion: '1.0.1',
       downgradedPublishedAt: '2026-01-02T00:00:00.000Z',
       downgradedTrustLevel: 'none',
@@ -211,14 +204,13 @@ describe('transformPackument', () => {
     )
 
     const transformed = transformPackument(packument, '1.0.1')
-    const infos = toVersionInfos(transformed)
 
-    expect(infos.find(v => v.version === '1.0.0')?.trustStatus).toEqual({
+    expect(transformed.versions['1.0.0']?.trustStatus).toEqual({
       provenance: true,
       trustedPublisher: true,
       stagedPublish: false,
     })
-    expect(detectPublishSecurityDowngradeForVersion(infos, '1.0.1')?.trustedVersion).toBe('1.0.0')
+    expect(transformed.publishSecurityDowngrade?.trustedVersion).toBe('1.0.0')
   })
 
   it('prefers trustedPublisher trust level when both trustedPublisher and attestations exist', () => {
@@ -264,20 +256,19 @@ describe('transformPackument', () => {
     )
 
     const transformed = transformPackument(packument, '7.0.1')
-    const infos = toVersionInfos(transformed)
 
     // Both versions should be trustedPublisher — no downgrade
-    expect(infos.find(v => v.version === '7.0.0')?.trustStatus).toEqual({
+    expect(transformed.versions['7.0.0']?.trustStatus).toEqual({
       provenance: true,
       trustedPublisher: true,
       stagedPublish: false,
     })
-    expect(infos.find(v => v.version === '7.0.1')?.trustStatus).toEqual({
+    expect(transformed.versions['7.0.1']?.trustStatus).toEqual({
       provenance: true,
       trustedPublisher: true,
       stagedPublish: false,
     })
-    expect(detectPublishSecurityDowngradeForVersion(infos, '7.0.1')).toBeNull()
+    expect(transformed.publishSecurityDowngrade).toBeNull()
   })
 
   it('flags non-direct downgrade chain until trust is restored', () => {
@@ -301,12 +292,15 @@ describe('transformPackument', () => {
       '2.4.0',
     )
 
-    const transformed = transformPackument(packument, '2.3.0')
-    const infos = toVersionInfos(transformed)
-
-    expect(detectPublishSecurityDowngradeForVersion(infos, '2.1.1')?.trustedVersion).toBe('2.1.0')
-    expect(detectPublishSecurityDowngradeForVersion(infos, '2.2.0')?.trustedVersion).toBe('2.1.0')
-    expect(detectPublishSecurityDowngradeForVersion(infos, '2.3.0')?.trustedVersion).toBe('2.1.0')
-    expect(detectPublishSecurityDowngradeForVersion(infos, '2.4.0')).toBeNull()
+    expect(transformPackument(packument, '2.1.1').publishSecurityDowngrade?.trustedVersion).toBe(
+      '2.1.0',
+    )
+    expect(transformPackument(packument, '2.2.0').publishSecurityDowngrade?.trustedVersion).toBe(
+      '2.1.0',
+    )
+    expect(transformPackument(packument, '2.3.0').publishSecurityDowngrade?.trustedVersion).toBe(
+      '2.1.0',
+    )
+    expect(transformPackument(packument, '2.4.0').publishSecurityDowngrade).toBeNull()
   })
 })
