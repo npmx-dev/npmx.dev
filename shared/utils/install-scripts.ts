@@ -7,6 +7,8 @@
  * Also extracts npx package calls from those scripts.
  */
 
+import type { InstallScriptsInfo } from '#shared/types/npm-registry'
+
 // Scripts that run when installing a package as a dependency
 const INSTALL_SCRIPTS = new Set(['preinstall', 'install', 'postinstall'])
 
