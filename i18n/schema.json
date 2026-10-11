@@ -1279,6 +1279,9 @@
             "gitee": {
               "type": "string"
             },
+            "pushin": {
+              "type": "string"
+            },
             "radicle": {
               "type": "string"
             },

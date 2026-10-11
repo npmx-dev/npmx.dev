@@ -327,6 +327,11 @@ const sparklineSrc = computed(() => {
             style="width: 24px; height: 24px"
           />
           <div
+            v-else-if="repoRef?.provider === 'pushin'"
+            class="i-custom:pushin shrink-0 text-fg-muted"
+            style="width: 24px; height: 24px"
+          />
+          <div
             v-else
             class="i-lucide:code shrink-0 text-fg-muted"
             style="width: 24px; height: 24px"
