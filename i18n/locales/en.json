@@ -840,6 +840,24 @@
       "sparkline_zoom_reset": {
         "title": "Reset zoom · double-click chart or press Esc",
         "aria_label": "Reset zoom"
+      },
+      "downloads_heatmap": {
+        "title": "Daily downloads: last 52 weeks, from {from} to {to}",
+        "legend": {
+          "anomalies": "Days with missing or anomalous download counts",
+          "max": "Max: {value} downloads on {date}",
+          "min": "Min: {value} downloads on {date}"
+        },
+        "copy_alt": {
+          "introduction": "Daily downloads heatmap for the {package_name} package. {date_range}.",
+          "no_data": "No reliable download data is available for this period.",
+          "summary": "A total of {total} downloads were recorded across {days} days, averaging {average} downloads per day.",
+          "peak": "The highest daily activity occurred on {date}, with {downloads} downloads.",
+          "busiest_weekday": "The busiest day of the week was {weekday}, averaging {average} downloads.",
+          "weekday_comparison": "On average, weekdays recorded {weekdays} downloads per day, compared with {weekends} on weekends.",
+          "weekly_trend": "Between the first and last complete weeks with reliable data, weekly downloads changed by {change}, from {first} to {last}.",
+          "excluded_days": "{count} calendar days were excluded from these statistics because of missing, anomalous, or not-yet-available data."
+        }
       }
     },
     "downloads": {
