@@ -1,27 +1,23 @@
-import { transformPackument } from '#shared/utils/packument'
-
 export function usePackage(
   name: MaybeRefOrGetter<string>,
   requestedVersion?: MaybeRefOrGetter<string | null>,
 ) {
   const asyncData = useLazyAsyncData(
     () => `package:${toValue(name)}:${toValue(requestedVersion) ?? ''}`,
-    async ({ $npmRegistry }, { signal }) => {
+    async (_nuxtApp, { signal }) => {
       const encodedName = encodePackageName(toValue(name))
-      const { data: r, isStale } = await $npmRegistry<Packument>(`/${encodedName}`, {
-        signal,
-      })
       const reqVer = toValue(requestedVersion)
-      const pkg = transformPackument(r, reqVer)
-      return { ...pkg, isStale }
+      // Fetch the already-trimmed packument from our own cached route so the
+      // full (often multi-MB) document is never sent to or parsed by the client.
+      const pkg = await $fetch<SlimPackument>(`/api/registry/packument/${encodedName}`, {
+        signal,
+        params: reqVer ? { version: reqVer } : undefined,
+      })
+      // Staleness is handled server-side by the route's SWR cache, so the
+      // response is always considered fresh from the client's perspective.
+      return { ...pkg, isStale: false }
     },
   )
-
-  if (import.meta.client && asyncData.data.value?.isStale) {
-    onMounted(() => {
-      asyncData.refresh()
-    })
-  }
 
   return asyncData
 }
