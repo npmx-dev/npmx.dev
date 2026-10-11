@@ -33,6 +33,39 @@ export type Packument = Omit<PackumentWithoutLicenseObjects, 'license' | 'versio
   versions: Record<string, PackumentVersion>
 }
 
+/**
+ * Abbreviated ("install") packument returned by the registry when requesting
+ * `Accept: application/vnd.npm.install-v1+json` — the much smaller document `npm install`
+ * consumes. It carries only install-relevant fields (versions, dist-tags, dependencies,
+ * os/cpu, dist, deprecated) and omits `time`, `readme`, `license`, `repository`, maintainers.
+ *
+ * Note: the registry omits `libc` from this document even though the full packument has it,
+ * so it must be fetched separately when needed (see `fetchNpmPackageVersionLibc`).
+ */
+export interface AbbreviatedPackument {
+  'name': string
+  'dist-tags'?: Record<string, string>
+  'modified'?: string
+  'versions': Record<string, AbbreviatedPackumentVersion>
+}
+
+export interface AbbreviatedPackumentVersion {
+  name?: string
+  version: string
+  dependencies?: Record<string, string>
+  optionalDependencies?: Record<string, string>
+  peerDependencies?: Record<string, string>
+  os?: string[]
+  cpu?: string[]
+  libc?: string[]
+  deprecated?: string
+  dist?: {
+    tarball?: string
+    unpackedSize?: number
+    [key: string]: unknown
+  }
+}
+
 /** Install scripts info (preinstall, install, postinstall) */
 export interface InstallScriptsInfo {
   scripts: ('preinstall' | 'install' | 'postinstall')[]

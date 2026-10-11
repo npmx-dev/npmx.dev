@@ -371,7 +371,7 @@ export async function analyzeDirectDependencyHealth(
     entries,
     async ([name, range]) => {
       try {
-        const packument = await fetchNpmPackage(name)
+        const packument = await fetchNpmPackageAbbreviated(name)
         const versions = Object.keys(packument.versions)
         const version = packument['dist-tags']?.[range] ?? resolveVersion(range, versions)
         if (!version) return null
