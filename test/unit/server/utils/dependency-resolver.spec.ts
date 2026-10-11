@@ -357,7 +357,7 @@ describe('dependency-resolver', () => {
       expect(mockVersionLibc).not.toHaveBeenCalled()
     })
 
-    it('treats platform-restricted versions as matching when the libc lookup fails', async () => {
+    it('excludes platform-restricted versions when the libc lookup fails', async () => {
       mockAbbreviatedPackument.mockImplementation(async (name: string) => {
         if (name === 'root')
           return makePackument('root', [{ version: '1.0.0', deps: { 'linux-ok': '^1.0.0' } }])
@@ -369,7 +369,25 @@ describe('dependency-resolver', () => {
 
       const result = await resolveDependencyTree('root', '1.0.0')
 
-      expect(result.has('linux-ok@1.0.0')).toBe(true)
+      // An unknown libc restriction could be a musl-only build, so it must not be included.
+      expect(result.has('linux-ok@1.0.0')).toBe(false)
+    })
+
+    it('does not fetch libc when os/cpu already exclude the target platform', async () => {
+      mockAbbreviatedPackument.mockImplementation(async (name: string) => {
+        if (name === 'root')
+          return makePackument('root', [{ version: '1.0.0', deps: { 'darwin-only': '^1.0.0' } }])
+        if (name === 'darwin-only')
+          return makePackument('darwin-only', [
+            { version: '1.0.0', os: ['darwin'], cpu: ['arm64'] },
+          ])
+        return null
+      })
+
+      const result = await resolveDependencyTree('root', '1.0.0')
+
+      expect(result.has('darwin-only@1.0.0')).toBe(false)
+      expect(mockVersionLibc).not.toHaveBeenCalled()
     })
 
     it('skips dependencies with unresolvable version ranges', async () => {

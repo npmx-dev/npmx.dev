@@ -158,17 +158,21 @@ export async function resolveDependencyTree(
         let versionData = packument.versions[version]
         if (!versionData) return
 
-        // The registry omits `libc` from abbreviated metadata, but it's needed to tell
-        // platform builds apart (e.g. glibc vs musl). Only platform-restricted versions are
-        // affected, so fetch the small single-version manifest for just those.
+        // `os`/`cpu` come from the abbreviated metadata; reject mismatches before paying for
+        // the separate libc lookup.
+        if (!matchesPlatform({ os: versionData.os, cpu: versionData.cpu })) return
+
+        // The registry omits `libc` from abbreviated metadata, but it can still exclude a
+        // version (e.g. musl-only builds on a glibc target), so read it from the small
+        // single-version manifest.
         if (versionData.libc === undefined && (versionData.os?.length || versionData.cpu?.length)) {
-          let libc: string[] | undefined
           try {
-            libc = await fetchNpmPackageVersionLibc(name, version)
+            const libc = await fetchNpmPackageVersionLibc(name, version)
+            if (libc) versionData = { ...versionData, libc }
           } catch {
-            libc = undefined
+            // The libc restriction is unknown — don't risk pulling in an incompatible build.
+            return
           }
-          if (libc) versionData = { ...versionData, libc }
         }
 
         if (!matchesPlatform(versionData)) return
