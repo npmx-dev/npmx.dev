@@ -29,10 +29,6 @@ type DailyDataPoint = {
   hasAnomaly?: boolean
 }
 
-type SvgPoint = { x: number; y: number }
-type SvgEdge = { start: SvgPoint; end: SvgPoint }
-type AxisBounds = { start: number; end: number }
-
 const props = defineProps<{ packageName: string }>()
 const chartRef = useTemplateRef('chartRef')
 
@@ -96,7 +92,7 @@ async function loadDownloads() {
   try {
     const result = await fetchPackageDownloadEvolution(props.packageName, null, {
       granularity: 'day',
-      startDate: toIsoDate(addDays(new Date(), -1 - 52 * DAYS_PER_WEEK)),
+      startDate: toIsoDate(addDays(new Date(), -WEEK_COUNT * DAYS_PER_WEEK)),
     })
 
     if (request === currentRequest) {
@@ -160,12 +156,12 @@ const dateRangeFormatter = computed(
 const dateRange = computed(() => {
   const firstWeekStart = heatmap.value.weekStarts[0]
   const lastWeekStart = heatmap.value.weekStarts.at(-1)
+  const endOfWeek = lastWeekStart ? addDays(parseIsoDate(lastWeekStart), DAYS_PER_WEEK - 1) : null
+  const today = new Date()
 
   return {
     from: firstWeekStart ? dateRangeFormatter.value.format(parseIsoDate(firstWeekStart)) : '',
-    to: lastWeekStart
-      ? dateRangeFormatter.value.format(addDays(parseIsoDate(lastWeekStart), DAYS_PER_WEEK - 1))
-      : '',
+    to: endOfWeek ? dateRangeFormatter.value.format(endOfWeek > today ? today : endOfWeek) : '',
   }
 })
 
@@ -456,6 +452,7 @@ function getTooltipDate(
   if (!weekStart || seriesIndex < 0 || seriesIndex >= DAYS_PER_WEEK) return ''
   return tooltipDateFormatter.value.format(addDays(parseIsoDate(weekStart), seriesIndex))
 }
+
 function isUnknownTooltipDay(
   datapoint: VueUiHeatmapDatapoint,
   seriesIndex: number,
@@ -468,12 +465,14 @@ function isUnknownTooltipDay(
   const weekStart = heatmap.value.weekStarts[columnIndex]
   if (!weekStart || seriesIndex < 0 || seriesIndex >= DAYS_PER_WEEK) return false
   const key = toIsoDate(addDays(parseIsoDate(weekStart), seriesIndex))
-  return isLastWeek(columnIndex) && !heatmap.value.reportedDates.has(key)
+  return columnIndex >= WEEK_COUNT - 2 && !heatmap.value.reportedDates.has(key)
 }
+
 function getCellDate(cell: VueUiHeatmapCell): Date | null {
   const weekStart = heatmap.value.weekStarts[cell.columnIndex]
   return weekStart ? addDays(parseIsoDate(weekStart), cell.rowIndex) : null
 }
+
 function isUnrecorded(cell: VueUiHeatmapCell): boolean {
   const date = getCellDate(cell)
   if (!date) return false
@@ -484,177 +483,23 @@ function isUnrecorded(cell: VueUiHeatmapCell): boolean {
     showUnknownDay(cell)
   )
 }
-function isLastWeek(columnIndex: number): boolean {
-  return columnIndex === WEEK_COUNT - 1
-}
+
 function showUnknownDay(cell: VueUiHeatmapCell): boolean {
   const date = getCellDate(cell)
-  return !!date && isLastWeek(cell.columnIndex) && !heatmap.value.reportedDates.has(toIsoDate(date))
+  return (
+    !!date &&
+    cell.columnIndex >= WEEK_COUNT - 2 &&
+    !heatmap.value.reportedDates.has(toIsoDate(date))
+  )
 }
+
 function getMissingDaySymbol(cell: VueUiHeatmapCell): string {
   const cx = cell.x + cell.width / 2
   const cy = cell.y + cell.height / 2
-  const shape = showUnknownDay(cell) ? '' : '-6-6m6 6 6 6m0-12-12 12'
+  const date = getCellDate(cell)
+  const isPending = showUnknownDay(cell) && !!date && date >= toUtcDay(new Date())
+  const shape = isPending ? '' : '-6-6m6 6 6 6m0-12-12 12'
   return `m${cx} ${cy}${shape}`
-}
-
-function pointKey(point: SvgPoint): string {
-  return `${point.x.toFixed(3)}:${point.y.toFixed(3)}`
-}
-
-function simplifyContour(points: SvgPoint[]): SvgPoint[] {
-  if (points.length < 4) return points
-  const ring =
-    pointKey(points[0]!) === pointKey(points[points.length - 1]!)
-      ? points.slice(0, -1)
-      : [...points]
-  const epsilon = 1 / 1_000
-
-  return ring.filter((point, index) => {
-    const previous = ring[(index - 1 + ring.length) % ring.length]!
-    const next = ring[(index + 1) % ring.length]!
-    const vertical =
-      Math.abs(previous.x - point.x) < epsilon && Math.abs(point.x - next.x) < epsilon
-    const horizontal =
-      Math.abs(previous.y - point.y) < epsilon && Math.abs(point.y - next.y) < epsilon
-    return !vertical && !horizontal
-  })
-}
-
-/**
- * Create shared boundaries from cell centers
- */
-function getAxisBounds(
-  centers: Map<number, number>,
-  fallbackSize: number,
-): Map<number, AxisBounds> {
-  const ordered = [...centers.entries()].sort(([a], [b]) => a - b)
-  const bounds = new Map<number, AxisBounds>()
-
-  ordered.forEach(([index, center], position) => {
-    const previous = ordered[position - 1]?.[1]
-    const next = ordered[position + 1]?.[1]
-
-    bounds.set(index, {
-      start:
-        previous === undefined
-          ? center - (next === undefined ? fallbackSize : next - center) / 2
-          : (previous + center) / 2,
-      end:
-        next === undefined
-          ? center + (previous === undefined ? fallbackSize : center - previous) / 2
-          : (center + next) / 2,
-    })
-  })
-
-  return bounds
-}
-
-/**
- * Wrap month cells with a contour, using shared grid edges (also follows partial first & last weeks)
- */
-function getMonthOutline(
-  cells: VueUiHeatmapCell[],
-  columnBounds: Map<number, AxisBounds>,
-  rowBounds: Map<number, AxisBounds>,
-): string {
-  const occupied = new Set(cells.map(cell => `${cell.rowIndex}:${cell.columnIndex}`))
-  const edges: SvgEdge[] = []
-  const addEdge = (x1: number, y1: number, x2: number, y2: number) => {
-    edges.push({ start: { x: x1, y: y1 }, end: { x: x2, y: y2 } })
-  }
-
-  for (const cell of cells) {
-    const row = cell.rowIndex
-    const col = cell.columnIndex
-    const xBounds = columnBounds.get(col)!
-    const yBounds = rowBounds.get(row)!
-    const x1 = xBounds.start
-    const y1 = yBounds.start
-    const x2 = xBounds.end
-    const y2 = yBounds.end
-
-    // Shared sides between adjacent month cells are omitted
-    if (!occupied.has(`${row - 1}:${col}`)) addEdge(x1, y1, x2, y1)
-    if (!occupied.has(`${row}:${col + 1}`)) addEdge(x2, y1, x2, y2)
-    if (!occupied.has(`${row + 1}:${col}`)) addEdge(x2, y2, x1, y2)
-    if (!occupied.has(`${row}:${col - 1}`)) addEdge(x1, y2, x1, y1)
-  }
-
-  const outgoing = new Map<string, number[]>()
-  edges.forEach((edge, index) => {
-    const key = pointKey(edge.start)
-    if (!outgoing.has(key)) outgoing.set(key, [])
-    outgoing.get(key)!.push(index)
-  })
-
-  const used = new Set<number>()
-  const contours: SvgPoint[][] = []
-
-  for (let index = 0; index < edges.length; index++) {
-    if (used.has(index)) continue
-
-    const start = edges[index]!
-    const startKey = pointKey(start.start)
-    const points: SvgPoint[] = [start.start]
-    let currentIndex: number | undefined = index
-
-    while (currentIndex !== undefined && !used.has(currentIndex)) {
-      const edge: SvgEdge = edges[currentIndex]!
-      used.add(currentIndex)
-      points.push(edge.end)
-      const endKey = pointKey(edge.end)
-      if (endKey === startKey) break
-      currentIndex = outgoing.get(endKey)?.find(candidate => !used.has(candidate))
-    }
-
-    if (pointKey(points[points.length - 1]!) === startKey) {
-      contours.push(simplifyContour(points))
-    }
-  }
-
-  return contours
-    .map(points => {
-      if (!points.length) return ''
-      const [first, ...rest] = points
-      return [
-        `M ${first!.x} ${first!.y}`,
-        ...rest.map(point => `L ${point.x} ${point.y}`),
-        'Z',
-      ].join(' ')
-    })
-    .filter(Boolean)
-    .join(' ')
-}
-
-function getMonthPaths(cells: VueUiHeatmapCell[]): Array<{ key: string; d: string }> {
-  if (!cells?.length) return []
-
-  const columnCenters = new Map<number, number>()
-  const rowCenters = new Map<number, number>()
-
-  for (const cell of cells) {
-    columnCenters.set(cell.columnIndex, cell.x + cell.width / 2)
-    rowCenters.set(cell.rowIndex, cell.y + cell.height / 2)
-  }
-
-  const columnBounds = getAxisBounds(columnCenters, cells[0]!.width)
-  const rowBounds = getAxisBounds(rowCenters, cells[0]!.height)
-  const months = new Map<string, VueUiHeatmapCell[]>()
-  for (const cell of cells ?? []) {
-    const date = getCellDate(cell)
-    if (!date) continue
-    const key = `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}`
-    if (!months.has(key)) months.set(key, [])
-    months.get(key)!.push(cell)
-  }
-
-  return [...months.entries()]
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([key, monthCells]) => ({
-      key,
-      d: getMonthOutline(monthCells, columnBounds, rowBounds),
-    }))
 }
 
 /**
@@ -758,7 +603,7 @@ function getLegendContent(svg: VueUiHeatmapSvgSlotProps['svg']) {
 </script>
 
 <template>
-  <div ref="rootEl" class="w-full font-mono">
+  <div class="w-full font-mono">
     <div v-if="fetchError" class="py-6 text-sm text-red-600 dark:text-red-400" role="alert">
       {{ fetchError }}
     </div>
@@ -774,6 +619,17 @@ function getLegendContent(svg: VueUiHeatmapSvgSlotProps['svg']) {
               '[direction:ltr]': true,
             }"
           >
+            <!-- Keyboard navigation hint -->
+            <template #hint="{ isVisible }">
+              <p
+                v-if="isVisible"
+                class="text-accent text-xs -mt-5 text-center px-2"
+                aria-hidden="true"
+              >
+                {{ $t('compare.packages.line_chart_nav_hint') }}
+              </p>
+            </template>
+
             <template #svg="{ svg }">
               <template v-for="cell in svg.cells" :key="cell.datapoint.id">
                 <g v-if="isUnrecorded(cell)" pointer-events="none">
@@ -794,56 +650,36 @@ function getLegendContent(svg: VueUiHeatmapSvgSlotProps['svg']) {
                 </g>
               </template>
 
-              <!-- Paths to wrap months -->
-              <path
-                v-for="month in getMonthPaths(svg.cells)"
-                :key="`${month.key}_wrapper-line`"
-                :d="month.d"
-                fill="none"
-                :stroke="colors.bg"
-                :stroke-width="4"
-                stroke-linejoin="round"
-                pointer-events="none"
-              />
-              <path
-                v-for="month in getMonthPaths(svg.cells)"
-                :key="`${month.key}_middle-line`"
-                :d="month.d"
-                fill="none"
-                :stroke="colors.fgSubtle"
-                :stroke-width="1"
-                stroke-linejoin="round"
-                pointer-events="none"
-              />
-
               <!-- BOTTOM LEGEND -->
-              <!-- Anomalies -->
-              <path v-bind="getLegendContent(svg).anomalies.marker" />
-              <text v-bind="getLegendContent(svg).anomalies.text">
-                {{ $t('package.trends.downloads_heatmap.legend.anomalies') }}
-              </text>
+              <template v-for="legend in [getLegendContent(svg)]" :key="'legend'">
+                <!-- Anomalies -->
+                <path v-bind="legend.anomalies.marker" />
+                <text v-bind="legend.anomalies.text">
+                  {{ $t('package.trends.downloads_heatmap.legend.anomalies') }}
+                </text>
 
-              <!-- Max -->
-              <rect v-bind="getLegendContent(svg).max.marker" />
-              <text v-bind="getLegendContent(svg).max.text">
-                {{
-                  $t('package.trends.downloads_heatmap.legend.max', {
-                    value: minMax.max.value,
-                    date: minMax.max.date,
-                  })
-                }}
-              </text>
+                <!-- Max -->
+                <rect v-bind="legend.max.marker" />
+                <text v-bind="legend.max.text">
+                  {{
+                    $t('package.trends.downloads_heatmap.legend.max', {
+                      value: minMax.max.value,
+                      date: minMax.max.date,
+                    })
+                  }}
+                </text>
 
-              <!-- Min -->
-              <rect v-bind="getLegendContent(svg).min.marker" />
-              <text v-bind="getLegendContent(svg).min.text">
-                {{
-                  $t('package.trends.downloads_heatmap.legend.min', {
-                    value: minMax.min.value,
-                    date: minMax.min.date,
-                  })
-                }}
-              </text>
+                <!-- Min -->
+                <rect v-bind="legend.min.marker" />
+                <text v-bind="legend.min.text">
+                  {{
+                    $t('package.trends.downloads_heatmap.legend.min', {
+                      value: minMax.min.value,
+                      date: minMax.min.date,
+                    })
+                  }}
+                </text>
+              </template>
 
               <!-- Selected cell (redrawn on the last layer to be above month wrapping paths) -->
               <rect

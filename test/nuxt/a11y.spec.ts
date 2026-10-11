@@ -1,6 +1,6 @@
 import { DEFAULT_FILTERS, type ColumnConfig, type FilterChip } from '#shared/types/preferences'
-import { mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
-import type { VueWrapper } from '@vue/test-utils'
+import { mountSuspended, registerEndpoint, mockNuxtImport } from '@nuxt/test-utils/runtime'
+import { flushPromises, type VueWrapper } from '@vue/test-utils'
 import 'axe-core'
 import type { AxeResults, RunOptions } from 'axe-core'
 import { afterEach, beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest'
@@ -10,6 +10,8 @@ import { createLikesLeaderboardEntry } from '~~/test/fixtures/likes-leaderboard'
 declare const axe: {
   run: (context: Element, options?: RunOptions) => Promise<AxeResults>
 }
+
+mockNuxtImport('useCharts', original => vi.fn(original))
 
 // Track mounted containers for cleanup
 const mountedContainers: HTMLElement[] = []
@@ -1550,10 +1552,44 @@ describe('component accessibility audits', () => {
   })
 
   describe('DailyDownloadsHeatmap', () => {
-    it('should have no accessibility violations', async () => {
+    const useChartsMock = vi.mocked(useCharts)
+    const originalUseCharts = useChartsMock.getMockImplementation()!
+
+    afterEach(() => {
+      useChartsMock.mockImplementation(originalUseCharts)
+    })
+
+    it('should have no accessibility violations when loaded', async () => {
+      const now = new Date()
+
+      const fetchMock = vi.fn().mockResolvedValue([
+        {
+          day: now.toISOString().slice(0, 10),
+          timestamp: now.getTime(),
+          value: 123,
+        },
+      ])
+
+      useChartsMock.mockImplementation(() => ({
+        ...originalUseCharts(),
+        fetchPackageDownloadEvolution: fetchMock,
+      }))
+
       const wrapper = await mountSuspended(DailyDownloadsHeatmap, {
         props: { packageName: 'vue' },
       })
+
+      await flushPromises()
+
+      await vi.waitFor(() => {
+        expect(wrapper.find('[data-test-id="vue-ui-heatmap-stub"]').exists()).toBe(true)
+      })
+
+      expect(fetchMock).toHaveBeenCalledWith(
+        'vue',
+        null,
+        expect.objectContaining({ granularity: 'day' }),
+      )
 
       const results = await runAxe(wrapper)
       expect(results.violations).toEqual([])
