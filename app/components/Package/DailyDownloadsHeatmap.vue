@@ -74,7 +74,7 @@ const DAYS_PER_WEEK = 7
 const WEEK_DAYS = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'] as const
 
 function toUtcDay(date: Date): Date {
-  return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
+  return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()))
 }
 
 function getDayKey(point: DailyDataPoint): string | null {
@@ -452,19 +452,28 @@ function getTooltipDate(
     series?.[seriesIndex]?.temperatures?.findIndex(
       temperature => temperature.id === datapoint?.id,
     ) ?? -1
-
   const weekStart = heatmap.value.weekStarts[columnIndex]
-
   if (!weekStart || seriesIndex < 0 || seriesIndex >= DAYS_PER_WEEK) return ''
-
   return tooltipDateFormatter.value.format(addDays(parseIsoDate(weekStart), seriesIndex))
 }
-
+function isUnknownTooltipDay(
+  datapoint: VueUiHeatmapDatapoint,
+  seriesIndex: number,
+  series: VueUiHeatmapRow[],
+): boolean {
+  const columnIndex =
+    series?.[seriesIndex]?.temperatures?.findIndex(
+      temperature => temperature.id === datapoint?.id,
+    ) ?? -1
+  const weekStart = heatmap.value.weekStarts[columnIndex]
+  if (!weekStart || seriesIndex < 0 || seriesIndex >= DAYS_PER_WEEK) return false
+  const key = toIsoDate(addDays(parseIsoDate(weekStart), seriesIndex))
+  return isLastWeek(columnIndex) && !heatmap.value.reportedDates.has(key)
+}
 function getCellDate(cell: VueUiHeatmapCell): Date | null {
   const weekStart = heatmap.value.weekStarts[cell.columnIndex]
   return weekStart ? addDays(parseIsoDate(weekStart), cell.rowIndex) : null
 }
-
 function isUnrecorded(cell: VueUiHeatmapCell): boolean {
   const date = getCellDate(cell)
   if (!date) return false
@@ -475,16 +484,13 @@ function isUnrecorded(cell: VueUiHeatmapCell): boolean {
     showUnknownDay(cell)
   )
 }
-
 function isLastWeek(columnIndex: number): boolean {
   return columnIndex === WEEK_COUNT - 1
 }
-
 function showUnknownDay(cell: VueUiHeatmapCell): boolean {
   const date = getCellDate(cell)
   return !!date && isLastWeek(cell.columnIndex) && !heatmap.value.reportedDates.has(toIsoDate(date))
 }
-
 function getMissingDaySymbol(cell: VueUiHeatmapCell): string {
   const cx = cell.x + cell.width / 2
   const cy = cell.y + cell.height / 2
@@ -886,7 +892,9 @@ function getLegendContent(svg: VueUiHeatmapSvgSlotProps['svg']) {
                     }"
                   >
                     <svg
-                      v-if="!datapoint.value"
+                      v-if="
+                        !isUnknownTooltipDay(datapoint, seriesIndex, series) && !datapoint.value
+                      "
                       viewBox="0 0 16 16"
                       class="absolute top-1/2 inset-is-1/2 -translate-x-1/2 -translate-y-1/2 w-full p-0.25"
                     >
@@ -899,7 +907,11 @@ function getLegendContent(svg: VueUiHeatmapSvgSlotProps['svg']) {
                     </svg>
                   </span>
                   <span class="text-sm text-gray-700 dark:text-gray-300">
-                    {{ compactNumberFormatter.format(Number(datapoint.value) || 0) }}
+                    {{
+                      isUnknownTooltipDay(datapoint, seriesIndex, series)
+                        ? '-'
+                        : compactNumberFormatter.format(Number(datapoint.value) || 0)
+                    }}
                   </span>
                 </div>
               </div>
