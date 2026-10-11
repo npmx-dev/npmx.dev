@@ -7,7 +7,7 @@ import {
   ERROR_PACKAGE_VERSION_AND_FILE_FAILED,
 } from '#shared/utils/constants'
 
-const CACHE_VERSION = 3
+const CACHE_VERSION = 4
 
 // Maximum file size to fetch and highlight (500KB)
 const MAX_FILE_SIZE = 500 * 1024
@@ -215,7 +215,7 @@ export default defineCachedEventHandler(
     maxAge: CACHE_MAX_AGE_ONE_YEAR, // 1 year
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
-      return `file:v${CACHE_VERSION}:${pkg.replace(/\/+$/, '').trim()}`
+      return toCacheKey(`file:v${CACHE_VERSION}:${pkg.replace(/\/+$/, '').trim()}`)
     },
   },
 )

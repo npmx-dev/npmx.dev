@@ -1,7 +1,7 @@
 import * as v from 'valibot'
 import { PackageCompareQuerySchema } from '#shared/schemas/package'
 
-const CACHE_VERSION = 1
+const CACHE_VERSION = 2
 const COMPARE_TIMEOUT = 8000 // 8 seconds
 
 /**
@@ -114,7 +114,7 @@ export default defineCachedEventHandler(
     swr: true,
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
-      return `compare:v${CACHE_VERSION}:${pkg.replace(/\/+$/, '').trim()}`
+      return toCacheKey(`compare:v${CACHE_VERSION}:${pkg.replace(/\/+$/, '').trim()}`)
     },
   },
 )

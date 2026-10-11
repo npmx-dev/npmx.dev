@@ -3,7 +3,7 @@ import { PackageFileDiffQuerySchema } from '#shared/schemas/package'
 import { countDiffStats, createDiff, insertSkipBlocks, truncateDiffHunks } from '#shared/utils/diff'
 import type { DiffHunk, DiffSkipBlock } from '#shared/types/compare'
 
-const CACHE_VERSION = 3
+const CACHE_VERSION = 4
 const DIFF_TIMEOUT = 15000 // 15 sec
 
 /** Files above this size use a cheaper plain-text diff renderer. */
@@ -336,7 +336,9 @@ export default defineCachedEventHandler(
       const distance = parseInt(query.maxDiffDistance as string, 10) || 30
       const charEdits = parseInt(query.inlineMaxCharEdits as string, 10) || 2
       const optionsKey = `${merge}:${ratio}:${distance}:${charEdits}`
-      return `compare-file:v${CACHE_VERSION}:${pkg.replace(/\/+$/, '').trim()}:${optionsKey}`
+      return toCacheKey(
+        `compare-file:v${CACHE_VERSION}:${pkg.replace(/\/+$/, '').trim()}:${optionsKey}`,
+      )
     },
   },
 )

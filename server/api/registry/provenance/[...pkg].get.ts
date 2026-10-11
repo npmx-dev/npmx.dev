@@ -57,7 +57,7 @@ export default defineCachedEventHandler(
     swr: true,
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
-      return `provenance:v1:${pkg.replace(/\/+$/, '').trim()}`
+      return toCacheKey(`provenance:v2:${pkg.replace(/\/+$/, '').trim()}`)
     },
   },
 )

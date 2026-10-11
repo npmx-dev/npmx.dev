@@ -60,7 +60,7 @@ export default defineCachedEventHandler(
     swr: true,
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
-      return `analysis:v2:${pkg.replace(/\/+$/, '').trim()}`
+      return toCacheKey(`analysis:v3:${pkg.replace(/\/+$/, '').trim()}`)
     },
   },
 )

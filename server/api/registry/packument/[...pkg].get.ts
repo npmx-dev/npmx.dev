@@ -62,7 +62,9 @@ export default defineCachedEventHandler(
     swr: true,
     getKey: event => {
       const version = getQuery(event).version
-      return `packument:v1:${getRouterParam(event, 'pkg') ?? ''}:${typeof version === 'string' ? version : ''}`
+      return toCacheKey(
+        `packument:v1:${getRouterParam(event, 'pkg') ?? ''}:${typeof version === 'string' ? version : ''}`,
+      )
     },
   },
 )
