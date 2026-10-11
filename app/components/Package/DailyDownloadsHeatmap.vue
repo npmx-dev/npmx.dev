@@ -157,11 +157,13 @@ const dateRange = computed(() => {
   const firstWeekStart = heatmap.value.weekStarts[0]
   const lastWeekStart = heatmap.value.weekStarts.at(-1)
   const endOfWeek = lastWeekStart ? addDays(parseIsoDate(lastWeekStart), DAYS_PER_WEEK - 1) : null
-  const today = new Date()
+  const yesterday = addDays(toUtcDay(new Date()), -1)
 
   return {
     from: firstWeekStart ? dateRangeFormatter.value.format(parseIsoDate(firstWeekStart)) : '',
-    to: endOfWeek ? dateRangeFormatter.value.format(endOfWeek > today ? today : endOfWeek) : '',
+    to: endOfWeek
+      ? dateRangeFormatter.value.format(endOfWeek > yesterday ? yesterday : endOfWeek)
+      : '',
   }
 })
 
