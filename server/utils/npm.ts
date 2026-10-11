@@ -90,7 +90,7 @@ export async function resolveVersionConstraint(
   constraint: string,
 ): Promise<string | null> {
   try {
-    const packument = await fetchNpmPackage(packageName)
+    const packument = await fetchNpmPackageAbbreviated(packageName)
     const versions = Object.keys(packument.versions)
     return findMaxSatisfying(versions, constraint)
   } catch {
