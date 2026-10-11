@@ -17,11 +17,14 @@ import { transformPackument } from '#shared/utils/packument'
  * - Client-side navigation downloads a few KB instead of potentially tens of MB.
  *
  * The transform depends on the requested version, so the `version` query
- * parameter is part of the cache key.
+ * parameter is part of the cache key. The value may be an exact version or a
+ * dist-tag (e.g. `latest`, `next`); it is resolved against the packument before
+ * transforming. When omitted it defaults to the `latest` dist-tag, so callers
+ * that only need the current version get its full manifest in the response.
  *
  * URL patterns:
  * - /api/registry/packument/packageName?version=1.2.3
- * - /api/registry/packument/@scope/packageName?version=1.2.3
+ * - /api/registry/packument/@scope/packageName?version=next
  */
 export default defineCachedEventHandler(
   async event => {
@@ -37,7 +40,16 @@ export default defineCachedEventHandler(
     try {
       const encodedName = encodePackageName(packageName)
       const packument = await $fetch<Packument>(`${NPM_REGISTRY}/${encodedName}`)
-      return transformPackument(packument, requestedVersion)
+
+      // Resolve the requested version (an exact version or a dist-tag) to a
+      // concrete version so the transform includes that version's full
+      // manifest. Defaults to the `latest` dist-tag when none was requested.
+      const resolvedVersion = requestedVersion
+        ? (packument['dist-tags']?.[requestedVersion] ??
+          (packument.versions[requestedVersion] ? requestedVersion : null))
+        : (packument['dist-tags']?.latest ?? null)
+
+      return transformPackument(packument, resolvedVersion)
     } catch (error: unknown) {
       handleApiError(error, {
         statusCode: 502,
