@@ -128,16 +128,19 @@ const {
   },
 )
 
-// Trigger fetch only when we have the real resolved version
-watch(
-  [resolvedVersion, resolvedStatus],
-  ([version, status]) => {
-    if (version && status === 'success') {
-      fetchInstallSize()
-    }
-  },
-  { immediate: true },
-)
+// Trigger fetch only when we have the real resolved version.
+// Client-only: install size walks the whole dependency tree, so never block SSR on it.
+if (import.meta.client) {
+  watch(
+    [resolvedVersion, resolvedStatus],
+    ([version, status]) => {
+      if (version && status === 'success') {
+        fetchInstallSize()
+      }
+    },
+    { immediate: true },
+  )
+}
 
 const { data: skillsData } = useLazyFetch<SkillsListResponse>(
   () => {
@@ -672,23 +675,28 @@ const showSkeleton = shallowRef(false)
                   <span v-else>-</span>
                 </span>
 
-                <!-- Total install size in parens -->
-                <template v-if="displayVersion?.dist?.unpackedSize !== installSize?.totalSize">
-                  <span class="ms-1">
-                    <span
-                      v-if="installSizeStatus === 'pending'"
-                      class="inline-flex items-center gap-1 text-fg-subtle"
-                    >
-                      (<span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />)
+                <!-- Total install size in parens.
+                     Client-only: the lazy install-size fetch can resolve after the server HTML is
+                     rendered but before the payload is serialized, so the value would be hydrated
+                     even though the server rendered something else (a spinner or '-'). -->
+                <ClientOnly>
+                  <template v-if="displayVersion?.dist?.unpackedSize !== installSize?.totalSize">
+                    <span class="ms-1">
+                      <span
+                        v-if="installSizeStatus === 'pending'"
+                        class="inline-flex items-center gap-1 text-fg-subtle"
+                      >
+                        (<span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />)
+                      </span>
+                      <span v-else-if="installSize?.totalSize" dir="ltr">
+                        <span class="text-fg-subtle">(</span
+                        >{{ bytesFormatter.format(installSize.totalSize)
+                        }}<span class="text-fg-subtle">)</span>
+                      </span>
+                      <span v-else class="text-fg-subtle">(-)</span>
                     </span>
-                    <span v-else-if="installSize?.totalSize" dir="ltr">
-                      <span class="text-fg-subtle">(</span
-                      >{{ bytesFormatter.format(installSize.totalSize)
-                      }}<span class="text-fg-subtle">)</span>
-                    </span>
-                    <span v-else class="text-fg-subtle">(-)</span>
-                  </span>
-                </template>
+                  </template>
+                </ClientOnly>
               </dd>
             </div>
 
