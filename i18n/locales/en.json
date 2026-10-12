@@ -849,6 +849,7 @@
           "max": "Max: {value} downloads on {date}",
           "min": "Min: {value} downloads on {date}"
         },
+        "nav_hint": "Use ← → ↑ ↓",
         "copy_alt": {
           "introduction": "Daily downloads heatmap for the {package_name} package. {date_range}.",
           "no_data": "No reliable download data is available for this period.",

@@ -2551,6 +2551,9 @@
                   },
                   "additionalProperties": false
                 },
+                "nav_hint": {
+                  "type": "string"
+                },
                 "copy_alt": {
                   "type": "object",
                   "properties": {

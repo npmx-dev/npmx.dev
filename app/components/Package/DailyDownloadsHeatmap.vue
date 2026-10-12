@@ -618,7 +618,7 @@ function getLegendContent(svg: VueUiHeatmapSvgSlotProps['svg']) {
                 class="text-accent text-xs -mt-5 text-center px-2"
                 aria-hidden="true"
               >
-                {{ $t('compare.packages.line_chart_nav_hint') }}
+                {{ $t('package.trends.downloads_heatmap.nav_hint') }}
               </p>
             </template>
 

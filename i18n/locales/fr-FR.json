@@ -741,6 +741,7 @@
           "max": "Max: {value} téléchargements le {date}",
           "min": "Min: {value} téléchargements le {date}"
         },
+        "nav_hint": "Utilisez ← → ↑ ↓",
         "copy_alt": {
           "introduction": "Carte thermique des téléchargements quotidiens du paquet {package_name}. {date_range}.",
           "no_data": "Aucune donnée de téléchargement fiable n'est disponible pour cette période.",
