@@ -90,9 +90,11 @@ async function loadDownloads() {
   fetchError.value = null
 
   try {
+    const yesterday = addDays(toUtcDay(new Date()), -1)
     const result = await fetchPackageDownloadEvolution(props.packageName, null, {
       granularity: 'day',
-      startDate: toIsoDate(addDays(new Date(), -WEEK_COUNT * DAYS_PER_WEEK)),
+      startDate: toIsoDate(addDays(yesterday, -(WEEK_COUNT * DAYS_PER_WEEK) + 1)),
+      endDate: toIsoDate(yesterday),
     })
 
     if (request === currentRequest) {
