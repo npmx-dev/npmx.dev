@@ -277,8 +277,6 @@ const accent = computed(() => {
     : (colors.value.fgSubtle ?? OKLCH_NEUTRAL_FALLBACK)
 })
 
-const selectedCell = shallowRef<VueUiHeatmapDatapoint | null>(null)
-
 const CELL_SPACING = 1
 
 const mobileBreakpointWidth = 640
@@ -348,12 +346,6 @@ const config = computed<VueUiHeatmapConfig>(() => ({
       },
     },
   },
-  events: {
-    datapointEnter: ({ datapoint }) => {
-      selectedCell.value = datapoint
-    },
-    datapointLeave: () => (selectedCell.value = null),
-  },
   style: {
     fontFamily: 'inherit',
     backgroundColor: colors.value.bg,
@@ -381,7 +373,7 @@ const config = computed<VueUiHeatmapConfig>(() => ({
           underlayer: colors.value.bg,
         },
         spacing: CELL_SPACING,
-        selected: { border: 0, color: 'transparent' },
+        selected: { border: 2, color: colors.value.fg },
       },
       dataLabels: {
         xAxis: {
@@ -684,20 +676,6 @@ function getLegendContent(svg: VueUiHeatmapSvgSlotProps['svg']) {
                   }}
                 </text>
               </template>
-
-              <!-- Selected cell (redrawn on the last layer to be above month wrapping paths) -->
-              <rect
-                v-if="selectedCell"
-                :x="selectedCell.x - CELL_SPACING"
-                :y="selectedCell.y"
-                :width="selectedCell.width"
-                :height="selectedCell.height"
-                :stroke="colors.fg"
-                stroke-width="2"
-                stroke-linejoin="round"
-                :fill="!selectedCell.value ? 'none' : selectedCell.color"
-                class="pointer-events-none"
-              />
 
               <!-- Print watermark-->
               <g
