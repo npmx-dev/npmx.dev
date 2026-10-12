@@ -560,7 +560,7 @@ function getLegendContent(svg: VueUiHeatmapSvgSlotProps['svg']) {
     }
   }
 
-  const x = svg.drawingArea.left + 24
+  const x = svg.drawingArea.left + 25
   return {
     anomalies: {
       marker: {
