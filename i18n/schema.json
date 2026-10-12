@@ -1530,6 +1530,9 @@
             },
             "version_distribution": {
               "type": "string"
+            },
+            "daily_downloads_heatmap": {
+              "type": "string"
             }
           },
           "additionalProperties": false

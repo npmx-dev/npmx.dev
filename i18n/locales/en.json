@@ -508,7 +508,8 @@
       },
       "main_information": "Main Information",
       "trends": "Trends",
-      "version_distribution": "Version Distribution"
+      "version_distribution": "Version Distribution",
+      "daily_downloads_heatmap": "Daily downloads heatmap"
     },
     "skills": {
       "title": "Agent Skills",

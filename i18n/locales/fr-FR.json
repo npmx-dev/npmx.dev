@@ -427,7 +427,8 @@
       "size_tooltip": {
         "unpacked": "{size} taille décompressée (ce paquet)",
         "total": "{size} taille totale décompressée (incluant les {count} dépendances pour linux-x64)"
-      }
+      },
+      "daily_downloads_heatmap": "Carte thermique des téléchargements quotidiens"
     },
     "skills": {
       "title": "Compétences de l'agent",
