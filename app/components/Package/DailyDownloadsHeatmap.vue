@@ -67,7 +67,7 @@ const watermarkColors = computed(() => ({
 
 const WEEK_COUNT = 52
 const DAYS_PER_WEEK = 7
-const WEEK_DAYS = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'] as const
+const WEEK_DAYS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'] as const
 
 function toUtcDay(date: Date): Date {
   return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()))
@@ -136,13 +136,9 @@ const weekdayLabels = computed(() => {
     weekday: 'short',
     timeZone: 'UTC',
   })
-  const today = new Date()
-  const mondayOffset = (today.getUTCDay() + 6) % 7
-  return WEEK_DAYS.map((_, index) => {
-    const date = new Date(today)
-    date.setUTCDate(today.getUTCDate() - mondayOffset + index)
-    return formatter.format(date)
-  })
+  const today = toUtcDay(new Date())
+  const startOffset = today.getUTCDay()
+  return WEEK_DAYS.map((_, index) => formatter.format(addDays(today, index - startOffset)))
 })
 
 const dateRangeFormatter = computed(
@@ -183,8 +179,8 @@ const heatmap = computed(() => {
   }
 
   const today = toUtcDay(new Date())
-  const daysSinceMonday = (today.getUTCDay() + 6) % DAYS_PER_WEEK
-  const currentWeekStart = addDays(today, -daysSinceMonday)
+  const weekStartOffset = today.getUTCDay()
+  const currentWeekStart = addDays(today, -weekStartOffset)
   const firstWeekStart = addDays(currentWeekStart, -(WEEK_COUNT - 1) * DAYS_PER_WEEK)
 
   const weeks = Array.from({ length: WEEK_COUNT }, (_, index) => {
