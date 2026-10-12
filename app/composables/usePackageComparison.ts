@@ -37,6 +37,8 @@ export interface PackageComparisonData {
     count: number
     severity: { critical: number; high: number; moderate: number; low: number }
   }
+  /** Total Socket supply-chain alerts across the tree (undefined = unknown) */
+  supplyChainAlerts?: number
   metadata?: {
     license?: string
     /**
@@ -60,6 +62,16 @@ export interface PackageComparisonData {
   isBinaryOnly?: boolean
   /** Marks this as the "no dependency" column for special display */
   isNoDependency?: boolean
+}
+
+/**
+ * Internal cache entry: the raw dependency-analysis result is kept alongside
+ * the public data so vulnerability counts can be re-derived at render time,
+ * filtered by the user's enabled security sources. It is stripped from the
+ * exposed `packagesData`.
+ */
+interface CachedPackageData extends PackageComparisonData {
+  vulnerabilityTree?: VulnerabilityTreeResult
 }
 
 /**
@@ -88,13 +100,56 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
   const numberFormatter = useNumberFormatter()
   const compactNumberFormatter = useCompactNumberFormatter()
   const bytesFormatter = useBytesFormatter()
+  const { anySourceEnabled: anySecuritySourceEnabled, effectiveSources: effectiveSecuritySources } =
+    useSecuritySources()
   const packages = computed(() => toValue(packageNames))
 
   // Cache of fetched data by package name (source of truth)
-  const cache = shallowRef(new Map<string, PackageComparisonData>())
+  const cache = shallowRef(new Map<string, CachedPackageData>())
 
-  // Derived array in current package order
-  const packagesData = computed(() => packages.value.map(name => cache.value.get(name) ?? null))
+  // Derive display counts from the raw tree, filtered by the user's enabled
+  // security sources. Undefined ("unknown") when the fetch failed, no source
+  // is enabled, or no enabled source produced data - never a misleading zero.
+  function deriveVulnerabilities(
+    tree: VulnerabilityTreeResult | undefined,
+  ): PackageComparisonData['vulnerabilities'] {
+    if (!tree || !anySecuritySourceEnabled.value) return undefined
+    if (noEnabledSecuritySourceHasData(tree.sourceStatus, effectiveSecuritySources.value)) {
+      return undefined
+    }
+    const { total, ...severity } = filterVulnerabilityTreeBySources(
+      tree,
+      effectiveSecuritySources.value,
+    ).totalCounts
+    return { count: total, severity }
+  }
+
+  function deriveSupplyChainAlerts(tree: VulnerabilityTreeResult | undefined): number | undefined {
+    // supply-chain alerts come only from Socket, so a 0 is only meaningful
+    // when Socket actually scanned - otherwise it's "unknown", never a zero
+    if (!tree || !effectiveSecuritySources.value.socket) return undefined
+    if (!securitySourceHasData(tree.sourceStatus, 'socket')) return undefined
+    return filterVulnerabilityTreeBySources(
+      tree,
+      effectiveSecuritySources.value,
+    ).supplyChainPackages.reduce((sum, pkg) => sum + pkg.alerts.length, 0)
+  }
+
+  // Derived array in current package order. The raw tree stays internal to
+  // the cache; consumers only see the derived (source-filtered) counts.
+  const packagesData = computed<(PackageComparisonData | null)[]>(() =>
+    packages.value.map(name => {
+      const data = cache.value.get(name)
+      if (!data) return null
+      const { vulnerabilityTree, ...rest } = data
+      if (data.isNoDependency) return rest
+      return {
+        ...rest,
+        vulnerabilities: deriveVulnerabilities(vulnerabilityTree),
+        supplyChainAlerts: deriveSupplyChainAlerts(vulnerabilityTree),
+      }
+    }),
+  )
 
   const status = shallowRef<'idle' | 'pending' | 'success' | 'error'>('idle')
   const error = shallowRef<Error | null>(null)
@@ -136,7 +191,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
     try {
       // First pass: fetch fast data (package info, downloads, analysis, vulns)
       const results = await Promise.all(
-        namesToFetch.map(async (spec): Promise<PackageComparisonData | null> => {
+        namesToFetch.map(async (spec): Promise<CachedPackageData | null> => {
           try {
             // A spec may include a version (vue@3.6.0)
             const { name, version: requestedVersion } = parsePackageSpec(spec)
@@ -194,16 +249,6 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               exports: versionData?.exports,
             })
 
-            // Vulnerabilities
-            let vulnsTotal: number = 0
-            let vulnsSeverity = { critical: 0, high: 0, moderate: 0, low: 0 }
-
-            if (vulns) {
-              const { total, ...severity } = vulns.totalCounts
-              vulnsTotal = total
-              vulnsSeverity = severity
-            }
-
             return {
               package: {
                 name: pkgData.name,
@@ -215,10 +260,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               directDeps: versionData ? getDependencyCount(versionData) : null,
               installSize: undefined, // Will be filled in second pass
               analysis: analysis ?? undefined,
-              vulnerabilities: {
-                count: vulnsTotal,
-                severity: vulnsSeverity,
-              },
+              vulnerabilityTree: vulns ?? undefined,
               metadata: {
                 license: normalizeLicense(pkgData.license),
                 // Use version-specific publish time, NOT time.modified (which can be
@@ -309,6 +351,21 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
 
     return packagesData.value.map(pkg => {
       if (!pkg) return null
+
+      // Security data has no meaning when no source is enabled - show an
+      // explicit "unavailable" cell instead of real (or zero) counts
+      if (
+        (facet === 'vulnerabilities' || facet === 'supplyChainAlerts') &&
+        !anySecuritySourceEnabled.value &&
+        !pkg.isNoDependency
+      ) {
+        return {
+          raw: null,
+          display: '—',
+          status: 'muted',
+          tooltip: t('security_sources.none_enabled'),
+        }
+      }
 
       return computeFacetValue(
         facet,
@@ -535,6 +592,23 @@ function computeFacetValue(
                 high: sev.high,
               }),
         status: count === 0 ? 'good' : sev.critical > 0 || sev.high > 0 ? 'bad' : 'warning',
+      }
+    }
+    case 'supplyChainAlerts': {
+      if (data.supplyChainAlerts === undefined) {
+        if (isNoDependency)
+          return {
+            raw: 'up-to-you',
+            display: t('compare.facets.values.up_to_you'),
+            status: 'good',
+          }
+        return null
+      }
+      const count = data.supplyChainAlerts
+      return {
+        raw: count,
+        display: count === 0 ? t('compare.facets.values.none') : formatNumber(count),
+        status: count === 0 ? 'good' : 'warning',
       }
     }
     case 'lastUpdated': {

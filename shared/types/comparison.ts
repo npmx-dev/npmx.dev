@@ -11,6 +11,7 @@ export type ComparisonFacet =
   | 'types'
   | 'engines'
   | 'vulnerabilities'
+  | 'supplyChainAlerts'
   | 'lastUpdated'
   | 'license'
   | 'dependencies'
@@ -87,6 +88,9 @@ export const FACET_INFO: Record<ComparisonFacet, Omit<FacetInfo, 'id'>> = {
     category: 'security',
   },
   vulnerabilities: {
+    category: 'security',
+  },
+  supplyChainAlerts: {
     category: 'security',
   },
 }
