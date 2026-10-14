@@ -318,7 +318,7 @@ const sparklineSrc = computed(() => {
           />
           <div
             v-else-if="repoRef?.provider === 'tangled'"
-            class="i-custom:tangled shrink-0 text-fg-muted"
+            class="i-simple-icons:tangled shrink-0 text-fg-muted"
             style="width: 24px; height: 24px"
           />
           <div

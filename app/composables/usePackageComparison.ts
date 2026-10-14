@@ -1,4 +1,3 @@
-import { normalizeLicense } from '#shared/utils/npm'
 import { parsePackageSpec } from '#shared/utils/parse-package-param'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
 
@@ -63,20 +62,6 @@ export interface PackageComparisonData {
 }
 
 /**
- * Resolve a requested version (exact version or dist-tag) against a packument.
- *
- * @returns The concrete version string, or `undefined` if it cannot be resolved.
- */
-function resolveRequestedVersion(pkgData: Packument, requested?: string): string | undefined {
-  if (!requested) return pkgData['dist-tags']?.latest
-  // Allow dist-tags such as "next" or "beta" in addition to exact versions.
-  const fromTag = pkgData['dist-tags']?.[requested]
-  if (fromTag) return fromTag
-  if (pkgData.versions?.[requested]) return requested
-  return undefined
-}
-
-/**
  * Composable for fetching and comparing multiple packages.
  *
  * Each entry may pin a version using the npm spec syntax (e.g. `nuxt`, `react@18.2.0`
@@ -84,7 +69,6 @@ function resolveRequestedVersion(pkgData: Packument, requested?: string): string
  */
 export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
   const { t } = useI18n()
-  const { $npmRegistry } = useNuxtApp()
   const numberFormatter = useNumberFormatter()
   const compactNumberFormatter = useCompactNumberFormatter()
   const bytesFormatter = useBytesFormatter()
@@ -138,13 +122,20 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
       const results = await Promise.all(
         namesToFetch.map(async (spec): Promise<PackageComparisonData | null> => {
           try {
-            // A spec may include a version (vue@3.6.0)
+            // A spec may include a version or dist-tag (vue@3.6.0, nuxt@next)
             const { name, version: requestedVersion } = parsePackageSpec(spec)
 
-            // Fetch basic package info first (required)
-            const { data: pkgData } = await $npmRegistry<Packument>(`/${encodePackageName(name)}`)
-            const resolvedVersion = resolveRequestedVersion(pkgData, requestedVersion)
-            if (!resolvedVersion) return null
+            // Fetch the already-trimmed packument from our own cached route. The
+            // route resolves the requested version (exact version or dist-tag,
+            // defaulting to latest) and returns that version's full manifest as
+            // `requestedVersion`.
+            const pkg = await $fetch<SlimPackument>(
+              `/api/registry/packument/${encodePackageName(name)}`,
+              { params: requestedVersion ? { version: requestedVersion } : undefined },
+            )
+            const versionData = pkg.requestedVersion
+            const resolvedVersion = versionData?.version
+            if (!versionData || !resolvedVersion) return null
 
             // Only target a specific version on the API endpoints when one was
             // explicitly requested
@@ -153,7 +144,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               : ''
 
             // Fetch fast additional data in parallel (optional - failures are ok)
-            const repoInfo = parseRepositoryInfo(pkgData.repository)
+            const repoInfo = parseRepositoryInfo(pkg.repository)
             const isGitHub = repoInfo?.provider === 'github'
             const [downloads, analysis, vulns, likes, ghRepo, ghIssues] = await Promise.all([
               // Download counts are per-package, not per-version.
@@ -182,16 +173,15 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
                     .catch(() => null)
                 : Promise.resolve(null),
             ])
-            const versionData = pkgData.versions[resolvedVersion]
-            const packageSize = versionData?.dist?.unpackedSize
+            const packageSize = versionData.dist?.unpackedSize
 
             // Detect if package is binary-only
             const isBinary = isBinaryOnlyPackage({
-              name: pkgData.name,
-              bin: versionData?.bin,
-              main: versionData?.main,
-              module: versionData?.module,
-              exports: versionData?.exports,
+              name: pkg.name,
+              bin: versionData.bin,
+              main: versionData.main,
+              module: versionData.module,
+              exports: versionData.exports,
             })
 
             // Vulnerabilities
@@ -206,13 +196,13 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
 
             return {
               package: {
-                name: pkgData.name,
+                name: pkg.name,
                 version: resolvedVersion,
                 description: undefined,
               },
               downloads: downloads?.downloads,
               packageSize,
-              directDeps: versionData ? getDependencyCount(versionData) : null,
+              directDeps: getDependencyCount(versionData),
               installSize: undefined, // Will be filled in second pass
               analysis: analysis ?? undefined,
               vulnerabilities: {
@@ -220,13 +210,13 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
                 severity: vulnsSeverity,
               },
               metadata: {
-                license: normalizeLicense(pkgData.license),
+                license: pkg.license,
                 // Use version-specific publish time, NOT time.modified (which can be
                 // updated by metadata changes like maintainer additions)
-                lastUpdated: pkgData.time?.[resolvedVersion],
-                createdAt: pkgData.time?.created,
+                lastUpdated: pkg.time?.[resolvedVersion],
+                createdAt: pkg.time?.created,
                 engines: analysis?.engines,
-                deprecated: versionData?.deprecated,
+                deprecated: versionData.deprecated,
                 github: {
                   stars: typeof ghRepo?.repo?.stars === 'number' ? ghRepo.repo.stars : undefined,
                   forks: typeof ghRepo?.repo?.forks === 'number' ? ghRepo.repo.forks : undefined,
