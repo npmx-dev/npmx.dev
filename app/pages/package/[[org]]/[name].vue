@@ -249,17 +249,6 @@ if (isSpaFallback.value || isHydratingWithServerContent.value) {
 }
 
 const displayVersion = computed(() => pkg.value?.requestedVersion ?? null)
-const versionSecurityMetadata = computed<PackageVersionInfo[]>(() => {
-  if (!pkg.value) return []
-  if (pkg.value.securityVersions?.length) return pkg.value.securityVersions
-
-  return Object.entries(pkg.value.versions).map(([version, metadata]) => ({
-    version,
-    time: pkg.value?.time?.[version],
-    trustStatus: metadata.trustStatus,
-    deprecated: metadata.deprecated,
-  }))
-})
 
 // Process package description
 const pkgDescription = useMarkdown(() => ({
@@ -332,11 +321,7 @@ const deprecationNoticeMessage = useMarkdown(() => ({
   text: deprecationNotice.value?.message ?? '',
 }))
 
-const publishSecurityDowngrade = computed(() => {
-  const currentVersion = displayVersion.value?.version
-  if (!currentVersion) return null
-  return detectPublishSecurityDowngradeForVersion(versionSecurityMetadata.value, currentVersion)
-})
+const publishSecurityDowngrade = computed(() => pkg.value?.publishSecurityDowngrade ?? null)
 
 const installVersionOverride = computed(
   () => publishSecurityDowngrade.value?.trustedVersion ?? null,

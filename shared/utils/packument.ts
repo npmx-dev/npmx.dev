@@ -1,6 +1,7 @@
-import { getTrustLevel, getTrustStatus } from 'packumeta'
+import { getTrustStatus } from 'packumeta'
 import { extractInstallScriptsInfo } from '#shared/utils/install-scripts'
 import { normalizeLicense } from '#shared/utils/npm'
+import { detectSecurityDowngradeForVersion } from '~/utils/publish-security'
 import type {
   Packument,
   SlimPackument,
@@ -50,21 +51,16 @@ export function transformPackument(
     includedVersions.add(requestedVersion)
   }
 
-  // Build security metadata for all versions, but only include in payload
-  // when the package has mixed trust levels (i.e. a downgrade could exist)
-  const securityVersionEntries = Object.entries(pkg.versions).map(([version, metadata]) => {
-    const trustStatus = getTrustStatus(metadata)
-    return {
-      version,
-      time: pkg.time[version],
-      trustStatus,
-      deprecated: metadata.deprecated,
-    }
-  })
-
-  const trustLevels = new Set(securityVersionEntries.map(v => getTrustLevel(v.trustStatus)))
-  const hasMixedTrust = trustLevels.size > 1
-  const securityVersions = hasMixedTrust ? securityVersionEntries : undefined
+  // Computed from the full version history so only the small result is serialized.
+  const securityVersionEntries = Object.entries(pkg.versions).map(([version, metadata]) => ({
+    version,
+    time: pkg.time[version],
+    trustStatus: getTrustStatus(metadata),
+    deprecated: metadata.deprecated,
+  }))
+  const publishSecurityDowngrade = requestedVersion
+    ? detectSecurityDowngradeForVersion(securityVersionEntries, requestedVersion)
+    : null
 
   // Build filtered versions object with install scripts info per version
   const filteredVersions: Record<string, SlimVersion> = {}
@@ -135,6 +131,6 @@ export function transformPackument(
     ...(storybook && { storybook }),
     'requestedVersion': versionData,
     'versions': filteredVersions,
-    'securityVersions': securityVersions,
+    'publishSecurityDowngrade': publishSecurityDowngrade,
   }
 }
