@@ -3,7 +3,7 @@ import {
   extractInstallScriptsInfo,
   getInstallScriptFilePath,
   parseNodeScript,
-} from '~/utils/install-scripts'
+} from '#shared/utils/install-scripts'
 
 describe('extractInstallScriptsInfo', () => {
   it('returns null when no install scripts exist', () => {
