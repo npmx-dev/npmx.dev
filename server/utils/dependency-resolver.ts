@@ -170,8 +170,8 @@ export async function resolveDependencyTree(
             const libc = await fetchNpmPackageVersionLibc(name, version)
             if (libc) versionData = { ...versionData, libc }
           } catch {
-            // The libc restriction is unknown — don't risk pulling in an incompatible build.
-            return
+            // libc lookup failed: skip optional deps, keep required ones.
+            if (optional) return
           }
         }
 

@@ -357,20 +357,30 @@ describe('dependency-resolver', () => {
       expect(mockVersionLibc).not.toHaveBeenCalled()
     })
 
-    it('excludes platform-restricted versions when the libc lookup fails', async () => {
+    it('keeps required deps but skips optional ones when the libc lookup fails', async () => {
       mockAbbreviatedPackument.mockImplementation(async (name: string) => {
         if (name === 'root')
-          return makePackument('root', [{ version: '1.0.0', deps: { 'linux-ok': '^1.0.0' } }])
-        if (name === 'linux-ok')
-          return makePackument('linux-ok', [{ version: '1.0.0', os: ['linux'] }])
+          return makePackument('root', [
+            {
+              version: '1.0.0',
+              deps: { 'linux-required': '^1.0.0' },
+              optionalDeps: { 'linux-optional': '^1.0.0' },
+            },
+          ])
+        if (name === 'linux-required')
+          return makePackument('linux-required', [{ version: '1.0.0', os: ['linux'] }])
+        if (name === 'linux-optional')
+          return makePackument('linux-optional', [{ version: '1.0.0', os: ['linux'] }])
         return null
       })
       mockVersionLibc.mockRejectedValue(new Error('registry unavailable'))
 
       const result = await resolveDependencyTree('root', '1.0.0')
 
-      // An unknown libc restriction could be a musl-only build, so it must not be included.
-      expect(result.has('linux-ok@1.0.0')).toBe(false)
+      // npm installs or fails on a required dep, so it must not silently vanish (with its vulns).
+      expect(result.has('linux-required@1.0.0')).toBe(true)
+      // An unknown libc could be the incompatible build, so optional deps are skipped.
+      expect(result.has('linux-optional@1.0.0')).toBe(false)
     })
 
     it('does not fetch libc when os/cpu already exclude the target platform', async () => {
