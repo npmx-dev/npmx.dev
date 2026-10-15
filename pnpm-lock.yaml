@@ -201,6 +201,9 @@ importers:
       focus-trap:
         specifier: ^8.0.0
         version: 8.2.2
+      forges:
+        specifier: https://pkg.pr.new/danielroe/forges@166
+        version: https://pkg.pr.new/danielroe/forges@166
       gray-matter:
         specifier: 4.0.3
         version: 4.0.3
@@ -6960,6 +6963,11 @@ packages:
     resolution: {integrity: sha512-gIXjKqtFuWEgzFRJA9WCQeSJLZDjgJUOMCMzxtvFq/37KojM1BFGufqsCy0r4qSQmYLsZYMeyRqzIWOMup03sw==}
     engines: {node: '>=14'}
 
+  forges@https://pkg.pr.new/danielroe/forges@166:
+    resolution: {integrity: sha512-2DPF6x5fqUnjfdW5QzB9ThLR/Su+uTsMXnkvEQ9zKEbxBy/nBGTmhH2T2y/fmjO7fg6k02mPQNj94bPlPXS3Qw==, tarball: https://pkg.pr.new/danielroe/forges@166}
+    version: 0.1.0
+    engines: {node: '>=22.18'}
+
   formatly@0.7.0:
     resolution: {integrity: sha512-7CXJtIIA0zy/u12StsYk25qVKxvdLA2ep2sTNxK3ov0mGNIIDqIvAXDSgTnAfDJFsPfWjuz0WjfYSdpvnLA5Tg==}
     engines: {node: '>=18.3.0'}
@@ -10685,6 +10693,9 @@ packages:
 
   vue-component-type-helpers@3.3.12:
     resolution: {integrity: sha512-HwCqmgTfLFskQc4P5TRnbduCMyPat2Ezu0elLWOGn0dD/6BKHP15B5bxce6aDi+E4kblPtru8amIBQzu0Di3qQ==}
+
+  vue-component-type-helpers@3.3.13:
+    resolution: {integrity: sha512-02KCxSmKDhIITjKyJ4QT5csP6L0WoRborLqY/34a40+S9uvMvdNgMV0yVjO3p2Gkz3ZoPmFz/0JsGHacwJYTxw==}
 
   vue-data-ui@3.26.1:
     resolution: {integrity: sha512-qK+AwCeqbfzWEw8c+729SQ3WTXJvdYSGipv2Jw5j+lRjSn0omnLa3KyiJ+jroCuZsTuSZHHY/HYKHe6kFmEZkg==}
@@ -15267,7 +15278,7 @@ snapshots:
       storybook: 10.5.5(@types/react@19.2.17)(prettier@3.9.6)(react@19.2.8)(vite-plus@1.1.0)
       type-fest: 2.19.0
       vue: 3.5.42(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)
-      vue-component-type-helpers: 3.3.12
+      vue-component-type-helpers: 3.3.13
 
   '@swc/helpers@0.5.23':
     dependencies:
@@ -18467,6 +18478,8 @@ snapshots:
     dependencies:
       cross-spawn: 7.0.6
       signal-exit: 4.1.0
+
+  forges@https://pkg.pr.new/danielroe/forges@166: {}
 
   formatly@0.7.0:
     dependencies:
@@ -23281,6 +23294,8 @@ snapshots:
   vue-component-type-helpers@2.2.12: {}
 
   vue-component-type-helpers@3.3.12: {}
+
+  vue-component-type-helpers@3.3.13: {}
 
   vue-data-ui@3.26.1(vue@3.5.42):
     dependencies:

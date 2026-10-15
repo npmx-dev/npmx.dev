@@ -160,6 +160,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               $fetch<PackageLikes>(`/api/social/likes/${encodePackageName(name)}`).catch(
                 () => null,
               ),
+              // TODO(serhalp): refactor to use `forges` once it can read GitHub through ungh.
               isGitHub
                 ? $fetch<{ repo: { stars?: number; forks?: number } }>(
                     `https://ungh.cc/repos/${repoInfo.owner}/${repoInfo.repo}`,
