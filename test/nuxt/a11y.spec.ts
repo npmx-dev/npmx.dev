@@ -1,6 +1,6 @@
 import { DEFAULT_FILTERS, type ColumnConfig, type FilterChip } from '#shared/types/preferences'
-import { mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
-import type { VueWrapper } from '@vue/test-utils'
+import { mountSuspended, registerEndpoint, mockNuxtImport } from '@nuxt/test-utils/runtime'
+import { flushPromises, type VueWrapper } from '@vue/test-utils'
 import 'axe-core'
 import type { AxeResults, RunOptions } from 'axe-core'
 import { afterEach, beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest'
@@ -10,6 +10,8 @@ import { createLikesLeaderboardEntry } from '~~/test/fixtures/likes-leaderboard'
 declare const axe: {
   run: (context: Element, options?: RunOptions) => Promise<AxeResults>
 }
+
+mockNuxtImport('useCharts', original => vi.fn(original))
 
 // Track mounted containers for cleanup
 const mountedContainers: HTMLElement[] = []
@@ -123,6 +125,53 @@ vi.mock('vue-data-ui/vue-ui-xy', () => {
       },
       setup(_, { slots }) {
         return () => h('div', { 'data-test-id': 'vue-ui-xy-stub' }, slots.default?.() ?? [])
+      },
+    }),
+  }
+})
+
+// VueUiHeatmap relies on browser measurements that are not
+// available in isolated a11y tests. Keep the component's SVG slot rendered.
+vi.mock('vue-data-ui/vue-ui-heatmap', () => {
+  return {
+    VueUiHeatmap: defineComponent({
+      name: 'VueUiHeatmap',
+      inheritAttrs: false,
+      props: {
+        dataset: { type: Array, default: () => [] },
+        config: { type: Object, default: () => ({}) },
+      },
+      setup(props, { slots }) {
+        return () => {
+          const rows = props.dataset as Array<{ values: Array<number | null> }>
+          const cells = rows.flatMap((row, rowIndex) =>
+            row.values.map((value, columnIndex) => ({
+              rowIndex,
+              columnIndex,
+              x: 48 + columnIndex * 12,
+              y: 8 + rowIndex * 12,
+              width: 11,
+              height: 11,
+              datapoint: { id: `${rowIndex}-${columnIndex}`, value },
+            })),
+          )
+
+          return h('div', { 'data-test-id': 'vue-ui-heatmap-stub' }, [
+            h(
+              'svg',
+              { 'role': 'img', 'aria-label': 'Daily downloads heatmap', 'viewBox': '0 0 720 160' },
+              slots.svg?.({
+                svg: {
+                  cells,
+                  drawingArea: { left: 40, bottom: 112 },
+                  width: 720,
+                  height: 160,
+                },
+              }) ?? [],
+            ),
+            slots.default?.() ?? [],
+          ])
+        }
       },
     }),
   }
@@ -300,6 +349,7 @@ import HeaderAccountMenuServer from '~/components/Header/AccountMenu.server.vue'
 import ToggleServer from '~/components/Settings/Toggle.server.vue'
 import SearchProviderToggleServer from '~/components/SearchProviderToggle.server.vue'
 import PackageTrendsChart from '~/components/Package/TrendsChart.vue'
+import DailyDownloadsHeatmap from '~/components/Package/DailyDownloadsHeatmap.vue'
 import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
 import FacetScatterChart from '~/components/Compare/FacetScatterChart.vue'
 import PackageTimelineChart from '~/components/Package/TimelineChart.vue'
@@ -1498,6 +1548,51 @@ describe('component accessibility audits', () => {
       // The spinner is decorative, so aria-busy is what conveys the pending state
       expect(button.attributes('aria-busy')).toBe('true')
       expect(button.attributes('aria-label')).toBeTruthy()
+    })
+  })
+
+  describe('DailyDownloadsHeatmap', () => {
+    const useChartsMock = vi.mocked(useCharts)
+    const originalUseCharts = useChartsMock.getMockImplementation()!
+
+    afterEach(() => {
+      useChartsMock.mockImplementation(originalUseCharts)
+    })
+
+    it('should have no accessibility violations when loaded', async () => {
+      const now = new Date()
+
+      const fetchMock = vi.fn().mockResolvedValue([
+        {
+          day: now.toISOString().slice(0, 10),
+          timestamp: now.getTime(),
+          value: 123,
+        },
+      ])
+
+      useChartsMock.mockImplementation(() => ({
+        ...originalUseCharts(),
+        fetchPackageDownloadEvolution: fetchMock,
+      }))
+
+      const wrapper = await mountSuspended(DailyDownloadsHeatmap, {
+        props: { packageName: 'vue' },
+      })
+
+      await flushPromises()
+
+      await vi.waitFor(() => {
+        expect(wrapper.find('[data-test-id="vue-ui-heatmap-stub"]').exists()).toBe(true)
+      })
+
+      expect(fetchMock).toHaveBeenCalledWith(
+        'vue',
+        null,
+        expect.objectContaining({ granularity: 'day' }),
+      )
+
+      const results = await runAxe(wrapper)
+      expect(results.violations).toEqual([])
     })
   })
 
