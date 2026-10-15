@@ -1,8 +1,5 @@
 import { CACHE_MAX_AGE_ONE_HOUR } from '#shared/utils/constants'
-
-interface GitHubSearchResponse {
-  total_count: number
-}
+import { createForgeProvider, toForgeRepoRef } from '~~/shared/utils/forges'
 
 export interface GithubIssueCountResponse {
   owner: string
@@ -22,19 +19,26 @@ export default defineCachedEventHandler(
       })
     }
 
-    const query = `repo:${owner}/${repo} is:issue is:open`
-    const url = `https://api.github.com/search/issues?q=${encodeURIComponent(query)}&per_page=1`
+    const ref = { provider: 'github' as const, owner, repo }
+    const provider = createForgeProvider(ref)
+
+    if (!provider) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'Failed to fetch issue count from GitHub',
+      })
+    }
 
     try {
-      const data = await fetchGitHubWithRetries<GitHubSearchResponse>(url, {
-        timeout: 10000,
+      // The search API reports the total, so a one-item page is enough.
+      const page = await provider.search.threadsPage({
+        repo: toForgeRepoRef(ref),
+        kind: 'issue',
+        state: 'open',
+        perPage: 1,
       })
 
-      return {
-        owner,
-        repo,
-        issues: typeof data?.total_count === 'number' ? data.total_count : null,
-      }
+      return { owner, repo, issues: page.total ?? null }
     } catch {
       throw createError({
         statusCode: 500,

@@ -17,7 +17,8 @@ import {
 import matter from 'gray-matter'
 import { marked } from 'marked'
 import { hasProtocol } from 'ufo'
-import { convertBlobOrFileToRawUrl, type RepositoryInfo } from '#shared/utils/git-providers'
+import { convertBlobOrFileToRawUrl } from '#shared/utils/forges'
+import type { RepositoryInfo } from '#shared/utils/git-providers'
 import { decodeHtmlEntities, slugify } from '#shared/utils/html'
 import { convertToEmoji } from '#shared/utils/emoji'
 import { toProxiedImageUrl } from '#server/utils/image-proxy'
@@ -280,9 +281,7 @@ function resolveImageUrl(url: string, packageName: string, repoInfo?: Repository
     return url
   }
   const resolved = resolveUrl(url, packageName, repoInfo)
-  const rawUrl = repoInfo?.provider
-    ? convertBlobOrFileToRawUrl(resolved, repoInfo.provider)
-    : resolved
+  const rawUrl = repoInfo?.provider ? convertBlobOrFileToRawUrl(resolved, repoInfo) : resolved
   const { imageProxySecret } = useRuntimeConfig()
   return toProxiedImageUrl(rawUrl, imageProxySecret)
 }
