@@ -1778,7 +1778,9 @@
       "p1": "Beklager, endringsloggen for {package} kunne ikke lastes",
       "p2": "Prøv igjen senere eller {viewon}"
     },
-    "rate_limit_ungh": "Beklager, GitHubs rate limit er nådd, prøv igjen om et øyeblikk",
-    "version_unavailable": "Den forespurte versjonen er ikke tilgjengelig."
+    "version_unavailable": "Den forespurte versjonen er ikke tilgjengelig.",
+    "ungh": {
+      "rate_limit": "Beklager, GitHubs rate limit er nådd, prøv igjen om et øyeblikk"
+    }
   }
 }

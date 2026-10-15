@@ -1841,7 +1841,9 @@
       "p1": "{package} のchangelogを読み込めませんでした",
       "p2": "後でもう一度試すか、{viewon} を確認してください"
     },
-    "rate_limit_ungh": "GitHubのレート制限に達しました。しばらくしてから再度試してください。",
-    "version_unavailable": "リクエストされたバージョンは利用できません。"
+    "version_unavailable": "リクエストされたバージョンは利用できません。",
+    "ungh": {
+      "rate_limit": "GitHubのレート制限に達しました。しばらくしてから再度試してください。"
+    }
   }
 }

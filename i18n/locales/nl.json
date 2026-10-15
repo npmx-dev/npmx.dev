@@ -1922,8 +1922,12 @@
       "p1": "Sorry, de wijzigingenoverzicht van {package} kon niet geladen worden.",
       "p2": "Probeer later opnieuw of {viewon}"
     },
-    "rate_limit_ungh": "Sorry, de opvraaglimiet (rate limit) van GitHub is bereikt. Probeer het over een ogenblik opnieuw.",
     "version_unavailable": "De gevraagde versie is niet beschikbaar.",
-    "copy_as_markdown": "Kopieer wijzigingen als Markdown"
+    "copy_as_markdown": "Kopieer wijzigingen als Markdown",
+    "ungh": {
+      "rate_limit": "Sorry, de opvraaglimiet (rate limit) van GitHub is bereikt. Probeer het later opnieuw.",
+      "hint": "U kunt helpen de opvraaglimiet te verhogen door de UNGH GitHub-app te installeren.",
+      "install": "Installeer UNGH GitHub-app"
+    }
   }
 }

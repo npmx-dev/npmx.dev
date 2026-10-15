@@ -1778,7 +1778,9 @@
       "p1": "Omlouváme se, seznam změn pro {package} nelze načíst",
       "p2": "Zkuste to prosím později nebo {viewon}"
     },
-    "rate_limit_ungh": "Omlouváme se, byl dosažen limit GitHubu, zkuste to prosím za chvíli znovu",
-    "version_unavailable": "Omlouváme se, požadovaná verze není k dispozici."
+    "version_unavailable": "Omlouváme se, požadovaná verze není k dispozici.",
+    "ungh": {
+      "rate_limit": "Omlouváme se, byl dosažen limit GitHubu, zkuste to prosím za chvíli znovu"
+    }
   }
 }

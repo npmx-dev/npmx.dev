@@ -1849,7 +1849,9 @@
       "p1": "Lo sentimos, no se pudo cargar el registro de cambios de {package}",
       "p2": "Inténtalo de nuevo más tarde o {viewon}"
     },
-    "rate_limit_ungh": "Lo sentimos, se alcanzó el límite de tasa de GitHub, inténtalo de nuevo en un momento",
-    "version_unavailable": "La versión solicitada no está disponible."
+    "version_unavailable": "La versión solicitada no está disponible.",
+    "ungh": {
+      "rate_limit": "Lo sentimos, se alcanzó el límite de tasa de GitHub, inténtalo de nuevo en un momento"
+    }
   }
 }

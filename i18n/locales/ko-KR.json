@@ -1874,8 +1874,10 @@
       "p1": "죄송합니다. {package}의 변경 기록을 불러올 수 없습니다",
       "p2": "나중에 다시 시도하거나 {viewon}"
     },
-    "rate_limit_ungh": "죄송합니다. GitHub 요청 제한에 도달했습니다. 잠시 후 다시 시도하세요",
     "version_unavailable": "요청한 버전을 사용할 수 없습니다.",
-    "copy_as_markdown": "변경 로그를 Markdown으로 복사"
+    "copy_as_markdown": "변경 로그를 Markdown으로 복사",
+    "ungh": {
+      "rate_limit": "죄송합니다. GitHub 요청 제한에 도달했습니다. 잠시 후 다시 시도하세요"
+    }
   }
 }

@@ -1728,7 +1728,9 @@
       "p1": "Leider konnte das Änderungsprotokoll für {package} nicht geladen werden",
       "p2": "Bitte versuche es später noch einmal oder {viewon}"
     },
-    "rate_limit_ungh": "Entschuldigung, die Zugriffsbeschränkung von GitHub wurde erreicht. Bitte versuche es in einem Moment erneut.",
-    "version_unavailable": "Die gewünschte Version ist nicht verfügbar."
+    "version_unavailable": "Die gewünschte Version ist nicht verfügbar.",
+    "ungh": {
+      "rate_limit": "Entschuldigung, die Zugriffsbeschränkung von GitHub wurde erreicht. Bitte versuche es in einem Moment erneut."
+    }
   }
 }
