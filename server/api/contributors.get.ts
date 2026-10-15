@@ -1,3 +1,7 @@
+import type { ForgeProvider, RepoRef as ForgeRepoRef } from 'forges'
+import type { RepoRef } from '~~/shared/utils/git-providers'
+import { createForgeProvider, toForgeRepoRef } from '~~/shared/utils/forges'
+
 export type Role = 'steward' | 'maintainer' | 'contributor' | 'core'
 
 export interface GitHubContributor {
@@ -10,8 +14,6 @@ export interface GitHubContributor {
   sponsors_url: string | null
 }
 
-type GitHubAPIContributor = Omit<GitHubContributor, 'role' | 'sponsors_url'>
-
 // Fallback when no GitHub token is available (e.g. preview environments).
 // Only stewards are shown as maintainers; everyone else is a contributor.
 const FALLBACK_STEWARDS = new Set(['danielroe', 'patak-cat'])
@@ -22,39 +24,44 @@ interface TeamMembers {
   maintainer: Set<string>
 }
 
-async function fetchTeamMembers(token: string): Promise<TeamMembers | null> {
-  const teams: Record<keyof TeamMembers, string> = {
-    steward: 'stewards',
-    core: 'core',
-    maintainer: 'maintainers',
+const ORG = 'npmx-dev'
+
+const TEAM_SLUGS: Record<keyof TeamMembers, string> = {
+  steward: 'stewards',
+  core: 'core',
+  maintainer: 'maintainers',
+}
+
+const orgRef: ForgeRepoRef = {
+  forge: 'github',
+  instance: 'github.com',
+  owner: ORG,
+  name: '',
+  kind: 'namespace',
+}
+const repoRef: RepoRef = { provider: 'github', owner: ORG, repo: 'npmx.dev' }
+
+async function collect<T>(iterable: AsyncIterable<T>): Promise<T[]> {
+  const items: T[] = []
+  for await (const item of iterable) {
+    items.push(item)
   }
+  return items
+}
 
+async function fetchTeamMembers(provider: ForgeProvider): Promise<TeamMembers | null> {
   try {
-    const result: TeamMembers = { steward: new Set(), maintainer: new Set(), core: new Set() }
-
-    for (const [role, slug] of Object.entries(teams) as [keyof TeamMembers, string][]) {
-      const response = await fetch(
-        `https://api.github.com/orgs/npmx-dev/teams/${slug}/members?per_page=100`,
-        {
-          headers: {
-            'Accept': 'application/vnd.github.v3+json',
-            'Authorization': `Bearer ${token}`,
-            'User-Agent': 'npmx',
-          },
-        },
-      )
-
-      if (!response.ok) {
-        console.warn(`Failed to fetch ${slug} team members: ${response.status}`)
-        return null
-      }
-
-      const members = (await response.json()) as { login: string }[]
-      for (const member of members) {
-        result[role].add(member.login)
+    const result: TeamMembers = { steward: new Set(), core: new Set(), maintainer: new Set() }
+    for (const [role, slug] of Object.entries(TEAM_SLUGS) as [keyof TeamMembers, string][]) {
+      for await (const actor of provider.orgs.teamMembers({
+        forge: 'github',
+        instance: 'github.com',
+        org: orgRef,
+        slug,
+      })) {
+        result[role].add(actor.login)
       }
     }
-
     return result
   } catch (error) {
     console.warn('Failed to fetch team members from GitHub:', error)
@@ -62,52 +69,18 @@ async function fetchTeamMembers(token: string): Promise<TeamMembers | null> {
   }
 }
 
-/**
- * Batch-query GitHub GraphQL API to check which users have sponsors enabled.
- * Returns a Set of logins that have a sponsors listing.
- */
-async function fetchSponsorable(token: string, logins: string[]): Promise<Set<string>> {
-  if (logins.length === 0) return new Set()
-
-  // Build aliased GraphQL query: user0: user(login: "x") { hasSponsorsListing login }
-  const fragments = logins.map(
-    (login, i) => `user${i}: user(login: "${login}") { hasSponsorsListing login }`,
-  )
-  const query = `{ ${fragments.join('\n')} }`
-
+async function fetchSponsorable(provider: ForgeProvider, logins: string[]): Promise<Set<string>> {
+  const sponsorable = new Set<string>()
   try {
-    const response = await fetch('https://api.github.com/graphql', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        'User-Agent': 'npmx',
-      },
-      body: JSON.stringify({ query }),
-    })
-
-    if (!response.ok) {
-      console.warn(`Failed to fetch sponsors info: ${response.status}`)
-      return new Set()
-    }
-
-    const json = (await response.json()) as {
-      data?: Record<string, { login: string; hasSponsorsListing: boolean } | null>
-    }
-
-    const sponsorable = new Set<string>()
-    if (json.data) {
-      for (const user of Object.values(json.data)) {
-        if (user?.hasSponsorsListing) {
-          sponsorable.add(user.login)
-        }
+    for (const login of logins) {
+      if (await provider.users.sponsorable(login)) {
+        sponsorable.add(login)
       }
     }
-    return sponsorable
   } catch (error) {
     console.warn('Failed to fetch sponsors info:', error)
-    return new Set()
   }
+  return sponsorable
 }
 
 function getRoleInfo(login: string, teams: TeamMembers): { role: Role; order: number } {
@@ -120,76 +93,48 @@ function getRoleInfo(login: string, teams: TeamMembers): { role: Role; order: nu
 export default defineCachedEventHandler(
   async (): Promise<GitHubContributor[]> => {
     const githubToken = useRuntimeConfig().github.orgToken
+    const provider = createForgeProvider(repoRef, { token: githubToken })
 
-    // Fetch team members dynamically if token is available; otherwise, use fallback
-    const teams: TeamMembers = await (async () => {
-      if (githubToken) {
-        const fetched = await fetchTeamMembers(githubToken)
-        if (fetched) return fetched
-      }
-      return { steward: FALLBACK_STEWARDS, maintainer: new Set<string>(), core: new Set<string>() }
-    })()
-
-    const allContributors: GitHubAPIContributor[] = []
-    let page = 1
-    const perPage = 100
-
-    while (true) {
-      const response = await fetch(
-        `https://api.github.com/repos/npmx-dev/npmx.dev/contributors?per_page=${perPage}&page=${page}`,
-        {
-          headers: {
-            'Accept': 'application/vnd.github.v3+json',
-            'User-Agent': 'npmx',
-            ...(githubToken && { Authorization: `Bearer ${githubToken}` }),
-          },
-        },
-      )
-
-      if (!response.ok) {
-        throw createError({
-          statusCode: response.status,
-          message: 'Failed to fetch contributors',
-        })
-      }
-
-      const contributors = (await response.json()) as GitHubAPIContributor[]
-
-      if (contributors.length === 0) {
-        break
-      }
-
-      allContributors.push(...contributors)
-
-      if (contributors.length < perPage) {
-        break
-      }
-
-      page++
+    if (!provider) {
+      throw createError({ statusCode: 500, message: 'Failed to read contributors' })
     }
 
-    const filtered = allContributors.filter(c => !c.login.includes('[bot]'))
+    // Fetch team members dynamically if token is available; otherwise, use fallback
+    const fallback: TeamMembers = {
+      steward: FALLBACK_STEWARDS,
+      maintainer: new Set(),
+      core: new Set(),
+    }
+    const teams: TeamMembers = githubToken
+      ? ((await fetchTeamMembers(provider)) ?? fallback)
+      : fallback
 
-    // Identify maintainers (stewards + maintainers) and check their sponsors status
-    const maintainerLogins = filtered
+    const contributors = (
+      await collect(provider.repos.contributors(toForgeRepoRef(repoRef)))
+    ).filter(c => c.actor?.login && !c.actor.login.includes('[bot]'))
+
+    const maintainerLogins = contributors
+      .map(c => c.actor!.login)
       .filter(
-        c => teams.steward.has(c.login) || teams.core.has(c.login) || teams.maintainer.has(c.login),
+        login => teams.steward.has(login) || teams.core.has(login) || teams.maintainer.has(login),
       )
-      .map(c => c.login)
 
     const sponsorable = githubToken
-      ? await fetchSponsorable(githubToken, maintainerLogins)
+      ? await fetchSponsorable(provider, maintainerLogins)
       : new Set<string>()
 
-    return filtered
+    return contributors
       .map(c => {
-        const { role, order } = getRoleInfo(c.login, teams)
-        const sponsors_url = sponsorable.has(c.login)
-          ? `https://github.com/sponsors/${c.login}`
-          : null
-        const contributor = Object.assign(c, { role, sponsors_url }) as GitHubContributor & {
-          sponsors_url: string | null
-          role: Role
+        const login = c.actor!.login
+        const { role, order } = getRoleInfo(login, teams)
+        const contributor: GitHubContributor = {
+          login,
+          id: Number(c.actor!.id),
+          avatar_url: c.actor!.avatarUrl ?? '',
+          html_url: c.actor!.url ?? `https://github.com/${login}`,
+          contributions: c.contributions,
+          role,
+          sponsors_url: sponsorable.has(login) ? `https://github.com/sponsors/${login}` : null,
         }
         return { contributor, order }
       })
