@@ -13,6 +13,51 @@ export const fetchNpmPackage = defineCachedFunction(
   },
 )
 
+/** Registry media type for the abbreviated ("install") packument. */
+const NPM_INSTALL_V1 = 'application/vnd.npm.install-v1+json'
+
+/**
+ * Fetch abbreviated packument metadata — the much smaller document `npm install` uses.
+ * Only install-relevant fields are present; use `fetchNpmPackage` when full-document fields
+ * (time, license, readme, …) are needed. Kept in a separate cache namespace from
+ * `fetchNpmPackage` because the shapes differ.
+ */
+export const fetchNpmPackageAbbreviated = defineCachedFunction(
+  async (name: string): Promise<AbbreviatedPackument> => {
+    const encodedName = encodePackageName(name)
+    return await $fetch<AbbreviatedPackument>(`${NPM_REGISTRY}/${encodedName}`, {
+      headers: { accept: NPM_INSTALL_V1 },
+    })
+  },
+  {
+    maxAge: CACHE_MAX_AGE_FIVE_MINUTES,
+    swr: true,
+    name: 'npm-package-abbreviated',
+    getKey: (name: string) => name,
+  },
+)
+
+/**
+ * The registry omits `libc` from abbreviated metadata, so read it from a single version's
+ * manifest (small). Only needed for platform-restricted versions — e.g. to tell glibc and
+ * musl builds of the same os/cpu apart.
+ */
+export const fetchNpmPackageVersionLibc = defineCachedFunction(
+  async (name: string, version: string): Promise<string[] | undefined> => {
+    const encodedName = encodePackageName(name)
+    const manifest = await $fetch<{ libc?: string[] }>(
+      `${NPM_REGISTRY}/${encodedName}/${encodeURIComponent(version)}`,
+    )
+    return manifest.libc
+  },
+  {
+    maxAge: CACHE_MAX_AGE_ONE_DAY,
+    swr: true,
+    name: 'npm-version-libc',
+    getKey: (name: string, version: string) => `${name}@${version}`,
+  },
+)
+
 /**
  * Get the latest version of a package using fast-npm-meta API.
  * Falls back to full packument if fast-npm-meta fails.
@@ -24,9 +69,9 @@ export async function fetchLatestVersionWithFallback(name: string): Promise<stri
   const version = await fetchLatestVersion(name)
   if (version) return version
 
-  // Fallback to full packument (also cached)
+  // Fallback to abbreviated packument (also cached)
   try {
-    const packument = await fetchNpmPackage(name)
+    const packument = await fetchNpmPackageAbbreviated(name)
     return packument['dist-tags']?.latest ?? null
   } catch {
     return null
@@ -45,7 +90,7 @@ export async function resolveVersionConstraint(
   constraint: string,
 ): Promise<string | null> {
   try {
-    const packument = await fetchNpmPackage(packageName)
+    const packument = await fetchNpmPackageAbbreviated(packageName)
     const versions = Object.keys(packument.versions)
     return findMaxSatisfying(versions, constraint)
   } catch {
