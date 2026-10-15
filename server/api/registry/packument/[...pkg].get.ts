@@ -1,20 +1,14 @@
-import {
-  CACHE_MAX_AGE_FIVE_MINUTES,
-  ERROR_NPM_FETCH_FAILED,
-  NPM_REGISTRY,
-} from '#shared/utils/constants'
-import { encodePackageName } from '#shared/utils/npm'
 import { transformPackument } from '#shared/utils/packument'
+import { CACHE_MAX_AGE_FIVE_MINUTES, ERROR_NPM_FETCH_FAILED } from '#shared/utils/constants'
 
 /**
  * Returns an already-trimmed ("slim") packument for a package page render.
  *
- * Fetches the full packument from the npm registry, runs the same
- * `transformPackument` the app uses, and returns only the small subset the
- * page needs. This means:
- * - The full packument is fetched and parsed at most once per cache period
- *   and is never stored whole (only the trimmed result is cached).
- * - Client-side navigation downloads a few KB instead of potentially tens of MB.
+ * Fetches the full packument via `fetchNpmPackage` so a server-rendered package
+ * page shares a single (Nitro-cached) download of the potentially huge document
+ * with the other server routes that need it (license-change, readme, ...). Only
+ * the small trimmed subset is returned and cached here, so clients download a
+ * few KB instead of potentially tens of MB.
  *
  * The transform depends on the requested version, so the `version` query
  * parameter is part of the cache key. The value may be an exact version or a
@@ -38,8 +32,7 @@ export default defineCachedEventHandler(
     const requestedVersion = typeof rawVersion === 'string' ? rawVersion : null
 
     try {
-      const encodedName = encodePackageName(packageName)
-      const packument = await $fetch<Packument>(`${NPM_REGISTRY}/${encodedName}`)
+      const packument = await fetchNpmPackage(packageName)
 
       // Resolve the requested version (an exact version or a dist-tag) to a
       // concrete version so the transform includes that version's full

@@ -1,11 +1,9 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createError, type H3Event } from 'h3'
-import { NPM_REGISTRY } from '#shared/utils/constants'
-import { encodePackageName } from '#shared/utils/npm'
 import type { Packument, PackumentVersion } from '#shared/types/npm-registry'
 
-const npmFetchMock = vi.fn()
-vi.stubGlobal('$fetch', npmFetchMock)
+const fetchNpmPackageMock = vi.fn()
+vi.stubGlobal('fetchNpmPackage', fetchNpmPackageMock)
 vi.stubGlobal('defineCachedEventHandler', (fn: Function) => fn)
 vi.stubGlobal('CACHE_MAX_AGE_FIVE_MINUTES', 300)
 
@@ -62,7 +60,7 @@ describe('packument API', () => {
 
   it('defaults to the latest dist-tag when no version is requested', async () => {
     routerParam = 'my-pkg'
-    npmFetchMock.mockResolvedValue(
+    fetchNpmPackageMock.mockResolvedValue(
       makePackument({
         versions: { '1.0.0': {}, '2.0.0': {} },
         time: { '1.0.0': '2024-01-01T00:00:00Z', '2.0.0': '2025-01-01T00:00:00Z' },
@@ -78,7 +76,7 @@ describe('packument API', () => {
   it('resolves an exact version', async () => {
     routerParam = 'my-pkg'
     queryParams = { version: '1.0.0' }
-    npmFetchMock.mockResolvedValue(
+    fetchNpmPackageMock.mockResolvedValue(
       makePackument({
         versions: { '1.0.0': {}, '2.0.0': {} },
         time: { '1.0.0': '2024-01-01T00:00:00Z', '2.0.0': '2025-01-01T00:00:00Z' },
@@ -93,7 +91,7 @@ describe('packument API', () => {
   it('resolves a dist-tag to its concrete version', async () => {
     routerParam = 'my-pkg'
     queryParams = { version: 'next' }
-    npmFetchMock.mockResolvedValue(
+    fetchNpmPackageMock.mockResolvedValue(
       makePackument({
         versions: { '1.0.0': {}, '2.0.0-beta.1': {} },
         time: {
@@ -111,7 +109,7 @@ describe('packument API', () => {
   it('includes no requestedVersion for an unresolvable version', async () => {
     routerParam = 'my-pkg'
     queryParams = { version: '9.9.9' }
-    npmFetchMock.mockResolvedValue(
+    fetchNpmPackageMock.mockResolvedValue(
       makePackument({
         versions: { '1.0.0': {} },
         time: { '1.0.0': '2024-01-01T00:00:00Z' },
@@ -123,9 +121,9 @@ describe('packument API', () => {
     expect(result.requestedVersion).toBeNull()
   })
 
-  it('fetches the encoded package name from the npm registry', async () => {
+  it('fetches the decoded package name via fetchNpmPackage', async () => {
     routerParam = '%40scope%2Fmy-pkg'
-    npmFetchMock.mockResolvedValue(
+    fetchNpmPackageMock.mockResolvedValue(
       makePackument({
         versions: { '1.0.0': {} },
         time: { '1.0.0': '2024-01-01T00:00:00Z' },
@@ -134,15 +132,13 @@ describe('packument API', () => {
     )
 
     await handler(fakeEvent)
-    expect(npmFetchMock).toHaveBeenCalledWith(
-      `${NPM_REGISTRY}/${encodePackageName('@scope/my-pkg')}`,
-    )
+    expect(fetchNpmPackageMock).toHaveBeenCalledWith('@scope/my-pkg')
   })
 
-  it('calls handleApiError when the registry fetch fails', async () => {
+  it('calls handleApiError when the packument fetch fails', async () => {
     routerParam = 'my-pkg'
     const error = new Error('upstream failure')
-    npmFetchMock.mockRejectedValue(error)
+    fetchNpmPackageMock.mockRejectedValue(error)
 
     await expect(handler(fakeEvent)).rejects.toMatchObject({ statusCode: 502 })
     expect(handleApiErrorMock).toHaveBeenCalledWith(error, {
