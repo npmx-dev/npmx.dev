@@ -34,10 +34,8 @@ export function useRepoMeta(repositoryUrl: MaybeRefOrGetter<string | null | unde
     // "unresolved data" and "zero value"
     stars: computed(() => meta.value?.stars ?? 0),
     forks: computed(() => meta.value?.forks ?? 0),
-    watchers: computed(() => meta.value?.watchers ?? 0),
 
     forksLink: computed(() => meta.value?.links.forks ?? null),
-    watchersLink: computed(() => meta.value?.links.watchers ?? null),
     repoLink: computed(() => meta.value?.links.repo ?? null),
 
     pending,

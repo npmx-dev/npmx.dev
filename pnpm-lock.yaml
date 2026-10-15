@@ -198,6 +198,9 @@ importers:
       focus-trap:
         specifier: ^8.0.0
         version: 8.2.2
+      forges:
+        specifier: https://pkg.pr.new/danielroe/forges@beed311
+        version: https://pkg.pr.new/danielroe/forges@beed311
       gray-matter:
         specifier: 4.0.3
         version: 4.0.3
@@ -6989,6 +6992,11 @@ packages:
   foreground-child@3.3.1:
     resolution: {integrity: sha512-gIXjKqtFuWEgzFRJA9WCQeSJLZDjgJUOMCMzxtvFq/37KojM1BFGufqsCy0r4qSQmYLsZYMeyRqzIWOMup03sw==}
     engines: {node: '>=14'}
+
+  forges@https://pkg.pr.new/danielroe/forges@beed311:
+    resolution: {integrity: sha512-P9WfBsvKYYgDYChL0v3iL5aAajPLIIcDbADejgX1Xrhk+UfFTgV6mp3D6sqrxitlkarQIGmJFFMNBd31BtMubA==, tarball: https://pkg.pr.new/danielroe/forges@beed311}
+    version: 0.3.1
+    engines: {node: '>=22.18'}
 
   formatly@0.11.4:
     resolution: {integrity: sha512-TeCC10lP8KCgoX+Fe5lryILIT0/Dy+nP0OSVnsuB5CwXoLuOdqxCYlPFF1inR8S/zTy1ec7TjhS2TeRKWzzImA==}
@@ -18747,6 +18755,8 @@ snapshots:
     dependencies:
       cross-spawn: 7.0.6
       signal-exit: 4.1.0
+
+  forges@https://pkg.pr.new/danielroe/forges@beed311: {}
 
   formatly@0.11.4:
     dependencies:

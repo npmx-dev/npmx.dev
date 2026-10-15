@@ -1,18 +1,21 @@
+import type { ProviderId } from '~~/shared/utils/git-providers'
 import type { MarkdownRepoInfo } from '~~/server/utils/changelog/markdown'
 import { describe, expect, it, vi, beforeAll, test } from 'vite-plus/test'
-import {
-  createGithubRepoInfo,
-  createGitLabRepoInfo,
-  createGiteeRepoInfo,
-  createBitbucketRepoInfo,
-  createForgejoRepoInfo,
-  createGiteaRepoInfo,
-  createSourcehutRepoInfo,
-  createTangledRepoInfo,
-} from '~~/server/utils/changelog/mdRepoInfo'
+import { createRepoInfo } from '~~/server/utils/changelog/mdRepoInfo'
 
 const TEST_OWNER = 'test-owner'
 const TEST_REPO = 'test-repo'
+
+function repoInfo(
+  provider: ProviderId,
+  owner: string,
+  repo: string,
+  path?: string,
+): MarkdownRepoInfo {
+  const info = createRepoInfo({ provider, owner, repo }, path)
+  if (!info) throw new Error(`no repo info for ${provider}`)
+  return info
+}
 // testing changelog specific needs, others things are tested at ../readme.spec.ts
 
 // some tests test with all git providers, other only the logic of the changelog markdown parser
@@ -35,11 +38,11 @@ beforeAll(() => {
 const { changelogRenderer } = await import('#server/utils/changelog/markdown')
 
 function changelogMdinfo(): MarkdownRepoInfo {
-  return createGithubRepoInfo(TEST_OWNER, TEST_REPO)
+  return repoInfo('github', TEST_OWNER, TEST_REPO)
 }
 
 function changelogMdInfoWithPath() {
-  return createGithubRepoInfo(TEST_OWNER, TEST_REPO, 'packages/test/changelog.md')
+  return repoInfo('github', TEST_OWNER, TEST_REPO, 'packages/test/changelog.md')
 }
 
 describe('URL Resolution', () => {
@@ -570,7 +573,7 @@ describe('Turn plaintext #isssue/#pr, !pr, @account & commmit into links', () =>
     })
 
     test('gitlab', async () => {
-      const info = createGitLabRepoInfo('gitlab.com', TEST_OWNER, TEST_REPO)
+      const info = repoInfo('gitlab', TEST_OWNER, TEST_REPO)
       const renderer = await changelogRenderer(info)
       // text from date-fns v4.3.0
       const markdown = `- Fixed pt locale first day of week to be Sunday. See #4195 by @ImRodry.
@@ -586,7 +589,7 @@ describe('Turn plaintext #isssue/#pr, !pr, @account & commmit into links', () =>
     })
 
     test('codeberg/forgejo', async () => {
-      const info = createForgejoRepoInfo('codeberg.org', TEST_OWNER, TEST_REPO)
+      const info = repoInfo('codeberg', TEST_OWNER, TEST_REPO)
       const renderer = await changelogRenderer(info)
       // text from date-fns v4.3.0
       const markdown = `- Fixed pt locale first day of week to be Sunday. See #4195 by @ImRodry.
@@ -602,7 +605,7 @@ describe('Turn plaintext #isssue/#pr, !pr, @account & commmit into links', () =>
     })
 
     test('tangled', async () => {
-      const info = createTangledRepoInfo(TEST_OWNER, TEST_REPO)
+      const info = repoInfo('tangled', TEST_OWNER, TEST_REPO)
       const renderer = await changelogRenderer(info)
       // text from date-fns v4.3.0
       const markdown = `- Fixed pt locale first day of week to be Sunday. See #4195 by @ImRodry.
@@ -618,7 +621,7 @@ describe('Turn plaintext #isssue/#pr, !pr, @account & commmit into links', () =>
     })
 
     test('gitea', async () => {
-      const info = createGiteaRepoInfo('gitea.com', TEST_OWNER, TEST_REPO)
+      const info = repoInfo('gitea', TEST_OWNER, TEST_REPO)
       const renderer = await changelogRenderer(info)
       // text from date-fns v4.3.0
       const markdown = `- Fixed pt locale first day of week to be Sunday. See #4195 by @ImRodry.
@@ -635,7 +638,7 @@ describe('Turn plaintext #isssue/#pr, !pr, @account & commmit into links', () =>
 
     test('bitbucket', async () => {
       // for bitbucket the support is only pull requests. Jira & accounts are external and not offline resolveable
-      const info = createBitbucketRepoInfo(TEST_OWNER, TEST_REPO)
+      const info = repoInfo('bitbucket', TEST_OWNER, TEST_REPO)
       const renderer = await changelogRenderer(info)
       // text from date-fns v4.3.0
       const markdown = `- Fixed pt locale first day of week to be Sunday. See #4195 by @ImRodry.
@@ -651,7 +654,7 @@ describe('Turn plaintext #isssue/#pr, !pr, @account & commmit into links', () =>
     })
 
     test('sourcehut', async () => {
-      const info = createSourcehutRepoInfo(`~${TEST_OWNER}`, TEST_REPO)
+      const info = repoInfo('sourcehut', `~${TEST_OWNER}`, TEST_REPO)
       const renderer = await changelogRenderer(info)
       // text from date-fns v4.3.0
       const markdown = `- Fixed pt locale first day of week to be Sunday. See #4195 by ~ImRodry.
@@ -667,7 +670,7 @@ describe('Turn plaintext #isssue/#pr, !pr, @account & commmit into links', () =>
     })
 
     test('gitee', async () => {
-      const info = createGiteeRepoInfo('test-owner', 'test-repo')
+      const info = repoInfo('gitee', 'test-owner', 'test-repo')
       const renderer = await changelogRenderer(info)
       // text from date-fns v4.3.0
       const markdown = `- Fixed pt locale first day of week to be Sunday. See #IKF9K6 by @ImRodry
@@ -792,7 +795,7 @@ describe('Turn plaintext #isssue/#pr, !pr, @account & commmit into links', () =>
     })
 
     test('gitlab', async () => {
-      const info = createGitLabRepoInfo('gitlab.com', TEST_OWNER, TEST_REPO)
+      const info = repoInfo('gitlab', TEST_OWNER, TEST_REPO)
       const renderer = await changelogRenderer(info)
       // from tiptap 3.27.1, 3.27.0, 3.26.0 & npmx 0.14.0 & 0.14.1
       const markdown = `- a16901d: Fix ordered list parsing so under-indented continuation lines preserve their first character
@@ -807,14 +810,14 @@ describe('Turn plaintext #isssue/#pr, !pr, @account & commmit into links', () =>
 <li><a href="https://gitlab.com/test-owner/test-repo/-/commit/a16901d" rel="nofollow noreferrer noopener" target="_blank">a16901d</a>: Fix ordered list parsing so under-indented continuation lines preserve their first character</li>
 <li>Updated dependencies [<a href="https://gitlab.com/test-owner/test-repo/-/commit/6270b99" rel="nofollow noreferrer noopener" target="_blank">6270b99</a>]</li>
 <li><a href="https://gitlab.com/test-owner/test-repo/-/commit/7fb19eb" rel="nofollow noreferrer noopener" target="_blank">7fb19eb</a>: Only add hash attributes to nodes, not to marks.</li>
-<li>Release v0.14.0 <a href="https://gitlab.com/test-owner/test-repo/-/commit/36128a54" rel="nofollow noreferrer noopener" target="_blank">36128a5</a></li>
-<li>Empty (<a href="https://gitlab.com/test-owner/test-repo/-/commit/4cab893c" rel="nofollow noreferrer noopener" target="_blank">4cab893</a>)</li>
+<li>Release v0.14.0 <a href="https://gitlab.com/test-owner/test-repo/-/commit/36128a54" rel="nofollow noreferrer noopener" target="_blank">36128a54</a></li>
+<li>Empty (<a href="https://gitlab.com/test-owner/test-repo/-/commit/4cab893c" rel="nofollow noreferrer noopener" target="_blank">4cab893c</a>)</li>
 </ul>
 `)
     })
 
     test('codeberg/forgejo', async () => {
-      const info = createForgejoRepoInfo('codeberg.org', TEST_OWNER, TEST_REPO)
+      const info = repoInfo('codeberg', TEST_OWNER, TEST_REPO)
       const renderer = await changelogRenderer(info)
       // from tiptap 3.27.1, 3.27.0, 3.26.0 & npmx 0.14.0 & 0.14.1
       const markdown = `- a16901d: Fix ordered list parsing so under-indented continuation lines preserve their first character
@@ -836,7 +839,7 @@ describe('Turn plaintext #isssue/#pr, !pr, @account & commmit into links', () =>
     })
 
     test('tangled', async () => {
-      const info = createTangledRepoInfo(TEST_OWNER, TEST_REPO)
+      const info = repoInfo('tangled', TEST_OWNER, TEST_REPO)
       const renderer = await changelogRenderer(info)
       // from tiptap 3.27.1, 3.27.0, 3.26.0 & npmx 0.14.0 & 0.14.1
       const markdown = `- a16901d: Fix ordered list parsing so under-indented continuation lines preserve their first character
@@ -858,7 +861,7 @@ describe('Turn plaintext #isssue/#pr, !pr, @account & commmit into links', () =>
     })
 
     test('gitea', async () => {
-      const info = createGiteaRepoInfo('gitea.com', TEST_OWNER, TEST_REPO)
+      const info = repoInfo('gitea', TEST_OWNER, TEST_REPO)
       const renderer = await changelogRenderer(info)
       // from tiptap 3.27.1, 3.27.0, 3.26.0 & npmx 0.14.0 & 0.14.1
       const markdown = `- a16901d: Fix ordered list parsing so under-indented continuation lines preserve their first character
@@ -880,7 +883,7 @@ describe('Turn plaintext #isssue/#pr, !pr, @account & commmit into links', () =>
     })
 
     test('bitbucket', async () => {
-      const info = createBitbucketRepoInfo(TEST_OWNER, TEST_REPO)
+      const info = repoInfo('bitbucket', TEST_OWNER, TEST_REPO)
       const renderer = await changelogRenderer(info)
       // from tiptap 3.27.1, 3.27.0, 3.26.0 & npmx 0.14.0 & 0.14.1
       const markdown = `- a16901d: Fix ordered list parsing so under-indented continuation lines preserve their first character
@@ -895,14 +898,14 @@ describe('Turn plaintext #isssue/#pr, !pr, @account & commmit into links', () =>
 <li><a href="https://bitbucket.org/test-owner/test-repo/commits/a16901d" rel="nofollow noreferrer noopener" target="_blank">a16901d</a>: Fix ordered list parsing so under-indented continuation lines preserve their first character</li>
 <li>Updated dependencies [<a href="https://bitbucket.org/test-owner/test-repo/commits/6270b99" rel="nofollow noreferrer noopener" target="_blank">6270b99</a>]</li>
 <li><a href="https://bitbucket.org/test-owner/test-repo/commits/7fb19eb" rel="nofollow noreferrer noopener" target="_blank">7fb19eb</a>: Only add hash attributes to nodes, not to marks.</li>
-<li>Release v0.14.0 <a href="https://bitbucket.org/test-owner/test-repo/commits/36128a54" rel="nofollow noreferrer noopener" target="_blank">36128a5</a></li>
-<li>Empty (<a href="https://bitbucket.org/test-owner/test-repo/commits/4cab893c" rel="nofollow noreferrer noopener" target="_blank">4cab893</a>)</li>
+<li>Release v0.14.0 <a href="https://bitbucket.org/test-owner/test-repo/commits/36128a54" rel="nofollow noreferrer noopener" target="_blank">36128a54</a></li>
+<li>Empty (<a href="https://bitbucket.org/test-owner/test-repo/commits/4cab893c" rel="nofollow noreferrer noopener" target="_blank">4cab893c</a>)</li>
 </ul>
 `)
     })
 
     test('sourcehut', async () => {
-      const info = createSourcehutRepoInfo(`~${TEST_OWNER}`, TEST_REPO)
+      const info = repoInfo('sourcehut', `~${TEST_OWNER}`, TEST_REPO)
       const renderer = await changelogRenderer(info)
       // from tiptap 3.27.1, 3.27.0, 3.26.0 & npmx 0.14.0 & 0.14.1
       const markdown = `- a16901d: Fix ordered list parsing so under-indented continuation lines preserve their first character
@@ -924,7 +927,7 @@ describe('Turn plaintext #isssue/#pr, !pr, @account & commmit into links', () =>
     })
 
     test('gitee', async () => {
-      const info = createGiteeRepoInfo(TEST_OWNER, TEST_REPO)
+      const info = repoInfo('gitee', TEST_OWNER, TEST_REPO)
       const renderer = await changelogRenderer(info)
       // from tiptap 3.27.1, 3.27.0, 3.26.0 & npmx 0.14.0 & 0.14.1
       const markdown = `- a16901d: Fix ordered list parsing so under-indented continuation lines preserve their first character
@@ -1003,7 +1006,7 @@ describe('format unformatted/auto links to git', () => {
   // links to account won't be formatted, this is something also git providers don't do
   describe('should turn issue, pr, commit & compare links to formatted links', () => {
     test('github', async () => {
-      const info = createGithubRepoInfo('vueuse', 'vueuse')
+      const info = repoInfo('github', 'vueuse', 'vueuse')
       const renderer = await changelogRenderer(info)
       // from vueuse 14.3.0 (last 2 links changed from `issues` -> `pull`)
       const markdown = `- Expose pointer event onLongPress  -  by mrcwbr in https://github.com/vueuse/vueuse/issues/5295 https://github.com/vueuse/vueuse/commit/b1688bd2
@@ -1025,11 +1028,12 @@ https://github.com/vueuse/vueuse/compare/v14.2.1...v14.3.0`
     })
 
     test('gitlab', async () => {
-      const info = createGitLabRepoInfo('gitlab.com', 'vueuse', 'vueuse')
+      const info = repoInfo('gitlab', 'vueuse', 'vueuse')
       const renderer = await changelogRenderer(info)
-      // from vueuse 14.3.0 (last 2 links changed from `issues` -> `pull`)
-      const markdown = `- Expose pointer event onLongPress  -  by mrcwbr in https://gitlab.com/vueuse/vueuse/-/work_items/5295 https://gitlab.com/vueuse/vueuse/-/commit/b1688bd2
-- createInjectionState: Non-undefined return when default specified  -  by Laupetin in https://gitlab.com/vueuse/vueuse/-/work_items/5306 https://gitlab.com/vueuse/vueuse/-/commit/b0c51c27
+      // from vueuse 14.3.0 (last 2 links changed from `issues` -> `pull`). GitLab
+      // writes issue links as `/-/work_items` now; `/-/issues/` still reads back.
+      const markdown = `- Expose pointer event onLongPress  -  by mrcwbr in https://gitlab.com/vueuse/vueuse/-/issues/5295 https://gitlab.com/vueuse/vueuse/-/commit/b1688bd2
+- createInjectionState: Non-undefined return when default specified  -  by Laupetin in https://gitlab.com/vueuse/vueuse/-/issues/5306 https://gitlab.com/vueuse/vueuse/-/commit/b0c51c27
 - createReusableTemplate: Add support for specifying component names  -  by wbolster in https://gitlab.com/vueuse/vueuse/-/merge_requests/5300 https://gitlab.com/vueuse/vueuse/-/commit/ea29d5cb
 - nuxt: Add composable variants to auto imports  -  by OrbisK in https://gitlab.com/vueuse/vueuse/-/merge_requests/5285 https://gitlab.com/vueuse/vueuse/-/commit/ac2ef95d
   
@@ -1037,17 +1041,17 @@ https://gitlab.com/vueuse/vueuse/-/compare/v14.2.1...v14.3.0`
 
       const result = renderer(markdown)
       expect(result.html).toBe(`<ul>
-<li>Expose pointer event onLongPress  -  by mrcwbr in <a href="https://gitlab.com/vueuse/vueuse/-/work_items/5295" rel="nofollow noreferrer noopener" target="_blank">#5295</a> <a href="https://gitlab.com/vueuse/vueuse/-/commit/b1688bd2" rel="nofollow noreferrer noopener" target="_blank">b1688bd</a></li>
-<li>createInjectionState: Non-undefined return when default specified  -  by Laupetin in <a href="https://gitlab.com/vueuse/vueuse/-/work_items/5306" rel="nofollow noreferrer noopener" target="_blank">#5306</a> <a href="https://gitlab.com/vueuse/vueuse/-/commit/b0c51c27" rel="nofollow noreferrer noopener" target="_blank">b0c51c2</a></li>
-<li>createReusableTemplate: Add support for specifying component names  -  by wbolster in <a href="https://gitlab.com/vueuse/vueuse/-/merge_requests/5300" rel="nofollow noreferrer noopener" target="_blank">!5300</a> <a href="https://gitlab.com/vueuse/vueuse/-/commit/ea29d5cb" rel="nofollow noreferrer noopener" target="_blank">ea29d5c</a></li>
-<li>nuxt: Add composable variants to auto imports  -  by OrbisK in <a href="https://gitlab.com/vueuse/vueuse/-/merge_requests/5285" rel="nofollow noreferrer noopener" target="_blank">!5285</a> <a href="https://gitlab.com/vueuse/vueuse/-/commit/ac2ef95d" rel="nofollow noreferrer noopener" target="_blank">ac2ef95</a></li>
+<li>Expose pointer event onLongPress  -  by mrcwbr in <a href="https://gitlab.com/vueuse/vueuse/-/issues/5295" rel="nofollow noreferrer noopener" target="_blank">#5295</a> <a href="https://gitlab.com/vueuse/vueuse/-/commit/b1688bd2" rel="nofollow noreferrer noopener" target="_blank">b1688bd2</a></li>
+<li>createInjectionState: Non-undefined return when default specified  -  by Laupetin in <a href="https://gitlab.com/vueuse/vueuse/-/issues/5306" rel="nofollow noreferrer noopener" target="_blank">#5306</a> <a href="https://gitlab.com/vueuse/vueuse/-/commit/b0c51c27" rel="nofollow noreferrer noopener" target="_blank">b0c51c27</a></li>
+<li>createReusableTemplate: Add support for specifying component names  -  by wbolster in <a href="https://gitlab.com/vueuse/vueuse/-/merge_requests/5300" rel="nofollow noreferrer noopener" target="_blank">!5300</a> <a href="https://gitlab.com/vueuse/vueuse/-/commit/ea29d5cb" rel="nofollow noreferrer noopener" target="_blank">ea29d5cb</a></li>
+<li>nuxt: Add composable variants to auto imports  -  by OrbisK in <a href="https://gitlab.com/vueuse/vueuse/-/merge_requests/5285" rel="nofollow noreferrer noopener" target="_blank">!5285</a> <a href="https://gitlab.com/vueuse/vueuse/-/commit/ac2ef95d" rel="nofollow noreferrer noopener" target="_blank">ac2ef95d</a></li>
 </ul>
 <p><a href="https://gitlab.com/vueuse/vueuse/-/compare/v14.2.1...v14.3.0" rel="nofollow noreferrer noopener" target="_blank">v14.2.1...v14.3.0</a></p>
 `)
     })
 
     test('codeberg/forgejo', async () => {
-      const info = createForgejoRepoInfo('codeberg.org', 'vueuse', 'vueuse')
+      const info = repoInfo('codeberg', 'vueuse', 'vueuse')
       const renderer = await changelogRenderer(info)
       // from vueuse 14.3.0 (last 2 links changed from `issues` -> `pull`)
       const markdown = `- Expose pointer event onLongPress  -  by mrcwbr in https://codeberg.org/vueuse/vueuse/issues/5295 https://codeberg.org/vueuse/vueuse/commit/b1688bd2
@@ -1069,7 +1073,7 @@ https://codeberg.org/vueuse/vueuse/compare/v14.2.1...v14.3.0`
     })
 
     test('tangled', async () => {
-      const info = createTangledRepoInfo('vueuse', 'vueuse')
+      const info = repoInfo('tangled', 'vueuse', 'vueuse')
       const renderer = await changelogRenderer(info)
       // from vueuse 14.3.0 (last 2 links changed from `issues` -> `pull`)
       const markdown = `- Expose pointer event onLongPress  -  by mrcwbr in https://tangled.org/vueuse/vueuse/issues/5295 https://tangled.org/vueuse/vueuse/commit/b1688bd2
@@ -1091,7 +1095,7 @@ https://tangled.org/vueuse/vueuse/compare/v14.2.1...v14.3.0`
     })
 
     test('gitea', async () => {
-      const info = createGiteaRepoInfo('gitea.com', 'vueuse', 'vueuse')
+      const info = repoInfo('gitea', 'vueuse', 'vueuse')
       const renderer = await changelogRenderer(info)
       // from vueuse 14.3.0 (last 2 links changed from `issues` -> `pull`)
       const markdown = `- Expose pointer event onLongPress  -  by mrcwbr in https://gitea.com/vueuse/vueuse/issues/5295 https://gitea.com/vueuse/vueuse/commit/b1688bd2
@@ -1113,7 +1117,7 @@ https://gitea.com/vueuse/vueuse/compare/v14.2.1...v14.3.0`
     })
 
     test('bitbucket', async () => {
-      const info = createBitbucketRepoInfo('vueuse', 'vueuse')
+      const info = repoInfo('bitbucket', 'vueuse', 'vueuse')
       const renderer = await changelogRenderer(info)
       // from vueuse 14.3.0 (last 2 links changed from `issues` -> `pull`)
       const markdown = `- Expose pointer event onLongPress  -  by mrcwbr in https://bitbucket.org/vueuse/vueuse/pull-requests/5295 https://bitbucket.org/vueuse/vueuse/commits/b1688bd2
@@ -1123,16 +1127,16 @@ https://gitea.com/vueuse/vueuse/compare/v14.2.1...v14.3.0`
       // compare is not supported
       const result = renderer(markdown)
       expect(result.html).toBe(`<ul>
-<li>Expose pointer event onLongPress  -  by mrcwbr in <a href="https://bitbucket.org/vueuse/vueuse/pull-requests/5295" rel="nofollow noreferrer noopener" target="_blank">#5295</a> <a href="https://bitbucket.org/vueuse/vueuse/commits/b1688bd2" rel="nofollow noreferrer noopener" target="_blank">b1688bd</a></li>
-<li>createInjectionState: Non-undefined return when default specified  -  by Laupetin in <a href="https://bitbucket.org/vueuse/vueuse/pull-requests/5306" rel="nofollow noreferrer noopener" target="_blank">#5306</a> <a href="https://bitbucket.org/vueuse/vueuse/commits/b0c51c27" rel="nofollow noreferrer noopener" target="_blank">b0c51c2</a></li>
-<li>createReusableTemplate: Add support for specifying component names  -  by wbolster in <a href="https://bitbucket.org/vueuse/vueuse/pull-requests/5300" rel="nofollow noreferrer noopener" target="_blank">#5300</a> <a href="https://bitbucket.org/vueuse/vueuse/commits/ea29d5cb" rel="nofollow noreferrer noopener" target="_blank">ea29d5c</a></li>
-<li>nuxt: Add composable variants to auto imports  -  by OrbisK in <a href="https://bitbucket.org/vueuse/vueuse/pull-requests/5285" rel="nofollow noreferrer noopener" target="_blank">#5285</a> <a href="https://bitbucket.org/vueuse/vueuse/commits/ac2ef95d" rel="nofollow noreferrer noopener" target="_blank">ac2ef95</a></li>
+<li>Expose pointer event onLongPress  -  by mrcwbr in <a href="https://bitbucket.org/vueuse/vueuse/pull-requests/5295" rel="nofollow noreferrer noopener" target="_blank">#5295</a> <a href="https://bitbucket.org/vueuse/vueuse/commits/b1688bd2" rel="nofollow noreferrer noopener" target="_blank">b1688bd2</a></li>
+<li>createInjectionState: Non-undefined return when default specified  -  by Laupetin in <a href="https://bitbucket.org/vueuse/vueuse/pull-requests/5306" rel="nofollow noreferrer noopener" target="_blank">#5306</a> <a href="https://bitbucket.org/vueuse/vueuse/commits/b0c51c27" rel="nofollow noreferrer noopener" target="_blank">b0c51c27</a></li>
+<li>createReusableTemplate: Add support for specifying component names  -  by wbolster in <a href="https://bitbucket.org/vueuse/vueuse/pull-requests/5300" rel="nofollow noreferrer noopener" target="_blank">#5300</a> <a href="https://bitbucket.org/vueuse/vueuse/commits/ea29d5cb" rel="nofollow noreferrer noopener" target="_blank">ea29d5cb</a></li>
+<li>nuxt: Add composable variants to auto imports  -  by OrbisK in <a href="https://bitbucket.org/vueuse/vueuse/pull-requests/5285" rel="nofollow noreferrer noopener" target="_blank">#5285</a> <a href="https://bitbucket.org/vueuse/vueuse/commits/ac2ef95d" rel="nofollow noreferrer noopener" target="_blank">ac2ef95d</a></li>
 </ul>
 `)
     })
 
     test('sourcehut', async () => {
-      const info = createSourcehutRepoInfo('~vueuse', 'vueuse')
+      const info = repoInfo('sourcehut', '~vueuse', 'vueuse')
       const renderer = await changelogRenderer(info)
       // from vueuse 14.3.0 (last 2 links changed from `issues` -> `pull`)
       const markdown = `- Expose pointer event onLongPress  -  by mrcwbr in https://todo.sr.ht/~vueuse/vueuse/5295 https://git.sr.ht/~vueuse/vueuse/commit/b1688bd2
@@ -1151,7 +1155,7 @@ https://gitea.com/vueuse/vueuse/compare/v14.2.1...v14.3.0`
     })
 
     test('gitee', async () => {
-      const info = createGiteeRepoInfo('vueuse', 'vueuse')
+      const info = repoInfo('gitee', 'vueuse', 'vueuse')
       const renderer = await changelogRenderer(info)
       // from vueuse 14.3.0 (last 2 links changed from `issues` -> `pull`)
       const markdown = `- Expose pointer event onLongPress  -  by mrcwbr in https://gitee.com/vueuse/vueuse/issues/ImRodry https://gitee.com/vueuse/vueuse/commit/b1688bd2
@@ -1174,7 +1178,7 @@ https://gitee.com/vueuse/vueuse/compare/v14.2.1...v14.3.0`
   })
 
   it('should ignore formatted links', async () => {
-    const info = createGithubRepoInfo('vueuse', 'vueuse')
+    const info = repoInfo('github', 'vueuse', 'vueuse')
     const renderer = await changelogRenderer(info)
 
     const markdown = `- Expose pointer event onLongPress  -  by mrcwbr in https://github.com/vueuse/vueuse/issues/5295 https://github.com/vueuse/vueuse/commit/b1688bd2

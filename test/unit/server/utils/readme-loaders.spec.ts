@@ -182,8 +182,6 @@ describe('resolvePackageReadmeSource', () => {
       provider: 'github',
       owner: 'u',
       repo: 'r',
-      rawBaseUrl: 'https://raw.githubusercontent.com/u/r/HEAD',
-      blobBaseUrl: 'https://github.com/u/r/blob/HEAD',
     })
 
     const result = await resolvePackageReadmeSource('some-pkg')
@@ -411,8 +409,6 @@ describe('resolvePackageReadmeSource', () => {
       provider: 'github' as const,
       owner: 'a',
       repo: 'b',
-      rawBaseUrl: 'https://raw.githubusercontent.com/a/b/HEAD',
-      blobBaseUrl: 'https://github.com/a/b/blob/HEAD',
     }
     parseRepositoryInfoMock.mockReturnValue(repoInfo)
 
