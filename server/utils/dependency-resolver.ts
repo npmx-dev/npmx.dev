@@ -1,4 +1,5 @@
 import { mapWithConcurrency } from '#shared/utils/async'
+import { parseDependencyVersion } from '#shared/utils/npm'
 import { findMaxSatisfying } from 'verkit'
 
 /** Concurrency limit for fetching packuments during dependency resolution */
@@ -171,9 +172,11 @@ export async function resolveDependencyTree(
           resolved.set(key, pkg)
         }
 
-        // Collect dependencies for next level
+        // Collect dependencies for next level.
+        // An npm alias ("npm:pkg@range") is resolved against the aliased package, not the dependency key.
         if (versionData.dependencies) {
-          for (const [depName, depRange] of Object.entries(versionData.dependencies)) {
+          for (const [depKey, depRange] of Object.entries(versionData.dependencies)) {
+            const depName = parseDependencyVersion(depRange).name ?? depKey
             if (!seen.has(depName) && !nextLevel.has(depName)) {
               nextLevel.set(depName, { range: depRange, optional: false, path: currentPath })
             }
@@ -182,7 +185,8 @@ export async function resolveDependencyTree(
 
         // Collect optional dependencies
         if (versionData.optionalDependencies) {
-          for (const [depName, depRange] of Object.entries(versionData.optionalDependencies)) {
+          for (const [depKey, depRange] of Object.entries(versionData.optionalDependencies)) {
+            const depName = parseDependencyVersion(depRange).name ?? depKey
             if (!seen.has(depName) && !nextLevel.has(depName)) {
               nextLevel.set(depName, { range: depRange, optional: true, path: currentPath })
             }
