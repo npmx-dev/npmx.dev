@@ -33,7 +33,7 @@ export default defineNuxtConfig({
     storageKey: 'npmx-color-mode',
   },
 
-  css: ['~/assets/main.css'],
+  css: ['~/assets/main.css', 'input-switch-polyfill/input-switch-polyfill.css'],
 
   runtimeConfig: {
     sessionPassword: '',
