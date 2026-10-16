@@ -71,6 +71,22 @@ export function isAllowedDomain(url: string | URL): boolean {
 }
 
 /**
+ * Resolve a request URL to an absolute URL so cache decisions are made on the real host.
+ *
+ * Callers may pass a relative path together with a `baseURL` option (e.g. `$npmRegistry`,
+ * `$npmApi`). `isAllowedDomain`/cache keys need the resolved absolute URL — a bare relative
+ * path can't be parsed and would otherwise be treated as not-cacheable.
+ */
+export function resolveRequestUrl(url: string | URL, baseURL?: string | URL): URL | null {
+  if (url instanceof URL) return url
+  try {
+    return new URL(url, baseURL)
+  } catch {
+    return null
+  }
+}
+
+/**
  * Structure of a cached fetch entry stored in Nitro storage.
  */
 export interface CachedFetchEntry<T = unknown> {
