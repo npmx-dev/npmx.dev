@@ -11,6 +11,7 @@ import {
 import { useTooltipPosition } from 'vue-data-ui/composables'
 import { adaptColorToBackground } from 'vue-data-ui/utils'
 import { addDays, parseIsoDate, toIsoDate } from '~/utils/date'
+import { applyBlocklistCorrection } from '~/utils/download-anomalies'
 import { downloadFileLink } from '~/utils/download'
 import { useCopyChartPng } from '~/composables/useCopyChartPng'
 import { useElementSize } from '@vueuse/core'
@@ -52,6 +53,7 @@ onMounted(() => {
 const { colors } = useColors(rootEl)
 
 const { fetchPackageDownloadEvolution } = useCharts()
+const { settings } = useSettings()
 const { accentColors, selectedAccentColor } = useAccentColor()
 const compactNumberFormatter = useCompactNumberFormatter()
 
@@ -111,6 +113,17 @@ async function loadDownloads() {
 }
 
 onMounted(loadDownloads)
+
+// Flags known anomalies with `hasAnomaly` so they render as such, like in the trends chart
+const correctedSource = computed(() =>
+  settings.value.chartFilter.anomaliesFixed
+    ? (applyBlocklistCorrection({
+        data: source.value,
+        packageName: props.packageName,
+        granularity: 'daily',
+      }) as DailyDataPoint[])
+    : source.value,
+)
 watch(() => props.packageName, loadDownloads)
 
 const tooltipDateFormatter = computed(
@@ -170,7 +183,7 @@ const heatmap = computed(() => {
   const anomalousDates = new Set<string>()
   const reportedDates = new Set<string>()
 
-  for (const item of source.value) {
+  for (const item of correctedSource.value) {
     const day = getDayKey(item)
     if (!day || !Number.isFinite(item.value)) continue
     reportedDates.add(day)
