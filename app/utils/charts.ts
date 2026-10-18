@@ -11,6 +11,7 @@ import type {
 } from 'vue-data-ui'
 import type { VueUiHeatmapDatasetItem } from 'vue-data-ui/vue-ui-heatmap'
 import type { ChartTimeGranularity } from '~/types/chart'
+import { addDays, parseIsoDate, toIsoDate } from '~/utils/date'
 
 interface SubEvent {
   key: string
@@ -1015,9 +1016,8 @@ export function createAltTextFromDownloadsHeatmap({
       const weekStart = config.weekStarts[weekIndex]
       if (!weekStart) return []
 
-      const date = new Date(`${weekStart}T00:00:00Z`)
-      date.setUTCDate(date.getUTCDate() + weekdayIndex)
-      const key = date.toISOString().slice(0, 10)
+      const date = addDays(parseIsoDate(weekStart), weekdayIndex)
+      const key = toIsoDate(date)
 
       if (
         !config.reportedDates.has(key) ||
