@@ -4063,6 +4063,7 @@ describe('component accessibility audits', () => {
           downgrade: {
             downgradedVersion: '2.0.0',
             downgradedTrustLevel: 'none',
+            downgradedTrustedPublisher: true,
             trustedVersion: '1.9.0',
             trustedTrustLevel: 'provenance',
           },

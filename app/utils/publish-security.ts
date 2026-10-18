@@ -95,6 +95,7 @@ export function detectSecurityDowngradeForVersion(
     downgradedVersion: current.version,
     downgradedPublishedAt: current.time,
     downgradedTrustLevel: current.trustLevelName,
+    downgradedTrustedPublisher: current.trustStatus?.trustedPublisher ?? false,
     trustedVersion: recommendation?.version,
     trustedPublishedAt: recommendation?.time,
     trustedTrustLevel: strongestOlder.trustLevelName,
