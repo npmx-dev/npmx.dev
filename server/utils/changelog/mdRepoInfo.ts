@@ -18,35 +18,18 @@ const REFERENCE_QUIRKS: Partial<Record<ProviderId, ReferenceQuirks>> = {
   gitlab: { issueChar: '#', prChar: '!' },
   bitbucket: { prChar: '#', accountChar: false },
   gitee: { issueChar: '#', issueRegex: /\B#[\dA-Z]+\b/gi, prChar: '!' },
+  // Sourcehut writes accounts as `~user`. It has no pull-request marker, so
+  // `prChar` matches `issueChar` and every `#` reference reads as an issue.
+  sourcehut: { issueChar: '#', prChar: '#', accountChar: '~', keepAccountChar: true },
 }
 
 const DEFAULT_QUIRKS: ReferenceQuirks = { issueChar: '#', prChar: '#' }
-
-/** Sourcehut has no `forges` provider, so its URLs stay hand-written. */
-function createSourcehutRepoInfo(owner: string, repo: string, path?: string): MarkdownRepoInfo {
-  const hostBaseUrl = 'https://git.sr.ht'
-  return {
-    hostBaseUrl,
-    blobBaseUrl: `${hostBaseUrl}/${owner}/${repo}/tree/HEAD/item`,
-    rawBaseUrl: `${hostBaseUrl}/${owner}/${repo}/blob/HEAD`,
-    path,
-    commitBaseUrl: `${hostBaseUrl}/${owner}/${repo}/commit`,
-    issueChar: '#',
-    issueBaseUrl: `https://todo.sr.ht/${owner}/${repo}`,
-    accountChar: '~',
-    keepAccountChar: true,
-  }
-}
 
 /**
  * The markdown renderer's view of a repository, built from `forges`. `undefined`
  * when `forges` has no provider for the ref (radicle).
  */
 export function createRepoInfo(ref: RepoRef, path?: string): MarkdownRepoInfo | null {
-  if (ref.provider === 'sourcehut') {
-    return createSourcehutRepoInfo(ref.owner, ref.repo, path)
-  }
-
   const provider = forgeWebProvider(ref)
   if (!provider) return null
 

@@ -181,21 +181,15 @@ function jsonResponse(data: unknown, status: number): Response {
   })
 }
 
+/**
+ * Sourcehut's links come from `forges`. Its metadata does not: every sr.ht read
+ * needs a token npmx does not have, and it reports no stars or forks to fetch,
+ * so a request would buy nothing over the zeros.
+ */
 const sourcehutAdapter: ProviderAdapter = {
-  links(ref) {
-    // Sourcehut uses ~username/repo format.
-    const base = `https://git.sr.ht/${ref.owner}/${ref.repo}`
-    return {
-      repo: base,
-      stars: base, // Sourcehut doesn't have stars
-      forks: base,
-    }
-  },
+  links: linksFor,
 
   async fetchMeta(_cachedFetch, _ref, links) {
-    // TODO(serhalp): refactor to use `forges` once it has a Sourcehut provider.
-    // Sourcehut doesn't have a public API for repo stats
-    // Just return basic info without fetching
     return {
       provider: 'sourcehut',
       url: links.repo,

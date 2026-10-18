@@ -202,8 +202,8 @@ importers:
         specifier: ^8.0.0
         version: 8.2.2
       forges:
-        specifier: https://pkg.pr.new/danielroe/forges@1aa532c
-        version: https://pkg.pr.new/danielroe/forges@1aa532c
+        specifier: https://pkg.pr.new/danielroe/forges@f758f60d
+        version: https://pkg.pr.new/danielroe/forges@f758f60d
       gray-matter:
         specifier: 4.0.3
         version: 4.0.3
@@ -6999,8 +6999,8 @@ packages:
     resolution: {integrity: sha512-gIXjKqtFuWEgzFRJA9WCQeSJLZDjgJUOMCMzxtvFq/37KojM1BFGufqsCy0r4qSQmYLsZYMeyRqzIWOMup03sw==}
     engines: {node: '>=14'}
 
-  forges@https://pkg.pr.new/danielroe/forges@1aa532c:
-    resolution: {integrity: sha512-9IllwkV81VHs5R2sxMZHFEZaZRw9Qp3yKksoIXuuV2MequOtxxi9RuWNEraCXdf2xqxp0y5JEA+HrNfyB0Tz3Q==, tarball: https://pkg.pr.new/danielroe/forges@1aa532c}
+  forges@https://pkg.pr.new/danielroe/forges@f758f60d:
+    resolution: {integrity: sha512-MVMMfqLHoL2zUNSSWmEyZjCBWyvNXXZq1l/fv1mGx/yyk/eBz+ECjqIlheuChP867k3ND9TnZuKFHdJzMrzKaw==, tarball: https://pkg.pr.new/danielroe/forges@f758f60d}
     version: 0.1.0
     engines: {node: '>=22.18'}
 
@@ -18762,7 +18762,7 @@ snapshots:
       cross-spawn: 7.0.6
       signal-exit: 4.1.0
 
-  forges@https://pkg.pr.new/danielroe/forges@1aa532c: {}
+  forges@https://pkg.pr.new/danielroe/forges@f758f60d: {}
 
   formatly@0.11.4:
     dependencies:

@@ -1,13 +1,14 @@
 import type { FetchLike, ForgeProvider, RepoRef as ForgeRepoRef, UrlTarget } from 'forges'
 import type { RepoRef } from '#shared/utils/git-providers'
-import { bitbucketLite } from 'forges/bitbucket'
-import { forgejoLite } from 'forges/forgejo'
-import { giteaLite } from 'forges/gitea'
-import { giteeLite } from 'forges/gitee'
-import { githubLite } from 'forges/github'
-import { gitlabLite } from 'forges/gitlab'
+import { bitbucket } from 'forges/bitbucket'
+import { forgejo } from 'forges/forgejo'
+import { gitea } from 'forges/gitea'
+import { gitee } from 'forges/gitee'
+import { github } from 'forges/github'
+import { gitlab } from 'forges/gitlab'
 import { pushin } from 'forges/pushin'
-import { tangledLite } from 'forges/tangled'
+import { sourcehut } from 'forges/sourcehut'
+import { tangled } from 'forges/tangled'
 
 /**
  * Adapter between npmx's own git provider registry (`git-providers.ts`) and the
@@ -68,8 +69,12 @@ export interface ForgeBridgeOptions {
 
 /**
  * Builds a `forges` provider for an npmx ref, or `undefined` when `forges` has
- * no provider for it (Sourcehut, Radicle, and the forges npmx backs with a
- * proxy or a bespoke endpoint: GitHub repo metadata and Tangled stats).
+ * no provider for it, or when the forge needs a credential npmx does not have.
+ *
+ * Radicle has no provider, and GitHub repo metadata and Tangled stats are backed
+ * by a proxy or a bespoke endpoint. Sourcehut has a provider, but every sr.ht
+ * read needs a token, so one is built only when a token is given; `forgeWebProvider`
+ * covers the callers that only build URLs.
  */
 export function createForgeProvider(
   ref: RepoRef,
@@ -80,25 +85,29 @@ export function createForgeProvider(
     case 'github':
       return (
         options.token
-          ? githubLite({ ...base, auth: { type: 'token', token: options.token } })
-          : githubLite(base)
+          ? github({ ...base, auth: { type: 'token', token: options.token } })
+          : github(base)
       ).create()
     case 'gitlab':
-      return gitlabLite({ ...base, baseUrl: `https://${ref.host ?? 'gitlab.com'}` }).create()
+      return gitlab({ ...base, baseUrl: `https://${ref.host ?? 'gitlab.com'}` }).create()
     case 'bitbucket':
-      return bitbucketLite(base).create()
+      return bitbucket(base).create()
     case 'codeberg':
-      return forgejoLite({ ...base, baseUrl: 'https://codeberg.org' }).create()
+      return forgejo({ ...base, baseUrl: 'https://codeberg.org' }).create()
     case 'forgejo':
-      return forgejoLite({ ...base, baseUrl: `https://${ref.host ?? 'codeberg.org'}` }).create()
+      return forgejo({ ...base, baseUrl: `https://${ref.host ?? 'codeberg.org'}` }).create()
     case 'gitea':
-      return giteaLite({ ...base, baseUrl: `https://${ref.host ?? 'gitea.com'}` }).create()
+      return gitea({ ...base, baseUrl: `https://${ref.host ?? 'gitea.com'}` }).create()
     case 'gitee':
-      return giteeLite(base).create()
+      return gitee(base).create()
     case 'pushin':
       return pushin(base).create()
+    case 'sourcehut':
+      return options.token
+        ? sourcehut({ ...base, auth: { type: 'token', token: options.token } }).create()
+        : undefined
     case 'tangled':
-      return tangledLite(base).create()
+      return tangled(base).create()
     default:
       return undefined
   }
@@ -118,7 +127,14 @@ export function forgeWebProvider(ref: RepoRef): ForgeProvider | undefined {
   const { forge, instance } = toForgeRepoRef(ref)
   const key = `${forge}:${instance}`
   if (!webProviders.has(key)) {
-    webProviders.set(key, createForgeProvider(ref))
+    // Building a URL needs no credential, and this provider is never asked to
+    // make a request, so the empty token sourcehut insists on is never sent.
+    webProviders.set(
+      key,
+      ref.provider === 'sourcehut'
+        ? sourcehut({ timeout: 15_000, auth: { type: 'token', token: '' } }).create()
+        : createForgeProvider(ref),
+    )
   }
   return webProviders.get(key)
 }
