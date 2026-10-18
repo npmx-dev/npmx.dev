@@ -330,7 +330,7 @@ const installVersionOverride = computed(
 const downgradeFallbackInstallText = computed(() => {
   const d = publishSecurityDowngrade.value
   if (!d?.trustedVersion) return null
-  if (d.trustedTrustLevel === 'provenance')
+  if (d.trustedTrustLevel === 'provenance' || d.downgradedTrustedPublisher)
     return $t('package.security_downgrade.fallback_install_provenance', {
       version: d.trustedVersion,
     })

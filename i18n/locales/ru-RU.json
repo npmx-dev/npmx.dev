@@ -24,6 +24,7 @@
     "brand": "бренд",
     "resources": "Ресурсы",
     "features": "Функции",
+    "tools": "инструменты",
     "other": "Дополнительно",
     "sponsored_by": "При поддержке {list}"
   },
@@ -40,6 +41,7 @@
     "show_kbd_hints": "Подсветить подсказки клавиш",
     "settings": "Открыть настройки",
     "compare": "Открыть сравнение",
+    "deps_stats": "Открыть инструмент статистики зависимостей",
     "compare_from_package": "Открыть сравнение (с текущим пакетом)",
     "changelog": "Открыть список изменений",
     "navigate_results": "Навигация по результатам",
@@ -204,12 +206,53 @@
     "popular_packages": "Популярные пакеты",
     "settings": "настройки",
     "compare": "сравнить",
+    "tools": "инструменты",
     "back": "назад",
     "menu": "Меню",
     "mobile_menu": "Навигационное меню",
     "open_menu": "Открыть меню",
     "links": "Ссылки",
     "tap_to_search": "Нажмите для поиска"
+  },
+  "tools": {
+    "title": "Инструменты",
+    "tagline": "утилиты для исследования пакетов и зависимостей проекта",
+    "meta_title": "Инструменты — npmx",
+    "meta_description": "Инструменты npmx для исследования пакетов и зависимостей проекта",
+    "deps_stats": {
+      "name": "Статистика зависимостей",
+      "description": "Загрузите package.json и изучите статистику по каждой зависимости"
+    }
+  },
+  "deps_stats": {
+    "title": "Статистика зависимостей",
+    "meta_title": "Статистика зависимостей — npmx",
+    "meta_description": "Загрузите package.json и изучите статистику по каждой зависимости",
+    "upload": {
+      "section": "Package.json",
+      "label": "Загрузить package.json",
+      "hint": "Перетащите package.json сюда или выберите файл. Считываются только поля зависимостей — данные не отправляются на сервер",
+      "clear": "Очистить",
+      "invalid_package_json": "Некорректный package.json"
+    },
+    "dependencies": {
+      "title": "Зависимости",
+      "count": "Нет зависимостей | 1 зависимость | {count} зависимостей",
+      "filter_label": "Фильтр зависимостей",
+      "filter_placeholder": "Фильтровать зависимости...",
+      "empty": "В этом package.json нет зависимостей",
+      "no_matches": "Нет зависимостей, соответствующих фильтру",
+      "non_registry": "Не пакет из реестра npm"
+    },
+    "stats": {
+      "empty_title": "Выберите зависимость",
+      "empty_description": "Выберите пакет из списка, чтобы увидеть загрузки, размер, уязвимости, тренды и другие данные",
+      "non_registry_title": "Локальная или удалённая зависимость",
+      "non_registry_description": "Эта запись указывает на файл, workspace, git или URL-зависимость, поэтому статистика из реестра недоступна",
+      "declared_range": "Указано",
+      "resolved_version": "Последняя",
+      "open_full_stats": "Открыть полную статистику"
+    }
   },
   "blog": {
     "title": "Блог",
@@ -382,6 +425,7 @@
       "forgejo": "Открыть на Forgejo",
       "gitea": "Открыть на Gitea",
       "gitee": "Открыть на Gitee",
+      "pushin": "Открыть на Pushin",
       "radicle": "Открыть на Radicle",
       "socket_dev": "Открыть на socket.dev",
       "sourcehut": "Открыть на SourceHut",
@@ -390,7 +434,8 @@
     "collapse": "Свернуть",
     "collapse_with_name": "Свернуть {name}",
     "expand": "Развернуть",
-    "expand_with_name": "Развернуть {name}"
+    "expand_with_name": "Развернуть {name}",
+    "copyMdError": "Не удалось загрузить markdown, попробуйте позже"
   },
   "profile": {
     "display_name": "Отображаемое имя",
@@ -520,8 +565,12 @@
       "pm_label": "Пакетный менеджер",
       "copy_command": "Скопировать команду установки",
       "copy_dev_command": "Копировать команду dev-установки",
+      "copy_types_command": "Скопировать команду установки типов",
       "dev_dependency_hint": "Обычно устанавливается как dev-зависимость",
-      "view_types": "Посмотреть {package}"
+      "view_types": "Посмотреть {package}",
+      "types_label": "Типы",
+      "collapse_commands": "Свернуть дополнительные команды",
+      "expand_commands": "Показать дополнительные команды"
     },
     "create": {
       "title": "Создать новый проект",
@@ -530,7 +579,16 @@
     },
     "run": {
       "title": "Запуск",
-      "locally": "Запустить локально"
+      "locally": "Запустить локально",
+      "copy_command": "Скопировать команду для локального запуска"
+    },
+    "command": {
+      "copied_install": "Команда установки скопирована",
+      "copied_dev_install": "Команда dev-установки скопирована",
+      "copied_run": "Команда запуска скопирована",
+      "copied_create": "Команда создания скопирована",
+      "copied_execute": "Команда выполнения скопирована",
+      "copied_skills": "Команда skills скопирована"
     },
     "readme": {
       "title": "Readme",
@@ -606,6 +664,7 @@
       "grouping_usage_about": "О группировке по использованию",
       "grouping_usage_all": "Все",
       "grouping_usage_most_used": "Чаще всего",
+      "order_by_downloads": "Сортировать по загрузкам",
       "recent_versions_only_tooltip": "Показывать только версии, опубликованные за последний год.",
       "show_low_usage_tooltip": "Включить группы версий, на которые приходится менее 1% от общего числа загрузок.",
       "y_axis_label": "Загрузки",
@@ -629,6 +688,7 @@
     "timeline": {
       "load_more": "Загрузить ещё",
       "load_error": "Не удалось загрузить хронологию. Попробуйте позже.",
+      "no_stable_versions": "Нет стабильных версий для отображения. Отключите параметр «Только стабильные», чтобы включить предварительные версии.",
       "size_increase": "Размер установки увеличился на {percent}% ({size})",
       "size_decrease": "Размер установки уменьшился на {percent}% ({size})",
       "dep_increase": "Добавлена {count} зависимость | Добавлено {count} зависимости | Добавлено {count} зависимостей",
@@ -642,6 +702,7 @@
       "trusted_publisher_removed": "Доверенная публикация удалена",
       "provenance_added": "Происхождение включено",
       "provenance_removed": "Происхождение удалено",
+      "deprecated": "Устарело",
       "chart": {
         "tab_aria_label": "Выбор метрики",
         "dependency_size": "Размер зависимостей",
@@ -650,6 +711,9 @@
         "zoom": "масштабировать",
         "reset_minimap": "сбросить миникарту",
         "ordered_versions": "только стабильные",
+        "sort_label": "Сортировать по",
+        "sort_time": "Время публикации",
+        "sort_semver": "Semver",
         "copy_alt": {
           "key_changes": "Ключевые изменения: {version_events}.",
           "version_events": "версия {version}: {events}",
@@ -671,7 +735,8 @@
       "outdated_minor": "{count} минорная версия позади (последняя: {latest}) | {count} минорные версии позади (последняя: {latest}) | {count} минорных версий позади (последняя: {latest})",
       "outdated_patch": "Доступно патч-обновление (последняя: {latest})",
       "has_replacement": "Для этой зависимости есть рекомендуемые замены",
-      "vulnerabilities_count": "{count} уязвимость | {count} уязвимости | {count} уязвимостей"
+      "vulnerabilities_count": "{count} уязвимость | {count} уязвимости | {count} уязвимостей",
+      "aliased_to": "Псевдоним для {name}"
     },
     "peer_dependencies": {
       "title": "Peer-зависимости ({count})",
@@ -715,16 +780,19 @@
       "granularity_yearly": "По годам",
       "start_date": "Начало",
       "end_date": "Конец",
+      "last_recorded_value": "* Последнее записанное значение",
       "loading": "Загрузка...",
       "date_range": "С {start} по {end}",
       "date_range_multiline": "С {start}\nпо {end}",
       "download_file": "Скачать {fileType}",
+      "copy_file": "Скопировать {fileType}",
       "toggle_annotator": "Переключить аннотации",
       "toggle_stack_mode": "Переключить режим накопления",
       "open_options": "Открыть параметры",
       "close_options": "Закрыть параметры",
       "legend_estimation": "Оценка",
       "no_data": "Нет данных",
+      "no_data_short": "Нет данных",
       "y_axis_label": "{granularity} {facet}",
       "facet": "Параметр",
       "title": "Тренды",
@@ -768,6 +836,10 @@
         "copy_url": "Скопируйте этот URL для встраивания графика на ваш сайт",
         "preview": "Предпросмотр",
         "tip": "Если начальная и конечная даты не указаны, по умолчанию берутся последние 12 месяцев."
+      },
+      "sparkline_zoom_reset": {
+        "title": "Сбросить масштаб · дважды кликните на графике или нажмите Esc",
+        "aria_label": "Сбросить масштаб"
       }
     },
     "downloads": {
@@ -1802,7 +1874,8 @@
   "logo_menu": {
     "copy_svg": "Копировать логотип как SVG",
     "copied": "Скопировано!",
-    "browse_brand": "Набор бренда"
+    "browse_brand": "Набор бренда",
+    "open_new_tab": "Открыть npmx в новой вкладке"
   },
   "brand": {
     "title": "Бренд",
@@ -1859,6 +1932,7 @@
       "p2": "Пожалуйста, попробуйте позже или {viewon}"
     },
     "rate_limit_ungh": "К сожалению, достигнут лимит запросов GitHub. Попробуйте снова через некоторое время.",
-    "version_unavailable": "Запрошенная версия недоступна."
+    "version_unavailable": "Запрошенная версия недоступна.",
+    "copy_as_markdown": "Скопировать список изменений как Markdown"
   }
 }

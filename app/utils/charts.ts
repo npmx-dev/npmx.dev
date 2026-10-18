@@ -9,7 +9,9 @@ import type {
   VueUiStackbarConfig,
   VueUiStackbarFormattedDatasetItem,
 } from 'vue-data-ui'
+import type { VueUiHeatmapDatasetItem } from 'vue-data-ui/vue-ui-heatmap'
 import type { ChartTimeGranularity } from '~/types/chart'
+import { addDays, parseIsoDate, toIsoDate } from '~/utils/date'
 
 interface SubEvent {
   key: string
@@ -965,6 +967,161 @@ export async function copyAltTextForTimelineStackbar({
   config,
 }: AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>) {
   const altText = createAltTextForTimelineStackbar({ dataset, config })
+  await config.copy(altText)
+}
+
+// Used for DailyDownloadsHeatmap
+export type DownloadsHeatmapAltConfig = {
+  packageName: string
+  dateRange: { from: string; to: string }
+  weekStarts: string[]
+  reportedDates: ReadonlySet<string>
+  anomalousDates: ReadonlySet<string>
+  locale: string
+  copy: (text: string) => Promise<void>
+  $t: TrendTranslateFunction
+}
+
+export function createAltTextFromDownloadsHeatmap({
+  dataset,
+  config,
+}: AltCopyArgs<VueUiHeatmapDatasetItem[], DownloadsHeatmapAltConfig>): string {
+  const { $t, locale } = config
+
+  const numberFormatter = new Intl.NumberFormat(locale)
+  const dateFormatter = new Intl.DateTimeFormat(locale, {
+    dateStyle: 'long',
+    timeZone: 'UTC',
+  })
+  const weekdayFormatter = new Intl.DateTimeFormat(locale, {
+    weekday: 'long',
+    timeZone: 'UTC',
+  })
+  const percentageFormatter = new Intl.NumberFormat(locale, {
+    style: 'percent',
+    maximumFractionDigits: 1,
+    signDisplay: 'exceptZero',
+  })
+
+  const date_range = $t('package.trends.downloads_heatmap.title', config.dateRange)
+  const introduction = $t('package.trends.downloads_heatmap.copy_alt.introduction', {
+    package_name: config.packageName,
+    date_range,
+  })
+
+  const watermark = $t('package.trends.copy_alt.watermark')
+
+  const days = dataset.flatMap((row, weekdayIndex) =>
+    row.values.flatMap((value, weekIndex) => {
+      const weekStart = config.weekStarts[weekIndex]
+      if (!weekStart) return []
+
+      const date = addDays(parseIsoDate(weekStart), weekdayIndex)
+      const key = toIsoDate(date)
+
+      if (
+        !config.reportedDates.has(key) ||
+        config.anomalousDates.has(key) ||
+        typeof value !== 'number' ||
+        !Number.isFinite(value) ||
+        value <= 0
+      ) {
+        return []
+      }
+
+      return [{ date, value, weekdayIndex, weekIndex }]
+    }),
+  )
+
+  if (!days.length) {
+    return [introduction, $t('package.trends.downloads_heatmap.copy_alt.no_data'), watermark].join(
+      ' ',
+    )
+  }
+  const total = sum(days.map(day => day.value))
+  const average = total / days.length
+  const peak = days.reduce((highest, day) => (day.value > highest.value ? day : highest))
+  const weekdayStats = Array.from({ length: 7 }, (_, index) => {
+    const entries = days.filter(day => day.weekdayIndex === index)
+
+    return {
+      date: entries[0]?.date,
+      average: entries.length ? sum(entries.map(day => day.value)) / entries.length : 0,
+    }
+  }).filter(day => day.date)
+
+  const busiestWeekday = weekdayStats.reduce((busiest, day) =>
+    day.average > busiest.average ? day : busiest,
+  )
+  const weekdays = days.filter(day => !isWeekend(day.date))
+  const weekends = days.filter(day => isWeekend(day.date))
+  const averageWeekday = weekdays.length ? sum(weekdays.map(day => day.value)) / weekdays.length : 0
+  const averageWeekend = weekends.length ? sum(weekends.map(day => day.value)) / weekends.length : 0
+  const completeWeeks = config.weekStarts.flatMap((_, weekIndex) => {
+    const entries = days.filter(day => day.weekIndex === weekIndex)
+
+    return entries.length === 7 ? [sum(entries.map(day => day.value))] : []
+  })
+
+  const firstWeek = completeWeeks[0]
+  const lastWeek = completeWeeks.at(-1)
+
+  const weekly_trend =
+    firstWeek !== undefined && lastWeek !== undefined && completeWeeks.length > 1 && firstWeek > 0
+      ? $t('package.trends.downloads_heatmap.copy_alt.weekly_trend', {
+          change: percentageFormatter.format((lastWeek - firstWeek) / firstWeek),
+          first: numberFormatter.format(firstWeek),
+          last: numberFormatter.format(lastWeek),
+        })
+      : ''
+
+  const excludedDays = config.weekStarts.length * dataset.length - days.length
+
+  return [
+    introduction,
+    $t('package.trends.downloads_heatmap.copy_alt.summary', {
+      total: numberFormatter.format(total),
+      average: numberFormatter.format(Math.round(average)),
+      days: numberFormatter.format(days.length),
+    }),
+    $t('package.trends.downloads_heatmap.copy_alt.peak', {
+      date: dateFormatter.format(peak.date),
+      downloads: numberFormatter.format(peak.value),
+    }),
+    busiestWeekday?.date
+      ? $t('package.trends.downloads_heatmap.copy_alt.busiest_weekday', {
+          weekday: weekdayFormatter.format(busiestWeekday.date),
+          average: numberFormatter.format(Math.round(busiestWeekday.average)),
+        })
+      : '',
+    weekdays.length && weekends.length
+      ? $t('package.trends.downloads_heatmap.copy_alt.weekday_comparison', {
+          weekdays: numberFormatter.format(Math.round(averageWeekday)),
+          weekends: numberFormatter.format(Math.round(averageWeekend)),
+        })
+      : '',
+    weekly_trend,
+    excludedDays > 0
+      ? $t('package.trends.downloads_heatmap.copy_alt.excluded_days', {
+          count: numberFormatter.format(excludedDays),
+        })
+      : '',
+    watermark,
+  ]
+    .filter(Boolean)
+    .join(' ')
+}
+
+function isWeekend(date: Date): boolean {
+  const day = date.getUTCDay()
+  return day === 0 || day === 6
+}
+
+export async function copyAltTextFromDownloadsHeatmap({
+  dataset,
+  config,
+}: AltCopyArgs<VueUiHeatmapDatasetItem[], DownloadsHeatmapAltConfig>) {
+  const altText = createAltTextFromDownloadsHeatmap({ dataset, config })
   await config.copy(altText)
 }
 

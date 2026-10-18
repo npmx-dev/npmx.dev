@@ -15,6 +15,8 @@ import {
   copyAltTextForTimelineChart,
   createAltTextForTimelineStackbar,
   copyAltTextForTimelineStackbar,
+  createAltTextFromDownloadsHeatmap,
+  copyAltTextFromDownloadsHeatmap,
   sanitise,
   insertLineBreaks,
   applyEllipsis,
@@ -23,6 +25,7 @@ import {
   type VersionsBarConfig,
   type TimelineChartConfig,
   type TimelineStackbarConfig,
+  type DownloadsHeatmapAltConfig,
   type EnrichedTimelineSizeCacheEntry,
 } from '~/utils/charts'
 import type {
@@ -1513,6 +1516,282 @@ describe('copyAltTextForTimelineStackbar', () => {
 
     expect(copyMock).toHaveBeenCalledTimes(1)
     expect(copyMock).toHaveBeenCalledWith(expected)
+  })
+})
+
+type DownloadsHeatmapDataset = Parameters<typeof createAltTextFromDownloadsHeatmap>[0]['dataset']
+
+// Rows match the component's Sunday-to-Saturday layout, so week starts are Sundays.
+const heatmapWeekStarts = ['2026-03-01', '2026-03-08']
+const firstHeatmapWeek = [5, 10, 20, 30, 40, 50, 5]
+const secondHeatmapWeek = [10, 20, 30, 40, 50, 60, 10]
+
+function createDownloadsHeatmapDataset(
+  weeks: Array<Array<number | null>> = [firstHeatmapWeek, secondHeatmapWeek],
+): DownloadsHeatmapDataset {
+  const weekdays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
+
+  return weekdays.map((name, weekdayIndex) => ({
+    name,
+    values: weeks.map(week => week[weekdayIndex] ?? null),
+  }))
+}
+
+function createDownloadsHeatmapReportedDates(weekStarts: string[]): Set<string> {
+  return new Set(
+    weekStarts.flatMap(weekStart =>
+      Array.from({ length: 7 }, (_, weekdayIndex) => {
+        const date = new Date(`${weekStart}T00:00:00Z`)
+        date.setUTCDate(date.getUTCDate() + weekdayIndex)
+        return date.toISOString().slice(0, 10)
+      }),
+    ),
+  )
+}
+
+function createDownloadsHeatmapConfig(
+  overrides: Partial<DownloadsHeatmapAltConfig> = {},
+): DownloadsHeatmapAltConfig {
+  const { translate } = createTranslateMock()
+  const weekStarts = overrides.weekStarts ?? heatmapWeekStarts
+
+  return {
+    packageName: '@scope/example',
+    dateRange: { from: '2026-03-01', to: '2026-03-14' },
+    weekStarts,
+    reportedDates: createDownloadsHeatmapReportedDates(weekStarts),
+    anomalousDates: new Set<string>(),
+    locale: 'en-US',
+    copy: vi.fn(async () => undefined),
+    $t: translate,
+    ...overrides,
+  }
+}
+
+function findHeatmapTranslation(calls: TranslateCall[], name: string) {
+  return calls.find(call => call.key === `package.trends.downloads_heatmap.copy_alt.${name}`)
+}
+
+describe('createAltTextFromDownloadsHeatmap', () => {
+  it('returns an introduction, no-data message and watermark for an empty dataset', () => {
+    const { translate, calls } = createTranslateMock()
+    const config = createDownloadsHeatmapConfig({ $t: translate })
+
+    const result = createAltTextFromDownloadsHeatmap({ dataset: [], config })
+
+    expect(result).toBe(
+      't:package.trends.downloads_heatmap.copy_alt.introduction ' +
+        't:package.trends.downloads_heatmap.copy_alt.no_data ' +
+        't:package.trends.copy_alt.watermark',
+    )
+    expect(
+      calls.find(call => call.key === 'package.trends.downloads_heatmap.title')?.named,
+    ).toEqual(config.dateRange)
+    expect(findHeatmapTranslation(calls, 'introduction')?.named).toEqual({
+      package_name: '@scope/example',
+      date_range: 't:package.trends.downloads_heatmap.title',
+    })
+    expect(findHeatmapTranslation(calls, 'summary')).toBeUndefined()
+  })
+
+  it('uses the no-data message when all values are zero or null', () => {
+    const { translate, calls } = createTranslateMock()
+    const config = createDownloadsHeatmapConfig({ $t: translate })
+    const dataset = createDownloadsHeatmapDataset([
+      [0, 0, 0, 0, 0, 0, 0],
+      [null, null, null, null, null, null, null],
+    ])
+
+    const result = createAltTextFromDownloadsHeatmap({ dataset, config })
+
+    expect(result).toContain('t:package.trends.downloads_heatmap.copy_alt.no_data')
+    expect(findHeatmapTranslation(calls, 'summary')).toBeUndefined()
+    expect(findHeatmapTranslation(calls, 'peak')).toBeUndefined()
+  })
+
+  it('computes totals, averages, peak, busiest weekday and weekday/weekend averages', () => {
+    const { translate, calls } = createTranslateMock()
+    const config = createDownloadsHeatmapConfig({ $t: translate })
+
+    const result = createAltTextFromDownloadsHeatmap({
+      dataset: createDownloadsHeatmapDataset(),
+      config,
+    })
+
+    expect(findHeatmapTranslation(calls, 'summary')?.named).toEqual({
+      total: '380',
+      average: '27',
+      days: '14',
+    })
+    expect(findHeatmapTranslation(calls, 'peak')?.named).toEqual({
+      date: 'March 13, 2026',
+      downloads: '60',
+    })
+    expect(findHeatmapTranslation(calls, 'busiest_weekday')?.named).toEqual({
+      weekday: 'Friday',
+      average: '55',
+    })
+    expect(findHeatmapTranslation(calls, 'weekday_comparison')?.named).toEqual({
+      weekdays: '35',
+      weekends: '8',
+    })
+    expect(result).toContain('t:package.trends.downloads_heatmap.copy_alt.summary')
+    expect(result).toContain('t:package.trends.copy_alt.watermark')
+    expect(findHeatmapTranslation(calls, 'excluded_days')).toBeUndefined()
+  })
+
+  it('calculates the trend from complete weeks using localized signed percentages', () => {
+    const { translate, calls } = createTranslateMock()
+    const config = createDownloadsHeatmapConfig({ $t: translate })
+
+    createAltTextFromDownloadsHeatmap({ dataset: createDownloadsHeatmapDataset(), config })
+
+    expect(findHeatmapTranslation(calls, 'weekly_trend')?.named).toEqual({
+      change: '+37.5%',
+      first: '160',
+      last: '220',
+    })
+  })
+
+  it('excludes anomalous, unreported, null, zero and non-finite values', () => {
+    const { translate, calls } = createTranslateMock()
+    const reportedDates = createDownloadsHeatmapReportedDates(heatmapWeekStarts)
+    reportedDates.delete('2026-03-13')
+    const config = createDownloadsHeatmapConfig({
+      $t: translate,
+      reportedDates,
+      anomalousDates: new Set(['2026-03-14']),
+    })
+    const dataset = createDownloadsHeatmapDataset([
+      [5, null, 0, Number.NaN, Number.POSITIVE_INFINITY, 50, 5],
+      [80, 10, 20, 30, 40, 60, 70],
+    ])
+
+    createAltTextFromDownloadsHeatmap({ dataset, config })
+
+    expect(findHeatmapTranslation(calls, 'summary')?.named).toEqual({
+      total: '240',
+      average: '30',
+      days: '8',
+    })
+    expect(findHeatmapTranslation(calls, 'peak')?.named).toEqual({
+      date: 'March 8, 2026',
+      downloads: '80',
+    })
+    expect(findHeatmapTranslation(calls, 'excluded_days')?.named).toEqual({ count: '6' })
+    expect(findHeatmapTranslation(calls, 'weekly_trend')).toBeUndefined()
+  })
+
+  it('omits the weekly trend when there is only one complete week', () => {
+    const { translate, calls } = createTranslateMock()
+    const config = createDownloadsHeatmapConfig({
+      $t: translate,
+      weekStarts: ['2026-03-01'],
+    })
+
+    createAltTextFromDownloadsHeatmap({
+      dataset: createDownloadsHeatmapDataset([firstHeatmapWeek]),
+      config,
+    })
+
+    expect(findHeatmapTranslation(calls, 'summary')?.named).toHaveProperty('days', '7')
+    expect(findHeatmapTranslation(calls, 'weekly_trend')).toBeUndefined()
+  })
+
+  it('compares the first and last complete weeks even when an intermediate week is incomplete', () => {
+    const { translate, calls } = createTranslateMock()
+    const weekStarts = ['2026-03-01', '2026-03-08', '2026-03-15']
+    const reportedDates = createDownloadsHeatmapReportedDates(weekStarts)
+    reportedDates.delete('2026-03-09')
+    const config = createDownloadsHeatmapConfig({
+      $t: translate,
+      weekStarts,
+      reportedDates,
+    })
+
+    createAltTextFromDownloadsHeatmap({
+      dataset: createDownloadsHeatmapDataset([
+        firstHeatmapWeek,
+        [10, 10, 10, 10, 10, 10, 10],
+        secondHeatmapWeek,
+      ]),
+      config,
+    })
+
+    expect(findHeatmapTranslation(calls, 'weekly_trend')?.named).toEqual({
+      change: '+37.5%',
+      first: '160',
+      last: '220',
+    })
+    expect(findHeatmapTranslation(calls, 'excluded_days')?.named).toEqual({ count: '1' })
+  })
+
+  it('omits the weekday/weekend comparison if no weekend data is reported', () => {
+    const { translate, calls } = createTranslateMock()
+    const reportedDates = createDownloadsHeatmapReportedDates(heatmapWeekStarts)
+    for (const date of ['2026-03-01', '2026-03-07', '2026-03-08', '2026-03-14']) {
+      reportedDates.delete(date)
+    }
+    const config = createDownloadsHeatmapConfig({ $t: translate, reportedDates })
+
+    createAltTextFromDownloadsHeatmap({ dataset: createDownloadsHeatmapDataset(), config })
+
+    expect(findHeatmapTranslation(calls, 'weekday_comparison')).toBeUndefined()
+    expect(findHeatmapTranslation(calls, 'excluded_days')?.named).toEqual({ count: '4' })
+  })
+
+  it('formats dates, weekday names, numbers and percentages using the selected locale', () => {
+    const { translate, calls } = createTranslateMock()
+    const config = createDownloadsHeatmapConfig({ $t: translate, locale: 'fr-FR' })
+
+    createAltTextFromDownloadsHeatmap({ dataset: createDownloadsHeatmapDataset(), config })
+
+    expect(findHeatmapTranslation(calls, 'peak')?.named).toEqual({
+      date: '13 mars 2026',
+      downloads: '60',
+    })
+    expect(findHeatmapTranslation(calls, 'busiest_weekday')?.named).toEqual({
+      weekday: 'vendredi',
+      average: '55',
+    })
+    expect(findHeatmapTranslation(calls, 'weekly_trend')?.named).toEqual({
+      change: new Intl.NumberFormat('fr-FR', {
+        style: 'percent',
+        maximumFractionDigits: 1,
+        signDisplay: 'exceptZero',
+      }).format(0.375),
+      first: '160',
+      last: '220',
+    })
+  })
+
+  it('ignores columns that have no corresponding week start', () => {
+    const { translate, calls } = createTranslateMock()
+    const config = createDownloadsHeatmapConfig({
+      $t: translate,
+      weekStarts: ['2026-03-01'],
+    })
+
+    createAltTextFromDownloadsHeatmap({ dataset: createDownloadsHeatmapDataset(), config })
+
+    expect(findHeatmapTranslation(calls, 'summary')?.named).toEqual({
+      total: '160',
+      average: '23',
+      days: '7',
+    })
+    expect(findHeatmapTranslation(calls, 'weekly_trend')).toBeUndefined()
+  })
+})
+
+describe('copyAltTextFromDownloadsHeatmap', () => {
+  it('copies the exact generated alternative text once', async () => {
+    const copy = vi.fn(async () => undefined)
+    const config = createDownloadsHeatmapConfig({ copy })
+    const dataset = createDownloadsHeatmapDataset()
+    const expected = createAltTextFromDownloadsHeatmap({ dataset, config })
+    await copyAltTextFromDownloadsHeatmap({ dataset, config })
+    expect(copy).toHaveBeenCalledTimes(1)
+    expect(copy).toHaveBeenCalledWith(expected)
   })
 })
 
