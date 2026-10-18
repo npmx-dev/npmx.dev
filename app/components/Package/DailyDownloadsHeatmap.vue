@@ -37,7 +37,6 @@ const { locale, localeProperties } = useI18n()
 const isRTL = computed(() => localeProperties.value.dir === 'rtl')
 
 const colorMode = useColorMode()
-const resolvedMode = shallowRef<'light' | 'dark'>('light')
 const isDarkMode = computed(() => colorMode.value === 'dark')
 const rootEl = shallowRef<HTMLElement | null>(null)
 const { width } = useElementSize(rootEl)
@@ -47,7 +46,6 @@ const { copiedPng, isCopyingPng, copyChartPng } = useCopyChartPng(chartRef)
 
 onMounted(() => {
   rootEl.value = document.documentElement
-  resolvedMode.value = colorMode.value === 'dark' ? 'dark' : 'light'
 })
 
 const { colors } = useColors(rootEl)
@@ -616,14 +614,7 @@ function getLegendContent(svg: VueUiHeatmapSvgSlotProps['svg']) {
     <div v-else-if="source.length" class="w-full overflow-visible">
       <ClientOnly>
         <div>
-          <VueUiHeatmap
-            ref="chartRef"
-            :dataset="dataset"
-            :config="config"
-            :class="{
-              '[direction:ltr]': true,
-            }"
-          >
+          <VueUiHeatmap ref="chartRef" :dataset="dataset" :config="config" class="[direction:ltr]">
             <!-- Keyboard navigation hint -->
             <template #hint="{ isVisible }">
               <p
