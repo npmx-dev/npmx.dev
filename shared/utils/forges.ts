@@ -7,7 +7,7 @@ import { giteeLite } from 'forges/gitee'
 import { githubLite } from 'forges/github'
 import { gitlabLite } from 'forges/gitlab'
 import { pushin } from 'forges/pushin'
-import { tangled } from 'forges/tangled'
+import { tangledLite } from 'forges/tangled'
 
 /**
  * Adapter between npmx's own git provider registry (`git-providers.ts`) and the
@@ -98,10 +98,29 @@ export function createForgeProvider(
     case 'pushin':
       return pushin(base).create()
     case 'tangled':
-      return tangled(base).create()
+      return tangledLite(base).create()
     default:
       return undefined
   }
+}
+
+/**
+ * A provider for building and reading web URLs, reused across calls.
+ *
+ * `urlFor()` and `parseUrl()` depend only on the forge and its instance, so one
+ * instance per pair is enough and callers can build links in a loop without
+ * constructing a provider each time. Callers that make a request build their own
+ * with a `fetch` and credentials.
+ */
+const webProviders = new Map<string, ForgeProvider | undefined>()
+
+export function forgeWebProvider(ref: RepoRef): ForgeProvider | undefined {
+  const { forge, instance } = toForgeRepoRef(ref)
+  const key = `${forge}:${instance}`
+  if (!webProviders.has(key)) {
+    webProviders.set(key, createForgeProvider(ref))
+  }
+  return webProviders.get(key)
 }
 
 /**
@@ -109,7 +128,7 @@ export function createForgeProvider(
  * has one, so a README image points at bytes instead of an HTML page.
  */
 export function convertBlobOrFileToRawUrl(url: string, ref: RepoRef): string {
-  const provider = createForgeProvider(ref)
+  const provider = forgeWebProvider(ref)
   const parsed = provider?.parseUrl(url)
   const file = parsed?.file
   if (!provider || !parsed || !file) {

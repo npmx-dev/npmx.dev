@@ -1,5 +1,5 @@
 import type { RepoRef } from '~~/shared/utils/git-providers'
-import { createForgeProvider, toForgeRepoRef } from '~~/shared/utils/forges'
+import { forgeWebProvider, toForgeRepoRef } from '~~/shared/utils/forges'
 import { resolveURL } from 'ufo'
 
 export interface RepoFileUrl {
@@ -20,7 +20,7 @@ export function getFileUrls(ref: RepoRef, path: string): RepoFileUrl | null {
     }
   }
 
-  const provider = createForgeProvider(ref)
+  const provider = forgeWebProvider(ref)
   const repo = toForgeRepoRef(ref)
   const raw = provider?.urlFor({ raw: { repo, path, at: 'HEAD' } })
   const blob = provider?.urlFor({ file: { repo, path, at: 'HEAD' } })

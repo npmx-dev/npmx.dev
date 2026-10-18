@@ -1,6 +1,6 @@
 import type { UrlTarget } from 'forges'
 import type { ProviderId, RepoRef } from '~~/shared/utils/git-providers'
-import { createForgeProvider, toForgeRepoRef } from '~~/shared/utils/forges'
+import { forgeWebProvider, toForgeRepoRef } from '~~/shared/utils/forges'
 import type { MarkdownRepoInfo } from './markdown'
 
 type ReferenceQuirks = Pick<
@@ -47,7 +47,7 @@ export function createRepoInfo(ref: RepoRef, path?: string): MarkdownRepoInfo | 
     return createSourcehutRepoInfo(ref.owner, ref.repo, path)
   }
 
-  const provider = createForgeProvider(ref)
+  const provider = forgeWebProvider(ref)
   if (!provider) return null
 
   const repo = toForgeRepoRef(ref)

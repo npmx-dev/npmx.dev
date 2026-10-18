@@ -1,7 +1,9 @@
+import type { Release } from 'forges'
 import type { ChangelogMarkdownInfo, ChangelogInfo } from '~~/shared/types/changelog'
 import type { ExtendedPackageJson } from '~~/shared/utils/package-analysis'
 import { type RepoRef, parseRepositoryInfo } from '~~/shared/utils/git-providers'
 import { getFileUrls } from './baseFileUrl'
+import { ForgeApiError } from 'forges'
 import { FetchError } from 'ofetch'
 import { ERROR_CHANGELOG_NOT_FOUND, ERROR_UNGH_API_KEY_EXHAUSTED } from '~~/shared/utils/constants'
 import { GithubReleaseSchama } from '~~/shared/schemas/changelog/release'
@@ -255,6 +257,9 @@ async function checkLatestGithubRelease(
 
 // Every forge `forges` can read releases for, via its own capability check.
 
+/** A repository that does not exist, or one this credential cannot read, has no release changelog. */
+const UNREADABLE_RELEASE_STATUSES = new Set([401, 403, 404])
+
 const checkLatestRelease = defineCachedFunction(
   async function (ref: RepoRef, directory?: string): Promise<ChangelogInfo | false> {
     const provider = createForgeProvider(ref)
@@ -262,7 +267,16 @@ const checkLatestRelease = defineCachedFunction(
       return false
     }
 
-    const release = await provider.releases.latest(toForgeRepoRef(ref))
+    let release: Release | undefined
+    try {
+      release = await provider.releases.latest(toForgeRepoRef(ref))
+    } catch (error) {
+      if (error instanceof ForgeApiError && UNREADABLE_RELEASE_STATUSES.has(error.status)) {
+        return false
+      }
+      throw error
+    }
+
     if (!release) {
       return false
     }
