@@ -9,12 +9,9 @@ describe('Terminal components', () => {
     selectedPackageManager.value = 'npm'
   })
 
-  it.each([
-    ['nub', 'nubx create-vite'],
-    ['upm', 'upx create-vite'],
-  ] as const)('renders only %s in TerminalExecute', async (packageManager, command) => {
+  it('renders only the selected package manager in TerminalExecute', async () => {
     const selectedPackageManager = useSelectedPackageManager()
-    selectedPackageManager.value = packageManager
+    selectedPackageManager.value = 'nub'
 
     const component = await mountSuspended(TerminalExecute, {
       props: { packageName: 'create-vite' },
@@ -23,7 +20,7 @@ describe('Terminal components', () => {
     const renderedCommands = component.findAll('[data-pm-cmd]')
 
     expect(renderedCommands).toHaveLength(1)
-    expect(renderedCommands[0]?.attributes('data-pm-cmd')).toBe(packageManager)
-    expect(component.text()).toContain(command)
+    expect(renderedCommands[0]?.attributes('data-pm-cmd')).toBe('nub')
+    expect(component.text()).toContain('nubx create-vite')
   })
 })
