@@ -68,7 +68,7 @@ export default defineNitroPlugin(nitroApp => {
       // Resolve the (possibly relative) request URL against `baseURL` so the allowlist check
       // and cache key operate on the real host. Callers like `$npmRegistry`/`$npmApi` pass a
       // relative path plus a `baseURL`, which `isAllowedDomain` can't parse on its own.
-      const absoluteUrl = resolveRequestUrl(url, options.baseURL as string | undefined)
+      const absoluteUrl = resolveRequestUrl(url, options)
 
       // Check if this URL should be cached
       if (!absoluteUrl || !isAllowedDomain(absoluteUrl)) {

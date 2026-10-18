@@ -13,14 +13,32 @@ describe('resolveRequestUrl', () => {
   })
 
   it('resolves a relative path against baseURL', () => {
-    expect(resolveRequestUrl('/vite', 'https://registry.npmjs.org')?.href).toBe(
+    expect(resolveRequestUrl('/vite', { baseURL: 'https://registry.npmjs.org' })?.href).toBe(
       'https://registry.npmjs.org/vite',
     )
   })
 
-  it('accepts a URL instance as-is', () => {
-    const url = new URL('https://api.npmjs.org/downloads/point/last-week/vite')
-    expect(resolveRequestUrl(url)).toBe(url)
+  it('keeps the baseURL path, matching how ofetch joins them', () => {
+    expect(
+      resolveRequestUrl('/point/last-week/vite', { baseURL: 'https://api.npmjs.org/downloads' })
+        ?.href,
+    ).toBe('https://api.npmjs.org/downloads/point/last-week/vite')
+  })
+
+  it('does not treat a protocol-relative path as a different host', () => {
+    expect(
+      resolveRequestUrl('//example.com/vite', { baseURL: 'https://registry.npmjs.org' })?.host,
+    ).toBe('registry.npmjs.org')
+  })
+
+  it('appends params and query options to the URL', () => {
+    expect(
+      resolveRequestUrl('/-/v1/search?size=25', {
+        baseURL: 'https://registry.npmjs.org',
+        params: { text: 'vue' },
+        query: { from: 25 },
+      })?.href,
+    ).toBe('https://registry.npmjs.org/-/v1/search?size=25&text=vue&from=25')
   })
 
   it('returns null for a relative path with no baseURL', () => {
@@ -30,7 +48,7 @@ describe('resolveRequestUrl', () => {
 
 describe('isAllowedDomain after resolving', () => {
   it('allows a relative registry request once resolved against baseURL', () => {
-    const resolved = resolveRequestUrl('/vite', 'https://registry.npmjs.org')
+    const resolved = resolveRequestUrl('/vite', { baseURL: 'https://registry.npmjs.org' })
     expect(resolved).not.toBeNull()
     expect(isAllowedDomain(resolved!)).toBe(true)
   })

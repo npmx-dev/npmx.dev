@@ -7,7 +7,10 @@ vi.stubGlobal('defineNitroPlugin', (setup: Function) => setup)
 
 const plugin = (await import('#server/plugins/fetch-cache')).default
 
-type CachedFetch = (url: string, options?: { baseURL?: string }) => Promise<{ data: unknown }>
+type CachedFetch = (
+  url: string,
+  options?: { baseURL?: string; query?: Record<string, string> },
+) => Promise<{ data: unknown }>
 
 /**
  * Boots the plugin with a fresh in-memory storage and returns that storage plus a
@@ -71,6 +74,18 @@ describe('fetch-cache plugin', () => {
 
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(result.data).toEqual({ name: 'vite' })
+  })
+
+  it('uses separate cache entries for requests that differ only in query options', async () => {
+    const { cachedFetch } = bootstrap()
+    const baseURL = 'https://registry.npmjs.org'
+    fetchMock.mockResolvedValueOnce({ name: 'vue' }).mockResolvedValueOnce({ name: 'react' })
+
+    await cachedFetch('/-/v1/search', { baseURL, query: { text: 'vue' } })
+    const result = await cachedFetch('/-/v1/search', { baseURL, query: { text: 'react' } })
+
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+    expect(result.data).toEqual({ name: 'react' })
   })
 
   it('does not cache when the URL cannot be resolved (no baseURL)', async () => {
