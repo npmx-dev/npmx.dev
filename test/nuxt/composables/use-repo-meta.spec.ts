@@ -191,6 +191,18 @@ describe('useRepoMeta - URL parsing via repoRef', () => {
     })
   })
 
+  describe('Pushin URLs', () => {
+    it('should parse Pushin URL', () => {
+      const result = parseRepoUrl('https://pushin.eu/tobbe/npmx-pushin-test')
+
+      expect(result).toEqual({
+        provider: 'pushin',
+        owner: 'tobbe',
+        repo: 'npmx-pushin-test',
+      })
+    })
+  })
+
   describe('Gitea URLs', () => {
     it('should parse exact allowlisted Gitea hosts', () => {
       const result = parseRepoUrl('https://gitea.com/org/project')

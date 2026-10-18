@@ -168,9 +168,6 @@
       "changelog": "Changelog",
       "stats": "Stats"
     },
-    "package_actions": {
-      "copy_run": "Copy run command"
-    },
     "code": {
       "copy_file": "Copy file contents"
     },
@@ -428,6 +425,7 @@
       "forgejo": "View on Forgejo",
       "gitea": "View on Gitea",
       "gitee": "View on Gitee",
+      "pushin": "View on Pushin",
       "radicle": "View on Radicle",
       "socket_dev": "View on socket.dev",
       "sourcehut": "View on SourceHut",
@@ -567,8 +565,12 @@
       "pm_label": "Package manager",
       "copy_command": "Copy install command",
       "copy_dev_command": "Copy dev install command",
+      "copy_types_command": "Copy types install command",
       "dev_dependency_hint": "Usually installed as a dev dependency",
-      "view_types": "View {package}"
+      "view_types": "View {package}",
+      "types_label": "Types",
+      "collapse_commands": "Collapse additional commands",
+      "expand_commands": "Show additional commands"
     },
     "create": {
       "title": "Create new project",
@@ -834,6 +836,10 @@
         "copy_url": "Copy this URL to embed the chart into your website",
         "preview": "Preview",
         "tip": "If startDate and endDate are not provided in the URL, the graph will display the last 12 months by default."
+      },
+      "sparkline_zoom_reset": {
+        "title": "Reset zoom · double-click chart or press Esc",
+        "aria_label": "Reset zoom"
       }
     },
     "downloads": {
@@ -1868,7 +1874,8 @@
   "logo_menu": {
     "copy_svg": "Copy logo as SVG",
     "copied": "Copied!",
-    "browse_brand": "Browse brand kit"
+    "browse_brand": "Browse brand kit",
+    "open_new_tab": "Open npmx in new tab"
   },
   "brand": {
     "title": "Brand",

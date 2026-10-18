@@ -508,15 +508,6 @@
           },
           "additionalProperties": false
         },
-        "package_actions": {
-          "type": "object",
-          "properties": {
-            "copy_run": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false
-        },
         "code": {
           "type": "object",
           "properties": {
@@ -1288,6 +1279,9 @@
             "gitee": {
               "type": "string"
             },
+            "pushin": {
+              "type": "string"
+            },
             "radicle": {
               "type": "string"
             },
@@ -1705,10 +1699,22 @@
             "copy_dev_command": {
               "type": "string"
             },
+            "copy_types_command": {
+              "type": "string"
+            },
             "dev_dependency_hint": {
               "type": "string"
             },
             "view_types": {
+              "type": "string"
+            },
+            "types_label": {
+              "type": "string"
+            },
+            "collapse_commands": {
+              "type": "string"
+            },
+            "expand_commands": {
               "type": "string"
             }
           },
@@ -2504,6 +2510,18 @@
                   "type": "string"
                 },
                 "tip": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "sparkline_zoom_reset": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "aria_label": {
                   "type": "string"
                 }
               },
@@ -5609,6 +5627,9 @@
           "type": "string"
         },
         "browse_brand": {
+          "type": "string"
+        },
+        "open_new_tab": {
           "type": "string"
         }
       },

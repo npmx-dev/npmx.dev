@@ -88,6 +88,16 @@ type RadicleProjectResponse = {
   issues?: { open: number; closed: number }
 }
 
+/** Pushin API response for repository details (GitHub-compatible) */
+type PushinRepoResponse = {
+  id: number
+  description?: string | null
+  default_branch?: string
+  stargazers_count?: number
+  forks_count?: number
+  watchers_count?: number
+}
+
 type ProviderAdapter = {
   links(ref: RepoRef): RepoMetaLinks
   fetchMeta(
@@ -440,6 +450,45 @@ const radicleAdapter: ProviderAdapter = {
   },
 }
 
+const pushinAdapter: ProviderAdapter = {
+  links(ref) {
+    const base = `https://pushin.eu/${ref.owner}/${ref.repo}`
+    return {
+      repo: base,
+      stars: `${base}/stargazers`,
+      forks: base, // Pushin doesn't have a forks page
+      watchers: base, // Pushin doesn't have a watchers page
+    }
+  },
+
+  async fetchMeta(cachedFetch, ref, links, options = {}) {
+    let res: PushinRepoResponse | null = null
+    try {
+      const { data } = await cachedFetch<PushinRepoResponse>(
+        `${GIT_PROVIDER_API_ORIGINS.pushin}/api/v1/repos/${ref.owner}/${ref.repo}`,
+        { ...options, headers: { 'User-Agent': 'npmx', ...options.headers } },
+        REPO_META_TTL,
+      )
+      res = data
+    } catch {
+      return null
+    }
+
+    if (!res) return null
+
+    return {
+      provider: 'pushin',
+      url: links.repo,
+      stars: res.stargazers_count ?? 0,
+      forks: res.forks_count ?? 0,
+      watchers: res.watchers_count ?? 0,
+      description: res.description ?? null,
+      defaultBranch: res.default_branch,
+      links,
+    }
+  },
+}
+
 /**
  * Adapter for exact allowlisted Forgejo instances.
  */
@@ -493,6 +542,7 @@ const providers = {
   sourcehut: sourcehutAdapter,
   tangled: tangledAdapter,
   radicle: radicleAdapter,
+  pushin: pushinAdapter,
   forgejo: forgejoAdapter,
   gitea: giteaAdapter,
 } satisfies Record<ProviderId, ProviderAdapter>

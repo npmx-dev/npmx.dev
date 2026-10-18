@@ -163,9 +163,6 @@
       "changelog": "Seznam změn",
       "stats": "Statistiky"
     },
-    "package_actions": {
-      "copy_run": "Kopírovat příkaz spuštění"
-    },
     "code": {
       "copy_file": "Kopírovat obsah souboru"
     },

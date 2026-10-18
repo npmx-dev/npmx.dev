@@ -32,6 +32,7 @@ export const FETCH_CACHE_ALLOWED_DOMAINS = [
   'codeberg.org', // Codeberg (Gitea-based)
   'gitea.com', // Gitea API
   'gitee.com', // Gitee API
+  'pushin.eu', // Pushin API
   // microcosm endpoints for atproto data
   CONSTELLATION_HOST,
   SLINGSHOT_HOST,
