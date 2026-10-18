@@ -1521,14 +1521,15 @@ describe('copyAltTextForTimelineStackbar', () => {
 
 type DownloadsHeatmapDataset = Parameters<typeof createAltTextFromDownloadsHeatmap>[0]['dataset']
 
-const heatmapWeekStarts = ['2026-03-02', '2026-03-09']
-const firstHeatmapWeek = [10, 20, 30, 40, 50, 5, 5]
-const secondHeatmapWeek = [20, 30, 40, 50, 60, 10, 10]
+// Rows match the component's Sunday-to-Saturday layout, so week starts are Sundays.
+const heatmapWeekStarts = ['2026-03-01', '2026-03-08']
+const firstHeatmapWeek = [5, 10, 20, 30, 40, 50, 5]
+const secondHeatmapWeek = [10, 20, 30, 40, 50, 60, 10]
 
 function createDownloadsHeatmapDataset(
   weeks: Array<Array<number | null>> = [firstHeatmapWeek, secondHeatmapWeek],
 ): DownloadsHeatmapDataset {
-  const weekdays = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
+  const weekdays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
 
   return weekdays.map((name, weekdayIndex) => ({
     name,
@@ -1556,7 +1557,7 @@ function createDownloadsHeatmapConfig(
 
   return {
     packageName: '@scope/example',
-    dateRange: { from: '2026-03-02', to: '2026-03-15' },
+    dateRange: { from: '2026-03-01', to: '2026-03-14' },
     weekStarts,
     reportedDates: createDownloadsHeatmapReportedDates(weekStarts),
     anomalousDates: new Set<string>(),
@@ -1662,8 +1663,8 @@ describe('createAltTextFromDownloadsHeatmap', () => {
       anomalousDates: new Set(['2026-03-14']),
     })
     const dataset = createDownloadsHeatmapDataset([
-      [null, 0, Number.NaN, Number.POSITIVE_INFINITY, 50, 5, 5],
-      [10, 20, 30, 40, 60, 70, 80],
+      [5, null, 0, Number.NaN, Number.POSITIVE_INFINITY, 50, 5],
+      [80, 10, 20, 30, 40, 60, 70],
     ])
 
     createAltTextFromDownloadsHeatmap({ dataset, config })
@@ -1674,7 +1675,7 @@ describe('createAltTextFromDownloadsHeatmap', () => {
       days: '8',
     })
     expect(findHeatmapTranslation(calls, 'peak')?.named).toEqual({
-      date: 'March 15, 2026',
+      date: 'March 8, 2026',
       downloads: '80',
     })
     expect(findHeatmapTranslation(calls, 'excluded_days')?.named).toEqual({ count: '6' })
@@ -1685,7 +1686,7 @@ describe('createAltTextFromDownloadsHeatmap', () => {
     const { translate, calls } = createTranslateMock()
     const config = createDownloadsHeatmapConfig({
       $t: translate,
-      weekStarts: ['2026-03-02'],
+      weekStarts: ['2026-03-01'],
     })
 
     createAltTextFromDownloadsHeatmap({
@@ -1699,9 +1700,9 @@ describe('createAltTextFromDownloadsHeatmap', () => {
 
   it('compares the first and last complete weeks even when an intermediate week is incomplete', () => {
     const { translate, calls } = createTranslateMock()
-    const weekStarts = ['2026-03-02', '2026-03-09', '2026-03-16']
+    const weekStarts = ['2026-03-01', '2026-03-08', '2026-03-15']
     const reportedDates = createDownloadsHeatmapReportedDates(weekStarts)
-    reportedDates.delete('2026-03-10')
+    reportedDates.delete('2026-03-09')
     const config = createDownloadsHeatmapConfig({
       $t: translate,
       weekStarts,
@@ -1728,7 +1729,7 @@ describe('createAltTextFromDownloadsHeatmap', () => {
   it('omits the weekday/weekend comparison if no weekend data is reported', () => {
     const { translate, calls } = createTranslateMock()
     const reportedDates = createDownloadsHeatmapReportedDates(heatmapWeekStarts)
-    for (const date of ['2026-03-07', '2026-03-08', '2026-03-14', '2026-03-15']) {
+    for (const date of ['2026-03-01', '2026-03-07', '2026-03-08', '2026-03-14']) {
       reportedDates.delete(date)
     }
     const config = createDownloadsHeatmapConfig({ $t: translate, reportedDates })
@@ -1768,7 +1769,7 @@ describe('createAltTextFromDownloadsHeatmap', () => {
     const { translate, calls } = createTranslateMock()
     const config = createDownloadsHeatmapConfig({
       $t: translate,
-      weekStarts: ['2026-03-02'],
+      weekStarts: ['2026-03-01'],
     })
 
     createAltTextFromDownloadsHeatmap({ dataset: createDownloadsHeatmapDataset(), config })

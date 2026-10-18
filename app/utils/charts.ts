@@ -1053,8 +1053,8 @@ export function createAltTextFromDownloadsHeatmap({
   const busiestWeekday = weekdayStats.reduce((busiest, day) =>
     day.average > busiest.average ? day : busiest,
   )
-  const weekdays = days.filter(day => day.weekdayIndex < 5)
-  const weekends = days.filter(day => day.weekdayIndex >= 5)
+  const weekdays = days.filter(day => !isWeekend(day.date))
+  const weekends = days.filter(day => isWeekend(day.date))
   const averageWeekday = weekdays.length ? sum(weekdays.map(day => day.value)) / weekdays.length : 0
   const averageWeekend = weekends.length ? sum(weekends.map(day => day.value)) / weekends.length : 0
   const completeWeeks = config.weekStarts.flatMap((_, weekIndex) => {
@@ -1110,6 +1110,11 @@ export function createAltTextFromDownloadsHeatmap({
   ]
     .filter(Boolean)
     .join(' ')
+}
+
+function isWeekend(date: Date): boolean {
+  const day = date.getUTCDay()
+  return day === 0 || day === 6
 }
 
 export async function copyAltTextFromDownloadsHeatmap({
