@@ -787,5 +787,8 @@ function getLegendContent(svg: VueUiHeatmapSvgSlotProps['svg']) {
         </template>
       </ClientOnly>
     </div>
+    <p v-else class="py-6 text-sm text-fg-subtle">
+      {{ $t('package.trends.no_data') }}
+    </p>
   </div>
 </template>
