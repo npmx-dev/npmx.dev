@@ -31,12 +31,14 @@ export default defineCachedEventHandler(
 
     try {
       // The search API reports the total, so a one-item page is enough.
-      const page = await provider.search.threadsPage({
-        repo: toForgeRepoRef(ref),
-        kind: 'issue',
-        state: 'open',
-        perPage: 1,
-      })
+      const page = await provider.search
+        .threads({
+          repo: toForgeRepoRef(ref),
+          kind: 'issue',
+          state: 'open',
+          perPage: 1,
+        })
+        .page()
 
       return { owner, repo, issues: page.total ?? null }
     } catch {

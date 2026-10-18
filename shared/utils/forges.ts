@@ -83,31 +83,29 @@ export function createForgeProvider(
   const base = { fetch: options.fetch, timeout: options.timeout ?? 15_000 }
   switch (ref.provider) {
     case 'github':
-      return (
-        options.token
-          ? github({ ...base, auth: { type: 'token', token: options.token } })
-          : github(base)
-      ).create()
+      return options.token
+        ? github({ ...base, auth: { type: 'token', token: options.token } })
+        : github(base)
     case 'gitlab':
-      return gitlab({ ...base, baseUrl: `https://${ref.host ?? 'gitlab.com'}` }).create()
+      return gitlab({ ...base, baseUrl: `https://${ref.host ?? 'gitlab.com'}` })
     case 'bitbucket':
-      return bitbucket(base).create()
+      return bitbucket(base)
     case 'codeberg':
-      return forgejo({ ...base, baseUrl: 'https://codeberg.org' }).create()
+      return forgejo({ ...base, baseUrl: 'https://codeberg.org' })
     case 'forgejo':
-      return forgejo({ ...base, baseUrl: `https://${ref.host ?? 'codeberg.org'}` }).create()
+      return forgejo({ ...base, baseUrl: `https://${ref.host ?? 'codeberg.org'}` })
     case 'gitea':
-      return gitea({ ...base, baseUrl: `https://${ref.host ?? 'gitea.com'}` }).create()
+      return gitea({ ...base, baseUrl: `https://${ref.host ?? 'gitea.com'}` })
     case 'gitee':
-      return gitee(base).create()
+      return gitee(base)
     case 'pushin':
-      return pushin(base).create()
+      return pushin(base)
     case 'sourcehut':
       return options.token
-        ? sourcehut({ ...base, auth: { type: 'token', token: options.token } }).create()
+        ? sourcehut({ ...base, auth: { type: 'token', token: options.token } })
         : undefined
     case 'tangled':
-      return tangled(base).create()
+      return tangled(base)
     default:
       return undefined
   }
@@ -132,7 +130,7 @@ export function forgeWebProvider(ref: RepoRef): ForgeProvider | undefined {
     webProviders.set(
       key,
       ref.provider === 'sourcehut'
-        ? sourcehut({ timeout: 15_000, auth: { type: 'token', token: '' } }).create()
+        ? sourcehut({ timeout: 15_000, auth: { type: 'token', token: '' } })
         : createForgeProvider(ref),
     )
   }

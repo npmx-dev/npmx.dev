@@ -37,7 +37,7 @@ export function createRepoInfo(ref: RepoRef, path?: string): MarkdownRepoInfo | 
   // A base is a page URL with its trailing path segment removed, so build the
   // page for a placeholder segment and trim it.
   const base = (target: UrlTarget) => provider.urlFor(target)?.replace(/\/$/, '')
-  const threadBase = (kind: 'issue' | 'pull_request' | 'commit') =>
+  const threadBase = (kind: 'issue' | 'pull_request') =>
     provider
       .urlFor({
         thread: {
@@ -50,13 +50,15 @@ export function createRepoInfo(ref: RepoRef, path?: string): MarkdownRepoInfo | 
         },
       })
       ?.replace(/\/1$/, '')
+  // A commit is its own target now, not a thread kind.
+  const commitBase = provider.urlFor({ commit: { repo, sha: '1' } })?.replace(/\/1$/, '')
 
   return {
     hostBaseUrl: provider.webOrigin ?? '',
     blobBaseUrl: base({ file: { repo, path: '', at: 'HEAD' } }) ?? '',
     rawBaseUrl: base({ raw: { repo, path: '', at: 'HEAD' } }) ?? '',
     path,
-    commitBaseUrl: threadBase('commit') ?? '',
+    commitBaseUrl: commitBase ?? '',
     issueBaseUrl: threadBase('issue'),
     prBaseUrl: threadBase('pull_request'),
     compareBaseUrl: base({ repo, section: 'compare' }),

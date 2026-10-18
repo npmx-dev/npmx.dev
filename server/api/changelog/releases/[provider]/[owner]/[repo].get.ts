@@ -124,7 +124,9 @@ async function getReleasesViaForges(
     })
   }
 
-  const { items: releases } = await forgeProvider.releases.listPage(toForgeRepoRef(ref), { signal })
+  const { items: releases } = await forgeProvider.releases
+    .list(toForgeRepoRef(ref), { signal })
+    .page()
   const repoInfo = createRepoInfo(ref)
   if (!repoInfo) {
     throw createError({

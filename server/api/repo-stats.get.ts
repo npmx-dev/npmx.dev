@@ -22,16 +22,23 @@ export default defineCachedEventHandler(
 
     // Each count comes from the total on a one-item page.
     const [contributors, commits, pullRequests] = await Promise.all([
-      provider.repos.contributorsPage(target, { perPage: 1 }).then(page => page.total ?? 0),
-      provider.contents.commitsPage(target, { perPage: 1 }).then(page => page.total ?? 0),
+      provider.repos
+        .contributors(target, { perPage: 1 })
+        .page()
+        .then(page => page.total ?? 0),
+      provider.commits
+        .list(target, { perPage: 1 })
+        .page()
+        .then(page => page.total ?? 0),
       provider.search
-        .threadsPage({
+        .threads({
           repo: target,
           kind: 'pull_request',
           state: 'closed',
           queryRaw: 'is:merged',
           perPage: 1,
         })
+        .page()
         .then(page => page.total ?? 0),
     ])
 
