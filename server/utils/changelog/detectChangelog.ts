@@ -16,6 +16,16 @@ type SafeResult<R, E = Error> = [R, null] | [null, E]
 const TIMEOUT = 15_000
 
 /**
+ * The `owner/repo` slug a changelog URL carries. The owner is a single path
+ * segment, so an owner that is itself a path, as a GitLab subgroup is, has to be
+ * encoded or it splits into two segments.
+ */
+function repoSlug(ref: RepoRef): `${string}/${string}` {
+  const owner = ref.owner.includes('/') ? encodeURIComponent(ref.owner) : ref.owner
+  return `${owner}/${ref.repo}`
+}
+
+/**
  * Detect whether changelogs/releases are available for this package
  *
  * first checks if releases are available and then changelog.md
@@ -147,12 +157,11 @@ async function checkFiles(ref: RepoRef, dir?: string) {
         return false
       })
     if (exists) {
-      const owner = ref.provider == 'gitlab' ? encodeURIComponent(ref.owner) : ref.owner
       return {
         type: 'md',
         provider: ref.provider,
         path,
-        repo: `${owner}/${ref.repo}`,
+        repo: repoSlug(ref),
         link: urls.blob,
         host: ref.host,
       } satisfies ChangelogMarkdownInfo
@@ -210,7 +219,7 @@ async function checkLatestGithubRelease(
       return {
         provider: ref.provider,
         type: 'release',
-        repo: `${ref.owner}/${ref.repo}`,
+        repo: repoSlug(ref),
         link: `https://github.com/${ref.owner}/${ref.repo}/releases`,
       }
     }
@@ -231,7 +240,7 @@ async function checkLatestGithubRelease(
       provider: ref.provider,
       type: 'md',
       path,
-      repo: `${ref.owner}/${ref.repo}`,
+      repo: repoSlug(ref),
       link: matchedChangelog,
     }
   } catch (e) {
@@ -289,7 +298,7 @@ const checkLatestRelease = defineCachedFunction(
       return {
         provider: ref.provider,
         type: 'release',
-        repo: `${ref.owner}/${ref.repo}`,
+        repo: repoSlug(ref),
         link: provider.urlFor({ repo: toForgeRepoRef(ref), section: 'releases' }) ?? '',
         host: ref.host,
       }
@@ -310,7 +319,7 @@ const checkLatestRelease = defineCachedFunction(
       provider: ref.provider,
       type: 'md',
       path: file.path,
-      repo: `${ref.owner}/${ref.repo}`,
+      repo: repoSlug(ref),
       link: matchedChangelog,
       host: ref.host,
     }
