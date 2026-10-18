@@ -88,7 +88,8 @@ export function resolveRequestUrl(
   options: Pick<FetchOptions, 'baseURL' | 'params' | 'query'> = {},
 ): URL | null {
   const { baseURL, params, query } = options
-  const request = withQuery(baseURL ? withBase(url, baseURL) : url, { ...params, ...query })
+  const joined = baseURL ? withBase(url, baseURL) : url
+  const request = params || query ? withQuery(joined, { ...params, ...query }) : joined
 
   try {
     return new URL(request)

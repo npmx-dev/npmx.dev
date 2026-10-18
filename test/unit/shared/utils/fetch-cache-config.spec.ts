@@ -31,6 +31,14 @@ describe('resolveRequestUrl', () => {
     ).toBe('registry.npmjs.org')
   })
 
+  it('leaves an existing query string untouched when no query options are given', () => {
+    expect(
+      resolveRequestUrl('/-/v1/search?text=maintainer%3Afoo&q=a%20b', {
+        baseURL: 'https://registry.npmjs.org',
+      })?.href,
+    ).toBe('https://registry.npmjs.org/-/v1/search?text=maintainer%3Afoo&q=a%20b')
+  })
+
   it('appends params and query options to the URL', () => {
     expect(
       resolveRequestUrl('/-/v1/search?size=25', {
