@@ -427,7 +427,8 @@
       "size_tooltip": {
         "unpacked": "{size} taille décompressée (ce paquet)",
         "total": "{size} taille totale décompressée (incluant les {count} dépendances pour linux-x64)"
-      }
+      },
+      "daily_downloads_heatmap": "Carte thermique des téléchargements quotidiens"
     },
     "skills": {
       "title": "Compétences de l'agent",
@@ -732,6 +733,25 @@
       "sparkline_zoom_reset": {
         "title": "Réinitialiser le zoom · double-cliquez sur le graphique ou appuyez sur Esc",
         "aria_label": "Réinitialiser le zoom"
+      },
+      "downloads_heatmap": {
+        "title": "Téléchargements quotidiens: dernières 52 semaines, du {from} au {to}",
+        "legend": {
+          "anomalies": "Jours avec des données manquantes ou en anomalie",
+          "max": "Max: {value} téléchargements le {date}",
+          "min": "Min: {value} téléchargements le {date}"
+        },
+        "nav_hint": "Utilisez ← → ↑ ↓",
+        "copy_alt": {
+          "introduction": "Carte thermique des téléchargements quotidiens du paquet {package_name}. {date_range}.",
+          "no_data": "Aucune donnée de téléchargement fiable n'est disponible pour cette période.",
+          "summary": "Un total de {total} téléchargements a été enregistré sur {days} jours, soit une moyenne de {average} téléchargements par jour.",
+          "peak": "Le pic d'activité a été atteint le {date}, avec {downloads} téléchargements.",
+          "busiest_weekday": "Le jour de la semaine le plus actif était le {weekday}, avec une moyenne de {average} téléchargements.",
+          "weekday_comparison": "En moyenne, les jours de semaine ont enregistré {weekdays} téléchargements par jour, contre {weekends} le week-end.",
+          "weekly_trend": "Entre la première et la dernière semaine complète disposant de données fiables, le nombre de téléchargements hebdomadaires a varié de {change}, passant de {first} à {last}.",
+          "excluded_days": "{count} jours calendaires ont été exclus de ces statistiques en raison de données manquantes, anormales ou pas encore disponibles."
+        }
       }
     },
     "downloads": {

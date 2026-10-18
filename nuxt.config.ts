@@ -456,6 +456,7 @@ export default defineNuxtConfig({
         'vue-data-ui/vue-ui-scatter',
         'vue-data-ui/vue-ui-horizontal-bar',
         'vue-data-ui/vue-ui-stackbar',
+        'vue-data-ui/vue-ui-heatmap',
         'virtua/vue',
         'verkit',
         'validate-npm-package-name',

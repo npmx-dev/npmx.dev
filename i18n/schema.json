@@ -1530,6 +1530,9 @@
             },
             "version_distribution": {
               "type": "string"
+            },
+            "daily_downloads_heatmap": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1862,6 +1865,9 @@
               "type": "string"
             },
             "description_to_provenance_trustedPublisher": {
+              "type": "string"
+            },
+            "description_to_trustedPublisher_without_provenance": {
               "type": "string"
             },
             "fallback_install_provenance": {
@@ -2523,6 +2529,63 @@
                 },
                 "aria_label": {
                   "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "downloads_heatmap": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "legend": {
+                  "type": "object",
+                  "properties": {
+                    "anomalies": {
+                      "type": "string"
+                    },
+                    "max": {
+                      "type": "string"
+                    },
+                    "min": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "nav_hint": {
+                  "type": "string"
+                },
+                "copy_alt": {
+                  "type": "object",
+                  "properties": {
+                    "introduction": {
+                      "type": "string"
+                    },
+                    "no_data": {
+                      "type": "string"
+                    },
+                    "summary": {
+                      "type": "string"
+                    },
+                    "peak": {
+                      "type": "string"
+                    },
+                    "busiest_weekday": {
+                      "type": "string"
+                    },
+                    "weekday_comparison": {
+                      "type": "string"
+                    },
+                    "weekly_trend": {
+                      "type": "string"
+                    },
+                    "excluded_days": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
                 }
               },
               "additionalProperties": false
