@@ -349,10 +349,18 @@ const supportsEstimation = computed(
     selectedMetric.value !== 'contributors',
 )
 
-const hasDownloadAnomalies = computed(() =>
-  normalisedDataset.value?.some(
-    datapoint => !!datapoint?.dashIndices?.length || datapoint?.series?.some(d => d == null),
-  ),
+const hasDashedSegments = computed(() =>
+  normalisedDataset.value.some((datapoint, index) => {
+    if (datapoint.dashIndices?.length) return true
+
+    return (
+      selectedMetric.value === DEFAULT_METRIC_ID &&
+      isLargePackage.value[getPackageNameForSeriesIndex(index)] === true &&
+      datapoint.series.length > 1 &&
+      isMissingDownloadValue(datapoint.series.at(-1)) &&
+      datapoint.series.slice(0, -1).some(value => !isMissingDownloadValue(value))
+    )
+  }),
 )
 
 const shouldRenderEstimationOverlay = computed(() => !pending.value && supportsEstimation.value)
@@ -1257,7 +1265,7 @@ function drawSvgPrintLegend(svg: Record<string, any>) {
   // Inject the estimation legend item when necessary
   if (
     (supportsEstimation.value && !isEndDateOnPeriodEnd.value && !isZoomed.value) ||
-    hasDownloadAnomalies.value
+    hasDashedSegments.value
   ) {
     seriesNames.push(`
         <line
@@ -2076,7 +2084,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
                 <!-- Estimation extra legend item -->
                 <div
                   class="flex shrink-0 items-center gap-1 whitespace-nowrap"
-                  v-if="supportsEstimation || hasDownloadAnomalies"
+                  v-if="supportsEstimation || hasDashedSegments"
                 >
                   <svg viewBox="0 0 20 2" width="20" class="shrink-0">
                     <line
