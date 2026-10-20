@@ -23,13 +23,13 @@ import {
   buildTrendsChartData,
   isWeeklyDataset,
   getTrendsDatetimeFormatterOptions,
-  nullifyZeroValues,
   isMissingDownloadValue,
   isLargeDownloadSeries,
   MULTI_PACKAGE_MODE_TOP_PADDING,
 } from '#shared/utils/trends-chart'
 import { downloadFileLink } from '~/utils/download'
 import { useCopyChartPng } from '~/composables/useCopyChartPng'
+import { getDownloadChartGaps } from '#shared/utils/download-chart-gaps'
 import { createLastDatapointLabelsSvg } from '#shared/utils/download-chart-last-label'
 
 import('vue-data-ui/style.css')
@@ -72,6 +72,7 @@ const { copy, copied } = useClipboard()
 
 const colorMode = useColorMode()
 const resolvedMode = shallowRef<'light' | 'dark'>('light')
+const gapPatternId = useId()
 const rootEl = shallowRef<HTMLElement | null>(null)
 const isZoomed = shallowRef(false)
 const zoomStartIndex = shallowRef(0)
@@ -200,17 +201,11 @@ const normalisedDataset = computed(() => {
   data.forEach((item, index) => {
     const packageName = getPackageNameForSeriesIndex(index)
 
-    item.series = nullifyZeroValues({
-      enabled: selectedMetric.value === DEFAULT_METRIC_ID && isLargePackage.value[packageName],
-      values: item.series,
-      keepLastZero: false,
-    }) as number[]
-
     if (selectedMetric.value !== DEFAULT_METRIC_ID || !item.series.length) return
 
     const rawLastValue = chartData.value.dataset?.[index]?.series?.at(-1)
 
-    if (!isLargePackage.value[packageName] && isMissingDownloadValue(rawLastValue)) {
+    if (!isLargePackage.value[packageName] && rawLastValue === 0) {
       const series = item.series as Array<number | null>
       series[series.length - 1] = 0
     }
@@ -1909,7 +1904,6 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
             :dates="chartData.dates"
             :datetimeFormatterOptions
             :showLastDatapointEstimation="shouldRenderEstimationOverlay && !isEndDateOnPeriodEnd"
-            :nullify-zero-values="selectedMetric === DEFAULT_METRIC_ID"
             :granularity="selectedGranularity"
             :large-package-series="largePackageSeries"
           />
@@ -1944,6 +1938,37 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
 
             <!-- Injecting custom svg elements -->
             <template #svg="{ svg }">
+              <g v-if="!pending && isDownloadsMetric" pointer-events="none" aria-hidden="true">
+                <template v-for="(gap, index) in getDownloadChartGaps(svg)" :key="index">
+                  <defs>
+                    <pattern
+                      :id="`${gapPatternId}-${index}`"
+                      width="6"
+                      height="6"
+                      patternUnits="userSpaceOnUse"
+                      patternTransform="rotate(45)"
+                    >
+                      <line
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="10"
+                        :stroke="colors.borderHover"
+                        stroke-width="5"
+                      />
+                    </pattern>
+                  </defs>
+                  <rect
+                    :x="gap.x"
+                    :y="gap.y"
+                    :width="gap.width"
+                    :height="gap.height"
+                    :fill="`url(#${gapPatternId}-${index})`"
+                    opacity="0.45"
+                  />
+                </template>
+              </g>
+
               <!-- Estimation lines for monthly & yearly granularities when the end date induces a downwards trend -->
               <g
                 v-if="shouldRenderEstimationOverlay && !isEndDateOnPeriodEnd && !isZoomed"

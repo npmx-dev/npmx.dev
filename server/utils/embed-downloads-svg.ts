@@ -1,3 +1,5 @@
+import { randomUUID } from 'node:crypto'
+import { getDownloadChartGaps } from '#shared/utils/download-chart-gaps'
 import { createError } from 'h3'
 import { createStaticVueUiXy } from 'vue-data-ui/ssr/vue-ui-xy'
 import { mergeConfigs } from 'vue-data-ui/utils'
@@ -342,7 +344,7 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
     const rawLastValue = chartData.dataset?.[index]?.series?.at(-1)
     if (!item.series.length || !isMissingDownloadValue(rawLastValue)) return
 
-    if (!isLargePackageByIndex[index]) {
+    if (!isLargePackageByIndex[index] && rawLastValue === 0) {
       const series = item.series as Array<number | null>
       series[series.length - 1] = 0
     }
@@ -451,6 +453,32 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
     config,
     additionalSvgContent: ({ series, drawingArea }) => {
       const renderedSeries = series as RenderedSeries[]
+      const gapPatternId = `download-gaps-${randomUUID()}`
+      const gapRectangles = getDownloadChartGaps({
+        drawingArea,
+        data: renderedSeries.map(serie => ({
+          color: serie.color ?? colors.fg,
+          isSegregated: serie.isSegregated === true,
+          plots: serie.plots?.map(plot => ({ x: Number(plot.x), value: plot.value })),
+        })),
+      })
+        .map((gap, index) => {
+          const patternId = `${gapPatternId}-${index}`
+          const stroke = colors.border.replace(
+            /[&<>"']/g,
+            character => `&#${character.charCodeAt(0)};`,
+          )
+          return `
+          <defs>
+            <pattern id="${patternId}" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="10" stroke="${stroke}" stroke-width="5" />
+            </pattern>
+          </defs>
+          <rect x="${gap.x}" y="${gap.y}" width="${gap.width}" height="${gap.height}" fill="url(#${patternId})" opacity="0.45" pointer-events="none" aria-hidden="true" />
+        `
+        })
+        .join('')
+
       const noDataGeometries = getNoDataTailGeometries({
         series: renderedSeries,
         isLargePackageByIndex,
@@ -532,6 +560,7 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
 
       return `
           <style>text {font-family:monospace;}</style>
+          ${gapRectangles}
           ${noDataTail}
           ${lastRecordedValueLegend}
           ${lastPlotValues}

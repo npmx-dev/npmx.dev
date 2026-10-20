@@ -18,7 +18,7 @@ const props = defineProps<{
   dataset?: Array<
     VueUiXyDatasetItem & {
       color?: string
-      series: number[]
+      series: Array<number | null>
       dashIndices?: number[]
     }
   >
@@ -29,7 +29,6 @@ const props = defineProps<{
     day: string
   }
   showLastDatapointEstimation: boolean
-  nullifyZeroValues?: boolean
   largePackageSeries?: boolean[]
   granularity: ChartTimeGranularity
 }>()
@@ -124,14 +123,7 @@ const datasets = computed<VueUiSparklineDatasetItem[][]>(() => {
 
       return {
         period,
-        value:
-          rawValue === 0
-            ? props.nullifyZeroValues && hasNoDataTail
-              ? index === props.dates.length - 1
-                ? 0
-                : null
-              : 0
-            : rawValue || (index === props.dates.length - 1 ? 0 : null),
+        value: rawValue ?? null,
       }
     })
   })
@@ -234,9 +226,9 @@ const configs = computed(() => {
           strokeWidth: 1,
           dashIndices,
           dashArray: 3,
-          cutNullValues: false,
+          cutNullValues: true,
           nullDashes: {
-            show: true,
+            show: false,
           },
         },
         plot: {
