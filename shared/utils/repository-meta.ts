@@ -2,7 +2,7 @@ import type { FetchLike } from 'forges'
 import type { CachedFetchFunction } from '#shared/utils/fetch-cache-config'
 import type { ProviderId, RepoRef } from '#shared/utils/git-providers'
 import { GIT_PROVIDER_API_ORIGINS } from '#shared/utils/git-providers'
-import { createForgeProvider, forgeWebProvider, toForgeRepoRef } from '#shared/utils/forges'
+import { createForgeProvider, forgeWeb, toForgeRepoRef } from '#shared/utils/forges'
 
 // TTL for git repo metadata (10 minutes - repo stats don't change frequently)
 const REPO_META_TTL = 60 * 10
@@ -62,15 +62,15 @@ type ProviderAdapter = {
 
 /** Repository page links, built from `forges`. */
 function linksFor(ref: RepoRef): RepoMetaLinks {
-  const provider = forgeWebProvider(ref)
+  const web = forgeWeb(ref)
   const repo = toForgeRepoRef(ref)
   // Fall back to the repository page where the forge has no dedicated one.
-  const page = provider?.urlFor({ repo }) ?? ''
+  const page = web?.urlFor({ repo }) ?? ''
   return {
     repo: page,
-    stars: provider?.urlFor({ repo, section: 'stargazers' }) ?? page,
-    forks: provider?.urlFor({ repo, section: 'forks' }) ?? page,
-    watchers: provider?.urlFor({ repo, section: 'watchers' }) ?? page,
+    stars: web?.urlFor({ repo, section: 'stargazers' }) ?? page,
+    forks: web?.urlFor({ repo, section: 'forks' }) ?? page,
+    watchers: web?.urlFor({ repo, section: 'watchers' }) ?? page,
   }
 }
 

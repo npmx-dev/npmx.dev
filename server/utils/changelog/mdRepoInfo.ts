@@ -1,6 +1,6 @@
 import type { UrlTarget } from 'forges'
 import type { ProviderId, RepoRef } from '~~/shared/utils/git-providers'
-import { forgeWebProvider, toForgeRepoRef } from '~~/shared/utils/forges'
+import { forgeWeb, toForgeRepoRef } from '~~/shared/utils/forges'
 import type { MarkdownRepoInfo } from './markdown'
 
 type ReferenceQuirks = Pick<
@@ -26,19 +26,19 @@ const REFERENCE_QUIRKS: Partial<Record<ProviderId, ReferenceQuirks>> = {
 const DEFAULT_QUIRKS: ReferenceQuirks = { issueChar: '#', prChar: '#' }
 
 /**
- * The markdown renderer's view of a repository, built from `forges`. `undefined`
- * when `forges` has no provider for the ref (radicle).
+ * The markdown renderer's view of a repository, built from `forges/web`.
+ * `undefined` when the ref has no web entry (radicle).
  */
 export function createRepoInfo(ref: RepoRef, path?: string): MarkdownRepoInfo | null {
-  const provider = forgeWebProvider(ref)
-  if (!provider) return null
+  const web = forgeWeb(ref)
+  if (!web) return null
 
   const repo = toForgeRepoRef(ref)
   // A base is a page URL with its trailing path segment removed, so build the
   // page for a placeholder segment and trim it.
-  const base = (target: UrlTarget) => provider.urlFor(target)?.replace(/\/$/, '')
+  const base = (target: UrlTarget) => web.urlFor(target)?.replace(/\/$/, '')
   const threadBase = (kind: 'issue' | 'pull_request') =>
-    provider
+    web
       .urlFor({
         thread: {
           forge: repo.forge,
@@ -51,10 +51,10 @@ export function createRepoInfo(ref: RepoRef, path?: string): MarkdownRepoInfo | 
       })
       ?.replace(/\/1$/, '')
   // A commit is its own target now, not a thread kind.
-  const commitBase = provider.urlFor({ commit: { repo, sha: '1' } })?.replace(/\/1$/, '')
+  const commitBase = web.urlFor({ commit: { repo, sha: '1' } })?.replace(/\/1$/, '')
 
   return {
-    hostBaseUrl: provider.webOrigin ?? '',
+    hostBaseUrl: web.webOrigin ?? '',
     blobBaseUrl: base({ file: { repo, path: '', at: 'HEAD' } }) ?? '',
     rawBaseUrl: base({ raw: { repo, path: '', at: 'HEAD' } }) ?? '',
     path,

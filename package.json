@@ -87,7 +87,7 @@
     "diff": "^9.0.0",
     "fast-npm-meta": "2.2.0",
     "focus-trap": "^8.0.0",
-    "forges": "https://pkg.pr.new/danielroe/forges@d8e48082",
+    "forges": "0.2.0",
     "gray-matter": "4.0.3",
     "hls.js": "1.7.0",
     "ipaddr.js": "2.5.0",
