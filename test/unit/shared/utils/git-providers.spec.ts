@@ -1,9 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import {
-  normalizeGitUrl,
-  parseRepositoryInfo,
-  type RepositoryInfo,
-} from '#shared/utils/git-providers'
+import { normalizeGitUrl, parseRepositoryInfo } from '#shared/utils/git-providers'
 
 describe('normalizeGitUrl', () => {
   it('should return null for empty input', () => {
@@ -112,7 +108,6 @@ describe('parseRepositoryInfo', () => {
       provider: 'github',
       owner: 'vercel',
       repo: 'ai',
-      rawBaseUrl: 'https://raw.githubusercontent.com/vercel/ai/HEAD',
       directory: undefined,
     })
   })
@@ -127,7 +122,6 @@ describe('parseRepositoryInfo', () => {
       provider: 'github',
       owner: 'withastro',
       repo: 'astro',
-      rawBaseUrl: 'https://raw.githubusercontent.com/withastro/astro/HEAD',
       directory: 'packages/astro',
     })
   })
@@ -138,8 +132,6 @@ describe('parseRepositoryInfo', () => {
       provider: 'github',
       owner: 'nuxt',
       repo: 'nuxt',
-      rawBaseUrl: 'https://raw.githubusercontent.com/nuxt/nuxt/HEAD',
-      blobBaseUrl: 'https://github.com/nuxt/nuxt/blob/HEAD',
     })
   })
 
@@ -152,8 +144,6 @@ describe('parseRepositoryInfo', () => {
       provider: 'github',
       owner: 'org',
       repo: 'repo',
-      rawBaseUrl: 'https://raw.githubusercontent.com/org/repo/HEAD',
-      blobBaseUrl: 'https://github.com/org/repo/blob/HEAD',
     })
   })
 
@@ -165,7 +155,6 @@ describe('parseRepositoryInfo', () => {
       provider: 'github',
       owner: 'nuxt',
       repo: 'nuxt',
-      rawBaseUrl: 'https://raw.githubusercontent.com/nuxt/nuxt/HEAD',
     })
   })
 
@@ -175,7 +164,6 @@ describe('parseRepositoryInfo', () => {
       provider: 'github',
       owner: 'owner',
       repo: 'repo',
-      rawBaseUrl: 'https://raw.githubusercontent.com/owner/repo/HEAD',
     })
   })
 
@@ -203,7 +191,6 @@ describe('parseRepositoryInfo', () => {
         owner: 'owner',
         repo: 'repo',
         host: 'gitlab.com',
-        rawBaseUrl: 'https://gitlab.com/owner/repo/-/raw/HEAD',
       })
     })
 
@@ -291,7 +278,6 @@ describe('parseRepositoryInfo', () => {
         provider: 'tangled',
         owner: 'nonbinary.computer',
         repo: 'weaver',
-        rawBaseUrl: 'https://tangled.sh/nonbinary.computer/weaver/raw/branch/main',
       })
     })
 
@@ -303,7 +289,6 @@ describe('parseRepositoryInfo', () => {
         provider: 'tangled',
         owner: 'pds.ls',
         repo: 'pdsls',
-        rawBaseUrl: 'https://tangled.sh/pds.ls/pdsls/raw/branch/main',
       })
     })
 
@@ -368,8 +353,6 @@ describe('parseRepositoryInfo', () => {
         provider: 'pushin',
         owner: 'tobbe',
         repo: 'npmx-pushin-test',
-        rawBaseUrl: 'https://pushin.eu/tobbe/npmx-pushin-test/blob/HEAD',
-        blobBaseUrl: 'https://pushin.eu/tobbe/npmx-pushin-test/blob/HEAD',
       })
       expect(result?.host).toBeUndefined()
     })
@@ -382,8 +365,6 @@ describe('parseRepositoryInfo', () => {
         provider: 'pushin',
         owner: 'tobbe',
         repo: 'npmx-pushin-test',
-        rawBaseUrl: 'https://pushin.eu/tobbe/npmx-pushin-test/blob/HEAD',
-        blobBaseUrl: 'https://pushin.eu/tobbe/npmx-pushin-test/blob/HEAD',
       })
     })
 
@@ -395,8 +376,6 @@ describe('parseRepositoryInfo', () => {
         provider: 'pushin',
         owner: 'tobbe',
         repo: 'npmx-pushin-test',
-        rawBaseUrl: 'https://pushin.eu/tobbe/npmx-pushin-test/blob/HEAD',
-        blobBaseUrl: 'https://pushin.eu/tobbe/npmx-pushin-test/blob/HEAD',
       })
       expect(result?.host).toBeUndefined()
     })
@@ -435,132 +414,7 @@ describe('parseRepositoryInfo', () => {
         owner: 'owner',
         repo: 'repo',
         host: 'gitea.com',
-        rawBaseUrl: 'https://gitea.com/owner/repo/raw/branch/main',
       })
     })
-  })
-
-  describe('blobBaseUrl generation', () => {
-    it('generates correct blobBaseUrl for GitHub', () => {
-      const result = parseRepositoryInfo({
-        url: 'https://github.com/vercel/ai.git',
-      })
-      expect(result).toMatchObject({
-        rawBaseUrl: 'https://raw.githubusercontent.com/vercel/ai/HEAD',
-        blobBaseUrl: 'https://github.com/vercel/ai/blob/HEAD',
-      })
-    })
-
-    it('generates correct blobBaseUrl for GitLab', () => {
-      const result = parseRepositoryInfo({
-        url: 'https://gitlab.com/owner/repo.git',
-      })
-      expect(result).toMatchObject({
-        rawBaseUrl: 'https://gitlab.com/owner/repo/-/raw/HEAD',
-        blobBaseUrl: 'https://gitlab.com/owner/repo/-/blob/HEAD',
-      })
-    })
-
-    it('generates correct blobBaseUrl for self-hosted GitLab', () => {
-      const result = parseRepositoryInfo({
-        url: 'https://gitlab.gnome.org/ewlsh/packages.gi.ts.git',
-      })
-      expect(result).toMatchObject({
-        rawBaseUrl: 'https://gitlab.gnome.org/ewlsh/packages.gi.ts/-/raw/HEAD',
-        blobBaseUrl: 'https://gitlab.gnome.org/ewlsh/packages.gi.ts/-/blob/HEAD',
-      })
-    })
-
-    it('generates correct blobBaseUrl for Bitbucket', () => {
-      const result = parseRepositoryInfo({
-        url: 'https://bitbucket.org/atlassian/atlassian-frontend-mirror.git',
-      })
-      expect(result).toMatchObject({
-        rawBaseUrl: 'https://bitbucket.org/atlassian/atlassian-frontend-mirror/raw/HEAD',
-        blobBaseUrl: 'https://bitbucket.org/atlassian/atlassian-frontend-mirror/src/HEAD',
-      })
-    })
-
-    it('generates correct blobBaseUrl for Codeberg', () => {
-      const result = parseRepositoryInfo({
-        url: 'https://codeberg.org/jgarber/CashCash',
-      })
-      expect(result).toMatchObject({
-        rawBaseUrl: 'https://codeberg.org/jgarber/CashCash/raw/branch/main',
-        blobBaseUrl: 'https://codeberg.org/jgarber/CashCash/src/branch/main',
-      })
-    })
-
-    it('generates correct blobBaseUrl for Gitee', () => {
-      const result = parseRepositoryInfo({
-        url: 'https://gitee.com/oschina/mcp-gitee.git',
-      })
-      expect(result).toMatchObject({
-        rawBaseUrl: 'https://gitee.com/oschina/mcp-gitee/raw/master',
-        blobBaseUrl: 'https://gitee.com/oschina/mcp-gitee/blob/master',
-      })
-    })
-
-    it('generates correct blobBaseUrl for Sourcehut', () => {
-      const result = parseRepositoryInfo({
-        url: 'https://git.sr.ht/~ayoayco/astro-resume.git',
-      })
-      expect(result).toMatchObject({
-        rawBaseUrl: 'https://git.sr.ht/~ayoayco/astro-resume/blob/HEAD',
-        blobBaseUrl: 'https://git.sr.ht/~ayoayco/astro-resume/tree/HEAD/item',
-      })
-    })
-
-    it('generates correct blobBaseUrl for Tangled', () => {
-      const result = parseRepositoryInfo({
-        url: 'https://tangled.sh/pds.ls/pdsls',
-      })
-      expect(result).toMatchObject({
-        rawBaseUrl: 'https://tangled.sh/pds.ls/pdsls/raw/branch/main',
-        blobBaseUrl: 'https://tangled.sh/pds.ls/pdsls/src/branch/main',
-      })
-    })
-
-    it('generates correct blobBaseUrl for Radicle', () => {
-      const result = parseRepositoryInfo({
-        url: 'https://app.radicle.at/nodes/seed.radicle.at/rad:z3nP4yT1PE3m1PxLEzr173sZtJVnT',
-      })
-      expect(result).toMatchObject({
-        rawBaseUrl:
-          'https://seed.radicle.at/api/v1/projects/rad:z3nP4yT1PE3m1PxLEzr173sZtJVnT/blob/HEAD',
-        blobBaseUrl:
-          'https://app.radicle.at/nodes/seed.radicle.at/rad:z3nP4yT1PE3m1PxLEzr173sZtJVnT/tree/HEAD',
-      })
-    })
-
-    it('generates correct blobBaseUrl for Forgejo', () => {
-      const result = parseRepositoryInfo({
-        url: 'https://next.forgejo.org/forgejo/forgejo',
-      })
-      expect(result).toMatchObject({
-        rawBaseUrl: 'https://next.forgejo.org/forgejo/forgejo/raw/branch/main',
-        blobBaseUrl: 'https://next.forgejo.org/forgejo/forgejo/src/branch/main',
-      })
-    })
-
-    it('generates correct blobBaseUrl for Pushin', () => {
-      const result = parseRepositoryInfo({
-        url: 'https://pushin.eu/tobbe/npmx-pushin-test',
-      })
-      expect(result).toMatchObject({
-        rawBaseUrl: 'https://pushin.eu/tobbe/npmx-pushin-test/blob/HEAD',
-        blobBaseUrl: 'https://pushin.eu/tobbe/npmx-pushin-test/blob/HEAD',
-      })
-    })
-  })
-})
-
-describe('RepositoryInfo type', () => {
-  it('includes blobBaseUrl in RepositoryInfo', () => {
-    const result = parseRepositoryInfo({
-      url: 'https://github.com/test/repo',
-    }) as RepositoryInfo
-    expect(result).toHaveProperty('blobBaseUrl')
-    expect(typeof result.blobBaseUrl).toBe('string')
   })
 })

@@ -1,65 +1,16 @@
+import type { RepoRef } from '~~/shared/utils/git-providers'
+import { forgeWeb, toForgeRepoRef } from '~~/shared/utils/forges'
+
 export interface RepoFileUrl {
   raw: string
   blob: string
 }
 
-export function getBaseFileUrl(ref: RepoRef): RepoFileUrl | null {
-  switch (ref.provider) {
-    case 'github':
-      return {
-        raw: `https://raw.githubusercontent.com/${ref.owner}/${ref.repo}/HEAD`,
-        blob: `https://github.com/${ref.owner}/${ref.repo}/blob/HEAD`,
-      }
-    case 'codeberg':
-      return {
-        blob: `https://codeberg.org/${ref.owner}/${ref.repo}/src/branch/HEAD`,
-        raw: `https://codeberg.org/${ref.owner}/${ref.repo}/raw/branch/HEAD`,
-      }
-    case 'forgejo': {
-      return {
-        blob: `https://${ref.host}/${ref.owner}/${ref.repo}/src/branch/HEAD`,
-        raw: `https://${ref.host}/${ref.owner}/${ref.repo}/raw/branch/HEAD`,
-      }
-    }
-    case 'gitea': {
-      // although similar to forgejo, we keep these separate because they're separately maintained projects
-      const host = ref.host ?? 'gitea.com'
-      return {
-        blob: `https://${host}/${ref.owner}/${ref.repo}/src/branch/HEAD`,
-        raw: `https://${host}/${ref.owner}/${ref.repo}/raw/branch/HEAD`,
-      }
-    }
-    case 'gitlab': {
-      const host = ref.host || 'gitlab.com'
-      return {
-        blob: `https://${host}/${ref.owner}/${ref.repo}/-/blob/HEAD`,
-        raw: `https://${host}/${ref.owner}/${ref.repo}/-/raw/HEAD`,
-      }
-    }
-    case 'tangled': {
-      return {
-        blob: `https://tangled.org/${ref.owner}/${ref.repo}/blob/HEAD`,
-        raw: `https://tangled.org/${ref.owner}/${ref.repo}/raw/HEAD`,
-      }
-    }
-    case 'bitbucket': {
-      return {
-        blob: `https://bitbucket.org/${ref.owner}/${ref.repo}/src/HEAD`,
-        raw: `https://bitbucket.org/${ref.owner}/${ref.repo}/raw/HEAD`,
-      }
-    }
-    case 'sourcehut': {
-      return {
-        blob: `https://git.sr.ht/${ref.owner}/${ref.repo}/tree/HEAD/item`,
-        raw: `https://git.sr.ht/${ref.owner}/${ref.repo}/blob/HEAD`,
-      }
-    }
-    case 'gitee': {
-      return {
-        blob: `https://gitee.com/${ref.owner}/${ref.repo}/blob/HEAD`,
-        raw: `https://gitee.com/${ref.owner}/${ref.repo}/raw/HEAD`,
-      }
-    }
-  }
-  return null
+/** The raw and blob URLs of one file, built by `forges`, or `null` where the forge has no such page. */
+export function getFileUrls(ref: RepoRef, path: string): RepoFileUrl | null {
+  const web = forgeWeb(ref)
+  const repo = toForgeRepoRef(ref)
+  const raw = web?.urlFor({ raw: { repo, path, at: 'HEAD' } })
+  const blob = web?.urlFor({ file: { repo, path, at: 'HEAD' } })
+  return raw && blob ? { raw, blob } : null
 }

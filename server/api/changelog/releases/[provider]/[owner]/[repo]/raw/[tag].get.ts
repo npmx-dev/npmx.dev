@@ -1,14 +1,10 @@
-import type { ProviderId } from '~~/shared/utils/git-providers'
+import type { ProviderId, RepoRef } from '~~/shared/utils/git-providers'
 import * as v from 'valibot'
 import { ERROR_THROW_INCOMPLETE_PARAM } from '~~/shared/utils/constants'
-import {
-  ForgejoReleaseSchama,
-  GiteaReleaseSchema,
-  GiteeReleaseSchema,
-  GithubReleaseCollectionSchama,
-  GitlabReleaseSchame,
-} from '~~/shared/schemas/changelog/release'
+import { GithubReleaseCollectionSchama } from '~~/shared/schemas/changelog/release'
+import { createForgeProvider, toForgeRepoRef } from '~~/shared/utils/forges'
 import { validateHostWithValibot } from '~~/server/utils/changelog/validateHost'
+import { requestSignal } from '~~/server/utils/requestSignal'
 
 const TIMEOUT_TIME = 15_000
 
@@ -30,30 +26,24 @@ export default defineCachedEventHandler(
     }
     // nuxt does decode a tag except for `/`
     tag = decodeURIComponent(tag)
-    const encodedTag = encodeURIComponent(tag)
 
     setHeader(event, 'content-type', 'text/markdown')
 
     try {
-      switch (provider) {
-        case 'github':
-          return getMarkdownFromGithub(owner, repo, tag, encodedTag)
-        case 'codeberg':
-          return await getMarkdownFromForgejo(owner, repo, encodedTag, 'codeberg.org')
-        case 'forgejo':
-          return await getMarkdownFromForgejo(owner, repo, encodedTag, host)
-        case 'gitlab':
-          return await getMarkdownFromGitlab(owner, repo, encodedTag, host)
-        case 'gitea':
-          return await getMarkdownFromGitea(owner, repo, encodedTag, host)
-        case 'gitee':
-          return await getMarkdownFromGitee(owner, repo, encodedTag)
-        default:
-          throw createError({
-            status: 404,
-            statusMessage: ERROR_CHANGELOG_NOT_FOUND,
-          })
+      // GitHub is read from the API directly (with an ungh fallback) to stay
+      // clear of rate limits; `forges` has no proxy, so it is not used here.
+      // TODO(serhalp): refactor to use `forges` once it can read GitHub through ungh.
+      if (provider === 'github') {
+        return getMarkdownFromGithub(owner, repo, tag)
       }
+      return await getMarkdownViaForges(
+        provider,
+        owner,
+        repo,
+        tag,
+        host || undefined,
+        requestSignal(event),
+      )
     } catch (error) {
       handleApiError(error, {
         statusCode: 500,
@@ -80,30 +70,24 @@ export default defineCachedEventHandler(
   },
 )
 
-async function getMarkdownFromGithub(owner: string, repo: string, tag: string, encodedTag: string) {
-  // ungh does not yet have an endpoint to get the release by tag, we will first attempt to get it from the github api directly
+async function getMarkdownFromGithub(owner: string, repo: string, tag: string) {
+  // ungh has no endpoint to get a release by tag yet, so read it through
+  // `forges` (which calls the GitHub API) and fall back to the ungh releases
+  // list when GitHub refuses, most likely due to a rate limit.
   // https://github.com/unjs/ungh/pull/162
+  const ref: RepoRef = { provider: 'github', owner, repo }
+  const forgeProvider = createForgeProvider(ref, { timeout: TIMEOUT_TIME })
 
-  const responseGithub = await $fetch(
-    `https://api.github.com/repos/${owner}/${repo}/releases/tags/${encodedTag}`,
-    {
-      headers: {
-        'Accept': 'application/vnd.github+json',
-        'User-Agent': 'npmx.dev',
-      },
-      ignoreResponseError: true,
-      timeout: TIMEOUT_TIME,
-    },
-  ).catch(() => null)
-
-  const parsed = v.safeParse(v.object({ body: v.string() }), responseGithub)
-
-  if (parsed.success) {
-    return parsed.output.body
+  if (forgeProvider?.can('releases.getByTag')) {
+    try {
+      const release = await forgeProvider.releases.getByTag(toForgeRepoRef(ref), tag)
+      if (release.body) {
+        return release.body
+      }
+    } catch {
+      // fall back to ungh below
+    }
   }
-
-  // via github api didn't work, most likely due to rate limit
-  // trying ungh releases list instead;
 
   const responseUngh = await $fetch(`https://ungh.cc/repos/${owner}/${repo}/releases`, {
     headers: {
@@ -115,9 +99,8 @@ async function getMarkdownFromGithub(owner: string, repo: string, tag: string, e
 
   const { releases } = v.parse(GithubReleaseCollectionSchama, responseUngh)
 
-  const decodedTag = tag
   for (const release of releases) {
-    if (release.tag == decodedTag) {
+    if (release.tag == tag) {
       return release.markdown
     }
   }
@@ -128,83 +111,24 @@ async function getMarkdownFromGithub(owner: string, repo: string, tag: string, e
   })
 }
 
-async function getMarkdownFromForgejo(
+/** Release markdown for every provider `forges` covers. */
+async function getMarkdownViaForges(
+  provider: ProviderId,
   owner: string,
   repo: string,
-  /** tag should be encoded */
   tag: string,
-  host: string = 'codeberg.org',
+  host?: string,
+  signal?: AbortSignal,
 ) {
-  const data = await $fetch(`https://${host}/api/v1/repos/${owner}/${repo}/releases/tags/${tag}`, {
-    headers: {
-      'User-Agent': 'npmx.dev',
-    },
-    timeout: TIMEOUT_TIME,
-  })
+  const ref: RepoRef = { provider, owner, repo, host }
+  const forgeProvider = createForgeProvider(ref, { timeout: TIMEOUT_TIME })
+  if (!forgeProvider?.can('releases.getByTag')) {
+    throw createError({
+      status: 404,
+      statusMessage: ERROR_CHANGELOG_NOT_FOUND,
+    })
+  }
 
-  const release = v.parse(ForgejoReleaseSchama, data)
-
-  return release.body
-}
-
-async function getMarkdownFromGitlab(
-  owner: string,
-  repo: string,
-  /** tag should be encoded */
-  tag: string,
-  host: string = 'gitlab.com',
-) {
-  owner = decodeURIComponent(owner)
-
-  const repoPath = encodeURIComponent(`${owner}/${repo}`)
-  const data = await $fetch(`https://${host}/api/v4/projects/${repoPath}/releases/${tag}`, {
-    headers: {
-      'User-Agent': 'npmx.dev',
-    },
-    timeout: TIMEOUT_TIME,
-  })
-
-  const release = v.parse(GitlabReleaseSchame, data)
-
-  return release.description
-}
-
-async function getMarkdownFromGitea(
-  owner: string,
-  repo: string,
-  /** tag should be encoded */
-  tag: string,
-  host: string = 'gitea.com',
-) {
-  const data = await $fetch(`https://${host}/api/v1/repos/${owner}/${repo}/releases/tags/${tag}`, {
-    headers: {
-      'User-Agent': 'npmx.dev',
-    },
-    timeout: TIMEOUT_TIME,
-  })
-
-  const release = v.parse(GiteaReleaseSchema, data)
-
-  return release.body
-}
-
-async function getMarkdownFromGitee(
-  owner: string,
-  repo: string,
-  /** tag should be encoded */
-  tag: string,
-) {
-  const data = await $fetch(
-    `https://gitee.com/api/v5/repos/${owner}/${repo}/releases/tags/${tag}`,
-    {
-      headers: {
-        'User-Agent': 'npmx.dev',
-      },
-      timeout: TIMEOUT_TIME,
-    },
-  )
-
-  const release = v.parse(GiteeReleaseSchema, data)
-
-  return release.body
+  const release = await forgeProvider.releases.getByTag(toForgeRepoRef(ref), tag, { signal })
+  return release.body ?? ''
 }

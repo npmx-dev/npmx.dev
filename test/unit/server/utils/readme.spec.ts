@@ -27,8 +27,6 @@ function createRepoInfo(overrides?: Partial<RepositoryInfo>): RepositoryInfo {
     provider: 'github',
     owner: 'test-owner',
     repo: 'test-repo',
-    rawBaseUrl: 'https://raw.githubusercontent.com/test-owner/test-repo/HEAD',
-    blobBaseUrl: 'https://github.com/test-owner/test-repo/blob/HEAD',
     ...overrides,
   }
 }
@@ -319,8 +317,8 @@ describe('Markdown File URL Resolution', () => {
       const repoInfo = createRepoInfo({
         provider: 'gitlab',
         host: 'gitlab.com',
-        rawBaseUrl: 'https://gitlab.com/owner/repo/-/raw/HEAD',
-        blobBaseUrl: 'https://gitlab.com/owner/repo/-/blob/HEAD',
+        owner: 'owner',
+        repo: 'repo',
       })
       const markdown = `[Docs](./docs/guide.md)`
       const result = await renderReadmeHtml(markdown, 'test-pkg', repoInfo)
@@ -333,8 +331,8 @@ describe('Markdown File URL Resolution', () => {
     it('uses correct blob URL format for Bitbucket', async () => {
       const repoInfo = createRepoInfo({
         provider: 'bitbucket',
-        rawBaseUrl: 'https://bitbucket.org/owner/repo/raw/HEAD',
-        blobBaseUrl: 'https://bitbucket.org/owner/repo/src/HEAD',
+        owner: 'owner',
+        repo: 'repo',
       })
       const markdown = `[Readme](./other/README.md)`
       const result = await renderReadmeHtml(markdown, 'test-pkg', repoInfo)

@@ -1,162 +1,67 @@
+import type { UrlTarget } from 'forges'
+import type { ProviderId, RepoRef } from '~~/shared/utils/git-providers'
+import { forgeWeb, toForgeRepoRef } from '~~/shared/utils/forges'
 import type { MarkdownRepoInfo } from './markdown'
 
-export function createGithubRepoInfo(owner: string, repo: string, path?: string): MarkdownRepoInfo {
-  const hostBaseUrl = 'https://github.com'
+type ReferenceQuirks = Pick<
+  MarkdownRepoInfo,
+  'issueChar' | 'issueRegex' | 'prChar' | 'accountChar' | 'keepAccountChar'
+>
 
-  return {
-    hostBaseUrl,
-    blobBaseUrl: `${hostBaseUrl}/${owner}/${repo}/blob/HEAD`,
-    rawBaseUrl: `https://raw.githubusercontent.com/${owner}/${repo}/HEAD`,
-    path,
-    commitBaseUrl: `${hostBaseUrl}/${owner}/${repo}/commit`,
-    issueChar: '#',
-    issueBaseUrl: `${hostBaseUrl}/${owner}/${repo}/issues`,
-    prChar: '#',
-    prBaseUrl: `${hostBaseUrl}/${owner}/${repo}/pull`,
-    compareBaseUrl: `${hostBaseUrl}/${owner}/${repo}/compare`,
-  }
+/**
+ * Reference syntax that the shared model does not carry: the char that marks an
+ * issue or pull request, and how accounts are written. Everything else comes
+ * from `forges`.
+ */
+const REFERENCE_QUIRKS: Partial<Record<ProviderId, ReferenceQuirks>> = {
+  github: { issueChar: '#', prChar: '#' },
+  gitlab: { issueChar: '#', prChar: '!' },
+  bitbucket: { prChar: '#', accountChar: false },
+  gitee: { issueChar: '#', issueRegex: /\B#[\dA-Z]+\b/gi, prChar: '!' },
+  // Sourcehut writes accounts as `~user`. It has no pull-request marker, so
+  // `prChar` matches `issueChar` and every `#` reference reads as an issue.
+  sourcehut: { issueChar: '#', prChar: '#', accountChar: '~', keepAccountChar: true },
 }
 
-export function createForgejoRepoInfo(
-  host: string,
-  owner: string,
-  repo: string,
-  path?: string,
-): MarkdownRepoInfo {
-  const hostBaseUrl = `https://${host}`
+const DEFAULT_QUIRKS: ReferenceQuirks = { issueChar: '#', prChar: '#' }
+
+/**
+ * The markdown renderer's view of a repository, built from `forges/web`.
+ * `undefined` when the ref has no web entry (radicle).
+ */
+export function createRepoInfo(ref: RepoRef, path?: string): MarkdownRepoInfo | null {
+  const web = forgeWeb(ref)
+  if (!web) return null
+
+  const repo = toForgeRepoRef(ref)
+  // A base is a page URL with its trailing path segment removed, so build the
+  // page for a placeholder segment and trim it.
+  const base = (target: UrlTarget) => web.urlFor(target)?.replace(/\/$/, '')
+  const threadBase = (kind: 'issue' | 'pull_request') =>
+    web
+      .urlFor({
+        thread: {
+          forge: repo.forge,
+          instance: repo.instance,
+          repo,
+          kind,
+          number: '1',
+          displayNumber: '1',
+        },
+      })
+      ?.replace(/\/1$/, '')
+  // A commit is its own target now, not a thread kind.
+  const commitBase = web.urlFor({ commit: { repo, sha: '1' } })?.replace(/\/1$/, '')
 
   return {
-    hostBaseUrl,
-    blobBaseUrl: `${hostBaseUrl}/${owner}/${repo}/src/branch/HEAD`,
-    rawBaseUrl: `${hostBaseUrl}/${owner}/${repo}/raw/branch/HEAD`,
+    hostBaseUrl: web.webOrigin ?? '',
+    blobBaseUrl: base({ file: { repo, path: '', at: 'HEAD' } }) ?? '',
+    rawBaseUrl: base({ raw: { repo, path: '', at: 'HEAD' } }) ?? '',
     path,
-    commitBaseUrl: `${hostBaseUrl}/${owner}/${repo}/commit`,
-    issueChar: '#',
-    issueBaseUrl: `${hostBaseUrl}/${owner}/${repo}/issues`,
-    prChar: '#',
-    prBaseUrl: `${hostBaseUrl}/${owner}/${repo}/pulls`,
-    compareBaseUrl: `${hostBaseUrl}/${owner}/${repo}/compare`,
-  }
-}
-
-export function createGitLabRepoInfo(
-  host: string,
-  owner: string,
-  repo: string,
-  path?: string,
-): MarkdownRepoInfo {
-  const hostBaseUrl = `https://${host}`
-
-  return {
-    hostBaseUrl,
-    blobBaseUrl: `${hostBaseUrl}/${owner}/${repo}/-/blob/HEAD`,
-    rawBaseUrl: `${hostBaseUrl}/${owner}/${repo}/-/raw/HEAD`,
-    path,
-    commitBaseUrl: `${hostBaseUrl}/${owner}/${repo}/-/commit`,
-    issueChar: '#',
-    // it seems that issues are work items in gitlab
-    issueBaseUrl: `${hostBaseUrl}/${owner}/${repo}/-/work_items`,
-    prChar: '!',
-    prBaseUrl: `${hostBaseUrl}/${owner}/${repo}/-/merge_requests`,
-    compareBaseUrl: `${hostBaseUrl}/${owner}/${repo}/-/compare`,
-  }
-}
-
-export function createTangledRepoInfo(
-  owner: string,
-  repo: string,
-  path?: string,
-): MarkdownRepoInfo {
-  const hostBaseUrl = 'https://tangled.org'
-
-  return {
-    hostBaseUrl,
-    blobBaseUrl: `${hostBaseUrl}/${owner}/${repo}/blob/HEAD`,
-    rawBaseUrl: `${hostBaseUrl}/${owner}/${repo}/raw/HEAD/`,
-    path,
-    commitBaseUrl: `${hostBaseUrl}/${owner}/${repo}/commit`,
-    issueChar: '#',
-    issueBaseUrl: `${hostBaseUrl}/${owner}/${repo}/issues`,
-    prChar: '#',
-    prBaseUrl: `${hostBaseUrl}/${owner}/${repo}/pulls`,
-    compareBaseUrl: `${hostBaseUrl}/${owner}/${repo}/compare`,
-  }
-}
-
-// similar to forgejo, but they're seperate projects so keeping this also seperate
-export function createGiteaRepoInfo(
-  host: string,
-  owner: string,
-  repo: string,
-  path?: string,
-): MarkdownRepoInfo {
-  const hostBaseUrl = `https://${host}`
-  return {
-    hostBaseUrl,
-    blobBaseUrl: `${hostBaseUrl}/${owner}/${repo}/src/branch/HEAD`,
-    rawBaseUrl: `${hostBaseUrl}/${owner}/${repo}/raw/branch/HEAD`,
-    path,
-    commitBaseUrl: `${hostBaseUrl}/${owner}/${repo}/commit`,
-    issueChar: '#',
-    issueBaseUrl: `${hostBaseUrl}/${owner}/${repo}/issues`,
-    prChar: '#',
-    prBaseUrl: `${hostBaseUrl}/${owner}/${repo}/pulls`,
-    compareBaseUrl: `${hostBaseUrl}/${owner}/${repo}/compare`,
-  }
-}
-
-export function createBitbucketRepoInfo(
-  owner: string,
-  repo: string,
-  path?: string,
-): MarkdownRepoInfo {
-  const hostBaseUrl = 'https://bitbucket.org'
-  return {
-    hostBaseUrl,
-    blobBaseUrl: `${hostBaseUrl}/${owner}/${repo}/src/HEAD`,
-    rawBaseUrl: `${hostBaseUrl}/${owner}/${repo}/raw/HEAD`,
-    path,
-    commitBaseUrl: `${hostBaseUrl}/${owner}/${repo}/commits`,
-    prChar: '#',
-    prBaseUrl: `${hostBaseUrl}/${owner}/${repo}/pull-requests`,
-    accountChar: false,
-    // bitbucket uses jira instead of normal issues which can't be resolved, further the compare page also seems to be different
-  }
-}
-
-export function createSourcehutRepoInfo(
-  owner: string,
-  repo: string,
-  path?: string,
-): MarkdownRepoInfo {
-  const hostBaseUrl = 'https://git.sr.ht'
-  return {
-    hostBaseUrl,
-    blobBaseUrl: `${hostBaseUrl}/${owner}/${repo}/tree/HEAD/item`,
-    rawBaseUrl: `${hostBaseUrl}/${owner}/${repo}/blob/HEAD`,
-    path,
-    commitBaseUrl: `${hostBaseUrl}/${owner}/${repo}/commit`,
-    issueChar: '#',
-    issueBaseUrl: `https://todo.sr.ht/${owner}/${repo}`,
-    accountChar: '~',
-    keepAccountChar: true,
-    // source hut doesn't have/support pr & compare
-  }
-}
-
-export function createGiteeRepoInfo(owner: string, repo: string, path?: string): MarkdownRepoInfo {
-  const hostBaseUrl = `https://gitee.com`
-  return {
-    hostBaseUrl,
-    blobBaseUrl: `${hostBaseUrl}/${owner}/${repo}/blob/HEAD`,
-    rawBaseUrl: `${hostBaseUrl}/${owner}/${repo}/raw/HEAD`,
-    path,
-    commitBaseUrl: `${hostBaseUrl}/${owner}/${repo}/commit`,
-    issueChar: '#',
-    issueBaseUrl: `${hostBaseUrl}/${owner}/${repo}/issues`,
-    issueRegex: /\B#[\dA-Z]+\b/gi,
-    prChar: '!',
-    prBaseUrl: `${hostBaseUrl}/${owner}/${repo}/pulls`,
-    compareBaseUrl: `${hostBaseUrl}/${owner}/${repo}/compare`,
+    commitBaseUrl: commitBase ?? '',
+    issueBaseUrl: threadBase('issue'),
+    prBaseUrl: threadBase('pull_request'),
+    compareBaseUrl: base({ repo, section: 'compare' }),
+    ...(REFERENCE_QUIRKS[ref.provider] ?? DEFAULT_QUIRKS),
   }
 }
