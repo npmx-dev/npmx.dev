@@ -41,6 +41,7 @@ const keyboardShortcutsEnabled = useKeyboardShortcuts()
 
 defineExpose({
   focus: () => el.value?.focus(),
+  click: () => el.value?.click(),
   getBoundingClientRect: () => el.value?.getBoundingClientRect(),
 })
 </script>
