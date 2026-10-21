@@ -1098,7 +1098,7 @@ function drawEstimationLine(svg: Record<string, any>) {
 
     const previousPoint = plots.at(-2)
     const lastPoint = plots.at(-1)
-    if (!previousPoint || !lastPoint) continue
+    if (previousPoint?.value == null || lastPoint?.value == null) continue
 
     const stroke = String(serie?.color ?? colors.value.fg)
 

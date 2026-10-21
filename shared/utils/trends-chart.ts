@@ -544,7 +544,7 @@ export function drawTrendsEstimationLine(options: {
     const previousPoint = plots.at(-2)
     const lastPoint = plots.at(-1)
 
-    if (!previousPoint || !lastPoint) {
+    if (previousPoint?.value == null || lastPoint?.value == null) {
       continue
     }
 

@@ -787,8 +787,8 @@ describe('drawTrendsEstimationLine', () => {
           {
             color: '#ff0000',
             plots: [
-              { x: 1, y: 2 },
-              { x: 3, y: 4 },
+              { x: 1, y: 2, value: 10 },
+              { x: 3, y: 4, value: 20 },
             ],
           },
         ],
@@ -809,12 +809,12 @@ describe('drawTrendsEstimationLine', () => {
         series: [
           {
             plots: [
-              { x: 1, y: 2 },
-              { x: 3, y: 4 },
+              { x: 1, y: 2, value: 10 },
+              { x: 3, y: 4, value: 20 },
             ],
           },
           {
-            plots: [{ x: 1, y: 2 }],
+            plots: [{ x: 1, y: 2, value: 10 }],
           },
           {
             plots: null,
@@ -834,11 +834,11 @@ describe('drawTrendsEstimationLine', () => {
         data: [
           {
             color: '#ff0000',
-            plots: [{ x: 1, y: 2 }, undefined],
+            plots: [{ x: 1, y: 2, value: 10 }, undefined],
           },
           {
             color: '#00ff00',
-            plots: [null, { x: 3, y: 4 }],
+            plots: [null, { x: 3, y: 4, value: 20 }],
           },
         ],
       },
@@ -847,6 +847,47 @@ describe('drawTrendsEstimationLine', () => {
     })
 
     expect(result).toBe('')
+  })
+  it.each([
+    [null, 20],
+    [10, null],
+    [null, null],
+  ])('skips null endpoints even when they have rendered coordinates (%s, %s)', (previous, last) => {
+    expect(
+      drawTrendsEstimationLine({
+        svg: {
+          data: [
+            {
+              plots: [
+                { x: 1, y: 0, value: previous },
+                { x: 3, y: 0, value: last },
+              ],
+            },
+          ],
+        },
+        colors,
+        shouldRender: true,
+      }),
+    ).toBe('')
+  })
+
+  it('keeps a genuine zero endpoint', () => {
+    expect(
+      drawTrendsEstimationLine({
+        svg: {
+          data: [
+            {
+              plots: [
+                { x: 1, y: 2, value: 10 },
+                { x: 3, y: 0, value: 0 },
+              ],
+            },
+          ],
+        },
+        colors,
+        shouldRender: true,
+      }),
+    ).toContain('<circle')
   })
 })
 
