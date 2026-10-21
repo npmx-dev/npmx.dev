@@ -529,6 +529,7 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
 
       const lastPlotValues = createLastDatapointLabelsSvg({
         series: labelSeries,
+        missingValueLabel: 'No data',
         drawingArea,
         colors: {
           foreground: colors.fg,

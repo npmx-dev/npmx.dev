@@ -1209,6 +1209,7 @@ function drawLastDatapointLabel(svg: VueUiXySvgSlotProps['svg']) {
 
   return createLastDatapointLabelsSvg({
     series: labelSeries,
+    missingValueLabel: isDownloadsMetric.value ? $t('package.trends.no_data_short') : undefined,
     drawingArea: svg.drawingArea,
     svgWidth: svg.width,
     fontSize: 20,
@@ -1444,8 +1445,9 @@ const chartConfig = computed<VueUiXyConfig>(() => {
                 : datapoint?.value
               const isNoDataValue =
                 selectedMetric.value === DEFAULT_METRIC_ID &&
-                isLargePackage.value[packageName] === true &&
-                isMissingDownloadValue(rawDataValue)
+                (rawDataValue == null ||
+                  (isLargePackage.value[packageName] === true &&
+                    isMissingDownloadValue(rawDataValue)))
               const rawValue = Number(datapoint?.value ?? 0)
               const value = isNoDataValue
                 ? $t('package.trends.no_data_short')

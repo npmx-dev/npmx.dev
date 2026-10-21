@@ -941,7 +941,7 @@ describe('downloads SVG embed response', () => {
     expect(content).toContain('1.2K')
   })
 
-  it('does not render a last datapoint label when the plot value is missing', async () => {
+  it('renders a no-data label when the plot value is missing', async () => {
     await createDownloadsSvgResponse({
       package: 'vue',
     })
@@ -966,7 +966,7 @@ describe('downloads SVG embed response', () => {
     })
 
     expect(content).toContain('<g data-logo="true" />')
-    expect(content).not.toContain('<text')
+    expect(content).toContain('No data')
   })
 
   it('falls back to en when canonical locales returns an empty array', async () => {

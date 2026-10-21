@@ -8,6 +8,27 @@ const colors = {
 }
 
 describe('createLastDatapointLabelsSvg', () => {
+  it.each([null, 0])('distinguishes a missing endpoint from zero (%s)', value => {
+    const result = createLastDatapointLabelsSvg({
+      series: [
+        {
+          plots: [
+            { x: 10, y: 20, value: 1234 },
+            { x: 30, y: 100, value },
+          ],
+        },
+      ],
+      drawingArea: { top: 0, height: 120 },
+      colors,
+      formatValue: String,
+      missingValueLabel: 'No data',
+      isDarkMode: false,
+    })
+    expect(result).toMatch(value === null ? /No data/ : />\s*0\s*</)
+    expect(result).not.toContain('1234')
+    expect(result).toContain('x="54"')
+  })
+
   it('returns an empty string when there are no series', () => {
     const result = createLastDatapointLabelsSvg({
       series: [],

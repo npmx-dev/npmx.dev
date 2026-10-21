@@ -93,12 +93,13 @@ function formatDataLabel(seriesIndex: number, value: number): string {
       }
     }
 
+    if (rawLastValue == null) return $t('package.trends.no_data_short')
     return numberFormatter.value.format(value)
   }
 
   // Hover | kbd interaction: show the actual value at the hovered index
   const rawValue = series[selectedIndex.value]
-  if (isLargeSeries(seriesIndex) && isMissingDownloadValue(rawValue)) {
+  if (rawValue == null || (isLargeSeries(seriesIndex) && isMissingDownloadValue(rawValue))) {
     return $t('package.trends.no_data_short')
   }
 
