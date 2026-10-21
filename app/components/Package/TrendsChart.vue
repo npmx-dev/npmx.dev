@@ -1944,8 +1944,8 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
               </p>
             </template>
 
-            <!-- Injecting custom svg elements -->
-            <template #svg="{ svg }">
+            <!-- Injecting custom svg elements on the bottom layer -->
+            <template #svg-underlayer="{ svg }">
               <g v-if="!pending && isDownloadsMetric" pointer-events="none" aria-hidden="true">
                 <template v-for="(gap, index) in getDownloadChartGaps(svg)" :key="index">
                   <defs>
@@ -1974,9 +1974,22 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
                     :fill="`url(#${gapPatternId}-${index})`"
                     opacity="0.45"
                   />
+                  <line
+                    v-for="x in [gap.x, gap.x + gap.width]"
+                    :key="x"
+                    :x1="x"
+                    :x2="x"
+                    :y1="gap.y"
+                    :y2="gap.y + gap.height"
+                    :stroke="colors.borderHover"
+                    stroke-width="0.5"
+                  />
                 </template>
               </g>
+            </template>
 
+            <!-- Injecting custom svg elements on the top layer -->
+            <template #svg="{ svg }">
               <!-- Estimation lines for monthly & yearly granularities when the end date induces a downwards trend -->
               <g
                 v-if="shouldRenderEstimationOverlay && !isEndDateOnPeriodEnd && !isZoomed"

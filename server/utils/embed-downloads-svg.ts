@@ -435,7 +435,8 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
     (chartGranularity === 'monthly' && !isLastDayOfMonth(effectiveEndDateIso)) ||
     (chartGranularity === 'yearly' && !isLastDayOfYear(effectiveEndDateIso))
 
-  return await createStaticVueUiXy({
+  let gapUnderlayer = ''
+  const svg = await createStaticVueUiXy({
     dataset: dataset.map((datapoint, index) => {
       const rawLastValue = chartData.dataset?.[index]?.series?.at(-1)
       const hasNoDataTail =
@@ -454,7 +455,7 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
     additionalSvgContent: ({ series, drawingArea }) => {
       const renderedSeries = series as RenderedSeries[]
       const gapPatternId = `download-gaps-${randomUUID()}`
-      const gapRectangles = getDownloadChartGaps({
+      gapUnderlayer = getDownloadChartGaps({
         drawingArea,
         data: renderedSeries.map(serie => ({
           color: serie.color ?? colors.fg,
@@ -475,6 +476,10 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
             </pattern>
           </defs>
           <rect x="${gap.x}" y="${gap.y}" width="${gap.width}" height="${gap.height}" fill="url(#${patternId})" opacity="0.45" pointer-events="none" aria-hidden="true" />
+          <g stroke="${stroke}" stroke-width="0.5" pointer-events="none" aria-hidden="true">
+            <line x1="${gap.x}" x2="${gap.x}" y1="${gap.y}" y2="${gap.y + gap.height}" />
+            <line x1="${gap.x + gap.width}" x2="${gap.x + gap.width}" y1="${gap.y}" y2="${gap.y + gap.height}" />
+          </g>
         `
         })
         .join('')
@@ -560,7 +565,6 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
 
       return `
           <style>text {font-family:monospace;}</style>
-          ${gapRectangles}
           ${noDataTail}
           ${lastRecordedValueLegend}
           ${lastPlotValues}
@@ -568,4 +572,13 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
         `
     },
   })
+
+  // The static renderer only exposes an overlay callback. Insert the gap markup
+  // before the first data layer.
+  return gapUnderlayer
+    ? svg.replace(
+        /<g data-layer="(?:bars|line-areas|lines|plots)"/,
+        match => `${gapUnderlayer}${match}`,
+      )
+    : svg
 }

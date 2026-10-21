@@ -1,3 +1,4 @@
+import type { createStaticVueUiXy as StaticRenderer } from 'vue-data-ui/ssr/vue-ui-xy'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createDownloadsSvgResponse } from '../../../../server/utils/embed-downloads-svg'
 
@@ -145,28 +146,46 @@ beforeEach(() => {
 
 describe('downloads SVG embed response', () => {
   it.each([false, true])('draws hatched gaps with multiple series: %s', async multipleSeries => {
-    await createDownloadsSvgResponse({ package: 'vue' })
-    const options = mocks.createStaticVueUiXy.mock.calls[0]![0]
-    const content = options.additionalSvgContent({
-      drawingArea: { left: 10, right: 90, top: 20, bottom: 300 },
-      series: [
-        ...(multipleSeries ? [{ color: '#ff0000', plots: [] }] : []),
-        {
-          color: '#42b883',
-          plots: [
-            { x: 10, y: 100, value: 100 },
-            { x: 30, y: 300, value: null },
-            { x: 50, y: 100, value: 200 },
-          ],
-        },
-      ],
+    mocks.createStaticVueUiXy.mockImplementationOnce(async options => {
+      const overlay = options.additionalSvgContent({
+        drawingArea: { left: 10, right: 90, top: 20, bottom: 300 },
+        series: [
+          ...(multipleSeries ? [{ color: '#ff0000', plots: [] }] : []),
+          {
+            color: '#42b883',
+            plots: [
+              { x: 10, y: 100, value: 100 },
+              { x: 30, y: 300, value: null },
+              { x: 50, y: 100, value: 200 },
+            ],
+          },
+        ],
+      })
+      expect(overlay).not.toContain('<pattern')
+      return `<svg><rect data-background="true"/><g data-layer="line-areas"></g><g data-layer="lines"></g>${overlay}</svg>`
     })
+    const content = await createDownloadsSvgResponse({ package: 'vue' })
+    expect(content.indexOf('<pattern')).toBeLessThan(content.indexOf('<g data-layer="line-areas"'))
+    expect(content.indexOf('<pattern')).toBeGreaterThan(content.indexOf('data-background'))
     expect(content).toContain('patternTransform="rotate(45)"')
     expect(content).toContain('stroke="#333333"')
     expect(content).toContain('<rect x="10" y="20" width="40" height="280"')
     const patternId = content.match(/<pattern id="([^"]+)"/)?.[1]
     expect(patternId).toBeTruthy()
     expect(content).toContain(`fill="url(#${patternId})" opacity="0.45"`)
+  })
+
+  it('places gaps before data layers in the actual static renderer output', async () => {
+    const { createStaticVueUiXy } = await vi.importActual<{
+      createStaticVueUiXy: typeof StaticRenderer
+    }>('vue-data-ui/ssr/vue-ui-xy')
+    mocks.createStaticVueUiXy.mockImplementationOnce(createStaticVueUiXy)
+    mocks.buildNormalisedTrendsDataset.mockReturnValue(createDataset({ series: [100, null, 200] }))
+    const svg = await createDownloadsSvgResponse({ package: 'vue' })
+    const patternIndex = svg.indexOf('<pattern')
+    expect(patternIndex).toBeGreaterThan(-1)
+    expect(patternIndex).toBeLessThan(svg.indexOf('<g data-layer="lines"'))
+    expect(svg.match(/<pattern /g)).toHaveLength(1)
   })
 
   it('throws 400 when no valid package name is provided', async () => {
