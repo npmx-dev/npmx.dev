@@ -3,6 +3,7 @@ import type { JsrPackageInfo } from '#shared/types/jsr'
 import type { SlimPackumentVersion } from '#shared/types'
 import type { DevDependencySuggestion } from '#shared/utils/dev-dependency'
 import type { PublishSecurityDowngrade } from '~/utils/publish-security'
+import { getPackageManagerConfig } from '~/utils/install-command'
 
 const props = defineProps<{
   packageName: string
@@ -19,6 +20,11 @@ const props = defineProps<{
   headingId: string
 }>()
 
+const isMounted = ref(false)
+onMounted(() => {
+  isMounted.value = true
+})
+
 const { selectedPM, showTypesInInstall, copied, copyInstallCommand } = useInstallCommand(
   () => props.packageName,
   () => props.requestedVersion ?? null,
@@ -26,6 +32,12 @@ const { selectedPM, showTypesInInstall, copied, copyInstallCommand } = useInstal
   () => props.typesPackageName ?? null,
   () => props.installVersionOverride ?? null,
 )
+
+const resolvedPM = computed(() => {
+  return isMounted.value ? selectedPM.value : 'npm'
+})
+
+const selectedPackageManagerConfig = computed(() => getPackageManagerConfig(resolvedPM.value))
 
 const { announce } = useCommandPalette()
 const { polite } = useAnnouncer()
@@ -141,7 +153,7 @@ onPrehydrate(el => {
               <span
                 v-for="(part, i) in getInstallCommandParts({
                   packageName: props.packageName,
-                  packageManager: selectedPM,
+                  packageManager: selectedPackageManagerConfig.id,
                   version: props.installVersionOverride ?? props.requestedVersion,
                   jsrInfo: props.jsrInfo,
                 })"
@@ -175,7 +187,7 @@ onPrehydrate(el => {
               :show-types="showTypesInInstall"
               :executable-info="executableInfo"
               :create-package-info="createPackageInfo"
-              :selected-pm="selectedPM"
+              :selected-pm="resolvedPM"
             />
           </div>
         </div>
