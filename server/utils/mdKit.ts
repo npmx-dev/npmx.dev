@@ -216,7 +216,13 @@ function getHeadingSlugSource(text: string): string {
   return stripHtmlTags(text).trim()
 }
 
+export function isMarkdownFileUrl(url: string): boolean {
+  return /\.(?:md|markdown)$/i.test(url.split('?')[0]?.split('#')[0] ?? '')
+}
+
 const htmlAnchorRe = /<a(\s[^>]*?)href=(["'])([^"']*)\2([^>]*)>([\s\S]*?)<\/a>/gi
+const anchorTokenOpenRe = /^<a(?:\s.+)?\/?>$/is
+const anchorTokenCloseRe = /^<\/a>$/i
 
 export type ToUserContentIdFn = (id: string) => string
 
@@ -241,7 +247,11 @@ export function createHeading(options: {
     this: Renderer<string, string>,
     { tokens, depth },
   ) {
-    const displayHtml = this.parser.parseInline(tokens)
+    const isWrappedInSingleAnchor =
+      anchorTokenOpenRe.test(tokens[0]?.raw ?? '') &&
+      anchorTokenCloseRe.test(tokens[tokens.length - 1]?.raw ?? '')
+    const headingTokens = isWrappedInSingleAnchor ? tokens.slice(1, -1) : tokens
+    const displayHtml = this.parser.parseInline(headingTokens)
     const plainText = getHeadingPlainText(displayHtml)
     const slugSource = getHeadingSlugSource(displayHtml)
     return processHeading(depth, displayHtml, plainText, slugSource)
