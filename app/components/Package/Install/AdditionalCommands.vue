@@ -16,6 +16,7 @@ const props = defineProps<{
   selectedPm: PackageManagerId
 }>()
 
+// Matches the summary row's copy button style (Package/Install/Dropdown.vue) for visual consistency.
 const copyButtonClass =
   'text-fg-muted bg-bg-subtle/80 border-border transition-all duration-150 hover:scale-105 active:scale-90 select-none'
 
