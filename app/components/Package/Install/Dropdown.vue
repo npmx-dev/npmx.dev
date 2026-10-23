@@ -197,7 +197,11 @@ onPrehydrate(el => {
 :root[data-pm='yarn'] [data-pm-cmd='yarn'],
 :root[data-pm='bun'] [data-pm-cmd='bun'],
 :root[data-pm='deno'] [data-pm-cmd='deno'],
-:root[data-pm='vlt'] [data-pm-cmd='vlt'] {
+:root[data-pm='vlt'] [data-pm-cmd='vlt'],
+:root[data-pm='vp'] [data-pm-cmd='vp'],
+:root[data-pm='nub'] [data-pm-cmd='nub'],
+:root[data-pm='ni'] [data-pm-cmd='ni'],
+:root[data-pm='upm'] [data-pm-cmd='upm'] {
   display: inline;
 }
 
