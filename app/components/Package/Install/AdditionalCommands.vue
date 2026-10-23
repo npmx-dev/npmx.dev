@@ -16,7 +16,6 @@ const props = defineProps<{
   selectedPm: PackageManagerId
 }>()
 
-// Matches the summary row's copy button style (Package/Install/Dropdown.vue) for visual consistency.
 const copyButtonClass =
   'text-fg-muted bg-bg-subtle/80 border-border transition-all duration-150 hover:scale-105 active:scale-90 select-none'
 
@@ -24,41 +23,41 @@ const devDependencySuggestion = computed(
   () => props.devDependencySuggestion ?? { recommended: false as const },
 )
 
-function getDevInstallPartsForPM(pmId: PackageManagerId) {
+function getDevInstallParts() {
   return getInstallCommandParts({
     packageName: props.packageName,
-    packageManager: pmId,
+    packageManager: props.selectedPm,
     version: props.installVersionOverride ?? props.requestedVersion,
     jsrInfo: props.jsrInfo,
     dev: true,
   })
 }
 
-function getTypesInstallPartsForPM(pmId: PackageManagerId) {
+function getTypesInstallParts() {
   if (!props.typesPackageName) return []
   return getInstallCommandParts({
     packageName: props.typesPackageName,
-    packageManager: pmId,
+    packageManager: props.selectedPm,
     jsrInfo: null,
     dev: true,
   })
 }
 
-function getRunPartsForPM(pmId: PackageManagerId, command?: string) {
+function getRunParts(command?: string) {
   return getRunCommandParts({
     packageName: props.packageName,
-    packageManager: pmId,
+    packageManager: props.selectedPm,
     jsrInfo: props.jsrInfo,
     command,
     isBinaryOnly: false,
   })
 }
 
-function getCreatePartsForPM(pmId: PackageManagerId) {
+function getCreateParts() {
   if (!props.createPackageInfo) return []
   return getExecuteCommandParts({
     packageName: props.createPackageInfo.packageName,
-    packageManager: pmId,
+    packageManager: props.selectedPm,
     jsrInfo: null,
     isCreatePackage: true,
   })
@@ -145,24 +144,15 @@ function copyCreateCommand() {
       <p class="text-xs text-fg-subtle mb-0.5 select-none">
         {{ $t('package.get_started.dev_dependency_hint') }}
       </p>
-      <code
-        class="font-mono text-sm min-w-0 block truncate tracking-tight"
-        dir="ltr"
-        v-for="pm in packageManagers"
-        :key="pm.id"
-        :data-pm-additional-cmd="pm.id"
-        ><span class="text-fg-subtle select-none">${{ ' ' }}</span
-        ><span
-          v-for="(part, i) in getDevInstallPartsForPM(pm.id)"
+      <code class="font-mono text-sm min-w-0 block truncate tracking-tight" dir="ltr">
+        <span class="text-fg-subtle select-none">$ </span>
+        <span
+          v-for="(part, i) in getDevInstallParts()"
           :key="i"
-          :class="
-            i === getDevInstallPartsForPM(pm.id).length - 1
-              ? 'text-fg font-medium'
-              : 'text-fg-muted'
-          "
+          :class="i === getDevInstallParts().length - 1 ? 'text-fg font-medium' : 'text-fg-muted'"
           >{{ i > 0 ? ' ' : '' }}{{ part }}</span
-        ></code
-      >
+        >
+      </code>
     </div>
   </div>
 
@@ -184,24 +174,15 @@ function copyCreateCommand() {
         {{ $t('package.get_started.types_label') }}
       </p>
       <div class="flex items-center gap-2 min-w-0">
-        <code
-          class="font-mono text-sm min-w-0 truncate tracking-tight"
-          dir="ltr"
-          v-for="pm in packageManagers"
-          :key="pm.id"
-          :data-pm-additional-cmd="pm.id"
-          ><span class="text-fg-subtle select-none">${{ ' ' }}</span
-          ><span
-            v-for="(part, i) in getTypesInstallPartsForPM(pm.id)"
+        <code class="font-mono text-sm min-w-0 truncate tracking-tight" dir="ltr">
+          <span class="text-fg-subtle select-none">$ </span>
+          <span
+            v-for="(part, i) in getTypesInstallParts()"
             :key="i"
-            :class="
-              i === getTypesInstallPartsForPM(pm.id).length - 1
-                ? 'text-fg font-medium'
-                : 'text-fg-muted'
-            "
+            :class="i === getTypesInstallParts().length - 1 ? 'text-fg font-medium' : 'text-fg-muted'"
             >{{ i > 0 ? ' ' : '' }}{{ part }}</span
-          ></code
-        >
+          >
+        </code>
         <NuxtLink
           :to="packageRoute(typesPackageName!)"
           class="shrink-0 text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-accent/70 rounded select-none -m-1 p-1"
@@ -231,24 +212,15 @@ function copyCreateCommand() {
     />
     <div class="min-w-0 flex-1">
       <p class="text-xs text-fg-subtle mb-0.5 select-none">{{ $t('package.run.locally') }}</p>
-      <code
-        class="font-mono text-sm min-w-0 block truncate tracking-tight"
-        dir="ltr"
-        v-for="pm in packageManagers"
-        :key="pm.id"
-        :data-pm-additional-cmd="pm.id"
-        ><span class="text-fg-subtle select-none">${{ ' ' }}</span
-        ><span
-          v-for="(part, i) in getRunPartsForPM(pm.id, executableInfo?.primaryCommand)"
+      <code class="font-mono text-sm min-w-0 block truncate tracking-tight" dir="ltr">
+        <span class="text-fg-subtle select-none">$ </span>
+        <span
+          v-for="(part, i) in getRunParts(executableInfo?.primaryCommand)"
           :key="i"
-          :class="
-            i === getRunPartsForPM(pm.id, executableInfo?.primaryCommand).length - 1
-              ? 'text-fg font-medium'
-              : 'text-fg-muted'
-          "
+          :class="i === getRunParts(executableInfo?.primaryCommand).length - 1 ? 'text-fg font-medium' : 'text-fg-muted'"
           >{{ i > 0 ? ' ' : '' }}{{ part }}</span
-        ></code
-      >
+        >
+      </code>
     </div>
   </div>
 
@@ -282,47 +254,15 @@ function copyCreateCommand() {
           </NuxtLink>
         </TooltipApp>
       </div>
-      <code
-        class="font-mono text-sm min-w-0 block truncate tracking-tight"
-        dir="ltr"
-        v-for="pm in packageManagers"
-        :key="pm.id"
-        :data-pm-additional-cmd="pm.id"
-        ><span class="text-fg-subtle select-none">${{ ' ' }}</span
-        ><span
-          v-for="(part, i) in getCreatePartsForPM(pm.id)"
+      <code class="font-mono text-sm min-w-0 block truncate tracking-tight" dir="ltr">
+        <span class="text-fg-subtle select-none">$ </span>
+        <span
+          v-for="(part, i) in getCreateParts()"
           :key="i"
-          :class="
-            i === getCreatePartsForPM(pm.id).length - 1 ? 'text-fg font-medium' : 'text-fg-muted'
-          "
+          :class="i === getCreateParts().length - 1 ? 'text-fg font-medium' : 'text-fg-muted'"
           >{{ i > 0 ? ' ' : '' }}{{ part }}</span
-        ></code
-      >
+        >
+      </code>
     </div>
   </div>
 </template>
-<style>
-/* Hide all variants by default when preference is set */
-:root[data-pm] [data-pm-additional-cmd] {
-  display: none;
-}
-
-/* Show only the matching package manager command */
-:root[data-pm='npm'] [data-pm-additional-cmd='npm'],
-:root[data-pm='pnpm'] [data-pm-additional-cmd='pnpm'],
-:root[data-pm='yarn'] [data-pm-additional-cmd='yarn'],
-:root[data-pm='bun'] [data-pm-additional-cmd='bun'],
-:root[data-pm='deno'] [data-pm-additional-cmd='deno'],
-:root[data-pm='vlt'] [data-pm-additional-cmd='vlt'],
-:root[data-pm='vp'] [data-pm-additional-cmd='vp'],
-:root[data-pm='nub'] [data-pm-additional-cmd='nub'],
-:root[data-pm='ni'] [data-pm-additional-cmd='ni'],
-:root[data-pm='upm'] [data-pm-additional-cmd='upm'] {
-  display: inline;
-}
-
-/* Fallback: when no data-pm is set (SSR initial), show npm as default */
-:root:not([data-pm]) [data-pm-additional-cmd]:not([data-pm-additional-cmd='npm']) {
-  display: none;
-}
-</style>
