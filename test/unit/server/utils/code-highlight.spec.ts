@@ -173,6 +173,11 @@ describe('linkifyModuleSpecifiers', () => {
 })
 
 describe('getLanguageFromPath', () => {
+  it('recognizes text bun lockfiles without treating binary lockfiles as text', () => {
+    expect(getLanguageFromPath('nested/bun.lock')).toBe('jsonc')
+    expect(getLanguageFromPath('nested/bun.lockb')).toBe('text')
+  })
+
   it('prefers well-known filenames over extension heuristics', () => {
     expect(getLanguageFromPath('foo/README.md')).toBe('markdown')
     expect(getLanguageFromPath('nested/tsconfig.json')).toBe('jsonc')
