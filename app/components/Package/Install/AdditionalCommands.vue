@@ -17,9 +17,13 @@ const props = defineProps<{
   selectedPm: PackageManagerId
 }>()
 
+const isMounted = ref(false)
+onMounted(() => {
+  isMounted.value = true
+})
+
 const resolvedPm = computed(() => {
-  if (import.meta.server) return 'npm'
-  return props.selectedPm
+  return isMounted.value ? props.selectedPm : 'npm'
 })
 
 const selectedPackageManagerConfig = computed(() => getPackageManagerConfig(resolvedPm.value))
