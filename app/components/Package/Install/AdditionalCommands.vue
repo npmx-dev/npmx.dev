@@ -180,7 +180,9 @@ function copyCreateCommand() {
           <span
             v-for="(part, i) in getTypesInstallParts()"
             :key="i"
-            :class="i === getTypesInstallParts().length - 1 ? 'text-fg font-medium' : 'text-fg-muted'"
+            :class="
+              i === getTypesInstallParts().length - 1 ? 'text-fg font-medium' : 'text-fg-muted'
+            "
             >{{ i > 0 ? ' ' : '' }}{{ part }}</span
           >
         </code>
@@ -218,7 +220,11 @@ function copyCreateCommand() {
         <span
           v-for="(part, i) in getRunParts(executableInfo?.primaryCommand)"
           :key="i"
-          :class="i === getRunParts(executableInfo?.primaryCommand).length - 1 ? 'text-fg font-medium' : 'text-fg-muted'"
+          :class="
+            i === getRunParts(executableInfo?.primaryCommand).length - 1
+              ? 'text-fg font-medium'
+              : 'text-fg-muted'
+          "
           >{{ i > 0 ? ' ' : '' }}{{ part }}</span
         >
       </code>
