@@ -2,6 +2,7 @@
 import type { JsrPackageInfo } from '#shared/types/jsr'
 import type { DevDependencySuggestion } from '#shared/utils/dev-dependency'
 import type { PackageManagerId } from '~/utils/install-command'
+import { getPackageManagerConfig } from '~/utils/install-command'
 
 const props = defineProps<{
   packageName: string
@@ -16,6 +17,13 @@ const props = defineProps<{
   selectedPm: PackageManagerId
 }>()
 
+const resolvedPm = computed(() => {
+  if (import.meta.server) return 'npm'
+  return props.selectedPm
+})
+
+const selectedPackageManagerConfig = computed(() => getPackageManagerConfig(resolvedPm.value))
+
 // Matches the summary row's copy button style (Package/Install/Dropdown.vue) for visual consistency.
 const copyButtonClass =
   'text-fg-muted bg-bg-subtle/80 border-border transition-all duration-150 hover:scale-105 active:scale-90 select-none'
@@ -27,7 +35,7 @@ const devDependencySuggestion = computed(
 function getDevInstallParts() {
   return getInstallCommandParts({
     packageName: props.packageName,
-    packageManager: props.selectedPm,
+    packageManager: selectedPackageManagerConfig.value.id,
     version: props.installVersionOverride ?? props.requestedVersion,
     jsrInfo: props.jsrInfo,
     dev: true,
@@ -38,7 +46,7 @@ function getTypesInstallParts() {
   if (!props.typesPackageName) return []
   return getInstallCommandParts({
     packageName: props.typesPackageName,
-    packageManager: props.selectedPm,
+    packageManager: selectedPackageManagerConfig.value.id,
     jsrInfo: null,
     dev: true,
   })
@@ -47,7 +55,7 @@ function getTypesInstallParts() {
 function getRunParts(command?: string) {
   return getRunCommandParts({
     packageName: props.packageName,
-    packageManager: props.selectedPm,
+    packageManager: selectedPackageManagerConfig.value.id,
     jsrInfo: props.jsrInfo,
     command,
     isBinaryOnly: false,
@@ -58,7 +66,7 @@ function getCreateParts() {
   if (!props.createPackageInfo) return []
   return getExecuteCommandParts({
     packageName: props.createPackageInfo.packageName,
-    packageManager: props.selectedPm,
+    packageManager: selectedPackageManagerConfig.value.id,
     jsrInfo: null,
     isCreatePackage: true,
   })
@@ -145,7 +153,11 @@ function copyCreateCommand() {
       <p class="text-xs text-fg-subtle mb-0.5 select-none">
         {{ $t('package.get_started.dev_dependency_hint') }}
       </p>
-      <code class="font-mono text-sm min-w-0 block truncate tracking-tight" dir="ltr">
+      <code
+        class="font-mono text-sm min-w-0 block truncate tracking-tight"
+        dir="ltr"
+        :data-pm-additional-cmd="selectedPackageManagerConfig.id"
+      >
         <span class="text-fg-subtle select-none">$ </span>
         <span
           v-for="(part, i) in getDevInstallParts()"
@@ -175,7 +187,11 @@ function copyCreateCommand() {
         {{ $t('package.get_started.types_label') }}
       </p>
       <div class="flex items-center gap-2 min-w-0">
-        <code class="font-mono text-sm min-w-0 truncate tracking-tight" dir="ltr">
+        <code
+          class="font-mono text-sm min-w-0 truncate tracking-tight"
+          dir="ltr"
+          :data-pm-additional-cmd="selectedPackageManagerConfig.id"
+        >
           <span class="text-fg-subtle select-none">$ </span>
           <span
             v-for="(part, i) in getTypesInstallParts()"
@@ -215,7 +231,11 @@ function copyCreateCommand() {
     />
     <div class="min-w-0 flex-1">
       <p class="text-xs text-fg-subtle mb-0.5 select-none">{{ $t('package.run.locally') }}</p>
-      <code class="font-mono text-sm min-w-0 block truncate tracking-tight" dir="ltr">
+      <code
+        class="font-mono text-sm min-w-0 block truncate tracking-tight"
+        dir="ltr"
+        :data-pm-additional-cmd="selectedPackageManagerConfig.id"
+      >
         <span class="text-fg-subtle select-none">$ </span>
         <span
           v-for="(part, i) in getRunParts(executableInfo?.primaryCommand)"
@@ -261,7 +281,11 @@ function copyCreateCommand() {
           </NuxtLink>
         </TooltipApp>
       </div>
-      <code class="font-mono text-sm min-w-0 block truncate tracking-tight" dir="ltr">
+      <code
+        class="font-mono text-sm min-w-0 block truncate tracking-tight"
+        dir="ltr"
+        :data-pm-additional-cmd="selectedPackageManagerConfig.id"
+      >
         <span class="text-fg-subtle select-none">$ </span>
         <span
           v-for="(part, i) in getCreateParts()"
