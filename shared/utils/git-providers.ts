@@ -11,6 +11,7 @@ export type ProviderId =
   | 'gitee'
   | 'tangled'
   | 'radicle'
+  | 'pushin'
 
 export interface RepoRef {
   provider: ProviderId
@@ -226,6 +227,27 @@ const providers: ProviderConfig[] = [
       `https://app.radicle.at/nodes/seed.radicle.at/${ref.repo}/tree/${branch}`,
   },
   {
+    id: 'pushin',
+    // Pushin serves the web UI and API on pushin.eu, but clone URLs use git.pushin.eu
+    matchHost: host => host === 'pushin.eu' || host === 'www.pushin.eu' || host === 'git.pushin.eu',
+    parsePath: parts => {
+      if (parts.length < 2) return null
+      const owner = decodeURIComponent(parts[0] ?? '').trim()
+      const repo = decodeURIComponent(parts[1] ?? '')
+        .trim()
+        .replace(/\.git$/i, '')
+      if (!owner || !repo) return null
+      return { owner, repo }
+    },
+    // Pushin doesn't serve raw files yet, so the blob URL is the closest we have.
+    // Relative README images resolve to HTML pages and won't render until then.
+    // TODO: switch to the raw file URL once Pushin supports serving raw files
+    getRawBaseUrl: (ref, branch = 'HEAD') =>
+      `https://pushin.eu/${ref.owner}/${ref.repo}/blob/${branch}`,
+    getBlobBaseUrl: (ref, branch = 'HEAD') =>
+      `https://pushin.eu/${ref.owner}/${ref.repo}/blob/${branch}`,
+  },
+  {
     id: 'forgejo',
     matchHost: host => FORGEJO_HOSTS.includes(host),
     parsePath: parts => {
@@ -407,6 +429,7 @@ export const GIT_PROVIDER_API_ORIGINS = {
   codeberg: 'https://codeberg.org',
   gitee: 'https://gitee.com',
   radicle: 'https://seed.radicle.at',
+  pushin: 'https://pushin.eu',
 } as const satisfies Partial<Record<ProviderId, string>>
 
 /**

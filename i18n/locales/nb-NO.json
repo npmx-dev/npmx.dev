@@ -163,9 +163,6 @@
       "changelog": "Endringslogg",
       "stats": "Statistikk"
     },
-    "package_actions": {
-      "copy_run": "Kopier kjørekommando"
-    },
     "code": {
       "copy_file": "Kopier filinnhold"
     },
@@ -486,7 +483,6 @@
       "compare": "sammenlign",
       "timeline": "tidslinje",
       "stats": "statistikk",
-      "compare_this_package": "sammenlign denne pakken",
       "changelog": "endringslogg"
     },
     "likes": {

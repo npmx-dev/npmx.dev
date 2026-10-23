@@ -155,9 +155,6 @@
       "compare": "比较此包",
       "download": "下载 tarball"
     },
-    "package_actions": {
-      "copy_run": "复制运行命令"
-    },
     "code": {
       "copy_file": "复制文件内容"
     },
@@ -444,8 +441,7 @@
       "docs": "文档",
       "fund": "资助",
       "compare": "比较",
-      "timeline": "时间线",
-      "compare_this_package": "比较此包"
+      "timeline": "时间线"
     },
     "likes": {
       "like": "点赞此包",

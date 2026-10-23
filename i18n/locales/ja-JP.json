@@ -166,9 +166,6 @@
       "changelog": "Changelog",
       "stats": "統計"
     },
-    "package_actions": {
-      "copy_run": "実行コマンドをコピー"
-    },
     "code": {
       "copy_file": "ファイル内容をコピー"
     },
@@ -489,7 +486,6 @@
       "compare": "比較",
       "timeline": "タイムライン",
       "stats": "統計",
-      "compare_this_package": "このパッケージを比較",
       "changelog": "changelog"
     },
     "likes": {

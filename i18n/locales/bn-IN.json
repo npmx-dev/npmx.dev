@@ -166,9 +166,6 @@
       "changelog": "চেঞ্জলগ",
       "stats": "পরিসংখ্যান"
     },
-    "package_actions": {
-      "copy_run": "রান কমান্ড কপি করুন"
-    },
     "code": {
       "copy_file": "ফাইল বিষয়বস্তু কপি করুন"
     },
@@ -489,7 +486,6 @@
       "compare": "তুলনা করুন",
       "timeline": "সময়রেখা",
       "stats": "পরিসংখ্যান",
-      "compare_this_package": "এই প্যাকেজ তুলনা",
       "changelog": "চেঞ্জলগ"
     },
     "likes": {

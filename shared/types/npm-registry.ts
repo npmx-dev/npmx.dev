@@ -12,7 +12,7 @@ import type {
   Contact,
 } from '@npm/types'
 import type { ReadmeResponse } from './readme'
-import type { TrustStatus } from 'packumeta'
+import type { TrustLevelName, TrustStatus } from 'packumeta'
 
 // Re-export official npm types for packument/manifest
 export type { Manifest, ManifestVersion, PackageJSON } from '@npm/types'
@@ -31,6 +31,39 @@ export type Packument = Omit<PackumentWithoutLicenseObjects, 'license' | 'versio
   // TODO: Remove this type override when @npm/types fixes the license field typing
   license?: PackumentLicense
   versions: Record<string, PackumentVersion>
+}
+
+/**
+ * Abbreviated ("install") packument returned by the registry when requesting
+ * `Accept: application/vnd.npm.install-v1+json` — the much smaller document `npm install`
+ * consumes. It carries only install-relevant fields (versions, dist-tags, dependencies,
+ * os/cpu, dist, deprecated) and omits `time`, `readme`, `license`, `repository`, maintainers.
+ *
+ * Note: the registry omits `libc` from this document even though the full packument has it,
+ * so it must be fetched separately when needed (see `fetchNpmPackageVersionLibc`).
+ */
+export interface AbbreviatedPackument {
+  'name': string
+  'dist-tags'?: Record<string, string>
+  'modified'?: string
+  'versions': Record<string, AbbreviatedPackumentVersion>
+}
+
+export interface AbbreviatedPackumentVersion {
+  name?: string
+  version: string
+  dependencies?: Record<string, string>
+  optionalDependencies?: Record<string, string>
+  peerDependencies?: Record<string, string>
+  os?: string[]
+  cpu?: string[]
+  libc?: string[]
+  deprecated?: string
+  dist?: {
+    tarball?: string
+    unpackedSize?: number
+    [key: string]: unknown
+  }
 }
 
 /** Install scripts info (preinstall, install, postinstall) */
@@ -91,8 +124,26 @@ export interface SlimPackument {
   'requestedVersion': SlimPackumentVersion | null
   /** Only includes dist-tag versions (with installScripts info added per version) */
   'versions': Record<string, SlimVersion>
-  /** Lightweight security metadata for all versions */
-  'securityVersions'?: PackageVersionInfo[]
+  /**
+   * Publish security downgrade for the requested version, or `null`.
+   * Computed server-side so the payload only carries the small result, not the full version history.
+   */
+  'publishSecurityDowngrade'?: PublishSecurityDowngrade | null
+}
+
+/**
+ * A publish-security downgrade detected for a specific viewed version.
+ */
+export interface PublishSecurityDowngrade {
+  downgradedVersion: string
+  downgradedPublishedAt?: string
+  downgradedTrustLevel: TrustLevelName
+  /** Whether the downgraded version was still published via trusted publishing (OIDC) */
+  downgradedTrustedPublisher: boolean
+  /** Recommended trusted version within the same major, if one exists */
+  trustedVersion?: string
+  trustedPublishedAt?: string
+  trustedTrustLevel: TrustLevelName
 }
 
 /**

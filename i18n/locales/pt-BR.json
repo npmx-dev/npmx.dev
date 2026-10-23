@@ -155,9 +155,6 @@
       "compare": "Comparar este pacote",
       "download": "Baixar tarball"
     },
-    "package_actions": {
-      "copy_run": "Copiar comando de execução"
-    },
     "code": {
       "copy_file": "Copiar conteúdo do arquivo"
     },
@@ -443,8 +440,7 @@
       "docs": "documentação",
       "fund": "financiar",
       "compare": "comparar",
-      "timeline": "linha do tempo",
-      "compare_this_package": "comparar este pacote"
+      "timeline": "linha do tempo"
     },
     "likes": {
       "like": "Gosto deste pacote",

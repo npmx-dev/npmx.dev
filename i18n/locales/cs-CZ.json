@@ -163,9 +163,6 @@
       "changelog": "Seznam změn",
       "stats": "Statistiky"
     },
-    "package_actions": {
-      "copy_run": "Kopírovat příkaz spuštění"
-    },
     "code": {
       "copy_file": "Kopírovat obsah souboru"
     },
@@ -486,7 +483,6 @@
       "compare": "porovnat",
       "timeline": "časová osa",
       "stats": "statistiky",
-      "compare_this_package": "porovnat tento balíček",
       "changelog": "seznam změn"
     },
     "likes": {

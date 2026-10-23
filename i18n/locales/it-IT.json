@@ -158,9 +158,6 @@
       "changelog": "Changelog",
       "stats": "Statistiche"
     },
-    "package_actions": {
-      "copy_run": "Copia comando di esecuzione"
-    },
     "code": {
       "copy_file": "Copia contenuto del file"
     },
@@ -481,7 +478,6 @@
       "compare": "confronta",
       "timeline": "Cronologia",
       "stats": "Statistiche",
-      "compare_this_package": "Confronta questo pacchetto",
       "changelog": "Registro delle modifiche"
     },
     "likes": {

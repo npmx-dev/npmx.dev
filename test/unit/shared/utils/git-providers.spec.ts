@@ -359,6 +359,58 @@ describe('parseRepositoryInfo', () => {
     })
   })
 
+  describe('Pushin support', () => {
+    it('parses Pushin URL', () => {
+      const result = parseRepositoryInfo({
+        url: 'https://pushin.eu/tobbe/npmx-pushin-test',
+      })
+      expect(result).toMatchObject({
+        provider: 'pushin',
+        owner: 'tobbe',
+        repo: 'npmx-pushin-test',
+        rawBaseUrl: 'https://pushin.eu/tobbe/npmx-pushin-test/blob/HEAD',
+        blobBaseUrl: 'https://pushin.eu/tobbe/npmx-pushin-test/blob/HEAD',
+      })
+      expect(result?.host).toBeUndefined()
+    })
+
+    it('parses Pushin URL from www.pushin.eu', () => {
+      const result = parseRepositoryInfo({
+        url: 'https://www.pushin.eu/tobbe/npmx-pushin-test',
+      })
+      expect(result).toMatchObject({
+        provider: 'pushin',
+        owner: 'tobbe',
+        repo: 'npmx-pushin-test',
+        rawBaseUrl: 'https://pushin.eu/tobbe/npmx-pushin-test/blob/HEAD',
+        blobBaseUrl: 'https://pushin.eu/tobbe/npmx-pushin-test/blob/HEAD',
+      })
+    })
+
+    it('parses Pushin HTTPS clone URL from git.pushin.eu', () => {
+      const result = parseRepositoryInfo({
+        url: 'git+https://git.pushin.eu/tobbe/npmx-pushin-test.git',
+      })
+      expect(result).toMatchObject({
+        provider: 'pushin',
+        owner: 'tobbe',
+        repo: 'npmx-pushin-test',
+        rawBaseUrl: 'https://pushin.eu/tobbe/npmx-pushin-test/blob/HEAD',
+        blobBaseUrl: 'https://pushin.eu/tobbe/npmx-pushin-test/blob/HEAD',
+      })
+      expect(result?.host).toBeUndefined()
+    })
+
+    it('parses Pushin SSH clone URL from git.pushin.eu', () => {
+      const result = parseRepositoryInfo('git@git.pushin.eu:tobbe/npmx-pushin-test.git')
+      expect(result).toMatchObject({
+        provider: 'pushin',
+        owner: 'tobbe',
+        repo: 'npmx-pushin-test',
+      })
+    })
+  })
+
   describe('Forgejo support', () => {
     it('parses Forgejo URL from next.forgejo.org', () => {
       const result = parseRepositoryInfo({
@@ -488,6 +540,16 @@ describe('parseRepositoryInfo', () => {
       expect(result).toMatchObject({
         rawBaseUrl: 'https://next.forgejo.org/forgejo/forgejo/raw/branch/main',
         blobBaseUrl: 'https://next.forgejo.org/forgejo/forgejo/src/branch/main',
+      })
+    })
+
+    it('generates correct blobBaseUrl for Pushin', () => {
+      const result = parseRepositoryInfo({
+        url: 'https://pushin.eu/tobbe/npmx-pushin-test',
+      })
+      expect(result).toMatchObject({
+        rawBaseUrl: 'https://pushin.eu/tobbe/npmx-pushin-test/blob/HEAD',
+        blobBaseUrl: 'https://pushin.eu/tobbe/npmx-pushin-test/blob/HEAD',
       })
     })
   })

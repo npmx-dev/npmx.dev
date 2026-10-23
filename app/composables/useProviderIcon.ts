@@ -11,8 +11,9 @@ const PROVIDER_ICONS: Record<ProviderId, IconClass> = {
   forgejo: 'i-simple-icons:forgejo',
   gitee: 'i-simple-icons:gitee',
   sourcehut: 'i-simple-icons:sourcehut',
-  tangled: 'i-custom:tangled',
+  tangled: 'i-simple-icons:tangled',
   radicle: 'i-lucide:network', // Radicle is a P2P network, using network icon
+  pushin: 'i-custom:pushin',
 }
 
 export function useProviderIcon(

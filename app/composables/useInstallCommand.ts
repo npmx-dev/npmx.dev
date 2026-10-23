@@ -55,7 +55,7 @@ export function useInstallCommand(
     })
   })
 
-  // Full install command including @types (for copying)
+  // Full install command including @types
   const fullInstallCommand = computed(() => {
     if (!installCommand.value) return ''
     const types = toValue(typesPackageName)
@@ -76,8 +76,8 @@ export function useInstallCommand(
   const { copied, copy } = useClipboard({ copiedDuring: 2000 })
 
   async function copyInstallCommand() {
-    if (!fullInstallCommand.value) return false
-    await copy(fullInstallCommand.value)
+    if (!installCommand.value) return false
+    await copy(installCommand.value)
     return true
   }
 

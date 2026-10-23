@@ -1,3 +1,4 @@
+import { createStaticVueUiXy } from 'vue-data-ui/ssr/vue-ui-xy'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   buildNormalisedTrendsDataset,
@@ -7,11 +8,16 @@ import {
   drawTrendsLastDatapointLabel,
   drawTrendsSvgPrintLegend,
   generateWatermarkLogo,
+  getMedianDailyDownloads,
   getTrendsDatetimeFormatterOptions,
   isDailyDataset,
+  isLargeDownloadSeries,
+  isMissingDownloadValue,
   isMonthlyDataset,
   isWeeklyDataset,
   isYearlyDataset,
+  median,
+  nullifyZeroValues,
 } from '#shared/utils/trends-chart'
 
 const {
@@ -285,13 +291,13 @@ describe('buildTrendsChartData', () => {
     expect(result.dataset).toEqual([
       expect.objectContaining({
         name: 'vue',
-        series: [10, 0],
+        series: [10, null],
         dashIndices: [0],
         color: '#42b883',
       }),
       expect.objectContaining({
         name: 'react',
-        series: [0, 20],
+        series: [null, 20],
         dashIndices: [],
       }),
     ])
@@ -315,12 +321,12 @@ describe('buildTrendsChartData', () => {
     expect(result.dataset).toEqual([
       expect.objectContaining({
         name: 'vue',
-        series: [10, 0],
+        series: [10, null],
         dashIndices: [0],
       }),
       expect.objectContaining({
         name: 'react',
-        series: [0, 20],
+        series: [null, 20],
         dashIndices: [],
       }),
     ])
@@ -344,12 +350,12 @@ describe('buildTrendsChartData', () => {
     expect(result.dataset).toEqual([
       expect.objectContaining({
         name: 'vue',
-        series: [10, 0],
+        series: [10, null],
         dashIndices: [0],
       }),
       expect.objectContaining({
         name: 'react',
-        series: [0, 20],
+        series: [null, 20],
         dashIndices: [],
       }),
     ])
@@ -392,12 +398,12 @@ describe('buildTrendsChartData', () => {
     expect(result.dataset).toEqual([
       expect.objectContaining({
         name: 'vue',
-        series: [10, 0],
+        series: [10, null],
         dashIndices: [0],
       }),
       expect.objectContaining({
         name: 'react',
-        series: [0, 20],
+        series: [null, 20],
         dashIndices: [],
       }),
     ])
@@ -439,7 +445,7 @@ describe('buildTrendsChartData', () => {
       }),
       expect.objectContaining({
         name: 'react',
-        series: [0],
+        series: [null],
       }),
     ])
   })
@@ -531,7 +537,7 @@ describe('buildNormalisedTrendsDataset', () => {
   })
 
   it('normalizes number, object, and invalid values before applying the pipeline', () => {
-    applyDataPipelineMock.mockReturnValue([1, 2, 0])
+    applyDataPipelineMock.mockReturnValue([1, 2, null])
 
     const result = buildNormalisedTrendsDataset({
       dataset: [
@@ -549,7 +555,7 @@ describe('buildNormalisedTrendsDataset', () => {
     })
 
     expect(applyDataPipelineMock).toHaveBeenCalledWith(
-      [1, 2, 0],
+      [1, 2, null],
       {
         averageWindow: 2,
         smoothingTau: 3,
@@ -565,10 +571,29 @@ describe('buildNormalisedTrendsDataset', () => {
 
     expect(result).toEqual([
       expect.objectContaining({
-        series: [1, 2, 0],
+        series: [1, 2, null],
         dashIndices: [],
       }),
     ])
+  })
+
+  it.each([
+    ['downloads', [1000, 0, 2000], [1000, null, 2000]],
+    ['downloads', [10, 0, 20], [10, 0, 20]],
+    ['contributors', [1000, 0, 2000], [1000, 0, 2000]],
+  ] as const)('classifies zero values before processing %s', (metric, series, expected) => {
+    buildNormalisedTrendsDataset({
+      dataset: [{ name: 'vue', type: 'line', series: [...series] }],
+      dates: [1, 2, 3],
+      granularity: 'daily',
+      selectedMetric: metric,
+      chartFilter: { averageWindow: 2, smoothingTau: 3 },
+    })
+    expect(applyDataPipelineMock).toHaveBeenCalledWith(
+      expected,
+      expect.anything(),
+      expect.anything(),
+    )
   })
 
   it('uses Date.now when endDateMs is missing', () => {
@@ -655,6 +680,8 @@ describe('buildTrendsChartConfig', () => {
   it('builds a light desktop config with default tooltip behavior', () => {
     const config = buildTrendsChartConfig(baseConfigOptions())
 
+    expect(config.line?.cutNullValues).toBe(true)
+    expect(config.line?.nullDashes?.show).toBe(false)
     expect(config.theme).toBe('')
     expect(config.chart?.height).toBe(400)
     expect(config.chart?.padding?.bottom).toBe(64)
@@ -663,6 +690,26 @@ describe('buildTrendsChartConfig', () => {
     expect(config.chart?.tooltip?.position).toBe('center')
     expect(config.chart?.tooltip?.offsetY).toBe(-24)
     expect(config.chart?.timeTag?.backgroundColor).toBe('#f8f8f8')
+  })
+
+  it.each([false, true])('breaks SVG stroke and fill across gaps (smooth: %s)', async smooth => {
+    const svg = await createStaticVueUiXy({
+      dataset: [
+        {
+          name: 'vue',
+          type: 'line',
+          useArea: true,
+          smooth,
+          series: [100, 200, null, 300, 400],
+        },
+      ],
+      config: buildTrendsChartConfig(baseConfigOptions()),
+    })
+    const areas = svg.match(/<g data-layer="line-areas">(.*?)<\/g>/)?.[1] ?? ''
+    const lines = svg.match(/<g data-layer="lines">(.*?)<\/g>/)?.[1] ?? ''
+    expect(areas.match(/<path /g)).toHaveLength(2)
+    // Separate SVG move commands start disconnected stroke segments.
+    expect(lines.match(/M/g)).toHaveLength(2)
   })
 
   it('falls back to bg when bgElevated is not provided', () => {
@@ -690,7 +737,6 @@ describe('buildTrendsChartConfig', () => {
       pending: true,
       locale: 'fr-FR',
       chartHeight: 500,
-      inModal: true,
       tooltipPosition: 'left',
     })
 
@@ -699,7 +745,6 @@ describe('buildTrendsChartConfig', () => {
     expect(config.chart?.grid?.labels?.fontSize).toBe(24)
     expect(config.chart?.grid?.labels?.color).toBe(colors.border)
     expect(config.chart?.grid?.labels?.axis?.fontSize).toBe(32)
-    expect(config.chart?.tooltip?.teleportTo).toBe('#chart-modal')
     expect(config.chart?.tooltip?.position).toBe('left')
     expect(config.chart?.tooltip?.offsetY).toBeUndefined()
   })
@@ -742,8 +787,8 @@ describe('drawTrendsEstimationLine', () => {
           {
             color: '#ff0000',
             plots: [
-              { x: 1, y: 2 },
-              { x: 3, y: 4 },
+              { x: 1, y: 2, value: 10 },
+              { x: 3, y: 4, value: 20 },
             ],
           },
         ],
@@ -764,12 +809,12 @@ describe('drawTrendsEstimationLine', () => {
         series: [
           {
             plots: [
-              { x: 1, y: 2 },
-              { x: 3, y: 4 },
+              { x: 1, y: 2, value: 10 },
+              { x: 3, y: 4, value: 20 },
             ],
           },
           {
-            plots: [{ x: 1, y: 2 }],
+            plots: [{ x: 1, y: 2, value: 10 }],
           },
           {
             plots: null,
@@ -789,11 +834,11 @@ describe('drawTrendsEstimationLine', () => {
         data: [
           {
             color: '#ff0000',
-            plots: [{ x: 1, y: 2 }, undefined],
+            plots: [{ x: 1, y: 2, value: 10 }, undefined],
           },
           {
             color: '#00ff00',
-            plots: [null, { x: 3, y: 4 }],
+            plots: [null, { x: 3, y: 4, value: 20 }],
           },
         ],
       },
@@ -802,6 +847,47 @@ describe('drawTrendsEstimationLine', () => {
     })
 
     expect(result).toBe('')
+  })
+  it.each([
+    [null, 20],
+    [10, null],
+    [null, null],
+  ])('skips null endpoints even when they have rendered coordinates (%s, %s)', (previous, last) => {
+    expect(
+      drawTrendsEstimationLine({
+        svg: {
+          data: [
+            {
+              plots: [
+                { x: 1, y: 0, value: previous },
+                { x: 3, y: 0, value: last },
+              ],
+            },
+          ],
+        },
+        colors,
+        shouldRender: true,
+      }),
+    ).toBe('')
+  })
+
+  it('keeps a genuine zero endpoint', () => {
+    expect(
+      drawTrendsEstimationLine({
+        svg: {
+          data: [
+            {
+              plots: [
+                { x: 1, y: 2, value: 10 },
+                { x: 3, y: 0, value: 0 },
+              ],
+            },
+          ],
+        },
+        colors,
+        shouldRender: true,
+      }),
+    ).toContain('<circle')
   })
 })
 
@@ -951,5 +1037,108 @@ describe('generateWatermarkLogo', () => {
     expect(result).toContain('width="3"')
     expect(result).toContain('height="4"')
     expect(result).toContain('fill="#123456"')
+  })
+})
+
+describe('nullifyZeroValues', () => {
+  it('does not mutate the dataset when disabled', () => {
+    const values = [0, 1, 2, 0, 4]
+    expect(nullifyZeroValues({ values, enabled: false })).toStrictEqual(values)
+  })
+
+  it('maps all zero values to null', () => {
+    const values = [0, 1, 0, 2, 0]
+    const expected = [null, 1, null, 2, null]
+    expect(nullifyZeroValues({ values, keepLastZero: false })).toStrictEqual(expected)
+  })
+
+  it('maps all zero values to null when all values are zero', () => {
+    const values = [0, 0, 0]
+    const expected = [null, null, null]
+    expect(nullifyZeroValues({ values, keepLastZero: false })).toStrictEqual(expected)
+  })
+
+  it('keeps the last zero value and maps others to null', () => {
+    const values = [0, 1, 2, 4, 0]
+    const expected = [null, 1, 2, 4, 0]
+    expect(nullifyZeroValues({ values })).toStrictEqual(expected)
+  })
+})
+
+describe('isMissingDownloadValue', () => {
+  it('returns true when the value is 0', () => {
+    expect(isMissingDownloadValue(0)).toBe(true)
+  })
+  it('returns true when the value is undefined or null', () => {
+    expect(isMissingDownloadValue(undefined)).toBe(true)
+    expect(isMissingDownloadValue(null)).toBe(true)
+  })
+  it('returns false when the value is valid', () => {
+    expect(isMissingDownloadValue(1)).toBe(false)
+  })
+})
+
+describe('median', () => {
+  it('returns 0 for an empty array', () => {
+    expect(median([])).toBe(0)
+  })
+
+  it('returns the middle value for an odd number of values', () => {
+    expect(median([9, 1, 5])).toBe(5)
+  })
+
+  it('returns the average of the two middle values for an even number of values', () => {
+    expect(median([10, 2, 8, 4])).toBe(6)
+  })
+
+  it('returns the middle value for an odd number of values', () => {
+    expect(median([3, 1, 2])).toBe(2)
+  })
+})
+
+describe('getMedianDailyDownloads', () => {
+  it('returns the median directly for daily data', () => {
+    expect(getMedianDailyDownloads([100, 300, 200], 'daily')).toBe(200)
+  })
+
+  it('converts weekly totals to daily values before calculating the median', () => {
+    expect(getMedianDailyDownloads([700, 1400, 2100], 'weekly')).toBe(200)
+  })
+
+  it('converts monthly and yearly totals to daily values', () => {
+    expect(getMedianDailyDownloads([(365.25 / 12) * 100], 'monthly')).toBeCloseTo(100)
+    expect(getMedianDailyDownloads([365.25 * 100], 'yearly')).toBeCloseTo(100)
+  })
+
+  it('ignores missing, non-finite, zero, and negative values', () => {
+    expect(
+      getMedianDailyDownloads(
+        [null, undefined, Number.NaN, Number.POSITIVE_INFINITY, 0, -10, 100, 300],
+        'daily',
+      ),
+    ).toBe(200)
+  })
+
+  it('returns 0 when there are no positive finite values', () => {
+    expect(getMedianDailyDownloads([null, undefined, 0, -1, Number.NaN], 'daily')).toBe(0)
+  })
+})
+
+describe('isLargeDownloadSeries', () => {
+  it('returns false when the median daily downloads equal the threshold', () => {
+    expect(isLargeDownloadSeries([500], 'daily')).toBe(false)
+  })
+
+  it('returns true when the median daily downloads exceed the threshold', () => {
+    expect(isLargeDownloadSeries([501], 'daily')).toBe(true)
+  })
+
+  it('applies the threshold after normalizing weekly totals to daily downloads', () => {
+    expect(isLargeDownloadSeries([3500], 'weekly')).toBe(false)
+    expect(isLargeDownloadSeries([3507], 'weekly')).toBe(true)
+  })
+
+  it('returns false when the series contains no valid positive downloads', () => {
+    expect(isLargeDownloadSeries([null, undefined, 0], 'daily')).toBe(false)
   })
 })
