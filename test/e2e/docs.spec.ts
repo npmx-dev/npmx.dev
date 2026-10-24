@@ -1,4 +1,20 @@
+import type { Page } from '@playwright/test'
 import { expect, test } from './test-utils'
+
+/** The version selector trigger button in the package subheader. */
+function getVersionButton(page: Page) {
+  return page.locator('[data-testid="package-subheader"] [data-testid="version-selector-button"]')
+}
+
+/** The native popover that holds the version links. */
+function getVersionDropdown(page: Page) {
+  return page.locator('[popover="auto"]')
+}
+
+/** Version links inside the open dropdown for the given package. */
+function getVersionLinks(page: Page, packageName: string) {
+  return getVersionDropdown(page).locator(`a[href*="/package-docs/${packageName}/v/"]`)
+}
 
 test.describe('API Documentation Pages', () => {
   test('docs page loads and shows content for a package', async ({ page, goto }) => {
@@ -10,7 +26,7 @@ test.describe('API Documentation Pages', () => {
 
     // Header should show package name and version
     await expect(page.locator('header').getByText('ufo')).toBeVisible()
-    await expect(page.locator('[data-testid="package-subheader"]').getByText('1.6.3')).toBeVisible()
+    await expect(getVersionButton(page).getByText('1.6.3')).toBeVisible()
 
     // Should have documentation content
     const docsContent = page.locator('.docs-content')
@@ -94,35 +110,30 @@ test.describe('Version Selector', () => {
     await goto('/package-docs/ufo/v/1.6.3', { waitUntil: 'hydration' })
 
     // Find and click the version selector button (wait for it to be visible)
-    const versionButton = page
-      .locator('[data-testid="package-subheader"] button')
-      .filter({ hasText: '1.6.3' })
+    const versionButton = getVersionButton(page).filter({ hasText: '1.6.3' })
     await expect(versionButton).toBeVisible({ timeout: 10000 })
 
     await versionButton.click()
 
-    // Dropdown should appear with version options
-    const dropdown = page.locator('[role="listbox"]')
+    // Popover should appear with version links
+    const dropdown = getVersionDropdown(page)
     await expect(dropdown).toBeVisible()
 
     // Should show multiple versions
-    const versionOptions = dropdown.locator('[role="option"]')
-    await expect(versionOptions.first()).toBeVisible()
+    await expect(getVersionLinks(page, 'ufo').first()).toBeVisible()
   })
 
   test('selecting a version navigates to that version', async ({ page, goto }) => {
     await goto('/package-docs/ufo/v/1.6.3', { waitUntil: 'hydration' })
 
     // Find and click the version selector button (wait for it to be visible)
-    const versionButton = page
-      .locator('[data-testid="package-subheader"] button')
-      .filter({ hasText: '1.6.3' })
+    const versionButton = getVersionButton(page).filter({ hasText: '1.6.3' })
     await expect(versionButton).toBeVisible({ timeout: 10000 })
 
     await versionButton.click()
 
     // Find a version link that's not the current version by checking the href
-    const versionLinks = page.locator('[role="option"] a[href*="/package-docs/ufo/v/"]')
+    const versionLinks = getVersionLinks(page, 'ufo')
     const count = await versionLinks.count()
 
     // Find first link that doesn't point to 1.6.3
@@ -150,14 +161,12 @@ test.describe('Version Selector', () => {
     await goto('/package-docs/ufo/v/1.6.3', { waitUntil: 'hydration' })
 
     // Wait for version button to be visible
-    const versionButton = page
-      .locator('[data-testid="package-subheader"] button')
-      .filter({ hasText: '1.6.3' })
+    const versionButton = getVersionButton(page).filter({ hasText: '1.6.3' })
     await expect(versionButton).toBeVisible({ timeout: 10000 })
 
     await versionButton.click()
 
-    const dropdown = page.locator('[role="listbox"]')
+    const dropdown = getVersionDropdown(page)
     await expect(dropdown).toBeVisible()
 
     // Press escape
