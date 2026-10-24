@@ -100,6 +100,12 @@ describe('parseJsDocLinks', () => {
     expect(result).toContain('>Example Site</a>')
   })
 
+  it('should handle pipe syntax', () => {
+    const result = parseJsDocLinks('{@link https://example.com | Pipe Syntax}', emptyLookup)
+    expect(result).toContain('href="https://example.com"')
+    expect(result).toContain('>Pipe Syntax</a>')
+  })
+
   it('should convert internal symbol references to anchor links', () => {
     const lookup: SymbolLookup = new Map([['MyFunction', 'function-MyFunction']])
     const result = parseJsDocLinks('{@link MyFunction}', lookup)
@@ -152,7 +158,7 @@ describe('parseJsDocLinks', () => {
 
   it('should convert external URLs using {@link url text} to links', () => {
     fc.assert(
-      fc.property(fc.webUrl(), fc.stringMatching(/^[^}\s][^}]+[^}\s]$/), (url, text) => {
+      fc.property(fc.webUrl(), fc.stringMatching(/^[^}\s|][^}]+[^}\s]$/), (url, text) => {
         const result = parseJsDocLinks(`{@link ${url} ${text}}`, emptyLookup)
         expect(result).toContain(`href="${escapeHtml(url)}"`)
         expect(result).toContain('target="_blank"')
