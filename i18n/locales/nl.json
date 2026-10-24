@@ -425,6 +425,7 @@
       "forgejo": "Bekijk op Forgejo",
       "gitea": "Bekijk op Gitea",
       "gitee": "Bekijk op Gitee",
+      "pushin": "Bekijk op Pushin",
       "radicle": "Bekijk op Radicle",
       "socket_dev": "Bekijk op socket.dev",
       "sourcehut": "Bekijk op SourceHut",
@@ -507,7 +508,8 @@
       },
       "main_information": "Hoofdinformatie",
       "trends": "Trends",
-      "version_distribution": "Versieverdeling"
+      "version_distribution": "Versieverdeling",
+      "daily_downloads_heatmap": "Heatmap van dagelijkse downloads"
     },
     "skills": {
       "title": "Agent Skills",
@@ -564,8 +566,12 @@
       "pm_label": "Pakketbeheerder",
       "copy_command": "Kopieer installatie command",
       "copy_dev_command": "Kopieer developer installatie command",
+      "copy_types_command": "Kopieer types installatie command",
       "dev_dependency_hint": "Wordt meestal geïnstalleerd als developer dependency",
-      "view_types": "Bekijk {package}"
+      "view_types": "Bekijk {package}",
+      "types_label": "Types",
+      "collapse_commands": "Aanvullende commands inklappen",
+      "expand_commands": "Aanvullende commands weergeven"
     },
     "create": {
       "title": "Nieuw project aanmaken",
@@ -615,6 +621,7 @@
       "description_to_none_provenance": "Deze versie is gepubliceerd zonder {provenance}.",
       "description_to_none_trustedPublisher": "Deze versie is gepubliceerd zonder {trustedPublishing}.",
       "description_to_provenance_trustedPublisher": "Deze versie gebruikt {provenance} maar niet {trustedPublishing}.",
+      "description_to_trustedPublisher_without_provenance": "Deze versie gebruikt {trustedPublishing} maar was gepubliceerd zonder {provenance}.",
       "fallback_install_provenance": "Installatie commands zijn vastgezet op {version}, de laatste versie met geverifieerde herkomst.",
       "fallback_install_trustedPublisher": "Installatie commands zijn vastgezet op {version}, the last version with vertrouwd publiceren.",
       "provenance_link_text": "herkomstverificatie",
@@ -831,6 +838,29 @@
         "copy_url": "Kopieer deze URL om de grafiek in uw website in te sluiten",
         "preview": "Voorbeeld",
         "tip": "Als startDate en endDate niet zijn opgegeven in de URL, toont de grafiek de laatste 12 maanden."
+      },
+      "sparkline_zoom_reset": {
+        "title": "Zoom resetten · dubbelklik op de grafiek of druk op Esc",
+        "aria_label": "Zoom resetten"
+      },
+      "downloads_heatmap": {
+        "title": "Dagelijkse downloads: laatste 52 weken, van {from} t/m {to}",
+        "legend": {
+          "anomalies": "Dagen met ontbrekende of afwijkende downloadcijfers",
+          "max": "Max: {value} downloads op {date}",
+          "min": "Min: {value} downloads op {date}"
+        },
+        "nav_hint": "Gebruik ← → ↑ ↓",
+        "copy_alt": {
+          "introduction": "Downloadheatmap voor het pakket {package_name}. {date_range}.",
+          "no_data": "Er zijn geen betrouwbare downloadgegevens beschikbaar voor deze periode.",
+          "summary": "In totaal zijn er {total} downloads geregistreerd over {days} dagen, gemiddeld {average} downloads per dag.",
+          "peak": "De meeste activiteit vond plaats op {date}, met {downloads} downloads.",
+          "busiest_weekday": "De drukste dag van de week was {weekday}, met gemiddeld {average} downloads.",
+          "weekday_comparison": "Doordeweeks waren er gemiddeld {weekdays} downloads per dag, tegenover {weekends} in het weekend.",
+          "weekly_trend": "Tussen de eerste en laatste volledige week met betrouwbare gegevens veranderde het aantal wekelijkse downloads met {change}, van {first} naar {last}.",
+          "excluded_days": "{count} kalenderdagen zijn buiten deze statistieken gehouden vanwege ontbrekende, afwijkende of nog niet beschikbare gegevens."
+        }
       }
     },
     "downloads": {
@@ -1158,6 +1188,10 @@
       "verified": "geverifieerd",
       "verified_title": "geverifieerde herkomstgegevens",
       "verified_via": "Geverifieerd: gepubliceerd via {provider}"
+    },
+    "staged_publish": {
+      "label": "Gefaseerde publicatie",
+      "title": "Gepubliceerd via gefaseerde publicatie met goedkeuring via 2FA"
     },
     "jsr": {
       "title": "Ook verkrijgbaar op JSR"
