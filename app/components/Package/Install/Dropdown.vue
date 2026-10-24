@@ -3,6 +3,7 @@ import type { JsrPackageInfo } from '#shared/types/jsr'
 import type { SlimPackumentVersion } from '#shared/types'
 import type { DevDependencySuggestion } from '#shared/utils/dev-dependency'
 import type { PublishSecurityDowngrade } from '~/utils/publish-security'
+import { getPackageManagerConfig } from '~/utils/install-command'
 
 const props = defineProps<{
   packageName: string
@@ -19,6 +20,11 @@ const props = defineProps<{
   headingId: string
 }>()
 
+const isMounted = ref(false)
+onMounted(() => {
+  isMounted.value = true
+})
+
 const { selectedPM, showTypesInInstall, copied, copyInstallCommand } = useInstallCommand(
   () => props.packageName,
   () => props.requestedVersion ?? null,
@@ -26,6 +32,12 @@ const { selectedPM, showTypesInInstall, copied, copyInstallCommand } = useInstal
   () => props.typesPackageName ?? null,
   () => props.installVersionOverride ?? null,
 )
+
+const resolvedPM = computed(() => {
+  return isMounted.value ? selectedPM.value : 'npm'
+})
+
+const selectedPackageManagerConfig = computed(() => getPackageManagerConfig(resolvedPM.value))
 
 const { announce } = useCommandPalette()
 const { polite } = useAnnouncer()
@@ -136,14 +148,11 @@ onPrehydrate(el => {
             <code
               class="font-mono text-sm min-w-0 flex-1 truncate tracking-tight cursor-text select-text"
               dir="ltr"
-              v-for="pm in packageManagers"
-              :key="pm.id"
-              :data-pm-cmd="pm.id"
             >
               <span
                 v-for="(part, i) in getInstallCommandParts({
                   packageName: props.packageName,
-                  packageManager: pm.id,
+                  packageManager: selectedPackageManagerConfig.id,
                   version: props.installVersionOverride ?? props.requestedVersion,
                   jsrInfo: props.jsrInfo,
                 })"
@@ -177,7 +186,7 @@ onPrehydrate(el => {
               :show-types="showTypesInInstall"
               :executable-info="executableInfo"
               :create-package-info="createPackageInfo"
-              :selected-pm="selectedPM"
+              :selected-pm="resolvedPM"
             />
           </div>
         </div>
@@ -185,28 +194,3 @@ onPrehydrate(el => {
     </div>
   </section>
 </template>
-<style>
-/* Hide all variants by default when preference is set */
-:root[data-pm] [data-pm-cmd] {
-  display: none;
-}
-
-/* Show only the matching package manager command */
-:root[data-pm='npm'] [data-pm-cmd='npm'],
-:root[data-pm='pnpm'] [data-pm-cmd='pnpm'],
-:root[data-pm='yarn'] [data-pm-cmd='yarn'],
-:root[data-pm='bun'] [data-pm-cmd='bun'],
-:root[data-pm='deno'] [data-pm-cmd='deno'],
-:root[data-pm='vlt'] [data-pm-cmd='vlt'],
-:root[data-pm='vp'] [data-pm-cmd='vp'],
-:root[data-pm='nub'] [data-pm-cmd='nub'],
-:root[data-pm='ni'] [data-pm-cmd='ni'],
-:root[data-pm='upm'] [data-pm-cmd='upm'] {
-  display: inline;
-}
-
-/* Fallback: when no data-pm is set (SSR initial), show npm as default */
-:root:not([data-pm]) [data-pm-cmd]:not([data-pm-cmd='npm']) {
-  display: none;
-}
-</style>
