@@ -1,4 +1,5 @@
 import type { VueUiScatterDatasetItem } from 'vue-data-ui'
+import { parsePackageSpec } from '#shared/utils/parse-package-param'
 import { applyEllipsis } from '~/utils/charts'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
 
@@ -90,10 +91,6 @@ function getNumericFacetValue(
   }
 }
 
-function getPackageName(packageData: PackageComparisonData, fallbackName: string): string {
-  return packageData.package?.name || fallbackName
-}
-
 export function buildCompareScatterChartDataset(
   packagesData: ReadonlyArray<PackageComparisonData | null>,
   packages: string[],
@@ -112,18 +109,21 @@ export function buildCompareScatterChartDataset(
       return acc
     }
 
-    const fallbackName = packages[index] || `package-${index + 1}`
-    const packageName = getPackageName(packageData, fallbackName)
+    const pkgSpec = packages[index] || `package-${index + 1}`
+    const parsed = parsePackageSpec(pkgSpec)
+    const name = packageData.package?.name || parsed.name
+    const version = packageData.package?.version || parsed.version
+    const packageName = version ? `${name}@${version}` : name
 
     acc.push({
-      name: applyEllipsis(packageName, 14),
+      name: applyEllipsis(packageName, 18),
       fullName: packageName,
-      color: isListedFramework(packageName) ? getFrameworkColor(packageName) : undefined,
+      color: isListedFramework(name) ? getFrameworkColor(name) : undefined,
       values: [
         {
           x,
           y,
-          name: applyEllipsis(packageName, 14),
+          name: applyEllipsis(packageName, 18),
           fullName: packageName,
         },
       ],

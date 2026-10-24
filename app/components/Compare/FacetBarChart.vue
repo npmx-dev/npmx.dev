@@ -77,10 +77,11 @@ const isDarkMode = computed(() => resolvedMode.value === 'dark')
 
 const dataset = computed<VueUiHorizontalBarDatasetItem[]>(() => {
   if (props.facetLoading) return []
-  return props.packages.map((name, index) => {
+  return props.packages.map((spec, index) => {
     const rawValue = props.values[index]?.raw
+    const { name } = parsePackageSpec(spec)
     return {
-      name: insertLineBreaks(applyEllipsis(name)),
+      name: insertLineBreaks(applyEllipsis(spec)),
       value: typeof rawValue === 'number' ? rawValue : 0,
       color: isListedFramework(name) ? getFrameworkColor(name) : undefined,
       formattedValue: props.values[index]?.display,
