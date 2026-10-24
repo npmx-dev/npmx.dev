@@ -2,7 +2,7 @@
 import type { LocaleObject } from '@nuxtjs/i18n'
 
 const router = useRouter()
-const { settings } = useSettings()
+const { settings, resetSettings } = useSettings()
 const { locale, locales, setLocale: setNuxti18nLocale } = useI18n()
 const colorMode = useColorMode()
 const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
@@ -27,6 +27,14 @@ const currentLocale = computed<string>({
     setNuxti18nLocale(newLocale)
   },
 })
+
+const isConfirmingReset = shallowRef(false)
+
+function onResetSettings() {
+  resetSettings()
+  colorMode.preference = 'system'
+  isConfirmingReset.value = false
+}
 
 // Escape to go back (but not when focused on form elements or modal is open)
 onKeyStroke(
@@ -331,6 +339,32 @@ useSeoMeta({
               :description="$t('settings.keyboard_shortcuts_enabled_description')"
               v-model="settings.keyboardShortcuts"
             />
+          </div>
+        </section>
+
+        <!-- RESET Section -->
+        <section>
+          <h2 class="text-xs text-fg-muted uppercase tracking-wider mb-4">
+            {{ $t('settings.sections.reset') }}
+          </h2>
+          <div class="bg-bg-subtle border border-border rounded-lg p-4 sm:p-6 space-y-3">
+            <p class="text-xs text-fg-muted">
+              {{ $t('settings.reset_settings_description') }}
+            </p>
+            <div v-if="isConfirmingReset" class="flex flex-wrap items-center gap-2">
+              <span class="text-sm text-fg" role="status">
+                {{ $t('settings.reset_settings_confirm') }}
+              </span>
+              <ButtonBase variant="primary" @click="onResetSettings">
+                {{ $t('settings.sections.reset') }}
+              </ButtonBase>
+              <ButtonBase @click="isConfirmingReset = false">
+                {{ $t('common.cancel') }}
+              </ButtonBase>
+            </div>
+            <ButtonBase v-else classicon="i-lucide:rotate-ccw" @click="isConfirmingReset = true">
+              {{ $t('settings.reset_settings') }}
+            </ButtonBase>
           </div>
         </section>
       </div>
