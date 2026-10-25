@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vite-plus/test'
 import { buildCompareScatterChartDataset } from '~/utils/compare-scatter-chart'
 
 vi.mock('~/utils/charts', () => ({

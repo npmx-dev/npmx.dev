@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { renderDocNodes, renderEntries, renderEntriesToc } from '#server/utils/docs/render'
 import { buildSymbolLookup, mergeOverloads } from '#server/utils/docs/processing'
 import { entrySlug } from '#server/utils/docs/text'

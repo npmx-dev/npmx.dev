@@ -1,4 +1,4 @@
-import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterAll, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import type { H3Event } from 'h3'
 import type { Packument } from '#shared/types/npm-registry'
 import { parsePackageParams } from '#server/utils/parse-package-params'

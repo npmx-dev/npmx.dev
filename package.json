@@ -149,7 +149,6 @@
     "typescript": "6.0.3",
     "unplugin-vue-markdown": "32.0.0",
     "vite": "catalog:vite-plus",
-    "vitest": "catalog:vite-plus",
     "vue-i18n-extract": "2.0.7",
     "vue-tsc": "3.3.10"
   },

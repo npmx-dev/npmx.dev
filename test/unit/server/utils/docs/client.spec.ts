@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { createLoader, createResolver, getModules } from '#server/utils/docs/client'
 
 describe('createResolver', () => {
