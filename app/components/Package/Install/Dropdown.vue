@@ -86,7 +86,7 @@ onPrehydrate(el => {
     >
       <div class="flex items-stretch max-lg:flex-col lg:flex-row-reverse">
         <div
-          class="flex items-center justify-between gap-1 px-3 border-s border-border-subtle max-lg:pt-2.5"
+          class="flex items-center justify-between gap-1 px-2.5 lg:border-s border-border-subtle max-lg:pt-2.5"
         >
           <div class="flex items-center gap-1">
             <PackageInstallDownloadTarball
