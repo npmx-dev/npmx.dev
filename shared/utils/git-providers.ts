@@ -340,14 +340,6 @@ export function parseRepositoryInfo(
   }
 }
 
-export function getProviderConfig(providerId: ProviderId): ProviderConfig | undefined {
-  return providers.find(p => p.id === providerId)
-}
-
-export function isKnownGitProvider(url: string): boolean {
-  return parseRepoUrl(url) !== null
-}
-
 /**
  * API origins used by each provider for client-side repo metadata fetches.
  * Self-hosted providers are excluded because their origins can be anything.

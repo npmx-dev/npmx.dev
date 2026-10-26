@@ -115,11 +115,6 @@ const FORGES: Partial<Record<ProviderId, ForgeEntry>> = {
   },
 }
 
-/** The `forges` instance host of an npmx ref. */
-export function forgeInstance(ref: RepoRef): string {
-  return forgeWeb(ref)?.instance ?? ref.host ?? ''
-}
-
 /** Translate an npmx repo ref into a `forges` repo ref. */
 export function toForgeRepoRef(ref: RepoRef): ForgeRepoRef {
   const web = forgeWeb(ref)
