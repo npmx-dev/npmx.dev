@@ -3,27 +3,18 @@ import type { ProviderId, RepoRef } from '~~/shared/utils/git-providers'
 import { forgeWeb, toForgeRepoRef } from '~~/shared/utils/forges'
 import type { MarkdownRepoInfo } from './markdown'
 
-type ReferenceQuirks = Pick<
-  MarkdownRepoInfo,
-  'issueChar' | 'issueRegex' | 'prChar' | 'accountChar' | 'keepAccountChar'
->
+type AccountSyntax = Pick<MarkdownRepoInfo, 'accountChar' | 'keepAccountChar'>
 
 /**
- * Reference syntax that the shared model does not carry: the char that marks an
- * issue or pull request, and how accounts are written. Everything else comes
- * from `forges`.
+ * How a forge writes an account mention. `forges` reads thread and commit
+ * references but has no account syntax, so this stays here.
  */
-const REFERENCE_QUIRKS: Partial<Record<ProviderId, ReferenceQuirks>> = {
-  github: { issueChar: '#', prChar: '#' },
-  gitlab: { issueChar: '#', prChar: '!' },
-  bitbucket: { prChar: '#', accountChar: false },
-  gitee: { issueChar: '#', issueRegex: /\B#[\dA-Z]+\b/gi, prChar: '!' },
-  // Sourcehut writes accounts as `~user`. It has no pull-request marker, so
-  // `prChar` matches `issueChar` and every `#` reference reads as an issue.
-  sourcehut: { issueChar: '#', prChar: '#', accountChar: '~', keepAccountChar: true },
+const ACCOUNT_SYNTAX: Partial<Record<ProviderId, AccountSyntax>> = {
+  // Bitbucket has no account page to link to.
+  bitbucket: { accountChar: false },
+  // Sourcehut writes accounts as `~user`, and the tilde is part of the URL.
+  sourcehut: { accountChar: '~', keepAccountChar: true },
 }
-
-const DEFAULT_QUIRKS: ReferenceQuirks = { issueChar: '#', prChar: '#' }
 
 /**
  * The markdown renderer's view of a repository, built from `forges/web`.
@@ -37,31 +28,13 @@ export function createRepoInfo(ref: RepoRef, path?: string): MarkdownRepoInfo | 
   // A base is a page URL with its trailing path segment removed, so build the
   // page for a placeholder segment and trim it.
   const base = (target: UrlTarget) => web.urlFor(target)?.replace(/\/$/, '')
-  const threadBase = (kind: 'issue' | 'pull_request') =>
-    web
-      .urlFor({
-        thread: {
-          forge: repo.forge,
-          instance: repo.instance,
-          repo,
-          kind,
-          number: '1',
-          displayNumber: '1',
-        },
-      })
-      ?.replace(/\/1$/, '')
-  // A commit is its own target now, not a thread kind.
-  const commitBase = web.urlFor({ commit: { repo, sha: '1' } })?.replace(/\/1$/, '')
 
   return {
     hostBaseUrl: web.webOrigin ?? '',
+    forge: { web, repo },
     blobBaseUrl: base({ file: { repo, path: '', at: 'HEAD' } }) ?? '',
     rawBaseUrl: base({ raw: { repo, path: '', at: 'HEAD' } }) ?? '',
     path,
-    commitBaseUrl: commitBase ?? '',
-    issueBaseUrl: threadBase('issue'),
-    prBaseUrl: threadBase('pull_request'),
-    compareBaseUrl: base({ repo, section: 'compare' }),
-    ...(REFERENCE_QUIRKS[ref.provider] ?? DEFAULT_QUIRKS),
+    ...ACCOUNT_SYNTAX[ref.provider],
   }
 }

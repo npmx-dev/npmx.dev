@@ -582,7 +582,7 @@ describe('Turn plaintext #isssue/#pr, !pr, @account & commmit into links', () =>
       const result = renderer(markdown)
 
       expect(result.html).toBe(`<ul>
-<li>Fixed pt locale first day of week to be Sunday. See <a href="https://gitlab.com/test-owner/test-repo/-/issues/4195" rel="nofollow noreferrer noopener" target="_blank">#4195</a> by <a href="https://gitlab.com/ImRodry" rel="nofollow noreferrer noopener" target="_blank">@ImRodry</a>.</li>
+<li>Fixed pt locale first day of week to be Sunday. See <a href="https://gitlab.com/test-owner/test-repo/-/work_items/4195" rel="nofollow noreferrer noopener" target="_blank">#4195</a> by <a href="https://gitlab.com/ImRodry" rel="nofollow noreferrer noopener" target="_blank">@ImRodry</a>.</li>
 <li>Fixed zh-CN, zh-HK, and zh-TW locale month parsing for October, November, and December. See <a href="https://gitlab.com/test-owner/test-repo/-/merge_requests/4194" rel="nofollow noreferrer noopener" target="_blank">!4194</a> by <a href="https://gitlab.com/puneetdixit200" rel="nofollow noreferrer noopener" target="_blank">@puneetdixit200</a>.</li>
 </ul>
 `)
@@ -810,8 +810,8 @@ describe('Turn plaintext #isssue/#pr, !pr, @account & commmit into links', () =>
 <li><a href="https://gitlab.com/test-owner/test-repo/-/commit/a16901d" rel="nofollow noreferrer noopener" target="_blank">a16901d</a>: Fix ordered list parsing so under-indented continuation lines preserve their first character</li>
 <li>Updated dependencies [<a href="https://gitlab.com/test-owner/test-repo/-/commit/6270b99" rel="nofollow noreferrer noopener" target="_blank">6270b99</a>]</li>
 <li><a href="https://gitlab.com/test-owner/test-repo/-/commit/7fb19eb" rel="nofollow noreferrer noopener" target="_blank">7fb19eb</a>: Only add hash attributes to nodes, not to marks.</li>
-<li>Release v0.14.0 <a href="https://gitlab.com/test-owner/test-repo/-/commit/36128a54" rel="nofollow noreferrer noopener" target="_blank">36128a5</a></li>
-<li>Empty (<a href="https://gitlab.com/test-owner/test-repo/-/commit/4cab893c" rel="nofollow noreferrer noopener" target="_blank">4cab893</a>)</li>
+<li>Release v0.14.0 <a href="https://gitlab.com/test-owner/test-repo/-/commit/36128a54" rel="nofollow noreferrer noopener" target="_blank">36128a54</a></li>
+<li>Empty (<a href="https://gitlab.com/test-owner/test-repo/-/commit/4cab893c" rel="nofollow noreferrer noopener" target="_blank">4cab893c</a>)</li>
 </ul>
 `)
     })
@@ -898,8 +898,8 @@ describe('Turn plaintext #isssue/#pr, !pr, @account & commmit into links', () =>
 <li><a href="https://bitbucket.org/test-owner/test-repo/commits/a16901d" rel="nofollow noreferrer noopener" target="_blank">a16901d</a>: Fix ordered list parsing so under-indented continuation lines preserve their first character</li>
 <li>Updated dependencies [<a href="https://bitbucket.org/test-owner/test-repo/commits/6270b99" rel="nofollow noreferrer noopener" target="_blank">6270b99</a>]</li>
 <li><a href="https://bitbucket.org/test-owner/test-repo/commits/7fb19eb" rel="nofollow noreferrer noopener" target="_blank">7fb19eb</a>: Only add hash attributes to nodes, not to marks.</li>
-<li>Release v0.14.0 <a href="https://bitbucket.org/test-owner/test-repo/commits/36128a54" rel="nofollow noreferrer noopener" target="_blank">36128a5</a></li>
-<li>Empty (<a href="https://bitbucket.org/test-owner/test-repo/commits/4cab893c" rel="nofollow noreferrer noopener" target="_blank">4cab893</a>)</li>
+<li>Release v0.14.0 <a href="https://bitbucket.org/test-owner/test-repo/commits/36128a54" rel="nofollow noreferrer noopener" target="_blank">36128a54</a></li>
+<li>Empty (<a href="https://bitbucket.org/test-owner/test-repo/commits/4cab893c" rel="nofollow noreferrer noopener" target="_blank">4cab893c</a>)</li>
 </ul>
 `)
     })
@@ -1030,7 +1030,9 @@ https://github.com/vueuse/vueuse/compare/v14.2.1...v14.3.0`
     test('gitlab', async () => {
       const info = repoInfo('gitlab', 'vueuse', 'vueuse')
       const renderer = await changelogRenderer(info)
-      // from vueuse 14.3.0 (last 2 links changed from `issues` -> `pull`)
+      // from vueuse 14.3.0 (last 2 links changed from `issues` -> `pull`). GitLab
+      // writes issue links as `/-/work_items` now; the `/-/issues/` form reads back
+      // all the same.
       const markdown = `- Expose pointer event onLongPress  -  by mrcwbr in https://gitlab.com/vueuse/vueuse/-/issues/5295 https://gitlab.com/vueuse/vueuse/-/commit/b1688bd2
 - createInjectionState: Non-undefined return when default specified  -  by Laupetin in https://gitlab.com/vueuse/vueuse/-/issues/5306 https://gitlab.com/vueuse/vueuse/-/commit/b0c51c27
 - createReusableTemplate: Add support for specifying component names  -  by wbolster in https://gitlab.com/vueuse/vueuse/-/merge_requests/5300 https://gitlab.com/vueuse/vueuse/-/commit/ea29d5cb
@@ -1040,10 +1042,10 @@ https://gitlab.com/vueuse/vueuse/-/compare/v14.2.1...v14.3.0`
 
       const result = renderer(markdown)
       expect(result.html).toBe(`<ul>
-<li>Expose pointer event onLongPress  -  by mrcwbr in <a href="https://gitlab.com/vueuse/vueuse/-/issues/5295" rel="nofollow noreferrer noopener" target="_blank">#5295</a> <a href="https://gitlab.com/vueuse/vueuse/-/commit/b1688bd2" rel="nofollow noreferrer noopener" target="_blank">b1688bd</a></li>
-<li>createInjectionState: Non-undefined return when default specified  -  by Laupetin in <a href="https://gitlab.com/vueuse/vueuse/-/issues/5306" rel="nofollow noreferrer noopener" target="_blank">#5306</a> <a href="https://gitlab.com/vueuse/vueuse/-/commit/b0c51c27" rel="nofollow noreferrer noopener" target="_blank">b0c51c2</a></li>
-<li>createReusableTemplate: Add support for specifying component names  -  by wbolster in <a href="https://gitlab.com/vueuse/vueuse/-/merge_requests/5300" rel="nofollow noreferrer noopener" target="_blank">!5300</a> <a href="https://gitlab.com/vueuse/vueuse/-/commit/ea29d5cb" rel="nofollow noreferrer noopener" target="_blank">ea29d5c</a></li>
-<li>nuxt: Add composable variants to auto imports  -  by OrbisK in <a href="https://gitlab.com/vueuse/vueuse/-/merge_requests/5285" rel="nofollow noreferrer noopener" target="_blank">!5285</a> <a href="https://gitlab.com/vueuse/vueuse/-/commit/ac2ef95d" rel="nofollow noreferrer noopener" target="_blank">ac2ef95</a></li>
+<li>Expose pointer event onLongPress  -  by mrcwbr in <a href="https://gitlab.com/vueuse/vueuse/-/issues/5295" rel="nofollow noreferrer noopener" target="_blank">#5295</a> <a href="https://gitlab.com/vueuse/vueuse/-/commit/b1688bd2" rel="nofollow noreferrer noopener" target="_blank">b1688bd2</a></li>
+<li>createInjectionState: Non-undefined return when default specified  -  by Laupetin in <a href="https://gitlab.com/vueuse/vueuse/-/issues/5306" rel="nofollow noreferrer noopener" target="_blank">#5306</a> <a href="https://gitlab.com/vueuse/vueuse/-/commit/b0c51c27" rel="nofollow noreferrer noopener" target="_blank">b0c51c27</a></li>
+<li>createReusableTemplate: Add support for specifying component names  -  by wbolster in <a href="https://gitlab.com/vueuse/vueuse/-/merge_requests/5300" rel="nofollow noreferrer noopener" target="_blank">!5300</a> <a href="https://gitlab.com/vueuse/vueuse/-/commit/ea29d5cb" rel="nofollow noreferrer noopener" target="_blank">ea29d5cb</a></li>
+<li>nuxt: Add composable variants to auto imports  -  by OrbisK in <a href="https://gitlab.com/vueuse/vueuse/-/merge_requests/5285" rel="nofollow noreferrer noopener" target="_blank">!5285</a> <a href="https://gitlab.com/vueuse/vueuse/-/commit/ac2ef95d" rel="nofollow noreferrer noopener" target="_blank">ac2ef95d</a></li>
 </ul>
 <p><a href="https://gitlab.com/vueuse/vueuse/-/compare/v14.2.1...v14.3.0" rel="nofollow noreferrer noopener" target="_blank">v14.2.1...v14.3.0</a></p>
 `)
@@ -1074,7 +1076,8 @@ https://codeberg.org/vueuse/vueuse/compare/v14.2.1...v14.3.0`
     test('tangled', async () => {
       const info = repoInfo('tangled', 'vueuse', 'vueuse')
       const renderer = await changelogRenderer(info)
-      // from vueuse 14.3.0 (last 2 links changed from `issues` -> `pull`)
+      // from vueuse 14.3.0 (last 2 links changed from `issues` -> `pull`).
+      // Tangled's web parser has no compare route, so that URL keeps its text.
       const markdown = `- Expose pointer event onLongPress  -  by mrcwbr in https://tangled.org/vueuse/vueuse/issues/5295 https://tangled.org/vueuse/vueuse/commit/b1688bd2
 - createInjectionState: Non-undefined return when default specified  -  by Laupetin in https://tangled.org/vueuse/vueuse/issues/5306 https://tangled.org/vueuse/vueuse/commit/b0c51c27
 - createReusableTemplate: Add support for specifying component names  -  by wbolster in https://tangled.org/vueuse/vueuse/pulls/5300 https://tangled.org/vueuse/vueuse/commit/ea29d5cb
@@ -1089,7 +1092,7 @@ https://tangled.org/vueuse/vueuse/compare/v14.2.1...v14.3.0`
 <li>createReusableTemplate: Add support for specifying component names  -  by wbolster in <a href="https://tangled.org/vueuse/vueuse/pulls/5300" rel="nofollow noreferrer noopener" target="_blank">#5300</a> <a href="https://tangled.org/vueuse/vueuse/commit/ea29d5cb" rel="nofollow noreferrer noopener" target="_blank">ea29d5c</a></li>
 <li>nuxt: Add composable variants to auto imports  -  by OrbisK in <a href="https://tangled.org/vueuse/vueuse/pulls/5285" rel="nofollow noreferrer noopener" target="_blank">#5285</a> <a href="https://tangled.org/vueuse/vueuse/commit/ac2ef95d" rel="nofollow noreferrer noopener" target="_blank">ac2ef95</a></li>
 </ul>
-<p><a href="https://tangled.org/vueuse/vueuse/compare/v14.2.1...v14.3.0" rel="nofollow noreferrer noopener" target="_blank">v14.2.1...v14.3.0</a></p>
+<p><a href="https://tangled.org/vueuse/vueuse/compare/v14.2.1...v14.3.0" rel="nofollow noreferrer noopener" target="_blank">https://tangled.org/vueuse/vueuse/compare/v14.2.1...v14.3.0</a></p>
 `)
     })
 
@@ -1126,10 +1129,10 @@ https://gitea.com/vueuse/vueuse/compare/v14.2.1...v14.3.0`
       // compare is not supported
       const result = renderer(markdown)
       expect(result.html).toBe(`<ul>
-<li>Expose pointer event onLongPress  -  by mrcwbr in <a href="https://bitbucket.org/vueuse/vueuse/pull-requests/5295" rel="nofollow noreferrer noopener" target="_blank">#5295</a> <a href="https://bitbucket.org/vueuse/vueuse/commits/b1688bd2" rel="nofollow noreferrer noopener" target="_blank">b1688bd</a></li>
-<li>createInjectionState: Non-undefined return when default specified  -  by Laupetin in <a href="https://bitbucket.org/vueuse/vueuse/pull-requests/5306" rel="nofollow noreferrer noopener" target="_blank">#5306</a> <a href="https://bitbucket.org/vueuse/vueuse/commits/b0c51c27" rel="nofollow noreferrer noopener" target="_blank">b0c51c2</a></li>
-<li>createReusableTemplate: Add support for specifying component names  -  by wbolster in <a href="https://bitbucket.org/vueuse/vueuse/pull-requests/5300" rel="nofollow noreferrer noopener" target="_blank">#5300</a> <a href="https://bitbucket.org/vueuse/vueuse/commits/ea29d5cb" rel="nofollow noreferrer noopener" target="_blank">ea29d5c</a></li>
-<li>nuxt: Add composable variants to auto imports  -  by OrbisK in <a href="https://bitbucket.org/vueuse/vueuse/pull-requests/5285" rel="nofollow noreferrer noopener" target="_blank">#5285</a> <a href="https://bitbucket.org/vueuse/vueuse/commits/ac2ef95d" rel="nofollow noreferrer noopener" target="_blank">ac2ef95</a></li>
+<li>Expose pointer event onLongPress  -  by mrcwbr in <a href="https://bitbucket.org/vueuse/vueuse/pull-requests/5295" rel="nofollow noreferrer noopener" target="_blank">#5295</a> <a href="https://bitbucket.org/vueuse/vueuse/commits/b1688bd2" rel="nofollow noreferrer noopener" target="_blank">b1688bd2</a></li>
+<li>createInjectionState: Non-undefined return when default specified  -  by Laupetin in <a href="https://bitbucket.org/vueuse/vueuse/pull-requests/5306" rel="nofollow noreferrer noopener" target="_blank">#5306</a> <a href="https://bitbucket.org/vueuse/vueuse/commits/b0c51c27" rel="nofollow noreferrer noopener" target="_blank">b0c51c27</a></li>
+<li>createReusableTemplate: Add support for specifying component names  -  by wbolster in <a href="https://bitbucket.org/vueuse/vueuse/pull-requests/5300" rel="nofollow noreferrer noopener" target="_blank">#5300</a> <a href="https://bitbucket.org/vueuse/vueuse/commits/ea29d5cb" rel="nofollow noreferrer noopener" target="_blank">ea29d5cb</a></li>
+<li>nuxt: Add composable variants to auto imports  -  by OrbisK in <a href="https://bitbucket.org/vueuse/vueuse/pull-requests/5285" rel="nofollow noreferrer noopener" target="_blank">#5285</a> <a href="https://bitbucket.org/vueuse/vueuse/commits/ac2ef95d" rel="nofollow noreferrer noopener" target="_blank">ac2ef95d</a></li>
 </ul>
 `)
     })
