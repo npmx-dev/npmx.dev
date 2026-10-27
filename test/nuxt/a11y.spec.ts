@@ -1328,6 +1328,7 @@ describe('component accessibility audits', () => {
               { raw: 100, display: '100 MB' },
               { raw: 50, display: '50 MB' },
             ],
+            packagesData: [],
             packages: ['nuxt', 'vue'],
             label: 'Package Size',
             description: 'Size of the package itself (unpacked)',
