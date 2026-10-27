@@ -217,19 +217,36 @@ export const FILENAME_ICONS: Record<string, string> = {
 // Patterns for filenames that match via RegExp
 export const FILENAME_ICON_PATTERNS: readonly { pattern: RegExp; icon: string }[] = [
   // ESLint configs
-  { pattern: /^(?:\.eslintrc(?:\.(?:json|js|cjs|yml|yaml))?|eslint\.config\.(?:js|cjs|mjs|ts|mts|cts))$/, icon: 'vscode-icons-file-type-eslint' },
-  
+  {
+    pattern:
+      /^(?:\.eslintrc(?:\.(?:json|js|cjs|yml|yaml))?|eslint\.config\.(?:js|cjs|mjs|ts|mts|cts))$/,
+    icon: 'vscode-icons-file-type-eslint',
+  },
+
   // Prettier configs
-  { pattern: /^(?:\.prettierrc(?:\.(?:json|js|cjs|yml|yaml|toml))?|prettier\.config\.(?:js|cjs|mjs|ts|mts|cts))$/, icon: 'vscode-icons-file-type-prettier' },
+  {
+    pattern:
+      /^(?:\.prettierrc(?:\.(?:json|js|cjs|yml|yaml|toml))?|prettier\.config\.(?:js|cjs|mjs|ts|mts|cts))$/,
+    icon: 'vscode-icons-file-type-prettier',
+  },
 
   // Tailwind configs
-  { pattern: /^tailwind\.config\.(?:js|cjs|mjs|ts|mts|cts)$/, icon: 'vscode-icons-file-type-tailwind' },
+  {
+    pattern: /^tailwind\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+    icon: 'vscode-icons-file-type-tailwind',
+  },
 
   // UnoCSS configs
-  { pattern: /^(?:uno|unocss)\.config\.(?:js|cjs|mjs|ts|mts|cts)$/, icon: 'vscode-icons-file-type-unocss' },
+  {
+    pattern: /^(?:uno|unocss)\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+    icon: 'vscode-icons-file-type-unocss',
+  },
 
   // PostCSS configs
-  { pattern: /^postcss\.config\.(?:js|cjs|mjs|ts|mts|cts)$/, icon: 'vscode-icons-file-type-postcss' },
+  {
+    pattern: /^postcss\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+    icon: 'vscode-icons-file-type-postcss',
+  },
 
   // Babel configs
   { pattern: /^babel\.config\.(?:js|cjs|mjs|ts|mts|cts)$/, icon: 'vscode-icons-file-type-babel' },
@@ -241,22 +258,34 @@ export const FILENAME_ICON_PATTERNS: readonly { pattern: RegExp; icon: string }[
   { pattern: /^vitest\.config\.(?:js|cjs|mjs|ts|mts|cts)$/, icon: 'vscode-icons-file-type-vitest' },
 
   // Playwright configs
-  { pattern: /^playwright\.config\.(?:js|cjs|mjs|ts|mts|cts)$/, icon: 'vscode-icons-file-type-playwright' },
+  {
+    pattern: /^playwright\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+    icon: 'vscode-icons-file-type-playwright',
+  },
 
   // Jest configs
   { pattern: /^jest\.config\.(?:js|cjs|mjs|ts|mts|cts)$/, icon: 'vscode-icons-file-type-jest' },
 
   // Cypress configs
-  { pattern: /^cypress\.config\.(?:js|cjs|mjs|ts|mts|cts)$/, icon: 'vscode-icons-file-type-cypress' },
+  {
+    pattern: /^cypress\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+    icon: 'vscode-icons-file-type-cypress',
+  },
 
   // Webpack configs
-  { pattern: /^webpack\.config\.(?:js|cjs|mjs|ts|mts|cts)$/, icon: 'vscode-icons-file-type-webpack' },
+  {
+    pattern: /^webpack\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+    icon: 'vscode-icons-file-type-webpack',
+  },
 
   // Rollup configs
   { pattern: /^rollup\.config\.(?:js|cjs|mjs|ts|mts|cts)$/, icon: 'vscode-icons-file-type-rollup' },
 
   // Esbuild configs
-  { pattern: /^esbuild\.config\.(?:js|cjs|mjs|ts|mts|cts)$/, icon: 'vscode-icons-file-type-esbuild' },
+  {
+    pattern: /^esbuild\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+    icon: 'vscode-icons-file-type-esbuild',
+  },
 
   // Nuxt configs
   { pattern: /^nuxt\.config\.(?:js|ts|mjs|mts)$/, icon: 'vscode-icons-file-type-nuxt' },
@@ -277,8 +306,14 @@ export const FILENAME_ICON_PATTERNS: readonly { pattern: RegExp; icon: string }[
   { pattern: /^\.env(?:\..*)?$/, icon: 'vscode-icons-file-type-dotenv' },
 
   // Documentation / Changelogs / Licenses
-  { pattern: /^(?:readme|changelog|contributing|code_of_conduct)\.(?:md|markdown|txt)$/i, icon: 'vscode-icons-file-type-markdown' },
-  { pattern: /^license(?:\.(?:md|txt))?|licence(?:\.(?:md|txt))?$/i, icon: 'custom-license-minified' },
+  {
+    pattern: /^(?:readme|changelog|contributing|code_of_conduct)\.(?:md|markdown|txt)$/i,
+    icon: 'vscode-icons-file-type-markdown',
+  },
+  {
+    pattern: /^license(?:\.(?:md|txt))?|licence(?:\.(?:md|txt))?$/i,
+    icon: 'custom-license-minified',
+  },
 ]
 
 // Patterns for .d.ts and similar compound extensions
