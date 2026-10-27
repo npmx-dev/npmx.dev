@@ -31,10 +31,7 @@ export function isVersionComparison(packages: string[]): boolean {
   return uniqueBase.length === 1 && real.length > 1
 }
 
-export function getPackageDisplayInfo(
-  packageData: { package?: ComparisonPackage },
-  spec: string,
-) {
+export function getPackageDisplayInfo(packageData: { package?: ComparisonPackage }, spec: string) {
   const parsed = parsePackageSpec(spec)
   const name = packageData.package?.name || parsed.name
   const version = packageData.package?.version || parsed.version
