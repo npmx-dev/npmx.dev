@@ -80,8 +80,7 @@ const dataset = computed<VueUiHorizontalBarDatasetItem[]>(() => {
   if (props.facetLoading) return []
   return props.packages.map((spec, index) => {
     const rawValue = props.values[index]?.raw
-    const packageData = props.packagesData[index]
-    if (!packageData) continue
+    const packageData = props.packagesData[index] ?? null
     const { name, displayName } = getPackageDisplayInfo(packageData, spec)
 
     return {

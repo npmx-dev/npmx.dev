@@ -32,12 +32,12 @@ export function isVersionComparison(packages: string[]): boolean {
 }
 
 export function getPackageDisplayInfo(
-  packageData: { package: ComparisonPackage },
+  packageData: { package: ComparisonPackage } | null,
   spec: string,
 ) {
   const parsed = parsePackageSpec(spec)
-  const name = packageData.package.name || parsed.name
-  const version = packageData.package.version || parsed.version
+  const name = packageData?.package.name || parsed.name
+  const version = packageData?.package.version || parsed.version
   const displayName = version ? `${name}@${version}` : name
 
   return { name, displayName }
