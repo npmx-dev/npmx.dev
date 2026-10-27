@@ -26,6 +26,7 @@ import('vue-data-ui/style.css')
 const props = defineProps<{
   values: (FacetValue | null | undefined)[]
   packages: string[]
+  packagesData: ReadonlyArray<PackageComparisonData | null>
   label: string
   description: string
   facetLoading?: boolean
@@ -79,9 +80,12 @@ const dataset = computed<VueUiHorizontalBarDatasetItem[]>(() => {
   if (props.facetLoading) return []
   return props.packages.map((spec, index) => {
     const rawValue = props.values[index]?.raw
-    const { name } = parsePackageSpec(spec)
+    const packageData = props.packagesData[index]
+    if (!packageData) continue
+    const { name, displayName } = getPackageDisplayInfo(packageData, spec)
+
     return {
-      name: insertLineBreaks(applyEllipsis(spec)),
+      name: insertLineBreaks(applyEllipsis(displayName)),
       value: typeof rawValue === 'number' ? rawValue : 0,
       color: isListedFramework(name) ? getFrameworkColor(name) : undefined,
       formattedValue: props.values[index]?.display,

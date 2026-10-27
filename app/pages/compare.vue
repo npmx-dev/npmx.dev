@@ -458,6 +458,7 @@ useSeoMeta({
                   <FacetBarChart
                     :values="getFacetValues(facet.id)"
                     :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)"
+                    :packages-data="packagesData"
                     :label="facet.label"
                     :description="facet.description"
                     :facet-loading="isFacetLoading(facet.id)"

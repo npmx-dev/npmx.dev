@@ -1,3 +1,4 @@
+import type { ComparisonPackage } from '../types/comparison'
 import { parsePackageSpec } from './parse-package-param'
 
 /** Special identifier for the "What Would James Do?" comparison column */
@@ -28,4 +29,16 @@ export function isVersionComparison(packages: string[]): boolean {
   const real = getRealPackages(packages)
   const uniqueBase = getUniqueBasePackages(packages)
   return uniqueBase.length === 1 && real.length > 1
+}
+
+export function getPackageDisplayInfo(
+  packageData: { package: ComparisonPackage },
+  spec: string,
+) {
+  const parsed = parsePackageSpec(spec)
+  const name = packageData.package.name || parsed.name
+  const version = packageData.package.version || parsed.version
+  const displayName = version ? `${name}@${version}` : name
+
+  return { name, displayName }
 }

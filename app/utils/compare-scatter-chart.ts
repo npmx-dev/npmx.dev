@@ -1,5 +1,5 @@
 import type { VueUiScatterDatasetItem } from 'vue-data-ui'
-import { parsePackageSpec } from '#shared/utils/parse-package-param'
+import { getPackageDisplayInfo } from '#shared/utils/compare'
 import { applyEllipsis } from '~/utils/charts'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
 
@@ -110,10 +110,7 @@ export function buildCompareScatterChartDataset(
     }
 
     const pkgSpec = packages[index] || `package-${index + 1}`
-    const parsed = parsePackageSpec(pkgSpec)
-    const name = packageData.package?.name || parsed.name
-    const version = packageData.package?.version || parsed.version
-    const packageName = version ? `${name}@${version}` : name
+    const { name, displayName: packageName } = getPackageDisplayInfo(packageData, pkgSpec)
 
     acc.push({
       name: applyEllipsis(packageName, 18),
