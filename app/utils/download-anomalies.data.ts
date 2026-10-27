@@ -4,7 +4,7 @@ export const DOWNLOAD_ANOMALIES: DownloadAnomaly[] = [
   // vite rogue CI spike
   {
     packageName: 'vite',
-    start: { date: '2025-08-07', dailyDownloads: 6_200_00 },
+    start: { date: '2025-08-07', dailyDownloads: 6_200_000 },
     end: { date: '2025-09-02', dailyDownloads: 6_600_000 },
   },
   // svelte unexplained spikes to millions of downloads
