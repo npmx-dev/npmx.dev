@@ -311,7 +311,7 @@ export const FILENAME_ICON_PATTERNS: readonly { pattern: RegExp; icon: string }[
     icon: 'vscode-icons-file-type-markdown',
   },
   {
-    pattern: /^license(?:\.(?:md|txt))?|licence(?:\.(?:md|txt))?$/i,
+    pattern: /^(?:license|licence)(?:\.(?:md|txt))?$/i,
     icon: 'custom-license-minified',
   },
 ]
