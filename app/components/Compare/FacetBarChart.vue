@@ -78,18 +78,19 @@ const isDarkMode = computed(() => resolvedMode.value === 'dark')
 
 const dataset = computed<VueUiHorizontalBarDatasetItem[]>(() => {
   if (props.facetLoading) return []
-  return props.packages.map((spec, index) => {
-    const rawValue = props.values[index]?.raw
-    const packageData = props.packagesData[index] ?? null
-    const { name, displayName } = getPackageDisplayInfo(packageData, spec)
+  return props.packages.flatMap((spec, index) => {
+     const rawValue = props.values[index]?.raw
+    const packageData = props.packagesData[index]
+    if (!packageData) return []
+     const { name, displayName } = getPackageDisplayInfo(packageData, spec)
 
-    return {
-      name: insertLineBreaks(applyEllipsis(displayName)),
-      value: typeof rawValue === 'number' ? rawValue : 0,
-      color: isListedFramework(name) ? getFrameworkColor(name) : undefined,
-      formattedValue: props.values[index]?.display,
-    }
-  })
+    return [{
+       name: insertLineBreaks(applyEllipsis(displayName)),
+       value: typeof rawValue === 'number' ? rawValue : 0,
+       color: isListedFramework(name) ? getFrameworkColor(name) : undefined,
+       formattedValue: props.values[index]?.display,
+    }]
+   })
 })
 
 const skeletonDataset = computed(() =>
