@@ -11,7 +11,7 @@ authors:
 title: 'npmx photon genesis'
 tags: ['OpenSource', 'Release']
 excerpt: 'More than 5 million visits a month, and npmx keeps getting faster. This release brings performance work down to every millisecond, more readable UI, smarter charts, and support for more tools and providers.'
-date: '2026-10-22'
+date: '2026-10-29'
 slug: 'release/photon-genesis'
 image: 'https://npmx.dev/blog/og/release-photon-genesis.png'
 description: 'More than 5 million visits a month, and npmx keeps getting faster. This release brings performance work down to every millisecond, more readable UI, smarter charts, and support for more tools and providers.'
