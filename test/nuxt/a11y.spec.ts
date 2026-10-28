@@ -1328,7 +1328,8 @@ describe('component accessibility audits', () => {
               { raw: 100, display: '100 MB' },
               { raw: 50, display: '50 MB' },
             ],
-            packagesData: [{
+            packagesData: [
+              {
                 package: {
                   name: 'nuxt',
                   version: '4.3.1',
@@ -1365,7 +1366,8 @@ describe('component accessibility audits', () => {
                 },
                 isBinaryOnly: false,
                 totalLikes: 156,
-              },{
+              },
+              {
                 package: {
                   name: 'vue',
                   version: '3.5.32',
@@ -1402,7 +1404,8 @@ describe('component accessibility audits', () => {
                 },
                 isBinaryOnly: false,
                 totalLikes: 85,
-              }],
+              },
+            ],
             packages: ['nuxt', 'vue'],
             label: 'Package Size',
             description: 'Size of the package itself (unpacked)',
