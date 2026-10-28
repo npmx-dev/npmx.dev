@@ -307,7 +307,7 @@ export const FILENAME_ICON_PATTERNS: readonly { pattern: RegExp; icon: string }[
 
   // Documentation / Changelogs / Licenses
   {
-    pattern: /^(?:readme|changelog|contributing|code_of_conduct)\.(?:md|markdown|txt)$/i,
+    pattern: /^(?:readme|changelog|contributing|code_of_conduct)(?:\.(?:md|markdown|txt))?$/i,
     icon: 'vscode-icons-file-type-markdown',
   },
   {
