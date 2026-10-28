@@ -212,7 +212,7 @@ onClickOutside(containerRef, () => {
             {{ $t('compare.no_dependency.label') }}
           </span>
         </template>
-        <LinkBase v-else :to="packageRoute(parsePackageSpec(pkg).name)" class="text-sm font-mono">
+        <LinkBase v-else :to="packageRoute(parsePackageSpec(pkg).name, parsePackageSpec(pkg).version)" class="text-sm font-mono">
           {{ pkg }}
         </LinkBase>
         <ButtonBase
