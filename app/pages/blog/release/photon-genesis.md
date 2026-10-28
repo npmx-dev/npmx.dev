@@ -45,7 +45,9 @@ We’re continually looking for ways to make npmx faster, down to every millisec
 - Avoiding a redundant packument fetch when checking for license changes ([#3322](https://github.com/npmx-dev/npmx.dev/pull/3322))
 - Caching normalized, trimmed packuments instead of raw responses ([#3320](https://github.com/npmx-dev/npmx.dev/pull/3320))
 
-That said, a good experience is about more than speed - it’s also about making every part of the service convenient and accessible.
+![Time to First Byte percentiles in early October and late October: P99 dropped from 9.67s to 2.95s while traffic keep growing](/blog/ttfb-photon-genesis.png)
+
+As a result, TTFB for the slowest requests improved more than threefold, so npmx stays responsive even on a slow connection. That said, a good experience is about more than speed - it’s also about making every part of the service convenient and accessible.
 
 ## UI/UX improvements
 
