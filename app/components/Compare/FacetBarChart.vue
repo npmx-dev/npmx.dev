@@ -80,9 +80,7 @@ const isDarkMode = computed(() => resolvedMode.value === 'dark')
 const dataset = computed<VueUiHorizontalBarDatasetItem[]>(() => {
   if (props.facetLoading) return []
 
-  const omitVersion = props.facetId
-    ? shouldHideFacetInVersionComparison(props.facetId)
-    : false
+  const omitVersion = props.facetId ? shouldHideFacetInVersionComparison(props.facetId) : false
 
   if (!omitVersion) {
     // Version-specific facet: keep one bar per entry (with version in label)
