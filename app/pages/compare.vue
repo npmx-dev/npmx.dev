@@ -30,6 +30,10 @@ const packages = computed({
   },
 })
 
+function isChartPackage(_: unknown, index: number): boolean {
+  return packages.value[index] !== NO_DEPENDENCY_ID
+}
+
 // Facet selection and info
 const { selectedFacets, selectAll, deselectAll, isAllSelected, isNoneSelected } =
   useFacetSelection()
@@ -456,11 +460,12 @@ useSeoMeta({
                   class="my-6"
                 >
                   <FacetBarChart
-                    :values="getFacetValues(facet.id)"
-                    :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)"
-                    :packages-data="packagesData"
+                    :values="getFacetValues(facet.id).filter(isChartPackage)"
+                    :packages="packages.filter(isChartPackage)"
+                    :packages-data="packagesData.filter(isChartPackage)"
                     :label="facet.label"
                     :description="facet.description"
+                    :facet-id="facet.id"
                     :facet-loading="isFacetLoading(facet.id)"
                   />
                 </div>
@@ -471,8 +476,8 @@ useSeoMeta({
               <div>
                 <FacetScatterChart
                   v-if="packages.length"
-                  :packages-data="packagesData"
-                  :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)"
+                  :packages="packages.filter(isChartPackage)"
+                  :packages-data="packagesData.filter(isChartPackage)"
                 />
               </div>
             </TabPanel>
