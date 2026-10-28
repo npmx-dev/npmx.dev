@@ -427,9 +427,9 @@ export type TrendLineDataset = {
   [key: string]: unknown
 } | null
 
-export type TrendTranslateKey = number | 'package.trends.y_axis_label' | (string & {})
+type TrendTranslateKey = number | 'package.trends.y_axis_label' | (string & {})
 
-export type TrendTranslateFunction = {
+type TrendTranslateFunction = {
   (key: TrendTranslateKey): string
   (key: TrendTranslateKey, named: Record<string, unknown>): string
   (key: TrendTranslateKey, named: Record<string, unknown>, options: Record<string, unknown>): string
@@ -461,7 +461,7 @@ export type FacetBarChartConfig = VueUiHorizontalBarConfig & {
   $t: TrendTranslateFunction
 }
 
-export type TimelineSizeDependencyBreakdown = {
+type TimelineSizeDependencyBreakdown = {
   name: string
   size: number
 }
@@ -473,7 +473,7 @@ export type TimelineSizeCacheValue = {
   dependencies: TimelineSizeDependencyBreakdown[]
 }
 
-export type ConvertedTimelineSizeCacheEntry = TimelineSizeCacheValue & {
+type ConvertedTimelineSizeCacheEntry = TimelineSizeCacheValue & {
   name: string
 }
 
@@ -684,7 +684,7 @@ export async function copyAltTextForVersionsBarChart({
 }
 
 // Used for FacetBarChart.vue
-export function createAltTextForCompareFacetBarChart({
+function createAltTextForCompareFacetBarChart({
   dataset,
   config,
 }: AltCopyArgs<VueUiHorizontalBarDatapoint[], FacetBarChartConfig>) {
@@ -734,7 +734,7 @@ type CompareScatterChartConfig = VueUiScatterConfig & {
 }
 
 // Used for FacetScatterChart.vue
-export function createAltTextForCompareScatterChart({
+function createAltTextForCompareScatterChart({
   dataset,
   config,
 }: AltCopyArgs<VueUiScatterSeries[], CompareScatterChartConfig>) {

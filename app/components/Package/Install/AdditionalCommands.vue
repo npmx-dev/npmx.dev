@@ -313,7 +313,11 @@ function copyCreateCommand() {
 :root[data-pm='yarn'] [data-pm-additional-cmd='yarn'],
 :root[data-pm='bun'] [data-pm-additional-cmd='bun'],
 :root[data-pm='deno'] [data-pm-additional-cmd='deno'],
-:root[data-pm='vlt'] [data-pm-additional-cmd='vlt'] {
+:root[data-pm='vlt'] [data-pm-additional-cmd='vlt'],
+:root[data-pm='vp'] [data-pm-additional-cmd='vp'],
+:root[data-pm='nub'] [data-pm-additional-cmd='nub'],
+:root[data-pm='ni'] [data-pm-additional-cmd='ni'],
+:root[data-pm='upm'] [data-pm-additional-cmd='upm'] {
   display: inline;
 }
 

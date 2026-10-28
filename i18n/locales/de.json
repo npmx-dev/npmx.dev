@@ -1616,18 +1616,10 @@
     "p2": "Bevor du beginnst, lies bitte unseren {guide}, um mehr über unseren Übersetzungsprozess zu erfahren und wie du dich beteiligen kannst.",
     "guide": "Lokalisierungs-Leitfaden (i18n)",
     "by_locale": "Übersetzungsfortschritt nach Sprache",
-    "by_file": "Übersetzungsfortschritt nach Datei",
     "complete_text": "Diese Übersetzung ist vollständig, großartige Arbeit!",
     "missing_text": "fehlt",
     "missing_keys": "Keine fehlenden Übersetzungen | Fehlende Übersetzung | Fehlende Übersetzungen",
-    "progress_label": "Fortschrittsstatus für {locale}",
-    "table": {
-      "file": "Datei",
-      "status": "Status",
-      "error": "Fehler beim Laden der Dateiliste.",
-      "empty": "Keine Dateien gefunden",
-      "file_link": "Bearbeite {file} ({lang}) auf GitHub"
-    }
+    "progress_label": "Fortschrittsstatus für {locale}"
   },
   "vacations": {
     "title": "im urlaub",

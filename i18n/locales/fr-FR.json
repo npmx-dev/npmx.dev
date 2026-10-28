@@ -1682,18 +1682,10 @@
     "p2": "Avant de commencer, veuillez lire notre {guide} pour en savoir plus sur notre processus de traduction et sur la façon de contribuer.",
     "guide": "guide de localisation (i18n)",
     "by_locale": "Progression des traductions par langue",
-    "by_file": "Progression des traductions par fichier",
     "complete_text": "Cette traduction est complète, bravo !",
     "missing_text": "manquantes",
     "missing_keys": "Aucune traduction manquante | Traduction manquante | Traductions manquantes",
-    "progress_label": "État d'avancement pour {locale}",
-    "table": {
-      "file": "Fichier",
-      "status": "Statut",
-      "error": "Erreur lors du chargement de la liste des fichiers.",
-      "empty": "Aucun fichier trouvé",
-      "file_link": "Modifier {file} ({lang}) sur GitHub"
-    }
+    "progress_label": "État d'avancement pour {locale}"
   },
   "vacations": {
     "title": "en vacances",

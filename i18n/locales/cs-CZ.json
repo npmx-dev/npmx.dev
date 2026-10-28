@@ -1666,18 +1666,10 @@
     "p2": "Než začnete, přečtěte si prosím našeho {guide}, abyste se seznámili s naším procesem překladu a zjistili, jak se můžete zapojit.",
     "guide": "průvodce lokalizací (i18n)",
     "by_locale": "Pokrok překladu podle jazyka",
-    "by_file": "Pokrok překladu podle souboru",
     "complete_text": "Tento překlad je dokončen, skvělá práce!",
     "missing_text": "chybí",
     "missing_keys": "{count} chybějící překlad | {count} chybějící překlady | {count} chybějících překladů",
-    "progress_label": "Pokrok překladu do jazyka {locale}",
-    "table": {
-      "file": "Soubor",
-      "status": "Stav",
-      "error": "Chyba při načítání seznamu souborů.",
-      "empty": "Žádné soubory nebyly nalezeny",
-      "file_link": "Upravit {file} ({lang}) na GitHubu"
-    }
+    "progress_label": "Pokrok překladu do jazyka {locale}"
   },
   "vacations": {
     "title": "na dovolené",

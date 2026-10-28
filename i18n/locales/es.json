@@ -1737,18 +1737,10 @@
     "p2": "Antes de comenzar, por favor lee nuestra {guide} para aprender sobre nuestro proceso de traducción y cómo puedes participar.",
     "guide": "guía de localización (i18n)",
     "by_locale": "Progreso de traducción por idioma",
-    "by_file": "Progreso de traducción por archivo",
     "complete_text": "Esta traducción está completa, ¡gran trabajo!",
     "missing_text": "faltante",
     "missing_keys": "No hay traducciones faltantes | Traducción faltante | Traducciones faltantes",
-    "progress_label": "Estado de progreso para {locale}",
-    "table": {
-      "file": "Archivo",
-      "status": "Estado",
-      "error": "Error al cargar la lista de archivos.",
-      "empty": "No se encontraron archivos",
-      "file_link": "Editar {file} ({lang}) en GitHub"
-    }
+    "progress_label": "Estado de progreso para {locale}"
   },
   "vacations": {
     "title": "de vacaciones",

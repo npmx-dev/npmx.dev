@@ -745,9 +745,9 @@ export function isMissingDownloadValue(value: unknown): boolean {
 }
 
 // This is somehow arbitrary: fixes the threshold above which a package is considered "large", which means any day with 0 downloads must imply a npm recording anomaly. If a package has a median daily downloads above this threshold, the last label on the charts will be the last valid one (see implementations in TrendsChart.vue, SplitSparkline.vue, embed-downloads-svg.ts)
-export const LARGE_PACKAGE_DAILY_DOWNLOADS_THRESHOLD = 500
+const LARGE_PACKAGE_DAILY_DOWNLOADS_THRESHOLD = 500
 
-export const DAYS_PER_GRANULARITY: Record<ChartTimeGranularity, number> = {
+const DAYS_PER_GRANULARITY: Record<ChartTimeGranularity, number> = {
   daily: 1,
   weekly: 7,
   monthly: 365.25 / 12,

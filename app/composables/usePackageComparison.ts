@@ -8,7 +8,7 @@ export const NO_DEPENDENCY_ID = '__no_dependency__'
  * Special display values for the "no dependency" column.
  * These are explicit markers that get special rendering treatment.
  */
-export const NoDependencyDisplay = {
+const NoDependencyDisplay = {
   /** Display as "–" (en-dash) */
   DASH: '__display_dash__',
   /** Display as "Up to you!" with good status */

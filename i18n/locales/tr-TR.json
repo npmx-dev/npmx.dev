@@ -1610,18 +1610,10 @@
     "p2": "Başlamadan önce çeviri sürecimiz ve nasıl katkıda bulunabileceğiniz hakkında bilgi edinmek için {guide} okuyun.",
     "guide": "yerelleştirme (i18n) rehberi",
     "by_locale": "Yerel ayara göre çeviri ilerleme durumu",
-    "by_file": "Dosyaya göre çeviri ilerleme durumu",
     "complete_text": "Bu çeviri tamamlandı, harika iş!",
     "missing_text": "eksik",
     "missing_keys": "Eksik çeviri yok | Eksik çeviri | Eksik çeviri",
-    "progress_label": "{locale} için ilerleme durumu",
-    "table": {
-      "file": "Dosya",
-      "status": "Durum",
-      "error": "Dosya listesi yüklenirken hata oluştu.",
-      "empty": "Dosya bulunamadı",
-      "file_link": "GitHub'da {file} ({lang}) düzenle"
-    }
+    "progress_label": "{locale} için ilerleme durumu"
   },
   "vacations": {
     "title": "tatilde",

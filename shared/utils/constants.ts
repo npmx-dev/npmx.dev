@@ -25,11 +25,7 @@ export const LIKES_LEADERBOARD_API_URL =
 // Error Messages
 export const ERROR_PACKAGE_ANALYSIS_FAILED = 'Failed to analyze package.'
 export const ERROR_PACKAGE_VERSION_AND_FILE_FAILED = 'Version and file path are required.'
-export const ERROR_PACKAGE_REQUIREMENTS_FAILED =
-  'Package name, version, and file path are required.'
 export const ERROR_PACKAGE_DETECT_CHANGELOG = 'failed to detect package has changelog'
-export const ERROR_BLUESKY_URL_FAILED =
-  'Invalid Bluesky URL format. Expected: https://bsky.app/profile/HANDLE/post/POST_ID'
 export const ERROR_FILE_LIST_FETCH_FAILED = 'Failed to fetch file list.'
 export const ERROR_CALC_INSTALL_SIZE_FAILED = 'Failed to calculate install size.'
 export const NPM_MISSING_README_SENTINEL = 'ERROR: No README data found!'
@@ -128,6 +124,3 @@ export const FOREGROUND_THEMES = {
 export const BLUESKY_URL_EXTRACT_REGEX = /profile\/([^/]+)\/post\/([^/]+)/
 export const BSKY_POST_AT_URI_REGEX =
   /^at:\/\/(did:[a-z]+:[\w.:%-]+)\/app\.bsky\.feed\.post\/([a-z0-9]+)$/
-export const BLOG_META_TAG_REGEX =
-  /<meta[^>]*(?:property|name)=["']([^"']+)["'][^>]*content=["']([^"']+)["'][^>]*>/gi
-export const META_TAG_TITLE_REGEX = /<title>([^<]*)<\/title>/i

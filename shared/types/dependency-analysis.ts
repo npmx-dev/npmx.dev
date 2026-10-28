@@ -18,13 +18,13 @@ export type OsvSeverityLevel = (typeof SEVERITY_LEVELS)[number] | 'unknown'
 /**
  * Counts by severity level
  */
-export type SeverityCounts = Record<(typeof SEVERITY_LEVELS)[number], number>
-export type VulnerabilityCounts = SeverityCounts & { total: number }
+type SeverityCounts = Record<(typeof SEVERITY_LEVELS)[number], number>
+type VulnerabilityCounts = SeverityCounts & { total: number }
 
 /**
  * CVSS severity information from OSV
  */
-export interface OsvSeverity {
+interface OsvSeverity {
   type: 'CVSS_V3' | 'CVSS_V4'
   score: string
 }
@@ -32,7 +32,7 @@ export interface OsvSeverity {
 /**
  * Reference link for a vulnerability
  */
-export interface OsvReference {
+interface OsvReference {
   type: 'ADVISORY' | 'WEB' | 'PACKAGE' | 'REPORT' | 'FIX' | 'ARTICLE' | 'DETECTION' | 'EVIDENCE'
   url: string
 }
@@ -41,7 +41,7 @@ export interface OsvReference {
  * Version range event from OSV affected data
  * @see https://ossf.github.io/osv-schema/#affectedrangesevents-fields
  */
-export interface OsvRangeEvent {
+interface OsvRangeEvent {
   introduced?: string
   fixed?: string
   last_affected?: string
@@ -100,7 +100,7 @@ export interface OsvQueryResponse {
 /**
  * Single result from OSV batch query (minimal info - just ID and modified)
  */
-export interface OsvBatchVulnRef {
+interface OsvBatchVulnRef {
   id: string
   modified: string
 }
@@ -108,7 +108,7 @@ export interface OsvBatchVulnRef {
 /**
  * Single result in OSV batch response
  */
-export interface OsvBatchResult {
+interface OsvBatchResult {
   vulns?: OsvBatchVulnRef[]
   next_page_token?: string
 }
@@ -132,16 +132,6 @@ export interface VulnerabilitySummary {
   url: string
   /** Version that fixes this vulnerability (if known) */
   fixedIn?: string
-}
-
-/**
- * Package vulnerability response returned by our API
- */
-export interface PackageVulnerabilities {
-  package: string
-  version: string
-  vulnerabilities: VulnerabilitySummary[]
-  counts: VulnerabilityCounts
 }
 
 /** Depth in dependency tree */

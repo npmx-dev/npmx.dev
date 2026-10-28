@@ -86,7 +86,7 @@ onPrehydrate(el => {
     >
       <div class="flex items-stretch max-lg:flex-col lg:flex-row-reverse">
         <div
-          class="flex items-center justify-between gap-1 px-3 border-s border-border-subtle max-lg:pt-2.5"
+          class="flex items-center justify-between gap-1 px-2.5 lg:border-s border-border-subtle max-lg:pt-2.5"
         >
           <div class="flex items-center gap-1">
             <PackageInstallDownloadTarball
@@ -197,7 +197,11 @@ onPrehydrate(el => {
 :root[data-pm='yarn'] [data-pm-cmd='yarn'],
 :root[data-pm='bun'] [data-pm-cmd='bun'],
 :root[data-pm='deno'] [data-pm-cmd='deno'],
-:root[data-pm='vlt'] [data-pm-cmd='vlt'] {
+:root[data-pm='vlt'] [data-pm-cmd='vlt'],
+:root[data-pm='vp'] [data-pm-cmd='vp'],
+:root[data-pm='nub'] [data-pm-cmd='nub'],
+:root[data-pm='ni'] [data-pm-cmd='ni'],
+:root[data-pm='upm'] [data-pm-cmd='upm'] {
   display: inline;
 }
 

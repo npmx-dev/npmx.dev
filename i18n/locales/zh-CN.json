@@ -1607,18 +1607,10 @@
     "p2": "开始之前，建议先读读我们的{guide}，了解一下翻译流程和参与方式。",
     "guide": "本地化（i18n）指南",
     "by_locale": "各语言翻译进度",
-    "by_file": "各文件翻译进度",
     "complete_text": "这个翻译已经完成，太棒啦！",
     "missing_text": "待翻译",
     "missing_keys": "没有遗漏的翻译 | 有 1 处遗漏 | 遗漏了 {count} 处",
-    "progress_label": "{locale} 的翻译进度",
-    "table": {
-      "file": "文件",
-      "status": "状态",
-      "error": "加载文件列表时出错",
-      "empty": "没有找到文件",
-      "file_link": "去 GitHub 上编辑 {file}（{lang}）"
-    }
+    "progress_label": "{locale} 的翻译进度"
   },
   "vacations": {
     "title": "休假中",

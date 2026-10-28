@@ -1,7 +1,7 @@
 import type { ChartTimeGranularity, EvolutionData } from '~/types/chart'
 import { DOWNLOAD_ANOMALIES } from './download-anomalies.data'
 
-export type DownloadAnomalyBound = {
+type DownloadAnomalyBound = {
   date: string // YYYY-MM-DD
   weeklyDownloads: number
 }
