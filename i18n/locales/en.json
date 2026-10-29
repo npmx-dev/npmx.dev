@@ -789,6 +789,7 @@
       "download_file": "Download {fileType}",
       "copy_file": "Copy {fileType}",
       "toggle_annotator": "Toggle annotator",
+      "toggle_fullscreen": "Toggle fullscreen",
       "toggle_stack_mode": "Toggle stack mode",
       "open_options": "Open options",
       "close_options": "Close options",

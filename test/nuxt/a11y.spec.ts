@@ -1,3 +1,4 @@
+import { CHART_ANNOTATOR_SLOTS, type AnnotatorSlotName } from '~/utils/charts'
 import { DEFAULT_FILTERS, type ColumnConfig, type FilterChip } from '#shared/types/preferences'
 import { mountSuspended, registerEndpoint, mockNuxtImport } from '@nuxt/test-utils/runtime'
 import { flushPromises, type VueWrapper } from '@vue/test-utils'
@@ -335,6 +336,8 @@ import {
   LicenseChangeWarning,
   ChartSplitSparkline,
   ChartCopyPngButton,
+  ChartAnnotatorIcon,
+  ChartFullscreenIcon,
   TabRoot,
   TabList,
   TabItem,
@@ -1516,6 +1519,45 @@ describe('component accessibility audits', () => {
           granularity: 'weekly',
         },
       })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('ChartAnnotatorIcon', () => {
+    const cases = CHART_ANNOTATOR_SLOTS.flatMap<{
+      slotName: AnnotatorSlotName
+      slotProps: Record<string, string | boolean>
+    }>(slotName => {
+      if (slotName === 'annotator-action-draw') {
+        return ['arrow', 'text', 'line', 'draw'].map(mode => ({
+          slotName,
+          slotProps: { mode },
+        }))
+      }
+      if (slotName === 'annotator-action-color') {
+        return [{ slotName, slotProps: { color: '#ff0000' } }]
+      }
+      return [false, true].map(state => ({
+        slotName,
+        slotProps: { disabled: state, isSelecting: state, isAnnotator: state },
+      }))
+    })
+
+    it.each(cases)('keeps $slotName decorative with $slotProps', async props => {
+      const component = await mountSuspended(ChartAnnotatorIcon, { props })
+      expect(component.get('span').attributes('aria-hidden')).toBe('true')
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('ChartFullscreenIcon', () => {
+    it.each([false, true])('stays decorative when fullscreen is %s', async isFullscreen => {
+      const component = await mountSuspended(ChartFullscreenIcon, {
+        props: { isFullscreen },
+      })
+      expect(component.get('span').attributes('aria-hidden')).toBe('true')
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })

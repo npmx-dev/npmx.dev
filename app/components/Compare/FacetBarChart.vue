@@ -117,7 +117,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
       buttons: {
         tooltip: false,
         pdf: false,
-        fullscreen: false,
+        fullscreen: true,
         sort: false,
         annotator: false,
         table: false,
@@ -125,6 +125,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
         altCopy: true,
       },
       buttonTitles: {
+        fullscreen: $t('package.trends.toggle_fullscreen'),
         img: $t('package.trends.download_file', { fileType: 'PNG' }),
         svg: $t('package.trends.download_file', { fileType: 'SVG' }),
         altCopy: $t('package.trends.copy_alt.button_label'),
@@ -320,6 +321,9 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
           <ChartCopyPngButton :copied="copiedPng" :copying="isCopyingPng" @click="copyChartPng" />
         </template>
 
+        <template #optionFullscreen="{ isFullscreen }">
+          <ChartFullscreenIcon :is-fullscreen="isFullscreen" />
+        </template>
         <template #optionImg>
           <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
         </template>
