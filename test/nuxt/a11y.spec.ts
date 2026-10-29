@@ -1557,7 +1557,9 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(ChartFullscreenIcon, {
         props: { isFullscreen },
       })
-      expect(component.get('span').attributes('aria-hidden')).toBe('true')
+      const icon = component.get('span')
+      expect(icon.attributes('aria-hidden')).toBe('true')
+      expect(icon.classes()).toContain(isFullscreen ? 'i-lucide:minimize' : 'i-lucide:maximize')
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
