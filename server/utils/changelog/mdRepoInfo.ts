@@ -18,15 +18,14 @@ const ACCOUNT_SYNTAX: Partial<Record<ProviderId, AccountSyntax>> = {
 
 /**
  * The markdown renderer's view of a repository, built from `forges/web`.
- * `undefined` when the ref has no web entry (radicle).
+ * `null` when the ref has no web entry (radicle).
  */
 export function createRepoInfo(ref: RepoRef, path?: string): MarkdownRepoInfo | null {
   const web = forgeWeb(ref)
   if (!web) return null
 
   const repo = toForgeRepoRef(ref)
-  // A base is a page URL with its trailing path segment removed, so build the
-  // page for a placeholder segment and trim it.
+  // A base is the URL of an empty path, without the trailing slash it ends in.
   const base = (target: UrlTarget) => web.urlFor(target)?.replace(/\/$/, '')
 
   return {

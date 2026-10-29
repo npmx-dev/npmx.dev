@@ -70,17 +70,16 @@ async function fetchTeamMembers(provider: ForgeProvider): Promise<TeamMembers | 
 }
 
 async function fetchSponsorable(provider: ForgeProvider, logins: string[]): Promise<Set<string>> {
-  const sponsorable = new Set<string>()
-  try {
-    for (const login of logins) {
-      if (await provider.users.sponsorable(login)) {
-        sponsorable.add(login)
-      }
-    }
-  } catch (error) {
-    console.warn('Failed to fetch sponsors info:', error)
-  }
-  return sponsorable
+  // One failed login (e.g. a renamed account) must not hide the others' links.
+  const results = await Promise.all(
+    logins.map(login =>
+      provider.users.sponsorable(login).catch(error => {
+        console.warn(`Failed to fetch sponsors info for ${login}:`, error)
+        return false
+      }),
+    ),
+  )
+  return new Set(logins.filter((_, i) => results[i]))
 }
 
 function getRoleInfo(login: string, teams: TeamMembers): { role: Role; order: number } {
@@ -93,7 +92,7 @@ function getRoleInfo(login: string, teams: TeamMembers): { role: Role; order: nu
 export default defineCachedEventHandler(
   async (): Promise<GitHubContributor[]> => {
     const githubToken = useRuntimeConfig().github.orgToken
-    const provider = createForgeProvider(repoRef, { token: githubToken })
+    const provider = await createForgeProvider(repoRef, { token: githubToken })
 
     if (!provider) {
       throw createError({ statusCode: 500, message: 'Failed to read contributors' })

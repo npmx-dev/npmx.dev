@@ -4,7 +4,6 @@ import { ERROR_THROW_INCOMPLETE_PARAM } from '~~/shared/utils/constants'
 import { GithubReleaseCollectionSchama } from '~~/shared/schemas/changelog/release'
 import { createForgeProvider, toForgeRepoRef } from '~~/shared/utils/forges'
 import { validateHostWithValibot } from '~~/server/utils/changelog/validateHost'
-import { requestSignal } from '~~/server/utils/requestSignal'
 
 const TIMEOUT_TIME = 15_000
 
@@ -12,7 +11,8 @@ export default defineCachedEventHandler(
   async event => {
     const provider = getRouterParam(event, 'provider') as ProviderId
     const repo = getRouterParam(event, 'repo')
-    const owner = getRouterParam(event, 'owner')
+    // A GitLab subgroup owner arrives encoded as one segment (`group%2Fsub`).
+    const owner = getRouterParam(event, 'owner', { decode: true })
     let tag = getRouterParam(event, 'tag')
 
     const rawQuery = getQuery(event)
@@ -36,14 +36,10 @@ export default defineCachedEventHandler(
       if (provider === 'github') {
         return getMarkdownFromGithub(owner, repo, tag)
       }
-      return await getMarkdownViaForges(
-        provider,
-        owner,
-        repo,
-        tag,
-        host || undefined,
-        requestSignal(event),
-      )
+      // No client-disconnect signal: in a cached handler it can't tell a client
+      // leaving from an SWR revalidation, and would abort the refresh. The result
+      // is cached for the next visitor anyway.
+      return await getMarkdownViaForges(provider, owner, repo, tag, host || undefined)
     } catch (error) {
       handleApiError(error, {
         statusCode: 500,
@@ -76,7 +72,7 @@ async function getMarkdownFromGithub(owner: string, repo: string, tag: string) {
   // list when GitHub refuses, most likely due to a rate limit.
   // https://github.com/unjs/ungh/pull/162
   const ref: RepoRef = { provider: 'github', owner, repo }
-  const forgeProvider = createForgeProvider(ref, { timeout: TIMEOUT_TIME })
+  const forgeProvider = await createForgeProvider(ref, { timeout: TIMEOUT_TIME })
 
   if (forgeProvider?.can('releases.getByTag')) {
     try {
@@ -118,10 +114,9 @@ async function getMarkdownViaForges(
   repo: string,
   tag: string,
   host?: string,
-  signal?: AbortSignal,
 ) {
   const ref: RepoRef = { provider, owner, repo, host }
-  const forgeProvider = createForgeProvider(ref, { timeout: TIMEOUT_TIME })
+  const forgeProvider = await createForgeProvider(ref, { timeout: TIMEOUT_TIME })
   if (!forgeProvider?.can('releases.getByTag')) {
     throw createError({
       status: 404,
@@ -129,6 +124,6 @@ async function getMarkdownViaForges(
     })
   }
 
-  const release = await forgeProvider.releases.getByTag(toForgeRepoRef(ref), tag, { signal })
+  const release = await forgeProvider.releases.getByTag(toForgeRepoRef(ref), tag)
   return release.body ?? ''
 }

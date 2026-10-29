@@ -27,6 +27,14 @@ export type RepoMeta = {
   links: RepoMetaLinks
 }
 
+/** What `/api/atproto/tangled-stats` returns. */
+export type TangledStats = {
+  stars: number
+  forks: number
+  description: string | null
+  defaultBranch?: string
+}
+
 type UnghRepoResponse = {
   repo: {
     description?: string | null
@@ -110,15 +118,15 @@ const githubAdapter: ProviderAdapter = {
 }
 
 /**
- * Adapter backed by `forges` for every provider it supports. npmx keeps its own
- * adapters for GitHub (which is deliberately proxied through ungh.cc) and the
- * providers `forges` does not cover (Sourcehut, Radicle).
+ * Adapter backed by `forges`. npmx keeps its own
+ * adapters for GitHub (proxied through ungh.cc), Sourcehut (whose reads need a
+ * token), Tangled (read on the server) and Radicle (not in `forges`).
  */
 function forgeAdapter(): ProviderAdapter {
   return {
     links: linksFor,
     async fetchMeta(cachedFetch, ref, links, options = {}) {
-      const provider = createForgeProvider(ref, {
+      const provider = await createForgeProvider(ref, {
         fetch: cachedFetchAsFetchLike(cachedFetch, REPO_META_TTL),
       })
       if (!provider) return null
@@ -200,7 +208,26 @@ const sourcehutAdapter: ProviderAdapter = {
   },
 }
 
-const tangledAdapter = forgeAdapter()
+/**
+ * Tangled is read through `forges` on the server: its reads reach hosts the
+ * browser's CSP cannot list (see `/api/atproto/tangled-stats`).
+ */
+const tangledAdapter: ProviderAdapter = {
+  links: linksFor,
+
+  async fetchMeta(cachedFetch, ref, links, options = {}) {
+    try {
+      const { data } = await cachedFetch<TangledStats>(
+        `/api/atproto/tangled-stats/${ref.owner}/${ref.repo}`,
+        options,
+        REPO_META_TTL,
+      )
+      return { provider: 'tangled', url: links.repo, ...data, links }
+    } catch {
+      return null
+    }
+  },
+}
 
 const radicleAdapter: ProviderAdapter = {
   links(ref) {

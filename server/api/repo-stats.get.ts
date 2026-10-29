@@ -12,7 +12,7 @@ export interface RepoStats {
 export default defineCachedEventHandler(
   async (): Promise<RepoStats> => {
     const ref = { provider: 'github' as const, owner: 'npmx-dev', repo: 'npmx.dev' }
-    const provider = createForgeProvider(ref)
+    const provider = await createForgeProvider(ref)
 
     if (!provider) {
       throw createError({ statusCode: 500, message: `Failed to read ${REPO}` })

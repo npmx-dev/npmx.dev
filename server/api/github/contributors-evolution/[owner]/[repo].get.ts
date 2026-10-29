@@ -26,7 +26,7 @@ export default defineCachedEventHandler(
     }
 
     const ref = { provider: 'github' as const, owner, repo }
-    const provider = createForgeProvider(ref)
+    const provider = await createForgeProvider(ref)
 
     if (!provider?.can('repos.contributorStats')) {
       return []

@@ -120,6 +120,35 @@ const checkChangelogFile = defineCachedFunction(
   },
 )
 
+/**
+ * Whether a raw file exists. Some hosts refuse `HEAD` without the file being
+ * absent, so a failure the method could explain is retried with `GET`.
+ */
+async function rawFileExists(url: string) {
+  const request = (method: 'HEAD' | 'GET') =>
+    $fetch(url, {
+      headers: {
+        // GitHub API requires User-Agent
+        'User-Agent': 'npmx.dev',
+      },
+      timeout: TIMEOUT,
+      method,
+    })
+
+  try {
+    await request('HEAD')
+    return true
+  } catch (error) {
+    const status = (error as FetchError).statusCode
+    // 404 means absent; credentials and rate limits will not improve on a retry.
+    if (status === 404 || status === 401 || status === 403 || status === 429 || status == null) {
+      throw error
+    }
+    await request('GET')
+    return true
+  }
+}
+
 async function checkFiles(ref: RepoRef, dir?: string) {
   for (const fileName of CHANGELOG_FILENAMES) {
     const path = resolveURL(dir ?? '', fileName)
@@ -128,34 +157,23 @@ async function checkFiles(ref: RepoRef, dir?: string) {
       return false
     }
 
-    const exists = await $fetch(urls.raw, {
-      headers: {
-        // GitHub API requires User-Agent
-        'User-Agent': 'npmx.dev',
-      },
-      timeout: TIMEOUT,
-      method: ref.provider != 'tangled' ? 'HEAD' : 'GET', // we just need to know if it exists or not, tangled doesn't support HEAD
-    })
-      .then(() => true)
-      .catch(e => {
-        if (e instanceof FetchError) {
-          // early throw in case the providers is having troubles, is rate limiting us or doesn't allow us
-          // in case of not being available or timeout we also early return as the provider might struggle
-          if (e.statusCode == null || e.statusCode >= 500) {
-            throw e
-          }
-          switch (e.statusCode) {
-            case 401:
-            case 403:
-            case 429:
-            case undefined:
-            case null:
-              throw e
-          }
+    const exists = await rawFileExists(urls.raw).catch(e => {
+      if (e instanceof FetchError) {
+        // early throw in case the providers is having troubles, is rate limiting us or doesn't allow us
+        // in case of not being available or timeout we also early return as the provider might struggle
+        if (e.statusCode == null || e.statusCode >= 500) {
+          throw e
         }
+        switch (e.statusCode) {
+          case 401:
+          case 403:
+          case 429:
+            throw e
+        }
+      }
 
-        return false
-      })
+      return false
+    })
     if (exists) {
       return {
         type: 'md',
@@ -271,7 +289,7 @@ const UNREADABLE_RELEASE_STATUSES = new Set([401, 403, 404])
 
 const checkLatestRelease = defineCachedFunction(
   async function (ref: RepoRef, directory?: string): Promise<ChangelogInfo | false> {
-    const provider = createForgeProvider(ref)
+    const provider = await createForgeProvider(ref)
     if (!provider?.can('releases.latest')) {
       return false
     }

@@ -11,7 +11,8 @@ export default defineCachedEventHandler(
   async event => {
     const provider = getRouterParam(event, 'provider') as ProviderId
     const repo = getRouterParam(event, 'repo')
-    const owner = getRouterParam(event, 'owner')
+    // A GitLab subgroup owner arrives encoded as one segment (`group%2Fsub`).
+    const owner = getRouterParam(event, 'owner', { decode: true })
     const path = getRouterParam(event, 'path')
 
     const rawQuery = getQuery(event)

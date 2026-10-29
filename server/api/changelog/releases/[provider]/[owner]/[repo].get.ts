@@ -10,7 +10,6 @@ import { createForgeProvider, toForgeRepoRef } from '~~/shared/utils/forges'
 import { changelogRenderer } from '~~/server/utils/changelog/markdown'
 import { createRepoInfo } from '~~/server/utils/changelog/mdRepoInfo'
 import { validateHostWithValibot } from '~~/server/utils/changelog/validateHost'
-import { requestSignal } from '~~/server/utils/requestSignal'
 
 const TIMEOUT_TIME = 15_000
 
@@ -18,7 +17,8 @@ export default defineCachedEventHandler(
   async event => {
     const provider = getRouterParam(event, 'provider') as ProviderId
     const repo = getRouterParam(event, 'repo')
-    const owner = getRouterParam(event, 'owner')
+    // A GitLab subgroup owner arrives encoded as one segment (`group%2Fsub`).
+    const owner = getRouterParam(event, 'owner', { decode: true })
 
     if (!repo || !provider || !owner) {
       throw createError({
@@ -36,13 +36,10 @@ export default defineCachedEventHandler(
       if (provider === 'github') {
         return await getReleasesFromGithub(owner, repo)
       }
-      return await getReleasesViaForges(
-        provider,
-        owner,
-        repo,
-        host || undefined,
-        requestSignal(event),
-      )
+      // No client-disconnect signal: in a cached handler it can't tell a client
+      // leaving from an SWR revalidation, and would abort the refresh. The result
+      // is cached for the next visitor anyway.
+      return await getReleasesViaForges(provider, owner, repo, host || undefined)
     } catch (error) {
       handleApiError(error, {
         statusCode: 500,
@@ -113,10 +110,9 @@ async function getReleasesViaForges(
   owner: string,
   repo: string,
   host?: string,
-  signal?: AbortSignal,
 ) {
   const ref: RepoRef = { provider, owner, repo, host }
-  const forgeProvider = createForgeProvider(ref, { timeout: TIMEOUT_TIME })
+  const forgeProvider = await createForgeProvider(ref, { timeout: TIMEOUT_TIME })
   if (!forgeProvider?.can('releases.list')) {
     throw createError({
       status: 404,
@@ -124,9 +120,7 @@ async function getReleasesViaForges(
     })
   }
 
-  const { items: releases } = await forgeProvider.releases
-    .list(toForgeRepoRef(ref), { signal })
-    .page()
+  const { items: releases } = await forgeProvider.releases.list(toForgeRepoRef(ref)).page()
   const repoInfo = createRepoInfo(ref)
   if (!repoInfo) {
     throw createError({
