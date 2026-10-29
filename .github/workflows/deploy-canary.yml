@@ -24,7 +24,7 @@ jobs:
 
       - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           run-install: false
 
       - uses: SocketDev/action@ba6de6cc0565af1f42295590380973573297e31f # v1.3.2

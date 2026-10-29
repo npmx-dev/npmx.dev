@@ -32,7 +32,7 @@ jobs:
 
       - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           sfw: true
           # root only, no scripts
           run-install: |
@@ -52,7 +52,7 @@ jobs:
 
       - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           cache: true
           sfw: true
 
@@ -70,7 +70,7 @@ jobs:
 
       - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           cache: true
           sfw: true
 
@@ -110,7 +110,7 @@ jobs:
 
       - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           cache: true
           sfw: true
 
@@ -165,7 +165,7 @@ jobs:
 
       - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           cache: true
           sfw: true
 
@@ -203,7 +203,7 @@ jobs:
 
       - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           cache: true
           sfw: true
 
@@ -227,7 +227,7 @@ jobs:
 
       - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           cache: true
           sfw: true
 
@@ -245,7 +245,7 @@ jobs:
 
       - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           sfw: true
           # root only, no scripts
           run-install: |
