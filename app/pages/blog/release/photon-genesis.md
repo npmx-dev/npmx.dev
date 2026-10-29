@@ -41,9 +41,11 @@ We’re continually looking for ways to make npmx faster, down to every millisec
 
 - Checking trust downgrades only for the resolved version ([#3316](https://github.com/npmx-dev/npmx.dev/pull/3316))
 - Loading install size and vulnerability data on demand ([#3315](https://github.com/npmx-dev/npmx.dev/pull/3315))
+- Fetching the smaller npm registry package payload (packument) when possible ([#3318](https://github.com/npmx-dev/npmx.dev/pull/3318))
 - Skipping source-map resolution in package documentation ([#3220](https://github.com/npmx-dev/npmx.dev/pull/3220))
 - Avoiding a redundant packument fetch when checking for license changes ([#3322](https://github.com/npmx-dev/npmx.dev/pull/3322))
 - Caching normalized, trimmed packuments instead of raw responses ([#3320](https://github.com/npmx-dev/npmx.dev/pull/3320))
+- Fix a bug resulting in many fetch responses not being cached ([#3325](https://github.com/npmx-dev/npmx.dev/pull/3325))
 
 ![Time to First Byte percentiles in early October and late October: P99 dropped from 9.67s to 2.95s while traffic keep growing](/blog/ttfb-photon-genesis.png)
 
