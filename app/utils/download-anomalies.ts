@@ -3,7 +3,7 @@ import { DOWNLOAD_ANOMALIES } from './download-anomalies.data'
 
 type DownloadAnomalyBound = {
   date: string // YYYY-MM-DD
-  weeklyDownloads: number
+  dailyDownloads: number
 }
 
 export type DownloadAnomaly = {
@@ -65,16 +65,16 @@ function isDateAffected(
   }
 }
 
-function scaleWeeklyValue(weeklyValue: number, granularity: ChartTimeGranularity): number {
+function scaleDailyValue(dailyValue: number, granularity: ChartTimeGranularity): number {
   switch (granularity) {
     case 'daily':
-      return Math.round(weeklyValue / 7)
+      return dailyValue
     case 'weekly':
-      return weeklyValue
+      return Math.round(dailyValue * 7)
     case 'monthly':
-      return Math.round((weeklyValue / 7) * 30)
+      return Math.round(dailyValue * 30)
     case 'yearly':
-      return Math.round((weeklyValue / 7) * 365)
+      return Math.round(dailyValue * 365)
   }
 }
 
@@ -115,9 +115,9 @@ export function applyBlocklistCorrection(opts: {
     const firstAffected = affectedIndices[0]!
     const lastAffected = affectedIndices[affectedIndices.length - 1]!
 
-    // Use neighbors when available, fall back to scaled weeklyDownloads
-    const scaledStart = scaleWeeklyValue(anomaly.start.weeklyDownloads, granularity)
-    const scaledEnd = scaleWeeklyValue(anomaly.end.weeklyDownloads, granularity)
+    // Use neighbors when available, fall back to scaled dailyDownloads
+    const scaledStart = scaleDailyValue(anomaly.start.dailyDownloads, granularity)
+    const scaledEnd = scaleDailyValue(anomaly.end.dailyDownloads, granularity)
 
     const startVal = firstAffected > 0 ? result[firstAffected - 1]!.value : scaledStart
     const endVal = lastAffected < result.length - 1 ? result[lastAffected + 1]!.value : scaledEnd

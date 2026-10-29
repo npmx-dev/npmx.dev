@@ -741,71 +741,73 @@ const showSkeleton = shallowRef(false)
           </ClientOnly>
         </section>
 
-        <!-- Binary-only packages: Show only execute command (no install) -->
-        <section v-if="isBinaryOnly" class="scroll-mt-20" :class="$style.areaInstall">
-          <div class="flex flex-wrap items-center justify-between mb-3">
-            <h2 id="run-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
-              {{ $t('package.run.title') }}
-            </h2>
-            <!-- Package manager dropdown -->
-            <PackageManagerSelect />
-          </div>
-          <div>
-            <TerminalExecute
-              :package-name="pkg.name"
-              :jsr-info="jsrInfo"
-              :is-create-package="isCreatePkg"
-            />
-          </div>
-        </section>
+        <div class="flex flex-col gap-8" :class="$style.areaInstall">
+          <!-- Binary-only packages: Show only execute command (no install) -->
+          <section v-if="isBinaryOnly" class="scroll-mt-20">
+            <div class="flex flex-wrap items-center justify-between mb-3">
+              <h2 id="run-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
+                {{ $t('package.run.title') }}
+              </h2>
+              <!-- Package manager dropdown -->
+              <PackageManagerSelect />
+            </div>
+            <div>
+              <TerminalExecute
+                :package-name="pkg.name"
+                :jsr-info="jsrInfo"
+                :is-create-package="isCreatePkg"
+              />
+            </div>
+          </section>
 
-        <!-- Regular packages: Install command with optional run command -->
-        <PackageInstallDropdown
-          v-else
-          heading-id="get-started"
-          :class="$style.areaInstall"
-          :package-name="pkg.name"
-          :display-version="displayVersion"
-          :requested-version="
-            requestedVersion && requestedVersion !== 'latest' ? resolvedVersion : null
-          "
-          :install-version-override="installVersionOverride"
-          :jsr-info="jsrInfo"
-          :dev-dependency-suggestion="packageAnalysis?.devDependencySuggestion"
-          :types-package-name="typesPackageName"
-          :executable-info="executableInfo"
-          :create-package-info="createPackageInfo"
-          :publish-security-downgrade="publishSecurityDowngrade"
-          :downgrade-fallback-install-text="downgradeFallbackInstallText"
-        />
-
-        <div class="space-y-6" :class="$style.areaVulns">
-          <!-- license change warning -->
-          <LicenseChangeWarning :change="licenseChangeData?.change ?? null" />
-          <!-- Bad package warning -->
-          <PackageReplacement
-            v-if="moduleReplacement"
-            :mapping="moduleReplacement.mapping"
-            :replacement="moduleReplacement.replacement"
+          <!-- Regular packages: Install command with optional run command -->
+          <PackageInstallDropdown
+            v-else
+            heading-id="get-started"
+            :package-name="pkg.name"
+            :display-version="displayVersion"
+            :requested-version="
+              requestedVersion && requestedVersion !== 'latest' ? resolvedVersion : null
+            "
+            :install-version-override="installVersionOverride"
+            :jsr-info="jsrInfo"
+            :dev-dependency-suggestion="packageAnalysis?.devDependencySuggestion"
+            :types-package-name="typesPackageName"
+            :executable-info="executableInfo"
+            :create-package-info="createPackageInfo"
+            :publish-security-downgrade="publishSecurityDowngrade"
+            :downgrade-fallback-install-text="downgradeFallbackInstallText"
           />
-          <!-- Size / dependency increase notice -->
-          <PackageSizeIncrease v-if="sizeDiff?.direction === 'increase'" :diff="sizeDiff" />
-          <!-- Size / dependency decrease celebration -->
-          <PackageSizeDecrease v-else-if="sizeDiff?.direction === 'decrease'" :diff="sizeDiff" />
-          <!-- Vulnerability scan -->
-          <ClientOnly>
-            <PackageVulnerabilityTree
-              v-if="resolvedVersion"
-              :package-name="pkg.name"
-              :version="resolvedVersion"
+
+          <div class="space-y-6" :class="$style.areaVulns">
+            <!-- license change warning -->
+            <LicenseChangeWarning :change="licenseChangeData?.change ?? null" />
+            <!-- Bad package warning -->
+            <PackageReplacement
+              v-if="moduleReplacement"
+              :mapping="moduleReplacement.mapping"
+              :replacement="moduleReplacement.replacement"
             />
-            <PackageDeprecatedTree
-              v-if="resolvedVersion"
-              :package-name="pkg.name"
-              :version="resolvedVersion"
-              class="mt-3"
-            />
-          </ClientOnly>
+            <!-- Size / dependency increase notice -->
+            <PackageSizeIncrease v-if="sizeDiff?.direction === 'increase'" :diff="sizeDiff" />
+            <!-- Size / dependency decrease celebration -->
+            <PackageSizeDecrease v-else-if="sizeDiff?.direction === 'decrease'" :diff="sizeDiff" />
+            <!-- Vulnerability scan -->
+            <ClientOnly>
+              <PackageVulnerabilityTree
+                v-if="resolvedVersion"
+                :package-name="pkg.name"
+                :version="resolvedVersion"
+              />
+              <PackageDeprecatedTree
+                v-if="resolvedVersion"
+                :package-name="pkg.name"
+                :version="resolvedVersion"
+                class="mt-3"
+              />
+              <template #fallback />
+            </ClientOnly>
+          </div>
         </div>
 
         <PackageSidebar :class="$style.areaSidebar">
@@ -999,7 +1001,6 @@ const showSkeleton = shallowRef(false)
   grid-template-areas:
     'details'
     'install'
-    'vulns'
     'sidebar'
     'readme';
 }
@@ -1011,9 +1012,8 @@ const showSkeleton = shallowRef(false)
     grid-template-areas:
       'details details'
       'install sidebar'
-      'vulns   sidebar'
       'readme  sidebar';
-    grid-template-rows: auto auto auto 1fr;
+    grid-template-rows: auto auto 1fr;
   }
 }
 
@@ -1024,9 +1024,8 @@ const showSkeleton = shallowRef(false)
     grid-template-areas:
       'details sidebar'
       'install sidebar'
-      'vulns   sidebar'
       'readme  sidebar';
-    grid-template-rows: auto auto auto 1fr;
+    grid-template-rows: auto auto 1fr;
   }
 }
 
@@ -1051,9 +1050,13 @@ const showSkeleton = shallowRef(false)
   white-space: pre-wrap;
 }
 
+/* Vulns children render only comments when there is nothing to show */
 .areaVulns {
-  grid-area: vulns;
   overflow-x: hidden;
+}
+
+.areaVulns:empty {
+  display: none;
 }
 
 .areaReadme {

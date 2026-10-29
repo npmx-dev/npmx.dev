@@ -40,6 +40,29 @@ function mockOsvApi(
   })
 }
 
+function mockNuxt(vulns: Array<Record<string, unknown> & { id: string }>) {
+  vi.mocked(resolveDependencyTree).mockResolvedValue(
+    new Map([
+      [
+        'nuxt@4.6.3',
+        {
+          name: 'nuxt',
+          version: '4.6.3',
+          size: 1000,
+          optional: false,
+          depth: 'root' as const,
+          path: ['nuxt@4.6.3'],
+          tarballUrl: 'https://example.com/nuxt-4.6.3.tgz',
+        },
+      ],
+    ]),
+  )
+  mockOsvApi(
+    [{ vulns: vulns.map(({ id }) => ({ id, modified: '2026-10-22' })) }],
+    new Map([['nuxt@4.6.3', { vulns }]]),
+  )
+}
+
 describe('dependency-analysis', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -915,6 +938,52 @@ describe('dependency-analysis', () => {
 
       expect(result.vulnerablePackages).toHaveLength(1)
       expect(result.vulnerablePackages[0]?.vulnerabilities[0]?.fixedIn).toBeUndefined()
+    })
+
+    describe('last_known_affected_version_range', () => {
+      const excluded = {
+        id: 'GHSA-vjh5-4x84-xrqp',
+        summary: 'Route rules skipped for case-variant paths',
+        database_specific: { severity: 'MODERATE' },
+        affected: [
+          {
+            package: { ecosystem: 'npm', name: 'nuxt' },
+            ranges: [{ type: 'ECOSYSTEM', events: [{ introduced: '4.0.0' }, { fixed: '4.6.2' }] }],
+          },
+          {
+            package: { ecosystem: 'npm', name: 'nuxt' },
+            ranges: [{ type: 'ECOSYSTEM', events: [{ introduced: '3.0.0' }] }],
+            database_specific: { last_known_affected_version_range: '< 4.0.0' },
+          },
+        ],
+      }
+      const applicable = {
+        id: 'GHSA-applicable',
+        summary: 'Applicable vuln',
+        database_specific: { severity: 'HIGH' },
+      }
+
+      it('drops vulnerabilities excluded by last_known_affected_version_range', async () => {
+        mockNuxt([excluded])
+
+        const result = await analyzeDependencyTree('nuxt', '4.6.3')
+
+        expect(result.vulnerablePackages).toHaveLength(0)
+        expect(result.failedQueries).toBe(0)
+        expect(result.totalCounts.total).toBe(0)
+      })
+
+      it('keeps applicable vulnerabilities alongside excluded ones', async () => {
+        mockNuxt([excluded, applicable])
+
+        const result = await analyzeDependencyTree('nuxt', '4.6.3')
+
+        expect(result.vulnerablePackages).toHaveLength(1)
+        expect(result.vulnerablePackages[0]?.vulnerabilities.map(v => v.id)).toEqual([
+          'GHSA-applicable',
+        ])
+        expect(result.totalCounts).toEqual({ total: 1, critical: 0, high: 1, moderate: 0, low: 0 })
+      })
     })
 
     it('returns both vulnerabilities and deprecated packages together', async () => {

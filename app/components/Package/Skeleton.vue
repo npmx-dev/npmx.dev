@@ -147,9 +147,6 @@
       </div>
     </section>
 
-    <!-- Vulns area (empty placeholder to hold grid space) -->
-    <div class="area-vulns" />
-
     <!-- Sidebar — matches area-sidebar in [...name].vue -->
     <div class="area-sidebar">
       <div
@@ -366,7 +363,6 @@
   grid-template-areas:
     'details'
     'install'
-    'vulns'
     'sidebar'
     'readme';
 }
@@ -378,9 +374,8 @@
     grid-template-areas:
       'details details'
       'install sidebar'
-      'vulns   sidebar'
       'readme  sidebar';
-    grid-template-rows: auto auto auto auto 1fr;
+    grid-template-rows: auto auto 1fr;
   }
 }
 
@@ -391,7 +386,6 @@
     grid-template-areas:
       'details sidebar'
       'install sidebar'
-      'vulns   sidebar'
       'readme  sidebar';
   }
 }
@@ -402,10 +396,6 @@
 
 .area-install {
   grid-area: install;
-}
-
-.area-vulns {
-  grid-area: vulns;
 }
 
 .area-readme {
