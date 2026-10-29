@@ -52,9 +52,10 @@ describe('isExcludedByLastKnownAffectedRange', () => {
   })
 
   it('treats last_affected as an inclusive bound', () => {
-    const advisory = vuln({
-      ranges: [{ type: 'SEMVER', events: [{ introduced: '0' }, { last_affected: '2.0.0' }] }],
-    })
+    const advisory = vuln(
+      { ranges: [{ type: 'SEMVER', events: [{ introduced: '0' }, { last_affected: '2.0.0' }] }] },
+      openRange('1.0.0', '< 2.0.0'),
+    )
     expect(isExcludedByLastKnownAffectedRange(advisory, 'nuxt', '2.0.0')).toBe(false)
   })
 
