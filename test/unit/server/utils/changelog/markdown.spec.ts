@@ -1076,8 +1076,7 @@ https://codeberg.org/vueuse/vueuse/compare/v14.2.1...v14.3.0`
     test('tangled', async () => {
       const info = repoInfo('tangled', 'vueuse', 'vueuse')
       const renderer = await changelogRenderer(info)
-      // from vueuse 14.3.0 (last 2 links changed from `issues` -> `pull`).
-      // Tangled's web parser has no compare route, so that URL keeps its text.
+      // from vueuse 14.3.0 (last 2 links changed from `issues` -> `pull`)
       const markdown = `- Expose pointer event onLongPress  -  by mrcwbr in https://tangled.org/vueuse/vueuse/issues/5295 https://tangled.org/vueuse/vueuse/commit/b1688bd2
 - createInjectionState: Non-undefined return when default specified  -  by Laupetin in https://tangled.org/vueuse/vueuse/issues/5306 https://tangled.org/vueuse/vueuse/commit/b0c51c27
 - createReusableTemplate: Add support for specifying component names  -  by wbolster in https://tangled.org/vueuse/vueuse/pulls/5300 https://tangled.org/vueuse/vueuse/commit/ea29d5cb
@@ -1092,7 +1091,7 @@ https://tangled.org/vueuse/vueuse/compare/v14.2.1...v14.3.0`
 <li>createReusableTemplate: Add support for specifying component names  -  by wbolster in <a href="https://tangled.org/vueuse/vueuse/pulls/5300" rel="nofollow noreferrer noopener" target="_blank">#5300</a> <a href="https://tangled.org/vueuse/vueuse/commit/ea29d5cb" rel="nofollow noreferrer noopener" target="_blank">ea29d5c</a></li>
 <li>nuxt: Add composable variants to auto imports  -  by OrbisK in <a href="https://tangled.org/vueuse/vueuse/pulls/5285" rel="nofollow noreferrer noopener" target="_blank">#5285</a> <a href="https://tangled.org/vueuse/vueuse/commit/ac2ef95d" rel="nofollow noreferrer noopener" target="_blank">ac2ef95</a></li>
 </ul>
-<p><a href="https://tangled.org/vueuse/vueuse/compare/v14.2.1...v14.3.0" rel="nofollow noreferrer noopener" target="_blank">https://tangled.org/vueuse/vueuse/compare/v14.2.1...v14.3.0</a></p>
+<p><a href="https://tangled.org/vueuse/vueuse/compare/v14.2.1...v14.3.0" rel="nofollow noreferrer noopener" target="_blank">v14.2.1...v14.3.0</a></p>
 `)
     })
 

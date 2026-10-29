@@ -10,7 +10,7 @@ export interface RepoFileUrl {
 export function getFileUrls(ref: RepoRef, path: string): RepoFileUrl | null {
   const web = forgeWeb(ref)
   const repo = toForgeRepoRef(ref)
-  const raw = web?.urlFor({ raw: { repo, path, at: 'HEAD' } })
-  const blob = web?.urlFor({ file: { repo, path, at: 'HEAD' } })
+  const raw = web?.urlFor({ raw: { repo, path } })
+  const blob = web?.urlFor({ file: { repo, path } })
   return raw && blob ? { raw, blob } : null
 }

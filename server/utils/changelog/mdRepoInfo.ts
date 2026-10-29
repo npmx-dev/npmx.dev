@@ -31,8 +31,8 @@ export function createRepoInfo(ref: RepoRef, path?: string): MarkdownRepoInfo | 
   return {
     hostBaseUrl: web.webOrigin ?? '',
     forge: { web, repo },
-    blobBaseUrl: base({ file: { repo, path: '', at: 'HEAD' } }) ?? '',
-    rawBaseUrl: base({ raw: { repo, path: '', at: 'HEAD' } }) ?? '',
+    blobBaseUrl: base({ file: { repo, path: '' } }) ?? '',
+    rawBaseUrl: base({ raw: { repo, path: '' } }) ?? '',
     path,
     ...ACCOUNT_SYNTAX[ref.provider],
   }

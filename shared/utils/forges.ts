@@ -126,7 +126,7 @@ export function convertBlobOrFileToRawUrl(url: string, ref: RepoRef): string {
     return url
   }
   const target: UrlTarget = {
-    raw: { repo: parsed.repo, path: file.path, at: file.at ?? 'HEAD' },
+    raw: { repo: parsed.repo, path: file.path, at: file.at },
   }
   return web.urlFor(target) ?? url
 }

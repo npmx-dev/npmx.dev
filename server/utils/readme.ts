@@ -302,8 +302,10 @@ function forgeFileUrl(
   }
 
   const repo = toForgeRepoRef(repoInfo)
-  const at = revision ?? 'HEAD'
-  const target: UrlTarget = asPage ? { file: { repo, path, at } } : { raw: { repo, path, at } }
+  // Without a known revision, the forge's default branch is what the package shipped from.
+  const target: UrlTarget = asPage
+    ? { file: { repo, path, at: revision } }
+    : { raw: { repo, path, at: revision } }
   const resolved = forgeWeb(repoInfo)?.urlFor(target)
   return resolved ? `${resolved}${suffix}` : undefined
 }
