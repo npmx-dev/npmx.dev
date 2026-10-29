@@ -58,4 +58,41 @@ describe('badge API', () => {
     expect(svg).toContain('>MIT<')
     expect(svg).not.toContain('[object Object]')
   })
+
+  it('omits vulnerabilities excluded by last_known_affected_version_range', async () => {
+    getRouterParamMock.mockImplementation((_event: unknown, name: string) => {
+      if (name === 'type') return 'vulnerabilities'
+      if (name === 'pkg') return 'nuxt'
+      return undefined
+    })
+    fetchNpmPackageMock.mockResolvedValue({
+      'name': 'nuxt',
+      'dist-tags': { latest: '4.6.3' },
+      'versions': { '4.6.3': { version: '4.6.3' } },
+      'time': {},
+    } as unknown as Packument)
+    const fetchMock = vi.fn().mockResolvedValue(
+      Response.json({
+        vulns: [
+          {
+            id: 'GHSA-vjh5-4x84-xrqp',
+            modified: '2026-10-22',
+            affected: [
+              {
+                package: { ecosystem: 'npm', name: 'nuxt' },
+                ranges: [{ type: 'SEMVER', events: [{ introduced: '3.0.0' }] }],
+                database_specific: { last_known_affected_version_range: '< 4.0.0' },
+              },
+            ],
+          },
+        ],
+      }),
+    )
+    vi.stubGlobal('fetch', fetchMock)
+
+    const svg = await handler(fakeEvent)
+
+    expect(fetchMock).toHaveBeenCalledWith('https://api.osv.dev/v1/query', expect.anything())
+    expect(svg).toContain('>0<')
+  })
 })
