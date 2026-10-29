@@ -917,6 +917,65 @@ describe('dependency-analysis', () => {
       expect(result.vulnerablePackages[0]?.vulnerabilities[0]?.fixedIn).toBeUndefined()
     })
 
+    it('drops vulnerabilities excluded by last_known_affected_version_range', async () => {
+      vi.mocked(resolveDependencyTree).mockResolvedValue(
+        new Map([
+          [
+            'nuxt@4.6.3',
+            {
+              name: 'nuxt',
+              version: '4.6.3',
+              size: 1000,
+              optional: false,
+              depth: 'root' as const,
+              path: ['nuxt@4.6.3'],
+              tarballUrl: 'https://example.com/nuxt-4.6.3.tgz',
+            },
+          ],
+        ]),
+      )
+
+      mockOsvApi(
+        [{ vulns: [{ id: 'GHSA-vjh5-4x84-xrqp', modified: '2026-10-22' }] }],
+        new Map([
+          [
+            'nuxt@4.6.3',
+            {
+              vulns: [
+                {
+                  id: 'GHSA-vjh5-4x84-xrqp',
+                  summary: 'Route rules skipped for case-variant paths',
+                  database_specific: { severity: 'MODERATE' },
+                  affected: [
+                    {
+                      package: { ecosystem: 'npm', name: 'nuxt' },
+                      ranges: [
+                        {
+                          type: 'ECOSYSTEM',
+                          events: [{ introduced: '4.0.0' }, { fixed: '4.6.2' }],
+                        },
+                      ],
+                    },
+                    {
+                      package: { ecosystem: 'npm', name: 'nuxt' },
+                      ranges: [{ type: 'ECOSYSTEM', events: [{ introduced: '3.0.0' }] }],
+                      database_specific: { last_known_affected_version_range: '< 4.0.0' },
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        ]),
+      )
+
+      const result = await analyzeDependencyTree('nuxt', '4.6.3')
+
+      expect(result.vulnerablePackages).toHaveLength(0)
+      expect(result.failedQueries).toBe(0)
+      expect(result.totalCounts.total).toBe(0)
+    })
+
     it('returns both vulnerabilities and deprecated packages together', async () => {
       const mockResolved = new Map([
         [
