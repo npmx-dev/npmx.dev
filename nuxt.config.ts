@@ -99,8 +99,6 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    // The OG renderer uses font files emitted by the client build.
-    '/_og/**': { prerender: false },
     // API routes
     '/api/**': { isr: 300 },
     '/api/registry/badge/**': {
@@ -322,6 +320,9 @@ export default defineNuxtConfig({
   },
 
   fonts: {
+    defaults: {
+      formats: ['woff2', 'ttf'],
+    },
     local: {
       dirs: ['assets/fonts'],
     },
@@ -371,8 +372,7 @@ export default defineNuxtConfig({
       // Reuse image-proxy HMAC secret to avoid managing a second secret.
       // Strict mode only activates when a secret is present (CI builds without one).
       strict: !!process.env.NUXT_IMAGE_PROXY_SECRET,
-      // Fork CI has no secrets, so keep its runtime OG URLs unsigned.
-      secret: process.env.NUXT_IMAGE_PROXY_SECRET || (isTest ? false : undefined),
+      secret: process.env.NUXT_IMAGE_PROXY_SECRET,
       // HMAC signing is sufficient; origin pinning blocks localhost e2e runs
       // and adds no meaningful security on top of signed URLs.
       restrictRuntimeImagesToOrigin: false,
