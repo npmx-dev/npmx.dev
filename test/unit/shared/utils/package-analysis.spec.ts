@@ -5,7 +5,6 @@ import {
   detectTypesStatus,
   getCreatePackageName,
   getCreateShortName,
-  getTypesPackageName,
   hasBuiltInTypes,
 } from '#shared/utils/package-analysis'
 
@@ -348,16 +347,6 @@ describe('analyzePackage with files (implicit types)', () => {
     const files = new Set(['dist/index.mjs', 'env.d.ts'])
     const result = analyzePackage(pkg, { files })
     expect(result.types).toEqual({ kind: 'none' })
-  })
-})
-
-describe('getTypesPackageName', () => {
-  it('handles unscoped package', () => {
-    expect(getTypesPackageName('lodash')).toBe('@types/lodash')
-  })
-
-  it('handles scoped package', () => {
-    expect(getTypesPackageName('@nuxt/kit')).toBe('@types/nuxt__kit')
   })
 })
 

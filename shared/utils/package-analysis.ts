@@ -389,17 +389,6 @@ export function hasBuiltInTypes(pkg: ExtendedPackageJson): boolean {
 }
 
 /**
- * Get the @types package name for a given package
- */
-export function getTypesPackageName(packageName: string): string {
-  if (packageName.startsWith('@')) {
-    // Scoped package: @scope/name -> @types/scope__name
-    return `@types/${packageName.slice(1).replace('/', '__')}`
-  }
-  return `@types/${packageName}`
-}
-
-/**
  * Options for package analysis
  */
 export interface AnalyzePackageOptions {

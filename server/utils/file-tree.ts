@@ -1,5 +1,5 @@
 import { getLatestVersion } from 'fast-npm-meta'
-import { encodePackageName } from 'npmeta'
+import { encodePackageName, getTypesPackageName } from 'npmeta'
 import { flattenFileTree } from '#server/utils/import-resolver'
 import type { ExtendedPackageJson, TypesPackageInfo } from '#shared/utils/package-analysis'
 
