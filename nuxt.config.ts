@@ -156,6 +156,13 @@ export default defineNuxtConfig({
         allowQuery: ['version'],
       },
     },
+    '/api/registry/pkg-pr-new': {
+      isr: {
+        expiration: 60,
+        passQuery: true,
+        allowQuery: ['owner', 'repo'],
+      },
+    },
     '/:pkg/.well-known/skills/**': { isr: 3600 },
     '/:scope/:pkg/.well-known/skills/**': { isr: 3600 },
     '/_avatar/**': { isr: 3600, proxy: 'https://www.gravatar.com/avatar/**' },
