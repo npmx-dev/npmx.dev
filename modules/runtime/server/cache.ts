@@ -212,22 +212,9 @@ async function processSingleFastNpmMeta(
   storage: ReturnType<typeof useStorage>,
   metadata: boolean,
 ): Promise<Record<string, unknown>> {
-  let packageName = packageQuery
-  let specifier = 'latest'
-
-  if (packageName.startsWith('@')) {
-    const atIndex = packageName.indexOf('@', 1)
-    if (atIndex !== -1) {
-      specifier = packageName.slice(atIndex + 1)
-      packageName = packageName.slice(0, atIndex)
-    }
-  } else {
-    const atIndex = packageName.indexOf('@')
-    if (atIndex !== -1) {
-      specifier = packageName.slice(atIndex + 1)
-      packageName = packageName.slice(0, atIndex)
-    }
-  }
+  const parsed = parsePackageSpec(packageQuery)
+  const packageName = parsed.name
+  const specifier = parsed.version || 'latest'
 
   // Special case: packages with "does-not-exist" in the name should 404
   if (packageName.includes('does-not-exist') || packageName.includes('nonexistent')) {
@@ -286,22 +273,9 @@ async function processSingleVersionsMeta(
   storage: ReturnType<typeof useStorage>,
   metadata: boolean,
 ): Promise<Record<string, unknown>> {
-  let packageName = packageQuery
-  let specifier = '*'
-
-  if (packageName.startsWith('@')) {
-    const atIndex = packageName.indexOf('@', 1)
-    if (atIndex !== -1) {
-      specifier = packageName.slice(atIndex + 1)
-      packageName = packageName.slice(0, atIndex)
-    }
-  } else {
-    const atIndex = packageName.indexOf('@')
-    if (atIndex !== -1) {
-      specifier = packageName.slice(atIndex + 1)
-      packageName = packageName.slice(0, atIndex)
-    }
-  }
+  const parsed = parsePackageSpec(packageQuery)
+  const packageName = parsed.name
+  const specifier = parsed.version || '*'
 
   if (packageName.includes('does-not-exist') || packageName.includes('nonexistent')) {
     return { name: packageName, error: 'not_found' }
