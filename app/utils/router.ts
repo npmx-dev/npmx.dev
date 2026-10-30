@@ -1,4 +1,5 @@
 import type { RouteLocationRaw } from 'vue-router'
+import { valid as isValidSingleVersion } from 'semver'
 import { splitPackageName } from '~/utils/package-name'
 
 export function packageRoute(
@@ -9,15 +10,28 @@ export function packageRoute(
   const { org, name } = splitPackageName(packageName)
 
   if (version) {
+    if (isValidSingleVersion(version)) {
+      return {
+        name: 'package-version',
+        params: {
+          org,
+          name,
+          version,
+        },
+      }
+    }
+
+    // If we have a version param but it isn't a *specific, single version* (e.g. 1.2.3), treat it
+    // as a semver specifier (e.g. ^1.2.3 or * or 3||4 or >3<=5) and route to the package page with
+    // the semver query param, which will pre-populate the version selector and show matching versions.
     return {
-      name: 'package-version',
+      name: 'package',
       params: {
         org,
         name,
-        // remove spaces to be correctly resolved by router
-        version: version.replace(/\s+/g, ''),
       },
-      hash,
+      query: { semver: version },
+      hash: hash ?? '#versions',
     }
   }
 
