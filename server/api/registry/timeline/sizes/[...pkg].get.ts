@@ -1,10 +1,6 @@
 import { getVersions } from 'fast-npm-meta'
-import { compare } from 'verkit'
-import {
-  parseTimelineSort,
-  parseStableOnly,
-  isStableVersion,
-} from '~~/server/api/registry/timeline/[...pkg].get'
+import { compare, isStable } from 'verkit'
+import { parseTimelineSort, parseStableOnly } from '~~/server/api/registry/timeline/[...pkg].get'
 
 const DEFAULT_LIMIT = 25
 
@@ -70,7 +66,7 @@ export default defineCachedEventHandler(
 
       // Must mirror the timeline endpoint's ordering so a given offset/limit page
       // covers the same versions the client is displaying.
-      const allVersions = versions.filter(v => time[v] && (!stableOnly || isStableVersion(v)))
+      const allVersions = versions.filter(v => time[v] && (!stableOnly || isStable(v)))
 
       if (sort === 'semver') {
         allVersions.sort((a, b) => compare(b, a))

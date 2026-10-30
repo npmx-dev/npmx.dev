@@ -1,10 +1,6 @@
 import { afterAll, afterEach, describe, expect, it, vi } from 'vite-plus/test'
 import { createError } from 'h3'
 
-vi.stubGlobal('encodePackageName', (name: string) => {
-  if (name.startsWith('@')) return `@${encodeURIComponent(name.slice(1))}`
-  return encodeURIComponent(name)
-})
 vi.stubGlobal('createError', createError)
 
 const { fetchNpmVersionDownloadsFromApi } = await import('#server/utils/npm-website-versions')

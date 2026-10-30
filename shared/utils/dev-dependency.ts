@@ -1,3 +1,5 @@
+import { splitPackageName } from 'npmeta'
+
 type DevDependencySuggestionReason = 'known-package' | 'readme-hint'
 
 export interface DevDependencySuggestion {
@@ -33,6 +35,7 @@ const KNOWN_DEV_DEPENDENCY_PACKAGES = new Set<string>([
 ])
 
 const KNOWN_DEV_DEPENDENCY_PACKAGE_PREFIXES = [
+  '@types/',
   '@typescript-eslint/',
   'eslint-',
   'prettier-',
@@ -43,18 +46,14 @@ const KNOWN_DEV_DEPENDENCY_PACKAGE_PREFIXES = [
 
 function isKnownDevDependencyPackage(packageName: string): boolean {
   const normalized = packageName.toLowerCase()
-  if (normalized.startsWith('@types/')) {
-    return true
-  }
-  // Match scoped packages by name segment, e.g. @scope/eslint-config
-  const namePart = normalized.includes('/') ? normalized.split('/').pop() : normalized
-  if (!namePart) return false
+  const { name } = splitPackageName(normalized)
+  if (!name) return false
 
   return (
     KNOWN_DEV_DEPENDENCY_PACKAGES.has(normalized) ||
-    KNOWN_DEV_DEPENDENCY_PACKAGES.has(namePart) ||
+    KNOWN_DEV_DEPENDENCY_PACKAGES.has(name) ||
     KNOWN_DEV_DEPENDENCY_PACKAGE_PREFIXES.some(prefix =>
-      prefix.startsWith('@') ? normalized.startsWith(prefix) : namePart.startsWith(prefix),
+      prefix.startsWith('@') ? normalized.startsWith(prefix) : name.startsWith(prefix),
     )
   )
 }

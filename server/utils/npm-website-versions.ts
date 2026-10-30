@@ -1,3 +1,5 @@
+import { encodePackageName } from 'npmeta'
+
 export interface NpmWebsiteVersionDownload {
   version: string
   downloads: number

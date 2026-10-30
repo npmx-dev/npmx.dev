@@ -92,6 +92,7 @@
     "ipaddr.js": "2.5.0",
     "marked": "18.0.9",
     "module-replacements": "3.3.0",
+    "npmeta": "0.3.0",
     "nuxt": "4.5.2",
     "nuxt-og-image": "6.7.8",
     "ofetch": "1.5.1",

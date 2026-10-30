@@ -1,4 +1,5 @@
 import type { H3Event } from 'h3'
+import { encodePackageName } from 'npmeta'
 import * as v from 'valibot'
 import type { LikesLeaderboardEntry } from '#shared/types/social'
 import type { CachedFetchFunction } from '#shared/utils/fetch-cache-config'
@@ -6,7 +7,6 @@ import { getRepositoryStars } from '#shared/utils/repository-meta'
 import { getHomepageMetadata } from '#server/utils/npm-homepage'
 import { fetchNpmPackage } from '#server/utils/npm'
 import { parseRepoUrl, type RepoRef } from '#shared/utils/git-providers'
-import { encodePackageName } from '#shared/utils/npm'
 import {
   CACHE_MAX_AGE_FIVE_MINUTES,
   CACHE_MAX_AGE_ONE_HOUR,

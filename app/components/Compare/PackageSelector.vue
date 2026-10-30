@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { parsePackageSpec } from 'npmeta'
+
 const packages = defineModel<string[]>({ required: true })
 
 const props = defineProps<{

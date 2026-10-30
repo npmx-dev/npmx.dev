@@ -1,5 +1,5 @@
+import { parseDependencyVersion } from 'npmeta'
 import { mapWithConcurrency } from '#shared/utils/async'
-import { parseDependencyVersion } from '#shared/utils/npm'
 import { findMaxSatisfying, findMinSatisfying, isGreater, isStable } from 'verkit'
 
 /** Concurrency limit for fetching packuments during dependency resolution */
