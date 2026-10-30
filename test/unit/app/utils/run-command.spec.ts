@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { getExecutableInfo, getRunCommand, getRunCommandParts } from '~/utils/run-command'
-import { isBinaryOnlyPackage, isCreatePackage } from '#shared/utils/binary-detection'
+import { isCreatePackage } from '#shared/utils/binary-detection'
 import type { JsrPackageInfo } from '#shared/types/jsr'
 
 describe('executable detection and run commands', () => {
@@ -172,56 +172,6 @@ describe('executable detection and run commands', () => {
       const parts = getRunCommandParts(options)
       const command = getRunCommand(options)
       expect(parts.join(' ')).toBe(command)
-    })
-  })
-
-  describe('isBinaryOnlyPackage', () => {
-    it('returns true for create-* packages', () => {
-      expect(isBinaryOnlyPackage({ name: 'create-vite' })).toBe(true)
-      expect(isBinaryOnlyPackage({ name: 'create-next-app' })).toBe(true)
-    })
-
-    it('returns true for scoped create packages', () => {
-      expect(isBinaryOnlyPackage({ name: '@vue/create-app' })).toBe(true)
-      expect(isBinaryOnlyPackage({ name: '@scope/create-something' })).toBe(true)
-    })
-
-    it('returns true for packages with bin but no entry points', () => {
-      expect(
-        isBinaryOnlyPackage({
-          name: 'degit',
-          bin: { degit: './bin.js' },
-        }),
-      ).toBe(true)
-    })
-
-    it('returns false for packages with bin AND entry points', () => {
-      expect(
-        isBinaryOnlyPackage({
-          name: 'eslint',
-          bin: { eslint: './bin/eslint.js' },
-          main: './lib/api.js',
-        }),
-      ).toBe(false)
-    })
-
-    it('returns false for packages with exports', () => {
-      expect(
-        isBinaryOnlyPackage({
-          name: 'some-package',
-          bin: { cmd: './bin.js' },
-          exports: { '.': './index.js' },
-        }),
-      ).toBe(false)
-    })
-
-    it('returns false for packages without bin', () => {
-      expect(
-        isBinaryOnlyPackage({
-          name: 'lodash',
-          main: './lodash.js',
-        }),
-      ).toBe(false)
     })
   })
 

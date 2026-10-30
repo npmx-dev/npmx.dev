@@ -1,3 +1,4 @@
+import { isBinaryOnlyPackage } from 'npmeta'
 import { parsePackageSpec } from '#shared/utils/parse-package-param'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
 
