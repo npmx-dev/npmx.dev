@@ -8,7 +8,6 @@ export default defineNuxtConfig({
   modules: [
     '@vercel/speed-insights',
     '@unocss/nuxt',
-    ...(isStorybook ? [] : ['@nuxt/fonts']),
     'nuxt-og-image',
     '@nuxtjs/html-validator',
     '@nuxt/scripts',
@@ -18,6 +17,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxtjs/i18n',
     '@nuxtjs/color-mode',
+    ...(isStorybook ? [] : ['@nuxt/fonts']),
   ],
 
   $test: {
@@ -99,8 +99,6 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    // OG images depend on font assets emitted by the client build.
-    '/_og/**': { prerender: false },
     // API routes
     '/api/**': { isr: 300 },
     '/api/registry/badge/**': {
