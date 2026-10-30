@@ -1,4 +1,5 @@
 import type { JsrPackageInfo } from '#shared/types/jsr'
+import { splitPackageName } from 'npmeta'
 import { getPackageSpecifier, packageManagers } from './install-command'
 import type { PackageManagerId } from './install-command'
 
@@ -12,13 +13,6 @@ export interface ExecutableInfo {
   commands: string[]
   /** Whether this package has any executables */
   hasExecutable: boolean
-}
-
-/**
- * Extract basename from package
- */
-function getPackageBaseName(packageName: string): string | undefined {
-  return packageName.startsWith('@') ? packageName.split('/')[1] : packageName
 }
 
 /**
@@ -50,7 +44,7 @@ export function getExecutableInfo(
   }
 
   // Prefer command matching package name if it exists; otherwise, use first
-  const baseName = getPackageBaseName(packageName)
+  const baseName = splitPackageName(packageName).name
   const primaryCommand = baseName && commands.includes(baseName) ? baseName : firstCommand
 
   return {
@@ -94,7 +88,7 @@ export function getRunCommandParts(options: RunCommandOptions): string[] {
   // For local execute with specific command name different from package name
   // e.g., `pnpm exec tsc` for typescript package
   if (options.command && options.command !== options.packageName) {
-    const baseName = getPackageBaseName(options.packageName)
+    const baseName = splitPackageName(options.packageName).name
     // If command matches base package name, use the package spec
     if (options.command === baseName) {
       return [...executeParts, spec]
