@@ -1,4 +1,4 @@
-import { encodePackageName } from 'npmeta'
+import { encodePackageName, splitPackageName } from 'npmeta'
 import validatePackageName from 'validate-npm-package-name'
 import { NPM_REGISTRY } from '#shared/utils/constants'
 
@@ -8,7 +8,7 @@ import { NPM_REGISTRY } from '#shared/utils/constants'
  */
 export function normalizePackageName(name: string): string {
   // Remove scope if present
-  const unscoped = name.startsWith('@') ? name.split('/')[1] || name : name
+  const unscoped = splitPackageName(name).name
 
   // Normalize: lowercase, remove punctuation (.-_), remove 'js' and 'node' suffixes/prefixes
   return (

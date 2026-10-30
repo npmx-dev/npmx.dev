@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { splitPackageName } from 'npmeta'
 import type { NewOperation } from '~/composables/useConnector'
 
 const props = defineProps<{
@@ -38,11 +39,7 @@ const hiddenMaintainersCount = computed(() =>
 )
 
 // Extract org name from scoped package
-const orgName = computed(() => {
-  if (!props.packageName.startsWith('@')) return null
-  const match = props.packageName.match(/^@([^/]+)\//)
-  return match ? match[1] : null
-})
+const orgName = computed(() => splitPackageName(props.packageName).scope)
 
 // Access data: who has access and via what
 const collaborators = shallowRef<Record<string, 'read-only' | 'read-write'>>({})
