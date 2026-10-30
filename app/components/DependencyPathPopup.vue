@@ -86,10 +86,7 @@ function getPopupStyle(): Record<string, string> {
             <span v-if="idx > 0" class="text-fg-subtle me-1">└─</span>
             <NuxtLink
               :to="
-                packageRoute(
-                  parsePackageSpec(pathItem).name,
-                  parsePackageSpec(pathItem).version,
-                )
+                packageRoute(parsePackageSpec(pathItem).name, parsePackageSpec(pathItem).version)
               "
               class="hover:underline"
               :class="idx === path.length - 1 ? 'text-fg font-medium' : 'text-fg-muted'"
