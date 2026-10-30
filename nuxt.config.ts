@@ -7,6 +7,7 @@ const isStorybook = process.env.STORYBOOK === 'true' || process.env.VITEST_STORY
 export default defineNuxtConfig({
   modules: [
     '@unocss/nuxt',
+    ...(isStorybook ? [] : ['@nuxt/fonts']),
     'nuxt-og-image',
     '@nuxtjs/html-validator',
     '@nuxt/scripts',
@@ -16,7 +17,6 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxtjs/i18n',
     '@nuxtjs/color-mode',
-    ...(isStorybook ? [] : ['@nuxt/fonts']),
   ],
 
   $test: {
