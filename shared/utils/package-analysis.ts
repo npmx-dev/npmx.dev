@@ -156,7 +156,7 @@ export function detectTypesStatus(
 
   // Check for implicit types by deriving expected declaration file paths from
   // entry points (e.g. .d.mts for .mjs) and checking if they exist in the package
-  if (files && f(pkg, files)) {
+  if (files && hasImplicitTypesForEntryPoints(pkg, files)) {
     return { kind: 'included' }
   }
 
