@@ -114,13 +114,34 @@ let settingsRef: RemovableRef<AppSettings> | null = null
  */
 export function useSettings() {
   if (!settingsRef) {
-    settingsRef = useLocalStorage<AppSettings>(STORAGE_KEY, DEFAULT_SETTINGS, {
+    // Clone so that changing settings never mutates DEFAULT_SETTINGS
+    settingsRef = useLocalStorage<AppSettings>(STORAGE_KEY, structuredClone(DEFAULT_SETTINGS), {
       mergeDefaults: true,
     })
   }
 
   return {
     settings: settingsRef,
+    resetSettings,
+  }
+}
+
+/**
+ * Restore all settings to their defaults, keeping the selected language.
+ */
+function resetSettings() {
+  if (!settingsRef) return
+
+  settingsRef.value = {
+    ...structuredClone(DEFAULT_SETTINGS),
+    selectedLocale: settingsRef.value.selectedLocale,
+  }
+
+  if (import.meta.client) {
+    document.documentElement.style.removeProperty('--accent-color')
+    document.documentElement.removeAttribute('data-bg-theme')
+    document.documentElement.removeAttribute('data-fg-theme')
+    document.documentElement.removeAttribute('data-collapsed')
   }
 }
 
