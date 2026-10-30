@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onKeyDown } from '@vueuse/core'
 import { UseFocusTrap } from '@vueuse/integrations/useFocusTrap/component'
+import { parsePackageSpec } from 'npmeta'
 
 defineProps<{
   /** Dependency path from root to vulnerable package (readonly from VulnerabilityTreeResult) */
@@ -52,15 +53,6 @@ function getPopupStyle(): Record<string, string> {
     left: `${popupPosition.value.left}px`,
   }
 }
-
-// Parse package string "name@version" into { name, version }
-function parsePackageString(pkg: string): { name: string; version: string } {
-  const atIndex = pkg.lastIndexOf('@')
-  if (atIndex > 0) {
-    return { name: pkg.slice(0, atIndex), version: pkg.slice(atIndex + 1) }
-  }
-  return { name: pkg, version: '' }
-}
 </script>
 
 <template>
@@ -95,8 +87,8 @@ function parsePackageString(pkg: string): { name: string; version: string } {
             <NuxtLink
               :to="
                 packageRoute(
-                  parsePackageString(pathItem).name,
-                  parsePackageString(pathItem).version,
+                  parsePackageSpec(pathItem).name,
+                  parsePackageSpec(pathItem).version,
                 )
               "
               class="hover:underline"
