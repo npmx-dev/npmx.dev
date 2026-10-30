@@ -182,7 +182,7 @@ function getCreatePackageSpecifier(options: ExecuteCommandOptions): string | nul
   }
 
   const shortName = getCreateShortName(options.packageName)
-  if (shortName === options.packageName) {
+  if (shortName === null) {
     return null
   }
 
