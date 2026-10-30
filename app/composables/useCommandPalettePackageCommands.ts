@@ -4,6 +4,7 @@ import type {
   CommandPaletteContextCommandInput,
   CommandPalettePackageContext,
 } from '~/types/command-palette'
+import { splitPackageName } from 'npmeta'
 import { downloadPackageTarball } from '~/utils/package-download'
 
 function activeLabel(isCurrentRoute: boolean, label: string) {
