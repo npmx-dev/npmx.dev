@@ -1331,6 +1331,84 @@ describe('component accessibility audits', () => {
               { raw: 100, display: '100 MB' },
               { raw: 50, display: '50 MB' },
             ],
+            packagesData: [
+              {
+                package: {
+                  name: 'nuxt',
+                  version: '4.3.1',
+                },
+                downloads: 1156058,
+                packageSize: 1667656,
+                directDeps: 66,
+                analysis: {
+                  package: 'nuxt',
+                  version: '4.3.1',
+                  devDependencySuggestion: {
+                    recommended: false,
+                  },
+                  moduleFormat: 'dual',
+                  types: {
+                    kind: 'included',
+                  },
+                  createPackage: {
+                    packageName: 'create-nuxt',
+                  },
+                },
+                vulnerabilities: {
+                  count: 0,
+                  severity: {
+                    critical: 0,
+                    high: 0,
+                    moderate: 0,
+                    low: 0,
+                  },
+                },
+                metadata: {
+                  license: 'MIT',
+                  lastUpdated: '2026-04-03T05:41:39.680Z',
+                },
+                isBinaryOnly: false,
+                totalLikes: 156,
+              },
+              {
+                package: {
+                  name: 'vue',
+                  version: '3.5.32',
+                },
+                downloads: 10979552,
+                packageSize: 2480183,
+                directDeps: 5,
+                analysis: {
+                  package: 'vue',
+                  version: '3.5.32',
+                  devDependencySuggestion: {
+                    recommended: false,
+                  },
+                  moduleFormat: 'dual',
+                  types: {
+                    kind: 'included',
+                  },
+                  createPackage: {
+                    packageName: 'create-vue',
+                  },
+                },
+                vulnerabilities: {
+                  count: 0,
+                  severity: {
+                    critical: 0,
+                    high: 0,
+                    moderate: 0,
+                    low: 0,
+                  },
+                },
+                metadata: {
+                  license: 'MIT',
+                  lastUpdated: '2026-04-03T05:41:39.680Z',
+                },
+                isBinaryOnly: false,
+                totalLikes: 85,
+              },
+            ],
             packages: ['nuxt', 'vue'],
             label: 'Package Size',
             description: 'Size of the package itself (unpacked)',
@@ -4121,6 +4199,7 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(PackageSecurityDowngradeAlert, {
         props: {
+          packageName: 'vue',
           downgrade: {
             downgradedVersion: '2.0.0',
             downgradedTrustLevel: 'none',

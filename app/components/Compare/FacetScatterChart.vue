@@ -56,11 +56,19 @@ const isDarkMode = computed(() => resolvedMode.value === 'dark')
 
 const { facetLabels } = useFacetSelection()
 
+const isVersionComparisonComputed = computed(() => isVersionComparison(props.packages))
+
 const chartableFacets = computed(() =>
   (
     Object.entries(facetLabels.value) as [
       ComparisonFacet,
-      { label: string; description: string; chartable_scatter: boolean },
+      {
+        label: string
+        description: string
+        chartable: boolean
+        chartable_scatter: boolean
+        formatter?: ((value: number) => string) | undefined
+      },
     ][]
   )
     .map(([name, facet]) => ({
@@ -69,10 +77,18 @@ const chartableFacets = computed(() =>
       description: facet.description,
       chartable: facet.chartable_scatter,
     }))
-    .filter(facet => facet.chartable),
+    .filter(facet => {
+      if (!facet.chartable) return false
+      if (isVersionComparisonComputed.value && shouldHideFacetInVersionComparison(facet.name)) {
+        return false
+      }
+      return true
+    }),
 )
 
-const selectedFacetX = ref<ComparisonFacet>('downloads')
+const selectedFacetX = ref<ComparisonFacet>(
+  isVersionComparisonComputed.value ? 'dependencies' : 'downloads',
+)
 const selectedFacetY = ref<ComparisonFacet>('installSize')
 
 const dataset = computed<VueUiScatterDatasetItem[]>(() =>

@@ -26,8 +26,10 @@ import('vue-data-ui/style.css')
 const props = defineProps<{
   values: (FacetValue | null | undefined)[]
   packages: string[]
+  packagesData: ReadonlyArray<PackageComparisonData | null>
   label: string
   description: string
+  facetId?: string
   facetLoading?: boolean
 }>()
 
@@ -77,14 +79,47 @@ const isDarkMode = computed(() => resolvedMode.value === 'dark')
 
 const dataset = computed<VueUiHorizontalBarDatasetItem[]>(() => {
   if (props.facetLoading) return []
-  return props.packages.map((name, index) => {
+
+  const omitVersion = props.facetId ? shouldHideFacetInVersionComparison(props.facetId) : false
+
+  if (!omitVersion) {
+    // Version-specific facet: keep one bar per entry (with version in label)
+    return props.packages.flatMap((spec, index) => {
+      const rawValue = props.values[index]?.raw
+      const packageData = props.packagesData[index]
+      if (!packageData) return []
+      const { name, displayName } = getPackageDisplayInfo(packageData, spec)
+
+      return [
+        {
+          name: insertLineBreaks(applyEllipsis(displayName)),
+          value: typeof rawValue === 'number' ? rawValue : 0,
+          color: isListedFramework(name) ? getFrameworkColor(name) : undefined,
+          formattedValue: props.values[index]?.display,
+        },
+      ]
+    })
+  }
+
+  // Package-level facet: one bar per unique package name
+  const seen = new Set<string>()
+  return props.packages.flatMap((spec, index) => {
+    const packageData = props.packagesData[index]
+    if (!packageData) return []
+
+    const { name } = getPackageDisplayInfo(packageData, spec)
+    if (seen.has(name)) return []
+    seen.add(name)
+
     const rawValue = props.values[index]?.raw
-    return {
-      name: insertLineBreaks(applyEllipsis(name)),
-      value: typeof rawValue === 'number' ? rawValue : 0,
-      color: isListedFramework(name) ? getFrameworkColor(name) : undefined,
-      formattedValue: props.values[index]?.display,
-    }
+    return [
+      {
+        name: insertLineBreaks(applyEllipsis(name)),
+        value: typeof rawValue === 'number' ? rawValue : 0,
+        color: isListedFramework(name) ? getFrameworkColor(name) : undefined,
+        formattedValue: props.values[index]?.display,
+      },
+    ]
   })
 })
 
