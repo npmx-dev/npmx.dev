@@ -3,8 +3,6 @@ import {
   analyzePackage,
   detectModuleFormat,
   detectTypesStatus,
-  getCreatePackageName,
-  getCreateShortName,
   hasBuiltInTypes,
 } from '#shared/utils/package-analysis'
 
@@ -474,49 +472,5 @@ describe('analyzePackage', () => {
       packageName: 'create-foo',
       deprecated: 'Use different tool',
     })
-  })
-})
-
-describe('getCreatePackageName', () => {
-  it('handles unscoped package', () => {
-    expect(getCreatePackageName('vite')).toBe('create-vite')
-  })
-
-  it('handles scoped package', () => {
-    expect(getCreatePackageName('@nuxt/app')).toBe('@nuxt/create-app')
-  })
-
-  it('handles single-word package', () => {
-    expect(getCreatePackageName('next')).toBe('create-next')
-  })
-
-  it('handles hyphenated package', () => {
-    expect(getCreatePackageName('solid-js')).toBe('create-solid-js')
-  })
-})
-
-describe('getCreateShortName', () => {
-  it('extracts name from unscoped create-* package', () => {
-    expect(getCreateShortName('create-vite')).toBe('vite')
-  })
-
-  it('extracts name from scoped create-* package preserving scope', () => {
-    expect(getCreateShortName('@vue/create-app')).toBe('@vue/app')
-  })
-
-  it('returns full name if not a create-* package', () => {
-    expect(getCreateShortName('vite')).toBe('vite')
-  })
-
-  it('returns full name for scoped package without create- prefix', () => {
-    expect(getCreateShortName('@scope/foo')).toBe('@scope/foo')
-  })
-
-  it('extracts name from create-next-app style packages', () => {
-    expect(getCreateShortName('create-next-app')).toBe('next-app')
-  })
-
-  it('returns scope only for @scope/create packages', () => {
-    expect(getCreateShortName('@angular/create')).toBe('@angular')
   })
 })

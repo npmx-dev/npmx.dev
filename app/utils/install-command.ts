@@ -1,5 +1,5 @@
 import type { JsrPackageInfo } from '#shared/types/jsr'
-import { getCreateShortName } from '#shared/utils/package-analysis'
+import { getCreateShortName } from 'npmeta'
 
 // @unocss-include
 export const packageManagers = [
