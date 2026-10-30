@@ -1,5 +1,5 @@
+import { normalizeLicense } from 'npmeta'
 import { compare, tryParse } from 'verkit'
-import { normalizeLicense } from '#shared/utils/npm'
 import { hasBuiltInTypes } from '~~/shared/utils/package-analysis'
 
 const DEFAULT_LIMIT = 25
