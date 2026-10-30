@@ -1,3 +1,4 @@
+import { encodePackageName } from 'npmeta'
 import { normalizeLicense } from '#shared/utils/npm'
 
 /**

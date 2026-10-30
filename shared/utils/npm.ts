@@ -4,17 +4,6 @@ import validatePackageName from 'validate-npm-package-name'
 import type { PackumentLicense } from '#shared/types/npm-registry'
 
 /**
- * Encode package name for URL usage.
- * Scoped packages need special handling (@scope/name → @scope%2Fname)
- */
-export function encodePackageName(name: string): string {
-  if (name.startsWith('@')) {
-    return `@${encodeURIComponent(name.slice(1))}`
-  }
-  return encodeURIComponent(name)
-}
-
-/**
  * Fetch the latest version of a package using fast-npm-meta API.
  * This is a lightweight alternative to fetching the full packument.
  *

@@ -1,6 +1,6 @@
+import { encodePackageName } from 'npmeta'
 import validatePackageName from 'validate-npm-package-name'
 import { NPM_REGISTRY } from '#shared/utils/constants'
-import { encodePackageName } from '#shared/utils/npm'
 
 /**
  * Normalize a package name for comparison by removing common variations.

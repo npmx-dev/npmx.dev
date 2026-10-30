@@ -1,4 +1,4 @@
-import { isBinaryOnlyPackage, parsePackageSpec } from 'npmeta'
+import { encodePackageName, isBinaryOnlyPackage, parsePackageSpec } from 'npmeta'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
 
 /** Special identifier for the "What Would James Do?" comparison column */
