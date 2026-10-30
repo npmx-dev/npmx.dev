@@ -99,6 +99,8 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
+    // OG images depend on font assets emitted by the client build.
+    '/_og/**': { prerender: false },
     // API routes
     '/api/**': { isr: 300 },
     '/api/registry/badge/**': {
