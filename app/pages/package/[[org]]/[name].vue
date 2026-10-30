@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { isBinaryOnlyPackage } from 'npmeta'
+import { isBinaryOnlyPackage, isCreatePackage } from 'npmeta'
 import { assertValidPackageName } from '#shared/utils/npm'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
 

@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest'
 import { getExecutableInfo, getRunCommand, getRunCommandParts } from '~/utils/run-command'
-import { isCreatePackage } from '#shared/utils/binary-detection'
 import type { JsrPackageInfo } from '#shared/types/jsr'
 
 describe('executable detection and run commands', () => {
@@ -172,23 +171,6 @@ describe('executable detection and run commands', () => {
       const parts = getRunCommandParts(options)
       const command = getRunCommand(options)
       expect(parts.join(' ')).toBe(command)
-    })
-  })
-
-  describe('isCreatePackage', () => {
-    it('returns true for create-* packages', () => {
-      expect(isCreatePackage('create-vite')).toBe(true)
-      expect(isCreatePackage('create-next-app')).toBe(true)
-    })
-
-    it('returns true for scoped create packages', () => {
-      expect(isCreatePackage('@vue/create-app')).toBe(true)
-    })
-
-    it('returns false for regular packages', () => {
-      expect(isCreatePackage('eslint')).toBe(false)
-      expect(isCreatePackage('lodash')).toBe(false)
-      expect(isCreatePackage('@scope/utils')).toBe(false)
     })
   })
 })
