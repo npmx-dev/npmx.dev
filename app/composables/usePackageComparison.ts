@@ -1,5 +1,4 @@
-import { isBinaryOnlyPackage } from 'npmeta'
-import { parsePackageSpec } from '#shared/utils/parse-package-param'
+import { isBinaryOnlyPackage, parsePackageSpec } from 'npmeta'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
 
 /** Special identifier for the "What Would James Do?" comparison column */

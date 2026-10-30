@@ -1,6 +1,6 @@
 import process from 'node:process'
 import type { CachedFetchResult } from '#shared/utils/fetch-cache-config'
-import { parsePackageSpec } from '#shared/utils/parse-package-param'
+import { parsePackageSpec } from 'npmeta'
 import { createFetch } from 'ofetch'
 
 /**
