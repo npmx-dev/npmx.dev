@@ -6,6 +6,7 @@ describe('SelectBase', () => {
   describe('rendering', () => {
     it('renders native select with slot options', async () => {
       const component = await mountSuspended(SelectBase, {
+        props: { modelValue: 'option1' },
         slots: {
           default:
             '<option value="option1">option 1</option><option value="option2">option 2</option>',
@@ -30,7 +31,7 @@ describe('SelectBase', () => {
 
     it('renders without disabled attribute when disabled is false', async () => {
       const component = await mountSuspended(SelectBase, {
-        props: { disabled: false },
+        props: { modelValue: 'option1', disabled: false },
         slots: { default: '<option value="option1">option 1</option>' },
       })
       const select = component.find('select')
@@ -39,7 +40,7 @@ describe('SelectBase', () => {
 
     it('renders disabled when disabled is true', async () => {
       const component = await mountSuspended(SelectBase, {
-        props: { disabled: true },
+        props: { modelValue: 'option1', disabled: true },
         slots: { default: '<option value="option1">option 1</option>' },
       })
       const select = component.find('select').element

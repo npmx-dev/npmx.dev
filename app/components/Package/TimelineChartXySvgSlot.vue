@@ -25,7 +25,7 @@ const svgElementTransitionClass = computed(() => [
 
 <template>
   <!-- Print watermark-->
-  <g v-if="svg.isPrintingSvg || svg.isPrintingImg || isCopyingPng" v-html="watermark" />
+  <g v-if="svg.isPrintingSvg || svg.isPrintingImg || isCopyingPng" v-html="watermark ?? ''" />
 
   <g class="pointer-events-none">
     <!-- Marker for selected version -->

@@ -151,7 +151,7 @@ function handlePageSizeChange(event: Event) {
           :label="$t('filters.pagination.items_per_page')"
           hidden-label
           id="page-size"
-          v-model="pageSizeSelectValue"
+          :model-value="pageSizeSelectValue"
           @change="handlePageSizeChange"
           :items="
             PAGE_SIZE_OPTIONS.map(size => ({

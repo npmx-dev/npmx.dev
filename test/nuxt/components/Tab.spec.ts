@@ -124,7 +124,7 @@ describe('Tab components', () => {
       const tabs = wrapper.findAll('[role="tab"]')
 
       await tabs[1]!.trigger('click')
-      const root = wrapper.findComponent(TabRoot)
+      const root = wrapper.findComponent({ name: 'TabRoot' })
       expect(root.emitted('update:modelValue')?.[0]).toEqual(['two'])
 
       wrapper.unmount()

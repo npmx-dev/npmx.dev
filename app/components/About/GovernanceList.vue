@@ -47,7 +47,7 @@ const roleLabels = computed(
             v-if="person.sponsors_url"
             :to="person.sponsors_url"
             no-underline
-            no-external-icon
+            no-new-tab-icon
             classicon="i-lucide:heart"
             class="flex! relative z-10 text-xs text-fg-muted hover:text-pink-400 mt-1"
             :aria-label="$t('about.team.sponsor_aria', { name: person.login })"

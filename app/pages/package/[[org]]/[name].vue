@@ -511,7 +511,7 @@ const showSkeleton = shallowRef(false)
       id="package-article"
       class="container w-full"
       :class="$style.packagePage"
-      v-html="serverRenderedHtml"
+      v-html="serverRenderedHtml ?? ''"
     />
 
     <template v-else-if="pkg">

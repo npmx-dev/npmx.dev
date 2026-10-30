@@ -164,7 +164,6 @@ function formatFacetValue(value: FacetValue): string {
           class="font-mono"
           :package-names="[packageName]"
           :package-name="packageName"
-          :version="resolvedVersion ?? undefined"
           default-range="52-weeks"
           hide-controls
           compact-x-axis-labels

@@ -147,7 +147,6 @@ function openAuthModal() {
               role="menuitem"
               class="w-full text-start gap-x-3 border-none"
               @click="openConnectorModal"
-              out
             >
               <img
                 v-if="npmAvatar"

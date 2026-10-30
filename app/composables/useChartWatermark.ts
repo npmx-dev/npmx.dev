@@ -128,7 +128,7 @@ export function drawSmallNpmxLogoAndTaglineWatermark({
   offsetXTagline?: number
   offsetYLogo?: number
 }) {
-  if (!svg.height) return
+  if (!svg.height) return ''
 
   const npmxLogoWidthToHeight = 2.64
   const npmxLogoHeight = logoWidth / npmxLogoWidthToHeight

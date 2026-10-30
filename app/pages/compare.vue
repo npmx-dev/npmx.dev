@@ -391,12 +391,7 @@ useSeoMeta({
 
         <div v-else-if="packagesData && packagesData.some(p => p !== null)">
           <!-- View tabs -->
-          <TabRoot
-            v-model="comparisonView"
-            default-value="table"
-            id-prefix="comparison"
-            class="mt-4"
-          >
+          <TabRoot v-model="comparisonView" id-prefix="comparison" class="mt-4">
             <TabList :ariaLabel="$t('compare.packages.section_comparison')">
               <TabItem value="table" tab-id="comparison-tab-table" icon="i-lucide:table">
                 {{ $t('compare.packages.table_view') }}
@@ -427,7 +422,6 @@ useSeoMeta({
                     :facet-loading="isFacetLoading(facet.id)"
                     :column-loading="columnLoading"
                     :bar="facet.id !== 'lastUpdated'"
-                    :headers="gridHeaders"
                   />
                 </CompareComparisonGrid>
               </div>

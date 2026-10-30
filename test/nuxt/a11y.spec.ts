@@ -3862,6 +3862,7 @@ describe('component accessibility audits', () => {
   describe('SelectBase', () => {
     it('should have no accessibility violations with options and aria-label', async () => {
       const component = await mountSuspended(SelectBase, {
+        props: { modelValue: 'option1' },
         attrs: { 'aria-label': 'Choose option' },
         slots: {
           default:
@@ -3874,7 +3875,7 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations when disabled', async () => {
       const component = await mountSuspended(SelectBase, {
-        props: { disabled: true },
+        props: { modelValue: 'option1', disabled: true },
         attrs: { 'aria-label': 'Disabled select' },
         slots: { default: '<option value="option1">option 1</option>' },
       })
@@ -3884,7 +3885,7 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations with size small', async () => {
       const component = await mountSuspended(SelectBase, {
-        props: { size: 'sm' },
+        props: { modelValue: 'option1', size: 'sm' },
         attrs: { 'aria-label': 'Small select' },
         slots: { default: '<option value="option1">option 1</option>' },
       })
@@ -3897,6 +3898,7 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations with label and items', async () => {
       const component = await mountSuspended(SelectField, {
         props: {
+          modelValue: 'option1',
           id: 'a11y-select-1',
           label: 'Choose one',
           items: [
@@ -3912,6 +3914,7 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations with hiddenLabel', async () => {
       const component = await mountSuspended(SelectField, {
         props: {
+          modelValue: 'option1',
           id: 'a11y-select-2',
           label: 'Hidden',
           hiddenLabel: true,
@@ -3925,6 +3928,7 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations when disabled', async () => {
       const component = await mountSuspended(SelectField, {
         props: {
+          modelValue: 'option1',
           id: 'a11y-select-3',
           selectAttrs: { 'aria-label': 'Disabled select' },
           items: [{ label: 'Option 1', value: 'option1' }],
@@ -3938,6 +3942,7 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations with size small', async () => {
       const component = await mountSuspended(SelectField, {
         props: {
+          modelValue: 'option1',
           id: 'a11y-select-4',
           selectAttrs: { 'aria-label': 'Disabled select' },
           items: [{ label: 'Option 1', value: 'option1' }],

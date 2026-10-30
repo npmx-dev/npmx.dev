@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends string">
 defineOptions({ name: 'TabRoot' })
 
 const props = withDefaults(
@@ -9,7 +9,8 @@ const props = withDefaults(
     idPrefix: 'tab',
   },
 )
-const selectedValue = defineModel<string>()
+
+const selectedValue = defineModel<T>({ required: true })
 
 function tabId(value: string): string {
   return `${props.idPrefix}-${value}`
