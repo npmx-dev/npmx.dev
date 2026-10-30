@@ -217,8 +217,8 @@ importers:
         specifier: 3.3.0
         version: 3.3.0
       npmeta:
-        specifier: 0.1.0
-        version: 0.1.0
+        specifier: 0.2.0
+        version: 0.2.0
       nuxt:
         specifier: 4.5.2
         version: 4.5.2(@babel/plugin-syntax-jsx@7.29.7)(@babel/plugin-syntax-typescript@7.29.7)(@oxc-project/types@0.154.0)(@parcel/watcher@2.5.6)(@rollup/plugin-babel@6.1.0)(@types/node@24.13.3)(@upstash/redis@1.38.2)(@vitejs/devtools-kit@0.4.10)(@voidzero-dev/vite-plus-core@1.3.0)(@volar/typescript@2.4.28)(@vue/compiler-sfc@3.5.42)(@vue/language-core@3.3.13)(better-sqlite3@13.0.3)(cac@7.0.0)(confbox@0.2.4)(db0@0.3.4)(dotenv@17.4.2)(encoding@0.1.13)(esbuild@0.28.1)(eslint@10.6.0)(giget@3.3.0)(ioredis@5.11.1)(lightningcss@1.33.0)(magicast@0.5.5)(optionator@0.9.4)(oxc-parser@0.144.0)(oxlint@1.88.0)(rolldown@1.2.4)(rollup-plugin-visualizer@7.0.1)(rollup@4.62.2)(srvx@0.11.22)(supports-color@10.2.2)(terser@5.48.0)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(vue-tsc@3.3.10)(webpack@5.108.4)(yaml@2.9.1)
@@ -8533,8 +8533,8 @@ packages:
     resolution: {integrity: sha512-9qny7Z9DsQU8Ou39ERsPU4OZQlSTP47ShQzuKZ6PRXpYLtIFgl/DEBYEXKlvcEa+9tHVcK8CF81Y2V72qaZhWA==}
     engines: {node: '>=18'}
 
-  npmeta@0.1.0:
-    resolution: {integrity: sha512-hHcFtHvbXV7kuffxUDZAVaMhQd5HKmDbBFx6HKK5pUju1Miv90uYSDTSO3bl5at3IlNa1ZiMriKfnaGk7lZAAA==}
+  npmeta@0.2.0:
+    resolution: {integrity: sha512-iOL9zd1hSr12U/fZqkq5TwdMPfl1R8cZ3excBvoaK43phH1rdtdcqTjgN1J3eRxujC2bxqYHFsVoFGRm9PWWWw==}
     engines: {node: '>=22'}
 
   nth-check@2.1.1:
@@ -20611,7 +20611,7 @@ snapshots:
       path-key: 4.0.0
       unicorn-magic: 0.3.0
 
-  npmeta@0.1.0: {}
+  npmeta@0.2.0: {}
 
   nth-check@2.1.1:
     dependencies:
