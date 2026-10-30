@@ -1,8 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import {
-  analyzePackage,
-  detectTypesStatus,
-} from '#shared/utils/package-analysis'
+import { analyzePackage, detectTypesStatus } from '#shared/utils/package-analysis'
 
 describe('detectTypesStatus', () => {
   it('detects included types from types field', () => {
