@@ -51,6 +51,7 @@ minimumReleaseAgeExclude:
   - '@nuxt/schema@4.5.2'
   - '@nuxt/vite-builder@4.5.2'
   - vue-data-ui@3.28.7
+  - 'npmeta@0.1.0'
 
 minimumReleaseAgeExcludePrune: true
 
