@@ -1,6 +1,5 @@
-import { normalizeLicense } from 'npmeta'
-import { compare, tryParse } from 'verkit'
-import { hasBuiltInTypes } from '~~/shared/utils/package-analysis'
+import { hasBuiltInTypes, normalizeLicense } from 'npmeta'
+import { compare, isStable } from 'verkit'
 
 const DEFAULT_LIMIT = 25
 
@@ -12,11 +11,6 @@ export function parseTimelineSort(value: unknown): TimelineSort {
 
 export function parseStableOnly(value: unknown): boolean {
   return value === 'true'
-}
-
-export function isStableVersion(version: string): boolean {
-  const parsed = tryParse(version)
-  return !!parsed && (parsed.prerelease?.length ?? 0) === 0
 }
 
 export interface TimelineVersion {
@@ -87,7 +81,7 @@ export default defineCachedEventHandler(
 
       // Build full sorted list
       const allVersions = Object.keys(packument.versions).filter(
-        v => packument.time[v] && (!stableOnly || isStableVersion(v)),
+        v => packument.time[v] && (!stableOnly || isStable(v)),
       )
 
       if (sort === 'semver') {

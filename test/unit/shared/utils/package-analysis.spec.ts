@@ -3,7 +3,6 @@ import {
   analyzePackage,
   detectModuleFormat,
   detectTypesStatus,
-  hasBuiltInTypes,
 } from '#shared/utils/package-analysis'
 
 describe('detectModuleFormat', () => {
@@ -345,37 +344,6 @@ describe('analyzePackage with files (implicit types)', () => {
     const files = new Set(['dist/index.mjs', 'env.d.ts'])
     const result = analyzePackage(pkg, { files })
     expect(result.types).toEqual({ kind: 'none' })
-  })
-})
-
-describe('hasBuiltInTypes', () => {
-  it('returns true when types field is present', () => {
-    expect(hasBuiltInTypes({ types: './index.d.ts' })).toBe(true)
-  })
-
-  it('returns true when typings field is present', () => {
-    expect(hasBuiltInTypes({ typings: './index.d.ts' })).toBe(true)
-  })
-
-  it('returns true when exports has types condition', () => {
-    expect(
-      hasBuiltInTypes({
-        exports: {
-          '.': {
-            types: './index.d.ts',
-            default: './index.js',
-          },
-        },
-      }),
-    ).toBe(true)
-  })
-
-  it('returns false when no types are present', () => {
-    expect(hasBuiltInTypes({ main: 'index.js' })).toBe(false)
-  })
-
-  it('returns false for empty package', () => {
-    expect(hasBuiltInTypes({})).toBe(false)
   })
 })
 

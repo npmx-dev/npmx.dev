@@ -1,6 +1,6 @@
 import * as v from 'valibot'
 import { createCanvas, type SKRSContext2D } from '@napi-rs/canvas'
-import { normalizeLicense } from 'npmeta'
+import { hasBuiltInTypes, normalizeLicense } from 'npmeta'
 import { hash } from 'ohash'
 import { createError, getRouterParam, getQuery, setHeader } from 'h3'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
