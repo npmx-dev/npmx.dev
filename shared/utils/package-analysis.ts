@@ -1,8 +1,11 @@
+import { detectModuleFormat } from 'npmeta'
+
 /**
  * Package analysis utilities for detecting module format and TypeScript support
  */
 
-export type ModuleFormat = 'esm' | 'cjs' | 'dual' | 'wasm' | 'unknown'
+// TODO(Roman): replace once exported from `npmeta`
+export type ModuleFormat = ReturnType<typeof detectModuleFormat>
 
 export type TypesStatus =
   | { kind: 'included' }
@@ -41,68 +44,6 @@ export interface ExtendedPackageJson {
 }
 
 type PackageExports = string | null | { [key: string]: PackageExports } | PackageExports[]
-
-/**
- * Detect the module format of a package based on package.json fields
- */
-export function detectModuleFormat(pkg: ExtendedPackageJson): ModuleFormat {
-  const hasExports = pkg.exports != null
-  const hasModule = !!pkg.module
-  const hasMain = !!pkg.main
-  const isTypeModule = pkg.type === 'module'
-  const isTypeCommonjs = pkg.type === 'commonjs' || !pkg.type
-
-  // Check exports field for dual format indicators
-  if (hasExports && pkg.exports) {
-    const exportInfo = analyzeExports(pkg.exports, isTypeModule)
-
-    if (exportInfo.hasImport && exportInfo.hasRequire) {
-      return 'dual'
-    }
-
-    if (exportInfo.hasImport || exportInfo.hasModule) {
-      // Has ESM exports, check if also has CJS
-      if (hasMain && !isTypeModule) {
-        return 'dual'
-      }
-      return 'esm'
-    }
-
-    if (exportInfo.hasRequire) {
-      // Has CJS exports, check if also has ESM
-      if (hasModule) {
-        return 'dual'
-      }
-      return 'cjs'
-    }
-
-    // exports field exists but doesn't use import/require conditions
-    // Fall through to other detection methods
-  }
-
-  // Legacy detection without exports field
-  if (hasModule && hasMain) {
-    // Check for dual packages (has module field and main points to cjs)
-    const mainIsCJS = pkg.main?.endsWith('.cjs') || (pkg.main?.endsWith('.js') && !isTypeModule)
-
-    return mainIsCJS ? 'dual' : 'esm'
-  }
-
-  const mainIsWASM = pkg.main?.endsWith('.wasm')
-  if (mainIsWASM) {
-    return 'wasm'
-  }
-
-  if (hasModule || isTypeModule) {
-    return 'esm'
-  }
-
-  if (hasMain || isTypeCommonjs) {
-    return 'cjs'
-  }
-
-  return 'unknown'
-}
 
 interface ExportsAnalysis {
   hasImport: boolean
