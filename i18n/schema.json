@@ -4555,7 +4555,7 @@
             "add_hint": {
               "type": "string"
             },
-            "try_version_comparison": {
+            "version_hint": {
               "type": "string"
             }
           },

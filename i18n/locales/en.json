@@ -1517,7 +1517,7 @@
       "remove_package": "Remove {package}",
       "packages_selected": "{count}/{max} packages selected.",
       "add_hint": "Add at least 2 packages to compare.",
-      "try_version_comparison": "Try a version comparison"
+      "version_hint": "Compare specific versions with {syntax}. For example, enter {first} and press Enter, then add {second}."
     },
     "scatter_chart": {
       "title": "Compare {x} vs {y}",
