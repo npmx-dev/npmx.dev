@@ -198,6 +198,8 @@ onClickOutside(containerRef, () => {
   isInputFocused.value = false
   highlightedIndex.value = -1
 })
+
+const versionHintId = useId()
 </script>
 
 <template>
@@ -247,6 +249,7 @@ onClickOutside(containerRef, () => {
           id="package-search"
           v-model="inputValue"
           type="text"
+          :aria-describedby="versionHintId"
           :placeholder="
             packages.length === 0
               ? $t('compare.selector.search_first')
@@ -321,6 +324,23 @@ onClickOutside(containerRef, () => {
     </div>
 
     <!-- Hint -->
+    <i18n-t
+      :id="versionHintId"
+      keypath="compare.selector.version_hint"
+      tag="p"
+      class="text-xs text-fg-subtle"
+    >
+      <template #syntax>
+        <code class="font-mono">package@version</code>
+      </template>
+      <template #first>
+        <code class="font-mono">vue@3.0.0</code>
+      </template>
+      <template #second>
+        <code class="font-mono">vue@3.5.44</code>
+      </template>
+    </i18n-t>
+
     <p class="text-xs text-fg-subtle">
       {{
         $t('compare.selector.packages_selected', {

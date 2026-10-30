@@ -4554,6 +4554,9 @@
             },
             "add_hint": {
               "type": "string"
+            },
+            "try_version_comparison": {
+              "type": "string"
             }
           },
           "additionalProperties": false
