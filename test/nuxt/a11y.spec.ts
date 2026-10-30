@@ -1,3 +1,4 @@
+import { CHART_ANNOTATOR_SLOTS, type AnnotatorSlotName } from '~/utils/charts'
 import { DEFAULT_FILTERS, type ColumnConfig, type FilterChip } from '#shared/types/preferences'
 import { mountSuspended, registerEndpoint, mockNuxtImport } from '@nuxt/test-utils/runtime'
 import { flushPromises, type VueWrapper } from '@vue/test-utils'
@@ -335,6 +336,8 @@ import {
   LicenseChangeWarning,
   ChartSplitSparkline,
   ChartCopyPngButton,
+  ChartAnnotatorIcon,
+  ChartFullscreenIcon,
   TabRoot,
   TabList,
   TabItem,
@@ -1328,6 +1331,84 @@ describe('component accessibility audits', () => {
               { raw: 100, display: '100 MB' },
               { raw: 50, display: '50 MB' },
             ],
+            packagesData: [
+              {
+                package: {
+                  name: 'nuxt',
+                  version: '4.3.1',
+                },
+                downloads: 1156058,
+                packageSize: 1667656,
+                directDeps: 66,
+                analysis: {
+                  package: 'nuxt',
+                  version: '4.3.1',
+                  devDependencySuggestion: {
+                    recommended: false,
+                  },
+                  moduleFormat: 'dual',
+                  types: {
+                    kind: 'included',
+                  },
+                  createPackage: {
+                    packageName: 'create-nuxt',
+                  },
+                },
+                vulnerabilities: {
+                  count: 0,
+                  severity: {
+                    critical: 0,
+                    high: 0,
+                    moderate: 0,
+                    low: 0,
+                  },
+                },
+                metadata: {
+                  license: 'MIT',
+                  lastUpdated: '2026-04-03T05:41:39.680Z',
+                },
+                isBinaryOnly: false,
+                totalLikes: 156,
+              },
+              {
+                package: {
+                  name: 'vue',
+                  version: '3.5.32',
+                },
+                downloads: 10979552,
+                packageSize: 2480183,
+                directDeps: 5,
+                analysis: {
+                  package: 'vue',
+                  version: '3.5.32',
+                  devDependencySuggestion: {
+                    recommended: false,
+                  },
+                  moduleFormat: 'dual',
+                  types: {
+                    kind: 'included',
+                  },
+                  createPackage: {
+                    packageName: 'create-vue',
+                  },
+                },
+                vulnerabilities: {
+                  count: 0,
+                  severity: {
+                    critical: 0,
+                    high: 0,
+                    moderate: 0,
+                    low: 0,
+                  },
+                },
+                metadata: {
+                  license: 'MIT',
+                  lastUpdated: '2026-04-03T05:41:39.680Z',
+                },
+                isBinaryOnly: false,
+                totalLikes: 85,
+              },
+            ],
             packages: ['nuxt', 'vue'],
             label: 'Package Size',
             description: 'Size of the package itself (unpacked)',
@@ -1516,6 +1597,47 @@ describe('component accessibility audits', () => {
           granularity: 'weekly',
         },
       })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('ChartAnnotatorIcon', () => {
+    const cases = CHART_ANNOTATOR_SLOTS.flatMap<{
+      slotName: AnnotatorSlotName
+      slotProps: Record<string, string | boolean>
+    }>(slotName => {
+      if (slotName === 'annotator-action-draw') {
+        return ['arrow', 'text', 'line', 'draw'].map(mode => ({
+          slotName,
+          slotProps: { mode },
+        }))
+      }
+      if (slotName === 'annotator-action-color') {
+        return [{ slotName, slotProps: { color: '#ff0000' } }]
+      }
+      return [false, true].map(state => ({
+        slotName,
+        slotProps: { disabled: state, isSelecting: state, isAnnotator: state },
+      }))
+    })
+
+    it.each(cases)('keeps $slotName decorative with $slotProps', async props => {
+      const component = await mountSuspended(ChartAnnotatorIcon, { props })
+      expect(component.get('span').attributes('aria-hidden')).toBe('true')
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('ChartFullscreenIcon', () => {
+    it.each([false, true])('stays decorative when fullscreen is %s', async isFullscreen => {
+      const component = await mountSuspended(ChartFullscreenIcon, {
+        props: { isFullscreen },
+      })
+      const icon = component.get('span')
+      expect(icon.attributes('aria-hidden')).toBe('true')
+      expect(icon.classes()).toContain(isFullscreen ? 'i-lucide:minimize' : 'i-lucide:maximize')
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
@@ -4077,6 +4199,7 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(PackageSecurityDowngradeAlert, {
         props: {
+          packageName: 'vue',
           downgrade: {
             downgradedVersion: '2.0.0',
             downgradedTrustLevel: 'none',

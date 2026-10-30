@@ -2371,6 +2371,9 @@
             "toggle_annotator": {
               "type": "string"
             },
+            "toggle_fullscreen": {
+              "type": "string"
+            },
             "toggle_stack_mode": {
               "type": "string"
             },
@@ -4553,6 +4556,9 @@
               "type": "string"
             },
             "add_hint": {
+              "type": "string"
+            },
+            "version_hint": {
               "type": "string"
             }
           },
