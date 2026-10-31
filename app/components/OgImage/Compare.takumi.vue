@@ -137,7 +137,7 @@ const summaryRemainder = computed(() =>
         <div v-for="pkg in stats" :key="pkg.name" class="flex flex-col gap-1">
           <div class="flex items-center gap-3">
             <span
-              class="text-2xl font-semibold tracking-tight font-ogmono"
+              class="text-2xl font-bold tracking-tight font-ogmono"
               :style="{
                 color: pkg.color,
                 maxWidth: '400px',
