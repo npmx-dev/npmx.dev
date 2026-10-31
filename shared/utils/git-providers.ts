@@ -177,14 +177,9 @@ export function normalizeGitUrl(input: string): string | null {
   return url.includes('://') ? url : `https://${url}`
 }
 
-/**
- * Reads `owner/repo` with the forge's own URL rules, so nested groups and `~user`
- * parse. The forge's default instance is read first; a self-hosted host is
- * tried as the instance when that does not match.
- */
+/** Reads `owner/repo` with the forge's own URL rules, so nested groups and `~user` parse. */
 function parseRepoPath(config: ProviderConfig, host: string, url: URL) {
-  const parse = (baseUrl?: string) => config.web?.({ baseUrl }).parseUrl(url)?.repo
-  const repo = parse() ?? parse(`https://${host}`)
+  const repo = config.web?.({ baseUrl: `https://${host}` }).parseUrl(url)?.repo
   return repo ? { owner: repo.owner, repo: repo.name } : null
 }
 
