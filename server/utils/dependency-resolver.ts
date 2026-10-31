@@ -15,12 +15,13 @@ export const TARGET_PLATFORM = {
 }
 
 /**
- * Fetch packument with caching (returns null on error for tree traversal).
- * Delegates to fetchNpmPackage() to share a single cache for all packument fetches.
+ * Fetch abbreviated packument metadata for tree traversal (returns null on error).
+ * Only install-relevant fields are needed here, so this uses the much smaller abbreviated
+ * document rather than the full packument.
  */
-async function fetchPackument(name: string): Promise<Packument | null> {
+async function fetchPackument(name: string): Promise<AbbreviatedPackument | null> {
   try {
-    return await fetchNpmPackage(name)
+    return await fetchNpmPackageAbbreviated(name)
   } catch (error) {
     if (import.meta.dev) {
       // oxlint-disable-next-line no-console -- log npm registry failures for debugging
@@ -30,11 +31,18 @@ async function fetchPackument(name: string): Promise<Packument | null> {
   }
 }
 
+/** The subset of version fields used to decide platform compatibility. */
+interface PlatformRestrictions {
+  os?: string[]
+  cpu?: string[]
+  libc?: string[]
+}
+
 /**
  * Check if a package version matches the target platform.
  * Returns false if the package explicitly excludes our target platform.
  */
-export function matchesPlatform(version: PackumentVersion): boolean {
+export function matchesPlatform(version: PlatformRestrictions): boolean {
   if (version.os && Array.isArray(version.os) && version.os.length > 0) {
     const osMatch = version.os.some(os => {
       if (os.startsWith('!')) return os.slice(1) !== TARGET_PLATFORM.os
@@ -51,7 +59,7 @@ export function matchesPlatform(version: PackumentVersion): boolean {
     if (!cpuMatch) return false
   }
 
-  const libc = (version as { libc?: string[] }).libc
+  const libc = version.libc
   if (libc && Array.isArray(libc) && libc.length > 0) {
     const libcMatch = libc.some(l => {
       if (l.startsWith('!')) return l.slice(1) !== TARGET_PLATFORM.libc
@@ -147,12 +155,29 @@ export async function resolveDependencyTree(
         const version = resolveVersion(range, versions)
         if (!version) return
 
-        const versionData = packument.versions[version]
+        let versionData = packument.versions[version]
         if (!versionData) return
+
+        // `os`/`cpu` come from the abbreviated metadata; reject mismatches before paying for
+        // the separate libc lookup.
+        if (!matchesPlatform({ os: versionData.os, cpu: versionData.cpu })) return
+
+        // The registry omits `libc` from abbreviated metadata, but it can still exclude a
+        // version (e.g. musl-only builds on a glibc target), so read it from the small
+        // single-version manifest.
+        if (versionData.libc === undefined && (versionData.os?.length || versionData.cpu?.length)) {
+          try {
+            const libc = await fetchNpmPackageVersionLibc(name, version)
+            if (libc) versionData = { ...versionData, libc }
+          } catch {
+            // libc lookup failed: skip optional deps, keep required ones.
+            if (optional) return
+          }
+        }
 
         if (!matchesPlatform(versionData)) return
 
-        const size = (versionData.dist as { unpackedSize?: number })?.unpackedSize ?? 0
+        const size = versionData.dist?.unpackedSize ?? 0
         const tarballUrl = versionData.dist?.tarball ?? ''
         const key = `${name}@${version}`
 

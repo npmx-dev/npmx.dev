@@ -285,14 +285,14 @@ describe('useInstallCommand', () => {
     it('should copy command to clipboard and set copied state', async () => {
       vi.useFakeTimers()
 
-      const { copyInstallCommand, copied, fullInstallCommand } = useInstallCommand(
+      const { copyInstallCommand, copied, installCommand } = useInstallCommand(
         'vue',
         null,
         null,
         null,
       )
 
-      expect(fullInstallCommand.value).toBe('npm install vue')
+      expect(installCommand.value).toBe('npm install vue')
       expect(copied.value).toBe(false)
 
       await copyInstallCommand()

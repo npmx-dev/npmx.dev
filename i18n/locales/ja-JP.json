@@ -166,9 +166,6 @@
       "changelog": "Changelog",
       "stats": "統計"
     },
-    "package_actions": {
-      "copy_run": "実行コマンドをコピー"
-    },
     "code": {
       "copy_file": "ファイル内容をコピー"
     },
@@ -489,7 +486,6 @@
       "compare": "比較",
       "timeline": "タイムライン",
       "stats": "統計",
-      "compare_this_package": "このパッケージを比較",
       "changelog": "changelog"
     },
     "likes": {
@@ -1733,18 +1729,10 @@
     "p2": "開始する前に、翻訳プロセスと参加方法について説明した {guide} を読んでください。",
     "guide": "ローカライズ (i18n) ガイド",
     "by_locale": "言語別の翻訳進捗",
-    "by_file": "ファイル別の翻訳進捗",
     "complete_text": "この言語の翻訳は完了しています。素晴らしい！",
     "missing_text": "未翻訳",
     "missing_keys": "未翻訳はありません | 未翻訳 1 件 | 未翻訳 {count} 件",
-    "progress_label": "{locale} の進捗状況",
-    "table": {
-      "file": "ファイル",
-      "status": "ステータス",
-      "error": "ファイルリストの読み込み中にエラーが発生しました。",
-      "empty": "ファイルが見つかりません",
-      "file_link": "GitHubで {file} ({lang}) を編集"
-    }
+    "progress_label": "{locale} の進捗状況"
   },
   "vacations": {
     "title": "on vacation",

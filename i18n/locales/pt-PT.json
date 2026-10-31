@@ -155,9 +155,6 @@
       "compare": "Comparar este pacote",
       "download": "Transferir tarball"
     },
-    "package_actions": {
-      "copy_run": "Copiar comando de execução"
-    },
     "code": {
       "copy_file": "Copiar conteúdo do ficheiro"
     },
@@ -444,8 +441,7 @@
       "docs": "docs",
       "fund": "financiar",
       "compare": "comparar",
-      "timeline": "linha do tempo",
-      "compare_this_package": "comparar este pacote"
+      "timeline": "linha do tempo"
     },
     "likes": {
       "like": "Gostar deste pacote",
@@ -1598,18 +1594,10 @@
     "p2": "Antes de começar, por favor lê o nosso {guide} para saberes mais sobre o nosso processo de tradução e como podes contribuir.",
     "guide": "Guia de tradução (i18n)",
     "by_locale": "Progresso de tradução por locale",
-    "by_file": "Progresso de tradução por ficheiro",
     "complete_text": "Esta tradução está completa, ótimo trabalho!",
     "missing_text": "em falta",
     "missing_keys": "Não existem traduções em falta | Tradução em falta | Traduções em falta",
-    "progress_label": "Estado de progresso para {locale}",
-    "table": {
-      "file": "Ficheiro",
-      "status": "Estado",
-      "error": "Erro ao carregar a lista de ficheiros.",
-      "empty": "Nenhum ficheiro encontrado",
-      "file_link": "Editar {file} ({lang}) no GitHub"
-    }
+    "progress_label": "Estado de progresso para {locale}"
   },
   "vacations": {
     "title": "de férias",

@@ -80,10 +80,10 @@ const { copied: copiedPkgVersion, copy: copyPkgVersion } = useClipboard({
   copiedDuring: 2000,
 })
 
-function hasProvenance(version: PackumentVersion | null): boolean {
-  if (!version?.dist) return false
-  return !!(version.dist as { attestations?: unknown }).attestations
-}
+const publishTrustStatus = computed(
+  () =>
+    (props.resolvedVersion && props.pkg?.versions[props.resolvedVersion]?.trustStatus) || undefined,
+)
 
 const { announce } = useCommandPalette()
 
@@ -204,7 +204,6 @@ useShortcuts({
   '.': () => codeLink.value,
   'm': () => mainLink.value,
   'd': () => docsLink.value,
-  'c': () => props.pkg && { name: 'compare' as const, query: { packages: props.pkg.name } },
   'f': () => diffLink.value,
   '-': () => changelogLink.value,
   't': () => timelineLink.value,
@@ -250,14 +249,6 @@ useShortcuts({
       </h1>
       <!-- Package metrics -->
       <div class="flex gap-2 flex-wrap items-stretch">
-        <LinkBase
-          variant="button-secondary"
-          :to="{ name: 'compare', query: { packages: packageName } }"
-          aria-keyshortcuts="c"
-          classicon="i-lucide:git-compare"
-        >
-          <span class="max-sm:sr-only">{{ $t('package.links.compare_this_package') }}</span>
-        </LinkBase>
         <PackageLikes :packageName />
 
         <LinkBase
@@ -293,7 +284,23 @@ useShortcuts({
           :tabindex="showScrollToTop ? 0 : -1"
         />
         <div class="flex-inline items-center flex-nowrap gap-1 font-mono text-fg-muted">
-          <template v-if="displayVersion && hasProvenance(displayVersion)">
+          <template v-if="publishTrustStatus?.stagedPublish">
+            <TooltipApp
+              :text="$t('badges.staged_publish.title')"
+              position="bottom"
+              strategy="fixed"
+            >
+              <LinkBase
+                variant="button-secondary"
+                to="https://docs.npmjs.com/staged-publishing/"
+                :aria-label="$t('badges.staged_publish.title')"
+                class="!py-1.25 !px-2 me-2"
+              >
+                <span class="i-lucide:shield-user size-[1em]" aria-hidden="true" />
+              </LinkBase>
+            </TooltipApp>
+          </template>
+          <template v-if="publishTrustStatus?.provenance">
             <TooltipApp
               :text="
                 provenanceData && provenanceStatus !== 'pending'

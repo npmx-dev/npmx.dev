@@ -39,14 +39,14 @@ describe('buildCompareScatterChartDataset', () => {
 
     expect(result).toEqual([
       {
-        name: 'ellipsis(vue,14)',
+        name: 'ellipsis(vue,18)',
         fullName: 'vue',
         color: 'color:vue',
         values: [
           {
             x: 1200,
             y: 4096,
-            name: 'ellipsis(vue,14)',
+            name: 'ellipsis(vue,18)',
             fullName: 'vue',
           },
         ],
@@ -72,14 +72,14 @@ describe('buildCompareScatterChartDataset', () => {
 
     expect(result).toEqual([
       {
-        name: 'ellipsis(some-library,14)',
+        name: 'ellipsis(some-library,18)',
         fullName: 'some-library',
         color: undefined,
         values: [
           {
             x: 100,
             y: 200,
-            name: 'ellipsis(some-library,14)',
+            name: 'ellipsis(some-library,18)',
             fullName: 'some-library',
           },
         ],
@@ -104,14 +104,14 @@ describe('buildCompareScatterChartDataset', () => {
 
     expect(result).toEqual([
       {
-        name: 'ellipsis(fallback-name,14)',
+        name: 'ellipsis(fallback-name,18)',
         fullName: 'fallback-name',
         color: undefined,
         values: [
           {
             x: 50,
             y: 75,
-            name: 'ellipsis(fallback-name,14)',
+            name: 'ellipsis(fallback-name,18)',
             fullName: 'fallback-name',
           },
         ],
@@ -131,14 +131,14 @@ describe('buildCompareScatterChartDataset', () => {
 
     expect(result).toEqual([
       {
-        name: 'ellipsis(package-1,14)',
+        name: 'ellipsis(package-1,18)',
         fullName: 'package-1',
         color: undefined,
         values: [
           {
             x: 10,
             y: 20,
-            name: 'ellipsis(package-1,14)',
+            name: 'ellipsis(package-1,18)',
             fullName: 'package-1',
           },
         ],
@@ -164,14 +164,14 @@ describe('buildCompareScatterChartDataset', () => {
 
     expect(result).toEqual([
       {
-        name: 'ellipsis(package-2,14)',
+        name: 'ellipsis(package-2,18)',
         fullName: 'package-2',
         color: undefined,
         values: [
           {
             x: 11,
             y: 22,
-            name: 'ellipsis(package-2,14)',
+            name: 'ellipsis(package-2,18)',
             fullName: 'package-2',
           },
         ],
@@ -197,14 +197,14 @@ describe('buildCompareScatterChartDataset', () => {
 
     expect(result).toEqual([
       {
-        name: 'ellipsis(fallback-empty-name,14)',
+        name: 'ellipsis(fallback-empty-name,18)',
         fullName: 'fallback-empty-name',
         color: undefined,
         values: [
           {
             x: 12,
             y: 34,
-            name: 'ellipsis(fallback-empty-name,14)',
+            name: 'ellipsis(fallback-empty-name,18)',
             fullName: 'fallback-empty-name',
           },
         ],
@@ -231,14 +231,14 @@ describe('buildCompareScatterChartDataset', () => {
 
     expect(result).toEqual([
       {
-        name: 'ellipsis(vue,14)',
+        name: 'ellipsis(vue,18)',
         fullName: 'vue',
         color: 'color:vue',
         values: [
           {
             x: 200,
             y: 300,
-            name: 'ellipsis(vue,14)',
+            name: 'ellipsis(vue,18)',
             fullName: 'vue',
           },
         ],
@@ -326,27 +326,27 @@ describe('buildCompareScatterChartDataset', () => {
 
     expect(result).toEqual([
       {
-        name: 'ellipsis(typed-package,14)',
+        name: 'ellipsis(typed-package,18)',
         fullName: 'typed-package',
         color: undefined,
         values: [
           {
             x: 1,
             y: 120,
-            name: 'ellipsis(typed-package,14)',
+            name: 'ellipsis(typed-package,18)',
             fullName: 'typed-package',
           },
         ],
       },
       {
-        name: 'ellipsis(untyped-package,14)',
+        name: 'ellipsis(untyped-package,18)',
         fullName: 'untyped-package',
         color: undefined,
         values: [
           {
             x: 0,
             y: 140,
-            name: 'ellipsis(untyped-package,14)',
+            name: 'ellipsis(untyped-package,18)',
             fullName: 'untyped-package',
           },
         ],
@@ -372,14 +372,14 @@ describe('buildCompareScatterChartDataset', () => {
 
     expect(result).toEqual([
       {
-        name: 'ellipsis(pkg-no-types,14)',
+        name: 'ellipsis(pkg-no-types,18)',
         fullName: 'pkg-no-types',
         color: undefined,
         values: [
           {
             x: 0,
             y: 77,
-            name: 'ellipsis(pkg-no-types,14)',
+            name: 'ellipsis(pkg-no-types,18)',
             fullName: 'pkg-no-types',
           },
         ],
@@ -411,14 +411,14 @@ describe('buildCompareScatterChartDataset', () => {
       ),
     ).toEqual([
       {
-        name: 'ellipsis(pkg-nested,14)',
+        name: 'ellipsis(pkg-nested,18)',
         fullName: 'pkg-nested',
         color: undefined,
         values: [
           {
             x: 12,
             y: 34,
-            name: 'ellipsis(pkg-nested,14)',
+            name: 'ellipsis(pkg-nested,18)',
             fullName: 'pkg-nested',
           },
         ],
@@ -453,14 +453,14 @@ describe('buildCompareScatterChartDataset', () => {
 
     expect(result).toEqual([
       {
-        name: 'ellipsis(metrics-package,14)',
+        name: 'ellipsis(metrics-package,18)',
         fullName: 'metrics-package',
         color: undefined,
         values: [
           {
             x: 42,
             y: 2048,
-            name: 'ellipsis(metrics-package,14)',
+            name: 'ellipsis(metrics-package,18)',
             fullName: 'metrics-package',
           },
         ],
@@ -488,14 +488,14 @@ describe('buildCompareScatterChartDataset', () => {
 
     expect(result).toEqual([
       {
-        name: 'ellipsis(security-package,14)',
+        name: 'ellipsis(security-package,18)',
         fullName: 'security-package',
         color: undefined,
         values: [
           {
             x: 3,
             y: 512,
-            name: 'ellipsis(security-package,14)',
+            name: 'ellipsis(security-package,18)',
             fullName: 'security-package',
           },
         ],
@@ -523,14 +523,14 @@ describe('buildCompareScatterChartDataset', () => {
 
     expect(result).toEqual([
       {
-        name: 'ellipsis(fresh-package,14)',
+        name: 'ellipsis(fresh-package,18)',
         fullName: 'fresh-package',
         color: undefined,
         values: [
           {
             x: 100,
             y: 1000,
-            name: 'ellipsis(fresh-package,14)',
+            name: 'ellipsis(fresh-package,18)',
             fullName: 'fresh-package',
           },
         ],
@@ -558,14 +558,14 @@ describe('buildCompareScatterChartDataset', () => {
 
     expect(result).toEqual([
       {
-        name: 'ellipsis(stale-package,14)',
+        name: 'ellipsis(stale-package,18)',
         fullName: 'stale-package',
         color: undefined,
         values: [
           {
             x: 0,
             y: 1000,
-            name: 'ellipsis(stale-package,14)',
+            name: 'ellipsis(stale-package,18)',
             fullName: 'stale-package',
           },
         ],
@@ -654,14 +654,14 @@ describe('buildCompareScatterChartDataset', () => {
 
     expect(result).toEqual([
       {
-        name: 'ellipsis(future-package,14)',
+        name: 'ellipsis(future-package,18)',
         fullName: 'future-package',
         color: undefined,
         values: [
           {
             x: 100,
             y: 100,
-            name: 'ellipsis(future-package,14)',
+            name: 'ellipsis(future-package,18)',
             fullName: 'future-package',
           },
         ],
@@ -724,14 +724,14 @@ describe('buildCompareScatterChartDataset', () => {
 
     expect(result).toEqual([
       {
-        name: 'ellipsis(date-instance-package,14)',
+        name: 'ellipsis(date-instance-package,18)',
         fullName: 'date-instance-package',
         color: undefined,
         values: [
           {
             x: 100,
             y: 250,
-            name: 'ellipsis(date-instance-package,14)',
+            name: 'ellipsis(date-instance-package,18)',
             fullName: 'date-instance-package',
           },
         ],
@@ -756,14 +756,14 @@ describe('buildCompareScatterChartDataset', () => {
 
     expect(result).toEqual([
       {
-        name: 'ellipsis(missing-analysis-package,14)',
+        name: 'ellipsis(missing-analysis-package,18)',
         fullName: 'missing-analysis-package',
         color: undefined,
         values: [
           {
             x: 0,
             y: 88,
-            name: 'ellipsis(missing-analysis-package,14)',
+            name: 'ellipsis(missing-analysis-package,18)',
             fullName: 'missing-analysis-package',
           },
         ],
@@ -831,14 +831,14 @@ describe('buildCompareScatterChartDataset', () => {
 
     expect(result).toEqual([
       {
-        name: 'ellipsis(undefined-kind-package,14)',
+        name: 'ellipsis(undefined-kind-package,18)',
         fullName: 'undefined-kind-package',
         color: undefined,
         values: [
           {
             x: 0,
             y: 91,
-            name: 'ellipsis(undefined-kind-package,14)',
+            name: 'ellipsis(undefined-kind-package,18)',
             fullName: 'undefined-kind-package',
           },
         ],

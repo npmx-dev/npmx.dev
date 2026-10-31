@@ -13,7 +13,11 @@ const parsedRoute = computed(() => {
 
   const packageName = org ? `${org}/${name}` : name
 
-  const version = 'version' in route.params ? route.params.version : null
+  // TODO: drop once nuxt emits child route names in `RouteRecordInfo` again. Since 4.5.2 the
+  // child arg is `never`, so `useRoute('changelog')` doesn't union in the `changelog-version`
+  // params and `version` widens to `unknown`.
+  // @ts-expect-error see above
+  const version: string | null = 'version' in route.params ? route.params.version : null
 
   return { packageName, version }
 })

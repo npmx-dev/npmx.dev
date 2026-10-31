@@ -2,13 +2,15 @@ import { describe, expect, it } from 'vitest'
 import { getFileIcon } from '~/utils/file-icons'
 
 describe('getFileIcon', () => {
-  it('returns correct icons for exact filename matches', () => {
+  it('returns correct icons for exact/pattern filename matches', () => {
     expect(getFileIcon('package.json')).toBe('vscode-icons-file-type-npm')
     expect(getFileIcon('Dockerfile')).toBe('vscode-icons-file-type-docker')
     expect(getFileIcon('.gitignore')).toBe('vscode-icons-file-type-git')
     expect(getFileIcon('eslint.config.js')).toBe('vscode-icons-file-type-eslint')
     expect(getFileIcon('vitest.config.ts')).toBe('vscode-icons-file-type-vitest')
     expect(getFileIcon('.env')).toBe('vscode-icons-file-type-dotenv')
+    expect(getFileIcon('README')).toBe('vscode-icons-file-type-markdown')
+    expect(getFileIcon('Licence')).toBe('custom-license-minified')
   })
 
   it('returns correct icons for compound extensions', () => {
@@ -23,6 +25,7 @@ describe('getFileIcon', () => {
     expect(getFileIcon('main.ts')).toBe('vscode-icons-file-type-typescript-official')
     expect(getFileIcon('App.vue')).toBe('vscode-icons-file-type-vue')
     expect(getFileIcon('data.json')).toBe('vscode-icons-file-type-json')
+    expect(getFileIcon('license.json')).toBe('vscode-icons-file-type-json')
     expect(getFileIcon('build.sh')).toBe('vscode-icons-file-type-shell')
     expect(getFileIcon('script.py')).toBe('vscode-icons-file-type-python')
     expect(getFileIcon('lib.rs')).toBe('vscode-icons-file-type-rust')
