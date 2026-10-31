@@ -1,3 +1,4 @@
+import { encodePackageName } from 'npmeta'
 import { findMaxSatisfying } from 'verkit'
 
 export const fetchNpmPackage = defineCachedFunction(

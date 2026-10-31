@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useRouteQuery } from '@vueuse/router'
+import { parsePackageSpec } from 'npmeta'
 import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
 import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
 import FacetScatterChart from '~/components/Compare/FacetScatterChart.vue'

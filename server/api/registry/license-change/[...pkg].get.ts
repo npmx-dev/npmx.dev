@@ -1,4 +1,4 @@
-import { normalizeLicense } from '#shared/utils/npm'
+import { normalizeLicense } from 'npmeta'
 
 interface LicenseChangeRecord {
   from: string

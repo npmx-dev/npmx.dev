@@ -4,7 +4,6 @@ import { describe, expect, it, vi, beforeEach } from 'vitest'
 vi.stubGlobal('defineCachedFunction', (fn: Function) => fn)
 const $fetchMock = vi.fn()
 vi.stubGlobal('$fetch', $fetchMock)
-vi.stubGlobal('encodePackageName', (name: string) => name.replace('/', '%2F'))
 vi.stubGlobal('NPM_REGISTRY', 'https://registry.npmjs.org')
 vi.stubGlobal('CACHE_MAX_AGE_FIVE_MINUTES', 300)
 vi.stubGlobal('CACHE_MAX_AGE_ONE_DAY', 86400)

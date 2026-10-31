@@ -1,3 +1,5 @@
+import { encodePackageName } from 'npmeta'
+
 export function usePackage(
   name: MaybeRefOrGetter<string>,
   requestedVersion?: MaybeRefOrGetter<string | null>,

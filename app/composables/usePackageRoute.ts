@@ -1,3 +1,5 @@
+import { splitPackageName } from 'npmeta'
+
 /**
  * Parse package name and optional version from the current route URL.
  *
