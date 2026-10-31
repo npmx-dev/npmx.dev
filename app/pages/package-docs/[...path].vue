@@ -9,6 +9,7 @@ definePageMeta({
   scrollMargin: 180,
 })
 
+const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
 
@@ -88,6 +89,21 @@ const { data: docsData, status: docsStatus } = useLazyFetch<DocsResponse>(
     }),
   },
 )
+
+// The docs HTML is only fetched client-side, so on a direct load the router's scroll behavior runs
+// before the hash target exists. Navigate to the hash again once the content has rendered.
+if (import.meta.client) {
+  watch(
+    () => docsData.value?.html,
+    html => {
+      if (html && route.hash) {
+        navigateTo(route.hash, { replace: true })
+      }
+    },
+    { flush: 'post' },
+  )
+}
+
 // Keep latestVersion for comparison (to show "(latest)" badge)
 const latestVersionDetailed = computed(() => {
   if (!pkg.value) return null
