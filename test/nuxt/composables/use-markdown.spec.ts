@@ -269,6 +269,13 @@ describe('useMarkdown', () => {
       expect(processed.value).toBe('A library')
     })
 
+    it('keeps text with a bare "<" that is not a truncated tag', () => {
+      expect(useMarkdown({ text: 'Fast x<y comparisons and sorting' }).value).toBe(
+        'Fast x&lt;y comparisons and sorting',
+      )
+      expect(useMarkdown({ text: 'compare a <b and c' }).value).toBe('compare a &lt;b and c')
+    })
+
     it('preserves a backtick code span after an unclosed tag', () => {
       const processed = useMarkdown({ text: 'compare a <b and run `npm i`' })
       expect(processed.value).toContain('<code>npm i</code>')

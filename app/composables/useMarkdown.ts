@@ -57,9 +57,11 @@ function stripAndEscapeHtml(text: string): string {
   )
 
   // Strip unclosed HTML tags left by registry truncation (no closing '>').
+  // Only a bare tag name at the very end, or one followed by an attribute ('=' or a quote), counts,
+  // so plain text like `x<y comparisons` is kept.
   // The tag branch must not cross a backtick, or it would swallow a later code span
   stripped = stripped.replace(
-    /(`[^`]*`)|<\/?[a-z][^>`]*$/gi,
+    /(`[^`]*`)|<\/?[a-z][a-z0-9-]*(?:$|\s[^>`="']*[="'][^>`]*$)/gi,
     (match, codeSpan: string | undefined) => codeSpan ?? '',
   )
 

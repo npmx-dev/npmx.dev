@@ -61,8 +61,16 @@ describe('stripHtmlTags', () => {
     ).toBe('')
   })
 
+  it('removes a bare unclosed tag name at the end', () => {
+    expect(stripHtmlTags('A library <p')).toBe('A library')
+  })
+
   it('leaves comparison text that is not a tag', () => {
     expect(stripHtmlTags('a < b')).toBe('a < b')
+    expect(stripHtmlTags('Fast x<y comparisons and sorting')).toBe(
+      'Fast x<y comparisons and sorting',
+    )
+    expect(stripHtmlTags('compare a <b and c')).toBe('compare a <b and c')
   })
 
   it('keeps a backtick code span after an unclosed tag', () => {
