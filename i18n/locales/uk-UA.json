@@ -432,7 +432,6 @@
       "tangled": "Переглянути на Tangled"
     },
     "collapse": "Згорнути",
-    "collapse_with_name": "Згорнути {name}",
     "copyMdError": "Не вдалося завантажити markdown, повторіть спробу пізніше"
   },
   "profile": {
@@ -579,14 +578,6 @@
       "title": "Запустити",
       "locally": "Запустити локально",
       "copy_command": "Копіювати команду для запуску локально"
-    },
-    "command": {
-      "copied_install": "Команду встановлення скопійовано",
-      "copied_dev_install": "Команду встановлення для розробки скопійовано",
-      "copied_run": "Команду запуску скопійовано",
-      "copied_create": "Команду створення скопійовано",
-      "copied_execute": "Команду виконання скопійовано",
-      "copied_skills": "Команду навичок скопійовано"
     },
     "command": {},
     "readme": {
@@ -839,6 +830,10 @@
       "sparkline_zoom_reset": {
         "title": "Скинути масштаб · двічі клацніть діаграму або натисніть Esc",
         "aria_label": "Скинути масштаб"
+      },
+      "downloads_heatmap": {
+        "legend": {},
+        "copy_alt": {}
       }
     },
     "downloads": {
@@ -1167,6 +1162,7 @@
       "verified_title": "Перевірене походження",
       "verified_via": "Перевірено: опубліковано через {provider}"
     },
+    "staged_publish": {},
     "jsr": {
       "title": "також доступно на JSR"
     }
