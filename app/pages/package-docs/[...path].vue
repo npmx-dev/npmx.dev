@@ -523,6 +523,11 @@ html[dir='rtl'] .toc-content .docs-toc-group > a {
   @apply text-fg-muted;
 }
 
+/* Members linked via {@link Symbol.member} */
+.docs-content .docs-members :target {
+  @apply scroll-mt-32 bg-badge-yellow/10 rounded-md;
+}
+
 .docs-content .docs-symbol-name,
 .docs-content .docs-members dl dd,
 .docs-content .docs-members dl dt code,
