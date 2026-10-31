@@ -155,12 +155,13 @@ defineOgImage(
         :requested-date="versionDate"
         :goToVersion="requestedVersion && version"
         :resolveVersionPending="resolvingPending"
-        #error
+        #error="{ error }"
       >
         <LazyChangelogErrorMsg
           :pkgName="pkg?.name"
           :changelog-link="changelog.link"
           :viewOnGit="viewOnProvider"
+          :error="error"
         />
       </LazyChangelogReleases>
       <LazyChangelogMarkdown
@@ -180,9 +181,19 @@ defineOgImage(
 
       <!-- error handling -->
       <template v-else-if="!changelogPending">
-        <p class="mt-5" v-if="changelogError?.statusMessage == ERROR_UNGH_API_KEY_EXHAUSTED">
-          {{ $t('changelog.rate_limit_ungh') }}
-        </p>
+        <div
+          v-if="changelogError?.statusText == ERROR_UNGH_API_KEY_EXHAUSTED"
+          class="items-center flex flex-col"
+        >
+          <p class="mt-5">{{ $t('changelog.ungh.rate_limit') }}</p>
+          <p>{{ $t('changelog.ungh.hint') }}</p>
+          <LinkBase
+            variant="button-secondary"
+            to="https://github.com/apps/ungh-app"
+            classicon="i-simple-icons:github"
+            >{{ $t('changelog.ungh.install') }}</LinkBase
+          >
+        </div>
         <p class="mt-5" v-else-if="!version || !pkg?.versions[version]">
           {{ $t('changelog.version_unavailable') }}
         </p>
