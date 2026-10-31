@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import type { CachedFetchFunction } from '#shared/utils/fetch-cache-config'
 import type { RepoRef } from '#shared/utils/git-providers'
 import { getRepoMeta } from '#shared/utils/repository-meta'
