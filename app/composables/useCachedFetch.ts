@@ -29,7 +29,7 @@ import type { CachedFetchResult } from '#shared/utils/fetch-cache-config'
  * ```
  */
 export function useCachedFetch(): CachedFetchFunction {
-  const defaultFetch: CachedFetchFunction =async <T = unknown>(
+  const defaultFetch: CachedFetchFunction = async <T = unknown>(
     url: string,
     options: Parameters<typeof $fetch>[1] = {},
     _ttl: number = FETCH_CACHE_DEFAULT_TTL,
