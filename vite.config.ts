@@ -159,6 +159,22 @@ export default defineConfig({
     },
     overrides: [
       {
+        files: ['test/**/*'],
+        rules: {
+          'no-restricted-imports': [
+            'error',
+            {
+              paths: [
+                {
+                  name: 'vitest',
+                  message: 'Import Vitest APIs from vite-plus/test instead.',
+                },
+              ],
+            },
+          ],
+        },
+      },
+      {
         files: [
           'server/**/*',
           'cli/**/*',

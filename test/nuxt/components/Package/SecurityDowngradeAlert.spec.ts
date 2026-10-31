@@ -1,5 +1,5 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import PackageSecurityDowngradeAlert from '~/components/Package/SecurityDowngradeAlert.vue'
 
 describe('PackageSecurityDowngradeAlert', () => {
