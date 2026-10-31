@@ -9,7 +9,7 @@
 
 import type { DenoDocNode } from '#shared/types/deno-doc'
 import type { MergedSymbol, SymbolLookup } from './types'
-import { cleanSymbolName, createSymbolId } from './text'
+import { cleanSymbolName, createMemberId, createSymbolId } from './text'
 
 /**
  * Flatten namespace elements into top-level nodes for easier display.
@@ -43,17 +43,43 @@ export function flattenNamespaces(nodes: DenoDocNode[]): DenoDocNode[] {
 /**
  * Build a lookup table mapping symbol names to their HTML anchor IDs.
  * Used for {@link} cross-references.
+ *
+ * Class, interface and enum members are reachable as `Symbol.member` and `Symbol#member`.
  */
 export function buildSymbolLookup(nodes: DenoDocNode[], prefix = ''): SymbolLookup {
   const lookup = new Map<string, string>()
+  const memberEntries: Array<[string, string]> = []
 
   for (const node of nodes) {
     const cleanName = cleanSymbolName(node.name)
     const id = createSymbolId(node.kind, cleanName, prefix)
     lookup.set(cleanName, id)
+
+    for (const memberName of getMemberNames(node)) {
+      const memberId = createMemberId(id, memberName)
+      memberEntries.push([`${cleanName}.${memberName}`, memberId])
+      memberEntries.push([`${cleanName}#${memberName}`, memberId])
+    }
+  }
+
+  // Flattened namespace elements are also named `Parent.child`, and those are real symbols, so they win.
+  for (const [name, memberId] of memberEntries) {
+    if (!lookup.has(name)) lookup.set(name, memberId)
   }
 
   return lookup
+}
+
+function getMemberNames(node: DenoDocNode): string[] {
+  const { classDef, enumDef, interfaceDef } = node
+
+  return [
+    ...(classDef?.properties ?? []),
+    ...(classDef?.methods ?? []),
+    ...(interfaceDef?.properties ?? []),
+    ...(interfaceDef?.methods ?? []),
+    ...(enumDef?.members ?? []),
+  ].map(member => member.name)
 }
 
 /**

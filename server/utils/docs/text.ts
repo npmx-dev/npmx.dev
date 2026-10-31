@@ -60,6 +60,13 @@ export function createSymbolId(kind: string, name: string, prefix = ''): string 
 }
 
 /**
+ * Create a URL-safe HTML anchor ID for a class, interface or enum member.
+ */
+export function createMemberId(symbolId: string, memberName: string): string {
+  return `${symbolId}--${memberName.replace(/[^a-z0-9-]/gi, '_')}`
+}
+
+/**
  * Derive a stable, URL-safe slug from a package entry point.
  */
 export function entrySlug(entryPoint: string): string {
