@@ -85,6 +85,23 @@ export default defineConfig({
       'no-await-in-loop': 'off',
       'unicorn/no-array-sort': 'off',
       'no-restricted-globals': 'error',
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: 'vitest',
+              message: 'Import Vitest APIs from vite-plus/test instead.',
+            },
+          ],
+          patterns: [
+            {
+              group: ['vitest/*'],
+              message: 'Import Vitest APIs from the matching vite-plus/test entry instead.',
+            },
+          ],
+        },
+      ],
       'typescript/consistent-type-imports': 'error',
       'e18e/prefer-array-from-map': 'error',
       'e18e/prefer-timer-args': 'error',
@@ -158,22 +175,6 @@ export default defineConfig({
       'regexp/sort-flags': 'warn',
     },
     overrides: [
-      {
-        files: ['test/**/*'],
-        rules: {
-          'no-restricted-imports': [
-            'error',
-            {
-              paths: [
-                {
-                  name: 'vitest',
-                  message: 'Import Vitest APIs from vite-plus/test instead.',
-                },
-              ],
-            },
-          ],
-        },
-      },
       {
         files: [
           'server/**/*',
