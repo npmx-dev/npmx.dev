@@ -49,11 +49,18 @@ export function flattenNamespaces(nodes: DenoDocNode[]): DenoDocNode[] {
 export function buildSymbolLookup(nodes: DenoDocNode[], prefix = ''): SymbolLookup {
   const lookup = new Map<string, string>()
   const memberEntries: Array<[string, string]> = []
+  const symbolsWithMembers = new Set<string>()
 
   for (const node of nodes) {
     const cleanName = cleanSymbolName(node.name)
     const id = createSymbolId(node.kind, cleanName, prefix)
     lookup.set(cleanName, id)
+
+    // Only the first declaration of a merged symbol has its members rendered, so later ones
+    // (e.g. a re-opened interface) would point to anchors that don't exist.
+    const symbolKey = `${node.kind}:${cleanName}`
+    if (symbolsWithMembers.has(symbolKey)) continue
+    symbolsWithMembers.add(symbolKey)
 
     for (const memberName of getMemberNames(node)) {
       const memberId = createMemberId(id, memberName)
@@ -72,14 +79,18 @@ export function buildSymbolLookup(nodes: DenoDocNode[], prefix = ''): SymbolLook
 
 function getMemberNames(node: DenoDocNode): string[] {
   const { classDef, enumDef, interfaceDef } = node
+  const constructorNames = classDef?.constructors?.length ? ['constructor'] : []
 
   return [
-    ...(classDef?.properties ?? []),
-    ...(classDef?.methods ?? []),
-    ...(interfaceDef?.properties ?? []),
-    ...(interfaceDef?.methods ?? []),
-    ...(enumDef?.members ?? []),
-  ].map(member => member.name)
+    ...constructorNames,
+    ...[
+      ...(classDef?.properties ?? []),
+      ...(classDef?.methods ?? []),
+      ...(interfaceDef?.properties ?? []),
+      ...(interfaceDef?.methods ?? []),
+      ...(enumDef?.members ?? []),
+    ].map(member => member.name),
+  ]
 }
 
 /**

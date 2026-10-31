@@ -368,7 +368,9 @@ function renderClassMembers(
     lines.push(`<h4>Constructor</h4>`)
     for (const ctor of constructors) {
       const params = formatParams(ctor.params)
-      lines.push(`<pre><code>constructor(${escapeHtml(params)})</code></pre>`)
+      lines.push(
+        `<pre${renderIdAttribute(claimMemberId('constructor'))}><code>constructor(${escapeHtml(params)})</code></pre>`,
+      )
     }
     lines.push(`</div>`)
   }

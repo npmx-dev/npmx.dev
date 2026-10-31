@@ -350,6 +350,53 @@ describe('issue #3279 - {@link} in member descriptions', () => {
     expect(html.match(/id="class-Store--get"/g)).toHaveLength(1)
     expect(html.match(/id="class-Store--value"/g)).toHaveLength(1)
   })
+
+  it('links {@link Class#constructor} to the first constructor overload', async () => {
+    const html = await renderNodes([
+      {
+        name: 'Client',
+        kind: 'class',
+        classDef: {
+          constructors: [{ params: [] }, { params: [{ kind: 'identifier', name: 'url' }] }],
+          properties: [{ name: 'url', jsDoc: { doc: 'Set via {@link Client#constructor}.' } }],
+        },
+      },
+    ])
+
+    expect(html).toContain(
+      '<dd>Set via <a href="#class-Client--constructor" class="docs-symbol-link">Client#constructor</a>.</dd>',
+    )
+    expect(html.match(/id="class-Client--constructor"/g)).toHaveLength(1)
+  })
+
+  it('prefixes member links and anchors for subpath entries', async () => {
+    const nodes: DenoDocNode[] = [
+      {
+        name: 'AlterTableBuilder',
+        kind: 'class',
+        classDef: { methods: [createAddColumnMethod('See {@link CreateTableBuilder.addColumn}')] },
+      },
+      {
+        name: 'CreateTableBuilder',
+        kind: 'class',
+        classDef: { methods: [createAddColumnMethod('Adds a column to the table.')] },
+      },
+    ]
+    const entries: ProcessedEntry[] = [
+      { entryPoint: '.', prefix: '', symbols: [], lookup: new Map() },
+      {
+        entryPoint: './schema',
+        prefix: 'schema',
+        symbols: mergeOverloads(nodes),
+        lookup: buildSymbolLookup(nodes, 'schema'),
+      },
+    ]
+
+    const html = await renderEntries(entries)
+
+    expect(html).toContain('href="#schema-class-CreateTableBuilder--addColumn"')
+    expect(html).toContain('<dt id="schema-class-CreateTableBuilder--addColumn">')
+  })
 })
 
 // =============================================================================

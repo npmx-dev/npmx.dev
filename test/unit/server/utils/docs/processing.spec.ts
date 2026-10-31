@@ -57,4 +57,27 @@ describe('buildSymbolLookup', () => {
 
     expect(lookup.get('Foo.bar')).toBe('function-Foo_bar')
   })
+
+  it('maps class constructors', () => {
+    const lookup = buildSymbolLookup([
+      { name: 'Client', kind: 'class', classDef: { constructors: [{ params: [] }] } },
+      { name: 'Empty', kind: 'class', classDef: {} },
+    ])
+
+    expect(lookup.get('Client#constructor')).toBe('class-Client--constructor')
+    expect(lookup.get('Client.constructor')).toBe('class-Client--constructor')
+    expect(lookup.has('Empty#constructor')).toBe(false)
+  })
+
+  it('only maps members of the first declaration of a merged symbol', () => {
+    const lookup = buildSymbolLookup([
+      { name: 'Options', kind: 'interface', interfaceDef: { properties: [{ name: 'level' }] } },
+      { name: 'Options', kind: 'interface', interfaceDef: { properties: [{ name: 'extra' }] } },
+      { name: 'Options', kind: 'class', classDef: { properties: [{ name: 'own' }] } },
+    ])
+
+    expect(lookup.get('Options.level')).toBe('interface-Options--level')
+    expect(lookup.has('Options.extra')).toBe(false)
+    expect(lookup.get('Options.own')).toBe('class-Options--own')
+  })
 })
